@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>D3 Clustergram</title>
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="custom.css">
+</head>
+
+<body>
+
+  <div id="wrapper" class='toggled'>
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+
+      <!-- Initial Content --> 
+      <div id='main_container'>
+
+        <!-- this row is required, -fluid causes problems --> 
+        <div class="row" > 
+
+          <div class="col-lg-12">
+
+            <!-- visualization -->
+            <div id='viz_container'>
+
+              <div class='row'>
+                <div id='clust_instruct_container' >
+                  <h1 id='viz_website_title'>D3 Clustergram</h1>
+
+                  <div id='viz_gmt_labels'></div>
+
+                  <div id='title_viz_instruct_text'>About:</div>
+                  <div class='viz_instruct_text'> This clustergram visualizes the example network located in static/networks/example_network.json. Zoom into the clustergram by scrolling. Double-click to reset zoom. Click on rows and columns to reorder. Search for a gene to zoom into the matrix. </div>
+
+                  <!-- input box for gene search -->
+                  <div id='gene_search_container' class='row'>
+                      <input id='gene_search_box' type="text" class="form-control" placeholder="Input Gene" aria-describedby="sizing-addon2">
+
+                      <div id='gene_search_button' class="btn-group" data-toggle="buttons" >
+                        <label id='gene_search_submit' class="btn btn-primary active " onclick="find_gene_in_clust();">
+                          <input type="radio" name="options" id="" autocomplete="off" checked > Search
+                        </label>
+                      </div>
+                  </div>
+
+                  <div id='toggle_order' class="btn-group" data-toggle="buttons" >
+                      <label class="btn btn-primary active prot_class" onclick="reorder_clust_rank('clust');">
+                        <input type="radio" name="options" id="clust_button" autocomplete="off" checked > Cluster
+                      </label>
+                      <label class="btn btn-primary prot_class" onclick="reorder_clust_rank('rank');">
+                        <input type="radio" name="options" id="rank_button" autocomplete="off" > Rank
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div id='clustergram_container' >
+                  <div id='col_title'>Columns</div>
+                  <div id='clust_and_row_container'>
+                    <div id='row_title'>Rows</div>
+                    <div id='svg_div'></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- end visualization -->
+
+          </div>
+        </div> <!-- end row -->
+      </div>
+    </div>
+    <!-- /#page-content-wrapper -->
+  </div>
+  <!-- /#wrapper -->
+
+  <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js" charset="utf-8"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+  <script src='d3_clustergram.js'></script>
+
+</body>
+</html>
