@@ -1,4 +1,3 @@
-
 d3.json('example_network.json', function(network_data){
 
   // make global copy of network_data 
