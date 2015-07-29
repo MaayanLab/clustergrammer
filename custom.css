@@ -1,11 +1,4 @@
-/* prevents horizontal scrolling */
-html {
-  /*min-width: 1040px;*/
-  max-width: 100%;
-  overflow-x: hidden;
-}
-
-
+/* stylize header */
 h1 {
   font-size: 45px;
   font-weight: 300;
@@ -13,318 +6,85 @@ h1 {
   margin-bottom: 20px;
 }
 
-h2 {
-  margin-top: 2em;
+/*stylize footer */
+footer {
+  margin-left: 200px;
+  text-align: center;
+  background-color: #f5f5f5;
+  font-size: 13px;
+  padding-left:10px;
+  padding-right:10px;
 }
 
-
-/*grey background*/
-.background {
-  fill: #eee;
-}
-
-line {
-  stroke: white; 
-}
-
+/* for highlighting row/col labels on hover*/
 text.active {
   font-weight: bold;
 }
 
-/*position the title of the columns and rows*/
-#col_title{
-  font-size: 20px;
-  display: block;
-  margin-left:140px;
-  margin-top:2px;
-  font-weight: 300;
-}
-
-#row_title{
-  font-size:20px;
-  display: block;
-  transform:rotate(-90deg );
-  float:left;
-  /*this is sensitive to the length of the 
-  row title*/
-  margin-left: -13px;
-  margin-top: 300px;
-  font-weight: 300;
-}
-
+/* default svg size for fixed svg option*/
 #svg_div{
-  /*margin-top: 0px;*/
-  /*margin-left: 50px;*/
-  position:absolute;
-  top:0px;
-  left:25px;
-  /*position:fixed;*/
-  /*float:left;*/
+  width:600px;
+  height:600px;
 }
 
-#main_svg{
-  /*position:fixed;*/
-  /*top:100px;
-  left:280px;*/
-  /*need to reduce this from -47px
-  not sure why*/
-  margin-left: 0px;
-  font-size:8.0px;
-  display:inline-block;
- }
-
-/*try to get auto height*/
-#wrapper{
-  height:100vh;
-}
-
-#main_container{
-  position: relative;
-  margin-left: 30px;
-  /*!! need to improve this*/
-  /*width:100%;*/
-  /*height:1000px;*/
-}
-
-#initial_container{
-  position:relative;
-}
-
-#clust_and_row_container{
-  /*so that the child div can be positioned absolutely*/
-  position: relative;
-}
-
-/*the viz container is wider
-than the initial container 
-because the sidebar will be closed*/
-#viz_container{
-  position: relative;
-  /*!! this constraints the width of svg*/
-  /*width: 80%;*/
-  /*background-color: blue;*/
-}
-
-#clustergram_container{
-  display: block;
-  border-style: solid;
-  border-width: 3px;
-  border-color: #f5f5f5;
-  margin-top: 10px;
-  /*set height here so that it will 
-  look normal with out clustergram*/
-  /*height: 950px;*/
-  margin-left: 260px;
-}
-
+/* stylize the sidebar instructions */
 #clust_instruct_container{
   display: block;
-  padding-left: 10px;
-  border-left: 0px;
-  /*border-style: solid;*/
-  /*border-width: 5px;*/
-  /*border-color: #f5f5f5;*/
-  /*set up fixed positions*/
   position:absolute;
-  width:245px;
-
+  width:200px;
+  padding-right: 0px;
+  margin-left: 10px;
 }
-
-#website_title{
-  margin-top: 20px;
-  display: none;
-}
-
-#gene_input_box{
-  height:200px;
-  width: 75%;
-  margin: 0 auto;
-  position:relative;
-  display:block;
-  resize:none;
-  font-size: 15px;
-  font-weight: 300;
-  padding-left: 6px;
-}
-
-#title_input_gene_list{
-  width:99%;
-  margin: 0 auto;
-  color:white;
-  text-align: center;
-  margin-top: 32px;
-  margin-bottom: 10px;
-  font-size: 22px;
-  font-weight: 300;
-}
-
-/*title for instructions*/
-#title_viz_instruct_text{
-  width:99%;
-  margin: 0 auto;
-  color:#333;
-  text-align: left;
-  margin-top: 5px;
-  padding-top:5px;
-  margin-bottom: 5px;
-  font-size: 22px;
-  font-weight: 300;
-  /*clear float left*/
-  clear:both;
-}
-
-/* the instructions for the visualization should
-look like the input gene list text title*/
+/* stylize instructions */
 .viz_instruct_text{
   width:99%;
   margin: 0 auto;
   color:#333;
-  text-align: left;
-  margin-top:10px;
-  margin-bottom: 10px;
+  text-align: justify;
   font-size: 12px;
   font-weight: 300;
+  padding-left: 0px;
 }
 
-.initial_paragraph{
-  font-size: 20px;
-  width:590px;
-  font-weight: 300;
-  display: none;
-}
-
-
-#title_gmt_menu{
-  display: none;
-  color:white;
-  padding-top:12px;
-  padding-bottom:12px;
-  padding-left:20px;
-  width:410px;
-  text-align: left; 
-  background: #333333;  
-  font-size: 22px;
-  font-weight: 300;
-}
-
-.h_top{
-  padding-left:20px;
-  width:410px;
-  text-align: left; 
-  background: #8C8C8C;
-  font-size: 17px;
-  font-weight: 300;
-  border-radius: 0;
-  opacity: 0;
-}
-
-.h_medium{
-  padding-left:30px;
-  width:410px;
-  text-align: left; 
-  background: #D0D0D0;
-  border-radius: 0;
-  font-size: 15px;
-  font-weight: 300;
-  padding-top: 0px;
-  padding-bottom: 0px;
-}
-
-#gmt_menu{
-  display: none;
-  margin-top: 20px;
-  margin-left: 0px;
-  font-size: 15px;
-  font-weight: 300;
-}
-
-.buttons{
-  font-size: 15px;
-  font-weight: 300;
-
-}
-
-.glyph_squares{
-  float: left;
-  margin-right: 10px;
-  margin-top: 0px;
-}
-
-#submit_genes_button{
-  width:141px;
-  margin-bottom: 10px;
-}
-
-/*clear button*/
-#clear_input_button{
-  opacity: 0.90;
-}
-
-/*return to previous enrichrgram button*/
-#return_prev_button{
-  width: 140px;
-  margin-top: 40px;
-  opacity: 0.9;
-}
-
-/*modify enrichrgram*/
-#modify_enrichrgram_button{
-  opacity: 1.0;
-}
-
-.form-group{
-  margin-bottom: 10px;
-}
-
-/*footer - shift it with the sidebar*/
-#footer_div{
-  margin-left: 0px;
-}
-
-/*title for the visualization*/
+/* title */
 #viz_website_title{
-  font-size: 33px;
+  font-size: 25px;
+  margin-top: 10px;
+  margin-bottom: 5px;
 }
 
-/*container for gene search box*/
+/* ordering buttons */
+#toggle_order{
+  /*reduced width sidebar 
+  margin-left used to be 45*/
+  margin-left: 15px;
+  margin-top: 20px;
+  margin-bottom:5px;
+}
+
+.order_name{
+  font-size: 11px;
+}
+
+/* container for gene search box */
 #gene_search_container{
   margin-top: 10px;
-  /*needed for some reason*/
   margin-left: 0px;
   display: none:;
 }
 
-/*gene search box */
+/* gene search box */
 #gene_search_box{
   width:120px;
-  /*float:left;*/
-  /*display: none;*/
 }
 
-/*gene search button*/
+/* gene search button */
 #gene_search_button{
-  /*width:50px;*/
-  /*float:left;*/
-  margin-top:-2px;
-  /*display: none;*/
+  margin-top:4px;
 }
 
-/*clear float left*/
-#clear{
-  clear:both;
-}
-
-/*fizing jquery autocomplete*/
-.ui-menu-item{
-  float:left;
-  clear: left;
-}
-
-/*move down submit button*/
-#gene_search_submit{
-  margin-top:5px;
-}
-
-#toggle_order{
-  margin-top: 10px;
+/*reduce the padding on the buttons*/
+.btn{
+  padding-top:2px;
+  padding-bottom:2px;
 }
