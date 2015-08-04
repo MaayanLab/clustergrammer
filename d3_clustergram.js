@@ -42,7 +42,7 @@ function initialize_visualization(network_data, params){
   var min_num_char = 5;
   var max_num_char = 60;
   var min_label_width = 60;
-  var max_label_width = 180;
+  var max_label_width = 220;
   var label_scale = d3.scale.linear().domain([min_num_char,max_num_char]).range([min_label_width,max_label_width]).clamp('true');
 
   // Nomal Labels 
@@ -424,7 +424,12 @@ function make_d3_clustergram(args) {
      // associate classes with colors 
      params.class_colors.col = {};
     for (var i=0; i < class_col.length; i++){
-      params.class_colors.col[class_col[i]] = params.rand_colors[i+50%num_colors]
+      if (i==0){
+        params.class_colors.col[class_col[i]] = '#eee';
+      }
+      else{
+        params.class_colors.col[class_col[i]] = params.rand_colors[i+50%num_colors];
+      }
     };
   };
 
@@ -435,7 +440,12 @@ function make_d3_clustergram(args) {
     // generate random colors for the groups 
     for (var i=0; i<200; i++){
       // grab colors from the list 
-      params.group_colors.row[i] = params.rand_colors[i%num_colors] ;
+      if (i==1){
+        params.group_colors.row[i] = '#eee' ;
+      }
+      else{
+        params.group_colors.row[i] = params.rand_colors[i%num_colors] ;
+      }
     };
   };
 
@@ -446,7 +456,12 @@ function make_d3_clustergram(args) {
     // generate random colors for the groups 
     for (var i=0; i<200; i++){
       // grab colors from the list 
-      params.group_colors.col[i] = params.rand_colors[i%num_colors] ;
+      if (i==1){
+        params.group_colors.col[i] = '#eee' ;
+      }
+      else{
+        params.group_colors.col[i] = params.rand_colors[i%num_colors] ;
+      }
     };
   };
 
@@ -1234,54 +1249,56 @@ function highlight_resource_types(params){
   var col_nodes = d3_clustergram.network_data.col_nodes;
   var row_nodes = d3_clustergram.network_data.row_nodes;
 
-  // This will set up the resource type color key 
-  // and generate an array of genes for later use
-  //////////////////////////////////////////////////////
+  // // This will set up the resource type color key 
+  // // and generate an array of genes for later use
+  // //////////////////////////////////////////////////////
 
-  // res_hexcodes = ['#097054','#FFDE00','#6599FF','#FF9900','#834C24','#003366','#1F1209']
+  // // res_hexcodes = ['#097054','#FFDE00','#6599FF','#FF9900','#834C24','#003366','#1F1209']
   
-  var res_hexcodes = ['#0000FF','#FF0000','#C0C0C0', '#FFA500'];
+  // var res_hexcodes = ['#0000FF','#FF0000','#C0C0C0', '#FFA500'];
 
   // define cell line groups 
-  var all_groups = ['TF group 1','TF group 2','TF group 3'];
+  // var all_groups = ['TF group 1','TF group 2','TF group 3'];
 
-  // generate an object to associate group with color 
-  var res_color_dict = {};
+  var all_groups = _.keys(params.class_colors.row);
 
-  // initialize the cell line color associations
-  var blue_cl = ['H1437','H1792','HCC15','A549','H1944','H1299','H1355','H838','CAL-12T','H23','H460','H661'];
-  var red_cl = ['H441','HCC78','H1734','H2228','H1781','H1975','H358','HCC827','H1703','H2342','H1650','LOU-NH91'];
-  var grey_cl = ['CALU-3','H2405','H2106', 'HCC44','H1666'];
-  var orange_cl = [] //['HCC44','H1666'];
+  // // generate an object to associate group with color 
+  // var res_color_dict = {};
 
-  for (var i=0; i<col_nodes.length;i++){
-    // add blue cell line 
-    if ( $.inArray(col_nodes[i]['name'],blue_cl) > -1 ){
-      res_color_dict[col_nodes[i]['name']]=res_hexcodes[0];
-    };
-    // add red cell line 
-    if ( $.inArray(col_nodes[i]['name'],red_cl)  > -1 ){
-      res_color_dict[col_nodes[i]['name']]=res_hexcodes[1];
-    };
-    // add grey cell line 
-    if ( $.inArray(col_nodes[i]['name'],grey_cl)  > -1 ){
-      res_color_dict[col_nodes[i]['name']]=res_hexcodes[2];
-    };
-    // add orange cell line 
-    if ( $.inArray(col_nodes[i]['name'],orange_cl)  > -1 ){
-      res_color_dict[col_nodes[i]['name']]=res_hexcodes[3];
-    };
-  }
+  // // initialize the cell line color associations
+  // var blue_cl = ['H1437','H1792','HCC15','A549','H1944','H1299','H1355','H838','CAL-12T','H23','H460','H661'];
+  // var red_cl = ['H441','HCC78','H1734','H2228','H1781','H1975','H358','HCC827','H1703','H2342','H1650','LOU-NH91'];
+  // var grey_cl = ['CALU-3','H2405','H2106', 'HCC44','H1666'];
+  // var orange_cl = [] //['HCC44','H1666'];
 
-  // export to global variable
-  params.res_color_dict = res_color_dict;
+  // for (var i=0; i<col_nodes.length;i++){
+  //   // add blue cell line 
+  //   if ( $.inArray(col_nodes[i]['name'],blue_cl) > -1 ){
+  //     res_color_dict[col_nodes[i]['name']]=res_hexcodes[0];
+  //   };
+  //   // add red cell line 
+  //   if ( $.inArray(col_nodes[i]['name'],red_cl)  > -1 ){
+  //     res_color_dict[col_nodes[i]['name']]=res_hexcodes[1];
+  //   };
+  //   // add grey cell line 
+  //   if ( $.inArray(col_nodes[i]['name'],grey_cl)  > -1 ){
+  //     res_color_dict[col_nodes[i]['name']]=res_hexcodes[2];
+  //   };
+  //   // add orange cell line 
+  //   if ( $.inArray(col_nodes[i]['name'],orange_cl)  > -1 ){
+  //     res_color_dict[col_nodes[i]['name']]=res_hexcodes[3];
+  //   };
+  // }
 
-  // define association between tf groups and colors 
-  var res_color_key = {}
-  res_color_key['TF group 1'] = res_hexcodes[0];
-  res_color_key['TF group 2'] = res_hexcodes[1];
-  res_color_key['TF group 3'] = res_hexcodes[2];
-  res_color_key['TF group 4'] = res_hexcodes[3];
+  // // export to global variable
+  // params.res_color_dict = res_color_dict;
+
+  // // define association between tf groups and colors 
+  // var res_color_key = {}
+  // res_color_key['TF group 1'] = res_hexcodes[0];
+  // res_color_key['TF group 2'] = res_hexcodes[1];
+  // res_color_key['TF group 3'] = res_hexcodes[2];
+  // res_color_key['TF group 4'] = res_hexcodes[3];
 
   // add color key 
   ////////////////////
@@ -1305,8 +1322,7 @@ function highlight_resource_types(params){
     .style('width','12px')
     .style('height','12px')
     .style('background-color', function(d){
-
-      return res_color_key[d];
+      return params.class_colors.row[d];
     })
 
   // add names 
