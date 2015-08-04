@@ -705,11 +705,11 @@ function make_d3_clustergram(args) {
     .append('path')
     .attr('d', function(d) { 
       var origin_x = params.class_room.symbol_width - 1;
-      var origin_y = params.border_width;
+      var origin_y = 0;
       var mid_x  = 1;
       var mid_y  =  params.y_scale.rangeBand()/2 ;
       var final_x  =  params.class_room.symbol_width - 1;
-      var final_y  =  params.y_scale.rangeBand() - params.border_width ;
+      var final_y  =  params.y_scale.rangeBand() ;
       var output_string = 'M '+origin_x+','+origin_y+' L ' + mid_x + ',' + mid_y + ', L ' + final_x + ','+final_y+' Z';
       return output_string;
      })
