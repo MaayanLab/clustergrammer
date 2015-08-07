@@ -1799,7 +1799,7 @@ function two_translate_zoom( pan_dx, pan_dy, fin_zoom){
     var zoom_x = 1;
 
     // search duration - the duration of zooming and panning 
-    search_duration =700;
+    var search_duration =700;
 
     // center_y
     var center_y = -(zoom_y -1)*half_height;
