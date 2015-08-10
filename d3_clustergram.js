@@ -270,6 +270,19 @@ function initialize_visualization(network_data, params){
   // not running a transition
   params.run_trans = 0;
 
+  console.log(network_data.links[0])
+  // define tile type: rect, group 
+  // rect is the default faster and simpler option 
+  // group is the optional slower and more complex option that is activated with: highlighting or split tiles
+  if ( _.has(network_data.links[0], 'value_up') ){
+    params.tile_type = 'group';
+  }
+  else{
+    params.tile_type = 'simple';
+  };
+
+  console.log(params.tile_type)
+
   return params
 };
 
@@ -503,20 +516,34 @@ function make_d3_clustergram(args) {
   // initialize matrix
   /////////////////////////
   params.matrix = [] ;
-  
-  // initialize matrix 
-  row_nodes.forEach( function(tmp,i) {
-    params.matrix[i] = d3.range(col_nodes.length).map(function(j) { return {pos_x: j, pos_y: i, value:0, group:0}; });
-  }); 
-
-  // Add information to the matrix
-  network_data.links.forEach( function(link) {
-    // transfer link information to the new adj matrix
-    params.matrix[link.source][link.target].value = link.value;
-    // transfer color - not being used right now 
-    // params.matrix[link.source][link.target].color = link.color;
-    params.matrix[link.source][link.target].highlight = link.highlight;
-  });
+    
+  // rect only 
+  if ( params.tile_type == 'simple' ){
+    // initialize matrix 
+    row_nodes.forEach( 
+      function(tmp,i) {
+        params.matrix[i] = d3.range(col_nodes.length).map( function(j) { return { pos_x: j, pos_y: i, value:0 };});
+      }); 
+    // Add information to the matrix
+    network_data.links.forEach( function(link) {
+      params.matrix[link.source][link.target].value = link.value;
+    });
+  } 
+  else{
+    // initialize matrix 
+    row_nodes.forEach( 
+      function(tmp,i) {
+        params.matrix[i] = d3.range(col_nodes.length).map( function(j) { return { pos_x: j, pos_y: i, value:0 };});
+      }); 
+    // Add information to the matrix
+    network_data.links.forEach( function(link) {
+      // transfer link information to the new adj matrix
+      params.matrix[link.source][link.target].value = link.value;
+      params.matrix[link.source][link.target].value_up = link.value_up;
+      params.matrix[link.source][link.target].value_dn = link.value_dn;
+      // params.matrix[link.source][link.target].highlight = link.highlight;
+    });
+  }
 
   // save params to the global object d3_clustergram 
   d3_clustergram.params = params;
@@ -551,16 +578,29 @@ function make_d3_clustergram(args) {
     .attr("width",  params.clust.dim.width)
     .attr("height", params.clust.dim.height);
 
-  // make rows 
+  // make rows: make rects or groups  
   // use matrix for the data join, which contains a two dimensional 
   // array of objects, each row of this matrix will be passed into the row function 
-  var row_obj =  params.clust_group.selectAll(".row")
-    .data( params.matrix )
-    .enter()
-    .append("g")
-    .attr("class", "row")
-    .attr("transform", function(d, i) { return "translate(0," + params.y_scale(i) + ")"; })
-    .each( row_function );
+  if (params.tile_type == 'simple'){
+
+    var row_obj =  params.clust_group.selectAll(".row")
+      .data( params.matrix )
+      .enter()
+      .append("g")
+      .attr("class", "row")
+      .attr("transform", function(d, i) { return "translate(0," + params.y_scale(i) + ")"; })
+      .each( row_function );
+
+  }
+  else{
+    var row_obj =  params.clust_group.selectAll(".row")
+      .data( params.matrix )
+      .enter()
+      .append("g")
+      .attr("class", "row")
+      .attr("transform", function(d, i) { return "translate(0," + params.y_scale(i) + ")"; })
+      .each( row_group_function );    
+  }
 
 
   // white lines in clustergram 
@@ -1363,11 +1403,10 @@ function row_function(row_data) {
   // generate tiles in the current row 
   var tile =  d3.select(this)
     // data join 
-    .selectAll('g')
+    .selectAll('rect')
     .data( row_data )
     .enter()
-    // .append('g')
-    .append("rect")
+    .append('rect')
     .attr('class','tile')
     .attr('transform', function(d){
       return 'translate(' + params.x_scale(d.pos_x) + ',0)'
@@ -1382,79 +1421,191 @@ function row_function(row_data) {
     // switch the color based on up/dn value 
     .style('fill', function(d) { 
       return d.value > 0 ? '#FF0000' : '#1C86EE' ;
+    } )
+    .on("mouseover", function(p) {
+      // highlight row - set text to active if 
+      d3.selectAll(".row_label_text text")
+        .classed("active", function(d, i) { 
+          return i == p.pos_y; 
+        });
+      d3.selectAll(".col_label_text text")
+        .classed("active", function(d, i) { 
+          return i == p.pos_x; 
+        });
+    })
+    .on("mouseout", function mouseout() {
+      d3.selectAll("text").classed("active", false);
+    })
+    .attr('title', function(d){
+      return d.value;
+    });
+
+  // add callback function to tile group - if one is supplied by the user 
+  if ( typeof params.click_tile =='function' ) {
+    d3.selectAll('.tile')
+      .on('click',function(d,i){
+        // export row/col name and value from tile 
+        var tile_info = {};
+        tile_info.row = d3_clustergram.network_data.row_nodes[d.pos_y].name;
+        tile_info.col = d3_clustergram.network_data.col_nodes[d.pos_x].name;
+        tile_info.value = d.value;
+        // run the user supplied callback function 
+        params.click_tile(tile_info);
+      });
+  };
+
+
+};
+
+// make each row in the clustergram 
+function row_group_function(row_data) {
+
+  // load parameters
+  var params = d3_clustergram.params;
+
+  // generate groups 
+  var tile =  d3.select(this)
+    // data join 
+    .selectAll('g')
+    .data( row_data )
+    .enter()
+    .append('g')
+    .attr('class','tile')
+    .attr('transform', function(d){
+      return 'translate(' + params.x_scale(d.pos_x) + ',0)'
+    });
+
+  // append rect 
+  tile
+    .append('rect')
+    // .attr('class','tile')
+    .attr("width",  params.x_scale.rangeBand())
+    .attr("height", params.y_scale.rangeBand())
+    .style("fill-opacity", function(d) { 
+      // calculate output opacity using the opacity scale 
+      var output_opacity = params.opacity_scale( Math.abs(d.value) );
+      if ( Math.abs(d.value_up) > 0 && Math.abs(d.value_dn) > 0 ) {
+        output_opacity = 0;
+      }
+      return output_opacity ; 
+    }) 
+    // switch the color based on up/dn value 
+    .style('fill', function(d) { 
+      return d.value > 0 ? '#FF0000' : '#1C86EE' ;
+    } )
+
+  tile  
+    .on("mouseover", function(p) {
+      // highlight row - set text to active if 
+      d3.selectAll(".row_label_text text")
+        .classed("active", function(d, i) { 
+          return i == p.pos_y; 
+        });
+      d3.selectAll(".col_label_text text")
+        .classed("active", function(d, i) { 
+          return i == p.pos_x; 
+        });
+    })
+    .on("mouseout", function mouseout() {
+      d3.selectAll("text").classed("active", false);
+    })
+    .attr('title', function(d){
+      return d.value;
+    });
+
+
+  // // append evidence highlighting - black rects 
+  if ( _.has(row_data[0], 'highlight') ){
+    console.log(row_data[0])
+    tile 
+      .append('rect')
+      .attr("width",  params.x_scale.rangeBand()*0.80)
+      .attr("height", params.y_scale.rangeBand()*0.80)
+      .attr('class','highlighting_rect')
+      .attr('transform','translate('+ params.x_scale.rangeBand()/10 + ' , '+ params.y_scale.rangeBand()/10 + ')')
+      .attr('class', 'cell_highlight')
+      .attr('stroke','black')
+      .attr('stroke-width',1.0)
+      .attr('fill-opacity', 0.0)
+      .attr('stroke-opacity', function(d){
+        // initialize opacity to 0 
+        var inst_opacity = 0;
+        // set opacity to 1 if there is evidence 
+        if (d.highlight == 1){
+          inst_opacity= 1;
+        }
+        return 1
+      }); 
+  }
+
+
+  // add callback function to tile group - if one is supplied by the user 
+  if ( typeof params.click_tile =='function' ) {
+    // d3.selectAll('.tile')
+    tile
+      .on('click',function(d,i){
+        // export row/col name and value from tile 
+        var tile_info = {};
+        tile_info.row = d3_clustergram.network_data.row_nodes[d.pos_y].name;
+        tile_info.col = d3_clustergram.network_data.col_nodes[d.pos_x].name;
+        tile_info.value = d.value;
+        // run the user supplied callback function 
+        params.click_tile(tile_info);
+      });
+  };
+
+
+  // split-up
+  tile
+    .append('path')
+    .style('stroke','black')
+    .style('stroke-width',0)
+    .attr('d', function(d) { 
+        var start_x = 0;
+        var final_x = params.x_scale.rangeBand() ;
+        var output_string = 'M' + start_x + ',0, L'+ start_x +', ' + params.x_scale.rangeBand() + ', L' + final_x +',0 Z';
+        return output_string;
+       }) 
+    .style("fill-opacity", function(d) { 
+      // calculate output opacity using the opacity scale 
+      var output_opacity = 0;
+      if ( Math.abs(d.value_dn)  > 0){
+        output_opacity = params.opacity_scale( Math.abs(d.value_up) );
+      }
+      return output_opacity ; 
+    }) 
+    // switch the color based on up/dn value 
+    .style('fill', function(d) { 
+      // rl_t (released) blue  
+      return '#FF0000' ;
     } );
 
 
-  // // add callback function to tile group - if one is supplied by the user 
-  // if ( typeof params.click_tile =='function' ) {
-  //   tile
-  //     .on('click',function(d,i){
-  //       // export row/col name and value from tile 
-  //       var tile_info = {};
-  //       tile_info.row = d3_clustergram.network_data.row_nodes[d.pos_y].name;
-  //       tile_info.col = d3_clustergram.network_data.col_nodes[d.pos_x].name;
-  //       tile_info.value = d.value;
-  //       // run the user supplied callback function 
-  //       params.click_tile(tile_info);
-  //     });
-  // };
-
-  // // add mouseover highlight event to group 
-  // tile
-  //   .on("mouseover", function(p) {
-  //     // highlight row - set text to active if 
-  //     d3.selectAll(".row_label_text text")
-  //       .classed("active", function(d, i) { 
-  //         return i == p.pos_y; 
-  //       });
-  //     d3.selectAll(".col_label_text text")
-  //       .classed("active", function(d, i) { 
-  //         return i == p.pos_x; 
-  //       });
-  //   })
-  //   .on("mouseout", function mouseout() {
-  //     d3.selectAll("text").classed("active", false);
-  //   })
-  //   .attr('title', function(d){
-  //     return d.value;
-  //   });
-
-  // // append tile rect 
-  // tile
-  //   .append("rect")
-  //   .attr("width",  params.x_scale.rangeBand())
-  //   .attr("height", params.y_scale.rangeBand())
-  //   .style("fill-opacity", function(d) { 
-  //     // calculate output opacity using the opacity scale 
-  //     var output_opacity = params.opacity_scale( Math.abs(d.value) );
-  //     return output_opacity ; 
-  //   }) 
-  //   // switch the color based on up/dn value 
-  //   .style('fill', function(d) { 
-  //     return d.value > 0 ? '#FF0000' : '#1C86EE' ;
-  //   } );
-
-  // // append evidence highlighting - black rects 
-  // //!! only do this if there is evidence 
-  // tile 
-  //   .append('rect')
-  //   .attr("width",  params.x_scale.rangeBand()*0.80)
-  //   .attr("height", params.y_scale.rangeBand()*0.80)
-  //   .attr('class','highlighting_rect')
-  //   .attr('transform','translate('+ params.x_scale.rangeBand()/10 + ' , '+ params.y_scale.rangeBand()/10 + ')')
-  //   .attr('class', 'cell_highlight')
-  //   .attr('stroke','black')
-  //   .attr('stroke-width',1.0)
-  //   .attr('fill-opacity', 0.0)
-  //   .attr('stroke-opacity', function(d){
-  //     // initialize opacity to 0 
-  //     var inst_opacity = 0;
-  //     // set opacity to 1 if there is evidence 
-  //     if (d.highlight == 1){
-  //       inst_opacity= 1;
-  //     }
-  //     return inst_opacity
-  //   }); 
+  // split-dn
+  tile
+    .append('path')
+    .style('stroke','black')
+    .style('stroke-width',0)
+    .attr('d', function(d) { 
+        start_x = 0;
+        final_x = params.x_scale.rangeBand() ;
+        output_string = 'M' + start_x + ', '+params.x_scale.rangeBand()+' ,       L'+ final_x +', ' + params.x_scale.rangeBand() + ',       L' + final_x +',0 Z';
+        return output_string;
+       })
+    .style("fill-opacity", function(d) { 
+      // calculate output opacity using the opacity scale 
+      output_opacity = 0;
+      if (Math.abs(d.value_up) > 0){
+        output_opacity = params.opacity_scale( Math.abs(d.value_dn) );
+      }
+      return output_opacity ; 
+    }) 
+    // switch the color based on up/dn value 
+    .style('fill', function(d) { 
+      // rl_f (not released) orange
+      return '#1C86EE'  ;
+    } );
+ 
 
 };
 
