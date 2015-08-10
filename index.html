@@ -35,13 +35,13 @@
 
     <!-- toggle clustergram order -->
     <div id='toggle_order' class="btn-group" data-toggle="buttons" >
-      <label class="btn btn-primary active order_name" onclick="d3_clustergram.reorder_clust_rank('clust');">
+      <label class="btn btn-primary active order_name" onclick="d3_clustergram.reorder('clust');">
         <input type="radio" name="options" id="clust_button" autocomplete="off" checked > Cluster
       </label>
-      <label class="btn btn-primary order_name" onclick="d3_clustergram.reorder_clust_rank('rank');">
+      <label class="btn btn-primary order_name" onclick="d3_clustergram.reorder('rank');">
         <input type="radio" name="options" id="rank_button" autocomplete="off" > Rank
       </label>
-      <label class="btn btn-primary order_name" onclick="d3_clustergram.reorder_clust_rank('class');">
+      <label class="btn btn-primary order_name" onclick="d3_clustergram.reorder('class');">
         <input type="radio" name="options" id="class_button" autocomplete="off" > Class
       </label>
     </div>

@@ -1459,7 +1459,7 @@ function row_function(row_data) {
 };
 
 // reorder the matrix using the toggle switch 
-function reorder_clust_rank(inst_order) {
+function reorder(inst_order) {
 
   // load parameters from d3_clustergram 
   var params = d3_clustergram.params;
@@ -2191,7 +2191,7 @@ function find_row(){
 // return d3_clustergram modules 
 return  {
           'make_clust':make_d3_clustergram,
-          'reorder_clust_rank':reorder_clust_rank,
+          'reorder':reorder,
           'find_row':find_row
         }
 
