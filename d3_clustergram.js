@@ -391,8 +391,6 @@ function make_d3_clustergram(args) {
   // row groups - only add if the rows have a group attribute 
   if ( _.has(row_nodes[0],'group') == true || _.has(col_nodes[0],'group') ){
 
-
-
     // initialize group colors 
     /////////////////////////
     params.group_colors = {};
@@ -403,7 +401,7 @@ function make_d3_clustergram(args) {
 
   };
 
-
+  // check if row/col have class information 
   if(_.has(row_nodes[0],'class') || _.has(col_nodes[0],'class')){
     // gather classes 
     params.class_colors = {};
@@ -930,7 +928,7 @@ function make_d3_clustergram(args) {
     .domain([0, 1])
     .range([0, params.norm_label.width.col ]); 
 
-  // append enrichment bars  
+  // append column value bars  
   col_label_click
     .append('rect')
     .attr('class','col_bars')
@@ -1682,7 +1680,7 @@ function apply_transformation( trans_x, trans_y, zoom_x, zoom_y ){
     .style('font-size', fin_font);
 
 
-  // enrichment bars 
+  // column value bars 
   ///////////////////////
   d3.selectAll('.col_bars')
     // column is rotated - effectively width and height are switched
@@ -1897,9 +1895,9 @@ function two_translate_zoom( pan_dx, pan_dy, fin_zoom){
       });
 
 
-    // enrichment bars 
+    // column value bars 
     ///////////////////////
-    // reduce the height of the enrichment bars based on the zoom applied 
+    // reduce the height of the column value bars based on the zoom applied 
     // recalculate the height and divide by the zooming scale 
     // col_label_obj.select('rect')
     d3.selectAll('.col_bars')
@@ -2166,12 +2164,12 @@ function zoom_and_highlight_found_gene(search_gene){
 // submit genes button 
 $("#gene_search_box").keyup(function (e) {
   if (e.keyCode == 13) {
-    find_gene_in_clust();
+    find_row();
   }
 });
 
 // find gene in clustergram 
-function find_gene_in_clust(){
+function find_row(){
   // get the searched gene 
   search_gene = $('#gene_search_box').val();
 
@@ -2185,7 +2183,7 @@ function find_gene_in_clust(){
 return  {
           'make_clust':make_d3_clustergram,
           'reorder_clust_rank':reorder_clust_rank,
-          'find_gene_in_clust':find_gene_in_clust
+          'find_row':find_row
         }
 
 // end closure 
