@@ -270,16 +270,26 @@ function initialize_visualization(network_data, params){
   // not running a transition
   params.run_trans = 0;
 
-  console.log(network_data.links[0])
+  // console.log(network_data.links[0])
   // define tile type: rect, group 
   // rect is the default faster and simpler option 
   // group is the optional slower and more complex option that is activated with: highlighting or split tiles
-  if ( _.has(network_data.links[0], 'value_up') ){
+  // if ( _.has(network_data.links[0], 'value_up') || _.has(network_data.links[0], 'highlight') ){
+  if ( _.has(network_data.links[0], 'value_up')  ){
     params.tile_type = 'group';
   }
   else{
     params.tile_type = 'simple';
   };
+
+  // check if rects should be highlighted 
+  if ( _.has( d3_clustergram.network_data.links[0], 'highlight' ) ){
+    params.highlight = 1;
+    console.log('found highlight')
+  }
+  else{
+    params.highlight = 0;
+  }
 
   console.log(params.tile_type)
 
@@ -541,7 +551,9 @@ function make_d3_clustergram(args) {
       params.matrix[link.source][link.target].value = link.value;
       params.matrix[link.source][link.target].value_up = link.value_up;
       params.matrix[link.source][link.target].value_dn = link.value_dn;
-      // params.matrix[link.source][link.target].highlight = link.highlight;
+      if (params.highlight == 1){
+        params.matrix[link.source][link.target].highlight = link.highlight;
+      } 
     });
   }
 
@@ -1515,8 +1527,8 @@ function row_group_function(row_data) {
 
 
   // // append evidence highlighting - black rects 
-  if ( _.has(row_data[0], 'highlight') ){
-    console.log(row_data[0])
+  if ( params.highlight == 1 ){
+    // console.log(row_data[0])
     tile 
       .append('rect')
       .attr("width",  params.x_scale.rangeBand()*0.80)
@@ -1534,7 +1546,7 @@ function row_group_function(row_data) {
         if (d.highlight == 1){
           inst_opacity= 1;
         }
-        return 1
+        return inst_opacity
       }); 
   }
 
