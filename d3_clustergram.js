@@ -1519,10 +1519,19 @@ function reorder(inst_order) {
     })
     .each('end',function(){
       // set running transition to 0
+      console.log('finished with transition ')
       d3_clustergram.params.run_trans = 0;
     });
 
+    // backup allow programmatic zoom
+    setTimeout(end_reorder, 2500)
+
 };
+
+// tmp backup function to allow programmatic zoom after reordering 
+function end_reorder() { 
+  d3_clustergram.params.run_trans = 0;
+}
 
 // recalculate the size of the visualization
 // and remake the clustergram 
@@ -2002,6 +2011,9 @@ function reorder_click_row(d,i){
       // set running transition to 0
       d3_clustergram.params.run_trans = 0;
     });
+
+  // backup allow programmatic zoom
+  setTimeout(end_reorder, 2500)
 };
 
 // reorder rows with column click 
@@ -2098,6 +2110,9 @@ function reorder_click_col(d,i){
   d3.select(this)
     .select('rect')
     .style('opacity',1);
+
+  // backup allow programmatic zoom
+  setTimeout(end_reorder, 2500)
 
 
 };
