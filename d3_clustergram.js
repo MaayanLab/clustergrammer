@@ -929,20 +929,22 @@ function make_d3_clustergram(args) {
     .range([0, params.norm_label.width.col ]); 
 
   // append column value bars  
-  col_label_click
-    .append('rect')
-    .attr('class','col_bars')
-    // column is rotated - effectively width and height are switched
-    .attr('width', function(d,i) { 
-      return params.bar_scale_col( d.value ); 
-    })
-    // rotate labels - reduce width if rotating
-    .attr('height', params.x_scale.rangeBand() * 0.66 )
-    .attr('fill', function(d){
-      // return d.color;
-      return 'red';
-    })
-    .attr('opacity', 0.4);
+  if ( _.has(d3_clustergram.network_data.col_nodes[0], 'value') ){
+    col_label_click
+      .append('rect')
+      .attr('class','col_bars')
+      // column is rotated - effectively width and height are switched
+      .attr('width', function(d,i) { 
+        return params.bar_scale_col( d.value ); 
+      })
+      // rotate labels - reduce width if rotating
+      .attr('height', params.x_scale.rangeBand() * 0.66 )
+      .attr('fill', function(d){
+        // return d.color;
+        return 'red';
+      })
+      .attr('opacity', 0.4);
+  }
 
   // add group labels if necessary 
   //////////////////////////////////
@@ -1682,11 +1684,14 @@ function apply_transformation( trans_x, trans_y, zoom_x, zoom_y ){
 
   // column value bars 
   ///////////////////////
-  d3.selectAll('.col_bars')
-    // column is rotated - effectively width and height are switched
-    .attr('width', function(d,i) { 
-      return params.bar_scale_col( d.value ) / (zoom_x) ; 
-    });
+
+  if ( _.has(d3_clustergram.network_data.col_nodes[0], 'value') ){
+    d3.selectAll('.col_bars')
+      // column is rotated - effectively width and height are switched
+      .attr('width', function(d,i) { 
+        return params.bar_scale_col( d.value ) / (zoom_x) ; 
+      });
+  }
 
 
 
@@ -1900,13 +1905,17 @@ function two_translate_zoom( pan_dx, pan_dy, fin_zoom){
     // reduce the height of the column value bars based on the zoom applied 
     // recalculate the height and divide by the zooming scale 
     // col_label_obj.select('rect')
-    d3.selectAll('.col_bars')
-      .transition()
-      .duration(search_duration)
-      // column is rotated - effectively width and height are switched
-      .attr('width', function(d,i) { 
-        return params.bar_scale_col( d.value ) / (zoom_x) ; 
-      });
+    if ( _.has(d3_clustergram.network_data.col_nodes[0], 'value') ){
+      d3.selectAll('.col_bars')
+        .transition()
+        .duration(search_duration)
+        // column is rotated - effectively width and height are switched
+        .attr('width', function(d,i) { 
+          return params.bar_scale_col( d.value ) / (zoom_x) ; 
+        });
+    }
+
+
   };
 
 };
