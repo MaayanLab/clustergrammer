@@ -159,8 +159,8 @@ function initialize_visualization(network_data, params){
     clust_row: d3.range(col_nodes.length).sort(function(a, b) { return col_nodes[b].clust  - col_nodes[a].clust; }),
     clust_col: d3.range(row_nodes.length).sort(function(a, b) { return row_nodes[b].clust  - row_nodes[a].clust; }),
     // class
-    class_row: d3.range(col_nodes.length).sort(function(a, b) { return col_nodes[b].class  - col_nodes[a].class; }),
-    class_col: d3.range(row_nodes.length).sort(function(a, b) { return row_nodes[b].class  - row_nodes[a].class; })
+    class_row: d3.range(col_nodes.length).sort(function(a, b) { return col_nodes[b].cl  - col_nodes[a].cl; }),
+    class_col: d3.range(row_nodes.length).sort(function(a, b) { return row_nodes[b].cl  - row_nodes[a].cl; })
   };
   
   // // initializing cluster order
@@ -449,14 +449,14 @@ function make_d3_clustergram(args) {
   };
 
   // check if row/col have class information 
-  if(_.has(row_nodes[0],'class') || _.has(col_nodes[0],'class')){
+  if(_.has(row_nodes[0],'cl') || _.has(col_nodes[0],'cl')){
     // gather classes 
     params.class_colors = {};
   }
 
   // gather class information from row 
-  if (_.has(row_nodes[0],'class') == true){
-     var class_row = _.uniq(_.pluck(row_nodes,'class'));
+  if (_.has(row_nodes[0],'cl') == true){
+     var class_row = _.uniq(_.pluck(row_nodes,'cl'));
     // associate classes with colors 
     params.class_colors.row = {};
     for (var i=0; i < class_row.length; i++){
@@ -464,8 +464,8 @@ function make_d3_clustergram(args) {
     };
   };
   // gather class information from col
-  if (_.has(col_nodes[0],'class') == true){
-     var class_col = _.uniq(_.pluck(col_nodes,'class'));
+  if (_.has(col_nodes[0],'cl') == true){
+     var class_col = _.uniq(_.pluck(col_nodes,'cl'));
      // associate classes with colors 
      params.class_colors.col = {};
     for (var i=0; i < class_col.length; i++){
@@ -806,7 +806,7 @@ function make_d3_clustergram(args) {
       // initailize color 
       var inst_color = '#eee';
       if (_.has(params, 'class_colors')){
-        inst_color = params.class_colors.row[d.class];
+        inst_color = params.class_colors.row[d.cl];
       };
       return inst_color;
     });
@@ -987,7 +987,7 @@ function make_d3_clustergram(args) {
     .attr('fill',function(d){
       var inst_color = '#eee';
       if(_.has(params, 'class_colors')){
-        inst_color = params.class_colors.col[d.class];
+        inst_color = params.class_colors.col[d.cl];
       }
       return inst_color;
     });
