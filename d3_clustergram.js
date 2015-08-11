@@ -260,11 +260,21 @@ function initialize_visualization(network_data, params){
   // input domain of 0 means set the domain automatically 
   if ( params.input_domain == 0 ){
     // set the domain using the maximum absolute value 
-    params.opacity_scale = d3.scale.linear().domain([0, Math.abs(max_link.value) ]).clamp(true).range([0.0,1.0]) ; 
+    if (params.opacity_scale == 'linear'){
+      params.opacity_scale = d3.scale.linear().domain([0, Math.abs(max_link.value) ]).clamp(true).range([0.0,1.0]) ; 
+    }
+    else if (params.opacity_scale == 'log'){
+      params.opacity_scale = d3.scale.log().domain([0.001, Math.abs(max_link.value) ]).clamp(true).range([0.0,1.0]) ; 
+    }
   }
   else{
     // set the domain manually 
-    params.opacity_scale = d3.scale.linear().domain([0, params.input_domain ]).clamp(true).range([0.0,1.0]) ; 
+    if (params.opacity_scale == 'linear'){
+      params.opacity_scale = d3.scale.linear().domain([0, params.input_domain ]).clamp(true).range([0.0,1.0]) ; 
+    }
+    else if (params.opacity_scale == 'log'){
+      params.opacity_scale = d3.scale.log().domain([0.001, params.input_domain ]).clamp(true).range([0.0,1.0]) ; 
+    }
   }
 
   // not running a transition
@@ -332,6 +342,14 @@ function make_d3_clustergram(args) {
     params.super.col = args.col_label;
   };
 
+  // add title to tile 
+  if (typeof args.title_tile == 'undefined'){
+    params.title_tile = false;
+  }
+  else if (args.title_tile == true){
+    params.title_tile = args.title_tile;
+  }
+
   // tile callback function - optional 
   if (typeof args.click_tile == 'undefined'){
     // there is no callback function included 
@@ -360,10 +378,18 @@ function make_d3_clustergram(args) {
     params.input_domain = args.input_domain;
   };
 
+  // set opacity scale type 
+  if (typeof args.opacity_scale == 'undefined'){
+    params.opacity_scale = 'linear';
+  }
+  else{
+    params.opacity_scale = args.opacity_scale;
+  }
+
   // variable/fixed visualization size (needs to be in the arguments)
   if (typeof args.resize == 'undefined'){
     // default resize to yes 
-    params.resize = 'yes';
+    params.resize = true;
   }
   else{
     params.resize = args.resize;
@@ -1260,7 +1286,7 @@ function make_d3_clustergram(args) {
 //////////////////////////////////////////////
 function parent_div_size_pos( params ){
 
-  if (params.resize == 'yes'){
+  if (params.resize == true){
     // get outer_margins
     var outer_margins = params.outer_margins;
 
@@ -1467,6 +1493,17 @@ function row_function(row_data) {
       });
   };
 
+  // append title to group 
+  if ( params.title_tile == true ){
+    tile
+      .append('title')
+      .text(function(d){
+        var inst_string = 'value: ' + d.value ;
+        return inst_string;
+      })
+  };
+
+
 
 };
 
@@ -1624,6 +1661,16 @@ function row_group_function(row_data) {
       // rl_f (not released) orange
       return '#1C86EE'  ;
     } );
+
+  // append title to group 
+  if ( params.title_tile == true ){
+    tile
+      .append('title')
+      .text(function(d){
+        var inst_string = 'value: ' + d.value ;
+        return inst_string;
+      })
+  }
  
 
 };
@@ -2295,7 +2342,7 @@ function timeout_resize(){
   var params = d3_clustergram.params;
 
   // only resize if allowed 
-  if (params.resize == 'yes'){
+  if (params.resize == true){
 
     // clear timeout
     clearTimeout(doit);

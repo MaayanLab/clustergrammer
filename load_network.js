@@ -1,6 +1,6 @@
 
 // load network 
-d3.json('example_network.json', function(network_data){
+d3.json('updn_network.json', function(network_data){
 
 	// define the outer margins of the visualization 
 	var outer_margins = {
@@ -31,10 +31,12 @@ d3.json('example_network.json', function(network_data){
 		'row_label':'Row-Data-Name',
 		'col_label':'Column-Data-Name',
 	  'outer_margins': outer_margins,
+	  // 'opacity_scale':'log',
 	  'input_domain':7,
+	  // 'title_tile': true,
 	  // 'click_tile': click_tile_callback,
 	  // 'click_group': click_group_callback
-	  // 'resize':'yes',
+	  // 'resize':false
 	  // 'order':'rank'
 	};
 
