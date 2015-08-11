@@ -163,10 +163,6 @@ function initialize_visualization(network_data, params){
     class_col: d3.range(row_nodes.length).sort(function(a, b) { return row_nodes[b].cl  - row_nodes[a].cl; })
   };
   
-  // // initializing cluster order
-  // //!! can be improved - have an optional argument 
-  // params['order'] = 'clust';
-
   // Assign initial ordering for x_scale and y_scale 
   if ( params.inst_order == 'clust' ){ 
     params.x_scale.domain( params.orders.clust_row );
@@ -251,7 +247,6 @@ function initialize_visualization(network_data, params){
   // calculate the zoom factor - the more nodes the more zooming allowed
   params.real_zoom = real_zoom_scale_col(col_nodes.length)*real_zoom_scale_screen(params.clust.dim.width);
 
-  //!! need to set some control for opacity rules - either use max link value or use some fixed domain 
   // set opacity scale 
   var max_link = _.max( network_data.links, function(d){ return Math.abs(d.value) } );
 
@@ -1004,7 +999,6 @@ function make_d3_clustergram(args) {
 
 
   //!! get the abs maximum value from row/col use this to make red/blue bars 
-
   // // get the max abs nl_pval (find obj and get nl_pval)
   // enr_max = _.max( col_nodes, function(d) { return Math.abs(d.nl_pval) } ).nl_pval ; 
 
@@ -1931,9 +1925,6 @@ function apply_transformation( trans_x, trans_y, zoom_x, zoom_y ){
         return params.bar_scale_col( d.value ) / (zoom_x) ; 
       });
   }
-
-
-
 
   // //!! change the size of the highlighting rects
   // //////////////////////////////////////////////
