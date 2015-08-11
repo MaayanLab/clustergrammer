@@ -1407,6 +1407,9 @@ function highlight_resource_types(params){
 // make each row in the clustergram 
 function row_function(row_data) {
 
+  // remove zero values to make visualization faster
+  var row_data = _.filter(row_data, function(num){ return num.value != 0; });
+
   // load parameters
   var params = d3_clustergram.params;
 
@@ -1469,6 +1472,9 @@ function row_function(row_data) {
 
 // make each row in the clustergram 
 function row_group_function(row_data) {
+
+  // remove zero values to make visualization faster
+  var row_data = _.filter(row_data, function(num){ return num.value != 0; });
 
   // load parameters
   var params = d3_clustergram.params;
