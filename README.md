@@ -16,7 +16,7 @@ This is a clustergram implemented in D3.js. I started from the example http://bo
 
 To make a clustergram pass in an object with your network and other optinal arguments. An example is in load_network.js and shown below 
 
-'''
+```
 
 // define arguments object 
 var arguments_obj = {
@@ -36,7 +36,7 @@ var arguments_obj = {
 
 d3_clustergram.make_clust( arguments_obj );
 
-'''
+```
 
 ## reorder clustergram: d3_clustergram.reorder()
 
