@@ -291,8 +291,6 @@ function initialize_visualization(network_data, params){
     params.highlight = 0;
   }
 
-  console.log(params.tile_type)
-
   return params
 };
 
@@ -1424,7 +1422,7 @@ function row_function(row_data) {
       return 'translate(' + params.x_scale(d.pos_x) + ',0)'
     })
     .attr("width",  params.x_scale.rangeBand())
-    .attr("height", params.y_scale.rangeBand())
+    .attr("height", params.y_scale.rangeBand()*0.98)
     .style("fill-opacity", function(d) { 
       // calculate output opacity using the opacity scale 
       var output_opacity = params.opacity_scale( Math.abs(d.value) );
@@ -1492,7 +1490,7 @@ function row_group_function(row_data) {
     .append('rect')
     // .attr('class','tile')
     .attr("width",  params.x_scale.rangeBand())
-    .attr("height", params.y_scale.rangeBand())
+    .attr("height", params.y_scale.rangeBand()*0.98)
     .style("fill-opacity", function(d) { 
       // calculate output opacity using the opacity scale 
       var output_opacity = params.opacity_scale( Math.abs(d.value) );
@@ -1548,8 +1546,7 @@ function row_group_function(row_data) {
         }
         return inst_opacity
       }); 
-  }
-
+  };
 
   // add callback function to tile group - if one is supplied by the user 
   if ( typeof params.click_tile =='function' ) {
@@ -1573,9 +1570,11 @@ function row_group_function(row_data) {
     .style('stroke','black')
     .style('stroke-width',0)
     .attr('d', function(d) { 
-        var start_x = 0;
+        var start_x = 0 ;
         var final_x = params.x_scale.rangeBand() ;
-        var output_string = 'M' + start_x + ',0, L'+ start_x +', ' + params.x_scale.rangeBand() + ', L' + final_x +',0 Z';
+        var start_y = 0;
+        var final_y = params.y_scale.rangeBand() - params.y_scale.rangeBand()/60;
+        var output_string = 'M' + start_x + ','+start_y+', L'+ start_x +', ' + final_y + ', L' + final_x +',0 Z';
         return output_string;
        }) 
     .style("fill-opacity", function(d) { 
@@ -1599,9 +1598,11 @@ function row_group_function(row_data) {
     .style('stroke','black')
     .style('stroke-width',0)
     .attr('d', function(d) { 
-        start_x = 0;
-        final_x = params.x_scale.rangeBand() ;
-        output_string = 'M' + start_x + ', '+params.x_scale.rangeBand()+' ,       L'+ final_x +', ' + params.x_scale.rangeBand() + ',       L' + final_x +',0 Z';
+        var start_x = 0;
+        var final_x = params.x_scale.rangeBand() ;
+        var start_y = params.y_scale.rangeBand() - params.y_scale.rangeBand()/60;
+        var final_y = params.y_scale.rangeBand() - params.y_scale.rangeBand()/60;
+        output_string = 'M' + start_x + ', '+start_y+' ,       L'+ final_x +', ' + final_y + ',  L' + final_x +',0 Z';
         return output_string;
        })
     .style("fill-opacity", function(d) { 
