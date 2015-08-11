@@ -346,9 +346,19 @@ function make_d3_clustergram(args) {
   if (typeof args.title_tile == 'undefined'){
     params.title_tile = false;
   }
-  else if (args.title_tile == true){
+  else{
     params.title_tile = args.title_tile;
   }
+
+  // tile colors
+  if (typeof args.tile_colors =='undefined'){
+    // red/blue
+    params.tile_colors = ['#FF0000','#1C86EE'];
+  }
+  else{
+    params.tile_colors = args.tile_colors;
+  }
+
 
   // tile callback function - optional 
   if (typeof args.click_tile == 'undefined'){
@@ -1459,7 +1469,7 @@ function row_function(row_data) {
     }) 
     // switch the color based on up/dn value 
     .style('fill', function(d) { 
-      return d.value > 0 ? '#FF0000' : '#1C86EE' ;
+      return d.value > 0 ? params.tile_colors[0] : params.tile_colors[1] ;
     } )
     .on("mouseover", function(p) {
       // highlight row - set text to active if 
@@ -1544,7 +1554,10 @@ function row_group_function(row_data) {
     }) 
     // switch the color based on up/dn value 
     .style('fill', function(d) { 
-      return d.value > 0 ? '#FF0000' : '#1C86EE' ;
+      // normal rule 
+      return d.value > 0 ? params.tile_colors[0] : params.tile_colors[1] ;
+      // //!! special rule for LDRgram
+      // return d.value_dn < 0 ? params.tile_colors[0] : params.tile_colors[1] ;
     } )
 
   tile  
@@ -1631,7 +1644,7 @@ function row_group_function(row_data) {
     // switch the color based on up/dn value 
     .style('fill', function(d) { 
       // rl_t (released) blue  
-      return '#FF0000' ;
+      return params.tile_colors[0] ;
     } );
 
 
@@ -1659,7 +1672,7 @@ function row_group_function(row_data) {
     // switch the color based on up/dn value 
     .style('fill', function(d) { 
       // rl_f (not released) orange
-      return '#1C86EE'  ;
+      return params.tile_colors[1] ;
     } );
 
   // append title to group 
