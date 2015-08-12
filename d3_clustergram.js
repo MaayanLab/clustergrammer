@@ -318,7 +318,6 @@ function make_d3_clustergram(args) {
   // svg_div_id
   if (typeof args.svg_div_id == 'undefined'){
     params.svg_div_id = 'svg_div'; 
-    console.log('here')
   }
   else {
     params.svg_div_id = args.svg_div_id; 
@@ -354,6 +353,15 @@ function make_d3_clustergram(args) {
     params.tile_colors = args.tile_colors;
   }
 
+  // background color 
+  if (typeof args.background_color == 'undefined'){
+    params.background_color = '#FFFFFF'
+    params.super_border_color = '#f5f5f5';
+  }
+  else{
+    params.background_color = args.background_color;
+    params.super_border_color = args.background_color;
+  }
 
   // tile callback function - optional 
   if (typeof args.click_tile == 'undefined'){
@@ -600,7 +608,19 @@ function make_d3_clustergram(args) {
     .attr("width",  params.svg_dim.width )
     // the height is reduced by more than the width because the tiles go right up to the bottom border 
     .attr("height", params.svg_dim.height )
-    // call zoom on the entire svg 
+
+  // append background rect if necessary to control background color 
+  if (params.background_color != '#FFFFFF'){
+    outer_group
+      .append('rect')
+      .attr('width', params.svg_dim.width)
+      .attr('height', params.svg_dim.height)
+      .style('fill',params.background_color);
+      console.log('change the background color ')
+  }
+
+  // call zoomingoom on the entire svg 
+  outer_group
     .call( params.zoom ); 
 
   params.clust_group = outer_group
@@ -667,8 +687,7 @@ function make_d3_clustergram(args) {
   vert_lines
     .append('line')
     .attr('x1',0)
-    //!! could be improved 
-    .attr('x2',-20*params.clust.dim.height)
+    .attr('x2',-params.clust.dim.height)
     .style('stroke-width', params.border_width+'px')
     .style('stroke','white');
 
@@ -683,7 +702,7 @@ function make_d3_clustergram(args) {
   // white background rect for row labels
   container_all_row
     .append('rect')
-    .attr('fill', 'white')
+    .attr('fill', params.background_color)
     .attr('width', params.norm_label.background.row )
     .attr('height', 30*params.clust.dim.height+'px')
     .attr('class','white_bars');
@@ -776,7 +795,7 @@ function make_d3_clustergram(args) {
   // append triangle background rect to zoomable group 
   row_triangle_zoom
     .append('rect')
-    .attr('fill', 'white')
+    .attr('fill', params.background_color) //!! prog_colors
     .attr('width', params.class_room.row+'px')
     .attr('height', function(){
        var inst_height = params.clust.dim.height ;
@@ -886,7 +905,7 @@ function make_d3_clustergram(args) {
   // white background rect for col labels 
   container_all_col 
     .append('rect')
-    .attr('fill', 'white')
+    .attr('fill', params.background_color) //!! prog_colors
     .attr('width',  30*params.clust.dim.width+'px')
     .attr('height', params.norm_label.background.col )
     .attr('class','white_bars');
@@ -1106,7 +1125,7 @@ function make_d3_clustergram(args) {
     .style('stroke-width','0')
     // mini-language for drawing path in d3, used to draw triangle 
     .attr('d', 'M 0,0 L 500,-500, L 500,0 Z')
-    .attr('fill','white')
+    .attr('fill', params.background_color ) //!! prog_colors
     .attr('id','right_slant_triangle')
     .attr('transform','translate('+params.clust.dim.width+','+params.norm_label.width.col+')');
 
@@ -1116,7 +1135,7 @@ function make_d3_clustergram(args) {
     .style('stroke-width','0')
     // mini-language for drawing path in d3, used to draw triangle 
     .attr('d', 'M 0,0 L 500,-500, L 0,-500 Z')
-    .attr('fill','white')
+    .attr('fill', params.background_color)
     .attr('id','left_slant_triangle')
     // shift left by 1 px to prevent cutting off labels 
     .attr('transform','translate(-1,'+params.norm_label.width.col+')');
@@ -1126,7 +1145,7 @@ function make_d3_clustergram(args) {
   // white rect to cover excess labels 
   d3.select('#main_svg')
     .append('rect')
-    .attr('fill', 'white')
+    .attr('fill', params.background_color) //!! prog_colors
     .attr('width', params.clust.margin.left )
     .attr('height', params.clust.margin.top )
     .attr('id','top_left_white');
@@ -1134,7 +1153,7 @@ function make_d3_clustergram(args) {
   // hide spillover from right
   d3.select('#main_svg')
     .append('rect')
-    .attr('fill', 'white')
+    .attr('fill', params.background_color) //!! prog_colors
     .attr('width', '300px')
     .attr('height', '3000px')
     .attr('transform', function() { 
@@ -1154,7 +1173,7 @@ function make_d3_clustergram(args) {
     // add super column title background 
     d3.select('#main_svg')
       .append('rect')
-      .attr('fill', 'white')
+      .attr('fill', params.background_color) //!! prog_colors
       .attr('height', params.super_label_width+'px')
       .attr('width', '3000px')
       .attr('class','white_bars')
@@ -1178,7 +1197,7 @@ function make_d3_clustergram(args) {
     // add super row title background 
     d3.select('#main_svg')
       .append('rect')
-      .attr('fill', 'white')
+      .attr('fill', params.background_color ) //!! prog_colors
       .attr('width', params.super_label_width+'px')
       .attr('height', '3000px')
       .attr('class','white_bars')
@@ -1211,7 +1230,7 @@ function make_d3_clustergram(args) {
   ///////////////////////////////////////////////////////////////////
   d3.select('#main_svg')
     .append('rect')
-    .attr('fill','white')
+    .attr('fill', params.background_color) //!! prog_colors
     .attr('width', params.svg_dim.width )
     // make this border twice the width of the grey border 
     .attr('height',  2*params.grey_border_width )
@@ -1226,7 +1245,7 @@ function make_d3_clustergram(args) {
   // left border
   d3.select('#main_svg')
     .append('rect')
-    .attr('fill','#f5f5f5')
+    .attr('fill', params.super_border_color) //!! prog_colors
     .attr('width',  params.grey_border_width )
     .attr('height', params.svg_dim.height )
     .attr('transform','translate(0,0)');
@@ -1234,7 +1253,7 @@ function make_d3_clustergram(args) {
   // right border 
   d3.select('#main_svg')
     .append('rect')
-    .attr('fill','#f5f5f5')
+    .attr('fill', params.super_border_color) //!! prog_colors
     .attr('width',  params.grey_border_width )
     .attr('height', params.svg_dim.height )
     .attr('transform', function(){
@@ -1245,7 +1264,7 @@ function make_d3_clustergram(args) {
   // top border 
   d3.select('#main_svg')
     .append('rect')
-    .attr('fill','#f5f5f5')
+    .attr('fill', params.super_border_color) //!! prog_colors
     .attr('width', params.svg_dim.width )
     .attr('height',  params.grey_border_width )
     .attr('transform', function(){
@@ -1256,7 +1275,7 @@ function make_d3_clustergram(args) {
   // bottom border 
   d3.select('#main_svg')
     .append('rect')
-    .attr('fill','#f5f5f5')
+    .attr('fill', params.super_border_color) //!! prog_colors
     .attr('width', params.svg_dim.width )
     .attr('height',  params.grey_border_width )
     .attr('transform', function(){
