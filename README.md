@@ -1,7 +1,7 @@
 # d3_clustergram 
 
 This is a clustergram implemented in D3.js. I started from the example http://bost.ocks.org/mike/miserables/ and added the following features 
-	
+  
 - zooming/panning
 - more ordering options 
 - row searching
@@ -42,14 +42,14 @@ var arguments_obj = {
 };
 
 d3_clustergram.make_clust( arguments_obj );
-```	
+``` 
 
 ### network_data 
 Your network must be in the following json format 
 
 ```
 {
-  "row_nodes":[
+  row_nodes:[
      {
       "name": "ATF7",
       "clust": 67,
@@ -59,7 +59,7 @@ Your network must be in the following json format
       "cl": "1.0"
     }
   ],
-  "col_nodes":[
+  col_nodes:[
     {
       "name": "Col-0",
       "clust": 4,
@@ -79,7 +79,11 @@ Your network must be in the following json format
   ]
 }
 ```
-row_nodes and col_nodes have optional properties: group and cl (group is given as an array of group membership at different distance cutoffs and used for the dendrogram-like colorbar). 
+#### group and cl properties 
+row_nodes and col_nodes have optional properties: "group" and "cl" (group is given as an array of group membership at different distance cutoffs and used for the dendrogram-like colorbar). If row_nodes and col_nodes have the property "group" then a dendrogram like colorbar will be added to the visualization and a slider can be used to change the group size. If row_nodes and col_nodes have the property "cl" then the triangles on each row/column label will be colored based on the classification (cl) of each row/column. 
+
+#### highlight property 
+links have the opional property "highlight" that can be used to highlight a tile with a black border. 
 
 ## reorder clustergram: d3_clustergram.reorder
 
