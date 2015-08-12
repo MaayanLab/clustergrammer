@@ -6,9 +6,16 @@ This is a clustergram implemented in D3.js. I started from the example http://bo
 - more ordering options 
 - row searching
 - dendrogram-like colorbar
-- classification triangles
+- row/column classification triangles
 - optional value bars for col/row nodes 
 - user defined click callback functions
+- optional split tiles and highlighting tiles
+- optional resizing
+
+The d3_clustergram repo is being hosted on github and gist and a live example of the visualization can be found on blocks. 
+- github: https://github.com/cornhundred/d3_clustergram 
+- gist: https://gist.github.com/cornhundred/c56253a5f3579a63406f
+- blocks http://bl.ocks.org/cornhundred/c56253a5f3579a63406f
 
 # d3_clustergram API
 
@@ -78,7 +85,7 @@ row_nodes and col_nodes have optional properties: group and cl (group is given a
 
 d3_clustergram.reorder takes a single argument that can take the values: 'clust' or 'rank'; and will reorder the clustergram accordingly. 
 
-## find row in clustergra: d3_clustergram.find_row
+## find row in clustergram: d3_clustergram.find_row
 d3_clustergram.find_row will find and zoom into the row that is specified by the input DOM element with id 'gene_search_box'. 
 
 D3 Clustergram was developed by Nick Fernandez at Icahn School of Medicine at Mount Sinai. 
