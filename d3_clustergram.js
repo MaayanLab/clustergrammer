@@ -342,7 +342,7 @@ function make_d3_clustergram(args) {
   }
   else{
     params.title_tile = args.title_tile;
-  }
+  };
 
   // tile colors
   if (typeof args.tile_colors =='undefined'){
@@ -351,7 +351,7 @@ function make_d3_clustergram(args) {
   }
   else{
     params.tile_colors = args.tile_colors;
-  }
+  };
 
   // background color 
   if (typeof args.background_color == 'undefined'){
@@ -361,7 +361,15 @@ function make_d3_clustergram(args) {
   else{
     params.background_color = args.background_color;
     params.super_border_color = args.background_color;
+  };
+
+  // check if zooming is enabled
+  if (typeof args.zoom == 'undefined'){
+    params.do_zoom = true;
   }
+  else{
+    params.do_zoom = args.zoom;
+  };
 
   // tile callback function - optional 
   if (typeof args.click_tile == 'undefined'){
@@ -620,8 +628,10 @@ function make_d3_clustergram(args) {
   }
 
   // call zoomingoom on the entire svg 
-  outer_group
-    .call( params.zoom ); 
+  if (params.do_zoom == true){
+    outer_group
+      .call( params.zoom ); 
+  }
 
   params.clust_group = outer_group
     // append a group that will hold clust_group and position it once 
