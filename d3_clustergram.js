@@ -96,8 +96,8 @@ function initialize_visualization(network_data, params){
 
   // get height and width from parent div 
   params.svg_dim = {};
-  params.svg_dim.width  = Number(d3.select('#svg_div').style('width' ).replace('px',''));
-  params.svg_dim.height = Number(d3.select('#svg_div').style('height').replace('px',''));
+  params.svg_dim.width  = Number(d3.select('#'+params.svg_div_id).style('width' ).replace('px',''));
+  params.svg_dim.height = Number(d3.select('#'+params.svg_div_id ).style('height').replace('px',''));
 
   // reduce width by row/col labels and by grey_border width (reduce width by less since this is less aparent with slanted col labels)
   var ini_clust_width  = params.svg_dim.width  - (params.super_label_width + label_scale(row_max_char) + params.class_room.row) - params.grey_border_width  - params.spillover_x_offset ;
