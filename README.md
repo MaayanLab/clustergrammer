@@ -84,9 +84,12 @@ Your network (called network_data here) must be in the following json format
 }
 ```
 
-#### row_nodes and col_nodes properties 
 There are three required properties: row_nodes, col_nodes, and links. Each of these properties is an array of objects with required and optional properties. 
 
+#### row_nodes and col_nodes properties 
+
+#### required properties: "name", "clust", "rank" 
+Both row_node and col_node objects are required to have the properties three properties: "name", "clust", "rank" . "name" specifies the name given to the row or column. "clust" and "rank" give the ordering of the row or column in the clustergram - these orderings have to be precalculated by the user and the python script d3_clustergram.py can be used for this. 
 
 ##### optional "group" and "cl" properties 
 row_nodes and col_nodes have optional properties: "group" and "cl" (group is given as an array of group membership at different distance cutoffs and used for the dendrogram-like colorbar). If row_nodes and col_nodes have the property "group" then a dendrogram like colorbar will be added to the visualization and a slider can be used to change the group size. If row_nodes and col_nodes have the property "cl" then the triangles on each row/column label will be colored based on the classification (cl) of each row/column. 
