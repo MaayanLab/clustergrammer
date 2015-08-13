@@ -39,13 +39,17 @@ var arguments_obj = {
   'click_group': click_group_callback
   'resize':false
   'order':'rank'
+  'transpose':true,
+  'zoom':false,
+  'tile_colors':['#ED9124','#1C86EE'],
+  'background_color':'orange',
 };
 
 d3_clustergram.make_clust( arguments_obj );
 ``` 
 
-### network_data 
-Your network must be in the following json format 
+### network_data json
+Your network (called network_data here) must be in the following json format 
 
 ```
 {
@@ -79,10 +83,15 @@ Your network must be in the following json format
   ]
 }
 ```
-#### group and cl properties 
+
+#### row_nodes and col_nodes properties 
+There are three required properties: row_nodes, col_nodes, and links. Each of these properties is an array of objects with required and optional properties. 
+
+
+##### optional "group" and "cl" properties 
 row_nodes and col_nodes have optional properties: "group" and "cl" (group is given as an array of group membership at different distance cutoffs and used for the dendrogram-like colorbar). If row_nodes and col_nodes have the property "group" then a dendrogram like colorbar will be added to the visualization and a slider can be used to change the group size. If row_nodes and col_nodes have the property "cl" then the triangles on each row/column label will be colored based on the classification (cl) of each row/column. 
 
-#### highlight property 
+##### highlight property 
 links have the opional property "highlight" that can be used to highlight a tile with a black border. 
 
 ## reorder clustergram: d3_clustergram.reorder
