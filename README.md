@@ -53,21 +53,21 @@ Your network (called network_data here) must be in the following json format
 
 ```
 {
-  row_nodes:[
+  "row_nodes":[
      {
       "name": "ATF7",
       "clust": 67,
-      "value": 0.6912280941908925,
+      "value": 0.691,
       "rank": 66,
       "group": []
       "cl": "1.0"
     }
   ],
-  col_nodes:[
+  "col_nodes":[
     {
       "name": "Col-0",
       "clust": 4,
-      "value": 0.13977366189382578,
+      "value": 0.139,
       "rank": 10,
       "group": [],
       "cl": "1.0"
@@ -77,8 +77,8 @@ Your network (called network_data here) must be in the following json format
     {
       "source": 0,
       "target": 0,
-      "value": 0.023191294265036619,
-      "highlight":1
+      "value": 0.023,
+      "highlight":0
     }
   ]
 }
@@ -88,14 +88,24 @@ There are three required properties: row_nodes, col_nodes, and links. Each of th
 
 #### row_nodes and col_nodes properties 
 
-#### required properties: "name", "clust", "rank" 
-Both row_node and col_node objects are required to have the properties three properties: "name", "clust", "rank" . "name" specifies the name given to the row or column. "clust" and "rank" give the ordering of the row or column in the clustergram - these orderings have to be precalculated by the user and the python script d3_clustergram.py can be used for this. 
+##### required properties: "name", "clust", "rank" 
+Both row_node and col_node objects are required to have the three properties: "name", "clust", "rank" . "name" specifies the name given to the row or column. "clust" and "rank" give the ordering of the row or column in the clustergram - these orderings have to be precalculated by the user and the python script d3_clustergram.py can be used for this. 
 
-##### optional "group" and "cl" properties 
-row_nodes and col_nodes have optional properties: "group" and "cl" (group is given as an array of group membership at different distance cutoffs and used for the dendrogram-like colorbar). If row_nodes and col_nodes have the property "group" then a dendrogram like colorbar will be added to the visualization and a slider can be used to change the group size. If row_nodes and col_nodes have the property "cl" then the triangles on each row/column label will be colored based on the classification (cl) of each row/column. 
+##### optional properties: "group", "cl", "value"
+row_nodes and col_nodes have optional properties: "group" and "cl" (group is given as an array of group membership at different distance cutoffs and used for the dendrogram-like colorbar - d3_clustergram.py gives an example of how to obtain group values). If row_nodes and col_nodes have the property "group" then a dendrogram like colorbar will be added to the visualization and a slider can be used to change the group size. 
 
-##### highlight property 
-links have the opional property "highlight" that can be used to highlight a tile with a black border. 
+If row_nodes and col_nodes have the property "cl" then the triangles on each row/column label will be colored based on the classification (cl) of each row/column. 
+
+If row_nodes or col_nodes have the property "value", then semi-transpaent bars will be made behind the labels that represent 
+"value". Currently this is only implemented for columns, values can only be positive, and the bars are always red. 
+
+#### links properties 
+
+##### required properties: "source", "target", "value"
+Link objects are required to have three properties: "source", "target", "value". "source" and "target" give the integer value of the row and column of the tile in the visualization. "value" specifies the opacity and color of the tile, where positive/negative values result in red/blue tiles (tiles are not made for links with zero value). If no 'input_domain' is specified then the domain for input values is given by the maximum absolute value of all link values. The positive and negative tile colors can be modified ysing the 'tile_colors' property in the arguments_obj. 
+
+##### optional properties: "highlight", "value_up", "value_dn"
+Links have the opional property "highlight" that can be used to highlight a tile with a black border. Links also have the optional properties "value_up" and "value_dn" which allow the user to split a tile into up- and down-triangles if a link has both up- and down-values. If a link has only an up- or down-value then a normal square tile is shown. Note that adding "highlight", "value_up", or "value_dn" will result in additional svg components and will slow down the visualization. 
 
 ## reorder clustergram: d3_clustergram.reorder
 
