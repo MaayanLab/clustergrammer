@@ -19,7 +19,7 @@ The d3_clustergram repo is being hosted on github and gist and a live example of
 
 # d3_clustergram API
 
-## make clustergram: d3_clustergram.make_clust
+## making a clustergram using d3_clustergram.make_clust
 
 ### make_clust arguments 
 To make a clustergram pass in an object with your network (network_data) and other optinal arguments. An example is in load_network.js and shown below 
@@ -106,6 +106,8 @@ Link objects are required to have three properties: "source", "target", "value".
 
 ##### optional properties: "highlight", "value_up", "value_dn"
 Links have the opional property "highlight" that can be used to highlight a tile with a black border. Links also have the optional properties "value_up" and "value_dn" which allow the user to split a tile into up- and down-triangles if a link has both up- and down-values. If a link has only an up- or down-value then a normal square tile is shown. Note that adding "highlight", "value_up", or "value_dn" will result in additional svg components and will slow down the visualization. 
+
+### Optional make_clust Properties 
 
 ## reorder clustergram: d3_clustergram.reorder
 
