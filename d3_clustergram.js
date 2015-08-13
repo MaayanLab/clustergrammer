@@ -1207,7 +1207,7 @@ function make_d3_clustergram(args) {
       .text(params.super.col)
       .attr('text-anchor','center')
       .attr('transform', function(){
-        var inst_x = params.clust.dim.width/2;
+        var inst_x = params.clust.dim.width/2 + params.norm_label.width.row;
         var inst_y = params.super_label_width  - params.uni_margin;
         return 'translate('+inst_x+','+inst_y+')';
       })
@@ -1233,7 +1233,7 @@ function make_d3_clustergram(args) {
       .attr('transform', function(){
         // position in the middle of the clustergram
         var inst_x = params.super_label_width - params.uni_margin;
-        var inst_y = params.clust.dim.height/2 ;
+        var inst_y = params.clust.dim.height/2 + params.norm_label.width.col;
         return 'translate('+inst_x+','+inst_y+')';
       });
 
@@ -2470,7 +2470,13 @@ function transpose_network(net){
 
     // optional highlight 
     if (_.has(net.links[i], 'highlight')){
-      inst_link.highlight = net.highlight;
+      inst_link.highlight = net.links[i].highlight;
+    }
+    if (_.has(net.links[i], 'value_up')){
+      inst_link.value_up = net.links[i].value_up;
+    }
+    if (_.has(net.links[i], 'value_dn')){
+      inst_link.value_dn = net.links[i].value_dn;
     }
 
     tnet.links.push(inst_link); 
