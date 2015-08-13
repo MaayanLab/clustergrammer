@@ -33,6 +33,7 @@
         'outer_margins': outer_margins,
         // 'opacity_scale':'log',
         'input_domain':7,
+        // 'transpose':true,
         // 'zoom':false,
         // 'tile_colors':['#ED9124','#1C86EE'],
         // 'background_color':'orange',

@@ -315,6 +315,7 @@ function make_d3_clustergram(args) {
   // network_data - not an optional argument 
   var network_data = args.network_data;
 
+
   // svg_div_id
   if (typeof args.svg_div_id == 'undefined'){
     params.svg_div_id = 'svg_div'; 
@@ -334,6 +335,21 @@ function make_d3_clustergram(args) {
     params.super = {};
     params.super.row = args.row_label;
     params.super.col = args.col_label;
+  }
+
+  // transpose matrix - if requested 
+  if (typeof args.transpose == 'undefined'){
+    params.transpose = false; 
+  }
+  else{
+    params.transpose = args.transpose;
+  }
+
+  // transpose network data and super-labels 
+  if ( params.transpose === true ){
+    network_data = transpose_network(network_data);
+    params.super.row = args.col_label;
+    params.super.col = args.row_label;
   }
 
   // add title to tile 
@@ -2437,6 +2453,29 @@ function find_row(){
     // zoom and highlight found gene 
     zoom_and_highlight_found_gene(search_gene);
   }
+}
+
+// transpose matrix funciton 
+function transpose_network(net){
+  tnet = {};
+  tnet.row_nodes = net.col_nodes;
+  tnet.col_nodes = net.row_nodes;
+  tnet.links = [];
+
+  for (var i=0; i<net.links.length; i++ ){
+    var inst_link = {};
+    inst_link.source = net.links[i].target;
+    inst_link.target = net.links[i].source;
+    inst_link.value = net.links[i].value;
+
+    // optional highlight 
+    if (_.has(net.links[i], 'highlight')){
+      inst_link.highlight = net.highlight;
+    }
+
+    tnet.links.push(inst_link); 
+  }
+  return tnet;
 }
 
 // return d3_clustergram modules 
