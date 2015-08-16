@@ -615,6 +615,9 @@ function make_d3_clustergram(args) {
       if (params.highlight == 1){
         params.matrix[link.source][link.target].highlight = link.highlight;
       } 
+      if ( _.has(link, 'info') ){
+        params.matrix[link.source][link.target].info = link.info;
+      }
     });
   }
 
@@ -1532,6 +1535,15 @@ function row_function(row_data) {
         tile_info.row = d3_clustergram.network_data.row_nodes[d.pos_y].name;
         tile_info.col = d3_clustergram.network_data.col_nodes[d.pos_x].name;
         tile_info.value = d.value;
+        if (_.has(d, 'value_up')){
+          tile_info.value_up = d.value_up;
+        }
+        if (_.has(d, 'value_dn')){
+          tile_info.value_dn = d.value_dn;
+        }
+        if (_.has(d, 'info')){
+          tile_info.info = d.info;
+        }
         // run the user supplied callback function 
         params.click_tile(tile_info);
       });
@@ -1645,6 +1657,15 @@ function row_group_function(row_data) {
         tile_info.row = d3_clustergram.network_data.row_nodes[d.pos_y].name;
         tile_info.col = d3_clustergram.network_data.col_nodes[d.pos_x].name;
         tile_info.value = d.value;
+        if (_.has(d, 'value_up')){
+          tile_info.value_up = d.value_up;
+        }
+        if (_.has(d, 'value_dn')){
+          tile_info.value_dn = d.value_dn;
+        }
+        if (_.has(d, 'info')){
+          tile_info.info = d.info;
+        }
         // run the user supplied callback function 
         params.click_tile(tile_info);
       });
@@ -2477,6 +2498,9 @@ function transpose_network(net){
     }
     if (_.has(net.links[i], 'value_dn')){
       inst_link.value_dn = net.links[i].value_dn;
+    }
+    if (_.has(net.links[i], 'info')){
+      inst_link.info = net.links[i].info;
     }
 
     tnet.links.push(inst_link); 

@@ -42,7 +42,7 @@ var arguments_obj = {
   'transpose':true,
   'zoom':false,
   'tile_colors':['#ED9124','#1C86EE'],
-  'background_color':'orange',
+  'background_color':'white',
 };
 
 d3_clustergram.make_clust( arguments_obj );
@@ -104,16 +104,16 @@ If row_nodes or col_nodes have the property "value", then semi-transpaent bars w
 ##### required properties: "source", "target", "value"
 Link objects are required to have three properties: "source", "target", "value". "source" and "target" give the integer value of the row and column of the tile in the visualization. "value" specifies the opacity and color of the tile, where positive/negative values result in red/blue tiles (tiles are not made for links with zero value). If no 'input_domain' is specified then the domain for input values is given by the maximum absolute value of all link values. The positive and negative tile colors can be modified ysing the 'tile_colors' property in the arguments_obj. 
 
-##### optional properties: "highlight", "value_up", "value_dn"
-Links have the opional property "highlight" that can be used to highlight a tile with a black border. Links also have the optional properties "value_up" and "value_dn" which allow the user to split a tile into up- and down-triangles if a link has both up- and down-values. If a link has only an up- or down-value then a normal square tile is shown. Note that adding "highlight", "value_up", or "value_dn" will result in additional svg components and will slow down the visualization. 
+##### optional properties: "highlight", "value_up", "value_dn", "info"
+Links have the opional property "highlight" that can be used to highlight a tile with a black border. Links also have the optional properties "value_up" and "value_dn" which allow the user to split a tile into up- and down-triangles if a link has both up- and down-values. If a link has only an up- or down-value then a normal square tile is shown. Note that adding "highlight", "value_up", or "value_dn" will result in additional svg components and will slow down the visualization. The property info can be used to pass additional information to the tile clickback funciton. 
 
 ### Optional make_clust Properties 
 
-## reorder clustergram: d3_clustergram.reorder
+## reorder clustergram
 
 d3_clustergram.reorder takes a single argument that can take the values: 'clust' or 'rank'; and will reorder the clustergram accordingly. 
 
-## find row in clustergram: d3_clustergram.find_row
+## find row in clustergram
 d3_clustergram.find_row will find and zoom into the row that is specified by the input DOM element with id 'gene_search_box'. 
 
 D3 Clustergram was developed by Nick Fernandez at Icahn School of Medicine at Mount Sinai. 
