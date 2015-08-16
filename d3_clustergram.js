@@ -280,7 +280,7 @@ function initialize_visualization(network_data, params){
   // rect is the default faster and simpler option 
   // group is the optional slower and more complex option that is activated with: highlighting or split tiles
   // if ( _.has(network_data.links[0], 'value_up') || _.has(network_data.links[0], 'highlight') ){
-  if ( _.has(network_data.links[0], 'value_up')  ){
+  if ( _.has(network_data.links[0], 'value_up') || _.has(network_data.links[0], 'highlight') ){
     params.tile_type = 'group';
   }
   else{
