@@ -202,6 +202,9 @@ function initialize_visualization(network_data, params){
 
   // make a scale that will set the initial font size based on the number of nodes 
   var scale_font_size = d3.scale.log().domain([min_node_num,max_node_num]).range([max_fs,min_fs]).clamp('true');
+  // scale font offset, when the font size is the height of the rects then it should be almost the full width of the rects
+  // when the font size is small, then the offset should be almost equal to half the rect width
+  params.scale_font_offset = d3.scale.linear().domain([1,0]).range([0.8,0.5])
 
   // controls how much the font size increases during zooming 
   // 1: do not increase font size while zooming
@@ -991,7 +994,7 @@ function make_d3_clustergram(args) {
   col_label_click
     .append("text")
     .attr("x", 0)
-    .attr("y", params.x_scale.rangeBand() * 0.6)
+    .attr("y", params.x_scale.rangeBand() * 0.60)
     // offset label to make room for triangle 
     .attr('dx', 2*params.border_width)
     .attr("text-anchor", "start")
@@ -2063,6 +2066,7 @@ function apply_transformation( trans_x, trans_y, zoom_x, zoom_y ){
     d3.selectAll('.row_label_text').each(function(){
       d3.select(this).select('text')
       .style('font-size', params.default_fs_row* params.zoom_scale_font.row + 'px' )
+      .attr('y',  params.y_scale.rangeBand() * params.scale_font_offset(params.zoom_scale_font.row) );
     });
 
   }
@@ -2071,6 +2075,7 @@ function apply_transformation( trans_x, trans_y, zoom_x, zoom_y ){
     d3.selectAll('.row_label_text').each(function(){
       d3.select(this).select('text')
       .style('font-size', params.default_fs_row + 'px' )
+      .attr('y',  params.y_scale.rangeBand()*0.75);
     });    
   }
 
@@ -2080,7 +2085,7 @@ function apply_transformation( trans_x, trans_y, zoom_x, zoom_y ){
     // reduce font size 
     d3.selectAll('.col_label_click').each(function(){
       d3.select(this).select('text')
-      .style('font-size', params.default_fs_col* params.zoom_scale_font.col + 'px' )
+      .style('font-size', params.default_fs_col* params.zoom_scale_font.col + 'px' );
     });
 
   }
@@ -2088,7 +2093,7 @@ function apply_transformation( trans_x, trans_y, zoom_x, zoom_y ){
     // reset font size 
     d3.selectAll('.col_label_click').each(function(){
       d3.select(this).select('text')
-      .style('font-size', params.default_fs_col + 'px' )
+      .style('font-size', params.default_fs_col + 'px' );
     });    
   }
 
