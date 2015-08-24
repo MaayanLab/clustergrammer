@@ -1,6 +1,6 @@
 
 // load network 
-    d3.json('kin_harmonogram.json', function(network_data){
+    d3.json('example_network.json', function(network_data){
 
       // define the outer margins of the visualization 
       var outer_margins = {
@@ -33,7 +33,7 @@
         'outer_margins': outer_margins,
         // 'opacity_scale':'log',
         'input_domain':7,
-        'col_overflow':0.3
+        'col_overflow':1
         // 'transpose':true,
         // 'zoom':false,
         // 'tile_colors':['#ED9124','#1C86EE'],
