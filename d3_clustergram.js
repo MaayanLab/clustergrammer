@@ -2293,6 +2293,47 @@ function two_translate_zoom( pan_dx, pan_dy, fin_zoom){
     //   .select('text')
     //   .style('font-size', fin_font_col);
 
+    // check if widest row or col are wider than the allowed label width 
+    ////////////////////////////////////////////////////////////////////////
+
+    if ( params.bounding_row_width_max * params.zoom.scale() > params.norm_label.width.row ) {
+      params.zoom_scale_font.row = params.norm_label.width.row / (params.bounding_row_width_max * params.zoom.scale()) ;
+
+      // reduce font size 
+      d3.selectAll('.row_label_text').each(function(){
+        d3.select(this).select('text')
+        .style('font-size', params.default_fs_row* params.zoom_scale_font.row + 'px' )
+        .attr('y',  params.y_scale.rangeBand() * params.scale_font_offset(params.zoom_scale_font.row) );
+      });
+
+    }
+    else{
+      // reset font size
+      d3.selectAll('.row_label_text').each(function(){
+        d3.select(this).select('text')
+        .style('font-size', params.default_fs_row + 'px' )
+        .attr('y',  params.y_scale.rangeBand()*0.75);
+      });    
+    }
+
+    if ( params.bounding_col_width_max * (params.zoom.scale()/params.zoom_switch) > params.norm_label.width.col ) {
+      params.zoom_scale_font.col = params.norm_label.width.col / (params.bounding_col_width_max * (params.zoom.scale()/params.zoom_switch)) ;
+
+      // reduce font size 
+      d3.selectAll('.col_label_click').each(function(){
+        d3.select(this).select('text')
+        .style('font-size', params.default_fs_col* params.zoom_scale_font.col + 'px' );
+      });
+
+    }
+    else{
+      // reset font size 
+      d3.selectAll('.col_label_click').each(function(){
+        d3.select(this).select('text')
+        .style('font-size', params.default_fs_col + 'px' );
+      });    
+    }
+
     // re-size of the highlighting rects 
     /////////////////////////////////////////
     d3.select('#row_labels')
