@@ -41,7 +41,7 @@ function initialize_visualization(network_data, params){
   // define label scale parameters: the more characters in the longest name, the larger the margin 
   var min_num_char = 5;
   var max_num_char = 60;
-  var min_label_width = 60;
+  var min_label_width = 80;
   var max_label_width = 220;
   var label_scale = d3.scale.linear().domain([min_num_char,max_num_char]).range([min_label_width,max_label_width]).clamp('true');
 
@@ -226,7 +226,13 @@ function initialize_visualization(network_data, params){
   // the colum font size is scaled by the width 
   //!! make this local later 
   // params.default_fs_col = scale_font_size(col_nodes.length)* scale_fs_screen_width(params.clust.dim.width); 
-  params.default_fs_col = params.x_scale.rangeBand()*0.7;
+  params.default_fs_col = params.x_scale.rangeBand()*0.6;
+
+  // font size zooming parameters 
+  params.zoom_scale_font = {};
+  params.zoom_scale_font.row = 1;
+  params.zoom_scale_font.col = 1;
+
 
   // // correct for forcing the tiles to be squares - if they are forced, then use the col font size for the row 
   // if (params.force_square == 1){
@@ -1003,10 +1009,6 @@ function make_d3_clustergram(args) {
     var tmp_width = d3.select(this).select('text').node().getBBox().width;
     if ( tmp_width > params.bounding_row_width_max ){
       params.bounding_row_width_max = tmp_width;
-      // // reset all 
-      // d3.selectAll('.row_label_text').select('text').attr('id','');
-      // // set current row to widest 
-      // d3.select(this).select('text').attr('id','widest_row');
     }
   });
 
@@ -1014,32 +1016,34 @@ function make_d3_clustergram(args) {
   d3.selectAll('.col_label_click').each(function(){
     var tmp_width = d3.select(this).select('text').node().getBBox().width;
     if ( tmp_width > params.bounding_col_width_max ){
-      params.bounding_col_width_max = tmp_width;
-      // // reset all 
-      // d3.selectAll('.col_label_click').select('text').attr('id','');
-      // // set current col to widest 
-      // d3.select(this).select('text').attr('id','widest_col');
+      // increase the apparent width of the column label since its rotated
+      // this will give more room for text
+      params.bounding_col_width_max = tmp_width*1.3;
     }
   });
 
+
   // check if widest row or col are wider than the allowed label width 
   ////////////////////////////////////////////////////////////////////////
+  params.ini_scale_font = {};
+  params.ini_scale_font.row = 1;
+  params.ini_scale_font.col = 1;
   if ( params.bounding_row_width_max * d3_clustergram.params.zoom.scale() > params.norm_label.width.row ) {
-    var scale_down_font_row = params.norm_label.width.row / params.bounding_row_width_max ;
+    params.ini_scale_font.row = params.norm_label.width.row / params.bounding_row_width_max ;
     // redefine bounding_row_width_max
-    params.bounding_row_width_max = scale_down_font_row * params.bounding_row_width_max;
+    params.bounding_row_width_max = params.ini_scale_font * params.bounding_row_width_max;
     // reduce font size 
     d3.selectAll('.row_label_click').each(function(){
       d3.select(this).select('text')
-      .style('font-size', params.default_fs_row* scale_down_font_row + 'px' )
+      .style('font-size', params.default_fs_row* params.ini_scale_font + 'px' )
     });
   }
   if ( params.bounding_col_width_max * d3_clustergram.params.zoom.scale() > params.norm_label.width.col ) {
-    var scale_down_font_col = params.norm_label.width.col / params.bounding_col_width_max ;
+    params.ini_scale_font.col = params.norm_label.width.col / params.bounding_col_width_max ;
     // redefine bounding_col_width_max
-    params.bounding_col_width_max = scale_down_font_col * params.bounding_col_width_max;
+    params.bounding_col_width_max = params.ini_scale_font.col * params.bounding_col_width_max;
     // reduce font size 
-    params.default_fs_col = params.default_fs_col * scale_down_font_col;
+    params.default_fs_col = params.default_fs_col * params.ini_scale_font.col;
     d3.selectAll('.col_label_click').each(function(){
       d3.select(this).select('text')
       .style('font-size', params.default_fs_col + 'px' )
@@ -2043,41 +2047,41 @@ function apply_transformation( trans_x, trans_y, zoom_x, zoom_y ){
   // check if widest row or col are wider than the allowed label width 
   ////////////////////////////////////////////////////////////////////////
 
-  // // console.log(d3.select('#widest_row').node().getBBox().width * params.zoom.scale())
-  // if ( d3.select('#widest_row').node().getBBox().width * params.zoom.scale() > params.norm_label.width.row ) {
-  //   console.log('row is getting too wide')
-  //   var scale_down_font =  params.norm_label.width.row / (d3.select('#widest_row').node().getBBox().width * params.zoom.scale() ) ;
-  //   console.log(scale_down_font)
-  //   // reduce font size 
-  //   d3.selectAll('.row_label_click').each(function(){
-  //     d3.select(this).select('text')
-  //     .remove()
-  //     // .style('font-size', params.default_fs_row* scale_down_font + 'px' )
-  //     // .text('here');
+  if ( params.bounding_row_width_max * params.zoom.scale() > params.norm_label.width.row ) {
+    params.zoom_scale_font.row = params.norm_label.width.row / (params.bounding_row_width_max * params.zoom.scale()) ;
 
-  //   });
-  // }
+    // reduce font size 
+    d3.selectAll('.row_label_text').each(function(){
+      d3.select(this).select('text')
+      .style('font-size', params.default_fs_row* params.zoom_scale_font.row + 'px' )
+    });
+
+  }
+  else{
+    // reset font size
+    d3.selectAll('.row_label_text').each(function(){
+      d3.select(this).select('text')
+      .style('font-size', params.default_fs_row + 'px' )
+    });    
+  }
 
   if ( params.bounding_col_width_max * (params.zoom.scale()/params.zoom_switch) > params.norm_label.width.col ) {
-    var scale_down_font = params.norm_label.width.col / (params.bounding_col_width_max * (params.zoom.scale()/params.zoom_switch)) ;
-
-    console.log('col label getting too wide')
-    console.log(scale_down_font)
+    params.zoom_scale_font.col = params.norm_label.width.col / (params.bounding_col_width_max * (params.zoom.scale()/params.zoom_switch)) ;
 
     // reduce font size 
     d3.selectAll('.col_label_click').each(function(){
       d3.select(this).select('text')
-      .style('font-size', params.default_fs_col* scale_down_font + 'px' )
+      .style('font-size', params.default_fs_col* params.zoom_scale_font.col + 'px' )
     });
 
-    // // reduce font size 
-    // d3.selectAll('.col_label_click').each(function(){
-    //   d3.select(this).select('text')
-    //   .style('font-size', params.default_fs_col* scale_down_font + 'px' )
-    // });
-
-  };
-
+  }
+  else{
+    // reset font size 
+    d3.selectAll('.col_label_click').each(function(){
+      d3.select(this).select('text')
+      .style('font-size', params.default_fs_col + 'px' )
+    });    
+  }
 
 
   // column value bars 
