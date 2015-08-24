@@ -2302,6 +2302,8 @@ function two_translate_zoom( pan_dx, pan_dy, fin_zoom){
       // reduce font size 
       d3.selectAll('.row_label_text').each(function(){
         d3.select(this).select('text')
+        .transition()
+        .duration(search_duration)
         .style('font-size', params.default_fs_row* params.zoom_scale_font.row + 'px' )
         .attr('y',  params.y_scale.rangeBand() * params.scale_font_offset(params.zoom_scale_font.row) );
       });
@@ -2311,6 +2313,8 @@ function two_translate_zoom( pan_dx, pan_dy, fin_zoom){
       // reset font size
       d3.selectAll('.row_label_text').each(function(){
         d3.select(this).select('text')
+        .transition()
+        .duration(search_duration)
         .style('font-size', params.default_fs_row + 'px' )
         .attr('y',  params.y_scale.rangeBand()*0.75);
       });    
@@ -2322,6 +2326,8 @@ function two_translate_zoom( pan_dx, pan_dy, fin_zoom){
       // reduce font size 
       d3.selectAll('.col_label_click').each(function(){
         d3.select(this).select('text')
+        .transition()
+        .duration(search_duration)
         .style('font-size', params.default_fs_col* params.zoom_scale_font.col + 'px' );
       });
 
@@ -2330,6 +2336,8 @@ function two_translate_zoom( pan_dx, pan_dy, fin_zoom){
       // reset font size 
       d3.selectAll('.col_label_click').each(function(){
         d3.select(this).select('text')
+        .transition()
+        .duration(search_duration)
         .style('font-size', params.default_fs_col + 'px' );
       });    
     }
