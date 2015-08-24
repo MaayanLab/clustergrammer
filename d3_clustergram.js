@@ -226,7 +226,7 @@ function initialize_visualization(network_data, params){
   // the colum font size is scaled by the width 
   //!! make this local later 
   // params.default_fs_col = scale_font_size(col_nodes.length)* scale_fs_screen_width(params.clust.dim.width); 
-  params.default_fs_col = params.x_scale.rangeBand()*0.6;
+  params.default_fs_col = params.x_scale.rangeBand()*0.7;
 
   // font size zooming parameters 
   params.zoom_scale_font = {};
@@ -1011,6 +1011,7 @@ function make_d3_clustergram(args) {
       params.bounding_row_width_max = tmp_width;
     }
   });
+  console.log(params.bounding_row_width_max)
 
   params.bounding_col_width_max = 0
   d3.selectAll('.col_label_click').each(function(){
@@ -1018,7 +1019,7 @@ function make_d3_clustergram(args) {
     if ( tmp_width > params.bounding_col_width_max ){
       // increase the apparent width of the column label since its rotated
       // this will give more room for text
-      params.bounding_col_width_max = tmp_width*1.3;
+      params.bounding_col_width_max = tmp_width*1.5;
     }
   });
 
@@ -1028,22 +1029,30 @@ function make_d3_clustergram(args) {
   params.ini_scale_font = {};
   params.ini_scale_font.row = 1;
   params.ini_scale_font.col = 1;
-  if ( params.bounding_row_width_max * d3_clustergram.params.zoom.scale() > params.norm_label.width.row ) {
+  if ( params.bounding_row_width_max * params.zoom.scale() > params.norm_label.width.row ) {
+
     params.ini_scale_font.row = params.norm_label.width.row / params.bounding_row_width_max ;
     // redefine bounding_row_width_max
-    params.bounding_row_width_max = params.ini_scale_font * params.bounding_row_width_max;
+    params.bounding_row_width_max = params.ini_scale_font.row * params.bounding_row_width_max;
+
+    // redefine default fs 
+    params.default_fs_row = params.default_fs_row * params.ini_scale_font.row;
     // reduce font size 
-    d3.selectAll('.row_label_click').each(function(){
+    d3.selectAll('.row_label_text').each(function(){
       d3.select(this).select('text')
-      .style('font-size', params.default_fs_row* params.ini_scale_font + 'px' )
+      .style('font-size', params.default_fs_row + 'px' )
     });
   }
-  if ( params.bounding_col_width_max * d3_clustergram.params.zoom.scale() > params.norm_label.width.col ) {
+
+  console.log(params.bounding_row_width_max)
+
+  if ( params.bounding_col_width_max * params.zoom.scale() > params.norm_label.width.col ) {
     params.ini_scale_font.col = params.norm_label.width.col / params.bounding_col_width_max ;
     // redefine bounding_col_width_max
     params.bounding_col_width_max = params.ini_scale_font.col * params.bounding_col_width_max;
-    // reduce font size 
+    // redefine default fs 
     params.default_fs_col = params.default_fs_col * params.ini_scale_font.col;
+    // reduce font size 
     d3.selectAll('.col_label_click').each(function(){
       d3.select(this).select('text')
       .style('font-size', params.default_fs_col + 'px' )
