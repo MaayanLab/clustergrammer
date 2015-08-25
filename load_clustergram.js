@@ -1,5 +1,5 @@
 
-// load network 
+    // load network 
     d3.json('example_network.json', function(network_data){
 
       // define the outer margins of the visualization 

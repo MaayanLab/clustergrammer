@@ -117,7 +117,7 @@ function initialize_visualization(network_data, params){
   ////////////////////////
   // ensure that rects are never taller than they are wide 
   // force square tiles 
-  if (col_nodes.length > row_nodes.length){
+  if ( ini_clust_width/col_nodes.length < ini_clust_height/row_nodes.length ){
 
     // scale the height 
     params.clust.dim.height = ini_clust_width * (row_nodes.length/col_nodes.length);
