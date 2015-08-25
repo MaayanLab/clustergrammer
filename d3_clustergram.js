@@ -41,8 +41,8 @@ function initialize_visualization(network_data, params){
   // define label scale parameters: the more characters in the longest name, the larger the margin 
   var min_num_char = 5;
   var max_num_char = 60;
-  var min_label_width = 100;
-  var max_label_width = 220;
+  var min_label_width = 120;
+  var max_label_width = 320;
   var label_scale = d3.scale.linear().domain([min_num_char,max_num_char]).range([min_label_width,max_label_width]).clamp('true');
 
   // Nomal Labels 
@@ -185,6 +185,10 @@ function initialize_visualization(network_data, params){
 
   // zoom_switch from 1 to 2d zoom 
   params.zoom_switch = (params.clust.dim.width/col_nodes.length)/(params.clust.dim.height/row_nodes.length);
+  // zoom_switch can not be less than 1
+  if (params.zoom_switch < 1){
+    params.zoom_switch = 1;
+  }
 
   // font size controls 
   ////////////////////////////
@@ -2183,7 +2187,7 @@ function two_translate_zoom( pan_dx, pan_dy, fin_zoom){
     // y pan room, the pan room has to be less than half_height since 
     // zooming in on a gene that is near the top of the clustergram also causes 
     // panning out of the visible region  
-    var y_pan_room = ((half_height)/params.zoom_switch);
+    var y_pan_room = half_height/params.zoom_switch;
 
     // prevent visualization from panning down too much 
     // when zooming into genes near the top of the clustergram 
