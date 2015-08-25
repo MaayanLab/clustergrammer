@@ -41,7 +41,7 @@ function initialize_visualization(network_data, params){
   // define label scale parameters: the more characters in the longest name, the larger the margin 
   var min_num_char = 5;
   var max_num_char = 60;
-  var min_label_width = 80;
+  var min_label_width = 100;
   var max_label_width = 220;
   var label_scale = d3.scale.linear().domain([min_num_char,max_num_char]).range([min_label_width,max_label_width]).clamp('true');
 
