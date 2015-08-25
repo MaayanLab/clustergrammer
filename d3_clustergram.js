@@ -361,8 +361,10 @@ var d3_clustergram = (function() {
     if (_.has(network_data.links[0], 'value_up') || _.has(network_data.links[
         0], 'highlight')) {
       params.tile_type = 'group';
+      // console.log('making group tiles');
     } else {
       params.tile_type = 'simple';
+      // console.log('making group tiles');
     }
 
     // check if rects should be highlighted
@@ -728,7 +730,8 @@ var d3_clustergram = (function() {
 
     _.each(network_data.links, function(link) {
       params.matrix[link.source][link.target].value = link.value;
-      if (params.tile_type === 'simple') {
+      // transfer additional link information is necessary 
+      if (params.tile_type === 'group') {
         params.matrix[link.source][link.target].value_up = link.value_up;
         params.matrix[link.source][link.target].value_dn = link.value_dn;
         if (params.highlight === 1) {
