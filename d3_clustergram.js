@@ -734,12 +734,12 @@ var d3_clustergram = (function() {
       if (params.tile_type === 'group') {
         params.matrix[link.source][link.target].value_up = link.value_up;
         params.matrix[link.source][link.target].value_dn = link.value_dn;
-        if (params.highlight === 1) {
-          params.matrix[link.source][link.target].highlight = link.highlight;
-        }
-        if (_.has(link, 'info')) {
-          params.matrix[link.source][link.target].info = link.info;
-        }
+      }
+      if (params.highlight === 1) {
+        params.matrix[link.source][link.target].highlight = link.highlight;
+      }
+      if (_.has(link, 'info')) {
+        params.matrix[link.source][link.target].info = link.info;
       }
     });
 
