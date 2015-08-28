@@ -71,8 +71,11 @@ var d3_clustergram = (function() {
     // rotated column labels - approx trig
     params.norm_label = {};
     params.norm_label.width = {};
-    params.norm_label.width.row = label_scale(row_max_char);
-    params.norm_label.width.col = 0.8 * label_scale(col_max_char);
+
+    // allow the user to increase or decrease the overall size of the labels 
+    params.norm_label.width.row = label_scale(row_max_char) * params.row_label_scale;
+    params.norm_label.width.col = 0.8 * label_scale(col_max_char) * params.col_label_scale;
+
     // normal label margins
     params.norm_label.margin = {};
     params.norm_label.margin.left = params.grey_border_width + params.super_label_width;
@@ -101,7 +104,7 @@ var d3_clustergram = (function() {
     // svg size: less than svg size
     ///////////////////////////////////
     // 0.8 approximates the trigonometric distance required for hiding the spillover
-    params.spillover_x_offset = label_scale(col_max_char) * 0.8;
+    params.spillover_x_offset = label_scale(col_max_char) * 0.8 * params.col_label_scale;
 
     // get height and width from parent div
     params.svg_dim = {};
@@ -112,11 +115,11 @@ var d3_clustergram = (function() {
 
     // reduce width by row/col labels and by grey_border width (reduce width by less since this is less aparent with slanted col labels)
     var ini_clust_width = params.svg_dim.width - (params.super_label_width +
-        label_scale(row_max_char) + params.class_room.row) - params.grey_border_width -
+        label_scale(row_max_char)*params.row_label_scale + params.class_room.row) - params.grey_border_width -
       params.spillover_x_offset;
     // there is space between the clustergram and the border
     var ini_clust_height = params.svg_dim.height - (params.super_label_width +
-        0.8 * label_scale(col_max_char) + params.class_room.col) - 5 *
+        0.8 * label_scale(col_max_char)*params.col_label_scale + params.class_room.col) - 5 *
       params.grey_border_width;
 
     // the visualization dimensions can be smaller than the svg
@@ -430,6 +433,18 @@ var d3_clustergram = (function() {
       params.label_overflow.col = 1;
     } else {
       params.label_overflow.col = args.col_overflow;
+    }
+
+    // row and label overall scale 
+    if (typeof args.row_label_scale == 'undefined'){
+      params.row_label_scale = 1;
+    } else {
+      params.row_label_scale = args.row_label_scale;
+    }
+    if (typeof args.col_label_scale == 'undefined'){
+      params.col_label_scale = 1;
+    } else {
+      params.col_label_scale = args.col_label_scale;
     }
 
     // transpose matrix - if requested
@@ -875,23 +890,18 @@ var d3_clustergram = (function() {
       .attr('transform', function(d, index) {
         return 'translate(0,' + params.y_scale(index) + ')';
       })
-      .on('click', reorder_click_row)
+      .on('dblclick', reorder_click_row)
       .on('mouseover', function() {
         // highlight text
         d3
           .select(this)
           .select('text')
-          .style('font-weight', 'bold');
+          .classed('active',true);
       })
       .on('mouseout', function mouseout() {
-        d3
-          .select(this)
+        d3.select(this)
           .select('text')
-          .style('font-weight', 'normal');
-        // reset highlighted col
-        d3
-          .select('#clicked_row')
-          .style('font-weight', 'bold');
+          .classed('active',false)
       });
 
     // append row label text
@@ -900,10 +910,7 @@ var d3_clustergram = (function() {
       .attr('y', params.y_scale.rangeBand() * 0.75)
       // .attr('dy', params.y_scale.rangeBand()/4)
       .attr('text-anchor', 'end')
-      // original font size
       .style('font-size', params.default_fs_row + 'px')
-      // // !! simple font size
-      // .style('font-size', params.y_scale.rangeBand()*0.9+'px')
       .text(function(d) {
         return d.name;
       });
@@ -1105,16 +1112,14 @@ var d3_clustergram = (function() {
       // rotate column labels
       .attr('transform', 'translate(' + params.x_scale.rangeBand() / 2 +
         ',' + x_offset_click + ') rotate(45)')
-      .on('click', reorder_click_col)
+      .on('dblclick', reorder_click_col)
       .on('mouseover', function() {
         d3.select(this).select('text')
-          .style('font-weight', 'bold');
+          .classed('active',true);
       })
       .on('mouseout', function mouseout() {
         d3.select(this).select('text')
-          .style('font-weight', 'normal');
-        d3.select('#clicked_col')
-          .style('font-weight', 'bold');
+          .classed('active',false);
       });
 
     // add column label
@@ -2237,16 +2242,14 @@ var d3_clustergram = (function() {
     // check if widest row or col are wider than the allowed label width
     ////////////////////////////////////////////////////////////////////////
 
-    if (params.bounding_width_max.row * params.zoom.scale() > params.norm_label
-      .width.row) {
+    if (params.bounding_width_max.row * params.zoom.scale() > params.norm_label.width.row) {
       params.zoom_scale_font.row = params.norm_label.width.row / (params.bounding_width_max
         .row * params.zoom.scale());
 
       // reduce font size
       d3.selectAll('.row_label_text').each(function() {
         d3.select(this).select('text')
-          .style('font-size', params.default_fs_row * params.zoom_scale_font
-            .row + 'px')
+          .style('font-size', params.default_fs_row * params.zoom_scale_font.row + 'px')
           .attr('y', params.y_scale.rangeBand() * params.scale_font_offset(
             params.zoom_scale_font.row));
       });
@@ -2602,11 +2605,6 @@ var d3_clustergram = (function() {
     d3.select('#clicked_row')
       .attr('id', '');
 
-    // highlight current
-    d3.select(this).select('text')
-      .style('font-weight', 'bold')
-      .attr('id', 'clicked_row');
-
     // find the row number of this term from row_nodes
     // gather row node names
     var tmp_arr = [];
@@ -2663,6 +2661,17 @@ var d3_clustergram = (function() {
         d3_clustergram.params.run_trans = 0;
       });
 
+    // highlight selected row
+    ///////////////////////////////
+    d3.selectAll('.row_label_text')
+      .select('rect')
+      .style('opacity', 0);
+
+    // highlight column name
+    d3.select(this)
+      .select('rect')
+      .style('opacity', 1);
+
     // backup allow programmatic zoom
     setTimeout(end_reorder, 2500);
   }
@@ -2682,19 +2691,6 @@ var d3_clustergram = (function() {
 
     // get inst col (term)
     var inst_term = d3.select(this).select('text').attr('full_name');
-
-    // highlight clicked column
-    // first un-highlight all others
-    d3.selectAll('.col_label_text').select('text')
-      .style('font-weight', 'normal');
-    // remove previous id
-    d3.select('#clicked_col')
-      .attr('id', '');
-
-    // highlight current
-    d3.select(this).select('text')
-      .style('font-weight', 'bold')
-      .attr('id', 'clicked_col');
 
     // find the column number of this term from col_nodes
     // gather column node names
@@ -2823,13 +2819,7 @@ var d3_clustergram = (function() {
     // get y position
     var inst_y_pos = params.y_scale(inst_gene_index);
 
-    // make row name bold
-    d3.selectAll('.row_label_text')
-      .filter(function(d) {
-        return d.name === search_gene;
-      })
-      .select('text')
-      .style('font-weight', 'bold');
+
     // highlight row name
     d3.selectAll('.row_label_text')
       .filter(function(d) {
