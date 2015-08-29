@@ -32,7 +32,7 @@
         'col_label':'Column-Data-Name',
         'outer_margins': outer_margins,
         // 'opacity_scale':'log',
-        'input_domain':7,
+        // 'input_domain':7,
         'col_overflow':1
         // 'transpose':true,
         // 'zoom':false,

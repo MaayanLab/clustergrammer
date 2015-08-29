@@ -10,12 +10,14 @@ print('make tsv clustergram')
 ##############################
 net.load_tsv_to_net('example_tsv_network.txt')
 
+# net.filter_network_thresh(1,3)
+
 # cluster 
 #############
 # only compare vectors with at least min_num_comp common data points
 # with absolute values above cutoff_comp 
 cutoff_comp = 0
-min_num_comp = 2
+min_num_comp = 3
 net.cluster_row_and_col('cos', cutoff_comp, min_num_comp)
 
 # export data visualization to file 
