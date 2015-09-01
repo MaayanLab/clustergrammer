@@ -2836,18 +2836,9 @@ var d3_clustergram = (function() {
     two_translate_zoom(0, pan_dy, params.zoom_switch);
   }
 
-  // submit genes button
-  $('#gene_search_box').keyup(function(e) {
-    if (e.keyCode === 13) {
-      find_row();
-    }
-  });
-
   // find gene in clustergram
-  function find_row() {
+  function find_row(search_gene) {
     // get the searched gene
-    var search_gene = $('#gene_search_box').val();
-
     if (d3_clustergram.params.all_genes.indexOf(search_gene) !== -1) {
       // zoom and highlight found gene
       zoom_and_highlight_found_gene(search_gene);

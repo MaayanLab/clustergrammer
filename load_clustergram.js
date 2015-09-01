@@ -96,3 +96,14 @@
       });
       $( "#amount" ).val( "$" + $( "#slider_row" ).slider( "value" ) );
     });
+
+
+    $(function() {
+      // submit genes button
+      $('#gene_search_box').keyup(function(e) {
+        if (e.keyCode === 13) {
+          var search_gene = $('#gene_search_box').val();
+          d3_clustergram.find_row(search_gene);
+        }
+      });
+    });
