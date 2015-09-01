@@ -1,6 +1,6 @@
 
 // start d3_clustergram closure
-var d3_clustergram = (function() {
+var d3_clustergram = function() {
   'use strict';
 
   // initialize clustergram: size, scales, etc.
@@ -2058,7 +2058,7 @@ var d3_clustergram = (function() {
   function reset_visualization_size() {
 
     // remake the clustergram
-    d3_clustergram.make_clust(d3_clustergram.params.args);
+    make_d3_clustergram(d3_clustergram.params.args);
 
     // reset zoom and translate
     d3_clustergram.params.zoom.scale(1).translate([d3_clustergram.params.clust
@@ -2895,7 +2895,7 @@ var d3_clustergram = (function() {
 
   // return d3_clustergram modules
   return {
-    make_clust: make_d3_clustergram,
+    make: make_d3_clustergram,
     reorder: reorder,
     find_row: find_row,
     get_genes: function() {
@@ -2904,5 +2904,4 @@ var d3_clustergram = (function() {
     colorbar_groups:colorbar_groups
   };
 
-  // end closure
-}());
+};
