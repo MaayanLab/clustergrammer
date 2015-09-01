@@ -1,7 +1,7 @@
 // slider script - col
 $(function() {
 
-  var d3c = d3_clustergram();
+  var d3c;
 
   // load network
   d3.json('json/example_network.json', function(network_data){
@@ -16,17 +16,17 @@ $(function() {
 
     // define callback function for clicking on tile
     function click_tile_callback(tile_info){
-      console.log('my callback')
+      console.log('my callback');
       console.log('clicking on ' + tile_info.row + ' row and ' + tile_info.col + ' col with value ' + String(tile_info.value))
-    };
+    }
 
     // define callback function for clicking on group
     function click_group_callback(group_info){
-      console.log('running user defined click group callback')
+      console.log('running user defined click group callback');
       console.log(group_info.type);
       console.log(group_info.nodes);
       console.log(group_info.info);
-    };
+    }
 
     // define arguments object
     var arguments_obj = {
@@ -50,7 +50,8 @@ $(function() {
     };
 
     // make clustergram: pass network_data and the div name where the svg should be made
-    d3c.make( arguments_obj );
+    d3c = d3_clustergram(arguments_obj);
+
   });
 
   $( "#slider_col" ).slider({

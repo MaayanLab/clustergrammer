@@ -1,7 +1,13 @@
 
-// start d3_clustergram closure
-var d3_clustergram = function() {
+/* d3_clustergram 1.0
+ * Nick Fernandez, Icahn School of Medicine at Mount Sinai
+ * 2015
+ */
+
+var d3_clustergram = function(args) {
   'use strict';
+
+  make_d3_clustergram(args);
 
   // initialize clustergram: size, scales, etc.
   function initialize_visualization(network_data, params) {
@@ -2895,7 +2901,6 @@ var d3_clustergram = function() {
 
   // return d3_clustergram modules
   return {
-    make: make_d3_clustergram,
     reorder: reorder,
     find_row: find_row,
     get_genes: function() {
