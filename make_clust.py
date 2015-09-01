@@ -8,7 +8,7 @@ print('make tsv clustergram')
 
 # load network from tsv file 
 ##############################
-net.load_tsv_to_net('example_tsv_network.txt')
+net.load_tsv_to_net('txt/example_tsv_network.txt')
 
 # net.filter_network_thresh(1,3)
 
