@@ -21,7 +21,10 @@ The d3_clustergram repo is being hosted on github and gist and a live example of
 
 d3_clustergram requires:
 - jQuery
+- jQuery UI
 - Underscore.js
+- Underscore.Strings.js
+- Bootstrap
 
 # d3_clustergram API
 
