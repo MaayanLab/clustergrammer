@@ -17,6 +17,12 @@ The d3_clustergram repo is being hosted on github and gist and a live example of
 - gist: https://gist.github.com/cornhundred/c56253a5f3579a63406f
 - blocks http://bl.ocks.org/cornhundred/c56253a5f3579a63406f
 
+# Dependencies
+
+d3_clustergram requires:
+- jQuery
+- Underscore.js
+
 # d3_clustergram API
 
 ## making a clustergram using d3_clustergram.make_clust
