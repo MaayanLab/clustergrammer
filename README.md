@@ -28,9 +28,9 @@ d3_clustergram requires:
 
 # d3_clustergram API
 
-## making a clustergram using d3_clustergram.make_clust
+## making a clustergram using d3_clustergram.make
 
-### make_clust arguments 
+### make arguments 
 To make a clustergram pass in an object with your network (network_data) and other optinal arguments. An example is in load_network.js and shown below 
 
 ```
@@ -54,7 +54,7 @@ var arguments_obj = {
   'background_color':'white',
 };
 
-d3_clustergram.make_clust( arguments_obj );
+d3_clustergram.make( arguments_obj );
 ``` 
 
 ### network_data json
