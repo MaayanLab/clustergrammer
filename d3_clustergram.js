@@ -1,11 +1,14 @@
 
 /* d3_clustergram 1.0
  * Nick Fernandez, Icahn School of Medicine at Mount Sinai
- * 2015
+ * (c) 2015
  */
 
-var d3_clustergram = function(args) {
+function d3_clustergram(args) {
   'use strict';
+
+  // This object is a temporary hack to hold all global state for this module.
+  var globals = {};
 
   make_d3_clustergram(args);
 
@@ -377,7 +380,7 @@ var d3_clustergram = function(args) {
     }
 
     // check if rects should be highlighted
-    if (_.has(d3_clustergram.network_data.links[0], 'highlight')) {
+    if (_.has(globals.network_data.links[0], 'highlight')) {
       params.highlight = 1;
       // console.log('found highlight');
     } else {
@@ -565,7 +568,7 @@ var d3_clustergram = function(args) {
     }
 
     // save global version of network_data
-    d3_clustergram.network_data = network_data;
+    globals.network_data = network_data;
 
     // set local variables from network_data
     var col_nodes = network_data.col_nodes;
@@ -765,7 +768,7 @@ var d3_clustergram = function(args) {
     });
 
     // save params to the global object d3_clustergram
-    d3_clustergram.params = params;
+    globals.params = params;
 
     // make clustergram visualization
     ///////////////////////////////////////
@@ -1042,7 +1045,7 @@ var d3_clustergram = function(args) {
             var inst_group = d.group[inst_level];
             // find all row names that are in the same group at the same group_level
             // get row_nodes
-            row_nodes = d3_clustergram.network_data.row_nodes;
+            row_nodes = globals.network_data.row_nodes;
             var group_nodes = [];
             _.each(row_nodes, function(node) {
               // check that the node is in the group
@@ -1283,7 +1286,7 @@ var d3_clustergram = function(args) {
       .range([0, params.norm_label.width.col]);
 
     // append column value bars
-    if (_.has(d3_clustergram.network_data.col_nodes[0], 'value')) {
+    if (_.has(globals.network_data.col_nodes[0], 'value')) {
       col_label_click
         .append('rect')
         .attr('class', 'col_bars')
@@ -1349,7 +1352,7 @@ var d3_clustergram = function(args) {
             var inst_group = d.group[inst_level];
             // find all column names that are in the same group at the same group_level
             // get col_nodes
-            col_nodes = d3_clustergram.network_data.col_nodes;
+            col_nodes = globals.network_data.col_nodes;
             var group_nodes = [];
             _.each(col_nodes, function(node) {
               // check that the node is in the group
@@ -1608,8 +1611,8 @@ var d3_clustergram = function(args) {
   //!! I will have to generalize this
   function highlight_resource_types(params) {
 
-    // var col_nodes = d3_clustergram.network_data.col_nodes;
-    var row_nodes = d3_clustergram.network_data.row_nodes;
+    // var col_nodes = globals.network_data.col_nodes;
+    var row_nodes = globals.network_data.row_nodes;
 
     // // This will set up the resource type color key
     // // and generate an array of genes for later use
@@ -1720,7 +1723,7 @@ var d3_clustergram = function(args) {
     });
 
     // load parameters
-    var params = d3_clustergram.params;
+    var params = globals.params;
 
     // generate tiles in the current row
     var tile = d3.select(this)
@@ -1768,8 +1771,8 @@ var d3_clustergram = function(args) {
         .on('click', function(d) {
           // export row/col name and value from tile
           var tile_info = {};
-          tile_info.row = d3_clustergram.network_data.row_nodes[d.pos_y].name;
-          tile_info.col = d3_clustergram.network_data.col_nodes[d.pos_x].name;
+          tile_info.row = globals.network_data.row_nodes[d.pos_y].name;
+          tile_info.col = globals.network_data.col_nodes[d.pos_x].name;
           tile_info.value = d.value;
           if (_.has(d, 'value_up')) {
             tile_info.value_up = d.value_up;
@@ -1805,7 +1808,7 @@ var d3_clustergram = function(args) {
     });
 
     // load parameters
-    var params = d3_clustergram.params;
+    var params = globals.params;
 
     // generate groups
     var tile = d3.select(this)
@@ -1893,8 +1896,8 @@ var d3_clustergram = function(args) {
         .on('click', function(d) {
           // export row/col name and value from tile
           var tile_info = {};
-          tile_info.row = d3_clustergram.network_data.row_nodes[d.pos_y].name;
-          tile_info.col = d3_clustergram.network_data.col_nodes[d.pos_x].name;
+          tile_info.row = globals.network_data.row_nodes[d.pos_y].name;
+          tile_info.col = globals.network_data.col_nodes[d.pos_x].name;
           tile_info.value = d.value;
           if (_.has(d, 'value_up')) {
             tile_info.value_up = d.value_up;
@@ -1986,10 +1989,10 @@ var d3_clustergram = function(args) {
   function reorder(inst_order) {
 
     // load parameters from d3_clustergram
-    var params = d3_clustergram.params;
+    var params = globals.params;
 
     // set running transition value
-    d3_clustergram.params.run_trans = 1;
+    globals.params.run_trans = 1;
 
     // load orders
     if (inst_order === 'clust') {
@@ -2046,7 +2049,7 @@ var d3_clustergram = function(args) {
       .each('end', function() {
         // set running transition to 0
         console.log('finished with transition ');
-        d3_clustergram.params.run_trans = 0;
+        globals.params.run_trans = 0;
       });
 
     // backup allow programmatic zoom
@@ -2056,7 +2059,7 @@ var d3_clustergram = function(args) {
 
   // tmp backup function to allow programmatic zoom after reordering
   function end_reorder() {
-    d3_clustergram.params.run_trans = 0;
+    globals.params.run_trans = 0;
   }
 
   // recalculate the size of the visualization
@@ -2064,11 +2067,11 @@ var d3_clustergram = function(args) {
   function reset_visualization_size() {
 
     // remake the clustergram
-    make_d3_clustergram(d3_clustergram.params.args);
+    make_d3_clustergram(globals.params.args);
 
     // reset zoom and translate
-    d3_clustergram.params.zoom.scale(1).translate([d3_clustergram.params.clust
-      .margin.left, d3_clustergram.params.clust.margin.top
+    globals.params.zoom.scale(1).translate([globals.params.clust
+      .margin.left, globals.params.clust.margin.top
     ]);
 
     // // turn off the wait sign
@@ -2085,9 +2088,9 @@ var d3_clustergram = function(args) {
     var zoom_y = d3.event.scale;
 
     // gather translate vector components
-    var trans_x = d3.event.translate[0] - d3_clustergram.params.clust.margin
+    var trans_x = d3.event.translate[0] - globals.params.clust.margin
       .left;
-    var trans_y = d3.event.translate[1] - d3_clustergram.params.clust.margin
+    var trans_y = d3.event.translate[1] - globals.params.clust.margin
       .top;
 
     // apply transformation
@@ -2102,7 +2105,7 @@ var d3_clustergram = function(args) {
   function apply_transformation(trans_x, trans_y, zoom_x, zoom_y) {
 
     // load parameters
-    var params = d3_clustergram.params;
+    var params = globals.params;
 
     // define d3 scale
     var d3_scale = zoom_x;
@@ -2288,7 +2291,7 @@ var d3_clustergram = function(args) {
     // column value bars
     ///////////////////////
 
-    if (_.has(d3_clustergram.network_data.col_nodes[0], 'value')) {
+    if (_.has(globals.network_data.col_nodes[0], 'value')) {
       d3.selectAll('.col_bars')
         // column is rotated - effectively width and height are switched
         .attr('width', function(d) {
@@ -2339,9 +2342,9 @@ var d3_clustergram = function(args) {
   function two_translate_zoom(pan_dx, pan_dy, fin_zoom) {
 
     // get parameters
-    var params = d3_clustergram.params;
+    var params = globals.params;
 
-    if (d3_clustergram.params.run_trans === 0) {
+    if (globals.params.run_trans === 0) {
 
       // define the commonly used variable half_height
       var half_height = params.clust.dim.height / 2;
@@ -2570,7 +2573,7 @@ var d3_clustergram = function(args) {
       // reduce the height of the column value bars based on the zoom applied
       // recalculate the height and divide by the zooming scale
       // col_label_obj.select('rect')
-      if (_.has(d3_clustergram.network_data.col_nodes[0], 'value')) {
+      if (_.has(globals.network_data.col_nodes[0], 'value')) {
         d3.selectAll('.col_bars')
           .transition()
           .duration(search_duration)
@@ -2586,14 +2589,14 @@ var d3_clustergram = function(args) {
   function reorder_click_row() {
 
     // set running transition value
-    d3_clustergram.params.run_trans = 1;
+    globals.params.run_trans = 1;
 
     // get parameters
-    var params = d3_clustergram.params;
+    var params = globals.params;
 
     // get row_nodes from global variable
-    var row_nodes = d3_clustergram.network_data.row_nodes;
-    var col_nodes = d3_clustergram.network_data.col_nodes;
+    var row_nodes = globals.network_data.row_nodes;
+    var col_nodes = globals.network_data.col_nodes;
 
     // get inst row (gene)
     var inst_gene = d3.select(this).select('text').text();
@@ -2659,7 +2662,7 @@ var d3_clustergram = function(args) {
       })
       .each('end', function() {
         // set running transition to 0
-        d3_clustergram.params.run_trans = 0;
+        globals.params.run_trans = 0;
       });
 
     // highlight selected row
@@ -2681,14 +2684,14 @@ var d3_clustergram = function(args) {
   function reorder_click_col() {
 
     // set running transition value
-    d3_clustergram.params.run_trans = 1;
+    globals.params.run_trans = 1;
 
     // get parameters
-    var params = d3_clustergram.params;
+    var params = globals.params;
 
     // get row_nodes from global variable
-    var row_nodes = d3_clustergram.network_data.row_nodes;
-    var col_nodes = d3_clustergram.network_data.col_nodes;
+    var row_nodes = globals.network_data.row_nodes;
+    var col_nodes = globals.network_data.col_nodes;
 
     // get inst col (term)
     var inst_term = d3.select(this).select('text').attr('full_name');
@@ -2750,7 +2753,7 @@ var d3_clustergram = function(args) {
       })
       .each('end', function() {
         // set running transition to 0
-        d3_clustergram.params.run_trans = 0;
+        globals.params.run_trans = 0;
       });
 
     // highlight selected column
@@ -2776,7 +2779,7 @@ var d3_clustergram = function(args) {
   function timeout_resize() {
 
     // get params
-    var params = d3_clustergram.params;
+    var params = globals.params;
 
     // only resize if allowed
     if (params.resize === true) {
@@ -2840,7 +2843,7 @@ var d3_clustergram = function(args) {
   // find gene in clustergram
   function find_row(search_gene) {
     // get the searched gene
-    if (d3_clustergram.params.all_genes.indexOf(search_gene) !== -1) {
+    if (globals.params.all_genes.indexOf(search_gene) !== -1) {
       // zoom and highlight found gene
       zoom_and_highlight_found_gene(search_gene);
     }
@@ -2885,28 +2888,26 @@ var d3_clustergram = function(args) {
 
       d3.selectAll('.row_class_rect')
         .style('fill', function(d){
-          return d3_clustergram.params.group_colors.row[d.group[inst_index]];
+          return globals.params.group_colors.row[d.group[inst_index]];
         });
 
     } else{
 
       d3.selectAll('.col_class_rect')
         .style('fill', function(d){
-          return d3_clustergram.params.group_colors.col[d.group[inst_index]];
+          return globals.params.group_colors.col[d.group[inst_index]];
         });
 
     }
 
   }
 
-  // return d3_clustergram modules
   return {
     reorder: reorder,
     find_row: find_row,
     get_genes: function() {
-      return d3_clustergram.params.all_genes;
+      return globals.params.all_genes;
     },
     colorbar_groups:colorbar_groups
   };
-
-};
+}
