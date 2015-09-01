@@ -22,7 +22,7 @@ var d3_clustergram = (function() {
     // Super Labels
     ///////////////////
     // super label width - the labels are 20px wide if they are included
-    if (params.super_labels === 'yes') {
+    if (params.super_labels) {
       // include super labels
       params.super_label_width = 20;
     } else {
@@ -409,10 +409,10 @@ var d3_clustergram = (function() {
     if (typeof args.row_label === 'undefined' || typeof args.col_label ===
       'undefined') {
       // do not put super labels
-      params.super_labels = 'no';
+      params.super_labels = false;
     } else {
       // make super labels
-      params.super_labels = 'yes';
+      params.super_labels = true;
       params.super = {};
       params.super.row = args.row_label;
       params.super.col = args.col_label;
@@ -1421,7 +1421,7 @@ var d3_clustergram = (function() {
 
 
     // only make the super titles if they are requested
-    if (params.super_labels === 'yes') {
+    if (params.super_labels) {
 
       // super col title
       /////////////////////////////////////
