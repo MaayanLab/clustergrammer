@@ -1566,7 +1566,7 @@ var d3_clustergram = (function() {
   //////////////////////////////////////////////
   function parent_div_size_pos(params) {
 
-    if (params.resize === true) {
+    if (params.resize) {
       // get outer_margins
       var outer_margins = params.outer_margins;
 
