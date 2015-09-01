@@ -2872,6 +2872,27 @@ var d3_clustergram = (function() {
     return tnet;
   }
 
+  // change the colorbar group 
+  function colorbar_groups(inst_rc, inst_index){
+
+    if (inst_rc === 'row'){
+
+      d3.selectAll('.row_class_rect')
+        .style('fill', function(d){
+          return d3_clustergram.params.group_colors.row[d.group[inst_index]];
+        });
+
+    } else{
+
+      d3.selectAll('.col_class_rect')
+        .style('fill', function(d){
+          return d3_clustergram.params.group_colors.col[d.group[inst_index]];
+        });
+
+    }
+
+  }
+
   // return d3_clustergram modules
   return {
     make_clust: make_d3_clustergram,
@@ -2879,7 +2900,8 @@ var d3_clustergram = (function() {
     find_row: find_row,
     get_genes: function() {
       return d3_clustergram.params.all_genes;
-    }
+    },
+    colorbar_groups:colorbar_groups
   };
 
   // end closure
