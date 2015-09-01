@@ -1701,11 +1701,6 @@ var d3_clustergram = (function() {
       params.all_genes.push(row_nodes[i].name);
     }
 
-    // use Jquery autocomplete
-    ////////////////////////////////
-    $('#gene_search_box').autocomplete({
-      source: params.all_genes
-    });
 
     return params;
   }
@@ -2879,9 +2874,12 @@ var d3_clustergram = (function() {
 
   // return d3_clustergram modules
   return {
-    'make_clust': make_d3_clustergram,
-    'reorder': reorder,
-    'find_row': find_row
+    make_clust: make_d3_clustergram,
+    reorder: reorder,
+    find_row: find_row,
+    get_genes: function() {
+      return d3_clustergram.params.all_genes;
+    }
   };
 
   // end closure
