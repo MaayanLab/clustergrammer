@@ -39,7 +39,7 @@ $(function() {
       // 'input_domain':7,
       'col_overflow':1
       // 'transpose':true,
-      // 'zoom':false,
+      // 'do_zoom':false,
       // 'tile_colors':['#ED9124','#1C86EE'],
       // 'background_color':'orange',
       // 'title_tile': true,
