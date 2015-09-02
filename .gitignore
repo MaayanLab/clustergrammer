@@ -46,6 +46,8 @@ Thumbs.db
 *.sublime-workspace
 *.sublime-project
 *.idea
+*.swo
+*.swp
 
 # sftp configuration file
 sftp-config.json 
