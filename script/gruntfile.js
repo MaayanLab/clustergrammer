@@ -5,6 +5,7 @@ module.exports = function(grunt) {
         '../src/Utils.js',
         '../src/zoom.js',
         '../src/Search.js',
+        '../src/visualization.js',
         '../src/main.js',
         '../src/_close.js'
     ];
