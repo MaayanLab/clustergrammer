@@ -51,7 +51,7 @@ $(function() {
 
     // make clustergram: pass network_data and the div name where the svg should be made
     d3c = d3_clustergram(arguments_obj);
-    
+
     $('#gene_search_box').autocomplete({
       source: d3c.get_genes()
     });
