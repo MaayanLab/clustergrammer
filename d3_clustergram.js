@@ -2859,6 +2859,20 @@ function d3_clustergram(args) {
     return obj === void 0;
   }
 
+  /* Mixes two objects in together, overwriting a target with a source.
+   */
+  function extend (target, source) {
+    target = target || {};
+    for (var prop in source) {
+      if (typeof source[prop] === 'object') {
+        target[prop] = extend(target[prop], source[prop]);
+      } else {
+        target[prop] = source[prop];
+      }
+    }
+    return target;
+  }
+
   /* Resize clustergram to fit screen size.
    */
   function resize_to_screen() {
