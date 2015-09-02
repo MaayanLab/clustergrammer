@@ -4,7 +4,7 @@ module.exports = function(grunt) {
         '../src/_open.js',
         '../src/Utils.js',
         '../src/zoom.js',
-        '../src/search.js',
+        '../src/Search.js',
         '../src/main.js',
         '../src/_close.js'
     ];
