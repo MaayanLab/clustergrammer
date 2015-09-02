@@ -10,7 +10,1331 @@ function d3_clustergram(args) {
   // This object is a temporary hack to hold all global state for this module.
   var globals = {};
 
-  make_d3_clustergram(args);
+
+  /* Main program
+   * ----------------------------------------------------------------------- */
+
+  make(args);
+  
+  /* The main function; makes clustergram based on user arguments.
+   */
+  function make(args) {
+
+    var params = {};
+    params.args = args;
+
+    // Unload Arguments
+    /////////////////////////
+
+    // network_data - not an optional argument
+    var network_data = args.network_data;
+
+
+    // svg_div_id
+    if (typeof args.svg_div_id === 'undefined') {
+      params.svg_div_id = 'svg_div';
+    } else {
+      params.svg_div_id = args.svg_div_id;
+    }
+
+    // super-row/col labels
+    if (typeof args.row_label === 'undefined' || typeof args.col_label ===
+        'undefined') {
+      // do not put super labels
+      params.super_labels = false;
+    } else {
+      // make super labels
+      params.super_labels = true;
+      params.super = {};
+      params.super.row = args.row_label;
+      params.super.col = args.col_label;
+    }
+
+    // row and column overflow sensitivity
+    params.label_overflow = {};
+    if (typeof args.row_overflow === 'undefined') {
+      // make sensitivity to overflow the max, 1
+      params.label_overflow.row = 1;
+    } else {
+      params.label_overflow.row = args.row_overflow;
+    }
+
+    // col and column overflow sensitivity
+    if (typeof args.col_overflow === 'undefined') {
+      // make sensitivity to overflow the max, 1
+      params.label_overflow.col = 1;
+    } else {
+      params.label_overflow.col = args.col_overflow;
+    }
+
+    // row and label overall scale
+    if (typeof args.row_label_scale == 'undefined'){
+      params.row_label_scale = 1;
+    } else {
+      params.row_label_scale = args.row_label_scale;
+    }
+    if (typeof args.col_label_scale == 'undefined'){
+      params.col_label_scale = 1;
+    } else {
+      params.col_label_scale = args.col_label_scale;
+    }
+
+    // transpose matrix - if requested
+    if (typeof args.transpose === 'undefined') {
+      params.transpose = false;
+    } else {
+      params.transpose = args.transpose;
+    }
+
+    // transpose network data and super-labels
+    if (params.transpose === true) {
+      network_data = transpose_network(network_data);
+      params.super.row = args.col_label;
+      params.super.col = args.row_label;
+    }
+
+    // add title to tile
+    if (typeof args.title_tile === 'undefined') {
+      params.title_tile = false;
+    } else {
+      params.title_tile = args.title_tile;
+    }
+
+    // tile colors
+    if (typeof args.tile_colors === 'undefined') {
+      // red/blue
+      params.tile_colors = ['#FF0000', '#1C86EE'];
+    } else {
+      params.tile_colors = args.tile_colors;
+    }
+
+    // background color
+    if (typeof args.background_color === 'undefined') {
+      params.background_color = '#FFFFFF';
+      params.super_border_color = '#f5f5f5';
+    } else {
+      params.background_color = args.background_color;
+      params.super_border_color = args.background_color;
+    }
+
+    // check if zooming is enabled
+    if (typeof args.zoom === 'undefined') {
+      params.do_zoom = true;
+    } else {
+      params.do_zoom = args.zoom;
+    }
+
+    // tile callback function - optional
+    if (typeof args.click_tile === 'undefined') {
+      // there is no callback function included
+      params.click_tile = 'none';
+    } else {
+      // transfer the callback function
+      params.click_tile = args.click_tile;
+    }
+
+    // group callback function - optional
+    if (typeof args.click_group === 'undefined') {
+      params.click_group = 'none';
+    } else {
+      // transfer the callback function
+      params.click_group = args.click_group;
+    }
+
+    // set input domain
+    if (typeof args.input_domain === 'undefined') {
+      // default domain is set to 0, which means that the domain will be set automatically
+      params.input_domain = 0;
+    } else {
+      params.input_domain = args.input_domain;
+    }
+
+    // set opacity scale type
+    if (typeof args.opacity_scale === 'undefined') {
+      params.opacity_scale = 'linear';
+    } else {
+      params.opacity_scale = args.opacity_scale;
+    }
+
+    // variable/fixed visualization size (needs to be in the arguments)
+    if (typeof args.resize === 'undefined') {
+      // default resize to yes
+      params.resize = true;
+    } else {
+      params.resize = args.resize;
+    }
+
+    // get outer_margins
+    if (typeof args.outer_margins === 'undefined') {
+      // default margins
+      params.outer_margins = {
+        'top': 0,
+        'bottom': 0,
+        'left': 0,
+        'right': 0
+      };
+    } else {
+      params.outer_margins = args.outer_margins;
+    }
+
+    // get initial ordering
+    if (typeof args.order === 'undefined') {
+      params.inst_order = 'clust';
+    }
+    // only use ordering if its defined correctly
+    else if (args.order === 'clust' || args.order === 'rank' ||
+        args.order === 'class') {
+      params.inst_order = args.order;
+    } else {
+      // backup
+      params.inst_order = 'clust';
+    }
+
+    // save global version of network_data
+    globals.network_data = network_data;
+
+    // set local variables from network_data
+    var col_nodes = network_data.col_nodes;
+    var row_nodes = network_data.row_nodes;
+
+    // colors from http://graphicdesign.stackexchange.com/revisions/3815/8
+    params.rand_colors = ['#000000', '#FF34FF', '#FFFF00', '#FF4A46',
+      '#008941', '#006FA6', '#A30059', '#FFDBE5', '#7A4900', '#0000A6',
+      '#63FFAC', '#B79762', '#004D43', '#8FB0FF', '#997D87', '#5A0007',
+      '#809693', '#FEFFE6', '#1B4400', '#4FC601', '#3B5DFF', '#4A3B53',
+      '#FF2F80', '#61615A', '#BA0900', '#6B7900', '#00C2A0', '#FFAA92',
+      '#FF90C9', '#B903AA', '#D16100', '#DDEFFF', '#000035', '#7B4F4B',
+      '#A1C299', '#300018', '#0AA6D8', '#013349', '#00846F', '#372101',
+      '#FFB500', '#C2FFED', '#A079BF', '#CC0744', '#C0B9B2', '#C2FF99',
+      '#001E09', '#00489C', '#6F0062', '#0CBD66', '#EEC3FF', '#456D75',
+      '#B77B68', '#7A87A1', '#788D66', '#885578', '#FAD09F', '#FF8A9A',
+      '#D157A0', '#BEC459', '#456648', '#0086ED', '#886F4C', '#34362D',
+      '#B4A8BD', '#00A6AA', '#452C2C', '#636375', '#A3C8C9', '#FF913F',
+      '#938A81', '#575329', '#00FECF', '#B05B6F', '#8CD0FF', '#3B9700',
+      '#04F757', '#C8A1A1', '#1E6E00', '#7900D7', '#A77500', '#6367A9',
+      '#A05837', '#6B002C', '#772600', '#D790FF', '#9B9700', '#549E79',
+      '#FFF69F', '#201625', '#72418F', '#BC23FF', '#99ADC0', '#3A2465',
+      '#922329', '#5B4534', '#FDE8DC', '#404E55', '#0089A3', '#CB7E98',
+      '#A4E804', '#324E72', '#6A3A4C', '#83AB58', '#001C1E', '#D1F7CE',
+      '#004B28', '#C8D0F6', '#A3A489', '#806C66', '#222800', '#BF5650',
+      '#E83000', '#66796D', '#DA007C', '#FF1A59', '#8ADBB4', '#1E0200',
+      '#5B4E51', '#C895C5', '#320033', '#FF6832', '#66E1D3', '#CFCDAC',
+      '#D0AC94', '#7ED379', '#012C58', '#7A7BFF', '#D68E01', '#353339',
+      '#78AFA1', '#FEB2C6', '#75797C', '#837393', '#943A4D', '#B5F4FF',
+      '#D2DCD5', '#9556BD', '#6A714A', '#001325', '#02525F', '#0AA3F7',
+      '#E98176', '#DBD5DD', '#5EBCD1', '#3D4F44', '#7E6405', '#02684E',
+      '#962B75', '#8D8546', '#9695C5', '#E773CE', '#D86A78', '#3E89BE',
+      '#CA834E', '#518A87', '#5B113C', '#55813B', '#E704C4', '#00005F',
+      '#A97399', '#4B8160', '#59738A', '#FF5DA7', '#F7C9BF', '#643127',
+      '#513A01', '#6B94AA', '#51A058', '#A45B02', '#1D1702', '#E20027',
+      '#E7AB63', '#4C6001', '#9C6966', '#64547B', '#97979E', '#006A66',
+      '#391406', '#F4D749', '#0045D2', '#006C31', '#DDB6D0', '#7C6571',
+      '#9FB2A4', '#00D891', '#15A08A', '#BC65E9', '#FFFFFE', '#C6DC99',
+      '#203B3C', '#671190', '#6B3A64', '#F5E1FF', '#FFA0F2', '#CCAA35',
+      '#374527', '#8BB400', '#797868', '#C6005A', '#3B000A', '#C86240',
+      '#29607C', '#402334', '#7D5A44', '#CCB87C', '#B88183', '#AA5199',
+      '#B5D6C3', '#A38469', '#9F94F0', '#A74571', '#B894A6', '#71BB8C',
+      '#00B433', '#789EC9', '#6D80BA', '#953F00', '#5EFF03', '#E4FFFC',
+      '#1BE177', '#BCB1E5', '#76912F', '#003109', '#0060CD', '#D20096',
+      '#895563', '#29201D', '#5B3213', '#A76F42', '#89412E', '#1A3A2A',
+      '#494B5A', '#A88C85', '#F4ABAA', '#A3F3AB', '#00C6C8', '#EA8B66',
+      '#958A9F', '#BDC9D2', '#9FA064', '#BE4700', '#658188', '#83A485',
+      '#453C23', '#47675D', '#3A3F00', '#061203', '#DFFB71', '#868E7E',
+      '#98D058', '#6C8F7D', '#D7BFC2', '#3C3E6E', '#D83D66', '#2F5D9B',
+      '#6C5E46', '#D25B88', '#5B656C', '#00B57F', '#545C46', '#866097',
+      '#365D25', '#252F99', '#00CCFF', '#674E60', '#FC009C', '#92896B',
+      '#1CE6FF'
+    ];
+
+    // get the total number of colors
+    var num_colors = params.rand_colors.length;
+
+    // row groups - only add if the rows have a group attribute
+    if (has(row_nodes[0], 'group') === true || has(col_nodes[0],
+            'group')) {
+
+      // initialize group colors
+      /////////////////////////
+      params.group_colors = {};
+      // initailize group at 5
+      params.group_level = {};
+      params.group_level.row = 5;
+      params.group_level.col = 5;
+
+    }
+
+    // check if row/col have class information
+    if (has(row_nodes[0], 'cl') || has(col_nodes[0], 'cl')) {
+      // gather classes
+      params.class_colors = {};
+    }
+
+    // gather class information from row
+    if (has(row_nodes[0], 'cl') === true) {
+      var class_rows = _.uniq(_.pluck(row_nodes, 'cl'));
+      // associate classes with colors
+      params.class_colors.row = {};
+      _.each(class_rows, function(c_row, i) {
+        params.class_colors.row[c_row] = params.rand_colors[i + 50 % num_colors];
+      });
+    }
+    // gather class information from col
+    if (has(col_nodes[0], 'cl') === true) {
+      var class_cols = _.uniq(_.pluck(col_nodes, 'cl'));
+      // associate classes with colors
+      params.class_colors.col = {};
+      _.each(class_cols, function(c_col, i) {
+        if (i === 0) {
+          params.class_colors.col[c_col] = '#eee';
+        } else {
+          params.class_colors.col[c_col] = params.rand_colors[i + 50 % num_colors];
+        }
+      });
+    }
+
+    // get row groups and make color dictionary
+    if (has(row_nodes[0], 'group') === true) {
+      params.group_colors.row = {};
+
+      // generate random colors for the groups
+      for (var i = 0; i < 200; i++) {
+        // grab colors from the list
+        if (i === 1) {
+          params.group_colors.row[i] = '#eee';
+        } else {
+          params.group_colors.row[i] = params.rand_colors[i % num_colors];
+        }
+      }
+    }
+
+    // get col groups and make color dictionary
+    if (has(col_nodes[0], 'group') === true) {
+      params.group_colors.col = {};
+
+      // generate random colors for the groups
+      for (var j = 0; j < 200; j++) {
+        // grab colors from the list
+        if (j === 1) {
+          params.group_colors.col[j] = '#eee';
+        } else {
+          params.group_colors.col[j] = params.rand_colors[j % num_colors];
+        }
+      }
+    }
+
+    // Begin Making Visualization
+    /////////////////////////////////
+
+    // might save global data to specific object in case a user wants
+    // to have more than one clustergram
+    // // initialize an object with the name svg_div_id
+    // d3_clustergram['params_'+svg_div_id] = {}
+
+    // remove any previous visualizations
+    d3.select('#main_svg').remove();
+
+    // size and position the outer div first
+    //////////////////////////////////////////
+    // only resize if allowed
+    parent_div_size_pos(params);
+
+    // initialize clustergram variables
+    params = initialize_visualization(network_data, params);
+
+    // display col and row title
+    d3.select('#row_title').style('display', 'block');
+    d3.select('#col_title').style('display', 'block');
+
+    // display clust_instruct_container
+    d3.select('#clust_instruct_container').style('display', 'block');
+
+    // shift the footer left
+    d3.select('#footer_div')
+        .style('margin-left', '0px');
+
+    // !! need to set up
+    // highlight resource types - set up type/color association
+    params = highlight_resource_types(params);
+
+    // define the variable zoom, a d3 method
+    params.zoom = d3.behavior.zoom().scaleExtent([1, params.real_zoom *
+    params.zoom_switch
+    ]).on('zoom', zoomed);
+
+    // initialize matrix
+    /////////////////////////
+    params.matrix = [];
+
+    _.each(row_nodes, function(tmp, row_index) {
+      params.matrix[row_index] = d3.range(col_nodes.length).map(function(col_index) {
+        return {
+          pos_x: col_index,
+          pos_y: row_index,
+          value: 0
+        };
+      });
+    });
+
+    _.each(network_data.links, function(link) {
+      params.matrix[link.source][link.target].value = link.value;
+      // transfer additional link information is necessary
+      if (params.tile_type === 'group') {
+        params.matrix[link.source][link.target].value_up = link.value_up;
+        params.matrix[link.source][link.target].value_dn = link.value_dn;
+      }
+      if (params.highlight === 1) {
+        params.matrix[link.source][link.target].highlight = link.highlight;
+      }
+      if (has(link, 'info')) {
+        params.matrix[link.source][link.target].info = link.info;
+      }
+    });
+
+    // save params to the global object d3_clustergram
+    globals.params = params;
+
+    // make clustergram visualization
+    ///////////////////////////////////////
+
+    // make outer group for clust_group - this will position clust_group once
+    var outer_group = d3.select('#' + params.svg_div_id)
+        .append('svg')
+        .attr('id', 'main_svg')
+      // leave room for the light grey border
+        .attr('width', params.svg_dim.width)
+      // the height is reduced by more than the width because the tiles go right up to the bottom border
+        .attr('height', params.svg_dim.height);
+
+    // append background rect if necessary to control background color
+    if (params.background_color !== '#FFFFFF') {
+      outer_group
+          .append('rect')
+          .attr('width', params.svg_dim.width)
+          .attr('height', params.svg_dim.height)
+          .style('fill', params.background_color);
+      console.log('change the background color ');
+    }
+
+    // call zoomingoom on the entire svg
+    if (params.do_zoom === true) {
+      outer_group
+          .call(params.zoom);
+    }
+
+    params.clust_group = outer_group
+      // append a group that will hold clust_group and position it once
+        .append('g')
+        .attr('transform', 'translate(' + params.clust.margin.left + ',' +
+        params.clust.margin.top + ')')
+        .append('g')
+        .attr('id', 'clust_group');
+
+    // grey background rect for clustergram
+    params.clust_group
+        .append('rect')
+        .attr('class', 'background')
+        .attr('id', 'grey_background')
+        .style('fill', '#eee')
+        .attr('width', params.clust.dim.width)
+        .attr('height', params.clust.dim.height);
+
+    // make rows: make rects or groups
+    // use matrix for the data join, which contains a two dimensional
+    // array of objects, each row of this matrix will be passed into the row function
+
+    var row_obj = params.clust_group.selectAll('.row')
+        .data(params.matrix)
+        .enter()
+        .append('g')
+        .attr('class', 'row')
+        .attr('transform', function(d, index) {
+          return 'translate(0,' + params.y_scale(index) + ')';
+        });
+
+    if (params.tile_type === 'simple') {
+      row_obj = row_obj.each(row_function);
+    } else {
+      row_obj = row_obj.each(row_group_function);
+    }
+
+    // white lines in clustergram
+    /////////////////////////////////
+
+    // horizontal lines
+    row_obj.append('line')
+      //!! find ouw what 20 represents
+        .attr('x2', 20 * params.clust.dim.width)
+        .style('stroke-width', params.border_width / params.zoom_switch +
+        'px')
+        .style('stroke', 'white');
+
+    // append vertical line groups
+    var vert_lines = params.clust_group
+        .selectAll('.vert_lines')
+        .data(col_nodes)
+        .enter()
+        .append('g')
+        .attr('class', 'vert_lines')
+        .attr('transform', function(d, index) {
+          return 'translate(' + params.x_scale(index) + ') rotate(-90)';
+        });
+
+    // add vertical lines
+    vert_lines
+        .append('line')
+        .attr('x1', 0)
+        .attr('x2', -params.clust.dim.height)
+        .style('stroke-width', params.border_width + 'px')
+        .style('stroke', 'white');
+
+
+    // Row
+    //////////////////////////////////
+    // make container to pre-position zoomable elements
+    var container_all_row = d3.select('#main_svg')
+        .append('g')
+        .attr('transform', 'translate(' + params.norm_label.margin.left + ',' +
+        params.clust.margin.top + ')');
+
+    // white background rect for row labels
+    container_all_row
+        .append('rect')
+        .attr('fill', params.background_color)
+        .attr('width', params.norm_label.background.row)
+        .attr('height', 30 * params.clust.dim.height + 'px')
+        .attr('class', 'white_bars');
+
+    // row_labels
+    container_all_row
+        .append('g')
+      // position the outer row label group
+        .attr('transform', 'translate(' + params.norm_label.width.row + ',0)')
+        .append('g')
+        .attr('id', 'row_labels');
+
+    // generate and position the row labels
+    var row_labels = d3.select('#row_labels')
+        .selectAll('.row_label_text')
+        .data(row_nodes)
+        .enter()
+        .append('g')
+        .attr('class', 'row_label_text')
+        .attr('transform', function(d, index) {
+          return 'translate(0,' + params.y_scale(index) + ')';
+        })
+        .on('dblclick', reorder_click_row)
+        .on('mouseover', function() {
+          // highlight text
+          d3
+              .select(this)
+              .select('text')
+              .classed('active',true);
+        })
+        .on('mouseout', function mouseout() {
+          d3.select(this)
+              .select('text')
+              .classed('active',false)
+        });
+
+    // append row label text
+    row_labels
+        .append('text')
+        .attr('y', params.y_scale.rangeBand() * 0.75)
+      // .attr('dy', params.y_scale.rangeBand()/4)
+        .attr('text-anchor', 'end')
+        .style('font-size', params.default_fs_row + 'px')
+        .text(function(d) {
+          return d.name;
+        });
+
+    // append rectangle behind text
+    row_labels
+        .insert('rect', 'text')
+        .attr('x', -10)
+        .attr('y', 0)
+        .attr('width', 10)
+        .attr('height', 10)
+        .style('opacity', 0);
+
+    // change the size of the highlighting rects
+    row_labels
+        .each(function() {
+          // get the bounding box of the row label text
+          var bbox = d3.select(this)
+              .select('text')[0][0]
+              .getBBox();
+          // use the bounding box to set the size of the rect
+          d3.select(this)
+              .select('rect')
+              .attr('x', bbox.x * 0.5)
+              .attr('y', 0)
+              .attr('width', bbox.width * 0.5)
+              .attr('height', params.y_scale.rangeBand())
+              .style('fill', function() {
+                var inst_hl = 'yellow';
+                return inst_hl;
+              })
+              .style('opacity', function(d) {
+                var inst_opacity = 0;
+                // highlight target genes
+                if (d.target === 1) {
+                  inst_opacity = 1;
+                }
+                return inst_opacity;
+              });
+        });
+
+    // row triangles
+    ///////////////////////
+    var row_triangle_zoom = container_all_row
+        .append('g')
+      // shift by the width of the normal row labels
+        .attr('transform', 'translate(' + params.norm_label.width.row + ',0)')
+        .append('g')
+        .attr('id', 'row_label_triangles');
+
+    // append triangle background rect to zoomable group
+    row_triangle_zoom
+        .append('rect')
+        .attr('fill', params.background_color) //!! prog_colors
+        .attr('width', params.class_room.row + 'px')
+        .attr('height', function() {
+          var inst_height = params.clust.dim.height;
+          return inst_height;
+        });
+
+    // append groups - each holds one triangle
+    var row_triangle_ini_group = row_triangle_zoom
+        .selectAll('g')
+        .data(row_nodes)
+        .enter()
+        .append('g')
+        .attr('class', 'row_triangle_group')
+        .attr('transform', function(d, index) {
+          return 'translate(0, ' + params.y_scale(index) + ')';
+        });
+
+    // add triangles
+    row_triangle_ini_group
+        .append('path')
+        .attr('d', function() {
+          var origin_x = params.class_room.symbol_width - 1;
+          var origin_y = 0;
+          var mid_x = 1;
+          var mid_y = params.y_scale.rangeBand() / 2;
+          var final_x = params.class_room.symbol_width - 1;
+          var final_y = params.y_scale.rangeBand();
+          var output_string = 'M ' + origin_x + ',' + origin_y + ' L ' +
+              mid_x + ',' + mid_y + ', L ' + final_x + ',' + final_y + ' Z';
+          return output_string;
+        })
+        .attr('fill', function(d) {
+          // initailize color
+          var inst_color = '#eee';
+          if (has(params, 'class_colors')) {
+            inst_color = params.class_colors.row[d.cl];
+          }
+          return inst_color;
+        });
+
+    // add row group labels if necessary
+    //////////////////////////////////////
+    if (has(params, 'group_colors')) {
+
+      // add rects for highlighting automatically identified groups
+      var row_class_rect = row_triangle_ini_group
+          .append('rect')
+          .attr('class', 'row_class_rect')
+          .attr('width', function() {
+            var inst_width = params.class_room.symbol_width - 1;
+            return inst_width + 'px';
+          })
+          .attr('height', params.y_scale.rangeBand())
+          .style('fill', function(d) {
+            var inst_level = params.group_level.row;
+            return params.group_colors.row[d.group[inst_level]];
+          })
+          .attr('x', function() {
+            var inst_offset = params.class_room.symbol_width + 1;
+            return inst_offset + 'px';
+          });
+
+      // optional row callback on click
+      if (typeof params.click_group === 'function') {
+        // only add click functionality to row rect
+        row_class_rect
+            .on('click', function(d) {
+              var inst_level = params.group_level.row;
+              var inst_group = d.group[inst_level];
+              // find all row names that are in the same group at the same group_level
+              // get row_nodes
+              row_nodes = globals.network_data.row_nodes;
+              var group_nodes = [];
+              _.each(row_nodes, function(node) {
+                // check that the node is in the group
+                if (node.group[inst_level] === inst_group) {
+                  // make a list of genes that are in inst_group at this group_level
+                  group_nodes.push(node.name);
+                }
+              });
+
+              // return the following information to the user
+              // row or col, distance cutoff level, nodes
+              var group_info = {};
+              group_info.type = 'row';
+              group_info.nodes = group_nodes;
+              group_info.info = {
+                'type': 'distance',
+                'cutoff': inst_level / 10
+              };
+
+              // pass information to group_click callback
+              params.click_group(group_info);
+
+            });
+      }
+    }
+
+
+    // col labels
+    //////////////////////////////////
+    // make container to pre-position zoomable elements
+    var container_all_col = d3.select('#main_svg')
+        .append('g')
+        .attr('transform', 'translate(' + params.clust.margin.left + ',' +
+        params.norm_label.margin.top + ')');
+
+    // white background rect for col labels
+    container_all_col
+        .append('rect')
+        .attr('fill', params.background_color) //!! prog_colors
+        .attr('width', 30 * params.clust.dim.width + 'px')
+        .attr('height', params.norm_label.background.col)
+        .attr('class', 'white_bars');
+
+    // col labels
+    container_all_col
+        .append('g')
+      // position the outer col label group
+        .attr('transform', 'translate(0,' + params.norm_label.width.col + ')')
+        .append('g')
+        .attr('id', 'col_labels');
+
+    // offset click group column label
+    var x_offset_click = params.x_scale.rangeBand() / 2 + params.border_width;
+    // reduce width of rotated rects
+    var reduce_rect_width = params.x_scale.rangeBand() * 0.36;
+
+    // add main column label group
+    var col_label_obj = d3.select('#col_labels')
+        .selectAll('.col_label_text')
+        .data(col_nodes)
+        .enter()
+        .append('g')
+        .attr('class', 'col_label_text')
+        .attr('transform', function(d, index) {
+          return 'translate(' + params.x_scale(index) + ') rotate(-90)';
+        });
+
+    // append group for individual column label
+    var col_label_click = col_label_obj
+      // append new group for rect and label (not white lines)
+        .append('g')
+        .attr('class', 'col_label_click')
+      // rotate column labels
+        .attr('transform', 'translate(' + params.x_scale.rangeBand() / 2 +
+        ',' + x_offset_click + ') rotate(45)')
+        .on('dblclick', reorder_click_col)
+        .on('mouseover', function() {
+          d3.select(this).select('text')
+              .classed('active',true);
+        })
+        .on('mouseout', function mouseout() {
+          d3.select(this).select('text')
+              .classed('active',false);
+        });
+
+    // add column label
+    col_label_click
+        .append('text')
+        .attr('x', 0)
+        .attr('y', params.x_scale.rangeBand() * 0.60)
+      // offset label to make room for triangle
+        .attr('dx', 2 * params.border_width)
+        .attr('text-anchor', 'start')
+        .attr('full_name', function(d) {
+          return d.name;
+        })
+      // original font size
+        .style('font-size', params.default_fs_col + 'px')
+      // // !! simple font size
+      // .style('font-size', params.x_scale.rangeBand()*0.7+'px')
+        .text(function(d) {
+          return d.name.replace(/_/g, ' ');
+        });
+
+    // label the widest row and col labels
+    ////////////////////////////////////////
+    params.bounding_width_max = {};
+    params.bounding_width_max.row = 0;
+    d3.selectAll('.row_label_text').each(function() {
+      var tmp_width = d3.select(this).select('text').node().getBBox().width;
+      if (tmp_width > params.bounding_width_max.row) {
+        params.bounding_width_max.row = tmp_width;
+      }
+    });
+
+    params.bounding_width_max.col = 0;
+    d3.selectAll('.col_label_click').each(function() {
+      var tmp_width = d3.select(this).select('text').node().getBBox().width;
+      if (tmp_width > params.bounding_width_max.col) {
+        // increase the apparent width of the column label since its rotated
+        // this will give more room for text
+        params.bounding_width_max.col = tmp_width * 1.2;
+      }
+    });
+
+    // optionally turn down sensitivity to row/col overflow
+    params.bounding_width_max.col = params.bounding_width_max.col * params.label_overflow
+            .col;
+    params.bounding_width_max.row = params.bounding_width_max.row * params.label_overflow
+            .row;
+
+
+    // check if widest row or col are wider than the allowed label width
+    ////////////////////////////////////////////////////////////////////////
+    params.ini_scale_font = {};
+    params.ini_scale_font.row = 1;
+    params.ini_scale_font.col = 1;
+    if (params.bounding_width_max.row * params.zoom.scale() > params.norm_label
+            .width.row) {
+
+      params.ini_scale_font.row = params.norm_label.width.row / params.bounding_width_max
+              .row;
+      // redefine bounding_width_max.row
+      params.bounding_width_max.row = params.ini_scale_font.row * params.bounding_width_max
+              .row;
+
+      // redefine default fs
+      params.default_fs_row = params.default_fs_row * params.ini_scale_font
+              .row;
+      // reduce font size
+      d3.selectAll('.row_label_text').each(function() {
+        d3.select(this).select('text')
+            .style('font-size', params.default_fs_row + 'px');
+      });
+    }
+
+    if (params.bounding_width_max.col * params.zoom.scale() > params.norm_label
+            .width.col) {
+      params.ini_scale_font.col = params.norm_label.width.col / params.bounding_width_max
+              .col;
+      // redefine bounding_width_max.col
+      params.bounding_width_max.col = params.ini_scale_font.col * params.bounding_width_max
+              .col;
+      // redefine default fs
+      params.default_fs_col = params.default_fs_col * params.ini_scale_font
+              .col;
+      // reduce font size
+      d3.selectAll('.col_label_click').each(function() {
+        d3.select(this).select('text')
+            .style('font-size', params.default_fs_col + 'px');
+      });
+    }
+
+    // append rectangle behind text
+    col_label_click
+        .insert('rect', 'text')
+        .attr('x', 10)
+        .attr('y', 0)
+        .attr('width', 10)
+        .attr('height', 10)
+        .style('opacity', 0);
+
+    // change the size of the highlighting rects
+    col_label_click
+        .each(function() {
+
+          // get the bounding box of the row label text
+          var bbox = d3.select(this)
+              .select('text')[0][0]
+              .getBBox();
+
+          // use the bounding box to set the size of the rect
+          d3.select(this)
+              .select('rect')
+              .attr('x', bbox.x * 1.25)
+              .attr('y', 0)
+              .attr('width', bbox.width * 1.25)
+            // used a reduced rect width for the columsn
+            // because the rects are slanted
+              .attr('height', params.x_scale.rangeBand() * 0.6)
+              .style('fill', 'yellow')
+              .style('opacity', 0);
+        });
+
+    // add triangle under rotated labels
+    col_label_click
+        .append('path')
+        .style('stroke-width', 0)
+        .attr('d', function() {
+          // x and y are flipped since its rotated
+          var origin_y = -params.border_width;
+          var start_x = 0;
+          var final_x = params.x_scale.rangeBand() - reduce_rect_width;
+          var start_y = -(params.x_scale.rangeBand() - reduce_rect_width +
+          params.border_width);
+          var final_y = -params.border_width;
+          var output_string = 'M ' + origin_y + ',0 L ' + start_y + ',' +
+              start_x + ', L ' + final_y + ',' + final_x + ' Z';
+          return output_string;
+        })
+        .attr('fill', function(d) {
+          var inst_color = '#eee';
+          if (has(params, 'class_colors')) {
+            inst_color = params.class_colors.col[d.cl];
+          }
+          return inst_color;
+        });
+
+
+    //!! get the abs maximum value from row/col use this to make red/blue bars
+    // // get the max abs nl_pval (find obj and get nl_pval)
+    // enr_max = _.max( col_nodes, function(d) { return Math.abs(d.nl_pval) } ).nl_pval ;
+
+    // the enrichment bar should be 3/4ths of the height of the column labels
+    params.bar_scale_col = d3.scale.linear()
+      // .domain([0, enr_max])
+        .domain([0, 1])
+        .range([0, params.norm_label.width.col]);
+
+    // append column value bars
+    if (has(globals.network_data.col_nodes[0], 'value')) {
+      col_label_click
+          .append('rect')
+          .attr('class', 'col_bars')
+        // column is rotated - effectively width and height are switched
+          .attr('width', function(d) {
+            return params.bar_scale_col(d.value);
+          })
+        // rotate labels - reduce width if rotating
+          .attr('height', params.x_scale.rangeBand() * 0.66)
+          .attr('fill', function() {
+            // return d.color;
+            return 'red';
+          })
+          .attr('opacity', 0.4);
+    }
+
+    // add group labels if necessary
+    //////////////////////////////////
+    if (has(params, 'group_colors')) {
+      // add class label under column label
+      var col_class = container_all_col
+          .append('g')
+        // .attr('transform','translate(0,'+params.norm_label.width.col+')')
+          .attr('transform', function() {
+            var inst_offset = params.norm_label.width.col + 2;
+            return 'translate(0,' + inst_offset + ')';
+          })
+          .append('g')
+        // shift down 1px
+        // .attr('transform','translate(0,2)')
+          .attr('id', 'col_class');
+
+      // append groups - each will hold a classification rect
+      var col_class_ini_group = col_class
+          .selectAll('g')
+          .data(col_nodes)
+          .enter()
+          .append('g')
+          .attr('class', 'col_class_group')
+          .attr('transform', function(d, index) {
+            return 'translate(' + params.x_scale(index) + ',0)';
+          });
+
+      // add rects for highlighting - dendrogram-like
+      col_class_ini_group
+          .append('rect')
+          .attr('class', 'col_class_rect')
+          .attr('width', params.x_scale.rangeBand())
+          .attr('height', function() {
+            var inst_height = params.class_room.col - 1;
+            return inst_height;
+          })
+          .style('fill', function(d) {
+            var inst_level = params.group_level.col;
+            return params.group_colors.col[d.group[inst_level]];
+          });
+
+      // optional column callback on click
+      if (typeof params.click_group === 'function') {
+        col_class_ini_group
+            .on('click', function(d) {
+              var inst_level = params.group_level.col;
+              var inst_group = d.group[inst_level];
+              // find all column names that are in the same group at the same group_level
+              // get col_nodes
+              col_nodes = globals.network_data.col_nodes;
+              var group_nodes = [];
+              _.each(col_nodes, function(node) {
+                // check that the node is in the group
+                if (node.group[inst_level] === inst_group) {
+                  // make a list of genes that are in inst_group at this group_level
+                  group_nodes.push(node.name);
+                }
+              });
+
+              // return the following information to the user
+              // row or col, distance cutoff level, nodes
+              var group_info = {};
+              group_info.type = 'col';
+              group_info.nodes = group_nodes;
+              group_info.info = {
+                'type': 'distance',
+                'cutoff': inst_level / 10
+              };
+
+              // pass information to group_click callback
+              params.click_group(group_info);
+
+            });
+      }
+
+    }
+
+    // hide spillover from slanted column labels on right side
+    container_all_col
+        .append('path')
+        .style('stroke-width', '0')
+      // mini-language for drawing path in d3, used to draw triangle
+        .attr('d', 'M 0,0 L 500,-500, L 500,0 Z')
+        .attr('fill', params.background_color) //!! prog_colors
+        .attr('id', 'right_slant_triangle')
+        .attr('transform', 'translate(' + params.clust.dim.width + ',' +
+        params.norm_label.width.col + ')');
+
+    // hide spillover from slanted column labels on left side
+    container_all_col
+        .append('path')
+        .style('stroke-width', '0')
+      // mini-language for drawing path in d3, used to draw triangle
+        .attr('d', 'M 0,0 L 500,-500, L 0,-500 Z')
+        .attr('fill', params.background_color)
+        .attr('id', 'left_slant_triangle')
+      // shift left by 1 px to prevent cutting off labels
+        .attr('transform', 'translate(-1,' + params.norm_label.width.col +
+        ')');
+
+    // top corner rect
+    ///////////////////////////////
+    // white rect to cover excess labels
+    d3.select('#main_svg')
+        .append('rect')
+        .attr('fill', params.background_color) //!! prog_colors
+        .attr('width', params.clust.margin.left)
+        .attr('height', params.clust.margin.top)
+        .attr('id', 'top_left_white');
+
+    // hide spillover from right
+    d3.select('#main_svg')
+        .append('rect')
+        .attr('fill', params.background_color) //!! prog_colors
+        .attr('width', '300px')
+        .attr('height', '3000px')
+        .attr('transform', function() {
+          var tmp_left = params.clust.margin.left + params.clust.dim.width;
+          var tmp_top = params.norm_label.margin.top + params.norm_label.width
+                  .col;
+          return 'translate(' + tmp_left + ',' + tmp_top + ')';
+        })
+        .attr('class', 'white_bars');
+
+
+
+    // only make the super titles if they are requested
+    if (params.super_labels) {
+
+      // super col title
+      /////////////////////////////////////
+      // add super column title background
+      d3.select('#main_svg')
+          .append('rect')
+          .attr('fill', params.background_color) //!! prog_colors
+          .attr('height', params.super_label_width + 'px')
+          .attr('width', '3000px')
+          .attr('class', 'white_bars')
+          .attr('transform', 'translate(0,' + params.grey_border_width + ')');
+
+      // super col title
+      d3.select('#main_svg')
+          .append('text')
+          .text(params.super.col)
+          .attr('text-anchor', 'center')
+          .attr('transform', function() {
+            var inst_x = params.clust.dim.width / 2 + params.norm_label.width
+                    .row;
+            var inst_y = params.super_label_width - params.uni_margin;
+            return 'translate(' + inst_x + ',' + inst_y + ')';
+          })
+          .style('font-size', '14px')
+          .style('font-weight', 300);
+
+      // super row title
+      /////////////////////////////////////
+      // add super row title background
+      d3.select('#main_svg')
+          .append('rect')
+          .attr('fill', params.background_color) //!! prog_colors
+          .attr('width', params.super_label_width + 'px')
+          .attr('height', '3000px')
+          .attr('class', 'white_bars')
+          .attr('transform', 'translate(' + params.grey_border_width + ',0)');
+
+      // append super title row group
+      // this is used to separate translation from rotation
+      d3.select('#main_svg')
+          .append('g')
+          .attr('id', 'super_row_label')
+          .attr('transform', function() {
+            // position in the middle of the clustergram
+            var inst_x = params.super_label_width - params.uni_margin;
+            var inst_y = params.clust.dim.height / 2 + params.norm_label.width
+                    .col;
+            return 'translate(' + inst_x + ',' + inst_y + ')';
+          });
+
+      // super row label (rotate the already translated title )
+      d3.select('#super_row_label')
+          .append('text')
+          .text(params.super.row)
+          .attr('text-anchor', 'center')
+          .attr('transform', 'rotate(-90)')
+          .style('font-size', '14px')
+          .style('font-weight', 300);
+
+    }
+
+    // white border bottom - prevent clustergram from hitting border
+    ///////////////////////////////////////////////////////////////////
+    d3.select('#main_svg')
+        .append('rect')
+        .attr('fill', params.background_color) //!! prog_colors
+        .attr('width', params.svg_dim.width)
+      // make this border twice the width of the grey border
+        .attr('height', 2 * params.grey_border_width)
+        .attr('transform', function() {
+          // shift up enough to show the entire border width
+          var inst_offset = params.svg_dim.height - 3 * params.grey_border_width;
+          return 'translate(0,' + inst_offset + ')';
+        });
+
+    // add border to svg in four separate lines - to not interfere with clicking anything
+    ///////////////////////////////////////////////////////////////////////////////////////
+    // left border
+    d3.select('#main_svg')
+        .append('rect')
+        .attr('fill', params.super_border_color) //!! prog_colors
+        .attr('width', params.grey_border_width)
+        .attr('height', params.svg_dim.height)
+        .attr('transform', 'translate(0,0)');
+
+    // right border
+    d3.select('#main_svg')
+        .append('rect')
+        .attr('fill', params.super_border_color) //!! prog_colors
+        .attr('width', params.grey_border_width)
+        .attr('height', params.svg_dim.height)
+        .attr('transform', function() {
+          var inst_offset = params.svg_dim.width - params.grey_border_width;
+          return 'translate(' + inst_offset + ',0)';
+        });
+
+    // top border
+    d3.select('#main_svg')
+        .append('rect')
+        .attr('fill', params.super_border_color) //!! prog_colors
+        .attr('width', params.svg_dim.width)
+        .attr('height', params.grey_border_width)
+        .attr('transform', function() {
+          var inst_offset = 0;
+          return 'translate(' + inst_offset + ',0)';
+        });
+
+    // bottom border
+    d3.select('#main_svg')
+        .append('rect')
+        .attr('fill', params.super_border_color) //!! prog_colors
+        .attr('width', params.svg_dim.width)
+        .attr('height', params.grey_border_width)
+        .attr('transform', function() {
+          var inst_offset = params.svg_dim.height - params.grey_border_width;
+          return 'translate(0,' + inst_offset + ')';
+        });
+
+    // initialize zoom and translate
+    ///////////////////////////////////
+    // initialize translate vector to compensate for label margins
+    params.zoom.translate([params.clust.margin.left, params.clust.margin.top]);
+
+    // resize window
+    d3.select(window).on('resize', timeout_resize);
+
+    // disable double-click zoom: double click should reset zoom level
+    // do this for all svg elements
+    d3.selectAll('svg').on('dblclick.zoom', null);
+
+    // double click to reset zoom - add transition
+    d3.select('#main_svg')
+        .on('dblclick', function() {
+          // apply the following two translate zoom to reset zoom
+          // programatically
+          two_translate_zoom(0, 0, 1);
+        });
+  }
+
+
+  // parent_div: size and position svg container - svg_div
+  //////////////////////////////////////////////
+  function parent_div_size_pos(params) {
+
+    if (params.resize) {
+      // get outer_margins
+      var outer_margins = params.outer_margins;
+
+      // get the size of the window
+      var screen_width = window.innerWidth;
+      var screen_height = window.innerHeight;
+
+      // define width and height of clustergram container
+      var container_dim = {};
+      container_dim.width = screen_width - outer_margins.left -
+          outer_margins.right;
+      container_dim.height = screen_height - outer_margins.top -
+          outer_margins.bottom;
+
+      // size the svg container div - svg_div
+      d3.select('#' + params.svg_div_id)
+          .style('margin-left', outer_margins.left + 'px')
+          .style('margin-top', outer_margins.top + 'px')
+          .style('width', container_dim.width + 'px')
+          .style('height', container_dim.height + 'px');
+    } else {
+      // get outer_margins
+      outer_margins = params.outer_margins;
+
+      // size the svg container div - svg_div
+      d3.select('#' + params.svg_div_id)
+          .style('margin-left', outer_margins.left + 'px')
+          .style('margin-top', outer_margins.top + 'px');
+    }
+  }
+
+  //!! this needs to be improved
+  //!! I will have to generalize this
+  function highlight_resource_types(params) {
+
+    // var col_nodes = globals.network_data.col_nodes;
+    var row_nodes = globals.network_data.row_nodes;
+
+    // // This will set up the resource type color key
+    // // and generate an array of genes for later use
+    // //////////////////////////////////////////////////////
+
+    // // res_hexcodes = ['#097054','#FFDE00','#6599FF','#FF9900','#834C24','#003366','#1F1209']
+
+    // var res_hexcodes = ['#0000FF','#FF0000','#C0C0C0', '#FFA500'];
+
+    // define cell line groups
+    // var all_groups = ['TF group 1','TF group 2','TF group 3'];
+
+    // var all_groups = _.keys(params.class_colors.row);
+
+    // // generate an object to associate group with color
+    // var res_color_dict = {};
+
+    // // initialize the cell line color associations
+    // var blue_cl = ['H1437','H1792','HCC15','A549','H1944','H1299','H1355','H838','CAL-12T','H23','H460','H661'];
+    // var red_cl = ['H441','HCC78','H1734','H2228','H1781','H1975','H358','HCC827','H1703','H2342','H1650','LOU-NH91'];
+    // var grey_cl = ['CALU-3','H2405','H2106', 'HCC44','H1666'];
+    // var orange_cl = [] //['HCC44','H1666'];
+
+    // for (var i=0; i<col_nodes.length;i++){
+    //   // add blue cell line
+    //   if ( $.inArray(col_nodes[i]['name'],blue_cl) > -1 ){
+    //     res_color_dict[col_nodes[i]['name']]=res_hexcodes[0];
+    //   };
+    //   // add red cell line
+    //   if ( $.inArray(col_nodes[i]['name'],red_cl)  > -1 ){
+    //     res_color_dict[col_nodes[i]['name']]=res_hexcodes[1];
+    //   };
+    //   // add grey cell line
+    //   if ( $.inArray(col_nodes[i]['name'],grey_cl)  > -1 ){
+    //     res_color_dict[col_nodes[i]['name']]=res_hexcodes[2];
+    //   };
+    //   // add orange cell line
+    //   if ( $.inArray(col_nodes[i]['name'],orange_cl)  > -1 ){
+    //     res_color_dict[col_nodes[i]['name']]=res_hexcodes[3];
+    //   };
+    // }
+
+    // // export to global variable
+    // params.res_color_dict = res_color_dict;
+
+    // // define association between tf groups and colors
+    // var res_color_key = {}
+    // res_color_key['TF group 1'] = res_hexcodes[0];
+    // res_color_key['TF group 2'] = res_hexcodes[1];
+    // res_color_key['TF group 3'] = res_hexcodes[2];
+    // res_color_key['TF group 4'] = res_hexcodes[3];
+
+    // // add color key
+    // ////////////////////
+    // // add keys
+    // var key_divs = d3.select('#res_color_key_div')
+    //   .selectAll('row')
+    //   .data(all_groups)
+    //   .enter()
+    //   .append('row')
+    //   .style('padding-top','15px');
+
+    // // add color
+    // key_divs
+    //   .append('div')
+    //   .attr('class','col-xs-2')
+    //   // get rid of excess padding
+    //   .style('padding-left','5px')
+    //   .style('padding-right','0px')
+    //   .style('padding-top','1px')
+    //   .append('div')
+    //   .style('width','12px')
+    //   .style('height','12px')
+    //   .style('background-color', function(d){
+    //     return params.class_colors.row[d];
+    //   })
+
+    // // add names
+    // key_divs
+    //   .append('div')
+    //   .attr('class','col-xs-10 res_names_in_key')
+    //   .append('text')
+    //   .text(function(d){
+    //     var inst_res = d.replace(/_/g, ' ');
+    //     return inst_res ;
+    //   })
+
+    // generate a list of genes for auto complete
+    ////////////////////////////////////////////////
+    // get all genes
+    params.all_genes = [];
+
+    // loop through row_nodes
+    for (var i = 0; i < row_nodes.length; i++) {
+      params.all_genes.push(row_nodes[i].name);
+    }
+
+    return params;
+  }
 
   // initialize clustergram: size, scales, etc.
   function initialize_visualization(network_data, params) {
@@ -63,7 +1387,7 @@ function d3_clustergram(args) {
     // Nomal Labels
     // define the space needed for the classification of rows - includes classification triangles and rects
     params.class_room = {};
-    if (_.has(params, 'group_colors')) {
+    if (has(params, 'group_colors')) {
       // make room for group rects
       params.class_room.row = 18;
       params.class_room.col = 9;
@@ -369,8 +1693,8 @@ function d3_clustergram(args) {
     // define tile type: rect, group
     // rect is the default faster and simpler option
     // group is the optional slower and more complex option that is activated with: highlighting or split tiles
-    // if ( _.has(network_data.links[0], 'value_up') || _.has(network_data.links[0], 'highlight') ){
-    if (_.has(network_data.links[0], 'value_up') || _.has(network_data.links[
+    // if ( has(network_data.links[0], 'value_up') || has(network_data.links[0], 'highlight') ){
+    if (has(network_data.links[0], 'value_up') || has(network_data.links[
         0], 'highlight')) {
       params.tile_type = 'group';
       // console.log('making group tiles');
@@ -380,1336 +1704,12 @@ function d3_clustergram(args) {
     }
 
     // check if rects should be highlighted
-    if (_.has(globals.network_data.links[0], 'highlight')) {
+    if (has(globals.network_data.links[0], 'highlight')) {
       params.highlight = 1;
       // console.log('found highlight');
     } else {
       params.highlight = 0;
     }
-
-    return params;
-  }
-
-
-  // main function
-  function make_d3_clustergram(args) {
-
-    // initialize the parameters object
-    var params = {};
-
-    // save all arguments for remaking viz
-    params.args = args;
-
-    // Unload Arguments
-    /////////////////////////
-
-    // network_data - not an optional argument
-    var network_data = args.network_data;
-
-
-    // svg_div_id
-    if (typeof args.svg_div_id === 'undefined') {
-      params.svg_div_id = 'svg_div';
-    } else {
-      params.svg_div_id = args.svg_div_id;
-    }
-
-    // super-row/col labels
-    if (typeof args.row_label === 'undefined' || typeof args.col_label ===
-      'undefined') {
-      // do not put super labels
-      params.super_labels = false;
-    } else {
-      // make super labels
-      params.super_labels = true;
-      params.super = {};
-      params.super.row = args.row_label;
-      params.super.col = args.col_label;
-    }
-
-    // row and column overflow sensitivity
-    params.label_overflow = {};
-    if (typeof args.row_overflow === 'undefined') {
-      // make sensitivity to overflow the max, 1
-      params.label_overflow.row = 1;
-    } else {
-      params.label_overflow.row = args.row_overflow;
-    }
-
-    // col and column overflow sensitivity
-    if (typeof args.col_overflow === 'undefined') {
-      // make sensitivity to overflow the max, 1
-      params.label_overflow.col = 1;
-    } else {
-      params.label_overflow.col = args.col_overflow;
-    }
-
-    // row and label overall scale 
-    if (typeof args.row_label_scale == 'undefined'){
-      params.row_label_scale = 1;
-    } else {
-      params.row_label_scale = args.row_label_scale;
-    }
-    if (typeof args.col_label_scale == 'undefined'){
-      params.col_label_scale = 1;
-    } else {
-      params.col_label_scale = args.col_label_scale;
-    }
-
-    // transpose matrix - if requested
-    if (typeof args.transpose === 'undefined') {
-      params.transpose = false;
-    } else {
-      params.transpose = args.transpose;
-    }
-
-    // transpose network data and super-labels
-    if (params.transpose === true) {
-      network_data = transpose_network(network_data);
-      params.super.row = args.col_label;
-      params.super.col = args.row_label;
-    }
-
-    // add title to tile
-    if (typeof args.title_tile === 'undefined') {
-      params.title_tile = false;
-    } else {
-      params.title_tile = args.title_tile;
-    }
-
-    // tile colors
-    if (typeof args.tile_colors === 'undefined') {
-      // red/blue
-      params.tile_colors = ['#FF0000', '#1C86EE'];
-    } else {
-      params.tile_colors = args.tile_colors;
-    }
-
-    // background color
-    if (typeof args.background_color === 'undefined') {
-      params.background_color = '#FFFFFF';
-      params.super_border_color = '#f5f5f5';
-    } else {
-      params.background_color = args.background_color;
-      params.super_border_color = args.background_color;
-    }
-
-    // check if zooming is enabled
-    if (typeof args.zoom === 'undefined') {
-      params.do_zoom = true;
-    } else {
-      params.do_zoom = args.zoom;
-    }
-
-    // tile callback function - optional
-    if (typeof args.click_tile === 'undefined') {
-      // there is no callback function included
-      params.click_tile = 'none';
-    } else {
-      // transfer the callback function
-      params.click_tile = args.click_tile;
-    }
-
-    // group callback function - optional
-    if (typeof args.click_group === 'undefined') {
-      params.click_group = 'none';
-    } else {
-      // transfer the callback function
-      params.click_group = args.click_group;
-    }
-
-    // set input domain
-    if (typeof args.input_domain === 'undefined') {
-      // default domain is set to 0, which means that the domain will be set automatically
-      params.input_domain = 0;
-    } else {
-      params.input_domain = args.input_domain;
-    }
-
-    // set opacity scale type
-    if (typeof args.opacity_scale === 'undefined') {
-      params.opacity_scale = 'linear';
-    } else {
-      params.opacity_scale = args.opacity_scale;
-    }
-
-    // variable/fixed visualization size (needs to be in the arguments)
-    if (typeof args.resize === 'undefined') {
-      // default resize to yes
-      params.resize = true;
-    } else {
-      params.resize = args.resize;
-    }
-
-    // get outer_margins
-    if (typeof args.outer_margins === 'undefined') {
-      // default margins
-      params.outer_margins = {
-        'top': 0,
-        'bottom': 0,
-        'left': 0,
-        'right': 0
-      };
-    } else {
-      params.outer_margins = args.outer_margins;
-    }
-
-    // get initial ordering
-    if (typeof args.order === 'undefined') {
-      params.inst_order = 'clust';
-    }
-    // only use ordering if its defined correctly
-    else if (args.order === 'clust' || args.order === 'rank' ||
-      args.order === 'class') {
-      params.inst_order = args.order;
-    } else {
-      // backup
-      params.inst_order = 'clust';
-    }
-
-    // save global version of network_data
-    globals.network_data = network_data;
-
-    // set local variables from network_data
-    var col_nodes = network_data.col_nodes;
-    var row_nodes = network_data.row_nodes;
-
-    // colors from http://graphicdesign.stackexchange.com/revisions/3815/8
-    params.rand_colors = ['#000000', '#FF34FF', '#FFFF00', '#FF4A46',
-      '#008941', '#006FA6', '#A30059', '#FFDBE5', '#7A4900', '#0000A6',
-      '#63FFAC', '#B79762', '#004D43', '#8FB0FF', '#997D87', '#5A0007',
-      '#809693', '#FEFFE6', '#1B4400', '#4FC601', '#3B5DFF', '#4A3B53',
-      '#FF2F80', '#61615A', '#BA0900', '#6B7900', '#00C2A0', '#FFAA92',
-      '#FF90C9', '#B903AA', '#D16100', '#DDEFFF', '#000035', '#7B4F4B',
-      '#A1C299', '#300018', '#0AA6D8', '#013349', '#00846F', '#372101',
-      '#FFB500', '#C2FFED', '#A079BF', '#CC0744', '#C0B9B2', '#C2FF99',
-      '#001E09', '#00489C', '#6F0062', '#0CBD66', '#EEC3FF', '#456D75',
-      '#B77B68', '#7A87A1', '#788D66', '#885578', '#FAD09F', '#FF8A9A',
-      '#D157A0', '#BEC459', '#456648', '#0086ED', '#886F4C', '#34362D',
-      '#B4A8BD', '#00A6AA', '#452C2C', '#636375', '#A3C8C9', '#FF913F',
-      '#938A81', '#575329', '#00FECF', '#B05B6F', '#8CD0FF', '#3B9700',
-      '#04F757', '#C8A1A1', '#1E6E00', '#7900D7', '#A77500', '#6367A9',
-      '#A05837', '#6B002C', '#772600', '#D790FF', '#9B9700', '#549E79',
-      '#FFF69F', '#201625', '#72418F', '#BC23FF', '#99ADC0', '#3A2465',
-      '#922329', '#5B4534', '#FDE8DC', '#404E55', '#0089A3', '#CB7E98',
-      '#A4E804', '#324E72', '#6A3A4C', '#83AB58', '#001C1E', '#D1F7CE',
-      '#004B28', '#C8D0F6', '#A3A489', '#806C66', '#222800', '#BF5650',
-      '#E83000', '#66796D', '#DA007C', '#FF1A59', '#8ADBB4', '#1E0200',
-      '#5B4E51', '#C895C5', '#320033', '#FF6832', '#66E1D3', '#CFCDAC',
-      '#D0AC94', '#7ED379', '#012C58', '#7A7BFF', '#D68E01', '#353339',
-      '#78AFA1', '#FEB2C6', '#75797C', '#837393', '#943A4D', '#B5F4FF',
-      '#D2DCD5', '#9556BD', '#6A714A', '#001325', '#02525F', '#0AA3F7',
-      '#E98176', '#DBD5DD', '#5EBCD1', '#3D4F44', '#7E6405', '#02684E',
-      '#962B75', '#8D8546', '#9695C5', '#E773CE', '#D86A78', '#3E89BE',
-      '#CA834E', '#518A87', '#5B113C', '#55813B', '#E704C4', '#00005F',
-      '#A97399', '#4B8160', '#59738A', '#FF5DA7', '#F7C9BF', '#643127',
-      '#513A01', '#6B94AA', '#51A058', '#A45B02', '#1D1702', '#E20027',
-      '#E7AB63', '#4C6001', '#9C6966', '#64547B', '#97979E', '#006A66',
-      '#391406', '#F4D749', '#0045D2', '#006C31', '#DDB6D0', '#7C6571',
-      '#9FB2A4', '#00D891', '#15A08A', '#BC65E9', '#FFFFFE', '#C6DC99',
-      '#203B3C', '#671190', '#6B3A64', '#F5E1FF', '#FFA0F2', '#CCAA35',
-      '#374527', '#8BB400', '#797868', '#C6005A', '#3B000A', '#C86240',
-      '#29607C', '#402334', '#7D5A44', '#CCB87C', '#B88183', '#AA5199',
-      '#B5D6C3', '#A38469', '#9F94F0', '#A74571', '#B894A6', '#71BB8C',
-      '#00B433', '#789EC9', '#6D80BA', '#953F00', '#5EFF03', '#E4FFFC',
-      '#1BE177', '#BCB1E5', '#76912F', '#003109', '#0060CD', '#D20096',
-      '#895563', '#29201D', '#5B3213', '#A76F42', '#89412E', '#1A3A2A',
-      '#494B5A', '#A88C85', '#F4ABAA', '#A3F3AB', '#00C6C8', '#EA8B66',
-      '#958A9F', '#BDC9D2', '#9FA064', '#BE4700', '#658188', '#83A485',
-      '#453C23', '#47675D', '#3A3F00', '#061203', '#DFFB71', '#868E7E',
-      '#98D058', '#6C8F7D', '#D7BFC2', '#3C3E6E', '#D83D66', '#2F5D9B',
-      '#6C5E46', '#D25B88', '#5B656C', '#00B57F', '#545C46', '#866097',
-      '#365D25', '#252F99', '#00CCFF', '#674E60', '#FC009C', '#92896B',
-      '#1CE6FF'
-    ];
-
-    // get the total number of colors
-    var num_colors = params.rand_colors.length;
-
-    // row groups - only add if the rows have a group attribute
-    if (_.has(row_nodes[0], 'group') === true || _.has(col_nodes[0],
-        'group')) {
-
-      // initialize group colors
-      /////////////////////////
-      params.group_colors = {};
-      // initailize group at 5
-      params.group_level = {};
-      params.group_level.row = 5;
-      params.group_level.col = 5;
-
-    }
-
-    // check if row/col have class information
-    if (_.has(row_nodes[0], 'cl') || _.has(col_nodes[0], 'cl')) {
-      // gather classes
-      params.class_colors = {};
-    }
-
-    // gather class information from row
-    if (_.has(row_nodes[0], 'cl') === true) {
-      var class_rows = _.uniq(_.pluck(row_nodes, 'cl'));
-      // associate classes with colors
-      params.class_colors.row = {};
-      _.each(class_rows, function(c_row, i) {
-        params.class_colors.row[c_row] = params.rand_colors[i + 50 % num_colors];
-      });
-    }
-    // gather class information from col
-    if (_.has(col_nodes[0], 'cl') === true) {
-      var class_cols = _.uniq(_.pluck(col_nodes, 'cl'));
-      // associate classes with colors
-      params.class_colors.col = {};
-      _.each(class_cols, function(c_col, i) {
-        if (i === 0) {
-          params.class_colors.col[c_col] = '#eee';
-        } else {
-          params.class_colors.col[c_col] = params.rand_colors[i + 50 % num_colors];
-        }
-      });
-    }
-
-    // get row groups and make color dictionary
-    if (_.has(row_nodes[0], 'group') === true) {
-      params.group_colors.row = {};
-
-      // generate random colors for the groups
-      for (var i = 0; i < 200; i++) {
-        // grab colors from the list
-        if (i === 1) {
-          params.group_colors.row[i] = '#eee';
-        } else {
-          params.group_colors.row[i] = params.rand_colors[i % num_colors];
-        }
-      }
-    }
-
-    // get col groups and make color dictionary
-    if (_.has(col_nodes[0], 'group') === true) {
-      params.group_colors.col = {};
-
-      // generate random colors for the groups
-      for (var j = 0; j < 200; j++) {
-        // grab colors from the list
-        if (j === 1) {
-          params.group_colors.col[j] = '#eee';
-        } else {
-          params.group_colors.col[j] = params.rand_colors[j % num_colors];
-        }
-      }
-    }
-
-    // Begin Making Visualization
-    /////////////////////////////////
-
-    // might save global data to specific object in case a user wants
-    // to have more than one clustergram
-    // // initialize an object with the name svg_div_id
-    // d3_clustergram['params_'+svg_div_id] = {}
-
-    // remove any previous visualizations
-    d3.select('#main_svg').remove();
-
-    // size and position the outer div first
-    //////////////////////////////////////////
-    // only resize if allowed
-    parent_div_size_pos(params);
-
-    // initialize clustergram variables
-    params = initialize_visualization(network_data, params);
-
-    // display col and row title
-    d3.select('#row_title').style('display', 'block');
-    d3.select('#col_title').style('display', 'block');
-
-    // display clust_instruct_container
-    d3.select('#clust_instruct_container').style('display', 'block');
-
-    // shift the footer left
-    d3.select('#footer_div')
-      .style('margin-left', '0px');
-
-    // !! need to set up
-    // highlight resource types - set up type/color association
-    params = highlight_resource_types(params);
-
-    // define the variable zoom, a d3 method
-    params.zoom = d3.behavior.zoom().scaleExtent([1, params.real_zoom *
-      params.zoom_switch
-    ]).on('zoom', zoomed);
-
-    // initialize matrix
-    /////////////////////////
-    params.matrix = [];
-
-    _.each(row_nodes, function(tmp, row_index) {
-        params.matrix[row_index] = d3.range(col_nodes.length).map(function(col_index) {
-          return {
-            pos_x: col_index,
-            pos_y: row_index,
-            value: 0
-          };
-        });
-      });
-
-    _.each(network_data.links, function(link) {
-      params.matrix[link.source][link.target].value = link.value;
-      // transfer additional link information is necessary 
-      if (params.tile_type === 'group') {
-        params.matrix[link.source][link.target].value_up = link.value_up;
-        params.matrix[link.source][link.target].value_dn = link.value_dn;
-      }
-      if (params.highlight === 1) {
-        params.matrix[link.source][link.target].highlight = link.highlight;
-      }
-      if (_.has(link, 'info')) {
-        params.matrix[link.source][link.target].info = link.info;
-      }
-    });
-
-    // save params to the global object d3_clustergram
-    globals.params = params;
-
-    // make clustergram visualization
-    ///////////////////////////////////////
-
-    // make outer group for clust_group - this will position clust_group once
-    var outer_group = d3.select('#' + params.svg_div_id)
-      .append('svg')
-      .attr('id', 'main_svg')
-      // leave room for the light grey border
-      .attr('width', params.svg_dim.width)
-      // the height is reduced by more than the width because the tiles go right up to the bottom border
-      .attr('height', params.svg_dim.height);
-
-    // append background rect if necessary to control background color
-    if (params.background_color !== '#FFFFFF') {
-      outer_group
-        .append('rect')
-        .attr('width', params.svg_dim.width)
-        .attr('height', params.svg_dim.height)
-        .style('fill', params.background_color);
-      console.log('change the background color ');
-    }
-
-    // call zoomingoom on the entire svg
-    if (params.do_zoom === true) {
-      outer_group
-        .call(params.zoom);
-    }
-
-    params.clust_group = outer_group
-      // append a group that will hold clust_group and position it once
-      .append('g')
-      .attr('transform', 'translate(' + params.clust.margin.left + ',' +
-        params.clust.margin.top + ')')
-      .append('g')
-      .attr('id', 'clust_group');
-
-    // grey background rect for clustergram
-    params.clust_group
-      .append('rect')
-      .attr('class', 'background')
-      .attr('id', 'grey_background')
-      .style('fill', '#eee')
-      .attr('width', params.clust.dim.width)
-      .attr('height', params.clust.dim.height);
-
-    // make rows: make rects or groups
-    // use matrix for the data join, which contains a two dimensional
-    // array of objects, each row of this matrix will be passed into the row function
-
-    var row_obj = params.clust_group.selectAll('.row')
-      .data(params.matrix)
-      .enter()
-      .append('g')
-      .attr('class', 'row')
-      .attr('transform', function(d, index) {
-        return 'translate(0,' + params.y_scale(index) + ')';
-      });
-
-    if (params.tile_type === 'simple') {
-      row_obj = row_obj.each(row_function);
-    } else {
-      row_obj = row_obj.each(row_group_function);
-    }
-
-    // white lines in clustergram
-    /////////////////////////////////
-
-    // horizontal lines
-    row_obj.append('line')
-      //!! find ouw what 20 represents
-      .attr('x2', 20 * params.clust.dim.width)
-      .style('stroke-width', params.border_width / params.zoom_switch +
-        'px')
-      .style('stroke', 'white');
-
-    // append vertical line groups
-    var vert_lines = params.clust_group
-      .selectAll('.vert_lines')
-      .data(col_nodes)
-      .enter()
-      .append('g')
-      .attr('class', 'vert_lines')
-      .attr('transform', function(d, index) {
-        return 'translate(' + params.x_scale(index) + ') rotate(-90)';
-      });
-
-    // add vertical lines
-    vert_lines
-      .append('line')
-      .attr('x1', 0)
-      .attr('x2', -params.clust.dim.height)
-      .style('stroke-width', params.border_width + 'px')
-      .style('stroke', 'white');
-
-
-    // Row
-    //////////////////////////////////
-    // make container to pre-position zoomable elements
-    var container_all_row = d3.select('#main_svg')
-      .append('g')
-      .attr('transform', 'translate(' + params.norm_label.margin.left + ',' +
-        params.clust.margin.top + ')');
-
-    // white background rect for row labels
-    container_all_row
-      .append('rect')
-      .attr('fill', params.background_color)
-      .attr('width', params.norm_label.background.row)
-      .attr('height', 30 * params.clust.dim.height + 'px')
-      .attr('class', 'white_bars');
-
-    // row_labels
-    container_all_row
-      .append('g')
-      // position the outer row label group
-      .attr('transform', 'translate(' + params.norm_label.width.row + ',0)')
-      .append('g')
-      .attr('id', 'row_labels');
-
-    // generate and position the row labels
-    var row_labels = d3.select('#row_labels')
-      .selectAll('.row_label_text')
-      .data(row_nodes)
-      .enter()
-      .append('g')
-      .attr('class', 'row_label_text')
-      .attr('transform', function(d, index) {
-        return 'translate(0,' + params.y_scale(index) + ')';
-      })
-      .on('dblclick', reorder_click_row)
-      .on('mouseover', function() {
-        // highlight text
-        d3
-          .select(this)
-          .select('text')
-          .classed('active',true);
-      })
-      .on('mouseout', function mouseout() {
-        d3.select(this)
-          .select('text')
-          .classed('active',false)
-      });
-
-    // append row label text
-    row_labels
-      .append('text')
-      .attr('y', params.y_scale.rangeBand() * 0.75)
-      // .attr('dy', params.y_scale.rangeBand()/4)
-      .attr('text-anchor', 'end')
-      .style('font-size', params.default_fs_row + 'px')
-      .text(function(d) {
-        return d.name;
-      });
-
-    // append rectangle behind text
-    row_labels
-      .insert('rect', 'text')
-      .attr('x', -10)
-      .attr('y', 0)
-      .attr('width', 10)
-      .attr('height', 10)
-      .style('opacity', 0);
-
-    // change the size of the highlighting rects
-    row_labels
-      .each(function() {
-        // get the bounding box of the row label text
-        var bbox = d3.select(this)
-          .select('text')[0][0]
-          .getBBox();
-        // use the bounding box to set the size of the rect
-        d3.select(this)
-          .select('rect')
-          .attr('x', bbox.x * 0.5)
-          .attr('y', 0)
-          .attr('width', bbox.width * 0.5)
-          .attr('height', params.y_scale.rangeBand())
-          .style('fill', function() {
-            var inst_hl = 'yellow';
-            return inst_hl;
-          })
-          .style('opacity', function(d) {
-            var inst_opacity = 0;
-            // highlight target genes
-            if (d.target === 1) {
-              inst_opacity = 1;
-            }
-            return inst_opacity;
-          });
-      });
-
-    // row triangles
-    ///////////////////////
-    var row_triangle_zoom = container_all_row
-      .append('g')
-      // shift by the width of the normal row labels
-      .attr('transform', 'translate(' + params.norm_label.width.row + ',0)')
-      .append('g')
-      .attr('id', 'row_label_triangles');
-
-    // append triangle background rect to zoomable group
-    row_triangle_zoom
-      .append('rect')
-      .attr('fill', params.background_color) //!! prog_colors
-      .attr('width', params.class_room.row + 'px')
-      .attr('height', function() {
-        var inst_height = params.clust.dim.height;
-        return inst_height;
-      });
-
-    // append groups - each holds one triangle
-    var row_triangle_ini_group = row_triangle_zoom
-      .selectAll('g')
-      .data(row_nodes)
-      .enter()
-      .append('g')
-      .attr('class', 'row_triangle_group')
-      .attr('transform', function(d, index) {
-        return 'translate(0, ' + params.y_scale(index) + ')';
-      });
-
-    // add triangles
-    row_triangle_ini_group
-      .append('path')
-      .attr('d', function() {
-        var origin_x = params.class_room.symbol_width - 1;
-        var origin_y = 0;
-        var mid_x = 1;
-        var mid_y = params.y_scale.rangeBand() / 2;
-        var final_x = params.class_room.symbol_width - 1;
-        var final_y = params.y_scale.rangeBand();
-        var output_string = 'M ' + origin_x + ',' + origin_y + ' L ' +
-          mid_x + ',' + mid_y + ', L ' + final_x + ',' + final_y + ' Z';
-        return output_string;
-      })
-      .attr('fill', function(d) {
-        // initailize color
-        var inst_color = '#eee';
-        if (_.has(params, 'class_colors')) {
-          inst_color = params.class_colors.row[d.cl];
-        }
-        return inst_color;
-      });
-
-    // add row group labels if necessary
-    //////////////////////////////////////
-    if (_.has(params, 'group_colors')) {
-
-      // add rects for highlighting automatically identified groups
-      var row_class_rect = row_triangle_ini_group
-        .append('rect')
-        .attr('class', 'row_class_rect')
-        .attr('width', function() {
-          var inst_width = params.class_room.symbol_width - 1;
-          return inst_width + 'px';
-        })
-        .attr('height', params.y_scale.rangeBand())
-        .style('fill', function(d) {
-          var inst_level = params.group_level.row;
-          return params.group_colors.row[d.group[inst_level]];
-        })
-        .attr('x', function() {
-          var inst_offset = params.class_room.symbol_width + 1;
-          return inst_offset + 'px';
-        });
-
-      // optional row callback on click
-      if (typeof params.click_group === 'function') {
-        // only add click functionality to row rect
-        row_class_rect
-          .on('click', function(d) {
-            var inst_level = params.group_level.row;
-            var inst_group = d.group[inst_level];
-            // find all row names that are in the same group at the same group_level
-            // get row_nodes
-            row_nodes = globals.network_data.row_nodes;
-            var group_nodes = [];
-            _.each(row_nodes, function(node) {
-              // check that the node is in the group
-              if (node.group[inst_level] === inst_group) {
-                // make a list of genes that are in inst_group at this group_level
-                group_nodes.push(node.name);
-              }
-            });
-
-            // return the following information to the user
-            // row or col, distance cutoff level, nodes
-            var group_info = {};
-            group_info.type = 'row';
-            group_info.nodes = group_nodes;
-            group_info.info = {
-              'type': 'distance',
-              'cutoff': inst_level / 10
-            };
-
-            // pass information to group_click callback
-            params.click_group(group_info);
-
-          });
-      }
-    }
-
-
-    // col labels
-    //////////////////////////////////
-    // make container to pre-position zoomable elements
-    var container_all_col = d3.select('#main_svg')
-      .append('g')
-      .attr('transform', 'translate(' + params.clust.margin.left + ',' +
-        params.norm_label.margin.top + ')');
-
-    // white background rect for col labels
-    container_all_col
-      .append('rect')
-      .attr('fill', params.background_color) //!! prog_colors
-      .attr('width', 30 * params.clust.dim.width + 'px')
-      .attr('height', params.norm_label.background.col)
-      .attr('class', 'white_bars');
-
-    // col labels
-    container_all_col
-      .append('g')
-      // position the outer col label group
-      .attr('transform', 'translate(0,' + params.norm_label.width.col + ')')
-      .append('g')
-      .attr('id', 'col_labels');
-
-    // offset click group column label
-    var x_offset_click = params.x_scale.rangeBand() / 2 + params.border_width;
-    // reduce width of rotated rects
-    var reduce_rect_width = params.x_scale.rangeBand() * 0.36;
-
-    // add main column label group
-    var col_label_obj = d3.select('#col_labels')
-      .selectAll('.col_label_text')
-      .data(col_nodes)
-      .enter()
-      .append('g')
-      .attr('class', 'col_label_text')
-      .attr('transform', function(d, index) {
-        return 'translate(' + params.x_scale(index) + ') rotate(-90)';
-      });
-
-    // append group for individual column label
-    var col_label_click = col_label_obj
-      // append new group for rect and label (not white lines)
-      .append('g')
-      .attr('class', 'col_label_click')
-      // rotate column labels
-      .attr('transform', 'translate(' + params.x_scale.rangeBand() / 2 +
-        ',' + x_offset_click + ') rotate(45)')
-      .on('dblclick', reorder_click_col)
-      .on('mouseover', function() {
-        d3.select(this).select('text')
-          .classed('active',true);
-      })
-      .on('mouseout', function mouseout() {
-        d3.select(this).select('text')
-          .classed('active',false);
-      });
-
-    // add column label
-    col_label_click
-      .append('text')
-      .attr('x', 0)
-      .attr('y', params.x_scale.rangeBand() * 0.60)
-      // offset label to make room for triangle
-      .attr('dx', 2 * params.border_width)
-      .attr('text-anchor', 'start')
-      .attr('full_name', function(d) {
-        return d.name;
-      })
-      // original font size
-      .style('font-size', params.default_fs_col + 'px')
-      // // !! simple font size
-      // .style('font-size', params.x_scale.rangeBand()*0.7+'px')
-      .text(function(d) {
-        return d.name.replace(/_/g, ' ');
-      });
-
-    // label the widest row and col labels
-    ////////////////////////////////////////
-    params.bounding_width_max = {};
-    params.bounding_width_max.row = 0;
-    d3.selectAll('.row_label_text').each(function() {
-      var tmp_width = d3.select(this).select('text').node().getBBox().width;
-      if (tmp_width > params.bounding_width_max.row) {
-        params.bounding_width_max.row = tmp_width;
-      }
-    });
-
-    params.bounding_width_max.col = 0;
-    d3.selectAll('.col_label_click').each(function() {
-      var tmp_width = d3.select(this).select('text').node().getBBox().width;
-      if (tmp_width > params.bounding_width_max.col) {
-        // increase the apparent width of the column label since its rotated
-        // this will give more room for text
-        params.bounding_width_max.col = tmp_width * 1.2;
-      }
-    });
-
-    // optionally turn down sensitivity to row/col overflow
-    params.bounding_width_max.col = params.bounding_width_max.col * params.label_overflow
-      .col;
-    params.bounding_width_max.row = params.bounding_width_max.row * params.label_overflow
-      .row;
-
-
-    // check if widest row or col are wider than the allowed label width
-    ////////////////////////////////////////////////////////////////////////
-    params.ini_scale_font = {};
-    params.ini_scale_font.row = 1;
-    params.ini_scale_font.col = 1;
-    if (params.bounding_width_max.row * params.zoom.scale() > params.norm_label
-      .width.row) {
-
-      params.ini_scale_font.row = params.norm_label.width.row / params.bounding_width_max
-        .row;
-      // redefine bounding_width_max.row
-      params.bounding_width_max.row = params.ini_scale_font.row * params.bounding_width_max
-        .row;
-
-      // redefine default fs
-      params.default_fs_row = params.default_fs_row * params.ini_scale_font
-        .row;
-      // reduce font size
-      d3.selectAll('.row_label_text').each(function() {
-        d3.select(this).select('text')
-          .style('font-size', params.default_fs_row + 'px');
-      });
-    }
-
-    if (params.bounding_width_max.col * params.zoom.scale() > params.norm_label
-      .width.col) {
-      params.ini_scale_font.col = params.norm_label.width.col / params.bounding_width_max
-        .col;
-      // redefine bounding_width_max.col
-      params.bounding_width_max.col = params.ini_scale_font.col * params.bounding_width_max
-        .col;
-      // redefine default fs
-      params.default_fs_col = params.default_fs_col * params.ini_scale_font
-        .col;
-      // reduce font size
-      d3.selectAll('.col_label_click').each(function() {
-        d3.select(this).select('text')
-          .style('font-size', params.default_fs_col + 'px');
-      });
-    }
-
-    // append rectangle behind text
-    col_label_click
-      .insert('rect', 'text')
-      .attr('x', 10)
-      .attr('y', 0)
-      .attr('width', 10)
-      .attr('height', 10)
-      .style('opacity', 0);
-
-    // change the size of the highlighting rects
-    col_label_click
-      .each(function() {
-
-        // get the bounding box of the row label text
-        var bbox = d3.select(this)
-          .select('text')[0][0]
-          .getBBox();
-
-        // use the bounding box to set the size of the rect
-        d3.select(this)
-          .select('rect')
-          .attr('x', bbox.x * 1.25)
-          .attr('y', 0)
-          .attr('width', bbox.width * 1.25)
-          // used a reduced rect width for the columsn
-          // because the rects are slanted
-          .attr('height', params.x_scale.rangeBand() * 0.6)
-          .style('fill', 'yellow')
-          .style('opacity', 0);
-      });
-
-    // add triangle under rotated labels
-    col_label_click
-      .append('path')
-      .style('stroke-width', 0)
-      .attr('d', function() {
-        // x and y are flipped since its rotated
-        var origin_y = -params.border_width;
-        var start_x = 0;
-        var final_x = params.x_scale.rangeBand() - reduce_rect_width;
-        var start_y = -(params.x_scale.rangeBand() - reduce_rect_width +
-          params.border_width);
-        var final_y = -params.border_width;
-        var output_string = 'M ' + origin_y + ',0 L ' + start_y + ',' +
-          start_x + ', L ' + final_y + ',' + final_x + ' Z';
-        return output_string;
-      })
-      .attr('fill', function(d) {
-        var inst_color = '#eee';
-        if (_.has(params, 'class_colors')) {
-          inst_color = params.class_colors.col[d.cl];
-        }
-        return inst_color;
-      });
-
-
-    //!! get the abs maximum value from row/col use this to make red/blue bars
-    // // get the max abs nl_pval (find obj and get nl_pval)
-    // enr_max = _.max( col_nodes, function(d) { return Math.abs(d.nl_pval) } ).nl_pval ;
-
-    // the enrichment bar should be 3/4ths of the height of the column labels
-    params.bar_scale_col = d3.scale.linear()
-      // .domain([0, enr_max])
-      .domain([0, 1])
-      .range([0, params.norm_label.width.col]);
-
-    // append column value bars
-    if (_.has(globals.network_data.col_nodes[0], 'value')) {
-      col_label_click
-        .append('rect')
-        .attr('class', 'col_bars')
-        // column is rotated - effectively width and height are switched
-        .attr('width', function(d) {
-          return params.bar_scale_col(d.value);
-        })
-        // rotate labels - reduce width if rotating
-        .attr('height', params.x_scale.rangeBand() * 0.66)
-        .attr('fill', function() {
-          // return d.color;
-          return 'red';
-        })
-        .attr('opacity', 0.4);
-    }
-
-    // add group labels if necessary
-    //////////////////////////////////
-    if (_.has(params, 'group_colors')) {
-      // add class label under column label
-      var col_class = container_all_col
-        .append('g')
-        // .attr('transform','translate(0,'+params.norm_label.width.col+')')
-        .attr('transform', function() {
-          var inst_offset = params.norm_label.width.col + 2;
-          return 'translate(0,' + inst_offset + ')';
-        })
-        .append('g')
-        // shift down 1px
-        // .attr('transform','translate(0,2)')
-        .attr('id', 'col_class');
-
-      // append groups - each will hold a classification rect
-      var col_class_ini_group = col_class
-        .selectAll('g')
-        .data(col_nodes)
-        .enter()
-        .append('g')
-        .attr('class', 'col_class_group')
-        .attr('transform', function(d, index) {
-          return 'translate(' + params.x_scale(index) + ',0)';
-        });
-
-      // add rects for highlighting - dendrogram-like
-      col_class_ini_group
-        .append('rect')
-        .attr('class', 'col_class_rect')
-        .attr('width', params.x_scale.rangeBand())
-        .attr('height', function() {
-          var inst_height = params.class_room.col - 1;
-          return inst_height;
-        })
-        .style('fill', function(d) {
-          var inst_level = params.group_level.col;
-          return params.group_colors.col[d.group[inst_level]];
-        });
-
-      // optional column callback on click
-      if (typeof params.click_group === 'function') {
-        col_class_ini_group
-          .on('click', function(d) {
-            var inst_level = params.group_level.col;
-            var inst_group = d.group[inst_level];
-            // find all column names that are in the same group at the same group_level
-            // get col_nodes
-            col_nodes = globals.network_data.col_nodes;
-            var group_nodes = [];
-            _.each(col_nodes, function(node) {
-              // check that the node is in the group
-              if (node.group[inst_level] === inst_group) {
-                // make a list of genes that are in inst_group at this group_level
-                group_nodes.push(node.name);
-              }
-            });
-
-            // return the following information to the user
-            // row or col, distance cutoff level, nodes
-            var group_info = {};
-            group_info.type = 'col';
-            group_info.nodes = group_nodes;
-            group_info.info = {
-              'type': 'distance',
-              'cutoff': inst_level / 10
-            };
-
-            // pass information to group_click callback
-            params.click_group(group_info);
-
-          });
-      }
-
-    }
-
-    // hide spillover from slanted column labels on right side
-    container_all_col
-      .append('path')
-      .style('stroke-width', '0')
-      // mini-language for drawing path in d3, used to draw triangle
-      .attr('d', 'M 0,0 L 500,-500, L 500,0 Z')
-      .attr('fill', params.background_color) //!! prog_colors
-      .attr('id', 'right_slant_triangle')
-      .attr('transform', 'translate(' + params.clust.dim.width + ',' +
-        params.norm_label.width.col + ')');
-
-    // hide spillover from slanted column labels on left side
-    container_all_col
-      .append('path')
-      .style('stroke-width', '0')
-      // mini-language for drawing path in d3, used to draw triangle
-      .attr('d', 'M 0,0 L 500,-500, L 0,-500 Z')
-      .attr('fill', params.background_color)
-      .attr('id', 'left_slant_triangle')
-      // shift left by 1 px to prevent cutting off labels
-      .attr('transform', 'translate(-1,' + params.norm_label.width.col +
-        ')');
-
-    // top corner rect
-    ///////////////////////////////
-    // white rect to cover excess labels
-    d3.select('#main_svg')
-      .append('rect')
-      .attr('fill', params.background_color) //!! prog_colors
-      .attr('width', params.clust.margin.left)
-      .attr('height', params.clust.margin.top)
-      .attr('id', 'top_left_white');
-
-    // hide spillover from right
-    d3.select('#main_svg')
-      .append('rect')
-      .attr('fill', params.background_color) //!! prog_colors
-      .attr('width', '300px')
-      .attr('height', '3000px')
-      .attr('transform', function() {
-        var tmp_left = params.clust.margin.left + params.clust.dim.width;
-        var tmp_top = params.norm_label.margin.top + params.norm_label.width
-          .col;
-        return 'translate(' + tmp_left + ',' + tmp_top + ')';
-      })
-      .attr('class', 'white_bars');
-
-
-
-    // only make the super titles if they are requested
-    if (params.super_labels) {
-
-      // super col title
-      /////////////////////////////////////
-      // add super column title background
-      d3.select('#main_svg')
-        .append('rect')
-        .attr('fill', params.background_color) //!! prog_colors
-        .attr('height', params.super_label_width + 'px')
-        .attr('width', '3000px')
-        .attr('class', 'white_bars')
-        .attr('transform', 'translate(0,' + params.grey_border_width + ')');
-
-      // super col title
-      d3.select('#main_svg')
-        .append('text')
-        .text(params.super.col)
-        .attr('text-anchor', 'center')
-        .attr('transform', function() {
-          var inst_x = params.clust.dim.width / 2 + params.norm_label.width
-            .row;
-          var inst_y = params.super_label_width - params.uni_margin;
-          return 'translate(' + inst_x + ',' + inst_y + ')';
-        })
-        .style('font-size', '14px')
-        .style('font-weight', 300);
-
-      // super row title
-      /////////////////////////////////////
-      // add super row title background
-      d3.select('#main_svg')
-        .append('rect')
-        .attr('fill', params.background_color) //!! prog_colors
-        .attr('width', params.super_label_width + 'px')
-        .attr('height', '3000px')
-        .attr('class', 'white_bars')
-        .attr('transform', 'translate(' + params.grey_border_width + ',0)');
-
-      // append super title row group
-      // this is used to separate translation from rotation
-      d3.select('#main_svg')
-        .append('g')
-        .attr('id', 'super_row_label')
-        .attr('transform', function() {
-          // position in the middle of the clustergram
-          var inst_x = params.super_label_width - params.uni_margin;
-          var inst_y = params.clust.dim.height / 2 + params.norm_label.width
-            .col;
-          return 'translate(' + inst_x + ',' + inst_y + ')';
-        });
-
-      // super row label (rotate the already translated title )
-      d3.select('#super_row_label')
-        .append('text')
-        .text(params.super.row)
-        .attr('text-anchor', 'center')
-        .attr('transform', 'rotate(-90)')
-        .style('font-size', '14px')
-        .style('font-weight', 300);
-
-    }
-
-    // white border bottom - prevent clustergram from hitting border
-    ///////////////////////////////////////////////////////////////////
-    d3.select('#main_svg')
-      .append('rect')
-      .attr('fill', params.background_color) //!! prog_colors
-      .attr('width', params.svg_dim.width)
-      // make this border twice the width of the grey border
-      .attr('height', 2 * params.grey_border_width)
-      .attr('transform', function() {
-        // shift up enough to show the entire border width
-        var inst_offset = params.svg_dim.height - 3 * params.grey_border_width;
-        return 'translate(0,' + inst_offset + ')';
-      });
-
-    // add border to svg in four separate lines - to not interfere with clicking anything
-    ///////////////////////////////////////////////////////////////////////////////////////
-    // left border
-    d3.select('#main_svg')
-      .append('rect')
-      .attr('fill', params.super_border_color) //!! prog_colors
-      .attr('width', params.grey_border_width)
-      .attr('height', params.svg_dim.height)
-      .attr('transform', 'translate(0,0)');
-
-    // right border
-    d3.select('#main_svg')
-      .append('rect')
-      .attr('fill', params.super_border_color) //!! prog_colors
-      .attr('width', params.grey_border_width)
-      .attr('height', params.svg_dim.height)
-      .attr('transform', function() {
-        var inst_offset = params.svg_dim.width - params.grey_border_width;
-        return 'translate(' + inst_offset + ',0)';
-      });
-
-    // top border
-    d3.select('#main_svg')
-      .append('rect')
-      .attr('fill', params.super_border_color) //!! prog_colors
-      .attr('width', params.svg_dim.width)
-      .attr('height', params.grey_border_width)
-      .attr('transform', function() {
-        var inst_offset = 0;
-        return 'translate(' + inst_offset + ',0)';
-      });
-
-    // bottom border
-    d3.select('#main_svg')
-      .append('rect')
-      .attr('fill', params.super_border_color) //!! prog_colors
-      .attr('width', params.svg_dim.width)
-      .attr('height', params.grey_border_width)
-      .attr('transform', function() {
-        var inst_offset = params.svg_dim.height - params.grey_border_width;
-        return 'translate(0,' + inst_offset + ')';
-      });
-
-    // initialize zoom and translate
-    ///////////////////////////////////
-    // initialize translate vector to compensate for label margins
-    params.zoom.translate([params.clust.margin.left, params.clust.margin.top]);
-
-    // resize window
-    d3.select(window).on('resize', timeout_resize);
-
-    // disable double-click zoom: double click should reset zoom level
-    // do this for all svg elements
-    d3.selectAll('svg').on('dblclick.zoom', null);
-
-    // double click to reset zoom - add transition
-    d3.select('#main_svg')
-      .on('dblclick', function() {
-        // apply the following two translate zoom to reset zoom
-        // programatically
-        two_translate_zoom(0, 0, 1);
-      });
-  }
-
-
-  // parent_div: size and position svg container - svg_div
-  //////////////////////////////////////////////
-  function parent_div_size_pos(params) {
-
-    if (params.resize) {
-      // get outer_margins
-      var outer_margins = params.outer_margins;
-
-      // get the size of the window
-      var screen_width = window.innerWidth;
-      var screen_height = window.innerHeight;
-
-      // define width and height of clustergram container
-      var container_dim = {};
-      container_dim.width = screen_width - outer_margins.left -
-        outer_margins.right;
-      container_dim.height = screen_height - outer_margins.top -
-        outer_margins.bottom;
-
-      // size the svg container div - svg_div
-      d3.select('#' + params.svg_div_id)
-        .style('margin-left', outer_margins.left + 'px')
-        .style('margin-top', outer_margins.top + 'px')
-        .style('width', container_dim.width + 'px')
-        .style('height', container_dim.height + 'px');
-    } else {
-      // get outer_margins
-      outer_margins = params.outer_margins;
-
-      // size the svg container div - svg_div
-      d3.select('#' + params.svg_div_id)
-        .style('margin-left', outer_margins.left + 'px')
-        .style('margin-top', outer_margins.top + 'px');
-    }
-  }
-
-  //!! this needs to be improved
-  //!! I will have to generalize this
-  function highlight_resource_types(params) {
-
-    // var col_nodes = globals.network_data.col_nodes;
-    var row_nodes = globals.network_data.row_nodes;
-
-    // // This will set up the resource type color key
-    // // and generate an array of genes for later use
-    // //////////////////////////////////////////////////////
-
-    // // res_hexcodes = ['#097054','#FFDE00','#6599FF','#FF9900','#834C24','#003366','#1F1209']
-
-    // var res_hexcodes = ['#0000FF','#FF0000','#C0C0C0', '#FFA500'];
-
-    // define cell line groups
-    // var all_groups = ['TF group 1','TF group 2','TF group 3'];
-
-    // var all_groups = _.keys(params.class_colors.row);
-
-    // // generate an object to associate group with color
-    // var res_color_dict = {};
-
-    // // initialize the cell line color associations
-    // var blue_cl = ['H1437','H1792','HCC15','A549','H1944','H1299','H1355','H838','CAL-12T','H23','H460','H661'];
-    // var red_cl = ['H441','HCC78','H1734','H2228','H1781','H1975','H358','HCC827','H1703','H2342','H1650','LOU-NH91'];
-    // var grey_cl = ['CALU-3','H2405','H2106', 'HCC44','H1666'];
-    // var orange_cl = [] //['HCC44','H1666'];
-
-    // for (var i=0; i<col_nodes.length;i++){
-    //   // add blue cell line
-    //   if ( $.inArray(col_nodes[i]['name'],blue_cl) > -1 ){
-    //     res_color_dict[col_nodes[i]['name']]=res_hexcodes[0];
-    //   };
-    //   // add red cell line
-    //   if ( $.inArray(col_nodes[i]['name'],red_cl)  > -1 ){
-    //     res_color_dict[col_nodes[i]['name']]=res_hexcodes[1];
-    //   };
-    //   // add grey cell line
-    //   if ( $.inArray(col_nodes[i]['name'],grey_cl)  > -1 ){
-    //     res_color_dict[col_nodes[i]['name']]=res_hexcodes[2];
-    //   };
-    //   // add orange cell line
-    //   if ( $.inArray(col_nodes[i]['name'],orange_cl)  > -1 ){
-    //     res_color_dict[col_nodes[i]['name']]=res_hexcodes[3];
-    //   };
-    // }
-
-    // // export to global variable
-    // params.res_color_dict = res_color_dict;
-
-    // // define association between tf groups and colors
-    // var res_color_key = {}
-    // res_color_key['TF group 1'] = res_hexcodes[0];
-    // res_color_key['TF group 2'] = res_hexcodes[1];
-    // res_color_key['TF group 3'] = res_hexcodes[2];
-    // res_color_key['TF group 4'] = res_hexcodes[3];
-
-    // // add color key
-    // ////////////////////
-    // // add keys
-    // var key_divs = d3.select('#res_color_key_div')
-    //   .selectAll('row')
-    //   .data(all_groups)
-    //   .enter()
-    //   .append('row')
-    //   .style('padding-top','15px');
-
-    // // add color
-    // key_divs
-    //   .append('div')
-    //   .attr('class','col-xs-2')
-    //   // get rid of excess padding
-    //   .style('padding-left','5px')
-    //   .style('padding-right','0px')
-    //   .style('padding-top','1px')
-    //   .append('div')
-    //   .style('width','12px')
-    //   .style('height','12px')
-    //   .style('background-color', function(d){
-    //     return params.class_colors.row[d];
-    //   })
-
-    // // add names
-    // key_divs
-    //   .append('div')
-    //   .attr('class','col-xs-10 res_names_in_key')
-    //   .append('text')
-    //   .text(function(d){
-    //     var inst_res = d.replace(/_/g, ' ');
-    //     return inst_res ;
-    //   })
-
-    // generate a list of genes for auto complete
-    ////////////////////////////////////////////////
-    // get all genes
-    params.all_genes = [];
-
-    // loop through row_nodes
-    for (var i = 0; i < row_nodes.length; i++) {
-      params.all_genes.push(row_nodes[i].name);
-    }
-
 
     return params;
   }
@@ -1774,13 +1774,13 @@ function d3_clustergram(args) {
           tile_info.row = globals.network_data.row_nodes[d.pos_y].name;
           tile_info.col = globals.network_data.col_nodes[d.pos_x].name;
           tile_info.value = d.value;
-          if (_.has(d, 'value_up')) {
+          if (has(d, 'value_up')) {
             tile_info.value_up = d.value_up;
           }
-          if (_.has(d, 'value_dn')) {
+          if (has(d, 'value_dn')) {
             tile_info.value_dn = d.value_dn;
           }
-          if (_.has(d, 'info')) {
+          if (has(d, 'info')) {
             tile_info.info = d.info;
           }
           // run the user supplied callback function
@@ -1899,13 +1899,13 @@ function d3_clustergram(args) {
           tile_info.row = globals.network_data.row_nodes[d.pos_y].name;
           tile_info.col = globals.network_data.col_nodes[d.pos_x].name;
           tile_info.value = d.value;
-          if (_.has(d, 'value_up')) {
+          if (has(d, 'value_up')) {
             tile_info.value_up = d.value_up;
           }
-          if (_.has(d, 'value_dn')) {
+          if (has(d, 'value_dn')) {
             tile_info.value_dn = d.value_dn;
           }
-          if (_.has(d, 'info')) {
+          if (has(d, 'info')) {
             tile_info.info = d.info;
           }
           // run the user supplied callback function
@@ -1985,78 +1985,6 @@ function d3_clustergram(args) {
     }
   }
 
-  // reorder the matrix using the toggle switch
-  function reorder(inst_order) {
-
-    // load parameters from d3_clustergram
-    var params = globals.params;
-
-    // set running transition value
-    globals.params.run_trans = 1;
-
-    // load orders
-    if (inst_order === 'clust') {
-      params.x_scale.domain(params.orders.clust_row);
-      params.y_scale.domain(params.orders.clust_col);
-    } else if (inst_order === 'rank') {
-      params.x_scale.domain(params.orders.rank_row);
-      params.y_scale.domain(params.orders.rank_col);
-    } else if (inst_order === 'class') {
-      params.x_scale.domain(params.orders.class_row);
-      params.y_scale.domain(params.orders.class_col);
-    }
-
-    // define the t variable as the transition function
-    var t = params.clust_group.transition().duration(2500);
-
-    // reorder matrix
-    t.selectAll('.row')
-      .attr('transform', function(d, i) {
-        return 'translate(0,' + params.y_scale(i) + ')';
-      })
-      .selectAll('.tile')
-      .attr('transform', function(d) {
-        return 'translate(' + params.x_scale(d.pos_x) + ' , 0)';
-      });
-
-    // Move Row Labels
-    d3.select('#row_labels').selectAll('.row_label_text')
-      .transition().duration(2500)
-      .attr('transform', function(d, i) {
-        return 'translate(0,' + params.y_scale(i) + ')';
-      });
-
-    // t.selectAll('.column')
-    d3.select('#col_labels').selectAll('.col_label_text')
-      .transition().duration(2500)
-      .attr('transform', function(d, i) {
-        return 'translate(' + params.x_scale(i) + ')rotate(-90)';
-      });
-
-    // reorder row_label_triangle groups
-    d3.selectAll('.row_triangle_group')
-      .transition().duration(2500)
-      .attr('transform', function(d, i) {
-        return 'translate(0,' + params.y_scale(i) + ')';
-      });
-
-    // reorder col_class groups
-    d3.selectAll('.col_class_group')
-      .transition().duration(2500)
-      .attr('transform', function(d, i) {
-        return 'translate(' + params.x_scale(i) + ',0)';
-      })
-      .each('end', function() {
-        // set running transition to 0
-        console.log('finished with transition ');
-        globals.params.run_trans = 0;
-      });
-
-    // backup allow programmatic zoom
-    setTimeout(end_reorder, 2500);
-
-  }
-
   // tmp backup function to allow programmatic zoom after reordering
   function end_reorder() {
     globals.params.run_trans = 0;
@@ -2067,7 +1995,7 @@ function d3_clustergram(args) {
   function reset_visualization_size() {
 
     // remake the clustergram
-    make_d3_clustergram(globals.params.args);
+    make(globals.params.args);
 
     // reset zoom and translate
     globals.params.zoom.scale(1).translate([globals.params.clust
@@ -2291,7 +2219,7 @@ function d3_clustergram(args) {
     // column value bars
     ///////////////////////
 
-    if (_.has(globals.network_data.col_nodes[0], 'value')) {
+    if (has(globals.network_data.col_nodes[0], 'value')) {
       d3.selectAll('.col_bars')
         // column is rotated - effectively width and height are switched
         .attr('width', function(d) {
@@ -2573,7 +2501,7 @@ function d3_clustergram(args) {
       // reduce the height of the column value bars based on the zoom applied
       // recalculate the height and divide by the zooming scale
       // col_label_obj.select('rect')
-      if (_.has(globals.network_data.col_nodes[0], 'value')) {
+      if (has(globals.network_data.col_nodes[0], 'value')) {
         d3.selectAll('.col_bars')
           .transition()
           .duration(search_duration)
@@ -2823,7 +2751,6 @@ function d3_clustergram(args) {
     // get y position
     var inst_y_pos = params.y_scale(inst_gene_index);
 
-
     // highlight row name
     d3.selectAll('.row_label_text')
       .filter(function(d) {
@@ -2840,15 +2767,6 @@ function d3_clustergram(args) {
     two_translate_zoom(0, pan_dy, params.zoom_switch);
   }
 
-  // find gene in clustergram
-  function find_row(search_gene) {
-    // get the searched gene
-    if (globals.params.all_genes.indexOf(search_gene) !== -1) {
-      // zoom and highlight found gene
-      zoom_and_highlight_found_gene(search_gene);
-    }
-  }
-
   // transpose matrix funciton
   function transpose_network(net) {
     var tnet = {};
@@ -2863,16 +2781,16 @@ function d3_clustergram(args) {
       inst_link.value = net.links[i].value;
 
       // optional highlight
-      if (_.has(net.links[i], 'highlight')) {
+      if (has(net.links[i], 'highlight')) {
         inst_link.highlight = net.links[i].highlight;
       }
-      if (_.has(net.links[i], 'value_up')) {
+      if (has(net.links[i], 'value_up')) {
         inst_link.value_up = net.links[i].value_up;
       }
-      if (_.has(net.links[i], 'value_dn')) {
+      if (has(net.links[i], 'value_dn')) {
         inst_link.value_dn = net.links[i].value_dn;
       }
-      if (_.has(net.links[i], 'info')) {
+      if (has(net.links[i], 'info')) {
         inst_link.info = net.links[i].info;
       }
 
@@ -2881,33 +2799,130 @@ function d3_clustergram(args) {
     return tnet;
   }
 
-  // change the colorbar group 
-  function colorbar_groups(inst_rc, inst_index){
 
-    if (inst_rc === 'row'){
+  /* API functions
+   * ----------------------------------------------------------------------- */
 
+  /* Reorder the clustergram using the toggle switch
+   */
+  function reorder(inst_order) {
+
+    // load parameters from d3_clustergram
+    var params = globals.params;
+
+    // set running transition value
+    globals.params.run_trans = 1;
+
+    // load orders
+    if (inst_order === 'clust') {
+      params.x_scale.domain(params.orders.clust_row);
+      params.y_scale.domain(params.orders.clust_col);
+    } else if (inst_order === 'rank') {
+      params.x_scale.domain(params.orders.rank_row);
+      params.y_scale.domain(params.orders.rank_col);
+    } else if (inst_order === 'class') {
+      params.x_scale.domain(params.orders.class_row);
+      params.y_scale.domain(params.orders.class_col);
+    }
+
+    // define the t variable as the transition function
+    var t = params.clust_group.transition().duration(2500);
+
+    // reorder matrix
+    t.selectAll('.row')
+      .attr('transform', function(d, i) {
+        return 'translate(0,' + params.y_scale(i) + ')';
+      })
+      .selectAll('.tile')
+      .attr('transform', function(d) {
+        return 'translate(' + params.x_scale(d.pos_x) + ' , 0)';
+      });
+
+    // Move Row Labels
+    d3.select('#row_labels').selectAll('.row_label_text')
+      .transition().duration(2500)
+      .attr('transform', function(d, i) {
+        return 'translate(0,' + params.y_scale(i) + ')';
+      });
+
+    // t.selectAll('.column')
+    d3.select('#col_labels').selectAll('.col_label_text')
+      .transition().duration(2500)
+      .attr('transform', function(d, i) {
+        return 'translate(' + params.x_scale(i) + ')rotate(-90)';
+      });
+
+    // reorder row_label_triangle groups
+    d3.selectAll('.row_triangle_group')
+      .transition().duration(2500)
+      .attr('transform', function(d, i) {
+        return 'translate(0,' + params.y_scale(i) + ')';
+      });
+
+    // reorder col_class groups
+    d3.selectAll('.col_class_group')
+      .transition().duration(2500)
+      .attr('transform', function(d, i) {
+        return 'translate(' + params.x_scale(i) + ',0)';
+      })
+      .each('end', function() {
+        // set running transition to 0
+        console.log('finished with transition ');
+        globals.params.run_trans = 0;
+      });
+
+    // backup allow programmatic zoom
+    setTimeout(end_reorder, 2500);
+  }
+
+  /* Find a gene (row) in the clustergram.
+   */
+  function find_gene(search_gene) {
+    // get the searched gene
+    if (globals.params.all_genes.indexOf(search_gene) !== -1) {
+      zoom_and_highlight_found_gene(search_gene);
+    }
+  }
+
+  /* Changes the groupings (x- and y-axis color bars).
+   */
+  function change_groups(inst_rc, inst_index) {
+    if (inst_rc === 'row') {
       d3.selectAll('.row_class_rect')
         .style('fill', function(d){
           return globals.params.group_colors.row[d.group[inst_index]];
         });
-
-    } else{
-
+    } else {
       d3.selectAll('.col_class_rect')
         .style('fill', function(d){
           return globals.params.group_colors.col[d.group[inst_index]];
         });
-
     }
-
   }
 
+  /* Returns all the genes in the clustergram.
+   */
+  function get_genes() {
+    return globals.params.all_genes;
+  }
+
+
+  /* Utility functions
+   * ----------------------------------------------------------------------- */
+
+  /* Returns whether or not an object has a certain property.
+   */
+  function has(obj, key) {
+    return obj != null && hasOwnProperty.call(obj, key);
+  }
+
+
+  /* API
+   * ----------------------------------------------------------------------- */
   return {
     reorder: reorder,
-    find_row: find_row,
-    get_genes: function() {
-      return globals.params.all_genes;
-    },
-    colorbar_groups:colorbar_groups
+    find_gene: find_gene,
+    get_genes: get_genes,
+    change_groups: change_groups
   };
 }

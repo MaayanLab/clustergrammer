@@ -66,7 +66,7 @@ $(function() {
       var inst_index = ui.value*10;
 
       // change group sizes
-      d3c.colorbar_groups('col',inst_index)
+      d3c.change_groups('col',inst_index)
 
     }
   });
@@ -83,7 +83,7 @@ $(function() {
       var inst_index = ui.value*10;
 
       // change group sizes
-      d3c.colorbar_groups('row',inst_index)
+      d3c.change_groups('row',inst_index)
     }
   });
   $( "#amount" ).val( "$" + $( "#slider_row" ).slider( "value" ) );
@@ -92,7 +92,7 @@ $(function() {
   $('#gene_search_box').keyup(function(e) {
     if (e.keyCode === 13) {
       var search_gene = $('#gene_search_box').val();
-      d3c.find_row(search_gene);
+      d3c.highlight_gene(search_gene);
     }
   });
 
