@@ -19,175 +19,8 @@ function d3_clustergram(args) {
    */
   function make(args) {
 
-    var params = {};
-    params.args = args;
-
-    // Unload Arguments
-    /////////////////////////
-
-    // network_data - not an optional argument
-    var network_data = args.network_data;
-
-
-    // svg_div_id
-    if (typeof args.svg_div_id === 'undefined') {
-      params.svg_div_id = 'svg_div';
-    } else {
-      params.svg_div_id = args.svg_div_id;
-    }
-
-    // super-row/col labels
-    if (typeof args.row_label === 'undefined' || typeof args.col_label ===
-        'undefined') {
-      // do not put super labels
-      params.super_labels = false;
-    } else {
-      // make super labels
-      params.super_labels = true;
-      params.super = {};
-      params.super.row = args.row_label;
-      params.super.col = args.col_label;
-    }
-
-    // row and column overflow sensitivity
-    params.label_overflow = {};
-    if (typeof args.row_overflow === 'undefined') {
-      // make sensitivity to overflow the max, 1
-      params.label_overflow.row = 1;
-    } else {
-      params.label_overflow.row = args.row_overflow;
-    }
-
-    // col and column overflow sensitivity
-    if (typeof args.col_overflow === 'undefined') {
-      // make sensitivity to overflow the max, 1
-      params.label_overflow.col = 1;
-    } else {
-      params.label_overflow.col = args.col_overflow;
-    }
-
-    // row and label overall scale
-    if (typeof args.row_label_scale == 'undefined'){
-      params.row_label_scale = 1;
-    } else {
-      params.row_label_scale = args.row_label_scale;
-    }
-    if (typeof args.col_label_scale == 'undefined'){
-      params.col_label_scale = 1;
-    } else {
-      params.col_label_scale = args.col_label_scale;
-    }
-
-    // transpose matrix - if requested
-    if (typeof args.transpose === 'undefined') {
-      params.transpose = false;
-    } else {
-      params.transpose = args.transpose;
-    }
-
-    // transpose network data and super-labels
-    if (params.transpose === true) {
-      network_data = transpose_network(network_data);
-      params.super.row = args.col_label;
-      params.super.col = args.row_label;
-    }
-
-    // add title to tile
-    if (typeof args.title_tile === 'undefined') {
-      params.title_tile = false;
-    } else {
-      params.title_tile = args.title_tile;
-    }
-
-    // tile colors
-    if (typeof args.tile_colors === 'undefined') {
-      // red/blue
-      params.tile_colors = ['#FF0000', '#1C86EE'];
-    } else {
-      params.tile_colors = args.tile_colors;
-    }
-
-    // background color
-    if (typeof args.background_color === 'undefined') {
-      params.background_color = '#FFFFFF';
-      params.super_border_color = '#f5f5f5';
-    } else {
-      params.background_color = args.background_color;
-      params.super_border_color = args.background_color;
-    }
-
-    // check if zooming is enabled
-    if (typeof args.zoom === 'undefined') {
-      params.do_zoom = true;
-    } else {
-      params.do_zoom = args.zoom;
-    }
-
-    // tile callback function - optional
-    if (typeof args.click_tile === 'undefined') {
-      // there is no callback function included
-      params.click_tile = 'none';
-    } else {
-      // transfer the callback function
-      params.click_tile = args.click_tile;
-    }
-
-    // group callback function - optional
-    if (typeof args.click_group === 'undefined') {
-      params.click_group = 'none';
-    } else {
-      // transfer the callback function
-      params.click_group = args.click_group;
-    }
-
-    // set input domain
-    if (typeof args.input_domain === 'undefined') {
-      // default domain is set to 0, which means that the domain will be set automatically
-      params.input_domain = 0;
-    } else {
-      params.input_domain = args.input_domain;
-    }
-
-    // set opacity scale type
-    if (typeof args.opacity_scale === 'undefined') {
-      params.opacity_scale = 'linear';
-    } else {
-      params.opacity_scale = args.opacity_scale;
-    }
-
-    // variable/fixed visualization size (needs to be in the arguments)
-    if (typeof args.resize === 'undefined') {
-      // default resize to yes
-      params.resize = true;
-    } else {
-      params.resize = args.resize;
-    }
-
-    // get outer_margins
-    if (typeof args.outer_margins === 'undefined') {
-      // default margins
-      params.outer_margins = {
-        'top': 0,
-        'bottom': 0,
-        'left': 0,
-        'right': 0
-      };
-    } else {
-      params.outer_margins = args.outer_margins;
-    }
-
-    // get initial ordering
-    if (typeof args.order === 'undefined') {
-      params.inst_order = 'clust';
-    }
-    // only use ordering if its defined correctly
-    else if (args.order === 'clust' || args.order === 'rank' ||
-        args.order === 'class') {
-      params.inst_order = args.order;
-    } else {
-      // backup
-      params.inst_order = 'clust';
-    }
+    var params = make_params(args),
+        network_data = args.network_data;
 
     // save global version of network_data
     globals.network_data = network_data;
@@ -1192,6 +1025,174 @@ function d3_clustergram(args) {
         });
   }
 
+  function make_params(args) {
+
+    var params = {
+          args: args
+        },
+        network_data = args.network_data;
+
+    // svg_div_id
+    if (typeof args.svg_div_id === 'undefined') {
+      params.svg_div_id = 'svg_div';
+    } else {
+      params.svg_div_id = args.svg_div_id;
+    }
+
+    // super-row/col labels
+    if (typeof args.row_label === 'undefined' || typeof args.col_label === 'undefined') {
+      // do not put super labels
+      params.super_labels = false;
+    } else {
+      // make super labels
+      params.super_labels = true;
+      params.super = {};
+      params.super.row = args.row_label;
+      params.super.col = args.col_label;
+    }
+
+    // row and column overflow sensitivity
+    params.label_overflow = {};
+    if (typeof args.row_overflow === 'undefined') {
+      // make sensitivity to overflow the max, 1
+      params.label_overflow.row = 1;
+    } else {
+      params.label_overflow.row = args.row_overflow;
+    }
+
+    // col and column overflow sensitivity
+    if (typeof args.col_overflow === 'undefined') {
+      // make sensitivity to overflow the max, 1
+      params.label_overflow.col = 1;
+    } else {
+      params.label_overflow.col = args.col_overflow;
+    }
+
+    // row and label overall scale
+    if (typeof args.row_label_scale == 'undefined'){
+      params.row_label_scale = 1;
+    } else {
+      params.row_label_scale = args.row_label_scale;
+    }
+    if (typeof args.col_label_scale == 'undefined'){
+      params.col_label_scale = 1;
+    } else {
+      params.col_label_scale = args.col_label_scale;
+    }
+
+    // transpose matrix - if requested
+    if (typeof args.transpose === 'undefined') {
+      params.transpose = false;
+    } else {
+      params.transpose = args.transpose;
+    }
+
+    // transpose network data and super-labels
+    if (params.transpose === true) {
+      network_data = transpose_network(network_data);
+      params.super.row = args.col_label;
+      params.super.col = args.row_label;
+    }
+
+    // add title to tile
+    if (typeof args.title_tile === 'undefined') {
+      params.title_tile = false;
+    } else {
+      params.title_tile = args.title_tile;
+    }
+
+    // tile colors
+    if (typeof args.tile_colors === 'undefined') {
+      // red/blue
+      params.tile_colors = ['#FF0000', '#1C86EE'];
+    } else {
+      params.tile_colors = args.tile_colors;
+    }
+
+    // background color
+    if (typeof args.background_color === 'undefined') {
+      params.background_color = '#FFFFFF';
+      params.super_border_color = '#f5f5f5';
+    } else {
+      params.background_color = args.background_color;
+      params.super_border_color = args.background_color;
+    }
+
+    // check if zooming is enabled
+    if (typeof args.zoom === 'undefined') {
+      params.do_zoom = true;
+    } else {
+      params.do_zoom = args.zoom;
+    }
+
+    // tile callback function - optional
+    if (typeof args.click_tile === 'undefined') {
+      // there is no callback function included
+      params.click_tile = 'none';
+    } else {
+      // transfer the callback function
+      params.click_tile = args.click_tile;
+    }
+
+    // group callback function - optional
+    if (typeof args.click_group === 'undefined') {
+      params.click_group = 'none';
+    } else {
+      // transfer the callback function
+      params.click_group = args.click_group;
+    }
+
+    // set input domain
+    if (typeof args.input_domain === 'undefined') {
+      // default domain is set to 0, which means that the domain will be set automatically
+      params.input_domain = 0;
+    } else {
+      params.input_domain = args.input_domain;
+    }
+
+    // set opacity scale type
+    if (typeof args.opacity_scale === 'undefined') {
+      params.opacity_scale = 'linear';
+    } else {
+      params.opacity_scale = args.opacity_scale;
+    }
+
+    // variable/fixed visualization size (needs to be in the arguments)
+    if (typeof args.resize === 'undefined') {
+      // default resize to yes
+      params.resize = true;
+    } else {
+      params.resize = args.resize;
+    }
+
+    // get outer_margins
+    if (typeof args.outer_margins === 'undefined') {
+      // default margins
+      params.outer_margins = {
+        'top': 0,
+        'bottom': 0,
+        'left': 0,
+        'right': 0
+      };
+    } else {
+      params.outer_margins = args.outer_margins;
+    }
+
+    // get initial ordering
+    if (typeof args.order === 'undefined') {
+      params.inst_order = 'clust';
+    }
+    // only use ordering if its defined correctly
+    else if (args.order === 'clust' || args.order === 'rank' ||
+        args.order === 'class') {
+      params.inst_order = args.order;
+    } else {
+      // backup
+      params.inst_order = 'clust';
+    }
+
+    return params;
+  }
 
   // parent_div: size and position svg container - svg_div
   //////////////////////////////////////////////
