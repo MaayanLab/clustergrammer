@@ -3,7 +3,7 @@
  */
 function make(args) {
 
-    var params = make_params(args),
+    var params = Config(args),
         network_data = args.network_data;
 
     if (params.transpose) {
@@ -72,7 +72,7 @@ function make(args) {
     // row groups - only add if the rows have a group attribute
     // Define the space needed for the classification of rows - includes classification triangles and rects
     params.class_room = {};
-    if (Utils.has(row_nodes[0], 'group') || Utils.has(col_nodes[0], 'group')) {
+    if (params.show_dendrogram) {
 
         // initialize group colors
         /////////////////////////
@@ -87,6 +87,28 @@ function make(args) {
         params.class_room.col = 9;
         // the width of the classification triangle or group rectangle
         params.class_room.symbol_width = 9;
+
+        params.group_colors.row = {};
+        // generate random colors for the groups
+        for (var i = 0; i < 200; i++) {
+            // grab colors from the list
+            if (i === 1) {
+                params.group_colors.row[i] = '#eee';
+            } else {
+                params.group_colors.row[i] = params.rand_colors[i % num_colors];
+            }
+        }
+
+        params.group_colors.col = {};
+        // generate random colors for the groups
+        for (var j = 0; j < 200; j++) {
+            // grab colors from the list
+            if (j === 1) {
+                params.group_colors.col[j] = '#eee';
+            } else {
+                params.group_colors.col[j] = params.rand_colors[j % num_colors];
+            }
+        }
     } else {
         // do not make room for group rects
         params.class_room.row = 9;
@@ -96,22 +118,14 @@ function make(args) {
     }
 
     // check if row/col have class information
-    if (Utils.has(row_nodes[0], 'cl') || Utils.has(col_nodes[0], 'cl')) {
-        // gather classes
+    if (params.show_categories) {
         params.class_colors = {};
-    }
-
-    // gather class information from row
-    if (Utils.has(row_nodes[0], 'cl')) {
         var class_rows = _.uniq(_.pluck(row_nodes, 'cl'));
         // associate classes with colors
         params.class_colors.row = {};
         _.each(class_rows, function(c_row, i) {
             params.class_colors.row[c_row] = params.rand_colors[i + 50 % num_colors];
         });
-    }
-    // gather class information from col
-    if (Utils.has(col_nodes[0], 'cl')) {
         var class_cols = _.uniq(_.pluck(col_nodes, 'cl'));
         // associate classes with colors
         params.class_colors.col = {};
@@ -122,36 +136,6 @@ function make(args) {
                 params.class_colors.col[c_col] = params.rand_colors[i + 50 % num_colors];
             }
         });
-    }
-
-    // get row groups and make color dictionary
-    if (Utils.has(row_nodes[0], 'group')) {
-        params.group_colors.row = {};
-
-        // generate random colors for the groups
-        for (var i = 0; i < 200; i++) {
-            // grab colors from the list
-            if (i === 1) {
-                params.group_colors.row[i] = '#eee';
-            } else {
-                params.group_colors.row[i] = params.rand_colors[i % num_colors];
-            }
-        }
-    }
-
-    // get col groups and make color dictionary
-    if (Utils.has(col_nodes[0], 'group')) {
-        params.group_colors.col = {};
-
-        // generate random colors for the groups
-        for (var j = 0; j < 200; j++) {
-            // grab colors from the list
-            if (j === 1) {
-                params.group_colors.col[j] = '#eee';
-            } else {
-                params.group_colors.col[j] = params.rand_colors[j % num_colors];
-            }
-        }
     }
 
     // Begin Making Visualization
@@ -1657,7 +1641,7 @@ function row_group_function(inp_row_data) {
 function reset_visualization_size() {
 
     // remake the clustergram
-    make(globals.params.args);
+    make(args);
 
     // reset zoom and translate
     globals.params.zoom.scale(1).translate(

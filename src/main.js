@@ -8,92 +8,12 @@
   /* Main program
    * ----------------------------------------------------------------------- */
 
+  // consume and validate user input
+  // build giant config object
+  // visualize based on config object
+  // handle user events
+
   make(args);
-
-  function make_params(args) {
-
-    var params,
-        defaults;
-
-    defaults = {
-      args: args,
-
-      // This should be a DOM element, not a selector.
-      svg_div_id: 'svg_id',
-      label_overflow: {
-        row: 1,
-        col: 1
-      },
-      row_label_scale: 1,
-      col_label_scale: 1,
-      transpose: false,
-      title_tile: false,
-
-      // Red and blue
-      tile_colors: ['#FF0000', '#1C86EE'],
-      background_color: '#FFFFFF',
-      super_border_color: '#F5F5F5',
-      do_zoom: true,
-
-      // Default domain is set to 0, which means that the domain will be set automatically
-      input_domain: 0,
-      opacity_scale: 'linear',
-      resize: true,
-      outer_margins: {
-        top: 0,
-        bottom: 0,
-        left: 0,
-        right: 0
-      },
-      super_labels: false,
-
-      // Gray border around the visualization
-      grey_border_width: 3,
-
-      // the distance between labels and clustergram
-      // a universal margin for the clustergram
-      uni_margin: 4,
-      uni_margin_row: 2
-    };
-
-    // Mixin defaults with  user-defined arguments.
-    params = Utils.extend(defaults, args);
-
-    // super label width - the labels are 20px wide if they are included
-    if (params.super_labels) {
-      // include super labels
-      params.super_label_width = 20;
-    } else {
-      // do not include super labels
-      params.super_label_width = 0;
-    }
-
-    // super-row/col labels
-    if (!Utils.is_undefined(args.row_label) && !Utils.is_undefined(args.col_label)) {
-      params.super_labels = true;
-      params.super = {};
-      params.super.row = args.row_label;
-      params.super.col = args.col_label;
-    }
-
-    // transpose network data and super-labels
-    if (params.transpose) {
-      params.super.row = args.col_label;
-      params.super.col = args.row_label;
-    }
-
-    else if (!Utils.is_undefined(args.order) && is_supported_order(args.order)) {
-      params.inst_order = args.order;
-    } else {
-      params.inst_order = 'clust';
-    }
-
-    return params;
-  }
-
-  function is_supported_order(order) {
-    return order === 'clust' || order === 'rank' || order === 'class';
-  }
 
   // parent_div: size and position svg container - svg_div
   //////////////////////////////////////////////

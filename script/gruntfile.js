@@ -3,6 +3,7 @@ module.exports = function(grunt) {
     var src_files = [
         '../src/_open.js',
         '../src/Utils.js',
+        '../src/Config.js',
         '../src/zoom.js',
         '../src/Search.js',
         '../src/visualization.js',
