@@ -86,7 +86,7 @@ function d3_clustergram(args) {
     var num_colors = params.rand_colors.length;
 
     // row groups - only add if the rows have a group attribute
-    if (has(row_nodes[0], 'group') === true || has(col_nodes[0], 'group')) {
+    if (has(row_nodes[0], 'group') || has(col_nodes[0], 'group')) {
 
       // initialize group colors
       /////////////////////////
@@ -105,7 +105,7 @@ function d3_clustergram(args) {
     }
 
     // gather class information from row
-    if (has(row_nodes[0], 'cl') === true) {
+    if (has(row_nodes[0], 'cl')) {
       var class_rows = _.uniq(_.pluck(row_nodes, 'cl'));
       // associate classes with colors
       params.class_colors.row = {};
@@ -114,7 +114,7 @@ function d3_clustergram(args) {
       });
     }
     // gather class information from col
-    if (has(col_nodes[0], 'cl') === true) {
+    if (has(col_nodes[0], 'cl')) {
       var class_cols = _.uniq(_.pluck(col_nodes, 'cl'));
       // associate classes with colors
       params.class_colors.col = {};
@@ -128,7 +128,7 @@ function d3_clustergram(args) {
     }
 
     // get row groups and make color dictionary
-    if (has(row_nodes[0], 'group') === true) {
+    if (has(row_nodes[0], 'group')) {
       params.group_colors.row = {};
 
       // generate random colors for the groups
@@ -143,7 +143,7 @@ function d3_clustergram(args) {
     }
 
     // get col groups and make color dictionary
-    if (has(col_nodes[0], 'group') === true) {
+    if (has(col_nodes[0], 'group')) {
       params.group_colors.col = {};
 
       // generate random colors for the groups
@@ -251,7 +251,7 @@ function d3_clustergram(args) {
     }
 
     // call zoomingoom on the entire svg
-    if (params.do_zoom === true) {
+    if (params.do_zoom) {
       outer_group
           .call(params.zoom);
     }
@@ -1600,7 +1600,7 @@ function d3_clustergram(args) {
     }
 
     // append title to group
-    if (params.title_tile === true) {
+    if (params.title_tile) {
       tile
         .append('title')
         .text(function(d) {
@@ -1786,7 +1786,7 @@ function d3_clustergram(args) {
       });
 
     // append title to group
-    if (params.title_tile === true) {
+    if (params.title_tile) {
       tile
         .append('title')
         .text(function(d) {
