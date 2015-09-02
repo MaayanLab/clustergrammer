@@ -13,7 +13,7 @@
   // visualize based on config object
   // handle user events
 
-  make(args);
+  var viz = Viz(args);
 
   // parent_div: size and position svg container - svg_div
   //////////////////////////////////////////////

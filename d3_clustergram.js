@@ -681,6 +681,18 @@ function Search(nodes, prop) {
     }
 }
 
+function Viz(args) {
+
+    make(args);
+
+    return {
+        remake: function() {
+            make(args);
+        }
+    }
+}
+
+
 /* The main function; makes clustergram based on user arguments.
  */
 function make(args) {
@@ -2322,14 +2334,14 @@ function row_group_function(inp_row_data) {
 // and remake the clustergram
 function reset_visualization_size() {
 
-    // remake the clustergram
-    make(args);
+    viz.remake();
 
     // reset zoom and translate
     globals.params.zoom.scale(1).translate(
         [globals.params.clust.margin.left, globals.params.clust.margin.top]
     );
 }
+
 
 
 
@@ -2345,7 +2357,7 @@ function reset_visualization_size() {
   // visualize based on config object
   // handle user events
 
-  make(args);
+  var viz = Viz(args);
 
   // parent_div: size and position svg container - svg_div
   //////////////////////////////////////////////
