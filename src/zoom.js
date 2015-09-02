@@ -2,7 +2,7 @@
 /* Functions for zooming. Should be turned into a module.
  * ----------------------------------------------------------------------- */
 function zoomed() {
-    
+
     var zoom_x = d3.event.scale,
         zoom_y = d3.event.scale,
         trans_x = d3.event.translate[0] - globals.params.clust.margin.left,

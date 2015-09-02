@@ -39,7 +39,7 @@ var Utils = {
 /* Functions for zooming. Should be turned into a module.
  * ----------------------------------------------------------------------- */
 function zoomed() {
-    
+
     var zoom_x = d3.event.scale,
         zoom_y = d3.event.scale,
         trans_x = d3.event.translate[0] - globals.params.clust.margin.left,
@@ -532,70 +532,65 @@ function two_translate_zoom(pan_dx, pan_dy, fin_zoom) {
         }
     }
 }
-/* Functions for handling row entities, in this case genes.
- * TODO: Refactor into module that tracks the entities in both cols and rows.
+
+/* Handles searching rows or columns.
  * ----------------------------------------------------------------------- */
+function Search(nodes, prop) {
 
-/* Collect all gene symbols from rows.
- */
-function collect_genes_from_network(row_nodes) {
-    var all_genes = [],
+    /* Collect entities from row or columns.
+     */
+    var entities = [],
         i;
-    for (i = 0; i < row_nodes.length; i++) {
-        all_genes.push(row_nodes[i].name);
+
+    for (i = 0; i < nodes.length; i++) {
+        entities.push(nodes[i][prop]);
     }
-    return all_genes;
-}
 
-/* Find a gene (row) in the clustergram.
- */
-function find_gene(search_gene) {
-    if (globals.params.all_genes.indexOf(search_gene) !== -1) {
-        zoom_and_highlight_found_gene(search_gene);
+    /* Find a gene (row) in the clustergram.
+     */
+    function find_entities(search_term) {
+        if (entities.indexOf(search_term) !== -1) {
+            un_hightlight_entities();
+            zoom_and_highlight_found_entity(search_term);
+            higlight_entity(search_term);
+        }
     }
-}
 
-/* Zoom into and highlight the found the gene
- */
-function zoom_and_highlight_found_gene(search_gene) {
+    /* Zoom into and highlight the found the gene
+     */
+    function zoom_and_highlight_found_entity(search_term) {
+        var idx = _.indexOf(entities, search_term),
+            inst_y_pos = globals.params.y_scale(idx),
+            pan_dy = globals.params.clust.dim.height / 2 - inst_y_pos;
 
-    // get parameters
-    var params = globals.params;
+        two_translate_zoom(0, pan_dy, globals.params.zoom_switch);
+    }
 
-    // unhighlight and unbold all genes
-    d3.selectAll('.row_label_text')
-        .select('text')
-        .style('font-weight', 'normal');
-    d3.selectAll('.row_label_text')
-        .select('rect')
-        .style('opacity', 0);
+    function un_hightlight_entities() {
+        d3.selectAll('.row_label_text').select('text').style('font-weight', 'normal');
+        d3.selectAll('.row_label_text').select('rect').style('opacity', 0);
+    }
 
-    // find the index of the gene
-    var inst_gene_index = _.indexOf(params.all_genes, search_gene);
+    function higlight_entity(search_term) {
+        // highlight row name
+        d3.selectAll('.row_label_text')
+            .filter(function(d) {
+                return d[prop] === search_term;
+            })
+            .select('rect')
+            .style('opacity', 1);
+    }
 
-    // get y position
-    var inst_y_pos = params.y_scale(inst_gene_index);
+    /* Returns all the genes in the clustergram.
+     */
+    function get_entities() {
+        return entities;
+    }
 
-    // highlight row name
-    d3.selectAll('.row_label_text')
-        .filter(function(d) {
-            return d.name === search_gene;
-        })
-        .select('rect')
-        .style('opacity', 1);
-
-    // calculate the y panning required to center the found gene
-    var pan_dy = params.clust.dim.height / 2 - inst_y_pos;
-
-    // use two translate method to control zooming
-    // pan_x, pan_y, zoom
-    two_translate_zoom(0, pan_dy, params.zoom_switch);
-}
-
-/* Returns all the genes in the clustergram.
- */
-function get_genes() {
-    return globals.params.all_genes;
+    return {
+        find_entities: find_entities,
+        get_entities: get_entities
+    }
 }
 
 
@@ -793,10 +788,6 @@ function get_genes() {
     // shift the footer left
     d3.select('#footer_div')
         .style('margin-left', '0px');
-
-    // !! need to set up
-    // highlight resource types - set up type/color association
-    params.all_genes = collect_genes_from_network(globals.network_data.row_nodes);
 
     // define the variable zoom, a d3 method
     params.zoom = d3.behavior.zoom().scaleExtent([1, params.real_zoom *
@@ -2732,12 +2723,15 @@ function get_genes() {
     return tnet;
   }
 
+  // highlight resource types - set up type/color association
+  var gene_search = Search(globals.network_data.row_nodes, 'name');
+
     /* API
      * ----------------------------------------------------------------------- */
     return {
         reorder: reorder,
-        find_gene: find_gene,
-        get_genes: get_genes,
+        find_gene: gene_search.find_entities,
+        get_genes: gene_search.get_entities,
         change_groups: change_groups
     };
 }

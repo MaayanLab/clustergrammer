@@ -195,10 +195,6 @@
     d3.select('#footer_div')
         .style('margin-left', '0px');
 
-    // !! need to set up
-    // highlight resource types - set up type/color association
-    params.all_genes = collect_genes_from_network(globals.network_data.row_nodes);
-
     // define the variable zoom, a d3 method
     params.zoom = d3.behavior.zoom().scaleExtent([1, params.real_zoom *
     params.zoom_switch
@@ -2132,3 +2128,6 @@
 
     return tnet;
   }
+
+  // highlight resource types - set up type/color association
+  var gene_search = Search(globals.network_data.row_nodes, 'name');
