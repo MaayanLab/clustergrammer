@@ -622,8 +622,11 @@ class Network(object):
 		'''
 		import scipy
 		import numpy as np 
+		from scipy.spatial.distance import pdist
+		from copy import deepcopy
 
-		print('\nclustering the matrix using dist_type ' + dist_type + ' with a comparison requirement of at least ' + str(cutoff) + ' instances above abs-value of ' + str(min_num_comp) +' in order to compare')
+		# print('\nclustering the matrix using dist_type ' + dist_type + ' with a comparison requirement of at least ' + str(cutoff) + ' instances above abs-value of ' + str(min_num_comp) +' in order to compare')
+		print('calculating distance matrix using ')
 
 		# make distance matrices 
 		##########################
@@ -636,16 +639,31 @@ class Network(object):
 		row_dm = scipy.zeros([num_row,num_row])
 		col_dm = scipy.zeros([num_col,num_col])
 
-		# row dist mat 
-		for i in range(num_row):
-			for j in range(num_row):
-				# calculate distance of two rows 
-				row_dm[i,j] = self.calc_thresh_col_dist( self.dat['mat'][i,:], self.dat['mat'][j,:], cutoff, min_num_comp )
+		# # row dist mat 
+		# for i in range(num_row):
+		# 	for j in range(num_row):
+		# 		# calculate distance of two rows 
+		# 		row_dm[i,j] = self.calc_thresh_col_dist( self.dat['mat'][i,:], self.dat['mat'][j,:], cutoff, min_num_comp )
 
-		# col dist mat 
-		for i in range(num_col):
-			for j in range(num_col):
-				col_dm[i,j] = self.calc_thresh_col_dist( self.dat['mat'][:,i], self.dat['mat'][:,j], cutoff, min_num_comp )
+		# # col dist mat 
+		# for i in range(num_col):
+		# 	for j in range(num_col):
+		# 		col_dm[i,j] = self.calc_thresh_col_dist( self.dat['mat'][:,i], self.dat['mat'][:,j], cutoff, min_num_comp )
+
+		# make copy of matrix 
+		tmp_mat = deepcopy(self.dat['mat'])
+
+		# calculate distance matrix 
+		row_dm = pdist( tmp_mat, metric='cosine' )
+		col_dm = pdist( tmp_mat.transpose(), metric='cosine' )
+
+		# prevent negative values and max distance is 1 for cosine
+		# row 
+		row_dm[row_dm < 0] = float(0)
+		row_dm[row_dm > 1] = float(1) 
+		# col
+		col_dm[col_dm < 0] = float(0)
+		col_dm[col_dm > 1] = float(1) 
 
 		# replace nans with the maximum distance in the distance matries 
 		row_dm[ np.isnan(row_dm) ] = np.nanmax(row_dm)
@@ -662,7 +680,7 @@ class Network(object):
 		# cluster 
 		##############
 		# cluster rows 
-		cluster_method = 'centroid'
+		cluster_method = 'average'
 		clust_order['row']['clust'], clust_order['row']['group'] = self.clust_and_group_nodes(row_dm, cluster_method)
 		clust_order['col']['clust'], clust_order['col']['group'] = self.clust_and_group_nodes(col_dm, cluster_method)
 

@@ -22,4 +22,4 @@ net.cluster_row_and_col('cos', cutoff_comp, min_num_comp)
 
 # export data visualization to file 
 ######################################
-net.write_json_to_file('viz', 'example_network.json','indent')
+net.write_json_to_file('viz', 'json/example_network.json','indent')
