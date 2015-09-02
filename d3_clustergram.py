@@ -5,7 +5,7 @@ class Network(object):
 	and a viz state where they are stored as: viz.links, viz.row_nodes, viz.col_nodes.
 
 	The goal is to start in a data-state and produce a viz-state of the network that will be 
-	used as input to d3_clustergram.js.
+	used as input to clustergram.js.
 	'''
 
 	def __init__(self):
@@ -143,7 +143,7 @@ class Network(object):
 						# gather column labels 
 						self.dat['nodes']['col'].append(inst_col)
 
-			# line 2: get dataset groups - do not save as 'cl', save as 'info' to sidestep d3_clustergram.js code
+			# line 2: get dataset groups - do not save as 'cl', save as 'info' to sidestep clustergram.js code
 			if i ==1:
 				# gather column classification information 
 				for j in range(len(inst_line)):
@@ -778,7 +778,7 @@ class Network(object):
 		return inst_dist
 
 	def viz_json(self, dendro=True):
-		''' make the dictionary for the d3_clustergram.js visualization ''' 
+		''' make the dictionary for the clustergram.js visualization '''
 
 		# get dendrogram cutoff distances 
 		all_dist = self.group_cutoffs()

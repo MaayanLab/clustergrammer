@@ -1,10 +1,42 @@
-
 /* d3_clustergram 1.0
  * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
  * (c) 2015
  */
 function d3_clustergram(args) {
-  'use strict';
+    'use strict';
+
+/* Utility functions
+ * ----------------------------------------------------------------------- */
+var Utils = {
+
+    /* Returns whether or not an object has a certain property.
+     */
+    has: function(obj, key) {
+        return obj != null && hasOwnProperty.call(obj, key);
+    },
+
+    /* Returns true if the object is undefined.
+     */
+    is_undefined: function(obj) {
+        return obj === void 0;
+    },
+
+    /* Mixes two objects in together, overwriting a target with a source.
+     */
+    extend: function(target, source) {
+        target = target || {};
+        for (var prop in source) {
+            if (typeof source[prop] === 'object') {
+                target[prop] = this.extend(target[prop], source[prop]);
+            } else {
+                target[prop] = source[prop];
+            }
+        }
+        return target;
+    }
+};
+
+
 
   // This object is a temporary hack to hold all global state for this module.
   var globals = {};
@@ -14,7 +46,7 @@ function d3_clustergram(args) {
    * ----------------------------------------------------------------------- */
 
   make(args);
-  
+
   /* The main function; makes clustergram based on user arguments.
    */
   function make(args) {
@@ -88,7 +120,7 @@ function d3_clustergram(args) {
     // row groups - only add if the rows have a group attribute
     // Define the space needed for the classification of rows - includes classification triangles and rects
     params.class_room = {};
-    if (has(row_nodes[0], 'group') || has(col_nodes[0], 'group')) {
+    if (Utils.has(row_nodes[0], 'group') || Utils.has(col_nodes[0], 'group')) {
 
       // initialize group colors
       /////////////////////////
@@ -97,7 +129,7 @@ function d3_clustergram(args) {
       params.group_level = {};
       params.group_level.row = 5;
       params.group_level.col = 5;
-      
+
       // make room for group rects
       params.class_room.row = 18;
       params.class_room.col = 9;
@@ -112,13 +144,13 @@ function d3_clustergram(args) {
     }
 
     // check if row/col have class information
-    if (has(row_nodes[0], 'cl') || has(col_nodes[0], 'cl')) {
+    if (Utils.has(row_nodes[0], 'cl') || Utils.has(col_nodes[0], 'cl')) {
       // gather classes
       params.class_colors = {};
     }
 
     // gather class information from row
-    if (has(row_nodes[0], 'cl')) {
+    if (Utils.has(row_nodes[0], 'cl')) {
       var class_rows = _.uniq(_.pluck(row_nodes, 'cl'));
       // associate classes with colors
       params.class_colors.row = {};
@@ -127,7 +159,7 @@ function d3_clustergram(args) {
       });
     }
     // gather class information from col
-    if (has(col_nodes[0], 'cl')) {
+    if (Utils.has(col_nodes[0], 'cl')) {
       var class_cols = _.uniq(_.pluck(col_nodes, 'cl'));
       // associate classes with colors
       params.class_colors.col = {};
@@ -141,7 +173,7 @@ function d3_clustergram(args) {
     }
 
     // get row groups and make color dictionary
-    if (has(row_nodes[0], 'group')) {
+    if (Utils.has(row_nodes[0], 'group')) {
       params.group_colors.row = {};
 
       // generate random colors for the groups
@@ -156,7 +188,7 @@ function d3_clustergram(args) {
     }
 
     // get col groups and make color dictionary
-    if (has(col_nodes[0], 'group')) {
+    if (Utils.has(col_nodes[0], 'group')) {
       params.group_colors.col = {};
 
       // generate random colors for the groups
@@ -233,7 +265,7 @@ function d3_clustergram(args) {
       if (params.highlight === 1) {
         params.matrix[link.source][link.target].highlight = link.highlight;
       }
-      if (has(link, 'info')) {
+      if (Utils.has(link, 'info')) {
         params.matrix[link.source][link.target].info = link.info;
       }
     });
@@ -479,7 +511,7 @@ function d3_clustergram(args) {
         .attr('fill', function(d) {
           // initailize color
           var inst_color = '#eee';
-          if (has(params, 'class_colors')) {
+          if (Utils.has(params, 'class_colors')) {
             inst_color = params.class_colors.row[d.cl];
           }
           return inst_color;
@@ -487,7 +519,7 @@ function d3_clustergram(args) {
 
     // add row group labels if necessary
     //////////////////////////////////////
-    if (has(params, 'group_colors')) {
+    if (Utils.has(params, 'group_colors')) {
 
       // add rects for highlighting automatically identified groups
       var row_class_rect = row_triangle_ini_group
@@ -739,7 +771,7 @@ function d3_clustergram(args) {
         })
         .attr('fill', function(d) {
           var inst_color = '#eee';
-          if (has(params, 'class_colors')) {
+          if (Utils.has(params, 'class_colors')) {
             inst_color = params.class_colors.col[d.cl];
           }
           return inst_color;
@@ -757,7 +789,7 @@ function d3_clustergram(args) {
         .range([0, params.norm_label.width.col]);
 
     // append column value bars
-    if (has(globals.network_data.col_nodes[0], 'value')) {
+    if (Utils.has(globals.network_data.col_nodes[0], 'value')) {
       col_label_click
           .append('rect')
           .attr('class', 'col_bars')
@@ -776,7 +808,7 @@ function d3_clustergram(args) {
 
     // add group labels if necessary
     //////////////////////////////////
-    if (has(params, 'group_colors')) {
+    if (Utils.has(params, 'group_colors')) {
       // add class label under column label
       var col_class = container_all_col
           .append('g')
@@ -1088,7 +1120,7 @@ function d3_clustergram(args) {
     };
 
     // Mixin defaults with  user-defined arguments.
-    params = extend(defaults, args);
+    params = Utils.extend(defaults, args);
 
     // super label width - the labels are 20px wide if they are included
     if (params.super_labels) {
@@ -1100,7 +1132,7 @@ function d3_clustergram(args) {
     }
 
     // super-row/col labels
-    if (!is_undefined(args.row_label) && !is_undefined(args.col_label)) {
+    if (!Utils.is_undefined(args.row_label) && !Utils.is_undefined(args.col_label)) {
       params.super_labels = true;
       params.super = {};
       params.super.row = args.row_label;
@@ -1113,7 +1145,7 @@ function d3_clustergram(args) {
       params.super.col = args.row_label;
     }
 
-    else if (!is_undefined(args.order) && is_supported_order(args.order)) {
+    else if (!Utils.is_undefined(args.order) && is_supported_order(args.order)) {
       params.inst_order = args.order;
     } else {
       params.inst_order = 'clust';
@@ -1502,8 +1534,8 @@ function d3_clustergram(args) {
     // define tile type: rect, group
     // rect is the default faster and simpler option
     // group is the optional slower and more complex option that is activated with: highlighting or split tiles
-    // if ( has(network_data.links[0], 'value_up') || has(network_data.links[0], 'highlight') ){
-    if (has(network_data.links[0], 'value_up') || has(network_data.links[
+    // if ( Utils.has(network_data.links[0], 'value_up') || Utils.has(network_data.links[0], 'highlight') ){
+    if (Utils.has(network_data.links[0], 'value_up') || Utils.has(network_data.links[
         0], 'highlight')) {
       params.tile_type = 'group';
       // console.log('making group tiles');
@@ -1513,7 +1545,7 @@ function d3_clustergram(args) {
     }
 
     // check if rects should be highlighted
-    if (has(globals.network_data.links[0], 'highlight')) {
+    if (Utils.has(globals.network_data.links[0], 'highlight')) {
       params.highlight = 1;
     } else {
       params.highlight = 0;
@@ -1582,13 +1614,13 @@ function d3_clustergram(args) {
           tile_info.row = globals.network_data.row_nodes[d.pos_y].name;
           tile_info.col = globals.network_data.col_nodes[d.pos_x].name;
           tile_info.value = d.value;
-          if (has(d, 'value_up')) {
+          if (Utils.has(d, 'value_up')) {
             tile_info.value_up = d.value_up;
           }
-          if (has(d, 'value_dn')) {
+          if (Utils.has(d, 'value_dn')) {
             tile_info.value_dn = d.value_dn;
           }
-          if (has(d, 'info')) {
+          if (Utils.has(d, 'info')) {
             tile_info.info = d.info;
           }
           // run the user supplied callback function
@@ -1707,13 +1739,13 @@ function d3_clustergram(args) {
           tile_info.row = globals.network_data.row_nodes[d.pos_y].name;
           tile_info.col = globals.network_data.col_nodes[d.pos_x].name;
           tile_info.value = d.value;
-          if (has(d, 'value_up')) {
+          if (Utils.has(d, 'value_up')) {
             tile_info.value_up = d.value_up;
           }
-          if (has(d, 'value_dn')) {
+          if (Utils.has(d, 'value_dn')) {
             tile_info.value_dn = d.value_dn;
           }
-          if (has(d, 'info')) {
+          if (Utils.has(d, 'info')) {
             tile_info.info = d.info;
           }
           // run the user supplied callback function
@@ -2024,7 +2056,7 @@ function d3_clustergram(args) {
     // column value bars
     ///////////////////////
 
-    if (has(globals.network_data.col_nodes[0], 'value')) {
+    if (Utils.has(globals.network_data.col_nodes[0], 'value')) {
       d3.selectAll('.col_bars')
         // column is rotated - effectively width and height are switched
         .attr('width', function(d) {
@@ -2306,7 +2338,7 @@ function d3_clustergram(args) {
       // reduce the height of the column value bars based on the zoom applied
       // recalculate the height and divide by the zooming scale
       // col_label_obj.select('rect')
-      if (has(globals.network_data.col_nodes[0], 'value')) {
+      if (Utils.has(globals.network_data.col_nodes[0], 'value')) {
         d3.selectAll('.col_bars')
           .transition()
           .duration(search_duration)
@@ -2652,32 +2684,6 @@ function d3_clustergram(args) {
   /* Utility functions
    * ----------------------------------------------------------------------- */
 
-  /* Returns whether or not an object has a certain property.
-   */
-  function has(obj, key) {
-    return obj != null && hasOwnProperty.call(obj, key);
-  }
-
-  /* Returns true if the object is undefined.
-   */
-  function is_undefined(obj) {
-    return obj === void 0;
-  }
-
-  /* Mixes two objects in together, overwriting a target with a source.
-   */
-  function extend(target, source) {
-    target = target || {};
-    for (var prop in source) {
-      if (typeof source[prop] === 'object') {
-        target[prop] = extend(target[prop], source[prop]);
-      } else {
-        target[prop] = source[prop];
-      }
-    }
-    return target;
-  }
-
   /* Resize clustergram to fit screen size.
    */
   function resize_to_screen() {
@@ -2705,16 +2711,16 @@ function d3_clustergram(args) {
       inst_link.value = net.links[i].value;
 
       // Optional highlight.
-      if (has(net.links[i], 'highlight')) {
+      if (Utils.has(net.links[i], 'highlight')) {
         inst_link.highlight = net.links[i].highlight;
       }
-      if (has(net.links[i], 'value_up')) {
+      if (Utils.has(net.links[i], 'value_up')) {
         inst_link.value_up = net.links[i].value_up;
       }
-      if (has(net.links[i], 'value_dn')) {
+      if (Utils.has(net.links[i], 'value_dn')) {
         inst_link.value_dn = net.links[i].value_dn;
       }
-      if (has(net.links[i], 'info')) {
+      if (Utils.has(net.links[i], 'info')) {
         inst_link.info = net.links[i].info;
       }
       tnet.links.push(inst_link);
@@ -2734,13 +2740,12 @@ function d3_clustergram(args) {
     return all_genes;
   }
 
-
-  /* API
-   * ----------------------------------------------------------------------- */
-  return {
-    reorder: reorder,
-    find_gene: find_gene,
-    get_genes: get_genes,
-    change_groups: change_groups
-  };
+    /* API
+     * ----------------------------------------------------------------------- */
+    return {
+        reorder: reorder,
+        find_gene: find_gene,
+        get_genes: get_genes,
+        change_groups: change_groups
+    };
 }
