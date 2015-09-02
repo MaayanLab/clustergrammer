@@ -1687,7 +1687,7 @@ function d3_clustergram(args) {
     }
 
     // not running a transition
-    params.run_trans = 0;
+    params.run_trans = false;
 
     // console.log(network_data.links[0])
     // define tile type: rect, group
@@ -1987,7 +1987,7 @@ function d3_clustergram(args) {
 
   // tmp backup function to allow programmatic zoom after reordering
   function end_reorder() {
-    globals.params.run_trans = 0;
+    globals.params.run_trans = false;
   }
 
   // recalculate the size of the visualization
@@ -2272,7 +2272,7 @@ function d3_clustergram(args) {
     // get parameters
     var params = globals.params;
 
-    if (globals.params.run_trans === 0) {
+    if (!globals.params.run_trans) {
 
       // define the commonly used variable half_height
       var half_height = params.clust.dim.height / 2;
@@ -2517,7 +2517,7 @@ function d3_clustergram(args) {
   function reorder_click_row() {
 
     // set running transition value
-    globals.params.run_trans = 1;
+    globals.params.run_trans = true;
 
     // get parameters
     var params = globals.params;
@@ -2590,7 +2590,7 @@ function d3_clustergram(args) {
       })
       .each('end', function() {
         // set running transition to 0
-        globals.params.run_trans = 0;
+        globals.params.run_trans = false;
       });
 
     // highlight selected row
@@ -2612,7 +2612,7 @@ function d3_clustergram(args) {
   function reorder_click_col() {
 
     // set running transition value
-    globals.params.run_trans = 1;
+    globals.params.run_trans = true;
 
     // get parameters
     var params = globals.params;
@@ -2681,7 +2681,7 @@ function d3_clustergram(args) {
       })
       .each('end', function() {
         // set running transition to 0
-        globals.params.run_trans = 0;
+        globals.params.run_trans = false;
       });
 
     // highlight selected column
@@ -2749,7 +2749,7 @@ function d3_clustergram(args) {
     var params = globals.params;
 
     // set running transition value
-    globals.params.run_trans = 1;
+    globals.params.run_trans = true;
 
     // load orders
     if (inst_order === 'clust') {
@@ -2806,7 +2806,7 @@ function d3_clustergram(args) {
       .each('end', function() {
         // set running transition to 0
         console.log('finished with transition ');
-        globals.params.run_trans = 0;
+        globals.params.run_trans = false;
       });
 
     // backup allow programmatic zoom
