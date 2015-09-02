@@ -86,6 +86,8 @@ function d3_clustergram(args) {
     var num_colors = params.rand_colors.length;
 
     // row groups - only add if the rows have a group attribute
+    // Define the space needed for the classification of rows - includes classification triangles and rects
+    params.class_room = {};
     if (has(row_nodes[0], 'group') || has(col_nodes[0], 'group')) {
 
       // initialize group colors
@@ -95,7 +97,18 @@ function d3_clustergram(args) {
       params.group_level = {};
       params.group_level.row = 5;
       params.group_level.col = 5;
-
+      
+      // make room for group rects
+      params.class_room.row = 18;
+      params.class_room.col = 9;
+      // the width of the classification triangle or group rectangle
+      params.class_room.symbol_width = 9;
+    } else {
+      // do not make room for group rects
+      params.class_room.row = 9;
+      params.class_room.col = 0;
+      // the width of the classification triangle or group rectangle
+      params.class_room.symbol_width = 9;
     }
 
     // check if row/col have class information
@@ -1104,22 +1117,6 @@ function d3_clustergram(args) {
       params.inst_order = args.order;
     } else {
       params.inst_order = 'clust';
-    }
-
-    // Define the space needed for the classification of rows - includes classification triangles and rects
-    params.class_room = {};
-    if (has(params, 'group_colors')) {
-      // make room for group rects
-      params.class_room.row = 18;
-      params.class_room.col = 9;
-      // the width of the classification triangle or group rectangle
-      params.class_room.symbol_width = 9;
-    } else {
-      // do not make room for group rects
-      params.class_room.row = 9;
-      params.class_room.col = 0;
-      // the width of the classification triangle or group rectangle
-      params.class_room.symbol_width = 9;
     }
 
     return params;
