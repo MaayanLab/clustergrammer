@@ -124,6 +124,126 @@ function Config(args) {
     return config;
 }
 
+var Colors = (function() {
+
+    // colors from http://graphicdesign.stackexchange.com/revisions/3815/8
+    var rand_colors,
+        num_colors;
+
+    rand_colors = [
+        '#000000', '#FF34FF', '#FFFF00', '#FF4A46',
+        '#008941', '#006FA6', '#A30059', '#FFDBE5', '#7A4900', '#0000A6',
+        '#63FFAC', '#B79762', '#004D43', '#8FB0FF', '#997D87', '#5A0007',
+        '#809693', '#FEFFE6', '#1B4400', '#4FC601', '#3B5DFF', '#4A3B53',
+        '#FF2F80', '#61615A', '#BA0900', '#6B7900', '#00C2A0', '#FFAA92',
+        '#FF90C9', '#B903AA', '#D16100', '#DDEFFF', '#000035', '#7B4F4B',
+        '#A1C299', '#300018', '#0AA6D8', '#013349', '#00846F', '#372101',
+        '#FFB500', '#C2FFED', '#A079BF', '#CC0744', '#C0B9B2', '#C2FF99',
+        '#001E09', '#00489C', '#6F0062', '#0CBD66', '#EEC3FF', '#456D75',
+        '#B77B68', '#7A87A1', '#788D66', '#885578', '#FAD09F', '#FF8A9A',
+        '#D157A0', '#BEC459', '#456648', '#0086ED', '#886F4C', '#34362D',
+        '#B4A8BD', '#00A6AA', '#452C2C', '#636375', '#A3C8C9', '#FF913F',
+        '#938A81', '#575329', '#00FECF', '#B05B6F', '#8CD0FF', '#3B9700',
+        '#04F757', '#C8A1A1', '#1E6E00', '#7900D7', '#A77500', '#6367A9',
+        '#A05837', '#6B002C', '#772600', '#D790FF', '#9B9700', '#549E79',
+        '#FFF69F', '#201625', '#72418F', '#BC23FF', '#99ADC0', '#3A2465',
+        '#922329', '#5B4534', '#FDE8DC', '#404E55', '#0089A3', '#CB7E98',
+        '#A4E804', '#324E72', '#6A3A4C', '#83AB58', '#001C1E', '#D1F7CE',
+        '#004B28', '#C8D0F6', '#A3A489', '#806C66', '#222800', '#BF5650',
+        '#E83000', '#66796D', '#DA007C', '#FF1A59', '#8ADBB4', '#1E0200',
+        '#5B4E51', '#C895C5', '#320033', '#FF6832', '#66E1D3', '#CFCDAC',
+        '#D0AC94', '#7ED379', '#012C58', '#7A7BFF', '#D68E01', '#353339',
+        '#78AFA1', '#FEB2C6', '#75797C', '#837393', '#943A4D', '#B5F4FF',
+        '#D2DCD5', '#9556BD', '#6A714A', '#001325', '#02525F', '#0AA3F7',
+        '#E98176', '#DBD5DD', '#5EBCD1', '#3D4F44', '#7E6405', '#02684E',
+        '#962B75', '#8D8546', '#9695C5', '#E773CE', '#D86A78', '#3E89BE',
+        '#CA834E', '#518A87', '#5B113C', '#55813B', '#E704C4', '#00005F',
+        '#A97399', '#4B8160', '#59738A', '#FF5DA7', '#F7C9BF', '#643127',
+        '#513A01', '#6B94AA', '#51A058', '#A45B02', '#1D1702', '#E20027',
+        '#E7AB63', '#4C6001', '#9C6966', '#64547B', '#97979E', '#006A66',
+        '#391406', '#F4D749', '#0045D2', '#006C31', '#DDB6D0', '#7C6571',
+        '#9FB2A4', '#00D891', '#15A08A', '#BC65E9', '#FFFFFE', '#C6DC99',
+        '#203B3C', '#671190', '#6B3A64', '#F5E1FF', '#FFA0F2', '#CCAA35',
+        '#374527', '#8BB400', '#797868', '#C6005A', '#3B000A', '#C86240',
+        '#29607C', '#402334', '#7D5A44', '#CCB87C', '#B88183', '#AA5199',
+        '#B5D6C3', '#A38469', '#9F94F0', '#A74571', '#B894A6', '#71BB8C',
+        '#00B433', '#789EC9', '#6D80BA', '#953F00', '#5EFF03', '#E4FFFC',
+        '#1BE177', '#BCB1E5', '#76912F', '#003109', '#0060CD', '#D20096',
+        '#895563', '#29201D', '#5B3213', '#A76F42', '#89412E', '#1A3A2A',
+        '#494B5A', '#A88C85', '#F4ABAA', '#A3F3AB', '#00C6C8', '#EA8B66',
+        '#958A9F', '#BDC9D2', '#9FA064', '#BE4700', '#658188', '#83A485',
+        '#453C23', '#47675D', '#3A3F00', '#061203', '#DFFB71', '#868E7E',
+        '#98D058', '#6C8F7D', '#D7BFC2', '#3C3E6E', '#D83D66', '#2F5D9B',
+        '#6C5E46', '#D25B88', '#5B656C', '#00B57F', '#545C46', '#866097',
+        '#365D25', '#252F99', '#00CCFF', '#674E60', '#FC009C', '#92896B',
+        '#1CE6FF'
+    ];
+
+    num_colors = rand_colors.length;
+
+    function get_default_color() {
+        //return rand_colors[0];
+        return '#EEE';
+    }
+
+    function get_random_color(i) {
+        return rand_colors[i % num_colors];
+    }
+
+    return {
+        get_default_color: get_default_color,
+        get_random_color: get_random_color
+    }
+})();
+
+/* Dendrogram color bar.
+ */
+function Dendrogram() {
+
+    var group_colors = [];
+
+    // generate random colors for the groups
+    for (var i = 0; i < 200; i++) {
+        // grab colors from the list
+        if (i === 1) {
+            group_colors[i] = Colors.get_default_color();
+        } else {
+            group_colors[i] = Colors.get_random_color(i);
+        }
+    }
+
+    /* Changes the groupings (x- and y-axis color bars).
+     */
+    function change_groups(inst_rc, inst_index) {
+        if (inst_rc === 'row') {
+            d3.selectAll('.row_class_rect')
+                .style('fill', function(d) {
+                    return group_colors[d.group[inst_index]];
+                });
+        } else {
+            d3.selectAll('.col_class_rect')
+                .style('fill', function(d) {
+                    return group_colors[d.group[inst_index]];
+                });
+        }
+    }
+
+    function color_group(i) {
+        group_colors[i];
+    }
+
+    function get_group_color(i) {
+        return group_colors[i];
+    }
+
+    return {
+        color_group: color_group,
+        get_group_color: get_group_color,
+        change_groups: change_groups
+    };
+}
+
+
 /* Functions for zooming. Should be turned into a module.
  * ----------------------------------------------------------------------- */
 function zoomed() {
@@ -681,13 +801,16 @@ function Search(nodes, prop) {
     }
 }
 
+var dendrogram;
+
 function Viz(args) {
 
-    make(args);
+    var config = Config(args);
+    make(config);
 
     return {
         remake: function() {
-            make(args);
+            make(config);
         }
     }
 }
@@ -695,10 +818,9 @@ function Viz(args) {
 
 /* The main function; makes clustergram based on user arguments.
  */
-function make(args) {
+function make(params) {
 
-    var params = Config(args),
-        network_data = args.network_data;
+    var network_data = args.network_data;
 
     if (params.transpose) {
         network_data = transpose_network(network_data);
@@ -711,70 +833,10 @@ function make(args) {
     var col_nodes = network_data.col_nodes;
     var row_nodes = network_data.row_nodes;
 
-    // colors from http://graphicdesign.stackexchange.com/revisions/3815/8
-    params.rand_colors = ['#000000', '#FF34FF', '#FFFF00', '#FF4A46',
-        '#008941', '#006FA6', '#A30059', '#FFDBE5', '#7A4900', '#0000A6',
-        '#63FFAC', '#B79762', '#004D43', '#8FB0FF', '#997D87', '#5A0007',
-        '#809693', '#FEFFE6', '#1B4400', '#4FC601', '#3B5DFF', '#4A3B53',
-        '#FF2F80', '#61615A', '#BA0900', '#6B7900', '#00C2A0', '#FFAA92',
-        '#FF90C9', '#B903AA', '#D16100', '#DDEFFF', '#000035', '#7B4F4B',
-        '#A1C299', '#300018', '#0AA6D8', '#013349', '#00846F', '#372101',
-        '#FFB500', '#C2FFED', '#A079BF', '#CC0744', '#C0B9B2', '#C2FF99',
-        '#001E09', '#00489C', '#6F0062', '#0CBD66', '#EEC3FF', '#456D75',
-        '#B77B68', '#7A87A1', '#788D66', '#885578', '#FAD09F', '#FF8A9A',
-        '#D157A0', '#BEC459', '#456648', '#0086ED', '#886F4C', '#34362D',
-        '#B4A8BD', '#00A6AA', '#452C2C', '#636375', '#A3C8C9', '#FF913F',
-        '#938A81', '#575329', '#00FECF', '#B05B6F', '#8CD0FF', '#3B9700',
-        '#04F757', '#C8A1A1', '#1E6E00', '#7900D7', '#A77500', '#6367A9',
-        '#A05837', '#6B002C', '#772600', '#D790FF', '#9B9700', '#549E79',
-        '#FFF69F', '#201625', '#72418F', '#BC23FF', '#99ADC0', '#3A2465',
-        '#922329', '#5B4534', '#FDE8DC', '#404E55', '#0089A3', '#CB7E98',
-        '#A4E804', '#324E72', '#6A3A4C', '#83AB58', '#001C1E', '#D1F7CE',
-        '#004B28', '#C8D0F6', '#A3A489', '#806C66', '#222800', '#BF5650',
-        '#E83000', '#66796D', '#DA007C', '#FF1A59', '#8ADBB4', '#1E0200',
-        '#5B4E51', '#C895C5', '#320033', '#FF6832', '#66E1D3', '#CFCDAC',
-        '#D0AC94', '#7ED379', '#012C58', '#7A7BFF', '#D68E01', '#353339',
-        '#78AFA1', '#FEB2C6', '#75797C', '#837393', '#943A4D', '#B5F4FF',
-        '#D2DCD5', '#9556BD', '#6A714A', '#001325', '#02525F', '#0AA3F7',
-        '#E98176', '#DBD5DD', '#5EBCD1', '#3D4F44', '#7E6405', '#02684E',
-        '#962B75', '#8D8546', '#9695C5', '#E773CE', '#D86A78', '#3E89BE',
-        '#CA834E', '#518A87', '#5B113C', '#55813B', '#E704C4', '#00005F',
-        '#A97399', '#4B8160', '#59738A', '#FF5DA7', '#F7C9BF', '#643127',
-        '#513A01', '#6B94AA', '#51A058', '#A45B02', '#1D1702', '#E20027',
-        '#E7AB63', '#4C6001', '#9C6966', '#64547B', '#97979E', '#006A66',
-        '#391406', '#F4D749', '#0045D2', '#006C31', '#DDB6D0', '#7C6571',
-        '#9FB2A4', '#00D891', '#15A08A', '#BC65E9', '#FFFFFE', '#C6DC99',
-        '#203B3C', '#671190', '#6B3A64', '#F5E1FF', '#FFA0F2', '#CCAA35',
-        '#374527', '#8BB400', '#797868', '#C6005A', '#3B000A', '#C86240',
-        '#29607C', '#402334', '#7D5A44', '#CCB87C', '#B88183', '#AA5199',
-        '#B5D6C3', '#A38469', '#9F94F0', '#A74571', '#B894A6', '#71BB8C',
-        '#00B433', '#789EC9', '#6D80BA', '#953F00', '#5EFF03', '#E4FFFC',
-        '#1BE177', '#BCB1E5', '#76912F', '#003109', '#0060CD', '#D20096',
-        '#895563', '#29201D', '#5B3213', '#A76F42', '#89412E', '#1A3A2A',
-        '#494B5A', '#A88C85', '#F4ABAA', '#A3F3AB', '#00C6C8', '#EA8B66',
-        '#958A9F', '#BDC9D2', '#9FA064', '#BE4700', '#658188', '#83A485',
-        '#453C23', '#47675D', '#3A3F00', '#061203', '#DFFB71', '#868E7E',
-        '#98D058', '#6C8F7D', '#D7BFC2', '#3C3E6E', '#D83D66', '#2F5D9B',
-        '#6C5E46', '#D25B88', '#5B656C', '#00B57F', '#545C46', '#866097',
-        '#365D25', '#252F99', '#00CCFF', '#674E60', '#FC009C', '#92896B',
-        '#1CE6FF'
-    ];
-
-    // get the total number of colors
-    var num_colors = params.rand_colors.length;
-
     // row groups - only add if the rows have a group attribute
     // Define the space needed for the classification of rows - includes classification triangles and rects
     params.class_room = {};
     if (params.show_dendrogram) {
-
-        // initialize group colors
-        /////////////////////////
-        params.group_colors = {};
-        // initailize group at 5
-        params.group_level = {};
-        params.group_level.row = 5;
-        params.group_level.col = 5;
 
         // make room for group rects
         params.class_room.row = 18;
@@ -782,27 +844,12 @@ function make(args) {
         // the width of the classification triangle or group rectangle
         params.class_room.symbol_width = 9;
 
-        params.group_colors.row = {};
-        // generate random colors for the groups
-        for (var i = 0; i < 200; i++) {
-            // grab colors from the list
-            if (i === 1) {
-                params.group_colors.row[i] = '#eee';
-            } else {
-                params.group_colors.row[i] = params.rand_colors[i % num_colors];
-            }
-        }
+        params.group_level = {
+            row: 5,
+            col: 5
+        };
 
-        params.group_colors.col = {};
-        // generate random colors for the groups
-        for (var j = 0; j < 200; j++) {
-            // grab colors from the list
-            if (j === 1) {
-                params.group_colors.col[j] = '#eee';
-            } else {
-                params.group_colors.col[j] = params.rand_colors[j % num_colors];
-            }
-        }
+        dendrogram = Dendrogram();
     } else {
         // do not make room for group rects
         params.class_room.row = 9;
@@ -818,7 +865,7 @@ function make(args) {
         // associate classes with colors
         params.class_colors.row = {};
         _.each(class_rows, function(c_row, i) {
-            params.class_colors.row[c_row] = params.rand_colors[i + 50 % num_colors];
+            params.class_colors.row[c_row] = Colors.get_random_color(i+50);
         });
         var class_cols = _.uniq(_.pluck(col_nodes, 'cl'));
         // associate classes with colors
@@ -827,7 +874,7 @@ function make(args) {
             if (i === 0) {
                 params.class_colors.col[c_col] = '#eee';
             } else {
-                params.class_colors.col[c_col] = params.rand_colors[i + 50 % num_colors];
+                params.class_colors.col[c_col] = Colors.get_random_color(i+50);
             }
         });
     }
@@ -1145,7 +1192,7 @@ function make(args) {
 
     // add row group labels if necessary
     //////////////////////////////////////
-    if (Utils.has(params, 'group_colors')) {
+    if (params.show_dendrogram) {
 
         // add rects for highlighting automatically identified groups
         var row_class_rect = row_triangle_ini_group
@@ -1158,7 +1205,7 @@ function make(args) {
             .attr('height', params.y_scale.rangeBand())
             .style('fill', function(d) {
                 var inst_level = params.group_level.row;
-                return params.group_colors.row[d.group[inst_level]];
+                return dendrogram.get_group_color(d.group[inst_level]);
             })
             .attr('x', function() {
                 var inst_offset = params.class_room.symbol_width + 1;
@@ -1434,7 +1481,7 @@ function make(args) {
 
     // add group labels if necessary
     //////////////////////////////////
-    if (Utils.has(params, 'group_colors')) {
+    if (params.show_dendrogram) {
         // add class label under column label
         var col_class = container_all_col
             .append('g')
@@ -1470,7 +1517,7 @@ function make(args) {
             })
             .style('fill', function(d) {
                 var inst_level = params.group_level.col;
-                return params.group_colors.col[d.group[inst_level]];
+                return dendrogram.get_group_color(d.group[inst_level]);
             });
 
         // optional column callback on click
@@ -2663,22 +2710,6 @@ function reset_visualization_size() {
     setTimeout(end_reorder, 2500);
   }
 
-  /* Changes the groupings (x- and y-axis color bars).
-   */
-  function change_groups(inst_rc, inst_index) {
-    if (inst_rc === 'row') {
-      d3.selectAll('.row_class_rect')
-        .style('fill', function(d){
-          return globals.params.group_colors.row[d.group[inst_index]];
-        });
-    } else {
-      d3.selectAll('.col_class_rect')
-        .style('fill', function(d){
-          return globals.params.group_colors.col[d.group[inst_index]];
-        });
-    }
-  }
-
   /* Utility functions
    * ----------------------------------------------------------------------- */
 
@@ -2736,6 +2767,8 @@ function reset_visualization_size() {
         reorder: reorder,
         find_gene: gene_search.find_entities,
         get_genes: gene_search.get_entities,
-        change_groups: change_groups
+        change_groups: function(inst_rc, inst_index) {
+            dendrogram.change_groups(inst_rc, inst_index);
+        }
     };
 }

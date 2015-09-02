@@ -4,6 +4,8 @@ module.exports = function(grunt) {
         '../src/_open.js',
         '../src/Utils.js',
         '../src/Config.js',
+        '../src/Colors.js',
+        '../src/Dendrogram.js',
         '../src/zoom.js',
         '../src/Search.js',
         '../src/visualization.js',

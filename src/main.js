@@ -319,22 +319,6 @@
     setTimeout(end_reorder, 2500);
   }
 
-  /* Changes the groupings (x- and y-axis color bars).
-   */
-  function change_groups(inst_rc, inst_index) {
-    if (inst_rc === 'row') {
-      d3.selectAll('.row_class_rect')
-        .style('fill', function(d){
-          return globals.params.group_colors.row[d.group[inst_index]];
-        });
-    } else {
-      d3.selectAll('.col_class_rect')
-        .style('fill', function(d){
-          return globals.params.group_colors.col[d.group[inst_index]];
-        });
-    }
-  }
-
   /* Utility functions
    * ----------------------------------------------------------------------- */
 

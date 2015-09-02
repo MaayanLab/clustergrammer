@@ -1,8 +1,6 @@
 // slider script - col
 $(function() {
 
-  var d3c;
-
   // load network
   d3.json('json/example_network.json', function(network_data){
 
@@ -50,62 +48,63 @@ $(function() {
     };
 
     // make clustergram: pass network_data and the div name where the svg should be made
-    d3c = d3_clustergram(arguments_obj);
+    var d3c = d3_clustergram(arguments_obj);
 
     $('#gene_search_box').autocomplete({
       source: d3c.get_genes()
     });
-  });
 
-  $( "#slider_col" ).slider({
-    value:0.5,
-    min: 0,
-    max: 1,
-    step: 0.1,
-    slide: function( event, ui ) {
 
-      // get inst_index from slider
-      $( "#amount" ).val( "$" + ui.value );
-      var inst_index = ui.value*10;
+    $( "#slider_col" ).slider({
+      value:0.5,
+      min: 0,
+      max: 1,
+      step: 0.1,
+      slide: function( event, ui ) {
 
-      // change group sizes
-      d3c.change_groups('col',inst_index)
+        // get inst_index from slider
+        $( "#amount" ).val( "$" + ui.value );
+        var inst_index = ui.value*10;
 
-    }
-  });
+        // change group sizes
+        d3c.change_groups('col',inst_index)
 
-  $( "#amount" ).val( "$" + $( "#slider_col" ).slider( "value" ) );
+      }
+    });
 
-  $( "#slider_row" ).slider({
-    value:0.5,
-    min: 0,
-    max: 1,
-    step: 0.1,
-    slide: function( event, ui ) {
-      $( "#amount" ).val( "$" + ui.value );
-      var inst_index = ui.value*10;
+    $( "#amount" ).val( "$" + $( "#slider_col" ).slider( "value" ) );
 
-      // change group sizes
-      d3c.change_groups('row',inst_index)
-    }
-  });
-  $( "#amount" ).val( "$" + $( "#slider_row" ).slider( "value" ) );
+    $( "#slider_row" ).slider({
+      value:0.5,
+      min: 0,
+      max: 1,
+      step: 0.1,
+      slide: function( event, ui ) {
+        $( "#amount" ).val( "$" + ui.value );
+        var inst_index = ui.value*10;
 
-  // submit genes button
-  $('#gene_search_box').keyup(function(e) {
-    if (e.keyCode === 13) {
-      var search_gene = $('#gene_search_box').val();
-      d3c.find_gene(search_gene);
-    }
-  });
+        // change group sizes
+        d3c.change_groups('row',inst_index)
+      }
+    });
+    $( "#amount" ).val( "$" + $( "#slider_row" ).slider( "value" ) );
 
-  $('#submit_gene_button').click(function() {
-    var gene = $('#gene_search_box').val();
-    d3c.find_gene(gene);
-  });
+    // submit genes button
+    $('#gene_search_box').keyup(function(e) {
+      if (e.keyCode === 13) {
+        var search_gene = $('#gene_search_box').val();
+        d3c.find_gene(search_gene);
+      }
+    });
 
-  $('#toggle_order .btn').click(function(evt) {
-    var order_id = $(evt.target).find('input').attr('id').replace('_button', '');
-    d3c.reorder(order_id);
+    $('#submit_gene_button').click(function() {
+      var gene = $('#gene_search_box').val();
+      d3c.find_gene(gene);
+    });
+
+    $('#toggle_order .btn').click(function(evt) {
+      var order_id = $(evt.target).find('input').attr('id').replace('_button', '');
+      d3c.reorder(order_id);
+    });
   });
 });
