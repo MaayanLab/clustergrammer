@@ -2735,7 +2735,7 @@ function d3_clustergram(args) {
   function zoom_and_highlight_found_gene(search_gene) {
 
     // get parameters
-    var params = d3_clustergram.params;
+    var params = globals.params;
 
     // unhighlight and unbold all genes
     d3.selectAll('.row_label_text')
@@ -2878,7 +2878,6 @@ function d3_clustergram(args) {
   /* Find a gene (row) in the clustergram.
    */
   function find_gene(search_gene) {
-    // get the searched gene
     if (globals.params.all_genes.indexOf(search_gene) !== -1) {
       zoom_and_highlight_found_gene(search_gene);
     }

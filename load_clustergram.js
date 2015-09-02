@@ -92,8 +92,13 @@ $(function() {
   $('#gene_search_box').keyup(function(e) {
     if (e.keyCode === 13) {
       var search_gene = $('#gene_search_box').val();
-      d3c.highlight_gene(search_gene);
+      d3c.find_gene(search_gene);
     }
+  });
+
+  $('#submit_gene_button').click(function() {
+    var gene = $('#gene_search_box').val();
+    d3c.find_gene(gene);
   });
 
   $('#toggle_order .btn').click(function(evt) {
