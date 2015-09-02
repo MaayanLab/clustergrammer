@@ -1178,7 +1178,7 @@ function d3_clustergram(args) {
     params.zoom.translate([params.clust.margin.left, params.clust.margin.top]);
 
     // resize window
-    d3.select(window).on('resize', timeout_resize);
+    d3.select(window).on('resize', resize_to_screen);
 
     // disable double-click zoom: double click should reset zoom level
     // do this for all svg elements
@@ -2701,35 +2701,6 @@ function d3_clustergram(args) {
 
   }
 
-  // resize clustergram with screensize change
-  var doit;
-
-  function timeout_resize() {
-
-    // get params
-    var params = globals.params;
-
-    // only resize if allowed
-    if (params.resize === true) {
-
-      // clear timeout
-      clearTimeout(doit);
-
-      // // set up wait message before request is made
-      // $.blockUI({ css: {
-      //         border: 'none',
-      //         padding: '15px',
-      //         backgroundColor: '#000',
-      //         '-webkit-border-radius': '10px',
-      //         '-moz-border-radius': '10px',
-      //         opacity: .8,
-      //         color: '#fff'
-      //     } });
-
-      doit = setTimeout(reset_visualization_size, 500);
-
-    }
-  }
 
   // zoom into and highlight the found the gene
   function zoom_and_highlight_found_gene(search_gene) {
@@ -2766,39 +2737,6 @@ function d3_clustergram(args) {
     // pan_x, pan_y, zoom
     two_translate_zoom(0, pan_dy, params.zoom_switch);
   }
-
-  // transpose matrix funciton
-  function transpose_network(net) {
-    var tnet = {};
-    tnet.row_nodes = net.col_nodes;
-    tnet.col_nodes = net.row_nodes;
-    tnet.links = [];
-
-    for (var i = 0; i < net.links.length; i++) {
-      var inst_link = {};
-      inst_link.source = net.links[i].target;
-      inst_link.target = net.links[i].source;
-      inst_link.value = net.links[i].value;
-
-      // optional highlight
-      if (has(net.links[i], 'highlight')) {
-        inst_link.highlight = net.links[i].highlight;
-      }
-      if (has(net.links[i], 'value_up')) {
-        inst_link.value_up = net.links[i].value_up;
-      }
-      if (has(net.links[i], 'value_dn')) {
-        inst_link.value_dn = net.links[i].value_dn;
-      }
-      if (has(net.links[i], 'info')) {
-        inst_link.info = net.links[i].info;
-      }
-
-      tnet.links.push(inst_link);
-    }
-    return tnet;
-  }
-
 
   /* API functions
    * ----------------------------------------------------------------------- */
@@ -2913,6 +2851,51 @@ function d3_clustergram(args) {
    */
   function has(obj, key) {
     return obj != null && hasOwnProperty.call(obj, key);
+  }
+
+  /* Resize clustergram to fit screen size.
+   */
+  function resize_to_screen() {
+    // Only resize if allowed
+    if (globals.params.resize) {
+      setTimeout(reset_visualization_size, 500);
+    }
+  }
+
+  /* Transpose network.
+   */
+  function transpose_network(net) {
+    var tnet = {},
+        inst_link,
+        i;
+
+    tnet.row_nodes = net.col_nodes;
+    tnet.col_nodes = net.row_nodes;
+    tnet.links = [];
+
+    for (i = 0; i < net.links.length; i++) {
+      inst_link = {};
+      inst_link.source = net.links[i].target;
+      inst_link.target = net.links[i].source;
+      inst_link.value = net.links[i].value;
+
+      // Optional highlight.
+      if (has(net.links[i], 'highlight')) {
+        inst_link.highlight = net.links[i].highlight;
+      }
+      if (has(net.links[i], 'value_up')) {
+        inst_link.value_up = net.links[i].value_up;
+      }
+      if (has(net.links[i], 'value_dn')) {
+        inst_link.value_dn = net.links[i].value_dn;
+      }
+      if (has(net.links[i], 'info')) {
+        inst_link.info = net.links[i].info;
+      }
+      tnet.links.push(inst_link);
+    }
+
+    return tnet;
   }
 
 
