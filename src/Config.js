@@ -77,8 +77,10 @@ function Config(args) {
     config.inst_order = 'clust';
   }
 
-  config.show_dendrogram = Utils.has(args.network_data.row_nodes[0], 'group') || Utils.has(col_nodes[0], 'group');
-  config.show_categories = Utils.has(args.network_data.row_nodes[0], 'cl') || Utils.has(col_nodes[0], 'cl');
+
+
+  config.show_dendrogram = Utils.has(args.network_data.row_nodes[0], 'group') || Utils.has(args.network_data.col_nodes[0], 'group');
+  config.show_categories = Utils.has(args.network_data.row_nodes[0], 'cl') || Utils.has(args.network_data.col_nodes[0], 'cl');
 
   // row groups - only add if the rows have a group attribute
   // Define the space needed for the classification of rows - includes classification triangles and rects

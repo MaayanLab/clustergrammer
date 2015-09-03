@@ -16,7 +16,7 @@ function Viz(args) {
   function make(params) {
 
     var reorder = Reorder();
-    var globals.params = params;
+    globals.params = params;
     var network_data = args.network_data;
 
     if (params.transpose) {
