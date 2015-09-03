@@ -29,4 +29,5 @@ var Colors = (function() {
         get_random_color: get_random_color,
         get_num_colors: get_num_colors
     }
+    
 })();

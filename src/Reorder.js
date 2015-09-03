@@ -68,7 +68,6 @@ function Reorder(){
       })
       .each('end', function() {
         // set running transition to 0
-        console.log('finished with transition ');
         globals.params.run_trans = false;
       });
 

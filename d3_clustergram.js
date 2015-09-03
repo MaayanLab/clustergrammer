@@ -81,7 +81,7 @@ function Config(args) {
         uni_margin_row: 2
     };
 
-    // Mixin defaults with  user-defined arguments.
+    // Mixin defaults with user-defined arguments.
     config = Utils.extend(defaults, args);
 
     // super label width - the labels are 20px wide if they are included
@@ -105,7 +105,10 @@ function Config(args) {
     if (config.transpose) {
         config.super.row = args.col_label;
         config.super.col = args.row_label;
-    } else if (!Utils.is_undefined(args.order) && is_supported_order(args.order)) {
+    } 
+
+    // initialize cluster ordering 
+    if (!Utils.is_undefined(args.order) && is_supported_order(args.order)) {
         config.inst_order = args.order;
     } else {
         config.inst_order = 'clust';
@@ -154,7 +157,9 @@ var Colors = (function() {
         get_random_color: get_random_color,
         get_num_colors: get_num_colors
     }
+    
 })();
+
 
 /* Dendrogram color bar.
  */
@@ -2064,7 +2069,6 @@ function Reorder(){
       })
       .each('end', function() {
         // set running transition to 0
-        console.log('finished with transition ');
         globals.params.run_trans = false;
       });
 
