@@ -1,6 +1,10 @@
 
 /* API
  * ----------------------------------------------------------------------- */
+ 
+// reorder is defined here for the API
+var reorder = Reorder();
+
 return {
     reorder: reorder,
     find_gene: gene_search.find_entities,

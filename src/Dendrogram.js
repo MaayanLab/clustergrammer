@@ -8,6 +8,7 @@ function Dendrogram(type, params, elem) {
     i;
 
   build_color_groups();
+
   if (type === 'row') {
     dom_class = 'row_class_rect';
     build_row_dendro();
@@ -37,7 +38,7 @@ function Dendrogram(type, params, elem) {
   }
 
   function color_group(j) {
-    group_colors[j];
+    return group_colors[j];
   }
 
   function get_group_color(j) {

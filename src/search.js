@@ -16,9 +16,9 @@ function Search(nodes, prop) {
      */
     function find_entities(search_term) {
         if (entities.indexOf(search_term) !== -1) {
-            un_hightlight_entities();
+            un_highlight_entities();
             zoom_and_highlight_found_entity(search_term);
-            higlight_entity(search_term);
+            highlight_entity(search_term);
         }
     }
 
@@ -32,12 +32,11 @@ function Search(nodes, prop) {
         two_translate_zoom(0, pan_dy, globals.params.zoom_switch);
     }
 
-    function un_hightlight_entities() {
-        d3.selectAll('.row_label_text').select('text').style('font-weight', 'normal');
+    function un_highlight_entities() {
         d3.selectAll('.row_label_text').select('rect').style('opacity', 0);
     }
 
-    function higlight_entity(search_term) {
+    function highlight_entity(search_term) {
         // highlight row name
         d3.selectAll('.row_label_text')
             .filter(function(d) {
