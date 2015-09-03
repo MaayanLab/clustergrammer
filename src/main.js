@@ -1,6 +1,4 @@
 
-
-
   // This object is a temporary hack to hold all global state for this module.
   var globals = {};
 
@@ -16,7 +14,6 @@
   var viz = Viz(args);
 
   // parent_div: size and position svg container - svg_div
-  //////////////////////////////////////////////
   function parent_div_size_pos(params) {
 
     if (params.resize) {
@@ -59,47 +56,56 @@
   // reorder columns with row click
   function reorder_click_row() {
 
-    // set running transition value
-    globals.params.run_trans = true;
+    // // set running transition value
+    // globals.params.run_trans = true;
 
-    // get parameters
-    var params = globals.params;
 
-    // get row_nodes from global variable
-    var row_nodes = globals.network_data.row_nodes;
-    var col_nodes = globals.network_data.col_nodes;
+    // // get row_nodes from global variable
+    // var row_nodes = globals.network_data.row_nodes;
+    // var col_nodes = globals.network_data.col_nodes;
+
+    var tmp_sort;
 
     // get inst row (gene)
     var inst_gene = d3.select(this).select('text').text();
 
-    // highlight clicked column
-    // first un-highlight all others
-    d3.selectAll('.rol_label_text').select('text')
-      .style('font-weight', 'normal');
-    // remove previous id
-    d3.select('#clicked_row')
-      .attr('id', '');
+    // sort matrix by row 
+    tmp_sort = viz.sort_by_rc('row', inst_gene);
 
-    // find the row number of this term from row_nodes
-    // gather row node names
-    var tmp_arr = [];
-    _.each(row_nodes, function(node) {
-      tmp_arr.push(node.name);
-    });
+    console.log(tmp_sort);
 
-    // find index
-    var inst_row = _.indexOf(tmp_arr, inst_gene);
+    // probably remove 
+    /////////////////////////////
+    // // highlight clicked column
+    // // first un-highlight all others
+    // d3.selectAll('.rol_label_text').select('text')
+    //   .style('font-weight', 'normal');
+    // // remove previous id
+    // d3.select('#clicked_row')
+    //   .attr('id', '');
 
-    // gather the values of the input genes
-    tmp_arr = [];
-    _.each(col_nodes, function(node, index) {
-      tmp_arr.push(params.matrix[inst_row][index].value);
-    });
+    // // find the index of the row 
+    // var tmp_arr = [];
+    // _.each(row_nodes, function(node) {
+    //   tmp_arr.push(node.name);
+    // });
 
-    // sort the rows
-    var tmp_sort = d3.range(tmp_arr.length).sort(function(a, b) {
-      return tmp_arr[b] - tmp_arr[a];
-    });
+    // // find index
+    // var inst_row = _.indexOf(tmp_arr, inst_gene);
+
+    // // gather the values of the input genes
+    // tmp_arr = [];
+    // _.each(col_nodes, function(node, index) {
+    //   tmp_arr.push(params.matrix[inst_row][index].value);
+    // });
+
+    // // sort the rows
+    // var tmp_sort = d3.range(tmp_arr.length).sort(function(a, b) {
+    //   return tmp_arr[b] - tmp_arr[a];
+    // });
+
+    // get parameters
+    var params = globals.params;
 
     // resort the columns (resort x)
     ///////////////////////////////////
@@ -109,7 +115,8 @@
     ////////////////////
 
     // define the t variable as the transition function
-    var t = viz.reorder();
+    var t = viz.get_clust_group()
+      .transition().duration(2500);
 
     // reorder matrix
     t.selectAll('.tile')
@@ -194,7 +201,8 @@
 
     // reorder
     // define the t variable as the transition function
-    var t = viz.reorder();
+    var t = viz.get_clust_group()
+      .transition().duration(2500);
 
     // reorder matrix
     t.selectAll('.row')
@@ -270,7 +278,8 @@
     }
 
     // define the t variable as the transition function
-    var t = viz.reorder();
+    var t = viz.get_clust_group()
+      .transition().duration(2500);
 
     // reorder matrix
     t.selectAll('.row')

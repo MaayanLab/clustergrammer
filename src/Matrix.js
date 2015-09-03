@@ -369,6 +369,17 @@ function Matrix(network_data, svg_elem, params) {
     return {
         get_clust_group: function() {
             return clust_group;
+        },
+        get_matrix: function(){
+            return matrix;
+        },
+        get_nodes: function(type){
+            if (type === 'row'){
+                var nodes = network_data.row_nodes;
+            } else {
+                var nodes = network_data.col_nodes;
+            }
+            return nodes;
         }
     };
 }
