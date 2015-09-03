@@ -804,7 +804,6 @@ function Viz(args) {
     }
 
     // Variable Label Widths
-    //////////////////////////
     // based on the length of the row/col labels - longer labels mean more space given
     // get row col data
     var col_nodes = network_data.col_nodes;
@@ -816,12 +815,15 @@ function Viz(args) {
     var col_max_char = _.max(col_nodes, function(inst) {
       return inst.name.length;
     }).name.length;
+
     // define label scale parameters: the more characters in the longest name, the larger the margin
     var min_num_char = 5;
     var max_num_char = 60;
     var min_label_width = 120;
     var max_label_width = 320;
-    var label_scale = d3.scale.linear().domain([min_num_char, max_num_char])
+    var label_scale = d3.scale
+      .linear()
+      .domain([min_num_char, max_num_char])
       .range([min_label_width, max_label_width]).clamp('true');
 
     // rotated column labels - approx trig
@@ -836,7 +838,8 @@ function Viz(args) {
     params.norm_label.margin = {};
     params.norm_label.margin.left = params.grey_border_width + params.super_label_width;
     params.norm_label.margin.top = params.grey_border_width + params.super_label_width;
-    // norm label background width, norm-label-width plus class-width plus maring
+
+    // norm label background width, norm-label-width plus class-width plus margin
     params.norm_label.background = {};
     params.norm_label.background.row = params.norm_label.width.row + params
       .class_room.row + params.uni_margin;
@@ -847,15 +850,10 @@ function Viz(args) {
     params.clust = {};
     params.clust.margin = {};
     // clust margin is the margin of the norm_label plus the width of the entire norm_label group
-    params.clust.margin.left = params.norm_label.margin.left + params.norm_label
-      .background.row;
-    params.clust.margin.top = params.norm_label.margin.top + params.norm_label
-      .background.col;
+    params.clust.margin.left = params.norm_label.margin.left + params.norm_label.background.row;
+    params.clust.margin.top = params.norm_label.margin.top + params.norm_label.background.col;
 
 
-    // calc clustergram dimensions
-    /////////////////////////////////////
-    // prevent narrow tiles and prevent stretched rows
 
     // svg size: less than svg size
     ///////////////////////////////////
@@ -987,96 +985,39 @@ function Viz(args) {
     var min_node_num = 10;
     var max_node_num = 3000;
 
-    // min and max font sizes
-    var min_fs = 0.05;
-    var max_fs = 15;
-
     // min and max expected screen widths
     var min_viz_width = 400;
     var max_viz_width = 2000;
 
-    // make a scale that will set the initial font size based on the number of nodes
-    d3
-      .scale
-      .log()
-      .domain([min_node_num, max_node_num])
-      .range([max_fs, min_fs])
-      .clamp('true');
     // scale font offset, when the font size is the height of the rects then it should be almost the full width of the rects
     // when the font size is small, then the offset should be almost equal to half the rect width
-    params.scale_font_offset = d3.scale.linear().domain([1, 0]).range([0.8,
-      0.5
-    ]);
-
-    // controls how much the font size increases during zooming
-    // 1: do not increase font size while zooming
-    // 0: increase font size while zooming
-    // allow some increase in font size when zooming
-    var min_fs_zoom = 0.95;
-    // allow full increase in font size when zooming
-    var max_fs_zoom = 0.0;
-    // make a scale that will control how the font size changes with zooming based on the number of nodes
-    var scale_reduce_font_size_factor = d3.scale.log().domain([min_node_num,
-      max_node_num
-    ]).range([min_fs_zoom, max_fs_zoom]).clamp('true');
-
-    // define screen width font size scale
-    // having a small screen width should reduce the font size of the columns
-    // this will be compensated by increasing the available real zoom
-    //!! this can be improved
-
-    // scale_fs_screen_width
-    d3
-      .scale
-      .linear()
-      .domain([min_viz_width, max_viz_width])
-      .range([0.75, 1.15])
-      .clamp('true');
-
-    // scale_fs_screen_height
-    d3
-      .scale
-      .linear()
-      .domain([min_viz_width, max_viz_width])
-      .range([0.75, 1.15])
-      .clamp('true');
+    params.scale_font_offset = d3.scale
+      .linear().domain([1, 0])
+      .range([0.8,0.5]);
 
     // the default font sizes are set here
-    // params.default_fs_row = scale_font_size(row_nodes.length)* scale_fs_screen_height(params.clust.dim.height);
     params.default_fs_row = params.y_scale.rangeBand() * 0.9;
-    // the colum font size is scaled by the width
-    //!! make this local later
-    // params.default_fs_col = scale_font_size(col_nodes.length)* scale_fs_screen_width(params.clust.dim.width);
     params.default_fs_col = params.x_scale.rangeBand() * 0.7;
 
-    // font size zooming parameters
+    // initialize font size zooming parameters
     params.zoom_scale_font = {};
     params.zoom_scale_font.row = 1;
     params.zoom_scale_font.col = 1;
 
-
-    // // correct for forcing the tiles to be squares - if they are forced, then use the col font size for the row
-    // if (params.force_square === 1){
-    //   // scale the row font size by the col scaling
-    //   params.default_fs_row = params.default_fs_col;
-    // }
-
-    // calculate the reduce font-size factor: 0 for no reduction in font size and 1 for full reduction of font size
-    params.reduce_font_size = {};
-    params.reduce_font_size.row = scale_reduce_font_size_factor(row_nodes.length);
-    params.reduce_font_size.col = scale_reduce_font_size_factor(col_nodes.length);
-
     // set up the real zoom (2d zoom) as a function of the number of col_nodes
     // since these are the nodes that are zoomed into in 2d zooming
-    var real_zoom_scale_col = d3.scale.linear().domain([min_node_num,
-      max_node_num
-    ]).range([2, 5]).clamp('true');
+    var real_zoom_scale_col = d3.scale
+      .linear()
+      .domain([min_node_num,max_node_num])
+      .range([2, 10]).clamp('true');
 
     // scale the zoom based on the screen size
     // smaller screens can zoom in more, compensates for reduced font size with small screen
-    var real_zoom_scale_screen = d3.scale.linear().domain([min_viz_width,
-      max_viz_width
-    ]).range([2, 1]).clamp('true');
+    var real_zoom_scale_screen = d3.scale
+      .linear()
+      .domain([min_viz_width,max_viz_width])
+      .range([2, 1]).clamp('true');
+
     // calculate the zoom factor - the more nodes the more zooming allowed
     params.real_zoom = real_zoom_scale_col(col_nodes.length) *
       real_zoom_scale_screen(params.clust.dim.width);
@@ -1085,7 +1026,6 @@ function Viz(args) {
     var max_link = _.max(network_data.links, function(d) {
       return Math.abs(d.value);
     });
-
 
     // set opacity_scale
     // input domain of 0 means set the domain automatically
@@ -1112,18 +1052,14 @@ function Viz(args) {
     // not running a transition
     params.run_trans = false;
 
-    // console.log(network_data.links[0])
-    // define tile type: rect, group
+    
+    // type type: simple or group 
     // rect is the default faster and simpler option
     // group is the optional slower and more complex option that is activated with: highlighting or split tiles
-    // if ( Utils.has(network_data.links[0], 'value_up') || Utils.has(network_data.links[0], 'highlight') ){
-    if (Utils.has(network_data.links[0], 'value_up') || Utils.has(network_data.links[
-      0], 'highlight')) {
+    if (Utils.has(network_data.links[0], 'value_up') || Utils.has(network_data.links[0], 'highlight')) {
       params.tile_type = 'group';
-      // console.log('making group tiles');
     } else {
       params.tile_type = 'simple';
-      // console.log('making group tiles');
     }
 
     // check if rects should be highlighted
