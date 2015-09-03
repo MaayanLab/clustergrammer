@@ -285,6 +285,10 @@ function Dendrogram(type, params, elem) {
 }
 
 
+function Matrix() {
+
+}
+
 /* Functions for zooming. Should be turned into a module.
  * ----------------------------------------------------------------------- */
 function zoomed() {
