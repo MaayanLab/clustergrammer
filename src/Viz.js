@@ -7,7 +7,8 @@ function Viz(args) {
   matrix,
   row_dendrogram,
   col_dendrogram,
-  reorder;
+  reorder,
+  zoom;
 
   make(config);
 
@@ -56,10 +57,14 @@ function Viz(args) {
     d3.select('#footer_div')
       .style('margin-left', '0px');
 
+    // instantiate zoom object 
+    zoom = Zoom();
+
     // define the variable zoom, a d3 method
-    params.zoom = d3.behavior.zoom().scaleExtent([1, params.real_zoom *
-    params.zoom_switch
-    ]).on('zoom', zoomed);
+    params.zoom = d3.behavior
+      .zoom()
+      .scaleExtent([1, params.real_zoom * params.zoom_switch])
+      .on('zoom', zoom.zoomed);
 
     // make outer group for clust_group - this will position clust_group once
     var svg_group = d3.select('#' + params.svg_div_id)
@@ -70,6 +75,12 @@ function Viz(args) {
       // the height is reduced by more than the width because the tiles go right up to the bottom border
       .attr('height', params.svg_dim.height);
 
+    // call zooming on the entire svg
+    if (params.do_zoom) {
+      svg_group.call(params.zoom);
+    }
+
+    // make the matrix 
     matrix = Matrix(network_data, svg_group, params);
 
     // append background rect if necessary to control background color
@@ -80,11 +91,6 @@ function Viz(args) {
       .attr('height', params.svg_dim.height)
       .style('fill', params.background_color);
       console.log('change the background color ');
-    }
-
-    // call zoomingoom on the entire svg
-    if (params.do_zoom) {
-      svg_group.call(params.zoom);
     }
 
 
@@ -766,7 +772,7 @@ function Viz(args) {
       .on('dblclick', function() {
       // apply the following two translate zoom to reset zoom
       // programatically
-      two_translate_zoom(0, 0, 1);
+      zoom.two_translate_zoom(0, 0, 1);
       });
   }
 
@@ -1187,40 +1193,40 @@ function Viz(args) {
   }
 
   /* Transpose network.
- */
-function transpose_network(net) {
-  var tnet = {},
-      inst_link,
-      i;
+   */
+  function transpose_network(net) {
+    var tnet = {},
+        inst_link,
+        i;
 
-  tnet.row_nodes = net.col_nodes;
-  tnet.col_nodes = net.row_nodes;
-  tnet.links = [];
+    tnet.row_nodes = net.col_nodes;
+    tnet.col_nodes = net.row_nodes;
+    tnet.links = [];
 
-  for (i = 0; i < net.links.length; i++) {
-    inst_link = {};
-    inst_link.source = net.links[i].target;
-    inst_link.target = net.links[i].source;
-    inst_link.value = net.links[i].value;
+    for (i = 0; i < net.links.length; i++) {
+      inst_link = {};
+      inst_link.source = net.links[i].target;
+      inst_link.target = net.links[i].source;
+      inst_link.value = net.links[i].value;
 
-    // Optional highlight.
-    if (Utils.has(net.links[i], 'highlight')) {
-      inst_link.highlight = net.links[i].highlight;
+      // Optional highlight.
+      if (Utils.has(net.links[i], 'highlight')) {
+        inst_link.highlight = net.links[i].highlight;
+      }
+      if (Utils.has(net.links[i], 'value_up')) {
+        inst_link.value_up = net.links[i].value_up;
+      }
+      if (Utils.has(net.links[i], 'value_dn')) {
+        inst_link.value_dn = net.links[i].value_dn;
+      }
+      if (Utils.has(net.links[i], 'info')) {
+        inst_link.info = net.links[i].info;
+      }
+      tnet.links.push(inst_link);
     }
-    if (Utils.has(net.links[i], 'value_up')) {
-      inst_link.value_up = net.links[i].value_up;
-    }
-    if (Utils.has(net.links[i], 'value_dn')) {
-      inst_link.value_dn = net.links[i].value_dn;
-    }
-    if (Utils.has(net.links[i], 'info')) {
-      inst_link.info = net.links[i].info;
-    }
-    tnet.links.push(inst_link);
+
+    return tnet;
   }
-
-  return tnet;
-}
 
   return {
     remake: function() {
@@ -1241,7 +1247,8 @@ function transpose_network(net) {
     },
     get_nodes: function(type){
       return matrix.get_nodes(type);
-    }
+    },
+    two_translate_zoom: zoom.two_translate_zoom
   }
 
 }
