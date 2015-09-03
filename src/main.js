@@ -13,6 +13,5 @@ var globals = {};
 // viz is scoped globally 
 var viz = Viz(args);
 
-
 // highlight resource types - set up type/color association
 var gene_search = Search(globals.network_data.row_nodes, 'name');
