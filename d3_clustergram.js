@@ -360,41 +360,37 @@ function Matrix(network_data, svg_elem, params) {
 
   function draw_grid_lines() {
 
-  // append horizontal lines 
-  var horz_lines = clust_group
-    .selectAll('.horz_lines')
-    .data(row_nodes)
-    .enter()
-    .append('g')
-    .attr('class','horz_lines')
-    .attr('transform', function(d, index) {
-        return 'translate(0,' + params.y_scale(index) + ') rotate(0)';
-    })
-    .append('line')
-    .attr('x1',0)
-    .attr('x2',params.clust.dim.width)
-    .style('stroke-width', params.border_width/params.zoom_switch+'px')
-    .style('stroke','white')
+    // append horizontal lines 
+    clust_group
+      .selectAll('.horz_lines')
+      .data(row_nodes)
+      .enter()
+      .append('g')
+      .attr('class','horz_lines')
+      .attr('transform', function(d, index) {
+          return 'translate(0,' + params.y_scale(index) + ') rotate(0)';
+      })
+      .append('line')
+      .attr('x1',0)
+      .attr('x2',params.clust.dim.width)
+      .style('stroke-width', params.border_width/params.zoom_switch+'px')
+      .style('stroke','white')
 
-
-  // append vertical line groups
-  var vert_lines = clust_group
-    .selectAll('.vert_lines')
-    .data(col_nodes)
-    .enter()
-    .append('g')
-    .attr('class', 'vert_lines')
-    .attr('transform', function(d, index) {
-        return 'translate(' + params.x_scale(index) + ') rotate(-90)';
-    });
-
-  // add vertical lines
-  vert_lines
-    .append('line')
-    .attr('x1', 0)
-    .attr('x2', -params.clust.dim.height)
-    .style('stroke-width', params.border_width + 'px')
-    .style('stroke', 'white');
+    // append vertical line groups
+    clust_group
+      .selectAll('.vert_lines')
+      .data(col_nodes)
+      .enter()
+      .append('g')
+      .attr('class', 'vert_lines')
+      .attr('transform', function(d, index) {
+          return 'translate(' + params.x_scale(index) + ') rotate(-90)';
+      })
+      .append('line')
+      .attr('x1', 0)
+      .attr('x2', -params.clust.dim.height)
+      .style('stroke-width', params.border_width + 'px')
+      .style('stroke', 'white');
   }
 
   // make each row in the clustergram
@@ -822,16 +818,11 @@ function Viz(args) {
     // Begin Making Visualization
     /////////////////////////////////
 
-    // might save global data to specific object in case a user wants
-    // to have more than one clustergram
-    // // initialize an object with the name svg_div_id
-    // d3_clustergram['params_'+svg_div_id] = {}
-
     // remove any previous visualizations
     d3.select('#main_svg').remove();
 
     // size and position the outer div first
-    //////////////////////////////////////////
+    
     // only resize if allowed
     parent_div_size_pos(params);
 
@@ -1758,7 +1749,7 @@ function Viz(args) {
     //////////////////////////////
 
     // border_width - width of white borders around tiles
-    params.border_width = params.x_scale.rangeBand() / 16.66;
+    params.border_width = params.x_scale.rangeBand() / 40;
 
     // zoom_switch from 1 to 2d zoom
     params.zoom_switch = (params.clust.dim.width / col_nodes.length) / (

@@ -80,16 +80,11 @@ function Viz(args) {
     // Begin Making Visualization
     /////////////////////////////////
 
-    // might save global data to specific object in case a user wants
-    // to have more than one clustergram
-    // // initialize an object with the name svg_div_id
-    // d3_clustergram['params_'+svg_div_id] = {}
-
     // remove any previous visualizations
     d3.select('#main_svg').remove();
 
     // size and position the outer div first
-    //////////////////////////////////////////
+    
     // only resize if allowed
     parent_div_size_pos(params);
 
@@ -1016,7 +1011,7 @@ function Viz(args) {
     //////////////////////////////
 
     // border_width - width of white borders around tiles
-    params.border_width = params.x_scale.rangeBand() / 16.66;
+    params.border_width = params.x_scale.rangeBand() / 40;
 
     // zoom_switch from 1 to 2d zoom
     params.zoom_switch = (params.clust.dim.width / col_nodes.length) / (
