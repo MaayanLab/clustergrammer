@@ -2,8 +2,7 @@
 var Colors = (function() {
 
     // colors from http://graphicdesign.stackexchange.com/revisions/3815/8
-    var rand_colors,
-        num_colors;
+    var rand_colors;
 
     rand_colors = [
         '#000000', '#FF34FF', '#FFFF00', '#FF4A46',
@@ -54,19 +53,22 @@ var Colors = (function() {
         '#1CE6FF'
     ];
 
-    num_colors = rand_colors.length;
-
     function get_default_color() {
         //return rand_colors[0];
         return '#EEE';
     }
 
     function get_random_color(i) {
-        return rand_colors[i % num_colors];
+        return rand_colors[i % get_num_colors()];
+    }
+
+    function get_num_colors() {
+        return rand_colors.length;
     }
 
     return {
         get_default_color: get_default_color,
-        get_random_color: get_random_color
+        get_random_color: get_random_color,
+        get_num_colors: get_num_colors
     }
 })();

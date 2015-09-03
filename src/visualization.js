@@ -1,5 +1,6 @@
 
-var dendrogram;
+var row_dendrogram,
+    col_dendrogram;
 
 function Viz(args) {
 
@@ -47,7 +48,6 @@ function make(params) {
             col: 5
         };
 
-        dendrogram = Dendrogram();
     } else {
         // do not make room for group rects
         params.class_room.row = 9;
@@ -392,23 +392,7 @@ function make(params) {
     //////////////////////////////////////
     if (params.show_dendrogram) {
 
-        // add rects for highlighting automatically identified groups
-        var row_class_rect = row_triangle_ini_group
-            .append('rect')
-            .attr('class', 'row_class_rect')
-            .attr('width', function() {
-                var inst_width = params.class_room.symbol_width - 1;
-                return inst_width + 'px';
-            })
-            .attr('height', params.y_scale.rangeBand())
-            .style('fill', function(d) {
-                var inst_level = params.group_level.row;
-                return dendrogram.get_group_color(d.group[inst_level]);
-            })
-            .attr('x', function() {
-                var inst_offset = params.class_room.symbol_width + 1;
-                return inst_offset + 'px';
-            });
+        row_dendrogram = Dendrogram('row', params, row_triangle_ini_group);
 
         // optional row callback on click
         if (typeof params.click_group === 'function') {
@@ -704,19 +688,7 @@ function make(params) {
                 return 'translate(' + params.x_scale(index) + ',0)';
             });
 
-        // add rects for highlighting - dendrogram-like
-        col_class_ini_group
-            .append('rect')
-            .attr('class', 'col_class_rect')
-            .attr('width', params.x_scale.rangeBand())
-            .attr('height', function() {
-                var inst_height = params.class_room.col - 1;
-                return inst_height;
-            })
-            .style('fill', function(d) {
-                var inst_level = params.group_level.col;
-                return dendrogram.get_group_color(d.group[inst_level]);
-            });
+        col_dendrogram = Dendrogram('col', params, col_class_ini_group);
 
         // optional column callback on click
         if (typeof params.click_group === 'function') {
