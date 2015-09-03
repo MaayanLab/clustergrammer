@@ -287,388 +287,399 @@ function Dendrogram(type, params, elem) {
 
 function Matrix(network_data, svg_elem, params) {
 
-    var text,
-        matrix = [],
-        row_nodes = network_data.row_nodes,
-        col_nodes = network_data.col_nodes,
-        clust_group;
+  var matrix = [],
+  row_nodes = network_data.row_nodes,
+  col_nodes = network_data.col_nodes,
+  clust_group;
 
-    _.each(row_nodes, function(tmp, row_index) {
-        matrix[row_index] = d3.range(col_nodes.length).map(function(col_index) {
-            return {
-                pos_x: col_index,
-                pos_y: row_index,
-                value: 0
-            };
-        });
-    });
-
-    _.each(network_data.links, function(link) {
-        matrix[link.source][link.target].value = link.value;
-        // transfer additional link information is necessary
-        if (link.value_up && link.value_dn) {
-            matrix[link.source][link.target].value_up = link.value_up;
-            matrix[link.source][link.target].value_dn = link.value_dn;
-        }
-        if (link.highlight) {
-            matrix[link.source][link.target].highlight = link.highlight;
-        }
-        if (link.info) {
-            matrix[link.source][link.target].info = link.info;
-        }
-    });
-
-    clust_group = svg_elem
-        // append a group that will hold clust_group and position it once
-        .append('g')
-        .attr('transform', 'translate(' +
-            params.clust.margin.left + ',' +
-            params.clust.margin.top + ')')
-        .append('g')
-        .attr('id', 'clust_group');
-
-    // grey background rect for clustergram
-    clust_group
-        .append('rect')
-        .attr('class', 'background')
-        .attr('id', 'grey_background')
-        .style('fill', '#eee')
-        .attr('width', params.clust.dim.width)
-        .attr('height', params.clust.dim.height);
-
-    var row_obj = clust_group.selectAll('.row')
-        .data(matrix)
-        .enter()
-        .append('g')
-        .attr('class', 'row')
-        .attr('transform', function(d, index) {
-            return 'translate(0,' + params.y_scale(index) + ')';
-        });
-
-
-    // make rows: make rects or groups
-    // use matrix for the data join, which contains a two dimensional
-    // array of objects, each row of this matrix will be passed into the row function
-
-    if (params.tile_type === 'simple') {
-        row_obj = row_obj.each(row_function);
-    } else {
-        row_obj = row_obj.each(row_group_function);
-    }
-
-    draw_grid_lines();
-
-    function draw_grid_lines() {
-
-        // White horizontal lines.
-        row_obj.append('line')
-            //!! find ouw what 20 represents
-            .attr('x2', 20 * params.clust.dim.width)
-            .style('stroke-width', params.border_width / params.zoom_switch + 'px')
-            .style('stroke', 'white');
-
-        // append vertical line groups
-        var vert_lines = clust_group
-            .selectAll('.vert_lines')
-            .data(col_nodes)
-            .enter()
-            .append('g')
-            .attr('class', 'vert_lines')
-            .attr('transform', function(d, index) {
-                return 'translate(' + params.x_scale(index) + ') rotate(-90)';
-            });
-
-        // add vertical lines
-        vert_lines
-            .append('line')
-            .attr('x1', 0)
-            .attr('x2', -params.clust.dim.height)
-            .style('stroke-width', params.border_width + 'px')
-            .style('stroke', 'white');
-    }
-
-    // make each row in the clustergram
-    function row_function(inp_row_data) {
-
-        // remove zero values to make visualization faster
-        var row_data = _.filter(inp_row_data, function(num) {
-            return num.value !== 0;
-        });
-
-        // generate tiles in the current row
-        var tile = d3.select(this)
-            // data join
-            .selectAll('rect')
-            .data(row_data)
-            .enter()
-            .append('rect')
-            .attr('class', 'tile')
-            .attr('transform', function(d) {
-                return 'translate(' + params.x_scale(d.pos_x) + ',0)';
-            })
-            .attr('width', params.x_scale.rangeBand())
-            .attr('height', params.y_scale.rangeBand() * 0.98)
-            .style('fill-opacity', function(d) {
-                // calculate output opacity using the opacity scale
-                var output_opacity = params.opacity_scale(Math.abs(d.value));
-                return output_opacity;
-            })
-            // switch the color based on up/dn value
-            .style('fill', function(d) {
-                return d.value > 0 ? params.tile_colors[0] : params.tile_colors[1];
-            })
-            .on('mouseover', function(p) {
-                // highlight row - set text to active if
-                d3.selectAll('.row_label_text text')
-                    .classed('active', function(d, i) {
-                        return i === p.pos_y;
-                    });
-                d3.selectAll('.col_label_text text')
-                    .classed('active', function(d, i) {
-                        return i === p.pos_x;
-                    });
-            })
-            .on('mouseout', function mouseout() {
-                d3.selectAll('text').classed('active', false);
-            })
-            .attr('title', function(d) {
-                return d.value;
-            });
-
-        // add callback function to tile group - if one is supplied by the user
-        if (typeof params.click_tile === 'function') {
-            d3.selectAll('.tile')
-                .on('click', function(d) {
-                    // export row/col name and value from tile
-                    var tile_info = {};
-                    tile_info.row = globals.network_data.row_nodes[d.pos_y].name;
-                    tile_info.col = globals.network_data.col_nodes[d.pos_x].name;
-                    tile_info.value = d.value;
-                    if (Utils.has(d, 'value_up')) {
-                        tile_info.value_up = d.value_up;
-                    }
-                    if (Utils.has(d, 'value_dn')) {
-                        tile_info.value_dn = d.value_dn;
-                    }
-                    if (Utils.has(d, 'info')) {
-                        tile_info.info = d.info;
-                    }
-                    // run the user supplied callback function
-                    params.click_tile(tile_info);
-                });
-        }
-
-        // append title to group
-        if (params.title_tile) {
-            tile
-                .append('title')
-                .text(function(d) {
-                    var inst_string = 'value: ' + d.value;
-                    return inst_string;
-                });
-        }
-    }
-
-    // make each row in the clustergram
-    function row_group_function(inp_row_data) {
-
-        // remove zero values to make visualization faster
-        var row_data = _.filter(inp_row_data, function(num) {
-            return num.value !== 0;
-        });
-
-        // generate groups
-        var tile = d3.select(this)
-            // data join
-            .selectAll('g')
-            .data(row_data)
-            .enter()
-            .append('g')
-            .attr('class', 'tile')
-            .attr('transform', function(d) {
-                return 'translate(' + params.x_scale(d.pos_x) + ',0)';
-            });
-
-        // append rect
-        tile
-            .append('rect')
-            // .attr('class','tile')
-            .attr('width', params.x_scale.rangeBand())
-            .attr('height', params.y_scale.rangeBand() * 0.98)
-            .style('fill-opacity', function(d) {
-                // calculate output opacity using the opacity scale
-                var output_opacity = params.opacity_scale(Math.abs(d.value));
-                if (Math.abs(d.value_up) > 0 && Math.abs(d.value_dn) > 0) {
-                    output_opacity = 0;
-                }
-                return output_opacity;
-            })
-            // switch the color based on up/dn value
-            .style('fill', function(d) {
-                // normal rule
-                return d.value > 0 ? params.tile_colors[0] : params.tile_colors[1];
-                // //!! special rule for LDRgram
-                // return d.value_dn < 0 ? params.tile_colors[0] : params.tile_colors[1] ;
-            });
-
-        tile
-            .on('mouseover', function(p) {
-                // highlight row - set text to active if
-                d3.selectAll('.row_label_text text')
-                    .classed('active', function(d, i) {
-                        return i === p.pos_y;
-                    });
-                d3.selectAll('.col_label_text text')
-                    .classed('active', function(d, i) {
-                        return i === p.pos_x;
-                    });
-            })
-            .on('mouseout', function mouseout() {
-                d3.selectAll('text').classed('active', false);
-            })
-            .attr('title', function(d) {
-                return d.value;
-            });
-
-
-        // // append evidence highlighting - black rects
-        if (params.highlight === 1) {
-            // console.log(row_data[0])
-            tile
-                .append('rect')
-                .attr('width', params.x_scale.rangeBand() * 0.80)
-                .attr('height', params.y_scale.rangeBand() * 0.80)
-                .attr('class', 'highlighting_rect')
-                .attr('transform', 'translate(' + params.x_scale.rangeBand() / 10 +
-                ' , ' + params.y_scale.rangeBand() / 10 + ')')
-                .attr('class', 'cell_highlight')
-                .attr('stroke', 'black')
-                .attr('stroke-width', 1.0)
-                .attr('fill-opacity', 0.0)
-                .attr('stroke-opacity', function(d) {
-                    // initialize opacity to 0
-                    var inst_opacity = 0;
-                    // set opacity to 1 if there is evidence
-                    if (d.highlight === 1) {
-                        inst_opacity = 1;
-                    }
-                    return inst_opacity;
-                });
-        }
-
-        // add callback function to tile group - if one is supplied by the user
-        if (typeof params.click_tile === 'function') {
-            // d3.selectAll('.tile')
-            tile
-                .on('click', function(d) {
-                    // export row/col name and value from tile
-                    var tile_info = {};
-                    tile_info.row = globals.network_data.row_nodes[d.pos_y].name;
-                    tile_info.col = globals.network_data.col_nodes[d.pos_x].name;
-                    tile_info.value = d.value;
-                    if (Utils.has(d, 'value_up')) {
-                        tile_info.value_up = d.value_up;
-                    }
-                    if (Utils.has(d, 'value_dn')) {
-                        tile_info.value_dn = d.value_dn;
-                    }
-                    if (Utils.has(d, 'info')) {
-                        tile_info.info = d.info;
-                    }
-                    // run the user supplied callback function
-                    params.click_tile(tile_info);
-                });
-        }
-
-
-        // split-up
-        tile
-            .append('path')
-            .style('stroke', 'black')
-            .style('stroke-width', 0)
-            .attr('d', function() {
-                var start_x = 0;
-                var final_x = params.x_scale.rangeBand();
-                var start_y = 0;
-                var final_y = params.y_scale.rangeBand() - params.y_scale.rangeBand() /
-                    60;
-                var output_string = 'M' + start_x + ',' + start_y + ', L' +
-                    start_x + ', ' + final_y + ', L' + final_x + ',0 Z';
-                return output_string;
-            })
-            .style('fill-opacity', function(d) {
-                // calculate output opacity using the opacity scale
-                var output_opacity = 0;
-                if (Math.abs(d.value_dn) > 0) {
-                    output_opacity = params.opacity_scale(Math.abs(d.value_up));
-                }
-                return output_opacity;
-            })
-            // switch the color based on up/dn value
-            .style('fill', function() {
-                // rl_t (released) blue
-                return params.tile_colors[0];
-            });
-
-
-        // split-dn
-        tile
-            .append('path')
-            .style('stroke', 'black')
-            .style('stroke-width', 0)
-            .attr('d', function() {
-                var start_x = 0;
-                var final_x = params.x_scale.rangeBand();
-                var start_y = params.y_scale.rangeBand() - params.y_scale.rangeBand() /
-                    60;
-                var final_y = params.y_scale.rangeBand() - params.y_scale.rangeBand() /
-                    60;
-                var output_string = 'M' + start_x + ', ' + start_y + ' ,       L' +
-                    final_x + ', ' + final_y + ',  L' + final_x + ',0 Z';
-                return output_string;
-            })
-            .style('fill-opacity', function(d) {
-                // calculate output opacity using the opacity scale
-                var output_opacity = 0;
-                if (Math.abs(d.value_up) > 0) {
-                    output_opacity = params.opacity_scale(Math.abs(d.value_dn));
-                }
-                return output_opacity;
-            })
-            // switch the color based on up/dn value
-            .style('fill', function() {
-                // rl_f (not released) orange
-                return params.tile_colors[1];
-            });
-
-        // append title to group
-        if (params.title_tile) {
-            tile
-                .append('title')
-                .text(function(d) {
-                    var inst_string = 'value: ' + d.value;
-                    return inst_string;
-                });
-        }
-    }
-
+  _.each(row_nodes, function(tmp, row_index) {
+  matrix[row_index] = d3.range(col_nodes.length).map(function(col_index) {
     return {
-        get_clust_group: function() {
-            return clust_group;
-        },
-        get_matrix: function(){
-            return matrix;
-        },
-        get_nodes: function(type){
-            if (type === 'row'){
-                var nodes = network_data.row_nodes;
-            } else {
-                var nodes = network_data.col_nodes;
-            }
-            return nodes;
-        }
+    pos_x: col_index,
+    pos_y: row_index,
+    value: 0
     };
+  });
+  });
+
+  _.each(network_data.links, function(link) {
+  matrix[link.source][link.target].value = link.value;
+  // transfer additional link information is necessary
+  if (link.value_up && link.value_dn) {
+    matrix[link.source][link.target].value_up = link.value_up;
+    matrix[link.source][link.target].value_dn = link.value_dn;
+  }
+  if (link.highlight) {
+    matrix[link.source][link.target].highlight = link.highlight;
+  }
+  if (link.info) {
+    matrix[link.source][link.target].info = link.info;
+  }
+  });
+
+  clust_group = svg_elem
+  // append a group that will hold clust_group and position it once
+  .append('g')
+  .attr('transform', 'translate(' +
+    params.clust.margin.left + ',' +
+    params.clust.margin.top + ')')
+  .append('g')
+  .attr('id', 'clust_group');
+
+  // grey background rect for clustergram
+  clust_group
+  .append('rect')
+  .attr('class', 'background')
+  .attr('id', 'grey_background')
+  .style('fill', '#eee')
+  .attr('width', params.clust.dim.width)
+  .attr('height', params.clust.dim.height);
+
+  var row_obj = clust_group.selectAll('.row')
+  .data(matrix)
+  .enter()
+  .append('g')
+  .attr('class', 'row')
+  .attr('transform', function(d, index) {
+    return 'translate(0,' + params.y_scale(index) + ')';
+  });
+
+
+  // make rows: make rects or groups
+  // use matrix for the data join, which contains a two dimensional
+  // array of objects, each row of this matrix will be passed into the row function
+
+  if (params.tile_type === 'simple') {
+  row_obj = row_obj.each(row_function);
+  } else {
+  row_obj = row_obj.each(row_group_function);
+  }
+
+  // draw grid lines after drawing tiles 
+  draw_grid_lines();
+
+  function draw_grid_lines() {
+
+  // append horizontal lines 
+  var horz_lines = clust_group
+    .selectAll('.horz_lines')
+    .data(row_nodes)
+    .enter()
+    .append('g')
+    .attr('class','horz_lines')
+    .attr('transform', function(d, index) {
+        return 'translate(0,' + params.y_scale(index) + ') rotate(0)';
+    })
+    .append('line')
+    .attr('x1',0)
+    .attr('x2',params.clust.dim.width)
+    .style('stroke-width', params.border_width/params.zoom_switch+'px')
+    .style('stroke','white')
+
+
+  // append vertical line groups
+  var vert_lines = clust_group
+    .selectAll('.vert_lines')
+    .data(col_nodes)
+    .enter()
+    .append('g')
+    .attr('class', 'vert_lines')
+    .attr('transform', function(d, index) {
+        return 'translate(' + params.x_scale(index) + ') rotate(-90)';
+    });
+
+  // add vertical lines
+  vert_lines
+    .append('line')
+    .attr('x1', 0)
+    .attr('x2', -params.clust.dim.height)
+    .style('stroke-width', params.border_width + 'px')
+    .style('stroke', 'white');
+  }
+
+  // make each row in the clustergram
+  function row_function(inp_row_data) {
+
+  // remove zero values to make visualization faster
+  var row_data = _.filter(inp_row_data, function(num) {
+    return num.value !== 0;
+  });
+
+  // generate tiles in the current row
+  var tile = d3.select(this)
+    // data join
+    .selectAll('rect')
+    .data(row_data)
+    .enter()
+    .append('rect')
+    .attr('class', 'tile')
+    .attr('transform', function(d) {
+    return 'translate(' + params.x_scale(d.pos_x) + ',0)';
+    })
+    .attr('width', params.x_scale.rangeBand())
+    .attr('height', params.y_scale.rangeBand() * 0.98)
+    .style('fill-opacity', function(d) {
+    // calculate output opacity using the opacity scale
+    var output_opacity = params.opacity_scale(Math.abs(d.value));
+    return output_opacity;
+    })
+    // switch the color based on up/dn value
+    .style('fill', function(d) {
+    return d.value > 0 ? params.tile_colors[0] : params.tile_colors[1];
+    })
+    .on('mouseover', function(p) {
+    // highlight row - set text to active if
+    d3.selectAll('.row_label_text text')
+      .classed('active', function(d, i) {
+      return i === p.pos_y;
+      });
+    d3.selectAll('.col_label_text text')
+      .classed('active', function(d, i) {
+      return i === p.pos_x;
+      });
+    })
+    .on('mouseout', function mouseout() {
+    d3.selectAll('text').classed('active', false);
+    })
+    .attr('title', function(d) {
+    return d.value;
+    });
+
+  // add callback function to tile group - if one is supplied by the user
+  if (typeof params.click_tile === 'function') {
+    d3.selectAll('.tile')
+    .on('click', function(d) {
+      // export row/col name and value from tile
+      var tile_info = {};
+      tile_info.row = globals.network_data.row_nodes[d.pos_y].name;
+      tile_info.col = globals.network_data.col_nodes[d.pos_x].name;
+      tile_info.value = d.value;
+      if (Utils.has(d, 'value_up')) {
+      tile_info.value_up = d.value_up;
+      }
+      if (Utils.has(d, 'value_dn')) {
+      tile_info.value_dn = d.value_dn;
+      }
+      if (Utils.has(d, 'info')) {
+      tile_info.info = d.info;
+      }
+      // run the user supplied callback function
+      params.click_tile(tile_info);
+    });
+  }
+
+  // append title to group
+  if (params.title_tile) {
+    tile
+    .append('title')
+    .text(function(d) {
+      var inst_string = 'value: ' + d.value;
+      return inst_string;
+    });
+  }
+  }
+
+  // make each row in the clustergram
+  function row_group_function(inp_row_data) {
+
+  // remove zero values to make visualization faster
+  var row_data = _.filter(inp_row_data, function(num) {
+    return num.value !== 0;
+  });
+
+  // generate groups
+  var tile = d3.select(this)
+    // data join
+    .selectAll('g')
+    .data(row_data)
+    .enter()
+    .append('g')
+    .attr('class', 'tile')
+    .attr('transform', function(d) {
+    return 'translate(' + params.x_scale(d.pos_x) + ',0)';
+    });
+
+  // append rect
+  tile
+    .append('rect')
+    // .attr('class','tile')
+    .attr('width', params.x_scale.rangeBand())
+    .attr('height', params.y_scale.rangeBand() * 0.98)
+    .style('fill-opacity', function(d) {
+    // calculate output opacity using the opacity scale
+    var output_opacity = params.opacity_scale(Math.abs(d.value));
+    if (Math.abs(d.value_up) > 0 && Math.abs(d.value_dn) > 0) {
+      output_opacity = 0;
+    }
+    return output_opacity;
+    })
+    // switch the color based on up/dn value
+    .style('fill', function(d) {
+    // normal rule
+    return d.value > 0 ? params.tile_colors[0] : params.tile_colors[1];
+    // //!! special rule for LDRgram
+    // return d.value_dn < 0 ? params.tile_colors[0] : params.tile_colors[1] ;
+    });
+
+  tile
+    .on('mouseover', function(p) {
+    // highlight row - set text to active if
+    d3.selectAll('.row_label_text text')
+      .classed('active', function(d, i) {
+      return i === p.pos_y;
+      });
+    d3.selectAll('.col_label_text text')
+      .classed('active', function(d, i) {
+      return i === p.pos_x;
+      });
+    })
+    .on('mouseout', function mouseout() {
+    d3.selectAll('text').classed('active', false);
+    })
+    .attr('title', function(d) {
+    return d.value;
+    });
+
+
+  // // append evidence highlighting - black rects
+  if (params.highlight === 1) {
+    // console.log(row_data[0])
+    tile
+    .append('rect')
+    .attr('width', params.x_scale.rangeBand() * 0.80)
+    .attr('height', params.y_scale.rangeBand() * 0.80)
+    .attr('class', 'highlighting_rect')
+    .attr('transform', 'translate(' + params.x_scale.rangeBand() / 10 +
+    ' , ' + params.y_scale.rangeBand() / 10 + ')')
+    .attr('class', 'cell_highlight')
+    .attr('stroke', 'black')
+    .attr('stroke-width', 1.0)
+    .attr('fill-opacity', 0.0)
+    .attr('stroke-opacity', function(d) {
+      // initialize opacity to 0
+      var inst_opacity = 0;
+      // set opacity to 1 if there is evidence
+      if (d.highlight === 1) {
+      inst_opacity = 1;
+      }
+      return inst_opacity;
+    });
+  }
+
+  // add callback function to tile group - if one is supplied by the user
+  if (typeof params.click_tile === 'function') {
+    // d3.selectAll('.tile')
+    tile
+    .on('click', function(d) {
+      // export row/col name and value from tile
+      var tile_info = {};
+      tile_info.row = globals.network_data.row_nodes[d.pos_y].name;
+      tile_info.col = globals.network_data.col_nodes[d.pos_x].name;
+      tile_info.value = d.value;
+      if (Utils.has(d, 'value_up')) {
+      tile_info.value_up = d.value_up;
+      }
+      if (Utils.has(d, 'value_dn')) {
+      tile_info.value_dn = d.value_dn;
+      }
+      if (Utils.has(d, 'info')) {
+      tile_info.info = d.info;
+      }
+      // run the user supplied callback function
+      params.click_tile(tile_info);
+    });
+  }
+
+
+  // split-up
+  tile
+    .append('path')
+    .style('stroke', 'black')
+    .style('stroke-width', 0)
+    .attr('d', function() {
+    var start_x = 0;
+    var final_x = params.x_scale.rangeBand();
+    var start_y = 0;
+    var final_y = params.y_scale.rangeBand() - params.y_scale.rangeBand() /
+      60;
+    var output_string = 'M' + start_x + ',' + start_y + ', L' +
+      start_x + ', ' + final_y + ', L' + final_x + ',0 Z';
+    return output_string;
+    })
+    .style('fill-opacity', function(d) {
+    // calculate output opacity using the opacity scale
+    var output_opacity = 0;
+    if (Math.abs(d.value_dn) > 0) {
+      output_opacity = params.opacity_scale(Math.abs(d.value_up));
+    }
+    return output_opacity;
+    })
+    // switch the color based on up/dn value
+    .style('fill', function() {
+    // rl_t (released) blue
+    return params.tile_colors[0];
+    });
+
+
+  // split-dn
+  tile
+    .append('path')
+    .style('stroke', 'black')
+    .style('stroke-width', 0)
+    .attr('d', function() {
+    var start_x = 0;
+    var final_x = params.x_scale.rangeBand();
+    var start_y = params.y_scale.rangeBand() - params.y_scale.rangeBand() /
+      60;
+    var final_y = params.y_scale.rangeBand() - params.y_scale.rangeBand() /
+      60;
+    var output_string = 'M' + start_x + ', ' + start_y + ' ,   L' +
+      final_x + ', ' + final_y + ',  L' + final_x + ',0 Z';
+    return output_string;
+    })
+    .style('fill-opacity', function(d) {
+    // calculate output opacity using the opacity scale
+    var output_opacity = 0;
+    if (Math.abs(d.value_up) > 0) {
+      output_opacity = params.opacity_scale(Math.abs(d.value_dn));
+    }
+    return output_opacity;
+    })
+    // switch the color based on up/dn value
+    .style('fill', function() {
+    // rl_f (not released) orange
+    return params.tile_colors[1];
+    });
+
+  // append title to group
+  if (params.title_tile) {
+    tile
+    .append('title')
+    .text(function(d) {
+      var inst_string = 'value: ' + d.value;
+      return inst_string;
+    });
+  }
+  }
+
+  return {
+  get_clust_group: function() {
+    return clust_group;
+  },
+  get_matrix: function(){
+    return matrix;
+  },
+  get_nodes: function(type){
+    if (type === 'row'){
+    var nodes = network_data.row_nodes;
+    } else {
+    var nodes = network_data.col_nodes;
+    }
+    return nodes;
+  }
+  };
 }
+
 
 /* Handles searching rows or columns.
  * ----------------------------------------------------------------------- */
@@ -1940,6 +1951,79 @@ function Viz(args) {
 
 function Reorder(){
 
+  /* Reorder the clustergram using the toggle switch
+   */
+  function all_reorder(inst_order) {
+
+    // load parameters from d3_clustergram
+    var params = globals.params;
+
+    // set running transition value
+    globals.params.run_trans = true;
+
+    // load orders
+    if (inst_order === 'clust') {
+      params.x_scale.domain(params.orders.clust_row);
+      params.y_scale.domain(params.orders.clust_col);
+    } else if (inst_order === 'rank') {
+      params.x_scale.domain(params.orders.rank_row);
+      params.y_scale.domain(params.orders.rank_col);
+    } else if (inst_order === 'class') {
+      params.x_scale.domain(params.orders.class_row);
+      params.y_scale.domain(params.orders.class_col);
+    }
+
+    // define the t variable as the transition function
+    var t = viz.get_clust_group()
+      .transition().duration(2500);
+
+    // reorder matrix
+    t.selectAll('.row')
+      .attr('transform', function(d, i) {
+        return 'translate(0,' + params.y_scale(i) + ')';
+      })
+      .selectAll('.tile')
+      .attr('transform', function(d) {
+        return 'translate(' + params.x_scale(d.pos_x) + ' , 0)';
+      });
+
+    // Move Row Labels
+    d3.select('#row_labels').selectAll('.row_label_text')
+      .transition().duration(2500)
+      .attr('transform', function(d, i) {
+        return 'translate(0,' + params.y_scale(i) + ')';
+      });
+
+    // t.selectAll('.column')
+    d3.select('#col_labels').selectAll('.col_label_text')
+      .transition().duration(2500)
+      .attr('transform', function(d, i) {
+        return 'translate(' + params.x_scale(i) + ')rotate(-90)';
+      });
+
+    // reorder row_label_triangle groups
+    d3.selectAll('.row_triangle_group')
+      .transition().duration(2500)
+      .attr('transform', function(d, i) {
+        return 'translate(0,' + params.y_scale(i) + ')';
+      });
+
+    // reorder col_class groups
+    d3.selectAll('.col_class_group')
+      .transition().duration(2500)
+      .attr('transform', function(d, i) {
+        return 'translate(' + params.x_scale(i) + ',0)';
+      })
+      .each('end', function() {
+        // set running transition to 0
+        console.log('finished with transition ');
+        globals.params.run_trans = false;
+      });
+
+    // backup allow programmatic zoom
+    setTimeout(end_reorder, 2500);
+  }
+
 	function row_reorder() {
 
     // get inst row (gene)
@@ -2019,7 +2103,6 @@ function Reorder(){
 
     // backup allow programmatic zoom
     setTimeout(end_reorder, 2500);
-
 	}
 
 	function col_reorder(){
@@ -2117,84 +2200,10 @@ function Reorder(){
     setTimeout(end_reorder, 2500);
 	}	
 
-
-  // tmp backup function to allow programmatic zoom after reordering
+  // allow programmatic zoom after reordering
   function end_reorder() {
     globals.params.run_trans = false;
   }  
-
-  /* Reorder the clustergram using the toggle switch
-   */
-  function all_reorder(inst_order) {
-
-    // load parameters from d3_clustergram
-    var params = globals.params;
-
-    // set running transition value
-    globals.params.run_trans = true;
-
-    // load orders
-    if (inst_order === 'clust') {
-      params.x_scale.domain(params.orders.clust_row);
-      params.y_scale.domain(params.orders.clust_col);
-    } else if (inst_order === 'rank') {
-      params.x_scale.domain(params.orders.rank_row);
-      params.y_scale.domain(params.orders.rank_col);
-    } else if (inst_order === 'class') {
-      params.x_scale.domain(params.orders.class_row);
-      params.y_scale.domain(params.orders.class_col);
-    }
-
-    // define the t variable as the transition function
-    var t = viz.get_clust_group()
-      .transition().duration(2500);
-
-    // reorder matrix
-    t.selectAll('.row')
-      .attr('transform', function(d, i) {
-        return 'translate(0,' + params.y_scale(i) + ')';
-      })
-      .selectAll('.tile')
-      .attr('transform', function(d) {
-        return 'translate(' + params.x_scale(d.pos_x) + ' , 0)';
-      });
-
-    // Move Row Labels
-    d3.select('#row_labels').selectAll('.row_label_text')
-      .transition().duration(2500)
-      .attr('transform', function(d, i) {
-        return 'translate(0,' + params.y_scale(i) + ')';
-      });
-
-    // t.selectAll('.column')
-    d3.select('#col_labels').selectAll('.col_label_text')
-      .transition().duration(2500)
-      .attr('transform', function(d, i) {
-        return 'translate(' + params.x_scale(i) + ')rotate(-90)';
-      });
-
-    // reorder row_label_triangle groups
-    d3.selectAll('.row_triangle_group')
-      .transition().duration(2500)
-      .attr('transform', function(d, i) {
-        return 'translate(0,' + params.y_scale(i) + ')';
-      });
-
-    // reorder col_class groups
-    d3.selectAll('.col_class_group')
-      .transition().duration(2500)
-      .attr('transform', function(d, i) {
-        return 'translate(' + params.x_scale(i) + ',0)';
-      })
-      .each('end', function() {
-        // set running transition to 0
-        console.log('finished with transition ');
-        globals.params.run_trans = false;
-      });
-
-    // backup allow programmatic zoom
-    setTimeout(end_reorder, 2500);
-  }
 
 	return {
 		row_reorder: row_reorder,
@@ -2705,134 +2714,135 @@ function two_translate_zoom(pan_dx, pan_dy, fin_zoom) {
     }
 }
 
-  // This object is a temporary hack to hold all global state for this module.
-  var globals = {};
+// This object is a temporary hack to hold all global state for this module.
+var globals = {};
 
 
-  /* Main program
-   * ----------------------------------------------------------------------- */
+/* Main program
+ * ----------------------------------------------------------------------- */
 
-  // consume and validate user input
-  // build giant config object
-  // visualize based on config object
-  // handle user events
+// consume and validate user input
+// build giant config object
+// visualize based on config object
+// handle user events
 
-  // viz is scoped globally 
-  var viz = Viz(args);
-  var reorder = Reorder();
+// viz is scoped globally 
+var viz = Viz(args);
+var reorder = Reorder();
 
-  // parent_div: size and position svg container - svg_div
-  function parent_div_size_pos(params) {
+// parent_div: size and position svg container - svg_div
+function parent_div_size_pos(params) {
 
-    if (params.resize) {
-      // get outer_margins
-      var outer_margins = params.outer_margins;
+  if (params.resize) {
+    // get outer_margins
+    var outer_margins = params.outer_margins;
 
-      // get the size of the window
-      var screen_width = window.innerWidth;
-      var screen_height = window.innerHeight;
+    // get the size of the window
+    var screen_width = window.innerWidth;
+    var screen_height = window.innerHeight;
 
-      // define width and height of clustergram container
-      var container_dim = {};
-      container_dim.width = screen_width - outer_margins.left -
-          outer_margins.right;
-      container_dim.height = screen_height - outer_margins.top -
-          outer_margins.bottom;
+    // define width and height of clustergram container
+    var container_dim = {};
+    container_dim.width = screen_width - outer_margins.left -
+        outer_margins.right;
+    container_dim.height = screen_height - outer_margins.top -
+        outer_margins.bottom;
 
-      // size the svg container div - svg_div
-      d3.select('#' + params.svg_div_id)
-          .style('margin-left', outer_margins.left + 'px')
-          .style('margin-top', outer_margins.top + 'px')
-          .style('width', container_dim.width + 'px')
-          .style('height', container_dim.height + 'px');
-    } else {
-      // get outer_margins
-      outer_margins = params.outer_margins;
+    // size the svg container div - svg_div
+    d3.select('#' + params.svg_div_id)
+        .style('margin-left', outer_margins.left + 'px')
+        .style('margin-top', outer_margins.top + 'px')
+        .style('width', container_dim.width + 'px')
+        .style('height', container_dim.height + 'px');
+  } else {
+    // get outer_margins
+    outer_margins = params.outer_margins;
 
-      // size the svg container div - svg_div
-      d3.select('#' + params.svg_div_id)
-          .style('margin-left', outer_margins.left + 'px')
-          .style('margin-top', outer_margins.top + 'px');
+    // size the svg container div - svg_div
+    d3.select('#' + params.svg_div_id)
+        .style('margin-left', outer_margins.left + 'px')
+        .style('margin-top', outer_margins.top + 'px');
+  }
+}
+
+
+
+/* API functions
+ * ----------------------------------------------------------------------- */
+
+
+
+/* Utility functions
+ * ----------------------------------------------------------------------- */
+
+/* Resize clustergram to fit screen size.
+ */
+function resize_to_screen() {
+  // Only resize if allowed
+  if (globals.params.resize) {
+    setTimeout(reset_visualization_size, 500);
+  }
+}
+
+// recalculate the size of the visualization
+// and remake the clustergram
+function reset_visualization_size() {
+
+    viz.remake();
+
+    // reset zoom and translate
+    globals.params.zoom.scale(1).translate(
+        [globals.params.clust.margin.left, globals.params.clust.margin.top]
+    );
+}
+
+/* Transpose network.
+ */
+function transpose_network(net) {
+  var tnet = {},
+      inst_link,
+      i;
+
+  tnet.row_nodes = net.col_nodes;
+  tnet.col_nodes = net.row_nodes;
+  tnet.links = [];
+
+  for (i = 0; i < net.links.length; i++) {
+    inst_link = {};
+    inst_link.source = net.links[i].target;
+    inst_link.target = net.links[i].source;
+    inst_link.value = net.links[i].value;
+
+    // Optional highlight.
+    if (Utils.has(net.links[i], 'highlight')) {
+      inst_link.highlight = net.links[i].highlight;
     }
-  }
-
-  
-
-  /* API functions
-   * ----------------------------------------------------------------------- */
-
-  
-
-  /* Utility functions
-   * ----------------------------------------------------------------------- */
-
-  /* Resize clustergram to fit screen size.
-   */
-  function resize_to_screen() {
-    // Only resize if allowed
-    if (globals.params.resize) {
-      setTimeout(reset_visualization_size, 500);
+    if (Utils.has(net.links[i], 'value_up')) {
+      inst_link.value_up = net.links[i].value_up;
     }
-  }
-
-  // recalculate the size of the visualization
-  // and remake the clustergram
-  function reset_visualization_size() {
-
-      viz.remake();
-
-      // reset zoom and translate
-      globals.params.zoom.scale(1).translate(
-          [globals.params.clust.margin.left, globals.params.clust.margin.top]
-      );
-  }
-
-  /* Transpose network.
-   */
-  function transpose_network(net) {
-    var tnet = {},
-        inst_link,
-        i;
-
-    tnet.row_nodes = net.col_nodes;
-    tnet.col_nodes = net.row_nodes;
-    tnet.links = [];
-
-    for (i = 0; i < net.links.length; i++) {
-      inst_link = {};
-      inst_link.source = net.links[i].target;
-      inst_link.target = net.links[i].source;
-      inst_link.value = net.links[i].value;
-
-      // Optional highlight.
-      if (Utils.has(net.links[i], 'highlight')) {
-        inst_link.highlight = net.links[i].highlight;
-      }
-      if (Utils.has(net.links[i], 'value_up')) {
-        inst_link.value_up = net.links[i].value_up;
-      }
-      if (Utils.has(net.links[i], 'value_dn')) {
-        inst_link.value_dn = net.links[i].value_dn;
-      }
-      if (Utils.has(net.links[i], 'info')) {
-        inst_link.info = net.links[i].info;
-      }
-      tnet.links.push(inst_link);
+    if (Utils.has(net.links[i], 'value_dn')) {
+      inst_link.value_dn = net.links[i].value_dn;
     }
-
-    return tnet;
+    if (Utils.has(net.links[i], 'info')) {
+      inst_link.info = net.links[i].info;
+    }
+    tnet.links.push(inst_link);
   }
 
-  // highlight resource types - set up type/color association
-  var gene_search = Search(globals.network_data.row_nodes, 'name');
+  return tnet;
+}
 
-    /* API
-     * ----------------------------------------------------------------------- */
-    return {
-        reorder: reorder,
-        find_gene: gene_search.find_entities,
-        get_genes: gene_search.get_entities,
-        change_groups: viz.change_group,
-        reorder: reorder.all_reorder
-    };
+// highlight resource types - set up type/color association
+var gene_search = Search(globals.network_data.row_nodes, 'name');
+
+/* API
+ * ----------------------------------------------------------------------- */
+return {
+    reorder: reorder,
+    find_gene: gene_search.find_entities,
+    get_genes: gene_search.get_entities,
+    change_groups: viz.change_group,
+    reorder: reorder.all_reorder
+};
+	
 }
