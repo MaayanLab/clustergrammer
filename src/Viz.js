@@ -109,7 +109,7 @@ function Viz(args) {
     ]).on('zoom', zoomed);
 
     // make outer group for clust_group - this will position clust_group once
-    var outer_group = d3.select('#' + params.svg_div_id)
+    var svg_group = d3.select('#' + params.svg_div_id)
       .append('svg')
       .attr('id', 'main_svg')
       // leave room for the light grey border
@@ -117,11 +117,11 @@ function Viz(args) {
       // the height is reduced by more than the width because the tiles go right up to the bottom border
       .attr('height', params.svg_dim.height);
 
-    matrix = Matrix(network_data, outer_group, params);
+    matrix = Matrix(network_data, svg_group, params);
 
     // append background rect if necessary to control background color
     if (params.background_color !== '#FFFFFF') {
-      outer_group
+      svg_group
       .append('rect')
       .attr('width', params.svg_dim.width)
       .attr('height', params.svg_dim.height)
@@ -131,7 +131,7 @@ function Viz(args) {
 
     // call zoomingoom on the entire svg
     if (params.do_zoom) {
-      outer_group.call(params.zoom);
+      svg_group.call(params.zoom);
     }
 
 
