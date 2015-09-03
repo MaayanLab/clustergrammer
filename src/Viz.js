@@ -1187,6 +1187,9 @@ function Viz(args) {
         },
         reorder: function() {
             return matrix.get_clust_group().transition().duration(2500);
+        },
+        get_clust_group: function(){
+            return matrix.get_clust_group();
         }
     }
 }

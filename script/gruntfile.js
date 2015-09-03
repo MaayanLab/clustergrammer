@@ -7,9 +7,9 @@ module.exports = function(grunt) {
         '../src/Colors.js',
         '../src/Dendrogram.js',
         '../src/Matrix.js',
-        '../src/zoom.js',
         '../src/Search.js',
         '../src/Viz.js',
+        '../src/zoom.js',
         '../src/main.js',
         '../src/_close.js'
     ];

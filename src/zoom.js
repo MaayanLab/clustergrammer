@@ -83,7 +83,9 @@ function apply_transformation(trans_x, trans_y, zoom_x, zoom_y) {
     // the zoom vector (zoom.scale) never gets reset
     ///////////////////////////////////////////////////
     // translate clustergram
-    params.clust_group
+    // params.clust_group
+    // d3.select('#clust_group')
+    viz.get_clust_group()
         .attr('transform', 'translate(' + [trans_x, trans_y] + ') scale(' +
         zoom_x + ',' + zoom_y + ')');
 
@@ -324,7 +326,9 @@ function two_translate_zoom(pan_dx, pan_dy, fin_zoom) {
 
         // transform clust group
         ////////////////////////////
-        params.clust_group
+        // params.clust_group
+        // d3.select('#clust_group')
+        viz.get_clust_group()
             .transition()
             .duration(search_duration)
             // first apply the margin transformation
