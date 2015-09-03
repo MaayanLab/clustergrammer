@@ -109,7 +109,7 @@
     ////////////////////
 
     // define the t variable as the transition function
-    var t = params.clust_group.transition().duration(2500);
+    var t = viz.reorder();
 
     // reorder matrix
     t.selectAll('.tile')
@@ -194,7 +194,7 @@
 
     // reorder
     // define the t variable as the transition function
-    var t = params.clust_group.transition().duration(2500);
+    var t = viz.reorder();
 
     // reorder matrix
     t.selectAll('.row')
@@ -270,7 +270,7 @@
     }
 
     // define the t variable as the transition function
-    var t = params.clust_group.transition().duration(2500);
+    var t = viz.reorder();
 
     // reorder matrix
     t.selectAll('.row')
@@ -329,6 +329,18 @@
     if (globals.params.resize) {
       setTimeout(reset_visualization_size, 500);
     }
+  }
+
+  // recalculate the size of the visualization
+  // and remake the clustergram
+  function reset_visualization_size() {
+
+      viz.remake();
+
+      // reset zoom and translate
+      globals.params.zoom.scale(1).translate(
+          [globals.params.clust.margin.left, globals.params.clust.margin.top]
+      );
   }
 
   /* Transpose network.
