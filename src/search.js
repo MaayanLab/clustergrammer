@@ -1,5 +1,6 @@
 
 /* Handles searching rows or columns.
+ !! need to generalize to column and row 
  * ----------------------------------------------------------------------- */
 function Search(nodes, prop) {
 
@@ -37,7 +38,7 @@ function Search(nodes, prop) {
     }
 
     function highlight_entity(search_term) {
-        // highlight row name
+        
         d3.selectAll('.row_label_text')
             .filter(function(d) {
                 return d[prop] === search_term;

@@ -15,10 +15,8 @@ function Viz(args) {
    */
   function make(params) {
 
-    reorder = Reorder();
-
-    globals.params = params;
-
+    var reorder = Reorder();
+    var globals.params = params;
     var network_data = args.network_data;
 
     if (params.transpose) {
@@ -31,51 +29,6 @@ function Viz(args) {
     // set local variables from network_data
     var col_nodes = network_data.col_nodes;
     var row_nodes = network_data.row_nodes;
-
-    // row groups - only add if the rows have a group attribute
-    // Define the space needed for the classification of rows - includes classification triangles and rects
-    params.class_room = {};
-    if (params.show_dendrogram) {
-
-      // make room for group rects
-      params.class_room.row = 18;
-      params.class_room.col = 9;
-      // the width of the classification triangle or group rectangle
-      params.class_room.symbol_width = 9;
-
-      params.group_level = {
-      row: 5,
-      col: 5
-      };
-
-    } else {
-      // do not make room for group rects
-      params.class_room.row = 9;
-      params.class_room.col = 0;
-      // the width of the classification triangle or group rectangle
-      params.class_room.symbol_width = 9;
-    }
-
-    // check if row/col have class information
-    if (params.show_categories) {
-      params.class_colors = {};
-      var class_rows = _.uniq(_.pluck(row_nodes, 'cl'));
-      // associate classes with colors
-      params.class_colors.row = {};
-      _.each(class_rows, function(c_row, i) {
-      params.class_colors.row[c_row] = Colors.get_random_color(i+50);
-      });
-      var class_cols = _.uniq(_.pluck(col_nodes, 'cl'));
-      // associate classes with colors
-      params.class_colors.col = {};
-      _.each(class_cols, function(c_col, i) {
-      if (i === 0) {
-        params.class_colors.col[c_col] = '#eee';
-      } else {
-        params.class_colors.col[c_col] = Colors.get_random_color(i+50);
-      }
-      });
-    }
 
     // Begin Making Visualization
     /////////////////////////////////

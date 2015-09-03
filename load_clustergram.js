@@ -1,4 +1,4 @@
-// slider script - col
+// load clustergram function 
 $(function() {
 
   // load network
