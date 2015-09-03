@@ -9,6 +9,7 @@ module.exports = function(grunt) {
         '../src/Matrix.js',
         '../src/Search.js',
         '../src/Viz.js',
+        '../src/Reorder.js',
         '../src/zoom.js',
         '../src/main.js',
         '../src/_close.js'
