@@ -15,13 +15,12 @@ function VizParams(network_data, params){
     // the outermost part of the visualization
     params.grey_border_width = 3;
 
-    // the distance between labels and clustergram
-    // a universal margin for the clustergram
+    // universal margin for the clustergram 
+    // the distance between labels and matrix 
     params.uni_margin = 4;
     params.uni_margin_row = 2;
 
     // Super Labels
-    ///////////////////
     // super label width - the labels are 20px wide if they are included
     if (params.super_labels) {
       // include super labels

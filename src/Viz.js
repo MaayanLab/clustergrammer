@@ -1,27 +1,25 @@
 
 /* Represents the entire visualization: labels, dendrogram (optional) and matrix.
  */
-function Viz(args) {
+function Viz(config, network_data) {
 
-  var config = Config(args),
-  matrix,
+  var matrix,
   row_dendrogram,
   col_dendrogram,
   zoom;
 
-  // make the visualization using the configuration object 
-  make(config);
+  // make viz 
+  make(config, network_data);
 
   /* The main function; makes clustergram based on user arguments.
    */
-  function make(config) {
+  function make(config, network_data) {
 
     // saving config, an early params, to global variable
     globals.params = config;
 
     // initialize params from config 
     var params = config;
-    var network_data = args.network_data;
 
     if (params.transpose) {
       network_data = transpose_network(network_data);

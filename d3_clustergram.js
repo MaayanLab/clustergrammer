@@ -813,13 +813,12 @@ function VizParams(network_data, params){
     // the outermost part of the visualization
     params.grey_border_width = 3;
 
-    // the distance between labels and clustergram
-    // a universal margin for the clustergram
+    // universal margin for the clustergram 
+    // the distance between labels and matrix 
     params.uni_margin = 4;
     params.uni_margin_row = 2;
 
     // Super Labels
-    ///////////////////
     // super label width - the labels are 20px wide if they are included
     if (params.super_labels) {
       // include super labels
@@ -1698,27 +1697,25 @@ function Spillover( params, container_all_col ){
 
 /* Represents the entire visualization: labels, dendrogram (optional) and matrix.
  */
-function Viz(args) {
+function Viz(config, network_data) {
 
-  var config = Config(args),
-  matrix,
+  var matrix,
   row_dendrogram,
   col_dendrogram,
   zoom;
 
-  // make the visualization using the configuration object 
-  make(config);
+  // make viz 
+  make(config, network_data);
 
   /* The main function; makes clustergram based on user arguments.
    */
-  function make(config) {
+  function make(config, network_data) {
 
     // saving config, an early params, to global variable
     globals.params = config;
 
     // initialize params from config 
     var params = config;
-    var network_data = args.network_data;
 
     if (params.transpose) {
       network_data = transpose_network(network_data);
@@ -2745,8 +2742,11 @@ var globals = {};
 // visualize based on config object
 // handle user events
 
-// viz is scoped globally 
-var viz = Viz(args);
+// consume and validate user input
+var config = Config(args);
+
+// make visualization 
+var viz = Viz(config, args.network_data);
 
 // highlight resource types - set up type/color association
 var gene_search = Search(globals.network_data.row_nodes, 'name');

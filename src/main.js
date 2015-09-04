@@ -10,8 +10,11 @@ var globals = {};
 // visualize based on config object
 // handle user events
 
-// viz is scoped globally 
-var viz = Viz(args);
+// consume and validate user input
+var config = Config(args);
+
+// make visualization 
+var viz = Viz(config, args.network_data);
 
 // highlight resource types - set up type/color association
 var gene_search = Search(globals.network_data.row_nodes, 'name');
