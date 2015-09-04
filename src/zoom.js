@@ -426,8 +426,22 @@ function Zoom(){
     }
   }
 
+  function ini_doubleclick(){
+
+    // disable double-click zoom: double click should reset zoom level
+    d3.selectAll('svg').on('dblclick.zoom', null);
+
+    // double click to reset zoom - add transition
+    d3.select('#main_svg')
+      .on('dblclick', function() {
+        // programmatic zoom reset 
+        two_translate_zoom(0, 0, 1);
+      });
+  }
+
   return {
-    zoomed:zoomed,
-    two_translate_zoom:two_translate_zoom
+    zoomed : zoomed,
+    two_translate_zoom : two_translate_zoom,
+    ini_doubleclick : ini_doubleclick
   }
 }

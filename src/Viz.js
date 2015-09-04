@@ -212,15 +212,8 @@ function Viz(args) {
       });
     }
 
-    // disable double-click zoom: double click should reset zoom level
-    d3.selectAll('svg').on('dblclick.zoom', null);
+    zoom.ini_doubleclick();
 
-    // double click to reset zoom - add transition
-    d3.select('#main_svg')
-      .on('dblclick', function() {
-        // programmatic zoom reset 
-        zoom.two_translate_zoom(0, 0, 1);
-      });
   }
 
   // initialize clustergram: size, scales, etc.
