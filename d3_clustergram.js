@@ -51,10 +51,8 @@ function Config(args) {
     super_labels: false,
 
     // matrix options 
-    background_color: '#FFFFFF',
-    tile_colors: ['#FF0000', '#1C86EE'],
     transpose: false,
-    do_zoom: true,
+    tile_colors: ['#FF0000', '#1C86EE'],
     tile_title: false,
     // Default domain is set to 0, which means that the domain will be set automatically
     input_domain: 0,
@@ -62,6 +60,8 @@ function Config(args) {
 
     // Viz Options 
     // This should be a DOM element, not a selector.
+    do_zoom: true,
+    background_color: '#FFFFFF',
     svg_div_id: 'svg_id',
     super_border_color: '#F5F5F5',
     resize: true,
@@ -115,29 +115,7 @@ function Config(args) {
   config.show_dendrogram = Utils.has(args.network_data.row_nodes[0], 'group') || Utils.has(args.network_data.col_nodes[0], 'group');
   config.show_categories = Utils.has(args.network_data.row_nodes[0], 'cl') || Utils.has(args.network_data.col_nodes[0], 'cl');
 
-  // row groups - only add if the rows have a group attribute
-  // Define the space needed for the classification of rows - includes classification triangles and rects
-  config.class_room = {};
-  if (config.show_dendrogram) {
-    // make room for group rects
-    config.class_room.row = 18;
-    config.class_room.col = 9;
-    // the width of the classification triangle or group rectangle
-    config.class_room.symbol_width = 9;
-
-    config.group_level = {
-    row: 5,
-    col: 5
-    };
-
-  } else {
-    // do not make room for group rects
-    config.class_room.row = 9;
-    config.class_room.col = 0;
-    // the width of the classification triangle or group rectangle
-    config.class_room.symbol_width = 9;
-  }
-
+  
   // check if row/col have class information
   if (config.show_categories) {
 
@@ -553,7 +531,7 @@ function Matrix(network_data, svg_elem, params) {
     }
 
     // append title to group
-    if (params.title_tile) {
+    if (params.tile_title) {
       tile
       .append('title')
       .text(function(d) {
@@ -736,7 +714,7 @@ function Matrix(network_data, svg_elem, params) {
       });
 
     // append title to group
-    if (params.title_tile) {
+    if (params.tile_title) {
       tile
       .append('title')
       .text(function(d) {
@@ -836,8 +814,24 @@ function VizParams(config){
   // Define Visualization Dimensions
   function initialize_visualization(config) {
 
-    // initialize params object 
+    // initialize params object from config
     var params = config;
+
+    // Label Paramsters 
+    params.labels = {};
+    params.labels.col_overflow = config.col_overflow;
+    params.labels.row_overflow = config.row_overflow;
+    params.super_labels = config.super_labels;
+
+    // Matrix Options 
+    params.tile_colors = config.tile_colors;
+    params.tile_title = config.tile_title; 
+    
+    // Visualization Options 
+    params.background_color = config.background_color; 
+    params.do_zoom = config.do_zoom;
+
+    params.opacity_scale = config.opacity_scale;
 
     // pass information from config 
     params.grey_border_width = config.grey_border_width;
@@ -860,6 +854,7 @@ function VizParams(config){
     } else {
       params.super_label_width = 0;
     }
+
 
     // Variable Label Widths
     // based on the length of the row/col labels - longer labels mean more space given
@@ -884,8 +879,9 @@ function VizParams(config){
     params.norm_label = {};
     params.norm_label.width = {};
 
+
     // allow the user to increase or decrease the overall size of the labels
-    params.norm_label.width.row = label_scale(row_max_char) * params.row_label_scale;
+    params.norm_label.width.row = label_scale(row_max_char) * config.row_label_scale;
     params.norm_label.width.col = 0.8 * label_scale(col_max_char) * params.col_label_scale;
 
     // normal label margins
@@ -929,7 +925,6 @@ function VizParams(config){
     params.clust.margin.left = params.norm_label.margin.left + params.norm_label.background.row;
     params.clust.margin.top = params.norm_label.margin.top + params.norm_label.background.col;
 
-
     // svg size: less than svg size
     ///////////////////////////////////
     // 0.8 approximates the trigonometric distance required for hiding the spillover
@@ -937,12 +932,14 @@ function VizParams(config){
 
     // get height and width from parent div
     params.svg_dim = {};
-    params.svg_dim.width  = Number(d3.select('#' + params.svg_div_id).style('width').replace('px', ''));
-    params.svg_dim.height = Number(d3.select('#' + params.svg_div_id).style('height').replace('px', ''));
+    params.svg_dim.width  = Number(d3.select('#' + config.svg_div_id).style('width').replace('px', ''));
+    params.svg_dim.height = Number(d3.select('#' + config.svg_div_id).style('height').replace('px', ''));
+
+
 
     // reduce width by row/col labels and by grey_border width (reduce width by less since this is less aparent with slanted col labels)
     var ini_clust_width = params.svg_dim.width - (params.super_label_width +
-      label_scale(row_max_char)*params.row_label_scale + params.class_room.row) - params.grey_border_width -
+      label_scale(row_max_char)*config.row_label_scale + params.class_room.row) - params.grey_border_width -
       params.spillover_x_offset;
 
     // there is space between the clustergram and the border
@@ -1439,8 +1436,8 @@ function Labels(){
     });
 
     // optionally turn down sensitivity to row/col overflow
-    params.bounding_width_max.col = params.bounding_width_max.col * params.col_overflow;
-    params.bounding_width_max.row = params.bounding_width_max.row * params.row_overflow;
+    params.bounding_width_max.col = params.bounding_width_max.col * params.labels.col_overflow;
+    params.bounding_width_max.row = params.bounding_width_max.row * params.labels.row_overflow;
 
 
     // check if widest row or col are wider than the allowed label width
@@ -1835,7 +1832,7 @@ function Viz(config) {
       .on('zoom', zoom.zoomed);
 
     // make outer group for clust_group - this will position clust_group once
-    var svg_group = d3.select('#' + params.svg_div_id)
+    var svg_group = d3.select('#' + config.svg_div_id)
       .append('svg')
       .attr('id', 'main_svg')
       // leave room for the light grey border
@@ -1859,7 +1856,6 @@ function Viz(config) {
       .attr('width', params.svg_dim.width)
       .attr('height', params.svg_dim.height)
       .style('fill', params.background_color);
-      console.log('change the background color ');
     }
 
 

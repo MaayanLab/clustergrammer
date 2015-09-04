@@ -14,10 +14,8 @@ function Config(args) {
     super_labels: false,
 
     // matrix options 
-    background_color: '#FFFFFF',
-    tile_colors: ['#FF0000', '#1C86EE'],
     transpose: false,
-    do_zoom: true,
+    tile_colors: ['#FF0000', '#1C86EE'],
     tile_title: false,
     // Default domain is set to 0, which means that the domain will be set automatically
     input_domain: 0,
@@ -25,6 +23,8 @@ function Config(args) {
 
     // Viz Options 
     // This should be a DOM element, not a selector.
+    do_zoom: true,
+    background_color: '#FFFFFF',
     svg_div_id: 'svg_id',
     super_border_color: '#F5F5F5',
     resize: true,
@@ -78,29 +78,7 @@ function Config(args) {
   config.show_dendrogram = Utils.has(args.network_data.row_nodes[0], 'group') || Utils.has(args.network_data.col_nodes[0], 'group');
   config.show_categories = Utils.has(args.network_data.row_nodes[0], 'cl') || Utils.has(args.network_data.col_nodes[0], 'cl');
 
-  // row groups - only add if the rows have a group attribute
-  // Define the space needed for the classification of rows - includes classification triangles and rects
-  config.class_room = {};
-  if (config.show_dendrogram) {
-    // make room for group rects
-    config.class_room.row = 18;
-    config.class_room.col = 9;
-    // the width of the classification triangle or group rectangle
-    config.class_room.symbol_width = 9;
-
-    config.group_level = {
-    row: 5,
-    col: 5
-    };
-
-  } else {
-    // do not make room for group rects
-    config.class_room.row = 9;
-    config.class_room.col = 0;
-    // the width of the classification triangle or group rectangle
-    config.class_room.symbol_width = 9;
-  }
-
+  
   // check if row/col have class information
   if (config.show_categories) {
 

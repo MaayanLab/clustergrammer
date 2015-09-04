@@ -61,7 +61,7 @@ function Viz(config) {
       .on('zoom', zoom.zoomed);
 
     // make outer group for clust_group - this will position clust_group once
-    var svg_group = d3.select('#' + params.svg_div_id)
+    var svg_group = d3.select('#' + config.svg_div_id)
       .append('svg')
       .attr('id', 'main_svg')
       // leave room for the light grey border
@@ -85,7 +85,6 @@ function Viz(config) {
       .attr('width', params.svg_dim.width)
       .attr('height', params.svg_dim.height)
       .style('fill', params.background_color);
-      console.log('change the background color ');
     }
 
 

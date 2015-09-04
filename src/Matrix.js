@@ -183,7 +183,7 @@ function Matrix(network_data, svg_elem, params) {
     }
 
     // append title to group
-    if (params.title_tile) {
+    if (params.tile_title) {
       tile
       .append('title')
       .text(function(d) {
@@ -366,7 +366,7 @@ function Matrix(network_data, svg_elem, params) {
       });
 
     // append title to group
-    if (params.title_tile) {
+    if (params.tile_title) {
       tile
       .append('title')
       .text(function(d) {
