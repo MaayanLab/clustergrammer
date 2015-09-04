@@ -10,6 +10,7 @@ module.exports = function(grunt) {
         '../src/Search.js',
         '../src/Labels.js',
         '../src/SuperLabels.js',
+        '../src/Spillover.js',
         '../src/Viz.js',
         '../src/Reorder.js',
         '../src/zoom.js',
