@@ -187,13 +187,11 @@ function Viz(args) {
 
     }
 
-
-    // only make the super titles if they are requested
+    // Super Labels 
     if (params.super_labels) {
 
-      // instantiate SuperLablels
+      // make super labels 
       var super_labels = SuperLabels();
-
       super_labels.make(params);      
 
     }
@@ -202,24 +200,26 @@ function Viz(args) {
     var spillover = Spillover(params, container_all_col);
 
     // initialize zoom and translate
-    
+
     ///////////////////////////////////
     // initialize translate vector to compensate for label margins
     params.zoom.translate([params.clust.margin.left, params.clust.margin.top]);
 
     // resize window
-    d3.select(window).on('resize', resize_to_screen);
+    if (globals.params.resize){
+      d3.select(window).on('resize', function(){
+        setTimeout(reset_visualization_size, 500);
+      });
+    }
 
     // disable double-click zoom: double click should reset zoom level
-    // do this for all svg elements
     d3.selectAll('svg').on('dblclick.zoom', null);
 
     // double click to reset zoom - add transition
     d3.select('#main_svg')
       .on('dblclick', function() {
-      // apply the following two translate zoom to reset zoom
-      // programatically
-      zoom.two_translate_zoom(0, 0, 1);
+        // programmatic zoom reset 
+        zoom.two_translate_zoom(0, 0, 1);
       });
   }
 
@@ -553,15 +553,6 @@ function Viz(args) {
     }
   }
 
-
-  /* Resize clustergram to fit screen size.
-   */
-  function resize_to_screen() {
-    // Only resize if allowed
-    if (globals.params.resize) {
-      setTimeout(reset_visualization_size, 500);
-    }
-  }
 
   // recalculate the size of the visualization
   // and remake the clustergram
