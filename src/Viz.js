@@ -8,7 +8,7 @@ function Viz(config) {
   col_dendrogram,
   zoom;
 
-  // make viz 
+  // make viz using config 
   make(config);
 
   /* The main function; makes clustergram based on user arguments.
@@ -17,15 +17,18 @@ function Viz(config) {
 
     // split config from viz_params 
 
+    // save global config object 
+    globals.config = config;
+
     var network_data = config.network_data;
 
     // initialize params from config 
     var params = config;
-    globals.config = config;
 
     // initialize clustergram variables
-    params = VizParams(params, network_data, params);
+    params = VizParams(params);
 
+    // global version of network data 
     globals.network_data = network_data;
 
     // set local variables from network_data
@@ -208,8 +211,6 @@ function Viz(config) {
     zoom.ini_doubleclick();
   }
 
-  
-
   function reset_visualization_size() {
 
     viz.remake();
@@ -219,7 +220,6 @@ function Viz(config) {
         [globals.config.clust.margin.left, globals.config.clust.margin.top]
     );
   }
-
   
   return {
     remake: function() {
