@@ -8,6 +8,7 @@ module.exports = function(grunt) {
         '../src/Dendrogram.js',
         '../src/Matrix.js',
         '../src/Search.js',
+        '../src/Labels.js',
         '../src/Viz.js',
         '../src/Reorder.js',
         '../src/zoom.js',
