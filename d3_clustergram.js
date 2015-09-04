@@ -82,9 +82,13 @@ function Config(args) {
   // Mixin defaults with user-defined arguments.
   config = Utils.extend(defaults, args);
 
+  // save network_data to config 
+  // extend does not properly pass network_data 
+  config.network_data = args.network_data;
+
   // transpose network if necessary 
   if (config.transpose) {
-    network_data = transpose_network(network_data);
+    args.network_data = transpose_network(args.network_data);
   }
 
   // super-row/col labels
@@ -1755,7 +1759,7 @@ function Spillover( params, container_all_col ){
 
 /* Represents the entire visualization: labels, dendrogram (optional) and matrix.
  */
-function Viz(config, network_data) {
+function Viz(config) {
 
   var matrix,
   row_dendrogram,
@@ -1763,13 +1767,16 @@ function Viz(config, network_data) {
   zoom;
 
   // make viz 
-  make(config, network_data);
+  make(config);
 
   /* The main function; makes clustergram based on user arguments.
    */
-  function make(config, network_data) {
+  function make(config) {
 
     // split config from viz_params 
+
+    // get network_data 
+    network_data = config.network_data;
 
     // initialize params from config 
     var params = config;
@@ -1975,7 +1982,7 @@ function Viz(config, network_data) {
   
   return {
     remake: function() {
-      make(config, network_data);
+      make(config);
     },
     change_group: function(inst_rc, inst_index) {
       if (inst_rc === 'row') {
@@ -2729,7 +2736,7 @@ var globals = {};
 var config = Config(args);
 
 // make visualization using configuration object and network 
-var viz = Viz(config, args.network_data);
+var viz = Viz(config);
 
 // highlight resource types - set up type/color association
 var gene_search = Search(globals.network_data.row_nodes, 'name');

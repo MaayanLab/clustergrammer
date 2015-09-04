@@ -45,9 +45,13 @@ function Config(args) {
   // Mixin defaults with user-defined arguments.
   config = Utils.extend(defaults, args);
 
+  // save network_data to config 
+  // extend does not properly pass network_data 
+  config.network_data = args.network_data;
+
   // transpose network if necessary 
   if (config.transpose) {
-    network_data = transpose_network(network_data);
+    args.network_data = transpose_network(args.network_data);
   }
 
   // super-row/col labels
