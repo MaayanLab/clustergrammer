@@ -14,7 +14,7 @@ var globals = {};
 var config = Config(args);
 
 // make visualization using configuration object and network 
-var viz = Viz(config, args.network_data);
+var viz = Viz(config);
 
 // highlight resource types - set up type/color association
 var gene_search = Search(globals.network_data.row_nodes, 'name');

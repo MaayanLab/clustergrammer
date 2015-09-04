@@ -1759,24 +1759,23 @@ function Spillover( params, container_all_col ){
 
 /* Represents the entire visualization: labels, dendrogram (optional) and matrix.
  */
-function Viz(config, network_data) {
+function Viz(config) {
 
   var matrix,
   row_dendrogram,
   col_dendrogram,
   zoom;
 
-  console.log(config.network_data)
-  console.log(network_data)
-
   // make viz 
-  make(config, network_data);
+  make(config);
 
   /* The main function; makes clustergram based on user arguments.
    */
-  function make(config, network_data) {
+  function make(config) {
 
     // split config from viz_params 
+
+    var network_data = config.network_data;
 
     // initialize params from config 
     var params = config;
@@ -1982,7 +1981,7 @@ function Viz(config, network_data) {
   
   return {
     remake: function() {
-      make(config, network_data);
+      make(config);
     },
     change_group: function(inst_rc, inst_index) {
       if (inst_rc === 'row') {
@@ -2736,7 +2735,7 @@ var globals = {};
 var config = Config(args);
 
 // make visualization using configuration object and network 
-var viz = Viz(config, args.network_data);
+var viz = Viz(config);
 
 // highlight resource types - set up type/color association
 var gene_search = Search(globals.network_data.row_nodes, 'name');

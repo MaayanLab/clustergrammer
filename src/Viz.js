@@ -1,24 +1,23 @@
 
 /* Represents the entire visualization: labels, dendrogram (optional) and matrix.
  */
-function Viz(config, network_data) {
+function Viz(config) {
 
   var matrix,
   row_dendrogram,
   col_dendrogram,
   zoom;
 
-  console.log(config.network_data)
-  console.log(network_data)
-
   // make viz 
-  make(config, network_data);
+  make(config);
 
   /* The main function; makes clustergram based on user arguments.
    */
-  function make(config, network_data) {
+  function make(config) {
 
     // split config from viz_params 
+
+    var network_data = config.network_data;
 
     // initialize params from config 
     var params = config;
@@ -224,7 +223,7 @@ function Viz(config, network_data) {
   
   return {
     remake: function() {
-      make(config, network_data);
+      make(config);
     },
     change_group: function(inst_rc, inst_index) {
       if (inst_rc === 'row') {
