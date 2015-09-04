@@ -82,6 +82,11 @@ function Config(args) {
   // Mixin defaults with user-defined arguments.
   config = Utils.extend(defaults, args);
 
+  // transpose network if necessary 
+  if (config.transpose) {
+    network_data = transpose_network(network_data);
+  }
+
   // super-row/col labels
   if (!Utils.is_undefined(args.row_label) && !Utils.is_undefined(args.col_label)) {
     config.super_labels = true;
@@ -155,6 +160,41 @@ function Config(args) {
     });
   }
 
+  /* Transpose network.
+   */
+  function transpose_network(net) {
+    var tnet = {},
+        inst_link,
+        i;
+
+    tnet.row_nodes = net.col_nodes;
+    tnet.col_nodes = net.row_nodes;
+    tnet.links = [];
+
+    for (i = 0; i < net.links.length; i++) {
+      inst_link = {};
+      inst_link.source = net.links[i].target;
+      inst_link.target = net.links[i].source;
+      inst_link.value = net.links[i].value;
+
+      // Optional highlight.
+      if (Utils.has(net.links[i], 'highlight')) {
+        inst_link.highlight = net.links[i].highlight;
+      }
+      if (Utils.has(net.links[i], 'value_up')) {
+        inst_link.value_up = net.links[i].value_up;
+      }
+      if (Utils.has(net.links[i], 'value_dn')) {
+        inst_link.value_dn = net.links[i].value_dn;
+      }
+      if (Utils.has(net.links[i], 'info')) {
+        inst_link.info = net.links[i].info;
+      }
+      tnet.links.push(inst_link);
+    }
+
+    return tnet;
+  }
 
 
   function is_supported_order(order) {
@@ -785,15 +825,17 @@ function Search(nodes, prop) {
 }
 /* VizParams Module 
 */
-function VizParams(network_data, params){
+function VizParams(params, network_data){
 
-  params = initialize_visualization(network_data, params)
+  params = initialize_visualization(params, network_data)
 
   // initialize clustergram: size, scales, etc.
-  function initialize_visualization(network_data, params) {
+  function initialize_visualization(params, network_data) {
 
     // Define Visualization Dimensions
     ///////////////////////////////////////
+    // only resize if allowed
+    parent_div_size_pos(params);
 
     // grey_border
     ///////////////////
@@ -1072,7 +1114,7 @@ function VizParams(network_data, params){
     }
 
     // check if rects should be highlighted
-    if (Utils.has(globals.network_data.links[0], 'highlight')) {
+    if (Utils.has(network_data.links[0], 'highlight')) {
       params.highlight = 1;
     } else {
       params.highlight = 0;
@@ -1081,7 +1123,39 @@ function VizParams(network_data, params){
     return params;
   }
 
+  // parent_div: size and position svg container - svg_div
+  function parent_div_size_pos(params) {
 
+    if (params.resize) {
+      // get outer_margins
+      var outer_margins = params.outer_margins;
+
+      // get the size of the window
+      var screen_width = window.innerWidth;
+      var screen_height = window.innerHeight;
+
+      // define width and height of clustergram container
+      var cont_dim = {};
+      cont_dim.width  = screen_width  - outer_margins.left - outer_margins.right;
+      cont_dim.height = screen_height - outer_margins.top - outer_margins.bottom;
+
+      // size the svg container div - svg_div
+      d3.select('#' + params.svg_div_id)
+          .style('margin-left', outer_margins.left + 'px')
+          .style('margin-top', outer_margins.top + 'px')
+          .style('width', cont_dim.width + 'px')
+          .style('height', cont_dim.height + 'px');
+          
+    } else {
+      // get outer_margins
+      outer_margins = params.outer_margins;
+
+      // size the svg container div - svg_div
+      d3.select('#' + params.svg_div_id)
+          .style('margin-left', outer_margins.left + 'px')
+          .style('margin-top',  outer_margins.top + 'px');
+    }
+  }
 
   return params
 
@@ -1701,9 +1775,8 @@ function Viz(config, network_data) {
     var params = config;
     globals.config = config;
 
-    if (params.transpose) {
-      network_data = transpose_network(network_data);
-    }
+    // initialize clustergram variables
+    params = VizParams(params, network_data, params);
 
     globals.network_data = network_data;
 
@@ -1720,12 +1793,6 @@ function Viz(config, network_data) {
 
     // size and position the outer div first
     
-    // only resize if allowed
-    parent_div_size_pos(params);
-
-    // initialize clustergram variables
-    params = VizParams(network_data, params);
-
     // display col and row title
     d3.select('#row_title').style('display', 'block');
     d3.select('#col_title').style('display', 'block');
@@ -1893,39 +1960,7 @@ function Viz(config, network_data) {
     zoom.ini_doubleclick();
   }
 
-  // parent_div: size and position svg container - svg_div
-  function parent_div_size_pos(params) {
-
-    if (params.resize) {
-      // get outer_margins
-      var outer_margins = params.outer_margins;
-
-      // get the size of the window
-      var screen_width = window.innerWidth;
-      var screen_height = window.innerHeight;
-
-      // define width and height of clustergram container
-      var cont_dim = {};
-      cont_dim.width  = screen_width  - outer_margins.left - outer_margins.right;
-      cont_dim.height = screen_height - outer_margins.top - outer_margins.bottom;
-
-      // size the svg container div - svg_div
-      d3.select('#' + params.svg_div_id)
-          .style('margin-left', outer_margins.left + 'px')
-          .style('margin-top', outer_margins.top + 'px')
-          .style('width', cont_dim.width + 'px')
-          .style('height', cont_dim.height + 'px');
-          
-    } else {
-      // get outer_margins
-      outer_margins = params.outer_margins;
-
-      // size the svg container div - svg_div
-      d3.select('#' + params.svg_div_id)
-          .style('margin-left', outer_margins.left + 'px')
-          .style('margin-top',  outer_margins.top + 'px');
-    }
-  }
+  
 
   function reset_visualization_size() {
 
@@ -1937,42 +1972,7 @@ function Viz(config, network_data) {
     );
   }
 
-  /* Transpose network.
-   */
-  function transpose_network(net) {
-    var tnet = {},
-        inst_link,
-        i;
-
-    tnet.row_nodes = net.col_nodes;
-    tnet.col_nodes = net.row_nodes;
-    tnet.links = [];
-
-    for (i = 0; i < net.links.length; i++) {
-      inst_link = {};
-      inst_link.source = net.links[i].target;
-      inst_link.target = net.links[i].source;
-      inst_link.value = net.links[i].value;
-
-      // Optional highlight.
-      if (Utils.has(net.links[i], 'highlight')) {
-        inst_link.highlight = net.links[i].highlight;
-      }
-      if (Utils.has(net.links[i], 'value_up')) {
-        inst_link.value_up = net.links[i].value_up;
-      }
-      if (Utils.has(net.links[i], 'value_dn')) {
-        inst_link.value_dn = net.links[i].value_dn;
-      }
-      if (Utils.has(net.links[i], 'info')) {
-        inst_link.info = net.links[i].info;
-      }
-      tnet.links.push(inst_link);
-    }
-
-    return tnet;
-  }
-
+  
   return {
     remake: function() {
       make(config, network_data);
