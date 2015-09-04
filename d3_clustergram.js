@@ -291,6 +291,45 @@ function Dendrogram(type, params, elem) {
       });
   }
 
+  // add callback functions 
+  /////////////////////////////
+  
+  // !! optional row callback on click
+  if (typeof params.click_group === 'function') {
+    // only add click functionality to row rect
+    row_class_rect
+      .on('click', function(d) {
+        var inst_level = params.group_level.row;
+       var inst_group = d.group[inst_level];
+        // find all row names that are in the same group at the same group_level
+        // get row_nodes
+        row_nodes = globals.network_data.row_nodes;
+        var group_nodes = [];
+
+        _.each(row_nodes, function(node) {
+          // check that the node is in the group
+          if (node.group[inst_level] === inst_group) {
+          // make a list of genes that are in inst_group at this group_level
+          group_nodes.push(node.name);
+          }
+      });
+
+      // return the following information to the user
+      // row or col, distance cutoff level, nodes
+      var group_info = {};
+      group_info.type = 'row';
+      group_info.nodes = group_nodes;
+      group_info.info = {
+        'type': 'distance',
+        'cutoff': inst_level / 10
+      };
+
+      // pass information to group_click callback
+      params.click_group(group_info);
+
+    });
+  }
+
   return {
     color_group: color_group,
     get_group_color: get_group_color,
@@ -759,8 +798,8 @@ function Search(nodes, prop) {
 }
 function Labels(){
 
-  // var row_dendrogram;
 
+  // make row labels 
   function make_rows(params, row_nodes, reorder){
 
     // Row Labels 
@@ -859,125 +898,6 @@ function Labels(){
         });
       });
 
-      return container_all_row;
-   }   
-
-  return {
-    make_rows: make_rows
-  };
-
-}
-
-// var tmp = Labels();
-// console.log('running make rows')
-// console.log(tmp.make_rows)
-// tmp.make_rows();
-
-/* Represents the entire visualization: labels, dendrogram (optional) and matrix.
- */
-function Viz(args) {
-
-  var config = Config(args),
-  matrix,
-  row_dendrogram,
-  col_dendrogram,
-  zoom;
-
-  // make the visualization using the configuration object 
-  make(config);
-
-  /* The main function; makes clustergram based on user arguments.
-   */
-  function make(config) {
-
-    // saving config, an early params, to global variable
-    globals.params = config;
-
-    // initialize params from config 
-    var params = config;
-    var network_data = args.network_data;
-
-    if (params.transpose) {
-      network_data = transpose_network(network_data);
-    }
-
-    // save global version of network_data
-    globals.network_data = network_data;
-
-    // set local variables from network_data
-    var col_nodes = network_data.col_nodes;
-    var row_nodes = network_data.row_nodes;
-
-    // Begin Making Visualization
-    /////////////////////////////////
-
-    // !! needs to be improved 
-    // remove any previous visualizations
-    d3.select('#main_svg').remove();
-
-    // size and position the outer div first
-    
-    // only resize if allowed
-    parent_div_size_pos(params);
-
-    // initialize clustergram variables
-    params = initialize_visualization(network_data, params);
-
-    // display col and row title
-    d3.select('#row_title').style('display', 'block');
-    d3.select('#col_title').style('display', 'block');
-
-    // display clust_instruct_container
-    d3.select('#clust_instruct_container').style('display', 'block');
-
-    // shift the footer left
-    d3.select('#footer_div')
-      .style('margin-left', '0px');
-
-    // instantiate zoom object 
-    zoom = Zoom();
-
-    // define the variable zoom, a d3 method
-    params.zoom = d3.behavior
-      .zoom()
-      .scaleExtent([1, params.real_zoom * params.zoom_switch])
-      .on('zoom', zoom.zoomed);
-
-    // make outer group for clust_group - this will position clust_group once
-    var svg_group = d3.select('#' + params.svg_div_id)
-      .append('svg')
-      .attr('id', 'main_svg')
-      // leave room for the light grey border
-      .attr('width', params.svg_dim.width)
-      // the height is reduced by more than the width because the tiles go right up to the bottom border
-      .attr('height', params.svg_dim.height);
-
-    // call zooming on the entire svg
-    if (params.do_zoom) {
-      svg_group.call(params.zoom);
-    }
-
-    // make the matrix 
-    /////////////////////////
-    matrix = Matrix(network_data, svg_group, params);
-
-    // append background rect if necessary to control background color
-    if (params.background_color !== '#FFFFFF') {
-      svg_group
-      .append('rect')
-      .attr('width', params.svg_dim.width)
-      .attr('height', params.svg_dim.height)
-      .style('fill', params.background_color);
-      console.log('change the background color ');
-    }
-
-
-    // define reordering object 
-    var reorder = Reorder();
-
-
-    var row_labels = Labels(params);
-    var container_all_row = row_labels.make_rows( params, row_nodes, reorder ); 
 
     // row triangles
     ///////////////////////
@@ -1031,52 +951,14 @@ function Viz(args) {
       }
       return inst_color;
       });
+      
+      // return row_triangle_ini_group so that the dendrogram can be made 
+      return row_triangle_ini_group;
+  }   
 
-    // add row group labels if necessary
-    //////////////////////////////////////
-    if (params.show_dendrogram) {
+  // make col labels 
+  function make_cols(params, col_nodes, reorder){
 
-      row_dendrogram = Dendrogram('row', params, row_triangle_ini_group);
-
-      // optional row callback on click
-      if (typeof params.click_group === 'function') {
-      // only add click functionality to row rect
-      row_class_rect
-        .on('click', function(d) {
-        var inst_level = params.group_level.row;
-        var inst_group = d.group[inst_level];
-        // find all row names that are in the same group at the same group_level
-        // get row_nodes
-        row_nodes = globals.network_data.row_nodes;
-        var group_nodes = [];
-        _.each(row_nodes, function(node) {
-          // check that the node is in the group
-          if (node.group[inst_level] === inst_group) {
-          // make a list of genes that are in inst_group at this group_level
-          group_nodes.push(node.name);
-          }
-        });
-
-        // return the following information to the user
-        // row or col, distance cutoff level, nodes
-        var group_info = {};
-        group_info.type = 'row';
-        group_info.nodes = group_nodes;
-        group_info.info = {
-          'type': 'distance',
-          'cutoff': inst_level / 10
-        };
-
-        // pass information to group_click callback
-        params.click_group(group_info);
-
-        });
-      }
-    }
-
-
-    // Column Labels 
-    //////////////////////////////////
     // make container to pre-position zoomable elements
     var container_all_col = d3.select('#main_svg')
       .append('g')
@@ -1304,6 +1186,145 @@ function Viz(args) {
       .attr('opacity', 0.4);
     }
 
+    return container_all_col;
+
+  }
+
+  return {
+    make_rows: make_rows,
+    make_cols: make_cols
+  };
+
+}
+
+// var tmp = Labels();
+// console.log('running make rows')
+// console.log(tmp.make_rows)
+// tmp.make_rows();
+
+/* Represents the entire visualization: labels, dendrogram (optional) and matrix.
+ */
+function Viz(args) {
+
+  var config = Config(args),
+  matrix,
+  row_dendrogram,
+  col_dendrogram,
+  zoom;
+
+  // make the visualization using the configuration object 
+  make(config);
+
+  /* The main function; makes clustergram based on user arguments.
+   */
+  function make(config) {
+
+    // saving config, an early params, to global variable
+    globals.params = config;
+
+    // initialize params from config 
+    var params = config;
+    var network_data = args.network_data;
+
+    if (params.transpose) {
+      network_data = transpose_network(network_data);
+    }
+
+    // save global version of network_data
+    globals.network_data = network_data;
+
+    // set local variables from network_data
+    var col_nodes = network_data.col_nodes;
+    var row_nodes = network_data.row_nodes;
+
+    // Begin Making Visualization
+    /////////////////////////////////
+
+    // !! needs to be improved 
+    // remove any previous visualizations
+    d3.select('#main_svg').remove();
+
+    // size and position the outer div first
+    
+    // only resize if allowed
+    parent_div_size_pos(params);
+
+    // initialize clustergram variables
+    params = initialize_visualization(network_data, params);
+
+    // display col and row title
+    d3.select('#row_title').style('display', 'block');
+    d3.select('#col_title').style('display', 'block');
+
+    // display clust_instruct_container
+    d3.select('#clust_instruct_container').style('display', 'block');
+
+    // shift the footer left
+    d3.select('#footer_div')
+      .style('margin-left', '0px');
+
+    // instantiate zoom object 
+    zoom = Zoom();
+
+    // define the variable zoom, a d3 method
+    params.zoom = d3.behavior
+      .zoom()
+      .scaleExtent([1, params.real_zoom * params.zoom_switch])
+      .on('zoom', zoom.zoomed);
+
+    // make outer group for clust_group - this will position clust_group once
+    var svg_group = d3.select('#' + params.svg_div_id)
+      .append('svg')
+      .attr('id', 'main_svg')
+      // leave room for the light grey border
+      .attr('width', params.svg_dim.width)
+      // the height is reduced by more than the width because the tiles go right up to the bottom border
+      .attr('height', params.svg_dim.height);
+
+    // call zooming on the entire svg
+    if (params.do_zoom) {
+      svg_group.call(params.zoom);
+    }
+
+    // make the matrix 
+    /////////////////////////
+    matrix = Matrix(network_data, svg_group, params);
+
+    // append background rect if necessary to control background color
+    if (params.background_color !== '#FFFFFF') {
+      svg_group
+      .append('rect')
+      .attr('width', params.svg_dim.width)
+      .attr('height', params.svg_dim.height)
+      .style('fill', params.background_color);
+      console.log('change the background color ');
+    }
+
+
+    // define reordering object 
+    var reorder = Reorder();
+
+    // define labels object 
+    var labels = Labels(params);
+
+    // row labels 
+    /////////////////////////
+    var row_triangle_ini_group = labels.make_rows( params, row_nodes, reorder ); 
+    
+    //////////////////////////////////////
+    if (params.show_dendrogram) {
+
+      // make dendrogram 
+      row_dendrogram = Dendrogram('row', params, row_triangle_ini_group);
+      
+    }
+
+
+    // Column Labels 
+    //////////////////////////////////
+    var container_all_col = labels.make_cols( params, col_nodes, reorder );
+    
+
     // add group labels if necessary
     //////////////////////////////////
     if (params.show_dendrogram) {
@@ -1368,6 +1389,9 @@ function Viz(args) {
       }
 
     }
+
+    // Spillover Protection 
+    //////////////////////////
 
     // hide spillover from slanted column labels on right side
     container_all_col

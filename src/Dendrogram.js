@@ -79,6 +79,45 @@ function Dendrogram(type, params, elem) {
       });
   }
 
+  // add callback functions 
+  /////////////////////////////
+  
+  // !! optional row callback on click
+  if (typeof params.click_group === 'function') {
+    // only add click functionality to row rect
+    row_class_rect
+      .on('click', function(d) {
+        var inst_level = params.group_level.row;
+       var inst_group = d.group[inst_level];
+        // find all row names that are in the same group at the same group_level
+        // get row_nodes
+        row_nodes = globals.network_data.row_nodes;
+        var group_nodes = [];
+
+        _.each(row_nodes, function(node) {
+          // check that the node is in the group
+          if (node.group[inst_level] === inst_group) {
+          // make a list of genes that are in inst_group at this group_level
+          group_nodes.push(node.name);
+          }
+      });
+
+      // return the following information to the user
+      // row or col, distance cutoff level, nodes
+      var group_info = {};
+      group_info.type = 'row';
+      group_info.nodes = group_nodes;
+      group_info.info = {
+        'type': 'distance',
+        'cutoff': inst_level / 10
+      };
+
+      // pass information to group_click callback
+      params.click_group(group_info);
+
+    });
+  }
+
   return {
     color_group: color_group,
     get_group_color: get_group_color,

@@ -101,334 +101,26 @@ function Viz(args) {
     // define reordering object 
     var reorder = Reorder();
 
+    // define labels object 
+    var labels = Labels(params);
 
-    var row_labels = Labels(params);
-    var container_all_row = row_labels.make_rows( params, row_nodes, reorder ); 
-
-    // row triangles
-    ///////////////////////
-    var row_triangle_zoom = container_all_row
-      .append('g')
-      // shift by the width of the normal row labels
-      .attr('transform', 'translate(' + params.norm_label.width.row + ',0)')
-      .append('g')
-      .attr('id', 'row_label_triangles');
-
-    // append triangle background rect to zoomable group
-    row_triangle_zoom
-      .append('rect')
-      .attr('fill', params.background_color) //!! prog_colors
-      .attr('width', params.class_room.row + 'px')
-      .attr('height', function() {
-      var inst_height = params.clust.dim.height;
-      return inst_height;
-      });
-
-    // append groups - each holds one triangle
-    var row_triangle_ini_group = row_triangle_zoom
-      .selectAll('g')
-      .data(row_nodes)
-      .enter()
-      .append('g')
-      .attr('class', 'row_triangle_group')
-      .attr('transform', function(d, index) {
-      return 'translate(0, ' + params.y_scale(index) + ')';
-      });
-
-    // add triangles
-    row_triangle_ini_group
-      .append('path')
-      .attr('d', function() {
-      var origin_x = params.class_room.symbol_width - 1;
-      var origin_y = 0;
-      var mid_x = 1;
-      var mid_y = params.y_scale.rangeBand() / 2;
-      var final_x = params.class_room.symbol_width - 1;
-      var final_y = params.y_scale.rangeBand();
-      var output_string = 'M ' + origin_x + ',' + origin_y + ' L ' +
-        mid_x + ',' + mid_y + ', L ' + final_x + ',' + final_y + ' Z';
-      return output_string;
-      })
-      .attr('fill', function(d) {
-      // initailize color
-      var inst_color = '#eee';
-      if (Utils.has(params, 'class_colors')) {
-        inst_color = params.class_colors.row[d.cl];
-      }
-      return inst_color;
-      });
-
-    // add row group labels if necessary
+    // row labels 
+    /////////////////////////
+    var row_triangle_ini_group = labels.make_rows( params, row_nodes, reorder ); 
+    
     //////////////////////////////////////
     if (params.show_dendrogram) {
 
+      // make dendrogram 
       row_dendrogram = Dendrogram('row', params, row_triangle_ini_group);
-
-      // optional row callback on click
-      if (typeof params.click_group === 'function') {
-      // only add click functionality to row rect
-      row_class_rect
-        .on('click', function(d) {
-        var inst_level = params.group_level.row;
-        var inst_group = d.group[inst_level];
-        // find all row names that are in the same group at the same group_level
-        // get row_nodes
-        row_nodes = globals.network_data.row_nodes;
-        var group_nodes = [];
-        _.each(row_nodes, function(node) {
-          // check that the node is in the group
-          if (node.group[inst_level] === inst_group) {
-          // make a list of genes that are in inst_group at this group_level
-          group_nodes.push(node.name);
-          }
-        });
-
-        // return the following information to the user
-        // row or col, distance cutoff level, nodes
-        var group_info = {};
-        group_info.type = 'row';
-        group_info.nodes = group_nodes;
-        group_info.info = {
-          'type': 'distance',
-          'cutoff': inst_level / 10
-        };
-
-        // pass information to group_click callback
-        params.click_group(group_info);
-
-        });
-      }
+      
     }
 
 
     // Column Labels 
     //////////////////////////////////
-    // make container to pre-position zoomable elements
-    var container_all_col = d3.select('#main_svg')
-      .append('g')
-      .attr('transform', 'translate(' + params.clust.margin.left + ',' +
-      params.norm_label.margin.top + ')');
-
-    // white background rect for col labels
-    container_all_col
-      .append('rect')
-      .attr('fill', params.background_color) //!! prog_colors
-      .attr('width', 30 * params.clust.dim.width + 'px')
-      .attr('height', params.norm_label.background.col)
-      .attr('class', 'white_bars');
-
-    // col labels
-    container_all_col
-      .append('g')
-      // position the outer col label group
-      .attr('transform', 'translate(0,' + params.norm_label.width.col + ')')
-      .append('g')
-      .attr('id', 'col_labels');
-
-    // offset click group column label
-    var x_offset_click = params.x_scale.rangeBand() / 2 + params.border_width;
-    // reduce width of rotated rects
-    var reduce_rect_width = params.x_scale.rangeBand() * 0.36;
-
-    // add main column label group
-    var col_label_obj = d3.select('#col_labels')
-      .selectAll('.col_label_text')
-      .data(col_nodes)
-      .enter()
-      .append('g')
-      .attr('class', 'col_label_text')
-      .attr('transform', function(d, index) {
-      return 'translate(' + params.x_scale(index) + ') rotate(-90)';
-      });
-
-    // append group for individual column label
-    var col_label_click = col_label_obj
-      // append new group for rect and label (not white lines)
-      .append('g')
-      .attr('class', 'col_label_click')
-      // rotate column labels
-      .attr('transform', 'translate(' + params.x_scale.rangeBand() / 2 + ',' + x_offset_click + ') rotate(45)')
-      .on('dblclick', reorder.col_reorder )
-      .on('mouseover', function() {
-      d3.select(this).select('text')
-        .classed('active',true);
-      })
-      .on('mouseout', function mouseout() {
-      d3.select(this).select('text')
-        .classed('active',false);
-      });
-
-    // add column label
-    col_label_click
-      .append('text')
-      .attr('x', 0)
-      .attr('y', params.x_scale.rangeBand() * 0.60)
-      // offset label to make room for triangle
-      .attr('dx', 2 * params.border_width)
-      .attr('text-anchor', 'start')
-      .attr('full_name', function(d) {
-      return d.name;
-      })
-      // original font size
-      .style('font-size', params.default_fs_col + 'px')
-      // // !! simple font size
-      // .style('font-size', params.x_scale.rangeBand()*0.7+'px')
-      .text(function(d) {
-      return d.name.replace(/_/g, ' ');
-      });
-
-    // label the widest row and col labels
-    ////////////////////////////////////////
-    params.bounding_width_max = {};
-    params.bounding_width_max.row = 0;
-    d3.selectAll('.row_label_text').each(function() {
-      var tmp_width = d3.select(this).select('text').node().getBBox().width;
-      if (tmp_width > params.bounding_width_max.row) {
-      params.bounding_width_max.row = tmp_width;
-      }
-    });
-
-    params.bounding_width_max.col = 0;
-    d3.selectAll('.col_label_click').each(function() {
-      var tmp_width = d3.select(this).select('text').node().getBBox().width;
-      if (tmp_width > params.bounding_width_max.col) {
-      // increase the apparent width of the column label since its rotated
-      // this will give more room for text
-      params.bounding_width_max.col = tmp_width * 1.2;
-      }
-    });
-
-    // optionally turn down sensitivity to row/col overflow
-    params.bounding_width_max.col = params.bounding_width_max.col * params.label_overflow
-      .col;
-    params.bounding_width_max.row = params.bounding_width_max.row * params.label_overflow
-      .row;
-
-
-    // check if widest row or col are wider than the allowed label width
-    ////////////////////////////////////////////////////////////////////////
-    params.ini_scale_font = {};
-    params.ini_scale_font.row = 1;
-    params.ini_scale_font.col = 1;
-    if (params.bounding_width_max.row * params.zoom.scale() > params.norm_label
-      .width.row) {
-
-      params.ini_scale_font.row = params.norm_label.width.row / params.bounding_width_max
-        .row;
-      // redefine bounding_width_max.row
-      params.bounding_width_max.row = params.ini_scale_font.row * params.bounding_width_max
-        .row;
-
-      // redefine default fs
-      params.default_fs_row = params.default_fs_row * params.ini_scale_font
-        .row;
-      // reduce font size
-      d3.selectAll('.row_label_text').each(function() {
-      d3.select(this).select('text')
-        .style('font-size', params.default_fs_row + 'px');
-      });
-    }
-
-    if (params.bounding_width_max.col * params.zoom.scale() > params.norm_label
-      .width.col) {
-      params.ini_scale_font.col = params.norm_label.width.col / params.bounding_width_max
-        .col;
-      // redefine bounding_width_max.col
-      params.bounding_width_max.col = params.ini_scale_font.col * params.bounding_width_max
-        .col;
-      // redefine default fs
-      params.default_fs_col = params.default_fs_col * params.ini_scale_font
-        .col;
-      // reduce font size
-      d3.selectAll('.col_label_click').each(function() {
-      d3.select(this).select('text')
-        .style('font-size', params.default_fs_col + 'px');
-      });
-    }
-
-    // append rectangle behind text
-    col_label_click
-      .insert('rect', 'text')
-      .attr('x', 10)
-      .attr('y', 0)
-      .attr('width', 10)
-      .attr('height', 10)
-      .style('opacity', 0);
-
-    // change the size of the highlighting rects
-    col_label_click
-      .each(function() {
-
-      // get the bounding box of the row label text
-      var bbox = d3.select(this)
-        .select('text')[0][0]
-        .getBBox();
-
-      // use the bounding box to set the size of the rect
-      d3.select(this)
-        .select('rect')
-        .attr('x', bbox.x * 1.25)
-        .attr('y', 0)
-        .attr('width', bbox.width * 1.25)
-        // used a reduced rect width for the columsn
-        // because the rects are slanted
-        .attr('height', params.x_scale.rangeBand() * 0.6)
-        .style('fill', 'yellow')
-        .style('opacity', 0);
-      });
-
-    // add triangle under rotated labels
-    col_label_click
-      .append('path')
-      .style('stroke-width', 0)
-      .attr('d', function() {
-      // x and y are flipped since its rotated
-      var origin_y = -params.border_width;
-      var start_x = 0;
-      var final_x = params.x_scale.rangeBand() - reduce_rect_width;
-      var start_y = -(params.x_scale.rangeBand() - reduce_rect_width +
-      params.border_width);
-      var final_y = -params.border_width;
-      var output_string = 'M ' + origin_y + ',0 L ' + start_y + ',' +
-        start_x + ', L ' + final_y + ',' + final_x + ' Z';
-      return output_string;
-      })
-      .attr('fill', function(d) {
-      var inst_color = '#eee';
-      if (Utils.has(params, 'class_colors')) {
-        inst_color = params.class_colors.col[d.cl];
-      }
-      return inst_color;
-      });
-
-
-    //!! get the abs maximum value from row/col use this to make red/blue bars
-    // // get the max abs nl_pval (find obj and get nl_pval)
-    // enr_max = _.max( col_nodes, function(d) { return Math.abs(d.nl_pval) } ).nl_pval ;
-
-    // the enrichment bar should be 3/4ths of the height of the column labels
-    params.bar_scale_col = d3.scale.linear()
-      // .domain([0, enr_max])
-      .domain([0, 1])
-      .range([0, params.norm_label.width.col]);
-
-    // append column value bars
-    if (Utils.has(globals.network_data.col_nodes[0], 'value')) {
-      col_label_click
-      .append('rect')
-      .attr('class', 'col_bars')
-      // column is rotated - effectively width and height are switched
-      .attr('width', function(d) {
-        return params.bar_scale_col(d.value);
-      })
-      // rotate labels - reduce width if rotating
-      .attr('height', params.x_scale.rangeBand() * 0.66)
-      .attr('fill', function() {
-        // return d.color;
-        return 'red';
-      })
-      .attr('opacity', 0.4);
-    }
+    var container_all_col = labels.make_cols( params, col_nodes, reorder );
+    
 
     // add group labels if necessary
     //////////////////////////////////
@@ -494,6 +186,9 @@ function Viz(args) {
       }
 
     }
+
+    // Spillover Protection 
+    //////////////////////////
 
     // hide spillover from slanted column labels on right side
     container_all_col
