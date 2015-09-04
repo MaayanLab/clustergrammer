@@ -15,17 +15,16 @@ function Viz(config, network_data) {
    */
   function make(config, network_data) {
 
-    // saving config, an early params, to global variable
-    globals.params = config;
+    // split config from viz_params 
 
     // initialize params from config 
     var params = config;
+    globals.config = config;
 
     if (params.transpose) {
       network_data = transpose_network(network_data);
     }
 
-    // save global version of network_data
     globals.network_data = network_data;
 
     // set local variables from network_data
@@ -204,7 +203,7 @@ function Viz(config, network_data) {
     params.zoom.translate([params.clust.margin.left, params.clust.margin.top]);
 
     // resize window
-    if (globals.params.resize){
+    if (globals.config.resize){
       d3.select(window).on('resize', function(){
         setTimeout(reset_visualization_size, 500);
       });
@@ -253,8 +252,8 @@ function Viz(config, network_data) {
     viz.remake();
 
     // reset zoom and translate
-    globals.params.zoom.scale(1).translate(
-        [globals.params.clust.margin.left, globals.params.clust.margin.top]
+    globals.config.zoom.scale(1).translate(
+        [globals.config.clust.margin.left, globals.config.clust.margin.top]
     );
   }
 
@@ -296,7 +295,7 @@ function Viz(config, network_data) {
 
   return {
     remake: function() {
-      make(config);
+      make(config, network_data);
     },
     change_group: function(inst_rc, inst_index) {
       if (inst_rc === 'row') {

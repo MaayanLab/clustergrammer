@@ -43,26 +43,27 @@ function Config(args) {
 
   defaults = {
 
-    // This should be a DOM element, not a selector.
-    svg_div_id: 'svg_id',
-    label_overflow: {
-      row: 1,
-      col: 1
-    },
+    // Label options 
+    col_overflow: 1,
+    row_overflow: 1,
     row_label_scale: 1,
     col_label_scale: 1,
-    transpose: false,
-    title_tile: false,
+    super_labels: false,
 
-    // Red and blue
-    tile_colors: ['#FF0000', '#1C86EE'],
+    // matrix options 
     background_color: '#FFFFFF',
-    super_border_color: '#F5F5F5',
+    tile_colors: ['#FF0000', '#1C86EE'],
+    transpose: false,
     do_zoom: true,
-
+    tile_title: false,
     // Default domain is set to 0, which means that the domain will be set automatically
     input_domain: 0,
     opacity_scale: 'linear',
+
+    // Viz Options 
+    // This should be a DOM element, not a selector.
+    svg_div_id: 'svg_id',
+    super_border_color: '#F5F5F5',
     resize: true,
     outer_margins: {
       top: 0,
@@ -70,11 +71,8 @@ function Config(args) {
       left: 0,
       right: 0
     },
-    super_labels: false,
-
     // Gray border around the visualization
     grey_border_width: 3,
-
     // the distance between labels and clustergram
     // a universal margin for the clustergram
     uni_margin: 4,
@@ -83,15 +81,6 @@ function Config(args) {
 
   // Mixin defaults with user-defined arguments.
   config = Utils.extend(defaults, args);
-
-  // super label width - the labels are 20px wide if they are included
-  if (config.super_labels) {
-    // include super labels
-    config.super_label_width = 20;
-  } else {
-    // do not include super labels
-    config.super_label_width = 0;
-  }
 
   // super-row/col labels
   if (!Utils.is_undefined(args.row_label) && !Utils.is_undefined(args.col_label)) {
@@ -113,8 +102,6 @@ function Config(args) {
   } else {
     config.inst_order = 'clust';
   }
-
-
 
   config.show_dendrogram = Utils.has(args.network_data.row_nodes[0], 'group') || Utils.has(args.network_data.col_nodes[0], 'group');
   config.show_categories = Utils.has(args.network_data.row_nodes[0], 'cl') || Utils.has(args.network_data.col_nodes[0], 'cl');
@@ -764,11 +751,11 @@ function Search(nodes, prop) {
      */
     function zoom_and_highlight_found_entity(search_term) {
         var idx = _.indexOf(entities, search_term),
-            inst_y_pos = globals.params.y_scale(idx),
-            pan_dy = globals.params.clust.dim.height / 2 - inst_y_pos;
+            inst_y_pos = globals.config.y_scale(idx),
+            pan_dy = globals.config.clust.dim.height / 2 - inst_y_pos;
 
         // viz exposes two_translate_zoom from zoom object 
-        viz.two_translate_zoom(0, pan_dy, globals.params.zoom_switch);
+        viz.two_translate_zoom(0, pan_dy, globals.config.zoom_switch);
     }
 
     function un_highlight_entities() {
@@ -818,13 +805,10 @@ function VizParams(network_data, params){
     params.uni_margin = 4;
     params.uni_margin_row = 2;
 
-    // Super Labels
-    // super label width - the labels are 20px wide if they are included
+    // Super Labels 
     if (params.super_labels) {
-      // include super labels
       params.super_label_width = 20;
     } else {
-      // do not include super labels
       params.super_label_width = 0;
     }
 
@@ -1097,6 +1081,8 @@ function VizParams(network_data, params){
     return params;
   }
 
+
+
   return params
 
 }
@@ -1359,10 +1345,8 @@ function Labels(){
     });
 
     // optionally turn down sensitivity to row/col overflow
-    params.bounding_width_max.col = params.bounding_width_max.col * params.label_overflow
-      .col;
-    params.bounding_width_max.row = params.bounding_width_max.row * params.label_overflow
-      .row;
+    params.bounding_width_max.col = params.bounding_width_max.col * params.col_overflow;
+    params.bounding_width_max.row = params.bounding_width_max.row * params.row_overflow;
 
 
     // check if widest row or col are wider than the allowed label width
@@ -1711,17 +1695,16 @@ function Viz(config, network_data) {
    */
   function make(config, network_data) {
 
-    // saving config, an early params, to global variable
-    globals.params = config;
+    // split config from viz_params 
 
     // initialize params from config 
     var params = config;
+    globals.config = config;
 
     if (params.transpose) {
       network_data = transpose_network(network_data);
     }
 
-    // save global version of network_data
     globals.network_data = network_data;
 
     // set local variables from network_data
@@ -1900,7 +1883,7 @@ function Viz(config, network_data) {
     params.zoom.translate([params.clust.margin.left, params.clust.margin.top]);
 
     // resize window
-    if (globals.params.resize){
+    if (globals.config.resize){
       d3.select(window).on('resize', function(){
         setTimeout(reset_visualization_size, 500);
       });
@@ -1949,8 +1932,8 @@ function Viz(config, network_data) {
     viz.remake();
 
     // reset zoom and translate
-    globals.params.zoom.scale(1).translate(
-        [globals.params.clust.margin.left, globals.params.clust.margin.top]
+    globals.config.zoom.scale(1).translate(
+        [globals.config.clust.margin.left, globals.config.clust.margin.top]
     );
   }
 
@@ -1992,7 +1975,7 @@ function Viz(config, network_data) {
 
   return {
     remake: function() {
-      make(config);
+      make(config, network_data);
     },
     change_group: function(inst_rc, inst_index) {
       if (inst_rc === 'row') {
@@ -2025,10 +2008,10 @@ function Reorder(){
   function all_reorder(inst_order) {
 
     // load parameters from d3_clustergram
-    var params = globals.params;
+    var params = globals.config;
 
     // set running transition value
-    globals.params.run_trans = true;
+    globals.config.run_trans = true;
 
     // load orders
     if (inst_order === 'clust') {
@@ -2085,20 +2068,20 @@ function Reorder(){
       })
       .each('end', function() {
         // set running transition to 0
-        globals.params.run_trans = false;
+        globals.config.run_trans = false;
       });
 
     // backup allow programmatic zoom
     setTimeout(end_reorder, 2500);
   }
 
-	function row_reorder() {
+  function row_reorder() {
 
     // get inst row (gene)
     var inst_row = d3.select(this).select('text').text();
 
-		// get row and col nodes 
-    globals.params.run_trans = true;
+    // get row and col nodes 
+    globals.config.run_trans = true;
 
     var mat       = viz.get_matrix();
     var row_nodes = viz.get_nodes('row');
@@ -2125,7 +2108,7 @@ function Reorder(){
     });
 
     // get parameters
-    var params = globals.params;
+    var params = globals.config;
 
     // resort the columns (resort x)
     params.x_scale.domain(tmp_sort);
@@ -2158,7 +2141,7 @@ function Reorder(){
       })
       .each('end', function() {
         // set running transition to 0
-        globals.params.run_trans = false;
+        globals.config.run_trans = false;
       });
 
     // highlight selected row 
@@ -2171,18 +2154,18 @@ function Reorder(){
 
     // backup allow programmatic zoom
     setTimeout(end_reorder, 2500);
-	}
+  }
 
-	function col_reorder(){
+  function col_reorder(){
     // set running transition value
-    globals.params.run_trans = true;
+    globals.config.run_trans = true;
 
     var mat       = viz.get_matrix();
     var row_nodes = viz.get_nodes('row');
     var col_nodes = viz.get_nodes('col');
 
     // get parameters
-    var params = globals.params;
+    var params = globals.config;
 
     // // get row_nodes from global variable
     // var row_nodes = globals.network_data.row_nodes;
@@ -2249,7 +2232,7 @@ function Reorder(){
       })
       .each('end', function() {
         // set running transition to 0
-        globals.params.run_trans = false;
+        globals.config.run_trans = false;
       });
 
     // highlight selected column
@@ -2266,18 +2249,18 @@ function Reorder(){
 
     // backup allow programmatic zoom
     setTimeout(end_reorder, 2500);
-	}	
+  } 
 
   // allow programmatic zoom after reordering
   function end_reorder() {
-    globals.params.run_trans = false;
+    globals.config.run_trans = false;
   }  
 
-	return {
-		row_reorder: row_reorder,
-		col_reorder: col_reorder,
+  return {
+    row_reorder: row_reorder,
+    col_reorder: col_reorder,
     all_reorder: all_reorder
-	};
+  };
 
 }
 
@@ -2291,8 +2274,8 @@ function Zoom(){
 
     var zoom_x = d3.event.scale,
       zoom_y = d3.event.scale,
-      trans_x = d3.event.translate[0] - globals.params.clust.margin.left,
-      trans_y = d3.event.translate[1] - globals.params.clust.margin.top;
+      trans_x = d3.event.translate[0] - globals.config.clust.margin.left,
+      trans_y = d3.event.translate[1] - globals.config.clust.margin.top;
 
     // apply transformation
     apply_transformation(trans_x, trans_y, zoom_x, zoom_y);  
@@ -2300,7 +2283,7 @@ function Zoom(){
 
   function apply_transformation(trans_x, trans_y, zoom_x, zoom_y) {
 
-    var params = globals.params;
+    var params = globals.config;
     var d3_scale = zoom_x;
 
     // y - rules
@@ -2497,9 +2480,9 @@ function Zoom(){
   function two_translate_zoom(pan_dx, pan_dy, fin_zoom) {
 
     // get parameters
-    var params = globals.params;
+    var params = globals.config;
 
-    if (!globals.params.run_trans) {
+    if (!globals.config.run_trans) {
 
       // define the commonly used variable half_height
       var half_height = params.clust.dim.height / 2;
@@ -2742,10 +2725,10 @@ var globals = {};
 // visualize based on config object
 // handle user events
 
-// consume and validate user input
+// consume and validate user arguments, produce configuration object 
 var config = Config(args);
 
-// make visualization 
+// make visualization using configuration object and network 
 var viz = Viz(config, args.network_data);
 
 // highlight resource types - set up type/color association

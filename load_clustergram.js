@@ -35,12 +35,12 @@ $(function() {
       'outer_margins': outer_margins,
       // 'opacity_scale':'log',
       // 'input_domain':7,
-      'col_overflow':1
+      // 'col_overflow':1
       // 'transpose':true,
       // 'do_zoom':false,
       // 'tile_colors':['#ED9124','#1C86EE'],
       // 'background_color':'orange',
-      // 'title_tile': true,
+      // 'tile_title': true,
       // 'click_tile': click_tile_callback,
       // 'click_group': click_group_callback
       // 'resize':false

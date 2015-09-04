@@ -20,13 +20,10 @@ function VizParams(network_data, params){
     params.uni_margin = 4;
     params.uni_margin_row = 2;
 
-    // Super Labels
-    // super label width - the labels are 20px wide if they are included
+    // Super Labels 
     if (params.super_labels) {
-      // include super labels
       params.super_label_width = 20;
     } else {
-      // do not include super labels
       params.super_label_width = 0;
     }
 
@@ -298,6 +295,8 @@ function VizParams(network_data, params){
 
     return params;
   }
+
+
 
   return params
 

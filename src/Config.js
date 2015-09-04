@@ -6,26 +6,27 @@ function Config(args) {
 
   defaults = {
 
-    // This should be a DOM element, not a selector.
-    svg_div_id: 'svg_id',
-    label_overflow: {
-      row: 1,
-      col: 1
-    },
+    // Label options 
+    col_overflow: 1,
+    row_overflow: 1,
     row_label_scale: 1,
     col_label_scale: 1,
-    transpose: false,
-    title_tile: false,
+    super_labels: false,
 
-    // Red and blue
-    tile_colors: ['#FF0000', '#1C86EE'],
+    // matrix options 
     background_color: '#FFFFFF',
-    super_border_color: '#F5F5F5',
+    tile_colors: ['#FF0000', '#1C86EE'],
+    transpose: false,
     do_zoom: true,
-
+    tile_title: false,
     // Default domain is set to 0, which means that the domain will be set automatically
     input_domain: 0,
     opacity_scale: 'linear',
+
+    // Viz Options 
+    // This should be a DOM element, not a selector.
+    svg_div_id: 'svg_id',
+    super_border_color: '#F5F5F5',
     resize: true,
     outer_margins: {
       top: 0,
@@ -33,11 +34,8 @@ function Config(args) {
       left: 0,
       right: 0
     },
-    super_labels: false,
-
     // Gray border around the visualization
     grey_border_width: 3,
-
     // the distance between labels and clustergram
     // a universal margin for the clustergram
     uni_margin: 4,
@@ -46,15 +44,6 @@ function Config(args) {
 
   // Mixin defaults with user-defined arguments.
   config = Utils.extend(defaults, args);
-
-  // super label width - the labels are 20px wide if they are included
-  if (config.super_labels) {
-    // include super labels
-    config.super_label_width = 20;
-  } else {
-    // do not include super labels
-    config.super_label_width = 0;
-  }
 
   // super-row/col labels
   if (!Utils.is_undefined(args.row_label) && !Utils.is_undefined(args.col_label)) {
@@ -76,8 +65,6 @@ function Config(args) {
   } else {
     config.inst_order = 'clust';
   }
-
-
 
   config.show_dendrogram = Utils.has(args.network_data.row_nodes[0], 'group') || Utils.has(args.network_data.col_nodes[0], 'group');
   config.show_categories = Utils.has(args.network_data.row_nodes[0], 'cl') || Utils.has(args.network_data.col_nodes[0], 'cl');

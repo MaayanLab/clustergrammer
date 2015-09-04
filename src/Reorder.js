@@ -8,10 +8,10 @@ function Reorder(){
   function all_reorder(inst_order) {
 
     // load parameters from d3_clustergram
-    var params = globals.params;
+    var params = globals.config;
 
     // set running transition value
-    globals.params.run_trans = true;
+    globals.config.run_trans = true;
 
     // load orders
     if (inst_order === 'clust') {
@@ -68,20 +68,20 @@ function Reorder(){
       })
       .each('end', function() {
         // set running transition to 0
-        globals.params.run_trans = false;
+        globals.config.run_trans = false;
       });
 
     // backup allow programmatic zoom
     setTimeout(end_reorder, 2500);
   }
 
-	function row_reorder() {
+  function row_reorder() {
 
     // get inst row (gene)
     var inst_row = d3.select(this).select('text').text();
 
-		// get row and col nodes 
-    globals.params.run_trans = true;
+    // get row and col nodes 
+    globals.config.run_trans = true;
 
     var mat       = viz.get_matrix();
     var row_nodes = viz.get_nodes('row');
@@ -108,7 +108,7 @@ function Reorder(){
     });
 
     // get parameters
-    var params = globals.params;
+    var params = globals.config;
 
     // resort the columns (resort x)
     params.x_scale.domain(tmp_sort);
@@ -141,7 +141,7 @@ function Reorder(){
       })
       .each('end', function() {
         // set running transition to 0
-        globals.params.run_trans = false;
+        globals.config.run_trans = false;
       });
 
     // highlight selected row 
@@ -154,18 +154,18 @@ function Reorder(){
 
     // backup allow programmatic zoom
     setTimeout(end_reorder, 2500);
-	}
+  }
 
-	function col_reorder(){
+  function col_reorder(){
     // set running transition value
-    globals.params.run_trans = true;
+    globals.config.run_trans = true;
 
     var mat       = viz.get_matrix();
     var row_nodes = viz.get_nodes('row');
     var col_nodes = viz.get_nodes('col');
 
     // get parameters
-    var params = globals.params;
+    var params = globals.config;
 
     // // get row_nodes from global variable
     // var row_nodes = globals.network_data.row_nodes;
@@ -232,7 +232,7 @@ function Reorder(){
       })
       .each('end', function() {
         // set running transition to 0
-        globals.params.run_trans = false;
+        globals.config.run_trans = false;
       });
 
     // highlight selected column
@@ -249,18 +249,18 @@ function Reorder(){
 
     // backup allow programmatic zoom
     setTimeout(end_reorder, 2500);
-	}	
+  } 
 
   // allow programmatic zoom after reordering
   function end_reorder() {
-    globals.params.run_trans = false;
+    globals.config.run_trans = false;
   }  
 
-	return {
-		row_reorder: row_reorder,
-		col_reorder: col_reorder,
+  return {
+    row_reorder: row_reorder,
+    col_reorder: col_reorder,
     all_reorder: all_reorder
-	};
+  };
 
 }
 

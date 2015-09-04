@@ -10,10 +10,10 @@ var globals = {};
 // visualize based on config object
 // handle user events
 
-// consume and validate user input
+// consume and validate user arguments, produce configuration object 
 var config = Config(args);
 
-// make visualization 
+// make visualization using configuration object and network 
 var viz = Viz(config, args.network_data);
 
 // highlight resource types - set up type/color association

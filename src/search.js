@@ -27,11 +27,11 @@ function Search(nodes, prop) {
      */
     function zoom_and_highlight_found_entity(search_term) {
         var idx = _.indexOf(entities, search_term),
-            inst_y_pos = globals.params.y_scale(idx),
-            pan_dy = globals.params.clust.dim.height / 2 - inst_y_pos;
+            inst_y_pos = globals.config.y_scale(idx),
+            pan_dy = globals.config.clust.dim.height / 2 - inst_y_pos;
 
         // viz exposes two_translate_zoom from zoom object 
-        viz.two_translate_zoom(0, pan_dy, globals.params.zoom_switch);
+        viz.two_translate_zoom(0, pan_dy, globals.config.zoom_switch);
     }
 
     function un_highlight_entities() {
