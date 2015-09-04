@@ -6,7 +6,8 @@ function Viz(config) {
   var matrix,
   row_dendrogram,
   col_dendrogram,
-  zoom;
+  zoom, 
+  params;
 
   // make viz using config 
   make(config);
@@ -15,18 +16,13 @@ function Viz(config) {
    */
   function make(config) {
 
-    // split config from viz_params 
-
     // save global config object 
     globals.config = config;
 
     var network_data = config.network_data;
 
-    // initialize params from config 
-    var params = config;
-
     // initialize clustergram variables
-    params = VizParams(params);
+    params = VizParams(config);
 
     // global version of network data 
     globals.network_data = network_data;

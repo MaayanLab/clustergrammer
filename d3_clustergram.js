@@ -829,14 +829,20 @@ function Search(nodes, prop) {
 }
 /* VizParams Module 
 */
-function VizParams(params){
+function VizParams(config){
 
-  params = initialize_visualization(params)
+  var params = initialize_visualization(config)
 
   // Define Visualization Dimensions
-  function initialize_visualization(params) {
+  function initialize_visualization(config) {
 
-    var network_data = params.network_data;
+    // initialize params object 
+    var params = config;
+
+    // pass information from config 
+    params.grey_border_width = config.grey_border_width;
+
+    var network_data = config.network_data;
 
     // only resize if allowed
     parent_div_size_pos(params);
@@ -886,6 +892,30 @@ function VizParams(params){
     params.norm_label.margin = {};
     params.norm_label.margin.left = params.grey_border_width + params.super_label_width;
     params.norm_label.margin.top = params.grey_border_width + params.super_label_width;
+
+    // row groups - only add if the rows have a group attribute
+    // Define the space needed for the classification of rows - includes classification triangles and rects
+    params.class_room = {};
+    if (config.show_dendrogram) {
+      // make room for group rects
+      params.class_room.row = 18;
+      params.class_room.col = 9;
+      // the width of the classification triangle or group rectangle
+      params.class_room.symbol_width = 9;
+
+      config.group_level = {
+        row: 5,
+        col: 5
+      };
+
+    } else {
+      // do not make room for group rects
+      params.class_room.row = 9;
+      params.class_room.col = 0;
+      // the width of the classification triangle or group rectangle
+      params.class_room.symbol_width = 9;
+    }
+
 
     // norm label background width, norm-label-width plus class-width plus margin
     params.norm_label.background = {};
@@ -1116,9 +1146,9 @@ function VizParams(params){
   // parent_div: size and position svg container - svg_div
   function parent_div_size_pos(params) {
 
-    if (params.resize) {
+    if (config.resize) {
       // get outer_margins
-      var outer_margins = params.outer_margins;
+      var outer_margins = config.outer_margins;
 
       // get the size of the window
       var screen_width = window.innerWidth;
@@ -1130,7 +1160,7 @@ function VizParams(params){
       cont_dim.height = screen_height - outer_margins.top - outer_margins.bottom;
 
       // size the svg container div - svg_div
-      d3.select('#' + params.svg_div_id)
+      d3.select('#' + config.svg_div_id)
           .style('margin-left', outer_margins.left + 'px')
           .style('margin-top', outer_margins.top + 'px')
           .style('width', cont_dim.width + 'px')
@@ -1141,7 +1171,7 @@ function VizParams(params){
       outer_margins = params.outer_margins;
 
       // size the svg container div - svg_div
-      d3.select('#' + params.svg_div_id)
+      d3.select('#' + config.svg_div_id)
           .style('margin-left', outer_margins.left + 'px')
           .style('margin-top',  outer_margins.top + 'px');
     }
@@ -1750,7 +1780,8 @@ function Viz(config) {
   var matrix,
   row_dendrogram,
   col_dendrogram,
-  zoom;
+  zoom, 
+  params;
 
   // make viz using config 
   make(config);
@@ -1759,18 +1790,13 @@ function Viz(config) {
    */
   function make(config) {
 
-    // split config from viz_params 
-
     // save global config object 
     globals.config = config;
 
     var network_data = config.network_data;
 
-    // initialize params from config 
-    var params = config;
-
     // initialize clustergram variables
-    params = VizParams(params);
+    params = VizParams(config);
 
     // global version of network data 
     globals.network_data = network_data;
