@@ -23,9 +23,9 @@ function Config(args) {
 
     // Viz Options 
     // This should be a DOM element, not a selector.
+    svg_div_id: 'svg_id',
     do_zoom: true,
     background_color: '#FFFFFF',
-    svg_div_id: 'svg_id',
     super_border_color: '#F5F5F5',
     resize: true,
     outer_margins: {

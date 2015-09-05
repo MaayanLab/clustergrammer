@@ -65,10 +65,10 @@ function Spillover( params, container_all_col ){
       .attr('fill', params.viz.background_color) //!! prog_colors
       .attr('width', params.svg_dim.width)
       // make this border twice the width of the grey border
-      .attr('height', 2 * params.grey_border_width)
+      .attr('height', 2 * params.viz.grey_border_width)
       .attr('transform', function() {
       // shift up enough to show the entire border width
-      var inst_offset = params.svg_dim.height - 3 * params.grey_border_width;
+      var inst_offset = params.svg_dim.height - 3 * params.viz.grey_border_width;
       return 'translate(0,' + inst_offset + ')';
       });
 
@@ -77,28 +77,28 @@ function Spillover( params, container_all_col ){
     // left border
     d3.select('#main_svg')
       .append('rect')
-      .attr('fill', params.super_border_color) //!! prog_colors
-      .attr('width', params.grey_border_width)
+      .attr('fill', params.viz.super_border_color) //!! prog_colors
+      .attr('width', params.viz.grey_border_width)
       .attr('height', params.svg_dim.height)
       .attr('transform', 'translate(0,0)');
 
     // right border
     d3.select('#main_svg')
       .append('rect')
-      .attr('fill', params.super_border_color) //!! prog_colors
-      .attr('width', params.grey_border_width)
+      .attr('fill', params.viz.super_border_color) //!! prog_colors
+      .attr('width', params.viz.grey_border_width)
       .attr('height', params.svg_dim.height)
       .attr('transform', function() {
-      var inst_offset = params.svg_dim.width - params.grey_border_width;
+      var inst_offset = params.svg_dim.width - params.viz.grey_border_width;
       return 'translate(' + inst_offset + ',0)';
       });
 
     // top border
     d3.select('#main_svg')
       .append('rect')
-      .attr('fill', params.super_border_color) //!! prog_colors
+      .attr('fill', params.viz.super_border_color) //!! prog_colors
       .attr('width', params.svg_dim.width)
-      .attr('height', params.grey_border_width)
+      .attr('height', params.viz.grey_border_width)
       .attr('transform', function() {
       var inst_offset = 0;
       return 'translate(' + inst_offset + ',0)';
@@ -107,11 +107,11 @@ function Spillover( params, container_all_col ){
     // bottom border
     d3.select('#main_svg')
       .append('rect')
-      .attr('fill', params.super_border_color) //!! prog_colors
+      .attr('fill', params.viz.super_border_color) //!! prog_colors
       .attr('width', params.svg_dim.width)
-      .attr('height', params.grey_border_width)
+      .attr('height', params.viz.grey_border_width)
       .attr('transform', function() {
-      var inst_offset = params.svg_dim.height - params.grey_border_width;
+      var inst_offset = params.svg_dim.height - params.viz.grey_border_width;
       return 'translate(0,' + inst_offset + ')';
       });
   }

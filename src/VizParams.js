@@ -23,19 +23,20 @@ function VizParams(config){
     
     // Visualization Options 
     params.viz = {};
+    params.viz.svg_div_id = config.svg_div_id;
     params.viz.do_zoom = config.do_zoom;
+    params.viz.resize = config.resize;
+    params.viz.outer_margins = config.outer_margins;
     params.viz.background_color = config.background_color; 
+    params.viz.super_border_color = config.super_border_color;
 
     // pass information from config 
-    params.grey_border_width = config.grey_border_width;
+    params.viz.grey_border_width = config.grey_border_width;
 
     var network_data = config.network_data;
 
     // only resize if allowed
     parent_div_size_pos(params);
-
-    // grey_border - the outermost part of the visualization
-    params.grey_border_width = 3;
 
     // universal margin for the clustergram, distance between labels and matrix 
     params.uni_margin = 4;
@@ -79,8 +80,8 @@ function VizParams(config){
 
     // normal label margins
     params.norm_label.margin = {};
-    params.norm_label.margin.left = params.grey_border_width + params.super_label_width;
-    params.norm_label.margin.top = params.grey_border_width + params.super_label_width;
+    params.norm_label.margin.left = params.viz.grey_border_width + params.super_label_width;
+    params.norm_label.margin.top = params.viz.grey_border_width + params.super_label_width;
 
     // row groups - only add if the rows have a group attribute
     // Define the space needed for the classification of rows - includes classification triangles and rects
@@ -125,20 +126,20 @@ function VizParams(config){
 
     // get height and width from parent div
     params.svg_dim = {};
-    params.svg_dim.width  = Number(d3.select('#' + config.svg_div_id).style('width').replace('px', ''));
-    params.svg_dim.height = Number(d3.select('#' + config.svg_div_id).style('height').replace('px', ''));
+    params.svg_dim.width  = Number(d3.select('#' + params.viz.svg_div_id).style('width').replace('px', ''));
+    params.svg_dim.height = Number(d3.select('#' + params.viz.svg_div_id).style('height').replace('px', ''));
 
 
 
     // reduce width by row/col labels and by grey_border width (reduce width by less since this is less aparent with slanted col labels)
     var ini_clust_width = params.svg_dim.width - (params.super_label_width +
-      label_scale(row_max_char)*config.row_label_scale + params.class_room.row) - params.grey_border_width -
+      label_scale(row_max_char)*config.row_label_scale + params.class_room.row) - params.viz.grey_border_width -
       params.spillover_x_offset;
 
     // there is space between the clustergram and the border
     var ini_clust_height = params.svg_dim.height - (params.super_label_width +
       0.8 * label_scale(col_max_char)*params.col_label_scale + params.class_room.col) - 5 *
-      params.grey_border_width;
+      params.viz.grey_border_width;
 
     // the visualization dimensions can be smaller than the svg
     // if there are not many rows the clustergram width will be reduced, but not the svg width
@@ -338,12 +339,12 @@ function VizParams(config){
   // parent_div: size and position svg container - svg_div
   function parent_div_size_pos(params) {
 
-    if (config.resize) {
+    if (params.viz.resize) {
       // get outer_margins
-      var outer_margins = config.outer_margins;
+      var outer_margins = params.viz.outer_margins;
 
       // get the size of the window
-      var screen_width = window.innerWidth;
+      var screen_width  = window.innerWidth;
       var screen_height = window.innerHeight;
 
       // define width and height of clustergram container
@@ -352,18 +353,18 @@ function VizParams(config){
       cont_dim.height = screen_height - outer_margins.top - outer_margins.bottom;
 
       // size the svg container div - svg_div
-      d3.select('#' + config.svg_div_id)
+      d3.select('#' + params.viz.svg_div_id)
           .style('margin-left', outer_margins.left + 'px')
-          .style('margin-top', outer_margins.top + 'px')
-          .style('width', cont_dim.width + 'px')
+          .style('margin-top',  outer_margins.top  + 'px')
+          .style('width',  cont_dim.width  + 'px')
           .style('height', cont_dim.height + 'px');
           
     } else {
       // get outer_margins
-      outer_margins = params.outer_margins;
+      outer_margins = params.viz.outer_margins;
 
       // size the svg container div - svg_div
-      d3.select('#' + config.svg_div_id)
+      d3.select('#' + params.viz.svg_div_id)
           .style('margin-left', outer_margins.left + 'px')
           .style('margin-top',  outer_margins.top + 'px');
     }

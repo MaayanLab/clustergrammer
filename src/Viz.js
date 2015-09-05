@@ -61,7 +61,7 @@ function Viz(config) {
       .on('zoom', zoom.zoomed);
 
     // make outer group for clust_group - this will position clust_group once
-    var svg_group = d3.select('#' + config.svg_div_id)
+    var svg_group = d3.select('#' + params.viz.svg_div_id)
       .append('svg')
       .attr('id', 'main_svg')
       // leave room for the light grey border
@@ -196,7 +196,7 @@ function Viz(config) {
     params.zoom.translate([params.clust.margin.left, params.clust.margin.top]);
 
     // resize window
-    if (globals.config.resize){
+    if (params.viz.resize){
       d3.select(window).on('resize', function(){
         setTimeout(reset_visualization_size, 500);
       });

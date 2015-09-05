@@ -11,7 +11,7 @@ function SuperLabels(){
     .attr('height', params.super_label_width + 'px')
     .attr('width', '3000px')
     .attr('class', 'white_bars')
-    .attr('transform', 'translate(0,' + params.grey_border_width + ')');
+    .attr('transform', 'translate(0,' + params.viz.grey_border_width + ')');
 
     // super col title
     d3.select('#main_svg')
@@ -36,7 +36,7 @@ function SuperLabels(){
     .attr('width', params.super_label_width + 'px')
     .attr('height', '3000px')
     .attr('class', 'white_bars')
-    .attr('transform', 'translate(' + params.grey_border_width + ',0)');
+    .attr('transform', 'translate(' + params.viz.grey_border_width + ',0)');
 
     // append super title row group
     // this is used to separate translation from rotation
