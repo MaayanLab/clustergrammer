@@ -745,62 +745,62 @@ function Matrix(network_data, svg_elem, params) {
 /* Handles searching rows or columns.
  !! need to generalize to column and row 
  * ----------------------------------------------------------------------- */
-function Search(nodes, prop) {
+function Search(params, nodes, prop) {
 
-    /* Collect entities from row or columns.
-     */
-    var entities = [],
-        i;
+  /* Collect entities from row or columns.
+   */
+  var entities = [],
+    i;
 
-    for (i = 0; i < nodes.length; i++) {
-        entities.push(nodes[i][prop]);
+  for (i = 0; i < nodes.length; i++) {
+    entities.push(nodes[i][prop]);
+  }
+
+  /* Find a gene (row) in the clustergram.
+   */
+  function find_entities(search_term) {
+    if (entities.indexOf(search_term) !== -1) {
+      un_highlight_entities();
+      zoom_and_highlight_found_entity(search_term);
+      highlight_entity(search_term);
     }
+  }
 
-    /* Find a gene (row) in the clustergram.
-     */
-    function find_entities(search_term) {
-        if (entities.indexOf(search_term) !== -1) {
-            un_highlight_entities();
-            zoom_and_highlight_found_entity(search_term);
-            highlight_entity(search_term);
-        }
-    }
+  /* Zoom into and highlight the found the gene
+   */
+  function zoom_and_highlight_found_entity(search_term) {
+    var idx = _.indexOf(entities, search_term),
+      inst_y_pos = params.y_scale(idx),
+      pan_dy = params.clust.dim.height / 2 - inst_y_pos;
 
-    /* Zoom into and highlight the found the gene
-     */
-    function zoom_and_highlight_found_entity(search_term) {
-        var idx = _.indexOf(entities, search_term),
-            inst_y_pos = globals.config.y_scale(idx),
-            pan_dy = globals.config.clust.dim.height / 2 - inst_y_pos;
+    // viz exposes two_translate_zoom from zoom object 
+    viz.two_translate_zoom(0, pan_dy, params.zoom_switch);
+  }
 
-        // viz exposes two_translate_zoom from zoom object 
-        viz.two_translate_zoom(0, pan_dy, globals.config.zoom_switch);
-    }
+  function un_highlight_entities() {
+    d3.selectAll('.row_label_text').select('rect').style('opacity', 0);
+  }
 
-    function un_highlight_entities() {
-        d3.selectAll('.row_label_text').select('rect').style('opacity', 0);
-    }
+  function highlight_entity(search_term) {
+    
+    d3.selectAll('.row_label_text')
+      .filter(function(d) {
+        return d[prop] === search_term;
+      })
+      .select('rect')
+      .style('opacity', 1);
+  }
 
-    function highlight_entity(search_term) {
-        
-        d3.selectAll('.row_label_text')
-            .filter(function(d) {
-                return d[prop] === search_term;
-            })
-            .select('rect')
-            .style('opacity', 1);
-    }
+  /* Returns all the genes in the clustergram.
+   */
+  function get_entities() {
+    return entities;
+  }
 
-    /* Returns all the genes in the clustergram.
-     */
-    function get_entities() {
-        return entities;
-    }
-
-    return {
-        find_entities: find_entities,
-        get_entities: get_entities
-    }
+  return {
+    find_entities: find_entities,
+    get_entities: get_entities
+  }
 }
 /* VizParams Module 
 */
@@ -1774,6 +1774,7 @@ function Spillover( params, container_all_col ){
  */
 function Viz(config) {
 
+  // scope these variables to viz 
   var matrix,
   row_dendrogram,
   col_dendrogram,
@@ -1787,9 +1788,6 @@ function Viz(config) {
   /* The main function; makes clustergram based on user arguments.
    */
   function make(config) {
-
-    // save global config object 
-    globals.config = config;
 
     // initialize clustergram variables
     params = VizParams(config);
@@ -1824,7 +1822,7 @@ function Viz(config) {
       .style('margin-left', '0px');
 
     // instantiate zoom object 
-    zoom = Zoom();
+    zoom = Zoom(params);
 
     // define the variable zoom, a d3 method
     params.zoom = d3.behavior
@@ -1860,8 +1858,7 @@ function Viz(config) {
     }
 
 
-    // define reordering object 
-    // reorder is scoped to viz since viz needs to expose it 
+    // define reordering object - scoped to viz
     reorder = Reorder(params);
 
     // define labels object 
@@ -1988,7 +1985,9 @@ function Viz(config) {
         [ params.clust.margin.left, params.clust.margin.top]
     );
   }
-  
+
+  // highlight resource types - set up type/color association
+  var gene_search = Search(params, globals.network_data.row_nodes, 'name');
 
   return {
     remake: function() {
@@ -2011,7 +2010,9 @@ function Viz(config) {
       return matrix.get_nodes(type);
     },
     two_translate_zoom: zoom.two_translate_zoom,
-    reorder: reorder.all_reorder
+    // expose all_reorder function
+    reorder: reorder.all_reorder,
+    search: gene_search
   }
 
 }
@@ -2284,7 +2285,7 @@ function Reorder(params){
 
 
 
-function Zoom(){
+function Zoom(params){
 
   /* Functions for zooming. Should be turned into a module.
    * ----------------------------------------------------------------------- */
@@ -2292,8 +2293,8 @@ function Zoom(){
 
     var zoom_x = d3.event.scale,
       zoom_y = d3.event.scale,
-      trans_x = d3.event.translate[0] - globals.config.clust.margin.left,
-      trans_y = d3.event.translate[1] - globals.config.clust.margin.top;
+      trans_x = d3.event.translate[0] - params.clust.margin.left,
+      trans_y = d3.event.translate[1] - params.clust.margin.top;
 
     // apply transformation
     apply_transformation(trans_x, trans_y, zoom_x, zoom_y);  
@@ -2301,7 +2302,6 @@ function Zoom(){
 
   function apply_transformation(trans_x, trans_y, zoom_x, zoom_y) {
 
-    var params = globals.config;
     var d3_scale = zoom_x;
 
     // y - rules
@@ -2498,9 +2498,7 @@ function Zoom(){
   function two_translate_zoom(pan_dx, pan_dy, fin_zoom) {
 
     // get parameters
-    var params = globals.config;
-
-    if (!globals.config.run_trans) {
+    if (!params.run_trans) {
 
       // define the commonly used variable half_height
       var half_height = params.clust.dim.height / 2;
@@ -2749,18 +2747,13 @@ var config = Config(args);
 // make visualization using configuration object and network 
 var viz = Viz(config);
 
-// highlight resource types - set up type/color association
-var gene_search = Search(globals.network_data.row_nodes, 'name');
 
 /* API
  * ----------------------------------------------------------------------- */
- 
-// // reorder is defined here for the API
-// var reorder = Reorder();
 
 return {
-    find_gene: gene_search.find_entities,
-    get_genes: gene_search.get_entities,
+    find_gene: viz.search.find_entities,
+    get_genes: viz.search.get_entities,
     change_groups: viz.change_group,
     reorder: viz.reorder
 };

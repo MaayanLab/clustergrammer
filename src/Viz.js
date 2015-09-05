@@ -3,6 +3,7 @@
  */
 function Viz(config) {
 
+  // scope these variables to viz 
   var matrix,
   row_dendrogram,
   col_dendrogram,
@@ -16,9 +17,6 @@ function Viz(config) {
   /* The main function; makes clustergram based on user arguments.
    */
   function make(config) {
-
-    // save global config object 
-    globals.config = config;
 
     // initialize clustergram variables
     params = VizParams(config);
@@ -53,7 +51,7 @@ function Viz(config) {
       .style('margin-left', '0px');
 
     // instantiate zoom object 
-    zoom = Zoom();
+    zoom = Zoom(params);
 
     // define the variable zoom, a d3 method
     params.zoom = d3.behavior
@@ -89,8 +87,7 @@ function Viz(config) {
     }
 
 
-    // define reordering object 
-    // reorder is scoped to viz since viz needs to expose it 
+    // define reordering object - scoped to viz
     reorder = Reorder(params);
 
     // define labels object 
@@ -217,7 +214,9 @@ function Viz(config) {
         [ params.clust.margin.left, params.clust.margin.top]
     );
   }
-  
+
+  // highlight resource types - set up type/color association
+  var gene_search = Search(params, globals.network_data.row_nodes, 'name');
 
   return {
     remake: function() {
@@ -240,7 +239,9 @@ function Viz(config) {
       return matrix.get_nodes(type);
     },
     two_translate_zoom: zoom.two_translate_zoom,
-    reorder: reorder.all_reorder
+    // expose all_reorder function
+    reorder: reorder.all_reorder,
+    search: gene_search
   }
 
 }

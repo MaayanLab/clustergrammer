@@ -1,4 +1,4 @@
-function Zoom(){
+function Zoom(params){
 
   /* Functions for zooming. Should be turned into a module.
    * ----------------------------------------------------------------------- */
@@ -6,8 +6,8 @@ function Zoom(){
 
     var zoom_x = d3.event.scale,
       zoom_y = d3.event.scale,
-      trans_x = d3.event.translate[0] - globals.config.clust.margin.left,
-      trans_y = d3.event.translate[1] - globals.config.clust.margin.top;
+      trans_x = d3.event.translate[0] - params.clust.margin.left,
+      trans_y = d3.event.translate[1] - params.clust.margin.top;
 
     // apply transformation
     apply_transformation(trans_x, trans_y, zoom_x, zoom_y);  
@@ -15,7 +15,6 @@ function Zoom(){
 
   function apply_transformation(trans_x, trans_y, zoom_x, zoom_y) {
 
-    var params = globals.config;
     var d3_scale = zoom_x;
 
     // y - rules
@@ -212,9 +211,7 @@ function Zoom(){
   function two_translate_zoom(pan_dx, pan_dy, fin_zoom) {
 
     // get parameters
-    var params = globals.config;
-
-    if (!globals.config.run_trans) {
+    if (!params.run_trans) {
 
       // define the commonly used variable half_height
       var half_height = params.clust.dim.height / 2;
