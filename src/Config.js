@@ -73,15 +73,14 @@ function Config(args) {
   }
 
   config.show_dendrogram = Utils.has(args.network_data.row_nodes[0], 'group') || Utils.has(args.network_data.col_nodes[0], 'group');
-  config.show_categories = Utils.has(args.network_data.row_nodes[0], 'cl') || Utils.has(args.network_data.col_nodes[0], 'cl');
+  config.show_categories = Utils.has(args.network_data.row_nodes[0], 'cl')    || Utils.has(args.network_data.col_nodes[0], 'cl');
 
   
-  // check if row/col have class information
+  // check for category information 
   if (config.show_categories) {
 
+    // !! set up option for manual color specification
     config.class_colors = {};
-    
-    // !! the class colors can be the same for rows and cols 
     
     // associate classes with colors
     var class_rows = _.uniq(_.pluck(row_nodes, 'cl'));

@@ -15,21 +15,27 @@ function VizParams(config){
     params.labels.col_overflow = config.col_overflow;
     params.labels.row_overflow = config.row_overflow;
     params.labels.super_labels = config.super_labels;
-
     // Super Labels Detais 
     if (params.labels.super_labels) {
-      params.super_label_width = 20;
-      params.super.row = config.super.row;
-      params.super.col = config.super.col;
+      params.labels.super_label_width = 20;
+      params.labels.super = {}; 
+      params.labels.super.row = config.super.row;
+      params.labels.super.col = config.super.col;
     } else {
-      params.super_label_width = 0;
+      params.labels.super_label_width = 0;
     }
+    // optional classification 
+    params.labels.show_categories = config.show_categories;
+    if (params.labels.show_categories){
+      params.labels.class_colors = config.class_colors;
+    }
+
 
     // Matrix Options 
     params.matrix = {};
     params.matrix.tile_colors = config.tile_colors;
     params.matrix.tile_title = config.tile_title; 
-    
+ 
     // Visualization Options 
     params.viz = {};
     params.viz.svg_div_id = config.svg_div_id;
@@ -42,6 +48,10 @@ function VizParams(config){
     params.viz.outer_margins = config.outer_margins;
     params.viz.uni_margin = config.uni_margin;
     params.viz.grey_border_width = config.grey_border_width;
+    params.viz.show_dendrogram = config.show_dendrogram;
+
+    // initial order of clustergram 
+    params.viz.inst_order = config.inst_order;
 
     // pass network_data to params
     params.network_data = config.network_data;
@@ -82,13 +92,13 @@ function VizParams(config){
 
     // normal label margins
     params.norm_label.margin = {};
-    params.norm_label.margin.left = params.viz.grey_border_width + params.super_label_width;
-    params.norm_label.margin.top = params.viz.grey_border_width + params.super_label_width;
+    params.norm_label.margin.left = params.viz.grey_border_width + params.labels.super_label_width;
+    params.norm_label.margin.top = params.viz.grey_border_width + params.labels.super_label_width;
 
     // row groups - only add if the rows have a group attribute
     // Define the space needed for the classification of rows - includes classification triangles and rects
     params.class_room = {};
-    if (config.show_dendrogram) {
+    if (params.viz.show_dendrogram) {
       // make room for group rects
       params.class_room.row = 18;
       params.class_room.col = 9;
@@ -134,12 +144,12 @@ function VizParams(config){
 
 
     // reduce width by row/col labels and by grey_border width (reduce width by less since this is less aparent with slanted col labels)
-    var ini_clust_width = params.svg_dim.width - (params.super_label_width +
+    var ini_clust_width = params.svg_dim.width - (params.labels.super_label_width +
       label_scale(row_max_char)*config.row_label_scale + params.class_room.row) - params.viz.grey_border_width -
       params.spillover_x_offset;
 
     // there is space between the clustergram and the border
-    var ini_clust_height = params.svg_dim.height - (params.super_label_width +
+    var ini_clust_height = params.svg_dim.height - (params.labels.super_label_width +
       0.8 * label_scale(col_max_char)*params.col_label_scale + params.class_room.col) - 5 *
       params.viz.grey_border_width;
 
@@ -218,13 +228,13 @@ function VizParams(config){
     };
 
     // Assign initial ordering for x_scale and y_scale
-    if (params.inst_order === 'clust') {
+    if (params.viz.inst_order === 'clust') {
       params.x_scale.domain(params.orders.clust_row);
       params.y_scale.domain(params.orders.clust_col);
-    } else if (params.inst_order === 'rank') {
+    } else if (params.viz.inst_order === 'rank') {
       params.x_scale.domain(params.orders.rank_row);
       params.y_scale.domain(params.orders.rank_col);
-    } else if (params.inst_order === 'class') {
+    } else if (params.viz.inst_order === 'class') {
       params.x_scale.domain(params.orders.class_row);
       params.y_scale.domain(params.orders.class_col);
     }

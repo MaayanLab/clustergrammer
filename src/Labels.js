@@ -146,10 +146,11 @@ function Labels(){
       return output_string;
       })
       .attr('fill', function(d) {
+
       // initailize color
       var inst_color = '#eee';
-      if (Utils.has(params, 'class_colors')) {
-        inst_color = params.class_colors.row[d.cl];
+      if (params.labels.show_categories) {
+        inst_color = params.labels.class_colors.row[d.cl];
       }
       return inst_color;
       });
@@ -351,8 +352,8 @@ function Labels(){
       })
       .attr('fill', function(d) {
       var inst_color = '#eee';
-      if (Utils.has(params, 'class_colors')) {
-        inst_color = params.class_colors.col[d.cl];
+      if (params.labels.show_categories) {
+        inst_color = params.labels.class_colors.col[d.cl];
       }
       return inst_color;
       });

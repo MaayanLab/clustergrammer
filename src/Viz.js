@@ -94,15 +94,6 @@ function Viz(config) {
     /////////////////////////
     var row_triangle_ini_group = labels.make_rows( params, row_nodes, reorder ); 
     
-    //////////////////////////////////////
-    if (params.show_dendrogram) {
-
-      // make dendrogram 
-      row_dendrogram = Dendrogram('row', params, row_triangle_ini_group);
-      
-    }
-
-
     // Column Labels 
     //////////////////////////////////
     var container_all_col = labels.make_cols( params, col_nodes, reorder );
@@ -110,7 +101,11 @@ function Viz(config) {
 
     // add group labels if necessary
     //////////////////////////////////
-    if (params.show_dendrogram) {
+    if (params.viz.show_dendrogram) {
+
+      // make row dendrogram 
+      row_dendrogram = Dendrogram('row', params, row_triangle_ini_group);
+
       // add class label under column label
       var col_class = container_all_col
       .append('g')
@@ -135,6 +130,7 @@ function Viz(config) {
         return 'translate(' + params.x_scale(index) + ',0)';
       });
 
+      // make col dendrogram 
       col_dendrogram = Dendrogram('col', params, col_class_ini_group);
 
       // optional column callback on click

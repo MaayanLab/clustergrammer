@@ -7,8 +7,8 @@ function SuperLabels(){
     // add super column title background
     d3.select('#main_svg')
     .append('rect')
-    .attr('fill', params.viz.background_color) //!! prog_colors
-    .attr('height', params.super_label_width + 'px')
+    .attr('fill', params.viz.background_color) 
+    .attr('height', params.labels.super_label_width + 'px')
     .attr('width', '3000px')
     .attr('class', 'white_bars')
     .attr('transform', 'translate(0,' + params.viz.grey_border_width + ')');
@@ -16,12 +16,12 @@ function SuperLabels(){
     // super col title
     d3.select('#main_svg')
     .append('text')
-    .text(params.super.col)
+    .text(params.labels.super.col)
     .attr('text-anchor', 'center')
     .attr('transform', function() {
       var inst_x = params.clust.dim.width / 2 + params.norm_label.width
         .row;
-      var inst_y = params.super_label_width - params.viz.uni_margin;
+      var inst_y = params.labels.super_label_width - params.viz.uni_margin;
       return 'translate(' + inst_x + ',' + inst_y + ')';
     })
     .style('font-size', '14px')
@@ -32,8 +32,8 @@ function SuperLabels(){
     // add super row title background
     d3.select('#main_svg')
     .append('rect')
-    .attr('fill', params.viz.background_color) //!! prog_colors
-    .attr('width', params.super_label_width + 'px')
+    .attr('fill', params.viz.background_color) 
+    .attr('width', params.labels.super_label_width + 'px')
     .attr('height', '3000px')
     .attr('class', 'white_bars')
     .attr('transform', 'translate(' + params.viz.grey_border_width + ',0)');
@@ -45,7 +45,7 @@ function SuperLabels(){
     .attr('id', 'super_row_label')
     .attr('transform', function() {
       // position in the middle of the clustergram
-      var inst_x = params.super_label_width - params.viz.uni_margin;
+      var inst_x = params.labels.super_label_width - params.viz.uni_margin;
       var inst_y = params.clust.dim.height / 2 + params.norm_label.width
         .col;
       return 'translate(' + inst_x + ',' + inst_y + ')';
@@ -54,7 +54,7 @@ function SuperLabels(){
     // super row label (rotate the already translated title )
     d3.select('#super_row_label')
     .append('text')
-    .text(params.super.row)
+    .text(params.labels.super.row)
     .attr('text-anchor', 'center')
     .attr('transform', 'rotate(-90)')
     .style('font-size', '14px')
