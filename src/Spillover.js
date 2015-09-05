@@ -17,7 +17,7 @@ function Spillover( params, container_all_col ){
       .style('stroke-width', '0')
       // mini-language for drawing path in d3, used to draw triangle
       .attr('d', 'M 0,0 L 500,-500, L 500,0 Z')
-      .attr('fill', params.background_color) //!! prog_colors
+      .attr('fill', params.viz.background_color) //!! prog_colors
       .attr('id', 'right_slant_triangle')
       .attr('transform', 'translate(' + params.clust.dim.width + ',' +
       params.norm_label.width.col + ')');
@@ -28,7 +28,7 @@ function Spillover( params, container_all_col ){
       .style('stroke-width', '0')
       // mini-language for drawing path in d3, used to draw triangle
       .attr('d', 'M 0,0 L 500,-500, L 0,-500 Z')
-      .attr('fill', params.background_color)
+      .attr('fill', params.viz.background_color)
       .attr('id', 'left_slant_triangle')
       // shift left by 1 px to prevent cutting off labels
       .attr('transform', 'translate(-1,' + params.norm_label.width.col +
@@ -39,7 +39,7 @@ function Spillover( params, container_all_col ){
     // white rect to cover excess labels
     d3.select('#main_svg')
       .append('rect')
-      .attr('fill', params.background_color) //!! prog_colors
+      .attr('fill', params.viz.background_color) //!! prog_colors
       .attr('width', params.clust.margin.left)
       .attr('height', params.clust.margin.top)
       .attr('id', 'top_left_white');
@@ -47,7 +47,7 @@ function Spillover( params, container_all_col ){
     // hide spillover from right
     d3.select('#main_svg')
       .append('rect')
-      .attr('fill', params.background_color) //!! prog_colors
+      .attr('fill', params.viz.background_color) //!! prog_colors
       .attr('width', '300px')
       .attr('height', '3000px')
       .attr('transform', function() {
@@ -62,7 +62,7 @@ function Spillover( params, container_all_col ){
     ///////////////////////////////////////////////////////////////////
     d3.select('#main_svg')
       .append('rect')
-      .attr('fill', params.background_color) //!! prog_colors
+      .attr('fill', params.viz.background_color) //!! prog_colors
       .attr('width', params.svg_dim.width)
       // make this border twice the width of the grey border
       .attr('height', 2 * params.grey_border_width)

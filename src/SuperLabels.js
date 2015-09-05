@@ -7,7 +7,7 @@ function SuperLabels(){
     // add super column title background
     d3.select('#main_svg')
     .append('rect')
-    .attr('fill', params.background_color) //!! prog_colors
+    .attr('fill', params.viz.background_color) //!! prog_colors
     .attr('height', params.super_label_width + 'px')
     .attr('width', '3000px')
     .attr('class', 'white_bars')
@@ -32,7 +32,7 @@ function SuperLabels(){
     // add super row title background
     d3.select('#main_svg')
     .append('rect')
-    .attr('fill', params.background_color) //!! prog_colors
+    .attr('fill', params.viz.background_color) //!! prog_colors
     .attr('width', params.super_label_width + 'px')
     .attr('height', '3000px')
     .attr('class', 'white_bars')

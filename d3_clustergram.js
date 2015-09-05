@@ -827,10 +827,9 @@ function VizParams(config){
     params.matrix.tile_title = config.tile_title; 
     
     // Visualization Options 
-    params.background_color = config.background_color; 
-    params.do_zoom = config.do_zoom;
-
-    params.opacity_scale = config.opacity_scale;
+    params.viz = {};
+    params.viz.do_zoom = config.do_zoom;
+    params.viz.background_color = config.background_color; 
 
     // pass information from config 
     params.grey_border_width = config.grey_border_width;
@@ -1097,22 +1096,22 @@ function VizParams(config){
     // input domain of 0 means set the domain automatically
     if (config.input_domain === 0) {
       // set the domain using the maximum absolute value
-      if (params.opacity_scale === 'linear') {
+      if (config.opacity_scale === 'linear') {
         params.opacity_scale = d3.scale.linear()
           .domain([0, Math.abs(max_link.value)]).clamp(true)
           .range([0.0, 1.0]);
-      } else if (params.opacity_scale === 'log') {
+      } else if (config.opacity_scale === 'log') {
         params.opacity_scale = d3.scale.log()
           .domain([0.001, Math.abs(max_link.value)]).clamp(true)
           .range([0.0, 1.0]);
       }
     } else {
       // set the domain manually
-      if (params.opacity_scale === 'linear') {
+      if (config.opacity_scale === 'linear') {
         params.opacity_scale = d3.scale.linear()
           .domain([0, config.input_domain]).clamp(true)
           .range([0.0, 1.0]);
-      } else if (params.opacity_scale === 'log') {
+      } else if (config.opacity_scale === 'log') {
         params.opacity_scale = d3.scale.log()
           .domain([0.001, config.input_domain]).clamp(true)
           .range([0.0, 1.0]);
@@ -1195,7 +1194,7 @@ function Labels(){
     // white background rect for row labels
     container_all_row
       .append('rect')
-      .attr('fill', params.background_color)
+      .attr('fill', params.viz.background_color)
       .attr('width', params.norm_label.background.row)
       .attr('height', 30 * params.clust.dim.height + 'px')
       .attr('class', 'white_bars');
@@ -1293,7 +1292,7 @@ function Labels(){
     // append triangle background rect to zoomable group
     row_triangle_zoom
       .append('rect')
-      .attr('fill', params.background_color) //!! prog_colors
+      .attr('fill', params.viz.background_color) //!! prog_colors
       .attr('width', params.class_room.row + 'px')
       .attr('height', function() {
       var inst_height = params.clust.dim.height;
@@ -1350,7 +1349,7 @@ function Labels(){
     // white background rect for col labels
     container_all_col
       .append('rect')
-      .attr('fill', params.background_color) //!! prog_colors
+      .attr('fill', params.viz.background_color) //!! prog_colors
       .attr('width', 30 * params.clust.dim.width + 'px')
       .attr('height', params.norm_label.background.col)
       .attr('class', 'white_bars');
@@ -1590,7 +1589,7 @@ function SuperLabels(){
     // add super column title background
     d3.select('#main_svg')
     .append('rect')
-    .attr('fill', params.background_color) //!! prog_colors
+    .attr('fill', params.viz.background_color) //!! prog_colors
     .attr('height', params.super_label_width + 'px')
     .attr('width', '3000px')
     .attr('class', 'white_bars')
@@ -1615,7 +1614,7 @@ function SuperLabels(){
     // add super row title background
     d3.select('#main_svg')
     .append('rect')
-    .attr('fill', params.background_color) //!! prog_colors
+    .attr('fill', params.viz.background_color) //!! prog_colors
     .attr('width', params.super_label_width + 'px')
     .attr('height', '3000px')
     .attr('class', 'white_bars')
@@ -1669,7 +1668,7 @@ function Spillover( params, container_all_col ){
       .style('stroke-width', '0')
       // mini-language for drawing path in d3, used to draw triangle
       .attr('d', 'M 0,0 L 500,-500, L 500,0 Z')
-      .attr('fill', params.background_color) //!! prog_colors
+      .attr('fill', params.viz.background_color) //!! prog_colors
       .attr('id', 'right_slant_triangle')
       .attr('transform', 'translate(' + params.clust.dim.width + ',' +
       params.norm_label.width.col + ')');
@@ -1680,7 +1679,7 @@ function Spillover( params, container_all_col ){
       .style('stroke-width', '0')
       // mini-language for drawing path in d3, used to draw triangle
       .attr('d', 'M 0,0 L 500,-500, L 0,-500 Z')
-      .attr('fill', params.background_color)
+      .attr('fill', params.viz.background_color)
       .attr('id', 'left_slant_triangle')
       // shift left by 1 px to prevent cutting off labels
       .attr('transform', 'translate(-1,' + params.norm_label.width.col +
@@ -1691,7 +1690,7 @@ function Spillover( params, container_all_col ){
     // white rect to cover excess labels
     d3.select('#main_svg')
       .append('rect')
-      .attr('fill', params.background_color) //!! prog_colors
+      .attr('fill', params.viz.background_color) //!! prog_colors
       .attr('width', params.clust.margin.left)
       .attr('height', params.clust.margin.top)
       .attr('id', 'top_left_white');
@@ -1699,7 +1698,7 @@ function Spillover( params, container_all_col ){
     // hide spillover from right
     d3.select('#main_svg')
       .append('rect')
-      .attr('fill', params.background_color) //!! prog_colors
+      .attr('fill', params.viz.background_color) //!! prog_colors
       .attr('width', '300px')
       .attr('height', '3000px')
       .attr('transform', function() {
@@ -1714,7 +1713,7 @@ function Spillover( params, container_all_col ){
     ///////////////////////////////////////////////////////////////////
     d3.select('#main_svg')
       .append('rect')
-      .attr('fill', params.background_color) //!! prog_colors
+      .attr('fill', params.viz.background_color) //!! prog_colors
       .attr('width', params.svg_dim.width)
       // make this border twice the width of the grey border
       .attr('height', 2 * params.grey_border_width)
@@ -1842,7 +1841,7 @@ function Viz(config) {
       .attr('height', params.svg_dim.height);
 
     // call zooming on the entire svg
-    if (params.do_zoom) {
+    if (params.viz.do_zoom) {
       svg_group.call(params.zoom);
     }
 
@@ -1851,12 +1850,12 @@ function Viz(config) {
     matrix = Matrix(network_data, svg_group, params);
 
     // append background rect if necessary to control background color
-    if (params.background_color !== '#FFFFFF') {
+    if (params.viz.background_color !== '#FFFFFF') {
       svg_group
       .append('rect')
       .attr('width', params.svg_dim.width)
       .attr('height', params.svg_dim.height)
-      .style('fill', params.background_color);
+      .style('fill', params.viz.background_color);
     }
 
 

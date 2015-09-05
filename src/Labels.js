@@ -15,7 +15,7 @@ function Labels(){
     // white background rect for row labels
     container_all_row
       .append('rect')
-      .attr('fill', params.background_color)
+      .attr('fill', params.viz.background_color)
       .attr('width', params.norm_label.background.row)
       .attr('height', 30 * params.clust.dim.height + 'px')
       .attr('class', 'white_bars');
@@ -113,7 +113,7 @@ function Labels(){
     // append triangle background rect to zoomable group
     row_triangle_zoom
       .append('rect')
-      .attr('fill', params.background_color) //!! prog_colors
+      .attr('fill', params.viz.background_color) //!! prog_colors
       .attr('width', params.class_room.row + 'px')
       .attr('height', function() {
       var inst_height = params.clust.dim.height;
@@ -170,7 +170,7 @@ function Labels(){
     // white background rect for col labels
     container_all_col
       .append('rect')
-      .attr('fill', params.background_color) //!! prog_colors
+      .attr('fill', params.viz.background_color) //!! prog_colors
       .attr('width', 30 * params.clust.dim.width + 'px')
       .attr('height', params.norm_label.background.col)
       .attr('class', 'white_bars');

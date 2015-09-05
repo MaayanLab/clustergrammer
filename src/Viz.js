@@ -70,7 +70,7 @@ function Viz(config) {
       .attr('height', params.svg_dim.height);
 
     // call zooming on the entire svg
-    if (params.do_zoom) {
+    if (params.viz.do_zoom) {
       svg_group.call(params.zoom);
     }
 
@@ -79,12 +79,12 @@ function Viz(config) {
     matrix = Matrix(network_data, svg_group, params);
 
     // append background rect if necessary to control background color
-    if (params.background_color !== '#FFFFFF') {
+    if (params.viz.background_color !== '#FFFFFF') {
       svg_group
       .append('rect')
       .attr('width', params.svg_dim.width)
       .attr('height', params.svg_dim.height)
-      .style('fill', params.background_color);
+      .style('fill', params.viz.background_color);
     }
 
 

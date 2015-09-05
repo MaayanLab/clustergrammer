@@ -22,10 +22,9 @@ function VizParams(config){
     params.matrix.tile_title = config.tile_title; 
     
     // Visualization Options 
-    params.background_color = config.background_color; 
-    params.do_zoom = config.do_zoom;
-
-    params.opacity_scale = config.opacity_scale;
+    params.viz = {};
+    params.viz.do_zoom = config.do_zoom;
+    params.viz.background_color = config.background_color; 
 
     // pass information from config 
     params.grey_border_width = config.grey_border_width;
@@ -292,22 +291,22 @@ function VizParams(config){
     // input domain of 0 means set the domain automatically
     if (config.input_domain === 0) {
       // set the domain using the maximum absolute value
-      if (params.opacity_scale === 'linear') {
+      if (config.opacity_scale === 'linear') {
         params.opacity_scale = d3.scale.linear()
           .domain([0, Math.abs(max_link.value)]).clamp(true)
           .range([0.0, 1.0]);
-      } else if (params.opacity_scale === 'log') {
+      } else if (config.opacity_scale === 'log') {
         params.opacity_scale = d3.scale.log()
           .domain([0.001, Math.abs(max_link.value)]).clamp(true)
           .range([0.0, 1.0]);
       }
     } else {
       // set the domain manually
-      if (params.opacity_scale === 'linear') {
+      if (config.opacity_scale === 'linear') {
         params.opacity_scale = d3.scale.linear()
           .domain([0, config.input_domain]).clamp(true)
           .range([0.0, 1.0]);
-      } else if (params.opacity_scale === 'log') {
+      } else if (config.opacity_scale === 'log') {
         params.opacity_scale = d3.scale.log()
           .domain([0.001, config.input_domain]).clamp(true)
           .range([0.0, 1.0]);
