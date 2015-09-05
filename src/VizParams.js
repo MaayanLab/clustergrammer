@@ -26,21 +26,21 @@ function VizParams(config){
     params.viz.svg_div_id = config.svg_div_id;
     params.viz.do_zoom = config.do_zoom;
     params.viz.resize = config.resize;
-    params.viz.outer_margins = config.outer_margins;
+    // background colors 
     params.viz.background_color = config.background_color; 
     params.viz.super_border_color = config.super_border_color;
-
-    // pass information from config 
+    // margin widths 
+    params.viz.outer_margins = config.outer_margins;
+    params.viz.uni_margin = config.uni_margin;
     params.viz.grey_border_width = config.grey_border_width;
 
-    var network_data = config.network_data;
+    // pass network_data to params
+    params.network_data = config.network_data;
+
+    var network_data = params.network_data;
 
     // only resize if allowed
     parent_div_size_pos(params);
-
-    // universal margin for the clustergram, distance between labels and matrix 
-    params.uni_margin = 4;
-    params.uni_margin_row = 2;
 
     // Super Labels 
     if (params.labels.super_labels) {
@@ -109,8 +109,8 @@ function VizParams(config){
 
     // norm label background width, norm-label-width plus class-width plus margin
     params.norm_label.background = {};
-    params.norm_label.background.row = params.norm_label.width.row + params.class_room.row + params.uni_margin;
-    params.norm_label.background.col = params.norm_label.width.col + params.class_room.col + params.uni_margin;
+    params.norm_label.background.row = params.norm_label.width.row + params.class_room.row + params.viz.uni_margin;
+    params.norm_label.background.col = params.norm_label.width.col + params.class_room.col + params.viz.uni_margin;
 
     // clustergram dimensions
     params.clust = {};

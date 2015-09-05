@@ -7,9 +7,10 @@ function Viz(config) {
   row_dendrogram,
   col_dendrogram,
   zoom, 
-  params;
+  params, 
+  reorder;
 
-  // make viz using config 
+  // make viz 
   make(config);
 
   /* The main function; makes clustergram based on user arguments.
@@ -19,10 +20,10 @@ function Viz(config) {
     // save global config object 
     globals.config = config;
 
-    var network_data = config.network_data;
-
     // initialize clustergram variables
     params = VizParams(config);
+
+    var network_data = params.network_data;
 
     // global version of network data 
     globals.network_data = network_data;
@@ -89,7 +90,8 @@ function Viz(config) {
 
 
     // define reordering object 
-    var reorder = Reorder();
+    // reorder is scoped to viz since viz needs to expose it 
+    reorder = Reorder(params);
 
     // define labels object 
     var labels = Labels(params);
@@ -211,11 +213,12 @@ function Viz(config) {
     viz.remake();
 
     // reset zoom and translate
-    globals.config.zoom.scale(1).translate(
-        [globals.config.clust.margin.left, globals.config.clust.margin.top]
+    params.zoom.scale(1).translate(
+        [ params.clust.margin.left, params.clust.margin.top]
     );
   }
   
+
   return {
     remake: function() {
       make(config);
@@ -236,7 +239,8 @@ function Viz(config) {
     get_nodes: function(type){
       return matrix.get_nodes(type);
     },
-    two_translate_zoom: zoom.two_translate_zoom
+    two_translate_zoom: zoom.two_translate_zoom,
+    reorder: reorder.all_reorder
   }
 
 }

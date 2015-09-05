@@ -38,8 +38,7 @@ function Config(args) {
     grey_border_width: 3,
     // the distance between labels and clustergram
     // a universal margin for the clustergram
-    uni_margin: 4,
-    uni_margin_row: 2
+    uni_margin: 4
   };
 
   // Mixin defaults with user-defined arguments.

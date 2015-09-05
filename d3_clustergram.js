@@ -75,8 +75,7 @@ function Config(args) {
     grey_border_width: 3,
     // the distance between labels and clustergram
     // a universal margin for the clustergram
-    uni_margin: 4,
-    uni_margin_row: 2
+    uni_margin: 4
   };
 
   // Mixin defaults with user-defined arguments.
@@ -831,21 +830,21 @@ function VizParams(config){
     params.viz.svg_div_id = config.svg_div_id;
     params.viz.do_zoom = config.do_zoom;
     params.viz.resize = config.resize;
-    params.viz.outer_margins = config.outer_margins;
+    // background colors 
     params.viz.background_color = config.background_color; 
     params.viz.super_border_color = config.super_border_color;
-
-    // pass information from config 
+    // margin widths 
+    params.viz.outer_margins = config.outer_margins;
+    params.viz.uni_margin = config.uni_margin;
     params.viz.grey_border_width = config.grey_border_width;
 
-    var network_data = config.network_data;
+    // pass network_data to params
+    params.network_data = config.network_data;
+
+    var network_data = params.network_data;
 
     // only resize if allowed
     parent_div_size_pos(params);
-
-    // universal margin for the clustergram, distance between labels and matrix 
-    params.uni_margin = 4;
-    params.uni_margin_row = 2;
 
     // Super Labels 
     if (params.labels.super_labels) {
@@ -914,8 +913,8 @@ function VizParams(config){
 
     // norm label background width, norm-label-width plus class-width plus margin
     params.norm_label.background = {};
-    params.norm_label.background.row = params.norm_label.width.row + params.class_room.row + params.uni_margin;
-    params.norm_label.background.col = params.norm_label.width.col + params.class_room.col + params.uni_margin;
+    params.norm_label.background.row = params.norm_label.width.row + params.class_room.row + params.viz.uni_margin;
+    params.norm_label.background.col = params.norm_label.width.col + params.class_room.col + params.viz.uni_margin;
 
     // clustergram dimensions
     params.clust = {};
@@ -1604,7 +1603,7 @@ function SuperLabels(){
     .attr('transform', function() {
       var inst_x = params.clust.dim.width / 2 + params.norm_label.width
         .row;
-      var inst_y = params.super_label_width - params.uni_margin;
+      var inst_y = params.super_label_width - params.viz.uni_margin;
       return 'translate(' + inst_x + ',' + inst_y + ')';
     })
     .style('font-size', '14px')
@@ -1628,7 +1627,7 @@ function SuperLabels(){
     .attr('id', 'super_row_label')
     .attr('transform', function() {
       // position in the middle of the clustergram
-      var inst_x = params.super_label_width - params.uni_margin;
+      var inst_x = params.super_label_width - params.viz.uni_margin;
       var inst_y = params.clust.dim.height / 2 + params.norm_label.width
         .col;
       return 'translate(' + inst_x + ',' + inst_y + ')';
@@ -1779,9 +1778,10 @@ function Viz(config) {
   row_dendrogram,
   col_dendrogram,
   zoom, 
-  params;
+  params, 
+  reorder;
 
-  // make viz using config 
+  // make viz 
   make(config);
 
   /* The main function; makes clustergram based on user arguments.
@@ -1791,10 +1791,10 @@ function Viz(config) {
     // save global config object 
     globals.config = config;
 
-    var network_data = config.network_data;
-
     // initialize clustergram variables
     params = VizParams(config);
+
+    var network_data = params.network_data;
 
     // global version of network data 
     globals.network_data = network_data;
@@ -1861,7 +1861,8 @@ function Viz(config) {
 
 
     // define reordering object 
-    var reorder = Reorder();
+    // reorder is scoped to viz since viz needs to expose it 
+    reorder = Reorder(params);
 
     // define labels object 
     var labels = Labels(params);
@@ -1983,11 +1984,12 @@ function Viz(config) {
     viz.remake();
 
     // reset zoom and translate
-    globals.config.zoom.scale(1).translate(
-        [globals.config.clust.margin.left, globals.config.clust.margin.top]
+    params.zoom.scale(1).translate(
+        [ params.clust.margin.left, params.clust.margin.top]
     );
   }
   
+
   return {
     remake: function() {
       make(config);
@@ -2008,7 +2010,8 @@ function Viz(config) {
     get_nodes: function(type){
       return matrix.get_nodes(type);
     },
-    two_translate_zoom: zoom.two_translate_zoom
+    two_translate_zoom: zoom.two_translate_zoom,
+    reorder: reorder.all_reorder
   }
 
 }
@@ -2016,17 +2019,17 @@ function Viz(config) {
 /* Reordering Module
 */
 
-function Reorder(){
+function Reorder(params){
 
   /* Reorder the clustergram using the toggle switch
    */
   function all_reorder(inst_order) {
 
-    // load parameters from d3_clustergram
-    var params = globals.config;
+    // // load parameters from d3_clustergram
+    // var params = params;
 
     // set running transition value
-    globals.config.run_trans = true;
+    params.run_trans = true;
 
     // load orders
     if (inst_order === 'clust') {
@@ -2083,7 +2086,7 @@ function Reorder(){
       })
       .each('end', function() {
         // set running transition to 0
-        globals.config.run_trans = false;
+        params.run_trans = false;
       });
 
     // backup allow programmatic zoom
@@ -2096,7 +2099,7 @@ function Reorder(){
     var inst_row = d3.select(this).select('text').text();
 
     // get row and col nodes 
-    globals.config.run_trans = true;
+    params.run_trans = true;
 
     var mat       = viz.get_matrix();
     var row_nodes = viz.get_nodes('row');
@@ -2122,8 +2125,8 @@ function Reorder(){
       return tmp_arr[b] - tmp_arr[a];
     });
 
-    // get parameters
-    var params = globals.config;
+    // // get parameters
+    // var params = params;
 
     // resort the columns (resort x)
     params.x_scale.domain(tmp_sort);
@@ -2156,7 +2159,7 @@ function Reorder(){
       })
       .each('end', function() {
         // set running transition to 0
-        globals.config.run_trans = false;
+        params.run_trans = false;
       });
 
     // highlight selected row 
@@ -2173,14 +2176,14 @@ function Reorder(){
 
   function col_reorder(){
     // set running transition value
-    globals.config.run_trans = true;
+    params.run_trans = true;
 
     var mat       = viz.get_matrix();
     var row_nodes = viz.get_nodes('row');
     var col_nodes = viz.get_nodes('col');
 
-    // get parameters
-    var params = globals.config;
+    // // get parameters
+    // var params = params;
 
     // // get row_nodes from global variable
     // var row_nodes = globals.network_data.row_nodes;
@@ -2247,7 +2250,7 @@ function Reorder(){
       })
       .each('end', function() {
         // set running transition to 0
-        globals.config.run_trans = false;
+        params.run_trans = false;
       });
 
     // highlight selected column
@@ -2268,7 +2271,7 @@ function Reorder(){
 
   // allow programmatic zoom after reordering
   function end_reorder() {
-    globals.config.run_trans = false;
+    params.run_trans = false;
   }  
 
   return {
@@ -2752,15 +2755,14 @@ var gene_search = Search(globals.network_data.row_nodes, 'name');
 /* API
  * ----------------------------------------------------------------------- */
  
-// reorder is defined here for the API
-var reorder = Reorder();
+// // reorder is defined here for the API
+// var reorder = Reorder();
 
 return {
-    reorder: reorder,
     find_gene: gene_search.find_entities,
     get_genes: gene_search.get_entities,
     change_groups: viz.change_group,
-    reorder: reorder.all_reorder
+    reorder: viz.reorder
 };
 	
 }
