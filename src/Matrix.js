@@ -139,7 +139,7 @@ function Matrix(network_data, svg_elem, params) {
       })
       // switch the color based on up/dn value
       .style('fill', function(d) {
-      return d.value > 0 ? params.tile_colors[0] : params.tile_colors[1];
+      return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
       })
       .on('mouseover', function(p) {
       // highlight row - set text to active if
@@ -183,7 +183,7 @@ function Matrix(network_data, svg_elem, params) {
     }
 
     // append title to group
-    if (params.tile_title) {
+    if (params.matrix.tile_title) {
       tile
       .append('title')
       .text(function(d) {
@@ -230,9 +230,7 @@ function Matrix(network_data, svg_elem, params) {
       // switch the color based on up/dn value
       .style('fill', function(d) {
       // normal rule
-      return d.value > 0 ? params.tile_colors[0] : params.tile_colors[1];
-      // //!! special rule for LDRgram
-      // return d.value_dn < 0 ? params.tile_colors[0] : params.tile_colors[1] ;
+      return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
       });
 
     tile
@@ -330,8 +328,8 @@ function Matrix(network_data, svg_elem, params) {
       })
       // switch the color based on up/dn value
       .style('fill', function() {
-      // rl_t (released) blue
-      return params.tile_colors[0];
+        // rl_t (released) blue
+        return params.matrix.tile_colors[0];
       });
 
 
@@ -362,11 +360,11 @@ function Matrix(network_data, svg_elem, params) {
       // switch the color based on up/dn value
       .style('fill', function() {
       // rl_f (not released) orange
-      return params.tile_colors[1];
+      return params.matrix.tile_colors[1];
       });
 
     // append title to group
-    if (params.tile_title) {
+    if (params.matrix.tile_title) {
       tile
       .append('title')
       .text(function(d) {

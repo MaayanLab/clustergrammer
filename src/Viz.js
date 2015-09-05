@@ -178,7 +178,7 @@ function Viz(config) {
     }
 
     // Super Labels 
-    if (params.super_labels) {
+    if (params.labels.super_labels) {
 
       // make super labels 
       var super_labels = SuperLabels();

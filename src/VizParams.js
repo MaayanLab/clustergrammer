@@ -14,11 +14,12 @@ function VizParams(config){
     params.labels = {};
     params.labels.col_overflow = config.col_overflow;
     params.labels.row_overflow = config.row_overflow;
-    params.super_labels = config.super_labels;
+    params.labels.super_labels = config.super_labels;
 
     // Matrix Options 
-    params.tile_colors = config.tile_colors;
-    params.tile_title = config.tile_title; 
+    params.matrix = {};
+    params.matrix.tile_colors = config.tile_colors;
+    params.matrix.tile_title = config.tile_title; 
     
     // Visualization Options 
     params.background_color = config.background_color; 
@@ -42,7 +43,7 @@ function VizParams(config){
     params.uni_margin_row = 2;
 
     // Super Labels 
-    if (params.super_labels) {
+    if (params.labels.super_labels) {
       params.super_label_width = 20;
     } else {
       params.super_label_width = 0;
@@ -289,25 +290,27 @@ function VizParams(config){
 
     // set opacity_scale
     // input domain of 0 means set the domain automatically
-    if (params.input_domain === 0) {
+    if (config.input_domain === 0) {
       // set the domain using the maximum absolute value
       if (params.opacity_scale === 'linear') {
-        params.opacity_scale = d3.scale.linear().domain([0, Math.abs(
-        max_link.value)]).clamp(true).range([0.0, 1.0]);
+        params.opacity_scale = d3.scale.linear()
+          .domain([0, Math.abs(max_link.value)]).clamp(true)
+          .range([0.0, 1.0]);
       } else if (params.opacity_scale === 'log') {
-        params.opacity_scale = d3.scale.log().domain([0.001, Math.abs(
-        max_link.value)]).clamp(true).range([0.0, 1.0]);
+        params.opacity_scale = d3.scale.log()
+          .domain([0.001, Math.abs(max_link.value)]).clamp(true)
+          .range([0.0, 1.0]);
       }
     } else {
       // set the domain manually
       if (params.opacity_scale === 'linear') {
         params.opacity_scale = d3.scale.linear()
-          .domain([0, params.input_domain]).clamp(true)
+          .domain([0, config.input_domain]).clamp(true)
           .range([0.0, 1.0]);
       } else if (params.opacity_scale === 'log') {
         params.opacity_scale = d3.scale.log()
-        .domain([0.001, params.input_domain]).clamp(true)
-        .range([0.0, 1.0]);
+          .domain([0.001, config.input_domain]).clamp(true)
+          .range([0.0, 1.0]);
       }
     }
 
