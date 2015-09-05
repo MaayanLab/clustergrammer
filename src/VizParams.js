@@ -16,6 +16,15 @@ function VizParams(config){
     params.labels.row_overflow = config.row_overflow;
     params.labels.super_labels = config.super_labels;
 
+    // Super Labels Detais 
+    if (params.labels.super_labels) {
+      params.super_label_width = 20;
+      params.super.row = config.super.row;
+      params.super.col = config.super.col;
+    } else {
+      params.super_label_width = 0;
+    }
+
     // Matrix Options 
     params.matrix = {};
     params.matrix.tile_colors = config.tile_colors;
@@ -41,13 +50,6 @@ function VizParams(config){
 
     // only resize if allowed
     parent_div_size_pos(params);
-
-    // Super Labels 
-    if (params.labels.super_labels) {
-      params.super_label_width = 20;
-    } else {
-      params.super_label_width = 0;
-    }
 
 
     // Variable Label Widths

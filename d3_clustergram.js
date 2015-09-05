@@ -87,8 +87,12 @@ function Config(args) {
 
   // transpose network if necessary 
   if (config.transpose) {
-    args.network_data = transpose_network(args.network_data);
-  }
+    config.network_data = transpose_network(args.network_data);
+    var tmp_col_label = args.col_label;
+    var tmp_row_label = args.row_label;
+    args.row_label = tmp_col_label;
+    args.col_label = tmp_row_label;
+  } 
 
   // super-row/col labels
   if (!Utils.is_undefined(args.row_label) && !Utils.is_undefined(args.col_label)) {
@@ -97,12 +101,6 @@ function Config(args) {
     config.super.row = args.row_label;
     config.super.col = args.col_label;
   }
-
-  // transpose network data and super-labels
-  if (config.transpose) {
-    config.super.row = args.col_label;
-    config.super.col = args.row_label;
-  } 
 
   // initialize cluster ordering 
   if (!Utils.is_undefined(args.order) && is_supported_order(args.order)) {
@@ -820,6 +818,15 @@ function VizParams(config){
     params.labels.row_overflow = config.row_overflow;
     params.labels.super_labels = config.super_labels;
 
+    // Super Labels Detais 
+    if (params.labels.super_labels) {
+      params.super_label_width = 20;
+      params.super.row = config.super.row;
+      params.super.col = config.super.col;
+    } else {
+      params.super_label_width = 0;
+    }
+
     // Matrix Options 
     params.matrix = {};
     params.matrix.tile_colors = config.tile_colors;
@@ -845,13 +852,6 @@ function VizParams(config){
 
     // only resize if allowed
     parent_div_size_pos(params);
-
-    // Super Labels 
-    if (params.labels.super_labels) {
-      params.super_label_width = 20;
-    } else {
-      params.super_label_width = 0;
-    }
 
 
     // Variable Label Widths
