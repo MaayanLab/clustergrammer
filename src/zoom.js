@@ -160,7 +160,7 @@ function Zoom(params){
     // column value bars
     ///////////////////////
 
-    if (Utils.has(globals.network_data.col_nodes[0], 'value')) {
+    if (Utils.has( params.network_data.col_nodes[0], 'value')) {
       d3.selectAll('.col_bars')
         // column is rotated - effectively width and height are switched
         .attr('width', function(d) {
@@ -411,7 +411,7 @@ function Zoom(params){
       // reduce the height of the column value bars based on the zoom applied
       // recalculate the height and divide by the zooming scale
       // col_label_obj.select('rect')
-      if (Utils.has(globals.network_data.col_nodes[0], 'value')) {
+      if (Utils.has( params.network_data.col_nodes[0], 'value')) {
         d3.selectAll('.col_bars')
           .transition()
           .duration(search_duration)

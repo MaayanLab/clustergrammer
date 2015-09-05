@@ -1,7 +1,4 @@
 
-// This object is a temporary hack to hold all global state for this module.
-var globals = {};
-
 /* Main program
  * ----------------------------------------------------------------------- */
 

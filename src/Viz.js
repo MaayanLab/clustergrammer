@@ -23,9 +23,6 @@ function Viz(config) {
 
     var network_data = params.network_data;
 
-    // global version of network data 
-    globals.network_data = network_data;
-
     // set local variables from network_data
     var col_nodes = network_data.col_nodes;
     var row_nodes = network_data.row_nodes;
@@ -148,7 +145,7 @@ function Viz(config) {
         var inst_group = d.group[inst_level];
         // find all column names that are in the same group at the same group_level
         // get col_nodes
-        col_nodes = globals.network_data.col_nodes;
+        col_nodes = params.network_data.col_nodes;
         var group_nodes = [];
         _.each(col_nodes, function(node) {
           // check that the node is in the group
@@ -216,7 +213,7 @@ function Viz(config) {
   }
 
   // highlight resource types - set up type/color association
-  var gene_search = Search(params, globals.network_data.row_nodes, 'name');
+  var gene_search = Search(params, params.network_data.row_nodes, 'name');
 
   return {
     remake: function() {

@@ -91,7 +91,7 @@ function Dendrogram(type, params, elem) {
        var inst_group = d.group[inst_level];
         // find all row names that are in the same group at the same group_level
         // get row_nodes
-        row_nodes = globals.network_data.row_nodes;
+        row_nodes = params.network_data.row_nodes;
         var group_nodes = [];
 
         _.each(row_nodes, function(node) {

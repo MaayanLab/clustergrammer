@@ -1,5 +1,5 @@
-function Labels(){
 
+function Labels(){
 
   // make row labels 
   function make_rows(params, row_nodes, reorder){
@@ -369,7 +369,7 @@ function Labels(){
       .range([0, params.norm_label.width.col]);
 
     // append column value bars
-    if (Utils.has(globals.network_data.col_nodes[0], 'value')) {
+    if (Utils.has( params.network_data.col_nodes[0], 'value')) {
       col_label_click
       .append('rect')
       .attr('class', 'col_bars')
@@ -397,7 +397,3 @@ function Labels(){
 
 }
 
-// var tmp = Labels();
-// console.log('running make rows')
-// console.log(tmp.make_rows)
-// tmp.make_rows();

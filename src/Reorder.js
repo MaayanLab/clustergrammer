@@ -164,13 +164,6 @@ function Reorder(params){
     var row_nodes = viz.get_nodes('row');
     var col_nodes = viz.get_nodes('col');
 
-    // // get parameters
-    // var params = params;
-
-    // // get row_nodes from global variable
-    // var row_nodes = globals.network_data.row_nodes;
-    // var col_nodes = globals.network_data.col_nodes;
-
     // get inst col (term)
     var inst_term = d3.select(this).select('text').attr('full_name');
 

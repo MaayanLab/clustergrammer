@@ -165,8 +165,8 @@ function Matrix(network_data, svg_elem, params) {
       .on('click', function(d) {
         // export row/col name and value from tile
         var tile_info = {};
-        tile_info.row = globals.network_data.row_nodes[d.pos_y].name;
-        tile_info.col = globals.network_data.col_nodes[d.pos_x].name;
+        tile_info.row = params.network_data.row_nodes[d.pos_y].name;
+        tile_info.col = params.network_data.col_nodes[d.pos_x].name;
         tile_info.value = d.value;
         if (Utils.has(d, 'value_up')) {
         tile_info.value_up = d.value_up;
@@ -285,8 +285,8 @@ function Matrix(network_data, svg_elem, params) {
       .on('click', function(d) {
         // export row/col name and value from tile
         var tile_info = {};
-        tile_info.row = globals.network_data.row_nodes[d.pos_y].name;
-        tile_info.col = globals.network_data.col_nodes[d.pos_x].name;
+        tile_info.row = params.network_data.row_nodes[d.pos_y].name;
+        tile_info.col = params.network_data.col_nodes[d.pos_x].name;
         tile_info.value = d.value;
         if (Utils.has(d, 'value_up')) {
         tile_info.value_up = d.value_up;

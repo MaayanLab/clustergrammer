@@ -311,7 +311,7 @@ function Dendrogram(type, params, elem) {
        var inst_group = d.group[inst_level];
         // find all row names that are in the same group at the same group_level
         // get row_nodes
-        row_nodes = globals.network_data.row_nodes;
+        row_nodes = params.network_data.row_nodes;
         var group_nodes = [];
 
         _.each(row_nodes, function(node) {
@@ -512,8 +512,8 @@ function Matrix(network_data, svg_elem, params) {
       .on('click', function(d) {
         // export row/col name and value from tile
         var tile_info = {};
-        tile_info.row = globals.network_data.row_nodes[d.pos_y].name;
-        tile_info.col = globals.network_data.col_nodes[d.pos_x].name;
+        tile_info.row = params.network_data.row_nodes[d.pos_y].name;
+        tile_info.col = params.network_data.col_nodes[d.pos_x].name;
         tile_info.value = d.value;
         if (Utils.has(d, 'value_up')) {
         tile_info.value_up = d.value_up;
@@ -632,8 +632,8 @@ function Matrix(network_data, svg_elem, params) {
       .on('click', function(d) {
         // export row/col name and value from tile
         var tile_info = {};
-        tile_info.row = globals.network_data.row_nodes[d.pos_y].name;
-        tile_info.col = globals.network_data.col_nodes[d.pos_x].name;
+        tile_info.row = params.network_data.row_nodes[d.pos_y].name;
+        tile_info.col = params.network_data.col_nodes[d.pos_x].name;
         tile_info.value = d.value;
         if (Utils.has(d, 'value_up')) {
         tile_info.value_up = d.value_up;
@@ -1177,8 +1177,8 @@ function VizParams(config){
   return params
 
 }
-function Labels(){
 
+function Labels(){
 
   // make row labels 
   function make_rows(params, row_nodes, reorder){
@@ -1548,7 +1548,7 @@ function Labels(){
       .range([0, params.norm_label.width.col]);
 
     // append column value bars
-    if (Utils.has(globals.network_data.col_nodes[0], 'value')) {
+    if (Utils.has( params.network_data.col_nodes[0], 'value')) {
       col_label_click
       .append('rect')
       .attr('class', 'col_bars')
@@ -1576,10 +1576,7 @@ function Labels(){
 
 }
 
-// var tmp = Labels();
-// console.log('running make rows')
-// console.log(tmp.make_rows)
-// tmp.make_rows();
+
 function SuperLabels(){
 
   function make( params ){
@@ -1794,9 +1791,6 @@ function Viz(config) {
 
     var network_data = params.network_data;
 
-    // global version of network data 
-    globals.network_data = network_data;
-
     // set local variables from network_data
     var col_nodes = network_data.col_nodes;
     var row_nodes = network_data.row_nodes;
@@ -1919,7 +1913,7 @@ function Viz(config) {
         var inst_group = d.group[inst_level];
         // find all column names that are in the same group at the same group_level
         // get col_nodes
-        col_nodes = globals.network_data.col_nodes;
+        col_nodes = params.network_data.col_nodes;
         var group_nodes = [];
         _.each(col_nodes, function(node) {
           // check that the node is in the group
@@ -1987,7 +1981,7 @@ function Viz(config) {
   }
 
   // highlight resource types - set up type/color association
-  var gene_search = Search(params, globals.network_data.row_nodes, 'name');
+  var gene_search = Search(params, params.network_data.row_nodes, 'name');
 
   return {
     remake: function() {
@@ -2182,13 +2176,6 @@ function Reorder(params){
     var mat       = viz.get_matrix();
     var row_nodes = viz.get_nodes('row');
     var col_nodes = viz.get_nodes('col');
-
-    // // get parameters
-    // var params = params;
-
-    // // get row_nodes from global variable
-    // var row_nodes = globals.network_data.row_nodes;
-    // var col_nodes = globals.network_data.col_nodes;
 
     // get inst col (term)
     var inst_term = d3.select(this).select('text').attr('full_name');
@@ -2447,7 +2434,7 @@ function Zoom(params){
     // column value bars
     ///////////////////////
 
-    if (Utils.has(globals.network_data.col_nodes[0], 'value')) {
+    if (Utils.has( params.network_data.col_nodes[0], 'value')) {
       d3.selectAll('.col_bars')
         // column is rotated - effectively width and height are switched
         .attr('width', function(d) {
@@ -2698,7 +2685,7 @@ function Zoom(params){
       // reduce the height of the column value bars based on the zoom applied
       // recalculate the height and divide by the zooming scale
       // col_label_obj.select('rect')
-      if (Utils.has(globals.network_data.col_nodes[0], 'value')) {
+      if (Utils.has( params.network_data.col_nodes[0], 'value')) {
         d3.selectAll('.col_bars')
           .transition()
           .duration(search_duration)
@@ -2729,9 +2716,6 @@ function Zoom(params){
     ini_doubleclick : ini_doubleclick
   }
 }
-
-// This object is a temporary hack to hold all global state for this module.
-var globals = {};
 
 /* Main program
  * ----------------------------------------------------------------------- */
