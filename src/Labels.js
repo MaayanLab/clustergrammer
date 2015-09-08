@@ -36,7 +36,7 @@ function Labels(){
       .append('g')
       .attr('class', 'row_label_text')
       .attr('transform', function(d, index) {
-      return 'translate(0,' + params.y_scale(index) + ')';
+      return 'translate(0,' + params.matrix.y_scale(index) + ')';
       })
       .on('dblclick', reorder.row_reorder )
       .on('mouseover', function() {
@@ -55,8 +55,8 @@ function Labels(){
     // append row label text
     row_labels
       .append('text')
-      .attr('y', params.y_scale.rangeBand() * 0.75)
-      // .attr('dy', params.y_scale.rangeBand()/4)
+      .attr('y', params.matrix.y_scale.rangeBand() * 0.75)
+      // .attr('dy', params.matrix.y_scale.rangeBand()/4)
       .attr('text-anchor', 'end')
       .style('font-size', params.default_fs_row + 'px')
       .text(function(d) {
@@ -85,7 +85,7 @@ function Labels(){
         .attr('x', bbox.x * 0.5)
         .attr('y', 0)
         .attr('width', bbox.width * 0.5)
-        .attr('height', params.y_scale.rangeBand())
+        .attr('height', params.matrix.y_scale.rangeBand())
         .style('fill', function() {
         var inst_hl = 'yellow';
         return inst_hl;
@@ -128,7 +128,7 @@ function Labels(){
       .append('g')
       .attr('class', 'row_triangle_group')
       .attr('transform', function(d, index) {
-      return 'translate(0, ' + params.y_scale(index) + ')';
+      return 'translate(0, ' + params.matrix.y_scale(index) + ')';
       });
 
     // add triangles
@@ -138,9 +138,9 @@ function Labels(){
       var origin_x = params.class_room.symbol_width - 1;
       var origin_y = 0;
       var mid_x = 1;
-      var mid_y = params.y_scale.rangeBand() / 2;
+      var mid_y = params.matrix.y_scale.rangeBand() / 2;
       var final_x = params.class_room.symbol_width - 1;
-      var final_y = params.y_scale.rangeBand();
+      var final_y = params.matrix.y_scale.rangeBand();
       var output_string = 'M ' + origin_x + ',' + origin_y + ' L ' +
         mid_x + ',' + mid_y + ', L ' + final_x + ',' + final_y + ' Z';
       return output_string;
@@ -185,9 +185,9 @@ function Labels(){
       .attr('id', 'col_labels');
 
     // offset click group column label
-    var x_offset_click = params.x_scale.rangeBand() / 2 + params.border_width;
+    var x_offset_click = params.matrix.x_scale.rangeBand() / 2 + params.viz.border_width;
     // reduce width of rotated rects
-    var reduce_rect_width = params.x_scale.rangeBand() * 0.36;
+    var reduce_rect_width = params.matrix.x_scale.rangeBand() * 0.36;
 
     // add main column label group
     var col_label_obj = d3.select('#col_labels')
@@ -197,7 +197,7 @@ function Labels(){
       .append('g')
       .attr('class', 'col_label_text')
       .attr('transform', function(d, index) {
-      return 'translate(' + params.x_scale(index) + ') rotate(-90)';
+      return 'translate(' + params.matrix.x_scale(index) + ') rotate(-90)';
       });
 
     // append group for individual column label
@@ -206,7 +206,7 @@ function Labels(){
       .append('g')
       .attr('class', 'col_label_click')
       // rotate column labels
-      .attr('transform', 'translate(' + params.x_scale.rangeBand() / 2 + ',' + x_offset_click + ') rotate(45)')
+      .attr('transform', 'translate(' + params.matrix.x_scale.rangeBand() / 2 + ',' + x_offset_click + ') rotate(45)')
       .on('dblclick', reorder.col_reorder )
       .on('mouseover', function() {
       d3.select(this).select('text')
@@ -221,9 +221,9 @@ function Labels(){
     col_label_click
       .append('text')
       .attr('x', 0)
-      .attr('y', params.x_scale.rangeBand() * 0.60)
+      .attr('y', params.matrix.x_scale.rangeBand() * 0.60)
       // offset label to make room for triangle
-      .attr('dx', 2 * params.border_width)
+      .attr('dx', 2 * params.viz.border_width)
       .attr('text-anchor', 'start')
       .attr('full_name', function(d) {
       return d.name;
@@ -231,7 +231,7 @@ function Labels(){
       // original font size
       .style('font-size', params.default_fs_col + 'px')
       // // !! simple font size
-      // .style('font-size', params.x_scale.rangeBand()*0.7+'px')
+      // .style('font-size', params.matrix.x_scale.rangeBand()*0.7+'px')
       .text(function(d) {
       return d.name.replace(/_/g, ' ');
       });
@@ -329,7 +329,7 @@ function Labels(){
         .attr('width', bbox.width * 1.25)
         // used a reduced rect width for the columsn
         // because the rects are slanted
-        .attr('height', params.x_scale.rangeBand() * 0.6)
+        .attr('height', params.matrix.x_scale.rangeBand() * 0.6)
         .style('fill', 'yellow')
         .style('opacity', 0);
       });
@@ -340,12 +340,12 @@ function Labels(){
       .style('stroke-width', 0)
       .attr('d', function() {
       // x and y are flipped since its rotated
-      var origin_y = -params.border_width;
+      var origin_y = -params.viz.border_width;
       var start_x = 0;
-      var final_x = params.x_scale.rangeBand() - reduce_rect_width;
-      var start_y = -(params.x_scale.rangeBand() - reduce_rect_width +
-      params.border_width);
-      var final_y = -params.border_width;
+      var final_x = params.matrix.x_scale.rangeBand() - reduce_rect_width;
+      var start_y = -(params.matrix.x_scale.rangeBand() - reduce_rect_width +
+      params.viz.border_width);
+      var final_y = -params.viz.border_width;
       var output_string = 'M ' + origin_y + ',0 L ' + start_y + ',' +
         start_x + ', L ' + final_y + ',' + final_x + ' Z';
       return output_string;
@@ -379,7 +379,7 @@ function Labels(){
         return params.bar_scale_col(d.value);
       })
       // rotate labels - reduce width if rotating
-      .attr('height', params.x_scale.rangeBand() * 0.66)
+      .attr('height', params.matrix.x_scale.rangeBand() * 0.66)
       .attr('fill', function() {
         // return d.color;
         return 'red';

@@ -122,7 +122,7 @@ function Zoom(params){
       d3.selectAll('.row_label_text').each(function() {
         d3.select(this).select('text')
           .style('font-size', params.default_fs_row * params.zoom_scale_font.row + 'px')
-          .attr('y', params.y_scale.rangeBand() * params.scale_font_offset(
+          .attr('y', params.matrix.y_scale.rangeBand() * params.scale_font_offset(
             params.zoom_scale_font.row));
       });
 
@@ -131,7 +131,7 @@ function Zoom(params){
       d3.selectAll('.row_label_text').each(function() {
         d3.select(this).select('text')
           .style('font-size', params.default_fs_row + 'px')
-          .attr('y', params.y_scale.rangeBand() * 0.75);
+          .attr('y', params.matrix.y_scale.rangeBand() * 0.75);
       });
     }
 
@@ -182,7 +182,7 @@ function Zoom(params){
     //   .attr('x', bbox.x*0.5)
     //   .attr('y', 0)
     //   .attr('width', bbox.width*0.5)
-    //   .attr('height', params.y_scale.rangeBand())
+    //   .attr('height', params.matrix.y_scale.rangeBand())
     //   .style('fill','yellow');
     // });
 
@@ -201,7 +201,7 @@ function Zoom(params){
     //   .attr('width', bbox.width * 1.25)
     //   // used thd reduced rect width for the columsn
     //   // reduced because thee rects are slanted
-    //   .attr('height', params.x_scale.rangeBand()*0.6)
+    //   .attr('height', params.matrix.x_scale.rangeBand()*0.6)
     //   .style('fill','yellow')
     //   .style('opacity',0);
     //   });
@@ -346,7 +346,7 @@ function Zoom(params){
             .duration(search_duration)
             .style('font-size', params.default_fs_row * params.zoom_scale_font
               .row + 'px')
-            .attr('y', params.y_scale.rangeBand() * params.scale_font_offset(
+            .attr('y', params.matrix.y_scale.rangeBand() * params.scale_font_offset(
               params.zoom_scale_font.row));
         });
 
@@ -357,7 +357,7 @@ function Zoom(params){
             .transition()
             .duration(search_duration)
             .style('font-size', params.default_fs_row + 'px')
-            .attr('y', params.y_scale.rangeBand() * 0.75);
+            .attr('y', params.matrix.y_scale.rangeBand() * 0.75);
         });
       }
 
@@ -400,7 +400,7 @@ function Zoom(params){
             .attr('x', bbox.x * 0.5)
             .attr('y', 0)
             .attr('width', bbox.width * 0.5)
-            .attr('height', params.y_scale.rangeBand())
+            .attr('height', params.matrix.y_scale.rangeBand())
             .style('fill', 'yellow');
         });
 

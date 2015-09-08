@@ -27,7 +27,7 @@ function Search(params, nodes, prop) {
    */
   function zoom_and_highlight_found_entity(search_term) {
     var idx = _.indexOf(entities, search_term),
-      inst_y_pos = params.y_scale(idx),
+      inst_y_pos = params.matrix.y_scale(idx),
       pan_dy = params.viz.clust.dim.height / 2 - inst_y_pos;
 
     // viz exposes two_translate_zoom from zoom object 

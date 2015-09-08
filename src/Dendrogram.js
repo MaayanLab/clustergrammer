@@ -53,7 +53,7 @@ function Dendrogram(type, params, elem) {
         var inst_width = params.class_room.symbol_width - 1;
         return inst_width + 'px';
       })
-      .attr('height', params.y_scale.rangeBand())
+      .attr('height', params.matrix.y_scale.rangeBand())
       .style('fill', function(d) {
         var inst_level = params.group_level.row;
         return get_group_color(d.group[inst_level]);
@@ -68,7 +68,7 @@ function Dendrogram(type, params, elem) {
     elem
       .append('rect')
       .attr('class', dom_class)
-      .attr('width', params.x_scale.rangeBand())
+      .attr('width', params.matrix.x_scale.rangeBand())
       .attr('height', function() {
         var inst_height = params.class_room.col - 1;
         return inst_height;

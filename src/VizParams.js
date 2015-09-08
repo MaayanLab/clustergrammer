@@ -133,7 +133,7 @@ function VizParams(config){
     // svg size: less than svg size
     ///////////////////////////////////
     // 0.8 approximates the trigonometric distance required for hiding the spillover
-    params.spillover_x_offset = label_scale(col_max_char) * 0.8 * params.col_label_scale;
+    var spillover_x_offset = label_scale(col_max_char) * 0.8 * params.col_label_scale;
 
     // get height and width from parent div
     params.viz.svg_dim = {};
@@ -144,13 +144,11 @@ function VizParams(config){
 
     // reduce width by row/col labels and by grey_border width (reduce width by less since this is less aparent with slanted col labels)
     var ini_clust_width = params.viz.svg_dim.width - (params.labels.super_label_width +
-      label_scale(row_max_char)*config.row_label_scale + params.class_room.row) - params.viz.grey_border_width -
-      params.spillover_x_offset;
+      label_scale(row_max_char)*config.row_label_scale + params.class_room.row) - params.viz.grey_border_width - spillover_x_offset;
 
     // there is space between the clustergram and the border
     var ini_clust_height = params.viz.svg_dim.height - (params.labels.super_label_width +
-      0.8 * label_scale(col_max_char)*params.col_label_scale + params.class_room.col) - 5 *
-      params.viz.grey_border_width;
+      0.8 * label_scale(col_max_char)*params.col_label_scale + params.class_room.col) - 5 * params.viz.grey_border_width;
 
     // the visualization dimensions can be smaller than the svg
     // if there are not many rows the clustergram width will be reduced, but not the svg width
@@ -195,11 +193,11 @@ function VizParams(config){
     // Define Orderings
     ////////////////////////////
     // scaling functions to position rows and tiles, define rangeBands
-    params.x_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.width]);
-    params.y_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.height]);
+    params.matrix.x_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.width]);
+    params.matrix.y_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.height]);
 
     // Define Orderings
-    params.orders = {
+    params.matrix.orders = {
       name: d3.range(col_nodes.length).sort(function(a, b) {
         return d3.ascending(col_nodes[a].name, col_nodes[b].name);
       }),
@@ -228,21 +226,21 @@ function VizParams(config){
 
     // Assign initial ordering for x_scale and y_scale
     if (params.viz.inst_order === 'clust') {
-      params.x_scale.domain(params.orders.clust_row);
-      params.y_scale.domain(params.orders.clust_col);
+      params.matrix.x_scale.domain(params.matrix.orders.clust_row);
+      params.matrix.y_scale.domain(params.matrix.orders.clust_col);
     } else if (params.viz.inst_order === 'rank') {
-      params.x_scale.domain(params.orders.rank_row);
-      params.y_scale.domain(params.orders.rank_col);
+      params.matrix.x_scale.domain(params.matrix.orders.rank_row);
+      params.matrix.y_scale.domain(params.matrix.orders.rank_col);
     } else if (params.viz.inst_order === 'class') {
-      params.x_scale.domain(params.orders.class_row);
-      params.y_scale.domain(params.orders.class_col);
+      params.matrix.x_scale.domain(params.matrix.orders.class_row);
+      params.matrix.y_scale.domain(params.matrix.orders.class_col);
     }
 
     // visualization parameters
     //////////////////////////////
 
     // border_width - width of white borders around tiles
-    params.border_width = params.x_scale.rangeBand() / 40;
+    params.viz.border_width = params.matrix.x_scale.rangeBand() / 40;
 
     // zoom_switch from 1 to 2d zoom
     params.zoom_switch = (params.viz.clust.dim.width / col_nodes.length) / (params.viz.clust.dim.height / row_nodes.length);
@@ -269,8 +267,8 @@ function VizParams(config){
       .range([0.8,0.5]);
 
     // the default font sizes are set here
-    params.default_fs_row = params.y_scale.rangeBand() * 0.9;
-    params.default_fs_col = params.x_scale.rangeBand() * 0.7;
+    params.default_fs_row = params.matrix.y_scale.rangeBand() * 0.9;
+    params.default_fs_col = params.matrix.x_scale.rangeBand() * 0.7;
 
     // initialize font size zooming parameters
     params.zoom_scale_font = {};

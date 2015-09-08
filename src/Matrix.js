@@ -34,7 +34,7 @@ function Matrix(network_data, svg_elem, params) {
     .append('g')
     .attr('class', 'row')
     .attr('transform', function(d, index) {
-      return 'translate(0,' + params.y_scale(index) + ')';
+      return 'translate(0,' + params.matrix.y_scale(index) + ')';
     });
 
   // draw rows of clustergram 
@@ -86,12 +86,12 @@ function Matrix(network_data, svg_elem, params) {
       .append('g')
       .attr('class','horz_lines')
       .attr('transform', function(d, index) {
-          return 'translate(0,' + params.y_scale(index) + ') rotate(0)';
+          return 'translate(0,' + params.matrix.y_scale(index) + ') rotate(0)';
       })
       .append('line')
       .attr('x1',0)
       .attr('x2',params.viz.clust.dim.width)
-      .style('stroke-width', params.border_width/params.zoom_switch+'px')
+      .style('stroke-width', params.viz.border_width/params.zoom_switch+'px')
       .style('stroke','white')
 
     // append vertical line groups
@@ -102,12 +102,12 @@ function Matrix(network_data, svg_elem, params) {
       .append('g')
       .attr('class', 'vert_lines')
       .attr('transform', function(d, index) {
-          return 'translate(' + params.x_scale(index) + ') rotate(-90)';
+          return 'translate(' + params.matrix.x_scale(index) + ') rotate(-90)';
       })
       .append('line')
       .attr('x1', 0)
       .attr('x2', -params.viz.clust.dim.height)
-      .style('stroke-width', params.border_width + 'px')
+      .style('stroke-width', params.viz.border_width + 'px')
       .style('stroke', 'white');
   }
 
@@ -128,10 +128,10 @@ function Matrix(network_data, svg_elem, params) {
       .append('rect')
       .attr('class', 'tile')
       .attr('transform', function(d) {
-      return 'translate(' + params.x_scale(d.pos_x) + ',0)';
+      return 'translate(' + params.matrix.x_scale(d.pos_x) + ',0)';
       })
-      .attr('width', params.x_scale.rangeBand())
-      .attr('height', params.y_scale.rangeBand() * 0.98)
+      .attr('width', params.matrix.x_scale.rangeBand())
+      .attr('height', params.matrix.y_scale.rangeBand() * 0.98)
       .style('fill-opacity', function(d) {
       // calculate output opacity using the opacity scale
       var output_opacity = params.opacity_scale(Math.abs(d.value));
@@ -210,15 +210,15 @@ function Matrix(network_data, svg_elem, params) {
       .append('g')
       .attr('class', 'tile')
       .attr('transform', function(d) {
-      return 'translate(' + params.x_scale(d.pos_x) + ',0)';
+      return 'translate(' + params.matrix.x_scale(d.pos_x) + ',0)';
       });
 
     // append rect
     tile
       .append('rect')
       // .attr('class','tile')
-      .attr('width', params.x_scale.rangeBand())
-      .attr('height', params.y_scale.rangeBand() * 0.98)
+      .attr('width', params.matrix.x_scale.rangeBand())
+      .attr('height', params.matrix.y_scale.rangeBand() * 0.98)
       .style('fill-opacity', function(d) {
       // calculate output opacity using the opacity scale
       var output_opacity = params.opacity_scale(Math.abs(d.value));
@@ -258,11 +258,11 @@ function Matrix(network_data, svg_elem, params) {
       // console.log(row_data[0])
       tile
       .append('rect')
-      .attr('width', params.x_scale.rangeBand() * 0.80)
-      .attr('height', params.y_scale.rangeBand() * 0.80)
+      .attr('width', params.matrix.x_scale.rangeBand() * 0.80)
+      .attr('height', params.matrix.y_scale.rangeBand() * 0.80)
       .attr('class', 'highlighting_rect')
-      .attr('transform', 'translate(' + params.x_scale.rangeBand() / 10 +
-      ' , ' + params.y_scale.rangeBand() / 10 + ')')
+      .attr('transform', 'translate(' + params.matrix.x_scale.rangeBand() / 10 +
+      ' , ' + params.matrix.y_scale.rangeBand() / 10 + ')')
       .attr('class', 'cell_highlight')
       .attr('stroke', 'black')
       .attr('stroke-width', 1.0)
@@ -310,9 +310,9 @@ function Matrix(network_data, svg_elem, params) {
       .style('stroke-width', 0)
       .attr('d', function() {
       var start_x = 0;
-      var final_x = params.x_scale.rangeBand();
+      var final_x = params.matrix.x_scale.rangeBand();
       var start_y = 0;
-      var final_y = params.y_scale.rangeBand() - params.y_scale.rangeBand() /
+      var final_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand() /
         60;
       var output_string = 'M' + start_x + ',' + start_y + ', L' +
         start_x + ', ' + final_y + ', L' + final_x + ',0 Z';
@@ -340,10 +340,10 @@ function Matrix(network_data, svg_elem, params) {
       .style('stroke-width', 0)
       .attr('d', function() {
       var start_x = 0;
-      var final_x = params.x_scale.rangeBand();
-      var start_y = params.y_scale.rangeBand() - params.y_scale.rangeBand() /
+      var final_x = params.matrix.x_scale.rangeBand();
+      var start_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand() /
         60;
-      var final_y = params.y_scale.rangeBand() - params.y_scale.rangeBand() /
+      var final_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand() /
         60;
       var output_string = 'M' + start_x + ', ' + start_y + ' ,   L' +
         final_x + ', ' + final_y + ',  L' + final_x + ',0 Z';

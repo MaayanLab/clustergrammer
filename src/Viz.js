@@ -127,7 +127,7 @@ function Viz(config) {
       .append('g')
       .attr('class', 'col_class_group')
       .attr('transform', function(d, index) {
-        return 'translate(' + params.x_scale(index) + ',0)';
+        return 'translate(' + params.matrix.x_scale(index) + ',0)';
       });
 
       // make col dendrogram 
