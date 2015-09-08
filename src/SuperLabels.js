@@ -19,7 +19,7 @@ function SuperLabels(){
     .text(params.labels.super.col)
     .attr('text-anchor', 'center')
     .attr('transform', function() {
-      var inst_x = params.clust.dim.width / 2 + params.norm_label.width
+      var inst_x = params.viz.clust.dim.width / 2 + params.norm_label.width
         .row;
       var inst_y = params.labels.super_label_width - params.viz.uni_margin;
       return 'translate(' + inst_x + ',' + inst_y + ')';
@@ -46,7 +46,7 @@ function SuperLabels(){
     .attr('transform', function() {
       // position in the middle of the clustergram
       var inst_x = params.labels.super_label_width - params.viz.uni_margin;
-      var inst_y = params.clust.dim.height / 2 + params.norm_label.width
+      var inst_y = params.viz.clust.dim.height / 2 + params.norm_label.width
         .col;
       return 'translate(' + inst_x + ',' + inst_y + ')';
     });

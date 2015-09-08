@@ -118,18 +118,17 @@ function VizParams(config){
       params.class_room.symbol_width = 9;
     }
 
-
     // norm label background width, norm-label-width plus class-width plus margin
     params.norm_label.background = {};
     params.norm_label.background.row = params.norm_label.width.row + params.class_room.row + params.viz.uni_margin;
     params.norm_label.background.col = params.norm_label.width.col + params.class_room.col + params.viz.uni_margin;
 
     // clustergram dimensions
-    params.clust = {};
-    params.clust.margin = {};
+    params.viz.clust= {};
+    params.viz.clust.margin = {};
     // clust margin is the margin of the norm_label plus the width of the entire norm_label group
-    params.clust.margin.left = params.norm_label.margin.left + params.norm_label.background.row;
-    params.clust.margin.top = params.norm_label.margin.top + params.norm_label.background.col;
+    params.viz.clust.margin.left = params.norm_label.margin.left + params.norm_label.background.row;
+    params.viz.clust.margin.top = params.norm_label.margin.top + params.norm_label.background.col;
 
     // svg size: less than svg size
     ///////////////////////////////////
@@ -137,19 +136,19 @@ function VizParams(config){
     params.spillover_x_offset = label_scale(col_max_char) * 0.8 * params.col_label_scale;
 
     // get height and width from parent div
-    params.svg_dim = {};
-    params.svg_dim.width  = Number(d3.select('#' + params.viz.svg_div_id).style('width').replace('px', ''));
-    params.svg_dim.height = Number(d3.select('#' + params.viz.svg_div_id).style('height').replace('px', ''));
+    params.viz.svg_dim = {};
+    params.viz.svg_dim.width  = Number(d3.select('#' + params.viz.svg_div_id).style('width').replace('px', ''));
+    params.viz.svg_dim.height = Number(d3.select('#' + params.viz.svg_div_id).style('height').replace('px', ''));
 
 
 
     // reduce width by row/col labels and by grey_border width (reduce width by less since this is less aparent with slanted col labels)
-    var ini_clust_width = params.svg_dim.width - (params.labels.super_label_width +
+    var ini_clust_width = params.viz.svg_dim.width - (params.labels.super_label_width +
       label_scale(row_max_char)*config.row_label_scale + params.class_room.row) - params.viz.grey_border_width -
       params.spillover_x_offset;
 
     // there is space between the clustergram and the border
-    var ini_clust_height = params.svg_dim.height - (params.labels.super_label_width +
+    var ini_clust_height = params.viz.svg_dim.height - (params.labels.super_label_width +
       0.8 * label_scale(col_max_char)*params.col_label_scale + params.class_room.col) - 5 *
       params.viz.grey_border_width;
 
@@ -160,8 +159,8 @@ function VizParams(config){
       .domain([1, 20]).range([0.05,1]).clamp('true');
 
     // clust_dim - clustergram dimensions (the clustergram is smaller than the svg)
-    params.clust.dim = {};
-    params.clust.dim.width = ini_clust_width * prevent_col_stretch(col_nodes.length);
+    params.viz.clust.dim = {};
+    params.viz.clust.dim.width = ini_clust_width * prevent_col_stretch(col_nodes.length);
 
     // clustergram height
     ////////////////////////
@@ -170,34 +169,34 @@ function VizParams(config){
     if (ini_clust_width / col_nodes.length < ini_clust_height / row_nodes.length) {
 
       // scale the height
-      params.clust.dim.height = ini_clust_width * (row_nodes.length / col_nodes.length);
+      params.viz.clust.dim.height = ini_clust_width * (row_nodes.length / col_nodes.length);
 
       // keep track of whether or not a force square has occurred
       // so that I can adjust the font accordingly
-      params.force_square = 1;
+      params.viz.force_square = 1;
 
       // make sure that force_square does not cause the entire visualization
       // to be taller than the svg, if it does, then undo
-      if (params.clust.dim.height > ini_clust_height) {
+      if (params.viz.clust.dim.height > ini_clust_height) {
       // make the height equal to the width
-      params.clust.dim.height = ini_clust_height;
+      params.viz.clust.dim.height = ini_clust_height;
       // keep track of whether or not a force square has occurred
-      params.force_square = 0;
+      params.viz.force_square = 0;
       }
     }
     // do not force square tiles
     else {
       // the height will be calculated normally - leading to wide tiles
-      params.clust.dim.height = ini_clust_height;
+      params.viz.clust.dim.height = ini_clust_height;
       // keep track of whether or not a force square has occurred
-      params.force_square = 0;
+      params.viz.force_square = 0;
     }
 
     // Define Orderings
     ////////////////////////////
     // scaling functions to position rows and tiles, define rangeBands
-    params.x_scale = d3.scale.ordinal().rangeBands([0, params.clust.dim.width]);
-    params.y_scale = d3.scale.ordinal().rangeBands([0, params.clust.dim.height]);
+    params.x_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.width]);
+    params.y_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.height]);
 
     // Define Orderings
     params.orders = {
@@ -246,7 +245,7 @@ function VizParams(config){
     params.border_width = params.x_scale.rangeBand() / 40;
 
     // zoom_switch from 1 to 2d zoom
-    params.zoom_switch = (params.clust.dim.width / col_nodes.length) / (params.clust.dim.height / row_nodes.length);
+    params.zoom_switch = (params.viz.clust.dim.width / col_nodes.length) / (params.viz.clust.dim.height / row_nodes.length);
 
     // zoom_switch can not be less than 1
     if (params.zoom_switch < 1) {
@@ -293,7 +292,7 @@ function VizParams(config){
       .range([2, 1]).clamp('true');
 
     // calculate the zoom factor - the more nodes the more zooming allowed
-    params.real_zoom = real_zoom_scale_col(col_nodes.length) * real_zoom_scale_screen(params.clust.dim.width);
+    params.real_zoom = real_zoom_scale_col(col_nodes.length) * real_zoom_scale_screen(params.viz.clust.dim.width);
 
     // set opacity scale
     var max_link = _.max(network_data.links, function(d) {

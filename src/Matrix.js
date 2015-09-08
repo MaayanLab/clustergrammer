@@ -13,8 +13,8 @@ function Matrix(network_data, svg_elem, params) {
   clust_group = svg_elem
     .append('g')
     .attr('transform', 'translate(' +
-      params.clust.margin.left + ',' +
-      params.clust.margin.top + ')')
+      params.viz.clust.margin.left + ',' +
+      params.viz.clust.margin.top + ')')
     .append('g')
     .attr('id', 'clust_group');
 
@@ -24,8 +24,8 @@ function Matrix(network_data, svg_elem, params) {
     .attr('class', 'background')
     .attr('id', 'grey_background')
     .style('fill', '#eee')
-    .attr('width', params.clust.dim.width)
-    .attr('height', params.clust.dim.height);
+    .attr('width', params.viz.clust.dim.width)
+    .attr('height', params.viz.clust.dim.height);
 
   // do the databind 
   var row_groups = clust_group.selectAll('.row')
@@ -90,7 +90,7 @@ function Matrix(network_data, svg_elem, params) {
       })
       .append('line')
       .attr('x1',0)
-      .attr('x2',params.clust.dim.width)
+      .attr('x2',params.viz.clust.dim.width)
       .style('stroke-width', params.border_width/params.zoom_switch+'px')
       .style('stroke','white')
 
@@ -106,7 +106,7 @@ function Matrix(network_data, svg_elem, params) {
       })
       .append('line')
       .attr('x1', 0)
-      .attr('x2', -params.clust.dim.height)
+      .attr('x2', -params.viz.clust.dim.height)
       .style('stroke-width', params.border_width + 'px')
       .style('stroke', 'white');
   }

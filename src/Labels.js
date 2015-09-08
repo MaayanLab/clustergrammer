@@ -10,14 +10,14 @@ function Labels(){
     var container_all_row = d3.select('#main_svg')
       .append('g')
       .attr('transform', 'translate(' + params.norm_label.margin.left + ',' +
-      params.clust.margin.top + ')');
+      params.viz.clust.margin.top + ')');
 
     // white background rect for row labels
     container_all_row
       .append('rect')
       .attr('fill', params.viz.background_color)
       .attr('width', params.norm_label.background.row)
-      .attr('height', 30 * params.clust.dim.height + 'px')
+      .attr('height', 30 * params.viz.clust.dim.height + 'px')
       .attr('class', 'white_bars');
 
     // row_labels
@@ -116,7 +116,7 @@ function Labels(){
       .attr('fill', params.viz.background_color) //!! prog_colors
       .attr('width', params.class_room.row + 'px')
       .attr('height', function() {
-      var inst_height = params.clust.dim.height;
+      var inst_height = params.viz.clust.dim.height;
       return inst_height;
       });
 
@@ -165,14 +165,14 @@ function Labels(){
     // make container to pre-position zoomable elements
     var container_all_col = d3.select('#main_svg')
       .append('g')
-      .attr('transform', 'translate(' + params.clust.margin.left + ',' +
+      .attr('transform', 'translate(' + params.viz.clust.margin.left + ',' +
       params.norm_label.margin.top + ')');
 
     // white background rect for col labels
     container_all_col
       .append('rect')
       .attr('fill', params.viz.background_color) //!! prog_colors
-      .attr('width', 30 * params.clust.dim.width + 'px')
+      .attr('width', 30 * params.viz.clust.dim.width + 'px')
       .attr('height', params.norm_label.background.col)
       .attr('class', 'white_bars');
 

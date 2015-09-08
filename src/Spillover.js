@@ -19,7 +19,7 @@ function Spillover( params, container_all_col ){
       .attr('d', 'M 0,0 L 500,-500, L 500,0 Z')
       .attr('fill', params.viz.background_color) //!! prog_colors
       .attr('id', 'right_slant_triangle')
-      .attr('transform', 'translate(' + params.clust.dim.width + ',' +
+      .attr('transform', 'translate(' + params.viz.clust.dim.width + ',' +
       params.norm_label.width.col + ')');
 
     // hide spillover from slanted column labels on left side
@@ -40,8 +40,8 @@ function Spillover( params, container_all_col ){
     d3.select('#main_svg')
       .append('rect')
       .attr('fill', params.viz.background_color) //!! prog_colors
-      .attr('width', params.clust.margin.left)
-      .attr('height', params.clust.margin.top)
+      .attr('width', params.viz.clust.margin.left)
+      .attr('height', params.viz.clust.margin.top)
       .attr('id', 'top_left_white');
 
     // hide spillover from right
@@ -51,7 +51,7 @@ function Spillover( params, container_all_col ){
       .attr('width', '300px')
       .attr('height', '3000px')
       .attr('transform', function() {
-      var tmp_left = params.clust.margin.left + params.clust.dim.width;
+      var tmp_left = params.viz.clust.margin.left + params.viz.clust.dim.width;
       var tmp_top = params.norm_label.margin.top + params.norm_label.width
         .col;
       return 'translate(' + tmp_left + ',' + tmp_top + ')';
@@ -63,12 +63,12 @@ function Spillover( params, container_all_col ){
     d3.select('#main_svg')
       .append('rect')
       .attr('fill', params.viz.background_color) //!! prog_colors
-      .attr('width', params.svg_dim.width)
+      .attr('width', params.viz.svg_dim.width)
       // make this border twice the width of the grey border
       .attr('height', 2 * params.viz.grey_border_width)
       .attr('transform', function() {
       // shift up enough to show the entire border width
-      var inst_offset = params.svg_dim.height - 3 * params.viz.grey_border_width;
+      var inst_offset = params.viz.svg_dim.height - 3 * params.viz.grey_border_width;
       return 'translate(0,' + inst_offset + ')';
       });
 
@@ -79,7 +79,7 @@ function Spillover( params, container_all_col ){
       .append('rect')
       .attr('fill', params.viz.super_border_color) //!! prog_colors
       .attr('width', params.viz.grey_border_width)
-      .attr('height', params.svg_dim.height)
+      .attr('height', params.viz.svg_dim.height)
       .attr('transform', 'translate(0,0)');
 
     // right border
@@ -87,9 +87,9 @@ function Spillover( params, container_all_col ){
       .append('rect')
       .attr('fill', params.viz.super_border_color) //!! prog_colors
       .attr('width', params.viz.grey_border_width)
-      .attr('height', params.svg_dim.height)
+      .attr('height', params.viz.svg_dim.height)
       .attr('transform', function() {
-      var inst_offset = params.svg_dim.width - params.viz.grey_border_width;
+      var inst_offset = params.viz.svg_dim.width - params.viz.grey_border_width;
       return 'translate(' + inst_offset + ',0)';
       });
 
@@ -97,7 +97,7 @@ function Spillover( params, container_all_col ){
     d3.select('#main_svg')
       .append('rect')
       .attr('fill', params.viz.super_border_color) //!! prog_colors
-      .attr('width', params.svg_dim.width)
+      .attr('width', params.viz.svg_dim.width)
       .attr('height', params.viz.grey_border_width)
       .attr('transform', function() {
       var inst_offset = 0;
@@ -108,10 +108,10 @@ function Spillover( params, container_all_col ){
     d3.select('#main_svg')
       .append('rect')
       .attr('fill', params.viz.super_border_color) //!! prog_colors
-      .attr('width', params.svg_dim.width)
+      .attr('width', params.viz.svg_dim.width)
       .attr('height', params.viz.grey_border_width)
       .attr('transform', function() {
-      var inst_offset = params.svg_dim.height - params.viz.grey_border_width;
+      var inst_offset = params.viz.svg_dim.height - params.viz.grey_border_width;
       return 'translate(0,' + inst_offset + ')';
       });
   }

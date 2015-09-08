@@ -61,9 +61,9 @@ function Viz(config) {
       .append('svg')
       .attr('id', 'main_svg')
       // leave room for the light grey border
-      .attr('width', params.svg_dim.width)
+      .attr('width', params.viz.svg_dim.width)
       // the height is reduced by more than the width because the tiles go right up to the bottom border
-      .attr('height', params.svg_dim.height);
+      .attr('height', params.viz.svg_dim.height);
 
     // call zooming on the entire svg
     if (params.viz.do_zoom) {
@@ -78,8 +78,8 @@ function Viz(config) {
     if (params.viz.background_color !== '#FFFFFF') {
       svg_group
       .append('rect')
-      .attr('width', params.svg_dim.width)
-      .attr('height', params.svg_dim.height)
+      .attr('width', params.viz.svg_dim.width)
+      .attr('height', params.viz.svg_dim.height)
       .style('fill', params.viz.background_color);
     }
 
@@ -185,7 +185,7 @@ function Viz(config) {
 
     ///////////////////////////////////
     // initialize translate vector to compensate for label margins
-    params.zoom.translate([params.clust.margin.left, params.clust.margin.top]);
+    params.zoom.translate([params.viz.clust.margin.left, params.viz.clust.margin.top]);
 
     // resize window
     if (params.viz.resize){
@@ -204,7 +204,7 @@ function Viz(config) {
 
     // reset zoom and translate
     params.zoom.scale(1).translate(
-        [ params.clust.margin.left, params.clust.margin.top]
+        [ params.viz.clust.margin.left, params.viz.clust.margin.top]
     );
   }
 

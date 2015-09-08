@@ -6,8 +6,8 @@ function Zoom(params){
 
     var zoom_x = d3.event.scale,
       zoom_y = d3.event.scale,
-      trans_x = d3.event.translate[0] - params.clust.margin.left,
-      trans_y = d3.event.translate[1] - params.clust.margin.top;
+      trans_x = d3.event.translate[0] - params.viz.clust.margin.left,
+      trans_y = d3.event.translate[1] - params.viz.clust.margin.top;
 
     // apply transformation
     apply_transformation(trans_x, trans_y, zoom_x, zoom_y);  
@@ -22,7 +22,7 @@ function Zoom(params){
     // available panning room in the y direction
     // multiple extra room (zoom - 1) by the width
     // always defined in the same way
-    var pan_room_y = (d3_scale - 1) * params.clust.dim.height;
+    var pan_room_y = (d3_scale - 1) * params.viz.clust.dim.height;
 
     // do not translate if translate in y direction is positive
     if (trans_y >= 0) {
@@ -48,7 +48,7 @@ function Zoom(params){
     else {
       // available panning room in the x direction
       // multiple extra room (zoom - 1) by the width
-      var pan_room_x = (d3_scale / params.zoom_switch - 1) * params.clust.dim.width;
+      var pan_room_x = (d3_scale / params.zoom_switch - 1) * params.viz.clust.dim.width;
 
       // no panning in the positive direction
       if (trans_x > 0) {
@@ -107,8 +107,7 @@ function Zoom(params){
 
     // reset translate vector - add back margins to trans_x and trans_y
     params.zoom
-      .translate([trans_x + params.clust.margin.left, trans_y + params.clust
-        .margin.top
+      .translate([trans_x + params.viz.clust.margin.left, trans_y + params.viz.clust.margin.top
       ]);
 
    
@@ -214,7 +213,7 @@ function Zoom(params){
     if (!params.run_trans) {
 
       // define the commonly used variable half_height
-      var half_height = params.clust.dim.height / 2;
+      var half_height = params.viz.clust.dim.height / 2;
 
       // y pan room, the pan room has to be less than half_height since
       // zooming in on a gene that is near the top of the clustergram also causes
@@ -325,7 +324,7 @@ function Zoom(params){
       // set y translate: center_y is positive, positive moves the visualization down
       // the translate vector has the initial margin, the first y centering, and pan_dy
       // times the scaling zoom_y
-      var net_y_offset = params.clust.margin.top + center_y + pan_dy *
+      var net_y_offset = params.viz.clust.margin.top + center_y + pan_dy *
         zoom_y;
 
       // reset the zoom translate and zoom
