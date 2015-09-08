@@ -53,7 +53,7 @@ function Viz(config) {
     // define the variable zoom, a d3 method
     params.zoom = d3.behavior
       .zoom()
-      .scaleExtent([1, params.real_zoom * params.zoom_switch])
+      .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch])
       .on('zoom', zoom.zoomed);
 
     // make outer group for clust_group - this will position clust_group once

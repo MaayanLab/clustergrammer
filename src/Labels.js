@@ -58,7 +58,7 @@ function Labels(){
       .attr('y', params.matrix.y_scale.rangeBand() * 0.75)
       // .attr('dy', params.matrix.y_scale.rangeBand()/4)
       .attr('text-anchor', 'end')
-      .style('font-size', params.default_fs_row + 'px')
+      .style('font-size', params.labels.defalut_fs_row + 'px')
       .text(function(d) {
       return d.name;
       });
@@ -229,7 +229,7 @@ function Labels(){
       return d.name;
       })
       // original font size
-      .style('font-size', params.default_fs_col + 'px')
+      .style('font-size', params.labels.defalut_fs_col + 'px')
       // // !! simple font size
       // .style('font-size', params.matrix.x_scale.rangeBand()*0.7+'px')
       .text(function(d) {
@@ -277,12 +277,12 @@ function Labels(){
         .row;
 
       // redefine default fs
-      params.default_fs_row = params.default_fs_row * params.ini_scale_font
+      params.labels.defalut_fs_row = params.labels.defalut_fs_row * params.ini_scale_font
         .row;
       // reduce font size
       d3.selectAll('.row_label_text').each(function() {
       d3.select(this).select('text')
-        .style('font-size', params.default_fs_row + 'px');
+        .style('font-size', params.labels.defalut_fs_row + 'px');
       });
     }
 
@@ -294,12 +294,12 @@ function Labels(){
       params.bounding_width_max.col = params.ini_scale_font.col * params.bounding_width_max
         .col;
       // redefine default fs
-      params.default_fs_col = params.default_fs_col * params.ini_scale_font
+      params.labels.defalut_fs_col = params.labels.defalut_fs_col * params.ini_scale_font
         .col;
       // reduce font size
       d3.selectAll('.col_label_click').each(function() {
       d3.select(this).select('text')
-        .style('font-size', params.default_fs_col + 'px');
+        .style('font-size', params.labels.defalut_fs_col + 'px');
       });
     }
 

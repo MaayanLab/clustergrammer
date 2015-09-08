@@ -382,7 +382,7 @@ function Matrix(network_data, svg_elem, params) {
     });
 
   // draw rows of clustergram 
-  if (params.tile_type === 'simple') {
+  if (params.matrix.tile_type === 'simple') {
     row_groups = row_groups.each(draw_simple_rows);
   } else {
     row_groups = row_groups.each(draw_group_rows);
@@ -435,7 +435,7 @@ function Matrix(network_data, svg_elem, params) {
       .append('line')
       .attr('x1',0)
       .attr('x2',params.viz.clust.dim.width)
-      .style('stroke-width', params.viz.border_width/params.zoom_switch+'px')
+      .style('stroke-width', params.viz.border_width/params.viz.zoom_switch+'px')
       .style('stroke','white')
 
     // append vertical line groups
@@ -478,7 +478,7 @@ function Matrix(network_data, svg_elem, params) {
       .attr('height', params.matrix.y_scale.rangeBand() * 0.98)
       .style('fill-opacity', function(d) {
       // calculate output opacity using the opacity scale
-      var output_opacity = params.opacity_scale(Math.abs(d.value));
+      var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
       return output_opacity;
       })
       // switch the color based on up/dn value
@@ -565,7 +565,7 @@ function Matrix(network_data, svg_elem, params) {
       .attr('height', params.matrix.y_scale.rangeBand() * 0.98)
       .style('fill-opacity', function(d) {
       // calculate output opacity using the opacity scale
-      var output_opacity = params.opacity_scale(Math.abs(d.value));
+      var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
       if (Math.abs(d.value_up) > 0 && Math.abs(d.value_dn) > 0) {
         output_opacity = 0;
       }
@@ -598,7 +598,7 @@ function Matrix(network_data, svg_elem, params) {
 
 
     // // append evidence highlighting - black rects
-    if (params.highlight === 1) {
+    if (params.matrix.highlight === 1) {
       // console.log(row_data[0])
       tile
       .append('rect')
@@ -666,7 +666,7 @@ function Matrix(network_data, svg_elem, params) {
       // calculate output opacity using the opacity scale
       var output_opacity = 0;
       if (Math.abs(d.value_dn) > 0) {
-        output_opacity = params.opacity_scale(Math.abs(d.value_up));
+        output_opacity = params.matrix.opacity_scale(Math.abs(d.value_up));
       }
       return output_opacity;
       })
@@ -697,7 +697,7 @@ function Matrix(network_data, svg_elem, params) {
       // calculate output opacity using the opacity scale
       var output_opacity = 0;
       if (Math.abs(d.value_up) > 0) {
-        output_opacity = params.opacity_scale(Math.abs(d.value_dn));
+        output_opacity = params.matrix.opacity_scale(Math.abs(d.value_dn));
       }
       return output_opacity;
       })
@@ -771,7 +771,7 @@ function Search(params, nodes, prop) {
       pan_dy = params.viz.clust.dim.height / 2 - inst_y_pos;
 
     // viz exposes two_translate_zoom from zoom object 
-    viz.two_translate_zoom(0, pan_dy, params.zoom_switch);
+    viz.two_translate_zoom(0, pan_dy, params.viz.zoom_switch);
   }
 
   function un_highlight_entities() {
@@ -1044,11 +1044,11 @@ function VizParams(config){
     params.viz.border_width = params.matrix.x_scale.rangeBand() / 40;
 
     // zoom_switch from 1 to 2d zoom
-    params.zoom_switch = (params.viz.clust.dim.width / col_nodes.length) / (params.viz.clust.dim.height / row_nodes.length);
+    params.viz.zoom_switch = (params.viz.clust.dim.width / col_nodes.length) / (params.viz.clust.dim.height / row_nodes.length);
 
     // zoom_switch can not be less than 1
-    if (params.zoom_switch < 1) {
-      params.zoom_switch = 1;
+    if (params.viz.zoom_switch < 1) {
+      params.viz.zoom_switch = 1;
     }
 
     // font size controls
@@ -1068,13 +1068,13 @@ function VizParams(config){
       .range([0.8,0.5]);
 
     // the default font sizes are set here
-    params.default_fs_row = params.matrix.y_scale.rangeBand() * 0.9;
-    params.default_fs_col = params.matrix.x_scale.rangeBand() * 0.7;
+    params.labels.defalut_fs_row = params.matrix.y_scale.rangeBand() * 0.95;
+    params.labels.defalut_fs_col = params.matrix.x_scale.rangeBand() * 0.75;
 
     // initialize font size zooming parameters
-    params.zoom_scale_font = {};
-    params.zoom_scale_font.row = 1;
-    params.zoom_scale_font.col = 1;
+    params.viz.zoom_scale_font = {};
+    params.viz.zoom_scale_font.row = 1;
+    params.viz.zoom_scale_font.col = 1;
 
     // set up the real zoom (2d zoom) as a function of the number of col_nodes
     // since these are the nodes that are zoomed into in 2d zooming
@@ -1091,7 +1091,7 @@ function VizParams(config){
       .range([2, 1]).clamp('true');
 
     // calculate the zoom factor - the more nodes the more zooming allowed
-    params.real_zoom = real_zoom_scale_col(col_nodes.length) * real_zoom_scale_screen(params.viz.clust.dim.width);
+    params.viz.real_zoom = real_zoom_scale_col(col_nodes.length) * real_zoom_scale_screen(params.viz.clust.dim.width);
 
     // set opacity scale
     var max_link = _.max(network_data.links, function(d) {
@@ -1103,44 +1103,44 @@ function VizParams(config){
     if (config.input_domain === 0) {
       // set the domain using the maximum absolute value
       if (config.opacity_scale === 'linear') {
-        params.opacity_scale = d3.scale.linear()
+        params.matrix.opacity_scale = d3.scale.linear()
           .domain([0, Math.abs(max_link.value)]).clamp(true)
           .range([0.0, 1.0]);
       } else if (config.opacity_scale === 'log') {
-        params.opacity_scale = d3.scale.log()
+        params.matrix.opacity_scale = d3.scale.log()
           .domain([0.001, Math.abs(max_link.value)]).clamp(true)
           .range([0.0, 1.0]);
       }
     } else {
       // set the domain manually
       if (config.opacity_scale === 'linear') {
-        params.opacity_scale = d3.scale.linear()
+        params.matrix.opacity_scale = d3.scale.linear()
           .domain([0, config.input_domain]).clamp(true)
           .range([0.0, 1.0]);
       } else if (config.opacity_scale === 'log') {
-        params.opacity_scale = d3.scale.log()
+        params.matrix.opacity_scale = d3.scale.log()
           .domain([0.001, config.input_domain]).clamp(true)
           .range([0.0, 1.0]);
       }
     }
 
     // is a transition running currently 
-    params.run_trans = false;
+    params.viz.run_trans = false;
     
     // tile type: simple or group 
     // rect is the default faster and simpler option
     // group is the optional slower and more complex option that is activated with: highlighting or split tiles
     if (Utils.has(network_data.links[0], 'value_up') || Utils.has(network_data.links[0], 'highlight')) {
-      params.tile_type = 'group';
+      params.matrix.tile_type = 'group';
     } else {
-      params.tile_type = 'simple';
+      params.matrix.tile_type = 'simple';
     }
 
     // check if rects should be highlighted
     if (Utils.has(network_data.links[0], 'highlight')) {
-      params.highlight = 1;
+      params.matrix.highlight = 1;
     } else {
-      params.highlight = 0;
+      params.matrix.highlight = 0;
     }
 
     return params;
@@ -1243,7 +1243,7 @@ function Labels(){
       .attr('y', params.matrix.y_scale.rangeBand() * 0.75)
       // .attr('dy', params.matrix.y_scale.rangeBand()/4)
       .attr('text-anchor', 'end')
-      .style('font-size', params.default_fs_row + 'px')
+      .style('font-size', params.labels.defalut_fs_row + 'px')
       .text(function(d) {
       return d.name;
       });
@@ -1414,7 +1414,7 @@ function Labels(){
       return d.name;
       })
       // original font size
-      .style('font-size', params.default_fs_col + 'px')
+      .style('font-size', params.labels.defalut_fs_col + 'px')
       // // !! simple font size
       // .style('font-size', params.matrix.x_scale.rangeBand()*0.7+'px')
       .text(function(d) {
@@ -1462,12 +1462,12 @@ function Labels(){
         .row;
 
       // redefine default fs
-      params.default_fs_row = params.default_fs_row * params.ini_scale_font
+      params.labels.defalut_fs_row = params.labels.defalut_fs_row * params.ini_scale_font
         .row;
       // reduce font size
       d3.selectAll('.row_label_text').each(function() {
       d3.select(this).select('text')
-        .style('font-size', params.default_fs_row + 'px');
+        .style('font-size', params.labels.defalut_fs_row + 'px');
       });
     }
 
@@ -1479,12 +1479,12 @@ function Labels(){
       params.bounding_width_max.col = params.ini_scale_font.col * params.bounding_width_max
         .col;
       // redefine default fs
-      params.default_fs_col = params.default_fs_col * params.ini_scale_font
+      params.labels.defalut_fs_col = params.labels.defalut_fs_col * params.ini_scale_font
         .col;
       // reduce font size
       d3.selectAll('.col_label_click').each(function() {
       d3.select(this).select('text')
-        .style('font-size', params.default_fs_col + 'px');
+        .style('font-size', params.labels.defalut_fs_col + 'px');
       });
     }
 
@@ -1828,7 +1828,7 @@ function Viz(config) {
     // define the variable zoom, a d3 method
     params.zoom = d3.behavior
       .zoom()
-      .scaleExtent([1, params.real_zoom * params.zoom_switch])
+      .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch])
       .on('zoom', zoom.zoomed);
 
     // make outer group for clust_group - this will position clust_group once
@@ -2027,7 +2027,7 @@ function Reorder(params){
     // var params = params;
 
     // set running transition value
-    params.run_trans = true;
+    params.viz.run_trans = true;
 
     // load orders
     if (inst_order === 'clust') {
@@ -2084,7 +2084,7 @@ function Reorder(params){
       })
       .each('end', function() {
         // set running transition to 0
-        params.run_trans = false;
+        params.viz.run_trans = false;
       });
 
     // backup allow programmatic zoom
@@ -2097,7 +2097,7 @@ function Reorder(params){
     var inst_row = d3.select(this).select('text').text();
 
     // get row and col nodes 
-    params.run_trans = true;
+    params.viz.run_trans = true;
 
     var mat       = viz.get_matrix();
     var row_nodes = viz.get_nodes('row');
@@ -2157,7 +2157,7 @@ function Reorder(params){
       })
       .each('end', function() {
         // set running transition to 0
-        params.run_trans = false;
+        params.viz.run_trans = false;
       });
 
     // highlight selected row 
@@ -2174,7 +2174,7 @@ function Reorder(params){
 
   function col_reorder(){
     // set running transition value
-    params.run_trans = true;
+    params.viz.run_trans = true;
 
     var mat       = viz.get_matrix();
     var row_nodes = viz.get_nodes('row');
@@ -2241,7 +2241,7 @@ function Reorder(params){
       })
       .each('end', function() {
         // set running transition to 0
-        params.run_trans = false;
+        params.viz.run_trans = false;
       });
 
     // highlight selected column
@@ -2262,7 +2262,7 @@ function Reorder(params){
 
   // allow programmatic zoom after reordering
   function end_reorder() {
-    params.run_trans = false;
+    params.viz.run_trans = false;
   }  
 
   return {
@@ -2315,17 +2315,17 @@ function Zoom(params){
     // x - rules
     ///////////////////////////////////////////////////
     // zoom in y direction only - translate in y only
-    if (d3_scale < params.zoom_switch) {
+    if (d3_scale < params.viz.zoom_switch) {
       // no x translate or zoom
       trans_x = 0;
       zoom_x = 1;
     }
     // zoom in both directions
-    // scale is greater than params.zoom_switch
+    // scale is greater than params.viz.zoom_switch
     else {
       // available panning room in the x direction
       // multiple extra room (zoom - 1) by the width
-      var pan_room_x = (d3_scale / params.zoom_switch - 1) * params.viz.clust.dim.width;
+      var pan_room_x = (d3_scale / params.viz.zoom_switch - 1) * params.viz.clust.dim.width;
 
       // no panning in the positive direction
       if (trans_x > 0) {
@@ -2333,7 +2333,7 @@ function Zoom(params){
         // no panning in the x direction
         trans_x = 0;
         // set zoom_x
-        zoom_x = d3_scale / params.zoom_switch;
+        zoom_x = d3_scale / params.viz.zoom_switch;
       }
       // restrict panning to pan_room_x
       else if (trans_x <= -pan_room_x) {
@@ -2341,13 +2341,13 @@ function Zoom(params){
         // no panning in the x direction
         trans_x = -pan_room_x;
         // set zoom_x
-        zoom_x = d3_scale / params.zoom_switch;
+        zoom_x = d3_scale / params.viz.zoom_switch;
       }
       // allow two dimensional panning
       else {
         // restrict transformation parameters
         // set zoom_x
-        zoom_x = d3_scale / params.zoom_switch;
+        zoom_x = d3_scale / params.viz.zoom_switch;
       }
     }
 
@@ -2392,35 +2392,35 @@ function Zoom(params){
     ////////////////////////////////////////////////////////////////////////
 
     if (params.bounding_width_max.row * params.zoom.scale() > params.norm_label.width.row) {
-      params.zoom_scale_font.row = params.norm_label.width.row / (params.bounding_width_max
+      params.viz.zoom_scale_font.row = params.norm_label.width.row / (params.bounding_width_max
           .row * params.zoom.scale());
 
       // reduce font size
       d3.selectAll('.row_label_text').each(function() {
         d3.select(this).select('text')
-          .style('font-size', params.default_fs_row * params.zoom_scale_font.row + 'px')
+          .style('font-size', params.labels.defalut_fs_row * params.viz.zoom_scale_font.row + 'px')
           .attr('y', params.matrix.y_scale.rangeBand() * params.scale_font_offset(
-            params.zoom_scale_font.row));
+            params.viz.zoom_scale_font.row));
       });
 
     } else {
       // reset font size
       d3.selectAll('.row_label_text').each(function() {
         d3.select(this).select('text')
-          .style('font-size', params.default_fs_row + 'px')
+          .style('font-size', params.labels.defalut_fs_row + 'px')
           .attr('y', params.matrix.y_scale.rangeBand() * 0.75);
       });
     }
 
-    if (params.bounding_width_max.col * (params.zoom.scale() / params.zoom_switch) >
+    if (params.bounding_width_max.col * (params.zoom.scale() / params.viz.zoom_switch) >
       params.norm_label.width.col) {
-      params.zoom_scale_font.col = params.norm_label.width.col / (params.bounding_width_max
-          .col * (params.zoom.scale() / params.zoom_switch));
+      params.viz.zoom_scale_font.col = params.norm_label.width.col / (params.bounding_width_max
+          .col * (params.zoom.scale() / params.viz.zoom_switch));
 
       // reduce font size
       d3.selectAll('.col_label_click').each(function() {
         d3.select(this).select('text')
-          .style('font-size', params.default_fs_col * params.zoom_scale_font
+          .style('font-size', params.labels.defalut_fs_col * params.viz.zoom_scale_font
             .col + 'px');
       });
 
@@ -2428,7 +2428,7 @@ function Zoom(params){
       // reset font size
       d3.selectAll('.col_label_click').each(function() {
         d3.select(this).select('text')
-          .style('font-size', params.default_fs_col + 'px');
+          .style('font-size', params.labels.defalut_fs_col + 'px');
       });
     }
 
@@ -2487,7 +2487,7 @@ function Zoom(params){
   function two_translate_zoom(pan_dx, pan_dy, fin_zoom) {
 
     // get parameters
-    if (!params.run_trans) {
+    if (!params.viz.run_trans) {
 
       // define the commonly used variable half_height
       var half_height = params.viz.clust.dim.height / 2;
@@ -2495,7 +2495,7 @@ function Zoom(params){
       // y pan room, the pan room has to be less than half_height since
       // zooming in on a gene that is near the top of the clustergram also causes
       // panning out of the visible region
-      var y_pan_room = half_height / params.zoom_switch;
+      var y_pan_room = half_height / params.viz.zoom_switch;
 
       // prevent visualization from panning down too much
       // when zooming into genes near the top of the clustergram
@@ -2516,14 +2516,14 @@ function Zoom(params){
         // that will be zoomed into - this is why the pan_dy value is not scaled in the two
         // translate transformations, but it has to be scaled afterwards to set the translate
         // vector)
-        // pan_dy = half_height - (half_height)/params.zoom_switch
+        // pan_dy = half_height - (half_height)/params.viz.zoom_switch
 
         // if pan_dy is greater than the pan room, then panning has to be restricted
-        // start by shifting back up (negative) by half_height/params.zoom_switch then shift back down
+        // start by shifting back up (negative) by half_height/params.viz.zoom_switch then shift back down
         // by the difference between half_height and pan_dy (so that the top of the clustergram is
         // visible)
         var shift_top_viz = half_height - pan_dy;
-        var shift_up_viz = -half_height / params.zoom_switch +
+        var shift_up_viz = -half_height / params.viz.zoom_switch +
           shift_top_viz;
 
         // reduce pan_dy so that the visualization does not get panned to far down
@@ -2537,7 +2537,7 @@ function Zoom(params){
         // console.log('restricting pan up')
         shift_top_viz = half_height + pan_dy;
 
-        shift_up_viz = half_height / params.zoom_switch - shift_top_viz; //- move_up_one_row;
+        shift_up_viz = half_height / params.viz.zoom_switch - shift_top_viz; //- move_up_one_row;
 
         // reduce pan_dy so that the visualization does not get panned to far down
         pan_dy = pan_dy + shift_up_viz;
@@ -2613,7 +2613,7 @@ function Zoom(params){
 
       if (params.bounding_width_max.row * params.zoom.scale() > params.norm_label
           .width.row) {
-        params.zoom_scale_font.row = params.norm_label.width.row / (params.bounding_width_max
+        params.viz.zoom_scale_font.row = params.norm_label.width.row / (params.bounding_width_max
             .row * params.zoom.scale());
 
         // reduce font size
@@ -2621,10 +2621,10 @@ function Zoom(params){
           d3.select(this).select('text')
             .transition()
             .duration(search_duration)
-            .style('font-size', params.default_fs_row * params.zoom_scale_font
+            .style('font-size', params.labels.defalut_fs_row * params.viz.zoom_scale_font
               .row + 'px')
             .attr('y', params.matrix.y_scale.rangeBand() * params.scale_font_offset(
-              params.zoom_scale_font.row));
+              params.viz.zoom_scale_font.row));
         });
 
       } else {
@@ -2633,22 +2633,22 @@ function Zoom(params){
           d3.select(this).select('text')
             .transition()
             .duration(search_duration)
-            .style('font-size', params.default_fs_row + 'px')
+            .style('font-size', params.labels.defalut_fs_row + 'px')
             .attr('y', params.matrix.y_scale.rangeBand() * 0.75);
         });
       }
 
-      if (params.bounding_width_max.col * (params.zoom.scale() / params.zoom_switch) >
+      if (params.bounding_width_max.col * (params.zoom.scale() / params.viz.zoom_switch) >
         params.norm_label.width.col) {
-        params.zoom_scale_font.col = params.norm_label.width.col / (params.bounding_width_max
-            .col * (params.zoom.scale() / params.zoom_switch));
+        params.viz.zoom_scale_font.col = params.norm_label.width.col / (params.bounding_width_max
+            .col * (params.zoom.scale() / params.viz.zoom_switch));
 
         // reduce font size
         d3.selectAll('.col_label_click').each(function() {
           d3.select(this).select('text')
             .transition()
             .duration(search_duration)
-            .style('font-size', params.default_fs_col * params.zoom_scale_font
+            .style('font-size', params.labels.defalut_fs_col * params.viz.zoom_scale_font
               .col + 'px');
         });
 
@@ -2658,7 +2658,7 @@ function Zoom(params){
           d3.select(this).select('text')
             .transition()
             .duration(search_duration)
-            .style('font-size', params.default_fs_col + 'px');
+            .style('font-size', params.labels.defalut_fs_col + 'px');
         });
       }
 

@@ -38,7 +38,7 @@ function Matrix(network_data, svg_elem, params) {
     });
 
   // draw rows of clustergram 
-  if (params.tile_type === 'simple') {
+  if (params.matrix.tile_type === 'simple') {
     row_groups = row_groups.each(draw_simple_rows);
   } else {
     row_groups = row_groups.each(draw_group_rows);
@@ -91,7 +91,7 @@ function Matrix(network_data, svg_elem, params) {
       .append('line')
       .attr('x1',0)
       .attr('x2',params.viz.clust.dim.width)
-      .style('stroke-width', params.viz.border_width/params.zoom_switch+'px')
+      .style('stroke-width', params.viz.border_width/params.viz.zoom_switch+'px')
       .style('stroke','white')
 
     // append vertical line groups
@@ -134,7 +134,7 @@ function Matrix(network_data, svg_elem, params) {
       .attr('height', params.matrix.y_scale.rangeBand() * 0.98)
       .style('fill-opacity', function(d) {
       // calculate output opacity using the opacity scale
-      var output_opacity = params.opacity_scale(Math.abs(d.value));
+      var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
       return output_opacity;
       })
       // switch the color based on up/dn value
@@ -221,7 +221,7 @@ function Matrix(network_data, svg_elem, params) {
       .attr('height', params.matrix.y_scale.rangeBand() * 0.98)
       .style('fill-opacity', function(d) {
       // calculate output opacity using the opacity scale
-      var output_opacity = params.opacity_scale(Math.abs(d.value));
+      var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
       if (Math.abs(d.value_up) > 0 && Math.abs(d.value_dn) > 0) {
         output_opacity = 0;
       }
@@ -254,7 +254,7 @@ function Matrix(network_data, svg_elem, params) {
 
 
     // // append evidence highlighting - black rects
-    if (params.highlight === 1) {
+    if (params.matrix.highlight === 1) {
       // console.log(row_data[0])
       tile
       .append('rect')
@@ -322,7 +322,7 @@ function Matrix(network_data, svg_elem, params) {
       // calculate output opacity using the opacity scale
       var output_opacity = 0;
       if (Math.abs(d.value_dn) > 0) {
-        output_opacity = params.opacity_scale(Math.abs(d.value_up));
+        output_opacity = params.matrix.opacity_scale(Math.abs(d.value_up));
       }
       return output_opacity;
       })
@@ -353,7 +353,7 @@ function Matrix(network_data, svg_elem, params) {
       // calculate output opacity using the opacity scale
       var output_opacity = 0;
       if (Math.abs(d.value_up) > 0) {
-        output_opacity = params.opacity_scale(Math.abs(d.value_dn));
+        output_opacity = params.matrix.opacity_scale(Math.abs(d.value_dn));
       }
       return output_opacity;
       })

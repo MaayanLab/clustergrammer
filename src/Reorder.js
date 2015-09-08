@@ -11,7 +11,7 @@ function Reorder(params){
     // var params = params;
 
     // set running transition value
-    params.run_trans = true;
+    params.viz.run_trans = true;
 
     // load orders
     if (inst_order === 'clust') {
@@ -68,7 +68,7 @@ function Reorder(params){
       })
       .each('end', function() {
         // set running transition to 0
-        params.run_trans = false;
+        params.viz.run_trans = false;
       });
 
     // backup allow programmatic zoom
@@ -81,7 +81,7 @@ function Reorder(params){
     var inst_row = d3.select(this).select('text').text();
 
     // get row and col nodes 
-    params.run_trans = true;
+    params.viz.run_trans = true;
 
     var mat       = viz.get_matrix();
     var row_nodes = viz.get_nodes('row');
@@ -141,7 +141,7 @@ function Reorder(params){
       })
       .each('end', function() {
         // set running transition to 0
-        params.run_trans = false;
+        params.viz.run_trans = false;
       });
 
     // highlight selected row 
@@ -158,7 +158,7 @@ function Reorder(params){
 
   function col_reorder(){
     // set running transition value
-    params.run_trans = true;
+    params.viz.run_trans = true;
 
     var mat       = viz.get_matrix();
     var row_nodes = viz.get_nodes('row');
@@ -225,7 +225,7 @@ function Reorder(params){
       })
       .each('end', function() {
         // set running transition to 0
-        params.run_trans = false;
+        params.viz.run_trans = false;
       });
 
     // highlight selected column
@@ -246,7 +246,7 @@ function Reorder(params){
 
   // allow programmatic zoom after reordering
   function end_reorder() {
-    params.run_trans = false;
+    params.viz.run_trans = false;
   }  
 
   return {

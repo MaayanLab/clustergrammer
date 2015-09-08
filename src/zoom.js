@@ -38,17 +38,17 @@ function Zoom(params){
     // x - rules
     ///////////////////////////////////////////////////
     // zoom in y direction only - translate in y only
-    if (d3_scale < params.zoom_switch) {
+    if (d3_scale < params.viz.zoom_switch) {
       // no x translate or zoom
       trans_x = 0;
       zoom_x = 1;
     }
     // zoom in both directions
-    // scale is greater than params.zoom_switch
+    // scale is greater than params.viz.zoom_switch
     else {
       // available panning room in the x direction
       // multiple extra room (zoom - 1) by the width
-      var pan_room_x = (d3_scale / params.zoom_switch - 1) * params.viz.clust.dim.width;
+      var pan_room_x = (d3_scale / params.viz.zoom_switch - 1) * params.viz.clust.dim.width;
 
       // no panning in the positive direction
       if (trans_x > 0) {
@@ -56,7 +56,7 @@ function Zoom(params){
         // no panning in the x direction
         trans_x = 0;
         // set zoom_x
-        zoom_x = d3_scale / params.zoom_switch;
+        zoom_x = d3_scale / params.viz.zoom_switch;
       }
       // restrict panning to pan_room_x
       else if (trans_x <= -pan_room_x) {
@@ -64,13 +64,13 @@ function Zoom(params){
         // no panning in the x direction
         trans_x = -pan_room_x;
         // set zoom_x
-        zoom_x = d3_scale / params.zoom_switch;
+        zoom_x = d3_scale / params.viz.zoom_switch;
       }
       // allow two dimensional panning
       else {
         // restrict transformation parameters
         // set zoom_x
-        zoom_x = d3_scale / params.zoom_switch;
+        zoom_x = d3_scale / params.viz.zoom_switch;
       }
     }
 
@@ -115,35 +115,35 @@ function Zoom(params){
     ////////////////////////////////////////////////////////////////////////
 
     if (params.bounding_width_max.row * params.zoom.scale() > params.norm_label.width.row) {
-      params.zoom_scale_font.row = params.norm_label.width.row / (params.bounding_width_max
+      params.viz.zoom_scale_font.row = params.norm_label.width.row / (params.bounding_width_max
           .row * params.zoom.scale());
 
       // reduce font size
       d3.selectAll('.row_label_text').each(function() {
         d3.select(this).select('text')
-          .style('font-size', params.default_fs_row * params.zoom_scale_font.row + 'px')
+          .style('font-size', params.labels.defalut_fs_row * params.viz.zoom_scale_font.row + 'px')
           .attr('y', params.matrix.y_scale.rangeBand() * params.scale_font_offset(
-            params.zoom_scale_font.row));
+            params.viz.zoom_scale_font.row));
       });
 
     } else {
       // reset font size
       d3.selectAll('.row_label_text').each(function() {
         d3.select(this).select('text')
-          .style('font-size', params.default_fs_row + 'px')
+          .style('font-size', params.labels.defalut_fs_row + 'px')
           .attr('y', params.matrix.y_scale.rangeBand() * 0.75);
       });
     }
 
-    if (params.bounding_width_max.col * (params.zoom.scale() / params.zoom_switch) >
+    if (params.bounding_width_max.col * (params.zoom.scale() / params.viz.zoom_switch) >
       params.norm_label.width.col) {
-      params.zoom_scale_font.col = params.norm_label.width.col / (params.bounding_width_max
-          .col * (params.zoom.scale() / params.zoom_switch));
+      params.viz.zoom_scale_font.col = params.norm_label.width.col / (params.bounding_width_max
+          .col * (params.zoom.scale() / params.viz.zoom_switch));
 
       // reduce font size
       d3.selectAll('.col_label_click').each(function() {
         d3.select(this).select('text')
-          .style('font-size', params.default_fs_col * params.zoom_scale_font
+          .style('font-size', params.labels.defalut_fs_col * params.viz.zoom_scale_font
             .col + 'px');
       });
 
@@ -151,7 +151,7 @@ function Zoom(params){
       // reset font size
       d3.selectAll('.col_label_click').each(function() {
         d3.select(this).select('text')
-          .style('font-size', params.default_fs_col + 'px');
+          .style('font-size', params.labels.defalut_fs_col + 'px');
       });
     }
 
@@ -210,7 +210,7 @@ function Zoom(params){
   function two_translate_zoom(pan_dx, pan_dy, fin_zoom) {
 
     // get parameters
-    if (!params.run_trans) {
+    if (!params.viz.run_trans) {
 
       // define the commonly used variable half_height
       var half_height = params.viz.clust.dim.height / 2;
@@ -218,7 +218,7 @@ function Zoom(params){
       // y pan room, the pan room has to be less than half_height since
       // zooming in on a gene that is near the top of the clustergram also causes
       // panning out of the visible region
-      var y_pan_room = half_height / params.zoom_switch;
+      var y_pan_room = half_height / params.viz.zoom_switch;
 
       // prevent visualization from panning down too much
       // when zooming into genes near the top of the clustergram
@@ -239,14 +239,14 @@ function Zoom(params){
         // that will be zoomed into - this is why the pan_dy value is not scaled in the two
         // translate transformations, but it has to be scaled afterwards to set the translate
         // vector)
-        // pan_dy = half_height - (half_height)/params.zoom_switch
+        // pan_dy = half_height - (half_height)/params.viz.zoom_switch
 
         // if pan_dy is greater than the pan room, then panning has to be restricted
-        // start by shifting back up (negative) by half_height/params.zoom_switch then shift back down
+        // start by shifting back up (negative) by half_height/params.viz.zoom_switch then shift back down
         // by the difference between half_height and pan_dy (so that the top of the clustergram is
         // visible)
         var shift_top_viz = half_height - pan_dy;
-        var shift_up_viz = -half_height / params.zoom_switch +
+        var shift_up_viz = -half_height / params.viz.zoom_switch +
           shift_top_viz;
 
         // reduce pan_dy so that the visualization does not get panned to far down
@@ -260,7 +260,7 @@ function Zoom(params){
         // console.log('restricting pan up')
         shift_top_viz = half_height + pan_dy;
 
-        shift_up_viz = half_height / params.zoom_switch - shift_top_viz; //- move_up_one_row;
+        shift_up_viz = half_height / params.viz.zoom_switch - shift_top_viz; //- move_up_one_row;
 
         // reduce pan_dy so that the visualization does not get panned to far down
         pan_dy = pan_dy + shift_up_viz;
@@ -336,7 +336,7 @@ function Zoom(params){
 
       if (params.bounding_width_max.row * params.zoom.scale() > params.norm_label
           .width.row) {
-        params.zoom_scale_font.row = params.norm_label.width.row / (params.bounding_width_max
+        params.viz.zoom_scale_font.row = params.norm_label.width.row / (params.bounding_width_max
             .row * params.zoom.scale());
 
         // reduce font size
@@ -344,10 +344,10 @@ function Zoom(params){
           d3.select(this).select('text')
             .transition()
             .duration(search_duration)
-            .style('font-size', params.default_fs_row * params.zoom_scale_font
+            .style('font-size', params.labels.defalut_fs_row * params.viz.zoom_scale_font
               .row + 'px')
             .attr('y', params.matrix.y_scale.rangeBand() * params.scale_font_offset(
-              params.zoom_scale_font.row));
+              params.viz.zoom_scale_font.row));
         });
 
       } else {
@@ -356,22 +356,22 @@ function Zoom(params){
           d3.select(this).select('text')
             .transition()
             .duration(search_duration)
-            .style('font-size', params.default_fs_row + 'px')
+            .style('font-size', params.labels.defalut_fs_row + 'px')
             .attr('y', params.matrix.y_scale.rangeBand() * 0.75);
         });
       }
 
-      if (params.bounding_width_max.col * (params.zoom.scale() / params.zoom_switch) >
+      if (params.bounding_width_max.col * (params.zoom.scale() / params.viz.zoom_switch) >
         params.norm_label.width.col) {
-        params.zoom_scale_font.col = params.norm_label.width.col / (params.bounding_width_max
-            .col * (params.zoom.scale() / params.zoom_switch));
+        params.viz.zoom_scale_font.col = params.norm_label.width.col / (params.bounding_width_max
+            .col * (params.zoom.scale() / params.viz.zoom_switch));
 
         // reduce font size
         d3.selectAll('.col_label_click').each(function() {
           d3.select(this).select('text')
             .transition()
             .duration(search_duration)
-            .style('font-size', params.default_fs_col * params.zoom_scale_font
+            .style('font-size', params.labels.defalut_fs_col * params.viz.zoom_scale_font
               .col + 'px');
         });
 
@@ -381,7 +381,7 @@ function Zoom(params){
           d3.select(this).select('text')
             .transition()
             .duration(search_duration)
-            .style('font-size', params.default_fs_col + 'px');
+            .style('font-size', params.labels.defalut_fs_col + 'px');
         });
       }
 

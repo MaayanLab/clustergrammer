@@ -243,11 +243,11 @@ function VizParams(config){
     params.viz.border_width = params.matrix.x_scale.rangeBand() / 40;
 
     // zoom_switch from 1 to 2d zoom
-    params.zoom_switch = (params.viz.clust.dim.width / col_nodes.length) / (params.viz.clust.dim.height / row_nodes.length);
+    params.viz.zoom_switch = (params.viz.clust.dim.width / col_nodes.length) / (params.viz.clust.dim.height / row_nodes.length);
 
     // zoom_switch can not be less than 1
-    if (params.zoom_switch < 1) {
-      params.zoom_switch = 1;
+    if (params.viz.zoom_switch < 1) {
+      params.viz.zoom_switch = 1;
     }
 
     // font size controls
@@ -267,13 +267,13 @@ function VizParams(config){
       .range([0.8,0.5]);
 
     // the default font sizes are set here
-    params.default_fs_row = params.matrix.y_scale.rangeBand() * 0.9;
-    params.default_fs_col = params.matrix.x_scale.rangeBand() * 0.7;
+    params.labels.defalut_fs_row = params.matrix.y_scale.rangeBand() * 0.95;
+    params.labels.defalut_fs_col = params.matrix.x_scale.rangeBand() * 0.75;
 
     // initialize font size zooming parameters
-    params.zoom_scale_font = {};
-    params.zoom_scale_font.row = 1;
-    params.zoom_scale_font.col = 1;
+    params.viz.zoom_scale_font = {};
+    params.viz.zoom_scale_font.row = 1;
+    params.viz.zoom_scale_font.col = 1;
 
     // set up the real zoom (2d zoom) as a function of the number of col_nodes
     // since these are the nodes that are zoomed into in 2d zooming
@@ -290,7 +290,7 @@ function VizParams(config){
       .range([2, 1]).clamp('true');
 
     // calculate the zoom factor - the more nodes the more zooming allowed
-    params.real_zoom = real_zoom_scale_col(col_nodes.length) * real_zoom_scale_screen(params.viz.clust.dim.width);
+    params.viz.real_zoom = real_zoom_scale_col(col_nodes.length) * real_zoom_scale_screen(params.viz.clust.dim.width);
 
     // set opacity scale
     var max_link = _.max(network_data.links, function(d) {
@@ -302,44 +302,44 @@ function VizParams(config){
     if (config.input_domain === 0) {
       // set the domain using the maximum absolute value
       if (config.opacity_scale === 'linear') {
-        params.opacity_scale = d3.scale.linear()
+        params.matrix.opacity_scale = d3.scale.linear()
           .domain([0, Math.abs(max_link.value)]).clamp(true)
           .range([0.0, 1.0]);
       } else if (config.opacity_scale === 'log') {
-        params.opacity_scale = d3.scale.log()
+        params.matrix.opacity_scale = d3.scale.log()
           .domain([0.001, Math.abs(max_link.value)]).clamp(true)
           .range([0.0, 1.0]);
       }
     } else {
       // set the domain manually
       if (config.opacity_scale === 'linear') {
-        params.opacity_scale = d3.scale.linear()
+        params.matrix.opacity_scale = d3.scale.linear()
           .domain([0, config.input_domain]).clamp(true)
           .range([0.0, 1.0]);
       } else if (config.opacity_scale === 'log') {
-        params.opacity_scale = d3.scale.log()
+        params.matrix.opacity_scale = d3.scale.log()
           .domain([0.001, config.input_domain]).clamp(true)
           .range([0.0, 1.0]);
       }
     }
 
     // is a transition running currently 
-    params.run_trans = false;
+    params.viz.run_trans = false;
     
     // tile type: simple or group 
     // rect is the default faster and simpler option
     // group is the optional slower and more complex option that is activated with: highlighting or split tiles
     if (Utils.has(network_data.links[0], 'value_up') || Utils.has(network_data.links[0], 'highlight')) {
-      params.tile_type = 'group';
+      params.matrix.tile_type = 'group';
     } else {
-      params.tile_type = 'simple';
+      params.matrix.tile_type = 'simple';
     }
 
     // check if rects should be highlighted
     if (Utils.has(network_data.links[0], 'highlight')) {
-      params.highlight = 1;
+      params.matrix.highlight = 1;
     } else {
-      params.highlight = 0;
+      params.matrix.highlight = 0;
     }
 
     return params;
