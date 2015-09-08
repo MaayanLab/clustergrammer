@@ -364,7 +364,7 @@ function Labels(){
     // enr_max = _.max( col_nodes, function(d) { return Math.abs(d.nl_pval) } ).nl_pval ;
 
     // the enrichment bar should be 3/4ths of the height of the column labels
-    params.bar_scale_col = d3.scale.linear()
+    params.labels.bar_scale_col = d3.scale.linear()
       // .domain([0, enr_max])
       .domain([0, 1])
       .range([0, params.norm_label.width.col]);
@@ -376,7 +376,7 @@ function Labels(){
       .attr('class', 'col_bars')
       // column is rotated - effectively width and height are switched
       .attr('width', function(d) {
-        return params.bar_scale_col(d.value);
+        return params.labels.bar_scale_col(d.value);
       })
       // rotate labels - reduce width if rotating
       .attr('height', params.matrix.x_scale.rangeBand() * 0.66)

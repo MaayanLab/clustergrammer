@@ -163,7 +163,7 @@ function Zoom(params){
       d3.selectAll('.col_bars')
         // column is rotated - effectively width and height are switched
         .attr('width', function(d) {
-          return params.bar_scale_col(d.value) / (zoom_x);
+          return params.labels.bar_scale_col(d.value) / (zoom_x);
         });
     }
 
@@ -416,7 +416,7 @@ function Zoom(params){
           .duration(search_duration)
           // column is rotated - effectively width and height are switched
           .attr('width', function(d) {
-            return params.bar_scale_col(d.value) / (zoom_x);
+            return params.labels.bar_scale_col(d.value) / (zoom_x);
           });
       }
     }
