@@ -4,7 +4,7 @@ function VizParams(config){
 
   var params = initialize_visualization(config)
 
-  console.log(params)
+  // console.log(params)
 
   // Define Visualization Dimensions
   function initialize_visualization(config) {

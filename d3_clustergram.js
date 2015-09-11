@@ -807,7 +807,7 @@ function VizParams(config){
 
   var params = initialize_visualization(config)
 
-  console.log(params)
+  // console.log(params)
 
   // Define Visualization Dimensions
   function initialize_visualization(config) {
@@ -2821,8 +2821,6 @@ function Zoom(params){
 
 // consume and validate user arguments, produce configuration object 
 var config = Config(args);
-
-console.log(config.force_square)
 
 // make visualization using configuration object and network 
 var viz = Viz(config);
