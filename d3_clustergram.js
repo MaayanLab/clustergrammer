@@ -75,7 +75,9 @@ function Config(args) {
     grey_border_width: 3,
     // the distance between labels and clustergram
     // a universal margin for the clustergram
-    uni_margin: 4
+    uni_margin: 4,
+    // force the visualization to be square 
+    force_square:0
   };
 
   // Mixin defaults with user-defined arguments.
@@ -120,14 +122,14 @@ function Config(args) {
     config.class_colors = {};
     
     // associate classes with colors
-    var class_rows = _.uniq(_.pluck(row_nodes, 'cl'));
+    var class_rows = _.uniq(_.pluck(args.network_data.row_nodes, 'cl'));
     config.class_colors.row = {};
     _.each(class_rows, function(c_row, i) {
       config.class_colors.row[c_row] = Colors.get_random_color(i+50);
     });
 
     // associate classes with colors
-    var class_cols = _.uniq(_.pluck(col_nodes, 'cl'));
+    var class_cols = _.uniq(_.pluck(args.network_data.col_nodes, 'cl'));
     config.class_colors.col = {};
     _.each(class_cols, function(c_col, i) {
       if (i === 0) {
@@ -993,6 +995,12 @@ function VizParams(config){
       params.viz.force_square = 0;
     }
 
+    
+    // manual force square
+    if (config.force_square===1){
+      params.viz.force_square = 1;
+    }
+
     // Define Orderings
     ////////////////////////////
     // scaling functions to position rows and tiles, define rangeBands
@@ -1341,6 +1349,43 @@ function Labels(){
       }
       return inst_color;
       });
+
+      // get max value
+      var enr_max = _.max( row_nodes, function(d) { return Math.abs(d.value) } ).value ;
+
+      // the enrichment bar should be 3/4ths of the height of the column labels
+      params.labels.bar_scale_row = d3.scale
+        .linear()
+        .domain([1, enr_max])
+        .range([0, params.norm_label.width.row]);
+
+      // append column value bars
+      if (Utils.has( params.network_data.row_nodes[0], 'value')) {
+        row_labels
+        .append('rect')
+        .attr('class', 'row_bars')
+        .attr('width', function(d) {
+          var inst_value = 0;
+          if (d.value > 0){
+            inst_value = params.labels.bar_scale_row(d.value);
+          }
+          return inst_value;
+        })
+
+        .attr('x', function(d) {
+          var inst_value = 0;
+          if (d.value > 0){
+            inst_value = -params.labels.bar_scale_row(d.value);
+          }
+          return inst_value;
+        })
+
+        .attr('height', params.matrix.y_scale.rangeBand() )
+        .attr('fill', function() {
+          return 'red';
+        })
+        .attr('opacity', 0.4);
+      }
       
       // return row_triangle_ini_group so that the dendrogram can be made 
       return row_triangle_ini_group;
@@ -1546,14 +1591,14 @@ function Labels(){
       });
 
 
-    //!! get the abs maximum value from row/col use this to make red/blue bars
-    // // get the max abs nl_pval (find obj and get nl_pval)
-    // enr_max = _.max( col_nodes, function(d) { return Math.abs(d.nl_pval) } ).nl_pval ;
+    //!! CHD specific 
+    // get max value
+    var enr_max = _.max( col_nodes, function(d) { return Math.abs(d.value) } ).value ;
 
     // the enrichment bar should be 3/4ths of the height of the column labels
-    params.labels.bar_scale_col = d3.scale.linear()
-      // .domain([0, enr_max])
-      .domain([0, 1])
+    params.labels.bar_scale_col = d3.scale
+      .linear()
+      .domain([1, enr_max])
       .range([0, params.norm_label.width.col]);
 
     // append column value bars
@@ -1561,9 +1606,12 @@ function Labels(){
       col_label_click
       .append('rect')
       .attr('class', 'col_bars')
-      // column is rotated - effectively width and height are switched
       .attr('width', function(d) {
-        return params.labels.bar_scale_col(d.value);
+        var inst_value = 0;
+        if (d.value > 0){
+          inst_value = params.labels.bar_scale_col(d.value);
+        }
+        return inst_value;
       })
       // rotate labels - reduce width if rotating
       .attr('height', params.matrix.x_scale.rangeBand() * 0.66)
@@ -2440,9 +2488,28 @@ function Zoom(params){
 
     if (Utils.has( params.network_data.col_nodes[0], 'value')) {
       d3.selectAll('.col_bars')
-        // column is rotated - effectively width and height are switched
         .attr('width', function(d) {
-          return params.labels.bar_scale_col(d.value) / (zoom_x);
+          var inst_value = 0;
+          if (d.value > 0){
+            inst_value = params.labels.bar_scale_col(d.value)/zoom_x;
+          }
+          return inst_value;
+        })
+
+      d3.selectAll('.row_bars')
+        .attr('width', function(d) {
+          var inst_value = 0;
+          if (d.value > 0){
+            inst_value = params.labels.bar_scale_row(d.value)/zoom_x;
+          }
+          return inst_value;
+        })
+        .attr('x', function(d) {
+          var inst_value = 0;
+          if (d.value > 0){
+            inst_value = -params.labels.bar_scale_row(d.value)/zoom_x;
+          }
+          return inst_value;
         });
     }
 
@@ -2690,13 +2757,36 @@ function Zoom(params){
       // recalculate the height and divide by the zooming scale
       // col_label_obj.select('rect')
       if (Utils.has( params.network_data.col_nodes[0], 'value')) {
+
         d3.selectAll('.col_bars')
           .transition()
           .duration(search_duration)
-          // column is rotated - effectively width and height are switched
           .attr('width', function(d) {
-            return params.labels.bar_scale_col(d.value) / (zoom_x);
-          });
+          var inst_value = 0;
+          if (d.value > 0){
+            inst_value = params.labels.bar_scale_col(d.value)/zoom_x;
+          }
+          return inst_value;
+        })
+
+        d3.selectAll('.row_bars')
+          .transition()
+          .duration(search_duration)
+          .attr('width', function(d) {
+          var inst_value = 0;
+          if (d.value > 0){
+            inst_value = params.labels.bar_scale_row(d.value)/zoom_x;
+          }
+          return inst_value;
+        })
+        .attr('x', function(d) {
+          var inst_value = 0;
+          if (d.value > 0){
+            inst_value = -params.labels.bar_scale_row(d.value)/zoom_x;
+          }
+          return inst_value;
+        });
+
       }
     }
   }
@@ -2731,6 +2821,8 @@ function Zoom(params){
 
 // consume and validate user arguments, produce configuration object 
 var config = Config(args);
+
+console.log(config.force_square)
 
 // make visualization using configuration object and network 
 var viz = Viz(config);

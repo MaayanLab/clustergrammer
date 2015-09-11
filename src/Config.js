@@ -38,7 +38,9 @@ function Config(args) {
     grey_border_width: 3,
     // the distance between labels and clustergram
     // a universal margin for the clustergram
-    uni_margin: 4
+    uni_margin: 4,
+    // force the visualization to be square 
+    force_square:0
   };
 
   // Mixin defaults with user-defined arguments.
@@ -83,14 +85,14 @@ function Config(args) {
     config.class_colors = {};
     
     // associate classes with colors
-    var class_rows = _.uniq(_.pluck(row_nodes, 'cl'));
+    var class_rows = _.uniq(_.pluck(args.network_data.row_nodes, 'cl'));
     config.class_colors.row = {};
     _.each(class_rows, function(c_row, i) {
       config.class_colors.row[c_row] = Colors.get_random_color(i+50);
     });
 
     // associate classes with colors
-    var class_cols = _.uniq(_.pluck(col_nodes, 'cl'));
+    var class_cols = _.uniq(_.pluck(args.network_data.col_nodes, 'cl'));
     config.class_colors.col = {};
     _.each(class_cols, function(c_col, i) {
       if (i === 0) {

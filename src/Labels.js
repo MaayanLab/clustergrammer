@@ -154,6 +154,43 @@ function Labels(){
       }
       return inst_color;
       });
+
+      // get max value
+      var enr_max = _.max( row_nodes, function(d) { return Math.abs(d.value) } ).value ;
+
+      // the enrichment bar should be 3/4ths of the height of the column labels
+      params.labels.bar_scale_row = d3.scale
+        .linear()
+        .domain([1, enr_max])
+        .range([0, params.norm_label.width.row]);
+
+      // append column value bars
+      if (Utils.has( params.network_data.row_nodes[0], 'value')) {
+        row_labels
+        .append('rect')
+        .attr('class', 'row_bars')
+        .attr('width', function(d) {
+          var inst_value = 0;
+          if (d.value > 0){
+            inst_value = params.labels.bar_scale_row(d.value);
+          }
+          return inst_value;
+        })
+
+        .attr('x', function(d) {
+          var inst_value = 0;
+          if (d.value > 0){
+            inst_value = -params.labels.bar_scale_row(d.value);
+          }
+          return inst_value;
+        })
+
+        .attr('height', params.matrix.y_scale.rangeBand() )
+        .attr('fill', function() {
+          return 'red';
+        })
+        .attr('opacity', 0.4);
+      }
       
       // return row_triangle_ini_group so that the dendrogram can be made 
       return row_triangle_ini_group;
@@ -359,14 +396,14 @@ function Labels(){
       });
 
 
-    //!! get the abs maximum value from row/col use this to make red/blue bars
-    // // get the max abs nl_pval (find obj and get nl_pval)
-    // enr_max = _.max( col_nodes, function(d) { return Math.abs(d.nl_pval) } ).nl_pval ;
+    //!! CHD specific 
+    // get max value
+    var enr_max = _.max( col_nodes, function(d) { return Math.abs(d.value) } ).value ;
 
     // the enrichment bar should be 3/4ths of the height of the column labels
-    params.labels.bar_scale_col = d3.scale.linear()
-      // .domain([0, enr_max])
-      .domain([0, 1])
+    params.labels.bar_scale_col = d3.scale
+      .linear()
+      .domain([1, enr_max])
       .range([0, params.norm_label.width.col]);
 
     // append column value bars
@@ -374,9 +411,12 @@ function Labels(){
       col_label_click
       .append('rect')
       .attr('class', 'col_bars')
-      // column is rotated - effectively width and height are switched
       .attr('width', function(d) {
-        return params.labels.bar_scale_col(d.value);
+        var inst_value = 0;
+        if (d.value > 0){
+          inst_value = params.labels.bar_scale_col(d.value);
+        }
+        return inst_value;
       })
       // rotate labels - reduce width if rotating
       .attr('height', params.matrix.x_scale.rangeBand() * 0.66)

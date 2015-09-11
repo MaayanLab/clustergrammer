@@ -33,6 +33,7 @@ $(function() {
       'row_label':'Row-Data-Name',
       'col_label':'Column-Data-Name',
       'outer_margins': outer_margins,
+      'force_square':1
       // 'opacity_scale':'log',
       // 'input_domain':7,
       // 'col_overflow':1

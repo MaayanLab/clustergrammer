@@ -161,9 +161,28 @@ function Zoom(params){
 
     if (Utils.has( params.network_data.col_nodes[0], 'value')) {
       d3.selectAll('.col_bars')
-        // column is rotated - effectively width and height are switched
         .attr('width', function(d) {
-          return params.labels.bar_scale_col(d.value) / (zoom_x);
+          var inst_value = 0;
+          if (d.value > 0){
+            inst_value = params.labels.bar_scale_col(d.value)/zoom_x;
+          }
+          return inst_value;
+        })
+
+      d3.selectAll('.row_bars')
+        .attr('width', function(d) {
+          var inst_value = 0;
+          if (d.value > 0){
+            inst_value = params.labels.bar_scale_row(d.value)/zoom_x;
+          }
+          return inst_value;
+        })
+        .attr('x', function(d) {
+          var inst_value = 0;
+          if (d.value > 0){
+            inst_value = -params.labels.bar_scale_row(d.value)/zoom_x;
+          }
+          return inst_value;
         });
     }
 
@@ -411,13 +430,36 @@ function Zoom(params){
       // recalculate the height and divide by the zooming scale
       // col_label_obj.select('rect')
       if (Utils.has( params.network_data.col_nodes[0], 'value')) {
+
         d3.selectAll('.col_bars')
           .transition()
           .duration(search_duration)
-          // column is rotated - effectively width and height are switched
           .attr('width', function(d) {
-            return params.labels.bar_scale_col(d.value) / (zoom_x);
-          });
+          var inst_value = 0;
+          if (d.value > 0){
+            inst_value = params.labels.bar_scale_col(d.value)/zoom_x;
+          }
+          return inst_value;
+        })
+
+        d3.selectAll('.row_bars')
+          .transition()
+          .duration(search_duration)
+          .attr('width', function(d) {
+          var inst_value = 0;
+          if (d.value > 0){
+            inst_value = params.labels.bar_scale_row(d.value)/zoom_x;
+          }
+          return inst_value;
+        })
+        .attr('x', function(d) {
+          var inst_value = 0;
+          if (d.value > 0){
+            inst_value = -params.labels.bar_scale_row(d.value)/zoom_x;
+          }
+          return inst_value;
+        });
+
       }
     }
   }

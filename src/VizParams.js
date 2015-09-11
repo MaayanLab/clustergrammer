@@ -192,6 +192,12 @@ function VizParams(config){
       params.viz.force_square = 0;
     }
 
+    
+    // manual force square
+    if (config.force_square===1){
+      params.viz.force_square = 1;
+    }
+
     // Define Orderings
     ////////////////////////////
     // scaling functions to position rows and tiles, define rangeBands

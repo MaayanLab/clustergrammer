@@ -25,6 +25,7 @@ class Network(object):
 			self.dat['node_info'][inst_rc]['info'] = []
 			# classification is specifically used to color the class triangles 
 			self.dat['node_info'][inst_rc]['cl'] = []
+			self.dat['node_info'][inst_rc]['value'] = []
 
 		# initialize matrix 
 		self.dat['mat'] = []
@@ -800,6 +801,8 @@ class Network(object):
 				# if 'cl' in self.dat['node_info'][inst_rc]:
 				if len(self.dat['node_info'][inst_rc]['cl']) > 0:
 					inst_dict['cl'] = self.dat['node_info'][inst_rc]['cl'][i]
+				if len(self.dat['node_info'][inst_rc]['value']) > 0:
+					inst_dict['value'] = self.dat['node_info'][inst_rc]['value'][i]
 
 				# add node information 
 				# if 'info' in self.dat['node_info'][inst_rc]:
