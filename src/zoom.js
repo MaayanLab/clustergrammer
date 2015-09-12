@@ -122,8 +122,8 @@ function Zoom(params){
       d3.selectAll('.row_label_text').each(function() {
         d3.select(this).select('text')
           .style('font-size', params.labels.defalut_fs_row * params.viz.zoom_scale_font.row + 'px')
-          .attr('y', params.matrix.y_scale.rangeBand() * params.scale_font_offset(
-            params.viz.zoom_scale_font.row));
+          .attr('y', params.matrix.y_scale.rangeBand() * params.scale_font_offset(params.viz.zoom_scale_font.row));
+
       });
 
     } else {
@@ -133,10 +133,38 @@ function Zoom(params){
           .style('font-size', params.labels.defalut_fs_row + 'px')
           .attr('y', params.matrix.y_scale.rangeBand() * 0.75);
       });
+
+      if (Utils.has( params.network_data.row_nodes[0], 'value')) {
+        d3.selectAll('.row_bars')
+        .attr('width', function(d) {
+          var inst_value = 0;
+          inst_value = params.labels.bar_scale_row(Math.abs(d.value));
+          return inst_value;
+        })
+        .attr('x', function(d) {
+          var inst_value = 0;
+          inst_value = -params.labels.bar_scale_row(Math.abs(d.value))  ;
+          return inst_value;
+        });
+      }
+
     }
 
-    if (params.bounding_width_max.col * (params.zoom.scale() / params.viz.zoom_switch) >
-      params.norm_label.width.col) {
+    if (Utils.has( params.network_data.row_nodes[0], 'value')) {
+      d3.selectAll('.row_bars')
+      .attr('width', function(d) {
+        var inst_value = 0;
+        inst_value = params.labels.bar_scale_row(Math.abs(d.value))/zoom_y;
+        return inst_value;
+      })
+      .attr('x', function(d) {
+        var inst_value = 0;
+        inst_value = -params.labels.bar_scale_row(Math.abs(d.value))/zoom_y;
+        return inst_value;
+      });
+    }
+
+    if (params.bounding_width_max.col * (params.zoom.scale() / params.viz.zoom_switch) > params.norm_label.width.col) {
       params.viz.zoom_scale_font.col = params.norm_label.width.col / (params.bounding_width_max
           .col * (params.zoom.scale() / params.viz.zoom_switch));
 
@@ -145,6 +173,7 @@ function Zoom(params){
         d3.select(this).select('text')
           .style('font-size', params.labels.defalut_fs_col * params.viz.zoom_scale_font
             .col + 'px');
+
       });
 
     } else {
@@ -153,38 +182,35 @@ function Zoom(params){
         d3.select(this).select('text')
           .style('font-size', params.labels.defalut_fs_col + 'px');
       });
+
+     if (Utils.has( params.network_data.col_nodes[0], 'value')) {
+        d3.selectAll('.col_bars')
+          .attr('width', function(d) {
+            var inst_value = 0;
+            if (d.value > 0){
+              inst_value = params.labels.bar_scale_col(d.value);
+            }
+            return inst_value;
+          })
+        }
+
     }
-
-
-    // column value bars
-    ///////////////////////
 
     if (Utils.has( params.network_data.col_nodes[0], 'value')) {
       d3.selectAll('.col_bars')
         .attr('width', function(d) {
           var inst_value = 0;
           if (d.value > 0){
-            inst_value = params.labels.bar_scale_col(d.value)/zoom_x;
+            inst_value = params.labels.bar_scale_col(d.value)/zoom_y;
           }
           return inst_value;
         })
+      }
 
-      d3.selectAll('.row_bars')
-        .attr('width', function(d) {
-          var inst_value = 0;
-          if (d.value > 0){
-            inst_value = params.labels.bar_scale_row(d.value)/zoom_x;
-          }
-          return inst_value;
-        })
-        .attr('x', function(d) {
-          var inst_value = 0;
-          if (d.value > 0){
-            inst_value = -params.labels.bar_scale_row(d.value)/zoom_x;
-          }
-          return inst_value;
-        });
-    }
+
+    // column value bars
+    ///////////////////////
+    // console.log(zoom_y)
 
     // //!! change the size of the highlighting rects
     // //////////////////////////////////////////////
@@ -441,22 +467,21 @@ function Zoom(params){
           }
           return inst_value;
         })
+        }
+
+      if (Utils.has( params.network_data.row_nodes[0], 'value')) {
 
         d3.selectAll('.row_bars')
           .transition()
           .duration(search_duration)
           .attr('width', function(d) {
           var inst_value = 0;
-          if (d.value > 0){
-            inst_value = params.labels.bar_scale_row(d.value)/zoom_x;
-          }
+          inst_value = params.labels.bar_scale_row(Math.abs(d.value))/zoom_y;
           return inst_value;
         })
         .attr('x', function(d) {
           var inst_value = 0;
-          if (d.value > 0){
-            inst_value = -params.labels.bar_scale_row(d.value)/zoom_x;
-          }
+          inst_value = -params.labels.bar_scale_row(Math.abs(d.value))/zoom_y;
           return inst_value;
         });
 
