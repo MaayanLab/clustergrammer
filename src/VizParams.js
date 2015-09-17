@@ -32,10 +32,10 @@ function VizParams(config){
       params.labels.class_colors = config.class_colors;
     }
 
-
     // Matrix Options 
     params.matrix = {};
     params.matrix.tile_colors = config.tile_colors;
+    params.matrix.bar_colors = config.bar_colors;
     params.matrix.tile_title = config.tile_title; 
  
     // Visualization Options 
@@ -135,7 +135,7 @@ function VizParams(config){
     // svg size: less than svg size
     ///////////////////////////////////
     // 0.8 approximates the trigonometric distance required for hiding the spillover
-    var spillover_x_offset = label_scale(col_max_char) * 0.8 * params.col_label_scale;
+    var spillover_x_offset = label_scale(col_max_char) * 0.6 * params.col_label_scale;
 
     // get height and width from parent div
     params.viz.svg_dim = {};
@@ -206,8 +206,12 @@ function VizParams(config){
 
     // Define Orderings
     params.matrix.orders = {
-      name: d3.range(col_nodes.length).sort(function(a, b) {
-        return d3.ascending(col_nodes[a].name, col_nodes[b].name);
+      // ini
+      ini_row: d3.range(col_nodes.length).sort(function(a, b) {
+        return col_nodes[b].ini - col_nodes[a].ini;
+      }),
+      ini_col: d3.range(row_nodes.length).sort(function(a, b) {
+        return row_nodes[b].ini - row_nodes[a].ini;
       }),
       // rank
       rank_row: d3.range(col_nodes.length).sort(function(a, b) {
@@ -233,7 +237,10 @@ function VizParams(config){
     };
 
     // Assign initial ordering for x_scale and y_scale
-    if (params.viz.inst_order === 'clust') {
+    if (params.viz.inst_order === 'ini') {
+      params.matrix.x_scale.domain(params.matrix.orders.ini_row);
+      params.matrix.y_scale.domain(params.matrix.orders.ini_col);
+    } else if (params.viz.inst_order === 'clust') {
       params.matrix.x_scale.domain(params.matrix.orders.clust_row);
       params.matrix.y_scale.domain(params.matrix.orders.clust_col);
     } else if (params.viz.inst_order === 'rank') {

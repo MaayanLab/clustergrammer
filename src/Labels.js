@@ -60,7 +60,7 @@ function Labels(){
       .attr('text-anchor', 'end')
       .style('font-size', params.labels.defalut_fs_row + 'px')
       .text(function(d) {
-      return d.name;
+        return d.name.replace(/_/g, ' ').split('#')[0];
       });
 
     // append rectangle behind text
@@ -194,7 +194,7 @@ function Labels(){
 
         .attr('height', params.matrix.y_scale.rangeBand() )
         .attr('fill', function(d) {
-          return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
+          return d.value > 0 ? params.matrix.bar_colors[0] : params.matrix.bar_colors[1];
         })
         .attr('opacity', 0.4);
       }
@@ -274,10 +274,8 @@ function Labels(){
       })
       // original font size
       .style('font-size', params.labels.defalut_fs_col + 'px')
-      // // !! simple font size
-      // .style('font-size', params.matrix.x_scale.rangeBand()*0.7+'px')
       .text(function(d) {
-      return d.name.replace(/_/g, ' ');
+        return d.name.replace(/_/g, ' ').split('#')[0];
       });
 
     params.bounding_width_max.col = 0;
@@ -395,11 +393,12 @@ function Labels(){
     //!! CHD specific 
     // get max value
     var enr_max = Math.abs(_.max( col_nodes, function(d) { return Math.abs(d.value) } ).value) ;
+    var enr_min = Math.abs(_.min( col_nodes, function(d) { return Math.abs(d.value) } ).value) ;
 
     // the enrichment bar should be 3/4ths of the height of the column labels
     params.labels.bar_scale_col = d3.scale
       .linear()
-      .domain([1, enr_max])
+      .domain([enr_min*0.75, enr_max])
       .range([0, params.norm_label.width.col]);
 
     // append column value bars
@@ -416,9 +415,8 @@ function Labels(){
       })
       // rotate labels - reduce width if rotating
       .attr('height', params.matrix.x_scale.rangeBand() * 0.66)
-      .attr('fill', function() {
-        // return d.color;
-        return 'red';
+      .attr('fill', function(d) {
+        return d.value > 0 ? params.matrix.bar_colors[0] : params.matrix.bar_colors[1];
       })
       .attr('opacity', 0.4);
     }

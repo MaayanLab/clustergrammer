@@ -4,6 +4,9 @@ $(function() {
   // load network
   d3.json('json/example_network.json', function(network_data){
 
+    console.log(network_data.col_nodes.length)
+    console.log(network_data.row_nodes.length)
+
     // define the outer margins of the visualization
     var outer_margins = {
         'top':5,
@@ -33,9 +36,9 @@ $(function() {
       'row_label':'Row-Data-Name',
       'col_label':'Column-Data-Name',
       'outer_margins': outer_margins,
-      'force_square':1
+      // 'force_square':1
       // 'opacity_scale':'log',
-      // 'input_domain':7,
+      // 'input_domain':2,
       // 'col_overflow':1
       // 'transpose':true,
       // 'do_zoom':false,
@@ -98,12 +101,12 @@ $(function() {
       }
     });
 
-    $('#submit_gene_button').click(function() {
+    $('#submit_gene_button').off().click(function() {
       var gene = $('#gene_search_box').val();
       d3c.find_gene(gene);
     });
 
-    $('#toggle_order .btn').click(function(evt) {
+    $('#toggle_order .btn').off().click(function(evt) {
       var order_id = $(evt.target).find('input').attr('id').replace('_button', '');
       d3c.reorder(order_id);
     });

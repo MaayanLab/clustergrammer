@@ -7,14 +7,13 @@ function Reorder(params){
    */
   function all_reorder(inst_order) {
 
-    // // load parameters from d3_clustergram
-    // var params = params;
-
-    // set running transition value
-    params.viz.run_trans = true;
+    params.viz.run_trans = false;
 
     // load orders
-    if (inst_order === 'clust') {
+    if (inst_order === 'ini') {
+      params.matrix.x_scale.domain(params.matrix.orders.ini_row);
+      params.matrix.y_scale.domain(params.matrix.orders.ini_col);
+    } else if (inst_order === 'clust') {
       params.matrix.x_scale.domain(params.matrix.orders.clust_row);
       params.matrix.y_scale.domain(params.matrix.orders.clust_col);
     } else if (inst_order === 'rank') {
@@ -25,54 +24,95 @@ function Reorder(params){
       params.matrix.y_scale.domain(params.matrix.orders.class_col);
     }
 
-    // define the t variable as the transition function
-    var t = viz.get_clust_group()
-      .transition().duration(2500);
+    // only animate transition if there are a small number of tiles 
+    if (d3.selectAll('.tile')[0].length < 10000){
 
-    // reorder matrix
-    t.selectAll('.row')
-      .attr('transform', function(d, i) {
-        return 'translate(0,' + params.matrix.y_scale(i) + ')';
-      })
-      .selectAll('.tile')
-      .attr('transform', function(d) {
-        return 'translate(' + params.matrix.x_scale(d.pos_x) + ' , 0)';
-      });
+      // define the t variable as the transition function
+      var t = viz.get_clust_group()
+        .transition().duration(2500);
 
-    // Move Row Labels
-    d3.select('#row_labels').selectAll('.row_label_text')
-      .transition().duration(2500)
-      .attr('transform', function(d, i) {
-        return 'translate(0,' + params.matrix.y_scale(i) + ')';
-      });
+      // reorder matrix
+      t.selectAll('.row')
+        .attr('transform', function(d, i) {
+          return 'translate(0,' + params.matrix.y_scale(i) + ')';
+        })
+        .selectAll('.tile')
+        .attr('transform', function(d) {
+          return 'translate(' + params.matrix.x_scale(d.pos_x) + ' , 0)';
+        });
 
-    // t.selectAll('.column')
-    d3.select('#col_labels').selectAll('.col_label_text')
-      .transition().duration(2500)
-      .attr('transform', function(d, i) {
-        return 'translate(' + params.matrix.x_scale(i) + ')rotate(-90)';
-      });
+      // Move Row Labels
+      d3.select('#row_labels').selectAll('.row_label_text')
+        .transition().duration(2500)
+        .attr('transform', function(d, i) {
+          return 'translate(0,' + params.matrix.y_scale(i) + ')';
+        });
 
-    // reorder row_label_triangle groups
-    d3.selectAll('.row_triangle_group')
-      .transition().duration(2500)
-      .attr('transform', function(d, i) {
-        return 'translate(0,' + params.matrix.y_scale(i) + ')';
-      });
+      // t.selectAll('.column')
+      d3.select('#col_labels').selectAll('.col_label_text')
+        .transition().duration(2500)
+        .attr('transform', function(d, i) {
+          return 'translate(' + params.matrix.x_scale(i) + ')rotate(-90)';
+        });
 
-    // reorder col_class groups
-    d3.selectAll('.col_class_group')
-      .transition().duration(2500)
-      .attr('transform', function(d, i) {
-        return 'translate(' + params.matrix.x_scale(i) + ',0)';
-      })
-      .each('end', function() {
-        // set running transition to 0
-        params.viz.run_trans = false;
-      });
+      // reorder row_label_triangle groups
+      d3.selectAll('.row_triangle_group')
+        .transition().duration(2500)
+        .attr('transform', function(d, i) {
+          return 'translate(0,' + params.matrix.y_scale(i) + ')';
+        });
 
-    // backup allow programmatic zoom
-    setTimeout(end_reorder, 2500);
+      // reorder col_class groups
+      d3.selectAll('.col_class_group')
+        .transition().duration(2500)
+        .attr('transform', function(d, i) {
+          return 'translate(' + params.matrix.x_scale(i) + ',0)';
+        });
+
+    } else {
+
+      // define the t variable as the transition function
+      var t = viz.get_clust_group()
+
+      // reorder matrix
+      t.selectAll('.row')
+        .attr('transform', function(d, i) {
+          return 'translate(0,' + params.matrix.y_scale(i) + ')';
+        })
+        .selectAll('.tile')
+        .attr('transform', function(d) {
+          return 'translate(' + params.matrix.x_scale(d.pos_x) + ' , 0)';
+        });
+
+      // Move Row Labels
+      d3.select('#row_labels').selectAll('.row_label_text')
+        .attr('transform', function(d, i) {
+          return 'translate(0,' + params.matrix.y_scale(i) + ')';
+        });
+
+      // t.selectAll('.column')
+      d3.select('#col_labels').selectAll('.col_label_text')
+        .attr('transform', function(d, i) {
+          return 'translate(' + params.matrix.x_scale(i) + ')rotate(-90)';
+        });
+
+      // reorder row_label_triangle groups
+      d3.selectAll('.row_triangle_group')
+        .attr('transform', function(d, i) {
+          return 'translate(0,' + params.matrix.y_scale(i) + ')';
+        });
+
+      // reorder col_class groups
+      d3.selectAll('.col_class_group')
+        .attr('transform', function(d, i) {
+          return 'translate(' + params.matrix.x_scale(i) + ',0)';
+        });      
+    }
+
+      params.viz.run_trans = false;
+      // backup allow programmatic zoom
+      setTimeout(end_reorder, 2500);
+
   }
 
   function row_reorder() {

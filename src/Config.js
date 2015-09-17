@@ -16,6 +16,7 @@ function Config(args) {
     // matrix options 
     transpose: false,
     tile_colors: ['#FF0000', '#1C86EE'],
+    bar_colors: ['#FF0000', '#1C86EE'],
     tile_title: false,
     // Default domain is set to 0, which means that the domain will be set automatically
     input_domain: 0,
@@ -145,7 +146,7 @@ function Config(args) {
 
 
   function is_supported_order(order) {
-    return order === 'clust' || order === 'rank' || order === 'class';
+    return order === 'ini' || order === 'clust' || order === 'rank' || order === 'class';
   }
 
   return config;

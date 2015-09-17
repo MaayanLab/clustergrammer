@@ -131,15 +131,15 @@ function Matrix(network_data, svg_elem, params) {
       return 'translate(' + params.matrix.x_scale(d.pos_x) + ',0)';
       })
       .attr('width', params.matrix.x_scale.rangeBand())
-      .attr('height', params.matrix.y_scale.rangeBand() * 0.98)
+      .attr('height', params.matrix.y_scale.rangeBand())
       .style('fill-opacity', function(d) {
-      // calculate output opacity using the opacity scale
-      var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
-      return output_opacity;
+        // calculate output opacity using the opacity scale
+        var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
+        return output_opacity;
       })
       // switch the color based on up/dn value
       .style('fill', function(d) {
-      return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
+        return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
       })
       .on('mouseover', function(p) {
       // highlight row - set text to active if
@@ -218,7 +218,7 @@ function Matrix(network_data, svg_elem, params) {
       .append('rect')
       // .attr('class','tile')
       .attr('width', params.matrix.x_scale.rangeBand())
-      .attr('height', params.matrix.y_scale.rangeBand() * 0.98)
+      .attr('height', params.matrix.y_scale.rangeBand())
       .style('fill-opacity', function(d) {
       // calculate output opacity using the opacity scale
       var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
@@ -229,8 +229,8 @@ function Matrix(network_data, svg_elem, params) {
       })
       // switch the color based on up/dn value
       .style('fill', function(d) {
-      // normal rule
-      return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
+        // normal rule
+        return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
       });
 
     tile
@@ -359,8 +359,7 @@ function Matrix(network_data, svg_elem, params) {
       })
       // switch the color based on up/dn value
       .style('fill', function() {
-      // rl_f (not released) orange
-      return params.matrix.tile_colors[1];
+        return params.matrix.tile_colors[1];
       });
 
     // append title to group
