@@ -34,19 +34,6 @@ function Viz(config) {
     // remove any previous visualizations
     d3.select('#main_svg').remove();
 
-    // size and position the outer div first
-    
-    // display col and row title
-    d3.select('#row_title').style('display', 'block');
-    d3.select('#col_title').style('display', 'block');
-
-    // display clust_instruct_container
-    d3.select('#clust_instruct_container').style('display', 'block');
-
-    // shift the footer left
-    d3.select('#footer_div')
-      .style('margin-left', '0px');
-
     // instantiate zoom object 
     zoom = Zoom(params);
 
@@ -56,16 +43,12 @@ function Viz(config) {
       .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch])
       .on('zoom', zoom.zoomed);
 
-    // make outer group for clust_group - this will position clust_group once
     var svg_group = d3.select('#' + params.viz.svg_div_id)
       .append('svg')
       .attr('id', 'main_svg')
-      // leave room for the light grey border
-      .attr('width', params.viz.svg_dim.width)
-      // the height is reduced by more than the width because the tiles go right up to the bottom border
+      .attr('width',  params.viz.svg_dim.width)
       .attr('height', params.viz.svg_dim.height);
 
-    // call zooming on the entire svg
     if (params.viz.do_zoom) {
       svg_group.call(params.zoom);
     }
@@ -74,14 +57,15 @@ function Viz(config) {
     /////////////////////////
     matrix = Matrix(network_data, svg_group, params);
 
-    // append background rect if necessary to control background color
-    if (params.viz.background_color !== '#FFFFFF') {
-      svg_group
-      .append('rect')
-      .attr('width', params.viz.svg_dim.width)
-      .attr('height', params.viz.svg_dim.height)
-      .style('fill', params.viz.background_color);
-    }
+    // // append background rect if necessary to control background color
+    // if (params.viz.background_color !== '#FFFFFF') {
+    //   svg_group
+    //   .append('rect')
+    //   .attr('id','background_rect')
+    //   .attr('width', params.viz.svg_dim.width)
+    //   .attr('height', params.viz.svg_dim.height)
+    //   .style('fill', params.viz.background_color);
+    // }
 
 
     // define reordering object - scoped to viz
@@ -200,7 +184,249 @@ function Viz(config) {
 
   function reset_visualization_size() {
 
-    viz.remake();
+    // !! do not remake visualization on screen size, resize only 
+    // viz.remake();
+
+    // get outer_margins
+    var outer_margins = params.viz.outer_margins;
+
+    // get the size of the window
+    var screen_width  = window.innerWidth;
+    var screen_height = window.innerHeight;
+
+    // define width and height of clustergram container
+    var cont_dim = {};
+    cont_dim.width  = screen_width  - outer_margins.left - outer_margins.right;
+    cont_dim.height = screen_height - outer_margins.top - outer_margins.bottom;
+
+    // size the svg container div - svg_div
+    d3.select('#' + params.viz.svg_div_id)
+        .style('margin-left', outer_margins.left + 'px')
+        .style('margin-top',  outer_margins.top  + 'px')
+        .style('width',  cont_dim.width  + 'px')
+        .style('height', cont_dim.height + 'px');
+
+    // get height and width from parent div
+    params.viz.svg_dim = {};
+    params.viz.svg_dim.width  = Number(d3.select('#' + params.viz.svg_div_id).style('width').replace('px', ''));
+    params.viz.svg_dim.height = Number(d3.select('#' + params.viz.svg_div_id).style('height').replace('px', ''));
+
+    // reduce width by row/col labels and by grey_border width (reduce width by less since this is less aparent with slanted col labels)
+    var ini_clust_width = params.viz.svg_dim.width - (params.labels.super_label_width +
+      params.norm_label.width.row + params.class_room.row) - params.viz.grey_border_width - params.viz.spillover_x_offset;
+
+    // there is space between the clustergram and the border
+    var ini_clust_height = params.viz.svg_dim.height - (params.labels.super_label_width +
+      params.norm_label.width.col + params.class_room.col) - 5 * params.viz.grey_border_width;
+
+    // the visualization dimensions can be smaller than the svg
+    // if there are not many rows the clustergram width will be reduced, but not the svg width
+    //!! needs to be improved
+    var prevent_col_stretch = d3.scale.linear()
+      .domain([1, 20]).range([0.05,1]).clamp('true');
+
+
+    // clust_dim - clustergram dimensions (the clustergram is smaller than the svg)
+    params.viz.clust.dim.width = ini_clust_width * prevent_col_stretch(params.viz.num_col_nodes);
+
+    // clustergram height
+    ////////////////////////
+    // ensure that rects are never taller than they are wide
+    // force square tiles
+    if (ini_clust_width / params.viz.num_col_nodes < ini_clust_height / params.viz.num_row_nodes) {
+
+      // scale the height
+      params.viz.clust.dim.height = ini_clust_width * (params.viz.num_row_nodes / params.viz.num_col_nodes);
+
+      // keep track of whether or not a force square has occurred
+      // so that I can adjust the font accordingly
+      params.viz.force_square = 1;
+
+      // make sure that force_square does not cause the entire visualization
+      // to be taller than the svg, if it does, then undo
+      if (params.viz.clust.dim.height > ini_clust_height) {
+      // make the height equal to the width
+      params.viz.clust.dim.height = ini_clust_height;
+      // keep track of whether or not a force square has occurred
+      params.viz.force_square = 0;
+      }
+    }
+    // do not force square tiles
+    else {
+      // the height will be calculated normally - leading to wide tiles
+      params.viz.clust.dim.height = ini_clust_height;
+      // keep track of whether or not a force square has occurred
+      params.viz.force_square = 0;
+    }
+
+    // resize the svg 
+    var svg_group = d3.select('#' + params.viz.svg_div_id)
+      .select('svg')
+      .attr('id', 'main_svg')
+      .attr('width', params.viz.svg_dim.width)
+      .attr('height', params.viz.svg_dim.height)
+
+      // optional transition 
+      // .transition().duration(1000);
+
+    // redefine x_scale and y_scale 
+    // scaling functions to position rows and tiles, define rangeBands
+    params.matrix.x_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.width]);
+    params.matrix.y_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.height]);
+
+    // Assign initial ordering for x_scale and y_scale
+    if (params.viz.inst_order === 'ini') {
+      params.matrix.x_scale.domain(params.matrix.orders.ini_row);
+      params.matrix.y_scale.domain(params.matrix.orders.ini_col);
+    } else if (params.viz.inst_order === 'clust') {
+      params.matrix.x_scale.domain(params.matrix.orders.clust_row);
+      params.matrix.y_scale.domain(params.matrix.orders.clust_col);
+    } else if (params.viz.inst_order === 'rank') {
+      params.matrix.x_scale.domain(params.matrix.orders.rank_row);
+      params.matrix.y_scale.domain(params.matrix.orders.rank_col);
+    } else if (params.viz.inst_order === 'class') {
+      params.matrix.x_scale.domain(params.matrix.orders.class_row);
+      params.matrix.y_scale.domain(params.matrix.orders.class_col);
+    }
+
+    // resize tiles 
+    svg_group.selectAll('.tile')
+      .attr('width', params.matrix.x_scale.rangeBand())
+      .attr('height', params.matrix.y_scale.rangeBand())
+      .attr('transform', function(d) {
+        return 'translate(' + params.matrix.x_scale(d.pos_x) + ',0)';
+      });
+
+    svg_group.selectAll('.row')
+      .attr('transform', function(d, index) {
+        return 'translate(0,' + params.matrix.y_scale(index) + ')';
+      });
+
+    // resize row labels 
+    ///////////////////////////
+
+    svg_group.select('#row_container')
+      .attr('transform', 'translate(' + params.norm_label.margin.left + ',' +
+      params.viz.clust.margin.top + ')');
+
+    svg_group.select('#row_container')
+      .select('white_bars')
+      .attr('width', params.norm_label.background.row)
+      .attr('height', params.viz.clust.dim.height + 'px');
+
+    svg_group.select('#row_container')
+      .select('label_container')
+      .attr('transform', 'translate(' + params.norm_label.width.row + ',0)')
+
+    svg_group.selectAll('.row_label_text')
+      .attr('transform', function(d, index) {
+        return 'translate(0,' + params.matrix.y_scale(index) + ')';
+      })
+
+    svg_group.selectAll('.row_label_text')
+      .attr('y', params.matrix.y_scale.rangeBand() * 0.75)
+      .style('font-size', params.labels.defalut_fs_row + 'px');
+
+    // change the size of the highlighting rects
+    svg_group.selectAll('.row_label_text')
+      .each(function() {
+        var bbox = d3.select(this)
+            .select('text')[0][0]
+          .getBBox();
+        d3.select(this)
+          .select('rect')
+          .attr('x', bbox.x * 0.5)
+          .attr('y', 0)
+          .attr('width', bbox.width * 0.5)
+          .attr('height', params.matrix.y_scale.rangeBand())
+          .style('fill', function() {
+          var inst_hl = 'yellow';
+          return inst_hl;
+          })
+          .style('opacity', function(d) {
+          var inst_opacity = 0;
+          // highlight target genes
+          if (d.target === 1) {
+            inst_opacity = 1;
+          }
+          return inst_opacity;
+          });
+      });
+
+
+    // label the widest row and col labels
+    params.bounding_width_max = {};
+    params.bounding_width_max.row = 0;
+    d3.selectAll('.row_label_text').each(function() {
+      var tmp_width = d3.select(this).select('text').node().getBBox().width;
+      if (tmp_width > params.bounding_width_max.row) {
+        params.bounding_width_max.row = tmp_width;
+      }
+    });
+
+    svg_group.select('#row_label_viz')
+      .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
+
+    svg_group.select('#row_label_viz')
+      .select('white_bars')
+      .attr('width', params.class_room.row + 'px')
+      .attr('height', function() {
+        var inst_height = params.viz.clust.dim.height;
+        return inst_height;
+      });
+
+    svg_group.selectAll('.row_triangle_group')
+      .attr('transform', function(d, index) {
+          return 'translate(0, ' + params.matrix.y_scale(index) + ')';
+        });
+
+    svg_group.selectAll('.row_triangle_group')
+      .select('path')
+      .attr('d', function() {
+        var origin_x = params.class_room.symbol_width - 1;
+        var origin_y = 0;
+        var mid_x = 1;
+        var mid_y = params.matrix.y_scale.rangeBand() / 2;
+        var final_x = params.class_room.symbol_width - 1;
+        var final_y = params.matrix.y_scale.rangeBand();
+        var output_string = 'M ' + origin_x + ',' + origin_y + ' L ' +
+          mid_x + ',' + mid_y + ', L ' + final_x + ',' + final_y + ' Z';
+        return output_string;
+      });
+
+
+      if (Utils.has( params.network_data.row_nodes[0], 'value')) {
+        
+        // set bar scale 
+        var enr_max = Math.abs(_.max( params.network_data.row_nodes, function(d) { return Math.abs(d.value) } ).value) ;
+        params.labels.bar_scale_row = d3.scale
+          .linear()
+          .domain([0, enr_max])
+          .range([0, params.norm_label.width.row ]);
+
+        row_labels
+          .append('rect')
+          .attr('class', 'row_bars')
+          .attr('width', function(d) {
+            var inst_value = 0;
+            inst_value = params.labels.bar_scale_row( Math.abs(d.value) );
+            return inst_value;
+          })
+          .attr('x', function(d) {
+            var inst_value = 0;
+            inst_value = -params.labels.bar_scale_row( Math.abs(d.value) );
+            return inst_value;
+          })
+          .attr('height', params.matrix.y_scale.rangeBand() )
+          .attr('fill', function(d) {
+            return d.value > 0 ? params.matrix.bar_colors[0] : params.matrix.bar_colors[1];
+          })
+          .attr('opacity', 0.4);
+
+        }    
+
+    // reposition grid lines 
+     
 
     // reset zoom and translate
     params.zoom.scale(1).translate(

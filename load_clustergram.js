@@ -4,9 +4,6 @@ $(function() {
   // load network
   d3.json('json/example_network.json', function(network_data){
 
-    console.log(network_data.col_nodes.length)
-    console.log(network_data.row_nodes.length)
-
     // define the outer margins of the visualization
     var outer_margins = {
         'top':5,

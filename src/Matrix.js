@@ -128,7 +128,7 @@ function Matrix(network_data, svg_elem, params) {
       .append('rect')
       .attr('class', 'tile')
       .attr('transform', function(d) {
-      return 'translate(' + params.matrix.x_scale(d.pos_x) + ',0)';
+        return 'translate(' + params.matrix.x_scale(d.pos_x) + ',0)';
       })
       .attr('width', params.matrix.x_scale.rangeBand())
       .attr('height', params.matrix.y_scale.rangeBand())
@@ -147,6 +147,7 @@ function Matrix(network_data, svg_elem, params) {
         .classed('active', function(d, i) {
         return i === p.pos_y;
         });
+        
       d3.selectAll('.col_label_text text')
         .classed('active', function(d, i) {
         return i === p.pos_x;
@@ -156,7 +157,7 @@ function Matrix(network_data, svg_elem, params) {
       d3.selectAll('text').classed('active', false);
       })
       .attr('title', function(d) {
-      return d.value;
+        return d.value;
       });
 
     // add callback function to tile group - if one is supplied by the user

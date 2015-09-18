@@ -4,63 +4,47 @@ function Labels(){
   // make row labels 
   function make_rows(params, row_nodes, reorder){
 
-    // Row Labels 
-    //////////////////////////////////
-    // make container to pre-position zoomable elements
-    var container_all_row = d3.select('#main_svg')
+    var row_container = d3.select('#main_svg')
       .append('g')
+      .attr('id','row_container')
       .attr('transform', 'translate(' + params.norm_label.margin.left + ',' +
       params.viz.clust.margin.top + ')');
 
-    // white background rect for row labels
-    container_all_row
+    // white background
+    row_container
       .append('rect')
       .attr('fill', params.viz.background_color)
       .attr('width', params.norm_label.background.row)
-      .attr('height', 30 * params.viz.clust.dim.height + 'px')
+      .attr('height', params.viz.clust.dim.height + 'px')
       .attr('class', 'white_bars');
 
-    // row_labels
-    container_all_row
+    // container for row label groups 
+    row_container
       .append('g')
-      // position the outer row label group
+      .attr('id','label_container')
       .attr('transform', 'translate(' + params.norm_label.width.row + ',0)')
       .append('g')
       .attr('id', 'row_labels');
 
-    // generate and position the row labels
     var row_labels = d3.select('#row_labels')
-      .selectAll('.row_label_text')
+      .selectAll('g')
       .data(row_nodes)
       .enter()
       .append('g')
       .attr('class', 'row_label_text')
       .attr('transform', function(d, index) {
-      return 'translate(0,' + params.matrix.y_scale(index) + ')';
+        return 'translate(0,' + params.matrix.y_scale(index) + ')';
       })
       .on('dblclick', reorder.row_reorder )
       .on('mouseover', function() {
-
-      // highlight text
-      d3.select(this)
-        .select('text')
-        .classed('active',true);
+        d3.select(this)
+          .select('text')
+          .classed('active',true);
       })
       .on('mouseout', function mouseout() {
-      d3.select(this)
-        .select('text')
-        .classed('active',false)
-      });
-
-    // append row label text
-    row_labels
-      .append('text')
-      .attr('y', params.matrix.y_scale.rangeBand() * 0.75)
-      // .attr('dy', params.matrix.y_scale.rangeBand()/4)
-      .attr('text-anchor', 'end')
-      .style('font-size', params.labels.defalut_fs_row + 'px')
-      .text(function(d) {
-        return d.name.replace(/_/g, ' ').split('#')[0];
+        d3.select(this)
+          .select('text')
+          .classed('active',false)
       });
 
     // append rectangle behind text
@@ -72,36 +56,43 @@ function Labels(){
       .attr('height', 10)
       .style('opacity', 0);
 
+    // append row label text
+    row_labels
+      .append('text')
+      .attr('y', params.matrix.y_scale.rangeBand() * 0.75)
+      .attr('text-anchor', 'end')
+      .style('font-size', params.labels.defalut_fs_row + 'px')
+      .text(function(d) {
+        return d.name.replace(/_/g, ' ').split('#')[0];
+      });
+
     // change the size of the highlighting rects
     row_labels
       .each(function() {
-      // get the bounding box of the row label text
-      var bbox = d3.select(this)
-        .select('text')[0][0]
-        .getBBox();
-      // use the bounding box to set the size of the rect
-      d3.select(this)
-        .select('rect')
-        .attr('x', bbox.x * 0.5)
-        .attr('y', 0)
-        .attr('width', bbox.width * 0.5)
-        .attr('height', params.matrix.y_scale.rangeBand())
-        .style('fill', function() {
-        var inst_hl = 'yellow';
-        return inst_hl;
-        })
-        .style('opacity', function(d) {
-        var inst_opacity = 0;
-        // highlight target genes
-        if (d.target === 1) {
-          inst_opacity = 1;
-        }
-        return inst_opacity;
-        });
+        var bbox = d3.select(this)
+            .select('text')[0][0]
+          .getBBox();
+        d3.select(this)
+          .select('rect')
+          .attr('x', bbox.x * 0.5)
+          .attr('y', 0)
+          .attr('width', bbox.width * 0.5)
+          .attr('height', params.matrix.y_scale.rangeBand())
+          .style('fill', function() {
+          var inst_hl = 'yellow';
+          return inst_hl;
+          })
+          .style('opacity', function(d) {
+          var inst_opacity = 0;
+          // highlight target genes
+          if (d.target === 1) {
+            inst_opacity = 1;
+          }
+          return inst_opacity;
+          });
       });
 
     // label the widest row and col labels
-    ////////////////////////////////////////
     params.bounding_width_max = {};
     params.bounding_width_max.row = 0;
     d3.selectAll('.row_label_text').each(function() {
@@ -113,91 +104,88 @@ function Labels(){
 
     // row triangles
     ///////////////////////
-    var row_triangle_zoom = container_all_row
+    var row_label_viz = row_container
       .append('g')
-      // shift by the width of the normal row labels
+      .attr('id','row_label_viz')
       .attr('transform', 'translate(' + params.norm_label.width.row + ',0)')
       .append('g')
       .attr('id', 'row_label_triangles');
 
-    // append triangle background rect to zoomable group
-    row_triangle_zoom
+    // white background for triangle
+    row_label_viz
       .append('rect')
-      .attr('fill', params.viz.background_color) //!! prog_colors
+      .attr('class','white_bars')
+      .attr('fill', params.viz.background_color) 
       .attr('width', params.class_room.row + 'px')
       .attr('height', function() {
-      var inst_height = params.viz.clust.dim.height;
-      return inst_height;
+        var inst_height = params.viz.clust.dim.height;
+        return inst_height;
       });
 
-    // append groups - each holds one triangle
-    var row_triangle_ini_group = row_triangle_zoom
+    // groups to hold label_viz 
+    var row_triangle_ini_group = row_label_viz
       .selectAll('g')
       .data(row_nodes)
       .enter()
       .append('g')
       .attr('class', 'row_triangle_group')
       .attr('transform', function(d, index) {
-      return 'translate(0, ' + params.matrix.y_scale(index) + ')';
+        return 'translate(0, ' + params.matrix.y_scale(index) + ')';
       });
 
     // add triangles
     row_triangle_ini_group
       .append('path')
       .attr('d', function() {
-      var origin_x = params.class_room.symbol_width - 1;
-      var origin_y = 0;
-      var mid_x = 1;
-      var mid_y = params.matrix.y_scale.rangeBand() / 2;
-      var final_x = params.class_room.symbol_width - 1;
-      var final_y = params.matrix.y_scale.rangeBand();
-      var output_string = 'M ' + origin_x + ',' + origin_y + ' L ' +
-        mid_x + ',' + mid_y + ', L ' + final_x + ',' + final_y + ' Z';
-      return output_string;
+        var origin_x = params.class_room.symbol_width - 1;
+        var origin_y = 0;
+        var mid_x = 1;
+        var mid_y = params.matrix.y_scale.rangeBand() / 2;
+        var final_x = params.class_room.symbol_width - 1;
+        var final_y = params.matrix.y_scale.rangeBand();
+        var output_string = 'M ' + origin_x + ',' + origin_y + ' L ' +
+          mid_x + ',' + mid_y + ', L ' + final_x + ',' + final_y + ' Z';
+        return output_string;
       })
       .attr('fill', function(d) {
-
-      // initailize color
-      var inst_color = '#eee';
-      if (params.labels.show_categories) {
-        inst_color = params.labels.class_colors.row[d.cl];
-      }
-      return inst_color;
+        // initailize color
+        var inst_color = '#eee';
+        if (params.labels.show_categories) {
+          inst_color = params.labels.class_colors.row[d.cl];
+        }
+        return inst_color;
       });
 
-      // get max value
-      var enr_max = Math.abs(_.max( row_nodes, function(d) { return Math.abs(d.value) } ).value) ;
 
-      // the enrichment bar should be 3/4ths of the height of the column labels
-      params.labels.bar_scale_row = d3.scale
-        .linear()
-        .domain([0, enr_max])
-        // .range([0, 10* params.bounding_width_max.row ]);
-        .range([0, params.norm_label.width.row ]);
-
-      // append column value bars
       if (Utils.has( params.network_data.row_nodes[0], 'value')) {
+        
+        // set bar scale 
+        var enr_max = Math.abs(_.max( row_nodes, function(d) { return Math.abs(d.value) } ).value) ;
+        params.labels.bar_scale_row = d3.scale
+          .linear()
+          .domain([0, enr_max])
+          .range([0, params.norm_label.width.row ]);
+
         row_labels
-        .append('rect')
-        .attr('class', 'row_bars')
-        .attr('width', function(d) {
-          var inst_value = 0;
-          inst_value = params.labels.bar_scale_row( Math.abs(d.value) );
-          return inst_value;
-        })
+          .append('rect')
+          .attr('class', 'row_bars')
+          .attr('width', function(d) {
+            var inst_value = 0;
+            inst_value = params.labels.bar_scale_row( Math.abs(d.value) );
+            return inst_value;
+          })
+          .attr('x', function(d) {
+            var inst_value = 0;
+            inst_value = -params.labels.bar_scale_row( Math.abs(d.value) );
+            return inst_value;
+          })
+          .attr('height', params.matrix.y_scale.rangeBand() )
+          .attr('fill', function(d) {
+            return d.value > 0 ? params.matrix.bar_colors[0] : params.matrix.bar_colors[1];
+          })
+          .attr('opacity', 0.4);
 
-        .attr('x', function(d) {
-          var inst_value = 0;
-          inst_value = -params.labels.bar_scale_row( Math.abs(d.value) );
-          return inst_value;
-        })
-
-        .attr('height', params.matrix.y_scale.rangeBand() )
-        .attr('fill', function(d) {
-          return d.value > 0 ? params.matrix.bar_colors[0] : params.matrix.bar_colors[1];
-        })
-        .attr('opacity', 0.4);
-      }
+        }
       
       // return row_triangle_ini_group so that the dendrogram can be made 
       return row_triangle_ini_group;
@@ -209,6 +197,7 @@ function Labels(){
     // make container to pre-position zoomable elements
     var container_all_col = d3.select('#main_svg')
       .append('g')
+      .attr('id','col_container')
       .attr('transform', 'translate(' + params.viz.clust.margin.left + ',' +
       params.norm_label.margin.top + ')');
 
