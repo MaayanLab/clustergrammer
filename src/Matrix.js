@@ -147,7 +147,7 @@ function Matrix(network_data, svg_elem, params) {
         .classed('active', function(d, i) {
         return i === p.pos_y;
         });
-        
+
       d3.selectAll('.col_label_text text')
         .classed('active', function(d, i) {
         return i === p.pos_x;
@@ -307,25 +307,26 @@ function Matrix(network_data, svg_elem, params) {
     // split-up
     tile
       .append('path')
-      .style('stroke', 'black')
+      // .style('stroke', 'black')
+      .attr('class','tile_split_up')
       .style('stroke-width', 0)
       .attr('d', function() {
-      var start_x = 0;
-      var final_x = params.matrix.x_scale.rangeBand();
-      var start_y = 0;
-      var final_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand() /
-        60;
-      var output_string = 'M' + start_x + ',' + start_y + ', L' +
-        start_x + ', ' + final_y + ', L' + final_x + ',0 Z';
-      return output_string;
+        var start_x = 0;
+        var final_x = params.matrix.x_scale.rangeBand();
+        var start_y = 0;
+        var final_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand() /
+          60;
+        var output_string = 'M' + start_x + ',' + start_y + ', L' +
+          start_x + ', ' + final_y + ', L' + final_x + ',0 Z';
+        return output_string;
       })
       .style('fill-opacity', function(d) {
-      // calculate output opacity using the opacity scale
-      var output_opacity = 0;
-      if (Math.abs(d.value_dn) > 0) {
-        output_opacity = params.matrix.opacity_scale(Math.abs(d.value_up));
-      }
-      return output_opacity;
+        // calculate output opacity using the opacity scale
+        var output_opacity = 0;
+        if (Math.abs(d.value_dn) > 0) {
+          output_opacity = params.matrix.opacity_scale(Math.abs(d.value_up));
+        }
+        return output_opacity;
       })
       // switch the color based on up/dn value
       .style('fill', function() {
@@ -337,26 +338,27 @@ function Matrix(network_data, svg_elem, params) {
     // split-dn
     tile
       .append('path')
-      .style('stroke', 'black')
+      .attr('class','tile_split_dn')
+      // .style('stroke', 'black')
       .style('stroke-width', 0)
       .attr('d', function() {
-      var start_x = 0;
-      var final_x = params.matrix.x_scale.rangeBand();
-      var start_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand() /
-        60;
-      var final_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand() /
-        60;
-      var output_string = 'M' + start_x + ', ' + start_y + ' ,   L' +
-        final_x + ', ' + final_y + ',  L' + final_x + ',0 Z';
-      return output_string;
+        var start_x = 0;
+        var final_x = params.matrix.x_scale.rangeBand();
+        var start_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand() /
+          60;
+        var final_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand() /
+          60;
+        var output_string = 'M' + start_x + ', ' + start_y + ' ,   L' +
+          final_x + ', ' + final_y + ',  L' + final_x + ',0 Z';
+        return output_string;
       })
       .style('fill-opacity', function(d) {
-      // calculate output opacity using the opacity scale
-      var output_opacity = 0;
-      if (Math.abs(d.value_up) > 0) {
-        output_opacity = params.matrix.opacity_scale(Math.abs(d.value_dn));
-      }
-      return output_opacity;
+        // calculate output opacity using the opacity scale
+        var output_opacity = 0;
+        if (Math.abs(d.value_up) > 0) {
+          output_opacity = params.matrix.opacity_scale(Math.abs(d.value_dn));
+        }
+        return output_opacity;
       })
       // switch the color based on up/dn value
       .style('fill', function() {

@@ -504,7 +504,7 @@ function Matrix(network_data, svg_elem, params) {
         .classed('active', function(d, i) {
         return i === p.pos_y;
         });
-        
+
       d3.selectAll('.col_label_text text')
         .classed('active', function(d, i) {
         return i === p.pos_x;
@@ -664,25 +664,26 @@ function Matrix(network_data, svg_elem, params) {
     // split-up
     tile
       .append('path')
-      .style('stroke', 'black')
+      // .style('stroke', 'black')
+      .attr('class','tile_split_up')
       .style('stroke-width', 0)
       .attr('d', function() {
-      var start_x = 0;
-      var final_x = params.matrix.x_scale.rangeBand();
-      var start_y = 0;
-      var final_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand() /
-        60;
-      var output_string = 'M' + start_x + ',' + start_y + ', L' +
-        start_x + ', ' + final_y + ', L' + final_x + ',0 Z';
-      return output_string;
+        var start_x = 0;
+        var final_x = params.matrix.x_scale.rangeBand();
+        var start_y = 0;
+        var final_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand() /
+          60;
+        var output_string = 'M' + start_x + ',' + start_y + ', L' +
+          start_x + ', ' + final_y + ', L' + final_x + ',0 Z';
+        return output_string;
       })
       .style('fill-opacity', function(d) {
-      // calculate output opacity using the opacity scale
-      var output_opacity = 0;
-      if (Math.abs(d.value_dn) > 0) {
-        output_opacity = params.matrix.opacity_scale(Math.abs(d.value_up));
-      }
-      return output_opacity;
+        // calculate output opacity using the opacity scale
+        var output_opacity = 0;
+        if (Math.abs(d.value_dn) > 0) {
+          output_opacity = params.matrix.opacity_scale(Math.abs(d.value_up));
+        }
+        return output_opacity;
       })
       // switch the color based on up/dn value
       .style('fill', function() {
@@ -694,26 +695,27 @@ function Matrix(network_data, svg_elem, params) {
     // split-dn
     tile
       .append('path')
-      .style('stroke', 'black')
+      .attr('class','tile_split_dn')
+      // .style('stroke', 'black')
       .style('stroke-width', 0)
       .attr('d', function() {
-      var start_x = 0;
-      var final_x = params.matrix.x_scale.rangeBand();
-      var start_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand() /
-        60;
-      var final_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand() /
-        60;
-      var output_string = 'M' + start_x + ', ' + start_y + ' ,   L' +
-        final_x + ', ' + final_y + ',  L' + final_x + ',0 Z';
-      return output_string;
+        var start_x = 0;
+        var final_x = params.matrix.x_scale.rangeBand();
+        var start_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand() /
+          60;
+        var final_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand() /
+          60;
+        var output_string = 'M' + start_x + ', ' + start_y + ' ,   L' +
+          final_x + ', ' + final_y + ',  L' + final_x + ',0 Z';
+        return output_string;
       })
       .style('fill-opacity', function(d) {
-      // calculate output opacity using the opacity scale
-      var output_opacity = 0;
-      if (Math.abs(d.value_up) > 0) {
-        output_opacity = params.matrix.opacity_scale(Math.abs(d.value_dn));
-      }
-      return output_opacity;
+        // calculate output opacity using the opacity scale
+        var output_opacity = 0;
+        if (Math.abs(d.value_up) > 0) {
+          output_opacity = params.matrix.opacity_scale(Math.abs(d.value_dn));
+        }
+        return output_opacity;
       })
       // switch the color based on up/dn value
       .style('fill', function() {
@@ -2132,6 +2134,33 @@ function Viz(config) {
         return 'translate(0,' + params.matrix.y_scale(index) + ')';
       });
 
+    svg_group.selectAll('.highlighting_rect')
+      .attr('width', params.matrix.x_scale.rangeBand() * 0.80)
+      .attr('height', params.matrix.y_scale.rangeBand() * 0.80);       
+
+    svg_group.selectAll('.tile_split_up')
+      .attr('d', function() {
+        var start_x = 0;
+        var final_x = params.matrix.x_scale.rangeBand();
+        var start_y = 0;
+        var final_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand()/60;
+        var output_string = 'M' + start_x + ',' + start_y + ', L' +
+          start_x + ', ' + final_y + ', L' + final_x + ',0 Z';
+        return output_string;
+      })
+
+    svg_group.selectAll('.tile_split_dn')
+      .attr('d', function() {
+        var start_x = 0;
+        var final_x = params.matrix.x_scale.rangeBand();
+        var start_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand()/60;
+        var final_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand()/60;
+        var output_string = 'M' + start_x + ', ' + start_y + ' ,   L' +
+          final_x + ', ' + final_y + ',  L' + final_x + ',0 Z';
+        return output_string;
+      })
+
+
     // resize row labels 
     ///////////////////////////
 
@@ -2255,10 +2284,35 @@ function Viz(config) {
 
         }    
 
-    // reposition grid lines 
-     
+        // reposition grid lines 
+        svg_group.selectAll('.horz_lines') 
+          .attr('transform', function(d, index) {
+              return 'translate(0,' + params.matrix.y_scale(index) + ') rotate(0)';
+          })
+
+        svg_group.selectAll('.horz_lines')
+          .select('line')
+          .attr('x2',params.viz.clust.dim.width)
+          .style('stroke-width', params.viz.border_width/params.viz.zoom_switch+'px');
+
+
+        svg_group.selectAll('.vert_lines')
+          .attr('transform', function(d, index) {
+              return 'translate(' + params.matrix.x_scale(index) + ') rotate(-90)';
+          });
+
+        svg_group.selectAll('.vert_lines')
+          .select('line')
+          .attr('x2', -params.viz.clust.dim.height)
+          .style('stroke-width', params.viz.border_width + 'px');
+
+
+
+
+
 
     // reset zoom and translate
+    //////////////////////////////
     params.zoom.scale(1).translate(
         [ params.viz.clust.margin.left, params.viz.clust.margin.top]
     );

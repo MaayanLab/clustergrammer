@@ -302,6 +302,33 @@ function Viz(config) {
         return 'translate(0,' + params.matrix.y_scale(index) + ')';
       });
 
+    svg_group.selectAll('.highlighting_rect')
+      .attr('width', params.matrix.x_scale.rangeBand() * 0.80)
+      .attr('height', params.matrix.y_scale.rangeBand() * 0.80);       
+
+    svg_group.selectAll('.tile_split_up')
+      .attr('d', function() {
+        var start_x = 0;
+        var final_x = params.matrix.x_scale.rangeBand();
+        var start_y = 0;
+        var final_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand()/60;
+        var output_string = 'M' + start_x + ',' + start_y + ', L' +
+          start_x + ', ' + final_y + ', L' + final_x + ',0 Z';
+        return output_string;
+      })
+
+    svg_group.selectAll('.tile_split_dn')
+      .attr('d', function() {
+        var start_x = 0;
+        var final_x = params.matrix.x_scale.rangeBand();
+        var start_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand()/60;
+        var final_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand()/60;
+        var output_string = 'M' + start_x + ', ' + start_y + ' ,   L' +
+          final_x + ', ' + final_y + ',  L' + final_x + ',0 Z';
+        return output_string;
+      })
+
+
     // resize row labels 
     ///////////////////////////
 
@@ -425,10 +452,35 @@ function Viz(config) {
 
         }    
 
-    // reposition grid lines 
-     
+        // reposition grid lines 
+        svg_group.selectAll('.horz_lines') 
+          .attr('transform', function(d, index) {
+              return 'translate(0,' + params.matrix.y_scale(index) + ') rotate(0)';
+          })
+
+        svg_group.selectAll('.horz_lines')
+          .select('line')
+          .attr('x2',params.viz.clust.dim.width)
+          .style('stroke-width', params.viz.border_width/params.viz.zoom_switch+'px');
+
+
+        svg_group.selectAll('.vert_lines')
+          .attr('transform', function(d, index) {
+              return 'translate(' + params.matrix.x_scale(index) + ') rotate(-90)';
+          });
+
+        svg_group.selectAll('.vert_lines')
+          .select('line')
+          .attr('x2', -params.viz.clust.dim.height)
+          .style('stroke-width', params.viz.border_width + 'px');
+
+
+
+
+
 
     // reset zoom and translate
+    //////////////////////////////
     params.zoom.scale(1).translate(
         [ params.viz.clust.margin.left, params.viz.clust.margin.top]
     );
