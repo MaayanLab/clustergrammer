@@ -51,25 +51,27 @@ function Spillover( params, container_all_col ){
       .attr('width', '300px')
       .attr('height', '3000px')
       .attr('transform', function() {
-      var tmp_left = params.viz.clust.margin.left + params.viz.clust.dim.width;
-      var tmp_top = params.norm_label.margin.top + params.norm_label.width
-        .col;
-      return 'translate(' + tmp_left + ',' + tmp_top + ')';
+        var tmp_left = params.viz.clust.margin.left + params.viz.clust.dim.width;
+        var tmp_top = params.norm_label.margin.top + params.norm_label.width
+          .col;
+        return 'translate(' + tmp_left + ',' + tmp_top + ')';
       })
-      .attr('class', 'white_bars');
+      .attr('class', 'white_bars')
+      .attr('id','right_spillover');
 
     // white border bottom - prevent clustergram from hitting border
     ///////////////////////////////////////////////////////////////////
     d3.select('#main_svg')
       .append('rect')
+      .attr('id','bottom_spillover')
       .attr('fill', params.viz.background_color) //!! prog_colors
       .attr('width', params.viz.svg_dim.width)
       // make this border twice the width of the grey border
       .attr('height', 2 * params.viz.grey_border_width)
       .attr('transform', function() {
-      // shift up enough to show the entire border width
-      var inst_offset = params.viz.svg_dim.height - 3 * params.viz.grey_border_width;
-      return 'translate(0,' + inst_offset + ')';
+        // shift up enough to show the entire border width
+        var inst_offset = params.viz.svg_dim.height - 3 * params.viz.grey_border_width;
+        return 'translate(0,' + inst_offset + ')';
       });
 
     // add border to svg in four separate lines - to not interfere with clicking anything
@@ -77,6 +79,7 @@ function Spillover( params, container_all_col ){
     // left border
     d3.select('#main_svg')
       .append('rect')
+      .attr('id','left_border')
       .attr('fill', params.viz.super_border_color) //!! prog_colors
       .attr('width', params.viz.grey_border_width)
       .attr('height', params.viz.svg_dim.height)
@@ -85,34 +88,37 @@ function Spillover( params, container_all_col ){
     // right border
     d3.select('#main_svg')
       .append('rect')
+      .attr('id','right_border')
       .attr('fill', params.viz.super_border_color) //!! prog_colors
       .attr('width', params.viz.grey_border_width)
       .attr('height', params.viz.svg_dim.height)
       .attr('transform', function() {
-      var inst_offset = params.viz.svg_dim.width - params.viz.grey_border_width;
-      return 'translate(' + inst_offset + ',0)';
+        var inst_offset = params.viz.svg_dim.width - params.viz.grey_border_width;
+        return 'translate(' + inst_offset + ',0)';
       });
 
     // top border
     d3.select('#main_svg')
       .append('rect')
+      .attr('id','top_border')
       .attr('fill', params.viz.super_border_color) //!! prog_colors
       .attr('width', params.viz.svg_dim.width)
       .attr('height', params.viz.grey_border_width)
       .attr('transform', function() {
-      var inst_offset = 0;
-      return 'translate(' + inst_offset + ',0)';
+        var inst_offset = 0;
+        return 'translate(' + inst_offset + ',0)';
       });
 
     // bottom border
     d3.select('#main_svg')
       .append('rect')
+      .attr('id','bottom_border')
       .attr('fill', params.viz.super_border_color) //!! prog_colors
       .attr('width', params.viz.svg_dim.width)
       .attr('height', params.viz.grey_border_width)
       .attr('transform', function() {
-      var inst_offset = params.viz.svg_dim.height - params.viz.grey_border_width;
-      return 'translate(0,' + inst_offset + ')';
+        var inst_offset = params.viz.svg_dim.height - params.viz.grey_border_width;
+        return 'translate(0,' + inst_offset + ')';
       });
   }
 

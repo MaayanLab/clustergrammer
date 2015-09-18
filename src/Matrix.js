@@ -86,7 +86,7 @@ function Matrix(network_data, svg_elem, params) {
       .append('g')
       .attr('class','horz_lines')
       .attr('transform', function(d, index) {
-          return 'translate(0,' + params.matrix.y_scale(index) + ') rotate(0)';
+        return 'translate(0,' + params.matrix.y_scale(index) + ') rotate(0)';
       })
       .append('line')
       .attr('x1',0)
