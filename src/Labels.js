@@ -21,7 +21,7 @@ function Labels(){
     // container for row label groups 
     row_container
       .append('g')
-      .attr('id','label_container')
+      .attr('class','label_container')
       .attr('transform', 'translate(' + params.norm_label.width.row + ',0)')
       .append('g')
       .attr('id', 'row_labels');
@@ -61,7 +61,7 @@ function Labels(){
       .append('text')
       .attr('y', params.matrix.y_scale.rangeBand() * 0.75)
       .attr('text-anchor', 'end')
-      .style('font-size', params.labels.defalut_fs_row + 'px')
+      .style('font-size', params.labels.default_fs_row + 'px')
       .text(function(d) {
         return d.name.replace(/_/g, ' ').split('#')[0];
       });
@@ -212,6 +212,7 @@ function Labels(){
     // col labels
     container_all_col
       .append('g')
+      .attr('class','label_container')
       // position the outer col label group
       .attr('transform', 'translate(0,' + params.norm_label.width.col + ')')
       .append('g')
@@ -230,7 +231,7 @@ function Labels(){
       .append('g')
       .attr('class', 'col_label_text')
       .attr('transform', function(d, index) {
-      return 'translate(' + params.matrix.x_scale(index) + ') rotate(-90)';
+        return 'translate(' + params.matrix.x_scale(index) + ') rotate(-90)';
       });
 
     // append group for individual column label
@@ -255,14 +256,13 @@ function Labels(){
       .append('text')
       .attr('x', 0)
       .attr('y', params.matrix.x_scale.rangeBand() * 0.60)
-      // offset label to make room for triangle
       .attr('dx', 2 * params.viz.border_width)
       .attr('text-anchor', 'start')
       .attr('full_name', function(d) {
-      return d.name;
+        return d.name;
       })
       // original font size
-      .style('font-size', params.labels.defalut_fs_col + 'px')
+      .style('font-size', params.labels.default_fs_col + 'px')
       .text(function(d) {
         return d.name.replace(/_/g, ' ').split('#')[0];
       });
@@ -297,12 +297,12 @@ function Labels(){
         .row;
 
       // redefine default fs
-      params.labels.defalut_fs_row = params.labels.defalut_fs_row * params.ini_scale_font
+      params.labels.default_fs_row = params.labels.default_fs_row * params.ini_scale_font
         .row;
       // reduce font size
       d3.selectAll('.row_label_text').each(function() {
       d3.select(this).select('text')
-        .style('font-size', params.labels.defalut_fs_row + 'px');
+        .style('font-size', params.labels.default_fs_row + 'px');
       });
     }
 
@@ -314,12 +314,12 @@ function Labels(){
       params.bounding_width_max.col = params.ini_scale_font.col * params.bounding_width_max
         .col;
       // redefine default fs
-      params.labels.defalut_fs_col = params.labels.defalut_fs_col * params.ini_scale_font
+      params.labels.default_fs_col = params.labels.default_fs_col * params.ini_scale_font
         .col;
       // reduce font size
       d3.selectAll('.col_label_click').each(function() {
       d3.select(this).select('text')
-        .style('font-size', params.labels.defalut_fs_col + 'px');
+        .style('font-size', params.labels.default_fs_col + 'px');
       });
     }
 
@@ -335,23 +335,17 @@ function Labels(){
     // change the size of the highlighting rects
     col_label_click
       .each(function() {
-
-      // get the bounding box of the row label text
-      var bbox = d3.select(this)
-        .select('text')[0][0]
-        .getBBox();
-
-      // use the bounding box to set the size of the rect
-      d3.select(this)
-        .select('rect')
-        .attr('x', bbox.x * 1.25)
-        .attr('y', 0)
-        .attr('width', bbox.width * 1.25)
-        // used a reduced rect width for the columsn
-        // because the rects are slanted
-        .attr('height', params.matrix.x_scale.rangeBand() * 0.6)
-        .style('fill', 'yellow')
-        .style('opacity', 0);
+        var bbox = d3.select(this)
+          .select('text')[0][0]
+          .getBBox();
+        d3.select(this)
+          .select('rect')
+          .attr('x', bbox.x * 1.25)
+          .attr('y', 0)
+          .attr('width', bbox.width * 1.25)
+          .attr('height', params.matrix.x_scale.rangeBand() * 0.6)
+          .style('fill', 'yellow')
+          .style('opacity', 0);
       });
 
     // add triangle under rotated labels
@@ -359,22 +353,22 @@ function Labels(){
       .append('path')
       .style('stroke-width', 0)
       .attr('d', function() {
-      // x and y are flipped since its rotated
-      var origin_y = -params.viz.border_width;
-      var start_x = 0;
-      var final_x = params.matrix.x_scale.rangeBand() - reduce_rect_width;
-      var start_y = -(params.matrix.x_scale.rangeBand() - reduce_rect_width +
-      params.viz.border_width);
-      var final_y = -params.viz.border_width;
-      var output_string = 'M ' + origin_y + ',0 L ' + start_y + ',' +
-        start_x + ', L ' + final_y + ',' + final_x + ' Z';
-      return output_string;
+        // x and y are flipped since its rotated
+        var origin_y = -params.viz.border_width;
+        var start_x = 0;
+        var final_x = params.matrix.x_scale.rangeBand() - reduce_rect_width;
+        var start_y = -(params.matrix.x_scale.rangeBand() - reduce_rect_width +
+        params.viz.border_width);
+        var final_y = -params.viz.border_width;
+        var output_string = 'M ' + origin_y + ',0 L ' + start_y + ',' +
+          start_x + ', L ' + final_y + ',' + final_x + ' Z';
+        return output_string;
       })
       .attr('fill', function(d) {
-      var inst_color = '#eee';
-      if (params.labels.show_categories) {
-        inst_color = params.labels.class_colors.col[d.cl];
-      }
+        var inst_color = '#eee';
+        if (params.labels.show_categories) {
+          inst_color = params.labels.class_colors.col[d.cl];
+        }
       return inst_color;
       });
 

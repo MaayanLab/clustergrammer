@@ -121,7 +121,7 @@ function Zoom(params){
       // reduce font size
       d3.selectAll('.row_label_text').each(function() {
         d3.select(this).select('text')
-          .style('font-size', params.labels.defalut_fs_row * params.viz.zoom_scale_font.row + 'px')
+          .style('font-size', params.labels.default_fs_row * params.viz.zoom_scale_font.row + 'px')
           .attr('y', params.matrix.y_scale.rangeBand() * params.scale_font_offset(params.viz.zoom_scale_font.row));
 
       });
@@ -130,7 +130,7 @@ function Zoom(params){
       // reset font size
       d3.selectAll('.row_label_text').each(function() {
         d3.select(this).select('text')
-          .style('font-size', params.labels.defalut_fs_row + 'px')
+          .style('font-size', params.labels.default_fs_row + 'px')
           .attr('y', params.matrix.y_scale.rangeBand() * 0.75);
       });
 
@@ -171,7 +171,7 @@ function Zoom(params){
       // reduce font size
       d3.selectAll('.col_label_click').each(function() {
         d3.select(this).select('text')
-          .style('font-size', params.labels.defalut_fs_col * params.viz.zoom_scale_font
+          .style('font-size', params.labels.default_fs_col * params.viz.zoom_scale_font
             .col + 'px');
 
       });
@@ -180,7 +180,7 @@ function Zoom(params){
       // reset font size
       d3.selectAll('.col_label_click').each(function() {
         d3.select(this).select('text')
-          .style('font-size', params.labels.defalut_fs_col + 'px');
+          .style('font-size', params.labels.default_fs_col + 'px');
       });
 
      // if (Utils.has( params.network_data.col_nodes[0], 'value')) {
@@ -389,7 +389,7 @@ function Zoom(params){
           d3.select(this).select('text')
             .transition()
             .duration(search_duration)
-            .style('font-size', params.labels.defalut_fs_row * params.viz.zoom_scale_font
+            .style('font-size', params.labels.default_fs_row * params.viz.zoom_scale_font
               .row + 'px')
             .attr('y', params.matrix.y_scale.rangeBand() * params.scale_font_offset(
               params.viz.zoom_scale_font.row));
@@ -401,7 +401,7 @@ function Zoom(params){
           d3.select(this).select('text')
             .transition()
             .duration(search_duration)
-            .style('font-size', params.labels.defalut_fs_row + 'px')
+            .style('font-size', params.labels.default_fs_row + 'px')
             .attr('y', params.matrix.y_scale.rangeBand() * 0.75);
         });
       }
@@ -416,7 +416,7 @@ function Zoom(params){
           d3.select(this).select('text')
             .transition()
             .duration(search_duration)
-            .style('font-size', params.labels.defalut_fs_col * params.viz.zoom_scale_font
+            .style('font-size', params.labels.default_fs_col * params.viz.zoom_scale_font
               .col + 'px');
         });
 
@@ -426,7 +426,7 @@ function Zoom(params){
           d3.select(this).select('text')
             .transition()
             .duration(search_duration)
-            .style('font-size', params.labels.defalut_fs_col + 'px');
+            .style('font-size', params.labels.default_fs_col + 'px');
         });
       }
 
