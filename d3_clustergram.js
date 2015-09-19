@@ -2007,7 +2007,14 @@ function Viz(config) {
     // resize window
     if (params.viz.resize){
       d3.select(window).on('resize', function(){
-        setTimeout(reset_visualization_size, 500);
+        d3.select('#main_svg').style('opacity',0.25);
+        // d3.select('#wait_message').style('display','block');
+        var wait_time = 500;
+        console.log(params.viz.run_trans)
+        if (params.viz.run_trans == true){
+          wait_time = 2500;
+        }
+        setTimeout(reset_visualization_size, wait_time);
       });
     }
 
@@ -2661,6 +2668,8 @@ function Viz(config) {
     params.zoom.scale(1).translate(
         [ params.viz.clust.margin.left, params.viz.clust.margin.top]
     );
+
+    d3.select('#main_svg').style('opacity',1);
   }
 
   // highlight resource types - set up type/color association
@@ -2703,7 +2712,7 @@ function Reorder(params){
    */
   function all_reorder(inst_order) {
 
-    params.viz.run_trans = false;
+    params.viz.run_trans = true;
 
     // load orders
     if (inst_order === 'ini') {
@@ -2805,7 +2814,9 @@ function Reorder(params){
         });      
     }
 
-      params.viz.run_trans = false;
+      // params.viz.run_trans = false;
+
+      
       // backup allow programmatic zoom
       setTimeout(end_reorder, 2500);
 

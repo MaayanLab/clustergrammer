@@ -33,6 +33,7 @@ $(function() {
       'row_label':'Row-Data-Name',
       'col_label':'Column-Data-Name',
       'outer_margins': outer_margins,
+      // 'row_label_scale':0.5
       // 'force_square':1
       // 'opacity_scale':'log',
       // 'input_domain':2,
@@ -48,6 +49,8 @@ $(function() {
       // 'order':'rank'
     };
 
+    d3.select('#wait_message').style('display','none');
+    
     // make clustergram: pass network_data and the div name where the svg should be made
     var d3c = d3_clustergram(arguments_obj);
 

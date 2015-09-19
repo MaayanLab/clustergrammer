@@ -7,7 +7,7 @@ function Reorder(params){
    */
   function all_reorder(inst_order) {
 
-    params.viz.run_trans = false;
+    params.viz.run_trans = true;
 
     // load orders
     if (inst_order === 'ini') {
@@ -109,7 +109,9 @@ function Reorder(params){
         });      
     }
 
-      params.viz.run_trans = false;
+      // params.viz.run_trans = false;
+
+      
       // backup allow programmatic zoom
       setTimeout(end_reorder, 2500);
 
