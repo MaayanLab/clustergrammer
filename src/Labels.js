@@ -15,7 +15,7 @@ function Labels(){
       .append('rect')
       .attr('fill', params.viz.background_color)
       .attr('width', params.norm_label.background.row)
-      .attr('height', params.viz.clust.dim.height + 'px')
+      .attr('height', 30*params.viz.clust.dim.height + 'px')
       .attr('class', 'white_bars');
 
     // container for row label groups 

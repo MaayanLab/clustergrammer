@@ -121,7 +121,6 @@ function Matrix(network_data, svg_elem, params) {
 
     // generate tiles in the current row
     var tile = d3.select(this)
-      // data join
       .selectAll('rect')
       .data(row_data)
       .enter()
@@ -145,16 +144,16 @@ function Matrix(network_data, svg_elem, params) {
       // highlight row - set text to active if
       d3.selectAll('.row_label_text text')
         .classed('active', function(d, i) {
-        return i === p.pos_y;
+          return i === p.pos_y;
         });
 
       d3.selectAll('.col_label_text text')
         .classed('active', function(d, i) {
-        return i === p.pos_x;
+          return i === p.pos_x;
         });
       })
       .on('mouseout', function mouseout() {
-      d3.selectAll('text').classed('active', false);
+        d3.selectAll('text').classed('active', false);
       })
       .attr('title', function(d) {
         return d.value;
@@ -211,13 +210,13 @@ function Matrix(network_data, svg_elem, params) {
       .append('g')
       .attr('class', 'tile')
       .attr('transform', function(d) {
-      return 'translate(' + params.matrix.x_scale(d.pos_x) + ',0)';
+        return 'translate(' + params.matrix.x_scale(d.pos_x) + ',0)';
       });
 
     // append rect
     tile
       .append('rect')
-      // .attr('class','tile')
+      .attr('class','tile_group')
       .attr('width', params.matrix.x_scale.rangeBand())
       .attr('height', params.matrix.y_scale.rangeBand())
       .style('fill-opacity', function(d) {
@@ -247,7 +246,7 @@ function Matrix(network_data, svg_elem, params) {
         });
       })
       .on('mouseout', function mouseout() {
-      d3.selectAll('text').classed('active', false);
+        d3.selectAll('text').classed('active', false);
       })
       .attr('title', function(d) {
       return d.value;

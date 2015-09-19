@@ -478,7 +478,6 @@ function Matrix(network_data, svg_elem, params) {
 
     // generate tiles in the current row
     var tile = d3.select(this)
-      // data join
       .selectAll('rect')
       .data(row_data)
       .enter()
@@ -502,16 +501,16 @@ function Matrix(network_data, svg_elem, params) {
       // highlight row - set text to active if
       d3.selectAll('.row_label_text text')
         .classed('active', function(d, i) {
-        return i === p.pos_y;
+          return i === p.pos_y;
         });
 
       d3.selectAll('.col_label_text text')
         .classed('active', function(d, i) {
-        return i === p.pos_x;
+          return i === p.pos_x;
         });
       })
       .on('mouseout', function mouseout() {
-      d3.selectAll('text').classed('active', false);
+        d3.selectAll('text').classed('active', false);
       })
       .attr('title', function(d) {
         return d.value;
@@ -568,13 +567,13 @@ function Matrix(network_data, svg_elem, params) {
       .append('g')
       .attr('class', 'tile')
       .attr('transform', function(d) {
-      return 'translate(' + params.matrix.x_scale(d.pos_x) + ',0)';
+        return 'translate(' + params.matrix.x_scale(d.pos_x) + ',0)';
       });
 
     // append rect
     tile
       .append('rect')
-      // .attr('class','tile')
+      .attr('class','tile_group')
       .attr('width', params.matrix.x_scale.rangeBand())
       .attr('height', params.matrix.y_scale.rangeBand())
       .style('fill-opacity', function(d) {
@@ -604,7 +603,7 @@ function Matrix(network_data, svg_elem, params) {
         });
       })
       .on('mouseout', function mouseout() {
-      d3.selectAll('text').classed('active', false);
+        d3.selectAll('text').classed('active', false);
       })
       .attr('title', function(d) {
       return d.value;
@@ -1234,7 +1233,7 @@ function Labels(){
       .append('rect')
       .attr('fill', params.viz.background_color)
       .attr('width', params.norm_label.background.row)
-      .attr('height', params.viz.clust.dim.height + 'px')
+      .attr('height', 30*params.viz.clust.dim.height + 'px')
       .attr('class', 'white_bars');
 
     // container for row label groups 
@@ -1639,57 +1638,59 @@ function SuperLabels(){
 
   function make( params ){
 
-    // super col title
-    /////////////////////////////////////
-    // add super column title background
-    d3.select('#main_svg')
+  // super col title
+  /////////////////////////////////////
+  // add super column title background
+  d3.select('#main_svg')
     .append('rect')
     .attr('fill', params.viz.background_color) 
     .attr('height', params.labels.super_label_width + 'px')
     .attr('width', '3000px')
+    .attr('id','super_col_bkg')
     .attr('class', 'white_bars')
     .attr('transform', 'translate(0,' + params.viz.grey_border_width + ')');
 
-    // super col title
-    d3.select('#main_svg')
+  // super col title
+  d3.select('#main_svg')
     .append('text')
+    .attr('id','super_col')
     .text(params.labels.super.col)
     .attr('text-anchor', 'center')
     .attr('transform', function() {
       var inst_x = params.viz.clust.dim.width / 2 + params.norm_label.width
-        .row;
+      .row;
       var inst_y = params.labels.super_label_width - params.viz.uni_margin;
       return 'translate(' + inst_x + ',' + inst_y + ')';
     })
     .style('font-size', '14px')
     .style('font-weight', 300);
 
-    // super row title
-    /////////////////////////////////////
-    // add super row title background
-    d3.select('#main_svg')
+  // super row title
+  /////////////////////////////////////
+  d3.select('#main_svg')
     .append('rect')
     .attr('fill', params.viz.background_color) 
     .attr('width', params.labels.super_label_width + 'px')
     .attr('height', '3000px')
+    .attr('id','super_row_bkg')
     .attr('class', 'white_bars')
     .attr('transform', 'translate(' + params.viz.grey_border_width + ',0)');
 
-    // append super title row group
-    // this is used to separate translation from rotation
-    d3.select('#main_svg')
+  // append super title row group
+  // this is used to separate translation from rotation
+  d3.select('#main_svg')
     .append('g')
-    .attr('id', 'super_row_label')
+    .attr('id','super_row')
     .attr('transform', function() {
       // position in the middle of the clustergram
       var inst_x = params.labels.super_label_width - params.viz.uni_margin;
       var inst_y = params.viz.clust.dim.height / 2 + params.norm_label.width
-        .col;
+      .col;
       return 'translate(' + inst_x + ',' + inst_y + ')';
     });
 
-    // super row label (rotate the already translated title )
-    d3.select('#super_row_label')
+  // super row label (rotate the already translated title )
+  d3.select('#super_row')
     .append('text')
     .text(params.labels.super.row)
     .attr('text-anchor', 'center')
@@ -1700,7 +1701,7 @@ function SuperLabels(){
   }
 
   return {
-    make : make
+  make : make
   };
  }
 
@@ -2019,7 +2020,60 @@ function Viz(config) {
     // !! do not remake visualization on screen size, resize only 
     // viz.remake();
 
+    // reset zoom 
     // zoom.two_translate_zoom(0,0,1)
+    var zoom_y = 1;
+    var zoom_x = 1;
+    var pan_dx = 0;
+    var pan_dy = 0;
+
+
+    var half_height = params.viz.clust.dim.height / 2;
+    var center_y = -(zoom_y - 1) * half_height;
+      // transform clust group
+      ////////////////////////////
+      // d3.select('#clust_group')
+      viz.get_clust_group()
+        // first apply the margin transformation
+        // then zoom, then apply the final transformation
+        .attr('transform', 'translate(' + [0, 0 + center_y] + ')' +
+        ' scale(' + 1 + ',' + zoom_y + ')' + 'translate(' + [pan_dx,
+          pan_dy
+        ] + ')');
+
+      // transform row labels
+      d3.select('#row_labels')
+        .attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' +
+        zoom_y + ',' + zoom_y + ')' + 'translate(' + [0, pan_dy] + ')');
+
+      // transform row_label_triangles
+      // use the offset saved in params, only zoom in the y direction
+      d3.select('#row_label_triangles')
+        .attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' +
+        1 + ',' + zoom_y + ')' + 'translate(' + [0, pan_dy] + ')');
+
+      // transform col labels
+      d3.select('#col_labels')
+        .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [
+          pan_dx, 0
+        ] + ')');
+
+      // transform col_class
+      d3.select('#col_class')
+        .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [
+          pan_dx, 0
+        ] + ')');
+
+      // set y translate: center_y is positive, positive moves the visualization down
+      // the translate vector has the initial margin, the first y centering, and pan_dy
+      // times the scaling zoom_y
+      var net_y_offset = params.viz.clust.margin.top + center_y + pan_dy * zoom_y;
+
+      // reset the zoom translate and zoom
+      params.zoom.scale(zoom_y);
+      params.zoom.translate([pan_dx, net_y_offset]);
+
+
 
     // get outer_margins
     var outer_margins = params.viz.outer_margins;
@@ -2133,6 +2187,10 @@ function Viz(config) {
         return 'translate(' + params.matrix.x_scale(d.pos_x) + ',0)';
       });
 
+    svg_group.selectAll('.tile_group')
+      .attr('width', params.matrix.x_scale.rangeBand())
+      .attr('height', params.matrix.y_scale.rangeBand());
+
     svg_group.selectAll('.row')
       .attr('transform', function(d, index) {
         return 'translate(0,' + params.matrix.y_scale(index) + ')';
@@ -2173,9 +2231,9 @@ function Viz(config) {
       params.viz.clust.margin.top + ')');
 
     svg_group.select('#row_container')
-      .select('white_bars')
+      .select('.white_bars')
       .attr('width', params.norm_label.background.row)
-      .attr('height', params.viz.clust.dim.height + 'px');
+      .attr('height', 30*params.viz.clust.dim.height + 'px');
 
     svg_group.select('#row_container')
       .select('.label_container')
@@ -2184,7 +2242,10 @@ function Viz(config) {
     svg_group.selectAll('.row_label_text')
       .attr('transform', function(d, index) {
         return 'translate(0,' + params.matrix.y_scale(index) + ')';
-      })
+      });
+
+    svg_group.selectAll('.row_label_text')
+      .select('text')
       .attr('y', params.matrix.y_scale.rangeBand() * 0.75)
 
     svg_group.selectAll('.row_label_text')
@@ -2484,6 +2545,43 @@ function Viz(config) {
           .attr('x2', -params.viz.clust.dim.height)
           .style('stroke-width', params.viz.border_width + 'px');
 
+    // resize superlabels 
+    /////////////////////////////////////
+    svg_group.select('#super_col_bkg')
+      .attr('height', params.labels.super_label_width + 'px')
+      .attr('transform', 'translate(0,' + params.viz.grey_border_width + ')');
+
+    // super col title
+    svg_group.select('#super_col')
+      .attr('transform', function() {
+        var inst_x = params.viz.clust.dim.width / 2 + params.norm_label.width
+          .row;
+        var inst_y = params.labels.super_label_width - params.viz.uni_margin;
+        return 'translate(' + inst_x + ',' + inst_y + ')';
+      });
+
+    // super row title
+    svg_group.select('#super_row_bkg')
+      .attr('width', params.labels.super_label_width + 'px')
+      .attr('transform', 'translate(' + params.viz.grey_border_width + ',0)');
+
+    // append super title row group
+    svg_group.select('#super_row')
+      .attr('transform', function() {
+        var inst_x = params.labels.super_label_width - params.viz.uni_margin;
+        var inst_y = params.viz.clust.dim.height / 2 + params.norm_label.width
+          .col;
+        return 'translate(' + inst_x + ',' + inst_y + ')';
+      });
+
+    // // super row label (rotate the already translated title )
+    // d3.select('#super_row_label')
+    //   .append('text')
+    //   .text(params.labels.super.row)
+    //   .attr('text-anchor', 'center')
+    //   .attr('transform', 'rotate(-90)')
+    //   .style('font-size', '14px')
+    //   .style('font-weight', 300);    
 
     // resize spillover 
     //////////////////////////
@@ -3268,8 +3366,7 @@ function Zoom(params){
       // set y translate: center_y is positive, positive moves the visualization down
       // the translate vector has the initial margin, the first y centering, and pan_dy
       // times the scaling zoom_y
-      var net_y_offset = params.viz.clust.margin.top + center_y + pan_dy *
-        zoom_y;
+      var net_y_offset = params.viz.clust.margin.top + center_y + pan_dy * zoom_y;
 
       // reset the zoom translate and zoom
       params.zoom.scale(zoom_y);
