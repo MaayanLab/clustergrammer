@@ -2031,7 +2031,7 @@ function Viz(config) {
     // resize window
     if (params.viz.resize){
       d3.select(window).on('resize', function(){
-        d3.select('#main_svg').style('opacity',0.25);
+        d3.select('#main_svg').style('opacity',0.5);
         var wait_time = 500;
         if (params.viz.run_trans == true){
           wait_time = 2500;
@@ -2042,7 +2042,7 @@ function Viz(config) {
 
     if (params.viz.expand_button){
 
-      var expand_opacity = 0.5;
+      var expand_opacity = 0.4;
       // add expand button 
       d3.select('#main_svg').append('text')
         .attr('text-anchor', 'middle')
@@ -2057,7 +2057,7 @@ function Viz(config) {
         .attr('x','25px')
         .style('opacity',expand_opacity)
         .on('mouseover',function(){
-          d3.select(this).style('opacity',1);
+          d3.select(this).style('opacity',0.75);
         })
         .on('mouseout',function(){
           d3.select(this).style('opacity',expand_opacity);
@@ -2088,8 +2088,10 @@ function Viz(config) {
 
           }
 
+          // get updated size for visualization 
           params.viz.parent_div_size_pos(params);
-          d3.select('#main_svg').style('opacity',0.25);
+
+          d3.select('#main_svg').style('opacity',0.5);
           var wait_time = 500;
           if (params.viz.run_trans == true){
             wait_time = 2500;
