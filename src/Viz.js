@@ -177,13 +177,63 @@ function Viz(config) {
         d3.select('#main_svg').style('opacity',0.25);
         // d3.select('#wait_message').style('display','block');
         var wait_time = 500;
-        console.log(params.viz.run_trans)
         if (params.viz.run_trans == true){
           wait_time = 2500;
         }
         setTimeout(reset_visualization_size, wait_time);
       });
     }
+
+    var expand_opacity = 0.5;
+    // add expand button 
+    d3.select('#main_svg').append('text')
+      .attr('text-anchor', 'middle')
+      .attr('dominant-baseline', 'central')
+      .attr('font-family', 'FontAwesome')
+      .attr('font-size', '30px')
+      .text(function(d) { 
+        // expand button 
+        return '\uf0b2'; 
+      })
+      .attr('y','25px')
+      .attr('x','25px')
+      .style('opacity',expand_opacity)
+      .on('mouseover',function(){
+        d3.select(this).style('opacity',1);
+      })
+      .on('mouseout',function(){
+        d3.select(this).style('opacity',expand_opacity);
+      })
+      .on('click',function(){
+
+        if (params.viz.expand === false){
+
+          d3.select('#clust_instruct_container')
+            .style('display','none');
+          d3.select(this)
+            .text(function(d){
+              // menu button
+              return '\uf0c9'; 
+            });
+          params.viz.expand = true;
+          console.log(params.viz.expand)
+
+        } else {
+
+          d3.select('#clust_instruct_container')
+            .style('display','block');
+          d3.select(this)
+            .text(function(d){
+              // expand button 
+              return '\uf0b2'; 
+            });
+          params.viz.expand = false;
+
+        }
+
+        params.viz.parent_div_size_pos(params);
+        reset_visualization_size();
+      });
 
     // initialize double click zoom for matrix 
     zoom.ini_doubleclick();
@@ -193,6 +243,8 @@ function Viz(config) {
 
     // !! do not remake visualization on screen size, resize only 
     // viz.remake();
+
+    console.log('resetting visualization size')
 
     // reset zoom 
     // zoom.two_translate_zoom(0,0,1)
@@ -204,53 +256,56 @@ function Viz(config) {
 
     var half_height = params.viz.clust.dim.height / 2;
     var center_y = -(zoom_y - 1) * half_height;
-      // transform clust group
-      ////////////////////////////
-      // d3.select('#clust_group')
-      viz.get_clust_group()
-        // first apply the margin transformation
-        // then zoom, then apply the final transformation
-        .attr('transform', 'translate(' + [0, 0 + center_y] + ')' +
-        ' scale(' + 1 + ',' + zoom_y + ')' + 'translate(' + [pan_dx,
-          pan_dy
-        ] + ')');
 
-      // transform row labels
-      d3.select('#row_labels')
-        .attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' +
-        zoom_y + ',' + zoom_y + ')' + 'translate(' + [0, pan_dy] + ')');
+    // transform clust group
+    ////////////////////////////
+    // d3.select('#clust_group')
+    viz.get_clust_group()
+      // first apply the margin transformation
+      // then zoom, then apply the final transformation
+      .attr('transform', 'translate(' + [0, 0 + center_y] + ')' +
+      ' scale(' + 1 + ',' + zoom_y + ')' + 'translate(' + [pan_dx,
+        pan_dy
+      ] + ')');
 
-      // transform row_label_triangles
-      // use the offset saved in params, only zoom in the y direction
-      d3.select('#row_label_triangles')
-        .attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' +
-        1 + ',' + zoom_y + ')' + 'translate(' + [0, pan_dy] + ')');
+    // transform row labels
+    d3.select('#row_labels')
+      .attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' +
+      zoom_y + ',' + zoom_y + ')' + 'translate(' + [0, pan_dy] + ')');
 
-      // transform col labels
-      d3.select('#col_labels')
-        .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [
-          pan_dx, 0
-        ] + ')');
+    // transform row_label_triangles
+    // use the offset saved in params, only zoom in the y direction
+    d3.select('#row_label_triangles')
+      .attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' +
+      1 + ',' + zoom_y + ')' + 'translate(' + [0, pan_dy] + ')');
 
-      // transform col_class
-      d3.select('#col_class')
-        .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [
-          pan_dx, 0
-        ] + ')');
+    // transform col labels
+    d3.select('#col_labels')
+      .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [
+        pan_dx, 0
+      ] + ')');
 
-      // set y translate: center_y is positive, positive moves the visualization down
-      // the translate vector has the initial margin, the first y centering, and pan_dy
-      // times the scaling zoom_y
-      var net_y_offset = params.viz.clust.margin.top + center_y + pan_dy * zoom_y;
+    // transform col_class
+    d3.select('#col_class')
+      .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [
+        pan_dx, 0
+      ] + ')');
 
-      // reset the zoom translate and zoom
-      params.zoom.scale(zoom_y);
-      params.zoom.translate([pan_dx, net_y_offset]);
+    // set y translate: center_y is positive, positive moves the visualization down
+    // the translate vector has the initial margin, the first y centering, and pan_dy
+    // times the scaling zoom_y
+    var net_y_offset = params.viz.clust.margin.top + center_y + pan_dy * zoom_y;
 
-
+    // reset the zoom translate and zoom
+    params.zoom.scale(zoom_y);
+    params.zoom.translate([pan_dx, net_y_offset]);
 
     // get outer_margins
-    var outer_margins = params.viz.outer_margins;
+    if ( params.viz.expand == false ){
+      var outer_margins = params.viz.outer_margins;
+    } else {
+      var outer_margins = params.viz.outer_margins_expand;
+    }    
 
     // get the size of the window
     var screen_width  = window.innerWidth;
@@ -328,6 +383,9 @@ function Viz(config) {
     if (params.viz.zoom_switch < 1) {
       params.viz.zoom_switch = 1;
     }
+
+    // calculate the zoom factor - the more nodes the more zooming allowed
+    params.viz.real_zoom = params.viz.real_zoom_scale_col(params.viz.num_col_nodes) * params.viz.real_zoom_scale_screen(params.viz.clust.dim.width);
 
     // resize the svg 
     ///////////////////////

@@ -59,6 +59,11 @@ function Spillover( params, container_all_col ){
       .attr('class', 'white_bars')
       .attr('id','right_spillover');
 
+    if (params.viz.prevent_col_stretch(params.viz.num_col_nodes) < 1){
+      d3.select('#main_svg').select('#right_spillover').style('opacity',0);
+      d3.select('#main_svg').select('#right_slant_triangle').style('opacity',0);
+    }
+
     // white border bottom - prevent clustergram from hitting border
     ///////////////////////////////////////////////////////////////////
     d3.select('#main_svg')

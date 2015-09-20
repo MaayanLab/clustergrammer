@@ -48,6 +48,7 @@ function VizParams(config){
     params.viz.super_border_color = config.super_border_color;
     // margin widths 
     params.viz.outer_margins = config.outer_margins;
+    params.viz.outer_margins_expand = config.outer_margins_expand;
     params.viz.uni_margin = config.uni_margin;
     params.viz.grey_border_width = config.grey_border_width;
     params.viz.show_dendrogram = config.show_dendrogram;
@@ -55,14 +56,17 @@ function VizParams(config){
     // initial order of clustergram 
     params.viz.inst_order = config.inst_order;
 
+    params.viz.expand = false;
+
     // pass network_data to params
     params.network_data = config.network_data;
 
     var network_data = params.network_data;
 
-    // only resize if allowed
+    // resize based on parent div 
     parent_div_size_pos(params);
 
+    params.viz.parent_div_size_pos = parent_div_size_pos;
 
     // Variable Label Widths
     // based on the length of the row/col labels - longer labels mean more space given
@@ -154,7 +158,7 @@ function VizParams(config){
     // the visualization dimensions can be smaller than the svg
     // if there are not many rows the clustergram width will be reduced, but not the svg width
     //!! needs to be improved
-    var prevent_col_stretch = d3.scale.linear()
+    params.viz.prevent_col_stretch = d3.scale.linear()
       .domain([1, 20]).range([0.05,1]).clamp('true');
 
     params.viz.num_col_nodes = col_nodes.length;
@@ -162,7 +166,7 @@ function VizParams(config){
 
     // clust_dim - clustergram dimensions (the clustergram is smaller than the svg)
     params.viz.clust.dim = {};
-    params.viz.clust.dim.width = ini_clust_width * prevent_col_stretch(params.viz.num_col_nodes);
+    params.viz.clust.dim.width = ini_clust_width * params.viz.prevent_col_stretch(params.viz.num_col_nodes);
 
     // clustergram height
     ////////////////////////
@@ -294,20 +298,20 @@ function VizParams(config){
 
     // set up the real zoom (2d zoom) as a function of the number of col_nodes
     // since these are the nodes that are zoomed into in 2d zooming
-    var real_zoom_scale_col = d3.scale
+    params.viz.real_zoom_scale_col = d3.scale
       .linear()
       .domain([min_node_num,max_node_num])
       .range([2, 10]).clamp('true');
 
     // scale the zoom based on the screen size
     // smaller screens can zoom in more, compensates for reduced font size with small screen
-    var real_zoom_scale_screen = d3.scale
+    params.viz.real_zoom_scale_screen = d3.scale
       .linear()
       .domain([min_viz_width,max_viz_width])
       .range([2, 1]).clamp('true');
 
     // calculate the zoom factor - the more nodes the more zooming allowed
-    params.viz.real_zoom = real_zoom_scale_col(params.viz.num_col_nodes) * real_zoom_scale_screen(params.viz.clust.dim.width);
+    params.viz.real_zoom = params.viz.real_zoom_scale_col(params.viz.num_col_nodes) * params.viz.real_zoom_scale_screen(params.viz.clust.dim.width);
 
     // set opacity scale
     var max_link = _.max(network_data.links, function(d) {
@@ -365,11 +369,18 @@ function VizParams(config){
   // parent_div: size and position svg container - svg_div
   function parent_div_size_pos(params) {
 
-    console.log('inside parent_div_size_pos')
+    // get outer_margins
+    if ( params.viz.expand == false ){
+      var outer_margins = params.viz.outer_margins;
+    } else {
+      var outer_margins = params.viz.outer_margins_expand;
+    }
+
+    console.log(outer_margins)
 
     if (params.viz.resize) {
-      // get outer_margins
-      var outer_margins = params.viz.outer_margins;
+
+      console.log('here')
 
       // get the size of the window
       var screen_width  = window.innerWidth;
@@ -388,8 +399,6 @@ function VizParams(config){
           .style('height', cont_dim.height + 'px');
           
     } else {
-      // get outer_margins
-      outer_margins = params.viz.outer_margins;
 
       // size the svg container div - svg_div
       d3.select('#' + params.viz.svg_div_id)

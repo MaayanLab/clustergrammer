@@ -12,6 +12,13 @@ $(function() {
         'right':2
       };
 
+    var outer_margins_expand = {
+        'top':5,
+        'bottom':33,
+        'left':5,
+        'right':2
+      };  
+
     // define callback function for clicking on tile
     function click_tile_callback(tile_info){
       console.log('my callback');
@@ -33,6 +40,7 @@ $(function() {
       'row_label':'Row-Data-Name',
       'col_label':'Column-Data-Name',
       'outer_margins': outer_margins,
+      'outer_margins_expand': outer_margins_expand
       // 'row_label_scale':0.5
       // 'force_square':1
       // 'opacity_scale':'log',

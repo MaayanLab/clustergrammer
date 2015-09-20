@@ -72,6 +72,12 @@ function Config(args) {
       left: 0,
       right: 0
     },
+    outer_margins_expand:{
+      top: 0,
+      bottom: 0,
+      left: 0,
+      right: 0
+    },
     // Gray border around the visualization
     grey_border_width: 3,
     // the distance between labels and clustergram
@@ -863,6 +869,7 @@ function VizParams(config){
     params.viz.super_border_color = config.super_border_color;
     // margin widths 
     params.viz.outer_margins = config.outer_margins;
+    params.viz.outer_margins_expand = config.outer_margins_expand;
     params.viz.uni_margin = config.uni_margin;
     params.viz.grey_border_width = config.grey_border_width;
     params.viz.show_dendrogram = config.show_dendrogram;
@@ -870,14 +877,17 @@ function VizParams(config){
     // initial order of clustergram 
     params.viz.inst_order = config.inst_order;
 
+    params.viz.expand = false;
+
     // pass network_data to params
     params.network_data = config.network_data;
 
     var network_data = params.network_data;
 
-    // only resize if allowed
+    // resize based on parent div 
     parent_div_size_pos(params);
 
+    params.viz.parent_div_size_pos = parent_div_size_pos;
 
     // Variable Label Widths
     // based on the length of the row/col labels - longer labels mean more space given
@@ -969,7 +979,7 @@ function VizParams(config){
     // the visualization dimensions can be smaller than the svg
     // if there are not many rows the clustergram width will be reduced, but not the svg width
     //!! needs to be improved
-    var prevent_col_stretch = d3.scale.linear()
+    params.viz.prevent_col_stretch = d3.scale.linear()
       .domain([1, 20]).range([0.05,1]).clamp('true');
 
     params.viz.num_col_nodes = col_nodes.length;
@@ -977,7 +987,7 @@ function VizParams(config){
 
     // clust_dim - clustergram dimensions (the clustergram is smaller than the svg)
     params.viz.clust.dim = {};
-    params.viz.clust.dim.width = ini_clust_width * prevent_col_stretch(params.viz.num_col_nodes);
+    params.viz.clust.dim.width = ini_clust_width * params.viz.prevent_col_stretch(params.viz.num_col_nodes);
 
     // clustergram height
     ////////////////////////
@@ -1109,20 +1119,20 @@ function VizParams(config){
 
     // set up the real zoom (2d zoom) as a function of the number of col_nodes
     // since these are the nodes that are zoomed into in 2d zooming
-    var real_zoom_scale_col = d3.scale
+    params.viz.real_zoom_scale_col = d3.scale
       .linear()
       .domain([min_node_num,max_node_num])
       .range([2, 10]).clamp('true');
 
     // scale the zoom based on the screen size
     // smaller screens can zoom in more, compensates for reduced font size with small screen
-    var real_zoom_scale_screen = d3.scale
+    params.viz.real_zoom_scale_screen = d3.scale
       .linear()
       .domain([min_viz_width,max_viz_width])
       .range([2, 1]).clamp('true');
 
     // calculate the zoom factor - the more nodes the more zooming allowed
-    params.viz.real_zoom = real_zoom_scale_col(params.viz.num_col_nodes) * real_zoom_scale_screen(params.viz.clust.dim.width);
+    params.viz.real_zoom = params.viz.real_zoom_scale_col(params.viz.num_col_nodes) * params.viz.real_zoom_scale_screen(params.viz.clust.dim.width);
 
     // set opacity scale
     var max_link = _.max(network_data.links, function(d) {
@@ -1180,11 +1190,18 @@ function VizParams(config){
   // parent_div: size and position svg container - svg_div
   function parent_div_size_pos(params) {
 
-    console.log('inside parent_div_size_pos')
+    // get outer_margins
+    if ( params.viz.expand == false ){
+      var outer_margins = params.viz.outer_margins;
+    } else {
+      var outer_margins = params.viz.outer_margins_expand;
+    }
+
+    console.log(outer_margins)
 
     if (params.viz.resize) {
-      // get outer_margins
-      var outer_margins = params.viz.outer_margins;
+
+      console.log('here')
 
       // get the size of the window
       var screen_width  = window.innerWidth;
@@ -1203,8 +1220,6 @@ function VizParams(config){
           .style('height', cont_dim.height + 'px');
           
     } else {
-      // get outer_margins
-      outer_margins = params.viz.outer_margins;
 
       // size the svg container div - svg_div
       d3.select('#' + params.viz.svg_div_id)
@@ -1766,6 +1781,11 @@ function Spillover( params, container_all_col ){
       .attr('class', 'white_bars')
       .attr('id','right_spillover');
 
+    if (params.viz.prevent_col_stretch(params.viz.num_col_nodes) < 1){
+      d3.select('#main_svg').select('#right_spillover').style('opacity',0);
+      d3.select('#main_svg').select('#right_slant_triangle').style('opacity',0);
+    }
+
     // white border bottom - prevent clustergram from hitting border
     ///////////////////////////////////////////////////////////////////
     d3.select('#main_svg')
@@ -2010,13 +2030,63 @@ function Viz(config) {
         d3.select('#main_svg').style('opacity',0.25);
         // d3.select('#wait_message').style('display','block');
         var wait_time = 500;
-        console.log(params.viz.run_trans)
         if (params.viz.run_trans == true){
           wait_time = 2500;
         }
         setTimeout(reset_visualization_size, wait_time);
       });
     }
+
+    var expand_opacity = 0.5;
+    // add expand button 
+    d3.select('#main_svg').append('text')
+      .attr('text-anchor', 'middle')
+      .attr('dominant-baseline', 'central')
+      .attr('font-family', 'FontAwesome')
+      .attr('font-size', '30px')
+      .text(function(d) { 
+        // expand button 
+        return '\uf0b2'; 
+      })
+      .attr('y','25px')
+      .attr('x','25px')
+      .style('opacity',expand_opacity)
+      .on('mouseover',function(){
+        d3.select(this).style('opacity',1);
+      })
+      .on('mouseout',function(){
+        d3.select(this).style('opacity',expand_opacity);
+      })
+      .on('click',function(){
+
+        if (params.viz.expand === false){
+
+          d3.select('#clust_instruct_container')
+            .style('display','none');
+          d3.select(this)
+            .text(function(d){
+              // menu button
+              return '\uf0c9'; 
+            });
+          params.viz.expand = true;
+          console.log(params.viz.expand)
+
+        } else {
+
+          d3.select('#clust_instruct_container')
+            .style('display','block');
+          d3.select(this)
+            .text(function(d){
+              // expand button 
+              return '\uf0b2'; 
+            });
+          params.viz.expand = false;
+
+        }
+
+        params.viz.parent_div_size_pos(params);
+        reset_visualization_size();
+      });
 
     // initialize double click zoom for matrix 
     zoom.ini_doubleclick();
@@ -2026,6 +2096,8 @@ function Viz(config) {
 
     // !! do not remake visualization on screen size, resize only 
     // viz.remake();
+
+    console.log('resetting visualization size')
 
     // reset zoom 
     // zoom.two_translate_zoom(0,0,1)
@@ -2037,53 +2109,56 @@ function Viz(config) {
 
     var half_height = params.viz.clust.dim.height / 2;
     var center_y = -(zoom_y - 1) * half_height;
-      // transform clust group
-      ////////////////////////////
-      // d3.select('#clust_group')
-      viz.get_clust_group()
-        // first apply the margin transformation
-        // then zoom, then apply the final transformation
-        .attr('transform', 'translate(' + [0, 0 + center_y] + ')' +
-        ' scale(' + 1 + ',' + zoom_y + ')' + 'translate(' + [pan_dx,
-          pan_dy
-        ] + ')');
 
-      // transform row labels
-      d3.select('#row_labels')
-        .attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' +
-        zoom_y + ',' + zoom_y + ')' + 'translate(' + [0, pan_dy] + ')');
+    // transform clust group
+    ////////////////////////////
+    // d3.select('#clust_group')
+    viz.get_clust_group()
+      // first apply the margin transformation
+      // then zoom, then apply the final transformation
+      .attr('transform', 'translate(' + [0, 0 + center_y] + ')' +
+      ' scale(' + 1 + ',' + zoom_y + ')' + 'translate(' + [pan_dx,
+        pan_dy
+      ] + ')');
 
-      // transform row_label_triangles
-      // use the offset saved in params, only zoom in the y direction
-      d3.select('#row_label_triangles')
-        .attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' +
-        1 + ',' + zoom_y + ')' + 'translate(' + [0, pan_dy] + ')');
+    // transform row labels
+    d3.select('#row_labels')
+      .attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' +
+      zoom_y + ',' + zoom_y + ')' + 'translate(' + [0, pan_dy] + ')');
 
-      // transform col labels
-      d3.select('#col_labels')
-        .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [
-          pan_dx, 0
-        ] + ')');
+    // transform row_label_triangles
+    // use the offset saved in params, only zoom in the y direction
+    d3.select('#row_label_triangles')
+      .attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' +
+      1 + ',' + zoom_y + ')' + 'translate(' + [0, pan_dy] + ')');
 
-      // transform col_class
-      d3.select('#col_class')
-        .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [
-          pan_dx, 0
-        ] + ')');
+    // transform col labels
+    d3.select('#col_labels')
+      .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [
+        pan_dx, 0
+      ] + ')');
 
-      // set y translate: center_y is positive, positive moves the visualization down
-      // the translate vector has the initial margin, the first y centering, and pan_dy
-      // times the scaling zoom_y
-      var net_y_offset = params.viz.clust.margin.top + center_y + pan_dy * zoom_y;
+    // transform col_class
+    d3.select('#col_class')
+      .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [
+        pan_dx, 0
+      ] + ')');
 
-      // reset the zoom translate and zoom
-      params.zoom.scale(zoom_y);
-      params.zoom.translate([pan_dx, net_y_offset]);
+    // set y translate: center_y is positive, positive moves the visualization down
+    // the translate vector has the initial margin, the first y centering, and pan_dy
+    // times the scaling zoom_y
+    var net_y_offset = params.viz.clust.margin.top + center_y + pan_dy * zoom_y;
 
-
+    // reset the zoom translate and zoom
+    params.zoom.scale(zoom_y);
+    params.zoom.translate([pan_dx, net_y_offset]);
 
     // get outer_margins
-    var outer_margins = params.viz.outer_margins;
+    if ( params.viz.expand == false ){
+      var outer_margins = params.viz.outer_margins;
+    } else {
+      var outer_margins = params.viz.outer_margins_expand;
+    }    
 
     // get the size of the window
     var screen_width  = window.innerWidth;
@@ -2161,6 +2236,9 @@ function Viz(config) {
     if (params.viz.zoom_switch < 1) {
       params.viz.zoom_switch = 1;
     }
+
+    // calculate the zoom factor - the more nodes the more zooming allowed
+    params.viz.real_zoom = params.viz.real_zoom_scale_col(params.viz.num_col_nodes) * params.viz.real_zoom_scale_screen(params.viz.clust.dim.width);
 
     // resize the svg 
     ///////////////////////
