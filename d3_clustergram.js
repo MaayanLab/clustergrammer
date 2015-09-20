@@ -73,7 +73,7 @@ function Config(args) {
       right: 0
     },
     outer_margins_expand:{
-      top: 0,
+      top: -666,
       bottom: 0,
       left: 0,
       right: 0
@@ -89,6 +89,12 @@ function Config(args) {
 
   // Mixin defaults with user-defined arguments.
   config = Utils.extend(defaults, args);
+
+  if (config.outer_margins_expand.top === -666){
+    config.expand_button = false;
+  } else {
+    config.expand_button = true;
+  }
 
   // save network_data to config 
   // extend does not properly pass network_data 
@@ -877,7 +883,9 @@ function VizParams(config){
     // initial order of clustergram 
     params.viz.inst_order = config.inst_order;
 
+    // not initialized in expand state
     params.viz.expand = false;
+    params.viz.expand_button = config.expand_button;
 
     // pass network_data to params
     params.network_data = config.network_data;
@@ -1197,11 +1205,7 @@ function VizParams(config){
       var outer_margins = params.viz.outer_margins_expand;
     }
 
-    console.log(outer_margins)
-
     if (params.viz.resize) {
-
-      console.log('here')
 
       // get the size of the window
       var screen_width  = window.innerWidth;
@@ -1218,7 +1222,7 @@ function VizParams(config){
           .style('margin-top',  outer_margins.top  + 'px')
           .style('width',  cont_dim.width  + 'px')
           .style('height', cont_dim.height + 'px');
-          
+
     } else {
 
       // size the svg container div - svg_div
@@ -2037,56 +2041,58 @@ function Viz(config) {
       });
     }
 
-    var expand_opacity = 0.5;
-    // add expand button 
-    d3.select('#main_svg').append('text')
-      .attr('text-anchor', 'middle')
-      .attr('dominant-baseline', 'central')
-      .attr('font-family', 'FontAwesome')
-      .attr('font-size', '30px')
-      .text(function(d) { 
-        // expand button 
-        return '\uf0b2'; 
-      })
-      .attr('y','25px')
-      .attr('x','25px')
-      .style('opacity',expand_opacity)
-      .on('mouseover',function(){
-        d3.select(this).style('opacity',1);
-      })
-      .on('mouseout',function(){
-        d3.select(this).style('opacity',expand_opacity);
-      })
-      .on('click',function(){
+    if (params.viz.expand_button){
 
-        if (params.viz.expand === false){
+      var expand_opacity = 0.5;
+      // add expand button 
+      d3.select('#main_svg').append('text')
+        .attr('text-anchor', 'middle')
+        .attr('dominant-baseline', 'central')
+        .attr('font-family', 'FontAwesome')
+        .attr('font-size', '30px')
+        .text(function(d) { 
+          // expand button 
+          return '\uf0b2'; 
+        })
+        .attr('y','25px')
+        .attr('x','25px')
+        .style('opacity',expand_opacity)
+        .on('mouseover',function(){
+          d3.select(this).style('opacity',1);
+        })
+        .on('mouseout',function(){
+          d3.select(this).style('opacity',expand_opacity);
+        })
+        .on('click',function(){
 
-          d3.select('#clust_instruct_container')
-            .style('display','none');
-          d3.select(this)
-            .text(function(d){
-              // menu button
-              return '\uf0c9'; 
-            });
-          params.viz.expand = true;
-          console.log(params.viz.expand)
+          if (params.viz.expand === false){
 
-        } else {
+            d3.select('#clust_instruct_container')
+              .style('display','none');
+            d3.select(this)
+              .text(function(d){
+                // menu button
+                return '\uf0c9'; 
+              });
+            params.viz.expand = true;
 
-          d3.select('#clust_instruct_container')
-            .style('display','block');
-          d3.select(this)
-            .text(function(d){
-              // expand button 
-              return '\uf0b2'; 
-            });
-          params.viz.expand = false;
+          } else {
 
-        }
+            d3.select('#clust_instruct_container')
+              .style('display','block');
+            d3.select(this)
+              .text(function(d){
+                // expand button 
+                return '\uf0b2'; 
+              });
+            params.viz.expand = false;
 
-        params.viz.parent_div_size_pos(params);
-        reset_visualization_size();
-      });
+          }
+
+          params.viz.parent_div_size_pos(params);
+          reset_visualization_size();
+        });
+    }
 
     // initialize double click zoom for matrix 
     zoom.ini_doubleclick();
@@ -2096,8 +2102,6 @@ function Viz(config) {
 
     // !! do not remake visualization on screen size, resize only 
     // viz.remake();
-
-    console.log('resetting visualization size')
 
     // reset zoom 
     // zoom.two_translate_zoom(0,0,1)

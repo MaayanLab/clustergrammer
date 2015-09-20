@@ -56,7 +56,9 @@ function VizParams(config){
     // initial order of clustergram 
     params.viz.inst_order = config.inst_order;
 
+    // not initialized in expand state
     params.viz.expand = false;
+    params.viz.expand_button = config.expand_button;
 
     // pass network_data to params
     params.network_data = config.network_data;
@@ -376,11 +378,7 @@ function VizParams(config){
       var outer_margins = params.viz.outer_margins_expand;
     }
 
-    console.log(outer_margins)
-
     if (params.viz.resize) {
-
-      console.log('here')
 
       // get the size of the window
       var screen_width  = window.innerWidth;
@@ -397,7 +395,7 @@ function VizParams(config){
           .style('margin-top',  outer_margins.top  + 'px')
           .style('width',  cont_dim.width  + 'px')
           .style('height', cont_dim.height + 'px');
-          
+
     } else {
 
       // size the svg container div - svg_div

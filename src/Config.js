@@ -36,7 +36,7 @@ function Config(args) {
       right: 0
     },
     outer_margins_expand:{
-      top: 0,
+      top: -666,
       bottom: 0,
       left: 0,
       right: 0
@@ -52,6 +52,12 @@ function Config(args) {
 
   // Mixin defaults with user-defined arguments.
   config = Utils.extend(defaults, args);
+
+  if (config.outer_margins_expand.top === -666){
+    config.expand_button = false;
+  } else {
+    config.expand_button = true;
+  }
 
   // save network_data to config 
   // extend does not properly pass network_data 
