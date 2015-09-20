@@ -175,7 +175,6 @@ function Viz(config) {
     if (params.viz.resize){
       d3.select(window).on('resize', function(){
         d3.select('#main_svg').style('opacity',0.25);
-        // d3.select('#wait_message').style('display','block');
         var wait_time = 500;
         if (params.viz.run_trans == true){
           wait_time = 2500;
@@ -233,7 +232,12 @@ function Viz(config) {
           }
 
           params.viz.parent_div_size_pos(params);
-          reset_visualization_size();
+          d3.select('#main_svg').style('opacity',0.25);
+          var wait_time = 500;
+          if (params.viz.run_trans == true){
+            wait_time = 2500;
+          }
+          setTimeout(reset_visualization_size, wait_time);
         });
     }
 
