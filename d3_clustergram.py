@@ -52,7 +52,7 @@ class Network(object):
     for i in range(len(lines)):
 
       # get inst_line
-      inst_line = lines[i].split('\t')
+      inst_line = lines[i].rstrip().split('\t')
       # strip each element 
       inst_line = [z.strip() for z in inst_line]
 

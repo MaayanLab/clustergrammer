@@ -74,11 +74,17 @@ text.active {
 /* gene search box */
 #gene_search_box{
   width:120px;
+  float: left;
+}
+#submit_gene_button{
+  padding-top: 6px;
+  padding-bottom: 6px;
 }
 
 /* gene search button */
 #gene_search_button{
-  margin-top:4px;
+  margin-left:4px;
+  float: left;
 }
 
 /*reduce the padding on the buttons*/
