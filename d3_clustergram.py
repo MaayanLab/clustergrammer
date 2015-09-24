@@ -92,23 +92,23 @@ class Network(object):
 
         # add rows to matrix
         if i > 1: 
-          self.dat['mat']  = np.vstack( ( self.dat['mat'], inst_data_row ) )
+          self.dat['mat'] = np.vstack( ( self.dat['mat'], inst_data_row ) )
 
   def load_hgram(self, filename):
     import numpy as np
 
     # example data format 
     ###########################
-    #   #  #  DatasetName  Achilles Cell Line Gene Essentiality Profiles
-    #   #  #  DatasetGroup  disease or phenotype associations
-    #   GeneSym  NA  NA/DatasetID  1
-    #   1060P11.3  na  na  0
-    #   3.8-1.2  na  na  0
-    #   3.8-1.5  na  na  0
+    #   # # DatasetName Achilles Cell Line Gene Essentiality Profiles
+    #   # # DatasetGroup  disease or phenotype associations
+    #   GeneSym NA  NA/DatasetID  1
+    #   1060P11.3 na  na  0
+    #   3.8-1.2 na  na  0
+    #   3.8-1.5 na  na  0
     #   A1BG  na  na  0
     #   A1BG-AS1  na  na  0
     #   A1CF  na  na  0
-    #   A2M  na  na  0  
+    #   A2M na  na  0 
 
     # processing steps
     # line 1 has dataset names starting on 4th column 
@@ -193,6 +193,131 @@ class Network(object):
     print('there are ' + str(len(self.dat['nodes']['col'])) + ' resources\n' )
     print('matrix shape')
     print(self.dat['mat'].shape)
+
+  def load_l1000cds2(self, l1000cds2):
+    import scipy
+    import numpy as np
+    
+    # process gene set result 
+    if 'upGenes' in l1000cds2['input']['data']:
+
+      # add the names from all the results 
+      all_results = l1000cds2['result']
+
+      # grab col nodes - input sig and drugs 
+      self.dat['nodes']['col'] = []
+
+      for i in range(len(all_results)):
+        inst_result = all_results[i]
+        self.dat['nodes']['col'].append(inst_result['name']+'#'+str(i))
+
+        self.dat['node_info']['col']['value'].append(inst_result['score'])
+
+        for type_overlap in inst_result['overlap']:
+          self.dat['nodes']['row'].extend( inst_result['overlap'][type_overlap] )
+
+
+      self.dat['nodes']['row'] = sorted(list(set(self.dat['nodes']['row'])))
+
+      # initialize the matrix 
+      self.dat['mat'] = scipy.zeros([ len(self.dat['nodes']['row']), len(self.dat['nodes']['col']) ])
+
+      # fill in the matrix with l10000 data 
+      ########################################
+
+      # fill in gene sigature as first column 
+      for i in range(len(self.dat['nodes']['row'])):
+
+        inst_gene = self.dat['nodes']['row'][i]
+
+        # get gene index 
+        inst_gene_index = self.dat['nodes']['row'].index(inst_gene)
+
+        # if gene is in up add 1 otherwise add -1 
+        if inst_gene in l1000cds2['input']['data']['upGenes']:
+          self.dat['node_info']['row']['value'].append(1)
+        else:
+          self.dat['node_info']['row']['value'].append(-1)
+
+        # add class
+        # self.dat['node_info']['row']['cl'].append(0)
+
+      # save the name as a class
+      for i in range(len(self.dat['nodes']['col'])):  
+        self.dat['node_info']['col']['cl'].append(self.dat['nodes']['col'][i])
+
+      # loop through drug results 
+      for inst_result_index in range(len(all_results)):
+
+        inst_result = all_results[inst_result_index]
+
+        # if up/dn then it should be negative since the drug is dn 
+        for inst_dn in inst_result['overlap']['up/dn']:
+
+          # get gene index 
+          inst_gene_index = self.dat['nodes']['row'].index(inst_dn)
+
+          # save -1 to gene row and drug column 
+          self.dat['mat'][ inst_gene_index, inst_result_index ] = -1 
+         
+        # if dn/up then it should be positive since the drug is up 
+        for inst_up in inst_result['overlap']['dn/up']:
+
+          # get gene index
+          inst_gene_index = self.dat['nodes']['row'].index(inst_up)
+
+          # save 1 to gene row and drug column 
+          self.dat['mat'][ inst_gene_index, inst_result_index ] = 1
+
+    # process a characteristic direction vector result
+    else:
+      all_results = l1000cds2['result']
+
+      # get gene names 
+      self.dat['nodes']['row'] = l1000cds2['input']['data']['up']['genes'] + l1000cds2['input']['data']['dn']['genes']
+
+      # save gene expression values 
+      tmp_exp_vect = l1000cds2['input']['data']['up']['vals'] + l1000cds2['input']['data']['dn']['vals']
+      for i in range(len(self.dat['nodes']['row'])):
+        self.dat['node_info']['row']['value'].append(tmp_exp_vect[i])
+
+      # gather result names 
+      for i in range(len(all_results)):
+
+        inst_result = all_results[i]
+        # add result to list 
+        self.dat['nodes']['col'].append(inst_result['name']+'#'+str(i))
+        self.dat['node_info']['col']['cl'].append(inst_result['name'])
+
+        # reverse signature, score [1,2]
+        if l1000cds2['input']['aggravate'] == False:
+          self.dat['node_info']['col']['value'].append( inst_result['score']-1 )
+        else:
+          self.dat['node_info']['col']['value'].append( 1 - inst_result['score'] )
+
+        # concat up and down lists 
+        inst_vect = inst_result['overlap']['up'] + inst_result['overlap']['dn']
+        inst_vect = np.transpose(np.asarray(inst_vect))
+
+        inst_vect = inst_vect.reshape(-1,1)
+
+        print(inst_vect)
+
+        # np.hstack((a,b))
+
+        # initialize or add to matrix 
+        if type(self.dat['mat']) is list:
+          self.dat['mat'] = inst_vect
+        else:
+          print('\n\ntrying hstack')
+          print(self.dat['mat'].shape)
+          print(inst_vect.shape)
+          self.dat['mat'] = np.hstack(( self.dat['mat'], inst_vect))
+
+        # print(self.dat['mat'])
+        # print(self.dat['mat'].shape)
+
+
 
   def load_cst_kea_enr_to_net(self, enr, pval_cutoff):
     import scipy
@@ -441,7 +566,8 @@ class Network(object):
 
   def load_data_to_net(self, inst_net):
     ''' load data into nodes and mat, also convert mat to numpy array''' 
-    self.dat = inst_net
+    self.dat['nodes'] = inst_net['nodes']
+    self.dat['mat'] = inst_net['mat']
     # convert to numpy array 
     self.mat_to_numpy_arr()
 
@@ -452,8 +578,10 @@ class Network(object):
 
     if net_type == 'dat':
       exp_dict = deepcopy(self.dat)
+
       # convert numpy array to list 
       exp_dict['mat'] = exp_dict['mat'].tolist()
+
     elif net_type == 'viz':
       exp_dict = self.viz
 
@@ -627,7 +755,7 @@ class Network(object):
     from copy import deepcopy
 
     # print('\nclustering the matrix using dist_type ' + dist_type + ' with a comparison requirement of at least ' + str(cutoff) + ' instances above abs-value of ' + str(min_num_comp) +' in order to compare')
-    print('calculating distance matrix using ')
+    # print('calculating distance matrix using ')
 
     # make distance matrices 
     ##########################
@@ -705,10 +833,44 @@ class Network(object):
     # generate distance cutoffs 
     inst_groups = {}
     for inst_dist in all_dist:
-      # inst_groups[inst_dist] = hier.fcluster(Y, inst_dist*dm.max(), 'inconsistent')  
-      inst_groups[inst_dist] = hier.fcluster(Y, inst_dist*dm.max(), 'distance')  
+      inst_key = str(inst_dist).replace('.','')
+      inst_groups[inst_key] = hier.fcluster(Y, inst_dist*dm.max(), 'distance') 
+      inst_groups[inst_key] = inst_groups[inst_key].tolist()
 
     return inst_clust_order, inst_groups
+
+  def sort_rank_node_values( self, rowcol ):
+    import numpy as np
+    from operator import itemgetter
+    from copy import deepcopy
+
+    # make a copy of nodes and node_info
+    inst_nodes = deepcopy(self.dat['nodes'][rowcol])
+    inst_vals  = deepcopy(self.dat['node_info'][rowcol]['value'])
+
+    tmp_arr = []
+    for i in range(len(inst_nodes)):
+      inst_dict = {}
+      # get name of the node 
+      inst_dict['name'] = inst_nodes[i]
+      # get value 
+      inst_dict['value'] = inst_vals[i]
+      tmp_arr.append(inst_dict)
+
+    # sort dictionary by value 
+    tmp_arr = sorted( tmp_arr, key=itemgetter('value') )
+
+    # get list of sorted nodes 
+    tmp_sort_nodes = []
+    for inst_dict in tmp_arr:
+      tmp_sort_nodes.append( inst_dict['name'] )
+
+    # get the sorted index 
+    sort_index = []
+    for inst_node in inst_nodes:
+      sort_index.append( tmp_sort_nodes.index(inst_node) )
+
+    return sort_index
 
   def sort_rank_nodes( self, rowcol ):
     import numpy as np
@@ -744,7 +906,6 @@ class Network(object):
     for inst_node in inst_nodes:
       sort_index.append( tmp_sort_nodes.index(inst_node) )
 
-    # save the sorted ranks 
     return sort_index
 
   def calc_thresh_col_dist( self, vect_row, vect_col, cutoff, min_num_meet):
@@ -798,6 +959,8 @@ class Network(object):
         if dendro==True:
           inst_dict['group'] = []
           for tmp_dist in all_dist:
+            # read group info in correct order 
+            tmp_dist = str(tmp_dist).replace('.','')
             inst_dict['group'].append( float( self.dat['node_info'][inst_rc]['group'][tmp_dist][i] ) )
 
         # append dictionary to list of nodes
@@ -830,6 +993,31 @@ class Network(object):
 
           # append link 
           self.viz['links'].append( inst_dict )
+
+  @staticmethod
+  def load_gmt(filename):
+
+    f = open(filename, 'r')
+    lines = f.readlines()
+    f.close()
+
+    gmt = {}
+
+    # loop through the lines of the gmt 
+    for i in range(len(lines)):
+
+      # get the inst line, strip off the new line character 
+      inst_line = lines[i].rstrip()
+
+      inst_term = inst_line.split('\t')[0]
+
+      # get the elements 
+      inst_elems = inst_line.split('\t')[2:]
+
+      # save the drug-kinase sets 
+      gmt[inst_term] = inst_elems
+
+    return gmt
 
   @staticmethod
   def load_json_to_dict(filename):
