@@ -191,7 +191,6 @@ function Viz(config) {
         .attr('text-anchor', 'middle')
         .attr('dominant-baseline', 'central')
         .attr('font-family', 'FontAwesome')
-        .attr('cursor', 'pointer')
         .attr('font-size', '30px')
         .text(function(d) {
           // expand button
@@ -199,6 +198,7 @@ function Viz(config) {
         })
         .attr('y','25px')
         .attr('x','25px')
+        .style('cursor', 'pointer')
         .style('opacity',expand_opacity)
         .on('mouseover',function(){
           d3.select(this).style('opacity',0.75);
