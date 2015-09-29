@@ -3,15 +3,15 @@
  */
 function Viz(config) {
 
-  // scope these variables to viz 
+  // scope these variables to viz
   var matrix,
   row_dendrogram,
   col_dendrogram,
-  zoom, 
-  params, 
+  zoom,
+  params,
   reorder;
 
-  // make viz 
+  // make viz
   make(config);
 
   /* The main function; makes clustergram based on user arguments.
@@ -30,11 +30,11 @@ function Viz(config) {
     // Begin Making Visualization
     /////////////////////////////////
 
-    // !! needs to be improved 
+    // !! needs to be improved
     // remove any previous visualizations
     d3.select('#main_svg').remove();
 
-    // instantiate zoom object 
+    // instantiate zoom object
     zoom = Zoom(params);
 
     // define the variable zoom, a d3 method
@@ -53,7 +53,7 @@ function Viz(config) {
       svg_group.call(params.zoom);
     }
 
-    // make the matrix 
+    // make the matrix
     /////////////////////////
     matrix = Matrix(network_data, svg_group, params);
 
@@ -71,23 +71,23 @@ function Viz(config) {
     // define reordering object - scoped to viz
     reorder = Reorder(params);
 
-    // define labels object 
+    // define labels object
     var labels = Labels(params);
 
-    // row labels 
+    // row labels
     /////////////////////////
-    var row_triangle_ini_group = labels.make_rows( params, row_nodes, reorder ); 
-    
-    // Column Labels 
+    var row_triangle_ini_group = labels.make_rows( params, row_nodes, reorder );
+
+    // Column Labels
     //////////////////////////////////
     var container_all_col = labels.make_cols( params, col_nodes, reorder );
-    
+
 
     // add group labels if necessary
     //////////////////////////////////
     if (params.viz.show_dendrogram) {
 
-      // make row dendrogram 
+      // make row dendrogram
       row_dendrogram = Dendrogram('row', params, row_triangle_ini_group);
 
       // add class label under column label
@@ -114,7 +114,7 @@ function Viz(config) {
         return 'translate(' + params.matrix.x_scale(index) + ',0)';
       });
 
-      // make col dendrogram 
+      // make col dendrogram
       col_dendrogram = Dendrogram('col', params, col_class_ini_group);
 
       // optional column callback on click
@@ -153,16 +153,16 @@ function Viz(config) {
 
     }
 
-    // Super Labels 
+    // Super Labels
     if (params.labels.super_labels) {
 
-      // make super labels 
+      // make super labels
       var super_labels = SuperLabels();
-      super_labels.make(params);      
+      super_labels.make(params);
 
     }
 
-    // Spillover Divs 
+    // Spillover Divs
     var spillover = Spillover(params, container_all_col);
 
     // initialize zoom and translate
@@ -186,18 +186,19 @@ function Viz(config) {
     if (params.viz.expand_button){
 
       var expand_opacity = 0.4;
-      // add expand button 
+      // add expand button
       d3.select('#main_svg').append('text')
         .attr('text-anchor', 'middle')
         .attr('dominant-baseline', 'central')
         .attr('font-family', 'FontAwesome')
         .attr('font-size', '30px')
-        .text(function(d) { 
-          // expand button 
-          return '\uf0b2'; 
+        .text(function(d) {
+          // expand button
+          return '\uf0b2';
         })
         .attr('y','25px')
         .attr('x','25px')
+        .style('cursor', 'pointer')
         .style('opacity',expand_opacity)
         .on('mouseover',function(){
           d3.select(this).style('opacity',0.75);
@@ -214,7 +215,7 @@ function Viz(config) {
             d3.select(this)
               .text(function(d){
                 // menu button
-                return '\uf0c9'; 
+                return '\uf0c9';
               });
             params.viz.expand = true;
 
@@ -224,14 +225,14 @@ function Viz(config) {
               .style('display','block');
             d3.select(this)
               .text(function(d){
-                // expand button 
-                return '\uf0b2'; 
+                // expand button
+                return '\uf0b2';
               });
             params.viz.expand = false;
 
           }
 
-          // get updated size for visualization 
+          // get updated size for visualization
           params.viz.parent_div_size_pos(params);
 
           d3.select('#main_svg').style('opacity',0.5);
@@ -243,16 +244,16 @@ function Viz(config) {
         });
     }
 
-    // initialize double click zoom for matrix 
+    // initialize double click zoom for matrix
     zoom.ini_doubleclick();
   }
 
   function reset_visualization_size() {
 
-    // !! do not remake visualization on screen size, resize only 
+    // !! do not remake visualization on screen size, resize only
     // viz.remake();
 
-    // reset zoom 
+    // reset zoom
     // zoom.two_translate_zoom(0,0,1)
     var zoom_y = 1;
     var zoom_x = 1;
@@ -311,7 +312,7 @@ function Viz(config) {
       var outer_margins = params.viz.outer_margins;
     } else {
       var outer_margins = params.viz.outer_margins_expand;
-    }    
+    }
 
     // get the size of the window
     var screen_width  = window.innerWidth;
@@ -393,7 +394,7 @@ function Viz(config) {
     // calculate the zoom factor - the more nodes the more zooming allowed
     params.viz.real_zoom = params.viz.real_zoom_scale_col(params.viz.num_col_nodes) * params.viz.real_zoom_scale_screen(params.viz.clust.dim.width);
 
-    // resize the svg 
+    // resize the svg
     ///////////////////////
     var svg_group = d3.select('#' + params.viz.svg_div_id)
       .select('svg')
@@ -416,7 +417,7 @@ function Viz(config) {
       .attr('width', params.viz.clust.dim.width)
       .attr('height', params.viz.clust.dim.height);
 
-    // resize tiles 
+    // resize tiles
     ///////////////////
     svg_group.selectAll('.tile')
       .attr('width', params.matrix.x_scale.rangeBand())
@@ -436,7 +437,7 @@ function Viz(config) {
 
     svg_group.selectAll('.highlighting_rect')
       .attr('width', params.matrix.x_scale.rangeBand() * 0.80)
-      .attr('height', params.matrix.y_scale.rangeBand() * 0.80);       
+      .attr('height', params.matrix.y_scale.rangeBand() * 0.80);
 
     svg_group.selectAll('.tile_split_up')
       .attr('d', function() {
@@ -461,7 +462,7 @@ function Viz(config) {
       })
 
 
-    // resize row labels 
+    // resize row labels
     ///////////////////////////
 
     svg_group.select('#row_container')
@@ -559,8 +560,8 @@ function Viz(config) {
 
 
       if (Utils.has( params.network_data.row_nodes[0], 'value')) {
-        
-        // set bar scale 
+
+        // set bar scale
         var enr_max = Math.abs(_.max( params.network_data.row_nodes, function(d) { return Math.abs(d.value) } ).value) ;
         params.labels.bar_scale_row = d3.scale
           .linear()
@@ -580,10 +581,10 @@ function Viz(config) {
           })
           .attr('height', params.matrix.y_scale.rangeBand() );
 
-      }    
+      }
 
-        // resize col labels 
-        /////////////////////// 
+        // resize col labels
+        ///////////////////////
         svg_group.select('#col_container')
           .attr('transform', 'translate(' + params.viz.clust.margin.left + ',' +
           params.norm_label.margin.top + ')');
@@ -710,7 +711,7 @@ function Viz(config) {
 
 
 
-        //!! CHD specific 
+        //!! CHD specific
         // get max value
         var enr_max = Math.abs(_.max( params.network_data.col_nodes, function(d) { return Math.abs(d.value) } ).value) ;
         var enr_min = Math.abs(_.min( params.network_data.col_nodes, function(d) { return Math.abs(d.value) } ).value) ;
@@ -761,9 +762,9 @@ function Viz(config) {
             return 'translate(' + params.matrix.x_scale(index) + ',0)';
           });
 
-        // reposition grid lines 
+        // reposition grid lines
         ////////////////////////////
-        svg_group.selectAll('.horz_lines') 
+        svg_group.selectAll('.horz_lines')
           .attr('transform', function(d, index) {
             return 'translate(0,' + params.matrix.y_scale(index) + ') rotate(0)';
           })
@@ -783,7 +784,7 @@ function Viz(config) {
           .attr('x2', -params.viz.clust.dim.height)
           .style('stroke-width', params.viz.border_width + 'px');
 
-    // resize superlabels 
+    // resize superlabels
     /////////////////////////////////////
     svg_group.select('#super_col_bkg')
       .attr('height', params.labels.super_label_width + 'px')
@@ -819,9 +820,9 @@ function Viz(config) {
     //   .attr('text-anchor', 'center')
     //   .attr('transform', 'rotate(-90)')
     //   .style('font-size', '14px')
-    //   .style('font-weight', 300);    
+    //   .style('font-weight', 300);
 
-    // resize spillover 
+    // resize spillover
     //////////////////////////
 
     // hide spillover from slanted column labels on right side
@@ -858,7 +859,7 @@ function Viz(config) {
 
     // add border to svg in four separate lines - to not interfere with clicking anything
     ///////////////////////////////////////////////////////////////////////////////////////
-    
+
     // left border
     svg_group.select('#left_border')
       .attr('width', params.viz.grey_border_width)
@@ -890,7 +891,7 @@ function Viz(config) {
       .attr('transform', function() {
         var inst_offset = params.viz.svg_dim.height - params.viz.grey_border_width;
         return 'translate(0,' + inst_offset + ')';
-      });    
+      });
 
 
 
