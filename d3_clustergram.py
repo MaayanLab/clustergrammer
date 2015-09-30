@@ -580,7 +580,8 @@ class Network(object):
       exp_dict = deepcopy(self.dat)
 
       # convert numpy array to list 
-      exp_dict['mat'] = exp_dict['mat'].tolist()
+      if type(exp_dict['mat']) is not list:
+        exp_dict['mat'] = exp_dict['mat'].tolist()
 
     elif net_type == 'viz':
       exp_dict = self.viz
@@ -723,7 +724,7 @@ class Network(object):
           filt_mat_up[i,j] = self.dat['mat_up'][pick_row, pick_col]
           filt_mat_dn[i,j] = self.dat['mat_dn'][pick_row, pick_col]
         if 'mat_info' in self.dat:
-          filt_mat_info[(i,j)] = self.dat['mat_info'][(pick_row,pick_col)]
+          filt_mat_info[str((i,j))] = self.dat['mat_info'][str((pick_row,pick_col))]
 
     # save nodes array - list of node names 
     self.dat['nodes'] = nodes
@@ -744,7 +745,7 @@ class Network(object):
 
     print( 'final mat shape' + str(self.dat['mat'].shape ) + '\n')
 
-  def cluster_row_and_col(self, dist_type, cutoff, min_num_comp, dendro=True):
+  def cluster_row_and_col(self, dist_type, cutoff=0, min_num_comp=1, dendro=True):
     ''' 
     cluster net.dat and make visualization json, net.viz. 
     optionally leave out dendrogram colorbar groups with dendro argument 
@@ -985,7 +986,9 @@ class Network(object):
           # add information if necessary - use dictionary with tuple key
           # each element of the matrix needs to have information 
           if 'mat_info' in self.dat:
-            inst_dict['info'] = self.dat['mat_info'][(i,j)]
+
+            # use tuple string 
+            inst_dict['info'] = self.dat['mat_info'][str((i,j))]
 
           # add highlight if necessary - use dictionary with tuple key 
           if 'mat_hl' in self.dat:
