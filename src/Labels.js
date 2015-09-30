@@ -1,7 +1,7 @@
 
-function Labels(){
+function Labels(args){
 
-  // make row labels 
+  // make row labels
   function make_rows(params, row_nodes, reorder){
 
     var row_container = d3.select('#main_svg')
@@ -18,7 +18,7 @@ function Labels(){
       .attr('height', 30*params.viz.clust.dim.height + 'px')
       .attr('class', 'white_bars');
 
-    // container for row label groups 
+    // container for row label groups
     row_container
       .append('g')
       .attr('class','label_container')
@@ -35,7 +35,13 @@ function Labels(){
       .attr('transform', function(d, index) {
         return 'translate(0,' + params.matrix.y_scale(index) + ')';
       })
-      .on('dblclick', reorder.row_reorder )
+      .on('dblclick', function(d) {
+        if (!!args.row_callback && _.isFunction(args.row_callback)) {
+          var row_name = d.name.replace(/_/g, ' ').split('#')[0];
+          args.row_callback(row_name);
+        }
+        reorder.row_reorder.call(this);
+      })
       .on('mouseover', function() {
         d3.select(this)
           .select('text')
@@ -115,14 +121,14 @@ function Labels(){
     row_label_viz
       .append('rect')
       .attr('class','white_bars')
-      .attr('fill', params.viz.background_color) 
+      .attr('fill', params.viz.background_color)
       .attr('width', params.class_room.row + 'px')
       .attr('height', function() {
         var inst_height = params.viz.clust.dim.height;
         return inst_height;
       });
 
-    // groups to hold label_viz 
+    // groups to hold label_viz
     var row_triangle_ini_group = row_label_viz
       .selectAll('g')
       .data(row_nodes)
@@ -158,8 +164,8 @@ function Labels(){
 
 
       if (Utils.has( params.network_data.row_nodes[0], 'value')) {
-        
-        // set bar scale 
+
+        // set bar scale
         var enr_max = Math.abs(_.max( row_nodes, function(d) { return Math.abs(d.value) } ).value) ;
         params.labels.bar_scale_row = d3.scale
           .linear()
@@ -186,12 +192,12 @@ function Labels(){
           .attr('opacity', 0.4);
 
         }
-      
-      // return row_triangle_ini_group so that the dendrogram can be made 
-      return row_triangle_ini_group;
-  }   
 
-  // make col labels 
+      // return row_triangle_ini_group so that the dendrogram can be made
+      return row_triangle_ini_group;
+  }
+
+  // make col labels
   function make_cols(params, col_nodes, reorder){
 
     // make container to pre-position zoomable elements
@@ -241,7 +247,13 @@ function Labels(){
       .attr('class', 'col_label_click')
       // rotate column labels
       .attr('transform', 'translate(' + params.matrix.x_scale.rangeBand() / 2 + ',' + x_offset_click + ') rotate(45)')
-      .on('dblclick', reorder.col_reorder )
+      .on('dblclick', function(d) {
+        if (!!args.col_callback && _.isFunction(args.col_callback)) {
+          var col_name = d.name.replace(/_/g, ' ').split('#')[0];
+          args.col_callback(col_name);
+        }
+        reorder.col_reorder.call(this);
+      })
       .on('mouseover', function() {
       d3.select(this).select('text')
         .classed('active',true);
@@ -373,7 +385,7 @@ function Labels(){
       });
 
 
-    //!! CHD specific 
+    //!! CHD specific
     // get max value
     var enr_max = Math.abs(_.max( col_nodes, function(d) { return Math.abs(d.value) } ).value) ;
     var enr_min = Math.abs(_.min( col_nodes, function(d) { return Math.abs(d.value) } ).value) ;
