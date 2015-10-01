@@ -2,7 +2,7 @@
 $(function() {
 
   // load network
-  d3.json('json/narrow_network.json', function(network_data){
+  d3.json('json/example_network.json', function(network_data){
 
     // define the outer margins of the visualization
     var outer_margins = {
