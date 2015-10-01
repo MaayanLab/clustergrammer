@@ -41,6 +41,7 @@ function Config(args) {
       left: 0,
       right: 0
     },
+    ini_expand:false,
     // Gray border around the visualization
     grey_border_width: 3,
     // the distance between labels and clustergram

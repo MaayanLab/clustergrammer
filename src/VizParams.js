@@ -49,6 +49,7 @@ function VizParams(config){
     // margin widths 
     params.viz.outer_margins = config.outer_margins;
     params.viz.outer_margins_expand = config.outer_margins_expand;
+    params.viz.expand = config.ini_expand;
     params.viz.uni_margin = config.uni_margin;
     params.viz.grey_border_width = config.grey_border_width;
     params.viz.show_dendrogram = config.show_dendrogram;
@@ -57,7 +58,11 @@ function VizParams(config){
     params.viz.inst_order = config.inst_order;
 
     // not initialized in expand state
-    params.viz.expand = false;
+    // params.viz.expand = false;
+    if (params.viz.expand === true){
+      d3.select('#clust_instruct_container')
+        .style('display','none');
+    }
     params.viz.expand_button = config.expand_button;
 
     // pass network_data to params
