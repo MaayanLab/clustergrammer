@@ -153,19 +153,15 @@ function Viz(config) {
 
     }
 
-    // Super Labels
-    if (params.labels.super_labels) {
-
-      // make super labels
-      var super_labels = SuperLabels();
-      super_labels.make(params);
-
-    }
 
     // Spillover Divs
     var spillover = Spillover(params, container_all_col);
 
-    // initialize zoom and translate
+    // Super Labels
+    if (params.labels.super_labels) {
+      var super_labels = SuperLabels();
+      super_labels.make(params);
+    }
 
     ///////////////////////////////////
     // initialize translate vector to compensate for label margins
