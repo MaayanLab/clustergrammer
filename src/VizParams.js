@@ -162,11 +162,18 @@ function VizParams(config){
     var ini_clust_height = params.viz.svg_dim.height - (params.labels.super_label_width +
       params.norm_label.width.col + params.class_room.col) - 5 * params.viz.grey_border_width;
 
+    // // the visualization dimensions can be smaller than the svg
+    // // if there are not many rows the clustergram width will be reduced, but not the svg width
+    // //!! needs to be improved
+    // params.viz.prevent_col_stretch = d3.scale.linear()
+    //   .domain([1, 20]).range([0.05,1]).clamp('true');
+
     // the visualization dimensions can be smaller than the svg
-    // if there are not many rows the clustergram width will be reduced, but not the svg width
-    //!! needs to be improved
+    // columns need to be shrunk for wide screens 
+    var min_col_shrink_scale = d3.scale.linear().domain([100,1500]).range([1,0.1]).clamp('true');
+    var min_col_shrink = min_col_shrink_scale(params.viz.svg_dim.width);
     params.viz.prevent_col_stretch = d3.scale.linear()
-      .domain([1, 20]).range([0.05,1]).clamp('true');
+      .domain([1, 20]).range([min_col_shrink,1]).clamp('true');
 
     params.viz.num_col_nodes = col_nodes.length;
     params.viz.num_row_nodes = row_nodes.length;
