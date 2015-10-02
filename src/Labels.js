@@ -80,9 +80,9 @@ function Labels(args){
           .getBBox();
         d3.select(this)
           .select('rect')
-          .attr('x', bbox.x * 0.5)
+          .attr('x', bbox.x )
           .attr('y', 0)
-          .attr('width', bbox.width * 0.5)
+          .attr('width', bbox.width )
           .attr('height', params.matrix.y_scale.rangeBand())
           .style('fill', function() {
           var inst_hl = 'yellow';

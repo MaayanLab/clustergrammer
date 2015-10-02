@@ -126,16 +126,9 @@ function Matrix(network_data, svg_elem, params) {
       .enter()
       .append('rect')
       .attr('class', 'tile')
-      .attr('transform', function(d) {
-        return 'translate(' + params.matrix.x_scale(d.pos_x) + ',0)';
-      })
+
       .attr('width', params.matrix.x_scale.rangeBand())
       .attr('height', params.matrix.y_scale.rangeBand())
-      .style('fill-opacity', function(d) {
-        // calculate output opacity using the opacity scale
-        var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
-        return output_opacity;
-      })
       // switch the color based on up/dn value
       .style('fill', function(d) {
         return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
@@ -158,6 +151,18 @@ function Matrix(network_data, svg_elem, params) {
       .attr('title', function(d) {
         return d.value;
       });
+
+    tile
+      .style('fill-opacity', function(d) {
+        // calculate output opacity using the opacity scale
+        var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
+        return output_opacity;
+      });
+
+    tile
+      .attr('transform', function(d) {
+        return 'translate(' + params.matrix.x_scale(d.pos_x) + ',0)';
+      })
 
     // add callback function to tile group - if one is supplied by the user
     if (typeof params.click_tile === 'function') {
