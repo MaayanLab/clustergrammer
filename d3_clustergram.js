@@ -1143,22 +1143,9 @@ function VizParams(config){
     params.viz.zoom_scale_font.row = 1;
     params.viz.zoom_scale_font.col = 1;
 
-    // set up the real zoom (2d zoom) as a function of the number of col_nodes
-    // since these are the nodes that are zoomed into in 2d zooming
-    params.viz.real_zoom_scale_col = d3.scale
-      .linear()
-      .domain([min_node_num,max_node_num])
-      .range([2, 10]).clamp('true');
-
-    // scale the zoom based on the screen size
-    // smaller screens can zoom in more, compensates for reduced font size with small screen
-    params.viz.real_zoom_scale_screen = d3.scale
-      .linear()
-      .domain([min_viz_width,max_viz_width])
-      .range([2, 1]).clamp('true');
-
-    // calculate the zoom factor - the more nodes the more zooming allowed
-    params.viz.real_zoom = params.viz.real_zoom_scale_col(params.viz.num_col_nodes) * params.viz.real_zoom_scale_screen(params.viz.clust.dim.width);
+    // allow user to do 'real' 2D zoom until visual aid column triangle 
+    // is as tall as the normal label width 
+    params.viz.real_zoom = params.norm_label.width.col / (params.matrix.x_scale.rangeBand()/2);
 
     // set opacity scale
     var max_link = _.max(network_data.links, function(d) {
@@ -2286,8 +2273,7 @@ function Viz(config) {
       params.viz.zoom_switch = 1;
     }
 
-    // calculate the zoom factor - the more nodes the more zooming allowed
-    params.viz.real_zoom = params.viz.real_zoom_scale_col(params.viz.num_col_nodes) * params.viz.real_zoom_scale_screen(params.viz.clust.dim.width);
+    params.viz.real_zoom = params.norm_label.width.col / (params.matrix.x_scale.rangeBand()/2);
 
     // resize the svg
     ///////////////////////

@@ -444,8 +444,7 @@ function Viz(config) {
       params.viz.zoom_switch = 1;
     }
 
-    // calculate the zoom factor - the more nodes the more zooming allowed
-    params.viz.real_zoom = params.viz.real_zoom_scale_col(params.viz.num_col_nodes) * params.viz.real_zoom_scale_screen(params.viz.clust.dim.width);
+    params.viz.real_zoom = params.norm_label.width.col / (params.matrix.x_scale.rangeBand()/2);
 
     // resize the svg
     ///////////////////////
