@@ -8,7 +8,7 @@ $(function() {
     var outer_margins = {
         'top':5,
         'bottom':33,  
-        'left':225,
+        'left':195,
         'right':2
       };
 

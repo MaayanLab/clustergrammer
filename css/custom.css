@@ -30,7 +30,7 @@ text.active {
 #clust_instruct_container{
   display: block;
   position:absolute;
-  width:200px;
+  width:180px;
   padding-right: 0px;
   margin-left: 10px;
 }
@@ -56,7 +56,7 @@ text.active {
 #toggle_order{
   /*reduced width sidebar 
   margin-left used to be 45*/
-  margin-left: 15px;
+  margin-left: 5px;
   margin-top: 20px;
   margin-bottom:5px;
 }
@@ -73,7 +73,7 @@ text.active {
 
 /* gene search box */
 #gene_search_box{
-  width:120px;
+  width:100px;
   float: left;
 }
 #submit_gene_button{
@@ -97,4 +97,12 @@ text.active {
   margin-left: 300px;
   margin-top: 10px;
   opacity: 0.5;
+}
+
+#slider_col{
+  width:170px;
+}
+
+#slider_row{
+  width:170px;
 }
