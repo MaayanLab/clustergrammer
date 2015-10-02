@@ -399,12 +399,17 @@ function Viz(config) {
     // columns need to be shrunk for wide screens 
     var min_col_shrink_scale = d3.scale.linear().domain([100,1500]).range([1,0.1]).clamp('true');
     var min_col_shrink = min_col_shrink_scale(params.viz.svg_dim.width);
-    var prevent_col_stretch = d3.scale.linear()
-      .domain([1, 20]).range([min_col_shrink,1]).clamp('true');
 
+    // reduce clustergram width if triangles are taller than the normal width 
+    // of the columns 
+    var tmp_x_scale = d3.scale.ordinal().rangeBands([0, ini_clust_width]);
+    tmp_x_scale.domain(params.matrix.orders.ini_row);
+    var triangle_height = tmp_x_scale.rangeBand()/2 ;
+    if (triangle_height > params.norm_label.width.col){
+      ini_clust_width = ini_clust_width * ( params.norm_label.width.col/triangle_height );
+    }
+    params.viz.clust.dim.width = ini_clust_width ;
 
-    // clust_dim - clustergram dimensions (the clustergram is smaller than the svg)
-    params.viz.clust.dim.width = ini_clust_width * prevent_col_stretch(params.viz.num_col_nodes);
 
     // clustergram height
     ////////////////////////
@@ -444,7 +449,6 @@ function Viz(config) {
       params.viz.zoom_switch = 1;
     }
 
-    params.viz.real_zoom = params.norm_label.width.col / (params.matrix.x_scale.rangeBand()/2);
 
     // resize the svg
     ///////////////////////
@@ -457,6 +461,11 @@ function Viz(config) {
     // redefine x_scale and y_scale rangeBands
     params.matrix.x_scale.rangeBands([0, params.viz.clust.dim.width]);
     params.matrix.y_scale.rangeBands([0, params.viz.clust.dim.height]);
+
+    // redefine zoom extent 
+    params.viz.real_zoom = params.norm_label.width.col / (params.matrix.x_scale.rangeBand()/2);
+    params.zoom
+      .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch]);
 
     // redefine border width
     params.viz.border_width = params.matrix.x_scale.rangeBand() / 40;

@@ -995,25 +995,11 @@ function VizParams(config){
     var ini_clust_height = params.viz.svg_dim.height - (params.labels.super_label_width +
       params.norm_label.width.col + params.class_room.col) - 5 * params.viz.grey_border_width;
 
-    // // the visualization dimensions can be smaller than the svg
-    // // if there are not many rows the clustergram width will be reduced, but not the svg width
-    // //!! needs to be improved
-    // params.viz.prevent_col_stretch = d3.scale.linear()
-    //   .domain([1, 20]).range([0.05,1]).clamp('true');
-
-    // the visualization dimensions can be smaller than the svg
-    // columns need to be shrunk for wide screens 
-    var min_col_shrink_scale = d3.scale.linear().domain([100,1500]).range([1,0.1]).clamp('true');
-    var min_col_shrink = min_col_shrink_scale(params.viz.svg_dim.width);
-    params.viz.prevent_col_stretch = d3.scale.linear()
-      .domain([1, 20]).range([min_col_shrink,1]).clamp('true');
-
     params.viz.num_col_nodes = col_nodes.length;
     params.viz.num_row_nodes = row_nodes.length;
 
     // clust_dim - clustergram dimensions (the clustergram is smaller than the svg)
     params.viz.clust.dim = {};
-    params.viz.clust.dim.width = ini_clust_width * params.viz.prevent_col_stretch(params.viz.num_col_nodes);
 
     // clustergram height
     ////////////////////////
@@ -1045,7 +1031,6 @@ function VizParams(config){
       params.viz.force_square = 0;
     }
 
-    
     // manual force square
     if (config.force_square===1){
       params.viz.force_square = 1;
@@ -1053,9 +1038,6 @@ function VizParams(config){
 
     // Define Orderings
     ////////////////////////////
-    // scaling functions to position rows and tiles, define rangeBands
-    params.matrix.x_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.width]);
-    params.matrix.y_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.height]);
 
     // Define Orderings
     params.matrix.orders = {
@@ -1088,6 +1070,27 @@ function VizParams(config){
         return row_nodes[b].cl - row_nodes[a].cl;
       })
     };
+
+    // the visualization dimensions can be smaller than the svg
+    // columns need to be shrunk for wide screens 
+    var min_col_shrink_scale = d3.scale.linear().domain([100,1500]).range([1,0.1]).clamp('true');
+    var min_col_shrink = min_col_shrink_scale(params.viz.svg_dim.width);
+
+    // calculate clustergram width 
+    // reduce clustergram width if triangles are taller than the normal width 
+    // of the columns 
+    var tmp_x_scale = d3.scale.ordinal().rangeBands([0, ini_clust_width]);
+    tmp_x_scale.domain(params.matrix.orders.ini_row);
+    var triangle_height = tmp_x_scale.rangeBand()/2 ;
+    if (triangle_height > params.norm_label.width.col){
+      ini_clust_width = ini_clust_width * ( params.norm_label.width.col/triangle_height );
+    }
+    params.viz.clust.dim.width = ini_clust_width ;
+
+
+    // scaling functions to position rows and tiles, define rangeBands
+    params.matrix.x_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.width]);
+    params.matrix.y_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.height]);
 
     // Assign initial ordering for x_scale and y_scale
     if (params.viz.inst_order === 'ini') {
@@ -1802,11 +1805,6 @@ function Spillover( params, container_all_col ){
       .attr('class', 'white_bars')
       .attr('id','right_spillover');
 
-    if (params.viz.prevent_col_stretch(params.viz.num_col_nodes) < 1){
-      d3.select('#main_svg').select('#right_spillover').style('opacity',0);
-      d3.select('#main_svg').select('#right_slant_triangle').style('opacity',0);
-    }
-
     // white border bottom - prevent clustergram from hitting border
     ///////////////////////////////////////////////////////////////////
     d3.select('#main_svg')
@@ -2228,12 +2226,17 @@ function Viz(config) {
     // columns need to be shrunk for wide screens 
     var min_col_shrink_scale = d3.scale.linear().domain([100,1500]).range([1,0.1]).clamp('true');
     var min_col_shrink = min_col_shrink_scale(params.viz.svg_dim.width);
-    var prevent_col_stretch = d3.scale.linear()
-      .domain([1, 20]).range([min_col_shrink,1]).clamp('true');
 
+    // reduce clustergram width if triangles are taller than the normal width 
+    // of the columns 
+    var tmp_x_scale = d3.scale.ordinal().rangeBands([0, ini_clust_width]);
+    tmp_x_scale.domain(params.matrix.orders.ini_row);
+    var triangle_height = tmp_x_scale.rangeBand()/2 ;
+    if (triangle_height > params.norm_label.width.col){
+      ini_clust_width = ini_clust_width * ( params.norm_label.width.col/triangle_height );
+    }
+    params.viz.clust.dim.width = ini_clust_width ;
 
-    // clust_dim - clustergram dimensions (the clustergram is smaller than the svg)
-    params.viz.clust.dim.width = ini_clust_width * prevent_col_stretch(params.viz.num_col_nodes);
 
     // clustergram height
     ////////////////////////
@@ -2273,7 +2276,6 @@ function Viz(config) {
       params.viz.zoom_switch = 1;
     }
 
-    params.viz.real_zoom = params.norm_label.width.col / (params.matrix.x_scale.rangeBand()/2);
 
     // resize the svg
     ///////////////////////
@@ -2286,6 +2288,11 @@ function Viz(config) {
     // redefine x_scale and y_scale rangeBands
     params.matrix.x_scale.rangeBands([0, params.viz.clust.dim.width]);
     params.matrix.y_scale.rangeBands([0, params.viz.clust.dim.height]);
+
+    // redefine zoom extent 
+    params.viz.real_zoom = params.norm_label.width.col / (params.matrix.x_scale.rangeBand()/2);
+    params.zoom
+      .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch]);
 
     // redefine border width
     params.viz.border_width = params.matrix.x_scale.rangeBand() / 40;
