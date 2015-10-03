@@ -48,7 +48,8 @@ function Config(args) {
     // a universal margin for the clustergram
     uni_margin: 4,
     // force the visualization to be square 
-    force_square:0
+    force_square:0,
+    opacity_slider: 1
   };
 
   // Mixin defaults with user-defined arguments.

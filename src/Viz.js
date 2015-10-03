@@ -968,6 +968,37 @@ function Viz(config) {
   // highlight resource types - set up type/color association
   var gene_search = Search(params, params.network_data.row_nodes, 'name');
 
+  // change opacity 
+  var opacity_slider = function (inst_slider){
+
+    var max_link = params.matrix.max_link;
+    var slider_scale = d3.scale
+      .linear()
+      .domain([0,1])
+      .range([0.1,1]);
+
+    var slider_factor = slider_scale(inst_slider)
+
+    console.log('slider factor')
+    console.log(inst_slider)
+    console.log(slider_factor)
+
+    params.matrix.opacity_scale = d3.scale.linear()
+          .domain([0, slider_factor*Math.abs(params.matrix.max_link)])
+          .clamp(true)
+          .range([0.0, 1.0]);
+
+    d3.selectAll('.tile')
+      .style('fill-opacity', function(d){
+
+        // console.log('d.value')
+        // console.log( params.matrix.opacity_scale(Math.abs(d.value)) )
+        return params.matrix.opacity_scale(Math.abs(d.value));
+        // return params.matrix.opacity_scale(d.value) ;
+      });
+
+  }
+
   return {
     remake: function() {
       make(config);
@@ -991,7 +1022,8 @@ function Viz(config) {
     two_translate_zoom: zoom.two_translate_zoom,
     // expose all_reorder function
     reorder: reorder.all_reorder,
-    search: gene_search
+    search: gene_search,
+    opacity_slider: opacity_slider
   }
 
 }

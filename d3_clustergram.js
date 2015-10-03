@@ -85,7 +85,8 @@ function Config(args) {
     // a universal margin for the clustergram
     uni_margin: 4,
     // force the visualization to be square 
-    force_square:0
+    force_square:0,
+    opacity_slider: 1
   };
 
   // Mixin defaults with user-defined arguments.
@@ -870,7 +871,8 @@ function VizParams(config){
     params.matrix.tile_colors = config.tile_colors;
     params.matrix.bar_colors = config.bar_colors;
     params.matrix.tile_title = config.tile_title; 
- 
+    params.matrix.opacity_slider = config.opacity_slider;
+
     // Visualization Options 
     params.viz = {};
     params.viz.svg_div_id = config.svg_div_id;
@@ -1151,9 +1153,9 @@ function VizParams(config){
     params.viz.real_zoom = params.norm_label.width.col / (params.matrix.x_scale.rangeBand()/2);
 
     // set opacity scale
-    var max_link = _.max(network_data.links, function(d) {
+    params.matrix.max_link = _.max(network_data.links, function(d) {
       return Math.abs(d.value);
-    });
+    }).value;
 
     // set opacity_scale
     // input domain of 0 means set the domain automatically
@@ -1161,11 +1163,11 @@ function VizParams(config){
       // set the domain using the maximum absolute value
       if (config.opacity_scale === 'linear') {
         params.matrix.opacity_scale = d3.scale.linear()
-          .domain([0, Math.abs(max_link.value)]).clamp(true)
+          .domain([0, params.matrix.opacity_slider*Math.abs(params.matrix.max_link)]).clamp(true)
           .range([0.0, 1.0]);
       } else if (config.opacity_scale === 'log') {
         params.matrix.opacity_scale = d3.scale.log()
-          .domain([0.001, Math.abs(max_link.value)]).clamp(true)
+          .domain([0.001, params.matrix.opacity_slider*Math.abs(params.matrix.max_link)]).clamp(true)
           .range([0.0, 1.0]);
       }
     } else {
@@ -2795,6 +2797,37 @@ function Viz(config) {
   // highlight resource types - set up type/color association
   var gene_search = Search(params, params.network_data.row_nodes, 'name');
 
+  // change opacity 
+  var opacity_slider = function (inst_slider){
+
+    var max_link = params.matrix.max_link;
+    var slider_scale = d3.scale
+      .linear()
+      .domain([0,1])
+      .range([0.1,1]);
+
+    var slider_factor = slider_scale(inst_slider)
+
+    console.log('slider factor')
+    console.log(inst_slider)
+    console.log(slider_factor)
+
+    params.matrix.opacity_scale = d3.scale.linear()
+          .domain([0, slider_factor*Math.abs(params.matrix.max_link)])
+          .clamp(true)
+          .range([0.0, 1.0]);
+
+    d3.selectAll('.tile')
+      .style('fill-opacity', function(d){
+
+        // console.log('d.value')
+        // console.log( params.matrix.opacity_scale(Math.abs(d.value)) )
+        return params.matrix.opacity_scale(Math.abs(d.value));
+        // return params.matrix.opacity_scale(d.value) ;
+      });
+
+  }
+
   return {
     remake: function() {
       make(config);
@@ -2818,7 +2851,8 @@ function Viz(config) {
     two_translate_zoom: zoom.two_translate_zoom,
     // expose all_reorder function
     reorder: reorder.all_reorder,
-    search: gene_search
+    search: gene_search,
+    opacity_slider: opacity_slider
   }
 
 }
@@ -3658,7 +3692,8 @@ return {
     find_gene: viz.search.find_entities,
     get_genes: viz.search.get_entities,
     change_groups: viz.change_group,
-    reorder: viz.reorder
+    reorder: viz.reorder,
+    opacity_slider: viz.opacity_slider
 };
 	
 }

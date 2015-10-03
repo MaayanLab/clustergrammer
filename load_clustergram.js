@@ -41,6 +41,7 @@ $(function() {
       'col_label':'Column-Data-Name',
       'outer_margins': outer_margins,
       'outer_margins_expand': outer_margins_expand,
+      'opacity_slider':1
       // 'ini_expand':true
       // 'row_label_scale':0.5
       // 'force_square':1
@@ -68,25 +69,21 @@ $(function() {
     });
 
 
+    // col groups
     $( "#slider_col" ).slider({
       value:0.5,
       min: 0,
       max: 1,
       step: 0.1,
       slide: function( event, ui ) {
-
-        // get inst_index from slider
         $( "#amount" ).val( "$" + ui.value );
         var inst_index = ui.value*10;
-
-        // change group sizes
         d3c.change_groups('col',inst_index)
-
       }
     });
-
     $( "#amount" ).val( "$" + $( "#slider_col" ).slider( "value" ) );
 
+    // row groups 
     $( "#slider_row" ).slider({
       value:0.5,
       min: 0,
@@ -95,12 +92,25 @@ $(function() {
       slide: function( event, ui ) {
         $( "#amount" ).val( "$" + ui.value );
         var inst_index = ui.value*10;
-
-        // change group sizes
         d3c.change_groups('row',inst_index)
       }
     });
     $( "#amount" ).val( "$" + $( "#slider_row" ).slider( "value" ) );
+
+    // opacity scale 
+    $( "#slider_opacity" ).slider({
+      value:1.0,
+      min: 0.1,
+      max: 1.0,
+      step: 0.1,
+      slide: function( event, ui ) {
+        $( "#amount" ).val( "$" + ui.value );
+        var inst_index = ui.value;
+        d3c.opacity_slider(inst_index)
+      }
+    });
+    $( "#amount" ).val( "$" + $( "#slider_opacity" ).slider( "value" ) );
+
 
     // submit genes button
     $('#gene_search_box').keyup(function(e) {

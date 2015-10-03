@@ -37,7 +37,8 @@ function VizParams(config){
     params.matrix.tile_colors = config.tile_colors;
     params.matrix.bar_colors = config.bar_colors;
     params.matrix.tile_title = config.tile_title; 
- 
+    params.matrix.opacity_slider = config.opacity_slider;
+
     // Visualization Options 
     params.viz = {};
     params.viz.svg_div_id = config.svg_div_id;
@@ -318,9 +319,9 @@ function VizParams(config){
     params.viz.real_zoom = params.norm_label.width.col / (params.matrix.x_scale.rangeBand()/2);
 
     // set opacity scale
-    var max_link = _.max(network_data.links, function(d) {
+    params.matrix.max_link = _.max(network_data.links, function(d) {
       return Math.abs(d.value);
-    });
+    }).value;
 
     // set opacity_scale
     // input domain of 0 means set the domain automatically
@@ -328,11 +329,11 @@ function VizParams(config){
       // set the domain using the maximum absolute value
       if (config.opacity_scale === 'linear') {
         params.matrix.opacity_scale = d3.scale.linear()
-          .domain([0, Math.abs(max_link.value)]).clamp(true)
+          .domain([0, params.matrix.opacity_slider*Math.abs(params.matrix.max_link)]).clamp(true)
           .range([0.0, 1.0]);
       } else if (config.opacity_scale === 'log') {
         params.matrix.opacity_scale = d3.scale.log()
-          .domain([0.001, Math.abs(max_link.value)]).clamp(true)
+          .domain([0.001, params.matrix.opacity_slider*Math.abs(params.matrix.max_link)]).clamp(true)
           .range([0.0, 1.0]);
       }
     } else {
