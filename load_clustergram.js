@@ -99,8 +99,8 @@ $(function() {
 
     // opacity scale 
     $( "#slider_opacity" ).slider({
-      value:1.0,
-      min: 0.1,
+      value:0.2,
+      min: 0.0,
       max: 1.0,
       step: 0.1,
       slide: function( event, ui ) {

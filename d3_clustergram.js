@@ -2804,13 +2804,9 @@ function Viz(config) {
     var slider_scale = d3.scale
       .linear()
       .domain([0,1])
-      .range([0.1,1]);
+      .range([1,0.1]);
 
     var slider_factor = slider_scale(inst_slider)
-
-    console.log('slider factor')
-    console.log(inst_slider)
-    console.log(slider_factor)
 
     params.matrix.opacity_scale = d3.scale.linear()
           .domain([0, slider_factor*Math.abs(params.matrix.max_link)])
@@ -2819,11 +2815,7 @@ function Viz(config) {
 
     d3.selectAll('.tile')
       .style('fill-opacity', function(d){
-
-        // console.log('d.value')
-        // console.log( params.matrix.opacity_scale(Math.abs(d.value)) )
         return params.matrix.opacity_scale(Math.abs(d.value));
-        // return params.matrix.opacity_scale(d.value) ;
       });
 
   }
