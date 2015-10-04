@@ -86,7 +86,6 @@ function Config(args) {
     uni_margin: 4,
     // force the visualization to be square 
     force_square:0,
-    opacity_slider: 1
   };
 
   // Mixin defaults with user-defined arguments.
@@ -871,7 +870,6 @@ function VizParams(config){
     params.matrix.tile_colors = config.tile_colors;
     params.matrix.bar_colors = config.bar_colors;
     params.matrix.tile_title = config.tile_title; 
-    params.matrix.opacity_slider = config.opacity_slider;
 
     // Visualization Options 
     params.viz = {};
@@ -891,6 +889,8 @@ function VizParams(config){
 
     // initial order of clustergram 
     params.viz.inst_order = config.inst_order;
+
+    params.matrix.opacity_function = config.opacity_scale;
 
     // not initialized in expand state
     // params.viz.expand = false;
@@ -1161,22 +1161,22 @@ function VizParams(config){
     // input domain of 0 means set the domain automatically
     if (config.input_domain === 0) {
       // set the domain using the maximum absolute value
-      if (config.opacity_scale === 'linear') {
+      if (params.matrix.opacity_function === 'linear') {
         params.matrix.opacity_scale = d3.scale.linear()
-          .domain([0, params.matrix.opacity_slider*Math.abs(params.matrix.max_link)]).clamp(true)
+          .domain([0, Math.abs(params.matrix.max_link)]).clamp(true)
           .range([0.0, 1.0]);
-      } else if (config.opacity_scale === 'log') {
+      } else if (params.matrix.opacity_function === 'log') {
         params.matrix.opacity_scale = d3.scale.log()
-          .domain([0.001, params.matrix.opacity_slider*Math.abs(params.matrix.max_link)]).clamp(true)
+          .domain([0.001, Math.abs(params.matrix.max_link)]).clamp(true)
           .range([0.0, 1.0]);
       }
     } else {
       // set the domain manually
-      if (config.opacity_scale === 'linear') {
+      if (params.matrix.opacity_function === 'linear') {
         params.matrix.opacity_scale = d3.scale.linear()
           .domain([0, config.input_domain]).clamp(true)
           .range([0.0, 1.0]);
-      } else if (config.opacity_scale === 'log') {
+      } else if (params.matrix.opacity_function === 'log') {
         params.matrix.opacity_scale = d3.scale.log()
           .domain([0.001, config.input_domain]).clamp(true)
           .range([0.0, 1.0]);
@@ -2806,17 +2806,30 @@ function Viz(config) {
       .domain([0,1])
       .range([1,0.1]);
 
-    var slider_factor = slider_scale(inst_slider)
+    var slider_factor = slider_scale(inst_slider);
 
-    params.matrix.opacity_scale = d3.scale.linear()
-          .domain([0, slider_factor*Math.abs(params.matrix.max_link)])
-          .clamp(true)
-          .range([0.0, 1.0]);
+    if (params.matrix.opacity_function === 'linear'){
+      params.matrix.opacity_scale = d3.scale.linear()
+        .domain([0, slider_factor*Math.abs(params.matrix.max_link)])
+        .clamp(true)
+        .range([0.0, 1.0]);
+    } else if (params.matrix.opacity_function === 'log'){
+      params.matrix.opacity_scale = d3.scale.log()
+        .domain([0.0001, slider_factor*Math.abs(params.matrix.max_link)])
+        .clamp(true)
+        .range([0.0, 1.0]);
+      }
 
     d3.selectAll('.tile')
       .style('fill-opacity', function(d){
         return params.matrix.opacity_scale(Math.abs(d.value));
       });
+
+  }
+
+  var opacity_function = function(function_type){
+
+
 
   }
 
@@ -2844,7 +2857,8 @@ function Viz(config) {
     // expose all_reorder function
     reorder: reorder.all_reorder,
     search: gene_search,
-    opacity_slider: opacity_slider
+    opacity_slider: opacity_slider,
+    opacity_function: opacity_function
   }
 
 }
@@ -3685,7 +3699,8 @@ return {
     get_genes: viz.search.get_entities,
     change_groups: viz.change_group,
     reorder: viz.reorder,
-    opacity_slider: viz.opacity_slider
+    opacity_slider: viz.opacity_slider,
+    opacity_function: viz.opacity_function
 };
 	
 }

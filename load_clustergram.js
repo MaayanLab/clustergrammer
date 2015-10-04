@@ -41,7 +41,6 @@ $(function() {
       'col_label':'Column-Data-Name',
       'outer_margins': outer_margins,
       'outer_margins_expand': outer_margins_expand,
-      'opacity_slider':1
       // 'ini_expand':true
       // 'row_label_scale':0.5
       // 'force_square':1

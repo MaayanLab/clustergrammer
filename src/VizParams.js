@@ -37,7 +37,6 @@ function VizParams(config){
     params.matrix.tile_colors = config.tile_colors;
     params.matrix.bar_colors = config.bar_colors;
     params.matrix.tile_title = config.tile_title; 
-    params.matrix.opacity_slider = config.opacity_slider;
 
     // Visualization Options 
     params.viz = {};
@@ -57,6 +56,8 @@ function VizParams(config){
 
     // initial order of clustergram 
     params.viz.inst_order = config.inst_order;
+
+    params.matrix.opacity_function = config.opacity_scale;
 
     // not initialized in expand state
     // params.viz.expand = false;
@@ -327,22 +328,22 @@ function VizParams(config){
     // input domain of 0 means set the domain automatically
     if (config.input_domain === 0) {
       // set the domain using the maximum absolute value
-      if (config.opacity_scale === 'linear') {
+      if (params.matrix.opacity_function === 'linear') {
         params.matrix.opacity_scale = d3.scale.linear()
-          .domain([0, params.matrix.opacity_slider*Math.abs(params.matrix.max_link)]).clamp(true)
+          .domain([0, Math.abs(params.matrix.max_link)]).clamp(true)
           .range([0.0, 1.0]);
-      } else if (config.opacity_scale === 'log') {
+      } else if (params.matrix.opacity_function === 'log') {
         params.matrix.opacity_scale = d3.scale.log()
-          .domain([0.001, params.matrix.opacity_slider*Math.abs(params.matrix.max_link)]).clamp(true)
+          .domain([0.001, Math.abs(params.matrix.max_link)]).clamp(true)
           .range([0.0, 1.0]);
       }
     } else {
       // set the domain manually
-      if (config.opacity_scale === 'linear') {
+      if (params.matrix.opacity_function === 'linear') {
         params.matrix.opacity_scale = d3.scale.linear()
           .domain([0, config.input_domain]).clamp(true)
           .range([0.0, 1.0]);
-      } else if (config.opacity_scale === 'log') {
+      } else if (params.matrix.opacity_function === 'log') {
         params.matrix.opacity_scale = d3.scale.log()
           .domain([0.001, config.input_domain]).clamp(true)
           .range([0.0, 1.0]);

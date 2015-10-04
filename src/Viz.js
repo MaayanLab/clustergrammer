@@ -977,17 +977,30 @@ function Viz(config) {
       .domain([0,1])
       .range([1,0.1]);
 
-    var slider_factor = slider_scale(inst_slider)
+    var slider_factor = slider_scale(inst_slider);
 
-    params.matrix.opacity_scale = d3.scale.linear()
-          .domain([0, slider_factor*Math.abs(params.matrix.max_link)])
-          .clamp(true)
-          .range([0.0, 1.0]);
+    if (params.matrix.opacity_function === 'linear'){
+      params.matrix.opacity_scale = d3.scale.linear()
+        .domain([0, slider_factor*Math.abs(params.matrix.max_link)])
+        .clamp(true)
+        .range([0.0, 1.0]);
+    } else if (params.matrix.opacity_function === 'log'){
+      params.matrix.opacity_scale = d3.scale.log()
+        .domain([0.0001, slider_factor*Math.abs(params.matrix.max_link)])
+        .clamp(true)
+        .range([0.0, 1.0]);
+      }
 
     d3.selectAll('.tile')
       .style('fill-opacity', function(d){
         return params.matrix.opacity_scale(Math.abs(d.value));
       });
+
+  }
+
+  var opacity_function = function(function_type){
+
+
 
   }
 
@@ -1015,7 +1028,8 @@ function Viz(config) {
     // expose all_reorder function
     reorder: reorder.all_reorder,
     search: gene_search,
-    opacity_slider: opacity_slider
+    opacity_slider: opacity_slider,
+    opacity_function: opacity_function
   }
 
 }
