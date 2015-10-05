@@ -1140,8 +1140,8 @@ function VizParams(config){
       .range([0.8,0.5]);
 
     // the default font sizes are set here
-    params.labels.default_fs_row = params.matrix.y_scale.rangeBand() * 1.0;
-    params.labels.default_fs_col = params.matrix.x_scale.rangeBand() * 0.85;
+    params.labels.default_fs_row = params.matrix.y_scale.rangeBand() * 1.01;
+    params.labels.default_fs_col = params.matrix.x_scale.rangeBand() * 0.85 ;
 
     // initialize font size zooming parameters
     params.viz.zoom_scale_font = {};
@@ -1514,8 +1514,9 @@ function Labels(args){
     col_label_click
       .append('text')
       .attr('x', 0)
-      .attr('y', params.matrix.x_scale.rangeBand() * 0.60)
-      .attr('dx', 2 * params.viz.border_width)
+      // manually tuned 
+      .attr('y', params.matrix.x_scale.rangeBand() * 0.64)
+      .attr('dx', params.viz.border_width)
       .attr('text-anchor', 'start')
       .attr('full_name', function(d) {
         return d.name;

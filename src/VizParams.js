@@ -307,8 +307,8 @@ function VizParams(config){
       .range([0.8,0.5]);
 
     // the default font sizes are set here
-    params.labels.default_fs_row = params.matrix.y_scale.rangeBand() * 1.0;
-    params.labels.default_fs_col = params.matrix.x_scale.rangeBand() * 0.85;
+    params.labels.default_fs_row = params.matrix.y_scale.rangeBand() * 1.01;
+    params.labels.default_fs_col = params.matrix.x_scale.rangeBand() * 0.85 ;
 
     // initialize font size zooming parameters
     params.viz.zoom_scale_font = {};

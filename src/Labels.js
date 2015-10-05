@@ -267,8 +267,9 @@ function Labels(args){
     col_label_click
       .append('text')
       .attr('x', 0)
-      .attr('y', params.matrix.x_scale.rangeBand() * 0.60)
-      .attr('dx', 2 * params.viz.border_width)
+      // manually tuned 
+      .attr('y', params.matrix.x_scale.rangeBand() * 0.64)
+      .attr('dx', params.viz.border_width)
       .attr('text-anchor', 'start')
       .attr('full_name', function(d) {
         return d.name;

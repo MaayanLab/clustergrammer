@@ -42,8 +42,8 @@ $(function() {
       'outer_margins': outer_margins,
       'outer_margins_expand': outer_margins_expand,
       // 'ini_expand':true
-      // 'col_label_scale':1.0,
-      // 'row_label_scale':1.0
+        // 'col_label_scale':0.8,
+        // 'row_label_scale':0.8
       // 'force_square':1
       // 'opacity_scale':'log',
       // 'input_domain':2,
