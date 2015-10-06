@@ -53,6 +53,10 @@ function VizParams(config){
     params.viz.uni_margin = config.uni_margin;
     params.viz.grey_border_width = config.grey_border_width;
     params.viz.show_dendrogram = config.show_dendrogram;
+    params.viz.tile_click_hlight = config.tile_click_hlight;
+
+    params.matrix.click_hlight_x = -666;
+    params.matrix.click_hlight_y = -666;
 
     // initial order of clustergram 
     params.viz.inst_order = config.inst_order;

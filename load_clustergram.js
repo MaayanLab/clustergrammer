@@ -21,7 +21,7 @@ $(function() {
 
     // define callback function for clicking on tile
     function click_tile_callback(tile_info){
-      console.log('my callback');
+      console.log('tile callback');
       console.log('clicking on ' + tile_info.row + ' row and ' + tile_info.col + ' col with value ' + String(tile_info.value))
     }
 
@@ -42,8 +42,8 @@ $(function() {
       'outer_margins': outer_margins,
       'outer_margins_expand': outer_margins_expand,
       // 'ini_expand':true
-        // 'col_label_scale':0.8,
-        // 'row_label_scale':0.8
+      // 'col_label_scale':0.8,
+      // 'row_label_scale':0.8
       // 'force_square':1
       // 'opacity_scale':'log',
       // 'input_domain':2,
@@ -53,7 +53,8 @@ $(function() {
       // 'tile_colors':['#ED9124','#1C86EE'],
       // 'background_color':'orange',
       // 'tile_title': true,
-      // 'click_tile': click_tile_callback,
+      'click_tile': click_tile_callback,
+      // 'tile_click_hlight':true  
       // 'click_group': click_group_callback
       // 'resize':false
       // 'order':'rank'

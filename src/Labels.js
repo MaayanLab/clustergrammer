@@ -261,7 +261,7 @@ function Labels(args){
       .on('mouseout', function mouseout() {
       d3.select(this).select('text')
         .classed('active',false);
-      });
+      }); 
 
     // add column label
     col_label_click

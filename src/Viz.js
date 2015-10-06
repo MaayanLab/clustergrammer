@@ -119,21 +119,22 @@ function Viz(config) {
 
       // optional column callback on click
       if (typeof params.click_group === 'function') {
-      col_class_ini_group
-        .on('click', function(d) {
-        var inst_level = params.group_level.col;
-        var inst_group = d.group[inst_level];
-        // find all column names that are in the same group at the same group_level
-        // get col_nodes
-        col_nodes = params.network_data.col_nodes;
-        var group_nodes = [];
-        _.each(col_nodes, function(node) {
-          // check that the node is in the group
-          if (node.group[inst_level] === inst_group) {
-          // make a list of genes that are in inst_group at this group_level
-          group_nodes.push(node.name);
-          }
-        });
+        
+        col_class_ini_group
+          .on('click', function(d) {
+          var inst_level = params.group_level.col;
+          var inst_group = d.group[inst_level];
+          // find all column names that are in the same group at the same group_level
+          // get col_nodes
+          col_nodes = params.network_data.col_nodes;
+          var group_nodes = [];
+          _.each(col_nodes, function(node) {
+            // check that the node is in the group
+            if (node.group[inst_level] === inst_group) {
+            // make a list of genes that are in inst_group at this group_level
+            group_nodes.push(node.name);
+            }
+          });
 
         // return the following information to the user
         // row or col, distance cutoff level, nodes
@@ -521,6 +522,57 @@ function Viz(config) {
           final_x + ', ' + final_y + ',  L' + final_x + ',0 Z';
         return output_string;
       })
+
+    // resize click hlight 
+    var rel_width_hlight = 6;
+    var opacity_hlight = 0.85;
+
+    var hlight_width = rel_width_hlight*params.viz.border_width;
+    var hlight_height = rel_width_hlight*params.viz.border_width/params.viz.zoom_switch;
+
+    // // get x position of rectangle 
+    // d3.select(clicked_rect).each(function(d){
+    //   var pos_x = d.pos_x;
+
+    // top highlight 
+    d3.select('#top_hlight')
+      .attr('width', params.matrix.x_scale.rangeBand())
+      .attr('height', hlight_height)
+      .attr('transform', function() {
+        return 'translate(' + params.matrix.x_scale(params.matrix.click_hlight_x) + ',0)';
+      });
+
+    // left highlight 
+    d3.select('#left_hlight')
+      .attr('width', hlight_width)
+      .attr('height', params.matrix.y_scale.rangeBand() - hlight_height*0.99 )
+      .attr('transform', function() {
+        return 'translate(' + params.matrix.x_scale(params.matrix.click_hlight_x) + ','+
+          hlight_height*0.99+')';
+      });
+
+    // right highlight 
+    d3.select('#right_hlight')
+      .attr('width', hlight_width)
+      .attr('height', params.matrix.y_scale.rangeBand() - hlight_height*0.99 )
+      .attr('transform', function() {
+        var tmp_translate = params.matrix.x_scale(params.matrix.click_hlight_x) + params.matrix.x_scale.rangeBand() - hlight_width;
+        return 'translate(' + tmp_translate + ','+
+          hlight_height*0.99+')';
+      });
+
+    // bottom highlight 
+    d3.select('#bottom_hlight')
+      .attr('width', function(){
+        return params.matrix.x_scale.rangeBand() - 1.98*hlight_width})
+      .attr('height', hlight_height)
+      .attr('transform', function() {
+        var tmp_translate_x = params.matrix.x_scale(params.matrix.click_hlight_x) + hlight_width*0.99;
+        var tmp_translate_y = params.matrix.y_scale.rangeBand() - hlight_height;
+        return 'translate(' + tmp_translate_x + ','+
+          tmp_translate_y+')';
+      });
+
 
 
     // resize row labels

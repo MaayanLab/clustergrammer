@@ -49,6 +49,7 @@ function Config(args) {
     uni_margin: 4,
     // force the visualization to be square 
     force_square:0,
+    tile_click_hlight:false
   };
 
   // Mixin defaults with user-defined arguments.
