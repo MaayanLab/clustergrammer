@@ -48,7 +48,7 @@ $(function() {
       'outer_margins_expand': outer_margins_expand,
 
       // 'click_tile': click_tile_callback,
-      'click_label':click_label,
+      // 'click_label':click_label,
       // 'tile_click_hlight':true,
       // 'highlight_color':'yellow',
 
