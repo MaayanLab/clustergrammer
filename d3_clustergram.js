@@ -1544,7 +1544,7 @@ function Labels(args){
       d3.selectAll('.row_label_text')
         .on('click',function(d){
           if (typeof params.click_label == 'function'){
-            params.click_label(d.name);
+            params.click_label(d.name, 'row');
             add_row_click_hlight(this, d.ini);
           } else {
             if (params.tile_click_hlight){
@@ -1826,7 +1826,7 @@ function Labels(args){
       .on('click',function(d){
 
         if (typeof params.click_label == 'function'){
-          params.click_label(d.name);
+          params.click_label(d.name, 'col');
           add_col_click_hlight(this, d.ini);
         } else {
 

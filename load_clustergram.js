@@ -34,8 +34,8 @@ $(function() {
     }
 
     // row/col callback function
-    function click_label(label_info){
-      console.log('label callback function '+ label_info)
+    function click_label(label_info, label_type){
+      console.log( label_type+' label callback function '+ label_info)
     }
 
     // define arguments object
@@ -48,7 +48,7 @@ $(function() {
       'outer_margins_expand': outer_margins_expand,
 
       // 'click_tile': click_tile_callback,
-      // 'click_label':click_label,
+      'click_label':click_label,
       // 'tile_click_hlight':true,
       // 'highlight_color':'yellow',
 
