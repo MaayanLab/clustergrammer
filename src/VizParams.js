@@ -1,4 +1,4 @@
-/* VizParams Module 
+/* VizParams Module
 */
 function VizParams(config){
 
@@ -12,44 +12,44 @@ function VizParams(config){
     // initialize params object from config
     var params = config;
 
-    // Label Paramsters 
+    // Label Paramsters
     params.labels = {};
     params.labels.col_overflow = config.col_overflow;
     params.labels.row_overflow = config.row_overflow;
     params.labels.super_labels = config.super_labels;
-    // Super Labels Detais 
+    // Super Labels Detais
     if (params.labels.super_labels) {
       params.labels.super_label_width = 20;
-      params.labels.super = {}; 
+      params.labels.super = {};
       params.labels.super.row = config.super.row;
       params.labels.super.col = config.super.col;
     } else {
       params.labels.super_label_width = 0;
     }
-    // optional classification 
+    // optional classification
     params.labels.show_categories = config.show_categories;
     if (params.labels.show_categories){
       params.labels.class_colors = config.class_colors;
     }
 
-    // Matrix Options 
+    // Matrix Options
     params.matrix = {};
     params.matrix.tile_colors = config.tile_colors;
     params.matrix.bar_colors = config.bar_colors;
     params.matrix.hlight_color = config.highlight_color
-    params.matrix.tile_title = config.tile_title; 
+    params.matrix.tile_title = config.tile_title;
 
     console.log(params.matrix.hlight_color)
 
-    // Visualization Options 
+    // Visualization Options
     params.viz = {};
     params.viz.svg_div_id = config.svg_div_id;
     params.viz.do_zoom = config.do_zoom;
     params.viz.resize = config.resize;
-    // background colors 
-    params.viz.background_color = config.background_color; 
+    // background colors
+    params.viz.background_color = config.background_color;
     params.viz.super_border_color = config.super_border_color;
-    // margin widths 
+    // margin widths
     params.viz.outer_margins = config.outer_margins;
     params.viz.outer_margins_expand = config.outer_margins_expand;
     params.viz.expand = config.ini_expand;
@@ -58,13 +58,13 @@ function VizParams(config){
     params.viz.show_dendrogram = config.show_dendrogram;
     params.viz.tile_click_hlight = config.tile_click_hlight;
 
-    // initialized clicked tile and rows 
+    // initialized clicked tile and rows
     params.matrix.click_hlight_x = -666;
     params.matrix.click_hlight_y = -666;
     params.matrix.click_hlight_row = -666;
     params.matrix.click_hlight_col = -666;
 
-    // initial order of clustergram 
+    // initial order of clustergram
     params.viz.inst_order = config.inst_order;
 
     params.matrix.opacity_function = config.opacity_scale;
@@ -82,7 +82,7 @@ function VizParams(config){
 
     var network_data = params.network_data;
 
-    // resize based on parent div 
+    // resize based on parent div
     parent_div_size_pos(params);
 
     params.viz.parent_div_size_pos = parent_div_size_pos;
@@ -113,7 +113,7 @@ function VizParams(config){
 
     // allow the user to increase or decrease the overall size of the labels
     params.norm_label.width.row = label_scale(row_max_char) * config.row_label_scale;
-    params.norm_label.width.col = 0.8 * label_scale(col_max_char) * params.col_label_scale;
+    params.norm_label.width.col = label_scale(col_max_char) * params.col_label_scale;
 
     // normal label margins
     params.norm_label.margin = {};
@@ -251,13 +251,13 @@ function VizParams(config){
     };
 
     // the visualization dimensions can be smaller than the svg
-    // columns need to be shrunk for wide screens 
+    // columns need to be shrunk for wide screens
     var min_col_shrink_scale = d3.scale.linear().domain([100,1500]).range([1,0.1]).clamp('true');
     var min_col_shrink = min_col_shrink_scale(params.viz.svg_dim.width);
 
-    // calculate clustergram width 
-    // reduce clustergram width if triangles are taller than the normal width 
-    // of the columns 
+    // calculate clustergram width
+    // reduce clustergram width if triangles are taller than the normal width
+    // of the columns
     var tmp_x_scale = d3.scale.ordinal().rangeBands([0, ini_clust_width]);
     tmp_x_scale.domain(params.matrix.orders.ini_row);
     var triangle_height = tmp_x_scale.rangeBand()/2 ;
@@ -325,8 +325,8 @@ function VizParams(config){
     params.viz.zoom_scale_font.row = 1;
     params.viz.zoom_scale_font.col = 1;
 
-    // allow user to do 'real' 2D zoom until visual aid column triangle 
-    // is as tall as the normal label width 
+    // allow user to do 'real' 2D zoom until visual aid column triangle
+    // is as tall as the normal label width
     params.viz.real_zoom = params.norm_label.width.col / (params.matrix.x_scale.rangeBand()/2);
 
     // set opacity scale
@@ -360,10 +360,10 @@ function VizParams(config){
       }
     }
 
-    // is a transition running currently 
+    // is a transition running currently
     params.viz.run_trans = false;
-    
-    // tile type: simple or group 
+
+    // tile type: simple or group
     // rect is the default faster and simpler option
     // group is the optional slower and more complex option that is activated with: highlighting or split tiles
     if (Utils.has(network_data.links[0], 'value_up') || Utils.has(network_data.links[0], 'highlight')) {
