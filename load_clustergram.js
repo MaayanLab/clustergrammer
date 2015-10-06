@@ -41,6 +41,9 @@ $(function() {
       'col_label':'Column-Data-Name',
       'outer_margins': outer_margins,
       'outer_margins_expand': outer_margins_expand,
+      'click_tile': click_tile_callback,
+      'highlight_color':'grey',
+      // 'tile_click_hlight':true  
       // 'ini_expand':true
       // 'col_label_scale':0.8,
       // 'row_label_scale':0.8
@@ -53,8 +56,6 @@ $(function() {
       // 'tile_colors':['#ED9124','#1C86EE'],
       // 'background_color':'orange',
       // 'tile_title': true,
-      'click_tile': click_tile_callback,
-      // 'tile_click_hlight':true  
       // 'click_group': click_group_callback
       // 'resize':false
       // 'order':'rank'

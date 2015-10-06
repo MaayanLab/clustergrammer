@@ -36,7 +36,10 @@ function VizParams(config){
     params.matrix = {};
     params.matrix.tile_colors = config.tile_colors;
     params.matrix.bar_colors = config.bar_colors;
+    params.matrix.hlight_color = config.highlight_color
     params.matrix.tile_title = config.tile_title; 
+
+    console.log(params.matrix.hlight_color)
 
     // Visualization Options 
     params.viz = {};

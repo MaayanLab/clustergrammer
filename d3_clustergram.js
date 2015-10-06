@@ -54,6 +54,7 @@ function Config(args) {
     transpose: false,
     tile_colors: ['#FF0000', '#1C86EE'],
     bar_colors: ['#FF0000', '#1C86EE'],
+    highlight_color: '#FFFF00',
     tile_title: false,
     // Default domain is set to 0, which means that the domain will be set automatically
     input_domain: 0,
@@ -439,7 +440,7 @@ function Matrix(network_data, svg_elem, params) {
       add_click_hlight(this);
     });
   } else {
-    
+
     // highlight clicked tile 
     if (params.tile_click_hlight){
       console.log('highlight clicked tiles');
@@ -488,7 +489,7 @@ function Matrix(network_data, svg_elem, params) {
           .attr('id','top_hlight')
           .attr('width', params.matrix.x_scale.rangeBand())
           .attr('height', hlight_height)
-          .attr('fill','yellow')
+          .attr('fill',params.matrix.hlight_color)
           .attr('transform', function() {
             return 'translate(' + params.matrix.x_scale(pos_x) + ',0)';
           })
@@ -501,7 +502,7 @@ function Matrix(network_data, svg_elem, params) {
           .attr('id','left_hlight')
           .attr('width', hlight_width)
           .attr('height', params.matrix.y_scale.rangeBand() - hlight_height*0.99 )
-          .attr('fill','yellow')
+          .attr('fill',params.matrix.hlight_color)
           .attr('transform', function() {
             return 'translate(' + params.matrix.x_scale(pos_x) + ','+
               hlight_height*0.99+')';
@@ -515,7 +516,7 @@ function Matrix(network_data, svg_elem, params) {
           .attr('id','right_hlight')
           .attr('width', hlight_width)
           .attr('height', params.matrix.y_scale.rangeBand() - hlight_height*0.99 )
-          .attr('fill','yellow')
+          .attr('fill',params.matrix.hlight_color)
           .attr('transform', function() {
             var tmp_translate = params.matrix.x_scale(pos_x) + params.matrix.x_scale.rangeBand() - hlight_width;
             return 'translate(' + tmp_translate + ','+
@@ -531,7 +532,7 @@ function Matrix(network_data, svg_elem, params) {
           .attr('width', function(){
             return params.matrix.x_scale.rangeBand() - 1.98*hlight_width})
           .attr('height', hlight_height)
-          .attr('fill','yellow')
+          .attr('fill',params.matrix.hlight_color)
           .attr('transform', function() {
             var tmp_translate_x = params.matrix.x_scale(pos_x) + hlight_width*0.99;
             var tmp_translate_y = params.matrix.y_scale.rangeBand() - hlight_height;
@@ -958,7 +959,10 @@ function VizParams(config){
     params.matrix = {};
     params.matrix.tile_colors = config.tile_colors;
     params.matrix.bar_colors = config.bar_colors;
+    params.matrix.hlight_color = config.highlight_color
     params.matrix.tile_title = config.tile_title; 
+
+    console.log(params.matrix.hlight_color)
 
     // Visualization Options 
     params.viz = {};
