@@ -530,9 +530,8 @@ function Viz(config) {
     var hlight_width = rel_width_hlight*params.viz.border_width;
     var hlight_height = rel_width_hlight*params.viz.border_width/params.viz.zoom_switch;
 
-    // // get x position of rectangle 
-    // d3.select(clicked_rect).each(function(d){
-    //   var pos_x = d.pos_x;
+    // reposition tile highlight
+    ////////////////////////////////
 
     // top highlight 
     d3.select('#top_hlight')
@@ -573,6 +572,18 @@ function Viz(config) {
           tmp_translate_y+')';
       });
 
+    // resize row highlight 
+    /////////////////////////
+    d3.select('#row_top_hlight')
+      .attr('width',params.viz.svg_dim.width)
+      .attr('height',hlight_height)
+    d3.select('#row_bottom_hlight')
+      .attr('width',params.viz.svg_dim.width)
+      .attr('height',hlight_height)
+      .attr('transform', function(){
+        var tmp_translate_y = params.matrix.y_scale.rangeBand() - hlight_height;
+        return 'translate(0,'+tmp_translate_y+')';
+      });    
 
 
     // resize row labels

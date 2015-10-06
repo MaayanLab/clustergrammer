@@ -10,7 +10,7 @@ function Zoom(params){
       trans_y = d3.event.translate[1] - params.viz.clust.margin.top;
 
     // apply transformation
-    apply_transformation(trans_x, trans_y, zoom_x, zoom_y);  
+    apply_transformation(trans_x, trans_y, zoom_x, zoom_y);
   }
 
   function apply_transformation(trans_x, trans_y, zoom_x, zoom_y) {
@@ -110,7 +110,7 @@ function Zoom(params){
       .translate([trans_x + params.viz.clust.margin.left, trans_y + params.viz.clust.margin.top
       ]);
 
-   
+
     // check if widest row or col are wider than the allowed label width
     ////////////////////////////////////////////////////////////////////////
 
@@ -496,7 +496,7 @@ function Zoom(params){
     // double click to reset zoom - add transition
     d3.select('#main_svg')
       .on('dblclick', function() {
-        // programmatic zoom reset 
+        // programmatic zoom reset
         two_translate_zoom(0, 0, 1);
       });
   }

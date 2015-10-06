@@ -6,7 +6,7 @@ function Matrix(network_data, svg_elem, params) {
   col_nodes = network_data.col_nodes,
   clust_group;
 
-  // make the matrix 
+  // make the matrix
   initialize_matrix();
 
   // append a group that will hold clust_group and position it once
@@ -18,7 +18,7 @@ function Matrix(network_data, svg_elem, params) {
     .append('g')
     .attr('id', 'clust_group');
 
-  // clustergram background rect 
+  // clustergram background rect
   clust_group
     .append('rect')
     .attr('class', 'background')
@@ -27,7 +27,7 @@ function Matrix(network_data, svg_elem, params) {
     .attr('width', params.viz.clust.dim.width)
     .attr('height', params.viz.clust.dim.height);
 
-  // do the databind 
+  // do the databind
   var row_groups = clust_group.selectAll('.row')
     .data(matrix)
     .enter()
@@ -37,14 +37,14 @@ function Matrix(network_data, svg_elem, params) {
       return 'translate(0,' + params.matrix.y_scale(index) + ')';
     });
 
-  // draw rows of clustergram 
+  // draw rows of clustergram
   if (params.matrix.tile_type === 'simple') {
     row_groups = row_groups.each(draw_simple_rows);
   } else {
     row_groups = row_groups.each(draw_group_rows);
   }
 
-  
+
   // add callback function to tile group - if one is supplied by the user
   if (typeof params.click_tile === 'function') {
     d3.selectAll('.tile')
@@ -69,7 +69,7 @@ function Matrix(network_data, svg_elem, params) {
     });
   } else {
 
-    // highlight clicked tile 
+    // highlight clicked tile
     if (params.tile_click_hlight){
       console.log('highlight clicked tiles');
 
@@ -86,7 +86,7 @@ function Matrix(network_data, svg_elem, params) {
 
   function add_click_hlight(clicked_rect){
 
-    // get x position of rectangle 
+    // get x position of rectangle
     d3.select(clicked_rect).each(function(d){
       var pos_x = d.pos_x;
       var pos_y = d.pos_y;
@@ -96,21 +96,21 @@ function Matrix(network_data, svg_elem, params) {
 
       if (pos_x!=params.matrix.click_hlight_x || pos_y!=params.matrix.click_hlight_y){
 
-        // save pos_x to params.viz.click_hlight_x 
+        // save pos_x to params.viz.click_hlight_x
         params.matrix.click_hlight_x = pos_x;
         params.matrix.click_hlight_y = pos_y;
 
-        // draw the highlighting rectangle as four rectangles 
-        // so that the width and height can be controlled 
-        // separately 
+        // draw the highlighting rectangle as four rectangles
+        // so that the width and height can be controlled
+        // separately
 
         var rel_width_hlight = 6;
         var opacity_hlight = 0.85;
 
-        var hlight_width = rel_width_hlight*params.viz.border_width;
+        var hlight_width  = rel_width_hlight*params.viz.border_width;
         var hlight_height = rel_width_hlight*params.viz.border_width/params.viz.zoom_switch;
 
-        // top highlight 
+        // top highlight
         d3.select(clicked_rect.parentNode)
           .append('rect')
           .attr('class','click_hlight')
@@ -123,7 +123,7 @@ function Matrix(network_data, svg_elem, params) {
           })
           .attr('opacity',opacity_hlight);
 
-        // left highlight 
+        // left highlight
         d3.select(clicked_rect.parentNode)
           .append('rect')
           .attr('class','click_hlight')
@@ -137,7 +137,7 @@ function Matrix(network_data, svg_elem, params) {
           })
           .attr('opacity',opacity_hlight);
 
-        // right highlight 
+        // right highlight
         d3.select(clicked_rect.parentNode)
           .append('rect')
           .attr('class','click_hlight')
@@ -152,7 +152,7 @@ function Matrix(network_data, svg_elem, params) {
           })
           .attr('opacity',opacity_hlight);
 
-        // bottom highlight 
+        // bottom highlight
         d3.select(clicked_rect.parentNode)
           .append('rect')
           .attr('class','click_hlight')
@@ -168,7 +168,7 @@ function Matrix(network_data, svg_elem, params) {
               tmp_translate_y+')';
           })
           .attr('opacity',opacity_hlight);
-          
+
         } else {
           params.matrix.click_hlight_x = -666;
           params.matrix.click_hlight_y = -666;
@@ -178,7 +178,7 @@ function Matrix(network_data, svg_elem, params) {
     })
   }
 
-  // draw grid lines after drawing tiles 
+  // draw grid lines after drawing tiles
   draw_grid_lines();
 
   function initialize_matrix() {
@@ -212,7 +212,7 @@ function Matrix(network_data, svg_elem, params) {
 
   function draw_grid_lines() {
 
-    // append horizontal lines 
+    // append horizontal lines
     clust_group
       .selectAll('.horz_lines')
       .data(row_nodes)
@@ -468,7 +468,7 @@ function Matrix(network_data, svg_elem, params) {
     }
     }
 
-  // Matrix API 
+  // Matrix API
   return {
     get_clust_group: function() {
       return clust_group;

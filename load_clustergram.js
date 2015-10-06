@@ -1,4 +1,4 @@
-// load clustergram function 
+// load clustergram function
 $(function() {
 
   // load network
@@ -7,7 +7,7 @@ $(function() {
     // define the outer margins of the visualization
     var outer_margins = {
         'top':5,
-        'bottom':33,  
+        'bottom':33,
         'left':195,
         'right':2
       };
@@ -17,7 +17,7 @@ $(function() {
         'bottom':33,
         'left':5,
         'right':2
-      };  
+      };
 
     // define callback function for clicking on tile
     function click_tile_callback(tile_info){
@@ -33,6 +33,11 @@ $(function() {
       console.log(group_info.info);
     }
 
+    // row/col callback function
+    function click_label(label_info){
+      console.log('label callback function '+ label_info)
+    }
+
     // define arguments object
     var arguments_obj = {
       'network_data': network_data,
@@ -41,9 +46,12 @@ $(function() {
       'col_label':'Column-Data-Name',
       'outer_margins': outer_margins,
       'outer_margins_expand': outer_margins_expand,
-      'click_tile': click_tile_callback,
-      'highlight_color':'grey',
-      // 'tile_click_hlight':true  
+
+      // 'click_tile': click_tile_callback,
+      // 'click_label':click_label,
+      // 'tile_click_hlight':true,
+      // 'highlight_color':'yellow',
+
       // 'ini_expand':true
       // 'col_label_scale':0.8,
       // 'row_label_scale':0.8
@@ -62,7 +70,7 @@ $(function() {
     };
 
     d3.select('#wait_message').style('display','none');
-    
+
     // make clustergram: pass network_data and the div name where the svg should be made
     var d3c = d3_clustergram(arguments_obj);
 
@@ -85,7 +93,7 @@ $(function() {
     });
     $( "#amount" ).val( "$" + $( "#slider_col" ).slider( "value" ) );
 
-    // row groups 
+    // row groups
     $( "#slider_row" ).slider({
       value:0.5,
       min: 0,
@@ -99,7 +107,7 @@ $(function() {
     });
     $( "#amount" ).val( "$" + $( "#slider_row" ).slider( "value" ) );
 
-    // opacity scale 
+    // opacity scale
     $( "#slider_opacity" ).slider({
       value:0.2,
       min: 0.0,

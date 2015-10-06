@@ -58,8 +58,11 @@ function VizParams(config){
     params.viz.show_dendrogram = config.show_dendrogram;
     params.viz.tile_click_hlight = config.tile_click_hlight;
 
+    // initialized clicked tile and rows 
     params.matrix.click_hlight_x = -666;
     params.matrix.click_hlight_y = -666;
+    params.matrix.click_hlight_row = -666;
+    params.matrix.click_hlight_col = -666;
 
     // initial order of clustergram 
     params.viz.inst_order = config.inst_order;

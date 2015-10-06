@@ -193,6 +193,62 @@ function Labels(args){
 
         }
 
+      // add row callback function
+      d3.selectAll('.row_label_text')
+        .on('click',function(d){
+          if (typeof params.click_label == 'function'){
+            params.click_label(d.name);
+            add_row_click_hlight(this, d.ini);
+          } else {
+            if (params.tile_click_hlight){
+              add_row_click_hlight(this,d.ini);
+            }
+          }
+
+        })
+
+
+      function add_row_click_hlight(clicked_row, id_clicked_row){
+
+        if (id_clicked_row != params.click_hlight_row){
+
+          var rel_width_hlight = 6;
+          var opacity_hlight = 0.85;
+          var hlight_width  = rel_width_hlight*params.viz.border_width;
+          var hlight_height = rel_width_hlight*params.viz.border_width/params.viz.zoom_switch;
+
+          d3.selectAll('.click_hlight')
+            .remove();
+
+          d3.select(clicked_row)
+            .append('rect')
+            .attr('class','click_hlight')
+            .attr('id','row_top_hlight')
+            .attr('width',params.viz.svg_dim.width)
+            .attr('height',hlight_height)
+            .attr('fill',params.matrix.hlight_color)
+            .attr('opacity',opacity_hlight);
+
+          d3.select(clicked_row)
+            .append('rect')
+            .attr('class','click_hlight')
+            .attr('id','row_bottom_hlight')
+            .attr('width',params.viz.svg_dim.width)
+            .attr('height',hlight_height)
+            .attr('fill',params.matrix.hlight_color)
+            .attr('opacity',opacity_hlight)
+            .attr('transform', function(){
+              var tmp_translate_y = params.matrix.y_scale.rangeBand() - hlight_height;
+              return 'translate(0,'+tmp_translate_y+')';
+            });
+        } else{
+          d3.selectAll('.click_hlight')
+          .remove();
+          params.click_hlight_row = -666;
+        }
+
+      }
+
       // return row_triangle_ini_group so that the dendrogram can be made
       return row_triangle_ini_group;
   }
@@ -261,13 +317,13 @@ function Labels(args){
       .on('mouseout', function mouseout() {
       d3.select(this).select('text')
         .classed('active',false);
-      }); 
+      });
 
     // add column label
     col_label_click
       .append('text')
       .attr('x', 0)
-      // manually tuned 
+      // manually tuned
       .attr('y', params.matrix.x_scale.rangeBand() * 0.64)
       .attr('dx', params.viz.border_width)
       .attr('text-anchor', 'start')
@@ -415,6 +471,75 @@ function Labels(args){
         return d.value > 0 ? params.matrix.bar_colors[0] : params.matrix.bar_colors[1];
       })
       .attr('opacity', 0.4);
+    }
+
+
+    // add col callback function
+    d3.selectAll('.col_label_text')
+      .on('click',function(d){
+
+        if (typeof params.click_label == 'function'){
+          params.click_label(d.name);
+          add_col_click_hlight(this, d.ini);
+        } else {
+
+          if (params.tile_click_hlight){
+            add_col_click_hlight(this, d.ini);
+          }
+
+        }
+
+      })
+
+
+    function add_col_click_hlight(clicked_col, id_clicked_col){
+
+      if (id_clicked_col != params.click_hlight_col){
+
+        params.click_hlight_col = id_clicked_col;
+
+        var rel_width_hlight = 6;
+        var opacity_hlight = 0.85;
+        var hlight_width  = rel_width_hlight*params.viz.border_width;
+        var hlight_height = rel_width_hlight*params.viz.border_width/params.viz.zoom_switch;
+
+        d3.selectAll('.click_hlight')
+          .remove();
+
+        d3.select(clicked_col)
+          .append('rect')
+          .attr('class','click_hlight')
+          .attr('id','col_top_hlight')
+          .attr('width',params.viz.svg_dim.height)
+          .attr('height',hlight_width)
+          .attr('fill',params.matrix.hlight_color)
+          .attr('opacity',opacity_hlight)
+          .attr('transform',function(){
+            var tmp_translate_y = 0;
+            var tmp_translate_x = -params.viz.svg_dim.height;
+            return 'translate('+tmp_translate_x+','+tmp_translate_y+')';
+          });
+
+        d3.select(clicked_col)
+          .append('rect')
+          .attr('class','click_hlight')
+          .attr('id','col_bottom_hlight')
+          .attr('width',params.viz.svg_dim.height)
+          .attr('height',hlight_width)
+          .attr('fill',params.matrix.hlight_color)
+          .attr('opacity',opacity_hlight)
+          .attr('transform', function(){
+            // reverse x and y since rotated
+            var tmp_translate_y = params.matrix.x_scale.rangeBand() - hlight_width;
+            var tmp_translate_x = -params.viz.svg_dim.height;
+            return 'translate('+tmp_translate_x+','+tmp_translate_y+')';
+          });
+      } else {
+        d3.selectAll('.click_hlight')
+        .remove();
+        params.click_hlight_col = -666;
+      }
+
     }
 
     return container_all_col;

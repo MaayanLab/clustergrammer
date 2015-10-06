@@ -378,7 +378,7 @@ function Matrix(network_data, svg_elem, params) {
   col_nodes = network_data.col_nodes,
   clust_group;
 
-  // make the matrix 
+  // make the matrix
   initialize_matrix();
 
   // append a group that will hold clust_group and position it once
@@ -390,7 +390,7 @@ function Matrix(network_data, svg_elem, params) {
     .append('g')
     .attr('id', 'clust_group');
 
-  // clustergram background rect 
+  // clustergram background rect
   clust_group
     .append('rect')
     .attr('class', 'background')
@@ -399,7 +399,7 @@ function Matrix(network_data, svg_elem, params) {
     .attr('width', params.viz.clust.dim.width)
     .attr('height', params.viz.clust.dim.height);
 
-  // do the databind 
+  // do the databind
   var row_groups = clust_group.selectAll('.row')
     .data(matrix)
     .enter()
@@ -409,14 +409,14 @@ function Matrix(network_data, svg_elem, params) {
       return 'translate(0,' + params.matrix.y_scale(index) + ')';
     });
 
-  // draw rows of clustergram 
+  // draw rows of clustergram
   if (params.matrix.tile_type === 'simple') {
     row_groups = row_groups.each(draw_simple_rows);
   } else {
     row_groups = row_groups.each(draw_group_rows);
   }
 
-  
+
   // add callback function to tile group - if one is supplied by the user
   if (typeof params.click_tile === 'function') {
     d3.selectAll('.tile')
@@ -441,7 +441,7 @@ function Matrix(network_data, svg_elem, params) {
     });
   } else {
 
-    // highlight clicked tile 
+    // highlight clicked tile
     if (params.tile_click_hlight){
       console.log('highlight clicked tiles');
 
@@ -458,7 +458,7 @@ function Matrix(network_data, svg_elem, params) {
 
   function add_click_hlight(clicked_rect){
 
-    // get x position of rectangle 
+    // get x position of rectangle
     d3.select(clicked_rect).each(function(d){
       var pos_x = d.pos_x;
       var pos_y = d.pos_y;
@@ -468,21 +468,21 @@ function Matrix(network_data, svg_elem, params) {
 
       if (pos_x!=params.matrix.click_hlight_x || pos_y!=params.matrix.click_hlight_y){
 
-        // save pos_x to params.viz.click_hlight_x 
+        // save pos_x to params.viz.click_hlight_x
         params.matrix.click_hlight_x = pos_x;
         params.matrix.click_hlight_y = pos_y;
 
-        // draw the highlighting rectangle as four rectangles 
-        // so that the width and height can be controlled 
-        // separately 
+        // draw the highlighting rectangle as four rectangles
+        // so that the width and height can be controlled
+        // separately
 
         var rel_width_hlight = 6;
         var opacity_hlight = 0.85;
 
-        var hlight_width = rel_width_hlight*params.viz.border_width;
+        var hlight_width  = rel_width_hlight*params.viz.border_width;
         var hlight_height = rel_width_hlight*params.viz.border_width/params.viz.zoom_switch;
 
-        // top highlight 
+        // top highlight
         d3.select(clicked_rect.parentNode)
           .append('rect')
           .attr('class','click_hlight')
@@ -495,7 +495,7 @@ function Matrix(network_data, svg_elem, params) {
           })
           .attr('opacity',opacity_hlight);
 
-        // left highlight 
+        // left highlight
         d3.select(clicked_rect.parentNode)
           .append('rect')
           .attr('class','click_hlight')
@@ -509,7 +509,7 @@ function Matrix(network_data, svg_elem, params) {
           })
           .attr('opacity',opacity_hlight);
 
-        // right highlight 
+        // right highlight
         d3.select(clicked_rect.parentNode)
           .append('rect')
           .attr('class','click_hlight')
@@ -524,7 +524,7 @@ function Matrix(network_data, svg_elem, params) {
           })
           .attr('opacity',opacity_hlight);
 
-        // bottom highlight 
+        // bottom highlight
         d3.select(clicked_rect.parentNode)
           .append('rect')
           .attr('class','click_hlight')
@@ -540,7 +540,7 @@ function Matrix(network_data, svg_elem, params) {
               tmp_translate_y+')';
           })
           .attr('opacity',opacity_hlight);
-          
+
         } else {
           params.matrix.click_hlight_x = -666;
           params.matrix.click_hlight_y = -666;
@@ -550,7 +550,7 @@ function Matrix(network_data, svg_elem, params) {
     })
   }
 
-  // draw grid lines after drawing tiles 
+  // draw grid lines after drawing tiles
   draw_grid_lines();
 
   function initialize_matrix() {
@@ -584,7 +584,7 @@ function Matrix(network_data, svg_elem, params) {
 
   function draw_grid_lines() {
 
-    // append horizontal lines 
+    // append horizontal lines
     clust_group
       .selectAll('.horz_lines')
       .data(row_nodes)
@@ -840,7 +840,7 @@ function Matrix(network_data, svg_elem, params) {
     }
     }
 
-  // Matrix API 
+  // Matrix API
   return {
     get_clust_group: function() {
       return clust_group;
@@ -981,8 +981,11 @@ function VizParams(config){
     params.viz.show_dendrogram = config.show_dendrogram;
     params.viz.tile_click_hlight = config.tile_click_hlight;
 
+    // initialized clicked tile and rows 
     params.matrix.click_hlight_x = -666;
     params.matrix.click_hlight_y = -666;
+    params.matrix.click_hlight_row = -666;
+    params.matrix.click_hlight_col = -666;
 
     // initial order of clustergram 
     params.viz.inst_order = config.inst_order;
@@ -1537,6 +1540,62 @@ function Labels(args){
 
         }
 
+      // add row callback function
+      d3.selectAll('.row_label_text')
+        .on('click',function(d){
+          if (typeof params.click_label == 'function'){
+            params.click_label(d.name);
+            add_row_click_hlight(this, d.ini);
+          } else {
+            if (params.tile_click_hlight){
+              add_row_click_hlight(this,d.ini);
+            }
+          }
+
+        })
+
+
+      function add_row_click_hlight(clicked_row, id_clicked_row){
+
+        if (id_clicked_row != params.click_hlight_row){
+
+          var rel_width_hlight = 6;
+          var opacity_hlight = 0.85;
+          var hlight_width  = rel_width_hlight*params.viz.border_width;
+          var hlight_height = rel_width_hlight*params.viz.border_width/params.viz.zoom_switch;
+
+          d3.selectAll('.click_hlight')
+            .remove();
+
+          d3.select(clicked_row)
+            .append('rect')
+            .attr('class','click_hlight')
+            .attr('id','row_top_hlight')
+            .attr('width',params.viz.svg_dim.width)
+            .attr('height',hlight_height)
+            .attr('fill',params.matrix.hlight_color)
+            .attr('opacity',opacity_hlight);
+
+          d3.select(clicked_row)
+            .append('rect')
+            .attr('class','click_hlight')
+            .attr('id','row_bottom_hlight')
+            .attr('width',params.viz.svg_dim.width)
+            .attr('height',hlight_height)
+            .attr('fill',params.matrix.hlight_color)
+            .attr('opacity',opacity_hlight)
+            .attr('transform', function(){
+              var tmp_translate_y = params.matrix.y_scale.rangeBand() - hlight_height;
+              return 'translate(0,'+tmp_translate_y+')';
+            });
+        } else{
+          d3.selectAll('.click_hlight')
+          .remove();
+          params.click_hlight_row = -666;
+        }
+
+      }
+
       // return row_triangle_ini_group so that the dendrogram can be made
       return row_triangle_ini_group;
   }
@@ -1605,13 +1664,13 @@ function Labels(args){
       .on('mouseout', function mouseout() {
       d3.select(this).select('text')
         .classed('active',false);
-      }); 
+      });
 
     // add column label
     col_label_click
       .append('text')
       .attr('x', 0)
-      // manually tuned 
+      // manually tuned
       .attr('y', params.matrix.x_scale.rangeBand() * 0.64)
       .attr('dx', params.viz.border_width)
       .attr('text-anchor', 'start')
@@ -1759,6 +1818,75 @@ function Labels(args){
         return d.value > 0 ? params.matrix.bar_colors[0] : params.matrix.bar_colors[1];
       })
       .attr('opacity', 0.4);
+    }
+
+
+    // add col callback function
+    d3.selectAll('.col_label_text')
+      .on('click',function(d){
+
+        if (typeof params.click_label == 'function'){
+          params.click_label(d.name);
+          add_col_click_hlight(this, d.ini);
+        } else {
+
+          if (params.tile_click_hlight){
+            add_col_click_hlight(this, d.ini);
+          }
+
+        }
+
+      })
+
+
+    function add_col_click_hlight(clicked_col, id_clicked_col){
+
+      if (id_clicked_col != params.click_hlight_col){
+
+        params.click_hlight_col = id_clicked_col;
+
+        var rel_width_hlight = 6;
+        var opacity_hlight = 0.85;
+        var hlight_width  = rel_width_hlight*params.viz.border_width;
+        var hlight_height = rel_width_hlight*params.viz.border_width/params.viz.zoom_switch;
+
+        d3.selectAll('.click_hlight')
+          .remove();
+
+        d3.select(clicked_col)
+          .append('rect')
+          .attr('class','click_hlight')
+          .attr('id','col_top_hlight')
+          .attr('width',params.viz.svg_dim.height)
+          .attr('height',hlight_width)
+          .attr('fill',params.matrix.hlight_color)
+          .attr('opacity',opacity_hlight)
+          .attr('transform',function(){
+            var tmp_translate_y = 0;
+            var tmp_translate_x = -params.viz.svg_dim.height;
+            return 'translate('+tmp_translate_x+','+tmp_translate_y+')';
+          });
+
+        d3.select(clicked_col)
+          .append('rect')
+          .attr('class','click_hlight')
+          .attr('id','col_bottom_hlight')
+          .attr('width',params.viz.svg_dim.height)
+          .attr('height',hlight_width)
+          .attr('fill',params.matrix.hlight_color)
+          .attr('opacity',opacity_hlight)
+          .attr('transform', function(){
+            // reverse x and y since rotated
+            var tmp_translate_y = params.matrix.x_scale.rangeBand() - hlight_width;
+            var tmp_translate_x = -params.viz.svg_dim.height;
+            return 'translate('+tmp_translate_x+','+tmp_translate_y+')';
+          });
+      } else {
+        d3.selectAll('.click_hlight')
+        .remove();
+        params.click_hlight_col = -666;
+      }
+
     }
 
     return container_all_col;
@@ -2457,9 +2585,8 @@ function Viz(config) {
     var hlight_width = rel_width_hlight*params.viz.border_width;
     var hlight_height = rel_width_hlight*params.viz.border_width/params.viz.zoom_switch;
 
-    // // get x position of rectangle 
-    // d3.select(clicked_rect).each(function(d){
-    //   var pos_x = d.pos_x;
+    // reposition tile highlight
+    ////////////////////////////////
 
     // top highlight 
     d3.select('#top_hlight')
@@ -2500,6 +2627,18 @@ function Viz(config) {
           tmp_translate_y+')';
       });
 
+    // resize row highlight 
+    /////////////////////////
+    d3.select('#row_top_hlight')
+      .attr('width',params.viz.svg_dim.width)
+      .attr('height',hlight_height)
+    d3.select('#row_bottom_hlight')
+      .attr('width',params.viz.svg_dim.width)
+      .attr('height',hlight_height)
+      .attr('transform', function(){
+        var tmp_translate_y = params.matrix.y_scale.rangeBand() - hlight_height;
+        return 'translate(0,'+tmp_translate_y+')';
+      });    
 
 
     // resize row labels
@@ -3328,7 +3467,7 @@ function Zoom(params){
       trans_y = d3.event.translate[1] - params.viz.clust.margin.top;
 
     // apply transformation
-    apply_transformation(trans_x, trans_y, zoom_x, zoom_y);  
+    apply_transformation(trans_x, trans_y, zoom_x, zoom_y);
   }
 
   function apply_transformation(trans_x, trans_y, zoom_x, zoom_y) {
@@ -3428,7 +3567,7 @@ function Zoom(params){
       .translate([trans_x + params.viz.clust.margin.left, trans_y + params.viz.clust.margin.top
       ]);
 
-   
+
     // check if widest row or col are wider than the allowed label width
     ////////////////////////////////////////////////////////////////////////
 
@@ -3814,7 +3953,7 @@ function Zoom(params){
     // double click to reset zoom - add transition
     d3.select('#main_svg')
       .on('dblclick', function() {
-        // programmatic zoom reset 
+        // programmatic zoom reset
         two_translate_zoom(0, 0, 1);
       });
   }
