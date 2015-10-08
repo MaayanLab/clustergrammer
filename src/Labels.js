@@ -442,7 +442,6 @@ function Labels(args){
       });
 
 
-    //!! CHD specific
     // get max value
     var enr_max = Math.abs(_.max( col_nodes, function(d) { return Math.abs(d.value) } ).value) ;
     var enr_min = Math.abs(_.min( col_nodes, function(d) { return Math.abs(d.value) } ).value) ;

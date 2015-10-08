@@ -109,9 +109,6 @@ function VizParams(config){
     params.labels.row_keep = keep_label_scale(row_max_char);
     params.labels.col_keep = keep_label_scale(col_max_char);
 
-    console.log(params.labels.row_keep)
-    console.log(params.labels.col_keep)
-
     var min_label_width = 85;
     var max_label_width = 140;
     var label_scale = d3.scale.linear()

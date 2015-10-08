@@ -170,8 +170,8 @@
     params.viz.border_width = params.matrix.x_scale.rangeBand() / 40;
 
     // the default font sizes are set here
-    params.labels.default_fs_row = params.matrix.y_scale.rangeBand() * 0.95;
-    params.labels.default_fs_col = params.matrix.x_scale.rangeBand() * 0.75;
+    params.labels.default_fs_row = params.matrix.y_scale.rangeBand() * 1.01;
+    params.labels.default_fs_col = params.matrix.x_scale.rangeBand() * 0.85;
 
     svg_group.select('#grey_background')
       .attr('width', params.viz.clust.dim.width)
@@ -283,6 +283,14 @@
         return 'translate(0,'+tmp_translate_y+')';
       });
 
+    // add text to row/col during resize
+    function normal_name(d){
+      var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
+      if (inst_name.length > params.labels.max_label_char){
+        inst_name = inst_name.substring(0,params.labels.max_label_char)+'..';
+      }
+      return inst_name;
+    }
 
     // resize row labels
     ///////////////////////////
@@ -311,7 +319,8 @@
 
     svg_group.selectAll('.row_label_text')
       .select('text')
-      .style('font-size', params.labels.default_fs_row + 'px');
+      .style('font-size', params.labels.default_fs_row + 'px')
+      .text(function(d){ return normal_name(d);});
 
     // change the size of the highlighting rects
     svg_group.selectAll('.row_label_text')
@@ -405,197 +414,197 @@
 
       }
 
-        // resize col labels
-        ///////////////////////
-        svg_group.select('#col_container')
-          .attr('transform', 'translate(' + params.viz.clust.margin.left + ',' +
-          params.norm_label.margin.top + ')');
+      // resize col labels
+      ///////////////////////
+      svg_group.select('#col_container')
+        .attr('transform', 'translate(' + params.viz.clust.margin.left + ',' +
+        params.norm_label.margin.top + ')');
 
-        svg_group.select('#col_container')
-          .select('.white_bars')
-          .attr('width', 30 * params.viz.clust.dim.width + 'px')
-          .attr('height', params.norm_label.background.col);
+      svg_group.select('#col_container')
+        .select('.white_bars')
+        .attr('width', 30 * params.viz.clust.dim.width + 'px')
+        .attr('height', params.norm_label.background.col);
 
-        svg_group.select('#col_container')
-          .select('.label_container')
-          .attr('transform', 'translate(0,' + params.norm_label.width.col + ')');
+      svg_group.select('#col_container')
+        .select('.label_container')
+        .attr('transform', 'translate(0,' + params.norm_label.width.col + ')');
 
-        // offset click group column label
-        var x_offset_click = params.matrix.x_scale.rangeBand() / 2 + params.viz.border_width;
-        // reduce width of rotated rects
-        var reduce_rect_width = params.matrix.x_scale.rangeBand() * 0.36;
+      // offset click group column label
+      var x_offset_click = params.matrix.x_scale.rangeBand() / 2 + params.viz.border_width;
+      // reduce width of rotated rects
+      var reduce_rect_width = params.matrix.x_scale.rangeBand() * 0.36;
 
-        svg_group.selectAll('.col_label_text')
-          .attr('transform', function(d, index) {
-            return 'translate(' + params.matrix.x_scale(index) + ') rotate(-90)';
-          });
-
-        svg_group.selectAll('.col_label_click')
-          .attr('transform', 'translate(' + params.matrix.x_scale.rangeBand() / 2 + ',' + x_offset_click + ') rotate(45)');
-
-        svg_group.selectAll('.col_label_click')
-          .select('text')
-          .attr('y', params.matrix.x_scale.rangeBand() * 0.60)
-          .attr('dx', 2 * params.viz.border_width)
-          .style('font-size', params.labels.default_fs_col + 'px');
-
-        params.bounding_width_max.col = 0;
-        svg_group.selectAll('.col_label_click').each(function() {
-          var tmp_width = d3.select(this).select('text').node().getBBox().width;
-          if (tmp_width > params.bounding_width_max.col) {
-          params.bounding_width_max.col = tmp_width * 1.2;
-          }
+      svg_group.selectAll('.col_label_text')
+        .attr('transform', function(d, index) {
+          return 'translate(' + params.matrix.x_scale(index) + ') rotate(-90)';
         });
 
-        // check if widest row or col are wider than the allowed label width
-        ////////////////////////////////////////////////////////////////////////
-        params.ini_scale_font = {};
-        params.ini_scale_font.row = 1;
-        params.ini_scale_font.col = 1;
+      svg_group.selectAll('.col_label_click')
+        .attr('transform', 'translate(' + params.matrix.x_scale.rangeBand() / 2 + ',' + x_offset_click + ') rotate(45)');
 
-        if (params.bounding_width_max.row > params.norm_label.width.row) {
+      svg_group.selectAll('.col_label_click')
+        .select('text')
+        .attr('y', params.matrix.x_scale.rangeBand() * 0.60)
+        .attr('dx', 2 * params.viz.border_width)
+        .style('font-size', params.labels.default_fs_col + 'px')
+        .text(function(d){ return normal_name(d);});
 
-          // calc reduction in font size
-          params.ini_scale_font.row = params.norm_label.width.row / params.bounding_width_max.row;
-          // redefine bounding_width_max.row
-          params.bounding_width_max.row = params.ini_scale_font.row * params.bounding_width_max.row;
 
-          // redefine default fs
-          params.labels.default_fs_row = params.labels.default_fs_row * params.ini_scale_font.row;
-          // reduce font size
-          d3.selectAll('.row_label_text').each(function() {
-          d3.select(this).select('text')
-            .style('font-size', params.labels.default_fs_row + 'px');
-          });
+      params.bounding_width_max.col = 0;
+      svg_group.selectAll('.col_label_click').each(function() {
+        var tmp_width = d3.select(this).select('text').node().getBBox().width;
+        if (tmp_width > params.bounding_width_max.col) {
+        params.bounding_width_max.col = tmp_width * 1.2;
         }
+      });
 
-        if (params.bounding_width_max.col > params.norm_label.width.col) {
 
-          // calc reduction in font size
-          params.ini_scale_font.col = params.norm_label.width.col / params.bounding_width_max.col;
-          // redefine bounding_width_max.col
-          params.bounding_width_max.col = params.ini_scale_font.col * params.bounding_width_max.col;
-          // redefine default fs
-          params.labels.default_fs_col = params.labels.default_fs_col * params.ini_scale_font.col;
-          // reduce font size
-          d3.selectAll('.col_label_click').each(function() {
-          d3.select(this).select('text')
-            .style('font-size', params.labels.default_fs_col + 'px');
-          });
-        }
+      // check if widest row or col are wider than the allowed label width
+      ////////////////////////////////////////////////////////////////////////
+      params.ini_scale_font = {};
+      params.ini_scale_font.row = 1;
+      params.ini_scale_font.col = 1;
 
-        svg_group.selectAll('.col_label_click')
-          .each(function() {
-            var bbox = d3.select(this)
-              .select('text')[0][0]
-              .getBBox();
-            d3.select(this)
-              .select('rect')
-              .attr('x', bbox.x * 1.25)
-              .attr('y', 0)
-              .attr('width', bbox.width * 1.25)
-              .attr('height', params.matrix.x_scale.rangeBand() * 0.6)
-              .style('fill', 'yellow')
-              .style('opacity', 0);
-          });
+      if (params.bounding_width_max.row > params.norm_label.width.row) {
 
-        svg_group.selectAll('.col_label_click')
-          .select('path')
-          .attr('d', function() {
-            // x and y are flipped since its rotated
-            var origin_y = -params.viz.border_width;
-            var start_x = 0;
-            var final_x = params.matrix.x_scale.rangeBand() - reduce_rect_width;
-            var start_y = -(params.matrix.x_scale.rangeBand() - reduce_rect_width +
-            params.viz.border_width);
-            var final_y = -params.viz.border_width;
-            var output_string = 'M ' + origin_y + ',0 L ' + start_y + ',' +
-              start_x + ', L ' + final_y + ',' + final_x + ' Z';
-            return output_string;
-          })
-          .attr('fill', function(d) {
-            var inst_color = '#eee';
-            if (params.labels.show_categories) {
-              inst_color = params.labels.class_colors.col[d.cl];
+        // calc reduction in font size
+        params.ini_scale_font.row = params.norm_label.width.row / params.bounding_width_max.row;
+        // redefine bounding_width_max.row
+        params.bounding_width_max.row = params.ini_scale_font.row * params.bounding_width_max.row;
+
+        // redefine default fs
+        params.labels.default_fs_row = params.labels.default_fs_row * params.ini_scale_font.row;
+        // reduce font size
+        d3.selectAll('.row_label_text').each(function() {
+        d3.select(this).select('text')
+          .style('font-size', params.labels.default_fs_row + 'px');
+        });
+      }
+
+      if (params.bounding_width_max.col > params.norm_label.width.col) {
+
+        // calc reduction in font size
+        params.ini_scale_font.col = params.norm_label.width.col / params.bounding_width_max.col;
+        // redefine bounding_width_max.col
+        params.bounding_width_max.col = params.ini_scale_font.col * params.bounding_width_max.col;
+        // redefine default fs
+        params.labels.default_fs_col = params.labels.default_fs_col * params.ini_scale_font.col;
+        // reduce font size
+        d3.selectAll('.col_label_click').each(function() {
+        d3.select(this).select('text')
+          .style('font-size', params.labels.default_fs_col + 'px');
+        });
+      }
+
+      svg_group.selectAll('.col_label_click')
+        .each(function() {
+          var bbox = d3.select(this)
+            .select('text')[0][0]
+            .getBBox();
+          d3.select(this)
+            .select('rect')
+            .attr('x', bbox.x * 1.25)
+            .attr('y', 0)
+            .attr('width', bbox.width * 1.25)
+            .attr('height', params.matrix.x_scale.rangeBand() * 0.6)
+            .style('fill', 'yellow')
+            .style('opacity', 0);
+        });
+
+      svg_group.selectAll('.col_label_click')
+        .select('path')
+        .attr('d', function() {
+          // x and y are flipped since its rotated
+          var origin_y = -params.viz.border_width;
+          var start_x = 0;
+          var final_x = params.matrix.x_scale.rangeBand() - reduce_rect_width;
+          var start_y = -(params.matrix.x_scale.rangeBand() - reduce_rect_width +
+          params.viz.border_width);
+          var final_y = -params.viz.border_width;
+          var output_string = 'M ' + origin_y + ',0 L ' + start_y + ',' +
+            start_x + ', L ' + final_y + ',' + final_x + ' Z';
+          return output_string;
+        })
+        .attr('fill', function(d) {
+          var inst_color = '#eee';
+          if (params.labels.show_categories) {
+            inst_color = params.labels.class_colors.col[d.cl];
+          }
+          return inst_color;
+        });
+
+
+      // get max value
+      var enr_max = Math.abs(_.max( params.network_data.col_nodes, function(d) { return Math.abs(d.value) } ).value) ;
+      var enr_min = Math.abs(_.min( params.network_data.col_nodes, function(d) { return Math.abs(d.value) } ).value) ;
+
+      // the enrichment bar should be 3/4ths of the height of the column labels
+      params.labels.bar_scale_col = d3.scale
+        .linear()
+        .domain([enr_min*0.75, enr_max])
+        .range([0, params.norm_label.width.col]);
+
+      // append column value bars
+      if (Utils.has( params.network_data.col_nodes[0], 'value')) {
+
+        svg_group.selectAll('.col_bars')
+          .attr('width', function(d) {
+            var inst_value = 0;
+            if (d.value > 0){
+              inst_value = params.labels.bar_scale_col(d.value);
             }
-            return inst_color;
-          });
-
-
-
-
-        //!! CHD specific
-        // get max value
-        var enr_max = Math.abs(_.max( params.network_data.col_nodes, function(d) { return Math.abs(d.value) } ).value) ;
-        var enr_min = Math.abs(_.min( params.network_data.col_nodes, function(d) { return Math.abs(d.value) } ).value) ;
-
-        // the enrichment bar should be 3/4ths of the height of the column labels
-        params.labels.bar_scale_col = d3.scale
-          .linear()
-          .domain([enr_min*0.75, enr_max])
-          .range([0, params.norm_label.width.col]);
-
-        // append column value bars
-        if (Utils.has( params.network_data.col_nodes[0], 'value')) {
-
-          svg_group.selectAll('.col_bars')
-            .attr('width', function(d) {
-              var inst_value = 0;
-              if (d.value > 0){
-                inst_value = params.labels.bar_scale_col(d.value);
-              }
-              return inst_value;
-            })
-            // rotate labels - reduce width if rotating
-            .attr('height', params.matrix.x_scale.rangeBand() * 0.66);
-        }
-
-        // resize dendrogram
-        ///////////////////
-        svg_group.selectAll('.row_class_rect')
-          .attr('width', function() {
-            var inst_width = params.class_room.symbol_width - 1;
-            return inst_width + 'px';
+            return inst_value;
           })
-          .attr('height', params.matrix.y_scale.rangeBand())
-          .attr('x', function() {
-            var inst_offset = params.class_room.symbol_width + 1;
-            return inst_offset + 'px';
-          });
+          // rotate labels - reduce width if rotating
+          .attr('height', params.matrix.x_scale.rangeBand() * 0.66);
+      }
 
-        svg_group.selectAll('.col_class_rect')
-          .attr('width', params.matrix.x_scale.rangeBand())
-          .attr('height', function() {
-            var inst_height = params.class_room.col - 1;
-            return inst_height;
-          });
+      // resize dendrogram
+      ///////////////////
+      svg_group.selectAll('.row_class_rect')
+        .attr('width', function() {
+          var inst_width = params.class_room.symbol_width - 1;
+          return inst_width + 'px';
+        })
+        .attr('height', params.matrix.y_scale.rangeBand())
+        .attr('x', function() {
+          var inst_offset = params.class_room.symbol_width + 1;
+          return inst_offset + 'px';
+        });
 
-        svg_group.selectAll('.col_class_group')
-          .attr('transform', function(d, index) {
-            return 'translate(' + params.matrix.x_scale(index) + ',0)';
-          });
+      svg_group.selectAll('.col_class_rect')
+        .attr('width', params.matrix.x_scale.rangeBand())
+        .attr('height', function() {
+          var inst_height = params.class_room.col - 1;
+          return inst_height;
+        });
 
-        // reposition grid lines
-        ////////////////////////////
-        svg_group.selectAll('.horz_lines')
-          .attr('transform', function(d, index) {
-            return 'translate(0,' + params.matrix.y_scale(index) + ') rotate(0)';
-          })
+      svg_group.selectAll('.col_class_group')
+        .attr('transform', function(d, index) {
+          return 'translate(' + params.matrix.x_scale(index) + ',0)';
+        });
 
-        svg_group.selectAll('.horz_lines')
-          .select('line')
-          .attr('x2',params.viz.clust.dim.width)
-          .style('stroke-width', params.viz.border_width/params.viz.zoom_switch+'px')
+      // reposition grid lines
+      ////////////////////////////
+      svg_group.selectAll('.horz_lines')
+        .attr('transform', function(d, index) {
+          return 'translate(0,' + params.matrix.y_scale(index) + ') rotate(0)';
+        })
 
-        svg_group.selectAll('.vert_lines')
-          .attr('transform', function(d, index) {
-              return 'translate(' + params.matrix.x_scale(index) + ') rotate(-90)';
-          });
+      svg_group.selectAll('.horz_lines')
+        .select('line')
+        .attr('x2',params.viz.clust.dim.width)
+        .style('stroke-width', params.viz.border_width/params.viz.zoom_switch+'px')
 
-        svg_group.selectAll('.vert_lines')
-          .select('line')
-          .attr('x2', -params.viz.clust.dim.height)
-          .style('stroke-width', params.viz.border_width + 'px');
+      svg_group.selectAll('.vert_lines')
+        .attr('transform', function(d, index) {
+            return 'translate(' + params.matrix.x_scale(index) + ') rotate(-90)';
+        });
+
+      svg_group.selectAll('.vert_lines')
+        .select('line')
+        .attr('x2', -params.viz.clust.dim.height)
+        .style('stroke-width', params.viz.border_width + 'px');
 
     // resize superlabels
     /////////////////////////////////////
