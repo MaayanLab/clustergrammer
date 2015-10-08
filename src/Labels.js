@@ -346,12 +346,6 @@ function Labels(args){
       }
     });
 
-    // optionally turn down sensitivity to row/col overflow
-    // params.bounding_width_max.col = params.bounding_width_max.col * params.labels.col_overflow;
-    // params.bounding_width_max.row = params.bounding_width_max.row * params.labels.row_overflow;
-    params.bounding_width_max.col = params.bounding_width_max.col ;
-    params.bounding_width_max.row = params.bounding_width_max.row ;
-
     // check if widest row or col are wider than the allowed label width
     ////////////////////////////////////////////////////////////////////////
     params.ini_scale_font = {};
