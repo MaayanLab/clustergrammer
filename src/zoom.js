@@ -331,13 +331,33 @@ function Zoom(params){
 
     var search_duration = 700;
 
-    var fraction_keep = 1;
-    var cutoff_length = 5;
+    var fraction_keep = {}
+    fraction_keep.row = 0.75;
+    fraction_keep.col = 0.2;
+    // var cutoff_length = 15;
+    var keep_width = {};
+    keep_width.row = params.bounding_width_max.row*fraction_keep.row*params.zoom.scale();
+    keep_width.col = params.bounding_width_max.col*fraction_keep.col*params.zoom.scale()/params.viz.zoom_switch;
 
-    if (params.bounding_width_max.row*fraction_keep * params.zoom.scale() > params.norm_label.width.row) {
+    function shorten_name(d){
+      var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
+      if (inst_name.length > cutoff_length){
+        inst_name = inst_name.substring(0,cutoff_length)+'..';
+      }
+      return inst_name;
+    }
 
-      params.viz.zoom_scale_font.row = params.norm_label.width.row /
-        (params.bounding_width_max.row*fraction_keep * params.zoom.scale());
+    function normal_name(d){
+      var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
+      if (inst_name.length > params.labels.max_label_length){
+        inst_name = inst_name.substring(0,params.labels.max_label_length)+'..';
+      }
+      return inst_name;
+    }
+
+    if (keep_width.row > params.norm_label.width.row) {
+
+      params.viz.zoom_scale_font.row = params.norm_label.width.row / keep_width.row;
 
       d3.selectAll('.row_label_text').each(function() {
         if (trans){
@@ -346,24 +366,16 @@ function Zoom(params){
             .style('font-size', params.labels.default_fs_row * params.viz.zoom_scale_font.row + 'px')
             .attr('y', params.matrix.y_scale.rangeBand() *
               params.scale_font_offset(params.viz.zoom_scale_font.row));
-
           // d3.select(this).select('text')
-
+          //   .text(function(d){return shorten_name(d)});
         } else {
           d3.select(this).select('text')
             .style('font-size', params.labels.default_fs_row * params.viz.zoom_scale_font.row + 'px')
             .attr('y', params.matrix.y_scale.rangeBand() *
               params.scale_font_offset(params.viz.zoom_scale_font.row))
-            .text(function(d){
-              var inst_name = d.name;
-              if (d.name.length > cutoff_length){
-                inst_name = d.name.substring(0,cutoff_length)+'...';
-              }
-              return inst_name;
-            });
+            // .text(function(d){return shorten_name(d)});
         }
       });
-
     } else {
       d3.selectAll('.row_label_text').each(function() {
         if (trans){
@@ -371,22 +383,21 @@ function Zoom(params){
             .transition().duration(search_duration)
             .style('font-size', params.labels.default_fs_row + 'px')
             .attr('y', params.matrix.y_scale.rangeBand() * 0.75);
+          d3.select(this).select('text')
+            .text(function(d){ return normal_name(d);});
+
         } else {
           d3.select(this).select('text')
             .style('font-size', params.labels.default_fs_row + 'px')
             .attr('y', params.matrix.y_scale.rangeBand() * 0.75)
-            .text(function(d){
-              return d.name;
-            });
+            .text(function(d){ return normal_name(d);});
         }
-
       });
     }
 
-    if (params.bounding_width_max.col * (params.zoom.scale() / params.viz.zoom_switch) > params.norm_label.width.col) {
+    if (keep_width.col > params.norm_label.width.col) {
 
-      params.viz.zoom_scale_font.col = params.norm_label.width.col /
-        (params.bounding_width_max.col * (params.zoom.scale() / params.viz.zoom_switch));
+      params.viz.zoom_scale_font.col = params.norm_label.width.col / keep_width.col;
 
       d3.selectAll('.col_label_click').each(function() {
         if (trans){
@@ -394,25 +405,75 @@ function Zoom(params){
             .transition().duration(search_duration)
             .style('font-size', params.labels.default_fs_col *
               params.viz.zoom_scale_font.col + 'px');
+          // d3.select(this).select('text')
+          //   .text(function(d){return shorten_name(d)});
         } else {
           d3.select(this).select('text')
             .style('font-size', params.labels.default_fs_col *
-              params.viz.zoom_scale_font.col + 'px');
+              params.viz.zoom_scale_font.col + 'px')
+            // .text(function(d){return shorten_name(d)});
         }
       });
-
     } else {
       d3.selectAll('.col_label_click').each(function() {
         if (trans){
           d3.select(this).select('text')
             .transition().duration(search_duration)
             .style('font-size', params.labels.default_fs_col + 'px');
+          d3.select(this).select('text')
+            .text(function(d){ return normal_name(d);});
         } else {
           d3.select(this).select('text')
-            .style('font-size', params.labels.default_fs_col + 'px');
+            .style('font-size', params.labels.default_fs_col + 'px')
+            .text(function(d){ return normal_name(d);});
         }
       });
     }
+
+
+    var max_row_width = params.norm_label.width.row;
+    var max_col_width = params.norm_label.width.col;
+
+    // constrain text after zooming
+    d3.selectAll('.row_label_text' ).each(function() { trim_text(this, 'row'); });
+    d3.selectAll('.col_label_click').each(function() { trim_text(this, 'col'); });
+
+    function trim_text(inst_selection, inst_rc){
+
+      var max_width,
+          inst_zoom;
+
+      if (inst_rc === 'row'){
+        max_width = params.norm_label.width.row;
+        inst_zoom = params.zoom.scale();
+      } else {
+        max_width = params.norm_label.width.col;
+        inst_zoom = params.zoom.scale()/params.viz.zoom_switch;
+      }
+
+      var tmp_width = d3.select(inst_selection).select('text').node().getBBox().width;
+      var inst_text = d3.select(inst_selection).select('text').text();
+      var actual_width = tmp_width*inst_zoom;
+
+      if (actual_width>max_width){
+        var trim_fraction = max_width/actual_width;
+        var keep_num_char = Math.floor(inst_text.length*trim_fraction)-1;
+        var trimmed_text = inst_text.substring(0,keep_num_char)+'..';
+        d3.select(inst_selection).select('text')
+          .text(trimmed_text);
+
+
+        if (inst_text === 'HuGE Navigator Gene-Phenotype Assoc..'){
+          console.log('\n\n')
+          console.log(inst_text)
+          console.log(actual_width)
+          console.log(max_width)
+        }
+
+      }
+
+    }
+
   }
 
   function ini_doubleclick(){

@@ -1015,8 +1015,8 @@ function VizParams(config){
     // define label scale parameters: the more characters in the longest name, the larger the margin
     var min_num_char = 5;
     var max_num_char = 60;
-    var min_label_width = 120;
-    var max_label_width = 320;
+    var min_label_width = 80;
+    var max_label_width = 120;
     var label_scale = d3.scale.linear()
       .domain([min_num_char, max_num_char])
       .range([min_label_width, max_label_width]).clamp('true');
@@ -1027,7 +1027,7 @@ function VizParams(config){
 
 
     // allow the user to increase or decrease the overall size of the labels
-    params.norm_label.width.row = label_scale(row_max_char) * config.row_label_scale;
+    params.norm_label.width.row = label_scale(row_max_char) * params.row_label_scale;
     params.norm_label.width.col = label_scale(col_max_char) * params.col_label_scale;
 
     // normal label margins
@@ -1235,6 +1235,8 @@ function VizParams(config){
     params.labels.default_fs_row = params.matrix.y_scale.rangeBand() * 1.01;
     params.labels.default_fs_col = params.matrix.x_scale.rangeBand() * 0.85;
 
+    params.labels.max_label_length = 35;
+
     // initialize font size zooming parameters
     params.viz.zoom_scale_font = {};
     params.viz.zoom_scale_font.row = 1;
@@ -1340,8 +1342,17 @@ function VizParams(config){
 
 function Labels(args){
 
+
   // make row labels
   function make_rows(params, row_nodes, reorder){
+
+    function normal_name(d){
+      var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
+      if (inst_name.length > params.labels.max_label_length){
+        inst_name = inst_name.substring(0,params.labels.max_label_length)+'..';
+      }
+      return inst_name;
+    }
 
     var row_container = d3.select('#main_svg')
       .append('g')
@@ -1375,10 +1386,6 @@ function Labels(args){
         return 'translate(0,' + params.matrix.y_scale(index) + ')';
       })
       .on('dblclick', function(d) {
-        if (!!args.row_callback && _.isFunction(args.row_callback)) {
-          var row_name = d.name.replace(/_/g, ' ').split('#')[0];
-          args.row_callback(row_name);
-        }
         reorder.row_reorder.call(this);
       })
       .on('mouseover', function() {
@@ -1407,9 +1414,7 @@ function Labels(args){
       .attr('y', params.matrix.y_scale.rangeBand() * 0.75)
       .attr('text-anchor', 'end')
       .style('font-size', params.labels.default_fs_row + 'px')
-      .text(function(d) {
-        return d.name.replace(/_/g, ' ').split('#')[0];
-      });
+      .text(function(d){ return normal_name(d);});
 
     // change the size of the highlighting rects
     row_labels
@@ -1440,6 +1445,7 @@ function Labels(args){
     // label the widest row and col labels
     params.bounding_width_max = {};
     params.bounding_width_max.row = 0;
+
     d3.selectAll('.row_label_text').each(function() {
       var tmp_width = d3.select(this).select('text').node().getBBox().width;
       if (tmp_width > params.bounding_width_max.row) {
@@ -1588,12 +1594,24 @@ function Labels(args){
 
       }
 
+      // row label text will not spillover initially since
+      // the font-size is set up to not allow spillover
+      // it can spillover during zooming and must be constrained
+
       // return row_triangle_ini_group so that the dendrogram can be made
       return row_triangle_ini_group;
   }
 
   // make col labels
   function make_cols(params, col_nodes, reorder){
+
+   function normal_name(d){
+      var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
+      if (inst_name.length > params.labels.max_label_length){
+        inst_name = inst_name.substring(0,params.labels.max_label_length)+'..';
+      }
+      return inst_name;
+    }
 
     // make container to pre-position zoomable elements
     var container_all_col = d3.select('#main_svg')
@@ -1643,10 +1661,6 @@ function Labels(args){
       // rotate column labels
       .attr('transform', 'translate(' + params.matrix.x_scale.rangeBand() / 2 + ',' + x_offset_click + ') rotate(45)')
       .on('dblclick', function(d) {
-        if (!!args.col_callback && _.isFunction(args.col_callback)) {
-          var col_name = d.name.replace(/_/g, ' ').split('#')[0];
-          args.col_callback(col_name);
-        }
         reorder.col_reorder.call(this);
       })
       .on('mouseover', function() {
@@ -1671,9 +1685,7 @@ function Labels(args){
       })
       // original font size
       .style('font-size', params.labels.default_fs_col + 'px')
-      .text(function(d) {
-        return d.name.replace(/_/g, ' ').split('#')[0];
-      });
+      .text(function(d){ return normal_name(d);});
 
     params.bounding_width_max.col = 0;
     d3.selectAll('.col_label_click').each(function() {
@@ -3825,13 +3837,33 @@ function Zoom(params){
 
     var search_duration = 700;
 
-    var fraction_keep = 1;
-    var cutoff_length = 5;
+    var fraction_keep = {}
+    fraction_keep.row = 0.75;
+    fraction_keep.col = 0.2;
+    // var cutoff_length = 15;
+    var keep_width = {};
+    keep_width.row = params.bounding_width_max.row*fraction_keep.row*params.zoom.scale();
+    keep_width.col = params.bounding_width_max.col*fraction_keep.col*params.zoom.scale()/params.viz.zoom_switch;
 
-    if (params.bounding_width_max.row*fraction_keep * params.zoom.scale() > params.norm_label.width.row) {
+    function shorten_name(d){
+      var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
+      if (inst_name.length > cutoff_length){
+        inst_name = inst_name.substring(0,cutoff_length)+'..';
+      }
+      return inst_name;
+    }
 
-      params.viz.zoom_scale_font.row = params.norm_label.width.row /
-        (params.bounding_width_max.row*fraction_keep * params.zoom.scale());
+    function normal_name(d){
+      var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
+      if (inst_name.length > params.labels.max_label_length){
+        inst_name = inst_name.substring(0,params.labels.max_label_length)+'..';
+      }
+      return inst_name;
+    }
+
+    if (keep_width.row > params.norm_label.width.row) {
+
+      params.viz.zoom_scale_font.row = params.norm_label.width.row / keep_width.row;
 
       d3.selectAll('.row_label_text').each(function() {
         if (trans){
@@ -3840,24 +3872,16 @@ function Zoom(params){
             .style('font-size', params.labels.default_fs_row * params.viz.zoom_scale_font.row + 'px')
             .attr('y', params.matrix.y_scale.rangeBand() *
               params.scale_font_offset(params.viz.zoom_scale_font.row));
-
           // d3.select(this).select('text')
-
+          //   .text(function(d){return shorten_name(d)});
         } else {
           d3.select(this).select('text')
             .style('font-size', params.labels.default_fs_row * params.viz.zoom_scale_font.row + 'px')
             .attr('y', params.matrix.y_scale.rangeBand() *
               params.scale_font_offset(params.viz.zoom_scale_font.row))
-            .text(function(d){
-              var inst_name = d.name;
-              if (d.name.length > cutoff_length){
-                inst_name = d.name.substring(0,cutoff_length)+'...';
-              }
-              return inst_name;
-            });
+            // .text(function(d){return shorten_name(d)});
         }
       });
-
     } else {
       d3.selectAll('.row_label_text').each(function() {
         if (trans){
@@ -3865,22 +3889,21 @@ function Zoom(params){
             .transition().duration(search_duration)
             .style('font-size', params.labels.default_fs_row + 'px')
             .attr('y', params.matrix.y_scale.rangeBand() * 0.75);
+          d3.select(this).select('text')
+            .text(function(d){ return normal_name(d);});
+
         } else {
           d3.select(this).select('text')
             .style('font-size', params.labels.default_fs_row + 'px')
             .attr('y', params.matrix.y_scale.rangeBand() * 0.75)
-            .text(function(d){
-              return d.name;
-            });
+            .text(function(d){ return normal_name(d);});
         }
-
       });
     }
 
-    if (params.bounding_width_max.col * (params.zoom.scale() / params.viz.zoom_switch) > params.norm_label.width.col) {
+    if (keep_width.col > params.norm_label.width.col) {
 
-      params.viz.zoom_scale_font.col = params.norm_label.width.col /
-        (params.bounding_width_max.col * (params.zoom.scale() / params.viz.zoom_switch));
+      params.viz.zoom_scale_font.col = params.norm_label.width.col / keep_width.col;
 
       d3.selectAll('.col_label_click').each(function() {
         if (trans){
@@ -3888,25 +3911,75 @@ function Zoom(params){
             .transition().duration(search_duration)
             .style('font-size', params.labels.default_fs_col *
               params.viz.zoom_scale_font.col + 'px');
+          // d3.select(this).select('text')
+          //   .text(function(d){return shorten_name(d)});
         } else {
           d3.select(this).select('text')
             .style('font-size', params.labels.default_fs_col *
-              params.viz.zoom_scale_font.col + 'px');
+              params.viz.zoom_scale_font.col + 'px')
+            // .text(function(d){return shorten_name(d)});
         }
       });
-
     } else {
       d3.selectAll('.col_label_click').each(function() {
         if (trans){
           d3.select(this).select('text')
             .transition().duration(search_duration)
             .style('font-size', params.labels.default_fs_col + 'px');
+          d3.select(this).select('text')
+            .text(function(d){ return normal_name(d);});
         } else {
           d3.select(this).select('text')
-            .style('font-size', params.labels.default_fs_col + 'px');
+            .style('font-size', params.labels.default_fs_col + 'px')
+            .text(function(d){ return normal_name(d);});
         }
       });
     }
+
+
+    var max_row_width = params.norm_label.width.row;
+    var max_col_width = params.norm_label.width.col;
+
+    // constrain text after zooming
+    d3.selectAll('.row_label_text' ).each(function() { trim_text(this, 'row'); });
+    d3.selectAll('.col_label_click').each(function() { trim_text(this, 'col'); });
+
+    function trim_text(inst_selection, inst_rc){
+
+      var max_width,
+          inst_zoom;
+
+      if (inst_rc === 'row'){
+        max_width = params.norm_label.width.row;
+        inst_zoom = params.zoom.scale();
+      } else {
+        max_width = params.norm_label.width.col;
+        inst_zoom = params.zoom.scale()/params.viz.zoom_switch;
+      }
+
+      var tmp_width = d3.select(inst_selection).select('text').node().getBBox().width;
+      var inst_text = d3.select(inst_selection).select('text').text();
+      var actual_width = tmp_width*inst_zoom;
+
+      if (actual_width>max_width){
+        var trim_fraction = max_width/actual_width;
+        var keep_num_char = Math.floor(inst_text.length*trim_fraction)-1;
+        var trimmed_text = inst_text.substring(0,keep_num_char)+'..';
+        d3.select(inst_selection).select('text')
+          .text(trimmed_text);
+
+
+        if (inst_text === 'HuGE Navigator Gene-Phenotype Assoc..'){
+          console.log('\n\n')
+          console.log(inst_text)
+          console.log(actual_width)
+          console.log(max_width)
+        }
+
+      }
+
+    }
+
   }
 
   function ini_doubleclick(){

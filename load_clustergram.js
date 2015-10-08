@@ -2,7 +2,7 @@
 $(function() {
 
   // load network
-  d3.json('json/default_example.json', function(network_data){
+  d3.json('json/harmonogram_example.json', function(network_data){
 
     // define the outer margins of the visualization
     var outer_margins = {
@@ -52,13 +52,13 @@ $(function() {
       // 'tile_click_hlight':true,
       // 'highlight_color':'yellow',
 
+      // 'transpose':true,
       // 'ini_expand':true
       // 'col_label_scale':0.8,
       // 'row_label_scale':0.8
       // 'force_square':1
       // 'opacity_scale':'log',
       // 'input_domain':2,
-      // 'transpose':true,
       // 'do_zoom':false,
       // 'tile_colors':['#ED9124','#1C86EE'],
       // 'background_color':'orange',

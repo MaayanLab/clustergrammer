@@ -1,8 +1,17 @@
 
 function Labels(args){
 
+
   // make row labels
   function make_rows(params, row_nodes, reorder){
+
+    function normal_name(d){
+      var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
+      if (inst_name.length > params.labels.max_label_length){
+        inst_name = inst_name.substring(0,params.labels.max_label_length)+'..';
+      }
+      return inst_name;
+    }
 
     var row_container = d3.select('#main_svg')
       .append('g')
@@ -36,10 +45,6 @@ function Labels(args){
         return 'translate(0,' + params.matrix.y_scale(index) + ')';
       })
       .on('dblclick', function(d) {
-        if (!!args.row_callback && _.isFunction(args.row_callback)) {
-          var row_name = d.name.replace(/_/g, ' ').split('#')[0];
-          args.row_callback(row_name);
-        }
         reorder.row_reorder.call(this);
       })
       .on('mouseover', function() {
@@ -68,9 +73,7 @@ function Labels(args){
       .attr('y', params.matrix.y_scale.rangeBand() * 0.75)
       .attr('text-anchor', 'end')
       .style('font-size', params.labels.default_fs_row + 'px')
-      .text(function(d) {
-        return d.name.replace(/_/g, ' ').split('#')[0];
-      });
+      .text(function(d){ return normal_name(d);});
 
     // change the size of the highlighting rects
     row_labels
@@ -101,6 +104,7 @@ function Labels(args){
     // label the widest row and col labels
     params.bounding_width_max = {};
     params.bounding_width_max.row = 0;
+
     d3.selectAll('.row_label_text').each(function() {
       var tmp_width = d3.select(this).select('text').node().getBBox().width;
       if (tmp_width > params.bounding_width_max.row) {
@@ -249,12 +253,24 @@ function Labels(args){
 
       }
 
+      // row label text will not spillover initially since
+      // the font-size is set up to not allow spillover
+      // it can spillover during zooming and must be constrained
+
       // return row_triangle_ini_group so that the dendrogram can be made
       return row_triangle_ini_group;
   }
 
   // make col labels
   function make_cols(params, col_nodes, reorder){
+
+   function normal_name(d){
+      var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
+      if (inst_name.length > params.labels.max_label_length){
+        inst_name = inst_name.substring(0,params.labels.max_label_length)+'..';
+      }
+      return inst_name;
+    }
 
     // make container to pre-position zoomable elements
     var container_all_col = d3.select('#main_svg')
@@ -304,10 +320,6 @@ function Labels(args){
       // rotate column labels
       .attr('transform', 'translate(' + params.matrix.x_scale.rangeBand() / 2 + ',' + x_offset_click + ') rotate(45)')
       .on('dblclick', function(d) {
-        if (!!args.col_callback && _.isFunction(args.col_callback)) {
-          var col_name = d.name.replace(/_/g, ' ').split('#')[0];
-          args.col_callback(col_name);
-        }
         reorder.col_reorder.call(this);
       })
       .on('mouseover', function() {
@@ -332,9 +344,7 @@ function Labels(args){
       })
       // original font size
       .style('font-size', params.labels.default_fs_col + 'px')
-      .text(function(d) {
-        return d.name.replace(/_/g, ' ').split('#')[0];
-      });
+      .text(function(d){ return normal_name(d);});
 
     params.bounding_width_max.col = 0;
     d3.selectAll('.col_label_click').each(function() {
