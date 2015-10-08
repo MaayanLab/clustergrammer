@@ -333,7 +333,6 @@ function Zoom(params){
 
     var fraction_keep = {};
 
-    // var cutoff_length = 15;
     var keep_width = {};
     keep_width.row = params.bounding_width_max.row*params.labels.row_keep
       *params.zoom.scale();
@@ -437,8 +436,10 @@ function Zoom(params){
       var max_width,
           inst_zoom;
 
+      var safe_row_trim_text = 0.9;
+
       if (inst_rc === 'row'){
-        max_width = params.norm_label.width.row*0.8;
+        max_width = params.norm_label.width.row*safe_row_trim_text;
         inst_zoom = params.zoom.scale();
       } else {
         // the column label has extra length since its rotated

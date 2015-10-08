@@ -1037,7 +1037,7 @@ function VizParams(config){
       .domain([params.labels.show_char, max_num_char])
       .range([1, params.labels.show_char/max_num_char]).clamp('true');
 
-    params.labels.row_keep = 1.3*keep_label_scale(row_max_char);
+    params.labels.row_keep = keep_label_scale(row_max_char);
     params.labels.col_keep = keep_label_scale(col_max_char);
 
     // define label scale
@@ -3965,7 +3965,6 @@ function Zoom(params){
 
     var fraction_keep = {};
 
-    // var cutoff_length = 15;
     var keep_width = {};
     keep_width.row = params.bounding_width_max.row*params.labels.row_keep
       *params.zoom.scale();
@@ -4069,8 +4068,10 @@ function Zoom(params){
       var max_width,
           inst_zoom;
 
+      var safe_row_trim_text = 0.9;
+
       if (inst_rc === 'row'){
-        max_width = params.norm_label.width.row*0.8;
+        max_width = params.norm_label.width.row*safe_row_trim_text;
         inst_zoom = params.zoom.scale();
       } else {
         // the column label has extra length since its rotated

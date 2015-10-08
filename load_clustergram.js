@@ -2,7 +2,7 @@
 $(function() {
 
   // load network
-  d3.json('json/default_example.json', function(network_data){
+  d3.json('json/harmonogram_example.json', function(network_data){
 
     // define the outer margins of the visualization
     var outer_margins = {
@@ -47,13 +47,13 @@ $(function() {
       'outer_margins': outer_margins,
       'outer_margins_expand': outer_margins_expand,
 
-      // 'show_tooltips':true,
+      'show_tooltips':true,
       // 'click_tile': click_tile_callback,
       // 'click_label':click_label,
       // 'tile_click_hlight':true,
       // 'highlight_color':'yellow',
 
-      // 'transpose':true,
+      'transpose':true,
       // 'ini_expand':true
       // 'col_label_scale':0.8,
       // 'row_label_scale':0.8

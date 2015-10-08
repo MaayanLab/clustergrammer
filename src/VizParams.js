@@ -115,7 +115,7 @@ function VizParams(config){
       .domain([params.labels.show_char, max_num_char])
       .range([1, params.labels.show_char/max_num_char]).clamp('true');
 
-    params.labels.row_keep = 1.3*keep_label_scale(row_max_char);
+    params.labels.row_keep = keep_label_scale(row_max_char);
     params.labels.col_keep = keep_label_scale(col_max_char);
 
     // define label scale
