@@ -47,6 +47,7 @@ function Config(args) {
     row_label_scale: 1,
     col_label_scale: 1,
     super_labels: false,
+    show_tooltips: false,
 
     // matrix options
     transpose: false,
@@ -948,6 +949,7 @@ function VizParams(config){
     if (params.labels.show_categories){
       params.labels.class_colors = config.class_colors;
     }
+    params.labels.show_tooltips = config.show_tooltips;
 
     // Matrix Options
     params.matrix = {};
@@ -1000,6 +1002,11 @@ function VizParams(config){
     // resize based on parent div
     parent_div_size_pos(params);
 
+    // get height and width from parent div
+    params.viz.svg_dim = {};
+    params.viz.svg_dim.width  = Number(d3.select('#' + params.viz.svg_div_id).style('width').replace('px', ''));
+    params.viz.svg_dim.height = Number(d3.select('#' + params.viz.svg_div_id).style('height').replace('px', ''));
+
     params.viz.parent_div_size_pos = parent_div_size_pos;
 
     // Variable Label Widths
@@ -1011,6 +1018,9 @@ function VizParams(config){
     // find the label with the most characters and use it to adjust the row and col margins
     var row_max_char = _.max(row_nodes, function(inst) { return inst.name.length; }).name.length;
     var col_max_char = _.max(col_nodes, function(inst) { return inst.name.length; }).name.length;
+
+    params.labels.row_max_char = row_max_char;
+    params.labels.col_max_char = col_max_char;
 
     // the maximum number of characters in a label
     params.labels.max_label_char = 35;
@@ -1030,6 +1040,8 @@ function VizParams(config){
     params.labels.row_keep = keep_label_scale(row_max_char);
     params.labels.col_keep = keep_label_scale(col_max_char);
 
+    // define label scale
+    ///////////////////////////
     var min_label_width = 85;
     var max_label_width = 140;
     var label_scale = d3.scale.linear()
@@ -1040,11 +1052,23 @@ function VizParams(config){
     params.norm_label = {};
     params.norm_label.width = {};
 
+    // screen_label_scale - small reduction
+    var screen_label_scale = d3.scale.linear()
+      .domain([500,1000])
+      .range([0.8,1.0])
+      .clamp(true);
 
-    // allow the user to increase or decrease the overall size of the labels
-    // make row label longer since its not rotated
-    params.norm_label.width.row = 1.2*label_scale(row_max_char) * params.row_label_scale;
-    params.norm_label.width.col = label_scale(col_max_char) * params.col_label_scale;
+    // Label Scale
+    ///////////////////////
+    // dependent on max char length or row/col labels, screensize,
+    // and user-defined factor
+    params.norm_label.width.row = 1.2*label_scale(row_max_char)
+      * screen_label_scale(params.viz.svg_dim.width)
+      * params.row_label_scale;
+
+    params.norm_label.width.col = label_scale(col_max_char)
+      * screen_label_scale(params.viz.svg_dim.height)
+      * params.col_label_scale;
 
     // normal label margins
     params.norm_label.margin = {};
@@ -1090,11 +1114,6 @@ function VizParams(config){
     ///////////////////////////////////
     // 0.8 approximates the trigonometric distance required for hiding the spillover
     params.viz.spillover_x_offset = label_scale(col_max_char) * 0.6 * params.col_label_scale;
-
-    // get height and width from parent div
-    params.viz.svg_dim = {};
-    params.viz.svg_dim.width  = Number(d3.select('#' + params.viz.svg_div_id).style('width').replace('px', ''));
-    params.viz.svg_dim.height = Number(d3.select('#' + params.viz.svg_div_id).style('height').replace('px', ''));
 
 
     // reduce width by row/col labels and by grey_border width (reduce width by less since this is less aparent with slanted col labels)
@@ -1181,10 +1200,10 @@ function VizParams(config){
       })
     };
 
-    // the visualization dimensions can be smaller than the svg
-    // columns need to be shrunk for wide screens
-    var min_col_shrink_scale = d3.scale.linear().domain([100,1500]).range([1,0.1]).clamp('true');
-    var min_col_shrink = min_col_shrink_scale(params.viz.svg_dim.width);
+    // // the visualization dimensions can be smaller than the svg
+    // // columns need to be shrunk for wide screens
+    // var min_col_shrink_scale = d3.scale.linear().domain([100,1500]).range([1,0.1]).clamp('true');
+    // var min_col_shrink = min_col_shrink_scale(params.viz.svg_dim.width);
 
     // calculate clustergram width
     // reduce clustergram width if triangles are taller than the normal width
@@ -1390,6 +1409,21 @@ function Labels(args){
       .append('g')
       .attr('id', 'row_labels');
 
+    // d3-tooltip
+    var tip = d3.tip()
+      .attr('class', 'd3-tip')
+      .direction('e')
+      .offset([0, 10])
+      .html(function(d) {
+        var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
+        return "<span>" + inst_name + "</span>";
+      })
+
+    d3.select('#'+params.viz.svg_div_id)
+      .select('svg')
+      .select('#row_container')
+      .call(tip);
+
     var row_labels = d3.select('#row_labels')
       .selectAll('g')
       .data(row_nodes)
@@ -1402,16 +1436,35 @@ function Labels(args){
       .on('dblclick', function(d) {
         reorder.row_reorder.call(this);
       })
-      .on('mouseover', function() {
-        d3.select(this)
-          .select('text')
-          .classed('active',true);
-      })
-      .on('mouseout', function mouseout() {
-        d3.select(this)
-          .select('text')
-          .classed('active',false)
-      });
+
+    if (params.labels.show_tooltips){
+      row_labels
+        .on('mouseover', function(d) {
+          d3.select(this)
+            .select('text')
+            .classed('active',true);
+          tip.show(d);
+        })
+        .on('mouseout', function mouseout(d) {
+          d3.select(this)
+            .select('text')
+            .classed('active',false);
+          tip.hide(d);
+        });
+    } else{
+      row_labels
+        .on('mouseover', function(d) {
+          d3.select(this)
+            .select('text')
+            .classed('active',true);
+        })
+        .on('mouseout', function mouseout(d) {
+          d3.select(this)
+            .select('text')
+            .classed('active',false);
+        });
+    }
+
 
     // append rectangle behind text
     row_labels
@@ -1656,6 +1709,21 @@ function Labels(args){
     // reduce width of rotated rects
     var reduce_rect_width = params.matrix.x_scale.rangeBand() * 0.36;
 
+    // d3-tooltip
+    var tip = d3.tip()
+      .attr('class', 'd3-tip')
+      .direction('s')
+      .offset([20, 0])
+      .html(function(d) {
+        var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
+        return "<span>" + inst_name + "</span>";
+      })
+
+    d3.select('#'+params.viz.svg_div_id)
+      .select('svg')
+      .select('#row_container')
+      .call(tip);
+
     // add main column label group
     var col_label_obj = d3.select('#col_labels')
       .selectAll('.col_label_text')
@@ -1665,7 +1733,7 @@ function Labels(args){
       .attr('class', 'col_label_text')
       .attr('transform', function(d, index) {
         return 'translate(' + params.matrix.x_scale(index) + ') rotate(-90)';
-      });
+      })
 
     // append group for individual column label
     var col_label_click = col_label_obj
@@ -1677,13 +1745,15 @@ function Labels(args){
       .on('dblclick', function(d) {
         reorder.col_reorder.call(this);
       })
-      .on('mouseover', function() {
-      d3.select(this).select('text')
-        .classed('active',true);
+      .on('mouseover', function(d) {
+        d3.select(this).select('text')
+          .classed('active',true);
+        // tip.show(d)
       })
-      .on('mouseout', function mouseout() {
-      d3.select(this).select('text')
-        .classed('active',false);
+      .on('mouseout', function(d) {
+        d3.select(this).select('text')
+          .classed('active',false);
+        // tip.hide(d)
       });
 
     // add column label
@@ -1700,6 +1770,13 @@ function Labels(args){
       // original font size
       .style('font-size', params.labels.default_fs_col + 'px')
       .text(function(d){ return normal_name(d);});
+
+    if (params.labels.show_tooltips){
+      col_label_obj
+        .select('text')
+        .on('mouseover',tip.show)
+        .on('mouseout',tip.hide);
+      }
 
     params.bounding_width_max.col = 0;
     d3.selectAll('.col_label_click').each(function() {
@@ -2148,6 +2225,43 @@ function Spillover( params, container_all_col ){
     params.viz.svg_dim.width  = Number(d3.select('#' + params.viz.svg_div_id).style('width').replace('px', ''));
     params.viz.svg_dim.height = Number(d3.select('#' + params.viz.svg_div_id).style('height').replace('px', ''));
 
+
+    ///////////////////////////////////////////////////////
+    // resizing labels on screen resize will be done later
+    ///////////////////////////////////////////////////////
+
+    // // define label scale parameters: the more characters in the longest name, the larger the margin
+    // var min_num_char = 5;
+    // var max_num_char = params.labels.max_label_char;
+
+    // // define label scale
+    // ///////////////////////////
+    // var min_label_width = 85;
+    // var max_label_width = 140;
+    // var label_scale = d3.scale.linear()
+    //   .domain([min_num_char, max_num_char])
+    //   .range([min_label_width, max_label_width]).clamp('true');
+
+    // // screen_label_scale
+    // var screen_label_scale = d3.scale.linear()
+    //   .domain([500,1000])
+    //   .range([0.5,1.0])
+    //   .clamp(true);
+
+    // // Label Scale
+    // ///////////////////////
+    // // dependent on max char length or row/col labels, screensize,
+    // // and user-defined factor
+    // params.norm_label.width.row = 1.2*label_scale(params.labels.row_max_char)
+    //   * screen_label_scale(params.viz.svg_dim.width)
+    //   * params.row_label_scale;
+
+    // params.norm_label.width.col = label_scale(params.labels.col_max_char)
+    //   * screen_label_scale(params.viz.svg_dim.height)
+    //   * params.col_label_scale;
+
+    /////////////////////////////////////////////
+
     // reduce width by row/col labels and by grey_border width (reduce width by less since this is less aparent with slanted col labels)
     var ini_clust_width = params.viz.svg_dim.width - (params.labels.super_label_width +
       params.norm_label.width.row + params.class_room.row) - params.viz.grey_border_width - params.viz.spillover_x_offset;
@@ -2156,10 +2270,10 @@ function Spillover( params, container_all_col ){
     var ini_clust_height = params.viz.svg_dim.height - (params.labels.super_label_width +
       params.norm_label.width.col + params.class_room.col) - 5 * params.viz.grey_border_width;
 
-    // the visualization dimensions can be smaller than the svg
-    // columns need to be shrunk for wide screens
-    var min_col_shrink_scale = d3.scale.linear().domain([100,1500]).range([1,0.1]).clamp('true');
-    var min_col_shrink = min_col_shrink_scale(params.viz.svg_dim.width);
+    // // the visualization dimensions can be smaller than the svg
+    // // columns need to be shrunk for wide screens
+    // var min_col_shrink_scale = d3.scale.linear().domain([100,1500]).range([1,0.1]).clamp('true');
+    // var min_col_shrink = min_col_shrink_scale(params.viz.svg_dim.width);
 
     // reduce clustergram width if triangles are taller than the normal width
     // of the columns
@@ -2846,16 +2960,6 @@ function Viz(config) {
     /////////////////////////
     matrix = Matrix(network_data, svg_group, params);
 
-    // // append background rect if necessary to control background color
-    // if (params.viz.background_color !== '#FFFFFF') {
-    //   svg_group
-    //   .append('rect')
-    //   .attr('id','background_rect')
-    //   .attr('width', params.viz.svg_dim.width)
-    //   .attr('height', params.viz.svg_dim.height)
-    //   .style('fill', params.viz.background_color);
-    // }
-
 
     // define reordering object - scoped to viz
     reorder = Reorder(params);
@@ -2954,7 +3058,7 @@ function Viz(config) {
     }
 
     // tmp add final svg border here
-     // add border to svg in four separate lines - to not interfere with clicking anything
+    // add border to svg in four separate lines - to not interfere with clicking anything
     ///////////////////////////////////////////////////////////////////////////////////////
     // left border
     d3.select('#main_svg')

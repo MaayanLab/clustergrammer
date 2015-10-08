@@ -10,6 +10,7 @@ function Config(args) {
     row_label_scale: 1,
     col_label_scale: 1,
     super_labels: false,
+    show_tooltips: false,
 
     // matrix options
     transpose: false,

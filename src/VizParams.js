@@ -27,6 +27,7 @@ function VizParams(config){
     if (params.labels.show_categories){
       params.labels.class_colors = config.class_colors;
     }
+    params.labels.show_tooltips = config.show_tooltips;
 
     // Matrix Options
     params.matrix = {};
@@ -79,6 +80,11 @@ function VizParams(config){
     // resize based on parent div
     parent_div_size_pos(params);
 
+    // get height and width from parent div
+    params.viz.svg_dim = {};
+    params.viz.svg_dim.width  = Number(d3.select('#' + params.viz.svg_div_id).style('width').replace('px', ''));
+    params.viz.svg_dim.height = Number(d3.select('#' + params.viz.svg_div_id).style('height').replace('px', ''));
+
     params.viz.parent_div_size_pos = parent_div_size_pos;
 
     // Variable Label Widths
@@ -90,6 +96,9 @@ function VizParams(config){
     // find the label with the most characters and use it to adjust the row and col margins
     var row_max_char = _.max(row_nodes, function(inst) { return inst.name.length; }).name.length;
     var col_max_char = _.max(col_nodes, function(inst) { return inst.name.length; }).name.length;
+
+    params.labels.row_max_char = row_max_char;
+    params.labels.col_max_char = col_max_char;
 
     // the maximum number of characters in a label
     params.labels.max_label_char = 35;
@@ -109,6 +118,8 @@ function VizParams(config){
     params.labels.row_keep = keep_label_scale(row_max_char);
     params.labels.col_keep = keep_label_scale(col_max_char);
 
+    // define label scale
+    ///////////////////////////
     var min_label_width = 85;
     var max_label_width = 140;
     var label_scale = d3.scale.linear()
@@ -119,11 +130,23 @@ function VizParams(config){
     params.norm_label = {};
     params.norm_label.width = {};
 
+    // screen_label_scale - small reduction
+    var screen_label_scale = d3.scale.linear()
+      .domain([500,1000])
+      .range([0.8,1.0])
+      .clamp(true);
 
-    // allow the user to increase or decrease the overall size of the labels
-    // make row label longer since its not rotated
-    params.norm_label.width.row = 1.2*label_scale(row_max_char) * params.row_label_scale;
-    params.norm_label.width.col = label_scale(col_max_char) * params.col_label_scale;
+    // Label Scale
+    ///////////////////////
+    // dependent on max char length or row/col labels, screensize,
+    // and user-defined factor
+    params.norm_label.width.row = 1.2*label_scale(row_max_char)
+      * screen_label_scale(params.viz.svg_dim.width)
+      * params.row_label_scale;
+
+    params.norm_label.width.col = label_scale(col_max_char)
+      * screen_label_scale(params.viz.svg_dim.height)
+      * params.col_label_scale;
 
     // normal label margins
     params.norm_label.margin = {};
@@ -169,11 +192,6 @@ function VizParams(config){
     ///////////////////////////////////
     // 0.8 approximates the trigonometric distance required for hiding the spillover
     params.viz.spillover_x_offset = label_scale(col_max_char) * 0.6 * params.col_label_scale;
-
-    // get height and width from parent div
-    params.viz.svg_dim = {};
-    params.viz.svg_dim.width  = Number(d3.select('#' + params.viz.svg_div_id).style('width').replace('px', ''));
-    params.viz.svg_dim.height = Number(d3.select('#' + params.viz.svg_div_id).style('height').replace('px', ''));
 
 
     // reduce width by row/col labels and by grey_border width (reduce width by less since this is less aparent with slanted col labels)
@@ -260,10 +278,10 @@ function VizParams(config){
       })
     };
 
-    // the visualization dimensions can be smaller than the svg
-    // columns need to be shrunk for wide screens
-    var min_col_shrink_scale = d3.scale.linear().domain([100,1500]).range([1,0.1]).clamp('true');
-    var min_col_shrink = min_col_shrink_scale(params.viz.svg_dim.width);
+    // // the visualization dimensions can be smaller than the svg
+    // // columns need to be shrunk for wide screens
+    // var min_col_shrink_scale = d3.scale.linear().domain([100,1500]).range([1,0.1]).clamp('true');
+    // var min_col_shrink = min_col_shrink_scale(params.viz.svg_dim.width);
 
     // calculate clustergram width
     // reduce clustergram width if triangles are taller than the normal width

@@ -2,7 +2,7 @@
 $(function() {
 
   // load network
-  d3.json('json/harmonogram_example.json', function(network_data){
+  d3.json('json/default_example.json', function(network_data){
 
     // define the outer margins of the visualization
     var outer_margins = {
@@ -46,6 +46,7 @@ $(function() {
       'col_label':'Column-Data-Name',
       'outer_margins': outer_margins,
       'outer_margins_expand': outer_margins_expand,
+      // 'show_tooltips':true,
 
       // 'click_tile': click_tile_callback,
       // 'click_label':click_label,

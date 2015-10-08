@@ -57,16 +57,6 @@ function Viz(config) {
     /////////////////////////
     matrix = Matrix(network_data, svg_group, params);
 
-    // // append background rect if necessary to control background color
-    // if (params.viz.background_color !== '#FFFFFF') {
-    //   svg_group
-    //   .append('rect')
-    //   .attr('id','background_rect')
-    //   .attr('width', params.viz.svg_dim.width)
-    //   .attr('height', params.viz.svg_dim.height)
-    //   .style('fill', params.viz.background_color);
-    // }
-
 
     // define reordering object - scoped to viz
     reorder = Reorder(params);
@@ -165,7 +155,7 @@ function Viz(config) {
     }
 
     // tmp add final svg border here
-     // add border to svg in four separate lines - to not interfere with clicking anything
+    // add border to svg in four separate lines - to not interfere with clicking anything
     ///////////////////////////////////////////////////////////////////////////////////////
     // left border
     d3.select('#main_svg')

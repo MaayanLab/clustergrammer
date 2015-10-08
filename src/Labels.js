@@ -35,6 +35,21 @@ function Labels(args){
       .append('g')
       .attr('id', 'row_labels');
 
+    // d3-tooltip
+    var tip = d3.tip()
+      .attr('class', 'd3-tip')
+      .direction('e')
+      .offset([0, 10])
+      .html(function(d) {
+        var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
+        return "<span>" + inst_name + "</span>";
+      })
+
+    d3.select('#'+params.viz.svg_div_id)
+      .select('svg')
+      .select('#row_container')
+      .call(tip);
+
     var row_labels = d3.select('#row_labels')
       .selectAll('g')
       .data(row_nodes)
@@ -47,16 +62,35 @@ function Labels(args){
       .on('dblclick', function(d) {
         reorder.row_reorder.call(this);
       })
-      .on('mouseover', function() {
-        d3.select(this)
-          .select('text')
-          .classed('active',true);
-      })
-      .on('mouseout', function mouseout() {
-        d3.select(this)
-          .select('text')
-          .classed('active',false)
-      });
+
+    if (params.labels.show_tooltips){
+      row_labels
+        .on('mouseover', function(d) {
+          d3.select(this)
+            .select('text')
+            .classed('active',true);
+          tip.show(d);
+        })
+        .on('mouseout', function mouseout(d) {
+          d3.select(this)
+            .select('text')
+            .classed('active',false);
+          tip.hide(d);
+        });
+    } else{
+      row_labels
+        .on('mouseover', function(d) {
+          d3.select(this)
+            .select('text')
+            .classed('active',true);
+        })
+        .on('mouseout', function mouseout(d) {
+          d3.select(this)
+            .select('text')
+            .classed('active',false);
+        });
+    }
+
 
     // append rectangle behind text
     row_labels
@@ -301,6 +335,21 @@ function Labels(args){
     // reduce width of rotated rects
     var reduce_rect_width = params.matrix.x_scale.rangeBand() * 0.36;
 
+    // d3-tooltip
+    var tip = d3.tip()
+      .attr('class', 'd3-tip')
+      .direction('s')
+      .offset([20, 0])
+      .html(function(d) {
+        var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
+        return "<span>" + inst_name + "</span>";
+      })
+
+    d3.select('#'+params.viz.svg_div_id)
+      .select('svg')
+      .select('#row_container')
+      .call(tip);
+
     // add main column label group
     var col_label_obj = d3.select('#col_labels')
       .selectAll('.col_label_text')
@@ -310,7 +359,7 @@ function Labels(args){
       .attr('class', 'col_label_text')
       .attr('transform', function(d, index) {
         return 'translate(' + params.matrix.x_scale(index) + ') rotate(-90)';
-      });
+      })
 
     // append group for individual column label
     var col_label_click = col_label_obj
@@ -322,13 +371,15 @@ function Labels(args){
       .on('dblclick', function(d) {
         reorder.col_reorder.call(this);
       })
-      .on('mouseover', function() {
-      d3.select(this).select('text')
-        .classed('active',true);
+      .on('mouseover', function(d) {
+        d3.select(this).select('text')
+          .classed('active',true);
+        // tip.show(d)
       })
-      .on('mouseout', function mouseout() {
-      d3.select(this).select('text')
-        .classed('active',false);
+      .on('mouseout', function(d) {
+        d3.select(this).select('text')
+          .classed('active',false);
+        // tip.hide(d)
       });
 
     // add column label
@@ -345,6 +396,13 @@ function Labels(args){
       // original font size
       .style('font-size', params.labels.default_fs_col + 'px')
       .text(function(d){ return normal_name(d);});
+
+    if (params.labels.show_tooltips){
+      col_label_obj
+        .select('text')
+        .on('mouseover',tip.show)
+        .on('mouseout',tip.hide);
+      }
 
     params.bounding_width_max.col = 0;
     d3.selectAll('.col_label_click').each(function() {

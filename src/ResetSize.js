@@ -86,6 +86,43 @@
     params.viz.svg_dim.width  = Number(d3.select('#' + params.viz.svg_div_id).style('width').replace('px', ''));
     params.viz.svg_dim.height = Number(d3.select('#' + params.viz.svg_div_id).style('height').replace('px', ''));
 
+
+    ///////////////////////////////////////////////////////
+    // resizing labels on screen resize will be done later
+    ///////////////////////////////////////////////////////
+
+    // // define label scale parameters: the more characters in the longest name, the larger the margin
+    // var min_num_char = 5;
+    // var max_num_char = params.labels.max_label_char;
+
+    // // define label scale
+    // ///////////////////////////
+    // var min_label_width = 85;
+    // var max_label_width = 140;
+    // var label_scale = d3.scale.linear()
+    //   .domain([min_num_char, max_num_char])
+    //   .range([min_label_width, max_label_width]).clamp('true');
+
+    // // screen_label_scale
+    // var screen_label_scale = d3.scale.linear()
+    //   .domain([500,1000])
+    //   .range([0.5,1.0])
+    //   .clamp(true);
+
+    // // Label Scale
+    // ///////////////////////
+    // // dependent on max char length or row/col labels, screensize,
+    // // and user-defined factor
+    // params.norm_label.width.row = 1.2*label_scale(params.labels.row_max_char)
+    //   * screen_label_scale(params.viz.svg_dim.width)
+    //   * params.row_label_scale;
+
+    // params.norm_label.width.col = label_scale(params.labels.col_max_char)
+    //   * screen_label_scale(params.viz.svg_dim.height)
+    //   * params.col_label_scale;
+
+    /////////////////////////////////////////////
+
     // reduce width by row/col labels and by grey_border width (reduce width by less since this is less aparent with slanted col labels)
     var ini_clust_width = params.viz.svg_dim.width - (params.labels.super_label_width +
       params.norm_label.width.row + params.class_room.row) - params.viz.grey_border_width - params.viz.spillover_x_offset;
@@ -94,10 +131,10 @@
     var ini_clust_height = params.viz.svg_dim.height - (params.labels.super_label_width +
       params.norm_label.width.col + params.class_room.col) - 5 * params.viz.grey_border_width;
 
-    // the visualization dimensions can be smaller than the svg
-    // columns need to be shrunk for wide screens
-    var min_col_shrink_scale = d3.scale.linear().domain([100,1500]).range([1,0.1]).clamp('true');
-    var min_col_shrink = min_col_shrink_scale(params.viz.svg_dim.width);
+    // // the visualization dimensions can be smaller than the svg
+    // // columns need to be shrunk for wide screens
+    // var min_col_shrink_scale = d3.scale.linear().domain([100,1500]).range([1,0.1]).clamp('true');
+    // var min_col_shrink = min_col_shrink_scale(params.viz.svg_dim.width);
 
     // reduce clustergram width if triangles are taller than the normal width
     // of the columns
