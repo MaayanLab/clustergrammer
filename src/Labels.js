@@ -104,7 +104,7 @@ function Labels(args){
     d3.selectAll('.row_label_text').each(function() {
       var tmp_width = d3.select(this).select('text').node().getBBox().width;
       if (tmp_width > params.bounding_width_max.row) {
-      params.bounding_width_max.row = tmp_width;
+        params.bounding_width_max.row = tmp_width;
       }
     });
 
@@ -340,34 +340,34 @@ function Labels(args){
     d3.selectAll('.col_label_click').each(function() {
       var tmp_width = d3.select(this).select('text').node().getBBox().width;
       if (tmp_width > params.bounding_width_max.col) {
-      // increase the apparent width of the column label since its rotated
-      // this will give more room for text
-      params.bounding_width_max.col = tmp_width * 1.2;
+        // increase the apparent width of the column label since its rotated
+        // this will give more room for text
+        params.bounding_width_max.col = tmp_width * 1.2;
       }
     });
 
     // optionally turn down sensitivity to row/col overflow
-    params.bounding_width_max.col = params.bounding_width_max.col * params.labels.col_overflow;
-    params.bounding_width_max.row = params.bounding_width_max.row * params.labels.row_overflow;
-
+    // params.bounding_width_max.col = params.bounding_width_max.col * params.labels.col_overflow;
+    // params.bounding_width_max.row = params.bounding_width_max.row * params.labels.row_overflow;
+    params.bounding_width_max.col = params.bounding_width_max.col ;
+    params.bounding_width_max.row = params.bounding_width_max.row ;
 
     // check if widest row or col are wider than the allowed label width
     ////////////////////////////////////////////////////////////////////////
     params.ini_scale_font = {};
     params.ini_scale_font.row = 1;
     params.ini_scale_font.col = 1;
-    if (params.bounding_width_max.row * params.zoom.scale() > params.norm_label
-      .width.row) {
 
-      params.ini_scale_font.row = params.norm_label.width.row / params.bounding_width_max
-        .row;
+    if (params.bounding_width_max.row > params.norm_label.width.row) {
+
+      // calc reduction in font size
+      params.ini_scale_font.row = params.norm_label.width.row / params.bounding_width_max.row;
       // redefine bounding_width_max.row
-      params.bounding_width_max.row = params.ini_scale_font.row * params.bounding_width_max
-        .row;
+      params.bounding_width_max.row = params.ini_scale_font.row * params.bounding_width_max.row;
 
       // redefine default fs
-      params.labels.default_fs_row = params.labels.default_fs_row * params.ini_scale_font
-        .row;
+      params.labels.default_fs_row = params.labels.default_fs_row * params.ini_scale_font.row;
+
       // reduce font size
       d3.selectAll('.row_label_text').each(function() {
       d3.select(this).select('text')
@@ -375,16 +375,12 @@ function Labels(args){
       });
     }
 
-    if (params.bounding_width_max.col * params.zoom.scale() > params.norm_label
-      .width.col) {
-      params.ini_scale_font.col = params.norm_label.width.col / params.bounding_width_max
-        .col;
+    if (params.bounding_width_max.col > params.norm_label.width.col) {
+      params.ini_scale_font.col = params.norm_label.width.col / params.bounding_width_max.col;
       // redefine bounding_width_max.col
-      params.bounding_width_max.col = params.ini_scale_font.col * params.bounding_width_max
-        .col;
+      params.bounding_width_max.col = params.ini_scale_font.col * params.bounding_width_max.col;
       // redefine default fs
-      params.labels.default_fs_col = params.labels.default_fs_col * params.ini_scale_font
-        .col;
+      params.labels.default_fs_col = params.labels.default_fs_col * params.ini_scale_font.col;
       // reduce font size
       d3.selectAll('.col_label_click').each(function() {
       d3.select(this).select('text')

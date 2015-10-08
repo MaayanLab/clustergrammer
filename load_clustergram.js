@@ -2,7 +2,7 @@
 $(function() {
 
   // load network
-  d3.json('json/default_example.json', function(network_data){
+  d3.json('json/updn_example.json', function(network_data){
 
     // define the outer margins of the visualization
     var outer_margins = {
@@ -58,7 +58,8 @@ $(function() {
       // 'force_square':1
       // 'opacity_scale':'log',
       // 'input_domain':2,
-      // 'col_overflow':1
+      // 'col_overflow':0.1,
+      // 'row_overflow':0.1,
       // 'transpose':true,
       // 'do_zoom':false,
       // 'tile_colors':['#ED9124','#1C86EE'],

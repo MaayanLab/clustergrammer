@@ -4,8 +4,6 @@ function VizParams(config){
 
   var params = initialize_visualization(config)
 
-  // console.log(params)
-
   // Define Visualization Dimensions
   function initialize_visualization(config) {
 
@@ -38,8 +36,6 @@ function VizParams(config){
     params.matrix.bar_colors = config.bar_colors;
     params.matrix.hlight_color = config.highlight_color
     params.matrix.tile_title = config.tile_title;
-
-    console.log(params.matrix.hlight_color)
 
     // Visualization Options
     params.viz = {};
@@ -318,7 +314,7 @@ function VizParams(config){
 
     // the default font sizes are set here
     params.labels.default_fs_row = params.matrix.y_scale.rangeBand() * 1.01;
-    params.labels.default_fs_col = params.matrix.x_scale.rangeBand() * 0.85 ;
+    params.labels.default_fs_col = params.matrix.x_scale.rangeBand() * 0.85;
 
     // initialize font size zooming parameters
     params.viz.zoom_scale_font = {};

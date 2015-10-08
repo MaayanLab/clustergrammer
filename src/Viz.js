@@ -119,7 +119,7 @@ function Viz(config) {
 
       // optional column callback on click
       if (typeof params.click_group === 'function') {
-        
+
         col_class_ini_group
           .on('click', function(d) {
           var inst_level = params.group_level.col;
@@ -164,7 +164,7 @@ function Viz(config) {
       super_labels.make(params);
     }
 
-    // tmp add final svg border here 
+    // tmp add final svg border here
      // add border to svg in four separate lines - to not interfere with clicking anything
     ///////////////////////////////////////////////////////////////////////////////////////
     // left border
@@ -271,7 +271,7 @@ function Viz(config) {
               });
             params.viz.expand = true;
 
-          // contract view 
+          // contract view
           } else {
 
             d3.select('#clust_instruct_container')
@@ -397,12 +397,12 @@ function Viz(config) {
       params.norm_label.width.col + params.class_room.col) - 5 * params.viz.grey_border_width;
 
     // the visualization dimensions can be smaller than the svg
-    // columns need to be shrunk for wide screens 
+    // columns need to be shrunk for wide screens
     var min_col_shrink_scale = d3.scale.linear().domain([100,1500]).range([1,0.1]).clamp('true');
     var min_col_shrink = min_col_shrink_scale(params.viz.svg_dim.width);
 
-    // reduce clustergram width if triangles are taller than the normal width 
-    // of the columns 
+    // reduce clustergram width if triangles are taller than the normal width
+    // of the columns
     var tmp_x_scale = d3.scale.ordinal().rangeBands([0, ini_clust_width]);
     tmp_x_scale.domain(params.matrix.orders.ini_row);
     var triangle_height = tmp_x_scale.rangeBand()/2 ;
@@ -463,7 +463,7 @@ function Viz(config) {
     params.matrix.x_scale.rangeBands([0, params.viz.clust.dim.width]);
     params.matrix.y_scale.rangeBands([0, params.viz.clust.dim.height]);
 
-    // redefine zoom extent 
+    // redefine zoom extent
     params.viz.real_zoom = params.norm_label.width.col / (params.matrix.x_scale.rangeBand()/2);
     params.zoom
       .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch]);
@@ -523,7 +523,7 @@ function Viz(config) {
         return output_string;
       })
 
-    // resize click hlight 
+    // resize click hlight
     var rel_width_hlight = 6;
     var opacity_hlight = 0.85;
 
@@ -533,7 +533,7 @@ function Viz(config) {
     // reposition tile highlight
     ////////////////////////////////
 
-    // top highlight 
+    // top highlight
     d3.select('#top_hlight')
       .attr('width', params.matrix.x_scale.rangeBand())
       .attr('height', hlight_height)
@@ -541,7 +541,7 @@ function Viz(config) {
         return 'translate(' + params.matrix.x_scale(params.matrix.click_hlight_x) + ',0)';
       });
 
-    // left highlight 
+    // left highlight
     d3.select('#left_hlight')
       .attr('width', hlight_width)
       .attr('height', params.matrix.y_scale.rangeBand() - hlight_height*0.99 )
@@ -550,7 +550,7 @@ function Viz(config) {
           hlight_height*0.99+')';
       });
 
-    // right highlight 
+    // right highlight
     d3.select('#right_hlight')
       .attr('width', hlight_width)
       .attr('height', params.matrix.y_scale.rangeBand() - hlight_height*0.99 )
@@ -560,7 +560,7 @@ function Viz(config) {
           hlight_height*0.99+')';
       });
 
-    // bottom highlight 
+    // bottom highlight
     d3.select('#bottom_hlight')
       .attr('width', function(){
         return params.matrix.x_scale.rangeBand() - 1.98*hlight_width})
@@ -572,7 +572,7 @@ function Viz(config) {
           tmp_translate_y+')';
       });
 
-    // resize row highlight 
+    // resize row highlight
     /////////////////////////
     d3.select('#row_top_hlight')
       .attr('width',params.viz.svg_dim.width)
@@ -583,7 +583,7 @@ function Viz(config) {
       .attr('transform', function(){
         var tmp_translate_y = params.matrix.y_scale.rangeBand() - hlight_height;
         return 'translate(0,'+tmp_translate_y+')';
-      });    
+      });
 
 
     // resize row labels
@@ -752,6 +752,8 @@ function Viz(config) {
         // optionally turn down sensitivity to row/col overflow
         params.bounding_width_max.col = params.bounding_width_max.col * params.labels.col_overflow;
         params.bounding_width_max.row = params.bounding_width_max.row * params.labels.row_overflow;
+        console.log('\n\nparams.bounding_width_max')
+        console.log(params.bounding_width_max)
 
 
         // check if widest row or col are wider than the allowed label width
@@ -759,18 +761,16 @@ function Viz(config) {
         params.ini_scale_font = {};
         params.ini_scale_font.row = 1;
         params.ini_scale_font.col = 1;
-        if (params.bounding_width_max.row * params.zoom.scale() > params.norm_label
-          .width.row) {
 
-          params.ini_scale_font.row = params.norm_label.width.row / params.bounding_width_max
-            .row;
+        if (params.bounding_width_max.row > params.norm_label.width.row) {
+
+          // calc reduction in font size
+          params.ini_scale_font.row = params.norm_label.width.row / params.bounding_width_max.row;
           // redefine bounding_width_max.row
-          params.bounding_width_max.row = params.ini_scale_font.row * params.bounding_width_max
-            .row;
+          params.bounding_width_max.row = params.ini_scale_font.row * params.bounding_width_max.row;
 
           // redefine default fs
-          params.labels.default_fs_row = params.labels.default_fs_row * params.ini_scale_font
-            .row;
+          params.labels.default_fs_row = params.labels.default_fs_row * params.ini_scale_font.row;
           // reduce font size
           d3.selectAll('.row_label_text').each(function() {
           d3.select(this).select('text')
@@ -778,16 +778,14 @@ function Viz(config) {
           });
         }
 
-        if (params.bounding_width_max.col * params.zoom.scale() > params.norm_label
-          .width.col) {
-          params.ini_scale_font.col = params.norm_label.width.col / params.bounding_width_max
-            .col;
+        if (params.bounding_width_max.col > params.norm_label.width.col) {
+
+          // calc reduction in font size
+          params.ini_scale_font.col = params.norm_label.width.col / params.bounding_width_max.col;
           // redefine bounding_width_max.col
-          params.bounding_width_max.col = params.ini_scale_font.col * params.bounding_width_max
-            .col;
+          params.bounding_width_max.col = params.ini_scale_font.col * params.bounding_width_max.col;
           // redefine default fs
-          params.labels.default_fs_col = params.labels.default_fs_col * params.ini_scale_font
-            .col;
+          params.labels.default_fs_col = params.labels.default_fs_col * params.ini_scale_font.col;
           // reduce font size
           d3.selectAll('.col_label_click').each(function() {
           d3.select(this).select('text')
@@ -1031,7 +1029,7 @@ function Viz(config) {
   // highlight resource types - set up type/color association
   var gene_search = Search(params, params.network_data.row_nodes, 'name');
 
-  // change opacity 
+  // change opacity
   var opacity_slider = function (inst_slider){
 
     var max_link = params.matrix.max_link;
