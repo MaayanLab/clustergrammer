@@ -1012,11 +1012,29 @@ function VizParams(config){
     var row_max_char = _.max(row_nodes, function(inst) { return inst.name.length; }).name.length;
     var col_max_char = _.max(col_nodes, function(inst) { return inst.name.length; }).name.length;
 
+    // the maximum number of characters in a label
+    params.labels.max_label_char = 35;
+
     // define label scale parameters: the more characters in the longest name, the larger the margin
     var min_num_char = 5;
-    var max_num_char = 60;
-    var min_label_width = 80;
-    var max_label_width = 120;
+    var max_num_char = params.labels.max_label_char;
+
+    // number of characters to show
+    params.labels.show_char = 12;
+
+    // calc how much of the label to keep
+    var keep_label_scale = d3.scale.linear()
+      .domain([params.labels.show_char, max_num_char])
+      .range([1, params.labels.show_char/max_num_char]).clamp('true');
+
+    params.labels.row_keep = keep_label_scale(row_max_char);
+    params.labels.col_keep = keep_label_scale(col_max_char);
+
+    console.log(params.labels.row_keep)
+    console.log(params.labels.col_keep)
+
+    var min_label_width = 85;
+    var max_label_width = 140;
     var label_scale = d3.scale.linear()
       .domain([min_num_char, max_num_char])
       .range([min_label_width, max_label_width]).clamp('true');
@@ -1027,7 +1045,8 @@ function VizParams(config){
 
 
     // allow the user to increase or decrease the overall size of the labels
-    params.norm_label.width.row = label_scale(row_max_char) * params.row_label_scale;
+    // make row label longer since its not rotated
+    params.norm_label.width.row = 1.2*label_scale(row_max_char) * params.row_label_scale;
     params.norm_label.width.col = label_scale(col_max_char) * params.col_label_scale;
 
     // normal label margins
@@ -1235,8 +1254,6 @@ function VizParams(config){
     params.labels.default_fs_row = params.matrix.y_scale.rangeBand() * 1.01;
     params.labels.default_fs_col = params.matrix.x_scale.rangeBand() * 0.85;
 
-    params.labels.max_label_length = 35;
-
     // initialize font size zooming parameters
     params.viz.zoom_scale_font = {};
     params.viz.zoom_scale_font.row = 1;
@@ -1348,8 +1365,8 @@ function Labels(args){
 
     function normal_name(d){
       var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
-      if (inst_name.length > params.labels.max_label_length){
-        inst_name = inst_name.substring(0,params.labels.max_label_length)+'..';
+      if (inst_name.length > params.labels.max_label_char){
+        inst_name = inst_name.substring(0,params.labels.max_label_char)+'..';
       }
       return inst_name;
     }
@@ -1607,8 +1624,8 @@ function Labels(args){
 
    function normal_name(d){
       var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
-      if (inst_name.length > params.labels.max_label_length){
-        inst_name = inst_name.substring(0,params.labels.max_label_length)+'..';
+      if (inst_name.length > params.labels.max_label_char){
+        inst_name = inst_name.substring(0,params.labels.max_label_char)+'..';
       }
       return inst_name;
     }
@@ -3837,26 +3854,19 @@ function Zoom(params){
 
     var search_duration = 700;
 
-    var fraction_keep = {}
-    fraction_keep.row = 0.75;
-    fraction_keep.col = 0.2;
+    var fraction_keep = {};
+
     // var cutoff_length = 15;
     var keep_width = {};
-    keep_width.row = params.bounding_width_max.row*fraction_keep.row*params.zoom.scale();
-    keep_width.col = params.bounding_width_max.col*fraction_keep.col*params.zoom.scale()/params.viz.zoom_switch;
-
-    function shorten_name(d){
-      var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
-      if (inst_name.length > cutoff_length){
-        inst_name = inst_name.substring(0,cutoff_length)+'..';
-      }
-      return inst_name;
-    }
+    keep_width.row = params.bounding_width_max.row*params.labels.row_keep
+      *params.zoom.scale();
+    keep_width.col = params.bounding_width_max.col*params.labels.col_keep
+      *params.zoom.scale()/params.viz.zoom_switch;
 
     function normal_name(d){
       var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
-      if (inst_name.length > params.labels.max_label_length){
-        inst_name = inst_name.substring(0,params.labels.max_label_length)+'..';
+      if (inst_name.length > params.labels.max_label_char){
+        inst_name = inst_name.substring(0,params.labels.max_label_char)+'..';
       }
       return inst_name;
     }
@@ -3872,14 +3882,11 @@ function Zoom(params){
             .style('font-size', params.labels.default_fs_row * params.viz.zoom_scale_font.row + 'px')
             .attr('y', params.matrix.y_scale.rangeBand() *
               params.scale_font_offset(params.viz.zoom_scale_font.row));
-          // d3.select(this).select('text')
-          //   .text(function(d){return shorten_name(d)});
         } else {
           d3.select(this).select('text')
             .style('font-size', params.labels.default_fs_row * params.viz.zoom_scale_font.row + 'px')
             .attr('y', params.matrix.y_scale.rangeBand() *
               params.scale_font_offset(params.viz.zoom_scale_font.row))
-            // .text(function(d){return shorten_name(d)});
         }
       });
     } else {
@@ -3901,9 +3908,12 @@ function Zoom(params){
       });
     }
 
-    if (keep_width.col > params.norm_label.width.col) {
+    // approximating the extra space available due to rotation
+    var col_extra_space = 1.3;
 
-      params.viz.zoom_scale_font.col = params.norm_label.width.col / keep_width.col;
+    if (keep_width.col > col_extra_space*params.norm_label.width.col) {
+
+      params.viz.zoom_scale_font.col = col_extra_space*params.norm_label.width.col / keep_width.col;
 
       d3.selectAll('.col_label_click').each(function() {
         if (trans){
@@ -3911,13 +3921,10 @@ function Zoom(params){
             .transition().duration(search_duration)
             .style('font-size', params.labels.default_fs_col *
               params.viz.zoom_scale_font.col + 'px');
-          // d3.select(this).select('text')
-          //   .text(function(d){return shorten_name(d)});
         } else {
           d3.select(this).select('text')
             .style('font-size', params.labels.default_fs_col *
               params.viz.zoom_scale_font.col + 'px')
-            // .text(function(d){return shorten_name(d)});
         }
       });
     } else {
@@ -3941,8 +3948,12 @@ function Zoom(params){
     var max_col_width = params.norm_label.width.col;
 
     // constrain text after zooming
-    d3.selectAll('.row_label_text' ).each(function() { trim_text(this, 'row'); });
-    d3.selectAll('.col_label_click').each(function() { trim_text(this, 'col'); });
+    if (params.labels.row_keep < 1){
+      d3.selectAll('.row_label_text' ).each(function() { trim_text(this, 'row'); });
+    }
+    if (params.labels.col_keep < 1){
+      d3.selectAll('.col_label_click').each(function() { trim_text(this, 'col'); });
+    }
 
     function trim_text(inst_selection, inst_rc){
 
@@ -3950,10 +3961,11 @@ function Zoom(params){
           inst_zoom;
 
       if (inst_rc === 'row'){
-        max_width = params.norm_label.width.row;
+        max_width = params.norm_label.width.row*0.8;
         inst_zoom = params.zoom.scale();
       } else {
-        max_width = params.norm_label.width.col;
+        // the column label has extra length since its rotated
+        max_width = params.norm_label.width.col*col_extra_space;
         inst_zoom = params.zoom.scale()/params.viz.zoom_switch;
       }
 
@@ -3962,19 +3974,12 @@ function Zoom(params){
       var actual_width = tmp_width*inst_zoom;
 
       if (actual_width>max_width){
+
         var trim_fraction = max_width/actual_width;
-        var keep_num_char = Math.floor(inst_text.length*trim_fraction)-1;
+        var keep_num_char = Math.floor(inst_text.length*trim_fraction)-3;
         var trimmed_text = inst_text.substring(0,keep_num_char)+'..';
         d3.select(inst_selection).select('text')
           .text(trimmed_text);
-
-
-        if (inst_text === 'HuGE Navigator Gene-Phenotype Assoc..'){
-          console.log('\n\n')
-          console.log(inst_text)
-          console.log(actual_width)
-          console.log(max_width)
-        }
 
       }
 

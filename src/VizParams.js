@@ -91,11 +91,29 @@ function VizParams(config){
     var row_max_char = _.max(row_nodes, function(inst) { return inst.name.length; }).name.length;
     var col_max_char = _.max(col_nodes, function(inst) { return inst.name.length; }).name.length;
 
+    // the maximum number of characters in a label
+    params.labels.max_label_char = 35;
+
     // define label scale parameters: the more characters in the longest name, the larger the margin
     var min_num_char = 5;
-    var max_num_char = 60;
-    var min_label_width = 80;
-    var max_label_width = 120;
+    var max_num_char = params.labels.max_label_char;
+
+    // number of characters to show
+    params.labels.show_char = 12;
+
+    // calc how much of the label to keep
+    var keep_label_scale = d3.scale.linear()
+      .domain([params.labels.show_char, max_num_char])
+      .range([1, params.labels.show_char/max_num_char]).clamp('true');
+
+    params.labels.row_keep = keep_label_scale(row_max_char);
+    params.labels.col_keep = keep_label_scale(col_max_char);
+
+    console.log(params.labels.row_keep)
+    console.log(params.labels.col_keep)
+
+    var min_label_width = 85;
+    var max_label_width = 140;
     var label_scale = d3.scale.linear()
       .domain([min_num_char, max_num_char])
       .range([min_label_width, max_label_width]).clamp('true');
@@ -106,7 +124,8 @@ function VizParams(config){
 
 
     // allow the user to increase or decrease the overall size of the labels
-    params.norm_label.width.row = label_scale(row_max_char) * params.row_label_scale;
+    // make row label longer since its not rotated
+    params.norm_label.width.row = 1.2*label_scale(row_max_char) * params.row_label_scale;
     params.norm_label.width.col = label_scale(col_max_char) * params.col_label_scale;
 
     // normal label margins
@@ -313,8 +332,6 @@ function VizParams(config){
     // the default font sizes are set here
     params.labels.default_fs_row = params.matrix.y_scale.rangeBand() * 1.01;
     params.labels.default_fs_col = params.matrix.x_scale.rangeBand() * 0.85;
-
-    params.labels.max_label_length = 35;
 
     // initialize font size zooming parameters
     params.viz.zoom_scale_font = {};
