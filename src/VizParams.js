@@ -12,8 +12,6 @@ function VizParams(config){
 
     // Label Paramsters
     params.labels = {};
-    params.labels.col_overflow = config.col_overflow;
-    params.labels.row_overflow = config.row_overflow;
     params.labels.super_labels = config.super_labels;
     // Super Labels Detais
     if (params.labels.super_labels) {

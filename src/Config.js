@@ -6,14 +6,12 @@ function Config(args) {
 
   defaults = {
 
-    // Label options 
-    col_overflow: 1,
-    row_overflow: 1,
+    // Label options
     row_label_scale: 1,
     col_label_scale: 1,
     super_labels: false,
 
-    // matrix options 
+    // matrix options
     transpose: false,
     tile_colors: ['#FF0000', '#1C86EE'],
     bar_colors: ['#FF0000', '#1C86EE'],
@@ -23,7 +21,7 @@ function Config(args) {
     input_domain: 0,
     opacity_scale: 'linear',
 
-    // Viz Options 
+    // Viz Options
     // This should be a DOM element, not a selector.
     svg_div_id: 'svg_id',
     do_zoom: true,
@@ -48,7 +46,7 @@ function Config(args) {
     // the distance between labels and clustergram
     // a universal margin for the clustergram
     uni_margin: 4,
-    // force the visualization to be square 
+    // force the visualization to be square
     force_square:0,
     tile_click_hlight:false
   };
@@ -62,18 +60,18 @@ function Config(args) {
     config.expand_button = true;
   }
 
-  // save network_data to config 
-  // extend does not properly pass network_data 
+  // save network_data to config
+  // extend does not properly pass network_data
   config.network_data = args.network_data;
 
-  // transpose network if necessary 
+  // transpose network if necessary
   if (config.transpose) {
     config.network_data = transpose_network(args.network_data);
     var tmp_col_label = args.col_label;
     var tmp_row_label = args.row_label;
     args.row_label = tmp_col_label;
     args.col_label = tmp_row_label;
-  } 
+  }
 
   // super-row/col labels
   if (!Utils.is_undefined(args.row_label) && !Utils.is_undefined(args.col_label)) {
@@ -83,7 +81,7 @@ function Config(args) {
     config.super.col = args.col_label;
   }
 
-  // initialize cluster ordering 
+  // initialize cluster ordering
   if (!Utils.is_undefined(args.order) && is_supported_order(args.order)) {
     config.inst_order = args.order;
   } else {
@@ -93,13 +91,13 @@ function Config(args) {
   config.show_dendrogram = Utils.has(args.network_data.row_nodes[0], 'group') || Utils.has(args.network_data.col_nodes[0], 'group');
   config.show_categories = Utils.has(args.network_data.row_nodes[0], 'cl')    || Utils.has(args.network_data.col_nodes[0], 'cl');
 
-  
-  // check for category information 
+
+  // check for category information
   if (config.show_categories) {
 
     // !! set up option for manual color specification
     config.class_colors = {};
-    
+
     // associate classes with colors
     var class_rows = _.uniq(_.pluck(args.network_data.row_nodes, 'cl'));
     config.class_colors.row = {};
