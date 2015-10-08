@@ -3825,10 +3825,13 @@ function Zoom(params){
 
     var search_duration = 700;
 
-    if (params.bounding_width_max.row * params.zoom.scale() > params.norm_label.width.row) {
+    var fraction_keep = 1;
+    var cutoff_length = 5;
+
+    if (params.bounding_width_max.row*fraction_keep * params.zoom.scale() > params.norm_label.width.row) {
 
       params.viz.zoom_scale_font.row = params.norm_label.width.row /
-        (params.bounding_width_max.row * params.zoom.scale());
+        (params.bounding_width_max.row*fraction_keep * params.zoom.scale());
 
       d3.selectAll('.row_label_text').each(function() {
         if (trans){
@@ -3837,11 +3840,21 @@ function Zoom(params){
             .style('font-size', params.labels.default_fs_row * params.viz.zoom_scale_font.row + 'px')
             .attr('y', params.matrix.y_scale.rangeBand() *
               params.scale_font_offset(params.viz.zoom_scale_font.row));
+
+          // d3.select(this).select('text')
+
         } else {
           d3.select(this).select('text')
             .style('font-size', params.labels.default_fs_row * params.viz.zoom_scale_font.row + 'px')
             .attr('y', params.matrix.y_scale.rangeBand() *
-              params.scale_font_offset(params.viz.zoom_scale_font.row));
+              params.scale_font_offset(params.viz.zoom_scale_font.row))
+            .text(function(d){
+              var inst_name = d.name;
+              if (d.name.length > cutoff_length){
+                inst_name = d.name.substring(0,cutoff_length)+'...';
+              }
+              return inst_name;
+            });
         }
       });
 
@@ -3855,7 +3868,10 @@ function Zoom(params){
         } else {
           d3.select(this).select('text')
             .style('font-size', params.labels.default_fs_row + 'px')
-            .attr('y', params.matrix.y_scale.rangeBand() * 0.75);
+            .attr('y', params.matrix.y_scale.rangeBand() * 0.75)
+            .text(function(d){
+              return d.name;
+            });
         }
 
       });
