@@ -1,5 +1,5 @@
 module.exports = function(grunt) {
-    
+
     var src_files = [
         '../src/_open.js',
         '../src/Utils.js',
@@ -12,13 +12,14 @@ module.exports = function(grunt) {
         '../src/Labels.js',
         '../src/SuperLabels.js',
         '../src/Spillover.js',
+        '../src/ResetSize.js',
         '../src/Viz.js',
         '../src/Reorder.js',
         '../src/zoom.js',
         '../src/main.js',
         '../src/_close.js'
     ];
-    
+
     grunt.initConfig({
         concat: {
             default: {

@@ -331,17 +331,12 @@ function Zoom(params){
 
     var search_duration = 700;
 
-    // check if widest row or col are wider than the allowed label width
-    ////////////////////////////////////////////////////////////////////////
-
     if (params.bounding_width_max.row * params.zoom.scale() > params.norm_label.width.row) {
 
       params.viz.zoom_scale_font.row = params.norm_label.width.row /
         (params.bounding_width_max.row * params.zoom.scale());
 
-      // reduce font size
       d3.selectAll('.row_label_text').each(function() {
-
         if (trans){
           d3.select(this).select('text')
             .transition().duration(search_duration)
@@ -354,11 +349,9 @@ function Zoom(params){
             .attr('y', params.matrix.y_scale.rangeBand() *
               params.scale_font_offset(params.viz.zoom_scale_font.row));
         }
-
       });
 
     } else {
-      // reset font size
       d3.selectAll('.row_label_text').each(function() {
         if (trans){
           d3.select(this).select('text')
@@ -379,7 +372,6 @@ function Zoom(params){
       params.viz.zoom_scale_font.col = params.norm_label.width.col /
         (params.bounding_width_max.col * (params.zoom.scale() / params.viz.zoom_switch));
 
-      // reduce font size
       d3.selectAll('.col_label_click').each(function() {
         if (trans){
           d3.select(this).select('text')
@@ -394,7 +386,6 @@ function Zoom(params){
       });
 
     } else {
-      // reset font size
       d3.selectAll('.col_label_click').each(function() {
         if (trans){
           d3.select(this).select('text')
@@ -405,10 +396,7 @@ function Zoom(params){
             .style('font-size', params.labels.default_fs_col + 'px');
         }
       });
-
-
     }
-
   }
 
   function ini_doubleclick(){
