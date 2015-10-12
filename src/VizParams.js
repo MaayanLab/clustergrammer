@@ -33,6 +33,7 @@ function VizParams(config){
     params.matrix = {};
     params.matrix.tile_colors = config.tile_colors;
     params.matrix.bar_colors = config.bar_colors;
+    params.matrix.outline_colors = config.outline_colors;
     params.matrix.hlight_color = config.highlight_color
     params.matrix.tile_title = config.tile_title;
 
@@ -92,6 +93,7 @@ function VizParams(config){
     // get row col data
     var col_nodes = network_data.col_nodes;
     var row_nodes = network_data.row_nodes;
+
 
     // find the label with the most characters and use it to adjust the row and col margins
     var row_max_char = _.max(row_nodes, function(inst) { return inst.name.length; }).name.length;
@@ -191,7 +193,7 @@ function VizParams(config){
     // svg size: less than svg size
     ///////////////////////////////////
     // 0.8 approximates the trigonometric distance required for hiding the spillover
-    params.viz.spillover_x_offset = label_scale(col_max_char) * 0.6 * params.col_label_scale;
+    params.viz.spillover_x_offset = label_scale(col_max_char) * 0.7 * params.col_label_scale;
 
 
     // reduce width by row/col labels and by grey_border width (reduce width by less since this is less aparent with slanted col labels)
@@ -346,7 +348,7 @@ function VizParams(config){
 
     // the default font sizes are set here
     params.labels.default_fs_row = params.matrix.y_scale.rangeBand() * 1.01;
-    params.labels.default_fs_col = params.matrix.x_scale.rangeBand() * 0.85;
+    params.labels.default_fs_col = params.matrix.x_scale.rangeBand() * 0.87;
 
     // initialize font size zooming parameters
     params.viz.zoom_scale_font = {};

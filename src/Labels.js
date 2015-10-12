@@ -410,7 +410,7 @@ function Labels(args){
       if (tmp_width > params.bounding_width_max.col) {
         // increase the apparent width of the column label since its rotated
         // this will give more room for text
-        params.bounding_width_max.col = tmp_width * 1.2;
+        params.bounding_width_max.col = tmp_width;
       }
     });
 

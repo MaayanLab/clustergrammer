@@ -16,6 +16,7 @@ function Config(args) {
     transpose: false,
     tile_colors: ['#FF0000', '#1C86EE'],
     bar_colors: ['#FF0000', '#1C86EE'],
+    outline_colors: ['orange','black'],
     highlight_color: '#FFFF00',
     tile_title: false,
     // Default domain is set to 0, which means that the domain will be set automatically

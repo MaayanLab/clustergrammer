@@ -71,7 +71,6 @@ function Matrix(network_data, svg_elem, params) {
 
     // highlight clicked tile
     if (params.tile_click_hlight){
-      console.log('highlight clicked tiles');
 
       d3.selectAll('.tile')
         .on('click',function(d){
@@ -187,7 +186,8 @@ function Matrix(network_data, svg_elem, params) {
       return {
       pos_x: col_index,
       pos_y: row_index,
-      value: 0
+      value: 0,
+      highlight:0
       };
     });
     });
@@ -371,30 +371,111 @@ function Matrix(network_data, svg_elem, params) {
       });
 
 
-    // // append evidence highlighting - black rects
-    if (params.matrix.highlight === 1) {
-      // console.log(row_data[0])
+    // // // append evidence highlighting - black rects
+    // if (params.matrix.highlight === 1) {
+
+      // tile
+      //   .append('rect')
+      //   .attr('width', params.matrix.x_scale.rangeBand() * 0.80)
+      //   .attr('height', params.matrix.y_scale.rangeBand() * 0.80)
+      //   .attr('class', 'highlighting_rect')
+      //   .attr('transform', 'translate(' + params.matrix.x_scale.rangeBand() / 10 +
+      //   ' , ' + params.matrix.y_scale.rangeBand() / 10 + ')')
+      //   .attr('class', 'cell_highlight')
+      //   .attr('stroke', 'black')
+      //   .attr('stroke-width', 1.0)
+      //   .attr('fill-opacity', 0.0)
+      //   .attr('stroke-opacity', function(d) {
+      //     // initialize opacity to 0
+      //     var inst_opacity = 0;
+      //     // set opacity to 1 if there is evidence
+      //     if (d.highlight === 1) {
+      //     inst_opacity = 1;
+      //     }
+      //     return inst_opacity;
+      //   });
+
+
+      var rel_width_hlight = 4 ;
+      var highlight_opacity = 0.0;
+
+      var hlight_width  = rel_width_hlight*params.viz.border_width;
+      var hlight_height = rel_width_hlight*params.viz.border_width/params.viz.zoom_switch;
+
+      // top highlight
       tile
-      .append('rect')
-      .attr('width', params.matrix.x_scale.rangeBand() * 0.80)
-      .attr('height', params.matrix.y_scale.rangeBand() * 0.80)
-      .attr('class', 'highlighting_rect')
-      .attr('transform', 'translate(' + params.matrix.x_scale.rangeBand() / 10 +
-      ' , ' + params.matrix.y_scale.rangeBand() / 10 + ')')
-      .attr('class', 'cell_highlight')
-      .attr('stroke', 'black')
-      .attr('stroke-width', 1.0)
-      .attr('fill-opacity', 0.0)
-      .attr('stroke-opacity', function(d) {
-        // initialize opacity to 0
-        var inst_opacity = 0;
-        // set opacity to 1 if there is evidence
-        if (d.highlight === 1) {
-        inst_opacity = 1;
-        }
-        return inst_opacity;
-      });
-    }
+        .append('rect')
+        .attr('class','highlight')
+        .attr('id','top_hlight')
+        .attr('width', params.matrix.x_scale.rangeBand())
+        .attr('height', hlight_height)
+        .attr('fill',function(d){
+          return d.highlight > 0 ? params.matrix.outline_colors[0] : params.matrix.outline_colors[1];
+        })
+        .attr('opacity',function(d){
+          return Math.abs(d.highlight);
+        });
+
+      // left highlight
+      tile
+        .append('rect')
+        .attr('class','highlight')
+        .attr('id','left_hlight')
+        .attr('width', hlight_width)
+        .attr('height', params.matrix.y_scale.rangeBand() - hlight_height*0.99 )
+        .attr('fill',function(d){
+          return d.highlight > 0 ? params.matrix.outline_colors[0] : params.matrix.outline_colors[1];
+        })
+        .attr('transform', function() {
+          return 'translate(' + 0 + ','+
+            hlight_height*0.99+')';
+        })
+        .attr('opacity',function(d){
+          return Math.abs(d.highlight);
+        });
+
+      // right highlight
+      tile
+        .append('rect')
+        .attr('class','highlight')
+        .attr('id','right_hlight')
+        .attr('width', hlight_width)
+        .attr('height', params.matrix.y_scale.rangeBand() - hlight_height*0.99 )
+        .attr('fill',function(d){
+          return d.highlight > 0 ? params.matrix.outline_colors[0] : params.matrix.outline_colors[1];
+        })
+        .attr('transform', function() {
+          var tmp_translate = params.matrix.x_scale.rangeBand() - hlight_width;
+          return 'translate(' + tmp_translate + ','+
+            hlight_height*0.99+')';
+        })
+        .attr('opacity',function(d){
+          return Math.abs(d.highlight);
+        });
+
+      // bottom highlight
+      tile
+        .append('rect')
+        .attr('class','highlight')
+        .attr('id','bottom_hlight')
+        .attr('width', function(){
+          return params.matrix.x_scale.rangeBand() - 1.98*hlight_width})
+        .attr('height', hlight_height)
+        .attr('fill',function(d){
+          return d.highlight > 0 ? params.matrix.outline_colors[0] : params.matrix.outline_colors[1];
+        })
+        .attr('transform', function() {
+          var tmp_translate_x = hlight_width*0.99;
+          var tmp_translate_y = params.matrix.y_scale.rangeBand() - hlight_height;
+          return 'translate(' + tmp_translate_x + ','+
+            tmp_translate_y+')';
+        })
+        .attr('opacity',function(d){
+          return Math.abs(d.highlight);
+        });
+
+    // }
+
 
     // split-up
     tile
