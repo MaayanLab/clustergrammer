@@ -319,7 +319,9 @@ function Dendrogram(type, params, elem) {
       })
       .style('fill', function(d) {
         var inst_level = params.group_level.col;
-        return get_group_color(d.group[inst_level]);
+	  if (Utils.has(d, 'group'))
+              return get_group_color(d.group[inst_level]);
+	  else return '#000000';
       });
   }
 
