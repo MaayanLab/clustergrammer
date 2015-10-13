@@ -35,20 +35,8 @@ function Labels(args){
       .append('g')
       .attr('id', 'row_labels');
 
-    // d3-tooltip
-    var tip = d3.tip()
-      .attr('class', 'd3-tip')
-      .direction('e')
-      .offset([0, 10])
-      .html(function(d) {
-        var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
-        return "<span>" + inst_name + "</span>";
-      })
 
-    d3.select('#'+params.viz.svg_div_id)
-      .select('svg')
-      .select('#row_container')
-      .call(tip);
+
 
     var row_labels = d3.select('#row_labels')
       .selectAll('g')
@@ -67,6 +55,21 @@ function Labels(args){
       })
 
     if (params.labels.show_tooltips){
+      // d3-tooltip
+      var tip = d3.tip()
+        .attr('class', 'd3-tip')
+        .direction('e')
+        .offset([0, 10])
+        .html(function(d) {
+          var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
+          return "<span>" + inst_name + "</span>";
+        })
+
+      d3.select('#'+params.viz.svg_div_id)
+        .select('svg')
+        .select('#row_container')
+        .call(tip);
+        
       row_labels
         .on('mouseover', function(d) {
           d3.select(this)
@@ -345,20 +348,6 @@ function Labels(args){
     // reduce width of rotated rects
     var reduce_rect_width = params.matrix.x_scale.rangeBand() * 0.36;
 
-    // d3-tooltip
-    var tip = d3.tip()
-      .attr('class', 'd3-tip')
-      .direction('s')
-      .offset([20, 0])
-      .html(function(d) {
-        var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
-        return "<span>" + inst_name + "</span>";
-      })
-
-    d3.select('#'+params.viz.svg_div_id)
-      .select('svg')
-      .select('#row_container')
-      .call(tip);
 
     // add main column label group
     var col_label_obj = d3.select('#col_labels')
@@ -405,6 +394,21 @@ function Labels(args){
       .text(function(d){ return normal_name(d);});
 
     if (params.labels.show_tooltips){
+
+      // d3-tooltip
+      var tip = d3.tip()
+        .attr('class', 'd3-tip')
+        .direction('s')
+        .offset([20, 0])
+        .html(function(d) {
+          var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
+          return "<span>" + inst_name + "</span>";
+        });
+      d3.select('#'+params.viz.svg_div_id)
+        .select('svg')
+        .select('#row_container')
+        .call(tip);
+        
       col_label_obj
         .select('text')
         .on('mouseover',tip.show)

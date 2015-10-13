@@ -8,7 +8,9 @@ return {
     change_groups: viz.change_group,
     reorder: viz.reorder,
     opacity_slider: viz.opacity_slider,
-    opacity_function: viz.opacity_function
+    opacity_function: viz.opacity_function,
+    resize: viz.run_reset_visualization_size,
+    params: viz.params
 };
 	
 }

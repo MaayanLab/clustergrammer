@@ -1,8 +1,29 @@
   function reset_visualization_size(params) {
-    run_reset_visualization_size(params);
+
+    // get outer_margins
+    if ( params.viz.expand == false ){
+      var outer_margins = params.viz.outer_margins;
+    } else {
+      var outer_margins = params.viz.outer_margins_expand;
+    }
+
+    // get the size of the window
+    var screen_width  = window.innerWidth;
+    var screen_height = window.innerHeight;
+
+    // define width and height of clustergram container
+    var cont_dim = {};
+    cont_dim.width  = screen_width  - outer_margins.left - outer_margins.right;
+    cont_dim.height = screen_height - outer_margins.top - outer_margins.bottom;
+
+    run_reset_visualization_size( params, cont_dim.width, cont_dim.height, outer_margins.left, outer_margins.top);
+
   }
 
-  function run_reset_visualization_size(params) {
+
+  function run_reset_visualization_size(params, set_clust_width, set_clust_height, set_margin_left, set_margin_top) {
+
+    console.log('reset visualization size')
 
     // reset zoom
     // zoom.two_translate_zoom(0,0,1)
@@ -58,28 +79,14 @@
     params.zoom.scale(zoom_y);
     params.zoom.translate([pan_dx, net_y_offset]);
 
-    // get outer_margins
-    if ( params.viz.expand == false ){
-      var outer_margins = params.viz.outer_margins;
-    } else {
-      var outer_margins = params.viz.outer_margins_expand;
-    }
 
-    // get the size of the window
-    var screen_width  = window.innerWidth;
-    var screen_height = window.innerHeight;
-
-    // define width and height of clustergram container
-    var cont_dim = {};
-    cont_dim.width  = screen_width  - outer_margins.left - outer_margins.right;
-    cont_dim.height = screen_height - outer_margins.top - outer_margins.bottom;
 
     // size the svg container div - svg_div
     d3.select('#' + params.viz.svg_div_id)
-        .style('margin-left', outer_margins.left + 'px')
-        .style('margin-top',  outer_margins.top  + 'px')
-        .style('width',  cont_dim.width  + 'px')
-        .style('height', cont_dim.height + 'px');
+        .style('margin-left', set_margin_left + 'px')
+        .style('margin-top',  set_margin_top  + 'px')
+        .style('width',  set_clust_width  + 'px')
+        .style('height', set_clust_height + 'px');
 
     // get height and width from parent div
     params.viz.svg_dim = {};

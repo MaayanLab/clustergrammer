@@ -12,7 +12,7 @@ function Viz(config) {
   reorder;
 
   // make viz
-  make(config);
+  params = make(config);
 
   /* The main function; makes clustergram based on user arguments.
    */
@@ -289,6 +289,8 @@ function Viz(config) {
 
     // initialize double click zoom for matrix
     zoom.ini_doubleclick();
+
+    return params;
   }
 
 
@@ -357,7 +359,10 @@ function Viz(config) {
     reorder: reorder.all_reorder,
     search: gene_search,
     opacity_slider: opacity_slider,
-    opacity_function: opacity_function
+    opacity_function: opacity_function,
+    run_reset_visualization_size: run_reset_visualization_size,
+    params: params
   }
+
 
 }

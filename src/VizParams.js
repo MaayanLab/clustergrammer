@@ -449,6 +449,6 @@ function VizParams(config){
     }
   }
 
-  return params
+  return params;
 
 }

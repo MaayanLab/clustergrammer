@@ -1453,7 +1453,7 @@ function VizParams(config){
     }
   }
 
-  return params
+  return params;
 
 }
 
@@ -1493,20 +1493,8 @@ function Labels(args){
       .append('g')
       .attr('id', 'row_labels');
 
-    // d3-tooltip
-    var tip = d3.tip()
-      .attr('class', 'd3-tip')
-      .direction('e')
-      .offset([0, 10])
-      .html(function(d) {
-        var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
-        return "<span>" + inst_name + "</span>";
-      })
 
-    d3.select('#'+params.viz.svg_div_id)
-      .select('svg')
-      .select('#row_container')
-      .call(tip);
+
 
     var row_labels = d3.select('#row_labels')
       .selectAll('g')
@@ -1525,6 +1513,21 @@ function Labels(args){
       })
 
     if (params.labels.show_tooltips){
+      // d3-tooltip
+      var tip = d3.tip()
+        .attr('class', 'd3-tip')
+        .direction('e')
+        .offset([0, 10])
+        .html(function(d) {
+          var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
+          return "<span>" + inst_name + "</span>";
+        })
+
+      d3.select('#'+params.viz.svg_div_id)
+        .select('svg')
+        .select('#row_container')
+        .call(tip);
+        
       row_labels
         .on('mouseover', function(d) {
           d3.select(this)
@@ -1803,20 +1806,6 @@ function Labels(args){
     // reduce width of rotated rects
     var reduce_rect_width = params.matrix.x_scale.rangeBand() * 0.36;
 
-    // d3-tooltip
-    var tip = d3.tip()
-      .attr('class', 'd3-tip')
-      .direction('s')
-      .offset([20, 0])
-      .html(function(d) {
-        var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
-        return "<span>" + inst_name + "</span>";
-      })
-
-    d3.select('#'+params.viz.svg_div_id)
-      .select('svg')
-      .select('#row_container')
-      .call(tip);
 
     // add main column label group
     var col_label_obj = d3.select('#col_labels')
@@ -1863,6 +1852,21 @@ function Labels(args){
       .text(function(d){ return normal_name(d);});
 
     if (params.labels.show_tooltips){
+
+      // d3-tooltip
+      var tip = d3.tip()
+        .attr('class', 'd3-tip')
+        .direction('s')
+        .offset([20, 0])
+        .html(function(d) {
+          var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
+          return "<span>" + inst_name + "</span>";
+        });
+      d3.select('#'+params.viz.svg_div_id)
+        .select('svg')
+        .select('#row_container')
+        .call(tip);
+        
       col_label_obj
         .select('text')
         .on('mouseover',tip.show)
@@ -2248,10 +2252,31 @@ function Spillover( params, container_all_col ){
 
 }
   function reset_visualization_size(params) {
-    run_reset_visualization_size(params);
+
+    // get outer_margins
+    if ( params.viz.expand == false ){
+      var outer_margins = params.viz.outer_margins;
+    } else {
+      var outer_margins = params.viz.outer_margins_expand;
+    }
+
+    // get the size of the window
+    var screen_width  = window.innerWidth;
+    var screen_height = window.innerHeight;
+
+    // define width and height of clustergram container
+    var cont_dim = {};
+    cont_dim.width  = screen_width  - outer_margins.left - outer_margins.right;
+    cont_dim.height = screen_height - outer_margins.top - outer_margins.bottom;
+
+    run_reset_visualization_size( params, cont_dim.width, cont_dim.height, outer_margins.left, outer_margins.top);
+
   }
 
-  function run_reset_visualization_size(params) {
+
+  function run_reset_visualization_size(params, set_clust_width, set_clust_height, set_margin_left, set_margin_top) {
+
+    console.log('reset visualization size')
 
     // reset zoom
     // zoom.two_translate_zoom(0,0,1)
@@ -2307,28 +2332,14 @@ function Spillover( params, container_all_col ){
     params.zoom.scale(zoom_y);
     params.zoom.translate([pan_dx, net_y_offset]);
 
-    // get outer_margins
-    if ( params.viz.expand == false ){
-      var outer_margins = params.viz.outer_margins;
-    } else {
-      var outer_margins = params.viz.outer_margins_expand;
-    }
 
-    // get the size of the window
-    var screen_width  = window.innerWidth;
-    var screen_height = window.innerHeight;
-
-    // define width and height of clustergram container
-    var cont_dim = {};
-    cont_dim.width  = screen_width  - outer_margins.left - outer_margins.right;
-    cont_dim.height = screen_height - outer_margins.top - outer_margins.bottom;
 
     // size the svg container div - svg_div
     d3.select('#' + params.viz.svg_div_id)
-        .style('margin-left', outer_margins.left + 'px')
-        .style('margin-top',  outer_margins.top  + 'px')
-        .style('width',  cont_dim.width  + 'px')
-        .style('height', cont_dim.height + 'px');
+        .style('margin-left', set_margin_left + 'px')
+        .style('margin-top',  set_margin_top  + 'px')
+        .style('width',  set_clust_width  + 'px')
+        .style('height', set_clust_height + 'px');
 
     // get height and width from parent div
     params.viz.svg_dim = {};
@@ -3048,7 +3059,7 @@ function Viz(config) {
   reorder;
 
   // make viz
-  make(config);
+  params = make(config);
 
   /* The main function; makes clustergram based on user arguments.
    */
@@ -3325,6 +3336,8 @@ function Viz(config) {
 
     // initialize double click zoom for matrix
     zoom.ini_doubleclick();
+
+    return params;
   }
 
 
@@ -3393,8 +3406,11 @@ function Viz(config) {
     reorder: reorder.all_reorder,
     search: gene_search,
     opacity_slider: opacity_slider,
-    opacity_function: opacity_function
+    opacity_function: opacity_function,
+    run_reset_visualization_size: run_reset_visualization_size,
+    params: params
   }
+
 
 }
 
@@ -4271,7 +4287,9 @@ return {
     change_groups: viz.change_group,
     reorder: viz.reorder,
     opacity_slider: viz.opacity_slider,
-    opacity_function: viz.opacity_function
+    opacity_function: viz.opacity_function,
+    resize: viz.run_reset_visualization_size,
+    params: viz.params
 };
 	
 }
