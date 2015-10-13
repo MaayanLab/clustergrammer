@@ -4100,12 +4100,10 @@ function Zoom(params){
       });
     }
 
-    // approximating the extra space available due to rotation
-    var col_extra_space = 1.3;
 
-    if (keep_width.col > col_extra_space*params.norm_label.width.col) {
+    if (keep_width.col > params.norm_label.width.col) {
 
-      params.viz.zoom_scale_font.col = col_extra_space*params.norm_label.width.col / keep_width.col;
+      params.viz.zoom_scale_font.col = params.norm_label.width.col / keep_width.col;
 
       d3.selectAll('.col_label_click').each(function() {
         if (trans){
@@ -4159,7 +4157,7 @@ function Zoom(params){
         inst_zoom = params.zoom.scale();
       } else {
         // the column label has extra length since its rotated
-        max_width = params.norm_label.width.col*col_extra_space;
+        max_width = params.norm_label.width.col;
         inst_zoom = params.zoom.scale()/params.viz.zoom_switch;
       }
 
