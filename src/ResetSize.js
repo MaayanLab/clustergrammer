@@ -311,7 +311,8 @@
     /////////////////////////
     d3.select('#row_top_hlight')
       .attr('width',params.viz.svg_dim.width)
-      .attr('height',hlight_height)
+      .attr('height',hlight_height);
+
     d3.select('#row_bottom_hlight')
       .attr('width',params.viz.svg_dim.width)
       .attr('height',hlight_height)
@@ -319,6 +320,28 @@
         var tmp_translate_y = params.matrix.y_scale.rangeBand() - hlight_height;
         return 'translate(0,'+tmp_translate_y+')';
       });
+
+    // resize col highlight 
+    /////////////////////////
+    d3.select('#col_top_hlight')
+      .attr('width',params.viz.clust.dim.height)
+      .attr('height',hlight_width)
+      .attr('transform',function(){
+            var tmp_translate_y = 0;
+            var tmp_translate_x = -(params.viz.clust.dim.height+
+              params.class_room.col+params.viz.uni_margin);
+            return 'translate('+tmp_translate_x+','+tmp_translate_y+')';
+          });
+
+    d3.select('#col_bottom_hlight')
+      .attr('width',params.viz.clust.dim.height)
+      .attr('height',hlight_width)
+      .attr('transform', function(){
+            var tmp_translate_y = params.matrix.x_scale.rangeBand() - hlight_width;
+            var tmp_translate_x = -(params.viz.clust.dim.height + 
+              params.class_room.col+params.viz.uni_margin);
+            return 'translate('+tmp_translate_x+','+tmp_translate_y+')';
+          });
 
     // add text to row/col during resize
     function normal_name(d){

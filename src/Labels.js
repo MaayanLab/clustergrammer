@@ -61,6 +61,9 @@ function Labels(args){
       })
       .on('dblclick', function(d) {
         reorder.row_reorder.call(this);
+        if (params.tile_click_hlight){
+          add_row_click_hlight(this,d.ini);
+        }
       })
 
     if (params.labels.show_tooltips){
@@ -258,6 +261,13 @@ function Labels(args){
           d3.selectAll('.click_hlight')
             .remove();
 
+          // // highlight selected row
+          // d3.selectAll('.row_label_text')
+          //   .select('rect')
+          // d3.select(this)
+          //   .select('rect')
+          //   .style('opacity', 1);
+
           d3.select(clicked_row)
             .append('rect')
             .attr('class','click_hlight')
@@ -368,9 +378,6 @@ function Labels(args){
       .attr('class', 'col_label_click')
       // rotate column labels
       .attr('transform', 'translate(' + params.matrix.x_scale.rangeBand() / 2 + ',' + x_offset_click + ') rotate(45)')
-      .on('dblclick', function(d) {
-        reorder.col_reorder.call(this);
-      })
       .on('mouseover', function(d) {
         d3.select(this).select('text')
           .classed('active',true);
@@ -547,6 +554,12 @@ function Labels(args){
         }
 
       })
+      .on('dblclick', function(d) {
+        reorder.col_reorder.call(this);
+        if (params.tile_click_hlight){
+          add_col_click_hlight(this,d.ini);
+        }
+      });
 
 
     function add_col_click_hlight(clicked_col, id_clicked_col){
@@ -563,17 +576,29 @@ function Labels(args){
         d3.selectAll('.click_hlight')
           .remove();
 
+        // // highlight selected column
+        // ///////////////////////////////
+        // // unhilight and unbold all columns (already unbolded earlier)
+        // d3.selectAll('.col_label_text')
+        //   .select('rect')
+        //   .style('opacity', 0);
+        // // highlight column name
+        // d3.select(clicked_col)
+        //   .select('rect')
+        //   .style('opacity', 1);
+
         d3.select(clicked_col)
           .append('rect')
           .attr('class','click_hlight')
           .attr('id','col_top_hlight')
-          .attr('width',params.viz.svg_dim.height)
+          .attr('width',params.viz.clust.dim.height)
           .attr('height',hlight_width)
           .attr('fill',params.matrix.hlight_color)
           .attr('opacity',opacity_hlight)
           .attr('transform',function(){
             var tmp_translate_y = 0;
-            var tmp_translate_x = -params.viz.svg_dim.height;
+            var tmp_translate_x = -(params.viz.clust.dim.height+
+              params.class_room.col+params.viz.uni_margin);
             return 'translate('+tmp_translate_x+','+tmp_translate_y+')';
           });
 
@@ -581,14 +606,15 @@ function Labels(args){
           .append('rect')
           .attr('class','click_hlight')
           .attr('id','col_bottom_hlight')
-          .attr('width',params.viz.svg_dim.height)
+          .attr('width',params.viz.clust.dim.height)
           .attr('height',hlight_width)
           .attr('fill',params.matrix.hlight_color)
           .attr('opacity',opacity_hlight)
           .attr('transform', function(){
             // reverse x and y since rotated
             var tmp_translate_y = params.matrix.x_scale.rangeBand() - hlight_width;
-            var tmp_translate_x = -params.viz.svg_dim.height;
+            var tmp_translate_x = -(params.viz.clust.dim.height + 
+              params.class_room.col+params.viz.uni_margin);
             return 'translate('+tmp_translate_x+','+tmp_translate_y+')';
           });
       } else {

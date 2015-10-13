@@ -47,10 +47,10 @@ $(function() {
       'outer_margins': outer_margins,
       'outer_margins_expand': outer_margins_expand,
 
+      // 'tile_click_hlight':true,
       // 'show_tooltips':true,
       // 'click_tile': click_tile_callback,
       // 'click_label':click_label,
-      // 'tile_click_hlight':true,
       // 'highlight_color':'yellow',
 
       // 'transpose':true,
