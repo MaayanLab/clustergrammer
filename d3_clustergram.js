@@ -2269,14 +2269,14 @@ function Spillover( params, container_all_col ){
     cont_dim.width  = screen_width  - outer_margins.left - outer_margins.right;
     cont_dim.height = screen_height - outer_margins.top - outer_margins.bottom;
 
-    run_reset_visualization_size( params, cont_dim.width, cont_dim.height, outer_margins.left, outer_margins.top);
+    run_reset_visualization_size(cont_dim.width, cont_dim.height, outer_margins.left, outer_margins.top, params);
 
   }
 
 
-  function run_reset_visualization_size(params, set_clust_width, set_clust_height, set_margin_left, set_margin_top) {
+  function run_reset_visualization_size(set_clust_width, set_clust_height, set_margin_left, set_margin_top, parameters) {
 
-    console.log('reset visualization size')
+     var params = parameters || this.params;
 
     // reset zoom
     // zoom.two_translate_zoom(0,0,1)
