@@ -140,9 +140,9 @@ $(function() {
       d3c.reorder(order_id);
     });
 
-    // example of manual resizing, preserves ordering
-    // input params, width, height, left margin and right margin
-    d3c.resize(d3c.params, 1000, 500, 200, 0)
+    // // example of manual resizing, preserves ordering
+    // // input params, width, height, left margin and right margin
+    // d3c.resize(d3c.params, 1000, 500, 200, 0)
 
   });
 });
