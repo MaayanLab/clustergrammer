@@ -47,11 +47,13 @@ $(function() {
       'outer_margins': outer_margins,
       'outer_margins_expand': outer_margins_expand,
 
-      // 'tile_click_hlight':true,
-      // 'show_tooltips':true,
+      'outline_colors':['black','yellow'],
+
+      'tile_click_hlight':true,
+      'show_tooltips':true,
       // 'click_tile': click_tile_callback,
       // 'click_label':click_label,
-      // 'highlight_color':'yellow',
+      'highlight_color':'yellow',
 
       // 'transpose':true,
       // 'ini_expand':true
