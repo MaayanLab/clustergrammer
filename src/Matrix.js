@@ -406,7 +406,7 @@ function Matrix(network_data, svg_elem, params) {
       tile
         .append('rect')
         .attr('class','highlight')
-        .attr('id','top_hlight')
+        .attr('id','perm_top_hlight')
         .attr('width', params.matrix.x_scale.rangeBand())
         .attr('height', hlight_height)
         .attr('fill',function(d){
@@ -420,7 +420,7 @@ function Matrix(network_data, svg_elem, params) {
       tile
         .append('rect')
         .attr('class','highlight')
-        .attr('id','left_hlight')
+        .attr('id','perm_left_hlight')
         .attr('width', hlight_width)
         .attr('height', params.matrix.y_scale.rangeBand() - hlight_height*0.99 )
         .attr('fill',function(d){
@@ -438,7 +438,7 @@ function Matrix(network_data, svg_elem, params) {
       tile
         .append('rect')
         .attr('class','highlight')
-        .attr('id','right_hlight')
+        .attr('id','perm_right_hlight')
         .attr('width', hlight_width)
         .attr('height', params.matrix.y_scale.rangeBand() - hlight_height*0.99 )
         .attr('fill',function(d){
@@ -457,7 +457,7 @@ function Matrix(network_data, svg_elem, params) {
       tile
         .append('rect')
         .attr('class','highlight')
-        .attr('id','bottom_hlight')
+        .attr('id','perm_ottom_hlight')
         .attr('width', function(){
           return params.matrix.x_scale.rangeBand() - 1.98*hlight_width})
         .attr('height', hlight_height)
