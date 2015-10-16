@@ -87,7 +87,8 @@ function Config(args) {
     uni_margin: 4,
     // force the visualization to be square
     force_square:0,
-    tile_click_hlight:false
+    tile_click_hlight:false,
+    super_label_scale: 1
   };
 
   // Mixin defaults with user-defined arguments.
@@ -1016,16 +1017,18 @@ function VizParams(config){
 
     // Label Paramsters
     params.labels = {};
+    params.labels.super_label_scale = config.super_label_scale;
     params.labels.super_labels = config.super_labels;
     // Super Labels Detais
     if (params.labels.super_labels) {
-      params.labels.super_label_width = 20;
+      params.labels.super_label_width = 20*params.labels.super_label_scale;
       params.labels.super = {};
       params.labels.super.row = config.super.row;
       params.labels.super.col = config.super.col;
     } else {
       params.labels.super_label_width = 0;
     }
+
     // optional classification
     params.labels.show_categories = config.show_categories;
     if (params.labels.show_categories){
@@ -2127,7 +2130,10 @@ function SuperLabels(){
       var inst_y = params.labels.super_label_width - params.viz.uni_margin;
       return 'translate(' + inst_x + ',' + inst_y + ')';
     })
-    .style('font-size', '14px')
+    .style('font-size', function(d){
+      var inst_font_size = 14 * params.labels.super_label_scale;
+      return inst_font_size+'px';
+    })
     .style('font-weight', 300);
 
   // super row title
@@ -2160,7 +2166,10 @@ function SuperLabels(){
     .text(params.labels.super.row)
     .attr('text-anchor', 'center')
     .attr('transform', 'rotate(-90)')
-    .style('font-size', '14px')
+    .style('font-size', function(d){
+      var inst_font_size = 14 * params.labels.super_label_scale;
+      return inst_font_size+'px';
+    })
     .style('font-weight', 300);
 
   }

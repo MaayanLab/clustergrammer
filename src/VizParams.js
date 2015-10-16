@@ -12,16 +12,18 @@ function VizParams(config){
 
     // Label Paramsters
     params.labels = {};
+    params.labels.super_label_scale = config.super_label_scale;
     params.labels.super_labels = config.super_labels;
     // Super Labels Detais
     if (params.labels.super_labels) {
-      params.labels.super_label_width = 20;
+      params.labels.super_label_width = 20*params.labels.super_label_scale;
       params.labels.super = {};
       params.labels.super.row = config.super.row;
       params.labels.super.col = config.super.col;
     } else {
       params.labels.super_label_width = 0;
     }
+
     // optional classification
     params.labels.show_categories = config.show_categories;
     if (params.labels.show_categories){

@@ -22,7 +22,7 @@ text.active {
 
 /* default svg size for fixed svg option*/
 #svg_div{
-  width:600px;
+  width:1000px;
   height:600px;
 }
 

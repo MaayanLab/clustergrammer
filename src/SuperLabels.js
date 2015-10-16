@@ -26,7 +26,10 @@ function SuperLabels(){
       var inst_y = params.labels.super_label_width - params.viz.uni_margin;
       return 'translate(' + inst_x + ',' + inst_y + ')';
     })
-    .style('font-size', '14px')
+    .style('font-size', function(d){
+      var inst_font_size = 14 * params.labels.super_label_scale;
+      return inst_font_size+'px';
+    })
     .style('font-weight', 300);
 
   // super row title
@@ -59,7 +62,10 @@ function SuperLabels(){
     .text(params.labels.super.row)
     .attr('text-anchor', 'center')
     .attr('transform', 'rotate(-90)')
-    .style('font-size', '14px')
+    .style('font-size', function(d){
+      var inst_font_size = 14 * params.labels.super_label_scale;
+      return inst_font_size+'px';
+    })
     .style('font-weight', 300);
 
   }

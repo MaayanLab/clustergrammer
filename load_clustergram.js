@@ -55,6 +55,7 @@ $(function() {
       // 'click_label':click_label,
       'highlight_color':'yellow',
 
+      // 'super_label_scale':2,
       // 'transpose':true,
       // 'ini_expand':true
       // 'col_label_scale':0.8,
