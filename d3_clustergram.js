@@ -302,7 +302,10 @@ function Dendrogram(type, params, elem) {
       .attr('height', params.matrix.y_scale.rangeBand())
       .style('fill', function(d) {
         var inst_level = params.group_level.row;
-        return get_group_color(d.group[inst_level]);
+        if (Utils.has(d, 'group'))
+            return get_group_color(d.group[inst_level]);
+        else
+            return '#000000';
       })
       .attr('x', function() {
         var inst_offset = params.class_room.symbol_width + 1;
@@ -321,7 +324,10 @@ function Dendrogram(type, params, elem) {
       })
       .style('fill', function(d) {
         var inst_level = params.group_level.col;
-        return get_group_color(d.group[inst_level]);
+        if (Utils.has(d, 'group'))
+            return get_group_color(d.group[inst_level]);
+        else
+            return '#000000';
       });
   }
 
