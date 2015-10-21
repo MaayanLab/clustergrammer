@@ -176,6 +176,18 @@ function Reorder(params){
         params.viz.run_trans = false;
       });
 
+    // highlight selected column
+    ///////////////////////////////
+    // unhilight and unbold all columns (already unbolded earlier)
+    d3.selectAll('.row_label_text')
+      .select('rect')
+      .style('opacity', 0);
+    // highlight column name
+    d3.select(this)
+      .select('rect')
+      .style('opacity', 1);
+
+
 
     reposition_tile_highlight();
 
@@ -255,16 +267,16 @@ function Reorder(params){
         params.viz.run_trans = false;
       });
 
-    // // highlight selected column
-    // ///////////////////////////////
-    // // unhilight and unbold all columns (already unbolded earlier)
-    // d3.selectAll('.col_label_text')
-    //   .select('rect')
-    //   .style('opacity', 0);
-    // // highlight column name
-    // d3.select(this)
-    //   .select('rect')
-    //   .style('opacity', 1);
+    // highlight selected column
+    ///////////////////////////////
+    // unhilight and unbold all columns (already unbolded earlier)
+    d3.selectAll('.col_label_text')
+      .select('rect')
+      .style('opacity', 0);
+    // highlight column name
+    d3.select(this)
+      .select('rect')
+      .style('opacity', 1);
 
 
     reposition_tile_highlight();

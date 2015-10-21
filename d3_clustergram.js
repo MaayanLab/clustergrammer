@@ -400,23 +400,6 @@ function Matrix(network_data, svg_elem, params) {
     .attr('width', params.viz.clust.dim.width)
     .attr('height', params.viz.clust.dim.height);
 
-  // // do the databind
-  // var row_groups = clust_group.selectAll('.row')
-  //   .data(matrix)
-  //   .enter()
-  //   .append('g')
-  //   .attr('class', 'row')
-  //   .attr('transform', function(d, index) {
-  //     return 'translate(0,' + params.matrix.y_scale(index) + ')';
-  //   });
-
-  // // draw rows of clustergram
-  // if (params.matrix.tile_type === 'simple') {
-  //   row_groups = row_groups.each(draw_simple_rows);
-  // } else {
-  //   row_groups = row_groups.each(draw_group_rows);
-  // }
-
   var tile_data = _.filter(network_data.links, 
     function(num) {
       return num.value !== 0 || num.highlight !== 0;
@@ -632,12 +615,17 @@ function Matrix(network_data, svg_elem, params) {
       .style('stroke', 'white');
   }
 
+  function make_tile_key(d){
+    var inst_key = row_nodes[d.source].name + '_' + col_nodes[d.target].name;
+    return inst_key ;
+  }
+
 
   function draw_simple_tiles(clust_group, tile_data){
 
-   // bind tile_data 
-    var tile = clust_group.selectAll('rect')
-      .data(tile_data)
+    // bind tile_data 
+    var tile = clust_group.selectAll('.tile')
+      .data(tile_data, make_tile_key)
       .enter()
       .append('rect')
       .attr('class','tile')
@@ -690,64 +678,7 @@ function Matrix(network_data, svg_elem, params) {
     }
   }
 
-  // make each row in the clustergram
-  function draw_simple_rows(inp_row_data) {
-
-    // generate tiles in the current row
-    var tile = d3.select(this)
-      .selectAll('rect')
-      .data(row_data)
-      .enter()
-      .append('rect')
-      .attr('class', 'tile')
-
-      .attr('width', params.matrix.x_scale.rangeBand())
-      .attr('height', params.matrix.y_scale.rangeBand())
-      // switch the color based on up/dn value
-      .style('fill', function(d) {
-        return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
-      })
-      .on('mouseover', function(p) {
-        // highlight row - set text to active if
-        d3.selectAll('.row_label_text text')
-          .classed('active', function(d, i) {
-            return i === p.source;
-          });
-
-        d3.selectAll('.col_label_text text')
-          .classed('active', function(d, i) {
-            return i === p.target;
-          });
-      })
-      .on('mouseout', function mouseout() {
-        d3.selectAll('text').classed('active', false);
-      })
-      .attr('title', function(d) {
-        return d.value;
-      });
-
-    tile
-      .style('fill-opacity', function(d) {
-        // calculate output opacity using the opacity scale
-        var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
-        return output_opacity;
-      });
-
-    tile
-      .attr('transform', function(d) {
-        return 'translate(' + params.matrix.x_scale(d.pos_x) + ',0)';
-      })
-
-    // append title to group
-    if (params.matrix.tile_title) {
-      tile.append('title')
-      .text(function(d) {
-        var inst_string = 'value: ' + d.value;
-        return inst_string;
-      });
-    }
-
-  }
+  
 
   // make each row in the clustergram
   function draw_group_tiles(clust_group, tile_data) {
@@ -756,7 +687,7 @@ function Matrix(network_data, svg_elem, params) {
     // bind tile_data
     var tile = clust_group
       .selectAll('g')
-      .data(tile_data)
+      .data(tile_data, make_tile_key)
       .enter()
       .append('g')
       .attr('class', 'tile')
@@ -3641,6 +3572,18 @@ function Reorder(params){
         params.viz.run_trans = false;
       });
 
+    // highlight selected column
+    ///////////////////////////////
+    // unhilight and unbold all columns (already unbolded earlier)
+    d3.selectAll('.row_label_text')
+      .select('rect')
+      .style('opacity', 0);
+    // highlight column name
+    d3.select(this)
+      .select('rect')
+      .style('opacity', 1);
+
+
 
     reposition_tile_highlight();
 
@@ -3720,16 +3663,16 @@ function Reorder(params){
         params.viz.run_trans = false;
       });
 
-    // // highlight selected column
-    // ///////////////////////////////
-    // // unhilight and unbold all columns (already unbolded earlier)
-    // d3.selectAll('.col_label_text')
-    //   .select('rect')
-    //   .style('opacity', 0);
-    // // highlight column name
-    // d3.select(this)
-    //   .select('rect')
-    //   .style('opacity', 1);
+    // highlight selected column
+    ///////////////////////////////
+    // unhilight and unbold all columns (already unbolded earlier)
+    d3.selectAll('.col_label_text')
+      .select('rect')
+      .style('opacity', 0);
+    // highlight column name
+    d3.select(this)
+      .select('rect')
+      .style('opacity', 1);
 
 
     reposition_tile_highlight();

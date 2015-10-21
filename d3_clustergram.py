@@ -776,8 +776,6 @@ class Network(object):
     row_dm = pdist( tmp_mat, metric='cosine' )
     col_dm = pdist( tmp_mat.transpose(), metric='cosine' )
 
-    # print(row_dm)
-
     # prevent negative values 
     # row 
     row_dm[row_dm < 0] = float(0)
