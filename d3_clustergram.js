@@ -417,26 +417,18 @@ function Matrix(network_data, svg_elem, params) {
   //   row_groups = row_groups.each(draw_group_rows);
   // }
 
-  var tile_data = _.filter(network_data.links, function(num) {
+  var tile_data = _.filter(network_data.links, 
+    function(num) {
       return num.value !== 0;
     });
 
-  console.log(tile_data[0]);
-
   // draw rows of clustergram
   if (params.matrix.tile_type === 'simple') {
-
-    draw_simple_tile(clust_group, tile_data);
-      
+    draw_simple_tiles(clust_group, tile_data);
   } 
-
   else {
-    draw_group_rows(clust_group, tile_data);    
+    draw_group_tiles(clust_group, tile_data);    
   }
-
-
-
-
 
   // add callback function to tile group - if one is supplied by the user
   if (typeof params.click_tile === 'function') {
@@ -641,7 +633,7 @@ function Matrix(network_data, svg_elem, params) {
   }
 
 
-  function draw_simple_tile(clust_group, tile_data){
+  function draw_simple_tiles(clust_group, tile_data){
 
    // bind tile_data 
     var tile = clust_group.selectAll('rect')
@@ -758,7 +750,7 @@ function Matrix(network_data, svg_elem, params) {
   }
 
   // make each row in the clustergram
-  function draw_group_rows(clust_group, tile_data) {
+  function draw_group_tiles(clust_group, tile_data) {
 
     console.log(tile_data[0])
     // bind tile_data
@@ -3511,12 +3503,8 @@ function Reorder(params){
 
       // reorder matrix
       t.selectAll('.tile')
-        // .attr('transform', function(d, i) {
-        //   return 'translate(0,' + params.matrix.y_scale(i) + ')';
-        // })
-        // .selectAll('.tile')
         .attr('transform', function(d) {
-          return 'translate(' + params.matrix.x_scale(d.pos_x) + ' , '+ params.matrix.y_scale(d.pos_y)+')';
+          return 'translate(' + params.matrix.x_scale(d.target) + ' , '+ params.matrix.y_scale(d.source)+')';
         });
 
       // Move Row Labels
@@ -3553,13 +3541,9 @@ function Reorder(params){
       var t = viz.get_clust_group()
 
       // reorder matrix
-      t.selectAll('.row')
+      t.selectAll('.tile')
         .attr('transform', function(d, i) {
-          return 'translate(0,' + params.matrix.y_scale(i) + ')';
-        })
-        .selectAll('.tile')
-        .attr('transform', function(d) {
-          return 'translate(' + params.matrix.x_scale(d.pos_x) + ' , 0)';
+          return 'translate('+params.matrix.x_scale(d.source)+',' + params.matrix.y_scale(d.source) + ')';
         });
 
       // Move Row Labels

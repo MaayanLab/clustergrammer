@@ -33,12 +33,8 @@ function Reorder(params){
 
       // reorder matrix
       t.selectAll('.tile')
-        // .attr('transform', function(d, i) {
-        //   return 'translate(0,' + params.matrix.y_scale(i) + ')';
-        // })
-        // .selectAll('.tile')
         .attr('transform', function(d) {
-          return 'translate(' + params.matrix.x_scale(d.pos_x) + ' , '+ params.matrix.y_scale(d.pos_y)+')';
+          return 'translate(' + params.matrix.x_scale(d.target) + ' , '+ params.matrix.y_scale(d.source)+')';
         });
 
       // Move Row Labels
@@ -75,13 +71,9 @@ function Reorder(params){
       var t = viz.get_clust_group()
 
       // reorder matrix
-      t.selectAll('.row')
+      t.selectAll('.tile')
         .attr('transform', function(d, i) {
-          return 'translate(0,' + params.matrix.y_scale(i) + ')';
-        })
-        .selectAll('.tile')
-        .attr('transform', function(d) {
-          return 'translate(' + params.matrix.x_scale(d.pos_x) + ' , 0)';
+          return 'translate('+params.matrix.x_scale(d.source)+',' + params.matrix.y_scale(d.source) + ')';
         });
 
       // Move Row Labels
