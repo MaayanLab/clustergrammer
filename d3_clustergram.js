@@ -419,7 +419,7 @@ function Matrix(network_data, svg_elem, params) {
 
   var tile_data = _.filter(network_data.links, 
     function(num) {
-      return num.value !== 0;
+      return num.value !== 0 || num.highlight !== 0;
     });
 
   // draw rows of clustergram
