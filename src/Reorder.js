@@ -142,9 +142,6 @@ function Reorder(params){
       return tmp_arr[b] - tmp_arr[a];
     });
 
-    // // get parameters
-    // var params = params;
-
     // resort the columns (resort x)
     params.matrix.x_scale.domain(tmp_sort);
 
@@ -157,8 +154,8 @@ function Reorder(params){
 
     // reorder matrix
     t.selectAll('.tile')
-      .attr('transform', function(data) {
-        return 'translate(' + params.matrix.x_scale(data.pos_x) + ',0)';
+      .attr('transform', function(d) {
+        return 'translate(' + params.matrix.x_scale(d.target) + ','+params.matrix.y_scale(d.source)+')';
       });
 
     // Move Col Labels
@@ -179,13 +176,6 @@ function Reorder(params){
         params.viz.run_trans = false;
       });
 
-    // // highlight selected row
-    // d3.selectAll('.row_label_text')
-    //   .select('rect')
-    //   .style('opacity', 0);
-    // d3.select(this)
-    //   .select('rect')
-    //   .style('opacity', 1);
 
     reposition_tile_highlight();
 
@@ -235,29 +225,29 @@ function Reorder(params){
       .transition().duration(2500);
 
     // reorder matrix
-    t.selectAll('.row')
-      .attr('transform', function(data, index) {
-        return 'translate(0,' + params.matrix.y_scale(index) + ')';
+    t.selectAll('.tile')
+      .attr('transform', function(d, index) {
+        return 'translate('+params.matrix.x_scale(d.target)+',' + params.matrix.y_scale(d.source) + ')';
       });
 
     // reorder row_label_triangle groups
     d3.selectAll('.row_triangle_group')
       .transition().duration(2500)
-      .attr('transform', function(data, index) {
+      .attr('transform', function(d, index) {
         return 'translate(0,' + params.matrix.y_scale(index) + ')';
       });
 
     // Move Row Labels
     d3.select('#row_labels').selectAll('.row_label_text')
       .transition().duration(2500)
-      .attr('transform', function(data, index) {
+      .attr('transform', function(d, index) {
         return 'translate(0,' + params.matrix.y_scale(index) + ')';
       });
 
     // t.selectAll('.column')
     d3.select('#col_labels').selectAll('.col_label_text')
       .transition().duration(2500)
-      .attr('transform', function(data, index) {
+      .attr('transform', function(d, index) {
         return 'translate(' + params.matrix.x_scale(index) + ')rotate(-90)';
       })
       .each('end', function() {

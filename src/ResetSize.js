@@ -227,17 +227,12 @@
       .attr('width', params.matrix.x_scale.rangeBand())
       .attr('height', params.matrix.y_scale.rangeBand())
       .attr('transform', function(d) {
-        return 'translate(' + params.matrix.x_scale(d.pos_x) + ',0)';
+        return 'translate(' + params.matrix.x_scale(d.target) + ','+params.matrix.y_scale(d.source)+')';
       });
 
     svg_group.selectAll('.tile_group')
       .attr('width', params.matrix.x_scale.rangeBand())
       .attr('height', params.matrix.y_scale.rangeBand());
-
-    svg_group.selectAll('.row')
-      .attr('transform', function(d, index) {
-        return 'translate(0,' + params.matrix.y_scale(index) + ')';
-      });
 
     svg_group.selectAll('.highlighting_rect')
       .attr('width', params.matrix.x_scale.rangeBand() * 0.80)

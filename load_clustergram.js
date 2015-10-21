@@ -49,7 +49,7 @@ $(function() {
 
       'outline_colors':['black','yellow'],
 
-      'tile_click_hlight':true,
+      // 'tile_click_hlight':true,
       'show_tooltips':true,
       // 'click_tile': click_tile_callback,
       // 'click_label':click_label,

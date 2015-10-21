@@ -651,12 +651,12 @@ function Matrix(network_data, svg_elem, params) {
         // highlight row - set text to active if
         d3.selectAll('.row_label_text text')
           .classed('active', function(d, i) {
-            return i === p.target;
+            return i === p.source;
           });
 
         d3.selectAll('.col_label_text text')
           .classed('active', function(d, i) {
-            return i === p.source;
+            return i === p.target;
           });
       })
       .on('mouseout', function mouseout() {
@@ -711,12 +711,12 @@ function Matrix(network_data, svg_elem, params) {
         // highlight row - set text to active if
         d3.selectAll('.row_label_text text')
           .classed('active', function(d, i) {
-            return i === p.pos_y;
+            return i === p.source;
           });
 
         d3.selectAll('.col_label_text text')
           .classed('active', function(d, i) {
-            return i === p.pos_x;
+            return i === p.target;
           });
       })
       .on('mouseout', function mouseout() {
@@ -2534,17 +2534,12 @@ function Spillover( params, container_all_col ){
       .attr('width', params.matrix.x_scale.rangeBand())
       .attr('height', params.matrix.y_scale.rangeBand())
       .attr('transform', function(d) {
-        return 'translate(' + params.matrix.x_scale(d.pos_x) + ',0)';
+        return 'translate(' + params.matrix.x_scale(d.target) + ','+params.matrix.y_scale(d.source)+')';
       });
 
     svg_group.selectAll('.tile_group')
       .attr('width', params.matrix.x_scale.rangeBand())
       .attr('height', params.matrix.y_scale.rangeBand());
-
-    svg_group.selectAll('.row')
-      .attr('transform', function(d, index) {
-        return 'translate(0,' + params.matrix.y_scale(index) + ')';
-      });
 
     svg_group.selectAll('.highlighting_rect')
       .attr('width', params.matrix.x_scale.rangeBand() * 0.80)
@@ -3612,9 +3607,6 @@ function Reorder(params){
       return tmp_arr[b] - tmp_arr[a];
     });
 
-    // // get parameters
-    // var params = params;
-
     // resort the columns (resort x)
     params.matrix.x_scale.domain(tmp_sort);
 
@@ -3627,8 +3619,8 @@ function Reorder(params){
 
     // reorder matrix
     t.selectAll('.tile')
-      .attr('transform', function(data) {
-        return 'translate(' + params.matrix.x_scale(data.pos_x) + ',0)';
+      .attr('transform', function(d) {
+        return 'translate(' + params.matrix.x_scale(d.target) + ','+params.matrix.y_scale(d.source)+')';
       });
 
     // Move Col Labels
@@ -3649,13 +3641,6 @@ function Reorder(params){
         params.viz.run_trans = false;
       });
 
-    // // highlight selected row
-    // d3.selectAll('.row_label_text')
-    //   .select('rect')
-    //   .style('opacity', 0);
-    // d3.select(this)
-    //   .select('rect')
-    //   .style('opacity', 1);
 
     reposition_tile_highlight();
 
@@ -3705,29 +3690,29 @@ function Reorder(params){
       .transition().duration(2500);
 
     // reorder matrix
-    t.selectAll('.row')
-      .attr('transform', function(data, index) {
-        return 'translate(0,' + params.matrix.y_scale(index) + ')';
+    t.selectAll('.tile')
+      .attr('transform', function(d, index) {
+        return 'translate('+params.matrix.x_scale(d.target)+',' + params.matrix.y_scale(d.source) + ')';
       });
 
     // reorder row_label_triangle groups
     d3.selectAll('.row_triangle_group')
       .transition().duration(2500)
-      .attr('transform', function(data, index) {
+      .attr('transform', function(d, index) {
         return 'translate(0,' + params.matrix.y_scale(index) + ')';
       });
 
     // Move Row Labels
     d3.select('#row_labels').selectAll('.row_label_text')
       .transition().duration(2500)
-      .attr('transform', function(data, index) {
+      .attr('transform', function(d, index) {
         return 'translate(0,' + params.matrix.y_scale(index) + ')';
       });
 
     // t.selectAll('.column')
     d3.select('#col_labels').selectAll('.col_label_text')
       .transition().duration(2500)
-      .attr('transform', function(data, index) {
+      .attr('transform', function(d, index) {
         return 'translate(' + params.matrix.x_scale(index) + ')rotate(-90)';
       })
       .each('end', function() {

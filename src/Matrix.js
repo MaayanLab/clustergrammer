@@ -278,12 +278,12 @@ function Matrix(network_data, svg_elem, params) {
         // highlight row - set text to active if
         d3.selectAll('.row_label_text text')
           .classed('active', function(d, i) {
-            return i === p.target;
+            return i === p.source;
           });
 
         d3.selectAll('.col_label_text text')
           .classed('active', function(d, i) {
-            return i === p.source;
+            return i === p.target;
           });
       })
       .on('mouseout', function mouseout() {
@@ -338,12 +338,12 @@ function Matrix(network_data, svg_elem, params) {
         // highlight row - set text to active if
         d3.selectAll('.row_label_text text')
           .classed('active', function(d, i) {
-            return i === p.pos_y;
+            return i === p.source;
           });
 
         d3.selectAll('.col_label_text text')
           .classed('active', function(d, i) {
-            return i === p.pos_x;
+            return i === p.target;
           });
       })
       .on('mouseout', function mouseout() {
