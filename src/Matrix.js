@@ -27,22 +27,99 @@ function Matrix(network_data, svg_elem, params) {
     .attr('width', params.viz.clust.dim.width)
     .attr('height', params.viz.clust.dim.height);
 
-  // do the databind
-  var row_groups = clust_group.selectAll('.row')
-    .data(matrix)
-    .enter()
-    .append('g')
-    .attr('class', 'row')
-    .attr('transform', function(d, index) {
-      return 'translate(0,' + params.matrix.y_scale(index) + ')';
+  // // do the databind
+  // var row_groups = clust_group.selectAll('.row')
+  //   .data(matrix)
+  //   .enter()
+  //   .append('g')
+  //   .attr('class', 'row')
+  //   .attr('transform', function(d, index) {
+  //     return 'translate(0,' + params.matrix.y_scale(index) + ')';
+  //   });
+
+  // // draw rows of clustergram
+  // if (params.matrix.tile_type === 'simple') {
+  //   row_groups = row_groups.each(draw_simple_rows);
+  // } else {
+  //   row_groups = row_groups.each(draw_group_rows);
+  // }
+
+  var tile_data = _.filter(network_data.links, function(num) {
+      return num.value !== 0;
     });
+
+  console.log(tile_data[0]);
 
   // draw rows of clustergram
   if (params.matrix.tile_type === 'simple') {
-    row_groups = row_groups.each(draw_simple_rows);
-  } else {
-    row_groups = row_groups.each(draw_group_rows);
-  }
+
+    console.log(tile_data)
+
+    // bind links 
+    var tile = clust_group.selectAll('rect')
+      .data(tile_data)
+      .enter()
+      .append('rect')
+      .attr('class','tile')
+      .attr('width', params.matrix.x_scale.rangeBand())
+      .attr('height', params.matrix.y_scale.rangeBand())
+      // switch the color based on up/dn value
+      .style('fill', function(d) {
+        return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
+      })
+      .on('mouseover', function(p) {
+        // highlight row - set text to active if
+        d3.selectAll('.row_label_text text')
+          .classed('active', function(d, i) {
+            return i === p.target;
+          });
+
+        d3.selectAll('.col_label_text text')
+          .classed('active', function(d, i) {
+            return i === p.source;
+          });
+      })
+      .on('mouseout', function mouseout() {
+        d3.selectAll('text').classed('active', false);
+      })
+      .attr('title', function(d) {
+        return d.value;
+      });
+
+    tile
+      .style('fill-opacity', function(d) {
+        // calculate output opacity using the opacity scale
+        var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
+        return output_opacity;
+      });
+
+
+    tile
+      .attr('transform', function(d) {
+        console.log('\n\n')
+        console.log(d)
+        // return 'translate(' + params.matrix.x_scale(d.source) + ','+params.matrix.y_scale(d.target)+')';
+        // target 
+        return 'translate(' + params.matrix.x_scale(d.target) + ','+params.matrix.y_scale(d.source)+')';
+      })
+
+    // append title to group
+    if (params.matrix.tile_title) {
+      tile.append('title')
+      .text(function(d) {
+        var inst_string = 'value: ' + d.value;
+        return inst_string;
+      });
+    }
+      
+  } 
+
+  // else {
+    
+  // }
+
+
+
 
 
   // add callback function to tile group - if one is supplied by the user
@@ -181,15 +258,17 @@ function Matrix(network_data, svg_elem, params) {
   draw_grid_lines();
 
   function initialize_matrix() {
+    
     _.each(row_nodes, function(tmp, row_index) {
-    matrix[row_index] = d3.range(col_nodes.length).map(function(col_index) {
-      return {
-      pos_x: col_index,
-      pos_y: row_index,
-      value: 0,
-      highlight:0
-      };
-    });
+      matrix[row_index] = d3.range(col_nodes.length).map(
+        function(col_index) {
+          return {
+            pos_x: col_index,
+            pos_y: row_index,
+            value: 0,
+            highlight:0
+          } ;
+        });
     });
 
     _.each(network_data.links, function(link) {
@@ -248,11 +327,6 @@ function Matrix(network_data, svg_elem, params) {
   // make each row in the clustergram
   function draw_simple_rows(inp_row_data) {
 
-    // remove zero values to make visualization faster
-    var row_data = _.filter(inp_row_data, function(num) {
-      return num.value !== 0;
-    });
-
     // generate tiles in the current row
     var tile = d3.select(this)
       .selectAll('rect')
@@ -297,8 +371,6 @@ function Matrix(network_data, svg_elem, params) {
       .attr('transform', function(d) {
         return 'translate(' + params.matrix.x_scale(d.pos_x) + ',0)';
       })
-
-
 
     // append title to group
     if (params.matrix.tile_title) {

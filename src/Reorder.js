@@ -32,13 +32,13 @@ function Reorder(params){
         .transition().duration(2500);
 
       // reorder matrix
-      t.selectAll('.row')
-        .attr('transform', function(d, i) {
-          return 'translate(0,' + params.matrix.y_scale(i) + ')';
-        })
-        .selectAll('.tile')
+      t.selectAll('.tile')
+        // .attr('transform', function(d, i) {
+        //   return 'translate(0,' + params.matrix.y_scale(i) + ')';
+        // })
+        // .selectAll('.tile')
         .attr('transform', function(d) {
-          return 'translate(' + params.matrix.x_scale(d.pos_x) + ' , 0)';
+          return 'translate(' + params.matrix.x_scale(d.pos_x) + ' , '+ params.matrix.y_scale(d.pos_y)+')';
         });
 
       // Move Row Labels
@@ -52,7 +52,7 @@ function Reorder(params){
       d3.select('#col_labels').selectAll('.col_label_text')
         .transition().duration(2500)
         .attr('transform', function(d, i) {
-          return 'translate(' + params.matrix.x_scale(i) + ')rotate(-90)';
+          return 'translate(' + params.matrix.x_scale(i) + ') rotate(-90)';
         });
 
       // reorder row_label_triangle groups
