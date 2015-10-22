@@ -43,11 +43,22 @@ function Viz(config) {
       .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch])
       .on('zoom', zoom.zoomed);
 
-    var svg_group = d3.select('#' + params.viz.svg_div_id)
-      .append('svg')
-      .attr('id', 'main_svg')
-      .attr('width',  params.viz.svg_dim.width)
-      .attr('height', params.viz.svg_dim.height);
+    console.log( d3.select('#'+params.viz.svg_div_id).select('svg').empty() )
+
+    // initialize svg 
+    if ( d3.select('#'+params.viz.svg_div_id).select('svg').empty() ){
+      var svg_group = d3.select('#' + params.viz.svg_div_id)
+        .append('svg')
+        .attr('id', 'main_svg')
+        .attr('width',  params.viz.svg_dim.width)
+        .attr('height', params.viz.svg_dim.height);
+    } else {
+      var svg_group = d3.select('#' + params.viz.svg_div_id)
+        .select('svg')
+        .attr('width',  params.viz.svg_dim.width)
+        .attr('height', params.viz.svg_dim.height);
+    }
+
 
     if (params.viz.do_zoom) {
       svg_group.call(params.zoom);

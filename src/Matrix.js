@@ -32,6 +32,12 @@ function Matrix(network_data, svg_elem, params) {
       return num.value !== 0 || num.highlight !== 0;
     });
 
+  // add link_key to links for object constancy
+  for (var i = 0; i < tile_data.length; i++) {
+    var d = tile_data[i];
+    tile_data[i].link_key = row_nodes[d.source].name + '_' + col_nodes[d.target].name;
+  }
+
   // draw rows of clustergram
   if (params.matrix.tile_type === 'simple') {
     draw_simple_tiles(clust_group, tile_data);
@@ -242,17 +248,11 @@ function Matrix(network_data, svg_elem, params) {
       .style('stroke', 'white');
   }
 
-  function make_tile_key(d){
-    var inst_key = row_nodes[d.source].name + '_' + col_nodes[d.target].name;
-    return inst_key ;
-  }
-
-
   function draw_simple_tiles(clust_group, tile_data){
 
     // bind tile_data 
     var tile = clust_group.selectAll('.tile')
-      .data(tile_data, make_tile_key)
+      .data(tile_data, function(d){return d.link_key;})
       .enter()
       .append('rect')
       .attr('class','tile')
@@ -314,7 +314,7 @@ function Matrix(network_data, svg_elem, params) {
     // bind tile_data
     var tile = clust_group
       .selectAll('g')
-      .data(tile_data, make_tile_key)
+      .data(tile_data, function(d){ return d.link_key;})
       .enter()
       .append('g')
       .attr('class', 'tile')

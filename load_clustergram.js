@@ -152,3 +152,45 @@ function make_clust(inst_network){  $(function() {
 }
 
 make_clust('default_example');
+
+function update_clust() {
+
+
+  d3.json('json/small_example.json', function(network_data){
+
+    // make global so that names can be accessed
+    var row_nodes = network_data.row_nodes;
+    var col_nodes = network_data.col_nodes;
+    var links = network_data.links;
+
+    // console.log(links.length)
+
+    tile_data = links;
+
+    // add link_key to links for object constancy
+    for (var i = 0; i < tile_data.length; i++) {
+      var d = tile_data[i];
+      tile_data[i].link_key = row_nodes[d.source].name + '_' + col_nodes[d.target].name;
+    }
+
+    function make_tile_key(d,row_nodes, col_nodes){
+      var inst_key = row_nodes[d.target].name + '_' + col_nodes[d.source].name;
+      return inst_key ;
+    }
+
+    d3.selectAll('.tile')
+      .data(links, function(d){ return d.link_key;})
+      .exit()
+      .transition().duration(1000)
+      .style('fill-opacity',0);
+
+
+    d3.selectAll('.tile')
+      .each(function(d,i){
+        console.log(i);
+      })
+    
+
+  })
+
+}
