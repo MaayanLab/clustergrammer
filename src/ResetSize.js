@@ -20,10 +20,9 @@
 
   }
 
-
   function run_reset_visualization_size(set_clust_width, set_clust_height, set_margin_left, set_margin_top, parameters) {
 
-     var params = parameters || this.params;
+    var params = parameters || this.params;
 
     // reset zoom
     // zoom.two_translate_zoom(0,0,1)

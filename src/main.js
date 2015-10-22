@@ -10,5 +10,8 @@
 // consume and validate user arguments, produce configuration object 
 var config = Config(args);
 
-// make visualization using configuration object and network 
-var viz = Viz(config);
+// make visualization parameters using configuration object 
+var params = VizParams(config);
+
+// make visualization using parameters  
+var viz = Viz(params);

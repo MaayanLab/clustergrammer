@@ -303,6 +303,16 @@ function Matrix(network_data, svg_elem, params) {
         return inst_string;
       });
     }
+
+    // remove old tiles 
+    var tmp = clust_group.selectAll('.tile')
+      .data(tile_data, function(d){
+        return d.link_key;
+      })
+      .exit()
+      .remove();
+
+      
   }
 
   

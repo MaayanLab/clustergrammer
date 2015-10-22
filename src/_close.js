@@ -10,6 +10,7 @@ return {
     opacity_slider: viz.opacity_slider,
     opacity_function: viz.opacity_function,
     resize: viz.run_reset_visualization_size,
+    update_network: viz.update_network,
     params: viz.params
 };
 	

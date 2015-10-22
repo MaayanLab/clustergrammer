@@ -35,9 +35,6 @@ function Labels(args){
       .append('g')
       .attr('id', 'row_labels');
 
-
-
-
     var row_labels = d3.select('#row_labels')
       .selectAll('g')
       .data(row_nodes)

@@ -676,6 +676,16 @@ function Matrix(network_data, svg_elem, params) {
         return inst_string;
       });
     }
+
+    // remove old tiles 
+    var tmp = clust_group.selectAll('.tile')
+      .data(tile_data, function(d){
+        return d.link_key;
+      })
+      .exit()
+      .remove();
+
+      
   }
 
   
@@ -1462,9 +1472,6 @@ function Labels(args){
       .attr('transform', 'translate(' + params.norm_label.width.row + ',0)')
       .append('g')
       .attr('id', 'row_labels');
-
-
-
 
     var row_labels = d3.select('#row_labels')
       .selectAll('g')
@@ -2258,10 +2265,9 @@ function Spillover( params, container_all_col ){
 
   }
 
-
   function run_reset_visualization_size(set_clust_width, set_clust_height, set_margin_left, set_margin_top, parameters) {
 
-     var params = parameters || this.params;
+    var params = parameters || this.params;
 
     // reset zoom
     // zoom.two_translate_zoom(0,0,1)
@@ -3025,10 +3031,20 @@ function Spillover( params, container_all_col ){
 
     d3.select('#main_svg').style('opacity',1);
   }
+function update_network(args){
+
+  console.log('updating the network')
+
+  var config = Config(args);
+  var params = VizParams(config);
+  console.log(params.super_label_scale);
+  console.log(params.show_tooltips);
+
+}
 
 /* Represents the entire visualization: labels, dendrogram (optional) and matrix.
  */
-function Viz(config) {
+function Viz(params) {
 
   // scope these variables to viz
   var matrix,
@@ -3037,16 +3053,13 @@ function Viz(config) {
   zoom,
   params,
   reorder;
-
+  
   // make viz
-  params = make(config);
+  params = make(params);
 
   /* The main function; makes clustergram based on user arguments.
    */
-  function make(config) {
-
-    // initialize clustergram variables
-    params = VizParams(config);
+  function make() {
 
     var network_data = params.network_data;
 
@@ -3057,9 +3070,9 @@ function Viz(config) {
     // Begin Making Visualization
     /////////////////////////////////
 
-    // !! needs to be improved
-    // remove any previous visualizations
-    d3.select('#main_svg').remove();
+    // // !! needs to be improved
+    // // remove any previous visualizations
+    // d3.select('#main_svg').remove();
 
     // instantiate zoom object
     zoom = Zoom(params);
@@ -3366,16 +3379,7 @@ function Viz(config) {
 
   }
 
-  var opacity_function = function(function_type){
-
-
-
-  }
-
   return {
-    remake: function() {
-      make(config);
-    },
     change_group: function(inst_rc, inst_index) {
       if (inst_rc === 'row') {
         row_dendrogram.change_groups(inst_index);
@@ -3397,8 +3401,8 @@ function Viz(config) {
     reorder: reorder.all_reorder,
     search: gene_search,
     opacity_slider: opacity_slider,
-    opacity_function: opacity_function,
     run_reset_visualization_size: run_reset_visualization_size,
+    update_network: update_network, 
     params: params
   }
 
@@ -4259,8 +4263,11 @@ function Zoom(params){
 // consume and validate user arguments, produce configuration object 
 var config = Config(args);
 
-// make visualization using configuration object and network 
-var viz = Viz(config);
+// make visualization parameters using configuration object 
+var params = VizParams(config);
+
+// make visualization using parameters  
+var viz = Viz(params);
 
 
 /* API
@@ -4274,6 +4281,7 @@ return {
     opacity_slider: viz.opacity_slider,
     opacity_function: viz.opacity_function,
     resize: viz.run_reset_visualization_size,
+    update_network: viz.update_network,
     params: viz.params
 };
 	

@@ -1,7 +1,7 @@
 
 /* Represents the entire visualization: labels, dendrogram (optional) and matrix.
  */
-function Viz(config) {
+function Viz(params) {
 
   // scope these variables to viz
   var matrix,
@@ -10,16 +10,13 @@ function Viz(config) {
   zoom,
   params,
   reorder;
-
+  
   // make viz
-  params = make(config);
+  params = make(params);
 
   /* The main function; makes clustergram based on user arguments.
    */
-  function make(config) {
-
-    // initialize clustergram variables
-    params = VizParams(config);
+  function make() {
 
     var network_data = params.network_data;
 
@@ -30,9 +27,9 @@ function Viz(config) {
     // Begin Making Visualization
     /////////////////////////////////
 
-    // !! needs to be improved
-    // remove any previous visualizations
-    d3.select('#main_svg').remove();
+    // // !! needs to be improved
+    // // remove any previous visualizations
+    // d3.select('#main_svg').remove();
 
     // instantiate zoom object
     zoom = Zoom(params);
@@ -339,16 +336,7 @@ function Viz(config) {
 
   }
 
-  var opacity_function = function(function_type){
-
-
-
-  }
-
   return {
-    remake: function() {
-      make(config);
-    },
     change_group: function(inst_rc, inst_index) {
       if (inst_rc === 'row') {
         row_dendrogram.change_groups(inst_index);
@@ -370,8 +358,8 @@ function Viz(config) {
     reorder: reorder.all_reorder,
     search: gene_search,
     opacity_slider: opacity_slider,
-    opacity_function: opacity_function,
     run_reset_visualization_size: run_reset_visualization_size,
+    update_network: update_network, 
     params: params
   }
 
