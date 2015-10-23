@@ -3242,8 +3242,6 @@ function resize_after_update(params, row_nodes, col_nodes, links, update_dur){
   // resize row labels
   ///////////////////////////
 
-  // may not transition font sizes since it causes problems with bounding box calculation 
-
   svg_group.select('#row_container')
     .transition().delay(update_dur).duration(update_dur)
     .attr('transform', 'translate(' + params.norm_label.margin.left + ',' +
@@ -3271,9 +3269,9 @@ function resize_after_update(params, row_nodes, col_nodes, links, update_dur){
     .transition().delay(update_dur).duration(update_dur)
     .attr('y', params.matrix.y_scale.rangeBand() * 0.75)
 
+  // do not delay the font size change since this will break the bounding box calc
   svg_group.selectAll('.row_label_text')
     .select('text')
-    // .transition().delay(0).duration(update_dur)
     .style('font-size', params.labels.default_fs_row + 'px')
     .text(function(d){ return normal_name(d);});
 
@@ -3309,9 +3307,11 @@ function resize_after_update(params, row_nodes, col_nodes, links, update_dur){
   });
 
   svg_group.select('#row_label_viz')
+    .transition().delay(update_dur).duration(update_dur)
     .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
 
   svg_group.select('#row_label_viz')
+    .transition().delay(update_dur).duration(update_dur)
     .select('white_bars')
     .attr('width', params.class_room.row + 'px')
     .attr('height', function() {
@@ -3320,12 +3320,14 @@ function resize_after_update(params, row_nodes, col_nodes, links, update_dur){
     });
 
   svg_group.selectAll('.row_triangle_group')
+    .transition().delay(update_dur).duration(update_dur)
     .attr('transform', function(d, index) {
         return 'translate(0, ' + params.matrix.y_scale(index) + ')';
       });
 
   svg_group.selectAll('.row_triangle_group')
     .select('path')
+    .transition().delay(update_dur).duration(update_dur)
     .attr('d', function() {
       var origin_x = params.class_room.symbol_width - 1;
       var origin_y = 0;
@@ -3349,6 +3351,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, update_dur){
         .range([0, params.norm_label.width.row ]);
 
       svg_group.selectAll('.row_bars')
+        .transition().delay(update_dur).duration(update_dur)
         .attr('width', function(d) {
           var inst_value = 0;
           inst_value = params.labels.bar_scale_row( Math.abs(d.value) );
@@ -3366,6 +3369,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, update_dur){
     // resize col labels
     ///////////////////////
     svg_group.select('#col_container')
+      .transition().delay(update_dur).duration(update_dur)
       .attr('transform', 'translate(' + params.viz.clust.margin.left + ',' +
       params.norm_label.margin.top + ')');
 
