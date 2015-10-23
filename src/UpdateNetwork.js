@@ -10,7 +10,7 @@ function update_network(args){
 
   var network_data = params.network_data;
 
-  var update_dur = 0;
+  var update_dur = 1000;
 
   enter_exit_update(params, network_data, update_dur);
 
@@ -111,17 +111,15 @@ function enter_exit_update(params, network_data, update_dur){
     .style('opacity',0)
     .remove();
 
-  // remove dendrogram 
-  d3.selectAll('.col_class_group')
-    .data(col_nodes, function(d){return name;})
-    .exit()
-    .transition().duration(update_dur)
-    .style('opacity',0)
-    .remove();  
+  // // remove dendrogram 
+  // d3.selectAll('.col_class_group')
+  //   .data(col_nodes, function(d){return name;})
+  //   .exit()
+  //   .transition().duration(update_dur)
+  //   .style('opacity',0)
+  //   .remove();  
 
-  // resize_after_update(params, row_nodes, col_nodes, links, update_dur);
-
-  run_reset_visualization_size(1000,1000,200,10, params);
+  resize_after_update(params, row_nodes, col_nodes, links, update_dur);
 
   // reset resize on expand button click and screen resize 
   params.initialize_resizing(params);
