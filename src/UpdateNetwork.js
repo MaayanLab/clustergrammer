@@ -89,12 +89,64 @@ function enter_exit_update(params, network_data, update_dur){
   d3.selectAll('.horz_lines')
     .data(row_nodes, function(d){return d.name;})
     .exit()
+    .transition().duration(update_dur)
+    .style('opacity',0)
     .remove();
 
   d3.selectAll('.vert_lines')
     .data(col_nodes, function(d){return d.name;})
     .exit()
+    .transition().duration(update_dur)
+    .style('opacity',0)
     .remove();
+
+
+    resize_after_update(row_nodes, col_nodes, links, update_dur);
+
+    // reset resize function 
+    d3.select(window).on('resize', null)
+
+    d3.select('#expand_button')
+    .on('click',function(){
+
+          // expand view
+          if (params.viz.expand === false){
+
+            d3.select('#clust_instruct_container')
+              .style('display','none');
+            d3.select(this)
+              .text(function(d){
+                // menu button
+                return '\uf0c9';
+              });
+            params.viz.expand = true;
+
+          // contract view
+          } else {
+
+            d3.select('#clust_instruct_container')
+              .style('display','block');
+            d3.select(this)
+              .text(function(d){
+                // expand button
+                return '\uf0b2';
+              });
+            params.viz.expand = false;
+
+          }
+
+          d3.select('#main_svg').style('opacity',0.5);
+          var wait_time = 500;
+          if (params.viz.run_trans == true){
+            wait_time = 2500;
+          }
+          setTimeout(reset_visualization_size, wait_time, params);
+        });
+}
+
+
+function resize_after_update(row_nodes, col_nodes, links, update_dur){
+
 
     // reset zoom
     //////////////////////////////
@@ -370,7 +422,6 @@ function enter_exit_update(params, network_data, update_dur){
         .data(col_nodes, function(d){return d.name;})
         .transition().delay(update_dur).duration(update_dur)
         .attr('transform', function(d, index) {
-          console.log('repositioning the columns labels')
           return 'translate(' + params.matrix.x_scale(index) + ') rotate(-90)';
         });
 
@@ -516,21 +567,19 @@ function enter_exit_update(params, network_data, update_dur){
       ////////////////////////////
       svg_group.selectAll('.horz_lines')
         .data(row_nodes, function(d){return d.name;})
+        .transition().delay(update_dur).duration(update_dur)
         .attr('transform', function(d, index) {
           return 'translate(0,' + params.matrix.y_scale(index) + ') rotate(0)';
         })
-
-      svg_group.selectAll('.horz_lines')
         .select('line')
         .attr('x2',params.viz.clust.dim.width)
         .style('stroke-width', params.viz.border_width/params.viz.zoom_switch+'px')
 
       svg_group.selectAll('.vert_lines')
+        .transition().delay(update_dur).duration(update_dur)
         .attr('transform', function(d, index) {
             return 'translate(' + params.matrix.x_scale(index) + ') rotate(-90)';
-        });
-
-      svg_group.selectAll('.vert_lines')
+        })
         .select('line')
         .attr('x2', -params.viz.clust.dim.height)
         .style('stroke-width', params.viz.border_width + 'px');
@@ -609,48 +658,5 @@ function enter_exit_update(params, network_data, update_dur){
     //     [ params.viz.clust.margin.left, params.viz.clust.margin.top]
     // );
 
-    // d3.select('#main_svg').style('opacity',1);
 
-    // reset resize function 
-    d3.select(window).on('resize', null)
-
-    d3.select('#expand_button')
-    .on('click',function(){
-
-          // expand view
-          if (params.viz.expand === false){
-
-            d3.select('#clust_instruct_container')
-              .style('display','none');
-            d3.select(this)
-              .text(function(d){
-                // menu button
-                return '\uf0c9';
-              });
-            params.viz.expand = true;
-
-          // contract view
-          } else {
-
-            d3.select('#clust_instruct_container')
-              .style('display','block');
-            d3.select(this)
-              .text(function(d){
-                // expand button
-                return '\uf0b2';
-              });
-            params.viz.expand = false;
-
-          }
-
-          // get updated size for visualization
-          params.viz.parent_div_size_pos(params);
-
-          d3.select('#main_svg').style('opacity',0.5);
-          var wait_time = 500;
-          if (params.viz.run_trans == true){
-            wait_time = 2500;
-          }
-          setTimeout(reset_visualization_size, wait_time, params);
-        });
 }

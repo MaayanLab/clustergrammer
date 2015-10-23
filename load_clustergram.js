@@ -157,8 +157,6 @@ function make_clust(inst_network){
 }
 
 
-d3c = make_clust('default_example');
-
 function update_clust(network_name) {
 
   d3.json('json/'+network_name, function(network_data){
@@ -203,4 +201,7 @@ function update_clust(network_name) {
   })
 
 }
+
+
+d3c = make_clust('default_example');
 
