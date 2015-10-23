@@ -16,8 +16,6 @@
     cont_dim.width  = screen_width  - outer_margins.left - outer_margins.right;
     cont_dim.height = screen_height - outer_margins.top - outer_margins.bottom;
 
-    console.log(params.highlight_color)
-
     run_reset_visualization_size(cont_dim.width, cont_dim.height, outer_margins.left, outer_margins.top, params);
 
   }

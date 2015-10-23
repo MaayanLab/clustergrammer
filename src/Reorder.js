@@ -7,6 +7,8 @@ function Reorder(params){
    */
   function all_reorder(inst_order) {
 
+    console.log('\n\nrunning all reorder\n\n')
+
     params.viz.run_trans = true;
 
     // load orders

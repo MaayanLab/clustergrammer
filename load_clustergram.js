@@ -161,8 +161,6 @@ function update_clust(network_name) {
 
   d3.json('json/'+network_name, function(network_data){
 
-
-
     // define the outer margins of the visualization
     var outer_margins = {
         'top':5,
@@ -196,7 +194,29 @@ function update_clust(network_name) {
 
     d3c.update_network(arguments_obj);
 
- 
+    // gene search 
+    $('#gene_search_box').autocomplete({
+      source: d3c.get_genes()
+    });
+
+    $('#gene_search_box').keyup(function(e) {
+      if (e.keyCode === 13) {
+        var search_gene = $('#gene_search_box').val();
+        d3c.find_gene(search_gene);
+      }
+    });
+
+    $('#submit_gene_button').off().click(function() {
+      var gene = $('#gene_search_box').val();
+      d3c.find_gene(gene);
+    });
+
+    $('#toggle_order .btn').off().click(function(evt) {
+      var order_id = $(evt.target).find('input').attr('id').replace('_button', '');
+      d3c.reorder(order_id);
+    });
+
+    
 
   })
 

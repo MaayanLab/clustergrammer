@@ -417,6 +417,95 @@ function VizParams(config){
     return params;
   }
 
+  function initialize_resizing(params){
+
+     
+    d3.select(window).on('resize', null);
+    d3.select('#expand_button').on('click',null);
+
+    // resize window
+    if (params.viz.resize){
+      d3.select(window).on('resize', function(){
+        d3.select('#main_svg').style('opacity',0.5);
+        var wait_time = 500;
+        if (params.viz.run_trans == true){
+          wait_time = 2500;
+        }
+        setTimeout(reset_visualization_size, wait_time, params);
+      });
+    }
+
+    if (params.viz.expand_button){
+
+      var expand_opacity = 0.4;
+
+      // add expand button
+      var exp_button = d3.select('#main_svg').append('text')
+        .attr('id','expand_button')
+        .attr('text-anchor', 'middle')
+        .attr('dominant-baseline', 'central')
+        .attr('font-family', 'FontAwesome')
+        .attr('font-size', '30px')
+        .text(function(d) {
+          if (params.viz.expand === false){
+            // expand button
+            return '\uf0b2';
+          } else {
+            // menu button
+            return '\uf0c9';
+          }
+        })
+        .attr('y','25px')
+        .attr('x','25px')
+        .style('cursor', 'pointer')
+        .style('opacity',expand_opacity)
+        .on('mouseover',function(){
+          d3.select(this).style('opacity',0.75);
+        })
+        .on('mouseout',function(){
+          d3.select(this).style('opacity',expand_opacity);
+        })
+        .on('click',function(){
+
+          // expand view
+          if (params.viz.expand === false){
+
+            d3.select('#clust_instruct_container')
+              .style('display','none');
+            d3.select(this)
+              .text(function(d){
+                // menu button
+                return '\uf0c9';
+              });
+            params.viz.expand = true;
+
+          // contract view
+          } else {
+
+            d3.select('#clust_instruct_container')
+              .style('display','block');
+            d3.select(this)
+              .text(function(d){
+                // expand button
+                return '\uf0b2';
+              });
+            params.viz.expand = false;
+
+          }
+
+          // get updated size for visualization
+          params.viz.parent_div_size_pos(params);
+
+          d3.select('#main_svg').style('opacity',0.5);
+          var wait_time = 500;
+          if (params.viz.run_trans == true){
+            wait_time = 2500;
+          }
+          setTimeout(reset_visualization_size, wait_time, params);
+        });
+    }
+  }
+
   // parent_div: size and position svg container - svg_div
   function parent_div_size_pos(params) {
 
@@ -462,6 +551,8 @@ function VizParams(config){
     .zoom()
     .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch])
     .on('zoom', zoom.zoomed);
+
+  params.initialize_resizing = initialize_resizing;
 
   return params;
 

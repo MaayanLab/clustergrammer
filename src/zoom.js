@@ -78,8 +78,8 @@ function Zoom(params){
     // the zoom vector (zoom.scale) never gets reset
     ///////////////////////////////////////////////////
     // translate clustergram
-    // d3.select('#clust_group')
-    viz.get_clust_group()
+    // viz.get_clust_group()
+    d3.select('#clust_group')
       .attr('transform', 'translate(' + [trans_x, trans_y] + ') scale(' +
       zoom_x + ',' + zoom_y + ')');
 
