@@ -33,6 +33,9 @@ function update_network(args){
   this.find_genes = gene_search.find_entities;
 
   d3.select('#main_svg').call(params.zoom);
+  
+  // disable default double click zoom 
+  d3.select('#main_svg').on('dblclick.zoom',null);
 
 }
 
@@ -111,17 +114,19 @@ function enter_exit_update(params, network_data, update_dur){
     .style('opacity',0)
     .remove();
 
-  // // remove dendrogram 
-  // d3.selectAll('.col_class_group')
-  //   .data(col_nodes, function(d){return name;})
-  //   .exit()
-  //   .transition().duration(update_dur)
-  //   .style('opacity',0)
-  //   .remove();  
+  // remove dendrogram 
+  d3.selectAll('.col_class_group')
+    .data(col_nodes, function(d){return d.name;})
+    .exit()
+    .transition().duration(update_dur)
+    .style('opacity',0)
+    .remove();  
 
   resize_after_update(params, row_nodes, col_nodes, links, update_dur);
 
   // reset resize on expand button click and screen resize 
   params.initialize_resizing(params);
+
+
 }
 

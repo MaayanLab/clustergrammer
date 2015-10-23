@@ -146,6 +146,8 @@ function Zoom(params){
 
   function two_translate_zoom(pan_dx, pan_dy, fin_zoom) {
 
+    console.log('running two translate zoom')
+
     // get parameters
     if (!params.viz.run_trans) {
 

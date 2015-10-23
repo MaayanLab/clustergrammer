@@ -215,6 +215,9 @@ function Viz(params) {
     if (params.viz.do_zoom) {
       svg_group.call(params.zoom);
     }
+
+    d3.select('#main_svg').on('dblclick.zoom',null);
+    
     return params;
   }
 
