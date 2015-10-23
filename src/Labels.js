@@ -37,7 +37,7 @@ function Labels(args){
 
     var row_labels = d3.select('#row_labels')
       .selectAll('g')
-      .data(row_nodes)
+      .data(row_nodes, function(d){return d.name;})
       .enter()
       .append('g')
       .attr('class', 'row_label_text')
@@ -172,7 +172,7 @@ function Labels(args){
     // groups to hold label_viz
     var row_triangle_ini_group = row_label_viz
       .selectAll('g')
-      .data(row_nodes)
+      .data(row_nodes, function(d){return d.name;})
       .enter()
       .append('g')
       .attr('class', 'row_triangle_group')
@@ -349,7 +349,7 @@ function Labels(args){
     // add main column label group
     var col_label_obj = d3.select('#col_labels')
       .selectAll('.col_label_text')
-      .data(col_nodes)
+      .data(col_nodes, function(d){return d.name;})
       .enter()
       .append('g')
       .attr('class', 'col_label_text')

@@ -10,7 +10,7 @@ function Viz(params) {
   zoom,
   params,
   reorder;
-  
+
   // make viz
   params = make(params);
 
@@ -34,13 +34,7 @@ function Viz(params) {
     // instantiate zoom object
     zoom = Zoom(params);
 
-    // define the variable zoom, a d3 method
-    params.zoom = d3.behavior
-      .zoom()
-      .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch])
-      .on('zoom', zoom.zoomed);
-
-    console.log( d3.select('#'+params.viz.svg_div_id).select('svg').empty() )
+    console.log('was a previous svg found? '+ d3.select('#'+params.viz.svg_div_id).select('svg').empty())
 
     // initialize svg 
     if ( d3.select('#'+params.viz.svg_div_id).select('svg').empty() ){
@@ -104,7 +98,7 @@ function Viz(params) {
       // append groups - each will hold a classification rect
       var col_class_ini_group = col_class
       .selectAll('g')
-      .data(col_nodes)
+      .data(col_nodes, function(d){return d.name;})
       .enter()
       .append('g')
       .attr('class', 'col_class_group')
@@ -229,8 +223,9 @@ function Viz(params) {
     if (params.viz.expand_button){
 
       var expand_opacity = 0.4;
+
       // add expand button
-      d3.select('#main_svg').append('text')
+      var exp_button = d3.select('#main_svg').append('text')
         .attr('id','expand_button')
         .attr('text-anchor', 'middle')
         .attr('dominant-baseline', 'central')
@@ -293,6 +288,7 @@ function Viz(params) {
           }
           setTimeout(reset_visualization_size, wait_time, params);
         });
+
     }
 
     // initialize double click zoom for matrix

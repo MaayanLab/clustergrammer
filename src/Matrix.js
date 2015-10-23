@@ -32,10 +32,10 @@ function Matrix(network_data, svg_elem, params) {
       return num.value !== 0 || num.highlight !== 0;
     });
 
-  // add link_key to links for object constancy
+  // add name to links for object constancy
   for (var i = 0; i < tile_data.length; i++) {
     var d = tile_data[i];
-    tile_data[i].link_key = row_nodes[d.source].name + '_' + col_nodes[d.target].name;
+    tile_data[i].name = row_nodes[d.source].name + '_' + col_nodes[d.target].name;
   }
 
   // draw rows of clustergram
@@ -218,7 +218,7 @@ function Matrix(network_data, svg_elem, params) {
     // append horizontal lines
     clust_group
       .selectAll('.horz_lines')
-      .data(row_nodes)
+      .data(row_nodes, function(d){return d.name;})
       .enter()
       .append('g')
       .attr('class','horz_lines')
@@ -252,7 +252,7 @@ function Matrix(network_data, svg_elem, params) {
 
     // bind tile_data 
     var tile = clust_group.selectAll('.tile')
-      .data(tile_data, function(d){return d.link_key;})
+      .data(tile_data, function(d){return d.name;})
       .enter()
       .append('rect')
       .attr('class','tile')
@@ -304,13 +304,13 @@ function Matrix(network_data, svg_elem, params) {
       });
     }
 
-    // remove old tiles 
-    var tmp = clust_group.selectAll('.tile')
-      .data(tile_data, function(d){
-        return d.link_key;
-      })
-      .exit()
-      .remove();
+    // // remove old tiles 
+    // var tmp = clust_group.selectAll('.tile')
+    //   .data(tile_data, function(d){
+    //     return d.name;
+    //   })
+    //   .exit()
+    //   .remove();
 
       
   }
@@ -324,7 +324,7 @@ function Matrix(network_data, svg_elem, params) {
     // bind tile_data
     var tile = clust_group
       .selectAll('g')
-      .data(tile_data, function(d){ return d.link_key;})
+      .data(tile_data, function(d){ return d.name;})
       .enter()
       .append('g')
       .attr('class', 'tile')

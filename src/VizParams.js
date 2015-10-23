@@ -10,6 +10,9 @@ function VizParams(config){
     // initialize params object from config
     var params = config;
 
+    // save a backup of the config object in params 
+    params.config = config;
+
     // Label Paramsters
     params.labels = {};
     params.labels.super_label_scale = config.super_label_scale;
@@ -450,6 +453,15 @@ function VizParams(config){
           .style('margin-top',  outer_margins.top + 'px');
     }
   }
+
+  // instantiate zoom object
+  var zoom = Zoom(params);
+
+  // define the variable zoom, a d3 method
+  params.zoom = d3.behavior
+    .zoom()
+    .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch])
+    .on('zoom', zoom.zoomed);
 
   return params;
 

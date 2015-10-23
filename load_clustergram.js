@@ -159,9 +159,9 @@ function make_clust(inst_network){
 
 d3c = make_clust('default_example');
 
-function update_clust() {
+function update_clust(network_name) {
 
-  d3.json('json/small_example.json', function(network_data){
+  d3.json('json/'+network_name, function(network_data){
 
 
 
@@ -191,60 +191,14 @@ function update_clust() {
       'outer_margins_expand': outer_margins_expand,
       'outline_colors':['black','yellow'],
       'show_tooltips':true,
-      'highlight_color':'yellow',
+      'highlight_color':'red',
       'super_label_scale':1.25
     };
 
 
     d3c.update_network(arguments_obj);
 
-    // // make global so that names can be accessed
-    // row_nodes = network_data.row_nodes;
-    // col_nodes = network_data.col_nodes;
-    // var links = network_data.links;
-
-    
-    // // console.log(links.length)
-
-    // tile_data = links;
-
-    // // add link_key to links for object constancy
-    // for (var i = 0; i < tile_data.length; i++) {
-    //   var d = tile_data[i];
-    //   tile_data[i].link_key = row_nodes[d.source].name + '_' + col_nodes[d.target].name;
-    // }
-
-    // function make_tile_key(d,row_nodes, col_nodes){
-    //   var inst_key = row_nodes[d.target].name + '_' + col_nodes[d.source].name;
-    //   return inst_key ;
-    // }
-
-  //   // remove tiles 
-  //   d3.selectAll('.tile')
-  //     .data(links, function(d){ return d.link_key;})
-  //     .exit()
-  //     .transition().duration(1000)
-  //     .style('opacity',0)
-  //     .remove();
-
-  //   // remove row labels 
-  //   d3.selectAll('.row_label_text')
-  //     .data(row_nodes, function(d){
-  //       console.log(d.name);
-  //       return d.name;
-  //     })
-  //     .exit()
-  //     .transition().duration(1000)
-  //     .style('opacity',0)
-  //     .remove();
-
-  //   // remove column labels 
-  //   d3.selectAll('.col_label_click')
-  //     .data(col_nodes, function(d){return d.name;})
-  //     .exit()
-  //     .transition().duration(1000)
-  //     .style('opacity',0)
-  //     .remove();    
+ 
 
   })
 
