@@ -3196,14 +3196,17 @@ function resize_after_update(params, row_nodes, col_nodes, links, update_dur){
     });
 
   svg_group.selectAll('.tile_group')
+    .transition().delay(update_dur).duration(update_dur)
     .attr('width', params.matrix.x_scale.rangeBand())
     .attr('height', params.matrix.y_scale.rangeBand());
 
   svg_group.selectAll('.highlighting_rect')
+    .transition().delay(update_dur).duration(update_dur)
     .attr('width', params.matrix.x_scale.rangeBand() * 0.80)
     .attr('height', params.matrix.y_scale.rangeBand() * 0.80);
 
   svg_group.selectAll('.tile_split_up')
+    .transition().delay(update_dur).duration(update_dur)
     .attr('d', function() {
       var start_x = 0;
       var final_x = params.matrix.x_scale.rangeBand();
@@ -3215,6 +3218,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, update_dur){
     })
 
   svg_group.selectAll('.tile_split_dn')
+    .transition().delay(update_dur).duration(update_dur)
     .attr('d', function() {
       var start_x = 0;
       var final_x = params.matrix.x_scale.rangeBand();
@@ -3225,89 +3229,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, update_dur){
       return output_string;
     })
 
-  // reposition tile highlight
-  ////////////////////////////////
-
-  var rel_width_hlight = 6;
-  var opacity_hlight = 0.85;
-  var hlight_width = rel_width_hlight*params.viz.border_width;
-  var hlight_height = rel_width_hlight*params.viz.border_width/params.viz.zoom_switch;
-
-  // top highlight
-  d3.select('#top_hlight')
-    .attr('width', params.matrix.x_scale.rangeBand())
-    .attr('height', hlight_height)
-    .attr('transform', function() {
-      return 'translate(' + params.matrix.x_scale(params.matrix.click_hlight_x) + ',0)';
-    });
-
-  // left highlight
-  d3.select('#left_hlight')
-    .attr('width', hlight_width)
-    .attr('height', params.matrix.y_scale.rangeBand() - hlight_height*0.99 )
-    .attr('transform', function() {
-      return 'translate(' + params.matrix.x_scale(params.matrix.click_hlight_x) + ','+
-        hlight_height*0.99+')';
-    });
-
-  // right highlight
-  d3.select('#right_hlight')
-    .attr('width', hlight_width)
-    .attr('height', params.matrix.y_scale.rangeBand() - hlight_height*0.99 )
-    .attr('transform', function() {
-      var tmp_translate = params.matrix.x_scale(params.matrix.click_hlight_x) + params.matrix.x_scale.rangeBand() - hlight_width;
-      return 'translate(' + tmp_translate + ','+
-        hlight_height*0.99+')';
-    });
-
-  // bottom highlight
-  d3.select('#bottom_hlight')
-    .attr('width', function(){
-      return params.matrix.x_scale.rangeBand() - 1.98*hlight_width})
-    .attr('height', hlight_height)
-    .attr('transform', function() {
-      var tmp_translate_x = params.matrix.x_scale(params.matrix.click_hlight_x) + hlight_width*0.99;
-      var tmp_translate_y = params.matrix.y_scale.rangeBand() - hlight_height;
-      return 'translate(' + tmp_translate_x + ','+
-        tmp_translate_y+')';
-    });
-
-  // resize row highlight
-  /////////////////////////
-  d3.select('#row_top_hlight')
-    .attr('width',params.viz.svg_dim.width)
-    .attr('height',hlight_height);
-
-  d3.select('#row_bottom_hlight')
-    .attr('width',params.viz.svg_dim.width)
-    .attr('height',hlight_height)
-    .attr('transform', function(){
-      var tmp_translate_y = params.matrix.y_scale.rangeBand() - hlight_height;
-      return 'translate(0,'+tmp_translate_y+')';
-    });
-
-  // resize col highlight 
-  /////////////////////////
-  d3.select('#col_top_hlight')
-    .attr('width',params.viz.clust.dim.height)
-    .attr('height',hlight_width)
-    .attr('transform',function(){
-          var tmp_translate_y = 0;
-          var tmp_translate_x = -(params.viz.clust.dim.height+
-            params.class_room.col+params.viz.uni_margin);
-          return 'translate('+tmp_translate_x+','+tmp_translate_y+')';
-        });
-
-  d3.select('#col_bottom_hlight')
-    .attr('width',params.viz.clust.dim.height)
-    .attr('height',hlight_width)
-    .attr('transform', function(){
-          var tmp_translate_y = params.matrix.x_scale.rangeBand() - hlight_width;
-          var tmp_translate_x = -(params.viz.clust.dim.height + 
-            params.class_room.col+params.viz.uni_margin);
-          return 'translate('+tmp_translate_x+','+tmp_translate_y+')';
-        });
-
+  
   // add text to row/col during resize
   function normal_name(d){
     var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
@@ -3320,30 +3242,38 @@ function resize_after_update(params, row_nodes, col_nodes, links, update_dur){
   // resize row labels
   ///////////////////////////
 
+  // may not transition font sizes since it causes problems with bounding box calculation 
+
   svg_group.select('#row_container')
+    .transition().delay(update_dur).duration(update_dur)
     .attr('transform', 'translate(' + params.norm_label.margin.left + ',' +
     params.viz.clust.margin.top + ')');
 
   svg_group.select('#row_container')
     .select('.white_bars')
+    .transition().delay(update_dur).duration(update_dur)
     .attr('width', params.norm_label.background.row)
     .attr('height', 30*params.viz.clust.dim.height + 'px');
 
   svg_group.select('#row_container')
     .select('.label_container')
+    .transition().delay(update_dur).duration(update_dur)
     .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
 
   svg_group.selectAll('.row_label_text')
+    .transition().delay(update_dur).duration(update_dur)
     .attr('transform', function(d, index) {
       return 'translate(0,' + params.matrix.y_scale(index) + ')';
     });
 
   svg_group.selectAll('.row_label_text')
     .select('text')
+    .transition().delay(update_dur).duration(update_dur)
     .attr('y', params.matrix.y_scale.rangeBand() * 0.75)
 
   svg_group.selectAll('.row_label_text')
     .select('text')
+    // .transition().delay(0).duration(update_dur)
     .style('font-size', params.labels.default_fs_row + 'px')
     .text(function(d){ return normal_name(d);});
 
