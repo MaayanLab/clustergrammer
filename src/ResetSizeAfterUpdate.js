@@ -326,11 +326,13 @@ function resize_after_update(params, row_nodes, col_nodes, links, update_dur){
       params.norm_label.margin.top + ')');
 
     svg_group.select('#col_container')
+      .transition().delay(update_dur).duration(update_dur)
       .select('.white_bars')
       .attr('width', 30 * params.viz.clust.dim.width + 'px')
       .attr('height', params.norm_label.background.col);
 
     svg_group.select('#col_container')
+      .transition().delay(update_dur).duration(update_dur)
       .select('.label_container')
       .attr('transform', 'translate(0,' + params.norm_label.width.col + ')');
 
@@ -340,25 +342,31 @@ function resize_after_update(params, row_nodes, col_nodes, links, update_dur){
     var reduce_rect_width = params.matrix.x_scale.rangeBand() * 0.36;
 
     svg_group.selectAll('.col_label_text')
+      .transition().delay(update_dur).duration(update_dur)
       .attr('transform', function(d, index) {
         return 'translate(' + params.matrix.x_scale(index) + ') rotate(-90)';
       });
 
     svg_group.selectAll('.col_label_click')
+      .transition().delay(update_dur).duration(update_dur)
       .attr('transform', 'translate(' + params.matrix.x_scale.rangeBand() / 2 + ',' + x_offset_click + ') rotate(45)');
 
     svg_group.selectAll('.col_label_click')
       .select('text')
-      .attr('y', params.matrix.x_scale.rangeBand() * 0.60)
-      .attr('dx', 2 * params.viz.border_width)
       .style('font-size', params.labels.default_fs_col + 'px')
       .text(function(d){ return normal_name(d);});
+
+    svg_group.selectAll('.col_label_click')
+      .select('text')
+      .transition().delay(update_dur).duration(update_dur)
+      .attr('y', params.matrix.x_scale.rangeBand() * 0.60)
+      .attr('dx', 2 * params.viz.border_width);
 
     params.bounding_width_max.col = 0;
     svg_group.selectAll('.col_label_click').each(function() {
       var tmp_width = d3.select(this).select('text').node().getBBox().width;
       if (tmp_width > params.bounding_width_max.col) {
-      params.bounding_width_max.col = tmp_width * 1.2;
+        params.bounding_width_max.col = tmp_width * 1.2;
       }
     });
 
@@ -418,6 +426,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, update_dur){
     // resize column triangle 
     svg_group.selectAll('.col_label_click')
       .select('path')
+      .transition().delay(update_dur).duration(update_dur)
       .attr('d', function() {
         // x and y are flipped since its rotated
         var origin_y = -params.viz.border_width;
@@ -442,6 +451,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, update_dur){
     if (Utils.has( params.network_data.col_nodes[0], 'value')) {
 
       svg_group.selectAll('.col_bars')
+        .transition().delay(update_dur).duration(update_dur)
         .attr('width', function(d) {
           var inst_value = 0;
           if (d.value > 0){
@@ -456,6 +466,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, update_dur){
     // resize dendrogram
     ///////////////////
     svg_group.selectAll('.row_class_rect')
+      .transition().delay(update_dur).duration(update_dur)
       .attr('width', function() {
         var inst_width = params.class_room.symbol_width - 1;
         return inst_width + 'px';
@@ -467,6 +478,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, update_dur){
       });
 
     svg_group.selectAll('.col_class_rect')
+      .transition().delay(update_dur).duration(update_dur)
       .attr('width', params.matrix.x_scale.rangeBand())
       .attr('height', function() {
         var inst_height = params.class_room.col - 1;
@@ -474,6 +486,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, update_dur){
       });
 
     svg_group.selectAll('.col_class_group')
+      .transition().delay(update_dur).duration(update_dur)
       .attr('transform', function(d, index) {
         return 'translate(' + params.matrix.x_scale(index) + ',0)';
       });
@@ -507,11 +520,13 @@ function resize_after_update(params, row_nodes, col_nodes, links, update_dur){
   // resize superlabels
   /////////////////////////////////////
   svg_group.select('#super_col_bkg')
+    .transition().delay(update_dur).duration(update_dur)
     .attr('height', params.labels.super_label_width + 'px')
     .attr('transform', 'translate(0,' + params.viz.grey_border_width + ')');
 
   // super col title
   svg_group.select('#super_col')
+    .transition().delay(update_dur).duration(update_dur)
     .attr('transform', function() {
       var inst_x = params.viz.clust.dim.width / 2 + params.norm_label.width
         .row;
@@ -521,11 +536,13 @@ function resize_after_update(params, row_nodes, col_nodes, links, update_dur){
 
   // super row title
   svg_group.select('#super_row_bkg')
+    .transition().delay(update_dur).duration(update_dur)
     .attr('width', params.labels.super_label_width + 'px')
     .attr('transform', 'translate(' + params.viz.grey_border_width + ',0)');
 
   // append super title row group
   svg_group.select('#super_row')
+    .transition().delay(update_dur).duration(update_dur)
     .attr('transform', function() {
       var inst_x = params.labels.super_label_width - params.viz.uni_margin;
       var inst_y = params.viz.clust.dim.height / 2 + params.norm_label.width
@@ -537,17 +554,21 @@ function resize_after_update(params, row_nodes, col_nodes, links, update_dur){
   //////////////////////////
   // hide spillover from slanted column labels on right side
   svg_group.select('#right_slant_triangle')
+    .transition().delay(update_dur).duration(update_dur)
     .attr('transform', 'translate(' + params.viz.clust.dim.width + ',' +
     params.norm_label.width.col + ')');
 
   svg_group.select('#left_slant_triangle')
+    .transition().delay(update_dur).duration(update_dur)
     .attr('transform', 'translate(-1,' + params.norm_label.width.col +')');
 
   svg_group.select('#top_left_white')
+    .transition().delay(update_dur).duration(update_dur)
     .attr('width', params.viz.clust.margin.left)
     .attr('height', params.viz.clust.margin.top);
 
   svg_group.select('#right_spillover')
+    .transition().delay(update_dur).duration(update_dur)
     .attr('transform', function() {
       var tmp_left = params.viz.clust.margin.left + params.viz.clust.dim.width;
       var tmp_top = params.norm_label.margin.top + params.norm_label.width
@@ -557,6 +578,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, update_dur){
 
   // white border bottom - prevent clustergram from hitting border
   svg_group.select('#bottom_spillover')
+    .transition().delay(update_dur).duration(update_dur)
     .attr('width', params.viz.svg_dim.width)
     .attr('height', 2 * params.viz.grey_border_width)
     .attr('transform', function() {
@@ -566,47 +588,11 @@ function resize_after_update(params, row_nodes, col_nodes, links, update_dur){
     });
 
 
-  // add border to svg in four separate lines - to not interfere with clicking anything
-  ///////////////////////////////////////////////////////////////////////////////////////
-  // left border
-  svg_group.select('#left_border')
-    .attr('width', params.viz.grey_border_width)
-    .attr('height', params.viz.svg_dim.height)
-    .attr('transform', 'translate(0,0)');
-
-  // right border
-  svg_group.select('#right_border')
-    .attr('width', params.viz.grey_border_width)
-    .attr('height', params.viz.svg_dim.height)
-    .attr('transform', function() {
-      var inst_offset = params.viz.svg_dim.width - params.viz.grey_border_width;
-      return 'translate(' + inst_offset + ',0)';
-    });
-
-  // top border
-  svg_group.select('#top_border')
-    .attr('width', params.viz.svg_dim.width)
-    .attr('height', params.viz.grey_border_width)
-    .attr('transform', function() {
-      var inst_offset = 0;
-      return 'translate(' + inst_offset + ',0)';
-    });
-
-  // bottom border
-  svg_group.select('#bottom_border')
-    .attr('width', params.viz.svg_dim.width)
-    .attr('height', params.viz.grey_border_width)
-    .attr('transform', function() {
-      var inst_offset = params.viz.svg_dim.height - params.viz.grey_border_width;
-      return 'translate(0,' + inst_offset + ')';
-    });
-
   // reset zoom and translate
   //////////////////////////////
   params.zoom.scale(1).translate(
       [ params.viz.clust.margin.left, params.viz.clust.margin.top]
   );
 
-  d3.select('#main_svg').style('opacity',1);
 
 }
