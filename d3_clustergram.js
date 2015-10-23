@@ -3050,41 +3050,41 @@ function Spillover( params, container_all_col ){
 function resize_after_update(params, row_nodes, col_nodes, links, update_dur){
 
 
-  // reset zoom
-  //////////////////////////////
-  var zoom_y = 1;
-  var zoom_x = 1;
-  var pan_dx = 0;
-  var pan_dy = 0;
+  // // reset zoom
+  // //////////////////////////////
+  // var zoom_y = 1;
+  // var zoom_x = 1;
+  // var pan_dx = 0;
+  // var pan_dy = 0;
 
-  var half_height = params.viz.clust.dim.height / 2;
-  var center_y = -(zoom_y - 1) * half_height;
+  // var half_height = params.viz.clust.dim.height / 2;
+  // var center_y = -(zoom_y - 1) * half_height;
 
-  viz.get_clust_group()
-    .attr('transform', 'translate(' + [0, 0 + center_y] + ')' +
-    ' scale(' + 1 + ',' + zoom_y + ')' + 'translate(' + [pan_dx,pan_dy] + ')');
+  // viz.get_clust_group()
+  //   .attr('transform', 'translate(' + [0, 0 + center_y] + ')' +
+  //   ' scale(' + 1 + ',' + zoom_y + ')' + 'translate(' + [pan_dx,pan_dy] + ')');
 
-  d3.select('#row_labels')
-    .attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' +
-    zoom_y + ',' + zoom_y + ')' + 'translate(' + [0, pan_dy] + ')');
+  // d3.select('#row_labels')
+  //   .attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' +
+  //   zoom_y + ',' + zoom_y + ')' + 'translate(' + [0, pan_dy] + ')');
 
-  d3.select('#row_label_triangles')
-    .attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' +
-    1 + ',' + zoom_y + ')' + 'translate(' + [0, pan_dy] + ')');
+  // d3.select('#row_label_triangles')
+  //   .attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' +
+  //   1 + ',' + zoom_y + ')' + 'translate(' + [0, pan_dy] + ')');
 
-  d3.select('#col_labels')
-    .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [pan_dx, 0] + ')');
+  // d3.select('#col_labels')
+  //   .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [pan_dx, 0] + ')');
 
-  d3.select('#col_class')
-    .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [pan_dx, 0] + ')');
+  // d3.select('#col_class')
+  //   .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [pan_dx, 0] + ')');
 
-  // set y translate: center_y is positive, positive moves the visualization down
-  // the translate vector has the initial margin, the first y centering, and pan_dy
-  // times the scaling zoom_y
-  var net_y_offset = params.viz.clust.margin.top + center_y + pan_dy * zoom_y;
+  // // set y translate: center_y is positive, positive moves the visualization down
+  // // the translate vector has the initial margin, the first y centering, and pan_dy
+  // // times the scaling zoom_y
+  // var net_y_offset = params.viz.clust.margin.top + center_y + pan_dy * zoom_y;
 
-  // reset the zoom translate and zoom
-  params.zoom.translate([pan_dx, net_y_offset]);
+  // // reset the zoom translate and zoom
+  // params.zoom.translate([pan_dx, net_y_offset]);
 
   // Begin Resizing 
   //////////////////////////
@@ -3219,6 +3219,8 @@ function resize_after_update(params, row_nodes, col_nodes, links, update_dur){
         .attr('height', params.matrix.y_scale.rangeBand() );
     }
 
+
+
     // resize col labels
     ///////////////////////
 
@@ -3244,7 +3246,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, update_dur){
       .data(col_nodes, function(d){return d.name;})
       .transition().delay(update_dur).duration(update_dur)
       .attr('transform', function(d, index) {
-        return 'translate(' + params.matrix.x_scale(index) + ') rotate(-90)';
+        return 'translate(' + params.matrix.x_scale(index) + ',-20) rotate(-90)';
       });
 
     svg_group.selectAll('.col_label_click')
@@ -3260,13 +3262,13 @@ function resize_after_update(params, row_nodes, col_nodes, links, update_dur){
       .style('font-size', params.labels.default_fs_col + 'px')
       .text(function(d){ return normal_name(d);});
 
-    params.bounding_width_max.col = 0;
-    svg_group.selectAll('.col_label_click').each(function() {
-      var tmp_width = d3.select(this).select('text').node().getBBox().width;
-      if (tmp_width > params.bounding_width_max.col) {
-      params.bounding_width_max.col = tmp_width * 1.2;
-      }
-    });
+    // params.bounding_width_max.col = 0;
+    // svg_group.selectAll('.col_label_click').each(function() {
+    //   var tmp_width = d3.select(this).select('text').node().getBBox().width;
+    //   if (tmp_width > params.bounding_width_max.col) {
+    //   params.bounding_width_max.col = tmp_width * 1.2;
+    //   }
+    // });
 
 
     // check if widest row or col are wider than the allowed label width
@@ -3456,16 +3458,24 @@ function update_network(args){
 
   var network_data = params.network_data;
 
-  var update_dur = 1200;
+  var update_dur = 0;
 
   enter_exit_update(params, network_data, update_dur);
 
   // var viz = Viz(params);
 
   // ordering 
-  this.reorder = Reorder(params).all_reorder;
+  var reorder = Reorder(params);
+  this.reorder = reorder.all_reorder;
 
-  // searching 
+  // reset row and col label click reorder 
+  d3.selectAll('.col_label_text')
+    .on('dblclick',null);
+
+  d3.selectAll('.row_label_text')
+    .on('dblclick',null);
+
+  // search functions 
   var gene_search = Search(params, params.network_data.row_nodes,'name');
   this.get_genes  = gene_search.get_entities;
   this.find_genes = gene_search.find_entities;
@@ -3557,10 +3567,9 @@ function enter_exit_update(params, network_data, update_dur){
     .style('opacity',0)
     .remove();  
 
-  resize_after_update(params, row_nodes, col_nodes, links, update_dur);
+  // resize_after_update(params, row_nodes, col_nodes, links, update_dur);
 
-
-  // run_reset_visualization_size(1000,1000,200,10, params);
+  run_reset_visualization_size(1000,1000,200,10, params);
 
   // reset resize on expand button click and screen resize 
   params.initialize_resizing(params);

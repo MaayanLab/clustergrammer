@@ -10,16 +10,24 @@ function update_network(args){
 
   var network_data = params.network_data;
 
-  var update_dur = 1200;
+  var update_dur = 0;
 
   enter_exit_update(params, network_data, update_dur);
 
   // var viz = Viz(params);
 
   // ordering 
-  this.reorder = Reorder(params).all_reorder;
+  var reorder = Reorder(params);
+  this.reorder = reorder.all_reorder;
 
-  // searching 
+  // reset row and col label click reorder 
+  d3.selectAll('.col_label_text')
+    .on('dblclick',null);
+
+  d3.selectAll('.row_label_text')
+    .on('dblclick',null);
+
+  // search functions 
   var gene_search = Search(params, params.network_data.row_nodes,'name');
   this.get_genes  = gene_search.get_entities;
   this.find_genes = gene_search.find_entities;
@@ -111,10 +119,9 @@ function enter_exit_update(params, network_data, update_dur){
     .style('opacity',0)
     .remove();  
 
-  resize_after_update(params, row_nodes, col_nodes, links, update_dur);
+  // resize_after_update(params, row_nodes, col_nodes, links, update_dur);
 
-
-  // run_reset_visualization_size(1000,1000,200,10, params);
+  run_reset_visualization_size(1000,1000,200,10, params);
 
   // reset resize on expand button click and screen resize 
   params.initialize_resizing(params);
