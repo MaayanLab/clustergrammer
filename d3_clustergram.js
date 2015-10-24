@@ -1885,6 +1885,7 @@ function Labels(args){
 
     // make container to pre-position zoomable elements
     if (d3.select('#col_container').empty()){
+
       var container_all_col = d3.select('#main_svg')
         .append('g')
         .attr('id','col_container')
@@ -1908,18 +1909,9 @@ function Labels(args){
         .append('g')
         .attr('id', 'col_labels');
 
-      // add main column label group
-      var col_label_obj = d3.select('#col_labels')
-        .selectAll('.col_label_text')
-        .data(col_nodes, function(d){return d.name;})
-        .enter()
-        .append('g')
-        .attr('class', 'col_label_text')
-        .attr('transform', function(d, index) {
-          return 'translate(' + params.matrix.x_scale(index) + ') rotate(-90)';
-        })
 
     } else {
+      
       var container_all_col = d3.select('#col_container')
         .attr('transform', 'translate(' + params.viz.clust.margin.left + ',' +
         params.norm_label.margin.top + ')');
@@ -1933,20 +1925,20 @@ function Labels(args){
 
       // col labels
       container_all_col.select('.label_container')
-        .attr('transform', 'translate(0,' + params.norm_label.width.col + ')')
-        .attr('id', 'col_labels');
-
-      // add main column label group
-      var col_label_obj = d3.selectAll('col_label_text')
-        .attr('transform', function(d, index) {
-          return 'translate(' + params.matrix.x_scale(index) + ') rotate(-90)';
-        })
 
     }
 
 
-
-
+    // add main column label group
+    var col_label_obj = d3.select('#col_labels')
+      .selectAll('.col_label_text')
+      .data(col_nodes, function(d){return d.name;})
+      .enter()
+      .append('g')
+      .attr('class', 'col_label_text')
+      .attr('transform', function(d, index) {
+        return 'translate(' + params.matrix.x_scale(index) + ') rotate(-90)';
+      })
 
     // append group for individual column label
     var col_label_click = col_label_obj
@@ -3900,6 +3892,7 @@ function enter_exit_update(params, network_data, delays){
 
   labels.make_rows( params, row_nodes, reorder );
   labels.make_cols( params, col_nodes, reorder );
+  
     // .transition().duration(duration)
     // .style('opacity',1)
 
