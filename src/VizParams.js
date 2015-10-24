@@ -325,7 +325,7 @@ function VizParams(config){
     //////////////////////////////
 
     // border_width - width of white borders around tiles
-    params.viz.border_width = params.matrix.x_scale.rangeBand() / 40;
+    params.viz.border_width = params.matrix.x_scale.rangeBand() / 60;
 
     // zoom_switch from 1 to 2d zoom
     params.viz.zoom_switch = (params.viz.clust.dim.width / params.viz.num_col_nodes) / (params.viz.clust.dim.height / params.viz.num_row_nodes);

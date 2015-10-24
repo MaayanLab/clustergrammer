@@ -168,13 +168,12 @@ function enter_exit_update(params, network_data, delays){
   // reset resize on expand button click and screen resize 
   params.initialize_resizing(params);
 
+  // enter new elements 
+  //////////////////////////
 
-  // remove tiles 
   d3.select('#clust_group')
     .selectAll('.tile')
-    .data(links, function(d){ 
-      return d.name;
-    })
+    .data(links, function(d){return d.name;})
     .enter()
     .append('rect')
     .style('fill-opacity',0)
@@ -194,16 +193,14 @@ function enter_exit_update(params, network_data, delays){
         return output_opacity;
     });
 
+  var labels = Labels(params);
+
+  var reorder = Reorder(params);
+
+  labels.make_rows( params, row_nodes, reorder );
+
     // .transition().duration(duration)
     // .style('opacity',1)
-
-  // // remove row labels 
-  // d3.selectAll('.row_label_text')
-  //   .data(row_nodes, function(d){ return d.name;})
-  //   .exit()
-  //   .transition().duration(duration)
-  //   .style('opacity',0)
-  //   .remove();
 
   // // remove column labels 
   // d3.selectAll('.col_label_click')

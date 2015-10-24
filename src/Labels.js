@@ -13,19 +13,31 @@ function Labels(args){
       return inst_name;
     }
 
-    var row_container = d3.select('#main_svg')
-      .append('g')
-      .attr('id','row_container')
-      .attr('transform', 'translate(' + params.norm_label.margin.left + ',' +
-      params.viz.clust.margin.top + ')');
+    if ( d3.select('#row_container').empty() ){
+      var row_container = d3.select('#main_svg')
+        .append('g')
+        .attr('id','row_container')
+        .attr('transform', 'translate(' + params.norm_label.margin.left + ',' +
+        params.viz.clust.margin.top + ')');
+    } else {
+      var row_container = d3.select('id','row_container')
+        .attr('transform', 'translate(' + params.norm_label.margin.left + ',' +
+        params.viz.clust.margin.top + ')');
+    }
+
+    console.log(
+        row_container.select('.white_bars').empty()
+      )
 
     // white background
-    row_container
-      .append('rect')
-      .attr('fill', params.viz.background_color)
-      .attr('width', params.norm_label.background.row)
-      .attr('height', 30*params.viz.clust.dim.height + 'px')
-      .attr('class', 'white_bars');
+    if (row_container.select('.white_bars').empty()){
+      row_container
+        .append('rect')
+        .attr('fill', params.viz.background_color)
+        .attr('width', params.norm_label.background.row)
+        .attr('height', 30*params.viz.clust.dim.height + 'px')
+        .attr('class', 'white_bars');
+    }
 
     // container for row label groups
     row_container
@@ -49,7 +61,7 @@ function Labels(args){
         if (params.tile_click_hlight){
           add_row_click_hlight(this,d.ini);
         }
-      })
+      });
 
     if (params.labels.show_tooltips){
       // d3-tooltip
@@ -159,15 +171,27 @@ function Labels(args){
       .attr('id', 'row_label_triangles');
 
     // white background for triangle
-    row_label_viz
-      .append('rect')
-      .attr('class','white_bars')
-      .attr('fill', params.viz.background_color)
-      .attr('width', params.class_room.row + 'px')
-      .attr('height', function() {
-        var inst_height = params.viz.clust.dim.height;
-        return inst_height;
-      });
+    if (row_label_viz.select('white_bars').empty()){
+      row_label_viz
+        .append('rect')
+        .attr('class','white_bars')
+        .attr('fill', params.viz.background_color)
+        .attr('width', params.class_room.row + 'px')
+        .attr('height', function() {
+          var inst_height = params.viz.clust.dim.height;
+          return inst_height;
+        });
+    } else {
+      row_label_viz
+        .select('class','white_bars')
+        .attr('fill', params.viz.background_color)
+        .attr('width', params.class_room.row + 'px')
+        .attr('height', function() {
+          var inst_height = params.viz.clust.dim.height;
+          return inst_height;
+        });
+    }
+
 
     // groups to hold label_viz
     var row_triangle_ini_group = row_label_viz

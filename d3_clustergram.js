@@ -1307,7 +1307,7 @@ function VizParams(config){
     //////////////////////////////
 
     // border_width - width of white borders around tiles
-    params.viz.border_width = params.matrix.x_scale.rangeBand() / 40;
+    params.viz.border_width = params.matrix.x_scale.rangeBand() / 60;
 
     // zoom_switch from 1 to 2d zoom
     params.viz.zoom_switch = (params.viz.clust.dim.width / params.viz.num_col_nodes) / (params.viz.clust.dim.height / params.viz.num_row_nodes);
@@ -1554,19 +1554,31 @@ function Labels(args){
       return inst_name;
     }
 
-    var row_container = d3.select('#main_svg')
-      .append('g')
-      .attr('id','row_container')
-      .attr('transform', 'translate(' + params.norm_label.margin.left + ',' +
-      params.viz.clust.margin.top + ')');
+    if ( d3.select('#row_container').empty() ){
+      var row_container = d3.select('#main_svg')
+        .append('g')
+        .attr('id','row_container')
+        .attr('transform', 'translate(' + params.norm_label.margin.left + ',' +
+        params.viz.clust.margin.top + ')');
+    } else {
+      var row_container = d3.select('id','row_container')
+        .attr('transform', 'translate(' + params.norm_label.margin.left + ',' +
+        params.viz.clust.margin.top + ')');
+    }
+
+    console.log(
+        row_container.select('.white_bars').empty()
+      )
 
     // white background
-    row_container
-      .append('rect')
-      .attr('fill', params.viz.background_color)
-      .attr('width', params.norm_label.background.row)
-      .attr('height', 30*params.viz.clust.dim.height + 'px')
-      .attr('class', 'white_bars');
+    if (row_container.select('.white_bars').empty()){
+      row_container
+        .append('rect')
+        .attr('fill', params.viz.background_color)
+        .attr('width', params.norm_label.background.row)
+        .attr('height', 30*params.viz.clust.dim.height + 'px')
+        .attr('class', 'white_bars');
+    }
 
     // container for row label groups
     row_container
@@ -1590,7 +1602,7 @@ function Labels(args){
         if (params.tile_click_hlight){
           add_row_click_hlight(this,d.ini);
         }
-      })
+      });
 
     if (params.labels.show_tooltips){
       // d3-tooltip
@@ -1700,15 +1712,27 @@ function Labels(args){
       .attr('id', 'row_label_triangles');
 
     // white background for triangle
-    row_label_viz
-      .append('rect')
-      .attr('class','white_bars')
-      .attr('fill', params.viz.background_color)
-      .attr('width', params.class_room.row + 'px')
-      .attr('height', function() {
-        var inst_height = params.viz.clust.dim.height;
-        return inst_height;
-      });
+    if (row_label_viz.select('white_bars').empty()){
+      row_label_viz
+        .append('rect')
+        .attr('class','white_bars')
+        .attr('fill', params.viz.background_color)
+        .attr('width', params.class_room.row + 'px')
+        .attr('height', function() {
+          var inst_height = params.viz.clust.dim.height;
+          return inst_height;
+        });
+    } else {
+      row_label_viz
+        .select('class','white_bars')
+        .attr('fill', params.viz.background_color)
+        .attr('width', params.class_room.row + 'px')
+        .attr('height', function() {
+          var inst_height = params.viz.clust.dim.height;
+          return inst_height;
+        });
+    }
+
 
     // groups to hold label_viz
     var row_triangle_ini_group = row_label_viz
@@ -3819,13 +3843,12 @@ function enter_exit_update(params, network_data, delays){
   // reset resize on expand button click and screen resize 
   params.initialize_resizing(params);
 
+  // enter new elements 
+  //////////////////////////
 
-  // remove tiles 
   d3.select('#clust_group')
     .selectAll('.tile')
-    .data(links, function(d){ 
-      return d.name;
-    })
+    .data(links, function(d){return d.name;})
     .enter()
     .append('rect')
     .style('fill-opacity',0)
@@ -3845,16 +3868,14 @@ function enter_exit_update(params, network_data, delays){
         return output_opacity;
     });
 
+  var labels = Labels(params);
+
+  var reorder = Reorder(params);
+
+  labels.make_rows( params, row_nodes, reorder );
+
     // .transition().duration(duration)
     // .style('opacity',1)
-
-  // // remove row labels 
-  // d3.selectAll('.row_label_text')
-  //   .data(row_nodes, function(d){ return d.name;})
-  //   .exit()
-  //   .transition().duration(duration)
-  //   .style('opacity',0)
-  //   .remove();
 
   // // remove column labels 
   // d3.selectAll('.col_label_click')
