@@ -198,7 +198,7 @@ function enter_exit_update(params, network_data, delays){
   var reorder = Reorder(params);
 
   labels.make_rows( params, row_nodes, reorder );
-
+  labels.make_cols( params, col_nodes, reorder );
     // .transition().duration(duration)
     // .style('opacity',1)
 

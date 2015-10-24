@@ -1566,10 +1566,6 @@ function Labels(args){
         params.viz.clust.margin.top + ')');
     }
 
-    console.log(
-        row_container.select('.white_bars').empty()
-      )
-
     // white background
     if (row_container.select('.white_bars').empty()){
       row_container
@@ -1864,7 +1860,7 @@ function Labels(args){
 
       // row label text will not spillover initially since
       // the font-size is set up to not allow spillover
-      // it can spillover during zooming and must be constrained
+      // it can spillover during zooming and must be constrained 
 
       // return row_triangle_ini_group so that the dendrogram can be made
       return row_triangle_ini_group;
@@ -1881,46 +1877,76 @@ function Labels(args){
       return inst_name;
     }
 
-    // make container to pre-position zoomable elements
-    var container_all_col = d3.select('#main_svg')
-      .append('g')
-      .attr('id','col_container')
-      .attr('transform', 'translate(' + params.viz.clust.margin.left + ',' +
-      params.norm_label.margin.top + ')');
-
-    // white background rect for col labels
-    container_all_col
-      .append('rect')
-      .attr('fill', params.viz.background_color) //!! prog_colors
-      .attr('width', 30 * params.viz.clust.dim.width + 'px')
-      .attr('height', params.norm_label.background.col)
-      .attr('class', 'white_bars');
-
-    // col labels
-    container_all_col
-      .append('g')
-      .attr('class','label_container')
-      // position the outer col label group
-      .attr('transform', 'translate(0,' + params.norm_label.width.col + ')')
-      .append('g')
-      .attr('id', 'col_labels');
-
     // offset click group column label
     var x_offset_click = params.matrix.x_scale.rangeBand() / 2 + params.viz.border_width;
     // reduce width of rotated rects
     var reduce_rect_width = params.matrix.x_scale.rangeBand() * 0.36;
 
 
-    // add main column label group
-    var col_label_obj = d3.select('#col_labels')
-      .selectAll('.col_label_text')
-      .data(col_nodes, function(d){return d.name;})
-      .enter()
-      .append('g')
-      .attr('class', 'col_label_text')
-      .attr('transform', function(d, index) {
-        return 'translate(' + params.matrix.x_scale(index) + ') rotate(-90)';
-      })
+    // make container to pre-position zoomable elements
+    if (d3.select('#col_container').empty()){
+      var container_all_col = d3.select('#main_svg')
+        .append('g')
+        .attr('id','col_container')
+        .attr('transform', 'translate(' + params.viz.clust.margin.left + ',' +
+        params.norm_label.margin.top + ')');
+
+      // white background rect for col labels
+      container_all_col
+        .append('rect')
+        .attr('fill', params.viz.background_color) //!! prog_colors
+        .attr('width', 30 * params.viz.clust.dim.width + 'px')
+        .attr('height', params.norm_label.background.col)
+        .attr('class', 'white_bars');
+
+      // col labels
+      container_all_col
+        .append('g')
+        .attr('class','label_container')
+        // position the outer col label group
+        .attr('transform', 'translate(0,' + params.norm_label.width.col + ')')
+        .append('g')
+        .attr('id', 'col_labels');
+
+      // add main column label group
+      var col_label_obj = d3.select('#col_labels')
+        .selectAll('.col_label_text')
+        .data(col_nodes, function(d){return d.name;})
+        .enter()
+        .append('g')
+        .attr('class', 'col_label_text')
+        .attr('transform', function(d, index) {
+          return 'translate(' + params.matrix.x_scale(index) + ') rotate(-90)';
+        })
+
+    } else {
+      var container_all_col = d3.select('#col_container')
+        .attr('transform', 'translate(' + params.viz.clust.margin.left + ',' +
+        params.norm_label.margin.top + ')');
+          
+      // white background rect for col labels
+      container_all_col
+        .select('.white_bars')
+        .attr('fill', params.viz.background_color) //!! prog_colors
+        .attr('width', 30 * params.viz.clust.dim.width + 'px')
+        .attr('height', params.norm_label.background.col);
+
+      // col labels
+      container_all_col.select('.label_container')
+        .attr('transform', 'translate(0,' + params.norm_label.width.col + ')')
+        .attr('id', 'col_labels');
+
+      // add main column label group
+      var col_label_obj = d3.selectAll('col_label_text')
+        .attr('transform', function(d, index) {
+          return 'translate(' + params.matrix.x_scale(index) + ') rotate(-90)';
+        })
+
+    }
+
+
+
+
 
     // append group for individual column label
     var col_label_click = col_label_obj
@@ -3873,7 +3899,7 @@ function enter_exit_update(params, network_data, delays){
   var reorder = Reorder(params);
 
   labels.make_rows( params, row_nodes, reorder );
-
+  labels.make_cols( params, col_nodes, reorder );
     // .transition().duration(duration)
     // .style('opacity',1)
 
@@ -3991,12 +4017,7 @@ function Viz(params) {
     // define labels object
     var labels = Labels(params);
 
-    // row labels
-    /////////////////////////
     var row_triangle_ini_group = labels.make_rows( params, row_nodes, reorder );
-
-    // Column Labels
-    //////////////////////////////////
     var container_all_col = labels.make_cols( params, col_nodes, reorder );
 
 
