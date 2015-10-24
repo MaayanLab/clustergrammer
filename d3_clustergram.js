@@ -3047,9 +3047,7 @@ function Spillover( params, container_all_col ){
     d3.select('#main_svg').style('opacity',1);
   }
 
-function resize_after_update(params, row_nodes, col_nodes, links, update_dur){
-
-  // .transition().delay(update_dur).duration(update_dur)
+function resize_after_update(params, row_nodes, col_nodes, links, duration, delays){
 
   // reset zoom
   //////////////////////////////
@@ -3182,13 +3180,13 @@ function resize_after_update(params, row_nodes, col_nodes, links, update_dur){
     .select('svg'); 
 
   svg_group.select('#grey_background')
-    .transition().delay(update_dur).duration(update_dur)
+    .transition().delay(delays.update).duration(duration)
     .attr('width', params.viz.clust.dim.width)
     .attr('height', params.viz.clust.dim.height);
 
   svg_group.selectAll('.tile')
     .data(links, function(d){return d.name;})
-    .transition().delay(update_dur).duration(update_dur)
+    .transition().delay(delays.update).duration(duration)
     .attr('width', params.matrix.x_scale.rangeBand())
     .attr('height', params.matrix.y_scale.rangeBand())
     .attr('transform', function(d) {
@@ -3196,17 +3194,17 @@ function resize_after_update(params, row_nodes, col_nodes, links, update_dur){
     });
 
   svg_group.selectAll('.tile_group')
-    .transition().delay(update_dur).duration(update_dur)
+    .transition().delay(delays.update).duration(duration)
     .attr('width', params.matrix.x_scale.rangeBand())
     .attr('height', params.matrix.y_scale.rangeBand());
 
   svg_group.selectAll('.highlighting_rect')
-    .transition().delay(update_dur).duration(update_dur)
+    .transition().delay(delays.update).duration(duration)
     .attr('width', params.matrix.x_scale.rangeBand() * 0.80)
     .attr('height', params.matrix.y_scale.rangeBand() * 0.80);
 
   svg_group.selectAll('.tile_split_up')
-    .transition().delay(update_dur).duration(update_dur)
+    .transition().delay(delays.update).duration(duration)
     .attr('d', function() {
       var start_x = 0;
       var final_x = params.matrix.x_scale.rangeBand();
@@ -3218,7 +3216,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, update_dur){
     })
 
   svg_group.selectAll('.tile_split_dn')
-    .transition().delay(update_dur).duration(update_dur)
+    .transition().delay(delays.update).duration(duration)
     .attr('d', function() {
       var start_x = 0;
       var final_x = params.matrix.x_scale.rangeBand();
@@ -3243,31 +3241,31 @@ function resize_after_update(params, row_nodes, col_nodes, links, update_dur){
   ///////////////////////////
 
   svg_group.select('#row_container')
-    .transition().delay(update_dur).duration(update_dur)
+    .transition().delay(delays.update).duration(duration)
     .attr('transform', 'translate(' + params.norm_label.margin.left + ',' +
     params.viz.clust.margin.top + ')');
 
   svg_group.select('#row_container')
     .select('.white_bars')
-    .transition().delay(update_dur).duration(update_dur)
+    .transition().delay(delays.update).duration(duration)
     .attr('width', params.norm_label.background.row)
     .attr('height', 30*params.viz.clust.dim.height + 'px');
 
   svg_group.select('#row_container')
     .select('.label_container')
-    .transition().delay(update_dur).duration(update_dur)
+    .transition().delay(delays.update).duration(duration)
     .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
 
   svg_group.selectAll('.row_label_text')
     .data(row_nodes, function(d){return d.name;})
-    .transition().delay(update_dur).duration(update_dur)
+    .transition().delay(delays.update).duration(duration)
     .attr('transform', function(d, index) {
       return 'translate(0,' + params.matrix.y_scale(index) + ')';
     });
 
   svg_group.selectAll('.row_label_text')
     .select('text')
-    .transition().delay(update_dur).duration(update_dur)
+    .transition().delay(delays.update).duration(duration)
     .attr('y', params.matrix.y_scale.rangeBand() * 0.75)
 
   // do not delay the font size change since this will break the bounding box calc
@@ -3308,11 +3306,11 @@ function resize_after_update(params, row_nodes, col_nodes, links, update_dur){
   });
 
   svg_group.select('#row_label_viz')
-    .transition().delay(update_dur).duration(update_dur)
+    .transition().delay(delays.update).duration(duration)
     .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
 
   svg_group.select('#row_label_viz')
-    .transition().delay(update_dur).duration(update_dur)
+    .transition().delay(delays.update).duration(duration)
     .select('white_bars')
     .attr('width', params.class_room.row + 'px')
     .attr('height', function() {
@@ -3322,14 +3320,14 @@ function resize_after_update(params, row_nodes, col_nodes, links, update_dur){
 
   svg_group.selectAll('.row_triangle_group')
     .data(row_nodes, function(d){return d.name;})
-    .transition().delay(update_dur).duration(update_dur)
+    .transition().delay(delays.update).duration(duration)
     .attr('transform', function(d, index) {
         return 'translate(0, ' + params.matrix.y_scale(index) + ')';
       });
 
   svg_group.selectAll('.row_triangle_group')
     .select('path')
-    .transition().delay(update_dur).duration(update_dur)
+    .transition().delay(delays.update).duration(duration)
     .attr('d', function() {
       var origin_x = params.class_room.symbol_width - 1;
       var origin_y = 0;
@@ -3353,7 +3351,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, update_dur){
         .range([0, params.norm_label.width.row ]);
 
       svg_group.selectAll('.row_bars')
-        .transition().delay(update_dur).duration(update_dur)
+        .transition().delay(delays.update).duration(duration)
         .attr('width', function(d) {
           var inst_value = 0;
           inst_value = params.labels.bar_scale_row( Math.abs(d.value) );
@@ -3371,18 +3369,18 @@ function resize_after_update(params, row_nodes, col_nodes, links, update_dur){
     // resize col labels
     ///////////////////////
     svg_group.select('#col_container')
-      .transition().delay(update_dur).duration(update_dur)
+      .transition().delay(delays.update).duration(duration)
       .attr('transform', 'translate(' + params.viz.clust.margin.left + ',' +
       params.norm_label.margin.top + ')');
 
     svg_group.select('#col_container')
-      .transition().delay(update_dur).duration(update_dur)
+      .transition().delay(delays.update).duration(duration)
       .select('.white_bars')
       .attr('width', 30 * params.viz.clust.dim.width + 'px')
       .attr('height', params.norm_label.background.col);
 
     svg_group.select('#col_container')
-      .transition().delay(update_dur).duration(update_dur)
+      .transition().delay(delays.update).duration(duration)
       .select('.label_container')
       .attr('transform', 'translate(0,' + params.norm_label.width.col + ')');
 
@@ -3393,13 +3391,13 @@ function resize_after_update(params, row_nodes, col_nodes, links, update_dur){
 
     svg_group.selectAll('.col_label_text')
       .data(col_nodes, function(d){return d.name;})
-      .transition().delay(update_dur).duration(update_dur)
+      .transition().delay(delays.update).duration(duration)
       .attr('transform', function(d, index) {
         return 'translate(' + params.matrix.x_scale(index) + ') rotate(-90)';
       });
 
     svg_group.selectAll('.col_label_click')
-      .transition().delay(update_dur).duration(update_dur)
+      .transition().delay(delays.update).duration(duration)
       .attr('transform', 'translate(' + params.matrix.x_scale.rangeBand() / 2 + ',' + x_offset_click + ') rotate(45)');
 
     svg_group.selectAll('.col_label_click')
@@ -3409,7 +3407,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, update_dur){
 
     svg_group.selectAll('.col_label_click')
       .select('text')
-      .transition().delay(update_dur).duration(update_dur)
+      .transition().delay(delays.update).duration(duration)
       .attr('y', params.matrix.x_scale.rangeBand() * 0.60)
       .attr('dx', 2 * params.viz.border_width);
 
@@ -3477,7 +3475,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, update_dur){
     // resize column triangle 
     svg_group.selectAll('.col_label_click')
       .select('path')
-      .transition().delay(update_dur).duration(update_dur)
+      .transition().delay(delays.update).duration(duration)
       .attr('d', function() {
         // x and y are flipped since its rotated
         var origin_y = -params.viz.border_width;
@@ -3502,7 +3500,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, update_dur){
     if (Utils.has( params.network_data.col_nodes[0], 'value')) {
 
       svg_group.selectAll('.col_bars')
-        .transition().delay(update_dur).duration(update_dur)
+        .transition().delay(delays.update).duration(duration)
         .attr('width', function(d) {
           var inst_value = 0;
           if (d.value > 0){
@@ -3517,7 +3515,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, update_dur){
     // resize dendrogram
     ///////////////////
     svg_group.selectAll('.row_class_rect')
-      .transition().delay(update_dur).duration(update_dur)
+      .transition().delay(delays.update).duration(duration)
       .attr('width', function() {
         var inst_width = params.class_room.symbol_width - 1;
         return inst_width + 'px';
@@ -3529,7 +3527,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, update_dur){
       });
 
     svg_group.selectAll('.col_class_rect')
-      .transition().delay(update_dur).duration(update_dur)
+      .transition().delay(delays.update).duration(duration)
       .attr('width', params.matrix.x_scale.rangeBand())
       .attr('height', function() {
         var inst_height = params.class_room.col - 1;
@@ -3538,7 +3536,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, update_dur){
 
     svg_group.selectAll('.col_class_group')
       .data(col_nodes, function(d){return d.name;})
-      .transition().delay(update_dur).duration(update_dur)
+      .transition().delay(delays.update).duration(duration)
       .attr('transform', function(d, index) {
         return 'translate(' + params.matrix.x_scale(index) + ',0)';
       });
@@ -3547,40 +3545,40 @@ function resize_after_update(params, row_nodes, col_nodes, links, update_dur){
     ////////////////////////////
     svg_group.selectAll('.horz_lines')
       .data(row_nodes, function(d){return d.name;})
-      .transition().delay(update_dur).duration(update_dur)
+      .transition().delay(delays.update).duration(duration)
       .attr('transform', function(d, index) {
         return 'translate(0,' + params.matrix.y_scale(index) + ') rotate(0)';
       })
 
     svg_group.selectAll('.horz_lines')
       .select('line')
-      .transition().delay(update_dur).duration(update_dur)
+      .transition().delay(delays.update).duration(duration)
       .attr('x2',params.viz.clust.dim.width)
       .style('stroke-width', params.viz.border_width/params.viz.zoom_switch+'px')
 
     svg_group.selectAll('.vert_lines')
       .data(col_nodes, function(d){return d.name;})
-      .transition().delay(update_dur).duration(update_dur)
+      .transition().delay(delays.update).duration(duration)
       .attr('transform', function(d, index) {
           return 'translate(' + params.matrix.x_scale(index) + ') rotate(-90)';
       });
 
     svg_group.selectAll('.vert_lines')
       .select('line')
-      .transition().delay(update_dur).duration(update_dur)
+      .transition().delay(delays.update).duration(duration)
       .attr('x2', -params.viz.clust.dim.height)
       .style('stroke-width', params.viz.border_width + 'px');
 
   // resize superlabels
   /////////////////////////////////////
   svg_group.select('#super_col_bkg')
-    .transition().delay(update_dur).duration(update_dur)
+    .transition().delay(delays.update).duration(duration)
     .attr('height', params.labels.super_label_width + 'px')
     .attr('transform', 'translate(0,' + params.viz.grey_border_width + ')');
 
   // super col title
   svg_group.select('#super_col')
-    .transition().delay(update_dur).duration(update_dur)
+    .transition().delay(delays.update).duration(duration)
     .attr('transform', function() {
       var inst_x = params.viz.clust.dim.width / 2 + params.norm_label.width
         .row;
@@ -3590,13 +3588,13 @@ function resize_after_update(params, row_nodes, col_nodes, links, update_dur){
 
   // super row title
   svg_group.select('#super_row_bkg')
-    .transition().delay(update_dur).duration(update_dur)
+    .transition().delay(delays.update).duration(duration)
     .attr('width', params.labels.super_label_width + 'px')
     .attr('transform', 'translate(' + params.viz.grey_border_width + ',0)');
 
   // append super title row group
   svg_group.select('#super_row')
-    .transition().delay(update_dur).duration(update_dur)
+    .transition().delay(delays.update).duration(duration)
     .attr('transform', function() {
       var inst_x = params.labels.super_label_width - params.viz.uni_margin;
       var inst_y = params.viz.clust.dim.height / 2 + params.norm_label.width
@@ -3608,21 +3606,21 @@ function resize_after_update(params, row_nodes, col_nodes, links, update_dur){
   //////////////////////////
   // hide spillover from slanted column labels on right side
   svg_group.select('#right_slant_triangle')
-    .transition().delay(update_dur).duration(update_dur)
+    .transition().delay(delays.update).duration(duration)
     .attr('transform', 'translate(' + params.viz.clust.dim.width + ',' +
     params.norm_label.width.col + ')');
 
   svg_group.select('#left_slant_triangle')
-    .transition().delay(update_dur).duration(update_dur)
+    .transition().delay(delays.update).duration(duration)
     .attr('transform', 'translate(-1,' + params.norm_label.width.col +')');
 
   svg_group.select('#top_left_white')
-    .transition().delay(update_dur).duration(update_dur)
+    .transition().delay(delays.update).duration(duration)
     .attr('width', params.viz.clust.margin.left)
     .attr('height', params.viz.clust.margin.top);
 
   svg_group.select('#right_spillover')
-    .transition().delay(update_dur).duration(update_dur)
+    .transition().delay(delays.update).duration(duration)
     .attr('transform', function() {
       var tmp_left = params.viz.clust.margin.left + params.viz.clust.dim.width;
       var tmp_top = params.norm_label.margin.top + params.norm_label.width
@@ -3632,7 +3630,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, update_dur){
 
   // white border bottom - prevent clustergram from hitting border
   svg_group.select('#bottom_spillover')
-    .transition().delay(update_dur).duration(update_dur)
+    .transition().delay(delays.update).duration(duration)
     .attr('width', params.viz.svg_dim.width)
     .attr('height', 2 * params.viz.grey_border_width)
     .attr('transform', function() {
@@ -3648,28 +3646,24 @@ function resize_after_update(params, row_nodes, col_nodes, links, update_dur){
       [ params.viz.clust.margin.left, params.viz.clust.margin.top]
   );
 
-  // disable default double click zoom 
-  d3.select('#main_svg').on('dblclick.zoom',null);
 
 }
 
 function update_network(args){
 
+  var old_params = this.params;
+
   var config = Config(args);
   var params = VizParams(config);
 
-  var width  = params.viz.svg_dim.width;
-  var height = params.viz.svg_dim.height;
-  var margin_left = args.outer_margins.left;
-  var margin_top = args.outer_margins.top;
+  var delays = check_need_exit_enter(old_params, params);
 
   var network_data = params.network_data;
 
-  var update_dur = 1000;
+  enter_exit_update(params, network_data, delays);
 
-  enter_exit_update(params, network_data, update_dur);
-
-  // var viz = Viz(params);
+  // update network data 
+  this.params.network_data = network_data;
 
   // ordering 
   var reorder = Reorder(params);
@@ -3688,14 +3682,57 @@ function update_network(args){
   this.find_genes = gene_search.find_entities;
 
   d3.select('#main_svg').call(params.zoom);
-  
+
   // disable default double click zoom 
   d3.select('#main_svg').on('dblclick.zoom',null);
 
 }
 
+function check_need_exit_enter(old_params, params){
 
-function enter_exit_update(params, network_data, update_dur){
+  // exit, update, enter 
+
+  // check if exit or enter or both are required 
+  var old_row_nodes = old_params.network_data.row_nodes;
+  var old_col_nodes = old_params.network_data.col_nodes;
+  var old_row = _.map(old_row_nodes, function(d){return d.name;});
+  var old_col = _.map(old_col_nodes, function(d){return d.name;});
+  var all_old_nodes = old_row.concat(old_col);
+
+  var row_nodes = params.network_data.row_nodes;
+  var col_nodes = params.network_data.col_nodes;
+  var row = _.map(row_nodes, function(d){return d.name;});
+  var col = _.map(col_nodes, function(d){return d.name;});
+  var all_nodes = row.concat(col);
+
+  var exit_nodes  = _.difference( all_old_nodes, all_nodes ).length;
+  var enter_nodes = _.difference( all_nodes, all_old_nodes ).length;
+
+  var delays = {};
+
+  delays.exit = 0;
+
+  if (exit_nodes > 0){
+    delays.update = 1000;
+  } else {
+    delays.update = 0;
+  }
+
+  if (enter_nodes > 0){
+    delays.enter = 1000;
+  } else {
+    delays.enter = 0;
+  }
+
+  delays.update = delays.update  + delays.exit;
+  delays.enter  = delays.enter + delays.exit + delays.update ;
+
+  return delays;
+}
+
+function enter_exit_update(params, network_data, delays){
+
+  var duration = 1000;
 
   // make global so that names can be accessed
   var row_nodes = network_data.row_nodes;
@@ -3719,7 +3756,7 @@ function enter_exit_update(params, network_data, update_dur){
   d3.selectAll('.tile')
     .data(links, function(d){ return d.name;})
     .exit()
-    .transition().duration(update_dur)
+    .transition().duration(duration)
     .style('opacity',0)
     .remove();
 
@@ -3727,7 +3764,7 @@ function enter_exit_update(params, network_data, update_dur){
   d3.selectAll('.row_label_text')
     .data(row_nodes, function(d){ return d.name;})
     .exit()
-    .transition().duration(update_dur)
+    .transition().duration(duration)
     .style('opacity',0)
     .remove();
 
@@ -3735,7 +3772,7 @@ function enter_exit_update(params, network_data, update_dur){
   d3.selectAll('.col_label_click')
     .data(col_nodes, function(d){return d.name;})
     .exit()
-    .transition().duration(update_dur)
+    .transition().duration(duration)
     .style('opacity',0)
     .remove();      
 
@@ -3743,7 +3780,7 @@ function enter_exit_update(params, network_data, update_dur){
   d3.selectAll('.row_triangle_group')
     .data(row_nodes, function(d){return d.name;})
     .exit()
-    .transition().duration(update_dur)
+    .transition().duration(duration)
     .style('opacity',0)
     .remove();      
 
@@ -3751,21 +3788,21 @@ function enter_exit_update(params, network_data, update_dur){
   d3.selectAll('.col_label_text')
     .data(col_nodes, function(d){return d.name;})
     .exit()
-    .transition().duration(update_dur)
+    .transition().duration(duration)
     .style('opacity',0)
     .remove();      
 
   d3.selectAll('.horz_lines')
     .data(row_nodes, function(d){return d.name;})
     .exit()
-    .transition().duration(update_dur)
+    .transition().duration(duration)
     .style('opacity',0)
     .remove();
 
   d3.selectAll('.vert_lines')
     .data(col_nodes, function(d){return d.name;})
     .exit()
-    .transition().duration(update_dur)
+    .transition().duration(duration)
     .style('opacity',0)
     .remove();
 
@@ -3773,11 +3810,11 @@ function enter_exit_update(params, network_data, update_dur){
   d3.selectAll('.col_class_group')
     .data(col_nodes, function(d){return d.name;})
     .exit()
-    .transition().duration(update_dur)
+    .transition().duration(duration)
     .style('opacity',0)
     .remove();  
 
-  resize_after_update(params, row_nodes, col_nodes, links, update_dur);
+  resize_after_update(params, row_nodes, col_nodes, links, duration, delays);
 
   // reset resize on expand button click and screen resize 
   params.initialize_resizing(params);

@@ -1,20 +1,18 @@
 function update_network(args){
 
+  var old_params = this.params;
+
   var config = Config(args);
   var params = VizParams(config);
 
-  var width  = params.viz.svg_dim.width;
-  var height = params.viz.svg_dim.height;
-  var margin_left = args.outer_margins.left;
-  var margin_top = args.outer_margins.top;
+  var delays = check_need_exit_enter(old_params, params);
 
   var network_data = params.network_data;
 
-  var update_dur = 1000;
+  enter_exit_update(params, network_data, delays);
 
-  enter_exit_update(params, network_data, update_dur);
-
-  // var viz = Viz(params);
+  // update network data 
+  this.params.network_data = network_data;
 
   // ordering 
   var reorder = Reorder(params);
@@ -33,14 +31,57 @@ function update_network(args){
   this.find_genes = gene_search.find_entities;
 
   d3.select('#main_svg').call(params.zoom);
-  
+
   // disable default double click zoom 
   d3.select('#main_svg').on('dblclick.zoom',null);
 
 }
 
+function check_need_exit_enter(old_params, params){
 
-function enter_exit_update(params, network_data, update_dur){
+  // exit, update, enter 
+
+  // check if exit or enter or both are required 
+  var old_row_nodes = old_params.network_data.row_nodes;
+  var old_col_nodes = old_params.network_data.col_nodes;
+  var old_row = _.map(old_row_nodes, function(d){return d.name;});
+  var old_col = _.map(old_col_nodes, function(d){return d.name;});
+  var all_old_nodes = old_row.concat(old_col);
+
+  var row_nodes = params.network_data.row_nodes;
+  var col_nodes = params.network_data.col_nodes;
+  var row = _.map(row_nodes, function(d){return d.name;});
+  var col = _.map(col_nodes, function(d){return d.name;});
+  var all_nodes = row.concat(col);
+
+  var exit_nodes  = _.difference( all_old_nodes, all_nodes ).length;
+  var enter_nodes = _.difference( all_nodes, all_old_nodes ).length;
+
+  var delays = {};
+
+  delays.exit = 0;
+
+  if (exit_nodes > 0){
+    delays.update = 1000;
+  } else {
+    delays.update = 0;
+  }
+
+  if (enter_nodes > 0){
+    delays.enter = 1000;
+  } else {
+    delays.enter = 0;
+  }
+
+  delays.update = delays.update  + delays.exit;
+  delays.enter  = delays.enter + delays.exit + delays.update ;
+
+  return delays;
+}
+
+function enter_exit_update(params, network_data, delays){
+
+  var duration = 1000;
 
   // make global so that names can be accessed
   var row_nodes = network_data.row_nodes;
@@ -64,7 +105,7 @@ function enter_exit_update(params, network_data, update_dur){
   d3.selectAll('.tile')
     .data(links, function(d){ return d.name;})
     .exit()
-    .transition().duration(update_dur)
+    .transition().duration(duration)
     .style('opacity',0)
     .remove();
 
@@ -72,7 +113,7 @@ function enter_exit_update(params, network_data, update_dur){
   d3.selectAll('.row_label_text')
     .data(row_nodes, function(d){ return d.name;})
     .exit()
-    .transition().duration(update_dur)
+    .transition().duration(duration)
     .style('opacity',0)
     .remove();
 
@@ -80,7 +121,7 @@ function enter_exit_update(params, network_data, update_dur){
   d3.selectAll('.col_label_click')
     .data(col_nodes, function(d){return d.name;})
     .exit()
-    .transition().duration(update_dur)
+    .transition().duration(duration)
     .style('opacity',0)
     .remove();      
 
@@ -88,7 +129,7 @@ function enter_exit_update(params, network_data, update_dur){
   d3.selectAll('.row_triangle_group')
     .data(row_nodes, function(d){return d.name;})
     .exit()
-    .transition().duration(update_dur)
+    .transition().duration(duration)
     .style('opacity',0)
     .remove();      
 
@@ -96,21 +137,21 @@ function enter_exit_update(params, network_data, update_dur){
   d3.selectAll('.col_label_text')
     .data(col_nodes, function(d){return d.name;})
     .exit()
-    .transition().duration(update_dur)
+    .transition().duration(duration)
     .style('opacity',0)
     .remove();      
 
   d3.selectAll('.horz_lines')
     .data(row_nodes, function(d){return d.name;})
     .exit()
-    .transition().duration(update_dur)
+    .transition().duration(duration)
     .style('opacity',0)
     .remove();
 
   d3.selectAll('.vert_lines')
     .data(col_nodes, function(d){return d.name;})
     .exit()
-    .transition().duration(update_dur)
+    .transition().duration(duration)
     .style('opacity',0)
     .remove();
 
@@ -118,11 +159,11 @@ function enter_exit_update(params, network_data, update_dur){
   d3.selectAll('.col_class_group')
     .data(col_nodes, function(d){return d.name;})
     .exit()
-    .transition().duration(update_dur)
+    .transition().duration(duration)
     .style('opacity',0)
     .remove();  
 
-  resize_after_update(params, row_nodes, col_nodes, links, update_dur);
+  resize_after_update(params, row_nodes, col_nodes, links, duration, delays);
 
   // reset resize on expand button click and screen resize 
   params.initialize_resizing(params);
