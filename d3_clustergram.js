@@ -3820,6 +3820,88 @@ function enter_exit_update(params, network_data, delays){
   params.initialize_resizing(params);
 
 
+  // remove tiles 
+  d3.select('#clust_group')
+    .selectAll('.tile')
+    .data(links, function(d){ 
+      return d.name;
+    })
+    .enter()
+    .append('rect')
+    .style('fill-opacity',0)
+    .attr('class','tile new_tile')
+    .attr('width', params.matrix.x_scale.rangeBand())
+    .attr('height', params.matrix.y_scale.rangeBand())
+    .attr('transform', function(d) {
+      return 'translate(' + params.matrix.x_scale(d.target) + ','+params.matrix.y_scale(d.source)+')';
+    })
+    .style('fill', function(d) {
+        return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
+    })
+    .transition().delay(delays.enter).duration(duration)
+    .style('fill-opacity', function(d) {
+        // calculate output opacity using the opacity scale
+        var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
+        return output_opacity;
+    });
+
+    // .transition().duration(duration)
+    // .style('opacity',1)
+
+  // // remove row labels 
+  // d3.selectAll('.row_label_text')
+  //   .data(row_nodes, function(d){ return d.name;})
+  //   .exit()
+  //   .transition().duration(duration)
+  //   .style('opacity',0)
+  //   .remove();
+
+  // // remove column labels 
+  // d3.selectAll('.col_label_click')
+  //   .data(col_nodes, function(d){return d.name;})
+  //   .exit()
+  //   .transition().duration(duration)
+  //   .style('opacity',0)
+  //   .remove();      
+
+  // // remove row triangles and colorbars 
+  // d3.selectAll('.row_triangle_group')
+  //   .data(row_nodes, function(d){return d.name;})
+  //   .exit()
+  //   .transition().duration(duration)
+  //   .style('opacity',0)
+  //   .remove();      
+
+  // // remove row triangles 
+  // d3.selectAll('.col_label_text')
+  //   .data(col_nodes, function(d){return d.name;})
+  //   .exit()
+  //   .transition().duration(duration)
+  //   .style('opacity',0)
+  //   .remove();      
+
+  // d3.selectAll('.horz_lines')
+  //   .data(row_nodes, function(d){return d.name;})
+  //   .exit()
+  //   .transition().duration(duration)
+  //   .style('opacity',0)
+  //   .remove();
+
+  // d3.selectAll('.vert_lines')
+  //   .data(col_nodes, function(d){return d.name;})
+  //   .exit()
+  //   .transition().duration(duration)
+  //   .style('opacity',0)
+  //   .remove();
+
+  // // remove dendrogram 
+  // d3.selectAll('.col_class_group')
+  //   .data(col_nodes, function(d){return d.name;})
+  //   .exit()
+  //   .transition().duration(duration)
+  //   .style('opacity',0)
+  //   .remove();  
+
 }
 
 
