@@ -26,6 +26,8 @@ function Reorder(params){
       params.matrix.y_scale.domain(params.matrix.orders.class_col);
     }
 
+
+
     // only animate transition if there are a small number of tiles
     if (d3.selectAll('.tile')[0].length < 10000){
 
@@ -70,12 +72,12 @@ function Reorder(params){
     } else {
 
       // define the t variable as the transition function
-      var t = viz.get_clust_group()
+      var t = viz.get_clust_group();
 
       // reorder matrix
       t.selectAll('.tile')
-        .attr('transform', function(d, i) {
-          return 'translate('+params.matrix.x_scale(d.source)+',' + params.matrix.y_scale(d.source) + ')';
+        .attr('transform', function(d) {
+          return 'translate(' + params.matrix.x_scale(d.target) + ' , '+ params.matrix.y_scale(d.source)+')';
         });
 
       // Move Row Labels
@@ -87,7 +89,7 @@ function Reorder(params){
       // t.selectAll('.column')
       d3.select('#col_labels').selectAll('.col_label_text')
         .attr('transform', function(d, i) {
-          return 'translate(' + params.matrix.x_scale(i) + ')rotate(-90)';
+          return 'translate(' + params.matrix.x_scale(i) + ') rotate(-90)';
         });
 
       // reorder row_label_triangle groups
@@ -101,6 +103,7 @@ function Reorder(params){
         .attr('transform', function(d, i) {
           return 'translate(' + params.matrix.x_scale(i) + ',0)';
         });
+
     }
 
       // params.viz.run_trans = false;
