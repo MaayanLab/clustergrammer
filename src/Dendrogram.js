@@ -52,6 +52,7 @@ function Dendrogram(type, params, elem) {
   }
 
   function build_row_dendro() {
+
     elem
       .append('rect')
       .attr('class', dom_class)
@@ -68,9 +69,12 @@ function Dendrogram(type, params, elem) {
         var inst_offset = params.class_room.symbol_width + 1;
         return inst_offset + 'px';
       });
+
   }
 
   function build_col_dendro() {
+
+    // d3.select('#col_class')
     elem
       .append('rect')
       .attr('class', dom_class)
@@ -83,6 +87,7 @@ function Dendrogram(type, params, elem) {
         var inst_level = params.group_level.col;
         return get_group_color(d.group[inst_level]);
       });
+
   }
 
   // add callback functions 

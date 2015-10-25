@@ -368,7 +368,6 @@ function Labels(args){
         .append('g')
         .attr('id', 'col_labels');
 
-
     } else {
       
       var container_all_col = d3.select('#col_container')

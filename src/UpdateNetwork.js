@@ -197,57 +197,90 @@ function enter_exit_update(params, network_data, delays){
 
   var reorder = Reorder(params);
 
-  labels.make_rows( params, row_nodes, reorder );
-  labels.make_cols( params, col_nodes, reorder );
+  var row_triangle_ini_group = labels.make_rows( params, row_nodes, reorder );
+  var container_all_col      = labels.make_cols( params, col_nodes, reorder );
+
+  // var col_class_ini_group = d3.select('.col_class_group');
+
+  // var row_dendrogram = Dendrogram('row', params, row_triangle_ini_group);
+  // var col_dendrogram = Dendrogram('col', params, col_class_ini_group);
+
+  var tmp_dendrogram = Dendrogram('row', params, row_triangle_ini_group);
+
+  var get_group_color = tmp_dendrogram.get_group_color;
+
+  // update dendrogram 
   
-    // .transition().duration(duration)
-    // .style('opacity',1)
+  d3.select('#col_class')
+    .selectAll('.col_class_group')
+    .data(col_nodes, function(d){return d.name;})
+    .enter()
+    .append('g')
+    .attr('class','col_class_group')
+    .attr('transform', function(d, index) {
+        return 'translate(' + params.matrix.x_scale(index) + ',0)';
+      })
+    .append('rect')
+    .attr('class', 'col_class_rect')
+    .attr('width', params.matrix.x_scale.rangeBand())
+    .attr('height', function() {
+      var inst_height = params.class_room.col - 1;
+      return inst_height;
+    })
+    .style('fill', function(d) {
+      var inst_level = params.group_level.col;
+      return get_group_color(d.group[inst_level]);
+    });
 
-  // // remove column labels 
-  // d3.selectAll('.col_label_click')
-  //   .data(col_nodes, function(d){return d.name;})
-  //   .exit()
-  //   .transition().duration(duration)
-  //   .style('opacity',0)
-  //   .remove();      
+  d3.select('#row_label_triangles')
+    .selectAll('.row_triangle_group')
+    .data(row_nodes, function(d){return d.name;})
+    .enter()
+    .append('g')
+    .attr('class','row_triangle_group')
+    .attr('transform', function(d, index) {
+        return 'translate(0,' + params.matrix.y_scale(index) + ')';
+      })
+    .append('rect')
+    .attr('class', 'row_class_rect new_rect')
+    .attr('width', function() {
+      var inst_width = params.class_room.symbol_width - 1;
+      return inst_width + 'px';
+    })
+    .attr('height', params.matrix.y_scale.rangeBand())
+    .style('fill', function(d) {
+      var inst_level = params.group_level.row;
+      return get_group_color(d.group[inst_level]);
+    })
+    .attr('x', function() {
+      var inst_offset = params.class_room.symbol_width + 1;
+      return inst_offset + 'px';
+    });
 
-  // // remove row triangles and colorbars 
-  // d3.selectAll('.row_triangle_group')
-  //   .data(row_nodes, function(d){return d.name;})
-  //   .exit()
-  //   .transition().duration(duration)
-  //   .style('opacity',0)
-  //   .remove();      
+    d3.selectAll('.row_class_rect')
+      .transition().delay(delays.update).duration(duration)
+      .attr('width', function() {
+        var inst_width = params.class_room.symbol_width - 1;
+        return inst_width + 'px';
+      })
+      .attr('height', params.matrix.y_scale.rangeBand())
+      .attr('x', function() {
+        var inst_offset = params.class_room.symbol_width + 1;
+        return inst_offset + 'px';
+      });
 
-  // // remove row triangles 
-  // d3.selectAll('.col_label_text')
-  //   .data(col_nodes, function(d){return d.name;})
-  //   .exit()
-  //   .transition().duration(duration)
-  //   .style('opacity',0)
-  //   .remove();      
+    console.log(params.matrix.orders.ini_row)
 
-  // d3.selectAll('.horz_lines')
-  //   .data(row_nodes, function(d){return d.name;})
-  //   .exit()
-  //   .transition().duration(duration)
-  //   .style('opacity',0)
-  //   .remove();
-
-  // d3.selectAll('.vert_lines')
-  //   .data(col_nodes, function(d){return d.name;})
-  //   .exit()
-  //   .transition().duration(duration)
-  //   .style('opacity',0)
-  //   .remove();
-
-  // // remove dendrogram 
-  // d3.selectAll('.col_class_group')
-  //   .data(col_nodes, function(d){return d.name;})
-  //   .exit()
-  //   .transition().duration(duration)
-  //   .style('opacity',0)
-  //   .remove();  
+    // .attr('class', 'row_class_rect')
+    // .attr('width', params.matrix.x_scale.rangeBand())
+    // .attr('height', function() {
+    //   var inst_height = params.class_room.row - 1;
+    //   return inst_height;
+    // })
+    // .style('fill', function(d) {
+    //   var inst_level = params.group_level.row;
+    //   return get_group_color(d.group[inst_level]);
+    // });
 
 }
 
