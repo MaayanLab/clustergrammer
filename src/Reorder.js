@@ -63,7 +63,7 @@ function Reorder(params){
         });
 
       // reorder col_class groups
-      d3.selectAll('.col_class_group')
+      d3.selectAll('.col_viz_group')
         .transition().duration(2500)
         .attr('transform', function(d, i) {
           return 'translate(' + params.matrix.x_scale(i) + ',0)';
@@ -99,7 +99,7 @@ function Reorder(params){
         });
 
       // reorder col_class groups
-      d3.selectAll('.col_class_group')
+      d3.selectAll('.col_viz_group')
         .attr('transform', function(d, i) {
           return 'translate(' + params.matrix.x_scale(i) + ',0)';
         });
@@ -171,7 +171,7 @@ function Reorder(params){
       });
 
     // reorder col_class groups
-    d3.selectAll('.col_class_group')
+    d3.selectAll('.col_viz_group')
       .transition().duration(2500)
       .attr('transform', function(data, index) {
         return 'translate(' + params.matrix.x_scale(index) + ',0)';

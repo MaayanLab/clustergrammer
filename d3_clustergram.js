@@ -241,7 +241,7 @@ var Colors = (function() {
 
 /* Dendrogram color bar.
  */
-function Dendrogram(type, params, elem) {
+function Dendrogram(type, params, delay_dendro) {
 
   var group_colors = [],
     dom_class,
@@ -249,10 +249,9 @@ function Dendrogram(type, params, elem) {
 
   build_color_groups();
 
-
   if (type === 'row') {
     dom_class = 'row_class_rect';
-    build_row_dendro();
+    build_row_dendro(delay_dendro);
   } else {
     dom_class = 'col_class_rect';
     build_col_dendro();
@@ -292,42 +291,92 @@ function Dendrogram(type, params, elem) {
     return group_colors[j];
   }
 
-  function build_row_dendro() {
+  function build_row_dendro(delay_dendro) {
 
-    elem
-      .append('rect')
-      .attr('class', dom_class)
-      .attr('width', function() {
-        var inst_width = params.class_room.symbol_width - 1;
-        return inst_width + 'px';
+    // add dendrogram rectangles if necessary 
+    d3.selectAll('.row_viz_group')
+      .each(function(d){
+        if (d3.select(this).select('rect').empty()){
+
+          d3.select(this)
+            .append('rect')
+            .attr('class', dom_class)
+            .attr('width', function() {
+              var inst_width = params.class_room.symbol_width - 1;
+              return inst_width + 'px';
+            })
+            .attr('height', params.matrix.y_scale.rangeBand())
+            .style('fill', function(d) {
+              var inst_level = params.group_level.row;
+              return get_group_color(d.group[inst_level]);
+            })
+            .attr('x', function() {
+              var inst_offset = params.class_room.symbol_width + 1;
+              return inst_offset + 'px';
+            });
+
+        }  else {
+
+          d3.select(this).select('rect')
+            .attr('width', function() {
+              var inst_width = params.class_room.symbol_width - 1;
+              return inst_width + 'px';
+            })
+            .attr('height', params.matrix.y_scale.rangeBand())
+            .style('fill', function(d) {
+              var inst_level = params.group_level.row;
+              return get_group_color(d.group[inst_level]);
+            })
+            .attr('x', function() {
+              var inst_offset = params.class_room.symbol_width + 1;
+              return inst_offset + 'px';
+            })
+            .attr('opacity',0.25)
+            .transition().delay(1000).duration(1000)
+            .attr('opacity',1); 
+        }
       })
-      .attr('height', params.matrix.y_scale.rangeBand())
-      .style('fill', function(d) {
-        var inst_level = params.group_level.row;
-        return get_group_color(d.group[inst_level]);
-      })
-      .attr('x', function() {
-        var inst_offset = params.class_room.symbol_width + 1;
-        return inst_offset + 'px';
-      });
 
   }
 
   function build_col_dendro() {
 
-    elem
-      .append('rect')
-      .attr('class', dom_class)
-      .attr('width', params.matrix.x_scale.rangeBand())
-      .attr('height', function() {
-        var inst_height = params.class_room.col - 1;
-        return inst_height;
-      })
-      .style('fill', function(d) {
-        var inst_level = params.group_level.col;
-        return get_group_color(d.group[inst_level]);
-      });
+    d3.selectAll('.col_viz_group')
+      .each(function(d){
 
+        if (d3.select(this).select('rect').empty()){
+
+          d3.select(this)
+            .append('rect')
+            .attr('class', dom_class)
+            .attr('width', params.matrix.x_scale.rangeBand())
+            .attr('height', function() {
+              var inst_height = params.class_room.col - 1;
+              return inst_height;
+            })
+            .style('fill', function(d) {
+              var inst_level = params.group_level.col;
+              return get_group_color(d.group[inst_level]);
+            });
+
+        } else {
+
+          d3.select(this).select('rect')
+            .attr('width', params.matrix.x_scale.rangeBand())
+            .attr('height', function() {
+              var inst_height = params.class_room.col - 1;
+              return inst_height;
+            })
+            .style('fill', function(d) {
+              var inst_level = params.group_level.col;
+              return get_group_color(d.group[inst_level]);
+            })
+            .attr('opacity',0.25)
+            .transition().delay(1000).duration(1000)
+            .attr('opacity',1);
+        }
+
+    })
   }
 
   // add callback functions 
@@ -2962,7 +3011,7 @@ function Spillover( params, container_all_col ){
           return inst_height;
         });
 
-      svg_group.selectAll('.col_class_group')
+      svg_group.selectAll('.col_viz_group')
         .attr('transform', function(d, index) {
           return 'translate(' + params.matrix.x_scale(index) + ',0)';
         });
@@ -3582,7 +3631,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
         return inst_height;
       });
 
-    svg_group.selectAll('.col_class_group')
+    svg_group.selectAll('.col_viz_group')
       .data(col_nodes, function(d){return d.name;})
       .transition().delay(delays.update).duration(duration)
       .attr('transform', function(d, index) {
@@ -3855,7 +3904,7 @@ function enter_exit_update(params, network_data, delays){
     .remove();
 
   // remove dendrogram 
-  d3.selectAll('.col_class_group')
+  d3.selectAll('.col_viz_group')
     .data(col_nodes, function(d){return d.name;})
     .exit()
     .transition().duration(duration)
@@ -3899,81 +3948,29 @@ function enter_exit_update(params, network_data, delays){
   var row_triangle_ini_group = labels.make_rows( params, row_nodes, reorder, duration );
   var container_all_col      = labels.make_cols( params, col_nodes, reorder, duration );
 
-  var tmp_dendrogram = Dendrogram('row', params, row_triangle_ini_group);
-  // var tmp_dendrogram = Dendrogram('col', params, row_triangle_ini_group);
-
-  var get_group_color = tmp_dendrogram.get_group_color;
-
-  // update dendrogram 
-  
+  // enter new groups that hold columns
   d3.select('#col_viz_zoom_container')
-    .selectAll('.col_class_group')
+    .selectAll('g')
     .data(col_nodes, function(d){return d.name;})
     .enter()
     .append('g')
-    .attr('class','col_class_group')
+    .attr('class', 'col_viz_group')
     .attr('transform', function(d, index) {
-        return 'translate(' + params.matrix.x_scale(index) + ',0)';
-      })
-    .append('rect')
-    .attr('class', 'col_class_rect')
-    .attr('width', params.matrix.x_scale.rangeBand())
-    .attr('height', function() {
-      var inst_height = params.class_room.col - 1;
-      return inst_height;
-    })
-    .style('fill', function(d) {
-      var inst_level = params.group_level.col;
-      return get_group_color(d.group[inst_level]);
+      return 'translate(' + params.matrix.x_scale(index) + ',0)';
     });
 
   d3.select('#row_viz_zoom_container')
-    .selectAll('.row_viz_group')
-    .data(row_nodes, function(d){return d.name;})
-    .enter()
-    .append('g')
-    .attr('class','row_viz_group')
-    .attr('transform', function(d, index) {
-        return 'translate(0,' + params.matrix.y_scale(index) + ')';
-      })
-    .append('rect')
-    .attr('class', 'row_class_rect new_rect')
-    .attr('width', function() {
-      var inst_width = params.class_room.symbol_width - 1;
-      return inst_width + 'px';
-    })
-    .attr('height', params.matrix.y_scale.rangeBand())
-    .style('fill', function(d) {
-      var inst_level = params.group_level.row;
-      return get_group_color(d.group[inst_level]);
-    })
-    .attr('x', function() {
-      var inst_offset = params.class_room.symbol_width + 1;
-      return inst_offset + 'px';
-    });
-
-    d3.selectAll('.row_class_rect')
-      .transition().delay(delays.update).duration(duration)
-      .attr('width', function() {
-        var inst_width = params.class_room.symbol_width - 1;
-        return inst_width + 'px';
-      })
-      .attr('height', params.matrix.y_scale.rangeBand())
-      .attr('x', function() {
-        var inst_offset = params.class_room.symbol_width + 1;
-        return inst_offset + 'px';
+      .selectAll('g')
+      .data(row_nodes, function(d){return d.name;})
+      .enter()
+      .append('g')
+      .attr('class', 'row_viz_group')
+      .attr('transform', function(d, index) {
+        return 'translate(0, ' + params.matrix.y_scale(index) + ')';
       });
 
-    // .attr('class', 'row_class_rect')
-    // .attr('width', params.matrix.x_scale.rangeBand())
-    // .attr('height', function() {
-    //   var inst_height = params.class_room.row - 1;
-    //   return inst_height;
-    // })
-    // .style('fill', function(d) {
-    //   var inst_level = params.group_level.row;
-    //   return get_group_color(d.group[inst_level]);
-    // });
+  var tmp_dendrogram = Dendrogram('row', params, row_triangle_ini_group, duration);
+  var tmp_dendrogram = Dendrogram('col', params, row_triangle_ini_group, duration);
 
 }
 
@@ -4052,7 +4049,7 @@ function Viz(params) {
     if (params.viz.show_dendrogram) {
 
       // make row dendrogram
-      row_dendrogram = Dendrogram('row', params, row_triangle_ini_group);
+      row_dendrogram = Dendrogram('row', params, 0);
 
       // add class label under column label
       var col_class = container_all_col
@@ -4071,13 +4068,13 @@ function Viz(params) {
       .data(col_nodes, function(d){return d.name;})
       .enter()
       .append('g')
-      .attr('class', 'col_class_group')
+      .attr('class', 'col_viz_group')
       .attr('transform', function(d, index) {
         return 'translate(' + params.matrix.x_scale(index) + ',0)';
       });
 
       // make col dendrogram
-      col_dendrogram = Dendrogram('col', params, col_class_ini_group);
+      col_dendrogram = Dendrogram('col', params, 0);
 
       // optional column callback on click
       if (typeof params.click_group === 'function') {
@@ -4325,7 +4322,7 @@ function Reorder(params){
         });
 
       // reorder col_class groups
-      d3.selectAll('.col_class_group')
+      d3.selectAll('.col_viz_group')
         .transition().duration(2500)
         .attr('transform', function(d, i) {
           return 'translate(' + params.matrix.x_scale(i) + ',0)';
@@ -4361,7 +4358,7 @@ function Reorder(params){
         });
 
       // reorder col_class groups
-      d3.selectAll('.col_class_group')
+      d3.selectAll('.col_viz_group')
         .attr('transform', function(d, i) {
           return 'translate(' + params.matrix.x_scale(i) + ',0)';
         });
@@ -4433,7 +4430,7 @@ function Reorder(params){
       });
 
     // reorder col_class groups
-    d3.selectAll('.col_class_group')
+    d3.selectAll('.col_viz_group')
       .transition().duration(2500)
       .attr('transform', function(data, index) {
         return 'translate(' + params.matrix.x_scale(index) + ',0)';

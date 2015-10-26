@@ -72,7 +72,7 @@ function Viz(params) {
     if (params.viz.show_dendrogram) {
 
       // make row dendrogram
-      row_dendrogram = Dendrogram('row', params, row_triangle_ini_group);
+      row_dendrogram = Dendrogram('row', params, 0);
 
       // add class label under column label
       var col_class = container_all_col
@@ -91,13 +91,13 @@ function Viz(params) {
       .data(col_nodes, function(d){return d.name;})
       .enter()
       .append('g')
-      .attr('class', 'col_class_group')
+      .attr('class', 'col_viz_group')
       .attr('transform', function(d, index) {
         return 'translate(' + params.matrix.x_scale(index) + ',0)';
       });
 
       // make col dendrogram
-      col_dendrogram = Dendrogram('col', params, col_class_ini_group);
+      col_dendrogram = Dendrogram('col', params, 0);
 
       // optional column callback on click
       if (typeof params.click_group === 'function') {

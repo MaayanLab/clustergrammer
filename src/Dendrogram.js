@@ -1,7 +1,7 @@
 
 /* Dendrogram color bar.
  */
-function Dendrogram(type, params, elem) {
+function Dendrogram(type, params, delay_dendro) {
 
   var group_colors = [],
     dom_class,
@@ -9,10 +9,9 @@ function Dendrogram(type, params, elem) {
 
   build_color_groups();
 
-
   if (type === 'row') {
     dom_class = 'row_class_rect';
-    build_row_dendro();
+    build_row_dendro(delay_dendro);
   } else {
     dom_class = 'col_class_rect';
     build_col_dendro();
@@ -52,42 +51,92 @@ function Dendrogram(type, params, elem) {
     return group_colors[j];
   }
 
-  function build_row_dendro() {
+  function build_row_dendro(delay_dendro) {
 
-    elem
-      .append('rect')
-      .attr('class', dom_class)
-      .attr('width', function() {
-        var inst_width = params.class_room.symbol_width - 1;
-        return inst_width + 'px';
+    // add dendrogram rectangles if necessary 
+    d3.selectAll('.row_viz_group')
+      .each(function(d){
+        if (d3.select(this).select('rect').empty()){
+
+          d3.select(this)
+            .append('rect')
+            .attr('class', dom_class)
+            .attr('width', function() {
+              var inst_width = params.class_room.symbol_width - 1;
+              return inst_width + 'px';
+            })
+            .attr('height', params.matrix.y_scale.rangeBand())
+            .style('fill', function(d) {
+              var inst_level = params.group_level.row;
+              return get_group_color(d.group[inst_level]);
+            })
+            .attr('x', function() {
+              var inst_offset = params.class_room.symbol_width + 1;
+              return inst_offset + 'px';
+            });
+
+        }  else {
+
+          d3.select(this).select('rect')
+            .attr('width', function() {
+              var inst_width = params.class_room.symbol_width - 1;
+              return inst_width + 'px';
+            })
+            .attr('height', params.matrix.y_scale.rangeBand())
+            .style('fill', function(d) {
+              var inst_level = params.group_level.row;
+              return get_group_color(d.group[inst_level]);
+            })
+            .attr('x', function() {
+              var inst_offset = params.class_room.symbol_width + 1;
+              return inst_offset + 'px';
+            })
+            .attr('opacity',0.25)
+            .transition().delay(1000).duration(1000)
+            .attr('opacity',1); 
+        }
       })
-      .attr('height', params.matrix.y_scale.rangeBand())
-      .style('fill', function(d) {
-        var inst_level = params.group_level.row;
-        return get_group_color(d.group[inst_level]);
-      })
-      .attr('x', function() {
-        var inst_offset = params.class_room.symbol_width + 1;
-        return inst_offset + 'px';
-      });
 
   }
 
   function build_col_dendro() {
 
-    elem
-      .append('rect')
-      .attr('class', dom_class)
-      .attr('width', params.matrix.x_scale.rangeBand())
-      .attr('height', function() {
-        var inst_height = params.class_room.col - 1;
-        return inst_height;
-      })
-      .style('fill', function(d) {
-        var inst_level = params.group_level.col;
-        return get_group_color(d.group[inst_level]);
-      });
+    d3.selectAll('.col_viz_group')
+      .each(function(d){
 
+        if (d3.select(this).select('rect').empty()){
+
+          d3.select(this)
+            .append('rect')
+            .attr('class', dom_class)
+            .attr('width', params.matrix.x_scale.rangeBand())
+            .attr('height', function() {
+              var inst_height = params.class_room.col - 1;
+              return inst_height;
+            })
+            .style('fill', function(d) {
+              var inst_level = params.group_level.col;
+              return get_group_color(d.group[inst_level]);
+            });
+
+        } else {
+
+          d3.select(this).select('rect')
+            .attr('width', params.matrix.x_scale.rangeBand())
+            .attr('height', function() {
+              var inst_height = params.class_room.col - 1;
+              return inst_height;
+            })
+            .style('fill', function(d) {
+              var inst_level = params.group_level.col;
+              return get_group_color(d.group[inst_level]);
+            })
+            .attr('opacity',0.25)
+            .transition().delay(1000).duration(1000)
+            .attr('opacity',1);
+        }
+
+    })
   }
 
   // add callback functions 

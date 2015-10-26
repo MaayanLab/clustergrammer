@@ -486,7 +486,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
         return inst_height;
       });
 
-    svg_group.selectAll('.col_class_group')
+    svg_group.selectAll('.col_viz_group')
       .data(col_nodes, function(d){return d.name;})
       .transition().delay(delays.update).duration(duration)
       .attr('transform', function(d, index) {

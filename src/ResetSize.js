@@ -566,7 +566,7 @@
           return inst_height;
         });
 
-      svg_group.selectAll('.col_class_group')
+      svg_group.selectAll('.col_viz_group')
         .attr('transform', function(d, index) {
           return 'translate(' + params.matrix.x_scale(index) + ',0)';
         });
