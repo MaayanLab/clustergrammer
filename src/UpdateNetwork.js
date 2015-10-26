@@ -201,6 +201,7 @@ function enter_exit_update(params, network_data, delays){
   var container_all_col      = labels.make_cols( params, col_nodes, reorder, duration );
 
   var tmp_dendrogram = Dendrogram('row', params, row_triangle_ini_group);
+  // var tmp_dendrogram = Dendrogram('col', params, row_triangle_ini_group);
 
   var get_group_color = tmp_dendrogram.get_group_color;
 

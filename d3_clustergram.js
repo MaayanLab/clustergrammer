@@ -249,6 +249,7 @@ function Dendrogram(type, params, elem) {
 
   build_color_groups();
 
+  
   if (type === 'row') {
     dom_class = 'row_class_rect';
     build_row_dendro();
@@ -1587,7 +1588,7 @@ function Labels(args){
     // container to hold text row labels 
     row_container
       .append('g')
-      .attr('id','row_label_zoom_container')
+      .attr('id','row_label_outer_container')
       .attr('transform', 'translate(' + params.norm_label.width.row + ',0)')
       .append('g')
       .attr('id', 'row_labels');
@@ -1734,15 +1735,10 @@ function Labels(args){
         });
     }
 
-    console.log(row_nodes)
-
-
     // groups that hold classification triangle and colorbar rect  
     var row_viz_group = d3.select('#row_viz_zoom_container')
       .selectAll('g')
-      .data(row_nodes, function(d){
-        console.log('checking names')
-        return d.name;})
+      .data(row_nodes, function(d){return d.name;})
       .enter()
       .append('g')
       .attr('class', 'row_viz_group')
@@ -1750,10 +1746,7 @@ function Labels(args){
         return 'translate(0, ' + params.matrix.y_scale(index) + ')';
       });
 
-
     // add triangles
-    console.log('here here ')
-
     row_viz_group
       .append('path')
       .attr('d', function(d) {
@@ -1773,9 +1766,11 @@ function Labels(args){
         if (params.labels.show_categories) {
           inst_color = params.labels.class_colors.row[d.cl];
         }
-        console.log(d.name);
         return inst_color;
-      });
+      })
+      .style('opacity',0)
+      .transition().delay(text_delay).duration(text_delay)
+      .style('opacity',1);
 
 
       if (Utils.has( params.network_data.row_nodes[0], 'value')) {
@@ -1910,7 +1905,7 @@ function Labels(args){
       // col labels
       container_all_col
         .append('g')
-        .attr('class','label_container')
+        .attr('id','col_label_outer_container')
         // position the outer col label group
         .attr('transform', 'translate(0,' + params.norm_label.width.col + ')')
         .append('g')
@@ -1930,7 +1925,7 @@ function Labels(args){
         .attr('height', params.norm_label.background.col);
 
       // col labels
-      container_all_col.select('.label_container')
+      container_all_col.select('#col_label_outer_container')
 
     }
 
@@ -2097,7 +2092,10 @@ function Labels(args){
           inst_color = params.labels.class_colors.col[d.cl];
         }
       return inst_color;
-      });
+      })
+      .style('opacity',0)
+      .transition().delay(text_delay).duration(text_delay)
+      .style('opacity',1);
 
 
     // get max value
@@ -2708,7 +2706,7 @@ function Spillover( params, container_all_col ){
       .attr('height', 30*params.viz.clust.dim.height + 'px');
 
     svg_group.select('#row_container')
-      .select('#row_label_zoom_container')
+      .select('#row_label_outer_container')
       .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
 
     svg_group.selectAll('.row_label_text')
@@ -2823,7 +2821,7 @@ function Spillover( params, container_all_col ){
         .attr('height', params.norm_label.background.col);
 
       svg_group.select('#col_container')
-        .select('.label_container')
+        .select('.col_label_outer_container')
         .attr('transform', 'translate(0,' + params.norm_label.width.col + ')');
 
       // offset click group column label
@@ -3303,7 +3301,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
     .attr('height', 30*params.viz.clust.dim.height + 'px');
 
   svg_group.select('#row_container')
-    .select('#row_label_zoom_container')
+    .select('#row_label_outer_container')
     .transition().delay(delays.update).duration(duration)
     .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
 
@@ -3432,7 +3430,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
 
     svg_group.select('#col_container')
       .transition().delay(delays.update).duration(duration)
-      .select('.label_container')
+      .select('.col_label_outer_container')
       .attr('transform', 'translate(0,' + params.norm_label.width.col + ')');
 
     // offset click group column label
@@ -3903,6 +3901,7 @@ function enter_exit_update(params, network_data, delays){
   var container_all_col      = labels.make_cols( params, col_nodes, reorder, duration );
 
   var tmp_dendrogram = Dendrogram('row', params, row_triangle_ini_group);
+  // var tmp_dendrogram = Dendrogram('col', params, row_triangle_ini_group);
 
   var get_group_color = tmp_dendrogram.get_group_color;
 

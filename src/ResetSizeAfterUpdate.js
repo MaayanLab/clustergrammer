@@ -204,7 +204,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
     .attr('height', 30*params.viz.clust.dim.height + 'px');
 
   svg_group.select('#row_container')
-    .select('#row_label_zoom_container')
+    .select('#row_label_outer_container')
     .transition().delay(delays.update).duration(duration)
     .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
 
@@ -333,7 +333,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
 
     svg_group.select('#col_container')
       .transition().delay(delays.update).duration(duration)
-      .select('.label_container')
+      .select('.col_label_outer_container')
       .attr('transform', 'translate(0,' + params.norm_label.width.col + ')');
 
     // offset click group column label

@@ -9,6 +9,7 @@ function Dendrogram(type, params, elem) {
 
   build_color_groups();
 
+  
   if (type === 'row') {
     dom_class = 'row_class_rect';
     build_row_dendro();
