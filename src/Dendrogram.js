@@ -83,16 +83,16 @@ function Dendrogram(type, params, delay_dendro) {
               return inst_width + 'px';
             })
             .attr('height', params.matrix.y_scale.rangeBand())
-            .style('fill', function(d) {
-              var inst_level = params.group_level.row;
-              return get_group_color(d.group[inst_level]);
-            })
             .attr('x', function() {
               var inst_offset = params.class_room.symbol_width + 1;
               return inst_offset + 'px';
             })
             .attr('opacity',0.25)
             .transition().delay(1000).duration(1000)
+            .style('fill', function(d) {
+              var inst_level = params.group_level.row;
+              return get_group_color(d.group[inst_level]);
+            })
             .attr('opacity',1); 
         }
       })
@@ -127,12 +127,12 @@ function Dendrogram(type, params, delay_dendro) {
               var inst_height = params.class_room.col - 1;
               return inst_height;
             })
+            .attr('opacity',0.25)
+            .transition().delay(1000).duration(1000)
             .style('fill', function(d) {
               var inst_level = params.group_level.col;
               return get_group_color(d.group[inst_level]);
             })
-            .attr('opacity',0.25)
-            .transition().delay(1000).duration(1000)
             .attr('opacity',1);
         }
 
