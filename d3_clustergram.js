@@ -1651,14 +1651,9 @@ function Labels(args){
         });
     }
 
-
     // append rectangle behind text
     row_labels
-      .insert('rect', 'text')
-      .attr('x', -10)
-      .attr('y', 0)
-      .attr('width', 10)
-      .attr('height', 10)
+      .insert('rect')
       .style('opacity', 0);
 
     // append row label text
@@ -1739,23 +1734,29 @@ function Labels(args){
         });
     }
 
+    console.log(row_nodes)
+
 
     // groups that hold classification triangle and colorbar rect  
-    var row_triangle_group = row_viz_outer_container
+    var row_viz_group = d3.select('#row_viz_zoom_container')
       .selectAll('g')
-      .data(row_nodes, function(d){return d.name;})
+      .data(row_nodes, function(d){
+        console.log('checking names')
+        return d.name;})
       .enter()
       .append('g')
-      .attr('class', 'row_triangle_group')
+      .attr('class', 'row_viz_group')
       .attr('transform', function(d, index) {
         return 'translate(0, ' + params.matrix.y_scale(index) + ')';
       });
 
 
     // add triangles
-    row_triangle_group
+    console.log('here here ')
+
+    row_viz_group
       .append('path')
-      .attr('d', function() {
+      .attr('d', function(d) {
         var origin_x = params.class_room.symbol_width - 1;
         var origin_y = 0;
         var mid_x = 1;
@@ -1772,6 +1773,7 @@ function Labels(args){
         if (params.labels.show_categories) {
           inst_color = params.labels.class_colors.row[d.cl];
         }
+        console.log(d.name);
         return inst_color;
       });
 
@@ -1873,8 +1875,8 @@ function Labels(args){
       // the font-size is set up to not allow spillover
       // it can spillover during zooming and must be constrained 
 
-      // return row_triangle_group so that the dendrogram can be made
-      return row_triangle_group;
+      // return row_viz_group so that the dendrogram can be made
+      return row_viz_group;
   }
 
   // make col labels
@@ -2765,12 +2767,12 @@ function Spillover( params, container_all_col ){
         return inst_height;
       });
 
-    svg_group.selectAll('.row_triangle_group')
+    svg_group.selectAll('.row_viz_group')
       .attr('transform', function(d, index) {
           return 'translate(0, ' + params.matrix.y_scale(index) + ')';
         });
 
-    svg_group.selectAll('.row_triangle_group')
+    svg_group.selectAll('.row_viz_group')
       .select('path')
       .attr('d', function() {
         var origin_x = params.class_room.symbol_width - 1;
@@ -3367,14 +3369,14 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
       return inst_height;
     });
 
-  svg_group.selectAll('.row_triangle_group')
+  svg_group.selectAll('.row_viz_group')
     .data(row_nodes, function(d){return d.name;})
     .transition().delay(delays.update).duration(duration)
     .attr('transform', function(d, index) {
         return 'translate(0, ' + params.matrix.y_scale(index) + ')';
       });
 
-  svg_group.selectAll('.row_triangle_group')
+  svg_group.selectAll('.row_viz_group')
     .select('path')
     .transition().delay(delays.update).duration(duration)
     .attr('d', function() {
@@ -3826,7 +3828,7 @@ function enter_exit_update(params, network_data, delays){
     .remove();      
 
   // remove row triangles and colorbars 
-  d3.selectAll('.row_triangle_group')
+  d3.selectAll('.row_viz_group')
     .data(row_nodes, function(d){return d.name;})
     .exit()
     .transition().duration(duration)
@@ -3928,11 +3930,11 @@ function enter_exit_update(params, network_data, delays){
     });
 
   d3.select('#row_viz_zoom_container')
-    .selectAll('.row_triangle_group')
+    .selectAll('.row_viz_group')
     .data(row_nodes, function(d){return d.name;})
     .enter()
     .append('g')
-    .attr('class','row_triangle_group')
+    .attr('class','row_viz_group')
     .attr('transform', function(d, index) {
         return 'translate(0,' + params.matrix.y_scale(index) + ')';
       })
@@ -4320,7 +4322,7 @@ function Reorder(params){
         });
 
       // reorder row_label_triangle groups
-      d3.selectAll('.row_triangle_group')
+      d3.selectAll('.row_viz_group')
         .transition().duration(2500)
         .attr('transform', function(d, i) {
           return 'translate(0,' + params.matrix.y_scale(i) + ')';
@@ -4357,7 +4359,7 @@ function Reorder(params){
         });
 
       // reorder row_label_triangle groups
-      d3.selectAll('.row_triangle_group')
+      d3.selectAll('.row_viz_group')
         .attr('transform', function(d, i) {
           return 'translate(0,' + params.matrix.y_scale(i) + ')';
         });
@@ -4512,7 +4514,7 @@ function Reorder(params){
       });
 
     // reorder row_label_triangle groups
-    d3.selectAll('.row_triangle_group')
+    d3.selectAll('.row_viz_group')
       .transition().duration(2500)
       .attr('transform', function(d, index) {
         return 'translate(0,' + params.matrix.y_scale(index) + ')';

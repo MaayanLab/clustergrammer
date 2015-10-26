@@ -56,7 +56,7 @@ function Reorder(params){
         });
 
       // reorder row_label_triangle groups
-      d3.selectAll('.row_triangle_group')
+      d3.selectAll('.row_viz_group')
         .transition().duration(2500)
         .attr('transform', function(d, i) {
           return 'translate(0,' + params.matrix.y_scale(i) + ')';
@@ -93,7 +93,7 @@ function Reorder(params){
         });
 
       // reorder row_label_triangle groups
-      d3.selectAll('.row_triangle_group')
+      d3.selectAll('.row_viz_group')
         .attr('transform', function(d, i) {
           return 'translate(0,' + params.matrix.y_scale(i) + ')';
         });
@@ -248,7 +248,7 @@ function Reorder(params){
       });
 
     // reorder row_label_triangle groups
-    d3.selectAll('.row_triangle_group')
+    d3.selectAll('.row_viz_group')
       .transition().duration(2500)
       .attr('transform', function(d, index) {
         return 'translate(0,' + params.matrix.y_scale(index) + ')';

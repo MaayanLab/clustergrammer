@@ -368,12 +368,12 @@
         return inst_height;
       });
 
-    svg_group.selectAll('.row_triangle_group')
+    svg_group.selectAll('.row_viz_group')
       .attr('transform', function(d, index) {
           return 'translate(0, ' + params.matrix.y_scale(index) + ')';
         });
 
-    svg_group.selectAll('.row_triangle_group')
+    svg_group.selectAll('.row_viz_group')
       .select('path')
       .attr('d', function() {
         var origin_x = params.class_room.symbol_width - 1;

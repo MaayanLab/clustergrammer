@@ -270,14 +270,14 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
       return inst_height;
     });
 
-  svg_group.selectAll('.row_triangle_group')
+  svg_group.selectAll('.row_viz_group')
     .data(row_nodes, function(d){return d.name;})
     .transition().delay(delays.update).duration(duration)
     .attr('transform', function(d, index) {
         return 'translate(0, ' + params.matrix.y_scale(index) + ')';
       });
 
-  svg_group.selectAll('.row_triangle_group')
+  svg_group.selectAll('.row_viz_group')
     .select('path')
     .transition().delay(delays.update).duration(duration)
     .attr('d', function() {

@@ -126,7 +126,7 @@ function enter_exit_update(params, network_data, delays){
     .remove();      
 
   // remove row triangles and colorbars 
-  d3.selectAll('.row_triangle_group')
+  d3.selectAll('.row_viz_group')
     .data(row_nodes, function(d){return d.name;})
     .exit()
     .transition().duration(duration)
@@ -228,11 +228,11 @@ function enter_exit_update(params, network_data, delays){
     });
 
   d3.select('#row_viz_zoom_container')
-    .selectAll('.row_triangle_group')
+    .selectAll('.row_viz_group')
     .data(row_nodes, function(d){return d.name;})
     .enter()
     .append('g')
-    .attr('class','row_triangle_group')
+    .attr('class','row_viz_group')
     .attr('transform', function(d, index) {
         return 'translate(0,' + params.matrix.y_scale(index) + ')';
       })
