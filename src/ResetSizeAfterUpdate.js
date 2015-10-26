@@ -15,7 +15,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
     .attr('transform', 'translate(' + [0, 0 + center_y] + ')' +
     ' scale(' + 1 + ',' + zoom_y + ')' + 'translate(' + [pan_dx,pan_dy] + ')');
 
-  d3.select('#row_labels')
+  d3.select('#row_label_zoom_container')
     .attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' +
     zoom_y + ',' + zoom_y + ')' + 'translate(' + [0, pan_dy] + ')');
 

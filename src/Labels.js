@@ -42,9 +42,9 @@ function Labels(args){
       .attr('id','row_label_outer_container')
       .attr('transform', 'translate(' + params.norm_label.width.row + ',0)')
       .append('g')
-      .attr('id', 'row_labels');
+      .attr('id', 'row_label_zoom_container');
 
-    var row_labels = d3.select('#row_labels')
+    var row_labels = d3.select('#row_label_zoom_container')
       .selectAll('g')
       .data(row_nodes, function(d){return d.name;})
       .enter()

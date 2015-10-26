@@ -84,7 +84,7 @@ function Zoom(params){
       zoom_x + ',' + zoom_y + ')');
 
     // transform row labels
-    d3.select('#row_labels')
+    d3.select('#row_label_zoom_container')
       .attr('transform', 'translate(' + [0, trans_y] + ') scale(' + zoom_y +
       ')');
 
@@ -228,7 +228,7 @@ function Zoom(params){
         ] + ')');
 
       // transform row labels
-      d3.select('#row_labels')
+      d3.select('#row_label_zoom_container')
         .transition()
         .duration(search_duration)
         .attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' +
@@ -272,7 +272,7 @@ function Zoom(params){
 
       // re-size of the highlighting rects
       /////////////////////////////////////////
-      d3.select('#row_labels')
+      d3.select('#row_label_zoom_container')
         .each(function() {
           // get the bounding box of the row label text
           var bbox = d3.select(this)

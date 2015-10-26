@@ -42,7 +42,7 @@ function Reorder(params){
         });
 
       // Move Row Labels
-      d3.select('#row_labels').selectAll('.row_label_text')
+      d3.select('#row_label_zoom_container').selectAll('.row_label_text')
         .transition().duration(2500)
         .attr('transform', function(d, i) {
           return 'translate(0,' + params.matrix.y_scale(i) + ')';
@@ -81,7 +81,7 @@ function Reorder(params){
         });
 
       // Move Row Labels
-      d3.select('#row_labels').selectAll('.row_label_text')
+      d3.select('#row_label_zoom_container').selectAll('.row_label_text')
         .attr('transform', function(d, i) {
           return 'translate(0,' + params.matrix.y_scale(i) + ')';
         });
@@ -255,7 +255,7 @@ function Reorder(params){
       });
 
     // Move Row Labels
-    d3.select('#row_labels').selectAll('.row_label_text')
+    d3.select('#row_label_zoom_container').selectAll('.row_label_text')
       .transition().duration(2500)
       .attr('transform', function(d, index) {
         return 'translate(0,' + params.matrix.y_scale(index) + ')';

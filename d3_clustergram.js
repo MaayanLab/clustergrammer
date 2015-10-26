@@ -1591,9 +1591,9 @@ function Labels(args){
       .attr('id','row_label_outer_container')
       .attr('transform', 'translate(' + params.norm_label.width.row + ',0)')
       .append('g')
-      .attr('id', 'row_labels');
+      .attr('id', 'row_label_zoom_container');
 
-    var row_labels = d3.select('#row_labels')
+    var row_labels = d3.select('#row_label_zoom_container')
       .selectAll('g')
       .data(row_nodes, function(d){return d.name;})
       .enter()
@@ -2435,7 +2435,7 @@ function Spillover( params, container_all_col ){
       .attr('transform', 'translate(' + [0, 0 + center_y] + ')' +
       ' scale(' + 1 + ',' + zoom_y + ')' + 'translate(' + [pan_dx,pan_dy] + ')');
 
-    d3.select('#row_labels')
+    d3.select('#row_label_zoom_container')
       .attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' +
       zoom_y + ',' + zoom_y + ')' + 'translate(' + [0, pan_dy] + ')');
 
@@ -3112,7 +3112,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
     .attr('transform', 'translate(' + [0, 0 + center_y] + ')' +
     ' scale(' + 1 + ',' + zoom_y + ')' + 'translate(' + [pan_dx,pan_dy] + ')');
 
-  d3.select('#row_labels')
+  d3.select('#row_label_zoom_container')
     .attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' +
     zoom_y + ',' + zoom_y + ')' + 'translate(' + [0, pan_dy] + ')');
 
@@ -4307,7 +4307,7 @@ function Reorder(params){
         });
 
       // Move Row Labels
-      d3.select('#row_labels').selectAll('.row_label_text')
+      d3.select('#row_label_zoom_container').selectAll('.row_label_text')
         .transition().duration(2500)
         .attr('transform', function(d, i) {
           return 'translate(0,' + params.matrix.y_scale(i) + ')';
@@ -4346,7 +4346,7 @@ function Reorder(params){
         });
 
       // Move Row Labels
-      d3.select('#row_labels').selectAll('.row_label_text')
+      d3.select('#row_label_zoom_container').selectAll('.row_label_text')
         .attr('transform', function(d, i) {
           return 'translate(0,' + params.matrix.y_scale(i) + ')';
         });
@@ -4520,7 +4520,7 @@ function Reorder(params){
       });
 
     // Move Row Labels
-    d3.select('#row_labels').selectAll('.row_label_text')
+    d3.select('#row_label_zoom_container').selectAll('.row_label_text')
       .transition().duration(2500)
       .attr('transform', function(d, index) {
         return 'translate(0,' + params.matrix.y_scale(index) + ')';
@@ -4712,7 +4712,7 @@ function Zoom(params){
       zoom_x + ',' + zoom_y + ')');
 
     // transform row labels
-    d3.select('#row_labels')
+    d3.select('#row_label_zoom_container')
       .attr('transform', 'translate(' + [0, trans_y] + ') scale(' + zoom_y +
       ')');
 
@@ -4856,7 +4856,7 @@ function Zoom(params){
         ] + ')');
 
       // transform row labels
-      d3.select('#row_labels')
+      d3.select('#row_label_zoom_container')
         .transition()
         .duration(search_duration)
         .attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' +
@@ -4900,7 +4900,7 @@ function Zoom(params){
 
       // re-size of the highlighting rects
       /////////////////////////////////////////
-      d3.select('#row_labels')
+      d3.select('#row_label_zoom_container')
         .each(function() {
           // get the bounding box of the row label text
           var bbox = d3.select(this)
