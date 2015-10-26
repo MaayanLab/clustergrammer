@@ -77,13 +77,13 @@ function Viz(params) {
       // add class label under column label
       var col_class = container_all_col
       .append('g')
-      // .attr('transform','translate(0,'+params.norm_label.width.col+')')
+      .attr('id','col_viz_outer_container')
       .attr('transform', function() {
         var inst_offset = params.norm_label.width.col + 2;
         return 'translate(0,' + inst_offset + ')';
       })
       .append('g')
-      .attr('id', 'col_viz_outer_container');
+      .attr('id', 'col_viz_zoom_container');
 
       // append groups - each will hold a classification rect
       var col_class_ini_group = col_class

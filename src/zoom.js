@@ -101,7 +101,7 @@ function Zoom(params){
       ')');
 
     // transform col_class
-    d3.select('#col_viz_outer_container')
+    d3.select('#col_viz_zoom_container')
       .attr('transform', 'translate(' + [trans_x, 0] + ') scale(' + zoom_x +
       ',1)');
 
@@ -251,7 +251,7 @@ function Zoom(params){
         ] + ')');
 
       // transform col_class
-      d3.select('#col_viz_outer_container')
+      d3.select('#col_viz_zoom_container')
         .transition()
         .duration(search_duration)
         .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [

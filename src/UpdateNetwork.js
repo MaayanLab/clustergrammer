@@ -207,7 +207,7 @@ function enter_exit_update(params, network_data, delays){
 
   // update dendrogram 
   
-  d3.select('#col_viz_outer_container')
+  d3.select('#col_viz_zoom_container')
     .selectAll('.col_class_group')
     .data(col_nodes, function(d){return d.name;})
     .enter()

@@ -2445,7 +2445,7 @@ function Spillover( params, container_all_col ){
     d3.select('#col_label_zoom_container')
       .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [pan_dx, 0] + ')');
 
-    d3.select('#col_viz_outer_container')
+    d3.select('#col_viz_zoom_container')
       .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [pan_dx, 0] + ')');
 
     // set y translate: center_y is positive, positive moves the visualization down
@@ -3122,7 +3122,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
   d3.select('#col_label_zoom_container')
     .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [pan_dx, 0] + ')');
 
-  d3.select('#col_viz_outer_container')
+  d3.select('#col_viz_zoom_container')
     .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [pan_dx, 0] + ')');
 
   // set y translate: center_y is positive, positive moves the visualization down
@@ -3906,7 +3906,7 @@ function enter_exit_update(params, network_data, delays){
 
   // update dendrogram 
   
-  d3.select('#col_viz_outer_container')
+  d3.select('#col_viz_zoom_container')
     .selectAll('.col_class_group')
     .data(col_nodes, function(d){return d.name;})
     .enter()
@@ -4057,13 +4057,13 @@ function Viz(params) {
       // add class label under column label
       var col_class = container_all_col
       .append('g')
-      // .attr('transform','translate(0,'+params.norm_label.width.col+')')
+      .attr('id','col_viz_outer_container')
       .attr('transform', function() {
         var inst_offset = params.norm_label.width.col + 2;
         return 'translate(0,' + inst_offset + ')';
       })
       .append('g')
-      .attr('id', 'col_viz_outer_container');
+      .attr('id', 'col_viz_zoom_container');
 
       // append groups - each will hold a classification rect
       var col_class_ini_group = col_class
@@ -4726,7 +4726,7 @@ function Zoom(params){
       ')');
 
     // transform col_class
-    d3.select('#col_viz_outer_container')
+    d3.select('#col_viz_zoom_container')
       .attr('transform', 'translate(' + [trans_x, 0] + ') scale(' + zoom_x +
       ',1)');
 
@@ -4876,7 +4876,7 @@ function Zoom(params){
         ] + ')');
 
       // transform col_class
-      d3.select('#col_viz_outer_container')
+      d3.select('#col_viz_zoom_container')
         .transition()
         .duration(search_duration)
         .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [
