@@ -83,9 +83,7 @@ function Viz(params) {
         return 'translate(0,' + inst_offset + ')';
       })
       .append('g')
-      // shift down 1px
-      // .attr('transform','translate(0,2)')
-      .attr('id', 'col_class');
+      .attr('id', 'col_viz_outer_container');
 
       // append groups - each will hold a classification rect
       var col_class_ini_group = col_class

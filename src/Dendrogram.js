@@ -9,7 +9,7 @@ function Dendrogram(type, params, elem) {
 
   build_color_groups();
 
-  
+
   if (type === 'row') {
     dom_class = 'row_class_rect';
     build_row_dendro();
@@ -75,7 +75,6 @@ function Dendrogram(type, params, elem) {
 
   function build_col_dendro() {
 
-    // d3.select('#col_class')
     elem
       .append('rect')
       .attr('class', dom_class)

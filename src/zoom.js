@@ -96,12 +96,12 @@ function Zoom(params){
 
     // transform col labels
     // move down col labels as zooming occurs, subtract trans_x - 20 almost works
-    d3.select('#col_labels')
+    d3.select('#col_label_zoom_container')
       .attr('transform', 'translate(' + [trans_x, 0] + ') scale(' + zoom_x +
       ')');
 
     // transform col_class
-    d3.select('#col_class')
+    d3.select('#col_viz_outer_container')
       .attr('transform', 'translate(' + [trans_x, 0] + ') scale(' + zoom_x +
       ',1)');
 
@@ -243,7 +243,7 @@ function Zoom(params){
         1 + ',' + zoom_y + ')' + 'translate(' + [0, pan_dy] + ')');
 
       // transform col labels
-      d3.select('#col_labels')
+      d3.select('#col_label_zoom_container')
         .transition()
         .duration(search_duration)
         .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [
@@ -251,7 +251,7 @@ function Zoom(params){
         ] + ')');
 
       // transform col_class
-      d3.select('#col_class')
+      d3.select('#col_viz_outer_container')
         .transition()
         .duration(search_duration)
         .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [

@@ -46,10 +46,10 @@
       .attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' +
       1 + ',' + zoom_y + ')' + 'translate(' + [0, pan_dy] + ')');
 
-    d3.select('#col_labels')
+    d3.select('#col_label_zoom_container')
       .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [pan_dx, 0] + ')');
 
-    d3.select('#col_class')
+    d3.select('#col_viz_outer_container')
       .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [pan_dx, 0] + ')');
 
     // set y translate: center_y is positive, positive moves the visualization down

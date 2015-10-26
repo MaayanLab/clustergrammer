@@ -249,7 +249,7 @@ function Dendrogram(type, params, elem) {
 
   build_color_groups();
 
-  
+
   if (type === 'row') {
     dom_class = 'row_class_rect';
     build_row_dendro();
@@ -315,7 +315,6 @@ function Dendrogram(type, params, elem) {
 
   function build_col_dendro() {
 
-    // d3.select('#col_class')
     elem
       .append('rect')
       .attr('class', dom_class)
@@ -1909,7 +1908,7 @@ function Labels(args){
         // position the outer col label group
         .attr('transform', 'translate(0,' + params.norm_label.width.col + ')')
         .append('g')
-        .attr('id', 'col_labels');
+        .attr('id', 'col_label_zoom_container');
 
     } else {
       
@@ -1931,7 +1930,7 @@ function Labels(args){
 
 
     // add main column label group
-    var col_label_obj = d3.select('#col_labels')
+    var col_label_obj = d3.select('#col_label_zoom_container')
       .selectAll('.col_label_text')
       .data(col_nodes, function(d){return d.name;})
       .enter()
@@ -2443,10 +2442,10 @@ function Spillover( params, container_all_col ){
       .attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' +
       1 + ',' + zoom_y + ')' + 'translate(' + [0, pan_dy] + ')');
 
-    d3.select('#col_labels')
+    d3.select('#col_label_zoom_container')
       .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [pan_dx, 0] + ')');
 
-    d3.select('#col_class')
+    d3.select('#col_viz_outer_container')
       .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [pan_dx, 0] + ')');
 
     // set y translate: center_y is positive, positive moves the visualization down
@@ -3120,10 +3119,10 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
     .attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' +
     1 + ',' + zoom_y + ')' + 'translate(' + [0, pan_dy] + ')');
 
-  d3.select('#col_labels')
+  d3.select('#col_label_zoom_container')
     .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [pan_dx, 0] + ')');
 
-  d3.select('#col_class')
+  d3.select('#col_viz_outer_container')
     .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [pan_dx, 0] + ')');
 
   // set y translate: center_y is positive, positive moves the visualization down
@@ -3907,7 +3906,7 @@ function enter_exit_update(params, network_data, delays){
 
   // update dendrogram 
   
-  d3.select('#col_class')
+  d3.select('#col_viz_outer_container')
     .selectAll('.col_class_group')
     .data(col_nodes, function(d){return d.name;})
     .enter()
@@ -4064,9 +4063,7 @@ function Viz(params) {
         return 'translate(0,' + inst_offset + ')';
       })
       .append('g')
-      // shift down 1px
-      // .attr('transform','translate(0,2)')
-      .attr('id', 'col_class');
+      .attr('id', 'col_viz_outer_container');
 
       // append groups - each will hold a classification rect
       var col_class_ini_group = col_class
@@ -4314,7 +4311,7 @@ function Reorder(params){
         });
 
       // t.selectAll('.column')
-      d3.select('#col_labels').selectAll('.col_label_text')
+      d3.select('#col_label_zoom_container').selectAll('.col_label_text')
         .transition().duration(2500)
         .attr('transform', function(d, i) {
           return 'translate(' + params.matrix.x_scale(i) + ') rotate(-90)';
@@ -4352,7 +4349,7 @@ function Reorder(params){
         });
 
       // t.selectAll('.column')
-      d3.select('#col_labels').selectAll('.col_label_text')
+      d3.select('#col_label_zoom_container').selectAll('.col_label_text')
         .attr('transform', function(d, i) {
           return 'translate(' + params.matrix.x_scale(i) + ') rotate(-90)';
         });
@@ -4429,7 +4426,7 @@ function Reorder(params){
       });
 
     // Move Col Labels
-    d3.select('#col_labels').selectAll('.col_label_text')
+    d3.select('#col_label_zoom_container').selectAll('.col_label_text')
       .transition().duration(2500)
       .attr('transform', function(data, index) {
         return 'translate(' + params.matrix.x_scale(index) + ')rotate(-90)';
@@ -4527,7 +4524,7 @@ function Reorder(params){
       });
 
     // t.selectAll('.column')
-    d3.select('#col_labels').selectAll('.col_label_text')
+    d3.select('#col_label_zoom_container').selectAll('.col_label_text')
       .transition().duration(2500)
       .attr('transform', function(d, index) {
         return 'translate(' + params.matrix.x_scale(index) + ')rotate(-90)';
@@ -4724,12 +4721,12 @@ function Zoom(params){
 
     // transform col labels
     // move down col labels as zooming occurs, subtract trans_x - 20 almost works
-    d3.select('#col_labels')
+    d3.select('#col_label_zoom_container')
       .attr('transform', 'translate(' + [trans_x, 0] + ') scale(' + zoom_x +
       ')');
 
     // transform col_class
-    d3.select('#col_class')
+    d3.select('#col_viz_outer_container')
       .attr('transform', 'translate(' + [trans_x, 0] + ') scale(' + zoom_x +
       ',1)');
 
@@ -4871,7 +4868,7 @@ function Zoom(params){
         1 + ',' + zoom_y + ')' + 'translate(' + [0, pan_dy] + ')');
 
       // transform col labels
-      d3.select('#col_labels')
+      d3.select('#col_label_zoom_container')
         .transition()
         .duration(search_duration)
         .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [
@@ -4879,7 +4876,7 @@ function Zoom(params){
         ] + ')');
 
       // transform col_class
-      d3.select('#col_class')
+      d3.select('#col_viz_outer_container')
         .transition()
         .duration(search_duration)
         .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [

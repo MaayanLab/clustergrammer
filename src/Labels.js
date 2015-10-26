@@ -360,7 +360,7 @@ function Labels(args){
         // position the outer col label group
         .attr('transform', 'translate(0,' + params.norm_label.width.col + ')')
         .append('g')
-        .attr('id', 'col_labels');
+        .attr('id', 'col_label_zoom_container');
 
     } else {
       
@@ -382,7 +382,7 @@ function Labels(args){
 
 
     // add main column label group
-    var col_label_obj = d3.select('#col_labels')
+    var col_label_obj = d3.select('#col_label_zoom_container')
       .selectAll('.col_label_text')
       .data(col_nodes, function(d){return d.name;})
       .enter()
