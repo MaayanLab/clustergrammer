@@ -197,13 +197,8 @@ function enter_exit_update(params, network_data, delays){
 
   var reorder = Reorder(params);
 
-  var row_triangle_ini_group = labels.make_rows( params, row_nodes, reorder );
-  var container_all_col      = labels.make_cols( params, col_nodes, reorder );
-
-  // var col_class_ini_group = d3.select('.col_class_group');
-
-  // var row_dendrogram = Dendrogram('row', params, row_triangle_ini_group);
-  // var col_dendrogram = Dendrogram('col', params, col_class_ini_group);
+  var row_triangle_ini_group = labels.make_rows( params, row_nodes, reorder, duration );
+  var container_all_col      = labels.make_cols( params, col_nodes, reorder, duration );
 
   var tmp_dendrogram = Dendrogram('row', params, row_triangle_ini_group);
 
@@ -232,7 +227,7 @@ function enter_exit_update(params, network_data, delays){
       return get_group_color(d.group[inst_level]);
     });
 
-  d3.select('#row_label_triangles')
+  d3.select('#row_viz_zoom_container')
     .selectAll('.row_triangle_group')
     .data(row_nodes, function(d){return d.name;})
     .enter()
@@ -268,8 +263,6 @@ function enter_exit_update(params, network_data, delays){
         var inst_offset = params.class_room.symbol_width + 1;
         return inst_offset + 'px';
       });
-
-    console.log(params.matrix.orders.ini_row)
 
     // .attr('class', 'row_class_rect')
     // .attr('width', params.matrix.x_scale.rangeBand())

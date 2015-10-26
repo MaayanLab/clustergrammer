@@ -59,6 +59,8 @@ function VizParams(config){
     params.viz.show_dendrogram = config.show_dendrogram;
     params.viz.tile_click_hlight = config.tile_click_hlight;
 
+    params.viz.uni_duration = 1000;
+
     // initialized clicked tile and rows
     params.matrix.click_hlight_x = -666;
     params.matrix.click_hlight_y = -666;
@@ -325,7 +327,7 @@ function VizParams(config){
     //////////////////////////////
 
     // border_width - width of white borders around tiles
-    params.viz.border_width = params.matrix.x_scale.rangeBand() / 60;
+    params.viz.border_width = params.matrix.x_scale.rangeBand() / 55;
 
     // zoom_switch from 1 to 2d zoom
     params.viz.zoom_switch = (params.viz.clust.dim.width / params.viz.num_col_nodes) / (params.viz.clust.dim.height / params.viz.num_row_nodes);

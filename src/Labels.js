@@ -1,18 +1,18 @@
 
 function Labels(args){
 
+  function normal_name(d){
+    var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
+    if (inst_name.length > params.labels.max_label_char){
+      inst_name = inst_name.substring(0,params.labels.max_label_char)+'..';
+    }
+    return inst_name;
+  }
 
   // make row labels
-  function make_rows(params, row_nodes, reorder){
+  function make_rows(params, row_nodes, reorder, text_delay){
 
-    function normal_name(d){
-      var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
-      if (inst_name.length > params.labels.max_label_char){
-        inst_name = inst_name.substring(0,params.labels.max_label_char)+'..';
-      }
-      return inst_name;
-    }
-
+    // row container holds all row text and row visualizations (triangles rects)
     if ( d3.select('#row_container').empty() ){
       var row_container = d3.select('#main_svg')
         .append('g')
@@ -25,20 +25,21 @@ function Labels(args){
         params.viz.clust.margin.top + ')');
     }
 
-    // white background
+    // white background - behind text and row visualizaitons 
     if (row_container.select('.white_bars').empty()){
       row_container
         .append('rect')
+        .attr('id','row_white_background')
         .attr('fill', params.viz.background_color)
         .attr('width', params.norm_label.background.row)
         .attr('height', 30*params.viz.clust.dim.height + 'px')
         .attr('class', 'white_bars');
     }
 
-    // container for row label groups
+    // container to hold text row labels 
     row_container
       .append('g')
-      .attr('class','label_container')
+      .attr('id','row_label_zoom_container')
       .attr('transform', 'translate(' + params.norm_label.width.row + ',0)')
       .append('g')
       .attr('id', 'row_labels');
@@ -118,7 +119,10 @@ function Labels(args){
       .attr('y', params.matrix.y_scale.rangeBand() * 0.75)
       .attr('text-anchor', 'end')
       .style('font-size', params.labels.default_fs_row + 'px')
-      .text(function(d){ return normal_name(d);});
+      .text(function(d){ return normal_name(d);})
+      .style('opacity',0)
+      .transition().delay(text_delay).duration(text_delay)
+      .style('opacity',1);
 
     // change the size of the highlighting rects
     row_labels
@@ -157,18 +161,17 @@ function Labels(args){
       }
     });
 
-    // row triangles
-    ///////////////////////
-    var row_label_viz = row_container
+    // row visualizations - classification triangles and colorbar rects 
+    var row_viz_outer_container = row_container
       .append('g')
-      .attr('id','row_label_viz')
+      .attr('id','row_viz_outer_container')
       .attr('transform', 'translate(' + params.norm_label.width.row + ',0)')
       .append('g')
-      .attr('id', 'row_label_triangles');
+      .attr('id', 'row_viz_zoom_container');
 
     // white background for triangle
-    if (row_label_viz.select('white_bars').empty()){
-      row_label_viz
+    if (row_viz_outer_container.select('white_bars').empty()){
+      row_viz_outer_container
         .append('rect')
         .attr('class','white_bars')
         .attr('fill', params.viz.background_color)
@@ -178,7 +181,7 @@ function Labels(args){
           return inst_height;
         });
     } else {
-      row_label_viz
+      row_viz_outer_container
         .select('class','white_bars')
         .attr('fill', params.viz.background_color)
         .attr('width', params.class_room.row + 'px')
@@ -189,8 +192,8 @@ function Labels(args){
     }
 
 
-    // groups to hold label_viz
-    var row_triangle_ini_group = row_label_viz
+    // groups that hold classification triangle and colorbar rect  
+    var row_triangle_group = row_viz_outer_container
       .selectAll('g')
       .data(row_nodes, function(d){return d.name;})
       .enter()
@@ -200,8 +203,9 @@ function Labels(args){
         return 'translate(0, ' + params.matrix.y_scale(index) + ')';
       });
 
+
     // add triangles
-    row_triangle_ini_group
+    row_triangle_group
       .append('path')
       .attr('d', function() {
         var origin_x = params.class_room.symbol_width - 1;
@@ -321,20 +325,14 @@ function Labels(args){
       // the font-size is set up to not allow spillover
       // it can spillover during zooming and must be constrained 
 
-      // return row_triangle_ini_group so that the dendrogram can be made
-      return row_triangle_ini_group;
+      // return row_triangle_group so that the dendrogram can be made
+      return row_triangle_group;
   }
 
   // make col labels
-  function make_cols(params, col_nodes, reorder){
+  function make_cols(params, col_nodes, reorder, text_delay){
 
-   function normal_name(d){
-      var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
-      if (inst_name.length > params.labels.max_label_char){
-        inst_name = inst_name.substring(0,params.labels.max_label_char)+'..';
-      }
-      return inst_name;
-    }
+   
 
     // offset click group column label
     var x_offset_click = params.matrix.x_scale.rangeBand() / 2 + params.viz.border_width;
@@ -429,7 +427,10 @@ function Labels(args){
       })
       // original font size
       .style('font-size', params.labels.default_fs_col + 'px')
-      .text(function(d){ return normal_name(d);});
+      .text(function(d){ return normal_name(d);})
+      .style('opacity',0)
+      .transition().delay(text_delay).duration(text_delay)
+      .style('opacity',1);
 
     if (params.labels.show_tooltips){
 

@@ -63,8 +63,8 @@ function Viz(params) {
     // define labels object
     var labels = Labels(params);
 
-    var row_triangle_ini_group = labels.make_rows( params, row_nodes, reorder );
-    var container_all_col = labels.make_cols( params, col_nodes, reorder );
+    var row_triangle_ini_group = labels.make_rows( params, row_nodes, reorder, 0 );
+    var container_all_col = labels.make_cols( params, col_nodes, reorder, 0 );
 
 
     // add group labels if necessary

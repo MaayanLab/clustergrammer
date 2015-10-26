@@ -19,7 +19,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
     .attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' +
     zoom_y + ',' + zoom_y + ')' + 'translate(' + [0, pan_dy] + ')');
 
-  d3.select('#row_label_triangles')
+  d3.select('#row_viz_zoom_container')
     .attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' +
     1 + ',' + zoom_y + ')' + 'translate(' + [0, pan_dy] + ')');
 
@@ -204,7 +204,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
     .attr('height', 30*params.viz.clust.dim.height + 'px');
 
   svg_group.select('#row_container')
-    .select('.label_container')
+    .select('#row_label_zoom_container')
     .transition().delay(delays.update).duration(duration)
     .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
 
@@ -257,11 +257,11 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
     }
   });
 
-  svg_group.select('#row_label_viz')
+  svg_group.select('#row_viz_outer_container')
     .transition().delay(delays.update).duration(duration)
     .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
 
-  svg_group.select('#row_label_viz')
+  svg_group.select('#row_viz_outer_container')
     .transition().delay(delays.update).duration(duration)
     .select('white_bars')
     .attr('width', params.class_room.row + 'px')
