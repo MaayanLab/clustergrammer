@@ -421,7 +421,6 @@ function VizParams(config){
 
   function initialize_resizing(params){
 
-     
     d3.select(window).on('resize', null);
 
     // resize window

@@ -9,6 +9,10 @@ function Zoom(params){
       trans_x = d3.event.translate[0] - params.viz.clust.margin.left,
       trans_y = d3.event.translate[1] - params.viz.clust.margin.top;
 
+    // console.log(params)
+    // console.log('manual zoom scale '+String(zoom_x))
+    // console.log(d3.event.scale)
+
     // apply transformation
     apply_transformation(trans_x, trans_y, zoom_x, zoom_y);
   }
@@ -144,9 +148,9 @@ function Zoom(params){
 
   }
 
-  function two_translate_zoom(pan_dx, pan_dy, fin_zoom) {
+  function two_translate_zoom(params, pan_dx, pan_dy, fin_zoom) {
 
-    console.log('running two translate zoom')
+    // console.log('running two translate zoom')
 
     // get parameters
     if (!params.viz.run_trans) {
@@ -266,6 +270,10 @@ function Zoom(params){
       // reset the zoom translate and zoom
       params.zoom.scale(zoom_y);
       params.zoom.translate([pan_dx, net_y_offset]);
+
+      console.log('resetting params.zoom.scale')
+      console.log('zoom_y '+String(zoom_y))
+
 
       var trans = true;
       constrain_font_size(trans);
@@ -474,7 +482,7 @@ function Zoom(params){
     d3.select('#main_svg')
       .on('dblclick', function() {
         // programmatic zoom reset
-        two_translate_zoom(0, 0, 1);
+        two_translate_zoom(params, 0, 0, 1);
       });
   }
 

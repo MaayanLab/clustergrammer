@@ -103,9 +103,6 @@ function Dendrogram(type, params, delay_dendro) {
 
     var col_nodes = params.network_data.col_nodes;
 
-    // console.log(col_nodes)
-
-    console.log('HERE')
     // append groups - each will hold a classification rect
     var col_class_ini_group = d3.select('#col_viz_zoom_container')
     .selectAll('g')

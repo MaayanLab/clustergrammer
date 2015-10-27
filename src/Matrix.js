@@ -176,7 +176,7 @@ function Matrix(network_data, svg_elem, params) {
   }
 
   // draw grid lines after drawing tiles
-  draw_grid_lines();
+  draw_grid_lines(row_nodes, col_nodes);
 
   function initialize_matrix() {
 
@@ -208,41 +208,6 @@ function Matrix(network_data, svg_elem, params) {
     });
 
     return matrix;
-  }
-
-  function draw_grid_lines() {
-
-    // append horizontal lines
-    clust_group
-      .selectAll('.horz_lines')
-      .data(row_nodes, function(d){return d.name;})
-      .enter()
-      .append('g')
-      .attr('class','horz_lines')
-      .attr('transform', function(d, index) {
-        return 'translate(0,' + params.matrix.y_scale(index) + ') rotate(0)';
-      })
-      .append('line')
-      .attr('x1',0)
-      .attr('x2',params.viz.clust.dim.width)
-      .style('stroke-width', params.viz.border_width/params.viz.zoom_switch+'px')
-      .style('stroke','white')
-
-    // append vertical line groups
-    clust_group
-      .selectAll('.vert_lines')
-      .data(col_nodes)
-      .enter()
-      .append('g')
-      .attr('class', 'vert_lines')
-      .attr('transform', function(d, index) {
-          return 'translate(' + params.matrix.x_scale(index) + ') rotate(-90)';
-      })
-      .append('line')
-      .attr('x1', 0)
-      .attr('x2', -params.viz.clust.dim.height)
-      .style('stroke-width', params.viz.border_width + 'px')
-      .style('stroke', 'white');
   }
 
   function draw_simple_tiles(clust_group, tile_data){

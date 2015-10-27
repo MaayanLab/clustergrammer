@@ -31,7 +31,7 @@ function Search(params, nodes, prop) {
       pan_dy = params.viz.clust.dim.height / 2 - inst_y_pos;
 
     // viz exposes two_translate_zoom from zoom object 
-    viz.two_translate_zoom(0, pan_dy, params.viz.zoom_switch);
+    viz.two_translate_zoom(params, 0, pan_dy, params.viz.zoom_switch);
   }
 
   function un_highlight_entities() {

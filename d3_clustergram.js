@@ -343,9 +343,6 @@ function Dendrogram(type, params, delay_dendro) {
 
     var col_nodes = params.network_data.col_nodes;
 
-    // console.log(col_nodes)
-
-    console.log('HERE')
     // append groups - each will hold a classification rect
     var col_class_ini_group = d3.select('#col_viz_zoom_container')
     .selectAll('g')
@@ -620,7 +617,7 @@ function Matrix(network_data, svg_elem, params) {
   }
 
   // draw grid lines after drawing tiles
-  draw_grid_lines();
+  draw_grid_lines(row_nodes, col_nodes);
 
   function initialize_matrix() {
 
@@ -652,41 +649,6 @@ function Matrix(network_data, svg_elem, params) {
     });
 
     return matrix;
-  }
-
-  function draw_grid_lines() {
-
-    // append horizontal lines
-    clust_group
-      .selectAll('.horz_lines')
-      .data(row_nodes, function(d){return d.name;})
-      .enter()
-      .append('g')
-      .attr('class','horz_lines')
-      .attr('transform', function(d, index) {
-        return 'translate(0,' + params.matrix.y_scale(index) + ') rotate(0)';
-      })
-      .append('line')
-      .attr('x1',0)
-      .attr('x2',params.viz.clust.dim.width)
-      .style('stroke-width', params.viz.border_width/params.viz.zoom_switch+'px')
-      .style('stroke','white')
-
-    // append vertical line groups
-    clust_group
-      .selectAll('.vert_lines')
-      .data(col_nodes)
-      .enter()
-      .append('g')
-      .attr('class', 'vert_lines')
-      .attr('transform', function(d, index) {
-          return 'translate(' + params.matrix.x_scale(index) + ') rotate(-90)';
-      })
-      .append('line')
-      .attr('x1', 0)
-      .attr('x2', -params.viz.clust.dim.height)
-      .style('stroke-width', params.viz.border_width + 'px')
-      .style('stroke', 'white');
   }
 
   function draw_simple_tiles(clust_group, tile_data){
@@ -1010,7 +972,7 @@ function Search(params, nodes, prop) {
       pan_dy = params.viz.clust.dim.height / 2 - inst_y_pos;
 
     // viz exposes two_translate_zoom from zoom object 
-    viz.two_translate_zoom(0, pan_dy, params.viz.zoom_switch);
+    viz.two_translate_zoom(params, 0, pan_dy, params.viz.zoom_switch);
   }
 
   function un_highlight_entities() {
@@ -1461,7 +1423,6 @@ function VizParams(config){
 
   function initialize_resizing(params){
 
-     
     d3.select(window).on('resize', null);
 
     // resize window
@@ -1651,7 +1612,6 @@ function Labels(params){
       .append('g')
       .attr('id', 'row_label_zoom_container');
 
-    console.log('\n\nmaking rows\n\n')
     var row_labels = d3.select('#row_label_zoom_container')
       .selectAll('g')
       .data(row_nodes, function(d){return d.name;})
@@ -2456,6 +2416,41 @@ function Spillover( params, container_all_col ){
 
 
 }
+
+function draw_grid_lines(row_nodes, col_nodes) {
+
+    // append horizontal lines
+    d3.select('#clust_group')
+      .selectAll('.horz_lines')
+      .data(row_nodes, function(d){return d.name;})
+      .enter()
+      .append('g')
+      .attr('class','horz_lines')
+      .attr('transform', function(d, index) {
+        return 'translate(0,' + params.matrix.y_scale(index) + ') rotate(0)';
+      })
+      .append('line')
+      .attr('x1',0)
+      .attr('x2',params.viz.clust.dim.width)
+      .style('stroke-width', params.viz.border_width/params.viz.zoom_switch+'px')
+      .style('stroke','white')
+
+    // append vertical line groups
+    d3.select('#clust_group')
+      .selectAll('.vert_lines')
+      .data(col_nodes)
+      .enter()
+      .append('g')
+      .attr('class', 'vert_lines')
+      .attr('transform', function(d, index) {
+          return 'translate(' + params.matrix.x_scale(index) + ') rotate(-90)';
+      })
+      .append('line')
+      .attr('x1', 0)
+      .attr('x2', -params.viz.clust.dim.height)
+      .style('stroke-width', params.viz.border_width + 'px')
+      .style('stroke', 'white');
+  }
   function reset_visualization_size(params) {
 
     // get outer_margins
@@ -3791,10 +3786,18 @@ function update_network(args){
   this.get_genes  = gene_search.get_entities;
   this.find_genes = gene_search.find_entities;
 
+  // initialize screen resizing - necesary for resizing with new params 
+  params.initialize_resizing(params);
+
+  // necessary to have zoom behavior on updated clustergram
+  // params.zoom corresponds to the zoomed function from the Zoom object 
   d3.select('#main_svg').call(params.zoom);
 
-  // disable default double click zoom 
-  d3.select('#main_svg').on('dblclick.zoom',null);
+  d3.select('#main_svg').on('dblclick.zoom',null);    
+
+  // initialize the double click behavior 
+  var zoom = Zoom(params);
+  zoom.ini_doubleclick();
 
 }
 
@@ -3926,8 +3929,6 @@ function enter_exit_update(params, network_data, delays){
 
   resize_after_update(params, row_nodes, col_nodes, links, duration, delays);
 
-  // reset resize on expand button click and screen resize 
-  params.initialize_resizing(params);
 
   // enter new elements 
   //////////////////////////
@@ -3961,9 +3962,11 @@ function enter_exit_update(params, network_data, delays){
   var row_triangle_ini_group = labels.make_rows( params, row_nodes, reorder, duration );
   var container_all_col      = labels.make_cols( params, col_nodes, reorder, duration );
 
-  var tmp_dendrogram = Dendrogram('row', params, row_triangle_ini_group, duration);
-  var tmp_dendrogram = Dendrogram('col', params, row_triangle_ini_group, duration);
+  Dendrogram('row', params, row_triangle_ini_group, duration);
+  Dendrogram('col', params, row_triangle_ini_group, duration);
 
+  // Fade in new gridlines 
+  ///////////////////////////
 
   // append horizontal lines
   d3.select('#clust_group')
@@ -3980,9 +3983,6 @@ function enter_exit_update(params, network_data, delays){
     .attr('x2',params.viz.clust.dim.width)
     .style('stroke-width', params.viz.border_width/params.viz.zoom_switch+'px')
     .style('stroke','white')
-    .attr('opacity',0)
-    .transition().delay(delays.enter).duration(duration)
-    .attr('opacity',1);
 
   // append vertical line groups
   d3.select('#clust_group')
@@ -4002,6 +4002,21 @@ function enter_exit_update(params, network_data, delays){
     .attr('opacity',0)
     .transition().delay(delays.enter).duration(duration)
     .attr('opacity',1);
+
+  // // reset resize on expand button click and screen resize 
+  // params.initialize_resizing(params);
+
+    // // instantiate zoom object
+    // var zoom = Zoom(params);
+
+    // // initialize double click zoom for matrix
+    // ////////////////////////////////////////////
+    // zoom.ini_doubleclick();
+
+    // if (params.viz.do_zoom) {
+    //   d3.select('#main_svg').call(params.zoom);
+    // }
+
 
 }
 
@@ -4041,8 +4056,6 @@ function Viz(params) {
 
     // instantiate zoom object
     zoom = Zoom(params);
-
-    console.log('was a previous svg found? '+ d3.select('#'+params.viz.svg_div_id).select('svg').empty())
 
     // initialize svg 
     if ( d3.select('#'+params.viz.svg_div_id).select('svg').empty() ){
@@ -4195,11 +4208,11 @@ function Viz(params) {
     // initialize translate vector to compensate for label margins
     params.zoom.translate([params.viz.clust.margin.left, params.viz.clust.margin.top]);
 
-    // params.initialize_resizing = initialize_resizing;
-
+    // initialize screen resizing 
     params.initialize_resizing(params);
 
     // initialize double click zoom for matrix
+    ////////////////////////////////////////////
     zoom.ini_doubleclick();
 
     if (params.viz.do_zoom) {
@@ -4271,7 +4284,8 @@ function Viz(params) {
     opacity_slider: opacity_slider,
     run_reset_visualization_size: run_reset_visualization_size,
     update_network: update_network, 
-    params: params
+    params: params,
+    draw_gridlines: matrix.draw_gridlines
   }
 
 
@@ -4649,6 +4663,10 @@ function Zoom(params){
       trans_x = d3.event.translate[0] - params.viz.clust.margin.left,
       trans_y = d3.event.translate[1] - params.viz.clust.margin.top;
 
+    // console.log(params)
+    // console.log('manual zoom scale '+String(zoom_x))
+    // console.log(d3.event.scale)
+
     // apply transformation
     apply_transformation(trans_x, trans_y, zoom_x, zoom_y);
   }
@@ -4784,9 +4802,9 @@ function Zoom(params){
 
   }
 
-  function two_translate_zoom(pan_dx, pan_dy, fin_zoom) {
+  function two_translate_zoom(params, pan_dx, pan_dy, fin_zoom) {
 
-    console.log('running two translate zoom')
+    // console.log('running two translate zoom')
 
     // get parameters
     if (!params.viz.run_trans) {
@@ -4906,6 +4924,10 @@ function Zoom(params){
       // reset the zoom translate and zoom
       params.zoom.scale(zoom_y);
       params.zoom.translate([pan_dx, net_y_offset]);
+
+      console.log('resetting params.zoom.scale')
+      console.log('zoom_y '+String(zoom_y))
+
 
       var trans = true;
       constrain_font_size(trans);
@@ -5114,7 +5136,7 @@ function Zoom(params){
     d3.select('#main_svg')
       .on('dblclick', function() {
         // programmatic zoom reset
-        two_translate_zoom(0, 0, 1);
+        two_translate_zoom(params, 0, 0, 1);
       });
   }
 

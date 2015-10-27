@@ -30,10 +30,18 @@ function update_network(args){
   this.get_genes  = gene_search.get_entities;
   this.find_genes = gene_search.find_entities;
 
+  // initialize screen resizing - necesary for resizing with new params 
+  params.initialize_resizing(params);
+
+  // necessary to have zoom behavior on updated clustergram
+  // params.zoom corresponds to the zoomed function from the Zoom object 
   d3.select('#main_svg').call(params.zoom);
 
-  // disable default double click zoom 
-  d3.select('#main_svg').on('dblclick.zoom',null);
+  d3.select('#main_svg').on('dblclick.zoom',null);    
+
+  // initialize the double click behavior 
+  var zoom = Zoom(params);
+  zoom.ini_doubleclick();
 
 }
 
@@ -165,8 +173,6 @@ function enter_exit_update(params, network_data, delays){
 
   resize_after_update(params, row_nodes, col_nodes, links, duration, delays);
 
-  // reset resize on expand button click and screen resize 
-  params.initialize_resizing(params);
 
   // enter new elements 
   //////////////////////////
@@ -200,9 +206,11 @@ function enter_exit_update(params, network_data, delays){
   var row_triangle_ini_group = labels.make_rows( params, row_nodes, reorder, duration );
   var container_all_col      = labels.make_cols( params, col_nodes, reorder, duration );
 
-  var tmp_dendrogram = Dendrogram('row', params, row_triangle_ini_group, duration);
-  var tmp_dendrogram = Dendrogram('col', params, row_triangle_ini_group, duration);
+  Dendrogram('row', params, row_triangle_ini_group, duration);
+  Dendrogram('col', params, row_triangle_ini_group, duration);
 
+  // Fade in new gridlines 
+  ///////////////////////////
 
   // append horizontal lines
   d3.select('#clust_group')
@@ -219,9 +227,6 @@ function enter_exit_update(params, network_data, delays){
     .attr('x2',params.viz.clust.dim.width)
     .style('stroke-width', params.viz.border_width/params.viz.zoom_switch+'px')
     .style('stroke','white')
-    .attr('opacity',0)
-    .transition().delay(delays.enter).duration(duration)
-    .attr('opacity',1);
 
   // append vertical line groups
   d3.select('#clust_group')
@@ -241,6 +246,21 @@ function enter_exit_update(params, network_data, delays){
     .attr('opacity',0)
     .transition().delay(delays.enter).duration(duration)
     .attr('opacity',1);
+
+  // // reset resize on expand button click and screen resize 
+  // params.initialize_resizing(params);
+
+    // // instantiate zoom object
+    // var zoom = Zoom(params);
+
+    // // initialize double click zoom for matrix
+    // ////////////////////////////////////////////
+    // zoom.ini_doubleclick();
+
+    // if (params.viz.do_zoom) {
+    //   d3.select('#main_svg').call(params.zoom);
+    // }
+
 
 }
 

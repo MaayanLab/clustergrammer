@@ -12,6 +12,7 @@ module.exports = function(grunt) {
         '../src/Labels.js',
         '../src/SuperLabels.js',
         '../src/Spillover.js',
+        '../src/DrawGridlines.js',
         '../src/ResetSize.js',
         '../src/ResetSizeAfterUpdate.js',
         '../src/UpdateNetwork.js',

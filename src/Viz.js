@@ -34,8 +34,6 @@ function Viz(params) {
     // instantiate zoom object
     zoom = Zoom(params);
 
-    console.log('was a previous svg found? '+ d3.select('#'+params.viz.svg_div_id).select('svg').empty())
-
     // initialize svg 
     if ( d3.select('#'+params.viz.svg_div_id).select('svg').empty() ){
       var svg_group = d3.select('#' + params.viz.svg_div_id)
@@ -187,11 +185,11 @@ function Viz(params) {
     // initialize translate vector to compensate for label margins
     params.zoom.translate([params.viz.clust.margin.left, params.viz.clust.margin.top]);
 
-    // params.initialize_resizing = initialize_resizing;
-
+    // initialize screen resizing 
     params.initialize_resizing(params);
 
     // initialize double click zoom for matrix
+    ////////////////////////////////////////////
     zoom.ini_doubleclick();
 
     if (params.viz.do_zoom) {
@@ -263,7 +261,8 @@ function Viz(params) {
     opacity_slider: opacity_slider,
     run_reset_visualization_size: run_reset_visualization_size,
     update_network: update_network, 
-    params: params
+    params: params,
+    draw_gridlines: matrix.draw_gridlines
   }
 
 

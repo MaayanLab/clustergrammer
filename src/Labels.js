@@ -44,7 +44,6 @@ function Labels(params){
       .append('g')
       .attr('id', 'row_label_zoom_container');
 
-    console.log('\n\nmaking rows\n\n')
     var row_labels = d3.select('#row_label_zoom_container')
       .selectAll('g')
       .data(row_nodes, function(d){return d.name;})
