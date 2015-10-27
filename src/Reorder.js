@@ -146,12 +146,6 @@ function Reorder(params){
     // resort cols 
     params.matrix.x_scale.domain(tmp_sort);
     
-    // console.log('rangebands')
-    // console.log(params.matrix.x_scale.rangeBand())
-    // console.log(params.matrix.y_scale.rangeBand())
-    // console.log('\n')
-
-
     // reorder matrix
     ////////////////////
 
@@ -241,11 +235,6 @@ function Reorder(params){
     // define the t variable as the transition function
     var t = viz.get_clust_group()
       .transition().duration(2500);
-
-    // console.log('rangebands')
-    // console.log(params.matrix.x_scale.rangeBand())
-    // console.log(params.matrix.y_scale.rangeBand())
-    // console.log('\n')
 
     // reorder matrix
     t.selectAll('.tile')

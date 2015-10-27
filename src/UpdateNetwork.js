@@ -16,13 +16,15 @@ function update_network(args){
   enter_exit_update(params, network_data, reorder, delays);
 
   // update network data 
-  this.params.network_data = network_data;
+  // this.params.network_data = network_data;
+  this.params = params;
 
 
+  console.log('reinitializing search')
   // search functions 
   var gene_search = Search(params, params.network_data.row_nodes,'name');
   this.get_genes  = gene_search.get_entities;
-  this.find_genes = gene_search.find_entities;
+  this.find_gene = gene_search.find_entities;
 
   // initialize screen resizing - necesary for resizing with new params 
   params.initialize_resizing(params);

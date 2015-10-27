@@ -956,10 +956,14 @@ function Search(params, nodes, prop) {
     entities.push(nodes[i][prop]);
   }
 
+  console.log('here')
+
   /* Find a gene (row) in the clustergram.
    */
   function find_entities(search_term) {
     if (entities.indexOf(search_term) !== -1) {
+      console.log('\nfind_entiies\n')
+      console.log(search_term)
       un_highlight_entities();
       zoom_and_highlight_found_entity(search_term);
       highlight_entity(search_term);
@@ -972,6 +976,9 @@ function Search(params, nodes, prop) {
     var idx = _.indexOf(entities, search_term),
       inst_y_pos = params.matrix.y_scale(idx),
       pan_dy = params.viz.clust.dim.height / 2 - inst_y_pos;
+
+      console.log(this)
+      console.log(params.viz.clust.dim.height);
 
     // viz exposes two_translate_zoom from zoom object 
     viz.two_translate_zoom(params, 0, pan_dy, params.viz.zoom_switch);
@@ -1317,7 +1324,6 @@ function VizParams(config){
       params.matrix.x_scale.domain(params.matrix.orders.ini_row);
       params.matrix.y_scale.domain(params.matrix.orders.ini_col);
     } else if (params.viz.inst_order === 'clust') {
-      console.log('initializing x and y scale domains')
       params.matrix.x_scale.domain(params.matrix.orders.clust_row);
       params.matrix.y_scale.domain(params.matrix.orders.clust_col);
     } else if (params.viz.inst_order === 'rank') {
@@ -3815,13 +3821,15 @@ function update_network(args){
   enter_exit_update(params, network_data, reorder, delays);
 
   // update network data 
-  this.params.network_data = network_data;
+  // this.params.network_data = network_data;
+  this.params = params;
 
 
+  console.log('reinitializing search')
   // search functions 
   var gene_search = Search(params, params.network_data.row_nodes,'name');
   this.get_genes  = gene_search.get_entities;
-  this.find_genes = gene_search.find_entities;
+  this.find_gene = gene_search.find_entities;
 
   // initialize screen resizing - necesary for resizing with new params 
   params.initialize_resizing(params);
@@ -4476,12 +4484,6 @@ function Reorder(params){
     // resort cols 
     params.matrix.x_scale.domain(tmp_sort);
     
-    // console.log('rangebands')
-    // console.log(params.matrix.x_scale.rangeBand())
-    // console.log(params.matrix.y_scale.rangeBand())
-    // console.log('\n')
-
-
     // reorder matrix
     ////////////////////
 
@@ -4571,11 +4573,6 @@ function Reorder(params){
     // define the t variable as the transition function
     var t = viz.get_clust_group()
       .transition().duration(2500);
-
-    // console.log('rangebands')
-    // console.log(params.matrix.x_scale.rangeBand())
-    // console.log(params.matrix.y_scale.rangeBand())
-    // console.log('\n')
 
     // reorder matrix
     t.selectAll('.tile')
@@ -4844,8 +4841,6 @@ function Zoom(params){
   }
 
   function two_translate_zoom(params, pan_dx, pan_dy, fin_zoom) {
-
-    console.log('two_translate_zoom')
 
     // get parameters
     if (!params.viz.run_trans) {

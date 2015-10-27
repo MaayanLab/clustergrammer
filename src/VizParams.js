@@ -313,7 +313,6 @@ function VizParams(config){
       params.matrix.x_scale.domain(params.matrix.orders.ini_row);
       params.matrix.y_scale.domain(params.matrix.orders.ini_col);
     } else if (params.viz.inst_order === 'clust') {
-      console.log('initializing x and y scale domains')
       params.matrix.x_scale.domain(params.matrix.orders.clust_row);
       params.matrix.y_scale.domain(params.matrix.orders.clust_col);
     } else if (params.viz.inst_order === 'rank') {

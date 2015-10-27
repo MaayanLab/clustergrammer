@@ -13,10 +13,14 @@ function Search(params, nodes, prop) {
     entities.push(nodes[i][prop]);
   }
 
+  console.log('here')
+
   /* Find a gene (row) in the clustergram.
    */
   function find_entities(search_term) {
     if (entities.indexOf(search_term) !== -1) {
+      console.log('\nfind_entiies\n')
+      console.log(search_term)
       un_highlight_entities();
       zoom_and_highlight_found_entity(search_term);
       highlight_entity(search_term);
@@ -29,6 +33,9 @@ function Search(params, nodes, prop) {
     var idx = _.indexOf(entities, search_term),
       inst_y_pos = params.matrix.y_scale(idx),
       pan_dy = params.viz.clust.dim.height / 2 - inst_y_pos;
+
+      console.log(this)
+      console.log(params.viz.clust.dim.height);
 
     // viz exposes two_translate_zoom from zoom object 
     viz.two_translate_zoom(params, 0, pan_dy, params.viz.zoom_switch);
