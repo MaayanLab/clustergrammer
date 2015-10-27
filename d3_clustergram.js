@@ -341,6 +341,23 @@ function Dendrogram(type, params, delay_dendro) {
 
   function build_col_dendro() {
 
+    var col_nodes = params.network_data.col_nodes;
+
+    // console.log(col_nodes)
+
+    console.log('HERE')
+    // append groups - each will hold a classification rect
+    var col_class_ini_group = d3.select('#col_viz_zoom_container')
+    .selectAll('g')
+    .data(col_nodes, function(d){return d.name;})
+    .enter()
+    .append('g')
+    .attr('class', 'col_viz_group')
+    .attr('transform', function(d, index) {
+      return 'translate(' + params.matrix.x_scale(index) + ',0)';
+    });
+
+
     d3.selectAll('.col_viz_group')
       .each(function(d){
 
@@ -1589,7 +1606,7 @@ function VizParams(config){
 
 }
 
-function Labels(args){
+function Labels(params){
 
   function normal_name(d){
     var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
@@ -1634,6 +1651,7 @@ function Labels(args){
       .append('g')
       .attr('id', 'row_label_zoom_container');
 
+    console.log('\n\nmaking rows\n\n')
     var row_labels = d3.select('#row_label_zoom_container')
       .selectAll('g')
       .data(row_nodes, function(d){return d.name;})
@@ -1644,6 +1662,7 @@ function Labels(args){
         return 'translate(0,' + params.matrix.y_scale(index) + ')';
       })
       .on('dblclick', function(d) {
+        console.log('double clicking row')
         reorder.row_reorder.call(this);
         if (params.tile_click_hlight){
           add_row_click_hlight(this,d.ini);
@@ -2187,6 +2206,7 @@ function Labels(args){
 
       })
       .on('dblclick', function(d) {
+        console.log('double clicking col')
         reorder.col_reorder.call(this);
         if (params.tile_click_hlight){
           add_col_click_hlight(this,d.ini);
@@ -3941,27 +3961,6 @@ function enter_exit_update(params, network_data, delays){
   var row_triangle_ini_group = labels.make_rows( params, row_nodes, reorder, duration );
   var container_all_col      = labels.make_cols( params, col_nodes, reorder, duration );
 
-  // enter new groups that hold columns
-  d3.select('#col_viz_zoom_container')
-    .selectAll('g')
-    .data(col_nodes, function(d){return d.name;})
-    .enter()
-    .append('g')
-    .attr('class', 'col_viz_group')
-    .attr('transform', function(d, index) {
-      return 'translate(' + params.matrix.x_scale(index) + ',0)';
-    });
-
-  d3.select('#row_viz_zoom_container')
-      .selectAll('g')
-      .data(row_nodes, function(d){return d.name;})
-      .enter()
-      .append('g')
-      .attr('class', 'row_viz_group')
-      .attr('transform', function(d, index) {
-        return 'translate(0, ' + params.matrix.y_scale(index) + ')';
-      });
-
   var tmp_dendrogram = Dendrogram('row', params, row_triangle_ini_group, duration);
   var tmp_dendrogram = Dendrogram('col', params, row_triangle_ini_group, duration);
 
@@ -4094,24 +4093,13 @@ function Viz(params) {
       .append('g')
       .attr('id', 'col_viz_zoom_container');
 
-      // append groups - each will hold a classification rect
-      var col_class_ini_group = col_class
-      .selectAll('g')
-      .data(col_nodes, function(d){return d.name;})
-      .enter()
-      .append('g')
-      .attr('class', 'col_viz_group')
-      .attr('transform', function(d, index) {
-        return 'translate(' + params.matrix.x_scale(index) + ',0)';
-      });
-
       // make col dendrogram
       col_dendrogram = Dendrogram('col', params, 0);
 
       // optional column callback on click
       if (typeof params.click_group === 'function') {
 
-        col_class_ini_group
+        d3.select('#col_viz_outer_container')
           .on('click', function(d) {
           var inst_level = params.group_level.col;
           var inst_group = d.group[inst_level];
@@ -4316,8 +4304,6 @@ function Reorder(params){
       params.matrix.x_scale.domain(params.matrix.orders.class_row);
       params.matrix.y_scale.domain(params.matrix.orders.class_col);
     }
-
-
 
     // only animate transition if there are a small number of tiles
     if (d3.selectAll('.tile')[0].length < 10000){

@@ -1,5 +1,5 @@
 
-function Labels(args){
+function Labels(params){
 
   function normal_name(d){
     var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
@@ -44,6 +44,7 @@ function Labels(args){
       .append('g')
       .attr('id', 'row_label_zoom_container');
 
+    console.log('\n\nmaking rows\n\n')
     var row_labels = d3.select('#row_label_zoom_container')
       .selectAll('g')
       .data(row_nodes, function(d){return d.name;})
@@ -54,6 +55,7 @@ function Labels(args){
         return 'translate(0,' + params.matrix.y_scale(index) + ')';
       })
       .on('dblclick', function(d) {
+        console.log('double clicking row')
         reorder.row_reorder.call(this);
         if (params.tile_click_hlight){
           add_row_click_hlight(this,d.ini);
@@ -597,6 +599,7 @@ function Labels(args){
 
       })
       .on('dblclick', function(d) {
+        console.log('double clicking col')
         reorder.col_reorder.call(this);
         if (params.tile_click_hlight){
           add_col_click_hlight(this,d.ini);

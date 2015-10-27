@@ -85,24 +85,13 @@ function Viz(params) {
       .append('g')
       .attr('id', 'col_viz_zoom_container');
 
-      // append groups - each will hold a classification rect
-      var col_class_ini_group = col_class
-      .selectAll('g')
-      .data(col_nodes, function(d){return d.name;})
-      .enter()
-      .append('g')
-      .attr('class', 'col_viz_group')
-      .attr('transform', function(d, index) {
-        return 'translate(' + params.matrix.x_scale(index) + ',0)';
-      });
-
       // make col dendrogram
       col_dendrogram = Dendrogram('col', params, 0);
 
       // optional column callback on click
       if (typeof params.click_group === 'function') {
 
-        col_class_ini_group
+        d3.select('#col_viz_outer_container')
           .on('click', function(d) {
           var inst_level = params.group_level.col;
           var inst_group = d.group[inst_level];

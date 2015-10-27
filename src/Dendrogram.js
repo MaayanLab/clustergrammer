@@ -101,6 +101,23 @@ function Dendrogram(type, params, delay_dendro) {
 
   function build_col_dendro() {
 
+    var col_nodes = params.network_data.col_nodes;
+
+    // console.log(col_nodes)
+
+    console.log('HERE')
+    // append groups - each will hold a classification rect
+    var col_class_ini_group = d3.select('#col_viz_zoom_container')
+    .selectAll('g')
+    .data(col_nodes, function(d){return d.name;})
+    .enter()
+    .append('g')
+    .attr('class', 'col_viz_group')
+    .attr('transform', function(d, index) {
+      return 'translate(' + params.matrix.x_scale(index) + ',0)';
+    });
+
+
     d3.selectAll('.col_viz_group')
       .each(function(d){
 

@@ -26,8 +26,6 @@ function Reorder(params){
       params.matrix.y_scale.domain(params.matrix.orders.class_col);
     }
 
-
-
     // only animate transition if there are a small number of tiles
     if (d3.selectAll('.tile')[0].length < 10000){
 

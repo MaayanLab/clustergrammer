@@ -200,27 +200,6 @@ function enter_exit_update(params, network_data, delays){
   var row_triangle_ini_group = labels.make_rows( params, row_nodes, reorder, duration );
   var container_all_col      = labels.make_cols( params, col_nodes, reorder, duration );
 
-  // enter new groups that hold columns
-  d3.select('#col_viz_zoom_container')
-    .selectAll('g')
-    .data(col_nodes, function(d){return d.name;})
-    .enter()
-    .append('g')
-    .attr('class', 'col_viz_group')
-    .attr('transform', function(d, index) {
-      return 'translate(' + params.matrix.x_scale(index) + ',0)';
-    });
-
-  d3.select('#row_viz_zoom_container')
-      .selectAll('g')
-      .data(row_nodes, function(d){return d.name;})
-      .enter()
-      .append('g')
-      .attr('class', 'row_viz_group')
-      .attr('transform', function(d, index) {
-        return 'translate(0, ' + params.matrix.y_scale(index) + ')';
-      });
-
   var tmp_dendrogram = Dendrogram('row', params, row_triangle_ini_group, duration);
   var tmp_dendrogram = Dendrogram('col', params, row_triangle_ini_group, duration);
 
