@@ -8,6 +8,11 @@ function Reorder(params){
   function all_reorder(inst_order) {
 
     params.viz.run_trans = true;
+    var row_nodes_obj = params.network_data.row_nodes;
+    var row_nodes_names = _.pluck(row_nodes_obj, 'name');
+
+    var col_nodes_obj = params.network_data.col_nodes;
+    var col_nodes_names = _.pluck(col_nodes_obj, 'name');
 
     // load orders
     if (inst_order === 'ini') {
@@ -40,29 +45,33 @@ function Reorder(params){
       // Move Row Labels
       d3.select('#row_label_zoom_container').selectAll('.row_label_text')
         .transition().duration(2500)
-        .attr('transform', function(d, i) {
-          return 'translate(0,' + params.matrix.y_scale(i) + ')';
+        .attr('transform', function(d) {
+          var inst_index = _.indexOf(row_nodes_names,d.name);
+          return 'translate(0,' + params.matrix.y_scale(inst_index) + ')';
         });
 
       // t.selectAll('.column')
       d3.select('#col_label_zoom_container').selectAll('.col_label_text')
         .transition().duration(2500)
-        .attr('transform', function(d, i) {
-          return 'translate(' + params.matrix.x_scale(i) + ') rotate(-90)';
+        .attr('transform', function(d) {
+          var inst_index = _.indexOf(col_nodes_names,d.name);
+          return 'translate(' + params.matrix.x_scale(inst_index) + ') rotate(-90)';
         });
 
       // reorder row_label_triangle groups
       d3.selectAll('.row_viz_group')
         .transition().duration(2500)
-        .attr('transform', function(d, i) {
-          return 'translate(0,' + params.matrix.y_scale(i) + ')';
+        .attr('transform', function(d) {
+          var inst_index = _.indexOf(row_nodes_names,d.name);
+          return 'translate(0,' + params.matrix.y_scale(inst_index) + ')';
         });
 
       // reorder col_class groups
       d3.selectAll('.col_viz_group')
         .transition().duration(2500)
-        .attr('transform', function(d, i) {
-          return 'translate(' + params.matrix.x_scale(i) + ',0)';
+        .attr('transform', function(d) {
+          var inst_index = _.indexOf(col_nodes_names,d.name);
+          return 'translate(' + params.matrix.x_scale(inst_index) + ',0)';
         });
 
     } else {
@@ -78,26 +87,30 @@ function Reorder(params){
 
       // Move Row Labels
       d3.select('#row_label_zoom_container').selectAll('.row_label_text')
-        .attr('transform', function(d, i) {
-          return 'translate(0,' + params.matrix.y_scale(i) + ')';
+        .attr('transform', function(d) {
+          var inst_index = _.indexOf(row_nodes_names,d.name);
+          return 'translate(0,' + params.matrix.y_scale(inst_index) + ')';
         });
 
       // t.selectAll('.column')
       d3.select('#col_label_zoom_container').selectAll('.col_label_text')
-        .attr('transform', function(d, i) {
-          return 'translate(' + params.matrix.x_scale(i) + ') rotate(-90)';
+        .attr('transform', function(d) {
+          var inst_index = _.indexOf(col_nodes_names,d.name);
+          return 'translate(' + params.matrix.x_scale(inst_index) + ') rotate(-90)';
         });
 
       // reorder row_label_triangle groups
       d3.selectAll('.row_viz_group')
-        .attr('transform', function(d, i) {
-          return 'translate(0,' + params.matrix.y_scale(i) + ')';
+        .attr('transform', function(d) {
+          var inst_index = _.indexOf(row_nodes_names,d.name);
+          return 'translate(0,' + params.matrix.y_scale(inst_index) + ')';
         });
 
       // reorder col_class groups
       d3.selectAll('.col_viz_group')
-        .attr('transform', function(d, i) {
-          return 'translate(' + params.matrix.x_scale(i) + ',0)';
+        .attr('transform', function(d) {
+          var inst_index = _.indexOf(col_nodes_names,d.name);
+          return 'translate(' + params.matrix.x_scale(inst_index) + ',0)';
         });
 
     }

@@ -31,7 +31,7 @@ function update_network(args){
   // params.zoom corresponds to the zoomed function from the Zoom object 
   d3.select('#main_svg').call(params.zoom);
 
-  d3.select('#main_svg').on('dblclick.zoom',null);    
+  // d3.select('#main_svg').on('dblclick.zoom',null);    
 
   // initialize the double click behavior - necessary for nomal zoom/double click
   // behavior 
@@ -193,6 +193,33 @@ function enter_exit_update(params, network_data, reorder, delays){
         var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
         return output_opacity;
     });
+
+  // redefine mouseover events for tiles 
+  d3.select('#clust_group')
+    .selectAll('.tile')
+    .on('mouseover', function(p) {
+
+      var row_name = p.name.split('_')[0];
+      var col_name = p.name.split('_')[1];
+
+      // highlight row - set text to active if
+      d3.selectAll('.row_label_text text')
+        .classed('active', function(d) {
+          return row_name === d.name;
+        });
+
+      d3.selectAll('.col_label_text text')
+        .classed('active', function(d) {
+          return col_name === d.name;
+        });
+    })
+    .on('mouseout', function mouseout() {
+      d3.selectAll('text').classed('active', false);
+    })
+    .attr('title', function(d) {
+      return d.value;
+    });
+
 
   var labels = Labels(params);
 

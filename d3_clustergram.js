@@ -447,6 +447,9 @@ function Matrix(network_data, svg_elem, params) {
   col_nodes = network_data.col_nodes,
   clust_group;
 
+  var row_nodes_names = _.pluck(row_nodes, 'name');
+  var col_nodes_names = _.pluck(col_nodes, 'name');
+
   // moved to VizParams - the matrix is only being used for row/col label
   // double click reordering 
   // // make the matrix
@@ -621,37 +624,6 @@ function Matrix(network_data, svg_elem, params) {
   // draw grid lines after drawing tiles
   draw_grid_lines(row_nodes, col_nodes);
 
-  // function initialize_matrix() {
-
-  //   _.each(row_nodes, function(tmp, row_index) {
-  //     matrix[row_index] = d3.range(col_nodes.length).map(
-  //       function(col_index) {
-  //         return {
-  //           pos_x: col_index,
-  //           pos_y: row_index,
-  //           value: 0,
-  //           highlight:0
-  //         } ;
-  //       });
-  //   });
-
-  //   _.each(network_data.links, function(link) {
-  //     matrix[link.source][link.target].value = link.value;
-  //     // transfer additional link information is necessary
-  //     if (link.value_up && link.value_dn) {
-  //       matrix[link.source][link.target].value_up = link.value_up;
-  //       matrix[link.source][link.target].value_dn = link.value_dn;
-  //     }
-  //     if (link.highlight) {
-  //       matrix[link.source][link.target].highlight = link.highlight;
-  //     }
-  //     if (link.info) {
-  //       matrix[link.source][link.target].info = link.info;
-  //     }
-  //   });
-
-  //   return matrix;
-  // }
 
   function draw_simple_tiles(clust_group, tile_data){
 
@@ -668,15 +640,19 @@ function Matrix(network_data, svg_elem, params) {
         return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
       })
       .on('mouseover', function(p) {
+        console.log(p.name)
+        var row_name = p.name.split('_')[0];
+        var col_name = p.name.split('_')[1];
+
         // highlight row - set text to active if
         d3.selectAll('.row_label_text text')
-          .classed('active', function(d, i) {
-            return i === p.source;
+          .classed('active', function(d) {
+            return row_name === d.name;
           });
 
         d3.selectAll('.col_label_text text')
-          .classed('active', function(d, i) {
-            return i === p.target;
+          .classed('active', function(d) {
+            return col_name === d.name;
           });
       })
       .on('mouseout', function mouseout() {
@@ -3832,7 +3808,7 @@ function update_network(args){
   // params.zoom corresponds to the zoomed function from the Zoom object 
   d3.select('#main_svg').call(params.zoom);
 
-  d3.select('#main_svg').on('dblclick.zoom',null);    
+  // d3.select('#main_svg').on('dblclick.zoom',null);    
 
   // initialize the double click behavior - necessary for nomal zoom/double click
   // behavior 
@@ -3994,6 +3970,33 @@ function enter_exit_update(params, network_data, reorder, delays){
         var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
         return output_opacity;
     });
+
+  // redefine mouseover events for tiles 
+  d3.select('#clust_group')
+    .selectAll('.tile')
+    .on('mouseover', function(p) {
+
+      var row_name = p.name.split('_')[0];
+      var col_name = p.name.split('_')[1];
+
+      // highlight row - set text to active if
+      d3.selectAll('.row_label_text text')
+        .classed('active', function(d) {
+          return row_name === d.name;
+        });
+
+      d3.selectAll('.col_label_text text')
+        .classed('active', function(d) {
+          return col_name === d.name;
+        });
+    })
+    .on('mouseout', function mouseout() {
+      d3.selectAll('text').classed('active', false);
+    })
+    .attr('title', function(d) {
+      return d.value;
+    });
+
 
   var labels = Labels(params);
 
@@ -4348,6 +4351,11 @@ function Reorder(params){
   function all_reorder(inst_order) {
 
     params.viz.run_trans = true;
+    var row_nodes_obj = params.network_data.row_nodes;
+    var row_nodes_names = _.pluck(row_nodes_obj, 'name');
+
+    var col_nodes_obj = params.network_data.col_nodes;
+    var col_nodes_names = _.pluck(col_nodes_obj, 'name');
 
     // load orders
     if (inst_order === 'ini') {
@@ -4380,29 +4388,33 @@ function Reorder(params){
       // Move Row Labels
       d3.select('#row_label_zoom_container').selectAll('.row_label_text')
         .transition().duration(2500)
-        .attr('transform', function(d, i) {
-          return 'translate(0,' + params.matrix.y_scale(i) + ')';
+        .attr('transform', function(d) {
+          var inst_index = _.indexOf(row_nodes_names,d.name);
+          return 'translate(0,' + params.matrix.y_scale(inst_index) + ')';
         });
 
       // t.selectAll('.column')
       d3.select('#col_label_zoom_container').selectAll('.col_label_text')
         .transition().duration(2500)
-        .attr('transform', function(d, i) {
-          return 'translate(' + params.matrix.x_scale(i) + ') rotate(-90)';
+        .attr('transform', function(d) {
+          var inst_index = _.indexOf(col_nodes_names,d.name);
+          return 'translate(' + params.matrix.x_scale(inst_index) + ') rotate(-90)';
         });
 
       // reorder row_label_triangle groups
       d3.selectAll('.row_viz_group')
         .transition().duration(2500)
-        .attr('transform', function(d, i) {
-          return 'translate(0,' + params.matrix.y_scale(i) + ')';
+        .attr('transform', function(d) {
+          var inst_index = _.indexOf(row_nodes_names,d.name);
+          return 'translate(0,' + params.matrix.y_scale(inst_index) + ')';
         });
 
       // reorder col_class groups
       d3.selectAll('.col_viz_group')
         .transition().duration(2500)
-        .attr('transform', function(d, i) {
-          return 'translate(' + params.matrix.x_scale(i) + ',0)';
+        .attr('transform', function(d) {
+          var inst_index = _.indexOf(col_nodes_names,d.name);
+          return 'translate(' + params.matrix.x_scale(inst_index) + ',0)';
         });
 
     } else {
@@ -4418,26 +4430,30 @@ function Reorder(params){
 
       // Move Row Labels
       d3.select('#row_label_zoom_container').selectAll('.row_label_text')
-        .attr('transform', function(d, i) {
-          return 'translate(0,' + params.matrix.y_scale(i) + ')';
+        .attr('transform', function(d) {
+          var inst_index = _.indexOf(row_nodes_names,d.name);
+          return 'translate(0,' + params.matrix.y_scale(inst_index) + ')';
         });
 
       // t.selectAll('.column')
       d3.select('#col_label_zoom_container').selectAll('.col_label_text')
-        .attr('transform', function(d, i) {
-          return 'translate(' + params.matrix.x_scale(i) + ') rotate(-90)';
+        .attr('transform', function(d) {
+          var inst_index = _.indexOf(col_nodes_names,d.name);
+          return 'translate(' + params.matrix.x_scale(inst_index) + ') rotate(-90)';
         });
 
       // reorder row_label_triangle groups
       d3.selectAll('.row_viz_group')
-        .attr('transform', function(d, i) {
-          return 'translate(0,' + params.matrix.y_scale(i) + ')';
+        .attr('transform', function(d) {
+          var inst_index = _.indexOf(row_nodes_names,d.name);
+          return 'translate(0,' + params.matrix.y_scale(inst_index) + ')';
         });
 
       // reorder col_class groups
       d3.selectAll('.col_viz_group')
-        .attr('transform', function(d, i) {
-          return 'translate(' + params.matrix.x_scale(i) + ',0)';
+        .attr('transform', function(d) {
+          var inst_index = _.indexOf(col_nodes_names,d.name);
+          return 'translate(' + params.matrix.x_scale(inst_index) + ',0)';
         });
 
     }

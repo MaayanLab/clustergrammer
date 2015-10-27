@@ -6,6 +6,9 @@ function Matrix(network_data, svg_elem, params) {
   col_nodes = network_data.col_nodes,
   clust_group;
 
+  var row_nodes_names = _.pluck(row_nodes, 'name');
+  var col_nodes_names = _.pluck(col_nodes, 'name');
+
   // moved to VizParams - the matrix is only being used for row/col label
   // double click reordering 
   // // make the matrix
@@ -180,37 +183,6 @@ function Matrix(network_data, svg_elem, params) {
   // draw grid lines after drawing tiles
   draw_grid_lines(row_nodes, col_nodes);
 
-  // function initialize_matrix() {
-
-  //   _.each(row_nodes, function(tmp, row_index) {
-  //     matrix[row_index] = d3.range(col_nodes.length).map(
-  //       function(col_index) {
-  //         return {
-  //           pos_x: col_index,
-  //           pos_y: row_index,
-  //           value: 0,
-  //           highlight:0
-  //         } ;
-  //       });
-  //   });
-
-  //   _.each(network_data.links, function(link) {
-  //     matrix[link.source][link.target].value = link.value;
-  //     // transfer additional link information is necessary
-  //     if (link.value_up && link.value_dn) {
-  //       matrix[link.source][link.target].value_up = link.value_up;
-  //       matrix[link.source][link.target].value_dn = link.value_dn;
-  //     }
-  //     if (link.highlight) {
-  //       matrix[link.source][link.target].highlight = link.highlight;
-  //     }
-  //     if (link.info) {
-  //       matrix[link.source][link.target].info = link.info;
-  //     }
-  //   });
-
-  //   return matrix;
-  // }
 
   function draw_simple_tiles(clust_group, tile_data){
 
@@ -227,15 +199,19 @@ function Matrix(network_data, svg_elem, params) {
         return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
       })
       .on('mouseover', function(p) {
+        console.log(p.name)
+        var row_name = p.name.split('_')[0];
+        var col_name = p.name.split('_')[1];
+
         // highlight row - set text to active if
         d3.selectAll('.row_label_text text')
-          .classed('active', function(d, i) {
-            return i === p.source;
+          .classed('active', function(d) {
+            return row_name === d.name;
           });
 
         d3.selectAll('.col_label_text text')
-          .classed('active', function(d, i) {
-            return i === p.target;
+          .classed('active', function(d) {
+            return col_name === d.name;
           });
       })
       .on('mouseout', function mouseout() {
