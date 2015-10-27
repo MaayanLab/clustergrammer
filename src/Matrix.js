@@ -72,12 +72,9 @@ function Matrix(network_data, svg_elem, params) {
 
     // highlight clicked tile
     if (params.tile_click_hlight){
-
       d3.selectAll('.tile')
         .on('click',function(d){
-
           add_click_hlight(this)
-
         })
     }
 
@@ -304,18 +301,7 @@ function Matrix(network_data, svg_elem, params) {
       });
     }
 
-    // // remove old tiles 
-    // var tmp = clust_group.selectAll('.tile')
-    //   .data(tile_data, function(d){
-    //     return d.name;
-    //   })
-    //   .exit()
-    //   .remove();
-
-      
   }
-
-  
 
   // make each row in the clustergram
   function draw_group_tiles(clust_group, tile_data) {
@@ -524,7 +510,8 @@ function Matrix(network_data, svg_elem, params) {
         return inst_string;
       });
     }
-    }
+
+  }
 
   // Matrix API
   return {
