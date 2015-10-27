@@ -223,5 +223,5 @@ function update_clust(network_name) {
 }
 
 // choose example here
-d3c = make_clust('small_example');
+d3c = make_clust('default_example');
 
