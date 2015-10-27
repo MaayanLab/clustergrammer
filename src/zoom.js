@@ -347,9 +347,6 @@ function Zoom(params){
       }
       return inst_name;
     }
-    console.log('constrain font size')
-    console.log(keep_width.row)
-    console.log(params.norm_label.width.row)
 
     if (keep_width.row > params.norm_label.width.row) {
 

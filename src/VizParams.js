@@ -142,7 +142,7 @@ function VizParams(config){
     // screen_label_scale - small reduction
     var screen_label_scale = d3.scale.linear()
       .domain([500,1000])
-      .range([0.8,1.0])
+      .range([1.0,1.0])
       .clamp(true);
 
     // Label Scale

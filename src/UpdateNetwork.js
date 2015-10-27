@@ -206,6 +206,11 @@ function enter_exit_update(params, network_data, reorder, delays){
   // Fade in new gridlines 
   ///////////////////////////
 
+  d3.selectAll('.horz_lines')
+    .remove();
+  d3.selectAll('.vert_lines')
+    .remove();
+
   // append horizontal lines
   d3.select('#clust_group')
     .selectAll('.horz_lines')
@@ -221,6 +226,9 @@ function enter_exit_update(params, network_data, reorder, delays){
     .attr('x2',params.viz.clust.dim.width)
     .style('stroke-width', params.viz.border_width/params.viz.zoom_switch+'px')
     .style('stroke','white')
+    .attr('opacity',0)
+    .transition().delay(delays.enter).duration(duration)
+    .attr('opacity',1);
 
   // append vertical line groups
   d3.select('#clust_group')

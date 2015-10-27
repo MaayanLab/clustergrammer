@@ -956,14 +956,10 @@ function Search(params, nodes, prop) {
     entities.push(nodes[i][prop]);
   }
 
-  console.log('here')
-
   /* Find a gene (row) in the clustergram.
    */
   function find_entities(search_term) {
     if (entities.indexOf(search_term) !== -1) {
-      console.log('\nfind_entiies\n')
-      console.log(search_term)
       un_highlight_entities();
       zoom_and_highlight_found_entity(search_term);
       highlight_entity(search_term);
@@ -976,9 +972,6 @@ function Search(params, nodes, prop) {
     var idx = _.indexOf(entities, search_term),
       inst_y_pos = params.matrix.y_scale(idx),
       pan_dy = params.viz.clust.dim.height / 2 - inst_y_pos;
-
-      console.log(this)
-      console.log(params.viz.clust.dim.height);
 
     // viz exposes two_translate_zoom from zoom object 
     viz.two_translate_zoom(params, 0, pan_dy, params.viz.zoom_switch);
@@ -1153,7 +1146,7 @@ function VizParams(config){
     // screen_label_scale - small reduction
     var screen_label_scale = d3.scale.linear()
       .domain([500,1000])
-      .range([0.8,1.0])
+      .range([1.0,1.0])
       .clamp(true);
 
     // Label Scale
@@ -4014,6 +4007,11 @@ function enter_exit_update(params, network_data, reorder, delays){
   // Fade in new gridlines 
   ///////////////////////////
 
+  d3.selectAll('.horz_lines')
+    .remove();
+  d3.selectAll('.vert_lines')
+    .remove();
+
   // append horizontal lines
   d3.select('#clust_group')
     .selectAll('.horz_lines')
@@ -4029,6 +4027,9 @@ function enter_exit_update(params, network_data, reorder, delays){
     .attr('x2',params.viz.clust.dim.width)
     .style('stroke-width', params.viz.border_width/params.viz.zoom_switch+'px')
     .style('stroke','white')
+    .attr('opacity',0)
+    .transition().delay(delays.enter).duration(duration)
+    .attr('opacity',1);
 
   // append vertical line groups
   d3.select('#clust_group')
@@ -5044,9 +5045,6 @@ function Zoom(params){
       }
       return inst_name;
     }
-    console.log('constrain font size')
-    console.log(keep_width.row)
-    console.log(params.norm_label.width.row)
 
     if (keep_width.row > params.norm_label.width.row) {
 
