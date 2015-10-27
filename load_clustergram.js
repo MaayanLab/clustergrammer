@@ -127,6 +127,20 @@ function make_clust(inst_network){
       });
       $( "#amount" ).val( "$" + $( "#slider_opacity" ).slider( "value" ) );
 
+      // filter scale
+      $( "#slider_filter" ).slider({
+        value:1,
+        min: 1,
+        max: 9,
+        step: 1,
+        slide: function( event, ui ) {
+          $( "#amount" ).val( "$" + ui.value );
+          var inst_index = ui.value;
+          console.log(inst_index)
+          update_clust('default_example_f'+inst_index+'.json')
+        }
+      });
+      $( "#amount" ).val( "$" + $( "#slider_filter" ).slider( "value" ) );
 
       // submit genes button
       $('#gene_search_box').keyup(function(e) {
@@ -216,12 +230,10 @@ function update_clust(network_name) {
       d3c.reorder(order_id);
     });
 
-    
-
   })
 
 }
 
 // choose example here
-d3c = make_clust('default_example');
+d3c = make_clust('default_example_f1');
 
