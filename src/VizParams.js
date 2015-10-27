@@ -423,7 +423,6 @@ function VizParams(config){
 
      
     d3.select(window).on('resize', null);
-    d3.select('#expand_button').on('click',null);
 
     // resize window
     if (params.viz.resize){
@@ -439,11 +438,18 @@ function VizParams(config){
 
     if (params.viz.expand_button){
 
+      d3.select('#expand_button').on('click',null);
       var expand_opacity = 0.4;
 
-      // add expand button
-      var exp_button = d3.select('#main_svg').append('text')
-        .attr('id','expand_button')
+      if (d3.select('#expand_button').empty()){
+        var exp_button = d3.select('#main_svg')
+          .append('text')
+          .attr('id','expand_button');
+      } else {
+        var exp_button = d3.select('#expand_button')
+      }
+
+      exp_button
         .attr('text-anchor', 'middle')
         .attr('dominant-baseline', 'central')
         .attr('font-family', 'FontAwesome')
