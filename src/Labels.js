@@ -53,6 +53,7 @@ function Labels(params){
       .attr('transform', function(d, index) {
         return 'translate(0,' + params.matrix.y_scale(index) + ')';
       })
+      // .on('dblclick',null);
       .on('dblclick', function(d) {
         console.log('double clicking row')
         reorder.row_reorder.call(this);

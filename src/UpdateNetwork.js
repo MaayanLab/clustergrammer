@@ -9,21 +9,15 @@ function update_network(args){
 
   var network_data = params.network_data;
 
-  enter_exit_update(params, network_data, delays);
+  // ordering - necessary for redefining the function called on button click
+  var reorder = Reorder(params);
+  this.reorder = reorder.all_reorder;
+
+  enter_exit_update(params, network_data, reorder, delays);
 
   // update network data 
   this.params.network_data = network_data;
 
-  // ordering 
-  var reorder = Reorder(params);
-  this.reorder = reorder.all_reorder;
-
-  // reset row and col label click reorder 
-  d3.selectAll('.col_label_text')
-    .on('dblclick',null);
-
-  d3.selectAll('.row_label_text')
-    .on('dblclick',null);
 
   // search functions 
   var gene_search = Search(params, params.network_data.row_nodes,'name');
@@ -39,7 +33,8 @@ function update_network(args){
 
   d3.select('#main_svg').on('dblclick.zoom',null);    
 
-  // initialize the double click behavior 
+  // initialize the double click behavior - necessary for nomal zoom/double click
+  // behavior 
   var zoom = Zoom(params);
   zoom.ini_doubleclick();
 
@@ -87,7 +82,7 @@ function check_need_exit_enter(old_params, params){
   return delays;
 }
 
-function enter_exit_update(params, network_data, delays){
+function enter_exit_update(params, network_data, reorder, delays){
 
   var duration = 1000;
 
@@ -201,7 +196,6 @@ function enter_exit_update(params, network_data, delays){
 
   var labels = Labels(params);
 
-  var reorder = Reorder(params);
 
   var row_triangle_ini_group = labels.make_rows( params, row_nodes, reorder, duration );
   var container_all_col      = labels.make_cols( params, col_nodes, reorder, duration );

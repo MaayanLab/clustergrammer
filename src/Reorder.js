@@ -7,8 +7,6 @@ function Reorder(params){
    */
   function all_reorder(inst_order) {
 
-    console.log('\n\nrunning all reorder\n\n')
-
     params.viz.run_trans = true;
 
     // load orders
@@ -104,16 +102,19 @@ function Reorder(params){
 
     }
 
-      // params.viz.run_trans = false;
+    // params.viz.run_trans = false;
 
-      reposition_tile_highlight();
+    reposition_tile_highlight();
 
-      // backup allow programmatic zoom
-      setTimeout(end_reorder, 2500);
+    // backup allow programmatic zoom
+    setTimeout(end_reorder, 2500);
 
   }
 
   function row_reorder() {
+
+    console.log('\nrunning row_reorder')
+    console.log(params.network_data.row_nodes.length)
 
     // get inst row (gene)
     var inst_row = d3.select(this).select('text').text();
@@ -189,8 +190,6 @@ function Reorder(params){
     d3.select(this)
       .select('rect')
       .style('opacity', 1);
-
-
 
     reposition_tile_highlight();
 
