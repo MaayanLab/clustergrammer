@@ -52,8 +52,10 @@ function Labels(params){
       .attr('class', 'row_label_text')
       .attr('transform', function(d, index) {
         return 'translate(0,' + params.matrix.y_scale(index) + ')';
-      })
-      // .on('dblclick',null);
+      });
+
+    d3.select('#row_label_zoom_container')
+      .selectAll('.row_label_text')
       .on('dblclick', function(d) {
         console.log('double clicking row')
         reorder.row_reorder.call(this);

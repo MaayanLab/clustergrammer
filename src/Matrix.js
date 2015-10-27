@@ -6,8 +6,10 @@ function Matrix(network_data, svg_elem, params) {
   col_nodes = network_data.col_nodes,
   clust_group;
 
-  // make the matrix
-  initialize_matrix();
+  // moved to VizParams - the matrix is only being used for row/col label
+  // double click reordering 
+  // // make the matrix
+  // initialize_matrix();
 
   // append a group that will hold clust_group and position it once
   clust_group = svg_elem
@@ -178,37 +180,37 @@ function Matrix(network_data, svg_elem, params) {
   // draw grid lines after drawing tiles
   draw_grid_lines(row_nodes, col_nodes);
 
-  function initialize_matrix() {
+  // function initialize_matrix() {
 
-    _.each(row_nodes, function(tmp, row_index) {
-      matrix[row_index] = d3.range(col_nodes.length).map(
-        function(col_index) {
-          return {
-            pos_x: col_index,
-            pos_y: row_index,
-            value: 0,
-            highlight:0
-          } ;
-        });
-    });
+  //   _.each(row_nodes, function(tmp, row_index) {
+  //     matrix[row_index] = d3.range(col_nodes.length).map(
+  //       function(col_index) {
+  //         return {
+  //           pos_x: col_index,
+  //           pos_y: row_index,
+  //           value: 0,
+  //           highlight:0
+  //         } ;
+  //       });
+  //   });
 
-    _.each(network_data.links, function(link) {
-      matrix[link.source][link.target].value = link.value;
-      // transfer additional link information is necessary
-      if (link.value_up && link.value_dn) {
-        matrix[link.source][link.target].value_up = link.value_up;
-        matrix[link.source][link.target].value_dn = link.value_dn;
-      }
-      if (link.highlight) {
-        matrix[link.source][link.target].highlight = link.highlight;
-      }
-      if (link.info) {
-        matrix[link.source][link.target].info = link.info;
-      }
-    });
+  //   _.each(network_data.links, function(link) {
+  //     matrix[link.source][link.target].value = link.value;
+  //     // transfer additional link information is necessary
+  //     if (link.value_up && link.value_dn) {
+  //       matrix[link.source][link.target].value_up = link.value_up;
+  //       matrix[link.source][link.target].value_dn = link.value_dn;
+  //     }
+  //     if (link.highlight) {
+  //       matrix[link.source][link.target].highlight = link.highlight;
+  //     }
+  //     if (link.info) {
+  //       matrix[link.source][link.target].info = link.info;
+  //     }
+  //   });
 
-    return matrix;
-  }
+  //   return matrix;
+  // }
 
   function draw_simple_tiles(clust_group, tile_data){
 

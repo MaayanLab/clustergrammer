@@ -313,6 +313,7 @@ function VizParams(config){
       params.matrix.x_scale.domain(params.matrix.orders.ini_row);
       params.matrix.y_scale.domain(params.matrix.orders.ini_col);
     } else if (params.viz.inst_order === 'clust') {
+      console.log('initializing x and y scale domains')
       params.matrix.x_scale.domain(params.matrix.orders.clust_row);
       params.matrix.y_scale.domain(params.matrix.orders.clust_col);
     } else if (params.viz.inst_order === 'rank') {
@@ -322,6 +323,9 @@ function VizParams(config){
       params.matrix.x_scale.domain(params.matrix.orders.class_row);
       params.matrix.y_scale.domain(params.matrix.orders.class_col);
     }
+
+    // initialize matrix 
+    params.matrix.matrix = initialize_matrix(network_data);
 
     // visualization parameters
     //////////////////////////////
@@ -548,6 +552,40 @@ function VizParams(config){
           .style('margin-left', outer_margins.left + 'px')
           .style('margin-top',  outer_margins.top + 'px');
     }
+  }
+
+  function initialize_matrix(network_data) {
+
+    var matrix = []; 
+
+    _.each(network_data.row_nodes, function(tmp, row_index) {
+      matrix[row_index] = d3.range(network_data.col_nodes.length).map(
+        function(col_index) {
+          return {
+            pos_x: col_index,
+            pos_y: row_index,
+            value: 0,
+            highlight:0
+          } ;
+        });
+    });
+
+    _.each(network_data.links, function(link) {
+      matrix[link.source][link.target].value = link.value;
+      // transfer additional link information is necessary
+      if (link.value_up && link.value_dn) {
+        matrix[link.source][link.target].value_up = link.value_up;
+        matrix[link.source][link.target].value_dn = link.value_dn;
+      }
+      if (link.highlight) {
+        matrix[link.source][link.target].highlight = link.highlight;
+      }
+      if (link.info) {
+        matrix[link.source][link.target].info = link.info;
+      }
+    });
+
+    return matrix;
   }
 
   // instantiate zoom object

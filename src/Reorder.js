@@ -113,18 +113,15 @@ function Reorder(params){
 
   function row_reorder() {
 
-    console.log('\nrunning row_reorder')
-    console.log(params.network_data.row_nodes.length)
-
     // get inst row (gene)
     var inst_row = d3.select(this).select('text').text();
 
     // get row and col nodes
     params.viz.run_trans = true;
 
-    var mat       = viz.get_matrix();
-    var row_nodes = viz.get_nodes('row');
-    var col_nodes = viz.get_nodes('col');
+    var mat       = params.matrix.matrix;
+    var row_nodes = params.network_data.row_nodes;
+    var col_nodes = params.network_data.col_nodes;
 
     // find the index of the row
     var tmp_arr = [];
@@ -146,8 +143,14 @@ function Reorder(params){
       return tmp_arr[b] - tmp_arr[a];
     });
 
-    // resort the columns (resort x)
+    // resort cols 
     params.matrix.x_scale.domain(tmp_sort);
+    
+    // console.log('rangebands')
+    // console.log(params.matrix.x_scale.rangeBand())
+    // console.log(params.matrix.y_scale.rangeBand())
+    // console.log('\n')
+
 
     // reorder matrix
     ////////////////////
@@ -201,9 +204,9 @@ function Reorder(params){
     // set running transition value
     params.viz.run_trans = true;
 
-    var mat       = viz.get_matrix();
-    var row_nodes = viz.get_nodes('row');
-    var col_nodes = viz.get_nodes('col');
+    var mat       = params.matrix.matrix;
+    var row_nodes = params.network_data.row_nodes;
+    var col_nodes = params.network_data.col_nodes;
 
     // get inst col (term)
     var inst_term = d3.select(this).select('text').attr('full_name');
@@ -224,12 +227,13 @@ function Reorder(params){
       tmp_arr.push( mat[index][inst_col].value);
     });
 
-    // sort the rows
+    // sort the cols
     var tmp_sort = d3.range(tmp_arr.length).sort(function(a, b) {
       return tmp_arr[b] - tmp_arr[a];
     });
 
-    // resort rows - y axis
+
+    // resort rows 
     ////////////////////////////
     params.matrix.y_scale.domain(tmp_sort);
 
@@ -238,9 +242,14 @@ function Reorder(params){
     var t = viz.get_clust_group()
       .transition().duration(2500);
 
+    // console.log('rangebands')
+    // console.log(params.matrix.x_scale.rangeBand())
+    // console.log(params.matrix.y_scale.rangeBand())
+    // console.log('\n')
+
     // reorder matrix
     t.selectAll('.tile')
-      .attr('transform', function(d, index) {
+      .attr('transform', function(d) {
         return 'translate('+params.matrix.x_scale(d.target)+',' + params.matrix.y_scale(d.source) + ')';
       });
 
