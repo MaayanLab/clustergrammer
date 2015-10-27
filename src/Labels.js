@@ -454,6 +454,9 @@ function Labels(params){
         .on('mouseout',tip.hide);
       }
 
+    // bounding font size 
+    /////////////////////////////
+
     params.bounding_width_max.col = 0;
     d3.selectAll('.col_label_click').each(function() {
       var tmp_width = d3.select(this).select('text').node().getBBox().width;

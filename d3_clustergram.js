@@ -2068,6 +2068,9 @@ function Labels(params){
         .on('mouseout',tip.hide);
       }
 
+    // bounding font size 
+    /////////////////////////////
+
     params.bounding_width_max.col = 0;
     d3.selectAll('.col_label_click').each(function() {
       var tmp_width = d3.select(this).select('text').node().getBBox().width;
@@ -3824,8 +3827,6 @@ function update_network(args){
   // this.params.network_data = network_data;
   this.params = params;
 
-
-  console.log('reinitializing search')
   // search functions 
   var gene_search = Search(params, params.network_data.row_nodes,'name');
   this.get_genes  = gene_search.get_entities;
@@ -4807,7 +4808,7 @@ function Zoom(params){
       ]);
 
     var trans = false;
-    constrain_font_size(trans);
+    constrain_font_size(params, trans);
 
 
     // resize label bars if necessary
@@ -4962,7 +4963,7 @@ function Zoom(params){
       params.zoom.translate([pan_dx, net_y_offset]);
 
       var trans = true;
-      constrain_font_size(trans);
+      constrain_font_size(params, trans);
 
       // re-size of the highlighting rects
       /////////////////////////////////////////
@@ -5023,11 +5024,12 @@ function Zoom(params){
     }
   }
 
-  function constrain_font_size(trans){
+  function constrain_font_size(params, trans){
 
     var search_duration = 700;
 
     var fraction_keep = {};
+
 
     var keep_width = {};
     keep_width.row = params.bounding_width_max.row*params.labels.row_keep
@@ -5042,6 +5044,9 @@ function Zoom(params){
       }
       return inst_name;
     }
+    console.log('constrain font size')
+    console.log(keep_width.row)
+    console.log(params.norm_label.width.row)
 
     if (keep_width.row > params.norm_label.width.row) {
 
@@ -5067,14 +5072,16 @@ function Zoom(params){
           d3.select(this).select('text')
             .transition().duration(search_duration)
             .style('font-size', params.labels.default_fs_row + 'px')
-            .attr('y', params.matrix.y_scale.rangeBand() * 0.75);
+            // .attr('y', params.matrix.y_scale.rangeBand() * 
+            //   params.scale_font_offset(params.viz.zoom_scale_font.row))
           d3.select(this).select('text')
             .text(function(d){ return normal_name(d);});
 
         } else {
           d3.select(this).select('text')
             .style('font-size', params.labels.default_fs_row + 'px')
-            .attr('y', params.matrix.y_scale.rangeBand() * 0.75)
+            // .attr('y', params.matrix.y_scale.rangeBand() * 
+            //   params.scale_font_offset(params.viz.zoom_scale_font.row))
             .text(function(d){ return normal_name(d);});
         }
       });

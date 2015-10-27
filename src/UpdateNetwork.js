@@ -19,8 +19,6 @@ function update_network(args){
   // this.params.network_data = network_data;
   this.params = params;
 
-
-  console.log('reinitializing search')
   // search functions 
   var gene_search = Search(params, params.network_data.row_nodes,'name');
   this.get_genes  = gene_search.get_entities;
