@@ -277,17 +277,6 @@ function Reorder(params){
         return 'translate(0,' + params.matrix.y_scale(inst_index) + ')';
       });
 
-    // // t.selectAll('.column')
-    // d3.select('#col_label_zoom_container').selectAll('.col_label_text')
-    //   .transition().duration(2500)
-    //   .attr('transform', function(d, index) {
-    //     return 'translate(' + params.matrix.x_scale(index) + ')rotate(-90)';
-    //   })
-    //   .each('end', function() {
-    //     // set running transition to 0
-    //     params.viz.run_trans = false;
-    //   });
-
     // highlight selected column
     ///////////////////////////////
     // unhilight and unbold all columns (already unbolded earlier)
