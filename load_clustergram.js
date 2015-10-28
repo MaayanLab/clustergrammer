@@ -85,11 +85,12 @@ function make_clust(inst_network){
           min: 1,
           max: 9,
           step: 1,
-          slide: function( event, ui ) {
+          stop: function( event, ui ) {
             $( "#amount" ).val( "$" + ui.value );
             var inst_index = ui.value;
-            update_clust('default_example_f'+inst_index+'.json');
             d3.select('#filter_value').text('filter row/column: value : '+inst_index);
+            var inst_name = 'default_example_f'+inst_index+'.json';
+            update_clust(inst_name);
           }
         });
         $( "#amount" ).val( "$" + $( "#slider_filter" ).slider( "value" ) );
