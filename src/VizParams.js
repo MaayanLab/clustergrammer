@@ -101,6 +101,8 @@ function VizParams(config){
     var col_nodes = network_data.col_nodes;
     var row_nodes = network_data.row_nodes;
 
+    params.network_data.row_nodes_names = _.pluck(row_nodes, 'name');
+    params.network_data.col_nodes_names = _.pluck(col_nodes, 'name');
 
     // find the label with the most characters and use it to adjust the row and col margins
     var row_max_char = _.max(row_nodes, function(inst) { return inst.name.length; }).name.length;

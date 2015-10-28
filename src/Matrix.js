@@ -199,7 +199,6 @@ function Matrix(network_data, svg_elem, params) {
         return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
       })
       .on('mouseover', function(p) {
-        // console.log(p.name)
         var row_name = p.name.split('_')[0];
         var col_name = p.name.split('_')[1];
 
@@ -249,7 +248,6 @@ function Matrix(network_data, svg_elem, params) {
   // make each row in the clustergram
   function draw_group_tiles(clust_group, tile_data) {
 
-    console.log(tile_data[0])
     // bind tile_data
     var tile = clust_group
       .selectAll('g')

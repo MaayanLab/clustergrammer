@@ -102,6 +102,7 @@ function Dendrogram(type, params, delay_dendro) {
   function build_col_dendro() {
 
     var col_nodes = params.network_data.col_nodes;
+    var col_nodes_names = _.pluck(col_nodes, 'name');
 
     // append groups - each will hold a classification rect
     var col_class_ini_group = d3.select('#col_viz_zoom_container')
@@ -110,8 +111,9 @@ function Dendrogram(type, params, delay_dendro) {
     .enter()
     .append('g')
     .attr('class', 'col_viz_group')
-    .attr('transform', function(d, index) {
-      return 'translate(' + params.matrix.x_scale(index) + ',0)';
+    .attr('transform', function(d) {
+      var inst_index = _.indexOf(col_nodes_names, d.name);
+      return 'translate(' + params.matrix.x_scale(inst_index) + ',0)';
     });
 
 

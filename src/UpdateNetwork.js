@@ -2,8 +2,6 @@ function update_network(args){
 
   var old_params = this.params;
 
-  console.log(params)
-
   var config = Config(args);
   var params = VizParams(config);
 
@@ -196,14 +194,16 @@ function enter_exit_update(params, network_data, reorder, delays){
         return output_opacity;
     });
 
+  d3.selectAll('.tile')
+    .on('mouseover',null)
+    .on('mouseout',null);
+
   // redefine mouseover events for tiles 
   d3.select('#clust_group')
     .selectAll('.tile')
     .on('mouseover', function(p) {
-
       var row_name = p.name.split('_')[0];
       var col_name = p.name.split('_')[1];
-
       // highlight row - set text to active if
       d3.selectAll('.row_label_text text')
         .classed('active', function(d) {
