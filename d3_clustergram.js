@@ -3198,6 +3198,9 @@ function draw_grid_lines(row_nodes, col_nodes) {
 
 function resize_after_update(params, row_nodes, col_nodes, links, duration, delays){
 
+  var row_nodes_names = params.network_data.row_nodes_names;
+  var col_nodes_names = params.network_data.col_nodes_names;
+
   // reset zoom
   //////////////////////////////
   var zoom_y = 1;
@@ -3408,8 +3411,9 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
   svg_group.selectAll('.row_label_text')
     .data(row_nodes, function(d){return d.name;})
     .transition().delay(delays.update).duration(duration)
-    .attr('transform', function(d, index) {
-      return 'translate(0,' + params.matrix.y_scale(index) + ')';
+    .attr('transform', function(d) {
+      var inst_index = _.indexOf(row_nodes_names, d.name);
+      return 'translate(0,' + params.matrix.y_scale(inst_index) + ')';
     });
 
   svg_group.selectAll('.row_label_text')
@@ -3470,8 +3474,9 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
   svg_group.selectAll('.row_viz_group')
     .data(row_nodes, function(d){return d.name;})
     .transition().delay(delays.update).duration(duration)
-    .attr('transform', function(d, index) {
-        return 'translate(0, ' + params.matrix.y_scale(index) + ')';
+    .attr('transform', function(d) {
+        var inst_index = _.indexOf(row_nodes_names, d.name);
+        return 'translate(0, ' + params.matrix.y_scale(inst_index) + ')';
       });
 
   svg_group.selectAll('.row_viz_group')
@@ -3541,8 +3546,9 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
     svg_group.selectAll('.col_label_text')
       .data(col_nodes, function(d){return d.name;})
       .transition().delay(delays.update).duration(duration)
-      .attr('transform', function(d, index) {
-        return 'translate(' + params.matrix.x_scale(index) + ') rotate(-90)';
+      .attr('transform', function(d) {
+        var inst_index = _.indexOf(col_nodes_names, d.name);
+        return 'translate(' + params.matrix.x_scale(inst_index) + ') rotate(-90)';
       });
 
     svg_group.selectAll('.col_label_click')
@@ -3686,8 +3692,9 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
     svg_group.selectAll('.col_viz_group')
       .data(col_nodes, function(d){return d.name;})
       .transition().delay(delays.update).duration(duration)
-      .attr('transform', function(d, index) {
-        return 'translate(' + params.matrix.x_scale(index) + ',0)';
+      .attr('transform', function(d) {
+        var inst_index = _.indexOf(col_nodes_names, d.name);
+        return 'translate(' + params.matrix.x_scale(inst_index) + ',0)';
       });
 
     // reposition grid lines
@@ -3695,8 +3702,9 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
     svg_group.selectAll('.horz_lines')
       .data(row_nodes, function(d){return d.name;})
       .transition().delay(delays.update).duration(duration)
-      .attr('transform', function(d, index) {
-        return 'translate(0,' + params.matrix.y_scale(index) + ') rotate(0)';
+      .attr('transform', function(d) {
+        var inst_index = _.indexOf(row_nodes_names, d.name);
+        return 'translate(0,' + params.matrix.y_scale(inst_index) + ') rotate(0)';
       })
 
     svg_group.selectAll('.horz_lines')
@@ -3708,8 +3716,9 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
     svg_group.selectAll('.vert_lines')
       .data(col_nodes, function(d){return d.name;})
       .transition().delay(delays.update).duration(duration)
-      .attr('transform', function(d, index) {
-          return 'translate(' + params.matrix.x_scale(index) + ') rotate(-90)';
+      .attr('transform', function(d) {
+          var inst_index = _.indexOf(col_nodes_names, d.name);
+          return 'translate(' + params.matrix.x_scale(inst_index) + ') rotate(-90)';
       });
 
     svg_group.selectAll('.vert_lines')
@@ -3966,6 +3975,7 @@ function enter_exit_update(params, network_data, reorder, delays){
     .style('opacity',0)
     .remove();  
 
+  // resize clust components using appropriate delays 
   resize_after_update(params, row_nodes, col_nodes, links, duration, delays);
 
 
@@ -4034,6 +4044,8 @@ function enter_exit_update(params, network_data, reorder, delays){
 
   // Fade in new gridlines 
   ///////////////////////////
+  var row_nodes_names = params.network_data.row_nodes_names;
+  var col_nodes_names = params.network_data.col_nodes_names;
 
   d3.selectAll('.horz_lines')
     .remove();
@@ -4047,8 +4059,9 @@ function enter_exit_update(params, network_data, reorder, delays){
     .enter()
     .append('g')
     .attr('class','horz_lines')
-    .attr('transform', function(d, index) {
-      return 'translate(0,' + params.matrix.y_scale(index) + ') rotate(0)';
+    .attr('transform', function(d) {
+      var inst_index = _.indexOf(row_nodes_names, d.name);
+      return 'translate(0,' + params.matrix.y_scale(inst_index) + ') rotate(0)';
     })
     .append('line')
     .attr('x1',0)
@@ -4066,8 +4079,9 @@ function enter_exit_update(params, network_data, reorder, delays){
     .enter()
     .append('g')
     .attr('class', 'vert_lines')
-    .attr('transform', function(d, index) {
-        return 'translate(' + params.matrix.x_scale(index) + ') rotate(-90)';
+    .attr('transform', function(d) {
+      var inst_index = _.indexOf(col_nodes_names, d.name);
+      return 'translate(' + params.matrix.x_scale(inst_index) + ') rotate(-90)';
     })
     .append('line')
     .attr('x1', 0)
