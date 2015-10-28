@@ -87,14 +87,34 @@ function make_clust(inst_network){
           step: 1,
           stop: function( event, ui ) {
             $( "#amount" ).val( "$" + ui.value );
-            var inst_index = ui.value;
-            d3.select('#filter_value').text('filter row/column: value : '+inst_index);
-            var inst_name = 'default_example_f'+inst_index+'.json';
+            var inst_filt = $( "#slider_filter" ).slider( "value" ); 
+
+            d3.select('#filter_value').text('filter row/column: value : '+inst_filt);
+            var inst_name = 'default_example_f'+inst_filt+'.json';
+
             update_clust(inst_name);
           }
         });
         $( "#amount" ).val( "$" + $( "#slider_filter" ).slider( "value" ) );
 
+        // // filter times_met - only initialize once 
+        // $( "#slider_times_met" ).slider({
+        //   value:1,
+        //   min: 1,
+        //   max: 3,
+        //   step: 1,
+        //   stop: function( event, ui ) {
+        //     $( "#amount" ).val( "$" + ui.value );
+        //     var inst_filt  = $( "#slider_filter" ).slider( "value" ); 
+        //     var inst_times = $( "#slider_times_met" ).slider( "value" ); 
+
+        //     d3.select('#filter_value').text('filter row/column: value : '+inst_filt);
+        //     var inst_name = 'default_example_f'+inst_filt+'_n'+inst_times+'.json';
+
+        //     update_clust(inst_name);
+        //   }
+        // });
+        // $( "#amount" ).val( "$" + $( "#slider_filter" ).slider( "value" ) );
 
         // reused functions 
           
@@ -173,6 +193,7 @@ function make_clust(inst_network){
           // disable the slider to prevent the user from making changes too
           // quickly
           $('#slider_filter').slider('disable');
+
           // reenable after update is finished 
           setTimeout(enable_slider, 3000);
 
