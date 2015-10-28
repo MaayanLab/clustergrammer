@@ -2,6 +2,8 @@ function update_network(args){
 
   var old_params = this.params;
 
+  console.log(params)
+
   var config = Config(args);
   var params = VizParams(config);
 
