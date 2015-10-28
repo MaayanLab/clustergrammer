@@ -166,6 +166,16 @@ function make_clust(inst_network){
 
         function update_clust(network_name) {
 
+          function enable_slider(){
+            $('#slider_filter').slider('enable');  
+          }
+
+          // disable the slider to prevent the user from making changes too
+          // quickly
+          $('#slider_filter').slider('disable');
+          // reenable after update is finished 
+          setTimeout(enable_slider, 3000);
+
           d3.json('json/'+network_name, function(network_data){
 
             // define the outer margins of the visualization
