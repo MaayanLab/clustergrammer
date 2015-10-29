@@ -488,9 +488,11 @@ function Matrix(network_data, svg_elem, params) {
 
   // draw rows of clustergram
   if (params.matrix.tile_type === 'simple') {
+    console.log('making simple tiles');
     draw_simple_tiles(clust_group, tile_data);
   } 
   else {
+    console.log('making group tiles');
     draw_group_tiles(clust_group, tile_data);    
   }
 
@@ -4753,6 +4755,11 @@ function Zoom(params){
   /* Functions for zooming. Should be turned into a module.
    * ----------------------------------------------------------------------- */
   function zoomed() {
+
+    console.log('running zoomed');
+    // console.log(d3.event.translate);
+    // console.log(d3.event.zoom);
+    // console.log('\n');
 
     var zoom_x = d3.event.scale,
       zoom_y = d3.event.scale,

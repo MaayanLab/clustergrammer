@@ -4,6 +4,11 @@ function Zoom(params){
    * ----------------------------------------------------------------------- */
   function zoomed() {
 
+    console.log('running zoomed');
+    // console.log(d3.event.translate);
+    // console.log(d3.event.zoom);
+    // console.log('\n');
+
     var zoom_x = d3.event.scale,
       zoom_y = d3.event.scale,
       trans_x = d3.event.translate[0] - params.viz.clust.margin.left,

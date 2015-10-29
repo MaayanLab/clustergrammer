@@ -4,7 +4,7 @@ function make_clust(inst_network){
   $(function() {
 
       // load network
-      d3.json('json/'+inst_network+'.json', function(network_data){
+      d3.json('json/'+inst_network, function(network_data){
 
         // define the outer margins of the visualization
         var outer_margins = {
@@ -48,12 +48,12 @@ function make_clust(inst_network){
           'col_label':'Column-Data-Name',
           'outer_margins': outer_margins,
           'outer_margins_expand': outer_margins_expand,
-          'outline_colors':['black','yellow'],
+          // 'outline_colors':['black','yellow'],
           // 'tile_click_hlight':true,
-          'show_tooltips':true,
+          // 'show_tooltips':true,
           // 'click_tile': click_tile_callback,
           // 'click_label':click_label,
-          'highlight_color':'yellow',
+          // 'highlight_color':'yellow',
           'super_label_scale':1.25,
           // 'transpose':true,
           // 'ini_expand':true
@@ -227,9 +227,9 @@ function make_clust(inst_network){
               'col_label':'Column-Data-Name',
               'outer_margins': outer_margins,
               'outer_margins_expand': outer_margins_expand,
-              'outline_colors':['black','yellow'],
-              'show_tooltips':true,
-              'highlight_color':'red',
+              // 'outline_colors':['black','yellow'],
+              // 'show_tooltips':true,
+              // 'highlight_color':'red',
               'super_label_scale':1.25,
               'order':inst_order
             };
@@ -250,5 +250,7 @@ function make_clust(inst_network){
 
 
 // choose example here
-make_clust('default_example_f1');
+// make_clust('default_example_f1.json');
+// make_clust('bar_example.json');
+make_clust('kin_sub_example.json');
 

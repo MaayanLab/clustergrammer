@@ -317,8 +317,6 @@ class Network(object):
         # print(self.dat['mat'])
         # print(self.dat['mat'].shape)
 
-
-
   def load_cst_kea_enr_to_net(self, enr, pval_cutoff):
     import scipy
     import numpy as np

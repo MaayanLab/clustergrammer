@@ -45,9 +45,11 @@ function Matrix(network_data, svg_elem, params) {
 
   // draw rows of clustergram
   if (params.matrix.tile_type === 'simple') {
+    console.log('making simple tiles');
     draw_simple_tiles(clust_group, tile_data);
   } 
   else {
+    console.log('making group tiles');
     draw_group_tiles(clust_group, tile_data);    
   }
 
