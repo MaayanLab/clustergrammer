@@ -4756,7 +4756,7 @@ function Zoom(params){
    * ----------------------------------------------------------------------- */
   function zoomed() {
 
-    console.log('running zoomed');
+    // console.log('running zoomed');
     // console.log(d3.event.translate);
     // console.log(d3.event.zoom);
     // console.log('\n');
