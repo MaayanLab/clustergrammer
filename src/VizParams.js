@@ -325,6 +325,24 @@ function VizParams(config){
       params.matrix.y_scale.domain(params.matrix.orders.class_col);
     }
 
+    // add instantaneous positions to links 
+    _.each(params.network_data.links, function(d){
+      d.x = params.matrix.x_scale(d.target);
+      d.y = params.matrix.y_scale(d.source);
+    });
+
+    // make lnks crossfilter 
+    params.cf = {};
+    params.cf.links = crossfilter(params.network_data.links);
+    params.cf.dim_x = params.cf.links.dimension(function(d){return d.x;});
+    params.cf.dim_y = params.cf.links.dimension(function(d){return d.y;});
+
+    // // test-filter 
+    // // params.cf.dim_x.filter([200,350]);
+    // params.cf.dim_y.filter([400,800]);
+    // // redefine links 
+    // params.network_data.links = params.cf.dim_x.top(Infinity);
+
     // initialize matrix 
     params.matrix.matrix = initialize_matrix(network_data);
 

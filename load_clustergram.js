@@ -6,6 +6,8 @@ function make_clust(inst_network){
       // load network
       d3.json('json/'+inst_network, function(network_data){
 
+        global_network_data = network_data;
+
         // define the outer margins of the visualization
         var outer_margins = {
             'top':5,

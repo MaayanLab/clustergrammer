@@ -9,10 +9,7 @@ function Matrix(network_data, svg_elem, params) {
   var row_nodes_names = _.pluck(row_nodes, 'name');
   var col_nodes_names = _.pluck(col_nodes, 'name');
 
-  // moved to VizParams - the matrix is only being used for row/col label
-  // double click reordering 
-  // // make the matrix
-  // initialize_matrix();
+
 
   // append a group that will hold clust_group and position it once
   clust_group = svg_elem
@@ -233,6 +230,8 @@ function Matrix(network_data, svg_elem, params) {
       .attr('transform', function(d) {
         // target is the column, which corresponds to the x position 
         // source is the row, which corresponds to the y position 
+        // console.log(params.matrix.x_scale(d.target));
+        // console.log(params.matrix.y_scale(d.source));
         return 'translate(' + params.matrix.x_scale(d.target) + ','+params.matrix.y_scale(d.source)+')';
       })
 

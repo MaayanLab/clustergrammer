@@ -4,10 +4,9 @@ function Zoom(params){
    * ----------------------------------------------------------------------- */
   function zoomed() {
 
-    // console.log('running zoomed');
-    // console.log(d3.event.translate);
-    // console.log(d3.event.zoom);
-    // console.log('\n');
+    // // reset the zoom translate and zoom
+    // params.zoom.scale(zoom_y);
+    // params.zoom.translate([pan_dx, net_y_offset]);
 
     var zoom_x = d3.event.scale,
       zoom_y = d3.event.scale,
@@ -79,6 +78,9 @@ function Zoom(params){
       }
     }
 
+    // update visible links 
+    update_viz_links(trans_x, trans_y, d3.event.scale);
+
     // apply transformation and reset translate vector
     // the zoom vector (zoom.scale) never gets reset
     ///////////////////////////////////////////////////
@@ -117,6 +119,12 @@ function Zoom(params){
 
     var trans = false;
     constrain_font_size(params, trans);
+
+
+    console.log(-trans_x, -trans_y);
+    console.log(d3.event.scale);
+    console.log('\n')
+
 
 
     // resize label bars if necessary
@@ -330,6 +338,23 @@ function Zoom(params){
 
       }
     }
+  }
+
+  function update_viz_links(trans_x, trans_y, zoom_scale){
+    // test-filter 
+    // params.cf.dim_x.filter([200,350]);
+    params.cf.dim_y.filter([400,800]);
+
+    // redefine links 
+    params.network_data.links = params.cf.dim_x.top(Infinity);
+
+    // console.log(params.network_data.links);
+
+    // d3.selectAll('.tile')
+    //   .data(params.network_data.links, function(d){return d.name;})
+    //   .exit()
+    //   .remove();
+
   }
 
   function constrain_font_size(params, trans){

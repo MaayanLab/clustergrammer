@@ -452,10 +452,7 @@ function Matrix(network_data, svg_elem, params) {
   var row_nodes_names = _.pluck(row_nodes, 'name');
   var col_nodes_names = _.pluck(col_nodes, 'name');
 
-  // moved to VizParams - the matrix is only being used for row/col label
-  // double click reordering 
-  // // make the matrix
-  // initialize_matrix();
+
 
   // append a group that will hold clust_group and position it once
   clust_group = svg_elem
@@ -676,6 +673,8 @@ function Matrix(network_data, svg_elem, params) {
       .attr('transform', function(d) {
         // target is the column, which corresponds to the x position 
         // source is the row, which corresponds to the y position 
+        // console.log(params.matrix.x_scale(d.target));
+        // console.log(params.matrix.y_scale(d.source));
         return 'translate(' + params.matrix.x_scale(d.target) + ','+params.matrix.y_scale(d.source)+')';
       })
 
@@ -1306,6 +1305,24 @@ function VizParams(config){
       params.matrix.x_scale.domain(params.matrix.orders.class_row);
       params.matrix.y_scale.domain(params.matrix.orders.class_col);
     }
+
+    // add instantaneous positions to links 
+    _.each(params.network_data.links, function(d){
+      d.x = params.matrix.x_scale(d.target);
+      d.y = params.matrix.y_scale(d.source);
+    });
+
+    // make lnks crossfilter 
+    params.cf = {};
+    params.cf.links = crossfilter(params.network_data.links);
+    params.cf.dim_x = params.cf.links.dimension(function(d){return d.x;});
+    params.cf.dim_y = params.cf.links.dimension(function(d){return d.y;});
+
+    // // test-filter 
+    // // params.cf.dim_x.filter([200,350]);
+    // params.cf.dim_y.filter([400,800]);
+    // // redefine links 
+    // params.network_data.links = params.cf.dim_x.top(Infinity);
 
     // initialize matrix 
     params.matrix.matrix = initialize_matrix(network_data);
@@ -4756,10 +4773,9 @@ function Zoom(params){
    * ----------------------------------------------------------------------- */
   function zoomed() {
 
-    // console.log('running zoomed');
-    // console.log(d3.event.translate);
-    // console.log(d3.event.zoom);
-    // console.log('\n');
+    // // reset the zoom translate and zoom
+    // params.zoom.scale(zoom_y);
+    // params.zoom.translate([pan_dx, net_y_offset]);
 
     var zoom_x = d3.event.scale,
       zoom_y = d3.event.scale,
@@ -4831,6 +4847,9 @@ function Zoom(params){
       }
     }
 
+    // update visible links 
+    update_viz_links(trans_x, trans_y, d3.event.scale);
+
     // apply transformation and reset translate vector
     // the zoom vector (zoom.scale) never gets reset
     ///////////////////////////////////////////////////
@@ -4869,6 +4888,12 @@ function Zoom(params){
 
     var trans = false;
     constrain_font_size(params, trans);
+
+
+    console.log(-trans_x, -trans_y);
+    console.log(d3.event.scale);
+    console.log('\n')
+
 
 
     // resize label bars if necessary
@@ -5082,6 +5107,23 @@ function Zoom(params){
 
       }
     }
+  }
+
+  function update_viz_links(trans_x, trans_y, zoom_scale){
+    // test-filter 
+    // params.cf.dim_x.filter([200,350]);
+    params.cf.dim_y.filter([400,800]);
+
+    // redefine links 
+    params.network_data.links = params.cf.dim_x.top(Infinity);
+
+    // console.log(params.network_data.links);
+
+    // d3.selectAll('.tile')
+    //   .data(params.network_data.links, function(d){return d.name;})
+    //   .exit()
+    //   .remove();
+
   }
 
   function constrain_font_size(params, trans){
