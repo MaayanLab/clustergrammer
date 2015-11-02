@@ -1591,13 +1591,13 @@ function VizParams(config){
   }
 
   // instantiate zoom object
-  var zoom = Zoom(params);
+  params.zoom_obj = Zoom(params);
 
   // define the variable zoom, a d3 method
   params.zoom = d3.behavior
     .zoom()
     .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch])
-    .on('zoom', zoom.zoomed);
+    .on('zoom', params.zoom_obj.zoomed);
 
   params.initialize_resizing = initialize_resizing;
 
@@ -2662,10 +2662,24 @@ function draw_grid_lines(row_nodes, col_nodes) {
     params.matrix.x_scale.rangeBands([0, params.viz.clust.dim.width]);
     params.matrix.y_scale.rangeBands([0, params.viz.clust.dim.height]);
 
+    // redefine x and y positions 
+    _.each(params.network_data.links, function(d){
+      d.x = params.matrix.x_scale(d.target);
+      d.y = params.matrix.y_scale(d.source);
+    });
+
+    // rename crossfilter 
+    params.cf = {};
+    params.cf.links = crossfilter(params.network_data.links);
+    params.cf.dim_x = params.cf.links.dimension(function(d){return d.x;});
+    params.cf.dim_y = params.cf.links.dimension(function(d){return d.y;}); 
+
     // redefine zoom extent
     params.viz.real_zoom = params.norm_label.width.col / (params.matrix.x_scale.rangeBand()/2);
     params.zoom
       .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch]);
+
+    
 
     // redefine border width
     params.viz.border_width = params.matrix.x_scale.rangeBand() / 40;
@@ -4140,7 +4154,7 @@ function Viz(params) {
   var matrix,
   row_dendrogram,
   col_dendrogram,
-  zoom,
+  zoom_obj,
   params,
   reorder;
 
@@ -4160,12 +4174,10 @@ function Viz(params) {
     // Begin Making Visualization
     /////////////////////////////////
 
-    // !! needs to be improved
     // remove any previous visualizations
     d3.select('#main_svg').remove();
 
-    // instantiate zoom object
-    zoom = Zoom(params);
+    zoom_obj = params.zoom_obj;
 
     // initialize svg 
     if ( d3.select('#'+params.viz.svg_div_id).select('svg').empty() ){
@@ -4184,7 +4196,6 @@ function Viz(params) {
     // make the matrix
     /////////////////////////
     matrix = Matrix(network_data, svg_group, params);
-
 
     // define reordering object - scoped to viz
     reorder = Reorder(params);
@@ -4321,7 +4332,7 @@ function Viz(params) {
 
     // initialize double click zoom for matrix
     ////////////////////////////////////////////
-    zoom.ini_doubleclick();
+    zoom_obj.ini_doubleclick();
 
     if (params.viz.do_zoom) {
       svg_group.call(params.zoom);
@@ -4385,7 +4396,7 @@ function Viz(params) {
     get_nodes: function(type){
       return matrix.get_nodes(type);
     },
-    two_translate_zoom: zoom.two_translate_zoom,
+    two_translate_zoom: zoom_obj.two_translate_zoom,
     // expose all_reorder function
     reorder: reorder.all_reorder,
     search: gene_search,
@@ -4516,36 +4527,20 @@ function Reorder(params){
 
     }
 
-    // // add names and instantaneous positions to links 
-    // _.each(params.network_data.links, function(d){
-    //   d.x = params.matrix.x_scale(d.target);
-    //   d.y = params.matrix.y_scale(d.source);
-    // });
+    // redefine x and y positions 
+    _.each(params.network_data.links, function(d){
+      d.x = params.matrix.x_scale(d.target);
+      d.y = params.matrix.y_scale(d.source);
+    });
 
-    // // make lnks crossfilter 
-    // params.cf = {};
-    // params.cf.links = crossfilter(params.network_data.links);
-    // params.cf.dim_x = params.cf.links.dimension(function(d){return d.x;});
-    // params.cf.dim_y = params.cf.links.dimension(function(d){return d.y;});    
+    // rename crossfilter 
+    params.cf = {};
+    params.cf.links = crossfilter(params.network_data.links);
+    params.cf.dim_x = params.cf.links.dimension(function(d){return d.x;});
+    params.cf.dim_y = params.cf.links.dimension(function(d){return d.y;}); 
 
-    // // reset zoom with updated params 
-    // ////////////////////////////////
-
-    // // instantiate zoom object
-    // var zoom = Zoom(params);
-
-    // // define the variable zoom, a d3 method
-    // params.zoom = d3.behavior
-    //   .zoom()
-    //   .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch])
-    //   .on('zoom', zoom.zoomed);
-
-    // d3.select('#main_svg').call(params.zoom);
-
-    // // reposition_tile_highlight();
-
-    // // // backup allow programmatic zoom
-    // // setTimeout(end_reorder, 2500);
+    // backup allow programmatic zoom
+    setTimeout(end_reorder, 2500);
 
   }
 
@@ -4793,7 +4788,7 @@ function Reorder(params){
 
 function Zoom(params){
 
-  console.log('\n\nredefine zoom\n')
+  console.log('Zoom')
 
   /* Functions for zooming. Should be turned into a module.
    * ----------------------------------------------------------------------- */
@@ -5018,6 +5013,8 @@ function Zoom(params){
       // center_y
       var center_y = -(zoom_y - 1) * half_height;
 
+      update_viz_links(params, 0, 0, zoom_x, zoom_y);
+
       // transform clust group
       ////////////////////////////
       // d3.select('#clust_group')
@@ -5142,9 +5139,9 @@ function Zoom(params){
       buffer*params.matrix.y_scale.rangeBand() ;
 
     var max_x = Math.abs(trans_x)/zoom_x + 
-      buffer*params.matrix.x_scale.rangeBand() + params.viz.clust.dim.width/zoom_x ;
+      2*buffer*params.matrix.x_scale.rangeBand() + params.viz.clust.dim.width/zoom_x ;
     var max_y = Math.abs(trans_y)/zoom_y +  
-      buffer*params.matrix.y_scale.rangeBand() + params.viz.clust.dim.height/zoom_y ;
+      2*buffer*params.matrix.y_scale.rangeBand() + params.viz.clust.dim.height/zoom_y ;
 
     // test-filter 
     params.cf.dim_x.filter([min_x,max_x]);
@@ -5209,10 +5206,7 @@ function Zoom(params){
       return d.value;
     });
 
-  console.log(d3.selectAll('.tile')[0].length);
-
-
-
+    console.log(d3.selectAll('.tile')[0].length);
   }
 
   function constrain_font_size(params, trans){

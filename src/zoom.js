@@ -1,6 +1,6 @@
 function Zoom(params){
 
-  console.log('\n\nredefine zoom\n')
+  console.log('Zoom')
 
   /* Functions for zooming. Should be turned into a module.
    * ----------------------------------------------------------------------- */
@@ -225,6 +225,8 @@ function Zoom(params){
       // center_y
       var center_y = -(zoom_y - 1) * half_height;
 
+      update_viz_links(params, 0, 0, zoom_x, zoom_y);
+
       // transform clust group
       ////////////////////////////
       // d3.select('#clust_group')
@@ -349,9 +351,9 @@ function Zoom(params){
       buffer*params.matrix.y_scale.rangeBand() ;
 
     var max_x = Math.abs(trans_x)/zoom_x + 
-      buffer*params.matrix.x_scale.rangeBand() + params.viz.clust.dim.width/zoom_x ;
+      2*buffer*params.matrix.x_scale.rangeBand() + params.viz.clust.dim.width/zoom_x ;
     var max_y = Math.abs(trans_y)/zoom_y +  
-      buffer*params.matrix.y_scale.rangeBand() + params.viz.clust.dim.height/zoom_y ;
+      2*buffer*params.matrix.y_scale.rangeBand() + params.viz.clust.dim.height/zoom_y ;
 
     // test-filter 
     params.cf.dim_x.filter([min_x,max_x]);
@@ -416,10 +418,7 @@ function Zoom(params){
       return d.value;
     });
 
-  console.log(d3.selectAll('.tile')[0].length);
-
-
-
+    console.log(d3.selectAll('.tile')[0].length);
   }
 
   function constrain_font_size(params, trans){

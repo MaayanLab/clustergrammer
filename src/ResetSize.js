@@ -155,10 +155,24 @@
     params.matrix.x_scale.rangeBands([0, params.viz.clust.dim.width]);
     params.matrix.y_scale.rangeBands([0, params.viz.clust.dim.height]);
 
+    // redefine x and y positions 
+    _.each(params.network_data.links, function(d){
+      d.x = params.matrix.x_scale(d.target);
+      d.y = params.matrix.y_scale(d.source);
+    });
+
+    // rename crossfilter 
+    params.cf = {};
+    params.cf.links = crossfilter(params.network_data.links);
+    params.cf.dim_x = params.cf.links.dimension(function(d){return d.x;});
+    params.cf.dim_y = params.cf.links.dimension(function(d){return d.y;}); 
+
     // redefine zoom extent
     params.viz.real_zoom = params.norm_label.width.col / (params.matrix.x_scale.rangeBand()/2);
     params.zoom
       .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch]);
+
+    
 
     // redefine border width
     params.viz.border_width = params.matrix.x_scale.rangeBand() / 40;

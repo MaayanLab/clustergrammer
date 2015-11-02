@@ -614,13 +614,13 @@ function VizParams(config){
   }
 
   // instantiate zoom object
-  var zoom = Zoom(params);
+  params.zoom_obj = Zoom(params);
 
   // define the variable zoom, a d3 method
   params.zoom = d3.behavior
     .zoom()
     .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch])
-    .on('zoom', zoom.zoomed);
+    .on('zoom', params.zoom_obj.zoomed);
 
   params.initialize_resizing = initialize_resizing;
 
