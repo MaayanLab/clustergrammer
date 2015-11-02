@@ -215,6 +215,19 @@ function Reorder(params){
 
     reposition_tile_highlight();
 
+    // redefine x and y positions 
+    _.each(params.network_data.links, function(d){
+      d.x = params.matrix.x_scale(d.target);
+      d.y = params.matrix.y_scale(d.source);
+    });
+
+    // rename crossfilter 
+    params.cf = {};
+    params.cf.links = crossfilter(params.network_data.links);
+    params.cf.dim_x = params.cf.links.dimension(function(d){return d.x;});
+    params.cf.dim_y = params.cf.links.dimension(function(d){return d.y;}); 
+
+
     // backup allow programmatic zoom
     setTimeout(end_reorder, 2500);
   }
@@ -296,6 +309,17 @@ function Reorder(params){
       .select('rect')
       .style('opacity', 1);
 
+    // redefine x and y positions 
+    _.each(params.network_data.links, function(d){
+      d.x = params.matrix.x_scale(d.target);
+      d.y = params.matrix.y_scale(d.source);
+    });
+
+    // rename crossfilter 
+    params.cf = {};
+    params.cf.links = crossfilter(params.network_data.links);
+    params.cf.dim_x = params.cf.links.dimension(function(d){return d.x;});
+    params.cf.dim_y = params.cf.links.dimension(function(d){return d.y;}); 
 
     reposition_tile_highlight();
 
