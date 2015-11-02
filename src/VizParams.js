@@ -363,7 +363,7 @@ function VizParams(config){
       params.viz.zoom_switch = 1;
     }
 
-    // font size controls
+    // precalc rect_width and height 
     params.matrix.rect_width = params.matrix.x_scale.rangeBand() - params.viz.border_width;
     params.matrix.rect_height = params.matrix.y_scale.rangeBand() - params.viz.border_width/params.viz.zoom_switch;
 

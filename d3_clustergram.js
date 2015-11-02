@@ -1340,7 +1340,7 @@ function VizParams(config){
       params.viz.zoom_switch = 1;
     }
 
-    // font size controls
+    // precalc rect_width and height 
     params.matrix.rect_width = params.matrix.x_scale.rangeBand() - params.viz.border_width;
     params.matrix.rect_height = params.matrix.y_scale.rangeBand() - params.viz.border_width/params.viz.zoom_switch;
 
@@ -2668,25 +2668,49 @@ function draw_grid_lines(row_nodes, col_nodes) {
       d.y = params.matrix.y_scale(d.source);
     });
 
-    // rename crossfilter 
+    // precalc rect_width and height 
+    params.matrix.rect_width = params.matrix.x_scale.rangeBand() - params.viz.border_width;
+    params.matrix.rect_height = params.matrix.y_scale.rangeBand() - params.viz.border_width/params.viz.zoom_switch;
+
+    console.log(params.network_data.links.length);
+
+    // reset crossfilter 
     params.cf = {};
     params.cf.links = crossfilter(params.network_data.links);
     params.cf.dim_x = params.cf.links.dimension(function(d){return d.x;});
     params.cf.dim_y = params.cf.links.dimension(function(d){return d.y;}); 
 
     // redefine zoom extent
-    params.viz.real_zoom = params.norm_label.width.col / (params.matrix.x_scale.rangeBand()/2);
-    params.zoom
-      .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch]);
+    params.viz.real_zoom = params.norm_label.width.col / (params.matrix.rect_width/2);
 
-    
+    // disable zoom while transitioning 
+    svg_group.on('.zoom', null);
+
+    // redefine zoom 
+    params.zoom_obj = Zoom(params);  
+    params.zoom
+      .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch])
+      .on('zoom', params.zoom_obj.zoomed);
+
+
+    // reenable zoom after transition 
+    if (params.viz.do_zoom) {
+      console.log('resizing ')
+      svg_group.call(params.zoom);
+    }
+
+    // prevent normal double click zoom etc 
+    params.zoom_obj.ini_doubleclick();
+
+    // initialize zoom - shuold improve to prevent transition if necessary 
+    params.zoom_obj.two_translate_zoom(params, 0, 0, 1);
 
     // redefine border width
-    params.viz.border_width = params.matrix.x_scale.rangeBand() / 40;
+    params.viz.border_width = params.matrix.rect_width / 55;
 
     // the default font sizes are set here
-    params.labels.default_fs_row = params.matrix.y_scale.rangeBand() * 1.01;
-    params.labels.default_fs_col = params.matrix.x_scale.rangeBand() * 0.85;
+    params.labels.default_fs_row = params.matrix.rect_width * 1.01;
+    params.labels.default_fs_col = params.matrix.rect_height * 0.85;
 
 
     svg_group.select('#grey_background')
@@ -2694,26 +2718,26 @@ function draw_grid_lines(row_nodes, col_nodes) {
       .attr('height', params.viz.clust.dim.height);
 
     svg_group.selectAll('.tile')
-      .attr('width', params.matrix.x_scale.rangeBand())
-      .attr('height', params.matrix.y_scale.rangeBand())
+      .attr('width', params.matrix.rect_width)
+      .attr('height', params.matrix.rect_height)
       .attr('transform', function(d) {
         return 'translate(' + params.matrix.x_scale(d.target) + ','+params.matrix.y_scale(d.source)+')';
       });
 
     svg_group.selectAll('.tile_group')
-      .attr('width', params.matrix.x_scale.rangeBand())
-      .attr('height', params.matrix.y_scale.rangeBand());
+      .attr('width', params.matrix.rect_width)
+      .attr('height', params.matrix.rect_height);
 
     svg_group.selectAll('.highlighting_rect')
-      .attr('width', params.matrix.x_scale.rangeBand() * 0.80)
-      .attr('height', params.matrix.y_scale.rangeBand() * 0.80);
+      .attr('width', params.matrix.rect_width * 0.80)
+      .attr('height', params.matrix.rect_height * 0.80);
 
     svg_group.selectAll('.tile_split_up')
       .attr('d', function() {
         var start_x = 0;
-        var final_x = params.matrix.x_scale.rangeBand();
+        var final_x = params.matrix.rect_width;
         var start_y = 0;
-        var final_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand()/60;
+        var final_y = params.matrix.rect_height - params.matrix.rect_height/60;
         var output_string = 'M' + start_x + ',' + start_y + ', L' +
           start_x + ', ' + final_y + ', L' + final_x + ',0 Z';
         return output_string;
@@ -2722,9 +2746,9 @@ function draw_grid_lines(row_nodes, col_nodes) {
     svg_group.selectAll('.tile_split_dn')
       .attr('d', function() {
         var start_x = 0;
-        var final_x = params.matrix.x_scale.rangeBand();
-        var start_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand()/60;
-        var final_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand()/60;
+        var final_x = params.matrix.rect_width;
+        var start_y = params.matrix.rect_height - params.matrix.rect_height/60;
+        var final_y = params.matrix.rect_height - params.matrix.rect_height;
         var output_string = 'M' + start_x + ', ' + start_y + ' ,   L' +
           final_x + ', ' + final_y + ',  L' + final_x + ',0 Z';
         return output_string;
@@ -2740,7 +2764,7 @@ function draw_grid_lines(row_nodes, col_nodes) {
 
     // top highlight
     d3.select('#top_hlight')
-      .attr('width', params.matrix.x_scale.rangeBand())
+      .attr('width', params.matrix.rect_width)
       .attr('height', hlight_height)
       .attr('transform', function() {
         return 'translate(' + params.matrix.x_scale(params.matrix.click_hlight_x) + ',0)';
@@ -2749,7 +2773,7 @@ function draw_grid_lines(row_nodes, col_nodes) {
     // left highlight
     d3.select('#left_hlight')
       .attr('width', hlight_width)
-      .attr('height', params.matrix.y_scale.rangeBand() - hlight_height*0.99 )
+      .attr('height', params.matrix.rect_width - hlight_height*0.99 )
       .attr('transform', function() {
         return 'translate(' + params.matrix.x_scale(params.matrix.click_hlight_x) + ','+
           hlight_height*0.99+')';
@@ -2758,9 +2782,9 @@ function draw_grid_lines(row_nodes, col_nodes) {
     // right highlight
     d3.select('#right_hlight')
       .attr('width', hlight_width)
-      .attr('height', params.matrix.y_scale.rangeBand() - hlight_height*0.99 )
+      .attr('height', params.matrix.rect_height - hlight_height*0.99 )
       .attr('transform', function() {
-        var tmp_translate = params.matrix.x_scale(params.matrix.click_hlight_x) + params.matrix.x_scale.rangeBand() - hlight_width;
+        var tmp_translate = params.matrix.x_scale(params.matrix.click_hlight_x) + params.matrix.rect_width - hlight_width;
         return 'translate(' + tmp_translate + ','+
           hlight_height*0.99+')';
       });
@@ -2768,11 +2792,11 @@ function draw_grid_lines(row_nodes, col_nodes) {
     // bottom highlight
     d3.select('#bottom_hlight')
       .attr('width', function(){
-        return params.matrix.x_scale.rangeBand() - 1.98*hlight_width})
+        return params.matrix.rect_width - 1.98*hlight_width})
       .attr('height', hlight_height)
       .attr('transform', function() {
         var tmp_translate_x = params.matrix.x_scale(params.matrix.click_hlight_x) + hlight_width*0.99;
-        var tmp_translate_y = params.matrix.y_scale.rangeBand() - hlight_height;
+        var tmp_translate_y = params.matrix.rect_height - hlight_height;
         return 'translate(' + tmp_translate_x + ','+
           tmp_translate_y+')';
       });
@@ -2787,7 +2811,7 @@ function draw_grid_lines(row_nodes, col_nodes) {
       .attr('width',params.viz.svg_dim.width)
       .attr('height',hlight_height)
       .attr('transform', function(){
-        var tmp_translate_y = params.matrix.y_scale.rangeBand() - hlight_height;
+        var tmp_translate_y = params.matrix.rect_height - hlight_height;
         return 'translate(0,'+tmp_translate_y+')';
       });
 
@@ -2807,7 +2831,7 @@ function draw_grid_lines(row_nodes, col_nodes) {
       .attr('width',params.viz.clust.dim.height)
       .attr('height',hlight_width)
       .attr('transform', function(){
-            var tmp_translate_y = params.matrix.x_scale.rangeBand() - hlight_width;
+            var tmp_translate_y = params.matrix.rect_width - hlight_width;
             var tmp_translate_x = -(params.viz.clust.dim.height + 
               params.class_room.col+params.viz.uni_margin);
             return 'translate('+tmp_translate_x+','+tmp_translate_y+')';
@@ -2846,7 +2870,7 @@ function draw_grid_lines(row_nodes, col_nodes) {
 
     svg_group.selectAll('.row_label_text')
       .select('text')
-      .attr('y', params.matrix.y_scale.rangeBand() * 0.75)
+      .attr('y', params.matrix.rect_height * 0.75)
 
     svg_group.selectAll('.row_label_text')
       .select('text')
@@ -2862,7 +2886,7 @@ function draw_grid_lines(row_nodes, col_nodes) {
           .attr('x', bbox.x )
           .attr('y', 0)
           .attr('width', bbox.width )
-          .attr('height', params.matrix.y_scale.rangeBand())
+          .attr('height', params.matrix.rect_height)
           .style('fill', 'yellow')
           .style('opacity', function(d) {
             var inst_opacity = 0;
@@ -2907,9 +2931,9 @@ function draw_grid_lines(row_nodes, col_nodes) {
         var origin_x = params.class_room.symbol_width - 1;
         var origin_y = 0;
         var mid_x = 1;
-        var mid_y = params.matrix.y_scale.rangeBand() / 2;
+        var mid_y = params.matrix.rect_height / 2;
         var final_x = params.class_room.symbol_width - 1;
-        var final_y = params.matrix.y_scale.rangeBand();
+        var final_y = params.matrix.rect_height;
         var output_string = 'M ' + origin_x + ',' + origin_y + ' L ' +
           mid_x + ',' + mid_y + ', L ' + final_x + ',' + final_y + ' Z';
         return output_string;
@@ -2936,7 +2960,7 @@ function draw_grid_lines(row_nodes, col_nodes) {
             inst_value = -params.labels.bar_scale_row( Math.abs(d.value) );
             return inst_value;
           })
-          .attr('height', params.matrix.y_scale.rangeBand() );
+          .attr('height', params.matrix.rect_height );
 
       }
 
@@ -2956,9 +2980,9 @@ function draw_grid_lines(row_nodes, col_nodes) {
         .attr('transform', 'translate(0,' + params.norm_label.width.col + ')');
 
       // offset click group column label
-      var x_offset_click = params.matrix.x_scale.rangeBand() / 2 + params.viz.border_width;
+      var x_offset_click = params.matrix.rect_width / 2 + params.viz.border_width;
       // reduce width of rotated rects
-      var reduce_rect_width = params.matrix.x_scale.rangeBand() * 0.36;
+      var reduce_rect_width = params.matrix.rect_width * 0.36;
 
       svg_group.selectAll('.col_label_text')
         .attr('transform', function(d) {
@@ -2967,11 +2991,11 @@ function draw_grid_lines(row_nodes, col_nodes) {
         });
 
       svg_group.selectAll('.col_label_click')
-        .attr('transform', 'translate(' + params.matrix.x_scale.rangeBand() / 2 + ',' + x_offset_click + ') rotate(45)');
+        .attr('transform', 'translate(' + params.matrix.rect_width / 2 + ',' + x_offset_click + ') rotate(45)');
 
       svg_group.selectAll('.col_label_click')
         .select('text')
-        .attr('y', params.matrix.x_scale.rangeBand() * 0.60)
+        .attr('y', params.matrix.rect_width * 0.60)
         .attr('dx', 2 * params.viz.border_width)
         .style('font-size', params.labels.default_fs_col + 'px')
         .text(function(d){ return normal_name(d);});
@@ -3032,7 +3056,7 @@ function draw_grid_lines(row_nodes, col_nodes) {
             .attr('x', bbox.x * 1.25)
             .attr('y', 0)
             .attr('width', bbox.width * 1.25)
-            .attr('height', params.matrix.x_scale.rangeBand() * 0.6)
+            .attr('height', params.matrix.rect_width * 0.6)
             .style('fill', 'yellow')
             .style('opacity', 0);
         });
@@ -3044,8 +3068,8 @@ function draw_grid_lines(row_nodes, col_nodes) {
           // x and y are flipped since its rotated
           var origin_y = -params.viz.border_width;
           var start_x = 0;
-          var final_x = params.matrix.x_scale.rangeBand() - reduce_rect_width;
-          var start_y = -(params.matrix.x_scale.rangeBand() - reduce_rect_width +
+          var final_x = params.matrix.rect_width - reduce_rect_width;
+          var start_y = -(params.matrix.rect_width - reduce_rect_width +
           params.viz.border_width);
           var final_y = -params.viz.border_width;
           var output_string = 'M ' + origin_y + ',0 L ' + start_y + ',' +
@@ -3072,7 +3096,7 @@ function draw_grid_lines(row_nodes, col_nodes) {
             return inst_value;
           })
           // rotate labels - reduce width if rotating
-          .attr('height', params.matrix.x_scale.rangeBand() * 0.66);
+          .attr('height', params.matrix.rect_width * 0.66);
       }
 
       // resize dendrogram
@@ -3082,14 +3106,14 @@ function draw_grid_lines(row_nodes, col_nodes) {
           var inst_width = params.class_room.symbol_width - 1;
           return inst_width + 'px';
         })
-        .attr('height', params.matrix.y_scale.rangeBand())
+        .attr('height', params.matrix.rect_height)
         .attr('x', function() {
           var inst_offset = params.class_room.symbol_width + 1;
           return inst_offset + 'px';
         });
 
       svg_group.selectAll('.col_class_rect')
-        .attr('width', params.matrix.x_scale.rangeBand())
+        .attr('width', params.matrix.rect_width)
         .attr('height', function() {
           var inst_height = params.class_room.col - 1;
           return inst_height;
@@ -5148,64 +5172,65 @@ function Zoom(params){
     params.cf.dim_y.filter([min_y,max_y ]);
 
     // redefine links 
-    params.network_data.links = params.cf.dim_x.top(Infinity);
+    var inst_links = params.cf.dim_x.top(Infinity);
 
     d3.selectAll('.tile')
-      .data(params.network_data.links, function(d){return d.name;})
+      .data(inst_links, function(d){return d.name;})
       .exit()
       .remove();
 
-  // enter new elements 
-  //////////////////////////
-  d3.select('#clust_group')
-    .selectAll('.tile')
-    .data(params.network_data.links, function(d){return d.name;})
-    .enter()
-    .append('rect')
-    .style('fill-opacity',0)
-    .attr('class','tile new_tile')
-    .attr('width', params.matrix.rect_width)
-    .attr('height', params.matrix.rect_height)
-    .attr('transform', function(d) {
-      return 'translate(' + params.matrix.x_scale(d.target) + ','+params.matrix.y_scale(d.source)+')';
-    })
-    .style('fill', function(d) {
-        return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
-    })
-    .style('fill-opacity', function(d) {
-        // calculate output opacity using the opacity scale
-        var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
-        return output_opacity;
-    });
+    // enter new elements 
+    //////////////////////////
+    d3.select('#clust_group')
+      .selectAll('.tile')
+      .data(inst_links, function(d){return d.name;})
+      .enter()
+      .append('rect')
+      .style('fill-opacity',0)
+      .attr('class','tile new_tile')
+      .attr('width', params.matrix.rect_width)
+      .attr('height', params.matrix.rect_height)
+      .attr('transform', function(d) {
+        return 'translate(' + params.matrix.x_scale(d.target) + ','+params.matrix.y_scale(d.source)+')';
+      })
+      .style('fill', function(d) {
+          return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
+      })
+      .style('fill-opacity', function(d) {
+          // calculate output opacity using the opacity scale
+          var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
+          return output_opacity;
+      });
 
-  d3.selectAll('.tile')
-    .on('mouseover',null)
-    .on('mouseout',null);
+    d3.selectAll('.tile')
+      .on('mouseover',null)
+      .on('mouseout',null);
 
-  // redefine mouseover events for tiles 
-  d3.select('#clust_group')
-    .selectAll('.tile')
-    .on('mouseover', function(p) {
-      var row_name = p.name.split('_')[0];
-      var col_name = p.name.split('_')[1];
-      // highlight row - set text to active if
-      d3.selectAll('.row_label_text text')
-        .classed('active', function(d) {
-          return row_name === d.name;
-        });
+    // redefine mouseover events for tiles 
+    d3.select('#clust_group')
+      .selectAll('.tile')
+      .on('mouseover', function(p) {
+        var row_name = p.name.split('_')[0];
+        var col_name = p.name.split('_')[1];
+        // highlight row - set text to active if
+        d3.selectAll('.row_label_text text')
+          .classed('active', function(d) {
+            return row_name === d.name;
+          });
 
-      d3.selectAll('.col_label_text text')
-        .classed('active', function(d) {
-          return col_name === d.name;
-        });
-    })
-    .on('mouseout', function mouseout() {
-      d3.selectAll('text').classed('active', false);
-    })
-    .attr('title', function(d) {
-      return d.value;
-    });
+        d3.selectAll('.col_label_text text')
+          .classed('active', function(d) {
+            return col_name === d.name;
+          });
+      })
+      .on('mouseout', function mouseout() {
+        d3.selectAll('text').classed('active', false);
+      })
+      .attr('title', function(d) {
+        return d.value;
+      });
 
+    // check the number of tiles 
     console.log(d3.selectAll('.tile')[0].length);
   }
 
