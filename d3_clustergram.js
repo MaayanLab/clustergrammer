@@ -5242,8 +5242,18 @@ function Zoom(params){
 
     var max_x = Math.abs(trans_x)/zoom_x + 
       + params.viz.clust.dim.width/zoom_x ;
-    var max_y = Math.abs(trans_y)/zoom_y +  
-      + params.viz.clust.dim.height ;
+    var max_y = (Math.abs(trans_y) + params.viz.clust.dim.height)/zoom_y ; 
+      // + params.viz.clust.dim.height/zoom_y ;
+
+    console.log('trans_y '+String(Math.abs(trans_y)))
+    console.log('zoom_y '+String(Math.abs(zoom_y)))
+
+    if (min_x < 0){
+      min_x = 0;
+    }
+    if (min_y < 0){
+      min_y = 0;  
+    }
 
     // test-filter 
     params.cf.dim_x.filter([min_x,max_x]);
@@ -5308,8 +5318,16 @@ function Zoom(params){
         return d.value;
       });
 
-    // // check the number of tiles 
-    // console.log(d3.selectAll('.tile')[0].length);
+    // check the number of tiles 
+    console.log('min_x '+String(min_x))
+    console.log('max_x '+String(max_x))
+    console.log('\n')
+    console.log('min_y '+String(min_y))
+    console.log('max_y '+String(max_y))
+
+      
+    console.log(d3.selectAll('.tile')[0].length);
+    console.log('\n\n')
   }
 
   function constrain_font_size(params, trans){
