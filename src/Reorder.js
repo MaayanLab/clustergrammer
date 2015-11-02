@@ -115,12 +115,36 @@ function Reorder(params){
 
     }
 
-    // params.viz.run_trans = false;
+    // // add names and instantaneous positions to links 
+    // _.each(params.network_data.links, function(d){
+    //   d.x = params.matrix.x_scale(d.target);
+    //   d.y = params.matrix.y_scale(d.source);
+    // });
 
-    reposition_tile_highlight();
+    // // make lnks crossfilter 
+    // params.cf = {};
+    // params.cf.links = crossfilter(params.network_data.links);
+    // params.cf.dim_x = params.cf.links.dimension(function(d){return d.x;});
+    // params.cf.dim_y = params.cf.links.dimension(function(d){return d.y;});    
 
-    // backup allow programmatic zoom
-    setTimeout(end_reorder, 2500);
+    // // reset zoom with updated params 
+    // ////////////////////////////////
+
+    // // instantiate zoom object
+    // var zoom = Zoom(params);
+
+    // // define the variable zoom, a d3 method
+    // params.zoom = d3.behavior
+    //   .zoom()
+    //   .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch])
+    //   .on('zoom', zoom.zoomed);
+
+    // d3.select('#main_svg').call(params.zoom);
+
+    // // reposition_tile_highlight();
+
+    // // // backup allow programmatic zoom
+    // // setTimeout(end_reorder, 2500);
 
   }
 

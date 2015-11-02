@@ -255,4 +255,5 @@ function make_clust(inst_network){
 make_clust('default_example_f1.json');
 // make_clust('bar_example.json');
 // make_clust('kin_sub_example.json');
+// make_clust('harmonogram_example.json');
 

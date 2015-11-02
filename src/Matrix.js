@@ -34,11 +34,7 @@ function Matrix(network_data, svg_elem, params) {
       return num.value !== 0 || num.highlight !== 0;
     });
 
-  // add name to links for object constancy
-  for (var i = 0; i < tile_data.length; i++) {
-    var d = tile_data[i];
-    tile_data[i].name = row_nodes[d.source].name + '_' + col_nodes[d.target].name;
-  }
+  console.log('adding names to tile_data')
 
   // draw rows of clustergram
   if (params.matrix.tile_type === 'simple') {
@@ -191,8 +187,8 @@ function Matrix(network_data, svg_elem, params) {
       .enter()
       .append('rect')
       .attr('class','tile')
-      .attr('width', params.matrix.x_scale.rangeBand())
-      .attr('height', params.matrix.y_scale.rangeBand())
+      .attr('width', params.matrix.rect_width)
+      .attr('height', params.matrix.rect_height)
       // switch the color based on up/dn value
       .style('fill', function(d) {
         return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];

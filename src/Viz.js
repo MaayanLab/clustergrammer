@@ -48,8 +48,6 @@ function Viz(params) {
         .attr('height', params.viz.svg_dim.height);
     }
 
-
-
     // make the matrix
     /////////////////////////
     matrix = Matrix(network_data, svg_group, params);

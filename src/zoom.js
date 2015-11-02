@@ -1,5 +1,7 @@
 function Zoom(params){
 
+  console.log('\n\nredefine zoom\n')
+
   /* Functions for zooming. Should be turned into a module.
    * ----------------------------------------------------------------------- */
   function zoomed() {
@@ -14,10 +16,10 @@ function Zoom(params){
       trans_y = d3.event.translate[1] - params.viz.clust.margin.top;
 
     // apply transformation
-    apply_transformation(trans_x, trans_y, zoom_x, zoom_y);
+    apply_transformation(params, trans_x, trans_y, zoom_x, zoom_y);
   }
 
-  function apply_transformation(trans_x, trans_y, zoom_x, zoom_y) {
+  function apply_transformation(params, trans_x, trans_y, zoom_x, zoom_y) {
 
     var d3_scale = zoom_x;
 
@@ -79,7 +81,7 @@ function Zoom(params){
     }
 
     // update visible links 
-    update_viz_links(trans_x, trans_y, d3.event.scale);
+    update_viz_links(params, trans_x, trans_y, zoom_x, zoom_y);
 
     // apply transformation and reset translate vector
     // the zoom vector (zoom.scale) never gets reset
@@ -121,9 +123,6 @@ function Zoom(params){
     constrain_font_size(params, trans);
 
 
-    console.log(-trans_x, -trans_y);
-    console.log(d3.event.scale);
-    console.log('\n')
 
 
 
@@ -340,20 +339,86 @@ function Zoom(params){
     }
   }
 
-  function update_viz_links(trans_x, trans_y, zoom_scale){
+  function update_viz_links(params, trans_x, trans_y, zoom_x, zoom_y){
+
+    // get translation vector absolute values 
+    var buffer = 1;
+    var min_x = Math.abs(trans_x)/zoom_x -
+      buffer*params.matrix.x_scale.rangeBand() ;
+    var min_y = Math.abs(trans_y)/zoom_y -
+      buffer*params.matrix.y_scale.rangeBand() ;
+
+    var max_x = Math.abs(trans_x)/zoom_x + 
+      buffer*params.matrix.x_scale.rangeBand() + params.viz.clust.dim.width/zoom_x ;
+    var max_y = Math.abs(trans_y)/zoom_y +  
+      buffer*params.matrix.y_scale.rangeBand() + params.viz.clust.dim.height/zoom_y ;
+
     // test-filter 
-    // params.cf.dim_x.filter([200,350]);
-    params.cf.dim_y.filter([400,800]);
+    params.cf.dim_x.filter([min_x,max_x]);
+    params.cf.dim_y.filter([min_y,max_y ]);
 
     // redefine links 
     params.network_data.links = params.cf.dim_x.top(Infinity);
 
-    // console.log(params.network_data.links);
+    d3.selectAll('.tile')
+      .data(params.network_data.links, function(d){return d.name;})
+      .exit()
+      .remove();
 
-    // d3.selectAll('.tile')
-    //   .data(params.network_data.links, function(d){return d.name;})
-    //   .exit()
-    //   .remove();
+  // enter new elements 
+  //////////////////////////
+  d3.select('#clust_group')
+    .selectAll('.tile')
+    .data(params.network_data.links, function(d){return d.name;})
+    .enter()
+    .append('rect')
+    .style('fill-opacity',0)
+    .attr('class','tile new_tile')
+    .attr('width', params.matrix.rect_width)
+    .attr('height', params.matrix.rect_height)
+    .attr('transform', function(d) {
+      return 'translate(' + params.matrix.x_scale(d.target) + ','+params.matrix.y_scale(d.source)+')';
+    })
+    .style('fill', function(d) {
+        return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
+    })
+    .style('fill-opacity', function(d) {
+        // calculate output opacity using the opacity scale
+        var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
+        return output_opacity;
+    });
+
+  d3.selectAll('.tile')
+    .on('mouseover',null)
+    .on('mouseout',null);
+
+  // redefine mouseover events for tiles 
+  d3.select('#clust_group')
+    .selectAll('.tile')
+    .on('mouseover', function(p) {
+      var row_name = p.name.split('_')[0];
+      var col_name = p.name.split('_')[1];
+      // highlight row - set text to active if
+      d3.selectAll('.row_label_text text')
+        .classed('active', function(d) {
+          return row_name === d.name;
+        });
+
+      d3.selectAll('.col_label_text text')
+        .classed('active', function(d) {
+          return col_name === d.name;
+        });
+    })
+    .on('mouseout', function mouseout() {
+      d3.selectAll('text').classed('active', false);
+    })
+    .attr('title', function(d) {
+      return d.value;
+    });
+
+  console.log(d3.selectAll('.tile')[0].length);
+
+
 
   }
 

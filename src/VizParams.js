@@ -325,8 +325,9 @@ function VizParams(config){
       params.matrix.y_scale.domain(params.matrix.orders.class_col);
     }
 
-    // add instantaneous positions to links 
+    // add names and instantaneous positions to links 
     _.each(params.network_data.links, function(d){
+      d.name = row_nodes[d.source].name + '_' + col_nodes[d.target].name;
       d.x = params.matrix.x_scale(d.target);
       d.y = params.matrix.y_scale(d.source);
     });
@@ -350,7 +351,9 @@ function VizParams(config){
     //////////////////////////////
 
     // border_width - width of white borders around tiles
-    params.viz.border_width = params.matrix.x_scale.rangeBand() / 55;
+    params.viz.border_fraction = 55;
+    params.viz.border_width = params.matrix.x_scale.rangeBand() / 
+      params.viz.border_fraction;
 
     // zoom_switch from 1 to 2d zoom
     params.viz.zoom_switch = (params.viz.clust.dim.width / params.viz.num_col_nodes) / (params.viz.clust.dim.height / params.viz.num_row_nodes);
@@ -361,6 +364,9 @@ function VizParams(config){
     }
 
     // font size controls
+    params.matrix.rect_width = params.matrix.x_scale.rangeBand() - params.viz.border_width;
+    params.matrix.rect_height = params.matrix.y_scale.rangeBand() - params.viz.border_width/params.viz.zoom_switch;
+
     ////////////////////////////
     // min and max number of expected nodes
     var min_node_num = 10;
