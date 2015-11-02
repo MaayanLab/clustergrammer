@@ -351,9 +351,9 @@ function Zoom(params){
       buffer*params.matrix.y_scale.rangeBand() ;
 
     var max_x = Math.abs(trans_x)/zoom_x + 
-      2*buffer*params.matrix.x_scale.rangeBand() + params.viz.clust.dim.width/zoom_x ;
+      + params.viz.clust.dim.width/zoom_x ;
     var max_y = Math.abs(trans_y)/zoom_y +  
-      2*buffer*params.matrix.y_scale.rangeBand() + params.viz.clust.dim.height/zoom_y ;
+      + params.viz.clust.dim.height ;
 
     // test-filter 
     params.cf.dim_x.filter([min_x,max_x]);
@@ -418,8 +418,8 @@ function Zoom(params){
         return d.value;
       });
 
-    // check the number of tiles 
-    console.log(d3.selectAll('.tile')[0].length);
+    // // check the number of tiles 
+    // console.log(d3.selectAll('.tile')[0].length);
   }
 
   function constrain_font_size(params, trans){
