@@ -171,6 +171,13 @@
     params.cf.dim_x = params.cf.links.dimension(function(d){return d.x;});
     params.cf.dim_y = params.cf.links.dimension(function(d){return d.y;}); 
 
+    // reset all crossfilter filters 
+    params.cf.dim_x.filterAll();
+    params.cf.dim_y.filterAll();
+
+    // redefine links - grab all links since filter is reset 
+    var inst_links = params.cf.dim_x.top(Infinity);
+
     // redefine zoom extent
     params.viz.real_zoom = params.norm_label.width.col / (params.matrix.rect_width/2);
 
@@ -192,9 +199,6 @@
 
     // prevent normal double click zoom etc 
     params.zoom_obj.ini_doubleclick();
-
-    // initialize zoom - shuold improve to prevent transition if necessary 
-    params.zoom_obj.two_translate_zoom(params, 0, 0, 1);
 
     // redefine border width
     params.viz.border_width = params.matrix.rect_width / 55;
@@ -244,6 +248,58 @@
           final_x + ', ' + final_y + ',  L' + final_x + ',0 Z';
         return output_string;
       })
+
+    // enter new elements 
+    //////////////////////////
+    d3.select('#clust_group')
+      .selectAll('.tile')
+      .data(inst_links, function(d){return d.name;})
+      .enter()
+      .append('rect')
+      .style('fill-opacity',0)
+      .attr('class','tile new_tile')
+      .attr('width', params.matrix.rect_width)
+      .attr('height', params.matrix.rect_height)
+      .attr('transform', function(d) {
+        return 'translate(' + params.matrix.x_scale(d.target) + ','+params.matrix.y_scale(d.source)+')';
+      })
+      .style('fill', function(d) {
+          return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
+      })
+      .style('fill-opacity', function(d) {
+          // calculate output opacity using the opacity scale
+          var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
+          return output_opacity;
+      });
+
+    d3.selectAll('.tile')
+      .on('mouseover',null)
+      .on('mouseout',null);
+
+    // redefine mouseover events for tiles 
+    d3.select('#clust_group')
+      .selectAll('.tile')
+      .on('mouseover', function(p) {
+        var row_name = p.name.split('_')[0];
+        var col_name = p.name.split('_')[1];
+        // highlight row - set text to active if
+        d3.selectAll('.row_label_text text')
+          .classed('active', function(d) {
+            return row_name === d.name;
+          });
+
+        d3.selectAll('.col_label_text text')
+          .classed('active', function(d) {
+            return col_name === d.name;
+          });
+      })
+      .on('mouseout', function mouseout() {
+        d3.selectAll('text').classed('active', false);
+      })
+      .attr('title', function(d) {
+        return d.value;
+      });
+
 
     // reposition tile highlight
     ////////////////////////////////
