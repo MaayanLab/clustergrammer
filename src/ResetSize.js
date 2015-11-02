@@ -165,8 +165,6 @@
     params.matrix.rect_width = params.matrix.x_scale.rangeBand() - params.viz.border_width;
     params.matrix.rect_height = params.matrix.y_scale.rangeBand() - params.viz.border_width/params.viz.zoom_switch;
 
-    console.log(params.network_data.links.length);
-
     // reset crossfilter 
     params.cf = {};
     params.cf.links = crossfilter(params.network_data.links);
@@ -202,8 +200,8 @@
     params.viz.border_width = params.matrix.rect_width / 55;
 
     // the default font sizes are set here
-    params.labels.default_fs_row = params.matrix.rect_width * 1.01;
-    params.labels.default_fs_col = params.matrix.rect_height * 0.85;
+    params.labels.default_fs_row = params.matrix.rect_height * 1.01;
+    params.labels.default_fs_col = params.matrix.rect_width * 0.85;
 
 
     svg_group.select('#grey_background')
