@@ -345,18 +345,17 @@ function Zoom(params){
 
     // get translation vector absolute values 
     var buffer = 1;
-    var min_x = Math.abs(trans_x)/zoom_x -
-      buffer*params.matrix.x_scale.rangeBand() ;
-    var min_y = Math.abs(trans_y)/zoom_y -
-      buffer*params.matrix.y_scale.rangeBand() ;
+    var min_x = Math.abs(trans_x)/zoom_x - buffer*params.matrix.x_scale.rangeBand() ;
+    var min_y = Math.abs(trans_y)/zoom_y - buffer*params.matrix.y_scale.rangeBand() ;
 
-    var max_x = Math.abs(trans_x)/zoom_x + 
-      + params.viz.clust.dim.width/zoom_x ;
-    var max_y = (Math.abs(trans_y) + params.viz.clust.dim.height)/zoom_y ; 
-      // + params.viz.clust.dim.height/zoom_y ;
+    var max_x = Math.abs(trans_x)/zoom_x + params.viz.clust.dim.width/zoom_x ;
+    // var max_y = Math.abs(trans_y)/zoom_y + params.viz.clust.dim.height ; 
+    var max_y = Math.abs(trans_y)/zoom_y + params.viz.clust.dim.height/zoom_y ; 
 
-    console.log('trans_y '+String(Math.abs(trans_y)))
-    console.log('zoom_y '+String(Math.abs(zoom_y)))
+    if (params.viz.force_square) {
+      console.log('force_square')
+      max_y = Math.abs(trans_y)/zoom_y + params.viz.clust.dim.height;       
+    }
 
     if (min_x < 0){
       min_x = 0;
@@ -429,13 +428,6 @@ function Zoom(params){
       });
 
     // check the number of tiles 
-    console.log('min_x '+String(min_x))
-    console.log('max_x '+String(max_x))
-    console.log('\n')
-    console.log('min_y '+String(min_y))
-    console.log('max_y '+String(max_y))
-
-      
     console.log(d3.selectAll('.tile')[0].length);
     console.log('\n\n')
   }
