@@ -262,7 +262,7 @@ make_clust('default_example_f1.json');
     // example of calculating average with reduce 
     // I need to calculate this value for each column 
 
-    var new_height = 200;
+    var new_height = 400;
 
     // get data from global_network_data
     var links = global_network_data.links;
@@ -285,7 +285,7 @@ make_clust('default_example_f1.json');
 
 
     // initialize array of new_links
-    var new_links = [];
+    new_links = [];
 
     // get col_nodes
     var col_nodes = global_network_data.col_nodes;
@@ -300,7 +300,7 @@ make_clust('default_example_f1.json');
       var rand_row = Math.random().toString(36).substring(7);
 
       // make specific names from a subset of all the other names
-      p.name = rand_row + '_' + v.name.split('_')[1];
+      p.name = 'row_'+ String(Math.floor(v.y)) + '_' + v.name.split('_')[1];
       return p;
     }
     function reduceRemoveAvg(p,v) {
@@ -314,23 +314,18 @@ make_clust('default_example_f1.json');
       return {count:0, sum:0, avg:0, name:''};
     }
 
-    // var inst_col = col_nodes[i];
-    // console.log('\n\n\n'+ inst_col.name);
-    // // filter the data 
-    // dim_col.filter(inst_col.name);
-    // var tmp = dim_col.top(Infinity);
-    // _.each(tmp, function(d){console.log(d.name);});
-
     // gather tmp version of new links 
-    var tmp_red = dim_ds.group().reduce(reduceAddAvg, reduceRemoveAvg, reduceInitAvg)
-                   .top(Infinity);
+    var tmp_red = dim_ds
+                  .group()
+                  .reduce(reduceAddAvg, reduceRemoveAvg, reduceInitAvg)
+                  .top(Infinity);
 
     // gather data from reduced sum 
-    var tmp_links = _.pluck(tmp_red, 'value');
+    new_links = _.pluck(tmp_red, 'value');
 
-    // add to new links
-    new_links = new_links.concat(tmp_links);
-    console.log('here')
-    console.log(new_links.length)
+    // // add to new links
+    // new_links = new_links.concat(tmp_links);
+    // console.log('here')
+    // console.log(new_links.length)
 
   }

@@ -372,6 +372,7 @@ function Zoom(params){
     // redefine links 
     var inst_links = params.cf.dim_x.top(Infinity);
 
+    // exit old elements 
     d3.selectAll('.tile')
       .data(inst_links, function(d){return d.name;})
       .exit()
@@ -433,6 +434,108 @@ function Zoom(params){
     console.log('\n\n')
   }
 
+  // downsample links 
+  function down_sample(params){
+    console.log('downsampling')
+
+    // example of calculating average with reduce 
+    // I need to calculate this value for each column 
+
+    var new_height = 100;
+
+    // get data from global_network_data
+    var links = params.network_data.links;
+
+    // load data into crossfilter  
+    var cfl = crossfilter(links);
+
+    // // define column dimension - column names 
+    // var dim_col = cfl.dimension(function(d){return d.name.split('_')[1];});
+    // // define dimension - y 
+    // var dim_y = cfl.dimension(function(d){return Math.floor(d.y/new_height);});
+
+    // downsample dimension 
+    var dim_ds = cfl.dimension(function(d){
+      var row_num = Math.floor(d.y/new_height);
+      var col_name = d.name.split('_')[1];
+      var inst_key = 'row_'+row_num + '_' + col_name;
+      return inst_key;
+    })
+
+    // initialize array of new_links
+    var new_links = [];
+
+    // define reduce functions 
+    function reduceAddAvg(p,v) {
+      ++p.count
+      p.sum += v.value;
+      p.avg = p.sum/p.count;
+
+      // generate random row name 
+      var rand_row = Math.random().toString(36).substring(7);
+
+      // make specific names from a subset of all the other names
+      p.name = 'row_'+ String(Math.floor(v.y)) + '_' + v.name.split('_')[1];
+
+      p.source = v.source;
+      p.target = v.target;
+      return p;
+    }
+    function reduceRemoveAvg(p,v) {
+      --p.count
+      p.sum -= v.value;
+      p.avg = p.sum/p.count;
+      p.name = 'no name';
+      p.target = 0;
+      p.source = 0;
+      return p;
+    }
+    function reduceInitAvg() {
+      return {count:0, sum:0, avg:0, name:'',source:0,target:0};
+    }
+
+    // gather tmp version of new links 
+    var tmp_red = dim_ds
+                  .group()
+                  .reduce(reduceAddAvg, reduceRemoveAvg, reduceInitAvg)
+                  .top(Infinity);
+
+    // gather data from reduced sum 
+    new_links = _.pluck(tmp_red, 'value');
+
+    // exit old elements 
+    d3.selectAll('.tile')
+      .data(new_links, function(d){return d.name;})
+      .exit()
+      .remove();
+
+    // enter new elements 
+    //////////////////////////
+    d3.select('#clust_group')
+      .selectAll('.tile')
+      .data(new_links, function(d){return d.name;})
+      .enter()
+      .append('rect')
+      .style('fill-opacity',0)
+      .attr('class','tile ds_tile')
+      .attr('width', params.matrix.rect_width)
+      .attr('height', params.matrix.rect_height)
+      .attr('transform', function(d) {
+        return 'translate(' + params.matrix.x_scale(d.target) + ','+params.matrix.y_scale(d.source)+')';
+      })
+      .style('fill', function(d) {
+          return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
+      })
+      .style('fill-opacity', function(d) {
+          // calculate output opacity using the opacity scale
+          var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
+          // return output_opacity;
+          return 1;
+      });
+
+
+
+  }
 
 
   function constrain_font_size(params, trans){
