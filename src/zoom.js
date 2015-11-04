@@ -81,7 +81,7 @@ function Zoom(params){
     }
 
     // update visible links 
-    update_viz_links(params, trans_x, trans_y, zoom_x, zoom_y);
+    update_viz_links(params, trans_x, trans_y, zoom_x, zoom_y, false);
     // downsample(params);
 
     // apply transformation and reset translate vector
@@ -226,7 +226,7 @@ function Zoom(params){
       // center_y
       var center_y = -(zoom_y - 1) * half_height;
 
-      update_viz_links(params, 0, 0, zoom_x, zoom_y);
+      update_viz_links(params, 0, 0, zoom_x, zoom_y, true);
 
       // transform clust group
       ////////////////////////////
@@ -342,7 +342,7 @@ function Zoom(params){
     }
   }
 
-  function update_viz_links(params, trans_x, trans_y, zoom_x, zoom_y){
+  function update_viz_links(params, trans_x, trans_y, zoom_x, zoom_y, trans){
 
     // get translation vector absolute values 
     var buffer = 1;
@@ -354,7 +354,7 @@ function Zoom(params){
     var max_y = Math.abs(trans_y)/zoom_y + params.viz.clust.dim.height/zoom_y ; 
 
     // show the full height of the clustergram if force_square 
-    if (params.viz.force_square) {
+    if (params.viz.force_square || trans) {
       max_y = Math.abs(trans_y)/zoom_y + params.viz.clust.dim.height;       
     }
 
@@ -561,13 +561,11 @@ function Zoom(params){
           d3.select(this).select('text')
             .transition().duration(search_duration)
             .style('font-size', params.labels.default_fs_row * params.viz.zoom_scale_font.row + 'px')
-            .attr('y', params.matrix.y_scale.rangeBand() *
-              params.scale_font_offset(params.viz.zoom_scale_font.row));
+            .attr('y', params.matrix.y_scale.rangeBand() * params.scale_font_offset(params.viz.zoom_scale_font.row));
         } else {
           d3.select(this).select('text')
             .style('font-size', params.labels.default_fs_row * params.viz.zoom_scale_font.row + 'px')
-            .attr('y', params.matrix.y_scale.rangeBand() *
-              params.scale_font_offset(params.viz.zoom_scale_font.row))
+            .attr('y', params.matrix.y_scale.rangeBand() * params.scale_font_offset(params.viz.zoom_scale_font.row))
         }
       });
     } else {
@@ -576,8 +574,10 @@ function Zoom(params){
           d3.select(this).select('text')
             .transition().duration(search_duration)
             .style('font-size', params.labels.default_fs_row + 'px')
-            // .attr('y', params.matrix.y_scale.rangeBand() * 
-            //   params.scale_font_offset(params.viz.zoom_scale_font.row))
+            // if there is a transition, then set zoom_scale_font to 1
+            // its either two translate zoom or sooming into matrix from search
+            .attr('y', params.matrix.y_scale.rangeBand() * 
+              params.scale_font_offset(1))
           d3.select(this).select('text')
             .text(function(d){ return normal_name(d);});
 
