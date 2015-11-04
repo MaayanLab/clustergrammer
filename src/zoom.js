@@ -82,6 +82,7 @@ function Zoom(params){
 
     // update visible links 
     update_viz_links(params, trans_x, trans_y, zoom_x, zoom_y);
+    // down_sample(params);
 
     // apply transformation and reset translate vector
     // the zoom vector (zoom.scale) never gets reset
@@ -352,8 +353,8 @@ function Zoom(params){
     // var max_y = Math.abs(trans_y)/zoom_y + params.viz.clust.dim.height ; 
     var max_y = Math.abs(trans_y)/zoom_y + params.viz.clust.dim.height/zoom_y ; 
 
+    // show the full height of the clustergram if force_square 
     if (params.viz.force_square) {
-      console.log('force_square')
       max_y = Math.abs(trans_y)/zoom_y + params.viz.clust.dim.height;       
     }
 
@@ -431,6 +432,8 @@ function Zoom(params){
     console.log(d3.selectAll('.tile')[0].length);
     console.log('\n\n')
   }
+
+
 
   function constrain_font_size(params, trans){
 
