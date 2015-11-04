@@ -1195,7 +1195,7 @@ function VizParams(config){
 
     // clust_dim - clustergram dimensions (the clustergram is smaller than the svg)
     params.viz.clust.dim = {};
- 
+
     // clustergram height
     ////////////////////////
     // ensure that rects are never taller than they are wide
@@ -2672,18 +2672,13 @@ function draw_grid_lines(row_nodes, col_nodes) {
     params.matrix.rect_width = params.matrix.x_scale.rangeBand() - params.viz.border_width;
     params.matrix.rect_height = params.matrix.y_scale.rangeBand() - params.viz.border_width/params.viz.zoom_switch;
 
+    console.log(params.network_data.links.length);
+
     // reset crossfilter 
     params.cf = {};
     params.cf.links = crossfilter(params.network_data.links);
     params.cf.dim_x = params.cf.links.dimension(function(d){return d.x;});
     params.cf.dim_y = params.cf.links.dimension(function(d){return d.y;}); 
-
-    // reset all crossfilter filters 
-    params.cf.dim_x.filterAll();
-    params.cf.dim_y.filterAll();
-
-    // redefine links - grab all links since filter is reset 
-    var inst_links = params.cf.dim_x.top(Infinity);
 
     // redefine zoom extent
     params.viz.real_zoom = params.norm_label.width.col / (params.matrix.rect_width/2);
@@ -2707,12 +2702,15 @@ function draw_grid_lines(row_nodes, col_nodes) {
     // prevent normal double click zoom etc 
     params.zoom_obj.ini_doubleclick();
 
+    // initialize zoom - shuold improve to prevent transition if necessary 
+    params.zoom_obj.two_translate_zoom(params, 0, 0, 1);
+
     // redefine border width
     params.viz.border_width = params.matrix.rect_width / 55;
 
     // the default font sizes are set here
-    params.labels.default_fs_row = params.matrix.rect_height * 1.01;
-    params.labels.default_fs_col = params.matrix.rect_width * 0.85;
+    params.labels.default_fs_row = params.matrix.rect_width * 1.01;
+    params.labels.default_fs_col = params.matrix.rect_height * 0.85;
 
 
     svg_group.select('#grey_background')
@@ -2755,58 +2753,6 @@ function draw_grid_lines(row_nodes, col_nodes) {
           final_x + ', ' + final_y + ',  L' + final_x + ',0 Z';
         return output_string;
       })
-
-    // enter new elements 
-    //////////////////////////
-    d3.select('#clust_group')
-      .selectAll('.tile')
-      .data(inst_links, function(d){return d.name;})
-      .enter()
-      .append('rect')
-      .style('fill-opacity',0)
-      .attr('class','tile new_tile')
-      .attr('width', params.matrix.rect_width)
-      .attr('height', params.matrix.rect_height)
-      .attr('transform', function(d) {
-        return 'translate(' + params.matrix.x_scale(d.target) + ','+params.matrix.y_scale(d.source)+')';
-      })
-      .style('fill', function(d) {
-          return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
-      })
-      .style('fill-opacity', function(d) {
-          // calculate output opacity using the opacity scale
-          var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
-          return output_opacity;
-      });
-
-    d3.selectAll('.tile')
-      .on('mouseover',null)
-      .on('mouseout',null);
-
-    // redefine mouseover events for tiles 
-    d3.select('#clust_group')
-      .selectAll('.tile')
-      .on('mouseover', function(p) {
-        var row_name = p.name.split('_')[0];
-        var col_name = p.name.split('_')[1];
-        // highlight row - set text to active if
-        d3.selectAll('.row_label_text text')
-          .classed('active', function(d) {
-            return row_name === d.name;
-          });
-
-        d3.selectAll('.col_label_text text')
-          .classed('active', function(d) {
-            return col_name === d.name;
-          });
-      })
-      .on('mouseout', function mouseout() {
-        d3.selectAll('text').classed('active', false);
-      })
-      .attr('title', function(d) {
-        return d.value;
-      });
-
 
     // reposition tile highlight
     ////////////////////////////////
@@ -4705,19 +4651,6 @@ function Reorder(params){
 
     reposition_tile_highlight();
 
-    // redefine x and y positions 
-    _.each(params.network_data.links, function(d){
-      d.x = params.matrix.x_scale(d.target);
-      d.y = params.matrix.y_scale(d.source);
-    });
-
-    // rename crossfilter 
-    params.cf = {};
-    params.cf.links = crossfilter(params.network_data.links);
-    params.cf.dim_x = params.cf.links.dimension(function(d){return d.x;});
-    params.cf.dim_y = params.cf.links.dimension(function(d){return d.y;}); 
-
-
     // backup allow programmatic zoom
     setTimeout(end_reorder, 2500);
   }
@@ -4799,17 +4732,6 @@ function Reorder(params){
       .select('rect')
       .style('opacity', 1);
 
-    // redefine x and y positions 
-    _.each(params.network_data.links, function(d){
-      d.x = params.matrix.x_scale(d.target);
-      d.y = params.matrix.y_scale(d.source);
-    });
-
-    // rename crossfilter 
-    params.cf = {};
-    params.cf.links = crossfilter(params.network_data.links);
-    params.cf.dim_x = params.cf.links.dimension(function(d){return d.x;});
-    params.cf.dim_y = params.cf.links.dimension(function(d){return d.y;}); 
 
     reposition_tile_highlight();
 
@@ -4972,7 +4894,6 @@ function Zoom(params){
 
     // update visible links 
     update_viz_links(params, trans_x, trans_y, zoom_x, zoom_y);
-    // downsample(params);
 
     // apply transformation and reset translate vector
     // the zoom vector (zoom.scale) never gets reset
@@ -5236,24 +5157,15 @@ function Zoom(params){
 
     // get translation vector absolute values 
     var buffer = 1;
-    var min_x = Math.abs(trans_x)/zoom_x - buffer*params.matrix.x_scale.rangeBand() ;
-    var min_y = Math.abs(trans_y)/zoom_y - buffer*params.matrix.y_scale.rangeBand() ;
+    var min_x = Math.abs(trans_x)/zoom_x -
+      buffer*params.matrix.x_scale.rangeBand() ;
+    var min_y = Math.abs(trans_y)/zoom_y -
+      buffer*params.matrix.y_scale.rangeBand() ;
 
-    var max_x = Math.abs(trans_x)/zoom_x + params.viz.clust.dim.width/zoom_x ;
-    // var max_y = Math.abs(trans_y)/zoom_y + params.viz.clust.dim.height ; 
-    var max_y = Math.abs(trans_y)/zoom_y + params.viz.clust.dim.height/zoom_y ; 
-
-    // show the full height of the clustergram if force_square 
-    if (params.viz.force_square) {
-      max_y = Math.abs(trans_y)/zoom_y + params.viz.clust.dim.height;       
-    }
-
-    if (min_x < 0){
-      min_x = 0;
-    }
-    if (min_y < 0){
-      min_y = 0;  
-    }
+    var max_x = Math.abs(trans_x)/zoom_x + 
+      2*buffer*params.matrix.x_scale.rangeBand() + params.viz.clust.dim.width/zoom_x ;
+    var max_y = Math.abs(trans_y)/zoom_y +  
+      2*buffer*params.matrix.y_scale.rangeBand() + params.viz.clust.dim.height/zoom_y ;
 
     // test-filter 
     params.cf.dim_x.filter([min_x,max_x]);
@@ -5262,7 +5174,6 @@ function Zoom(params){
     // redefine links 
     var inst_links = params.cf.dim_x.top(Infinity);
 
-    // exit old elements 
     d3.selectAll('.tile')
       .data(inst_links, function(d){return d.name;})
       .exit()
@@ -5321,105 +5232,7 @@ function Zoom(params){
 
     // check the number of tiles 
     console.log(d3.selectAll('.tile')[0].length);
-    console.log('\n\n')
   }
-
-  function downsample(params){
-    console.log('downsampling')
-
-    // example of calculating average with reduce 
-    // I need to calculate this value for each column 
-
-    var new_height = params.viz.clust.dim.height/2;
-
-    // get data from global_network_data
-    var links = params.network_data.links;
-
-    // load data into crossfilter  
-    var cfl = crossfilter(links);
-
-    // downsample dimension 
-    var dim_ds = cfl.dimension(function(d){
-      var row_num = Math.floor(d.y/new_height);
-      var col_name = d.name.split('_')[1];
-      var inst_key = 'row_'+row_num + '_' + col_name;
-      return inst_key;
-    })
-
-    // initialize array of new_links
-    var new_links = [];
-
-    // define reduce functions 
-    function reduceAddAvg(p,v) {
-      ++p.count
-      p.sum += v.value;
-      p.value = p.sum/p.count;
-
-      // generate random row name 
-      var rand_row = Math.random().toString(36).substring(7);
-
-      // make specific names from a subset of all the other names
-      p.name = 'row_'+ String(Math.floor(v.y)) + '_' + v.name.split('_')[1];
-
-      p.source = v.source;
-      p.target = v.target;
-      return p;
-    }
-    function reduceRemoveAvg(p,v) {
-      --p.count
-      p.sum -= v.value;
-      p.value = p.sum/p.count;
-      p.name = 'no name';
-      p.target = 0;
-      p.source = 0;
-      return p;
-    }
-    function reduceInitAvg() {
-      return {count:0, sum:0, avg:0, name:'',source:0,target:0};
-    }
-
-    // gather tmp version of new links 
-    var tmp_red = dim_ds
-                  .group()
-                  .reduce(reduceAddAvg, reduceRemoveAvg, reduceInitAvg)
-                  .top(Infinity);
-
-    // gather data from reduced sum 
-    new_links = _.pluck(tmp_red, 'value');
-
-    // exit old elements 
-    d3.selectAll('.tile')
-      .data(new_links, function(d){return d.name;})
-      .exit()
-      .remove();
-
-    // enter new elements 
-    //////////////////////////
-    d3.select('#clust_group')
-      .selectAll('.tile')
-      .data(new_links, function(d){return d.name;})
-      .enter()
-      .append('rect')
-      .style('fill-opacity',0)
-      .attr('class','tile ds_tile')
-      .attr('width', params.matrix.rect_width)
-      .attr('height', params.matrix.rect_height)
-      .attr('transform', function(d) {
-        return 'translate(' + params.matrix.x_scale(d.target) + ','+params.matrix.y_scale(d.source)+')';
-      })
-      .style('fill', function(d) {
-          return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
-      })
-      .style('fill-opacity', function(d) {
-          // calculate output opacity using the opacity scale
-          var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
-          return output_opacity;
-      });
-
-
-
-  }
-
 
   function constrain_font_size(params, trans){
 
@@ -5612,5 +5425,5 @@ return {
     update_network: viz.update_network,
     params: viz.params
 };
-	
+  
 }

@@ -218,7 +218,7 @@ function VizParams(config){
 
     // clust_dim - clustergram dimensions (the clustergram is smaller than the svg)
     params.viz.clust.dim = {};
-
+ 
     // clustergram height
     ////////////////////////
     // ensure that rects are never taller than they are wide

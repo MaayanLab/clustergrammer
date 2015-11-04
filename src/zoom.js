@@ -82,7 +82,7 @@ function Zoom(params){
 
     // update visible links 
     update_viz_links(params, trans_x, trans_y, zoom_x, zoom_y);
-    // down_sample(params);
+    // downsample(params);
 
     // apply transformation and reset translate vector
     // the zoom vector (zoom.scale) never gets reset
@@ -434,25 +434,19 @@ function Zoom(params){
     console.log('\n\n')
   }
 
-  // downsample links 
-  function down_sample(params){
+  function downsample(params){
     console.log('downsampling')
 
     // example of calculating average with reduce 
     // I need to calculate this value for each column 
 
-    var new_height = 100;
+    var new_height = params.viz.clust.dim.height/2;
 
     // get data from global_network_data
     var links = params.network_data.links;
 
     // load data into crossfilter  
     var cfl = crossfilter(links);
-
-    // // define column dimension - column names 
-    // var dim_col = cfl.dimension(function(d){return d.name.split('_')[1];});
-    // // define dimension - y 
-    // var dim_y = cfl.dimension(function(d){return Math.floor(d.y/new_height);});
 
     // downsample dimension 
     var dim_ds = cfl.dimension(function(d){
@@ -469,7 +463,7 @@ function Zoom(params){
     function reduceAddAvg(p,v) {
       ++p.count
       p.sum += v.value;
-      p.avg = p.sum/p.count;
+      p.value = p.sum/p.count;
 
       // generate random row name 
       var rand_row = Math.random().toString(36).substring(7);
@@ -484,7 +478,7 @@ function Zoom(params){
     function reduceRemoveAvg(p,v) {
       --p.count
       p.sum -= v.value;
-      p.avg = p.sum/p.count;
+      p.value = p.sum/p.count;
       p.name = 'no name';
       p.target = 0;
       p.source = 0;
@@ -529,8 +523,7 @@ function Zoom(params){
       .style('fill-opacity', function(d) {
           // calculate output opacity using the opacity scale
           var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
-          // return output_opacity;
-          return 1;
+          return output_opacity;
       });
 
 

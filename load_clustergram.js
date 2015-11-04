@@ -99,27 +99,7 @@ function make_clust(inst_network){
         });
         $( "#amount" ).val( "$" + $( "#slider_filter" ).slider( "value" ) );
 
-        // // filter times_met - only initialize once 
-        // $( "#slider_times_met" ).slider({
-        //   value:1,
-        //   min: 1,
-        //   max: 3,
-        //   step: 1,
-        //   stop: function( event, ui ) {
-        //     $( "#amount" ).val( "$" + ui.value );
-        //     var inst_filt  = $( "#slider_filter" ).slider( "value" ); 
-        //     var inst_times = $( "#slider_times_met" ).slider( "value" ); 
-
-        //     d3.select('#filter_value').text('filter row/column: value : '+inst_filt);
-        //     var inst_name = 'default_example_f'+inst_filt+'_n'+inst_times+'.json';
-
-        //     update_clust(inst_name);
-        //   }
-        // });
-        // $( "#amount" ).val( "$" + $( "#slider_filter" ).slider( "value" ) );
-
         // reused functions 
-          
         function ini_sliders(){
           // col groups
           $( "#slider_col" ).slider({
@@ -257,75 +237,3 @@ make_clust('default_example_f1.json');
 // make_clust('kin_sub_example.json');
 // make_clust('harmonogram_example.json');
 
-
-  function down_sample(params){
-    // example of calculating average with reduce 
-    // I need to calculate this value for each column 
-
-    var new_height = 400;
-
-    // get data from global_network_data
-    var links = global_network_data.links;
-
-    // load data into crossfilter  
-    var cfl = crossfilter(links);
-
-    // // define column dimension - column names 
-    // var dim_col = cfl.dimension(function(d){return d.name.split('_')[1];});
-    // // define dimension - y 
-    // var dim_y = cfl.dimension(function(d){return Math.floor(d.y/new_height);});
-
-    // downsample dimension 
-    dim_ds = cfl.dimension(function(d){
-      var row_num = Math.floor(d.y/new_height);
-      var col_name = d.name.split('_')[1];
-      var inst_key = 'row_'+row_num + '_' + col_name;
-      return inst_key;
-    })
-
-
-    // initialize array of new_links
-    new_links = [];
-
-    // get col_nodes
-    var col_nodes = global_network_data.col_nodes;
-
-    // define reduce functions 
-    function reduceAddAvg(p,v) {
-      ++p.count
-      p.sum += v.value;
-      p.avg = p.sum/p.count;
-
-      // generate random row name 
-      var rand_row = Math.random().toString(36).substring(7);
-
-      // make specific names from a subset of all the other names
-      p.name = 'row_'+ String(Math.floor(v.y)) + '_' + v.name.split('_')[1];
-      return p;
-    }
-    function reduceRemoveAvg(p,v) {
-      --p.count
-      p.sum -= v.value;
-      p.avg = p.sum/p.count;
-      p.name = 'no name';
-      return p;
-    }
-    function reduceInitAvg() {
-      return {count:0, sum:0, avg:0, name:''};
-    }
-
-    // gather tmp version of new links 
-    var tmp_red = dim_ds
-                  .group()
-                  .reduce(reduceAddAvg, reduceRemoveAvg, reduceInitAvg)
-                  .top(Infinity);
-
-    // gather data from reduced sum 
-    new_links = _.pluck(tmp_red, 'value');
-
-    // // add to new links
-    // new_links = new_links.concat(tmp_links);
-    // console.log('here')
-    // console.log(new_links.length)
-
-  }
