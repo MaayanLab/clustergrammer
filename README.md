@@ -1,4 +1,4 @@
-# d3_clustergram 
+# clustergrammer.js 
 
 This is a clustergram implemented in D3.js. I started from the example http://bost.ocks.org/mike/miserables/ and added the following features 
   
@@ -12,23 +12,23 @@ This is a clustergram implemented in D3.js. I started from the example http://bo
 - optional split tiles and highlighting tiles
 - optional resizing
 
-The d3_clustergram repo is being hosted on github and gist and a live example of the visualization can be found on blocks. 
-- github: https://github.com/cornhundred/d3_clustergram 
+The clustergrammer.js repo is being hosted on github and gist and a live example of the visualization can be found on blocks. 
+- github: https://github.com/cornhundred/clustergrammer.js 
 - gist: https://gist.github.com/cornhundred/c56253a5f3579a63406f
 - blocks http://bl.ocks.org/cornhundred/c56253a5f3579a63406f
 
 # Dependencies
 
-d3_clustergram requires:
+clustergrammer.js requires:
 - jQuery
 - jQuery UI
 - Underscore.js
 - Underscore.Strings.js
 - Bootstrap
 
-# d3_clustergram API
+# clustergrammer.js API
 
-## making a clustergram using d3_clustergram.make
+## making a clustergram using clustergrammer.js.make
 
 ### make arguments 
 To make a clustergram pass in an object with your network (network_data) and other optinal arguments. An example is in load_network.js and shown below 
@@ -54,11 +54,11 @@ var arguments_obj = {
   'background_color':'white',
 };
 
-d3_clustergram.make( arguments_obj );
+clustergrammer.make( arguments_obj );
 ``` 
 
 ### network_data json
-Your network (called network_data here) must be in the following json format - make_clust.py and d3_clustergram.py can be used to make a json of this format from a matrix given in tab separated format (see make_clust.py, which produces example_network.json from example_tsv_network.txt)
+Your network (called network_data here) must be in the following json format - make_clust.py and clustergrammer.py can be used to make a json of this format from a matrix given in tab separated format (see make_clust.py, which produces example_network.json from example_tsv_network.txt)
 
 ```
 {
@@ -101,7 +101,7 @@ There are three required properties: row_nodes, col_nodes, and links. Each of th
 Both row_node and col_node objects are required to have the three properties: "name", "clust", "rank" . "name" specifies the name given to the row or column. "clust" and "rank" give the ordering of the row or column in the clustergram - these orderings have to be precalculated by the user and the python script make_clust.py can be used for this. 
 
 ##### optional properties: "group", "cl", "value"
-row_nodes and col_nodes have optional properties: "group" and "cl" (group is given as an array of group membership at different distance cutoffs and used for the dendrogram-like colorbar - see d3_clustergram.py). If row_nodes and col_nodes have the property "group" then a dendrogram like colorbar will be added to the visualization and a slider can be used to change the group size. 
+row_nodes and col_nodes have optional properties: "group" and "cl" (group is given as an array of group membership at different distance cutoffs and used for the dendrogram-like colorbar - see clustergrammer.py). If row_nodes and col_nodes have the property "group" then a dendrogram like colorbar will be added to the visualization and a slider can be used to change the group size. 
 
 If row_nodes and col_nodes have the property "cl" then the triangles on each row/column label will be colored based on the classification (cl) of each row/column. 
 
@@ -120,13 +120,13 @@ Links have the opional property "highlight" that can be used to highlight a tile
 
 ## reorder clustergram
 
-d3_clustergram.reorder takes a single argument that can take the values: 'clust' or 'rank'; and will reorder the clustergram accordingly. 
+clustergrammer.reorder takes a single argument that can take the values: 'clust' or 'rank'; and will reorder the clustergram accordingly. 
 
 ## find row in clustergram
-d3_clustergram.find_row will find and zoom into the row that is specified by the input DOM element with id 'gene_search_box'. 
+clustergrammer.find_row will find and zoom into the row that is specified by the input DOM element with id 'gene_search_box'. 
 
-# d3_clustergram.py
-The network json, example_network.json, used in the visualization was produced using the python script make_clust.py and the class definition d3_clustergram.py. The python script d3_clustergram.py defines the class, Network, that loads the example network in tab separated format, example_tsv_network.txt, calculates clustering, and saves the network in the required format. To remake example_network.json run make_clust.py. 
+# clustergrammer.py
+The network json, example_network.json, used in the visualization was produced using the python script make_clust.py and the class definition clustergrammer.js.py. The python script clustergrammer.js.py defines the class, Network, that loads the example network in tab separated format, example_tsv_network.txt, calculates clustering, and saves the network in the required format. To remake example_network.json run make_clust.py. 
 
 D3 Clustergram was developed by Nick Fernandez at Icahn School of Medicine at Mount Sinai. 
 
