@@ -79,6 +79,8 @@ function make_clust(inst_network){
         // tmp make d3c a global variable so that it can be updated with new data 
         var d3c = d3_clustergram(arguments_obj);
 
+        global_params = d3c.params;
+
         ini_sliders();
 
         // filter scale - only initialize once 
@@ -237,3 +239,125 @@ make_clust('default_example_f1.json');
 // make_clust('kin_sub_example.json');
 // make_clust('harmonogram_example.json');
 
+function downsample(params){
+  console.log('downsampling')
+
+  var ini_num_rows = params.network_data.row_nodes.length;
+
+  new_num_rows = ini_num_rows/2;
+
+  console.log(new_num_rows);
+
+  // get cluster height
+  var clust_height = params.viz.clust.dim.height;
+  // initialize scale
+  var y_scale = d3.scale.ordinal().rangeBands([0,clust_height]);
+  // define domain 
+  y_scale.domain(_.range(new_num_rows));
+
+  console.log(clust_height)
+  console.log(y_scale(0))
+  console.log(y_scale(1))
+  console.log(y_scale(new_num_rows-1))
+
+  // get new rangeBand to calculate new y position 
+  var tile_height = y_scale.rangeBand();
+
+  console.log('old tile height')
+  console.log(params.matrix.y_scale.rangeBand())
+
+  console.log('tile_height')
+  console.log(tile_height)
+
+  // get data from global_network_data
+  var links = params.network_data.links;
+
+  // use crossfilter to calculate new links 
+
+  // load data into crossfilter  
+  var cfl = crossfilter(links);
+
+  // downsample dimension - define the key that will be used to do the reduction
+  var dim_ds = cfl.dimension(function(d){
+    // merge together rows into a smaller number of rows 
+    var row_num = Math.floor(d.y/tile_height);
+    var col_name = d.name.split('_')[1];
+    var inst_key = 'row_'+row_num + '_' + col_name;
+    return inst_key;
+  })
+
+  // initialize array of new_links
+  var new_links = [];
+
+  // define reduce functions 
+  function reduceAddAvg(p,v) {
+    ++p.count
+    p.sum += v.value;
+    p.value = p.sum/p.count;
+
+    // make specific names from a subset of all the other names
+    p.name = 'row_'+ String(Math.floor(v.y)) + '_' + v.name.split('_')[1];
+
+    p.source = Math.floor(v.y/tile_height);
+    p.target = v.target;
+    return p;
+  }
+  function reduceRemoveAvg(p,v) {
+    --p.count
+    p.sum -= v.value;
+    p.value = p.sum/p.count;
+    p.name = 'no name';
+    p.target = 0;
+    p.source = 0;
+    return p;
+  }
+  function reduceInitAvg() {
+    return {count:0, sum:0, avg:0, name:'',source:0,target:0};
+  }
+
+  // gather tmp version of new links 
+  var tmp_red = dim_ds
+                .group()
+                .reduce(reduceAddAvg, reduceRemoveAvg, reduceInitAvg)
+                .top(Infinity);
+
+  // gather data from reduced sum 
+  new_links = _.pluck(tmp_red, 'value');
+
+
+
+  // add new tiles 
+  /////////////////////////
+
+  // exit old elements 
+  d3.selectAll('.tile')
+    .data(new_links, function(d){return d.name;})
+    .exit()
+    .remove();
+
+  d3.selectAll('.horz_lines').remove();
+
+  // enter new elements 
+  //////////////////////////
+  d3.select('#clust_group')
+    .selectAll('.tile')
+    .data(new_links, function(d){return d.name;})
+    .enter()
+    .append('rect')
+    .style('fill-opacity',0)
+    .attr('class','tile ds_tile')
+    .attr('width', params.matrix.rect_width)
+    .attr('height', tile_height)
+    .attr('transform', function(d) {
+      return 'translate(' + params.matrix.x_scale(d.target) + ','+y_scale(d.source)+')';
+    })
+    .style('fill', function(d) {
+        return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
+    })
+    .style('fill-opacity', function(d) {
+        // calculate output opacity using the opacity scale
+        var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
+        return output_opacity;
+    });
+
+}
