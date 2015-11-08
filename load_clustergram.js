@@ -244,9 +244,11 @@ function downsample(params){
 
   var ini_num_rows = params.network_data.row_nodes.length;
 
-  new_num_rows = ini_num_rows/2;
+  var reduce_by = 2;
 
-  console.log(new_num_rows);
+  var col_nodes = params.network_data.col_nodes;
+
+  new_num_rows = ini_num_rows/reduce_by;
 
   // get cluster height
   var clust_height = params.viz.clust.dim.height;
@@ -255,19 +257,14 @@ function downsample(params){
   // define domain 
   y_scale.domain(_.range(new_num_rows));
 
-  console.log(clust_height)
-  console.log(y_scale(0))
-  console.log(y_scale(1))
-  console.log(y_scale(new_num_rows-1))
-
   // get new rangeBand to calculate new y position 
   var tile_height = y_scale.rangeBand();
 
-  console.log('old tile height')
-  console.log(params.matrix.y_scale.rangeBand())
+  var ini_tile_height = params.matrix.y_scale.rangeBand();
 
-  console.log('tile_height')
-  console.log(tile_height)
+  var increase_ds = 1.5;
+
+  var ds_factor = ini_tile_height/tile_height * increase_ds;
 
   // get data from global_network_data
   var links = params.network_data.links;
@@ -281,7 +278,7 @@ function downsample(params){
   var dim_ds = cfl.dimension(function(d){
     // merge together rows into a smaller number of rows 
     var row_num = Math.floor(d.y/tile_height);
-    var col_name = d.name.split('_')[1];
+    var col_name = d.name.split('_');
     var inst_key = 'row_'+row_num + '_' + col_name;
     return inst_key;
   })
@@ -295,8 +292,8 @@ function downsample(params){
     p.sum += v.value;
     p.value = p.sum/p.count;
 
-    // make specific names from a subset of all the other names
-    p.name = 'row_'+ String(Math.floor(v.y)) + '_' + v.name.split('_')[1];
+    // make 
+    p.name = 'row_'+ String(Math.floor(v.y)) + '_' + col_nodes[v.target].name;
 
     p.source = Math.floor(v.y/tile_height);
     p.target = v.target;
@@ -356,7 +353,7 @@ function downsample(params){
     })
     .style('fill-opacity', function(d) {
         // calculate output opacity using the opacity scale
-        var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
+        var output_opacity = params.matrix.opacity_scale(Math.abs(d.sum*ds_factor));
         return output_opacity;
     });
 

@@ -234,10 +234,10 @@ function Matrix(network_data, svg_elem, params) {
     // append title to group
     if (params.matrix.tile_title) {
       tile.append('title')
-      .text(function(d) {
-        var inst_string = 'value: ' + d.value;
-        return inst_string;
-      });
+        .text(function(d) {
+          var inst_string = 'value: ' + d.value;
+          return inst_string;
+        });
     }
 
   }
