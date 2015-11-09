@@ -244,11 +244,17 @@ function downsample(params){
 
   var ini_num_rows = params.network_data.row_nodes.length;
 
-  var reduce_by = 2;
+  // calc the increase in rect size required 
+  // first get the current size of the rectangle 
+  var ini_rect_height = d3.select('.tile').attr('height');
+  var reduce_by = 80/ini_rect_height;
 
   var col_nodes = params.network_data.col_nodes;
 
   new_num_rows = ini_num_rows/reduce_by;
+
+  console.log('ini_num_rows '+String(ini_num_rows))
+  console.log('new_num_rows '+String(new_num_rows))
 
   // get cluster height
   var clust_height = params.viz.clust.dim.height;
@@ -262,12 +268,14 @@ function downsample(params){
 
   var ini_tile_height = params.matrix.y_scale.rangeBand();
 
-  var increase_ds = 1.5;
+  var increase_ds = 0.25*reduce_by;
 
-  var ds_factor = ini_tile_height/tile_height * increase_ds;
+  var ds_factor = 2 ;// ini_tile_height/tile_height * increase_ds;
 
   // get data from global_network_data
   var links = params.network_data.links;
+
+  console.log('initially there are ' + String(links.length) + ' links ')
 
   // use crossfilter to calculate new links 
 
@@ -283,9 +291,6 @@ function downsample(params){
     return inst_key;
   })
 
-  // initialize array of new_links
-  var new_links = [];
-
   // define reduce functions 
   function reduceAddAvg(p,v) {
     ++p.count
@@ -293,7 +298,8 @@ function downsample(params){
     p.value = p.sum/p.count;
 
     // make 
-    p.name = 'row_'+ String(Math.floor(v.y)) + '_' + col_nodes[v.target].name;
+    // p.name = 'row_'+ String(Math.floor(v.y)) + '_' + col_nodes[v.target].name;
+    p.name = 'row_'+ String(Math.floor(v.y/tile_height)) + '_' + col_nodes[v.target].name;
 
     p.source = Math.floor(v.y/tile_height);
     p.target = v.target;
@@ -313,14 +319,18 @@ function downsample(params){
   }
 
   // gather tmp version of new links 
-  var tmp_red = dim_ds
+  tmp_red = dim_ds
                 .group()
                 .reduce(reduceAddAvg, reduceRemoveAvg, reduceInitAvg)
                 .top(Infinity);
 
+  // initialize array of new_links
+  new_links = [];
+
   // gather data from reduced sum 
   new_links = _.pluck(tmp_red, 'value');
 
+  console.log('there are ' + String(new_links.length) + ' new_links')
 
 
   // add new tiles 
@@ -328,7 +338,9 @@ function downsample(params){
 
   // exit old elements 
   d3.selectAll('.tile')
-    .data(new_links, function(d){return d.name;})
+    .data(new_links, function(d){
+      return d.name;
+    })
     .exit()
     .remove();
 
@@ -349,7 +361,7 @@ function downsample(params){
       return 'translate(' + params.matrix.x_scale(d.target) + ','+y_scale(d.source)+')';
     })
     .style('fill', function(d) {
-        return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
+      return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
     })
     .style('fill-opacity', function(d) {
         // calculate output opacity using the opacity scale
