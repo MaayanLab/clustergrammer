@@ -234,10 +234,10 @@ function make_clust(inst_network){
 
 
 // choose example here
-make_clust('default_example_f1.json');
+// make_clust('default_example_f1.json');
 // make_clust('bar_example.json');
 // make_clust('kin_sub_example.json');
-// make_clust('harmonogram_example.json');
+make_clust('harmonogram_example.json');
 
 function downsample(params){
   console.log('downsampling')
@@ -247,7 +247,7 @@ function downsample(params){
   // calc the increase in rect size required 
   // first get the current size of the rectangle 
   var ini_rect_height = d3.select('.tile').attr('height');
-  var reduce_by = 80/ini_rect_height;
+  var reduce_by = 10/ini_rect_height;
 
   var col_nodes = params.network_data.col_nodes;
 
@@ -268,9 +268,9 @@ function downsample(params){
 
   var ini_tile_height = params.matrix.y_scale.rangeBand();
 
-  var increase_ds = 0.25*reduce_by;
+  var increase_ds = 1; // 0.25*reduce_by;
 
-  var ds_factor = 2 ;// ini_tile_height/tile_height * increase_ds;
+  var ds_factor = ini_tile_height/tile_height * increase_ds;
 
   // get data from global_network_data
   var links = params.network_data.links;
@@ -286,7 +286,7 @@ function downsample(params){
   var dim_ds = cfl.dimension(function(d){
     // merge together rows into a smaller number of rows 
     var row_num = Math.floor(d.y/tile_height);
-    var col_name = d.name.split('_');
+    var col_name = col_nodes[d.target].name;
     var inst_key = 'row_'+row_num + '_' + col_name;
     return inst_key;
   })
@@ -331,7 +331,6 @@ function downsample(params){
   new_links = _.pluck(tmp_red, 'value');
 
   console.log('there are ' + String(new_links.length) + ' new_links')
-
 
   // add new tiles 
   /////////////////////////
