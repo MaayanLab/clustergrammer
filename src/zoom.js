@@ -446,9 +446,9 @@ function Zoom(params){
         return d.value;
       });
 
-    // check the number of tiles 
-    console.log(d3.selectAll('.tile')[0].length);
-    console.log('\n\n')
+    // // check the number of tiles 
+    // console.log(d3.selectAll('.tile')[0].length);
+    // console.log('\n\n')
   }
 
 

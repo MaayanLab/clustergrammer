@@ -2813,11 +2813,13 @@ function draw_grid_lines(row_nodes, col_nodes) {
     // resize tiles - either in rows or individually 
     if (d3.select('.row_tile').empty()){
 
+
+
       console.log('resizing individual tiles');
       // reset tiles 
       svg_group.selectAll('.tile')
-        .attr('width', params.matrix.rect_width)
-        .attr('height', params.matrix.rect_height)
+        .attr('width', params.matrix.x_scale.rangeBand())
+        .attr('height', params.matrix.y_scale.rangeBand())
         .attr('transform', function(d) {
           return 'translate(' + params.matrix.x_scale(d.target) + ','+params.matrix.y_scale(d.source)+')';
         });
@@ -3302,14 +3304,14 @@ function draw_grid_lines(row_nodes, col_nodes) {
           var inst_width = params.class_room.symbol_width - 1;
           return inst_width + 'px';
         })
-        .attr('height', params.matrix.rect_height)
+        .attr('height', params.matrix.y_scale.rangeBand())
         .attr('x', function() {
           var inst_offset = params.class_room.symbol_width + 1;
           return inst_offset + 'px';
         });
 
       svg_group.selectAll('.col_class_rect')
-        .attr('width', params.matrix.rect_width)
+        .attr('width', params.matrix.x_scale.rangeBand())
         .attr('height', function() {
           var inst_height = params.class_room.col - 1;
           return inst_height;
@@ -5499,9 +5501,9 @@ function Zoom(params){
         return d.value;
       });
 
-    // check the number of tiles 
-    console.log(d3.selectAll('.tile')[0].length);
-    console.log('\n\n')
+    // // check the number of tiles 
+    // console.log(d3.selectAll('.tile')[0].length);
+    // console.log('\n\n')
   }
 
 
