@@ -36,7 +36,7 @@ function Matrix(network_data, svg_elem, params) {
   // draw rows of clustergram
   if (params.matrix.tile_type === 'simple') {
 
-    if (params.network_data.links.length < 10000){
+    if (params.network_data.links.length < params.matrix.def_large_matrix){
       console.log('making simple tiles');
       draw_simple_tiles(clust_group, tile_data);
     } else {

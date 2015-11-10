@@ -30,7 +30,7 @@ function Reorder(params){
     }
 
     // only animate transition if there are a small number of tiles
-    if (d3.selectAll('.tile')[0].length < 10000){
+    if (d3.selectAll('.tile')[0].length < params.matrix.def_large_matrix){
 
       // define the t variable as the transition function
       var t = viz.get_clust_group()

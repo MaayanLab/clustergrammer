@@ -479,7 +479,7 @@ function Matrix(network_data, svg_elem, params) {
   // draw rows of clustergram
   if (params.matrix.tile_type === 'simple') {
 
-    if (params.network_data.links.length < 10000){
+    if (params.network_data.links.length < params.matrix.def_large_matrix){
       console.log('making simple tiles');
       draw_simple_tiles(clust_group, tile_data);
     } else {
@@ -1128,6 +1128,12 @@ function VizParams(config){
     params.matrix.click_hlight_y = -666;
     params.matrix.click_hlight_row = -666;
     params.matrix.click_hlight_col = -666;
+
+    // definition of a large matrix - based on number of links 
+    // cutoff between large and small matrix
+    // below this cutoff reordering is done with transitions
+    // and tiles are drawn individually - not in rows 
+    params.matrix.def_large_matrix = 10000;
 
     // initial order of clustergram
     params.viz.inst_order = config.inst_order;
@@ -4656,7 +4662,7 @@ function Reorder(params){
     }
 
     // only animate transition if there are a small number of tiles
-    if (d3.selectAll('.tile')[0].length < 10000){
+    if (d3.selectAll('.tile')[0].length < params.matrix.def_large_matrix){
 
       // define the t variable as the transition function
       var t = viz.get_clust_group()

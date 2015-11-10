@@ -67,6 +67,12 @@ function VizParams(config){
     params.matrix.click_hlight_row = -666;
     params.matrix.click_hlight_col = -666;
 
+    // definition of a large matrix - based on number of links 
+    // cutoff between large and small matrix
+    // below this cutoff reordering is done with transitions
+    // and tiles are drawn individually - not in rows 
+    params.matrix.def_large_matrix = 10000;
+
     // initial order of clustergram
     params.viz.inst_order = config.inst_order;
 
