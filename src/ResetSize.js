@@ -162,8 +162,10 @@
     });
 
     // precalc rect_width and height 
-    params.matrix.rect_width = params.matrix.x_scale.rangeBand() - params.viz.border_width;
-    params.matrix.rect_height = params.matrix.y_scale.rangeBand() - params.viz.border_width/params.viz.zoom_switch;
+    // params.matrix.rect_width = params.matrix.x_scale.rangeBand() - params.viz.border_width;
+    // params.matrix.rect_height = params.matrix.y_scale.rangeBand() - params.viz.border_width/params.viz.zoom_switch;
+    params.matrix.rect_width = params.matrix.x_scale.rangeBand();
+    params.matrix.rect_height = params.matrix.y_scale.rangeBand();
 
     // reset crossfilter 
     params.cf = {};
@@ -265,8 +267,8 @@
         .append('rect')
         .style('fill-opacity',0)
         .attr('class','tile new_tile')
-        .attr('width', params.matrix.rect_width)
-        .attr('height', params.matrix.rect_height)
+        .attr('width', params.matrix.x_scale.rangeBand())
+        .attr('height', params.matrix.y_scale.rangeBand())
         .attr('transform', function(d) {
           return 'translate(' + params.matrix.x_scale(d.target) + ','+params.matrix.y_scale(d.source)+')';
         })
@@ -725,29 +727,34 @@
           return 'translate(' + params.matrix.x_scale(inst_index) + ',0)';
         });
 
-      // reposition grid lines
-      ////////////////////////////
-      svg_group.selectAll('.horz_lines')
-        .attr('transform', function(d) {
-          var inst_index = _.indexOf(row_nodes_names, d.name);
-          return 'translate(0,' + params.matrix.y_scale(inst_index) + ') rotate(0)';
-        })
+      // // reposition grid lines
+      // ////////////////////////////
+      // svg_group.selectAll('.horz_lines')
+      //   .attr('transform', function(d) {
+      //     var inst_index = _.indexOf(row_nodes_names, d.name);
+      //     return 'translate(0,' + params.matrix.y_scale(inst_index) + ') rotate(0)';
+      //   })
 
-      svg_group.selectAll('.horz_lines')
-        .select('line')
-        .attr('x2',params.viz.clust.dim.width)
-        .style('stroke-width', params.viz.border_width/params.viz.zoom_switch+'px')
+      // svg_group.selectAll('.horz_lines')
+      //   .select('line')
+      //   .attr('x2',params.viz.clust.dim.width)
+      //   .style('stroke-width', params.viz.border_width/params.viz.zoom_switch+'px')
 
-      svg_group.selectAll('.vert_lines')
-        .attr('transform', function(d) {
-          var inst_index = _.indexOf(col_nodes_names, d.name);
-          return 'translate(' + params.matrix.x_scale(inst_index) + ') rotate(-90)';
-        });
+      // svg_group.selectAll('.vert_lines')
+      //   .attr('transform', function(d) {
+      //     var inst_index = _.indexOf(col_nodes_names, d.name);
+      //     return 'translate(' + params.matrix.x_scale(inst_index) + ') rotate(-90)';
+      //   });
 
-      svg_group.selectAll('.vert_lines')
-        .select('line')
-        .attr('x2', -params.viz.clust.dim.height)
-        .style('stroke-width', params.viz.border_width + 'px');
+      // svg_group.selectAll('.vert_lines')
+      //   .select('line')
+      //   .attr('x2', -params.viz.clust.dim.height)
+      //   .style('stroke-width', params.viz.border_width + 'px');
+
+      var row_nodes = params.network_data.row_nodes;
+      var col_nodes = params.network_data.col_nodes;
+
+      draw_grid_lines(row_nodes, col_nodes);
 
     // resize superlabels
     /////////////////////////////////////

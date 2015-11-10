@@ -83,17 +83,17 @@ function Zoom(params){
     // update visible links 
     var min_rect_height = 3;
 
-    if (d3.select('.row_tile').empty()){
-      var links_in_view = update_viz_links(params, trans_x, trans_y, zoom_x, zoom_y, false);
-      draw_viz_links(params, links_in_view);
+    // if (d3.select('.row_tile').empty()){
+    //   var links_in_view = update_viz_links(params, trans_x, trans_y, zoom_x, zoom_y, false);
+    //   draw_viz_links(params, links_in_view);
 
-      // // draw the new links using links_in_view 
-      // if (params.matrix.rect_height*zoom_y > min_rect_height){
-      //   draw_viz_links(params, links_in_view);
-      // } else if (d3.select('.ds_tile').empty()) {
-      //   downsample(params, min_rect_height);
-      // }
-    }
+    //   // // draw the new links using links_in_view 
+    //   // if (params.matrix.rect_height*zoom_y > min_rect_height){
+    //   //   draw_viz_links(params, links_in_view);
+    //   // } else if (d3.select('.ds_tile').empty()) {
+    //   //   downsample(params, min_rect_height);
+    //   // }
+    // }
 
 
     // apply transformation and reset translate vector
@@ -235,10 +235,12 @@ function Zoom(params){
       // center_y
       var center_y = -(zoom_y - 1) * half_height;
 
-      if (d3.select('.row_tile').empty()){
-        var links_in_view = update_viz_links(params, 0, 0, zoom_x, zoom_y, true);
-        draw_viz_links(params, links_in_view);
-      }
+      // do not update viz links
+      /////////////////////////////
+      // if (d3.select('.row_tile').empty()){
+      //   var links_in_view = update_viz_links(params, 0, 0, zoom_x, zoom_y, true);
+      //   draw_viz_links(params, links_in_view);
+      // }
 
       // transform clust group
       ////////////////////////////
