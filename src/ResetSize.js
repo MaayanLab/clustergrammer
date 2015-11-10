@@ -217,15 +217,15 @@
     // resize tiles - either in rows or individually 
     if (d3.select('.row_tile').empty()){
 
-
-
       console.log('resizing individual tiles');
       // reset tiles 
       svg_group.selectAll('.tile')
-        .attr('width', params.matrix.x_scale.rangeBand())
-        .attr('height', params.matrix.y_scale.rangeBand())
+        .attr('width', params.matrix.rect_width)
+        .attr('height', params.matrix.rect_height)
         .attr('transform', function(d) {
-          return 'translate(' + params.matrix.x_scale(d.target) + ','+params.matrix.y_scale(d.source)+')';
+          var x_pos = params.matrix.x_scale(d.target) + 0.5*params.viz.border_width;
+          var y_pos = params.matrix.y_scale(d.source) + 0.5*params.viz.border_width/params.viz.zoom_switch;
+          return 'translate(' + x_pos + ','+ y_pos +')';
         });
 
       svg_group.selectAll('.tile_group')
@@ -314,10 +314,12 @@
       // resize tiles
       ///////////////////
       svg_group.selectAll('.tile')
-        .attr('width', params.matrix.x_scale.rangeBand())
-        .attr('height', params.matrix.y_scale.rangeBand())
+        .attr('width', params.matrix.rect_width)
+        .attr('height', params.matrix.rect_height)
         .attr('transform', function(d) {
-          return 'translate(' + params.matrix.x_scale(d.pos_x) + ',0)';
+          var x_pos = params.matrix.x_scale(d.pos_x) + 0.5*params.viz.border_width; 
+          var y_pos = 0.5*params.viz.border_width/params.viz.zoom_switch;
+          return 'translate(' + x_pos + ','+y_pos+')';
         });
 
       svg_group.selectAll('.tile_group')

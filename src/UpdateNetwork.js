@@ -180,10 +180,12 @@ function enter_exit_update(params, network_data, reorder, delays){
     .append('rect')
     .style('fill-opacity',0)
     .attr('class','tile new_tile')
-    .attr('width', params.matrix.x_scale.rangeBand())
-    .attr('height', params.matrix.y_scale.rangeBand())
+    .attr('width', params.matrix.rect_width)
+    .attr('height', params.matrix.rect_height)
     .attr('transform', function(d) {
-      return 'translate(' + params.matrix.x_scale(d.target) + ','+params.matrix.y_scale(d.source)+')';
+      var x_pos = params.matrix.x_scale(d.target) + 0.5*params.viz.border_width;
+      var y_pos = params.matrix.y_scale(d.source) + 0.5*params.viz.border_width/params.viz.zoom_switch;
+      return 'translate(' + x_pos + ','+ y_pos +')';
     })
     .style('fill', function(d) {
         return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];

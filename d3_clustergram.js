@@ -656,9 +656,8 @@ function Matrix(network_data, svg_elem, params) {
       .enter()
       .append('rect')
       .attr('class', 'tile row_tile')
-
-      .attr('width', params.matrix.x_scale.rangeBand())
-      .attr('height', params.matrix.y_scale.rangeBand())
+      .attr('width', params.matrix.rect_width)
+      .attr('height', params.matrix.rect_height)
       // switch the color based on up/dn value
       .style('fill', function(d) {
         return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
@@ -691,10 +690,10 @@ function Matrix(network_data, svg_elem, params) {
 
     tile
       .attr('transform', function(d) {
-        return 'translate(' + params.matrix.x_scale(d.pos_x) + ',0)';
-      })
-
-
+        var x_pos = params.matrix.x_scale(d.pos_x) + 0.5*params.viz.border_width; 
+        var y_pos = 0.5*params.viz.border_width/params.viz.zoom_switch;
+        return 'translate(' + x_pos + ','+y_pos+')';
+      });
 
     // append title to group
     if (params.matrix.tile_title) {
@@ -752,12 +751,10 @@ function Matrix(network_data, svg_elem, params) {
 
     tile
       .attr('transform', function(d) {
-        // target is the column, which corresponds to the x position 
-        // source is the row, which corresponds to the y position 
         var x_pos = params.matrix.x_scale(d.target) + 0.5*params.viz.border_width;
         var y_pos = params.matrix.y_scale(d.source) + 0.5*params.viz.border_width/params.viz.zoom_switch;
         return 'translate(' + x_pos + ','+ y_pos +')';
-      })
+      });
 
     // append title to group
     if (params.matrix.tile_title) {
@@ -2821,15 +2818,15 @@ function draw_grid_lines(row_nodes, col_nodes) {
     // resize tiles - either in rows or individually 
     if (d3.select('.row_tile').empty()){
 
-
-
       console.log('resizing individual tiles');
       // reset tiles 
       svg_group.selectAll('.tile')
-        .attr('width', params.matrix.x_scale.rangeBand())
-        .attr('height', params.matrix.y_scale.rangeBand())
+        .attr('width', params.matrix.rect_width)
+        .attr('height', params.matrix.rect_height)
         .attr('transform', function(d) {
-          return 'translate(' + params.matrix.x_scale(d.target) + ','+params.matrix.y_scale(d.source)+')';
+          var x_pos = params.matrix.x_scale(d.target) + 0.5*params.viz.border_width;
+          var y_pos = params.matrix.y_scale(d.source) + 0.5*params.viz.border_width/params.viz.zoom_switch;
+          return 'translate(' + x_pos + ','+ y_pos +')';
         });
 
       svg_group.selectAll('.tile_group')
@@ -2918,10 +2915,12 @@ function draw_grid_lines(row_nodes, col_nodes) {
       // resize tiles
       ///////////////////
       svg_group.selectAll('.tile')
-        .attr('width', params.matrix.x_scale.rangeBand())
-        .attr('height', params.matrix.y_scale.rangeBand())
+        .attr('width', params.matrix.rect_width)
+        .attr('height', params.matrix.rect_height)
         .attr('transform', function(d) {
-          return 'translate(' + params.matrix.x_scale(d.pos_x) + ',0)';
+          var x_pos = params.matrix.x_scale(d.pos_x) + 0.5*params.viz.border_width; 
+          var y_pos = 0.5*params.viz.border_width/params.viz.zoom_switch;
+          return 'translate(' + x_pos + ','+y_pos+')';
         });
 
       svg_group.selectAll('.tile_group')
@@ -4259,10 +4258,12 @@ function enter_exit_update(params, network_data, reorder, delays){
     .append('rect')
     .style('fill-opacity',0)
     .attr('class','tile new_tile')
-    .attr('width', params.matrix.x_scale.rangeBand())
-    .attr('height', params.matrix.y_scale.rangeBand())
+    .attr('width', params.matrix.rect_width)
+    .attr('height', params.matrix.rect_height)
     .attr('transform', function(d) {
-      return 'translate(' + params.matrix.x_scale(d.target) + ','+params.matrix.y_scale(d.source)+')';
+      var x_pos = params.matrix.x_scale(d.target) + 0.5*params.viz.border_width;
+      var y_pos = params.matrix.y_scale(d.source) + 0.5*params.viz.border_width/params.viz.zoom_switch;
+      return 'translate(' + x_pos + ','+ y_pos +')';
     })
     .style('fill', function(d) {
         return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
@@ -5163,6 +5164,16 @@ function Zoom(params){
     //   // }
     // }
 
+    //   // draw the new links using links_in_view 
+    //   if (params.matrix.rect_height*zoom_y > min_rect_height){
+    //     // draw_viz_links(params, );
+    //   } else if (d3.select('.ds_tile').empty()) {
+    //     downsample(params, min_rect_height);
+    //   }
+
+    // // if (d3.select('.ds_tile').empty()){
+    // //   downsample(params, min_rect_height);
+    // // }
 
     // apply transformation and reset translate vector
     // the zoom vector (zoom.scale) never gets reset

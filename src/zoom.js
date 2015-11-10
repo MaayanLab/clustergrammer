@@ -95,6 +95,16 @@ function Zoom(params){
     //   // }
     // }
 
+    //   // draw the new links using links_in_view 
+    //   if (params.matrix.rect_height*zoom_y > min_rect_height){
+    //     // draw_viz_links(params, );
+    //   } else if (d3.select('.ds_tile').empty()) {
+    //     downsample(params, min_rect_height);
+    //   }
+
+    // // if (d3.select('.ds_tile').empty()){
+    // //   downsample(params, min_rect_height);
+    // // }
 
     // apply transformation and reset translate vector
     // the zoom vector (zoom.scale) never gets reset
