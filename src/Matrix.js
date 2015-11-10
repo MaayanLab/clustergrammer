@@ -311,9 +311,9 @@ function Matrix(network_data, svg_elem, params) {
       .attr('transform', function(d) {
         // target is the column, which corresponds to the x position 
         // source is the row, which corresponds to the y position 
-        // console.log(params.matrix.x_scale(d.target));
-        // console.log(params.matrix.y_scale(d.source));
-        return 'translate(' + params.matrix.x_scale(d.target) + ','+params.matrix.y_scale(d.source)+')';
+        var x_pos = params.matrix.x_scale(d.target) + 0.5*params.viz.border_width;
+        var y_pos = params.matrix.y_scale(d.source) + 0.5*params.viz.border_width/params.viz.zoom_switch;
+        return 'translate(' + x_pos + ','+ y_pos +')';
       })
 
     // append title to group

@@ -25,7 +25,7 @@ function draw_grid_lines(row_nodes, col_nodes) {
     .attr('x1',0)
     .attr('x2',params.viz.clust.dim.width)
     .style('stroke-width', params.viz.border_width/params.viz.zoom_switch+'px')
-    .style('stroke','white')
+    .style('stroke','white');
 
   // append vertical line groups
   d3.select('#clust_group')

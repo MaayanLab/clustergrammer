@@ -370,8 +370,8 @@ function VizParams(config){
     }
 
     // precalc rect_width and height 
-    params.matrix.rect_width = params.matrix.x_scale.rangeBand() - params.viz.border_width;
-    params.matrix.rect_height = params.matrix.y_scale.rangeBand() - params.viz.border_width/params.viz.zoom_switch;
+    params.matrix.rect_width = params.matrix.x_scale.rangeBand() - 1*params.viz.border_width;
+    params.matrix.rect_height = params.matrix.y_scale.rangeBand() - 1*params.viz.border_width/params.viz.zoom_switch;
 
     ////////////////////////////
     // min and max number of expected nodes

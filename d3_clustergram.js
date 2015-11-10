@@ -754,9 +754,9 @@ function Matrix(network_data, svg_elem, params) {
       .attr('transform', function(d) {
         // target is the column, which corresponds to the x position 
         // source is the row, which corresponds to the y position 
-        // console.log(params.matrix.x_scale(d.target));
-        // console.log(params.matrix.y_scale(d.source));
-        return 'translate(' + params.matrix.x_scale(d.target) + ','+params.matrix.y_scale(d.source)+')';
+        var x_pos = params.matrix.x_scale(d.target) + 0.5*params.viz.border_width;
+        var y_pos = params.matrix.y_scale(d.source) + 0.5*params.viz.border_width/params.viz.zoom_switch;
+        return 'translate(' + x_pos + ','+ y_pos +')';
       })
 
     // append title to group
@@ -1432,8 +1432,8 @@ function VizParams(config){
     }
 
     // precalc rect_width and height 
-    params.matrix.rect_width = params.matrix.x_scale.rangeBand() - params.viz.border_width;
-    params.matrix.rect_height = params.matrix.y_scale.rangeBand() - params.viz.border_width/params.viz.zoom_switch;
+    params.matrix.rect_width = params.matrix.x_scale.rangeBand() - 1*params.viz.border_width;
+    params.matrix.rect_height = params.matrix.y_scale.rangeBand() - 1*params.viz.border_width/params.viz.zoom_switch;
 
     ////////////////////////////
     // min and max number of expected nodes
@@ -2583,7 +2583,7 @@ function draw_grid_lines(row_nodes, col_nodes) {
     .attr('x1',0)
     .attr('x2',params.viz.clust.dim.width)
     .style('stroke-width', params.viz.border_width/params.viz.zoom_switch+'px')
-    .style('stroke','white')
+    .style('stroke','white');
 
   // append vertical line groups
   d3.select('#clust_group')
@@ -2871,8 +2871,8 @@ function draw_grid_lines(row_nodes, col_nodes) {
         .append('rect')
         .style('fill-opacity',0)
         .attr('class','tile new_tile')
-        .attr('width', params.matrix.x_scale.rangeBand())
-        .attr('height', params.matrix.y_scale.rangeBand())
+        .attr('width', params.matrix.rect_width)
+        .attr('height', params.matrix.rect_height)
         .attr('transform', function(d) {
           return 'translate(' + params.matrix.x_scale(d.target) + ','+params.matrix.y_scale(d.source)+')';
         })
@@ -3331,34 +3331,34 @@ function draw_grid_lines(row_nodes, col_nodes) {
           return 'translate(' + params.matrix.x_scale(inst_index) + ',0)';
         });
 
-      // // reposition grid lines
-      // ////////////////////////////
-      // svg_group.selectAll('.horz_lines')
-      //   .attr('transform', function(d) {
-      //     var inst_index = _.indexOf(row_nodes_names, d.name);
-      //     return 'translate(0,' + params.matrix.y_scale(inst_index) + ') rotate(0)';
-      //   })
+      // reposition grid lines
+      ////////////////////////////
+      svg_group.selectAll('.horz_lines')
+        .attr('transform', function(d) {
+          var inst_index = _.indexOf(row_nodes_names, d.name);
+          return 'translate(0,' + params.matrix.y_scale(inst_index) + ') rotate(0)';
+        })
 
-      // svg_group.selectAll('.horz_lines')
-      //   .select('line')
-      //   .attr('x2',params.viz.clust.dim.width)
-      //   .style('stroke-width', params.viz.border_width/params.viz.zoom_switch+'px')
+      svg_group.selectAll('.horz_lines')
+        .select('line')
+        .attr('x2',params.viz.clust.dim.width)
+        .style('stroke-width', params.viz.border_width/params.viz.zoom_switch+'px')
 
-      // svg_group.selectAll('.vert_lines')
-      //   .attr('transform', function(d) {
-      //     var inst_index = _.indexOf(col_nodes_names, d.name);
-      //     return 'translate(' + params.matrix.x_scale(inst_index) + ') rotate(-90)';
-      //   });
+      svg_group.selectAll('.vert_lines')
+        .attr('transform', function(d) {
+          var inst_index = _.indexOf(col_nodes_names, d.name);
+          return 'translate(' + params.matrix.x_scale(inst_index) + ') rotate(-90)';
+        });
 
-      // svg_group.selectAll('.vert_lines')
-      //   .select('line')
-      //   .attr('x2', -params.viz.clust.dim.height)
-      //   .style('stroke-width', params.viz.border_width + 'px');
+      svg_group.selectAll('.vert_lines')
+        .select('line')
+        .attr('x2', -params.viz.clust.dim.height)
+        .style('stroke-width', params.viz.border_width + 'px');
 
-      var row_nodes = params.network_data.row_nodes;
-      var col_nodes = params.network_data.col_nodes;
+      // var row_nodes = params.network_data.row_nodes;
+      // var col_nodes = params.network_data.col_nodes;
 
-      draw_grid_lines(row_nodes, col_nodes);
+      // draw_grid_lines(row_nodes, col_nodes);
 
     // resize superlabels
     /////////////////////////////////////
