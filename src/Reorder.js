@@ -80,9 +80,13 @@ function Reorder(params){
       var t = viz.get_clust_group();
 
       // reorder matrix
-      t.selectAll('.tile')
+      t.selectAll('.row')
+        .attr('transform', function(d, i) {
+          return 'translate(0,' + params.matrix.y_scale(i) + ')';
+        })
+        .selectAll('.tile')
         .attr('transform', function(d) {
-          return 'translate(' + params.matrix.x_scale(d.target) + ' , '+ params.matrix.y_scale(d.source)+')';
+          return 'translate(' + params.matrix.x_scale(d.pos_x) + ' , 0)';
         });
 
       // Move Row Labels
@@ -176,11 +180,19 @@ function Reorder(params){
     var t = viz.get_clust_group()
       .transition().duration(2500);
 
-    // reorder matrix
-    t.selectAll('.tile')
-      .attr('transform', function(d) {
-        return 'translate(' + params.matrix.x_scale(d.target) + ','+params.matrix.y_scale(d.source)+')';
-      });
+    if (d3.select('.row_tile').empty()){
+      // reorder matrix
+      t.selectAll('.tile')
+        .attr('transform', function(d) {
+          return 'translate(' + params.matrix.x_scale(d.target) + ','+params.matrix.y_scale(d.source)+')';
+        });
+    } else {
+      // reorder matrix
+      t.selectAll('.tile')
+        .attr('transform', function(data) {
+          return 'translate(' + params.matrix.x_scale(data.pos_x) + ',0)';
+        });
+    }
 
     // Move Col Labels
     d3.select('#col_label_zoom_container').selectAll('.col_label_text')
@@ -267,7 +279,7 @@ function Reorder(params){
     });
 
 
-    // resort rows 
+    // resort cols
     ////////////////////////////
     params.matrix.y_scale.domain(tmp_sort);
 
@@ -276,11 +288,20 @@ function Reorder(params){
     var t = viz.get_clust_group()
       .transition().duration(2500);
 
-    // reorder matrix
-    t.selectAll('.tile')
-      .attr('transform', function(d) {
-        return 'translate('+params.matrix.x_scale(d.target)+',' + params.matrix.y_scale(d.source) + ')';
-      });
+    if (d3.select('.row_tile').empty()){
+
+      // reorder matrix
+      t.selectAll('.tile')
+        .attr('transform', function(d) {
+          return 'translate('+params.matrix.x_scale(d.target)+',' + params.matrix.y_scale(d.source) + ')';
+        });
+      } else {
+        // reorder matrix
+        t.selectAll('.row')
+          .attr('transform', function(data, index) {
+            return 'translate(0,' + params.matrix.y_scale(index) + ')';
+          });
+      }
 
     // reorder row_label_triangle groups
     d3.selectAll('.row_viz_group')

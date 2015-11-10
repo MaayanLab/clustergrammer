@@ -81,8 +81,20 @@ function Zoom(params){
     }
 
     // update visible links 
-    update_viz_links(params, trans_x, trans_y, zoom_x, zoom_y, false);
-    // downsample(params);
+    var min_rect_height = 3;
+
+    if (d3.select('.row_tile').empty()){
+      var links_in_view = update_viz_links(params, trans_x, trans_y, zoom_x, zoom_y, false);
+      draw_viz_links(params, links_in_view);
+
+      // // draw the new links using links_in_view 
+      // if (params.matrix.rect_height*zoom_y > min_rect_height){
+      //   draw_viz_links(params, links_in_view);
+      // } else if (d3.select('.ds_tile').empty()) {
+      //   downsample(params, min_rect_height);
+      // }
+    }
+
 
     // apply transformation and reset translate vector
     // the zoom vector (zoom.scale) never gets reset
@@ -122,9 +134,6 @@ function Zoom(params){
 
     var trans = false;
     constrain_font_size(params, trans);
-
-
-
 
 
     // resize label bars if necessary
@@ -226,7 +235,10 @@ function Zoom(params){
       // center_y
       var center_y = -(zoom_y - 1) * half_height;
 
-      update_viz_links(params, 0, 0, zoom_x, zoom_y, true);
+      if (d3.select('.row_tile').empty()){
+        var links_in_view = update_viz_links(params, 0, 0, zoom_x, zoom_y, true);
+        draw_viz_links(params, links_in_view);
+      }
 
       // transform clust group
       ////////////////////////////
@@ -367,10 +379,15 @@ function Zoom(params){
 
     // test-filter 
     params.cf.dim_x.filter([min_x,max_x]);
-    params.cf.dim_y.filter([min_y,max_y ]);
+    params.cf.dim_y.filter([min_y,max_y]);
 
     // redefine links 
     var inst_links = params.cf.dim_x.top(Infinity);
+
+    return inst_links;
+  }
+
+  function draw_viz_links(params, inst_links){
 
     // exit old elements 
     d3.selectAll('.tile')
@@ -588,6 +605,151 @@ function Zoom(params){
         two_translate_zoom(params, 0, 0, 1);
       });
   }
+
+function downsample(params, min_rect_height){
+  console.log('downsampling')
+
+  var ini_num_rows = params.network_data.row_nodes.length;
+
+  // calc the increase in rect size required 
+  // first get the current size of the rectangle 
+  var ini_rect_height = d3.select('.tile').attr('height');
+  var reduce_by = 2*min_rect_height/ini_rect_height;
+
+  var col_nodes = params.network_data.col_nodes;
+
+  var new_num_rows = ini_num_rows/reduce_by;
+
+  // get cluster height
+  var clust_height = params.viz.clust.dim.height;
+  // initialize scale
+  var y_scale = d3.scale.ordinal().rangeBands([0,clust_height]);
+  // define domain 
+  y_scale.domain(_.range(new_num_rows));
+
+  // get new rangeBand to calculate new y position 
+  var tile_height = y_scale.rangeBand();
+
+  var ini_tile_height = params.matrix.y_scale.rangeBand();
+
+  var increase_ds = 1; // 0.25*reduce_by;
+
+  var ds_factor = ini_tile_height/tile_height * increase_ds;
+
+  // get data from global_network_data
+  var links_in_view = params.network_data.links;
+
+  // use crossfilter to calculate new links 
+
+  // load data into crossfilter  
+  var cfl = crossfilter(links_in_view);
+
+  // downsample dimension - define the key that will be used to do the reduction
+  var dim_ds = cfl.dimension(function(d){
+    // merge together rows into a smaller number of rows 
+    var row_num = Math.floor(d.y/tile_height);
+    var col_name = col_nodes[d.target].name;
+    var inst_key = 'row_'+row_num + '_' + col_name;
+    return inst_key;
+  })
+
+  // define reduce functions 
+  function reduceAddAvg(p,v) {
+    ++p.count
+    if (v.value > 0){
+      p.sum_up += v.value;
+    } else {
+      p.sum_dn += v.value;
+    }
+    p.value_up = p.sum_up/p.count;
+    p.value_dn = p.sum_dn/p.count;
+
+    // make new row name 
+    p.name = 'row_'+ String(Math.floor(v.y/tile_height)) + '_' + col_nodes[v.target].name;
+
+    p.source = Math.floor(v.y/tile_height);
+    p.target = v.target;
+    return p;
+  }
+  function reduceRemoveAvg(p,v) {
+    --p.count
+    if (v.value > 0){
+      p.sum_up -= v.value;
+    } else {
+      p.sum_dn -= v.value;
+    }
+    p.value_up = p.sum_up/p.count;
+    p.value_dn = p.sum_dn/p.count;
+
+    p.name = 'no name';
+    p.target = 0;
+    p.source = 0;
+    return p;
+  }
+  function reduceInitAvg() {
+    return {count:0, sum_up:0, sum_dn:0, avg:0, name:'',source:0,target:0};
+  }
+
+  // gather tmp version of new links 
+  var tmp_red = dim_ds
+                .group()
+                .reduce(reduceAddAvg, reduceRemoveAvg, reduceInitAvg)
+                .top(Infinity);
+
+  // initialize array of new_links
+  var new_links = [];
+
+  // gather data from reduced sum 
+  new_links = _.pluck(tmp_red, 'value');
+
+  // add new tiles 
+  /////////////////////////
+
+  // exit old elements 
+  d3.selectAll('.tile')
+    .data(new_links, function(d){
+      return d.name;
+    })
+    .exit()
+    .remove();
+
+  // d3.selectAll('.horz_lines').remove();
+
+  // define compound color scale 
+  var color_scale = d3.scale.linear().domain([-1,1])
+    .range([params.matrix.tile_colors[1], params.matrix.tile_colors[0]]);
+
+  // enter new elements 
+  //////////////////////////
+  d3.select('#clust_group')
+    .selectAll('.tile')
+    .data(new_links, function(d){return d.name;})
+    .enter()
+    .append('rect')
+    .style('fill-opacity',0)
+    .attr('class','tile ds_tile')
+    .attr('width', params.matrix.rect_width)
+    .attr('height', tile_height)
+    .attr('transform', function(d) {
+      return 'translate(' + params.matrix.x_scale(d.target) + ','+y_scale(d.source)+')';
+    })
+    .style('fill', function(d) {
+      // return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
+      var abs_val_up = Math.abs(d.value_up);
+      var abs_val_dn = Math.abs(d.value_dn);
+      var inst_value = (abs_val_up - abs_val_dn) / (abs_val_up + abs_val_dn);
+
+      return color_scale(inst_value);
+    })
+    .style('fill-opacity', function(d) {
+        // calculate output opacity using the opacity scale
+        var val_updn = Math.abs(d.sum_up)+Math.abs(d.sum_dn);
+        var output_opacity = params.matrix.opacity_scale(val_updn*ds_factor);
+        return output_opacity;
+    });
+
+}
+
 
   return {
     zoomed : zoomed,

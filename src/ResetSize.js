@@ -212,94 +212,145 @@
       .attr('width', params.viz.clust.dim.width)
       .attr('height', params.viz.clust.dim.height);
 
-    svg_group.selectAll('.tile')
-      .attr('width', params.matrix.rect_width)
-      .attr('height', params.matrix.rect_height)
-      .attr('transform', function(d) {
-        return 'translate(' + params.matrix.x_scale(d.target) + ','+params.matrix.y_scale(d.source)+')';
-      });
+    // resize tiles - either in rows or individually 
+    if (d3.select('.row_tile').empty()){
 
-    svg_group.selectAll('.tile_group')
-      .attr('width', params.matrix.rect_width)
-      .attr('height', params.matrix.rect_height);
+      console.log('resizing individual tiles');
+      // reset tiles 
+      svg_group.selectAll('.tile')
+        .attr('width', params.matrix.rect_width)
+        .attr('height', params.matrix.rect_height)
+        .attr('transform', function(d) {
+          return 'translate(' + params.matrix.x_scale(d.target) + ','+params.matrix.y_scale(d.source)+')';
+        });
 
-    svg_group.selectAll('.highlighting_rect')
-      .attr('width', params.matrix.rect_width * 0.80)
-      .attr('height', params.matrix.rect_height * 0.80);
+      svg_group.selectAll('.tile_group')
+        .attr('width', params.matrix.rect_width)
+        .attr('height', params.matrix.rect_height);
 
-    svg_group.selectAll('.tile_split_up')
-      .attr('d', function() {
-        var start_x = 0;
-        var final_x = params.matrix.rect_width;
-        var start_y = 0;
-        var final_y = params.matrix.rect_height - params.matrix.rect_height/60;
-        var output_string = 'M' + start_x + ',' + start_y + ', L' +
-          start_x + ', ' + final_y + ', L' + final_x + ',0 Z';
-        return output_string;
-      })
+      svg_group.selectAll('.highlighting_rect')
+        .attr('width', params.matrix.rect_width * 0.80)
+        .attr('height', params.matrix.rect_height * 0.80);
 
-    svg_group.selectAll('.tile_split_dn')
-      .attr('d', function() {
-        var start_x = 0;
-        var final_x = params.matrix.rect_width;
-        var start_y = params.matrix.rect_height - params.matrix.rect_height/60;
-        var final_y = params.matrix.rect_height - params.matrix.rect_height;
-        var output_string = 'M' + start_x + ', ' + start_y + ' ,   L' +
-          final_x + ', ' + final_y + ',  L' + final_x + ',0 Z';
-        return output_string;
-      })
+      svg_group.selectAll('.tile_split_up')
+        .attr('d', function() {
+          var start_x = 0;
+          var final_x = params.matrix.rect_width;
+          var start_y = 0;
+          var final_y = params.matrix.rect_height - params.matrix.rect_height/60;
+          var output_string = 'M' + start_x + ',' + start_y + ', L' +
+            start_x + ', ' + final_y + ', L' + final_x + ',0 Z';
+          return output_string;
+        })
 
-    // enter new elements 
-    //////////////////////////
-    d3.select('#clust_group')
-      .selectAll('.tile')
-      .data(inst_links, function(d){return d.name;})
-      .enter()
-      .append('rect')
-      .style('fill-opacity',0)
-      .attr('class','tile new_tile')
-      .attr('width', params.matrix.rect_width)
-      .attr('height', params.matrix.rect_height)
-      .attr('transform', function(d) {
-        return 'translate(' + params.matrix.x_scale(d.target) + ','+params.matrix.y_scale(d.source)+')';
-      })
-      .style('fill', function(d) {
-          return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
-      })
-      .style('fill-opacity', function(d) {
-          // calculate output opacity using the opacity scale
-          var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
-          return output_opacity;
-      });
+      svg_group.selectAll('.tile_split_dn')
+        .attr('d', function() {
+          var start_x = 0;
+          var final_x = params.matrix.rect_width;
+          var start_y = params.matrix.rect_height - params.matrix.rect_height/60;
+          var final_y = params.matrix.rect_height - params.matrix.rect_height;
+          var output_string = 'M' + start_x + ', ' + start_y + ' ,   L' +
+            final_x + ', ' + final_y + ',  L' + final_x + ',0 Z';
+          return output_string;
+        })
 
-    d3.selectAll('.tile')
-      .on('mouseover',null)
-      .on('mouseout',null);
+      // enter new elements 
+      //////////////////////////
+      d3.select('#clust_group')
+        .selectAll('.tile')
+        .data(inst_links, function(d){return d.name;})
+        .enter()
+        .append('rect')
+        .style('fill-opacity',0)
+        .attr('class','tile new_tile')
+        .attr('width', params.matrix.rect_width)
+        .attr('height', params.matrix.rect_height)
+        .attr('transform', function(d) {
+          return 'translate(' + params.matrix.x_scale(d.target) + ','+params.matrix.y_scale(d.source)+')';
+        })
+        .style('fill', function(d) {
+            return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
+        })
+        .style('fill-opacity', function(d) {
+            // calculate output opacity using the opacity scale
+            var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
+            return output_opacity;
+        });
 
-    // redefine mouseover events for tiles 
-    d3.select('#clust_group')
-      .selectAll('.tile')
-      .on('mouseover', function(p) {
-        var row_name = p.name.split('_')[0];
-        var col_name = p.name.split('_')[1];
-        // highlight row - set text to active if
-        d3.selectAll('.row_label_text text')
-          .classed('active', function(d) {
-            return row_name === d.name;
-          });
+      d3.selectAll('.tile')
+        .on('mouseover',null)
+        .on('mouseout',null);
 
-        d3.selectAll('.col_label_text text')
-          .classed('active', function(d) {
-            return col_name === d.name;
-          });
-      })
-      .on('mouseout', function mouseout() {
-        d3.selectAll('text').classed('active', false);
-      })
-      .attr('title', function(d) {
-        return d.value;
-      });
+      // redefine mouseover events for tiles 
+      d3.select('#clust_group')
+        .selectAll('.tile')
+        .on('mouseover', function(p) {
+          var row_name = p.name.split('_')[0];
+          var col_name = p.name.split('_')[1];
+          // highlight row - set text to active if
+          d3.selectAll('.row_label_text text')
+            .classed('active', function(d) {
+              return row_name === d.name;
+            });
 
+          d3.selectAll('.col_label_text text')
+            .classed('active', function(d) {
+              return col_name === d.name;
+            });
+        })
+        .on('mouseout', function mouseout() {
+          d3.selectAll('text').classed('active', false);
+        })
+        .attr('title', function(d) {
+          return d.value;
+        });
+    } else {
+
+      console.log('resizing row tiles');
+      // resize tiles
+      ///////////////////
+      svg_group.selectAll('.tile')
+        .attr('width', params.matrix.x_scale.rangeBand())
+        .attr('height', params.matrix.y_scale.rangeBand())
+        .attr('transform', function(d) {
+          return 'translate(' + params.matrix.x_scale(d.pos_x) + ',0)';
+        });
+
+      svg_group.selectAll('.tile_group')
+        .attr('width', params.matrix.x_scale.rangeBand())
+        .attr('height', params.matrix.y_scale.rangeBand());
+
+      svg_group.selectAll('.row')
+        .attr('transform', function(d, index) {
+          return 'translate(0,' + params.matrix.y_scale(index) + ')';
+        });
+
+      svg_group.selectAll('.highlighting_rect')
+        .attr('width', params.matrix.x_scale.rangeBand() * 0.80)
+        .attr('height', params.matrix.y_scale.rangeBand() * 0.80);
+
+      svg_group.selectAll('.tile_split_up')
+        .attr('d', function() {
+          var start_x = 0;
+          var final_x = params.matrix.x_scale.rangeBand();
+          var start_y = 0;
+          var final_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand()/60;
+          var output_string = 'M' + start_x + ',' + start_y + ', L' +
+            start_x + ', ' + final_y + ', L' + final_x + ',0 Z';
+          return output_string;
+        })
+
+      svg_group.selectAll('.tile_split_dn')
+        .attr('d', function() {
+          var start_x = 0;
+          var final_x = params.matrix.x_scale.rangeBand();
+          var start_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand()/60;
+          var final_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand()/60;
+          var output_string = 'M' + start_x + ', ' + start_y + ' ,   L' +
+            final_x + ', ' + final_y + ',  L' + final_x + ',0 Z';
+          return output_string;
+        })
+    }
 
     // reposition tile highlight
     ////////////////////////////////
