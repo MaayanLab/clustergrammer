@@ -590,7 +590,9 @@ function VizParams(config){
     var matrix = []; 
 
     _.each(network_data.row_nodes, function(tmp, row_index) {
-      matrix[row_index] = d3.range(network_data.col_nodes.length).map(
+      matrix[row_index] = {};
+      matrix[row_index].name = network_data.row_nodes[row_index].name;
+      matrix[row_index].row_data = d3.range(network_data.col_nodes.length).map(
         function(col_index) {
           return {
             pos_x: col_index,
@@ -602,17 +604,17 @@ function VizParams(config){
     });
 
     _.each(network_data.links, function(link) {
-      matrix[link.source][link.target].value = link.value;
       // transfer additional link information is necessary
+      matrix[link.source].row_data[link.target].value = link.value;
       if (link.value_up && link.value_dn) {
-        matrix[link.source][link.target].value_up = link.value_up;
-        matrix[link.source][link.target].value_dn = link.value_dn;
+        matrix[link.source].row_data[link.target].value_up = link.value_up;
+        matrix[link.source].row_data[link.target].value_dn = link.value_dn;
       }
       if (link.highlight) {
-        matrix[link.source][link.target].highlight = link.highlight;
+        matrix[link.source].row_data[link.target].highlight = link.highlight;
       }
       if (link.info) {
-        matrix[link.source][link.target].info = link.info;
+        matrix[link.source].row_data[link.target].info = link.info;
       }
     });
 

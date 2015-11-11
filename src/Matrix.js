@@ -33,38 +33,62 @@ function Matrix(network_data, svg_elem, params) {
     });
 
 
+  console.log('making row tiles')
+  
+  // make row matrix - add key names to rows in matrix 
+  var row_groups = clust_group.selectAll('.row')
+    .data(params.matrix.matrix, function(d){
+      return d.name;
+    })
+    .enter()
+    .append('g')
+    .attr('class', 'row')
+    .attr('transform', function(d, index) {
+      return 'translate(0,' + params.matrix.y_scale(index) + ')';
+    });
+
   // draw rows of clustergram
   if (params.matrix.tile_type === 'simple') {
+    row_groups = row_groups.each(draw_simple_rows);
+  } else {
+    row_groups = row_groups.each(draw_group_rows);
+  };
 
-    if (params.network_data.links.length < params.matrix.def_large_matrix){
-      console.log('making simple tiles');
-      draw_simple_tiles(clust_group, tile_data);
-    } else {
-      console.log('making row tiles')
-      // make row matrix 
-      var row_groups = clust_group.selectAll('.row')
-        .data(params.matrix.matrix)
-        .enter()
-        .append('g')
-        .attr('class', 'row')
-        .attr('transform', function(d, index) {
-          return 'translate(0,' + params.matrix.y_scale(index) + ')';
-        });
 
-      // draw rows of clustergram
-      if (params.matrix.tile_type === 'simple') {
-        row_groups = row_groups.each(draw_simple_rows);
-      } else {
-        row_groups = row_groups.each(draw_group_rows);
-      }
+  // // draw rows or individual tiles 
+  // if (params.matrix.tile_type === 'simple') {
 
-    }
+  //   if (params.network_data.links.length < params.matrix.def_large_matrix){
+  //     console.log('making simple tiles');
+  //     draw_simple_tiles(clust_group, tile_data);
+  //   } else {
 
-  } 
-  else {
-    console.log('making group tiles');
-    draw_group_tiles(clust_group, tile_data);    
-  }
+  //     console.log('making row tiles')
+
+  //     // make row matrix 
+  //     var row_groups = clust_group.selectAll('.row')
+  //       .data(params.matrix.matrix, function(d){return d.name;})
+  //       .enter()
+  //       .append('g')
+  //       .attr('class', 'row')
+  //       .attr('transform', function(d, index) {
+  //         return 'translate(0,' + params.matrix.y_scale(index) + ')';
+  //       });
+
+  //     // draw rows of clustergram
+  //     if (params.matrix.tile_type === 'simple') {
+  //       row_groups = row_groups.each(draw_simple_rows);
+  //     } else {
+  //       row_groups = row_groups.each(draw_group_rows);
+  //     }
+
+  //   }
+
+  // } 
+  // else {
+  //   console.log('making group tiles');
+  //   draw_group_tiles(clust_group, tile_data);    
+  // }
 
   // add callback function to tile group - if one is supplied by the user
   if (typeof params.click_tile === 'function') {
@@ -199,7 +223,9 @@ function Matrix(network_data, svg_elem, params) {
   draw_grid_lines(row_nodes, col_nodes);
 
   // make each row in the clustergram
-  function draw_simple_rows(inp_row_data) {
+  function draw_simple_rows(ini_inp_row_data) {
+
+    var inp_row_data = ini_inp_row_data.row_data;
 
     // remove zero values to make visualization faster
     var row_data = _.filter(inp_row_data, function(num) {

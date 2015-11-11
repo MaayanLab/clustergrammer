@@ -36,10 +36,13 @@ function Reorder(params){
       var t = viz.get_clust_group()
         .transition().duration(2500);
 
-      // reorder matrix
-      t.selectAll('.tile')
+      t.selectAll('.row')
+        .attr('transform', function(d, i) {
+          return 'translate(0,' + params.matrix.y_scale(i) + ')';
+          })
+        .selectAll('.tile')
         .attr('transform', function(d) {
-          return 'translate(' + params.matrix.x_scale(d.target) + ' , '+ params.matrix.y_scale(d.source)+')';
+          return 'translate(' + params.matrix.x_scale(d.pos_x) + ' , 0)';
         });
 
       // Move Row Labels
@@ -162,7 +165,7 @@ function Reorder(params){
     // gather the values of the input genes
     tmp_arr = [];
     _.each(col_nodes, function(node, index) {
-      tmp_arr.push( mat[inst_row][index].value);
+      tmp_arr.push( mat[inst_row].row_data[index].value);
     });
 
     // sort the rows
@@ -270,7 +273,7 @@ function Reorder(params){
     // gather the values of the input genes
     tmp_arr = [];
     _.each(row_nodes, function(node, index) {
-      tmp_arr.push( mat[index][inst_col].value);
+      tmp_arr.push( mat[index].row_data[inst_col].value);
     });
 
     // sort the cols
