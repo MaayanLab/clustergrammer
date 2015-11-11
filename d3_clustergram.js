@@ -676,9 +676,7 @@ function Matrix(network_data, svg_elem, params) {
     // generate tiles in the current row
     var tile = d3.select(this)
       .selectAll('rect')
-      .data(row_data, function(d){
-        return d.col_name;
-      })
+      .data(row_data, function(d){return d.col_name;})
       .enter()
       .append('rect')
       .attr('class', 'tile row_tile')
@@ -4222,7 +4220,10 @@ function enter_exit_update(params, network_data, reorder, delays){
   //   .style('opacity',0)
   //   .remove();
 
-  // // remove rows 
+  // exit
+  ////////////
+
+  // remove entire rows 
   d3.select('#clust_group')
     .selectAll('.row')
     .data(params.matrix.matrix, function(d){return d.name;})
@@ -4230,8 +4231,6 @@ function enter_exit_update(params, network_data, reorder, delays){
     .transition().duration(duration)
     .style('opacity',0)
     .remove();
-
-  // remove tiles in rows 
 
   // remove row labels 
   d3.selectAll('.row_label_text')
@@ -4294,57 +4293,87 @@ function enter_exit_update(params, network_data, reorder, delays){
   // enter new elements 
   //////////////////////////
 
+  // d3.select('#clust_group')
+  //   .selectAll('.tile')
+  //   .data(links, function(d){return d.name;})
+  //   .enter()
+  //   .append('rect')
+  //   .style('fill-opacity',0)
+  //   .attr('class','tile new_tile')
+  //   .attr('width', params.matrix.rect_width)
+  //   .attr('height', params.matrix.rect_height)
+  //   .attr('transform', function(d) {
+  //     var x_pos = params.matrix.x_scale(d.target) + 0.5*params.viz.border_width;
+  //     var y_pos = params.matrix.y_scale(d.source) + 0.5*params.viz.border_width/params.viz.zoom_switch;
+  //     return 'translate(' + x_pos + ','+ y_pos +')';
+  //   })
+  //   .style('fill', function(d) {
+  //       return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
+  //   })
+  //   .transition().delay(delays.enter).duration(duration)
+  //   .style('fill-opacity', function(d) {
+  //       // calculate output opacity using the opacity scale
+  //       var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
+  //       return output_opacity;
+  //   });
+
+
   d3.select('#clust_group')
-    .selectAll('.tile')
-    .data(links, function(d){return d.name;})
-    .enter()
-    .append('rect')
-    .style('fill-opacity',0)
-    .attr('class','tile new_tile')
-    .attr('width', params.matrix.rect_width)
-    .attr('height', params.matrix.rect_height)
-    .attr('transform', function(d) {
-      var x_pos = params.matrix.x_scale(d.target) + 0.5*params.viz.border_width;
-      var y_pos = params.matrix.y_scale(d.source) + 0.5*params.viz.border_width/params.viz.zoom_switch;
-      return 'translate(' + x_pos + ','+ y_pos +')';
-    })
-    .style('fill', function(d) {
-        return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
-    })
-    .transition().delay(delays.enter).duration(duration)
-    .style('fill-opacity', function(d) {
-        // calculate output opacity using the opacity scale
-        var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
-        return output_opacity;
+    .selectAll('.row')
+    // .data(params.matrix.matrix, function(d){return d.name;})
+    // .enter()
+    // .
+    .each(exit_simple_row) 
+
+  // remove tiles in rows 
+  function exit_simple_row(ini_inp_row_data){
+
+    var inp_row_data = ini_inp_row_data.row_data;
+
+    // rmove zero values from 
+    var row_data = _.filter(inp_row_data, function(num){
+      return num.value !=0;
     });
 
-  d3.selectAll('.tile')
-    .on('mouseover',null)
-    .on('mouseout',null);
+    console.log(ini_inp_row_data.name)
 
-  // redefine mouseover events for tiles 
-  d3.select('#clust_group')
-    .selectAll('.tile')
-    .on('mouseover', function(p) {
-      var row_name = p.name.split('_')[0];
-      var col_name = p.name.split('_')[1];
-      // highlight row - set text to active if
-      d3.selectAll('.row_label_text text')
-        .classed('active', function(d) {
-          return row_name === d.name;
-        });
+    // remove files 
+    d3.select(this)
+      .selectAll('rect')
+      .data(row_data, function(d){return d.col_name;})
+      .exit()
+      .remove();
+  }
 
-      d3.selectAll('.col_label_text text')
-        .classed('active', function(d) {
-          return col_name === d.name;
-        });
-    })
-    .on('mouseout', function mouseout() {
-      d3.selectAll('text').classed('active', false);
-    })
-    .attr('title', function(d) {
-      return d.value;
-    });
+
+  // d3.selectAll('.tile')
+  //   .on('mouseover',null)
+  //   .on('mouseout',null);
+
+  // // redefine mouseover events for tiles 
+  // d3.select('#clust_group')
+  //   .selectAll('.tile')
+  //   .on('mouseover', function(p) {
+  //     var row_name = p.name.split('_')[0];
+  //     var col_name = p.name.split('_')[1];
+  //     // highlight row - set text to active if
+  //     d3.selectAll('.row_label_text text')
+  //       .classed('active', function(d) {
+  //         return row_name === d.name;
+  //       });
+
+  //     d3.selectAll('.col_label_text text')
+  //       .classed('active', function(d) {
+  //         return col_name === d.name;
+  //       });
+  //   })
+  //   .on('mouseout', function mouseout() {
+  //     d3.selectAll('text').classed('active', false);
+  //   })
+  //   .attr('title', function(d) {
+  //     return d.value;
+  //   });
+
 
 
   var labels = Labels(params);

@@ -233,9 +233,7 @@ function Matrix(network_data, svg_elem, params) {
     // generate tiles in the current row
     var tile = d3.select(this)
       .selectAll('rect')
-      .data(row_data, function(d){
-        return d.col_name;
-      })
+      .data(row_data, function(d){return d.col_name;})
       .enter()
       .append('rect')
       .attr('class', 'tile row_tile')
