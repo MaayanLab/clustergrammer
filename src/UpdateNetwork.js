@@ -5,7 +5,7 @@ function update_network(args){
   var config = Config(args);
   var params = VizParams(config);
 
-  var delays = check_need_exit_enter(old_params, params);
+  var delays = define_enter_exit_delays(old_params, params);
 
   var network_data = params.network_data;
 
@@ -40,7 +40,7 @@ function update_network(args){
 
 }
 
-function check_need_exit_enter(old_params, params){
+function define_enter_exit_delays(old_params, params){
 
   // exit, update, enter 
 
@@ -104,13 +104,24 @@ function enter_exit_update(params, network_data, reorder, delays){
     return d.name ;
   }
 
-  // remove tiles 
-  d3.selectAll('.tile')
-    .data(links, function(d){ return d.name;})
+  // // remove tiles 
+  // d3.selectAll('.tile')
+  //   .data(links, function(d){ return d.name;})
+  //   .exit()
+  //   .transition().duration(duration)
+  //   .style('opacity',0)
+  //   .remove();
+
+  // // remove rows 
+  d3.select('#clust_group')
+    .selectAll('.row')
+    .data(params.matrix.matrix, function(d){return d.name;})
     .exit()
     .transition().duration(duration)
     .style('opacity',0)
     .remove();
+
+  // remove tiles in rows 
 
   // remove row labels 
   d3.selectAll('.row_label_text')
@@ -298,7 +309,6 @@ function enter_exit_update(params, network_data, reorder, delays){
     // if (params.viz.do_zoom) {
     //   d3.select('#main_svg').call(params.zoom);
     // }
-
 
 }
 

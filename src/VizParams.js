@@ -334,6 +334,8 @@ function VizParams(config){
     // add names and instantaneous positions to links 
     _.each(params.network_data.links, function(d){
       d.name = row_nodes[d.source].name + '_' + col_nodes[d.target].name;
+      d.row_name = row_nodes[d.source].name;
+      d.col_name = col_nodes[d.target].name;
       d.x = params.matrix.x_scale(d.target);
       d.y = params.matrix.y_scale(d.source);
     });
@@ -606,6 +608,8 @@ function VizParams(config){
     _.each(network_data.links, function(link) {
       // transfer additional link information is necessary
       matrix[link.source].row_data[link.target].value = link.value;
+      matrix[link.source].row_data[link.target].row_name = link.row_name;
+      matrix[link.source].row_data[link.target].col_name = link.col_name;
       if (link.value_up && link.value_dn) {
         matrix[link.source].row_data[link.target].value_up = link.value_up;
         matrix[link.source].row_data[link.target].value_dn = link.value_dn;

@@ -37,9 +37,7 @@ function Matrix(network_data, svg_elem, params) {
   
   // make row matrix - add key names to rows in matrix 
   var row_groups = clust_group.selectAll('.row')
-    .data(params.matrix.matrix, function(d){
-      return d.name;
-    })
+    .data(params.matrix.matrix, function(d){return d.name;})
     .enter()
     .append('g')
     .attr('class', 'row')
@@ -235,7 +233,9 @@ function Matrix(network_data, svg_elem, params) {
     // generate tiles in the current row
     var tile = d3.select(this)
       .selectAll('rect')
-      .data(row_data)
+      .data(row_data, function(d){
+        return d.col_name;
+      })
       .enter()
       .append('rect')
       .attr('class', 'tile row_tile')

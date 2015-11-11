@@ -480,9 +480,7 @@ function Matrix(network_data, svg_elem, params) {
   
   // make row matrix - add key names to rows in matrix 
   var row_groups = clust_group.selectAll('.row')
-    .data(params.matrix.matrix, function(d){
-      return d.name;
-    })
+    .data(params.matrix.matrix, function(d){return d.name;})
     .enter()
     .append('g')
     .attr('class', 'row')
@@ -678,7 +676,9 @@ function Matrix(network_data, svg_elem, params) {
     // generate tiles in the current row
     var tile = d3.select(this)
       .selectAll('rect')
-      .data(row_data)
+      .data(row_data, function(d){
+        return d.col_name;
+      })
       .enter()
       .append('rect')
       .attr('class', 'tile row_tile')
@@ -1419,6 +1419,8 @@ function VizParams(config){
     // add names and instantaneous positions to links 
     _.each(params.network_data.links, function(d){
       d.name = row_nodes[d.source].name + '_' + col_nodes[d.target].name;
+      d.row_name = row_nodes[d.source].name;
+      d.col_name = col_nodes[d.target].name;
       d.x = params.matrix.x_scale(d.target);
       d.y = params.matrix.y_scale(d.source);
     });
@@ -1691,6 +1693,8 @@ function VizParams(config){
     _.each(network_data.links, function(link) {
       // transfer additional link information is necessary
       matrix[link.source].row_data[link.target].value = link.value;
+      matrix[link.source].row_data[link.target].row_name = link.row_name;
+      matrix[link.source].row_data[link.target].col_name = link.col_name;
       if (link.value_up && link.value_dn) {
         matrix[link.source].row_data[link.target].value_up = link.value_up;
         matrix[link.source].row_data[link.target].value_dn = link.value_dn;
@@ -4111,7 +4115,7 @@ function update_network(args){
   var config = Config(args);
   var params = VizParams(config);
 
-  var delays = check_need_exit_enter(old_params, params);
+  var delays = define_enter_exit_delays(old_params, params);
 
   var network_data = params.network_data;
 
@@ -4146,7 +4150,7 @@ function update_network(args){
 
 }
 
-function check_need_exit_enter(old_params, params){
+function define_enter_exit_delays(old_params, params){
 
   // exit, update, enter 
 
@@ -4210,13 +4214,24 @@ function enter_exit_update(params, network_data, reorder, delays){
     return d.name ;
   }
 
-  // remove tiles 
-  d3.selectAll('.tile')
-    .data(links, function(d){ return d.name;})
+  // // remove tiles 
+  // d3.selectAll('.tile')
+  //   .data(links, function(d){ return d.name;})
+  //   .exit()
+  //   .transition().duration(duration)
+  //   .style('opacity',0)
+  //   .remove();
+
+  // // remove rows 
+  d3.select('#clust_group')
+    .selectAll('.row')
+    .data(params.matrix.matrix, function(d){return d.name;})
     .exit()
     .transition().duration(duration)
     .style('opacity',0)
     .remove();
+
+  // remove tiles in rows 
 
   // remove row labels 
   d3.selectAll('.row_label_text')
@@ -4404,7 +4419,6 @@ function enter_exit_update(params, network_data, reorder, delays){
     // if (params.viz.do_zoom) {
     //   d3.select('#main_svg').call(params.zoom);
     // }
-
 
 }
 
