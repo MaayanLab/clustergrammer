@@ -139,14 +139,14 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
     .attr('width', params.viz.clust.dim.width)
     .attr('height', params.viz.clust.dim.height);
 
-  svg_group.selectAll('.tile')
-    .data(links, function(d){return d.name;})
-    .transition().delay(delays.update).duration(duration)
-    .attr('width', params.matrix.x_scale.rangeBand())
-    .attr('height', params.matrix.y_scale.rangeBand())
-    .attr('transform', function(d) {
-      return 'translate(' + params.matrix.x_scale(d.target) + ','+params.matrix.y_scale(d.source)+')';
-    });
+  // svg_group.selectAll('.tile')
+  //   .data(links, function(d){return d.name;})
+  //   .transition().delay(delays.update).duration(duration)
+  //   .attr('width', params.matrix.x_scale.rangeBand())
+  //   .attr('height', params.matrix.y_scale.rangeBand())
+  //   .attr('transform', function(d) {
+  //     return 'translate(' + params.matrix.x_scale(d.target) + ','+params.matrix.y_scale(d.source)+')';
+  //   });
 
   svg_group.selectAll('.tile_group')
     .transition().delay(delays.update).duration(duration)

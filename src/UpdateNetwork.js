@@ -84,6 +84,10 @@ function define_enter_exit_delays(old_params, params){
 
 function enter_exit_update(params, network_data, reorder, delays){
 
+  // get row and col names 
+  var row_nodes_names = params.network_data.row_nodes_names;
+  var col_nodes_names = params.network_data.col_nodes_names;
+
   var duration = 1000;
 
   // make global so that names can be accessed
@@ -104,14 +108,6 @@ function enter_exit_update(params, network_data, reorder, delays){
     return d.name ;
   }
 
-  // // remove tiles 
-  // d3.selectAll('.tile')
-  //   .data(links, function(d){ return d.name;})
-  //   .exit()
-  //   .transition().duration(duration)
-  //   .style('opacity',0)
-  //   .remove();
-
   // exit
   ////////////
 
@@ -123,6 +119,63 @@ function enter_exit_update(params, network_data, reorder, delays){
     .transition().duration(duration)
     .style('opacity',0)
     .remove();
+
+  // remove tiles 
+  d3.select('#clust_group')
+    .selectAll('.row')
+    .each(exit_simple_row);
+
+  // function to remove tiles 
+  function exit_simple_row(ini_inp_row_data){
+
+    var inp_row_data = ini_inp_row_data.row_data;
+
+    // rmove zero values from 
+    var row_data = _.filter(inp_row_data, function(num){
+      return num.value !=0;
+    });
+
+    // remove files 
+    var cur_row = d3.select(this)
+      .selectAll('rect')
+      .data(row_data, function(d){return d.col_name;});
+
+    // remove exiting tiles 
+    cur_row
+      .exit()
+      .transition().duration(duration)
+      .remove();
+
+    cur_row
+      .transition().delay(delays.update).duration(duration)
+      .attr('width', params.matrix.rect_width)
+      .attr('height', params.matrix.rect_height)
+      .attr('transform', function(d) {
+        // var inst_row_index = _.indexOf(row_nodes_names, d.row_name);
+        if (_.contains(col_nodes_names, d.col_name)){
+          console.log(duration)
+          var inst_col_index = _.indexOf(col_nodes_names, d.col_name);
+          var x_pos = params.matrix.x_scale(inst_col_index) + 0.5*params.viz.border_width; 
+          var y_pos = 0;//0.5*params.viz.border_width/params.viz.zoom_switch;
+          return 'translate(' + x_pos + ','+y_pos+')';
+        }
+      });
+
+  }
+
+  // update tile positions 
+  d3.select('#clust_group')
+    .selectAll('.row')
+    .transition().delay(delays.update).duration(duration)
+    .attr('transform', function(d){
+      var y_pos = 0;
+      if ( _.contains(row_nodes_names, d.name) ){
+        var inst_row_index = _.indexOf(row_nodes_names, d.name);
+        y_pos = params.matrix.x_scale(inst_row_index);
+      }
+      return 'translate(0,'+ y_pos +')';
+    });
+
 
   // remove row labels 
   d3.selectAll('.row_label_text')
@@ -210,33 +263,8 @@ function enter_exit_update(params, network_data, reorder, delays){
   //   });
 
 
-  d3.select('#clust_group')
-    .selectAll('.row')
-    // .data(params.matrix.matrix, function(d){return d.name;})
-    // .enter()
-    // .
-    .each(exit_simple_row) 
-
-  // remove tiles in rows 
-  function exit_simple_row(ini_inp_row_data){
-
-    var inp_row_data = ini_inp_row_data.row_data;
-
-    // rmove zero values from 
-    var row_data = _.filter(inp_row_data, function(num){
-      return num.value !=0;
-    });
-
-    console.log(ini_inp_row_data.name)
-
-    // remove files 
-    d3.select(this)
-      .selectAll('rect')
-      .data(row_data, function(d){return d.col_name;})
-      .exit()
-      .remove();
-  }
-
+  // d3.select('#clust_group')
+    
 
   // d3.selectAll('.tile')
   //   .on('mouseover',null)
