@@ -229,6 +229,22 @@ function VizParams(config){
     ////////////////////////
     // ensure that rects are never taller than they are wide
     // force square tiles
+
+    console.log(ini_clust_width)
+    console.log(ini_clust_height)
+
+    // calculate clustergram width
+    // reduce clustergram width if triangles are taller than the normal width
+    // of the columns
+    var tmp_x_scale = d3.scale.ordinal().rangeBands([0, ini_clust_width]);
+    tmp_x_scale.domain(_.range(row_nodes.length));
+    var triangle_height = tmp_x_scale.rangeBand()/2 ;
+    if (triangle_height > params.norm_label.width.col){
+      ini_clust_width = ini_clust_width * ( params.norm_label.width.col/triangle_height );
+    }
+    params.viz.clust.dim.width = ini_clust_width ;
+
+
     if (ini_clust_width / params.viz.num_col_nodes < ini_clust_height / params.viz.num_row_nodes) {
 
       // scale the height
@@ -255,10 +271,15 @@ function VizParams(config){
       params.viz.force_square = 0;
     }
 
-    // manual force square
-    if (config.force_square===1){
-      params.viz.force_square = 1;
-    }
+    // // manual force square
+    // if (config.force_square===1){
+    //   params.viz.force_square = 1;
+    // }
+
+    console.log('\nin VizParams')
+    console.log('params.viz.clust.dim.height '+params.viz.clust.dim.height)
+    console.log('params.viz.clust.dim.width '+params.viz.clust.dim.width)
+    console.log('force square '+String(params.viz.force_square))
 
     // Define Orderings
     ////////////////////////////
@@ -295,23 +316,7 @@ function VizParams(config){
       })
     };
 
-    // // the visualization dimensions can be smaller than the svg
-    // // columns need to be shrunk for wide screens
-    // var min_col_shrink_scale = d3.scale.linear().domain([100,1500]).range([1,0.1]).clamp('true');
-    // var min_col_shrink = min_col_shrink_scale(params.viz.svg_dim.width);
-
-    // calculate clustergram width
-    // reduce clustergram width if triangles are taller than the normal width
-    // of the columns
-    var tmp_x_scale = d3.scale.ordinal().rangeBands([0, ini_clust_width]);
-    tmp_x_scale.domain(params.matrix.orders.ini_row);
-    var triangle_height = tmp_x_scale.rangeBand()/2 ;
-    if (triangle_height > params.norm_label.width.col){
-      ini_clust_width = ini_clust_width * ( params.norm_label.width.col/triangle_height );
-    }
-    params.viz.clust.dim.width = ini_clust_width ;
-
-
+    
     // scaling functions to position rows and tiles, define rangeBands
     params.matrix.x_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.width]);
     params.matrix.y_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.height]);

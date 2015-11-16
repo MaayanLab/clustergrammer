@@ -159,7 +159,7 @@ function enter_exit_update(params, network_data, reorder, delays){
     cur_row
       .transition().delay(delays.update).duration(duration)
       .attr('width', params.matrix.rect_width)
-      .attr('height', params.matrix.y_scale.rangeBand())
+      .attr('height', params.matrix.rect_height)
       .attr('transform', function(d) {
         if (_.contains(col_nodes_names, d.col_name)){
           var inst_col_index = _.indexOf(col_nodes_names, d.col_name);
@@ -321,45 +321,45 @@ function enter_exit_update(params, network_data, reorder, delays){
   var col_nodes_names = params.network_data.col_nodes_names;
 
 
-  // // append horizontal lines
-  // d3.select('#clust_group')
-  //   .selectAll('.horz_lines')
-  //   .data(row_nodes, function(d){return d.name;})
-  //   .enter()
-  //   .append('g')
-  //   .attr('class','horz_lines')
-  //   .attr('transform', function(d) {
-  //     var inst_index = _.indexOf(row_nodes_names, d.name);
-  //     return 'translate(0,' + params.matrix.y_scale(inst_index) + ') rotate(0)';
-  //   })
-  //   .append('line')
-  //   .attr('x1',0)
-  //   .attr('x2',params.viz.clust.dim.width)
-  //   .style('stroke-width', params.viz.border_width/params.viz.zoom_switch+'px')
-  //   .style('stroke','white')
-  //   .attr('opacity',0)
-  //   .transition().delay(delays.enter).duration(duration)
-  //   .attr('opacity',1);
+  // append horizontal lines
+  d3.select('#clust_group')
+    .selectAll('.horz_lines')
+    .data(row_nodes, function(d){return d.name;})
+    .enter()
+    .append('g')
+    .attr('class','horz_lines')
+    .attr('transform', function(d) {
+      var inst_index = _.indexOf(row_nodes_names, d.name);
+      return 'translate(0,' + params.matrix.y_scale(inst_index) + ') rotate(0)';
+    })
+    .append('line')
+    .attr('x1',0)
+    .attr('x2',params.viz.clust.dim.width)
+    .style('stroke-width', params.viz.border_width/params.viz.zoom_switch+'px')
+    .style('stroke','white')
+    .attr('opacity',0)
+    .transition().delay(delays.enter).duration(2*duration)
+    .attr('opacity',1);
 
-  // // append vertical line groups
-  // d3.select('#clust_group')
-  //   .selectAll('.vert_lines')
-  //   .data(col_nodes)
-  //   .enter()
-  //   .append('g')
-  //   .attr('class', 'vert_lines')
-  //   .attr('transform', function(d) {
-  //     var inst_index = _.indexOf(col_nodes_names, d.name);
-  //     return 'translate(' + params.matrix.x_scale(inst_index) + ') rotate(-90)';
-  //   })
-  //   .append('line')
-  //   .attr('x1', 0)
-  //   .attr('x2', -params.viz.clust.dim.height)
-  //   .style('stroke-width', params.viz.border_width + 'px')
-  //   .style('stroke', 'white')
-  //   .attr('opacity',0)
-  //   .transition().delay(delays.enter).duration(duration)
-  //   .attr('opacity',1);
+  // append vertical line groups
+  d3.select('#clust_group')
+    .selectAll('.vert_lines')
+    .data(col_nodes)
+    .enter()
+    .append('g')
+    .attr('class', 'vert_lines')
+    .attr('transform', function(d) {
+      var inst_index = _.indexOf(col_nodes_names, d.name);
+      return 'translate(' + params.matrix.x_scale(inst_index) + ') rotate(-90)';
+    })
+    .append('line')
+    .attr('x1', 0)
+    .attr('x2', -params.viz.clust.dim.height)
+    .style('stroke-width', params.viz.border_width + 'px')
+    .style('stroke', 'white')
+    .attr('opacity',0)
+    .transition().delay(delays.enter).duration(2*duration)
+    .attr('opacity',1);
 
   // // reset resize on expand button click and screen resize 
   // params.initialize_resizing(params);
