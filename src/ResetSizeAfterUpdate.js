@@ -139,10 +139,6 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
     .attr('width', params.viz.clust.dim.width)
     .attr('height', params.viz.clust.dim.height);
 
-  console.log('\nin reset size after update')
-  console.log(params.viz.clust.dim.width)
-  console.log(params.viz.clust.dim.height)
-
   // svg_group.selectAll('.tile')
   //   .data(links, function(d){return d.name;})
   //   .transition().delay(delays.update).duration(duration)

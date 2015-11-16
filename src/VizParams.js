@@ -230,9 +230,6 @@ function VizParams(config){
     // ensure that rects are never taller than they are wide
     // force square tiles
 
-    console.log(ini_clust_width)
-    console.log(ini_clust_height)
-
     // calculate clustergram width
     // reduce clustergram width if triangles are taller than the normal width
     // of the columns
@@ -271,15 +268,10 @@ function VizParams(config){
       params.viz.force_square = 0;
     }
 
-    // // manual force square
-    // if (config.force_square===1){
-    //   params.viz.force_square = 1;
-    // }
-
-    console.log('\nin VizParams')
-    console.log('params.viz.clust.dim.height '+params.viz.clust.dim.height)
-    console.log('params.viz.clust.dim.width '+params.viz.clust.dim.width)
-    console.log('force square '+String(params.viz.force_square))
+    // manual force square
+    if (config.force_square===1){
+      params.viz.force_square = 1;
+    }
 
     // Define Orderings
     ////////////////////////////
