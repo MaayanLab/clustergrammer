@@ -37,8 +37,9 @@ function Reorder(params){
         .transition().duration(2500);
 
       t.selectAll('.row')
-        .attr('transform', function(d, i) {
-          return 'translate(0,' + params.matrix.y_scale(i) + ')';
+        .attr('transform', function(d) {
+          var tmp_index = _.indexOf(row_nodes_names, d.name);
+          return 'translate(0,' + params.matrix.y_scale(tmp_index) + ')';
           })
         .selectAll('.tile')
         .attr('transform', function(d) {
@@ -84,8 +85,9 @@ function Reorder(params){
 
       // reorder matrix
       t.selectAll('.row')
-        .attr('transform', function(d, i) {
-          return 'translate(0,' + params.matrix.y_scale(i) + ')';
+        .attr('transform', function(d) {
+          var tmp_index = _.indexOf(row_nodes_names, d.name);
+          return 'translate(0,' + params.matrix.y_scale(tmp_index) + ')';
         })
         .selectAll('.tile')
         .attr('transform', function(d) {

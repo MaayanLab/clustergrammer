@@ -154,8 +154,9 @@ function enter_exit_update(params, network_data, reorder, delays){
     // exit removing rows 
     cur_row
       .exit()
-      .transition().duration(duration)
+      .transition().duration(1000)
       .attr('fill-opacity',0)
+      // .delay(1000)
       .remove();
 
     // update tiles in x direction 
