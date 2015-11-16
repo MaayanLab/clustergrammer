@@ -41,8 +41,9 @@ function Matrix(network_data, svg_elem, params) {
     .enter()
     .append('g')
     .attr('class', 'row')
-    .attr('transform', function(d, index) {
-      return 'translate(0,' + params.matrix.y_scale(index) + ')';
+    .attr('transform', function(d) {
+      var tmp_index = _.indexOf(row_nodes_names, d.name);
+      return 'translate(0,' + params.matrix.y_scale(tmp_index) + ')';
     });
 
   // draw rows of clustergram

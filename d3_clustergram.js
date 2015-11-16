@@ -484,8 +484,9 @@ function Matrix(network_data, svg_elem, params) {
     .enter()
     .append('g')
     .attr('class', 'row')
-    .attr('transform', function(d, index) {
-      return 'translate(0,' + params.matrix.y_scale(index) + ')';
+    .attr('transform', function(d) {
+      var tmp_index = _.indexOf(row_nodes_names, d.name);
+      return 'translate(0,' + params.matrix.y_scale(tmp_index) + ')';
     });
 
   // draw rows of clustergram
@@ -4225,24 +4226,24 @@ function enter_exit_update(params, network_data, reorder, delays){
     .style('opacity',0)
     .remove();
 
-  console.log(params.matrix.matrix)
 
   // move rows 
   d3.select('#clust_group')
     .selectAll('.row')
     .data(params.matrix.matrix, function(d){return d.name;})
     .transition().delay(delays.update).duration(duration)
-    .attr('transform', function(d, index){
-      return 'translate(0,'+params.matrix.y_scale(index)+')';
+    .attr('transform', function(d){
+      var tmp_index = _.indexOf(row_nodes_names, d.name);
+      return 'translate(0,'+params.matrix.y_scale(tmp_index)+')';
     })
 
-  // remove tiles 
+  // update existing rows - enter, exit, update tiles in existing row
   d3.select('#clust_group')
     .selectAll('.row')
-    .each(exit_simple_row);
+    .each(eeu_existing_row);
 
   // function to remove tiles 
-  function exit_simple_row(ini_inp_row_data){
+  function eeu_existing_row(ini_inp_row_data){
 
     var inp_row_data = ini_inp_row_data.row_data;
 
@@ -4256,13 +4257,14 @@ function enter_exit_update(params, network_data, reorder, delays){
       .selectAll('rect')
       .data(row_data, function(d){return d.col_name;});
 
-    // remove exiting tiles 
+    // exit removing rows 
     cur_row
       .exit()
       .transition().duration(duration)
+      .attr('fill-opacity',0)
       .remove();
 
-    // reposition tiles in x direction 
+    // update tiles in x direction 
     cur_row
       .transition().delay(delays.update).duration(duration)
       .attr('width', params.matrix.rect_width)
@@ -4274,6 +4276,31 @@ function enter_exit_update(params, network_data, reorder, delays){
           return 'translate(' + x_pos + ',0)';
         }
       });
+
+    // enter new tiles 
+    cur_row
+      .enter()
+      .append('rect')
+      .attr('class', 'tile row_tile')
+      .attr('width', params.matrix.rect_width)
+      .attr('height', params.matrix.rect_height)
+      .attr('fill-opacity',0)
+      .attr('transform', function(d){
+        var x_pos = params.matrix.x_scale(d.pos_x) + 0.5*params.viz.border_width;
+        var y_pos = 0.5*params.viz.border_width/params.viz.zoom_switch;
+        return 'translate('+x_pos+','+y_pos+')';
+      })
+      .transition().delay(delays.enter).duration(duration)
+      .style('fill', function(d) {
+        return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
+      })
+      .attr('fill-opacity',function(d){
+        var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
+        return output_opacity;
+      });
+
+
+
 
   }
 
@@ -4361,8 +4388,9 @@ function enter_exit_update(params, network_data, reorder, delays){
     .enter()
     .append('g')
     .attr('class','row')
-    .attr('transform', function(d, index) {
-      return 'translate(0,' + params.matrix.y_scale(index) + ')';
+    .attr('transform', function(d) {
+      var tmp_index = _.indexOf(row_nodes_names, d.name);
+      return 'translate(0,' + params.matrix.y_scale(tmp_index) + ')';
     });
 
   new_row_groups.each(enter_simple_rows);
