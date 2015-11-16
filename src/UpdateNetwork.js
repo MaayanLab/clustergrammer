@@ -120,6 +120,15 @@ function enter_exit_update(params, network_data, reorder, delays){
     .style('opacity',0)
     .remove();
 
+  // move rows 
+  d3.select('#clust_group')
+    .selectAll('.row')
+    .data(params.matrix.matrix, function(d){return d.name;})
+    .transition().delay(delays.enter).duration(duration)
+    .attr('transform', function(d, index){
+      return 'translate(0,'+params.matrix.y_scale(index)+')';
+    })
+
   // remove tiles 
   d3.select('#clust_group')
     .selectAll('.row')
@@ -130,12 +139,12 @@ function enter_exit_update(params, network_data, reorder, delays){
 
     var inp_row_data = ini_inp_row_data.row_data;
 
-    // rmove zero values from 
+    // remove zero values from 
     var row_data = _.filter(inp_row_data, function(num){
       return num.value !=0;
     });
 
-    // remove files 
+    // remove tiles 
     var cur_row = d3.select(this)
       .selectAll('rect')
       .data(row_data, function(d){return d.col_name;});
@@ -146,36 +155,37 @@ function enter_exit_update(params, network_data, reorder, delays){
       .transition().duration(duration)
       .remove();
 
+    // reposition tiles in x direction 
     cur_row
       .transition().delay(delays.update).duration(duration)
       .attr('width', params.matrix.rect_width)
-      .attr('height', params.matrix.rect_height)
+      .attr('height', params.matrix.y_scale.rangeBand())
       .attr('transform', function(d) {
-        // var inst_row_index = _.indexOf(row_nodes_names, d.row_name);
         if (_.contains(col_nodes_names, d.col_name)){
-          console.log(duration)
           var inst_col_index = _.indexOf(col_nodes_names, d.col_name);
           var x_pos = params.matrix.x_scale(inst_col_index) + 0.5*params.viz.border_width; 
-          var y_pos = 0;//0.5*params.viz.border_width/params.viz.zoom_switch;
+          var y_pos = 0;
           return 'translate(' + x_pos + ','+y_pos+')';
         }
       });
 
   }
 
-  // update tile positions 
-  d3.select('#clust_group')
-    .selectAll('.row')
-    .transition().delay(delays.update).duration(duration)
-    .attr('transform', function(d){
-      var y_pos = 0;
-      if ( _.contains(row_nodes_names, d.name) ){
-        var inst_row_index = _.indexOf(row_nodes_names, d.name);
-        y_pos = params.matrix.x_scale(inst_row_index);
-      }
-      return 'translate(0,'+ y_pos +')';
-    });
+  // // update tile positions 
+  // d3.select('#clust_group')
+  //   .selectAll('.row')
+  //   .transition().delay(delays.update).duration(duration)
+  //   .attr('transform', function(d){
+  //     var y_pos = 0;
+  //     if ( _.contains(row_nodes_names, d.name) ){
+  //       var inst_row_index = _.indexOf(row_nodes_names, d.name);
+  //       y_pos = params.matrix.x_scale(inst_row_index);
+  //     }
+  //     return 'translate(0,'+ y_pos +')';
+  //   });
 
+  d3.selectAll('.horz_lines').remove();
+  d3.selectAll('.vert_lines').remove();
 
   // remove row labels 
   d3.selectAll('.row_label_text')
@@ -310,50 +320,46 @@ function enter_exit_update(params, network_data, reorder, delays){
   var row_nodes_names = params.network_data.row_nodes_names;
   var col_nodes_names = params.network_data.col_nodes_names;
 
-  d3.selectAll('.horz_lines')
-    .remove();
-  d3.selectAll('.vert_lines')
-    .remove();
 
-  // append horizontal lines
-  d3.select('#clust_group')
-    .selectAll('.horz_lines')
-    .data(row_nodes, function(d){return d.name;})
-    .enter()
-    .append('g')
-    .attr('class','horz_lines')
-    .attr('transform', function(d) {
-      var inst_index = _.indexOf(row_nodes_names, d.name);
-      return 'translate(0,' + params.matrix.y_scale(inst_index) + ') rotate(0)';
-    })
-    .append('line')
-    .attr('x1',0)
-    .attr('x2',params.viz.clust.dim.width)
-    .style('stroke-width', params.viz.border_width/params.viz.zoom_switch+'px')
-    .style('stroke','white')
-    .attr('opacity',0)
-    .transition().delay(delays.enter).duration(duration)
-    .attr('opacity',1);
+  // // append horizontal lines
+  // d3.select('#clust_group')
+  //   .selectAll('.horz_lines')
+  //   .data(row_nodes, function(d){return d.name;})
+  //   .enter()
+  //   .append('g')
+  //   .attr('class','horz_lines')
+  //   .attr('transform', function(d) {
+  //     var inst_index = _.indexOf(row_nodes_names, d.name);
+  //     return 'translate(0,' + params.matrix.y_scale(inst_index) + ') rotate(0)';
+  //   })
+  //   .append('line')
+  //   .attr('x1',0)
+  //   .attr('x2',params.viz.clust.dim.width)
+  //   .style('stroke-width', params.viz.border_width/params.viz.zoom_switch+'px')
+  //   .style('stroke','white')
+  //   .attr('opacity',0)
+  //   .transition().delay(delays.enter).duration(duration)
+  //   .attr('opacity',1);
 
-  // append vertical line groups
-  d3.select('#clust_group')
-    .selectAll('.vert_lines')
-    .data(col_nodes)
-    .enter()
-    .append('g')
-    .attr('class', 'vert_lines')
-    .attr('transform', function(d) {
-      var inst_index = _.indexOf(col_nodes_names, d.name);
-      return 'translate(' + params.matrix.x_scale(inst_index) + ') rotate(-90)';
-    })
-    .append('line')
-    .attr('x1', 0)
-    .attr('x2', -params.viz.clust.dim.height)
-    .style('stroke-width', params.viz.border_width + 'px')
-    .style('stroke', 'white')
-    .attr('opacity',0)
-    .transition().delay(delays.enter).duration(duration)
-    .attr('opacity',1);
+  // // append vertical line groups
+  // d3.select('#clust_group')
+  //   .selectAll('.vert_lines')
+  //   .data(col_nodes)
+  //   .enter()
+  //   .append('g')
+  //   .attr('class', 'vert_lines')
+  //   .attr('transform', function(d) {
+  //     var inst_index = _.indexOf(col_nodes_names, d.name);
+  //     return 'translate(' + params.matrix.x_scale(inst_index) + ') rotate(-90)';
+  //   })
+  //   .append('line')
+  //   .attr('x1', 0)
+  //   .attr('x2', -params.viz.clust.dim.height)
+  //   .style('stroke-width', params.viz.border_width + 'px')
+  //   .style('stroke', 'white')
+  //   .attr('opacity',0)
+  //   .transition().delay(delays.enter).duration(duration)
+  //   .attr('opacity',1);
 
   // // reset resize on expand button click and screen resize 
   // params.initialize_resizing(params);

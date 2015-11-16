@@ -500,21 +500,21 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
         return 'translate(' + params.matrix.x_scale(inst_index) + ',0)';
       });
 
-    // reposition grid lines
-    ////////////////////////////
-    svg_group.selectAll('.horz_lines')
-      .data(row_nodes, function(d){return d.name;})
-      .transition().delay(delays.update).duration(duration)
-      .attr('transform', function(d) {
-        var inst_index = _.indexOf(row_nodes_names, d.name);
-        return 'translate(0,' + params.matrix.y_scale(inst_index) + ') rotate(0)';
-      })
+    // // reposition grid lines
+    // ////////////////////////////
+    // svg_group.selectAll('.horz_lines')
+    //   .data(row_nodes, function(d){return d.name;})
+    //   .transition().delay(delays.update).duration(duration)
+    //   .attr('transform', function(d) {
+    //     var inst_index = _.indexOf(row_nodes_names, d.name);
+    //     return 'translate(0,' + params.matrix.y_scale(inst_index) + ') rotate(0)';
+    //   })
 
-    svg_group.selectAll('.horz_lines')
-      .select('line')
-      .transition().delay(delays.update).duration(duration)
-      .attr('x2',params.viz.clust.dim.width)
-      .style('stroke-width', params.viz.border_width/params.viz.zoom_switch+'px')
+    // svg_group.selectAll('.horz_lines')
+    //   .select('line')
+    //   .transition().delay(delays.update).duration(duration)
+    //   .attr('x2',params.viz.clust.dim.width)
+    //   .style('stroke-width', params.viz.border_width/params.viz.zoom_switch+'px')
 
     svg_group.selectAll('.vert_lines')
       .data(col_nodes, function(d){return d.name;})
