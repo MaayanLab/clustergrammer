@@ -313,15 +313,16 @@ function enter_exit_update(params, network_data, reorder, delays){
         return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
       })
       .on('mouseover', function(p) {
+
         // highlight row - set text to active if
         d3.selectAll('.row_label_text text')
-          .classed('active', function(d, i) {
-            return i === p.pos_y;
+          .classed('active', function(d) {
+            return p.row_name === d.name;
           });
 
         d3.selectAll('.col_label_text text')
-          .classed('active', function(d, i) {
-            return i === p.pos_x;
+          .classed('active', function(d) {
+            return p.col_name === d.name;
           });
       })
       .on('mouseout', function mouseout() {
@@ -393,14 +394,14 @@ function enter_exit_update(params, network_data, reorder, delays){
   // // redefine mouseover events for tiles 
   // d3.select('#clust_group')
   //   .selectAll('.tile')
-  //   .on('mouseover', function(p) {
-  //     var row_name = p.name.split('_')[0];
-  //     var col_name = p.name.split('_')[1];
-  //     // highlight row - set text to active if
-  //     d3.selectAll('.row_label_text text')
-  //       .classed('active', function(d) {
-  //         return row_name === d.name;
-  //       });
+    // .on('mouseover', function(p) {
+    //   var row_name = p.name.split('_')[0];
+    //   var col_name = p.name.split('_')[1];
+    //   // highlight row - set text to active if
+    //   d3.selectAll('.row_label_text text')
+    //     .classed('active', function(d) {
+    //       return row_name === d.name;
+    //     });
 
   //     d3.selectAll('.col_label_text text')
   //       .classed('active', function(d) {
