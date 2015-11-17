@@ -118,7 +118,7 @@ function Labels(params){
     // append row label text
     row_labels
       .append('text')
-      .attr('y', params.matrix.y_scale.rangeBand() * 0.75)
+      .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35 )
       .attr('text-anchor', 'end')
       .style('font-size', params.labels.default_fs_row + 'px')
       .text(function(d){ return normal_name(d);})

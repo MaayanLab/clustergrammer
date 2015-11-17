@@ -219,12 +219,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
       return 'translate(0,' + params.matrix.y_scale(inst_index) + ')';
     });
 
-  svg_group.selectAll('.row_label_text')
-    .select('text')
-    .transition().delay(delays.update).duration(duration)
-    .attr('y', params.matrix.y_scale.rangeBand() * 0.75)
-
-  // do not delay the font size change since this will break the bounding box calc
+   // do not delay the font size change since this will break the bounding box calc
   svg_group.selectAll('.row_label_text')
     .select('text')
     .style('font-size', params.labels.default_fs_row + 'px')
@@ -260,6 +255,36 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
       params.bounding_width_max.row = tmp_width;
     }
   });
+
+  // check if widest row or col are wider than the allowed label width
+  ////////////////////////////////////////////////////////////////////////
+  params.ini_scale_font = {};
+  params.ini_scale_font.row = 1;
+  params.ini_scale_font.col = 1;
+
+  if (params.bounding_width_max.row > params.norm_label.width.row) {
+
+    // calc reduction in font size
+    params.ini_scale_font.row = params.norm_label.width.row / params.bounding_width_max.row;
+    // redefine bounding_width_max.row
+    params.bounding_width_max.row = params.ini_scale_font.row * params.bounding_width_max.row;
+
+    // redefine default fs
+    params.labels.default_fs_row = params.labels.default_fs_row * params.ini_scale_font.row;
+    // reduce font size
+    d3.selectAll('.row_label_text').each(function() {
+      d3.select(this).select('text')
+        .style('font-size', params.labels.default_fs_row + 'px');
+    })
+  }
+
+  // positioning row text after row text size may have been reduced 
+  svg_group.selectAll('.row_label_text')
+    .select('text')
+    .transition().delay(delays.update).duration(duration)
+    .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35 );
+
+
 
   svg_group.select('#row_viz_outer_container')
     .transition().delay(delays.update).duration(duration)
@@ -378,27 +403,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
     });
 
 
-    // check if widest row or col are wider than the allowed label width
-    ////////////////////////////////////////////////////////////////////////
-    params.ini_scale_font = {};
-    params.ini_scale_font.row = 1;
-    params.ini_scale_font.col = 1;
 
-    if (params.bounding_width_max.row > params.norm_label.width.row) {
-
-      // calc reduction in font size
-      params.ini_scale_font.row = params.norm_label.width.row / params.bounding_width_max.row;
-      // redefine bounding_width_max.row
-      params.bounding_width_max.row = params.ini_scale_font.row * params.bounding_width_max.row;
-
-      // redefine default fs
-      params.labels.default_fs_row = params.labels.default_fs_row * params.ini_scale_font.row;
-      // reduce font size
-      d3.selectAll('.row_label_text').each(function() {
-      d3.select(this).select('text')
-        .style('font-size', params.labels.default_fs_row + 'px');
-      });
-    }
 
     if (params.bounding_width_max.col > params.norm_label.width.col) {
 
@@ -412,7 +417,8 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
       d3.selectAll('.col_label_click').each(function() {
       d3.select(this).select('text')
         .style('font-size', params.labels.default_fs_col + 'px');
-      });
+      })
+      // .attr('y', params.matrix.rect_width * 0.5 + params.labels.default_fs_col*0.25 )
     }
 
     svg_group.selectAll('.col_label_click')

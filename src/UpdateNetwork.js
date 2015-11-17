@@ -349,9 +349,6 @@ function enter_exit_update(params, network_data, reorder, delays){
         return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
       })
       .on('mouseover', function(p) {
-        console.log('\n')
-        console.log(p.row_name);
-        console.log(p.col_name);
         // highlight row - set text to active if
         d3.selectAll('.row_label_text text')
           .classed('active', function(d) {
