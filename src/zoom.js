@@ -83,6 +83,8 @@ function Zoom(params){
     // update visible links 
     var min_rect_height = 3;
 
+    // downsample(params, min_rect_height);
+
     // if (d3.select('.row_tile').empty()){
     //   var links_in_view = update_viz_links(params, trans_x, trans_y, zoom_x, zoom_y, false);
     //   draw_viz_links(params, links_in_view);
@@ -633,6 +635,9 @@ function downsample(params, min_rect_height){
   var col_nodes = params.network_data.col_nodes;
 
   var new_num_rows = ini_num_rows/reduce_by;
+
+  console.log('\n\nini num rows '+String(ini_num_rows));
+  console.log('new_num_rows '+String(new_num_rows))
 
   // get cluster height
   var clust_height = params.viz.clust.dim.height;

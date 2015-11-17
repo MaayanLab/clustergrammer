@@ -2829,7 +2829,6 @@ function draw_grid_lines(row_nodes, col_nodes) {
 
     // reenable zoom after transition 
     if (params.viz.do_zoom) {
-      console.log('resizing ')
       svg_group.call(params.zoom);
     }
 
@@ -2851,7 +2850,6 @@ function draw_grid_lines(row_nodes, col_nodes) {
     // resize tiles - either in rows or individually 
     if (d3.select('.row_tile').empty()){
 
-      console.log('resizing individual tiles');
       // reset tiles 
       svg_group.selectAll('.tile')
         .attr('width', params.matrix.rect_width)
@@ -2944,7 +2942,6 @@ function draw_grid_lines(row_nodes, col_nodes) {
         });
     } else {
 
-      console.log('resizing row tiles');
       // resize tiles
       ///////////////////
       svg_group.selectAll('.tile')
@@ -3286,7 +3283,6 @@ function draw_grid_lines(row_nodes, col_nodes) {
 
     svg_group.selectAll('.row_label_text')
       .select('text')
-      // .attr('y', params.matrix.rect_height * 0.75);
       .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35 );
 
       svg_group.selectAll('.col_label_click')
@@ -5414,6 +5410,8 @@ function Zoom(params){
     // update visible links 
     var min_rect_height = 3;
 
+    // downsample(params, min_rect_height);
+
     // if (d3.select('.row_tile').empty()){
     //   var links_in_view = update_viz_links(params, trans_x, trans_y, zoom_x, zoom_y, false);
     //   draw_viz_links(params, links_in_view);
@@ -5964,6 +5962,9 @@ function downsample(params, min_rect_height){
   var col_nodes = params.network_data.col_nodes;
 
   var new_num_rows = ini_num_rows/reduce_by;
+
+  console.log('\n\nini num rows '+String(ini_num_rows));
+  console.log('new_num_rows '+String(new_num_rows))
 
   // get cluster height
   var clust_height = params.viz.clust.dim.height;

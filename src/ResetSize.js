@@ -195,7 +195,6 @@
 
     // reenable zoom after transition 
     if (params.viz.do_zoom) {
-      console.log('resizing ')
       svg_group.call(params.zoom);
     }
 
@@ -217,7 +216,6 @@
     // resize tiles - either in rows or individually 
     if (d3.select('.row_tile').empty()){
 
-      console.log('resizing individual tiles');
       // reset tiles 
       svg_group.selectAll('.tile')
         .attr('width', params.matrix.rect_width)
@@ -310,7 +308,6 @@
         });
     } else {
 
-      console.log('resizing row tiles');
       // resize tiles
       ///////////////////
       svg_group.selectAll('.tile')
@@ -652,7 +649,6 @@
 
     svg_group.selectAll('.row_label_text')
       .select('text')
-      // .attr('y', params.matrix.rect_height * 0.75);
       .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35 );
 
       svg_group.selectAll('.col_label_click')
