@@ -496,11 +496,13 @@ function Zoom(params){
           d3.select(this).select('text')
             .transition().duration(search_duration)
             .style('font-size', params.labels.default_fs_row * params.viz.zoom_scale_font.row + 'px')
-            .attr('y', params.matrix.y_scale.rangeBand() * params.scale_font_offset(params.viz.zoom_scale_font.row));
+            // .attr('y', params.matrix.rect_height * params.scale_font_offset(params.viz.zoom_scale_font.row));
+            .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35*params.viz.zoom_scale_font.row );
         } else {
           d3.select(this).select('text')
             .style('font-size', params.labels.default_fs_row * params.viz.zoom_scale_font.row + 'px')
-            .attr('y', params.matrix.y_scale.rangeBand() * params.scale_font_offset(params.viz.zoom_scale_font.row))
+            // .attr('y', params.matrix.rect_height * params.scale_font_offset(params.viz.zoom_scale_font.row))
+            .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35*params.viz.zoom_scale_font.row );
         }
       });
     } else {

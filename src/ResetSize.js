@@ -472,9 +472,9 @@
         return 'translate(0,' + params.matrix.y_scale(inst_index) + ')';
       });
 
-    svg_group.selectAll('.row_label_text')
-      .select('text')
-      .attr('y', params.matrix.rect_height * 0.75)
+
+
+    
 
     svg_group.selectAll('.row_label_text')
       .select('text')
@@ -649,6 +649,11 @@
           .style('font-size', params.labels.default_fs_col + 'px');
         });
       }
+
+    svg_group.selectAll('.row_label_text')
+      .select('text')
+      // .attr('y', params.matrix.rect_height * 0.75);
+      .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35 );
 
       svg_group.selectAll('.col_label_click')
         .each(function() {

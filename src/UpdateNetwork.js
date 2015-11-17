@@ -161,9 +161,6 @@ function enter_exit_update(params, network_data, reorder, delays){
     // update tiles in x direction 
     cur_row
       .on('mouseover', function(p) {
-        console.log('\n')
-        console.log(p.row_name);
-        console.log(p.col_name);
         // highlight row - set text to active if
         d3.selectAll('.row_label_text text')
           .classed('active', function(d) {
@@ -197,9 +194,6 @@ function enter_exit_update(params, network_data, reorder, delays){
       .attr('width', params.matrix.rect_width)
       .attr('height', params.matrix.rect_height)
       .on('mouseover', function(p) {
-        console.log('\n')
-        console.log(p.row_name);
-        console.log(p.col_name);
         // highlight row - set text to active if
         d3.selectAll('.row_label_text text')
           .classed('active', function(d) {

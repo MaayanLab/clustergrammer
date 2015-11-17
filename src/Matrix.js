@@ -46,12 +46,17 @@ function Matrix(network_data, svg_elem, params) {
       return 'translate(0,' + params.matrix.y_scale(tmp_index) + ')';
     });
 
-  // draw rows of clustergram
-  if (params.matrix.tile_type === 'simple') {
-    row_groups = row_groups.each(draw_simple_rows);
-  } else {
-    row_groups = row_groups.each(draw_group_rows);
-  };
+
+
+  // add group rows later 
+  row_groups = row_groups.each(draw_simple_rows);
+
+  // // draw rows of clustergram
+  // if (params.matrix.tile_type === 'simple') {
+  //   row_groups = row_groups.each(draw_simple_rows);
+  // } else {
+  //   row_groups = row_groups.each(draw_group_rows);
+  // };
 
 
   // // draw rows or individual tiles 

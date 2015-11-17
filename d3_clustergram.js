@@ -489,12 +489,17 @@ function Matrix(network_data, svg_elem, params) {
       return 'translate(0,' + params.matrix.y_scale(tmp_index) + ')';
     });
 
-  // draw rows of clustergram
-  if (params.matrix.tile_type === 'simple') {
-    row_groups = row_groups.each(draw_simple_rows);
-  } else {
-    row_groups = row_groups.each(draw_group_rows);
-  };
+
+
+  // add group rows later 
+  row_groups = row_groups.each(draw_simple_rows);
+
+  // // draw rows of clustergram
+  // if (params.matrix.tile_type === 'simple') {
+  //   row_groups = row_groups.each(draw_simple_rows);
+  // } else {
+  //   row_groups = row_groups.each(draw_group_rows);
+  // };
 
 
   // // draw rows or individual tiles 
@@ -3101,9 +3106,9 @@ function draw_grid_lines(row_nodes, col_nodes) {
         return 'translate(0,' + params.matrix.y_scale(inst_index) + ')';
       });
 
-    svg_group.selectAll('.row_label_text')
-      .select('text')
-      .attr('y', params.matrix.rect_height * 0.75)
+
+
+    
 
     svg_group.selectAll('.row_label_text')
       .select('text')
@@ -3278,6 +3283,11 @@ function draw_grid_lines(row_nodes, col_nodes) {
           .style('font-size', params.labels.default_fs_col + 'px');
         });
       }
+
+    svg_group.selectAll('.row_label_text')
+      .select('text')
+      // .attr('y', params.matrix.rect_height * 0.75);
+      .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35 );
 
       svg_group.selectAll('.col_label_click')
         .each(function() {
@@ -4273,9 +4283,6 @@ function enter_exit_update(params, network_data, reorder, delays){
     // update tiles in x direction 
     cur_row
       .on('mouseover', function(p) {
-        console.log('\n')
-        console.log(p.row_name);
-        console.log(p.col_name);
         // highlight row - set text to active if
         d3.selectAll('.row_label_text text')
           .classed('active', function(d) {
@@ -4309,9 +4316,6 @@ function enter_exit_update(params, network_data, reorder, delays){
       .attr('width', params.matrix.rect_width)
       .attr('height', params.matrix.rect_height)
       .on('mouseover', function(p) {
-        console.log('\n')
-        console.log(p.row_name);
-        console.log(p.col_name);
         // highlight row - set text to active if
         d3.selectAll('.row_label_text text')
           .classed('active', function(d) {
@@ -5823,11 +5827,13 @@ function Zoom(params){
           d3.select(this).select('text')
             .transition().duration(search_duration)
             .style('font-size', params.labels.default_fs_row * params.viz.zoom_scale_font.row + 'px')
-            .attr('y', params.matrix.y_scale.rangeBand() * params.scale_font_offset(params.viz.zoom_scale_font.row));
+            // .attr('y', params.matrix.rect_height * params.scale_font_offset(params.viz.zoom_scale_font.row));
+            .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35*params.viz.zoom_scale_font.row );
         } else {
           d3.select(this).select('text')
             .style('font-size', params.labels.default_fs_row * params.viz.zoom_scale_font.row + 'px')
-            .attr('y', params.matrix.y_scale.rangeBand() * params.scale_font_offset(params.viz.zoom_scale_font.row))
+            // .attr('y', params.matrix.rect_height * params.scale_font_offset(params.viz.zoom_scale_font.row))
+            .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35*params.viz.zoom_scale_font.row );
         }
       });
     } else {
