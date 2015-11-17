@@ -4266,6 +4266,24 @@ function enter_exit_update(params, network_data, reorder, delays){
 
     // update tiles in x direction 
     cur_row
+      .on('mouseover', function(p) {
+        console.log('\n')
+        console.log(p.row_name);
+        console.log(p.col_name);
+        // highlight row - set text to active if
+        d3.selectAll('.row_label_text text')
+          .classed('active', function(d) {
+            return p.row_name === d.name;
+          });
+
+        d3.selectAll('.col_label_text text')
+          .classed('active', function(d) {
+            return p.col_name === d.name;
+          });
+      })
+      .on('mouseout', function mouseout() {
+        d3.selectAll('text').classed('active', false);
+      })
       .transition().delay(delays.update).duration(duration)
       .attr('width', params.matrix.rect_width)
       .attr('height', params.matrix.rect_height)
@@ -4284,6 +4302,24 @@ function enter_exit_update(params, network_data, reorder, delays){
       .attr('class', 'tile row_tile')
       .attr('width', params.matrix.rect_width)
       .attr('height', params.matrix.rect_height)
+      .on('mouseover', function(p) {
+        console.log('\n')
+        console.log(p.row_name);
+        console.log(p.col_name);
+        // highlight row - set text to active if
+        d3.selectAll('.row_label_text text')
+          .classed('active', function(d) {
+            return p.row_name === d.name;
+          });
+
+        d3.selectAll('.col_label_text text')
+          .classed('active', function(d) {
+            return p.col_name === d.name;
+          });
+      })
+      .on('mouseout', function mouseout() {
+        d3.selectAll('text').classed('active', false);
+      })
       .attr('fill-opacity',0)
       .attr('transform', function(d){
         var x_pos = params.matrix.x_scale(d.pos_x) + 0.5*params.viz.border_width;
@@ -4419,7 +4455,9 @@ function enter_exit_update(params, network_data, reorder, delays){
         return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
       })
       .on('mouseover', function(p) {
-
+        console.log('\n')
+        console.log(p.row_name);
+        console.log(p.col_name);
         // highlight row - set text to active if
         d3.selectAll('.row_label_text text')
           .classed('active', function(d) {
@@ -4433,10 +4471,8 @@ function enter_exit_update(params, network_data, reorder, delays){
       })
       .on('mouseout', function mouseout() {
         d3.selectAll('text').classed('active', false);
-      })
-      .attr('title', function(d) {
-        return d.value;
       });
+      
 
     tile
       .style('fill-opacity',0)
