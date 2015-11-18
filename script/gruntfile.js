@@ -7,6 +7,7 @@ module.exports = function(grunt) {
         '../src/Colors.js',
         '../src/Dendrogram.js',
         '../src/Matrix.js',
+        '../src/DownSampling.js',
         '../src/Search.js',
         '../src/VizParams.js',
         '../src/Labels.js',
