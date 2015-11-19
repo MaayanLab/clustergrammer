@@ -129,9 +129,6 @@ class Network(object):
       # get the inst_line and make list 
       inst_line = lines[i].strip().split('\t')
 
-      if i%1000 == 0: 
-        print(i)
-
       # line 1: get dataset names 
       if i ==0:
 
@@ -238,9 +235,6 @@ class Network(object):
           self.dat['node_info']['row']['value'].append(1)
         else:
           self.dat['node_info']['row']['value'].append(-1)
-
-        # add class
-        # self.dat['node_info']['row']['cl'].append(0)
 
       # save the name as a class
       for i in range(len(self.dat['nodes']['col'])):  
