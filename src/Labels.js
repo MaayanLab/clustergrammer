@@ -485,7 +485,7 @@ function Labels(params){
       // redefine bounding_width_max.row
       params.bounding_width_max.row = params.ini_scale_font.row * params.bounding_width_max.row;
 
-      // redefine default fs
+      // redefine default fs !! increase to make more readable 
       params.labels.default_fs_row = params.labels.default_fs_row * params.ini_scale_font.row;
 
       // reduce font size
@@ -495,18 +495,32 @@ function Labels(params){
       });
     }
 
+    // debugger;
+
     if (params.bounding_width_max.col > params.norm_label.width.col) {
+
+      // calc reduction in font size 
       params.ini_scale_font.col = params.norm_label.width.col / params.bounding_width_max.col;
       // redefine bounding_width_max.col
       params.bounding_width_max.col = params.ini_scale_font.col * params.bounding_width_max.col;
-      // redefine default fs
+      // redefine default fs, !! increase to make more readable 
       params.labels.default_fs_col = params.labels.default_fs_col * params.ini_scale_font.col;
+
       // reduce font size
       d3.selectAll('.col_label_click').each(function() {
       d3.select(this).select('text')
         .style('font-size', params.labels.default_fs_col + 'px');
       });
     }
+
+    // constrain text after zooming
+    if (params.labels.row_keep < 1){
+      d3.selectAll('.row_label_text' ).each(function() { trim_text(this, 'row'); });
+    }
+    if (params.labels.col_keep < 1){
+      d3.selectAll('.col_label_click').each(function() { trim_text(this, 'col'); });
+    }
+
 
     // append rectangle behind text
     col_label_click

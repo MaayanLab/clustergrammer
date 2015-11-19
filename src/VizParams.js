@@ -118,14 +118,14 @@ function VizParams(config){
     params.labels.col_max_char = col_max_char;
 
     // the maximum number of characters in a label
-    params.labels.max_label_char = 35;
+    params.labels.max_label_char = 10;
 
     // define label scale parameters: the more characters in the longest name, the larger the margin
     var min_num_char = 5;
     var max_num_char = params.labels.max_label_char;
 
     // number of characters to show
-    params.labels.show_char = 15;
+    params.labels.show_char = 10;
 
     // calc how much of the label to keep
     var keep_label_scale = d3.scale.linear()
@@ -138,7 +138,7 @@ function VizParams(config){
     // define label scale
     ///////////////////////////
     var min_label_width = 85;
-    var max_label_width = 140;
+    var max_label_width = 105;
     var label_scale = d3.scale.linear()
       .domain([min_num_char, max_num_char])
       .range([min_label_width, max_label_width]).clamp('true');
@@ -234,13 +234,13 @@ function VizParams(config){
     // reduce clustergram width if triangles are taller than the normal width
     // of the columns
     var tmp_x_scale = d3.scale.ordinal().rangeBands([0, ini_clust_width]);
-    tmp_x_scale.domain(_.range(row_nodes.length));
+    tmp_x_scale.domain(_.range(col_nodes.length));
     var triangle_height = tmp_x_scale.rangeBand()/2 ;
+
     if (triangle_height > params.norm_label.width.col){
       ini_clust_width = ini_clust_width * ( params.norm_label.width.col/triangle_height );
     }
     params.viz.clust.dim.width = ini_clust_width ;
-
 
     if (ini_clust_width / params.viz.num_col_nodes < ini_clust_height / params.viz.num_row_nodes) {
 

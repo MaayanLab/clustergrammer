@@ -495,6 +495,7 @@ function Zoom(params){
     if (keep_width.row > params.norm_label.width.row) {
 
       params.viz.zoom_scale_font.row = params.norm_label.width.row / keep_width.row;
+      // params.viz.zoom_scale_font.row = params.norm_label.width.row / keep_width.row;
 
       d3.selectAll('.row_label_text').each(function() {
         if (trans){
@@ -577,37 +578,7 @@ function Zoom(params){
       d3.selectAll('.col_label_click').each(function() { trim_text(this, 'col'); });
     }
 
-    function trim_text(inst_selection, inst_rc){
 
-      var max_width,
-          inst_zoom;
-
-      var safe_row_trim_text = 0.9;
-
-      if (inst_rc === 'row'){
-        max_width = params.norm_label.width.row*safe_row_trim_text;
-        inst_zoom = params.zoom.scale();
-      } else {
-        // the column label has extra length since its rotated
-        max_width = params.norm_label.width.col;
-        inst_zoom = params.zoom.scale()/params.viz.zoom_switch;
-      }
-
-      var tmp_width = d3.select(inst_selection).select('text').node().getBBox().width;
-      var inst_text = d3.select(inst_selection).select('text').text();
-      var actual_width = tmp_width*inst_zoom;
-
-      if (actual_width>max_width){
-
-        var trim_fraction = max_width/actual_width;
-        var keep_num_char = Math.floor(inst_text.length*trim_fraction)-3;
-        var trimmed_text = inst_text.substring(0,keep_num_char)+'..';
-        d3.select(inst_selection).select('text')
-          .text(trimmed_text);
-
-      }
-
-    }
 
   }
 

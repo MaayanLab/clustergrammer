@@ -1007,6 +1007,37 @@ function Search(params, nodes, prop) {
     get_entities: get_entities
   }
 }
+function trim_text(inst_selection, inst_rc){
+
+  var max_width,
+      inst_zoom;
+
+  var safe_row_trim_text = 0.9;
+
+  if (inst_rc === 'row'){
+    max_width = params.norm_label.width.row*safe_row_trim_text;
+    inst_zoom = params.zoom.scale();
+  } else {
+    // the column label has extra length since its rotated
+    max_width = params.norm_label.width.col;
+    inst_zoom = params.zoom.scale()/params.viz.zoom_switch;
+  }
+
+  var tmp_width = d3.select(inst_selection).select('text').node().getBBox().width;
+  var inst_text = d3.select(inst_selection).select('text').text();
+  var actual_width = tmp_width*inst_zoom;
+
+  if (actual_width>max_width){
+
+    var trim_fraction = max_width/actual_width;
+    var keep_num_char = Math.floor(inst_text.length*trim_fraction)-3;
+    var trimmed_text = inst_text.substring(0,keep_num_char)+'..';
+    d3.select(inst_selection).select('text')
+      .text(trimmed_text);
+
+  }
+
+}
 /* VizParams Module
 */
 function VizParams(config){
@@ -1127,14 +1158,14 @@ function VizParams(config){
     params.labels.col_max_char = col_max_char;
 
     // the maximum number of characters in a label
-    params.labels.max_label_char = 35;
+    params.labels.max_label_char = 10;
 
     // define label scale parameters: the more characters in the longest name, the larger the margin
     var min_num_char = 5;
     var max_num_char = params.labels.max_label_char;
 
     // number of characters to show
-    params.labels.show_char = 15;
+    params.labels.show_char = 10;
 
     // calc how much of the label to keep
     var keep_label_scale = d3.scale.linear()
@@ -1147,7 +1178,7 @@ function VizParams(config){
     // define label scale
     ///////////////////////////
     var min_label_width = 85;
-    var max_label_width = 140;
+    var max_label_width = 105;
     var label_scale = d3.scale.linear()
       .domain([min_num_char, max_num_char])
       .range([min_label_width, max_label_width]).clamp('true');
@@ -1243,13 +1274,13 @@ function VizParams(config){
     // reduce clustergram width if triangles are taller than the normal width
     // of the columns
     var tmp_x_scale = d3.scale.ordinal().rangeBands([0, ini_clust_width]);
-    tmp_x_scale.domain(_.range(row_nodes.length));
+    tmp_x_scale.domain(_.range(col_nodes.length));
     var triangle_height = tmp_x_scale.rangeBand()/2 ;
+
     if (triangle_height > params.norm_label.width.col){
       ini_clust_width = ini_clust_width * ( params.norm_label.width.col/triangle_height );
     }
     params.viz.clust.dim.width = ini_clust_width ;
-
 
     if (ini_clust_width / params.viz.num_col_nodes < ini_clust_height / params.viz.num_row_nodes) {
 
@@ -2132,7 +2163,7 @@ function Labels(params){
       // redefine bounding_width_max.row
       params.bounding_width_max.row = params.ini_scale_font.row * params.bounding_width_max.row;
 
-      // redefine default fs
+      // redefine default fs !! increase to make more readable 
       params.labels.default_fs_row = params.labels.default_fs_row * params.ini_scale_font.row;
 
       // reduce font size
@@ -2142,18 +2173,32 @@ function Labels(params){
       });
     }
 
+    // debugger;
+
     if (params.bounding_width_max.col > params.norm_label.width.col) {
+
+      // calc reduction in font size 
       params.ini_scale_font.col = params.norm_label.width.col / params.bounding_width_max.col;
       // redefine bounding_width_max.col
       params.bounding_width_max.col = params.ini_scale_font.col * params.bounding_width_max.col;
-      // redefine default fs
+      // redefine default fs, !! increase to make more readable 
       params.labels.default_fs_col = params.labels.default_fs_col * params.ini_scale_font.col;
+
       // reduce font size
       d3.selectAll('.col_label_click').each(function() {
       d3.select(this).select('text')
         .style('font-size', params.labels.default_fs_col + 'px');
       });
     }
+
+    // constrain text after zooming
+    if (params.labels.row_keep < 1){
+      d3.selectAll('.row_label_text' ).each(function() { trim_text(this, 'row'); });
+    }
+    if (params.labels.col_keep < 1){
+      d3.selectAll('.col_label_click').each(function() { trim_text(this, 'col'); });
+    }
+
 
     // append rectangle behind text
     col_label_click
@@ -5742,6 +5787,7 @@ function Zoom(params){
     if (keep_width.row > params.norm_label.width.row) {
 
       params.viz.zoom_scale_font.row = params.norm_label.width.row / keep_width.row;
+      // params.viz.zoom_scale_font.row = params.norm_label.width.row / keep_width.row;
 
       d3.selectAll('.row_label_text').each(function() {
         if (trans){
@@ -5824,37 +5870,7 @@ function Zoom(params){
       d3.selectAll('.col_label_click').each(function() { trim_text(this, 'col'); });
     }
 
-    function trim_text(inst_selection, inst_rc){
 
-      var max_width,
-          inst_zoom;
-
-      var safe_row_trim_text = 0.9;
-
-      if (inst_rc === 'row'){
-        max_width = params.norm_label.width.row*safe_row_trim_text;
-        inst_zoom = params.zoom.scale();
-      } else {
-        // the column label has extra length since its rotated
-        max_width = params.norm_label.width.col;
-        inst_zoom = params.zoom.scale()/params.viz.zoom_switch;
-      }
-
-      var tmp_width = d3.select(inst_selection).select('text').node().getBBox().width;
-      var inst_text = d3.select(inst_selection).select('text').text();
-      var actual_width = tmp_width*inst_zoom;
-
-      if (actual_width>max_width){
-
-        var trim_fraction = max_width/actual_width;
-        var keep_num_char = Math.floor(inst_text.length*trim_fraction)-3;
-        var trimmed_text = inst_text.substring(0,keep_num_char)+'..';
-        d3.select(inst_selection).select('text')
-          .text(trimmed_text);
-
-      }
-
-    }
 
   }
 
