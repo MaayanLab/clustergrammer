@@ -138,7 +138,7 @@ function VizParams(config){
     // define label scale
     ///////////////////////////
     var min_label_width = 85;
-    var max_label_width = 105;
+    var max_label_width = 85;
     var label_scale = d3.scale.linear()
       .domain([min_num_char, max_num_char])
       .range([min_label_width, max_label_width]).clamp('true');
