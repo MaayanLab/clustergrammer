@@ -205,8 +205,8 @@
     params.viz.border_width = params.matrix.rect_width / 55;
 
     // the default font sizes are set here
-    params.labels.default_fs_row = params.matrix.rect_height * 1.01;
-    params.labels.default_fs_col = params.matrix.rect_width * 0.85;
+    params.labels.default_fs_row = params.matrix.rect_height * 1.07;
+    params.labels.default_fs_col = params.matrix.rect_width * 0.87  ;
 
 
     svg_group.select('#grey_background')
