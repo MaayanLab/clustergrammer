@@ -5427,6 +5427,8 @@ function Zoom(params){
 
   function two_translate_zoom(params, pan_dx, pan_dy, fin_zoom) {
 
+    console.log('\nrunning two_translate_zoom   ')
+
     // get parameters
     if (!params.viz.run_trans) {
 
@@ -5717,10 +5719,9 @@ function Zoom(params){
 
   function constrain_font_size(params, trans){
 
-    var search_duration = 700;
+    console.log('constraining font size')
 
     var fraction_keep = {};
-
 
     var keep_width = {};
     keep_width.row = params.bounding_width_max.row*params.labels.row_keep
@@ -5743,14 +5744,11 @@ function Zoom(params){
       d3.selectAll('.row_label_text').each(function() {
         if (trans){
           d3.select(this).select('text')
-            .transition().duration(search_duration)
             .style('font-size', params.labels.default_fs_row * params.viz.zoom_scale_font.row + 'px')
-            // .attr('y', params.matrix.rect_height * params.scale_font_offset(params.viz.zoom_scale_font.row));
             .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35*params.viz.zoom_scale_font.row );
         } else {
           d3.select(this).select('text')
             .style('font-size', params.labels.default_fs_row * params.viz.zoom_scale_font.row + 'px')
-            // .attr('y', params.matrix.rect_height * params.scale_font_offset(params.viz.zoom_scale_font.row))
             .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35*params.viz.zoom_scale_font.row );
         }
       });
@@ -5758,20 +5756,16 @@ function Zoom(params){
       d3.selectAll('.row_label_text').each(function() {
         if (trans){
           d3.select(this).select('text')
-            .transition().duration(search_duration)
             .style('font-size', params.labels.default_fs_row + 'px')
             // if there is a transition, then set zoom_scale_font to 1
             // its either two translate zoom or sooming into matrix from search
-            .attr('y', params.matrix.y_scale.rangeBand() * 
-              params.scale_font_offset(1))
+            .attr('y', params.matrix.y_scale.rangeBand() * params.scale_font_offset(1))
           d3.select(this).select('text')
             .text(function(d){ return normal_name(d);});
 
         } else {
           d3.select(this).select('text')
             .style('font-size', params.labels.default_fs_row + 'px')
-            // .attr('y', params.matrix.y_scale.rangeBand() * 
-            //   params.scale_font_offset(params.viz.zoom_scale_font.row))
             .text(function(d){ return normal_name(d);});
         }
       });
@@ -5785,7 +5779,6 @@ function Zoom(params){
       d3.selectAll('.col_label_click').each(function() {
         if (trans){
           d3.select(this).select('text')
-            .transition().duration(search_duration)
             .style('font-size', params.labels.default_fs_col *
               params.viz.zoom_scale_font.col + 'px');
         } else {
@@ -5798,7 +5791,6 @@ function Zoom(params){
       d3.selectAll('.col_label_click').each(function() {
         if (trans){
           d3.select(this).select('text')
-            .transition().duration(search_duration)
             .style('font-size', params.labels.default_fs_col + 'px');
           d3.select(this).select('text')
             .text(function(d){ return normal_name(d);});
