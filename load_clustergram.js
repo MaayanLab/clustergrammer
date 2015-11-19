@@ -52,7 +52,7 @@ function make_clust(inst_network){
           'outer_margins_expand': outer_margins_expand,
           // 'outline_colors':['black','yellow'],
           // 'tile_click_hlight':true,
-          // 'show_tooltips':true,
+          'show_tooltips':true,
           // 'click_tile': click_tile_callback,
           // 'click_label':click_label,
           // 'highlight_color':'yellow',
@@ -235,6 +235,7 @@ function make_clust(inst_network){
 
 // choose example here
 make_clust('default_example_f1.json');
+// make_clust('enr_vect_example.json');
 // make_clust('narrow_example.json');
 // make_clust('bar_example.json');
 // make_clust('kin_sub_example.json');
