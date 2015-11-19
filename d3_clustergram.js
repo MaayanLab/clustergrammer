@@ -5715,11 +5715,13 @@ function Zoom(params){
   }
 
 
-
-
   function constrain_font_size(params, trans){
 
-    console.log('constraining font size')
+    if (trans){
+      var trans_time = 700;
+    } else {
+      var trans_time = 0;
+    }
 
     var fraction_keep = {};
 
@@ -5745,7 +5747,9 @@ function Zoom(params){
         if (trans){
           d3.select(this).select('text')
             .style('font-size', params.labels.default_fs_row * params.viz.zoom_scale_font.row + 'px')
-            .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35*params.viz.zoom_scale_font.row );
+            .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35*params.viz.zoom_scale_font.row )
+            .style('opacity',0.20).transition().duration(700)
+            .style('opacity',1);
         } else {
           d3.select(this).select('text')
             .style('font-size', params.labels.default_fs_row * params.viz.zoom_scale_font.row + 'px')
@@ -5761,7 +5765,9 @@ function Zoom(params){
             // its either two translate zoom or sooming into matrix from search
             .attr('y', params.matrix.y_scale.rangeBand() * params.scale_font_offset(1))
           d3.select(this).select('text')
-            .text(function(d){ return normal_name(d);});
+            .text(function(d){ return normal_name(d);})
+            .style('opacity',0.20).transition().duration(700)
+            .style('opacity',1);
 
         } else {
           d3.select(this).select('text')
@@ -5780,7 +5786,9 @@ function Zoom(params){
         if (trans){
           d3.select(this).select('text')
             .style('font-size', params.labels.default_fs_col *
-              params.viz.zoom_scale_font.col + 'px');
+              params.viz.zoom_scale_font.col + 'px')
+            .style('opacity',0.20).transition().duration(700)
+            .style('opacity',1);
         } else {
           d3.select(this).select('text')
             .style('font-size', params.labels.default_fs_col *
@@ -5793,7 +5801,9 @@ function Zoom(params){
           d3.select(this).select('text')
             .style('font-size', params.labels.default_fs_col + 'px');
           d3.select(this).select('text')
-            .text(function(d){ return normal_name(d);});
+            .text(function(d){ return normal_name(d);})
+            .style('opacity',0.20).transition().duration(700)
+            .style('opacity',1);
         } else {
           d3.select(this).select('text')
             .style('font-size', params.labels.default_fs_col + 'px')
