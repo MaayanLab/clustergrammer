@@ -116,8 +116,8 @@ class Network(object):
     # line 3 has column labels and dataset numbers, but no information that I need
     # line 4 and after have gene symbols (first column) and values (4th and after columns)
 
-    # load gene classes for harmonogram 
-    gc = self.load_json_to_dict('gene_classes_harmonogram.json')
+    # # load gene classes for harmonogram 
+    # gc = self.load_json_to_dict('gene_classes_harmonogram.json')
 
     f = open(filename,'r')
     lines = f.readlines()
@@ -737,7 +737,7 @@ class Network(object):
 
     print( 'final mat shape' + str(self.dat['mat'].shape ) + '\n')
 
-  def cluster_row_and_col(self, dist_type, cutoff=0, min_num_comp=1, dendro=True):
+  def cluster_row_and_col(self, dist_type, cutoff=0, min_num_comp=1, dendro=True, run_clustering=True):
     ''' 
     cluster net.dat and make visualization json, net.viz. 
     optionally leave out dendrogram colorbar groups with dendro argument 
@@ -747,8 +747,10 @@ class Network(object):
     from scipy.spatial.distance import pdist
     from copy import deepcopy
 
-    # print('\nclustering the matrix using dist_type ' + dist_type + ' with a comparison requirement of at least ' + str(cutoff) + ' instances above abs-value of ' + str(min_num_comp) +' in order to compare')
-    # print('calculating distance matrix using ')
+    # do not make dendrogram is you are not running clusttering 
+    if run_clustering == False:
+      dendro = False
+
 
     # make distance matrices 
     ##########################
@@ -777,17 +779,18 @@ class Network(object):
     # initialize clust order 
     clust_order = self.ini_clust_order()
 
-    # initial ordering 
+    # initial ordering
     ###################
-    clust_order['row']['ini'] = range(num_row, 0, -1)
-    clust_order['col']['ini'] = range(num_col, 0, -1)
+    clust_order['row']['ini'] = range(num_row, -1, -1)
+    clust_order['col']['ini'] = range(num_col, -1, -1)
 
     # cluster 
     ##############
-    # cluster rows 
-    cluster_method = 'average'
-    clust_order['row']['clust'], clust_order['row']['group'] = self.clust_and_group_nodes(row_dm, cluster_method)
-    clust_order['col']['clust'], clust_order['col']['group'] = self.clust_and_group_nodes(col_dm, cluster_method)
+    if run_clustering == True:
+      # cluster rows 
+      cluster_method = 'average'
+      clust_order['row']['clust'], clust_order['row']['group'] = self.clust_and_group_nodes(row_dm, cluster_method)
+      clust_order['col']['clust'], clust_order['col']['group'] = self.clust_and_group_nodes(col_dm, cluster_method)
 
     # rank 
     ############
@@ -795,14 +798,22 @@ class Network(object):
     clust_order['col']['rank'] = self.sort_rank_nodes('col')
 
     # save clustering orders to node_info 
+    if run_clustering == True:
+      print('\n\ntransferring clustering orders\n\n')
+      self.dat['node_info']['row']['clust'] = clust_order['row']['clust']
+      self.dat['node_info']['col']['clust'] = clust_order['col']['clust']
+    else:
+      print('\n\nnot transferring clustering orders\n\n')
+      self.dat['node_info']['row']['clust'] = clust_order['row']['ini']
+      self.dat['node_info']['col']['clust'] = clust_order['col']['ini']
+
+    # transfer ordereings
     # row
     self.dat['node_info']['row']['ini']   = clust_order['row']['ini']
-    self.dat['node_info']['row']['clust'] = clust_order['row']['clust']
     self.dat['node_info']['row']['rank']  = clust_order['row']['rank']
     self.dat['node_info']['row']['group'] = clust_order['row']['group']
     # col 
     self.dat['node_info']['col']['ini']   = clust_order['col']['ini']
-    self.dat['node_info']['col']['clust'] = clust_order['col']['clust']
     self.dat['node_info']['col']['rank']  = clust_order['col']['rank']
     self.dat['node_info']['col']['group'] = clust_order['col']['group']
 

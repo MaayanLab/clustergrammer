@@ -234,7 +234,7 @@ function make_clust(inst_network){
 
 
 // choose example here
-make_clust('default_example_f1.json');
+make_clust('default_example.json');
 // make_clust('enr_vect_example.json');
 // make_clust('narrow_example.json');
 // make_clust('narrow_long_name.json');
