@@ -520,6 +520,8 @@ function VizParams(config){
               });
             params.viz.expand = true;
 
+            d3.selectAll('.borders').style('fill','white');
+
           // contract view
           } else {
 
@@ -532,6 +534,7 @@ function VizParams(config){
               });
             params.viz.expand = false;
 
+            d3.selectAll('.borders').style('fill','#eee');
           }
 
           // get updated size for visualization

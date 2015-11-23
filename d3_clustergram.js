@@ -1560,6 +1560,8 @@ function VizParams(config){
               });
             params.viz.expand = true;
 
+            d3.selectAll('.borders').style('fill','white');
+
           // contract view
           } else {
 
@@ -1572,6 +1574,7 @@ function VizParams(config){
               });
             params.viz.expand = false;
 
+            d3.selectAll('.borders').style('fill','#eee');
           }
 
           // get updated size for visualization
@@ -4736,6 +4739,7 @@ function Viz(params) {
     d3.select('#main_svg')
       .append('rect')
       .attr('id','left_border')
+      .attr('class','borders')
       .attr('fill', params.viz.super_border_color) //!! prog_colors
       .attr('width', params.viz.grey_border_width)
       .attr('height', params.viz.svg_dim.height)
@@ -4745,6 +4749,7 @@ function Viz(params) {
     d3.select('#main_svg')
       .append('rect')
       .attr('id','right_border')
+      .attr('class','borders')
       .attr('fill', params.viz.super_border_color) //!! prog_colors
       .attr('width', params.viz.grey_border_width)
       .attr('height', params.viz.svg_dim.height)
@@ -4757,6 +4762,7 @@ function Viz(params) {
     d3.select('#main_svg')
       .append('rect')
       .attr('id','top_border')
+      .attr('class','borders')
       .attr('fill', params.viz.super_border_color) //!! prog_colors
       .attr('width', params.viz.svg_dim.width)
       .attr('height', params.viz.grey_border_width)
@@ -4769,6 +4775,7 @@ function Viz(params) {
     d3.select('#main_svg')
       .append('rect')
       .attr('id','bottom_border')
+      .attr('class','borders')
       .attr('fill', params.viz.super_border_color) //!! prog_colors
       .attr('width', params.viz.svg_dim.width)
       .attr('height', params.viz.grey_border_width)
