@@ -1561,6 +1561,7 @@ function VizParams(config){
             params.viz.expand = true;
 
             d3.selectAll('.borders').style('fill','white');
+            d3.select('.footer_section').style('display','none');
 
           // contract view
           } else {
@@ -1575,6 +1576,7 @@ function VizParams(config){
             params.viz.expand = false;
 
             d3.selectAll('.borders').style('fill','#eee');
+            d3.select('.footer_section').style('display','block');
           }
 
           // get updated size for visualization
@@ -4735,12 +4737,20 @@ function Viz(params) {
     // tmp add final svg border here
     // add border to svg in four separate lines - to not interfere with clicking anything
     ///////////////////////////////////////////////////////////////////////////////////////
+    function border_colors() {
+      var inst_color = params.viz.super_border_color;
+      if (params.viz.expand){
+        inst_color = 'white';
+      }
+      return inst_color;
+    }
+
     // left border
     d3.select('#main_svg')
       .append('rect')
       .attr('id','left_border')
       .attr('class','borders')
-      .attr('fill', params.viz.super_border_color) //!! prog_colors
+      .attr('fill', border_colors) 
       .attr('width', params.viz.grey_border_width)
       .attr('height', params.viz.svg_dim.height)
       .attr('transform', 'translate(0,0)');
@@ -4750,7 +4760,7 @@ function Viz(params) {
       .append('rect')
       .attr('id','right_border')
       .attr('class','borders')
-      .attr('fill', params.viz.super_border_color) //!! prog_colors
+      .attr('fill', border_colors)
       .attr('width', params.viz.grey_border_width)
       .attr('height', params.viz.svg_dim.height)
       .attr('transform', function() {
@@ -4763,7 +4773,7 @@ function Viz(params) {
       .append('rect')
       .attr('id','top_border')
       .attr('class','borders')
-      .attr('fill', params.viz.super_border_color) //!! prog_colors
+      .attr('fill', border_colors)
       .attr('width', params.viz.svg_dim.width)
       .attr('height', params.viz.grey_border_width)
       .attr('transform', function() {
@@ -4776,7 +4786,7 @@ function Viz(params) {
       .append('rect')
       .attr('id','bottom_border')
       .attr('class','borders')
-      .attr('fill', params.viz.super_border_color) //!! prog_colors
+      .attr('fill', border_colors)
       .attr('width', params.viz.svg_dim.width)
       .attr('height', params.viz.grey_border_width)
       .attr('transform', function() {
