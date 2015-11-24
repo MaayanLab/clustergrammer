@@ -8,6 +8,10 @@ function Reorder(params){
   function all_reorder(inst_order) {
 
     params.viz.run_trans = true;
+    
+    // save order state 
+    params.viz.inst_order = inst_order;
+
     var row_nodes_obj = params.network_data.row_nodes;
     var row_nodes_names = _.pluck(row_nodes_obj, 'name');
 

@@ -1,40 +1,68 @@
-function update_network(args){
+function update_network(change_view){
 
+  console.log('changing view '+String(change_view.filter));
+
+  // create a new args object 
+  //////////////////////////////////////////
+
+  /*
+  The original network_data is stored in this.config and will never be 
+  overwritten. In order to update the network I need to 
+  
+  1. Create new network_data object using the filter value and 
+  this.config.network_data. I'll use crossfilter to only select links from the 
+  original network_data that are connecting the updated nodes. 
+
+  2. Make new_config object by copying the original config and swapping in the 
+  updated network_data object. 
+
+  3. Use new_config to make new_params. With new_params and the updated 
+  network_data, I can 
+  */
+
+  /////////////////////////////
+  // new way 
+  /////////////////////////////
+
+  // get copy of old params 
   var old_params = this.params;
 
-  var config = Config(args);
-  var params = VizParams(config);
+  // make new_network_data 
+  var new_network_data = filter_network_data(this.config.network_data, change_view); 
 
+  // make Deep copy of this.config object 
+  var new_config = jQuery.extend(true, {}, this.config);
+
+  // swap in new_network_data
+  new_config.network_data = new_network_data;
+  // swap in instantaneous order 
+  new_config.inst_order = old_params.viz.inst_order;
+
+  // make new params 
+  var params = VizParams(new_config);
   var delays = define_enter_exit_delays(old_params, params);
 
-  var network_data = params.network_data;
-
-  // ordering - necessary for redefining the function called on button click
+  // ordering - necessary for reordering the function called on button click 
   var reorder = Reorder(params);
   this.reorder = reorder.all_reorder;
 
-  enter_exit_update(params, network_data, reorder, delays);
+  enter_exit_update(params, new_network_data, reorder, delays);
 
-  // update network data 
-  // this.params.network_data = network_data;
+  // update network data in params 
   this.params = params;
 
   // search functions 
-  var gene_search = Search(params, params.network_data.row_nodes,'name');
-  this.get_genes  = gene_search.get_entities;
+  var gene_search = Search(params, params.network_data.row_nodes, 'name');
+  this.get_genes = gene_search.get_entities;
   this.find_gene = gene_search.find_entities;
 
-  // initialize screen resizing - necesary for resizing with new params 
+  // initialize screen resizing - necessary for resizing with new params 
   params.initialize_resizing(params);
 
-  // necessary to have zoom behavior on updated clustergram
-  // params.zoom corresponds to the zoomed function from the Zoom object 
+  // necessary to have zoom behavior updated on updating clustergram 
   d3.select('#main_svg').call(params.zoom);
 
-  // d3.select('#main_svg').on('dblclick.zoom',null);    
-
-  // initialize the double click behavior - necessary for nomal zoom/double click
-  // behavior 
+  // initialize the double click behavior 
   var zoom = Zoom(params);
   zoom.ini_doubleclick();
 

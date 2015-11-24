@@ -1050,8 +1050,8 @@ function VizParams(config){
     // initialize params object from config
     var params = config;
 
-    // save a backup of the config object in params 
-    params.config = config;
+    // // save a backup of the config object in params 
+    // params.config = config;
 
     // Label Paramsters
     params.labels = {};
@@ -1370,6 +1370,10 @@ function VizParams(config){
 
     // add names and instantaneous positions to links 
     _.each(params.network_data.links, function(d){
+
+      // console.log('\n\nadding names')
+      // console.log(d);
+
       d.name = row_nodes[d.source].name + '_' + col_nodes[d.target].name;
       d.row_name = row_nodes[d.source].name;
       d.col_name = col_nodes[d.target].name;
@@ -4089,43 +4093,71 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
 
 }
 
-function update_network(args){
+function update_network(change_view){
 
+  console.log('changing view '+String(change_view.filter));
+
+  // create a new args object 
+  //////////////////////////////////////////
+
+  /*
+  The original network_data is stored in this.config and will never be 
+  overwritten. In order to update the network I need to 
+  
+  1. Create new network_data object using the filter value and 
+  this.config.network_data. I'll use crossfilter to only select links from the 
+  original network_data that are connecting the updated nodes. 
+
+  2. Make new_config object by copying the original config and swapping in the 
+  updated network_data object. 
+
+  3. Use new_config to make new_params. With new_params and the updated 
+  network_data, I can 
+  */
+
+  /////////////////////////////
+  // new way 
+  /////////////////////////////
+
+  // get copy of old params 
   var old_params = this.params;
 
-  var config = Config(args);
-  var params = VizParams(config);
+  // make new_network_data 
+  var new_network_data = filter_network_data(this.config.network_data, change_view); 
 
+  // make Deep copy of this.config object 
+  var new_config = jQuery.extend(true, {}, this.config);
+
+  // swap in new_network_data
+  new_config.network_data = new_network_data;
+  // swap in instantaneous order 
+  new_config.inst_order = old_params.viz.inst_order;
+
+  // make new params 
+  var params = VizParams(new_config);
   var delays = define_enter_exit_delays(old_params, params);
 
-  var network_data = params.network_data;
-
-  // ordering - necessary for redefining the function called on button click
+  // ordering - necessary for reordering the function called on button click 
   var reorder = Reorder(params);
   this.reorder = reorder.all_reorder;
 
-  enter_exit_update(params, network_data, reorder, delays);
+  enter_exit_update(params, new_network_data, reorder, delays);
 
-  // update network data 
-  // this.params.network_data = network_data;
+  // update network data in params 
   this.params = params;
 
   // search functions 
-  var gene_search = Search(params, params.network_data.row_nodes,'name');
-  this.get_genes  = gene_search.get_entities;
+  var gene_search = Search(params, params.network_data.row_nodes, 'name');
+  this.get_genes = gene_search.get_entities;
   this.find_gene = gene_search.find_entities;
 
-  // initialize screen resizing - necesary for resizing with new params 
+  // initialize screen resizing - necessary for resizing with new params 
   params.initialize_resizing(params);
 
-  // necessary to have zoom behavior on updated clustergram
-  // params.zoom corresponds to the zoomed function from the Zoom object 
+  // necessary to have zoom behavior updated on updating clustergram 
   d3.select('#main_svg').call(params.zoom);
 
-  // d3.select('#main_svg').on('dblclick.zoom',null);    
-
-  // initialize the double click behavior - necessary for nomal zoom/double click
-  // behavior 
+  // initialize the double click behavior 
   var zoom = Zoom(params);
   zoom.ini_doubleclick();
 
@@ -4607,6 +4639,54 @@ function enter_exit_update(params, network_data, reorder, delays){
 }
 
 
+function filter_network_data(orig_network_data, new_nodes){
+  
+  var views = orig_network_data.views;
+
+  var inst_view = _.find(views, function(d){return d.filt==change_view.filter});
+
+  var new_nodes = inst_view.nodes;
+
+  // get new names of rows and cols 
+  var row_names = _.pluck(new_nodes.row_nodes, 'name');
+  var col_names = _.pluck(new_nodes.col_nodes, 'name');
+
+  var links = orig_network_data.links;
+
+  console.log('there are '+String(orig_network_data.links.length) +' links in original data')
+
+  var new_links = _.filter(links, function(d){
+    var inst_row = d.name.split('_')[0];
+    var inst_col = d.name.split('_')[1]; 
+
+    var row_index = _.indexOf(row_names, inst_row);
+    var col_index = _.indexOf(col_names, inst_col);
+
+    if ( row_index >-1 & col_index >-1 ){
+      // redefine source and target 
+      d.source = row_index;
+      d.target = col_index;
+      return d;
+    }
+  })
+
+  // set up new_network_data
+  var new_network_data = {};
+  // rows
+  new_network_data.row_nodes = new_nodes.row_nodes;
+  new_network_data.row_nodes_names = row_names;
+  // cols
+  new_network_data.col_nodes = new_nodes.col_nodes;
+  new_network_data.col_nodes_names = col_names;
+  // links 
+  new_network_data.links = new_links;
+
+  // pass on all views 
+  new_network_data.views = views;
+  
+  return new_network_data;
+
+}
 
 /* Represents the entire visualization: labels, dendrogram (optional) and matrix.
  */
@@ -4894,6 +4974,10 @@ function Reorder(params){
   function all_reorder(inst_order) {
 
     params.viz.run_trans = true;
+    
+    // save order state 
+    params.viz.inst_order = inst_order;
+
     var row_nodes_obj = params.network_data.row_nodes;
     var row_nodes_names = _.pluck(row_nodes_obj, 'name');
 
@@ -6092,7 +6176,8 @@ return {
     opacity_function: viz.opacity_function,
     resize: viz.run_reset_visualization_size,
     update_network: viz.update_network,
-    params: viz.params
+    params: viz.params,
+    config: config
 };
 	
 }

@@ -96,7 +96,11 @@ function make_clust(inst_network){
             d3.select('#filter_value').text('filter row/column: value : '+inst_filt);
             var inst_name = 'default_example_f'+inst_filt+'.json';
 
-            update_clust(inst_name);
+            // get clustergram to update using views and crossfilter 
+            change_view = {'filter':inst_filt, 'num_meet':1}
+            d3c.update_network(change_view);
+
+            // update_clust(inst_name);
           }
         });
         $( "#amount" ).val( "$" + $( "#slider_filter" ).slider( "value" ) );

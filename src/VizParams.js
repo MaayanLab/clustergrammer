@@ -10,8 +10,8 @@ function VizParams(config){
     // initialize params object from config
     var params = config;
 
-    // save a backup of the config object in params 
-    params.config = config;
+    // // save a backup of the config object in params 
+    // params.config = config;
 
     // Label Paramsters
     params.labels = {};
@@ -330,6 +330,10 @@ function VizParams(config){
 
     // add names and instantaneous positions to links 
     _.each(params.network_data.links, function(d){
+
+      // console.log('\n\nadding names')
+      // console.log(d);
+
       d.name = row_nodes[d.source].name + '_' + col_nodes[d.target].name;
       d.row_name = row_nodes[d.source].name;
       d.col_name = col_nodes[d.target].name;

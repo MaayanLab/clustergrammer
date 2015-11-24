@@ -18,6 +18,7 @@ module.exports = function(grunt) {
         '../src/ResetSize.js',
         '../src/ResetSizeAfterUpdate.js',
         '../src/UpdateNetwork.js',
+        '../src/FilterNetwork.js',
         '../src/Viz.js',
         '../src/Reorder.js',
         '../src/zoom.js',
