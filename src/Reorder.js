@@ -328,11 +328,11 @@ function Reorder(params){
     ///////////////////////////////
     // unhilight and unbold all columns (already unbolded earlier)
     d3.selectAll('.col_label_text')
-      .select('rect')
+      .select('.highlight_rect')
       .style('opacity', 0);
     // highlight column name
     d3.select(this)
-      .select('rect')
+      .select('.highlight_rect')
       .style('opacity', 1);
 
     // redefine x and y positions 

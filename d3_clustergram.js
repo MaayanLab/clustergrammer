@@ -2102,6 +2102,36 @@ function Labels(params){
         // tip.hide(d)
       });
 
+    // get max value
+    var enr_max = Math.abs(_.max( col_nodes, function(d) { return Math.abs(d.value) } ).value) ;
+    var enr_min = Math.abs(_.min( col_nodes, function(d) { return Math.abs(d.value) } ).value) ;
+
+    // the enrichment bar should be 3/4ths of the height of the column labels
+    params.labels.bar_scale_col = d3.scale
+      .linear()
+      .domain([enr_min*0.75, enr_max])
+      .range([0, params.norm_label.width.col]);
+
+    // append column value bars
+    if (Utils.has( params.network_data.col_nodes[0], 'value')) {
+      col_label_click
+      .append('rect')
+      .attr('class', 'col_bars')
+      .attr('width', function(d) {
+        var inst_value = 0;
+        if (d.value > 0){
+          inst_value = params.labels.bar_scale_col(d.value);
+        }
+        return inst_value;
+      })
+      // rotate labels - reduce width if rotating
+      .attr('height', params.matrix.x_scale.rangeBand() * 0.66)
+      .attr('fill', function(d) {
+        return d.value > 0 ? params.matrix.bar_colors[0] : params.matrix.bar_colors[1];
+      })
+      .attr('opacity', 0.4);
+    }
+
     // add column label
     col_label_click
       .append('text')
@@ -2208,6 +2238,7 @@ function Labels(params){
     // append rectangle behind text
     col_label_click
       .insert('rect', 'text')
+      .attr('class','.highlight_rect')
       .attr('x', 10)
       .attr('y', 0)
       .attr('width', 10)
@@ -2221,7 +2252,7 @@ function Labels(params){
           .select('text')[0][0]
           .getBBox();
         d3.select(this)
-          .select('rect')
+          .select('.highlight_rect')
           .attr('x', bbox.x * 1.25)
           .attr('y', 0)
           .attr('width', bbox.width * 1.25)
@@ -2258,35 +2289,7 @@ function Labels(params){
       .style('opacity',1);
 
 
-    // get max value
-    var enr_max = Math.abs(_.max( col_nodes, function(d) { return Math.abs(d.value) } ).value) ;
-    var enr_min = Math.abs(_.min( col_nodes, function(d) { return Math.abs(d.value) } ).value) ;
 
-    // the enrichment bar should be 3/4ths of the height of the column labels
-    params.labels.bar_scale_col = d3.scale
-      .linear()
-      .domain([enr_min*0.75, enr_max])
-      .range([0, params.norm_label.width.col]);
-
-    // append column value bars
-    if (Utils.has( params.network_data.col_nodes[0], 'value')) {
-      col_label_click
-      .append('rect')
-      .attr('class', 'col_bars')
-      .attr('width', function(d) {
-        var inst_value = 0;
-        if (d.value > 0){
-          inst_value = params.labels.bar_scale_col(d.value);
-        }
-        return inst_value;
-      })
-      // rotate labels - reduce width if rotating
-      .attr('height', params.matrix.x_scale.rangeBand() * 0.66)
-      .attr('fill', function(d) {
-        return d.value > 0 ? params.matrix.bar_colors[0] : params.matrix.bar_colors[1];
-      })
-      .attr('opacity', 0.4);
-    }
 
 
     // add col callback function
@@ -5211,11 +5214,11 @@ function Reorder(params){
     ///////////////////////////////
     // unhilight and unbold all columns (already unbolded earlier)
     d3.selectAll('.col_label_text')
-      .select('rect')
+      .select('.highlight_rect')
       .style('opacity', 0);
     // highlight column name
     d3.select(this)
-      .select('rect')
+      .select('.highlight_rect')
       .style('opacity', 1);
 
     // redefine x and y positions 
