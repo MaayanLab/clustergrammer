@@ -98,9 +98,23 @@ function make_clust(inst_network){
 
             // get clustergram to update using views and crossfilter 
             change_view = {'filter':inst_filt, 'num_meet':1}
+
+            // disable the slider to prevent the user from making changes too
+            // quickly
+            $('#slider_filter').slider('disable');
+
+            // update network 
             d3c.update_network(change_view);
 
-            // update_clust(inst_name);
+            ini_sliders();
+
+            function enable_slider(){
+              $('#slider_filter').slider('enable');  
+            }
+
+            // reenable after update is finished 
+            setTimeout(enable_slider, 3000);
+
           }
         });
         $( "#amount" ).val( "$" + $( "#slider_filter" ).slider( "value" ) );
@@ -170,64 +184,6 @@ function make_clust(inst_network){
             var order_id = $(evt.target).find('input').attr('id').replace('_button', '');
             d3c.reorder(order_id);
           });
-        }
-
-        function update_clust(network_name) {
-
-          function enable_slider(){
-            $('#slider_filter').slider('enable');  
-          }
-
-          // disable the slider to prevent the user from making changes too
-          // quickly
-          $('#slider_filter').slider('disable');
-
-          // reenable after update is finished 
-          setTimeout(enable_slider, 3000);
-
-          d3.json('json/'+network_name, function(network_data){
-
-            // define the outer margins of the visualization
-            var outer_margins = {
-                'top':5,
-                'bottom':33,
-                'left':195,
-                'right':2
-              };
-
-            var outer_margins_expand = {
-                'top':5,
-                'bottom':33,
-                'left':5,
-                'right':2
-              };
-
-            var inst_order = d3.select('#toggle_order')
-              .select('.active')
-              .select('input')
-              .attr('id').split('_')[0];
-
-            // define arguments object
-            var arguments_obj = {
-              'network_data': network_data,
-              'svg_div_id': 'svg_div',
-              'row_label':'Row-Data-Name',
-              'col_label':'Column-Data-Name',
-              'outer_margins': outer_margins,
-              'outer_margins_expand': outer_margins_expand,
-              // 'outline_colors':['black','yellow'],
-              // 'show_tooltips':true,
-              // 'highlight_color':'red',
-              'super_label_scale':1.25,
-              'order':inst_order
-            };
-
-
-            d3c.update_network(arguments_obj);
-
-            ini_sliders();
-
-          })
         }
 
     }); // end d3.json 

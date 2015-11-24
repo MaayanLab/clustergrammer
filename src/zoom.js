@@ -517,7 +517,7 @@ function Zoom(params){
             .style('font-size', params.labels.default_fs_row + 'px')
             // if there is a transition, then set zoom_scale_font to 1
             // its either two translate zoom or sooming into matrix from search
-            .attr('y', params.matrix.y_scale.rangeBand() * params.scale_font_offset(1))
+            .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35*params.viz.zoom_scale_font.row );
           d3.select(this).select('text')
             .text(function(d){ return normal_name(d);})
             .style('opacity',0.20).transition().duration(700)
