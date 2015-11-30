@@ -536,7 +536,8 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
       });
 
 
-    if (delays.transition){
+
+    if (delays.run_transition){
 
       // resize column triangle 
       svg_group.selectAll('.col_label_click')
@@ -606,33 +607,65 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
 
   // resize dendrogram
   ///////////////////
-  svg_group.selectAll('.row_class_rect')
-    // .transition().delay(delays.update).duration(duration)
-    .attr('width', function() {
-      var inst_width = params.class_room.symbol_width - 1;
-      return inst_width + 'px';
-    })
-    .attr('height', params.matrix.y_scale.rangeBand())
-    .attr('x', function() {
-      var inst_offset = params.class_room.symbol_width + 1;
-      return inst_offset + 'px';
-    });
 
-  svg_group.selectAll('.col_class_rect')
-    // .transition().delay(delays.update).duration(duration)
-    .attr('width', params.matrix.x_scale.rangeBand())
-    .attr('height', function() {
-      var inst_height = params.class_room.col - 1;
-      return inst_height;
-    });
+  if (delays.run_transition){
 
-  svg_group.selectAll('.col_viz_group')
-    .data(col_nodes, function(d){return d.name;})
-    // .transition().delay(delays.update).duration(duration)
-    .attr('transform', function(d) {
-      var inst_index = _.indexOf(col_nodes_names, d.name);
-      return 'translate(' + params.matrix.x_scale(inst_index) + ',0)';
-    });
+    svg_group.selectAll('.row_class_rect')
+      .transition().delay(delays.update).duration(duration)
+      .attr('width', function() {
+        var inst_width = params.class_room.symbol_width - 1;
+        return inst_width + 'px';
+      })
+      .attr('height', params.matrix.y_scale.rangeBand())
+      .attr('x', function() {
+        var inst_offset = params.class_room.symbol_width + 1;
+        return inst_offset + 'px';
+      });
+
+    svg_group.selectAll('.col_class_rect')
+      .transition().delay(delays.update).duration(duration)
+      .attr('width', params.matrix.x_scale.rangeBand())
+      .attr('height', function() {
+        var inst_height = params.class_room.col - 1;
+        return inst_height;
+      });
+
+    svg_group.selectAll('.col_viz_group')
+      .data(col_nodes, function(d){return d.name;})
+      .transition().delay(delays.update).duration(duration)
+      .attr('transform', function(d) {
+        var inst_index = _.indexOf(col_nodes_names, d.name);
+        return 'translate(' + params.matrix.x_scale(inst_index) + ',0)';
+      });
+
+    } else {
+
+      svg_group.selectAll('.row_class_rect')
+      .attr('width', function() {
+        var inst_width = params.class_room.symbol_width - 1;
+        return inst_width + 'px';
+      })
+      .attr('height', params.matrix.y_scale.rangeBand())
+      .attr('x', function() {
+        var inst_offset = params.class_room.symbol_width + 1;
+        return inst_offset + 'px';
+      });
+
+    svg_group.selectAll('.col_class_rect')
+      .attr('width', params.matrix.x_scale.rangeBand())
+      .attr('height', function() {
+        var inst_height = params.class_room.col - 1;
+        return inst_height;
+      });
+
+    svg_group.selectAll('.col_viz_group')
+      .data(col_nodes, function(d){return d.name;})
+      .attr('transform', function(d) {
+        var inst_index = _.indexOf(col_nodes_names, d.name);
+        return 'translate(' + params.matrix.x_scale(inst_index) + ',0)';
+      });
+
+    }
 
   // reposition grid lines
   ////////////////////////////
