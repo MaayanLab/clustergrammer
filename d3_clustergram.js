@@ -2824,147 +2824,49 @@ function draw_grid_lines(row_nodes, col_nodes) {
       .attr('width', params.viz.clust.dim.width)
       .attr('height', params.viz.clust.dim.height);
 
-    // resize tiles - either in rows or individually 
-    if (d3.select('.row_tile').empty()){
+    // resize rows and tiles within rows 
 
-      // reset tiles 
-      svg_group.selectAll('.tile')
-        .attr('width', params.matrix.rect_width)
-        .attr('height', params.matrix.rect_height)
-        .attr('transform', function(d) {
-          var x_pos = params.matrix.x_scale(d.target) + 0.5*params.viz.border_width;
-          var y_pos = params.matrix.y_scale(d.source) + 0.5*params.viz.border_width/params.viz.zoom_switch;
-          return 'translate(' + x_pos + ','+ y_pos +')';
-        });
+    svg_group.selectAll('.row')
+      .attr('transform', function(d){
+        var tmp_index = _.indexOf(row_nodes_names, d.name);
+        return 'translate(0,'+params.matrix.y_scale(tmp_index)+')';
+      });
+      
+    svg_group.selectAll('.row')
+      .selectAll('rect')
+      .attr('transform', function(d){
+        var x_pos = params.matrix.x_scale(d.pos_x) + 0.5*params.viz.border_width;
+        var y_pos = 0.5*params.viz.border_width/params.viz.zoom_switch;
+        return 'translate('+x_pos+','+y_pos+')';
+      })
+      .attr('width', params.matrix.rect_width)
+      .attr('height', params.matrix.rect_height);
 
-      svg_group.selectAll('.tile_group')
-        .attr('width', params.matrix.rect_width)
-        .attr('height', params.matrix.rect_height);
+    svg_group.selectAll('.highlighting_rect')
+      .attr('width', params.matrix.x_scale.rangeBand() * 0.80)
+      .attr('height', params.matrix.y_scale.rangeBand() * 0.80);
 
-      svg_group.selectAll('.highlighting_rect')
-        .attr('width', params.matrix.rect_width * 0.80)
-        .attr('height', params.matrix.rect_height * 0.80);
+    svg_group.selectAll('.tile_split_up')
+      .attr('d', function() {
+        var start_x = 0;
+        var final_x = params.matrix.x_scale.rangeBand();
+        var start_y = 0;
+        var final_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand()/60;
+        var output_string = 'M' + start_x + ',' + start_y + ', L' +
+          start_x + ', ' + final_y + ', L' + final_x + ',0 Z';
+        return output_string;
+      })
 
-      svg_group.selectAll('.tile_split_up')
-        .attr('d', function() {
-          var start_x = 0;
-          var final_x = params.matrix.rect_width;
-          var start_y = 0;
-          var final_y = params.matrix.rect_height - params.matrix.rect_height/60;
-          var output_string = 'M' + start_x + ',' + start_y + ', L' +
-            start_x + ', ' + final_y + ', L' + final_x + ',0 Z';
-          return output_string;
-        })
-
-      svg_group.selectAll('.tile_split_dn')
-        .attr('d', function() {
-          var start_x = 0;
-          var final_x = params.matrix.rect_width;
-          var start_y = params.matrix.rect_height - params.matrix.rect_height/60;
-          var final_y = params.matrix.rect_height - params.matrix.rect_height;
-          var output_string = 'M' + start_x + ', ' + start_y + ' ,   L' +
-            final_x + ', ' + final_y + ',  L' + final_x + ',0 Z';
-          return output_string;
-        })
-
-      // enter new elements 
-      //////////////////////////
-      d3.select('#clust_group')
-        .selectAll('.tile')
-        .data(inst_links, function(d){return d.name;})
-        .enter()
-        .append('rect')
-        .style('fill-opacity',0)
-        .attr('class','tile new_tile')
-        .attr('width', params.matrix.rect_width)
-        .attr('height', params.matrix.rect_height)
-        .attr('transform', function(d) {
-          return 'translate(' + params.matrix.x_scale(d.target) + ','+params.matrix.y_scale(d.source)+')';
-        })
-        .style('fill', function(d) {
-            return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
-        })
-        .style('fill-opacity', function(d) {
-            // calculate output opacity using the opacity scale
-            var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
-            return output_opacity;
-        });
-
-      d3.selectAll('.tile')
-        .on('mouseover',null)
-        .on('mouseout',null);
-
-      // redefine mouseover events for tiles 
-      d3.select('#clust_group')
-        .selectAll('.tile')
-        .on('mouseover', function(p) {
-          var row_name = p.name.split('_')[0];
-          var col_name = p.name.split('_')[1];
-          // highlight row - set text to active if
-          d3.selectAll('.row_label_text text')
-            .classed('active', function(d) {
-              return row_name === d.name;
-            });
-
-          d3.selectAll('.col_label_text text')
-            .classed('active', function(d) {
-              return col_name === d.name;
-            });
-        })
-        .on('mouseout', function mouseout() {
-          d3.selectAll('text').classed('active', false);
-        })
-        .attr('title', function(d) {
-          return d.value;
-        });
-    } else {
-
-      // resize tiles
-      ///////////////////
-      svg_group.selectAll('.tile')
-        .attr('width', params.matrix.rect_width)
-        .attr('height', params.matrix.rect_height)
-        .attr('transform', function(d) {
-          var x_pos = params.matrix.x_scale(d.pos_x) + 0.5*params.viz.border_width; 
-          var y_pos = 0.5*params.viz.border_width/params.viz.zoom_switch;
-          return 'translate(' + x_pos + ','+y_pos+')';
-        });
-
-      svg_group.selectAll('.tile_group')
-        .attr('width', params.matrix.x_scale.rangeBand())
-        .attr('height', params.matrix.y_scale.rangeBand());
-
-      svg_group.selectAll('.row')
-        .attr('transform', function(d, index) {
-          return 'translate(0,' + params.matrix.y_scale(index) + ')';
-        });
-
-      svg_group.selectAll('.highlighting_rect')
-        .attr('width', params.matrix.x_scale.rangeBand() * 0.80)
-        .attr('height', params.matrix.y_scale.rangeBand() * 0.80);
-
-      svg_group.selectAll('.tile_split_up')
-        .attr('d', function() {
-          var start_x = 0;
-          var final_x = params.matrix.x_scale.rangeBand();
-          var start_y = 0;
-          var final_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand()/60;
-          var output_string = 'M' + start_x + ',' + start_y + ', L' +
-            start_x + ', ' + final_y + ', L' + final_x + ',0 Z';
-          return output_string;
-        })
-
-      svg_group.selectAll('.tile_split_dn')
-        .attr('d', function() {
-          var start_x = 0;
-          var final_x = params.matrix.x_scale.rangeBand();
-          var start_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand()/60;
-          var final_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand()/60;
-          var output_string = 'M' + start_x + ', ' + start_y + ' ,   L' +
-            final_x + ', ' + final_y + ',  L' + final_x + ',0 Z';
-          return output_string;
-        })
-    }
+    svg_group.selectAll('.tile_split_dn')
+      .attr('d', function() {
+        var start_x = 0;
+        var final_x = params.matrix.x_scale.rangeBand();
+        var start_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand()/60;
+        var final_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand()/60;
+        var output_string = 'M' + start_x + ', ' + start_y + ' ,   L' +
+          final_x + ', ' + final_y + ',  L' + final_x + ',0 Z';
+        return output_string;
+      })
 
     // reposition tile highlight
     ////////////////////////////////
@@ -3080,9 +2982,6 @@ function draw_grid_lines(row_nodes, col_nodes) {
         return 'translate(0,' + params.matrix.y_scale(inst_index) + ')';
       });
 
-
-
-    
 
     svg_group.selectAll('.row_label_text')
       .select('text')
@@ -5168,7 +5067,7 @@ function Reorder(params){
       // Move Row Labels
       d3.select('#row_label_zoom_container').selectAll('.row_label_text')
         .attr('transform', function(d) {
-          var inst_index = _.indexOf(row_nodes_names,d.name);
+          var inst_index = _.indexOf(row_nodes_names, d.name);
           return 'translate(0,' + params.matrix.y_scale(inst_index) + ')';
         });
 
@@ -5251,44 +5150,59 @@ function Reorder(params){
     
     // reorder matrix
     ////////////////////
+    if (params.network_data.links.length > params.matrix.def_large_matrix){
 
-    // define the t variable as the transition function
-    var t = viz.get_clust_group()
-      .transition().duration(2500);
+      // define the t variable as the transition function
+      var t = viz.get_clust_group();
 
-    if (d3.select('.row_tile').empty()){
-      // reorder matrix
-      t.selectAll('.tile')
+      // Move Col Labels
+      d3.select('#col_label_zoom_container').selectAll('.col_label_text')
         .attr('transform', function(d) {
-          return 'translate(' + params.matrix.x_scale(d.target) + ','+params.matrix.y_scale(d.source)+')';
+          var inst_index = _.indexOf(col_nodes_names, d.name);
+          return 'translate(' + params.matrix.x_scale(inst_index) + ')rotate(-90)';
         });
+
+      // reorder col_class groups
+      d3.selectAll('.col_viz_group')
+        .attr('transform', function(d) {
+          var inst_index = _.indexOf(col_nodes_names, d.name);
+          return 'translate(' + params.matrix.x_scale(inst_index) + ',0)';
+        });
+
+      setTimeout(end_reorder, 250);
+    
     } else {
-      // reorder matrix
-      t.selectAll('.tile')
-        .attr('transform', function(data) {
-          return 'translate(' + params.matrix.x_scale(data.pos_x) + ',0)';
+
+      // define the t variable as the transition function
+      var t = viz.get_clust_group().transition().duration(2500);
+
+      // Move Col Labels
+      d3.select('#col_label_zoom_container').selectAll('.col_label_text')
+        .transition().duration(2500)
+        .attr('transform', function(d) {
+          var inst_index = _.indexOf(col_nodes_names, d.name);
+          return 'translate(' + params.matrix.x_scale(inst_index) + ')rotate(-90)';
         });
+
+      // reorder col_class groups
+      d3.selectAll('.col_viz_group')
+        .transition().duration(2500)
+        .attr('transform', function(d) {
+          var inst_index = _.indexOf(col_nodes_names, d.name);
+          return 'translate(' + params.matrix.x_scale(inst_index) + ',0)';
+        })
+        .each('end', function() {
+          // set running transition to 0
+          params.viz.run_trans = false;
+        });      
     }
 
-    // Move Col Labels
-    d3.select('#col_label_zoom_container').selectAll('.col_label_text')
-      .transition().duration(2500)
+    // reorder matrix
+    t.selectAll('.tile')
       .attr('transform', function(d) {
-        var inst_index = _.indexOf(col_nodes_names, d.name);
-        return 'translate(' + params.matrix.x_scale(inst_index) + ')rotate(-90)';
+        return 'translate(' + params.matrix.x_scale(d.pos_x) + ',0)';
       });
 
-    // reorder col_class groups
-    d3.selectAll('.col_viz_group')
-      .transition().duration(2500)
-      .attr('transform', function(d) {
-        var inst_index = _.indexOf(col_nodes_names, d.name);
-        return 'translate(' + params.matrix.x_scale(inst_index) + ',0)';
-      })
-      .each('end', function() {
-        // set running transition to 0
-        params.viz.run_trans = false;
-      });
 
     // highlight selected column
     ///////////////////////////////
@@ -5360,40 +5274,51 @@ function Reorder(params){
     params.matrix.y_scale.domain(tmp_sort);
 
     // reorder
-    // define the t variable as the transition function
-    var t = viz.get_clust_group()
-      .transition().duration(2500);
+    if (params.network_data.links.length > params.matrix.def_large_matrix){
+      var t = viz.get_clust_group();
 
-    if (d3.select('.row_tile').empty()){
-
-      // reorder matrix
-      t.selectAll('.tile')
+      // reorder row_label_triangle groups
+      d3.selectAll('.row_viz_group')
         .attr('transform', function(d) {
-          return 'translate('+params.matrix.x_scale(d.target)+',' + params.matrix.y_scale(d.source) + ')';
+          var inst_index = _.indexOf(row_nodes_names, d.name);
+          return 'translate(0,' + params.matrix.y_scale(inst_index) + ')';
         });
-      } else {
-        // reorder matrix
-        t.selectAll('.row')
-          .attr('transform', function(data, index) {
-            return 'translate(0,' + params.matrix.y_scale(index) + ')';
-          });
-      }
 
-    // reorder row_label_triangle groups
-    d3.selectAll('.row_viz_group')
-      .transition().duration(2500)
+      // Move Row Labels
+      d3.select('#row_label_zoom_container').selectAll('.row_label_text')
+        .attr('transform', function(d) {
+          var inst_index = _.indexOf(row_nodes_names, d.name);
+          return 'translate(0,' + params.matrix.y_scale(inst_index) + ')';
+        });
+
+    } else {
+
+      var t = viz.get_clust_group().transition().duration(2500);
+
+      // reorder row_label_triangle groups
+      d3.selectAll('.row_viz_group')
+        .transition().duration(2500)
+        .attr('transform', function(d) {
+          var inst_index = _.indexOf(row_nodes_names, d.name);
+          return 'translate(0,' + params.matrix.y_scale(inst_index) + ')';
+        });
+
+      // Move Row Labels
+      d3.select('#row_label_zoom_container').selectAll('.row_label_text')
+        .transition().duration(2500)
+        .attr('transform', function(d) {
+          var inst_index = _.indexOf(row_nodes_names, d.name);
+          return 'translate(0,' + params.matrix.y_scale(inst_index) + ')';
+        });        
+    }
+
+    // reorder matrix rows 
+    t.selectAll('.row')
       .attr('transform', function(d) {
         var inst_index = _.indexOf(row_nodes_names, d.name);
         return 'translate(0,' + params.matrix.y_scale(inst_index) + ')';
       });
 
-    // Move Row Labels
-    d3.select('#row_label_zoom_container').selectAll('.row_label_text')
-      .transition().duration(2500)
-      .attr('transform', function(d) {
-        var inst_index = _.indexOf(row_nodes_names, d.name);
-        return 'translate(0,' + params.matrix.y_scale(inst_index) + ')';
-      });
 
     // highlight selected column
     ///////////////////////////////
