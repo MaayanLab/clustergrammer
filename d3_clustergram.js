@@ -3875,7 +3875,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
     svg_group.selectAll('.col_label_click').each(function() {
       var tmp_width = d3.select(this).select('text').node().getBBox().width;
       if (tmp_width > params.bounding_width_max.col) {
-        params.bounding_width_max.col = tmp_width * 1.2;
+        params.bounding_width_max.col = tmp_width;
       }
     });
 
@@ -4260,10 +4260,10 @@ function define_enter_exit_delays(old_params, params){
   delays.enter  = delays.enter + delays.update ;
 
   delays.run_transition = true;
-  if ( old_params.network_data.links.length > 0.25*params.matrix.def_large_matrix ){
+  if ( old_params.network_data.links.length > 0.2*params.matrix.def_large_matrix ){
     delays.run_transition = false;
-    // delays.update = 0;
-    // delays.enter = 0;
+    delays.update = 0;
+    delays.enter = 0;
   }
 
   // reduce opacity during update
@@ -4685,8 +4685,6 @@ function filter_network_data(orig_network_data, new_nodes){
   var col_names = _.pluck(new_nodes.col_nodes, 'name');
 
   var links = orig_network_data.links;
-
-  console.log('there are '+String(orig_network_data.links.length) +' links in original data')
 
   var new_links = _.filter(links, function(d){
     var inst_row = d.name.split('_')[0];
@@ -5454,8 +5452,6 @@ function Reorder(params){
 
 
 function Zoom(params){
-
-  console.log('Zoom')
 
   /* Functions for zooming. Should be turned into a module.
    * ----------------------------------------------------------------------- */

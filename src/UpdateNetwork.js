@@ -105,10 +105,10 @@ function define_enter_exit_delays(old_params, params){
   delays.enter  = delays.enter + delays.update ;
 
   delays.run_transition = true;
-  if ( old_params.network_data.links.length > 0.25*params.matrix.def_large_matrix ){
+  if ( old_params.network_data.links.length > 0.2*params.matrix.def_large_matrix ){
     delays.run_transition = false;
-    // delays.update = 0;
-    // delays.enter = 0;
+    delays.update = 0;
+    delays.enter = 0;
   }
 
   // reduce opacity during update

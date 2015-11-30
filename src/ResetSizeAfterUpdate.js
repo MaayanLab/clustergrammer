@@ -499,7 +499,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
     svg_group.selectAll('.col_label_click').each(function() {
       var tmp_width = d3.select(this).select('text').node().getBBox().width;
       if (tmp_width > params.bounding_width_max.col) {
-        params.bounding_width_max.col = tmp_width * 1.2;
+        params.bounding_width_max.col = tmp_width;
       }
     });
 

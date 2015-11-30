@@ -12,8 +12,6 @@ function filter_network_data(orig_network_data, new_nodes){
 
   var links = orig_network_data.links;
 
-  console.log('there are '+String(orig_network_data.links.length) +' links in original data')
-
   var new_links = _.filter(links, function(d){
     var inst_row = d.name.split('_')[0];
     var inst_col = d.name.split('_')[1]; 

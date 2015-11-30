@@ -1,7 +1,5 @@
 function Zoom(params){
 
-  console.log('Zoom')
-
   /* Functions for zooming. Should be turned into a module.
    * ----------------------------------------------------------------------- */
   function zoomed() {
