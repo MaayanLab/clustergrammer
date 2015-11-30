@@ -128,7 +128,6 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
   /////////////////////////////////////////
   /////////////////////////////////////////
 
-
   // resize the svg
   ///////////////////////
   var svg_group = d3.select('#' + params.viz.svg_div_id)
@@ -139,49 +138,36 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
     .attr('width', params.viz.clust.dim.width)
     .attr('height', params.viz.clust.dim.height);
 
-  // svg_group.selectAll('.tile')
-  //   .data(links, function(d){return d.name;})
-  //   .transition().delay(delays.update).duration(duration)
-  //   .attr('width', params.matrix.x_scale.rangeBand())
-  //   .attr('height', params.matrix.y_scale.rangeBand())
-  //   .attr('transform', function(d) {
-  //     return 'translate(' + params.matrix.x_scale(d.target) + ','+params.matrix.y_scale(d.source)+')';
-  //   });
 
-  svg_group.selectAll('.tile_group')
-    .transition().delay(delays.update).duration(duration)
-    .attr('width', params.matrix.x_scale.rangeBand())
-    .attr('height', params.matrix.y_scale.rangeBand());
-
-  svg_group.selectAll('.highlighting_rect')
-    .transition().delay(delays.update).duration(duration)
-    .attr('width', params.matrix.x_scale.rangeBand() * 0.80)
-    .attr('height', params.matrix.y_scale.rangeBand() * 0.80);
-
-  svg_group.selectAll('.tile_split_up')
-    .transition().delay(delays.update).duration(duration)
-    .attr('d', function() {
-      var start_x = 0;
-      var final_x = params.matrix.x_scale.rangeBand();
-      var start_y = 0;
-      var final_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand()/60;
-      var output_string = 'M' + start_x + ',' + start_y + ', L' +
-        start_x + ', ' + final_y + ', L' + final_x + ',0 Z';
-      return output_string;
-    })
-
-  svg_group.selectAll('.tile_split_dn')
-    .transition().delay(delays.update).duration(duration)
-    .attr('d', function() {
-      var start_x = 0;
-      var final_x = params.matrix.x_scale.rangeBand();
-      var start_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand()/60;
-      var final_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand()/60;
-      var output_string = 'M' + start_x + ', ' + start_y + ' ,   L' +
-        final_x + ', ' + final_y + ',  L' + final_x + ',0 Z';
-      return output_string;
-    })
-
+  //////////////////////
+  // set up later 
+  //////////////////////
+  // svg_group.selectAll('.highlighting_rect')
+  //   // .transition().delay(delays.update).duration(duration)
+  //   .attr('width', params.matrix.x_scale.rangeBand() * 0.80)
+  //   .attr('height', params.matrix.y_scale.rangeBand() * 0.80);
+  // svg_group.selectAll('.tile_split_up')
+  //   // .transition().delay(delays.update).duration(duration)
+  //   .attr('d', function() {
+  //     var start_x = 0;
+  //     var final_x = params.matrix.x_scale.rangeBand();
+  //     var start_y = 0;
+  //     var final_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand()/60;
+  //     var output_string = 'M' + start_x + ',' + start_y + ', L' +
+  //       start_x + ', ' + final_y + ', L' + final_x + ',0 Z';
+  //     return output_string;
+  //   })
+  // svg_group.selectAll('.tile_split_dn')
+  //   // .transition().delay(delays.update).duration(duration)
+  //   .attr('d', function() {
+  //     var start_x = 0;
+  //     var final_x = params.matrix.x_scale.rangeBand();
+  //     var start_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand()/60;
+  //     var final_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand()/60;
+  //     var output_string = 'M' + start_x + ', ' + start_y + ' ,   L' +
+  //       final_x + ', ' + final_y + ',  L' + final_x + ',0 Z';
+  //     return output_string;
+  //   })
   
   // add text to row/col during resize
   function normal_name(d){
@@ -195,29 +181,55 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
   // resize row labels
   ///////////////////////////
 
-  svg_group.select('#row_container')
-    .transition().delay(delays.update).duration(duration)
-    .attr('transform', 'translate(' + params.norm_label.margin.left + ',' +
-    params.viz.clust.margin.top + ')');
+  if (delays.run_transition){
 
-  svg_group.select('#row_container')
-    .select('.white_bars')
-    .transition().delay(delays.update).duration(duration)
-    .attr('width', params.norm_label.background.row)
-    .attr('height', 30*params.viz.clust.dim.height + 'px');
+    svg_group.select('#row_container')
+      .transition().delay(delays.update).duration(duration)
+      .attr('transform', 'translate(' + params.norm_label.margin.left + ',' +
+      params.viz.clust.margin.top + ')');
 
-  svg_group.select('#row_container')
-    .select('#row_label_outer_container')
-    .transition().delay(delays.update).duration(duration)
-    .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
+    svg_group.select('#row_container')
+      .select('.white_bars')
+      .transition().delay(delays.update).duration(duration)
+      .attr('width', params.norm_label.background.row)
+      .attr('height', 30*params.viz.clust.dim.height + 'px');
 
-  svg_group.selectAll('.row_label_text')
-    .data(row_nodes, function(d){return d.name;})
-    .transition().delay(delays.update).duration(duration)
-    .attr('transform', function(d) {
-      var inst_index = _.indexOf(row_nodes_names, d.name);
-      return 'translate(0,' + params.matrix.y_scale(inst_index) + ')';
-    });
+    svg_group.select('#row_container')
+      .select('#row_label_outer_container')
+      .transition().delay(delays.update).duration(duration)
+      .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
+
+    svg_group.selectAll('.row_label_text')
+      .data(row_nodes, function(d){return d.name;})
+      .transition().delay(delays.update).duration(duration)
+      .attr('transform', function(d) {
+        var inst_index = _.indexOf(row_nodes_names, d.name);
+        return 'translate(0,' + params.matrix.y_scale(inst_index) + ')';
+      })
+      .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35 );
+
+  } else {
+      svg_group.select('#row_container')
+      .attr('transform', 'translate(' + params.norm_label.margin.left + ',' +
+      params.viz.clust.margin.top + ')');
+
+    svg_group.select('#row_container')
+      .select('.white_bars')
+      .attr('width', params.norm_label.background.row)
+      .attr('height', 30*params.viz.clust.dim.height + 'px');
+
+    svg_group.select('#row_container')
+      .select('#row_label_outer_container')
+      .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
+
+    svg_group.selectAll('.row_label_text')
+      .data(row_nodes, function(d){return d.name;})
+      .attr('transform', function(d) {
+        var inst_index = _.indexOf(row_nodes_names, d.name);
+        return 'translate(0,' + params.matrix.y_scale(inst_index) + ')';
+      })
+      .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35 );
+  }
 
    // do not delay the font size change since this will break the bounding box calc
   svg_group.selectAll('.row_label_text')
@@ -284,8 +296,6 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
     .transition().delay(delays.update).duration(duration)
     .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35 );
 
-
-
   svg_group.select('#row_viz_outer_container')
     .transition().delay(delays.update).duration(duration)
     .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
@@ -333,7 +343,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
         .range([0, params.norm_label.width.row ]);
 
       svg_group.selectAll('.row_bars')
-        .transition().delay(delays.update).duration(duration)
+        // .transition().delay(delays.update).duration(duration)
         .attr('width', function(d) {
           var inst_value = 0;
           inst_value = params.labels.bar_scale_row( Math.abs(d.value) );
@@ -479,7 +489,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
     // resize dendrogram
     ///////////////////
     svg_group.selectAll('.row_class_rect')
-      .transition().delay(delays.update).duration(duration)
+      // .transition().delay(delays.update).duration(duration)
       .attr('width', function() {
         var inst_width = params.class_room.symbol_width - 1;
         return inst_width + 'px';
@@ -491,7 +501,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
       });
 
     svg_group.selectAll('.col_class_rect')
-      .transition().delay(delays.update).duration(duration)
+      // .transition().delay(delays.update).duration(duration)
       .attr('width', params.matrix.x_scale.rangeBand())
       .attr('height', function() {
         var inst_height = params.class_room.col - 1;
@@ -500,7 +510,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
 
     svg_group.selectAll('.col_viz_group')
       .data(col_nodes, function(d){return d.name;})
-      .transition().delay(delays.update).duration(duration)
+      // .transition().delay(delays.update).duration(duration)
       .attr('transform', function(d) {
         var inst_index = _.indexOf(col_nodes_names, d.name);
         return 'translate(' + params.matrix.x_scale(inst_index) + ',0)';
@@ -510,7 +520,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
     ////////////////////////////
     svg_group.selectAll('.horz_lines')
       .data(row_nodes, function(d){return d.name;})
-      .transition().delay(delays.update).duration(duration)
+      // .transition().delay(delays.update).duration(duration)
       .attr('transform', function(d) {
         var inst_index = _.indexOf(row_nodes_names, d.name);
         return 'translate(0,' + params.matrix.y_scale(inst_index) + ') rotate(0)';
@@ -518,13 +528,13 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
 
     svg_group.selectAll('.horz_lines')
       .select('line')
-      .transition().delay(delays.update).duration(duration)
+      // .transition().delay(delays.update).duration(duration)
       .attr('x2',params.viz.clust.dim.width)
       .style('stroke-width', params.viz.border_width/params.viz.zoom_switch+'px')
 
     svg_group.selectAll('.vert_lines')
       .data(col_nodes, function(d){return d.name;})
-      .transition().delay(delays.update).duration(duration)
+      // .transition().delay(delays.update).duration(duration)
       .attr('transform', function(d) {
           var inst_index = _.indexOf(col_nodes_names, d.name);
           return 'translate(' + params.matrix.x_scale(inst_index) + ') rotate(-90)';
@@ -532,20 +542,20 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
 
     svg_group.selectAll('.vert_lines')
       .select('line')
-      .transition().delay(delays.update).duration(duration)
+      // .transition().delay(delays.update).duration(duration)
       .attr('x2', -params.viz.clust.dim.height)
       .style('stroke-width', params.viz.border_width + 'px');
 
   // resize superlabels
   /////////////////////////////////////
   svg_group.select('#super_col_bkg')
-    .transition().delay(delays.update).duration(duration)
+    // .transition().delay(delays.update).duration(duration)
     .attr('height', params.labels.super_label_width + 'px')
     .attr('transform', 'translate(0,' + params.viz.grey_border_width + ')');
 
   // super col title
   svg_group.select('#super_col')
-    .transition().delay(delays.update).duration(duration)
+    // .transition().delay(delays.update).duration(duration)
     .attr('transform', function() {
       var inst_x = params.viz.clust.dim.width / 2 + params.norm_label.width
         .row;
@@ -555,13 +565,13 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
 
   // super row title
   svg_group.select('#super_row_bkg')
-    .transition().delay(delays.update).duration(duration)
+    // .transition().delay(delays.update).duration(duration)
     .attr('width', params.labels.super_label_width + 'px')
     .attr('transform', 'translate(' + params.viz.grey_border_width + ',0)');
 
   // append super title row group
   svg_group.select('#super_row')
-    .transition().delay(delays.update).duration(duration)
+    // .transition().delay(delays.update).duration(duration)
     .attr('transform', function() {
       var inst_x = params.labels.super_label_width - params.viz.uni_margin;
       var inst_y = params.viz.clust.dim.height / 2 + params.norm_label.width

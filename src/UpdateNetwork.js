@@ -90,8 +90,6 @@ function define_enter_exit_delays(old_params, params){
 
   var delays = {};
 
-  delays.exit = 0;
-
   if (exit_nodes > 0){
     delays.update = 1000;
   } else {
@@ -104,8 +102,13 @@ function define_enter_exit_delays(old_params, params){
     delays.enter = 0;
   }
 
-  delays.update = delays.update  + delays.exit;
-  delays.enter  = delays.enter + delays.exit + delays.update ;
+  delays.enter  = delays.enter + delays.update ;
+
+  // check if the number of links is large and if it is do not transition
+  delays.run_transition = true;
+  if ( params.network_data.links.length > 0.25*params.matrix.def_large_matrix ){
+    delays.run_transition = false;
+  }
 
   return delays;
 }
@@ -140,24 +143,42 @@ function enter_exit_update(params, network_data, reorder, delays){
   ////////////
 
   // remove entire rows 
-  d3.select('#clust_group')
+  var exiting_rows = d3.select('#clust_group')
     .selectAll('.row')
     .data(params.matrix.matrix, function(d){return d.name;})
-    .exit()
-    .transition().duration(duration)
-    .style('opacity',0)
-    .remove();
+    .exit();
+
+  if (delays.run_transition){
+    exiting_rows
+      .transition().duration(duration)
+      .style('opacity',0)
+      .remove();
+  } else {
+    exiting_rows
+      .style('opacity',0)
+      .remove();
+  }
 
 
   // move rows 
-  d3.select('#clust_group')
+  var move_rows = d3.select('#clust_group')
     .selectAll('.row')
-    .data(params.matrix.matrix, function(d){return d.name;})
-    .transition().delay(delays.update).duration(duration)
-    .attr('transform', function(d){
-      var tmp_index = _.indexOf(row_nodes_names, d.name);
-      return 'translate(0,'+params.matrix.y_scale(tmp_index)+')';
-    })
+    .data(params.matrix.matrix, function(d){return d.name;});
+
+  if (delays.run_transition){
+    move_rows
+      .transition().delay(delays.update).duration(duration)
+      .attr('transform', function(d){
+        var tmp_index = _.indexOf(row_nodes_names, d.name);
+        return 'translate(0,'+params.matrix.y_scale(tmp_index)+')';
+      });
+  } else {
+    move_rows
+      .attr('transform', function(d){
+        var tmp_index = _.indexOf(row_nodes_names, d.name);
+        return 'translate(0,'+params.matrix.y_scale(tmp_index)+')';
+      });
+  }
 
   // update existing rows - enter, exit, update tiles in existing row
   d3.select('#clust_group')
@@ -179,15 +200,23 @@ function enter_exit_update(params, network_data, reorder, delays){
       .selectAll('rect')
       .data(row_data, function(d){return d.col_name;});
 
-    // exit removing rows 
-    cur_row
-      .exit()
-      .transition().duration(300)
-      .attr('fill-opacity',0)
-      .remove();
+    if (delays.run_transition){
+      // exit removing rows 
+      cur_row
+        .exit()
+        .transition().duration(300)
+        .attr('fill-opacity',0)
+        .remove();
+    } else {
+      // exit removing rows 
+      cur_row
+        .exit()
+        .attr('fill-opacity',0)
+        .remove();
+    }
 
     // update tiles in x direction 
-    cur_row
+    var update_row_tiles = cur_row
       .on('mouseover', function(p) {
         // highlight row - set text to active if
         d3.selectAll('.row_label_text text')
@@ -202,20 +231,36 @@ function enter_exit_update(params, network_data, reorder, delays){
       })
       .on('mouseout', function mouseout() {
         d3.selectAll('text').classed('active', false);
-      })
-      .transition().delay(delays.update).duration(duration)
-      .attr('width', params.matrix.rect_width)
-      .attr('height', params.matrix.rect_height)
-      .attr('transform', function(d) {
-        if (_.contains(col_nodes_names, d.col_name)){
-          var inst_col_index = _.indexOf(col_nodes_names, d.col_name);
-          var x_pos = params.matrix.x_scale(inst_col_index) + 0.5*params.viz.border_width; 
-          return 'translate(' + x_pos + ',0)';
-        }
       });
 
+    if (delays.run_transition){
+      update_row_tiles
+        .transition().delay(delays.update).duration(duration)
+        .attr('width', params.matrix.rect_width)
+        .attr('height', params.matrix.rect_height)
+        .attr('transform', function(d) {
+          if (_.contains(col_nodes_names, d.col_name)){
+            var inst_col_index = _.indexOf(col_nodes_names, d.col_name);
+            var x_pos = params.matrix.x_scale(inst_col_index) + 0.5*params.viz.border_width; 
+            return 'translate(' + x_pos + ',0)';
+          }
+        });
+    } else {
+      update_row_tiles
+        .attr('width', params.matrix.rect_width)
+        .attr('height', params.matrix.rect_height)
+        .attr('transform', function(d) {
+          if (_.contains(col_nodes_names, d.col_name)){
+            var inst_col_index = _.indexOf(col_nodes_names, d.col_name);
+            var x_pos = params.matrix.x_scale(inst_col_index) + 0.5*params.viz.border_width; 
+            return 'translate(' + x_pos + ',0)';
+          }
+        });      
+    }
+
+
     // enter new tiles 
-    cur_row
+    var new_tiles = cur_row
       .enter()
       .append('rect')
       .attr('class', 'tile row_tile')
@@ -241,33 +286,31 @@ function enter_exit_update(params, network_data, reorder, delays){
         var x_pos = params.matrix.x_scale(d.pos_x) + 0.5*params.viz.border_width;
         var y_pos = 0.5*params.viz.border_width/params.viz.zoom_switch;
         return 'translate('+x_pos+','+y_pos+')';
-      })
-      .transition().delay(delays.enter).duration(duration)
-      .style('fill', function(d) {
-        return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
-      })
-      .attr('fill-opacity',function(d){
-        var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
-        return output_opacity;
       });
 
-
-
+    if (delays.run_transition){
+      new_tiles
+        .transition().delay(delays.enter).duration(duration)
+        .style('fill', function(d) {
+          return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
+        })
+        .attr('fill-opacity',function(d){
+          var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
+          return output_opacity;
+        });
+    } else {
+      new_tiles
+        .style('fill', function(d) {
+          return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
+        })
+        .attr('fill-opacity',function(d){
+          var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
+          return output_opacity;
+        });
+    }
 
   }
 
-  // // update tile positions 
-  // d3.select('#clust_group')
-  //   .selectAll('.row')
-  //   .transition().delay(delays.update).duration(duration)
-  //   .attr('transform', function(d){
-  //     var y_pos = 0;
-  //     if ( _.contains(row_nodes_names, d.name) ){
-  //       var inst_row_index = _.indexOf(row_nodes_names, d.name);
-  //       y_pos = params.matrix.x_scale(inst_row_index);
-  //     }
-  //     return 'translate(0,'+ y_pos +')';
-  //   });
 
   d3.selectAll('.horz_lines').remove();
   d3.selectAll('.vert_lines').remove();
@@ -403,77 +446,9 @@ function enter_exit_update(params, network_data, reorder, delays){
         return 'translate(' + x_pos + ','+y_pos+')';
       });
 
-    // // append title to group
-    // if (params.matrix.tile_title) {
-    //   tile.append('title')
-    //   .text(function(d) {
-    //     var inst_string = 'value: ' + d.value;
-    //     return inst_string;
-    //   });
-    // }
-
   }
 
-  // d3.select('#clust_group')
-  //   .selectAll('.tile')
-  //   .data(links, function(d){return d.name;})
-  //   .enter()
-  //   .append('rect')
-  //   .style('fill-opacity',0)
-  //   .attr('class','tile new_tile')
-  //   .attr('width', params.matrix.rect_width)
-  //   .attr('height', params.matrix.rect_height)
-  //   .attr('transform', function(d) {
-  //     var x_pos = params.matrix.x_scale(d.target) + 0.5*params.viz.border_width;
-  //     var y_pos = params.matrix.y_scale(d.source) + 0.5*params.viz.border_width/params.viz.zoom_switch;
-  //     return 'translate(' + x_pos + ','+ y_pos +')';
-  //   })
-  //   .style('fill', function(d) {
-  //       return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
-  //   })
-  //   .transition().delay(delays.enter).duration(duration)
-  //   .style('fill-opacity', function(d) {
-  //       // calculate output opacity using the opacity scale
-  //       var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
-  //       return output_opacity;
-  //   });
-
-
-  // d3.select('#clust_group')
-    
-
-  // d3.selectAll('.tile')
-  //   .on('mouseover',null)
-  //   .on('mouseout',null);
-
-  // // redefine mouseover events for tiles 
-  // d3.select('#clust_group')
-  //   .selectAll('.tile')
-    // .on('mouseover', function(p) {
-    //   var row_name = p.name.split('_')[0];
-    //   var col_name = p.name.split('_')[1];
-    //   // highlight row - set text to active if
-    //   d3.selectAll('.row_label_text text')
-    //     .classed('active', function(d) {
-    //       return row_name === d.name;
-    //     });
-
-  //     d3.selectAll('.col_label_text text')
-  //       .classed('active', function(d) {
-  //         return col_name === d.name;
-  //       });
-  //   })
-  //   .on('mouseout', function mouseout() {
-  //     d3.selectAll('text').classed('active', false);
-  //   })
-  //   .attr('title', function(d) {
-  //     return d.value;
-  //   });
-
-
-
   var labels = Labels(params);
-
 
   var row_triangle_ini_group = labels.make_rows( params, row_nodes, reorder, duration );
   var container_all_col      = labels.make_cols( params, col_nodes, reorder, duration );
@@ -526,20 +501,6 @@ function enter_exit_update(params, network_data, reorder, delays){
     .attr('opacity',0)
     .transition().delay(delays.enter).duration(2*duration)
     .attr('opacity',1);
-
-  // // reset resize on expand button click and screen resize 
-  // params.initialize_resizing(params);
-
-    // // instantiate zoom object
-    // var zoom = Zoom(params);
-
-    // // initialize double click zoom for matrix
-    // ////////////////////////////////////////////
-    // zoom.ini_doubleclick();
-
-    // if (params.viz.do_zoom) {
-    //   d3.select('#main_svg').call(params.zoom);
-    // }
 
 }
 

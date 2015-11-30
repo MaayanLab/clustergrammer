@@ -7,6 +7,8 @@ all_filt = range(10)
 
 inst_meet = 1
 
+print('something')
+
 # calc mult_view net 
 net_view = deepcopy(Network())
 net_view.load_tsv_to_net('txt/example_tsv_network.txt')
@@ -23,7 +25,6 @@ for inst_filt in all_filt:
   # load network from tsv file
   ##############################
   net = deepcopy(Network())
-  # net.load_tsv_to_net('txt/example_tsv_network.txt')
 
   net.dat = deepcopy(net_view.dat)
 
