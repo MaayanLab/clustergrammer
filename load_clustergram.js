@@ -113,7 +113,7 @@ function make_clust(inst_network){
             }
 
             // reenable after update is finished 
-            setTimeout(enable_slider, 3000);
+            setTimeout(enable_slider, 2500);
 
           }
         });
