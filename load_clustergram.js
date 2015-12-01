@@ -76,10 +76,10 @@ function make_clust(inst_network){
         d3.select('#wait_message').style('display','none');
 
         // make clustergram: pass network_data and the div name where the svg should be made
-        // tmp make d3c a global variable so that it can be updated with new data 
-        var d3c = clustergrammer(arguments_obj);
+        // tmp make cgm a global variable so that it can be updated with new data 
+        var cgm = clustergrammer(arguments_obj);
 
-        global_params = d3c.params;
+        global_params = cgm.params;
 
         ini_sliders();
 
@@ -107,7 +107,7 @@ function make_clust(inst_network){
             $('#slider_filter').slider('disable');
 
             // update network 
-            d3c.update_network(change_view);
+            cgm.update_network(change_view);
 
             ini_sliders();
 
@@ -134,7 +134,7 @@ function make_clust(inst_network){
             slide: function( event, ui ) {
               $( "#amount" ).val( "$" + ui.value );
               var inst_index = ui.value*10;
-              d3c.change_groups('col',inst_index)
+              cgm.change_groups('col',inst_index)
             }
           });
           $( "#amount" ).val( "$" + $( "#slider_col" ).slider( "value" ) );
@@ -148,7 +148,7 @@ function make_clust(inst_network){
             slide: function( event, ui ) {
               $( "#amount" ).val( "$" + ui.value );
               var inst_index = ui.value*10;
-              d3c.change_groups('row',inst_index)
+              cgm.change_groups('row',inst_index)
             }
           });
           $( "#amount" ).val( "$" + $( "#slider_row" ).slider( "value" ) );
@@ -162,36 +162,36 @@ function make_clust(inst_network){
             slide: function( event, ui ) {
               $( "#amount" ).val( "$" + ui.value );
               var inst_index = ui.value;
-              d3c.opacity_slider(inst_index)
+              cgm.opacity_slider(inst_index)
             }
           });
           $( "#amount" ).val( "$" + $( "#slider_opacity" ).slider( "value" ) );
 
           $('#gene_search_box').autocomplete({
-            source: d3c.get_genes()
+            source: cgm.get_genes()
           });
 
           // submit genes button
           $('#gene_search_box').keyup(function(e) {
             if (e.keyCode === 13) {
               var search_gene = $('#gene_search_box').val();
-              d3c.find_gene(search_gene);
+              cgm.find_gene(search_gene);
             }
           });
 
           $('#submit_gene_button').off().click(function() {
             var gene = $('#gene_search_box').val();
-            d3c.find_gene(gene);
+            cgm.find_gene(gene);
           });
 
           $('#toggle_row_order .btn').off().click(function(evt) {
             var order_id = $(evt.target).find('input').attr('id').replace('_button', '');
-            d3c.reorder(order_id,'row');
+            cgm.reorder(order_id,'row');
           });
 
           $('#toggle_col_order .btn').off().click(function(evt) {
             var order_id = $(evt.target).find('input').attr('id').replace('_button', '');
-            d3c.reorder(order_id,'col');
+            cgm.reorder(order_id,'col');
           });
 
         }
