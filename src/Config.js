@@ -85,10 +85,13 @@ function Config(args) {
   }
 
   // initialize cluster ordering
+  config.inst_order = {};
   if (!Utils.is_undefined(args.order) && is_supported_order(args.order)) {
-    config.inst_order = args.order;
+    config.inst_order.row = args.order;
+    config.inst_order.col = args.order;
   } else {
-    config.inst_order = 'clust';
+    config.inst_order.row = 'clust';
+    config.inst_order.col = 'clust';
   }
 
   config.show_dendrogram = Utils.has(args.network_data.row_nodes[0], 'group') || Utils.has(args.network_data.col_nodes[0], 'group');

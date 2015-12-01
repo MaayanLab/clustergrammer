@@ -73,7 +73,7 @@ function VizParams(config){
     // and tiles are drawn individually - not in rows 
     params.matrix.def_large_matrix = 10000;
 
-    // initial order of clustergram
+    // initial order of clustergram, row and col are separate 
     params.viz.inst_order = config.inst_order;
 
     params.matrix.opacity_function = config.opacity_scale;
@@ -313,18 +313,23 @@ function VizParams(config){
     params.matrix.x_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.width]);
     params.matrix.y_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.height]);
 
-    // Assign initial ordering for x_scale and y_scale
-    if (params.viz.inst_order === 'ini') {
+    if (params.viz.inst_order.row === 'ini') {
       params.matrix.x_scale.domain(params.matrix.orders.ini_row);
-      params.matrix.y_scale.domain(params.matrix.orders.ini_col);
-    } else if (params.viz.inst_order === 'clust') {
+    } else if (params.viz.inst_order.row === 'clust') {
       params.matrix.x_scale.domain(params.matrix.orders.clust_row);
-      params.matrix.y_scale.domain(params.matrix.orders.clust_col);
-    } else if (params.viz.inst_order === 'rank') {
+    } else if (params.viz.inst_order.row === 'rank') {
       params.matrix.x_scale.domain(params.matrix.orders.rank_row);
-      params.matrix.y_scale.domain(params.matrix.orders.rank_col);
-    } else if (params.viz.inst_order === 'class') {
+    } else if (params.viz.inst_order.row === 'class') {
       params.matrix.x_scale.domain(params.matrix.orders.class_row);
+    }
+
+    if (params.viz.inst_order.col === 'ini') {
+      params.matrix.y_scale.domain(params.matrix.orders.ini_col);
+    } else if (params.viz.inst_order.col === 'clust') {
+      params.matrix.y_scale.domain(params.matrix.orders.clust_col);
+    } else if (params.viz.inst_order.col === 'rank') {
+      params.matrix.y_scale.domain(params.matrix.orders.rank_col);
+    } else if (params.viz.inst_order.col === 'class') {
       params.matrix.y_scale.domain(params.matrix.orders.class_col);
     }
 

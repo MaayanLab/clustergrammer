@@ -36,7 +36,8 @@
     <div class='viz_instruct_text'> D3 Clustergram is developed by Nick Fernandez at the <a href="http://icahn.mssm.edu/">Icahn School of Medicine at Mount Sinai</a> in the <a href="http://icahn.mssm.edu/research/labs/maayan-laboratory">Ma'ayan Lab</a> a <a href="http://lincs-dcic.org/">DCIC BD2K-LINCS</a> center. </div>
 
     <!-- toggle clustergram order -->
-    <div id='toggle_order' class="btn-group" data-toggle="buttons" >
+    <p>Row Order</p>
+    <div id='toggle_col_order' class="btn-group" data-toggle="buttons" >
       <label class="btn btn-primary active order_name">
         <input type="radio" name="options" id="clust_button" autocomplete="off" checked > Cluster
       </label>
@@ -47,6 +48,21 @@
         <input type="radio" name="options" id="class_button" autocomplete="off" > Class
       </label>
     </div>
+
+    
+    <p>Column Order</p>
+    <div id='toggle_row_order' class="btn-group" data-toggle="buttons" >
+      <label class="btn btn-primary active order_name">
+        <input type="radio" name="options" id="clust_button" autocomplete="off" checked > Cluster
+      </label>
+      <label class="btn btn-primary order_name">
+        <input type="radio" name="options" id="rank_button" autocomplete="off" > Rank
+      </label>
+      <label class="btn btn-primary order_name">
+        <input type="radio" name="options" id="class_button" autocomplete="off" > Class
+      </label>
+    </div>
+
 
     <!-- input box for gene search -->
     <div id='gene_search_container' class='row'>

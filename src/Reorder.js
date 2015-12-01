@@ -5,12 +5,16 @@ function Reorder(params){
 
   /* Reorder the clustergram using the toggle switch
    */
-  function all_reorder(inst_order) {
+  function all_reorder(inst_order, row_col) {
 
     params.viz.run_trans = true;
     
     // save order state 
-    params.viz.inst_order = inst_order;
+    if (row_col === 'row'){
+      params.viz.inst_order.row = inst_order;
+    } else if (row_col === 'col'){
+      params.viz.inst_order.col = inst_order;
+    }
 
     var row_nodes_obj = params.network_data.row_nodes;
     var row_nodes_names = _.pluck(row_nodes_obj, 'name');
@@ -18,20 +22,31 @@ function Reorder(params){
     var col_nodes_obj = params.network_data.col_nodes;
     var col_nodes_names = _.pluck(col_nodes_obj, 'name');
 
-    // load orders
-    if (inst_order === 'ini') {
-      params.matrix.x_scale.domain(params.matrix.orders.ini_row);
-      params.matrix.y_scale.domain(params.matrix.orders.ini_col);
-    } else if (inst_order === 'clust') {
-      params.matrix.x_scale.domain(params.matrix.orders.clust_row);
-      params.matrix.y_scale.domain(params.matrix.orders.clust_col);
-    } else if (inst_order === 'rank') {
-      params.matrix.x_scale.domain(params.matrix.orders.rank_row);
-      params.matrix.y_scale.domain(params.matrix.orders.rank_col);
-    } else if (inst_order === 'class') {
-      params.matrix.x_scale.domain(params.matrix.orders.class_row);
-      params.matrix.y_scale.domain(params.matrix.orders.class_col);
-    }
+    if (row_col === 'row'){
+      // load orders
+      if (inst_order === 'ini') {
+        params.matrix.x_scale.domain(params.matrix.orders.ini_row);
+      } else if (inst_order === 'clust') {
+        params.matrix.x_scale.domain(params.matrix.orders.clust_row);
+      } else if (inst_order === 'rank') {
+        params.matrix.x_scale.domain(params.matrix.orders.rank_row);
+      } else if (inst_order === 'class') {
+        params.matrix.x_scale.domain(params.matrix.orders.class_row);
+      }
+
+    } else if (row_col == 'col') {
+      // load orders
+      if (inst_order === 'ini') {
+        params.matrix.y_scale.domain(params.matrix.orders.ini_col);
+      } else if (inst_order === 'clust') {
+        params.matrix.y_scale.domain(params.matrix.orders.clust_col);
+      } else if (inst_order === 'rank') {
+        params.matrix.y_scale.domain(params.matrix.orders.rank_col);
+      } else if (inst_order === 'class') {
+        params.matrix.x_scale.domain(params.matrix.orders.class_row);
+        params.matrix.y_scale.domain(params.matrix.orders.class_col);
+      }
+    }    
 
     // only animate transition if there are a small number of tiles
     if (d3.selectAll('.tile')[0].length < params.matrix.def_large_matrix){

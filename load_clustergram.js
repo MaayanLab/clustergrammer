@@ -184,10 +184,16 @@ function make_clust(inst_network){
             d3c.find_gene(gene);
           });
 
-          $('#toggle_order .btn').off().click(function(evt) {
+          $('#toggle_row_order .btn').off().click(function(evt) {
             var order_id = $(evt.target).find('input').attr('id').replace('_button', '');
-            d3c.reorder(order_id);
+            d3c.reorder(order_id,'row');
           });
+
+          $('#toggle_col_order .btn').off().click(function(evt) {
+            var order_id = $(evt.target).find('input').attr('id').replace('_button', '');
+            d3c.reorder(order_id,'col');
+          });
+
         }
 
     }); // end d3.json 
