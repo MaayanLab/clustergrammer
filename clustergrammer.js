@@ -5654,8 +5654,6 @@ function Zoom(params){
 
   function two_translate_zoom(params, pan_dx, pan_dy, fin_zoom) {
 
-    console.log('\nrunning two_translate_zoom   ')
-
     // get parameters
     if (!params.viz.run_trans) {
 
@@ -5971,36 +5969,45 @@ function Zoom(params){
       params.viz.zoom_scale_font.row = params.norm_label.width.row / keep_width.row;
       // params.viz.zoom_scale_font.row = params.norm_label.width.row / keep_width.row;
 
+      console.log('constraing font size')
+
       d3.selectAll('.row_label_text').each(function() {
         if (trans){
+
           d3.select(this).select('text')
             .style('font-size', params.labels.default_fs_row * params.viz.zoom_scale_font.row + 'px')
             .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35*params.viz.zoom_scale_font.row )
             .style('opacity',0.20).transition().duration(700)
             .style('opacity',1);
+
         } else {
+
           d3.select(this).select('text')
             .style('font-size', params.labels.default_fs_row * params.viz.zoom_scale_font.row + 'px')
             .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35*params.viz.zoom_scale_font.row );
         }
       });
     } else {
+
       d3.selectAll('.row_label_text').each(function() {
         if (trans){
+
           d3.select(this).select('text')
             .style('font-size', params.labels.default_fs_row + 'px')
-            // if there is a transition, then set zoom_scale_font to 1
-            // its either two translate zoom or sooming into matrix from search
-            .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35*params.viz.zoom_scale_font.row );
+            // do not scale by params.viz.zoom_scale_font.row, since this is 1
+            .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35 );
+
           d3.select(this).select('text')
             .text(function(d){ return normal_name(d);})
             .style('opacity',0.20).transition().duration(700)
             .style('opacity',1);
 
         } else {
+
           d3.select(this).select('text')
             .style('font-size', params.labels.default_fs_row + 'px')
             .text(function(d){ return normal_name(d);});
+
         }
       });
     }
