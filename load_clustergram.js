@@ -77,7 +77,7 @@ function make_clust(inst_network){
 
         // make clustergram: pass network_data and the div name where the svg should be made
         // tmp make d3c a global variable so that it can be updated with new data 
-        var d3c = d3_clustergram(arguments_obj);
+        var d3c = clustergrammer(arguments_obj);
 
         global_params = d3c.params;
 

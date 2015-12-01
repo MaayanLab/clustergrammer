@@ -30,7 +30,7 @@ module.exports = function(grunt) {
         concat: {
             default: {
                 src: src_files,
-                dest: '../d3_clustergram.js'
+                dest: '../clustergrammer.js'
             }
         },
         watch: {

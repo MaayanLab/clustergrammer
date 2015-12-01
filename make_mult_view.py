@@ -1,5 +1,5 @@
 # import network class from Network.py
-from d3_clustergram import Network
+from clustergrammer import Network
 from copy import deepcopy
 
 # filter between 0 and 90% of max value 

@@ -1,5 +1,5 @@
 # import network class from Network.py
-from d3_clustergram import Network
+from clustergrammer import Network
 
 # get instance of Network
 net = Network()
