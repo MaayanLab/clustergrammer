@@ -493,8 +493,6 @@ function Zoom(params){
       params.viz.zoom_scale_font.row = params.norm_label.width.row / keep_width.row;
       // params.viz.zoom_scale_font.row = params.norm_label.width.row / keep_width.row;
 
-      console.log('constraing font size')
-
       d3.selectAll('.row_label_text').each(function() {
         if (trans){
 
@@ -601,7 +599,7 @@ function Zoom(params){
   }
 
 function downsample(params, min_rect_height){
-  console.log('downsampling')
+  // console.log('downsampling')
 
   var ini_num_rows = params.network_data.row_nodes.length;
 
@@ -614,8 +612,8 @@ function downsample(params, min_rect_height){
 
   var new_num_rows = ini_num_rows/reduce_by;
 
-  console.log('\n\nini num rows '+String(ini_num_rows));
-  console.log('new_num_rows '+String(new_num_rows))
+  // console.log('\n\nini num rows '+String(ini_num_rows));
+  // console.log('new_num_rows '+String(new_num_rows))
 
   // get cluster height
   var clust_height = params.viz.clust.dim.height;

@@ -4268,7 +4268,12 @@ function define_enter_exit_delays(old_params, params){
   delays.enter  = delays.enter + delays.update ;
 
   delays.run_transition = true;
-  if ( old_params.network_data.links.length > 0.2*params.matrix.def_large_matrix ){
+
+  var old_num_links = old_params.network_data.links.length;
+  var new_num_links = params.network_data.links.length;
+  var cutoff_num_links = 0.35*params.matrix.def_large_matrix;
+
+  if ( old_num_links > cutoff_num_links || new_num_links > cutoff_num_links ){
     delays.run_transition = false;
     delays.update = 0;
     delays.enter = 0;
@@ -5969,8 +5974,6 @@ function Zoom(params){
       params.viz.zoom_scale_font.row = params.norm_label.width.row / keep_width.row;
       // params.viz.zoom_scale_font.row = params.norm_label.width.row / keep_width.row;
 
-      console.log('constraing font size')
-
       d3.selectAll('.row_label_text').each(function() {
         if (trans){
 
@@ -6077,7 +6080,7 @@ function Zoom(params){
   }
 
 function downsample(params, min_rect_height){
-  console.log('downsampling')
+  // console.log('downsampling')
 
   var ini_num_rows = params.network_data.row_nodes.length;
 
@@ -6090,8 +6093,8 @@ function downsample(params, min_rect_height){
 
   var new_num_rows = ini_num_rows/reduce_by;
 
-  console.log('\n\nini num rows '+String(ini_num_rows));
-  console.log('new_num_rows '+String(new_num_rows))
+  // console.log('\n\nini num rows '+String(ini_num_rows));
+  // console.log('new_num_rows '+String(new_num_rows))
 
   // get cluster height
   var clust_height = params.viz.clust.dim.height;
