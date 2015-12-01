@@ -31,12 +31,12 @@
 
     <div id='viz_gmt_labels'></div>
 
-    <div id='title_viz_instruct_text'>About:</div>
-    <div class='viz_instruct_text'> Zoom into the clustergram using scroll. Reorder the clustergram using the toggle buttons or by double-clicking rows or columns. Double-click the clustergram to programatically reset zoom/panning.  Search for a gene to zoom into the matrix. Change the size of row/colum groups by moving the sliders. Click on row/column groups. See README for more information.</div>
-    <div class='viz_instruct_text'> D3 Clustergram is developed by Nick Fernandez at the <a href="http://icahn.mssm.edu/">Icahn School of Medicine at Mount Sinai</a> in the <a href="http://icahn.mssm.edu/research/labs/maayan-laboratory">Ma'ayan Lab</a> a <a href="http://lincs-dcic.org/">DCIC BD2K-LINCS</a> center. </div>
+    <div class='viz_small_text'> Zoom into the clustergram using scroll. Reorder the clustergram using the toggle buttons or by double-clicking rows or columns. Double-click the clustergram to programatically reset zoom/panning.  Search for a gene to zoom into the matrix. Change the size of row/colum groups by moving the sliders. Click on row/column groups. See README for more information.</div>
+
+    <div class='viz_small_text'> D3 Clustergram is developed by Nick Fernandez at the <a href="http://icahn.mssm.edu/">Icahn School of Medicine at Mount Sinai</a> in the <a href="http://icahn.mssm.edu/research/labs/maayan-laboratory">Ma'ayan Lab</a> a <a href="http://lincs-dcic.org/">DCIC BD2K-LINCS</a> center. </div>
 
     <!-- toggle clustergram order -->
-    <p>Row Order</p>
+    <div class='viz_medium_text'>Row Order</div>
     <div id='toggle_col_order' class="btn-group" data-toggle="buttons" >
       <label class="btn btn-primary active order_name">
         <input type="radio" name="options" id="clust_button" autocomplete="off" checked > Cluster
@@ -50,7 +50,7 @@
     </div>
 
     
-    <p>Column Order</p>
+    <div class='viz_medium_text'>Column Order</div>
     <div id='toggle_row_order' class="btn-group" data-toggle="buttons" >
       <label class="btn btn-primary active order_name">
         <input type="radio" name="options" id="clust_button" autocomplete="off" checked > Cluster
@@ -74,14 +74,14 @@
         </div>
     </div>
 
-    <p>set column group size</p>
-    <div id="slider_col"></div>
-    <p>set row group size</p>
+    <p class='viz_medium_text'>Row Group</p>
     <div id="slider_row"></div>
-    <p>opacity</p>
+    <p class='viz_medium_text'>Column Group</p>
+    <div id="slider_col"></div>
+    <div class='viz_medium_text'>opacity</div>
     <div id="slider_opacity"></div>
 
-    <p id='filter_value'>filter: 0% </p>
+    <div class='viz_medium_text' id='filter_value'>Filter: 0% </div>
     <div id="slider_filter"></div>
 
     <!-- <p id='filter_times_met'>times value appears: 1 </p>

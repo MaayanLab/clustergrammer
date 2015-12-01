@@ -96,7 +96,7 @@ function make_clust(inst_network){
             d3.select('#main_svg')
               .style('opacity',0.70);
 
-            d3.select('#filter_value').text('filter: '+100*inst_filt+'%');
+            d3.select('#filter_value').text('Filter: '+100*inst_filt+'%');
             var inst_name = 'default_example_f'+inst_filt+'.json';
 
             // get clustergram to update using views and crossfilter 
