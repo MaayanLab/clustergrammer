@@ -46,6 +46,18 @@ class Network(object):
 
     self.load_lines_from_tsv_to_net(lines)
 
+  def pandas_load_tsv_to_net(self, filename):
+    import pandas as pd 
+
+    tmp_df = pd.read_table(filename, index_col=0)
+
+    # save to self
+    tmp_dat = self.df_to_dat(tmp_df)
+
+    self.dat['nodes'] = tmp_dat['nodes']
+    self.dat['mat'] = tmp_dat['mat']
+
+
   def load_lines_from_tsv_to_net(self, lines):
     import numpy as np
     # get row/col labels and data from lines 
@@ -94,7 +106,7 @@ class Network(object):
         if i > 1: 
           self.dat['mat'] = np.vstack( ( self.dat['mat'], inst_data_row ) )
 
-  def load_hgram(self, filename):
+  def load_hgram(self, filename, max_num_links=50000):
     import numpy as np
 
     # example data format 
@@ -175,7 +187,11 @@ class Network(object):
         # grab data, convert to float, and make numpy array 
         inst_data_row = inst_line[3:]
         inst_data_row = [float(tmp_dat) for tmp_dat in inst_data_row]
+
         inst_data_row = np.asarray(inst_data_row)
+
+        # threshold data 
+        inst_data_row[abs(inst_data_row) < thresh_data] = 0
 
         # initialize matrix 
         if i == 3:
@@ -737,7 +753,49 @@ class Network(object):
 
     print( 'final mat shape' + str(self.dat['mat'].shape ) + '\n')
 
-  def cluster_row_and_col(self, dist_type, cutoff=0, min_num_comp=1, dendro=True, run_clustering=True):
+  def keep_max_num_links(self, keep_num_links):
+
+    print('\trun keep_max_num_links')
+    max_mat_value = abs(self.dat['mat']).max()
+
+    # check the total number of links 
+    inst_thresh = 0
+    inst_pct_max = 0
+    inst_num_links = (abs(self.dat['mat'])>inst_thresh).sum()
+    print('initially there are '+str(inst_num_links)+' links ')
+
+    print('there are initially '+str(inst_num_links)+'\n')
+
+    thresh_fraction = 100
+
+    while (inst_num_links > keep_num_links):
+
+      # increase the threshold as a pct of max value in mat 
+      inst_pct_max = inst_pct_max + 1 
+
+      # increase threshold 
+      inst_thresh = max_mat_value*(float(inst_pct_max)/thresh_fraction)
+
+      # check the number of links above the curr threshold 
+      inst_num_links = (abs(self.dat['mat'])>inst_thresh).sum()
+
+      print('there are '+str(inst_num_links)+ ' links at threshold '+str(inst_pct_max)+'pct and value of ' +str(inst_thresh)+'\n')
+
+    # if there are no links then increas thresh back up 
+    if inst_num_links == 0:
+      inst_pct_max = inst_pct_max - 1 
+      inst_thresh = max_mat_value*(float(inst_pct_max)/thresh_fraction)
+
+    print('final number of links '+str(inst_num_links))
+
+    # replace values that are less than thresh with zero 
+    self.dat['mat'][ abs(self.dat['mat']) < inst_thresh] = 0
+
+    # return number of links 
+    return (abs(self.dat['mat'])>inst_thresh).sum()
+
+
+  def cluster_row_and_col(self, dist_type, cutoff=0, min_num_comp=1, dendro=True, run_clustering=True, run_rank=True):
     ''' 
     cluster net.dat and make visualization json, net.viz. 
     optionally leave out dendrogram colorbar groups with dendro argument 
@@ -792,10 +850,11 @@ class Network(object):
       clust_order['row']['clust'], clust_order['row']['group'] = self.clust_and_group_nodes(row_dm, cluster_method)
       clust_order['col']['clust'], clust_order['col']['group'] = self.clust_and_group_nodes(col_dm, cluster_method)
 
-    # rank 
-    ############
-    clust_order['row']['rank'] = self.sort_rank_nodes('row')
-    clust_order['col']['rank'] = self.sort_rank_nodes('col')
+    if run_rank == True:
+      # rank 
+      ############
+      clust_order['row']['rank'] = self.sort_rank_nodes('row')
+      clust_order['col']['rank'] = self.sort_rank_nodes('col')
 
     # save clustering orders to node_info 
     if run_clustering == True:
@@ -807,14 +866,19 @@ class Network(object):
       self.dat['node_info']['row']['clust'] = clust_order['row']['ini']
       self.dat['node_info']['col']['clust'] = clust_order['col']['ini']
 
+    if run_rank == True:
+      self.dat['node_info']['row']['rank']  = clust_order['row']['rank']
+      self.dat['node_info']['col']['rank']  = clust_order['col']['rank']
+    else:
+      self.dat['node_info']['row']['rank']  = clust_order['row']['ini']
+      self.dat['node_info']['col']['rank']  = clust_order['col']['ini']
+
     # transfer ordereings
     # row
     self.dat['node_info']['row']['ini']   = clust_order['row']['ini']
-    self.dat['node_info']['row']['rank']  = clust_order['row']['rank']
     self.dat['node_info']['row']['group'] = clust_order['row']['group']
     # col 
     self.dat['node_info']['col']['ini']   = clust_order['col']['ini']
-    self.dat['node_info']['col']['rank']  = clust_order['col']['rank']
     self.dat['node_info']['col']['group'] = clust_order['col']['group']
 
 
@@ -1114,3 +1178,17 @@ class Network(object):
 
     # return the found dictionary
     return found_dict
+
+  @staticmethod
+  def df_to_dat(df):
+    import numpy as np 
+    import pandas as pd 
+
+    dat = {}
+    dat['nodes'] = {}
+
+    dat['mat'] = df.values
+    dat['nodes']['row'] = df.index.tolist()
+    dat['nodes']['col'] = df.columns.tolist()
+
+    return dat

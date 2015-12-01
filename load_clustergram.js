@@ -85,15 +85,18 @@ function make_clust(inst_network){
 
         // filter scale - only initialize once 
         $( "#slider_filter" ).slider({
-          value:1,
-          min: 1,
-          max: 9,
-          step: 1,
+          value:0,
+          min: 0,
+          max: 0.9,
+          step: 0.1,
           stop: function( event, ui ) {
             $( "#amount" ).val( "$" + ui.value );
             var inst_filt = $( "#slider_filter" ).slider( "value" ); 
 
-            d3.select('#filter_value').text('filter row/column: value : '+inst_filt);
+            d3.select('#main_svg')
+              .style('opacity',0.70);
+
+            d3.select('#filter_value').text('filter: '+100*inst_filt+'%');
             var inst_name = 'default_example_f'+inst_filt+'.json';
 
             // get clustergram to update using views and crossfilter 
@@ -117,6 +120,7 @@ function make_clust(inst_network){
 
           }
         });
+
         $( "#amount" ).val( "$" + $( "#slider_filter" ).slider( "value" ) );
 
         // reused functions 
