@@ -125,6 +125,7 @@ function make_clust(inst_network){
 
         // reused functions 
         function ini_sliders(){
+          
           // col groups
           $( "#slider_col" ).slider({
             value:0.5,

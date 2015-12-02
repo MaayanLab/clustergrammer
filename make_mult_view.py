@@ -12,8 +12,8 @@ print('something')
 
 # calc mult_view net 
 net_view = deepcopy(Network())
-# net_view.load_tsv_to_net('txt/example_tsv_network.txt')
-net_view.pandas_load_tsv_to_net('txt/ccle_example.txt')
+net_view.load_tsv_to_net('txt/example_tsv_network.txt')
+# net_view.pandas_load_tsv_to_net('txt/ccle_example.txt')
 net_view.cluster_row_and_col('cos')
 
 mat = net_view.dat['mat']
