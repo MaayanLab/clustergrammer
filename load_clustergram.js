@@ -79,6 +79,9 @@ function make_clust(inst_network){
         // tmp make cgm a global variable so that it can be updated with new data 
         var cgm = clustergrammer(arguments_obj);
 
+        // global verison of cgm 
+        g_cgm = cgm;
+
         global_params = cgm.params;
 
         ini_sliders();

@@ -4200,6 +4200,8 @@ function update_network(change_view){
   new_config.network_data = new_network_data;
   // swap in instantaneous order 
   new_config.inst_order = old_params.viz.inst_order;
+  // never switch to expand when updating the matrix 
+  new_config.ini_expand = false;
 
   // make new params 
   var params = VizParams(new_config);
@@ -4977,6 +4979,10 @@ function Viz(params) {
 
   }
 
+  function reset_zoom(){
+    zoom_obj.two_translate_zoom(params, 0,0,1);
+  }
+
   return {
     change_group: function(inst_rc, inst_index) {
       if (inst_rc === 'row') {
@@ -5002,7 +5008,8 @@ function Viz(params) {
     run_reset_visualization_size: run_reset_visualization_size,
     update_network: update_network, 
     params: params,
-    draw_gridlines: matrix.draw_gridlines
+    draw_gridlines: matrix.draw_gridlines,
+    reset_zoom: reset_zoom
   }
 
 
@@ -6265,6 +6272,7 @@ return {
     resize: viz.run_reset_visualization_size,
     update_network: viz.update_network,
     params: viz.params,
+    reset_zoom: viz.reset_zoom,
     config: config
 };
 	

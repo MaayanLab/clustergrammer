@@ -12,6 +12,7 @@ return {
     resize: viz.run_reset_visualization_size,
     update_network: viz.update_network,
     params: viz.params,
+    reset_zoom: viz.reset_zoom,
     config: config
 };
 	

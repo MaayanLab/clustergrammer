@@ -311,21 +311,13 @@ class Network(object):
 
         inst_vect = inst_vect.reshape(-1,1)
 
-        print(inst_vect)
-
-        # np.hstack((a,b))
-
         # initialize or add to matrix 
         if type(self.dat['mat']) is list:
           self.dat['mat'] = inst_vect
         else:
-          print('\n\ntrying hstack')
-          print(self.dat['mat'].shape)
-          print(inst_vect.shape)
           self.dat['mat'] = np.hstack(( self.dat['mat'], inst_vect))
 
-        # print(self.dat['mat'])
-        # print(self.dat['mat'].shape)
+
 
   def load_cst_kea_enr_to_net(self, enr, pval_cutoff):
     import scipy
@@ -521,7 +513,7 @@ class Network(object):
       gene_data = inst_sig['genes']
 
       # gather sig names 
-      all_sigs.append(inst_sig['name']) 
+      all_sigs.append(inst_sig['col_title']) 
 
       # gather genes 
       for inst_gene_data in gene_data:
@@ -534,7 +526,7 @@ class Network(object):
     print( 'found ' + str(len(all_genes)) + ' genes' )
     print( 'found ' + str(len(all_sigs)) + ' siguatures\n'  )
 
-    # save genes adn sigs to nodes 
+    # save genes and sigs to nodes 
     self.dat['nodes']['row'] = all_genes
     self.dat['nodes']['col'] = all_sigs
 
@@ -547,7 +539,7 @@ class Network(object):
     for inst_sig in sigs:
 
       # get sig name 
-      inst_sig_name = inst_sig['name']
+      inst_sig_name = inst_sig['col_title']
 
       # get gene data
       gene_data = inst_sig['genes']
@@ -639,8 +631,6 @@ class Network(object):
     import scipy
     import numpy as np
 
-    print('\nfiltering network using cutoff of ' + str(cutoff) + ' and min_num_meet of ' + str(min_num_meet))
-
     # transfer the nodes 
     nodes = {}
     nodes['row'] = []
@@ -650,8 +640,6 @@ class Network(object):
     node_info = {}
     node_info['row'] = []
     node_info['col'] = []
-
-    print( 'initial mat shape' + str(self.dat['mat'].shape ))
 
     # add rows with non-zero values 
     #################################
@@ -993,9 +981,11 @@ class Network(object):
   def viz_json(self, dendro=True):
     ''' make the dictionary for the clustergram.js visualization '''
 
+    print('in viz_json')
     # get dendrogram cutoff distances 
     all_dist = self.group_cutoffs()
 
+    print('viz_json: set up nodes')
     # make nodes for viz
     #####################
     # make rows and cols 
@@ -1032,6 +1022,7 @@ class Network(object):
         # append dictionary to list of nodes
         self.viz[inst_rc+'_nodes'].append(inst_dict)
 
+    print('viz_json: set up links')
     # links 
     ########
     for i in range(len( self.dat['nodes']['row'] )):
@@ -1061,6 +1052,14 @@ class Network(object):
 
           # append link 
           self.viz['links'].append( inst_dict )
+
+  def df_to_dat(self, df):
+    import numpy as np 
+    import pandas as pd 
+
+    self.dat['mat'] = df.values
+    self.dat['nodes']['row'] = df.index.tolist()
+    self.dat['nodes']['col'] = df.columns.tolist()
 
   @staticmethod
   def load_gmt(filename):
@@ -1179,16 +1178,4 @@ class Network(object):
     # return the found dictionary
     return found_dict
 
-  @staticmethod
-  def df_to_dat(df):
-    import numpy as np 
-    import pandas as pd 
-
-    dat = {}
-    dat['nodes'] = {}
-
-    dat['mat'] = df.values
-    dat['nodes']['row'] = df.index.tolist()
-    dat['nodes']['col'] = df.columns.tolist()
-
-    return dat
+  

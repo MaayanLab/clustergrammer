@@ -37,6 +37,8 @@ function update_network(change_view){
   new_config.network_data = new_network_data;
   // swap in instantaneous order 
   new_config.inst_order = old_params.viz.inst_order;
+  // never switch to expand when updating the matrix 
+  new_config.ini_expand = false;
 
   // make new params 
   var params = VizParams(new_config);
