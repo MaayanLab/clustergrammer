@@ -1,4 +1,4 @@
-function filter_network_data(orig_network_data, new_nodes){
+function filter_network_data(orig_network_data, change_view){
   
   var views = orig_network_data.views;
 

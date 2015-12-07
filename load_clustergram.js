@@ -87,7 +87,7 @@ function make_clust(inst_network){
         console.log(cgm)
         ini_sliders();
             
-        // ini_play_button(cgm);
+        ini_play_button(cgm);
 
         // filter scale - only initialize once 
         $( "#slider_filter" ).slider({
@@ -103,10 +103,11 @@ function make_clust(inst_network){
               .style('opacity',0.70);
 
             d3.select('#filter_value').text('Filter: '+100*inst_filt+'%');
-            var inst_name = 'default_example_f'+inst_filt+'.json';
 
             // get clustergram to update using views and crossfilter 
-            change_view = {'filter':inst_filt, 'num_meet':1}
+            change_view = {'filter':inst_filt, 'num_meet':1};
+
+            console.log(change_view)
 
             // disable the slider to prevent the user from making changes too
             // quickly
@@ -192,12 +193,12 @@ function make_clust(inst_network){
           });
 
           $('#toggle_row_order .btn').off().click(function(evt) {
-            var order_id = $(evt.target).find('input').attr('id').replace('_button', '');
+            var order_id = $(evt.target).attr('id').split('_')[0];
             cgm.reorder(order_id,'row');
           });
 
           $('#toggle_col_order .btn').off().click(function(evt) {
-            var order_id = $(evt.target).find('input').attr('id').replace('_button', '');
+            var order_id = $(evt.target).attr('id').split('_')[0];
             cgm.reorder(order_id,'col');
           });
 

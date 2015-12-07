@@ -4701,7 +4701,7 @@ function enter_exit_update(params, network_data, reorder, delays){
 }
 
 
-function filter_network_data(orig_network_data, new_nodes){
+function filter_network_data(orig_network_data, change_view){
   
   var views = orig_network_data.views;
 
