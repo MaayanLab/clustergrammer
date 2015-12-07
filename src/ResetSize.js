@@ -18,6 +18,20 @@
 
     run_reset_visualization_size(cont_dim.width, cont_dim.height, outer_margins.left, outer_margins.top, params);
 
+    // get dimensions of the main_svg
+    var dim = {};
+    dim.main_svg = {};
+    dim.main_svg.w = d3.select('#main_svg').style('width').replace('px','');
+    dim.main_svg.h = d3.select('#main_svg').style('height').replace('px','');
+    
+    // reposition the play button 
+    d3.select('#play_button')
+      .attr('transform', function(){
+        var pos_x = dim.main_svg.w/2;
+        var pos_y = dim.main_svg.h/2;
+        return 'translate('+pos_x+','+pos_y+')';
+      });
+
   }
 
   function run_reset_visualization_size(set_clust_width, set_clust_height, set_margin_left, set_margin_top, parameters) {

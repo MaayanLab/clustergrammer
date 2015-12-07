@@ -209,8 +209,6 @@ function Viz(params) {
   }
 
 
-
-
   // highlight resource types - set up type/color association
   var gene_search = Search(params, params.network_data.row_nodes, 'name');
 
@@ -244,8 +242,8 @@ function Viz(params) {
 
   }
 
-  function reset_zoom(){
-    zoom_obj.two_translate_zoom(params, 0,0,1);
+  function reset_zoom(inst_scale){
+    zoom_obj.two_translate_zoom(params, 0,0,inst_scale);
   }
 
   return {

@@ -2637,6 +2637,20 @@ function draw_grid_lines(row_nodes, col_nodes) {
 
     run_reset_visualization_size(cont_dim.width, cont_dim.height, outer_margins.left, outer_margins.top, params);
 
+    // get dimensions of the main_svg
+    var dim = {};
+    dim.main_svg = {};
+    dim.main_svg.w = d3.select('#main_svg').style('width').replace('px','');
+    dim.main_svg.h = d3.select('#main_svg').style('height').replace('px','');
+    
+    // reposition the play button 
+    d3.select('#play_button')
+      .attr('transform', function(){
+        var pos_x = dim.main_svg.w/2;
+        var pos_y = dim.main_svg.h/2;
+        return 'translate('+pos_x+','+pos_y+')';
+      });
+
   }
 
   function run_reset_visualization_size(set_clust_width, set_clust_height, set_margin_left, set_margin_top, parameters) {
@@ -4944,8 +4958,6 @@ function Viz(params) {
   }
 
 
-
-
   // highlight resource types - set up type/color association
   var gene_search = Search(params, params.network_data.row_nodes, 'name');
 
@@ -4979,8 +4991,8 @@ function Viz(params) {
 
   }
 
-  function reset_zoom(){
-    zoom_obj.two_translate_zoom(params, 0,0,1);
+  function reset_zoom(inst_scale){
+    zoom_obj.two_translate_zoom(params, 0,0,inst_scale);
   }
 
   return {
@@ -5725,7 +5737,12 @@ function Zoom(params){
 
       // will improve this !!
       var zoom_y = fin_zoom;
-      var zoom_x = 1;
+      var zoom_x;
+      if (fin_zoom <= params.viz.zoom_switch){
+        var zoom_x = 1;
+      } else {
+        var zoom_x = fin_zoom/params.viz.zoom_switch;
+      }
 
       // search duration - the duration of zooming and panning
       var search_duration = 700;
@@ -5748,7 +5765,7 @@ function Zoom(params){
         // first apply the margin transformation
         // then zoom, then apply the final transformation
         .attr('transform', 'translate(' + [0, 0 + center_y] + ')' +
-        ' scale(' + 1 + ',' + zoom_y + ')' + 'translate(' + [pan_dx,
+        ' scale(' + zoom_x + ',' + zoom_y + ')' + 'translate(' + [pan_dx,
           pan_dy
         ] + ')');
 

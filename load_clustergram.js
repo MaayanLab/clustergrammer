@@ -84,7 +84,10 @@ function make_clust(inst_network){
 
         global_params = cgm.params;
 
+        console.log(cgm)
         ini_sliders();
+            
+        // ini_play_button(cgm);
 
         // filter scale - only initialize once 
         $( "#slider_filter" ).slider({
