@@ -1,118 +1,127 @@
 function ini_play_button(cgm){
 
-  // get dimensions of the main_svg
-  center = {};
-  center.pos_x = 1.2*g_cgm.params.norm_label.width.row + cgm.params.viz.clust.dim.width/2;
-  center.pos_y = 1.2*g_cgm.params.norm_label.width.col + cgm.params.viz.clust.dim.height/2;
-
-  
-
-  // add preview button for demo 
-  var play_button = d3.select('#main_svg')
-    .append('g')
-    .attr('id','play_button');
-
-  play_button
-    .attr('transform', function(){
-      var pos_x = center.pos_x;
-      var pos_y = center.pos_y;
-      return 'translate('+pos_x+','+pos_y+')';
-    });
-    
-  play_button
-    .append('circle')
-    .style('r',45)
-    .style('fill','white')
-    .style('stroke','black')
-    .style('stroke-width','3px')
-    .style('opacity',0.5);
-
-  play_button
-    .append('path')
-    .attr('d',function(){
-
-      var tri_w = 40;
-      var tri_h = 22; 
-      var tri_offset = 15;
-
-      return 'M-'+tri_offset+',-'+tri_h+' l '+tri_w+','+tri_h+' l -'+tri_w+','+tri_h+' z ';
-    })
-    .style('fill','black')
-    .style('opacity',0.5);
-
-  // mouseover behavior
-  d3.select('#play_button')
-    .on('mouseover', function(){
-      d3.select(this)
-        .select('path')
-        .style('fill','red')
-        .style('opacity',1);
-
-      d3.select(this)
-        .select('circle')
-        .style('opacity',1);
-
-    })
-    .on('mouseout', function(){
-      d3.select(this)
-        .select('path')
-        .style('fill','black')
-        .style('opacity',0.5);
-      d3.select(this)
-        .select('circle')
-        .style('opacity',0.5);
-    })
-    .on('click', click_play)
-
+  // initialize 
   var delay = {};
   delay.reorder_title = 600;
   delay.reorder = delay.reorder_title + 1000;
   delay.read_duration = 1500;
 
+  initialize_play();
 
+  // 
   function click_play(){
 
-    // remove play button 
-    d3.select(this)
-      .transition().duration(500)
-      .style('opacity',0);
+    toggle_play_button(false);
 
-    if (cgm.params.zoom.scale() != 1){
-      cgm.reset_zoom( inst_scale );
+    // play demo 
+    setTimeout( play_demo, 500 );
+ 
+  }
+
+  function initialize_play(){
+    // get dimensions of the main_svg
+    center = {};
+    center.pos_x = 1.2*g_cgm.params.norm_label.width.row + cgm.params.viz.clust.dim.width/2;
+    center.pos_y = 1.2*g_cgm.params.norm_label.width.col + cgm.params.viz.clust.dim.height/2;
+
+    // make play button
+    //////////////////////////
+    var play_button = d3.select('#main_svg')
+      .append('g')
+      .attr('id','play_button');
+
+    play_button
+      .attr('transform', function(){
+        var pos_x = center.pos_x;
+        var pos_y = center.pos_y;
+        return 'translate('+pos_x+','+pos_y+')';
+      });
+      
+    play_button
+      .append('circle')
+      .style('r',45)
+      .style('fill','white')
+      .style('stroke','black')
+      .style('stroke-width','3px')
+      .style('opacity',0.5);
+
+    play_button
+      .append('path')
+      .attr('d',function(){
+
+        var tri_w = 40;
+        var tri_h = 22; 
+        var tri_offset = 15;
+
+        return 'M-'+tri_offset+',-'+tri_h+' l '+tri_w+','+tri_h+' l -'+tri_w+','+tri_h+' z ';
+      })
+      .style('fill','black')
+      .style('opacity',0.5);
+
+    // mouseover behavior
+    d3.select('#play_button')
+      .on('mouseover', function(){
+        d3.select(this)
+          .select('path')
+          .style('fill','red')
+          .style('opacity',1);
+
+        d3.select(this)
+          .select('circle')
+          .style('opacity',1);
+
+      })
+      .on('mouseout', function(){
+        d3.select(this)
+          .select('path')
+          .style('fill','black')
+          .style('opacity',0.5);
+        d3.select(this)
+          .select('circle')
+          .style('opacity',0.5);
+      })
+      .on('click', click_play)
+
+
+    // play text group 
+    ///////////////////////////
+    d3.select('#main_svg')
+      .append('g')
+      .attr('id','demo_group')
+      .append('rect');    
+  }
+
+  function toggle_play_button(appear){
+
+    if (appear === false){
+      d3.select('#play_button')
+        .transition().duration(500)
+        .style('opacity',0);
+    } else {
+      d3.select('#play_button')
+        .transition().duration(500)
+        .style('opacity',1)
     }
-
-    // play zoom 
-    setTimeout( play_zoom, delay.reorder_title );
-
-    setTimeout( play_reset_zoom, 2500 );
-
-    // setTimeout( function(){
-    //   // cgm.reorder('rank','row');
-    // }, delay.reorder );
-
-
 
   }
 
-  function play_zoom(){
+    // if (cgm.params.zoom.scale() != 1){
+    //   cgm.reset_zoom( inst_scale );
+    // }
 
+  function play_demo(){
 
     var inst_scale = cgm.params.viz.zoom_switch;
 
     setTimeout( cgm.reset_zoom, 500, 2*inst_scale );
 
-    // playback instructions 
-    var demo_group = d3.select('#main_svg')
-      .append('g')
-      .attr('id','demo_group')
+    d3.select('#demo_group')
       .style('opacity',0)
       .transition().duration(250)
       .style('opacity',1)
       .transition().duration(250).delay(delay.read_duration)
-      .style('opacity',0);
-
-    var text_rect = d3.select('#demo_group')
-        .append('rect');
+      .style('opacity',0)
+      .each('end',play_reset_zoom);
 
     var text = d3.select('#demo_group')
       .append('text')
@@ -134,7 +143,7 @@ function ini_play_button(cgm){
           return 'translate('+pos_x+','+pos_y+')';
         })
 
-    text_rect
+    d3.select('#demo_group').select('rect')
       .style('fill','white')
       .attr('width', box_scale*bbox.width)
       .attr('height',box_scale*bbox.height)
@@ -153,7 +162,9 @@ function ini_play_button(cgm){
       .transition().duration(250)
       .style('opacity',1)
       .transition().duration(250).delay(delay.read_duration)
-      .style('opacity',0);
+      .style('opacity',0)
+      // add play button back 
+      .each('end', toggle_play_button, true );
 
     var bbox = text[0][0].getBBox();
     var box_scale = 1.1;
