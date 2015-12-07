@@ -20,8 +20,8 @@ function ini_play_button(cgm){
   function initialize_play(){
     // get dimensions of the main_svg
     center = {};
-    center.pos_x = 1.2*g_cgm.params.norm_label.width.row + cgm.params.viz.clust.dim.width/2;
-    center.pos_y = 1.2*g_cgm.params.norm_label.width.col + cgm.params.viz.clust.dim.height/2;
+    center.pos_x = 1.2*cgm.params.norm_label.width.row + cgm.params.viz.clust.dim.width/2;
+    center.pos_y = 1.2*cgm.params.norm_label.width.col + cgm.params.viz.clust.dim.height/2;
 
     // make play button
     //////////////////////////
@@ -127,7 +127,8 @@ function ini_play_button(cgm){
     setTimeout(play_reset_zoom, 2000);
 
     // reorder 
-    setTimeout( play_reorder, 4000, 'rank');
+    var reorder_text = 'Reorder Rows and Columns by Rank';
+    setTimeout( play_reorder, 4000, 'rank', reorder_text);
 
     // filter - reorder - filter 
     setTimeout( play_filter, 10000 );
@@ -154,12 +155,12 @@ function ini_play_button(cgm){
 
   }
 
-  function play_reorder(inst_order){
+  function play_reorder(inst_order, reorder_text){
 
     // cgm.reorder('rank','row');
     console.log('reordering '+inst_order)
 
-    demo_text('Reorder Rows and Columns', 5000)
+    demo_text(reorder_text, 5000);
 
     setTimeout( click_reorder , 500,  inst_order, 'row');
     setTimeout( click_reorder , 3000, inst_order, 'col');
@@ -170,6 +171,7 @@ function ini_play_button(cgm){
 
   function play_filter(){
 
+
     var inst_filt = 0.4;
     var change_view = {'filter':inst_filt, 'num_meet':1};
     setTimeout( update_view, 100, change_view);
@@ -178,12 +180,12 @@ function ini_play_button(cgm){
     var change_view = {'filter':inst_filt, 'num_meet':1};
     setTimeout( update_view, 3100, change_view);
 
-    setTimeout( play_reorder, 6000, 'clust');
-
     var inst_filt = 0.0;
     var change_view = {'filter':inst_filt, 'num_meet':1};
-    setTimeout( update_view, 12000, change_view);
+    setTimeout( update_view, 6000, change_view);
 
+    var reorder_text = 'Reset ordering to Cluster';
+    setTimeout( play_reorder, 10000, 'clust', reorder_text);
 
   }
 
@@ -238,6 +240,8 @@ function ini_play_button(cgm){
   }  
 
   function update_view(change_view){
+
+    demo_text('Filter matrix: '+String(100*change_view.filter)+'%', 1500);
     $("#slider_filter").slider("option", "value", change_view.filter);
     cgm.update_network(change_view);
   }
