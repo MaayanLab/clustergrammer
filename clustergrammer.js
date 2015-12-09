@@ -507,29 +507,31 @@ function Matrix(network_data, svg_elem, params) {
   // // };
 
 
- 
   // add callback function to tile group - if one is supplied by the user
   if (typeof params.click_tile === 'function') {
     d3.selectAll('.tile')
     .on('click', function(d) {
+
       // export row/col name and value from tile
       var tile_info = {};
       tile_info.row = params.network_data.row_nodes[d.pos_y].name;
       tile_info.col = params.network_data.col_nodes[d.pos_x].name;
       tile_info.value = d.value;
+
       if (Utils.has(d, 'value_up')) {
-      tile_info.value_up = d.value_up;
+        tile_info.value_up = d.value_up;
       }
       if (Utils.has(d, 'value_dn')) {
-      tile_info.value_dn = d.value_dn;
+        tile_info.value_dn = d.value_dn;
       }
       if (Utils.has(d, 'info')) {
-      tile_info.info = d.info;
+        tile_info.info = d.info;
       }
       // run the user supplied callback function
       params.click_tile(tile_info);
       add_click_hlight(this);
     });
+
   } else {
 
     // highlight clicked tile
