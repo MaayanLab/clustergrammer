@@ -86,7 +86,8 @@ function make_clust(inst_network){
 
         console.log(cgm)
         ini_sliders();
-            
+         
+        // // play demo   
         // ini_play_button(cgm);
 
         // filter scale - only initialize once 
