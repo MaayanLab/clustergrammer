@@ -7,6 +7,24 @@ function ini_play_button(cgm){
 
   initialize_play();
 
+
+  function play_demo(){
+
+    // zoom and pan 
+    play_zoom();
+
+    // reset zoom
+    setTimeout(play_reset_zoom, 2000);
+
+    // reorder 
+    var reorder_text = 'Reorder Rows and Columns by Rank';
+    setTimeout( play_reorder, 4000, 'rank', reorder_text);
+
+    // filter - reorder - filter 
+    setTimeout( play_filter, 10000 );
+  }
+
+
   // 
   function click_play(){
 
@@ -116,22 +134,6 @@ function ini_play_button(cgm){
         .style('opacity',1)
     }
 
-  }
-
-  function play_demo(){
-
-    // zoom and pan 
-    play_zoom();
-
-    // reset zoom
-    setTimeout(play_reset_zoom, 2000);
-
-    // reorder 
-    var reorder_text = 'Reorder Rows and Columns by Rank';
-    setTimeout( play_reorder, 4000, 'rank', reorder_text);
-
-    // filter - reorder - filter 
-    setTimeout( play_filter, 10000 );
   }
 
 

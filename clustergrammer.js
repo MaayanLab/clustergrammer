@@ -5788,7 +5788,7 @@ function Zoom(params){
       d3.select('#col_label_zoom_container')
         .transition()
         .duration(search_duration)
-        .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [
+        .attr('transform', ' scale(' + zoom_x + ',' + zoom_x + ')' + 'translate(' + [
           pan_dx, 0
         ] + ')');
 
@@ -5796,7 +5796,7 @@ function Zoom(params){
       d3.select('#col_viz_zoom_container')
         .transition()
         .duration(search_duration)
-        .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [
+        .attr('transform', ' scale(' + zoom_x + ',' + 1 + ')' + 'translate(' + [
           pan_dx, 0
         ] + ')');
 

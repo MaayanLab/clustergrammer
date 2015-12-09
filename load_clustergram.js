@@ -87,7 +87,7 @@ function make_clust(inst_network){
         console.log(cgm)
         ini_sliders();
             
-        ini_play_button(cgm);
+        // ini_play_button(cgm);
 
         // filter scale - only initialize once 
         $( "#slider_filter" ).slider({
@@ -214,6 +214,7 @@ function make_clust(inst_network){
 // choose example here
 // make_clust('default_example.json');
 make_clust('mult_view.json');
+// make_clust('updn_example.json');
 // make_clust('enr_vect_example.json');
 // make_clust('narrow_example.json');
 // make_clust('narrow_long_name.json');
