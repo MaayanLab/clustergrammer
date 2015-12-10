@@ -65,6 +65,16 @@ function Reorder(params){
           return 'translate(' + params.matrix.x_scale(d.pos_x) + ' , 0)';
         });
 
+      t.selectAll('.tile_up')
+        .attr('transform', function(d) {
+          return 'translate(' + params.matrix.x_scale(d.pos_x) + ' , 0)';
+        });
+
+      t.selectAll('.tile_dn')
+        .attr('transform', function(d) {
+          return 'translate(' + params.matrix.x_scale(d.pos_x) + ' , 0)';
+        });
+
       // Move Row Labels
       d3.select('#row_label_zoom_container').selectAll('.row_label_text')
         .transition().duration(2500)
@@ -109,6 +119,16 @@ function Reorder(params){
           return 'translate(0,' + params.matrix.y_scale(tmp_index) + ')';
         })
         .selectAll('.tile')
+        .attr('transform', function(d) {
+          return 'translate(' + params.matrix.x_scale(d.pos_x) + ' , 0)';
+        });
+
+      t.selectAll('.tile_up')
+        .attr('transform', function(d) {
+          return 'translate(' + params.matrix.x_scale(d.pos_x) + ' , 0)';
+        });
+
+      t.selectAll('.tile_dn')
         .attr('transform', function(d) {
           return 'translate(' + params.matrix.x_scale(d.pos_x) + ' , 0)';
         });
@@ -251,6 +271,16 @@ function Reorder(params){
       .attr('transform', function(d) {
         return 'translate(' + params.matrix.x_scale(d.pos_x) + ',0)';
       });
+
+    t.selectAll('.tile_up')
+      .attr('transform', function(d) {
+        return 'translate(' + params.matrix.x_scale(d.pos_x) + ',0)';
+      }); 
+
+    t.selectAll('.tile_dn')
+      .attr('transform', function(d) {
+        return 'translate(' + params.matrix.x_scale(d.pos_x) + ',0)';
+      });  
 
 
     // highlight selected column

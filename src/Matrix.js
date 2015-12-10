@@ -291,7 +291,7 @@ function Matrix(network_data, svg_elem, params) {
         .data(row_split_data, function(d){return d.col_name;})
         .enter()
         .append('path')
-        .attr('clas','tile_dn')
+        .attr('class','tile_dn')
         .attr('d', function(d) {
 
           // dn triangle 
