@@ -247,17 +247,16 @@ function Matrix(network_data, svg_elem, params) {
         return 'translate(' + x_pos + ','+y_pos+')';
       });
 
-    var split_tiles = d3.select(this)
-      .selectAll('path')
-      .data(row_split_data, function(d){
-        // console.log(d.value_up);
-        return d.col_name;
-      })
-      .enter()
-      .append('path')
-      .attr('d', function(d) {
+    if (params.matrix.tile_type == 'updn'){
 
-        if (d.value_up > 0){
+      // tile_up 
+      var split_tiles = d3.select(this)
+        .selectAll('.tile_up')
+        .data(row_split_data, function(d){return d.col_name;})
+        .enter()
+        .append('path')
+        .attr('class','tile_up')
+        .attr('d', function(d) {
 
           // up triangle 
           var start_x = 0;
@@ -268,10 +267,32 @@ function Matrix(network_data, svg_elem, params) {
           var output_string = 'M' + start_x + ',' + start_y + ', L' +
           start_x + ', ' + final_y + ', L' + final_x + ',0 Z';
 
-          d3.select(this)
-            .attr('class','tile_up');
+          return output_string;
+        })  
+        .attr('transform', function(d) {
+          var x_pos = params.matrix.x_scale(d.pos_x) + 0.5*params.viz.border_width; 
+          var y_pos = 0.5*params.viz.border_width/params.viz.zoom_switch;
+          return 'translate(' + x_pos + ','+y_pos+')';
+        })
+        .style('fill', function() {
+          return params.matrix.tile_colors[0];
+        })
+        .style('fill-opacity',function(d){
+          var inst_opacity = 0;
+          if (Math.abs(d.value_dn)>0){
+            inst_opacity = params.matrix.opacity_scale(Math.abs(d.value_up));
+          }
+          return inst_opacity;
+        });
 
-        } else {
+      // tile_dn 
+      var split_tiles = d3.select(this)
+        .selectAll('.tile_dn')
+        .data(row_split_data, function(d){return d.col_name;})
+        .enter()
+        .append('path')
+        .attr('clas','tile_dn')
+        .attr('d', function(d) {
 
           // dn triangle 
           var start_x = 0;
@@ -282,45 +303,33 @@ function Matrix(network_data, svg_elem, params) {
           var output_string = 'M' + start_x + ', ' + start_y + ' ,   L' +
           final_x + ', ' + final_y + ',  L' + final_x + ',0 Z';
 
-          d3.select(this)
-            .attr('class','tile_dn');
-        }
+          return output_string;
+        })  
+        .attr('transform', function(d) {
+          var x_pos = params.matrix.x_scale(d.pos_x) + 0.5*params.viz.border_width; 
+          var y_pos = 0.5*params.viz.border_width/params.viz.zoom_switch;
+          return 'translate(' + x_pos + ','+y_pos+')';
+        })
+        .style('fill', function() {
+          return params.matrix.tile_colors[1];
+        })
+        .style('fill-opacity',function(d){
+          var inst_opacity = 0;
+          if (Math.abs(d.value_up)>0){
+            inst_opacity = params.matrix.opacity_scale(Math.abs(d.value_dn));
+          }
+          return inst_opacity;
+        });
 
-        return output_string;
-      })  
-      .attr('transform', function(d) {
-        var x_pos = params.matrix.x_scale(d.pos_x) + 0.5*params.viz.border_width; 
-        var y_pos = 0.5*params.viz.border_width/params.viz.zoom_switch;
-        return 'translate(' + x_pos + ','+y_pos+')';
-      });
+      // remove tiles where splitting is done 
+      tile
+        .each(function(d){
+          if ( Math.abs(d.value_up)>0 && Math.abs(d.value_dn)>0 ){
+            d3.select(this).remove();
+          }
+        })
 
-
-    // switch the color based on up/dn value
-    d3.selectAll('.tile_up')
-      .style('fill', function() {
-        return params.matrix.tile_colors[0];
-      })
-      .style('fill-opacity',function(d){
-        var inst_opacity = params.matrix.opacity_scale(Math.abs(d.value_up));
-        return inst_opacity;
-      });
-
-    // switch the color based on up/dn value
-    d3.selectAll('.tile_dn')
-      .style('fill', function() {
-        return params.matrix.tile_colors[1];
-      })
-      .style('fill-opacity',function(d){
-        var inst_opacity = params.matrix.opacity_scale(Math.abs(d.value_dn));
-        // console.log(d.value_dn)
-        // console.log(d.value_up)
-        return 0.5;
-        // return inst_opacity;
-      });
-
-
-
-
+    }
 
     // append title to group
     if (params.matrix.tile_title) {

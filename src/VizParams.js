@@ -605,12 +605,14 @@ function VizParams(config){
       matrix[row_index].row_data = d3.range(network_data.col_nodes.length).map(
         function(col_index) {
 
-          if ( _.has(network_data.links[0], 'value_up') || _.has(network_data.links[0],'value_dn') ){
 
+          if ( _.has(network_data.links[0], 'value_up') || _.has(network_data.links[0],'value_dn') ){
             var ini_object = {
               pos_x: col_index,
               pos_y: row_index,
               value: 0,
+              value_up: 0,
+              value_dn: 0,
               highlight:0
             };
 
@@ -620,8 +622,6 @@ function VizParams(config){
               pos_x: col_index,
               pos_y: row_index,
               value: 0,
-              value_up: 0,
-              value_dn: 0,
               highlight:0
             };
 
