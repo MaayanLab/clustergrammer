@@ -474,17 +474,21 @@ function Matrix(network_data, svg_elem, params) {
     .attr('width', params.viz.clust.dim.width)
     .attr('height', params.viz.clust.dim.height);
 
-  var tile_data = _.filter(network_data.links, 
-    function(num) {
-      return num.value !== 0 || num.highlight !== 0;
-    });
-
+  // // remove zero values to speed up visualization 
+  // var tile_data = _.filter(network_data.links, 
+  //   function(num) {
+  //     // if only single value 
+  //     if (params.matrix.tile_type === 'simple'){
+  //       return num.value !== 0 || num.highlight !== 0;
+  //     } else {
+  //       return num.value !== 0 || num.value_up !==0 || num.value_dn !==0 || num.highlight !== 0;
+  //     }
+  //   });
 
   // console.log('making downsampled version rathe than original')
   // var DS = DownSampling();
   // var ds_data = DS.calc_ds_matrix(params, 5);
   // DS.draw_ds_matrix(params, ds_data);
-
   
   // make row matrix - add key names to rows in matrix 
   var row_groups = clust_group.selectAll('.row')
@@ -498,15 +502,6 @@ function Matrix(network_data, svg_elem, params) {
     })
     .each(draw_simple_rows);
     
-  // // add group row functionality later 
-  // // // draw rows of clustergram
-  // // if (params.matrix.tile_type === 'simple') {
-  // //   row_groups = row_groups.each(draw_simple_rows);
-  // // } else {
-  // //   row_groups = row_groups.each(draw_group_rows);
-  // // };
-
-
   // add callback function to tile group - if one is supplied by the user
   if (typeof params.click_tile === 'function') {
     d3.selectAll('.tile')
@@ -646,15 +641,20 @@ function Matrix(network_data, svg_elem, params) {
 
     var inp_row_data = ini_inp_row_data.row_data;
 
-    // remove zero values to make visualization faster
-    var row_data = _.filter(inp_row_data, function(num) {
+    // value: remove zero values to make visualization faster
+    var row_values = _.filter(inp_row_data, function(num) {
       return num.value !== 0;
+    });
+
+    // value split 
+    var row_split_data = _.filter(inp_row_data, function(num){
+      return num.value_up !== 0 || num.value_dn;
     });
 
     // generate tiles in the current row
     var tile = d3.select(this)
       .selectAll('rect')
-      .data(row_data, function(d){return d.col_name;})
+      .data(row_values, function(d){return d.col_name;})
       .enter()
       .append('rect')
       .attr('class', 'tile row_tile')
@@ -681,21 +681,92 @@ function Matrix(network_data, svg_elem, params) {
       })
       .attr('title', function(d) {
         return d.value;
-      });
-
-    tile
+      })
       .style('fill-opacity', function(d) {
         // calculate output opacity using the opacity scale
         var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
         return output_opacity;
-      });
-
-    tile
+      })
       .attr('transform', function(d) {
         var x_pos = params.matrix.x_scale(d.pos_x) + 0.5*params.viz.border_width; 
         var y_pos = 0.5*params.viz.border_width/params.viz.zoom_switch;
         return 'translate(' + x_pos + ','+y_pos+')';
       });
+
+    var split_tiles = d3.select(this)
+      .selectAll('path')
+      .data(row_split_data, function(d){
+        // console.log(d.value_up);
+        return d.col_name;
+      })
+      .enter()
+      .append('path')
+      .attr('d', function(d) {
+
+        if (d.value_up > 0){
+
+          // up triangle 
+          var start_x = 0;
+          var final_x = params.matrix.x_scale.rangeBand();
+          var start_y = 0;
+          var final_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand() /60;
+
+          var output_string = 'M' + start_x + ',' + start_y + ', L' +
+          start_x + ', ' + final_y + ', L' + final_x + ',0 Z';
+
+          d3.select(this)
+            .attr('class','tile_up');
+
+        } else {
+
+          // dn triangle 
+          var start_x = 0;
+          var final_x = params.matrix.x_scale.rangeBand();
+          var start_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand() /60;
+          var final_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand() /60;
+
+          var output_string = 'M' + start_x + ', ' + start_y + ' ,   L' +
+          final_x + ', ' + final_y + ',  L' + final_x + ',0 Z';
+
+          d3.select(this)
+            .attr('class','tile_dn');
+        }
+
+        return output_string;
+      })  
+      .attr('transform', function(d) {
+        var x_pos = params.matrix.x_scale(d.pos_x) + 0.5*params.viz.border_width; 
+        var y_pos = 0.5*params.viz.border_width/params.viz.zoom_switch;
+        return 'translate(' + x_pos + ','+y_pos+')';
+      });
+
+
+    // switch the color based on up/dn value
+    d3.selectAll('.tile_up')
+      .style('fill', function() {
+        return params.matrix.tile_colors[0];
+      })
+      .style('fill-opacity',function(d){
+        var inst_opacity = params.matrix.opacity_scale(Math.abs(d.value_up));
+        return inst_opacity;
+      });
+
+    // switch the color based on up/dn value
+    d3.selectAll('.tile_dn')
+      .style('fill', function() {
+        return params.matrix.tile_colors[1];
+      })
+      .style('fill-opacity',function(d){
+        var inst_opacity = params.matrix.opacity_scale(Math.abs(d.value_dn));
+        // console.log(d.value_dn)
+        // console.log(d.value_up)
+        return 0.5;
+        // return inst_opacity;
+      });
+
+
+
+
 
     // append title to group
     if (params.matrix.tile_title) {
@@ -705,217 +776,10 @@ function Matrix(network_data, svg_elem, params) {
         return inst_string;
       });
     }
-  }
-
-
-  // make each row in the clustergram
-  function draw_group_tiles(clust_group, tile_data) {
-
-    // bind tile_data
-    var tile = clust_group
-      .selectAll('g')
-      .data(tile_data, function(d){ return d.name;})
-      .enter()
-      .append('g')
-      .attr('class', 'tile')
-      .attr('transform', function(d) {
-        return 'translate(' + params.matrix.x_scale(d.target) + ','+params.matrix.y_scale(d.source)+')';
-      });
-
-    // append rect
-    tile
-      .append('rect')
-      .attr('class','tile_group')
-      .attr('width', params.matrix.x_scale.rangeBand())
-      .attr('height', params.matrix.y_scale.rangeBand())
-      .style('fill-opacity', function(d) {
-      // calculate output opacity using the opacity scale
-      var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
-      if (Math.abs(d.value_up) > 0 && Math.abs(d.value_dn) > 0) {
-        output_opacity = 0;
-      }
-      return output_opacity;
-      })
-      // switch the color based on up/dn value
-      .style('fill', function(d) {
-        // normal rule
-        return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
-      });
-
-    tile
-      .on('mouseover', function(p) {
-      // highlight row - set text to active if
-      d3.selectAll('.row_label_text text')
-        .classed('active', function(d, i) {
-        return i === p.source;
-        });
-      d3.selectAll('.col_label_text text')
-        .classed('active', function(d, i) {
-        return i === p.target;
-        });
-      })
-      .on('mouseout', function mouseout() {
-        d3.selectAll('text').classed('active', false);
-      })
-      .attr('title', function(d) {
-      return d.value;
-      });
-
-      if ('highlight' in tile_data[0]){
-
-        var rel_width_hlight = 4 ;
-        var highlight_opacity = 0.0;
-
-        var hlight_width  = rel_width_hlight*params.viz.border_width;
-        var hlight_height = rel_width_hlight*params.viz.border_width/params.viz.zoom_switch;
-
-        // top highlight
-        tile
-          .append('rect')
-          .attr('class','highlight')
-          .attr('id','perm_top_hlight')
-          .attr('width', params.matrix.x_scale.rangeBand())
-          .attr('height', hlight_height)
-          .attr('fill',function(d){
-            return d.highlight > 0 ? params.matrix.outline_colors[0] : params.matrix.outline_colors[1];
-          })
-          .attr('opacity',function(d){
-            return Math.abs(d.highlight);
-          });
-
-        // left highlight
-        tile
-          .append('rect')
-          .attr('class','highlight')
-          .attr('id','perm_left_hlight')
-          .attr('width', hlight_width)
-          .attr('height', params.matrix.y_scale.rangeBand() - hlight_height*0.99 )
-          .attr('fill',function(d){
-            return d.highlight > 0 ? params.matrix.outline_colors[0] : params.matrix.outline_colors[1];
-          })
-          .attr('transform', function() {
-            return 'translate(' + 0 + ','+
-              hlight_height*0.99+')';
-          })
-          .attr('opacity',function(d){
-            return Math.abs(d.highlight);
-          });
-
-        // right highlight
-        tile
-          .append('rect')
-          .attr('class','highlight')
-          .attr('id','perm_right_hlight')
-          .attr('width', hlight_width)
-          .attr('height', params.matrix.y_scale.rangeBand() - hlight_height*0.99 )
-          .attr('fill',function(d){
-            return d.highlight > 0 ? params.matrix.outline_colors[0] : params.matrix.outline_colors[1];
-          })
-          .attr('transform', function() {
-            var tmp_translate = params.matrix.x_scale.rangeBand() - hlight_width;
-            return 'translate(' + tmp_translate + ','+
-              hlight_height*0.99+')';
-          })
-          .attr('opacity',function(d){
-            return Math.abs(d.highlight);
-          });
-
-        // bottom highlight
-        tile
-          .append('rect')
-          .attr('class','highlight')
-          .attr('id','perm_ottom_hlight')
-          .attr('width', function(){
-            return params.matrix.x_scale.rangeBand() - 1.98*hlight_width})
-          .attr('height', hlight_height)
-          .attr('fill',function(d){
-            return d.highlight > 0 ? params.matrix.outline_colors[0] : params.matrix.outline_colors[1];
-          })
-          .attr('transform', function() {
-            var tmp_translate_x = hlight_width*0.99;
-            var tmp_translate_y = params.matrix.y_scale.rangeBand() - hlight_height;
-            return 'translate(' + tmp_translate_x + ','+
-              tmp_translate_y+')';
-          })
-          .attr('opacity',function(d){
-            return Math.abs(d.highlight);
-          });
-
-      }
-
-
-    // split-up
-    tile
-      .append('path')
-      // .style('stroke', 'black')
-      .attr('class','tile_split_up')
-      .style('stroke-width', 0)
-      .attr('d', function() {
-        var start_x = 0;
-        var final_x = params.matrix.x_scale.rangeBand();
-        var start_y = 0;
-        var final_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand() /
-          60;
-        var output_string = 'M' + start_x + ',' + start_y + ', L' +
-          start_x + ', ' + final_y + ', L' + final_x + ',0 Z';
-        return output_string;
-      })
-      .style('fill-opacity', function(d) {
-        // calculate output opacity using the opacity scale
-        var output_opacity = 0;
-        if (Math.abs(d.value_dn) > 0) {
-          output_opacity = params.matrix.opacity_scale(Math.abs(d.value_up));
-        }
-        return output_opacity;
-      })
-      // switch the color based on up/dn value
-      .style('fill', function() {
-        // rl_t (released) blue
-        return params.matrix.tile_colors[0];
-      });
-
-
-    // split-dn
-    tile
-      .append('path')
-      .attr('class','tile_split_dn')
-      // .style('stroke', 'black')
-      .style('stroke-width', 0)
-      .attr('d', function() {
-        var start_x = 0;
-        var final_x = params.matrix.x_scale.rangeBand();
-        var start_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand() /
-          60;
-        var final_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand() /
-          60;
-        var output_string = 'M' + start_x + ', ' + start_y + ' ,   L' +
-          final_x + ', ' + final_y + ',  L' + final_x + ',0 Z';
-        return output_string;
-      })
-      .style('fill-opacity', function(d) {
-        // calculate output opacity using the opacity scale
-        var output_opacity = 0;
-        if (Math.abs(d.value_up) > 0) {
-          output_opacity = params.matrix.opacity_scale(Math.abs(d.value_dn));
-        }
-        return output_opacity;
-      })
-      // switch the color based on up/dn value
-      .style('fill', function() {
-        return params.matrix.tile_colors[1];
-      });
-
-    // append title to group
-    if (params.matrix.tile_title) {
-      tile
-      .append('title')
-      .text(function(d) {
-        var inst_string = 'value: ' + d.value;
-        return inst_string;
-      });
-    }
 
   }
+
+
   
 
   // Matrix API
@@ -1589,9 +1453,6 @@ function VizParams(config){
     // add names and instantaneous positions to links 
     _.each(params.network_data.links, function(d){
 
-      // console.log('\n\nadding names')
-      // console.log(d);
-
       d.name = row_nodes[d.source].name + '_' + col_nodes[d.target].name;
       d.row_name = row_nodes[d.source].name;
       d.col_name = col_nodes[d.target].name;
@@ -1699,8 +1560,8 @@ function VizParams(config){
     // tile type: simple or group
     // rect is the default faster and simpler option
     // group is the optional slower and more complex option that is activated with: highlighting or split tiles
-    if (Utils.has(network_data.links[0], 'value_up') || Utils.has(network_data.links[0], 'highlight')) {
-      params.matrix.tile_type = 'group';
+    if (Utils.has(network_data.links[0], 'value_up') || Utils.has(network_data.links[0], 'value_dn')) {
+      params.matrix.tile_type = 'updn';
     } else {
       params.matrix.tile_type = 'simple';
     }
@@ -1860,24 +1721,47 @@ function VizParams(config){
       matrix[row_index].name = network_data.row_nodes[row_index].name;
       matrix[row_index].row_data = d3.range(network_data.col_nodes.length).map(
         function(col_index) {
-          return {
-            pos_x: col_index,
-            pos_y: row_index,
-            value: 0,
-            highlight:0
-          } ;
+
+          if ( _.has(network_data.links[0], 'value_up') || _.has(network_data.links[0],'value_dn') ){
+
+            var ini_object = {
+              pos_x: col_index,
+              pos_y: row_index,
+              value: 0,
+              highlight:0
+            };
+
+          } else {
+
+            var ini_object = {
+              pos_x: col_index,
+              pos_y: row_index,
+              value: 0,
+              value_up: 0,
+              value_dn: 0,
+              highlight:0
+            };
+
+          }
+
+          return ini_object;
+
+
         });
     });
 
     _.each(network_data.links, function(link) {
+
       // transfer additional link information is necessary
       matrix[link.source].row_data[link.target].value = link.value;
       matrix[link.source].row_data[link.target].row_name = link.row_name;
       matrix[link.source].row_data[link.target].col_name = link.col_name;
-      if (link.value_up && link.value_dn) {
+
+      if ( _.has(link, 'value_up') || _.has(link, 'value_dn') ) {
         matrix[link.source].row_data[link.target].value_up = link.value_up;
         matrix[link.source].row_data[link.target].value_dn = link.value_dn;
       }
+
       if (link.highlight) {
         matrix[link.source].row_data[link.target].highlight = link.highlight;
       }

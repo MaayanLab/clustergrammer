@@ -336,9 +336,6 @@ function VizParams(config){
     // add names and instantaneous positions to links 
     _.each(params.network_data.links, function(d){
 
-      // console.log('\n\nadding names')
-      // console.log(d);
-
       d.name = row_nodes[d.source].name + '_' + col_nodes[d.target].name;
       d.row_name = row_nodes[d.source].name;
       d.col_name = col_nodes[d.target].name;
@@ -446,8 +443,8 @@ function VizParams(config){
     // tile type: simple or group
     // rect is the default faster and simpler option
     // group is the optional slower and more complex option that is activated with: highlighting or split tiles
-    if (Utils.has(network_data.links[0], 'value_up') || Utils.has(network_data.links[0], 'highlight')) {
-      params.matrix.tile_type = 'group';
+    if (Utils.has(network_data.links[0], 'value_up') || Utils.has(network_data.links[0], 'value_dn')) {
+      params.matrix.tile_type = 'updn';
     } else {
       params.matrix.tile_type = 'simple';
     }
@@ -607,24 +604,47 @@ function VizParams(config){
       matrix[row_index].name = network_data.row_nodes[row_index].name;
       matrix[row_index].row_data = d3.range(network_data.col_nodes.length).map(
         function(col_index) {
-          return {
-            pos_x: col_index,
-            pos_y: row_index,
-            value: 0,
-            highlight:0
-          } ;
+
+          if ( _.has(network_data.links[0], 'value_up') || _.has(network_data.links[0],'value_dn') ){
+
+            var ini_object = {
+              pos_x: col_index,
+              pos_y: row_index,
+              value: 0,
+              highlight:0
+            };
+
+          } else {
+
+            var ini_object = {
+              pos_x: col_index,
+              pos_y: row_index,
+              value: 0,
+              value_up: 0,
+              value_dn: 0,
+              highlight:0
+            };
+
+          }
+
+          return ini_object;
+
+
         });
     });
 
     _.each(network_data.links, function(link) {
+
       // transfer additional link information is necessary
       matrix[link.source].row_data[link.target].value = link.value;
       matrix[link.source].row_data[link.target].row_name = link.row_name;
       matrix[link.source].row_data[link.target].col_name = link.col_name;
-      if (link.value_up && link.value_dn) {
+
+      if ( _.has(link, 'value_up') || _.has(link, 'value_dn') ) {
         matrix[link.source].row_data[link.target].value_up = link.value_up;
         matrix[link.source].row_data[link.target].value_dn = link.value_dn;
       }
+
       if (link.highlight) {
         matrix[link.source].row_data[link.target].highlight = link.highlight;
       }
