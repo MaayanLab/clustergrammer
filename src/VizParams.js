@@ -600,11 +600,12 @@ function VizParams(config){
     var matrix = []; 
 
     _.each(network_data.row_nodes, function(tmp, row_index) {
+
       matrix[row_index] = {};
       matrix[row_index].name = network_data.row_nodes[row_index].name;
       matrix[row_index].row_data = d3.range(network_data.col_nodes.length).map(
-        function(col_index) {
 
+        function(col_index) {
 
           if ( _.has(network_data.links[0], 'value_up') || _.has(network_data.links[0],'value_dn') ){
             var ini_object = {
@@ -626,11 +627,9 @@ function VizParams(config){
             };
 
           }
-
           return ini_object;
-
-
         });
+
     });
 
     _.each(network_data.links, function(link) {

@@ -1,4 +1,7 @@
 def main():
+  make_enr_vect_clust()
+
+def example_mult_views():
   from clustergrammer import Network
 
   net = Network()
@@ -33,7 +36,7 @@ def make_enr_vect_clust():
   ####################################################### 
   user_list_ids = [
     {"col_title":'something else ',"user_list_id":100},
-    {"col_title":'Lung Spot Check 2',"user_list_id":641038}
+    {"col_title":'Lung Spot Check 2',"user_list_id":101}
   ]
 
   gmt = 'ChEA_2015'
@@ -46,6 +49,6 @@ def make_enr_vect_clust():
   net = enr_fun.make_enr_vect_clust(g2e_post, threshold, num_thresh)
 
   # write network to json 
-  # net.write_json_to_file('')
+  net.write_json_to_file('viz','json/enr_vect_example.json')
 
 main()

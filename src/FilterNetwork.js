@@ -7,6 +7,8 @@ function filter_network_data(orig_network_data, change_view){
 
     if (_.has(change_view,'filter_row')){
 
+      console.log('change view has filter_row')
+
       // failsafe from json 
       if (_.has(d, 'filter_row')){
         return d.filter_row == change_view.filter_row;

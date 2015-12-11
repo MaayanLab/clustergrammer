@@ -1,5 +1,7 @@
 function update_network(change_view){
 
+  console.log(change_view)
+
   console.log('changing view '+String(change_view.filter));
 
   // create a new args object 

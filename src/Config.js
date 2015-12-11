@@ -67,6 +67,29 @@ function Config(args) {
   // extend does not properly pass network_data
   config.network_data = args.network_data;
 
+  _.each(config.network_data.row_nodes, function(d){
+    d.name = d.name.replace(/_/g, ' ');
+  });
+  _.each(config.network_data.col_nodes, function(d){
+    d.name = d.name.replace(/_/g, ' ');
+  });
+
+  _.each(config.network_data.views, function(inst_view){
+
+    var inst_nodes = inst_view.nodes;
+
+    // fix rows in views 
+    _.each(inst_nodes.row_nodes, function(d){
+      d.name = d.name.replace(/_/g, ' ');
+    });
+
+    // fix cols in views 
+    _.each(inst_nodes.col_nodes, function(d){
+      d.name = d.name.replace(/_/g, ' ');
+    });
+
+  })
+
   // transpose network if necessary
   if (config.transpose) {
     config.network_data = transpose_network(args.network_data);

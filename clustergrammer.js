@@ -104,6 +104,29 @@ function Config(args) {
   // extend does not properly pass network_data
   config.network_data = args.network_data;
 
+  _.each(config.network_data.row_nodes, function(d){
+    d.name = d.name.replace(/_/g, ' ');
+  });
+  _.each(config.network_data.col_nodes, function(d){
+    d.name = d.name.replace(/_/g, ' ');
+  });
+
+  _.each(config.network_data.views, function(inst_view){
+
+    var inst_nodes = inst_view.nodes;
+
+    // fix rows in views 
+    _.each(inst_nodes.row_nodes, function(d){
+      d.name = d.name.replace(/_/g, ' ');
+    });
+
+    // fix cols in views 
+    _.each(inst_nodes.col_nodes, function(d){
+      d.name = d.name.replace(/_/g, ' ');
+    });
+
+  })
+
   // transpose network if necessary
   if (config.transpose) {
     config.network_data = transpose_network(args.network_data);
@@ -1715,11 +1738,12 @@ function VizParams(config){
     var matrix = []; 
 
     _.each(network_data.row_nodes, function(tmp, row_index) {
+
       matrix[row_index] = {};
       matrix[row_index].name = network_data.row_nodes[row_index].name;
       matrix[row_index].row_data = d3.range(network_data.col_nodes.length).map(
-        function(col_index) {
 
+        function(col_index) {
 
           if ( _.has(network_data.links[0], 'value_up') || _.has(network_data.links[0],'value_dn') ){
             var ini_object = {
@@ -1741,11 +1765,9 @@ function VizParams(config){
             };
 
           }
-
           return ini_object;
-
-
         });
+
     });
 
     _.each(network_data.links, function(link) {
@@ -4313,6 +4335,8 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
 
 function update_network(change_view){
 
+  console.log(change_view)
+
   console.log('changing view '+String(change_view.filter));
 
   // create a new args object 
@@ -4845,6 +4869,8 @@ function filter_network_data(orig_network_data, change_view){
   var inst_view = _.find(views, function(d){
 
     if (_.has(change_view,'filter_row')){
+
+      console.log('change view has filter_row')
 
       // failsafe from json 
       if (_.has(d, 'filter_row')){

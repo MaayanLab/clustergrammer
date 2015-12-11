@@ -245,7 +245,8 @@ def make_enr_vect_clust(g2e_post, threshold, num_thresh):
   print('\n  filtering network')
   net.filter_network_thresh(threshold,num_thresh)
   print('\n  clustering network')
-  net.cluster_row_and_col('cos')
+  # net.cluster_row_and_col('cos')
+  net.make_mult_views(dist_type='cos',filter_row=True)
   print('\n  finished clustering Enrichr vectors\n---------------------')
 
   return net 
