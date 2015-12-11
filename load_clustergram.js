@@ -106,7 +106,7 @@ function make_clust(inst_network){
             d3.select('#filter_value').text('Filter: '+100*inst_filt+'%');
 
             // get clustergram to update using views and crossfilter 
-            change_view = {'filter':inst_filt, 'num_meet':1};
+            change_view = {'filter_row':inst_filt, 'num_meet':1};
 
             console.log(change_view)
 

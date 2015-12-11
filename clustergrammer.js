@@ -474,17 +474,6 @@ function Matrix(network_data, svg_elem, params) {
     .attr('width', params.viz.clust.dim.width)
     .attr('height', params.viz.clust.dim.height);
 
-  // // remove zero values to speed up visualization 
-  // var tile_data = _.filter(network_data.links, 
-  //   function(num) {
-  //     // if only single value 
-  //     if (params.matrix.tile_type === 'simple'){
-  //       return num.value !== 0 || num.highlight !== 0;
-  //     } else {
-  //       return num.value !== 0 || num.value_up !==0 || num.value_dn !==0 || num.highlight !== 0;
-  //     }
-  //   });
-
   // console.log('making downsampled version rathe than original')
   // var DS = DownSampling();
   // var ds_data = DS.calc_ds_matrix(params, 5);
@@ -4852,7 +4841,23 @@ function filter_network_data(orig_network_data, change_view){
   
   var views = orig_network_data.views;
 
-  var inst_view = _.find(views, function(d){return d.filt==change_view.filter});
+  // failsafe if there is only row+col filtering from front-end
+  var inst_view = _.find(views, function(d){
+
+    if (_.has(change_view,'filter_row')){
+
+      // failsafe from json 
+      if (_.has(d, 'filter_row')){
+        return d.filter_row == change_view.filter_row;
+      } else {
+        return d.filt == change_view.filter_row;
+      }
+
+    } else {
+      return d.filt==change_view.filter;
+    }
+
+  });
 
   var new_nodes = inst_view.nodes;
 

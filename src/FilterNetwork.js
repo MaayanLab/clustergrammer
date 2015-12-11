@@ -2,7 +2,23 @@ function filter_network_data(orig_network_data, change_view){
   
   var views = orig_network_data.views;
 
-  var inst_view = _.find(views, function(d){return d.filt==change_view.filter});
+  // failsafe if there is only row+col filtering from front-end
+  var inst_view = _.find(views, function(d){
+
+    if (_.has(change_view,'filter_row')){
+
+      // failsafe from json 
+      if (_.has(d, 'filter_row')){
+        return d.filter_row == change_view.filter_row;
+      } else {
+        return d.filt == change_view.filter_row;
+      }
+
+    } else {
+      return d.filt==change_view.filter;
+    }
+
+  });
 
   var new_nodes = inst_view.nodes;
 

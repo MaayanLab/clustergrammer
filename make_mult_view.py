@@ -8,12 +8,9 @@ all_filt = [i/float(10) for i in all_filt]
 
 inst_meet = 1
 
-print('something')
-
-# calc mult_view net 
+# initialie net_view 
 net_view = deepcopy(Network())
 net_view.load_tsv_to_net('txt/example_tsv_network.txt')
-# net_view.pandas_load_tsv_to_net('txt/ccle_example.txt')
 net_view.cluster_row_and_col('cos')
 
 mat = net_view.dat['mat']
@@ -35,7 +32,11 @@ for inst_filt in all_filt:
 
   filt_value = inst_filt * max_mat
 
-  net.filter_network_thresh(filt_value,inst_meet)
+  # filter row 
+  net.filter_row_thresh(filt_value,inst_meet)
+  
+  # # filter column 
+  # net.filter_col_thresh(filt_value,inst_meet)
 
   mat_shape = net.dat['mat'].shape
 
@@ -48,8 +49,10 @@ for inst_filt in all_filt:
 
     # add view 
     inst_view = {}
-    inst_view['filt'] = inst_filt
-    inst_view['num_meet'] = inst_meet
+    inst_view['filter_row'] = inst_filt
+    inst_view['filter_col'] = inst_filt
+    inst_view['num_meet_row'] = inst_meet
+    inst_view['num_meet_col'] = inst_meet
     inst_view['dist'] = 'cos'
     inst_view['nodes'] = {}
     inst_view['nodes']['row_nodes'] = net.viz['row_nodes']
