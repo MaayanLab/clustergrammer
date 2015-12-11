@@ -91,11 +91,12 @@ function make_clust(inst_network){
         // ini_play_button(cgm);
 
         // filter scale - only initialize once 
+        var inst_max = network_data.views.length - 1;
         $( "#slider_filter" ).slider({
           value:0,
           min: 0,
-          max: 0.9,
-          step: 0.1,
+          max: inst_max,
+          step: 1,
           stop: function( event, ui ) {
             $( "#amount" ).val( "$" + ui.value );
             var inst_filt = $( "#slider_filter" ).slider( "value" ); 
@@ -103,10 +104,10 @@ function make_clust(inst_network){
             d3.select('#main_svg')
               .style('opacity',0.70);
 
-            d3.select('#filter_value').text('Filter: '+100*inst_filt+'%');
+            d3.select('#filter_value').text('Filter Rows: '+10*inst_filt+'%');
 
             // get clustergram to update using views and crossfilter 
-            change_view = {'filter_row':inst_filt, 'num_meet':1};
+            change_view = {'filter_row':inst_filt/10, 'num_meet':1};
 
             console.log(change_view)
 
