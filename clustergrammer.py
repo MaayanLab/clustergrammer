@@ -317,8 +317,6 @@ class Network(object):
         else:
           self.dat['mat'] = np.hstack(( self.dat['mat'], inst_vect))
 
-
-
   def load_cst_kea_enr_to_net(self, enr, pval_cutoff):
     import scipy
     import numpy as np
@@ -622,7 +620,6 @@ class Network(object):
   def swap_nan_for_zero(self):
     import numpy as np
     self.dat['mat'][ np.isnan( self.dat['mat'] ) ] = 0
-
 
   def filter_row_thresh( self, cutoff, min_num_meet ):
     ''' 
@@ -1248,6 +1245,74 @@ class Network(object):
     self.dat['mat'] = df.values
     self.dat['nodes']['row'] = df.index.tolist()
     self.dat['nodes']['col'] = df.columns.tolist()
+
+  def make_mult_views(self, dist_type='cos',filter_row=True, filter_col=False):
+    ''' 
+    This will calculate multiple views of a clustergram by filtering the 
+    data and clustering after each fitlering. By default row filtering will 
+    be turned on and column filteirng will not. The filtering steps are defined
+    as a percentage of the maximum value found in the network. 
+    '''
+    from clustergrammer import Network
+    from copy import deepcopy 
+
+    # filter between 0% and 90% of max value 
+    all_filt = range(10)
+    all_filt = [i/float(10) for i in all_filt]
+
+    inst_meet = 1
+
+    # cluster default view 
+    self.cluster_row_and_col('cos')
+
+    mat = self.dat['mat']
+    max_mat = max(mat.min(), mat.max(), key=abs)
+
+    self.viz['views'] = []
+
+    all_views = []
+
+    col_filt = 0
+
+    for row_filt in all_filt:
+
+      print('row filt\t'+str(row_filt))
+
+      # initialize new net 
+      net = deepcopy(Network())
+
+      net.dat = deepcopy(self.dat)
+
+      filt_value = row_filt * max_mat
+
+      # filter rows 
+      net.filter_row_thresh(filt_value, inst_meet)
+
+      # try to filter - will not work if there is one row
+      try:
+
+        # cluster 
+        net.cluster_row_and_col('cos')
+
+        # add view 
+        inst_view = {}
+        inst_view['filter_row'] = row_filt
+        inst_view['filter_col'] = col_filt
+        inst_view['num_meet_row'] = inst_meet
+        inst_view['num_meet_col'] = inst_meet
+        inst_view['dist'] = 'cos'
+        inst_view['nodes'] = {}
+        inst_view['nodes']['row_nodes'] = net.viz['row_nodes']
+        inst_view['nodes']['col_nodes'] = net.viz['col_nodes']
+
+        all_views.append(inst_view)
+
+      except:
+        print('did not cluster filtered view')
+
+    # add views to viz
+    self.viz['views'] = all_views
+
 
   @staticmethod
   def load_gmt(filename):

@@ -8073,7 +8073,7 @@
         ]
       }, 
       "filter_row": 0.0, 
-      "filter_col": 0.0
+      "filter_col": 0
     }, 
     {
       "dist": "cos", 
@@ -9359,7 +9359,7 @@
         ]
       }, 
       "filter_row": 0.1, 
-      "filter_col": 0.1
+      "filter_col": 0
     }, 
     {
       "dist": "cos", 
@@ -10645,7 +10645,7 @@
         ]
       }, 
       "filter_row": 0.2, 
-      "filter_col": 0.2
+      "filter_col": 0
     }, 
     {
       "dist": "cos", 
@@ -11931,7 +11931,7 @@
         ]
       }, 
       "filter_row": 0.3, 
-      "filter_col": 0.3
+      "filter_col": 0
     }, 
     {
       "dist": "cos", 
@@ -12894,7 +12894,7 @@
         ]
       }, 
       "filter_row": 0.4, 
-      "filter_col": 0.4
+      "filter_col": 0
     }, 
     {
       "dist": "cos", 
@@ -13724,7 +13724,7 @@
         ]
       }, 
       "filter_row": 0.5, 
-      "filter_col": 0.5
+      "filter_col": 0
     }, 
     {
       "dist": "cos", 
@@ -14402,7 +14402,7 @@
         ]
       }, 
       "filter_row": 0.6, 
-      "filter_col": 0.6
+      "filter_col": 0
     }, 
     {
       "dist": "cos", 
@@ -15004,7 +15004,7 @@
         ]
       }, 
       "filter_row": 0.7, 
-      "filter_col": 0.7
+      "filter_col": 0
     }, 
     {
       "dist": "cos", 
@@ -15606,7 +15606,7 @@
         ]
       }, 
       "filter_row": 0.8, 
-      "filter_col": 0.8
+      "filter_col": 0
     }, 
     {
       "dist": "cos", 
@@ -16208,7 +16208,7 @@
         ]
       }, 
       "filter_row": 0.9, 
-      "filter_col": 0.9
+      "filter_col": 0
     }
   ]
 }
