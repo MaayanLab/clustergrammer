@@ -1,23 +1,6 @@
 def main():
   make_enr_vect_clust()
 
-def example_mult_views():
-  from clustergrammer import Network
-
-  net = Network()
-
-  # load data 
-  net.load_tsv_to_net('txt/example_tsv_network.txt')
-
-  # make multple clusterings 
-  net.make_mult_views(dist_type='cos', filter_row=True)
-
-  # 
-  net.write_json_to_file('viz','json/mult_view.json','indent')
-
-  # net.mult_views()
-
-
 def make_enr_vect_clust():
   import enrichr_functions as enr_fun
   from clustergrammer import Network
@@ -35,8 +18,10 @@ def make_enr_vect_clust():
   # mock g2e data 
   ####################################################### 
   user_list_ids = [
-    {"col_title":'something else ',"user_list_id":100},
-    {"col_title":'Lung Spot Check 2',"user_list_id":101}
+    {"col_title":'1',"user_list_id":100},
+    {"col_title":'2',"user_list_id":101},
+    {"col_title":'3',"user_list_id":102},
+    {"col_title":'4',"user_list_id":103}
   ]
 
   gmt = 'ChEA_2015'

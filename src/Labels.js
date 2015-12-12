@@ -68,6 +68,7 @@ function Labels(params){
       });
 
     if (params.labels.show_tooltips){
+      
       // d3-tooltip
       var tip = d3.tip()
         .attr('class', 'd3-tip')
@@ -76,7 +77,7 @@ function Labels(params){
         .html(function(d) {
           var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
           return "<span>" + inst_name + "</span>";
-        })
+        });
 
       d3.select('#'+params.viz.svg_div_id)
         .select('svg')
@@ -411,12 +412,10 @@ function Labels(params){
       .on('mouseover', function(d) {
         d3.select(this).select('text')
           .classed('active',true);
-        // tip.show(d)
       })
       .on('mouseout', function(d) {
         d3.select(this).select('text')
           .classed('active',false);
-        // tip.hide(d)
       });
 
     // get max value

@@ -88,11 +88,6 @@ def enrichr_get_request( gmt, userListId ):
   # get response_list 
   response_list = resp_json[only_key]
 
-  # print('\nresponse list length '+str(len(response_list))+'\n')
-
-  print('\n\nresponse_list')
-  print(response_list)
-
   # transfer the response_list to the enr_dict 
   enr = transfer_to_enr_dict( response_list )
 
@@ -149,14 +144,20 @@ def transfer_to_enr_dict(response_list):
 def make_enr_vect_clust(g2e_post, threshold, num_thresh):
   ''' 
   Make clustergram of enrichment results from Enrichr using a set of input 
-  gene lists that have already been uploaded to Enrichr. I'll be sent a list 
-  of userListIds with column titles and the requested gmt. I'll then make get
-  requests to Enrichr to get enriched terms. Then I'll make a clustergram with 
-  gene signature columns and enriched term rows and combined score tiles.
+  gene lists that have already been uploaded to Enrichr - up and down lists. 
+
+  I'll be sent a list of userListIds with column titles and the requested gmt. 
+  I'll then make get requests to Enrichr to get enriched terms. Then I'll make a 
+  clustergram with gene signature columns and enriched term rows and combined 
+  score tiles.
   '''
   from clustergrammer import Network
   import scipy 
   print('\n\n  in make_enr_vect_clust')
+
+  print('\n\nGMT')
+  print(g2e_post['background_type'])
+  print('\n')
 
   # process g2e_post
   ####################
@@ -164,13 +165,13 @@ def make_enr_vect_clust(g2e_post, threshold, num_thresh):
   all_col_titles = []
   id_to_title = {}
 
-  for inst_gs in g2e_post['user_list_ids']:
-    print('  col_title: '+str(inst_gs['col_title'])+' '+str(inst_gs['user_list_id']) )
-    all_ids.append(inst_gs['user_list_id'])
+  for inst_gs in g2e_post['signature_ids']:
+    print('  col_title: '+str(inst_gs['col_title'])+' '+str(inst_gs['enr_id_up']) )
+    all_ids.append(inst_gs['enr_id_up'])
     all_col_titles.append(inst_gs['col_title'])
 
     # keep association between id and col title 
-    id_to_title[inst_gs['user_list_id']] = inst_gs['col_title']
+    id_to_title[inst_gs['enr_id_up']] = inst_gs['col_title']
 
   inst_gmt = g2e_post['background_type']
 
@@ -198,6 +199,7 @@ def make_enr_vect_clust(g2e_post, threshold, num_thresh):
   # cols: all gene lists 
   col_node_names = all_col_titles
   
+  # loop through the gene signatures 
   for inst_gs in all_enr:
     # loop through the enriched terms for the gs 
     for inst_enr in inst_gs['enr']:
@@ -221,6 +223,11 @@ def make_enr_vect_clust(g2e_post, threshold, num_thresh):
   net.dat['mat'] = scipy.zeros([len(row_node_names),len(col_node_names)])
 
   print('\n  gathering enrichment information\n----------------------\n')
+  net.dat['mat_info'] = {}
+  for i in range(len(row_node_names)):
+    for j in range(len(col_node_names)):
+      net.dat['mat_info'][str((i,j))] = ''
+
   # fill in mat using all_enr 
   for inst_gs in all_enr:
 
@@ -231,6 +238,7 @@ def make_enr_vect_clust(g2e_post, threshold, num_thresh):
 
       inst_term = inst_enr['name']
       inst_cs = inst_enr['combined_score']
+      inst_genes = inst_enr['int_genes']
 
       # save in mat 
       ###############
@@ -238,8 +246,16 @@ def make_enr_vect_clust(g2e_post, threshold, num_thresh):
       row_index = row_node_names.index(inst_term)
       col_index = col_node_names.index(inst_gs_name)
 
+      print(str((row_index,col_index)))
+
+      net.dat['mat_info'][str((row_index,col_index))] = inst_genes
+
       if inst_cs > 0:
         net.dat['mat'][row_index, col_index] = inst_cs
+        print(row_index)
+        print(col_index)
+
+  print(net.dat['mat_info'])
 
   # filter and cluster network 
   print('\n  filtering network')
