@@ -10,7 +10,8 @@ function Config(args) {
     row_label_scale: 1,
     col_label_scale: 1,
     super_labels: false,
-    show_tooltips: false,
+    show_label_tooltips: false,
+    show_tile_tooltips: false,
 
     // matrix options
     transpose: false,
@@ -51,7 +52,8 @@ function Config(args) {
     // force the visualization to be square
     force_square:0,
     tile_click_hlight:false,
-    super_label_scale: 1
+    super_label_scale: 1,
+    make_tile_tooltip:function(d){return d.info;}
   };
 
   // Mixin defaults with user-defined arguments.

@@ -67,8 +67,8 @@ function Labels(params){
         }
       });
 
-    if (params.labels.show_tooltips){
-      
+    if (params.labels.show_label_tooltips){
+
       // d3-tooltip
       var tip = d3.tip()
         .attr('class', 'd3-tip')
@@ -466,7 +466,7 @@ function Labels(params){
       .transition().delay(text_delay).duration(text_delay)
       .style('opacity',1);
 
-    if (params.labels.show_tooltips){
+    if (params.labels.show_label_tooltips){
 
       // d3-tooltip
       var tip = d3.tip()

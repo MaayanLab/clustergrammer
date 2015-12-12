@@ -32,7 +32,7 @@ function VizParams(config){
     if (params.labels.show_categories){
       params.labels.class_colors = config.class_colors;
     }
-    params.labels.show_tooltips = config.show_tooltips;
+    params.labels.show_label_tooltips = config.show_label_tooltips;
 
     // Matrix Options
     params.matrix = {};
@@ -41,6 +41,10 @@ function VizParams(config){
     params.matrix.outline_colors = config.outline_colors;
     params.matrix.hlight_color = config.highlight_color
     params.matrix.tile_title = config.tile_title;
+    params.matrix.show_tile_tooltips  = config.show_tile_tooltips;
+
+    // transfer tile tooltip function 
+    params.matrix.make_tile_tooltip = config.make_tile_tooltip;
 
     // Visualization Options
     params.viz = {};

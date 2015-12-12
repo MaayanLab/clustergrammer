@@ -47,7 +47,8 @@ function Config(args) {
     row_label_scale: 1,
     col_label_scale: 1,
     super_labels: false,
-    show_tooltips: false,
+    show_label_tooltips: false,
+    show_tile_tooltips: false,
 
     // matrix options
     transpose: false,
@@ -88,7 +89,8 @@ function Config(args) {
     // force the visualization to be square
     force_square:0,
     tile_click_hlight:false,
-    super_label_scale: 1
+    super_label_scale: 1,
+    make_tile_tooltip:function(d){return d.info;}
   };
 
   // Mixin defaults with user-defined arguments.
@@ -479,6 +481,8 @@ function Matrix(network_data, svg_elem, params) {
   var row_nodes_names = _.pluck(row_nodes, 'name');
   var col_nodes_names = _.pluck(col_nodes, 'name');
 
+
+
   // append a group that will hold clust_group and position it once
   clust_group = svg_elem
     .append('g')
@@ -488,17 +492,17 @@ function Matrix(network_data, svg_elem, params) {
     .append('g')
     .attr('id', 'clust_group');
 
-  // d3-tooltip - for tiles 
-  var tip = d3.tip()
-    .attr('class', 'd3-tip something')
-    .direction('e')
-    .offset([0, 0])
-    .html(function(d) {
-      // var inst_name = 'up: '+ d.row_name.replace(/_/g, ' ').split('#')[0];
-      var inst_name = 'up: '+ d.info.join('\t');
-      var inst_string = "<p>"+inst_name+"</p>"+inst_name+"";
-      return inst_string;
-    });
+  if (params.matrix.show_tile_tooltips){
+    // d3-tooltip - for tiles 
+    var tip = d3.tip()
+      .attr('class', 'd3-tip')
+      .direction('e')
+      .offset([0, 0])
+      .html(params.matrix.make_tile_tooltip);
+
+    d3.select('#clust_group')
+      .call(tip);
+  }
 
   // clustergram background rect
   clust_group
@@ -507,8 +511,7 @@ function Matrix(network_data, svg_elem, params) {
     .attr('id', 'grey_background')
     .style('fill', '#eee')
     .attr('width', params.viz.clust.dim.width)
-    .attr('height', params.viz.clust.dim.height)
-    .call(tip);
+    .attr('height', params.viz.clust.dim.height);
 
   // console.log('making downsampled version rathe than original')
   // var DS = DownSampling();
@@ -694,25 +697,27 @@ function Matrix(network_data, svg_elem, params) {
       .style('fill', function(d) {
         return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
       })
-      .on('mouseover', function(d) {
+      .on('mouseover', function(p) {
         // highlight row - set text to active if
         d3.selectAll('.row_label_text text')
-          .classed('active', function(d, i) {
-            return i === d.pos_y;
+          .classed('active', function(d) {
+            return p.row_name === d.name;
           });
 
         d3.selectAll('.col_label_text text')
-          .classed('active', function(d, i) {
-            return i === d.pos_x;
+          .classed('active', function(d) {
+            return p.col_name === d.name;
           });
+        if (params.matrix.show_tile_tooltips){
+          tip.show(p);
+        }
       })
       .on('mouseout', function(d) {
         d3.selectAll('text').classed('active', false);
-        tip.hide();
+        if (params.matrix.show_tile_tooltips){
+          tip.hide();
+        }
       })
-      .on('click', function(d){
-        tip.show(d);
-      } )
       .attr('title', function(d) {
         return d.value;
       })
@@ -1194,7 +1199,7 @@ function VizParams(config){
     if (params.labels.show_categories){
       params.labels.class_colors = config.class_colors;
     }
-    params.labels.show_tooltips = config.show_tooltips;
+    params.labels.show_label_tooltips = config.show_label_tooltips;
 
     // Matrix Options
     params.matrix = {};
@@ -1203,6 +1208,10 @@ function VizParams(config){
     params.matrix.outline_colors = config.outline_colors;
     params.matrix.hlight_color = config.highlight_color
     params.matrix.tile_title = config.tile_title;
+    params.matrix.show_tile_tooltips  = config.show_tile_tooltips;
+
+    // transfer tile tooltip function 
+    params.matrix.make_tile_tooltip = config.make_tile_tooltip;
 
     // Visualization Options
     params.viz = {};
@@ -1900,8 +1909,8 @@ function Labels(params){
         }
       });
 
-    if (params.labels.show_tooltips){
-      
+    if (params.labels.show_label_tooltips){
+
       // d3-tooltip
       var tip = d3.tip()
         .attr('class', 'd3-tip')
@@ -2299,7 +2308,7 @@ function Labels(params){
       .transition().delay(text_delay).duration(text_delay)
       .style('opacity',1);
 
-    if (params.labels.show_tooltips){
+    if (params.labels.show_label_tooltips){
 
       // d3-tooltip
       var tip = d3.tip()
@@ -4494,6 +4503,17 @@ function define_enter_exit_delays(old_params, params){
 
 function enter_exit_update(params, network_data, reorder, delays){
 
+  // d3-tooltip - for tiles 
+  var tip = d3.tip()
+    .attr('class', 'd3-tip')
+    .direction('e')
+    .offset([0, 0])
+    .html(params.matrix.make_tile_tooltip);
+
+
+  d3.select('#clust_group')
+    .call(tip);
+
   // get row and col names 
   var row_nodes_names = params.network_data.row_nodes_names;
   var col_nodes_names = params.network_data.col_nodes_names;
@@ -4607,9 +4627,11 @@ function enter_exit_update(params, network_data, reorder, delays){
           .classed('active', function(d) {
             return p.col_name === d.name;
           });
+        tip.show(p);
       })
       .on('mouseout', function mouseout() {
         d3.selectAll('text').classed('active', false);
+        tip.hide();
       });
 
     if (delays.run_transition){
@@ -4765,7 +4787,7 @@ function enter_exit_update(params, network_data, reorder, delays){
     .attr('transform', function(d) {
       var tmp_index = _.indexOf(row_nodes_names, d.name);
       return 'translate(0,' + params.matrix.y_scale(tmp_index) + ')';
-    });
+    })  ;
 
   new_row_groups.each(enter_simple_rows);
 

@@ -136,6 +136,17 @@ function define_enter_exit_delays(old_params, params){
 
 function enter_exit_update(params, network_data, reorder, delays){
 
+  // d3-tooltip - for tiles 
+  var tip = d3.tip()
+    .attr('class', 'd3-tip')
+    .direction('e')
+    .offset([0, 0])
+    .html(params.matrix.make_tile_tooltip);
+
+
+  d3.select('#clust_group')
+    .call(tip);
+
   // get row and col names 
   var row_nodes_names = params.network_data.row_nodes_names;
   var col_nodes_names = params.network_data.col_nodes_names;
@@ -249,9 +260,11 @@ function enter_exit_update(params, network_data, reorder, delays){
           .classed('active', function(d) {
             return p.col_name === d.name;
           });
+        tip.show(p);
       })
       .on('mouseout', function mouseout() {
         d3.selectAll('text').classed('active', false);
+        tip.hide();
       });
 
     if (delays.run_transition){
@@ -407,7 +420,7 @@ function enter_exit_update(params, network_data, reorder, delays){
     .attr('transform', function(d) {
       var tmp_index = _.indexOf(row_nodes_names, d.name);
       return 'translate(0,' + params.matrix.y_scale(tmp_index) + ')';
-    });
+    })  ;
 
   new_row_groups.each(enter_simple_rows);
 

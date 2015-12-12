@@ -10,6 +10,8 @@ function Matrix(network_data, svg_elem, params) {
   var row_nodes_names = _.pluck(row_nodes, 'name');
   var col_nodes_names = _.pluck(col_nodes, 'name');
 
+
+
   // append a group that will hold clust_group and position it once
   clust_group = svg_elem
     .append('g')
@@ -19,17 +21,17 @@ function Matrix(network_data, svg_elem, params) {
     .append('g')
     .attr('id', 'clust_group');
 
-  // d3-tooltip - for tiles 
-  var tip = d3.tip()
-    .attr('class', 'd3-tip something')
-    .direction('e')
-    .offset([0, 0])
-    .html(function(d) {
-      // var inst_name = 'up: '+ d.row_name.replace(/_/g, ' ').split('#')[0];
-      var inst_name = 'up: '+ d.info.join('\t');
-      var inst_string = "<p>"+inst_name+"</p>"+inst_name+"";
-      return inst_string;
-    });
+  if (params.matrix.show_tile_tooltips){
+    // d3-tooltip - for tiles 
+    var tip = d3.tip()
+      .attr('class', 'd3-tip')
+      .direction('e')
+      .offset([0, 0])
+      .html(params.matrix.make_tile_tooltip);
+
+    d3.select('#clust_group')
+      .call(tip);
+  }
 
   // clustergram background rect
   clust_group
@@ -38,8 +40,7 @@ function Matrix(network_data, svg_elem, params) {
     .attr('id', 'grey_background')
     .style('fill', '#eee')
     .attr('width', params.viz.clust.dim.width)
-    .attr('height', params.viz.clust.dim.height)
-    .call(tip);
+    .attr('height', params.viz.clust.dim.height);
 
   // console.log('making downsampled version rathe than original')
   // var DS = DownSampling();
@@ -225,25 +226,27 @@ function Matrix(network_data, svg_elem, params) {
       .style('fill', function(d) {
         return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
       })
-      .on('mouseover', function(d) {
+      .on('mouseover', function(p) {
         // highlight row - set text to active if
         d3.selectAll('.row_label_text text')
-          .classed('active', function(d, i) {
-            return i === d.pos_y;
+          .classed('active', function(d) {
+            return p.row_name === d.name;
           });
 
         d3.selectAll('.col_label_text text')
-          .classed('active', function(d, i) {
-            return i === d.pos_x;
+          .classed('active', function(d) {
+            return p.col_name === d.name;
           });
+        if (params.matrix.show_tile_tooltips){
+          tip.show(p);
+        }
       })
       .on('mouseout', function(d) {
         d3.selectAll('text').classed('active', false);
-        tip.hide();
+        if (params.matrix.show_tile_tooltips){
+          tip.hide();
+        }
       })
-      .on('click', function(d){
-        tip.show(d);
-      } )
       .attr('title', function(d) {
         return d.value;
       })

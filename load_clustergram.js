@@ -42,6 +42,13 @@ function make_clust(inst_network){
           console.log( label_type+' label callback function '+ label_info)
         }
 
+        // show up/dn genes from enrichment 
+        function make_tile_tooltip(d){
+          var inst_name = 'up: '+ d.info.join('\t');
+          var inst_string = "<p>"+inst_name+"</p>"+inst_name+"";
+          return inst_string; 
+        }
+
         // define arguments object
         var arguments_obj = {
           'network_data': network_data,
@@ -52,7 +59,9 @@ function make_clust(inst_network){
           'outer_margins_expand': outer_margins_expand,
           // 'outline_colors':['black','yellow'],
           // 'tile_click_hlight':true,
-          'show_tooltips':true,
+          'show_label_tooltips':true,
+          'show_tile_tooltips':true,
+          'make_tile_tooltip':make_tile_tooltip,
           // 'click_tile': click_tile_callback,
           // 'click_label':click_label,
           // 'highlight_color':'yellow',
