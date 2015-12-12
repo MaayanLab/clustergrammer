@@ -59,9 +59,9 @@ function make_clust(inst_network){
           'outer_margins_expand': outer_margins_expand,
           // 'outline_colors':['black','yellow'],
           // 'tile_click_hlight':true,
-          // 'show_label_tooltips':true,
-          // 'show_tile_tooltips':true,
-          // 'make_tile_tooltip':make_tile_tooltip,
+          'show_label_tooltips':true,
+          'show_tile_tooltips':true,
+          'make_tile_tooltip':make_tile_tooltip,
           // 'click_tile': click_tile_callback,
           // 'click_label':click_label,
           // 'highlight_color':'yellow',
@@ -225,8 +225,8 @@ function make_clust(inst_network){
 // choose example here
 // make_clust('default_example.json');
 make_clust('mult_view.json');
-// make_clust('updn_example.json');
 // make_clust('enr_vect_example.json');
+// make_clust('updn_example.json');
 // make_clust('narrow_example.json');
 // make_clust('narrow_long_name.json');
 // make_clust('bar_example.json');

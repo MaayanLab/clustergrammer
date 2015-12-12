@@ -221,6 +221,8 @@ def make_enr_vect_clust(g2e_post, threshold, num_thresh):
   print('\n\n')
 
   net.dat['mat'] = scipy.zeros([len(row_node_names),len(col_node_names)])
+  net.dat['mat_up'] = scipy.zeros([len(row_node_names),len(col_node_names)])
+  net.dat['mat_dn'] = scipy.zeros([len(row_node_names),len(col_node_names)])
 
   print('\n  gathering enrichment information\n----------------------\n')
   net.dat['mat_info'] = {}
@@ -246,16 +248,12 @@ def make_enr_vect_clust(g2e_post, threshold, num_thresh):
       row_index = row_node_names.index(inst_term)
       col_index = col_node_names.index(inst_gs_name)
 
-      print(str((row_index,col_index)))
-
       net.dat['mat_info'][str((row_index,col_index))] = inst_genes
 
       if inst_cs > 0:
         net.dat['mat'][row_index, col_index] = inst_cs
-        print(row_index)
-        print(col_index)
-
-  print(net.dat['mat_info'])
+        net.dat['mat_up'][row_index, col_index] = inst_cs
+        net.dat['mat_dn'][row_index, col_index] = -inst_cs
 
   # filter and cluster network 
   print('\n  filtering network')

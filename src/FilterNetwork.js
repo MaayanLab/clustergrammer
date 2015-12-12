@@ -1,5 +1,5 @@
 function filter_network_data(orig_network_data, change_view){
-  
+ 
   var views = orig_network_data.views;
 
   // failsafe if there is only row+col filtering from front-end

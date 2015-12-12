@@ -250,7 +250,6 @@
     svg_group.selectAll('.row')
       .selectAll('.tile_up')
       .attr('d', function(d) {
-
           // up triangle 
           var start_x = 0;
           var final_x = params.matrix.x_scale.rangeBand();
@@ -271,7 +270,6 @@
     svg_group.selectAll('.row')
       .selectAll('.tile_dn')
       .attr('d', function(d) {
-
           // dn triangle 
           var start_x = 0;
           var final_x = params.matrix.x_scale.rangeBand();
