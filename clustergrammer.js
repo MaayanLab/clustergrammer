@@ -4503,16 +4503,18 @@ function define_enter_exit_delays(old_params, params){
 
 function enter_exit_update(params, network_data, reorder, delays){
 
-  // d3-tooltip - for tiles 
-  var tip = d3.tip()
-    .attr('class', 'd3-tip')
-    .direction('e')
-    .offset([0, 0])
-    .html(params.matrix.make_tile_tooltip);
+  if (params.matrix.show_tile_tooltips){
+    // d3-tooltip - for tiles 
+    var tip = d3.tip()
+      .attr('class', 'd3-tip')
+      .direction('e')
+      .offset([0, 0])
+      .html(params.matrix.make_tile_tooltip);
 
 
-  d3.select('#clust_group')
-    .call(tip);
+    d3.select('#clust_group')
+      .call(tip);
+    }
 
   // get row and col names 
   var row_nodes_names = params.network_data.row_nodes_names;
@@ -4627,11 +4629,15 @@ function enter_exit_update(params, network_data, reorder, delays){
           .classed('active', function(d) {
             return p.col_name === d.name;
           });
-        tip.show(p);
+        if (params.matrix.show_tile_tooltips){
+          tip.show(p);
+        }
       })
       .on('mouseout', function mouseout() {
         d3.selectAll('text').classed('active', false);
-        tip.hide();
+        if (params.matrix.show_tile_tooltips){
+          tip.hide();
+        }
       });
 
     if (delays.run_transition){
