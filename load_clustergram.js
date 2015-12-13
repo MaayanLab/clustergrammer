@@ -49,14 +49,18 @@ function make_clust(inst_network){
             var inst_up = 'Up Genes: '+ d.info.up.join('\t');
             var inst_dn = 'Down Genes: '+ d.info.dn.join('\t');
             var inst_string = "<p>"+inst_up+"</p>"+inst_dn;
+            // improve
+            var inst_score = Math.abs(d.value.toFixed(2));
           } else if ( d.info.up.length > 0 ){
             var inst_up = 'Up Genes: '+ d.info.up.join('\t');
             var inst_string = inst_up;
+            var inst_score = d.value.toFixed(2);
           } else if ( d.info.dn.length > 0 ){
             var inst_dn = 'Down Genes: '+ d.info.dn.join('\t');
             var inst_string = inst_dn;
+            var inst_score = -d.value.toFixed(2);
           }
-          var inst_info = '<p>'+d.col_name+' is enriched for '+d.row_name+'</p>'
+          var inst_info = '<p>'+d.col_name+' is enriched for '+d.row_name+' with Combined Score: '+ inst_score +'</p>'
           return inst_info + inst_string; 
         }
 
@@ -235,8 +239,8 @@ function make_clust(inst_network){
 
 // choose example here
 // make_clust('default_example.json');
-make_clust('mult_view.json');
-// make_clust('enr_vect_example.json');
+// make_clust('mult_view.json');
+make_clust('enr_vect_example.json');
 // make_clust('updn_example.json');
 // make_clust('narrow_example.json');
 // make_clust('narrow_long_name.json');
