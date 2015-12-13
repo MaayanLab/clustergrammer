@@ -496,7 +496,7 @@ function Matrix(network_data, svg_elem, params) {
     // d3-tooltip - for tiles 
     var tip = d3.tip()
       .attr('class', 'd3-tip')
-      .direction('s')
+      .direction('n')
       .offset([0, 0])
       .html(params.matrix.make_tile_tooltip);
 
@@ -4541,7 +4541,7 @@ function enter_exit_update(params, network_data, reorder, delays){
     // d3-tooltip - for tiles 
     var tip = d3.tip()
       .attr('class', 'd3-tip')
-      .direction('s')
+      .direction('n')
       .offset([0, 0])
       .html(params.matrix.make_tile_tooltip);
 

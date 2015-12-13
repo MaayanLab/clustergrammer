@@ -56,7 +56,8 @@ function make_clust(inst_network){
             var inst_dn = 'Down Genes: '+ d.info.dn.join('\t');
             var inst_string = inst_dn;
           }
-          return inst_string; 
+          var inst_info = '<p>'+d.col_name+' is enriched for '+d.row_name+'</p>'
+          return inst_info + inst_string; 
         }
 
         // define arguments object

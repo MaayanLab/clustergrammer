@@ -1,23 +1,3 @@
-# make clustergram
-def make_enrichment_clustergram(enr, dist_type):
-  import d3_clustergram
-
-  # make a dictionary of enr_terms and colors 
-  terms_colors = {}
-  for inst_enr in enr:
-    terms_colors[inst_enr['name']] = inst_enr['color']
-
-  # convert enr to nodes, data_mat 
-  nodes, data_mat = d3_clustergram.convert_enr_to_nodes_mat( enr )
-
-  # cluster rows and columns 
-  clust_order = d3_clustergram.cluster_row_and_column( nodes, data_mat, dist_type, enr )
-
-  # generate d3_clust json 
-  d3_json = d3_clustergram.d3_clust_single_value( nodes, clust_order, data_mat, terms_colors )
-
-  return d3_json
-
 # make the get request to enrichr using the requests library 
 # this is done before making the get request with the gmt name 
 def enrichr_post_request( input_genes, meta=''):
