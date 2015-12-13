@@ -44,8 +44,19 @@ function make_clust(inst_network){
 
         // show up/dn genes from enrichment 
         function make_tile_tooltip(d){
-          var inst_name = 'up: '+ d.info.join('\t');
-          var inst_string = "<p>"+inst_name+"</p>"+inst_name+"";
+          // up and down 
+          if (_.has(d.info,'up' && _.has(d.info,'dn'))){
+            var inst_up = 'up: '+ d.info.up.join('\t');
+            var inst_dn = 'dn: '+ d.info.dn.join('\t');
+            var inst_string = "<p>"+inst_up+"</p>"+inst_dn;
+          } else if (_.has(d.info,'up')){
+            var inst_up = 'up: '+ d.info.up.join('\t');
+            var inst_string = inst_up;
+          } else if (_.has(d.info,'dn')){
+            var inst_dn = 'dn: '+ d.info.dn.join('\t');
+            var inst_string = inst_dn;
+          }
+
           return inst_string; 
         }
 
@@ -224,8 +235,8 @@ function make_clust(inst_network){
 
 // choose example here
 // make_clust('default_example.json');
-// make_clust('mult_view.json');
-make_clust('enr_vect_example.json');
+make_clust('mult_view.json');
+// make_clust('enr_vect_example.json');
 // make_clust('updn_example.json');
 // make_clust('narrow_example.json');
 // make_clust('narrow_long_name.json');

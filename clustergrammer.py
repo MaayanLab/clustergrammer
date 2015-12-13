@@ -1266,7 +1266,10 @@ class Network(object):
     self.cluster_row_and_col('cos')
 
     mat = self.dat['mat']
-    max_mat = max(mat.min(), mat.max(), key=abs)
+    max_mat = abs(max(mat.min(), mat.max(), key=abs))
+
+    print('\nmax_mat\n---------------\n----------------')
+    print(max_mat)
 
     self.viz['views'] = []
 

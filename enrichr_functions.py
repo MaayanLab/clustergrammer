@@ -166,12 +166,24 @@ def make_enr_vect_clust(g2e_post, threshold, num_thresh):
   id_to_title = {}
 
   for inst_gs in g2e_post['signature_ids']:
-    print('  col_title: '+str(inst_gs['col_title'])+' '+str(inst_gs['enr_id_up']) )
-    all_ids.append(inst_gs['enr_id_up'])
-    all_col_titles.append(inst_gs['col_title'])
+    for inst_updn in ['up','dn']:
 
-    # keep association between id and col title 
-    id_to_title[inst_gs['enr_id_up']] = inst_gs['col_title']
+      # keep all ids 
+      all_ids.append(inst_gs['enr_id_'+inst_updn])
+      all_col_titles.append(inst_gs['col_title'])
+
+      # keep association between id and col title 
+      id_to_title[ inst_gs['enr_id_'+inst_updn] ] = inst_gs['col_title']+'_'+inst_updn
+
+  # get unique columns 
+  all_col_titles = list(set(all_col_titles))
+
+  print('\nall ids')
+  print(len(all_ids))
+  print(all_ids)
+  print('\nid_to_title')
+  print(len(id_to_title))
+  print(id_to_title)
 
   inst_gmt = g2e_post['background_type']
 
@@ -228,12 +240,13 @@ def make_enr_vect_clust(g2e_post, threshold, num_thresh):
   net.dat['mat_info'] = {}
   for i in range(len(row_node_names)):
     for j in range(len(col_node_names)):
-      net.dat['mat_info'][str((i,j))] = ''
+      net.dat['mat_info'][str((i,j))] = {}
 
-  # fill in mat using all_enr 
+  # fill in mat using all_enr, includes up/dn 
   for inst_gs in all_enr:
 
-    inst_gs_name = inst_gs['name']
+    inst_gs_name = inst_gs['name'].split('_')[0]
+    inst_updn = inst_gs['name'].split('_')[1]
 
     # loop through the enriched terms for the gs 
     for inst_enr in inst_gs['enr']:
@@ -248,12 +261,15 @@ def make_enr_vect_clust(g2e_post, threshold, num_thresh):
       row_index = row_node_names.index(inst_term)
       col_index = col_node_names.index(inst_gs_name)
 
-      net.dat['mat_info'][str((row_index,col_index))] = inst_genes
+      net.dat['mat_info'][str((row_index,col_index))][inst_updn] = inst_genes
 
       if inst_cs > 0:
-        net.dat['mat'][row_index, col_index] = inst_cs
-        net.dat['mat_up'][row_index, col_index] = inst_cs
-        net.dat['mat_dn'][row_index, col_index] = -inst_cs
+        if inst_updn == 'up':
+          net.dat['mat'][row_index, col_index] = net.dat['mat'][row_index, col_index] + inst_cs
+          # net.dat['mat_up'][row_index, col_index] = inst_cs
+        elif inst_updn == 'dn':
+          net.dat['mat'][row_index, col_index] = net.dat['mat'][row_index, col_index] - inst_cs
+          # net.dat['mat_dn'][row_index, col_index] = -inst_cs
 
   # filter and cluster network 
   print('\n  filtering network')
