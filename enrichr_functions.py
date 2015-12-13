@@ -131,7 +131,11 @@ def make_enr_clust(sig_id, inst_gmt, threshold, num_thresh):
     if inst_enr['combined_score'] > 0:
       enr.append(inst_enr)
 
-  print(enr[0].keys())
+  # only keep the top 20 terms 
+  if len(enr)>15:
+    enr = enr[0:15]
+
+  # print
 
   # genes 
   row_node_names = []
@@ -173,7 +177,11 @@ def make_enr_clust(sig_id, inst_gmt, threshold, num_thresh):
       net.dat['mat'][row_index, col_index] = 1
 
   net.filter_network_thresh(threshold, num_thresh)
-  net.make_mult_views(dist_type='cos',filter_row=True,run_clustering=False)
+  net.cluster_row_and_col(dist_type='cos',run_clustering=True,dendro=False)
+
+  # keep the original column order in rank 
+  for inst_col in net.viz['col_nodes']:
+    inst_col['rank'] = inst_col['ini']
 
   return net  
 
