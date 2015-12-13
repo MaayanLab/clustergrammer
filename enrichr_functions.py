@@ -241,6 +241,8 @@ def make_enr_vect_clust(g2e_post, threshold, num_thresh):
   for i in range(len(row_node_names)):
     for j in range(len(col_node_names)):
       net.dat['mat_info'][str((i,j))] = {}
+      for inst_updn in ['up','dn']:
+        net.dat['mat_info'][str((i,j))][inst_updn] = []
 
   # fill in mat using all_enr, includes up/dn 
   for inst_gs in all_enr:
@@ -261,15 +263,16 @@ def make_enr_vect_clust(g2e_post, threshold, num_thresh):
       row_index = row_node_names.index(inst_term)
       col_index = col_node_names.index(inst_gs_name)
 
-      net.dat['mat_info'][str((row_index,col_index))][inst_updn] = inst_genes
 
       if inst_cs > 0:
         if inst_updn == 'up':
           net.dat['mat'][row_index, col_index] = net.dat['mat'][row_index, col_index] + inst_cs
-          # net.dat['mat_up'][row_index, col_index] = inst_cs
+          net.dat['mat_up'][row_index, col_index] = inst_cs
+          net.dat['mat_info'][str((row_index,col_index))][inst_updn] = inst_genes
         elif inst_updn == 'dn':
           net.dat['mat'][row_index, col_index] = net.dat['mat'][row_index, col_index] - inst_cs
-          # net.dat['mat_dn'][row_index, col_index] = -inst_cs
+          net.dat['mat_dn'][row_index, col_index] = -inst_cs
+          net.dat['mat_info'][str((row_index,col_index))][inst_updn] = inst_genes
 
   # filter and cluster network 
   print('\n  filtering network')

@@ -45,18 +45,17 @@ function make_clust(inst_network){
         // show up/dn genes from enrichment 
         function make_tile_tooltip(d){
           // up and down 
-          if (_.has(d.info,'up' && _.has(d.info,'dn'))){
-            var inst_up = 'up: '+ d.info.up.join('\t');
-            var inst_dn = 'dn: '+ d.info.dn.join('\t');
+          if ( d.info.up.length > 0 && d.info.dn.length > 0 ){
+            var inst_up = 'Up Genes: '+ d.info.up.join('\t');
+            var inst_dn = 'Down Genes: '+ d.info.dn.join('\t');
             var inst_string = "<p>"+inst_up+"</p>"+inst_dn;
-          } else if (_.has(d.info,'up')){
-            var inst_up = 'up: '+ d.info.up.join('\t');
+          } else if ( d.info.up.length > 0 ){
+            var inst_up = 'Up Genes: '+ d.info.up.join('\t');
             var inst_string = inst_up;
-          } else if (_.has(d.info,'dn')){
-            var inst_dn = 'dn: '+ d.info.dn.join('\t');
+          } else if ( d.info.dn.length > 0 ){
+            var inst_dn = 'Down Genes: '+ d.info.dn.join('\t');
             var inst_string = inst_dn;
           }
-
           return inst_string; 
         }
 

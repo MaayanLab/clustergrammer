@@ -140,7 +140,7 @@ function enter_exit_update(params, network_data, reorder, delays){
     // d3-tooltip - for tiles 
     var tip = d3.tip()
       .attr('class', 'd3-tip')
-      .direction('e')
+      .direction('s')
       .offset([0, 0])
       .html(params.matrix.make_tile_tooltip);
 

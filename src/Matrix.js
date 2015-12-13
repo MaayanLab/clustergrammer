@@ -25,7 +25,7 @@ function Matrix(network_data, svg_elem, params) {
     // d3-tooltip - for tiles 
     var tip = d3.tip()
       .attr('class', 'd3-tip')
-      .direction('e')
+      .direction('s')
       .offset([0, 0])
       .html(params.matrix.make_tile_tooltip);
 
