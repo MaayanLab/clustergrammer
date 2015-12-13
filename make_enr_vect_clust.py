@@ -1,4 +1,12 @@
 def main():
+
+  import enrichr_functions as enr_fun 
+
+  net = enr_fun.make_enr_clust(939279,'KEA_2015',0.001,1)
+
+  net.write_json_to_file('viz','json/enr_clust_example.json')  
+
+def make_enr_vect_clust():
   import enrichr_functions as enr_fun 
   from clustergrammer import Network
 

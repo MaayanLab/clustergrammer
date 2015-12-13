@@ -1246,7 +1246,7 @@ class Network(object):
     self.dat['nodes']['row'] = df.index.tolist()
     self.dat['nodes']['col'] = df.columns.tolist()
 
-  def make_mult_views(self, dist_type='cos',filter_row=True, filter_col=False):
+  def make_mult_views(self, dist_type='cos',filter_row=True, filter_col=False, run_clustering=True):
     ''' 
     This will calculate multiple views of a clustergram by filtering the 
     data and clustering after each fitlering. By default row filtering will 
@@ -1263,7 +1263,7 @@ class Network(object):
     inst_meet = 1
 
     # cluster default view 
-    self.cluster_row_and_col('cos')
+    self.cluster_row_and_col('cos', run_clustering=run_clustering)
 
     mat = self.dat['mat']
     max_mat = abs(max(mat.min(), mat.max(), key=abs))
