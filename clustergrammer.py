@@ -621,13 +621,30 @@ class Network(object):
     import numpy as np
     self.dat['mat'][ np.isnan( self.dat['mat'] ) ] = 0
 
-  def filter_row_thresh( self, cutoff, min_num_meet ):
+  def filter_row_thresh( self, row_filt_int, filter_type='value' ):
     ''' 
-    remove rows and columns from matrix that do not have at least 
-    min_num_meet instances of a value with an absolute value above cutoff 
+    Remove rows from matrix that do not meet some threshold
+
+    value: The default filtering is value, in that at least one value in the row 
+    has to be higher than some threshold. 
+
+    num: Rows can be filtered by the number of non-zero values it has. 
+
+    sum: Rows can be filtered by the sum of the values 
+
     '''
     import scipy
     import numpy as np
+
+    # max vlue in matrix 
+    mat = self.dat['mat']
+    max_mat = abs(max(mat.min(), mat.max(), key=abs))
+    # maximum number of measurements 
+    max_num = len(self.dat['nodes']['col'])
+
+    mat_abs = abs(mat)
+    sum_row = np.sum(mat_abs, axis=1)
+    max_sum = max(sum_row)
 
     # transfer the nodes 
     nodes = {}
@@ -639,7 +656,7 @@ class Network(object):
     node_info['row'] = []
     node_info['col'] = self.dat['node_info']['col']['info']
 
-    # add rows with non-zero values 
+    # filter rows  
     #################################
     for i in range(len(self.dat['nodes']['row'])):
 
@@ -650,19 +667,47 @@ class Network(object):
       if len(self.dat['node_info']['row']['info']) > 0:
         inst_node_info = self.dat['node_info']['row']['info'][i]
 
-      # get row vect 
+      # get absolute value of row data 
       row_vect = np.absolute(self.dat['mat'][i,:])
 
-      # check if there are nonzero values 
-      found_tuple = np.where(row_vect >= cutoff)
-      if len(found_tuple[0])>=min_num_meet:
+      # value: is there at least one value over cutoff 
+      ##################################################
+      if filter_type == 'value':
 
-        # add name 
-        nodes['row'].append(inst_nodes_row)
+        # calc cutoff 
+        cutoff = row_filt_int * max_mat
 
-        # add info if necessary 
-        if len(self.dat['node_info']['row']['info']) > 0:
-          node_info['row'].append(inst_node_info)
+        # count the number of values above some thresh 
+        found_tuple = np.where(row_vect >= cutoff)
+        if len(found_tuple[0])>=1:
+          # add name 
+          nodes['row'].append(inst_nodes_row)
+          # add info if necessary 
+          if len(self.dat['node_info']['row']['info']) > 0:
+            node_info['row'].append(inst_node_info)
+
+      elif filter_type == 'num':
+
+        # count the number of non-zero values 
+        found_tuple = np.where(row_vect >= 0)
+        cutoff = row_filt_int * max_num
+        if len(found_tuple[0])>= cutoff:
+          # add name 
+          nodes['row'].append(inst_nodes_row)
+          # add info if necessary 
+          if len(self.dat['node_info']['row']['info']) > 0:
+            node_info['row'].append(inst_node_info)
+
+      elif filter_type == 'sum':
+
+        inst_row_sum = sum(abs(row_vect))
+
+        if inst_row_sum > row_filt_int*max_sum:
+          # add name 
+          nodes['row'].append(inst_nodes_row)
+          # add info if necessary 
+          if len(self.dat['node_info']['row']['info']) > 0:
+            node_info['row'].append(inst_node_info)
 
     # cherrypick data from self.dat['mat'] 
     ##################################
@@ -1246,7 +1291,7 @@ class Network(object):
     self.dat['nodes']['row'] = df.index.tolist()
     self.dat['nodes']['col'] = df.columns.tolist()
 
-  def make_mult_views(self, dist_type='cos',filter_row=True, filter_col=False, run_clustering=True):
+  def make_mult_views(self, dist_type='cos',filter_row=['value'], filter_col=False, run_clustering=True):
     ''' 
     This will calculate multiple views of a clustergram by filtering the 
     data and clustering after each fitlering. By default row filtering will 
@@ -1256,83 +1301,87 @@ class Network(object):
     from clustergrammer import Network
     from copy import deepcopy 
 
-    # filter between 0% and 90% of max value 
+    # filter between 0% and 90% of some to be determined value 
     all_filt = range(10)
     all_filt = [i/float(10) for i in all_filt]
 
-    inst_meet = 1
-
     # cluster default view 
     self.cluster_row_and_col('cos', run_clustering=run_clustering)
-
-    mat = self.dat['mat']
-    max_mat = abs(max(mat.min(), mat.max(), key=abs))
-
-    print('\nmax_mat\n---------------\n----------------')
-    print(max_mat)
 
     self.viz['views'] = []
 
     all_views = []
 
-    # row filtering 
-    #####################
-    for row_filt in all_filt:
-      # initialize new net 
-      net = deepcopy(Network())
-      net.dat = deepcopy(self.dat)
-      filt_value = row_filt * max_mat
-      # filter rows 
-      net.filter_row_thresh(filt_value, inst_meet)
+    # Perform row filterings 
+    ###########################
+    if len(filter_row) > 0:
 
-      # try to filter - will not work if there is one row
-      try:
+      # perform multiple types of row filtering 
+      ###########################################
+      for inst_type in filter_row:
+        
+        for row_filt_int in all_filt:
 
-        # cluster 
-        net.cluster_row_and_col('cos')
+          # initialize new net 
+          net = deepcopy(Network())
+          net.dat = deepcopy(self.dat)
+          # filter rows 
+          net.filter_row_thresh(row_filt_int, filter_type=inst_type)
 
-        # add view 
-        inst_view = {}
-        inst_view['filter_row'] = row_filt
-        inst_view['dist'] = 'cos'
-        inst_view['nodes'] = {}
-        inst_view['nodes']['row_nodes'] = net.viz['row_nodes']
-        inst_view['nodes']['col_nodes'] = net.viz['col_nodes']
+          # try to filter - will not work if there is one row
+          try:
 
-        all_views.append(inst_view)
+            # cluster 
+            net.cluster_row_and_col('cos')
 
-      except:
-        print('did not cluster filtered view')
+            inst_name = 'filter_row'+'_'+inst_type
 
-    # col filtering 
-    #####################
-    for col_filt in all_filt:
-      print(col_filt)
-      # initialize new net 
-      net = deepcopy(Network())
-      net.dat = deepcopy(self.dat)
-      filt_value = col_filt * max_mat
-      # filter cols 
-      net.filter_col_thresh(filt_value, inst_meet)
+            # add view 
+            inst_view = {}
+            inst_view[inst_name] = row_filt_int
+            inst_view['dist'] = 'cos'
+            inst_view['nodes'] = {}
+            inst_view['nodes']['row_nodes'] = net.viz['row_nodes']
+            inst_view['nodes']['col_nodes'] = net.viz['col_nodes']
 
-      # try to filter - will not work if there is one col
-      try:
+            all_views.append(inst_view)
 
-        # cluster 
-        net.cluster_row_and_col('cos')
+          except:
+            print('did not cluster filtered view')
 
-        # add view 
-        inst_view = {}
-        inst_view['filter_col'] = col_filt
-        inst_view['dist'] = 'cos'
-        inst_view['nodes'] = {}
-        inst_view['nodes']['row_nodes'] = net.viz['row_nodes']
-        inst_view['nodes']['col_nodes'] = net.viz['col_nodes']
+    # Default col Filtering 
+    ###########################
+    inst_meet = 1
+    if filter_col == True:
+      # col filtering 
+      #####################
+      for col_filt in all_filt:
+        print(col_filt)
+        # initialize new net 
+        net = deepcopy(Network())
+        net.dat = deepcopy(self.dat)
+        filt_value = col_filt * max_mat
+        # filter cols 
+        net.filter_col_thresh(filt_value, inst_meet)
 
-        all_views.append(inst_view)
+        # try to filter - will not work if there is one col
+        try:
 
-      except:
-        print('did not cluster filtered view')    
+          # cluster 
+          net.cluster_row_and_col('cos')
+
+          # add view 
+          inst_view = {}
+          inst_view['filter_col'] = col_filt
+          inst_view['dist'] = 'cos'
+          inst_view['nodes'] = {}
+          inst_view['nodes']['row_nodes'] = net.viz['row_nodes']
+          inst_view['nodes']['col_nodes'] = net.viz['col_nodes']
+
+          all_views.append(inst_view)
+
+        except:
+          print('did not cluster filtered view')    
 
 
     # add views to viz

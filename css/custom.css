@@ -59,6 +59,18 @@ text.active {
   padding-left: 0px;
 }
 
+.viz_large_text{
+  width:99%;
+  margin: 0 auto;
+  margin-top: 6px;
+  margin-bottom: 3px;
+  color:#333;
+  text-align: justify;
+  font-size: 16px;
+  font-weight: 300;
+  padding-left: 0px;
+}
+
 /* title */
 #viz_website_title{
   font-size: 25px;

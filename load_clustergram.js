@@ -108,95 +108,90 @@ function make_clust(inst_network){
 
         global_params = cgm.params;
 
-        console.log(cgm)
         ini_sliders();
          
         // // play demo   
         // ini_play_button(cgm);
 
-        // filter rows 
-        ////////////////////
-        var views = network_data.views;
-        var row_views = _.filter(views, function(d){return _.has(d,'filter_row');});
-        var inst_max = row_views.length - 1;
-        $( "#slider_filter_row" ).slider({
-          value:0,
-          min: 0,
-          max: inst_max,
-          step: 1,
-          stop: function( event, ui ) {
-            $( "#amount" ).val( "$" + ui.value );
-            var inst_filt = $( "#slider_filter_row" ).slider( "value" ); 
+        set_up_filters('filter_row_value');
+        set_up_filters('filter_row_sum');
+        set_up_filters('filter_row_num');
 
-            change_view = {'filter_row':inst_filt/10, 'num_meet':1};
+        function set_up_filters(filter_type){
 
-            d3.select('#main_svg')
-              .style('opacity',0.70);
-            d3.select('#filter_value_row').text('Filter Rows: '+10*inst_filt+'%');          
-            d3.select('#filter_value_col').text('Filter Columns: '+0+'%');          
-            $("#slider_filter_col").slider( "value", 0);
+          // filter 
+          ////////////////////
+          var views = network_data.views;
+          var all_views = _.filter(views, function(d){return _.has(d,filter_type);});
+          var inst_max = all_views.length - 1;
+          $( '#slider_'+filter_type ).slider({
+            value:0,
+            min: 0,
+            max: inst_max,
+            step: 1,
+            stop: function( event, ui ) {
 
-            $('#slider_filter_row').slider('disable');
+              $( "#amount" ).val( "$" + ui.value );
+              var inst_filt = $( '#slider_'+filter_type ).slider( "value" ); 
 
-            cgm.update_network(change_view);
+              if (filter_type==='filter_row_value'){
 
-            ini_sliders();
+                change_view = {'filter_row_value':inst_filt/10};
+                filter_name = 'Value';
+                $('#slider_filter_row_sum').slider( "value", 0);
+                $('#slider_filter_row_num').slider( "value", 0);
 
-            function enable_slider(){
-              $('#slider_filter_row').slider('enable');  
+                d3.select('#filter_row_sum').text('Filter Sum: 0%');          
+                d3.select('#filter_row_num').text('Filter Number Non-zero: 0%');          
+
+              } else if (filter_type === 'filter_row_num'){
+
+                change_view = {'filter_row_num':inst_filt/10};
+                filter_name = 'Number Non-zero';
+                $('#slider_filter_row_value').slider( "value", 0);
+                $('#slider_filter_row_sum').slider( "value", 0);
+
+                d3.select('#filter_row_sum').text('Filter Sum: 0%');          
+                d3.select('#filter_row_value').text('Filter Value: 0%');          
+
+              } else if (filter_type === 'filter_row_sum'){
+
+                change_view = {'filter_row_sum':inst_filt/10};
+                filter_name = 'Sum';
+                $('#slider_filter_row_value').slider( "value", 0);
+                $('#slider_filter_row_num').slider( "value", 0);
+
+                d3.select('#filter_row_value').text('Filter Value: 0%');          
+                d3.select('#filter_row_num').text('Filter Number Non-zero: 0%'); 
+
+              }
+
+              d3.select('#main_svg')
+                .style('opacity',0.70);
+
+              d3.select('#'+filter_type).text('Filter '+filter_name+': '+10*inst_filt+'%');          
+
+              $('.slider_filter').slider('disable');
+              d3.selectAll('.btn').attr('disabled',true);
+
+              cgm.update_network(change_view);
+
+              ini_sliders();
+
+              function enable_slider(){
+                $('.slider_filter').slider('enable');  
+                d3.selectAll('.btn').attr('disabled',null);
+              }
+              setTimeout(enable_slider, 2500);
+
             }
-            setTimeout(enable_slider, 2500);
+          });
+          $( "#amount" ).val( "$" + $( '#slider_'+filter_type ).slider( "value" ) );
 
-          }
-        });
-        $( "#amount" ).val( "$" + $( "#slider_filter_row" ).slider( "value" ) );
-
-
-
-        // filter cols 
-        ////////////////////
-        var views = network_data.views;
-        var col_views = _.filter(views, function(d){return _.has(d,'filter_col');});
-        var inst_max = col_views.length - 1;
-        $( "#slider_filter_col" ).slider({
-          value:0,
-          min: 0,
-          max: inst_max,
-          step: 1,
-          stop: function( event, ui ) {
-            $( "#amount" ).val( "$" + ui.value );
-            var inst_filt = $( "#slider_filter_col" ).slider( "value" ); 
-
-            change_view = {'filter_col':inst_filt/10, 'num_meet':1};
-
-            d3.select('#main_svg')
-              .style('opacity',0.70);
-
-            d3.select('#filter_value_col').text('Filter Columns: '+10*inst_filt+'%');          
-            d3.select('#filter_value_row').text('Filter Rows: '+0+'%');          
-            $("#slider_filter_row").slider( "value", 0);
-
-            $('#slider_filter_col').slider('disable');
-
-            cgm.update_network(change_view);
-
-            ini_sliders();
-
-            function enable_slider(){
-              $('#slider_filter_col').slider('enable');  
-            }
-            setTimeout(enable_slider, 2500);
-
-          }
-        });
-        $( "#amount" ).val( "$" + $( "#slider_filter_col" ).slider( "value" ) );
-
-
-
+        }     
 
         // reused functions 
         function ini_sliders(){
-
 
           // col groups
           $( "#slider_col" ).slider({

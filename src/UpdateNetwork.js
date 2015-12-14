@@ -1,7 +1,5 @@
 function update_network(change_view){
 
-  console.log(change_view)
-
   // create a new args object 
   //////////////////////////////////////////
 

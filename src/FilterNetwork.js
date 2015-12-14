@@ -6,15 +6,16 @@ function filter_network_data(orig_network_data, change_view){
   console.log(change_view)
   console.log('\n\n\n')
 
-
-  // failsafe if there is only row+col filtering from front-end
+  // get view 
   ///////////////////////////////////////////////////////////////
   if (_.has(change_view,'filter_row')){
+    // failsafe if there is only row+col filtering from front-end
 
     var inst_view = _.find(views, function(d){
 
       // failsafe from json 
       if (_.has(d, 'filter_row')){
+        // filter_row_value is the same as filter_row 
         return d.filter_row == change_view.filter_row;
       } else {
         return d.filt == change_view.filter_row;
@@ -22,10 +23,28 @@ function filter_network_data(orig_network_data, change_view){
 
     });  
 
-  } else if (_.has(change_view,'filter_col')) {
+  } else if (_.has(change_view, 'filter_row_value')) {
+
+    console.log('\n\nfilter row value\n\n')
+
+    // filter row value 
+    var inst_view = _.find(views, function(d){
+
+      // failsafe from json 
+      return d.filter_row_value == change_view.filter_row_value;
+
+    });  
+
+  } else if (_.has(change_view,'filter_row_sum')) {
 
     var inst_view = _.find(views, function(d){
-      return d.filter_col == change_view.filter_col;
+      return d.filter_row_sum == change_view.filter_row_sum;
+    });
+
+  } else if (_.has(change_view,'filter_row_num')) {
+
+    var inst_view = _.find(views, function(d){
+      return d.filter_row_num == change_view.filter_row_num;
     });
 
   }
