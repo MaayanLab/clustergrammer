@@ -5293,9 +5293,7 @@ function filter_network_data(orig_network_data, change_view){
  
   var views = orig_network_data.views;
 
-  console.log('\n\n\n')
   console.log(change_view)
-  console.log('\n\n\n')
 
   // get view 
   ///////////////////////////////////////////////////////////////
@@ -5315,8 +5313,6 @@ function filter_network_data(orig_network_data, change_view){
     });  
 
   } else if (_.has(change_view, 'filter_row_value')) {
-
-    console.log('\n\nfilter row value\n\n')
 
     // filter row value 
     var inst_view = _.find(views, function(d){
