@@ -75,8 +75,8 @@ function make_clust(inst_network){
           // 'outline_colors':['black','yellow'],
           // 'tile_click_hlight':true,
           'show_label_tooltips':true,
-          'show_tile_tooltips':true,
-          'make_tile_tooltip':make_tile_tooltip,
+          // 'show_tile_tooltips':true,
+          // 'make_tile_tooltip':make_tile_tooltip,
           // 'click_tile': click_tile_callback,
           // 'click_label':click_label,
           // 'highlight_color':'yellow',
@@ -114,51 +114,90 @@ function make_clust(inst_network){
         // // play demo   
         // ini_play_button(cgm);
 
-        // filter scale - only initialize once 
-        var inst_max = network_data.views.length - 1;
-        $( "#slider_filter" ).slider({
+        // filter rows 
+        ////////////////////
+        var views = network_data.views;
+        var row_views = _.filter(views, function(d){return _.has(d,'filter_row');});
+        var inst_max = row_views.length - 1;
+        $( "#slider_filter_row" ).slider({
           value:0,
           min: 0,
           max: inst_max,
           step: 1,
           stop: function( event, ui ) {
             $( "#amount" ).val( "$" + ui.value );
-            var inst_filt = $( "#slider_filter" ).slider( "value" ); 
+            var inst_filt = $( "#slider_filter_row" ).slider( "value" ); 
+
+            change_view = {'filter_row':inst_filt/10, 'num_meet':1};
 
             d3.select('#main_svg')
               .style('opacity',0.70);
+            d3.select('#filter_value_row').text('Filter Rows: '+10*inst_filt+'%');          
+            d3.select('#filter_value_col').text('Filter Columns: '+0+'%');          
+            $("#slider_filter_col").slider( "value", 0);
 
-            d3.select('#filter_value').text('Filter Rows: '+10*inst_filt+'%');
+            $('#slider_filter_row').slider('disable');
 
-            // get clustergram to update using views and crossfilter 
-            change_view = {'filter_row':inst_filt/10, 'num_meet':1};
-
-            console.log(change_view)
-
-            // disable the slider to prevent the user from making changes too
-            // quickly
-            $('#slider_filter').slider('disable');
-
-            // update network 
             cgm.update_network(change_view);
 
             ini_sliders();
 
             function enable_slider(){
-              $('#slider_filter').slider('enable');  
+              $('#slider_filter_row').slider('enable');  
             }
-
-            // reenable after update is finished 
             setTimeout(enable_slider, 2500);
 
           }
         });
+        $( "#amount" ).val( "$" + $( "#slider_filter_row" ).slider( "value" ) );
 
-        $( "#amount" ).val( "$" + $( "#slider_filter" ).slider( "value" ) );
+
+
+        // filter cols 
+        ////////////////////
+        var views = network_data.views;
+        var col_views = _.filter(views, function(d){return _.has(d,'filter_col');});
+        var inst_max = col_views.length - 1;
+        $( "#slider_filter_col" ).slider({
+          value:0,
+          min: 0,
+          max: inst_max,
+          step: 1,
+          stop: function( event, ui ) {
+            $( "#amount" ).val( "$" + ui.value );
+            var inst_filt = $( "#slider_filter_col" ).slider( "value" ); 
+
+            change_view = {'filter_col':inst_filt/10, 'num_meet':1};
+
+            d3.select('#main_svg')
+              .style('opacity',0.70);
+
+            d3.select('#filter_value_col').text('Filter Columns: '+10*inst_filt+'%');          
+            d3.select('#filter_value_row').text('Filter Rows: '+0+'%');          
+            $("#slider_filter_row").slider( "value", 0);
+
+            $('#slider_filter_col').slider('disable');
+
+            cgm.update_network(change_view);
+
+            ini_sliders();
+
+            function enable_slider(){
+              $('#slider_filter_col').slider('enable');  
+            }
+            setTimeout(enable_slider, 2500);
+
+          }
+        });
+        $( "#amount" ).val( "$" + $( "#slider_filter_col" ).slider( "value" ) );
+
+
+
 
         // reused functions 
         function ini_sliders(){
-          
+
+
           // col groups
           $( "#slider_col" ).slider({
             value:0.5,

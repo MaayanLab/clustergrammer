@@ -1275,19 +1275,13 @@ class Network(object):
 
     all_views = []
 
-    col_filt = 0
-
+    # row filtering 
+    #####################
     for row_filt in all_filt:
-
-      print('row filt\t'+str(row_filt))
-
       # initialize new net 
       net = deepcopy(Network())
-
       net.dat = deepcopy(self.dat)
-
       filt_value = row_filt * max_mat
-
       # filter rows 
       net.filter_row_thresh(filt_value, inst_meet)
 
@@ -1300,9 +1294,6 @@ class Network(object):
         # add view 
         inst_view = {}
         inst_view['filter_row'] = row_filt
-        inst_view['filter_col'] = col_filt
-        inst_view['num_meet_row'] = inst_meet
-        inst_view['num_meet_col'] = inst_meet
         inst_view['dist'] = 'cos'
         inst_view['nodes'] = {}
         inst_view['nodes']['row_nodes'] = net.viz['row_nodes']
@@ -1312,6 +1303,37 @@ class Network(object):
 
       except:
         print('did not cluster filtered view')
+
+    # col filtering 
+    #####################
+    for col_filt in all_filt:
+      print(col_filt)
+      # initialize new net 
+      net = deepcopy(Network())
+      net.dat = deepcopy(self.dat)
+      filt_value = col_filt * max_mat
+      # filter cols 
+      net.filter_col_thresh(filt_value, inst_meet)
+
+      # try to filter - will not work if there is one col
+      try:
+
+        # cluster 
+        net.cluster_row_and_col('cos')
+
+        # add view 
+        inst_view = {}
+        inst_view['filter_col'] = col_filt
+        inst_view['dist'] = 'cos'
+        inst_view['nodes'] = {}
+        inst_view['nodes']['row_nodes'] = net.viz['row_nodes']
+        inst_view['nodes']['col_nodes'] = net.viz['col_nodes']
+
+        all_views.append(inst_view)
+
+      except:
+        print('did not cluster filtered view')    
+
 
     # add views to viz
     self.viz['views'] = all_views
