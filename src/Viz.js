@@ -81,41 +81,6 @@ function Viz(params) {
       // make col dendrogram
       col_dendrogram = Dendrogram('col', params);
 
-      // optional column callback on click
-      if (typeof params.click_group === 'function') {
-
-        d3.select('#col_viz_outer_container')
-          .on('click', function(d) {
-          var inst_level = params.group_level.col;
-          var inst_group = d.group[inst_level];
-          // find all column names that are in the same group at the same group_level
-          // get col_nodes
-          col_nodes = params.network_data.col_nodes;
-          var group_nodes = [];
-          _.each(col_nodes, function(node) {
-            // check that the node is in the group
-            if (node.group[inst_level] === inst_group) {
-            // make a list of genes that are in inst_group at this group_level
-            group_nodes.push(node.name);
-            }
-          });
-
-        // return the following information to the user
-        // row or col, distance cutoff level, nodes
-        var group_info = {};
-        group_info.type = 'col';
-        group_info.nodes = group_nodes;
-        group_info.info = {
-          'type': 'distance',
-          'cutoff': inst_level / 10
-        };
-
-        // pass information to group_click callback
-        params.click_group(group_info);
-
-        });
-      }
-
     }
 
 
