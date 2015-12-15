@@ -688,10 +688,14 @@ class Network(object):
 
       elif filter_type == 'num':
 
-        # count the number of non-zero values 
-        found_tuple = np.where(row_vect >= 0)
-        cutoff = row_filt_int * max_num
-        if len(found_tuple[0])>= cutoff:
+        num_nonzero = np.count_nonzero(row_vect)
+        # use integer number of non-zero measurements
+        cutoff = row_filt_int * 10
+
+        # print('num_nonzero '+str(num_nonzero)+' cutoff: '+str(cutoff))
+        # print('\n')
+
+        if num_nonzero>= cutoff:
           # add name 
           nodes['row'].append(inst_nodes_row)
           # add info if necessary 
@@ -1327,6 +1331,9 @@ class Network(object):
           net.dat = deepcopy(self.dat)
           # filter rows 
           net.filter_row_thresh(row_filt_int, filter_type=inst_type)
+
+          # filter columns since some columns might be all zero 
+          net.filter_col_thresh(0.001,1)
 
           # try to filter - will not work if there is one row
           try:
