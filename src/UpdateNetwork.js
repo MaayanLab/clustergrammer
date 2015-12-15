@@ -836,8 +836,8 @@ function enter_exit_update(params, network_data, reorder, delays){
   var row_triangle_ini_group = labels.make_rows( params, row_nodes, reorder, duration );
   var container_all_col      = labels.make_cols( params, col_nodes, reorder, duration );
 
-  Dendrogram('row', params, row_triangle_ini_group, duration);
-  Dendrogram('col', params, row_triangle_ini_group, duration);
+  Dendrogram('row', params);
+  Dendrogram('col', params);
 
   // Fade in new gridlines 
   ///////////////////////////

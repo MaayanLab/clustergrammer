@@ -65,7 +65,7 @@ function Viz(params) {
     if (params.viz.show_dendrogram) {
 
       // make row dendrogram
-      row_dendrogram = Dendrogram('row', params, 0);
+      row_dendrogram = Dendrogram('row', params);
 
       // add class label under column label
       var col_class = container_all_col
@@ -79,7 +79,7 @@ function Viz(params) {
       .attr('id', 'col_viz_zoom_container');
 
       // make col dendrogram
-      col_dendrogram = Dendrogram('col', params, 0);
+      col_dendrogram = Dendrogram('col', params);
 
       // optional column callback on click
       if (typeof params.click_group === 'function') {
@@ -247,11 +247,11 @@ function Viz(params) {
   }
 
   return {
-    change_group: function(inst_rc, inst_index) {
+    change_groups: function(inst_rc, inst_index) {
       if (inst_rc === 'row') {
-        row_dendrogram.change_groups(inst_index);
+        row_dendrogram.change_groups(inst_rc,inst_index);
       } else {
-        col_dendrogram.change_groups(inst_index);
+        col_dendrogram.change_groups(inst_rc,inst_index);
       }
     },
     get_clust_group: function(){

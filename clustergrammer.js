@@ -269,7 +269,7 @@ var Colors = (function() {
 
 /* Dendrogram color bar.
  */
-function Dendrogram(type, params, delay_dendro) {
+function Dendrogram(type, params) {
 
   var group_colors = [],
     dom_class,
@@ -279,7 +279,7 @@ function Dendrogram(type, params, delay_dendro) {
 
   if (type === 'row') {
     dom_class = 'row_class_rect';
-    build_row_dendro(delay_dendro);
+    build_row_dendro();
   } else {
     dom_class = 'col_class_rect';
     build_col_dendro();
@@ -304,11 +304,18 @@ function Dendrogram(type, params, delay_dendro) {
 
   /* Changes the groupings (x- and y-axis color bars).
    */
-  function change_groups(inst_index) {
+  function change_groups(inst_rc, inst_index) {
     d3.selectAll('.' + dom_class)
       .style('fill', function(d) {
         return group_colors[d.group[inst_index]];
       });
+
+    if (inst_rc==='row'){
+      params.group_level.row = inst_index;
+    } else if (inst_rc==='col'){
+      params.group_level.col = inst_index;
+    }
+
   }
 
   function color_group(j) {
@@ -319,7 +326,7 @@ function Dendrogram(type, params, delay_dendro) {
     return group_colors[j];
   }
 
-  function build_row_dendro(delay_dendro) {
+  function build_row_dendro() {
 
     // add dendrogram rectangles if necessary 
     d3.selectAll('.row_viz_group')
@@ -341,7 +348,41 @@ function Dendrogram(type, params, delay_dendro) {
             .attr('x', function() {
               var inst_offset = params.class_room.symbol_width + 1;
               return inst_offset + 'px';
-            });
+            })
+            // .on('mouseover', function(d){
+            //   var inst_level = params.group_level.row;
+            //   var inst_nodes = params.network_data.row_nodes;
+
+            //   console.log('\n\n');
+            //   console.log('clicking a group');
+            //   console.log(d.name)
+            //   console.log(d.group)
+            //   console.log('group level row')
+            //   console.log(params.group_level.row)
+
+            //   console.log('num rows: '+String(params.network_data.row_nodes.length))
+
+
+            //   var inst_group = d.group[inst_level];
+            //   var group_nodes = [];
+
+            //   _.each(inst_nodes, function(node){
+            //     if (node.group[inst_level] === inst_group){
+            //       group_nodes.push(node.name);
+            //     }
+            //   });
+
+            //   console.log(group_nodes)
+            //   console.log('\n\n')
+
+            //   var group_info = {};
+            //   group_info.type = 'row';
+            //   group_info.nodes = group_nodes;
+            //   group_info.cutoff = inst_level/10;
+
+            //   // params.click_group(group_info);
+
+            // });
 
         }  else {
 
@@ -5237,8 +5278,8 @@ function enter_exit_update(params, network_data, reorder, delays){
   var row_triangle_ini_group = labels.make_rows( params, row_nodes, reorder, duration );
   var container_all_col      = labels.make_cols( params, col_nodes, reorder, duration );
 
-  Dendrogram('row', params, row_triangle_ini_group, duration);
-  Dendrogram('col', params, row_triangle_ini_group, duration);
+  Dendrogram('row', params);
+  Dendrogram('col', params);
 
   // Fade in new gridlines 
   ///////////////////////////
@@ -5443,7 +5484,7 @@ function Viz(params) {
     if (params.viz.show_dendrogram) {
 
       // make row dendrogram
-      row_dendrogram = Dendrogram('row', params, 0);
+      row_dendrogram = Dendrogram('row', params);
 
       // add class label under column label
       var col_class = container_all_col
@@ -5457,7 +5498,7 @@ function Viz(params) {
       .attr('id', 'col_viz_zoom_container');
 
       // make col dendrogram
-      col_dendrogram = Dendrogram('col', params, 0);
+      col_dendrogram = Dendrogram('col', params);
 
       // optional column callback on click
       if (typeof params.click_group === 'function') {
@@ -5625,11 +5666,11 @@ function Viz(params) {
   }
 
   return {
-    change_group: function(inst_rc, inst_index) {
+    change_groups: function(inst_rc, inst_index) {
       if (inst_rc === 'row') {
-        row_dendrogram.change_groups(inst_index);
+        row_dendrogram.change_groups(inst_rc,inst_index);
       } else {
-        col_dendrogram.change_groups(inst_index);
+        col_dendrogram.change_groups(inst_rc,inst_index);
       }
     },
     get_clust_group: function(){
@@ -6941,7 +6982,7 @@ var viz = Viz(params);
 return {
     find_gene: viz.search.find_entities,
     get_genes: viz.search.get_entities,
-    change_groups: viz.change_group,
+    change_groups: viz.change_groups,
     reorder: viz.reorder,
     opacity_slider: viz.opacity_slider,
     opacity_function: viz.opacity_function,
