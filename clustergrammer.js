@@ -4549,6 +4549,20 @@ function update_network(change_view){
   this.get_genes = gene_search.get_entities;
   this.find_gene = gene_search.find_entities;
 
+  // redefine change_group function 
+  var row_dendrogram = Dendrogram('row', params);
+  var col_dendrogram = Dendrogram('col', params);
+
+  function new_change_groups(inst_rc, inst_index) {
+      if (inst_rc === 'row') {
+        row_dendrogram.change_groups(inst_rc,inst_index);
+      } else {
+        col_dendrogram.change_groups(inst_rc,inst_index);
+      }
+  }
+
+  this.change_groups = new_change_groups;
+
   // initialize screen resizing - necessary for resizing with new params 
   params.initialize_resizing(params);
 
