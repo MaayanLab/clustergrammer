@@ -66,8 +66,8 @@ function Dendrogram(type, params) {
         .attr('class', 'd3-tip')
         .direction('e')
         .offset([0, 0])
-        .html(function(group_nodes){
-          return group_nodes.join('\t');
+        .html(function(group_nodes_list){
+          return group_nodes_list.join('\t');
         });
 
       d3.select('#row_viz_zoom_container')
@@ -99,19 +99,22 @@ function Dendrogram(type, params) {
         if (params.labels.show_label_tooltips){
           dendro_rect
             .on('mouseover', function(d){
-              var group_nodes = get_inst_group('row',d);
-
-              tip.show(group_nodes);
+              var group_nodes_list = get_inst_group('row',d);
+              tip.show(group_nodes_list);
             })
             .on('mouseout', function(d){
               tip.hide();
             });
         }
 
-        // dendro_rect
-        //   .on('click', function(d){
-        //     params.click_group(group_info);
-        //   });
+        // show group in modal 
+        if (typeof params.click_group === 'function'){
+          dendro_rect
+            .on('click', function(d){
+              var group_nodes_list = get_inst_group('row',d);
+              params.click_group('row', group_nodes_list);
+            });
+        }       
 
       })
 
@@ -140,13 +143,12 @@ function Dendrogram(type, params) {
         .attr('class', 'd3-tip')
         .direction('s')
         .offset([0, 0])
-        .html(function(group_nodes){
-          return group_nodes.join('\t');
+        .html(function(group_nodes_list){
+          return group_nodes_list.join('\t');
         });
 
       d3.select('#row_viz_zoom_container')
         .call(tip);
-
     }    
 
     d3.selectAll('.col_viz_group')
@@ -169,12 +171,20 @@ function Dendrogram(type, params) {
         if (params.labels.show_label_tooltips){
           dendro_rect
             .on('mouseover', function(d){
-              var group_nodes = get_inst_group('col',d);
-              tip.show(group_nodes);
+              var group_nodes_list = get_inst_group('col',d);
+              tip.show(group_nodes_list );
             })
             .on('mouseout', function(d){
               tip.hide();
-            });        
+            }); 
+
+          if (typeof params.click_group==='function'){
+            dendro_rect
+              .on('click',function(d){
+                var group_nodes_list = get_inst_group('col',d);
+                params.click_group('col',group_nodes_list);
+              });
+          }
         }
 
     })
@@ -191,15 +201,15 @@ function Dendrogram(type, params) {
     }
 
     var inst_group = d.group[inst_level];
-    var group_nodes = [];
+    var group_nodes_list = [];
 
     _.each(inst_nodes, function(node){
       if (node.group[inst_level] === inst_group){
-        group_nodes.push(node.name);
+        group_nodes_list.push(node.name);
       }
     });
 
-    return group_nodes;
+    return group_nodes_list;
   }
 
   // add callback functions 

@@ -30,14 +30,24 @@ function make_clust(inst_network){
         }
 
         // define callback function for clicking on group
-        function click_group_callback(group_info){
+        function click_group_callback(inst_rc, group_nodes_list){
           console.log('running user defined click group callback');
-          console.log(group_info.type);
-          console.log(group_info.nodes);
 
           $('#dendro_info').modal('toggle');
-          d3.select('#dendro_info').select('.modal-body').select('p').text('something');
-          d3.select('#dendro_info').select('.modal-title').text('The title');
+          d3.select('#dendro_info').select('.modal-body').select('p')
+            .text(group_nodes_list.join('\t'));
+
+          if (inst_rc==='row'){
+            var type_title = 'Row';
+          } else if (inst_rc==='col'){
+            var type_title = 'Column';
+          }
+
+            
+          d3.select('#dendro_info').select('.modal-title')
+            .text(function(){
+              return 'Selected '+type_title + ' Group';
+            });
 
         }
 
