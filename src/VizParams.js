@@ -277,6 +277,24 @@ function VizParams(config){
       params.viz.force_square = 1;
     }
 
+    // set up bar_scale_row and bar_scale_col if there are values for rows/cols
+    // get max value
+
+    // the enrichment bar should be 3/4ths of the height of the column labels
+    var enr_max = Math.abs(_.max( col_nodes, function(d) { return Math.abs(d.value) } ).value) ;
+    params.labels.bar_scale_col = d3.scale
+      .linear()
+      .domain([0, enr_max])
+      .range([0, params.norm_label.width.col]);    
+
+    // set bar scale
+    var enr_max = Math.abs(_.max( row_nodes, function(d) { return Math.abs(d.value) } ).value) ;
+    params.labels.bar_scale_row = d3.scale
+      .linear()
+      .domain([0, enr_max])
+      .range([0, params.norm_label.width.row ]);
+
+
     // Define Orderings
     ////////////////////////////
 

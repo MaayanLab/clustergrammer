@@ -525,14 +525,14 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
         var bbox = d3.select(this)
           .select('text')[0][0]
           .getBBox();
-        d3.select(this)
-          .select('rect')
-          .attr('x', bbox.x * 1.25)
-          .attr('y', 0)
-          .attr('width', bbox.width * 1.25)
-          .attr('height', params.matrix.x_scale.rangeBand() * 0.6)
-          .style('fill', 'yellow')
-          .style('opacity', 0);
+        // d3.select(this)
+        //   .select('rect')
+        //   .attr('x', bbox.x * 1.25)
+        //   .attr('y', 0)
+        //   .attr('width', bbox.width * 1.25)
+        //   .attr('height', params.matrix.x_scale.rangeBand() * 0.6)
+        //   .style('fill', 'yellow')
+        //   .style('opacity', 0);
       });
 
 
@@ -597,6 +597,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
         .attr('width', function(d) {
           var inst_value = 0;
           if (d.value > 0){
+            console.log(params.labels)
             inst_value = params.labels.bar_scale_col(d.value);
           }
           return inst_value;

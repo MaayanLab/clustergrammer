@@ -611,14 +611,15 @@
           var bbox = d3.select(this)
             .select('text')[0][0]
             .getBBox();
-          d3.select(this)
-            .select('rect')
-            .attr('x', bbox.x * 1.25)
-            .attr('y', 0)
-            .attr('width', bbox.width * 1.25)
-            .attr('height', params.matrix.rect_width * 0.6)
-            .style('fill', 'yellow')
-            .style('opacity', 0);
+
+          // d3.select(this)
+          //   .select('rect')
+          //   .attr('x', bbox.x * 1.25)
+          //   .attr('y', 0)
+          //   .attr('width', bbox.width * 1.25)
+          //   .attr('height', params.matrix.rect_width * 0.6)
+          //   .style('fill', 'yellow')
+          //   .style('opacity', 0);
         });
 
       // resize column triangle 

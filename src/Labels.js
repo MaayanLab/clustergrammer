@@ -235,13 +235,6 @@ function Labels(params){
 
       if (Utils.has( params.network_data.row_nodes[0], 'value')) {
 
-        // set bar scale
-        var enr_max = Math.abs(_.max( row_nodes, function(d) { return Math.abs(d.value) } ).value) ;
-        params.labels.bar_scale_row = d3.scale
-          .linear()
-          .domain([0, enr_max])
-          .range([0, params.norm_label.width.row ]);
-
         row_labels
           .append('rect')
           .attr('class', 'row_bars')
@@ -418,15 +411,7 @@ function Labels(params){
           .classed('active',false);
       });
 
-    // get max value
-    var enr_max = Math.abs(_.max( col_nodes, function(d) { return Math.abs(d.value) } ).value) ;
-    var enr_min = Math.abs(_.min( col_nodes, function(d) { return Math.abs(d.value) } ).value) ;
 
-    // the enrichment bar should be 3/4ths of the height of the column labels
-    params.labels.bar_scale_col = d3.scale
-      .linear()
-      .domain([enr_min*0.75, enr_max])
-      .range([0, params.norm_label.width.col]);
 
     // append column value bars
     if (Utils.has( params.network_data.col_nodes[0], 'value')) {

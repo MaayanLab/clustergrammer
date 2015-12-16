@@ -57,8 +57,10 @@ function update_network(change_view){
   this.find_gene = gene_search.find_entities;
 
   // redefine change_group function 
-  var row_dendrogram = Dendrogram('row', params);
-  var col_dendrogram = Dendrogram('col', params);
+  if (params.viz.show_dendrogram){
+    var row_dendrogram = Dendrogram('row', params);
+    var col_dendrogram = Dendrogram('col', params);
+  }
 
   function new_change_groups(inst_rc, inst_index) {
       if (inst_rc === 'row') {

@@ -1573,6 +1573,24 @@ function VizParams(config){
       params.viz.force_square = 1;
     }
 
+    // set up bar_scale_row and bar_scale_col if there are values for rows/cols
+    // get max value
+
+    // the enrichment bar should be 3/4ths of the height of the column labels
+    var enr_max = Math.abs(_.max( col_nodes, function(d) { return Math.abs(d.value) } ).value) ;
+    params.labels.bar_scale_col = d3.scale
+      .linear()
+      .domain([0, enr_max])
+      .range([0, params.norm_label.width.col]);    
+
+    // set bar scale
+    var enr_max = Math.abs(_.max( row_nodes, function(d) { return Math.abs(d.value) } ).value) ;
+    params.labels.bar_scale_row = d3.scale
+      .linear()
+      .domain([0, enr_max])
+      .range([0, params.norm_label.width.row ]);
+
+
     // Define Orderings
     ////////////////////////////
 
@@ -2206,13 +2224,6 @@ function Labels(params){
 
       if (Utils.has( params.network_data.row_nodes[0], 'value')) {
 
-        // set bar scale
-        var enr_max = Math.abs(_.max( row_nodes, function(d) { return Math.abs(d.value) } ).value) ;
-        params.labels.bar_scale_row = d3.scale
-          .linear()
-          .domain([0, enr_max])
-          .range([0, params.norm_label.width.row ]);
-
         row_labels
           .append('rect')
           .attr('class', 'row_bars')
@@ -2389,15 +2400,7 @@ function Labels(params){
           .classed('active',false);
       });
 
-    // get max value
-    var enr_max = Math.abs(_.max( col_nodes, function(d) { return Math.abs(d.value) } ).value) ;
-    var enr_min = Math.abs(_.min( col_nodes, function(d) { return Math.abs(d.value) } ).value) ;
 
-    // the enrichment bar should be 3/4ths of the height of the column labels
-    params.labels.bar_scale_col = d3.scale
-      .linear()
-      .domain([enr_min*0.75, enr_max])
-      .range([0, params.norm_label.width.col]);
 
     // append column value bars
     if (Utils.has( params.network_data.col_nodes[0], 'value')) {
@@ -3505,14 +3508,15 @@ function draw_grid_lines(row_nodes, col_nodes) {
           var bbox = d3.select(this)
             .select('text')[0][0]
             .getBBox();
-          d3.select(this)
-            .select('rect')
-            .attr('x', bbox.x * 1.25)
-            .attr('y', 0)
-            .attr('width', bbox.width * 1.25)
-            .attr('height', params.matrix.rect_width * 0.6)
-            .style('fill', 'yellow')
-            .style('opacity', 0);
+
+          // d3.select(this)
+          //   .select('rect')
+          //   .attr('x', bbox.x * 1.25)
+          //   .attr('y', 0)
+          //   .attr('width', bbox.width * 1.25)
+          //   .attr('height', params.matrix.rect_width * 0.6)
+          //   .style('fill', 'yellow')
+          //   .style('opacity', 0);
         });
 
       // resize column triangle 
@@ -4240,14 +4244,14 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
         var bbox = d3.select(this)
           .select('text')[0][0]
           .getBBox();
-        d3.select(this)
-          .select('rect')
-          .attr('x', bbox.x * 1.25)
-          .attr('y', 0)
-          .attr('width', bbox.width * 1.25)
-          .attr('height', params.matrix.x_scale.rangeBand() * 0.6)
-          .style('fill', 'yellow')
-          .style('opacity', 0);
+        // d3.select(this)
+        //   .select('rect')
+        //   .attr('x', bbox.x * 1.25)
+        //   .attr('y', 0)
+        //   .attr('width', bbox.width * 1.25)
+        //   .attr('height', params.matrix.x_scale.rangeBand() * 0.6)
+        //   .style('fill', 'yellow')
+        //   .style('opacity', 0);
       });
 
 
@@ -4312,6 +4316,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
         .attr('width', function(d) {
           var inst_value = 0;
           if (d.value > 0){
+            console.log(params.labels)
             inst_value = params.labels.bar_scale_col(d.value);
           }
           return inst_value;
@@ -4551,8 +4556,10 @@ function update_network(change_view){
   this.find_gene = gene_search.find_entities;
 
   // redefine change_group function 
-  var row_dendrogram = Dendrogram('row', params);
-  var col_dendrogram = Dendrogram('col', params);
+  if (params.viz.show_dendrogram){
+    var row_dendrogram = Dendrogram('row', params);
+    var col_dendrogram = Dendrogram('col', params);
+  }
 
   function new_change_groups(inst_rc, inst_index) {
       if (inst_rc === 'row') {

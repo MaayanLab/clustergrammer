@@ -113,12 +113,16 @@ def transfer_to_enr_dict(response_list):
 
   return enr 
 
-def make_enr_clust(sig_id, inst_gmt, threshold, num_thresh):
+def make_enr_clust(sig_id, inst_gmt):
   '''
   Make clustergram of enriched terms vs genes  
   '''
   from clustergrammer import Network
   import scipy
+
+  threshold = 0.001 
+  num_thresh = 1
+  dendro=False
 
   print('\n\nGMT')
   print(inst_gmt)
@@ -134,8 +138,6 @@ def make_enr_clust(sig_id, inst_gmt, threshold, num_thresh):
   # only keep the top 20 terms 
   if len(enr)>15:
     enr = enr[0:15]
-
-  # print
 
   # genes 
   row_node_names = []
@@ -177,7 +179,10 @@ def make_enr_clust(sig_id, inst_gmt, threshold, num_thresh):
       net.dat['mat'][row_index, col_index] = 1
 
   net.filter_network_thresh(threshold, num_thresh)
-  net.cluster_row_and_col(dist_type='cos',run_clustering=True,dendro=False)
+
+  # make multiple view 
+  # net.cluster_row_and_col(dist_type='cos',run_clustering=True,dendro=False)
+  net.make_mult_views(dist_type='cos',filter_row=['sum'],dendro=False)
 
   # keep the original column order in rank 
   for inst_col in net.viz['col_nodes']:

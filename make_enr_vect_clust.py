@@ -1,8 +1,12 @@
 def main():
 
+  make_enr_clust()
+
+def make_enr_clust():
+
   import enrichr_functions as enr_fun 
 
-  net = enr_fun.make_enr_clust(939279,'CORUM',0.001,1)
+  net = enr_fun.make_enr_clust(939279,'CORUM')
 
   net.write_json_to_file('viz','json/enr_clust_example.json')  
 
