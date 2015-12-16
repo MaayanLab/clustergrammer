@@ -49,6 +49,51 @@ function make_clust(inst_network){
               return 'Selected '+type_title + ' Group';
             });
 
+
+          options = {
+            description:'some-description',
+            list: group_nodes_list.join('\n')
+          }
+
+          console.log(options)
+
+          // // send genes to Enrichr 
+          // send_genes_to_enrichr(options);
+
+        }
+
+        function send_genes_to_enrichr(options) {
+          var defaultOptions = {
+            description: "",
+            popup: false
+          };
+
+          if (typeof options.description == 'undefined')
+            options.description = defaultOptions.description;
+          if (typeof options.list == 'undefined')
+            alert('No genes defined.');
+
+          var form = document.createElement('form');
+          form.setAttribute('method', 'post');
+          form.setAttribute('action', 'http://amp.pharm.mssm.edu/Enrichr/enrich');
+          form.setAttribute('target', '_blank');
+          form.setAttribute('enctype', 'multipart/form-data');
+
+          var listField = document.createElement('input');
+          listField.setAttribute('type', 'hidden');
+          listField.setAttribute('name', 'list');
+          listField.setAttribute('value', options.list);
+          form.appendChild(listField);
+
+          var descField = document.createElement('input');
+          descField.setAttribute('type', 'hidden');
+          descField.setAttribute('name', 'description');
+          descField.setAttribute('value', options.description);
+          form.appendChild(descField);
+
+          document.body.appendChild(form);
+          form.submit();
+          document.body.removeChild(form);
         }
 
         // row/col callback function
