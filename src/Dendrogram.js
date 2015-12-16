@@ -96,33 +96,17 @@ function Dendrogram(type, params) {
             return inst_offset + 'px';
           })
 
-        dendro_rect
-          .on('mouseover', function(d){
-            var inst_level = params.group_level.row;
-            var inst_nodes = params.network_data.row_nodes;
-            var inst_group = d.group[inst_level];
-            var group_nodes = [];
+        if (params.labels.show_label_tooltips){
+          dendro_rect
+            .on('mouseover', function(d){
+              var group_nodes = get_inst_group('row',d);
 
-            _.each(inst_nodes, function(node){
-              if (node.group[inst_level] === inst_group){
-                group_nodes.push(node.name);
-              }
-            });
-
-            var group_info = {};
-            group_info.type = 'row';
-            group_info.nodes = group_nodes;
-            group_info.cutoff = inst_level/10;
-
-            if (params.labels.show_label_tooltips){
               tip.show(group_nodes);
-            }
-          })
-          .on('mouseout', function(d){
-            if (params.labels.show_label_tooltips){
+            })
+            .on('mouseout', function(d){
               tip.hide();
-            }
-          });
+            });
+        }
 
         // dendro_rect
         //   .on('click', function(d){
@@ -182,35 +166,40 @@ function Dendrogram(type, params) {
             return get_group_color(d.group[inst_level]);
           });
 
-        dendro_rect
-          .on('mouseover', function(d){
-            var inst_level = params.group_level.col;
-            var inst_nodes = params.network_data.col_nodes;
-            var inst_group = d.group[inst_level];
-            var group_nodes = [];
-
-            _.each(inst_nodes, function(node){
-              if (node.group[inst_level] === inst_group){
-                group_nodes.push(node.name);
-              }
-            });
-
-            var group_info = {};
-            group_info.type = 'col';
-            group_info.nodes = group_nodes;
-            group_info.cutoff = inst_level/10;
-
-            if (params.labels.show_label_tooltips){
+        if (params.labels.show_label_tooltips){
+          dendro_rect
+            .on('mouseover', function(d){
+              var group_nodes = get_inst_group('col',d);
               tip.show(group_nodes);
-            }
-          })
-          .on('mouseout', function(d){
-            if (params.labels.show_label_tooltips){
+            })
+            .on('mouseout', function(d){
               tip.hide();
-            }
-          });        
+            });        
+        }
 
     })
+  }
+
+  function get_inst_group(inst_rc,d){
+
+    if (inst_rc === 'col'){
+      var inst_level = params.group_level.col;
+      var inst_nodes = params.network_data.col_nodes;
+    } else if (inst_rc==='row') {
+      var inst_level = params.group_level.row;
+      var inst_nodes = params.network_data.row_nodes;
+    }
+
+    var inst_group = d.group[inst_level];
+    var group_nodes = [];
+
+    _.each(inst_nodes, function(node){
+      if (node.group[inst_level] === inst_group){
+        group_nodes.push(node.name);
+      }
+    });
+
+    return group_nodes;
   }
 
   // add callback functions 

@@ -34,6 +34,11 @@ function make_clust(inst_network){
           console.log('running user defined click group callback');
           console.log(group_info.type);
           console.log(group_info.nodes);
+
+          $('#dendro_info').modal('toggle');
+          d3.select('#dendro_info').select('.modal-body').select('p').text('something');
+          d3.select('#dendro_info').select('.modal-title').text('The title');
+
         }
 
         // row/col callback function
