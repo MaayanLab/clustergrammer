@@ -64,7 +64,7 @@ function Dendrogram(type, params) {
       // d3-tooltip - for tiles 
       var tip = d3.tip()
         .attr('class', 'd3-tip')
-        .direction('n')
+        .direction('e')
         .offset([0, 0])
         .html(function(group_nodes){
           return group_nodes.join('\t');
@@ -154,7 +154,7 @@ function Dendrogram(type, params) {
       // d3-tooltip - for tiles 
       var tip = d3.tip()
         .attr('class', 'd3-tip')
-        .direction('n')
+        .direction('s')
         .offset([0, 0])
         .html(function(group_nodes){
           return group_nodes.join('\t');

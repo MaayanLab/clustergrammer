@@ -332,7 +332,7 @@ function Dendrogram(type, params) {
       // d3-tooltip - for tiles 
       var tip = d3.tip()
         .attr('class', 'd3-tip')
-        .direction('n')
+        .direction('e')
         .offset([0, 0])
         .html(function(group_nodes){
           return group_nodes.join('\t');
@@ -422,7 +422,7 @@ function Dendrogram(type, params) {
       // d3-tooltip - for tiles 
       var tip = d3.tip()
         .attr('class', 'd3-tip')
-        .direction('n')
+        .direction('s')
         .offset([0, 0])
         .html(function(group_nodes){
           return group_nodes.join('\t');
@@ -1474,12 +1474,14 @@ function VizParams(config){
     // row groups - only add if the rows have a group attribute
     // Define the space needed for the classification of rows - includes classification triangles and rects
     params.class_room = {};
+
+    // the width of the classification triangle and group rectangle
+    params.class_room.symbol_width = 11;
+
     if (params.viz.show_dendrogram) {
       // make room for group rects
-      params.class_room.row = 18;
-      params.class_room.col = 9;
-      // the width of the classification triangle or group rectangle
-      params.class_room.symbol_width = 9;
+      params.class_room.row = 2*params.class_room.symbol_width;
+      params.class_room.col = params.class_room.symbol_width;
 
       config.group_level = {
         row: 5,
@@ -1488,10 +1490,8 @@ function VizParams(config){
 
     } else {
       // do not make room for group rects
-      params.class_room.row = 9;
+      params.class_room.row = params.class_room.symbol_width;
       params.class_room.col = 0;
-      // the width of the classification triangle or group rectangle
-      params.class_room.symbol_width = 9;
     }
 
     // norm label background width, norm-label-width plus class-width plus margin
