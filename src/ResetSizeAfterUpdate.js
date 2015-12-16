@@ -597,7 +597,6 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
         .attr('width', function(d) {
           var inst_value = 0;
           if (d.value > 0){
-            console.log(params.labels)
             inst_value = params.labels.bar_scale_col(d.value);
           }
           return inst_value;

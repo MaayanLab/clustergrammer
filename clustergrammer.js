@@ -1581,7 +1581,7 @@ function VizParams(config){
     params.labels.bar_scale_col = d3.scale
       .linear()
       .domain([0, enr_max])
-      .range([0, params.norm_label.width.col]);    
+      .range([0, 0.75*params.norm_label.width.col]);    
 
     // set bar scale
     var enr_max = Math.abs(_.max( row_nodes, function(d) { return Math.abs(d.value) } ).value) ;
@@ -4316,7 +4316,6 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
         .attr('width', function(d) {
           var inst_value = 0;
           if (d.value > 0){
-            console.log(params.labels)
             inst_value = params.labels.bar_scale_col(d.value);
           }
           return inst_value;
