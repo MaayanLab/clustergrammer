@@ -622,42 +622,6 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
         return inst_offset + 'px';
       });
 
-    svg_group.selectAll('.row_class_rect')
-      .on('mouseover', function(d){
-        var inst_level = params.group_level.row;
-        var inst_nodes = params.network_data.row_nodes;
-
-        console.log('\n\n');
-        console.log('clicking a group');
-        console.log(d.name)
-        console.log(d.group)
-        console.log('group level row')
-        console.log(params.group_level.row)
-
-        console.log('num rows: '+String(params.network_data.row_nodes.length))
-
-
-        var inst_group = d.group[inst_level];
-        var group_nodes = [];
-
-        _.each(inst_nodes, function(node){
-          if (node.group[inst_level] === inst_group){
-            group_nodes.push(node.name);
-          }
-        });
-
-        console.log(group_nodes)
-        console.log('\n\n')
-
-        var group_info = {};
-        group_info.type = 'row';
-        group_info.nodes = group_nodes;
-        group_info.cutoff = inst_level/10;
-
-        // params.click_group(group_info);
-
-      });
-
     svg_group.selectAll('.col_class_rect')
       .transition().delay(delays.update).duration(duration)
       .attr('width', params.matrix.x_scale.rangeBand())

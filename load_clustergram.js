@@ -34,7 +34,6 @@ function make_clust(inst_network){
           console.log('running user defined click group callback');
           console.log(group_info.type);
           console.log(group_info.nodes);
-          console.log(group_info.info);
         }
 
         // row/col callback function
@@ -92,7 +91,7 @@ function make_clust(inst_network){
           // 'tile_colors':['#ED9124','#1C86EE'],
           // 'background_color':'orange',
           // 'tile_title': true,
-          // 'click_group': click_group_callback
+          'click_group': click_group_callback,
           // 'resize':false
           // 'order':'rank'
         };

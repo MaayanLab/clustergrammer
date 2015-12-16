@@ -60,11 +60,27 @@ function Dendrogram(type, params) {
 
   function build_row_dendro() {
 
-    // add dendrogram rectangles if necessary 
+    if (params.labels.show_label_tooltips){
+      // d3-tooltip - for tiles 
+      var tip = d3.tip()
+        .attr('class', 'd3-tip')
+        .direction('n')
+        .offset([0, 0])
+        .html(function(group_nodes){
+          return group_nodes.join('\t');
+        });
+
+      d3.select('#row_viz_zoom_container')
+        .call(tip);
+
+    } 
+
     d3.selectAll('.row_viz_group')
       .each(function(d){
 
-        d3.select(this)
+        var inst_level = params.group_level.row;
+
+        var dendro_rect = d3.select(this)
           .append('rect')
           .attr('class', dom_class)
           .attr('width', function() {
@@ -73,27 +89,17 @@ function Dendrogram(type, params) {
           })
           .attr('height', params.matrix.y_scale.rangeBand())
           .style('fill', function(d) {
-            var inst_level = params.group_level.row;
             return get_group_color(d.group[inst_level]);
           })
           .attr('x', function() {
             var inst_offset = params.class_room.symbol_width + 1;
             return inst_offset + 'px';
           })
+
+        dendro_rect
           .on('mouseover', function(d){
             var inst_level = params.group_level.row;
             var inst_nodes = params.network_data.row_nodes;
-
-            console.log('\n\n');
-            console.log('clicking a group');
-            console.log(d.name)
-            console.log(d.group)
-            console.log('group level row')
-            console.log(params.group_level.row)
-
-            console.log('num rows: '+String(params.network_data.row_nodes.length))
-
-
             var inst_group = d.group[inst_level];
             var group_nodes = [];
 
@@ -103,17 +109,25 @@ function Dendrogram(type, params) {
               }
             });
 
-            console.log(group_nodes)
-            console.log('\n\n')
-
             var group_info = {};
             group_info.type = 'row';
             group_info.nodes = group_nodes;
             group_info.cutoff = inst_level/10;
 
-            // params.click_group(group_info);
-
+            if (params.labels.show_label_tooltips){
+              tip.show(group_nodes);
+            }
+          })
+          .on('mouseout', function(d){
+            if (params.labels.show_label_tooltips){
+              tip.hide();
+            }
           });
+
+        // dendro_rect
+        //   .on('click', function(d){
+        //     params.click_group(group_info);
+        //   });
 
       })
 
@@ -136,41 +150,65 @@ function Dendrogram(type, params) {
       return 'translate(' + params.matrix.x_scale(inst_index) + ',0)';
     });
 
+    if (params.labels.show_label_tooltips){
+      // d3-tooltip - for tiles 
+      var tip = d3.tip()
+        .attr('class', 'd3-tip')
+        .direction('n')
+        .offset([0, 0])
+        .html(function(group_nodes){
+          return group_nodes.join('\t');
+        });
+
+      d3.select('#row_viz_zoom_container')
+        .call(tip);
+
+    }    
 
     d3.selectAll('.col_viz_group')
       .each(function(d){
 
-        if (d3.select(this).select('rect').empty()){
+        var inst_level = params.group_level.col;
 
-          d3.select(this)
-            .append('rect')
-            .attr('class', dom_class)
-            .attr('width', params.matrix.x_scale.rangeBand())
-            .attr('height', function() {
-              var inst_height = params.class_room.col - 1;
-              return inst_height;
-            })
-            .style('fill', function(d) {
-              var inst_level = params.group_level.col;
-              return get_group_color(d.group[inst_level]);
+        var dendro_rect = d3.select(this)
+          .append('rect')
+          .attr('class', dom_class)
+          .attr('width', params.matrix.x_scale.rangeBand())
+          .attr('height', function() {
+            var inst_height = params.class_room.col - 1;
+            return inst_height;
+          })
+          .style('fill', function(d) {
+            return get_group_color(d.group[inst_level]);
+          });
+
+        dendro_rect
+          .on('mouseover', function(d){
+            var inst_level = params.group_level.col;
+            var inst_nodes = params.network_data.col_nodes;
+            var inst_group = d.group[inst_level];
+            var group_nodes = [];
+
+            _.each(inst_nodes, function(node){
+              if (node.group[inst_level] === inst_group){
+                group_nodes.push(node.name);
+              }
             });
 
-        } else {
+            var group_info = {};
+            group_info.type = 'col';
+            group_info.nodes = group_nodes;
+            group_info.cutoff = inst_level/10;
 
-          d3.select(this).select('rect')
-            .attr('width', params.matrix.x_scale.rangeBand())
-            .attr('height', function() {
-              var inst_height = params.class_room.col - 1;
-              return inst_height;
-            })
-            .attr('opacity',0.25)
-            .transition().delay(1000).duration(1000)
-            .style('fill', function(d) {
-              var inst_level = params.group_level.col;
-              return get_group_color(d.group[inst_level]);
-            })
-            .attr('opacity',1);
-        }
+            if (params.labels.show_label_tooltips){
+              tip.show(group_nodes);
+            }
+          })
+          .on('mouseout', function(d){
+            if (params.labels.show_label_tooltips){
+              tip.hide();
+            }
+          });        
 
     })
   }
@@ -178,77 +216,77 @@ function Dendrogram(type, params) {
   // add callback functions 
   /////////////////////////////
   
-  // !! optional row callback on click
-  if (typeof params.click_group === 'function') {
-    // only add click functionality to row rect
-    row_class_rect
-      .on('click', function(d) {
-        var inst_level = params.group_level.row;
-       var inst_group = d.group[inst_level];
-        // find all row names that are in the same group at the same group_level
-        // get row_nodes
-        row_nodes = params.network_data.row_nodes;
-        var group_nodes = [];
+  // // !! optional row callback on click
+  // if (typeof params.click_group === 'function') {
+  //   // only add click functionality to row rect
+  //   row_class_rect
+  //     .on('click', function(d) {
+  //       var inst_level = params.group_level.row;
+  //      var inst_group = d.group[inst_level];
+  //       // find all row names that are in the same group at the same group_level
+  //       // get row_nodes
+  //       row_nodes = params.network_data.row_nodes;
+  //       var group_nodes = [];
 
-        _.each(row_nodes, function(node) {
-          // check that the node is in the group
-          if (node.group[inst_level] === inst_group) {
-          // make a list of genes that are in inst_group at this group_level
-          group_nodes.push(node.name);
-          }
-      });
+  //       _.each(row_nodes, function(node) {
+  //         // check that the node is in the group
+  //         if (node.group[inst_level] === inst_group) {
+  //         // make a list of genes that are in inst_group at this group_level
+  //         group_nodes.push(node.name);
+  //         }
+  //     });
 
-      // return the following information to the user
-      // row or col, distance cutoff level, nodes
-      var group_info = {};
-      group_info.type = 'row';
-      group_info.nodes = group_nodes;
-      group_info.info = {
-        'type': 'distance',
-        'cutoff': inst_level / 10
-      };
+  //     // return the following information to the user
+  //     // row or col, distance cutoff level, nodes
+  //     var group_info = {};
+  //     group_info.type = 'row';
+  //     group_info.nodes = group_nodes;
+  //     group_info.info = {
+  //       'type': 'distance',
+  //       'cutoff': inst_level / 10
+  //     };
 
-      // pass information to group_click callback
-      params.click_group(group_info);
+  //     // pass information to group_click callback
+  //     params.click_group(group_info);
 
-    });
-  }
+  //   });
+  // }
 
 
-    // optional column callback on click
-    if (typeof params.click_group === 'function') {
+  // // optional column callback on click
+  // if (typeof params.click_group === 'function') {
 
-      d3.select('#col_viz_outer_container')
-        .on('click', function(d) {
-        var inst_level = params.group_level.col;
-        var inst_group = d.group[inst_level];
-        // find all column names that are in the same group at the same group_level
-        // get col_nodes
-        col_nodes = params.network_data.col_nodes;
-        var group_nodes = [];
-        _.each(col_nodes, function(node) {
-          // check that the node is in the group
-          if (node.group[inst_level] === inst_group) {
-          // make a list of genes that are in inst_group at this group_level
-          group_nodes.push(node.name);
-          }
-        });
+  //   d3.select('#col_viz_outer_container')
+  //     .on('click', function(d) {
+  //     var inst_level = params.group_level.col;
+  //     var inst_group = d.group[inst_level];
+  //     // find all column names that are in the same group at the same group_level
+  //     // get col_nodes
+  //     col_nodes = params.network_data.col_nodes;
+  //     var group_nodes = [];
+  //     _.each(col_nodes, function(node) {
+  //       // check that the node is in the group
+  //       if (node.group[inst_level] === inst_group) {
+  //       // make a list of genes that are in inst_group at this group_level
+  //       group_nodes.push(node.name);
+  //       }
+  //     });
 
-      // return the following information to the user
-      // row or col, distance cutoff level, nodes
-      var group_info = {};
-      group_info.type = 'col';
-      group_info.nodes = group_nodes;
-      group_info.info = {
-        'type': 'distance',
-        'cutoff': inst_level / 10
-      };
+  //   // return the following information to the user
+  //   // row or col, distance cutoff level, nodes
+  //   var group_info = {};
+  //   group_info.type = 'col';
+  //   group_info.nodes = group_nodes;
+  //   group_info.info = {
+  //     'type': 'distance',
+  //     'cutoff': inst_level / 10
+  //   };
 
-      // pass information to group_click callback
-      params.click_group(group_info);
+  //   // pass information to group_click callback
+  //   params.click_group(group_info);
 
-      });
-    }
+  //   });
+  // }
 
   return {
     color_group: color_group,
