@@ -10,8 +10,26 @@ function VizParams(config){
     // initialize params object from config
     var params = config;
 
-    // // save a backup of the config object in params 
-    // params.config = config;
+    // // deep copy 
+    // params = jQuery.extend(true, {}, config)
+
+    // // shallow copy 
+    // var params = jQuery.extend({}, config)
+
+    // console.log('in VizParams')
+    // console.log(config.network_data.row_nodes.length)
+
+    // run initial filtering if necessary 
+    if (_.isNull(params.ini_view) === false){
+      params.network_data = filter_network_data(params.network_data, params.ini_view);
+      // remove ini_view 
+      params.ini_view = null;
+      
+      console.log('\n-----------------set ini view\n--------------------------') 
+    }
+
+    console.log('after filter')
+    console.log(config.network_data.row_nodes.length)
 
     // Label Paramsters
     params.labels = {};
@@ -90,10 +108,13 @@ function VizParams(config){
     }
     params.viz.expand_button = config.expand_button;
 
-    // pass network_data to params
-    params.network_data = config.network_data;
+    // // pass network_data to params
+    // params.network_data = config.network_data;
 
-    var network_data = params.network_data;
+    var col_nodes = params.network_data.col_nodes;
+    var row_nodes = params.network_data.row_nodes;
+
+    // var network_data = params.network_data;
 
     // resize based on parent div
     parent_div_size_pos(params);
@@ -108,8 +129,6 @@ function VizParams(config){
     // Variable Label Widths
     // based on the length of the row/col labels - longer labels mean more space given
     // get row col data
-    var col_nodes = network_data.col_nodes;
-    var row_nodes = network_data.row_nodes;
 
     params.network_data.row_nodes_names = _.pluck(row_nodes, 'name');
     params.network_data.col_nodes_names = _.pluck(col_nodes, 'name');
@@ -357,10 +376,9 @@ function VizParams(config){
 
     // add names and instantaneous positions to links 
     _.each(params.network_data.links, function(d){
-
-      d.name = row_nodes[d.source].name + '_' + col_nodes[d.target].name;
-      d.row_name = row_nodes[d.source].name;
-      d.col_name = col_nodes[d.target].name;
+      // d.name = row_nodes[d.source].name + '_' + col_nodes[d.target].name;
+      // d.row_name = row_nodes[d.source].name;
+      // d.col_name = col_nodes[d.target].name;
       d.x = params.matrix.x_scale(d.target);
       d.y = params.matrix.y_scale(d.source);
     });
@@ -378,7 +396,7 @@ function VizParams(config){
     // params.network_data.links = params.cf.dim_x.top(Infinity);
 
     // initialize matrix 
-    params.matrix.matrix = initialize_matrix(network_data);
+    params.matrix.matrix = initialize_matrix(params.network_data);
 
     // visualization parameters
     //////////////////////////////
@@ -429,7 +447,7 @@ function VizParams(config){
     params.viz.real_zoom = params.norm_label.width.col / (params.matrix.x_scale.rangeBand()/2);
 
     // set opacity scale
-    params.matrix.max_link = _.max(network_data.links, function(d) {
+    params.matrix.max_link = _.max(params.network_data.links, function(d) {
       return Math.abs(d.value);
     }).value;
 
@@ -465,14 +483,14 @@ function VizParams(config){
     // tile type: simple or group
     // rect is the default faster and simpler option
     // group is the optional slower and more complex option that is activated with: highlighting or split tiles
-    if (Utils.has(network_data.links[0], 'value_up') || Utils.has(network_data.links[0], 'value_dn')) {
+    if (Utils.has(params.network_data.links[0], 'value_up') || Utils.has(params.network_data.links[0], 'value_dn')) {
       params.matrix.tile_type = 'updn';
     } else {
       params.matrix.tile_type = 'simple';
     }
 
     // check if rects should be highlighted
-    if (Utils.has(network_data.links[0], 'highlight')) {
+    if (Utils.has(params.network_data.links[0], 'highlight')) {
       params.matrix.highlight = 1;
     } else {
       params.matrix.highlight = 0;

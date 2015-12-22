@@ -53,7 +53,8 @@ function Config(args) {
     force_square:0,
     tile_click_hlight:false,
     super_label_scale: 1,
-    make_tile_tooltip:function(d){return d.info;}
+    make_tile_tooltip:function(d){return d.info;},
+    ini_view:null 
   };
 
   // Mixin defaults with user-defined arguments.
@@ -68,6 +69,16 @@ function Config(args) {
   // save network_data to config
   // extend does not properly pass network_data
   config.network_data = args.network_data;
+
+  var col_nodes = config.network_data.col_nodes;
+  var row_nodes = config.network_data.row_nodes;
+
+  // add names and instantaneous positions to links 
+  _.each(config.network_data.links, function(d){
+    d.name = row_nodes[d.source].name + '_' + col_nodes[d.target].name;
+    d.row_name = row_nodes[d.source].name;
+    d.col_name = col_nodes[d.target].name;
+  });  
 
   _.each(config.network_data.row_nodes, function(d){
     d.name = d.name.replace(/_/g, ' ');

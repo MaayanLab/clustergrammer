@@ -90,7 +90,8 @@ function Config(args) {
     force_square:0,
     tile_click_hlight:false,
     super_label_scale: 1,
-    make_tile_tooltip:function(d){return d.info;}
+    make_tile_tooltip:function(d){return d.info;},
+    ini_view:null 
   };
 
   // Mixin defaults with user-defined arguments.
@@ -105,6 +106,16 @@ function Config(args) {
   // save network_data to config
   // extend does not properly pass network_data
   config.network_data = args.network_data;
+
+  var col_nodes = config.network_data.col_nodes;
+  var row_nodes = config.network_data.row_nodes;
+
+  // add names and instantaneous positions to links 
+  _.each(config.network_data.links, function(d){
+    d.name = row_nodes[d.source].name + '_' + col_nodes[d.target].name;
+    d.row_name = row_nodes[d.source].name;
+    d.col_name = col_nodes[d.target].name;
+  });  
 
   _.each(config.network_data.row_nodes, function(d){
     d.name = d.name.replace(/_/g, ' ');
@@ -1306,8 +1317,26 @@ function VizParams(config){
     // initialize params object from config
     var params = config;
 
-    // // save a backup of the config object in params 
-    // params.config = config;
+    // // deep copy 
+    // params = jQuery.extend(true, {}, config)
+
+    // // shallow copy 
+    // var params = jQuery.extend({}, config)
+
+    // console.log('in VizParams')
+    // console.log(config.network_data.row_nodes.length)
+
+    // run initial filtering if necessary 
+    if (_.isNull(params.ini_view) === false){
+      params.network_data = filter_network_data(params.network_data, params.ini_view);
+      // remove ini_view 
+      params.ini_view = null;
+      
+      console.log('\n-----------------set ini view\n--------------------------') 
+    }
+
+    console.log('after filter')
+    console.log(config.network_data.row_nodes.length)
 
     // Label Paramsters
     params.labels = {};
@@ -1386,10 +1415,13 @@ function VizParams(config){
     }
     params.viz.expand_button = config.expand_button;
 
-    // pass network_data to params
-    params.network_data = config.network_data;
+    // // pass network_data to params
+    // params.network_data = config.network_data;
 
-    var network_data = params.network_data;
+    var col_nodes = params.network_data.col_nodes;
+    var row_nodes = params.network_data.row_nodes;
+
+    // var network_data = params.network_data;
 
     // resize based on parent div
     parent_div_size_pos(params);
@@ -1404,8 +1436,6 @@ function VizParams(config){
     // Variable Label Widths
     // based on the length of the row/col labels - longer labels mean more space given
     // get row col data
-    var col_nodes = network_data.col_nodes;
-    var row_nodes = network_data.row_nodes;
 
     params.network_data.row_nodes_names = _.pluck(row_nodes, 'name');
     params.network_data.col_nodes_names = _.pluck(col_nodes, 'name');
@@ -1653,10 +1683,9 @@ function VizParams(config){
 
     // add names and instantaneous positions to links 
     _.each(params.network_data.links, function(d){
-
-      d.name = row_nodes[d.source].name + '_' + col_nodes[d.target].name;
-      d.row_name = row_nodes[d.source].name;
-      d.col_name = col_nodes[d.target].name;
+      // d.name = row_nodes[d.source].name + '_' + col_nodes[d.target].name;
+      // d.row_name = row_nodes[d.source].name;
+      // d.col_name = col_nodes[d.target].name;
       d.x = params.matrix.x_scale(d.target);
       d.y = params.matrix.y_scale(d.source);
     });
@@ -1674,7 +1703,7 @@ function VizParams(config){
     // params.network_data.links = params.cf.dim_x.top(Infinity);
 
     // initialize matrix 
-    params.matrix.matrix = initialize_matrix(network_data);
+    params.matrix.matrix = initialize_matrix(params.network_data);
 
     // visualization parameters
     //////////////////////////////
@@ -1725,7 +1754,7 @@ function VizParams(config){
     params.viz.real_zoom = params.norm_label.width.col / (params.matrix.x_scale.rangeBand()/2);
 
     // set opacity scale
-    params.matrix.max_link = _.max(network_data.links, function(d) {
+    params.matrix.max_link = _.max(params.network_data.links, function(d) {
       return Math.abs(d.value);
     }).value;
 
@@ -1761,14 +1790,14 @@ function VizParams(config){
     // tile type: simple or group
     // rect is the default faster and simpler option
     // group is the optional slower and more complex option that is activated with: highlighting or split tiles
-    if (Utils.has(network_data.links[0], 'value_up') || Utils.has(network_data.links[0], 'value_dn')) {
+    if (Utils.has(params.network_data.links[0], 'value_up') || Utils.has(params.network_data.links[0], 'value_dn')) {
       params.matrix.tile_type = 'updn';
     } else {
       params.matrix.tile_type = 'simple';
     }
 
     // check if rects should be highlighted
-    if (Utils.has(network_data.links[0], 'highlight')) {
+    if (Utils.has(params.network_data.links[0], 'highlight')) {
       params.matrix.highlight = 1;
     } else {
       params.matrix.highlight = 0;
@@ -4523,8 +4552,14 @@ function update_network(change_view){
   // get copy of old params 
   var old_params = this.params;
 
-  // make new_network_data 
+  console.log('checking immutable config')
+  console.log(this.config.network_data.row_nodes.length)
+
+  // make new_network_data using immutable copy of network_data
   var new_network_data = filter_network_data(this.config.network_data, change_view); 
+
+  console.log('checking new_network_data')
+  console.log(new_network_data.row_nodes.length)
 
   // make Deep copy of this.config object 
   var new_config = jQuery.extend(true, {}, this.config);
@@ -4535,9 +4570,14 @@ function update_network(change_view){
   new_config.inst_order = old_params.viz.inst_order;
   // never switch to expand when updating the matrix 
   new_config.ini_expand = false;
+  // ensure that ini_view is not set 
+  new_config.ini_view = null;
 
   // make new params 
   var params = VizParams(new_config);
+  console.log('\nchecking before eeu')
+  console.log(old_params.network_data.row_nodes.length)
+  console.log(params.network_data.row_nodes.length)
   var delays = define_enter_exit_delays(old_params, params);
 
   // ordering - necessary for reordering the function called on button click 
@@ -7003,8 +7043,18 @@ function downsample(params, min_rect_height){
 // consume and validate user arguments, produce configuration object 
 var config = Config(args);
 
+console.log(config.network_data.row_nodes.length)
+
+// deepcopy
+var config_copy = jQuery.extend(true, {}, config);
+
 // make visualization parameters using configuration object 
-var params = VizParams(config);
+var params = VizParams(config_copy);
+
+console.log('config')
+console.log(config.network_data.row_nodes.length)
+console.log('config_copy')
+console.log(config_copy.network_data.row_nodes.length)
 
 // make visualization using parameters  
 var viz = Viz(params);
@@ -7013,6 +7063,8 @@ var viz = Viz(params);
 /* API
  * ----------------------------------------------------------------------- */
 
+console.log('checking before close  ')
+console.log(config.network_data.row_nodes.length)
 return {
     find_gene: viz.search.find_entities,
     get_genes: viz.search.get_entities,

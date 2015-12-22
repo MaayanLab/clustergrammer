@@ -4,7 +4,7 @@ def main():
   import requests
 
 
-  gmt = 'KEA_2015'
+  gmt = 'ChEA_2015'
   userListId = 939279
 
   # define the get url 

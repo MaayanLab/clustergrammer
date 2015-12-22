@@ -142,7 +142,7 @@ function make_clust(inst_network){
           'super_label_scale':1.25,
           // 'transpose':true,
           // 'ini_expand':true,
-          // 'col_label_scale':0.8,
+          'col_label_scale':1.5,
           // 'row_label_scale':0.8
           // 'force_square':1
           // 'opacity_scale':'log',
@@ -154,6 +154,7 @@ function make_clust(inst_network){
           'click_group': click_group_callback,
           // 'resize':false
           // 'order':'rank'
+          'ini_view':{'filter_row_sum':0.9}
         };
 
         d3.select('#wait_message').style('display','none');
@@ -332,8 +333,8 @@ function make_clust(inst_network){
 
 // choose example here
 // make_clust('default_example.json');
-// make_clust('mult_view.json');
-make_clust('enr_clust_example.json');
+make_clust('mult_view.json');
+// make_clust('enr_clust_example.json');
 // make_clust('enr_vect_example.json');
 // make_clust('updn_example.json');
 // make_clust('narrow_example.json');
