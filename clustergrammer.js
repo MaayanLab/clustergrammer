@@ -1323,20 +1323,12 @@ function VizParams(config){
     // // shallow copy 
     // var params = jQuery.extend({}, config)
 
-    // console.log('in VizParams')
-    // console.log(config.network_data.row_nodes.length)
-
     // run initial filtering if necessary 
     if (_.isNull(params.ini_view) === false){
       params.network_data = filter_network_data(params.network_data, params.ini_view);
       // remove ini_view 
       params.ini_view = null;
-      
-      console.log('\n-----------------set ini view\n--------------------------') 
     }
-
-    console.log('after filter')
-    console.log(config.network_data.row_nodes.length)
 
     // Label Paramsters
     params.labels = {};
@@ -4552,14 +4544,8 @@ function update_network(change_view){
   // get copy of old params 
   var old_params = this.params;
 
-  console.log('checking immutable config')
-  console.log(this.config.network_data.row_nodes.length)
-
   // make new_network_data using immutable copy of network_data
   var new_network_data = filter_network_data(this.config.network_data, change_view); 
-
-  console.log('checking new_network_data')
-  console.log(new_network_data.row_nodes.length)
 
   // make Deep copy of this.config object 
   var new_config = jQuery.extend(true, {}, this.config);
@@ -4575,9 +4561,6 @@ function update_network(change_view){
 
   // make new params 
   var params = VizParams(new_config);
-  console.log('\nchecking before eeu')
-  console.log(old_params.network_data.row_nodes.length)
-  console.log(params.network_data.row_nodes.length)
   var delays = define_enter_exit_delays(old_params, params);
 
   // ordering - necessary for reordering the function called on button click 
@@ -7043,18 +7026,11 @@ function downsample(params, min_rect_height){
 // consume and validate user arguments, produce configuration object 
 var config = Config(args);
 
-console.log(config.network_data.row_nodes.length)
-
 // deepcopy
 var config_copy = jQuery.extend(true, {}, config);
 
 // make visualization parameters using configuration object 
 var params = VizParams(config_copy);
-
-console.log('config')
-console.log(config.network_data.row_nodes.length)
-console.log('config_copy')
-console.log(config_copy.network_data.row_nodes.length)
 
 // make visualization using parameters  
 var viz = Viz(params);
@@ -7063,8 +7039,6 @@ var viz = Viz(params);
 /* API
  * ----------------------------------------------------------------------- */
 
-console.log('checking before close  ')
-console.log(config.network_data.row_nodes.length)
 return {
     find_gene: viz.search.find_entities,
     get_genes: viz.search.get_entities,

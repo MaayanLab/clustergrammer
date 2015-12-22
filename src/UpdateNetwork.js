@@ -25,14 +25,8 @@ function update_network(change_view){
   // get copy of old params 
   var old_params = this.params;
 
-  console.log('checking immutable config')
-  console.log(this.config.network_data.row_nodes.length)
-
   // make new_network_data using immutable copy of network_data
   var new_network_data = filter_network_data(this.config.network_data, change_view); 
-
-  console.log('checking new_network_data')
-  console.log(new_network_data.row_nodes.length)
 
   // make Deep copy of this.config object 
   var new_config = jQuery.extend(true, {}, this.config);
@@ -48,9 +42,6 @@ function update_network(change_view){
 
   // make new params 
   var params = VizParams(new_config);
-  console.log('\nchecking before eeu')
-  console.log(old_params.network_data.row_nodes.length)
-  console.log(params.network_data.row_nodes.length)
   var delays = define_enter_exit_delays(old_params, params);
 
   // ordering - necessary for reordering the function called on button click 

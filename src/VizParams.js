@@ -16,20 +16,12 @@ function VizParams(config){
     // // shallow copy 
     // var params = jQuery.extend({}, config)
 
-    // console.log('in VizParams')
-    // console.log(config.network_data.row_nodes.length)
-
     // run initial filtering if necessary 
     if (_.isNull(params.ini_view) === false){
       params.network_data = filter_network_data(params.network_data, params.ini_view);
       // remove ini_view 
       params.ini_view = null;
-      
-      console.log('\n-----------------set ini view\n--------------------------') 
     }
-
-    console.log('after filter')
-    console.log(config.network_data.row_nodes.length)
 
     // Label Paramsters
     params.labels = {};

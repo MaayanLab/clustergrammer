@@ -154,7 +154,7 @@ function make_clust(inst_network){
           'click_group': click_group_callback,
           // 'resize':false
           // 'order':'rank'
-          'ini_view':{'filter_row_sum':0.9}
+          // 'ini_view':{'filter_row_sum':0.7}
         };
 
         d3.select('#wait_message').style('display','none');

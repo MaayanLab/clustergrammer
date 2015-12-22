@@ -2,8 +2,6 @@
 /* API
  * ----------------------------------------------------------------------- */
 
-console.log('checking before close  ')
-console.log(config.network_data.row_nodes.length)
 return {
     find_gene: viz.search.find_entities,
     get_genes: viz.search.get_entities,
