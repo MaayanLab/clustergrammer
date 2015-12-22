@@ -5405,7 +5405,7 @@ function filter_network_data(orig_network_data, change_view){
 
   console.log(change_view)
 
-  // get view 
+  // Get Row Filtering View 
   ///////////////////////////////////////////////////////////////
   if (_.has(change_view,'filter_row')){
     // failsafe if there is only row+col filtering from front-end

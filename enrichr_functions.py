@@ -202,8 +202,8 @@ def enrichr_clust_from_response(response_list):
   net.filter_network_thresh(threshold, num_thresh)
 
   # make multiple view 
-  # net.cluster_row_and_col(dist_type='cos',run_clustering=True,dendro=False)
-  net.make_mult_views(dist_type='cos',filter_row=['sum'],dendro=False)
+  net.cluster_row_and_col(dist_type='cos',run_clustering=True,dendro=False)
+  # net.make_mult_views(dist_type='cos',filter_row=['sum'],dendro=False)
 
   # keep the original column order in rank 
   for inst_col in net.viz['col_nodes']:

@@ -17,9 +17,7 @@ function play_demo(){
       var inst_time = 0;
       var prev_duration = 0;
 
-      if (cgm.params.viz.expand === false){
-        console.log('not expanded yet')
-      }
+
 
       setTimeout( play_intro(), inst_time);
       prev_duration = 9*sec_scale;
