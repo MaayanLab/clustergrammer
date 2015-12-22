@@ -1314,6 +1314,52 @@ class Network(object):
     self.dat['nodes']['row'] = df.index.tolist()
     self.dat['nodes']['col'] = df.columns.tolist()
 
+  def dat_to_df(self):
+    import numpy as np
+    import pandas as pd
+
+    df = pd.DataFrame(data = self.dat['mat'], columns=self.dat['nodes']['col'], index=self.dat['nodes']['row'])
+
+    return df 
+
+  def fast_mult_views(self, dist_type='cos', run_clustering=True, dendro=True):
+    import numpy as np
+    import pandas as pd
+    ''' 
+    This will use Pandas to calculte multiple views of a clustergram
+    For now, it will disregard link information 
+    '''
+
+    from clustergrammer import Network
+    from copy import deepcopy
+
+    # calculate initial view 
+    self.cluster_row_and_col('cos',run_clustering=run_clustering, dendro=dendro)
+
+    # filter betwen 0% and 90% of some threshoold 
+    all_filt = range(10)
+    all_filt = [i/float(10) for i in all_filt]
+
+    # row filtering values 
+    mat = self.dat['mat']
+    mat_abs = abs(mat)
+    sum_row = np.sum(mat_abs, axis=1)
+    max_sum = max(sum_row)
+
+    for inst_filt in all_filt:
+      
+      cutoff = inst_filt * max_sum
+
+      # initialize new dataframe 
+      df = self.dat_to_df()
+
+      df = self.df_filter_row(df, cutoff)
+
+      print('\nmatrix size')
+      print(df.shape)
+
+
+
   def make_mult_views(self, dist_type='cos',filter_row=['value'], filter_col=False, run_clustering=True, dendro=True):
     ''' 
     This will calculate multiple views of a clustergram by filtering the 
@@ -1354,7 +1400,7 @@ class Network(object):
           # filter columns since some columns might be all zero 
           net.filter_col_thresh(0.001,1)
 
-          # try to filter - will not work if there is one row
+          # try to cluster - will not work if there is one row
           try:
 
             # cluster 
@@ -1390,7 +1436,7 @@ class Network(object):
         # filter cols 
         net.filter_col_thresh(filt_value, inst_meet)
 
-        # try to filter - will not work if there is one col
+        # try to cluster - will not work if there is one col
         try:
 
           # cluster 
@@ -1413,6 +1459,93 @@ class Network(object):
     # add views to viz
     self.viz['views'] = all_views
 
+  @staticmethod
+  def df_filter_row(df, threshold, take_abs=True):
+    ''' filter rows in matrix at some threshold
+    and remove columns that have all zero values '''
+
+    import pandas as pd 
+    from copy import deepcopy 
+
+    # take absolute value if necessary 
+    if take_abs == True:
+      df_copy = deepcopy(df.abs())
+    else:
+      df_copy = deepcopy(df)
+
+    # filter rows 
+    df_copy = df_copy[df_copy.sum(axis=1) > threshold]
+
+    # filter columns to remove columns with all zero values 
+    # transpose 
+    df_copy = df_copy.transpose()
+    df_copy = df_copy[df_copy.sum(axis=1) > 0]
+    # transpose back 
+    df_copy = df_copy.transpose()
+
+    # get df ready for export 
+    if take_abs == True:
+
+      inst_rows = df_copy.index.tolist()
+      inst_cols = df_copy.columns.tolist()
+
+      # filter columns 
+      df = df[inst_cols]
+
+      # filter rows 
+      df = df.transpose()
+      df = df[inst_rows]
+      df = df.transpose()
+
+    else:
+      # just transfer the copied data 
+      df = df_copy
+
+    return df   
+
+  @staticmethod
+  def df_filter_col(df, threshold, take_abs=True):
+    ''' filter columns in matrix at some threshold
+    and remove rows that have all zero values '''
+
+    import pandas 
+    from copy import deepcopy 
+
+    # take absolute value if necessary 
+    if take_abs == True:
+      df_copy = deepcopy(df.abs())
+    else:
+      df_copy = deepcopy(df)
+
+    # filter columns to remove columns with all zero values 
+    # transpose 
+    df_copy = df_copy.transpose()
+    df_copy = df_copy[df_copy.sum(axis=1) > threshold]
+    # transpose back 
+    df_copy = df_copy.transpose()
+
+    # filter rows 
+    df_copy = df_copy[df_copy.sum(axis=1) > 0]
+
+    # get df ready for export 
+    if take_abs == True:
+
+      inst_rows = df_copy.index.tolist()
+      inst_cols = df_copy.columns.tolist()
+
+      # filter columns 
+      df = df[inst_cols]
+
+      # filter rows 
+      df = df.transpose()
+      df = df[inst_rows]
+      df = df.transpose()
+
+    else:
+      # just transfer the copied data 
+      df = df_copy
+
+    return df   
 
   @staticmethod
   def load_gmt(filename):

@@ -154,6 +154,8 @@ function make_clust(inst_network){
           'click_group': click_group_callback,
           // 'resize':false
           // 'order':'rank'
+          'col_order':'rank',
+          'row_order':'clust'
           // 'ini_view':{'filter_row_sum':0.7}
         };
 

@@ -3,7 +3,6 @@ def main():
   import json
   import requests
 
-
   gmt = 'ChEA_2015'
   userListId = 939279
 

@@ -120,7 +120,7 @@ function Config(args) {
     config.super.col = args.col_label;
   }
 
-  // initialize cluster ordering
+  // initialize cluster ordering - both rows and columns 
   config.inst_order = {};
   if (!Utils.is_undefined(args.order) && is_supported_order(args.order)) {
     config.inst_order.row = args.order;
@@ -128,6 +128,18 @@ function Config(args) {
   } else {
     config.inst_order.row = 'clust';
     config.inst_order.col = 'clust';
+  }
+
+  // set row or column order directly -- note that row/col are swapped 
+  // !! need to swap row/col orderings 
+  if (!Utils.is_undefined(args.row_order) && is_supported_order(args.row_order)) {
+    // !! row and col orderings are swapped, need to fix 
+    config.inst_order.col = args.row_order;
+  }
+
+  if (!Utils.is_undefined(args.col_order) && is_supported_order(args.col_order)) {
+    // !! row and col orderings are swapped, need to fix 
+    config.inst_order.row = args.col_order;
   }
 
   config.show_dendrogram = Utils.has(args.network_data.row_nodes[0], 'group') || Utils.has(args.network_data.col_nodes[0], 'group');
