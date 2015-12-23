@@ -1333,8 +1333,27 @@ class Network(object):
     from clustergrammer import Network
     from copy import deepcopy
 
-    # calculate initial view 
+    # get dataframe of network and remove rows/cols with all zero values 
+    df = self.dat_to_df()
+    df = self.df_filter_row(df, 0)
+    df = self.df_filter_col(df, 0)
+
+    # calculate initial view with no row filtering
+    #################################################
+    # cluster initial view 
     self.cluster_row_and_col('cos',run_clustering=run_clustering, dendro=dendro)
+
+    # set up views 
+    all_views = []
+
+    inst_view = {}
+    inst_view['filter_row_sum'] = 0
+    inst_view['dist'] = 'cos'
+    inst_view['nodes'] = {}
+    inst_view['nodes']['row_nodes'] = self.viz['row_nodes']
+    inst_view['nodes']['col_nodes'] = self.viz['col_nodes']
+
+    all_views.append(inst_view)
 
     # filter betwen 0% and 90% of some threshoold 
     all_filt = range(10)
@@ -1348,16 +1367,48 @@ class Network(object):
 
     for inst_filt in all_filt:
       
-      cutoff = inst_filt * max_sum
+      # skip zero filtering 
+      if inst_filt > 0:
 
-      # initialize new dataframe 
-      df = self.dat_to_df()
+        cutoff = inst_filt * max_sum
 
-      df = self.df_filter_row(df, cutoff)
+        # filter row 
+        df = self.df_filter_row(df, cutoff)
 
-      print('\nmatrix size')
-      print(df.shape)
+        print('filtering at cutoff ' + str(inst_filt))
+        print('matrix size')
+        print(df.shape)
+        print('\n')
 
+        # ini net 
+        net = deepcopy(Network())
+
+        # transfer to dat 
+        net.df_to_dat(df)
+
+        # # try to cluster 
+        # try: 
+
+        # cluster
+        net.cluster_row_and_col('cos')
+
+        # add view 
+        inst_view = {}
+        inst_view['filter_row_sum'] = inst_filt
+        inst_view['dist'] = 'cos'
+        inst_view['nodes'] = {}
+        inst_view['nodes']['row_nodes'] = net.viz['row_nodes']
+        inst_view['nodes']['col_nodes'] = net.viz['col_nodes']
+
+        all_views.append(inst_view)          
+
+        # print(all_views)
+
+        # except:
+        #   print('did not cluster filtered view')
+
+    # add views to viz
+    self.viz['views'] = all_views
 
 
   def make_mult_views(self, dist_type='cos',filter_row=['value'], filter_col=False, run_clustering=True, dendro=True):

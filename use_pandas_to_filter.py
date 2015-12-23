@@ -1,4 +1,7 @@
 def main():
+
+  import time
+  start_time = time.time()
   import pandas as pd
 
   # import network class from Network.py
@@ -6,18 +9,21 @@ def main():
 
   net = Network()
 
-  net.load_tsv_to_net('txt/example_tsv_network.txt')
+  # load data to dataframe 
+  net.load_tsv_to_net('txt/mat_1mb.txt')
 
-  df = net.dat_to_df()
+  # perform fast row filtering 
+  net.fast_mult_views()
 
-  df_filt = net.df_filter_col(df,40)
+  # print(net.viz['views'])
 
-  print(df_filt.shape)
+  net.write_json_to_file('viz', 'json/mult_view_fast.json', 'indent')
 
-  # load filtered data back to network 
-  net.df_to_dat(df)
+  # your code
+  elapsed_time = time.time() - start_time
 
-  # net.fast_mult_views()
+  print('\n\n\nelapsed time')
+  print(elapsed_time)
 
   # print(df)
 

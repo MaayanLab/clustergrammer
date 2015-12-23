@@ -154,8 +154,8 @@ function make_clust(inst_network){
           'click_group': click_group_callback,
           // 'resize':false
           // 'order':'rank'
-          'col_order':'rank',
-          'row_order':'clust'
+          // 'col_order':'rank',
+          // 'row_order':'clust'
           // 'ini_view':{'filter_row_sum':0.7}
         };
 
@@ -335,7 +335,8 @@ function make_clust(inst_network){
 
 // choose example here
 // make_clust('default_example.json');
-make_clust('mult_view.json');
+// make_clust('mult_view.json');
+make_clust('mult_view_fast.json');
 // make_clust('enr_clust_example.json');
 // make_clust('enr_vect_example.json');
 // make_clust('updn_example.json');

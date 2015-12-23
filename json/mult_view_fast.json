@@ -67131,7 +67131,7 @@
         ]
       }, 
       "dist": "cos", 
-      "filter_row_sum": 0.0
+      "filter_row_sum": 0
     }, 
     {
       "nodes": {
