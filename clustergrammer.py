@@ -1399,26 +1399,24 @@ class Network(object):
         # transfer to dat 
         net.df_to_dat(df)
 
-        # # try to cluster 
-        # try: 
+        # try to cluster 
+        try: 
 
-        # cluster
-        net.cluster_row_and_col('cos')
+          # cluster
+          net.cluster_row_and_col('cos')
 
-        # add view 
-        inst_view = {}
-        inst_view['filter_row_sum'] = inst_filt
-        inst_view['dist'] = 'cos'
-        inst_view['nodes'] = {}
-        inst_view['nodes']['row_nodes'] = net.viz['row_nodes']
-        inst_view['nodes']['col_nodes'] = net.viz['col_nodes']
+          # add view 
+          inst_view = {}
+          inst_view['filter_row_sum'] = inst_filt
+          inst_view['dist'] = 'cos'
+          inst_view['nodes'] = {}
+          inst_view['nodes']['row_nodes'] = net.viz['row_nodes']
+          inst_view['nodes']['col_nodes'] = net.viz['col_nodes']
 
-        all_views.append(inst_view)          
+          all_views.append(inst_view)          
 
-        # print(all_views)
-
-        # except:
-        #   print('did not cluster filtered view')
+        except:
+          print('did not cluster filtered view')
 
     # add views to viz
     self.viz['views'] = all_views
