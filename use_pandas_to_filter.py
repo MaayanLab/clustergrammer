@@ -15,8 +15,6 @@ def main():
   # perform fast row filtering 
   net.fast_mult_views()
 
-  # print(net.viz['views'])
-
   net.write_json_to_file('viz', 'json/mult_view_fast.json', 'indent')
 
   # your code

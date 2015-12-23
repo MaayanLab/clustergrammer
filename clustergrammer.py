@@ -49,7 +49,8 @@ class Network(object):
   def pandas_load_tsv_to_net(self, filename):
     import pandas as pd 
 
-    tmp_df = pd.read_table(filename, index_col=0)
+    tmp_df = {}
+    tmp_df['mat'] = pd.read_table(filename, index_col=0)
 
     # save to self
     tmp_dat = self.df_to_dat(tmp_df)
@@ -1310,15 +1311,27 @@ class Network(object):
     import numpy as np 
     import pandas as pd 
 
-    self.dat['mat'] = df.values
-    self.dat['nodes']['row'] = df.index.tolist()
-    self.dat['nodes']['col'] = df.columns.tolist()
+    self.dat['mat'] = df['mat'].values
+    self.dat['nodes']['row'] = df['mat'].index.tolist()
+    self.dat['nodes']['col'] = df['mat'].columns.tolist()
+
+    if 'mat_up' in df:
+      self.dat['mat_up'] = df['mat_up'].values
+      self.dat['mat_dn'] = df['mat_dn'].values
 
   def dat_to_df(self):
     import numpy as np
     import pandas as pd
 
-    df = pd.DataFrame(data = self.dat['mat'], columns=self.dat['nodes']['col'], index=self.dat['nodes']['row'])
+    df = {}
+  
+    # always return 'mat' dataframe     
+    df['mat'] = pd.DataFrame(data = self.dat['mat'], columns=self.dat['nodes']['col'], index=self.dat['nodes']['row'])
+
+    if 'mat_up' in self.dat:
+
+      df['mat_up'] = pd.DataFrame(data = self.dat['mat_up'], columns=self.dat['nodes']['col'], index=self.dat['nodes']['row'])
+      df['mat_dn'] = pd.DataFrame(data = self.dat['mat_dn'], columns=self.dat['nodes']['col'], index=self.dat['nodes']['row'])
 
     return df 
 
@@ -1333,7 +1346,7 @@ class Network(object):
     from clustergrammer import Network
     from copy import deepcopy
 
-    # get dataframe of network and remove rows/cols with all zero values 
+    # get dataframe dictionary of network and remove rows/cols with all zero values 
     df = self.dat_to_df()
     df = self.df_filter_row(df, 0)
     df = self.df_filter_col(df, 0)
@@ -1377,7 +1390,7 @@ class Network(object):
 
         print('filtering at cutoff ' + str(inst_filt))
         print('matrix size')
-        print(df.shape)
+        print(df['mat'].shape)
         print('\n')
 
         # ini net 
@@ -1517,12 +1530,14 @@ class Network(object):
 
     import pandas as pd 
     from copy import deepcopy 
+    from clustergrammer import Network
+    net = Network()
 
     # take absolute value if necessary 
     if take_abs == True:
-      df_copy = deepcopy(df.abs())
+      df_copy = deepcopy(df['mat'].abs())
     else:
-      df_copy = deepcopy(df)
+      df_copy = deepcopy(df['mat'])
 
     # filter rows 
     df_copy = df_copy[df_copy.sum(axis=1) > threshold]
@@ -1537,20 +1552,28 @@ class Network(object):
     # get df ready for export 
     if take_abs == True:
 
+      # grab remaining rows and cols 
       inst_rows = df_copy.index.tolist()
       inst_cols = df_copy.columns.tolist()
 
-      # filter columns 
-      df = df[inst_cols]
+      df['mat'] = net.grab_df_subset(df['mat'], inst_rows, inst_cols)
 
-      # filter rows 
-      df = df.transpose()
-      df = df[inst_rows]
-      df = df.transpose()
+      if 'mat_up' in df:
+        # grab up and down data 
+        df['mat_up'] = net.grab_df_subset(df['mat_up'], inst_rows, inst_cols)
+        df['mat_dn'] = net.grab_df_subset(df['mat_dn'], inst_rows, inst_cols)
 
     else:
-      # just transfer the copied data 
-      df = df_copy
+      # just transfer the copied data for mat 
+      df['mat'] = df_copy
+
+      if 'mat_up' in df:
+        # grab remaining rows and cols 
+        inst_rows = df_copy.index.tolist()
+        inst_cols = df_copy.columns.tolist()
+        # grab up and down data 
+        df['mat_up'] = net.grab_df_subset(df['mat_up'], inst_rows, inst_cols)
+        df['mat_dn'] = net.grab_df_subset(df['mat_dn'], inst_rows, inst_cols)
 
     return df   
 
@@ -1561,12 +1584,14 @@ class Network(object):
 
     import pandas 
     from copy import deepcopy 
+    from clustergrammer import Network
+    net = Network()
 
     # take absolute value if necessary 
     if take_abs == True:
-      df_copy = deepcopy(df.abs())
+      df_copy = deepcopy(df['mat'].abs())
     else:
-      df_copy = deepcopy(df)
+      df_copy = deepcopy(df['mat'])
 
     # filter columns to remove columns with all zero values 
     # transpose 
@@ -1584,19 +1609,25 @@ class Network(object):
       inst_rows = df_copy.index.tolist()
       inst_cols = df_copy.columns.tolist()
 
-      # filter columns 
-      df = df[inst_cols]
-
-      # filter rows 
-      df = df.transpose()
-      df = df[inst_rows]
-      df = df.transpose()
+      df['mat'] = net.grab_df_subset(df['mat'], inst_rows, inst_cols)
 
     else:
       # just transfer the copied data 
-      df = df_copy
+      df['mat'] = df_copy
 
     return df   
+
+  @staticmethod
+  def grab_df_subset(df, inst_rows, inst_cols):
+
+    # filter columns 
+    df = df[inst_cols]
+    # filter rows 
+    df = df.transpose()
+    df = df[inst_rows]
+    df = df.transpose()
+
+    return df
 
   @staticmethod
   def load_gmt(filename):
