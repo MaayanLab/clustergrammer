@@ -234,14 +234,8 @@ function enter_exit_update(params, network_data, reorder, delays){
   // enter exit update tiles  
   function eeu_existing_row(ini_inp_row_data){
 
-    // console.log(ini_inp_row_data.row_data)
 
     var inp_row_data = ini_inp_row_data.row_data;
-
-    // _.each(inp_row_data, function(d){
-    //   console.log(d.name);
-    // })
-
 
     // remove zero values from 
     var row_values = _.filter(inp_row_data, function(num){
@@ -251,7 +245,10 @@ function enter_exit_update(params, network_data, reorder, delays){
     // bind data to tiles 
     var cur_row_tiles = d3.select(this)
       .selectAll('.tile')
-      .data(row_values, function(d){return d.col_name;});
+      .data(row_values, function(d){
+        // console.log(d.col_name);
+        return d.col_name;
+      });
 
     ///////////////////////////
     // Exit 
@@ -536,9 +533,16 @@ function enter_exit_update(params, network_data, reorder, delays){
       .attr('fill-opacity',0)
       .attr('transform', function(d){
         var x_pos = params.matrix.x_scale(d.pos_x) + 0.5*params.viz.border_width;
-        console.log(d.pos_x)
         var y_pos = 0.5*params.viz.border_width/params.viz.zoom_switch;
-        console.log(String(x_pos)+' '+String(y_pos))
+
+        // if (isNaN(x_pos)){
+        //   console.log('\n')
+        //   console.log(d.col_name)
+        //   console.log(d.pos_x)
+        //   console.log(x_pos)
+        //   console.log('\n')
+        // }
+
         return 'translate('+x_pos+','+y_pos+')';
       });
 
