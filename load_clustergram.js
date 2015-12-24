@@ -142,7 +142,7 @@ function make_clust(inst_network){
           'super_label_scale':1.25,
           // 'transpose':true,
           // 'ini_expand':true,
-          'col_label_scale':1.5,
+          // 'col_label_scale':1.5,
           // 'row_label_scale':0.8
           // 'force_square':1
           // 'opacity_scale':'log',
@@ -335,13 +335,12 @@ function make_clust(inst_network){
 
 // choose example here
 // make_clust('default_example.json');
-make_clust('mult_view.json');
-// make_clust('mult_view_fast.json');
+// make_clust('mult_view.json');
 // make_clust('enr_clust_example.json');
 // make_clust('updn_example.json');
 // make_clust('narrow_example.json');
 // make_clust('narrow_long_name.json');
 // make_clust('bar_example.json');
-// make_clust('kin_sub_example.json');
+make_clust('kin_sub_example.json');
 // make_clust('harmonogram_example.json');
 

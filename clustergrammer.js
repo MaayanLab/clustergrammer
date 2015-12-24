@@ -1459,6 +1459,7 @@ function VizParams(config){
 
     // the maximum number of characters in a label
     params.labels.max_label_char = 10;
+    // params.labels.max_label_char = 15;
 
     // define label scale parameters: the more characters in the longest name, the larger the margin
     var min_num_char = 5;
@@ -1477,8 +1478,8 @@ function VizParams(config){
 
     // define label scale
     ///////////////////////////
-    var min_label_width = 85;
-    var max_label_width = 85;
+    var min_label_width = 65;
+    var max_label_width = 115;
     var label_scale = d3.scale.linear()
       .domain([min_num_char, max_num_char])
       .range([min_label_width, max_label_width]).clamp('true');
@@ -1487,22 +1488,14 @@ function VizParams(config){
     params.norm_label = {};
     params.norm_label.width = {};
 
-    // screen_label_scale - small reduction
-    var screen_label_scale = d3.scale.linear()
-      .domain([500,1000])
-      .range([1.0,1.0])
-      .clamp(true);
-
     // Label Scale
     ///////////////////////
     // dependent on max char length or row/col labels, screensize,
-    // and user-defined factor
-    params.norm_label.width.row = 1.2*label_scale(row_max_char)
-      * screen_label_scale(params.viz.svg_dim.width)
+    // and user-defined factor: row_label_scale and col_label_scale
+    params.norm_label.width.row = label_scale(row_max_char)
       * params.row_label_scale;
 
     params.norm_label.width.col = label_scale(col_max_char)
-      * screen_label_scale(params.viz.svg_dim.height)
       * params.col_label_scale;
 
     // normal label margins

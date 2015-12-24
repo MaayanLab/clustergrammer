@@ -11,6 +11,7 @@ def main():
 
   # load data to dataframe 
   net.load_tsv_to_net('txt/example_tsv_network.txt')
+  # net.load_tsv_to_net('txt/mat_1mb.txt')
 
   # perform fast row filtering 
   net.fast_mult_views()
