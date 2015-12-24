@@ -66,7 +66,7 @@ function filter_network_data(orig_network_data, change_view){
       d.target = col_index;
       return d;
     }
-  })
+  });
 
   // set up new_network_data
   var new_network_data = {};

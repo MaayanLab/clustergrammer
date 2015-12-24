@@ -218,19 +218,22 @@ function Matrix(network_data, svg_elem, params) {
         return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
       })
       .on('mouseover', function(p) {
+
         // highlight row - set text to active if
         d3.selectAll('.row_label_text text')
           .classed('active', function(d) {
-            return p.row_name === d.name;
+            return p.row_name.replace(/_/g, ' ') === d.name;
           });
 
         d3.selectAll('.col_label_text text')
           .classed('active', function(d) {
             return p.col_name === d.name;
           });
+
         if (params.matrix.show_tile_tooltips){
           tip.show(p);
         }
+
       })
       .on('mouseout', function(d) {
         d3.selectAll('text').classed('active', false);
@@ -298,7 +301,7 @@ function Matrix(network_data, svg_elem, params) {
         // highlight row - set text to active if
         d3.selectAll('.row_label_text text')
           .classed('active', function(d) {
-            return p.row_name === d.name;
+            return p.row_name.replace(/_/g, ' ') === d.name;
           });
 
         d3.selectAll('.col_label_text text')
@@ -355,7 +358,7 @@ function Matrix(network_data, svg_elem, params) {
         // highlight row - set text to active if
         d3.selectAll('.row_label_text text')
           .classed('active', function(d) {
-            return p.row_name === d.name;
+            return p.row_name.replace(/_/g, ' ') === d.name;
           });
 
         d3.selectAll('.col_label_text text')

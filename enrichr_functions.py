@@ -26,7 +26,7 @@ def enrichr_post_request( input_genes, meta=''):
 
 # make the get request to enrichr using the requests library 
 # this is done after submitting post request with the input gene list 
-def enrichr_get_request( gmt, userListId ):
+def enrichr_get_request( gmt, userListId, max_num_term=50 ):
   import requests
   import json
 
@@ -44,25 +44,23 @@ def enrichr_get_request( gmt, userListId ):
 
   # wait until okay status code is returned 
   num_try = 0
-  print('\n\n\n\n\nuserListId: '+str(userListId))
+  print('\tEnrichr enrichment get req userListId: '+str(userListId))
   while inst_status_code == 400 and num_try < 100:
     num_try = num_try +1 
     try:
       # make the get request to get the enrichr results 
-      print('make-get-req-Enrichr')
 
       try:
         get_response = requests.get( get_url, params=params )
 
         # get status_code
         inst_status_code = get_response.status_code
-        print('inst_status_code: '+str(inst_status_code))
 
       except:
-        print('get request failed\n------------------------\n\n')
+        print('retry get request')
 
     except:
-      pass
+      print('get requests failed')
 
   # load as dictionary 
   resp_json = json.loads( get_response.text )
@@ -74,18 +72,9 @@ def enrichr_get_request( gmt, userListId ):
   response_list = resp_json[only_key]
 
   # transfer the response_list to the enr_dict 
-  max_num_term = 50
-  print('\n-------------------------\n')
-  print('\n-------------------------\n')
-  print('transferring results to enrichment dictionary ')
-  print('\n-------------------------\n')
-  print('\n-------------------------\n')
   enr = transfer_to_enr_dict( response_list, max_num_term )
 
   # return enrichment json and userListId
-  print('\n-------------------------\n')
-  print('returning enrichment results ')
-  print('\n-------------------------\n')
   return enr 
 
 # transfer the response_list to a list of dictionaries 
@@ -143,7 +132,7 @@ def enrichr_clust_from_response(response_list):
   import scipy
   import json 
 
-  print('\n\n\n\n\nenrichr_clust_from_response\n\n\n\n\n')
+  print('\nenrichr_clust_from_response\n')
 
   ini_enr = transfer_to_enr_dict( response_list )
 
@@ -202,8 +191,8 @@ def enrichr_clust_from_response(response_list):
   net.filter_network_thresh(threshold, num_thresh)
 
   # make multiple view 
-  # net.cluster_row_and_col(dist_type='cos',run_clustering=True,dendro=False)
-  net.make_mult_views(dist_type='cos',filter_row=['sum'],dendro=False)
+  net.cluster_row_and_col(dist_type='cos',run_clustering=True,dendro=False)
+  # net.make_mult_views(dist_type='cos',filter_row=['sum'],dendro=False)
 
   # keep the original column order in rank 
   for inst_col in net.viz['col_nodes']:
@@ -302,6 +291,12 @@ def make_enr_vect_clust(sig_enr_info, threshold, num_thresh):
   '''
   from clustergrammer import Network
   import scipy 
+  import time 
+
+  if 'viz_title' in sig_enr_info:
+    inst_title = sig_enr_info['viz_title']
+  else:
+    inst_title = 'enrichment_vector'
   
   # process sig_enr_info
   ####################
@@ -324,12 +319,15 @@ def make_enr_vect_clust(sig_enr_info, threshold, num_thresh):
 
   inst_gmt = sig_enr_info['background_type']
 
-  # calc enrichment for all input gene lists 
+  # Enrichment  
   ############################################
+  # track time to get enrichment information 
+  start_time = time.time()
+    
   all_enr = []
   for inst_id in all_ids:
-    # calc enrichment 
-    enr = enrichr_get_request(inst_gmt, inst_id)
+    # calc enrichment - only keep top 50 terms 
+    enr = enrichr_get_request(inst_gmt, inst_id, max_num_term=50)
 
     # save enrichment obj: name and enr data 
     enr_obj = {}
@@ -338,11 +336,16 @@ def make_enr_vect_clust(sig_enr_info, threshold, num_thresh):
 
     all_enr.append(enr_obj)
 
+  elapsed_time = time.time() - start_time
+  print('\n\n----------------------------------------------------')
+  print(inst_title + ': Time Enrichr Get Requests: '+str(elapsed_time)+' seconds')
+  print('----------------------------------------------------\n')
+
   # collect information into network data structure 
   ##################################################
-  print('\n-------------------------\n')
-  print('collecting enrichment information into network')
-  print('\n-------------------------\n')
+  # track time to collect enr info into mat 
+  start_time = time.time()
+
   # rows: all enriched terms 
   row_node_names = []
   # cols: all gene lists 
@@ -368,24 +371,15 @@ def make_enr_vect_clust(sig_enr_info, threshold, num_thresh):
   net.dat['mat_up'] = scipy.zeros([len(row_node_names),len(col_node_names)])
   net.dat['mat_dn'] = scipy.zeros([len(row_node_names),len(col_node_names)])
 
-
-  print('\n-------------------------\n')
-  print('\n-------------------------\n')
-  print('size of matrix to be clustered')
-  print(net.dat['mat'].shape)
-  print('\n-------------------------\n')
-  print('\n-------------------------\n')
-
-  print('\n-------------------------\n')
-  print('gathering enrichment info into mat')
-  print('\n-------------------------\n')
-
-  net.dat['mat_info'] = {}
-  for i in range(len(row_node_names)):
-    for j in range(len(col_node_names)):
-      net.dat['mat_info'][str((i,j))] = {}
-      for inst_updn in ['up','dn']:
-        net.dat['mat_info'][str((i,j))][inst_updn] = []
+  print('size of enrichment vector matrix: '+inst_title+' '+str(net.dat['mat'].shape))
+  
+  # # initialize mat_info - save intersecting gene info 
+  # net.dat['mat_info'] = {}
+  # for i in range(len(row_node_names)):
+  #   for j in range(len(col_node_names)):
+  #     net.dat['mat_info'][str((i,j))] = {}
+  #     for inst_updn in ['up','dn']:
+  #       net.dat['mat_info'][str((i,j))][inst_updn] = []
 
   # fill in mat using all_enr, includes up/dn 
   for inst_gs in all_enr:
@@ -410,24 +404,27 @@ def make_enr_vect_clust(sig_enr_info, threshold, num_thresh):
         if inst_updn == 'up':
           net.dat['mat'][row_index, col_index] = net.dat['mat'][row_index, col_index] + inst_cs
           net.dat['mat_up'][row_index, col_index] = inst_cs
-          net.dat['mat_info'][str((row_index,col_index))][inst_updn] = inst_genes
+          # net.dat['mat_info'][str((row_index,col_index))][inst_updn] = inst_genes
         elif inst_updn == 'dn':
           net.dat['mat'][row_index, col_index] = net.dat['mat'][row_index, col_index] - inst_cs
           net.dat['mat_dn'][row_index, col_index] = -inst_cs
-          net.dat['mat_info'][str((row_index,col_index))][inst_updn] = inst_genes
+          # net.dat['mat_info'][str((row_index,col_index))][inst_updn] = inst_genes
 
 
-  print('\n-------------------------\n')
-  print('\n-------------------------\n')
-  print('clustering multiple views')
-  print('\n-------------------------\n')
-  print('\n-------------------------\n')
+  elapsed_time = time.time() - start_time
+  print('\n\n----------------------------------------------------')
+  print(inst_title + ': Time to Collect Enr into Matrix : '+str(elapsed_time)+' seconds')
+  print('----------------------------------------------------\n')
 
-  # filter and cluster network 
-  print('\n  filtering network')
-  net.filter_network_thresh(threshold,num_thresh)
-  print('\n  clustering network')
-  net.make_mult_views(dist_type='cos',filter_row=['sum'])
-  print('\n  finished clustering Enrichr vectors\n---------------------')
+  # fast calc mult views using pandas 
+  # track time to collect enr info into mat 
+  start_time = time.time()
+  net.fast_mult_views()
+  elapsed_time = time.time() - start_time
+  print('\n\n----------------------------------------------------')
+  print(inst_title + ': Time Clustering/Filtering : '+str(elapsed_time)+' seconds')
+  print('----------------------------------------------------\n')
+
+  print('return net to run_enrich_background ' + inst_title)
 
   return net 

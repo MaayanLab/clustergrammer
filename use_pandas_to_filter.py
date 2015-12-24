@@ -19,9 +19,7 @@ def main():
 
   # your code
   elapsed_time = time.time() - start_time
-
-  print('\n\n\nelapsed time')
-  print(elapsed_time)
+  print('\n\n\nelapsed time: '+str(elapsed_time))
 
   # print(df)
 

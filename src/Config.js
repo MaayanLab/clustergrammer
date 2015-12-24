@@ -70,23 +70,15 @@ function Config(args) {
   // extend does not properly pass network_data
   config.network_data = args.network_data;
 
-  var col_nodes = config.network_data.col_nodes;
-  var row_nodes = config.network_data.row_nodes;
-
-  // add names and instantaneous positions to links 
-  _.each(config.network_data.links, function(d){
-    d.name = row_nodes[d.source].name + '_' + col_nodes[d.target].name;
-    d.row_name = row_nodes[d.source].name;
-    d.col_name = col_nodes[d.target].name;
-  });  
-
+  // replace undersores with space in row/col names 
   _.each(config.network_data.row_nodes, function(d){
     d.name = d.name.replace(/_/g, ' ');
   });
   _.each(config.network_data.col_nodes, function(d){
     d.name = d.name.replace(/_/g, ' ');
   });
-
+  
+  // replace underscore with space in row/col names from views 
   _.each(config.network_data.views, function(inst_view){
 
     var inst_nodes = inst_view.nodes;
@@ -102,6 +94,17 @@ function Config(args) {
     });
 
   })
+
+  var col_nodes = config.network_data.col_nodes;
+  var row_nodes = config.network_data.row_nodes;
+
+  // add names and instantaneous positions to links 
+  _.each(config.network_data.links, function(d){
+    d.name = row_nodes[d.source].name + '_' + col_nodes[d.target].name;
+    d.row_name = row_nodes[d.source].name;
+    d.col_name = col_nodes[d.target].name;
+  });  
+
 
   // transpose network if necessary
   if (config.transpose) {

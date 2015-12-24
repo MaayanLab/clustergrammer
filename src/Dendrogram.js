@@ -60,20 +60,20 @@ function Dendrogram(type, params) {
 
   function build_row_dendro() {
 
-    if (params.labels.show_label_tooltips){
-      // d3-tooltip - for tiles 
-      var tip = d3.tip()
-        .attr('class', 'd3-tip')
-        .direction('e')
-        .offset([0, 0])
-        .html(function(group_nodes_list){
-          return group_nodes_list.join('\t');
-        });
 
-      d3.select('#row_viz_zoom_container')
-        .call(tip);
+    // if (params.labels.show_label_tooltips){
+    //   // d3-tooltip - for tiles 
+    //   var tip = d3.tip()
+    //     .attr('class', 'd3-tip')
+    //     .direction('e')
+    //     .offset([0, 0])
+    //     .html(function(group_nodes_list){
+    //       return group_nodes_list.join('\t');
+    //     });
 
-    } 
+    //   d3.select('#row_viz_zoom_container')
+    //     .call(tip);
+    // } 
 
     d3.selectAll('.row_viz_group')
       .each(function(d){
@@ -96,16 +96,16 @@ function Dendrogram(type, params) {
             return inst_offset + 'px';
           })
 
-        if (params.labels.show_label_tooltips){
-          dendro_rect
-            .on('mouseover', function(d){
-              var group_nodes_list = get_inst_group('row',d);
-              tip.show(group_nodes_list);
-            })
-            .on('mouseout', function(d){
-              tip.hide();
-            });
-        }
+        // if (params.labels.show_label_tooltips){
+        //   dendro_rect
+        //     .on('mouseover', function(d){
+        //       var group_nodes_list = get_inst_group('row',d);
+        //       tip.show(group_nodes_list);
+        //     })
+        //     .on('mouseout', function(d){
+        //       tip.hide();
+        //     });
+        // }
 
         // show group in modal 
         if (typeof params.click_group === 'function'){
@@ -137,19 +137,19 @@ function Dendrogram(type, params) {
       return 'translate(' + params.matrix.x_scale(inst_index) + ',0)';
     });
 
-    if (params.labels.show_label_tooltips){
-      // d3-tooltip - for tiles 
-      var tip = d3.tip()
-        .attr('class', 'd3-tip')
-        .direction('s')
-        .offset([0, 0])
-        .html(function(group_nodes_list){
-          return group_nodes_list.join('\t');
-        });
+    // if (params.labels.show_label_tooltips){
+    //   // d3-tooltip - for tiles 
+    //   var tip = d3.tip()
+    //     .attr('class', 'd3-tip')
+    //     .direction('s')
+    //     .offset([0, 0])
+    //     .html(function(group_nodes_list){
+    //       return group_nodes_list.join('\t');
+    //     });
 
-      d3.select('#row_viz_zoom_container')
-        .call(tip);
-    }    
+    //   d3.select('#row_viz_zoom_container')
+    //     .call(tip);
+    // }    
 
     d3.selectAll('.col_viz_group')
       .each(function(d){
@@ -168,23 +168,23 @@ function Dendrogram(type, params) {
             return get_group_color(d.group[inst_level]);
           });
 
-        if (params.labels.show_label_tooltips){
-          dendro_rect
-            .on('mouseover', function(d){
-              var group_nodes_list = get_inst_group('col',d);
-              tip.show(group_nodes_list );
-            })
-            .on('mouseout', function(d){
-              tip.hide();
-            }); 
+        // if (params.labels.show_label_tooltips){
+        //   dendro_rect
+        //     .on('mouseover', function(d){
+        //       var group_nodes_list = get_inst_group('col',d);
+        //       tip.show(group_nodes_list );
+        //     })
+        //     .on('mouseout', function(d){
+        //       tip.hide();
+        //     }); 
+        // }
 
-          if (typeof params.click_group==='function'){
-            dendro_rect
-              .on('click',function(d){
-                var group_nodes_list = get_inst_group('col',d);
-                params.click_group('col',group_nodes_list);
-              });
-          }
+        if (typeof params.click_group==='function'){
+          dendro_rect
+            .on('click',function(d){
+              var group_nodes_list = get_inst_group('col',d);
+              params.click_group('col',group_nodes_list);
+            });
         }
 
     })

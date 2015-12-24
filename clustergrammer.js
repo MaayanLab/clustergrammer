@@ -107,23 +107,15 @@ function Config(args) {
   // extend does not properly pass network_data
   config.network_data = args.network_data;
 
-  var col_nodes = config.network_data.col_nodes;
-  var row_nodes = config.network_data.row_nodes;
-
-  // add names and instantaneous positions to links 
-  _.each(config.network_data.links, function(d){
-    d.name = row_nodes[d.source].name + '_' + col_nodes[d.target].name;
-    d.row_name = row_nodes[d.source].name;
-    d.col_name = col_nodes[d.target].name;
-  });  
-
+  // replace undersores with space in row/col names 
   _.each(config.network_data.row_nodes, function(d){
     d.name = d.name.replace(/_/g, ' ');
   });
   _.each(config.network_data.col_nodes, function(d){
     d.name = d.name.replace(/_/g, ' ');
   });
-
+  
+  // replace underscore with space in row/col names from views 
   _.each(config.network_data.views, function(inst_view){
 
     var inst_nodes = inst_view.nodes;
@@ -139,6 +131,17 @@ function Config(args) {
     });
 
   })
+
+  var col_nodes = config.network_data.col_nodes;
+  var row_nodes = config.network_data.row_nodes;
+
+  // add names and instantaneous positions to links 
+  _.each(config.network_data.links, function(d){
+    d.name = row_nodes[d.source].name + '_' + col_nodes[d.target].name;
+    d.row_name = row_nodes[d.source].name;
+    d.col_name = col_nodes[d.target].name;
+  });  
+
 
   // transpose network if necessary
   if (config.transpose) {
@@ -351,20 +354,20 @@ function Dendrogram(type, params) {
 
   function build_row_dendro() {
 
-    if (params.labels.show_label_tooltips){
-      // d3-tooltip - for tiles 
-      var tip = d3.tip()
-        .attr('class', 'd3-tip')
-        .direction('e')
-        .offset([0, 0])
-        .html(function(group_nodes_list){
-          return group_nodes_list.join('\t');
-        });
 
-      d3.select('#row_viz_zoom_container')
-        .call(tip);
+    // if (params.labels.show_label_tooltips){
+    //   // d3-tooltip - for tiles 
+    //   var tip = d3.tip()
+    //     .attr('class', 'd3-tip')
+    //     .direction('e')
+    //     .offset([0, 0])
+    //     .html(function(group_nodes_list){
+    //       return group_nodes_list.join('\t');
+    //     });
 
-    } 
+    //   d3.select('#row_viz_zoom_container')
+    //     .call(tip);
+    // } 
 
     d3.selectAll('.row_viz_group')
       .each(function(d){
@@ -387,16 +390,16 @@ function Dendrogram(type, params) {
             return inst_offset + 'px';
           })
 
-        if (params.labels.show_label_tooltips){
-          dendro_rect
-            .on('mouseover', function(d){
-              var group_nodes_list = get_inst_group('row',d);
-              tip.show(group_nodes_list);
-            })
-            .on('mouseout', function(d){
-              tip.hide();
-            });
-        }
+        // if (params.labels.show_label_tooltips){
+        //   dendro_rect
+        //     .on('mouseover', function(d){
+        //       var group_nodes_list = get_inst_group('row',d);
+        //       tip.show(group_nodes_list);
+        //     })
+        //     .on('mouseout', function(d){
+        //       tip.hide();
+        //     });
+        // }
 
         // show group in modal 
         if (typeof params.click_group === 'function'){
@@ -428,19 +431,19 @@ function Dendrogram(type, params) {
       return 'translate(' + params.matrix.x_scale(inst_index) + ',0)';
     });
 
-    if (params.labels.show_label_tooltips){
-      // d3-tooltip - for tiles 
-      var tip = d3.tip()
-        .attr('class', 'd3-tip')
-        .direction('s')
-        .offset([0, 0])
-        .html(function(group_nodes_list){
-          return group_nodes_list.join('\t');
-        });
+    // if (params.labels.show_label_tooltips){
+    //   // d3-tooltip - for tiles 
+    //   var tip = d3.tip()
+    //     .attr('class', 'd3-tip')
+    //     .direction('s')
+    //     .offset([0, 0])
+    //     .html(function(group_nodes_list){
+    //       return group_nodes_list.join('\t');
+    //     });
 
-      d3.select('#row_viz_zoom_container')
-        .call(tip);
-    }    
+    //   d3.select('#row_viz_zoom_container')
+    //     .call(tip);
+    // }    
 
     d3.selectAll('.col_viz_group')
       .each(function(d){
@@ -459,23 +462,23 @@ function Dendrogram(type, params) {
             return get_group_color(d.group[inst_level]);
           });
 
-        if (params.labels.show_label_tooltips){
-          dendro_rect
-            .on('mouseover', function(d){
-              var group_nodes_list = get_inst_group('col',d);
-              tip.show(group_nodes_list );
-            })
-            .on('mouseout', function(d){
-              tip.hide();
-            }); 
+        // if (params.labels.show_label_tooltips){
+        //   dendro_rect
+        //     .on('mouseover', function(d){
+        //       var group_nodes_list = get_inst_group('col',d);
+        //       tip.show(group_nodes_list );
+        //     })
+        //     .on('mouseout', function(d){
+        //       tip.hide();
+        //     }); 
+        // }
 
-          if (typeof params.click_group==='function'){
-            dendro_rect
-              .on('click',function(d){
-                var group_nodes_list = get_inst_group('col',d);
-                params.click_group('col',group_nodes_list);
-              });
-          }
+        if (typeof params.click_group==='function'){
+          dendro_rect
+            .on('click',function(d){
+              var group_nodes_list = get_inst_group('col',d);
+              params.click_group('col',group_nodes_list);
+            });
         }
 
     })
@@ -805,19 +808,22 @@ function Matrix(network_data, svg_elem, params) {
         return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
       })
       .on('mouseover', function(p) {
+
         // highlight row - set text to active if
         d3.selectAll('.row_label_text text')
           .classed('active', function(d) {
-            return p.row_name === d.name;
+            return p.row_name.replace(/_/g, ' ') === d.name;
           });
 
         d3.selectAll('.col_label_text text')
           .classed('active', function(d) {
             return p.col_name === d.name;
           });
+
         if (params.matrix.show_tile_tooltips){
           tip.show(p);
         }
+
       })
       .on('mouseout', function(d) {
         d3.selectAll('text').classed('active', false);
@@ -885,7 +891,7 @@ function Matrix(network_data, svg_elem, params) {
         // highlight row - set text to active if
         d3.selectAll('.row_label_text text')
           .classed('active', function(d) {
-            return p.row_name === d.name;
+            return p.row_name.replace(/_/g, ' ') === d.name;
           });
 
         d3.selectAll('.col_label_text text')
@@ -942,7 +948,7 @@ function Matrix(network_data, svg_elem, params) {
         // highlight row - set text to active if
         d3.selectAll('.row_label_text text')
           .classed('active', function(d) {
-            return p.row_name === d.name;
+            return p.row_name.replace(/_/g, ' ') === d.name;
           });
 
         d3.selectAll('.col_label_text text')
@@ -4765,7 +4771,14 @@ function enter_exit_update(params, network_data, reorder, delays){
   // enter exit update tiles  
   function eeu_existing_row(ini_inp_row_data){
 
+    // console.log(ini_inp_row_data.row_data)
+
     var inp_row_data = ini_inp_row_data.row_data;
+
+    // _.each(inp_row_data, function(d){
+    //   console.log(d.name);
+    // })
+
 
     // remove zero values from 
     var row_values = _.filter(inp_row_data, function(num){
@@ -5060,7 +5073,9 @@ function enter_exit_update(params, network_data, reorder, delays){
       .attr('fill-opacity',0)
       .attr('transform', function(d){
         var x_pos = params.matrix.x_scale(d.pos_x) + 0.5*params.viz.border_width;
+        console.log(d.pos_x)
         var y_pos = 0.5*params.viz.border_width/params.viz.zoom_switch;
+        console.log(String(x_pos)+' '+String(y_pos))
         return 'translate('+x_pos+','+y_pos+')';
       });
 
@@ -5502,7 +5517,7 @@ function filter_network_data(orig_network_data, change_view){
       d.target = col_index;
       return d;
     }
-  })
+  });
 
   // set up new_network_data
   var new_network_data = {};
@@ -6350,31 +6365,6 @@ function Zoom(params){
     // update visible links 
     var min_rect_height = 3;
 
-    // downsample(params, min_rect_height);
-
-    // if (d3.select('.row_tile').empty()){
-    //   var links_in_view = update_viz_links(params, trans_x, trans_y, zoom_x, zoom_y, false);
-    //   draw_viz_links(params, links_in_view);
-
-    //   // // draw the new links using links_in_view 
-    //   // if (params.matrix.rect_height*zoom_y > min_rect_height){
-    //   //   draw_viz_links(params, links_in_view);
-    //   // } else if (d3.select('.ds_tile').empty()) {
-    //   //   downsample(params, min_rect_height);
-    //   // }
-    // }
-
-    //   // draw the new links using links_in_view 
-    //   if (params.matrix.rect_height*zoom_y > min_rect_height){
-    //     // draw_viz_links(params, );
-    //   } else if (d3.select('.ds_tile').empty()) {
-    //     downsample(params, min_rect_height);
-    //   }
-
-    // // if (d3.select('.ds_tile').empty()){
-    // //   downsample(params, min_rect_height);
-    // // }
-
     // apply transformation and reset translate vector
     // the zoom vector (zoom.scale) never gets reset
     ///////////////////////////////////////////////////
@@ -6518,13 +6508,6 @@ function Zoom(params){
 
       // center_y
       var center_y = -(zoom_y - 1) * half_height;
-
-      // do not update viz links
-      /////////////////////////////
-      // if (d3.select('.row_tile').empty()){
-      //   var links_in_view = update_viz_links(params, 0, 0, zoom_x, zoom_y, true);
-      //   draw_viz_links(params, links_in_view);
-      // }
 
       // transform clust group
       ////////////////////////////
@@ -6672,71 +6655,6 @@ function Zoom(params){
 
     return inst_links;
   }
-
-  function draw_viz_links(params, inst_links){
-
-    // exit old elements 
-    d3.selectAll('.tile')
-      .data(inst_links, function(d){return d.name;})
-      .exit()
-      .remove();
-
-    // enter new elements 
-    //////////////////////////
-    d3.select('#clust_group')
-      .selectAll('.tile')
-      .data(inst_links, function(d){return d.name;})
-      .enter()
-      .append('rect')
-      .style('fill-opacity',0)
-      .attr('class','tile new_tile')
-      .attr('width', params.matrix.rect_width)
-      .attr('height', params.matrix.rect_height)
-      .attr('transform', function(d) {
-        return 'translate(' + params.matrix.x_scale(d.target) + ','+params.matrix.y_scale(d.source)+')';
-      })
-      .style('fill', function(d) {
-          return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
-      })
-      .style('fill-opacity', function(d) {
-          // calculate output opacity using the opacity scale
-          var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
-          return output_opacity;
-      });
-
-    d3.selectAll('.tile')
-      .on('mouseover',null)
-      .on('mouseout',null);
-
-    // redefine mouseover events for tiles 
-    d3.select('#clust_group')
-      .selectAll('.tile')
-      .on('mouseover', function(p) {
-        var row_name = p.name.split('_')[0];
-        var col_name = p.name.split('_')[1];
-        // highlight row - set text to active if
-        d3.selectAll('.row_label_text text')
-          .classed('active', function(d) {
-            return row_name === d.name;
-          });
-
-        d3.selectAll('.col_label_text text')
-          .classed('active', function(d) {
-            return col_name === d.name;
-          });
-      })
-      .on('mouseout', function mouseout() {
-        d3.selectAll('text').classed('active', false);
-      })
-      .attr('title', function(d) {
-        return d.value;
-      });
-
-    // // check the number of tiles 
-    // console.log(d3.selectAll('.tile')[0].length);
-    // console.log('\n\n')
-  }
-
 
   function constrain_font_size(params, trans){
 

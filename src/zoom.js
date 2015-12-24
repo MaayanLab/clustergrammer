@@ -81,31 +81,6 @@ function Zoom(params){
     // update visible links 
     var min_rect_height = 3;
 
-    // downsample(params, min_rect_height);
-
-    // if (d3.select('.row_tile').empty()){
-    //   var links_in_view = update_viz_links(params, trans_x, trans_y, zoom_x, zoom_y, false);
-    //   draw_viz_links(params, links_in_view);
-
-    //   // // draw the new links using links_in_view 
-    //   // if (params.matrix.rect_height*zoom_y > min_rect_height){
-    //   //   draw_viz_links(params, links_in_view);
-    //   // } else if (d3.select('.ds_tile').empty()) {
-    //   //   downsample(params, min_rect_height);
-    //   // }
-    // }
-
-    //   // draw the new links using links_in_view 
-    //   if (params.matrix.rect_height*zoom_y > min_rect_height){
-    //     // draw_viz_links(params, );
-    //   } else if (d3.select('.ds_tile').empty()) {
-    //     downsample(params, min_rect_height);
-    //   }
-
-    // // if (d3.select('.ds_tile').empty()){
-    // //   downsample(params, min_rect_height);
-    // // }
-
     // apply transformation and reset translate vector
     // the zoom vector (zoom.scale) never gets reset
     ///////////////////////////////////////////////////
@@ -249,13 +224,6 @@ function Zoom(params){
 
       // center_y
       var center_y = -(zoom_y - 1) * half_height;
-
-      // do not update viz links
-      /////////////////////////////
-      // if (d3.select('.row_tile').empty()){
-      //   var links_in_view = update_viz_links(params, 0, 0, zoom_x, zoom_y, true);
-      //   draw_viz_links(params, links_in_view);
-      // }
 
       // transform clust group
       ////////////////////////////
@@ -403,71 +371,6 @@ function Zoom(params){
 
     return inst_links;
   }
-
-  function draw_viz_links(params, inst_links){
-
-    // exit old elements 
-    d3.selectAll('.tile')
-      .data(inst_links, function(d){return d.name;})
-      .exit()
-      .remove();
-
-    // enter new elements 
-    //////////////////////////
-    d3.select('#clust_group')
-      .selectAll('.tile')
-      .data(inst_links, function(d){return d.name;})
-      .enter()
-      .append('rect')
-      .style('fill-opacity',0)
-      .attr('class','tile new_tile')
-      .attr('width', params.matrix.rect_width)
-      .attr('height', params.matrix.rect_height)
-      .attr('transform', function(d) {
-        return 'translate(' + params.matrix.x_scale(d.target) + ','+params.matrix.y_scale(d.source)+')';
-      })
-      .style('fill', function(d) {
-          return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
-      })
-      .style('fill-opacity', function(d) {
-          // calculate output opacity using the opacity scale
-          var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
-          return output_opacity;
-      });
-
-    d3.selectAll('.tile')
-      .on('mouseover',null)
-      .on('mouseout',null);
-
-    // redefine mouseover events for tiles 
-    d3.select('#clust_group')
-      .selectAll('.tile')
-      .on('mouseover', function(p) {
-        var row_name = p.name.split('_')[0];
-        var col_name = p.name.split('_')[1];
-        // highlight row - set text to active if
-        d3.selectAll('.row_label_text text')
-          .classed('active', function(d) {
-            return row_name === d.name;
-          });
-
-        d3.selectAll('.col_label_text text')
-          .classed('active', function(d) {
-            return col_name === d.name;
-          });
-      })
-      .on('mouseout', function mouseout() {
-        d3.selectAll('text').classed('active', false);
-      })
-      .attr('title', function(d) {
-        return d.value;
-      });
-
-    // // check the number of tiles 
-    // console.log(d3.selectAll('.tile')[0].length);
-    // console.log('\n\n')
-  }
-
 
   function constrain_font_size(params, trans){
 
