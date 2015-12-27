@@ -335,8 +335,8 @@ function make_clust(inst_network){
 
 // choose example here
 // make_clust('default_example.json');
-make_clust('ccle.json');
-// make_clust('mult_view.json');
+// make_clust('ccle.json');
+make_clust('mult_view.json');
 // make_clust('enr_clust_example.json');
 // make_clust('updn_example.json');
 // make_clust('narrow_example.json');
