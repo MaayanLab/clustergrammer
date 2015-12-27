@@ -162,6 +162,12 @@ function enter_exit_update(params, network_data, reorder, delays){
       .call(tip);
     }
 
+  // reposition matrix 
+  d3.select('#clust_group_container')
+    .attr('transform', 'translate(' +
+      params.viz.clust.margin.left + ',' +
+      params.viz.clust.margin.top + ')');
+
   // get row and col names 
   var row_nodes_names = params.network_data.row_nodes_names;
   var col_nodes_names = params.network_data.col_nodes_names;

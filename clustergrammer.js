@@ -605,6 +605,7 @@ function Matrix(network_data, svg_elem, params) {
   // append a group that will hold clust_group and position it once
   clust_group = svg_elem
     .append('g')
+    .attr('id','clust_group_container')
     .attr('transform', 'translate(' +
       params.viz.clust.margin.left + ',' +
       params.viz.clust.margin.top + ')')
@@ -4691,6 +4692,12 @@ function enter_exit_update(params, network_data, reorder, delays){
     d3.select('#clust_group')
       .call(tip);
     }
+
+  // reposition matrix 
+  d3.select('#clust_group_container')
+    .attr('transform', 'translate(' +
+      params.viz.clust.margin.left + ',' +
+      params.viz.clust.margin.top + ')');
 
   // get row and col names 
   var row_nodes_names = params.network_data.row_nodes_names;

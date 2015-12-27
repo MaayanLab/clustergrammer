@@ -15,6 +15,7 @@ function Matrix(network_data, svg_elem, params) {
   // append a group that will hold clust_group and position it once
   clust_group = svg_elem
     .append('g')
+    .attr('id','clust_group_container')
     .attr('transform', 'translate(' +
       params.viz.clust.margin.left + ',' +
       params.viz.clust.margin.top + ')')
