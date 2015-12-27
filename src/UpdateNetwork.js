@@ -168,6 +168,10 @@ function enter_exit_update(params, network_data, reorder, delays){
       params.viz.clust.margin.left + ',' +
       params.viz.clust.margin.top + ')');
 
+  // reposition row container 
+  d3.select('#row_viz_outer_container')
+    .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
+
   // get row and col names 
   var row_nodes_names = params.network_data.row_nodes_names;
   var col_nodes_names = params.network_data.col_nodes_names;
