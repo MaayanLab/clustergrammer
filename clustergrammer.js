@@ -4703,6 +4703,17 @@ function enter_exit_update(params, network_data, reorder, delays){
   d3.select('#row_viz_outer_container')
     .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
 
+  // reposition col container 
+  d3.select('#col_label_outer_container')
+    .attr('transform', 'translate(0,' + params.norm_label.width.col + ')');
+
+  // reposition col_viz container 
+  d3.select('#col_viz_outer_container')
+    .attr('transform', function() {
+        var inst_offset = params.norm_label.width.col + 2;
+        return 'translate(0,' + inst_offset + ')';
+      })
+
   // get row and col names 
   var row_nodes_names = params.network_data.row_nodes_names;
   var col_nodes_names = params.network_data.col_nodes_names;
