@@ -431,10 +431,25 @@ function VizParams(config){
     // is as tall as the normal label width
     params.viz.real_zoom = params.norm_label.width.col / (params.matrix.x_scale.rangeBand()/2);
 
-    // set opacity scale
-    params.matrix.max_link = _.max(params.network_data.links, function(d) {
-      return Math.abs(d.value);
-    }).value;
+    // if this is a filtered view, then use the maximum link value determined from all links 
+    if (_.has(params.network_data,'all_links')){
+
+      // get max link value from 'all_links'
+      params.matrix.max_link = _.max(params.network_data.all_links, function(d) {
+        return Math.abs(d.value);
+      }).value;
+
+      console.log('using all links ')
+
+    } else {
+
+      // get max link value current 'links'
+      params.matrix.max_link = _.max(params.network_data.links, function(d) {
+        return Math.abs(d.value);
+      }).value;
+
+      console.log('using normal links ')
+    }
 
     // set opacity_scale
     // input domain of 0 means set the domain automatically

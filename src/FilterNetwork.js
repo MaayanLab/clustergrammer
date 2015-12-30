@@ -79,6 +79,9 @@ function filter_network_data(orig_network_data, change_view){
   // links 
   new_network_data.links = new_links;
 
+  // save all links 
+  new_network_data.all_links = links;
+
   // pass on all views 
   new_network_data.views = views;
   

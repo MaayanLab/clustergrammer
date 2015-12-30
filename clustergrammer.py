@@ -1521,6 +1521,8 @@ class Network(object):
     ''' filter rows in matrix at some threshold
     and remove columns that have all zero values '''
 
+    print('\tdf_filter_row: '+str(threshold))
+
     import pandas as pd 
     from copy import deepcopy 
     from clustergrammer import Network

@@ -1757,10 +1757,25 @@ function VizParams(config){
     // is as tall as the normal label width
     params.viz.real_zoom = params.norm_label.width.col / (params.matrix.x_scale.rangeBand()/2);
 
-    // set opacity scale
-    params.matrix.max_link = _.max(params.network_data.links, function(d) {
-      return Math.abs(d.value);
-    }).value;
+    // if this is a filtered view, then use the maximum link value determined from all links 
+    if (_.has(params.network_data,'all_links')){
+
+      // get max link value from 'all_links'
+      params.matrix.max_link = _.max(params.network_data.all_links, function(d) {
+        return Math.abs(d.value);
+      }).value;
+
+      console.log('using all links ')
+
+    } else {
+
+      // get max link value current 'links'
+      params.matrix.max_link = _.max(params.network_data.links, function(d) {
+        return Math.abs(d.value);
+      }).value;
+
+      console.log('using normal links ')
+    }
 
     // set opacity_scale
     // input domain of 0 means set the domain automatically
@@ -5548,6 +5563,9 @@ function filter_network_data(orig_network_data, change_view){
   new_network_data.col_nodes_names = col_names;
   // links 
   new_network_data.links = new_links;
+
+  // save all links 
+  new_network_data.all_links = links;
 
   // pass on all views 
   new_network_data.views = views;
