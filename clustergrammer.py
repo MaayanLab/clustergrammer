@@ -1327,14 +1327,66 @@ class Network(object):
 
     return df 
 
+  def top_views(self, dist_type='cos', run_clustering=True, dendro=True):
+    '''
+    This will calculate multiple views of a clustergram by filtering the data 
+    and clustering after each filtering. This filtering will keep the top N 
+    rows based on some quantity (sum, num-non-zero, etc). 
+    '''
+    from clustergrammer import Network
+    from copy import deepcopy 
+
+    # get dataframe dictionary of network and remove rows/cols with all zero values 
+    df = self.dat_to_df()
+    # each row or column must have at least one non-zero value 
+    threshold = 0.001
+    df = self.df_filter_row(df, threshold)
+    df = self.df_filter_col(df, threshold)
+
+    # calculate initial view with no row filtering
+    ##################################################
+    # swap back in the filtered df to dat 
+    self.df_to_dat(df)
+
+    # cluster initial view 
+    self.cluster_row_and_col('cos',run_clustering=run_clustering, dendro=dendro)
+
+    # set up views 
+    all_views = []
+
+    # top - only select the top rows 
+    inst_view = {}
+    inst_view['top_row_sum'] = 'all'
+    inst_view['dist'] = 'cos'
+    inst_view['nodes'] = {}
+    inst_view['nodes']['row_nodes'] = self.viz['row_nodes']
+    inst_view['nodes']['col_nodes'] = self.viz['col_nodes']
+
+    # add view with no filtering 
+    all_views.append(inst_view)
+
+    # keep the following number of top rows 
+    keep_top = [10,20,30,40,50,100,200,300,400,500]
+
+    print(keep_top)
+
+    print(df['mat'].shape)
+
+    # get the following rows 
+    keep_rows = ['LATS1','NEK9','MYLK3']
+
+    part_df = df['mat'].ix[keep_rows]
+
+    print(part_df.shape)
+
   def fast_mult_views(self, dist_type='cos', run_clustering=True, dendro=True):
     import numpy as np
     import pandas as pd
     ''' 
-    This will use Pandas to calculte multiple views of a clustergram
-    For now, it will disregard link information 
+    This will use Pandas to calculte multiple views of a clustergram 
+    Currently, it is only filtering based on row-sum and it is disregarding 
+    link information (used to add click functionality). 
     '''
-
     from clustergrammer import Network
     from copy import deepcopy
 
@@ -1356,6 +1408,7 @@ class Network(object):
     # set up views 
     all_views = []
 
+    # set up initial view 
     inst_view = {}
     inst_view['filter_row_sum'] = 0
     inst_view['dist'] = 'cos'
@@ -1363,9 +1416,10 @@ class Network(object):
     inst_view['nodes']['row_nodes'] = self.viz['row_nodes']
     inst_view['nodes']['col_nodes'] = self.viz['col_nodes']
 
+    # add view with no filtering 
     all_views.append(inst_view)
 
-    # filter betwen 0% and 90% of some threshoold 
+    # filter between 0% and 90% of some threshoold 
     all_filt = range(10)
     all_filt = [i/float(10) for i in all_filt]
 
@@ -1617,10 +1671,9 @@ class Network(object):
 
     # filter columns 
     df = df[inst_cols]
+
     # filter rows 
-    df = df.transpose()
-    df = df[inst_rows]
-    df = df.transpose()
+    df = df.ix[inst_rows]
 
     return df
 
