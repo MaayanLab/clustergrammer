@@ -175,9 +175,62 @@ function make_clust(inst_network){
         // // play demo   
         // ini_play_button(cgm);
 
-        set_up_filters('filter_row_value');
-        set_up_filters('filter_row_sum');
-        set_up_filters('filter_row_num');
+        // set_up_filters('filter_row_value');
+        // set_up_filters('filter_row_sum');
+        // set_up_filters('filter_row_num');
+
+        set_up_N_filters('N_row_sum'); 
+
+        function set_up_N_filters(filter_type){
+
+          // filter 
+          ////////////////////
+          var views = network_data.views;
+          var all_views = _.filter(views, function(d){return _.has(d,filter_type);});
+          var inst_max = all_views.length - 1;
+          $( '#slider_'+filter_type ).slider({
+            value:0,
+            min: 0,
+            max: inst_max,
+            step: 1,
+            stop: function( event, ui ) {
+
+              console.log('ui.value '+ String(ui.value))
+
+              // change value 
+              $( "#amount" ).val( "$" + ui.value );
+
+              // get value 
+              var inst_N = $( '#slider_'+filter_type ).slider( "value" ); 
+
+              // change_view = {'N_row_sum':inst_N};
+              // filter_name = 'N_row_sum';
+
+              // d3.select('#filter_row_value').text('Filter Value: 0%');          
+              // d3.select('#filter_row_num').text('Filter Number Non-zero: 0%'); 
+
+              // d3.select('#main_svg').style('opacity',0.70);
+
+              // d3.select('#'+filter_type).text('Filter '+filter_name+': '+inst_N+'%');          
+
+              // $('.slider_filter').slider('disable');
+              // d3.selectAll('.btn').attr('disabled',true);
+
+              // cgm.update_network(change_view);
+
+              // ini_sliders();
+
+              // function enable_slider(){
+              //   $('.slider_filter').slider('enable');  
+              //   d3.selectAll('.btn').attr('disabled',null);
+              // }
+              // setTimeout(enable_slider, 2500);
+
+            }
+          });
+          $( "#amount" ).val( "$" + $( '#slider_'+filter_type ).slider( "value" ) );
+
+        }     
 
         function set_up_filters(filter_type){
 

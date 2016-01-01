@@ -10,15 +10,17 @@ def main():
   net = Network()
 
   # load data to dataframe 
-  net.load_tsv_to_net('txt/example_tsv_network.txt')
-  # net.load_tsv_to_net('txt/mat_1mb.txt')
+  # net.load_tsv_to_net('txt/example_tsv_network.txt')
+  net.load_tsv_to_net('txt/mat_1mb.txt')
 
-  net.top_views()   
+  net.N_top_views()
 
   # perform fast row filtering 
   # net.fast_mult_views()
 
-  # net.write_json_to_file('viz', 'json/mult_view.json', 'indent')
+  net.write_json_to_file('viz', 'json/mult_view.json', 'indent')
+
+  print(net.viz.keys())
 
   # your code
   elapsed_time = time.time() - start_time

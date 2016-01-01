@@ -1327,7 +1327,7 @@ class Network(object):
 
     return df 
 
-  def top_views(self, dist_type='cos', run_clustering=True, dendro=True):
+  def N_top_views(self, dist_type='cos', run_clustering=True, dendro=True):
     '''
     This will calculate multiple views of a clustergram by filtering the data 
     and clustering after each filtering. This filtering will keep the top N 
@@ -1356,7 +1356,7 @@ class Network(object):
 
     # top - only select the top rows 
     inst_view = {}
-    inst_view['top_row_sum'] = 'all'
+    inst_view['N_row_sum'] = 'all'
     inst_view['dist'] = 'cos'
     inst_view['nodes'] = {}
     inst_view['nodes']['row_nodes'] = self.viz['row_nodes']
@@ -1368,16 +1368,58 @@ class Network(object):
     # keep the following number of top rows 
     keep_top = [10,20,30,40,50,100,200,300,400,500]
 
-    print(keep_top)
+    # get copy of df and take abs value, cell line cols and gene rows
+    df_abs = deepcopy(df['mat'].abs())
 
-    print(df['mat'].shape)
+    # transpose to get gene columns 
+    df_abs = df_abs.transpose()
 
-    # get the following rows 
-    keep_rows = ['LATS1','NEK9','MYLK3']
+    # sum the values of the genes in the cell lines 
+    tmp_sum = df_abs.sum(axis=0)
 
-    part_df = df['mat'].ix[keep_rows]
+    # 
+    tmp_sum.sort(ascending=False)
 
-    print(part_df.shape)
+    rows_sorted = tmp_sum.index.values.tolist()
+
+    for inst_keep in keep_top:
+
+      tmp_df = deepcopy(df['mat'])
+
+      if inst_keep < len(rows_sorted):
+
+        # get the labels of the rows that will be kept 
+        keep_rows = rows_sorted[0:inst_keep]
+
+        # filter the matrix 
+        tmp_df = tmp_df.ix[keep_rows]
+
+        # initialize netowrk 
+        net = deepcopy(Network())
+
+        # transfer to dat 
+        net.df_to_dat(df)
+
+        # try to cluster 
+        try: 
+          # cluster 
+          net.cluster_row_and_col('cos')
+          # add view 
+          inst_view = {}
+          inst_view['N_row_sum'] = inst_keep
+          inst_view['dist'] = 'cos'
+          inst_view['nodes'] = {}
+          inst_view['nodes']['row_nodes'] = net.viz['row_nodes']
+          inst_view['nodes']['col_nodes'] = net.viz['col_nodes']
+          all_views.append(inst_view)
+        except:
+          print('*** did not cluster filtered view')
+
+    # add views to viz 
+    self.viz['views'] = all_views
+
+    print('\tfinished fast_mult_views')
+
 
   def fast_mult_views(self, dist_type='cos', run_clustering=True, dendro=True):
     import numpy as np
