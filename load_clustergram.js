@@ -187,7 +187,32 @@ function make_clust(inst_network){
           ////////////////////
           var views = network_data.views;
           var all_views = _.filter(views, function(d){return _.has(d,filter_type);});
+
+          console.log(all_views)
+
           var inst_max = all_views.length - 1;
+
+          console.log('inst_max: '+String(inst_max))
+
+          // make dictionary 
+          var N_dict = {};
+
+          // filters
+          all_filt = [500,400,300,200,100,50,40,30,20,10]
+
+          console.log('setting up N filter')
+          _.each(all_filt, function(d){
+            tmp_index = _.indexOf(all_filt, d)
+
+            N_dict[tmp_index] = d;
+
+          });
+
+
+          console.log(N_dict)
+
+          // push value to end of array 
+
           $( '#slider_'+filter_type ).slider({
             value:0,
             min: 0,
@@ -203,20 +228,17 @@ function make_clust(inst_network){
               // get value 
               var inst_N = $( '#slider_'+filter_type ).slider( "value" ); 
 
-              // change_view = {'N_row_sum':inst_N};
-              // filter_name = 'N_row_sum';
+              change_view = {'N_row_sum':inst_N};
+              filter_name = 'N_row_sum';
 
-              // d3.select('#filter_row_value').text('Filter Value: 0%');          
-              // d3.select('#filter_row_num').text('Filter Number Non-zero: 0%'); 
+              d3.select('#main_svg').style('opacity',0.70);
 
-              // d3.select('#main_svg').style('opacity',0.70);
+              d3.select('#'+filter_type).text('Filter '+filter_name+': '+inst_N+'%');          
 
-              // d3.select('#'+filter_type).text('Filter '+filter_name+': '+inst_N+'%');          
+              $('.slider_filter').slider('disable');
+              d3.selectAll('.btn').attr('disabled',true);
 
-              // $('.slider_filter').slider('disable');
-              // d3.selectAll('.btn').attr('disabled',true);
-
-              // cgm.update_network(change_view);
+              cgm.update_network(change_view);
 
               // ini_sliders();
 
