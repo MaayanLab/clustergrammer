@@ -198,7 +198,7 @@ function make_clust(inst_network){
           var N_dict = {};
 
           // filters
-          all_filt = [500,400,300,200,100,50,40,30,20,10]
+          var all_filt = ['all',500,400,300,200,100,50,40,30,20,10]
 
           console.log('setting up N filter')
           _.each(all_filt, function(d){
@@ -208,10 +208,6 @@ function make_clust(inst_network){
 
           });
 
-
-          console.log(N_dict)
-
-          // push value to end of array 
 
           $( '#slider_'+filter_type ).slider({
             value:0,
@@ -226,27 +222,32 @@ function make_clust(inst_network){
               $( "#amount" ).val( "$" + ui.value );
 
               // get value 
-              var inst_N = $( '#slider_'+filter_type ).slider( "value" ); 
+              var inst_index = $( '#slider_'+filter_type ).slider( "value" ); 
 
-              change_view = {'N_row_sum':inst_N};
+              var inst_top = N_dict[inst_index];
+
+              console.log(inst_index)
+              console.log(  )
+
+              change_view = {'N_row_sum':inst_top};
               filter_name = 'N_row_sum';
 
               d3.select('#main_svg').style('opacity',0.70);
 
-              d3.select('#'+filter_type).text('Filter '+filter_name+': '+inst_N+'%');          
+              d3.select('#'+filter_type).text('Filter '+filter_name+': '+inst_top+'%'); 
 
               $('.slider_filter').slider('disable');
               d3.selectAll('.btn').attr('disabled',true);
 
               cgm.update_network(change_view);
 
-              // ini_sliders();
+              ini_sliders();
 
-              // function enable_slider(){
-              //   $('.slider_filter').slider('enable');  
-              //   d3.selectAll('.btn').attr('disabled',null);
-              // }
-              // setTimeout(enable_slider, 2500);
+              function enable_slider(){
+                $('.slider_filter').slider('enable');  
+                d3.selectAll('.btn').attr('disabled',null);
+              }
+              setTimeout(enable_slider, 2500);
 
             }
           });

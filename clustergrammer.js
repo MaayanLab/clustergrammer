@@ -5528,7 +5528,16 @@ function filter_network_data(orig_network_data, change_view){
       return d.filter_row_num == change_view.filter_row_num;
     });
 
+  } else if (_.has(change_view, 'N_row_sum')){
+
+    var inst_view = _.find(views, function(d){
+      return d.N_row_sum == change_view.N_row_sum;
+    });
+
   }
+
+  console.log('new view')
+  console.log(inst_view)
 
   var new_nodes = inst_view.nodes;
 
