@@ -13,9 +13,10 @@ def main():
   # net.load_tsv_to_net('txt/example_tsv_network.txt')
   net.load_tsv_to_net('txt/mat_1mb.txt')
 
+  # filter top views 
   net.N_top_views()
 
-  # perform fast row filtering 
+  # # perform fast row filtering 
   # net.fast_mult_views()
 
   net.write_json_to_file('viz', 'json/mult_view.json', 'indent')

@@ -176,7 +176,7 @@ function make_clust(inst_network){
         // ini_play_button(cgm);
 
         // set_up_filters('filter_row_value');
-        // set_up_filters('filter_row_sum');
+        set_up_filters('filter_row_sum');
         // set_up_filters('filter_row_num');
 
         set_up_N_filters('N_row_sum'); 
@@ -188,19 +188,14 @@ function make_clust(inst_network){
           var views = network_data.views;
           var all_views = _.filter(views, function(d){return _.has(d,filter_type);});
 
-          console.log(all_views)
-
           var inst_max = all_views.length - 1;
-
-          console.log('inst_max: '+String(inst_max))
 
           // make dictionary 
           var N_dict = {};
 
           // filters
-          var all_filt = ['all',500,400,300,200,100,50,40,30,20,10]
+          var all_filt = _.pluck( network_data.views,'N_row_sum')
 
-          console.log('setting up N filter')
           _.each(all_filt, function(d){
             tmp_index = _.indexOf(all_filt, d)
 
@@ -234,7 +229,7 @@ function make_clust(inst_network){
 
               d3.select('#main_svg').style('opacity',0.70);
 
-              d3.select('#'+filter_type).text('Filter '+filter_name+': '+inst_top+'%'); 
+              d3.select('#'+filter_type).text('Top rows: '+inst_top+' rows'); 
 
               $('.slider_filter').slider('disable');
               d3.selectAll('.btn').attr('disabled',true);

@@ -1366,7 +1366,7 @@ class Network(object):
     all_views.append(inst_view)
 
     # keep the following number of top rows 
-    keep_top = [10,20,30,40,50,100,200,300,400,500]
+    keep_top = [500,400,300,200,100,50,40,30,20,10]
 
     # get copy of df and take abs value, cell line cols and gene rows
     df_abs = deepcopy(df['mat'].abs())
@@ -1384,9 +1384,6 @@ class Network(object):
 
     for inst_keep in keep_top:
 
-      print('inst_keep')
-      print(inst_keep)
-
       tmp_df = deepcopy(df)
 
       if inst_keep < len(rows_sorted):
@@ -1394,16 +1391,8 @@ class Network(object):
         # get the labels of the rows that will be kept 
         keep_rows = rows_sorted[0:inst_keep]
 
-        print(len(keep_rows))
-
-        print('before filtering')
-        print(tmp_df['mat'].shape)
-
         # filter the matrix 
         tmp_df['mat'] = tmp_df['mat'].ix[keep_rows]
-
-        print('after filtering')
-        print(tmp_df['mat'].shape)
 
         # initialize netowrk 
         net = deepcopy(Network())
@@ -1414,10 +1403,6 @@ class Network(object):
 
         # transfer to dat 
         net.df_to_dat(tmp_df)
-
-        print('shape')
-        print(net.dat['mat'].shape)
-        print('\n')
 
         # try to cluster 
         try: 
