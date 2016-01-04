@@ -1384,21 +1384,40 @@ class Network(object):
 
     for inst_keep in keep_top:
 
-      tmp_df = deepcopy(df['mat'])
+      print('inst_keep')
+      print(inst_keep)
+
+      tmp_df = deepcopy(df)
 
       if inst_keep < len(rows_sorted):
 
         # get the labels of the rows that will be kept 
         keep_rows = rows_sorted[0:inst_keep]
 
+        print(len(keep_rows))
+
+        print('before filtering')
+        print(tmp_df['mat'].shape)
+
         # filter the matrix 
-        tmp_df = tmp_df.ix[keep_rows]
+        tmp_df['mat'] = tmp_df['mat'].ix[keep_rows]
+
+        print('after filtering')
+        print(tmp_df['mat'].shape)
 
         # initialize netowrk 
         net = deepcopy(Network())
 
+
+        # filter columns - some columns may have all zero values 
+        tmp_df = self.df_filter_col(tmp_df,0.001)
+
         # transfer to dat 
-        net.df_to_dat(df)
+        net.df_to_dat(tmp_df)
+
+        print('shape')
+        print(net.dat['mat'].shape)
+        print('\n')
 
         # try to cluster 
         try: 
