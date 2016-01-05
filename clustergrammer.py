@@ -516,91 +516,74 @@ class Network(object):
   def load_vect_post_to_net(self, vect_post):
     import numpy as np
 
-    # get all signatures 
+    # get all signatures (a.k.a. columns)
     sigs = vect_post['columns']
 
-    # get all genes from signatures 
-    all_genes = []
+    # get all rows from signatures 
+    all_rows = []
     all_sigs = []
     for inst_sig in sigs:
 
-      # get gene data 
-      gene_data = inst_sig['vector']
-
       # gather sig names 
-      all_sigs.append(inst_sig['col_title']) 
+      all_sigs.append(inst_sig['col_name']) 
 
-      # gather genes 
-      for inst_row_data in gene_data:
+      # get column 
+      col_data = inst_sig['data']
 
-        # add genes - the gene name is the first element of the list 
-        all_genes.append( inst_row_data[0] )
+      # gather row names
+      for inst_row_data in col_data:
+
+        # get gene name 
+        all_rows.append( inst_row_data['row_name'] )
 
     # get unique sorted list of genes 
-    all_genes = sorted(list(set(all_genes)))
-    print( 'found ' + str(len(all_genes)) + ' rows' )
+    all_rows = sorted(list(set(all_rows)))
+    all_sigs = sorted(list(set(all_sigs)))
+    print( 'found ' + str(len(all_rows)) + ' rows' )
     print( 'found ' + str(len(all_sigs)) + ' columns\n'  )
 
     # save genes and sigs to nodes 
-    self.dat['nodes']['row'] = all_genes
+    self.dat['nodes']['row'] = all_rows
     self.dat['nodes']['col'] = all_sigs
 
     # initialize numpy matrix of nans
-    self.dat['mat'] = np.empty((len(all_genes),len(all_sigs)))
+    self.dat['mat'] = np.empty((len(all_rows),len(all_sigs)))
     self.dat['mat'][:] = np.nan
 
-    self.dat['mat_up'] = np.empty((len(all_genes),len(all_sigs)))
-    self.dat['mat_up'][:] = np.nan
+    if vect_post['is_up_down'] == True:
+      self.dat['mat_up'] = np.empty((len(all_rows),len(all_sigs)))
+      self.dat['mat_up'][:] = np.nan
 
-    self.dat['mat_dn'] = np.empty((len(all_genes),len(all_sigs)))
-    self.dat['mat_dn'][:] = np.nan
+      self.dat['mat_dn'] = np.empty((len(all_rows),len(all_sigs)))
+      self.dat['mat_dn'][:] = np.nan
 
-    # loop through all signatures and genes 
+    # loop through all signatures and rows
     # and place information into self.dat
     for inst_sig in sigs:
 
       # get sig name 
-      inst_sig_name = inst_sig['col_title']
+      inst_sig_name = inst_sig['col_name']
 
-      # get gene data
-      vector_data = inst_sig['vector']
+      # get row data
+      col_data = inst_sig['data']
 
-      # loop through vector 
-      for inst_row_data in vector_data:
+      # loop through column  
+      for inst_row_data in col_data:
 
-        # add gene data to signature matrix 
-        inst_gene = inst_row_data[0]
-        inst_value = inst_row_data[1]
+        # add row data to signature matrix 
+        inst_row = inst_row_data['row_name']
+        inst_value = inst_row_data['val']
 
-        # find index of gene and sig in matrix 
-        row_index = all_genes.index(inst_gene)
+        # find index of row and sig in matrix 
+        row_index = all_rows.index(inst_row)
         col_index  = all_sigs.index(inst_sig_name)
 
         # save inst_value to matrix 
         self.dat['mat'][row_index, col_index] = inst_value
 
-      # loop through vector_up and vector_dn
-      if 'vector_up' in inst_sig:
-
-        for inst_updn in ['up','dn']:
-
-          # get gene data
-          vector_data = inst_sig['vector_'+inst_updn]
-
-          # loop through vector 
-          for inst_row_data in vector_data:
-
-            # add gene data to signature matrix 
-            inst_gene = inst_row_data[0]
-            inst_value = inst_row_data[1]
-
-            # find index of gene and sig in matrix 
-            row_index = all_genes.index(inst_gene)
-            col_index  = all_sigs.index(inst_sig_name)
-
-            # save inst_value to matrix 
-            self.dat['mat_'+inst_updn][row_index, col_index] = inst_value
-
+        if vect_post['is_up_down'] == True:
+          self.dat['mat_up'][row_index, col_index] = inst_row_data['val_up']
+          self.dat['mat_dn'][row_index, col_index] = inst_row_data['val_dn']
 
   def load_g2e_to_net(self, g2e):
     import numpy as np
