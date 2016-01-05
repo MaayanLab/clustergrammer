@@ -248,7 +248,7 @@ function make_clust(inst_network){
           });
           $( "#amount" ).val( "$" + $( '#slider_'+filter_type ).slider( "value" ) );
 
-        }     
+        } 
 
         function set_up_filters(filter_type){
 
@@ -406,6 +406,7 @@ function make_clust(inst_network){
 
 // choose example here
 make_clust('mult_view.json');
+// make_clust('large_example.json');
 // make_clust('default_example.json');
 // make_clust('ccle.json');
 // make_clust('enr_clust_example.json');
