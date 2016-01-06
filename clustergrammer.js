@@ -1765,6 +1765,8 @@ function VizParams(config){
         return Math.abs(d.value);
       }).value;
 
+      console.log('using all links ')
+
     } else {
 
       // get max link value current 'links'
@@ -1772,6 +1774,7 @@ function VizParams(config){
         return Math.abs(d.value);
       }).value;
 
+      console.log('using normal links ')
     }
 
     // set opacity_scale
@@ -5531,8 +5534,14 @@ function filter_network_data(orig_network_data, change_view){
       return d.N_row_sum == change_view.N_row_sum;
     });
 
+    if(typeof inst_view === 'undefined'){
+        inst_view = views[0];
+    };
+
   }
 
+  console.log('new view')
+  console.log(inst_view)
 
   var new_nodes = inst_view.nodes;
 
@@ -7023,5 +7032,5 @@ return {
     reset_zoom: viz.reset_zoom,
     config: config
 };
-  
+	
 }

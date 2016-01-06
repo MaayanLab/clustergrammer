@@ -550,7 +550,13 @@ class Network(object):
     self.dat['mat'] = np.empty((len(all_rows),len(all_sigs)))
     self.dat['mat'][:] = np.nan
 
-    if vect_post['is_up_down'] == True:
+    is_up_down = False 
+
+    if 'is_up_down' in vect_post:
+      if vect_post['is_up_down'] == True:
+        is_up_down = True
+
+    if is_up_down == True:
       self.dat['mat_up'] = np.empty((len(all_rows),len(all_sigs)))
       self.dat['mat_up'][:] = np.nan
 
@@ -581,7 +587,7 @@ class Network(object):
         # save inst_value to matrix 
         self.dat['mat'][row_index, col_index] = inst_value
 
-        if vect_post['is_up_down'] == True:
+        if is_up_down == True:
           self.dat['mat_up'][row_index, col_index] = inst_row_data['val_up']
           self.dat['mat_dn'][row_index, col_index] = inst_row_data['val_dn']
 

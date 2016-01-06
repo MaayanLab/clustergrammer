@@ -49,6 +49,10 @@ function filter_network_data(orig_network_data, change_view){
       return d.N_row_sum == change_view.N_row_sum;
     });
 
+    if(typeof inst_view === 'undefined'){
+        inst_view = views[0];
+    };
+
   }
 
   console.log('new view')
