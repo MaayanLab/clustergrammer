@@ -1447,7 +1447,7 @@ class Network(object):
     keep_top = [500,400,300,200,100,90,80,70,60,50,40,30,20,10]
 
     # get copy of df and take abs value, cell line cols and gene rows
-    df_abs = deepcopy(df['mat'].abs())
+    df_abs = deepcopy(df['mat'])
 
     # transpose to get gene columns 
     df_abs = df_abs.transpose()
@@ -1455,7 +1455,10 @@ class Network(object):
     # sum the values of the genes in the cell lines 
     tmp_sum = df_abs.sum(axis=0)
 
-    # 
+    # take absolute value to keep most positive and most negative rows 
+    tmp_sum = tmp_sum.abs()
+
+    # sort rows by value 
     tmp_sum.sort(ascending=False)
 
     rows_sorted = tmp_sum.index.values.tolist()
@@ -1561,7 +1564,7 @@ class Network(object):
         cutoff = inst_filt * max_sum
 
         # filter row 
-        df = self.df_filter_row(df, cutoff)
+        df = self.df_filter_row(df, cutoff, take_abs=True)
 
         print('\tfiltering at cutoff ' + str(inst_filt) + ' mat shape: ' + str(df['mat'].shape))
 
@@ -1713,7 +1716,29 @@ class Network(object):
       df_copy = deepcopy(df['mat'])
 
     # filter rows 
-    df_copy = df_copy[df_copy.sum(axis=1) > threshold]
+    df_copy = df_copy[ df_copy.sum(axis=1) > threshold]
+
+    # # transpose df 
+    # df_copy = df_copy.transpose()
+    # # sum the values of the rows 
+    # tmp_sum = df_copy.sum(axis=0)
+    # # transpose df_copy back 
+    # df_copy = df_copy.transpose()
+
+    # # take absolute value to keep most positive and most negative rows 
+    # tmp_sum = tmp_sum.abs()
+
+    # # sort rows by value 
+    # tmp_sum.sort(ascending=False)
+
+    # # filter series using threshold 
+    # tmp_sum = tmp_sum[tmp_sum>threshold]
+
+    # # get keep_row names 
+    # keep_rows = tmp_sum.index.values.tolist()
+
+    # # keep only a subset of the rows 
+    # df_copy = df_copy.ix[keep_rows]
 
     # filter columns to remove columns with all zero values 
     # transpose 
