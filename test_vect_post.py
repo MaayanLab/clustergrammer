@@ -17,9 +17,7 @@ def post_to_clustergrammer():
   vect_post = net.load_json_to_dict('large_vect_post.json')
   # vect_post = net.load_json_to_dict('fake_vect_post.json')
 
-
   r = requests.post(upload_url, data=json.dumps(vect_post) )
-
 
   link = r.text
 

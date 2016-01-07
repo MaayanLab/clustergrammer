@@ -591,66 +591,6 @@ class Network(object):
           self.dat['mat_up'][row_index, col_index] = inst_row_data['val_up']
           self.dat['mat_dn'][row_index, col_index] = inst_row_data['val_dn']
 
-  def load_g2e_to_net(self, g2e):
-    import numpy as np
-
-    # get all signatures 
-    sigs = g2e['gene_signatures']
-
-    # get all genes from signatures 
-    all_genes = []
-    all_sigs = []
-    for inst_sig in sigs:
-
-      # get gene data 
-      gene_data = inst_sig['genes']
-
-      # gather sig names 
-      all_sigs.append(inst_sig['col_title']) 
-
-      # gather genes 
-      for inst_gene_data in gene_data:
-
-        # add genes - the gene name is the first element of the list 
-        all_genes.append( inst_gene_data[0] )
-
-    # get unique sorted list of genes 
-    all_genes = sorted(list(set(all_genes)))
-    print( 'found ' + str(len(all_genes)) + ' genes' )
-    print( 'found ' + str(len(all_sigs)) + ' siguatures\n'  )
-
-    # save genes and sigs to nodes 
-    self.dat['nodes']['row'] = all_genes
-    self.dat['nodes']['col'] = all_sigs
-
-    # initialize numpy matrix of nans
-    self.dat['mat'] = np.empty((len(all_genes),len(all_sigs)))
-    self.dat['mat'][:] = np.nan
-
-    # loop through all signatures and genes 
-    # and place information into self.dat
-    for inst_sig in sigs:
-
-      # get sig name 
-      inst_sig_name = inst_sig['col_title']
-
-      # get gene data
-      gene_data = inst_sig['genes']
-
-      # loop through genes 
-      for inst_gene_data in gene_data:
-
-        # add gene data to signature matrix 
-        inst_gene = inst_gene_data[0]
-        inst_value = inst_gene_data[1]
-
-        # find index of gene and sig in matrix 
-        row_index = all_genes.index(inst_gene)
-        col_index  = all_sigs.index(inst_sig_name)
-
-        # save inst_value to matrix 
-        self.dat['mat'][row_index, col_index] = inst_value
-
   def load_data_file_to_net(self, filename):
     # load json from file to new dictionary 
     inst_dat = self.load_json_to_dict(filename)
