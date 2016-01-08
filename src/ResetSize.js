@@ -222,6 +222,9 @@
     params.labels.default_fs_row = params.matrix.rect_height * 1.07;
     params.labels.default_fs_col = params.matrix.rect_width * 0.87  ;
 
+    svg_group.select('#super_background')
+      .style('width', params.viz.svg_dim.width)
+      .style('height', params.viz.svg_dim.height);
 
     svg_group.select('#grey_background')
       .attr('width', params.viz.clust.dim.width)

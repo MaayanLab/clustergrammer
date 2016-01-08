@@ -3167,6 +3167,9 @@ function draw_grid_lines(row_nodes, col_nodes) {
     params.labels.default_fs_row = params.matrix.rect_height * 1.07;
     params.labels.default_fs_col = params.matrix.rect_width * 0.87  ;
 
+    svg_group.select('#super_background')
+      .style('width', params.viz.svg_dim.width)
+      .style('height', params.viz.svg_dim.height);
 
     svg_group.select('#grey_background')
       .attr('width', params.viz.clust.dim.width)
@@ -5633,6 +5636,14 @@ function Viz(params) {
         .attr('width',  params.viz.svg_dim.width)
         .attr('height', params.viz.svg_dim.height);
     }
+
+    // add white background 
+    svg_group
+      .append('rect')
+      .attr('id','super_background')
+      .style('width', params.viz.svg_dim.width)
+      .style('height', params.viz.svg_dim.height)
+      .style('fill','white')
 
     // make the matrix
     /////////////////////////
