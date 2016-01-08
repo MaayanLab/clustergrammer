@@ -159,7 +159,7 @@ function make_clust(inst_network){
           // 'ini_view':{'filter_row_sum':0.9}
         };
 
-        d3.select('#wait_message').style('display','none');
+        d3.select('#wait_message').remove();
 
         // make clustergram: pass network_data and the div name where the svg should be made
         // tmp make cgm a global variable so that it can be updated with new data 
@@ -180,6 +180,67 @@ function make_clust(inst_network){
         // set_up_filters('filter_row_num');
 
         set_up_N_filters('N_row_sum'); 
+
+        // download svg of images 
+        filename='clustergram.svg';
+        d3.selectAll("#download-svg")
+          .attr("href", "data:image/svg+xml;charset=utf-8;base64," + 
+            btoa(unescape(encodeURIComponent(
+
+              d3.select("#main_svg").attr("version", "1.1").attr("xmlns", "http://www.w3.org/2000/svg")
+                .node().parentNode.innerHTML)
+
+              )
+            )
+          )
+        .attr("download",filename);
+
+
+        // // attempt 2 
+        // if (p.graph.svg.downloadID != undefined){
+        //     var serializer = new XMLSerializer();
+        //     var xmlString = serializer.serializeToString(d3.select('svg').node());
+        //     var imgData = 'data:image/svg+xml;base64,' + btoa(xmlString);
+
+        //     function writeDownloadLink(){
+        //         var html = d3.select(elementid).select("svg")
+        //                 .attr("title", "svg_title")
+        //                 .attr("version", 1.1)
+        //                 .attr("xmlns", "http://www.w3.org/2000/svg")
+        //                 .node().parentNode.innerHTML;  
+
+        //         d3.select(this)
+        //                 .attr("href-lang", "image/svg+xml")
+        //                 .attr("href", "data:image/svg+xml;base64,\n" + btoa(unescape(encodeURIComponent(html))))
+        //     };
+
+        //     var idselector = "#"+p.graph.svg.downloadID;
+
+        //     d3.select(idselector)
+        //             .on("mouseover", writeDownloadLink);
+
+        // }         
+
+
+
+        // attempt 3 
+
+        // //Encode the SVG
+        // var serializer = new XMLSerializer();
+        // var xmlString = serializer.serializeToString(d3.select('#main_svg').node());
+        // // btoa(xmlString)
+        // // btoa(unescape(encodeURIComponent(markup)))
+        // // var imgData = 'data:image/svg+xml;base64,' + btoa(xmlString);
+        // var imgData = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(xmlString)));
+        // //Use the download attribute (or a shim) to provide a link
+        // // <a href="'+imgData+'" download="download">Download</a>
+
+        // tmp = d3.select('#download-svg')
+        //   .attr('href',imgData)
+        //   .attr('download','download');
+
+
+
 
         function set_up_N_filters(filter_type){
 
@@ -402,6 +463,26 @@ function make_clust(inst_network){
   }); // end closure 
 
 } // end make_clust
+
+
+// save svg: example from: http://bl.ocks.org/pgiraud/8955139#profile.json
+////////////////////////////////////////////////////////////////////////////
+function save_clust_svg(){
+
+  d3.select('#expand_button').style('opacity',0)
+
+  var html = d3.select("svg")
+        .attr("title", "test2")
+        .attr("version", 1.1)
+        .attr("xmlns", "http://www.w3.org/2000/svg")
+        .node().parentNode.innerHTML;        
+
+  var blob = new Blob([html], {type: "image/svg+xml"});              
+
+  saveAs(blob, "myProfile.svg");
+
+  d3.select('#expand_button').style('opacity',0.4)
+}
 
 
 // choose example here

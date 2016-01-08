@@ -55,7 +55,6 @@ class Network(object):
     # save to self
     self.df_to_dat(tmp_df)
 
-
   def load_lines_from_tsv_to_net(self, lines):
     import numpy as np
     # get row/col labels and data from lines 
@@ -103,107 +102,6 @@ class Network(object):
         # add rows to matrix
         if i > 1: 
           self.dat['mat'] = np.vstack( ( self.dat['mat'], inst_data_row ) )
-
-  def load_hgram(self, filename, max_num_links=50000):
-    import numpy as np
-
-    # example data format 
-    ###########################
-    #   # # DatasetName Achilles Cell Line Gene Essentiality Profiles
-    #   # # DatasetGroup  disease or phenotype associations
-    #   GeneSym NA  NA/DatasetID  1
-    #   1060P11.3 na  na  0
-    #   3.8-1.2 na  na  0
-    #   3.8-1.5 na  na  0
-    #   A1BG  na  na  0
-    #   A1BG-AS1  na  na  0
-    #   A1CF  na  na  0
-    #   A2M na  na  0 
-
-    # processing steps
-    # line 1 has dataset names starting on 4th column 
-    # line 2 has dataset groups starting on 4th column 
-    # line 3 has column labels and dataset numbers, but no information that I need
-    # line 4 and after have gene symbols (first column) and values (4th and after columns)
-
-    # # load gene classes for harmonogram 
-    # gc = self.load_json_to_dict('gene_classes_harmonogram.json')
-
-    f = open(filename,'r')
-    lines = f.readlines()
-    f.close()
-
-    # loop through the lines of the file 
-    for i in range(len(lines)):
-
-      # get the inst_line and make list 
-      inst_line = lines[i].strip().split('\t')
-
-      # line 1: get dataset names 
-      if i ==0:
-
-        # gather column information 
-        for j in range(len(inst_line)):
-          # skip the first three columns
-          if j > 2: 
-            # get inst label
-            inst_col = inst_line[j]
-            # gather column labels 
-            self.dat['nodes']['col'].append(inst_col)
-
-      # line 2: get dataset groups - do not save as 'cl', save as 'info' to sidestep clustergram.js code
-      if i ==1:
-        # gather column classification information 
-        for j in range(len(inst_line)):
-          # skip the first three columns
-          if j > 2: 
-            # get inst label
-            inst_col = inst_line[j]
-            # gather column labels 
-            self.dat['node_info']['col']['info'].append(inst_col)
-
-      # line 3: no information 
-
-      # line 4: get gene symbol and data 
-      if i > 2:
-
-        # get gene 
-        inst_gene = inst_line[0]
-        # add gene to rows 
-        self.dat['nodes']['row'].append(inst_gene)
-
-        # not going to do this here
-        ############################
-        # # add protein type to classification and initialize class to other
-        # inst_prot_class = 'other'
-        # for inst_gc in gc:
-        #   if inst_gene in gc[inst_gc]:
-        #     inst_prot_class = inst_gc
-        # # add class to node_info
-        # self.dat['node_info']['row']['cl'].append(inst_prot_class)
-
-        # grab data, convert to float, and make numpy array 
-        inst_data_row = inst_line[3:]
-        inst_data_row = [float(tmp_dat) for tmp_dat in inst_data_row]
-
-        inst_data_row = np.asarray(inst_data_row)
-
-        # threshold data 
-        inst_data_row[abs(inst_data_row) < thresh_data] = 0
-
-        # initialize matrix 
-        if i == 3:
-          self.dat['mat'] = inst_data_row
-
-        # add rows to matrix 
-        if i > 3:
-          self.dat['mat'] = np.vstack( ( self.dat['mat'], inst_data_row ) )
-
-
-    print('\nthere are ' + str(len(self.dat['nodes']['row'])) + ' genes' )
-    print('there are ' + str(len(self.dat['nodes']['col'])) + ' resources\n' )
-    print('matrix shape')
-    print(self.dat['mat'].shape)
 
   def load_l1000cds2(self, l1000cds2):
     import scipy
