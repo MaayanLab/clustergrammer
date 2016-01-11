@@ -2,6 +2,8 @@ function filter_network_data(orig_network_data, change_view){
  
   var views = orig_network_data.views;
 
+  console.log(views)
+
   console.log(change_view)
 
   // Get Row Filtering View 
@@ -98,6 +100,8 @@ function filter_network_data(orig_network_data, change_view){
   // pass on all views 
   new_network_data.views = views;
   
+  console.log(new_network_data.col_nodes)
+
   return new_network_data;
 
 }

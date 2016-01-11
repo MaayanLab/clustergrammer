@@ -19,11 +19,8 @@ def main():
   buff = StringIO.StringIO( file_buffer.read() )
   net.pandas_load_tsv_to_net(buff)
 
-  # # filter top views 
-  # net.N_top_views()
-
-  # perform fast row filtering 
-  net.fast_mult_views()
+  # filter rows 
+  net.make_filtered_views()
 
   net.write_json_to_file('viz', 'json/mult_view.json', 'indent')
 

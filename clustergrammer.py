@@ -1270,14 +1270,12 @@ class Network(object):
 
     return df 
 
-  def N_top_views(self, dist_type='cos', run_clustering=True, dendro=True):
+  def make_filtered_views(self, dist_type='cos', run_clustering=True, dendro=True):
     '''
     This will calculate multiple views of a clustergram by filtering the data 
     and clustering after each filtering. This filtering will keep the top N 
     rows based on some quantity (sum, num-non-zero, etc). 
     '''
-    from clustergrammer import Network
-    from copy import deepcopy 
 
     # get dataframe dictionary of network and remove rows/cols with all zero values 
     df = self.dat_to_df()
@@ -1307,6 +1305,97 @@ class Network(object):
 
     # add view with no filtering 
     all_views.append(inst_view)
+
+    # # add N_row_sum views 
+    all_views = self.add_N_top_views(   df, all_views )
+    all_views = self.add_pct_top_views( df, all_views )
+
+    # add views to viz 
+    self.viz['views'] = all_views
+
+    print('\tfinished fast_mult_views')
+
+  def add_pct_top_views(self, df, all_views):
+    from clustergrammer import Network 
+    from copy import deepcopy 
+    import numpy as np
+
+    # gather category key 
+    is_col_cat = False
+    if len(self.dat['node_info']['col']['cl']) > 0:
+      is_col_cat = True
+      cat_key_col = {}
+      for i in range(len(self.dat['nodes']['col'])):
+        cat_key_col[ self.dat['nodes']['col'][i] ] = self.dat['node_info']['col']['cl'][i]
+
+    # filter between 0% and 90% of some threshoold 
+    all_filt = range(10)
+    all_filt = [i/float(10) for i in all_filt]
+
+    # row filtering values 
+    mat = self.dat['mat']
+    mat_abs = abs(mat)
+    sum_row = np.sum(mat_abs, axis=1)
+    max_sum = max(sum_row)
+
+    for inst_filt in all_filt:
+      
+      # skip zero filtering 
+      if inst_filt > 0:
+
+        cutoff = inst_filt * max_sum
+
+        # filter row 
+        df = self.df_filter_row(df, cutoff, take_abs=True)
+
+        print('\tfiltering at cutoff ' + str(inst_filt) + ' mat shape: ' + str(df['mat'].shape))
+
+        # ini net 
+        net = deepcopy(Network())
+
+        # transfer to dat 
+        net.df_to_dat(df)
+
+        # add col categories if necessary 
+        if is_col_cat: 
+          inst_col_cats = []
+
+          for inst_col_name in self.dat['nodes']['col']:
+            inst_col_cats.append( cat_key_col[inst_col_name] )
+
+          net.dat['node_info']['col']['cl'] = inst_col_cats
+
+        # try to cluster 
+        try: 
+
+          # cluster
+          net.cluster_row_and_col('cos')
+
+          # add view 
+          inst_view = {}
+          inst_view['filter_row_sum'] = inst_filt
+          inst_view['dist'] = 'cos'
+          inst_view['nodes'] = {}
+          inst_view['nodes']['row_nodes'] = net.viz['row_nodes']
+          inst_view['nodes']['col_nodes'] = net.viz['col_nodes']
+          all_views.append(inst_view)          
+
+        except:
+          print('\t*** did not cluster filtered view')
+
+    return all_views
+
+  def add_N_top_views(self, df, all_views):
+    from clustergrammer import Network
+    from copy import deepcopy 
+
+    # gather category key 
+    is_col_cat = False
+    if len(self.dat['node_info']['col']['cl']) > 0:
+      is_col_cat = True
+      cat_key_col = {}
+      for i in range(len(self.dat['nodes']['col'])):
+        cat_key_col[ self.dat['nodes']['col'][i] ] = self.dat['node_info']['col']['cl'][i]
 
     # keep the following number of top rows 
     keep_top = [500,400,300,200,100,90,80,70,60,50,40,30,20,10]
@@ -1343,12 +1432,20 @@ class Network(object):
         # initialize netowrk 
         net = deepcopy(Network())
 
-
         # filter columns - some columns may have all zero values 
         tmp_df = self.df_filter_col(tmp_df,0.001)
 
         # transfer to dat 
         net.df_to_dat(tmp_df)
+
+        # add col categories if necessary 
+        if is_col_cat: 
+          inst_col_cats = []
+
+          for inst_col_name in self.dat['nodes']['col']:
+            inst_col_cats.append( cat_key_col[inst_col_name] )
+
+          net.dat['node_info']['col']['cl'] = inst_col_cats
 
         # try to cluster 
         try: 
@@ -1363,24 +1460,28 @@ class Network(object):
           inst_view['nodes']['col_nodes'] = net.viz['col_nodes']
           all_views.append(inst_view)
         except:
-          print('*** did not cluster filtered view')
+          print('*** did not cluster filtered view') 
 
-    # add views to viz 
-    self.viz['views'] = all_views
-
-    print('\tfinished fast_mult_views')
-
+    return all_views
 
   def fast_mult_views(self, dist_type='cos', run_clustering=True, dendro=True):
     import numpy as np
     import pandas as pd
+    from clustergrammer import Network
+    from copy import deepcopy
     ''' 
     This will use Pandas to calculte multiple views of a clustergram 
     Currently, it is only filtering based on row-sum and it is disregarding 
     link information (used to add click functionality). 
     '''
-    from clustergrammer import Network
-    from copy import deepcopy
+
+    # gather category key 
+    is_col_cat = False
+    if len(self.dat['node_info']['col']['cl']) > 0:
+      is_col_cat = True
+      cat_key_col = {}
+      for i in range(len(self.dat['nodes']['col'])):
+        cat_key_col[ self.dat['nodes']['col'][i] ] = self.dat['node_info']['col']['cl'][i]
 
     # get dataframe dictionary of network and remove rows/cols with all zero values 
     df = self.dat_to_df()
@@ -1439,6 +1540,15 @@ class Network(object):
         # transfer to dat 
         net.df_to_dat(df)
 
+        # add col categories if necessary 
+        if is_col_cat: 
+          inst_col_cats = []
+
+          for inst_col_name in self.dat['nodes']['col']:
+            inst_col_cats.append( cat_key_col[inst_col_name] )
+
+          net.dat['node_info']['col']['cl'] = inst_col_cats
+
         # try to cluster 
         try: 
 
@@ -1452,7 +1562,6 @@ class Network(object):
           inst_view['nodes'] = {}
           inst_view['nodes']['row_nodes'] = net.viz['row_nodes']
           inst_view['nodes']['col_nodes'] = net.viz['col_nodes']
-
           all_views.append(inst_view)          
 
         except:

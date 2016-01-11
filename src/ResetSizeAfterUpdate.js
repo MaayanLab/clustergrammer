@@ -559,8 +559,13 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
           var inst_color = '#eee';
           if (params.labels.show_categories) {
             inst_color = params.labels.class_colors.col[d.cl];
+
           }
+          // console.log(params.labels.class_colors.col)
+          // console.log(d.cl)
           return inst_color;
+          // console.log(inst_color)
+          // return 'green';
         });
 
     } else {
