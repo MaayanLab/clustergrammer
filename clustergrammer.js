@@ -2160,6 +2160,7 @@ function Labels(params){
       .attr('text-anchor', 'end')
       .style('font-size', params.labels.default_fs_row + 'px')
       .text(function(d){ return normal_name(d);})
+      .attr('pointer-events','none')
       .style('opacity',0)
       .transition().delay(text_delay).duration(text_delay)
       .style('opacity',1);
@@ -2484,6 +2485,7 @@ function Labels(params){
       // original font size
       .style('font-size', params.labels.default_fs_col + 'px')
       .text(function(d){ return normal_name(d);})
+      // .attr('pointer-events','none')
       .style('opacity',0)
       .transition().delay(text_delay).duration(text_delay)
       .style('opacity',1);
@@ -2577,10 +2579,10 @@ function Labels(params){
     col_label_click
       .insert('rect', 'text')
       .attr('class','.highlight_rect')
-      .attr('x', 10)
+      .attr('x', 0)
       .attr('y', 0)
-      .attr('width', 10)
-      .attr('height', 10)
+      .attr('width', 20)
+      .attr('height', params.matrix.rect_width)
       .style('opacity', 0);
 
     // change the size of the highlighting rects
