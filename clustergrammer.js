@@ -2501,16 +2501,18 @@ function Labels(params){
           var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
           return "<span>" + inst_name + "</span>";
         });
+
       d3.select('#'+params.viz.svg_div_id)
         .select('svg')
-        .select('#row_container')
+        .select('#col_container')
         .call(tip);
         
       col_label_obj
         .select('text')
         .on('mouseover',tip.show)
         .on('mouseout',tip.hide);
-      }
+
+    }
 
     // bounding font size 
     /////////////////////////////
@@ -2582,7 +2584,7 @@ function Labels(params){
       .attr('x', 0)
       .attr('y', 0)
       .attr('width', 20)
-      .attr('height', params.matrix.rect_width)
+      .attr('height', 0.5*params.matrix.rect_width)
       .style('opacity', 0);
 
     // change the size of the highlighting rects
