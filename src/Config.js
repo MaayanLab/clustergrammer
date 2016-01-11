@@ -162,7 +162,7 @@ function Config(args) {
       if (i === 0) {
         config.class_colors.row[c_row] = '#eee';
       } else {
-        config.class_colors.row[c_row] = Colors.get_random_color(i);
+        config.class_colors.row[c_row] = Colors.get_random_color(i+3);
       }
     });
 
@@ -171,9 +171,9 @@ function Config(args) {
     config.class_colors.col = {};
     _.each(class_cols, function(c_col, i) {
       if (i === 0) {
-        config.class_colors.col[c_col] = '#eee';
+        config.class_colors.col[c_col] = 'green';
       } else {
-        config.class_colors.col[c_col] = Colors.get_random_color(i);
+        config.class_colors.col[c_col] = Colors.get_random_color(i+3);
       }
     });
   }

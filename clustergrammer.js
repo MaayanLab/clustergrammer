@@ -199,7 +199,7 @@ function Config(args) {
       if (i === 0) {
         config.class_colors.row[c_row] = '#eee';
       } else {
-        config.class_colors.row[c_row] = Colors.get_random_color(i);
+        config.class_colors.row[c_row] = Colors.get_random_color(i+3);
       }
     });
 
@@ -208,9 +208,9 @@ function Config(args) {
     config.class_colors.col = {};
     _.each(class_cols, function(c_col, i) {
       if (i === 0) {
-        config.class_colors.col[c_col] = '#eee';
+        config.class_colors.col[c_col] = 'green';
       } else {
-        config.class_colors.col[c_col] = Colors.get_random_color(i);
+        config.class_colors.col[c_col] = Colors.get_random_color(i+3);
       }
     });
   }
@@ -4335,11 +4335,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
             inst_color = params.labels.class_colors.col[d.cl];
 
           }
-          // console.log(params.labels.class_colors.col)
-          // console.log(d.cl)
           return inst_color;
-          // console.log(inst_color)
-          // return 'green';
         });
 
     } else {
@@ -5597,6 +5593,8 @@ function filter_network_data(orig_network_data, change_view){
   // pass on all views 
   new_network_data.views = views;
   
+  console.log(new_network_data.col_nodes)
+
   return new_network_data;
 
 }
