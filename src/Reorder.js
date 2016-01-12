@@ -43,8 +43,9 @@ function Reorder(params){
       } else if (inst_order === 'rank') {
         params.matrix.y_scale.domain(params.matrix.orders.rank_col);
       } else if (inst_order === 'class') {
-        params.matrix.x_scale.domain(params.matrix.orders.class_row);
+        // params.matrix.x_scale.domain(params.matrix.orders.class_row);
         params.matrix.y_scale.domain(params.matrix.orders.class_col);
+        console.log('change to class order ')
       }
     }    
 

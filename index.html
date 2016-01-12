@@ -31,9 +31,9 @@
 
     <div id='viz_gmt_labels'></div>
 
-    <div class='viz_small_text'> Zoom into the clustergram using scroll. Reorder the clustergram using the toggle buttons or by double-clicking rows or columns. Double-click the clustergram to programatically reset zoom/panning.  Search for a gene to zoom into the matrix. Change the size of row/colum groups by moving the sliders. Click on row/column groups. See README for more information.</div>
+    <div class='viz_small_text'> Zoom/Reorder/Search/Filter, see README for more info.</div>
 
-    <div class='viz_small_text'> Clustergrammer.js is developed by Nick Fernandez at the <a href="http://icahn.mssm.edu/">Icahn School of Medicine at Mount Sinai</a> in the <a href="http://icahn.mssm.edu/research/labs/maayan-laboratory">Ma'ayan Lab</a> a <a href="http://lincs-dcic.org/">DCIC BD2K-LINCS</a> center. </div>
+    <div class='viz_small_text'> Clustergrammer.js is developed by Nicolas Fernandez at the <a href="http://icahn.mssm.edu/">Icahn School of Medicine at Mount Sinai</a> in the <a href="http://icahn.mssm.edu/research/labs/maayan-laboratory">Ma'ayan Lab</a> a <a href="http://lincs-dcic.org/">DCIC BD2K-LINCS</a> center. </div>
 
     <!-- toggle clustergram order -->
     <div class='viz_medium_text'>Row Order</div>
@@ -49,11 +49,17 @@
     
     <div class='viz_medium_text'>Column Order</div>
     <div id='toggle_row_order' class="btn-group" data-toggle="buttons" >
+
       <label class="btn btn-primary active order_name" id="clust_col">
         <input type="radio" name="options" autocomplete="off" checked > Cluster
       </label>
+
       <label class="btn btn-primary order_name" id="rank_col">
         <input type="radio" name="options" autocomplete="off" > Rank
+      </label>
+
+      <label class="btn btn-primary order_name" id="class_col">
+        <input type="radio" name="options" autocomplete="off" > Category
       </label>
 
     </div>
@@ -83,6 +89,8 @@
 
     <div class='viz_medium_text' id='filter_row_sum'>Filter Sum: 0% </div>
     <div id="slider_filter_row_sum" class='slider_filter'></div>
+
+    <div id='key_cat_col'></div>
 
     <!-- <div class='viz_medium_text' id='filter_row_value'>Filter Value: 0% </div> -->
     <!-- <div id="slider_filter_row_value" class='slider_filter'></div> -->

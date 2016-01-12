@@ -171,7 +171,7 @@ function Config(args) {
     config.class_colors.col = {};
 
     // custom column group colors 
-    var cat_colors = ['#1f77b4','orange ','8c564b','yellow','red','pink','blue','#e377c2','grey'];
+    var cat_colors = ['#1f77b4','orange','#8c564b','yellow','red','pink','blue','#e377c2','grey'];
 
     _.each(class_cols, function(c_col, i) {
       

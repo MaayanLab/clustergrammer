@@ -208,7 +208,7 @@ function Config(args) {
     config.class_colors.col = {};
 
     // custom column group colors 
-    var cat_colors = ['#1f77b4','orange ','8c564b','yellow','red','pink','blue','#e377c2','grey'];
+    var cat_colors = ['#1f77b4','orange','#8c564b','yellow','red','pink','blue','#e377c2','grey'];
 
     _.each(class_cols, function(c_col, i) {
       
@@ -5942,8 +5942,9 @@ function Reorder(params){
       } else if (inst_order === 'rank') {
         params.matrix.y_scale.domain(params.matrix.orders.rank_col);
       } else if (inst_order === 'class') {
-        params.matrix.x_scale.domain(params.matrix.orders.class_row);
+        // params.matrix.x_scale.domain(params.matrix.orders.class_row);
         params.matrix.y_scale.domain(params.matrix.orders.class_col);
+        console.log('change to class order ')
       }
     }    
 

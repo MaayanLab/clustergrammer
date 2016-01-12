@@ -196,49 +196,43 @@ function make_clust(inst_network){
         .attr("download",filename);
 
 
-        // // attempt 2 
-        // if (p.graph.svg.downloadID != undefined){
-        //     var serializer = new XMLSerializer();
-        //     var xmlString = serializer.serializeToString(d3.select('svg').node());
-        //     var imgData = 'data:image/svg+xml;base64,' + btoa(xmlString);
+        // set up column category key 
+        var key_cat_col = d3.select('#key_cat_col')
+          // .style('background-color','red')
+          .style('margin-top','10px')
+          .style('padding','5px')
+          .style('border','1px solid #DEDEDE')
+          .style('margin-bottom','10px');
 
-        //     function writeDownloadLink(){
-        //         var html = d3.select(elementid).select("svg")
-        //                 .attr("title", "svg_title")
-        //                 .attr("version", 1.1)
-        //                 .attr("xmlns", "http://www.w3.org/2000/svg")
-        //                 .node().parentNode.innerHTML;  
+        key_cat_col
+          .append('p')
+          .text('Column Categories')
+          .style('margin-bottom','2px');
 
-        //         d3.select(this)
-        //                 .attr("href-lang", "image/svg+xml")
-        //                 .attr("href", "data:image/svg+xml;base64,\n" + btoa(unescape(encodeURIComponent(html))))
-        //     };
+        for (var inst_cat in cgm.params.class_colors.col){
 
-        //     var idselector = "#"+p.graph.svg.downloadID;
+          var inst_group = key_cat_col
+            .append('g');
 
-        //     d3.select(idselector)
-        //             .on("mouseover", writeDownloadLink);
+          inst_group
+            .append('div')
+            .style('width','12px')
+            .style('height','12px')
+            .style('float','left')
+            .style('margin-right','5px')
+            .style('margin-top','5px')
+            .style('background-color',function(){
+              var inst_color = cgm.params.class_colors.col[inst_cat];
+              return inst_color;
+            })
 
-        // }         
-
-
-
-        // attempt 3 
-
-        // //Encode the SVG
-        // var serializer = new XMLSerializer();
-        // var xmlString = serializer.serializeToString(d3.select('#main_svg').node());
-        // // btoa(xmlString)
-        // // btoa(unescape(encodeURIComponent(markup)))
-        // // var imgData = 'data:image/svg+xml;base64,' + btoa(xmlString);
-        // var imgData = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(xmlString)));
-        // //Use the download attribute (or a shim) to provide a link
-        // // <a href="'+imgData+'" download="download">Download</a>
-
-        // tmp = d3.select('#download-svg')
-        //   .attr('href',imgData)
-        //   .attr('download','download');
-
+          // 
+          inst_group
+            .append('p')
+            .style('margin-bottom','2px')
+            .append('text')
+            .text(inst_cat);
+        }
 
         // save svg: example from: http://bl.ocks.org/pgiraud/8955139#profile.json
         ////////////////////////////////////////////////////////////////////////////
