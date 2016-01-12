@@ -1651,17 +1651,33 @@ function VizParams(config){
       }),
       clust_col: d3.range(params.viz.num_row_nodes).sort(function(a, b) {
         return row_nodes[b].clust - row_nodes[a].clust;
-      }),
-      // class
-      class_row: d3.range(params.viz.num_col_nodes).sort(function(a, b) {
-        return col_nodes[b].cl - col_nodes[a].cl;
-      }),
-      class_col: d3.range(params.viz.num_row_nodes).sort(function(a, b) {
-        return row_nodes[b].cl - row_nodes[a].cl;
       })
     };
 
-    
+
+
+    // define class ordering 
+    if (_.has(col_nodes[0],'cl')){
+
+      // the order should be interpreted as the nth node should be positioned here 
+      // in the order 
+
+      var tmp_col_nodes = _.sortBy(col_nodes,'cl')
+
+      var ordered_col_names = []
+      for (var i=0; i< tmp_col_nodes.length; i++){
+        ordered_col_names.push( tmp_col_nodes[i].name );
+      }
+
+      var order_col_class = []
+      for (var i=0; i< col_nodes.length; i++){
+        var inst_col_name = ordered_col_names[i];
+        order_col_class.push( _.indexOf( params.network_data.col_nodes_names, inst_col_name) );
+      }
+
+      params.matrix.orders.class_row = order_col_class;
+    }
+
     // scaling functions to position rows and tiles, define rangeBands
     params.matrix.x_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.width]);
     params.matrix.y_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.height]);
@@ -5930,6 +5946,7 @@ function Reorder(params){
       } else if (inst_order === 'rank') {
         params.matrix.x_scale.domain(params.matrix.orders.rank_row);
       } else if (inst_order === 'class') {
+        console.log('reordering the columns by redefining x_scale')
         params.matrix.x_scale.domain(params.matrix.orders.class_row);
       }
 
@@ -5943,8 +5960,8 @@ function Reorder(params){
         params.matrix.y_scale.domain(params.matrix.orders.rank_col);
       } else if (inst_order === 'class') {
         // params.matrix.x_scale.domain(params.matrix.orders.class_row);
+        console.log('reordering the columns based on class')
         params.matrix.y_scale.domain(params.matrix.orders.class_col);
-        console.log('change to class order ')
       }
     }    
 
