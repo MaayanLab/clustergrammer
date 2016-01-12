@@ -199,19 +199,20 @@ function Config(args) {
       if (i === 0) {
         config.class_colors.row[c_row] = '#eee';
       } else {
-        config.class_colors.row[c_row] = Colors.get_random_color(i+3);
+        config.class_colors.row[c_row] = Colors.get_random_color(i);
       }
     });
 
     // associate classes with colors
     var class_cols = _.uniq(_.pluck(args.network_data.col_nodes, 'cl'));
     config.class_colors.col = {};
+
+    // custom column group colors 
+    var cat_colors = ['#1f77b4','orange ','8c564b','yellow','red','pink','blue','#e377c2','grey'];
+
     _.each(class_cols, function(c_col, i) {
-      if (i === 0) {
-        config.class_colors.col[c_col] = 'green';
-      } else {
-        config.class_colors.col[c_col] = Colors.get_random_color(i+3);
-      }
+      
+      config.class_colors.col[c_col] = cat_colors[ i % cat_colors.length ];
     });
   }
 
@@ -2597,6 +2598,7 @@ function Labels(params){
         d3.select(this)
           .select('rect')
           .attr('width', bbox.width * 1.1)
+          .attr('height', 0.67*params.matrix.rect_width)
           .style('fill', function(d){
             var inst_color = 'white';
             if (params.labels.show_categories){
@@ -2604,7 +2606,7 @@ function Labels(params){
             }
             return inst_color 
           })
-          .style('opacity', 0.25);
+          .style('opacity', 0.30);
       });
 
     // add triangle under rotated labels
@@ -2633,9 +2635,6 @@ function Labels(params){
       .style('opacity',0)
       .transition().delay(text_delay).duration(text_delay)
       .style('opacity',1);
-
-
-
 
 
     // add col callback function
@@ -3616,6 +3615,27 @@ function draw_grid_lines(row_nodes, col_nodes) {
           .attr('height', params.matrix.rect_width * 0.66);
       }
 
+      // change the size of the highlighting rects
+      d3.selectAll('.col_label_click')
+        .each(function(d) {
+          var bbox = d3.select(this)
+            .select('text')[0][0]
+            .getBBox();
+
+          d3.select(this)
+            .select('rect')
+            .attr('width', bbox.width * 1.1)
+            .attr('height', 0.67*params.matrix.rect_width)
+            .style('fill', function(d){
+              var inst_color = 'white';
+              if (params.labels.show_categories){
+                inst_color = params.labels.class_colors.col[d.cl];
+              }
+              return inst_color 
+            })
+            .style('opacity', 0.30);
+        });  
+
       // resize dendrogram
       ///////////////////
       svg_group.selectAll('.row_class_rect')
@@ -4383,6 +4403,28 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
         // rotate labels - reduce width if rotating
         .attr('height', params.matrix.x_scale.rangeBand() * 0.66);
     }
+
+
+  // change the size of the highlighting rects
+  d3.selectAll('.col_label_click')
+    .each(function(d) {
+      var bbox = d3.select(this)
+        .select('text')[0][0]
+        .getBBox();
+
+      d3.select(this)
+        .select('rect')
+        .attr('width', bbox.width * 1.1)
+        .attr('height', 0.67*params.matrix.rect_width)
+        .style('fill', function(d){
+          var inst_color = 'white';
+          if (params.labels.show_categories){
+            inst_color = params.labels.class_colors.col[d.cl];
+          }
+          return inst_color 
+        })
+        .style('opacity', 0.30);
+    });      
 
   // resize dendrogram
   ///////////////////
@@ -6858,6 +6900,7 @@ function Zoom(params){
         d3.select(this)
           .select('rect')
           .attr('width', bbox.width * 1.1)
+          .attr('height', 0.67*params.matrix.rect_width)
           .style('fill', function(d){
             var inst_color = 'white';
             if (params.labels.show_categories){

@@ -560,6 +560,7 @@ function Labels(params){
         d3.select(this)
           .select('rect')
           .attr('width', bbox.width * 1.1)
+          .attr('height', 0.67*params.matrix.rect_width)
           .style('fill', function(d){
             var inst_color = 'white';
             if (params.labels.show_categories){
@@ -567,7 +568,7 @@ function Labels(params){
             }
             return inst_color 
           })
-          .style('opacity', 0.25);
+          .style('opacity', 0.30);
       });
 
     // add triangle under rotated labels
@@ -596,9 +597,6 @@ function Labels(params){
       .style('opacity',0)
       .transition().delay(text_delay).duration(text_delay)
       .style('opacity',1);
-
-
-
 
 
     // add col callback function

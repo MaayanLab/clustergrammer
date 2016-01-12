@@ -663,6 +663,27 @@
           .attr('height', params.matrix.rect_width * 0.66);
       }
 
+      // change the size of the highlighting rects
+      d3.selectAll('.col_label_click')
+        .each(function(d) {
+          var bbox = d3.select(this)
+            .select('text')[0][0]
+            .getBBox();
+
+          d3.select(this)
+            .select('rect')
+            .attr('width', bbox.width * 1.1)
+            .attr('height', 0.67*params.matrix.rect_width)
+            .style('fill', function(d){
+              var inst_color = 'white';
+              if (params.labels.show_categories){
+                inst_color = params.labels.class_colors.col[d.cl];
+              }
+              return inst_color 
+            })
+            .style('opacity', 0.30);
+        });  
+
       // resize dendrogram
       ///////////////////
       svg_group.selectAll('.row_class_rect')

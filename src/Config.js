@@ -162,19 +162,20 @@ function Config(args) {
       if (i === 0) {
         config.class_colors.row[c_row] = '#eee';
       } else {
-        config.class_colors.row[c_row] = Colors.get_random_color(i+3);
+        config.class_colors.row[c_row] = Colors.get_random_color(i);
       }
     });
 
     // associate classes with colors
     var class_cols = _.uniq(_.pluck(args.network_data.col_nodes, 'cl'));
     config.class_colors.col = {};
+
+    // custom column group colors 
+    var cat_colors = ['#1f77b4','orange ','8c564b','yellow','red','pink','blue','#e377c2','grey'];
+
     _.each(class_cols, function(c_col, i) {
-      if (i === 0) {
-        config.class_colors.col[c_col] = 'green';
-      } else {
-        config.class_colors.col[c_col] = Colors.get_random_color(i+3);
-      }
+      
+      config.class_colors.col[c_col] = cat_colors[ i % cat_colors.length ];
     });
   }
 

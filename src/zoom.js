@@ -500,6 +500,7 @@ function Zoom(params){
         d3.select(this)
           .select('rect')
           .attr('width', bbox.width * 1.1)
+          .attr('height', 0.67*params.matrix.rect_width)
           .style('fill', function(d){
             var inst_color = 'white';
             if (params.labels.show_categories){
