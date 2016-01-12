@@ -2583,24 +2583,28 @@ function Labels(params){
       .attr('class','.highlight_rect')
       .attr('x', 0)
       .attr('y', 0)
-      .attr('width', 20)
-      .attr('height', 0.5*params.matrix.rect_width)
+      .attr('width', 10*params.matrix.rect_height)
+      .attr('height', 0.67*params.matrix.rect_width)
       .style('opacity', 0);
 
     // change the size of the highlighting rects
-    col_label_click
-      .each(function() {
+    d3.selectAll('.col_label_click')
+      .each(function(d) {
         var bbox = d3.select(this)
           .select('text')[0][0]
           .getBBox();
+
         d3.select(this)
-          .select('.highlight_rect')
-          .attr('x', bbox.x * 1.25)
-          .attr('y', 0)
-          .attr('width', bbox.width * 1.25)
-          .attr('height', params.matrix.x_scale.rangeBand() * 0.6)
-          .style('fill', 'yellow')
-          .style('opacity', 0);
+          .select('rect')
+          .attr('width', bbox.width * 1.1)
+          .style('fill', function(d){
+            var inst_color = 'white';
+            if (params.labels.show_categories){
+              inst_color = params.labels.class_colors.col[d.cl];
+            }
+            return inst_color 
+          })
+          .style('opacity', 0.25);
       });
 
     // add triangle under rotated labels
@@ -6843,7 +6847,26 @@ function Zoom(params){
       d3.selectAll('.col_label_click').each(function() { trim_text(this, 'col'); });
     }
 
+    // constrain column text highlight bars 
+    // change the size of the highlighting rects
+    d3.selectAll('.col_label_click')
+      .each(function(d) {
+        var bbox = d3.select(this)
+          .select('text')[0][0]
+          .getBBox();
 
+        d3.select(this)
+          .select('rect')
+          .attr('width', bbox.width * 1.1)
+          .style('fill', function(d){
+            var inst_color = 'white';
+            if (params.labels.show_categories){
+              inst_color = params.labels.class_colors.col[d.cl];
+            }
+            return inst_color 
+          })
+          .style('opacity', 0.25);
+      });
 
   }
 
