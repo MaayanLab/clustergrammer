@@ -5572,12 +5572,16 @@ function filter_network_data(orig_network_data, change_view){
  
   var views = orig_network_data.views;
 
-  console.log(views)
-
   console.log(change_view)
 
   // Get Row Filtering View 
   ///////////////////////////////////////////////////////////////
+  // change_view has the name of the new view (e.g. {N_row_sum:20})
+  // this view name is used to pull up the view information. The view consists 
+  // of a description of the view (e.g N_row_sum number and distance type) and 
+  // the nodes of the view (e.g. row_nodes and col_nodes). With the new set of 
+  // nodes, new_nodes, the links will be filtered in order to only keep links 
+  // between nodes that still exist in the view 
   if (_.has(change_view,'filter_row')){
     // failsafe if there is only row+col filtering from front-end
 
@@ -5631,6 +5635,17 @@ function filter_network_data(orig_network_data, change_view){
   console.log(inst_view)
 
   var new_nodes = inst_view.nodes;
+
+  // // try to manually set col_names here
+  // var tmp_keep_cols = ['H441','HCC78','HCC827','LOU-NH91','H1975','HCC44'];
+
+  // new_nodes.col_nodes = _.filter(new_nodes.col_nodes, function(d){
+  //   if ( _.contains(tmp_keep_cols, d.name) ){
+  //     return d;
+  //   }
+  // })
+
+  // console.log(new_nodes)
 
   // get new names of rows and cols 
   var row_names = _.pluck(new_nodes.row_nodes, 'name');
@@ -5959,7 +5974,6 @@ function Reorder(params){
       } else if (inst_order === 'rank') {
         params.matrix.x_scale.domain(params.matrix.orders.rank_row);
       } else if (inst_order === 'class') {
-        console.log('reordering the columns by redefining x_scale')
         params.matrix.x_scale.domain(params.matrix.orders.class_row);
       }
 
@@ -5973,7 +5987,6 @@ function Reorder(params){
         params.matrix.y_scale.domain(params.matrix.orders.rank_col);
       } else if (inst_order === 'class') {
         // params.matrix.x_scale.domain(params.matrix.orders.class_row);
-        console.log('reordering the columns based on class')
         params.matrix.y_scale.domain(params.matrix.orders.class_col);
       }
     }    

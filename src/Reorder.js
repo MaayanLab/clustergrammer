@@ -31,7 +31,6 @@ function Reorder(params){
       } else if (inst_order === 'rank') {
         params.matrix.x_scale.domain(params.matrix.orders.rank_row);
       } else if (inst_order === 'class') {
-        console.log('reordering the columns by redefining x_scale')
         params.matrix.x_scale.domain(params.matrix.orders.class_row);
       }
 
@@ -45,7 +44,6 @@ function Reorder(params){
         params.matrix.y_scale.domain(params.matrix.orders.rank_col);
       } else if (inst_order === 'class') {
         // params.matrix.x_scale.domain(params.matrix.orders.class_row);
-        console.log('reordering the columns based on class')
         params.matrix.y_scale.domain(params.matrix.orders.class_col);
       }
     }    
