@@ -21,7 +21,7 @@ def main():
 
   # filter rows 
   net.make_filtered_views()
-
+# 
   net.write_json_to_file('viz', 'json/mult_view.json', 'indent')
 
   # your code

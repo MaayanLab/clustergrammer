@@ -1,11 +1,12 @@
 # define a class for networks 
 class Network(object):
   '''
-  Networks have two states: the data state where they are stored as: matrix and nodes; 
-  and a viz state where they are stored as: viz.links, viz.row_nodes, viz.col_nodes.
+  Networks have two states: the data state where they are stored as: matrix and
+  nodes and a viz state where they are stored as: viz.links, viz.row_nodes, viz.
+  col_nodes.
 
-  The goal is to start in a data-state and produce a viz-state of the network that will be 
-  used as input to clustergram.js.
+  The goal is to start in a data-state and produce a viz-state of the network 
+  that will be used as input to clustergram.js.
   '''
 
   def __init__(self):
@@ -254,185 +255,6 @@ class Network(object):
           self.dat['mat'] = inst_vect
         else:
           self.dat['mat'] = np.hstack(( self.dat['mat'], inst_vect))
-
-  def load_cst_kea_enr_to_net(self, enr, pval_cutoff):
-    import scipy
-    import numpy as np
-
-    # enr - data structure 
-      # cell line 
-        # up_genes, dn_genes
-          # name, pval, pval_bon, pval_bh, int_genes 
-
-    print('loading cst enriched kinases ')
-
-    # the columns are the cell lines 
-    all_col = sorted(enr.keys())
-
-    # the rows are the enriched terms 
-    all_row = []
-
-    # gather all genes with significantly enriched pval_bh 
-    #######################################################
-    updn = ['up','dn']
-    # loop through cell lines 
-    for inst_cl in enr:
-      # loop through up/dn genes 
-      for inst_updn in updn:
-
-        # get inst_enr: the enrichment results from a cell line in either up/dn
-        inst_enr = enr[inst_cl][inst_updn]
-
-        # loop through enriched terms 
-        for i in range(len(inst_enr)):
-
-          # append name if pval is significant 
-          if inst_enr[i]['pval_bh'] <= pval_cutoff:
-
-            # append name to all terms 
-            all_row.append(inst_enr[i]['name'])
-
-    # get unique terms, sort them
-    all_row = sorted(list(set(all_row)))
-
-    # save row and column data to nodes 
-    nodes = {}
-    nodes['row'] = all_row
-    nodes['col'] = all_col
-
-    # gather data into matrix 
-    #############################
-    # initialize data_mat
-    data_mat = {}
-    data_mat['value']    = scipy.zeros([ len(all_row), len(all_col) ])
-    data_mat['value_up'] = scipy.zeros([ len(all_row), len(all_col) ])
-    data_mat['value_dn'] = scipy.zeros([ len(all_row), len(all_col) ])  
-
-    # save additional informaiton in a dictionary 
-    mat_info = {}
-
-    # loop through the rows (genes)
-    for i in range(len(all_row)):
-      
-      # get inst row: gene 
-      inst_gene = all_row[i]
-
-      # loop through the columns (cell lines)
-      for j in range(len(all_col)):
-
-        # get inst col: cell line 
-        inst_cl = all_col[j]
-
-        # initialize pval_nl negative log up/dn
-        pval_nl = {}
-
-        # ini list of substrates 
-        substrates = []
-
-        # get enrichment from up/dn genes
-        for inst_updn in updn:
-
-          # initialize pval_nl[inst_updn] = np.nan
-          pval_nl[inst_updn] = np.nan
-
-          # gather the current set of enrichment results
-          # from the cell line 
-          inst_enr = enr[inst_cl][inst_updn]
-
-          # check if kinase is in list of enriched results 
-          if any(d['name'] == inst_gene for d in inst_enr):
-
-            # get the dict from the list
-            inst_dict = self.find_dict_in_list( inst_enr, 'name', inst_gene)
-            
-            # only include significant pvalues
-            if inst_dict['pval_bh'] <= 0.05:
-
-              # retrieve the negative log pval_
-              pval_nl[inst_updn] = -np.log2( inst_dict['pval_bh'] )
-
-              # save ranks of substrates 
-              substrates.extend( inst_dict['ranks'] )
-
-            else:
-              # set nan pval
-              pval_nl[inst_updn] = np.nan
-
-        # set value for data_mat 
-        ###########################
-        # now that the enrichment results have been gathered
-        # for up/dn genes save the results 
-
-        # there is both up and down enrichment 
-        if np.isnan(pval_nl['up']) == False and np.isnan(pval_nl['dn']) == False:
-          
-          # set value of data_mat['merge'] as the mean of up/dn enrichment 
-          data_mat['value'][i,j] = np.mean([ pval_nl['up'], -pval_nl['dn'] ])
-
-          # set values of up/dn
-          data_mat['value_up'][i,j] =  pval_nl['up']
-          data_mat['value_dn'][i,j] = -pval_nl['dn']
-
-        # there is only up enrichment 
-        elif np.isnan(pval_nl['up']) == False:
-          # set value of data_mat as up enrichment 
-          data_mat['value'][i,j] = pval_nl['up'] 
-          data_mat['value_up'][i,j] = pval_nl['up']
-
-        # there is only dn enrichment
-        elif np.isnan(pval_nl['dn']) == False:
-          # set value of data_mat as the mean of up/dn enrichment 
-          data_mat['value'][i,j] = -pval_nl['dn']
-          data_mat['value_dn'][i,j] = -pval_nl['dn']
-
-        # save substrates to mat_info
-        mat_info[(i,j)] = substrates
-
-    # save nodes and data_mat to self.dat
-    self.dat['nodes'] = nodes
-    self.dat['mat'] = data_mat['value']
-
-    # add up and dn values into self.dat
-    self.dat['mat_up'] = data_mat['value_up']
-    self.dat['mat_dn'] = data_mat['value_dn']
-
-    # add mat_info with substrate information 
-    self.dat['mat_info'] = mat_info
-
-  def load_ccle_to_net(self, prot_type):
-    import scipy 
-    import numpy as np
-
-    # load ccle data 
-    ccle = self.load_json_to_dict('CCLE/nsclc_allzc.json')
-    ccle['data_z'] = np.asarray(ccle['data_z'], dtype = float)
-
-    # load protein type lists 
-    gs_list = self.load_json_to_dict('gene_classes_harmonogram.json')
-
-    # generate node lists 
-    # find the protein-types that are in ccle 
-    self.dat['nodes']['row'] = sorted(list(set(gs_list[prot_type]).intersection(ccle['gene'])))
-    self.dat['nodes']['col'] = ccle['cell_lines']
-
-
-    # initialize mat
-    self.dat['mat'] = scipy.zeros([ len(self.dat['nodes']['row']), len(self.dat['nodes']['col']) ])
-
-    # loop through rows and cols
-    for i in range(len(self.dat['nodes']['row'])):
-      for j in range(len(self.dat['nodes']['col'])):
-
-        # get inst_row and inst_col
-        inst_row = self.dat['nodes']['row'][i]
-        inst_col = self.dat['nodes']['col'][j]
-
-        # find gene and cl index in zscored data 
-        index_x = ccle['gene'].index(inst_row)
-        index_y = ccle['cell_lines'].index(inst_col)
-
-        # map primary data to mat 
-        self.dat['mat'][i,j] = ccle['data_z'][index_x, index_y]
 
   def load_vect_post_to_net(self, vect_post):
     import numpy as np
@@ -987,7 +809,6 @@ class Network(object):
     if run_clustering == False:
       dendro = False
 
-
     # make distance matrices 
     ##########################
 
@@ -1007,9 +828,7 @@ class Network(object):
     col_dm = pdist( tmp_mat.transpose(), metric='cosine' )
 
     # prevent negative values 
-    # row 
     row_dm[row_dm < 0] = float(0)
-    # col
     col_dm[col_dm < 0] = float(0)
 
     # initialize clust order 
@@ -1021,16 +840,13 @@ class Network(object):
     clust_order['col']['ini'] = range(num_col, -1, -1)
 
     # cluster 
-    ##############
     if run_clustering == True:
-      # cluster rows 
       cluster_method = 'average'
       clust_order['row']['clust'], clust_order['row']['group'] = self.clust_and_group_nodes(row_dm, cluster_method)
       clust_order['col']['clust'], clust_order['col']['group'] = self.clust_and_group_nodes(col_dm, cluster_method)
 
+    # rank 
     if run_rank == True:
-      # rank 
-      ############
       clust_order['row']['rank'] = self.sort_rank_nodes('row')
       clust_order['col']['rank'] = self.sort_rank_nodes('col')
 
@@ -1057,9 +873,92 @@ class Network(object):
     self.dat['node_info']['col']['ini']   = clust_order['col']['ini']
     self.dat['node_info']['col']['group'] = clust_order['col']['group']
 
+    if len(self.dat['node_info']['col']['cl']) > 0:
+      self.calc_cat_clust_order()
 
     # make the viz json - can optionally leave out dendrogram
     self.viz_json(dendro)
+
+
+  def calc_cat_clust_order(self):
+    from clustergrammer import Network 
+    from copy import deepcopy 
+    
+    # make a dict of columns in categories 
+    ##########################################
+    col_in_cat = {}
+    for i in range(len(self.dat['node_info']['col']['cl'])):
+
+      inst_cat = self.dat['node_info']['col']['cl'][i]
+      inst_col = self.dat['nodes']['col'][i]
+
+      if inst_cat not in col_in_cat:
+        col_in_cat[inst_cat] = []
+
+      # collect col names for categories 
+      col_in_cat[inst_cat].append(inst_col)
+
+    # alpha order categories 
+    all_cats = sorted(col_in_cat.keys())
+
+    # cluster each category
+    ##############################
+
+    # calc clustering of each category 
+    all_cat_orders = []
+    # this is the ordering of the columns based on their category, not 
+    # including their clustering order on top of their category 
+    tmp_col_names_list = []
+    for inst_cat in all_cats:
+
+      inst_cols = col_in_cat[inst_cat]
+
+      # keep a list of the columns 
+      tmp_col_names_list.extend(inst_cols)
+
+      cat_net = deepcopy(Network())
+
+      cat_net.dat['mat'] = deepcopy(self.dat['mat'])
+      cat_net.dat['nodes'] = deepcopy(self.dat['nodes'])
+
+      # get dataframe, to simplify column filtering 
+      cat_df = cat_net.dat_to_df()
+
+      # get subset of dataframe 
+      sub_df = {}
+      sub_df['mat'] = cat_df['mat'][inst_cols]
+
+      # load back to dat 
+      cat_net.df_to_dat(sub_df)
+
+      try:
+        cat_net.cluster_row_and_col('cos')
+        inst_cat_order = cat_net.dat['node_info']['col']['clust']
+      except:
+        inst_cat_order = range(len(cat_net.dat['nodes']['col']))
+
+      prev_order_len = len(all_cat_orders) 
+
+      # add previous order length to the current order number
+      inst_cat_order = [i+prev_order_len for i in inst_cat_order]
+      all_cat_orders.extend(inst_cat_order)
+
+    # sort tmp_col_names_lust by the integers in all_cat_orders 
+    names_col_cat_clust = [x for (y,x) in sorted(zip(all_cat_orders,tmp_col_names_list))]
+
+    # calc category-cluster order 
+    ##############################
+    final_order = []
+    for i in range(len(self.dat['nodes']['col'])):
+
+      # get the rank of the col in the order of col_nodes 
+      inst_col_name = self.dat['nodes']['col'][i]
+
+      inst_col_num = names_col_cat_clust.index(inst_col_name)
+
+      final_order.append(inst_col_num)
+
+    self.dat['node_info']['col']['cl_index'] = final_order    
 
   def clust_and_group_nodes( self, dm, cluster_method ):
     import scipy.cluster.hierarchy as hier
@@ -1185,10 +1084,16 @@ class Network(object):
         inst_dict['clust'] = self.dat['node_info'][inst_rc]['clust'].index(i)
         inst_dict['rank']  = self.dat['node_info'][inst_rc]['rank'][i]
 
-        # add node class 'cl' - this could potentially be a list of several classes 
-        # if 'cl' in self.dat['node_info'][inst_rc]:
+
+        # add node class cl 
         if len(self.dat['node_info'][inst_rc]['cl']) > 0:
           inst_dict['cl'] = self.dat['node_info'][inst_rc]['cl'][i]
+
+        # add node class cl_index
+        if 'cl_index' in self.dat['node_info'][inst_rc] > 0:
+          inst_dict['cl_index'] = self.dat['node_info'][inst_rc]['cl_index'][i]
+
+        # add node class val   
         if len(self.dat['node_info'][inst_rc]['value']) > 0:
           inst_dict['value'] = self.dat['node_info'][inst_rc]['value'][i]
 
@@ -1676,7 +1581,7 @@ class Network(object):
     ''' filter rows in matrix at some threshold
     and remove columns that have all zero values '''
 
-    print('\tdf_filter_row: '+str(threshold))
+    # print('\tdf_filter_row: '+str(threshold))
 
     import pandas as pd 
     from copy import deepcopy 
