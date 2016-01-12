@@ -357,7 +357,6 @@ function VizParams(config){
         return col_nodes[b].cl_index - col_nodes[a].cl_index;
       });
 
-      console.log(params.matrix.orders.class_row)
     }
 
 

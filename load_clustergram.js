@@ -212,26 +212,38 @@ function make_clust(inst_network){
         for (var inst_cat in cgm.params.class_colors.col){
 
           var inst_group = key_cat_col
-            .append('g');
+            .append('g')
+            .on('click',function(){
+              console.log(this)
+              d3.select(this)
+                .select('div')
+                .style('opacity',0.1);
+
+              d3.select(this)
+                .select('text')
+                .style('opacity',0.1);
+
+            });
 
           inst_group
             .append('div')
-            .style('width','12px')
-            .style('height','12px')
+            .style('width','15px')
+            .style('height','15px')
             .style('float','left')
             .style('margin-right','5px')
-            .style('margin-top','5px')
+            .style('margin-top','2px')
             .style('background-color',function(){
               var inst_color = cgm.params.class_colors.col[inst_cat];
               return inst_color;
-            })
+            });
 
-          // 
+
           inst_group
             .append('p')
             .style('margin-bottom','2px')
             .append('text')
             .text(inst_cat);
+
         }
 
         // save svg: example from: http://bl.ocks.org/pgiraud/8955139#profile.json

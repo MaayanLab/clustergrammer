@@ -100,8 +100,6 @@ function filter_network_data(orig_network_data, change_view){
   // pass on all views 
   new_network_data.views = views;
   
-  console.log(new_network_data.col_nodes)
-
   return new_network_data;
 
 }
