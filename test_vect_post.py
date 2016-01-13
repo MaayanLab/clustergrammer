@@ -9,12 +9,11 @@ def post_to_clustergrammer():
   import requests 
   import json
 
-  filename = 'example_matrix.txt'
-  # upload_url = 'http://localhost:9000/clustergrammer/vector_upload/'
-  upload_url = 'http://amp.pharm.mssm.edu/clustergrammer/vector_upload/'
+  upload_url = 'http://localhost:9000/clustergrammer/vector_upload/'
+  # upload_url = 'http://amp.pharm.mssm.edu/clustergrammer/vector_upload/'
 
   net = Network()
-  vect_post = net.load_json_to_dict('large_vect_post.json')
+  vect_post = net.load_json_to_dict('test_vector_upload.json')
   # vect_post = net.load_json_to_dict('fake_vect_post.json')
 
   r = requests.post(upload_url, data=json.dumps(vect_post) )

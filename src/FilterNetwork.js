@@ -61,6 +61,10 @@ function change_network_view(params, orig_network_data, change_view){
 
   }
 
+  if (change_view==='default'){
+    inst_view = views[0];
+  }
+
   // console.log('new view')
   // console.log(inst_view)
 
@@ -117,11 +121,12 @@ function show_one_cat( new_nodes, inst_params ){
 }
 
 function change_category( inst_cat ){
-  // console.log('changing category');
-  // console.log(this)
-
   // change the category 
   this.params.show_cat = inst_cat;
+
+  if ( inst_cat === 'show_all'){
+    this.params.show_cat = null;
+  }
 }
 
 function filter_using_new_nodes(new_nodes, links, views){
