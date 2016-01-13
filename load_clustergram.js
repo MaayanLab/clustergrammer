@@ -157,6 +157,7 @@ function make_clust(inst_network){
           // 'col_order':'rank',
           // 'row_order':'clust'
           // 'ini_view':{'filter_row_sum':0.9}
+          'show_cat':'category-three'
         };
 
         d3.select('#wait_message').remove();
@@ -195,57 +196,63 @@ function make_clust(inst_network){
           )
         .attr("download",filename);
 
+        if (cgm.params.show_categories){
 
-        // set up column category key 
-        var key_cat_col = d3.select('#key_cat_col')
-          // .style('background-color','red')
-          .style('margin-top','10px')
-          .style('padding','5px')
-          .style('border','1px solid #DEDEDE')
-          .style('margin-bottom','10px')
-          .style('overflow','scroll')
-          .style('max-height','200px');
+          // set up column category key 
+          var key_cat_col = d3.select('#key_cat_col')
+            // .style('background-color','red')
+            .style('margin-top','10px')
+            .style('padding','5px')
+            .style('border','1px solid #DEDEDE')
+            .style('margin-bottom','10px')
+            .style('overflow','scroll')
+            .style('max-height','200px');
 
-        key_cat_col
-          .append('p')
-          .text('Column Categories')
-          .style('margin-bottom','2px');
-
-        for (var inst_cat in cgm.params.class_colors.col){
-
-          var inst_group = key_cat_col
-            .append('g')
-            .on('click',function(){
-              console.log(this)
-              d3.select(this)
-                .select('div')
-                .style('opacity',0.1);
-
-              d3.select(this)
-                .select('text')
-                .style('opacity',0.1);
-
-            });
-
-          inst_group
-            .append('div')
-            .style('width','15px')
-            .style('height','15px')
-            .style('float','left')
-            .style('margin-right','5px')
-            .style('margin-top','2px')
-            .style('background-color',function(){
-              var inst_color = cgm.params.class_colors.col[inst_cat];
-              return inst_color;
-            });
-
-
-          inst_group
+          key_cat_col
             .append('p')
-            .style('margin-bottom','2px')
-            .append('text')
-            .text(inst_cat);
+            .text('Column Categories')
+            .style('margin-bottom','2px');
 
+          for (var inst_cat in cgm.params.class_colors.col){
+
+            var inst_group = key_cat_col
+              .append('g')
+              .on('click',function(){
+                
+                var inst_cat = d3.select(this).select('text').text();
+
+
+
+                // d3.select(this)
+                //   .select('div')
+                //   .style('opacity',0.1);
+
+                // d3.select(this)
+                //   .select('text')
+                //   .style('opacity',0.1);
+
+              });
+
+            inst_group
+              .append('div')
+              .style('width','15px')
+              .style('height','15px')
+              .style('float','left')
+              .style('margin-right','5px')
+              .style('margin-top','2px')
+              .style('background-color',function(){
+                var inst_color = cgm.params.class_colors.col[inst_cat];
+                return inst_color;
+              });
+
+
+            inst_group
+              .append('p')
+              .style('margin-bottom','2px')
+              .append('text')
+              .text(inst_cat);
+
+          }
         }
 
         // save svg: example from: http://bl.ocks.org/pgiraud/8955139#profile.json

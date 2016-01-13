@@ -617,6 +617,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
 
         d3.select(this)
           .select('rect')
+          .transition().delay(delays.update).duration(duration)
           .attr('width', bbox.width * 1.1)
           .attr('height', 0.67*params.matrix.rect_width)
           .style('fill', function(d){

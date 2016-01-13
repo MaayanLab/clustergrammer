@@ -1,4 +1,4 @@
-function filter_network_data(orig_network_data, change_view){
+function change_network_view(orig_network_data, change_view){
  
   var views = orig_network_data.views;
 
@@ -65,24 +65,40 @@ function filter_network_data(orig_network_data, change_view){
   console.log(inst_view)
 
   var new_nodes = inst_view.nodes;
+  var links = orig_network_data.links;
 
-  // // try to manually set col_names here
-  // var tmp_keep_cols = ['H441','HCC78','HCC827','LOU-NH91','H1975','HCC44'];
+  // fitler categories 
+  if (_.isNull(params.show_cat) === false){
+    new_nodes = show_one_cat(new_nodes, params.class_dict, params.show_cat);
+  }
 
-  // new_nodes.col_nodes = _.filter(new_nodes.col_nodes, function(d){
-  //   if ( _.contains(tmp_keep_cols, d.name) ){
-  //     return d;
-  //   }
-  // })
+  var new_network_data = filter_using_new_nodes(new_nodes, links, views);
 
-  // console.log(new_nodes)
+  return new_network_data;
+}
+
+function show_one_cat( new_nodes, class_dict, show_cat ){
+
+  console.log('show cat '+String(show_cat));
+
+  // get columns that belong to a category
+  var keep_cols = class_dict[show_cat];
+
+  new_nodes.col_nodes = _.filter(new_nodes.col_nodes, function(d){
+    if ( _.contains(keep_cols, d.name) ){
+      return d;
+    }
+  });
+
+  return new_nodes;
+}
+
+function filter_using_new_nodes(new_nodes, links, views){
 
   // get new names of rows and cols 
   var row_names = _.pluck(new_nodes.row_nodes, 'name');
   var col_names = _.pluck(new_nodes.col_nodes, 'name');
-
-  var links = orig_network_data.links;
-
+  
   var new_links = _.filter(links, function(d){
     var inst_row = d.name.split('_')[0];
     var inst_col = d.name.split('_')[1]; 
@@ -116,5 +132,4 @@ function filter_network_data(orig_network_data, change_view){
   new_network_data.views = views;
   
   return new_network_data;
-
 }

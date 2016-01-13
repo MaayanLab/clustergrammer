@@ -18,10 +18,19 @@ function VizParams(config){
 
     // run initial filtering if necessary 
     if (_.isNull(params.ini_view) === false){
-      params.network_data = filter_network_data(params.network_data, params.ini_view);
+      params.network_data = change_network_view(params.network_data, params.ini_view);
       // remove ini_view 
       params.ini_view = null;
     }
+
+    // if (_.isNull(params.show_cat) === false){
+    //   console.log('initialize with '+String(params.show_cat) + ' category only');
+    //   // fitler categories 
+    //   params.network_data = show_one_cat(params.network_data, params.class_dict, params.show_cat);
+
+    //   params.network_data = filter_using_new_nodes( params.network_data, params.network_data.links, params.network_data.views);
+
+    // }
 
     // Label Paramsters
     params.labels = {};
@@ -38,8 +47,9 @@ function VizParams(config){
     }
 
     // optional classification
-    params.labels.show_categories = config.show_categories;
+    params.labels.show_categories = config.show_categories
     if (params.labels.show_categories){
+
       params.labels.class_colors = config.class_colors;
     }
     params.labels.show_label_tooltips = config.show_label_tooltips;

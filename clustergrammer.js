@@ -91,7 +91,10 @@ function Config(args) {
     tile_click_hlight:false,
     super_label_scale: 1,
     make_tile_tooltip:function(d){return d.info;},
-    ini_view:null 
+    // initialize view, e.g. initialize with row filtering
+    ini_view:null, 
+    // initialize column category - only show data from one category
+    show_cat:null
   };
 
   // Mixin defaults with user-defined arguments.
@@ -189,7 +192,7 @@ function Config(args) {
   // check for category information
   if (config.show_categories) {
 
-    // !! set up option for manual color specification
+    // initialize dictionary of colors 
     config.class_colors = {};
 
     // associate classes with colors
@@ -214,6 +217,21 @@ function Config(args) {
       
       config.class_colors.col[c_col] = cat_colors[ i % cat_colors.length ];
     });
+
+    // generate a dictionary of columns in each category 
+    config.class_dict = {};
+    _.each( col_nodes, function(d){
+
+      // initialize array for each category 
+      if ( _.has(config.class_dict, d.cl) == false ){
+        config.class_dict[d.cl] = [];
+      }
+
+      // add column name to category array 
+      config.class_dict[d.cl].push(d.name);
+
+    });
+
   }
 
   /* Transpose network.
@@ -1345,10 +1363,19 @@ function VizParams(config){
 
     // run initial filtering if necessary 
     if (_.isNull(params.ini_view) === false){
-      params.network_data = filter_network_data(params.network_data, params.ini_view);
+      params.network_data = change_network_view(params.network_data, params.ini_view);
       // remove ini_view 
       params.ini_view = null;
     }
+
+    // if (_.isNull(params.show_cat) === false){
+    //   console.log('initialize with '+String(params.show_cat) + ' category only');
+    //   // fitler categories 
+    //   params.network_data = show_one_cat(params.network_data, params.class_dict, params.show_cat);
+
+    //   params.network_data = filter_using_new_nodes( params.network_data, params.network_data.links, params.network_data.views);
+
+    // }
 
     // Label Paramsters
     params.labels = {};
@@ -1365,8 +1392,9 @@ function VizParams(config){
     }
 
     // optional classification
-    params.labels.show_categories = config.show_categories;
+    params.labels.show_categories = config.show_categories
     if (params.labels.show_categories){
+
       params.labels.class_colors = config.class_colors;
     }
     params.labels.show_label_tooltips = config.show_label_tooltips;
@@ -2535,7 +2563,7 @@ function Labels(params){
         .call(tip);
         
       col_label_obj
-        .select('text')
+        // .select('text')
         .on('mouseover',tip.show)
         .on('mouseout',tip.hide);
 
@@ -4444,6 +4472,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
 
         d3.select(this)
           .select('rect')
+          .transition().delay(delays.update).duration(duration)
           .attr('width', bbox.width * 1.1)
           .attr('height', 0.67*params.matrix.rect_width)
           .style('fill', function(d){
@@ -4657,7 +4686,7 @@ function update_network(change_view){
   var old_params = this.params;
 
   // make new_network_data using immutable copy of network_data
-  var new_network_data = filter_network_data(this.config.network_data, change_view); 
+  var new_network_data = change_network_view(this.config.network_data, change_view); 
 
   // make Deep copy of this.config object 
   var new_config = jQuery.extend(true, {}, this.config);
@@ -5568,7 +5597,7 @@ function enter_exit_update(params, network_data, reorder, delays){
 }
 
 
-function filter_network_data(orig_network_data, change_view){
+function change_network_view(orig_network_data, change_view){
  
   var views = orig_network_data.views;
 
@@ -5635,24 +5664,40 @@ function filter_network_data(orig_network_data, change_view){
   console.log(inst_view)
 
   var new_nodes = inst_view.nodes;
+  var links = orig_network_data.links;
 
-  // // try to manually set col_names here
-  // var tmp_keep_cols = ['H441','HCC78','HCC827','LOU-NH91','H1975','HCC44'];
+  // fitler categories 
+  if (_.isNull(params.show_cat) === false){
+    new_nodes = show_one_cat(new_nodes, params.class_dict, params.show_cat);
+  }
 
-  // new_nodes.col_nodes = _.filter(new_nodes.col_nodes, function(d){
-  //   if ( _.contains(tmp_keep_cols, d.name) ){
-  //     return d;
-  //   }
-  // })
+  var new_network_data = filter_using_new_nodes(new_nodes, links, views);
 
-  // console.log(new_nodes)
+  return new_network_data;
+}
+
+function show_one_cat( new_nodes, class_dict, show_cat ){
+
+  console.log('show cat '+String(show_cat));
+
+  // get columns that belong to a category
+  var keep_cols = class_dict[show_cat];
+
+  new_nodes.col_nodes = _.filter(new_nodes.col_nodes, function(d){
+    if ( _.contains(keep_cols, d.name) ){
+      return d;
+    }
+  });
+
+  return new_nodes;
+}
+
+function filter_using_new_nodes(new_nodes, links, views){
 
   // get new names of rows and cols 
   var row_names = _.pluck(new_nodes.row_nodes, 'name');
   var col_names = _.pluck(new_nodes.col_nodes, 'name');
-
-  var links = orig_network_data.links;
-
+  
   var new_links = _.filter(links, function(d){
     var inst_row = d.name.split('_')[0];
     var inst_col = d.name.split('_')[1]; 
@@ -5686,7 +5731,6 @@ function filter_network_data(orig_network_data, change_view){
   new_network_data.views = views;
   
   return new_network_data;
-
 }
 
 /* Represents the entire visualization: labels, dendrogram (optional) and matrix.

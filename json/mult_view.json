@@ -743,7 +743,7 @@
       "cl": "category-one", 
       "rank": 6, 
       "ini": 29, 
-      "cl_index": 6
+      "cl_index": 11
     }, 
     {
       "group": [
@@ -764,7 +764,7 @@
       "cl": "category-one", 
       "rank": 17, 
       "ini": 28, 
-      "cl_index": 12
+      "cl_index": 9
     }, 
     {
       "group": [
@@ -782,10 +782,10 @@
       ], 
       "name": "CAL-12T", 
       "clust": 4, 
-      "cl": "category-one", 
+      "cl": "category-two", 
       "rank": 10, 
       "ini": 27, 
-      "cl_index": 13
+      "cl_index": 26
     }, 
     {
       "group": [
@@ -806,7 +806,7 @@
       "cl": "category-one", 
       "rank": 4, 
       "ini": 26, 
-      "cl_index": 7
+      "cl_index": 14
     }, 
     {
       "group": [
@@ -824,10 +824,10 @@
       ], 
       "name": "H1975", 
       "clust": 22, 
-      "cl": "category-three", 
+      "cl": "category-one", 
       "rank": 0, 
       "ini": 25, 
-      "cl_index": 22
+      "cl_index": 15
     }, 
     {
       "group": [
@@ -869,7 +869,7 @@
       "cl": "category-one", 
       "rank": 9, 
       "ini": 23, 
-      "cl_index": 10
+      "cl_index": 17
     }, 
     {
       "group": [
@@ -890,7 +890,7 @@
       "cl": "category-two", 
       "rank": 28, 
       "ini": 22, 
-      "cl_index": 25
+      "cl_index": 28
     }, 
     {
       "group": [
@@ -911,7 +911,7 @@
       "cl": "category-three", 
       "rank": 1, 
       "ini": 21, 
-      "cl_index": 23
+      "cl_index": 24
     }, 
     {
       "group": [
@@ -932,7 +932,7 @@
       "cl": "category-two", 
       "rank": 25, 
       "ini": 20, 
-      "cl_index": 27
+      "cl_index": 25
     }, 
     {
       "group": [
@@ -953,7 +953,7 @@
       "cl": "category-one", 
       "rank": 18, 
       "ini": 19, 
-      "cl_index": 8
+      "cl_index": 7
     }, 
     {
       "group": [
@@ -1016,7 +1016,7 @@
       "cl": "category-one", 
       "rank": 11, 
       "ini": 16, 
-      "cl_index": 9
+      "cl_index": 10
     }, 
     {
       "group": [
@@ -1058,7 +1058,7 @@
       "cl": "category-two", 
       "rank": 26, 
       "ini": 14, 
-      "cl_index": 26
+      "cl_index": 27
     }, 
     {
       "group": [
@@ -1076,10 +1076,10 @@
       ], 
       "name": "H2228", 
       "clust": 26, 
-      "cl": "category-three", 
+      "cl": "category-four", 
       "rank": 2, 
       "ini": 13, 
-      "cl_index": 24
+      "cl_index": 2
     }, 
     {
       "group": [
@@ -1100,7 +1100,7 @@
       "cl": "category-one", 
       "rank": 12, 
       "ini": 12, 
-      "cl_index": 17
+      "cl_index": 8
     }, 
     {
       "group": [
@@ -1121,7 +1121,7 @@
       "cl": "category-one", 
       "rank": 20, 
       "ini": 11, 
-      "cl_index": 11
+      "cl_index": 16
     }, 
     {
       "group": [
@@ -1142,7 +1142,7 @@
       "cl": "category-one", 
       "rank": 5, 
       "ini": 10, 
-      "cl_index": 16
+      "cl_index": 6
     }, 
     {
       "group": [
@@ -1181,10 +1181,10 @@
       ], 
       "name": "H441", 
       "clust": 27, 
-      "cl": "category-two", 
+      "cl": "category-one", 
       "rank": 27, 
       "ini": 8, 
-      "cl_index": 28
+      "cl_index": 12
     }, 
     {
       "group": [
@@ -1205,7 +1205,7 @@
       "cl": "category-one", 
       "rank": 23, 
       "ini": 7, 
-      "cl_index": 14
+      "cl_index": 13
     }, 
     {
       "group": [
@@ -1226,7 +1226,7 @@
       "cl": "category-four", 
       "rank": 16, 
       "ini": 6, 
-      "cl_index": 2
+      "cl_index": 5
     }, 
     {
       "group": [
@@ -1244,10 +1244,10 @@
       ], 
       "name": "H1734", 
       "clust": 24, 
-      "cl": "category-one", 
+      "cl": "category-three", 
       "rank": 19, 
       "ini": 5, 
-      "cl_index": 15
+      "cl_index": 22
     }, 
     {
       "group": [
@@ -1265,10 +1265,10 @@
       ], 
       "name": "LOU-NH91", 
       "clust": 13, 
-      "cl": "category-four", 
+      "cl": "category-three", 
       "rank": 15, 
       "ini": 4, 
-      "cl_index": 4
+      "cl_index": 23
     }, 
     {
       "group": [
@@ -1331,7 +1331,7 @@
       "cl": "category-four", 
       "rank": 13, 
       "ini": 1, 
-      "cl_index": 5
+      "cl_index": 4
     }
   ], 
   "links": [
@@ -6849,7 +6849,6 @@
   "views": [
     {
       "N_row_sum": "all", 
-      "dist": "cos", 
       "nodes": {
         "row_nodes": [
           {
@@ -7595,7 +7594,7 @@
             "cl": "category-one", 
             "rank": 6, 
             "ini": 29, 
-            "cl_index": 6
+            "cl_index": 11
           }, 
           {
             "group": [
@@ -7616,7 +7615,7 @@
             "cl": "category-one", 
             "rank": 17, 
             "ini": 28, 
-            "cl_index": 12
+            "cl_index": 9
           }, 
           {
             "group": [
@@ -7634,10 +7633,10 @@
             ], 
             "name": "CAL-12T", 
             "clust": 4, 
-            "cl": "category-one", 
+            "cl": "category-two", 
             "rank": 10, 
             "ini": 27, 
-            "cl_index": 13
+            "cl_index": 26
           }, 
           {
             "group": [
@@ -7658,7 +7657,7 @@
             "cl": "category-one", 
             "rank": 4, 
             "ini": 26, 
-            "cl_index": 7
+            "cl_index": 14
           }, 
           {
             "group": [
@@ -7676,10 +7675,10 @@
             ], 
             "name": "H1975", 
             "clust": 22, 
-            "cl": "category-three", 
+            "cl": "category-one", 
             "rank": 0, 
             "ini": 25, 
-            "cl_index": 22
+            "cl_index": 15
           }, 
           {
             "group": [
@@ -7721,7 +7720,7 @@
             "cl": "category-one", 
             "rank": 9, 
             "ini": 23, 
-            "cl_index": 10
+            "cl_index": 17
           }, 
           {
             "group": [
@@ -7742,7 +7741,7 @@
             "cl": "category-two", 
             "rank": 28, 
             "ini": 22, 
-            "cl_index": 25
+            "cl_index": 28
           }, 
           {
             "group": [
@@ -7763,7 +7762,7 @@
             "cl": "category-three", 
             "rank": 1, 
             "ini": 21, 
-            "cl_index": 23
+            "cl_index": 24
           }, 
           {
             "group": [
@@ -7784,7 +7783,7 @@
             "cl": "category-two", 
             "rank": 25, 
             "ini": 20, 
-            "cl_index": 27
+            "cl_index": 25
           }, 
           {
             "group": [
@@ -7805,7 +7804,7 @@
             "cl": "category-one", 
             "rank": 18, 
             "ini": 19, 
-            "cl_index": 8
+            "cl_index": 7
           }, 
           {
             "group": [
@@ -7868,7 +7867,7 @@
             "cl": "category-one", 
             "rank": 11, 
             "ini": 16, 
-            "cl_index": 9
+            "cl_index": 10
           }, 
           {
             "group": [
@@ -7910,7 +7909,7 @@
             "cl": "category-two", 
             "rank": 26, 
             "ini": 14, 
-            "cl_index": 26
+            "cl_index": 27
           }, 
           {
             "group": [
@@ -7928,10 +7927,10 @@
             ], 
             "name": "H2228", 
             "clust": 26, 
-            "cl": "category-three", 
+            "cl": "category-four", 
             "rank": 2, 
             "ini": 13, 
-            "cl_index": 24
+            "cl_index": 2
           }, 
           {
             "group": [
@@ -7952,7 +7951,7 @@
             "cl": "category-one", 
             "rank": 12, 
             "ini": 12, 
-            "cl_index": 17
+            "cl_index": 8
           }, 
           {
             "group": [
@@ -7973,7 +7972,7 @@
             "cl": "category-one", 
             "rank": 20, 
             "ini": 11, 
-            "cl_index": 11
+            "cl_index": 16
           }, 
           {
             "group": [
@@ -7994,7 +7993,7 @@
             "cl": "category-one", 
             "rank": 5, 
             "ini": 10, 
-            "cl_index": 16
+            "cl_index": 6
           }, 
           {
             "group": [
@@ -8033,10 +8032,10 @@
             ], 
             "name": "H441", 
             "clust": 27, 
-            "cl": "category-two", 
+            "cl": "category-one", 
             "rank": 27, 
             "ini": 8, 
-            "cl_index": 28
+            "cl_index": 12
           }, 
           {
             "group": [
@@ -8057,7 +8056,7 @@
             "cl": "category-one", 
             "rank": 23, 
             "ini": 7, 
-            "cl_index": 14
+            "cl_index": 13
           }, 
           {
             "group": [
@@ -8078,7 +8077,7 @@
             "cl": "category-four", 
             "rank": 16, 
             "ini": 6, 
-            "cl_index": 2
+            "cl_index": 5
           }, 
           {
             "group": [
@@ -8096,10 +8095,10 @@
             ], 
             "name": "H1734", 
             "clust": 24, 
-            "cl": "category-one", 
+            "cl": "category-three", 
             "rank": 19, 
             "ini": 5, 
-            "cl_index": 15
+            "cl_index": 22
           }, 
           {
             "group": [
@@ -8117,10 +8116,10 @@
             ], 
             "name": "LOU-NH91", 
             "clust": 13, 
-            "cl": "category-four", 
+            "cl": "category-three", 
             "rank": 15, 
             "ini": 4, 
-            "cl_index": 4
+            "cl_index": 23
           }, 
           {
             "group": [
@@ -8183,3007 +8182,12 @@
             "cl": "category-four", 
             "rank": 13, 
             "ini": 1, 
-            "cl_index": 5
+            "cl_index": 4
           }
         ]
-      }
-    }, 
-    {
-      "N_row_sum": 30, 
+      }, 
       "dist": "cos", 
-      "nodes": {
-        "row_nodes": [
-          {
-            "rank": 29, 
-            "group": [
-              9.0, 
-              8.0, 
-              7.0, 
-              5.0, 
-              5.0, 
-              3.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "STK31", 
-            "clust": 9, 
-            "ini": 30
-          }, 
-          {
-            "rank": 0, 
-            "group": [
-              7.0, 
-              6.0, 
-              5.0, 
-              3.0, 
-              3.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "STK24", 
-            "clust": 6, 
-            "ini": 29
-          }, 
-          {
-            "rank": 28, 
-            "group": [
-              12.0, 
-              11.0, 
-              10.0, 
-              8.0, 
-              7.0, 
-              4.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "STK32A", 
-            "clust": 11, 
-            "ini": 28
-          }, 
-          {
-            "rank": 27, 
-            "group": [
-              20.0, 
-              19.0, 
-              18.0, 
-              15.0, 
-              12.0, 
-              6.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "NRK", 
-            "clust": 23, 
-            "ini": 27
-          }, 
-          {
-            "rank": 26, 
-            "group": [
-              23.0, 
-              22.0, 
-              21.0, 
-              16.0, 
-              12.0, 
-              6.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "TBK1", 
-            "clust": 21, 
-            "ini": 26
-          }, 
-          {
-            "rank": 25, 
-            "group": [
-              22.0, 
-              21.0, 
-              20.0, 
-              15.0, 
-              12.0, 
-              6.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "EGFR", 
-            "clust": 22, 
-            "ini": 25
-          }, 
-          {
-            "rank": 24, 
-            "group": [
-              11.0, 
-              10.0, 
-              9.0, 
-              7.0, 
-              6.0, 
-              3.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "MYLK3", 
-            "clust": 8, 
-            "ini": 24
-          }, 
-          {
-            "rank": 23, 
-            "group": [
-              16.0, 
-              15.0, 
-              14.0, 
-              11.0, 
-              9.0, 
-              4.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "ROS1", 
-            "clust": 15, 
-            "ini": 23
-          }, 
-          {
-            "rank": 22, 
-            "group": [
-              21.0, 
-              20.0, 
-              19.0, 
-              15.0, 
-              12.0, 
-              6.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "CDK4", 
-            "clust": 24, 
-            "ini": 22
-          }, 
-          {
-            "rank": 21, 
-            "group": [
-              26.0, 
-              25.0, 
-              24.0, 
-              19.0, 
-              15.0, 
-              7.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "LATS1", 
-            "clust": 25, 
-            "ini": 21
-          }, 
-          {
-            "rank": 20, 
-            "group": [
-              18.0, 
-              17.0, 
-              16.0, 
-              13.0, 
-              11.0, 
-              5.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "LMTK3", 
-            "clust": 17, 
-            "ini": 20
-          }, 
-          {
-            "rank": 19, 
-            "group": [
-              19.0, 
-              18.0, 
-              17.0, 
-              14.0, 
-              11.0, 
-              5.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "NPR1", 
-            "clust": 18, 
-            "ini": 19
-          }, 
-          {
-            "rank": 18, 
-            "group": [
-              30.0, 
-              29.0, 
-              28.0, 
-              23.0, 
-              17.0, 
-              7.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "UHMK1", 
-            "clust": 27, 
-            "ini": 18
-          }, 
-          {
-            "rank": 17, 
-            "group": [
-              4.0, 
-              3.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "PRKG2", 
-            "clust": 2, 
-            "ini": 17
-          }, 
-          {
-            "rank": 1, 
-            "group": [
-              3.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "GRK4", 
-            "clust": 3, 
-            "ini": 16
-          }, 
-          {
-            "rank": 2, 
-            "group": [
-              8.0, 
-              7.0, 
-              6.0, 
-              4.0, 
-              4.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "PDGFRA", 
-            "clust": 7, 
-            "ini": 15
-          }, 
-          {
-            "rank": 3, 
-            "group": [
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "CAMK2B", 
-            "clust": 4, 
-            "ini": 14
-          }, 
-          {
-            "rank": 16, 
-            "group": [
-              14.0, 
-              13.0, 
-              12.0, 
-              9.0, 
-              8.0, 
-              4.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "ERBB2", 
-            "clust": 13, 
-            "ini": 13
-          }, 
-          {
-            "rank": 4, 
-            "group": [
-              6.0, 
-              5.0, 
-              4.0, 
-              2.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "NEK9", 
-            "clust": 0, 
-            "ini": 12
-          }, 
-          {
-            "rank": 15, 
-            "group": [
-              25.0, 
-              24.0, 
-              23.0, 
-              18.0, 
-              14.0, 
-              6.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "MAP2K4", 
-            "clust": 19, 
-            "ini": 11
-          }, 
-          {
-            "rank": 14, 
-            "group": [
-              27.0, 
-              26.0, 
-              25.0, 
-              20.0, 
-              15.0, 
-              7.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "PDK4", 
-            "clust": 26, 
-            "ini": 10
-          }, 
-          {
-            "rank": 13, 
-            "group": [
-              28.0, 
-              27.0, 
-              26.0, 
-              21.0, 
-              16.0, 
-              7.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "SRC", 
-            "clust": 28, 
-            "ini": 9
-          }, 
-          {
-            "rank": 5, 
-            "group": [
-              5.0, 
-              4.0, 
-              3.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "DCLK3", 
-            "clust": 1, 
-            "ini": 8
-          }, 
-          {
-            "rank": 6, 
-            "group": [
-              10.0, 
-              9.0, 
-              8.0, 
-              6.0, 
-              5.0, 
-              3.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "ERBB4", 
-            "clust": 10, 
-            "ini": 7
-          }, 
-          {
-            "rank": 12, 
-            "group": [
-              24.0, 
-              23.0, 
-              22.0, 
-              17.0, 
-              13.0, 
-              6.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "IRAK1", 
-            "clust": 20, 
-            "ini": 6
-          }, 
-          {
-            "rank": 7, 
-            "group": [
-              15.0, 
-              14.0, 
-              13.0, 
-              10.0, 
-              8.0, 
-              4.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "STK39", 
-            "clust": 14, 
-            "ini": 5
-          }, 
-          {
-            "rank": 11, 
-            "group": [
-              13.0, 
-              12.0, 
-              11.0, 
-              8.0, 
-              7.0, 
-              4.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "KDR", 
-            "clust": 12, 
-            "ini": 4
-          }, 
-          {
-            "rank": 8, 
-            "group": [
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "SRPK3", 
-            "clust": 5, 
-            "ini": 3
-          }, 
-          {
-            "rank": 10, 
-            "group": [
-              17.0, 
-              16.0, 
-              15.0, 
-              12.0, 
-              10.0, 
-              4.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "AAK1", 
-            "clust": 16, 
-            "ini": 2
-          }, 
-          {
-            "rank": 9, 
-            "group": [
-              29.0, 
-              28.0, 
-              27.0, 
-              22.0, 
-              16.0, 
-              7.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "LRRK2", 
-            "clust": 29, 
-            "ini": 1
-          }
-        ], 
-        "col_nodes": [
-          {
-            "group": [
-              28.0, 
-              28.0, 
-              27.0, 
-              25.0, 
-              20.0, 
-              11.0, 
-              6.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H1650", 
-            "clust": 21, 
-            "cl": "category-one", 
-            "rank": 8, 
-            "ini": 29, 
-            "cl_index": 12
-          }, 
-          {
-            "group": [
-              8.0, 
-              8.0, 
-              8.0, 
-              8.0, 
-              6.0, 
-              4.0, 
-              3.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H23", 
-            "clust": 11, 
-            "cl": "category-one", 
-            "rank": 18, 
-            "ini": 28, 
-            "cl_index": 7
-          }, 
-          {
-            "group": [
-              3.0, 
-              3.0, 
-              3.0, 
-              3.0, 
-              2.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "CAL-12T", 
-            "clust": 1, 
-            "cl": "category-one", 
-            "rank": 9, 
-            "ini": 27, 
-            "cl_index": 13
-          }, 
-          {
-            "group": [
-              26.0, 
-              26.0, 
-              25.0, 
-              23.0, 
-              18.0, 
-              9.0, 
-              6.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H358", 
-            "clust": 25, 
-            "cl": "category-one", 
-            "rank": 14, 
-            "ini": 26, 
-            "cl_index": 14
-          }, 
-          {
-            "group": [
-              27.0, 
-              27.0, 
-              26.0, 
-              24.0, 
-              19.0, 
-              10.0, 
-              6.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H1975", 
-            "clust": 22, 
-            "cl": "category-three", 
-            "rank": 0, 
-            "ini": 25, 
-            "cl_index": 22
-          }, 
-          {
-            "group": [
-              12.0, 
-              12.0, 
-              12.0, 
-              11.0, 
-              9.0, 
-              5.0, 
-              3.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "HCC15", 
-            "clust": 8, 
-            "cl": "category-seven", 
-            "rank": 17, 
-            "ini": 24, 
-            "cl_index": 18
-          }, 
-          {
-            "group": [
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H1355", 
-            "clust": 2, 
-            "cl": "category-one", 
-            "rank": 16, 
-            "ini": 23, 
-            "cl_index": 15
-          }, 
-          {
-            "group": [
-              21.0, 
-              21.0, 
-              21.0, 
-              19.0, 
-              16.0, 
-              9.0, 
-              6.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "HCC827", 
-            "clust": 23, 
-            "cl": "category-two", 
-            "rank": 28, 
-            "ini": 22, 
-            "cl_index": 25
-          }, 
-          {
-            "group": [
-              18.0, 
-              18.0, 
-              18.0, 
-              16.0, 
-              14.0, 
-              8.0, 
-              5.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H2405", 
-            "clust": 19, 
-            "cl": "category-three", 
-            "rank": 2, 
-            "ini": 21, 
-            "cl_index": 23
-          }, 
-          {
-            "group": [
-              16.0, 
-              16.0, 
-              16.0, 
-              14.0, 
-              12.0, 
-              7.0, 
-              5.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "HCC78", 
-            "clust": 16, 
-            "cl": "category-two", 
-            "rank": 26, 
-            "ini": 20, 
-            "cl_index": 27
-          }, 
-          {
-            "group": [
-              19.0, 
-              19.0, 
-              19.0, 
-              17.0, 
-              14.0, 
-              8.0, 
-              5.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H1666", 
-            "clust": 20, 
-            "cl": "category-one", 
-            "rank": 4, 
-            "ini": 19, 
-            "cl_index": 10
-          }, 
-          {
-            "group": [
-              15.0, 
-              15.0, 
-              15.0, 
-              13.0, 
-              11.0, 
-              6.0, 
-              4.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H661", 
-            "clust": 13, 
-            "cl": "category-three", 
-            "rank": 6, 
-            "ini": 18, 
-            "cl_index": 21
-          }, 
-          {
-            "group": [
-              13.0, 
-              13.0, 
-              13.0, 
-              12.0, 
-              10.0, 
-              6.0, 
-              4.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H838", 
-            "clust": 14, 
-            "cl": "category-five", 
-            "rank": 5, 
-            "ini": 17, 
-            "cl_index": 0
-          }, 
-          {
-            "group": [
-              11.0, 
-              11.0, 
-              11.0, 
-              10.0, 
-              8.0, 
-              4.0, 
-              3.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H1703", 
-            "clust": 9, 
-            "cl": "category-one", 
-            "rank": 7, 
-            "ini": 16, 
-            "cl_index": 16
-          }, 
-          {
-            "group": [
-              20.0, 
-              20.0, 
-              20.0, 
-              18.0, 
-              15.0, 
-              8.0, 
-              5.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "CALU-3", 
-            "clust": 18, 
-            "cl": "category-five", 
-            "rank": 15, 
-            "ini": 15, 
-            "cl_index": 1
-          }, 
-          {
-            "group": [
-              14.0, 
-              14.0, 
-              14.0, 
-              12.0, 
-              10.0, 
-              6.0, 
-              4.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H2342", 
-            "clust": 15, 
-            "cl": "category-two", 
-            "rank": 25, 
-            "ini": 14, 
-            "cl_index": 26
-          }, 
-          {
-            "group": [
-              23.0, 
-              23.0, 
-              23.0, 
-              21.0, 
-              17.0, 
-              9.0, 
-              6.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H2228", 
-            "clust": 27, 
-            "cl": "category-three", 
-            "rank": 10, 
-            "ini": 13, 
-            "cl_index": 24
-          }, 
-          {
-            "group": [
-              9.0, 
-              9.0, 
-              9.0, 
-              8.0, 
-              6.0, 
-              4.0, 
-              3.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H1299", 
-            "clust": 12, 
-            "cl": "category-one", 
-            "rank": 12, 
-            "ini": 12, 
-            "cl_index": 11
-          }, 
-          {
-            "group": [
-              6.0, 
-              6.0, 
-              6.0, 
-              6.0, 
-              4.0, 
-              3.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H1792", 
-            "clust": 5, 
-            "cl": "category-one", 
-            "rank": 23, 
-            "ini": 11, 
-            "cl_index": 17
-          }, 
-          {
-            "group": [
-              4.0, 
-              4.0, 
-              4.0, 
-              4.0, 
-              3.0, 
-              3.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H460", 
-            "clust": 6, 
-            "cl": "category-one", 
-            "rank": 1, 
-            "ini": 10, 
-            "cl_index": 6
-          }, 
-          {
-            "group": [
-              29.0, 
-              29.0, 
-              28.0, 
-              26.0, 
-              21.0, 
-              12.0, 
-              7.0, 
-              3.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H2106", 
-            "clust": 0, 
-            "cl": "category-six", 
-            "rank": 24, 
-            "ini": 9, 
-            "cl_index": 19
-          }, 
-          {
-            "group": [
-              25.0, 
-              25.0, 
-              24.0, 
-              22.0, 
-              17.0, 
-              9.0, 
-              6.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H441", 
-            "clust": 26, 
-            "cl": "category-two", 
-            "rank": 27, 
-            "ini": 8, 
-            "cl_index": 28
-          }, 
-          {
-            "group": [
-              7.0, 
-              7.0, 
-              7.0, 
-              7.0, 
-              5.0, 
-              3.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H1944", 
-            "clust": 4, 
-            "cl": "category-one", 
-            "rank": 22, 
-            "ini": 7, 
-            "cl_index": 8
-          }, 
-          {
-            "group": [
-              2.0, 
-              2.0, 
-              2.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H1437", 
-            "clust": 3, 
-            "cl": "category-four", 
-            "rank": 13, 
-            "ini": 6, 
-            "cl_index": 3
-          }, 
-          {
-            "group": [
-              22.0, 
-              22.0, 
-              22.0, 
-              20.0, 
-              16.0, 
-              9.0, 
-              6.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H1734", 
-            "clust": 24, 
-            "cl": "category-one", 
-            "rank": 20, 
-            "ini": 5, 
-            "cl_index": 9
-          }, 
-          {
-            "group": [
-              17.0, 
-              17.0, 
-              17.0, 
-              15.0, 
-              13.0, 
-              7.0, 
-              5.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "LOU-NH91", 
-            "clust": 17, 
-            "cl": "category-four", 
-            "rank": 3, 
-            "ini": 4, 
-            "cl_index": 5
-          }, 
-          {
-            "group": [
-              10.0, 
-              10.0, 
-              10.0, 
-              9.0, 
-              7.0, 
-              4.0, 
-              3.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "HCC44", 
-            "clust": 10, 
-            "cl": "category-four", 
-            "rank": 11, 
-            "ini": 3, 
-            "cl_index": 2
-          }, 
-          {
-            "group": [
-              5.0, 
-              5.0, 
-              5.0, 
-              5.0, 
-              3.0, 
-              3.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "A549", 
-            "clust": 7, 
-            "cl": "category-six", 
-            "rank": 19, 
-            "ini": 2, 
-            "cl_index": 20
-          }, 
-          {
-            "group": [
-              24.0, 
-              24.0, 
-              23.0, 
-              21.0, 
-              17.0, 
-              9.0, 
-              6.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H1781", 
-            "clust": 28, 
-            "cl": "category-four", 
-            "rank": 21, 
-            "ini": 1, 
-            "cl_index": 4
-          }
-        ]
-      }
-    }, 
-    {
-      "N_row_sum": 20, 
-      "dist": "cos", 
-      "nodes": {
-        "row_nodes": [
-          {
-            "rank": 19, 
-            "group": [
-              6.0, 
-              6.0, 
-              6.0, 
-              6.0, 
-              5.0, 
-              3.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "STK31", 
-            "clust": 5, 
-            "ini": 20
-          }, 
-          {
-            "rank": 0, 
-            "group": [
-              19.0, 
-              18.0, 
-              18.0, 
-              14.0, 
-              11.0, 
-              5.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "STK24", 
-            "clust": 18, 
-            "ini": 19
-          }, 
-          {
-            "rank": 18, 
-            "group": [
-              7.0, 
-              7.0, 
-              7.0, 
-              6.0, 
-              5.0, 
-              3.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "STK32A", 
-            "clust": 6, 
-            "ini": 18
-          }, 
-          {
-            "rank": 17, 
-            "group": [
-              8.0, 
-              8.0, 
-              8.0, 
-              7.0, 
-              6.0, 
-              3.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "NRK", 
-            "clust": 9, 
-            "ini": 17
-          }, 
-          {
-            "rank": 16, 
-            "group": [
-              11.0, 
-              11.0, 
-              11.0, 
-              8.0, 
-              6.0, 
-              3.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "TBK1", 
-            "clust": 7, 
-            "ini": 16
-          }, 
-          {
-            "rank": 15, 
-            "group": [
-              10.0, 
-              10.0, 
-              10.0, 
-              7.0, 
-              6.0, 
-              3.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "EGFR", 
-            "clust": 8, 
-            "ini": 15
-          }, 
-          {
-            "rank": 14, 
-            "group": [
-              5.0, 
-              5.0, 
-              5.0, 
-              5.0, 
-              4.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "MYLK3", 
-            "clust": 2, 
-            "ini": 14
-          }, 
-          {
-            "rank": 13, 
-            "group": [
-              14.0, 
-              14.0, 
-              14.0, 
-              11.0, 
-              8.0, 
-              3.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "ROS1", 
-            "clust": 11, 
-            "ini": 13
-          }, 
-          {
-            "rank": 12, 
-            "group": [
-              9.0, 
-              9.0, 
-              9.0, 
-              7.0, 
-              6.0, 
-              3.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "CDK4", 
-            "clust": 10, 
-            "ini": 12
-          }, 
-          {
-            "rank": 11, 
-            "group": [
-              3.0, 
-              3.0, 
-              3.0, 
-              3.0, 
-              2.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "LATS1", 
-            "clust": 3, 
-            "ini": 11
-          }, 
-          {
-            "rank": 10, 
-            "group": [
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "LMTK3", 
-            "clust": 0, 
-            "ini": 10
-          }, 
-          {
-            "rank": 9, 
-            "group": [
-              2.0, 
-              2.0, 
-              2.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "NPR1", 
-            "clust": 1, 
-            "ini": 9
-          }, 
-          {
-            "rank": 8, 
-            "group": [
-              12.0, 
-              12.0, 
-              12.0, 
-              9.0, 
-              7.0, 
-              3.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "UHMK1", 
-            "clust": 12, 
-            "ini": 8
-          }, 
-          {
-            "rank": 7, 
-            "group": [
-              17.0, 
-              16.0, 
-              16.0, 
-              12.0, 
-              9.0, 
-              4.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "PRKG2", 
-            "clust": 15, 
-            "ini": 7
-          }, 
-          {
-            "rank": 1, 
-            "group": [
-              15.0, 
-              15.0, 
-              15.0, 
-              12.0, 
-              9.0, 
-              4.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "GRK4", 
-            "clust": 16, 
-            "ini": 6
-          }, 
-          {
-            "rank": 2, 
-            "group": [
-              20.0, 
-              19.0, 
-              19.0, 
-              15.0, 
-              12.0, 
-              5.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "PDGFRA", 
-            "clust": 19, 
-            "ini": 5
-          }, 
-          {
-            "rank": 3, 
-            "group": [
-              16.0, 
-              15.0, 
-              15.0, 
-              12.0, 
-              9.0, 
-              4.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "CAMK2B", 
-            "clust": 17, 
-            "ini": 4
-          }, 
-          {
-            "rank": 6, 
-            "group": [
-              13.0, 
-              13.0, 
-              13.0, 
-              10.0, 
-              7.0, 
-              3.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "ERBB2", 
-            "clust": 13, 
-            "ini": 3
-          }, 
-          {
-            "rank": 4, 
-            "group": [
-              18.0, 
-              17.0, 
-              17.0, 
-              13.0, 
-              10.0, 
-              4.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "NEK9", 
-            "clust": 14, 
-            "ini": 2
-          }, 
-          {
-            "rank": 5, 
-            "group": [
-              4.0, 
-              4.0, 
-              4.0, 
-              4.0, 
-              3.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "MAP2K4", 
-            "clust": 4, 
-            "ini": 1
-          }
-        ], 
-        "col_nodes": [
-          {
-            "group": [
-              14.0, 
-              14.0, 
-              12.0, 
-              8.0, 
-              5.0, 
-              4.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H1650", 
-            "clust": 14, 
-            "cl": "category-one", 
-            "rank": 7, 
-            "ini": 29, 
-            "cl_index": 14
-          }, 
-          {
-            "group": [
-              4.0, 
-              4.0, 
-              4.0, 
-              3.0, 
-              2.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H23", 
-            "clust": 7, 
-            "cl": "category-one", 
-            "rank": 14, 
-            "ini": 28, 
-            "cl_index": 12
-          }, 
-          {
-            "group": [
-              20.0, 
-              20.0, 
-              18.0, 
-              13.0, 
-              8.0, 
-              5.0, 
-              3.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "CAL-12T", 
-            "clust": 20, 
-            "cl": "category-one", 
-            "rank": 21, 
-            "ini": 27, 
-            "cl_index": 7
-          }, 
-          {
-            "group": [
-              21.0, 
-              21.0, 
-              19.0, 
-              14.0, 
-              8.0, 
-              5.0, 
-              3.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H358", 
-            "clust": 21, 
-            "cl": "category-one", 
-            "rank": 15, 
-            "ini": 26, 
-            "cl_index": 13
-          }, 
-          {
-            "group": [
-              27.0, 
-              27.0, 
-              24.0, 
-              17.0, 
-              10.0, 
-              7.0, 
-              3.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H1975", 
-            "clust": 27, 
-            "cl": "category-three", 
-            "rank": 1, 
-            "ini": 25, 
-            "cl_index": 22
-          }, 
-          {
-            "group": [
-              5.0, 
-              5.0, 
-              4.0, 
-              3.0, 
-              2.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "HCC15", 
-            "clust": 8, 
-            "cl": "category-seven", 
-            "rank": 5, 
-            "ini": 24, 
-            "cl_index": 18
-          }, 
-          {
-            "group": [
-              9.0, 
-              9.0, 
-              8.0, 
-              5.0, 
-              3.0, 
-              3.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H1355", 
-            "clust": 10, 
-            "cl": "category-one", 
-            "rank": 16, 
-            "ini": 23, 
-            "cl_index": 16
-          }, 
-          {
-            "group": [
-              25.0, 
-              25.0, 
-              22.0, 
-              16.0, 
-              9.0, 
-              6.0, 
-              3.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "HCC827", 
-            "clust": 25, 
-            "cl": "category-two", 
-            "rank": 28, 
-            "ini": 22, 
-            "cl_index": 26
-          }, 
-          {
-            "group": [
-              16.0, 
-              16.0, 
-              14.0, 
-              10.0, 
-              6.0, 
-              4.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H2405", 
-            "clust": 18, 
-            "cl": "category-three", 
-            "rank": 4, 
-            "ini": 21, 
-            "cl_index": 23
-          }, 
-          {
-            "group": [
-              18.0, 
-              18.0, 
-              16.0, 
-              11.0, 
-              6.0, 
-              4.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "HCC78", 
-            "clust": 17, 
-            "cl": "category-two", 
-            "rank": 26, 
-            "ini": 20, 
-            "cl_index": 27
-          }, 
-          {
-            "group": [
-              17.0, 
-              17.0, 
-              15.0, 
-              10.0, 
-              6.0, 
-              4.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H1666", 
-            "clust": 19, 
-            "cl": "category-one", 
-            "rank": 3, 
-            "ini": 19, 
-            "cl_index": 10
-          }, 
-          {
-            "group": [
-              3.0, 
-              3.0, 
-              3.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H661", 
-            "clust": 1, 
-            "cl": "category-three", 
-            "rank": 18, 
-            "ini": 18, 
-            "cl_index": 21
-          }, 
-          {
-            "group": [
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H838", 
-            "clust": 2, 
-            "cl": "category-five", 
-            "rank": 11, 
-            "ini": 17, 
-            "cl_index": 0
-          }, 
-          {
-            "group": [
-              8.0, 
-              8.0, 
-              7.0, 
-              4.0, 
-              2.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H1703", 
-            "clust": 4, 
-            "cl": "category-one", 
-            "rank": 10, 
-            "ini": 16, 
-            "cl_index": 15
-          }, 
-          {
-            "group": [
-              15.0, 
-              15.0, 
-              13.0, 
-              9.0, 
-              5.0, 
-              4.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "CALU-3", 
-            "clust": 15, 
-            "cl": "category-five", 
-            "rank": 8, 
-            "ini": 15, 
-            "cl_index": 1
-          }, 
-          {
-            "group": [
-              2.0, 
-              2.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H2342", 
-            "clust": 3, 
-            "cl": "category-two", 
-            "rank": 27, 
-            "ini": 14, 
-            "cl_index": 25
-          }, 
-          {
-            "group": [
-              24.0, 
-              24.0, 
-              21.0, 
-              15.0, 
-              9.0, 
-              6.0, 
-              3.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H2228", 
-            "clust": 22, 
-            "cl": "category-three", 
-            "rank": 12, 
-            "ini": 13, 
-            "cl_index": 24
-          }, 
-          {
-            "group": [
-              6.0, 
-              6.0, 
-              5.0, 
-              3.0, 
-              2.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H1299", 
-            "clust": 6, 
-            "cl": "category-one", 
-            "rank": 6, 
-            "ini": 12, 
-            "cl_index": 6
-          }, 
-          {
-            "group": [
-              28.0, 
-              28.0, 
-              25.0, 
-              18.0, 
-              11.0, 
-              7.0, 
-              3.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H1792", 
-            "clust": 28, 
-            "cl": "category-one", 
-            "rank": 22, 
-            "ini": 11, 
-            "cl_index": 11
-          }, 
-          {
-            "group": [
-              10.0, 
-              10.0, 
-              8.0, 
-              5.0, 
-              3.0, 
-              3.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H460", 
-            "clust": 11, 
-            "cl": "category-one", 
-            "rank": 0, 
-            "ini": 10, 
-            "cl_index": 17
-          }, 
-          {
-            "group": [
-              29.0, 
-              29.0, 
-              26.0, 
-              19.0, 
-              12.0, 
-              8.0, 
-              4.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H2106", 
-            "clust": 0, 
-            "cl": "category-six", 
-            "rank": 20, 
-            "ini": 9, 
-            "cl_index": 19
-          }, 
-          {
-            "group": [
-              22.0, 
-              22.0, 
-              20.0, 
-              15.0, 
-              9.0, 
-              6.0, 
-              3.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H441", 
-            "clust": 23, 
-            "cl": "category-two", 
-            "rank": 24, 
-            "ini": 8, 
-            "cl_index": 28
-          }, 
-          {
-            "group": [
-              12.0, 
-              12.0, 
-              10.0, 
-              6.0, 
-              4.0, 
-              3.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H1944", 
-            "clust": 12, 
-            "cl": "category-one", 
-            "rank": 19, 
-            "ini": 7, 
-            "cl_index": 8
-          }, 
-          {
-            "group": [
-              11.0, 
-              11.0, 
-              9.0, 
-              5.0, 
-              3.0, 
-              3.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H1437", 
-            "clust": 9, 
-            "cl": "category-four", 
-            "rank": 17, 
-            "ini": 6, 
-            "cl_index": 3
-          }, 
-          {
-            "group": [
-              26.0, 
-              26.0, 
-              23.0, 
-              16.0, 
-              9.0, 
-              6.0, 
-              3.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H1734", 
-            "clust": 26, 
-            "cl": "category-one", 
-            "rank": 25, 
-            "ini": 5, 
-            "cl_index": 9
-          }, 
-          {
-            "group": [
-              19.0, 
-              19.0, 
-              17.0, 
-              12.0, 
-              7.0, 
-              4.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "LOU-NH91", 
-            "clust": 16, 
-            "cl": "category-four", 
-            "rank": 2, 
-            "ini": 4, 
-            "cl_index": 2
-          }, 
-          {
-            "group": [
-              7.0, 
-              7.0, 
-              6.0, 
-              3.0, 
-              2.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "HCC44", 
-            "clust": 5, 
-            "cl": "category-four", 
-            "rank": 13, 
-            "ini": 3, 
-            "cl_index": 4
-          }, 
-          {
-            "group": [
-              13.0, 
-              13.0, 
-              11.0, 
-              7.0, 
-              4.0, 
-              3.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "A549", 
-            "clust": 13, 
-            "cl": "category-six", 
-            "rank": 9, 
-            "ini": 2, 
-            "cl_index": 20
-          }, 
-          {
-            "group": [
-              23.0, 
-              23.0, 
-              20.0, 
-              15.0, 
-              9.0, 
-              6.0, 
-              3.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H1781", 
-            "clust": 24, 
-            "cl": "category-four", 
-            "rank": 23, 
-            "ini": 1, 
-            "cl_index": 5
-          }
-        ]
-      }
-    }, 
-    {
-      "N_row_sum": 10, 
-      "dist": "cos", 
-      "nodes": {
-        "row_nodes": [
-          {
-            "rank": 9, 
-            "group": [
-              3.0, 
-              3.0, 
-              3.0, 
-              3.0, 
-              3.0, 
-              3.0, 
-              3.0, 
-              3.0, 
-              2.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "STK31", 
-            "clust": 4, 
-            "ini": 10
-          }, 
-          {
-            "rank": 0, 
-            "group": [
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "STK24", 
-            "clust": 0, 
-            "ini": 9
-          }, 
-          {
-            "rank": 8, 
-            "group": [
-              4.0, 
-              4.0, 
-              4.0, 
-              4.0, 
-              3.0, 
-              3.0, 
-              3.0, 
-              3.0, 
-              2.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "STK32A", 
-            "clust": 5, 
-            "ini": 8
-          }, 
-          {
-            "rank": 7, 
-            "group": [
-              5.0, 
-              5.0, 
-              5.0, 
-              5.0, 
-              4.0, 
-              4.0, 
-              3.0, 
-              3.0, 
-              2.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "NRK", 
-            "clust": 8, 
-            "ini": 7
-          }, 
-          {
-            "rank": 6, 
-            "group": [
-              8.0, 
-              8.0, 
-              8.0, 
-              8.0, 
-              5.0, 
-              4.0, 
-              3.0, 
-              3.0, 
-              2.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "TBK1", 
-            "clust": 6, 
-            "ini": 6
-          }, 
-          {
-            "rank": 5, 
-            "group": [
-              7.0, 
-              7.0, 
-              7.0, 
-              7.0, 
-              4.0, 
-              4.0, 
-              3.0, 
-              3.0, 
-              2.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "EGFR", 
-            "clust": 7, 
-            "ini": 5
-          }, 
-          {
-            "rank": 4, 
-            "group": [
-              9.0, 
-              9.0, 
-              9.0, 
-              9.0, 
-              6.0, 
-              5.0, 
-              4.0, 
-              4.0, 
-              2.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "MYLK3", 
-            "clust": 3, 
-            "ini": 4
-          }, 
-          {
-            "rank": 3, 
-            "group": [
-              2.0, 
-              2.0, 
-              2.0, 
-              2.0, 
-              2.0, 
-              2.0, 
-              2.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "ROS1", 
-            "clust": 1, 
-            "ini": 3
-          }, 
-          {
-            "rank": 2, 
-            "group": [
-              6.0, 
-              6.0, 
-              6.0, 
-              6.0, 
-              4.0, 
-              4.0, 
-              3.0, 
-              3.0, 
-              2.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "CDK4", 
-            "clust": 9, 
-            "ini": 2
-          }, 
-          {
-            "rank": 1, 
-            "group": [
-              10.0, 
-              10.0, 
-              10.0, 
-              10.0, 
-              7.0, 
-              6.0, 
-              5.0, 
-              5.0, 
-              2.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "LATS1", 
-            "clust": 2, 
-            "ini": 1
-          }
-        ], 
-        "col_nodes": [
-          {
-            "group": [
-              28.0, 
-              23.0, 
-              17.0, 
-              11.0, 
-              7.0, 
-              5.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H1650", 
-            "clust": 27, 
-            "cl": "category-one", 
-            "rank": 7, 
-            "ini": 29, 
-            "cl_index": 12
-          }, 
-          {
-            "group": [
-              6.0, 
-              6.0, 
-              4.0, 
-              3.0, 
-              2.0, 
-              2.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H23", 
-            "clust": 6, 
-            "cl": "category-one", 
-            "rank": 19, 
-            "ini": 28, 
-            "cl_index": 7
-          }, 
-          {
-            "group": [
-              5.0, 
-              5.0, 
-              3.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "CAL-12T", 
-            "clust": 0, 
-            "cl": "category-one", 
-            "rank": 6, 
-            "ini": 27, 
-            "cl_index": 13
-          }, 
-          {
-            "group": [
-              26.0, 
-              21.0, 
-              16.0, 
-              10.0, 
-              6.0, 
-              5.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H358", 
-            "clust": 25, 
-            "cl": "category-one", 
-            "rank": 11, 
-            "ini": 26, 
-            "cl_index": 15
-          }, 
-          {
-            "group": [
-              13.0, 
-              10.0, 
-              7.0, 
-              5.0, 
-              3.0, 
-              2.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H1975", 
-            "clust": 12, 
-            "cl": "category-three", 
-            "rank": 0, 
-            "ini": 25, 
-            "cl_index": 22
-          }, 
-          {
-            "group": [
-              8.0, 
-              6.0, 
-              4.0, 
-              3.0, 
-              2.0, 
-              2.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "HCC15", 
-            "clust": 8, 
-            "cl": "category-seven", 
-            "rank": 13, 
-            "ini": 24, 
-            "cl_index": 18
-          }, 
-          {
-            "group": [
-              14.0, 
-              11.0, 
-              7.0, 
-              5.0, 
-              3.0, 
-              2.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H1355", 
-            "clust": 13, 
-            "cl": "category-one", 
-            "rank": 4, 
-            "ini": 23, 
-            "cl_index": 16
-          }, 
-          {
-            "group": [
-              29.0, 
-              24.0, 
-              18.0, 
-              12.0, 
-              7.0, 
-              5.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "HCC827", 
-            "clust": 28, 
-            "cl": "category-two", 
-            "rank": 28, 
-            "ini": 22, 
-            "cl_index": 26
-          }, 
-          {
-            "group": [
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H2405", 
-            "clust": 3, 
-            "cl": "category-three", 
-            "rank": 18, 
-            "ini": 21, 
-            "cl_index": 23
-          }, 
-          {
-            "group": [
-              2.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "HCC78", 
-            "clust": 4, 
-            "cl": "category-two", 
-            "rank": 27, 
-            "ini": 20, 
-            "cl_index": 27
-          }, 
-          {
-            "group": [
-              4.0, 
-              4.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H1666", 
-            "clust": 1, 
-            "cl": "category-one", 
-            "rank": 5, 
-            "ini": 19, 
-            "cl_index": 10
-          }, 
-          {
-            "group": [
-              22.0, 
-              19.0, 
-              14.0, 
-              9.0, 
-              5.0, 
-              4.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H661", 
-            "clust": 19, 
-            "cl": "category-three", 
-            "rank": 22, 
-            "ini": 18, 
-            "cl_index": 21
-          }, 
-          {
-            "group": [
-              20.0, 
-              17.0, 
-              13.0, 
-              9.0, 
-              5.0, 
-              4.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H838", 
-            "clust": 20, 
-            "cl": "category-five", 
-            "rank": 20, 
-            "ini": 17, 
-            "cl_index": 0
-          }, 
-          {
-            "group": [
-              9.0, 
-              6.0, 
-              4.0, 
-              3.0, 
-              2.0, 
-              2.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H1703", 
-            "clust": 9, 
-            "cl": "category-one", 
-            "rank": 12, 
-            "ini": 16, 
-            "cl_index": 14
-          }, 
-          {
-            "group": [
-              17.0, 
-              14.0, 
-              10.0, 
-              7.0, 
-              4.0, 
-              3.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "CALU-3", 
-            "clust": 17, 
-            "cl": "category-five", 
-            "rank": 9, 
-            "ini": 15, 
-            "cl_index": 1
-          }, 
-          {
-            "group": [
-              21.0, 
-              18.0, 
-              13.0, 
-              9.0, 
-              5.0, 
-              4.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H2342", 
-            "clust": 21, 
-            "cl": "category-two", 
-            "rank": 26, 
-            "ini": 14, 
-            "cl_index": 25
-          }, 
-          {
-            "group": [
-              23.0, 
-              20.0, 
-              15.0, 
-              10.0, 
-              6.0, 
-              5.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H2228", 
-            "clust": 23, 
-            "cl": "category-three", 
-            "rank": 21, 
-            "ini": 13, 
-            "cl_index": 24
-          }, 
-          {
-            "group": [
-              7.0, 
-              6.0, 
-              4.0, 
-              3.0, 
-              2.0, 
-              2.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H1299", 
-            "clust": 7, 
-            "cl": "category-one", 
-            "rank": 8, 
-            "ini": 12, 
-            "cl_index": 9
-          }, 
-          {
-            "group": [
-              15.0, 
-              12.0, 
-              8.0, 
-              6.0, 
-              3.0, 
-              2.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H1792", 
-            "clust": 14, 
-            "cl": "category-one", 
-            "rank": 15, 
-            "ini": 11, 
-            "cl_index": 17
-          }, 
-          {
-            "group": [
-              11.0, 
-              8.0, 
-              5.0, 
-              4.0, 
-              3.0, 
-              2.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H460", 
-            "clust": 10, 
-            "cl": "category-one", 
-            "rank": 2, 
-            "ini": 10, 
-            "cl_index": 8
-          }, 
-          {
-            "group": [
-              18.0, 
-              15.0, 
-              11.0, 
-              7.0, 
-              4.0, 
-              3.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H2106", 
-            "clust": 18, 
-            "cl": "category-six", 
-            "rank": 3, 
-            "ini": 9, 
-            "cl_index": 19
-          }, 
-          {
-            "group": [
-              25.0, 
-              20.0, 
-              15.0, 
-              10.0, 
-              6.0, 
-              5.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H441", 
-            "clust": 22, 
-            "cl": "category-two", 
-            "rank": 23, 
-            "ini": 8, 
-            "cl_index": 28
-          }, 
-          {
-            "group": [
-              12.0, 
-              9.0, 
-              6.0, 
-              4.0, 
-              3.0, 
-              2.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H1944", 
-            "clust": 11, 
-            "cl": "category-one", 
-            "rank": 16, 
-            "ini": 7, 
-            "cl_index": 6
-          }, 
-          {
-            "group": [
-              19.0, 
-              16.0, 
-              12.0, 
-              8.0, 
-              4.0, 
-              3.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H1437", 
-            "clust": 16, 
-            "cl": "category-four", 
-            "rank": 1, 
-            "ini": 6, 
-            "cl_index": 2
-          }, 
-          {
-            "group": [
-              27.0, 
-              22.0, 
-              16.0, 
-              10.0, 
-              6.0, 
-              5.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H1734", 
-            "clust": 26, 
-            "cl": "category-one", 
-            "rank": 25, 
-            "ini": 5, 
-            "cl_index": 11
-          }, 
-          {
-            "group": [
-              3.0, 
-              3.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "LOU-NH91", 
-            "clust": 2, 
-            "cl": "category-four", 
-            "rank": 14, 
-            "ini": 4, 
-            "cl_index": 3
-          }, 
-          {
-            "group": [
-              10.0, 
-              7.0, 
-              4.0, 
-              3.0, 
-              2.0, 
-              2.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "HCC44", 
-            "clust": 5, 
-            "cl": "category-four", 
-            "rank": 17, 
-            "ini": 3, 
-            "cl_index": 4
-          }, 
-          {
-            "group": [
-              16.0, 
-              13.0, 
-              9.0, 
-              6.0, 
-              3.0, 
-              2.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "A549", 
-            "clust": 15, 
-            "cl": "category-six", 
-            "rank": 10, 
-            "ini": 2, 
-            "cl_index": 20
-          }, 
-          {
-            "group": [
-              24.0, 
-              20.0, 
-              15.0, 
-              10.0, 
-              6.0, 
-              5.0, 
-              2.0, 
-              1.0, 
-              1.0, 
-              1.0, 
-              1.0
-            ], 
-            "name": "H1781", 
-            "clust": 24, 
-            "cl": "category-four", 
-            "rank": 24, 
-            "ini": 1, 
-            "cl_index": 5
-          }
-        ]
-      }
+      "filter_row_sum": 0
     }, 
     {
       "nodes": {
@@ -11931,7 +8935,7 @@
             "cl": "category-one", 
             "rank": 6, 
             "ini": 29, 
-            "cl_index": 6
+            "cl_index": 11
           }, 
           {
             "group": [
@@ -11952,7 +8956,7 @@
             "cl": "category-one", 
             "rank": 17, 
             "ini": 28, 
-            "cl_index": 12
+            "cl_index": 9
           }, 
           {
             "group": [
@@ -11970,10 +8974,10 @@
             ], 
             "name": "CAL-12T", 
             "clust": 4, 
-            "cl": "category-one", 
+            "cl": "category-two", 
             "rank": 10, 
             "ini": 27, 
-            "cl_index": 13
+            "cl_index": 26
           }, 
           {
             "group": [
@@ -11994,7 +8998,7 @@
             "cl": "category-one", 
             "rank": 4, 
             "ini": 26, 
-            "cl_index": 7
+            "cl_index": 14
           }, 
           {
             "group": [
@@ -12012,10 +9016,10 @@
             ], 
             "name": "H1975", 
             "clust": 22, 
-            "cl": "category-three", 
+            "cl": "category-one", 
             "rank": 0, 
             "ini": 25, 
-            "cl_index": 22
+            "cl_index": 15
           }, 
           {
             "group": [
@@ -12057,7 +9061,7 @@
             "cl": "category-one", 
             "rank": 9, 
             "ini": 23, 
-            "cl_index": 10
+            "cl_index": 17
           }, 
           {
             "group": [
@@ -12078,7 +9082,7 @@
             "cl": "category-two", 
             "rank": 28, 
             "ini": 22, 
-            "cl_index": 25
+            "cl_index": 28
           }, 
           {
             "group": [
@@ -12099,7 +9103,7 @@
             "cl": "category-three", 
             "rank": 1, 
             "ini": 21, 
-            "cl_index": 23
+            "cl_index": 24
           }, 
           {
             "group": [
@@ -12120,7 +9124,7 @@
             "cl": "category-two", 
             "rank": 25, 
             "ini": 20, 
-            "cl_index": 27
+            "cl_index": 25
           }, 
           {
             "group": [
@@ -12141,7 +9145,7 @@
             "cl": "category-one", 
             "rank": 18, 
             "ini": 19, 
-            "cl_index": 8
+            "cl_index": 7
           }, 
           {
             "group": [
@@ -12204,7 +9208,7 @@
             "cl": "category-one", 
             "rank": 11, 
             "ini": 16, 
-            "cl_index": 9
+            "cl_index": 10
           }, 
           {
             "group": [
@@ -12246,7 +9250,7 @@
             "cl": "category-two", 
             "rank": 26, 
             "ini": 14, 
-            "cl_index": 26
+            "cl_index": 27
           }, 
           {
             "group": [
@@ -12264,10 +9268,10 @@
             ], 
             "name": "H2228", 
             "clust": 26, 
-            "cl": "category-three", 
+            "cl": "category-four", 
             "rank": 2, 
             "ini": 13, 
-            "cl_index": 24
+            "cl_index": 2
           }, 
           {
             "group": [
@@ -12288,7 +9292,7 @@
             "cl": "category-one", 
             "rank": 12, 
             "ini": 12, 
-            "cl_index": 17
+            "cl_index": 8
           }, 
           {
             "group": [
@@ -12309,7 +9313,7 @@
             "cl": "category-one", 
             "rank": 20, 
             "ini": 11, 
-            "cl_index": 11
+            "cl_index": 16
           }, 
           {
             "group": [
@@ -12330,7 +9334,7 @@
             "cl": "category-one", 
             "rank": 5, 
             "ini": 10, 
-            "cl_index": 16
+            "cl_index": 6
           }, 
           {
             "group": [
@@ -12369,10 +9373,10 @@
             ], 
             "name": "H441", 
             "clust": 27, 
-            "cl": "category-two", 
+            "cl": "category-one", 
             "rank": 27, 
             "ini": 8, 
-            "cl_index": 28
+            "cl_index": 12
           }, 
           {
             "group": [
@@ -12393,7 +9397,7 @@
             "cl": "category-one", 
             "rank": 23, 
             "ini": 7, 
-            "cl_index": 14
+            "cl_index": 13
           }, 
           {
             "group": [
@@ -12414,7 +9418,7 @@
             "cl": "category-four", 
             "rank": 16, 
             "ini": 6, 
-            "cl_index": 2
+            "cl_index": 5
           }, 
           {
             "group": [
@@ -12432,10 +9436,10 @@
             ], 
             "name": "H1734", 
             "clust": 24, 
-            "cl": "category-one", 
+            "cl": "category-three", 
             "rank": 19, 
             "ini": 5, 
-            "cl_index": 15
+            "cl_index": 22
           }, 
           {
             "group": [
@@ -12453,10 +9457,10 @@
             ], 
             "name": "LOU-NH91", 
             "clust": 13, 
-            "cl": "category-four", 
+            "cl": "category-three", 
             "rank": 15, 
             "ini": 4, 
-            "cl_index": 4
+            "cl_index": 23
           }, 
           {
             "group": [
@@ -12519,7 +9523,7 @@
             "cl": "category-four", 
             "rank": 13, 
             "ini": 1, 
-            "cl_index": 5
+            "cl_index": 4
           }
         ]
       }, 
@@ -13272,7 +10276,7 @@
             "cl": "category-one", 
             "rank": 6, 
             "ini": 29, 
-            "cl_index": 6
+            "cl_index": 11
           }, 
           {
             "group": [
@@ -13293,7 +10297,7 @@
             "cl": "category-one", 
             "rank": 17, 
             "ini": 28, 
-            "cl_index": 12
+            "cl_index": 9
           }, 
           {
             "group": [
@@ -13311,10 +10315,10 @@
             ], 
             "name": "CAL-12T", 
             "clust": 4, 
-            "cl": "category-one", 
+            "cl": "category-two", 
             "rank": 10, 
             "ini": 27, 
-            "cl_index": 13
+            "cl_index": 26
           }, 
           {
             "group": [
@@ -13335,7 +10339,7 @@
             "cl": "category-one", 
             "rank": 4, 
             "ini": 26, 
-            "cl_index": 7
+            "cl_index": 14
           }, 
           {
             "group": [
@@ -13353,10 +10357,10 @@
             ], 
             "name": "H1975", 
             "clust": 22, 
-            "cl": "category-three", 
+            "cl": "category-one", 
             "rank": 0, 
             "ini": 25, 
-            "cl_index": 22
+            "cl_index": 15
           }, 
           {
             "group": [
@@ -13398,7 +10402,7 @@
             "cl": "category-one", 
             "rank": 9, 
             "ini": 23, 
-            "cl_index": 10
+            "cl_index": 17
           }, 
           {
             "group": [
@@ -13419,7 +10423,7 @@
             "cl": "category-two", 
             "rank": 28, 
             "ini": 22, 
-            "cl_index": 25
+            "cl_index": 28
           }, 
           {
             "group": [
@@ -13440,7 +10444,7 @@
             "cl": "category-three", 
             "rank": 1, 
             "ini": 21, 
-            "cl_index": 23
+            "cl_index": 24
           }, 
           {
             "group": [
@@ -13461,7 +10465,7 @@
             "cl": "category-two", 
             "rank": 25, 
             "ini": 20, 
-            "cl_index": 27
+            "cl_index": 25
           }, 
           {
             "group": [
@@ -13482,7 +10486,7 @@
             "cl": "category-one", 
             "rank": 18, 
             "ini": 19, 
-            "cl_index": 8
+            "cl_index": 7
           }, 
           {
             "group": [
@@ -13545,7 +10549,7 @@
             "cl": "category-one", 
             "rank": 11, 
             "ini": 16, 
-            "cl_index": 9
+            "cl_index": 10
           }, 
           {
             "group": [
@@ -13587,7 +10591,7 @@
             "cl": "category-two", 
             "rank": 26, 
             "ini": 14, 
-            "cl_index": 26
+            "cl_index": 27
           }, 
           {
             "group": [
@@ -13605,10 +10609,10 @@
             ], 
             "name": "H2228", 
             "clust": 26, 
-            "cl": "category-three", 
+            "cl": "category-four", 
             "rank": 2, 
             "ini": 13, 
-            "cl_index": 24
+            "cl_index": 2
           }, 
           {
             "group": [
@@ -13629,7 +10633,7 @@
             "cl": "category-one", 
             "rank": 12, 
             "ini": 12, 
-            "cl_index": 17
+            "cl_index": 8
           }, 
           {
             "group": [
@@ -13650,7 +10654,7 @@
             "cl": "category-one", 
             "rank": 20, 
             "ini": 11, 
-            "cl_index": 11
+            "cl_index": 16
           }, 
           {
             "group": [
@@ -13671,7 +10675,7 @@
             "cl": "category-one", 
             "rank": 5, 
             "ini": 10, 
-            "cl_index": 16
+            "cl_index": 6
           }, 
           {
             "group": [
@@ -13710,10 +10714,10 @@
             ], 
             "name": "H441", 
             "clust": 27, 
-            "cl": "category-two", 
+            "cl": "category-one", 
             "rank": 27, 
             "ini": 8, 
-            "cl_index": 28
+            "cl_index": 12
           }, 
           {
             "group": [
@@ -13734,7 +10738,7 @@
             "cl": "category-one", 
             "rank": 23, 
             "ini": 7, 
-            "cl_index": 14
+            "cl_index": 13
           }, 
           {
             "group": [
@@ -13755,7 +10759,7 @@
             "cl": "category-four", 
             "rank": 16, 
             "ini": 6, 
-            "cl_index": 2
+            "cl_index": 5
           }, 
           {
             "group": [
@@ -13773,10 +10777,10 @@
             ], 
             "name": "H1734", 
             "clust": 24, 
-            "cl": "category-one", 
+            "cl": "category-three", 
             "rank": 19, 
             "ini": 5, 
-            "cl_index": 15
+            "cl_index": 22
           }, 
           {
             "group": [
@@ -13794,10 +10798,10 @@
             ], 
             "name": "LOU-NH91", 
             "clust": 13, 
-            "cl": "category-four", 
+            "cl": "category-three", 
             "rank": 15, 
             "ini": 4, 
-            "cl_index": 4
+            "cl_index": 23
           }, 
           {
             "group": [
@@ -13860,7 +10864,7 @@
             "cl": "category-four", 
             "rank": 13, 
             "ini": 1, 
-            "cl_index": 5
+            "cl_index": 4
           }
         ]
       }, 
@@ -14613,7 +11617,7 @@
             "cl": "category-one", 
             "rank": 6, 
             "ini": 29, 
-            "cl_index": 6
+            "cl_index": 11
           }, 
           {
             "group": [
@@ -14634,7 +11638,7 @@
             "cl": "category-one", 
             "rank": 17, 
             "ini": 28, 
-            "cl_index": 12
+            "cl_index": 9
           }, 
           {
             "group": [
@@ -14652,10 +11656,10 @@
             ], 
             "name": "CAL-12T", 
             "clust": 4, 
-            "cl": "category-one", 
+            "cl": "category-two", 
             "rank": 10, 
             "ini": 27, 
-            "cl_index": 13
+            "cl_index": 26
           }, 
           {
             "group": [
@@ -14676,7 +11680,7 @@
             "cl": "category-one", 
             "rank": 4, 
             "ini": 26, 
-            "cl_index": 7
+            "cl_index": 14
           }, 
           {
             "group": [
@@ -14694,10 +11698,10 @@
             ], 
             "name": "H1975", 
             "clust": 22, 
-            "cl": "category-three", 
+            "cl": "category-one", 
             "rank": 0, 
             "ini": 25, 
-            "cl_index": 22
+            "cl_index": 15
           }, 
           {
             "group": [
@@ -14739,7 +11743,7 @@
             "cl": "category-one", 
             "rank": 9, 
             "ini": 23, 
-            "cl_index": 10
+            "cl_index": 17
           }, 
           {
             "group": [
@@ -14760,7 +11764,7 @@
             "cl": "category-two", 
             "rank": 28, 
             "ini": 22, 
-            "cl_index": 25
+            "cl_index": 28
           }, 
           {
             "group": [
@@ -14781,7 +11785,7 @@
             "cl": "category-three", 
             "rank": 1, 
             "ini": 21, 
-            "cl_index": 23
+            "cl_index": 24
           }, 
           {
             "group": [
@@ -14802,7 +11806,7 @@
             "cl": "category-two", 
             "rank": 25, 
             "ini": 20, 
-            "cl_index": 27
+            "cl_index": 25
           }, 
           {
             "group": [
@@ -14823,7 +11827,7 @@
             "cl": "category-one", 
             "rank": 18, 
             "ini": 19, 
-            "cl_index": 8
+            "cl_index": 7
           }, 
           {
             "group": [
@@ -14886,7 +11890,7 @@
             "cl": "category-one", 
             "rank": 11, 
             "ini": 16, 
-            "cl_index": 9
+            "cl_index": 10
           }, 
           {
             "group": [
@@ -14928,7 +11932,7 @@
             "cl": "category-two", 
             "rank": 26, 
             "ini": 14, 
-            "cl_index": 26
+            "cl_index": 27
           }, 
           {
             "group": [
@@ -14946,10 +11950,10 @@
             ], 
             "name": "H2228", 
             "clust": 26, 
-            "cl": "category-three", 
+            "cl": "category-four", 
             "rank": 2, 
             "ini": 13, 
-            "cl_index": 24
+            "cl_index": 2
           }, 
           {
             "group": [
@@ -14970,7 +11974,7 @@
             "cl": "category-one", 
             "rank": 12, 
             "ini": 12, 
-            "cl_index": 17
+            "cl_index": 8
           }, 
           {
             "group": [
@@ -14991,7 +11995,7 @@
             "cl": "category-one", 
             "rank": 20, 
             "ini": 11, 
-            "cl_index": 11
+            "cl_index": 16
           }, 
           {
             "group": [
@@ -15012,7 +12016,7 @@
             "cl": "category-one", 
             "rank": 5, 
             "ini": 10, 
-            "cl_index": 16
+            "cl_index": 6
           }, 
           {
             "group": [
@@ -15051,10 +12055,10 @@
             ], 
             "name": "H441", 
             "clust": 27, 
-            "cl": "category-two", 
+            "cl": "category-one", 
             "rank": 27, 
             "ini": 8, 
-            "cl_index": 28
+            "cl_index": 12
           }, 
           {
             "group": [
@@ -15075,7 +12079,7 @@
             "cl": "category-one", 
             "rank": 23, 
             "ini": 7, 
-            "cl_index": 14
+            "cl_index": 13
           }, 
           {
             "group": [
@@ -15096,7 +12100,7 @@
             "cl": "category-four", 
             "rank": 16, 
             "ini": 6, 
-            "cl_index": 2
+            "cl_index": 5
           }, 
           {
             "group": [
@@ -15114,10 +12118,10 @@
             ], 
             "name": "H1734", 
             "clust": 24, 
-            "cl": "category-one", 
+            "cl": "category-three", 
             "rank": 19, 
             "ini": 5, 
-            "cl_index": 15
+            "cl_index": 22
           }, 
           {
             "group": [
@@ -15135,10 +12139,10 @@
             ], 
             "name": "LOU-NH91", 
             "clust": 13, 
-            "cl": "category-four", 
+            "cl": "category-three", 
             "rank": 15, 
             "ini": 4, 
-            "cl_index": 4
+            "cl_index": 23
           }, 
           {
             "group": [
@@ -15201,7 +12205,7 @@
             "cl": "category-four", 
             "rank": 13, 
             "ini": 1, 
-            "cl_index": 5
+            "cl_index": 4
           }
         ]
       }, 
@@ -15954,7 +12958,7 @@
             "cl": "category-one", 
             "rank": 6, 
             "ini": 29, 
-            "cl_index": 6
+            "cl_index": 11
           }, 
           {
             "group": [
@@ -15975,7 +12979,7 @@
             "cl": "category-one", 
             "rank": 17, 
             "ini": 28, 
-            "cl_index": 12
+            "cl_index": 9
           }, 
           {
             "group": [
@@ -15993,10 +12997,10 @@
             ], 
             "name": "CAL-12T", 
             "clust": 4, 
-            "cl": "category-one", 
+            "cl": "category-two", 
             "rank": 10, 
             "ini": 27, 
-            "cl_index": 13
+            "cl_index": 26
           }, 
           {
             "group": [
@@ -16017,7 +13021,7 @@
             "cl": "category-one", 
             "rank": 4, 
             "ini": 26, 
-            "cl_index": 7
+            "cl_index": 14
           }, 
           {
             "group": [
@@ -16035,10 +13039,10 @@
             ], 
             "name": "H1975", 
             "clust": 22, 
-            "cl": "category-three", 
+            "cl": "category-one", 
             "rank": 0, 
             "ini": 25, 
-            "cl_index": 22
+            "cl_index": 15
           }, 
           {
             "group": [
@@ -16080,7 +13084,7 @@
             "cl": "category-one", 
             "rank": 9, 
             "ini": 23, 
-            "cl_index": 10
+            "cl_index": 17
           }, 
           {
             "group": [
@@ -16101,7 +13105,7 @@
             "cl": "category-two", 
             "rank": 28, 
             "ini": 22, 
-            "cl_index": 25
+            "cl_index": 28
           }, 
           {
             "group": [
@@ -16122,7 +13126,7 @@
             "cl": "category-three", 
             "rank": 1, 
             "ini": 21, 
-            "cl_index": 23
+            "cl_index": 24
           }, 
           {
             "group": [
@@ -16143,7 +13147,7 @@
             "cl": "category-two", 
             "rank": 25, 
             "ini": 20, 
-            "cl_index": 27
+            "cl_index": 25
           }, 
           {
             "group": [
@@ -16164,7 +13168,7 @@
             "cl": "category-one", 
             "rank": 18, 
             "ini": 19, 
-            "cl_index": 8
+            "cl_index": 7
           }, 
           {
             "group": [
@@ -16227,7 +13231,7 @@
             "cl": "category-one", 
             "rank": 11, 
             "ini": 16, 
-            "cl_index": 9
+            "cl_index": 10
           }, 
           {
             "group": [
@@ -16269,7 +13273,7 @@
             "cl": "category-two", 
             "rank": 26, 
             "ini": 14, 
-            "cl_index": 26
+            "cl_index": 27
           }, 
           {
             "group": [
@@ -16287,10 +13291,10 @@
             ], 
             "name": "H2228", 
             "clust": 26, 
-            "cl": "category-three", 
+            "cl": "category-four", 
             "rank": 2, 
             "ini": 13, 
-            "cl_index": 24
+            "cl_index": 2
           }, 
           {
             "group": [
@@ -16311,7 +13315,7 @@
             "cl": "category-one", 
             "rank": 12, 
             "ini": 12, 
-            "cl_index": 17
+            "cl_index": 8
           }, 
           {
             "group": [
@@ -16332,7 +13336,7 @@
             "cl": "category-one", 
             "rank": 20, 
             "ini": 11, 
-            "cl_index": 11
+            "cl_index": 16
           }, 
           {
             "group": [
@@ -16353,7 +13357,7 @@
             "cl": "category-one", 
             "rank": 5, 
             "ini": 10, 
-            "cl_index": 16
+            "cl_index": 6
           }, 
           {
             "group": [
@@ -16392,10 +13396,10 @@
             ], 
             "name": "H441", 
             "clust": 27, 
-            "cl": "category-two", 
+            "cl": "category-one", 
             "rank": 27, 
             "ini": 8, 
-            "cl_index": 28
+            "cl_index": 12
           }, 
           {
             "group": [
@@ -16416,7 +13420,7 @@
             "cl": "category-one", 
             "rank": 23, 
             "ini": 7, 
-            "cl_index": 14
+            "cl_index": 13
           }, 
           {
             "group": [
@@ -16437,7 +13441,7 @@
             "cl": "category-four", 
             "rank": 16, 
             "ini": 6, 
-            "cl_index": 2
+            "cl_index": 5
           }, 
           {
             "group": [
@@ -16455,10 +13459,10 @@
             ], 
             "name": "H1734", 
             "clust": 24, 
-            "cl": "category-one", 
+            "cl": "category-three", 
             "rank": 19, 
             "ini": 5, 
-            "cl_index": 15
+            "cl_index": 22
           }, 
           {
             "group": [
@@ -16476,10 +13480,10 @@
             ], 
             "name": "LOU-NH91", 
             "clust": 13, 
-            "cl": "category-four", 
+            "cl": "category-three", 
             "rank": 15, 
             "ini": 4, 
-            "cl_index": 4
+            "cl_index": 23
           }, 
           {
             "group": [
@@ -16542,7 +13546,7 @@
             "cl": "category-four", 
             "rank": 13, 
             "ini": 1, 
-            "cl_index": 5
+            "cl_index": 4
           }
         ]
       }, 
@@ -17240,7 +14244,7 @@
             "cl": "category-one", 
             "rank": 17, 
             "ini": 28, 
-            "cl_index": 16
+            "cl_index": 8
           }, 
           {
             "group": [
@@ -17258,10 +14262,10 @@
             ], 
             "name": "CAL-12T", 
             "clust": 9, 
-            "cl": "category-one", 
+            "cl": "category-two", 
             "rank": 5, 
             "ini": 27, 
-            "cl_index": 14
+            "cl_index": 26
           }, 
           {
             "group": [
@@ -17282,7 +14286,7 @@
             "cl": "category-one", 
             "rank": 6, 
             "ini": 26, 
-            "cl_index": 15
+            "cl_index": 16
           }, 
           {
             "group": [
@@ -17300,10 +14304,10 @@
             ], 
             "name": "H1975", 
             "clust": 22, 
-            "cl": "category-three", 
+            "cl": "category-one", 
             "rank": 0, 
             "ini": 25, 
-            "cl_index": 22
+            "cl_index": 6
           }, 
           {
             "group": [
@@ -17345,7 +14349,7 @@
             "cl": "category-one", 
             "rank": 11, 
             "ini": 23, 
-            "cl_index": 17
+            "cl_index": 12
           }, 
           {
             "group": [
@@ -17366,7 +14370,7 @@
             "cl": "category-two", 
             "rank": 28, 
             "ini": 22, 
-            "cl_index": 25
+            "cl_index": 28
           }, 
           {
             "group": [
@@ -17387,7 +14391,7 @@
             "cl": "category-three", 
             "rank": 1, 
             "ini": 21, 
-            "cl_index": 23
+            "cl_index": 24
           }, 
           {
             "group": [
@@ -17408,7 +14412,7 @@
             "cl": "category-two", 
             "rank": 24, 
             "ini": 20, 
-            "cl_index": 27
+            "cl_index": 25
           }, 
           {
             "group": [
@@ -17429,7 +14433,7 @@
             "cl": "category-one", 
             "rank": 18, 
             "ini": 19, 
-            "cl_index": 8
+            "cl_index": 13
           }, 
           {
             "group": [
@@ -17492,7 +14496,7 @@
             "cl": "category-one", 
             "rank": 8, 
             "ini": 16, 
-            "cl_index": 9
+            "cl_index": 7
           }, 
           {
             "group": [
@@ -17534,7 +14538,7 @@
             "cl": "category-two", 
             "rank": 26, 
             "ini": 14, 
-            "cl_index": 26
+            "cl_index": 27
           }, 
           {
             "group": [
@@ -17552,10 +14556,10 @@
             ], 
             "name": "H2228", 
             "clust": 26, 
-            "cl": "category-three", 
+            "cl": "category-four", 
             "rank": 4, 
             "ini": 13, 
-            "cl_index": 24
+            "cl_index": 2
           }, 
           {
             "group": [
@@ -17576,7 +14580,7 @@
             "cl": "category-one", 
             "rank": 12, 
             "ini": 12, 
-            "cl_index": 7
+            "cl_index": 10
           }, 
           {
             "group": [
@@ -17597,7 +14601,7 @@
             "cl": "category-one", 
             "rank": 15, 
             "ini": 11, 
-            "cl_index": 10
+            "cl_index": 17
           }, 
           {
             "group": [
@@ -17618,7 +14622,7 @@
             "cl": "category-one", 
             "rank": 3, 
             "ini": 10, 
-            "cl_index": 6
+            "cl_index": 9
           }, 
           {
             "group": [
@@ -17657,10 +14661,10 @@
             ], 
             "name": "H441", 
             "clust": 27, 
-            "cl": "category-two", 
+            "cl": "category-one", 
             "rank": 27, 
             "ini": 8, 
-            "cl_index": 28
+            "cl_index": 14
           }, 
           {
             "group": [
@@ -17681,7 +14685,7 @@
             "cl": "category-one", 
             "rank": 22, 
             "ini": 7, 
-            "cl_index": 12
+            "cl_index": 15
           }, 
           {
             "group": [
@@ -17702,7 +14706,7 @@
             "cl": "category-four", 
             "rank": 19, 
             "ini": 6, 
-            "cl_index": 2
+            "cl_index": 5
           }, 
           {
             "group": [
@@ -17720,10 +14724,10 @@
             ], 
             "name": "H1734", 
             "clust": 24, 
-            "cl": "category-one", 
+            "cl": "category-three", 
             "rank": 20, 
             "ini": 5, 
-            "cl_index": 13
+            "cl_index": 22
           }, 
           {
             "group": [
@@ -17741,10 +14745,10 @@
             ], 
             "name": "LOU-NH91", 
             "clust": 13, 
-            "cl": "category-four", 
+            "cl": "category-three", 
             "rank": 16, 
             "ini": 4, 
-            "cl_index": 4
+            "cl_index": 23
           }, 
           {
             "group": [
@@ -17807,7 +14811,7 @@
             "cl": "category-four", 
             "rank": 13, 
             "ini": 1, 
-            "cl_index": 5
+            "cl_index": 4
           }
         ]
       }, 
@@ -18294,7 +15298,7 @@
             "cl": "category-one", 
             "rank": 8, 
             "ini": 29, 
-            "cl_index": 7
+            "cl_index": 11
           }, 
           {
             "group": [
@@ -18315,7 +15319,7 @@
             "cl": "category-one", 
             "rank": 20, 
             "ini": 28, 
-            "cl_index": 10
+            "cl_index": 9
           }, 
           {
             "group": [
@@ -18333,10 +15337,10 @@
             ], 
             "name": "CAL-12T", 
             "clust": 7, 
-            "cl": "category-one", 
+            "cl": "category-two", 
             "rank": 12, 
             "ini": 27, 
-            "cl_index": 17
+            "cl_index": 26
           }, 
           {
             "group": [
@@ -18357,7 +15361,7 @@
             "cl": "category-one", 
             "rank": 6, 
             "ini": 26, 
-            "cl_index": 8
+            "cl_index": 14
           }, 
           {
             "group": [
@@ -18375,10 +15379,10 @@
             ], 
             "name": "H1975", 
             "clust": 9, 
-            "cl": "category-three", 
+            "cl": "category-one", 
             "rank": 0, 
             "ini": 25, 
-            "cl_index": 22
+            "cl_index": 15
           }, 
           {
             "group": [
@@ -18420,7 +15424,7 @@
             "cl": "category-one", 
             "rank": 11, 
             "ini": 23, 
-            "cl_index": 9
+            "cl_index": 7
           }, 
           {
             "group": [
@@ -18441,7 +15445,7 @@
             "cl": "category-two", 
             "rank": 28, 
             "ini": 22, 
-            "cl_index": 25
+            "cl_index": 28
           }, 
           {
             "group": [
@@ -18462,7 +15466,7 @@
             "cl": "category-three", 
             "rank": 1, 
             "ini": 21, 
-            "cl_index": 23
+            "cl_index": 24
           }, 
           {
             "group": [
@@ -18483,7 +15487,7 @@
             "cl": "category-two", 
             "rank": 23, 
             "ini": 20, 
-            "cl_index": 27
+            "cl_index": 25
           }, 
           {
             "group": [
@@ -18504,7 +15508,7 @@
             "cl": "category-one", 
             "rank": 21, 
             "ini": 19, 
-            "cl_index": 6
+            "cl_index": 10
           }, 
           {
             "group": [
@@ -18567,7 +15571,7 @@
             "cl": "category-one", 
             "rank": 16, 
             "ini": 16, 
-            "cl_index": 12
+            "cl_index": 8
           }, 
           {
             "group": [
@@ -18609,7 +15613,7 @@
             "cl": "category-two", 
             "rank": 27, 
             "ini": 14, 
-            "cl_index": 26
+            "cl_index": 27
           }, 
           {
             "group": [
@@ -18627,10 +15631,10 @@
             ], 
             "name": "H2228", 
             "clust": 12, 
-            "cl": "category-three", 
+            "cl": "category-four", 
             "rank": 4, 
             "ini": 13, 
-            "cl_index": 24
+            "cl_index": 2
           }, 
           {
             "group": [
@@ -18651,7 +15655,7 @@
             "cl": "category-one", 
             "rank": 13, 
             "ini": 12, 
-            "cl_index": 13
+            "cl_index": 16
           }, 
           {
             "group": [
@@ -18672,7 +15676,7 @@
             "cl": "category-one", 
             "rank": 9, 
             "ini": 11, 
-            "cl_index": 11
+            "cl_index": 17
           }, 
           {
             "group": [
@@ -18693,7 +15697,7 @@
             "cl": "category-one", 
             "rank": 7, 
             "ini": 10, 
-            "cl_index": 16
+            "cl_index": 6
           }, 
           {
             "group": [
@@ -18732,10 +15736,10 @@
             ], 
             "name": "H441", 
             "clust": 13, 
-            "cl": "category-two", 
+            "cl": "category-one", 
             "rank": 25, 
             "ini": 8, 
-            "cl_index": 28
+            "cl_index": 12
           }, 
           {
             "group": [
@@ -18756,7 +15760,7 @@
             "cl": "category-one", 
             "rank": 26, 
             "ini": 7, 
-            "cl_index": 14
+            "cl_index": 13
           }, 
           {
             "group": [
@@ -18777,7 +15781,7 @@
             "cl": "category-four", 
             "rank": 17, 
             "ini": 6, 
-            "cl_index": 2
+            "cl_index": 5
           }, 
           {
             "group": [
@@ -18795,10 +15799,10 @@
             ], 
             "name": "H1734", 
             "clust": 11, 
-            "cl": "category-one", 
+            "cl": "category-three", 
             "rank": 19, 
             "ini": 5, 
-            "cl_index": 15
+            "cl_index": 22
           }, 
           {
             "group": [
@@ -18816,10 +15820,10 @@
             ], 
             "name": "LOU-NH91", 
             "clust": 16, 
-            "cl": "category-four", 
+            "cl": "category-three", 
             "rank": 22, 
             "ini": 4, 
-            "cl_index": 4
+            "cl_index": 23
           }, 
           {
             "group": [
@@ -18882,7 +15886,7 @@
             "cl": "category-four", 
             "rank": 10, 
             "ini": 1, 
-            "cl_index": 5
+            "cl_index": 4
           }
         ]
       }, 
@@ -19160,7 +16164,7 @@
             "cl": "category-one", 
             "rank": 10, 
             "ini": 29, 
-            "cl_index": 7
+            "cl_index": 11
           }, 
           {
             "group": [
@@ -19181,7 +16185,7 @@
             "cl": "category-one", 
             "rank": 23, 
             "ini": 28, 
-            "cl_index": 10
+            "cl_index": 17
           }, 
           {
             "group": [
@@ -19199,10 +16203,10 @@
             ], 
             "name": "CAL-12T", 
             "clust": 16, 
-            "cl": "category-one", 
+            "cl": "category-two", 
             "rank": 5, 
             "ini": 27, 
-            "cl_index": 8
+            "cl_index": 26
           }, 
           {
             "group": [
@@ -19223,7 +16227,7 @@
             "cl": "category-one", 
             "rank": 9, 
             "ini": 26, 
-            "cl_index": 9
+            "cl_index": 14
           }, 
           {
             "group": [
@@ -19241,10 +16245,10 @@
             ], 
             "name": "H1975", 
             "clust": 27, 
-            "cl": "category-three", 
+            "cl": "category-one", 
             "rank": 0, 
             "ini": 25, 
-            "cl_index": 22
+            "cl_index": 15
           }, 
           {
             "group": [
@@ -19286,7 +16290,7 @@
             "cl": "category-one", 
             "rank": 1, 
             "ini": 23, 
-            "cl_index": 17
+            "cl_index": 6
           }, 
           {
             "group": [
@@ -19307,7 +16311,7 @@
             "cl": "category-two", 
             "rank": 28, 
             "ini": 22, 
-            "cl_index": 26
+            "cl_index": 28
           }, 
           {
             "group": [
@@ -19328,7 +16332,7 @@
             "cl": "category-three", 
             "rank": 3, 
             "ini": 21, 
-            "cl_index": 23
+            "cl_index": 22
           }, 
           {
             "group": [
@@ -19349,7 +16353,7 @@
             "cl": "category-two", 
             "rank": 27, 
             "ini": 20, 
-            "cl_index": 27
+            "cl_index": 25
           }, 
           {
             "group": [
@@ -19370,7 +16374,7 @@
             "cl": "category-one", 
             "rank": 6, 
             "ini": 19, 
-            "cl_index": 6
+            "cl_index": 12
           }, 
           {
             "group": [
@@ -19391,7 +16395,7 @@
             "cl": "category-three", 
             "rank": 14, 
             "ini": 18, 
-            "cl_index": 21
+            "cl_index": 23
           }, 
           {
             "group": [
@@ -19433,7 +16437,7 @@
             "cl": "category-one", 
             "rank": 22, 
             "ini": 16, 
-            "cl_index": 12
+            "cl_index": 13
           }, 
           {
             "group": [
@@ -19475,7 +16479,7 @@
             "cl": "category-two", 
             "rank": 25, 
             "ini": 14, 
-            "cl_index": 25
+            "cl_index": 27
           }, 
           {
             "group": [
@@ -19493,10 +16497,10 @@
             ], 
             "name": "H2228", 
             "clust": 19, 
-            "cl": "category-three", 
+            "cl": "category-four", 
             "rank": 11, 
             "ini": 13, 
-            "cl_index": 24
+            "cl_index": 3
           }, 
           {
             "group": [
@@ -19517,7 +16521,7 @@
             "cl": "category-one", 
             "rank": 16, 
             "ini": 12, 
-            "cl_index": 13
+            "cl_index": 8
           }, 
           {
             "group": [
@@ -19538,7 +16542,7 @@
             "cl": "category-one", 
             "rank": 4, 
             "ini": 11, 
-            "cl_index": 11
+            "cl_index": 16
           }, 
           {
             "group": [
@@ -19559,7 +16563,7 @@
             "cl": "category-one", 
             "rank": 7, 
             "ini": 10, 
-            "cl_index": 16
+            "cl_index": 9
           }, 
           {
             "group": [
@@ -19598,10 +16602,10 @@
             ], 
             "name": "H441", 
             "clust": 18, 
-            "cl": "category-two", 
+            "cl": "category-one", 
             "rank": 26, 
             "ini": 8, 
-            "cl_index": 28
+            "cl_index": 7
           }, 
           {
             "group": [
@@ -19622,7 +16626,7 @@
             "cl": "category-one", 
             "rank": 21, 
             "ini": 7, 
-            "cl_index": 14
+            "cl_index": 10
           }, 
           {
             "group": [
@@ -19643,7 +16647,7 @@
             "cl": "category-four", 
             "rank": 2, 
             "ini": 6, 
-            "cl_index": 2
+            "cl_index": 4
           }, 
           {
             "group": [
@@ -19661,10 +16665,10 @@
             ], 
             "name": "H1734", 
             "clust": 22, 
-            "cl": "category-one", 
+            "cl": "category-three", 
             "rank": 19, 
             "ini": 5, 
-            "cl_index": 15
+            "cl_index": 21
           }, 
           {
             "group": [
@@ -19682,10 +16686,10 @@
             ], 
             "name": "LOU-NH91", 
             "clust": 4, 
-            "cl": "category-four", 
+            "cl": "category-three", 
             "rank": 18, 
             "ini": 4, 
-            "cl_index": 3
+            "cl_index": 24
           }, 
           {
             "group": [
@@ -19706,7 +16710,7 @@
             "cl": "category-four", 
             "rank": 15, 
             "ini": 3, 
-            "cl_index": 4
+            "cl_index": 2
           }, 
           {
             "group": [
@@ -19855,7 +16859,7 @@
             "cl": "category-one", 
             "rank": 17, 
             "ini": 29, 
-            "cl_index": 16
+            "cl_index": 17
           }, 
           {
             "group": [
@@ -19894,10 +16898,10 @@
             ], 
             "name": "CAL-12T", 
             "clust": 4, 
-            "cl": "category-one", 
+            "cl": "category-two", 
             "rank": 9, 
             "ini": 27, 
-            "cl_index": 6
+            "cl_index": 28
           }, 
           {
             "group": [
@@ -19918,7 +16922,7 @@
             "cl": "category-one", 
             "rank": 14, 
             "ini": 26, 
-            "cl_index": 12
+            "cl_index": 6
           }, 
           {
             "group": [
@@ -19936,10 +16940,10 @@
             ], 
             "name": "H1975", 
             "clust": 21, 
-            "cl": "category-three", 
+            "cl": "category-one", 
             "rank": 0, 
             "ini": 25, 
-            "cl_index": 21
+            "cl_index": 12
           }, 
           {
             "group": [
@@ -20002,7 +17006,7 @@
             "cl": "category-two", 
             "rank": 21, 
             "ini": 22, 
-            "cl_index": 27
+            "cl_index": 25
           }, 
           {
             "group": [
@@ -20023,7 +17027,7 @@
             "cl": "category-three", 
             "rank": 19, 
             "ini": 21, 
-            "cl_index": 23
+            "cl_index": 24
           }, 
           {
             "group": [
@@ -20044,7 +17048,7 @@
             "cl": "category-two", 
             "rank": 24, 
             "ini": 20, 
-            "cl_index": 25
+            "cl_index": 26
           }, 
           {
             "group": [
@@ -20065,7 +17069,7 @@
             "cl": "category-one", 
             "rank": 13, 
             "ini": 19, 
-            "cl_index": 14
+            "cl_index": 9
           }, 
           {
             "group": [
@@ -20128,7 +17132,7 @@
             "cl": "category-one", 
             "rank": 25, 
             "ini": 16, 
-            "cl_index": 10
+            "cl_index": 14
           }, 
           {
             "group": [
@@ -20170,7 +17174,7 @@
             "cl": "category-two", 
             "rank": 8, 
             "ini": 14, 
-            "cl_index": 26
+            "cl_index": 27
           }, 
           {
             "group": [
@@ -20188,10 +17192,10 @@
             ], 
             "name": "H2228", 
             "clust": 28, 
-            "cl": "category-three", 
+            "cl": "category-four", 
             "rank": 23, 
             "ini": 13, 
-            "cl_index": 24
+            "cl_index": 3
           }, 
           {
             "group": [
@@ -20212,7 +17216,7 @@
             "cl": "category-one", 
             "rank": 11, 
             "ini": 12, 
-            "cl_index": 7
+            "cl_index": 10
           }, 
           {
             "group": [
@@ -20233,7 +17237,7 @@
             "cl": "category-one", 
             "rank": 2, 
             "ini": 11, 
-            "cl_index": 15
+            "cl_index": 7
           }, 
           {
             "group": [
@@ -20254,7 +17258,7 @@
             "cl": "category-one", 
             "rank": 6, 
             "ini": 10, 
-            "cl_index": 8
+            "cl_index": 15
           }, 
           {
             "group": [
@@ -20293,10 +17297,10 @@
             ], 
             "name": "H441", 
             "clust": 23, 
-            "cl": "category-two", 
+            "cl": "category-one", 
             "rank": 28, 
             "ini": 8, 
-            "cl_index": 28
+            "cl_index": 8
           }, 
           {
             "group": [
@@ -20317,7 +17321,7 @@
             "cl": "category-one", 
             "rank": 18, 
             "ini": 7, 
-            "cl_index": 9
+            "cl_index": 16
           }, 
           {
             "group": [
@@ -20338,7 +17342,7 @@
             "cl": "category-four", 
             "rank": 7, 
             "ini": 6, 
-            "cl_index": 2
+            "cl_index": 4
           }, 
           {
             "group": [
@@ -20356,10 +17360,10 @@
             ], 
             "name": "H1734", 
             "clust": 26, 
-            "cl": "category-one", 
+            "cl": "category-three", 
             "rank": 22, 
             "ini": 5, 
-            "cl_index": 17
+            "cl_index": 21
           }, 
           {
             "group": [
@@ -20377,10 +17381,10 @@
             ], 
             "name": "LOU-NH91", 
             "clust": 3, 
-            "cl": "category-four", 
+            "cl": "category-three", 
             "rank": 20, 
             "ini": 4, 
-            "cl_index": 3
+            "cl_index": 23
           }, 
           {
             "group": [
@@ -20401,7 +17405,7 @@
             "cl": "category-four", 
             "rank": 16, 
             "ini": 3, 
-            "cl_index": 4
+            "cl_index": 2
           }, 
           {
             "group": [
@@ -20512,7 +17516,7 @@
             "cl": "category-one", 
             "rank": 18, 
             "ini": 29, 
-            "cl_index": 16
+            "cl_index": 11
           }, 
           {
             "group": [
@@ -20533,7 +17537,7 @@
             "cl": "category-one", 
             "rank": 1, 
             "ini": 28, 
-            "cl_index": 12
+            "cl_index": 7
           }, 
           {
             "group": [
@@ -20551,10 +17555,10 @@
             ], 
             "name": "CAL-12T", 
             "clust": 22, 
-            "cl": "category-one", 
+            "cl": "category-two", 
             "rank": 3, 
             "ini": 27, 
-            "cl_index": 6
+            "cl_index": 26
           }, 
           {
             "group": [
@@ -20575,7 +17579,7 @@
             "cl": "category-one", 
             "rank": 13, 
             "ini": 26, 
-            "cl_index": 13
+            "cl_index": 10
           }, 
           {
             "group": [
@@ -20593,10 +17597,10 @@
             ], 
             "name": "H1975", 
             "clust": 11, 
-            "cl": "category-three", 
+            "cl": "category-one", 
             "rank": 22, 
             "ini": 25, 
-            "cl_index": 23
+            "cl_index": 15
           }, 
           {
             "group": [
@@ -20701,7 +17705,7 @@
             "cl": "category-two", 
             "rank": 24, 
             "ini": 20, 
-            "cl_index": 28
+            "cl_index": 25
           }, 
           {
             "group": [
@@ -20722,7 +17726,7 @@
             "cl": "category-one", 
             "rank": 8, 
             "ini": 19, 
-            "cl_index": 11
+            "cl_index": 14
           }, 
           {
             "group": [
@@ -20743,7 +17747,7 @@
             "cl": "category-three", 
             "rank": 19, 
             "ini": 18, 
-            "cl_index": 21
+            "cl_index": 24
           }, 
           {
             "group": [
@@ -20785,7 +17789,7 @@
             "cl": "category-one", 
             "rank": 28, 
             "ini": 16, 
-            "cl_index": 7
+            "cl_index": 17
           }, 
           {
             "group": [
@@ -20827,7 +17831,7 @@
             "cl": "category-two", 
             "rank": 10, 
             "ini": 14, 
-            "cl_index": 25
+            "cl_index": 28
           }, 
           {
             "group": [
@@ -20845,10 +17849,10 @@
             ], 
             "name": "H2228", 
             "clust": 14, 
-            "cl": "category-three", 
+            "cl": "category-four", 
             "rank": 23, 
             "ini": 13, 
-            "cl_index": 24
+            "cl_index": 2
           }, 
           {
             "group": [
@@ -20869,7 +17873,7 @@
             "cl": "category-one", 
             "rank": 17, 
             "ini": 12, 
-            "cl_index": 10
+            "cl_index": 12
           }, 
           {
             "group": [
@@ -20890,7 +17894,7 @@
             "cl": "category-one", 
             "rank": 5, 
             "ini": 11, 
-            "cl_index": 15
+            "cl_index": 6
           }, 
           {
             "group": [
@@ -20911,7 +17915,7 @@
             "cl": "category-one", 
             "rank": 4, 
             "ini": 10, 
-            "cl_index": 17
+            "cl_index": 13
           }, 
           {
             "group": [
@@ -20950,10 +17954,10 @@
             ], 
             "name": "H441", 
             "clust": 9, 
-            "cl": "category-two", 
+            "cl": "category-one", 
             "rank": 27, 
             "ini": 8, 
-            "cl_index": 26
+            "cl_index": 9
           }, 
           {
             "group": [
@@ -20974,7 +17978,7 @@
             "cl": "category-one", 
             "rank": 14, 
             "ini": 7, 
-            "cl_index": 9
+            "cl_index": 16
           }, 
           {
             "group": [
@@ -20995,7 +17999,7 @@
             "cl": "category-four", 
             "rank": 7, 
             "ini": 6, 
-            "cl_index": 2
+            "cl_index": 5
           }, 
           {
             "group": [
@@ -21013,10 +18017,10 @@
             ], 
             "name": "H1734", 
             "clust": 10, 
-            "cl": "category-one", 
+            "cl": "category-three", 
             "rank": 21, 
             "ini": 5, 
-            "cl_index": 14
+            "cl_index": 21
           }, 
           {
             "group": [
@@ -21034,10 +18038,10 @@
             ], 
             "name": "LOU-NH91", 
             "clust": 2, 
-            "cl": "category-four", 
+            "cl": "category-three", 
             "rank": 25, 
             "ini": 4, 
-            "cl_index": 4
+            "cl_index": 23
           }, 
           {
             "group": [
@@ -21100,7 +18104,7 @@
             "cl": "category-four", 
             "rank": 26, 
             "ini": 1, 
-            "cl_index": 5
+            "cl_index": 4
           }
         ]
       }, 

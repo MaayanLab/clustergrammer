@@ -1175,7 +1175,7 @@ class Network(object):
 
     return df 
 
-  def make_filtered_views(self, dist_type='cos', run_clustering=True, dendro=True):
+  def make_filtered_views(self, dist_type='cos', run_clustering=True, dendro=True, views=['filter_row_sum','N_row_sum']):
     '''
     This will calculate multiple views of a clustergram by filtering the data 
     and clustering after each filtering. This filtering will keep the top N 
@@ -1203,6 +1203,7 @@ class Network(object):
     # top - only select the top rows 
     inst_view = {}
     inst_view['N_row_sum'] = 'all'
+    inst_view['filter_row_sum'] = 0
     inst_view['dist'] = 'cos'
     inst_view['nodes'] = {}
     inst_view['nodes']['row_nodes'] = self.viz['row_nodes']
@@ -1212,8 +1213,11 @@ class Network(object):
     all_views.append(inst_view)
 
     # # add N_row_sum views 
-    all_views = self.add_N_top_views(   df, all_views )
-    all_views = self.add_pct_top_views( df, all_views )
+    if 'N_row_sum' in views:
+      all_views = self.add_N_top_views(   df, all_views )
+      
+    if 'filter_row_sum' in views:
+      all_views = self.add_pct_top_views( df, all_views )
 
     # add views to viz 
     self.viz['views'] = all_views

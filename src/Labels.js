@@ -471,7 +471,7 @@ function Labels(params){
         .call(tip);
         
       col_label_obj
-        .select('text')
+        // .select('text')
         .on('mouseover',tip.show)
         .on('mouseout',tip.hide);
 

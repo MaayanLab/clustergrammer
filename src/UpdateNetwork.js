@@ -26,7 +26,7 @@ function update_network(change_view){
   var old_params = this.params;
 
   // make new_network_data using immutable copy of network_data
-  var new_network_data = filter_network_data(this.config.network_data, change_view); 
+  var new_network_data = change_network_view(this.config.network_data, change_view); 
 
   // make Deep copy of this.config object 
   var new_config = jQuery.extend(true, {}, this.config);

@@ -54,7 +54,10 @@ function Config(args) {
     tile_click_hlight:false,
     super_label_scale: 1,
     make_tile_tooltip:function(d){return d.info;},
-    ini_view:null 
+    // initialize view, e.g. initialize with row filtering
+    ini_view:null, 
+    // initialize column category - only show data from one category
+    show_cat:null
   };
 
   // Mixin defaults with user-defined arguments.
@@ -152,7 +155,7 @@ function Config(args) {
   // check for category information
   if (config.show_categories) {
 
-    // !! set up option for manual color specification
+    // initialize dictionary of colors 
     config.class_colors = {};
 
     // associate classes with colors
@@ -177,6 +180,21 @@ function Config(args) {
       
       config.class_colors.col[c_col] = cat_colors[ i % cat_colors.length ];
     });
+
+    // generate a dictionary of columns in each category 
+    config.class_dict = {};
+    _.each( col_nodes, function(d){
+
+      // initialize array for each category 
+      if ( _.has(config.class_dict, d.cl) == false ){
+        config.class_dict[d.cl] = [];
+      }
+
+      // add column name to category array 
+      config.class_dict[d.cl].push(d.name);
+
+    });
+
   }
 
   /* Transpose network.
