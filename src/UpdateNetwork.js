@@ -5,28 +5,36 @@ function update_network(change_view){
 
   /*
   The original network_data is stored in this.config and will never be 
-  overwritten. In order to update the network I need to 
+  overwritten. In order to update the network I need to: 
   
   1. Create new network_data object using the filter value and 
-  this.config.network_data. I'll use crossfilter to only select links from the 
-  original network_data that are connecting the updated nodes. 
+  this.config.network_data. 
 
   2. Make new_config object by copying the original config and swapping in the 
   updated network_data object. 
 
   3. Use new_config to make new_params. With new_params and the updated 
-  network_data, I can 
+  network_data, I can make the visualization.
   */
 
   /////////////////////////////
-  // new way 
   /////////////////////////////
+
+  // debugger;
 
   // get copy of old params 
   var old_params = this.params;
 
-  // make new_network_data using immutable copy of network_data
-  var new_network_data = change_network_view(this.config.network_data, change_view); 
+  // console.log('\n\n\nchange_view\n--------------------')
+  // console.log(change_view)
+  // console.log('\n--------------------\n\n\n')
+
+  // make new_network_data by filtering the original network data 
+  var config_copy = jQuery.extend(true, {}, this.config);
+  var new_network_data = change_network_view(this.params, config_copy.network_data, change_view); 
+
+  // console.log('new network data ')
+  // console.log(new_network_data)
 
   // make Deep copy of this.config object 
   var new_config = jQuery.extend(true, {}, this.config);
@@ -39,10 +47,15 @@ function update_network(change_view){
   new_config.ini_expand = false;
   // ensure that ini_view is not set 
   new_config.ini_view = null;
+  // pass on show_cat to preserve category filtering 
+  new_config.show_cat = this.params.show_cat;
 
   // make new params 
   var params = VizParams(new_config);
   var delays = define_enter_exit_delays(old_params, params);
+
+  // console.log('new params: '+params.show_cat)
+  // console.log('old params:'+this.params.show_cat)
 
   // ordering - necessary for reordering the function called on button click 
   var reorder = Reorder(params);
@@ -65,11 +78,11 @@ function update_network(change_view){
   }
 
   function new_change_groups(inst_rc, inst_index) {
-      if (inst_rc === 'row') {
-        row_dendrogram.change_groups(inst_rc,inst_index);
-      } else {
-        col_dendrogram.change_groups(inst_rc,inst_index);
-      }
+    if (inst_rc === 'row') {
+      row_dendrogram.change_groups(inst_rc,inst_index);
+    } else {
+      col_dendrogram.change_groups(inst_rc,inst_index);
+    }
   }
 
   this.change_groups = new_change_groups;
@@ -267,7 +280,6 @@ function enter_exit_update(params, network_data, reorder, delays){
     var cur_row_tiles = d3.select(this)
       .selectAll('.tile')
       .data(row_values, function(d){
-        // console.log(d.col_name);
         return d.col_name;
       });
 

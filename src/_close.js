@@ -13,7 +13,8 @@ return {
     update_network: viz.update_network,
     params: viz.params,
     reset_zoom: viz.reset_zoom,
-    config: config
+    config: config,
+    change_category: change_category
 };
 	
 }

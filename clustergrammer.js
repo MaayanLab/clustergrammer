@@ -1368,15 +1368,15 @@ function VizParams(config){
       params.ini_view = null;
     }
 
-    if (_.isNull(params.show_cat) === false){
-      console.log('initialize with '+String(params.show_cat) + ' category only');
+    // if (_.isNull(params.show_cat) === false){
+    //   console.log('\nVizParams: ini cat '+String(params.show_cat) );
 
-      // fitler categories 
-      params.network_data = show_one_cat(params.network_data, params.class_dict, params.show_cat);
+    //   // fitler categories 
+    //   params.network_data = show_one_cat(params.network_data, params);
 
-      params.network_data = filter_using_new_nodes( params.network_data, params.network_data.links, params.network_data.views);
+    //   params.network_data = filter_using_new_nodes( params.network_data, params.network_data.links, params.network_data.views);
 
-    }
+    // }
 
     // Label Paramsters
     params.labels = {};
@@ -1821,7 +1821,7 @@ function VizParams(config){
         return Math.abs(d.value);
       }).value;
 
-      console.log('using all links ')
+      // console.log('using all links ')
 
     } else {
 
@@ -1830,7 +1830,7 @@ function VizParams(config){
         return Math.abs(d.value);
       }).value;
 
-      console.log('using normal links ')
+      // console.log('using normal links ')
     }
 
     // set opacity_scale
@@ -4671,28 +4671,36 @@ function update_network(change_view){
 
   /*
   The original network_data is stored in this.config and will never be 
-  overwritten. In order to update the network I need to 
+  overwritten. In order to update the network I need to: 
   
   1. Create new network_data object using the filter value and 
-  this.config.network_data. I'll use crossfilter to only select links from the 
-  original network_data that are connecting the updated nodes. 
+  this.config.network_data. 
 
   2. Make new_config object by copying the original config and swapping in the 
   updated network_data object. 
 
   3. Use new_config to make new_params. With new_params and the updated 
-  network_data, I can 
+  network_data, I can make the visualization.
   */
 
   /////////////////////////////
-  // new way 
   /////////////////////////////
+
+  // debugger;
 
   // get copy of old params 
   var old_params = this.params;
 
-  // make new_network_data using immutable copy of network_data
-  var new_network_data = change_network_view(this.config.network_data, change_view); 
+  // console.log('\n\n\nchange_view\n--------------------')
+  // console.log(change_view)
+  // console.log('\n--------------------\n\n\n')
+
+  // make new_network_data by filtering the original network data 
+  var config_copy = jQuery.extend(true, {}, this.config);
+  var new_network_data = change_network_view(this.params, config_copy.network_data, change_view); 
+
+  // console.log('new network data ')
+  // console.log(new_network_data)
 
   // make Deep copy of this.config object 
   var new_config = jQuery.extend(true, {}, this.config);
@@ -4705,10 +4713,15 @@ function update_network(change_view){
   new_config.ini_expand = false;
   // ensure that ini_view is not set 
   new_config.ini_view = null;
+  // pass on show_cat to preserve category filtering 
+  new_config.show_cat = this.params.show_cat;
 
   // make new params 
   var params = VizParams(new_config);
   var delays = define_enter_exit_delays(old_params, params);
+
+  // console.log('new params: '+params.show_cat)
+  // console.log('old params:'+this.params.show_cat)
 
   // ordering - necessary for reordering the function called on button click 
   var reorder = Reorder(params);
@@ -4731,11 +4744,11 @@ function update_network(change_view){
   }
 
   function new_change_groups(inst_rc, inst_index) {
-      if (inst_rc === 'row') {
-        row_dendrogram.change_groups(inst_rc,inst_index);
-      } else {
-        col_dendrogram.change_groups(inst_rc,inst_index);
-      }
+    if (inst_rc === 'row') {
+      row_dendrogram.change_groups(inst_rc,inst_index);
+    } else {
+      col_dendrogram.change_groups(inst_rc,inst_index);
+    }
   }
 
   this.change_groups = new_change_groups;
@@ -4933,7 +4946,6 @@ function enter_exit_update(params, network_data, reorder, delays){
     var cur_row_tiles = d3.select(this)
       .selectAll('.tile')
       .data(row_values, function(d){
-        // console.log(d.col_name);
         return d.col_name;
       });
 
@@ -5603,11 +5615,11 @@ function enter_exit_update(params, network_data, reorder, delays){
 }
 
 
-function change_network_view(orig_network_data, change_view){
+function change_network_view(params, orig_network_data, change_view){
  
   var views = orig_network_data.views;
 
-  console.log(change_view)
+  // console.log(change_view)
 
   // Get Row Filtering View 
   ///////////////////////////////////////////////////////////////
@@ -5666,15 +5678,17 @@ function change_network_view(orig_network_data, change_view){
 
   }
 
-  console.log('new view')
-  console.log(inst_view)
+  // console.log('new view')
+  // console.log(inst_view)
 
   var new_nodes = inst_view.nodes;
   var links = orig_network_data.links;
 
   // fitler categories if necessary 
   if (_.isNull(params.show_cat) === false){
-    new_nodes = show_one_cat(new_nodes, params.class_dict, params.show_cat);
+
+    console.log('\n\nchange_network_view: params.show_cat '+params.show_cat)
+    new_nodes = show_one_cat(new_nodes, params);
   }
 
   var new_network_data = filter_using_new_nodes(new_nodes, links, views);
@@ -5682,9 +5696,17 @@ function change_network_view(orig_network_data, change_view){
   return new_network_data;
 }
 
-function show_one_cat( new_nodes, class_dict, show_cat ){
+function show_one_cat( new_nodes, inst_params ){
 
-  console.log('show cat '+String(show_cat));
+
+  // new_nodes = inst_params.network_data.views[0].nodes;
+
+  // var default_nodes = inst_params.network_data.views[0].nodes;
+
+  var class_dict = inst_params.class_dict;
+  var show_cat = inst_params.show_cat;
+
+  // console.log('show one category '+String(show_cat));
 
   if (_.has(class_dict,show_cat)){
 
@@ -5696,10 +5718,27 @@ function show_one_cat( new_nodes, class_dict, show_cat ){
         return d;
       }
     });
-    
+
   }
 
+  // console.log('\n\n')
+  // console.log('show_one_cat')
+  // console.log(new_nodes)
+  // console.log('\n\n')
+  // console.log('default view')
+  // console.log(default_nodes)
+  // console.log(inst_params)
+  // console.log('\n\n\n\n')
+
   return new_nodes;
+}
+
+function change_category( inst_cat ){
+  // console.log('changing category');
+  // console.log(this)
+
+  // change the category 
+  this.params.show_cat = inst_cat;
 }
 
 function filter_using_new_nodes(new_nodes, links, views){
@@ -7214,7 +7253,8 @@ return {
     update_network: viz.update_network,
     params: viz.params,
     reset_zoom: viz.reset_zoom,
-    config: config
+    config: config,
+    change_category: change_category
 };
 	
 }

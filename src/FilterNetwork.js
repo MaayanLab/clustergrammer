@@ -1,8 +1,8 @@
-function change_network_view(orig_network_data, change_view){
+function change_network_view(params, orig_network_data, change_view){
  
   var views = orig_network_data.views;
 
-  console.log(change_view)
+  // console.log(change_view)
 
   // Get Row Filtering View 
   ///////////////////////////////////////////////////////////////
@@ -61,15 +61,17 @@ function change_network_view(orig_network_data, change_view){
 
   }
 
-  console.log('new view')
-  console.log(inst_view)
+  // console.log('new view')
+  // console.log(inst_view)
 
   var new_nodes = inst_view.nodes;
   var links = orig_network_data.links;
 
   // fitler categories if necessary 
   if (_.isNull(params.show_cat) === false){
-    new_nodes = show_one_cat(new_nodes, params.class_dict, params.show_cat);
+
+    console.log('\n\nchange_network_view: params.show_cat '+params.show_cat)
+    new_nodes = show_one_cat(new_nodes, params);
   }
 
   var new_network_data = filter_using_new_nodes(new_nodes, links, views);
@@ -77,9 +79,17 @@ function change_network_view(orig_network_data, change_view){
   return new_network_data;
 }
 
-function show_one_cat( new_nodes, class_dict, show_cat ){
+function show_one_cat( new_nodes, inst_params ){
 
-  console.log('show cat '+String(show_cat));
+
+  // new_nodes = inst_params.network_data.views[0].nodes;
+
+  // var default_nodes = inst_params.network_data.views[0].nodes;
+
+  var class_dict = inst_params.class_dict;
+  var show_cat = inst_params.show_cat;
+
+  // console.log('show one category '+String(show_cat));
 
   if (_.has(class_dict,show_cat)){
 
@@ -91,10 +101,27 @@ function show_one_cat( new_nodes, class_dict, show_cat ){
         return d;
       }
     });
-    
+
   }
 
+  // console.log('\n\n')
+  // console.log('show_one_cat')
+  // console.log(new_nodes)
+  // console.log('\n\n')
+  // console.log('default view')
+  // console.log(default_nodes)
+  // console.log(inst_params)
+  // console.log('\n\n\n\n')
+
   return new_nodes;
+}
+
+function change_category( inst_cat ){
+  // console.log('changing category');
+  // console.log(this)
+
+  // change the category 
+  this.params.show_cat = inst_cat;
 }
 
 function filter_using_new_nodes(new_nodes, links, views){

@@ -23,15 +23,15 @@ function VizParams(config){
       params.ini_view = null;
     }
 
-    if (_.isNull(params.show_cat) === false){
-      console.log('initialize with '+String(params.show_cat) + ' category only');
+    // if (_.isNull(params.show_cat) === false){
+    //   console.log('\nVizParams: ini cat '+String(params.show_cat) );
 
-      // fitler categories 
-      params.network_data = show_one_cat(params.network_data, params.class_dict, params.show_cat);
+    //   // fitler categories 
+    //   params.network_data = show_one_cat(params.network_data, params);
 
-      params.network_data = filter_using_new_nodes( params.network_data, params.network_data.links, params.network_data.views);
+    //   params.network_data = filter_using_new_nodes( params.network_data, params.network_data.links, params.network_data.views);
 
-    }
+    // }
 
     // Label Paramsters
     params.labels = {};
@@ -476,7 +476,7 @@ function VizParams(config){
         return Math.abs(d.value);
       }).value;
 
-      console.log('using all links ')
+      // console.log('using all links ')
 
     } else {
 
@@ -485,7 +485,7 @@ function VizParams(config){
         return Math.abs(d.value);
       }).value;
 
-      console.log('using normal links ')
+      // console.log('using normal links ')
     }
 
     // set opacity_scale
