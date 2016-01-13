@@ -218,62 +218,7 @@ function make_clust(inst_network){
             var inst_group = key_cat_col
               .append('g')
               .attr('class','category_section')
-              .on('click',function(){
-                
-                var inst_cat = d3.select(this).select('text').text();
-
-                // update the category 
-                if (cgm.params.show_cat === inst_cat){
-
-                  console.log('show all category')
-
-                  // show all categories 
-                  cgm.change_category('show_all'); 
-
-                  // show selection in key 
-                  d3.selectAll('.category_section')
-                    .select('.category_color')
-                    .style('opacity',1);
-
-                  d3.selectAll('.category_section')
-                    .select('p')
-                    .style('opacity',1);
-
-                } else {
-
-                  console.log('show one category')
-                  // show one category 
-                  cgm.change_category(inst_cat); 
-
-                  // show selection in key 
-                  d3.selectAll('.category_section')
-                    .select('.category_color')
-                    .style('opacity',0.35);
-
-                  d3.selectAll('.category_section')
-                    .select('p')
-                    .style('opacity',0.35);
-
-                  d3.select(this)
-                    .select('.category_color')
-                    .style('opacity',1);
-
-                  d3.select(this)
-                    .select('p')
-                    .style('opacity',1);
-
-                }
-                cgm.update_network('default');
-
-                // d3.select(this)
-                //   .select('div')
-                //   .style('opacity',0.1);
-
-                // d3.select(this)
-                //   .select('text')
-                //   .style('opacity',0.1);
-
-              });
+              .on('click', category_key_click);
 
             inst_group
               .append('div')
@@ -298,6 +243,57 @@ function make_clust(inst_network){
               .style('cursor','pointer');
 
           }
+        }
+
+        function category_key_click(){
+          
+          var inst_cat = d3.select(this).select('text').text();
+
+          // update the category 
+          if (cgm.params.show_cat === inst_cat){
+
+            // show all categories 
+            cgm.change_category('show_all'); 
+
+            // show selection in key 
+            d3.selectAll('.category_section')
+              .select('.category_color')
+              .style('opacity',1);
+
+            d3.selectAll('.category_section')
+              .select('p')
+              .style('opacity',1);
+
+            ini_sliders();
+
+          } else {
+
+            // show one category 
+            cgm.change_category(inst_cat); 
+
+            // show selection in key 
+            d3.selectAll('.category_section')
+              .select('.category_color')
+              .style('opacity',0.35);
+
+            d3.selectAll('.category_section')
+              .select('p')
+              .style('opacity',0.35);
+
+            d3.select(this)
+              .select('.category_color')
+              .style('opacity',1);
+
+            d3.select(this)
+              .select('p')
+              .style('opacity',1);
+
+            ini_sliders();
+          }
+
+          // update the network after changing the category 
+          cgm.update_network('default');
+
         }
 
         // save svg: example from: http://bl.ocks.org/pgiraud/8955139#profile.json
