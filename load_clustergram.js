@@ -157,7 +157,7 @@ function make_clust(inst_network){
           // 'col_order':'rank',
           // 'row_order':'clust'
           // 'ini_view':{'filter_row_sum':0.9}
-          'show_cat':'category-three'
+          // 'show_cat':'category-one'
         };
 
         d3.select('#wait_message').remove();

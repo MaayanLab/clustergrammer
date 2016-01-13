@@ -1368,14 +1368,15 @@ function VizParams(config){
       params.ini_view = null;
     }
 
-    // if (_.isNull(params.show_cat) === false){
-    //   console.log('initialize with '+String(params.show_cat) + ' category only');
-    //   // fitler categories 
-    //   params.network_data = show_one_cat(params.network_data, params.class_dict, params.show_cat);
+    if (_.isNull(params.show_cat) === false){
+      console.log('initialize with '+String(params.show_cat) + ' category only');
 
-    //   params.network_data = filter_using_new_nodes( params.network_data, params.network_data.links, params.network_data.views);
+      // fitler categories 
+      params.network_data = show_one_cat(params.network_data, params.class_dict, params.show_cat);
 
-    // }
+      params.network_data = filter_using_new_nodes( params.network_data, params.network_data.links, params.network_data.views);
+
+    }
 
     // Label Paramsters
     params.labels = {};
@@ -5685,14 +5686,18 @@ function show_one_cat( new_nodes, class_dict, show_cat ){
 
   console.log('show cat '+String(show_cat));
 
-  // get columns that belong to a category
-  var keep_cols = class_dict[show_cat];
+  if (_.has(class_dict,show_cat)){
 
-  new_nodes.col_nodes = _.filter(new_nodes.col_nodes, function(d){
-    if ( _.contains(keep_cols, d.name) ){
-      return d;
-    }
-  });
+    // get columns that belong to a category
+    var keep_cols = class_dict[show_cat];
+
+    new_nodes.col_nodes = _.filter(new_nodes.col_nodes, function(d){
+      if ( _.contains(keep_cols, d.name) ){
+        return d;
+      }
+    });
+    
+  }
 
   return new_nodes;
 }

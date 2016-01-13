@@ -81,14 +81,18 @@ function show_one_cat( new_nodes, class_dict, show_cat ){
 
   console.log('show cat '+String(show_cat));
 
-  // get columns that belong to a category
-  var keep_cols = class_dict[show_cat];
+  if (_.has(class_dict,show_cat)){
 
-  new_nodes.col_nodes = _.filter(new_nodes.col_nodes, function(d){
-    if ( _.contains(keep_cols, d.name) ){
-      return d;
-    }
-  });
+    // get columns that belong to a category
+    var keep_cols = class_dict[show_cat];
+
+    new_nodes.col_nodes = _.filter(new_nodes.col_nodes, function(d){
+      if ( _.contains(keep_cols, d.name) ){
+        return d;
+      }
+    });
+    
+  }
 
   return new_nodes;
 }
