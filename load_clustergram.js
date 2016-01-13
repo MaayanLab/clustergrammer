@@ -202,7 +202,9 @@ function make_clust(inst_network){
           .style('margin-top','10px')
           .style('padding','5px')
           .style('border','1px solid #DEDEDE')
-          .style('margin-bottom','10px');
+          .style('margin-bottom','10px')
+          .style('overflow','scroll')
+          .style('max-height','200px');
 
         key_cat_col
           .append('p')
