@@ -462,6 +462,11 @@ function Labels(params){
         .offset([20, 0])
         .html(function(d) {
           var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
+
+          if (params.show_categories){
+            inst_name = inst_name + ': ' + String(d.cl);
+          }
+
           return "<span>" + inst_name + "</span>";
         });
 

@@ -2554,6 +2554,11 @@ function Labels(params){
         .offset([20, 0])
         .html(function(d) {
           var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
+
+          if (params.show_categories){
+            inst_name = inst_name + ': ' + String(d.cl);
+          }
+
           return "<span>" + inst_name + "</span>";
         });
 
@@ -5666,7 +5671,7 @@ function change_network_view(orig_network_data, change_view){
   var new_nodes = inst_view.nodes;
   var links = orig_network_data.links;
 
-  // fitler categories 
+  // fitler categories if necessary 
   if (_.isNull(params.show_cat) === false){
     new_nodes = show_one_cat(new_nodes, params.class_dict, params.show_cat);
   }
