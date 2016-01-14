@@ -1272,11 +1272,13 @@ class Network(object):
 
     # row filtering values 
     mat = deepcopy(df['mat'])
-    mat_abs = abs(mat)
-    sum_row = np.sum(mat_abs, axis=1)
+    sum_row = np.sum(mat, axis=1)
     max_sum = max(sum_row)
 
     for inst_filt in all_filt:
+
+      print('\ninst_filt')
+      print(inst_filt)
 
       cutoff = inst_filt * max_sum
 
@@ -1287,7 +1289,7 @@ class Network(object):
       inst_df = deepcopy(df)
 
       # filter row in df 
-      inst_df = copy_net.df_filter_row(inst_df, cutoff, take_abs=True)
+      inst_df = copy_net.df_filter_row(inst_df, cutoff, take_abs=False)
 
       # filter columns by category if necessary 
       if current_col_cat != 'all_category':
@@ -1407,7 +1409,7 @@ class Network(object):
 
         # filter the rows 
         if inst_keep != 'all':
-          
+
           # get the labels of the rows that will be kept 
           keep_rows = rows_sorted[0:inst_keep]
 
@@ -1675,9 +1677,7 @@ class Network(object):
   @staticmethod
   def df_filter_row(df, threshold, take_abs=True):
     ''' filter rows in matrix at some threshold
-    and remove columns that have all zero values '''
-
-    # print('\tdf_filter_row: '+str(threshold))
+    and remove columns that have a sum below this threshold '''
 
     import pandas as pd 
     from copy import deepcopy 
@@ -1690,63 +1690,35 @@ class Network(object):
     else:
       df_copy = deepcopy(df['mat'])
 
-    # filter rows 
-    df_copy = df_copy[ df_copy.sum(axis=1) > threshold]
-
-    # # transpose df 
-    # df_copy = df_copy.transpose()
-    # # sum the values of the rows 
-    # tmp_sum = df_copy.sum(axis=0)
-    # # transpose df_copy back 
-    # df_copy = df_copy.transpose()
-
-    # # take absolute value to keep most positive and most negative rows 
-    # tmp_sum = tmp_sum.abs()
-
-    # # sort rows by value 
-    # tmp_sum.sort(ascending=False)
-
-    # # filter series using threshold 
-    # tmp_sum = tmp_sum[tmp_sum>threshold]
-
-    # # get keep_row names 
-    # keep_rows = tmp_sum.index.values.tolist()
-
-    # # keep only a subset of the rows 
-    # df_copy = df_copy.ix[keep_rows]
-
-    # filter columns to remove columns with all zero values 
-    # transpose 
-    df_copy = df_copy.transpose()
-    df_copy = df_copy[df_copy.sum(axis=1) > 0]
-    # transpose back 
+    # transpose df 
     df_copy = df_copy.transpose()
 
-    # get df ready for export 
-    if take_abs == True:
+    # sum the values of the rows 
+    tmp_sum = df_copy.sum(axis=0)
 
-      # grab remaining rows and cols 
-      inst_rows = df_copy.index.tolist()
-      inst_cols = df_copy.columns.tolist()
+    # take absolute value to keep most positive and most negative rows 
+    tmp_sum = tmp_sum.abs()
 
-      df['mat'] = net.grab_df_subset(df['mat'], inst_rows, inst_cols)
+    # sort rows by value 
+    tmp_sum.sort(ascending=False)
 
-      if 'mat_up' in df:
-        # grab up and down data 
-        df['mat_up'] = net.grab_df_subset(df['mat_up'], inst_rows, inst_cols)
-        df['mat_dn'] = net.grab_df_subset(df['mat_dn'], inst_rows, inst_cols)
+    # filter series using threshold 
+    tmp_sum = tmp_sum[tmp_sum>threshold]
 
-    else:
-      # just transfer the copied data for mat 
-      df['mat'] = df_copy
+    print('greater than thresh: '+str(threshold))
+    print(tmp_sum)
 
-      if 'mat_up' in df:
-        # grab remaining rows and cols 
-        inst_rows = df_copy.index.tolist()
-        inst_cols = df_copy.columns.tolist()
-        # grab up and down data 
-        df['mat_up'] = net.grab_df_subset(df['mat_up'], inst_rows, inst_cols)
-        df['mat_dn'] = net.grab_df_subset(df['mat_dn'], inst_rows, inst_cols)
+    # get keep_row names 
+    keep_rows = tmp_sum.index.values.tolist()
+
+    # grab the subset of the data 
+    df['mat'] = net.grab_df_subset(df['mat'], keep_rows=keep_rows)
+
+    if 'mat_up' in df:
+      # grab up and down data 
+      df['mat_up'] = net.grab_df_subset(df['mat_up'], keep_rows=keep_rows)
+      df['mat_dn'] = net.grab_df_subset(df['mat_dn'], keep_rows=keep_rows)
+
 
     return df   
 
