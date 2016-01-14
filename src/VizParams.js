@@ -23,8 +23,8 @@ function VizParams(config){
       params.ini_view = null;
     }
 
-    // if (_.isNull(params.show_cat) === false){
-    //   console.log('\nVizParams: ini cat '+String(params.show_cat) );
+    // if (_.isNull(params.current_col_cat) === false){
+    //   console.log('\nVizParams: ini cat '+String(params.current_col_cat) );
 
     //   // fitler categories 
     //   params.network_data = show_one_cat(params.network_data, params);
@@ -50,7 +50,6 @@ function VizParams(config){
     // optional classification
     params.labels.show_categories = config.show_categories
     if (params.labels.show_categories){
-
       params.labels.class_colors = config.class_colors;
     }
     params.labels.show_label_tooltips = config.show_label_tooltips;

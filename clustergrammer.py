@@ -79,6 +79,23 @@ class Network(object):
       cat_line = [i.strip() for i in cat_line]
       self.dat['node_info']['col']['cl'] = cat_line[1:]
 
+    # make a dict of columns in categories 
+    ##########################################
+    col_in_cat = {}
+    for i in range(len(self.dat['node_info']['col']['cl'])):
+
+      inst_cat = self.dat['node_info']['col']['cl'][i]
+      inst_col = self.dat['nodes']['col'][i]
+
+      if inst_cat not in col_in_cat:
+        col_in_cat[inst_cat] = []
+
+      # collect col names for categories 
+      col_in_cat[inst_cat].append(inst_col)      
+
+    # save to node_info
+    self.dat['node_info']['col_in_cat'] = col_in_cat
+
   def load_lines_from_tsv_to_net(self, lines):
     import numpy as np
     # get row/col labels and data from lines 
@@ -469,9 +486,6 @@ class Network(object):
         num_nonzero = np.count_nonzero(row_vect)
         # use integer number of non-zero measurements
         cutoff = row_filt_int * 10
-
-        # print('num_nonzero '+str(num_nonzero)+' cutoff: '+str(cutoff))
-        # print('\n')
 
         if num_nonzero>= cutoff:
           # add name 
@@ -883,20 +897,8 @@ class Network(object):
   def calc_cat_clust_order(self):
     from clustergrammer import Network 
     from copy import deepcopy 
-    
-    # make a dict of columns in categories 
-    ##########################################
-    col_in_cat = {}
-    for i in range(len(self.dat['node_info']['col']['cl'])):
 
-      inst_cat = self.dat['node_info']['col']['cl'][i]
-      inst_col = self.dat['nodes']['col'][i]
-
-      if inst_cat not in col_in_cat:
-        col_in_cat[inst_cat] = []
-
-      # collect col names for categories 
-      col_in_cat[inst_cat].append(inst_col)
+    col_in_cat = self.dat['node_info']['col_in_cat']
 
     # alpha order categories 
     all_cats = sorted(col_in_cat.keys())
@@ -934,6 +936,7 @@ class Network(object):
       try:
         cat_net.cluster_row_and_col('cos')
         inst_cat_order = cat_net.dat['node_info']['col']['clust']
+
       except:
         inst_cat_order = range(len(cat_net.dat['nodes']['col']))
 
@@ -1175,13 +1178,14 @@ class Network(object):
 
     return df 
 
-  def make_filtered_views(self, dist_type='cos', run_clustering=True, dendro=True, views=['filter_row_sum','N_row_sum']):
+  def make_filtered_views(self, dist_type='cos', run_clustering=True, dendro=True, views=['filter_row_sum','N_row_sum'], calc_col_cats=True):
     '''
     This will calculate multiple views of a clustergram by filtering the data 
     and clustering after each filtering. This filtering will keep the top N 
     rows based on some quantity (sum, num-non-zero, etc). 
     '''
 
+    print('running make_filtered_views')
     # get dataframe dictionary of network and remove rows/cols with all zero values 
     df = self.dat_to_df()
     # each row or column must have at least one non-zero value 
@@ -1204,6 +1208,7 @@ class Network(object):
     inst_view = {}
     inst_view['N_row_sum'] = 'all'
     inst_view['filter_row_sum'] = 0
+    inst_view['col_cat'] = 'all_category'
     inst_view['dist'] = 'cos'
     inst_view['nodes'] = {}
     inst_view['nodes']['row_nodes'] = self.viz['row_nodes']
@@ -1212,26 +1217,38 @@ class Network(object):
     # add view with no filtering 
     all_views.append(inst_view)
 
-    # # add N_row_sum views 
-    if 'N_row_sum' in views:
-      all_views = self.add_N_top_views(   df, all_views )
-      
-    if 'filter_row_sum' in views:
-      all_views = self.add_pct_top_views( df, all_views )
+    # generate views for each column category (default to only one)
+    all_col_cat = ['all_category']
+
+    # check for column categories 
+    if len(self.dat['node_info']['col']['cl']) > 0 and calc_col_cats:
+      tmp_cats = sorted(list(set(self.dat['node_info']['col']['cl'])))
+
+      # gather all col_cats 
+      all_col_cat.extend(tmp_cats)
+
+    for inst_col_cat in all_col_cat:
+
+      # add N_row_sum views 
+      if 'N_row_sum' in views:
+        all_views = self.add_N_top_views( df, all_views, inst_col_cat )
+
+      if 'filter_row_sum' in views:
+        all_views = self.add_pct_top_views( df, all_views, inst_col_cat )
 
     # add views to viz 
     self.viz['views'] = all_views
 
-    print('\tfinished fast_mult_views')
+    print('finished make_filtered_views')
 
-  def add_pct_top_views(self, df, all_views):
+  def add_pct_top_views(self, df_orig, all_views, current_col_cat='all_category'):
     from clustergrammer import Network 
     from copy import deepcopy 
     import numpy as np
 
     # gather category key 
     is_col_cat = False
-    if len(self.dat['node_info']['col']['cl']) > 0:
+    if len(self.dat['node_info']['col']['cl']) > 0 and current_col_cat=='all_category':
       is_col_cat = True
       cat_key_col = {}
       for i in range(len(self.dat['nodes']['col'])):
@@ -1241,23 +1258,41 @@ class Network(object):
     all_filt = range(10)
     all_filt = [i/float(10) for i in all_filt]
 
+
+    # make a copy of the network so that filtering is not propagated 
+    copy_net = deepcopy(self)
+
     # row filtering values 
-    mat = self.dat['mat']
+    mat = copy_net.dat['mat']
     mat_abs = abs(mat)
     sum_row = np.sum(mat_abs, axis=1)
     max_sum = max(sum_row)
 
     for inst_filt in all_filt:
-      
       # skip zero filtering 
       if inst_filt > 0:
 
         cutoff = inst_filt * max_sum
 
-        # filter row 
-        df = self.df_filter_row(df, cutoff, take_abs=True)
+        # make a copy of the network so that filtering is not propagated 
+        copy_net = deepcopy(self)
 
-        print('\tfiltering at cutoff ' + str(inst_filt) + ' mat shape: ' + str(df['mat'].shape))
+        # make copy of df_orig
+        df = deepcopy(df_orig)
+
+        # filter row in df 
+        df = copy_net.df_filter_row(df, cutoff, take_abs=True)
+
+        # filter columns by category if necessary 
+        if current_col_cat != 'all_category':
+          keep_cols = copy_net.dat['node_info']['col_in_cat'][current_col_cat]
+
+          df['mat'] = copy_net.grab_df_subset(df['mat'], keep_rows='all', keep_cols=keep_cols)
+
+          if 'mat_up' in df:
+            # grab up and down data 
+            df['mat_up'] = copy_net.grab_df_subset(df['mat_up'], keep_rows='all', keep_cols=keep_cols)
+            df['mat_dn'] = copy_net.grab_df_subset(df['mat_dn'], keep_rows='all', keep_cols=keep_cols)
 
         # ini net 
         net = deepcopy(Network())
@@ -1269,10 +1304,14 @@ class Network(object):
         if is_col_cat: 
           inst_col_cats = []
 
-          for inst_col_name in self.dat['nodes']['col']:
+          for inst_col_name in copy_net.dat['nodes']['col']:
             inst_col_cats.append( cat_key_col[inst_col_name] )
 
+          # transfer category information 
           net.dat['node_info']['col']['cl'] = inst_col_cats
+
+          # add col_in_cat
+          net.dat['node_info']['col_in_cat'] = copy_net.dat['node_info']['col_in_cat']
 
         # try to cluster 
         try: 
@@ -1284,23 +1323,24 @@ class Network(object):
           inst_view = {}
           inst_view['filter_row_sum'] = inst_filt
           inst_view['dist'] = 'cos'
+          inst_view['col_cat'] = current_col_cat
           inst_view['nodes'] = {}
           inst_view['nodes']['row_nodes'] = net.viz['row_nodes']
           inst_view['nodes']['col_nodes'] = net.viz['col_nodes']
           all_views.append(inst_view)          
 
         except:
-          print('\t*** did not cluster filtered view')
+          print('\t*** did not cluster pct filtered view')
 
     return all_views
 
-  def add_N_top_views(self, df, all_views):
+  def add_N_top_views(self, df, all_views, current_col_cat='all_category'):
     from clustergrammer import Network
     from copy import deepcopy 
 
     # gather category key 
     is_col_cat = False
-    if len(self.dat['node_info']['col']['cl']) > 0:
+    if len(self.dat['node_info']['col']['cl']) > 0 and current_col_cat=='all_category':
       is_col_cat = True
       cat_key_col = {}
       for i in range(len(self.dat['nodes']['col'])):
@@ -1324,11 +1364,26 @@ class Network(object):
     # sort rows by value 
     tmp_sum.sort(ascending=False)
 
+    # make a copy of hte network 
+    copy_net = deepcopy(self)
+
     rows_sorted = tmp_sum.index.values.tolist()
 
     for inst_keep in keep_top:
 
+      # initialize df
       tmp_df = deepcopy(df)
+
+      # filter columns by category if necessary 
+      if current_col_cat != 'all_category':
+        keep_cols = copy_net.dat['node_info']['col_in_cat'][current_col_cat]
+
+        tmp_df['mat'] = copy_net.grab_df_subset(tmp_df['mat'], keep_rows='all', keep_cols=keep_cols)
+
+        if 'mat_up' in df:
+          # grab up and down data 
+          tmp_df['mat_up'] = copy_net.grab_df_subset(tmp_df['mat_up'], keep_rows='all', keep_cols=keep_cols)
+          tmp_df['mat_dn'] = copy_net.grab_df_subset(tmp_df['mat_dn'], keep_rows='all', keep_cols=keep_cols)      
 
       if inst_keep < len(rows_sorted):
 
@@ -1337,6 +1392,10 @@ class Network(object):
 
         # filter the matrix 
         tmp_df['mat'] = tmp_df['mat'].ix[keep_rows]
+
+        if 'mat_up' in tmp_df:
+          tmp_df['mat_up'] = tmp_df['mat_up'].ix[keep_rows] 
+          tmp_df['mat_dn'] = tmp_df['mat_dn'].ix[keep_rows] 
 
         # initialize netowrk 
         net = deepcopy(Network())
@@ -1352,9 +1411,14 @@ class Network(object):
           inst_col_cats = []
 
           for inst_col_name in self.dat['nodes']['col']:
+
             inst_col_cats.append( cat_key_col[inst_col_name] )
 
+          # transfer category information 
           net.dat['node_info']['col']['cl'] = inst_col_cats
+
+          # add col_in_cat 
+          net.dat['node_info']['col_in_cat'] = copy_net.dat['node_info']['col_in_cat']
 
         # try to cluster 
         try: 
@@ -1364,12 +1428,13 @@ class Network(object):
           inst_view = {}
           inst_view['N_row_sum'] = inst_keep
           inst_view['dist'] = 'cos'
+          inst_view['col_cat'] = current_col_cat
           inst_view['nodes'] = {}
           inst_view['nodes']['row_nodes'] = net.viz['row_nodes']
           inst_view['nodes']['col_nodes'] = net.viz['col_nodes']
           all_views.append(inst_view)
         except:
-          print('*** did not cluster filtered view') 
+          print('\t*** did not cluster N filtered view') 
 
     return all_views
 
@@ -1540,7 +1605,7 @@ class Network(object):
             all_views.append(inst_view)
 
           except:
-            print('did not cluster filtered view')
+            print('\t***did not cluster filtered view')
 
     # Default col Filtering 
     ###########################
@@ -1699,13 +1764,15 @@ class Network(object):
     return df   
 
   @staticmethod
-  def grab_df_subset(df, inst_rows, inst_cols):
+  def grab_df_subset(df, keep_rows='all', keep_cols='all'):
 
-    # filter columns 
-    df = df[inst_cols]
+    if keep_cols != 'all':
+      # filter columns 
+      df = df[keep_cols]
 
-    # filter rows 
-    df = df.ix[inst_rows]
+    if keep_rows != 'all':
+      # filter rows 
+      df = df.ix[keep_rows]
 
     return df
 

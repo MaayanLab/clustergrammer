@@ -157,7 +157,7 @@ function make_clust(inst_network){
           // 'col_order':'rank',
           // 'row_order':'clust'
           // 'ini_view':{'filter_row_sum':0.9}
-          // 'show_cat':'category-one'
+          // 'current_col_cat':'category-one'
         };
 
         d3.select('#wait_message').remove();
@@ -176,8 +176,8 @@ function make_clust(inst_network){
         // // play demo   
         // ini_play_button(cgm);
 
-        // set_up_filters('filter_row_value');
         set_up_filters('filter_row_sum');
+        // set_up_filters('filter_row_value');
         // set_up_filters('filter_row_num');
 
         set_up_N_filters('N_row_sum'); 
@@ -250,7 +250,7 @@ function make_clust(inst_network){
           var inst_cat = d3.select(this).select('text').text();
 
           // update the category 
-          if (cgm.params.show_cat === inst_cat){
+          if (cgm.params.current_col_cat === inst_cat){
 
             // show all categories 
             cgm.change_category('show_all'); 
@@ -410,7 +410,9 @@ function make_clust(inst_network){
           // filter 
           ////////////////////
           var views = network_data.views;
+
           var all_views = _.filter(views, function(d){return _.has(d,filter_type);});
+
           var inst_max = all_views.length - 1;
           $( '#slider_'+filter_type ).slider({
             value:0,

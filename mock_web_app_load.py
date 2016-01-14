@@ -20,8 +20,8 @@ def main():
   net.pandas_load_tsv_to_net(buff)
 
   # filter rows 
-  net.make_filtered_views(views=['filter_row_sum'])
-  net.write_json_to_file('viz', 'json/mult_view.json', 'indent')
+  net.make_filtered_views(views=['filter_row_sum','N_row_sum'], calc_col_cats=True)
+  net.write_json_to_file('viz', 'json/mult_view.json', 'no-indent')
 
   elapsed_time = time.time() - start_time
   print('\n\n\nelapsed time: '+str(elapsed_time))

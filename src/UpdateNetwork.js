@@ -47,15 +47,15 @@ function update_network(change_view){
   new_config.ini_expand = false;
   // ensure that ini_view is not set 
   new_config.ini_view = null;
-  // pass on show_cat to preserve category filtering 
-  new_config.show_cat = this.params.show_cat;
+  // pass on current_col_cat to preserve category filtering 
+  new_config.current_col_cat = this.params.current_col_cat;
 
   // make new params 
   var params = VizParams(new_config);
   var delays = define_enter_exit_delays(old_params, params);
 
-  // console.log('new params: '+params.show_cat)
-  // console.log('old params:'+this.params.show_cat)
+  // console.log('new params: '+params.current_col_cat)
+  // console.log('old params:'+this.params.current_col_cat)
 
   // ordering - necessary for reordering the function called on button click 
   var reorder = Reorder(params);

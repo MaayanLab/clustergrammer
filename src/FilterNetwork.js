@@ -71,12 +71,12 @@ function change_network_view(params, orig_network_data, change_view){
   var new_nodes = inst_view.nodes;
   var links = orig_network_data.links;
 
-  // fitler categories if necessary 
-  if (_.isNull(params.show_cat) === false){
+  // // fitler categories if necessary 
+  // if (_.isNull(params.current_col_cat) === false){
 
-    console.log('\n\nchange_network_view: params.show_cat '+params.show_cat)
-    new_nodes = show_one_cat(new_nodes, params);
-  }
+  //   console.log('\n\nchange_network_view: params.current_col_cat '+params.current_col_cat)
+  //   new_nodes = show_one_cat(new_nodes, params);
+  // }
 
   var new_network_data = filter_using_new_nodes(new_nodes, links, views);
 
@@ -91,14 +91,14 @@ function show_one_cat( new_nodes, inst_params ){
   // var default_nodes = inst_params.network_data.views[0].nodes;
 
   var class_dict = inst_params.class_dict;
-  var show_cat = inst_params.show_cat;
+  var current_col_cat = inst_params.current_col_cat;
 
-  // console.log('show one category '+String(show_cat));
+  // console.log('show one category '+String(current_col_cat));
 
-  if (_.has(class_dict,show_cat)){
+  if (_.has(class_dict, current_col_cat)){
 
     // get columns that belong to a category
-    var keep_cols = class_dict[show_cat];
+    var keep_cols = class_dict[current_col_cat];
 
     new_nodes.col_nodes = _.filter(new_nodes.col_nodes, function(d){
       if ( _.contains(keep_cols, d.name) ){
@@ -122,10 +122,10 @@ function show_one_cat( new_nodes, inst_params ){
 
 function change_category( inst_cat ){
   // change the category 
-  this.params.show_cat = inst_cat;
+  this.params.current_col_cat = inst_cat;
 
   if ( inst_cat === 'show_all'){
-    this.params.show_cat = null;
+    this.params.current_col_cat = null;
   }
 }
 

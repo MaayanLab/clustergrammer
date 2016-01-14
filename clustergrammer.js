@@ -94,7 +94,7 @@ function Config(args) {
     // initialize view, e.g. initialize with row filtering
     ini_view:null, 
     // initialize column category - only show data from one category
-    show_cat:null
+    current_col_cat:'all_category'
   };
 
   // Mixin defaults with user-defined arguments.
@@ -1368,8 +1368,8 @@ function VizParams(config){
       params.ini_view = null;
     }
 
-    // if (_.isNull(params.show_cat) === false){
-    //   console.log('\nVizParams: ini cat '+String(params.show_cat) );
+    // if (_.isNull(params.current_col_cat) === false){
+    //   console.log('\nVizParams: ini cat '+String(params.current_col_cat) );
 
     //   // fitler categories 
     //   params.network_data = show_one_cat(params.network_data, params);
@@ -1395,7 +1395,6 @@ function VizParams(config){
     // optional classification
     params.labels.show_categories = config.show_categories
     if (params.labels.show_categories){
-
       params.labels.class_colors = config.class_colors;
     }
     params.labels.show_label_tooltips = config.show_label_tooltips;
@@ -4713,15 +4712,15 @@ function update_network(change_view){
   new_config.ini_expand = false;
   // ensure that ini_view is not set 
   new_config.ini_view = null;
-  // pass on show_cat to preserve category filtering 
-  new_config.show_cat = this.params.show_cat;
+  // pass on current_col_cat to preserve category filtering 
+  new_config.current_col_cat = this.params.current_col_cat;
 
   // make new params 
   var params = VizParams(new_config);
   var delays = define_enter_exit_delays(old_params, params);
 
-  // console.log('new params: '+params.show_cat)
-  // console.log('old params:'+this.params.show_cat)
+  // console.log('new params: '+params.current_col_cat)
+  // console.log('old params:'+this.params.current_col_cat)
 
   // ordering - necessary for reordering the function called on button click 
   var reorder = Reorder(params);
@@ -5688,12 +5687,12 @@ function change_network_view(params, orig_network_data, change_view){
   var new_nodes = inst_view.nodes;
   var links = orig_network_data.links;
 
-  // fitler categories if necessary 
-  if (_.isNull(params.show_cat) === false){
+  // // fitler categories if necessary 
+  // if (_.isNull(params.current_col_cat) === false){
 
-    console.log('\n\nchange_network_view: params.show_cat '+params.show_cat)
-    new_nodes = show_one_cat(new_nodes, params);
-  }
+  //   console.log('\n\nchange_network_view: params.current_col_cat '+params.current_col_cat)
+  //   new_nodes = show_one_cat(new_nodes, params);
+  // }
 
   var new_network_data = filter_using_new_nodes(new_nodes, links, views);
 
@@ -5708,14 +5707,14 @@ function show_one_cat( new_nodes, inst_params ){
   // var default_nodes = inst_params.network_data.views[0].nodes;
 
   var class_dict = inst_params.class_dict;
-  var show_cat = inst_params.show_cat;
+  var current_col_cat = inst_params.current_col_cat;
 
-  // console.log('show one category '+String(show_cat));
+  // console.log('show one category '+String(current_col_cat));
 
-  if (_.has(class_dict,show_cat)){
+  if (_.has(class_dict, current_col_cat)){
 
     // get columns that belong to a category
-    var keep_cols = class_dict[show_cat];
+    var keep_cols = class_dict[current_col_cat];
 
     new_nodes.col_nodes = _.filter(new_nodes.col_nodes, function(d){
       if ( _.contains(keep_cols, d.name) ){
@@ -5739,10 +5738,10 @@ function show_one_cat( new_nodes, inst_params ){
 
 function change_category( inst_cat ){
   // change the category 
-  this.params.show_cat = inst_cat;
+  this.params.current_col_cat = inst_cat;
 
   if ( inst_cat === 'show_all'){
-    this.params.show_cat = null;
+    this.params.current_col_cat = null;
   }
 }
 
