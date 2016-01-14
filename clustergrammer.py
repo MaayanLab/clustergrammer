@@ -1323,8 +1323,12 @@ class Network(object):
         # try to cluster 
         try: 
 
-          # cluster
-          net.cluster_row_and_col('cos')
+          try:
+            # cluster
+            net.cluster_row_and_col('cos',run_clustering=True)
+          except:
+            # cluster
+            net.cluster_row_and_col('cos',run_clustering=False)
 
           # add view 
           inst_view = {}
@@ -1436,8 +1440,14 @@ class Network(object):
 
         # try to cluster 
         try: 
-          # cluster 
-          net.cluster_row_and_col('cos')
+
+          try:
+            # cluster 
+            net.cluster_row_and_col('cos',run_clustering=True)
+          except:
+            # cluster 
+            net.cluster_row_and_col('cos',run_clustering=False)
+
           # add view 
           inst_view = {}
           inst_view['N_row_sum'] = inst_keep
