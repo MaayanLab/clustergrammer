@@ -5582,9 +5582,9 @@ function change_network_view(params, orig_network_data, change_view){
       return d.col_cat === params.current_col_cat;
     })
 
-    // debugger
   }
 
+    // debugger
 
 
   var new_nodes = inst_view.nodes;

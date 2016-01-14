@@ -1205,18 +1205,18 @@ class Network(object):
     # set up views 
     all_views = []
 
-    # top - only select the top rows 
-    inst_view = {}
-    inst_view['N_row_sum'] = 'all'
-    inst_view['filter_row_sum'] = 0
-    inst_view['col_cat'] = 'all_category'
-    inst_view['dist'] = 'cos'
-    inst_view['nodes'] = {}
-    inst_view['nodes']['row_nodes'] = self.viz['row_nodes']
-    inst_view['nodes']['col_nodes'] = self.viz['col_nodes']
+    # # top - only select the top rows 
+    # inst_view = {}
+    # inst_view['N_row_sum'] = 'all'
+    # inst_view['filter_row_sum'] = 0
+    # inst_view['col_cat'] = 'all_category'
+    # inst_view['dist'] = 'cos'
+    # inst_view['nodes'] = {}
+    # inst_view['nodes']['row_nodes'] = self.viz['row_nodes']
+    # inst_view['nodes']['col_nodes'] = self.viz['col_nodes']
 
-    # add view with no filtering 
-    all_views.append(inst_view)
+    # # add view with no filtering 
+    # all_views.append(inst_view)
 
     # generate views for each column category (default to only one)
     all_col_cat = ['all_category']
@@ -1277,71 +1277,69 @@ class Network(object):
     max_sum = max(sum_row)
 
     for inst_filt in all_filt:
-      # skip zero filtering 
-      if inst_filt > 0:
 
-        cutoff = inst_filt * max_sum
+      cutoff = inst_filt * max_sum
 
-        # make a copy of the network so that filtering is not propagated 
-        copy_net = deepcopy(self)
+      # make a copy of the network so that filtering is not propagated 
+      copy_net = deepcopy(self)
 
-        # make copy of df
-        inst_df = deepcopy(df)
+      # make copy of df
+      inst_df = deepcopy(df)
 
-        # filter row in df 
-        inst_df = copy_net.df_filter_row(inst_df, cutoff, take_abs=True)
+      # filter row in df 
+      inst_df = copy_net.df_filter_row(inst_df, cutoff, take_abs=True)
 
-        # filter columns by category if necessary 
-        if current_col_cat != 'all_category':
-          keep_cols = copy_net.dat['node_info']['col_in_cat'][current_col_cat]
-          inst_df['mat'] = copy_net.grab_df_subset(inst_df['mat'], keep_rows='all', keep_cols=keep_cols)
+      # filter columns by category if necessary 
+      if current_col_cat != 'all_category':
+        keep_cols = copy_net.dat['node_info']['col_in_cat'][current_col_cat]
+        inst_df['mat'] = copy_net.grab_df_subset(inst_df['mat'], keep_rows='all', keep_cols=keep_cols)
 
-          if 'mat_up' in inst_df:
-            # grab up and down data 
-            inst_df['mat_up'] = copy_net.grab_df_subset(inst_df['mat_up'], keep_rows='all', keep_cols=keep_cols)
-            inst_df['mat_dn'] = copy_net.grab_df_subset(inst_df['mat_dn'], keep_rows='all', keep_cols=keep_cols)
+        if 'mat_up' in inst_df:
+          # grab up and down data 
+          inst_df['mat_up'] = copy_net.grab_df_subset(inst_df['mat_up'], keep_rows='all', keep_cols=keep_cols)
+          inst_df['mat_dn'] = copy_net.grab_df_subset(inst_df['mat_dn'], keep_rows='all', keep_cols=keep_cols)
 
-        # ini net 
-        net = deepcopy(Network())
+      # ini net 
+      net = deepcopy(Network())
 
-        # transfer to dat 
-        net.df_to_dat(inst_df)
+      # transfer to dat 
+      net.df_to_dat(inst_df)
 
-        # add col categories if necessary 
-        if is_col_cat: 
-          inst_col_cats = []
+      # add col categories if necessary 
+      if is_col_cat: 
+        inst_col_cats = []
 
-          for inst_col_name in copy_net.dat['nodes']['col']:
-            inst_col_cats.append( cat_key_col[inst_col_name] )
+        for inst_col_name in copy_net.dat['nodes']['col']:
+          inst_col_cats.append( cat_key_col[inst_col_name] )
 
-          # transfer category information 
-          net.dat['node_info']['col']['cl'] = inst_col_cats
+        # transfer category information 
+        net.dat['node_info']['col']['cl'] = inst_col_cats
 
-          # add col_in_cat
-          net.dat['node_info']['col_in_cat'] = copy_net.dat['node_info']['col_in_cat']
+        # add col_in_cat
+        net.dat['node_info']['col_in_cat'] = copy_net.dat['node_info']['col_in_cat']
 
-        # try to cluster 
-        try: 
+      # try to cluster 
+      try: 
 
-          try:
-            # cluster
-            net.cluster_row_and_col('cos',run_clustering=True)
-          except:
-            # cluster
-            net.cluster_row_and_col('cos',run_clustering=False)
-
-          # add view 
-          inst_view = {}
-          inst_view['filter_row_sum'] = inst_filt
-          inst_view['dist'] = 'cos'
-          inst_view['col_cat'] = current_col_cat
-          inst_view['nodes'] = {}
-          inst_view['nodes']['row_nodes'] = net.viz['row_nodes']
-          inst_view['nodes']['col_nodes'] = net.viz['col_nodes']
-          all_views.append(inst_view)          
-
+        try:
+          # cluster
+          net.cluster_row_and_col('cos',run_clustering=True)
         except:
-          print('\t*** did not cluster pct filtered view')
+          # cluster
+          net.cluster_row_and_col('cos',run_clustering=False)
+
+        # add view 
+        inst_view = {}
+        inst_view['filter_row_sum'] = inst_filt
+        inst_view['dist'] = 'cos'
+        inst_view['col_cat'] = current_col_cat
+        inst_view['nodes'] = {}
+        inst_view['nodes']['row_nodes'] = net.viz['row_nodes']
+        inst_view['nodes']['col_nodes'] = net.viz['col_nodes']
+        all_views.append(inst_view)          
+
+      except:
+        print('\t*** did not cluster pct filtered view')
 
     return all_views
 
@@ -1367,7 +1365,7 @@ class Network(object):
         cat_key_col[ self.dat['nodes']['col'][i] ] = self.dat['node_info']['col']['cl'][i]
 
     # keep the following number of top rows 
-    keep_top = [500,400,300,200,100,90,80,70,60,50,40,30,20,10]
+    keep_top = ['all',500,400,300,200,100,90,80,70,60,50,40,30,20,10]
 
     # get copy of df and take abs value, cell line cols and gene rows
     df_abs = deepcopy(df['mat'])
@@ -1383,7 +1381,6 @@ class Network(object):
 
     # sort rows by value 
     tmp_sum.sort(ascending=False)
-
 
     rows_sorted = tmp_sum.index.values.tolist()
 
@@ -1403,26 +1400,32 @@ class Network(object):
           tmp_df['mat_up'] = copy_net.grab_df_subset(tmp_df['mat_up'], keep_rows='all', keep_cols=keep_cols)
           tmp_df['mat_dn'] = copy_net.grab_df_subset(tmp_df['mat_dn'], keep_rows='all', keep_cols=keep_cols)      
 
-      if inst_keep < len(rows_sorted):
-
-        # get the labels of the rows that will be kept 
-        keep_rows = rows_sorted[0:inst_keep]
-
-        # filter the matrix 
-        tmp_df['mat'] = tmp_df['mat'].ix[keep_rows]
-
-        if 'mat_up' in tmp_df:
-          tmp_df['mat_up'] = tmp_df['mat_up'].ix[keep_rows] 
-          tmp_df['mat_dn'] = tmp_df['mat_dn'].ix[keep_rows] 
+      if inst_keep < len(rows_sorted) or inst_keep == 'all':
 
         # initialize netowrk 
         net = deepcopy(Network())
 
-        # filter columns - some columns may have all zero values 
-        tmp_df = self.df_filter_col(tmp_df,0.001)
+        # filter the rows 
+        if inst_keep != 'all':
+          
+          # get the labels of the rows that will be kept 
+          keep_rows = rows_sorted[0:inst_keep]
 
-        # transfer to dat 
-        net.df_to_dat(tmp_df)
+          # filter the matrix 
+          tmp_df['mat'] = tmp_df['mat'].ix[keep_rows]
+
+          if 'mat_up' in tmp_df:
+            tmp_df['mat_up'] = tmp_df['mat_up'].ix[keep_rows] 
+            tmp_df['mat_dn'] = tmp_df['mat_dn'].ix[keep_rows] 
+
+          # filter columns - some columns may have all zero values 
+          tmp_df = self.df_filter_col(tmp_df,0.001)
+
+          # transfer to dat 
+          net.df_to_dat(tmp_df)
+
+        else:
+          net.df_to_dat(tmp_df)
 
         # add col categories if necessary 
         if is_col_cat: 
