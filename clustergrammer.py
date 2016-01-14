@@ -1245,10 +1245,18 @@ class Network(object):
 
     print('finished make_filtered_views')
 
-  def add_pct_top_views(self, df_orig, all_views, current_col_cat='all_category'):
+  def add_pct_top_views(self, df, all_views, current_col_cat='all_category'):
     from clustergrammer import Network 
     from copy import deepcopy 
     import numpy as np
+
+    # make a copy of the network so that filtering is not propagated 
+    copy_net = deepcopy(self)
+
+    # filter columns by category if necessary - do this on df, which is a copy
+    if current_col_cat != 'all_category':
+      keep_cols = copy_net.dat['node_info']['col_in_cat'][current_col_cat]
+      df['mat'] = copy_net.grab_df_subset(df['mat'], keep_rows='all', keep_cols=keep_cols)
 
     # gather category key 
     is_col_cat = False
@@ -1262,12 +1270,8 @@ class Network(object):
     all_filt = range(10)
     all_filt = [i/float(10) for i in all_filt]
 
-
-    # make a copy of the network so that filtering is not propagated 
-    copy_net = deepcopy(self)
-
     # row filtering values 
-    mat = copy_net.dat['mat']
+    mat = deepcopy(df['mat'])
     mat_abs = abs(mat)
     sum_row = np.sum(mat_abs, axis=1)
     max_sum = max(sum_row)
@@ -1281,28 +1285,27 @@ class Network(object):
         # make a copy of the network so that filtering is not propagated 
         copy_net = deepcopy(self)
 
-        # make copy of df_orig
-        df = deepcopy(df_orig)
+        # make copy of df
+        inst_df = deepcopy(df)
 
         # filter row in df 
-        df = copy_net.df_filter_row(df, cutoff, take_abs=True)
+        inst_df = copy_net.df_filter_row(inst_df, cutoff, take_abs=True)
 
         # filter columns by category if necessary 
         if current_col_cat != 'all_category':
           keep_cols = copy_net.dat['node_info']['col_in_cat'][current_col_cat]
+          inst_df['mat'] = copy_net.grab_df_subset(inst_df['mat'], keep_rows='all', keep_cols=keep_cols)
 
-          df['mat'] = copy_net.grab_df_subset(df['mat'], keep_rows='all', keep_cols=keep_cols)
-
-          if 'mat_up' in df:
+          if 'mat_up' in inst_df:
             # grab up and down data 
-            df['mat_up'] = copy_net.grab_df_subset(df['mat_up'], keep_rows='all', keep_cols=keep_cols)
-            df['mat_dn'] = copy_net.grab_df_subset(df['mat_dn'], keep_rows='all', keep_cols=keep_cols)
+            inst_df['mat_up'] = copy_net.grab_df_subset(inst_df['mat_up'], keep_rows='all', keep_cols=keep_cols)
+            inst_df['mat_dn'] = copy_net.grab_df_subset(inst_df['mat_dn'], keep_rows='all', keep_cols=keep_cols)
 
         # ini net 
         net = deepcopy(Network())
 
         # transfer to dat 
-        net.df_to_dat(df)
+        net.df_to_dat(inst_df)
 
         # add col categories if necessary 
         if is_col_cat: 
