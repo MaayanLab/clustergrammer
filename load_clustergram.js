@@ -343,6 +343,20 @@ function make_clust(inst_network){
           var views = network_data.views;
           var all_views = _.filter(views, function(d){return _.has(d,filter_type);});
 
+
+          // filter for column category if necessary 
+          if ( _.has(all_views[0],'col_cat') ) {
+
+            // get views with current_col_cat 
+            all_views = _.filter(all_views, function(d){
+              if (d.col_cat==cgm.params.current_col_cat){
+                return d;
+              } 
+            })
+          }
+
+          console.log( 'found ' + String(all_views.length) +' views for ' + filter_type )
+
           var inst_max = all_views.length - 1;
 
           // make dictionary 
@@ -411,7 +425,21 @@ function make_clust(inst_network){
           ////////////////////
           var views = network_data.views;
 
+          // get views with filter type: e.g. fliter_row_sum
           var all_views = _.filter(views, function(d){return _.has(d,filter_type);});
+
+          // filter for column category if necessary 
+          if ( _.has(all_views[0],'col_cat') ) {
+
+            // get views with current_col_cat 
+            all_views = _.filter(all_views, function(d){
+              if (d.col_cat==cgm.params.current_col_cat){
+                return d;
+              } 
+            })
+          }
+
+          console.log( 'found ' + String(all_views.length) +' views for ' + filter_type )
 
           var inst_max = all_views.length - 1;
           $( '#slider_'+filter_type ).slider({
