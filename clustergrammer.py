@@ -1179,6 +1179,7 @@ class Network(object):
     return df 
 
   def make_filtered_views(self, dist_type='cos', run_clustering=True, dendro=True, views=['filter_row_sum','N_row_sum'], calc_col_cats=True):
+    from copy import deepcopy
     '''
     This will calculate multiple views of a clustergram by filtering the data 
     and clustering after each filtering. This filtering will keep the top N 
@@ -1229,12 +1230,15 @@ class Network(object):
 
     for inst_col_cat in all_col_cat:
 
+      # make a copy of df to send to filters
+      send_df = deepcopy(df)
+
       # add N_row_sum views 
       if 'N_row_sum' in views:
-        all_views = self.add_N_top_views( df, all_views, inst_col_cat )
+        all_views = self.add_N_top_views( send_df, all_views, inst_col_cat )
 
       if 'filter_row_sum' in views:
-        all_views = self.add_pct_top_views( df, all_views, inst_col_cat )
+        all_views = self.add_pct_top_views( send_df, all_views, inst_col_cat )
 
     # add views to viz 
     self.viz['views'] = all_views
@@ -1338,6 +1342,15 @@ class Network(object):
     from clustergrammer import Network
     from copy import deepcopy 
 
+    # make a copy of hte network 
+    copy_net = deepcopy(self)
+    
+    # filter columns by category if necessary 
+    if current_col_cat != 'all_category':
+      keep_cols = copy_net.dat['node_info']['col_in_cat'][current_col_cat]
+
+      df['mat'] = copy_net.grab_df_subset(df['mat'], keep_rows='all', keep_cols=keep_cols)    
+
     # gather category key 
     is_col_cat = False
     if len(self.dat['node_info']['col']['cl']) > 0 and current_col_cat=='all_category':
@@ -1364,8 +1377,6 @@ class Network(object):
     # sort rows by value 
     tmp_sum.sort(ascending=False)
 
-    # make a copy of hte network 
-    copy_net = deepcopy(self)
 
     rows_sorted = tmp_sum.index.values.tolist()
 

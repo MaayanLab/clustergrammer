@@ -5618,7 +5618,7 @@ function change_network_view(params, orig_network_data, change_view){
  
   var views = orig_network_data.views;
 
-  // console.log(change_view)
+  console.log('change_network_view')
 
   // Get Row Filtering View 
   ///////////////////////////////////////////////////////////////
@@ -5628,10 +5628,11 @@ function change_network_view(params, orig_network_data, change_view){
   // the nodes of the view (e.g. row_nodes and col_nodes). With the new set of 
   // nodes, new_nodes, the links will be filtered in order to only keep links 
   // between nodes that still exist in the view 
-  if (_.has(change_view,'filter_row')){
-    // failsafe if there is only row+col filtering from front-end
 
-    var inst_view = _.find(views, function(d){
+  if (_.has(change_view,'filter_row')){
+
+    // failsafe if there is only row+col filtering from front-end
+    var filt_views = _.filter(views, function(d){
 
       // failsafe from json 
       if (_.has(d, 'filter_row')){
@@ -5646,7 +5647,7 @@ function change_network_view(params, orig_network_data, change_view){
   } else if (_.has(change_view, 'filter_row_value')) {
 
     // filter row value 
-    var inst_view = _.find(views, function(d){
+    var filt_views = _.filter(views, function(d){
 
       // failsafe from json 
       return d.filter_row_value == change_view.filter_row_value;
@@ -5655,34 +5656,51 @@ function change_network_view(params, orig_network_data, change_view){
 
   } else if (_.has(change_view,'filter_row_sum')) {
 
-    var inst_view = _.find(views, function(d){
+    var filt_views = _.filter(views, function(d){
       return d.filter_row_sum == change_view.filter_row_sum;
     });
 
   } else if (_.has(change_view,'filter_row_num')) {
 
-    var inst_view = _.find(views, function(d){
+    var filt_views = _.filter(views, function(d){
       return d.filter_row_num == change_view.filter_row_num;
     });
 
   } else if (_.has(change_view, 'N_row_sum')){
 
-    var inst_view = _.find(views, function(d){
+    var filt_views = _.filter(views, function(d){
       return d.N_row_sum == change_view.N_row_sum;
     });
 
-    if(typeof inst_view === 'undefined'){
-        inst_view = views[0];
+    if(typeof filt_views === 'undefined'){
+        filt_views = [views[0]];
     };
 
   }
 
   if (change_view==='default'){
-    inst_view = views[0];
+    filt_views = [views[0]];
   }
 
-  // console.log('new view')
-  // console.log(inst_view)
+  // get the single view that will be used to update the network from 
+  // the array of filtered views 
+  if (filt_views.length==1){
+    console.log('\nview defined by filter only, no category\n')
+    var inst_view = filt_views[0];
+  } 
+
+  if (params.show_categories){
+
+    console.log('\nview defined by filter and category\n')
+    // apply category filtering if necessary 
+    var inst_view = _.find(filt_views, function(d){
+      return d.col_cat === params.current_col_cat;
+    })
+
+    // debugger
+  }
+
+
 
   var new_nodes = inst_view.nodes;
   var links = orig_network_data.links;
@@ -5739,10 +5757,7 @@ function show_one_cat( new_nodes, inst_params ){
 function change_category( inst_cat ){
   // change the category 
   this.params.current_col_cat = inst_cat;
-
-  if ( inst_cat === 'show_all'){
-    this.params.current_col_cat = null;
-  }
+  console.log('changed category to ' + String(inst_cat));
 }
 
 function filter_using_new_nodes(new_nodes, links, views){

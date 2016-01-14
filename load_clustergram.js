@@ -253,7 +253,7 @@ function make_clust(inst_network){
           if (cgm.params.current_col_cat === inst_cat){
 
             // show all categories 
-            cgm.change_category('show_all'); 
+            cgm.change_category('all_category'); 
 
             // show selection in key 
             d3.selectAll('.category_section')
@@ -291,8 +291,8 @@ function make_clust(inst_network){
             ini_sliders();
           }
 
-          // update the network after changing the category 
-          cgm.update_network('default');
+          // // update the network after changing the category 
+          // cgm.update_network('default');
 
         }
 
