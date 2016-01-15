@@ -382,7 +382,12 @@ function VizParams(config){
     } else if (params.viz.inst_order.row === 'rank') {
       params.matrix.x_scale.domain(params.matrix.orders.rank_row);
     } else if (params.viz.inst_order.row === 'class') {
-      params.matrix.x_scale.domain(params.matrix.orders.class_row);
+      if (_.has(params.matrix.orders,'class_row')){
+        params.matrix.x_scale.domain(params.matrix.orders.class_row);
+      } else {
+        params.matrix.x_scale.domain(params.matrix.orders.clust_row);
+      }
+
     }
 
     if (params.viz.inst_order.col === 'ini') {
@@ -392,7 +397,11 @@ function VizParams(config){
     } else if (params.viz.inst_order.col === 'rank') {
       params.matrix.y_scale.domain(params.matrix.orders.rank_col);
     } else if (params.viz.inst_order.col === 'class') {
-      params.matrix.y_scale.domain(params.matrix.orders.class_col);
+      if (_.has(params.matrix.orders,'class_row')){
+        params.matrix.y_scale.domain(params.matrix.orders.class_col);
+      } else {
+        params.matrix.y_scale.domain(params.matrix.orders.clust_col);
+      }
     }
 
     // add names and instantaneous positions to links 

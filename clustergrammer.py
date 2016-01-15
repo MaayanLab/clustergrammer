@@ -1719,7 +1719,6 @@ class Network(object):
       df['mat_up'] = net.grab_df_subset(df['mat_up'], keep_rows=keep_rows)
       df['mat_dn'] = net.grab_df_subset(df['mat_dn'], keep_rows=keep_rows)
 
-
     return df   
 
   @staticmethod

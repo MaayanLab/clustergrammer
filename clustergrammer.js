@@ -1612,7 +1612,12 @@ function VizParams(config){
     } else if (params.viz.inst_order.row === 'rank') {
       params.matrix.x_scale.domain(params.matrix.orders.rank_row);
     } else if (params.viz.inst_order.row === 'class') {
-      params.matrix.x_scale.domain(params.matrix.orders.class_row);
+      if (_.has(params.matrix.orders,'class_row')){
+        params.matrix.x_scale.domain(params.matrix.orders.class_row);
+      } else {
+        params.matrix.x_scale.domain(params.matrix.orders.clust_row);
+      }
+
     }
 
     if (params.viz.inst_order.col === 'ini') {
@@ -1622,7 +1627,11 @@ function VizParams(config){
     } else if (params.viz.inst_order.col === 'rank') {
       params.matrix.y_scale.domain(params.matrix.orders.rank_col);
     } else if (params.viz.inst_order.col === 'class') {
-      params.matrix.y_scale.domain(params.matrix.orders.class_col);
+      if (_.has(params.matrix.orders,'class_row')){
+        params.matrix.y_scale.domain(params.matrix.orders.class_col);
+      } else {
+        params.matrix.y_scale.domain(params.matrix.orders.clust_col);
+      }
     }
 
     // add names and instantaneous positions to links 
@@ -5584,60 +5593,15 @@ function change_network_view(params, orig_network_data, change_view){
 
   }
 
-    // debugger
-
-
   var new_nodes = inst_view.nodes;
   var links = orig_network_data.links;
-
-  // // fitler categories if necessary 
-  // if (_.isNull(params.current_col_cat) === false){
-
-  //   console.log('\n\nchange_network_view: params.current_col_cat '+params.current_col_cat)
-  //   new_nodes = show_one_cat(new_nodes, params);
-  // }
 
   var new_network_data = filter_using_new_nodes(new_nodes, links, views);
 
   return new_network_data;
 }
 
-function show_one_cat( new_nodes, inst_params ){
 
-
-  // new_nodes = inst_params.network_data.views[0].nodes;
-
-  // var default_nodes = inst_params.network_data.views[0].nodes;
-
-  var class_dict = inst_params.class_dict;
-  var current_col_cat = inst_params.current_col_cat;
-
-  // console.log('show one category '+String(current_col_cat));
-
-  if (_.has(class_dict, current_col_cat)){
-
-    // get columns that belong to a category
-    var keep_cols = class_dict[current_col_cat];
-
-    new_nodes.col_nodes = _.filter(new_nodes.col_nodes, function(d){
-      if ( _.contains(keep_cols, d.name) ){
-        return d;
-      }
-    });
-
-  }
-
-  // console.log('\n\n')
-  // console.log('show_one_cat')
-  // console.log(new_nodes)
-  // console.log('\n\n')
-  // console.log('default view')
-  // console.log(default_nodes)
-  // console.log(inst_params)
-  // console.log('\n\n\n\n')
-
-  return new_nodes;
-}
 
 function change_category( inst_cat ){
   // change the category 

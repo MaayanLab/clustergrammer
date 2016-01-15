@@ -291,8 +291,27 @@ function make_clust(inst_network){
             ini_sliders();
           }
 
-          // // update the network after changing the category 
-          // cgm.update_network('default');
+          // disable controls while updating
+          $('.slider_filter').slider('disable');
+          d3.selectAll('.btn').attr('disabled',true);
+          d3.selectAll('.category_section')
+            .on('click', '')
+            .select('text')
+            .style('opacity',0.5);
+
+          // update the network after changing the category - default to no filtering 
+          cgm.update_network({'N_row_sum':'all'});
+
+          function enable_slider(){
+            $('.slider_filter').slider('enable');  
+            d3.selectAll('.btn').attr('disabled',null);
+            d3.selectAll('.category_section')
+              .on('click', category_key_click)
+              .select('text')
+              .style('opacity',1);
+          }
+
+          setTimeout(enable_slider, 2500);          
 
         }
 
@@ -402,6 +421,11 @@ function make_clust(inst_network){
 
               $('.slider_filter').slider('disable');
               d3.selectAll('.btn').attr('disabled',true);
+              d3.selectAll('.category_section')
+                .on('click', '')
+                .select('text')
+                .style('opacity',0.5);
+
 
               cgm.update_network(change_view);
 
@@ -410,6 +434,10 @@ function make_clust(inst_network){
               function enable_slider(){
                 $('.slider_filter').slider('enable');  
                 d3.selectAll('.btn').attr('disabled',null);
+                d3.selectAll('.category_section')
+                  .on('click', category_key_click)
+                  .select('text')
+                  .style('opacity',1);
               }
               setTimeout(enable_slider, 2500);
 
@@ -491,6 +519,10 @@ function make_clust(inst_network){
 
               $('.slider_filter').slider('disable');
               d3.selectAll('.btn').attr('disabled',true);
+              d3.selectAll('.category_section')
+                .on('click', '')
+                .select('text')
+                .style('opacity',0.5);
 
               cgm.update_network(change_view);
 
@@ -499,6 +531,10 @@ function make_clust(inst_network){
               function enable_slider(){
                 $('.slider_filter').slider('enable');  
                 d3.selectAll('.btn').attr('disabled',null);
+                d3.selectAll('.category_section')
+                  .on('click', category_key_click)
+                  .select('text')
+                  .style('opacity',1);
               }
               setTimeout(enable_slider, 2500);
 
