@@ -1186,8 +1186,9 @@ class Network(object):
 
     # get dataframe dictionary of network and remove rows/cols with all zero values 
     df = self.dat_to_df()
+
     # each row or column must have at least one non-zero value 
-    threshold = 0.001
+    threshold = 0.0001
     df = self.df_filter_row(df, threshold)
     df = self.df_filter_col(df, threshold)
 
@@ -1676,6 +1677,8 @@ class Network(object):
     else:
       df_copy = deepcopy(df['mat'])
 
+    ini_rows = df_copy.index.values.tolist()
+
     # transpose df 
     df_copy = df_copy.transpose()
 
@@ -1691,19 +1694,17 @@ class Network(object):
     # filter series using threshold 
     tmp_sum = tmp_sum[tmp_sum>threshold]
 
-    # print('greater than thresh: '+str(threshold))
-    # print(tmp_sum)
-
     # get keep_row names 
-    keep_rows = tmp_sum.index.values.tolist()
+    keep_rows = sorted(tmp_sum.index.values.tolist())
 
-    # grab the subset of the data 
-    df['mat'] = net.grab_df_subset(df['mat'], keep_rows=keep_rows)
+    if len(keep_rows) < len(ini_rows):
+      # grab the subset of the data 
+      df['mat'] = net.grab_df_subset(df['mat'], keep_rows=keep_rows)
 
-    if 'mat_up' in df:
-      # grab up and down data 
-      df['mat_up'] = net.grab_df_subset(df['mat_up'], keep_rows=keep_rows)
-      df['mat_dn'] = net.grab_df_subset(df['mat_dn'], keep_rows=keep_rows)
+      if 'mat_up' in df:
+        # grab up and down data 
+        df['mat_up'] = net.grab_df_subset(df['mat_up'], keep_rows=keep_rows)
+        df['mat_dn'] = net.grab_df_subset(df['mat_dn'], keep_rows=keep_rows)
 
     return df   
 

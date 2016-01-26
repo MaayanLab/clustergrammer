@@ -17,7 +17,7 @@ def main():
   # choose file 
   ################
   # file_buffer = open('txt/col_categories.txt')
-  file_buffer = open('txt/example_tsv_network.txt')
+  file_buffer = open('txt/example_tsv_network.txt'  )
 
 
   buff = StringIO.StringIO( file_buffer.read() )
