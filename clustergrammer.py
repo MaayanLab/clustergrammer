@@ -16,7 +16,8 @@ class Network(object):
     self.dat['nodes']['row'] = []
     self.dat['nodes']['col'] = []
 
-    # node_info holds the orderings (ini, clust, rank), classification ('cl'), and other general information 
+    # node_info holds the orderings (ini, clust, rank), classification ('cl'), 
+    # and other general information 
     self.dat['node_info'] = {}
     for inst_rc in self.dat['nodes']:
       self.dat['node_info'][inst_rc] = {}
@@ -809,7 +810,9 @@ class Network(object):
     # return number of links 
     return (abs(self.dat['mat'])>inst_thresh).sum()
 
-  def cluster_row_and_col(self, dist_type, cutoff=0, min_num_comp=1, dendro=True, run_clustering=True, run_rank=True):
+  def cluster_row_and_col(self, dist_type='cosine', cutoff=0, dendro=True, \
+    run_clustering=True, run_rank=True):
+
     ''' 
     cluster net.dat and make visualization json, net.viz. 
     optionally leave out dendrogram colorbar groups with dendro argument 
@@ -838,8 +841,9 @@ class Network(object):
     tmp_mat = deepcopy(self.dat['mat'])
 
     # calculate distance matrix 
-    row_dm = pdist( tmp_mat, metric='cosine' )
-    col_dm = pdist( tmp_mat.transpose(), metric='cosine' )
+    print('calc distance matrix using '+ dist_type)
+    row_dm = pdist( tmp_mat, metric=dist_type )
+    col_dm = pdist( tmp_mat.transpose(), metric=dist_type )
 
     # prevent negative values 
     row_dm[row_dm < 0] = float(0)
@@ -855,9 +859,13 @@ class Network(object):
 
     # cluster 
     if run_clustering == True:
+
       cluster_method = 'average'
-      clust_order['row']['clust'], clust_order['row']['group'] = self.clust_and_group_nodes(row_dm, cluster_method)
-      clust_order['col']['clust'], clust_order['col']['group'] = self.clust_and_group_nodes(col_dm, cluster_method)
+      clust_order['row']['clust'], clust_order['row']['group'] = \
+      self.clust_and_group(row_dm, cluster_method)
+
+      clust_order['col']['clust'], clust_order['col']['group'] = \
+      self.clust_and_group(col_dm, cluster_method)
 
     # rank 
     if run_rank == True:
@@ -963,7 +971,7 @@ class Network(object):
 
     self.dat['node_info']['col']['cl_index'] = final_order    
 
-  def clust_and_group_nodes( self, dm, cluster_method ):
+  def clust_and_group( self, dm, cluster_method ):
     import scipy.cluster.hierarchy as hier
 
     # calculate linkage 
@@ -1051,22 +1059,6 @@ class Network(object):
       sort_index.append( tmp_sort_nodes.index(inst_node) )
 
     return sort_index
-
-  def calc_thresh_col_dist( self, vect_row, vect_col, cutoff, min_num_meet):
-    import scipy.spatial
-    import numpy as np
-
-    # apply cutoff 
-    vect_row, vect_col = self.threshold_vect_comparison(vect_row, vect_col, cutoff)
-
-    # check min_num_meet 
-    if len(vect_row) >= min_num_meet:
-      inst_dist = scipy.spatial.distance.cosine(vect_row, vect_col)
-    else:
-      # later the nans will be replaced with the maximum distance 
-      inst_dist = np.nan
-
-    return inst_dist
 
   def viz_json(self, dendro=True):
     ''' make the dictionary for the clustergram.js visualization '''
@@ -1178,7 +1170,9 @@ class Network(object):
 
     return df 
 
-  def make_filtered_views(self, dist_type='cos', run_clustering=True, dendro=True, views=['filter_row_sum','N_row_sum'], calc_col_cats=True):
+  def make_filtered_views(self, dist_type='cosine', run_clustering=True, \
+    dendro=True, views=['filter_row_sum','N_row_sum'], calc_col_cats=True):
+
     from copy import deepcopy
     '''
     This will calculate multiple views of a clustergram by filtering the data 
@@ -1187,6 +1181,9 @@ class Network(object):
     '''
 
     print('running make_filtered_views')
+
+    print('dist_type '+str(dist_type))
+
     # get dataframe dictionary of network and remove rows/cols with all zero values 
     df = self.dat_to_df()
     # each row or column must have at least one non-zero value 
@@ -1200,28 +1197,16 @@ class Network(object):
     self.df_to_dat(df)
 
     # cluster initial view 
-    self.cluster_row_and_col('cos',run_clustering=run_clustering, dendro=dendro)
+    self.cluster_row_and_col(dist_type=dist_type,run_clustering=run_clustering, dendro=dendro)
 
     # set up views 
     all_views = []
 
-    # # top - only select the top rows 
-    # inst_view = {}
-    # inst_view['N_row_sum'] = 'all'
-    # inst_view['filter_row_sum'] = 0
-    # inst_view['col_cat'] = 'all_category'
-    # inst_view['dist'] = 'cos'
-    # inst_view['nodes'] = {}
-    # inst_view['nodes']['row_nodes'] = self.viz['row_nodes']
-    # inst_view['nodes']['col_nodes'] = self.viz['col_nodes']
-
-    # # add view with no filtering 
-    # all_views.append(inst_view)
-
     # generate views for each column category (default to only one)
     all_col_cat = ['all_category']
 
-    # check for column categories 
+    # check for column categories and check whether category specific clustering
+    # should be calculated 
     if len(self.dat['node_info']['col']['cl']) > 0 and calc_col_cats:
       tmp_cats = sorted(list(set(self.dat['node_info']['col']['cl'])))
 
@@ -1235,17 +1220,19 @@ class Network(object):
 
       # add N_row_sum views 
       if 'N_row_sum' in views:
-        all_views = self.add_N_top_views( send_df, all_views, inst_col_cat )
+        all_views = self.add_N_top_views( send_df, all_views, dist_type=dist_type, current_col_cat=inst_col_cat )
 
       if 'filter_row_sum' in views:
-        all_views = self.add_pct_top_views( send_df, all_views, inst_col_cat )
+        all_views = self.add_pct_top_views( send_df, all_views, dist_type=dist_type, current_col_cat=inst_col_cat )
 
     # add views to viz 
     self.viz['views'] = all_views
 
     print('finished make_filtered_views')
 
-  def add_pct_top_views(self, df, all_views, current_col_cat='all_category'):
+  def add_pct_top_views(self, df, all_views, dist_type='cosine', \
+    current_col_cat='all_category'):
+
     from clustergrammer import Network 
     from copy import deepcopy 
     import numpy as np
@@ -1276,9 +1263,6 @@ class Network(object):
     max_sum = max(sum_row)
 
     for inst_filt in all_filt:
-
-      print('\ninst_filt')
-      print(inst_filt)
 
       cutoff = inst_filt * max_sum
 
@@ -1325,10 +1309,10 @@ class Network(object):
 
         try:
           # cluster
-          net.cluster_row_and_col('cos',run_clustering=True)
+          net.cluster_row_and_col(dist_type=dist_type,run_clustering=True)
         except:
           # cluster
-          net.cluster_row_and_col('cos',run_clustering=False)
+          net.cluster_row_and_col(dist_type=dist_type,run_clustering=False)
 
         # add view 
         inst_view = {}
@@ -1345,7 +1329,9 @@ class Network(object):
 
     return all_views
 
-  def add_N_top_views(self, df, all_views, current_col_cat='all_category'):
+  def add_N_top_views(self, df, all_views, dist_type='cosine',\
+    current_col_cat='all_category'):
+
     from clustergrammer import Network
     from copy import deepcopy 
 
@@ -1448,10 +1434,10 @@ class Network(object):
 
           try:
             # cluster 
-            net.cluster_row_and_col('cos',run_clustering=True)
+            net.cluster_row_and_col(dist_type,run_clustering=True)
           except:
             # cluster 
-            net.cluster_row_and_col('cos',run_clustering=False)
+            net.cluster_row_and_col(dist_type,run_clustering=False)
 
           # add view 
           inst_view = {}
@@ -1643,7 +1629,7 @@ class Network(object):
       # col filtering 
       #####################
       for col_filt in all_filt:
-        print(col_filt)
+        # print(col_filt)
         # initialize new net 
         net = deepcopy(Network())
         net.dat = deepcopy(self.dat)
@@ -1705,8 +1691,8 @@ class Network(object):
     # filter series using threshold 
     tmp_sum = tmp_sum[tmp_sum>threshold]
 
-    print('greater than thresh: '+str(threshold))
-    print(tmp_sum)
+    # print('greater than thresh: '+str(threshold))
+    # print(tmp_sum)
 
     # get keep_row names 
     keep_rows = tmp_sum.index.values.tolist()

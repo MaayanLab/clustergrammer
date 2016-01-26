@@ -14,13 +14,19 @@ def main():
   # net.load_tsv_to_net('txt/example_tsv_network.txt')
   # net.load_tsv_to_net('txt/mat_1mb.txt')
 
-  file_buffer = open('txt/col_categories.txt')
-  # file_buffer = open('txt/example_tsv_network.txt')
+  # choose file 
+  ################
+  # file_buffer = open('txt/col_categories.txt')
+  file_buffer = open('txt/example_tsv_network.txt')
+
+
   buff = StringIO.StringIO( file_buffer.read() )
   net.pandas_load_tsv_to_net(buff)
 
   # filter rows 
-  net.make_filtered_views(views=['filter_row_sum','N_row_sum'], calc_col_cats=True)
+  views = ['filter_row_sum','N_row_sum']
+  dist_type = 'cos'
+  net.make_filtered_views(dist_type=dist_type, views=views, calc_col_cats=True)
   net.write_json_to_file('viz', 'json/mult_view.json', 'no-indent')
 
   elapsed_time = time.time() - start_time
