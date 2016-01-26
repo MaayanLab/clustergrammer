@@ -810,7 +810,7 @@ class Network(object):
     # return number of links 
     return (abs(self.dat['mat'])>inst_thresh).sum()
 
-  def cluster_row_and_col(self, dist_type='cosine', cutoff=0, dendro=True, \
+  def cluster_row_and_col(self, dist_type='cosine', linkage_type='average', dendro=True, \
     run_clustering=True, run_rank=True):
 
     ''' 
@@ -841,7 +841,6 @@ class Network(object):
     tmp_mat = deepcopy(self.dat['mat'])
 
     # calculate distance matrix 
-    print('calc distance matrix using '+ dist_type)
     row_dm = pdist( tmp_mat, metric=dist_type )
     col_dm = pdist( tmp_mat.transpose(), metric=dist_type )
 
@@ -860,12 +859,11 @@ class Network(object):
     # cluster 
     if run_clustering == True:
 
-      cluster_method = 'average'
       clust_order['row']['clust'], clust_order['row']['group'] = \
-      self.clust_and_group(row_dm, cluster_method)
+      self.clust_and_group(row_dm, linkage_type=linkage_type)
 
       clust_order['col']['clust'], clust_order['col']['group'] = \
-      self.clust_and_group(col_dm, cluster_method)
+      self.clust_and_group(col_dm, linkage_type=linkage_type)
 
     # rank 
     if run_rank == True:
@@ -971,11 +969,11 @@ class Network(object):
 
     self.dat['node_info']['col']['cl_index'] = final_order    
 
-  def clust_and_group( self, dm, cluster_method ):
+  def clust_and_group( self, dm, linkage_type='average' ):
     import scipy.cluster.hierarchy as hier
 
     # calculate linkage 
-    Y = hier.linkage( dm, method=cluster_method )
+    Y = hier.linkage( dm, method=linkage_type )
     Z = hier.dendrogram( Y, no_plot=True )
     # get ordering
     inst_clust_order = Z['leaves']
@@ -1171,7 +1169,8 @@ class Network(object):
     return df 
 
   def make_filtered_views(self, dist_type='cosine', run_clustering=True, \
-    dendro=True, views=['filter_row_sum','N_row_sum'], calc_col_cats=True):
+    dendro=True, views=['filter_row_sum','N_row_sum'], calc_col_cats=True, \
+    linkage_type='average'):
 
     from copy import deepcopy
     '''
@@ -1198,7 +1197,8 @@ class Network(object):
     self.df_to_dat(df)
 
     # cluster initial view 
-    self.cluster_row_and_col(dist_type=dist_type,run_clustering=run_clustering, dendro=dendro)
+    self.cluster_row_and_col(dist_type=dist_type, linkage_type=linkage_type, \
+      run_clustering=run_clustering, dendro=dendro)
 
     # set up views 
     all_views = []

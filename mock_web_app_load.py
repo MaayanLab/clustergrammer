@@ -25,8 +25,17 @@ def main():
 
   # filter rows 
   views = ['filter_row_sum','N_row_sum']
-  dist_type = 'cos'
-  net.make_filtered_views(dist_type=dist_type, views=views, calc_col_cats=True)
+
+  # distance metric 
+  dist_type = 'cosine'
+
+  # linkage type 
+  linkage_type = 'average'
+
+
+  net.make_filtered_views(dist_type=dist_type, views=views, calc_col_cats=True,\
+  linkage_type=linkage_type)
+
   net.write_json_to_file('viz', 'json/mult_view.json', 'no-indent')
 
   elapsed_time = time.time() - start_time
