@@ -145,9 +145,9 @@ def enrichr_clust_from_response(response_list):
   num_thresh = 1
   dendro=False
 
-  # only keep the top 20 terms 
-  if len(enr)>15:
-    enr = enr[0:15]
+  # only keep the top 10 terms 
+  if len(enr)>10:
+    enr = enr[0:10]
 
   # genes 
   row_node_names = []
@@ -192,8 +192,14 @@ def enrichr_clust_from_response(response_list):
   views = ['N_row_sum']
   net.make_filtered_views(dist_type='cosine', views=views, dendro=False)
 
-  # keep the original column order in rank 
+  # order columns by enrichment score
   for inst_col in net.viz['col_nodes']:
     inst_col['rank'] = inst_col['ini']
+
+  for inst_view in net.viz['views']:
+    for inst_col in inst_view['nodes']['col_nodes']:
+      inst_col['rank'] = inst_col['ini']
+      inst_col['value'] = 0.3
+
 
   return net  

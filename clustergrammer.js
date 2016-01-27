@@ -3554,8 +3554,8 @@ function draw_grid_lines(row_nodes, col_nodes) {
           return inst_color;
         });
 
-      // append column value bars
-      if (Utils.has( params.network_data.col_nodes[0], 'value')) {
+      // // append column value bars
+      // if (Utils.has( params.network_data.col_nodes[0], 'value')) {
 
         svg_group.selectAll('.col_bars')
           .attr('width', function(d) {
@@ -3567,7 +3567,7 @@ function draw_grid_lines(row_nodes, col_nodes) {
           })
           // rotate labels - reduce width if rotating
           .attr('height', params.matrix.rect_width * 0.66);
-      }
+      // }
 
       if (params.labels.show_categories){
         // change the size of the highlighting rects
@@ -6722,7 +6722,7 @@ function Zoom(params){
           }
           return inst_value;
         })
-        }
+      }
 
       if (Utils.has( params.network_data.row_nodes[0], 'value')) {
 
@@ -6905,15 +6905,16 @@ function Zoom(params){
         d3.select(this)
           .select('rect')
           .attr('width', bbox.width * 1.1)
-          .attr('height', 0.67*params.matrix.rect_width)
-          .style('fill', function(d){
-            var inst_color = 'white';
-            if (params.labels.show_categories){
-              inst_color = params.labels.class_colors.col[d.cl];
-            }
-            return inst_color 
-          })
-          .style('opacity', 0.25);
+          .attr('height', 0.67*params.matrix.rect_width);
+          // .style('fill', function(d){
+          //   var inst_color = 'white';
+          //   if (params.labels.show_categories){
+          //     inst_color = params.labels.class_colors.col[d.cl];
+          //   }
+          //   return inst_color 
+          // })
+          // .style('opacity', 0.25);
+
       });
 
   }

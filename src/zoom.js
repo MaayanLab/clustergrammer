@@ -317,7 +317,7 @@ function Zoom(params){
           }
           return inst_value;
         })
-        }
+      }
 
       if (Utils.has( params.network_data.row_nodes[0], 'value')) {
 
@@ -500,15 +500,16 @@ function Zoom(params){
         d3.select(this)
           .select('rect')
           .attr('width', bbox.width * 1.1)
-          .attr('height', 0.67*params.matrix.rect_width)
-          .style('fill', function(d){
-            var inst_color = 'white';
-            if (params.labels.show_categories){
-              inst_color = params.labels.class_colors.col[d.cl];
-            }
-            return inst_color 
-          })
-          .style('opacity', 0.25);
+          .attr('height', 0.67*params.matrix.rect_width);
+          // .style('fill', function(d){
+          //   var inst_color = 'white';
+          //   if (params.labels.show_categories){
+          //     inst_color = params.labels.class_colors.col[d.cl];
+          //   }
+          //   return inst_color 
+          // })
+          // .style('opacity', 0.25);
+
       });
 
   }

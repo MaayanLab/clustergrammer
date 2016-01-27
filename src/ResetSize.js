@@ -648,8 +648,8 @@
           return inst_color;
         });
 
-      // append column value bars
-      if (Utils.has( params.network_data.col_nodes[0], 'value')) {
+      // // append column value bars
+      // if (Utils.has( params.network_data.col_nodes[0], 'value')) {
 
         svg_group.selectAll('.col_bars')
           .attr('width', function(d) {
@@ -661,7 +661,7 @@
           })
           // rotate labels - reduce width if rotating
           .attr('height', params.matrix.rect_width * 0.66);
-      }
+      // }
 
       if (params.labels.show_categories){
         // change the size of the highlighting rects
