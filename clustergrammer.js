@@ -4343,7 +4343,6 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
         });      
     }
 
-
     // append column value bars
     if (Utils.has( params.network_data.col_nodes[0], 'value')) {
 
@@ -4359,7 +4358,6 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
         // rotate labels - reduce width if rotating
         .attr('height', params.matrix.x_scale.rangeBand() * 0.66);
     }
-
 
   if (params.labels.show_categories){
     // change the size of the highlighting rects
@@ -5578,7 +5576,7 @@ function change_network_view(params, orig_network_data, change_view){
 
   // get the single view that will be used to update the network from 
   // the array of filtered views 
-  if (filt_views.length==1){
+  if ( params.show_categories === false ){
     console.log('\nview defined by filter only, no category\n')
     var inst_view = filt_views[0];
   } 

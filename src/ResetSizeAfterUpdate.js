@@ -589,7 +589,6 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
         });      
     }
 
-
     // append column value bars
     if (Utils.has( params.network_data.col_nodes[0], 'value')) {
 
@@ -605,7 +604,6 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
         // rotate labels - reduce width if rotating
         .attr('height', params.matrix.x_scale.rangeBand() * 0.66);
     }
-
 
   if (params.labels.show_categories){
     // change the size of the highlighting rects

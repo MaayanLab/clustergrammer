@@ -407,13 +407,16 @@ function make_clust(inst_network){
               // get value 
               var inst_index = $( '#slider_'+filter_type ).slider( "value" ); 
 
+              console.log(N_dict)
+
               var inst_top = N_dict[inst_index];
 
               console.log(inst_index)
-              console.log(  )
 
               change_view = {'N_row_sum':inst_top};
               filter_name = 'N_row_sum';
+
+              console.log(change_view)
 
               d3.select('#main_svg').style('opacity',0.70);
 
