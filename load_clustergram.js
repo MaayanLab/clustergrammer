@@ -176,7 +176,7 @@ function make_clust(inst_network){
         // // play demo   
         // ini_play_button(cgm);
 
-        set_up_filters('filter_row_sum');
+        // set_up_filters('filter_row_sum');
         // set_up_filters('filter_row_value');
         // set_up_filters('filter_row_num');
 
@@ -419,7 +419,7 @@ function make_clust(inst_network){
 
               d3.select('#'+filter_type).text('Top rows: '+inst_top+' rows'); 
 
-              $('.slider_filter').slider('disable');
+              // $('.slider_filter').slider('disable');
               d3.selectAll('.btn').attr('disabled',true);
               d3.selectAll('.category_section')
                 .on('click', '')
@@ -432,7 +432,7 @@ function make_clust(inst_network){
               ini_sliders();
 
               function enable_slider(){
-                $('.slider_filter').slider('enable');  
+                // $('.slider_filter').slider('enable');  
                 d3.selectAll('.btn').attr('disabled',null);
                 d3.selectAll('.category_section')
                   .on('click', category_key_click)

@@ -46,9 +46,12 @@ def main():
   # get response_list 
   response_list = resp_json[only_key]
 
-  print(response_list)
-
   net = enr_fun.enrichr_clust_from_response(response_list)
+
+  views = net.viz['views']
+
+  for inst_view in views:
+    print(inst_view.keys())
 
   net.write_json_to_file('viz','json/enr_clust_example.json')  
 
