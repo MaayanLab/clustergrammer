@@ -555,27 +555,27 @@ function Labels(params){
       .attr('height', 0.67*params.matrix.rect_width)
       .style('opacity', 0);
 
-    // only run this if there are col categories 
-    if (params.labels.show_categories){
-      // change the size of the highlighting rects
-      col_label_click
-        .each(function(d) {
-          var bbox = d3.select(this)
-            .select('text')[0][0]
-            .getBBox();
+    // // only run this if there are col categories 
+    // if (params.labels.show_categories){
+    //   // change the size of the highlighting rects
+    //   col_label_click
+    //     .each(function(d) {
+    //       var bbox = d3.select(this)
+    //         .select('text')[0][0]
+    //         .getBBox();
 
-          d3.select(this)
-            .select('rect')
-            .attr('width', bbox.width * 1.1)
-            .attr('height', 0.67*params.matrix.rect_width)
-            .style('fill', function(d){
-              var inst_color = 'white';
-              inst_color = params.labels.class_colors.col[d.cl];
-              return inst_color 
-            })
-            .style('opacity', 0.30);
-        });
-    }
+    //       d3.select(this)
+    //         .select('rect')
+    //         .attr('width', bbox.width * 1.1)
+    //         .attr('height', 0.67*params.matrix.rect_width)
+    //         .style('fill', function(d){
+    //           var inst_color = 'white';
+    //           inst_color = params.labels.class_colors.col[d.cl];
+    //           return inst_color 
+    //         })
+    //         .style('opacity', 0.30);
+    //     });
+    // }
 
     // add triangle under rotated labels
     col_label_click
