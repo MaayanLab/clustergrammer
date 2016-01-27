@@ -131,15 +131,57 @@ def enrichr_clust_from_response(response_list):
   from clustergrammer import Network
   import scipy
   import json 
+  import pandas as pd 
+  import math 
 
   print('\nenrichr_clust_from_response\n')
 
   ini_enr = transfer_to_enr_dict( response_list )
 
   enr = []
+  dict_score = {}
+  scores = {}
+  score_types = ['combined_score','pval','zscore']
+
+  for inst_score_type in score_types:
+    scores[inst_score_type] = pd.Series()
+
   for inst_enr in ini_enr:
     if inst_enr['combined_score'] > 0:
+
+      # make a dictionary of the terms and their scores 
+      dict_score[inst_enr['name']] = {}
+      dict_score[inst_enr['name']]['combined_score'] = inst_enr['combined_score']
+      dict_score[inst_enr['name']]['pval'] = inst_enr['pval']
+      dict_score[inst_enr['name']]['zscore'] = inst_enr['zscore']
+
+      # make series of enriched terms with scores 
+      for inst_score_type in score_types:
+
+        if inst_score_type == 'combined_score':
+          scores[inst_score_type][inst_enr['name']] = inst_enr[inst_score_type]
+        if inst_score_type == 'pval':
+          scores[inst_score_type][inst_enr['name']] = -math.log(inst_enr[inst_score_type])
+        if inst_score_type == 'zscore':
+          scores[inst_score_type][inst_enr['name']] = -inst_enr[inst_score_type]
+
+
+      # keep enrichement values 
       enr.append(inst_enr)
+
+  for inst_score_type in score_types:
+    scores[inst_score_type] = scores[inst_score_type]/scores[inst_score_type].max()
+    scores[inst_score_type].sort(ascending=False)
+
+  print('\n\ncombined score ')
+  # normalize the scores so they are all on the same bar scale 
+  print(scores['combined_score'])
+
+  print('\n\npval')
+  print(scores['pval'])
+
+  print('\n\nzscore')
+  print(scores['zscore'])
 
   threshold = 0.001 
   num_thresh = 1
@@ -199,7 +241,10 @@ def enrichr_clust_from_response(response_list):
   for inst_view in net.viz['views']:
     for inst_col in inst_view['nodes']['col_nodes']:
       inst_col['rank'] = inst_col['ini']
-      inst_col['value'] = 0.3
+
+      inst_name = inst_col['name']
+
+      inst_col['value'] = dict_score[inst_name]['combined_score']
 
 
   return net  

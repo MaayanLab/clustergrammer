@@ -1182,8 +1182,6 @@ class Network(object):
 
     print('dist_type '+str(dist_type))
 
-    print(views)
-
     # get dataframe dictionary of network and remove rows/cols with all zero values 
     df = self.dat_to_df()
 
@@ -1227,9 +1225,6 @@ class Network(object):
 
       if 'filter_row_sum' in views:
         all_views = self.add_pct_top_views( send_df, all_views, dist_type=dist_type, current_col_cat=inst_col_cat )
-
-    for inst_view in all_views:
-      print(inst_view.keys())
 
     # add views to viz 
     self.viz['views'] = all_views
@@ -1380,8 +1375,6 @@ class Network(object):
 
     for inst_keep in keep_top:
 
-      print(inst_keep)
-
       # initialize df
       tmp_df = deepcopy(df)
 
@@ -1458,9 +1451,6 @@ class Network(object):
           all_views.append(inst_view)
         except:
           print('\t*** did not cluster N filtered view') 
-
-    print('there are N views')
-    print(len(all_views))
 
     return all_views
 

@@ -50,11 +50,6 @@ def main():
 
   views = net.viz['views']
 
-  for inst_view in views:
-    print(inst_view.keys())
-
   net.write_json_to_file('viz','json/enr_clust_example.json')  
-
-
 
 main()
