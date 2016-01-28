@@ -3,8 +3,10 @@ def main():
   import json
   import requests
 
-  gmt = 'ChEA_2015'
+  gmt = 'KEA_2015'
   userListId = 939279
+  # userListId = 939379
+  # userListId = 100
 
   # define the get url 
   get_url = 'http://amp.pharm.mssm.edu/Enrichr/enrich'

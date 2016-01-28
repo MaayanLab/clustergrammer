@@ -308,8 +308,8 @@ function Zoom(params){
       if (Utils.has( params.network_data.col_nodes[0], 'value')) {
 
         d3.selectAll('.col_bars')
-          .transition()
-          .duration(search_duration)
+          // .transition()
+          // .duration(search_duration)
           .attr('width', function(d) {
           var inst_value = 0;
           if (d.value > 0){

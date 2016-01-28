@@ -127,8 +127,8 @@ function make_clust(inst_network){
         var arguments_obj = {
           'network_data': network_data,
           'svg_div_id': 'svg_div',
-          'row_label':'Row-Data-Name',
-          'col_label':'Column-Data-Name',
+          'row_label':'Input Genes',
+          'col_label':'Enriched Terms',
           'outer_margins': outer_margins,
           'outer_margins_expand': outer_margins_expand,
           // 'outline_colors':['black','yellow'],
@@ -156,7 +156,7 @@ function make_clust(inst_network){
           // 'order':'rank'
           // 'col_order':'rank',
           // 'row_order':'clust'
-          // 'ini_view':{'filter_row_sum':0.9}
+          // 'ini_view':{'N_row_sum':'55'}
           // 'current_col_cat':'category-one'
         };
 
@@ -632,12 +632,12 @@ function make_clust(inst_network){
 
 
 // choose example here
-// make_clust('mult_view.json');
+make_clust('mult_view.json');
 // make_clust('vect_post_example.json');
 // make_clust('large_example.json');
 // make_clust('default_example.json');
 // make_clust('ccle.json');
-make_clust('enr_clust_example.json');
+// make_clust('enr_clust_example.json');
 // make_clust('updn_example.json');
 // make_clust('narrow_example.json');
 // make_clust('narrow_long_name.json');

@@ -18,7 +18,10 @@ function VizParams(config){
 
     // run initial filtering if necessary 
     if (_.isNull(params.ini_view) === false){
-      params.network_data = change_network_view(params.network_data, params.ini_view);
+
+      console.log(params.ini_view)
+      params.network_data = change_network_view( params, params.network_data, params.ini_view);
+
       // remove ini_view 
       params.ini_view = null;
     }
