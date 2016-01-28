@@ -589,14 +589,22 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
         });      
     }
 
+    console.log('reset size after updata\n----------------------------')
+    _.each(col_nodes, function(d){console.log(String(d.name)+' '+String(d.value))})
+
     // append column value bars
     if (Utils.has( params.network_data.col_nodes[0], 'value')) {
 
+      console.log('resizing col bars')
+
       svg_group.selectAll('.col_bars')
+        .data(col_nodes, function(d){return d.name;})
         .transition().delay(delays.update).duration(duration)
         .attr('width', function(d) {
           var inst_value = 0;
           if (d.value > 0){
+
+            console.log( String(d.name) +' '+ String(d.value) +'\n\n')
             inst_value = params.labels.bar_scale_col(d.value);
           }
           return inst_value;

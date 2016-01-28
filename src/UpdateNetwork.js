@@ -613,9 +613,6 @@ function enter_exit_update(params, network_data, reorder, delays){
     // need to add split tiles to existing rows 
     ////////////////////////////////////////////////////
 
-
-
-
   }
 
 
@@ -646,7 +643,6 @@ function enter_exit_update(params, network_data, reorder, delays){
     .style('opacity',0)
     .remove();      
 
-  // remove row triangles 
   d3.selectAll('.col_label_text')
     .data(col_nodes, function(d){return d.name;})
     .exit()

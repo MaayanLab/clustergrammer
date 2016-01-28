@@ -77,7 +77,19 @@ function change_network_view(params, orig_network_data, change_view){
   // the array of filtered views 
   if ( params.show_categories === false ){
     console.log('\nview defined by filter only, no category\n')
+    console.log('there are '+String(filt_views.length)+' views with this N_row_sum')
     var inst_view = filt_views[0];
+
+    if (_.has(change_view,'enr_score_type')){
+
+      inst_view = _.filter(filt_views, function(d){
+        return d.enr_score_type == change_view.enr_score_type;
+      })[0];
+
+      console.log('\n\n final inst_view ');
+      console.log(inst_view);
+    }
+
   } 
 
   if (params.show_categories){

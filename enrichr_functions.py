@@ -174,6 +174,15 @@ def enrichr_clust_from_response(response_list):
   top_terms['pval'] = scores['pval'].index.tolist()[:10]
   top_terms['zscore'] = scores['zscore'].index.tolist()[:10]
 
+  print('\ncombined_score')
+  print(scores['combined_score'])
+
+  print('\npval')
+  print(scores['pval'])
+
+  print('\nzscore')
+  print(scores['zscore'])
+
   # gather the terms that should be kept - they are at the top of the score list
   keep_terms = top_terms['combined_score'] + \
   top_terms['pval'] + top_terms['zscore']
@@ -187,8 +196,8 @@ def enrichr_clust_from_response(response_list):
       keep_enr.append(inst_enr)
 
 
-  # fill in matrix 
-  ##################
+  # fill in full matrix 
+  #######################
 
   # genes 
   row_node_names = []
@@ -212,6 +221,7 @@ def enrichr_clust_from_response(response_list):
     inst_term = inst_enr['name']
     col_index = col_node_names.index(inst_term)
 
+    # use combined score for full matrix - will not be seen in viz
     tmp_score = scores['combined_score'][inst_term]
     net.dat['node_info']['col']['value'].append(tmp_score)
 
@@ -235,10 +245,11 @@ def enrichr_clust_from_response(response_list):
     inst_df = deepcopy(df)
     inst_net = deepcopy(Network())
 
-    inst_df['mat'] = inst_df['mat'][top_terms['combined_score']]
+    inst_df['mat'] = inst_df['mat'][top_terms[inst_score_type]]
 
     print('\n\n'+inst_score_type)
     print(inst_df['mat'].shape)
+    print(top_terms[inst_score_type])
 
     # load back into net 
     inst_net.df_to_dat(inst_df)
@@ -252,10 +263,13 @@ def enrichr_clust_from_response(response_list):
     # add score_type to views 
     for inst_view in inst_views:
       inst_view['enr_score_type'] = inst_score_type
-      
+
       # add values to col_nodes and order according to rank 
       for inst_col in inst_view['nodes']['col_nodes']:
-        inst_col['rank'] = inst_col['ini']
+
+        inst_col['rank'] = len(top_terms[inst_score_type]) - \
+        top_terms[inst_score_type].index(inst_col['name'])
+        
         inst_name = inst_col['name']
         inst_col['value'] = scores[inst_score_type][inst_name]
 

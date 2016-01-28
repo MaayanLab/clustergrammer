@@ -1529,6 +1529,11 @@ function VizParams(config){
 
     // the enrichment bar should be 3/4ths of the height of the column labels
     var enr_max = Math.abs(_.max( col_nodes, function(d) { return Math.abs(d.value) } ).value) ;
+
+    console.log('\n\nenr_max')
+    console.log(enr_max)
+    console.log('\n\n')
+    
     params.labels.bar_scale_col = d3.scale
       .linear()
       .domain([0, enr_max])
@@ -2405,22 +2410,26 @@ function Labels(params){
 
     // append column value bars
     if (Utils.has( params.network_data.col_nodes[0], 'value')) {
+
+      d3.selectAll('col_bars').remove();
+
       col_label_click
-      .append('rect')
-      .attr('class', 'col_bars')
-      .attr('width', function(d) {
-        var inst_value = 0;
-        if (d.value > 0){
-          inst_value = params.labels.bar_scale_col(d.value);
-        }
-        return inst_value;
-      })
-      // rotate labels - reduce width if rotating
-      .attr('height', params.matrix.x_scale.rangeBand() * 0.66)
-      .style('fill', function(d) {
-        return d.value > 0 ? params.matrix.bar_colors[0] : params.matrix.bar_colors[1];
-      })
-      .attr('opacity', 0.4);
+        .append('rect')
+        .attr('class', 'col_bars')
+        .attr('width', function(d) {
+          var inst_value = 0;
+          if (d.value > 0){
+            inst_value = params.labels.bar_scale_col(d.value);
+          }
+          return inst_value;
+        })
+        // rotate labels - reduce width if rotating
+        .attr('height', params.matrix.x_scale.rangeBand() * 0.66)
+        .style('fill', function(d) {
+          return d.value > 0 ? params.matrix.bar_colors[0] : params.matrix.bar_colors[1];
+        })
+        .attr('opacity', 0.4);
+
     }
 
     // add column label
@@ -4346,14 +4355,22 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
         });      
     }
 
+    console.log('reset size after updata\n----------------------------')
+    _.each(col_nodes, function(d){console.log(String(d.name)+' '+String(d.value))})
+
     // append column value bars
     if (Utils.has( params.network_data.col_nodes[0], 'value')) {
 
+      console.log('resizing col bars')
+
       svg_group.selectAll('.col_bars')
+        .data(col_nodes, function(d){return d.name;})
         .transition().delay(delays.update).duration(duration)
         .attr('width', function(d) {
           var inst_value = 0;
           if (d.value > 0){
+
+            console.log( String(d.name) +' '+ String(d.value) +'\n\n')
             inst_value = params.labels.bar_scale_col(d.value);
           }
           return inst_value;
@@ -5173,9 +5190,6 @@ function enter_exit_update(params, network_data, reorder, delays){
     // need to add split tiles to existing rows 
     ////////////////////////////////////////////////////
 
-
-
-
   }
 
 
@@ -5206,7 +5220,6 @@ function enter_exit_update(params, network_data, reorder, delays){
     .style('opacity',0)
     .remove();      
 
-  // remove row triangles 
   d3.selectAll('.col_label_text')
     .data(col_nodes, function(d){return d.name;})
     .exit()
@@ -5588,7 +5601,19 @@ function change_network_view(params, orig_network_data, change_view){
   // the array of filtered views 
   if ( params.show_categories === false ){
     console.log('\nview defined by filter only, no category\n')
+    console.log('there are '+String(filt_views.length)+' views with this N_row_sum')
     var inst_view = filt_views[0];
+
+    if (_.has(change_view,'enr_score_type')){
+
+      inst_view = _.filter(filt_views, function(d){
+        return d.enr_score_type == change_view.enr_score_type;
+      })[0];
+
+      console.log('\n\n final inst_view ');
+      console.log(inst_view);
+    }
+
   } 
 
   if (params.show_categories){
@@ -6908,28 +6933,28 @@ function Zoom(params){
       d3.selectAll('.col_label_click').each(function() { trim_text(this, 'col'); });
     }
 
-    // constrain column text highlight bars 
-    // change the size of the highlighting rects
-    d3.selectAll('.col_label_click')
-      .each(function(d) {
-        var bbox = d3.select(this)
-          .select('text')[0][0]
-          .getBBox();
+    // // constrain column text highlight bars 
+    // // change the size of the highlighting rects
+    // d3.selectAll('.col_label_click')
+    //   .each(function(d) {
+    //     var bbox = d3.select(this)
+    //       .select('text')[0][0]
+    //       .getBBox();
 
-        d3.select(this)
-          .select('rect')
-          .attr('width', bbox.width * 1.1)
-          .attr('height', 0.67*params.matrix.rect_width);
-          // .style('fill', function(d){
-          //   var inst_color = 'white';
-          //   if (params.labels.show_categories){
-          //     inst_color = params.labels.class_colors.col[d.cl];
-          //   }
-          //   return inst_color 
-          // })
-          // .style('opacity', 0.25);
+    //     d3.select(this)
+    //       .select('rect')
+    //       .attr('width', bbox.width * 1.1)
+    //       .attr('height', 0.67*params.matrix.rect_width);
+    //       // .style('fill', function(d){
+    //       //   var inst_color = 'white';
+    //       //   if (params.labels.show_categories){
+    //       //     inst_color = params.labels.class_colors.col[d.cl];
+    //       //   }
+    //       //   return inst_color 
+    //       // })
+    //       // .style('opacity', 0.25);
 
-      });
+    //   });
 
   }
 

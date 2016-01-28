@@ -416,22 +416,26 @@ function Labels(params){
 
     // append column value bars
     if (Utils.has( params.network_data.col_nodes[0], 'value')) {
+
+      d3.selectAll('col_bars').remove();
+
       col_label_click
-      .append('rect')
-      .attr('class', 'col_bars')
-      .attr('width', function(d) {
-        var inst_value = 0;
-        if (d.value > 0){
-          inst_value = params.labels.bar_scale_col(d.value);
-        }
-        return inst_value;
-      })
-      // rotate labels - reduce width if rotating
-      .attr('height', params.matrix.x_scale.rangeBand() * 0.66)
-      .style('fill', function(d) {
-        return d.value > 0 ? params.matrix.bar_colors[0] : params.matrix.bar_colors[1];
-      })
-      .attr('opacity', 0.4);
+        .append('rect')
+        .attr('class', 'col_bars')
+        .attr('width', function(d) {
+          var inst_value = 0;
+          if (d.value > 0){
+            inst_value = params.labels.bar_scale_col(d.value);
+          }
+          return inst_value;
+        })
+        // rotate labels - reduce width if rotating
+        .attr('height', params.matrix.x_scale.rangeBand() * 0.66)
+        .style('fill', function(d) {
+          return d.value > 0 ? params.matrix.bar_colors[0] : params.matrix.bar_colors[1];
+        })
+        .attr('opacity', 0.4);
+
     }
 
     // add column label
