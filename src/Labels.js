@@ -15,14 +15,14 @@ function Labels(params){
     var row_nodes_names = params.network_data.row_nodes_names;
 
     // row container holds all row text and row visualizations (triangles rects)
-    if ( d3.select('#row_container').empty() ){
-      var row_container = d3.select('#main_svg')
+    if ( d3.select(params.viz.vis_svg + ' #row_container').empty() ){
+      var row_container = d3.select(params.viz.viz_svg)
         .append('g')
         .attr('id','row_container')
         .attr('transform', 'translate(' + params.norm_label.margin.left + ',' +
         params.viz.clust.margin.top + ')');
     } else {
-      var row_container = d3.select('id','row_container')
+      var row_container = d3.select(params.viz.viz_svg).select('id','row_container')
         .attr('transform', 'translate(' + params.norm_label.margin.left + ',' +
         params.viz.clust.margin.top + ')');
     }
@@ -79,8 +79,7 @@ function Labels(params){
           return "<span>" + inst_name + "</span>";
         });
 
-      d3.select('#'+params.viz.svg_div_id)
-        .select('svg')
+      d3.select(params.viz.viz_wrapper)
         .select('#row_container')
         .call(tip);
         
@@ -342,7 +341,7 @@ function Labels(params){
     // make container to pre-position zoomable elements
     if (d3.select('#col_container').empty()){
 
-      var container_all_col = d3.select('#main_svg')
+      var container_all_col = d3.select(params.viz.viz_svg)
         .append('g')
         .attr('id','col_container')
         .attr('transform', 'translate(' + params.viz.clust.margin.left + ',' +
@@ -474,7 +473,7 @@ function Labels(params){
           return "<span>" + inst_name + "</span>";
         });
 
-      d3.select('#'+params.viz.svg_div_id)
+      d3.select(params.viz.viz_wrapper)
         .select('svg')
         .select('#col_container')
         .call(tip);

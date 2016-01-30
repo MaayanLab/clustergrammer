@@ -125,8 +125,8 @@ function make_clust(inst_network){
 
         // define arguments object
         var arguments_obj = {
+          root: '#container-id-1',
           'network_data': network_data,
-          'svg_div_id': 'svg_div',
           'row_label':'Input Genes',
           'col_label':'Enriched Terms',
           'outer_margins': outer_margins,

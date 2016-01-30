@@ -23,10 +23,6 @@ function Config(args) {
     // Default domain is set to 0, which means that the domain will be set automatically
     input_domain: 0,
     opacity_scale: 'linear',
-
-    // Viz Options
-    // This should be a DOM element, not a selector.
-    svg_div_id: 'svg_id',
     do_zoom: true,
     background_color: '#FFFFFF',
     super_border_color: '#F5F5F5',
@@ -96,7 +92,7 @@ function Config(args) {
       d.name = d.name.replace(/_/g, ' ');
     });
 
-  })
+  });
 
   var col_nodes = config.network_data.col_nodes;
   var row_nodes = config.network_data.row_nodes;

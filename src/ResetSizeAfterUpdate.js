@@ -46,8 +46,8 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
 
   // get height and width from parent div
   params.viz.svg_dim = {};
-  params.viz.svg_dim.width  = Number(d3.select('#' + params.viz.svg_div_id).style('width').replace('px', ''));
-  params.viz.svg_dim.height = Number(d3.select('#' + params.viz.svg_div_id).style('height').replace('px', ''));
+  params.viz.svg_dim.width  = Number(d3.select(params.viz.viz_wrapper).style('width').replace('px', ''));
+  params.viz.svg_dim.height = Number(d3.select(params.viz.viz_wrapper).style('height').replace('px', ''));
 
   // reduce width by row/col labels and by grey_border width (reduce width by less since this is less aparent with slanted col labels)
   var ini_clust_width = params.viz.svg_dim.width - (params.labels.super_label_width +
@@ -130,7 +130,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
 
   // resize the svg
   ///////////////////////
-  var svg_group = d3.select('#' + params.viz.svg_div_id)
+  var svg_group = d3.select(params.viz.viz_wrapper)
     .select('svg'); 
 
   svg_group.select('#grey_background')

@@ -14,7 +14,7 @@ var config = Config(args);
 var config_copy = jQuery.extend(true, {}, config);
 
 // make visualization parameters using configuration object 
-var params = VizParams(config_copy);
+var params = Params(config_copy);
 
 // make visualization using parameters  
 var viz = Viz(params);

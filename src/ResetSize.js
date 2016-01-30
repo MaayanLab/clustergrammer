@@ -19,10 +19,11 @@
     run_reset_visualization_size(cont_dim.width, cont_dim.height, outer_margins.left, outer_margins.top, params);
 
     // get dimensions of the main_svg
+    // TODO: Change dim.main_svg name to viz_svg?
     var dim = {};
     dim.main_svg = {};
-    dim.main_svg.w = d3.select('#main_svg').style('width').replace('px','');
-    dim.main_svg.h = d3.select('#main_svg').style('height').replace('px','');
+    dim.main_svg.w = d3.select(params.viz.viz_svg).style('width').replace('px','');
+    dim.main_svg.h = d3.select(params.viz.viz_svg).style('height').replace('px','');
     
     // reposition the play button 
     d3.select('#play_button')
@@ -80,7 +81,7 @@
     params.zoom.translate([pan_dx, net_y_offset]);
 
     // size the svg container div - svg_div
-    d3.select('#' + params.viz.svg_div_id)
+    d3.select(params.viz.viz_wrapper)
         .style('margin-left', set_margin_left + 'px')
         .style('margin-top',  set_margin_top  + 'px')
         .style('width',  set_clust_width  + 'px')
@@ -92,8 +93,8 @@
 
     // get height and width from parent div
     params.viz.svg_dim = {};
-    params.viz.svg_dim.width  = Number(d3.select('#' + params.viz.svg_div_id).style('width').replace('px', ''));
-    params.viz.svg_dim.height = Number(d3.select('#' + params.viz.svg_div_id).style('height').replace('px', ''));
+    params.viz.svg_dim.width  = Number(d3.select(params.viz.viz_wrapper).style('width').replace('px', ''));
+    params.viz.svg_dim.height = Number(d3.select(params.viz.viz_wrapper).style('height').replace('px', ''));
 
     // reduce width by row/col labels and by grey_border width (reduce width by less since this is less aparent with slanted col labels)
     var ini_clust_width = params.viz.svg_dim.width - (params.labels.super_label_width +
@@ -159,9 +160,7 @@
 
     // resize the svg
     ///////////////////////
-    var svg_group = d3.select('#' + params.viz.svg_div_id)
-      .select('svg')
-      .attr('id', 'main_svg')
+    var svg_group = d3.select(params.viz.viz_svg)
       .attr('width', params.viz.svg_dim.width)
       .attr('height', params.viz.svg_dim.height);
 
@@ -844,5 +843,5 @@
         [ params.viz.clust.margin.left, params.viz.clust.margin.top]
     );
 
-    d3.select('#main_svg').style('opacity',1);
+    d3.select(params.viz.viz_svg).style('opacity',1);
   }

@@ -37,7 +37,7 @@ function Spillover( params, container_all_col ){
     // top corner rect
     ///////////////////////////////
     // white rect to cover excess labels
-    d3.select('#main_svg')
+    d3.select(params.viz.viz_svg)
       .append('rect')
       .attr('fill', params.viz.background_color) //!! prog_colors
       .attr('width', params.viz.clust.margin.left)
@@ -45,7 +45,7 @@ function Spillover( params, container_all_col ){
       .attr('id', 'top_left_white');
 
     // hide spillover from right
-    d3.select('#main_svg')
+    d3.select(params.viz.viz_svg)
       .append('rect')
       .attr('fill', params.viz.background_color) //!! prog_colors
       .attr('width', '300px')
@@ -61,7 +61,7 @@ function Spillover( params, container_all_col ){
 
     // white border bottom - prevent clustergram from hitting border
     ///////////////////////////////////////////////////////////////////
-    d3.select('#main_svg')
+    d3.select(params.viz.viz_svg)
       .append('rect')
       .attr('id','bottom_spillover')
       .attr('fill', params.viz.background_color) //!! prog_colors

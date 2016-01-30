@@ -520,7 +520,7 @@ function Zoom(params){
     d3.selectAll('svg').on('dblclick.zoom', null);
 
     // double click to reset zoom - add transition
-    d3.select('#main_svg')
+    d3.select(params.viz.viz_svg)
       .on('dblclick', function() {
         // programmatic zoom reset
         two_translate_zoom(params, 0, 0, 1);

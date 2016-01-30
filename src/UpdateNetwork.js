@@ -51,7 +51,7 @@ function update_network(change_view){
   new_config.current_col_cat = this.params.current_col_cat;
 
   // make new params 
-  var params = VizParams(new_config);
+  var params = Params(new_config);
   var delays = define_enter_exit_delays(old_params, params);
 
   // console.log('new params: '+params.current_col_cat)
@@ -91,7 +91,7 @@ function update_network(change_view){
   params.initialize_resizing(params);
 
   // necessary to have zoom behavior updated on updating clustergram 
-  d3.select('#main_svg').call(params.zoom);
+  d3.select(params.viz.viz_svg).call(params.zoom);
 
   // initialize the double click behavior 
   var zoom = Zoom(params);
@@ -148,11 +148,11 @@ function define_enter_exit_delays(old_params, params){
   }
 
   // reduce opacity during update
-  d3.select('#main_svg')
+  d3.select(params.viz.viz_svg)
     .style('opacity',0.70);
 
   function finish_update(){
-    d3.select('#main_svg')
+    d3.select(params.viz.viz_svg)
       .transition().duration(250)
       .style('opacity',1.0);
   }
