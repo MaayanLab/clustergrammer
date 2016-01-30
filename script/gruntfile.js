@@ -21,6 +21,7 @@ module.exports = function (grunt) {
     '../src/Params.js',
     '../src/FilterNetwork.js',
     '../src/Viz.js',
+    '../src/Sidebar.js',
     '../src/Reorder.js',
     '../src/zoom.js',
     '../src/main.js',

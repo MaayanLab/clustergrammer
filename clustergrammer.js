@@ -1301,6 +1301,9 @@ function Params(config) {
     params.viz.viz_wrapper = config.root + ' .viz-wrapper';
     params.viz.viz_svg = params.viz.viz_wrapper + ' .viz_svg';
 
+    params.sidebar = {};
+    params.sidebar.sidebar_wrapper = config.root + ' .sidebar-wrapper';
+
     params.viz.do_zoom = config.do_zoom;
     params.viz.resize = config.resize;
     // background colors
@@ -1906,7 +1909,7 @@ function Params(config) {
 
       // size the svg container div - svg_div
       d3.select(params.viz.viz_wrapper)
-        .style('margin-left', outer_margins.left + 'px')
+        .style('float', 'right')
         .style('margin-top', outer_margins.top + 'px')
         .style('width', cont_dim.width + 'px')
         .style('height', cont_dim.height + 'px');
@@ -1915,7 +1918,7 @@ function Params(config) {
 
       // size the svg container div - svg_div
       d3.select(params.viz.viz_wrapper)
-        .style('margin-left', outer_margins.left + 'px')
+        .style('float', 'right')
         .style('margin-top', outer_margins.top + 'px');
     }
   }
@@ -2992,7 +2995,7 @@ function draw_grid_lines(row_nodes, col_nodes) {
 
     // size the svg container div - svg_div
     d3.select(params.viz.viz_wrapper)
-        .style('margin-left', set_margin_left + 'px')
+        .style('float', 'right')
         .style('margin-top',  set_margin_top  + 'px')
         .style('width',  set_clust_width  + 'px')
         .style('height', set_clust_height + 'px');
@@ -5910,6 +5913,44 @@ function Viz(params) {
   }
 }
 
+/* Represents sidebar with controls.
+ */
+function Sidebar(viz, params) {
+
+  var row_order_controls = '' +
+    '<div class="viz_medium_text">Row Order</div>' +
+    ' <div id="toggle_col_order" class="btn-group" data-toggle="buttons">' +
+    '   <label class="btn btn-primary active order_name" id="clust_row">' +
+    '     <input type="radio" name="options" autocomplete="off" checked > Cluster' +
+    '   </label>' +
+    '   <label class="btn btn-primary order_name"  id="rank_row">' +
+    '     <input type="radio" name="options" autocomplete="off"> Rank' +
+    '   </label>' +
+    '</div>';
+
+  var parts = params.sidebar.sidebar_wrapper.split(' ');
+  var sidebar_class = parts[parts.length-1].replace('.', '');
+
+  var sidebar = d3
+    .select(params.root)
+    .append('div')
+    .attr('id', sidebar_class)
+    .style('float', 'left');
+
+  sidebar.html(row_order_controls);
+
+
+  // 1. Recreate sidebar in JavaScript from HTML.
+  // 2. Rename all IDs to classes.
+  //    Don't forget load_clustergram.js
+  // 3. Move behavior in load_clustergram.js to sidebar.js
+  //    Example of advanced behavior:
+  //
+  //    if (params.use_controls) {
+  //       sidebar.select(params.root).append('div').....
+
+}
+
 /* Reordering Module
 */
 
@@ -7114,6 +7155,12 @@ var params = Params(config_copy);
 
 // make visualization using parameters  
 var viz = Viz(params);
+
+// TODO: set useSidebar=true as default in config.js
+if (params.useSidebar) {
+  sidebar = Sidebar(viz, params);
+}
+
 
 
 /* API

@@ -18,3 +18,9 @@ var params = Params(config_copy);
 
 // make visualization using parameters  
 var viz = Viz(params);
+
+// TODO: set useSidebar=true as default in config.js
+if (params.useSidebar) {
+  sidebar = Sidebar(viz, params);
+}
+

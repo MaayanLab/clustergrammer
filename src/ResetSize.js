@@ -82,7 +82,7 @@
 
     // size the svg container div - svg_div
     d3.select(params.viz.viz_wrapper)
-        .style('margin-left', set_margin_left + 'px')
+        .style('float', 'right')
         .style('margin-top',  set_margin_top  + 'px')
         .style('width',  set_clust_width  + 'px')
         .style('height', set_clust_height + 'px');

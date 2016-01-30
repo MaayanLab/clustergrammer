@@ -75,6 +75,9 @@ function Params(config) {
     params.viz.viz_wrapper = config.root + ' .viz-wrapper';
     params.viz.viz_svg = params.viz.viz_wrapper + ' .viz_svg';
 
+    params.sidebar = {};
+    params.sidebar.sidebar_wrapper = config.root + ' .sidebar-wrapper';
+
     params.viz.do_zoom = config.do_zoom;
     params.viz.resize = config.resize;
     // background colors
@@ -680,7 +683,7 @@ function Params(config) {
 
       // size the svg container div - svg_div
       d3.select(params.viz.viz_wrapper)
-        .style('margin-left', outer_margins.left + 'px')
+        .style('float', 'right')
         .style('margin-top', outer_margins.top + 'px')
         .style('width', cont_dim.width + 'px')
         .style('height', cont_dim.height + 'px');
@@ -689,7 +692,7 @@ function Params(config) {
 
       // size the svg container div - svg_div
       d3.select(params.viz.viz_wrapper)
-        .style('margin-left', outer_margins.left + 'px')
+        .style('float', 'right')
         .style('margin-top', outer_margins.top + 'px');
     }
   }
