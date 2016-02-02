@@ -53,7 +53,8 @@ function Config(args) {
     // initialize view, e.g. initialize with row filtering
     ini_view:null, 
     // initialize column category - only show data from one category
-    current_col_cat:'all_category'
+    current_col_cat:'all_category',
+    use_sidebar:true
   };
 
   // Mixin defaults with user-defined arguments.

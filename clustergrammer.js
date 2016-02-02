@@ -90,7 +90,8 @@ function Config(args) {
     // initialize view, e.g. initialize with row filtering
     ini_view:null, 
     // initialize column category - only show data from one category
-    current_col_cat:'all_category'
+    current_col_cat:'all_category',
+    use_sidebar:true
   };
 
   // Mixin defaults with user-defined arguments.
@@ -1245,7 +1246,6 @@ function Params(config) {
     // run initial filtering if necessary 
     if (_.isNull(params.ini_view) === false) {
 
-      console.log(params.ini_view);
       params.network_data = change_network_view(params, params.network_data, params.ini_view);
 
       // remove ini_view 
@@ -1539,10 +1539,6 @@ function Params(config) {
     var enr_max = Math.abs(_.max(col_nodes, function (d) {
       return Math.abs(d.value)
     }).value);
-
-    console.log('\n\nenr_max')
-    console.log(enr_max)
-    console.log('\n\n')
 
     params.labels.bar_scale_col = d3.scale
       .linear()
@@ -7157,8 +7153,8 @@ var params = Params(config_copy);
 var viz = Viz(params);
 
 // TODO: set useSidebar=true as default in config.js
-if (params.useSidebar) {
-  sidebar = Sidebar(viz, params);
+if (params.use_sidebar) {
+  var sidebar = Sidebar(viz, params);
 }
 
 

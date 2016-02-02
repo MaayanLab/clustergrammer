@@ -20,7 +20,7 @@ var params = Params(config_copy);
 var viz = Viz(params);
 
 // TODO: set useSidebar=true as default in config.js
-if (params.useSidebar) {
-  sidebar = Sidebar(viz, params);
+if (params.use_sidebar) {
+  var sidebar = Sidebar(viz, params);
 }
 

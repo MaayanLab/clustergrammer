@@ -182,19 +182,19 @@ function make_clust(inst_network){
 
         set_up_N_filters('N_row_sum'); 
 
-        // download svg of images 
-        filename='clustergram.svg';
-        d3.selectAll("#download-svg")
-          .attr("href", "data:image/svg+xml;charset=utf-8;base64," + 
-            btoa(unescape(encodeURIComponent(
+        // // download svg of images 
+        // filename='clustergram.svg';
+        // d3.selectAll("#download-svg")
+        //   .attr("href", "data:image/svg+xml;charset=utf-8;base64," + 
+        //     btoa(unescape(encodeURIComponent(
 
-              d3.select("#main_svg").attr("version", "1.1").attr("xmlns", "http://www.w3.org/2000/svg")
-                .node().parentNode.innerHTML)
+        //       d3.select("#main_svg").attr("version", "1.1").attr("xmlns", "http://www.w3.org/2000/svg")
+        //         .node().parentNode.innerHTML)
 
-              )
-            )
-          )
-        .attr("download",filename);
+        //       )
+        //     )
+        //   )
+        // .attr("download",filename);
 
         if (cgm.params.show_categories){
 
