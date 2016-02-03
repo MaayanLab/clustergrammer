@@ -1,0 +1,1 @@
+grunt --gruntfile=/Users/nickfernandez/Documents/clustergrammer_js/script/gruntfile.js watch

@@ -5924,6 +5924,29 @@ function Sidebar(viz, params) {
     '   </label>' +
     '</div>';
 
+
+  var col_order_controls = '<div class="viz_medium_text">Column Order</div>' +
+    '<div id="toggle_row_order" class="btn-group" data-toggle="buttons" >' +
+      '<label class="btn btn-primary active order_name" id="clust_col">' +
+        '<input type="radio" name="options" autocomplete="off" checked > Cluster' + 
+      '</label>' +
+      '<label class="btn btn-primary order_name" id="rank_col">' +
+        '<input type="radio" name="options" autocomplete="off" > Rank' +
+      '</label>' +
+      '<label class="btn btn-primary order_name" id="class_col">' +
+        '<input type="radio" name="options" autocomplete="off" > Category' +
+      '</label>' +
+    '</div>';
+
+  var search_controls = '<div id="gene_search_container" class="row">' +
+        '<input id="gene_search_box" type="text" class="form-control" placeholder="Input Gene">' +
+        '<div id="gene_search_button" class="btn-group" data-toggle="buttons" >' +
+          '<label id="submit_gene_button" class="btn btn-primary active">' +
+            '<input type="radio" name="options" id="" autocomplete="off" checked > Search' +
+          '</label>' +
+        '</div>' +
+    '</div>';
+
   var parts = params.sidebar.sidebar_wrapper.split(' ');
   var sidebar_class = parts[parts.length-1].replace('.', '');
 
@@ -5933,8 +5956,17 @@ function Sidebar(viz, params) {
     .attr('id', sidebar_class)
     .style('float', 'left');
 
-  sidebar.html(row_order_controls);
+  sidebar
+    .append('div')
+    .html(row_order_controls);
 
+  sidebar
+    .append('div')
+    .html(col_order_controls);    
+
+  sidebar
+    .append('div')
+    .html(search_controls);
 
   // 1. Recreate sidebar in JavaScript from HTML.
   // 2. Rename all IDs to classes.
