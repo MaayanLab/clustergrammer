@@ -36,6 +36,14 @@ function Sidebar(viz, params) {
         '</div>' +
     '</div>';
 
+  var colorbar_sliders = '<p class="viz_medium_text">Row Group Size</p>' +
+    '<div id="slider_row"></div>' +
+    '<p class="viz_medium_text">Column Group Size</p>' +
+    '<div id="slider_col"></div>';
+
+  var N_row_sum = '<div class="viz_medium_text" id="N_row_sum">Top rows: all rows </div>' +
+    '<div id="slider_N_row_sum" class="slider_filter"></div>';
+
   var parts = params.sidebar.sidebar_wrapper.split(' ');
   var sidebar_class = parts[parts.length-1].replace('.', '');
 
@@ -56,6 +64,15 @@ function Sidebar(viz, params) {
   sidebar
     .append('div')
     .html(search_controls);
+
+  sidebar
+    .append('div')
+    .html(colorbar_sliders);
+
+  sidebar
+    .append('div')
+    .html(N_row_sum);
+
 
   // 1. Recreate sidebar in JavaScript from HTML.
   // 2. Rename all IDs to classes.

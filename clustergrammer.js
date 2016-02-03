@@ -2021,8 +2021,10 @@ function Labels(params){
         params.viz.clust.margin.top + ')');
     }
 
+    // !!!!!!!! tmp change 
     // white background - behind text and row visualizaitons 
-    if (row_container.select('.white_bars').empty()){
+    // if (row_container.select('.white_bars').empty()){
+    if (d3.select('#row_white_background').empty()){
       row_container
         .append('rect')
         .attr('id','row_white_background')
@@ -2167,7 +2169,8 @@ function Labels(params){
       .attr('id', 'row_viz_zoom_container');
 
     // white background for triangle
-    if (row_viz_outer_container.select('white_bars').empty()){
+    // if (row_viz_outer_container.select('white_bars').empty()){
+    if (d3.select('#row_viz_zoom_container').select('.white_bars').empty()){
       row_viz_outer_container
         .append('rect')
         .attr('class','white_bars')
@@ -5947,6 +5950,14 @@ function Sidebar(viz, params) {
         '</div>' +
     '</div>';
 
+  var colorbar_sliders = '<p class="viz_medium_text">Row Group Size</p>' +
+    '<div id="slider_row"></div>' +
+    '<p class="viz_medium_text">Column Group Size</p>' +
+    '<div id="slider_col"></div>';
+
+  var N_row_sum = '<div class="viz_medium_text" id="N_row_sum">Top rows: all rows </div>' +
+    '<div id="slider_N_row_sum" class="slider_filter"></div>';
+
   var parts = params.sidebar.sidebar_wrapper.split(' ');
   var sidebar_class = parts[parts.length-1].replace('.', '');
 
@@ -5967,6 +5978,15 @@ function Sidebar(viz, params) {
   sidebar
     .append('div')
     .html(search_controls);
+
+  sidebar
+    .append('div')
+    .html(colorbar_sliders);
+
+  sidebar
+    .append('div')
+    .html(N_row_sum);
+
 
   // 1. Recreate sidebar in JavaScript from HTML.
   // 2. Rename all IDs to classes.

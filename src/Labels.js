@@ -27,8 +27,10 @@ function Labels(params){
         params.viz.clust.margin.top + ')');
     }
 
+    // !!!!!!!! tmp change 
     // white background - behind text and row visualizaitons 
-    if (row_container.select('.white_bars').empty()){
+    // if (row_container.select('.white_bars').empty()){
+    if (d3.select('#row_white_background').empty()){
       row_container
         .append('rect')
         .attr('id','row_white_background')
@@ -173,7 +175,8 @@ function Labels(params){
       .attr('id', 'row_viz_zoom_container');
 
     // white background for triangle
-    if (row_viz_outer_container.select('white_bars').empty()){
+    // if (row_viz_outer_container.select('white_bars').empty()){
+    if (d3.select('#row_viz_zoom_container').select('.white_bars').empty()){
       row_viz_outer_container
         .append('rect')
         .attr('class','white_bars')
