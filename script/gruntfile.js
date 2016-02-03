@@ -20,6 +20,7 @@ module.exports = function (grunt) {
     '../src/UpdateNetwork.js',
     '../src/Params.js',
     '../src/FilterNetwork.js',
+    '../src/FilterSliders.js',
     '../src/Viz.js',
     '../src/Sidebar.js',
     '../src/Reorder.js',

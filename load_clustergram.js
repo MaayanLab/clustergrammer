@@ -23,106 +23,6 @@ function make_clust(inst_network){
             'right':2
           };
 
-        // define callback function for clicking on tile
-        function click_tile_callback(tile_info){
-          console.log('tile callback');
-          console.log('clicking on ' + tile_info.row + ' row and ' + tile_info.col + ' col with value ' + String(tile_info.value))
-        }
-
-        // define callback function for clicking on group
-        function click_group_callback(inst_rc, group_nodes_list){
-          console.log('running user defined click group callback');
-
-          $('#dendro_info').modal('toggle');
-          d3.select('#dendro_info').select('.modal-body').select('p')
-            .text(group_nodes_list.join('\t'));
-
-          if (inst_rc==='row'){
-            var type_title = 'Row';
-          } else if (inst_rc==='col'){
-            var type_title = 'Column';
-          }
-
-            
-          d3.select('#dendro_info').select('.modal-title')
-            .text(function(){
-              return 'Selected '+type_title + ' Group';
-            });
-
-
-          options = {
-            description:'some-description',
-            list: group_nodes_list.join('\n')
-          }
-
-          console.log(options)
-
-          // // send genes to Enrichr 
-          // send_genes_to_enrichr(options);
-
-        }
-
-        function send_genes_to_enrichr(options) {
-          var defaultOptions = {
-            description: "",
-            popup: false
-          };
-
-          if (typeof options.description == 'undefined')
-            options.description = defaultOptions.description;
-          if (typeof options.list == 'undefined')
-            alert('No genes defined.');
-
-          var form = document.createElement('form');
-          form.setAttribute('method', 'post');
-          form.setAttribute('action', 'http://amp.pharm.mssm.edu/Enrichr/enrich');
-          form.setAttribute('target', '_blank');
-          form.setAttribute('enctype', 'multipart/form-data');
-
-          var listField = document.createElement('input');
-          listField.setAttribute('type', 'hidden');
-          listField.setAttribute('name', 'list');
-          listField.setAttribute('value', options.list);
-          form.appendChild(listField);
-
-          var descField = document.createElement('input');
-          descField.setAttribute('type', 'hidden');
-          descField.setAttribute('name', 'description');
-          descField.setAttribute('value', options.description);
-          form.appendChild(descField);
-
-          document.body.appendChild(form);
-          form.submit();
-          document.body.removeChild(form);
-        }
-
-        // row/col callback function
-        function click_label(label_info, label_type){
-          console.log( label_type+' label callback function '+ label_info)
-        }
-
-        // show up/dn genes from enrichment 
-        function make_tile_tooltip(d){
-          // up and down 
-          if ( d.info.up.length > 0 && d.info.dn.length > 0 ){
-            var inst_up = 'Up Genes: '+ d.info.up.join('\t');
-            var inst_dn = 'Down Genes: '+ d.info.dn.join('\t');
-            var inst_string = "<p>"+inst_up+"</p>"+inst_dn;
-            // improve
-            var inst_score = Math.abs(d.value.toFixed(2));
-          } else if ( d.info.up.length > 0 ){
-            var inst_up = 'Up Genes: '+ d.info.up.join('\t');
-            var inst_string = inst_up;
-            var inst_score = d.value.toFixed(2);
-          } else if ( d.info.dn.length > 0 ){
-            var inst_dn = 'Down Genes: '+ d.info.dn.join('\t');
-            var inst_string = inst_dn;
-            var inst_score = -d.value.toFixed(2);
-          }
-          var inst_info = '<p>'+d.col_name+' is enriched for '+d.row_name+' with Combined Score: '+ inst_score +'</p>'
-          return inst_info + inst_string; 
-        }
-
         // define arguments object
         var arguments_obj = {
           root: '#container-id-1',
@@ -136,8 +36,6 @@ function make_clust(inst_network){
           'show_label_tooltips':true,
           // 'show_tile_tooltips':true,
           // 'make_tile_tooltip':make_tile_tooltip,
-          // 'click_tile': click_tile_callback,
-          // 'click_label':click_label,
           // 'highlight_color':'yellow',
           'super_label_scale':1.25,
           // 'transpose':true,
@@ -151,7 +49,7 @@ function make_clust(inst_network){
           // 'tile_colors':['#ED9124','#1C86EE'],
           // 'background_color':'orange',
           // 'tile_title': true,
-          'click_group': click_group_callback,
+          // 'click_group': click_group_callback,
           // 'resize':false
           // 'order':'rank'
           // 'col_order':'rank',
@@ -172,29 +70,13 @@ function make_clust(inst_network){
         global_params = cgm.params;
 
         ini_sliders();
-         
-        // // play demo   
-        // ini_play_button(cgm);
 
         // set_up_filters('filter_row_sum');
         // set_up_filters('filter_row_value');
         // set_up_filters('filter_row_num');
 
-        set_up_N_filters('N_row_sum'); 
-
-        // // download svg of images 
-        // filename='clustergram.svg';
-        // d3.selectAll("#download-svg")
-        //   .attr("href", "data:image/svg+xml;charset=utf-8;base64," + 
-        //     btoa(unescape(encodeURIComponent(
-
-        //       d3.select("#main_svg").attr("version", "1.1").attr("xmlns", "http://www.w3.org/2000/svg")
-        //         .node().parentNode.innerHTML)
-
-        //       )
-        //     )
-        //   )
-        // .attr("download",filename);
+        // !! tmp set up filters in load clustergram using cgm 
+        cgm.set_up_N_filters('N_row_sum'); 
 
         if (cgm.params.show_categories){
 
@@ -355,197 +237,6 @@ function make_clust(inst_network){
             d3.select('#expand_button').style('opacity',0.4);
           })
 
-        function set_up_N_filters(filter_type){
-
-          // filter 
-          ////////////////////
-          var views = network_data.views;
-          var all_views = _.filter(views, function(d){return _.has(d,filter_type);});
-
-
-          // filter for column category if necessary 
-          if ( _.has(all_views[0],'col_cat') ) {
-
-            // get views with current_col_cat 
-            all_views = _.filter(all_views, function(d){
-              if (d.col_cat==cgm.params.current_col_cat){
-                return d;
-              } 
-            })
-          }
-
-          console.log( 'found ' + String(all_views.length) +' views for ' + filter_type )
-
-          var inst_max = all_views.length - 1;
-
-          // make dictionary 
-          var N_dict = {};
-
-          // filters
-          var all_filt = _.pluck( network_data.views,'N_row_sum')
-
-          _.each(all_filt, function(d){
-            tmp_index = _.indexOf(all_filt, d)
-
-            N_dict[tmp_index] = d;
-
-          });
-
-
-          $( '#slider_'+filter_type ).slider({
-            value:0,
-            min: 0,
-            max: inst_max,
-            step: 1,
-            stop: function( event, ui ) {
-
-              console.log('ui.value '+ String(ui.value))
-
-              // change value 
-              $( "#amount" ).val( "$" + ui.value );
-
-              // get value 
-              var inst_index = $( '#slider_'+filter_type ).slider( "value" ); 
-
-              console.log(N_dict)
-
-              var inst_top = N_dict[inst_index];
-
-              console.log(inst_index)
-
-              change_view = {'N_row_sum':inst_top};
-              filter_name = 'N_row_sum';
-
-              console.log(change_view)
-
-              d3.select('#main_svg').style('opacity',0.70);
-
-              d3.select('#'+filter_type).text('Top rows: '+inst_top+' rows'); 
-
-              // $('.slider_filter').slider('disable');
-              d3.selectAll('.btn').attr('disabled',true);
-              d3.selectAll('.category_section')
-                .on('click', '')
-                .select('text')
-                .style('opacity',0.5);
-
-
-              cgm.update_network(change_view);
-
-              ini_sliders();
-
-              function enable_slider(){
-                // $('.slider_filter').slider('enable');  
-                d3.selectAll('.btn').attr('disabled',null);
-                d3.selectAll('.category_section')
-                  .on('click', category_key_click)
-                  .select('text')
-                  .style('opacity',1);
-              }
-              setTimeout(enable_slider, 2500);
-
-            }
-          });
-          $( "#amount" ).val( "$" + $( '#slider_'+filter_type ).slider( "value" ) );
-
-        } 
-
-        function set_up_filters(filter_type){
-
-          // filter 
-          ////////////////////
-          var views = network_data.views;
-
-          // get views with filter type: e.g. fliter_row_sum
-          var all_views = _.filter(views, function(d){return _.has(d,filter_type);});
-
-          // filter for column category if necessary 
-          if ( _.has(all_views[0],'col_cat') ) {
-
-            // get views with current_col_cat 
-            all_views = _.filter(all_views, function(d){
-              if (d.col_cat==cgm.params.current_col_cat){
-                return d;
-              } 
-            })
-          }
-
-          console.log( 'found ' + String(all_views.length) +' views for ' + filter_type )
-
-          var inst_max = all_views.length - 1;
-          $( '#slider_'+filter_type ).slider({
-            value:0,
-            min: 0,
-            max: inst_max,
-            step: 1,
-            stop: function( event, ui ) {
-
-              $( "#amount" ).val( "$" + ui.value );
-              var inst_filt = $( '#slider_'+filter_type ).slider( "value" ); 
-
-              if (filter_type==='filter_row_value'){
-
-                change_view = {'filter_row_value':inst_filt/10};
-                filter_name = 'Value';
-                $('#slider_filter_row_sum').slider( "value", 0);
-                $('#slider_filter_row_num').slider( "value", 0);
-
-                d3.select('#filter_row_sum').text('Filter Sum: 0%');          
-                d3.select('#filter_row_num').text('Filter Number Non-zero: 0%');          
-
-              } else if (filter_type === 'filter_row_num'){
-
-                change_view = {'filter_row_num':inst_filt/10};
-                filter_name = 'Number Non-zero';
-                $('#slider_filter_row_value').slider( "value", 0);
-                $('#slider_filter_row_sum').slider( "value", 0);
-
-                d3.select('#filter_row_sum').text('Filter Sum: 0%');          
-                d3.select('#filter_row_value').text('Filter Value: 0%');          
-
-              } else if (filter_type === 'filter_row_sum'){
-
-                change_view = {'filter_row_sum':inst_filt/10};
-                filter_name = 'Sum';
-                $('#slider_filter_row_value').slider( "value", 0);
-                $('#slider_filter_row_num').slider( "value", 0);
-
-                d3.select('#filter_row_value').text('Filter Value: 0%');          
-                d3.select('#filter_row_num').text('Filter Number Non-zero: 0%'); 
-
-              }
-
-              d3.select('#main_svg')
-                .style('opacity',0.70);
-
-              d3.select('#'+filter_type).text('Filter '+filter_name+': '+10*inst_filt+'%');          
-
-              $('.slider_filter').slider('disable');
-              d3.selectAll('.btn').attr('disabled',true);
-              d3.selectAll('.category_section')
-                .on('click', '')
-                .select('text')
-                .style('opacity',0.5);
-
-              cgm.update_network(change_view);
-
-              ini_sliders();
-
-              function enable_slider(){
-                $('.slider_filter').slider('enable');  
-                d3.selectAll('.btn').attr('disabled',null);
-                d3.selectAll('.category_section')
-                  .on('click', category_key_click)
-                  .select('text')
-                  .style('opacity',1);
-              }
-              setTimeout(enable_slider, 2500);
-
-            }
-          });
-          $( "#amount" ).val( "$" + $( '#slider_'+filter_type ).slider( "value" ) );
-
-        }     
 
         // reused functions 
         function ini_sliders(){

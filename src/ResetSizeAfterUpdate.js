@@ -589,9 +589,6 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
         });      
     }
 
-    console.log('reset size after updata\n----------------------------')
-    _.each(col_nodes, function(d){console.log(String(d.name)+' '+String(d.value))})
-
     // append column value bars
     if (Utils.has( params.network_data.col_nodes[0], 'value')) {
 
