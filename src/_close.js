@@ -15,7 +15,8 @@ return {
     reset_zoom: viz.reset_zoom,
     config: config,
     change_category: change_category,
-    set_up_N_filters: set_up_N_filters
+    set_up_N_filters: set_up_N_filters,
+    ini_sliders:ini_sliders
 };
 	
 }

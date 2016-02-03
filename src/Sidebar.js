@@ -22,9 +22,6 @@ function Sidebar(viz, params) {
       '<label class="btn btn-primary order_name" id="rank_col">' +
         '<input type="radio" name="options" autocomplete="off" > Rank' +
       '</label>' +
-      '<label class="btn btn-primary order_name" id="class_col">' +
-        '<input type="radio" name="options" autocomplete="off" > Category' +
-      '</label>' +
     '</div>';
 
   var search_controls = '<div id="gene_search_container" class="row">' +

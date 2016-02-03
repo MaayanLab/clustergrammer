@@ -77,15 +77,15 @@ function set_up_N_filters(filter_type){
 
       cgm.update_network(change_view);
 
-      ini_sliders();
+      ini_sliders(cgm);
 
       function enable_slider(){
         // $('.slider_filter').slider('enable');  
         d3.selectAll('.btn').attr('disabled',null);
-        d3.selectAll('.category_section')
-          .on('click', category_key_click)
-          .select('text')
-          .style('opacity',1);
+        // d3.selectAll('.category_section')
+        //   .on('click', category_key_click)
+        //   .select('text')
+        //   .style('opacity',1);
       }
       setTimeout(enable_slider, 2500);
 
@@ -94,79 +94,7 @@ function set_up_N_filters(filter_type){
   $( "#amount" ).val( "$" + $( '#slider_'+filter_type ).slider( "value" ) );
 
 
-  // reused functions 
-  function ini_sliders(){
 
-    // col groups
-    $( "#slider_col" ).slider({
-      value:0.5,
-      min: 0,
-      max: 1,
-      step: 0.1,
-      slide: function( event, ui ) {
-        $( "#amount" ).val( "$" + ui.value );
-        var inst_index = ui.value*10;
-        cgm.change_groups('col',inst_index)
-      }
-    });
-    $( "#amount" ).val( "$" + $( "#slider_col" ).slider( "value" ) );
-
-    // row groups
-    $( "#slider_row" ).slider({
-      value:0.5,
-      min: 0,
-      max: 1,
-      step: 0.1,
-      slide: function( event, ui ) {
-        $( "#amount" ).val( "$" + ui.value );
-        var inst_index = ui.value*10;
-        cgm.change_groups('row',inst_index)
-      }
-    });
-    $( "#amount" ).val( "$" + $( "#slider_row" ).slider( "value" ) );
-
-    // opacity scale
-    $( "#slider_opacity" ).slider({
-      value:0.2,
-      min: 0.0,
-      max: 1.0,
-      step: 0.1,
-      slide: function( event, ui ) {
-        $( "#amount" ).val( "$" + ui.value );
-        var inst_index = ui.value;
-        cgm.opacity_slider(inst_index)
-      }
-    });
-    $( "#amount" ).val( "$" + $( "#slider_opacity" ).slider( "value" ) );
-
-    $('#gene_search_box').autocomplete({
-      source: cgm.get_genes()
-    });
-
-    // submit genes button
-    $('#gene_search_box').keyup(function(e) {
-      if (e.keyCode === 13) {
-        var search_gene = $('#gene_search_box').val();
-        cgm.find_gene(search_gene);
-      }
-    });
-
-    $('#submit_gene_button').off().click(function() {
-      var gene = $('#gene_search_box').val();
-      cgm.find_gene(gene);
-    });
-
-    $('#toggle_row_order .btn').off().click(function(evt) {
-      var order_id = $(evt.target).attr('id').split('_')[0];
-      cgm.reorder(order_id,'row');
-    });
-
-    $('#toggle_col_order .btn').off().click(function(evt) {
-      var order_id = $(evt.target).attr('id').split('_')[0];
-      cgm.reorder(order_id,'col');
-    });
-
-  }  
 
 
 
@@ -270,3 +198,78 @@ function set_up_filters(filter_type){
 
 }     
 
+
+
+  // reused functions 
+  function ini_sliders(cgm){
+
+    // col groups
+    $( "#slider_col" ).slider({
+      value:0.5,
+      min: 0,
+      max: 1,
+      step: 0.1,
+      slide: function( event, ui ) {
+        $( "#amount" ).val( "$" + ui.value );
+        var inst_index = ui.value*10;
+        cgm.change_groups('col',inst_index)
+      }
+    });
+    $( "#amount" ).val( "$" + $( "#slider_col" ).slider( "value" ) );
+
+    // row groups
+    $( "#slider_row" ).slider({
+      value:0.5,
+      min: 0,
+      max: 1,
+      step: 0.1,
+      slide: function( event, ui ) {
+        $( "#amount" ).val( "$" + ui.value );
+        var inst_index = ui.value*10;
+        cgm.change_groups('row',inst_index)
+      }
+    });
+    $( "#amount" ).val( "$" + $( "#slider_row" ).slider( "value" ) );
+
+    // opacity scale
+    $( "#slider_opacity" ).slider({
+      value:0.2,
+      min: 0.0,
+      max: 1.0,
+      step: 0.1,
+      slide: function( event, ui ) {
+        $( "#amount" ).val( "$" + ui.value );
+        var inst_index = ui.value;
+        cgm.opacity_slider(inst_index)
+      }
+    });
+    $( "#amount" ).val( "$" + $( "#slider_opacity" ).slider( "value" ) );
+
+    $('#gene_search_box').autocomplete({
+      source: cgm.get_genes()
+    });
+
+    // submit genes button
+    $('#gene_search_box').keyup(function(e) {
+      if (e.keyCode === 13) {
+        var search_gene = $('#gene_search_box').val();
+        cgm.find_gene(search_gene);
+      }
+    });
+
+    $('#submit_gene_button').off().click(function() {
+      var gene = $('#gene_search_box').val();
+      cgm.find_gene(gene);
+    });
+
+    $('#toggle_row_order .btn').off().click(function(evt) {
+      var order_id = $(evt.target).attr('id').split('_')[0];
+      cgm.reorder(order_id,'row');
+    });
+
+    $('#toggle_col_order .btn').off().click(function(evt) {
+      var order_id = $(evt.target).attr('id').split('_')[0];
+      cgm.reorder(order_id,'col');
+    });
+
+  }  
