@@ -68,7 +68,7 @@
     d3.select('#col_label_zoom_container')
       .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [pan_dx, 0] + ')');
 
-    d3.select('#col_viz_zoom_container')
+    d3.select('.col_viz_zoom_container')
       .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [pan_dx, 0] + ')');
 
     // set y translate: center_y is positive, positive moves the visualization down
@@ -220,7 +220,7 @@
     params.labels.default_fs_row = params.matrix.rect_height * 1.07;
     params.labels.default_fs_col = params.matrix.rect_width * 0.87  ;
 
-    svg_group.select('#super_background')
+    svg_group.select('.super_background')
       .style('width', params.viz.svg_dim.width)
       .style('height', params.viz.svg_dim.height);
 

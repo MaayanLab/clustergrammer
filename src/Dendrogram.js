@@ -106,7 +106,7 @@ function Dendrogram(type, params) {
     var col_nodes_names = _.pluck(col_nodes, 'name');
 
     // append groups - each will hold a classification rect
-    var col_class_ini_group = d3.select('#col_viz_zoom_container')
+    var col_class_ini_group = d3.select('.col_viz_zoom_container')
     .selectAll('g')
     .data(col_nodes, function(d){return d.name;})
     .enter()

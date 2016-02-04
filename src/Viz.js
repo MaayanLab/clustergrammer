@@ -29,7 +29,7 @@ function Viz(params) {
     // add white background 
     svg_group
       .append('rect')
-      .attr('id', 'super_background')
+      .attr('class', 'super_background')
       .style('width', params.viz.svg_dim.width)
       .style('height', params.viz.svg_dim.height)
       .style('fill', 'white');
@@ -58,13 +58,13 @@ function Viz(params) {
       // add class label under column label
       var col_class = container_all_col
         .append('g')
-        .attr('id', 'col_viz_outer_container')
+        .attr('class', 'col_viz_outer_container')
         .attr('transform', function () {
           var inst_offset = params.norm_label.width.col + 2;
           return 'translate(0,' + inst_offset + ')';
         })
         .append('g')
-        .attr('id', 'col_viz_zoom_container');
+        .attr('class', 'col_viz_zoom_container');
 
       // make col dendrogram
       col_dendrogram = Dendrogram('col', params);

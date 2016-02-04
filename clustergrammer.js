@@ -416,7 +416,7 @@ function Dendrogram(type, params) {
     var col_nodes_names = _.pluck(col_nodes, 'name');
 
     // append groups - each will hold a classification rect
-    var col_class_ini_group = d3.select('#col_viz_zoom_container')
+    var col_class_ini_group = d3.select('.col_viz_zoom_container')
     .selectAll('g')
     .data(col_nodes, function(d){return d.name;})
     .enter()
@@ -2968,7 +2968,7 @@ function draw_grid_lines(row_nodes, col_nodes) {
     d3.select('#col_label_zoom_container')
       .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [pan_dx, 0] + ')');
 
-    d3.select('#col_viz_zoom_container')
+    d3.select('.col_viz_zoom_container')
       .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [pan_dx, 0] + ')');
 
     // set y translate: center_y is positive, positive moves the visualization down
@@ -3120,7 +3120,7 @@ function draw_grid_lines(row_nodes, col_nodes) {
     params.labels.default_fs_row = params.matrix.rect_height * 1.07;
     params.labels.default_fs_col = params.matrix.rect_width * 0.87  ;
 
-    svg_group.select('#super_background')
+    svg_group.select('.super_background')
       .style('width', params.viz.svg_dim.width)
       .style('height', params.viz.svg_dim.height);
 
@@ -3775,7 +3775,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
   d3.select('#col_label_zoom_container')
     .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [pan_dx, 0] + ')');
 
-  d3.select('#col_viz_zoom_container')
+  d3.select('.col_viz_zoom_container')
     .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [pan_dx, 0] + ')');
 
   // set y translate: center_y is positive, positive moves the visualization down
@@ -4738,7 +4738,7 @@ function enter_exit_update(params, network_data, reorder, delays){
     .attr('transform', 'translate(0,' + params.norm_label.width.col + ')');
 
   // reposition col_viz container 
-  d3.select('#col_viz_outer_container')
+  d3.select('.col_viz_outer_container')
     .attr('transform', function() {
         var inst_offset = params.norm_label.width.col + 2;
         return 'translate(0,' + inst_offset + ')';
@@ -5965,7 +5965,7 @@ function Viz(params) {
     // add white background 
     svg_group
       .append('rect')
-      .attr('id', 'super_background')
+      .attr('class', 'super_background')
       .style('width', params.viz.svg_dim.width)
       .style('height', params.viz.svg_dim.height)
       .style('fill', 'white');
@@ -5994,13 +5994,13 @@ function Viz(params) {
       // add class label under column label
       var col_class = container_all_col
         .append('g')
-        .attr('id', 'col_viz_outer_container')
+        .attr('class', 'col_viz_outer_container')
         .attr('transform', function () {
           var inst_offset = params.norm_label.width.col + 2;
           return 'translate(0,' + inst_offset + ')';
         })
         .append('g')
-        .attr('id', 'col_viz_zoom_container');
+        .attr('class', 'col_viz_zoom_container');
 
       // make col dendrogram
       col_dendrogram = Dendrogram('col', params);
@@ -6861,7 +6861,7 @@ function Zoom(params){
       ')');
 
     // transform col_class
-    d3.select('#col_viz_zoom_container')
+    d3.select('.col_viz_zoom_container')
       .attr('transform', 'translate(' + [trans_x, 0] + ') scale(' + zoom_x +
       ',1)');
 
@@ -7014,7 +7014,7 @@ function Zoom(params){
         ] + ')');
 
       // transform col_class
-      d3.select('#col_viz_zoom_container')
+      d3.select('.col_viz_zoom_container')
         .transition()
         .duration(search_duration)
         .attr('transform', ' scale(' + zoom_x + ',' + 1 + ')' + 'translate(' + [
