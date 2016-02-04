@@ -54,16 +54,14 @@ function set_up_N_filters(filter_type){
       // get value 
       var inst_index = $( '#slider_'+filter_type ).slider( "value" ); 
 
-      console.log(N_dict)
-
       var inst_top = N_dict[inst_index];
-
-      console.log(inst_index)
 
       var change_view = {'N_row_sum':inst_top};
       var filter_name = 'N_row_sum';
 
-      d3.select('#main_svg').style('opacity',0.70);
+      var viz_svg = cgm.params.viz.viz_svg;
+
+      d3.select(viz_svg).style('opacity',0.70);
 
       d3.select('#'+filter_type).text('Top rows: '+inst_top+' rows'); 
 
@@ -166,7 +164,9 @@ function set_up_filters(filter_type){
 
       }
 
-      d3.select('#main_svg')
+      var viz_svg = cgm.params.viz.viz_svg;
+
+      d3.select(viz_svg)
         .style('opacity',0.70);
 
       d3.select('#'+filter_type).text('Filter '+filter_name+': '+10*inst_filt+'%');          

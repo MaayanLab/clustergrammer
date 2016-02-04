@@ -1,6 +1,10 @@
-/* Params it's like all the little measurements that you need to like literally you all the distances you need.
+/* Params: calculates the size of all the visualization elements in the 
+clustergram. 
  */
-function Params(config) {
+function Params(input_config) {
+
+  // deepcopy config to not change the original input_config 
+  var config = jQuery.extend(true, {}, input_config);  
 
   var params = initialize_visualization(config);
 
@@ -10,12 +14,6 @@ function Params(config) {
     // initialize params object from config
     var params = config;
 
-    // // deep copy 
-    // params = jQuery.extend(true, {}, config)
-
-    // // shallow copy 
-    // var params = jQuery.extend({}, config)
-
     // run initial filtering if necessary 
     if (_.isNull(params.ini_view) === false) {
 
@@ -24,16 +22,6 @@ function Params(config) {
       // remove ini_view 
       params.ini_view = null;
     }
-
-    // if (_.isNull(params.current_col_cat) === false){
-    //   console.log('\nVizParams: ini cat '+String(params.current_col_cat) );
-
-    //   // fitler categories 
-    //   params.network_data = show_one_cat(params.network_data, params);
-
-    //   params.network_data = filter_using_new_nodes( params.network_data, params.network_data.links, params.network_data.views);
-
-    // }
 
     // Label Paramsters
     params.labels = {};

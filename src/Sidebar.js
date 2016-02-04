@@ -48,6 +48,7 @@ function Sidebar(viz, params) {
     .select(params.root)
     .append('div')
     .attr('id', sidebar_class)
+    .style('margin-left','10px')
     .style('float', 'left');
 
   sidebar

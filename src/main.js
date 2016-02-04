@@ -10,16 +10,12 @@
 // consume and validate user arguments, produce configuration object 
 var config = Config(args);
 
-// deepcopy
-var config_copy = jQuery.extend(true, {}, config);
-
 // make visualization parameters using configuration object 
-var params = Params(config_copy);
+var params = Params(config);
 
 // make visualization using parameters  
 var viz = Viz(params);
 
-// TODO: set useSidebar=true as default in config.js
 if (params.use_sidebar) {
   var sidebar = Sidebar(viz, params);
 }

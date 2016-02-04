@@ -20,14 +20,8 @@ function update_network(change_view){
   /////////////////////////////
   /////////////////////////////
 
-  // debugger;
-
   // get copy of old params 
   var old_params = this.params;
-
-  // console.log('\n\n\nchange_view\n--------------------')
-  // console.log(change_view)
-  // console.log('\n--------------------\n\n\n')
 
   // make new_network_data by filtering the original network data 
   var config_copy = jQuery.extend(true, {}, this.config);

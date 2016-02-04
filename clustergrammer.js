@@ -1225,9 +1225,13 @@ function trim_text(inst_selection, inst_rc){
   }
 
 }
-/* Params it's like all the little measurements that you need to like literally you all the distances you need.
+/* Params: calculates the size of all the visualization elements in the 
+clustergram. 
  */
-function Params(config) {
+function Params(input_config) {
+
+  // deepcopy config to not change the original input_config 
+  var config = jQuery.extend(true, {}, input_config);  
 
   var params = initialize_visualization(config);
 
@@ -1237,12 +1241,6 @@ function Params(config) {
     // initialize params object from config
     var params = config;
 
-    // // deep copy 
-    // params = jQuery.extend(true, {}, config)
-
-    // // shallow copy 
-    // var params = jQuery.extend({}, config)
-
     // run initial filtering if necessary 
     if (_.isNull(params.ini_view) === false) {
 
@@ -1251,16 +1249,6 @@ function Params(config) {
       // remove ini_view 
       params.ini_view = null;
     }
-
-    // if (_.isNull(params.current_col_cat) === false){
-    //   console.log('\nVizParams: ini cat '+String(params.current_col_cat) );
-
-    //   // fitler categories 
-    //   params.network_data = show_one_cat(params.network_data, params);
-
-    //   params.network_data = filter_using_new_nodes( params.network_data, params.network_data.links, params.network_data.views);
-
-    // }
 
     // Label Paramsters
     params.labels = {};
@@ -2930,18 +2918,17 @@ function draw_grid_lines(row_nodes, col_nodes) {
 
     run_reset_visualization_size(cont_dim.width, cont_dim.height, outer_margins.left, outer_margins.top, params);
 
-    // get dimensions of the main_svg
-    // TODO: Change dim.main_svg name to viz_svg?
+    // get dimensions of the viz_svg
     var dim = {};
-    dim.main_svg = {};
-    dim.main_svg.w = d3.select(params.viz.viz_svg).style('width').replace('px','');
-    dim.main_svg.h = d3.select(params.viz.viz_svg).style('height').replace('px','');
+    dim.viz_svg = {};
+    dim.viz_svg.w = d3.select(params.viz.viz_svg).style('width').replace('px','');
+    dim.viz_svg.h = d3.select(params.viz.viz_svg).style('height').replace('px','');
     
     // reposition the play button 
-    d3.select('#play_button')
+    d3.select('.play_button')
       .attr('transform', function(){
-        var pos_x = dim.main_svg.w/2;
-        var pos_y = dim.main_svg.h/2;
+        var pos_x = dim.viz_svg.w/2;
+        var pos_y = dim.viz_svg.h/2;
         return 'translate('+pos_x+','+pos_y+')';
       });
 
@@ -4587,14 +4574,8 @@ function update_network(change_view){
   /////////////////////////////
   /////////////////////////////
 
-  // debugger;
-
   // get copy of old params 
   var old_params = this.params;
-
-  // console.log('\n\n\nchange_view\n--------------------')
-  // console.log(change_view)
-  // console.log('\n--------------------\n\n\n')
 
   // make new_network_data by filtering the original network data 
   var config_copy = jQuery.extend(true, {}, this.config);
@@ -5734,16 +5715,14 @@ function set_up_N_filters(filter_type){
       // get value 
       var inst_index = $( '#slider_'+filter_type ).slider( "value" ); 
 
-      console.log(N_dict)
-
       var inst_top = N_dict[inst_index];
-
-      console.log(inst_index)
 
       var change_view = {'N_row_sum':inst_top};
       var filter_name = 'N_row_sum';
 
-      d3.select('#main_svg').style('opacity',0.70);
+      var viz_svg = cgm.params.viz.viz_svg;
+
+      d3.select(viz_svg).style('opacity',0.70);
 
       d3.select('#'+filter_type).text('Top rows: '+inst_top+' rows'); 
 
@@ -5846,7 +5825,9 @@ function set_up_filters(filter_type){
 
       }
 
-      d3.select('#main_svg')
+      var viz_svg = cgm.params.viz.viz_svg;
+
+      d3.select(viz_svg)
         .style('opacity',0.70);
 
       d3.select('#'+filter_type).text('Filter '+filter_name+': '+10*inst_filt+'%');          
@@ -6234,6 +6215,7 @@ function Sidebar(viz, params) {
     .select(params.root)
     .append('div')
     .attr('id', sidebar_class)
+    .style('margin-left','10px')
     .style('float', 'left');
 
   sidebar
@@ -7464,16 +7446,12 @@ function downsample(params, min_rect_height){
 // consume and validate user arguments, produce configuration object 
 var config = Config(args);
 
-// deepcopy
-var config_copy = jQuery.extend(true, {}, config);
-
 // make visualization parameters using configuration object 
-var params = Params(config_copy);
+var params = Params(config);
 
 // make visualization using parameters  
 var viz = Viz(params);
 
-// TODO: set useSidebar=true as default in config.js
 if (params.use_sidebar) {
   var sidebar = Sidebar(viz, params);
 }

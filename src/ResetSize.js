@@ -18,18 +18,17 @@
 
     run_reset_visualization_size(cont_dim.width, cont_dim.height, outer_margins.left, outer_margins.top, params);
 
-    // get dimensions of the main_svg
-    // TODO: Change dim.main_svg name to viz_svg?
+    // get dimensions of the viz_svg
     var dim = {};
-    dim.main_svg = {};
-    dim.main_svg.w = d3.select(params.viz.viz_svg).style('width').replace('px','');
-    dim.main_svg.h = d3.select(params.viz.viz_svg).style('height').replace('px','');
+    dim.viz_svg = {};
+    dim.viz_svg.w = d3.select(params.viz.viz_svg).style('width').replace('px','');
+    dim.viz_svg.h = d3.select(params.viz.viz_svg).style('height').replace('px','');
     
     // reposition the play button 
-    d3.select('#play_button')
+    d3.select('.play_button')
       .attr('transform', function(){
-        var pos_x = dim.main_svg.w/2;
-        var pos_y = dim.main_svg.h/2;
+        var pos_x = dim.viz_svg.w/2;
+        var pos_y = dim.viz_svg.h/2;
         return 'translate('+pos_x+','+pos_y+')';
       });
 
