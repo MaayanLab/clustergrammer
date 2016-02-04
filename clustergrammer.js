@@ -506,12 +506,12 @@ function Matrix(network_data, svg_elem, params) {
   // append a group that will hold clust_group and position it once
   clust_group = svg_elem
     .append('g')
-    .attr('id','clust_group_container')
+    .attr('class','clust_container')
     .attr('transform', 'translate(' +
       params.viz.clust.margin.left + ',' +
       params.viz.clust.margin.top + ')')
     .append('g')
-    .attr('id', 'clust_group');
+    .attr('class', 'clust_group');
 
   if (params.matrix.show_tile_tooltips){
     // d3-tooltip - for tiles 
@@ -520,8 +520,7 @@ function Matrix(network_data, svg_elem, params) {
       .direction('n')
       .offset([0, 0])
       .html(params.matrix.make_tile_tooltip);
-
-    d3.select('#clust_group')
+    d3.select(params.root+' .clust_group')
       .call(tip);
   }
 
@@ -533,11 +532,6 @@ function Matrix(network_data, svg_elem, params) {
     .style('fill', '#eee')
     .attr('width', params.viz.clust.dim.width)
     .attr('height', params.viz.clust.dim.height);
-
-  // console.log('making downsampled version rathe than original')
-  // var DS = DownSampling();
-  // var ds_data = DS.calc_ds_matrix(params, 5);
-  // DS.draw_ds_matrix(params, ds_data);
   
   // make row matrix - add key names to rows in matrix 
   var row_groups = clust_group.selectAll('.row')
@@ -1064,7 +1058,7 @@ function DownSampling(params, min_rect_height){
     d3.selectAll('.horz_lines').remove();
 
     // update bound data on rows 
-    var ds_clust = d3.select('#clust_group')
+    var ds_clust = d3.select(params.root+' .clust_group')
       .selectAll('.row')
       .data(ds_matrix, function(d){return d.name;});
 
@@ -1290,7 +1284,7 @@ function Params(input_config) {
     params.viz.viz_svg = params.viz.viz_wrapper + ' .viz_svg';
 
     params.sidebar = {};
-    params.sidebar.sidebar_wrapper = config.root + ' .sidebar-wrapper';
+    params.sidebar.sidebar_class = 'sidebar_wrapper';
 
     params.viz.do_zoom = config.do_zoom;
     params.viz.resize = config.resize;
@@ -2865,7 +2859,7 @@ function draw_grid_lines(row_nodes, col_nodes) {
     .remove();
 
   // append horizontal lines
-  d3.select('#clust_group')
+  d3.select(params.root+' .clust_group')
     .selectAll('.horz_lines')
     .data(row_nodes, function(d){return d.name;})
     .enter()
@@ -2882,7 +2876,7 @@ function draw_grid_lines(row_nodes, col_nodes) {
     .style('stroke','white');
 
   // append vertical line groups
-  d3.select('#clust_group')
+  d3.select(params.root+' .clust_group')
     .selectAll('.vert_lines')
     .data(col_nodes)
     .enter()
@@ -4719,12 +4713,12 @@ function enter_exit_update(params, network_data, reorder, delays){
       .offset([0, 0])
       .html(params.matrix.make_tile_tooltip);
 
-    d3.select('#clust_group')
+    d3.select(params.root+'.clust_group')
       .call(tip);
     }
 
   // reposition matrix 
-  d3.select('#clust_group_container')
+  d3.select('.clust_container')
     .attr('transform', 'translate(' +
       params.viz.clust.margin.left + ',' +
       params.viz.clust.margin.top + ')');
@@ -4772,7 +4766,7 @@ function enter_exit_update(params, network_data, reorder, delays){
   ////////////
 
   // remove entire rows 
-  var exiting_rows = d3.select('#clust_group')
+  var exiting_rows = d3.select(params.root+' .clust_group')
     .selectAll('.row')
     .data(params.matrix.matrix, function(d){return d.name;})
     .exit();
@@ -4789,7 +4783,7 @@ function enter_exit_update(params, network_data, reorder, delays){
   }
 
   // move rows 
-  var move_rows = d3.select('#clust_group')
+  var move_rows = d3.select(params.root+' .clust_group')
     .selectAll('.row')
     .data(params.matrix.matrix, function(d){return d.name;});
 
@@ -4809,7 +4803,7 @@ function enter_exit_update(params, network_data, reorder, delays){
   }
 
   // update existing rows - enter, exit, update tiles in existing row
-  d3.select('#clust_group')
+  d3.select(params.root+' .clust_group')
     .selectAll('.row')
     .each(eeu_existing_row);
 
@@ -5228,7 +5222,7 @@ function enter_exit_update(params, network_data, reorder, delays){
   //////////////////////////
 
   // enter new rows 
-  var new_row_groups = d3.select('#clust_group')
+  var new_row_groups = d3.select(params.root+' .clust_group')
     .selectAll('.row')
     .data(params.matrix.matrix, function(d){return d.name;})
     .enter()
@@ -5451,7 +5445,7 @@ function enter_exit_update(params, network_data, reorder, delays){
 
 
   // append horizontal lines
-  d3.select('#clust_group')
+  d3.select(params.root+' .clust_group')
     .selectAll('.horz_lines')
     .data(row_nodes, function(d){return d.name;})
     .enter()
@@ -5471,7 +5465,7 @@ function enter_exit_update(params, network_data, reorder, delays){
     .attr('opacity',1);
 
   // append vertical line groups
-  d3.select('#clust_group')
+  d3.select(params.root+' .clust_group')
     .selectAll('.vert_lines')
     .data(col_nodes)
     .enter()
@@ -6199,13 +6193,10 @@ function Sidebar(viz, params) {
   var N_row_sum = '<div class="viz_medium_text N_row_sum">Top rows: all rows </div>' +
     '<div class="slider_filter slider_N_row_sum"></div>';
 
-  var parts = params.sidebar.sidebar_wrapper.split(' ');
-  var sidebar_class = parts[parts.length-1].replace('.', '');
-
   var sidebar = d3
     .select(params.root)
     .append('div')
-    .attr('id', sidebar_class)
+    .attr('class', params.sidebar.sidebar_class )
     .style('margin-left','10px')
     .style('float', 'left');
 
@@ -6830,7 +6821,7 @@ function Zoom(params){
     ///////////////////////////////////////////////////
     // translate clustergram
     // viz.get_clust_group()
-    d3.select('#clust_group')
+    d3.select(params.root+' .clust_group')
       .attr('transform', 'translate(' + [trans_x, trans_y] + ') scale(' +
       zoom_x + ',' + zoom_y + ')');
 
@@ -6971,7 +6962,6 @@ function Zoom(params){
 
       // transform clust group
       ////////////////////////////
-      // d3.select('#clust_group')
       viz.get_clust_group()
         .transition().duration(search_duration)
         // first apply the margin transformation
@@ -7389,7 +7379,7 @@ function downsample(params, min_rect_height){
 
   // enter new elements 
   //////////////////////////
-  d3.select('#clust_group')
+  d3.select(params.root+' .clust_group')
     .selectAll('.tile')
     .data(new_links, function(d){return d.name;})
     .enter()

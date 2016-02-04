@@ -63,7 +63,7 @@ function Params(input_config) {
     params.viz.viz_svg = params.viz.viz_wrapper + ' .viz_svg';
 
     params.sidebar = {};
-    params.sidebar.sidebar_wrapper = config.root + ' .sidebar-wrapper';
+    params.sidebar.sidebar_class = 'sidebar_wrapper';
 
     params.viz.do_zoom = config.do_zoom;
     params.viz.resize = config.resize;

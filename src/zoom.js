@@ -86,7 +86,7 @@ function Zoom(params){
     ///////////////////////////////////////////////////
     // translate clustergram
     // viz.get_clust_group()
-    d3.select('#clust_group')
+    d3.select(params.root+' .clust_group')
       .attr('transform', 'translate(' + [trans_x, trans_y] + ') scale(' +
       zoom_x + ',' + zoom_y + ')');
 
@@ -227,7 +227,6 @@ function Zoom(params){
 
       // transform clust group
       ////////////////////////////
-      // d3.select('#clust_group')
       viz.get_clust_group()
         .transition().duration(search_duration)
         // first apply the margin transformation
@@ -645,7 +644,7 @@ function downsample(params, min_rect_height){
 
   // enter new elements 
   //////////////////////////
-  d3.select('#clust_group')
+  d3.select(params.root+' .clust_group')
     .selectAll('.tile')
     .data(new_links, function(d){return d.name;})
     .enter()

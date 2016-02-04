@@ -150,7 +150,7 @@ function DownSampling(params, min_rect_height){
     d3.selectAll('.horz_lines').remove();
 
     // update bound data on rows 
-    var ds_clust = d3.select('#clust_group')
+    var ds_clust = d3.select(params.root+' .clust_group')
       .selectAll('.row')
       .data(ds_matrix, function(d){return d.name;});
 

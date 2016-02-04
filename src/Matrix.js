@@ -15,12 +15,12 @@ function Matrix(network_data, svg_elem, params) {
   // append a group that will hold clust_group and position it once
   clust_group = svg_elem
     .append('g')
-    .attr('id','clust_group_container')
+    .attr('class','clust_container')
     .attr('transform', 'translate(' +
       params.viz.clust.margin.left + ',' +
       params.viz.clust.margin.top + ')')
     .append('g')
-    .attr('id', 'clust_group');
+    .attr('class', 'clust_group');
 
   if (params.matrix.show_tile_tooltips){
     // d3-tooltip - for tiles 
@@ -29,8 +29,7 @@ function Matrix(network_data, svg_elem, params) {
       .direction('n')
       .offset([0, 0])
       .html(params.matrix.make_tile_tooltip);
-
-    d3.select('#clust_group')
+    d3.select(params.root+' .clust_group')
       .call(tip);
   }
 
@@ -42,11 +41,6 @@ function Matrix(network_data, svg_elem, params) {
     .style('fill', '#eee')
     .attr('width', params.viz.clust.dim.width)
     .attr('height', params.viz.clust.dim.height);
-
-  // console.log('making downsampled version rathe than original')
-  // var DS = DownSampling();
-  // var ds_data = DS.calc_ds_matrix(params, 5);
-  // DS.draw_ds_matrix(params, ds_data);
   
   // make row matrix - add key names to rows in matrix 
   var row_groups = clust_group.selectAll('.row')

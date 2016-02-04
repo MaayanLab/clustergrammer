@@ -165,12 +165,12 @@ function enter_exit_update(params, network_data, reorder, delays){
       .offset([0, 0])
       .html(params.matrix.make_tile_tooltip);
 
-    d3.select('#clust_group')
+    d3.select(params.root+'.clust_group')
       .call(tip);
     }
 
   // reposition matrix 
-  d3.select('#clust_group_container')
+  d3.select('.clust_container')
     .attr('transform', 'translate(' +
       params.viz.clust.margin.left + ',' +
       params.viz.clust.margin.top + ')');
@@ -218,7 +218,7 @@ function enter_exit_update(params, network_data, reorder, delays){
   ////////////
 
   // remove entire rows 
-  var exiting_rows = d3.select('#clust_group')
+  var exiting_rows = d3.select(params.root+' .clust_group')
     .selectAll('.row')
     .data(params.matrix.matrix, function(d){return d.name;})
     .exit();
@@ -235,7 +235,7 @@ function enter_exit_update(params, network_data, reorder, delays){
   }
 
   // move rows 
-  var move_rows = d3.select('#clust_group')
+  var move_rows = d3.select(params.root+' .clust_group')
     .selectAll('.row')
     .data(params.matrix.matrix, function(d){return d.name;});
 
@@ -255,7 +255,7 @@ function enter_exit_update(params, network_data, reorder, delays){
   }
 
   // update existing rows - enter, exit, update tiles in existing row
-  d3.select('#clust_group')
+  d3.select(params.root+' .clust_group')
     .selectAll('.row')
     .each(eeu_existing_row);
 
@@ -674,7 +674,7 @@ function enter_exit_update(params, network_data, reorder, delays){
   //////////////////////////
 
   // enter new rows 
-  var new_row_groups = d3.select('#clust_group')
+  var new_row_groups = d3.select(params.root+' .clust_group')
     .selectAll('.row')
     .data(params.matrix.matrix, function(d){return d.name;})
     .enter()
@@ -897,7 +897,7 @@ function enter_exit_update(params, network_data, reorder, delays){
 
 
   // append horizontal lines
-  d3.select('#clust_group')
+  d3.select(params.root+' .clust_group')
     .selectAll('.horz_lines')
     .data(row_nodes, function(d){return d.name;})
     .enter()
@@ -917,7 +917,7 @@ function enter_exit_update(params, network_data, reorder, delays){
     .attr('opacity',1);
 
   // append vertical line groups
-  d3.select('#clust_group')
+  d3.select(params.root+' .clust_group')
     .selectAll('.vert_lines')
     .data(col_nodes)
     .enter()

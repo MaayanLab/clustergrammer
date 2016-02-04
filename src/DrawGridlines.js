@@ -11,7 +11,7 @@ function draw_grid_lines(row_nodes, col_nodes) {
     .remove();
 
   // append horizontal lines
-  d3.select('#clust_group')
+  d3.select(params.root+' .clust_group')
     .selectAll('.horz_lines')
     .data(row_nodes, function(d){return d.name;})
     .enter()
@@ -28,7 +28,7 @@ function draw_grid_lines(row_nodes, col_nodes) {
     .style('stroke','white');
 
   // append vertical line groups
-  d3.select('#clust_group')
+  d3.select(params.root+' .clust_group')
     .selectAll('.vert_lines')
     .data(col_nodes)
     .enter()

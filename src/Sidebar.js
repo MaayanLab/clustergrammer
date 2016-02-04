@@ -41,13 +41,10 @@ function Sidebar(viz, params) {
   var N_row_sum = '<div class="viz_medium_text N_row_sum">Top rows: all rows </div>' +
     '<div class="slider_filter slider_N_row_sum"></div>';
 
-  var parts = params.sidebar.sidebar_wrapper.split(' ');
-  var sidebar_class = parts[parts.length-1].replace('.', '');
-
   var sidebar = d3
     .select(params.root)
     .append('div')
-    .attr('id', sidebar_class)
+    .attr('class', params.sidebar.sidebar_class )
     .style('margin-left','10px')
     .style('float', 'left');
 
