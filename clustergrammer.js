@@ -3704,13 +3704,13 @@ function draw_grid_lines(row_nodes, col_nodes) {
     // add border to svg in four separate lines - to not interfere with clicking anything
     ///////////////////////////////////////////////////////////////////////////////////////
     // left border
-    svg_group.select('#left_border')
+    svg_group.select('.left_border')
       .attr('width', params.viz.grey_border_width)
       .attr('height', params.viz.svg_dim.height)
       .attr('transform', 'translate(0,0)');
 
     // right border
-    svg_group.select('#right_border')
+    svg_group.select('.right_border')
       .attr('width', params.viz.grey_border_width)
       .attr('height', params.viz.svg_dim.height)
       .attr('transform', function() {
@@ -3719,7 +3719,7 @@ function draw_grid_lines(row_nodes, col_nodes) {
       });
 
     // top border
-    svg_group.select('#top_border')
+    svg_group.select('.top_border')
       .attr('width', params.viz.svg_dim.width)
       .attr('height', params.viz.grey_border_width)
       .attr('transform', function() {
@@ -3728,7 +3728,7 @@ function draw_grid_lines(row_nodes, col_nodes) {
       });
 
     // bottom border
-    svg_group.select('#bottom_border')
+    svg_group.select('.bottom_border')
       .attr('width', params.viz.svg_dim.width)
       .attr('height', params.viz.grey_border_width)
       .attr('transform', function() {
@@ -5700,20 +5700,15 @@ function set_up_N_filters(filter_type){
   update_network = this.update_network;
 
 
-  $( '#slider_'+filter_type ).slider({
+  $( '.slider_'+filter_type ).slider({
     value:0,
     min: 0,
     max: inst_max,
     step: 1,
     stop: function( event, ui ) {
 
-      console.log('ui.value '+ String(ui.value))
-
-      // change value 
-      $( "#amount" ).val( "$" + ui.value );
-
       // get value 
-      var inst_index = $( '#slider_'+filter_type ).slider( "value" ); 
+      var inst_index = $( '.slider_'+filter_type ).slider( "value" ); 
 
       var inst_top = N_dict[inst_index];
 
@@ -5724,7 +5719,7 @@ function set_up_N_filters(filter_type){
 
       d3.select(viz_svg).style('opacity',0.70);
 
-      d3.select('#'+filter_type).text('Top rows: '+inst_top+' rows'); 
+      d3.select('.'+filter_type).text('Top rows: '+inst_top+' rows'); 
 
       // $('.slider_filter').slider('disable');
       d3.selectAll('.btn').attr('disabled',true);
@@ -5750,13 +5745,6 @@ function set_up_N_filters(filter_type){
 
     }
   });
-  $( "#amount" ).val( "$" + $( '#slider_'+filter_type ).slider( "value" ) );
-
-
-
-
-
-
 
 } 
 
@@ -5923,13 +5911,15 @@ function set_up_filters(filter_type){
       cgm.find_gene(gene);
     });
 
-    $('#toggle_row_order .btn').off().click(function(evt) {
-      var order_id = $(evt.target).attr('id').split('_')[0];
+    $('.toggle_row_order .btn').off().click(function(evt) {
+      var order_id = $(evt.target).attr('name').split('_')[0];
+      console.log('toggle_row_order')
       cgm.reorder(order_id,'row');
     });
 
-    $('#toggle_col_order .btn').off().click(function(evt) {
-      var order_id = $(evt.target).attr('id').split('_')[0];
+    $('.toggle_col_order .btn').off().click(function(evt) {
+      var order_id = $(evt.target).attr('name').split('_')[0];
+      console.log('toggle_col_order')
       cgm.reorder(order_id,'col');
     });
 
@@ -6030,7 +6020,8 @@ function Viz(params) {
     // left border
     d3.select(params.viz.viz_svg)
       .append('rect')
-      .attr('id', 'left_border')
+      .classed('left_border',true)
+      .classed('borders',true)
       .attr('class', 'borders')
       .attr('fill', border_colors)
       .attr('width', params.viz.grey_border_width)
@@ -6040,8 +6031,8 @@ function Viz(params) {
     // right border
     d3.select(params.viz.viz_svg)
       .append('rect')
-      .attr('id', 'right_border')
-      .attr('class', 'borders')
+      .classed('right_border',true)
+      .classed('borders',true)
       .attr('fill', border_colors)
       .attr('width', params.viz.grey_border_width)
       .attr('height', params.viz.svg_dim.height)
@@ -6053,8 +6044,8 @@ function Viz(params) {
     // top border
     d3.select(params.viz.viz_svg)
       .append('rect')
-      .attr('id', 'top_border')
-      .attr('class', 'borders')
+      .classed('top_border',true)
+      .classed('borders',true)
       .attr('fill', border_colors)
       .attr('width', params.viz.svg_dim.width)
       .attr('height', params.viz.grey_border_width)
@@ -6066,8 +6057,8 @@ function Viz(params) {
     // bottom border
     d3.select(params.viz.viz_svg)
       .append('rect')
-      .attr('id', 'bottom_border')
-      .attr('class', 'borders')
+      .classed('bottom_border',true)
+      .classed('borders',true)
       .attr('fill', border_colors)
       .attr('width', params.viz.svg_dim.width)
       .attr('height', params.viz.grey_border_width)
@@ -6171,22 +6162,22 @@ function Sidebar(viz, params) {
 
   var row_order_controls = '' +
     '<div class="viz_medium_text">Row Order</div>' +
-    ' <div id="toggle_col_order" class="btn-group" data-toggle="buttons">' +
-    '   <label class="btn btn-primary active order_name" id="clust_row">' +
+    ' <div class="btn-group toggle_col_order" data-toggle="buttons">' +
+    '   <label class="btn btn-primary active order_name" name="clust_row">' +
     '     <input type="radio" name="options" autocomplete="off" checked > Cluster' +
     '   </label>' +
-    '   <label class="btn btn-primary order_name"  id="rank_row">' +
+    '   <label class="btn btn-primary order_name"  name="rank_row">' +
     '     <input type="radio" name="options" autocomplete="off"> Rank' +
     '   </label>' +
     '</div>';
 
 
   var col_order_controls = '<div class="viz_medium_text">Column Order</div>' +
-    '<div id="toggle_row_order" class="btn-group" data-toggle="buttons" >' +
-      '<label class="btn btn-primary active order_name" id="clust_col">' +
+    '<div class="btn-group toggle_row_order" data-toggle="buttons" >' +
+      '<label class="btn btn-primary active order_name" name="clust_col">' +
         '<input type="radio" name="options" autocomplete="off" checked > Cluster' + 
       '</label>' +
-      '<label class="btn btn-primary order_name" id="rank_col">' +
+      '<label class="btn btn-primary order_name" name="rank_col">' +
         '<input type="radio" name="options" autocomplete="off" > Rank' +
       '</label>' +
     '</div>';
@@ -6205,8 +6196,8 @@ function Sidebar(viz, params) {
     '<p class="viz_medium_text">Column Group Size</p>' +
     '<div id="slider_col"></div>';
 
-  var N_row_sum = '<div class="viz_medium_text" id="N_row_sum">Top rows: all rows </div>' +
-    '<div id="slider_N_row_sum" class="slider_filter"></div>';
+  var N_row_sum = '<div class="viz_medium_text N_row_sum">Top rows: all rows </div>' +
+    '<div class="slider_filter slider_N_row_sum"></div>';
 
   var parts = params.sidebar.sidebar_wrapper.split(' ');
   var sidebar_class = parts[parts.length-1].replace('.', '');

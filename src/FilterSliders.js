@@ -39,20 +39,15 @@ function set_up_N_filters(filter_type){
   update_network = this.update_network;
 
 
-  $( '#slider_'+filter_type ).slider({
+  $( '.slider_'+filter_type ).slider({
     value:0,
     min: 0,
     max: inst_max,
     step: 1,
     stop: function( event, ui ) {
 
-      console.log('ui.value '+ String(ui.value))
-
-      // change value 
-      $( "#amount" ).val( "$" + ui.value );
-
       // get value 
-      var inst_index = $( '#slider_'+filter_type ).slider( "value" ); 
+      var inst_index = $( '.slider_'+filter_type ).slider( "value" ); 
 
       var inst_top = N_dict[inst_index];
 
@@ -63,7 +58,7 @@ function set_up_N_filters(filter_type){
 
       d3.select(viz_svg).style('opacity',0.70);
 
-      d3.select('#'+filter_type).text('Top rows: '+inst_top+' rows'); 
+      d3.select('.'+filter_type).text('Top rows: '+inst_top+' rows'); 
 
       // $('.slider_filter').slider('disable');
       d3.selectAll('.btn').attr('disabled',true);
@@ -89,13 +84,6 @@ function set_up_N_filters(filter_type){
 
     }
   });
-  $( "#amount" ).val( "$" + $( '#slider_'+filter_type ).slider( "value" ) );
-
-
-
-
-
-
 
 } 
 
@@ -262,13 +250,15 @@ function set_up_filters(filter_type){
       cgm.find_gene(gene);
     });
 
-    $('#toggle_row_order .btn').off().click(function(evt) {
-      var order_id = $(evt.target).attr('id').split('_')[0];
+    $('.toggle_row_order .btn').off().click(function(evt) {
+      var order_id = $(evt.target).attr('name').split('_')[0];
+      console.log('toggle_row_order')
       cgm.reorder(order_id,'row');
     });
 
-    $('#toggle_col_order .btn').off().click(function(evt) {
-      var order_id = $(evt.target).attr('id').split('_')[0];
+    $('.toggle_col_order .btn').off().click(function(evt) {
+      var order_id = $(evt.target).attr('name').split('_')[0];
+      console.log('toggle_col_order')
       cgm.reorder(order_id,'col');
     });
 

@@ -804,13 +804,13 @@
     // add border to svg in four separate lines - to not interfere with clicking anything
     ///////////////////////////////////////////////////////////////////////////////////////
     // left border
-    svg_group.select('#left_border')
+    svg_group.select('.left_border')
       .attr('width', params.viz.grey_border_width)
       .attr('height', params.viz.svg_dim.height)
       .attr('transform', 'translate(0,0)');
 
     // right border
-    svg_group.select('#right_border')
+    svg_group.select('.right_border')
       .attr('width', params.viz.grey_border_width)
       .attr('height', params.viz.svg_dim.height)
       .attr('transform', function() {
@@ -819,7 +819,7 @@
       });
 
     // top border
-    svg_group.select('#top_border')
+    svg_group.select('.top_border')
       .attr('width', params.viz.svg_dim.width)
       .attr('height', params.viz.grey_border_width)
       .attr('transform', function() {
@@ -828,7 +828,7 @@
       });
 
     // bottom border
-    svg_group.select('#bottom_border')
+    svg_group.select('.bottom_border')
       .attr('width', params.viz.svg_dim.width)
       .attr('height', params.viz.grey_border_width)
       .attr('transform', function() {

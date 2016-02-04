@@ -4,22 +4,22 @@ function Sidebar(viz, params) {
 
   var row_order_controls = '' +
     '<div class="viz_medium_text">Row Order</div>' +
-    ' <div id="toggle_col_order" class="btn-group" data-toggle="buttons">' +
-    '   <label class="btn btn-primary active order_name" id="clust_row">' +
+    ' <div class="btn-group toggle_col_order" data-toggle="buttons">' +
+    '   <label class="btn btn-primary active order_name" name="clust_row">' +
     '     <input type="radio" name="options" autocomplete="off" checked > Cluster' +
     '   </label>' +
-    '   <label class="btn btn-primary order_name"  id="rank_row">' +
+    '   <label class="btn btn-primary order_name"  name="rank_row">' +
     '     <input type="radio" name="options" autocomplete="off"> Rank' +
     '   </label>' +
     '</div>';
 
 
   var col_order_controls = '<div class="viz_medium_text">Column Order</div>' +
-    '<div id="toggle_row_order" class="btn-group" data-toggle="buttons" >' +
-      '<label class="btn btn-primary active order_name" id="clust_col">' +
+    '<div class="btn-group toggle_row_order" data-toggle="buttons" >' +
+      '<label class="btn btn-primary active order_name" name="clust_col">' +
         '<input type="radio" name="options" autocomplete="off" checked > Cluster' + 
       '</label>' +
-      '<label class="btn btn-primary order_name" id="rank_col">' +
+      '<label class="btn btn-primary order_name" name="rank_col">' +
         '<input type="radio" name="options" autocomplete="off" > Rank' +
       '</label>' +
     '</div>';
@@ -38,8 +38,8 @@ function Sidebar(viz, params) {
     '<p class="viz_medium_text">Column Group Size</p>' +
     '<div id="slider_col"></div>';
 
-  var N_row_sum = '<div class="viz_medium_text" id="N_row_sum">Top rows: all rows </div>' +
-    '<div id="slider_N_row_sum" class="slider_filter"></div>';
+  var N_row_sum = '<div class="viz_medium_text N_row_sum">Top rows: all rows </div>' +
+    '<div class="slider_filter slider_N_row_sum"></div>';
 
   var parts = params.sidebar.sidebar_wrapper.split(' ');
   var sidebar_class = parts[parts.length-1].replace('.', '');

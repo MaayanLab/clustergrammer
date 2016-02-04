@@ -94,7 +94,8 @@ function Viz(params) {
     // left border
     d3.select(params.viz.viz_svg)
       .append('rect')
-      .attr('id', 'left_border')
+      .classed('left_border',true)
+      .classed('borders',true)
       .attr('class', 'borders')
       .attr('fill', border_colors)
       .attr('width', params.viz.grey_border_width)
@@ -104,8 +105,8 @@ function Viz(params) {
     // right border
     d3.select(params.viz.viz_svg)
       .append('rect')
-      .attr('id', 'right_border')
-      .attr('class', 'borders')
+      .classed('right_border',true)
+      .classed('borders',true)
       .attr('fill', border_colors)
       .attr('width', params.viz.grey_border_width)
       .attr('height', params.viz.svg_dim.height)
@@ -117,8 +118,8 @@ function Viz(params) {
     // top border
     d3.select(params.viz.viz_svg)
       .append('rect')
-      .attr('id', 'top_border')
-      .attr('class', 'borders')
+      .classed('top_border',true)
+      .classed('borders',true)
       .attr('fill', border_colors)
       .attr('width', params.viz.svg_dim.width)
       .attr('height', params.viz.grey_border_width)
@@ -130,8 +131,8 @@ function Viz(params) {
     // bottom border
     d3.select(params.viz.viz_svg)
       .append('rect')
-      .attr('id', 'bottom_border')
-      .attr('class', 'borders')
+      .classed('bottom_border',true)
+      .classed('borders',true)
       .attr('fill', border_colors)
       .attr('width', params.viz.svg_dim.width)
       .attr('height', params.viz.grey_border_width)
