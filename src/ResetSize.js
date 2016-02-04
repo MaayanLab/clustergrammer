@@ -57,11 +57,11 @@
       .attr('transform', 'translate(' + [0, 0 + center_y] + ')' +
       ' scale(' + 1 + ',' + zoom_y + ')' + 'translate(' + [pan_dx,pan_dy] + ')');
 
-    d3.select('#row_label_zoom_container')
+    d3.select(params.root+' .row_label_zoom_container')
       .attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' +
       zoom_y + ',' + zoom_y + ')' + 'translate(' + [0, pan_dy] + ')');
 
-    d3.select('#row_viz_zoom_container')
+    d3.select(params.root+' .row_zoom_container')
       .attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' +
       1 + ',' + zoom_y + ')' + 'translate(' + [0, pan_dy] + ')');
 

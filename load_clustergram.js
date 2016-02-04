@@ -68,10 +68,11 @@ function make_clust(inst_network){
         // 'current_col_cat':'category-one'
       };
 
-      d3.select('#wait_message').remove();
 
       var cgm = clustergrammer(arguments_obj);
       g_cgm = cgm;
+
+      d3.select(g_cgm.params.root+' .wait_message').remove();
 
       // !! tmp set up for initializing sliders 
       // !! tmp set up filters in load clustergram using cgm 

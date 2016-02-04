@@ -91,13 +91,13 @@ function Zoom(params){
       zoom_x + ',' + zoom_y + ')');
 
     // transform row labels
-    d3.select('#row_label_zoom_container')
+    d3.select(params.root+' .row_label_zoom_container')
       .attr('transform', 'translate(' + [0, trans_y] + ') scale(' + zoom_y +
       ')');
 
-    // transform row_viz_zoom_container
+    // transform row_zoom_container
     // use the offset saved in params, only zoom in the y direction
-    d3.select('#row_viz_zoom_container')
+    d3.select(params.root+' .row_zoom_container')
       .attr('transform', 'translate(' + [0, trans_y] + ') scale( 1,' +
       zoom_y + ')');
 
@@ -237,15 +237,15 @@ function Zoom(params){
         ] + ')');
 
       // transform row labels
-      d3.select('#row_label_zoom_container')
+      d3.select(params.root+' .row_label_zoom_container')
         .transition()
         .duration(search_duration)
         .attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' +
         zoom_y + ',' + zoom_y + ')' + 'translate(' + [0, pan_dy] + ')');
 
-      // transform row_viz_zoom_container
+      // transform row_zoom_container
       // use the offset saved in params, only zoom in the y direction
-      d3.select('#row_viz_zoom_container')
+      d3.select(params.root+' .row_zoom_container')
         .transition()
         .duration(search_duration)
         .attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' +
@@ -281,7 +281,7 @@ function Zoom(params){
 
       // re-size of the highlighting rects
       /////////////////////////////////////////
-      d3.select('#row_label_zoom_container')
+      d3.select(params.root+' .row_label_zoom_container')
         .each(function() {
           // get the bounding box of the row label text
           var bbox = d3.select(this)

@@ -27,17 +27,14 @@ function Labels(params){
         params.viz.clust.margin.top + ')');
     }
 
-    // !!!!!!!! tmp change 
-    // white background - behind text and row visualizaitons 
-    // if (row_container.select('.white_bars').empty()){
-    if (d3.select('#row_white_background').empty()){
+    if (d3.select(params.root+' .row_white_background').empty()){
       row_container
         .append('rect')
-        .attr('id','row_white_background')
+        .classed('row_white_background',true)
+        .classed('white_bars',true)
         .attr('fill', params.viz.background_color)
         .attr('width', params.norm_label.background.row)
         .attr('height', 30*params.viz.clust.dim.height + 'px')
-        .attr('class', 'white_bars');
     }
 
     // container to hold text row labels 
@@ -46,9 +43,9 @@ function Labels(params){
       .attr('id','row_label_outer_container')
       .attr('transform', 'translate(' + params.norm_label.width.row + ',0)')
       .append('g')
-      .attr('id', 'row_label_zoom_container');
+      .attr('class', 'row_label_zoom_container');
 
-    var row_labels = d3.select('#row_label_zoom_container')
+    var row_labels = d3.select(params.root+' .row_label_zoom_container')
       .selectAll('g')
       .data(row_nodes, function(d){return d.name;})
       .enter()
@@ -59,7 +56,7 @@ function Labels(params){
         return 'translate(0,' + params.matrix.y_scale(inst_index) + ')';
       });
 
-    d3.select('#row_label_zoom_container')
+    d3.select(params.root+' .row_label_zoom_container')
       .selectAll('.row_label_text')
       .on('dblclick', function(d) {
         console.log('double clicking row')
@@ -172,20 +169,21 @@ function Labels(params){
       .attr('id','row_viz_outer_container')
       .attr('transform', 'translate(' + params.norm_label.width.row + ',0)')
       .append('g')
-      .attr('id', 'row_viz_zoom_container');
+      .attr('class', 'row_zoom_container');
 
     // white background for triangle
     // if (row_viz_outer_container.select('white_bars').empty()){
-    if (d3.select('#row_viz_zoom_container').select('.white_bars').empty()){
-      row_viz_outer_container
-        .append('rect')
-        .attr('class','white_bars')
-        .attr('fill', params.viz.background_color)
-        .attr('width', params.class_room.row + 'px')
-        .attr('height', function() {
-          var inst_height = params.viz.clust.dim.height;
-          return inst_height;
-        });
+    if (d3.select(params.root+' .row_zoom_container')
+        .select('.white_bars').empty()){
+          row_viz_outer_container
+            .append('rect')
+            .attr('class','white_bars')
+            .attr('fill', params.viz.background_color)
+            .attr('width', params.class_room.row + 'px')
+            .attr('height', function() {
+              var inst_height = params.viz.clust.dim.height;
+              return inst_height;
+            });
     } else {
       row_viz_outer_container
         .select('class','white_bars')
@@ -198,7 +196,7 @@ function Labels(params){
     }
 
     // groups that hold classification triangle and colorbar rect  
-    var row_viz_group = d3.select('#row_viz_zoom_container')
+    var row_viz_group = d3.select(params.root+' .row_zoom_container')
       .selectAll('g')
       .data(row_nodes, function(d){return d.name;})
       .enter()
