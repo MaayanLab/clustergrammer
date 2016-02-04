@@ -612,8 +612,8 @@ function Matrix(network_data, svg_elem, params) {
         // top highlight
         d3.select(clicked_rect.parentNode)
           .append('rect')
-          .attr('class','click_hlight')
-          .attr('id','top_hlight')
+          .classed('click_hlight',true)
+          .classed('top_hlight',true)
           .attr('width', params.matrix.x_scale.rangeBand())
           .attr('height', hlight_height)
           .attr('fill',params.matrix.hlight_color)
@@ -625,8 +625,8 @@ function Matrix(network_data, svg_elem, params) {
         // left highlight
         d3.select(clicked_rect.parentNode)
           .append('rect')
-          .attr('class','click_hlight')
-          .attr('id','left_hlight')
+          .classed('click_hlight',true)
+          .classed('left_hlight',true)
           .attr('width', hlight_width)
           .attr('height', params.matrix.y_scale.rangeBand() - hlight_height*0.99 )
           .attr('fill',params.matrix.hlight_color)
@@ -639,8 +639,8 @@ function Matrix(network_data, svg_elem, params) {
         // right highlight
         d3.select(clicked_rect.parentNode)
           .append('rect')
-          .attr('class','click_hlight')
-          .attr('id','right_hlight')
+          .classed('click_hlight',true)
+          .classed('right_hlight',true)
           .attr('width', hlight_width)
           .attr('height', params.matrix.y_scale.rangeBand() - hlight_height*0.99 )
           .attr('fill',params.matrix.hlight_color)
@@ -654,8 +654,8 @@ function Matrix(network_data, svg_elem, params) {
         // bottom highlight
         d3.select(clicked_rect.parentNode)
           .append('rect')
-          .attr('class','click_hlight')
-          .attr('id','bottom_hlight')
+          .classed('click_hlight',true)
+          .classed('bottom_hlight',true)
           .attr('width', function(){
             return params.matrix.x_scale.rangeBand() - 1.98*hlight_width})
           .attr('height', hlight_height)
@@ -1779,15 +1779,15 @@ function Params(input_config) {
 
     if (params.viz.expand_button) {
 
-      d3.select('#expand_button').on('click', null);
+      d3.select(params.root+' .expand_button').on('click', null);
       var expand_opacity = 0.4;
 
-      if (d3.select('#expand_button').empty()) {
+      if (d3.select(params.root+' .expand_button').empty()) {
         var exp_button = d3.select(params.viz.viz_svg)
           .append('text')
-          .attr('id', 'expand_button');
+          .attr('class', 'expand_button');
       } else {
-        var exp_button = d3.select('#expand_button')
+        var exp_button = d3.select(params.root+' .expand_button')
       }
 
       exp_button
@@ -2738,7 +2738,7 @@ function SuperLabels(params) {
     });
 
   // super row label (rotate the already translated title )
-  d3.select('#super_row')
+  d3.select(params.root+' .super_row')
     .append('text')
     .text(params.labels.super.row)
     .attr('text-anchor', 'center')
@@ -3207,7 +3207,7 @@ function draw_grid_lines(row_nodes, col_nodes) {
     var hlight_height = rel_width_hlight*params.viz.border_width/params.viz.zoom_switch;
 
     // top highlight
-    d3.select('#top_hlight')
+    d3.select(params.root+' .top_hlight')
       .attr('width', params.matrix.rect_width)
       .attr('height', hlight_height)
       .attr('transform', function() {
@@ -3215,7 +3215,7 @@ function draw_grid_lines(row_nodes, col_nodes) {
       });
 
     // left highlight
-    d3.select('#left_hlight')
+    d3.select(params.root+' .left_hlight')
       .attr('width', hlight_width)
       .attr('height', params.matrix.rect_width - hlight_height*0.99 )
       .attr('transform', function() {
@@ -3224,7 +3224,7 @@ function draw_grid_lines(row_nodes, col_nodes) {
       });
 
     // right highlight
-    d3.select('#right_hlight')
+    d3.select(params.root+' .right_hlight')
       .attr('width', hlight_width)
       .attr('height', params.matrix.rect_height - hlight_height*0.99 )
       .attr('transform', function() {
@@ -3234,7 +3234,7 @@ function draw_grid_lines(row_nodes, col_nodes) {
       });
 
     // bottom highlight
-    d3.select('#bottom_hlight')
+    d3.select(params.root+' .bottom_hlight')
       .attr('width', function(){
         return params.matrix.rect_width - 1.98*hlight_width})
       .attr('height', hlight_height)
@@ -3247,11 +3247,11 @@ function draw_grid_lines(row_nodes, col_nodes) {
 
     // resize row highlight
     /////////////////////////
-    d3.select('#row_top_hlight')
+    d3.select(params.root+' .row_top_hlight')
       .attr('width',params.viz.svg_dim.width)
       .attr('height',hlight_height);
 
-    d3.select('#row_bottom_hlight')
+    d3.select(params.root+' .row_bottom_hlight')
       .attr('width',params.viz.svg_dim.width)
       .attr('height',hlight_height)
       .attr('transform', function(){
@@ -3261,7 +3261,7 @@ function draw_grid_lines(row_nodes, col_nodes) {
 
     // resize col highlight 
     /////////////////////////
-    d3.select('#col_top_hlight')
+    d3.select(params.root+' .col_top_hlight')
       .attr('width',params.viz.clust.dim.height)
       .attr('height',hlight_width)
       .attr('transform',function(){
@@ -3271,7 +3271,7 @@ function draw_grid_lines(row_nodes, col_nodes) {
             return 'translate('+tmp_translate_x+','+tmp_translate_y+')';
           });
 
-    d3.select('#col_bottom_hlight')
+    d3.select(params.root+' .col_bottom_hlight')
       .attr('width',params.viz.clust.dim.height)
       .attr('height',hlight_width)
       .attr('transform', function(){
@@ -4714,11 +4714,11 @@ function enter_exit_update(params, network_data, reorder, delays){
       params.viz.clust.margin.top + ')');
 
   // reposition row container 
-  d3.select('#row_viz_outer_container')
+  d3.select(params.root+' .row_viz_outer_container')
     .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
 
   // reposition col container 
-  d3.select('#col_label_outer_container')
+  d3.select(params.root+' .col_label_outer_container')
     .attr('transform', 'translate(0,' + params.norm_label.width.col + ')');
 
   // reposition col_viz container 
@@ -6676,7 +6676,7 @@ function Reorder(params){
     ////////////////////////////////
 
     // top highlight
-    d3.select('#top_hlight')
+    d3.select(params.root+' .top_hlight')
       .attr('width', params.matrix.x_scale.rangeBand())
       .attr('height', hlight_height)
       .transition().duration(2500)
@@ -6685,7 +6685,7 @@ function Reorder(params){
       });
 
     // left highlight
-    d3.select('#left_hlight')
+    d3.select(params.root+' .left_hlight')
       .attr('width', hlight_width)
       .attr('height', params.matrix.y_scale.rangeBand() - hlight_height*0.99 )
       .transition().duration(2500)
@@ -6695,7 +6695,7 @@ function Reorder(params){
       });
 
     // right highlight
-    d3.select('#right_hlight')
+    d3.select(params.root+' .right_hlight')
       .attr('width', hlight_width)
       .attr('height', params.matrix.y_scale.rangeBand() - hlight_height*0.99 )
       .transition().duration(2500)
@@ -6706,7 +6706,7 @@ function Reorder(params){
       });
 
     // bottom highlight
-    d3.select('#bottom_hlight')
+    d3.select(params.root+' .bottom_hlight')
       .attr('width', function(){
         return params.matrix.x_scale.rangeBand() - 1.98*hlight_width})
       .attr('height', hlight_height)

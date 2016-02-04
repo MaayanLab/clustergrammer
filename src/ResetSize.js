@@ -323,7 +323,7 @@
     var hlight_height = rel_width_hlight*params.viz.border_width/params.viz.zoom_switch;
 
     // top highlight
-    d3.select('#top_hlight')
+    d3.select(params.root+' .top_hlight')
       .attr('width', params.matrix.rect_width)
       .attr('height', hlight_height)
       .attr('transform', function() {
@@ -331,7 +331,7 @@
       });
 
     // left highlight
-    d3.select('#left_hlight')
+    d3.select(params.root+' .left_hlight')
       .attr('width', hlight_width)
       .attr('height', params.matrix.rect_width - hlight_height*0.99 )
       .attr('transform', function() {
@@ -340,7 +340,7 @@
       });
 
     // right highlight
-    d3.select('#right_hlight')
+    d3.select(params.root+' .right_hlight')
       .attr('width', hlight_width)
       .attr('height', params.matrix.rect_height - hlight_height*0.99 )
       .attr('transform', function() {
@@ -350,7 +350,7 @@
       });
 
     // bottom highlight
-    d3.select('#bottom_hlight')
+    d3.select(params.root+' .bottom_hlight')
       .attr('width', function(){
         return params.matrix.rect_width - 1.98*hlight_width})
       .attr('height', hlight_height)
@@ -363,11 +363,11 @@
 
     // resize row highlight
     /////////////////////////
-    d3.select('#row_top_hlight')
+    d3.select(params.root+' .row_top_hlight')
       .attr('width',params.viz.svg_dim.width)
       .attr('height',hlight_height);
 
-    d3.select('#row_bottom_hlight')
+    d3.select(params.root+' .row_bottom_hlight')
       .attr('width',params.viz.svg_dim.width)
       .attr('height',hlight_height)
       .attr('transform', function(){
@@ -377,7 +377,7 @@
 
     // resize col highlight 
     /////////////////////////
-    d3.select('#col_top_hlight')
+    d3.select(params.root+' .col_top_hlight')
       .attr('width',params.viz.clust.dim.height)
       .attr('height',hlight_width)
       .attr('transform',function(){
@@ -387,7 +387,7 @@
             return 'translate('+tmp_translate_x+','+tmp_translate_y+')';
           });
 
-    d3.select('#col_bottom_hlight')
+    d3.select(params.root+' .col_bottom_hlight')
       .attr('width',params.viz.clust.dim.height)
       .attr('height',hlight_width)
       .attr('transform', function(){

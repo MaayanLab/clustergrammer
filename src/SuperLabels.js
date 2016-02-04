@@ -59,7 +59,7 @@ function SuperLabels(params) {
     });
 
   // super row label (rotate the already translated title )
-  d3.select('#super_row')
+  d3.select(params.root+' .super_row')
     .append('text')
     .text(params.labels.super.row)
     .attr('text-anchor', 'center')

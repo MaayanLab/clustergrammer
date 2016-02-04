@@ -453,7 +453,7 @@ function Reorder(params){
     ////////////////////////////////
 
     // top highlight
-    d3.select('#top_hlight')
+    d3.select(params.root+' .top_hlight')
       .attr('width', params.matrix.x_scale.rangeBand())
       .attr('height', hlight_height)
       .transition().duration(2500)
@@ -462,7 +462,7 @@ function Reorder(params){
       });
 
     // left highlight
-    d3.select('#left_hlight')
+    d3.select(params.root+' .left_hlight')
       .attr('width', hlight_width)
       .attr('height', params.matrix.y_scale.rangeBand() - hlight_height*0.99 )
       .transition().duration(2500)
@@ -472,7 +472,7 @@ function Reorder(params){
       });
 
     // right highlight
-    d3.select('#right_hlight')
+    d3.select(params.root+' .right_hlight')
       .attr('width', hlight_width)
       .attr('height', params.matrix.y_scale.rangeBand() - hlight_height*0.99 )
       .transition().duration(2500)
@@ -483,7 +483,7 @@ function Reorder(params){
       });
 
     // bottom highlight
-    d3.select('#bottom_hlight')
+    d3.select(params.root+' .bottom_hlight')
       .attr('width', function(){
         return params.matrix.x_scale.rangeBand() - 1.98*hlight_width})
       .attr('height', hlight_height)

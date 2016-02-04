@@ -209,7 +209,7 @@ function play_demo(){
     sim_click('single',25,25);
 
     setTimeout( function(){      
-      $("#expand_button").d3Click()
+      $('.expand_button').d3Click()
     }, 500);
   }
 

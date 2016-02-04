@@ -558,15 +558,15 @@ function Params(input_config) {
 
     if (params.viz.expand_button) {
 
-      d3.select('#expand_button').on('click', null);
+      d3.select(params.root+' .expand_button').on('click', null);
       var expand_opacity = 0.4;
 
-      if (d3.select('#expand_button').empty()) {
+      if (d3.select(params.root+' .expand_button').empty()) {
         var exp_button = d3.select(params.viz.viz_svg)
           .append('text')
-          .attr('id', 'expand_button');
+          .attr('class', 'expand_button');
       } else {
-        var exp_button = d3.select('#expand_button')
+        var exp_button = d3.select(params.root+' .expand_button')
       }
 
       exp_button

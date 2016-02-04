@@ -121,8 +121,8 @@ function Matrix(network_data, svg_elem, params) {
         // top highlight
         d3.select(clicked_rect.parentNode)
           .append('rect')
-          .attr('class','click_hlight')
-          .attr('id','top_hlight')
+          .classed('click_hlight',true)
+          .classed('top_hlight',true)
           .attr('width', params.matrix.x_scale.rangeBand())
           .attr('height', hlight_height)
           .attr('fill',params.matrix.hlight_color)
@@ -134,8 +134,8 @@ function Matrix(network_data, svg_elem, params) {
         // left highlight
         d3.select(clicked_rect.parentNode)
           .append('rect')
-          .attr('class','click_hlight')
-          .attr('id','left_hlight')
+          .classed('click_hlight',true)
+          .classed('left_hlight',true)
           .attr('width', hlight_width)
           .attr('height', params.matrix.y_scale.rangeBand() - hlight_height*0.99 )
           .attr('fill',params.matrix.hlight_color)
@@ -148,8 +148,8 @@ function Matrix(network_data, svg_elem, params) {
         // right highlight
         d3.select(clicked_rect.parentNode)
           .append('rect')
-          .attr('class','click_hlight')
-          .attr('id','right_hlight')
+          .classed('click_hlight',true)
+          .classed('right_hlight',true)
           .attr('width', hlight_width)
           .attr('height', params.matrix.y_scale.rangeBand() - hlight_height*0.99 )
           .attr('fill',params.matrix.hlight_color)
@@ -163,8 +163,8 @@ function Matrix(network_data, svg_elem, params) {
         // bottom highlight
         d3.select(clicked_rect.parentNode)
           .append('rect')
-          .attr('class','click_hlight')
-          .attr('id','bottom_hlight')
+          .classed('click_hlight',true)
+          .classed('bottom_hlight',true)
           .attr('width', function(){
             return params.matrix.x_scale.rangeBand() - 1.98*hlight_width})
           .attr('height', hlight_height)
