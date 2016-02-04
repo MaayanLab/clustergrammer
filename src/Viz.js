@@ -96,7 +96,6 @@ function Viz(params) {
       .append('rect')
       .classed('left_border',true)
       .classed('borders',true)
-      .attr('class', 'borders')
       .attr('fill', border_colors)
       .attr('width', params.viz.grey_border_width)
       .attr('height', params.viz.svg_dim.height)

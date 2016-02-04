@@ -127,8 +127,8 @@ function set_up_filters(filter_type){
         $('#slider_filter_row_sum').slider( "value", 0);
         $('#slider_filter_row_num').slider( "value", 0);
 
-        d3.select('#filter_row_sum').text('Filter Sum: 0%');          
-        d3.select('#filter_row_num').text('Filter Number Non-zero: 0%');          
+        d3.select('.filter_row_sum').text('Filter Sum: 0%');          
+        d3.select('.filter_row_num').text('Filter Number Non-zero: 0%');          
 
       } else if (filter_type === 'filter_row_num'){
 
@@ -137,8 +137,8 @@ function set_up_filters(filter_type){
         $('#slider_filter_row_value').slider( "value", 0);
         $('#slider_filter_row_sum').slider( "value", 0);
 
-        d3.select('#filter_row_sum').text('Filter Sum: 0%');          
-        d3.select('#filter_row_value').text('Filter Value: 0%');          
+        d3.select('.filter_row_sum').text('Filter Sum: 0%');          
+        d3.select('.filter_row_value').text('Filter Value: 0%');          
 
       } else if (filter_type === 'filter_row_sum'){
 
@@ -147,8 +147,8 @@ function set_up_filters(filter_type){
         $('#slider_filter_row_value').slider( "value", 0);
         $('#slider_filter_row_num').slider( "value", 0);
 
-        d3.select('#filter_row_value').text('Filter Value: 0%');          
-        d3.select('#filter_row_num').text('Filter Number Non-zero: 0%'); 
+        d3.select('.filter_row_value').text('Filter Value: 0%');          
+        d3.select('.filter_row_num').text('Filter Number Non-zero: 0%'); 
 
       }
 
@@ -157,7 +157,7 @@ function set_up_filters(filter_type){
       d3.select(viz_svg)
         .style('opacity',0.70);
 
-      d3.select('#'+filter_type).text('Filter '+filter_name+': '+10*inst_filt+'%');          
+      d3.select('.'+filter_type).text('Filter '+filter_name+': '+10*inst_filt+'%');          
 
       $('.slider_filter').slider('disable');
       d3.selectAll('.btn').attr('disabled',true);

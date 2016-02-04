@@ -2316,11 +2316,11 @@ function Labels(params){
 
 
     // make container to pre-position zoomable elements
-    if (d3.select('#col_container').empty()){
+    if (d3.select(params.root+' .col_container').empty()){
 
       var container_all_col = d3.select(params.viz.viz_svg)
         .append('g')
-        .attr('id','col_container')
+        .attr('class','col_container')
         .attr('transform', 'translate(' + params.viz.clust.margin.left + ',' +
         params.norm_label.margin.top + ')');
 
@@ -2343,7 +2343,7 @@ function Labels(params){
 
     } else {
       
-      var container_all_col = d3.select('#col_container')
+      var container_all_col = d3.select(params.root+' .col_container')
         .attr('transform', 'translate(' + params.viz.clust.margin.left + ',' +
         params.norm_label.margin.top + ')');
           
@@ -2452,7 +2452,7 @@ function Labels(params){
 
       d3.select(params.viz.viz_wrapper)
         .select('svg')
-        .select('#col_container')
+        .select(params.root+' .col_container')
         .call(tip);
         
       col_label_obj
@@ -3415,16 +3415,16 @@ function draw_grid_lines(row_nodes, col_nodes) {
 
       // resize col labels
       ///////////////////////
-      svg_group.select('#col_container')
+      svg_group.select(params.root+' .col_container')
         .attr('transform', 'translate(' + params.viz.clust.margin.left + ',' +
         params.norm_label.margin.top + ')');
 
-      svg_group.select('#col_container')
+      svg_group.select(params.root+' .col_container')
         .select('.white_bars')
         .attr('width', 30 * params.viz.clust.dim.width + 'px')
         .attr('height', params.norm_label.background.col);
 
-      svg_group.select('#col_container')
+      svg_group.select(params.root+' .col_container')
         .select('.col_label_outer_container')
         .attr('transform', 'translate(0,' + params.norm_label.width.col + ')');
 
@@ -4145,18 +4145,18 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
 
     if (delays.run_transition){
 
-      svg_group.select('#col_container')
+      svg_group.select(params.root+' .col_container')
         .transition().delay(delays.update).duration(duration)
         .attr('transform', 'translate(' + params.viz.clust.margin.left + ',' +
         params.norm_label.margin.top + ')');
 
-      svg_group.select('#col_container')
+      svg_group.select(params.root+' .col_container')
         .transition().delay(delays.update).duration(duration)
         .select('.white_bars')
         .attr('width', 30 * params.viz.clust.dim.width + 'px')
         .attr('height', params.norm_label.background.col);
 
-      svg_group.select('#col_container')
+      svg_group.select(params.root+' .col_container')
         .transition().delay(delays.update).duration(duration)
         .select('.col_label_outer_container')
         .attr('transform', 'translate(0,' + params.norm_label.width.col + ')');
@@ -4191,16 +4191,16 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
 
     } else {
 
-      svg_group.select('#col_container')
+      svg_group.select(params.root+' .col_container')
         .attr('transform', 'translate(' + params.viz.clust.margin.left + ',' +
         params.norm_label.margin.top + ')');
 
-      svg_group.select('#col_container')
+      svg_group.select(params.root+' .col_container')
         .select('.white_bars')
         .attr('width', 30 * params.viz.clust.dim.width + 'px')
         .attr('height', params.norm_label.background.col);
 
-      svg_group.select('#col_container')
+      svg_group.select(params.root+' .col_container')
         .select('.col_label_outer_container')
         .attr('transform', 'translate(0,' + params.norm_label.width.col + ')');
 
@@ -5780,8 +5780,8 @@ function set_up_filters(filter_type){
         $('#slider_filter_row_sum').slider( "value", 0);
         $('#slider_filter_row_num').slider( "value", 0);
 
-        d3.select('#filter_row_sum').text('Filter Sum: 0%');          
-        d3.select('#filter_row_num').text('Filter Number Non-zero: 0%');          
+        d3.select('.filter_row_sum').text('Filter Sum: 0%');          
+        d3.select('.filter_row_num').text('Filter Number Non-zero: 0%');          
 
       } else if (filter_type === 'filter_row_num'){
 
@@ -5790,8 +5790,8 @@ function set_up_filters(filter_type){
         $('#slider_filter_row_value').slider( "value", 0);
         $('#slider_filter_row_sum').slider( "value", 0);
 
-        d3.select('#filter_row_sum').text('Filter Sum: 0%');          
-        d3.select('#filter_row_value').text('Filter Value: 0%');          
+        d3.select('.filter_row_sum').text('Filter Sum: 0%');          
+        d3.select('.filter_row_value').text('Filter Value: 0%');          
 
       } else if (filter_type === 'filter_row_sum'){
 
@@ -5800,8 +5800,8 @@ function set_up_filters(filter_type){
         $('#slider_filter_row_value').slider( "value", 0);
         $('#slider_filter_row_num').slider( "value", 0);
 
-        d3.select('#filter_row_value').text('Filter Value: 0%');          
-        d3.select('#filter_row_num').text('Filter Number Non-zero: 0%'); 
+        d3.select('.filter_row_value').text('Filter Value: 0%');          
+        d3.select('.filter_row_num').text('Filter Number Non-zero: 0%'); 
 
       }
 
@@ -5810,7 +5810,7 @@ function set_up_filters(filter_type){
       d3.select(viz_svg)
         .style('opacity',0.70);
 
-      d3.select('#'+filter_type).text('Filter '+filter_name+': '+10*inst_filt+'%');          
+      d3.select('.'+filter_type).text('Filter '+filter_name+': '+10*inst_filt+'%');          
 
       $('.slider_filter').slider('disable');
       d3.selectAll('.btn').attr('disabled',true);
@@ -6014,7 +6014,6 @@ function Viz(params) {
       .append('rect')
       .classed('left_border',true)
       .classed('borders',true)
-      .attr('class', 'borders')
       .attr('fill', border_colors)
       .attr('width', params.viz.grey_border_width)
       .attr('height', params.viz.svg_dim.height)

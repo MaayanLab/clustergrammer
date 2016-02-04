@@ -110,7 +110,7 @@ function play_demo(){
 
     setTimeout(
       function(){
-        d3.select('#slider_col')
+        d3.select('.slider_col')
             .transition()
             .style('box-shadow','0px 0px 10px 5px #007f00')
             .transition().duration(1).delay(5500)
@@ -142,7 +142,7 @@ function play_demo(){
 
     demo_text('Search for rows using\nthe search box', 4000);
 
-    d3.select('#gene_search_container')
+    d3.select('.gene_search_container')
       .transition()
         .style('background','#007f00')
         .style('box-shadow','0px 0px 10px 5px #007f00')
@@ -260,7 +260,7 @@ function play_demo(){
 
     // make play button
     //////////////////////////
-    var play_button = d3.select('#main_svg')
+    var play_button = d3.select('.main_svg')
       .append('g')
       .attr('id','play_button');
 
@@ -293,7 +293,7 @@ function play_demo(){
       .style('opacity',0.5);
 
     // mouseover behavior
-    d3.select('#play_button')
+    d3.select('.play_button')
       .on('mouseover', function(){
         d3.select(this)
           .select('path')
@@ -318,7 +318,7 @@ function play_demo(){
 
     // play text group 
     ///////////////////////////
-    var demo_group = d3.select('#main_svg')
+    var demo_group = d3.select('.main_svg')
       .append('g')
       .attr('id','demo_group')
       .attr('transform', function(){
@@ -371,11 +371,11 @@ function play_demo(){
   function toggle_play_button(appear){
 
     if (appear === false){
-      d3.select('#play_button')
+      d3.select('.play_button')
         .transition().duration(500)
         .style('opacity',0);
     } else {
-      d3.select('#play_button')
+      d3.select('.play_button')
         .transition().duration(500)
         .style('opacity',1)
     }
@@ -412,7 +412,7 @@ function play_demo(){
     demo_text(reorder_text, 7000);
 
     setTimeout( function(){
-      d3.select('#toggle_col_order')
+      d3.select('.toggle_col_order')
           .transition()
           .style('background','#007f00')
           .style('box-shadow','0px 0px 10px 5px #007f00')
@@ -425,7 +425,7 @@ function play_demo(){
     setTimeout( click_reorder , 2000,  inst_order, 'row');
 
     setTimeout( function(){
-      d3.select('#toggle_row_order')
+      d3.select('.toggle_row_order')
           .transition()
           .style('background','#007f00')
           .style('box-shadow','0px 0px 10px 5px #007f00')
@@ -448,7 +448,7 @@ function play_demo(){
     var ini_wait = 4500;
     demo_text(text, ini_wait);
 
-    d3.select('#slider_filter')
+    d3.select('.slider_filter')
         .transition()
         .style('box-shadow','0px 0px 10px 5px #007f00')
         .transition().duration(1).delay(12000)
@@ -471,7 +471,7 @@ function play_demo(){
   function sim_click(single_double, pos_x, pos_y){
     var click_duration = 200;
 
-    var click_circle = d3.select('#main_svg')
+    var click_circle = d3.select('.main_svg')
       .append('circle')
       .attr('cx',pos_x)
       .attr('cy',pos_y)
@@ -508,7 +508,7 @@ function play_demo(){
     setTimeout( demo_text, 300, text, 1900 );
 
     $("#slider_filter").slider( "value", change_view.filter);
-    d3.select('#filter_value').text('Filter: '+change_view.filter*100+'%');
+    d3.select('.filter_value').text('Filter: '+change_view.filter*100+'%');
     cgm.update_network(change_view);
   }
 
@@ -526,7 +526,7 @@ function play_demo(){
       split_text.push('');
     }
 
-    d3.select('#demo_group')
+    d3.select('.demo_group')
       .style('opacity',0)
       .transition().duration(250)
       .style('opacity',1)
@@ -541,14 +541,14 @@ function play_demo(){
 
       // make text box 
       //////////////////
-      var inst_text_obj = d3.select('#demo_group')
+      var inst_text_obj = d3.select('.demo_group')
         .select('#text_'+inst_text_num)
         .text(split_text[i]);
       var bbox = inst_text_obj[0][0].getBBox();
 
       var box_opacity = 0.85;
 
-      d3.select('#demo_group')
+      d3.select('.demo_group')
         .select('#rect_'+inst_text_num)
         .style('fill','white')
         .attr('width', bbox.width+20)

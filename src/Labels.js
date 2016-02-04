@@ -340,11 +340,11 @@ function Labels(params){
 
 
     // make container to pre-position zoomable elements
-    if (d3.select('#col_container').empty()){
+    if (d3.select(params.root+' .col_container').empty()){
 
       var container_all_col = d3.select(params.viz.viz_svg)
         .append('g')
-        .attr('id','col_container')
+        .attr('class','col_container')
         .attr('transform', 'translate(' + params.viz.clust.margin.left + ',' +
         params.norm_label.margin.top + ')');
 
@@ -367,7 +367,7 @@ function Labels(params){
 
     } else {
       
-      var container_all_col = d3.select('#col_container')
+      var container_all_col = d3.select(params.root+' .col_container')
         .attr('transform', 'translate(' + params.viz.clust.margin.left + ',' +
         params.norm_label.margin.top + ')');
           
@@ -476,7 +476,7 @@ function Labels(params){
 
       d3.select(params.viz.viz_wrapper)
         .select('svg')
-        .select('#col_container')
+        .select(params.root+' .col_container')
         .call(tip);
         
       col_label_obj

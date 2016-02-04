@@ -523,16 +523,16 @@
 
       // resize col labels
       ///////////////////////
-      svg_group.select('#col_container')
+      svg_group.select(params.root+' .col_container')
         .attr('transform', 'translate(' + params.viz.clust.margin.left + ',' +
         params.norm_label.margin.top + ')');
 
-      svg_group.select('#col_container')
+      svg_group.select(params.root+' .col_container')
         .select('.white_bars')
         .attr('width', 30 * params.viz.clust.dim.width + 'px')
         .attr('height', params.norm_label.background.col);
 
-      svg_group.select('#col_container')
+      svg_group.select(params.root+' .col_container')
         .select('.col_label_outer_container')
         .attr('transform', 'translate(0,' + params.norm_label.width.col + ')');
 

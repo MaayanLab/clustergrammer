@@ -407,18 +407,18 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
 
     if (delays.run_transition){
 
-      svg_group.select('#col_container')
+      svg_group.select(params.root+' .col_container')
         .transition().delay(delays.update).duration(duration)
         .attr('transform', 'translate(' + params.viz.clust.margin.left + ',' +
         params.norm_label.margin.top + ')');
 
-      svg_group.select('#col_container')
+      svg_group.select(params.root+' .col_container')
         .transition().delay(delays.update).duration(duration)
         .select('.white_bars')
         .attr('width', 30 * params.viz.clust.dim.width + 'px')
         .attr('height', params.norm_label.background.col);
 
-      svg_group.select('#col_container')
+      svg_group.select(params.root+' .col_container')
         .transition().delay(delays.update).duration(duration)
         .select('.col_label_outer_container')
         .attr('transform', 'translate(0,' + params.norm_label.width.col + ')');
@@ -453,16 +453,16 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
 
     } else {
 
-      svg_group.select('#col_container')
+      svg_group.select(params.root+' .col_container')
         .attr('transform', 'translate(' + params.viz.clust.margin.left + ',' +
         params.norm_label.margin.top + ')');
 
-      svg_group.select('#col_container')
+      svg_group.select(params.root+' .col_container')
         .select('.white_bars')
         .attr('width', 30 * params.viz.clust.dim.width + 'px')
         .attr('height', params.norm_label.background.col);
 
-      svg_group.select('#col_container')
+      svg_group.select(params.root+' .col_container')
         .select('.col_label_outer_container')
         .attr('transform', 'translate(0,' + params.norm_label.width.col + ')');
 
