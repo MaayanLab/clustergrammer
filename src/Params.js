@@ -100,10 +100,6 @@ function Params(input_config) {
 
     // not initialized in expand state
     // params.viz.expand = false;
-    if (params.viz.expand === true) {
-      d3.select('#clust_instruct_container')
-        .style('display', 'none');
-    }
     params.viz.expand_button = config.expand_button;
 
     // // pass network_data to params
@@ -602,8 +598,6 @@ function Params(input_config) {
           // expand view
           if (params.viz.expand === false) {
 
-            d3.select('#clust_instruct_container')
-              .style('display', 'none');
             d3.select(this)
               .text(function (d) {
                 // menu button
@@ -617,8 +611,6 @@ function Params(input_config) {
             // contract view
           } else {
 
-            d3.select('#clust_instruct_container')
-              .style('display', 'block');
             d3.select(this)
               .text(function (d) {
                 // expand button

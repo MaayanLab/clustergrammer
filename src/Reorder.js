@@ -85,7 +85,8 @@ function Reorder(params){
         });
 
       // t.selectAll('.column')
-      d3.select('#col_label_zoom_container').selectAll('.col_label_text')
+      d3.select(params.root+' .col_zoom_container')
+        .selectAll('.col_label_text')
         .transition().duration(2500)
         .attr('transform', function(d) {
           var inst_index = _.indexOf(col_nodes_names, d.name);
@@ -143,7 +144,8 @@ function Reorder(params){
         });
 
       // t.selectAll('.column')
-      d3.select('#col_label_zoom_container').selectAll('.col_label_text')
+      d3.select(params.root+' .col_zoom_container')
+        .selectAll('.col_label_text')
         .attr('transform', function(d) {
           var inst_index = _.indexOf(col_nodes_names,d.name);
           return 'translate(' + params.matrix.x_scale(inst_index) + ') rotate(-90)';
@@ -227,7 +229,8 @@ function Reorder(params){
       var t = viz.get_clust_group();
 
       // Move Col Labels
-      d3.select('#col_label_zoom_container').selectAll('.col_label_text')
+      d3.select(params.root+' .col_zoom_container')
+        .selectAll('.col_label_text')
         .attr('transform', function(d) {
           var inst_index = _.indexOf(col_nodes_names, d.name);
           return 'translate(' + params.matrix.x_scale(inst_index) + ')rotate(-90)';
@@ -248,7 +251,8 @@ function Reorder(params){
       var t = viz.get_clust_group().transition().duration(2500);
 
       // Move Col Labels
-      d3.select('#col_label_zoom_container').selectAll('.col_label_text')
+      d3.select(params.root+' .col_zoom_container')
+        .selectAll('.col_label_text')
         .transition().duration(2500)
         .attr('transform', function(d) {
           var inst_index = _.indexOf(col_nodes_names, d.name);

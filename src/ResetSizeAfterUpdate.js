@@ -26,7 +26,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
     .attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' +
     1 + ',' + zoom_y + ')' + 'translate(' + [0, pan_dy] + ')');
 
-  d3.select('#col_label_zoom_container')
+  d3.select(params.root+' .col_zoom_container')
     .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [pan_dx, 0] + ')');
 
   d3.select('.col_viz_zoom_container')

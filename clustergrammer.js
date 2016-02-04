@@ -1321,10 +1321,6 @@ function Params(input_config) {
 
     // not initialized in expand state
     // params.viz.expand = false;
-    if (params.viz.expand === true) {
-      d3.select('#clust_instruct_container')
-        .style('display', 'none');
-    }
     params.viz.expand_button = config.expand_button;
 
     // // pass network_data to params
@@ -1823,8 +1819,6 @@ function Params(input_config) {
           // expand view
           if (params.viz.expand === false) {
 
-            d3.select('#clust_instruct_container')
-              .style('display', 'none');
             d3.select(this)
               .text(function (d) {
                 // menu button
@@ -1838,8 +1832,6 @@ function Params(input_config) {
             // contract view
           } else {
 
-            d3.select('#clust_instruct_container')
-              .style('display', 'block');
             d3.select(this)
               .text(function (d) {
                 // expand button
@@ -2339,7 +2331,7 @@ function Labels(params){
         // position the outer col label group
         .attr('transform', 'translate(0,' + params.norm_label.width.col + ')')
         .append('g')
-        .attr('id', 'col_label_zoom_container');
+        .attr('class', 'col_zoom_container');
 
     } else {
       
@@ -2361,7 +2353,7 @@ function Labels(params){
 
 
     // add main column label group
-    var col_label_obj = d3.select('#col_label_zoom_container')
+    var col_label_obj = d3.select(params.root+' .col_zoom_container')
       .selectAll('.col_label_text')
       .data(col_nodes, function(d){return d.name;})
       .enter()
@@ -2957,7 +2949,7 @@ function draw_grid_lines(row_nodes, col_nodes) {
       .attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' +
       1 + ',' + zoom_y + ')' + 'translate(' + [0, pan_dy] + ')');
 
-    d3.select('#col_label_zoom_container')
+    d3.select(params.root+' .col_zoom_container')
       .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [pan_dx, 0] + ')');
 
     d3.select('.col_viz_zoom_container')
@@ -3764,7 +3756,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
     .attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' +
     1 + ',' + zoom_y + ')' + 'translate(' + [0, pan_dy] + ')');
 
-  d3.select('#col_label_zoom_container')
+  d3.select(params.root+' .col_zoom_container')
     .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [pan_dx, 0] + ')');
 
   d3.select('.col_viz_zoom_container')
@@ -6316,7 +6308,8 @@ function Reorder(params){
         });
 
       // t.selectAll('.column')
-      d3.select('#col_label_zoom_container').selectAll('.col_label_text')
+      d3.select(params.root+' .col_zoom_container')
+        .selectAll('.col_label_text')
         .transition().duration(2500)
         .attr('transform', function(d) {
           var inst_index = _.indexOf(col_nodes_names, d.name);
@@ -6374,7 +6367,8 @@ function Reorder(params){
         });
 
       // t.selectAll('.column')
-      d3.select('#col_label_zoom_container').selectAll('.col_label_text')
+      d3.select(params.root+' .col_zoom_container')
+        .selectAll('.col_label_text')
         .attr('transform', function(d) {
           var inst_index = _.indexOf(col_nodes_names,d.name);
           return 'translate(' + params.matrix.x_scale(inst_index) + ') rotate(-90)';
@@ -6458,7 +6452,8 @@ function Reorder(params){
       var t = viz.get_clust_group();
 
       // Move Col Labels
-      d3.select('#col_label_zoom_container').selectAll('.col_label_text')
+      d3.select(params.root+' .col_zoom_container')
+        .selectAll('.col_label_text')
         .attr('transform', function(d) {
           var inst_index = _.indexOf(col_nodes_names, d.name);
           return 'translate(' + params.matrix.x_scale(inst_index) + ')rotate(-90)';
@@ -6479,7 +6474,8 @@ function Reorder(params){
       var t = viz.get_clust_group().transition().duration(2500);
 
       // Move Col Labels
-      d3.select('#col_label_zoom_container').selectAll('.col_label_text')
+      d3.select(params.root+' .col_zoom_container')
+        .selectAll('.col_label_text')
         .transition().duration(2500)
         .attr('transform', function(d) {
           var inst_index = _.indexOf(col_nodes_names, d.name);
@@ -6839,7 +6835,7 @@ function Zoom(params){
 
     // transform col labels
     // move down col labels as zooming occurs, subtract trans_x - 20 almost works
-    d3.select('#col_label_zoom_container')
+    d3.select(params.root+' .col_zoom_container')
       .attr('transform', 'translate(' + [trans_x, 0] + ') scale(' + zoom_x +
       ')');
 
@@ -6988,7 +6984,7 @@ function Zoom(params){
         1 + ',' + zoom_y + ')' + 'translate(' + [0, pan_dy] + ')');
 
       // transform col labels
-      d3.select('#col_label_zoom_container')
+      d3.select(params.root+' .col_zoom_container')
         .transition()
         .duration(search_duration)
         .attr('transform', ' scale(' + zoom_x + ',' + zoom_x + ')' + 'translate(' + [
