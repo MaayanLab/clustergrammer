@@ -18,7 +18,7 @@ function Spillover( params, container_all_col ){
       // mini-language for drawing path in d3, used to draw triangle
       .attr('d', 'M 0,0 L 500,-500, L 500,0 Z')
       .attr('fill', params.viz.background_color) //!! prog_colors
-      .attr('id', 'right_slant_triangle')
+      .attr('class', 'right_slant_triangle')
       .attr('transform', 'translate(' + params.viz.clust.dim.width + ',' +
       params.norm_label.width.col + ')');
 
@@ -29,7 +29,7 @@ function Spillover( params, container_all_col ){
       // mini-language for drawing path in d3, used to draw triangle
       .attr('d', 'M 0,0 L 500,-500, L 0,-500 Z')
       .attr('fill', params.viz.background_color)
-      .attr('id', 'left_slant_triangle')
+      .attr('class', 'left_slant_triangle')
       // shift left by 1 px to prevent cutting off labels
       .attr('transform', 'translate(-1,' + params.norm_label.width.col +
       ')');
@@ -42,7 +42,7 @@ function Spillover( params, container_all_col ){
       .attr('fill', params.viz.background_color) //!! prog_colors
       .attr('width', params.viz.clust.margin.left)
       .attr('height', params.viz.clust.margin.top)
-      .attr('id', 'top_left_white');
+      .attr('class', 'top_left_white');
 
     // hide spillover from right
     d3.select(params.viz.viz_svg)
@@ -57,13 +57,13 @@ function Spillover( params, container_all_col ){
         return 'translate(' + tmp_left + ',' + tmp_top + ')';
       })
       .attr('class', 'white_bars')
-      .attr('id','right_spillover');
+      .attr('class','right_spillover');
 
     // white border bottom - prevent clustergram from hitting border
     ///////////////////////////////////////////////////////////////////
     d3.select(params.viz.viz_svg)
       .append('rect')
-      .attr('id','bottom_spillover')
+      .attr('class','bottom_spillover')
       .attr('fill', params.viz.background_color) //!! prog_colors
       .attr('width', params.viz.svg_dim.width)
       // make this border twice the width of the grey border

@@ -36,8 +36,8 @@ function Matrix(network_data, svg_elem, params) {
   // clustergram background rect
   clust_group
     .append('rect')
-    .attr('class', 'background')
-    .attr('id', 'grey_background')
+    .classed('background',true)
+    .classed('grey_background',true)
     .style('fill', '#eee')
     .attr('width', params.viz.clust.dim.width)
     .attr('height', params.viz.clust.dim.height);

@@ -133,7 +133,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
   var svg_group = d3.select(params.viz.viz_wrapper)
     .select('svg'); 
 
-  svg_group.select('#grey_background')
+  svg_group.select(params.root+' .grey_background')
     .transition().delay(delays.update).duration(duration)
     .attr('width', params.viz.clust.dim.width)
     .attr('height', params.viz.clust.dim.height);
@@ -183,18 +183,18 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
 
   if (delays.run_transition){
 
-    svg_group.select('#row_container')
+    svg_group.select(params.root+' .row_container')
       .transition().delay(delays.update).duration(duration)
       .attr('transform', 'translate(' + params.norm_label.margin.left + ',' +
       params.viz.clust.margin.top + ')');
 
-    svg_group.select('#row_container')
+    svg_group.select(params.root+' .row_container')
       .select('.white_bars')
       .transition().delay(delays.update).duration(duration)
       .attr('width', params.norm_label.background.row)
       .attr('height', 30*params.viz.clust.dim.height + 'px');
 
-    svg_group.select('#row_container')
+    svg_group.select(params.root+' .row_container')
       .select('#row_label_outer_container')
       .transition().delay(delays.update).duration(duration)
       .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
@@ -209,16 +209,16 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
       .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35 );
 
   } else {
-      svg_group.select('#row_container')
+      svg_group.select(params.root+' .row_container')
       .attr('transform', 'translate(' + params.norm_label.margin.left + ',' +
       params.viz.clust.margin.top + ')');
 
-    svg_group.select('#row_container')
+    svg_group.select(params.root+' .row_container')
       .select('.white_bars')
       .attr('width', params.norm_label.background.row)
       .attr('height', 30*params.viz.clust.dim.height + 'px');
 
-    svg_group.select('#row_container')
+    svg_group.select(params_root+' .row_container')
       .select('#row_label_outer_container')
       .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
 

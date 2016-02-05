@@ -15,14 +15,15 @@ function Labels(params){
     var row_nodes_names = params.network_data.row_nodes_names;
 
     // row container holds all row text and row visualizations (triangles rects)
-    if ( d3.select(params.viz.vis_svg + ' #row_container').empty() ){
+    if ( d3.select(params.viz.vis_svg + ' .row_container').empty() ){
       var row_container = d3.select(params.viz.viz_svg)
         .append('g')
-        .attr('id','row_container')
+        .attr('class','row_container')
         .attr('transform', 'translate(' + params.norm_label.margin.left + ',' +
         params.viz.clust.margin.top + ')');
     } else {
-      var row_container = d3.select(params.viz.viz_svg).select('id','row_container')
+      var row_container = d3.select(params.viz.viz_svg)
+        .select('.row_container')
         .attr('transform', 'translate(' + params.norm_label.margin.left + ',' +
         params.viz.clust.margin.top + ')');
     }
@@ -40,7 +41,7 @@ function Labels(params){
     // container to hold text row labels 
     row_container
       .append('g')
-      .attr('id','row_label_outer_container')
+      .attr('class','row_label_outer_container')
       .attr('transform', 'translate(' + params.norm_label.width.row + ',0)')
       .append('g')
       .attr('class', 'row_label_zoom_container');
@@ -79,7 +80,7 @@ function Labels(params){
         });
 
       d3.select(params.viz.viz_wrapper)
-        .select('#row_container')
+        .select(params.root+' .row_container')
         .call(tip);
         
       row_labels
@@ -166,7 +167,7 @@ function Labels(params){
     // row visualizations - classification triangles and colorbar rects 
     var row_viz_outer_container = row_container
       .append('g')
-      .attr('id','row_viz_outer_container')
+      .attr('class','row_viz_outer_container')
       .attr('transform', 'translate(' + params.norm_label.width.row + ',0)')
       .append('g')
       .attr('class', 'row_zoom_container');
@@ -293,8 +294,8 @@ function Labels(params){
 
           d3.select(clicked_row)
             .append('rect')
-            .attr('class','click_hlight')
-            .attr('id','row_top_hlight')
+            .classed('click_hlight',true)
+            .classed('row_top_hlight',true)
             .attr('width',params.viz.svg_dim.width)
             .attr('height',hlight_height)
             .attr('fill',params.matrix.hlight_color)
@@ -302,8 +303,8 @@ function Labels(params){
 
           d3.select(clicked_row)
             .append('rect')
-            .attr('class','click_hlight')
-            .attr('id','row_bottom_hlight')
+            .classed('click_hlight',true)
+            .classed('row_bottom_hlight',true)
             .attr('width',params.viz.svg_dim.width)
             .attr('height',hlight_height)
             .attr('fill',params.matrix.hlight_color)
@@ -359,7 +360,7 @@ function Labels(params){
       // col labels
       container_all_col
         .append('g')
-        .attr('id','col_label_outer_container')
+        .attr('class','col_label_outer_container')
         // position the outer col label group
         .attr('transform', 'translate(0,' + params.norm_label.width.col + ')')
         .append('g')
@@ -661,8 +662,8 @@ function Labels(params){
 
         d3.select(clicked_col)
           .append('rect')
-          .attr('class','click_hlight')
-          .attr('id','col_top_hlight')
+          .classed('click_hlight',true)
+          .classed('col_top_hlight',true)
           .attr('width',params.viz.clust.dim.height)
           .attr('height',hlight_width)
           .attr('fill',params.matrix.hlight_color)
@@ -676,8 +677,8 @@ function Labels(params){
 
         d3.select(clicked_col)
           .append('rect')
-          .attr('class','click_hlight')
-          .attr('id','col_bottom_hlight')
+          .classed('click_hlight',true)
+          .classed('col_bottom_hlight',true)
           .attr('width',params.viz.clust.dim.height)
           .attr('height',hlight_width)
           .attr('fill',params.matrix.hlight_color)

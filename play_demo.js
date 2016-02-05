@@ -224,7 +224,7 @@ function play_demo(){
       });
 
     tmp
-      .attr('id','demo_col_click');
+      .attr('class','demo_col_click');
 
     setTimeout(delay_clicking_row, 3500);
     // duration 7000
@@ -262,7 +262,7 @@ function play_demo(){
     //////////////////////////
     var play_button = d3.select('.main_svg')
       .append('g')
-      .attr('id','play_button');
+      .attr('class','play_button');
 
     play_button
       .attr('transform', function(){
@@ -320,7 +320,7 @@ function play_demo(){
     ///////////////////////////
     var demo_group = d3.select('.main_svg')
       .append('g')
-      .attr('id','demo_group')
+      .attr('class','demo_group')
       .attr('transform', function(){
           var pos_x = 100;
           var pos_y = 130 ;
@@ -329,27 +329,27 @@ function play_demo(){
       
     demo_group
       .append('rect')
-      .attr('id','rect_1');
+      .attr('class','rect_1');
 
     demo_group
       .append('rect')
-      .attr('id','rect_2');
+      .attr('class','rect_2');
 
     demo_group
       .append('rect')
-      .attr('id','rect_3');
+      .attr('class','rect_3');
 
     var demo_text_size = 40;
     demo_group
       .append('text')
-      .attr('id','text_1')
+      .attr('class','text_1')
       .attr('font-size',demo_text_size+'px')
       .attr('font-weight',1000)
       .attr('font-family','"Helvetica Neue", Helvetica, Arial, sans-serif');
 
     demo_group
       .append('text')
-      .attr('id','text_2')
+      .attr('class','text_2')
       .attr('font-size',demo_text_size+'px')
       .attr('font-weight',1000)
       .attr('font-family','"Helvetica Neue", Helvetica, Arial, sans-serif')
@@ -359,7 +359,7 @@ function play_demo(){
 
     demo_group
       .append('text')
-      .attr('id','text_3')
+      .attr('class','text_3')
       .attr('font-size',demo_text_size+'px')
       .attr('font-weight',1000)
       .attr('font-family','"Helvetica Neue", Helvetica, Arial, sans-serif')

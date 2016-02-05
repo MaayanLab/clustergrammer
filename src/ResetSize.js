@@ -409,16 +409,16 @@
     // resize row labels
     ///////////////////////////
 
-    svg_group.select('#row_container')
+    svg_group.select(params.root+' row_container')
       .attr('transform', 'translate(' + params.norm_label.margin.left + ',' +
       params.viz.clust.margin.top + ')');
 
-    svg_group.select('#row_container')
+    svg_group.select(params.root+' .row_container')
       .select('.white_bars')
       .attr('width', params.norm_label.background.row)
       .attr('height', 30*params.viz.clust.dim.height + 'px');
 
-    svg_group.select('#row_container')
+    svg_group.select(params.root+' .row_container')
       .select('#row_label_outer_container')
       .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
 

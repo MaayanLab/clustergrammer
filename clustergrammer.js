@@ -527,8 +527,8 @@ function Matrix(network_data, svg_elem, params) {
   // clustergram background rect
   clust_group
     .append('rect')
-    .attr('class', 'background')
-    .attr('id', 'grey_background')
+    .classed('background',true)
+    .classed('grey_background',true)
     .style('fill', '#eee')
     .attr('width', params.viz.clust.dim.width)
     .attr('height', params.viz.clust.dim.height);
@@ -1983,14 +1983,15 @@ function Labels(params){
     var row_nodes_names = params.network_data.row_nodes_names;
 
     // row container holds all row text and row visualizations (triangles rects)
-    if ( d3.select(params.viz.vis_svg + ' #row_container').empty() ){
+    if ( d3.select(params.viz.vis_svg + ' .row_container').empty() ){
       var row_container = d3.select(params.viz.viz_svg)
         .append('g')
-        .attr('id','row_container')
+        .attr('class','row_container')
         .attr('transform', 'translate(' + params.norm_label.margin.left + ',' +
         params.viz.clust.margin.top + ')');
     } else {
-      var row_container = d3.select(params.viz.viz_svg).select('id','row_container')
+      var row_container = d3.select(params.viz.viz_svg)
+        .select('.row_container')
         .attr('transform', 'translate(' + params.norm_label.margin.left + ',' +
         params.viz.clust.margin.top + ')');
     }
@@ -2008,7 +2009,7 @@ function Labels(params){
     // container to hold text row labels 
     row_container
       .append('g')
-      .attr('id','row_label_outer_container')
+      .attr('class','row_label_outer_container')
       .attr('transform', 'translate(' + params.norm_label.width.row + ',0)')
       .append('g')
       .attr('class', 'row_label_zoom_container');
@@ -2047,7 +2048,7 @@ function Labels(params){
         });
 
       d3.select(params.viz.viz_wrapper)
-        .select('#row_container')
+        .select(params.root+' .row_container')
         .call(tip);
         
       row_labels
@@ -2134,7 +2135,7 @@ function Labels(params){
     // row visualizations - classification triangles and colorbar rects 
     var row_viz_outer_container = row_container
       .append('g')
-      .attr('id','row_viz_outer_container')
+      .attr('class','row_viz_outer_container')
       .attr('transform', 'translate(' + params.norm_label.width.row + ',0)')
       .append('g')
       .attr('class', 'row_zoom_container');
@@ -2261,8 +2262,8 @@ function Labels(params){
 
           d3.select(clicked_row)
             .append('rect')
-            .attr('class','click_hlight')
-            .attr('id','row_top_hlight')
+            .classed('click_hlight',true)
+            .classed('row_top_hlight',true)
             .attr('width',params.viz.svg_dim.width)
             .attr('height',hlight_height)
             .attr('fill',params.matrix.hlight_color)
@@ -2270,8 +2271,8 @@ function Labels(params){
 
           d3.select(clicked_row)
             .append('rect')
-            .attr('class','click_hlight')
-            .attr('id','row_bottom_hlight')
+            .classed('click_hlight',true)
+            .classed('row_bottom_hlight',true)
             .attr('width',params.viz.svg_dim.width)
             .attr('height',hlight_height)
             .attr('fill',params.matrix.hlight_color)
@@ -2327,7 +2328,7 @@ function Labels(params){
       // col labels
       container_all_col
         .append('g')
-        .attr('id','col_label_outer_container')
+        .attr('class','col_label_outer_container')
         // position the outer col label group
         .attr('transform', 'translate(0,' + params.norm_label.width.col + ')')
         .append('g')
@@ -2629,8 +2630,8 @@ function Labels(params){
 
         d3.select(clicked_col)
           .append('rect')
-          .attr('class','click_hlight')
-          .attr('id','col_top_hlight')
+          .classed('click_hlight',true)
+          .classed('col_top_hlight',true)
           .attr('width',params.viz.clust.dim.height)
           .attr('height',hlight_width)
           .attr('fill',params.matrix.hlight_color)
@@ -2644,8 +2645,8 @@ function Labels(params){
 
         d3.select(clicked_col)
           .append('rect')
-          .attr('class','click_hlight')
-          .attr('id','col_bottom_hlight')
+          .classed('click_hlight',true)
+          .classed('col_bottom_hlight',true)
           .attr('width',params.viz.clust.dim.height)
           .attr('height',hlight_width)
           .attr('fill',params.matrix.hlight_color)
@@ -2775,7 +2776,7 @@ function Spillover( params, container_all_col ){
       // mini-language for drawing path in d3, used to draw triangle
       .attr('d', 'M 0,0 L 500,-500, L 500,0 Z')
       .attr('fill', params.viz.background_color) //!! prog_colors
-      .attr('id', 'right_slant_triangle')
+      .attr('class', 'right_slant_triangle')
       .attr('transform', 'translate(' + params.viz.clust.dim.width + ',' +
       params.norm_label.width.col + ')');
 
@@ -2786,7 +2787,7 @@ function Spillover( params, container_all_col ){
       // mini-language for drawing path in d3, used to draw triangle
       .attr('d', 'M 0,0 L 500,-500, L 0,-500 Z')
       .attr('fill', params.viz.background_color)
-      .attr('id', 'left_slant_triangle')
+      .attr('class', 'left_slant_triangle')
       // shift left by 1 px to prevent cutting off labels
       .attr('transform', 'translate(-1,' + params.norm_label.width.col +
       ')');
@@ -2799,7 +2800,7 @@ function Spillover( params, container_all_col ){
       .attr('fill', params.viz.background_color) //!! prog_colors
       .attr('width', params.viz.clust.margin.left)
       .attr('height', params.viz.clust.margin.top)
-      .attr('id', 'top_left_white');
+      .attr('class', 'top_left_white');
 
     // hide spillover from right
     d3.select(params.viz.viz_svg)
@@ -2814,13 +2815,13 @@ function Spillover( params, container_all_col ){
         return 'translate(' + tmp_left + ',' + tmp_top + ')';
       })
       .attr('class', 'white_bars')
-      .attr('id','right_spillover');
+      .attr('class','right_spillover');
 
     // white border bottom - prevent clustergram from hitting border
     ///////////////////////////////////////////////////////////////////
     d3.select(params.viz.viz_svg)
       .append('rect')
-      .attr('id','bottom_spillover')
+      .attr('class','bottom_spillover')
       .attr('fill', params.viz.background_color) //!! prog_colors
       .attr('width', params.viz.svg_dim.width)
       // make this border twice the width of the grey border
@@ -3293,16 +3294,16 @@ function draw_grid_lines(row_nodes, col_nodes) {
     // resize row labels
     ///////////////////////////
 
-    svg_group.select('#row_container')
+    svg_group.select(params.root+' row_container')
       .attr('transform', 'translate(' + params.norm_label.margin.left + ',' +
       params.viz.clust.margin.top + ')');
 
-    svg_group.select('#row_container')
+    svg_group.select(params.root+' .row_container')
       .select('.white_bars')
       .attr('width', params.norm_label.background.row)
       .attr('height', 30*params.viz.clust.dim.height + 'px');
 
-    svg_group.select('#row_container')
+    svg_group.select(params.root+' .row_container')
       .select('#row_label_outer_container')
       .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
 
@@ -3863,7 +3864,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
   var svg_group = d3.select(params.viz.viz_wrapper)
     .select('svg'); 
 
-  svg_group.select('#grey_background')
+  svg_group.select(params.root+' .grey_background')
     .transition().delay(delays.update).duration(duration)
     .attr('width', params.viz.clust.dim.width)
     .attr('height', params.viz.clust.dim.height);
@@ -3913,18 +3914,18 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
 
   if (delays.run_transition){
 
-    svg_group.select('#row_container')
+    svg_group.select(params.root+' .row_container')
       .transition().delay(delays.update).duration(duration)
       .attr('transform', 'translate(' + params.norm_label.margin.left + ',' +
       params.viz.clust.margin.top + ')');
 
-    svg_group.select('#row_container')
+    svg_group.select(params.root+' .row_container')
       .select('.white_bars')
       .transition().delay(delays.update).duration(duration)
       .attr('width', params.norm_label.background.row)
       .attr('height', 30*params.viz.clust.dim.height + 'px');
 
-    svg_group.select('#row_container')
+    svg_group.select(params.root+' .row_container')
       .select('#row_label_outer_container')
       .transition().delay(delays.update).duration(duration)
       .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
@@ -3939,16 +3940,16 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
       .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35 );
 
   } else {
-      svg_group.select('#row_container')
+      svg_group.select(params.root+' .row_container')
       .attr('transform', 'translate(' + params.norm_label.margin.left + ',' +
       params.viz.clust.margin.top + ')');
 
-    svg_group.select('#row_container')
+    svg_group.select(params.root+' .row_container')
       .select('.white_bars')
       .attr('width', params.norm_label.background.row)
       .attr('height', 30*params.viz.clust.dim.height + 'px');
 
-    svg_group.select('#row_container')
+    svg_group.select(params_root+' .row_container')
       .select('#row_label_outer_container')
       .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
 
