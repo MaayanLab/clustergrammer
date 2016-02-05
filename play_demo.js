@@ -542,14 +542,14 @@ function play_demo(){
       // make text box 
       //////////////////
       var inst_text_obj = d3.select('.demo_group')
-        .select('#text_'+inst_text_num)
+        .select('.text_'+inst_text_num)
         .text(split_text[i]);
       var bbox = inst_text_obj[0][0].getBBox();
 
       var box_opacity = 0.85;
 
       d3.select('.demo_group')
-        .select('#rect_'+inst_text_num)
+        .select('.rect_'+inst_text_num)
         .style('fill','white')
         .attr('width', bbox.width+20)
         .attr('height',bbox.height)

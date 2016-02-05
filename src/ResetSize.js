@@ -224,7 +224,7 @@
       .style('width', params.viz.svg_dim.width)
       .style('height', params.viz.svg_dim.height);
 
-    svg_group.select('#grey_background')
+    svg_group.select('.grey_background')
       .attr('width', params.viz.clust.dim.width)
       .attr('height', params.viz.clust.dim.height);
 
@@ -419,7 +419,7 @@
       .attr('height', 30*params.viz.clust.dim.height + 'px');
 
     svg_group.select(params.root+' .row_container')
-      .select('#row_label_outer_container')
+      .select('.row_label_container')
       .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
 
     svg_group.selectAll('.row_label_text')
@@ -465,10 +465,10 @@
       }
     });
 
-    svg_group.select('#row_viz_outer_container')
+    svg_group.select('.row_viz_container')
       .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
 
-    svg_group.select('#row_viz_outer_container')
+    svg_group.select('.row_viz_container')
       .select('white_bars')
       .attr('width', params.class_room.row + 'px')
       .attr('height', function() {
@@ -741,7 +741,7 @@
 
     // resize superlabels
     /////////////////////////////////////
-    svg_group.select('#super_col_bkg')
+    svg_group.select('.super_col_bkg')
       .attr('height', params.labels.super_label_width + 'px')
       .attr('transform', 'translate(0,' + params.viz.grey_border_width + ')');
 
@@ -771,7 +771,7 @@
     // resize spillover
     //////////////////////////
     // hide spillover from slanted column labels on right side
-    svg_group.select('#right_slant_triangle')
+    svg_group.select('.right_slant_triangle')
       .attr('transform', 'translate(' + params.viz.clust.dim.width + ',' +
       params.norm_label.width.col + ')');
 
@@ -782,7 +782,7 @@
       .attr('width', params.viz.clust.margin.left)
       .attr('height', params.viz.clust.margin.top);
 
-    svg_group.select('#right_spillover')
+    svg_group.select('.right_spillover')
       .attr('transform', function() {
         var tmp_left = params.viz.clust.margin.left + params.viz.clust.dim.width;
         var tmp_top = params.norm_label.margin.top + params.norm_label.width
@@ -791,7 +791,7 @@
       });
 
     // white border bottom - prevent clustergram from hitting border
-    svg_group.select('#bottom_spillover')
+    svg_group.select('.bottom_spillover')
       .attr('width', params.viz.svg_dim.width)
       .attr('height', 2 * params.viz.grey_border_width)
       .attr('transform', function() {

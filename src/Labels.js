@@ -41,7 +41,7 @@ function Labels(params){
     // container to hold text row labels 
     row_container
       .append('g')
-      .attr('class','row_label_outer_container')
+      .attr('class','row_label_container')
       .attr('transform', 'translate(' + params.norm_label.width.row + ',0)')
       .append('g')
       .attr('class', 'row_label_zoom_container');
@@ -165,18 +165,16 @@ function Labels(params){
     });
 
     // row visualizations - classification triangles and colorbar rects 
-    var row_viz_outer_container = row_container
+    var row_viz_container = row_container
       .append('g')
-      .attr('class','row_viz_outer_container')
+      .attr('class','row_viz_container')
       .attr('transform', 'translate(' + params.norm_label.width.row + ',0)')
       .append('g')
       .attr('class', 'row_zoom_container');
 
     // white background for triangle
-    // if (row_viz_outer_container.select('white_bars').empty()){
-    if (d3.select(params.root+' .row_zoom_container')
-        .select('.white_bars').empty()){
-          row_viz_outer_container
+    if (d3.select(params.root+' .row_zoom_container').select('.white_bars').empty()){
+          row_viz_container
             .append('rect')
             .attr('class','white_bars')
             .attr('fill', params.viz.background_color)
@@ -186,7 +184,7 @@ function Labels(params){
               return inst_height;
             });
     } else {
-      row_viz_outer_container
+      row_viz_container
         .select('class','white_bars')
         .attr('fill', params.viz.background_color)
         .attr('width', params.class_room.row + 'px')
@@ -380,7 +378,7 @@ function Labels(params){
         .attr('height', params.norm_label.background.col);
 
       // col labels
-      container_all_col.select('#col_label_outer_container')
+      container_all_col.select(params.root+' .col_label_outer_container')
 
     }
 

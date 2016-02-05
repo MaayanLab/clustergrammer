@@ -8,8 +8,8 @@ function SuperLabels(params) {
     .attr('fill', params.viz.background_color)
     .attr('height', params.labels.super_label_width + 'px')
     .attr('width', '3000px')
-    .attr('id', 'super_col_bkg')
-    .attr('class', 'white_bars')
+    .classed('super_col_bkg',true)
+    .classed('white_bars',true)
     .attr('transform', 'translate(0,' + params.viz.grey_border_width + ')');
 
   // super col title

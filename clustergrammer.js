@@ -2009,7 +2009,7 @@ function Labels(params){
     // container to hold text row labels 
     row_container
       .append('g')
-      .attr('class','row_label_outer_container')
+      .attr('class','row_label_container')
       .attr('transform', 'translate(' + params.norm_label.width.row + ',0)')
       .append('g')
       .attr('class', 'row_label_zoom_container');
@@ -2133,18 +2133,16 @@ function Labels(params){
     });
 
     // row visualizations - classification triangles and colorbar rects 
-    var row_viz_outer_container = row_container
+    var row_viz_container = row_container
       .append('g')
-      .attr('class','row_viz_outer_container')
+      .attr('class','row_viz_container')
       .attr('transform', 'translate(' + params.norm_label.width.row + ',0)')
       .append('g')
       .attr('class', 'row_zoom_container');
 
     // white background for triangle
-    // if (row_viz_outer_container.select('white_bars').empty()){
-    if (d3.select(params.root+' .row_zoom_container')
-        .select('.white_bars').empty()){
-          row_viz_outer_container
+    if (d3.select(params.root+' .row_zoom_container').select('.white_bars').empty()){
+          row_viz_container
             .append('rect')
             .attr('class','white_bars')
             .attr('fill', params.viz.background_color)
@@ -2154,7 +2152,7 @@ function Labels(params){
               return inst_height;
             });
     } else {
-      row_viz_outer_container
+      row_viz_container
         .select('class','white_bars')
         .attr('fill', params.viz.background_color)
         .attr('width', params.class_room.row + 'px')
@@ -2348,7 +2346,7 @@ function Labels(params){
         .attr('height', params.norm_label.background.col);
 
       // col labels
-      container_all_col.select('#col_label_outer_container')
+      container_all_col.select(params.root+' .col_label_outer_container')
 
     }
 
@@ -2688,8 +2686,8 @@ function SuperLabels(params) {
     .attr('fill', params.viz.background_color)
     .attr('height', params.labels.super_label_width + 'px')
     .attr('width', '3000px')
-    .attr('id', 'super_col_bkg')
-    .attr('class', 'white_bars')
+    .classed('super_col_bkg',true)
+    .classed('white_bars',true)
     .attr('transform', 'translate(0,' + params.viz.grey_border_width + ')');
 
   // super col title
@@ -3109,7 +3107,7 @@ function draw_grid_lines(row_nodes, col_nodes) {
       .style('width', params.viz.svg_dim.width)
       .style('height', params.viz.svg_dim.height);
 
-    svg_group.select('#grey_background')
+    svg_group.select('.grey_background')
       .attr('width', params.viz.clust.dim.width)
       .attr('height', params.viz.clust.dim.height);
 
@@ -3304,7 +3302,7 @@ function draw_grid_lines(row_nodes, col_nodes) {
       .attr('height', 30*params.viz.clust.dim.height + 'px');
 
     svg_group.select(params.root+' .row_container')
-      .select('#row_label_outer_container')
+      .select('.row_label_container')
       .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
 
     svg_group.selectAll('.row_label_text')
@@ -3350,10 +3348,10 @@ function draw_grid_lines(row_nodes, col_nodes) {
       }
     });
 
-    svg_group.select('#row_viz_outer_container')
+    svg_group.select('.row_viz_container')
       .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
 
-    svg_group.select('#row_viz_outer_container')
+    svg_group.select('.row_viz_container')
       .select('white_bars')
       .attr('width', params.class_room.row + 'px')
       .attr('height', function() {
@@ -3626,7 +3624,7 @@ function draw_grid_lines(row_nodes, col_nodes) {
 
     // resize superlabels
     /////////////////////////////////////
-    svg_group.select('#super_col_bkg')
+    svg_group.select('.super_col_bkg')
       .attr('height', params.labels.super_label_width + 'px')
       .attr('transform', 'translate(0,' + params.viz.grey_border_width + ')');
 
@@ -3656,7 +3654,7 @@ function draw_grid_lines(row_nodes, col_nodes) {
     // resize spillover
     //////////////////////////
     // hide spillover from slanted column labels on right side
-    svg_group.select('#right_slant_triangle')
+    svg_group.select('.right_slant_triangle')
       .attr('transform', 'translate(' + params.viz.clust.dim.width + ',' +
       params.norm_label.width.col + ')');
 
@@ -3667,7 +3665,7 @@ function draw_grid_lines(row_nodes, col_nodes) {
       .attr('width', params.viz.clust.margin.left)
       .attr('height', params.viz.clust.margin.top);
 
-    svg_group.select('#right_spillover')
+    svg_group.select('.right_spillover')
       .attr('transform', function() {
         var tmp_left = params.viz.clust.margin.left + params.viz.clust.dim.width;
         var tmp_top = params.norm_label.margin.top + params.norm_label.width
@@ -3676,7 +3674,7 @@ function draw_grid_lines(row_nodes, col_nodes) {
       });
 
     // white border bottom - prevent clustergram from hitting border
-    svg_group.select('#bottom_spillover')
+    svg_group.select('.bottom_spillover')
       .attr('width', params.viz.svg_dim.width)
       .attr('height', 2 * params.viz.grey_border_width)
       .attr('transform', function() {
@@ -3926,7 +3924,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
       .attr('height', 30*params.viz.clust.dim.height + 'px');
 
     svg_group.select(params.root+' .row_container')
-      .select('#row_label_outer_container')
+      .select('.row_label_container')
       .transition().delay(delays.update).duration(duration)
       .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
 
@@ -3950,7 +3948,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
       .attr('height', 30*params.viz.clust.dim.height + 'px');
 
     svg_group.select(params_root+' .row_container')
-      .select('#row_label_outer_container')
+      .select('.row_label_container')
       .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
 
     svg_group.selectAll('.row_label_text')
@@ -4029,11 +4027,11 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
       .transition().delay(delays.update).duration(duration)
       .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35 );
 
-    svg_group.select('#row_viz_outer_container')
+    svg_group.select('.row_viz_container')
       .transition().delay(delays.update).duration(duration)
       .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
 
-    svg_group.select('#row_viz_outer_container')
+    svg_group.select('.row_viz_container')
       .transition().delay(delays.update).duration(duration)
       .select('white_bars')
       .attr('width', params.class_room.row + 'px')
@@ -4072,10 +4070,10 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
       .select('text')
       .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35 );
 
-    svg_group.select('#row_viz_outer_container')
+    svg_group.select('.row_viz_container')
       .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
 
-    svg_group.select('#row_viz_outer_container')
+    svg_group.select('.row_viz_container')
       .select('white_bars')
       .attr('width', params.class_room.row + 'px')
       .attr('height', function() {
@@ -4459,7 +4457,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
 
   // resize superlabels
   /////////////////////////////////////
-  svg_group.select('#super_col_bkg')
+  svg_group.select('.super_col_bkg')
     // .transition().delay(delays.update).duration(duration)
     .attr('height', params.labels.super_label_width + 'px')
     .attr('transform', 'translate(0,' + params.viz.grey_border_width + ')');
@@ -4493,7 +4491,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
   // resize spillover
   //////////////////////////
   // hide spillover from slanted column labels on right side
-  svg_group.select('#right_slant_triangle')
+  svg_group.select('.right_slant_triangle')
     .transition().delay(delays.update).duration(duration)
     .attr('transform', 'translate(' + params.viz.clust.dim.width + ',' +
     params.norm_label.width.col + ')');
@@ -4507,7 +4505,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
     .attr('width', params.viz.clust.margin.left)
     .attr('height', params.viz.clust.margin.top);
 
-  svg_group.select('#right_spillover')
+  svg_group.select('.right_spillover')
     .transition().delay(delays.update).duration(duration)
     .attr('transform', function() {
       var tmp_left = params.viz.clust.margin.left + params.viz.clust.dim.width;
@@ -4517,7 +4515,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
     });
 
   // white border bottom - prevent clustergram from hitting border
-  svg_group.select('#bottom_spillover')
+  svg_group.select('.bottom_spillover')
     .transition().delay(delays.update).duration(duration)
     .attr('width', params.viz.svg_dim.width)
     .attr('height', 2 * params.viz.grey_border_width)
@@ -4715,7 +4713,7 @@ function enter_exit_update(params, network_data, reorder, delays){
       params.viz.clust.margin.top + ')');
 
   // reposition row container 
-  d3.select(params.root+' .row_viz_outer_container')
+  d3.select(params.root+' .row_viz_container')
     .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
 
   // reposition col container 
