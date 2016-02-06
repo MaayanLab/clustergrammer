@@ -59,7 +59,7 @@ function Params(input_config) {
     // Visualization Options
     params.viz = {};
 
-    params.viz.viz_wrapper = config.root + ' .viz-wrapper';
+    params.viz.viz_wrapper = config.root + ' .viz_wrapper';
     params.viz.viz_svg = params.viz.viz_wrapper + ' .viz_svg';
 
     params.sidebar = {};
@@ -110,8 +110,7 @@ function Params(input_config) {
 
 
     // Create wrapper around SVG visualization
-    var class_name = params.viz.viz_wrapper.replace('.', '');
-    d3.select(config.root).append('div').attr('class', class_name);
+    d3.select(config.root).append('div').attr('class', 'viz_wrapper');
 
     // resize based on parent div
     parent_div_size_pos(params);

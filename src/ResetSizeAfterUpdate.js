@@ -728,13 +728,13 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
 
   // resize superlabels
   /////////////////////////////////////
-  svg_group.select('.super_col_bkg')
+  svg_group.select('.super_col_bk g')
     // .transition().delay(delays.update).duration(duration)
     .attr('height', params.labels.super_label_width + 'px')
     .attr('transform', 'translate(0,' + params.viz.grey_border_width + ')');
 
   // super col title
-  svg_group.select('#super_col')
+  svg_group.select('.super_col')
     // .transition().delay(delays.update).duration(duration)
     .attr('transform', function() {
       var inst_x = params.viz.clust.dim.width / 2 + params.norm_label.width
@@ -744,13 +744,13 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
     });
 
   // super row title
-  svg_group.select('#super_row_bkg')
+  svg_group.select('.super_row_bkg')
     // .transition().delay(delays.update).duration(duration)
     .attr('width', params.labels.super_label_width + 'px')
     .attr('transform', 'translate(' + params.viz.grey_border_width + ',0)');
 
   // append super title row group
-  svg_group.select('#super_row')
+  svg_group.select('.super_row')
     // .transition().delay(delays.update).duration(duration)
     .attr('transform', function() {
       var inst_x = params.labels.super_label_width - params.viz.uni_margin;
@@ -767,11 +767,11 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
     .attr('transform', 'translate(' + params.viz.clust.dim.width + ',' +
     params.norm_label.width.col + ')');
 
-  svg_group.select('#left_slant_triangle')
+  svg_group.select('.left_slant_triangle')
     .transition().delay(delays.update).duration(duration)
     .attr('transform', 'translate(-1,' + params.norm_label.width.col +')');
 
-  svg_group.select('#top_left_white')
+  svg_group.select('.top_left_white')
     .transition().delay(delays.update).duration(duration)
     .attr('width', params.viz.clust.margin.left)
     .attr('height', params.viz.clust.margin.top);

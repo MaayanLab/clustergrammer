@@ -746,7 +746,7 @@
       .attr('transform', 'translate(0,' + params.viz.grey_border_width + ')');
 
     // super col title
-    svg_group.select('#super_col')
+    svg_group.select('.super_col')
       .attr('transform', function() {
         var inst_x = params.viz.clust.dim.width / 2 + params.norm_label.width
           .row;
@@ -755,12 +755,12 @@
       });
 
     // super row title
-    svg_group.select('#super_row_bkg')
+    svg_group.select('.super_row_bkg')
       .attr('width', params.labels.super_label_width + 'px')
       .attr('transform', 'translate(' + params.viz.grey_border_width + ',0)');
 
     // append super title row group
-    svg_group.select('#super_row')
+    svg_group.select('.super_row')
       .attr('transform', function() {
         var inst_x = params.labels.super_label_width - params.viz.uni_margin;
         var inst_y = params.viz.clust.dim.height / 2 + params.norm_label.width
@@ -775,10 +775,10 @@
       .attr('transform', 'translate(' + params.viz.clust.dim.width + ',' +
       params.norm_label.width.col + ')');
 
-    svg_group.select('#left_slant_triangle')
+    svg_group.select('.left_slant_triangle')
       .attr('transform', 'translate(-1,' + params.norm_label.width.col +')');
 
-    svg_group.select('#top_left_white')
+    svg_group.select('.top_left_white')
       .attr('width', params.viz.clust.margin.left)
       .attr('height', params.viz.clust.margin.top);
 

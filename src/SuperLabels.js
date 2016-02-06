@@ -15,7 +15,7 @@ function SuperLabels(params) {
   // super col title
   d3.select(params.viz.viz_svg)
     .append('text')
-    .attr('id', 'super_col')
+    .attr('class', 'super_col')
     .text(params.labels.super.col)
     .attr('text-anchor', 'center')
     .attr('transform', function () {
@@ -41,15 +41,15 @@ function SuperLabels(params) {
     .attr('fill', params.viz.background_color)
     .attr('width', params.labels.super_label_width + 'px')
     .attr('height', '3000px')
-    .attr('id', 'super_row_bkg')
-    .attr('class', 'white_bars')
+    .classed('super_row_bkg',true)
+    .classed('white_bars',true)
     .attr('transform', 'translate(' + params.viz.grey_border_width + ',0)');
 
   // append super title row group
   // this is used to separate translation from rotation
   d3.select(params.viz.viz_svg)
     .append('g')
-    .attr('id', 'super_row')
+    .classed('super_row',true)
     .attr('transform', function () {
       // position in the middle of the clustergram
       var inst_x = params.labels.super_label_width - params.viz.uni_margin;

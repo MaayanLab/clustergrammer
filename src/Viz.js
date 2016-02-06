@@ -16,13 +16,10 @@ function Viz(params) {
     var col_nodes = network_data.col_nodes;
     var row_nodes = network_data.row_nodes;
 
-    var parts = params.viz.viz_svg.split(' ');
-    var viz_svg_class = parts[parts.length-1].replace('.', '');
-
     // initialize svg
     var svg_group = d3.select(params.viz.viz_wrapper)
       .append('svg')
-      .attr('class', viz_svg_class)
+      .attr('class', 'viz_svg')
       .attr('width', params.viz.svg_dim.width)
       .attr('height', params.viz.svg_dim.height);
 
