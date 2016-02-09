@@ -142,7 +142,7 @@ function Viz(params) {
     params.zoom.translate([params.viz.clust.margin.left, params.viz.clust.margin.top]);
 
     // initialize screen resizing 
-    params.initialize_resizing(params);
+    initialize_resizing(params);
 
     // initialize double click zoom for matrix
     ////////////////////////////////////////////
