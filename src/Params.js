@@ -412,12 +412,13 @@ function Params(input_config) {
     params.matrix.highlight = 0;
   }
 
-  params.zoom_obj = Zoom(params);
+  var zoom_obj = Zoom(params);
+  params.zoom_obj = zoom_obj;
 
   params.zoom = d3.behavior
     .zoom()
     .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch])
-    .on('zoom', params.zoom_obj.zoomed);
+    .on('zoom', zoom_obj.zoomed);
 
   params.initialize_resizing = initialize_resizing;
 

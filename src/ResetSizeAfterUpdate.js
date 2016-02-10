@@ -37,9 +37,6 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
   // times the scaling zoom_y
   var net_y_offset = params.viz.clust.margin.top + center_y + pan_dy * zoom_y;
 
-  // reset the zoom translate and zoom
-  params.zoom.translate([pan_dx, net_y_offset]);
-
 
   // Resetting some visualization parameters
   ///////////////////////////////////////////////

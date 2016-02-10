@@ -107,8 +107,6 @@ function Viz(params) {
       return 'translate(0,' + inst_offset + ')';
     });
 
-  params.zoom.translate([params.viz.clust.margin.left, params.viz.clust.margin.top]);
-
   initialize_resizing(params);
 
   var zoom_obj = Zoom(params);  

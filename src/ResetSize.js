@@ -76,9 +76,6 @@
     // times the scaling zoom_y
     var net_y_offset = params.viz.clust.margin.top + center_y + pan_dy * zoom_y;
 
-    // reset the zoom translate and zoom
-    params.zoom.translate([pan_dx, net_y_offset]);
-
     // size the svg container div - svg_div
     d3.select(params.viz.viz_wrapper)
         .style('float', 'right')
@@ -201,9 +198,10 @@
     // redefine zoom 
     var zoom_obj = Zoom(params);  
     params.zoom_obj = zoom_obj;
+
     params.zoom
       .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch])
-      .on('zoom', params.zoom_obj.zoomed);
+      .on('zoom', zoom_obj.zoomed);
 
 
     // reenable zoom after transition 

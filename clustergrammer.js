@@ -1410,12 +1410,13 @@ function Params(input_config) {
     params.matrix.highlight = 0;
   }
 
-  params.zoom_obj = Zoom(params);
+  var zoom_obj = Zoom(params);
+  params.zoom_obj = zoom_obj;
 
   params.zoom = d3.behavior
     .zoom()
     .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch])
-    .on('zoom', params.zoom_obj.zoomed);
+    .on('zoom', zoom_obj.zoomed);
 
   params.initialize_resizing = initialize_resizing;
 
@@ -2418,9 +2419,6 @@ function draw_grid_lines(row_nodes, col_nodes) {
     // times the scaling zoom_y
     var net_y_offset = params.viz.clust.margin.top + center_y + pan_dy * zoom_y;
 
-    // reset the zoom translate and zoom
-    params.zoom.translate([pan_dx, net_y_offset]);
-
     // size the svg container div - svg_div
     d3.select(params.viz.viz_wrapper)
         .style('float', 'right')
@@ -2543,9 +2541,10 @@ function draw_grid_lines(row_nodes, col_nodes) {
     // redefine zoom 
     var zoom_obj = Zoom(params);  
     params.zoom_obj = zoom_obj;
+
     params.zoom
       .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch])
-      .on('zoom', params.zoom_obj.zoomed);
+      .on('zoom', zoom_obj.zoomed);
 
 
     // reenable zoom after transition 
@@ -3225,9 +3224,6 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
   // the translate vector has the initial margin, the first y centering, and pan_dy
   // times the scaling zoom_y
   var net_y_offset = params.viz.clust.margin.top + center_y + pan_dy * zoom_y;
-
-  // reset the zoom translate and zoom
-  params.zoom.translate([pan_dx, net_y_offset]);
 
 
   // Resetting some visualization parameters
@@ -5666,8 +5662,6 @@ function Viz(params) {
       return 'translate(0,' + inst_offset + ')';
     });
 
-  params.zoom.translate([params.viz.clust.margin.left, params.viz.clust.margin.top]);
-
   initialize_resizing(params);
 
   var zoom_obj = Zoom(params);  
@@ -6605,7 +6599,6 @@ function Zoom(params){
 
       // reset the zoom translate and zoom
       params.zoom.scale(zoom_y);
-      params.zoom.translate([pan_dx, net_y_offset]);
 
       var trans = true;
       constrain_font_size(params, trans);

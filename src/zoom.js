@@ -269,7 +269,6 @@ function Zoom(params){
 
       // reset the zoom translate and zoom
       params.zoom.scale(zoom_y);
-      params.zoom.translate([pan_dx, net_y_offset]);
 
       var trans = true;
       constrain_font_size(params, trans);
