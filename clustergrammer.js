@@ -974,11 +974,11 @@ function trim_text(inst_selection, inst_rc){
 
   if (inst_rc === 'row'){
     max_width = params.norm_label.width.row*safe_row_trim_text;
-    inst_zoom = params.zoom.scale();
+    inst_zoom = params.zoom_behavior.scale();
   } else {
     // the column label has extra length since its rotated
     max_width = params.norm_label.width.col;
-    inst_zoom = params.zoom.scale()/params.viz.zoom_switch;
+    inst_zoom = params.zoom_behavior.scale()/params.viz.zoom_switch;
   }
 
   var tmp_width = d3.select(inst_selection).select('text').node().getBBox().width;
@@ -1412,8 +1412,7 @@ function Params(input_config) {
 
   var zoom_obj = Zoom(params);
 
-  params.zoom = d3.behavior
-    .zoom()
+  params.zoom_behavior = d3.behavior.zoom()
     .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch])
     .on('zoom', zoom_obj.zoomed);
 
@@ -2540,14 +2539,14 @@ function draw_grid_lines(row_nodes, col_nodes) {
     // redefine zoom 
     var zoom_obj = Zoom(params);  
 
-    params.zoom
+    params.zoom_behavior
       .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch])
       .on('zoom', zoom_obj.zoomed);
 
 
     // reenable zoom after transition 
     if (params.viz.do_zoom) {
-      svg_group.call(params.zoom);
+      svg_group.call(params.zoom_behavior);
     }
 
     // prevent normal double click zoom etc 
@@ -3178,7 +3177,7 @@ function draw_grid_lines(row_nodes, col_nodes) {
 
     // reset zoom and translate
     //////////////////////////////
-    params.zoom.scale(1).translate(
+    params.zoom_behavior.scale(1).translate(
         [ params.viz.clust.margin.left, params.viz.clust.margin.top]
     );
 
@@ -3295,7 +3294,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
 
   // redefine zoom extent
   params.viz.real_zoom = params.norm_label.width.col / (params.matrix.x_scale.rangeBand()/2);
-  params.zoom
+  params.zoom_behavior
     .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch]);
 
   // redefine border width
@@ -3982,7 +3981,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
 
   // reset zoom and translate
   //////////////////////////////
-  params.zoom.scale(1).translate(
+  params.zoom_behavior.scale(1).translate(
       [ params.viz.clust.margin.left, params.viz.clust.margin.top]
   );
 
@@ -4044,7 +4043,7 @@ function update_network(change_view){
   params.initialize_resizing(params);
 
   // necessary to have zoom behavior updated on updating clustergram 
-  d3.select(params.viz.viz_svg).call(params.zoom);
+  d3.select(params.viz.viz_svg).call(params.zoom_behavior);
 
   // re-initialize the double click behavior 
   var zoom = Zoom(params);
@@ -5626,7 +5625,7 @@ function Viz(params) {
   zoom_obj.ini_doubleclick(params);
 
   if (params.viz.do_zoom) {
-    svg_group.call(params.zoom);
+    svg_group.call(params.zoom_behavior);
   }
 
   d3.select(params.viz.viz_svg).on('dblclick.zoom', null);
@@ -6395,7 +6394,7 @@ function Zoom(params){
       ',1)');
 
     // reset translate vector - add back margins to trans_x and trans_y
-    params.zoom
+    params.zoom_behavior
       .translate([trans_x + params.viz.clust.margin.left, trans_y + params.viz.clust.margin.top
       ]);
 
@@ -6555,7 +6554,7 @@ function Zoom(params){
       var net_y_offset = params.viz.clust.margin.top + center_y + pan_dy * zoom_y;
 
       // reset the zoom translate and zoom
-      params.zoom.scale(zoom_y);
+      params.zoom_behavior.scale(zoom_y);
 
       var trans = true;
       constrain_font_size(params, trans);
@@ -6664,9 +6663,9 @@ function Zoom(params){
 
     var keep_width = {};
     keep_width.row = params.bounding_width_max.row*params.labels.row_keep
-      *params.zoom.scale();
+      *params.zoom_behavior.scale();
     keep_width.col = params.bounding_width_max.col*params.labels.col_keep
-      *params.zoom.scale()/params.viz.zoom_switch;
+      *params.zoom_behavior.scale()/params.viz.zoom_switch;
 
     function normal_name(d){
       var inst_name = d.name.replace(/_/g, ' ').split('#')[0];

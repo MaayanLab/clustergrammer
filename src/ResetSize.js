@@ -198,14 +198,14 @@
     // redefine zoom 
     var zoom_obj = Zoom(params);  
 
-    params.zoom
+    params.zoom_behavior
       .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch])
       .on('zoom', zoom_obj.zoomed);
 
 
     // reenable zoom after transition 
     if (params.viz.do_zoom) {
-      svg_group.call(params.zoom);
+      svg_group.call(params.zoom_behavior);
     }
 
     // prevent normal double click zoom etc 
@@ -836,7 +836,7 @@
 
     // reset zoom and translate
     //////////////////////////////
-    params.zoom.scale(1).translate(
+    params.zoom_behavior.scale(1).translate(
         [ params.viz.clust.margin.left, params.viz.clust.margin.top]
     );
 

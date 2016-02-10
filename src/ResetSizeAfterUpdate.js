@@ -109,7 +109,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
 
   // redefine zoom extent
   params.viz.real_zoom = params.norm_label.width.col / (params.matrix.x_scale.rangeBand()/2);
-  params.zoom
+  params.zoom_behavior
     .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch]);
 
   // redefine border width
@@ -796,7 +796,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
 
   // reset zoom and translate
   //////////////////////////////
-  params.zoom.scale(1).translate(
+  params.zoom_behavior.scale(1).translate(
       [ params.viz.clust.margin.left, params.viz.clust.margin.top]
   );
 

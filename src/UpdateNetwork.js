@@ -53,7 +53,7 @@ function update_network(change_view){
   params.initialize_resizing(params);
 
   // necessary to have zoom behavior updated on updating clustergram 
-  d3.select(params.viz.viz_svg).call(params.zoom);
+  d3.select(params.viz.viz_svg).call(params.zoom_behavior);
 
   // re-initialize the double click behavior 
   var zoom = Zoom(params);

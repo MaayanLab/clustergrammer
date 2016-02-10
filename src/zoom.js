@@ -108,7 +108,7 @@ function Zoom(params){
       ',1)');
 
     // reset translate vector - add back margins to trans_x and trans_y
-    params.zoom
+    params.zoom_behavior
       .translate([trans_x + params.viz.clust.margin.left, trans_y + params.viz.clust.margin.top
       ]);
 
@@ -268,7 +268,7 @@ function Zoom(params){
       var net_y_offset = params.viz.clust.margin.top + center_y + pan_dy * zoom_y;
 
       // reset the zoom translate and zoom
-      params.zoom.scale(zoom_y);
+      params.zoom_behavior.scale(zoom_y);
 
       var trans = true;
       constrain_font_size(params, trans);
@@ -377,9 +377,9 @@ function Zoom(params){
 
     var keep_width = {};
     keep_width.row = params.bounding_width_max.row*params.labels.row_keep
-      *params.zoom.scale();
+      *params.zoom_behavior.scale();
     keep_width.col = params.bounding_width_max.col*params.labels.col_keep
-      *params.zoom.scale()/params.viz.zoom_switch;
+      *params.zoom_behavior.scale()/params.viz.zoom_switch;
 
     function normal_name(d){
       var inst_name = d.name.replace(/_/g, ' ').split('#')[0];

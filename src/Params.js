@@ -414,8 +414,7 @@ function Params(input_config) {
 
   var zoom_obj = Zoom(params);
 
-  params.zoom = d3.behavior
-    .zoom()
+  params.zoom_behavior = d3.behavior.zoom()
     .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch])
     .on('zoom', zoom_obj.zoomed);
 

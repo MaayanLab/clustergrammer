@@ -114,7 +114,7 @@ function Viz(params) {
   zoom_obj.ini_doubleclick(params);
 
   if (params.viz.do_zoom) {
-    svg_group.call(params.zoom);
+    svg_group.call(params.zoom_behavior);
   }
 
   d3.select(params.viz.viz_svg).on('dblclick.zoom', null);

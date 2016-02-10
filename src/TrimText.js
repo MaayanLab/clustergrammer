@@ -7,11 +7,11 @@ function trim_text(inst_selection, inst_rc){
 
   if (inst_rc === 'row'){
     max_width = params.norm_label.width.row*safe_row_trim_text;
-    inst_zoom = params.zoom.scale();
+    inst_zoom = params.zoom_behavior.scale();
   } else {
     // the column label has extra length since its rotated
     max_width = params.norm_label.width.col;
-    inst_zoom = params.zoom.scale()/params.viz.zoom_switch;
+    inst_zoom = params.zoom_behavior.scale()/params.viz.zoom_switch;
   }
 
   var tmp_width = d3.select(inst_selection).select('text').node().getBBox().width;
