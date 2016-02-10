@@ -200,7 +200,9 @@
 
     params.zoom_behavior
       .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch])
-      .on('zoom', zoom_obj.zoomed);
+      .on('zoom', function(){
+        zoomed(params);
+      });
 
 
     // reenable zoom after transition 

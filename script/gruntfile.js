@@ -30,6 +30,7 @@ module.exports = function (grunt) {
     '../src/constrain_font_size.js',
     '../src/apply_transformation.js',
     '../src/two_translate_zoom.js',
+    '../src/zoomed.js',
     '../src/main.js',
     '../src/_close.js'
   ];
