@@ -151,7 +151,7 @@ function Viz(params) {
   }
 
   function reset_zoom(inst_scale) {
-    zoom_obj.two_translate_zoom(params, 0, 0, inst_scale);
+    two_translate_zoom(params, 0, 0, inst_scale);
   }
 
   return {
@@ -171,7 +171,6 @@ function Viz(params) {
     get_nodes: function (type) {
       return matrix.get_nodes(type);
     },
-    two_translate_zoom: zoom_obj.two_translate_zoom,
     reorder: reorder.all_reorder,
     search: gene_search,
     opacity_slider: opacity_slider,

@@ -61,7 +61,6 @@ function Zoom(params){
 
   return {
     zoomed : zoomed,
-    two_translate_zoom : two_translate_zoom,
     ini_doubleclick : ini_doubleclick
   }
 }
