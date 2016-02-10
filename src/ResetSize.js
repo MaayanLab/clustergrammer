@@ -199,7 +199,8 @@
     svg_group.on('.zoom', null);
 
     // redefine zoom 
-    params.zoom_obj = Zoom(params);  
+    var zoom_obj = Zoom(params);  
+    params.zoom_obj = zoom_obj;
     params.zoom
       .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch])
       .on('zoom', params.zoom_obj.zoomed);
@@ -211,7 +212,7 @@
     }
 
     // prevent normal double click zoom etc 
-    params.zoom_obj.ini_doubleclick(params);
+    zoom_obj.ini_doubleclick(params);
 
     // redefine border width
     params.viz.border_width = params.matrix.rect_width / 55;

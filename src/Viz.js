@@ -111,7 +111,9 @@ function Viz(params) {
 
   initialize_resizing(params);
 
-  params.zoom_obj.ini_doubleclick(params);
+  var zoom_obj = Zoom(params);  
+
+  zoom_obj.ini_doubleclick(params);
 
   if (params.viz.do_zoom) {
     svg_group.call(params.zoom);
