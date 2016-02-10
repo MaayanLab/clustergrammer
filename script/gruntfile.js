@@ -28,6 +28,7 @@ module.exports = function (grunt) {
     '../src/Reorder.js',
     '../src/zoom.js',
     '../src/constrain_font_size.js',
+    '../src/apply_transformation.js',
     '../src/main.js',
     '../src/_close.js'
   ];
