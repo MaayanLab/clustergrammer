@@ -1434,7 +1434,9 @@ function Labels(params){
   }
 
   // make row labels
-  function make_rows(params, row_nodes, reorder, text_delay){
+  function make_rows(params, reorder, text_delay){
+
+    var row_nodes = params.network_data.row_nodes;
 
     var row_nodes_names = params.network_data.row_nodes_names;
 
@@ -1752,8 +1754,9 @@ function Labels(params){
   }
 
   // make col labels
-  function make_cols(params, col_nodes, reorder, text_delay){
+  function make_cols(params, reorder, text_delay){
 
+    var col_nodes = params.network_data.col_nodes;
     var col_nodes_names = params.network_data.col_nodes_names;
 
     // offset click group column label
@@ -4881,8 +4884,8 @@ function enter_exit_update(params, network_data, reorder, delays){
 
   var labels = Labels(params);
 
-  var row_triangle_ini_group = labels.make_rows( params, row_nodes, reorder, duration );
-  var container_all_col      = labels.make_cols( params, col_nodes, reorder, duration );
+  var row_triangle_ini_group = labels.make_rows( params, reorder, duration );
+  var container_all_col      = labels.make_cols( params, reorder, duration );
 
   // Fade in new gridlines 
   ///////////////////////////
@@ -5577,9 +5580,9 @@ function Viz(params) {
 
   var labels = Labels(params);
 
-  var row_triangle_ini_group = labels.make_rows(params, params.network_data.row_nodes, reorder, 0);
-
-  var container_all_col = labels.make_cols(params, params.network_data.col_nodes, reorder, 0);
+  var delay_text = 0;
+  var row_triangle_ini_group = labels.make_rows(params, reorder, delay_text);
+  var container_all_col      = labels.make_cols(params, reorder, delay_text);
 
 
   if (params.viz.show_dendrogram) {

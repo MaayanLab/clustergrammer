@@ -887,8 +887,8 @@ function enter_exit_update(params, network_data, reorder, delays){
 
   var labels = Labels(params);
 
-  var row_triangle_ini_group = labels.make_rows( params, row_nodes, reorder, duration );
-  var container_all_col      = labels.make_cols( params, col_nodes, reorder, duration );
+  var row_triangle_ini_group = labels.make_rows( params, reorder, duration );
+  var container_all_col      = labels.make_cols( params, reorder, duration );
 
   // Fade in new gridlines 
   ///////////////////////////

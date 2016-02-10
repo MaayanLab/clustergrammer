@@ -21,9 +21,9 @@ function Viz(params) {
 
   var labels = Labels(params);
 
-  var row_triangle_ini_group = labels.make_rows(params, params.network_data.row_nodes, reorder, 0);
-
-  var container_all_col = labels.make_cols(params, params.network_data.col_nodes, reorder, 0);
+  var delay_text = 0;
+  var row_triangle_ini_group = labels.make_rows(params, reorder, delay_text);
+  var container_all_col      = labels.make_cols(params, reorder, delay_text);
 
 
   if (params.viz.show_dendrogram) {
