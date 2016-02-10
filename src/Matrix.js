@@ -1,6 +1,6 @@
+function Matrix(params, svg_elem) {
 
-
-function Matrix(network_data, svg_elem, params) {
+  var network_data = params.network_data;
 
   var matrix = [],
   row_nodes = network_data.row_nodes,
@@ -9,8 +9,6 @@ function Matrix(network_data, svg_elem, params) {
 
   var row_nodes_names = _.pluck(row_nodes, 'name');
   var col_nodes_names = _.pluck(col_nodes, 'name');
-
-
 
   // append a group that will hold clust_group and position it once
   clust_group = svg_elem

@@ -1,17 +1,7 @@
 /* Represents the entire visualization: labels, dendrogram (optional) and matrix.
  */
 function Viz(params) {
-
-  // scope these variables to viz
-  var matrix,
-    row_dendrogram,
-    col_dendrogram,
-    reorder;
   
-  var network_data = params.network_data;
-  var col_nodes = network_data.col_nodes;
-  var row_nodes = network_data.row_nodes;
-
   var svg_group = d3.select(params.viz.viz_wrapper)
     .append('svg')
     .attr('class', 'viz_svg')
@@ -25,19 +15,20 @@ function Viz(params) {
     .style('height', params.viz.svg_dim.height)
     .style('fill', 'white');
 
-  matrix = Matrix(network_data, svg_group, params);
+  var matrix = Matrix(params, svg_group);
 
-  reorder = Reorder(params);
+  var reorder = Reorder(params);
 
   var labels = Labels(params);
 
-  var row_triangle_ini_group = labels.make_rows(params, row_nodes, reorder, 0);
-  var container_all_col = labels.make_cols(params, col_nodes, reorder, 0);
+  var row_triangle_ini_group = labels.make_rows(params, params.network_data.row_nodes, reorder, 0);
+
+  var container_all_col = labels.make_cols(params, params.network_data.col_nodes, reorder, 0);
 
 
   if (params.viz.show_dendrogram) {
 
-    row_dendrogram = Dendrogram('row', params);
+    var row_dendrogram = Dendrogram('row', params);
 
     var col_class = container_all_col
       .append('g')
@@ -49,7 +40,7 @@ function Viz(params) {
       .append('g')
       .attr('class', 'col_viz_zoom_container');
 
-    col_dendrogram = Dendrogram('col', params);
+    var col_dendrogram = Dendrogram('col', params);
 
   }
 
