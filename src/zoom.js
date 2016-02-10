@@ -513,15 +513,13 @@ function Zoom(params){
 
   }
 
-  function ini_doubleclick(){
+  function ini_doubleclick(params){
 
-    // disable double-click zoom: double click should reset zoom level
-    d3.selectAll('svg').on('dblclick.zoom', null);
+    // disable double-click zoom
+    d3.selectAll(params.viz.viz_svg).on('dblclick.zoom', null);
 
-    // double click to reset zoom - add transition
     d3.select(params.viz.viz_svg)
       .on('dblclick', function() {
-        // programmatic zoom reset
         two_translate_zoom(params, 0, 0, 1);
       });
   }

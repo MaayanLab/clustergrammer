@@ -211,7 +211,7 @@
     }
 
     // prevent normal double click zoom etc 
-    params.zoom_obj.ini_doubleclick();
+    params.zoom_obj.ini_doubleclick(params);
 
     // redefine border width
     params.viz.border_width = params.matrix.rect_width / 55;

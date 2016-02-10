@@ -2771,7 +2771,7 @@ function draw_grid_lines(row_nodes, col_nodes) {
     }
 
     // prevent normal double click zoom etc 
-    params.zoom_obj.ini_doubleclick();
+    params.zoom_obj.ini_doubleclick(params);
 
     // redefine border width
     params.viz.border_width = params.matrix.rect_width / 55;
@@ -4303,7 +4303,7 @@ function update_network(change_view){
 
   // initialize the double click behavior 
   var zoom = Zoom(params);
-  zoom.ini_doubleclick();
+  zoom.ini_doubleclick(params);
 
 }
 
@@ -5887,7 +5887,7 @@ function Viz(params) {
 
   initialize_resizing(params);
 
-  params.zoom_obj.ini_doubleclick();
+  params.zoom_obj.ini_doubleclick(params);
 
   if (params.viz.do_zoom) {
     svg_group.call(params.zoom);
@@ -7064,15 +7064,13 @@ function Zoom(params){
 
   }
 
-  function ini_doubleclick(){
+  function ini_doubleclick(params){
 
-    // disable double-click zoom: double click should reset zoom level
-    d3.selectAll('svg').on('dblclick.zoom', null);
+    // disable double-click zoom
+    d3.selectAll(params.viz.viz_svg).on('dblclick.zoom', null);
 
-    // double click to reset zoom - add transition
     d3.select(params.viz.viz_svg)
       .on('dblclick', function() {
-        // programmatic zoom reset
         two_translate_zoom(params, 0, 0, 1);
       });
   }

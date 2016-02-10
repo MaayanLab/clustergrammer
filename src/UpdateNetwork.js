@@ -89,7 +89,7 @@ function update_network(change_view){
 
   // initialize the double click behavior 
   var zoom = Zoom(params);
-  zoom.ini_doubleclick();
+  zoom.ini_doubleclick(params);
 
 }
 
