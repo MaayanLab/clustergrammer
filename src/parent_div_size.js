@@ -14,12 +14,11 @@ function parent_div_size(params) {
     var screen_width = window.innerWidth;
     var screen_height = window.innerHeight;
 
-    // define width and height of clustergram container
     var cont_dim = {};
     cont_dim.width = screen_width - outer_margins.left - outer_margins.right;
     cont_dim.height = screen_height - outer_margins.top - outer_margins.bottom;
 
-    // size the svg container div - svg_div
+    // resize and position 
     d3.select(params.viz.viz_wrapper)
       .style('float', 'right')
       .style('margin-top', outer_margins.top + 'px')
@@ -28,7 +27,7 @@ function parent_div_size(params) {
 
   } else {
 
-    // size the svg container div - svg_div
+    // position 
     d3.select(params.viz.viz_wrapper)
       .style('float', 'right')
       .style('margin-top', outer_margins.top + 'px');
