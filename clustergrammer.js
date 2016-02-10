@@ -1411,7 +1411,6 @@ function Params(input_config) {
   }
 
   var zoom_obj = Zoom(params);
-  params.zoom_obj = zoom_obj;
 
   params.zoom = d3.behavior
     .zoom()
@@ -2540,7 +2539,6 @@ function draw_grid_lines(row_nodes, col_nodes) {
 
     // redefine zoom 
     var zoom_obj = Zoom(params);  
-    params.zoom_obj = zoom_obj;
 
     params.zoom
       .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch])
@@ -3993,56 +3991,24 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
 
 function update_network(change_view){
 
-  // create a new args object 
-  //////////////////////////////////////////
-
-  /*
-  The original network_data is stored in this.config and will never be 
-  overwritten. In order to update the network I need to: 
-  
-  1. Create new network_data object using the filter value and 
-  this.config.network_data. 
-
-  2. Make new_config object by copying the original config and swapping in the 
-  updated network_data object. 
-
-  3. Use new_config to make new_params. With new_params and the updated 
-  network_data, I can make the visualization.
-  */
-
-  /////////////////////////////
-  /////////////////////////////
-
-  // get copy of old params 
   var old_params = this.params;
 
   // make new_network_data by filtering the original network data 
   var config_copy = jQuery.extend(true, {}, this.config);
   var new_network_data = change_network_view(this.params, config_copy.network_data, change_view); 
 
-  // console.log('new network data ')
-  // console.log(new_network_data)
-
   // make Deep copy of this.config object 
   var new_config = jQuery.extend(true, {}, this.config);
 
-  // swap in new_network_data
   new_config.network_data = new_network_data;
-  // swap in instantaneous order 
   new_config.inst_order = old_params.viz.inst_order;
   // never switch to expand when updating the matrix 
   new_config.ini_expand = false;
-  // ensure that ini_view is not set 
   new_config.ini_view = null;
-  // pass on current_col_cat to preserve category filtering 
   new_config.current_col_cat = this.params.current_col_cat;
 
-  // make new params 
   var params = Params(new_config);
   var delays = define_enter_exit_delays(old_params, params);
-
-  // console.log('new params: '+params.current_col_cat)
-  // console.log('old params:'+this.params.current_col_cat)
 
   // ordering - necessary for reordering the function called on button click 
   var reorder = Reorder(params);
@@ -4080,7 +4046,7 @@ function update_network(change_view){
   // necessary to have zoom behavior updated on updating clustergram 
   d3.select(params.viz.viz_svg).call(params.zoom);
 
-  // initialize the double click behavior 
+  // re-initialize the double click behavior 
   var zoom = Zoom(params);
   zoom.ini_doubleclick(params);
 
@@ -4554,15 +4520,6 @@ function enter_exit_update(params, network_data, reorder, delays){
       .attr('transform', function(d){
         var x_pos = params.matrix.x_scale(d.pos_x) + 0.5*params.viz.border_width;
         var y_pos = 0.5*params.viz.border_width/params.viz.zoom_switch;
-
-        // if (isNaN(x_pos)){
-        //   console.log('\n')
-        //   console.log(d.col_name)
-        //   console.log(d.pos_x)
-        //   console.log(x_pos)
-        //   console.log('\n')
-        // }
-
         return 'translate('+x_pos+','+y_pos+')';
       });
 
@@ -5706,7 +5663,7 @@ function Viz(params) {
   }
 
   function reset_zoom(inst_scale) {
-    params.zoom_obj.two_translate_zoom(params, 0, 0, inst_scale);
+    zoom_obj.two_translate_zoom(params, 0, 0, inst_scale);
   }
 
   return {
@@ -5726,7 +5683,7 @@ function Viz(params) {
     get_nodes: function (type) {
       return matrix.get_nodes(type);
     },
-    two_translate_zoom: params.zoom_obj.two_translate_zoom,
+    two_translate_zoom: zoom_obj.two_translate_zoom,
     reorder: reorder.all_reorder,
     search: gene_search,
     opacity_slider: opacity_slider,

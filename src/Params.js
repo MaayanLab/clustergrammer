@@ -413,7 +413,6 @@ function Params(input_config) {
   }
 
   var zoom_obj = Zoom(params);
-  params.zoom_obj = zoom_obj;
 
   params.zoom = d3.behavior
     .zoom()

@@ -197,7 +197,6 @@
 
     // redefine zoom 
     var zoom_obj = Zoom(params);  
-    params.zoom_obj = zoom_obj;
 
     params.zoom
       .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch])
