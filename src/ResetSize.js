@@ -195,9 +195,6 @@
     // disable zoom while transitioning 
     svg_group.on('.zoom', null);
 
-    // redefine zoom 
-    var zoom_obj = Zoom(params);  
-
     params.zoom_behavior
       .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch])
       .on('zoom', function(){
@@ -211,7 +208,7 @@
     }
 
     // prevent normal double click zoom etc 
-    zoom_obj.ini_doubleclick(params);
+    ini_doubleclick(params);
 
     // redefine border width
     params.viz.border_width = params.matrix.rect_width / 55;

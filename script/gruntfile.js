@@ -26,7 +26,7 @@ module.exports = function (grunt) {
     '../src/Viz.js',
     '../src/Sidebar.js',
     '../src/Reorder.js',
-    '../src/zoom.js',
+    '../src/ini_doubleclick.js',
     '../src/constrain_font_size.js',
     '../src/apply_transformation.js',
     '../src/two_translate_zoom.js',

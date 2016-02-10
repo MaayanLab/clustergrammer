@@ -56,8 +56,7 @@ function update_network(change_view){
   d3.select(params.viz.viz_svg).call(params.zoom_behavior);
 
   // re-initialize the double click behavior 
-  var zoom = Zoom(params);
-  zoom.ini_doubleclick(params);
+  ini_doubleclick(params);
 
 }
 

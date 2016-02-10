@@ -1409,8 +1409,6 @@ function Params(input_config) {
     params.matrix.highlight = 0;
   }
 
-  var zoom_obj = Zoom(params);
-
   params.zoom_behavior = d3.behavior.zoom()
     .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch])
     .on('zoom', function(){
@@ -2537,9 +2535,6 @@ function draw_grid_lines(row_nodes, col_nodes) {
     // disable zoom while transitioning 
     svg_group.on('.zoom', null);
 
-    // redefine zoom 
-    var zoom_obj = Zoom(params);  
-
     params.zoom_behavior
       .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch])
       .on('zoom', function(){
@@ -2553,7 +2548,7 @@ function draw_grid_lines(row_nodes, col_nodes) {
     }
 
     // prevent normal double click zoom etc 
-    zoom_obj.ini_doubleclick(params);
+    ini_doubleclick(params);
 
     // redefine border width
     params.viz.border_width = params.matrix.rect_width / 55;
@@ -4049,8 +4044,7 @@ function update_network(change_view){
   d3.select(params.viz.viz_svg).call(params.zoom_behavior);
 
   // re-initialize the double click behavior 
-  var zoom = Zoom(params);
-  zoom.ini_doubleclick(params);
+  ini_doubleclick(params);
 
 }
 
@@ -5623,9 +5617,7 @@ function Viz(params) {
 
   initialize_resizing(params);
 
-  var zoom_obj = Zoom(params);  
-
-  zoom_obj.ini_doubleclick(params);
+  ini_doubleclick(params);
 
   if (params.viz.do_zoom) {
     svg_group.call(params.zoom_behavior);
@@ -6286,25 +6278,15 @@ function Reorder(params){
 
 
 
-function Zoom(params){
+function ini_doubleclick(params){
 
-  /* Functions for zooming. Should be turned into a module.
-   * ----------------------------------------------------------------------- */
+  // disable double-click zoom
+  d3.selectAll(params.viz.viz_svg).on('dblclick.zoom', null);
 
-  function ini_doubleclick(params){
-
-    // disable double-click zoom
-    d3.selectAll(params.viz.viz_svg).on('dblclick.zoom', null);
-
-    d3.select(params.viz.viz_svg)
-      .on('dblclick', function() {
-        two_translate_zoom(params, 0, 0, 1);
-      });
-  }
-
-  return {
-    ini_doubleclick : ini_doubleclick
-  }
+  d3.select(params.viz.viz_svg)
+    .on('dblclick', function() {
+      two_translate_zoom(params, 0, 0, 1);
+    });
 }
 function constrain_font_size(params, trans){
 
