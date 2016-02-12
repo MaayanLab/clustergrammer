@@ -51,7 +51,7 @@ function Config(args) {
     super_label_scale: 1,
     make_tile_tooltip:function(d){return d.info;},
     // initialize view, e.g. initialize with row filtering
-    ini_view:null, 
+    ini_view:null,
     // initialize column category - only show data from one category
     current_col_cat:'all_category',
     use_sidebar:true
@@ -70,25 +70,25 @@ function Config(args) {
   // extend does not properly pass network_data
   config.network_data = args.network_data;
 
-  // replace undersores with space in row/col names 
+  // replace undersores with space in row/col names
   _.each(config.network_data.row_nodes, function(d){
     d.name = d.name.replace(/_/g, ' ');
   });
   _.each(config.network_data.col_nodes, function(d){
     d.name = d.name.replace(/_/g, ' ');
   });
-  
-  // replace underscore with space in row/col names from views 
+
+  // replace underscore with space in row/col names from views
   _.each(config.network_data.views, function(inst_view){
 
     var inst_nodes = inst_view.nodes;
 
-    // fix rows in views 
+    // fix rows in views
     _.each(inst_nodes.row_nodes, function(d){
       d.name = d.name.replace(/_/g, ' ');
     });
 
-    // fix cols in views 
+    // fix cols in views
     _.each(inst_nodes.col_nodes, function(d){
       d.name = d.name.replace(/_/g, ' ');
     });
@@ -98,12 +98,12 @@ function Config(args) {
   var col_nodes = config.network_data.col_nodes;
   var row_nodes = config.network_data.row_nodes;
 
-  // add names and instantaneous positions to links 
+  // add names and instantaneous positions to links
   _.each(config.network_data.links, function(d){
     d.name = row_nodes[d.source].name + '_' + col_nodes[d.target].name;
     d.row_name = row_nodes[d.source].name;
     d.col_name = col_nodes[d.target].name;
-  });  
+  });
 
 
   // transpose network if necessary
@@ -123,7 +123,7 @@ function Config(args) {
     config.super.col = args.col_label;
   }
 
-  // initialize cluster ordering - both rows and columns 
+  // initialize cluster ordering - both rows and columns
   config.inst_order = {};
   if (!Utils.is_undefined(args.order) && is_supported_order(args.order)) {
     config.inst_order.row = args.order;
@@ -133,15 +133,15 @@ function Config(args) {
     config.inst_order.col = 'clust';
   }
 
-  // set row or column order directly -- note that row/col are swapped 
-  // !! need to swap row/col orderings 
+  // set row or column order directly -- note that row/col are swapped
+  // !! need to swap row/col orderings
   if (!Utils.is_undefined(args.row_order) && is_supported_order(args.row_order)) {
-    // !! row and col orderings are swapped, need to fix 
+    // !! row and col orderings are swapped, need to fix
     config.inst_order.col = args.row_order;
   }
 
   if (!Utils.is_undefined(args.col_order) && is_supported_order(args.col_order)) {
-    // !! row and col orderings are swapped, need to fix 
+    // !! row and col orderings are swapped, need to fix
     config.inst_order.row = args.col_order;
   }
 
@@ -152,7 +152,7 @@ function Config(args) {
   // check for category information
   if (config.show_categories) {
 
-    // initialize dictionary of colors 
+    // initialize dictionary of colors
     config.class_colors = {};
 
     // associate classes with colors
@@ -170,66 +170,29 @@ function Config(args) {
     var class_cols = _.uniq(_.pluck(args.network_data.col_nodes, 'cl'));
     config.class_colors.col = {};
 
-    // custom column group colors 
+    // custom column group colors
     var cat_colors = ['#1f77b4','orange','#8c564b','yellow','red','pink','blue','#e377c2','grey'];
 
     _.each(class_cols, function(c_col, i) {
-      
+
       config.class_colors.col[c_col] = cat_colors[ i % cat_colors.length ];
     });
 
-    // generate a dictionary of columns in each category 
+    // generate a dictionary of columns in each category
     config.class_dict = {};
     _.each( col_nodes, function(d){
 
-      // initialize array for each category 
+      // initialize array for each category
       if ( _.has(config.class_dict, d.cl) == false ){
         config.class_dict[d.cl] = [];
       }
 
-      // add column name to category array 
+      // add column name to category array
       config.class_dict[d.cl].push(d.name);
 
     });
 
   }
-
-  /* Transpose network.
-   */
-  function transpose_network(net) {
-    var tnet = {},
-        inst_link,
-        i;
-
-    tnet.row_nodes = net.col_nodes;
-    tnet.col_nodes = net.row_nodes;
-    tnet.links = [];
-
-    for (i = 0; i < net.links.length; i++) {
-      inst_link = {};
-      inst_link.source = net.links[i].target;
-      inst_link.target = net.links[i].source;
-      inst_link.value = net.links[i].value;
-
-      // Optional highlight.
-      if (Utils.has(net.links[i], 'highlight')) {
-        inst_link.highlight = net.links[i].highlight;
-      }
-      if (Utils.has(net.links[i], 'value_up')) {
-        inst_link.value_up = net.links[i].value_up;
-      }
-      if (Utils.has(net.links[i], 'value_dn')) {
-        inst_link.value_dn = net.links[i].value_dn;
-      }
-      if (Utils.has(net.links[i], 'info')) {
-        inst_link.info = net.links[i].info;
-      }
-      tnet.links.push(inst_link);
-    }
-
-    return tnet;
-  }
-
 
   function is_supported_order(order) {
     return order === 'ini' || order === 'clust' || order === 'rank' || order === 'class';
