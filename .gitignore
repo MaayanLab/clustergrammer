@@ -19,7 +19,7 @@
 *.rar
 *.tar
 *.zip
-script/node_modules/
+node_modules
 
 # Logs and databases #
 ######################
