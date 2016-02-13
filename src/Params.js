@@ -1,12 +1,23 @@
-/* Params: calculates the size of all the visualization elements in the 
-clustergram. 
+var d3 = require('d3');
+var crossfilter = require('crossfilter');
+var pluck = require('lodash/pluck');
+var max = require('lodash/max');
+var has = require('lodash/has');
+var extend = require('extend');
+
+var label_scale = require('../label_scale');
+var keep_label_scale = require('../keep_label_scale');
+var change_network_view = require('../change_network_view');
+var parent_div_size = require('../parent_div_size');
+/* Params: calculates the size of all the visualization elements in the
+clustergram.
  */
 function Params(input_config) {
 
-  var config = jQuery.extend(true, {}, input_config);  
+  var config = extend(true, {}, input_config);
   var params = config;
 
-  if (_.isNull(params.ini_view) === false) {
+  if (params.ini_view !== null) {
     params.network_data = change_network_view(params, params.network_data, params.ini_view);
     params.ini_view = null;
   }
@@ -70,7 +81,7 @@ function Params(input_config) {
   params.matrix.click_hlight_row = -666;
   params.matrix.click_hlight_col = -666;
 
-  // definition of a large matrix - based on number of links 
+  // definition of a large matrix - based on number of links
   // below this cutoff reordering is done with transitions
   params.matrix.def_large_matrix = 10000;
 
@@ -86,20 +97,20 @@ function Params(input_config) {
   // Create wrapper around SVG visualization
   d3.select(config.root).append('div').attr('class', 'viz_wrapper');
 
-  // resize parent div - needs to be run here 
+  // resize parent div - needs to be run here
   parent_div_size(params);
 
   params.viz.svg_dim = {};
   params.viz.svg_dim.width = Number(d3.select(params.viz.viz_wrapper).style('width').replace('px', ''));
   params.viz.svg_dim.height = Number(d3.select(params.viz.viz_wrapper).style('height').replace('px', ''));
 
-  params.network_data.row_nodes_names = _.pluck(row_nodes, 'name');
-  params.network_data.col_nodes_names = _.pluck(col_nodes, 'name');
+  params.network_data.row_nodes_names = pluck(row_nodes, 'name');
+  params.network_data.col_nodes_names = pluck(col_nodes, 'name');
 
-  var row_max_char = _.max(row_nodes, function (inst) {
+  var row_max_char = max(row_nodes, function (inst) {
     return inst.name.length;
   }).name.length;
-  var col_max_char = _.max(col_nodes, function (inst) {
+  var col_max_char = max(col_nodes, function (inst) {
     return inst.name.length;
   }).name.length;
 
@@ -149,7 +160,7 @@ function Params(input_config) {
     params.class_room.row = 2 * params.class_room.symbol_width;
     params.class_room.col = params.class_room.symbol_width;
 
-    // TODO check this 
+    // TODO check this
     config.group_level = {
       row: 5,
       col: 5
@@ -170,7 +181,7 @@ function Params(input_config) {
   params.viz.clust.margin.top = params.norm_label.margin.top + params.norm_label.background.col;
   params.viz.spillover_x_offset = label_scale(col_max_char) * 0.7 * params.col_label_scale;
 
-  // reduce width by row/col labels and by grey_border width 
+  // reduce width by row/col labels and by grey_border width
   //(reduce width by less since this is less aparent with slanted col labels)
   var ini_clust_width = params.viz.svg_dim.width - (params.labels.super_label_width +
     params.norm_label.width.row + params.class_room.row) - params.viz.grey_border_width - params.viz.spillover_x_offset;
@@ -214,7 +225,7 @@ function Params(input_config) {
   }
 
 
-  var enr_max = Math.abs(_.max(col_nodes, function (d) {
+  var enr_max = Math.abs(max(col_nodes, function (d) {
     return Math.abs(d.value)
   }).value);
 
@@ -223,7 +234,7 @@ function Params(input_config) {
     .domain([0, enr_max])
     .range([0, 0.75 * params.norm_label.width.col]);
 
-  var enr_max = Math.abs(_.max(row_nodes, function (d) {
+  var enr_max = Math.abs(max(row_nodes, function (d) {
     return Math.abs(d.value)
   }).value);
   params.labels.bar_scale_row = d3.scale
@@ -259,10 +270,10 @@ function Params(input_config) {
 
 
   // // define class ordering - define on front-end
-  // if (_.has(col_nodes[0],'cl')){
+  // if (has(col_nodes[0],'cl')){
 
-  //   // the order should be interpreted as the nth node should be positioned here 
-  //   // in the order 
+  //   // the order should be interpreted as the nth node should be positioned here
+  //   // in the order
 
   //   var tmp_col_nodes = _.sortBy(col_nodes,'cl')
 
@@ -280,7 +291,7 @@ function Params(input_config) {
   //   params.matrix.orders.class_row = order_col_class;
   // }
 
-  if (_.has(col_nodes[0], 'cl_index')) {
+  if (has(col_nodes[0], 'cl_index')) {
     params.matrix.orders.class_row = d3.range(params.viz.num_col_nodes).sort(function (a, b) {
       return col_nodes[b].cl_index - col_nodes[a].cl_index;
     });
@@ -296,7 +307,7 @@ function Params(input_config) {
   } else if (params.viz.inst_order.row === 'rank') {
     params.matrix.x_scale.domain(params.matrix.orders.rank_row);
   } else if (params.viz.inst_order.row === 'class') {
-    if (_.has(params.matrix.orders, 'class_row')) {
+    if (has(params.matrix.orders, 'class_row')) {
       params.matrix.x_scale.domain(params.matrix.orders.class_row);
     } else {
       params.matrix.x_scale.domain(params.matrix.orders.clust_row);
@@ -311,14 +322,14 @@ function Params(input_config) {
   } else if (params.viz.inst_order.col === 'rank') {
     params.matrix.y_scale.domain(params.matrix.orders.rank_col);
   } else if (params.viz.inst_order.col === 'class') {
-    if (_.has(params.matrix.orders, 'class_row')) {
+    if (has(params.matrix.orders, 'class_row')) {
       params.matrix.y_scale.domain(params.matrix.orders.class_col);
     } else {
       params.matrix.y_scale.domain(params.matrix.orders.clust_col);
     }
   }
 
-  _.each(params.network_data.links, function (d) {
+  params.network_data.links.forEach(function (d) {
     // d.name = row_nodes[d.source].name + '_' + col_nodes[d.target].name;
     // d.row_name = row_nodes[d.source].name;
     // d.col_name = col_nodes[d.target].name;
@@ -326,8 +337,8 @@ function Params(input_config) {
     d.y = params.matrix.y_scale(d.source);
   });
 
-  // make lnks crossfilter 
-  // TODO check if relying on crossfilter 
+  // make lnks crossfilter
+  // TODO check if relying on crossfilter
   params.cf = {};
   params.cf.links = crossfilter(params.network_data.links);
   params.cf.dim_x = params.cf.links.dimension(function (d) {
@@ -365,12 +376,12 @@ function Params(input_config) {
 
   params.viz.real_zoom = params.norm_label.width.col / (params.matrix.x_scale.rangeBand() / 2);
 
-  if (_.has(params.network_data, 'all_links')) {
-    params.matrix.max_link = _.max(params.network_data.all_links, function (d) {
+  if (has(params.network_data, 'all_links')) {
+    params.matrix.max_link = max(params.network_data.all_links, function (d) {
       return Math.abs(d.value);
     }).value;
   } else {
-    params.matrix.max_link = _.max(params.network_data.links, function (d) {
+    params.matrix.max_link = max(params.network_data.links, function (d) {
       return Math.abs(d.value);
     }).value;
   }
@@ -400,13 +411,13 @@ function Params(input_config) {
   // TODO check if using run_trans
   params.viz.run_trans = false;
 
-  if (Utils.has(params.network_data.links[0], 'value_up') || Utils.has(params.network_data.links[0], 'value_dn')) {
+  if (has(params.network_data.links[0], 'value_up') || has(params.network_data.links[0], 'value_dn')) {
     params.matrix.tile_type = 'updn';
   } else {
     params.matrix.tile_type = 'simple';
   }
 
-  if (Utils.has(params.network_data.links[0], 'highlight')) {
+  if (has(params.network_data.links[0], 'highlight')) {
     params.matrix.highlight = 1;
   } else {
     params.matrix.highlight = 0;

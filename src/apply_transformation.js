@@ -1,5 +1,7 @@
+var d3 = require('d3');
+var utils = require('./utils');
 
-function apply_transformation(params, trans_x, trans_y, zoom_x, zoom_y) {
+module.exports = function(params, trans_x, trans_y, zoom_x, zoom_y) {
 
   var d3_scale = zoom_x;
 
@@ -60,7 +62,7 @@ function apply_transformation(params, trans_x, trans_y, zoom_x, zoom_y) {
     }
   }
 
-  // update visible links 
+  // update visible links
   var min_rect_height = 3;
 
   // apply transformation and reset translate vector
@@ -106,7 +108,7 @@ function apply_transformation(params, trans_x, trans_y, zoom_x, zoom_y) {
   // resize label bars if necessary
   ////////////////////////////////////
 
-  if (Utils.has( params.network_data.row_nodes[0], 'value')) {
+  if (utils.has(params.network_data.row_nodes[0], 'value')) {
     d3.selectAll('.row_bars')
     .attr('width', function(d) {
       var inst_value = 0;
@@ -120,7 +122,7 @@ function apply_transformation(params, trans_x, trans_y, zoom_x, zoom_y) {
     });
   }
 
-  if (Utils.has( params.network_data.col_nodes[0], 'value')) {
+  if (utils.has(params.network_data.col_nodes[0], 'value')) {
     d3.selectAll('.col_bars')
       .attr('width', function(d) {
         var inst_value = 0;
