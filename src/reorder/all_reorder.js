@@ -1,9 +1,7 @@
-var Params = require('../params');
 var crossfilter = require('crossfilter');
 var end_reorder = require('./end_reorder');
 
-module.exports = function(inst_order, row_col) {
-  var params = Params.get();
+module.exports = function(params, inst_order, row_col) {
 
   params.viz.run_trans = true;
 
@@ -166,7 +164,7 @@ module.exports = function(inst_order, row_col) {
   }
 
   // redefine x and y positions
-  _.each(params.network_data.links, function(d){
+  params.network_data.links.forEach(function(d){
     d.x = params.matrix.x_scale(d.target);
     d.y = params.matrix.y_scale(d.source);
   });

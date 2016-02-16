@@ -1,5 +1,4 @@
-var Params = require('../params');
-var Config = require('../config');
+var make_params = require('../params');
 var change_network_view = require('./change_network_view');
 var generate_dendrogram = require('../dendrogram');
 var initialize_resizing = require('../initialize_resizing');
@@ -9,17 +8,15 @@ var define_enter_exit_delays = require('./define_enter_exit_delays');
 var search = require('../search');
 var all_reorder = require('../reorder/all_reorder');
 
-module.exports = function(change_view) {
-
-  var old_params = Params.get();
-  var config = Config.get();
+module.exports = function(old_params, change_view) {
 
   // make new_network_data by filtering the original network data
-  var config_copy = jQuery.extend(true, {}, config);
+  var config_copy = jQuery.extend(true, {}, this.config);
+  console.log(this.config);
   var new_network_data = change_network_view(old_params, config_copy.network_data, change_view);
 
   // make Deep copy of this.config object
-  var new_config = jQuery.extend(true, {}, config);
+  var new_config = jQuery.extend(true, {}, this.config);
 
   new_config.network_data = new_network_data;
   new_config.inst_order = old_params.viz.inst_order;
@@ -28,7 +25,7 @@ module.exports = function(change_view) {
   new_config.ini_view = null;
   new_config.current_col_cat = old_params.current_col_cat;
 
-  var params = Params.make_params(new_config);
+  var params = make_params(new_config);
   var delays = define_enter_exit_delays(old_params, params);
 
   // ordering - necessary for reordering the function called on button click

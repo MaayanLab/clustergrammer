@@ -1,9 +1,7 @@
 var utils = require('../utils');
-var Params = require('../params');
 
-module.exports = function(row_nodes, col_nodes, links, duration, delays) {
-  var params = Params.get();
-  
+module.exports = function(params, row_nodes, col_nodes, links, duration, delays) {
+
   var row_nodes_names = params.network_data.row_nodes_names;
   var col_nodes_names = params.network_data.col_nodes_names;
 
@@ -17,7 +15,7 @@ module.exports = function(row_nodes, col_nodes, links, duration, delays) {
   var half_height = params.viz.clust.dim.height / 2;
   var center_y = -(zoom_y - 1) * half_height;
 
-  this.viz.get_clust_group()
+  d3.select(params.root + ' .clust_group')
     .attr('transform', 'translate(' + [0, 0 + center_y] + ')' +
     ' scale(' + 1 + ',' + zoom_y + ')' + 'translate(' + [pan_dx,pan_dy] + ')');
 

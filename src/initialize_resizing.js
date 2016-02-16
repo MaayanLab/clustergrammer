@@ -1,9 +1,7 @@
-var Params = require('./params');
 var parent_div_size = require('./parent_div_size');
 var reset_visualization_size = require('./reset_size/reset_visualization_size');
 
-module.exports = function() {
-  var params = Params.get();
+module.exports = function(params) {
 
   d3.select(window).on('resize', null);
 
@@ -37,7 +35,7 @@ module.exports = function() {
       .attr('dominant-baseline', 'central')
       .attr('font-family', 'FontAwesome')
       .attr('font-size', '30px')
-      .text(function (d) {
+      .text(function () {
         if (params.viz.expand === false) {
           // expand button
           return '\uf0b2';
@@ -93,7 +91,7 @@ module.exports = function() {
         if (params.viz.run_trans == true) {
           wait_time = 2500;
         }
-        setTimeout(reset_visualization_size, wait_time);
+        setTimeout(reset_visualization_size, wait_time, params);
       });
   }
 };

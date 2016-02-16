@@ -1,9 +1,7 @@
-var Params = require('./params');
 var utils = require('./utils');
 var trim_text = require('./trim_text');
 
-module.exports = function(trans) {
-  var params = Params.get();
+module.exports = function(params, trans) {
 
   var trans_time;
 
@@ -110,10 +108,10 @@ module.exports = function(trans) {
 
   // constrain text after zooming
   if (params.labels.row_keep < 1){
-    d3.selectAll('.row_label_text' ).each(function() { trim_text(this, 'row'); });
+    d3.selectAll('.row_label_text' ).each(function() { trim_text(params, this, 'row'); });
   }
   if (params.labels.col_keep < 1){
-    d3.selectAll('.col_label_click').each(function() { trim_text(this, 'col'); });
+    d3.selectAll('.col_label_click').each(function() { trim_text(params, this, 'col'); });
   }
 
   // // constrain column text highlight bars

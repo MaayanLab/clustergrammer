@@ -1,9 +1,8 @@
-var Params = require('../params');
+var utils = require('../utils');
 var get_inst_group = require('./get_inst_group');
-var group_colors = require('./group_colors');
+var build_color_groups = require('./build_color_groups');
 
-module.exports = function (dom_class) {
-  var params = Params.get();
+module.exports = function (params, dom_class) {
   var col_nodes = params.network_data.col_nodes;
   var col_nodes_names = _.pluck(col_nodes, 'name');
 
@@ -33,8 +32,9 @@ module.exports = function (dom_class) {
           return inst_height;
         })
         .style('fill', function(d) {
-          if (_.has(d,'group')){
-            var inst_color = group_colors.get_group_color(d.group[inst_level]);
+          if (utils.has(d,'group')){
+            var group_colors = build_color_groups(params);
+            var inst_color = group_colors[d.group[inst_level]];
           } else {
             inst_color = '#eee';
           }
@@ -44,7 +44,7 @@ module.exports = function (dom_class) {
       if (typeof params.click_group === 'function'){
         dendro_rect
           .on('click',function(d){
-            var group_nodes_list = get_inst_group('col', d);
+            var group_nodes_list = get_inst_group(params, 'col', d);
             params.click_group('col', group_nodes_list);
           });
       }

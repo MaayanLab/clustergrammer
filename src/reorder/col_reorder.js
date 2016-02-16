@@ -1,10 +1,8 @@
 var crossfilter = require('crossfilter');
-var Params = require('../params');
 var end_reorder = require('./end_reorder');
 var reposition_tile_highlight = require('./reposition_tile_highlight');
 
-module.exports = function() {
-  var params = Params.get();
+module.exports = function(params) {
 
   // set running transition value
   params.viz.run_trans = true;
@@ -21,7 +19,7 @@ module.exports = function() {
   // find the column number of this term from col_nodes
   // gather column node names
   var tmp_arr = [];
-  _.each(col_nodes, function(node) {
+  col_nodes.forEach(function(node) {
     tmp_arr.push(node.name);
   });
 
@@ -30,7 +28,7 @@ module.exports = function() {
 
   // gather the values of the input genes
   tmp_arr = [];
-  _.each(row_nodes, function(node, index) {
+  row_nodes.forEach(function(node, index) {
     tmp_arr.push( mat[index].row_data[inst_col].value);
   });
 
@@ -105,7 +103,7 @@ module.exports = function() {
     .style('opacity', 1);
 
   // redefine x and y positions
-  _.each(params.network_data.links, function(d){
+  params.network_data.links.forEach(function(d){
     d.x = params.matrix.x_scale(d.target);
     d.y = params.matrix.y_scale(d.source);
   });
@@ -116,7 +114,7 @@ module.exports = function() {
   params.cf.dim_x = params.cf.links.dimension(function(d){return d.x;});
   params.cf.dim_y = params.cf.links.dimension(function(d){return d.y;});
 
-  reposition_tile_highlight();
+  reposition_tile_highlight(params);
 
   // backup allow programmatic zoom
   setTimeout(end_reorder, 2500);

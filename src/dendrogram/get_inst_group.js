@@ -1,8 +1,4 @@
-var Params = require('../params');
-
-module.exports = function(inst_rc,d) {
-  var params = Params.get();
-
+module.exports = function(params, inst_rc, d) {
   var inst_level;
   var inst_nodes;
 

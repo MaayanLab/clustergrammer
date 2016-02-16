@@ -109,7 +109,7 @@ module.exports = function(params, orig_network_data, change_view) {
 
     var new_nodes = inst_view.nodes;
     var links = orig_network_data.links;
-    var new_network_data = filter_using_new_nodes(new_nodes, links, views);
+    var new_network_data = filter_using_new_nodes(params, new_nodes, links, views);
 
   } else {
     var new_network_data = orig_network_data;

@@ -1,11 +1,9 @@
-var Params = require('../params');
 var resize_after_update = require('../reset_size/reset_size_after_update');
 var make_rows = require('../labels/make_rows');
 var make_cols = require('../labels/make_cols');
 var eeu_existing_row = require('./eeu_existing_row');
 
-module.exports = function(network_data, delays){
-  var params = Params.get();
+module.exports = function(params, network_data, delays){
 
   if (params.matrix.show_tile_tooltips){
     // d3-tooltip - for tiles
@@ -108,7 +106,7 @@ module.exports = function(network_data, delays){
   d3.select(params.root+' .clust_group')
     .selectAll('.row')
     .each(function(d) {
-      eeu_existing_row(d, tip, delays, duration);
+      eeu_existing_row(params, d, tip, delays, duration);
     });
 
   // enter exit update tiles

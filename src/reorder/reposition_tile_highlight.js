@@ -1,7 +1,4 @@
-var Params = require('../params');
-
-module.exports = function() {
-  var params = Params.get();
+module.exports = function(params) {
 
   // resize click hlight
   var rel_width_hlight = 6;

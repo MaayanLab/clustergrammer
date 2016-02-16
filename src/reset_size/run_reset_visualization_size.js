@@ -1,12 +1,9 @@
-var Params = require('../params');
 var crossfilter = require('crossfilter');
 var utils = require('../utils');
 var zoomed = require('../zoomed');
 var ini_doubleclick = require('../ini_doubleclick');
 
-module.exports = function(set_clust_width, set_clust_height, set_margin_left, set_margin_top, parameters) {
-
-  var params = parameters || Params.get();
+module.exports = function(params, set_clust_width, set_clust_height, set_margin_left, set_margin_top) {
 
   var row_nodes = params.network_data.row_nodes;
   var col_nodes = params.network_data.col_nodes;
@@ -23,11 +20,12 @@ module.exports = function(set_clust_width, set_clust_height, set_margin_left, se
   var half_height = params.viz.clust.dim.height / 2;
   var center_y = -(zoom_y - 1) * half_height;
 
-  this.viz.get_clust_group()
+  d3
+    .select(params.root + ' .clust_group')
     .attr('transform', 'translate(' + [0, 0 + center_y] + ')' +
     ' scale(' + 1 + ',' + zoom_y + ')' + 'translate(' + [pan_dx,pan_dy] + ')');
 
-  d3.select(params.root+' .row_label_zoom_container')
+  d3.select(params.root + ' .row_label_zoom_container')
     .attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' +
     zoom_y + ',' + zoom_y + ')' + 'translate(' + [0, pan_dy] + ')');
 

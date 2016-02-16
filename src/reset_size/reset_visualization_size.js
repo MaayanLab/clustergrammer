@@ -1,8 +1,6 @@
-var Params = require('../params');
 var run_reset_visualization_size = require('./run_reset_visualization_size');
 
-module.exports = function() {
-  var params = Params.get();
+module.exports = function(params) {
 
   // get outer_margins
   var outer_margins = params.viz.expand ? params.viz.outer_margins_expand : params.viz.outer_margins;
@@ -16,7 +14,7 @@ module.exports = function() {
   cont_dim.width  = screen_width  - outer_margins.left - outer_margins.right;
   cont_dim.height = screen_height - outer_margins.top - outer_margins.bottom;
 
-  run_reset_visualization_size(cont_dim.width, cont_dim.height, outer_margins.left, outer_margins.top, params);
+  run_reset_visualization_size(params, cont_dim.width, cont_dim.height, outer_margins.left, outer_margins.top);
 
   // get dimensions of the viz_svg
   var dim = {};

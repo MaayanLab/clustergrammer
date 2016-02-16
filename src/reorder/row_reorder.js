@@ -1,10 +1,8 @@
-var Params = require('../params');
 var crossfilter = require('crossfilter');
 var end_reorder = require('./end_reorder');
 var reposition_tile_highlight = require('./reposition_tile_highlight');
 
-module.exports = function() {
-  var params = Params.get();
+module.exports = function(params) {
 
   // get inst row (gene)
   var inst_row = d3.select(this).select('text').text();
@@ -46,7 +44,7 @@ module.exports = function() {
   if (params.network_data.links.length > params.matrix.def_large_matrix){
 
     // define the t variable as the transition function
-    var t = this.viz.get_clust_group();
+    var t = d3.select(params.root + ' .clust_group');
 
     // Move Col Labels
     d3.select(params.root+' .col_zoom_container')
@@ -68,7 +66,7 @@ module.exports = function() {
   } else {
 
     // define the t variable as the transition function
-    var t = this.viz.get_clust_group().transition().duration(2500);
+    var t = d3.select(params.root + ' .clust_group').transition().duration(2500);
 
     // Move Col Labels
     d3.select(params.root+' .col_zoom_container')
@@ -120,7 +118,7 @@ module.exports = function() {
     .select('rect')
     .style('opacity', 1);
 
-  reposition_tile_highlight();
+  reposition_tile_highlight(params);
 
   // redefine x and y positions
   params.network_data.links.forEach(function(d){

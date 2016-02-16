@@ -1,9 +1,6 @@
-var Params = require('../params');
-
 // make each row in the clustergram
 module.exports = function(ini_inp_row_data, tip) {
-  var params = Params.get();
-
+  var params = { matrix: { rect_width: 10 } };
   var inp_row_data = ini_inp_row_data.row_data;
 
   // value: remove zero values to make visualization faster

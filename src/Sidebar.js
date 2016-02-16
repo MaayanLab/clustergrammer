@@ -1,8 +1,6 @@
-var Params = require('./params');
 /* Represents sidebar with controls.
  */
-module.exports = function(viz) {
-  var params = Params.get();
+module.exports = function(params, viz) {
 
   var row_order_controls = '' +
     '<div class="viz_medium_text">Row Order</div>' +

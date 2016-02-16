@@ -1,10 +1,8 @@
-var Params = require('./params');
 var two_translate_zoom = require('./two_translate_zoom');
 /* Handles searching rows or columns.
  !! need to generalize to column and row
  * ----------------------------------------------------------------------- */
-module.exports = function(nodes, prop) {
-  var params = Params.get();
+module.exports = function(params, nodes, prop) {
 
   /* Collect entities from row or columns.
    */

@@ -1,10 +1,7 @@
-var Params = require('./params');
 var utils = require('./utils');
 var constrain_font_size = require('./constrain_font_size');
-var viz = require('./viz');
 
-module.exports = function(pan_dx, pan_dy, fin_zoom) {
-  var params = Params.get();
+module.exports = function(params, pan_dx, pan_dy, fin_zoom) {
   // get parameters
   if (!params.viz.run_trans) {
 
@@ -79,7 +76,8 @@ module.exports = function(pan_dx, pan_dy, fin_zoom) {
 
     // transform clust group
     ////////////////////////////
-    viz.get_clust_group()
+    d3
+      .select('.clust_group')
       .transition().duration(search_duration)
       // first apply the margin transformation
       // then zoom, then apply the final transformation

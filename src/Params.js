@@ -9,12 +9,11 @@ var zoomed = require('./zoomed');
 /* Params: calculates the size of all the visualization elements in the
 clustergram.
  */
-var params = {};
 
-function make_params(input_config) {
+module.exports = function(input_config) {
 
   var config = extend(true, {}, input_config);
-  params = config;
+  var params = config;
 
   if (params.ini_view !== null) {
     params.network_data = change_network_view(params, params.network_data, params.ini_view);
@@ -429,14 +428,4 @@ function make_params(input_config) {
     });
 
   return params;
-}
-
-module.exports = {
-  get: function() {
-    if (Object.keys(params).length < 1) {
-      throw new Error('Params was passed without being initialized.');
-    }
-    return params;
-  },
-  make_params: make_params
 };

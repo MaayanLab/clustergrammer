@@ -1,10 +1,7 @@
-var Params = require('./params');
 var utils = require('./utils');
 var constrain_font_size = require('./constrain_font_size');
 
-module.exports = function(trans_x, trans_y, zoom_x, zoom_y) {
-  var params = Params.get();
-
+module.exports = function(params, trans_x, trans_y, zoom_x, zoom_y) {
   var d3_scale = zoom_x;
 
   // y - rules

@@ -1,8 +1,5 @@
-var Params = require('./params');
 
-module.exports = function(row_nodes, col_nodes) {
-  var params = Params.get();
-
+module.exports = function(params, row_nodes, col_nodes) {
   var row_nodes_names = params.network_data.row_nodes_names;
   var col_nodes_names = params.network_data.col_nodes_names;
 

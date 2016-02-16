@@ -1,6 +1,6 @@
-var Params = require('./params');
-var viz = require('./viz');
-var Config = require('./config');
+var make_config = require('./config');
+var make_params = require('./params');
+var make_viz = require('./viz');
 
 /* clustergrammer 1.0
  * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
@@ -16,15 +16,15 @@ function Clustergrammer(args) {
   // handle user events
 
   // consume and validate user arguments, produce configuration object
-  var config = Config.make_config(args);
+  var config = make_config(args);
   // make visualization parameters using configuration object
-  var params = Params.make_params(config);
+  var params = make_params(config);
   // make visualization using parameters
-  var viz = generate_viz();
+  var viz = make_viz(params);
 
   if (params.use_sidebar) {
     var generate_sidebar = require('./sidebar');
-    generate_sidebar(viz, params);
+    generate_sidebar(params, viz);
   }
 
   return {

@@ -1,8 +1,4 @@
-var Params = require('../params');
-
-module.exports = function(clicked_row, id_clicked_row) {
-  var params = Params.get();
-
+module.exports = function(params, clicked_row, id_clicked_row) {
   if (id_clicked_row != params.click_hlight_row){
 
     var rel_width_hlight = 6;

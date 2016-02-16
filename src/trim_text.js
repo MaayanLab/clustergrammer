@@ -1,7 +1,5 @@
-var Params = require('./params');
 
-module.exports = function(inst_selection, inst_rc) {
-  var params = Params.get();
+module.exports = function(params, inst_selection, inst_rc) {
 
   var max_width,
       inst_zoom;

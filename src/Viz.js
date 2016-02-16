@@ -1,4 +1,3 @@
-var Params = require('./params');
 var generate_matrix = require('./matrix');
 var generate_dendro = require('./dendrogram');
 var make_rows = require('./labels/make_rows');
@@ -10,8 +9,7 @@ var two_translate_zoom = require('./two_translate_zoom');
 var initialize_resizing = require('./initialize_resizing');
 var ini_doubleclick = require('./ini_doubleclick');
 
-module.exports = function() {
-  var params = Params.get();
+module.exports = function(params) {
   var svg_group = d3.select(params.viz.viz_wrapper)
     .append('svg')
     .attr('class', 'viz_svg')
@@ -25,18 +23,18 @@ module.exports = function() {
     .style('height', params.viz.svg_dim.height)
     .style('fill', 'white');
 
-  var matrix = generate_matrix(svg_group);
+  var matrix = generate_matrix(params, svg_group);
 
   // var labels = generate_labels(params);
 
   var delay_text = 0;
-  make_rows(delay_text);
-  var container_all_col = make_cols(delay_text);
+  make_rows(params, delay_text);
+  var container_all_col = make_cols(params, delay_text);
 
 
   if (params.viz.show_dendrogram) {
 
-    var row_dendrogram = generate_dendro('row');
+    var row_dendrogram = generate_dendro(params, 'row');
 
     container_all_col
       .append('g')
@@ -48,14 +46,14 @@ module.exports = function() {
       .append('g')
       .attr('class', 'col_viz_zoom_container');
 
-    var col_dendrogram = generate_dendro('col');
+    var col_dendrogram = generate_dendro(params, 'col');
 
   }
 
-  run_spillover(container_all_col);
+  run_spillover(params, container_all_col);
 
   if (params.labels.super_labels) {
-    generate_super_labels();
+    generate_super_labels(params);
   }
 
   function border_colors() {
@@ -115,9 +113,9 @@ module.exports = function() {
       return 'translate(0,' + inst_offset + ')';
     });
 
-  initialize_resizing();
+  initialize_resizing(params);
 
-  ini_doubleclick();
+  ini_doubleclick(params);
 
   if (params.viz.do_zoom) {
     svg_group.call(params.zoom_behavior);
@@ -125,7 +123,7 @@ module.exports = function() {
 
   d3.select(params.viz.viz_svg).on('dblclick.zoom', null);
 
-  var gene_search = run_search(params.network_data.row_nodes, 'name');
+  var gene_search = run_search(params, params.network_data.row_nodes, 'name');
 
   var opacity_slider = function (inst_slider) {
 
@@ -157,11 +155,11 @@ module.exports = function() {
   };
 
   function reset_zoom(inst_scale) {
-    two_translate_zoom(0, 0, inst_scale);
+    two_translate_zoom(params, 0, 0, inst_scale);
   }
 
   return {
-    change_groups: function (inst_rc, inst_index) {
+    change_groups: function(inst_rc, inst_index) {
       if (inst_rc === 'row') {
         row_dendrogram.change_groups(inst_rc, inst_index);
       } else {
@@ -174,7 +172,7 @@ module.exports = function() {
     get_matrix: function () {
       return matrix.get_matrix();
     },
-    get_nodes: function (type) {
+    get_nodes: function(type) {
       return matrix.get_nodes(type);
     },
     reorder: require('./reorder/all_reorder'),

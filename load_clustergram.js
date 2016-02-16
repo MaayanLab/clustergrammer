@@ -71,7 +71,7 @@ function make_clust(inst_network){
       var cgm = Clustergrammer(arguments_obj);
       g_cgm = cgm;
 
-      d3.select(g_cgm.params.root+' .wait_message').remove();
+      d3.select(g_cgm.params.root + ' .wait_message').remove();
 
       // !! tmp set up for initializing sliders
       // !! tmp set up filters in load clustergram using cgm

@@ -1,11 +1,8 @@
-var Params = require('../params');
 var utils = require('../utils');
 var add_row_click_hlight = require('./add_row_click_hlight');
 var row_reorder = require('../reorder/row_reorder');
 
-module.exports = function(text_delay) {
-  var params = Params.get();
-
+module.exports = function(params, text_delay) {
   var row_nodes = params.network_data.row_nodes;
 
   var row_nodes_names = params.network_data.row_nodes_names;
@@ -205,7 +202,7 @@ module.exports = function(text_delay) {
   // add triangles
   row_viz_group
     .append('path')
-    .attr('d', function(d) {
+    .attr('d', function() {
       var origin_x = params.class_room.symbol_width - 1;
       var origin_y = 0;
       var mid_x = 1;
@@ -257,10 +254,10 @@ module.exports = function(text_delay) {
       .on('click',function(d){
         if (typeof params.click_label == 'function'){
           params.click_label(d.name, 'row');
-          add_row_click_hlight(this, d.ini);
+          add_row_click_hlight(params, this, d.ini);
         } else {
           if (params.tile_click_hlight){
-            add_row_click_hlight(this,d.ini);
+            add_row_click_hlight(params, this, d.ini);
           }
         }
 

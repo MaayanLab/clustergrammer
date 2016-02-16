@@ -1,7 +1,4 @@
-var Params = require('../params');
-
-module.exports = function(clicked_col, id_clicked_col) {
-  var params = Params.get();
+module.exports = function(params, clicked_col, id_clicked_col) {
 
   if (id_clicked_col != params.click_hlight_col){
 

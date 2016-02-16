@@ -1,10 +1,8 @@
-var Params = require('../params');
 var utils = require('../utils');
 var ini_sliders = require('./ini_sliders');
 
-module.exports = function(filter_type) {
-  var params = Params.get();
-
+module.exports = function(filter_type, parameters) {
+  var params = parameters || this.params;
   // filter
   ////////////////////
 
@@ -12,6 +10,7 @@ module.exports = function(filter_type) {
   var all_views = _.filter(views, function(d) { return utils.has(d,filter_type); });
 
   var cgm = this;
+  console.log(cgm);
 
   // // filter for column category if necessary
   // if ( utils.has(all_views[0],'col_cat') ) {

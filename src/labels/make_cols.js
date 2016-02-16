@@ -1,11 +1,9 @@
-var Params = require('../params');
 var utils = require('../utils');
 var trim_text = require('../trim_text');
 var add_col_click_hlight = require('./add_col_click_hlight');
 var col_reorder = require('../reorder/col_reorder');
 
-module.exports = function(text_delay) {
-  var params = Params.get();
+module.exports = function(params, text_delay) {
 
   var col_nodes = params.network_data.col_nodes;
   var col_nodes_names = params.network_data.col_nodes_names;
@@ -17,7 +15,7 @@ module.exports = function(text_delay) {
 
 
   // make container to pre-position zoomable elements
-  if (d3.select(params.root+' .col_container').empty()){
+  if (d3.select(params.root+' .col_container').empty()) {
 
     var container_all_col = d3.select(params.viz.viz_svg)
       .append('g')
@@ -219,10 +217,10 @@ module.exports = function(text_delay) {
 
   // constrain text after zooming
   if (params.labels.row_keep < 1){
-    d3.selectAll('.row_label_text' ).each(function() { trim_text(this, 'row'); });
+    d3.selectAll('.row_label_text' ).each(function() { trim_text(params, this, 'row'); });
   }
   if (params.labels.col_keep < 1){
-    d3.selectAll('.col_label_click').each(function() { trim_text(this, 'col'); });
+    d3.selectAll('.col_label_click').each(function() { trim_text(params, this, 'col'); });
   }
 
 
@@ -292,11 +290,11 @@ module.exports = function(text_delay) {
 
       if (typeof params.click_label == 'function'){
         params.click_label(d.name, 'col');
-        add_col_click_hlight(this, d.ini);
+        add_col_click_hlight(params, this, d.ini);
       } else {
 
         if (params.tile_click_hlight){
-          add_col_click_hlight(this, d.ini);
+          add_col_click_hlight(params, this, d.ini);
         }
 
       }
@@ -306,7 +304,7 @@ module.exports = function(text_delay) {
       console.log('double clicking col');
       col_reorder.call(this);
       if (params.tile_click_hlight){
-        add_col_click_hlight(this,d.ini);
+        add_col_click_hlight(params, this, d.ini);
       }
     });
 

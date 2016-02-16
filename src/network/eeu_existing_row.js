@@ -1,7 +1,4 @@
-var Params = require('../params');
-
-module.exports = function(ini_inp_row_data, tip, delays, duration) {
-  var params = Params.get();
+module.exports = function(params, ini_inp_row_data, tip, delays, duration) {
 
   var inp_row_data = ini_inp_row_data.row_data;
 
@@ -162,7 +159,7 @@ module.exports = function(ini_inp_row_data, tip, delays, duration) {
     if (delays.run_transition){
       update_tiles_up
         .transition().delay(delays.update).duration(duration)
-        .attr('d', function(d) {
+        .attr('d', function() {
           // up triangle
           var start_x = 0;
           var final_x = params.matrix.x_scale.rangeBand();
@@ -179,7 +176,7 @@ module.exports = function(ini_inp_row_data, tip, delays, duration) {
         });
     } else {
       update_tiles_up
-        .attr('d', function(d) {
+        .attr('d', function() {
           // up triangle
           var start_x = 0;
           var final_x = params.matrix.x_scale.rangeBand();
@@ -223,7 +220,7 @@ module.exports = function(ini_inp_row_data, tip, delays, duration) {
     if (delays.run_transition){
       update_tiles_dn
         .transition().delay(delays.update).duration(duration)
-        .attr('d', function(d) {
+        .attr('d', function() {
             // dn triangle
             var start_x = 0;
             var final_x = params.matrix.x_scale.rangeBand();
@@ -240,7 +237,7 @@ module.exports = function(ini_inp_row_data, tip, delays, duration) {
           });
     } else {
       update_tiles_dn
-        .attr('d', function(d) {
+        .attr('d', function() {
           // dn triangle
           var start_x = 0;
           var final_x = params.matrix.x_scale.rangeBand();

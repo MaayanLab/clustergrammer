@@ -2,62 +2,59 @@ var utils = require('./utils');
 var colors = require('./colors');
 var transpose_network = require('./network/transpose_network');
 
-var defaults = {
-  // Label options
-  row_label_scale: 1,
-  col_label_scale: 1,
-  super_labels: false,
-  show_label_tooltips: false,
-  show_tile_tooltips: false,
-  // matrix options
-  transpose: false,
-  tile_colors: ['#FF0000', '#1C86EE'],
-  bar_colors: ['#FF0000', '#1C86EE'],
-  outline_colors: ['orange','black'],
-  highlight_color: '#FFFF00',
-  tile_title: false,
-  // Default domain is set to 0, which means that the domain will be set automatically
-  input_domain: 0,
-  opacity_scale: 'linear',
-  do_zoom: true,
-  background_color: '#FFFFFF',
-  super_border_color: '#F5F5F5',
-  resize: true,
-  outer_margins: {
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0
-  },
-  outer_margins_expand:{
-    top: -666,
-    bottom: 0,
-    left: 0,
-    right: 0
-  },
-  ini_expand: false,
-  // Gray border around the visualization
-  grey_border_width: 3,
-  // the distance between labels and clustergram
-  // a universal margin for the clustergram
-  uni_margin: 4,
-  // force the visualization to be square
-  force_square: 0,
-  tile_click_hlight: false,
-  super_label_scale: 1,
-  make_tile_tooltip: function(d) { return d.info; },
-  // initialize view, e.g. initialize with row filtering
-  ini_view: null,
-  // initialize column category - only show data from one category
-  current_col_cat: 'all_category',
-  use_sidebar: true
-};
-
-var config = {};
-
-function make_config(args) {
+module.exports = function(args) {
+  var defaults = {
+    // Label options
+    row_label_scale: 1,
+    col_label_scale: 1,
+    super_labels: false,
+    show_label_tooltips: false,
+    show_tile_tooltips: false,
+    // matrix options
+    transpose: false,
+    tile_colors: ['#FF0000', '#1C86EE'],
+    bar_colors: ['#FF0000', '#1C86EE'],
+    outline_colors: ['orange','black'],
+    highlight_color: '#FFFF00',
+    tile_title: false,
+    // Default domain is set to 0, which means that the domain will be set automatically
+    input_domain: 0,
+    opacity_scale: 'linear',
+    do_zoom: true,
+    background_color: '#FFFFFF',
+    super_border_color: '#F5F5F5',
+    resize: true,
+    outer_margins: {
+      top: 0,
+      bottom: 0,
+      left: 0,
+      right: 0
+    },
+    outer_margins_expand:{
+      top: -666,
+      bottom: 0,
+      left: 0,
+      right: 0
+    },
+    ini_expand: false,
+    // Gray border around the visualization
+    grey_border_width: 3,
+    // the distance between labels and clustergram
+    // a universal margin for the clustergram
+    uni_margin: 4,
+    // force the visualization to be square
+    force_square: 0,
+    tile_click_hlight: false,
+    super_label_scale: 1,
+    make_tile_tooltip: function(d) { return d.info; },
+    // initialize view, e.g. initialize with row filtering
+    ini_view: null,
+    // initialize column category - only show data from one category
+    current_col_cat: 'all_category',
+    use_sidebar: true
+  };
   // Mixin defaults with user-defined arguments.
-  config = utils.extend(defaults, args);
+  var config = utils.extend(defaults, args);
 
   if (config.outer_margins_expand.top === -666){
     config.expand_button = false;
@@ -189,11 +186,4 @@ function make_config(args) {
   }
 
   return config;
-};
-
-module.exports = {
-  get: function() {
-    return config;
-  },
-  make_config: make_config
 };

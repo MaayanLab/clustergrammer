@@ -1,12 +1,10 @@
-var Params = require('./params');
 /* Spillover Module
 */
-module.exports = function(container_all_col) {
-  var params = Params.get();
+module.exports = function(params, container_all_col) {
   // make spillover protection divs
   make(params, container_all_col);
 
-  function make( params, container_all_col ){
+  function make(params, container_all_col ){
     // Spillover Protection
     //////////////////////////
 
