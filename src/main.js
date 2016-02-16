@@ -20,7 +20,7 @@ function Clustergrammer(args) {
   // make visualization parameters using configuration object
   var params = Params.make_params(config);
   // make visualization using parameters
-  // var viz = generate_viz();
+  var viz = generate_viz();
 
   if (params.use_sidebar) {
     var generate_sidebar = require('./sidebar');
