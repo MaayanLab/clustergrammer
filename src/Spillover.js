@@ -1,14 +1,13 @@
-
-/* Spillover Module 
+var Params = require('./params');
+/* Spillover Module
 */
-function Spillover( params, container_all_col ){
-
-  // make spillover protection divs 
-  make( params, container_all_col );
+module.exports = function(container_all_col) {
+  var params = Params.get();
+  // make spillover protection divs
+  make(params, container_all_col);
 
   function make( params, container_all_col ){
-
-    // Spillover Protection 
+    // Spillover Protection
     //////////////////////////
 
     // hide spillover from slanted column labels on right side
@@ -73,9 +72,5 @@ function Spillover( params, container_all_col ){
         var inst_offset = params.viz.svg_dim.height - 3 * params.viz.grey_border_width;
         return 'translate(0,' + inst_offset + ')';
       });
-
-   
   }
-
-
-}
+};

@@ -18,7 +18,10 @@
   "homepage": "https://github.com/cornhundred/clustergrammer.js#readme",
   "devDependencies": {
     "babel-core": "^6.5.2",
+    "babel-eslint": "^4.1.8",
     "babel-loader": "^6.2.2",
+    "eslint": "^2.1.0",
+    "expose-loader": "^0.7.1",
     "webpack": "^1.12.13"
   },
   "dependencies": {

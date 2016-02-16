@@ -1,5 +1,10 @@
-function two_translate_zoom(params, pan_dx, pan_dy, fin_zoom) {
+var Params = require('./params');
+var utils = require('./utils');
+var constrain_font_size = require('./constrain_font_size');
+var viz = require('./viz');
 
+module.exports = function(pan_dx, pan_dy, fin_zoom) {
+  var params = Params.get();
   // get parameters
   if (!params.viz.run_trans) {
 
@@ -150,7 +155,7 @@ function two_translate_zoom(params, pan_dx, pan_dy, fin_zoom) {
     // reduce the height of the column value bars based on the zoom applied
     // recalculate the height and divide by the zooming scale
     // col_label_obj.select('rect')
-    if (Utils.has( params.network_data.col_nodes[0], 'value')) {
+    if (utils.has(params.network_data.col_nodes[0], 'value')) {
 
       d3.selectAll('.col_bars')
         // .transition()
@@ -161,10 +166,10 @@ function two_translate_zoom(params, pan_dx, pan_dy, fin_zoom) {
           inst_value = params.labels.bar_scale_col(d.value)/zoom_x;
         }
         return inst_value;
-      })
+      });
     }
 
-    if (Utils.has( params.network_data.row_nodes[0], 'value')) {
+    if (utils.has(params.network_data.row_nodes[0], 'value')) {
 
       d3.selectAll('.row_bars')
         .transition()
@@ -182,4 +187,4 @@ function two_translate_zoom(params, pan_dx, pan_dy, fin_zoom) {
 
     }
   }
-}
+};

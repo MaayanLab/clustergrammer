@@ -1,21 +1,20 @@
-var d3 = require('d3');
 var crossfilter = require('crossfilter');
-var pluck = require('lodash/pluck');
-var max = require('lodash/max');
-var has = require('lodash/has');
 var extend = require('extend');
+var utils = require('./utils');
+var change_network_view = require('./network/change_network_view');
+var parent_div_size = require('./parent_div_size');
+var initialize_matrix = require('./initialize_matrix');
+var zoomed = require('./zoomed');
 
-var label_scale = require('../label_scale');
-var keep_label_scale = require('../keep_label_scale');
-var change_network_view = require('../change_network_view');
-var parent_div_size = require('../parent_div_size');
 /* Params: calculates the size of all the visualization elements in the
 clustergram.
  */
-function Params(input_config) {
+var params = {};
+
+function make_params(input_config) {
 
   var config = extend(true, {}, input_config);
-  var params = config;
+  params = config;
 
   if (params.ini_view !== null) {
     params.network_data = change_network_view(params, params.network_data, params.ini_view);
@@ -104,13 +103,13 @@ function Params(input_config) {
   params.viz.svg_dim.width = Number(d3.select(params.viz.viz_wrapper).style('width').replace('px', ''));
   params.viz.svg_dim.height = Number(d3.select(params.viz.viz_wrapper).style('height').replace('px', ''));
 
-  params.network_data.row_nodes_names = pluck(row_nodes, 'name');
-  params.network_data.col_nodes_names = pluck(col_nodes, 'name');
+  params.network_data.row_nodes_names = _.pluck(row_nodes, 'name');
+  params.network_data.col_nodes_names = _.pluck(col_nodes, 'name');
 
-  var row_max_char = max(row_nodes, function (inst) {
+  var row_max_char = _.max(row_nodes, function (inst) {
     return inst.name.length;
   }).name.length;
-  var col_max_char = max(col_nodes, function (inst) {
+  var col_max_char = _.max(col_nodes, function (inst) {
     return inst.name.length;
   }).name.length;
 
@@ -225,8 +224,8 @@ function Params(input_config) {
   }
 
 
-  var enr_max = Math.abs(max(col_nodes, function (d) {
-    return Math.abs(d.value)
+  var enr_max = Math.abs(_.max(col_nodes, function (d) {
+    return Math.abs(d.value);
   }).value);
 
   params.labels.bar_scale_col = d3.scale
@@ -234,8 +233,8 @@ function Params(input_config) {
     .domain([0, enr_max])
     .range([0, 0.75 * params.norm_label.width.col]);
 
-  var enr_max = Math.abs(max(row_nodes, function (d) {
-    return Math.abs(d.value)
+  var enr_max = Math.abs(_.max(row_nodes, function (d) {
+    return Math.abs(d.value);
   }).value);
   params.labels.bar_scale_row = d3.scale
     .linear()
@@ -270,7 +269,7 @@ function Params(input_config) {
 
 
   // // define class ordering - define on front-end
-  // if (has(col_nodes[0],'cl')){
+  // if (utils.has(col_nodes[0],'cl')){
 
   //   // the order should be interpreted as the nth node should be positioned here
   //   // in the order
@@ -291,7 +290,7 @@ function Params(input_config) {
   //   params.matrix.orders.class_row = order_col_class;
   // }
 
-  if (has(col_nodes[0], 'cl_index')) {
+  if (utils.has(col_nodes[0], 'cl_index')) {
     params.matrix.orders.class_row = d3.range(params.viz.num_col_nodes).sort(function (a, b) {
       return col_nodes[b].cl_index - col_nodes[a].cl_index;
     });
@@ -307,7 +306,7 @@ function Params(input_config) {
   } else if (params.viz.inst_order.row === 'rank') {
     params.matrix.x_scale.domain(params.matrix.orders.rank_row);
   } else if (params.viz.inst_order.row === 'class') {
-    if (has(params.matrix.orders, 'class_row')) {
+    if (utils.has(params.matrix.orders, 'class_row')) {
       params.matrix.x_scale.domain(params.matrix.orders.class_row);
     } else {
       params.matrix.x_scale.domain(params.matrix.orders.clust_row);
@@ -322,7 +321,7 @@ function Params(input_config) {
   } else if (params.viz.inst_order.col === 'rank') {
     params.matrix.y_scale.domain(params.matrix.orders.rank_col);
   } else if (params.viz.inst_order.col === 'class') {
-    if (has(params.matrix.orders, 'class_row')) {
+    if (utils.has(params.matrix.orders, 'class_row')) {
       params.matrix.y_scale.domain(params.matrix.orders.class_col);
     } else {
       params.matrix.y_scale.domain(params.matrix.orders.clust_col);
@@ -376,12 +375,12 @@ function Params(input_config) {
 
   params.viz.real_zoom = params.norm_label.width.col / (params.matrix.x_scale.rangeBand() / 2);
 
-  if (has(params.network_data, 'all_links')) {
-    params.matrix.max_link = max(params.network_data.all_links, function (d) {
+  if (utils.has(params.network_data, 'all_links')) {
+    params.matrix.max_link = _.max(params.network_data.all_links, function (d) {
       return Math.abs(d.value);
     }).value;
   } else {
-    params.matrix.max_link = max(params.network_data.links, function (d) {
+    params.matrix.max_link = _.max(params.network_data.links, function (d) {
       return Math.abs(d.value);
     }).value;
   }
@@ -411,13 +410,13 @@ function Params(input_config) {
   // TODO check if using run_trans
   params.viz.run_trans = false;
 
-  if (has(params.network_data.links[0], 'value_up') || has(params.network_data.links[0], 'value_dn')) {
+  if (utils.has(params.network_data.links[0], 'value_up') || utils.has(params.network_data.links[0], 'value_dn')) {
     params.matrix.tile_type = 'updn';
   } else {
     params.matrix.tile_type = 'simple';
   }
 
-  if (has(params.network_data.links[0], 'highlight')) {
+  if (utils.has(params.network_data.links[0], 'highlight')) {
     params.matrix.highlight = 1;
   } else {
     params.matrix.highlight = 0;
@@ -429,8 +428,15 @@ function Params(input_config) {
       zoomed(params);
     });
 
-  params.initialize_resizing = initialize_resizing;
-
   return params;
-
 }
+
+module.exports = {
+  get: function() {
+    if (Object.keys(params).length < 1) {
+      throw new Error('Params was passed without being initialized.');
+    }
+    return params;
+  },
+  make_params: make_params
+};

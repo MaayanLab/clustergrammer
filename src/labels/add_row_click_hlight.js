@@ -1,0 +1,50 @@
+var Params = require('../params');
+
+module.exports = function(clicked_row, id_clicked_row) {
+  var params = Params.get();
+
+  if (id_clicked_row != params.click_hlight_row){
+
+    var rel_width_hlight = 6;
+    var opacity_hlight = 0.85;
+    var hlight_width  = rel_width_hlight*params.viz.border_width;
+    var hlight_height = rel_width_hlight*params.viz.border_width/params.viz.zoom_switch;
+
+    d3.selectAll('.click_hlight')
+      .remove();
+
+    // // highlight selected row
+    // d3.selectAll('.row_label_text')
+    //   .select('rect')
+    // d3.select(this)
+    //   .select('rect')
+    //   .style('opacity', 1);
+
+    d3.select(clicked_row)
+      .append('rect')
+      .classed('click_hlight',true)
+      .classed('row_top_hlight',true)
+      .attr('width',params.viz.svg_dim.width)
+      .attr('height',hlight_height)
+      .attr('fill',params.matrix.hlight_color)
+      .attr('opacity',opacity_hlight);
+
+    d3.select(clicked_row)
+      .append('rect')
+      .classed('click_hlight',true)
+      .classed('row_bottom_hlight',true)
+      .attr('width',params.viz.svg_dim.width)
+      .attr('height',hlight_height)
+      .attr('fill',params.matrix.hlight_color)
+      .attr('opacity',opacity_hlight)
+      .attr('transform', function(){
+        var tmp_translate_y = params.matrix.y_scale.rangeBand() - hlight_height;
+        return 'translate(0,'+tmp_translate_y+')';
+      });
+  } else{
+    d3.selectAll('.click_hlight')
+    .remove();
+    params.click_hlight_row = -666;
+  }
+
+};

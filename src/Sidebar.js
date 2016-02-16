@@ -1,6 +1,8 @@
+var Params = require('./params');
 /* Represents sidebar with controls.
  */
-function Sidebar(viz, params) {
+module.exports = function(viz) {
+  var params = Params.get();
 
   var row_order_controls = '' +
     '<div class="viz_medium_text">Row Order</div>' +
@@ -17,7 +19,7 @@ function Sidebar(viz, params) {
   var col_order_controls = '<div class="viz_medium_text">Column Order</div>' +
     '<div class="btn-group toggle_row_order" data-toggle="buttons" >' +
       '<label class="btn btn-primary active order_name" name="clust_col">' +
-        '<input type="radio" name="options" autocomplete="off" checked > Cluster' + 
+        '<input type="radio" name="options" autocomplete="off" checked > Cluster' +
       '</label>' +
       '<label class="btn btn-primary order_name" name="rank_col">' +
         '<input type="radio" name="options" autocomplete="off" > Rank' +
@@ -54,7 +56,7 @@ function Sidebar(viz, params) {
 
   sidebar
     .append('div')
-    .html(col_order_controls);    
+    .html(col_order_controls);
 
   sidebar
     .append('div')
@@ -78,4 +80,4 @@ function Sidebar(viz, params) {
   //    if (params.use_controls) {
   //       sidebar.select(params.root).append('div').....
 
-}
+};

@@ -13,9 +13,9 @@ make_clust('mult_view.json');
 // make_clust('harmonogram_example.json');
 
 
-function make_clust(inst_network){  
+function make_clust(inst_network){
 
-    // load json 
+    // load json
     d3.json('json/'+inst_network, function(network_data){
 
       // define the outer margins of the visualization
@@ -68,17 +68,16 @@ function make_clust(inst_network){
         // 'current_col_cat':'category-one'
       };
 
-
-      var cgm = clustergrammer(arguments_obj);
+      var cgm = Clustergrammer(arguments_obj);
       g_cgm = cgm;
 
       d3.select(g_cgm.params.root+' .wait_message').remove();
 
-      // !! tmp set up for initializing sliders 
-      // !! tmp set up filters in load clustergram using cgm 
+      // !! tmp set up for initializing sliders
+      // !! tmp set up filters in load clustergram using cgm
       cgm.ini_sliders(cgm);
-      cgm.set_up_N_filters('N_row_sum'); 
+      cgm.set_up_N_filters('N_row_sum');
 
-  }); 
+  });
 
-} 
+}

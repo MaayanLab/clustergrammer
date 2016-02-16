@@ -1,3 +1,4 @@
+var utils = require('../utils');
 /* Transpose network.
  */
 module.exports = function (net) {
@@ -16,20 +17,20 @@ module.exports = function (net) {
     inst_link.value = net.links[i].value;
 
     // Optional highlight.
-    if (Utils.has(net.links[i], 'highlight')) {
+    if (utils.has(net.links[i], 'highlight')) {
       inst_link.highlight = net.links[i].highlight;
     }
-    if (Utils.has(net.links[i], 'value_up')) {
+    if (utils.has(net.links[i], 'value_up')) {
       inst_link.value_up = net.links[i].value_up;
     }
-    if (Utils.has(net.links[i], 'value_dn')) {
+    if (utils.has(net.links[i], 'value_dn')) {
       inst_link.value_dn = net.links[i].value_dn;
     }
-    if (Utils.has(net.links[i], 'info')) {
+    if (utils.has(net.links[i], 'info')) {
       inst_link.info = net.links[i].info;
     }
     tnet.links.push(inst_link);
   }
 
   return tnet;
-}
+};

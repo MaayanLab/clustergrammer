@@ -1,4 +1,9 @@
-function initialize_resizing(params) {
+var Params = require('./params');
+var parent_div_size = require('./parent_div_size');
+var reset_visualization_size = require('./reset_size/reset_visualization_size');
+
+module.exports = function() {
+  var params = Params.get();
 
   d3.select(window).on('resize', null);
 
@@ -16,15 +21,15 @@ function initialize_resizing(params) {
 
   if (params.viz.expand_button) {
 
-    d3.select(params.root+' .expand_button').on('click', null);
+    d3.select(params.root + ' .expand_button').on('click', null);
     var expand_opacity = 0.4;
 
-    if (d3.select(params.root+' .expand_button').empty()) {
+    if (d3.select(params.root + ' .expand_button').empty()) {
       var exp_button = d3.select(params.viz.viz_svg)
         .append('text')
         .attr('class', 'expand_button');
     } else {
-      var exp_button = d3.select(params.root+' .expand_button')
+      var exp_button = d3.select(params.root + ' .expand_button');
     }
 
     exp_button
@@ -80,7 +85,7 @@ function initialize_resizing(params) {
           d3.select('.footer_section').style('display', 'block');
         }
 
-        // resize parent div 
+        // resize parent div
         parent_div_size(params);
 
         d3.select(params.viz.viz_svg).style('opacity', 0.5);
@@ -88,7 +93,7 @@ function initialize_resizing(params) {
         if (params.viz.run_trans == true) {
           wait_time = 2500;
         }
-        setTimeout(reset_visualization_size, wait_time, params);
+        setTimeout(reset_visualization_size, wait_time);
       });
   }
-}
+};

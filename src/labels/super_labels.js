@@ -1,4 +1,6 @@
-function SuperLabels(params) {
+var Params = require('../params');
+module.exports = function() {
+  var params = Params.get();
 
   // super col title
   /////////////////////////////////////
@@ -28,7 +30,7 @@ function SuperLabels(params) {
       var inst_y = params.labels.super_label_width - params.viz.uni_margin;
       return 'translate(' + inst_x + ',' + inst_y + ')';
     })
-    .style('font-size', function (d) {
+    .style('font-size', function () {
       var inst_font_size = 14 * params.labels.super_label_scale;
       return inst_font_size + 'px';
     })
@@ -63,15 +65,15 @@ function SuperLabels(params) {
     .append('text')
     .text(params.labels.super.row)
     .attr('text-anchor', 'center')
-    .attr('transform', function (d) {
+    .attr('transform', function () {
       var inst_text_width = d3.select(this)[0][0].getBBox().width;
       var inst_x_offset = inst_text_width / 2 + params.norm_label.width.col;
-      var inst_offset = 'translate(0,' + inst_x_offset + '), rotate(-90)'
+      var inst_offset = 'translate(0,' + inst_x_offset + '), rotate(-90)';
       return inst_offset;
     })
-    .style('font-size', function (d) {
+    .style('font-size', function () {
       var inst_font_size = 14 * params.labels.super_label_scale;
       return inst_font_size + 'px';
     })
     .style('font-weight', 300);
-}
+};

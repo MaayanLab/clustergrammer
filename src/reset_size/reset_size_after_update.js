@@ -1,6 +1,9 @@
+var utils = require('../utils');
+var Params = require('../params');
 
-function resize_after_update(params, row_nodes, col_nodes, links, duration, delays){
-
+module.exports = function(row_nodes, col_nodes, links, duration, delays) {
+  var params = Params.get();
+  
   var row_nodes_names = params.network_data.row_nodes_names;
   var col_nodes_names = params.network_data.col_nodes_names;
 
@@ -14,7 +17,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
   var half_height = params.viz.clust.dim.height / 2;
   var center_y = -(zoom_y - 1) * half_height;
 
-  viz.get_clust_group()
+  this.viz.get_clust_group()
     .attr('transform', 'translate(' + [0, 0 + center_y] + ')' +
     ' scale(' + 1 + ',' + zoom_y + ')' + 'translate(' + [pan_dx,pan_dy] + ')');
 
@@ -121,14 +124,14 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
 
 
 
-  // Begin resizing the visualization 
+  // Begin resizing the visualization
   /////////////////////////////////////////
   /////////////////////////////////////////
 
   // resize the svg
   ///////////////////////
   var svg_group = d3.select(params.viz.viz_wrapper)
-    .select('svg'); 
+    .select('svg');
 
   svg_group.select(params.root+' .grey_background')
     .transition().delay(delays.update).duration(duration)
@@ -137,7 +140,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
 
 
   //////////////////////
-  // set up later 
+  // set up later
   //////////////////////
   // svg_group.selectAll('.highlighting_rect')
   //   // .transition().delay(delays.update).duration(duration)
@@ -165,7 +168,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
   //       final_x + ', ' + final_y + ',  L' + final_x + ',0 Z';
   //     return output_string;
   //   })
-  
+
   // add text to row/col during resize
   function normal_name(d){
     var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
@@ -215,7 +218,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
       .attr('width', params.norm_label.background.row)
       .attr('height', 30*params.viz.clust.dim.height + 'px');
 
-    svg_group.select(params_root+' .row_container')
+    svg_group.select(params.root + ' .row_container')
       .select('.row_label_container')
       .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
 
@@ -284,12 +287,12 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
     d3.selectAll('.row_label_text').each(function() {
       d3.select(this).select('text')
         .style('font-size', params.labels.default_fs_row + 'px');
-    })
+    });
   }
 
   if (delays.run_transition){
 
-    // positioning row text after row text size may have been reduced 
+    // positioning row text after row text size may have been reduced
     svg_group.selectAll('.row_label_text')
       .select('text')
       .transition().delay(delays.update).duration(duration)
@@ -333,7 +336,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
 
   } else {
 
-    // positioning row text after row text size may have been reduced 
+    // positioning row text after row text size may have been reduced
     svg_group.selectAll('.row_label_text')
       .select('text')
       .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35 );
@@ -372,10 +375,10 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
 
   }
 
-    if (Utils.has( params.network_data.row_nodes[0], 'value')) {
+    if (utils.has( params.network_data.row_nodes[0], 'value')) {
 
       // set bar scale
-      var enr_max = Math.abs(_.max( params.network_data.row_nodes, function(d) { return Math.abs(d.value) } ).value) ;
+      var enr_max = Math.abs(_.max( params.network_data.row_nodes, function(d) { return Math.abs(d.value); } ).value) ;
       params.labels.bar_scale_row = d3.scale
         .linear()
         .domain([0, enr_max])
@@ -513,13 +516,13 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
       d3.selectAll('.col_label_click').each(function() {
       d3.select(this).select('text')
         .style('font-size', params.labels.default_fs_col + 'px');
-      })
+      });
       // .attr('y', params.matrix.rect_width * 0.5 + params.labels.default_fs_col*0.25 )
     }
 
     svg_group.selectAll('.col_label_click')
       .each(function() {
-        var bbox = d3.select(this)
+        d3.select(this)
           .select('text')[0][0]
           .getBBox();
         // d3.select(this)
@@ -536,7 +539,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
 
     if (delays.run_transition){
 
-      // resize column triangle 
+      // resize column triangle
       svg_group.selectAll('.col_label_click')
         .select('path')
         .transition().delay(delays.update).duration(duration)
@@ -562,7 +565,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
         });
 
     } else {
-      // resize column triangle 
+      // resize column triangle
       svg_group.selectAll('.col_label_click')
         .select('path')
         .attr('d', function() {
@@ -583,13 +586,13 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
             inst_color = params.labels.class_colors.col[d.cl];
           }
           return inst_color;
-        });      
+        });
     }
 
     // append column value bars
-    if (Utils.has( params.network_data.col_nodes[0], 'value')) {
+    if (utils.has( params.network_data.col_nodes[0], 'value')) {
 
-      console.log('resizing col bars')
+      console.log('resizing col bars');
 
       svg_group.selectAll('.col_bars')
         .data(col_nodes, function(d){return d.name;})
@@ -598,7 +601,7 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
           var inst_value = 0;
           if (d.value > 0){
 
-            console.log( String(d.name) +' '+ String(d.value) +'\n\n')
+            console.log( String(d.name) +' '+ String(d.value) +'\n\n');
             inst_value = params.labels.bar_scale_col(d.value);
           }
           return inst_value;
@@ -625,12 +628,12 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
             if (params.labels.show_categories){
               inst_color = params.labels.class_colors.col[d.cl];
             }
-            return inst_color 
+            return inst_color;
           })
           .style('opacity', 0.30);
-      });      
+      });
   }
-  
+
   // resize dendrogram
   ///////////////////
 
@@ -701,13 +704,13 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
     .attr('transform', function(d) {
       var inst_index = _.indexOf(row_nodes_names, d.name);
       return 'translate(0,' + params.matrix.y_scale(inst_index) + ') rotate(0)';
-    })
+    });
 
   svg_group.selectAll('.horz_lines')
     .select('line')
     // .transition().delay(delays.update).duration(duration)
     .attr('x2',params.viz.clust.dim.width)
-    .style('stroke-width', params.viz.border_width/params.viz.zoom_switch+'px')
+    .style('stroke-width', params.viz.border_width/params.viz.zoom_switch+'px');
 
   svg_group.selectAll('.vert_lines')
     .data(col_nodes, function(d){return d.name;})
@@ -799,6 +802,4 @@ function resize_after_update(params, row_nodes, col_nodes, links, duration, dela
   params.zoom_behavior.scale(1).translate(
       [ params.viz.clust.margin.left, params.viz.clust.margin.top]
   );
-
-
-}
+};

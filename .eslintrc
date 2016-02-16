@@ -1,7 +1,13 @@
 {
     "env": {
         "browser": true,
-        "node": true,
+        "commonjs": true
+    },
+    "globals": {
+      "d3": false,
+      "$": false,
+      "jQuery": false,
+      "_": false,
     },
     "extends": "eslint:recommended",
     "rules": {
@@ -14,7 +20,7 @@
         "block-scoped-var": 0,
         "block-spacing": 0,
         "brace-style": 0,
-        "callback-return": 2,
+        "callback-return": 0,
         "camelcase": 0,
         "comma-spacing": 0,
         "comma-style": [
@@ -42,7 +48,7 @@
         "func-names": 0,
         "func-style": 0,
         "generator-star-spacing": 2,
-        "global-require": 2,
+        "global-require": 0,
         "guard-for-in": 2,
         "handle-callback-err": 2,
         "id-blacklist": 2,
@@ -57,7 +63,7 @@
             2,
             "unix"
         ],
-        "lines-around-comment": 2,
+        "lines-around-comment": 0,
         "max-depth": 2,
         "max-len": 0,
         "max-nested-callbacks": 2,
@@ -71,6 +77,7 @@
         "no-caller": 2,
         "no-catch-shadow": 2,
         "no-confusing-arrow": 2,
+        "no-console": 1,
         "no-continue": 2,
         "no-div-regex": 2,
         "no-else-return": 0,
@@ -121,6 +128,7 @@
         "no-process-env": 2,
         "no-process-exit": 2,
         "no-proto": 2,
+        "no-redeclare": 1,
         "no-restricted-imports": 2,
         "no-restricted-modules": 2,
         "no-restricted-syntax": 2,
@@ -141,6 +149,7 @@
         "no-unmodified-loop-condition": 2,
         "no-unneeded-ternary": 2,
         "no-unused-expressions": 2,
+        "no-unused-vars": 1,
         "no-use-before-define": 0,
         "no-useless-call": 2,
         "no-useless-concat": 0,
@@ -174,7 +183,7 @@
         "radix": 2,
         "require-jsdoc": 0,
         "require-yield": 2,
-        "semi": 0,
+        "semi": 2,
         "semi-spacing": 0,
         "sort-imports": 2,
         "sort-vars": 0,
@@ -184,10 +193,14 @@
         "space-infix-ops": 0,
         "space-unary-ops": 2,
         "spaced-comment": 0,
-        "strict": 0,
+        "strict": [
+            2,
+            "never"
+        ],
         "template-curly-spacing": 2,
         "valid-jsdoc": 2,
         "vars-on-top": 0,
+        "wrap-iife": 2,
         "wrap-regex": 2,
         "yield-star-spacing": 2,
         "yoda": [

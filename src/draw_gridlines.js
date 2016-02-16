@@ -1,5 +1,7 @@
+var Params = require('./params');
 
-function draw_grid_lines(row_nodes, col_nodes) {
+module.exports = function(row_nodes, col_nodes) {
+  var params = Params.get();
 
   var row_nodes_names = params.network_data.row_nodes_names;
   var col_nodes_names = params.network_data.col_nodes_names;
@@ -43,4 +45,4 @@ function draw_grid_lines(row_nodes, col_nodes) {
     .attr('x2', -params.viz.clust.dim.height)
     .style('stroke-width', params.viz.border_width + 'px')
     .style('stroke', 'white');
-  }
+};

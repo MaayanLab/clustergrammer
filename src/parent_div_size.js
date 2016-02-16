@@ -1,8 +1,8 @@
-// resize parent div 
-function parent_div_size(params) {
+// resize parent div
+module.exports = function(params) {
 
   // get outer_margins
-  if (params.viz.expand == false) {
+  if (params.viz.expand === false) {
     var outer_margins = params.viz.outer_margins;
   } else {
     var outer_margins = params.viz.outer_margins_expand;
@@ -18,7 +18,7 @@ function parent_div_size(params) {
     cont_dim.width = screen_width - outer_margins.left - outer_margins.right;
     cont_dim.height = screen_height - outer_margins.top - outer_margins.bottom;
 
-    // resize and position 
+    // resize and position
     d3.select(params.viz.viz_wrapper)
       .style('float', 'right')
       .style('margin-top', outer_margins.top + 'px')
@@ -27,9 +27,9 @@ function parent_div_size(params) {
 
   } else {
 
-    // position 
+    // position
     d3.select(params.viz.viz_wrapper)
       .style('float', 'right')
       .style('margin-top', outer_margins.top + 'px');
   }
-}
+};

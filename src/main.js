@@ -1,5 +1,6 @@
-var generate_config = require('./config');
-var generate_viz = require('./viz');
+var Params = require('./params');
+var viz = require('./viz');
+var Config = require('./config');
 
 /* clustergrammer 1.0
  * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
@@ -15,19 +16,19 @@ function Clustergrammer(args) {
   // handle user events
 
   // consume and validate user arguments, produce configuration object
-  this.config = generate_config(args);
+  var config = Config.make_config(args);
   // make visualization parameters using configuration object
-  this.params = generate_params(config);
+  var params = Params.make_params(config);
   // make visualization using parameters
-  this.viz = generate_viz();
+  // var viz = generate_viz();
+
   if (params.use_sidebar) {
-    var sidebar = Sidebar(viz, params);
+    var generate_sidebar = require('./sidebar');
+    generate_sidebar(viz, params);
   }
 
-    /* API
-     * ----------------------------------------------------------------------- */
-  Clustergrammer.prototype = {
-    constructor: Clustergrammer,
+  return {
+    params: params,
     find_gene: viz.search.find_entities,
     get_genes: viz.search.get_entities,
     change_groups: viz.change_groups,
@@ -36,12 +37,11 @@ function Clustergrammer(args) {
     opacity_function: viz.opacity_function,
     resize: viz.run_reset_visualization_size,
     update_network: viz.update_network,
-    params: params,
     reset_zoom: viz.reset_zoom,
-    config: config,
-    change_category: change_category,
-    set_up_N_filters: set_up_N_filters,
-    ini_sliders:ini_sliders
+    change_category: require('./network/change_category'),
+    set_up_N_filters: require('./filters/set_up_N_filters'),
+    ini_sliders: require('./filters/ini_sliders')
   };
-
 }
+
+module.exports = Clustergrammer;

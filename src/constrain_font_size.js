@@ -1,26 +1,27 @@
-function constrain_font_size(params, trans){
+var Params = require('./params');
+var utils = require('./utils');
+var trim_text = require('./trim_text');
 
-  if (trans){
-    var trans_time = 700;
+module.exports = function(trans) {
+  var params = Params.get();
+
+  var trans_time;
+
+  if (trans) {
+    trans_time = 700;
   } else {
-    var trans_time = 0;
+    trans_time = 0;
   }
 
   var fraction_keep = {};
 
   var keep_width = {};
-  keep_width.row = params.bounding_width_max.row*params.labels.row_keep
-    *params.zoom_behavior.scale();
-  keep_width.col = params.bounding_width_max.col*params.labels.col_keep
-    *params.zoom_behavior.scale()/params.viz.zoom_switch;
+  keep_width.row = params.bounding_width_max.row * params.labels.row_keep
+    * params.zoom_behavior.scale();
+  keep_width.col = params.bounding_width_max.col * params.labels.col_keep
+    * params.zoom_behavior.scale() / params.viz.zoom_switch;
 
-  function normal_name(d){
-    var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
-    if (inst_name.length > params.labels.max_label_char){
-      inst_name = inst_name.substring(0,params.labels.max_label_char)+'..';
-    }
-    return inst_name;
-  }
+
 
   if (keep_width.row > params.norm_label.width.row) {
 
@@ -54,7 +55,7 @@ function constrain_font_size(params, trans){
           .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35 );
 
         d3.select(this).select('text')
-          .text(function(d){ return normal_name(d);})
+          .text(function(d){ return utils.normal_name(d, params.labels.max_label_char);})
           .style('opacity',0.20).transition().duration(700)
           .style('opacity',1);
 
@@ -62,7 +63,7 @@ function constrain_font_size(params, trans){
 
         d3.select(this).select('text')
           .style('font-size', params.labels.default_fs_row + 'px')
-          .text(function(d){ return normal_name(d);});
+          .text(function(d){ return utils.normal_name(d, params.labels.max_label_char);});
 
       }
     });
@@ -83,7 +84,7 @@ function constrain_font_size(params, trans){
       } else {
         d3.select(this).select('text')
           .style('font-size', params.labels.default_fs_col *
-            params.viz.zoom_scale_font.col + 'px')
+            params.viz.zoom_scale_font.col + 'px');
       }
     });
   } else {
@@ -92,13 +93,13 @@ function constrain_font_size(params, trans){
         d3.select(this).select('text')
           .style('font-size', params.labels.default_fs_col + 'px');
         d3.select(this).select('text')
-          .text(function(d){ return normal_name(d);})
+          .text(function(d){ return utils.normal_name(d, params.labels.max_label_char);})
           .style('opacity',0.20).transition().duration(700)
           .style('opacity',1);
       } else {
         d3.select(this).select('text')
           .style('font-size', params.labels.default_fs_col + 'px')
-          .text(function(d){ return normal_name(d);});
+          .text(function(d){ return utils.normal_name(d, params.labels.max_label_char);});
       }
     });
   }
@@ -115,7 +116,7 @@ function constrain_font_size(params, trans){
     d3.selectAll('.col_label_click').each(function() { trim_text(this, 'col'); });
   }
 
-  // // constrain column text highlight bars 
+  // // constrain column text highlight bars
   // // change the size of the highlighting rects
   // d3.selectAll('.col_label_click')
   //   .each(function(d) {
@@ -132,10 +133,10 @@ function constrain_font_size(params, trans){
   //       //   if (params.labels.show_categories){
   //       //     inst_color = params.labels.class_colors.col[d.cl];
   //       //   }
-  //       //   return inst_color 
+  //       //   return inst_color
   //       // })
   //       // .style('opacity', 0.25);
 
   //   });
 
-}
+};

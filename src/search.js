@@ -1,8 +1,10 @@
-
+var Params = require('./params');
+var two_translate_zoom = require('./two_translate_zoom');
 /* Handles searching rows or columns.
- !! need to generalize to column and row 
+ !! need to generalize to column and row
  * ----------------------------------------------------------------------- */
-function Search(params, nodes, prop) {
+module.exports = function(nodes, prop) {
+  var params = Params.get();
 
   /* Collect entities from row or columns.
    */
@@ -38,7 +40,7 @@ function Search(params, nodes, prop) {
   }
 
   function highlight_entity(search_term) {
-    
+
     d3.selectAll('.row_label_text')
       .filter(function(d) {
         return d[prop] === search_term;
@@ -56,5 +58,5 @@ function Search(params, nodes, prop) {
   return {
     find_entities: find_entities,
     get_entities: get_entities
-  }
-}
+  };
+};

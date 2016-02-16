@@ -1,4 +1,7 @@
-function trim_text(inst_selection, inst_rc){
+var Params = require('./params');
+
+module.exports = function(inst_selection, inst_rc) {
+  var params = Params.get();
 
   var max_width,
       inst_zoom;
@@ -6,7 +9,7 @@ function trim_text(inst_selection, inst_rc){
   var safe_row_trim_text = 0.9;
 
   if (inst_rc === 'row'){
-    max_width = params.norm_label.width.row*safe_row_trim_text;
+    max_width = params.norm_label.width.row * safe_row_trim_text;
     inst_zoom = params.zoom_behavior.scale();
   } else {
     // the column label has extra length since its rotated
@@ -25,7 +28,6 @@ function trim_text(inst_selection, inst_rc){
     var trimmed_text = inst_text.substring(0,keep_num_char)+'..';
     d3.select(inst_selection).select('text')
       .text(trimmed_text);
-
   }
 
-}
+};
