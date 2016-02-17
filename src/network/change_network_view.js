@@ -2,9 +2,8 @@ var utils = require('../utils');
 var filter_using_new_nodes = require('./filter_using_new_nodes');
 
 module.exports = function(params, orig_network_data, change_view) {
-  console.log('change_network_view');
   var views = orig_network_data.views;
-
+  var filt_views;
 
   // Get Row Filtering View
   ///////////////////////////////////////////////////////////////
@@ -18,7 +17,7 @@ module.exports = function(params, orig_network_data, change_view) {
   if (utils.has(change_view,'filter_row')){
 
     // failsafe if there is only row+col filtering from front-end
-    var filt_views = _.filter(views, function(d){
+    filt_views = _.filter(views, function(d){
 
       // failsafe from json
       if (utils.has(d, 'filter_row')){
@@ -33,7 +32,7 @@ module.exports = function(params, orig_network_data, change_view) {
   } else if (utils.has(change_view, 'filter_row_value')) {
 
     // filter row value
-    var filt_views = _.filter(views, function(d){
+    filt_views = _.filter(views, function(d){
 
       // failsafe from json
       return d.filter_row_value == change_view.filter_row_value;
@@ -42,19 +41,19 @@ module.exports = function(params, orig_network_data, change_view) {
 
   } else if (utils.has(change_view,'filter_row_sum')) {
 
-    var filt_views = _.filter(views, function(d){
+    filt_views = _.filter(views, function(d){
       return d.filter_row_sum == change_view.filter_row_sum;
     });
 
   } else if (utils.has(change_view,'filter_row_num')) {
 
-    var filt_views = _.filter(views, function(d){
+    filt_views = _.filter(views, function(d){
       return d.filter_row_num == change_view.filter_row_num;
     });
 
   } else if (utils.has(change_view, 'N_row_sum')){
 
-    var filt_views = _.filter(views, function(d){
+    filt_views = _.filter(views, function(d){
       return d.N_row_sum == change_view.N_row_sum;
     });
 
@@ -72,12 +71,13 @@ module.exports = function(params, orig_network_data, change_view) {
   get the inst_view
   */
 
+  var inst_view;
+  var new_network_data;
+
   // get the single view that will be used to update the network from
   // the array of filtered views
   if ( params.show_categories === false ){
-    console.log('\nview defined by filter only, no category\n');
-    console.log('there are '+String(filt_views.length)+' views with this N_row_sum');
-    var inst_view = filt_views[0];
+    inst_view = filt_views[0];
 
     if (utils.has(change_view,'enr_score_type')){
 
@@ -85,16 +85,13 @@ module.exports = function(params, orig_network_data, change_view) {
         return d.enr_score_type == change_view.enr_score_type;
       })[0];
 
-      console.log('\n\n final inst_view ');
-      console.log(inst_view);
     }
 
   }
 
   if (params.show_categories){
-    console.log('\nview defined by filter and category\n');
     // apply category filtering if necessary
-    var inst_view = _.find(filt_views, function(d){
+    inst_view = _.find(filt_views, function(d){
       return d.col_cat === params.current_col_cat;
     });
   }
@@ -106,10 +103,10 @@ module.exports = function(params, orig_network_data, change_view) {
 
     var new_nodes = inst_view.nodes;
     var links = orig_network_data.links;
-    var new_network_data = filter_using_new_nodes(params, new_nodes, links, views);
+    new_network_data = filter_using_new_nodes(params, new_nodes, links, views);
 
   } else {
-    var new_network_data = orig_network_data;
+    new_network_data = orig_network_data;
   }
 
   return new_network_data;

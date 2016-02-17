@@ -1,7 +1,7 @@
 var make_config = require('./config');
 var make_params = require('./params');
 var make_viz = require('./viz');
-var ini_sliders = require('./filters/ini_sliders')
+// var ini_sliders = require('./filters/ini_sliders');
 
 /* clustergrammer 1.0
  * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai

@@ -5,6 +5,8 @@ var col_reorder = require('../reorder/col_reorder');
 
 module.exports = function(params, text_delay) {
 
+  var container_all_col;
+
   var col_nodes = params.network_data.col_nodes;
   var col_nodes_names = params.network_data.col_nodes_names;
 
@@ -17,7 +19,7 @@ module.exports = function(params, text_delay) {
   // make container to pre-position zoomable elements
   if (d3.select(params.root+' .col_container').empty()) {
 
-    var container_all_col = d3.select(params.viz.viz_svg)
+    container_all_col = d3.select(params.viz.viz_svg)
       .append('g')
       .attr('class','col_container')
       .attr('transform', 'translate(' + params.viz.clust.margin.left + ',' +
@@ -42,7 +44,7 @@ module.exports = function(params, text_delay) {
 
   } else {
 
-    var container_all_col = d3.select(params.root+' .col_container')
+    container_all_col = d3.select(params.root+' .col_container')
       .attr('transform', 'translate(' + params.viz.clust.margin.left + ',' +
       params.norm_label.margin.top + ')');
 
@@ -78,11 +80,11 @@ module.exports = function(params, text_delay) {
     .attr('class', 'col_label_click')
     // rotate column labels
     .attr('transform', 'translate(' + params.matrix.x_scale.rangeBand() / 2 + ',' + x_offset_click + ') rotate(45)')
-    .on('mouseover', function(d) {
+    .on('mouseover', function() {
       d3.select(this).select('text')
         .classed('active',true);
     })
-    .on('mouseout', function(d) {
+    .on('mouseout', function() {
       d3.select(this).select('text')
         .classed('active',false);
     });

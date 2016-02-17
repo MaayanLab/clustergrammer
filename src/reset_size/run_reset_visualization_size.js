@@ -13,7 +13,7 @@ module.exports = function(params, set_clust_width, set_clust_height, set_margin_
   // reset zoom
   //////////////////////////////
   var zoom_y = 1;
-  var zoom_x = 1;
+  // var zoom_x = 1;
   var pan_dx = 0;
   var pan_dy = 0;
 
@@ -39,10 +39,10 @@ module.exports = function(params, set_clust_width, set_clust_height, set_margin_
   d3.select('.col_viz_zoom_container')
     .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [pan_dx, 0] + ')');
 
-  // set y translate: center_y is positive, positive moves the visualization down
-  // the translate vector has the initial margin, the first y centering, and pan_dy
-  // times the scaling zoom_y
-  var net_y_offset = params.viz.clust.margin.top + center_y + pan_dy * zoom_y;
+  // // set y translate: center_y is positive, positive moves the visualization down
+  // // the translate vector has the initial margin, the first y centering, and pan_dy
+  // // times the scaling zoom_y
+  // var net_y_offset = params.viz.clust.margin.top + center_y + pan_dy * zoom_y;
 
   // size the svg container div - svg_div
   d3.select(params.viz.viz_wrapper)
@@ -283,7 +283,7 @@ module.exports = function(params, set_clust_width, set_clust_height, set_margin_
   ////////////////////////////////
 
   var rel_width_hlight = 6;
-  var opacity_hlight = 0.85;
+  // var opacity_hlight = 0.85;
   var hlight_width = rel_width_hlight*params.viz.border_width;
   var hlight_height = rel_width_hlight*params.viz.border_width/params.viz.zoom_switch;
 

@@ -8,7 +8,7 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
   // reset zoom
   //////////////////////////////
   var zoom_y = 1;
-  var zoom_x = 1;
+  // var zoom_x = 1;
   var pan_dx = 0;
   var pan_dy = 0;
 
@@ -33,10 +33,10 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
   d3.select('.col_viz_zoom_container')
     .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [pan_dx, 0] + ')');
 
-  // set y translate: center_y is positive, positive moves the visualization down
-  // the translate vector has the initial margin, the first y centering, and pan_dy
-  // times the scaling zoom_y
-  var net_y_offset = params.viz.clust.margin.top + center_y + pan_dy * zoom_y;
+  // // set y translate: center_y is positive, positive moves the visualization down
+  // // the translate vector has the initial margin, the first y centering, and pan_dy
+  // // times the scaling zoom_y
+  // var net_y_offset = params.viz.clust.margin.top + center_y + pan_dy * zoom_y;
 
 
   // Resetting some visualization parameters
@@ -402,6 +402,8 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
 
     // resize col labels
     ///////////////////////
+    var x_offset_click;
+    var reduce_rect_width;
 
     if (delays.run_transition){
 
@@ -422,9 +424,9 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
         .attr('transform', 'translate(0,' + params.norm_label.width.col + ')');
 
       // offset click group column label
-      var x_offset_click = params.matrix.x_scale.rangeBand() / 2 + params.viz.border_width;
+      x_offset_click = params.matrix.x_scale.rangeBand() / 2 + params.viz.border_width;
       // reduce width of rotated rects
-      var reduce_rect_width = params.matrix.x_scale.rangeBand() * 0.36;
+      reduce_rect_width = params.matrix.x_scale.rangeBand() * 0.36;
 
       svg_group.selectAll('.col_label_text')
         .data(col_nodes, function(d){return d.name;})
@@ -465,9 +467,9 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
         .attr('transform', 'translate(0,' + params.norm_label.width.col + ')');
 
       // offset click group column label
-      var x_offset_click = params.matrix.x_scale.rangeBand() / 2 + params.viz.border_width;
+      x_offset_click = params.matrix.x_scale.rangeBand() / 2 + params.viz.border_width;
       // reduce width of rotated rects
-      var reduce_rect_width = params.matrix.x_scale.rangeBand() * 0.36;
+      reduce_rect_width = params.matrix.x_scale.rangeBand() * 0.36;
 
       svg_group.selectAll('.col_label_text')
         .data(col_nodes, function(d){return d.name;})
@@ -590,8 +592,6 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
     // append column value bars
     if (utils.has( params.network_data.col_nodes[0], 'value')) {
 
-      console.log('resizing col bars');
-
       svg_group.selectAll('.col_bars')
         .data(col_nodes, function(d){return d.name;})
         .transition().delay(delays.update).duration(duration)
@@ -599,7 +599,6 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
           var inst_value = 0;
           if (d.value > 0){
 
-            console.log( String(d.name) +' '+ String(d.value) +'\n\n');
             inst_value = params.labels.bar_scale_col(d.value);
           }
           return inst_value;
@@ -611,7 +610,7 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
   if (params.labels.show_categories){
     // change the size of the highlighting rects
     d3.selectAll('.col_label_click')
-      .each(function(d) {
+      .each(function() {
         var bbox = d3.select(this)
           .select('text')[0][0]
           .getBBox();

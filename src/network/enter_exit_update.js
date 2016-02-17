@@ -58,10 +58,6 @@ module.exports = function(params, network_data, delays){
     tile_data[i].name = row_nodes[d.source].name + '_' + col_nodes[d.target].name;
   }
 
-  function get_key(d){
-    return d.name ;
-  }
-
   // exit
   ////////////
 
@@ -107,7 +103,7 @@ module.exports = function(params, network_data, delays){
     .selectAll('.row')
     .each(function(d) {
       // TODO add tip back to arguments 
-      tmp = this;
+      var tmp = this;
       eeu_existing_row(params, d, delays, duration, tmp);
     });
 
@@ -295,7 +291,7 @@ module.exports = function(params, network_data, delays){
           tip.show(p);
         }
       })
-      .on('mouseout', function(d) {
+      .on('mouseout', function() {
         d3.selectAll('text').classed('active', false);
         if (params.matrix.show_tile_tooltips){
           tip.hide();
@@ -321,7 +317,7 @@ module.exports = function(params, network_data, delays){
         .enter()
         .append('path')
         .attr('class','tile_dn')
-        .attr('d', function(d) {
+        .attr('d', function() {
 
           // dn triangle
           var start_x = 0;
@@ -357,7 +353,7 @@ module.exports = function(params, network_data, delays){
           tip.show(p);
         }
       })
-      .on('mouseout', function(d) {
+      .on('mouseout', function() {
         d3.selectAll('text').classed('active', false);
         if (params.matrix.show_tile_tooltips){
           tip.hide();
@@ -389,14 +385,11 @@ module.exports = function(params, network_data, delays){
 
   // var labels = Labels(params);
 
-  var row_triangle_ini_group = make_rows(params, duration);
-  var container_all_col = make_cols(params, duration);
+  make_rows(params, duration);
+  make_cols(params, duration);
 
   // Fade in new gridlines
   ///////////////////////////
-  var row_nodes_names = params.network_data.row_nodes_names;
-  var col_nodes_names = params.network_data.col_nodes_names;
-
 
   // append horizontal lines
   d3.select(params.root+' .clust_group')

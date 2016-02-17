@@ -42,7 +42,7 @@ module.exports = function(filter_type, parameters) {
     min: 0,
     max: inst_max,
     step: 1,
-    stop: function( event ) {
+    stop: function() {
 
       // get value
       var inst_index = $( '.slider_'+filter_type ).slider( "value" );
@@ -50,7 +50,7 @@ module.exports = function(filter_type, parameters) {
       var inst_top = N_dict[inst_index];
 
       var change_view = {'N_row_sum':inst_top};
-      
+
       var viz_svg = cgm.params.viz.viz_svg;
 
       d3.select(viz_svg).style('opacity',0.70);

@@ -1,5 +1,5 @@
 // var crossfilter = require('crossfilter');
-var end_reorder = require('./end_reorder');
+// var end_reorder = require('./end_reorder');
 var reposition_tile_highlight = require('./reposition_tile_highlight');
 
 module.exports = function(params, col_selection) {
@@ -44,9 +44,11 @@ module.exports = function(params, col_selection) {
   ////////////////////////////
   params.matrix.y_scale.domain(tmp_sort);
 
+  var t;
+
   // reorder
   if (params.network_data.links.length > params.matrix.def_large_matrix){
-    var t = d3.select(params.root+' .clust_group');
+    t = d3.select(params.root+' .clust_group');
 
     // reorder row_label_triangle groups
     d3.selectAll('.row_viz_group')
@@ -65,7 +67,7 @@ module.exports = function(params, col_selection) {
 
   } else {
 
-    var t = d3.select(params.root+' .clust_group')
+    t = d3.select(params.root+' .clust_group')
       .transition().duration(2500);
 
     // reorder row_label_triangle groups

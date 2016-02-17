@@ -93,15 +93,15 @@ module.exports = function(params, ini_inp_row_data, delays, duration, row_select
         .classed('active', function(d) {
           return p.col_name === d.name;
         });
-      if (params.matrix.show_tile_tooltips){
-        tip.show(p);
-      }
+      // if (params.matrix.show_tile_tooltips){
+      //   tip.show(p);
+      // }
     })
     .on('mouseout', function mouseout() {
       d3.selectAll('text').classed('active', false);
-      if (params.matrix.show_tile_tooltips){
-        tip.hide();
-      }
+      // if (params.matrix.show_tile_tooltips){
+      //   tip.hide();
+      // }
     });
 
   var col_nodes_names = params.network_data.col_nodes_names;
@@ -146,15 +146,15 @@ module.exports = function(params, ini_inp_row_data, delays, duration, row_select
           .classed('active', function(d) {
             return p.col_name === d.name;
           });
-        if (params.matrix.show_tile_tooltips){
-          tip.show(p);
-        }
+        // if (params.matrix.show_tile_tooltips){
+        //   tip.show(p);
+        // }
       })
       .on('mouseout', function mouseout() {
         d3.selectAll('text').classed('active', false);
-        if (params.matrix.show_tile_tooltips){
-          tip.hide();
-        }
+        // if (params.matrix.show_tile_tooltips){
+        //   tip.hide();
+        // }
       });
 
     if (delays.run_transition){
@@ -207,15 +207,15 @@ module.exports = function(params, ini_inp_row_data, delays, duration, row_select
           .classed('active', function(d) {
             return p.col_name === d.name;
           });
-        if (params.matrix.show_tile_tooltips){
-          tip.show(p);
-        }
+        // if (params.matrix.show_tile_tooltips){
+        //   tip.show(p);
+        // }
       })
       .on('mouseout', function mouseout() {
         d3.selectAll('text').classed('active', false);
-        if (params.matrix.show_tile_tooltips){
-          tip.hide();
-        }
+        // if (params.matrix.show_tile_tooltips){
+        //   tip.hide();
+        // }
       });
 
     if (delays.run_transition){
@@ -287,15 +287,15 @@ module.exports = function(params, ini_inp_row_data, delays, duration, row_select
         .classed('active', function(d) {
           return p.col_name === d.name;
         });
-      if (params.matrix.show_tile_tooltips){
-        tip.show(p);
-      }
+      // if (params.matrix.show_tile_tooltips){
+      //   tip.show(p);
+      // }
     })
     .on('mouseout', function mouseout() {
       d3.selectAll('text').classed('active', false);
-      if (params.matrix.show_tile_tooltips){
-        tip.hide();
-      }
+      // if (params.matrix.show_tile_tooltips){
+      //   tip.hide();
+      // }
     })
     .attr('fill-opacity',0)
     .attr('transform', function(d){

@@ -1,5 +1,5 @@
 // var crossfilter = require('crossfilter');
-var end_reorder = require('./end_reorder');
+// var end_reorder = require('./end_reorder');
 
 module.exports = function(params, inst_order, row_col) {
 
@@ -44,11 +44,13 @@ module.exports = function(params, inst_order, row_col) {
     }
   }
 
+  var t;
+
   // only animate transition if there are a small number of tiles
   if (d3.selectAll('.tile')[0].length < params.matrix.def_large_matrix){
 
     // define the t variable as the transition function
-    var t = d3.select(params.root+' .clust_group')
+    t = d3.select(params.root+' .clust_group')
       .transition().duration(2500);
 
     t.selectAll('.row')
@@ -108,7 +110,7 @@ module.exports = function(params, inst_order, row_col) {
   } else {
 
     // define the t variable as the transition function
-    var t = d3.select(params.root+' .clust_group')
+    t = d3.select(params.root+' .clust_group');
 
     // reorder matrix
     t.selectAll('.row')
@@ -169,11 +171,11 @@ module.exports = function(params, inst_order, row_col) {
     d.y = params.matrix.y_scale(d.source);
   });
 
-  // rename crossfilter
-  params.cf = {};
-  params.cf.links = crossfilter(params.network_data.links);
-  params.cf.dim_x = params.cf.links.dimension(function(d){return d.x;});
-  params.cf.dim_y = params.cf.links.dimension(function(d){return d.y;});
+  // // rename crossfilter
+  // params.cf = {};
+  // params.cf.links = crossfilter(params.network_data.links);
+  // params.cf.dim_x = params.cf.links.dimension(function(d){return d.x;});
+  // params.cf.dim_y = params.cf.links.dimension(function(d){return d.y;});
 
   // // backup allow programmatic zoom
   // setTimeout(end_reorder, 2500);

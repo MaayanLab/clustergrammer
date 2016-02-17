@@ -6,16 +6,17 @@ module.exports = function(params, text_delay) {
   var row_nodes = params.network_data.row_nodes;
 
   var row_nodes_names = params.network_data.row_nodes_names;
+  var row_container;
 
   // row container holds all row text and row visualizations (triangles rects)
   if ( d3.select(params.viz.vis_svg + ' .row_container').empty() ){
-    var row_container = d3.select(params.viz.viz_svg)
+    row_container = d3.select(params.viz.viz_svg)
       .append('g')
       .attr('class','row_container')
       .attr('transform', 'translate(' + params.norm_label.margin.left + ',' +
       params.viz.clust.margin.top + ')');
   } else {
-    var row_container = d3.select(params.viz.viz_svg)
+    row_container = d3.select(params.viz.viz_svg)
       .select('.row_container')
       .attr('transform', 'translate(' + params.norm_label.margin.left + ',' +
       params.viz.clust.margin.top + ')');
@@ -53,7 +54,6 @@ module.exports = function(params, text_delay) {
   d3.select(params.root+' .row_label_zoom_container')
     .selectAll('.row_label_text')
     .on('dblclick', function(d) {
-      console.log('double clicking row');
       row_reorder(params, this);
       if (params.tile_click_hlight){
         add_row_click_hlight(this,d.ini);
@@ -91,12 +91,12 @@ module.exports = function(params, text_delay) {
       });
   } else{
     row_labels
-      .on('mouseover', function(d) {
+      .on('mouseover', function() {
         d3.select(this)
           .select('text')
           .classed('active',true);
       })
-      .on('mouseout', function mouseout(d) {
+      .on('mouseout', function mouseout() {
         d3.select(this)
           .select('text')
           .classed('active',false);

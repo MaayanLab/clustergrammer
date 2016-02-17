@@ -12,7 +12,6 @@ module.exports = function(params, svg_elem) {
   clust_group;
 
   var row_nodes_names = _.pluck(row_nodes, 'name');
-  var col_nodes_names = _.pluck(col_nodes, 'name');
 
   // append a group that will hold clust_group and position it once
   clust_group = svg_elem
@@ -83,8 +82,8 @@ module.exports = function(params, svg_elem) {
           }
 
         })
-        .on('mouseout', function(d) {
-          d3.selectAll('text').classed('active', false);
+        .on('mouseout', function() {
+          d3.selectAll('text').cl120Gassed('active', false);
           if (params.matrix.show_tile_tooltips){
             tip.hide();
           }
@@ -117,7 +116,7 @@ module.exports = function(params, svg_elem) {
           .enter()
           .append('path')
           .attr('class','tile_up')
-          .attr('d', function(d) {
+          .attr('d', function() {
 
             // up triangle
             var start_x = 0;
@@ -160,7 +159,7 @@ module.exports = function(params, svg_elem) {
             tip.show(p);
           }
         })
-        .on('mouseout', function(d) {
+        .on('mouseout', function() {
           d3.selectAll('text').classed('active', false);
           if (params.matrix.show_tile_tooltips){
             tip.hide();
@@ -174,7 +173,7 @@ module.exports = function(params, svg_elem) {
           .enter()
           .append('path')
           .attr('class','tile_dn')
-          .attr('d', function(d) {
+          .attr('d', function() {
 
             // dn triangle
             var start_x = 0;
@@ -217,7 +216,7 @@ module.exports = function(params, svg_elem) {
             tip.show(p);
           }
         })
-        .on('mouseout', function(d) {
+        .on('mouseout', function() {
           d3.selectAll('text').classed('active', false);
           if (params.matrix.show_tile_tooltips){
             tip.hide();
@@ -243,11 +242,11 @@ module.exports = function(params, svg_elem) {
         });
       }
 
-    };
+    }
 
 
   // make row matrix - add key names to rows in matrix
-  var row_groups = clust_group.selectAll('.row')
+  clust_group.selectAll('.row')
     .data(params.matrix.matrix, function(d){return d.name;})
     .enter()
     .append('g')

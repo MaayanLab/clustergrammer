@@ -23,7 +23,7 @@ module.exports = function(params, row_selection) {
   });
 
   // find index
-  var inst_row = _.indexOf(tmp_arr, inst_row);
+  inst_row = _.indexOf(tmp_arr, inst_row);
 
   // gather the values of the input genes
   tmp_arr = [];
@@ -39,12 +39,14 @@ module.exports = function(params, row_selection) {
   // resort cols
   params.matrix.x_scale.domain(tmp_sort);
 
+  var t;
+
   // reorder matrix
   ////////////////////
   if (params.network_data.links.length > params.matrix.def_large_matrix){
 
     // define the t variable as the transition function
-    var t = d3.select(params.root + ' .clust_group');
+    t = d3.select(params.root + ' .clust_group');
 
     // Move Col Labels
     d3.select(params.root+' .col_zoom_container')
@@ -66,7 +68,7 @@ module.exports = function(params, row_selection) {
   } else {
 
     // define the t variable as the transition function
-    var t = d3.select(params.root + ' .clust_group').transition().duration(2500);
+    t = d3.select(params.root + ' .clust_group').transition().duration(2500);
 
     // Move Col Labels
     d3.select(params.root+' .col_zoom_container')
@@ -83,7 +85,7 @@ module.exports = function(params, row_selection) {
       .attr('transform', function(d) {
         var inst_index = _.indexOf(col_nodes_names, d.name);
         return 'translate(' + params.matrix.x_scale(inst_index) + ',0)';
-      })
+      });
       // .each('end', function() {
       //   // set running transition to 0
       //   params.viz.run_trans = false;

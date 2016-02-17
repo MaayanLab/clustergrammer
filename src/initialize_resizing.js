@@ -3,6 +3,8 @@ var reset_visualization_size = require('./reset_size/reset_visualization_size');
 
 module.exports = function(params) {
 
+  var exp_button;
+
   d3.select(window).on('resize', null);
 
   // resize window
@@ -23,11 +25,11 @@ module.exports = function(params) {
     var expand_opacity = 0.4;
 
     if (d3.select(params.root + ' .expand_button').empty()) {
-      var exp_button = d3.select(params.viz.viz_svg)
+      exp_button = d3.select(params.viz.viz_svg)
         .append('text')
         .attr('class', 'expand_button');
     } else {
-      var exp_button = d3.select(params.root + ' .expand_button');
+      exp_button = d3.select(params.root + ' .expand_button');
     }
 
     exp_button
@@ -60,7 +62,7 @@ module.exports = function(params) {
         if (params.viz.expand === false) {
 
           d3.select(this)
-            .text(function (d) {
+            .text(function() {
               // menu button
               return '\uf0c9';
             });
@@ -73,7 +75,7 @@ module.exports = function(params) {
         } else {
 
           d3.select(this)
-            .text(function (d) {
+            .text(function () {
               // expand button
               return '\uf0b2';
             });

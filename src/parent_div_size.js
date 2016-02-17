@@ -2,10 +2,11 @@
 module.exports = function(params) {
 
   // get outer_margins
+  var outer_margins;
   if (params.viz.expand === false) {
-    var outer_margins = params.viz.outer_margins;
+    outer_margins = params.viz.outer_margins;
   } else {
-    var outer_margins = params.viz.outer_margins_expand;
+    outer_margins = params.viz.outer_margins_expand;
   }
 
   if (params.viz.resize) {
