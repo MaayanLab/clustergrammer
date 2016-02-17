@@ -11,7 +11,7 @@ module.exports = function ini_sliders(cgm, params){
       slide: function( event, ui ) {
         $( "#amount" ).val( "$" + ui.value );
         var inst_index = ui.value*10;
-        change_groups(params, 'col',inst_index);
+        change_groups(cgm.params, 'col',inst_index);
       }
     });
     $( "#amount" ).val( "$" + $( ".slider_col" ).slider( "value" ) );
@@ -25,7 +25,7 @@ module.exports = function ini_sliders(cgm, params){
       slide: function( event, ui ) {
         $( "#amount" ).val( "$" + ui.value );
         var inst_index = ui.value*10;
-        change_groups(params, 'row',inst_index);
+        change_groups(cgm.params, 'row',inst_index);
       }
     });
     $( "#amount" ).val( "$" + $( ".slider_row" ).slider( "value" ) );
@@ -51,14 +51,14 @@ module.exports = function ini_sliders(cgm, params){
       var order_id = $(evt.target).attr('name').split('_')[0];
       d3.selectAll('.toggle_row_order .btn').classed('active',false);
       d3.select(this).classed('active',true);
-      cgm.reorder(params, order_id,'row');
+      cgm.reorder(cgm.params, order_id,'row');
     });
 
     $('.toggle_col_order .btn').off().click(function(evt) {
       var order_id = $(evt.target).attr('name').split('_')[0];
       d3.selectAll('.toggle_col_order .btn').classed('active',false);
       d3.select(this).classed('active',true);
-      cgm.reorder(params, order_id,'col');
+      cgm.reorder(cgm.params, order_id,'col');
     });
 
 };
