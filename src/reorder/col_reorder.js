@@ -2,10 +2,12 @@ var crossfilter = require('crossfilter');
 var end_reorder = require('./end_reorder');
 var reposition_tile_highlight = require('./reposition_tile_highlight');
 
-module.exports = function(params) {
+module.exports = function(params, col_selection) {
 
-  // set running transition value
-  params.viz.run_trans = true;
+  // // set running transition value
+  // params.viz.run_trans = true;
+
+  // col_selection = col_selection;
 
   var mat       = params.matrix.matrix;
   var row_nodes = params.network_data.row_nodes;
@@ -14,9 +16,9 @@ module.exports = function(params) {
   var row_nodes_names = _.pluck(row_nodes, 'name');
 
   // get inst col (term)
-  var inst_term = d3.select(this).select('text').attr('full_name');
+  var inst_term = d3.select(col_selection).select('text').attr('full_name');
 
-  // find the column number of this term from col_nodes
+  // find the column number of col_selection term from col_nodes
   // gather column node names
   var tmp_arr = [];
   col_nodes.forEach(function(node) {
@@ -44,7 +46,7 @@ module.exports = function(params) {
 
   // reorder
   if (params.network_data.links.length > params.matrix.def_large_matrix){
-    var t = this.viz.get_clust_group();
+    var t = d3.select(params.root+' .clust_group');
 
     // reorder row_label_triangle groups
     d3.selectAll('.row_viz_group')
@@ -63,7 +65,8 @@ module.exports = function(params) {
 
   } else {
 
-    var t = this.viz.get_clust_group().transition().duration(2500);
+    var t = d3.select(params.root+' .clust_group')
+      .transition().duration(2500);
 
     // reorder row_label_triangle groups
     d3.selectAll('.row_viz_group')
@@ -98,7 +101,7 @@ module.exports = function(params) {
     .select('.highlight_rect')
     .style('opacity', 0);
   // highlight column name
-  d3.select(this)
+  d3.select(col_selection)
     .select('.highlight_rect')
     .style('opacity', 1);
 

@@ -1,5 +1,5 @@
 // TODO add tip back to arguments
-module.exports = function(params, ini_inp_row_data, delays, duration, row_selector) {
+module.exports = function(params, ini_inp_row_data, delays, duration, row_selection) {
 
   var inp_row_data = ini_inp_row_data.row_data;
 
@@ -9,7 +9,7 @@ module.exports = function(params, ini_inp_row_data, delays, duration, row_select
   });
 
   // bind data to tiles
-  var cur_row_tiles = d3.select(row_selector)
+  var cur_row_tiles = d3.select(row_selection)
     .selectAll('.tile')
     .data(row_values, function(d){
       return d.col_name;
@@ -39,7 +39,7 @@ module.exports = function(params, ini_inp_row_data, delays, duration, row_select
     });
 
     // tile_up
-    var cur_tiles_up = d3.select(row_selector)
+    var cur_tiles_up = d3.select(row_selection)
       .selectAll('.tile_up')
       .data(row_split_data, function(d){return d.col_name;});
 
@@ -57,7 +57,7 @@ module.exports = function(params, ini_inp_row_data, delays, duration, row_select
     }
 
     // tile_dn
-    var cur_tiles_dn = d3.select(row_selector)
+    var cur_tiles_dn = d3.select(row_selection)
       .selectAll('.tile_dn')
       .data(row_split_data, function(d){return d.col_name;});
 
@@ -260,7 +260,7 @@ module.exports = function(params, ini_inp_row_data, delays, duration, row_select
       .selectAll('.tile')
       .each(function(d){
         if ( Math.abs(d.value_up)>0 && Math.abs(d.value_dn)>0 ){
-          d3.select(row_selector).remove();
+          d3.select(row_selection).remove();
         }
       });
   }
@@ -330,7 +330,7 @@ module.exports = function(params, ini_inp_row_data, delays, duration, row_select
   new_tiles
     .each(function(d){
       if (Math.abs(d.value_up) > 0 && Math.abs(d.value_dn) > 0) {
-        d3.select(row_selector).remove();
+        d3.select(row_selection).remove();
       }
     });
 

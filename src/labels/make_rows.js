@@ -54,7 +54,7 @@ module.exports = function(params, text_delay) {
     .selectAll('.row_label_text')
     .on('dblclick', function(d) {
       console.log('double clicking row');
-      row_reorder.call(this);
+      row_reorder(params, this);
       if (params.tile_click_hlight){
         add_row_click_hlight(this,d.ini);
       }

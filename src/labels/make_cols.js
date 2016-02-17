@@ -301,8 +301,7 @@ module.exports = function(params, text_delay) {
 
     })
     .on('dblclick', function(d) {
-      console.log('double clicking col');
-      col_reorder.call(this);
+      col_reorder(params, this);
       if (params.tile_click_hlight){
         add_col_click_hlight(params, this, d.ini);
       }

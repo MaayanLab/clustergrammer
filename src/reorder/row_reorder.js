@@ -2,13 +2,13 @@ var crossfilter = require('crossfilter');
 var end_reorder = require('./end_reorder');
 var reposition_tile_highlight = require('./reposition_tile_highlight');
 
-module.exports = function(params) {
+module.exports = function(params, row_selection) {
 
   // get inst row (gene)
-  var inst_row = d3.select(this).select('text').text();
+  var inst_row = d3.select(row_selection).select('text').text();
 
-  // get row and col nodes
-  params.viz.run_trans = true;
+  // // get row and col nodes
+  // params.viz.run_trans = true;
 
   var mat       = params.matrix.matrix;
   var row_nodes = params.network_data.row_nodes;
@@ -84,10 +84,10 @@ module.exports = function(params) {
         var inst_index = _.indexOf(col_nodes_names, d.name);
         return 'translate(' + params.matrix.x_scale(inst_index) + ',0)';
       })
-      .each('end', function() {
-        // set running transition to 0
-        params.viz.run_trans = false;
-      });
+      // .each('end', function() {
+      //   // set running transition to 0
+      //   params.viz.run_trans = false;
+      // });
   }
 
   // reorder matrix
@@ -114,7 +114,7 @@ module.exports = function(params) {
     .select('rect')
     .style('opacity', 0);
   // highlight column name
-  d3.select(this)
+  d3.select(row_selection)
     .select('rect')
     .style('opacity', 1);
 
