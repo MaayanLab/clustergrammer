@@ -83,7 +83,7 @@ module.exports = function(params, svg_elem) {
 
         })
         .on('mouseout', function() {
-          d3.selectAll('text').cl120Gassed('active', false);
+          d3.selectAll('text').classed('active', false);
           if (params.matrix.show_tile_tooltips){
             tip.hide();
           }
