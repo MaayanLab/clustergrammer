@@ -1,3 +1,4 @@
+var change_groups = require('../dendrogram/change_groups');
 
 module.exports = function ini_sliders(cgm){
 
@@ -10,7 +11,7 @@ module.exports = function ini_sliders(cgm){
       slide: function( event, ui ) {
         $( "#amount" ).val( "$" + ui.value );
         var inst_index = ui.value*10;
-        cgm.change_groups(cgm.params, 'col',inst_index);
+        change_groups(cgm.params, 'col',inst_index);
       }
     });
     $( "#amount" ).val( "$" + $( ".slider_col" ).slider( "value" ) );
@@ -24,7 +25,7 @@ module.exports = function ini_sliders(cgm){
       slide: function( event, ui ) {
         $( "#amount" ).val( "$" + ui.value );
         var inst_index = ui.value*10;
-        cgm.change_groups(cgm.params, 'row',inst_index);
+        change_groups(cgm.params, 'row',inst_index);
       }
     });
     $( "#amount" ).val( "$" + $( ".slider_row" ).slider( "value" ) );
