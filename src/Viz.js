@@ -1,5 +1,4 @@
 var generate_matrix = require('./matrix');
-var generate_dendro = require('./dendrogram');
 var make_rows = require('./labels/make_rows');
 var make_cols = require('./labels/make_cols');
 var generate_super_labels = require('./labels/super_labels');
@@ -8,6 +7,10 @@ var run_search = require('./search');
 var two_translate_zoom = require('./two_translate_zoom');
 var initialize_resizing = require('./initialize_resizing');
 var ini_doubleclick = require('./ini_doubleclick');
+
+var build_col_dendro = require('./dendrogram/build_col_dendro');
+var build_row_dendro = require('./dendrogram/build_row_dendro');
+var change_groups = require('./dendrogram/change_groups')
 
 module.exports = function(params) {
   var svg_group = d3.select(params.viz.viz_wrapper)
@@ -34,7 +37,7 @@ module.exports = function(params) {
 
   if (params.viz.show_dendrogram) {
 
-    var row_dendrogram = generate_dendro(params, 'row');
+    var row_dendrogram = build_row_dendro(params, 'row_class_rect');
 
     container_all_col
       .append('g')
@@ -46,7 +49,7 @@ module.exports = function(params) {
       .append('g')
       .attr('class', 'col_viz_zoom_container');
 
-    var col_dendrogram = generate_dendro(params, 'col');
+    var col_dendrogram = build_col_dendro(params, 'col_class_rect');
 
   }
 
@@ -161,9 +164,9 @@ module.exports = function(params) {
   return {
     change_groups: function(params, inst_rc, inst_index) {
       if (inst_rc === 'row') {
-        row_dendrogram.change_groups(params, inst_rc, inst_index);
+        change_groups(params, inst_rc, inst_index);
       } else {
-        col_dendrogram.change_groups(params, inst_rc, inst_index);
+        change_groups(params, inst_rc, inst_index);
       }
     },
     get_clust_group: function () {

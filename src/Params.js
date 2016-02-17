@@ -231,7 +231,7 @@ module.exports = function(input_config) {
     .domain([0, enr_max])
     .range([0, 0.75 * params.norm_label.width.col]);
 
-  var enr_max = Math.abs(_.max(row_nodes, function (d) {
+  enr_max = Math.abs(_.max(row_nodes, function (d) {
     return Math.abs(d.value);
   }).value);
   params.labels.bar_scale_row = d3.scale

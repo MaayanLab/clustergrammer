@@ -16,19 +16,7 @@ module.exports = function Dendrogram(params, type) {
     build_col_dendro(params, dom_class);
   }
 
-  var group_colors = build_color_groups(params);
-
-  function color_group(index) {
-    return group_colors[index];
-  }
-
-  function get_group_color(index) {
-    return group_colors[index];
-  }
-
   return {
-    color_group: color_group,
-    get_group_color: get_group_color,
     change_groups: change_groups
   };
 };
