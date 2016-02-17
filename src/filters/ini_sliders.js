@@ -1,6 +1,6 @@
 var change_groups = require('../dendrogram/change_groups');
 
-module.exports = function ini_sliders(cgm, params){
+module.exports = function ini_sliders(cgm){
 
     // col groups
     $( ".slider_col" ).slider({
@@ -31,7 +31,7 @@ module.exports = function ini_sliders(cgm, params){
     $( "#amount" ).val( "$" + $( ".slider_row" ).slider( "value" ) );
 
     $('.gene_search_box').autocomplete({
-      source: cgm.get_genes()
+      source: cgm.get_genes
     });
 
     // submit genes button

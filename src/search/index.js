@@ -1,4 +1,4 @@
-var two_translate_zoom = require('./two_translate_zoom');
+var two_translate_zoom = require('../two_translate_zoom');
 /* Handles searching rows or columns.
  !! need to generalize to column and row
  * ----------------------------------------------------------------------- */
@@ -6,8 +6,8 @@ module.exports = function(params, nodes, prop) {
 
   /* Collect entities from row or columns.
    */
-  var entities = [],
-    i;
+  var entities = [];
+  var i;
 
   for (i = 0; i < nodes.length; i++) {
     entities.push(nodes[i][prop]);
@@ -47,14 +47,8 @@ module.exports = function(params, nodes, prop) {
       .style('opacity', 1);
   }
 
-  /* Returns all the genes in the clustergram.
-   */
-  function get_entities() {
-    return entities;
-  }
-
   return {
     find_entities: find_entities,
-    get_entities: get_entities
+    get_entities: entities
   };
 };
