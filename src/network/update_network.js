@@ -1,14 +1,15 @@
 var make_params = require('../params');
 var change_network_view = require('./change_network_view');
-// var build_col_dendro = require('../dendrogram/build_col_dendro');
-// var build_row_dendro = require('../dendrogram/build_row_dendro');
-var generate_dendro = require('../dendrogram');
 var initialize_resizing = require('../initialize_resizing');
 var ini_doubleclick = require('../ini_doubleclick');
 var enter_exit_update = require('./enter_exit_update');
 var define_enter_exit_delays = require('./define_enter_exit_delays');
 var search = require('../search');
 var all_reorder = require('../reorder/all_reorder');
+
+var build_col_dendro = require('../dendrogram/build_col_dendro');
+var build_row_dendro = require('../dendrogram/build_row_dendro');
+var change_groups = require('../dendrogram/change_groups');
 
 module.exports = function(old_params, change_view) {
 
@@ -50,15 +51,16 @@ module.exports = function(old_params, change_view) {
   // TODO reenable dendrogram updating
   // redefine change_group function
   if (params.viz.show_dendrogram){
-    var row_dendrogram = generate_dendro(params, 'row');
-    var col_dendrogram = generate_dendro(params, 'col');
+    build_row_dendro(params, 'row_class_rect');
+    build_col_dendro(params, 'col_class_rect');
+
   }
 
   function new_change_groups(params, inst_rc, inst_index) {
     if (inst_rc === 'row') {
-      row_dendrogram.change_groups(params, inst_rc,inst_index);
+      change_groups(params, inst_rc,inst_index);
     } else {
-      col_dendrogram.change_groups(params, inst_rc,inst_index);
+      change_groups(params, inst_rc,inst_index);
     }
   }
 
