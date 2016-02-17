@@ -1,6 +1,7 @@
 var make_config = require('./config');
 var make_params = require('./params');
 var make_viz = require('./viz');
+var ini_sliders = require('./filters/ini_sliders')
 
 /* clustergrammer 1.0
  * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
@@ -26,6 +27,9 @@ function Clustergrammer(args) {
     var generate_sidebar = require('./sidebar');
     generate_sidebar(params, viz);
   }
+
+  // console.log('ini_sliders from main.js')
+  // ini_sliders({});
 
   return {
     params: params,

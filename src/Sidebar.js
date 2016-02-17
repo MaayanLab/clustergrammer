@@ -105,7 +105,6 @@ module.exports = function(params, viz) {
     .classed('btn-primary',true)
     .classed('submit_gene_button',true);
 
-
   var colorbar_sliders = sidebar
     .append('div')
     .classed('colorbar_sliders',true);

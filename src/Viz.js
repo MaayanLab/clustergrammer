@@ -159,11 +159,11 @@ module.exports = function(params) {
   }
 
   return {
-    change_groups: function(inst_rc, inst_index) {
+    change_groups: function(params, inst_rc, inst_index) {
       if (inst_rc === 'row') {
-        row_dendrogram.change_groups(inst_rc, inst_index);
+        row_dendrogram.change_groups(params, inst_rc, inst_index);
       } else {
-        col_dendrogram.change_groups(inst_rc, inst_index);
+        col_dendrogram.change_groups(params, inst_rc, inst_index);
       }
     },
     get_clust_group: function () {

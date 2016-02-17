@@ -1,6 +1,8 @@
-module.exports = function(cgm){
 
-  // col groups
+
+module.exports = function ini_sliders(cgm){
+
+    // col groups
     $( ".slider_col" ).slider({
       value:0.5,
       min: 0,
@@ -9,7 +11,7 @@ module.exports = function(cgm){
       slide: function( event, ui ) {
         $( "#amount" ).val( "$" + ui.value );
         var inst_index = ui.value*10;
-        cgm.change_groups('col',inst_index)
+        cgm.change_groups(cgm.params, 'col',inst_index)
       }
     });
     $( "#amount" ).val( "$" + $( ".slider_col" ).slider( "value" ) );
@@ -23,7 +25,7 @@ module.exports = function(cgm){
       slide: function( event, ui ) {
         $( "#amount" ).val( "$" + ui.value );
         var inst_index = ui.value*10;
-        cgm.change_groups('row',inst_index)
+        cgm.change_groups(cgm.params, 'row',inst_index)
       }
     });
     $( "#amount" ).val( "$" + $( ".slider_row" ).slider( "value" ) );

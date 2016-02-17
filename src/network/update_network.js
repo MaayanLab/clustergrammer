@@ -54,11 +54,11 @@ module.exports = function(old_params, change_view) {
     var col_dendrogram = generate_dendro(params, 'col');
   }
 
-  function new_change_groups(inst_rc, inst_index) {
+  function new_change_groups(params, inst_rc, inst_index) {
     if (inst_rc === 'row') {
-      row_dendrogram.change_groups(inst_rc,inst_index);
+      row_dendrogram.change_groups(params, inst_rc,inst_index);
     } else {
-      col_dendrogram.change_groups(inst_rc,inst_index);
+      col_dendrogram.change_groups(params, inst_rc,inst_index);
     }
   }
 

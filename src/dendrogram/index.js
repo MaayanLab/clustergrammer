@@ -1,10 +1,11 @@
 var build_row_dendro = require('./build_row_dendro');
 var build_col_dendro = require('./build_col_dendro');
 var build_color_groups = require('./build_color_groups');
+var change_groups = require('./change_groups');
 
 /* Dendrogram color bar.
  */
-module.exports = function(params, type) {
+module.exports = function Dendrogram(params, type) {
   var dom_class;
 
   if (type === 'row') {
@@ -23,21 +24,6 @@ module.exports = function(params, type) {
 
   function get_group_color(index) {
     return group_colors[index];
-  }
-
-  /* Changes the groupings (x- and y-axis color bars).
-   */
-  function change_groups(inst_rc, inst_index) {
-    d3.selectAll('.' + dom_class)
-      .style('fill', function(d) {
-        return get_group_color(d.group[inst_index]);
-      });
-
-    if (inst_rc==='row'){
-      params.group_level.row = inst_index;
-    } else if (inst_rc==='col'){
-      params.group_level.col = inst_index;
-    }
   }
 
   return {
