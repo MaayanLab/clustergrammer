@@ -1,4 +1,4 @@
-var crossfilter = require('crossfilter');
+// var crossfilter = require('crossfilter');
 var end_reorder = require('./end_reorder');
 
 module.exports = function(params, inst_order, row_col) {

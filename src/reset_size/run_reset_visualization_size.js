@@ -1,4 +1,4 @@
-var crossfilter = require('crossfilter');
+// var crossfilter = require('crossfilter');
 var utils = require('../utils');
 var zoomed = require('../zoomed');
 var ini_doubleclick = require('../ini_doubleclick');
@@ -144,18 +144,18 @@ module.exports = function(params, set_clust_width, set_clust_height, set_margin_
   params.matrix.rect_width = params.matrix.x_scale.rangeBand();
   params.matrix.rect_height = params.matrix.y_scale.rangeBand();
 
-  // reset crossfilter
-  params.cf = {};
-  params.cf.links = crossfilter(params.network_data.links);
-  params.cf.dim_x = params.cf.links.dimension(function(d){return d.x;});
-  params.cf.dim_y = params.cf.links.dimension(function(d){return d.y;});
+  // // reset crossfilter
+  // params.cf = {};
+  // params.cf.links = crossfilter(params.network_data.links);
+  // params.cf.dim_x = params.cf.links.dimension(function(d){return d.x;});
+  // params.cf.dim_y = params.cf.links.dimension(function(d){return d.y;});
 
-  // reset all crossfilter filters
-  params.cf.dim_x.filterAll();
-  params.cf.dim_y.filterAll();
+  // // reset all crossfilter filters
+  // params.cf.dim_x.filterAll();
+  // params.cf.dim_y.filterAll();
 
-  // redefine links - grab all links since filter is reset
-  var inst_links = params.cf.dim_x.top(Infinity);
+  // // redefine links - grab all links since filter is reset
+  // var inst_links = params.cf.dim_x.top(Infinity);
 
   // redefine zoom extent
   params.viz.real_zoom = params.norm_label.width.col / (params.matrix.rect_width/2);

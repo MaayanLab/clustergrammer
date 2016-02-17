@@ -1,5 +1,4 @@
-var crossfilter = require('crossfilter');
-var extend = require('extend');
+// var crossfilter = require('crossfilter');
 var utils = require('./utils');
 var change_network_view = require('./network/change_network_view');
 var parent_div_size = require('./parent_div_size');
@@ -12,7 +11,7 @@ clustergram.
 
 module.exports = function(input_config) {
 
-  var config = extend(true, {}, input_config);
+  var config = $.extend(true, {}, input_config);
   var params = config;
 
   if (params.ini_view !== null) {
@@ -335,16 +334,16 @@ module.exports = function(input_config) {
     d.y = params.matrix.y_scale(d.source);
   });
 
-  // make lnks crossfilter
-  // TODO check if relying on crossfilter
-  params.cf = {};
-  params.cf.links = crossfilter(params.network_data.links);
-  params.cf.dim_x = params.cf.links.dimension(function (d) {
-    return d.x;
-  });
-  params.cf.dim_y = params.cf.links.dimension(function (d) {
-    return d.y;
-  });
+  // // make lnks crossfilter
+  // // TODO check if relying on crossfilter
+  // params.cf = {};
+  // params.cf.links = crossfilter(params.network_data.links);
+  // params.cf.dim_x = params.cf.links.dimension(function (d) {
+  //   return d.x;
+  // });
+  // params.cf.dim_y = params.cf.links.dimension(function (d) {
+  //   return d.y;
+  // });
 
   params.matrix.matrix = initialize_matrix(params.network_data);
 
