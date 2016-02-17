@@ -102,11 +102,14 @@ module.exports = function(params, network_data, delays){
       });
   }
 
+  // TODO disabled eeu_existing_row
   // update existing rows - enter, exit, update tiles in existing row
   d3.select(params.root+' .clust_group')
     .selectAll('.row')
     .each(function(d) {
-      eeu_existing_row(params, d, tip, delays, duration);
+      // TODO add tip back to arguments 
+      tmp = this;
+      eeu_existing_row(params, d, delays, duration, tmp);
     });
 
   // enter exit update tiles

@@ -43,11 +43,12 @@ module.exports = function(old_params, change_view) {
   this.get_genes = gene_search.get_entities;
   this.find_gene = gene_search.find_entities;
 
-  // redefine change_group function
-  if (params.viz.show_dendrogram){
-    var row_dendrogram = generate_dendrogram('row', params);
-    var col_dendrogram = generate_dendrogram('col', params);
-  }
+  // TODO reenable dendrogram updating
+  // // redefine change_group function
+  // if (params.viz.show_dendrogram){
+  //   var row_dendrogram = generate_dendrogram('row', params);
+  //   var col_dendrogram = generate_dendrogram('col', params);
+  // }
 
   function new_change_groups(inst_rc, inst_index) {
     if (inst_rc === 'row') {
