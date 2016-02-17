@@ -1,5 +1,4 @@
 
-
 module.exports = function ini_sliders(cgm){
 
     // col groups
@@ -74,6 +73,5 @@ module.exports = function ini_sliders(cgm){
       d3.select(this).classed('active',true);
       cgm.reorder(cgm.params, order_id,'col');
     });
-
 
 };

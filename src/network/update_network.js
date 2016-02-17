@@ -53,18 +53,9 @@ module.exports = function(old_params, change_view) {
   if (params.viz.show_dendrogram){
     build_row_dendro(params, 'row_class_rect');
     build_col_dendro(params, 'col_class_rect');
-
   }
 
-  function new_change_groups(params, inst_rc, inst_index) {
-    if (inst_rc === 'row') {
-      change_groups(params, inst_rc,inst_index);
-    } else {
-      change_groups(params, inst_rc,inst_index);
-    }
-  }
-
-  this.change_groups = new_change_groups;
+  this.change_groups = change_groups;
 
   // initialize screen resizing - necessary for resizing with new params
   initialize_resizing(params);

@@ -10,7 +10,6 @@ var ini_doubleclick = require('./ini_doubleclick');
 
 var build_col_dendro = require('./dendrogram/build_col_dendro');
 var build_row_dendro = require('./dendrogram/build_row_dendro');
-var change_groups = require('./dendrogram/change_groups');
 
 module.exports = function(params) {
   var svg_group = d3.select(params.viz.viz_wrapper)
@@ -162,13 +161,6 @@ module.exports = function(params) {
   }
 
   return {
-    change_groups: function(params, inst_rc, inst_index) {
-      if (inst_rc === 'row') {
-        change_groups(params, inst_rc, inst_index);
-      } else {
-        change_groups(params, inst_rc, inst_index);
-      }
-    },
     get_clust_group: function () {
       return matrix.get_clust_group();
     },

@@ -1,6 +1,7 @@
 var make_config = require('./config');
 var make_params = require('./params');
 var make_viz = require('./viz');
+var change_groups = require('./dendrogram/change_groups');
 // var ini_sliders = require('./filters/ini_sliders');
 
 /* clustergrammer 1.0
@@ -36,7 +37,7 @@ function Clustergrammer(args) {
     config:config,
     find_gene: viz.search.find_entities,
     get_genes: viz.search.get_entities,
-    change_groups: viz.change_groups,
+    change_groups: change_groups,
     reorder: viz.reorder,
     opacity_slider: viz.opacity_slider,
     opacity_function: viz.opacity_function,
