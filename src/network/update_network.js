@@ -21,17 +21,16 @@ module.exports = function(old_params, change_view) {
 
   var new_network_data = change_network_view(old_params, config_copy.network_data, change_view);
 
-  // make Deep copy of this.config object
-  var new_config = jQuery.extend(true, {}, this.config);
+  // make tmp config to make new params 
+  var tmp_config = jQuery.extend(true, {}, this.config);
 
-  new_config.network_data = new_network_data;
-  new_config.inst_order = old_params.viz.inst_order;
-  // never switch to expand when updating the matrix
-  new_config.ini_expand = false;
-  new_config.ini_view = null;
-  new_config.current_col_cat = old_params.current_col_cat;
+  tmp_config.network_data = new_network_data;
+  tmp_config.inst_order = old_params.viz.inst_order;
+  tmp_config.ini_expand = false;
+  tmp_config.ini_view = null;
+  tmp_config.current_col_cat = old_params.current_col_cat;
 
-  var params = make_params(new_config);
+  var params = make_params(tmp_config);
   var delays = define_enter_exit_delays(old_params, params);
 
   // ordering - necessary for reordering the function called on button click

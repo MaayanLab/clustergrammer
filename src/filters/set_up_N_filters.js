@@ -3,8 +3,6 @@ var ini_sliders = require('./ini_sliders');
 
 module.exports = function(filter_type, parameters) {
   var params = parameters || this.params;
-  // filter
-  ////////////////////
 
   var views = params.network_data.views;
   var all_views = _.filter(views, function(d) { return utils.has(d,filter_type); });
@@ -28,7 +26,7 @@ module.exports = function(filter_type, parameters) {
   var N_dict = {};
 
   // filters
-  var all_filt = _.pluck( params.network_data.views,'N_row_sum');
+  var all_filt = _.pluck( params.network_data.views, 'N_row_sum');
 
   all_filt.forEach(function(d){
     var tmp_index = _.indexOf(all_filt, d);
@@ -65,8 +63,7 @@ module.exports = function(filter_type, parameters) {
         .style('opacity',0.5);
 
       cgm.update_network(cgm.params, change_view);
-
-      ini_sliders(cgm, params);
+      ini_sliders(cgm, cgm.params);
 
       function enable_slider(){
         // $('.slider_filter').slider('enable');
