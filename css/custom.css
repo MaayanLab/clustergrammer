@@ -92,23 +92,24 @@ text.active {
 }
 
 /* container for gene search box */
-#gene_search_container{
+.gene_search_container{
   margin-top: 10px;
   margin-left: 0px;
 }
 
 /* gene search box */
-#gene_search_box{
+.gene_search_box{
   width:100px;
   float: left;
 }
-#submit_gene_button{
+
+.submit_gene_button{
   padding-top: 6px;
   padding-bottom: 6px;
 }
 
 /* gene search button */
-#gene_search_button{
+.gene_search_button{
   margin-left:4px;
   float: left;
 }
