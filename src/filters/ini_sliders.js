@@ -11,7 +11,7 @@ module.exports = function ini_sliders(cgm){
       slide: function( event, ui ) {
         $( "#amount" ).val( "$" + ui.value );
         var inst_index = ui.value*10;
-        cgm.change_groups(cgm.params, 'col',inst_index)
+        cgm.change_groups(cgm.params, 'col',inst_index);
       }
     });
     $( "#amount" ).val( "$" + $( ".slider_col" ).slider( "value" ) );
@@ -25,7 +25,7 @@ module.exports = function ini_sliders(cgm){
       slide: function( event, ui ) {
         $( "#amount" ).val( "$" + ui.value );
         var inst_index = ui.value*10;
-        cgm.change_groups(cgm.params, 'row',inst_index)
+        cgm.change_groups(cgm.params, 'row',inst_index);
       }
     });
     $( "#amount" ).val( "$" + $( ".slider_row" ).slider( "value" ) );
@@ -39,7 +39,7 @@ module.exports = function ini_sliders(cgm){
       slide: function( event, ui ) {
         $( "#amount" ).val( "$" + ui.value );
         var inst_index = ui.value;
-        cgm.opacity_slider(inst_index)
+        cgm.opacity_slider(inst_index);
       }
     });
     $( "#amount" ).val( "$" + $( "#slider_opacity" ).slider( "value" ) );
@@ -63,7 +63,6 @@ module.exports = function ini_sliders(cgm){
 
     $('.toggle_row_order .btn').off().click(function(evt) {
       var order_id = $(evt.target).attr('name').split('_')[0];
-      console.log('toggle_row_order')
       d3.selectAll('.toggle_row_order .btn').classed('active',false);
       d3.select(this).classed('active',true);
       cgm.reorder(cgm.params, order_id,'row');
@@ -71,7 +70,6 @@ module.exports = function ini_sliders(cgm){
 
     $('.toggle_col_order .btn').off().click(function(evt) {
       var order_id = $(evt.target).attr('name').split('_')[0];
-      console.log('toggle_col_order')
       d3.selectAll('.toggle_col_order .btn').classed('active',false);
       d3.select(this).classed('active',true);
       cgm.reorder(cgm.params, order_id,'col');

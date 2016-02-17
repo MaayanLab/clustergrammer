@@ -25,7 +25,7 @@ function Clustergrammer(args) {
 
   if (params.use_sidebar) {
     var generate_sidebar = require('./sidebar');
-    generate_sidebar(params, viz);
+    generate_sidebar(params);
   }
 
   // console.log('ini_sliders from main.js')

@@ -61,9 +61,6 @@ module.exports = function(params, trans_x, trans_y, zoom_x, zoom_y) {
     }
   }
 
-  // update visible links
-  var min_rect_height = 3;
-
   // apply transformation and reset translate vector
   // the zoom vector (zoom.scale) never gets reset
   ///////////////////////////////////////////////////

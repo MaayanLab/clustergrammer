@@ -2,6 +2,7 @@ var utils = require('./utils');
 
 module.exports = function(network_data) {
   var matrix = [];
+  var ini_object;
 
   network_data.row_nodes.forEach(function (tmp, row_index) {
 
@@ -11,7 +12,7 @@ module.exports = function(network_data) {
       function (col_index) {
 
         if (utils.has(network_data.links[0], 'value_up') || utils.has(network_data.links[0], 'value_dn')) {
-          var ini_object = {
+          ini_object = {
             pos_x: col_index,
             pos_y: row_index,
             value: 0,
@@ -22,7 +23,7 @@ module.exports = function(network_data) {
 
         } else {
 
-          var ini_object = {
+          ini_object = {
             pos_x: col_index,
             pos_y: row_index,
             value: 0,

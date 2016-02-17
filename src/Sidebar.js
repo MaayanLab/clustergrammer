@@ -1,6 +1,7 @@
 /* Represents sidebar with controls.
  */
-module.exports = function(params, viz) {
+module.exports = function(params) {
+  var is_active;
 
   var button_data = [
       {'name':'Cluster',
@@ -26,7 +27,7 @@ module.exports = function(params, viz) {
     .append('div')
     .classed('btn-group-vertical',true)
     .classed('toggle_col_order',true)
-    .attr('role','group')
+    .attr('role','group');
 
   row_reorder
     .selectAll('.button')
@@ -37,16 +38,16 @@ module.exports = function(params, viz) {
     .classed('btn',true)
     .classed('btn-primary',true)
     .classed('active', function(d){
-      var is_active = false;
+      is_active = false;
       if (d.name == 'Cluster'){
-        var is_active = true;
+        is_active = true;
       }
       return is_active;
     })
     .attr('name', function(d){
       return d.short_name;
     })
-    .html(function(d){return d.name;})
+    .html(function(d){return d.name;});
 
   sidebar
     .append('div')
@@ -58,7 +59,7 @@ module.exports = function(params, viz) {
     .append('div')
     .classed('btn-group-vertical',true)
     .classed('toggle_row_order',true)
-    .attr('role','group')
+    .attr('role','group');
 
   col_reorder
     .selectAll('.button')
@@ -69,16 +70,16 @@ module.exports = function(params, viz) {
     .classed('btn',true)
     .classed('btn-primary',true)
     .classed('active', function(d){
-      var is_active = false;
+      is_active = false;
       if (d.name == 'Cluster'){
-        var is_active = true;
+        is_active = true;
       }
       return is_active;
     })
     .attr('name', function(d){
       return d.short_name;
     })
-    .html(function(d){return d.name;})
+    .html(function(d){return d.name;});
 
   var search_container = sidebar
     .append('div')
@@ -116,7 +117,7 @@ module.exports = function(params, viz) {
 
   colorbar_sliders
     .append('div')
-    .classed('slider_row',true)
+    .classed('slider_row',true);
 
   colorbar_sliders
     .append('p')
@@ -125,7 +126,7 @@ module.exports = function(params, viz) {
 
   colorbar_sliders
     .append('div')
-    .classed('slider_col',true)    
+    .classed('slider_col',true);
 
   var row_filters = sidebar
     .append('div')

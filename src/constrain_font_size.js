@@ -3,16 +3,6 @@ var trim_text = require('./trim_text');
 
 module.exports = function(params, trans) {
 
-  var trans_time;
-
-  if (trans) {
-    trans_time = 700;
-  } else {
-    trans_time = 0;
-  }
-
-  var fraction_keep = {};
-
   var keep_width = {};
   keep_width.row = params.bounding_width_max.row * params.labels.row_keep
     * params.zoom_behavior.scale();
@@ -101,10 +91,6 @@ module.exports = function(params, trans) {
       }
     });
   }
-
-
-  var max_row_width = params.norm_label.width.row;
-  var max_col_width = params.norm_label.width.col;
 
   // constrain text after zooming
   if (params.labels.row_keep < 1){

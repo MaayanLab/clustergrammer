@@ -1,6 +1,5 @@
 var build_row_dendro = require('./build_row_dendro');
 var build_col_dendro = require('./build_col_dendro');
-var build_color_groups = require('./build_color_groups');
 var change_groups = require('./change_groups');
 
 /* Dendrogram color bar.

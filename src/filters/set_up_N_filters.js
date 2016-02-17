@@ -22,8 +22,6 @@ module.exports = function(filter_type, parameters) {
   //   })
   // }
 
-  console.log( 'found ' + String(all_views.length) +' views for ' + filter_type );
-
   var inst_max = all_views.length - 1;
 
   // make dictionary
@@ -39,15 +37,12 @@ module.exports = function(filter_type, parameters) {
 
   });
 
-  var update_network = this.update_network;
-
-
   $( '.slider_'+filter_type ).slider({
     value:0,
     min: 0,
     max: inst_max,
     step: 1,
-    stop: function( event, ui ) {
+    stop: function( event ) {
 
       // get value
       var inst_index = $( '.slider_'+filter_type ).slider( "value" );
@@ -55,8 +50,7 @@ module.exports = function(filter_type, parameters) {
       var inst_top = N_dict[inst_index];
 
       var change_view = {'N_row_sum':inst_top};
-      var filter_name = 'N_row_sum';
-
+      
       var viz_svg = cgm.params.viz.viz_svg;
 
       d3.select(viz_svg).style('opacity',0.70);

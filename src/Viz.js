@@ -10,7 +10,7 @@ var ini_doubleclick = require('./ini_doubleclick');
 
 var build_col_dendro = require('./dendrogram/build_col_dendro');
 var build_row_dendro = require('./dendrogram/build_row_dendro');
-var change_groups = require('./dendrogram/change_groups')
+var change_groups = require('./dendrogram/change_groups');
 
 module.exports = function(params) {
   var svg_group = d3.select(params.viz.viz_wrapper)
@@ -37,7 +37,7 @@ module.exports = function(params) {
 
   if (params.viz.show_dendrogram) {
 
-    var row_dendrogram = build_row_dendro(params, 'row_class_rect');
+    build_row_dendro(params, 'row_class_rect');
 
     container_all_col
       .append('g')
@@ -49,7 +49,7 @@ module.exports = function(params) {
       .append('g')
       .attr('class', 'col_viz_zoom_container');
 
-    var col_dendrogram = build_col_dendro(params, 'col_class_rect');
+    build_col_dendro(params, 'col_class_rect');
 
   }
 
