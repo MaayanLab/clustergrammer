@@ -44,8 +44,8 @@ module.exports = function(old_params, change_view) {
 
   // search functions
   var gene_search = search(params, params.network_data.row_nodes, 'name');
-  this.get_genes = gene_search.get_entities;
-  this.find_gene = gene_search.find_entities;
+  this.get_entities = gene_search.get_entities;
+  this.find_entity = gene_search.find_entity;
 
   // TODO reenable dendrogram updating
   // redefine change_group function

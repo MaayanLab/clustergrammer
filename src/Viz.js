@@ -3,7 +3,7 @@ var make_rows = require('./labels/make_rows');
 var make_cols = require('./labels/make_cols');
 var generate_super_labels = require('./labels/super_labels');
 var run_spillover = require('./spillover');
-var run_search = require('./search');
+var search = require('./search');
 var two_translate_zoom = require('./two_translate_zoom');
 var initialize_resizing = require('./initialize_resizing');
 var ini_doubleclick = require('./ini_doubleclick');
@@ -125,7 +125,7 @@ module.exports = function(params) {
 
   d3.select(params.viz.viz_svg).on('dblclick.zoom', null);
 
-  var gene_search = run_search(params, params.network_data.row_nodes, 'name');
+  var search_obj = search(params, params.network_data.row_nodes, 'name');
 
   var opacity_slider = function (inst_slider) {
 
@@ -171,7 +171,8 @@ module.exports = function(params) {
       return matrix.get_nodes(type);
     },
     reorder: require('./reorder/all_reorder'),
-    search: gene_search,
+    find_entity: search_obj.find_entity,
+    get_entities: search_obj.get_entities,
     opacity_slider: opacity_slider,
     run_reset_visualization_size: require('./reset_size/run_reset_visualization_size'),
     update_network: require('./network/update_network'),
