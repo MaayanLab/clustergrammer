@@ -62,13 +62,13 @@ module.exports = function(cgm){
   $('.toggle_row_order .btn').off().click(function(evt) {
     var order_id = $(evt.target).attr('name').split('_')[0];
     console.log('toggle_row_order');
-    cgm.reorder(order_id,'row');
+    cgm.reorder(cgm.params, order_id,'row');
   });
 
   $('.toggle_col_order .btn').off().click(function(evt) {
     var order_id = $(evt.target).attr('name').split('_')[0];
     console.log('toggle_col_order');
-    cgm.reorder(order_id,'col');
+    cgm.reorder(cgm.params, order_id,'col');
   });
 
 };

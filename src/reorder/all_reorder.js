@@ -3,7 +3,7 @@ var end_reorder = require('./end_reorder');
 
 module.exports = function(params, inst_order, row_col) {
 
-  params.viz.run_trans = true;
+  // params.viz.run_trans = true;
 
   // save order state
   if (row_col === 'row'){
@@ -48,7 +48,7 @@ module.exports = function(params, inst_order, row_col) {
   if (d3.selectAll('.tile')[0].length < params.matrix.def_large_matrix){
 
     // define the t variable as the transition function
-    var t = this.viz.get_clust_group()
+    var t = d3.select(params.root+' .clust_group')
       .transition().duration(2500);
 
     t.selectAll('.row')
@@ -108,7 +108,7 @@ module.exports = function(params, inst_order, row_col) {
   } else {
 
     // define the t variable as the transition function
-    var t = this.viz.get_clust_group();
+    var t = d3.select(params.root+' .clust_group')
 
     // reorder matrix
     t.selectAll('.row')
