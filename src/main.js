@@ -1,8 +1,6 @@
 var make_config = require('./config');
 var make_params = require('./params');
 var make_viz = require('./viz');
-var change_groups = require('./dendrogram/change_groups');
-// var ini_sliders = require('./filters/ini_sliders');
 
 /* clustergrammer 1.0
  * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
@@ -29,15 +27,11 @@ function Clustergrammer(args) {
     generate_sidebar(params);
   }
 
-  // console.log('ini_sliders from main.js')
-  // ini_sliders({});
-
   return {
     params: params,
     config:config,
     find_gene: viz.search.find_entities,
     get_genes: viz.search.get_entities,
-    change_groups: change_groups,
     reorder: viz.reorder,
     opacity_slider: viz.opacity_slider,
     opacity_function: viz.opacity_function,

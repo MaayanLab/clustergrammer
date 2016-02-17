@@ -9,7 +9,6 @@ var all_reorder = require('../reorder/all_reorder');
 
 var build_col_dendro = require('../dendrogram/build_col_dendro');
 var build_row_dendro = require('../dendrogram/build_row_dendro');
-var change_groups = require('../dendrogram/change_groups');
 
 module.exports = function(old_params, change_view) {
 
@@ -54,8 +53,6 @@ module.exports = function(old_params, change_view) {
     build_row_dendro(params, 'row_class_rect');
     build_col_dendro(params, 'col_class_rect');
   }
-
-  this.change_groups = change_groups;
 
   // initialize screen resizing - necessary for resizing with new params
   initialize_resizing(params);

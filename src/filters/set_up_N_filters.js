@@ -66,7 +66,7 @@ module.exports = function(filter_type, parameters) {
 
       cgm.update_network(cgm.params, change_view);
 
-      ini_sliders(cgm);
+      ini_sliders(cgm, params);
 
       function enable_slider(){
         // $('.slider_filter').slider('enable');
