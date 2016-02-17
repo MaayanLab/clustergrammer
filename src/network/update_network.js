@@ -2,6 +2,7 @@ var make_params = require('../params');
 var change_network_view = require('./change_network_view');
 var build_col_dendro = require('../dendrogram/build_col_dendro');
 var build_row_dendro = require('../dendrogram/build_row_dendro');
+var generate_dendro = require('../dendrogram');
 var initialize_resizing = require('../initialize_resizing');
 var ini_doubleclick = require('../ini_doubleclick');
 var enter_exit_update = require('./enter_exit_update');
@@ -11,10 +12,12 @@ var all_reorder = require('../reorder/all_reorder');
 
 module.exports = function(old_params, change_view) {
 
+  /*
+  This is being run by the cgm object, and has access to config. 
+  */
+
   // make new_network_data by filtering the original network data
   var config_copy = jQuery.extend(true, {}, this.config);
-
-  console.log('update_network running change_network_view')
 
   var new_network_data = change_network_view(old_params, config_copy.network_data, change_view);
 
@@ -47,8 +50,8 @@ module.exports = function(old_params, change_view) {
   // TODO reenable dendrogram updating
   // redefine change_group function
   if (params.viz.show_dendrogram){
-    var row_dendrogram = build_row_dendro(params, 'row');
-    var col_dendrogram = build_col_dendro(params, 'col');
+    var row_dendrogram = generate_dendro(params, 'row');
+    var col_dendrogram = generate_dendro(params, 'col');
   }
 
   function new_change_groups(inst_rc, inst_index) {
