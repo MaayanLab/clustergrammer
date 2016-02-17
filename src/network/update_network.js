@@ -1,6 +1,7 @@
 var make_params = require('../params');
 var change_network_view = require('./change_network_view');
-var generate_dendrogram = require('../dendrogram');
+var build_col_dendro = require('../dendrogram/build_col_dendro');
+var build_row_dendro = require('../dendrogram/build_row_dendro');
 var initialize_resizing = require('../initialize_resizing');
 var ini_doubleclick = require('../ini_doubleclick');
 var enter_exit_update = require('./enter_exit_update');
@@ -44,11 +45,11 @@ module.exports = function(old_params, change_view) {
   this.find_gene = gene_search.find_entities;
 
   // TODO reenable dendrogram updating
-  // // redefine change_group function
-  // if (params.viz.show_dendrogram){
-  //   var row_dendrogram = generate_dendrogram('row', params);
-  //   var col_dendrogram = generate_dendrogram('col', params);
-  // }
+  // redefine change_group function
+  if (params.viz.show_dendrogram){
+    var row_dendrogram = build_row_dendro(params, 'row');
+    var col_dendrogram = build_col_dendro(params, 'col');
+  }
 
   function new_change_groups(inst_rc, inst_index) {
     if (inst_rc === 'row') {
