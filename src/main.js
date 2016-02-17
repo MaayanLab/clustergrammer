@@ -29,6 +29,7 @@ function Clustergrammer(args) {
 
   return {
     params: params,
+    config:config,
     find_gene: viz.search.find_entities,
     get_genes: viz.search.get_entities,
     change_groups: viz.change_groups,

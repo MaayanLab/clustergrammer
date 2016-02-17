@@ -12,7 +12,9 @@ module.exports = function(old_params, change_view) {
 
   // make new_network_data by filtering the original network data
   var config_copy = jQuery.extend(true, {}, this.config);
-  console.log(this.config);
+
+  console.log('update_network running change_network_view')
+
   var new_network_data = change_network_view(old_params, config_copy.network_data, change_view);
 
   // make Deep copy of this.config object

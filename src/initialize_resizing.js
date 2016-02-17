@@ -1,4 +1,4 @@
-var parent_div_size = require('./parent_div_size');
+var parent_div_size = require('./parent_div_size'); 
 var reset_visualization_size = require('./reset_size/reset_visualization_size');
 
 module.exports = function(params) {

@@ -1,4 +1,6 @@
-module.exports = function(new_nodes, links, views) {
+module.exports = function(params, new_nodes, links, views) {
+
+  debugger;
   // get new names of rows and cols
   var row_names = _.pluck(new_nodes.row_nodes, 'name');
   var col_names = _.pluck(new_nodes.col_nodes, 'name');

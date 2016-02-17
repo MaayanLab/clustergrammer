@@ -2,9 +2,9 @@ var utils = require('../utils');
 var filter_using_new_nodes = require('./filter_using_new_nodes');
 
 module.exports = function(params, orig_network_data, change_view) {
+  console.log('change_network_view');
   var views = orig_network_data.views;
 
-  console.log('change_network_view');
 
   // Get Row Filtering View
   ///////////////////////////////////////////////////////////////
@@ -14,9 +14,6 @@ module.exports = function(params, orig_network_data, change_view) {
   // the nodes of the view (e.g. row_nodes and col_nodes). With the new set of
   // nodes, new_nodes, the links will be filtered in order to only keep links
   // between nodes that still exist in the view
-
-  console.log('in change_network_view');
-  console.log(change_view);
 
   if (utils.has(change_view,'filter_row')){
 

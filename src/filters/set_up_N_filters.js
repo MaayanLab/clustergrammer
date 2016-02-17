@@ -10,7 +10,6 @@ module.exports = function(filter_type, parameters) {
   var all_views = _.filter(views, function(d) { return utils.has(d,filter_type); });
 
   var cgm = this;
-  console.log(cgm);
 
   // // filter for column category if necessary
   // if ( utils.has(all_views[0],'col_cat') ) {
@@ -71,8 +70,7 @@ module.exports = function(filter_type, parameters) {
         .select('text')
         .style('opacity',0.5);
 
-
-      cgm.update_network(change_view);
+      cgm.update_network(cgm.params, change_view);
 
       ini_sliders(cgm);
 
