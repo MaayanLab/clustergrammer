@@ -119,6 +119,6 @@ module.exports = function(params, col_selection) {
 
   reposition_tile_highlight(params);
 
-  // backup allow programmatic zoom
-  setTimeout(end_reorder, 2500);
+  // // backup allow programmatic zoom
+  // setTimeout(end_reorder, 2500);
 };

@@ -175,7 +175,7 @@ module.exports = function(params, inst_order, row_col) {
   params.cf.dim_x = params.cf.links.dimension(function(d){return d.x;});
   params.cf.dim_y = params.cf.links.dimension(function(d){return d.y;});
 
-  // backup allow programmatic zoom
-  setTimeout(end_reorder, 2500);
+  // // backup allow programmatic zoom
+  // setTimeout(end_reorder, 2500);
 
 };
