@@ -88,7 +88,7 @@ module.exports = function(params, trans_x, trans_y, zoom_x, zoom_y) {
     ')');
 
   // transform col_class
-  d3.select('.col_viz_zoom_container')
+  d3.select(params.root+' .col_viz_zoom_container')
     .attr('transform', 'translate(' + [trans_x, 0] + ') scale(' + zoom_x +
     ',1)');
 

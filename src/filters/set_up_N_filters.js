@@ -50,7 +50,7 @@ module.exports = function(config, params, filter_type) {
 
       d3.select(viz_svg).style('opacity',0.70);
 
-      d3.select('.'+filter_type).text('Top rows: '+inst_top+' rows');
+      d3.select(params.root+' .'+filter_type).text('Top rows: '+inst_top+' rows');
 
       // $('.slider_filter').slider('disable');
       d3.selectAll(params.root+' .btn').attr('disabled',true);

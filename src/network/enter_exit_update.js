@@ -22,7 +22,7 @@ module.exports = function(params, network_data, delays){
     }
 
   // reposition matrix
-  d3.select('.clust_container')
+  d3.select(params.root+' .clust_container')
     .attr('transform', 'translate(' +
       params.viz.clust.margin.left + ',' +
       params.viz.clust.margin.top + ')');
@@ -36,7 +36,7 @@ module.exports = function(params, network_data, delays){
     .attr('transform', 'translate(0,' + params.norm_label.width.col + ')');
 
   // reposition col_viz container
-  d3.select('.col_viz_outer_container')
+  d3.select(params.root+' .col_viz_outer_container')
     .attr('transform', function() {
         var inst_offset = params.norm_label.width.col + 2;
         return 'translate(0,' + inst_offset + ')';

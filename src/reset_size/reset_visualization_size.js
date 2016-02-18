@@ -23,7 +23,7 @@ module.exports = function(params) {
   dim.viz_svg.h = d3.select(params.viz.viz_svg).style('height').replace('px','');
 
   // reposition the play button
-  d3.select('.play_button')
+  d3.select(params.root+' .play_button')
     .attr('transform', function(){
       var pos_x = dim.viz_svg.w/2;
       var pos_y = dim.viz_svg.h/2;

@@ -7,7 +7,7 @@ module.exports = function (params, dom_class) {
   var col_nodes_names = _.pluck(col_nodes, 'name');
 
   // append groups - each will hold a classification rect
-  d3.select('.col_viz_zoom_container')
+  d3.select(params.root+' .col_viz_zoom_container')
     .selectAll('g')
     .data(col_nodes, function(d){ return d.name; })
     .enter()
