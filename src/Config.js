@@ -74,22 +74,24 @@ module.exports = function(args) {
     d.name = d.name.replace(/_/g, ' ');
   });
 
-  // replace underscore with space in row/col names from views
-  config.network_data.views.forEach(function(inst_view){
+  // process view row/col names 
+  if (_.has(config.network_data,'views')){
+    config.network_data.views.forEach(function(inst_view){
 
-    var inst_nodes = inst_view.nodes;
+      var inst_nodes = inst_view.nodes;
 
-    // fix rows in views
-    inst_nodes.row_nodes.forEach(function(d){
-      d.name = d.name.replace(/_/g, ' ');
+      // fix rows in views
+      inst_nodes.row_nodes.forEach(function(d){
+        d.name = d.name.replace(/_/g, ' ');
+      });
+
+      // fix cols in views
+      inst_nodes.col_nodes.forEach(function(d){
+        d.name = d.name.replace(/_/g, ' ');
+      });
+
     });
-
-    // fix cols in views
-    inst_nodes.col_nodes.forEach(function(d){
-      d.name = d.name.replace(/_/g, ' ');
-    });
-
-  });
+  }
 
   var col_nodes = config.network_data.col_nodes;
   var row_nodes = config.network_data.row_nodes;
