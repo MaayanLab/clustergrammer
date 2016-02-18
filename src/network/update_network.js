@@ -10,19 +10,19 @@ var build_col_dendro = require('../dendrogram/build_col_dendro');
 var build_row_dendro = require('../dendrogram/build_row_dendro');
 var ini_sliders = require('../filters/ini_sliders');
 
-module.exports = function(old_params, change_view) {
+module.exports = function(cgm, old_params, change_view) {
 
   /*
   This is being run by the cgm object, and has access to config. 
   */
 
   // make new_network_data by filtering the original network data
-  var config_copy = jQuery.extend(true, {}, this.config);
+  var config_copy = jQuery.extend(true, {}, cgm.config);
 
   var new_network_data = change_network_view(old_params, config_copy.network_data, change_view);
 
   // make tmp config to make new params 
-  var tmp_config = jQuery.extend(true, {}, this.config);
+  var tmp_config = jQuery.extend(true, {}, cgm.config);
 
   tmp_config.network_data = new_network_data;
   tmp_config.inst_order = old_params.viz.inst_order;
@@ -34,17 +34,17 @@ module.exports = function(old_params, change_view) {
   var delays = define_enter_exit_delays(old_params, params);
 
   // ordering - necessary for reordering the function called on button click
-  this.reorder = all_reorder;
+  cgm.reorder = all_reorder;
 
   enter_exit_update(params, new_network_data, delays);
 
   // update network data in params
-  this.params = params;
+  cgm.params = params;
 
   // search functions
   var gene_search = search(params, params.network_data.row_nodes, 'name');
-  this.get_entities = gene_search.get_entities;
-  this.find_entity = gene_search.find_entity;
+  cgm.get_entities = gene_search.get_entities;
+  cgm.find_entity = gene_search.find_entity;
 
   // TODO reenable dendrogram updating
   // redefine change_group function
