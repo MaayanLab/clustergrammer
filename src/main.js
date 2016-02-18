@@ -36,7 +36,6 @@ function Clustergrammer(args) {
     opacity_slider: viz.opacity_slider,
     opacity_function: viz.opacity_function,
     resize: viz.run_reset_visualization_size,
-    update_network: require('./network/update_network'),
     reset_zoom: viz.reset_zoom,
     change_category: require('./network/change_category'),
     set_up_N_filters: require('./filters/set_up_N_filters')

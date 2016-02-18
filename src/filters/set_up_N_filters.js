@@ -1,4 +1,5 @@
 var utils = require('../utils');
+var update_network = require('../network/update_network');
 
 module.exports = function(parameters, filter_type) {
   var params = parameters || this.params;
@@ -61,7 +62,7 @@ module.exports = function(parameters, filter_type) {
         .select('text')
         .style('opacity',0.5);
 
-      params = cgm.update_network(cgm.config, params, change_view);
+      params = update_network(cgm.config, params, change_view);
 
       function enable_slider(){
         // $('.slider_filter').slider('enable');
