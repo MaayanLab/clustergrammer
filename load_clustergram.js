@@ -36,8 +36,8 @@ function make_clust(inst_network){
       var arguments_obj = {
         root: '#container-id-1',
         'network_data': network_data,
-        'row_label':'Input Genes',
-        'col_label':'Enriched Terms',
+        'row_label':'Row Title',
+        'col_label':'Colum Title',
         'outer_margins': outer_margins,
         'outer_margins_expand': outer_margins_expand,
         // 'outline_colors':['black','yellow'],
