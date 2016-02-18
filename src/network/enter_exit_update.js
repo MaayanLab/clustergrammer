@@ -5,6 +5,10 @@ var eeu_existing_row = require('./eeu_existing_row');
 
 module.exports = function(params, network_data, delays){
 
+  // remove old tooltips 
+  d3.selectAll(params.root+' .d3-tip')
+    .remove();
+
   if (params.matrix.show_tile_tooltips){
     // d3-tooltip - for tiles
     var tip = d3.tip()

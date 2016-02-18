@@ -68,10 +68,9 @@ function make_clust(inst_network){
         // 'current_col_cat':'category-one'
       };
 
-      var cgm = Clustergrammer(arguments_obj);
-      g_cgm = cgm;
+      cgm = Clustergrammer(arguments_obj);
 
-      d3.select(g_cgm.params.root + ' .wait_message').remove();
+      d3.select(cgm.params.root + ' .wait_message').remove();
 
 
   });
