@@ -63,7 +63,7 @@ module.exports = function(filter_type, parameters) {
         .style('opacity',0.5);
 
       cgm.update_network(cgm.params, change_view);
-      ini_sliders(cgm, cgm.params);
+      ini_sliders(cgm.params);
 
       function enable_slider(){
         // $('.slider_filter').slider('enable');

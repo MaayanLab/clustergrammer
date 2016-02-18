@@ -170,7 +170,6 @@ module.exports = function(params) {
     get_nodes: function(type) {
       return matrix.get_nodes(type);
     },
-    reorder: require('./reorder/all_reorder'),
     find_entity: search_obj.find_entity,
     get_entities: search_obj.get_entities,
     opacity_slider: opacity_slider,

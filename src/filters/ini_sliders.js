@@ -1,9 +1,8 @@
 var change_groups = require('../dendrogram/change_groups');
 var search = require('../search');
+var reorder = require('../reorder/all_reorder');
 
-module.exports = function ini_sliders(cgm, params){
-
-  console.log('running ini_sliders')
+module.exports = function ini_sliders(params){
 
   var search_obj = search(params, params.network_data.row_nodes, 'name');
 
@@ -56,14 +55,14 @@ module.exports = function ini_sliders(cgm, params){
     var order_id = $(evt.target).attr('name').split('_')[0];
     d3.selectAll('.toggle_row_order .btn').classed('active',false);
     d3.select(this).classed('active',true);
-    cgm.reorder(params, order_id,'row');
+    reorder(params, order_id,'row');
   });
 
   $('.toggle_col_order .btn').off().click(function(evt) {
     var order_id = $(evt.target).attr('name').split('_')[0];
     d3.selectAll('.toggle_col_order .btn').classed('active',false);
     d3.select(this).classed('active',true);
-    cgm.reorder(params, order_id,'col');
+    reorder(params, order_id,'col');
   });
 
 };

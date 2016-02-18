@@ -29,10 +29,10 @@ function Clustergrammer(args) {
 
   return {
     params: params,
-    config:config,
+    config: config,
     find_entity: viz.find_entity,
     get_entities: viz.get_entities,
-    reorder: viz.reorder,
+    reorder: require('./reorder/all_reorder'),
     opacity_slider: viz.opacity_slider,
     opacity_function: viz.opacity_function,
     resize: viz.run_reset_visualization_size,
@@ -40,7 +40,7 @@ function Clustergrammer(args) {
     reset_zoom: viz.reset_zoom,
     change_category: require('./network/change_category'),
     set_up_N_filters: require('./filters/set_up_N_filters'),
-    ini_sliders: require('./filters/ini_sliders'),
+    ini_sliders: require('./filters/ini_sliders')
   };
 }
 
