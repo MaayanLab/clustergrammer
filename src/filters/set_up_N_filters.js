@@ -61,7 +61,7 @@ module.exports = function(parameters, filter_type) {
         .select('text')
         .style('opacity',0.5);
 
-      cgm.update_network(cgm, cgm.config, cgm.params, change_view);
+      params = cgm.update_network(cgm.config, params, change_view);
 
       function enable_slider(){
         // $('.slider_filter').slider('enable');

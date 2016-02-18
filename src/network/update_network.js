@@ -4,17 +4,11 @@ var initialize_resizing = require('../initialize_resizing');
 var ini_doubleclick = require('../ini_doubleclick');
 var enter_exit_update = require('./enter_exit_update');
 var define_enter_exit_delays = require('./define_enter_exit_delays');
-// var search = require('../search');
-// var all_reorder = require('../reorder/all_reorder');
 var build_col_dendro = require('../dendrogram/build_col_dendro');
 var build_row_dendro = require('../dendrogram/build_row_dendro');
 var ini_sliders = require('../filters/ini_sliders');
 
-module.exports = function(cgm, config, old_params, change_view) {
-
-  /*
-  This is being run by the cgm object, and has access to config. 
-  */
+module.exports = function(config, old_params, change_view) {
 
   // make new_network_data by filtering the original network data
   var config_copy = jQuery.extend(true, {}, config);
@@ -35,18 +29,6 @@ module.exports = function(cgm, config, old_params, change_view) {
 
   enter_exit_update(params, new_network_data, delays);
 
-  // update network data in params
-  cgm.params = params;
-
-  // // ordering - necessary for reordering the function called on button click
-  // cgm.reorder = all_reorder;
-
-  // // search functions
-  // var search_obj = search(params, params.network_data.row_nodes, 'name');
-  // cgm.get_entities = search_obj.get_entities;
-  // cgm.find_entity = search_obj.find_entity;
-
-  // TODO reenable dendrogram updating
   // redefine change_group function
   if (params.viz.show_dendrogram){
     build_row_dendro(params, 'row_class_rect');
@@ -63,5 +45,8 @@ module.exports = function(cgm, config, old_params, change_view) {
   ini_doubleclick(params);
 
   ini_sliders(params);
+
+  // return updated params 
+  return params;
 
 };
