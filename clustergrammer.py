@@ -1168,7 +1168,7 @@ class Network(object):
     return df 
 
   def make_filtered_views(self, dist_type='cosine', run_clustering=True, \
-    dendro=True, views=['filter_row_sum','N_row_sum'], calc_col_cats=True, \
+    dendro=True, views=['pct_row_sum','N_row_sum'], calc_col_cats=True, \
     linkage_type='average'):
 
     from copy import deepcopy
@@ -1176,6 +1176,8 @@ class Network(object):
     This will calculate multiple views of a clustergram by filtering the data 
     and clustering after each filtering. This filtering will keep the top N 
     rows based on some quantity (sum, num-non-zero, etc). 
+
+    pct_row_sum was formerly called filter_row_sum
     '''
 
     print('running make_filtered_views')
@@ -1223,7 +1225,7 @@ class Network(object):
         print('add N top views')
         all_views = self.add_N_top_views( send_df, all_views, dist_type=dist_type, current_col_cat=inst_col_cat )
 
-      if 'filter_row_sum' in views:
+      if 'pct_row_sum' in views:
         all_views = self.add_pct_top_views( send_df, all_views, dist_type=dist_type, current_col_cat=inst_col_cat )
 
     # add views to viz 
@@ -1317,7 +1319,7 @@ class Network(object):
 
         # add view 
         inst_view = {}
-        inst_view['filter_row_sum'] = inst_filt
+        inst_view['pct_row_sum'] = inst_filt
         inst_view['dist'] = 'cos'
         inst_view['col_cat'] = current_col_cat
         inst_view['nodes'] = {}
@@ -1493,7 +1495,7 @@ class Network(object):
 
     # set up initial view 
     inst_view = {}
-    inst_view['filter_row_sum'] = 0
+    inst_view['pct_row_sum'] = 0
     inst_view['dist'] = 'cos'
     inst_view['nodes'] = {}
     inst_view['nodes']['row_nodes'] = self.viz['row_nodes']
@@ -1547,7 +1549,7 @@ class Network(object):
 
           # add view 
           inst_view = {}
-          inst_view['filter_row_sum'] = inst_filt
+          inst_view['pct_row_sum'] = inst_filt
           inst_view['dist'] = 'cos'
           inst_view['nodes'] = {}
           inst_view['nodes']['row_nodes'] = net.viz['row_nodes']

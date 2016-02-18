@@ -6,9 +6,9 @@ from clustergrammer import Network
 
 net = Network()
 
-net.load_tsv_to_net('txt/mat_1mb.txt')
+net.load_tsv_to_net('txt/example_tsv.txt')
 
-net.make_mult_views(dist_type='cos',filter_row=['sum'])
+net.make_filtered_views(dist_type='cos',views=['N_row_sum','pct_row_sum'])
 
 net.write_json_to_file('viz', 'json/mult_view.json', 'indent')
 
