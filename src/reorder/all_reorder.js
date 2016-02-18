@@ -45,7 +45,7 @@ module.exports = function(params, inst_order, row_col) {
   var t;
 
   // only animate transition if there are a small number of tiles
-  if (d3.selectAll('.tile')[0].length < params.matrix.def_large_matrix){
+  if (d3.selectAll(params.root+' .tile')[0].length < params.matrix.def_large_matrix){
 
     // define the t variable as the transition function
     t = d3.select(params.root+' .clust_group')
@@ -90,7 +90,7 @@ module.exports = function(params, inst_order, row_col) {
       });
 
     // reorder row_label_triangle groups
-    d3.selectAll('.row_viz_group')
+    d3.selectAll(params.root+' .row_viz_group')
       .transition().duration(2500)
       .attr('transform', function(d) {
         var inst_index = _.indexOf(row_nodes_names, d.name);
@@ -98,7 +98,7 @@ module.exports = function(params, inst_order, row_col) {
       });
 
     // reorder col_class groups
-    d3.selectAll('.col_viz_group')
+    d3.selectAll(params.root+' .col_viz_group')
       .transition().duration(2500)
       .attr('transform', function(d) {
         var inst_index = _.indexOf(col_nodes_names, d.name);
@@ -148,14 +148,14 @@ module.exports = function(params, inst_order, row_col) {
       });
 
     // reorder row_label_triangle groups
-    d3.selectAll('.row_viz_group')
+    d3.selectAll(params.root+' .row_viz_group')
       .attr('transform', function(d) {
         var inst_index = _.indexOf(row_nodes_names,d.name);
         return 'translate(0,' + params.matrix.y_scale(inst_index) + ')';
       });
 
     // reorder col_class groups
-    d3.selectAll('.col_viz_group')
+    d3.selectAll(params.root+' .col_viz_group')
       .attr('transform', function(d) {
         var inst_index = _.indexOf(col_nodes_names,d.name);
         return 'translate(' + params.matrix.x_scale(inst_index) + ',0)';

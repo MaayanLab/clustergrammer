@@ -259,7 +259,7 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
   // label the widest row and col labels
   params.bounding_width_max = {};
   params.bounding_width_max.row = 0;
-  d3.selectAll('.row_label_text').each(function() {
+  d3.selectAll(params.root+' .row_label_text').each(function() {
     var tmp_width = d3.select(this).select('text').node().getBBox().width;
     if (tmp_width > params.bounding_width_max.row) {
       params.bounding_width_max.row = tmp_width;
@@ -282,7 +282,7 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
     // redefine default fs
     params.labels.default_fs_row = params.labels.default_fs_row * params.ini_scale_font.row;
     // reduce font size
-    d3.selectAll('.row_label_text').each(function() {
+    d3.selectAll(params.root+' .row_label_text').each(function() {
       d3.select(this).select('text')
         .style('font-size', params.labels.default_fs_row + 'px');
     });
@@ -513,7 +513,7 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
       // redefine default fs
       params.labels.default_fs_col = params.labels.default_fs_col * params.ini_scale_font.col;
       // reduce font size
-      d3.selectAll('.col_label_click').each(function() {
+      d3.selectAll(params.root+' .col_label_click').each(function() {
       d3.select(this).select('text')
         .style('font-size', params.labels.default_fs_col + 'px');
       });
@@ -609,7 +609,7 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
 
   if (params.labels.show_categories){
     // change the size of the highlighting rects
-    d3.selectAll('.col_label_click')
+    d3.selectAll(params.root+' .col_label_click')
       .each(function() {
         var bbox = d3.select(this)
           .select('text')[0][0]
