@@ -71,7 +71,10 @@ module.exports = function(params) {
           d3.selectAll('.borders').style('fill', 'white');
           d3.select('.footer_section').style('display', 'none');
 
-          // contract view
+          d3.select(params.root+' .sidebar_wrapper')
+            .style('display','none');
+
+        // contract view
         } else {
 
           d3.select(this)
@@ -79,10 +82,13 @@ module.exports = function(params) {
               // expand button
               return '\uf0b2';
             });
+
           params.viz.expand = false;
 
           d3.selectAll('.borders').style('fill', '#eee');
           d3.select('.footer_section').style('display', 'block');
+          d3.select(params.root+' .sidebar_wrapper')
+            .style('display','block');
         }
 
         // resize parent div
