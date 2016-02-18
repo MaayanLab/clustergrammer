@@ -6,11 +6,11 @@ module.exports = function(params, clicked_row, id_clicked_row) {
     // var hlight_width  = rel_width_hlight*params.viz.border_width;
     var hlight_height = rel_width_hlight*params.viz.border_width/params.viz.zoom_switch;
 
-    d3.selectAll('.click_hlight')
+    d3.selectAll(params.root+' .click_hlight')
       .remove();
 
     // // highlight selected row
-    // d3.selectAll('.row_label_text')
+    // d3.selectAll(params.root+' .row_label_text')
     //   .select('rect')
     // d3.select(this)
     //   .select('rect')
@@ -38,7 +38,7 @@ module.exports = function(params, clicked_row, id_clicked_row) {
         return 'translate(0,'+tmp_translate_y+')';
       });
   } else{
-    d3.selectAll('.click_hlight')
+    d3.selectAll(params.root+' .click_hlight')
     .remove();
     params.click_hlight_row = -666;
   }

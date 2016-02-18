@@ -23,12 +23,12 @@ module.exports = function make_simple_rows(params, ini_inp_row_data, tip, row_se
     .on('mouseover', function(p) {
 
       // highlight row - set text to active if
-      d3.selectAll('.row_label_text text')
+      d3.selectAll(params.root+' .row_label_text text')
         .classed('active', function(d) {
           return p.row_name.replace(/_/g, ' ') === d.name;
         });
 
-      d3.selectAll('.col_label_text text')
+      d3.selectAll(params.root+' .col_label_text text')
         .classed('active', function(d) {
           return p.col_name === d.name;
         });
@@ -39,7 +39,7 @@ module.exports = function make_simple_rows(params, ini_inp_row_data, tip, row_se
 
     })
     .on('mouseout', function() {
-      d3.selectAll('text').classed('active', false);
+      d3.selectAll(params.root+' text').classed('active', false);
       if (params.matrix.show_tile_tooltips){
         tip.hide();
       }
@@ -102,12 +102,12 @@ module.exports = function make_simple_rows(params, ini_inp_row_data, tip, row_se
       })
       .on('mouseover', function(p) {
       // highlight row - set text to active if
-      d3.selectAll('.row_label_text text')
+      d3.selectAll(params.root+' .row_label_text text')
         .classed('active', function(d) {
           return p.row_name.replace(/_/g, ' ') === d.name;
         });
 
-      d3.selectAll('.col_label_text text')
+      d3.selectAll(params.root+' .col_label_text text')
         .classed('active', function(d) {
           return p.col_name === d.name;
         });
@@ -116,7 +116,7 @@ module.exports = function make_simple_rows(params, ini_inp_row_data, tip, row_se
       }
     })
     .on('mouseout', function() {
-      d3.selectAll('text').classed('active', false);
+      d3.selectAll(params.root+' text').classed('active', false);
       if (params.matrix.show_tile_tooltips){
         tip.hide();
       }
@@ -159,12 +159,12 @@ module.exports = function make_simple_rows(params, ini_inp_row_data, tip, row_se
       })
       .on('mouseover', function(p) {
       // highlight row - set text to active if
-      d3.selectAll('.row_label_text text')
+      d3.selectAll(params.root+' .row_label_text text')
         .classed('active', function(d) {
           return p.row_name.replace(/_/g, ' ') === d.name;
         });
 
-      d3.selectAll('.col_label_text text')
+      d3.selectAll(params.root+' .col_label_text text')
         .classed('active', function(d) {
           return p.col_name === d.name;
         });
@@ -173,7 +173,7 @@ module.exports = function make_simple_rows(params, ini_inp_row_data, tip, row_se
       }
     })
     .on('mouseout', function() {
-      d3.selectAll('text').classed('active', false);
+      d3.selectAll(params.root+' text').classed('active', false);
       if (params.matrix.show_tile_tooltips){
         tip.hide();
       }

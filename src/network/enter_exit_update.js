@@ -112,11 +112,11 @@ module.exports = function(params, network_data, delays){
     });
 
 
-  d3.selectAll('.horz_lines').remove();
-  d3.selectAll('.vert_lines').remove();
+  d3.selectAll(params.root+' .horz_lines').remove();
+  d3.selectAll(params.root+' .vert_lines').remove();
 
   // remove row labels
-  d3.selectAll('.row_label_text')
+  d3.selectAll(params.root+' .row_label_text')
     .data(row_nodes, function(d){ return d.name;})
     .exit()
     .transition().duration(duration)
@@ -124,7 +124,7 @@ module.exports = function(params, network_data, delays){
     .remove();
 
   // remove column labels
-  d3.selectAll('.col_label_click')
+  d3.selectAll(params.root+' .col_label_click')
     .data(col_nodes, function(d){return d.name;})
     .exit()
     .transition().duration(duration)
@@ -132,28 +132,28 @@ module.exports = function(params, network_data, delays){
     .remove();
 
   // remove row triangles and colorbars
-  d3.selectAll('.row_viz_group')
+  d3.selectAll(params.root+' .row_viz_group')
     .data(row_nodes, function(d){return d.name;})
     .exit()
     .transition().duration(duration)
     .style('opacity',0)
     .remove();
 
-  d3.selectAll('.col_label_text')
+  d3.selectAll(params.root+' .col_label_text')
     .data(col_nodes, function(d){return d.name;})
     .exit()
     .transition().duration(duration)
     .style('opacity',0)
     .remove();
 
-  d3.selectAll('.horz_lines')
+  d3.selectAll(params.root+' .horz_lines')
     .data(row_nodes, function(d){return d.name;})
     .exit()
     .transition().duration(duration)
     .style('opacity',0)
     .remove();
 
-  d3.selectAll('.vert_lines')
+  d3.selectAll(params.root+' .vert_lines')
     .data(col_nodes, function(d){return d.name;})
     .exit()
     .transition().duration(duration)
@@ -161,7 +161,7 @@ module.exports = function(params, network_data, delays){
     .remove();
 
   // remove dendrogram
-  d3.selectAll('.col_viz_group')
+  d3.selectAll(params.root+' .col_viz_group')
     .data(col_nodes, function(d){return d.name;})
     .exit()
     .transition().duration(duration)
@@ -215,18 +215,18 @@ module.exports = function(params, network_data, delays){
       })
       .on('mouseover', function(p) {
         // highlight row - set text to active if
-        d3.selectAll('.row_label_text text')
+        d3.selectAll(params.root+' .row_label_text text')
           .classed('active', function(d) {
             return p.row_name === d.name;
           });
 
-        d3.selectAll('.col_label_text text')
+        d3.selectAll(params.root+' .col_label_text text')
           .classed('active', function(d) {
             return p.col_name === d.name;
           });
       })
       .on('mouseout', function mouseout() {
-        d3.selectAll('text').classed('active', false);
+        d3.selectAll(params.root+' text').classed('active', false);
       });
 
     tile
@@ -282,12 +282,12 @@ module.exports = function(params, network_data, delays){
         })
         .on('mouseover', function(p) {
         // highlight row - set text to active if
-        d3.selectAll('.row_label_text text')
+        d3.selectAll(params.root+' .row_label_text text')
           .classed('active', function(d) {
             return p.row_name === d.name;
           });
 
-        d3.selectAll('.col_label_text text')
+        d3.selectAll(params.root+' .col_label_text text')
           .classed('active', function(d) {
             return p.col_name === d.name;
           });
@@ -296,7 +296,7 @@ module.exports = function(params, network_data, delays){
         }
       })
       .on('mouseout', function() {
-        d3.selectAll('text').classed('active', false);
+        d3.selectAll(params.root+' text').classed('active', false);
         if (params.matrix.show_tile_tooltips){
           tip.hide();
         }
@@ -344,12 +344,12 @@ module.exports = function(params, network_data, delays){
         })
         .on('mouseover', function(p) {
         // highlight row - set text to active if
-        d3.selectAll('.row_label_text text')
+        d3.selectAll(params.root+' .row_label_text text')
           .classed('active', function(d) {
             return p.row_name === d.name;
           });
 
-        d3.selectAll('.col_label_text text')
+        d3.selectAll(params.root+' .col_label_text text')
           .classed('active', function(d) {
             return p.col_name === d.name;
           });
@@ -358,7 +358,7 @@ module.exports = function(params, network_data, delays){
         }
       })
       .on('mouseout', function() {
-        d3.selectAll('text').classed('active', false);
+        d3.selectAll(params.root+' text').classed('active', false);
         if (params.matrix.show_tile_tooltips){
           tip.hide();
         }

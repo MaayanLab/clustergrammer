@@ -3,10 +3,10 @@ module.exports = function(params, row_nodes, col_nodes) {
   var row_nodes_names = params.network_data.row_nodes_names;
   var col_nodes_names = params.network_data.col_nodes_names;
 
-  d3.selectAll('.horz_lines')
+  d3.selectAll(params.root+' .horz_lines')
     .remove();
 
-  d3.selectAll('.vert_lines')
+  d3.selectAll(params.root+' .vert_lines')
     .remove();
 
   // append horizontal lines

@@ -54,7 +54,7 @@ module.exports = function(params, row_selection) {
       });
 
     // reorder col_class groups
-    d3.selectAll('.col_viz_group')
+    d3.selectAll(params.root+' .col_viz_group')
       .attr('transform', function(d) {
         var inst_index = _.indexOf(col_nodes_names, d.name);
         return 'translate(' + params.matrix.x_scale(inst_index) + ',0)';
@@ -75,7 +75,7 @@ module.exports = function(params, row_selection) {
       });
 
     // reorder col_class groups
-    d3.selectAll('.col_viz_group')
+    d3.selectAll(params.root+' .col_viz_group')
       .transition().duration(2500)
       .attr('transform', function(d) {
         var inst_index = _.indexOf(col_nodes_names, d.name);
@@ -107,7 +107,7 @@ module.exports = function(params, row_selection) {
   // highlight selected column
   ///////////////////////////////
   // unhilight and unbold all columns (already unbolded earlier)
-  d3.selectAll('.row_label_text')
+  d3.selectAll(params.root+' .row_label_text')
     .select('rect')
     .style('opacity', 0);
   // highlight column name

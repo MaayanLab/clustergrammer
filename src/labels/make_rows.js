@@ -150,7 +150,7 @@ module.exports = function(params, text_delay) {
   params.bounding_width_max = {};
   params.bounding_width_max.row = 0;
 
-  d3.selectAll('.row_label_text').each(function() {
+  d3.selectAll(params.root+' .row_label_text').each(function() {
     var tmp_width = d3.select(this).select('text').node().getBBox().width;
     if (tmp_width > params.bounding_width_max.row) {
       params.bounding_width_max.row = tmp_width;
@@ -250,7 +250,7 @@ module.exports = function(params, text_delay) {
       }
 
     // add row callback function
-    d3.selectAll('.row_label_text')
+    d3.selectAll(params.root+' .row_label_text')
       .on('click',function(d){
         if (typeof params.click_label == 'function'){
           params.click_label(d.name, 'row');

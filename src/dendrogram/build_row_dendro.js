@@ -4,7 +4,7 @@ var build_color_groups = require('./build_color_groups');
 
 module.exports = function(params, dom_class) {
 
-  d3.selectAll('.row_viz_group')
+  d3.selectAll(params.root+' .row_viz_group')
     .each(function() {
 
       var inst_level = params.group_level.row;

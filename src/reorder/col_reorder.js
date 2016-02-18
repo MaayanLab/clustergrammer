@@ -46,7 +46,7 @@ module.exports = function(params, col_selection) {
     t = d3.select(params.root+' .clust_group');
 
     // reorder row_label_triangle groups
-    d3.selectAll('.row_viz_group')
+    d3.selectAll(params.root+' .row_viz_group')
       .attr('transform', function(d) {
         var inst_index = _.indexOf(row_nodes_names, d.name);
         return 'translate(0,' + params.matrix.y_scale(inst_index) + ')';
@@ -66,7 +66,7 @@ module.exports = function(params, col_selection) {
       .transition().duration(2500);
 
     // reorder row_label_triangle groups
-    d3.selectAll('.row_viz_group')
+    d3.selectAll(params.root+' .row_viz_group')
       .transition().duration(2500)
       .attr('transform', function(d) {
         var inst_index = _.indexOf(row_nodes_names, d.name);
@@ -94,7 +94,7 @@ module.exports = function(params, col_selection) {
   // highlight selected column
   ///////////////////////////////
   // unhilight and unbold all columns (already unbolded earlier)
-  d3.selectAll('.col_label_text')
+  d3.selectAll(params.root+' .col_label_text')
     .select('.highlight_rect')
     .style('opacity', 0);
   // highlight column name

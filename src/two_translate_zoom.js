@@ -155,7 +155,7 @@ module.exports = function(params, pan_dx, pan_dy, fin_zoom) {
     // col_label_obj.select('rect')
     if (utils.has(params.network_data.col_nodes[0], 'value')) {
 
-      d3.selectAll('.col_bars')
+      d3.selectAll(params.root+' .col_bars')
         // .transition()
         // .duration(search_duration)
         .attr('width', function(d) {
@@ -169,7 +169,7 @@ module.exports = function(params, pan_dx, pan_dy, fin_zoom) {
 
     if (utils.has(params.network_data.row_nodes[0], 'value')) {
 
-      d3.selectAll('.row_bars')
+      d3.selectAll(params.root+' .row_bars')
         .transition()
         .duration(search_duration)
         .attr('width', function(d) {

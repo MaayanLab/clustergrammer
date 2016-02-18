@@ -18,7 +18,7 @@ module.exports = function (params, dom_class) {
       return 'translate(' + params.matrix.x_scale(inst_index) + ',0)';
     });
 
-  d3.selectAll('.col_viz_group')
+  d3.selectAll(params.root+' .col_viz_group')
     .each(function() {
 
       var inst_level = params.group_level.col;

@@ -16,7 +16,7 @@ module.exports = function(params, trans) {
     params.viz.zoom_scale_font.row = params.norm_label.width.row / keep_width.row;
     // params.viz.zoom_scale_font.row = params.norm_label.width.row / keep_width.row;
 
-    d3.selectAll('.row_label_text').each(function() {
+    d3.selectAll(params.root+' .row_label_text').each(function() {
       if (trans){
 
         d3.select(this).select('text')
@@ -34,7 +34,7 @@ module.exports = function(params, trans) {
     });
   } else {
 
-    d3.selectAll('.row_label_text').each(function() {
+    d3.selectAll(params.root+' .row_label_text').each(function() {
       if (trans){
 
         d3.select(this).select('text')
@@ -62,7 +62,7 @@ module.exports = function(params, trans) {
 
     params.viz.zoom_scale_font.col = params.norm_label.width.col / keep_width.col;
 
-    d3.selectAll('.col_label_click').each(function() {
+    d3.selectAll(params.root+' .col_label_click').each(function() {
       if (trans){
         d3.select(this).select('text')
           .style('font-size', params.labels.default_fs_col *
@@ -76,7 +76,7 @@ module.exports = function(params, trans) {
       }
     });
   } else {
-    d3.selectAll('.col_label_click').each(function() {
+    d3.selectAll(params.root+' .col_label_click').each(function() {
       if (trans){
         d3.select(this).select('text')
           .style('font-size', params.labels.default_fs_col + 'px');
@@ -94,15 +94,15 @@ module.exports = function(params, trans) {
 
   // constrain text after zooming
   if (params.labels.row_keep < 1){
-    d3.selectAll('.row_label_text' ).each(function() { trim_text(params, this, 'row'); });
+    d3.selectAll(params.root+' .row_label_text' ).each(function() { trim_text(params, this, 'row'); });
   }
   if (params.labels.col_keep < 1){
-    d3.selectAll('.col_label_click').each(function() { trim_text(params, this, 'col'); });
+    d3.selectAll(params.root+' .col_label_click').each(function() { trim_text(params, this, 'col'); });
   }
 
   // // constrain column text highlight bars
   // // change the size of the highlighting rects
-  // d3.selectAll('.col_label_click')
+  // d3.selectAll(params.root+' .col_label_click')
   //   .each(function(d) {
   //     var bbox = d3.select(this)
   //       .select('text')[0][0]

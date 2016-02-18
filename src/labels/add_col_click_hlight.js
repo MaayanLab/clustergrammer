@@ -9,7 +9,7 @@ module.exports = function(params, clicked_col, id_clicked_col) {
     var hlight_width  = rel_width_hlight*params.viz.border_width;
     // var hlight_height = rel_width_hlight*params.viz.border_width/params.viz.zoom_switch;
 
-    d3.selectAll('.click_hlight')
+    d3.selectAll(params.root+' .click_hlight')
       .remove();
 
     // // highlight selected column
@@ -54,7 +54,7 @@ module.exports = function(params, clicked_col, id_clicked_col) {
         return 'translate('+tmp_translate_x+','+tmp_translate_y+')';
       });
   } else {
-    d3.selectAll('.click_hlight')
+    d3.selectAll(params.root+' .click_hlight')
       .remove();
     params.click_hlight_col = -666;
   }

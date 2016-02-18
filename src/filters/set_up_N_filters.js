@@ -53,8 +53,8 @@ module.exports = function(config, params, filter_type) {
       d3.select('.'+filter_type).text('Top rows: '+inst_top+' rows');
 
       // $('.slider_filter').slider('disable');
-      d3.selectAll('.btn').attr('disabled',true);
-      d3.selectAll('.category_section')
+      d3.selectAll(params.root+' .btn').attr('disabled',true);
+      d3.selectAll(params.root+' .category_section')
         .on('click', '')
         .select('text')
         .style('opacity',0.5);
@@ -67,8 +67,8 @@ module.exports = function(config, params, filter_type) {
 
       function enable_slider(){
         // $('.slider_filter').slider('enable');
-        d3.selectAll('.btn').attr('disabled',null);
-        // d3.selectAll('.category_section')
+        d3.selectAll(params.root+' .btn').attr('disabled',null);
+        // d3.selectAll(params.root+' .category_section')
         //   .on('click', category_key_click)
         //   .select('text')
         //   .style('opacity',1);

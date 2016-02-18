@@ -5,7 +5,7 @@ module.exports = function(params, clicked_rect){
     var pos_x = d.pos_x;
     var pos_y = d.pos_y;
 
-    d3.selectAll('.click_hlight')
+    d3.selectAll(params.root+' .click_hlight')
       .remove();
 
     if (pos_x!=params.matrix.click_hlight_x || pos_y!=params.matrix.click_hlight_y){

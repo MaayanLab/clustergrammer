@@ -84,12 +84,12 @@ module.exports = function(params, ini_inp_row_data, delays, duration, row_select
   var update_row_tiles = cur_row_tiles
     .on('mouseover', function(p) {
       // highlight row - set text to active if
-      d3.selectAll('.row_label_text text')
+      d3.selectAll(params.root+' .row_label_text text')
         .classed('active', function(d) {
           return p.row_name === d.name;
         });
 
-      d3.selectAll('.col_label_text text')
+      d3.selectAll(params.root+' .col_label_text text')
         .classed('active', function(d) {
           return p.col_name === d.name;
         });
@@ -98,7 +98,7 @@ module.exports = function(params, ini_inp_row_data, delays, duration, row_select
       // }
     })
     .on('mouseout', function mouseout() {
-      d3.selectAll('text').classed('active', false);
+      d3.selectAll(params.root+' text').classed('active', false);
       // if (params.matrix.show_tile_tooltips){
       //   tip.hide();
       // }
@@ -137,12 +137,12 @@ module.exports = function(params, ini_inp_row_data, delays, duration, row_select
     var update_tiles_up = cur_tiles_up
       .on('mouseover', function(p) {
         // highlight row - set text to active if
-        d3.selectAll('.row_label_text text')
+        d3.selectAll(params.root+' .row_label_text text')
           .classed('active', function(d) {
             return p.row_name === d.name;
           });
 
-        d3.selectAll('.col_label_text text')
+        d3.selectAll(params.root+' .col_label_text text')
           .classed('active', function(d) {
             return p.col_name === d.name;
           });
@@ -151,7 +151,7 @@ module.exports = function(params, ini_inp_row_data, delays, duration, row_select
         // }
       })
       .on('mouseout', function mouseout() {
-        d3.selectAll('text').classed('active', false);
+        d3.selectAll(params.root+' text').classed('active', false);
         // if (params.matrix.show_tile_tooltips){
         //   tip.hide();
         // }
@@ -198,12 +198,12 @@ module.exports = function(params, ini_inp_row_data, delays, duration, row_select
     var update_tiles_dn = cur_tiles_dn
       .on('mouseover', function(p) {
         // highlight row - set text to active if
-        d3.selectAll('.row_label_text text')
+        d3.selectAll(params.root+' .row_label_text text')
           .classed('active', function(d) {
             return p.row_name === d.name;
           });
 
-        d3.selectAll('.col_label_text text')
+        d3.selectAll(params.root+' .col_label_text text')
           .classed('active', function(d) {
             return p.col_name === d.name;
           });
@@ -212,7 +212,7 @@ module.exports = function(params, ini_inp_row_data, delays, duration, row_select
         // }
       })
       .on('mouseout', function mouseout() {
-        d3.selectAll('text').classed('active', false);
+        d3.selectAll(params.root+' text').classed('active', false);
         // if (params.matrix.show_tile_tooltips){
         //   tip.hide();
         // }
@@ -278,12 +278,12 @@ module.exports = function(params, ini_inp_row_data, delays, duration, row_select
     .attr('height', params.matrix.rect_height)
     .on('mouseover', function(p) {
       // highlight row - set text to active if
-      d3.selectAll('.row_label_text text')
+      d3.selectAll(params.root+' .row_label_text text')
         .classed('active', function(d) {
           return p.row_name === d.name;
         });
 
-      d3.selectAll('.col_label_text text')
+      d3.selectAll(params.root+' .col_label_text text')
         .classed('active', function(d) {
           return p.col_name === d.name;
         });
@@ -292,7 +292,7 @@ module.exports = function(params, ini_inp_row_data, delays, duration, row_select
       // }
     })
     .on('mouseout', function mouseout() {
-      d3.selectAll('text').classed('active', false);
+      d3.selectAll(params.root+' text').classed('active', false);
       // if (params.matrix.show_tile_tooltips){
       //   tip.hide();
       // }

@@ -149,7 +149,7 @@ module.exports = function(params) {
         .range([0.0, 1.0]);
     }
 
-    d3.selectAll('.tile')
+    d3.selectAll(params.root+' .tile')
       .style('fill-opacity', function (d) {
         return params.matrix.opacity_scale(Math.abs(d.value));
       });

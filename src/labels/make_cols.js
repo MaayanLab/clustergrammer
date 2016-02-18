@@ -94,7 +94,7 @@ module.exports = function(params, text_delay) {
   // append column value bars
   if (utils.has(params.network_data.col_nodes[0], 'value')) {
 
-    d3.selectAll('col_bars').remove();
+    // d3.selectAll(params.root+' col_bars').remove();
 
     col_label_click
       .append('rect')
@@ -167,7 +167,7 @@ module.exports = function(params, text_delay) {
   /////////////////////////////
 
   params.bounding_width_max.col = 0;
-  d3.selectAll('.col_label_click').each(function() {
+  d3.selectAll(params.root+' .col_label_click').each(function() {
     var tmp_width = d3.select(this).select('text').node().getBBox().width;
     if (tmp_width > params.bounding_width_max.col) {
       // increase the apparent width of the column label since its rotated
@@ -193,7 +193,7 @@ module.exports = function(params, text_delay) {
     params.labels.default_fs_row = params.labels.default_fs_row * params.ini_scale_font.row;
 
     // reduce font size
-    d3.selectAll('.row_label_text').each(function() {
+    d3.selectAll(params.root+' .row_label_text').each(function() {
     d3.select(this).select('text')
       .style('font-size', params.labels.default_fs_row + 'px');
     });
@@ -211,7 +211,7 @@ module.exports = function(params, text_delay) {
     params.labels.default_fs_col = params.labels.default_fs_col * params.ini_scale_font.col;
 
     // reduce font size
-    d3.selectAll('.col_label_click').each(function() {
+    d3.selectAll(params.root+' .col_label_click').each(function() {
     d3.select(this).select('text')
       .style('font-size', params.labels.default_fs_col + 'px');
     });
@@ -219,10 +219,10 @@ module.exports = function(params, text_delay) {
 
   // constrain text after zooming
   if (params.labels.row_keep < 1){
-    d3.selectAll('.row_label_text' ).each(function() { trim_text(params, this, 'row'); });
+    d3.selectAll(params.root+' .row_label_text' ).each(function() { trim_text(params, this, 'row'); });
   }
   if (params.labels.col_keep < 1){
-    d3.selectAll('.col_label_click').each(function() { trim_text(params, this, 'col'); });
+    d3.selectAll(params.root+' .col_label_click').each(function() { trim_text(params, this, 'col'); });
   }
 
 
@@ -287,7 +287,7 @@ module.exports = function(params, text_delay) {
 
 
   // add col callback function
-  d3.selectAll('.col_label_text')
+  d3.selectAll(params.root+' .col_label_text')
     .on('click',function(d){
 
       if (typeof params.click_label == 'function'){

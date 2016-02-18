@@ -105,7 +105,7 @@ module.exports = function(params, trans_x, trans_y, zoom_x, zoom_y) {
   ////////////////////////////////////
 
   if (utils.has(params.network_data.row_nodes[0], 'value')) {
-    d3.selectAll('.row_bars')
+    d3.selectAll(params.root+' .row_bars')
     .attr('width', function(d) {
       var inst_value = 0;
       inst_value = params.labels.bar_scale_row(Math.abs(d.value))/zoom_y;
@@ -119,7 +119,7 @@ module.exports = function(params, trans_x, trans_y, zoom_x, zoom_y) {
   }
 
   if (utils.has(params.network_data.col_nodes[0], 'value')) {
-    d3.selectAll('.col_bars')
+    d3.selectAll(params.root+' .col_bars')
       .attr('width', function(d) {
         var inst_value = 0;
         if (d.value > 0){

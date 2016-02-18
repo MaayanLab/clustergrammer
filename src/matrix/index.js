@@ -59,7 +59,7 @@ module.exports = function(params, svg_elem) {
 
   // add callback function to tile group - if one is supplied by the user
   if (typeof params.click_tile === 'function') {
-    d3.selectAll('.tile')
+    d3.selectAll(params.root+' .tile')
     .on('click', function(d) {
 
       // export row/col name and value from tile
@@ -87,7 +87,7 @@ module.exports = function(params, svg_elem) {
 
     // highlight clicked tile
     if (params.tile_click_hlight){
-      d3.selectAll('.tile')
+      d3.selectAll(params.root+' .tile')
         .on('click',function() {
           add_click_hlight(params, this);
         });

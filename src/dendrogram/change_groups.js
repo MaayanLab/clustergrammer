@@ -14,7 +14,7 @@ module.exports = function (params, inst_rc, inst_index) {
     dom_class = 'col_class_rect';
   }
 
-  d3.selectAll('.' + dom_class)
+  d3.selectAll(params.root+' .' + dom_class)
     .style('fill', function(d) {
       var inst_group = d.group[inst_index];
       return group_colors[ inst_group ];
