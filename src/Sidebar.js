@@ -10,7 +10,7 @@ module.exports = function(config, params) {
   var button_data = [
       {'name':'Cluster',
        'short_name':'clust'},
-      {'name':'Rank',
+      {'name':'Rank by Sum',
       'short_name':'rank'}
     ];
 
@@ -19,7 +19,8 @@ module.exports = function(config, params) {
     .append('div')
     .attr('class', params.sidebar.sidebar_class )
     .style('margin-left','10px')
-    .style('float', 'left');
+    .style('float', 'left')
+    .style('width','180px');
 
   sidebar
     .append('div')
@@ -32,6 +33,8 @@ module.exports = function(config, params) {
     .classed('btn-group-vertical',true)
     .classed('toggle_col_order',true)
     .attr('role','group');
+    // .style('margin','auto')
+    // .style('width','100%');
 
   row_reorder
     .selectAll('.button')
