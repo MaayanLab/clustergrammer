@@ -1,6 +1,6 @@
 var utils = require('../utils');
 
-module.exports = function(filter_type, parameters) {
+module.exports = function(parameters, filter_type) {
   var params = parameters || this.params;
 
   var views = params.network_data.views;
