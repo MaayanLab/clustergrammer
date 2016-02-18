@@ -120,7 +120,7 @@ text.active {
   padding-bottom:2px;
 }
 
-#wait_message{
+.wait_message{
   margin-left: 300px;
   margin-top: 10px;
   opacity: 0.5;
