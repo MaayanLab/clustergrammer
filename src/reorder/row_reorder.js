@@ -5,7 +5,6 @@ module.exports = function(params, row_selection) {
   // get inst row (gene)
   var inst_row = d3.select(row_selection).select('text').text();
 
-  // get row and col nodes
   params.viz.run_trans = true;
 
   var mat       = params.matrix.matrix;
@@ -126,6 +125,6 @@ module.exports = function(params, row_selection) {
 
   setTimeout(function(){
     params.viz.run_trans = false;
-  }, 2500, params);
+  }, 2500);
 
 };

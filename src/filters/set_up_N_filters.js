@@ -61,6 +61,10 @@ module.exports = function(config, params, filter_type) {
 
       params = update_network(config, params, change_view);
 
+      setTimeout(function(){
+        params.viz.run_trans = false;
+      }, 2500);
+
       function enable_slider(){
         // $('.slider_filter').slider('enable');
         d3.selectAll('.btn').attr('disabled',null);

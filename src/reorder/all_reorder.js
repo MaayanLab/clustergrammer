@@ -171,7 +171,7 @@ module.exports = function(params, inst_order, row_col) {
 
   setTimeout(function(){
     params.viz.run_trans = false;
-  }, 2500, params);
+  }, 2500);
 
 
 };

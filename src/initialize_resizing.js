@@ -15,7 +15,6 @@ module.exports = function(params) {
       if (params.viz.run_trans == true) {
         wait_time = 2500;
       }
-      console.log('wait_time '+String(wait_time))
       setTimeout(reset_visualization_size, wait_time, params);
     });
   }

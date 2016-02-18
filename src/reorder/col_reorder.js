@@ -2,10 +2,7 @@ var reposition_tile_highlight = require('./reposition_tile_highlight');
 
 module.exports = function(params, col_selection) {
 
-  // set running transition value
   params.viz.run_trans = true;
-
-  // col_selection = col_selection;
 
   var mat       = params.matrix.matrix;
   var row_nodes = params.network_data.row_nodes;
@@ -115,6 +112,6 @@ module.exports = function(params, col_selection) {
 
   setTimeout(function(){
     params.viz.run_trans = false;
-  }, 2500, params);
+  }, 2500);
 
 };

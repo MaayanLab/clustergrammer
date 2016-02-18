@@ -46,6 +46,8 @@ module.exports = function(config, old_params, change_view) {
 
   ini_sliders(params);
 
+  params.viz.run_trans = true;
+  
   // return updated params 
   return params;
 
