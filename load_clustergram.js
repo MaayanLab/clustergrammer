@@ -75,7 +75,6 @@ function make_clust(inst_network){
 
       // !! tmp set up for initializing sliders
       // !! tmp set up filters in load clustergram using cgm
-      cgm.ini_sliders(cgm.params);
       cgm.set_up_N_filters('N_row_sum');
 
   });

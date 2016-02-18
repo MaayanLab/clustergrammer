@@ -1,5 +1,4 @@
 var utils = require('../utils');
-var ini_sliders = require('./ini_sliders');
 
 module.exports = function(filter_type, parameters) {
   var params = parameters || this.params;
@@ -63,7 +62,6 @@ module.exports = function(filter_type, parameters) {
         .style('opacity',0.5);
 
       cgm.update_network(cgm.params, change_view);
-      ini_sliders(cgm.params);
 
       function enable_slider(){
         // $('.slider_filter').slider('enable');

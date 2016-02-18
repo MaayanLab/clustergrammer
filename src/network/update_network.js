@@ -6,9 +6,9 @@ var enter_exit_update = require('./enter_exit_update');
 var define_enter_exit_delays = require('./define_enter_exit_delays');
 var search = require('../search');
 var all_reorder = require('../reorder/all_reorder');
-
 var build_col_dendro = require('../dendrogram/build_col_dendro');
 var build_row_dendro = require('../dendrogram/build_row_dendro');
+var ini_sliders = require('../filters/ini_sliders');
 
 module.exports = function(old_params, change_view) {
 
@@ -61,5 +61,7 @@ module.exports = function(old_params, change_view) {
 
   // re-initialize the double click behavior
   ini_doubleclick(params);
+
+  ini_sliders(params);
 
 };
