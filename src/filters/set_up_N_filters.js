@@ -1,12 +1,10 @@
 var utils = require('../utils');
 var update_network = require('../network/update_network');
 
-module.exports = function(params, filter_type) {
+module.exports = function(config, params, filter_type) {
 
   var views = params.network_data.views;
   var all_views = _.filter(views, function(d) { return utils.has(d,filter_type); });
-
-  var cgm = this;
 
   // // filter for column category if necessary
   // if ( utils.has(all_views[0],'col_cat') ) {
@@ -61,7 +59,7 @@ module.exports = function(params, filter_type) {
         .select('text')
         .style('opacity',0.5);
 
-      params = update_network(cgm.config, params, change_view);
+      params = update_network(config, params, change_view);
 
       function enable_slider(){
         // $('.slider_filter').slider('enable');
