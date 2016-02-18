@@ -1,6 +1,5 @@
 var utils = require('../utils');
 var draw_gridlines = require('../draw_gridlines');
-// var make_simple_rows = require('./make_simple_rows');
 var add_click_hlight = require('./add_click_hlight');
 var make_simple_rows = require('./make_simple_rows');
 
@@ -43,7 +42,6 @@ module.exports = function(params, svg_elem) {
     .style('fill', '#eee')
     .attr('width', params.viz.clust.dim.width)
     .attr('height', params.viz.clust.dim.height);
-
 
   // make row matrix - add key names to rows in matrix
   clust_group.selectAll('.row')

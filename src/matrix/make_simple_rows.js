@@ -1,4 +1,5 @@
 module.exports = function make_simple_rows(params, ini_inp_row_data, tip, row_selection) {
+
   var inp_row_data = ini_inp_row_data.row_data;
 
   // value: remove zero values to make visualization faster
@@ -178,11 +179,11 @@ module.exports = function make_simple_rows(params, ini_inp_row_data, tip, row_se
       }
     });
 
-    // remove tiles when splitting is done
+    // remove rect when tile is split 
     tile
       .each(function(d){
         if ( Math.abs(d.value_up)>0 && Math.abs(d.value_dn)>0 ){
-          d3.select(row_selection).remove();
+          d3.select(this).remove();
         }
       });
 
