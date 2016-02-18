@@ -1,11 +1,9 @@
-// var crossfilter = require('crossfilter');
-// var end_reorder = require('./end_reorder');
 var reposition_tile_highlight = require('./reposition_tile_highlight');
 
 module.exports = function(params, col_selection) {
 
-  // // set running transition value
-  // params.viz.run_trans = true;
+  // set running transition value
+  params.viz.run_trans = true;
 
   // col_selection = col_selection;
 
@@ -113,14 +111,10 @@ module.exports = function(params, col_selection) {
     d.y = params.matrix.y_scale(d.source);
   });
 
-  // // rename crossfilter
-  // params.cf = {};
-  // params.cf.links = crossfilter(params.network_data.links);
-  // params.cf.dim_x = params.cf.links.dimension(function(d){return d.x;});
-  // params.cf.dim_y = params.cf.links.dimension(function(d){return d.y;});
-
   reposition_tile_highlight(params);
 
-  // // backup allow programmatic zoom
-  // setTimeout(end_reorder, 2500);
+  setTimeout(function(){
+    params.viz.run_trans = false;
+  }, 2500, params);
+
 };

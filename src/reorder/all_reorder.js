@@ -1,9 +1,7 @@
-// var crossfilter = require('crossfilter');
-// var end_reorder = require('./end_reorder');
 
 module.exports = function(params, inst_order, row_col) {
 
-  // params.viz.run_trans = true;
+  params.viz.run_trans = true;
 
   // save order state
   if (row_col === 'row'){
@@ -171,13 +169,9 @@ module.exports = function(params, inst_order, row_col) {
     d.y = params.matrix.y_scale(d.source);
   });
 
-  // // rename crossfilter
-  // params.cf = {};
-  // params.cf.links = crossfilter(params.network_data.links);
-  // params.cf.dim_x = params.cf.links.dimension(function(d){return d.x;});
-  // params.cf.dim_y = params.cf.links.dimension(function(d){return d.y;});
+  setTimeout(function(){
+    params.viz.run_trans = false;
+  }, 2500, params);
 
-  // // backup allow programmatic zoom
-  // setTimeout(end_reorder, 2500);
 
 };
