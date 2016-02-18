@@ -2,7 +2,7 @@ var ini_sliders = require('./filters/ini_sliders');
 
 /* Represents sidebar with controls.
  */
-module.exports = function(params) {
+module.exports = function(config, params) {
   var is_active;
 
   var button_data = [

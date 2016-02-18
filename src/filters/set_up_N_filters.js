@@ -1,8 +1,7 @@
 var utils = require('../utils');
 var update_network = require('../network/update_network');
 
-module.exports = function(parameters, filter_type) {
-  var params = parameters || this.params;
+module.exports = function(params, filter_type) {
 
   var views = params.network_data.views;
   var all_views = _.filter(views, function(d) { return utils.has(d,filter_type); });
@@ -49,7 +48,7 @@ module.exports = function(parameters, filter_type) {
 
       var change_view = {'N_row_sum':inst_top};
 
-      var viz_svg = cgm.params.viz.viz_svg;
+      var viz_svg = params.viz.viz_svg;
 
       d3.select(viz_svg).style('opacity',0.70);
 
