@@ -73,9 +73,6 @@ function make_clust(inst_network){
 
       d3.select(g_cgm.params.root + ' .wait_message').remove();
 
-      // !! tmp set up for initializing sliders
-      // !! tmp set up filters in load clustergram using cgm
-      cgm.set_up_N_filters(cgm.config, cgm.params, 'N_row_sum');
 
   });
 

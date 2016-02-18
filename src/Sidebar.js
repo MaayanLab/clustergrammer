@@ -1,4 +1,6 @@
+
 var ini_sliders = require('./filters/ini_sliders');
+var set_up_N_filters = require('./filters/set_up_N_filters');
 
 /* Represents sidebar with controls.
  */
@@ -146,6 +148,8 @@ module.exports = function(config, params) {
     .classed('slider_N_row_sum',true);
 
   ini_sliders(params);
+
+  set_up_N_filters(config, params, 'N_row_sum');
 
   // 1. Recreate sidebar in JavaScript from HTML.
   // 2. Rename all IDs to classes.

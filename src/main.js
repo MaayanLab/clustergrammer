@@ -37,8 +37,7 @@ function Clustergrammer(args) {
     opacity_function: viz.opacity_function,
     resize: viz.run_reset_visualization_size,
     reset_zoom: viz.reset_zoom,
-    change_category: require('./network/change_category'),
-    set_up_N_filters: require('./filters/set_up_N_filters')
+    change_category: require('./network/change_category')
   };
 }
 
