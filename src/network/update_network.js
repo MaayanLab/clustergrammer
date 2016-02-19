@@ -48,7 +48,8 @@ module.exports = function(config, old_params, change_view) {
 
   params.viz.run_trans = true;
   
-  d3.selectAll(params.root+' .d3-tip').remove()
+  d3.selectAll(params.root+' .d3-tip')
+    .remove();
 
   // return updated params 
   return params;

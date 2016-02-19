@@ -39,6 +39,12 @@ module.exports = function(params, orig_network_data, change_view) {
 
     });
 
+  } else if (utils.has(change_view,'pct_row_sum')) {
+
+    filt_views = _.filter(views, function(d){
+      return d.pct_row_sum == change_view.pct_row_sum;
+    });
+
   } else if (utils.has(change_view,'filter_row_sum')) {
 
     filt_views = _.filter(views, function(d){

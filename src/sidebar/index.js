@@ -140,8 +140,10 @@ module.exports = function sidebar(config, params) {
 
   var filter_type = 'N_row_sum';
   var initial_text = 'Top rows: all rows';
+  set_up_filters(config, params, filter_type, initial_text);
 
-
+  var filter_type = 'pct_row_sum';
+  var initial_text = 'Top rows: all rows';
   set_up_filters(config, params, filter_type, initial_text);
 
   ini_sidebar(params);
