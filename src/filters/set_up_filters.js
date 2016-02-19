@@ -3,7 +3,22 @@ var update_network = require('../network/update_network');
 var disable_sidebar = require('../sidebar/disable_sidebar');
 var enable_sidebar  = require('../sidebar/enable_sidebar');
 
-module.exports = function set_up_filters(config, params, filter_type) {
+module.exports = function set_up_filters(config, params, filter_type, initial_text) {
+
+  var row_filters = d3.select(params.root+' .'+params.sidebar.sidebar_class)
+    .append('div')
+    .classed('row_filters',true);
+
+  row_filters
+    .append('div')
+    .classed('viz_medium_text',true)
+    .classed(filter_type,true)
+    .text(initial_text);
+
+  row_filters
+    .append('div')
+    .classed('slider_'+filter_type,true)
+    .classed('slider',true);
 
   var views = params.network_data.views;
 

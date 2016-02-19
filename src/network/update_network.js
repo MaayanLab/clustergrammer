@@ -6,7 +6,7 @@ var enter_exit_update = require('./enter_exit_update');
 var define_enter_exit_delays = require('./define_enter_exit_delays');
 var build_col_dendro = require('../dendrogram/build_col_dendro');
 var build_row_dendro = require('../dendrogram/build_row_dendro');
-var ini_sliders = require('../filters/ini_sliders');
+var ini_sidebar = require('../sidebar/ini_sidebar');
 
 module.exports = function(config, old_params, change_view) {
 
@@ -44,10 +44,12 @@ module.exports = function(config, old_params, change_view) {
   // re-initialize the double click behavior
   ini_doubleclick(params);
 
-  ini_sliders(params);
+  ini_sidebar(params);
 
   params.viz.run_trans = true;
   
+  d3.selectAll(params.root+' .d3-tip').remove()
+
   // return updated params 
   return params;
 

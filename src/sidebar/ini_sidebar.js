@@ -2,7 +2,7 @@ var change_groups = require('../dendrogram/change_groups');
 var search = require('../search');
 var reorder = require('../reorder/all_reorder');
 
-module.exports = function ini_sliders(params){
+module.exports = function ini_sidebar(params){
 
   var search_obj = search(params, params.network_data.row_nodes, 'name');
 
