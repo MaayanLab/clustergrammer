@@ -2,17 +2,17 @@ var utils = require('../utils');
 var filter_using_new_nodes = require('./filter_using_new_nodes');
 
 module.exports = function(params, orig_network_data, change_view) {
-  var views = orig_network_data.views;
-  var filt_views;
 
-  // Get Row Filtering View
-  ///////////////////////////////////////////////////////////////
-  // change_view has the name of the new view (e.g. {N_row_sum:20})
-  // this view name is used to pull up the view information. The view consists
-  // of a description of the view (e.g N_row_sum number and distance type) and
-  // the nodes of the view (e.g. row_nodes and col_nodes). With the new set of
-  // nodes, new_nodes, the links will be filtered in order to only keep links
-  // between nodes that still exist in the view
+  var views = orig_network_data.views;
+  var filter_type = Object.keys(change_view);
+  var filter_value = change_view[filter_type];
+
+  var tmp = _.filter(views, function(d){return d[filter_type]==filter_value;});
+
+  console.log('found view from network_data');
+  console.log(tmp[0]);
+
+  var filt_views;
 
   if (utils.has(change_view,'filter_row')){
 
@@ -95,12 +95,12 @@ module.exports = function(params, orig_network_data, change_view) {
 
   }
 
-  if (params.show_categories){
-    // apply category filtering if necessary
-    inst_view = _.find(filt_views, function(d){
-      return d.col_cat === params.current_col_cat;
-    });
-  }
+  // if (params.show_categories){
+  //   // apply category filtering if necessary
+  //   inst_view = _.find(filt_views, function(d){
+  //     return d.col_cat === params.current_col_cat;
+  //   });
+  // }
 
   /*
   assign the inst_view, if it is defined
