@@ -14,10 +14,8 @@ make_clust('mult_view.json');
 
 function make_clust(inst_network){
 
-    // load json
     d3.json('json/'+inst_network, function(network_data){
 
-      // define the outer margins of the visualization
       var outer_margins = {
           'top':5,
           'bottom':33,
@@ -70,7 +68,6 @@ function make_clust(inst_network){
       cgm = Clustergrammer(arguments_obj);
 
       d3.select(cgm.params.root + ' .wait_message').remove();
-
 
   });
 

@@ -1,10 +1,10 @@
 
-var ini_sliders = require('./filters/ini_sliders');
-var set_up_N_filters = require('./filters/set_up_N_filters');
+var ini_sliders = require('../filters/ini_sliders');
+var set_up_N_filters = require('../filters/set_up_N_filters');
 
 /* Represents sidebar with controls.
  */
-module.exports = function(config, params) {
+module.exports = function sidebar(config, params) {
   var is_active;
 
   var button_data = [
@@ -124,7 +124,8 @@ module.exports = function(config, params) {
 
   colorbar_sliders
     .append('div')
-    .classed('slider_row',true);
+    .classed('slider_row',true)
+    .classed('slider',true);
 
   colorbar_sliders
     .append('p')
@@ -133,7 +134,8 @@ module.exports = function(config, params) {
 
   colorbar_sliders
     .append('div')
-    .classed('slider_col',true);
+    .classed('slider_col',true)
+    .classed('slider',true);
 
   var row_filters = sidebar
     .append('div')
@@ -148,7 +150,8 @@ module.exports = function(config, params) {
   row_filters
     .append('div')
     .classed('slider_filter',true)
-    .classed('slider_N_row_sum',true);
+    .classed('slider_N_row_sum',true)
+    .classed('slider',true);
 
   ini_sliders(params);
 

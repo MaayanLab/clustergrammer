@@ -23,7 +23,7 @@ function Clustergrammer(args) {
   var viz = make_viz(params);
 
   if (params.use_sidebar) {
-    var make_sidebar = require('./sidebar');
+    var make_sidebar = require('./sidebar/');
     make_sidebar(config, params);
   }
 
