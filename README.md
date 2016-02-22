@@ -6,11 +6,9 @@ This is a clustergram implemented in D3.js. I started from the example http://bo
 - more ordering options 
 - row searching
 - dendrogram-like colorbar
-- row/column classification triangles
 - optional value bars for col/row nodes 
-- user defined click callback functions
 - optional split tiles and highlighting tiles
-- optional resizing
+- row filtering
 
 The clustergrammer.js repo is being hosted on github and gist and a live example of the visualization can be found on blocks. 
 - github: https://github.com/cornhundred/clustergrammer.js 
