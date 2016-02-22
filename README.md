@@ -29,7 +29,7 @@ clustergrammer.js requires:
 ## making a clustergram using clustergrammer.js.make
 
 ### make arguments 
-To make a clustergram pass in an object with your network (network_data) and other optinal arguments. An example is in load_network.js and shown below 
+To make a clustergram pass in an object with your network (network_data) and other optinal arguments. An example is in load_clustergram.js and shown below 
 
 ```
 // define arguments object 
@@ -52,7 +52,7 @@ var arguments_obj = {
   'background_color':'white',
 };
 
-clustergrammer.make( arguments_obj );
+Clustergrammer( arguments_obj );
 ``` 
 
 ### network_data json
