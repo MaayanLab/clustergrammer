@@ -124,7 +124,7 @@ clustergrammer.reorder takes a single argument that can take the values: 'clust'
 clustergrammer.find_row will find and zoom into the row that is specified by the input DOM element with id 'gene_search_box'. 
 
 # clustergrammer.py
-The network json, example_network.json, used in the visualization was produced using the python script make_clust.py and the class definition clustergrammer.js.py. The python script clustergrammer.js.py defines the class, Network, that loads the example network in tab separated format, example_tsv_network.txt, calculates clustering, and saves the network in the required format. To remake example_network.json run make_clust.py. 
+The example network json, mult_view.json, used in the visualization was produced using the python script make_clustergram.py. The python script clustergrammer.js.py defines the class, Network, that loads the example network in tab separated format, example_tsv_network.txt, calculates clustering, and saves the network in the required format. To remake example_network.json run make_clust.py. 
 
 D3 Clustergram was developed by Nick Fernandez at Icahn School of Medicine at Mount Sinai. 
 
