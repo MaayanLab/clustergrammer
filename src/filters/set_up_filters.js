@@ -3,7 +3,22 @@ var update_network = require('../network/update_network');
 var disable_sidebar = require('../sidebar/disable_sidebar');
 var enable_sidebar  = require('../sidebar/enable_sidebar');
 
-module.exports = function set_up_filters(config, params, filter_type, initial_text) {
+module.exports = function set_up_filters(config, params, filter_type) {
+
+  var initial_text;
+  var suffix;
+  var initial_value;
+
+  if (filter_type === 'pct_row_sum'){
+    initial_text = 'Pct rows sum: ';
+    initial_value = '100';
+    suffix = '%';
+  } else if (filter_type === 'N_row_sum'){
+    initial_text = 'Top rows sum: ';
+    initial_value = 'all';
+    suffix = ' rows';
+  }
+
 
   var row_filters = d3.select(params.root+' .'+params.sidebar.sidebar_class)
     .append('div')
@@ -13,7 +28,7 @@ module.exports = function set_up_filters(config, params, filter_type, initial_te
     .append('div')
     .classed('viz_medium_text',true)
     .classed(filter_type,true)
-    .text(initial_text);
+    .text(initial_text + initial_value + suffix);
 
   row_filters
     .append('div')
@@ -51,11 +66,18 @@ module.exports = function set_up_filters(config, params, filter_type, initial_te
       var requested_view = {};
       requested_view[filter_type] = inst_view_name;
 
+      if (filter_type==='pct_row_sum'){
+        inst_view_name = String(inst_view_name *100);
+        $(params.root+' .slider_'+'N_row_sum').slider( "value", 0);
+      } else if (filter_type === 'N_row_sum'){
+        $(params.root+' .slider_'+'pct_row_sum').slider( "value", 0);
+      }
+
       disable_sidebar(params);
 
       params = update_network(config, params, requested_view);
 
-      d3.select(params.root+' .'+filter_type).text('Top rows: '+inst_view_name+' rows');
+      d3.select(params.root+' .'+filter_type).text(initial_text + inst_view_name + suffix);
 
       setTimeout(enable_sidebar, 2500, params);
 

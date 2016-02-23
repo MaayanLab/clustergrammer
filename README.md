@@ -15,6 +15,8 @@ The clustergrammer.js repo is being hosted on github and gist and a live example
 - gist: https://gist.github.com/cornhundred/c56253a5f3579a63406f
 - blocks http://bl.ocks.org/cornhundred/c56253a5f3579a63406f
 
+The source code is under the src directory and webpack module developer is being used to make clustergrammer.js. 
+
 # Dependencies
 
 clustergrammer.js requires:

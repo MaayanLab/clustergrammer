@@ -1,4 +1,3 @@
-var utils = require('../utils');
 var filter_using_new_nodes = require('./filter_using_new_nodes');
 
 module.exports = function(params, orig_network_data, change_view) {
@@ -8,6 +7,8 @@ module.exports = function(params, orig_network_data, change_view) {
   var filter_value = change_view[filter_type];
 
   var inst_view = _.filter(views, function(d){return d[filter_type]==filter_value;})[0];
+
+  var new_network_data;
 
   if (typeof inst_view !== 'undefined'){
 

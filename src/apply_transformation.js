@@ -65,7 +65,6 @@ module.exports = function(params, trans_x, trans_y, zoom_x, zoom_y) {
   // the zoom vector (zoom.scale) never gets reset
   ///////////////////////////////////////////////////
   // translate clustergram
-  // viz.get_clust_group()
   d3.select(params.root+' .clust_group')
     .attr('transform', 'translate(' + [trans_x, trans_y] + ') scale(' +
     zoom_x + ',' + zoom_y + ')');
