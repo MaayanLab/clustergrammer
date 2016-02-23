@@ -10,7 +10,7 @@ module.exports = function set_up_filters(config, params, filter_type) {
   var initial_value;
 
   if (filter_type === 'pct_row_sum'){
-    initial_text = 'Pct rows sum: ';
+    initial_text = 'Top rows sum: ';
     initial_value = '100';
     suffix = '%';
   } else if (filter_type === 'N_row_sum'){
@@ -67,7 +67,7 @@ module.exports = function set_up_filters(config, params, filter_type) {
       requested_view[filter_type] = inst_view_name;
 
       if (filter_type==='pct_row_sum'){
-        inst_view_name = String(inst_view_name *100);
+        inst_view_name = String(100-inst_view_name *100);
         $(params.root+' .slider_'+'N_row_sum').slider( "value", 0);
       } else if (filter_type === 'N_row_sum'){
         $(params.root+' .slider_'+'pct_row_sum').slider( "value", 0);

@@ -1,4 +1,5 @@
 
+var utils = require('../utils');
 var ini_sidebar = require('../sidebar/ini_sidebar');
 var set_up_filters = require('../filters/set_up_filters');
 
@@ -33,8 +34,6 @@ module.exports = function sidebar(config, params) {
     .classed('btn-group-vertical',true)
     .classed('toggle_col_order',true)
     .attr('role','group');
-    // .style('margin','auto')
-    // .style('width','100%');
 
   row_reorder
     .selectAll('.button')
@@ -139,23 +138,17 @@ module.exports = function sidebar(config, params) {
 
 
   var filter_type;
+  var views = params.network_data.views;
 
-  filter_type = 'N_row_sum';
-  set_up_filters(config, params, filter_type);
+  var possible_filters = ['N_row_sum','pct_row_sum'];
 
-  filter_type = 'pct_row_sum';
-  set_up_filters(config, params, filter_type);
-
+  _.each(possible_filters, function(inst_filter){
+    var num_views = _.filter(views, function(d) { return utils.has(d,inst_filter); }).length;
+    if (num_views > 0){
+      set_up_filters(config, params, inst_filter);
+    }
+  })
+  
   ini_sidebar(params);
-
-
-  // 1. Recreate sidebar in JavaScript from HTML.
-  // 2. Rename all IDs to classes.
-  //    Don't forget load_clustergram.js
-  // 3. Move behavior in load_clustergram.js to sidebar.js
-  //    Example of advanced behavior:
-  //
-  //    if (params.use_controls) {
-  //       sidebar.select(params.root).append('div').....
 
 };
