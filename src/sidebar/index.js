@@ -3,12 +3,13 @@ var utils = require('../utils');
 var ini_sidebar = require('./ini_sidebar');
 var set_up_filters = require('../filters/set_up_filters');
 var set_up_colorbar = require('./set_up_colorbar');
+var set_up_search = require('./set_up_search');
+var set_up_reorder = require('./set_up_reorder');
 
 /* Represents sidebar with controls.
  */
 module.exports = function sidebar(config, params) {
-  var is_active;
-
+  
   var button_data = [
       {'name':'Cluster',
        'short_name':'clust'},
@@ -24,103 +25,16 @@ module.exports = function sidebar(config, params) {
     .style('float', 'left')
     .style('width','180px');
 
-  sidebar
-    .append('div')
-    .html('Row Order');
+  set_up_reorder(sidebar, button_data);
 
-  var row_reorder = sidebar
-    .append('div')
-    .classed('viz_medium_text',true)
-    .append('div')
-    .classed('btn-group-vertical',true)
-    .classed('toggle_col_order',true)
-    .attr('role','group');
+  set_up_search(sidebar);
 
-  row_reorder
-    .selectAll('.button')
-    .data(button_data)
-    .enter()
-    .append('button')
-    .attr('type','button')
-    .classed('btn',true)
-    .classed('btn-primary',true)
-    .classed('active', function(d){
-      is_active = false;
-      if (d.name == 'Cluster'){
-        is_active = true;
-      }
-      return is_active;
-    })
-    .attr('name', function(d){
-      return d.short_name;
-    })
-    .html(function(d){return d.name;});
-
-  sidebar
-    .append('div')
-    .html('Column Order');
-
-  var col_reorder = sidebar
-    .append('div')
-    .classed('viz_medium_text',true)
-    .append('div')
-    .classed('btn-group-vertical',true)
-    .classed('toggle_row_order',true)
-    .attr('role','group');
-
-  col_reorder
-    .selectAll('.button')
-    .data(button_data)
-    .enter()
-    .append('button')
-    .attr('type','button')
-    .classed('btn',true)
-    .classed('btn-primary',true)
-    .classed('active', function(d){
-      is_active = false;
-      if (d.name == 'Cluster'){
-        is_active = true;
-      }
-      return is_active;
-    })
-    .attr('name', function(d){
-      return d.short_name;
-    })
-    .html(function(d){return d.name;});
-
-  var search_container = sidebar
-    .append('div')
-    .classed('row',true)
-    .classed('gene_search_container',true);
-
-  search_container
-    .append('input')
-    .classed('form-control',true)
-    .classed('gene_search_box',true)
-    .attr('type','text')
-    .attr('placeholder','Input Gene');
-
-  search_container
-    .append('div')
-    .classed('btn-group',true)
-    .classed('gene_search_button',true)
-    .attr('data-toggle','buttons')
-    .append('div')
-    .append('button')
-    .html('Search')
-    .attr('type','button')
-    .classed('btn',true)
-    .classed('btn-primary',true)
-    .classed('submit_gene_button',true);
-
-
+  // only checking rows for dendrogram, should always be present and rows and cols 
   var inst_rows = params.network_data.row_nodes;
   var found_colorbar = _.filter(inst_rows, function(d) { return utils.has(d,'group'); }).length;
-
   if (found_colorbar>0){
     set_up_colorbar(sidebar);
   }
-
 
   var views = params.network_data.views;
 
