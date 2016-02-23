@@ -9,13 +9,6 @@ var set_up_reorder = require('./set_up_reorder');
 /* Represents sidebar with controls.
  */
 module.exports = function sidebar(config, params) {
-  
-  var button_data = [
-      {'name':'Cluster',
-       'short_name':'clust'},
-      {'name':'Rank by Sum',
-      'short_name':'rank'}
-    ];
 
   var sidebar = d3
     .select(params.root)
@@ -25,7 +18,7 @@ module.exports = function sidebar(config, params) {
     .style('float', 'left')
     .style('width','180px');
 
-  set_up_reorder(sidebar, button_data);
+  set_up_reorder(sidebar);
 
   set_up_search(sidebar);
 
