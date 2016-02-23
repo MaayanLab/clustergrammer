@@ -1,5 +1,13 @@
 
-module.exports = function(params, inst_order, row_col) {
+module.exports = function(params, inst_order, tmp_row_col) {
+
+  // row/col names are swapped, will improve later
+  var row_col;
+  if (tmp_row_col==='row'){
+    row_col = 'col';
+  } else if (tmp_row_col === 'col'){
+    row_col = 'row';
+  }
 
   params.viz.run_trans = true;
 

@@ -53,14 +53,14 @@ module.exports = function ini_sidebar(params){
     var order_id = $(evt.target).attr('name').split('_')[0];
     d3.selectAll(params.root+' .toggle_col_order .btn').classed('active',false);
     d3.select(this).classed('active',true);
-    reorder(params, order_id,'row');
+    reorder(params, order_id,'col');
   });
 
   $(params.root+' .toggle_row_order .btn').off().click(function(evt) {
     var order_id = $(evt.target).attr('name').split('_')[0];
     d3.selectAll(params.root+' .toggle_row_order .btn').classed('active',false);
     d3.select(this).classed('active',true);
-    reorder(params, order_id,'col');
+    reorder(params, order_id,'row');
   });
 
 };
