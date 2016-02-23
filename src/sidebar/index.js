@@ -1,7 +1,8 @@
 
 var utils = require('../utils');
-var ini_sidebar = require('../sidebar/ini_sidebar');
+var ini_sidebar = require('./ini_sidebar');
 var set_up_filters = require('../filters/set_up_filters');
+var set_up_colorbar = require('./set_up_colorbar');
 
 /* Represents sidebar with controls.
  */
@@ -112,32 +113,15 @@ module.exports = function sidebar(config, params) {
     .classed('btn-primary',true)
     .classed('submit_gene_button',true);
 
-  var colorbar_sliders = sidebar
-    .append('div')
-    .classed('colorbar_sliders',true);
 
-  colorbar_sliders
-    .append('p')
-    .classed('viz_medium_text',true)
-    .text('Row Group Size');
+  var inst_rows = params.network_data.row_nodes;
+  var found_colorbar = _.filter(inst_rows, function(d) { return utils.has(d,'group'); }).length;
 
-  colorbar_sliders
-    .append('div')
-    .classed('slider_row',true)
-    .classed('slider',true);
-
-  colorbar_sliders
-    .append('p')
-    .classed('viz_medium_text',true)
-    .text('Column Group Size');
-
-  colorbar_sliders
-    .append('div')
-    .classed('slider_col',true)
-    .classed('slider',true);
+  if (found_colorbar>0){
+    set_up_colorbar(sidebar);
+  }
 
 
-  var filter_type;
   var views = params.network_data.views;
 
   var possible_filters = ['N_row_sum','pct_row_sum'];
@@ -147,7 +131,7 @@ module.exports = function sidebar(config, params) {
     if (num_views > 0){
       set_up_filters(config, params, inst_filter);
     }
-  })
+  });
   
   ini_sidebar(params);
 
