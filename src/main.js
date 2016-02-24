@@ -1,5 +1,5 @@
 var make_config = require('./config');
-var make_params = require('./params');
+var make_params = require('./params/');
 var make_viz = require('./viz');
 
 /* clustergrammer 1.0

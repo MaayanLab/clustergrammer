@@ -1,15 +1,15 @@
 // var crossfilter = require('crossfilter');
-var utils = require('./utils');
-var change_network_view = require('./network/change_network_view');
-var parent_div_size = require('./parent_div_size');
-var initialize_matrix = require('./initialize_matrix');
-var zoomed = require('./zoomed');
+var utils = require('../utils');
+var change_network_view = require('../network/change_network_view');
+var parent_div_size = require('../parent_div_size');
+var initialize_matrix = require('../initialize_matrix');
+var zoomed = require('../zoomed');
 
 /* Params: calculates the size of all the visualization elements in the
 clustergram.
  */
 
-module.exports = function(input_config) {
+module.exports = function params(input_config) {
 
   var config = $.extend(true, {}, input_config);
   var params = config;
@@ -98,7 +98,7 @@ module.exports = function(input_config) {
   parent_div_size(params);
 
   params.viz.svg_dim = {};
-  params.viz.svg_dim.width = Number(d3.select(params.viz.viz_wrapper).style('width').replace('px', ''));
+  params.viz.svg_dim.width  = Number(d3.select(params.viz.viz_wrapper).style('width').replace('px', ''));
   params.viz.svg_dim.height = Number(d3.select(params.viz.viz_wrapper).style('height').replace('px', ''));
 
   params.network_data.row_nodes_names = _.pluck(row_nodes, 'name');
@@ -186,11 +186,15 @@ module.exports = function(input_config) {
   params.viz.spillover_x_offset = label_scale(col_max_char) * 0.7 * 
     params.col_label_scale;
 
-  var row_info_space = params.labels.super_label_width + 
-    params.norm_label.width.row + params.class_room.row;
+  params.colorbar_room = {};
+  var tmp_colorbar_room = 0;
+  params.colorbar_room.row = tmp_colorbar_room;
+  params.colorbar_room.col = tmp_colorbar_room;
 
+  var row_info_space = params.labels.super_label_width + 
+    params.norm_label.width.row + params.class_room.row + params.colorbar_room.row;
   var col_info_space = params.labels.super_label_width + 
-    params.norm_label.width.col + params.class_room.col;
+    params.norm_label.width.col + params.class_room.col + params.colorbar_room.col;
 
   // reduce width by row/col labels and by grey_border width
   //(reduce width by less since this is less aparent with slanted col labels)
@@ -346,17 +350,6 @@ module.exports = function(input_config) {
     d.x = params.matrix.x_scale(d.target);
     d.y = params.matrix.y_scale(d.source);
   });
-
-  // // make lnks crossfilter
-  // // TODO check if relying on crossfilter
-  // params.cf = {};
-  // params.cf.links = crossfilter(params.network_data.links);
-  // params.cf.dim_x = params.cf.links.dimension(function (d) {
-  //   return d.x;
-  // });
-  // params.cf.dim_y = params.cf.links.dimension(function (d) {
-  //   return d.y;
-  // });
 
   params.matrix.matrix = initialize_matrix(params.network_data);
 

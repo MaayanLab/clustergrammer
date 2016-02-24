@@ -1,4 +1,4 @@
-var make_params = require('../params');
+var make_params = require('../params/');
 var change_network_view = require('./change_network_view');
 var initialize_resizing = require('../initialize_resizing');
 var ini_doubleclick = require('../ini_doubleclick');

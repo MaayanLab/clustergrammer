@@ -33,12 +33,6 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
   d3.select(params.root+' .col_viz_container')
     .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [pan_dx, 0] + ')');
 
-  // // set y translate: center_y is positive, positive moves the visualization down
-  // // the translate vector has the initial margin, the first y centering, and pan_dy
-  // // times the scaling zoom_y
-  // var net_y_offset = params.viz.clust.margin.top + center_y + pan_dy * zoom_y;
-
-
   // Resetting some visualization parameters
   ///////////////////////////////////////////////
 
@@ -47,13 +41,16 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
   params.viz.svg_dim.width  = Number(d3.select(params.viz.viz_wrapper).style('width').replace('px', ''));
   params.viz.svg_dim.height = Number(d3.select(params.viz.viz_wrapper).style('height').replace('px', ''));
 
+  var row_info_space = params.labels.super_label_width + 
+    params.norm_label.width.row + params.class_room.row + params.colorbar_room.row;
+  var col_info_space = params.labels.super_label_width + 
+    params.norm_label.width.col + params.class_room.col + params.colorbar_room.col;
+
   // reduce width by row/col labels and by grey_border width (reduce width by less since this is less aparent with slanted col labels)
-  var ini_clust_width = params.viz.svg_dim.width - (params.labels.super_label_width +
-    params.norm_label.width.row + params.class_room.row) - params.viz.grey_border_width - params.viz.spillover_x_offset;
+  var ini_clust_width = params.viz.svg_dim.width - row_info_space - params.viz.grey_border_width - params.viz.spillover_x_offset;
 
   // there is space between the clustergram and the border
-  var ini_clust_height = params.viz.svg_dim.height - (params.labels.super_label_width +
-    params.norm_label.width.col + params.class_room.col) - 5 * params.viz.grey_border_width;
+  var ini_clust_height = params.viz.svg_dim.height - col_info_space - 5 * params.viz.grey_border_width;
 
   // reduce clustergram width if triangles are taller than the normal width
   // of the columns
