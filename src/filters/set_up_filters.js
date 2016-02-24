@@ -13,11 +13,19 @@ module.exports = function set_up_filters(config, params, filter_type) {
     initial_text = 'Top rows sum: ';
     initial_value = '100';
     suffix = '%';
+  } else if (filter_type === 'pct_row_var'){
+    initial_text = 'Top rows variance: ';
+    initial_value = '100';
+    suffix = '%';    
   } else if (filter_type === 'N_row_sum'){
     initial_text = 'Top rows sum: ';
     initial_value = 'all';
     suffix = ' rows';
-  }
+  } else if (filter_type === 'N_row_var'){
+    initial_text = 'Top rows variance: ';
+    initial_value = 'all';
+    suffix = ' rows';
+  }  
 
   var row_filters = d3.select(params.root+' .'+params.sidebar.sidebar_class)
     .append('div')
@@ -67,11 +75,13 @@ module.exports = function set_up_filters(config, params, filter_type) {
 
       if (filter_type==='pct_row_sum'){
         inst_view_name = String(100-inst_view_name *100);
-        $(params.root+' .slider_'+'N_row_sum').slider( "value", 0);
+        $(params.root+' .slider_N_row_sum').slider( "value", 0);
 
       } else if (filter_type === 'N_row_sum'){
-        $(params.root+' .slider_'+'pct_row_sum').slider( "value", 0);
-
+        $(params.root+' .slider_pct_row_sum').slider( "value", 0);
+        $(params.root+' .slider_N_row_var').slider( "value", 0);
+      } else if (filter_type === 'N_row_var'){
+        $(params.root+' .slider_N_row_sum').slider( "value", 0);
       }
 
       disable_sidebar(params);

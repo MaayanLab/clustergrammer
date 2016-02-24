@@ -31,10 +31,18 @@ module.exports = function sidebar(config, params) {
 
   var views = params.network_data.views;
 
-  var possible_filters = ['N_row_sum','pct_row_sum'];
+  var possible_filters = [
+    'N_row_sum',
+    'N_row_var',
+    'pct_row_sum',
+    'pct_row_var'
+  ];
 
   _.each(possible_filters, function(inst_filter){
-    var num_views = _.filter(views, function(d) { return utils.has(d,inst_filter); }).length;
+    var num_views = _.filter(views, function(d) { 
+        return utils.has(d,inst_filter); 
+      }).length;
+
     if (num_views > 0){
       set_up_filters(config, params, inst_filter);
     }
