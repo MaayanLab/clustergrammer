@@ -10,7 +10,7 @@ module.exports = {
     return inst_name;
   },
   is_supported_order: function(order) {
-    return order === 'ini' || order === 'clust' || order === 'rank' || order === 'class';
+    return order === 'ini' || order === 'clust' || order === 'rank' || order === 'class' || order == 'alpha';
   },
 
   /* Returns whether or not an object has a certain property.

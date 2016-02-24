@@ -26,8 +26,8 @@ module.exports = function(params, inst_order, tmp_row_col) {
 
   if (row_col === 'row'){
     // load orders
-    if (inst_order === 'ini') {
-      params.matrix.x_scale.domain(params.matrix.orders.ini_row);
+    if (inst_order === 'alpha') {
+      params.matrix.x_scale.domain(params.matrix.orders.alpha_row);
     } else if (inst_order === 'clust') {
       params.matrix.x_scale.domain(params.matrix.orders.clust_row);
     } else if (inst_order === 'rank') {
@@ -38,8 +38,8 @@ module.exports = function(params, inst_order, tmp_row_col) {
 
   } else if (row_col == 'col') {
     // load orders
-    if (inst_order === 'ini') {
-      params.matrix.y_scale.domain(params.matrix.orders.ini_col);
+    if (inst_order === 'alpha') {
+      params.matrix.y_scale.domain(params.matrix.orders.alpha_col);
     } else if (inst_order === 'clust') {
       params.matrix.y_scale.domain(params.matrix.orders.clust_col);
     } else if (inst_order === 'rank') {

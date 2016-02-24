@@ -239,16 +239,24 @@ module.exports = function(input_config) {
     .domain([0, enr_max])
     .range([0, params.norm_label.width.row]);
 
+  var tmp;
+  var row_nodes_names = _.pluck(row_nodes, 'name');
+  tmp = row_nodes_names.sort();
+  var row_alpha_index = _.map(tmp, function(d){
+    return params.network_data.row_nodes_names.indexOf(d);
+  });
+
+  var col_nodes_names = _.pluck(col_nodes, 'name');
+  tmp = col_nodes_names.sort();
+  var col_alpha_index = _.map(tmp, function(d){
+    return params.network_data.col_nodes_names.indexOf(d);
+  });  
 
   // Define Orderings
   params.matrix.orders = {
     // ini
-    ini_row: d3.range(params.viz.num_col_nodes).sort(function (a, b) {
-      return col_nodes[b].ini - col_nodes[a].ini;
-    }),
-    ini_col: d3.range(params.viz.num_row_nodes).sort(function (a, b) {
-      return row_nodes[b].ini - row_nodes[a].ini;
-    }),
+    alpha_row: col_alpha_index,
+    alpha_col: row_alpha_index,
     // rank
     rank_row: d3.range(params.viz.num_col_nodes).sort(function (a, b) {
       return col_nodes[b].rank - col_nodes[a].rank;
@@ -297,8 +305,8 @@ module.exports = function(input_config) {
   params.matrix.x_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.width]);
   params.matrix.y_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.height]);
 
-  if (params.viz.inst_order.row === 'ini') {
-    params.matrix.x_scale.domain(params.matrix.orders.ini_row);
+  if (params.viz.inst_order.row === 'alpha') {
+    params.matrix.x_scale.domain(params.matrix.orders.alpha_row);
   } else if (params.viz.inst_order.row === 'clust') {
     params.matrix.x_scale.domain(params.matrix.orders.clust_row);
   } else if (params.viz.inst_order.row === 'rank') {
@@ -312,8 +320,8 @@ module.exports = function(input_config) {
 
   }
 
-  if (params.viz.inst_order.col === 'ini') {
-    params.matrix.y_scale.domain(params.matrix.orders.ini_col);
+  if (params.viz.inst_order.col === 'alpha') {
+    params.matrix.y_scale.domain(params.matrix.orders.alpha_col);
   } else if (params.viz.inst_order.col === 'clust') {
     params.matrix.y_scale.domain(params.matrix.orders.clust_col);
   } else if (params.viz.inst_order.col === 'rank') {

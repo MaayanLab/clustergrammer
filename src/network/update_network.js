@@ -20,6 +20,7 @@ module.exports = function(config, old_params, change_view) {
 
   tmp_config.network_data = new_network_data;
   tmp_config.inst_order = old_params.viz.inst_order;
+
   tmp_config.ini_expand = false;
   tmp_config.ini_view = null;
   tmp_config.current_col_cat = old_params.current_col_cat;
@@ -48,7 +49,8 @@ module.exports = function(config, old_params, change_view) {
 
   params.viz.run_trans = true;
   
-  d3.selectAll(params.root+' .d3-tip')
+  // remove any tooltips, not just those from the current viz
+  d3.selectAll('.d3-tip')
     .remove();
 
   // return updated params 

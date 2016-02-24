@@ -18,7 +18,7 @@ module.exports = function sidebar(config, params) {
     .style('float', 'left')
     .style('width','180px');
 
-  set_up_reorder(sidebar);
+  set_up_reorder(params, sidebar);
 
   set_up_search(sidebar);
 

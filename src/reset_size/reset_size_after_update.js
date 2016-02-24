@@ -58,7 +58,7 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
   // reduce clustergram width if triangles are taller than the normal width
   // of the columns
   var tmp_x_scale = d3.scale.ordinal().rangeBands([0, ini_clust_width]);
-  tmp_x_scale.domain(params.matrix.orders.ini_row);
+  tmp_x_scale.domain(params.matrix.orders.clust_row);
   var triangle_height = tmp_x_scale.rangeBand()/2 ;
   if (triangle_height > params.norm_label.width.col){
     ini_clust_width = ini_clust_width * ( params.norm_label.width.col/triangle_height );

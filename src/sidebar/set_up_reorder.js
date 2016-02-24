@@ -1,11 +1,18 @@
-module.exports = function set_up_search(sidebar){
+module.exports = function set_up_reorder(params, sidebar){
 
-  var button_data = [
-      {'name':'Cluster',
-       'short_name':'clust'},
-      {'name':'Rank by Sum',
-      'short_name':'rank'}
-    ];
+  var button_dict = {
+    'clust':'Cluster',
+    'rank':'Rank by sum',
+    'rank_var':'Rank by variance',
+    'ini':'Initial Order',
+    'alpha':'Alphabetically',
+    'cat':'Category'
+  };
+
+  var tmp_orders = Object.keys(params.matrix.orders);
+
+  var possible_orders = tmp_orders.map(function(x){return x.split('_')[0];});
+  possible_orders = _.uniq(possible_orders);
 
   var node_data = [
     {
@@ -37,7 +44,7 @@ module.exports = function set_up_search(sidebar){
 
     inst_reorder
       .selectAll('.button')
-      .data(button_data)
+      .data(possible_orders)
       .enter()
       .append('button')
       .attr('type','button')
@@ -45,17 +52,16 @@ module.exports = function set_up_search(sidebar){
       .classed('btn-primary',true)
       .classed('active', function(d){
         is_active = false;
-        if (d.name == 'Cluster'){
+        if (d == 'clust'){
           is_active = true;
         }
         return is_active;
       })
       .attr('name', function(d){
-        return d.short_name;
+        return d;
       })
-      .html(function(d){return d.name;});
+      .html(function(d){return button_dict[d];});
     
   });
-
 
 };
