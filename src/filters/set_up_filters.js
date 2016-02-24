@@ -57,9 +57,6 @@ module.exports = function set_up_filters(config, params, filter_type) {
     step: 1,
     stop: function() {
 
-      // console.log('set_up_filters')
-      // console.log(params.viz.inst_order);
-
       // get value
       var inst_index = $( params.root+' .slider_'+filter_type ).slider( "value" );
 
@@ -72,14 +69,9 @@ module.exports = function set_up_filters(config, params, filter_type) {
         inst_view_name = String(100-inst_view_name *100);
         $(params.root+' .slider_'+'N_row_sum').slider( "value", 0);
 
-        // console.log('passing params to N_row_sum')
-        // set_up_filters(config, params, 'N_row_sum');
-
       } else if (filter_type === 'N_row_sum'){
         $(params.root+' .slider_'+'pct_row_sum').slider( "value", 0);
 
-        // console.log('passing params to pct_row_sum')
-        // set_up_filters(config, params, 'pct_row_sum');
       }
 
       disable_sidebar(params);
@@ -90,8 +82,6 @@ module.exports = function set_up_filters(config, params, filter_type) {
 
       params.viz.inst_order.row = d3.select(params.root+' .toggle_col_order')
         .select('.active').attr('name');
-
-      console.log(params.viz.inst_order);
 
       params = update_network(config, params, requested_view);
 

@@ -654,11 +654,25 @@ class Network(object):
 
       # add N_row_sum views 
       if 'N_row_sum' in views:
-        print('add N top views')
-        all_views = self.add_N_top_views( send_df, all_views, dist_type=dist_type, current_col_cat=inst_col_cat )
+        print('add N_row_sum')
+        all_views = self.add_N_top_views( send_df, all_views, \
+          dist_type=dist_type, current_col_cat=inst_col_cat, rank_type='sum' )
+
+      # add N_row_var views 
+      if 'N_row_var' in views:
+        print('add N_row_var')
+        all_views = self.add_N_top_views( send_df, all_views, \
+          dist_type=dist_type, current_col_cat=inst_col_cat, rank_type='var' )
 
       if 'pct_row_sum' in views:
-        all_views = self.add_pct_top_views( send_df, all_views, dist_type=dist_type, current_col_cat=inst_col_cat )
+        print('add pct_row_sum')
+        all_views = self.add_pct_top_views( send_df, all_views, \
+          dist_type=dist_type, current_col_cat=inst_col_cat, rank_type='sum' )
+
+      if 'pct_row_var' in views:
+        print('add pct_row_var')
+        all_views = self.add_pct_top_views( send_df, all_views, \
+          dist_type=dist_type, current_col_cat=inst_col_cat, rank_type='var' )        
 
     # add views to viz 
     self.viz['views'] = all_views
@@ -666,7 +680,7 @@ class Network(object):
     print('finished make_filtered_views')
 
   def add_pct_top_views(self, df, all_views, dist_type='cosine', \
-    current_col_cat='all_category'):
+    current_col_cat='all_category', rank_type='sum'):
 
     from clustergrammer import Network 
     from copy import deepcopy 
@@ -751,7 +765,7 @@ class Network(object):
 
         # add view 
         inst_view = {}
-        inst_view['pct_row_sum'] = inst_filt
+        inst_view['pct_row_'+rank_type] = inst_filt
         inst_view['dist'] = 'cos'
         inst_view['col_cat'] = current_col_cat
         inst_view['nodes'] = {}
@@ -765,7 +779,7 @@ class Network(object):
     return all_views
 
   def add_N_top_views(self, df, all_views, dist_type='cosine',\
-    current_col_cat='all_category'):
+    current_col_cat='all_category', rank_type='sum'):
 
     from clustergrammer import Network
     from copy import deepcopy 
@@ -797,13 +811,15 @@ class Network(object):
     df_abs = df_abs.transpose()
 
     # sum the values of the genes in the cell lines 
-    tmp_sum = df_abs.sum(axis=0)
+    if rank_type == 'sum':
+      tmp_sum = df_abs.sum(axis=0)
+    elif rank_type == 'var':
+      tmp_sum = df_abs.var(axis=0)
 
     # take absolute value to keep most positive and most negative rows 
     tmp_sum = tmp_sum.abs()
 
     # sort rows by value 
-    # tmp_sum.sort(ascending=False)
     tmp_sum.sort_values(inplace=True, ascending=False)
 
     rows_sorted = tmp_sum.index.values.tolist()
@@ -877,7 +893,7 @@ class Network(object):
 
           # add view 
           inst_view = {}
-          inst_view['N_row_sum'] = inst_keep
+          inst_view['N_row_'+rank_type] = inst_keep
           inst_view['dist'] = 'cos'
           inst_view['col_cat'] = current_col_cat
           inst_view['nodes'] = {}
