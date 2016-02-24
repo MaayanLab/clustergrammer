@@ -85,11 +85,13 @@ module.exports = function set_up_filters(config, params, filter_type) {
       disable_sidebar(params);
 
       // get current row ordering from buttons 
-      params.viz.inst_order.row = d3.select(params.root+' .toggle_row_order')
+      params.viz.inst_order.col = d3.select(params.root+' .toggle_row_order')
         .select('.active').attr('name');
 
-      params.viz.inst_order.col = d3.select(params.root+' .toggle_col_order')
+      params.viz.inst_order.row = d3.select(params.root+' .toggle_col_order')
         .select('.active').attr('name');
+
+      console.log(params.viz.inst_order);
 
       params = update_network(config, params, requested_view);
 
