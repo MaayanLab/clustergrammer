@@ -308,8 +308,13 @@ class Network(object):
 
     # rank 
     if run_rank == True:
-      clust_order['row']['rank'] = self.sort_rank_nodes('row')
-      clust_order['col']['rank'] = self.sort_rank_nodes('col')
+      # rank based on sum 
+      clust_order['row']['rank'] = self.sort_rank_nodes('row','sum')
+      clust_order['col']['rank'] = self.sort_rank_nodes('col','sum')
+
+      # rank based on variance 
+      clust_order['row']['rankvar'] = self.sort_rank_nodes('row','var')
+      clust_order['col']['rankvar'] = self.sort_rank_nodes('col','var')
 
     # save clustering orders to node_info 
     if run_clustering == True:
@@ -320,8 +325,14 @@ class Network(object):
       self.dat['node_info']['col']['clust'] = clust_order['col']['ini']
 
     if run_rank == True:
+      # sum rank 
       self.dat['node_info']['row']['rank']  = clust_order['row']['rank']
       self.dat['node_info']['col']['rank']  = clust_order['col']['rank']
+
+      # variance rank 
+      self.dat['node_info']['row']['rankvar']  = clust_order['row']['rankvar']
+      self.dat['node_info']['col']['rankvar']  = clust_order['col']['rankvar']
+
     else:
       self.dat['node_info']['row']['rank']  = clust_order['row']['ini']
       self.dat['node_info']['col']['rank']  = clust_order['col']['ini']
@@ -429,40 +440,7 @@ class Network(object):
 
     return inst_clust_order, inst_groups
 
-  def sort_rank_node_values( self, rowcol ):
-    import numpy as np
-    from operator import itemgetter
-    from copy import deepcopy
-
-    # make a copy of nodes and node_info
-    inst_nodes = deepcopy(self.dat['nodes'][rowcol])
-    inst_vals  = deepcopy(self.dat['node_info'][rowcol]['value'])
-
-    tmp_arr = []
-    for i in range(len(inst_nodes)):
-      inst_dict = {}
-      # get name of the node 
-      inst_dict['name'] = inst_nodes[i]
-      # get value 
-      inst_dict['value'] = inst_vals[i]
-      tmp_arr.append(inst_dict)
-
-    # sort dictionary by value 
-    tmp_arr = sorted( tmp_arr, key=itemgetter('value') )
-
-    # get list of sorted nodes 
-    tmp_sort_nodes = []
-    for inst_dict in tmp_arr:
-      tmp_sort_nodes.append( inst_dict['name'] )
-
-    # get the sorted index 
-    sort_index = []
-    for inst_node in inst_nodes:
-      sort_index.append( tmp_sort_nodes.index(inst_node) )
-
-    return sort_index
-
-  def sort_rank_nodes( self, rowcol ):
+  def sort_rank_nodes( self, rowcol, rank_type ):
     import numpy as np
     from operator import itemgetter
     from copy import deepcopy
@@ -478,14 +456,22 @@ class Network(object):
       inst_dict['name'] = inst_nodes[i]
       # sum values of the node
       if rowcol == 'row':
-        inst_dict['total'] = np.sum(inst_mat[i,:])
+        if rank_type == 'sum':
+          inst_dict['rank'] = np.sum(inst_mat[i,:])
+        elif rank_type == 'var':
+          inst_dict['rank'] = np.var(inst_mat[i,:])
       else:
-        inst_dict['total'] = np.sum(inst_mat[:,i])
+        if rank_type == 'sum':
+          inst_dict['rank'] = np.sum(inst_mat[:,i])
+        elif rank_type == 'var':
+          inst_dict['rank'] = np.var(inst_mat[:,i])
       # add this to the list of dicts 
       sum_term.append(inst_dict)
 
+
     # sort dictionary by number of terms 
-    sum_term = sorted( sum_term, key=itemgetter('total'), reverse=False )
+    sum_term = sorted( sum_term, key=itemgetter('rank'), reverse=False )
+
     # get list of sorted nodes 
     tmp_sort_nodes = []
     for inst_dict in sum_term:
@@ -513,9 +499,14 @@ class Network(object):
         inst_dict = {}
         inst_dict['name']  = self.dat['nodes'][inst_rc][i]
         inst_dict['ini']   = self.dat['node_info'][inst_rc]['ini'][i]
+
         #!! clean this up so I do not have to get the index here 
         inst_dict['clust'] = self.dat['node_info'][inst_rc]['clust'].index(i)
+
         inst_dict['rank']  = self.dat['node_info'][inst_rc]['rank'][i]
+
+        if 'rankvar' in self.dat['node_info'][inst_rc]:
+          inst_dict['rankvar']  = self.dat['node_info'][inst_rc]['rankvar'][i]
 
 
         # add node class cl 

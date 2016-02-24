@@ -273,6 +273,16 @@ module.exports = function(input_config) {
     })
   };
 
+  // check if rankvar order is available 
+  if (_.has(params.network_data.row_nodes[0],'rankvar') ){
+    params.matrix.orders.rankvar_row = d3.range(params.viz.num_col_nodes).sort(function (a, b) {
+      return col_nodes[b].rankvar - col_nodes[a].rankvar;
+    });
+
+    params.matrix.orders.rankvar_col = d3.range(params.viz.num_row_nodes).sort(function (a, b) {
+      return row_nodes[b].rankvar - row_nodes[a].rankvar;
+    });
+  }
 
   // // define class ordering - define on front-end
   // if (utils.has(col_nodes[0],'cl')){

@@ -2,8 +2,8 @@ module.exports = function set_up_reorder(params, sidebar){
 
   var button_dict = {
     'clust':'Cluster',
-    'rank':'Rank by sum',
-    'rank_var':'Rank by variance',
+    'rank':'Rank by Sum',
+    'rankvar':'Rank by Variance',
     'ini':'Initial Order',
     'alpha':'Alphabetically',
     'cat':'Category'
@@ -13,6 +13,8 @@ module.exports = function set_up_reorder(params, sidebar){
 
   var possible_orders = tmp_orders.map(function(x){return x.split('_')[0];});
   possible_orders = _.uniq(possible_orders);
+
+  possible_orders = possible_orders.sort();
 
   var node_data = [
     {

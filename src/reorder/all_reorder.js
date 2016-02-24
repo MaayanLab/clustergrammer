@@ -1,6 +1,8 @@
 
 module.exports = function(params, inst_order, tmp_row_col) {
 
+  console.log(inst_order)
+
   // row/col names are swapped, will improve later
   var row_col;
   if (tmp_row_col==='row'){
