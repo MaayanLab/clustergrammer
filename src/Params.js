@@ -158,10 +158,7 @@ module.exports = function(input_config) {
     params.class_room.col = params.class_room.symbol_width;
 
     // TODO check this
-    config.group_level = {
-      row: 5,
-      col: 5
-    };
+    config.group_level = {row: 5, col: 5};
 
   } else {
     params.class_room.row = params.class_room.symbol_width;
@@ -169,23 +166,40 @@ module.exports = function(input_config) {
   }
 
   params.norm_label.background = {};
-  params.norm_label.background.row = params.norm_label.width.row + params.class_room.row + params.viz.uni_margin;
-  params.norm_label.background.col = params.norm_label.width.col + params.class_room.col + params.viz.uni_margin;
+
+  params.viz.bottom_space = 15;
+
+  params.norm_label.background.row = params.norm_label.width.row + 
+    params.class_room.row + params.viz.uni_margin;
+
+  params.norm_label.background.col = params.norm_label.width.col + 
+    params.class_room.col + params.viz.uni_margin;
 
   params.viz.clust = {};
   params.viz.clust.margin = {};
-  params.viz.clust.margin.left = params.norm_label.margin.left + params.norm_label.background.row;
-  params.viz.clust.margin.top = params.norm_label.margin.top + params.norm_label.background.col;
-  params.viz.spillover_x_offset = label_scale(col_max_char) * 0.7 * params.col_label_scale;
+  params.viz.clust.margin.left = params.norm_label.margin.left + 
+    params.norm_label.background.row;
+
+  params.viz.clust.margin.top = params.norm_label.margin.top + 
+    params.norm_label.background.col;
+
+  params.viz.spillover_x_offset = label_scale(col_max_char) * 0.7 * 
+    params.col_label_scale;
+
+  var row_info_space = params.labels.super_label_width + 
+    params.norm_label.width.row + params.class_room.row;
+
+  var col_info_space = params.labels.super_label_width + 
+    params.norm_label.width.col + params.class_room.col;
 
   // reduce width by row/col labels and by grey_border width
   //(reduce width by less since this is less aparent with slanted col labels)
-  var ini_clust_width = params.viz.svg_dim.width - (params.labels.super_label_width +
-    params.norm_label.width.row + params.class_room.row) - params.viz.grey_border_width - params.viz.spillover_x_offset;
+  var ini_clust_width = params.viz.svg_dim.width - row_info_space 
+    - params.viz.grey_border_width - params.viz.spillover_x_offset;
 
   // there is space between the clustergram and the border
-  var ini_clust_height = params.viz.svg_dim.height - (params.labels.super_label_width +
-    params.norm_label.width.col + params.class_room.col) - 5 * params.viz.grey_border_width;
+  var ini_clust_height = params.viz.svg_dim.height - col_info_space 
+    - params.viz.bottom_space;
 
   params.viz.num_col_nodes = col_nodes.length;
   params.viz.num_row_nodes = row_nodes.length;
@@ -201,9 +215,13 @@ module.exports = function(input_config) {
   }
   params.viz.clust.dim.width = ini_clust_width;
 
-  if (ini_clust_width / params.viz.num_col_nodes < ini_clust_height / params.viz.num_row_nodes) {
+  var width_by_col  = ini_clust_width / params.viz.num_col_nodes;
+  var height_by_row = ini_clust_height / params.viz.num_row_nodes;
 
-    params.viz.clust.dim.height = ini_clust_width * (params.viz.num_row_nodes / params.viz.num_col_nodes );
+  if ( width_by_col < height_by_row ) {
+
+    params.viz.clust.dim.height = ini_clust_width * 
+      (params.viz.num_row_nodes / params.viz.num_col_nodes );
 
     params.viz.force_square = 1;
 
@@ -325,9 +343,6 @@ module.exports = function(input_config) {
     .domain( params.matrix.orders[ params.viz.inst_order.col + '_col' ] );
 
   params.network_data.links.forEach(function (d) {
-    // d.name = row_nodes[d.source].name + '_' + col_nodes[d.target].name;
-    // d.row_name = row_nodes[d.source].name;
-    // d.col_name = col_nodes[d.target].name;
     d.x = params.matrix.x_scale(d.target);
     d.y = params.matrix.y_scale(d.source);
   });
