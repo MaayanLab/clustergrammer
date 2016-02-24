@@ -1,8 +1,10 @@
 /* global __dirname:false */
 
+var DEBUG = process.argv.indexOf('-p') === -1;
+
 module.exports = {
     entry: './src/main.js',
-    devtool: 'cheap-module-eval-source-map',
+    devtool: DEBUG ? 'cheap-module-eval-source-map' : false,
     target: 'web',
     output: {
       path: __dirname,
