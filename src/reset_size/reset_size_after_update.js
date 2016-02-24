@@ -30,7 +30,7 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
   d3.select(params.root+' .col_zoom_container')
     .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [pan_dx, 0] + ')');
 
-  d3.select(params.root+' .col_viz_zoom_container')
+  d3.select(params.root+' .col_viz_container')
     .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [pan_dx, 0] + ')');
 
   // // set y translate: center_y is positive, positive moves the visualization down
