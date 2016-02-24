@@ -25,29 +25,15 @@ module.exports = function(params, inst_order, tmp_row_col) {
   var col_nodes_names = _.pluck(col_nodes_obj, 'name');
 
   if (row_col === 'row'){
-    // load orders
-    if (inst_order === 'alpha') {
-      params.matrix.x_scale.domain(params.matrix.orders.alpha_row);
-    } else if (inst_order === 'clust') {
-      params.matrix.x_scale.domain(params.matrix.orders.clust_row);
-    } else if (inst_order === 'rank') {
-      params.matrix.x_scale.domain(params.matrix.orders.rank_row);
-    } else if (inst_order === 'class') {
-      params.matrix.x_scale.domain(params.matrix.orders.class_row);
-    }
+
+    params.matrix.x_scale
+      .domain( params.matrix.orders[ params.viz.inst_order.row + '_row' ] );
 
   } else if (row_col == 'col') {
-    // load orders
-    if (inst_order === 'alpha') {
-      params.matrix.y_scale.domain(params.matrix.orders.alpha_col);
-    } else if (inst_order === 'clust') {
-      params.matrix.y_scale.domain(params.matrix.orders.clust_col);
-    } else if (inst_order === 'rank') {
-      params.matrix.y_scale.domain(params.matrix.orders.rank_col);
-    } else if (inst_order === 'class') {
-      // params.matrix.x_scale.domain(params.matrix.orders.class_row);
-      params.matrix.y_scale.domain(params.matrix.orders.class_col);
-    }
+
+    params.matrix.y_scale
+      .domain( params.matrix.orders[ params.viz.inst_order.col + '_col' ] );
+
   }
 
   var t;

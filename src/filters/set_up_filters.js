@@ -19,7 +19,6 @@ module.exports = function set_up_filters(config, params, filter_type) {
     suffix = ' rows';
   }
 
-
   var row_filters = d3.select(params.root+' .'+params.sidebar.sidebar_class)
     .append('div')
     .classed('row_filters',true);
@@ -58,6 +57,9 @@ module.exports = function set_up_filters(config, params, filter_type) {
     step: 1,
     stop: function() {
 
+      // console.log('set_up_filters')
+      // console.log(params.viz.inst_order);
+
       // get value
       var inst_index = $( params.root+' .slider_'+filter_type ).slider( "value" );
 
@@ -69,11 +71,25 @@ module.exports = function set_up_filters(config, params, filter_type) {
       if (filter_type==='pct_row_sum'){
         inst_view_name = String(100-inst_view_name *100);
         $(params.root+' .slider_'+'N_row_sum').slider( "value", 0);
+
+        // console.log('passing params to N_row_sum')
+        // set_up_filters(config, params, 'N_row_sum');
+
       } else if (filter_type === 'N_row_sum'){
         $(params.root+' .slider_'+'pct_row_sum').slider( "value", 0);
+
+        // console.log('passing params to pct_row_sum')
+        // set_up_filters(config, params, 'pct_row_sum');
       }
 
       disable_sidebar(params);
+
+      // get current row ordering from buttons 
+      params.viz.inst_order.row = d3.select(params.root+' .toggle_row_order')
+        .select('.active').attr('name');
+
+      params.viz.inst_order.col = d3.select(params.root+' .toggle_col_order')
+        .select('.active').attr('name');
 
       params = update_network(config, params, requested_view);
 

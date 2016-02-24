@@ -302,37 +302,17 @@ module.exports = function(input_config) {
     });
   }
 
-  params.matrix.x_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.width]);
-  params.matrix.y_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.height]);
+  params.matrix.x_scale = d3.scale.ordinal()
+    .rangeBands([0, params.viz.clust.dim.width]);
 
-  if (params.viz.inst_order.row === 'alpha') {
-    params.matrix.x_scale.domain(params.matrix.orders.alpha_row);
-  } else if (params.viz.inst_order.row === 'clust') {
-    params.matrix.x_scale.domain(params.matrix.orders.clust_row);
-  } else if (params.viz.inst_order.row === 'rank') {
-    params.matrix.x_scale.domain(params.matrix.orders.rank_row);
-  } else if (params.viz.inst_order.row === 'class') {
-    if (utils.has(params.matrix.orders, 'class_row')) {
-      params.matrix.x_scale.domain(params.matrix.orders.class_row);
-    } else {
-      params.matrix.x_scale.domain(params.matrix.orders.clust_row);
-    }
+  params.matrix.y_scale = d3.scale.ordinal()
+    .rangeBands([0, params.viz.clust.dim.height]);
 
-  }
+  params.matrix.x_scale
+    .domain( params.matrix.orders[ params.viz.inst_order.row + '_row' ] );
 
-  if (params.viz.inst_order.col === 'alpha') {
-    params.matrix.y_scale.domain(params.matrix.orders.alpha_col);
-  } else if (params.viz.inst_order.col === 'clust') {
-    params.matrix.y_scale.domain(params.matrix.orders.clust_col);
-  } else if (params.viz.inst_order.col === 'rank') {
-    params.matrix.y_scale.domain(params.matrix.orders.rank_col);
-  } else if (params.viz.inst_order.col === 'class') {
-    if (utils.has(params.matrix.orders, 'class_row')) {
-      params.matrix.y_scale.domain(params.matrix.orders.class_col);
-    } else {
-      params.matrix.y_scale.domain(params.matrix.orders.clust_col);
-    }
-  }
+  params.matrix.y_scale
+    .domain( params.matrix.orders[ params.viz.inst_order.col + '_col' ] );
 
   params.network_data.links.forEach(function (d) {
     // d.name = row_nodes[d.source].name + '_' + col_nodes[d.target].name;
