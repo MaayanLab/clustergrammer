@@ -44,7 +44,8 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
     params.norm_label.width.row + params.class_room.row + params.colorbar_room.row;
 
   // reduce width by row/col labels and by grey_border width (reduce width by less since this is less aparent with slanted col labels)
-  var ini_clust_width = params.viz.svg_dim.width - row_info_space - params.viz.grey_border_width - params.viz.spillover_x_offset;
+  var ini_clust_width = params.viz.svg_dim.width - row_info_space 
+    - params.viz.grey_border_width - params.viz.spillover_x_offset;
 
   // reduce clustergram width if triangles are taller than the normal width
   // of the columns

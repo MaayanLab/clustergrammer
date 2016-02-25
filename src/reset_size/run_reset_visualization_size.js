@@ -3,6 +3,7 @@ var utils = require('../utils');
 var zoomed = require('../zoomed');
 var ini_doubleclick = require('../ini_doubleclick');
 var get_svg_dim = require('../params/get_svg_dim');
+var is_force_square = require('../params/is_force_square');
 
 module.exports = function(params, set_clust_width, set_clust_height, set_margin_left, set_margin_top) {
 
@@ -62,10 +63,6 @@ module.exports = function(params, set_clust_width, set_clust_height, set_margin_
   var ini_clust_width = params.viz.svg_dim.width - (params.labels.super_label_width +
     params.norm_label.width.row + params.class_room.row) - params.viz.grey_border_width - params.viz.spillover_x_offset;
 
-  // there is space between the clustergram and the border
-  var ini_clust_height = params.viz.svg_dim.height - (params.labels.super_label_width +
-    params.norm_label.width.col + params.class_room.col) - 5 * params.viz.grey_border_width;
-
   // reduce clustergram width if triangles are taller than the normal width
   // of the columns
   var tmp_x_scale = d3.scale.ordinal().rangeBands([0, ini_clust_width]);
@@ -76,35 +73,7 @@ module.exports = function(params, set_clust_width, set_clust_height, set_margin_
   }
   params.viz.clust.dim.width = ini_clust_width ;
 
-  // clustergram height
-  ////////////////////////
-  // ensure that rects are never taller than they are wide
-  // force square tiles
-  if (ini_clust_width / params.viz.num_col_nodes < ini_clust_height / params.viz.num_row_nodes) {
-
-    // scale the height
-    params.viz.clust.dim.height = ini_clust_width * (params.viz.num_row_nodes / params.viz.num_col_nodes);
-
-    // keep track of whether or not a force square has occurred
-    // so that I can adjust the font accordingly
-    params.viz.force_square = 1;
-
-    // make sure that force_square does not cause the entire visualization
-    // to be taller than the svg, if it does, then undo
-    if (params.viz.clust.dim.height > ini_clust_height) {
-    // make the height equal to the width
-    params.viz.clust.dim.height = ini_clust_height;
-    // keep track of whether or not a force square has occurred
-    params.viz.force_square = 0;
-    }
-  }
-  // do not force square tiles
-  else {
-    // the height will be calculated normally - leading to wide tiles
-    params.viz.clust.dim.height = ini_clust_height;
-    // keep track of whether or not a force square has occurred
-    params.viz.force_square = 0;
-  }
+  params = is_force_square(params);  
 
   // zoom_switch from 1 to 2d zoom
   params.viz.zoom_switch = (params.viz.clust.dim.width / params.viz.num_col_nodes) / (params.viz.clust.dim.height / params.viz.num_row_nodes);
@@ -113,8 +82,6 @@ module.exports = function(params, set_clust_width, set_clust_height, set_margin_
   if (params.viz.zoom_switch < 1) {
     params.viz.zoom_switch = 1;
   }
-
-
 
 
   // Begin resizing the visualization

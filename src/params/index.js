@@ -76,6 +76,8 @@ module.exports = function params(input_config) {
   params.colorbar_room.row = tmp_colorbar_room;
   params.colorbar_room.col = tmp_colorbar_room;
 
+
+
   var row_info_space = params.labels.super_label_width + 
     params.norm_label.width.row + params.class_room.row + params.colorbar_room.row;
 
