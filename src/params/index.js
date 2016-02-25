@@ -4,6 +4,7 @@ var change_network_view = require('../network/change_network_view');
 var parent_div_size = require('../parent_div_size');
 var initialize_matrix = require('../initialize_matrix');
 var zoomed = require('../zoomed');
+var is_force_square = require('./is_force_square');
 
 /* Params: calculates the size of all the visualization elements in the
 clustergram.
@@ -193,17 +194,11 @@ module.exports = function params(input_config) {
 
   var row_info_space = params.labels.super_label_width + 
     params.norm_label.width.row + params.class_room.row + params.colorbar_room.row;
-  var col_info_space = params.labels.super_label_width + 
-    params.norm_label.width.col + params.class_room.col + params.colorbar_room.col;
 
   // reduce width by row/col labels and by grey_border width
   //(reduce width by less since this is less aparent with slanted col labels)
   var ini_clust_width = params.viz.svg_dim.width - row_info_space 
     - params.viz.grey_border_width - params.viz.spillover_x_offset;
-
-  // there is space between the clustergram and the border
-  var ini_clust_height = params.viz.svg_dim.height - col_info_space 
-    - params.viz.bottom_space;
 
   params.viz.num_col_nodes = col_nodes.length;
   params.viz.num_row_nodes = row_nodes.length;
@@ -219,30 +214,11 @@ module.exports = function params(input_config) {
   }
   params.viz.clust.dim.width = ini_clust_width;
 
-  var width_by_col  = ini_clust_width / params.viz.num_col_nodes;
-  var height_by_row = ini_clust_height / params.viz.num_row_nodes;
-
-  if ( width_by_col < height_by_row ) {
-
-    params.viz.clust.dim.height = ini_clust_width * 
-      (params.viz.num_row_nodes / params.viz.num_col_nodes );
-
-    params.viz.force_square = 1;
-
-    if (params.viz.clust.dim.height > ini_clust_height) {
-      params.viz.clust.dim.height = ini_clust_height;
-      params.viz.force_square = 0;
-    }
-  }
-  else {
-    params.viz.clust.dim.height = ini_clust_height;
-    params.viz.force_square = 0;
-  }
+  params = is_force_square(params);
 
   if (config.force_square === 1) {
     params.viz.force_square = 1;
   }
-
 
   var enr_max = Math.abs(_.max(col_nodes, function (d) {
     return Math.abs(d.value);
