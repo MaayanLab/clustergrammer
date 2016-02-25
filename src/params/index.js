@@ -6,6 +6,7 @@ var initialize_matrix = require('../initialize_matrix');
 var zoomed = require('../zoomed');
 var is_force_square = require('./is_force_square');
 var get_svg_dim = require('./get_svg_dim');
+var set_label_params = require('./set_label_params');
 
 /* Params: calculates the size of all the visualization elements in the
 clustergram.
@@ -21,24 +22,7 @@ module.exports = function params(input_config) {
     params.ini_view = null;
   }
 
-  params.labels = {};
-  params.labels.super_label_scale = config.super_label_scale;
-  params.labels.super_labels = config.super_labels;
-
-  if (params.labels.super_labels) {
-    params.labels.super_label_width = 20 * params.labels.super_label_scale;
-    params.labels.super = {};
-    params.labels.super.row = config.super.row;
-    params.labels.super.col = config.super.col;
-  } else {
-    params.labels.super_label_width = 0;
-  }
-
-  params.labels.show_categories = config.show_categories;
-  if (params.labels.show_categories) {
-    params.labels.class_colors = config.class_colors;
-  }
-  params.labels.show_label_tooltips = config.show_label_tooltips;
+  params = set_label_params(config, params);
 
   params.matrix = {};
   params.matrix.tile_colors = config.tile_colors;
@@ -51,6 +35,8 @@ module.exports = function params(input_config) {
   params.matrix.make_tile_tooltip = config.make_tile_tooltip;
 
   params.viz = {};
+
+  params.viz.spillover_x_offset = params.norm_label.width.col;
 
   params.viz.viz_wrapper = config.root + ' .viz_wrapper';
   params.viz.viz_svg = params.viz.viz_wrapper + ' .viz_svg';
@@ -104,46 +90,13 @@ module.exports = function params(input_config) {
   params.network_data.row_nodes_names = _.pluck(row_nodes, 'name');
   params.network_data.col_nodes_names = _.pluck(col_nodes, 'name');
 
-  var row_max_char = _.max(row_nodes, function (inst) {
-    return inst.name.length;
-  }).name.length;
-  var col_max_char = _.max(col_nodes, function (inst) {
-    return inst.name.length;
-  }).name.length;
 
-  params.labels.row_max_char = row_max_char;
-  params.labels.col_max_char = col_max_char;
 
-  params.labels.max_label_char = 10;
 
-  var min_num_char = 5;
-  var max_num_char = params.labels.max_label_char;
 
-  params.labels.show_char = 10;
 
-  // calc how much of the label to keep
-  var keep_label_scale = d3.scale.linear()
-    .domain([params.labels.show_char, max_num_char])
-    .range([1, params.labels.show_char / max_num_char]).clamp('true');
 
-  params.labels.row_keep = keep_label_scale(row_max_char);
-  params.labels.col_keep = keep_label_scale(col_max_char);
 
-  // define label scale
-  var min_label_width = 65;
-  var max_label_width = 115;
-  var label_scale = d3.scale.linear()
-    .domain([min_num_char, max_num_char])
-    .range([min_label_width, max_label_width]).clamp('true');
-
-  params.norm_label = {};
-  params.norm_label.width = {};
-
-  params.norm_label.width.row = label_scale(row_max_char)
-    * params.row_label_scale;
-
-  params.norm_label.width.col = label_scale(col_max_char)
-    * params.col_label_scale;
 
   params.norm_label.margin = {};
   params.norm_label.margin.left = params.viz.grey_border_width + params.labels.super_label_width;
@@ -183,8 +136,7 @@ module.exports = function params(input_config) {
   params.viz.clust.margin.top = params.norm_label.margin.top + 
     params.norm_label.background.col;
 
-  params.viz.spillover_x_offset = label_scale(col_max_char) * 0.7 * 
-    params.col_label_scale;
+
 
   params.colorbar_room = {};
   var tmp_colorbar_room = 0;

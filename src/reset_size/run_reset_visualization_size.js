@@ -2,6 +2,7 @@
 var utils = require('../utils');
 var zoomed = require('../zoomed');
 var ini_doubleclick = require('../ini_doubleclick');
+var get_svg_dim = require('../params/get_svg_dim');
 
 module.exports = function(params, set_clust_width, set_clust_height, set_margin_left, set_margin_top) {
 
@@ -55,11 +56,8 @@ module.exports = function(params, set_clust_width, set_clust_height, set_margin_
   // Resetting some visualization parameters
   ///////////////////////////////////////////////
 
-  // get height and width from parent div
-  params.viz.svg_dim = {};
-  params.viz.svg_dim.width  = Number(d3.select(params.viz.viz_wrapper).style('width').replace('px', ''));
-  params.viz.svg_dim.height = Number(d3.select(params.viz.viz_wrapper).style('height').replace('px', ''));
-
+  params = get_svg_dim(params);
+  
   // reduce width by row/col labels and by grey_border width (reduce width by less since this is less aparent with slanted col labels)
   var ini_clust_width = params.viz.svg_dim.width - (params.labels.super_label_width +
     params.norm_label.width.row + params.class_room.row) - params.viz.grey_border_width - params.viz.spillover_x_offset;
