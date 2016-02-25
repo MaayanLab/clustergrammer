@@ -305,10 +305,6 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
 
   }
 
-
-  bound_label_size(params, svg_group);
-
-
   svg_group.selectAll('.col_label_click')
     .each(function() {
       d3.select(this)
@@ -412,10 +408,10 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
       });
   }
 
+  // run for both view update and screen resize 
+  bound_label_size(params, svg_group);
   resize_dendro(params, svg_group, delays);
-
   resize_super_labels(params, svg_group, delays);
-
   resize_spillover(params, svg_group, delays);
 
   // reset zoom and translate

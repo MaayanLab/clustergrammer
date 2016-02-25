@@ -255,6 +255,29 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
 
   }
 
+  svg_group
+    .selectAll('.row_viz_group')
+    .attr('transform', function(d) {
+        var inst_index = _.indexOf(row_nodes_names, d.name);
+        return 'translate(0, ' + params.matrix.y_scale(inst_index) + ')';
+      });
+
+  svg_group
+    .selectAll('.row_viz_group')
+    .select('path')
+    .attr('d', function() {
+      var origin_x = params.class_room.symbol_width - 1;
+      var origin_y = 0;
+      var mid_x = 1;
+      var mid_y = params.matrix.rect_height / 2;
+      var final_x = params.class_room.symbol_width - 1;
+      var final_y = params.matrix.rect_height;
+      var output_string = 'M ' + origin_x + ',' + origin_y + ' L ' +
+        mid_x + ',' + mid_y + ', L ' + final_x + ',' + final_y + ' Z';
+      return output_string;
+    });    
+
+
   // resize col labels
   ///////////////////////
   svg_group.select(params.root+' .col_container')
@@ -291,34 +314,6 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
     .style('font-size', params.labels.default_fs_col + 'px')
     .text(function(d){ return normal_name(params, d);});
 
-
-  bound_label_size(params, svg_group);
-
-
-
-
-
-  svg_group
-    .selectAll('.row_viz_group')
-    .attr('transform', function(d) {
-        var inst_index = _.indexOf(row_nodes_names, d.name);
-        return 'translate(0, ' + params.matrix.y_scale(inst_index) + ')';
-      });
-
-  svg_group
-    .selectAll('.row_viz_group')
-    .select('path')
-    .attr('d', function() {
-      var origin_x = params.class_room.symbol_width - 1;
-      var origin_y = 0;
-      var mid_x = 1;
-      var mid_y = params.matrix.rect_height / 2;
-      var final_x = params.class_room.symbol_width - 1;
-      var final_y = params.matrix.rect_height;
-      var output_string = 'M ' + origin_x + ',' + origin_y + ' L ' +
-        mid_x + ',' + mid_y + ', L ' + final_x + ',' + final_y + ' Z';
-      return output_string;
-    });    
 
   svg_group
     .selectAll('.col_label_click')
@@ -387,14 +382,14 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
       });
   }
 
+  // run for both view update and screen resize 
+  bound_label_size(params, svg_group);
   resize_dendro(params, svg_group);
-
-  resize_grid_lines(params, svg_group);
-
   resize_super_labels(params, svg_group);
-
   resize_spillover(params, svg_group);
 
+  // specific to screen resize 
+  resize_grid_lines(params, svg_group);
   resize_borders(params, svg_group);
 
   // reset zoom and translate
