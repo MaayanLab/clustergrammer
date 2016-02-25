@@ -7,6 +7,8 @@ var zoomed = require('../zoomed');
 var is_force_square = require('./is_force_square');
 var get_svg_dim = require('./get_svg_dim');
 var set_label_params = require('./set_label_params');
+var set_viz_params = require('./set_viz_params');
+var set_matrix_params = require('./set_matrix_params');
 
 /* Params: calculates the size of all the visualization elements in the
 clustergram.
@@ -24,57 +26,15 @@ module.exports = function params(input_config) {
 
   params = set_label_params(config, params);
 
-  params.matrix = {};
-  params.matrix.tile_colors = config.tile_colors;
-  params.matrix.bar_colors = config.bar_colors;
-  params.matrix.outline_colors = config.outline_colors;
-  params.matrix.hlight_color = config.highlight_color;
-  params.matrix.tile_title = config.tile_title;
-  params.matrix.show_tile_tooltips = config.show_tile_tooltips;
+  params = set_viz_params(config, params);
 
-  params.matrix.make_tile_tooltip = config.make_tile_tooltip;
-
-  params.viz = {};
-
-  params.viz.spillover_x_offset = params.norm_label.width.col;
-
-  params.viz.viz_wrapper = config.root + ' .viz_wrapper';
-  params.viz.viz_svg = params.viz.viz_wrapper + ' .viz_svg';
-
-  params.sidebar = {};
-  params.sidebar.sidebar_class = 'sidebar_wrapper';
-
-  params.viz.do_zoom = config.do_zoom;
-  params.viz.resize = config.resize;
-  // background colors
-  params.viz.background_color = config.background_color;
-  params.viz.super_border_color = config.super_border_color;
-  // margin widths
-  params.viz.outer_margins = config.outer_margins;
-  params.viz.outer_margins_expand = config.outer_margins_expand;
-  params.viz.expand = config.ini_expand;
-  params.viz.uni_margin = config.uni_margin;
-  params.viz.grey_border_width = config.grey_border_width;
-  params.viz.show_dendrogram = config.show_dendrogram;
-  params.viz.tile_click_hlight = config.tile_click_hlight;
-
-  params.viz.uni_duration = 1000;
-
-  // initialized clicked tile and rows
-  params.matrix.click_hlight_x = -666;
-  params.matrix.click_hlight_y = -666;
-  params.matrix.click_hlight_row = -666;
-  params.matrix.click_hlight_col = -666;
+  params = set_matrix_params(config, params);
 
   // definition of a large matrix - based on number of links
   // below this cutoff reordering is done with transitions
   params.matrix.def_large_matrix = 10000;
 
-  params.viz.inst_order = config.inst_order;
-
   params.matrix.opacity_function = config.opacity_scale;
-
-  params.viz.expand_button = config.expand_button;
 
   var col_nodes = params.network_data.col_nodes;
   var row_nodes = params.network_data.row_nodes;
@@ -89,14 +49,6 @@ module.exports = function params(input_config) {
 
   params.network_data.row_nodes_names = _.pluck(row_nodes, 'name');
   params.network_data.col_nodes_names = _.pluck(col_nodes, 'name');
-
-
-
-
-
-
-
-
 
   params.norm_label.margin = {};
   params.norm_label.margin.left = params.viz.grey_border_width + params.labels.super_label_width;
@@ -119,8 +71,6 @@ module.exports = function params(input_config) {
   }
 
   params.norm_label.background = {};
-
-  params.viz.bottom_space = 15;
 
   params.norm_label.background.row = params.norm_label.width.row + 
     params.class_room.row + params.viz.uni_margin;
