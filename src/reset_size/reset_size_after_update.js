@@ -1,62 +1,19 @@
 var utils = require('../utils');
 var is_force_square = require('../params/is_force_square');
 var get_svg_dim = require('../params/get_svg_dim');
+var set_clust_width = require('../params/set_clust_width');
+var reset_zoom = require('../zoom/reset_zoom');
 
 module.exports = function(params, row_nodes, col_nodes, links, duration, delays) {
 
   var row_nodes_names = params.network_data.row_nodes_names;
   var col_nodes_names = params.network_data.col_nodes_names;
 
-  // reset zoom
-  //////////////////////////////
-  var zoom_y = 1;
-  // var zoom_x = 1;
-  var pan_dx = 0;
-  var pan_dy = 0;
-
-  var half_height = params.viz.clust.dim.height / 2;
-  var center_y = -(zoom_y - 1) * half_height;
-
-  d3.select(params.root + ' .clust_group')
-    .attr('transform', 'translate(' + [0, 0 + center_y] + ')' +
-    ' scale(' + 1 + ',' + zoom_y + ')' + 'translate(' + [pan_dx,pan_dy] + ')');
-
-  d3.select(params.root+' .row_label_zoom_container')
-    .attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' +
-    zoom_y + ',' + zoom_y + ')' + 'translate(' + [0, pan_dy] + ')');
-
-  d3.select(params.root+' .row_zoom_container')
-    .attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' +
-    1 + ',' + zoom_y + ')' + 'translate(' + [0, pan_dy] + ')');
-
-  d3.select(params.root+' .col_zoom_container')
-    .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [pan_dx, 0] + ')');
-
-  d3.select(params.root+' .col_viz_container')
-    .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [pan_dx, 0] + ')');
+  reset_zoom(params);
 
   // Resetting some visualization parameters
-  ///////////////////////////////////////////////
-
   params = get_svg_dim(params);
-
-  var row_info_space = params.labels.super_label_width + 
-    params.norm_label.width.row + params.class_room.row + params.colorbar_room.row;
-
-  // reduce width by row/col labels and by grey_border width (reduce width by less since this is less aparent with slanted col labels)
-  var ini_clust_width = params.viz.svg_dim.width - row_info_space 
-    - params.viz.grey_border_width - params.viz.spillover_x_offset;
-
-  // reduce clustergram width if triangles are taller than the normal width
-  // of the columns
-  var tmp_x_scale = d3.scale.ordinal().rangeBands([0, ini_clust_width]);
-  tmp_x_scale.domain(params.matrix.orders.clust_row);
-  var triangle_height = tmp_x_scale.rangeBand()/2 ;
-  if (triangle_height > params.norm_label.width.col){
-    ini_clust_width = ini_clust_width * ( params.norm_label.width.col/triangle_height );
-  }
-  params.viz.clust.dim.width = ini_clust_width ;
-
+  params = set_clust_width(params);
   params = is_force_square(params);
 
   // zoom_switch from 1 to 2d zoom

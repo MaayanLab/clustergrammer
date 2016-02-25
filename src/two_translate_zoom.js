@@ -117,11 +117,6 @@ module.exports = function(params, pan_dx, pan_dy, fin_zoom) {
         pan_dx, 0
       ] + ')');
 
-    // // set y translate: center_y is positive, positive moves the visualization down
-    // // the translate vector has the initial margin, the first y centering, and pan_dy
-    // // times the scaling zoom_y
-    // var net_y_offset = params.viz.clust.margin.top + center_y + pan_dy * zoom_y;
-
     // reset the zoom translate and zoom
     params.zoom_behavior.scale(zoom_y);
 

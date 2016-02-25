@@ -9,6 +9,7 @@ var get_svg_dim = require('./get_svg_dim');
 var set_label_params = require('./set_label_params');
 var set_viz_params = require('./set_viz_params');
 var set_matrix_params = require('./set_matrix_params');
+var set_clust_width = require('./set_clust_width');
 
 /* Params: calculates the size of all the visualization elements in the
 clustergram.
@@ -69,37 +70,17 @@ module.exports = function params(input_config) {
   params.viz.clust.margin.top = params.norm_label.margin.top + 
     params.norm_label.background.col;
 
-
-
   params.colorbar_room = {};
   var tmp_colorbar_room = 0;
   params.colorbar_room.row = tmp_colorbar_room;
   params.colorbar_room.col = tmp_colorbar_room;
-
-
-
-  var row_info_space = params.labels.super_label_width + 
-    params.norm_label.width.row + params.class_room.row + params.colorbar_room.row;
-
-  // reduce width by row/col labels and by grey_border width
-  //(reduce width by less since this is less aparent with slanted col labels)
-  var ini_clust_width = params.viz.svg_dim.width - row_info_space 
-    - params.viz.grey_border_width - params.viz.spillover_x_offset;
 
   params.viz.num_col_nodes = col_nodes.length;
   params.viz.num_row_nodes = row_nodes.length;
 
   params.viz.clust.dim = {};
 
-  var tmp_x_scale = d3.scale.ordinal().rangeBands([0, ini_clust_width]);
-  tmp_x_scale.domain(_.range(col_nodes.length));
-  var triangle_height = tmp_x_scale.rangeBand() / 2;
-
-  if (triangle_height > params.norm_label.width.col) {
-    ini_clust_width = ini_clust_width * ( params.norm_label.width.col / triangle_height );
-  }
-  params.viz.clust.dim.width = ini_clust_width;
-
+  params = set_clust_width(params);
   params = is_force_square(params);
 
   if (config.force_square === 1) {
