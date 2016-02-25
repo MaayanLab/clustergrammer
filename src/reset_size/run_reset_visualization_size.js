@@ -198,7 +198,8 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
   // resize row labels
   ///////////////////////////
 
-  resize_row_labels(params, svg_group);
+  resize_row_labels(params, svg_group); 
+  resize_row_viz(params, svg_group);
 
   svg_group.selectAll('.row_label_text')
     .select('text')
@@ -226,88 +227,86 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
         });
     });
 
+  svg_group.selectAll('.row_label_text')
+    .select('text')
+    .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35 ); 
 
+  if (utils.has( params.network_data.row_nodes[0], 'value')) {
 
+    // set bar scale
+    var enr_max = Math.abs(_.max( params.network_data.row_nodes, function(d) { return Math.abs(d.value); } ).value) ;
+    params.labels.bar_scale_row = d3.scale
+      .linear()
+      .domain([0, enr_max])
+      .range([0, params.norm_label.width.row ]);
 
+    svg_group.selectAll('.row_bars')
+      .attr('width', function(d) {
+        var inst_value = 0;
+        inst_value = params.labels.bar_scale_row( Math.abs(d.value) );
+        return inst_value;
+      })
+      .attr('x', function(d) {
+        var inst_value = 0;
+        inst_value = -params.labels.bar_scale_row( Math.abs(d.value) );
+        return inst_value;
+      })
+      .attr('height', params.matrix.rect_height );
 
+  }
 
-    if (utils.has( params.network_data.row_nodes[0], 'value')) {
+  // resize col labels
+  ///////////////////////
+  svg_group.select(params.root+' .col_container')
+    .attr('transform', 'translate(' + params.viz.clust.margin.left + ',' +
+    params.norm_label.margin.top + ')');
 
-      // set bar scale
-      var enr_max = Math.abs(_.max( params.network_data.row_nodes, function(d) { return Math.abs(d.value); } ).value) ;
-      params.labels.bar_scale_row = d3.scale
-        .linear()
-        .domain([0, enr_max])
-        .range([0, params.norm_label.width.row ]);
+  svg_group.select(params.root+' .col_container')
+    .select('.white_bars')
+    .attr('width', 30 * params.viz.clust.dim.width + 'px')
+    .attr('height', params.norm_label.background.col);
 
-      svg_group.selectAll('.row_bars')
-        .attr('width', function(d) {
-          var inst_value = 0;
-          inst_value = params.labels.bar_scale_row( Math.abs(d.value) );
-          return inst_value;
-        })
-        .attr('x', function(d) {
-          var inst_value = 0;
-          inst_value = -params.labels.bar_scale_row( Math.abs(d.value) );
-          return inst_value;
-        })
-        .attr('height', params.matrix.rect_height );
+  svg_group.select(params.root+' .col_container')
+    .select('.col_label_outer_container')
+    .attr('transform', 'translate(0,' + params.norm_label.width.col + ')');
 
-    }
+  // offset click group column label
+  var x_offset_click = params.matrix.rect_width / 2 + params.viz.border_width;
+  // reduce width of rotated rects
+  var reduce_rect_width = params.matrix.rect_width * 0.36;
 
-    // resize col labels
-    ///////////////////////
-    svg_group.select(params.root+' .col_container')
-      .attr('transform', 'translate(' + params.viz.clust.margin.left + ',' +
-      params.norm_label.margin.top + ')');
+  svg_group.selectAll('.col_label_text')
+    .attr('transform', function(d) {
+      var inst_index = _.indexOf(col_nodes_names, d.name);
+      return 'translate(' + params.matrix.x_scale(inst_index) + ') rotate(-90)';
+    });
 
-    svg_group.select(params.root+' .col_container')
-      .select('.white_bars')
-      .attr('width', 30 * params.viz.clust.dim.width + 'px')
-      .attr('height', params.norm_label.background.col);
+  svg_group.selectAll('.col_label_click')
+    .attr('transform', 'translate(' + params.matrix.rect_width / 2 + ',' + x_offset_click + ') rotate(45)');
 
-    svg_group.select(params.root+' .col_container')
-      .select('.col_label_outer_container')
-      .attr('transform', 'translate(0,' + params.norm_label.width.col + ')');
-
-    // offset click group column label
-    var x_offset_click = params.matrix.rect_width / 2 + params.viz.border_width;
-    // reduce width of rotated rects
-    var reduce_rect_width = params.matrix.rect_width * 0.36;
-
-    svg_group.selectAll('.col_label_text')
-      .attr('transform', function(d) {
-        var inst_index = _.indexOf(col_nodes_names, d.name);
-        return 'translate(' + params.matrix.x_scale(inst_index) + ') rotate(-90)';
-      });
-
-    svg_group.selectAll('.col_label_click')
-      .attr('transform', 'translate(' + params.matrix.rect_width / 2 + ',' + x_offset_click + ') rotate(45)');
-
-    svg_group.selectAll('.col_label_click')
-      .select('text')
-      .attr('y', params.matrix.rect_width * 0.60)
-      .attr('dx', 2 * params.viz.border_width)
-      .style('font-size', params.labels.default_fs_col + 'px')
-      .text(function(d){ return normal_name(params, d);});
+  svg_group.selectAll('.col_label_click')
+    .select('text')
+    .attr('y', params.matrix.rect_width * 0.60)
+    .attr('dx', 2 * params.viz.border_width)
+    .style('font-size', params.labels.default_fs_col + 'px')
+    .text(function(d){ return normal_name(params, d);});
 
 
   bound_label_size(params, svg_group);
 
 
-  svg_group.selectAll('.row_label_text')
-    .select('text')
-    .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35 ); 
 
-  resize_row_viz(params, svg_group);
 
-  svg_group.selectAll('.row_viz_group')
+
+  svg_group
+    .selectAll('.row_viz_group')
     .attr('transform', function(d) {
         var inst_index = _.indexOf(row_nodes_names, d.name);
         return 'translate(0, ' + params.matrix.y_scale(inst_index) + ')';
       });
 
-  svg_group.selectAll('.row_viz_group')
+  svg_group
+    .selectAll('.row_viz_group')
     .select('path')
     .attr('d', function() {
       var origin_x = params.class_room.symbol_width - 1;
@@ -321,7 +320,8 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
       return output_string;
     });    
 
-  svg_group.selectAll('.col_label_click')
+  svg_group
+    .selectAll('.col_label_click')
     .each(function() {
       d3.select(this)
         .select('text')[0][0]
@@ -329,7 +329,8 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
     });
 
   // resize column triangle
-  svg_group.selectAll('.col_label_click')
+  svg_group
+    .selectAll('.col_label_click')
     .select('path')
     .attr('d', function() {
       // x and y are flipped since its rotated
@@ -352,17 +353,16 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
     });
 
 
-    svg_group.selectAll('.col_bars')
-      .attr('width', function(d) {
-        var inst_value = 0;
-        if (d.value > 0){
-          inst_value = params.labels.bar_scale_col(d.value);
-        }
-        return inst_value;
-      })
-      // rotate labels - reduce width if rotating
-      .attr('height', params.matrix.rect_width * 0.66);
-  // }
+  svg_group.selectAll('.col_bars')
+    .attr('width', function(d) {
+      var inst_value = 0;
+      if (d.value > 0){
+        inst_value = params.labels.bar_scale_col(d.value);
+      }
+      return inst_value;
+    })
+    // rotate labels - reduce width if rotating
+    .attr('height', params.matrix.rect_width * 0.66);
 
   if (params.labels.show_categories){
     // change the size of the highlighting rects
