@@ -7,6 +7,7 @@ var is_force_square = require('../params/is_force_square');
 var set_clust_width = require('../params/set_clust_width');
 var reset_zoom = require('../zoom/reset_zoom');
 var resize_dendro = require('./resize_dendro');
+var resize_grid_lines = require('./resize_grid_lines');
 
 module.exports = function(params, inst_clust_width, inst_clust_height, set_margin_left, set_margin_top) {
 
@@ -492,113 +493,88 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
     .select('text')
     .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35 );
 
-    svg_group.selectAll('.col_label_click')
+  svg_group.selectAll('.col_label_click')
+    .each(function() {
+      d3.select(this)
+        .select('text')[0][0]
+        .getBBox();
+
+      // d3.select(this)
+      //   .select('rect')
+      //   .attr('x', bbox.x * 1.25)
+      //   .attr('y', 0)
+      //   .attr('width', bbox.width * 1.25)
+      //   .attr('height', params.matrix.rect_width * 0.6)
+      //   .style('fill', 'yellow')
+      //   .style('opacity', 0);
+    });
+
+  // resize column triangle
+  svg_group.selectAll('.col_label_click')
+    .select('path')
+    .attr('d', function() {
+      // x and y are flipped since its rotated
+      var origin_y = -params.viz.border_width;
+      var start_x = 0;
+      var final_x = params.matrix.rect_width - reduce_rect_width;
+      var start_y = -(params.matrix.rect_width - reduce_rect_width +
+      params.viz.border_width);
+      var final_y = -params.viz.border_width;
+      var output_string = 'M ' + origin_y + ',0 L ' + start_y + ',' +
+        start_x + ', L ' + final_y + ',' + final_x + ' Z';
+      return output_string;
+    })
+    .attr('fill', function(d) {
+      var inst_color = '#eee';
+      if (params.labels.show_categories) {
+        inst_color = params.labels.class_colors.col[d.cl];
+      }
+      return inst_color;
+    });
+
+  // // append column value bars
+  // if (utils.has( params.network_data.col_nodes[0], 'value')) {
+
+    svg_group.selectAll('.col_bars')
+      .attr('width', function(d) {
+        var inst_value = 0;
+        if (d.value > 0){
+          inst_value = params.labels.bar_scale_col(d.value);
+        }
+        return inst_value;
+      })
+      // rotate labels - reduce width if rotating
+      .attr('height', params.matrix.rect_width * 0.66);
+  // }
+
+  if (params.labels.show_categories){
+    // change the size of the highlighting rects
+    d3.selectAll(params.root+' .col_label_click')
       .each(function() {
-        d3.select(this)
+        var bbox = d3.select(this)
           .select('text')[0][0]
           .getBBox();
 
-        // d3.select(this)
-        //   .select('rect')
-        //   .attr('x', bbox.x * 1.25)
-        //   .attr('y', 0)
-        //   .attr('width', bbox.width * 1.25)
-        //   .attr('height', params.matrix.rect_width * 0.6)
-        //   .style('fill', 'yellow')
-        //   .style('opacity', 0);
+        d3.select(this)
+          .select('rect')
+          .attr('width', bbox.width * 1.1)
+          .attr('height', 0.67*params.matrix.rect_width)
+          .style('fill', function(d){
+            var inst_color = 'white';
+            if (params.labels.show_categories){
+              inst_color = params.labels.class_colors.col[d.cl];
+            }
+            return inst_color;
+          })
+          .style('opacity', 0.30);
       });
+  }
 
-    // resize column triangle
-    svg_group.selectAll('.col_label_click')
-      .select('path')
-      .attr('d', function() {
-        // x and y are flipped since its rotated
-        var origin_y = -params.viz.border_width;
-        var start_x = 0;
-        var final_x = params.matrix.rect_width - reduce_rect_width;
-        var start_y = -(params.matrix.rect_width - reduce_rect_width +
-        params.viz.border_width);
-        var final_y = -params.viz.border_width;
-        var output_string = 'M ' + origin_y + ',0 L ' + start_y + ',' +
-          start_x + ', L ' + final_y + ',' + final_x + ' Z';
-        return output_string;
-      })
-      .attr('fill', function(d) {
-        var inst_color = '#eee';
-        if (params.labels.show_categories) {
-          inst_color = params.labels.class_colors.col[d.cl];
-        }
-        return inst_color;
-      });
+  resize_dendro(params, svg_group);
 
-    // // append column value bars
-    // if (utils.has( params.network_data.col_nodes[0], 'value')) {
 
-      svg_group.selectAll('.col_bars')
-        .attr('width', function(d) {
-          var inst_value = 0;
-          if (d.value > 0){
-            inst_value = params.labels.bar_scale_col(d.value);
-          }
-          return inst_value;
-        })
-        // rotate labels - reduce width if rotating
-        .attr('height', params.matrix.rect_width * 0.66);
-    // }
+  resize_grid_lines(params, svg_group);
 
-    if (params.labels.show_categories){
-      // change the size of the highlighting rects
-      d3.selectAll(params.root+' .col_label_click')
-        .each(function() {
-          var bbox = d3.select(this)
-            .select('text')[0][0]
-            .getBBox();
-
-          d3.select(this)
-            .select('rect')
-            .attr('width', bbox.width * 1.1)
-            .attr('height', 0.67*params.matrix.rect_width)
-            .style('fill', function(d){
-              var inst_color = 'white';
-              if (params.labels.show_categories){
-                inst_color = params.labels.class_colors.col[d.cl];
-              }
-              return inst_color;
-            })
-            .style('opacity', 0.30);
-        });
-    }
-
-    resize_dendro(params, svg_group);
-
-    // reposition grid lines
-    ////////////////////////////
-    svg_group.selectAll('.horz_lines')
-      .attr('transform', function(d) {
-        var inst_index = _.indexOf(row_nodes_names, d.name);
-        return 'translate(0,' + params.matrix.y_scale(inst_index) + ') rotate(0)';
-      });
-
-    svg_group.selectAll('.horz_lines')
-      .select('line')
-      .attr('x2',params.viz.clust.dim.width)
-      .style('stroke-width', params.viz.border_width/params.viz.zoom_switch+'px');
-
-    svg_group.selectAll('.vert_lines')
-      .attr('transform', function(d) {
-        var inst_index = _.indexOf(col_nodes_names, d.name);
-        return 'translate(' + params.matrix.x_scale(inst_index) + ') rotate(-90)';
-      });
-
-    svg_group.selectAll('.vert_lines')
-      .select('line')
-      .attr('x2', -params.viz.clust.dim.height)
-      .style('stroke-width', params.viz.border_width + 'px');
-
-    // var row_nodes = params.network_data.row_nodes;
-    // var col_nodes = params.network_data.col_nodes;
-
-    // draw_grid_lines(row_nodes, col_nodes);
 
   // resize superlabels
   /////////////////////////////////////
