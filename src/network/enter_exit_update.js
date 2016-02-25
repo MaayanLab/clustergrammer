@@ -3,6 +3,7 @@ var make_rows = require('../labels/make_rows');
 var make_cols = require('../labels/make_cols');
 var eeu_existing_row = require('./eeu_existing_row');
 var enter_new_rows = require('../enter/enter_new_rows');
+var exit_components = require('../exit/exit_components');
 
 module.exports = function(params, network_data, delays){
 
@@ -63,26 +64,6 @@ module.exports = function(params, network_data, delays){
     tile_data[i].name = row_nodes[d.source].name + '_' + col_nodes[d.target].name;
   }
 
-  // exit
-  ////////////
-
-  // remove entire rows
-  var exiting_rows = d3.select(params.root+' .clust_group')
-    .selectAll('.row')
-    .data(params.matrix.matrix, function(d){return d.name;})
-    .exit();
-
-  if (delays.run_transition){
-    exiting_rows
-      .transition().duration(duration)
-      .style('opacity',0)
-      .remove();
-  } else {
-    exiting_rows
-      .style('opacity',0)
-      .remove();
-  }
-
   // move rows
   var move_rows = d3.select(params.root+' .clust_group')
     .selectAll('.row')
@@ -116,58 +97,10 @@ module.exports = function(params, network_data, delays){
   d3.selectAll(params.root+' .horz_lines').remove();
   d3.selectAll(params.root+' .vert_lines').remove();
 
-  // remove row labels
-  d3.selectAll(params.root+' .row_label_text')
-    .data(row_nodes, function(d){ return d.name;})
-    .exit()
-    .transition().duration(duration)
-    .style('opacity',0)
-    .remove();
 
-  // remove column labels
-  d3.selectAll(params.root+' .col_label_click')
-    .data(col_nodes, function(d){return d.name;})
-    .exit()
-    .transition().duration(duration)
-    .style('opacity',0)
-    .remove();
-
-  // remove row triangles and colorbars
-  d3.selectAll(params.root+' .row_viz_group')
-    .data(row_nodes, function(d){return d.name;})
-    .exit()
-    .transition().duration(duration)
-    .style('opacity',0)
-    .remove();
-
-  d3.selectAll(params.root+' .col_label_text')
-    .data(col_nodes, function(d){return d.name;})
-    .exit()
-    .transition().duration(duration)
-    .style('opacity',0)
-    .remove();
-
-  d3.selectAll(params.root+' .horz_lines')
-    .data(row_nodes, function(d){return d.name;})
-    .exit()
-    .transition().duration(duration)
-    .style('opacity',0)
-    .remove();
-
-  d3.selectAll(params.root+' .vert_lines')
-    .data(col_nodes, function(d){return d.name;})
-    .exit()
-    .transition().duration(duration)
-    .style('opacity',0)
-    .remove();
-
-  // remove dendrogram
-  d3.selectAll(params.root+' .col_viz_group')
-    .data(col_nodes, function(d){return d.name;})
-    .exit()
-    .transition().duration(duration)
-    .style('opacity',0)
-    .remove();
+  // exit
+  ////////////
+  exit_components(params, delays, duration);
 
   // resize clust components using appropriate delays
   resize_after_update(params, row_nodes, col_nodes, links, duration, delays);
