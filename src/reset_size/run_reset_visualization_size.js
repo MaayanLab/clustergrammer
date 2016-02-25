@@ -11,6 +11,7 @@ var resize_grid_lines = require('./resize_grid_lines');
 var resize_super_labels = require('./resize_super_labels');
 var resize_spillover = require('./resize_spillover');
 var resize_borders = require('./resize_borders');
+var resize_row_labels = require('./resize_row_labels');
 
 module.exports = function(params, inst_clust_width, inst_clust_height, set_margin_left, set_margin_top) {
 
@@ -298,25 +299,7 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
   // resize row labels
   ///////////////////////////
 
-  svg_group.select(params.root+' row_container')
-    .attr('transform', 'translate(' + params.norm_label.margin.left + ',' +
-    params.viz.clust.margin.top + ')');
-
-  svg_group.select(params.root+' .row_container')
-    .select('.white_bars')
-    .attr('width', params.norm_label.background.row)
-    .attr('height', 30*params.viz.clust.dim.height + 'px');
-
-  svg_group.select(params.root+' .row_container')
-    .select('.row_label_container')
-    .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
-
-  svg_group.selectAll('.row_label_text')
-    .attr('transform', function(d) {
-      var inst_index = _.indexOf(row_nodes_names, d.name);
-      return 'translate(0,' + params.matrix.y_scale(inst_index) + ')';
-    });
-
+  resize_row_labels(params, svg_group);
 
   svg_group.selectAll('.row_label_text')
     .select('text')
@@ -575,7 +558,6 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
 
   resize_dendro(params, svg_group);
 
-
   resize_grid_lines(params, svg_group);
 
   resize_super_labels(params, svg_group);
@@ -585,10 +567,9 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
   resize_borders(params, svg_group);
 
   // reset zoom and translate
-  //////////////////////////////
-  params.zoom_behavior.scale(1).translate(
-      [ params.viz.clust.margin.left, params.viz.clust.margin.top]
-  );
+  params.zoom_behavior
+    .scale(1)
+    .translate([ params.viz.clust.margin.left, params.viz.clust.margin.top ]);
 
   d3.select(params.viz.viz_svg).style('opacity',1);
 };

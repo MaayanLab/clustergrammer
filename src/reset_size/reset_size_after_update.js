@@ -6,6 +6,7 @@ var reset_zoom = require('../zoom/reset_zoom');
 var resize_dendro = require('./resize_dendro');
 var resize_super_labels = require('./resize_super_labels');
 var resize_spillover = require('./resize_spillover');
+var resize_row_labels = require('./resize_row_labels');
 
 module.exports = function(params, row_nodes, col_nodes, links, duration, delays) {
 
@@ -97,60 +98,9 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
     return inst_name;
   }
 
-  // resize row labels
-  ///////////////////////////
+  resize_row_labels(params, svg_group, delays);
 
-  if (delays.run_transition){
-
-    svg_group.select(params.root+' .row_container')
-      .transition().delay(delays.update).duration(duration)
-      .attr('transform', 'translate(' + params.norm_label.margin.left + ',' +
-      params.viz.clust.margin.top + ')');
-
-    svg_group.select(params.root+' .row_container')
-      .select('.white_bars')
-      .transition().delay(delays.update).duration(duration)
-      .attr('width', params.norm_label.background.row)
-      .attr('height', 30*params.viz.clust.dim.height + 'px');
-
-    svg_group.select(params.root+' .row_container')
-      .select('.row_label_container')
-      .transition().delay(delays.update).duration(duration)
-      .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
-
-    svg_group.selectAll('.row_label_text')
-      .data(row_nodes, function(d){return d.name;})
-      .transition().delay(delays.update).duration(duration)
-      .attr('transform', function(d) {
-        var inst_index = _.indexOf(row_nodes_names, d.name);
-        return 'translate(0,' + params.matrix.y_scale(inst_index) + ')';
-      })
-      .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35 );
-
-  } else {
-      svg_group.select(params.root+' .row_container')
-      .attr('transform', 'translate(' + params.norm_label.margin.left + ',' +
-      params.viz.clust.margin.top + ')');
-
-    svg_group.select(params.root+' .row_container')
-      .select('.white_bars')
-      .attr('width', params.norm_label.background.row)
-      .attr('height', 30*params.viz.clust.dim.height + 'px');
-
-    svg_group.select(params.root + ' .row_container')
-      .select('.row_label_container')
-      .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
-
-    svg_group.selectAll('.row_label_text')
-      .data(row_nodes, function(d){return d.name;})
-      .attr('transform', function(d) {
-        var inst_index = _.indexOf(row_nodes_names, d.name);
-        return 'translate(0,' + params.matrix.y_scale(inst_index) + ')';
-      })
-      .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35 );
-  }
-
-   // do not delay the font size change since this will break the bounding box calc
+  // do not delay the font size change since this will break the bounding box calc
   svg_group.selectAll('.row_label_text')
     .select('text')
     .style('font-size', params.labels.default_fs_row + 'px')
@@ -559,7 +509,6 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
   resize_spillover(params, svg_group, delays);
 
   // reset zoom and translate
-  //////////////////////////////
   params.zoom_behavior
     .scale(1)
     .translate([ params.viz.clust.margin.left, params.viz.clust.margin.top ]);
