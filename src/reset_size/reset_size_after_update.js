@@ -7,6 +7,7 @@ var resize_dendro = require('./resize_dendro');
 var resize_super_labels = require('./resize_super_labels');
 var resize_spillover = require('./resize_spillover');
 var resize_row_labels = require('./resize_row_labels');
+var normal_name = require('./normal_name');
 
 module.exports = function(params, row_nodes, col_nodes, links, duration, delays) {
 
@@ -89,14 +90,7 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
   //     return output_string;
   //   })
 
-  // add text to row/col during resize
-  function normal_name(d){
-    var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
-    if (inst_name.length > params.labels.max_label_char){
-      inst_name = inst_name.substring(0,params.labels.max_label_char)+'..';
-    }
-    return inst_name;
-  }
+
 
   resize_row_labels(params, svg_group, delays);
 
@@ -104,7 +98,7 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
   svg_group.selectAll('.row_label_text')
     .select('text')
     .style('font-size', params.labels.default_fs_row + 'px')
-    .text(function(d){ return normal_name(d);});
+    .text(function(d){ return normal_name(params, d);});
 
   // change the size of the highlighting rects
   svg_group.selectAll('.row_label_text')
@@ -314,7 +308,7 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
       svg_group.selectAll('.col_label_click')
         .select('text')
         .style('font-size', params.labels.default_fs_col + 'px')
-        .text(function(d){ return normal_name(d);});
+        .text(function(d){ return normal_name(params, d);});
 
       svg_group.selectAll('.col_label_click')
         .select('text')
@@ -355,7 +349,7 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
       svg_group.selectAll('.col_label_click')
         .select('text')
         .style('font-size', params.labels.default_fs_col + 'px')
-        .text(function(d){ return normal_name(d);});
+        .text(function(d){ return normal_name(params, d);});
 
       svg_group.selectAll('.col_label_click')
         .select('text')

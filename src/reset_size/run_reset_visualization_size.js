@@ -13,6 +13,7 @@ var resize_spillover = require('./resize_spillover');
 var resize_borders = require('./resize_borders');
 var resize_row_labels = require('./resize_row_labels');
 var resize_highlights = require('./resize_highlights');
+var normal_name = require('./normal_name');
 
 module.exports = function(params, inst_clust_width, inst_clust_height, set_margin_left, set_margin_top) {
 
@@ -207,14 +208,6 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
 
   resize_highlights(params);
 
-  // add text to row/col during resize
-  function normal_name(d){
-    var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
-    if (inst_name.length > params.labels.max_label_char){
-      inst_name = inst_name.substring(0,params.labels.max_label_char)+'..';
-    }
-    return inst_name;
-  }
 
   // resize row labels
   ///////////////////////////
@@ -224,7 +217,7 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
   svg_group.selectAll('.row_label_text')
     .select('text')
     .style('font-size', params.labels.default_fs_row + 'px')
-    .text(function(d){ return normal_name(d);});
+    .text(function(d){ return normal_name(params, d);});
 
   // change the size of the highlighting rects
   svg_group.selectAll('.row_label_text')
@@ -347,7 +340,7 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
       .attr('y', params.matrix.rect_width * 0.60)
       .attr('dx', 2 * params.viz.border_width)
       .style('font-size', params.labels.default_fs_col + 'px')
-      .text(function(d){ return normal_name(d);});
+      .text(function(d){ return normal_name(params, d);});
 
     params.bounding_width_max.col = 0;
     svg_group.selectAll('.col_label_click').each(function() {
