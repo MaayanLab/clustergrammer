@@ -301,17 +301,6 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
 
   resize_row_viz(params, svg_group);
 
-  // svg_group.select('.row_viz_container')
-  //   .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
-
-  // svg_group.select('.row_viz_container')
-  //   .select('white_bars')
-  //   .attr('width', params.class_room.row + 'px')
-  //   .attr('height', function() {
-  //     var inst_height = params.viz.clust.dim.height;
-  //     return inst_height;
-  //   });
-
   svg_group.selectAll('.row_viz_group')
     .attr('transform', function(d) {
         var inst_index = _.indexOf(row_nodes_names, d.name);

@@ -134,19 +134,6 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
       .transition().delay(delays.update).duration(duration)
       .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35 );
 
-    // svg_group.select('.row_viz_container')
-    //   .transition().delay(delays.update).duration(duration)
-    //   .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
-
-    // svg_group.select('.row_viz_container')
-    //   .transition().delay(delays.update).duration(duration)
-    //   .select('white_bars')
-    //   .attr('width', params.class_room.row + 'px')
-    //   .attr('height', function() {
-    //     var inst_height = params.viz.clust.dim.height;
-    //     return inst_height;
-    //   });
-
     svg_group.selectAll('.row_viz_group')
       .data(row_nodes, function(d){return d.name;})
       .transition().delay(delays.update).duration(duration)
@@ -177,17 +164,6 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
       .select('text')
       .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35 );
 
-    // svg_group.select('.row_viz_container')
-    //   .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
-
-    // svg_group.select('.row_viz_container')
-    //   .select('white_bars')
-    //   .attr('width', params.class_room.row + 'px')
-    //   .attr('height', function() {
-    //     var inst_height = params.viz.clust.dim.height;
-    //     return inst_height;
-    //   });
-
     svg_group.selectAll('.row_viz_group')
       .data(row_nodes, function(d){return d.name;})
       .attr('transform', function(d) {
@@ -211,208 +187,206 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
 
   }
 
-    if (utils.has( params.network_data.row_nodes[0], 'value')) {
+  if (utils.has( params.network_data.row_nodes[0], 'value')) {
 
-      // set bar scale
-      var enr_max = Math.abs(_.max( params.network_data.row_nodes, function(d) { return Math.abs(d.value); } ).value) ;
-      params.labels.bar_scale_row = d3.scale
-        .linear()
-        .domain([0, enr_max])
-        .range([0, params.norm_label.width.row ]);
+    // set bar scale
+    var enr_max = Math.abs(_.max( params.network_data.row_nodes, function(d) { return Math.abs(d.value); } ).value) ;
+    params.labels.bar_scale_row = d3.scale
+      .linear()
+      .domain([0, enr_max])
+      .range([0, params.norm_label.width.row ]);
 
-      svg_group.selectAll('.row_bars')
-        // .transition().delay(delays.update).duration(duration)
-        .attr('width', function(d) {
-          var inst_value = 0;
-          inst_value = params.labels.bar_scale_row( Math.abs(d.value) );
-          return inst_value;
-        })
-        .attr('x', function(d) {
-          var inst_value = 0;
-          inst_value = -params.labels.bar_scale_row( Math.abs(d.value) );
-          return inst_value;
-        })
-        .attr('height', params.matrix.y_scale.rangeBand() );
+    svg_group.selectAll('.row_bars')
+      // .transition().delay(delays.update).duration(duration)
+      .attr('width', function(d) {
+        var inst_value = 0;
+        inst_value = params.labels.bar_scale_row( Math.abs(d.value) );
+        return inst_value;
+      })
+      .attr('x', function(d) {
+        var inst_value = 0;
+        inst_value = -params.labels.bar_scale_row( Math.abs(d.value) );
+        return inst_value;
+      })
+      .attr('height', params.matrix.y_scale.rangeBand() );
 
-    }
+  }
 
+  // resize col labels
+  ///////////////////////
+  var x_offset_click;
+  var reduce_rect_width;
 
+  if (delays.run_transition){
 
-    // resize col labels
-    ///////////////////////
-    var x_offset_click;
-    var reduce_rect_width;
+    svg_group.select(params.root+' .col_container')
+      .transition().delay(delays.update).duration(duration)
+      .attr('transform', 'translate(' + params.viz.clust.margin.left + ',' +
+      params.norm_label.margin.top + ')');
 
-    if (delays.run_transition){
+    svg_group.select(params.root+' .col_container')
+      .transition().delay(delays.update).duration(duration)
+      .select('.white_bars')
+      .attr('width', 30 * params.viz.clust.dim.width + 'px')
+      .attr('height', params.norm_label.background.col);
 
-      svg_group.select(params.root+' .col_container')
-        .transition().delay(delays.update).duration(duration)
-        .attr('transform', 'translate(' + params.viz.clust.margin.left + ',' +
-        params.norm_label.margin.top + ')');
+    svg_group.select(params.root+' .col_container')
+      .transition().delay(delays.update).duration(duration)
+      .select('.col_label_outer_container')
+      .attr('transform', 'translate(0,' + params.norm_label.width.col + ')');
 
-      svg_group.select(params.root+' .col_container')
-        .transition().delay(delays.update).duration(duration)
-        .select('.white_bars')
-        .attr('width', 30 * params.viz.clust.dim.width + 'px')
-        .attr('height', params.norm_label.background.col);
+    // offset click group column label
+    x_offset_click = params.matrix.x_scale.rangeBand() / 2 + params.viz.border_width;
+    // reduce width of rotated rects
+    reduce_rect_width = params.matrix.x_scale.rangeBand() * 0.36;
 
-      svg_group.select(params.root+' .col_container')
-        .transition().delay(delays.update).duration(duration)
-        .select('.col_label_outer_container')
-        .attr('transform', 'translate(0,' + params.norm_label.width.col + ')');
-
-      // offset click group column label
-      x_offset_click = params.matrix.x_scale.rangeBand() / 2 + params.viz.border_width;
-      // reduce width of rotated rects
-      reduce_rect_width = params.matrix.x_scale.rangeBand() * 0.36;
-
-      svg_group.selectAll('.col_label_text')
-        .data(col_nodes, function(d){return d.name;})
-        .transition().delay(delays.update).duration(duration)
-        .attr('transform', function(d) {
-          var inst_index = _.indexOf(col_nodes_names, d.name);
-          return 'translate(' + params.matrix.x_scale(inst_index) + ') rotate(-90)';
-        });
-
-      svg_group.selectAll('.col_label_click')
-        .transition().delay(delays.update).duration(duration)
-        .attr('transform', 'translate(' + params.matrix.x_scale.rangeBand() / 2 + ',' + x_offset_click + ') rotate(45)');
-
-      svg_group.selectAll('.col_label_click')
-        .select('text')
-        .style('font-size', params.labels.default_fs_col + 'px')
-        .text(function(d){ return normal_name(params, d);});
-
-      svg_group.selectAll('.col_label_click')
-        .select('text')
-        .transition().delay(delays.update).duration(duration)
-        .attr('y', params.matrix.x_scale.rangeBand() * 0.60)
-        .attr('dx', 2 * params.viz.border_width);
-
-    } else {
-
-      svg_group.select(params.root+' .col_container')
-        .attr('transform', 'translate(' + params.viz.clust.margin.left + ',' +
-        params.norm_label.margin.top + ')');
-
-      svg_group.select(params.root+' .col_container')
-        .select('.white_bars')
-        .attr('width', 30 * params.viz.clust.dim.width + 'px')
-        .attr('height', params.norm_label.background.col);
-
-      svg_group.select(params.root+' .col_container')
-        .select('.col_label_outer_container')
-        .attr('transform', 'translate(0,' + params.norm_label.width.col + ')');
-
-      // offset click group column label
-      x_offset_click = params.matrix.x_scale.rangeBand() / 2 + params.viz.border_width;
-      // reduce width of rotated rects
-      reduce_rect_width = params.matrix.x_scale.rangeBand() * 0.36;
-
-      svg_group.selectAll('.col_label_text')
-        .data(col_nodes, function(d){return d.name;})
-        .attr('transform', function(d) {
-          var inst_index = _.indexOf(col_nodes_names, d.name);
-          return 'translate(' + params.matrix.x_scale(inst_index) + ') rotate(-90)';
-        });
-
-      svg_group.selectAll('.col_label_click')
-        .attr('transform', 'translate(' + params.matrix.x_scale.rangeBand() / 2 + ',' + x_offset_click + ') rotate(45)');
-
-      svg_group.selectAll('.col_label_click')
-        .select('text')
-        .style('font-size', params.labels.default_fs_col + 'px')
-        .text(function(d){ return normal_name(params, d);});
-
-      svg_group.selectAll('.col_label_click')
-        .select('text')
-        .attr('y', params.matrix.x_scale.rangeBand() * 0.60)
-        .attr('dx', 2 * params.viz.border_width);
-
-    }
-
-
-    bound_label_size(params, svg_group);
-
-
-    svg_group.selectAll('.col_label_click')
-      .each(function() {
-        d3.select(this)
-          .select('text')[0][0]
-          .getBBox();
+    svg_group.selectAll('.col_label_text')
+      .data(col_nodes, function(d){return d.name;})
+      .transition().delay(delays.update).duration(duration)
+      .attr('transform', function(d) {
+        var inst_index = _.indexOf(col_nodes_names, d.name);
+        return 'translate(' + params.matrix.x_scale(inst_index) + ') rotate(-90)';
       });
 
+    svg_group.selectAll('.col_label_click')
+      .transition().delay(delays.update).duration(duration)
+      .attr('transform', 'translate(' + params.matrix.x_scale.rangeBand() / 2 + ',' + x_offset_click + ') rotate(45)');
+
+    svg_group.selectAll('.col_label_click')
+      .select('text')
+      .style('font-size', params.labels.default_fs_col + 'px')
+      .text(function(d){ return normal_name(params, d);});
+
+    svg_group.selectAll('.col_label_click')
+      .select('text')
+      .transition().delay(delays.update).duration(duration)
+      .attr('y', params.matrix.x_scale.rangeBand() * 0.60)
+      .attr('dx', 2 * params.viz.border_width);
+
+  } else {
+
+    svg_group.select(params.root+' .col_container')
+      .attr('transform', 'translate(' + params.viz.clust.margin.left + ',' +
+      params.norm_label.margin.top + ')');
+
+    svg_group.select(params.root+' .col_container')
+      .select('.white_bars')
+      .attr('width', 30 * params.viz.clust.dim.width + 'px')
+      .attr('height', params.norm_label.background.col);
+
+    svg_group.select(params.root+' .col_container')
+      .select('.col_label_outer_container')
+      .attr('transform', 'translate(0,' + params.norm_label.width.col + ')');
+
+    // offset click group column label
+    x_offset_click = params.matrix.x_scale.rangeBand() / 2 + params.viz.border_width;
+    // reduce width of rotated rects
+    reduce_rect_width = params.matrix.x_scale.rangeBand() * 0.36;
+
+    svg_group.selectAll('.col_label_text')
+      .data(col_nodes, function(d){return d.name;})
+      .attr('transform', function(d) {
+        var inst_index = _.indexOf(col_nodes_names, d.name);
+        return 'translate(' + params.matrix.x_scale(inst_index) + ') rotate(-90)';
+      });
+
+    svg_group.selectAll('.col_label_click')
+      .attr('transform', 'translate(' + params.matrix.x_scale.rangeBand() / 2 + ',' + x_offset_click + ') rotate(45)');
+
+    svg_group.selectAll('.col_label_click')
+      .select('text')
+      .style('font-size', params.labels.default_fs_col + 'px')
+      .text(function(d){ return normal_name(params, d);});
+
+    svg_group.selectAll('.col_label_click')
+      .select('text')
+      .attr('y', params.matrix.x_scale.rangeBand() * 0.60)
+      .attr('dx', 2 * params.viz.border_width);
+
+  }
 
 
-    if (delays.run_transition){
+  bound_label_size(params, svg_group);
 
-      // resize column triangle
-      svg_group.selectAll('.col_label_click')
-        .select('path')
-        .transition().delay(delays.update).duration(duration)
-        .attr('d', function() {
-          // x and y are flipped since its rotated
-          var origin_y = -params.viz.border_width;
-          var start_x = 0;
-          var final_x = params.matrix.x_scale.rangeBand() - reduce_rect_width;
-          var start_y = -(params.matrix.x_scale.rangeBand() - reduce_rect_width +
-          params.viz.border_width);
-          var final_y = -params.viz.border_width;
-          var output_string = 'M ' + origin_y + ',0 L ' + start_y + ',' +
-            start_x + ', L ' + final_y + ',' + final_x + ' Z';
-          return output_string;
-        })
-        .attr('fill', function(d) {
-          var inst_color = '#eee';
-          if (params.labels.show_categories) {
-            inst_color = params.labels.class_colors.col[d.cl];
 
-          }
-          return inst_color;
-        });
+  svg_group.selectAll('.col_label_click')
+    .each(function() {
+      d3.select(this)
+        .select('text')[0][0]
+        .getBBox();
+    });
 
-    } else {
-      // resize column triangle
-      svg_group.selectAll('.col_label_click')
-        .select('path')
-        .attr('d', function() {
-          // x and y are flipped since its rotated
-          var origin_y = -params.viz.border_width;
-          var start_x = 0;
-          var final_x = params.matrix.x_scale.rangeBand() - reduce_rect_width;
-          var start_y = -(params.matrix.x_scale.rangeBand() - reduce_rect_width +
-          params.viz.border_width);
-          var final_y = -params.viz.border_width;
-          var output_string = 'M ' + origin_y + ',0 L ' + start_y + ',' +
-            start_x + ', L ' + final_y + ',' + final_x + ' Z';
-          return output_string;
-        })
-        .attr('fill', function(d) {
-          var inst_color = '#eee';
-          if (params.labels.show_categories) {
-            inst_color = params.labels.class_colors.col[d.cl];
-          }
-          return inst_color;
-        });
-    }
 
-    // append column value bars
-    if (utils.has( params.network_data.col_nodes[0], 'value')) {
 
-      svg_group.selectAll('.col_bars')
-        .data(col_nodes, function(d){return d.name;})
-        .transition().delay(delays.update).duration(duration)
-        .attr('width', function(d) {
-          var inst_value = 0;
-          if (d.value > 0){
+  if (delays.run_transition){
 
-            inst_value = params.labels.bar_scale_col(d.value);
-          }
-          return inst_value;
-        })
-        // rotate labels - reduce width if rotating
-        .attr('height', params.matrix.x_scale.rangeBand() * 0.66);
-    }
+    // resize column triangle
+    svg_group.selectAll('.col_label_click')
+      .select('path')
+      .transition().delay(delays.update).duration(duration)
+      .attr('d', function() {
+        // x and y are flipped since its rotated
+        var origin_y = -params.viz.border_width;
+        var start_x = 0;
+        var final_x = params.matrix.x_scale.rangeBand() - reduce_rect_width;
+        var start_y = -(params.matrix.x_scale.rangeBand() - reduce_rect_width +
+        params.viz.border_width);
+        var final_y = -params.viz.border_width;
+        var output_string = 'M ' + origin_y + ',0 L ' + start_y + ',' +
+          start_x + ', L ' + final_y + ',' + final_x + ' Z';
+        return output_string;
+      })
+      .attr('fill', function(d) {
+        var inst_color = '#eee';
+        if (params.labels.show_categories) {
+          inst_color = params.labels.class_colors.col[d.cl];
+
+        }
+        return inst_color;
+      });
+
+  } else {
+    // resize column triangle
+    svg_group.selectAll('.col_label_click')
+      .select('path')
+      .attr('d', function() {
+        // x and y are flipped since its rotated
+        var origin_y = -params.viz.border_width;
+        var start_x = 0;
+        var final_x = params.matrix.x_scale.rangeBand() - reduce_rect_width;
+        var start_y = -(params.matrix.x_scale.rangeBand() - reduce_rect_width +
+        params.viz.border_width);
+        var final_y = -params.viz.border_width;
+        var output_string = 'M ' + origin_y + ',0 L ' + start_y + ',' +
+          start_x + ', L ' + final_y + ',' + final_x + ' Z';
+        return output_string;
+      })
+      .attr('fill', function(d) {
+        var inst_color = '#eee';
+        if (params.labels.show_categories) {
+          inst_color = params.labels.class_colors.col[d.cl];
+        }
+        return inst_color;
+      });
+  }
+
+  // append column value bars
+  if (utils.has( params.network_data.col_nodes[0], 'value')) {
+
+    svg_group.selectAll('.col_bars')
+      .data(col_nodes, function(d){return d.name;})
+      .transition().delay(delays.update).duration(duration)
+      .attr('width', function(d) {
+        var inst_value = 0;
+        if (d.value > 0){
+
+          inst_value = params.labels.bar_scale_col(d.value);
+        }
+        return inst_value;
+      })
+      // rotate labels - reduce width if rotating
+      .attr('height', params.matrix.x_scale.rangeBand() * 0.66);
+  }
 
   if (params.labels.show_categories){
     // change the size of the highlighting rects
