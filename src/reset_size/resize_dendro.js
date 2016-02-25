@@ -1,10 +1,17 @@
-module.exports = function resize_dendro(params, svg_group, delays=0){
+module.exports = function resize_dendro(params, svg_group, delay_info=false){
 
   // resize dendrogram
   ///////////////////
 
+  var delays = {};
+
+  if (delay_info === false){
+    delays.run_transition = false;
+  } else {
+    delays = delay_info;
+  }
+
   var duration = params.viz.duration;
-  
   var col_nodes = params.network_data.col_nodes;
   var col_nodes_names = params.network_data.col_nodes_names;
 
@@ -12,9 +19,7 @@ module.exports = function resize_dendro(params, svg_group, delays=0){
   // var row_nodes_names = params.network_data.row_nodes_names;
 
   var dendro_group;
-  if (delays){
-
-    // console.log('run with delay')
+  if (delays.run_transition){
 
       dendro_group = svg_group
         .transition().delay(delays.update).duration(duration);
@@ -30,8 +35,6 @@ module.exports = function resize_dendro(params, svg_group, delays=0){
         });
 
     } else {
-
-      // console.log('run with NO delay')
 
       dendro_group = svg_group;
 

@@ -6,6 +6,7 @@ var get_svg_dim = require('../params/get_svg_dim');
 var is_force_square = require('../params/is_force_square');
 var set_clust_width = require('../params/set_clust_width');
 var reset_zoom = require('../zoom/reset_zoom');
+var resize_dendro = require('./resize_dendro');
 
 module.exports = function(params, inst_clust_width, inst_clust_height, set_margin_left, set_margin_top) {
 
@@ -568,34 +569,7 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
         });
     }
 
-    // resize dendrogram
-    ///////////////////
-    svg_group
-      .selectAll('.row_class_rect')
-      .attr('width', function() {
-        var inst_width = params.class_room.symbol_width - 1;
-        return inst_width + 'px';
-      })
-      .attr('height', params.matrix.y_scale.rangeBand())
-      .attr('x', function() {
-        var inst_offset = params.class_room.symbol_width + 1;
-        return inst_offset + 'px';
-      });
-
-    svg_group
-      .selectAll('.col_class_rect')
-      .attr('width', params.matrix.x_scale.rangeBand())
-      .attr('height', function() {
-        var inst_height = params.class_room.col - 1;
-        return inst_height;
-      });
-
-    svg_group
-      .selectAll('.col_viz_group')
-      .attr('transform', function(d) {
-        var inst_index = _.indexOf(col_nodes_names, d.name);
-        return 'translate(' + params.matrix.x_scale(inst_index) + ',0)';
-      });
+    resize_dendro(params, svg_group);
 
     // reposition grid lines
     ////////////////////////////
