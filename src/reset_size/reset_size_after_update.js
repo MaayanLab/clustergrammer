@@ -1,5 +1,6 @@
 var utils = require('../utils');
 var is_force_square = require('../params/is_force_square');
+var get_svg_dim = require('../params/get_svg_dim');
 
 module.exports = function(params, row_nodes, col_nodes, links, duration, delays) {
 
@@ -37,15 +38,10 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
   // Resetting some visualization parameters
   ///////////////////////////////////////////////
 
-  // get height and width from parent div
-  params.viz.svg_dim = {};
-  params.viz.svg_dim.width  = Number(d3.select(params.viz.viz_wrapper).style('width').replace('px', ''));
-  params.viz.svg_dim.height = Number(d3.select(params.viz.viz_wrapper).style('height').replace('px', ''));
+  params = get_svg_dim(params);
 
   var row_info_space = params.labels.super_label_width + 
     params.norm_label.width.row + params.class_room.row + params.colorbar_room.row;
-  var col_info_space = params.labels.super_label_width + 
-    params.norm_label.width.col + params.class_room.col + params.colorbar_room.col;
 
   // reduce width by row/col labels and by grey_border width (reduce width by less since this is less aparent with slanted col labels)
   var ini_clust_width = params.viz.svg_dim.width - row_info_space - params.viz.grey_border_width - params.viz.spillover_x_offset;

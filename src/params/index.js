@@ -5,6 +5,7 @@ var parent_div_size = require('../parent_div_size');
 var initialize_matrix = require('../initialize_matrix');
 var zoomed = require('../zoomed');
 var is_force_square = require('./is_force_square');
+var get_svg_dim = require('./get_svg_dim');
 
 /* Params: calculates the size of all the visualization elements in the
 clustergram.
@@ -98,9 +99,7 @@ module.exports = function params(input_config) {
   // resize parent div - needs to be run here
   parent_div_size(params);
 
-  params.viz.svg_dim = {};
-  params.viz.svg_dim.width  = Number(d3.select(params.viz.viz_wrapper).style('width').replace('px', ''));
-  params.viz.svg_dim.height = Number(d3.select(params.viz.viz_wrapper).style('height').replace('px', ''));
+  params = get_svg_dim(params);
 
   params.network_data.row_nodes_names = _.pluck(row_nodes, 'name');
   params.network_data.col_nodes_names = _.pluck(col_nodes, 'name');
