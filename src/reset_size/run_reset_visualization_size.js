@@ -14,6 +14,7 @@ var resize_borders = require('./resize_borders');
 var resize_row_labels = require('./resize_row_labels');
 var resize_highlights = require('./resize_highlights');
 var normal_name = require('./normal_name');
+var bound_label_size = require('./bound_label_size');
 
 module.exports = function(params, inst_clust_width, inst_clust_height, set_margin_left, set_margin_top) {
 
@@ -66,23 +67,8 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
   });
 
   // precalc rect_width and height
-  // params.matrix.rect_width = params.matrix.x_scale.rangeBand() - params.viz.border_width;
-  // params.matrix.rect_height = params.matrix.y_scale.rangeBand() - params.viz.border_width/params.viz.zoom_switch;
   params.matrix.rect_width = params.matrix.x_scale.rangeBand();
   params.matrix.rect_height = params.matrix.y_scale.rangeBand();
-
-  // // reset crossfilter
-  // params.cf = {};
-  // params.cf.links = crossfilter(params.network_data.links);
-  // params.cf.dim_x = params.cf.links.dimension(function(d){return d.x;});
-  // params.cf.dim_y = params.cf.links.dimension(function(d){return d.y;});
-
-  // // reset all crossfilter filters
-  // params.cf.dim_x.filterAll();
-  // params.cf.dim_y.filterAll();
-
-  // // redefine links - grab all links since filter is reset
-  // var inst_links = params.cf.dim_x.top(Infinity);
 
   // redefine zoom extent
   params.viz.real_zoom = params.norm_label.width.col / (params.matrix.rect_width/2);
@@ -95,7 +81,6 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
     .on('zoom', function(){
       zoomed(params);
     });
-
 
   // reenable zoom after transition
   if (params.viz.do_zoom) {
@@ -240,15 +225,7 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
         });
     });
 
-  // label the widest row and col labels
-  params.bounding_width_max = {};
-  params.bounding_width_max.row = 0;
-  d3.selectAll(params.root+' .row_label_text').each(function() {
-    var tmp_width = d3.select(this).select('text').node().getBBox().width;
-    if (tmp_width > params.bounding_width_max.row) {
-      params.bounding_width_max.row = tmp_width;
-    }
-  });
+
 
   svg_group.select('.row_viz_container')
     .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
@@ -342,51 +319,9 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
       .style('font-size', params.labels.default_fs_col + 'px')
       .text(function(d){ return normal_name(params, d);});
 
-    params.bounding_width_max.col = 0;
-    svg_group.selectAll('.col_label_click').each(function() {
-      var tmp_width = d3.select(this).select('text').node().getBBox().width;
-      if (tmp_width > params.bounding_width_max.col) {
-      params.bounding_width_max.col = tmp_width * 1.2;
-      }
-    });
 
+  bound_label_size(params, svg_group);
 
-    // check if widest row or col are wider than the allowed label width
-    ////////////////////////////////////////////////////////////////////////
-    params.ini_scale_font = {};
-    params.ini_scale_font.row = 1;
-    params.ini_scale_font.col = 1;
-
-    if (params.bounding_width_max.row > params.norm_label.width.row) {
-
-      // calc reduction in font size
-      params.ini_scale_font.row = params.norm_label.width.row / params.bounding_width_max.row;
-      // redefine bounding_width_max.row
-      params.bounding_width_max.row = params.ini_scale_font.row * params.bounding_width_max.row;
-
-      // redefine default fs
-      params.labels.default_fs_row = params.labels.default_fs_row * params.ini_scale_font.row;
-      // reduce font size
-      d3.selectAll(params.root+' .row_label_text').each(function() {
-      d3.select(this).select('text')
-        .style('font-size', params.labels.default_fs_row + 'px');
-      });
-    }
-
-    if (params.bounding_width_max.col > params.norm_label.width.col) {
-
-      // calc reduction in font size
-      params.ini_scale_font.col = params.norm_label.width.col / params.bounding_width_max.col;
-      // redefine bounding_width_max.col
-      params.bounding_width_max.col = params.ini_scale_font.col * params.bounding_width_max.col;
-      // redefine default fs
-      params.labels.default_fs_col = params.labels.default_fs_col * params.ini_scale_font.col;
-      // reduce font size
-      d3.selectAll(params.root+' .col_label_click').each(function() {
-      d3.select(this).select('text')
-        .style('font-size', params.labels.default_fs_col + 'px');
-      });
-    }
 
   svg_group.selectAll('.row_label_text')
     .select('text')
@@ -397,15 +332,6 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
       d3.select(this)
         .select('text')[0][0]
         .getBBox();
-
-      // d3.select(this)
-      //   .select('rect')
-      //   .attr('x', bbox.x * 1.25)
-      //   .attr('y', 0)
-      //   .attr('width', bbox.width * 1.25)
-      //   .attr('height', params.matrix.rect_width * 0.6)
-      //   .style('fill', 'yellow')
-      //   .style('opacity', 0);
     });
 
   // resize column triangle
@@ -431,8 +357,6 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
       return inst_color;
     });
 
-  // // append column value bars
-  // if (utils.has( params.network_data.col_nodes[0], 'value')) {
 
     svg_group.selectAll('.col_bars')
       .attr('width', function(d) {

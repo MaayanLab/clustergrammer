@@ -99,6 +99,8 @@ module.exports = function set_up_filters(config, params, filter_type) {
 
       setTimeout(enable_sidebar, 2500, params);
 
+      return params;
+
     }
   });
 

@@ -220,8 +220,6 @@ module.exports = function params(input_config) {
   params.viz.zoom_scale_font.row = 1;
   params.viz.zoom_scale_font.col = 1;
 
-  params.viz.real_zoom = params.norm_label.width.col / (params.matrix.x_scale.rangeBand() / 2);
-
   if (utils.has(params.network_data, 'all_links')) {
     params.matrix.max_link = _.max(params.network_data.all_links, function (d) {
       return Math.abs(d.value);
@@ -266,6 +264,8 @@ module.exports = function params(input_config) {
   } else {
     params.matrix.highlight = 0;
   }
+
+  params.viz.real_zoom = params.norm_label.width.col / (params.matrix.x_scale.rangeBand() / 2);
 
   params.zoom_behavior = d3.behavior.zoom()
     .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch])
