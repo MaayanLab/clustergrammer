@@ -1,4 +1,4 @@
-var utils = require('./utils');
+var utils = require('../utils');
 var constrain_font_size = require('./constrain_font_size');
 
 module.exports = function(params, pan_dx, pan_dy, fin_zoom) {

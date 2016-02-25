@@ -1,5 +1,5 @@
 var utils = require('../utils');
-var trim_text = require('../trim_text');
+var trim_text = require('../zoom/trim_text');
 var add_col_click_hlight = require('./add_col_click_hlight');
 var col_reorder = require('../reorder/col_reorder');
 

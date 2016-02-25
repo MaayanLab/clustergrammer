@@ -4,9 +4,9 @@ var make_cols = require('./labels/make_cols');
 var generate_super_labels = require('./labels/super_labels');
 var run_spillover = require('./spillover');
 var search = require('./search');
-var two_translate_zoom = require('./two_translate_zoom');
+var two_translate_zoom = require('./zoom/two_translate_zoom');
 var initialize_resizing = require('./initialize_resizing');
-var ini_doubleclick = require('./ini_doubleclick');
+var ini_doubleclick = require('./zoom/ini_doubleclick');
 
 var build_col_dendro = require('./dendrogram/build_col_dendro');
 var build_row_dendro = require('./dendrogram/build_row_dendro');

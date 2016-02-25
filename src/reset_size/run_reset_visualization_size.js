@@ -1,7 +1,7 @@
 // var crossfilter = require('crossfilter');
 var utils = require('../utils');
-var zoomed = require('../zoomed');
-var ini_doubleclick = require('../ini_doubleclick');
+var zoomed = require('../zoom/zoomed');
+var ini_doubleclick = require('../zoom/ini_doubleclick');
 var get_svg_dim = require('../params/get_svg_dim');
 var is_force_square = require('../params/is_force_square');
 var set_clust_width = require('../params/set_clust_width');

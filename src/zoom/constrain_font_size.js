@@ -1,4 +1,4 @@
-var utils = require('./utils');
+var utils = require('../utils');
 var trim_text = require('./trim_text');
 
 module.exports = function(params, trans) {

@@ -1,4 +1,4 @@
-var two_translate_zoom = require('../two_translate_zoom');
+var two_translate_zoom = require('../zoom/two_translate_zoom');
 
 /* Handles searching rows or columns.
  TODO need to generalize to column and row
