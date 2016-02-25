@@ -12,6 +12,8 @@ var bound_label_size = require('./bound_label_size');
 var resize_row_viz = require('./resize_row_viz');
 var resize_col_labels = require('./resize_col_labels');
 var resize_col_text = require('./resize_col_text');
+var resize_col_triangle = require('./resize_col_triangle');
+var resize_col_hlight = require('./resize_col_hlight');
 
 module.exports = function(params, row_nodes, col_nodes, links, duration, delays) {
 
@@ -216,67 +218,10 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
   // resize col labels
   ///////////////////////
   // reduce width of rotated rects
-  var reduce_rect_width = params.matrix.x_scale.rangeBand() * 0.36;
 
   resize_col_labels(params, svg_group, delays);
   resize_col_text(params, svg_group);
-
-
-
-  if (delays.run_transition){
-
-    // resize column triangle
-    svg_group
-      .selectAll('.col_label_click')
-      .select('path')
-      .transition().delay(delays.update).duration(duration)
-      .attr('d', function() {
-        // x and y are flipped since its rotated
-        var origin_y = -params.viz.border_width;
-        var start_x = 0;
-        var final_x = params.matrix.x_scale.rangeBand() - reduce_rect_width;
-        var start_y = -(params.matrix.x_scale.rangeBand() - reduce_rect_width +
-        params.viz.border_width);
-        var final_y = -params.viz.border_width;
-        var output_string = 'M ' + origin_y + ',0 L ' + start_y + ',' +
-          start_x + ', L ' + final_y + ',' + final_x + ' Z';
-        return output_string;
-      })
-      .attr('fill', function(d) {
-        var inst_color = '#eee';
-        if (params.labels.show_categories) {
-          inst_color = params.labels.class_colors.col[d.cl];
-
-        }
-        return inst_color;
-      });
-
-  } else {
-    // resize column triangle
-    svg_group
-      .selectAll('.col_label_click')
-      .select('path')
-      .attr('d', function() {
-        // x and y are flipped since its rotated
-        var origin_y = -params.viz.border_width;
-        var start_x = 0;
-        var final_x = params.matrix.x_scale.rangeBand() - reduce_rect_width;
-        var start_y = -(params.matrix.x_scale.rangeBand() - reduce_rect_width +
-        params.viz.border_width);
-        var final_y = -params.viz.border_width;
-        var output_string = 'M ' + origin_y + ',0 L ' + start_y + ',' +
-          start_x + ', L ' + final_y + ',' + final_x + ' Z';
-        return output_string;
-      })
-      .attr('fill', function(d) {
-        var inst_color = '#eee';
-        if (params.labels.show_categories) {
-          inst_color = params.labels.class_colors.col[d.cl];
-        }
-        return inst_color;
-      });
-  }
-
+  resize_col_triangle(params, svg_group, delays);
 
 
   // append column value bars
@@ -299,27 +244,7 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
   }
 
   if (params.labels.show_categories){
-    // change the size of the highlighting rects
-    d3.selectAll(params.root+' .col_label_click')
-      .each(function() {
-        var bbox = d3.select(this)
-          .select('text')[0][0]
-          .getBBox();
-
-        d3.select(this)
-          .select('rect')
-          .transition().delay(delays.update).duration(duration)
-          .attr('width', bbox.width * 1.1)
-          .attr('height', 0.67*params.matrix.rect_width)
-          .style('fill', function(d){
-            var inst_color = 'white';
-            if (params.labels.show_categories){
-              inst_color = params.labels.class_colors.col[d.cl];
-            }
-            return inst_color;
-          })
-          .style('opacity', 0.30);
-      });
+    resize_col_hlight(params, delays);
   }
 
   // run for both view update and screen resize 
