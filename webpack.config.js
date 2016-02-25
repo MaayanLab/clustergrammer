@@ -22,7 +22,10 @@ module.exports = {
         loaders: [
             {
               test: /\.js$/,
-              loader: 'babel'
+              loader: 'babel',
+              query: {
+                presets: ['es2015']
+              }
             }
         ]
     }

@@ -47,5 +47,6 @@ module.exports = function set_viz_params(config, params){
     params.class_room.col = 0;
   }
 
+  params.viz.duration = 1000;
   return params;
 };

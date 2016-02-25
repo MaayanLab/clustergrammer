@@ -7,6 +7,7 @@ from clustergrammer import Network
 net = Network()
 
 net.load_tsv_to_net('txt/example_tsv.txt')
+# net.load_tsv_to_net('txt/mat_1mb.txt')
 
 net.make_filtered_views(dist_type='cos',views=['N_row_sum','N_row_var'], dendro=True)
 

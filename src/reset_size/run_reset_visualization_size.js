@@ -570,7 +570,8 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
 
     // resize dendrogram
     ///////////////////
-    svg_group.selectAll('.row_class_rect')
+    svg_group
+      .selectAll('.row_class_rect')
       .attr('width', function() {
         var inst_width = params.class_room.symbol_width - 1;
         return inst_width + 'px';
@@ -581,14 +582,16 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
         return inst_offset + 'px';
       });
 
-    svg_group.selectAll('.col_class_rect')
+    svg_group
+      .selectAll('.col_class_rect')
       .attr('width', params.matrix.x_scale.rangeBand())
       .attr('height', function() {
         var inst_height = params.class_room.col - 1;
         return inst_height;
       });
 
-    svg_group.selectAll('.col_viz_group')
+    svg_group
+      .selectAll('.col_viz_group')
       .attr('transform', function(d) {
         var inst_index = _.indexOf(col_nodes_names, d.name);
         return 'translate(' + params.matrix.x_scale(inst_index) + ',0)';
@@ -655,7 +658,8 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
   // resize spillover
   //////////////////////////
   // hide spillover from slanted column labels on right side
-  svg_group.select('.right_slant_triangle')
+  svg_group
+    .select('.right_slant_triangle')
     .attr('transform', 'translate(' + params.viz.clust.dim.width + ',' +
     params.norm_label.width.col + ')');
 
