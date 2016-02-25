@@ -5,6 +5,7 @@ var set_clust_width = require('../params/set_clust_width');
 var reset_zoom = require('../zoom/reset_zoom');
 var resize_dendro = require('./resize_dendro');
 var resize_super_labels = require('./resize_super_labels');
+var resize_spillover = require('./resize_spillover');
 
 module.exports = function(params, row_nodes, col_nodes, links, duration, delays) {
 
@@ -555,48 +556,11 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
 
   resize_super_labels(params, svg_group, delays);
 
-  // resize spillover
-  //////////////////////////
-  // hide spillover from slanted column labels on right side
-  svg_group
-    .transition().delay(delays.update).duration(duration)
-    .select('.right_slant_triangle')
-    .attr('transform', 'translate(' + params.viz.clust.dim.width + ',' +
-    params.norm_label.width.col + ')');
-
-  svg_group.select('.left_slant_triangle')
-    .transition().delay(delays.update).duration(duration)
-    .attr('transform', 'translate(-1,' + params.norm_label.width.col +')');
-
-  svg_group
-    .transition().delay(delays.update).duration(duration)
-    .select('.top_left_white')
-    .attr('width', params.viz.clust.margin.left)
-    .attr('height', params.viz.clust.margin.top);
-
-  svg_group.select('.right_spillover')
-    .transition().delay(delays.update).duration(duration)
-    .attr('transform', function() {
-      var tmp_left = params.viz.clust.margin.left + params.viz.clust.dim.width;
-      var tmp_top = params.norm_label.margin.top + params.norm_label.width
-        .col;
-      return 'translate(' + tmp_left + ',' + tmp_top + ')';
-    });
-
-  // white border bottom - prevent clustergram from hitting border
-  svg_group.select('.bottom_spillover')
-    .transition().delay(delays.update).duration(duration)
-    .attr('width', params.viz.svg_dim.width)
-    .attr('height', 2 * params.viz.grey_border_width)
-    .attr('transform', function() {
-      // shift up enough to show the entire border width
-      var inst_offset = params.viz.svg_dim.height - 3 * params.viz.grey_border_width;
-      return 'translate(0,' + inst_offset + ')';
-    });
+  resize_spillover(params, svg_group, delays);
 
   // reset zoom and translate
   //////////////////////////////
-  params.zoom_behavior.scale(1).translate(
-      [ params.viz.clust.margin.left, params.viz.clust.margin.top]
-  );
+  params.zoom_behavior
+    .scale(1)
+    .translate([ params.viz.clust.margin.left, params.viz.clust.margin.top ]);
 };

@@ -1,16 +1,14 @@
  module.exports = function resize_super_labels(params, ini_svg_group, delay_info=false){
 
   var delays = {};
+  var duration = params.viz.duration;
+  var svg_group;
 
   if(delay_info === false){
     delays.run_transition = false;
   } else {
     delays = delay_info;
   }
-
-  var duration = params.viz.duration;
-
-  var svg_group;
 
   if (delays.run_transition){
     svg_group = ini_svg_group

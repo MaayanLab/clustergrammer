@@ -9,6 +9,8 @@ var reset_zoom = require('../zoom/reset_zoom');
 var resize_dendro = require('./resize_dendro');
 var resize_grid_lines = require('./resize_grid_lines');
 var resize_super_labels = require('./resize_super_labels');
+var resize_spillover = require('./resize_spillover');
+var resize_borders = require('./resize_borders');
 
 module.exports = function(params, inst_clust_width, inst_clust_height, set_margin_left, set_margin_top) {
 
@@ -578,74 +580,9 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
 
   resize_super_labels(params, svg_group);
 
-  // resize spillover
-  //////////////////////////
-  // hide spillover from slanted column labels on right side
-  svg_group
-    .select('.right_slant_triangle')
-    .attr('transform', 'translate(' + params.viz.clust.dim.width + ',' +
-    params.norm_label.width.col + ')');
+  resize_spillover(params, svg_group);
 
-  svg_group.select('.left_slant_triangle')
-    .attr('transform', 'translate(-1,' + params.norm_label.width.col +')');
-
-  svg_group.select('.top_left_white')
-    .attr('width', params.viz.clust.margin.left)
-    .attr('height', params.viz.clust.margin.top);
-
-  svg_group.select('.right_spillover')
-    .attr('transform', function() {
-      var tmp_left = params.viz.clust.margin.left + params.viz.clust.dim.width;
-      var tmp_top = params.norm_label.margin.top + params.norm_label.width
-        .col;
-      return 'translate(' + tmp_left + ',' + tmp_top + ')';
-    });
-
-  // white border bottom - prevent clustergram from hitting border
-  svg_group.select('.bottom_spillover')
-    .attr('width', params.viz.svg_dim.width)
-    .attr('height', 2 * params.viz.grey_border_width)
-    .attr('transform', function() {
-      // shift up enough to show the entire border width
-      var inst_offset = params.viz.svg_dim.height - 3 * params.viz.grey_border_width;
-      return 'translate(0,' + inst_offset + ')';
-    });
-
-
-  // add border to svg in four separate lines - to not interfere with clicking anything
-  ///////////////////////////////////////////////////////////////////////////////////////
-  // left border
-  svg_group.select('.left_border')
-    .attr('width', params.viz.grey_border_width)
-    .attr('height', params.viz.svg_dim.height)
-    .attr('transform', 'translate(0,0)');
-
-  // right border
-  svg_group.select('.right_border')
-    .attr('width', params.viz.grey_border_width)
-    .attr('height', params.viz.svg_dim.height)
-    .attr('transform', function() {
-      var inst_offset = params.viz.svg_dim.width - params.viz.grey_border_width;
-      return 'translate(' + inst_offset + ',0)';
-    });
-
-  // top border
-  svg_group.select('.top_border')
-    .attr('width', params.viz.svg_dim.width)
-    .attr('height', params.viz.grey_border_width)
-    .attr('transform', function() {
-      var inst_offset = 0;
-      return 'translate(' + inst_offset + ',0)';
-    });
-
-  // bottom border
-  svg_group.select('.bottom_border')
-    .attr('width', params.viz.svg_dim.width)
-    .attr('height', params.viz.grey_border_width)
-    .attr('transform', function() {
-      var inst_offset = params.viz.svg_dim.height - params.viz.grey_border_width;
-      return 'translate(0,' + inst_offset + ')';
-    });
+  resize_borders(params, svg_group);
 
   // reset zoom and translate
   //////////////////////////////
