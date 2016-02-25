@@ -30,5 +30,4 @@ module.exports = function resize_row_viz(params, ini_svg_group, delay_info=false
       return inst_height;
     });
 
-
 };

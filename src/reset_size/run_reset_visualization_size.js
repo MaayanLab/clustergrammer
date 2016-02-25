@@ -277,43 +277,59 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
       return output_string;
     });    
 
-
-  // resize col labels
-  ///////////////////////
-  svg_group.select(params.root+' .col_container')
-    .attr('transform', 'translate(' + params.viz.clust.margin.left + ',' +
-    params.norm_label.margin.top + ')');
-
-  svg_group.select(params.root+' .col_container')
-    .select('.white_bars')
-    .attr('width', 30 * params.viz.clust.dim.width + 'px')
-    .attr('height', params.norm_label.background.col);
-
-  svg_group.select(params.root+' .col_container')
-    .select('.col_label_outer_container')
-    .attr('transform', 'translate(0,' + params.norm_label.width.col + ')');
-
   // offset click group column label
   var x_offset_click = params.matrix.rect_width / 2 + params.viz.border_width;
   // reduce width of rotated rects
   var reduce_rect_width = params.matrix.rect_width * 0.36;
 
-  svg_group.selectAll('.col_label_text')
+  //////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////
+
+  // resize col labels
+  ///////////////////////
+  svg_group
+    .select(params.root+' .col_container')
+    .attr('transform', 'translate(' + params.viz.clust.margin.left + ',' +
+    params.norm_label.margin.top + ')');
+
+  svg_group
+    .select(params.root+' .col_container')
+    .select('.white_bars')
+    .attr('width', 30 * params.viz.clust.dim.width + 'px')
+    .attr('height', params.norm_label.background.col);
+
+  svg_group
+    .select(params.root+' .col_container')
+    .select('.col_label_outer_container')
+    .attr('transform', 'translate(0,' + params.norm_label.width.col + ')');
+
+  svg_group
+    .selectAll('.col_label_text')
     .attr('transform', function(d) {
       var inst_index = _.indexOf(col_nodes_names, d.name);
       return 'translate(' + params.matrix.x_scale(inst_index) + ') rotate(-90)';
     });
 
-  svg_group.selectAll('.col_label_click')
+  svg_group
+    .selectAll('.col_label_click')
     .attr('transform', 'translate(' + params.matrix.rect_width / 2 + ',' + x_offset_click + ') rotate(45)');
 
-  svg_group.selectAll('.col_label_click')
+  svg_group
+    .selectAll('.col_label_click')
     .select('text')
-    .attr('y', params.matrix.rect_width * 0.60)
-    .attr('dx', 2 * params.viz.border_width)
+    .attr('y', params.matrix.x_scale.rangeBand() * 0.60)
+    .attr('dx', 2 * params.viz.border_width);
+
+  //////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////
+
+
+  ////////////////////////////////////////////////////////////////
+  svg_group
+    .selectAll('.col_label_click')
+    .select('text')
     .style('font-size', params.labels.default_fs_col + 'px')
     .text(function(d){ return normal_name(params, d);});
-
 
   svg_group
     .selectAll('.col_label_click')
@@ -322,6 +338,7 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
         .select('text')[0][0]
         .getBBox();
     });
+  ////////////////////////////////////////////////////////////////
 
   // resize column triangle
   svg_group
@@ -348,7 +365,8 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
     });
 
 
-  svg_group.selectAll('.col_bars')
+  svg_group
+    .selectAll('.col_bars')
     .attr('width', function(d) {
       var inst_value = 0;
       if (d.value > 0){

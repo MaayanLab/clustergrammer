@@ -217,30 +217,34 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
   var x_offset_click;
   var reduce_rect_width;
 
+  // offset click group column label
+  x_offset_click = params.matrix.x_scale.rangeBand() / 2 + params.viz.border_width;
+  // reduce width of rotated rects
+  reduce_rect_width = params.matrix.x_scale.rangeBand() * 0.36;
+
   if (delays.run_transition){
 
-    svg_group.select(params.root+' .col_container')
+    svg_group
       .transition().delay(delays.update).duration(duration)
+      .select(params.root+' .col_container')
       .attr('transform', 'translate(' + params.viz.clust.margin.left + ',' +
       params.norm_label.margin.top + ')');
 
-    svg_group.select(params.root+' .col_container')
+    svg_group
       .transition().delay(delays.update).duration(duration)
+      .select(params.root+' .col_container')
       .select('.white_bars')
       .attr('width', 30 * params.viz.clust.dim.width + 'px')
       .attr('height', params.norm_label.background.col);
 
-    svg_group.select(params.root+' .col_container')
+    svg_group
       .transition().delay(delays.update).duration(duration)
+      .select(params.root+' .col_container')
       .select('.col_label_outer_container')
       .attr('transform', 'translate(0,' + params.norm_label.width.col + ')');
 
-    // offset click group column label
-    x_offset_click = params.matrix.x_scale.rangeBand() / 2 + params.viz.border_width;
-    // reduce width of rotated rects
-    reduce_rect_width = params.matrix.x_scale.rangeBand() * 0.36;
-
-    svg_group.selectAll('.col_label_text')
+    svg_group
+      .selectAll('.col_label_text')
       .data(col_nodes, function(d){return d.name;})
       .transition().delay(delays.update).duration(duration)
       .attr('transform', function(d) {
@@ -248,76 +252,79 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
         return 'translate(' + params.matrix.x_scale(inst_index) + ') rotate(-90)';
       });
 
-    svg_group.selectAll('.col_label_click')
+    svg_group
       .transition().delay(delays.update).duration(duration)
+      .selectAll('.col_label_click')
       .attr('transform', 'translate(' + params.matrix.x_scale.rangeBand() / 2 + ',' + x_offset_click + ') rotate(45)');
 
-    svg_group.selectAll('.col_label_click')
-      .select('text')
-      .style('font-size', params.labels.default_fs_col + 'px')
-      .text(function(d){ return normal_name(params, d);});
-
-    svg_group.selectAll('.col_label_click')
-      .select('text')
+    svg_group
       .transition().delay(delays.update).duration(duration)
+      .selectAll('.col_label_click')
+      .select('text')
       .attr('y', params.matrix.x_scale.rangeBand() * 0.60)
       .attr('dx', 2 * params.viz.border_width);
 
   } else {
 
-    svg_group.select(params.root+' .col_container')
+    svg_group
+      .select(params.root+' .col_container')
       .attr('transform', 'translate(' + params.viz.clust.margin.left + ',' +
       params.norm_label.margin.top + ')');
 
-    svg_group.select(params.root+' .col_container')
+    svg_group
+      .select(params.root+' .col_container')
       .select('.white_bars')
       .attr('width', 30 * params.viz.clust.dim.width + 'px')
       .attr('height', params.norm_label.background.col);
 
-    svg_group.select(params.root+' .col_container')
+    svg_group
+      .select(params.root+' .col_container')
       .select('.col_label_outer_container')
       .attr('transform', 'translate(0,' + params.norm_label.width.col + ')');
 
-    // offset click group column label
-    x_offset_click = params.matrix.x_scale.rangeBand() / 2 + params.viz.border_width;
-    // reduce width of rotated rects
-    reduce_rect_width = params.matrix.x_scale.rangeBand() * 0.36;
-
-    svg_group.selectAll('.col_label_text')
+    svg_group
+      .selectAll('.col_label_text')
       .data(col_nodes, function(d){return d.name;})
       .attr('transform', function(d) {
         var inst_index = _.indexOf(col_nodes_names, d.name);
         return 'translate(' + params.matrix.x_scale(inst_index) + ') rotate(-90)';
       });
 
-    svg_group.selectAll('.col_label_click')
+    svg_group
+      .selectAll('.col_label_click')
       .attr('transform', 'translate(' + params.matrix.x_scale.rangeBand() / 2 + ',' + x_offset_click + ') rotate(45)');
 
-    svg_group.selectAll('.col_label_click')
-      .select('text')
-      .style('font-size', params.labels.default_fs_col + 'px')
-      .text(function(d){ return normal_name(params, d);});
-
-    svg_group.selectAll('.col_label_click')
+    svg_group
+      .selectAll('.col_label_click')
       .select('text')
       .attr('y', params.matrix.x_scale.rangeBand() * 0.60)
       .attr('dx', 2 * params.viz.border_width);
 
   }
 
-  svg_group.selectAll('.col_label_click')
+  ////////////////////////////////////////////////////////////////
+  svg_group
+    .selectAll('.col_label_click')
+    .select('text')
+    .style('font-size', params.labels.default_fs_col + 'px')
+    .text(function(d){ return normal_name(params, d);});
+
+  svg_group
+    .selectAll('.col_label_click')
     .each(function() {
       d3.select(this)
         .select('text')[0][0]
         .getBBox();
     });
+  ////////////////////////////////////////////////////////////////
 
 
 
   if (delays.run_transition){
 
     // resize column triangle
-    svg_group.selectAll('.col_label_click')
+    svg_group
+      .selectAll('.col_label_click')
       .select('path')
       .transition().delay(delays.update).duration(duration)
       .attr('d', function() {
@@ -343,7 +350,8 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
 
   } else {
     // resize column triangle
-    svg_group.selectAll('.col_label_click')
+    svg_group
+      .selectAll('.col_label_click')
       .select('path')
       .attr('d', function() {
         // x and y are flipped since its rotated
@@ -369,7 +377,8 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
   // append column value bars
   if (utils.has( params.network_data.col_nodes[0], 'value')) {
 
-    svg_group.selectAll('.col_bars')
+    svg_group
+      .selectAll('.col_bars')
       .data(col_nodes, function(d){return d.name;})
       .transition().delay(delays.update).duration(duration)
       .attr('width', function(d) {
