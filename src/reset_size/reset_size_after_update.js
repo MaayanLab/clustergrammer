@@ -9,6 +9,7 @@ var resize_spillover = require('./resize_spillover');
 var resize_row_labels = require('./resize_row_labels');
 var normal_name = require('./normal_name');
 var bound_label_size = require('./bound_label_size');
+var resize_row_viz = require('./resize_row_viz');
 
 module.exports = function(params, row_nodes, col_nodes, links, duration, delays) {
 
@@ -123,6 +124,7 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
     });
 
 
+  resize_row_viz(params, svg_group, delays);
 
   if (delays.run_transition){
 
@@ -132,18 +134,18 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
       .transition().delay(delays.update).duration(duration)
       .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35 );
 
-    svg_group.select('.row_viz_container')
-      .transition().delay(delays.update).duration(duration)
-      .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
+    // svg_group.select('.row_viz_container')
+    //   .transition().delay(delays.update).duration(duration)
+    //   .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
 
-    svg_group.select('.row_viz_container')
-      .transition().delay(delays.update).duration(duration)
-      .select('white_bars')
-      .attr('width', params.class_room.row + 'px')
-      .attr('height', function() {
-        var inst_height = params.viz.clust.dim.height;
-        return inst_height;
-      });
+    // svg_group.select('.row_viz_container')
+    //   .transition().delay(delays.update).duration(duration)
+    //   .select('white_bars')
+    //   .attr('width', params.class_room.row + 'px')
+    //   .attr('height', function() {
+    //     var inst_height = params.viz.clust.dim.height;
+    //     return inst_height;
+    //   });
 
     svg_group.selectAll('.row_viz_group')
       .data(row_nodes, function(d){return d.name;})
@@ -175,16 +177,16 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
       .select('text')
       .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35 );
 
-    svg_group.select('.row_viz_container')
-      .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
+    // svg_group.select('.row_viz_container')
+    //   .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
 
-    svg_group.select('.row_viz_container')
-      .select('white_bars')
-      .attr('width', params.class_room.row + 'px')
-      .attr('height', function() {
-        var inst_height = params.viz.clust.dim.height;
-        return inst_height;
-      });
+    // svg_group.select('.row_viz_container')
+    //   .select('white_bars')
+    //   .attr('width', params.class_room.row + 'px')
+    //   .attr('height', function() {
+    //     var inst_height = params.viz.clust.dim.height;
+    //     return inst_height;
+    //   });
 
     svg_group.selectAll('.row_viz_group')
       .data(row_nodes, function(d){return d.name;})

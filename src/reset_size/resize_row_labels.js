@@ -3,6 +3,7 @@ module.exports = function resize_row_labels(params, ini_svg_group, delay_info=fa
   var delays = {};
   var duration = params.viz.duration;
   var svg_group;
+  
   var row_nodes = params.network_data.row_nodes;
   var row_nodes_names = params.network_data.row_nodes_names;
 
