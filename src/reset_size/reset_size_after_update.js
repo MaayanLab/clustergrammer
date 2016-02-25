@@ -11,11 +11,11 @@ var normal_name = require('./normal_name');
 var bound_label_size = require('./bound_label_size');
 var resize_row_viz = require('./resize_row_viz');
 var resize_col_labels = require('./resize_col_labels');
+var resize_col_text = require('./resize_col_text');
 
 module.exports = function(params, row_nodes, col_nodes, links, duration, delays) {
 
   var row_nodes_names = params.network_data.row_nodes_names;
-  var col_nodes_names = params.network_data.col_nodes_names;
 
   reset_zoom(params);
 
@@ -215,108 +215,11 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
 
   // resize col labels
   ///////////////////////
-  var reduce_rect_width;
-
   // reduce width of rotated rects
-  reduce_rect_width = params.matrix.x_scale.rangeBand() * 0.36;
+  var reduce_rect_width = params.matrix.x_scale.rangeBand() * 0.36;
 
   resize_col_labels(params, svg_group, delays);
-
-  if (delays.run_transition){
-
-    // svg_group
-    //   .transition().delay(delays.update).duration(duration)
-    //   .select(params.root+' .col_container')
-    //   .attr('transform', 'translate(' + params.viz.clust.margin.left + ',' +
-    //   params.norm_label.margin.top + ')');
-
-    // svg_group
-    //   .transition().delay(delays.update).duration(duration)
-    //   .select(params.root+' .col_container')
-    //   .select('.white_bars')
-    //   .attr('width', 30 * params.viz.clust.dim.width + 'px')
-    //   .attr('height', params.norm_label.background.col);
-
-    // svg_group
-    //   .transition().delay(delays.update).duration(duration)
-    //   .select(params.root+' .col_container')
-    //   .select('.col_label_outer_container')
-    //   .attr('transform', 'translate(0,' + params.norm_label.width.col + ')');
-
-    // svg_group
-    //   .selectAll('.col_label_text')
-    //   .data(col_nodes, function(d){return d.name;})
-    //   .transition().delay(delays.update).duration(duration)
-    //   .attr('transform', function(d) {
-    //     var inst_index = _.indexOf(col_nodes_names, d.name);
-    //     return 'translate(' + params.matrix.x_scale(inst_index) + ') rotate(-90)';
-    //   });
-
-    // svg_group
-    //   .transition().delay(delays.update).duration(duration)
-    //   .selectAll('.col_label_click')
-    //   .attr('transform', 'translate(' + params.matrix.x_scale.rangeBand() / 2 + ',' + x_offset_click + ') rotate(45)');
-
-    // svg_group
-    //   .transition().delay(delays.update).duration(duration)
-    //   .selectAll('.col_label_click')
-    //   .select('text')
-    //   .attr('y', params.matrix.x_scale.rangeBand() * 0.60)
-    //   .attr('dx', 2 * params.viz.border_width);
-
-  } else {
-
-    // svg_group
-    //   .select(params.root+' .col_container')
-    //   .attr('transform', 'translate(' + params.viz.clust.margin.left + ',' +
-    //   params.norm_label.margin.top + ')');
-
-    // svg_group
-    //   .select(params.root+' .col_container')
-    //   .select('.white_bars')
-    //   .attr('width', 30 * params.viz.clust.dim.width + 'px')
-    //   .attr('height', params.norm_label.background.col);
-
-    // svg_group
-    //   .select(params.root+' .col_container')
-    //   .select('.col_label_outer_container')
-    //   .attr('transform', 'translate(0,' + params.norm_label.width.col + ')');
-
-    // svg_group
-    //   .selectAll('.col_label_text')
-    //   .data(col_nodes, function(d){return d.name;})
-    //   .attr('transform', function(d) {
-    //     var inst_index = _.indexOf(col_nodes_names, d.name);
-    //     return 'translate(' + params.matrix.x_scale(inst_index) + ') rotate(-90)';
-    //   });
-
-    // svg_group
-    //   .selectAll('.col_label_click')
-    //   .attr('transform', 'translate(' + params.matrix.x_scale.rangeBand() / 2 + ',' + x_offset_click + ') rotate(45)');
-
-    // svg_group
-    //   .selectAll('.col_label_click')
-    //   .select('text')
-    //   .attr('y', params.matrix.x_scale.rangeBand() * 0.60)
-    //   .attr('dx', 2 * params.viz.border_width);
-
-  }
-
-  ////////////////////////////////////////////////////////////////
-  svg_group
-    .selectAll('.col_label_click')
-    .select('text')
-    .style('font-size', params.labels.default_fs_col + 'px')
-    .text(function(d){ return normal_name(params, d);});
-
-  svg_group
-    .selectAll('.col_label_click')
-    .each(function() {
-      d3.select(this)
-        .select('text')[0][0]
-        .getBBox();
-    });
-  ////////////////////////////////////////////////////////////////
+  resize_col_text(params, svg_group);
 
 
 
@@ -373,6 +276,8 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
         return inst_color;
       });
   }
+
+
 
   // append column value bars
   if (utils.has( params.network_data.col_nodes[0], 'value')) {
