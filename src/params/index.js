@@ -30,12 +30,6 @@ module.exports = function params(input_config) {
 
   params = set_matrix_params(config, params);
 
-  // definition of a large matrix - based on number of links
-  // below this cutoff reordering is done with transitions
-  params.matrix.def_large_matrix = 10000;
-
-  params.matrix.opacity_function = config.opacity_scale;
-
   var col_nodes = params.network_data.col_nodes;
   var row_nodes = params.network_data.row_nodes;
 
@@ -54,20 +48,9 @@ module.exports = function params(input_config) {
   params.norm_label.margin.left = params.viz.grey_border_width + params.labels.super_label_width;
   params.norm_label.margin.top = params.viz.grey_border_width + params.labels.super_label_width;
 
-  params.class_room = {};
-
-  params.class_room.symbol_width = 11;
-
-  if (params.viz.show_dendrogram) {
-    params.class_room.row = 2 * params.class_room.symbol_width;
-    params.class_room.col = params.class_room.symbol_width;
-
-    // TODO check this
+  if (params.viz.show_dendrogram){
+    // setting config globally 
     config.group_level = {row: 5, col: 5};
-
-  } else {
-    params.class_room.row = params.class_room.symbol_width;
-    params.class_room.col = 0;
   }
 
   params.norm_label.background = {};
@@ -288,8 +271,6 @@ module.exports = function params(input_config) {
     }
   }
 
-  // TODO check if using run_trans
-  params.viz.run_trans = false;
 
   if (utils.has(params.network_data.links[0], 'value_up') || utils.has(params.network_data.links[0], 'value_dn')) {
     params.matrix.tile_type = 'updn';

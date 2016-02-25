@@ -32,5 +32,20 @@ module.exports = function set_viz_params(config, params){
 
   params.viz.bottom_space = 15;
 
+  params.viz.run_trans = false;
+
+  params.class_room = {};
+
+  params.class_room.symbol_width = 11;
+
+  if (params.viz.show_dendrogram) {
+    params.class_room.row = 2 * params.class_room.symbol_width;
+    params.class_room.col = params.class_room.symbol_width;
+
+  } else {
+    params.class_room.row = params.class_room.symbol_width;
+    params.class_room.col = 0;
+  }
+
   return params;
 };
