@@ -16,6 +16,7 @@ var resize_highlights = require('./resize_highlights');
 var normal_name = require('./normal_name');
 var bound_label_size = require('./bound_label_size');
 var resize_row_viz = require('./resize_row_viz');
+var resize_col_labels = require('./resize_col_labels');
 
 module.exports = function(params, inst_clust_width, inst_clust_height, set_margin_left, set_margin_top) {
 
@@ -285,40 +286,42 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
   //////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////
 
-  // resize col labels
-  ///////////////////////
-  svg_group
-    .select(params.root+' .col_container')
-    .attr('transform', 'translate(' + params.viz.clust.margin.left + ',' +
-    params.norm_label.margin.top + ')');
+  resize_col_labels(params, svg_group);
 
-  svg_group
-    .select(params.root+' .col_container')
-    .select('.white_bars')
-    .attr('width', 30 * params.viz.clust.dim.width + 'px')
-    .attr('height', params.norm_label.background.col);
+  // // resize col labels
+  // ///////////////////////
+  // svg_group
+  //   .select(params.root+' .col_container')
+  //   .attr('transform', 'translate(' + params.viz.clust.margin.left + ',' +
+  //   params.norm_label.margin.top + ')');
 
-  svg_group
-    .select(params.root+' .col_container')
-    .select('.col_label_outer_container')
-    .attr('transform', 'translate(0,' + params.norm_label.width.col + ')');
+  // svg_group
+  //   .select(params.root+' .col_container')
+  //   .select('.white_bars')
+  //   .attr('width', 30 * params.viz.clust.dim.width + 'px')
+  //   .attr('height', params.norm_label.background.col);
 
-  svg_group
-    .selectAll('.col_label_text')
-    .attr('transform', function(d) {
-      var inst_index = _.indexOf(col_nodes_names, d.name);
-      return 'translate(' + params.matrix.x_scale(inst_index) + ') rotate(-90)';
-    });
+  // svg_group
+  //   .select(params.root+' .col_container')
+  //   .select('.col_label_outer_container')
+  //   .attr('transform', 'translate(0,' + params.norm_label.width.col + ')');
 
-  svg_group
-    .selectAll('.col_label_click')
-    .attr('transform', 'translate(' + params.matrix.rect_width / 2 + ',' + x_offset_click + ') rotate(45)');
+  // svg_group
+  //   .selectAll('.col_label_text')
+  //   .attr('transform', function(d) {
+  //     var inst_index = _.indexOf(col_nodes_names, d.name);
+  //     return 'translate(' + params.matrix.x_scale(inst_index) + ') rotate(-90)';
+  //   });
 
-  svg_group
-    .selectAll('.col_label_click')
-    .select('text')
-    .attr('y', params.matrix.x_scale.rangeBand() * 0.60)
-    .attr('dx', 2 * params.viz.border_width);
+  // svg_group
+  //   .selectAll('.col_label_click')
+  //   .attr('transform', 'translate(' + params.matrix.rect_width / 2 + ',' + x_offset_click + ') rotate(45)');
+
+  // svg_group
+  //   .selectAll('.col_label_click')
+  //   .select('text')
+  //   .attr('y', params.matrix.x_scale.rangeBand() * 0.60)
+  //   .attr('dx', 2 * params.viz.border_width);
 
   //////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////
