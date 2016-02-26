@@ -48,4 +48,5 @@ module.exports = function enter_grid_lines(params, delays, duration){
     .attr('opacity',0)
     .transition().delay(delays.enter).duration(2*duration)
     .attr('opacity',1);
+    
   };

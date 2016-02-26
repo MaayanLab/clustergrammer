@@ -2,9 +2,9 @@ var resize_after_update = require('../reset_size/reset_size_after_update');
 var make_rows = require('../labels/make_rows');
 var make_cols = require('../labels/make_cols');
 var eeu_existing_row = require('./eeu_existing_row');
-var enter_new_rows = require('../enter/enter_new_rows');
 var exit_components = require('../exit/exit_components');
 var enter_grid_lines = require('../enter/enter_grid_lines');
+var enter_row_groups = require('../enter/enter_row_groups');
 
 module.exports = function(params, network_data, delays){
 
@@ -108,25 +108,9 @@ module.exports = function(params, network_data, delays){
 
   // enter new elements
   //////////////////////////
+  enter_row_groups(params, delays, duration, tip);
 
-  // enter new rows
-  var new_row_groups = d3.select(params.root+' .clust_group')
-    .selectAll('.row')
-    .data(params.matrix.matrix, function(d){return d.name;})
-    .enter()
-    .append('g')
-    .attr('class','row')
-    .attr('transform', function(d) {
-      var tmp_index = _.indexOf(row_nodes_names, d.name);
-      return 'translate(0,' + params.matrix.y_scale(tmp_index) + ')';
-    })  ;
-
-  new_row_groups
-    .each( function(d){
-      enter_new_rows(params, d, delays, duration, tip, this); 
-    } );
-
-
+  // update existing rows 
   make_rows(params, duration);
   make_cols(params, duration);
 
