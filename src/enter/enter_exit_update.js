@@ -5,6 +5,7 @@ var eeu_existing_row = require('./eeu_existing_row');
 var exit_components = require('../exit/exit_components');
 var enter_grid_lines = require('../enter/enter_grid_lines');
 var enter_row_groups = require('../enter/enter_row_groups');
+var resize_containers = require('../reset_size/resize_containers');
 
 module.exports = function(params, network_data, delays){
 
@@ -24,26 +25,8 @@ module.exports = function(params, network_data, delays){
       .call(tip);
     }
 
-  // reposition matrix
-  d3.select(params.root+' .clust_container')
-    .attr('transform', 'translate(' +
-      params.viz.clust.margin.left + ',' +
-      params.viz.clust.margin.top + ')');
-
-  // reposition row container
-  d3.select(params.root+' .row_viz_container')
-    .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
-
-  // reposition col container
-  d3.select(params.root+' .col_label_outer_container')
-    .attr('transform', 'translate(0,' + params.norm_label.width.col + ')');
-
-  // reposition col_viz container
-  d3.select(params.root+' .col_viz_outer_container')
-    .attr('transform', function() {
-        var inst_offset = params.norm_label.width.col + 2;
-        return 'translate(0,' + inst_offset + ')';
-      });
+  // TODO check if necessary 
+  resize_containers(params);
 
   // get row and col names
   var row_nodes_names = params.network_data.row_nodes_names;
@@ -97,14 +80,12 @@ module.exports = function(params, network_data, delays){
   d3.selectAll(params.root+' .horz_lines').remove();
   d3.selectAll(params.root+' .vert_lines').remove();
 
-
   // exit
   ////////////
   exit_components(params, delays, duration);
 
   // resize clust components using appropriate delays
   resize_after_update(params, row_nodes, col_nodes, links, duration, delays);
-
 
   // enter new elements
   //////////////////////////
