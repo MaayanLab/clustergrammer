@@ -50,6 +50,7 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
   params.labels.default_fs_row = params.matrix.y_scale.rangeBand() * 1.01;
   params.labels.default_fs_col = params.matrix.x_scale.rangeBand() * 0.85;
 
+
   // Begin resizing the visualization
   /////////////////////////////////////////
   /////////////////////////////////////////
@@ -63,39 +64,6 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
     .transition().delay(delays.update).duration(duration)
     .attr('width', params.viz.clust.dim.width)
     .attr('height', params.viz.clust.dim.height);
-
-
-  //////////////////////
-  // set up later
-  //////////////////////
-  // svg_group.selectAll('.highlighting_rect')
-  //   // .transition().delay(delays.update).duration(duration)
-  //   .attr('width', params.matrix.x_scale.rangeBand() * 0.80)
-  //   .attr('height', params.matrix.y_scale.rangeBand() * 0.80);
-  // svg_group.selectAll('.tile_split_up')
-  //   // .transition().delay(delays.update).duration(duration)
-  //   .attr('d', function() {
-  //     var start_x = 0;
-  //     var final_x = params.matrix.x_scale.rangeBand();
-  //     var start_y = 0;
-  //     var final_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand()/60;
-  //     var output_string = 'M' + start_x + ',' + start_y + ', L' +
-  //       start_x + ', ' + final_y + ', L' + final_x + ',0 Z';
-  //     return output_string;
-  //   })
-  // svg_group.selectAll('.tile_split_dn')
-  //   // .transition().delay(delays.update).duration(duration)
-  //   .attr('d', function() {
-  //     var start_x = 0;
-  //     var final_x = params.matrix.x_scale.rangeBand();
-  //     var start_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand()/60;
-  //     var final_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand()/60;
-  //     var output_string = 'M' + start_x + ', ' + start_y + ' ,   L' +
-  //       final_x + ', ' + final_y + ',  L' + final_x + ',0 Z';
-  //     return output_string;
-  //   })
-
-
 
   resize_row_labels(params, svg_group, delays);
 
