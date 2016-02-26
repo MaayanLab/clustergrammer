@@ -19,6 +19,7 @@ var resize_col_triangle = require('./resize_col_triangle');
 var resize_col_hlight = require('./resize_col_hlight');
 var recalc_params_for_resize = require('./recalc_params_for_resize');
 var resize_row_tiles = require('./resize_row_tiles');
+var resize_label_bars = require('./resize_label_bars');
 
 module.exports = function(params, inst_clust_width, inst_clust_height, set_margin_left, set_margin_top) {
 
@@ -125,26 +126,7 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
 
   if (utils.has( params.network_data.row_nodes[0], 'value')) {
 
-    // set bar scale
-    var enr_max = Math.abs(_.max( params.network_data.row_nodes, function(d) { return Math.abs(d.value); } ).value) ;
-
-    params.labels.bar_scale_row = d3.scale
-      .linear()
-      .domain([0, enr_max])
-      .range([0, params.norm_label.width.row ]);
-
-    svg_group.selectAll('.row_bars')
-      .attr('width', function(d) {
-        var inst_value = 0;
-        inst_value = params.labels.bar_scale_row( Math.abs(d.value) );
-        return inst_value;
-      })
-      .attr('x', function(d) {
-        var inst_value = 0;
-        inst_value = -params.labels.bar_scale_row( Math.abs(d.value) );
-        return inst_value;
-      })
-      .attr('height', params.matrix.rect_height );
+    resize_label_bars(params, svg_group);
 
   }
 
