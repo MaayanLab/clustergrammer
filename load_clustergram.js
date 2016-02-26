@@ -1,5 +1,5 @@
 
-// make_clust('mult_view.json');
+make_clust('mult_view.json');
 // make_clust('vect_post_example.json');
 // make_clust('default_example.json');
 // make_clust('ccle.json');
@@ -7,7 +7,7 @@
 // make_clust('updn_example.json');
 // make_clust('narrow_example.json');
 // make_clust('narrow_long_name.json');
-make_clust('bar_example.json');
+// make_clust('bar_example.json');
 // make_clust('kin_sub_example.json');
 // make_clust('harmonogram_example.json');
 
