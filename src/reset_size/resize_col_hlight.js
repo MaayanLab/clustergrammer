@@ -23,13 +23,13 @@ module.exports = function resize_col_hlight(params, delay_info=false){
           .transition().delay(delays.update).duration(duration)
           .attr('width', bbox.width * 1.1)
           .attr('height', 0.67*params.matrix.rect_width)
-          .style('fill', function(d){
-            var inst_color = 'white';
-            if (params.labels.show_categories){
-              inst_color = params.labels.class_colors.col[d.cl];
-            }
-            return inst_color;
-          })
+          // .style('fill', function(d){
+          //   var inst_color = 'white';
+          //   // if (params.labels.show_categories){
+          //   //   inst_color = params.labels.class_colors.col[d.cl];
+          //   // }
+          //   return inst_color;
+          // })
           .style('opacity', 0.30);
       });
 
@@ -46,13 +46,13 @@ module.exports = function resize_col_hlight(params, delay_info=false){
           .select('rect')
           .attr('width', bbox.width * 1.1)
           .attr('height', 0.67*params.matrix.rect_width)
-          .style('fill', function(d){
-            var inst_color = 'white';
-            if (params.labels.show_categories){
-              inst_color = params.labels.class_colors.col[d.cl];
-            }
-            return inst_color;
-          })
+          // .style('fill', function(d){
+          //   var inst_color = 'white';
+          //   // if (params.labels.show_categories){
+          //   //   inst_color = params.labels.class_colors.col[d.cl];
+          //   // }
+          //   return inst_color;
+          // })
           .style('opacity', 0.30);
       }); 
 

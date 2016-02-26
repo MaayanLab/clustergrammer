@@ -144,9 +144,9 @@ module.exports = function(params, text_delay) {
       .html(function(d) {
         var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
 
-        if (params.show_categories){
-          inst_name = inst_name + ': ' + String(d.cl);
-        }
+        // if (params.show_categories){
+        //   inst_name = inst_name + ': ' + String(d.cl);
+        // }
 
         return "<span>" + inst_name + "</span>";
       });
@@ -274,11 +274,11 @@ module.exports = function(params, text_delay) {
         start_x + ', L ' + final_y + ',' + final_x + ' Z';
       return output_string;
     })
-    .attr('fill', function(d) {
+    .attr('fill', function() {
       var inst_color = '#eee';
-      if (params.labels.show_categories) {
-        inst_color = params.labels.class_colors.col[d.cl];
-      }
+      // if (params.labels.show_categories) {
+      //   inst_color = params.labels.class_colors.col[d.cl];
+      // }
     return inst_color;
     })
     .style('opacity',0)
