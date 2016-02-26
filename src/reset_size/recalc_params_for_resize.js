@@ -1,3 +1,7 @@
+var get_svg_dim = require('../params/get_svg_dim');
+var is_force_square = require('../params/is_force_square');
+var set_clust_width = require('../params/set_clust_width');
+
 module.exports = function recalc_params_for_resize(params){
 
   // Resetting some visualization parameters
@@ -31,4 +35,5 @@ module.exports = function recalc_params_for_resize(params){
   params.labels.default_fs_row = params.matrix.rect_height * 1.07;
   params.labels.default_fs_col = params.matrix.rect_width * 0.87  ;
 
+  return params;
 };

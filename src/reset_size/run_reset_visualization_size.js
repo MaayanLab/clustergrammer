@@ -2,9 +2,6 @@
 var utils = require('../utils');
 var zoomed = require('../zoom/zoomed');
 var ini_doubleclick = require('../zoom/ini_doubleclick');
-var get_svg_dim = require('../params/get_svg_dim');
-var is_force_square = require('../params/is_force_square');
-var set_clust_width = require('../params/set_clust_width');
 var reset_zoom = require('../zoom/reset_zoom');
 var resize_dendro = require('./resize_dendro');
 var resize_grid_lines = require('./resize_grid_lines');
@@ -20,7 +17,7 @@ var resize_col_labels = require('./resize_col_labels');
 var resize_col_text = require('./resize_col_text');
 var resize_col_triangle = require('./resize_col_triangle');
 var resize_col_hlight = require('./resize_col_hlight');
-var recalc_params_for_resize = require('./recalc_params_for_resize')
+var recalc_params_for_resize = require('./recalc_params_for_resize');
 
 module.exports = function(params, inst_clust_width, inst_clust_height, set_margin_left, set_margin_top) {
 
@@ -31,9 +28,10 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
       .style('width',  inst_clust_width  + 'px')
       .style('height', inst_clust_height + 'px');
 
-  reset_zoom(params);
 
   params = recalc_params_for_resize(params);
+
+  reset_zoom(params);
 
   var row_nodes = params.network_data.row_nodes;
   var row_nodes_names = _.pluck(row_nodes, 'name');
@@ -47,6 +45,9 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
   });
 
 
+  // disable zoom while transitioning
+  svg_group.on('.zoom', null);
+  
   params.zoom_behavior
     .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch])
     .on('zoom', function(){
@@ -62,8 +63,6 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
     .attr('width', params.viz.svg_dim.width)
     .attr('height', params.viz.svg_dim.height);
 
-  // disable zoom while transitioning
-  svg_group.on('.zoom', null);
 
   // prevent normal double click zoom etc
   ini_doubleclick(params);
@@ -141,27 +140,27 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
     .attr('width', params.matrix.x_scale.rangeBand() * 0.80)
     .attr('height', params.matrix.y_scale.rangeBand() * 0.80);
 
-  svg_group.selectAll('.tile_split_up')
-    .attr('d', function() {
-      var start_x = 0;
-      var final_x = params.matrix.x_scale.rangeBand();
-      var start_y = 0;
-      var final_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand()/60;
-      var output_string = 'M' + start_x + ',' + start_y + ', L' +
-        start_x + ', ' + final_y + ', L' + final_x + ',0 Z';
-      return output_string;
-    });
+  // svg_group.selectAll('.tile_split_up')
+  //   .attr('d', function() {
+  //     var start_x = 0;
+  //     var final_x = params.matrix.x_scale.rangeBand();
+  //     var start_y = 0;
+  //     var final_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand()/60;
+  //     var output_string = 'M' + start_x + ',' + start_y + ', L' +
+  //       start_x + ', ' + final_y + ', L' + final_x + ',0 Z';
+  //     return output_string;
+  //   });
 
-  svg_group.selectAll('.tile_split_dn')
-    .attr('d', function() {
-      var start_x = 0;
-      var final_x = params.matrix.x_scale.rangeBand();
-      var start_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand()/60;
-      var final_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand()/60;
-      var output_string = 'M' + start_x + ', ' + start_y + ' ,   L' +
-        final_x + ', ' + final_y + ',  L' + final_x + ',0 Z';
-      return output_string;
-    });
+  // svg_group.selectAll('.tile_split_dn')
+  //   .attr('d', function() {
+  //     var start_x = 0;
+  //     var final_x = params.matrix.x_scale.rangeBand();
+  //     var start_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand()/60;
+  //     var final_y = params.matrix.y_scale.rangeBand() - params.matrix.y_scale.rangeBand()/60;
+  //     var output_string = 'M' + start_x + ', ' + start_y + ' ,   L' +
+  //       final_x + ', ' + final_y + ',  L' + final_x + ',0 Z';
+  //     return output_string;
+  //   });
 
   resize_highlights(params);
 
