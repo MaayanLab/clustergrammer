@@ -19,6 +19,7 @@
       .style('opacity',0)
       .remove();
   }
+  
   // remove row labels
   d3.selectAll(params.root+' .row_label_text')
     .data(row_nodes, function(d){ return d.name;})

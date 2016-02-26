@@ -1,3 +1,5 @@
+var exit_existing_row = require('../exit/exit_existing_row');
+
 // TODO add tip back to arguments
 module.exports = function(params, ini_inp_row_data, delays, duration, row_selection) {
 
@@ -15,66 +17,7 @@ module.exports = function(params, ini_inp_row_data, delays, duration, row_select
       return d.col_name;
     });
 
-  ///////////////////////////
-  // Exit
-  ///////////////////////////
-  if (delays.run_transition){
-    cur_row_tiles
-      .exit()
-      .transition().duration(300)
-      .attr('fill-opacity',0)
-      .remove();
-  } else {
-    cur_row_tiles
-      .exit()
-      .attr('fill-opacity',0)
-      .remove();
-  }
-
-  if (params.matrix.tile_type == 'updn'){
-
-    // value split
-    var row_split_data = _.filter(inp_row_data, function(num){
-      return num.value_up != 0 || num.value_dn !=0 ;
-    });
-
-    // tile_up
-    var cur_tiles_up = d3.select(row_selection)
-      .selectAll('.tile_up')
-      .data(row_split_data, function(d){return d.col_name;});
-
-    if (delays.run_transition){
-      cur_tiles_up
-        .exit()
-        .transition().duration(300)
-        .attr('fill','0')
-        .remove();
-    } else {
-      cur_tiles_up
-        .exit()
-        .attr('fill',0)
-        .remove();
-    }
-
-    // tile_dn
-    var cur_tiles_dn = d3.select(row_selection)
-      .selectAll('.tile_dn')
-      .data(row_split_data, function(d){return d.col_name;});
-
-    if (delays.run_transition){
-      cur_tiles_dn
-        .exit()
-        .transition().duration(300)
-        .attr('fill',0)
-        .remove();
-    } else {
-      cur_tiles_dn
-        .exit()
-        .attr('fill',0)
-        .remove();
-    }
-
-  }
+  exit_existing_row(params, delays, cur_row_tiles, inp_row_data, row_selection);
 
   ///////////////////////////
   // Update
@@ -132,6 +75,17 @@ module.exports = function(params, ini_inp_row_data, delays, duration, row_select
   }
 
   if (params.matrix.tile_type == 'updn'){
+
+    // value split
+    var row_split_data = _.filter(inp_row_data, function(num){
+      return num.value_up != 0 || num.value_dn !=0 ;
+    });
+
+    // tile_up
+    var cur_tiles_up = d3.select(row_selection)
+      .selectAll('.tile_up')
+      .data(row_split_data, function(d){return d.col_name;});
+
 
     // update split tiles_up
     var update_tiles_up = cur_tiles_up
@@ -193,6 +147,11 @@ module.exports = function(params, ini_inp_row_data, delays, duration, row_select
           return 'translate(' + x_pos + ','+y_pos+')';
         });
     }
+
+    // tile_dn
+    var cur_tiles_dn = d3.select(row_selection)
+      .selectAll('.tile_dn')
+      .data(row_split_data, function(d){return d.col_name;});
 
     // update split tiles_dn
     var update_tiles_dn = cur_tiles_dn
@@ -260,7 +219,8 @@ module.exports = function(params, ini_inp_row_data, delays, duration, row_select
       .selectAll('.tile')
       .each(function(d){
         if ( Math.abs(d.value_up)>0 && Math.abs(d.value_dn)>0 ){
-          d3.select(row_selection).remove();
+          d3.select(this)
+            .remove();
         }
       });
   }
@@ -330,7 +290,8 @@ module.exports = function(params, ini_inp_row_data, delays, duration, row_select
   new_tiles
     .each(function(d){
       if (Math.abs(d.value_up) > 0 && Math.abs(d.value_dn) > 0) {
-        d3.select(row_selection).remove();
+        d3.select(this)
+          .remove();
       }
     });
 
