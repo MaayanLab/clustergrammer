@@ -2,7 +2,8 @@ var utils = require('../utils');
 var constrain_font_size = require('./constrain_font_size');
 
 module.exports = function(params, pan_dx, pan_dy, fin_zoom) {
-  // get parameters
+
+  // do not allow while transitioning, e.g. reordering
   if (!params.viz.run_trans) {
 
     // define the commonly used variable half_height
@@ -117,8 +118,15 @@ module.exports = function(params, pan_dx, pan_dy, fin_zoom) {
         pan_dx, 0
       ] + ')');
 
-    // reset the zoom translate and zoom
-    params.zoom_behavior.scale(zoom_y);
+    // set y translate: center_y is positive, positive moves the visualization down
+    // the translate vector has the initial margin, the first y centering, and pan_dy
+    // times the scaling zoom_y
+    var net_y_offset = params.viz.clust.margin.top + center_y + pan_dy * zoom_y;
+
+    // reset the zoom and translate 
+    params.zoom_behavior
+      .scale(zoom_y)
+      .translate([pan_dx, net_y_offset]);
 
     var trans = true;
     constrain_font_size(params, trans);
