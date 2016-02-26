@@ -22,4 +22,7 @@ module.exports = function resize_label_bars(params, svg_group){
     })
     .attr('height', params.matrix.y_scale.rangeBand() );
 
+
+
+
 };

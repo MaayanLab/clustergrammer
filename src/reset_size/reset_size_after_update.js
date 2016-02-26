@@ -13,7 +13,7 @@ var resize_row_viz = require('./resize_row_viz');
 var resize_col_labels = require('./resize_col_labels');
 var resize_col_text = require('./resize_col_text');
 var resize_col_triangle = require('./resize_col_triangle');
-// var resize_col_hlight = require('./resize_col_hlight');
+var resize_col_hlight = require('./resize_col_hlight');
 var resize_label_bars = require('./resize_label_bars');
 
 module.exports = function(params, row_nodes, col_nodes, links, duration, delays) {
@@ -194,29 +194,7 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
   resize_col_text(params, svg_group);
   resize_col_triangle(params, svg_group, delays);
 
-
-  // append column value bars
-  if (utils.has( params.network_data.col_nodes[0], 'value')) {
-
-    svg_group
-      .selectAll('.col_bars')
-      .data(col_nodes, function(d){return d.name;})
-      .transition().delay(delays.update).duration(duration)
-      .attr('width', function(d) {
-        var inst_value = 0;
-        if (d.value > 0){
-
-          inst_value = params.labels.bar_scale_col(d.value);
-        }
-        return inst_value;
-      })
-      // rotate labels - reduce width if rotating
-      .attr('height', params.matrix.x_scale.rangeBand() * 0.66);
-  }
-
-  // if (params.labels.show_categories){
-  //   resize_col_hlight(params, delays);
-  // }
+  resize_col_hlight(params, svg_group, delays);
 
   // run for both view update and screen resize 
   bound_label_size(params, svg_group);

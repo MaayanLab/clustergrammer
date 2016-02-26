@@ -127,6 +127,7 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
 
     // set bar scale
     var enr_max = Math.abs(_.max( params.network_data.row_nodes, function(d) { return Math.abs(d.value); } ).value) ;
+
     params.labels.bar_scale_row = d3.scale
       .linear()
       .domain([0, enr_max])
@@ -173,21 +174,9 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
   resize_col_text(params, svg_group);
   resize_col_triangle(params, svg_group);
 
-  svg_group
-    .selectAll('.col_bars')
-    .attr('width', function(d) {
-      var inst_value = 0;
-      if (d.value > 0){
-        inst_value = params.labels.bar_scale_col(d.value);
-      }
-      return inst_value;
-    })
-    // rotate labels - reduce width if rotating
-    .attr('height', params.matrix.rect_width * 0.66);
 
-  if (params.labels.show_categories){
-    resize_col_hlight(params);
-  }
+
+  resize_col_hlight(params, svg_group);
 
   // run for both view update and screen resize 
   bound_label_size(params, svg_group);
