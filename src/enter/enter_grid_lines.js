@@ -1,0 +1,51 @@
+module.exports = function enter_grid_lines(params, delays, duration){
+
+  var row_nodes = params.network_data.row_nodes;
+  var row_nodes_names = params.network_data.row_nodes_names;
+
+  var col_nodes = params.network_data.col_nodes;
+  var col_nodes_names = params.network_data.col_nodes_names;
+
+  // Fade in new gridlines
+  ///////////////////////////
+
+  // append horizontal lines
+  d3.select(params.root+' .clust_group')
+    .selectAll('.horz_lines')
+    .data(row_nodes, function(d){return d.name;})
+    .enter()
+    .append('g')
+    .attr('class','horz_lines')
+    .attr('transform', function(d) {
+      var inst_index = _.indexOf(row_nodes_names, d.name);
+      return 'translate(0,' + params.matrix.y_scale(inst_index) + ') rotate(0)';
+    })
+    .append('line')
+    .attr('x1',0)
+    .attr('x2',params.viz.clust.dim.width)
+    .style('stroke-width', params.viz.border_width/params.viz.zoom_switch+'px')
+    .style('stroke','white')
+    .attr('opacity',0)
+    .transition().delay(delays.enter).duration(2*duration)
+    .attr('opacity',1);
+
+  // append vertical line groups
+  d3.select(params.root+' .clust_group')
+    .selectAll('.vert_lines')
+    .data(col_nodes)
+    .enter()
+    .append('g')
+    .attr('class', 'vert_lines')
+    .attr('transform', function(d) {
+      var inst_index = _.indexOf(col_nodes_names, d.name);
+      return 'translate(' + params.matrix.x_scale(inst_index) + ') rotate(-90)';
+    })
+    .append('line')
+    .attr('x1', 0)
+    .attr('x2', -params.viz.clust.dim.height)
+    .style('stroke-width', params.viz.border_width + 'px')
+    .style('stroke', 'white')
+    .attr('opacity',0)
+    .transition().delay(delays.enter).duration(2*duration)
+    .attr('opacity',1);
+  };

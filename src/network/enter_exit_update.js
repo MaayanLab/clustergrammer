@@ -4,6 +4,7 @@ var make_cols = require('../labels/make_cols');
 var eeu_existing_row = require('./eeu_existing_row');
 var enter_new_rows = require('../enter/enter_new_rows');
 var exit_components = require('../exit/exit_components');
+var enter_grid_lines = require('../enter/enter_grid_lines');
 
 module.exports = function(params, network_data, delays){
 
@@ -46,7 +47,6 @@ module.exports = function(params, network_data, delays){
 
   // get row and col names
   var row_nodes_names = params.network_data.row_nodes_names;
-  var col_nodes_names = params.network_data.col_nodes_names;
 
   var duration = 1000;
 
@@ -126,52 +126,10 @@ module.exports = function(params, network_data, delays){
       enter_new_rows(params, d, delays, duration, tip, this); 
     } );
 
-  // var labels = Labels(params);
 
   make_rows(params, duration);
   make_cols(params, duration);
 
-  // Fade in new gridlines
-  ///////////////////////////
-
-  // append horizontal lines
-  d3.select(params.root+' .clust_group')
-    .selectAll('.horz_lines')
-    .data(row_nodes, function(d){return d.name;})
-    .enter()
-    .append('g')
-    .attr('class','horz_lines')
-    .attr('transform', function(d) {
-      var inst_index = _.indexOf(row_nodes_names, d.name);
-      return 'translate(0,' + params.matrix.y_scale(inst_index) + ') rotate(0)';
-    })
-    .append('line')
-    .attr('x1',0)
-    .attr('x2',params.viz.clust.dim.width)
-    .style('stroke-width', params.viz.border_width/params.viz.zoom_switch+'px')
-    .style('stroke','white')
-    .attr('opacity',0)
-    .transition().delay(delays.enter).duration(2*duration)
-    .attr('opacity',1);
-
-  // append vertical line groups
-  d3.select(params.root+' .clust_group')
-    .selectAll('.vert_lines')
-    .data(col_nodes)
-    .enter()
-    .append('g')
-    .attr('class', 'vert_lines')
-    .attr('transform', function(d) {
-      var inst_index = _.indexOf(col_nodes_names, d.name);
-      return 'translate(' + params.matrix.x_scale(inst_index) + ') rotate(-90)';
-    })
-    .append('line')
-    .attr('x1', 0)
-    .attr('x2', -params.viz.clust.dim.height)
-    .style('stroke-width', params.viz.border_width + 'px')
-    .style('stroke', 'white')
-    .attr('opacity',0)
-    .transition().delay(delays.enter).duration(2*duration)
-    .attr('opacity',1);
+  enter_grid_lines(params, delays, duration);
 
 };
