@@ -20,48 +20,25 @@ var resize_col_labels = require('./resize_col_labels');
 var resize_col_text = require('./resize_col_text');
 var resize_col_triangle = require('./resize_col_triangle');
 var resize_col_hlight = require('./resize_col_hlight');
+var recalc_params_for_resize = require('./recalc_params_for_resize')
 
 module.exports = function(params, inst_clust_width, inst_clust_height, set_margin_left, set_margin_top) {
 
-  var row_nodes = params.network_data.row_nodes;
-  var row_nodes_names = _.pluck(row_nodes, 'name');
-
-  reset_zoom(params);
-
-  // size the svg container div - svg_div
+  // first resize hte svg 
   d3.select(params.viz.viz_wrapper)
       .style('float', 'right')
       .style('margin-top',  set_margin_top  + 'px')
       .style('width',  inst_clust_width  + 'px')
       .style('height', inst_clust_height + 'px');
 
+  reset_zoom(params);
 
-  // Resetting some visualization parameters
-  params = get_svg_dim(params);
-  params = set_clust_width(params);
-  params = is_force_square(params);  
+  params = recalc_params_for_resize(params);
 
-  // zoom_switch from 1 to 2d zoom
-  params.viz.zoom_switch = (params.viz.clust.dim.width / params.viz.num_col_nodes) / (params.viz.clust.dim.height / params.viz.num_row_nodes);
+  var row_nodes = params.network_data.row_nodes;
+  var row_nodes_names = _.pluck(row_nodes, 'name');
 
-  // zoom_switch can not be less than 1
-  if (params.viz.zoom_switch < 1) {
-    params.viz.zoom_switch = 1;
-  }
-
-
-  // Begin resizing the visualization
-
-
-  // resize the svg
-  ///////////////////////
-  var svg_group = d3.select(params.viz.viz_svg)
-    .attr('width', params.viz.svg_dim.width)
-    .attr('height', params.viz.svg_dim.height);
-
-  // redefine x_scale and y_scale rangeBands
-  params.matrix.x_scale.rangeBands([0, params.viz.clust.dim.width]);
-  params.matrix.y_scale.rangeBands([0, params.viz.clust.dim.height]);
+  var svg_group = d3.select(params.viz.viz_svg);
 
   // redefine x and y positions
   _.each(params.network_data.links, function(d){
@@ -69,15 +46,6 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
     d.y = params.matrix.y_scale(d.source);
   });
 
-  // precalc rect_width and height
-  params.matrix.rect_width = params.matrix.x_scale.rangeBand();
-  params.matrix.rect_height = params.matrix.y_scale.rangeBand();
-
-  // redefine zoom extent
-  params.viz.real_zoom = params.norm_label.width.col / (params.matrix.rect_width/2);
-
-  // disable zoom while transitioning
-  svg_group.on('.zoom', null);
 
   params.zoom_behavior
     .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch])
@@ -90,15 +58,16 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
     svg_group.call(params.zoom_behavior);
   }
 
+  svg_group
+    .attr('width', params.viz.svg_dim.width)
+    .attr('height', params.viz.svg_dim.height);
+
+  // disable zoom while transitioning
+  svg_group.on('.zoom', null);
+
   // prevent normal double click zoom etc
   ini_doubleclick(params);
 
-  // redefine border width
-  params.viz.border_width = params.matrix.rect_width / 55;
-
-  // the default font sizes are set here
-  params.labels.default_fs_row = params.matrix.rect_height * 1.07;
-  params.labels.default_fs_col = params.matrix.rect_width * 0.87  ;
 
   svg_group.select('.super_background')
     .style('width', params.viz.svg_dim.width)
