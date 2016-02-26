@@ -1,8 +1,5 @@
 module.exports = function exit_existing_row(params, delays, cur_row_tiles, inp_row_data, row_selection){
 
-  ///////////////////////////
-  // Exit
-  ///////////////////////////
   if (delays.run_transition){
     cur_row_tiles
       .exit()
