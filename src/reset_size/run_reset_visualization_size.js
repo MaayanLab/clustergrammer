@@ -16,7 +16,7 @@ var resize_row_viz = require('./resize_row_viz');
 var resize_col_labels = require('./resize_col_labels');
 var resize_col_text = require('./resize_col_text');
 var resize_col_triangle = require('./resize_col_triangle');
-// var resize_col_hlight = require('./resize_col_hlight');
+var resize_col_hlight = require('./resize_col_hlight');
 var recalc_params_for_resize = require('./recalc_params_for_resize');
 var resize_row_tiles = require('./resize_row_tiles');
 
@@ -185,9 +185,9 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
     // rotate labels - reduce width if rotating
     .attr('height', params.matrix.rect_width * 0.66);
 
-  // if (params.labels.show_categories){
-  //   resize_col_hlight(params);
-  // }
+  if (params.labels.show_categories){
+    resize_col_hlight(params);
+  }
 
   // run for both view update and screen resize 
   bound_label_size(params, svg_group);
