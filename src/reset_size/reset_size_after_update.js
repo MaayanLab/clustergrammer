@@ -176,7 +176,7 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
   resize_col_hlight(params, svg_group, delays);
 
   // run for both view update and screen resize 
-  bound_label_size(params, svg_group);
+  bound_label_size(params);
   resize_dendro(params, svg_group, delays);
   resize_super_labels(params, svg_group, delays);
   resize_spillover(params, svg_group, delays);

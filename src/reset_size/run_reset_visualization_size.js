@@ -161,7 +161,7 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
   resize_col_hlight(params, svg_group);
 
   // run for both view update and screen resize 
-  bound_label_size(params, svg_group);
+  bound_label_size(params);
   resize_dendro(params, svg_group);
   resize_super_labels(params, svg_group);
   resize_spillover(params, svg_group);

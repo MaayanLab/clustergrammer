@@ -32,7 +32,7 @@ def main():
 
     inst_col = {}
 
-    col_name = 'Col-' + str( col_num+1 )
+    col_name = 'Col-' + str( col_num+1 ) + ' make name longer'
 
     inst_col['col_name'] = col_name
     inst_col['link'] = 'col-link'

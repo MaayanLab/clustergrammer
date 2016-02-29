@@ -157,6 +157,20 @@ module.exports = function(params, text_delay) {
     }
   });
 
+  params.ini_scale_font = {};
+  params.ini_scale_font.row = 1;
+  if (params.bounding_width_max.row > params.norm_label.width.row) {
+
+    params.ini_scale_font.row = params.norm_label.width.row / params.bounding_width_max.row;
+    params.bounding_width_max.row = params.ini_scale_font.row * params.bounding_width_max.row;
+    params.labels.default_fs_row = params.labels.default_fs_row * params.ini_scale_font.row;
+    d3.selectAll(params.root+' .row_label_text').each(function() {
+    d3.select(this).select('text')
+      .style('font-size', params.labels.default_fs_row + 'px');
+    });
+  }
+
+
   // row visualizations - classification triangles and colorbar rects
   var row_viz_container = row_container
     .append('g')

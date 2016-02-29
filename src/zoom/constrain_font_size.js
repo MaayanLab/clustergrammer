@@ -10,7 +10,6 @@ module.exports = function(params, trans) {
     * params.zoom_behavior.scale() / params.viz.zoom_switch;
 
 
-
   if (keep_width.row > params.norm_label.width.row) {
 
     params.viz.zoom_scale_font.row = params.norm_label.width.row / keep_width.row;

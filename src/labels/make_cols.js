@@ -172,36 +172,13 @@ module.exports = function(params, text_delay) {
   // check if widest row or col are wider than the allowed label width
   ////////////////////////////////////////////////////////////////////////
   params.ini_scale_font = {};
-  params.ini_scale_font.row = 1;
   params.ini_scale_font.col = 1;
-
-  if (params.bounding_width_max.row > params.norm_label.width.row) {
-
-    // calc reduction in font size
-    params.ini_scale_font.row = params.norm_label.width.row / params.bounding_width_max.row;
-    // redefine bounding_width_max.row
-    params.bounding_width_max.row = params.ini_scale_font.row * params.bounding_width_max.row;
-
-    // redefine default fs !! increase to make more readable
-    params.labels.default_fs_row = params.labels.default_fs_row * params.ini_scale_font.row;
-
-    // reduce font size
-    d3.selectAll(params.root+' .row_label_text').each(function() {
-    d3.select(this).select('text')
-      .style('font-size', params.labels.default_fs_row + 'px');
-    });
-  }
 
   if (params.bounding_width_max.col > params.norm_label.width.col) {
 
-    // calc reduction in font size
     params.ini_scale_font.col = params.norm_label.width.col / params.bounding_width_max.col;
-    // redefine bounding_width_max.col
     params.bounding_width_max.col = params.ini_scale_font.col * params.bounding_width_max.col;
-    // redefine default fs, !! increase to make more readable
     params.labels.default_fs_col = params.labels.default_fs_col * params.ini_scale_font.col;
-
-    // reduce font size
     d3.selectAll(params.root+' .col_label_click').each(function() {
     d3.select(this).select('text')
       .style('font-size', params.labels.default_fs_col + 'px');
