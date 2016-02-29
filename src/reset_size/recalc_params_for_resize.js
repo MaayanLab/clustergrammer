@@ -1,6 +1,7 @@
 var get_svg_dim = require('../params/get_svg_dim');
 var is_force_square = require('../params/is_force_square');
 var set_clust_width = require('../params/set_clust_width');
+var calc_default_fs = require('../params/calc_default_fs');
 
 module.exports = function recalc_params_for_resize(params){
 
@@ -32,8 +33,7 @@ module.exports = function recalc_params_for_resize(params){
   params.viz.border_width = params.matrix.rect_width / 55;
 
   // the default font sizes are set here
-  params.labels.default_fs_row = params.matrix.rect_height * 1.07;
-  params.labels.default_fs_col = params.matrix.rect_width * 0.87  ;
+  params = calc_default_fs(params);
 
   return params;
 };

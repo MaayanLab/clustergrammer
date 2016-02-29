@@ -14,6 +14,7 @@ var resize_col_text = require('./resize_col_text');
 var resize_col_triangle = require('./resize_col_triangle');
 var resize_col_hlight = require('./resize_col_hlight');
 var resize_label_bars = require('./resize_label_bars');
+var calc_default_fs = require('../params/calc_default_fs');
 
 module.exports = function(params, row_nodes, col_nodes, links, duration, delays) {
 
@@ -46,9 +47,7 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
   // redefine border width
   params.viz.border_width = params.matrix.x_scale.rangeBand() / 40;
 
-  // the default font sizes are set here
-  params.labels.default_fs_row = params.matrix.y_scale.rangeBand() * 1.01;
-  params.labels.default_fs_col = params.matrix.x_scale.rangeBand() * 0.85;
+  params = calc_default_fs(params);
 
 
   // Begin resizing the visualization
