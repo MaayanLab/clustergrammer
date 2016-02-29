@@ -7,7 +7,10 @@ def main():
 
   net.load_vect_post_to_net(vect_post)
 
-  net.N_top_views()
+  net.swap_nan_for_zero()
+  
+  # net.N_top_views()
+  net.make_filtered_views(dist_type='cos',views=['N_row_sum','N_row_var'], dendro=True)
 
   net.write_json_to_file('viz','json/vect_post_example.json','indent')
 

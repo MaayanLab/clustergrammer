@@ -106,7 +106,8 @@ def make_up_names(num_names):
   row_names = []
 
   for i in range(num_names):
-    row_names.append(id_generator(5, "WERJASDFNYUIO"))
+    length_of_names = int(30*random.random())
+    row_names.append(id_generator(length_of_names, "WERJASDFNYUIO"))
 
   row_names = list(set(row_names))
 

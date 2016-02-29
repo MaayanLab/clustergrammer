@@ -94,8 +94,6 @@ module.exports = function(params, text_delay) {
   // append column value bars
   if (utils.has(params.network_data.col_nodes[0], 'value')) {
 
-    // d3.selectAll(params.root+' col_bars').remove();
-
     col_label_click
       .append('rect')
       .attr('class', 'col_bars')
@@ -143,11 +141,6 @@ module.exports = function(params, text_delay) {
       .offset([20, 0])
       .html(function(d) {
         var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
-
-        // if (params.show_categories){
-        //   inst_name = inst_name + ': ' + String(d.cl);
-        // }
-
         return "<span>" + inst_name + "</span>";
       });
 
@@ -198,8 +191,6 @@ module.exports = function(params, text_delay) {
       .style('font-size', params.labels.default_fs_row + 'px');
     });
   }
-
-  // debugger;
 
   if (params.bounding_width_max.col > params.norm_label.width.col) {
 
@@ -276,9 +267,6 @@ module.exports = function(params, text_delay) {
     })
     .attr('fill', function() {
       var inst_color = '#eee';
-      // if (params.labels.show_categories) {
-      //   inst_color = params.labels.class_colors.col[d.cl];
-      // }
     return inst_color;
     })
     .style('opacity',0)

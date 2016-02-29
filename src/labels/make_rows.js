@@ -146,7 +146,7 @@ module.exports = function(params, text_delay) {
         });
     });
 
-  // label the widest row and col labels
+  // label the widest row labels 
   params.bounding_width_max = {};
   params.bounding_width_max.row = 0;
 
