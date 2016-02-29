@@ -10,7 +10,6 @@ var resize_spillover = require('./resize_spillover');
 var resize_borders = require('./resize_borders');
 var resize_row_labels = require('./resize_row_labels');
 var resize_highlights = require('./resize_highlights');
-var normal_name = require('./normal_name');
 var bound_label_size = require('./bound_label_size');
 var resize_row_viz = require('./resize_row_viz');
 var resize_col_labels = require('./resize_col_labels');
@@ -97,7 +96,7 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
   svg_group.selectAll('.row_label_text')
     .select('text')
     .style('font-size', params.labels.default_fs_row + 'px')
-    .text(function(d){ return normal_name(params, d);});
+    .text(function(d){ return utils.normal_name(d, params.labels.max_label_char);});
 
   // change the size of the highlighting rects
   svg_group.selectAll('.row_label_text')

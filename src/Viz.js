@@ -7,9 +7,9 @@ var search = require('./search');
 var two_translate_zoom = require('./zoom/two_translate_zoom');
 var initialize_resizing = require('./initialize_resizing');
 var ini_doubleclick = require('./zoom/ini_doubleclick');
-
 var build_col_dendro = require('./dendrogram/build_col_dendro');
 var build_row_dendro = require('./dendrogram/build_row_dendro');
+var bound_label_size = require('./reset_size/bound_label_size');
 
 module.exports = function(params) {
   var svg_group = d3.select(params.viz.viz_wrapper)
@@ -32,6 +32,9 @@ module.exports = function(params) {
   var delay_text = 0;
   make_rows(params, delay_text);
   var container_all_col = make_cols(params, delay_text);
+
+
+  bound_label_size(params);
 
 
   if (params.viz.show_dendrogram) {

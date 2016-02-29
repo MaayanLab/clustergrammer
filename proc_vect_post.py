@@ -12,6 +12,6 @@ def main():
   # net.N_top_views()
   net.make_filtered_views(dist_type='cos',views=['N_row_sum','N_row_var'], dendro=True)
 
-  net.write_json_to_file('viz','json/vect_post_example.json','indent')
+  net.write_json_to_file('viz','json/large_vect_post_example.json','indent')
 
 main()

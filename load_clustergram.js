@@ -1,6 +1,7 @@
 
 // make_clust('mult_view.json');
-make_clust('vect_post_example.json');
+make_clust('large_vect_post_example.json');
+// make_clust('vect_post_example.json');
 // make_clust('enr_clust_example.json');
 // make_clust('default_example.json');
 // make_clust('ccle.json');

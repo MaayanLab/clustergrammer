@@ -156,41 +156,11 @@ module.exports = function(params, text_delay) {
 
   }
 
-  // bounding font size
-  /////////////////////////////
-
-  params.bounding_width_max.col = 0;
-  d3.selectAll(params.root+' .col_label_click').each(function() {
-    var tmp_width = d3.select(this).select('text').node().getBBox().width;
-    if (tmp_width > params.bounding_width_max.col) {
-      // increase the apparent width of the column label since its rotated
-      // this will give more room for text
-      params.bounding_width_max.col = tmp_width;
-    }
-  });
-
-  // check if widest row or col are wider than the allowed label width
-  ////////////////////////////////////////////////////////////////////////
-  params.ini_scale_font = {};
-  params.ini_scale_font.col = 1;
-
-  if (params.bounding_width_max.col > params.norm_label.width.col) {
-
-    params.ini_scale_font.col = params.norm_label.width.col / params.bounding_width_max.col;
-    params.bounding_width_max.col = params.ini_scale_font.col * params.bounding_width_max.col;
-    params.labels.default_fs_col = params.labels.default_fs_col * params.ini_scale_font.col;
-    d3.selectAll(params.root+' .col_label_click').each(function() {
-    d3.select(this).select('text')
-      .style('font-size', params.labels.default_fs_col + 'px');
-    });
-  }
-
-  // constrain text after zooming
-  if (params.labels.row_keep < 1){
-    d3.selectAll(params.root+' .row_label_text' ).each(function() { trim_text(params, this, 'row'); });
-  }
   if (params.labels.col_keep < 1){
-    d3.selectAll(params.root+' .col_label_click').each(function() { trim_text(params, this, 'col'); });
+    d3.selectAll(params.root+' .col_label_click')
+      .each(function() { 
+        trim_text(params, this, 'col'); 
+      });
   }
 
 
