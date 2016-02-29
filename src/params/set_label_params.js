@@ -34,8 +34,8 @@ module.exports = function set_label_params(config, params){
   params.labels.col_max_char = col_max_char;
 
   // increae teh number of max_label_char to initiate label trimming 
-  params.labels.max_label_char = 10;
-  // params.labels.max_label_char = 30;
+  // params.labels.max_label_char = 10;
+  params.labels.max_label_char = 30;
 
   var min_num_char = 5;
   var max_num_char = params.labels.max_label_char;

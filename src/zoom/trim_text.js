@@ -1,8 +1,10 @@
 
 module.exports = function(params, inst_selection, inst_rc) {
 
-  var max_width,
-      inst_zoom;
+  // trim text that is longer than the container 
+
+  var max_width;
+  var inst_zoom;
 
   var safe_row_trim_text = 0.9;
 
@@ -15,15 +17,24 @@ module.exports = function(params, inst_selection, inst_rc) {
     inst_zoom = params.zoom_behavior.scale()/params.viz.zoom_switch;
   }
 
-  var tmp_width = d3.select(inst_selection).select('text').node().getBBox().width;
-  var inst_text = d3.select(inst_selection).select('text').text();
-  var actual_width = tmp_width*inst_zoom;
+  var tmp_width = d3.select(inst_selection)
+    .select('text')
+    .node()
+    .getBBox()
+    .width;
+
+  var inst_text = d3.select(inst_selection)
+    .select('text')
+    .text();
+
+  var actual_width = tmp_width * inst_zoom;
 
   if (actual_width>max_width){
 
     var trim_fraction = max_width/actual_width;
     var keep_num_char = Math.floor(inst_text.length*trim_fraction)-3;
     var trimmed_text = inst_text.substring(0,keep_num_char)+'..';
+
     d3.select(inst_selection).select('text')
       .text(trimmed_text);
   }

@@ -4,16 +4,13 @@ var trim_text = require('./trim_text');
 module.exports = function(params, trans) {
 
   var keep_width = {};
-  keep_width.row = params.bounding_width_max.row * params.labels.row_keep
-    * params.zoom_behavior.scale();
-  keep_width.col = params.bounding_width_max.col * params.labels.col_keep
-    * params.zoom_behavior.scale() / params.viz.zoom_switch;
+  keep_width.row = params.bounding_width_max.row * params.labels.row_keep * params.zoom_behavior.scale();
+  keep_width.col = params.bounding_width_max.col * params.labels.col_keep * params.zoom_behavior.scale() / params.viz.zoom_switch;
 
 
   if (keep_width.row > params.norm_label.width.row) {
 
     params.viz.zoom_scale_font.row = params.norm_label.width.row / keep_width.row;
-    // params.viz.zoom_scale_font.row = params.norm_label.width.row / keep_width.row;
 
     d3.selectAll(params.root+' .row_label_text').each(function() {
       if (trans){

@@ -10,6 +10,7 @@ var set_label_params = require('./set_label_params');
 var set_viz_params = require('./set_viz_params');
 var set_matrix_params = require('./set_matrix_params');
 var set_clust_width = require('./set_clust_width');
+var calc_defaule_fs = require('./calc_default_fs');
 
 /* Params: calculates the size of all the visualization elements in the
 clustergram.
@@ -213,8 +214,7 @@ module.exports = function params(input_config) {
     .linear().domain([1, 0])
     .range([0.8, 0.5]);
 
-  params.labels.default_fs_row = params.matrix.y_scale.rangeBand() * 1.01;
-  params.labels.default_fs_col = params.matrix.x_scale.rangeBand() * 0.87;
+  params = calc_defaule_fs(params);    
 
   params.viz.zoom_scale_font = {};
   params.viz.zoom_scale_font.row = 1;
