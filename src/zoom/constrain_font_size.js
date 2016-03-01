@@ -1,4 +1,3 @@
-var utils = require('../utils');
 var trim_text = require('./trim_text');
 
 module.exports = function(params) {
@@ -12,28 +11,34 @@ module.exports = function(params) {
 
   if (real_font_size.row > params.labels.max_allow_fs){
 
-    reduce_fs.row = params.labels.max_allow_fs/ real_font_size.row;
-    tmp_font_size = tmp_font_size * reduce_fs.row;
+
+    reduce_fs.row = params.labels.max_allow_fs / real_font_size.row;
+
+    // tmp_font_size = tmp_font_size * reduce_fs.row;
+    var inst_zoom = params.zoom_behavior.scale();
+    if (inst_zoom > params.viz.zoom_switch){
+      inst_zoom = params.viz.zoom_switch;
+    }
+
+    tmp_font_size = params.labels.max_allow_fs/inst_zoom;
 
     d3.selectAll(params.root+' .row_label_text')
       .each(function(){ 
         d3.select(this).select('text')
           .style('font-size', tmp_font_size + 'px');
-          // .text(function(d){ return utils.normal_name(d);});
       });
   }
 
 
   if (real_font_size.col > params.labels.max_allow_fs){
 
-    reduce_fs.col = params.labels.max_allow_fs/ real_font_size.col;
+    reduce_fs.col = params.labels.max_allow_fs / real_font_size.col;
     tmp_font_size = tmp_font_size * reduce_fs.col;
 
     d3.selectAll(params.root+' .row_label_text')
       .each(function(){ 
         d3.select(this).select('text')
           .style('font-size', tmp_font_size + 'px');
-          // .text(function(d){ return utils.normal_name(d);});
       });
   }  
 

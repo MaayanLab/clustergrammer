@@ -26,46 +26,23 @@ module.exports = function(params, inst_selection, inst_rc) {
     .getBBox()
     .width;
 
-  // if (inst_text.slice(-2)==='..'){
-  //   current_num_char = inst_text.length-2;
-  // } else {
-  //   current_num_char = inst_text.length;
-  // }
-
-  // only scale the available room if the zoom is greater than one 
-  // this is for the columns 
-  if (inst_zoom > 1){
-    inst_width = tmp_width * inst_zoom;
-  } else {
-    inst_width = tmp_width;
-  }
+  inst_width = tmp_width*inst_zoom;
 
   if (inst_width > max_width){
 
     d3.select(inst_selection)
       .select('text')
-      .text(function(d){
-
+      .text(function(){
         inst_text = d3.select(this).text();
         current_num_char = inst_text.length;
-        keep_num_char = current_num_char - 2;
-        trimmed_text = inst_text.substring(0,keep_num_char);
-
-        // original_text = d.name;
-        // if ( original_text === 'JNWYDREUIEADJDAIFFOF'){
-        //   console.log(inst_text)
-        //   console.log(inst_width)
-        //   console.log(trimmed_text);
-        //   console.log('\n')
-        // }
-
+        keep_num_char = current_num_char - 4;
+        trimmed_text = inst_text.substring(0,keep_num_char)+'..';
         return trimmed_text;
       });
 
-
   } 
 
-  else if (inst_width < max_width * 0.75) {
+  else if (inst_width < max_width * 0.7 ) {
 
       // add characters back 
       // wait until the text is 25% smaller than the max area 
@@ -75,12 +52,16 @@ module.exports = function(params, inst_selection, inst_rc) {
         .text(function(d){
 
           inst_text = d3.select(this).text();
-          current_num_char = inst_text.length;
+
+          if (inst_text.slice(-2)==='..'){
+            current_num_char = inst_text.length-2;
+          } else {
+            current_num_char = inst_text.length;
+          }
+          
           original_text = d.name;
-
           keep_num_char = current_num_char +2;
-
-          trimmed_text = original_text.substring(0,keep_num_char);//+'..';
+          trimmed_text = original_text.substring(0,keep_num_char)+'..';
 
           // if '..' was added to original text 
           if (trimmed_text.length > original_text.length){
