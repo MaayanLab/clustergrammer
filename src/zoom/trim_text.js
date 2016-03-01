@@ -19,12 +19,25 @@ module.exports = function(params, inst_selection, inst_rc) {
           return trimmed_text;
         }
 
+  function calc_width(tmp_width, inst_zoom, inst_rc){
+    if (inst_rc==='row'){
+      inst_width = tmp_width * inst_zoom;
+    } else {
+      if (inst_zoom < 1){
+        inst_width = tmp_width;
+      } else {
+        inst_width = tmp_width * inst_zoom ;
+      }
+    }
+    return inst_width;
+  }        
+
   if (inst_rc === 'row'){
     max_width = params.norm_label.width.row ;
     inst_zoom = params.zoom_behavior.scale();
   } else {
     // the column label has extra length since its rotated
-    max_width = params.norm_label.width.col ;
+    max_width = params.norm_label.width.col;
     inst_zoom = params.zoom_behavior.scale()/params.viz.zoom_switch;
   }
 
@@ -34,21 +47,38 @@ module.exports = function(params, inst_selection, inst_rc) {
     .getBBox()
     .width;
 
-  inst_width = tmp_width*inst_zoom;
+  inst_width = calc_width(tmp_width, inst_zoom, inst_rc);
+
+  if (inst_rc==='col'){
+  //   console.log('col')
+  //   console.log(inst_width)
+  //   console.log(max_width)
+
+    // console.log(String(inst_width)+' : '+String(max_width) + 'x '+String(inst_zoom))
+
+  }
+    
 
   if (inst_width > max_width){
 
-    while (inst_width > max_width){
+    // while (inst_width > max_width){
+    for (var i=1; i<10; i++){
 
-      d3.select(inst_selection)
-        .select('text')
-        .text( trim );
+      if (inst_width > max_width){
+        // console.log(i)
 
-      tmp_width = d3.select(inst_selection)
-        .select('text')
-        .node().getBBox().width;
+        d3.select(inst_selection)
+          .select('text')
+          .text( trim );
 
-      inst_width = tmp_width*inst_zoom;
+        tmp_width = d3.select(inst_selection)
+          .select('text')
+          .node().getBBox().width;
+
+        inst_width = calc_width(tmp_width, inst_zoom, inst_rc);
+
+
+      }
 
     }
 
@@ -56,32 +86,32 @@ module.exports = function(params, inst_selection, inst_rc) {
 
   else if (inst_width < max_width * 0.7 ) {
 
-      // add characters back 
-      // wait until the text is 25% smaller than the max area 
+    // add characters back 
+    // wait until the text is 25% smaller than the max area 
 
-      d3.select(inst_selection)  
-        .select('text')
-        .text(function(d){
+    d3.select(inst_selection)  
+      .select('text')
+      .text(function(d){
 
-          inst_text = d3.select(this).text();
+        inst_text = d3.select(this).text();
 
-          if (inst_text.slice(-2)==='..'){
-            current_num_char = inst_text.length-2;
-          } else {
-            current_num_char = inst_text.length;
-          }
-          
-          original_text = d.name;
-          keep_num_char = current_num_char +2;
-          trimmed_text = original_text.substring(0,keep_num_char)+'..';
+        if (inst_text.slice(-2)==='..'){
+          current_num_char = inst_text.length-2;
+        } else {
+          current_num_char = inst_text.length;
+        }
+        
+        original_text = d.name;
+        keep_num_char = current_num_char +2;
+        trimmed_text = original_text.substring(0,keep_num_char)+'..';
 
-          // if '..' was added to original text 
-          if (trimmed_text.length > original_text.length){
-            trimmed_text = original_text;
-          }
+        // if '..' was added to original text 
+        if (trimmed_text.length > original_text.length){
+          trimmed_text = original_text;
+        }
 
-          return trimmed_text;
-        });
+        return trimmed_text;
+      });
 
   }
 
