@@ -52,8 +52,8 @@ module.exports = function set_label_params(config, params){
 
 
   // define label scale
-  var min_label_width = 65;
-  var max_label_width = 115;
+  var min_label_width = 85;
+  var max_label_width = 120;
   var label_scale = d3.scale.linear()
     .domain([min_num_char, max_num_char])
     .range([min_label_width, max_label_width]).clamp('true');
@@ -65,7 +65,7 @@ module.exports = function set_label_params(config, params){
 
   params.norm_label.width.col = label_scale(col_max_char) * params.col_label_scale;
 
-  params.labels.max_allow_fs = 18;
+  params.labels.max_allow_fs = 20;
 
   return params;
 };
