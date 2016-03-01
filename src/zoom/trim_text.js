@@ -15,11 +15,11 @@ module.exports = function(params, inst_selection, inst_rc) {
   if (inst_rc === 'row'){
     max_width = params.norm_label.width.row ;
     inst_zoom = params.zoom_behavior.scale();
-    num_trims = Math.floor(params.labels.row_max_char);
+    num_trims = params.labels.row_max_char;
   } else {
     max_width = params.norm_label.width.col;
     inst_zoom = params.zoom_behavior.scale()/params.viz.zoom_switch;
-    num_trims = Math.floor(params.labels.col_max_char);
+    num_trims = params.labels.col_max_char;
   }
 
   var tmp_width = d3.select(inst_selection)

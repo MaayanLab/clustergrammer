@@ -4,7 +4,7 @@ var constrain_font_size = require('../zoom/constrain_font_size');
 
 module.exports = function label_constrain_and_trim(params){
 
-  // console.log('label_constrain_and_trim')
+  // console.log('label_constrain_and_trim');
 
   // reset text in rows and columns 
   d3.selectAll(params.root+' .row_label_text')
