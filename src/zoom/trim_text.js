@@ -30,15 +30,27 @@ module.exports = function(params, inst_selection, inst_rc) {
 
   if (inst_width > max_width){
 
-    d3.select(inst_selection)
-      .select('text')
-      .text(function(){
-        inst_text = d3.select(this).text();
-        current_num_char = inst_text.length;
-        keep_num_char = current_num_char - 4;
-        trimmed_text = inst_text.substring(0,keep_num_char)+'..';
-        return trimmed_text;
-      });
+    while (inst_width > max_width){
+
+      d3.select(inst_selection)
+        .select('text')
+        .text(function(){
+
+          inst_text = d3.select(this).text();
+          current_num_char = inst_text.length;
+          keep_num_char = current_num_char - 4;
+          trimmed_text = inst_text.substring(0,keep_num_char)+'..';
+          return trimmed_text;
+
+        });
+
+      tmp_width = d3.select(inst_selection)
+        .select('text')
+        .node().getBBox().width;
+
+      inst_width = tmp_width*inst_zoom;
+
+    }
 
   } 
 
