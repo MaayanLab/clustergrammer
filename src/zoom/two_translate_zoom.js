@@ -1,5 +1,6 @@
 var utils = require('../utils');
 var constrain_font_size = require('./constrain_font_size');
+var trim_text = require('./trim_text');
 
 module.exports = function(params, pan_dx, pan_dy, fin_zoom) {
 
@@ -128,8 +129,13 @@ module.exports = function(params, pan_dx, pan_dy, fin_zoom) {
       .scale(zoom_y)
       .translate([pan_dx, net_y_offset]);
 
-    var trans = true;
-    constrain_font_size(params, trans);
+    constrain_font_size(params);
+
+    d3.selectAll(params.root+' .row_label_text' )
+      .each(function() { trim_text(params, this, 'row'); });
+
+    d3.selectAll(params.root+' .col_label_click')
+      .each(function() { trim_text(params, this, 'col'); });
 
     // re-size of the highlighting rects
     /////////////////////////////////////////

@@ -1,5 +1,6 @@
 var utils = require('../utils');
 var constrain_font_size = require('./constrain_font_size');
+var trim_text = require('./trim_text');
 
 module.exports = function(params, trans_x, trans_y, zoom_x, zoom_y) {
   var d3_scale = zoom_x;
@@ -96,9 +97,13 @@ module.exports = function(params, trans_x, trans_y, zoom_x, zoom_y) {
     .translate([trans_x + params.viz.clust.margin.left, trans_y + params.viz.clust.margin.top
     ]);
 
-  var trans = false;
-  constrain_font_size(params, trans);
+  constrain_font_size(params);
 
+  d3.selectAll(params.root+' .row_label_text' )
+    .each(function() { trim_text(params, this, 'row'); });
+
+  d3.selectAll(params.root+' .col_label_click')
+    .each(function() { trim_text(params, this, 'col'); });
 
   // resize label bars if necessary
   ////////////////////////////////////

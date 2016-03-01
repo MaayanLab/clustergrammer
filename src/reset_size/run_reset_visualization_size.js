@@ -18,7 +18,6 @@ var resize_col_hlight = require('./resize_col_hlight');
 var recalc_params_for_resize = require('./recalc_params_for_resize');
 var resize_row_tiles = require('./resize_row_tiles');
 var resize_label_bars = require('./resize_label_bars');
-var trim_text = require('../zoom/trim_text');
 
 module.exports = function(params, inst_clust_width, inst_clust_height, set_margin_left, set_margin_top) {
 
@@ -98,35 +97,33 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
     .style('font-size', params.labels.default_fs_row + 'px')
     .text(function(d){ return utils.normal_name(d);});
 
-  // change the size of the highlighting rects
-  svg_group.selectAll('.row_label_text')
-    .each(function() {
-      var bbox = d3.select(this).select('text')[0][0].getBBox();
-      d3.select(this)
-        .select('rect')
-        .attr('x', bbox.x )
-        .attr('y', 0)
-        .attr('width', bbox.width )
-        .attr('height', params.matrix.rect_height)
-        .style('fill', 'yellow')
-        .style('opacity', function(d) {
-          var inst_opacity = 0;
-          // highlight target genes
-          if (d.target === 1) {
-            inst_opacity = 1;
-          }
-          return inst_opacity;
-        });
-    });
+  // // change the size of the highlighting rects
+  // svg_group.selectAll('.row_label_text')
+  //   .each(function() {
+  //     var bbox = d3.select(this).select('text')[0][0].getBBox();
+  //     d3.select(this)
+  //       .select('rect')
+  //       .attr('x', bbox.x )
+  //       .attr('y', 0)
+  //       .attr('width', bbox.width )
+  //       .attr('height', params.matrix.rect_height)
+  //       .style('fill', 'yellow')
+  //       .style('opacity', function(d) {
+  //         var inst_opacity = 0;
+  //         // highlight target genes
+  //         if (d.target === 1) {
+  //           inst_opacity = 1;
+  //         }
+  //         return inst_opacity;
+  //       });
+  //   });
 
-  svg_group.selectAll('.row_label_text')
-    .select('text')
-    .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35 ); 
+  // svg_group.selectAll('.row_label_text')
+  //   .select('text')
+  //   .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35 ); 
 
   if (utils.has( params.network_data.row_nodes[0], 'value')) {
-
     resize_label_bars(params, svg_group);
-
   }
 
   svg_group
@@ -154,22 +151,7 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
   resize_col_labels(params, svg_group); 
   resize_col_text(params, svg_group);
   resize_col_triangle(params, svg_group);
-
-
-
   resize_col_hlight(params, svg_group);
-
-  // run for both view update and screen resize 
-
-  d3.selectAll(params.root+' .row_label_text' )
-    .each(function() { 
-      trim_text(params, this, 'row'); 
-    });
-    
-  d3.selectAll(params.root+' .col_label_click')
-    .each(function() { 
-      trim_text(params, this, 'col'); 
-    });
 
   resize_dendro(params, svg_group);
   resize_super_labels(params, svg_group);

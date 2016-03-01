@@ -11,6 +11,14 @@ module.exports = function(params, inst_selection, inst_rc) {
   var original_text;
   var keep_num_char;
 
+  function trim(){
+          inst_text = d3.select(this).text();
+          current_num_char = inst_text.length;
+          keep_num_char = current_num_char - 4;
+          trimmed_text = inst_text.substring(0,keep_num_char)+'..';
+          return trimmed_text;
+        }
+
   if (inst_rc === 'row'){
     max_width = params.norm_label.width.row ;
     inst_zoom = params.zoom_behavior.scale();
@@ -34,15 +42,7 @@ module.exports = function(params, inst_selection, inst_rc) {
 
       d3.select(inst_selection)
         .select('text')
-        .text(function(){
-
-          inst_text = d3.select(this).text();
-          current_num_char = inst_text.length;
-          keep_num_char = current_num_char - 4;
-          trimmed_text = inst_text.substring(0,keep_num_char)+'..';
-          return trimmed_text;
-
-        });
+        .text( trim );
 
       tmp_width = d3.select(inst_selection)
         .select('text')

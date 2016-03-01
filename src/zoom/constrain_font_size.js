@@ -1,4 +1,3 @@
-var trim_text = require('./trim_text');
 
 module.exports = function(params) {
 
@@ -42,10 +41,6 @@ module.exports = function(params) {
       });
   }  
 
-  d3.selectAll(params.root+' .row_label_text' )
-    .each(function() { trim_text(params, this, 'row'); });
 
-  d3.selectAll(params.root+' .col_label_click')
-    .each(function() { trim_text(params, this, 'col'); });
 
 };
