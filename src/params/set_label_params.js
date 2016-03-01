@@ -67,7 +67,7 @@ module.exports = function set_label_params(config, params){
   params.norm_label.width.col = label_scale(col_max_char)
     * params.col_label_scale;
 
-  params.labels.max_allow_fs = 30;
+  params.labels.max_allow_fs = 18;
 
   return params;
 };

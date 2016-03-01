@@ -2,14 +2,14 @@
 module.exports = function(params, inst_selection, inst_rc) {
 
   // trim text that is longer than the container 
-
   var max_width;
   var inst_zoom;
-
-  var safe_row_trim_text = 0.8;
+  var actual_width;
+  var trimmed_text;
+  var current_num_char;
 
   if (inst_rc === 'row'){
-    max_width = params.norm_label.width.row * safe_row_trim_text;
+    max_width = params.norm_label.width.row ;
     inst_zoom = params.zoom_behavior.scale();
   } else {
     // the column label has extra length since its rotated
@@ -23,30 +23,27 @@ module.exports = function(params, inst_selection, inst_rc) {
     .getBBox()
     .width;
 
-
   var inst_text = d3.select(inst_selection)
     .select('text')
     .text();
 
-  var current_num_char;
   if (inst_text.slice(-2)==='..'){
     current_num_char = inst_text.length-2;
   } else {
     current_num_char = inst_text.length;
   }
 
-  // inst_text = inst_text.replace('..','');
-
-  var actual_width = tmp_width;
-  var trimmed_text;
-
   // only scale the available room if the zoom is greater than one 
   // this is for the columns 
   if (inst_zoom > 1){
     actual_width = tmp_width * inst_zoom;
+  } else {
+    actual_width = tmp_width;
   }
 
-  if (actual_width>max_width){
+  var safety_factor = 0.7;
+
+  if (actual_width > max_width*safety_factor){
 
     d3.select(inst_selection)
       .select('text')
@@ -54,7 +51,7 @@ module.exports = function(params, inst_selection, inst_rc) {
 
         var original_text = d.name;
 
-        var trim_fraction = max_width/actual_width;
+        var trim_fraction = max_width/actual_width * safety_factor;
 
         var keep_num_char = Math.floor(original_text.length*trim_fraction);
 

@@ -4,7 +4,7 @@ var trim_text = require('./trim_text');
 module.exports = function(params, trans=false) {
 
   var keep_width = {};
-  keep_width.row = params.bounding_width_max.row * params.labels.row_keep * params.zoom_behavior.scale();
+  // keep_width.row = params.bounding_width_max.row * params.labels.row_keep * params.zoom_behavior.scale();
   keep_width.col = params.bounding_width_max.col * params.labels.col_keep * params.zoom_behavior.scale() / params.viz.zoom_switch;
 
 
@@ -16,8 +16,6 @@ module.exports = function(params, trans=false) {
     var reduce_row_fs = params.labels.max_allow_fs/ real_font_size ;
 
     tmp_font_size = tmp_font_size * reduce_row_fs;
-
-    // console.log(tmp_font_size)
 
     d3.selectAll(params.root+' .row_label_text')
       .each(function(){ 
