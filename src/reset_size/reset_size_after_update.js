@@ -14,7 +14,8 @@ var resize_col_triangle = require('./resize_col_triangle');
 var resize_col_hlight = require('./resize_col_hlight');
 var resize_label_bars = require('./resize_label_bars');
 var calc_default_fs = require('../params/calc_default_fs');
-var trim_text = require('../zoom/trim_text');
+// var trim_text = require('../zoom/trim_text');
+var font_constrain_and_trim = require('../labels/font_constrain_and_trim');
 
 module.exports = function(params, row_nodes, col_nodes, links, duration, delays) {
 
@@ -175,20 +176,23 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
 
   // run for both view update and screen resize 
 
-  d3.selectAll(params.root+' .row_label_text' )
-    .each(function() { 
-      trim_text(params, this, 'row'); 
-    });
+  // d3.selectAll(params.root+' .row_label_text' )
+  //   .each(function() { 
+  //     trim_text(params, this, 'row'); 
+  //   });
     
-  d3.selectAll(params.root+' .col_label_click')
-    .each(function() { 
-      trim_text(params, this, 'col'); 
-    });   
+  // d3.selectAll(params.root+' .col_label_click')
+  //   .each(function() { 
+  //     trim_text(params, this, 'col'); 
+  //   });   
+
 
   resize_dendro(params, svg_group, delays);
   resize_super_labels(params, svg_group, delays);
   resize_spillover(params, svg_group, delays);
 
+  font_constrain_and_trim(params);
+  
   // reset zoom and translate
   params.zoom_behavior
     .scale(1)
