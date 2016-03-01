@@ -18,7 +18,7 @@ var resize_col_hlight = require('./resize_col_hlight');
 var recalc_params_for_resize = require('./recalc_params_for_resize');
 var resize_row_tiles = require('./resize_row_tiles');
 var resize_label_bars = require('./resize_label_bars');
-var font_constrain_and_trim = require('../labels/font_constrain_and_trim');
+var label_constrain_and_trim = require('../labels/label_constrain_and_trim');
 
 module.exports = function(params, inst_clust_width, inst_clust_height, set_margin_left, set_margin_top) {
 
@@ -168,7 +168,7 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
     .scale(1)
     .translate([ params.viz.clust.margin.left, params.viz.clust.margin.top ]);
 
-  font_constrain_and_trim(params);
+  label_constrain_and_trim(params);
   
   d3.select(params.viz.viz_svg).style('opacity',1);
 };

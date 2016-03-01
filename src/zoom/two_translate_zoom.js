@@ -1,5 +1,5 @@
 var utils = require('../utils');
-var font_constrain_and_trim = require('../labels/font_constrain_and_trim');
+var label_constrain_and_trim = require('../labels/label_constrain_and_trim');
 
 module.exports = function(params, pan_dx, pan_dy, fin_zoom) {
 
@@ -128,7 +128,7 @@ module.exports = function(params, pan_dx, pan_dy, fin_zoom) {
       .scale(zoom_y)
       .translate([pan_dx, net_y_offset]);
 
-    font_constrain_and_trim(params);
+    label_constrain_and_trim(params);
 
     // re-size of the highlighting rects
     /////////////////////////////////////////

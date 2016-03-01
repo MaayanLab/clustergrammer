@@ -15,7 +15,7 @@ var resize_col_hlight = require('./resize_col_hlight');
 var resize_label_bars = require('./resize_label_bars');
 var calc_default_fs = require('../params/calc_default_fs');
 // var trim_text = require('../zoom/trim_text');
-var font_constrain_and_trim = require('../labels/font_constrain_and_trim');
+var label_constrain_and_trim = require('../labels/label_constrain_and_trim');
 
 module.exports = function(params, row_nodes, col_nodes, links, duration, delays) {
 
@@ -191,7 +191,7 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
   resize_super_labels(params, svg_group, delays);
   resize_spillover(params, svg_group, delays);
 
-  font_constrain_and_trim(params);
+  label_constrain_and_trim(params);
   
   // reset zoom and translate
   params.zoom_behavior

@@ -6,7 +6,7 @@ def main():
   from clustergrammer import Network
   net = Network()
 
-  row_num = 10
+  row_num = 150
   num_columns = 5
 
   # make up all names for all data 
