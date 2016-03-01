@@ -7,7 +7,7 @@ def main():
   net = Network()
 
   row_num = 150
-  num_columns = 5
+  num_columns = 10
 
   # make up all names for all data 
   row_names = make_up_names(row_num)
