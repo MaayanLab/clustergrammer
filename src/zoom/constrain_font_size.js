@@ -18,16 +18,13 @@ module.exports = function(params) {
     tmp_font_size = params.labels.max_allow_fs/inst_zoom;
 
     d3.selectAll(params.root+' .row_label_text')
-      .each(function(){ 
-        d3.select(this).select('text')
-          .style('font-size', tmp_font_size + 'px');
-      });
+      .select('text')
+      .style('font-size', tmp_font_size + 'px');
+
   } else {
     d3.selectAll(params.root+' .row_label_text')
-      .each(function(){ 
-        d3.select(this).select('text')
-          .style('font-size', params.labels.default_fs_row + 'px');
-      });
+      .select('text')
+      .style('font-size', params.labels.default_fs_row + 'px');
   }
 
   if (real_font_size.col > params.labels.max_allow_fs){
@@ -36,16 +33,13 @@ module.exports = function(params) {
     tmp_font_size = params.labels.max_allow_fs/inst_zoom;
 
     d3.selectAll(params.root+' .col_label_text')
-      .each(function(){ 
-        d3.select(this).select('text')
-          .style('font-size', tmp_font_size + 'px');
-      });
+      .select('text')
+      .style('font-size', tmp_font_size + 'px');
+
   } else {
     d3.selectAll(params.root+' .col_label_text')
-      .each(function(){ 
-        d3.select(this).select('text')
-          .style('font-size', params.labels.default_fs_col + 'px');
-      });    
+      .select('text')
+      .style('font-size', params.labels.default_fs_col + 'px');
   }
 
 };

@@ -50,12 +50,9 @@ module.exports = function(params, inst_selection, inst_rc) {
 
   if (inst_width > max_width){
 
-    // while (inst_width > max_width){
     for (var i=1; i<10; i++){
 
       if (inst_width > max_width){
-        // console.log(i)
-
         d3.select(inst_selection)
           .select('text')
           .text( trim );
@@ -67,9 +64,7 @@ module.exports = function(params, inst_selection, inst_rc) {
         inst_width = calc_width(tmp_width, inst_zoom, inst_rc);
 
       }
-
     }
-
   } 
 
   else if (inst_width < max_width * 0.75 ) {

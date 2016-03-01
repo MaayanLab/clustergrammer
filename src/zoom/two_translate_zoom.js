@@ -129,6 +129,15 @@ module.exports = function(params, pan_dx, pan_dy, fin_zoom) {
       .scale(zoom_y)
       .translate([pan_dx, net_y_offset]);
 
+    // reset text in rows and columns 
+    d3.selectAll(params.root+' .row_label_text')
+      .select('text')
+      .text(function(d){ return utils.normal_name(d); });
+
+    d3.selectAll(params.root+' .col_label_text')
+      .select('text')
+      .text(function(d){ return utils.normal_name(d); });
+
     constrain_font_size(params);
 
     d3.selectAll(params.root+' .row_label_text' )
