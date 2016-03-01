@@ -30,8 +30,8 @@ module.exports = function set_label_params(config, params){
   }).name.length;
 
 
-  params.labels.row_max_char = row_max_char;
-  params.labels.col_max_char = col_max_char;
+  // params.labels.row_max_char = row_max_char;
+  // params.labels.col_max_char = col_max_char;
 
   // increae teh number of max_label_char to initiate label trimming 
   // params.labels.max_label_char = 10;
@@ -61,11 +61,9 @@ module.exports = function set_label_params(config, params){
   params.norm_label = {};
   params.norm_label.width = {};
 
-  params.norm_label.width.row = label_scale(row_max_char)
-    * params.row_label_scale;
+  params.norm_label.width.row = label_scale(row_max_char) * params.row_label_scale;
 
-  params.norm_label.width.col = label_scale(col_max_char)
-    * params.col_label_scale;
+  params.norm_label.width.col = label_scale(col_max_char) * params.col_label_scale;
 
   params.labels.max_allow_fs = 18;
 

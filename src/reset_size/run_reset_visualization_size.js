@@ -10,7 +10,6 @@ var resize_spillover = require('./resize_spillover');
 var resize_borders = require('./resize_borders');
 var resize_row_labels = require('./resize_row_labels');
 var resize_highlights = require('./resize_highlights');
-var bound_label_size = require('./bound_label_size');
 var resize_row_viz = require('./resize_row_viz');
 var resize_col_labels = require('./resize_col_labels');
 var resize_col_text = require('./resize_col_text');
@@ -171,10 +170,6 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
     .each(function() { 
       trim_text(params, this, 'col'); 
     });
-
-  bound_label_size(params);
-
-
 
   resize_dendro(params, svg_group);
   resize_super_labels(params, svg_group);

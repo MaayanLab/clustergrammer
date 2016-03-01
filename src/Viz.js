@@ -9,7 +9,6 @@ var initialize_resizing = require('./initialize_resizing');
 var ini_doubleclick = require('./zoom/ini_doubleclick');
 var build_col_dendro = require('./dendrogram/build_col_dendro');
 var build_row_dendro = require('./dendrogram/build_row_dendro');
-var bound_label_size = require('./reset_size/bound_label_size');
 var trim_text = require('./zoom/trim_text');
 
 module.exports = function(params) {
@@ -44,8 +43,6 @@ module.exports = function(params) {
     .each(function() { 
       trim_text(params, this, 'col'); 
     });
-
-  bound_label_size(params);
 
   if (params.viz.show_dendrogram) {
 

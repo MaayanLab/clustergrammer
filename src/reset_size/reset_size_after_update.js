@@ -7,7 +7,6 @@ var resize_dendro = require('./resize_dendro');
 var resize_super_labels = require('./resize_super_labels');
 var resize_spillover = require('./resize_spillover');
 var resize_row_labels = require('./resize_row_labels');
-var bound_label_size = require('./bound_label_size');
 var resize_row_viz = require('./resize_row_viz');
 var resize_col_labels = require('./resize_col_labels');
 var resize_col_text = require('./resize_col_text');
@@ -185,8 +184,6 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
     .each(function() { 
       trim_text(params, this, 'col'); 
     });   
-  bound_label_size(params);
-
 
   resize_dendro(params, svg_group, delays);
   resize_super_labels(params, svg_group, delays);
