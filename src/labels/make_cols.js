@@ -1,5 +1,4 @@
 var utils = require('../utils');
-var trim_text = require('../zoom/trim_text');
 var add_col_click_hlight = require('./add_col_click_hlight');
 var col_reorder = require('../reorder/col_reorder');
 
@@ -126,7 +125,7 @@ module.exports = function(params, text_delay) {
     })
     // original font size
     .style('font-size', params.labels.default_fs_col + 'px')
-    .text(function(d){ return utils.normal_name(d, params.labels.max_label_char); })
+    .text(function(d){ return utils.normal_name(d); })
     // .attr('pointer-events','none')
     .style('opacity',0)
     .transition().delay(text_delay).duration(text_delay)
@@ -156,12 +155,6 @@ module.exports = function(params, text_delay) {
 
   }
 
-  if (params.labels.col_keep < 1){
-    d3.selectAll(params.root+' .col_label_click')
-      .each(function() { 
-        trim_text(params, this, 'col'); 
-      });
-  }
 
 
   // append rectangle behind text

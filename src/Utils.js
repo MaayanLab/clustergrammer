@@ -2,11 +2,8 @@
 /* Utility functions
  * ----------------------------------------------------------------------- */
 module.exports = {
-  normal_name: function(d, max_char) {
+  normal_name: function(d) {
     var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
-    if (inst_name.length > max_char) {
-      inst_name = inst_name.substring(0, max_char) + '..';
-    }
     return inst_name;
   },
   is_supported_order: function(order) {

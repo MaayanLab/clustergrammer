@@ -15,6 +15,7 @@ var resize_col_triangle = require('./resize_col_triangle');
 var resize_col_hlight = require('./resize_col_hlight');
 var resize_label_bars = require('./resize_label_bars');
 var calc_default_fs = require('../params/calc_default_fs');
+var trim_text = require('../zoom/trim_text');
 
 module.exports = function(params, row_nodes, col_nodes, links, duration, delays) {
 
@@ -70,7 +71,7 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
   svg_group.selectAll('.row_label_text')
     .select('text')
     .style('font-size', params.labels.default_fs_row + 'px')
-    .text(function(d){ return utils.normal_name(d, params.labels.max_label_char);});
+    .text(function(d){ return utils.normal_name(d);});
 
   // change the size of the highlighting rects
   svg_group.selectAll('.row_label_text')
@@ -174,7 +175,19 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
   resize_col_hlight(params, svg_group, delays);
 
   // run for both view update and screen resize 
+
+  d3.selectAll(params.root+' .row_label_text' )
+    .each(function() { 
+      trim_text(params, this, 'row'); 
+    });
+    
+  d3.selectAll(params.root+' .col_label_click')
+    .each(function() { 
+      trim_text(params, this, 'col'); 
+    });   
   bound_label_size(params);
+
+
   resize_dendro(params, svg_group, delays);
   resize_super_labels(params, svg_group, delays);
   resize_spillover(params, svg_group, delays);

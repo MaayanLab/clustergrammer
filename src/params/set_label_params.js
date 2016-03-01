@@ -35,20 +35,20 @@ module.exports = function set_label_params(config, params){
 
   // increae teh number of max_label_char to initiate label trimming 
   // params.labels.max_label_char = 10;
-  params.labels.max_label_char = 30;
+  params.labels.max_label_char = 15;
 
   var min_num_char = 5;
   var max_num_char = params.labels.max_label_char;
 
   params.labels.show_char = 10;
 
-  // calc how much of the label to keep
-  var keep_label_scale = d3.scale.linear()
-    .domain([params.labels.show_char, max_num_char])
-    .range([1, params.labels.show_char / max_num_char]).clamp('true');
+  // // calc how much of the label to keep
+  // var keep_label_scale = d3.scale.linear()
+  //   .domain([params.labels.show_char, max_num_char])
+  //   .range([1, params.labels.show_char / max_num_char]).clamp('true');
 
-  params.labels.row_keep = keep_label_scale(row_max_char);
-  params.labels.col_keep = keep_label_scale(col_max_char);
+  params.labels.row_keep = 1 ; // keep_label_scale(row_max_char);
+  params.labels.col_keep = 1 ;// keep_label_scale(col_max_char);
 
 
   // define label scale
@@ -66,6 +66,8 @@ module.exports = function set_label_params(config, params){
 
   params.norm_label.width.col = label_scale(col_max_char)
     * params.col_label_scale;
+
+  params.labels.max_allow_fs = 30;
 
   return params;
 };

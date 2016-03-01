@@ -1,5 +1,4 @@
 var utils = require('../utils');
-var trim_text = require('../zoom/trim_text');
 var add_row_click_hlight = require('./add_row_click_hlight');
 var row_reorder = require('../reorder/row_reorder');
 
@@ -115,9 +114,7 @@ module.exports = function(params, text_delay) {
     .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35 )
     .attr('text-anchor', 'end')
     .style('font-size', params.labels.default_fs_row + 'px')
-    .text(function(d){ 
-      return utils.normal_name(d, params.labels.max_label_char); 
-    })
+    .text(function(d){ return utils.normal_name(d); })
     .attr('pointer-events','none')
     .style('opacity',0)
     .transition().delay(text_delay).duration(text_delay)
@@ -149,13 +146,7 @@ module.exports = function(params, text_delay) {
         });
     });
 
-  // constrain text after zooming
-  if (params.labels.row_keep < 1){
-    d3.selectAll(params.root+' .row_label_text' )
-      .each(function() { 
-        trim_text(params, this, 'row'); 
-      });
-  }
+
 
   // row visualizations - classification triangles and colorbar rects
   var row_viz_container = row_container
