@@ -28,9 +28,17 @@ module.exports = function(params, inst_selection, inst_rc) {
     .select('text')
     .text();
 
+  var current_num_char;
+  if (inst_text.slice(-2)==='..'){
+    current_num_char = inst_text.length-2;
+  } else {
+    current_num_char = inst_text.length;
+  }
+
   // inst_text = inst_text.replace('..','');
 
   var actual_width = tmp_width;
+  var trimmed_text;
 
   // only scale the available room if the zoom is greater than one 
   // this is for the columns 
@@ -48,17 +56,8 @@ module.exports = function(params, inst_selection, inst_rc) {
 
         var trim_fraction = max_width/actual_width;
 
-        var current_num_char;
-        if (inst_text.slice(-2)==='..'){
-          current_num_char = inst_text.length-2;
-        } else {
-          current_num_char = inst_text.length;
-        }
-
-
         var keep_num_char = Math.floor(original_text.length*trim_fraction);
 
-        var trimmed_text;
 
         if ( original_text === 'JNWYDREUIEADJDAIFFOF'){
           // console.log('current and keep')
@@ -67,7 +66,8 @@ module.exports = function(params, inst_selection, inst_rc) {
           // console.log('curr num char '+ String(current_num_char) )
         }
 
-        if (keep_num_char < current_num_char){
+        // added a character buffer 
+        if (keep_num_char < current_num_char-1){
           trimmed_text = original_text.substring(0,keep_num_char)+'..';
         } else {
           trimmed_text = inst_text;
@@ -85,12 +85,30 @@ module.exports = function(params, inst_selection, inst_rc) {
         return trimmed_text;
       });
 
-  // } else {
-    // d3.select(inst_selection)  
-    //   .select('text')
-    //   .text(function(d){
-    //     return d.name;
-    //   });
+
+  } else if (actual_width < max_width*0.75) {
+
+      // add characters back 
+      // wait until the text is 25% smaller than the max area 
+
+      d3.select(inst_selection)  
+        .select('text')
+        .text(function(d){
+
+          var original_text = d.name;
+
+          var keep_num_char = current_num_char +2;
+
+          trimmed_text = original_text.substring(0,keep_num_char)+'..';
+
+          // if '..' was added to original text 
+          if (trimmed_text.length > original_text.length){
+            trimmed_text = original_text;
+          }
+
+          return trimmed_text;
+        });
+
   }
 
 };
