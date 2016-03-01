@@ -7,6 +7,8 @@ def main():
   net = Network()
 
   row_num = 200
+  num_columns = 5
+
   # make up all names for all data 
   row_names = make_up_names(row_num)
 
@@ -19,7 +21,6 @@ def main():
   vect_post['is_up_down'] = True
   vect_post['columns'] = []
 
-  num_columns = 5
 
   split = True
 
@@ -106,8 +107,8 @@ def make_up_names(num_names):
   row_names = []
 
   for i in range(num_names):
-    length_of_names = int(30*random.random())
-    row_names.append(id_generator(length_of_names, "WERJASDFNYUIO"))
+    length_of_names = int(30*random.random()) + 3
+    row_names.append(id_generator(length_of_names, "WERJASDFNYKEM1219UIO "))
 
   row_names = list(set(row_names))
 

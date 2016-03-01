@@ -14,7 +14,7 @@ module.exports = function(params, inst_selection, inst_rc) {
   function trim(){
           inst_text = d3.select(this).text();
           current_num_char = inst_text.length;
-          keep_num_char = current_num_char - 4;
+          keep_num_char = current_num_char - 3;
           trimmed_text = inst_text.substring(0,keep_num_char)+'..';
           return trimmed_text;
         }
@@ -36,7 +36,6 @@ module.exports = function(params, inst_selection, inst_rc) {
     max_width = params.norm_label.width.row ;
     inst_zoom = params.zoom_behavior.scale();
   } else {
-    // the column label has extra length since its rotated
     max_width = params.norm_label.width.col;
     inst_zoom = params.zoom_behavior.scale()/params.viz.zoom_switch;
   }
@@ -48,16 +47,6 @@ module.exports = function(params, inst_selection, inst_rc) {
     .width;
 
   inst_width = calc_width(tmp_width, inst_zoom, inst_rc);
-
-  if (inst_rc==='col'){
-  //   console.log('col')
-  //   console.log(inst_width)
-  //   console.log(max_width)
-
-    // console.log(String(inst_width)+' : '+String(max_width) + 'x '+String(inst_zoom))
-
-  }
-    
 
   if (inst_width > max_width){
 
@@ -77,14 +66,13 @@ module.exports = function(params, inst_selection, inst_rc) {
 
         inst_width = calc_width(tmp_width, inst_zoom, inst_rc);
 
-
       }
 
     }
 
   } 
 
-  else if (inst_width < max_width * 0.7 ) {
+  else if (inst_width < max_width * 0.75 ) {
 
     // add characters back 
     // wait until the text is 25% smaller than the max area 
