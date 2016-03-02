@@ -9,7 +9,7 @@ module.exports = function (params, dom_class) {
 
   // append groups - each will hold a classification rect
   // this is done differently for the rows 
-  d3.select(params.root+' .col_viz_container')
+  d3.select(params.root+' .col_cat_container')
     .selectAll('g')
     .data(col_nodes, function(d){ return d.name; })
     .enter()

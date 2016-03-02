@@ -111,7 +111,7 @@ module.exports = function(params, pan_dx, pan_dy, fin_zoom) {
       ] + ')');
 
     // transform col_class
-    d3.select(params.root+' .col_viz_container')
+    d3.select(params.root+' .col_cat_container')
       .transition()
       .duration(search_duration)
       .attr('transform', ' scale(' + zoom_x + ',' + 1 + ')' + 'translate(' + [

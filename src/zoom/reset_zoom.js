@@ -25,7 +25,7 @@ module.exports = function(params){
   d3.select(params.root+' .col_zoom_container')
     .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [pan_dx, 0] + ')');
 
-  d3.select(params.root+' .col_viz_container')
+  d3.select(params.root+' .col_cat_container')
     .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [pan_dx, 0] + ')');
     
 };

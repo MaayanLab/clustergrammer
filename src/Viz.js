@@ -57,7 +57,7 @@ module.exports = function(params) {
         return 'translate(0,' + inst_offset + ')';
       })
       .append('g')
-      .attr('class', 'col_viz_container');
+      .attr('class', 'col_cat_container');
 
     build_col_dendro(params, 'col_class_rect');
 
