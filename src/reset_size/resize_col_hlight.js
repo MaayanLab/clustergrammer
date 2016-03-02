@@ -14,7 +14,7 @@ module.exports = function resize_col_hlight(params, svg_group, delay_info=false)
   // if (delays.transition){
 
   //   // change the size of the highlighting rects
-  //   d3.selectAll(params.root+' .col_label_click')
+  //   d3.selectAll(params.root+' .col_label_group')
   //     .each(function() {
 
   //       var bbox = d3.select(this)
@@ -40,7 +40,7 @@ module.exports = function resize_col_hlight(params, svg_group, delay_info=false)
   // } else {
 
   //   // change the size of the highlighting rects
-  //   d3.selectAll(params.root+' .col_label_click')
+  //   d3.selectAll(params.root+' .col_label_group')
   //     .each(function() {
   //       var bbox = d3.select(this)
   //         .select('text')[0][0]

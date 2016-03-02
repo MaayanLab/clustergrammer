@@ -29,7 +29,7 @@
     .remove();
 
   // remove column labels
-  d3.selectAll(params.root+' .col_label_click')
+  d3.selectAll(params.root+' .col_label_group')
     .data(col_nodes, function(d){return d.name;})
     .exit()
     .transition().duration(duration)

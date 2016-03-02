@@ -20,7 +20,7 @@ module.exports = function label_constrain_and_trim(params){
   d3.selectAll(params.root+' .row_label_group' )
     .each(function() { trim_text(params, this, 'row'); });
 
-  d3.selectAll(params.root+' .col_label_click')
+  d3.selectAll(params.root+' .col_label_group')
     .each(function() { trim_text(params, this, 'col'); });
 
 };

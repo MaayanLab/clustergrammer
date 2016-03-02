@@ -2,7 +2,7 @@ module.exports = function resize_col_triangle(params,  ini_svg_group, delay_info
 
   // resize column triangle
   var ini_triangle_group = ini_svg_group
-    .selectAll('.col_label_click')
+    .selectAll('.col_label_group')
     .select('path');
 
   var delays = {};

@@ -180,7 +180,7 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
   //     trim_text(params, this, 'row'); 
   //   });
     
-  // d3.selectAll(params.root+' .col_label_click')
+  // d3.selectAll(params.root+' .col_label_group')
   //   .each(function() { 
   //     trim_text(params, this, 'col'); 
   //   });   

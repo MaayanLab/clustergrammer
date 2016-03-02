@@ -73,10 +73,10 @@ module.exports = function(params, text_delay) {
     });
 
   // append group for individual column label
-  var col_label_click = col_label_obj
+  var col_label_group = col_label_obj
     // append new group for rect and label (not white lines)
     .append('g')
-    .attr('class', 'col_label_click')
+    .attr('class', 'col_label_group')
     // rotate column labels
     .attr('transform', 'translate(' + params.matrix.x_scale.rangeBand() / 2 + ',' + x_offset_click + ') rotate(45)')
     .on('mouseover', function() {
@@ -91,7 +91,7 @@ module.exports = function(params, text_delay) {
   // append column value bars
   if (utils.has(params.network_data.col_nodes[0], 'value')) {
 
-    col_label_click
+    col_label_group
       .append('rect')
       .attr('class', 'col_bars')
       .attr('width', function(d) {
@@ -111,7 +111,7 @@ module.exports = function(params, text_delay) {
   }
 
   // add column label
-  col_label_click
+  col_label_group
     .append('text')
     .attr('x', 0)
     // manually tuned
@@ -132,7 +132,7 @@ module.exports = function(params, text_delay) {
   make_col_tooltips(params);
 
   // append rectangle behind text
-  col_label_click
+  col_label_group
     .insert('rect')
     .attr('class','.highlight_rect')
     .attr('x', 0)
@@ -144,7 +144,7 @@ module.exports = function(params, text_delay) {
   // // only run this if there are col categories
   // if (params.labels.show_categories){
   //   // change the size of the highlighting rects
-  //   col_label_click
+  //   col_label_group
   //     .each(function(d) {
   //       var bbox = d3.select(this)
   //         .select('text')[0][0]
@@ -164,7 +164,7 @@ module.exports = function(params, text_delay) {
   // }
 
   // add triangle under rotated labels
-  col_label_click
+  col_label_group
     .append('path')
     .style('stroke-width', 0)
     .attr('d', function() {

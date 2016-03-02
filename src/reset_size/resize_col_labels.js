@@ -61,11 +61,11 @@ module.exports = function(params, ini_svg_group, delay_info=false){
 
 
   svg_group
-    .selectAll('.col_label_click')
+    .selectAll('.col_label_group')
     .attr('transform', 'translate(' + params.matrix.x_scale.rangeBand() / 2 + ',' + x_offset_click + ') rotate(45)');
 
   svg_group
-    .selectAll('.col_label_click')
+    .selectAll('.col_label_group')
     .select('text')
     .attr('y', params.matrix.x_scale.rangeBand() * 0.60)
     .attr('dx', 2 * params.viz.border_width);
