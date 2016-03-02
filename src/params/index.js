@@ -5,10 +5,10 @@ var is_force_square = require('./is_force_square');
 var get_svg_dim = require('./get_svg_dim');
 var set_label_params = require('./set_label_params');
 var set_viz_params = require('./set_viz_params');
-var set_matrix_params = require('./set_matrix_params');
+var ini_matrix_params = require('./ini_matrix_params');
 var set_clust_width = require('./set_clust_width');
 var calc_default_fs = require('./calc_default_fs');
-var more_matrix_params = require('./more_matrix_params');
+var set_matrix_params = require('./set_matrix_params');
 
 /* Params: calculates the size of all the visualization elements in the
 clustergram.
@@ -28,7 +28,7 @@ module.exports = function params(input_config) {
 
   params = set_viz_params(config, params);
 
-  params = set_matrix_params(config, params);
+  params = ini_matrix_params(config, params);
 
   var col_nodes = params.network_data.col_nodes;
   var row_nodes = params.network_data.row_nodes;
@@ -103,7 +103,7 @@ module.exports = function params(input_config) {
     .domain([0, enr_max])
     .range([0, params.norm_label.width.row]);
 
-  params = more_matrix_params(config, params);
+  params = set_matrix_params(config, params);
 
   params.scale_font_offset = d3.scale
     .linear().domain([1, 0])
