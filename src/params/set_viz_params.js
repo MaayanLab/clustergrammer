@@ -7,9 +7,6 @@ module.exports = function set_viz_params(config, params){
   params.viz.viz_wrapper = config.root + ' .viz_wrapper';
   params.viz.viz_svg = params.viz.viz_wrapper + ' .viz_svg';
 
-  params.sidebar = {};
-  params.sidebar.sidebar_class = 'sidebar_wrapper';
-
   params.viz.do_zoom = config.do_zoom;
   params.viz.resize = config.resize;
   // background colors
@@ -34,19 +31,23 @@ module.exports = function set_viz_params(config, params){
 
   params.viz.run_trans = false;
 
-  params.class_room = {};
+  params.viz.duration = 1000;
 
-  params.class_room.symbol_width = 11;
+  params.cat_room = {};
+
+  params.cat_room.symbol_width = 11;
 
   if (params.viz.show_dendrogram) {
-    params.class_room.row = 2 * params.class_room.symbol_width;
-    params.class_room.col = params.class_room.symbol_width;
+    params.cat_room.row = 2 * params.cat_room.symbol_width;
+    params.cat_room.col = params.cat_room.symbol_width;
 
   } else {
-    params.class_room.row = params.class_room.symbol_width;
-    params.class_room.col = 0;
+    params.cat_room.row = params.cat_room.symbol_width;
+    params.cat_room.col = 0;
   }
 
-  params.viz.duration = 1000;
+  params.sidebar = {};
+  params.sidebar.sidebar_class = 'sidebar_wrapper';
+
   return params;
 };

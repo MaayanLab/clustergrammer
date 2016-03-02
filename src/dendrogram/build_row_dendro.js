@@ -13,7 +13,7 @@ module.exports = function(params, dom_class) {
         .append('rect')
         .attr('class', dom_class)
         .attr('width', function() {
-          var inst_width = params.class_room.symbol_width - 1;
+          var inst_width = params.cat_room.symbol_width - 1;
           return inst_width + 'px';
         })
         .attr('height', params.matrix.y_scale.rangeBand())
@@ -28,7 +28,7 @@ module.exports = function(params, dom_class) {
           return inst_color;
         })
         .attr('x', function() {
-          var inst_offset = params.class_room.symbol_width + 1;
+          var inst_offset = params.cat_room.symbol_width + 1;
           return inst_offset + 'px';
         });
 

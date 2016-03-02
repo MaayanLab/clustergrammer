@@ -29,7 +29,7 @@ module.exports = function (params, dom_class) {
         .attr('class', dom_class)
         .attr('width', params.matrix.x_scale.rangeBand())
         .attr('height', function() {
-          var inst_height = params.class_room.col - 1;
+          var inst_height = params.cat_room.col - 1;
           return inst_height;
         })
         .style('fill', function(d) {

@@ -59,10 +59,10 @@ module.exports = function make_params(input_config) {
   params.norm_label.background = {};
 
   params.norm_label.background.row = params.norm_label.width.row + 
-    params.class_room.row + params.viz.uni_margin;
+    params.cat_room.row + params.viz.uni_margin;
 
   params.norm_label.background.col = params.norm_label.width.col + 
-    params.class_room.col + params.viz.uni_margin;
+    params.cat_room.col + params.viz.uni_margin;
 
   params.viz.clust = {};
   params.viz.clust.margin = {};

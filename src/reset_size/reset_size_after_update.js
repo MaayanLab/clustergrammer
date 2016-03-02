@@ -116,11 +116,11 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
       .select('path')
       .transition().delay(delays.update).duration(duration)
       .attr('d', function() {
-        var origin_x = params.class_room.symbol_width - 1;
+        var origin_x = params.cat_room.symbol_width - 1;
         var origin_y = 0;
         var mid_x = 1;
         var mid_y = params.matrix.y_scale.rangeBand() / 2;
-        var final_x = params.class_room.symbol_width - 1;
+        var final_x = params.cat_room.symbol_width - 1;
         var final_y = params.matrix.y_scale.rangeBand();
         var output_string = 'M ' + origin_x + ',' + origin_y + ' L ' +
           mid_x + ',' + mid_y + ', L ' + final_x + ',' + final_y + ' Z';
@@ -144,11 +144,11 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
     svg_group.selectAll('.row_viz_group')
       .select('path')
       .attr('d', function() {
-        var origin_x = params.class_room.symbol_width - 1;
+        var origin_x = params.cat_room.symbol_width - 1;
         var origin_y = 0;
         var mid_x = 1;
         var mid_y = params.matrix.y_scale.rangeBand() / 2;
-        var final_x = params.class_room.symbol_width - 1;
+        var final_x = params.cat_room.symbol_width - 1;
         var final_y = params.matrix.y_scale.rangeBand();
         var output_string = 'M ' + origin_x + ',' + origin_y + ' L ' +
           mid_x + ',' + mid_y + ', L ' + final_x + ',' + final_y + ' Z';

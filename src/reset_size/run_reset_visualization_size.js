@@ -139,11 +139,11 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
     .selectAll('.row_viz_group')
     .select('path')
     .attr('d', function() {
-      var origin_x = params.class_room.symbol_width - 1;
+      var origin_x = params.cat_room.symbol_width - 1;
       var origin_y = 0;
       var mid_x = 1;
       var mid_y = params.matrix.rect_height / 2;
-      var final_x = params.class_room.symbol_width - 1;
+      var final_x = params.cat_room.symbol_width - 1;
       var final_y = params.matrix.rect_height;
       var output_string = 'M ' + origin_x + ',' + origin_y + ' L ' +
         mid_x + ',' + mid_y + ', L ' + final_x + ',' + final_y + ' Z';
