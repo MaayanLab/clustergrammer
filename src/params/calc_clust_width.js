@@ -1,7 +1,9 @@
 module.exports = function calc_clust_width(params){
 
+  params.viz.clust.dim = {};
+
   var row_info_space = params.labels.super_label_width + 
-    params.norm_label.width.row + params.cat_room.row + params.colorbar_room.row;  
+    params.norm_label.width.row + params.cat_room.row + params.viz.colorbar_room.row;  
 
   // reduce width by row/col labels and by grey_border width
   //(reduce width by less since this is less aparent with slanted col labels)

@@ -46,5 +46,16 @@ module.exports = function set_viz_params(config, params){
   // of the rects 
   params.viz.border_fraction = 55;
 
+  if (config.force_square === 1) {
+    params.viz.force_square = 1;
+  }
+
+  params.viz.num_col_nodes = params.network_data.col_nodes.length;
+  params.viz.num_row_nodes = params.network_data.row_nodes.length;
+
+  params.viz.colorbar_room = {};
+  params.viz.colorbar_room.row = 0;
+  params.viz.colorbar_room.col = 0;
+
   return params;
 };
