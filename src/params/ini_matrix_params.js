@@ -21,5 +21,8 @@ module.exports = function set_matrix_params(config, params){
 
   params.matrix.opacity_function = config.opacity_scale;
 
+  params.network_data.row_nodes_names = _.pluck(params.network_data.row_nodes, 'name');
+  params.network_data.col_nodes_names = _.pluck(params.network_data.col_nodes, 'name');
+
   return params;
 };

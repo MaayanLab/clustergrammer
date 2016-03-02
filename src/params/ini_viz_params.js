@@ -24,6 +24,11 @@ module.exports = function set_viz_params(config, params){
   params.viz.run_trans = false;
   params.viz.duration = 1000;
 
+  if (params.viz.show_dendrogram){
+    // setting config globally 
+    config.group_level = {row: 5, col: 5};
+  }
+
   params.cat_room = {};
   params.cat_room.symbol_width = 11;
   if (params.viz.show_dendrogram) {
@@ -36,6 +41,10 @@ module.exports = function set_viz_params(config, params){
 
   params.sidebar = {};
   params.sidebar.sidebar_class = 'sidebar_wrapper';
+
+  // the border of the rects should be 1 over this value of the width/height
+  // of the rects 
+  params.viz.border_fraction = 55;
 
   return params;
 };

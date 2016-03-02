@@ -1,6 +1,6 @@
 // var crossfilter = require('crossfilter');
 var change_network_view = require('../network/change_network_view');
-var parent_div_size = require('../parent_div_size');
+var set_viz_wrapper_size = require('../set_viz_wrapper_size');
 var is_force_square = require('./is_force_square');
 var get_svg_dim = require('./get_svg_dim');
 var ini_label_params = require('./ini_label_params');
@@ -8,7 +8,8 @@ var ini_viz_params = require('./ini_viz_params');
 var ini_matrix_params = require('./ini_matrix_params');
 var set_clust_width = require('./set_clust_width');
 var calc_default_fs = require('./calc_default_fs');
-var set_matrix_params = require('./set_matrix_params');
+var calc_matrix_params = require('./calc_matrix_params');
+var calc_label_params = require('./calc_label_params');
 
 /* 
 Params: calculates the size of all the visualization elements in the
@@ -31,37 +32,11 @@ module.exports = function make_params(input_config) {
   params = ini_viz_params(config, params);
   params = ini_matrix_params(config, params);
 
-  // Create wrapper around SVG visualization
-  if (d3.select(params.root+' .viz_wrapper').empty()){
-    d3.select(params.root)
-      .append('div')
-      .attr('class', 'viz_wrapper');
-  }
-
-  // resize parent div - needs to be run here
-  parent_div_size(params);
+  set_viz_wrapper_size(params);
 
   params = get_svg_dim(params);
 
-  params.network_data.row_nodes_names = _.pluck(params.network_data.row_nodes, 'name');
-  params.network_data.col_nodes_names = _.pluck(params.network_data.col_nodes, 'name');
-
-  params.norm_label.margin = {};
-  params.norm_label.margin.left = params.viz.grey_border_width + params.labels.super_label_width;
-  params.norm_label.margin.top  = params.viz.grey_border_width + params.labels.super_label_width;
-
-  if (params.viz.show_dendrogram){
-    // setting config globally 
-    config.group_level = {row: 5, col: 5};
-  }
-
-  params.norm_label.background = {};
-
-  params.norm_label.background.row = params.norm_label.width.row + 
-    params.cat_room.row + params.viz.uni_margin;
-
-  params.norm_label.background.col = params.norm_label.width.col + 
-    params.cat_room.col + params.viz.uni_margin;
+  params = calc_label_params(params);
 
   params.viz.clust = {};
   params.viz.clust.margin = {};
@@ -105,7 +80,7 @@ module.exports = function make_params(input_config) {
     .domain([0, enr_max])
     .range([0, params.norm_label.width.row]);
 
-  params = set_matrix_params(config, params);
+  params = calc_matrix_params(config, params);
 
   params.scale_font_offset = d3.scale
     .linear().domain([1, 0])
@@ -113,9 +88,7 @@ module.exports = function make_params(input_config) {
 
   params = calc_default_fs(params);
 
-  params.viz.border_fraction = 55;
-  params.viz.border_width = params.matrix.x_scale.rangeBand() /
-    params.viz.border_fraction;
+  params.viz.border_width = params.matrix.x_scale.rangeBand() / params.viz.border_fraction;
 
   params.matrix.rect_width = params.matrix.x_scale.rangeBand() - 1 * params.viz.border_width;
   params.matrix.rect_height = params.matrix.y_scale.rangeBand() - 1 * params.viz.border_width / params.viz.zoom_switch;

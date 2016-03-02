@@ -1,5 +1,12 @@
 // resize parent div
-module.exports = function(params) {
+module.exports = function set_viz_wrapper_size(params) {
+
+  // Create wrapper around SVG visualization
+  if (d3.select(params.root+' .viz_wrapper').empty()){
+    d3.select(params.root)
+      .append('div')
+      .attr('class', 'viz_wrapper');
+  }
 
   // get outer_margins
   var outer_margins;

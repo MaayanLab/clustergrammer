@@ -2,7 +2,7 @@ var set_zoom_params = require('./set_zoom_params');
 var utils = require('../utils');
 var initialize_matrix = require('../initialize_matrix');
 
-module.exports = function more_matrix_params(config, params){
+module.exports = function calc_matrix_params(config, params){
 
   var col_nodes = params.network_data.col_nodes;
   var row_nodes = params.network_data.row_nodes;

@@ -1,5 +1,5 @@
-var parent_div_size = require('./parent_div_size'); 
 var reset_visualization_size = require('./reset_size/reset_visualization_size');
+// var set_viz_wrapper_size = require('./set_viz_wrapper_size'); 
 
 module.exports = function(params) {
 
@@ -91,8 +91,8 @@ module.exports = function(params) {
             .style('display','block');
         }
 
-        // resize parent div
-        parent_div_size(params);
+        // // resize parent div
+        // set_viz_wrapper_size(params);
 
         d3.select(params.viz.viz_svg).style('opacity', 0.5);
         var wait_time = 500;
