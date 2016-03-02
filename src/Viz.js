@@ -51,7 +51,7 @@ module.exports = function(params) {
 
     d3.select(params.root+' .col_container')
       .append('g')
-      .attr('class', 'col_viz_outer_container')
+      .attr('class', 'col_cat_outer_container')
       .attr('transform', function () {
         var inst_offset = params.norm_label.width.col + 2;
         return 'translate(0,' + inst_offset + ')';
@@ -59,7 +59,7 @@ module.exports = function(params) {
       .append('g')
       .attr('class', 'col_cat_container');
 
-    build_col_dendro(params, 'col_class_rect');
+    build_col_dendro(params, 'col_cat_rect');
 
   }
 

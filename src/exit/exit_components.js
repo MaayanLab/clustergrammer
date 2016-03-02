@@ -66,7 +66,7 @@
     .remove();
 
   // remove dendrogram
-  d3.selectAll(params.root+' .col_viz_group')
+  d3.selectAll(params.root+' .col_cat_group')
     .data(col_nodes, function(d){return d.name;})
     .exit()
     .transition().duration(duration)

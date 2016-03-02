@@ -25,7 +25,7 @@ module.exports = function resize_dendro(params, svg_group, delay_info=false){
         .transition().delay(delays.update).duration(duration);
 
       svg_group
-        .selectAll('.col_viz_group')
+        .selectAll('.col_cat_group')
         // data binding needed for loss/gain of columns
         .data(col_nodes, function(d){return d.name;})
         .transition().delay(delays.update).duration(duration)
@@ -39,7 +39,7 @@ module.exports = function resize_dendro(params, svg_group, delay_info=false){
       dendro_group = svg_group;
 
       svg_group
-        .selectAll('.col_viz_group')
+        .selectAll('.col_cat_group')
         // data binding needed for loss/gain of columns
         .data(col_nodes, function(d){return d.name;})
         .attr('transform', function(d) {
@@ -62,7 +62,7 @@ module.exports = function resize_dendro(params, svg_group, delay_info=false){
       });
 
     dendro_group
-      .selectAll('.col_class_rect')
+      .selectAll('.col_cat_rect')
       .attr('width', params.matrix.x_scale.rangeBand())
       .attr('height', function() {
         var inst_height = params.cat_room.col - 1;

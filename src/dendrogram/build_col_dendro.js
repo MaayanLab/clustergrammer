@@ -14,13 +14,13 @@ module.exports = function (params, dom_class) {
     .data(col_nodes, function(d){ return d.name; })
     .enter()
     .append('g')
-    .attr('class', 'col_viz_group')
+    .attr('class', 'col_cat_group')
     .attr('transform', function(d) {
       var inst_index = _.indexOf(col_nodes_names, d.name);
       return 'translate(' + params.matrix.x_scale(inst_index) + ',0)';
     });
 
-  d3.selectAll(params.root+' .col_viz_group')
+  d3.selectAll(params.root+' .col_cat_group')
     .each(function() {
 
       var inst_level = params.group_level.col;

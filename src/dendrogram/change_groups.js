@@ -11,7 +11,7 @@ module.exports = function (params, inst_rc, inst_index) {
   if (inst_rc=='row'){
     dom_class = 'row_class_rect';
   } else {
-    dom_class = 'col_class_rect';
+    dom_class = 'col_cat_rect';
   }
 
   d3.selectAll(params.root+' .' + dom_class)
