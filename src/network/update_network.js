@@ -33,7 +33,7 @@ module.exports = function(config, old_params, change_view) {
   // redefine change_group function
   if (params.viz.show_dendrogram){
     make_row_dendro(params, 'row_class_rect');
-    make_col_dendro(params, 'col_cat_rect');
+    make_col_dendro(params);
   }
 
   // initialize screen resizing - necessary for resizing with new params

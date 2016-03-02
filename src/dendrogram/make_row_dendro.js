@@ -2,7 +2,7 @@ var utils = require('../utils');
 var get_inst_group = require('./get_inst_group');
 var build_color_groups = require('./build_color_groups');
 
-module.exports = function make_row_dendro(params, dom_class) {
+module.exports = function make_row_dendro(params) {
 
   d3.selectAll(params.root+' .row_viz_group')
     .each(function() {
@@ -10,13 +10,13 @@ module.exports = function make_row_dendro(params, dom_class) {
       var inst_level = params.group_level.row;
 
       var dendro_rect;
-      if (d3.select(this).select('.'+dom_class).empty()){
+      if (d3.select(this).select('.row_class_rect').empty()){
         dendro_rect = d3.select(this)
           .append('rect')
-          .attr('class', dom_class);
+          .attr('class', 'row_class_rect');
       } else {
         dendro_rect = d3.select(this)
-          .select('.'+dom_class);
+          .select('.row_class_rect');
       }
 
       dendro_rect

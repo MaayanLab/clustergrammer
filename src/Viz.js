@@ -47,7 +47,7 @@ module.exports = function(params) {
 
   if (params.viz.show_dendrogram) {
 
-    make_row_dendro(params, 'row_class_rect');
+    make_row_dendro(params);
 
     d3.select(params.root+' .col_container')
       .append('g')
@@ -59,7 +59,7 @@ module.exports = function(params) {
       .append('g')
       .attr('class', 'col_cat_container');
 
-    make_col_dendro(params, 'col_cat_rect');
+    make_col_dendro(params);
 
   }
 
