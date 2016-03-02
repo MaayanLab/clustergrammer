@@ -94,9 +94,9 @@ module.exports = function(params, pan_dx, pan_dy, fin_zoom) {
       .attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' +
       zoom_y + ',' + zoom_y + ')' + 'translate(' + [0, pan_dy] + ')');
 
-    // transform row_zoom_container
+    // transform row_cat_container
     // use the offset saved in params, only zoom in the y direction
-    d3.select(params.root+' .row_zoom_container')
+    d3.select(params.root+' .row_cat_container')
       .transition()
       .duration(search_duration)
       .attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' +

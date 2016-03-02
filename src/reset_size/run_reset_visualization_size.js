@@ -124,14 +124,14 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
   }
 
   svg_group
-    .selectAll('.row_viz_group')
+    .selectAll('.row_cat_group')
     .attr('transform', function(d) {
         var inst_index = _.indexOf(row_nodes_names, d.name);
         return 'translate(0, ' + params.matrix.y_scale(inst_index) + ')';
       });
 
   svg_group
-    .selectAll('.row_viz_group')
+    .selectAll('.row_cat_group')
     .select('path')
     .attr('d', function() {
       var origin_x = params.cat_room.symbol_width - 1;

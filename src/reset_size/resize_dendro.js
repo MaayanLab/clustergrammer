@@ -50,7 +50,7 @@ module.exports = function resize_dendro(params, svg_group, delay_info=false){
     }
 
     dendro_group
-      .selectAll('.row_class_rect')
+      .selectAll('.row_cat_rect')
       .attr('width', function() {
         var inst_width = params.cat_room.symbol_width - 1;
         return inst_width + 'px';

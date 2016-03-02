@@ -9,7 +9,7 @@ module.exports = function (params, inst_rc, inst_index) {
   var group_colors = build_color_groups(params);
 
   if (inst_rc=='row'){
-    dom_class = 'row_class_rect';
+    dom_class = 'row_cat_rect';
   } else {
     dom_class = 'col_cat_rect';
   }

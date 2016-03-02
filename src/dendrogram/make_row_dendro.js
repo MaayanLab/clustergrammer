@@ -4,19 +4,19 @@ var build_color_groups = require('./build_color_groups');
 
 module.exports = function make_row_dendro(params) {
 
-  d3.selectAll(params.root+' .row_viz_group')
+  d3.selectAll(params.root+' .row_cat_group')
     .each(function() {
   
       var inst_level = params.group_level.row;
 
       var dendro_rect;
-      if (d3.select(this).select('.row_class_rect').empty()){
+      if (d3.select(this).select('.row_cat_rect').empty()){
         dendro_rect = d3.select(this)
           .append('rect')
-          .attr('class', 'row_class_rect');
+          .attr('class', 'row_cat_rect');
       } else {
         dendro_rect = d3.select(this)
-          .select('.row_class_rect');
+          .select('.row_cat_rect');
       }
 
       dendro_rect

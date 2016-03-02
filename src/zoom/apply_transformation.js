@@ -75,9 +75,9 @@ module.exports = function(params, trans_x, trans_y, zoom_x, zoom_y) {
     .attr('transform', 'translate(' + [0, trans_y] + ') scale(' + zoom_y +
     ')');
 
-  // transform row_zoom_container
+  // transform row_cat_container
   // use the offset saved in params, only zoom in the y direction
-  d3.select(params.root+' .row_zoom_container')
+  d3.select(params.root+' .row_cat_container')
     .attr('transform', 'translate(' + [0, trans_y] + ') scale( 1,' +
     zoom_y + ')');
 

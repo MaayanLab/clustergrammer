@@ -37,7 +37,7 @@
     .remove();
 
   // remove row triangles and colorbars
-  d3.selectAll(params.root+' .row_viz_group')
+  d3.selectAll(params.root+' .row_cat_group')
     .data(row_nodes, function(d){return d.name;})
     .exit()
     .transition().duration(duration)

@@ -19,10 +19,10 @@ module.exports = function resize_row_viz(params, ini_svg_group, delay_info=false
   }
 
 
-  svg_group.select('.row_viz_container')
+  svg_group.select('.row_cat_outer_container')
     .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
 
-  svg_group.select('.row_viz_container')
+  svg_group.select('.row_cat_outer_container')
     .select('white_bars')
     .attr('width', params.cat_room.row + 'px')
     .attr('height', function() {

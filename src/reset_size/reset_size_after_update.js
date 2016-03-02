@@ -104,7 +104,7 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
       .transition().delay(delays.update).duration(duration)
       .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35 );
 
-    svg_group.selectAll('.row_viz_group')
+    svg_group.selectAll('.row_cat_group')
       .data(row_nodes, function(d){return d.name;})
       .transition().delay(delays.update).duration(duration)
       .attr('transform', function(d) {
@@ -112,7 +112,7 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
           return 'translate(0, ' + params.matrix.y_scale(inst_index) + ')';
         });
 
-    svg_group.selectAll('.row_viz_group')
+    svg_group.selectAll('.row_cat_group')
       .select('path')
       .transition().delay(delays.update).duration(duration)
       .attr('d', function() {
@@ -134,14 +134,14 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
       .select('text')
       .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35 );
 
-    svg_group.selectAll('.row_viz_group')
+    svg_group.selectAll('.row_cat_group')
       .data(row_nodes, function(d){return d.name;})
       .attr('transform', function(d) {
           var inst_index = _.indexOf(row_nodes_names, d.name);
           return 'translate(0, ' + params.matrix.y_scale(inst_index) + ')';
         });
 
-    svg_group.selectAll('.row_viz_group')
+    svg_group.selectAll('.row_cat_group')
       .select('path')
       .attr('d', function() {
         var origin_x = params.cat_room.symbol_width - 1;

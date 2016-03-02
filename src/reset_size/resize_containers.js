@@ -6,7 +6,7 @@ module.exports = function resize_containers(params){
       params.viz.clust.margin.top + ')');
 
   // reposition row container
-  d3.select(params.root+' .row_viz_container')
+  d3.select(params.root+' .row_cat_outer_container')
     .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
 
   // reposition col container

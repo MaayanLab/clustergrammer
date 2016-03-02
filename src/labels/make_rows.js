@@ -116,30 +116,30 @@ module.exports = function(params, text_delay) {
 
 
   // row visualizations - classification triangles and colorbar rects
-  var row_viz_container;
-  if (d3.select(params.root+' .row_viz_container').empty()){
+  var row_cat_outer_container;
+  if (d3.select(params.root+' .row_cat_outer_container').empty()){
 
-    row_viz_container = row_container
+    row_cat_outer_container = row_container
       .append('g')
-      .attr('class','row_viz_container')
+      .attr('class','row_cat_outer_container')
       .attr('transform', 'translate(' + params.norm_label.width.row + ',0)')
       .append('g')
-      .attr('class', 'row_zoom_container');
+      .attr('class', 'row_cat_container');
 
   } else {
 
-    row_viz_container = row_container
-      .select('row_viz_container')
+    row_cat_outer_container = row_container
+      .select('row_cat_outer_container')
       .attr('transform', 'translate(' + params.norm_label.width.row + ',0)')
       .append('g')
-      .attr('class', 'row_zoom_container');
+      .attr('class', 'row_cat_container');
 
   }
 
   // white background for triangle
-  if (d3.select(params.root+' .row_zoom_container').select('.white_bars').empty()){
+  if (d3.select(params.root+' .row_cat_container').select('.white_bars').empty()){
 
-    row_viz_container
+    row_cat_outer_container
       .append('rect')
       .attr('class','white_bars')
       .attr('fill', params.viz.background_color)
@@ -151,7 +151,7 @@ module.exports = function(params, text_delay) {
 
   } else {
 
-    row_viz_container
+    row_cat_outer_container
       .select('class','white_bars')
       .attr('fill', params.viz.background_color)
       .attr('width', params.cat_room.row + 'px')
@@ -163,19 +163,19 @@ module.exports = function(params, text_delay) {
   }
 
   // groups that hold classification triangle and colorbar rect
-  var row_viz_group = d3.select(params.root+' .row_zoom_container')
+  var row_cat_group = d3.select(params.root+' .row_cat_container')
     .selectAll('g')
     .data(row_nodes, function(d){return d.name;})
     .enter()
     .append('g')
-    .attr('class', 'row_viz_group')
+    .attr('class', 'row_cat_group')
     .attr('transform', function(d) {
       var inst_index = _.indexOf(row_nodes_names, d.name);
       return 'translate(0, ' + params.matrix.y_scale(inst_index) + ')';
     });
 
   // add triangles
-  row_viz_group
+  row_cat_group
     .append('path')
     .attr('d', function() {
       var origin_x = params.cat_room.symbol_width - 1;
