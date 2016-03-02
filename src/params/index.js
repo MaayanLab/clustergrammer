@@ -3,7 +3,6 @@ var utils = require('../utils');
 var change_network_view = require('../network/change_network_view');
 var parent_div_size = require('../parent_div_size');
 var initialize_matrix = require('../initialize_matrix');
-var zoomed = require('../zoom/zoomed');
 var is_force_square = require('./is_force_square');
 var get_svg_dim = require('./get_svg_dim');
 var set_label_params = require('./set_label_params');
@@ -11,6 +10,7 @@ var set_viz_params = require('./set_viz_params');
 var set_matrix_params = require('./set_matrix_params');
 var set_clust_width = require('./set_clust_width');
 var calc_default_fs = require('./calc_default_fs');
+var set_zoom_params = require('./set_zoom_params');
 
 /* Params: calculates the size of all the visualization elements in the
 clustergram.
@@ -31,6 +31,9 @@ module.exports = function params(input_config) {
   params = set_viz_params(config, params);
 
   params = set_matrix_params(config, params);
+
+
+
 
   var col_nodes = params.network_data.col_nodes;
   var row_nodes = params.network_data.row_nodes;
@@ -190,6 +193,8 @@ module.exports = function params(input_config) {
   params.matrix.y_scale
     .domain( params.matrix.orders[ params.viz.inst_order.col + '_col' ] );
 
+  params = set_zoom_params(params);
+
   params.network_data.links.forEach(function (d) {
     d.x = params.matrix.x_scale(d.target);
     d.y = params.matrix.y_scale(d.source);
@@ -201,24 +206,12 @@ module.exports = function params(input_config) {
   params.viz.border_width = params.matrix.x_scale.rangeBand() /
     params.viz.border_fraction;
 
-  params.viz.zoom_switch = (params.viz.clust.dim.width / params.viz.num_col_nodes) / (params.viz.clust.dim.height / params.viz.num_row_nodes);
-
-  if (params.viz.zoom_switch < 1) {
-    params.viz.zoom_switch = 1;
-  }
-
-  params.matrix.rect_width = params.matrix.x_scale.rangeBand() - 1 * params.viz.border_width;
-  params.matrix.rect_height = params.matrix.y_scale.rangeBand() - 1 * params.viz.border_width / params.viz.zoom_switch;
 
   params.scale_font_offset = d3.scale
     .linear().domain([1, 0])
     .range([0.8, 0.5]);
 
   params = calc_default_fs(params);    
-
-  params.viz.zoom_scale_font = {};
-  params.viz.zoom_scale_font.row = 1;
-  params.viz.zoom_scale_font.col = 1;
 
   if (utils.has(params.network_data, 'all_links')) {
     params.matrix.max_link = _.max(params.network_data.all_links, function (d) {
@@ -265,13 +258,9 @@ module.exports = function params(input_config) {
     params.matrix.highlight = 0;
   }
 
-  params.viz.real_zoom = params.norm_label.width.col / (params.matrix.x_scale.rangeBand() / 2);
+  params.matrix.rect_width = params.matrix.x_scale.rangeBand() - 1 * params.viz.border_width;
+  params.matrix.rect_height = params.matrix.y_scale.rangeBand() - 1 * params.viz.border_width / params.viz.zoom_switch;
 
-  params.zoom_behavior = d3.behavior.zoom()
-    .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch])
-    .on('zoom', function(){
-      zoomed(params);
-    });
 
   return params;
 };

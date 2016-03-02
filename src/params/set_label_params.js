@@ -33,23 +33,10 @@ module.exports = function set_label_params(config, params){
   params.labels.row_max_char = row_max_char;
   params.labels.col_max_char = col_max_char;
 
-  // increae teh number of max_label_char to initiate label trimming 
-  // params.labels.max_label_char = 10;
-  params.labels.max_label_char = 15;
-
   var min_num_char = 5;
-  var max_num_char = params.labels.max_label_char;
+  var max_num_char = 15;
 
   params.labels.show_char = 10;
-
-  // // calc how much of the label to keep
-  // var keep_label_scale = d3.scale.linear()
-  //   .domain([params.labels.show_char, max_num_char])
-  //   .range([1, params.labels.show_char / max_num_char]).clamp('true');
-
-  params.labels.row_keep = 1 ; // keep_label_scale(row_max_char);
-  params.labels.col_keep = 1 ;// keep_label_scale(col_max_char);
-
 
   // define label scale
   var min_label_width = 85;
