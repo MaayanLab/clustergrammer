@@ -1,13 +1,13 @@
 var get_svg_dim = require('../params/get_svg_dim');
 var is_force_square = require('../params/is_force_square');
-var set_clust_width = require('../params/set_clust_width');
+var calc_clust_width = require('../params/calc_clust_width');
 var calc_default_fs = require('../params/calc_default_fs');
 
 module.exports = function recalc_params_for_resize(params){
 
   // Resetting some visualization parameters
   params = get_svg_dim(params);
-  params = set_clust_width(params);
+  params = calc_clust_width(params);
   params = is_force_square(params);  
 
   // zoom_switch from 1 to 2d zoom

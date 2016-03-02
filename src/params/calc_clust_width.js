@@ -1,4 +1,4 @@
-module.exports = function set_clust_width(params){
+module.exports = function calc_clust_width(params){
 
   var row_info_space = params.labels.super_label_width + 
     params.norm_label.width.row + params.cat_room.row + params.colorbar_room.row;  

@@ -10,9 +10,9 @@ var label_constrain_and_trim = require('../labels/label_constrain_and_trim');
 
 module.exports = function(params, network_data, delays){
 
-  // // remove old tooltips 
-  // d3.selectAll(params.root+' .d3-tip')
-  //   .style('display','none');
+  // remove old tooltips 
+  d3.selectAll(params.root+' .d3-tip')
+    .style('opacity',0);
 
   if (params.matrix.show_tile_tooltips){
     // d3-tooltip - for tiles

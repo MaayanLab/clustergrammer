@@ -1,7 +1,7 @@
 var utils = require('../utils');
 var is_force_square = require('../params/is_force_square');
 var get_svg_dim = require('../params/get_svg_dim');
-var set_clust_width = require('../params/set_clust_width');
+var calc_clust_width = require('../params/calc_clust_width');
 var reset_zoom = require('../zoom/reset_zoom');
 var resize_dendro = require('./resize_dendro');
 var resize_super_labels = require('./resize_super_labels');
@@ -24,7 +24,7 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
 
   // Resetting some visualization parameters
   params = get_svg_dim(params);
-  params = set_clust_width(params);
+  params = calc_clust_width(params);
   params = is_force_square(params);
 
   // zoom_switch from 1 to 2d zoom

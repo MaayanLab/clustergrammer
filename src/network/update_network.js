@@ -49,9 +49,9 @@ module.exports = function(config, old_params, change_view) {
 
   params.viz.run_trans = true;
   
-  // // remove any tooltips, not just those from the current viz
-  // d3.selectAll('.d3-tip')
-  //   .style('display','none');
+  // remove any tooltips, not just those from the current viz
+  d3.selectAll(params.root+' .d3-tip')
+    .style('opacity',0);
 
   // return updated params 
   return params;
