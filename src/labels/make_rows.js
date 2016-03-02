@@ -107,7 +107,6 @@ module.exports = function(params, text_delay) {
     });
 
 
-
   // row visualizations - classification triangles and colorbar rects
   var row_viz_container = row_container
     .append('g')
@@ -118,16 +117,19 @@ module.exports = function(params, text_delay) {
 
   // white background for triangle
   if (d3.select(params.root+' .row_zoom_container').select('.white_bars').empty()){
-        row_viz_container
-          .append('rect')
-          .attr('class','white_bars')
-          .attr('fill', params.viz.background_color)
-          .attr('width', params.class_room.row + 'px')
-          .attr('height', function() {
-            var inst_height = params.viz.clust.dim.height;
-            return inst_height;
-          });
+
+    row_viz_container
+      .append('rect')
+      .attr('class','white_bars')
+      .attr('fill', params.viz.background_color)
+      .attr('width', params.class_room.row + 'px')
+      .attr('height', function() {
+        var inst_height = params.viz.clust.dim.height;
+        return inst_height;
+      });
+
   } else {
+
     row_viz_container
       .select('class','white_bars')
       .attr('fill', params.viz.background_color)
@@ -136,6 +138,7 @@ module.exports = function(params, text_delay) {
         var inst_height = params.viz.clust.dim.height;
         return inst_height;
       });
+
   }
 
   // groups that hold classification triangle and colorbar rect
@@ -177,48 +180,48 @@ module.exports = function(params, text_delay) {
     .style('opacity',1);
 
 
-    if (utils.has(params.network_data.row_nodes[0], 'value')) {
+  if (utils.has(params.network_data.row_nodes[0], 'value')) {
 
-      row_labels
-        .append('rect')
-        .attr('class', 'row_bars')
-        .attr('width', function(d) {
-          var inst_value = 0;
-          inst_value = params.labels.bar_scale_row( Math.abs(d.value) );
-          return inst_value;
-        })
-        .attr('x', function(d) {
-          var inst_value = 0;
-          inst_value = -params.labels.bar_scale_row( Math.abs(d.value) );
-          return inst_value;
-        })
-        .attr('height', params.matrix.y_scale.rangeBand() )
-        .attr('fill', function(d) {
-          return d.value > 0 ? params.matrix.bar_colors[0] : params.matrix.bar_colors[1];
-        })
-        .attr('opacity', 0.4);
+    row_labels
+      .append('rect')
+      .attr('class', 'row_bars')
+      .attr('width', function(d) {
+        var inst_value = 0;
+        inst_value = params.labels.bar_scale_row( Math.abs(d.value) );
+        return inst_value;
+      })
+      .attr('x', function(d) {
+        var inst_value = 0;
+        inst_value = -params.labels.bar_scale_row( Math.abs(d.value) );
+        return inst_value;
+      })
+      .attr('height', params.matrix.y_scale.rangeBand() )
+      .attr('fill', function(d) {
+        return d.value > 0 ? params.matrix.bar_colors[0] : params.matrix.bar_colors[1];
+      })
+      .attr('opacity', 0.4);
 
+  }
+
+  // add row callback function
+  d3.selectAll(params.root+' .row_label_text')
+    .on('click',function(d){
+      if (typeof params.click_label == 'function'){
+        params.click_label(d.name, 'row');
+        add_row_click_hlight(params, this, d.ini);
+      } else {
+        if (params.tile_click_hlight){
+          add_row_click_hlight(params, this, d.ini);
+        }
       }
 
-    // add row callback function
-    d3.selectAll(params.root+' .row_label_text')
-      .on('click',function(d){
-        if (typeof params.click_label == 'function'){
-          params.click_label(d.name, 'row');
-          add_row_click_hlight(params, this, d.ini);
-        } else {
-          if (params.tile_click_hlight){
-            add_row_click_hlight(params, this, d.ini);
-          }
-        }
-
-      });
+    });
 
 
-    // row label text will not spillover initially since
-    // the font-size is set up to not allow spillover
-    // it can spillover during zooming and must be constrained
+  // row label text will not spillover initially since
+  // the font-size is set up to not allow spillover
+  // it can spillover during zooming and must be constrained
 
-    // return row_viz_group so that the dendrogram can be made
-    return row_viz_group;
+  // return row_viz_group so that the dendrogram can be made
+  return row_viz_group;
 };

@@ -2,7 +2,7 @@ var generate_matrix = require('./matrix');
 var make_rows = require('./labels/make_rows');
 var make_cols = require('./labels/make_cols');
 var generate_super_labels = require('./labels/super_labels');
-var run_spillover = require('./spillover');
+var spillover = require('./spillover');
 var search = require('./search');
 var two_translate_zoom = require('./zoom/two_translate_zoom');
 var initialize_resizing = require('./initialize_resizing');
@@ -31,7 +31,7 @@ module.exports = function(params) {
 
   var delay_text = 0;
   make_rows(params, delay_text);
-  var container_all_col = make_cols(params, delay_text);
+  make_cols(params, delay_text);
 
 
   d3.selectAll(params.root+' .row_label_text' )
@@ -48,7 +48,7 @@ module.exports = function(params) {
 
     build_row_dendro(params, 'row_class_rect');
 
-    container_all_col
+    d3.select(params.root+' .col_container')
       .append('g')
       .attr('class', 'col_viz_outer_container')
       .attr('transform', function () {
@@ -62,7 +62,7 @@ module.exports = function(params) {
 
   }
 
-  run_spillover(params, container_all_col);
+  spillover(params);
 
   if (params.labels.super_labels) {
     generate_super_labels(params);

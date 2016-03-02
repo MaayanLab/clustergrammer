@@ -5,7 +5,7 @@ var make_col_tooltips = require('./make_col_tooltips');
 
 module.exports = function(params, text_delay) {
 
-  var container_all_col;
+  var col_container;
 
   var col_nodes = params.network_data.col_nodes;
   var col_nodes_names = params.network_data.col_nodes_names;
@@ -19,14 +19,14 @@ module.exports = function(params, text_delay) {
   // make container to pre-position zoomable elements
   if (d3.select(params.root+' .col_container').empty()) {
 
-    container_all_col = d3.select(params.viz.viz_svg)
+    col_container = d3.select(params.viz.viz_svg)
       .append('g')
       .attr('class','col_container')
       .attr('transform', 'translate(' + params.viz.clust.margin.left + ',' +
       params.norm_label.margin.top + ')');
 
     // white background rect for col labels
-    container_all_col
+    col_container
       .append('rect')
       .attr('fill', params.viz.background_color) //!! prog_colors
       .attr('width', 30 * params.viz.clust.dim.width + 'px')
@@ -34,7 +34,7 @@ module.exports = function(params, text_delay) {
       .attr('class', 'white_bars');
 
     // col labels
-    container_all_col
+    col_container
       .append('g')
       .attr('class','col_label_outer_container')
       // position the outer col label group
@@ -44,22 +44,21 @@ module.exports = function(params, text_delay) {
 
   } else {
 
-    container_all_col = d3.select(params.root+' .col_container')
+    col_container = d3.select(params.root+' .col_container')
       .attr('transform', 'translate(' + params.viz.clust.margin.left + ',' +
       params.norm_label.margin.top + ')');
 
     // white background rect for col labels
-    container_all_col
+    col_container
       .select('.white_bars')
       .attr('fill', params.viz.background_color) //!! prog_colors
       .attr('width', 30 * params.viz.clust.dim.width + 'px')
       .attr('height', params.norm_label.background.col);
 
     // col labels
-    container_all_col.select(params.root+' .col_label_outer_container');
+    col_container.select(params.root+' .col_label_outer_container');
 
   }
-
 
   // add main column label group
   var col_label_obj = d3.select(params.root+' .col_zoom_container')
@@ -88,8 +87,6 @@ module.exports = function(params, text_delay) {
       d3.select(this).select('text')
         .classed('active',false);
     });
-
-
 
   // append column value bars
   if (utils.has(params.network_data.col_nodes[0], 'value')) {
@@ -131,7 +128,6 @@ module.exports = function(params, text_delay) {
     .style('opacity',0)
     .transition().delay(text_delay).duration(text_delay)
     .style('opacity',1);
-
 
   make_col_tooltips(params);
 
@@ -191,7 +187,6 @@ module.exports = function(params, text_delay) {
     .transition().delay(text_delay).duration(text_delay)
     .style('opacity',1);
 
-
   // add col callback function
   d3.selectAll(params.root+' .col_label_text')
     .on('click',function(d){
@@ -215,5 +210,4 @@ module.exports = function(params, text_delay) {
       }
     });
 
-  return container_all_col;
 };

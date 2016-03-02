@@ -7,7 +7,6 @@ var enter_grid_lines = require('../enter/enter_grid_lines');
 var enter_row_groups = require('../enter/enter_row_groups');
 var resize_containers = require('../reset_size/resize_containers');
 var label_constrain_and_trim = require('../labels/label_constrain_and_trim');
-var make_row_tooltips = require('../labels/make_row_tooltips');
 
 module.exports = function(params, network_data, delays){
 
