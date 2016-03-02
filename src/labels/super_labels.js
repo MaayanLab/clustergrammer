@@ -29,7 +29,7 @@ module.exports = function(params) {
       return 'translate(' + inst_x + ',' + inst_y + ')';
     })
     .style('font-size', function () {
-      var inst_font_size = 14 * params.labels.super_label_scale;
+      var inst_font_size = 18 * params.labels.super_label_scale;
       return inst_font_size + 'px';
     })
     .style('font-weight', 300);
@@ -70,7 +70,7 @@ module.exports = function(params) {
       return inst_offset;
     })
     .style('font-size', function () {
-      var inst_font_size = 14 * params.labels.super_label_scale;
+      var inst_font_size = 18 * params.labels.super_label_scale;
       return inst_font_size + 'px';
     })
     .style('font-weight', 300);

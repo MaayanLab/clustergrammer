@@ -12,6 +12,7 @@ var build_row_dendro = require('./dendrogram/build_row_dendro');
 var trim_text = require('./zoom/trim_text');
 
 module.exports = function(params) {
+  
   var svg_group = d3.select(params.viz.viz_wrapper)
     .append('svg')
     .attr('class', 'viz_svg')

@@ -10,17 +10,20 @@ var set_clust_width = require('./set_clust_width');
 var calc_default_fs = require('./calc_default_fs');
 var set_matrix_params = require('./set_matrix_params');
 
-/* Params: calculates the size of all the visualization elements in the
+/* 
+Params: calculates the size of all the visualization elements in the
 clustergram.
  */
 
-module.exports = function params(input_config) {
+module.exports = function make_params(input_config) {
 
   var config = $.extend(true, {}, input_config);
   var params = config;
 
+  // when pre-loading the visualization using a view
   if (params.ini_view !== null) {
     params.network_data = change_network_view(params, params.network_data, params.ini_view);
+    // disable pre-loading of view 
     params.ini_view = null;
   }
 

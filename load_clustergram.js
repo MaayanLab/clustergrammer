@@ -45,7 +45,7 @@ function make_clust(inst_network){
         // 'show_tile_tooltips':true,
         // 'make_tile_tooltip':make_tile_tooltip,
         // 'highlight_color':'yellow',
-        'super_label_scale':1.25,
+        // 'super_label_scale':1.25,
         // 'transpose':true,
         // 'ini_expand':true,
         // 'col_label_scale':1.5,

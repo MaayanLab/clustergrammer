@@ -1,14 +1,11 @@
 module.exports = function set_label_params(config, params){
 
-  var col_nodes = params.network_data.col_nodes;
-  var row_nodes = params.network_data.row_nodes;
-
   params.labels = {};
   params.labels.super_label_scale = config.super_label_scale;
   params.labels.super_labels = config.super_labels;
 
   if (params.labels.super_labels) {
-    params.labels.super_label_width = 20 * params.labels.super_label_scale;
+    params.labels.super_label_width = 25 * params.labels.super_label_scale;
     params.labels.super = {};
     params.labels.super.row = config.super.row;
     params.labels.super.col = config.super.col;
@@ -22,35 +19,30 @@ module.exports = function set_label_params(config, params){
   }
   params.labels.show_label_tooltips = config.show_label_tooltips;
 
-  var row_max_char = _.max(row_nodes, function (inst) {
-    return inst.name.length;
-  }).name.length;
-  var col_max_char = _.max(col_nodes, function (inst) {
-    return inst.name.length;
-  }).name.length;
+  params.labels.row_max_char = _.max(params.network_data.row_nodes, 
+    function (inst) {
+      return inst.name.length;
+    }).name.length;
 
+  params.labels.col_max_char = _.max(params.network_data.col_nodes, 
+    function (inst) {
+      return inst.name.length;
+    }).name.length;
 
-  params.labels.row_max_char = row_max_char;
-  params.labels.col_max_char = col_max_char;
-
-  var min_num_char = 5;
-  var max_num_char = 15;
-
-  params.labels.show_char = 10;
-
-  // define label scale
-  var min_label_width = 85;
-  var max_label_width = 120;
   var label_scale = d3.scale.linear()
-    .domain([min_num_char, max_num_char])
-    .range([min_label_width, max_label_width]).clamp('true');
+    // min and max number of characters
+    .domain([5, 15])
+    // min and max of label width 
+    .range([ 85, 120]).clamp('true');
 
   params.norm_label = {};
   params.norm_label.width = {};
 
-  params.norm_label.width.row = label_scale(row_max_char) * params.row_label_scale;
+  params.norm_label.width.row = label_scale(params.labels.row_max_char) 
+    * params.row_label_scale;
 
-  params.norm_label.width.col = label_scale(col_max_char) * params.col_label_scale;
+  params.norm_label.width.col = label_scale(params.labels.col_max_char) 
+    * params.col_label_scale;
 
   params.labels.max_allow_fs = 20;
 
