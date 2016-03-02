@@ -2,7 +2,7 @@ var utils = require('../utils');
 var get_inst_group = require('./get_inst_group');
 var build_color_groups = require('./build_color_groups');
 
-module.exports = function(params, dom_class) {
+module.exports = function make_row_dendro(params, dom_class) {
 
   d3.selectAll(params.root+' .row_viz_group')
     .each(function() {
