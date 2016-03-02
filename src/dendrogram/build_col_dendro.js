@@ -8,6 +8,7 @@ module.exports = function (params, dom_class) {
   var col_nodes_names = _.pluck(col_nodes, 'name');
 
   // append groups - each will hold a classification rect
+  // this is done differently for the rows 
   d3.select(params.root+' .col_viz_container')
     .selectAll('g')
     .data(col_nodes, function(d){ return d.name; })
@@ -24,9 +25,18 @@ module.exports = function (params, dom_class) {
 
       var inst_level = params.group_level.col;
 
-      var dendro_rect = d3.select(this)
-        .append('rect')
-        .attr('class', dom_class)
+      var dendro_rect;
+      if (d3.select(this).select('.'+dom_class).empty()){
+        dendro_rect = d3.select(this)
+          .append('rect')
+          .attr('class', dom_class);
+      } else {
+        dendro_rect = d3.select(this)
+          .select('.'+dom_class);
+      }
+
+
+      dendro_rect
         .attr('width', params.matrix.x_scale.rangeBand())
         .attr('height', function() {
           var inst_height = params.cat_room.col - 1;
