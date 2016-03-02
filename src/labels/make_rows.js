@@ -10,7 +10,7 @@ module.exports = function(params, text_delay) {
   var row_container;
 
   // row container holds all row text and row visualizations (triangles rects)
-  if ( d3.select(params.viz.vis_svg + ' .row_container').empty() ){
+  if ( d3.select(params.viz.viz_svg + ' .row_container').empty() ){
     row_container = d3.select(params.viz.viz_svg)
       .append('g')
       .attr('class','row_container')
@@ -33,13 +33,21 @@ module.exports = function(params, text_delay) {
       .attr('height', 30*params.viz.clust.dim.height + 'px');
   }
 
-  // container to hold text row labels
-  row_container
-    .append('g')
-    .attr('class','row_label_container')
-    .attr('transform', 'translate(' + params.norm_label.width.row + ',0)')
-    .append('g')
-    .attr('class', 'row_label_zoom_container');
+  if ( d3.select(params.root +' .row_label_container').empty() ){
+    // container to hold text row labels
+    row_container
+      .append('g')
+      .attr('class','row_label_container')
+      .attr('transform', 'translate(' + params.norm_label.width.row + ',0)')
+      .append('g')
+      .attr('class', 'row_label_zoom_container');
+  } else {
+    // container to hold text row labels
+    row_container
+      .select(params.root+' .row_label_container')
+      .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
+  }
+
 
   var row_labels = d3.select(params.root+' .row_label_zoom_container')
     .selectAll('g')
@@ -108,12 +116,25 @@ module.exports = function(params, text_delay) {
 
 
   // row visualizations - classification triangles and colorbar rects
-  var row_viz_container = row_container
-    .append('g')
-    .attr('class','row_viz_container')
-    .attr('transform', 'translate(' + params.norm_label.width.row + ',0)')
-    .append('g')
-    .attr('class', 'row_zoom_container');
+  var row_viz_container;
+  if (d3.select(params.root+' .row_viz_container').empty()){
+
+    row_viz_container = row_container
+      .append('g')
+      .attr('class','row_viz_container')
+      .attr('transform', 'translate(' + params.norm_label.width.row + ',0)')
+      .append('g')
+      .attr('class', 'row_zoom_container');
+
+  } else {
+
+    row_viz_container = row_container
+      .select('row_viz_container')
+      .attr('transform', 'translate(' + params.norm_label.width.row + ',0)')
+      .append('g')
+      .attr('class', 'row_zoom_container');
+
+  }
 
   // white background for triangle
   if (d3.select(params.root+' .row_zoom_container').select('.white_bars').empty()){

@@ -93,12 +93,6 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
   resize_row_labels(params, svg_group); 
   resize_row_viz(params, svg_group);
 
-  // svg_group.selectAll('.row_label_group')
-  //   .select('text')
-  //   .style('font-size', params.labels.default_fs_row + 'px')
-  //   .text(function(d){ return utils.normal_name(d);});
-
-
   // // change the size of the highlighting rects
   // svg_group.selectAll('.row_label_group')
   //   .each(function() {
@@ -120,9 +114,10 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
   //       });
   //   });
 
-  // svg_group.selectAll('.row_label_group')
-  //   .select('text')
-  //   .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35 ); 
+  // necessary to properly position row labels vertically 
+  svg_group.selectAll('.row_label_group')
+    .select('text')
+    .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35 ); 
 
   if (utils.has( params.network_data.row_nodes[0], 'value')) {
     resize_label_bars(params, svg_group);

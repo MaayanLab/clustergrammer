@@ -173,19 +173,6 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
 
   resize_col_hlight(params, svg_group, delays);
 
-  // run for both view update and screen resize 
-
-  // d3.selectAll(params.root+' .row_label_group' )
-  //   .each(function() { 
-  //     trim_text(params, this, 'row'); 
-  //   });
-    
-  // d3.selectAll(params.root+' .col_label_group')
-  //   .each(function() { 
-  //     trim_text(params, this, 'col'); 
-  //   });   
-
-
   resize_dendro(params, svg_group, delays);
   resize_super_labels(params, svg_group, delays);
   resize_spillover(params, svg_group, delays);

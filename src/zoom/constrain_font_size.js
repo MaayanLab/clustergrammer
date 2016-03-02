@@ -19,12 +19,14 @@ module.exports = function(params) {
 
     d3.selectAll(params.root+' .row_label_group')
       .select('text')
-      .style('font-size', tmp_font_size + 'px');
+      .style('font-size', tmp_font_size + 'px')
+      .attr('y', params.matrix.rect_height * 0.5 + tmp_font_size*0.35 );
 
   } else {
     d3.selectAll(params.root+' .row_label_group')
       .select('text')
-      .style('font-size', params.labels.default_fs_row + 'px');
+      .style('font-size', params.labels.default_fs_row + 'px')
+      .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35 );
   }
 
   if (real_font_size.col > params.labels.max_allow_fs){
