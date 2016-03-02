@@ -24,7 +24,7 @@ module.exports = function resize_row_viz(params, ini_svg_group, delay_info=false
 
   svg_group.select('.row_viz_container')
     .select('white_bars')
-    .attr('width', params.class_room.row + 'px')
+    .attr('width', params.cat_room.row + 'px')
     .attr('height', function() {
       var inst_height = params.viz.clust.dim.height;
       return inst_height;

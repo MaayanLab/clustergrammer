@@ -3,7 +3,7 @@ var change_network_view = require('../network/change_network_view');
 var parent_div_size = require('../parent_div_size');
 var is_force_square = require('./is_force_square');
 var get_svg_dim = require('./get_svg_dim');
-var set_label_params = require('./set_label_params');
+var ini_label_params = require('./ini_label_params');
 var ini_viz_params = require('./ini_viz_params');
 var ini_matrix_params = require('./ini_matrix_params');
 var set_clust_width = require('./set_clust_width');
@@ -27,12 +27,16 @@ module.exports = function make_params(input_config) {
     params.ini_view = null;
   }
 
-  params = set_label_params(config, params);
+  params = ini_label_params(config, params);
   params = ini_viz_params(config, params);
   params = ini_matrix_params(config, params);
 
   // Create wrapper around SVG visualization
-  d3.select(config.root).append('div').attr('class', 'viz_wrapper');
+  if (d3.select(params.root+' .viz_wrapper').empty()){
+    d3.select(params.root)
+      .append('div')
+      .attr('class', 'viz_wrapper');
+  }
 
   // resize parent div - needs to be run here
   parent_div_size(params);
@@ -44,7 +48,7 @@ module.exports = function make_params(input_config) {
 
   params.norm_label.margin = {};
   params.norm_label.margin.left = params.viz.grey_border_width + params.labels.super_label_width;
-  params.norm_label.margin.top = params.viz.grey_border_width + params.labels.super_label_width;
+  params.norm_label.margin.top  = params.viz.grey_border_width + params.labels.super_label_width;
 
   if (params.viz.show_dendrogram){
     // setting config globally 
