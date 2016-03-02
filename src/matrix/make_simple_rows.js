@@ -23,7 +23,7 @@ module.exports = function make_simple_rows(params, ini_inp_row_data, tip, row_se
     .on('mouseover', function(p) {
 
       // highlight row - set text to active if
-      d3.selectAll(params.root+' .row_label_text text')
+      d3.selectAll(params.root+' .row_label_group text')
         .classed('active', function(d) {
           return p.row_name.replace(/_/g, ' ') === d.name;
         });
@@ -102,7 +102,7 @@ module.exports = function make_simple_rows(params, ini_inp_row_data, tip, row_se
       })
       .on('mouseover', function(p) {
       // highlight row - set text to active if
-      d3.selectAll(params.root+' .row_label_text text')
+      d3.selectAll(params.root+' .row_label_group text')
         .classed('active', function(d) {
           return p.row_name.replace(/_/g, ' ') === d.name;
         });
@@ -159,7 +159,7 @@ module.exports = function make_simple_rows(params, ini_inp_row_data, tip, row_se
       })
       .on('mouseover', function(p) {
       // highlight row - set text to active if
-      d3.selectAll(params.root+' .row_label_text text')
+      d3.selectAll(params.root+' .row_label_group text')
         .classed('active', function(d) {
           return p.row_name.replace(/_/g, ' ') === d.name;
         });

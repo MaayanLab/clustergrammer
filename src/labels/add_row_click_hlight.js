@@ -10,7 +10,7 @@ module.exports = function(params, clicked_row, id_clicked_row) {
       .remove();
 
     // // highlight selected row
-    // d3.selectAll(params.root+' .row_label_text')
+    // d3.selectAll(params.root+' .row_label_group')
     //   .select('rect')
     // d3.select(this)
     //   .select('rect')

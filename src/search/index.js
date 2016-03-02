@@ -20,7 +20,7 @@ module.exports = function(params, nodes, prop) {
     if (entities.indexOf(search_term) !== -1) {
 
       // unhighlight
-      d3.selectAll(params.root+' .row_label_text')
+      d3.selectAll(params.root+' .row_label_group')
         .select('rect').style('opacity', 0);
 
       // calc pan_dy 
@@ -31,7 +31,7 @@ module.exports = function(params, nodes, prop) {
       two_translate_zoom(params, 0, pan_dy, params.viz.zoom_switch);
 
       // highlight 
-      d3.selectAll(params.root+' .row_label_text')
+      d3.selectAll(params.root+' .row_label_group')
         .filter(function(d) {
           return d[prop] === search_term;
         })

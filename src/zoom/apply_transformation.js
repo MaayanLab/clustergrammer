@@ -99,7 +99,7 @@ module.exports = function(params, trans_x, trans_y, zoom_x, zoom_y) {
 
   constrain_font_size(params);
 
-  d3.selectAll(params.root+' .row_label_text' )
+  d3.selectAll(params.root+' .row_label_group' )
     .each(function() { trim_text(params, this, 'row'); });
 
   d3.selectAll(params.root+' .col_label_click')

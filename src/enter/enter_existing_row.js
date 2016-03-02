@@ -9,7 +9,7 @@ module.exports = function enter_existing_row(params, delays, duration, cur_row_t
     .attr('height', params.matrix.rect_height)
     .on('mouseover', function(p) {
       // highlight row - set text to active if
-      d3.selectAll(params.root+' .row_label_text text')
+      d3.selectAll(params.root+' .row_label_group text')
         .classed('active', function(d) {
           return p.row_name === d.name;
         });

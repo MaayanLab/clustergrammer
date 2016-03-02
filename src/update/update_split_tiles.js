@@ -15,7 +15,7 @@ module.exports = function update_split_tiles(params, inp_row_data, row_selection
   var update_tiles_up = cur_tiles_up
     .on('mouseover', function(p) {
       // highlight row - set text to active if
-      d3.selectAll(params.root+' .row_label_text text')
+      d3.selectAll(params.root+' .row_label_group text')
         .classed('active', function(d) {
           return p.row_name === d.name;
         });
@@ -81,7 +81,7 @@ module.exports = function update_split_tiles(params, inp_row_data, row_selection
   var update_tiles_dn = cur_tiles_dn
     .on('mouseover', function(p) {
       // highlight row - set text to active if
-      d3.selectAll(params.root+' .row_label_text text')
+      d3.selectAll(params.root+' .row_label_group text')
         .classed('active', function(d) {
           return p.row_name === d.name;
         });

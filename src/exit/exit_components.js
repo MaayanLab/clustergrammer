@@ -21,7 +21,7 @@
   }
   
   // remove row labels
-  d3.selectAll(params.root+' .row_label_text')
+  d3.selectAll(params.root+' .row_label_group')
     .data(row_nodes, function(d){ return d.name;})
     .exit()
     .transition().duration(duration)

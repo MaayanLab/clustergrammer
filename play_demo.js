@@ -218,7 +218,7 @@ function play_demo(){
     demo_text('Reorder the matrix based on a single\nrow or column by double-clicking a \n label', 6000)
 
     // select column to be reordered 
-    tmp = d3.selectAll('.row_label_text')
+    tmp = d3.selectAll('.row_label_group')
       .filter(function(d){
         return d.name == 'EGFR';
       });

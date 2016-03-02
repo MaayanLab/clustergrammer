@@ -107,7 +107,7 @@ module.exports = function(params, row_selection) {
   // highlight selected column
   ///////////////////////////////
   // unhilight and unbold all columns (already unbolded earlier)
-  d3.selectAll(params.root+' .row_label_text')
+  d3.selectAll(params.root+' .row_label_group')
     .select('rect')
     .style('opacity', 0);
   // highlight column name

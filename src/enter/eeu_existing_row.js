@@ -29,7 +29,7 @@ module.exports = function(params, ini_inp_row_data, delays, duration, row_select
   var update_row_tiles = cur_row_tiles
     .on('mouseover', function(p) {
       // highlight row - set text to active if
-      d3.selectAll(params.root+' .row_label_text text')
+      d3.selectAll(params.root+' .row_label_group text')
         .classed('active', function(d) {
           return p.row_name === d.name;
         });

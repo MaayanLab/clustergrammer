@@ -34,7 +34,7 @@ module.exports = function(params) {
   make_cols(params, delay_text);
 
 
-  d3.selectAll(params.root+' .row_label_text' )
+  d3.selectAll(params.root+' .row_label_group' )
     .each(function() { 
       trim_text(params, this, 'row'); 
     });

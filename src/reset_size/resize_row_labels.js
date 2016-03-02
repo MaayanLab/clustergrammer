@@ -15,7 +15,7 @@ module.exports = function resize_row_labels(params, ini_svg_group, delay_info=fa
 
   if (delays.run_transition){
 
-    ini_svg_group.selectAll('.row_label_text')
+    ini_svg_group.selectAll('.row_label_group')
       // data bind necessary for loss/gain of rows
       .data(row_nodes, function(d){return d.name;})
       .transition().delay(delays.update).duration(duration)
@@ -30,7 +30,7 @@ module.exports = function resize_row_labels(params, ini_svg_group, delay_info=fa
 
   } else {
 
-    ini_svg_group.selectAll('.row_label_text')
+    ini_svg_group.selectAll('.row_label_group')
       // data bind necessary for loss/gain of rows
       .data(row_nodes, function(d){return d.name;})
       .attr('transform', function(d) {

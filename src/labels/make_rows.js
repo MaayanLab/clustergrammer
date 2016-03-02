@@ -46,14 +46,14 @@ module.exports = function(params, text_delay) {
     .data(row_nodes, function(d){return d.name;})
     .enter()
     .append('g')
-    .attr('class', 'row_label_text')
+    .attr('class', 'row_label_group')
     .attr('transform', function(d) {
       var inst_index = _.indexOf(row_nodes_names, d.name);
       return 'translate(0,' + params.matrix.y_scale(inst_index) + ')';
     });
 
   d3.select(params.root+' .row_label_zoom_container')
-    .selectAll('.row_label_text')
+    .selectAll('.row_label_group')
     .on('dblclick', function(d) {
       row_reorder(params, this);
       if (params.tile_click_hlight){
@@ -204,7 +204,7 @@ module.exports = function(params, text_delay) {
   }
 
   // add row callback function
-  d3.selectAll(params.root+' .row_label_text')
+  d3.selectAll(params.root+' .row_label_group')
     .on('click',function(d){
       if (typeof params.click_label == 'function'){
         params.click_label(d.name, 'row');

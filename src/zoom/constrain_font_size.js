@@ -17,12 +17,12 @@ module.exports = function(params) {
 
     tmp_font_size = params.labels.max_allow_fs/inst_zoom;
 
-    d3.selectAll(params.root+' .row_label_text')
+    d3.selectAll(params.root+' .row_label_group')
       .select('text')
       .style('font-size', tmp_font_size + 'px');
 
   } else {
-    d3.selectAll(params.root+' .row_label_text')
+    d3.selectAll(params.root+' .row_label_group')
       .select('text')
       .style('font-size', params.labels.default_fs_row + 'px');
   }

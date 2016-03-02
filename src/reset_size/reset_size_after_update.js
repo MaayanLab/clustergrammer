@@ -67,13 +67,13 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
   resize_row_labels(params, svg_group, delays);
 
   // do not delay the font size change since this will break the bounding box calc
-  svg_group.selectAll('.row_label_text')
+  svg_group.selectAll('.row_label_group')
     .select('text')
     .style('font-size', params.labels.default_fs_row + 'px')
     .text(function(d){ return utils.normal_name(d);});
 
   // change the size of the highlighting rects
-  svg_group.selectAll('.row_label_text')
+  svg_group.selectAll('.row_label_group')
     .each(function() {
       var bbox = d3.select(this).select('text')[0][0].getBBox();
       d3.select(this)
@@ -99,7 +99,7 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
   if (delays.run_transition){
 
     // positioning row text after row text size may have been reduced
-    svg_group.selectAll('.row_label_text')
+    svg_group.selectAll('.row_label_group')
       .select('text')
       .transition().delay(delays.update).duration(duration)
       .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35 );
@@ -130,7 +130,7 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
   } else {
 
     // positioning row text after row text size may have been reduced
-    svg_group.selectAll('.row_label_text')
+    svg_group.selectAll('.row_label_group')
       .select('text')
       .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35 );
 
@@ -175,7 +175,7 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
 
   // run for both view update and screen resize 
 
-  // d3.selectAll(params.root+' .row_label_text' )
+  // d3.selectAll(params.root+' .row_label_group' )
   //   .each(function() { 
   //     trim_text(params, this, 'row'); 
   //   });
