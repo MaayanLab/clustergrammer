@@ -1,6 +1,7 @@
 var utils = require('../utils');
 var add_row_click_hlight = require('./add_row_click_hlight');
 var row_reorder = require('../reorder/row_reorder');
+var make_row_tooltips = require('./make_row_tooltips');
 
 module.exports = function(params, text_delay) {
   var row_nodes = params.network_data.row_nodes;
@@ -60,48 +61,7 @@ module.exports = function(params, text_delay) {
       }
     });
 
-  if (params.labels.show_label_tooltips){
-
-    // d3-tooltip
-    var tip = d3.tip()
-      .attr('class', 'd3-tip')
-      .direction('e')
-      .offset([0, 10])
-      .html(function(d) {
-        var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
-        return "<span>" + inst_name + "</span>";
-      });
-
-    d3.select(params.viz.viz_wrapper)
-      .select(params.root+' .row_container')
-      .call(tip);
-
-    row_labels
-      .on('mouseover', function(d) {
-        d3.select(this)
-          .select('text')
-          .classed('active',true);
-        tip.show(d);
-      })
-      .on('mouseout', function mouseout(d) {
-        d3.select(this)
-          .select('text')
-          .classed('active',false);
-        tip.hide(d);
-      });
-  } else{
-    row_labels
-      .on('mouseover', function() {
-        d3.select(this)
-          .select('text')
-          .classed('active',true);
-      })
-      .on('mouseout', function mouseout() {
-        d3.select(this)
-          .select('text')
-          .classed('active',false);
-      });
-  }
+  make_row_tooltips(params);
 
   // append rectangle behind text
   row_labels

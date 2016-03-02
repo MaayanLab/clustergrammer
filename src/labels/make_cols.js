@@ -1,6 +1,7 @@
 var utils = require('../utils');
 var add_col_click_hlight = require('./add_col_click_hlight');
 var col_reorder = require('../reorder/col_reorder');
+var make_col_tooltips = require('./make_col_tooltips');
 
 module.exports = function(params, text_delay) {
 
@@ -131,31 +132,8 @@ module.exports = function(params, text_delay) {
     .transition().delay(text_delay).duration(text_delay)
     .style('opacity',1);
 
-  if (params.labels.show_label_tooltips){
 
-    // d3-tooltip
-    var tip = d3.tip()
-      .attr('class', 'd3-tip')
-      .direction('s')
-      .offset([20, 0])
-      .html(function(d) {
-        var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
-        return "<span>" + inst_name + "</span>";
-      });
-
-    d3.select(params.viz.viz_wrapper)
-      .select('svg')
-      .select(params.root+' .col_container')
-      .call(tip);
-
-    col_label_obj
-      // .select('text')
-      .on('mouseover',tip.show)
-      .on('mouseout',tip.hide);
-
-  }
-
-
+  make_col_tooltips(params);
 
   // append rectangle behind text
   col_label_click
