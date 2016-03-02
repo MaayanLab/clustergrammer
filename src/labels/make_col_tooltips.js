@@ -1,11 +1,13 @@
 module.exports = function make_col_tooltips(params){
 
   if (params.labels.show_label_tooltips){
+
     // d3-tooltip
     var col_tip = d3.tip()
       .attr('class', 'd3-tip')
       .direction('s')
       .offset([20, 0])
+      .style('display','block')
       .html(function(d) {
         var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
         return "<span>" + inst_name + "</span>";
@@ -22,5 +24,5 @@ module.exports = function make_col_tooltips(params){
       .on('mouseout',  col_tip.hide);
 
   }
-  
+
 };
