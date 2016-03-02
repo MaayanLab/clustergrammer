@@ -238,11 +238,4 @@ module.exports = function(params, text_delay) {
 
     });
 
-
-  // row label text will not spillover initially since
-  // the font-size is set up to not allow spillover
-  // it can spillover during zooming and must be constrained
-
-  // return row_viz_group so that the dendrogram can be made
-  return row_viz_group;
 };

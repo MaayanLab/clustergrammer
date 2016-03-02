@@ -7,11 +7,20 @@ module.exports = function(params, dom_class) {
   d3.selectAll(params.root+' .row_viz_group')
     .each(function() {
 
+  
       var inst_level = params.group_level.row;
 
-      var dendro_rect = d3.select(this)
-        .append('rect')
-        .attr('class', dom_class)
+      var dendro_rect;
+      if (d3.select(this).select(' .'+dom_class).empty()){
+        dendro_rect = d3.select(this)
+          .append('rect')
+          .attr('class', dom_class);
+      } else {
+        dendro_rect = d3.select(this)
+          .select('.'+dom_class);
+      }
+
+      dendro_rect
         .attr('width', function() {
           var inst_width = params.cat_room.symbol_width - 1;
           return inst_width + 'px';
