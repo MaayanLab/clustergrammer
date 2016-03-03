@@ -25,10 +25,8 @@ module.exports = function make_params(input_config) {
 
   // when pre-loading the visualization using a view
   if (params.ini_view !== null) {
-    
     params.network_data = change_network_view(params, params.network_data, 
       params.ini_view);
-
     // disable pre-loading of view 
     params.ini_view = null;
   }
