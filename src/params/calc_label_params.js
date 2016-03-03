@@ -1,29 +1,29 @@
-module.exports = function calc_label_params(params){
+module.exports = function calc_label_params(viz){
 
-  params.viz.norm_labels.margin = {};
+  viz.norm_labels.margin = {};
 
-  params.viz.norm_labels.margin.left = params.viz.super_labels.margin.left
-    + params.viz.super_labels.dim.width;
+  viz.norm_labels.margin.left = viz.super_labels.margin.left
+    + viz.super_labels.dim.width;
     
-  params.viz.norm_labels.margin.top  = params.viz.super_labels.margin.top 
-    + params.viz.super_labels.dim.width;
+  viz.norm_labels.margin.top  = viz.super_labels.margin.top 
+    + viz.super_labels.dim.width;
 
-  params.viz.norm_labels.container = {};
+  viz.label_background = {};
 
-  params.viz.norm_labels.container.row = params.viz.norm_labels.width.row + 
-    params.viz.cat_room.row + params.viz.dendro_room.row + params.viz.uni_margin;
+  viz.label_background.row = viz.norm_labels.width.row + 
+    viz.cat_room.row + viz.dendro_room.row + viz.uni_margin;
 
-  params.viz.norm_labels.container.col = params.viz.norm_labels.width.col + 
-    params.viz.cat_room.col + params.viz.uni_margin;
+  viz.label_background.col = viz.norm_labels.width.col + 
+    viz.cat_room.col + viz.uni_margin;
 
-  params.viz.clust = {};
-  params.viz.clust.margin = {};
+  viz.clust = {};
+  viz.clust.margin = {};
 
-  params.viz.clust.margin.left = params.viz.norm_labels.margin.left + 
-    params.viz.norm_labels.container.row;
+  viz.clust.margin.left = viz.norm_labels.margin.left + 
+    viz.label_background.row;
 
-  params.viz.clust.margin.top = params.viz.norm_labels.margin.top + 
-    params.viz.norm_labels.container.col;
+  viz.clust.margin.top = viz.norm_labels.margin.top + 
+    viz.label_background.col;
 
-  return params;
+  return viz;
 };

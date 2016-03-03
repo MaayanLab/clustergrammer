@@ -2,8 +2,6 @@ module.exports = function set_viz_params(config, params){
 
   params.viz = {};
 
-
-
   params.viz.viz_wrapper = config.root + ' .viz_wrapper';
   params.viz.do_zoom = config.do_zoom;
   params.viz.resize = config.resize;

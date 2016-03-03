@@ -48,7 +48,7 @@ module.exports = function resize_row_labels(params, ini_svg_group, delay_info=fa
 
   svg_group.select(params.root+' .row_container')
     .select('.white_bars')
-    .attr('width', params.viz.norm_labels.container.row)
+    .attr('width', params.viz.label_background.row)
     .attr('height', 30*params.viz.clust.dim.height + 'px');
 
   svg_group.select(params.root + ' .row_container')

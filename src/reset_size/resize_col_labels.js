@@ -52,7 +52,7 @@ module.exports = function(params, ini_svg_group, delay_info=false){
     .select(params.root+' .col_container')
     .select('.white_bars')
     .attr('width', 30 * params.viz.clust.dim.width + 'px')
-    .attr('height', params.viz.norm_labels.container.col);
+    .attr('height', params.viz.label_background.col);
 
   svg_group
     .select(params.root+' .col_container')

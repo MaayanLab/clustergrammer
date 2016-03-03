@@ -30,7 +30,7 @@ module.exports = function(params, text_delay) {
       .append('rect')
       .attr('fill', params.viz.background_color) //!! prog_colors
       .attr('width', 30 * params.viz.clust.dim.width + 'px')
-      .attr('height', params.viz.norm_labels.container.col)
+      .attr('height', params.viz.label_background.col)
       .attr('class', 'white_bars');
 
     // col labels
@@ -53,7 +53,7 @@ module.exports = function(params, text_delay) {
       .select('.white_bars')
       .attr('fill', params.viz.background_color) //!! prog_colors
       .attr('width', 30 * params.viz.clust.dim.width + 'px')
-      .attr('height', params.viz.norm_labels.container.col);
+      .attr('height', params.viz.label_background.col);
 
     // col labels
     col_container.select(params.root+' .col_label_outer_container');
