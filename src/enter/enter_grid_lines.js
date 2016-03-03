@@ -18,7 +18,7 @@ module.exports = function enter_grid_lines(params, delays, duration){
     .attr('class','horz_lines')
     .attr('transform', function(d) {
       var inst_index = _.indexOf(row_nodes_names, d.name);
-      return 'translate(0,' + params.matrix.y_scale(inst_index) + ') rotate(0)';
+      return 'translate(0,' + params.viz.y_scale(inst_index) + ') rotate(0)';
     })
     .append('line')
     .attr('x1',0)
@@ -38,7 +38,7 @@ module.exports = function enter_grid_lines(params, delays, duration){
     .attr('class', 'vert_lines')
     .attr('transform', function(d) {
       var inst_index = _.indexOf(col_nodes_names, d.name);
-      return 'translate(' + params.matrix.x_scale(inst_index) + ') rotate(-90)';
+      return 'translate(' + params.viz.x_scale(inst_index) + ') rotate(-90)';
     })
     .append('line')
     .attr('x1', 0)

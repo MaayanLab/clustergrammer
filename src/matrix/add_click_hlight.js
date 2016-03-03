@@ -29,11 +29,11 @@ module.exports = function(params, clicked_rect){
         .append('rect')
         .classed('click_hlight',true)
         .classed('top_hlight',true)
-        .attr('width', params.matrix.x_scale.rangeBand())
+        .attr('width', params.viz.x_scale.rangeBand())
         .attr('height', hlight_height)
         .attr('fill',params.matrix.hlight_color)
         .attr('transform', function() {
-          return 'translate(' + params.matrix.x_scale(pos_x) + ',0)';
+          return 'translate(' + params.viz.x_scale(pos_x) + ',0)';
         })
         .attr('opacity',opacity_hlight);
 
@@ -43,10 +43,10 @@ module.exports = function(params, clicked_rect){
         .classed('click_hlight',true)
         .classed('left_hlight',true)
         .attr('width', hlight_width)
-        .attr('height', params.matrix.y_scale.rangeBand() - hlight_height*0.99 )
+        .attr('height', params.viz.y_scale.rangeBand() - hlight_height*0.99 )
         .attr('fill',params.matrix.hlight_color)
         .attr('transform', function() {
-          return 'translate(' + params.matrix.x_scale(pos_x) + ','+
+          return 'translate(' + params.viz.x_scale(pos_x) + ','+
             hlight_height*0.99+')';
         })
         .attr('opacity',opacity_hlight);
@@ -57,10 +57,10 @@ module.exports = function(params, clicked_rect){
         .classed('click_hlight',true)
         .classed('right_hlight',true)
         .attr('width', hlight_width)
-        .attr('height', params.matrix.y_scale.rangeBand() - hlight_height*0.99 )
+        .attr('height', params.viz.y_scale.rangeBand() - hlight_height*0.99 )
         .attr('fill',params.matrix.hlight_color)
         .attr('transform', function() {
-          var tmp_translate = params.matrix.x_scale(pos_x) + params.matrix.x_scale.rangeBand() - hlight_width;
+          var tmp_translate = params.viz.x_scale(pos_x) + params.viz.x_scale.rangeBand() - hlight_width;
           return 'translate(' + tmp_translate + ','+
             hlight_height*0.99+')';
         })
@@ -72,12 +72,12 @@ module.exports = function(params, clicked_rect){
         .classed('click_hlight',true)
         .classed('bottom_hlight',true)
         .attr('width', function(){
-          return params.matrix.x_scale.rangeBand() - 1.98*hlight_width;})
+          return params.viz.x_scale.rangeBand() - 1.98*hlight_width;})
         .attr('height', hlight_height)
         .attr('fill',params.matrix.hlight_color)
         .attr('transform', function() {
-          var tmp_translate_x = params.matrix.x_scale(pos_x) + hlight_width*0.99;
-          var tmp_translate_y = params.matrix.y_scale.rangeBand() - hlight_height;
+          var tmp_translate_x = params.viz.x_scale(pos_x) + hlight_width*0.99;
+          var tmp_translate_y = params.viz.y_scale.rangeBand() - hlight_height;
           return 'translate(' + tmp_translate_x + ','+
             tmp_translate_y+')';
         })

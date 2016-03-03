@@ -25,15 +25,15 @@ module.exports = function resize_col_triangle(params,  ini_svg_group, delay_info
     triangle_group = ini_triangle_group;
   }
 
-  var reduce_rect_width = params.matrix.x_scale.rangeBand() * 0.36;
+  var reduce_rect_width = params.viz.x_scale.rangeBand() * 0.36;
   
   triangle_group
     .attr('d', function() {
       // x and y are flipped since its rotated
       var origin_y = -params.viz.border_width;
       var start_x = 0;
-      var final_x = params.matrix.x_scale.rangeBand() - reduce_rect_width;
-      var start_y = -(params.matrix.x_scale.rangeBand() - reduce_rect_width +
+      var final_x = params.viz.x_scale.rangeBand() - reduce_rect_width;
+      var start_y = -(params.viz.x_scale.rangeBand() - reduce_rect_width +
       params.viz.border_width);
       var final_y = -params.viz.border_width;
       var output_string = 'M ' + origin_y + ',0 L ' + start_y + ',' +

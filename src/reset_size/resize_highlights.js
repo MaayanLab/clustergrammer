@@ -13,7 +13,7 @@
     .attr('width', params.matrix.rect_width)
     .attr('height', hlight_height)
     .attr('transform', function() {
-      return 'translate(' + params.matrix.x_scale(params.matrix.click_hlight_x) + ',0)';
+      return 'translate(' + params.viz.x_scale(params.matrix.click_hlight_x) + ',0)';
     });
 
   // left highlight
@@ -21,7 +21,7 @@
     .attr('width', hlight_width)
     .attr('height', params.matrix.rect_width - hlight_height*0.99 )
     .attr('transform', function() {
-      return 'translate(' + params.matrix.x_scale(params.matrix.click_hlight_x) + ','+
+      return 'translate(' + params.viz.x_scale(params.matrix.click_hlight_x) + ','+
         hlight_height*0.99+')';
     });
 
@@ -30,7 +30,7 @@
     .attr('width', hlight_width)
     .attr('height', params.matrix.rect_height - hlight_height*0.99 )
     .attr('transform', function() {
-      var tmp_translate = params.matrix.x_scale(params.matrix.click_hlight_x) + params.matrix.rect_width - hlight_width;
+      var tmp_translate = params.viz.x_scale(params.matrix.click_hlight_x) + params.matrix.rect_width - hlight_width;
       return 'translate(' + tmp_translate + ','+
         hlight_height*0.99+')';
     });
@@ -41,7 +41,7 @@
       return params.matrix.rect_width - 1.98*hlight_width;})
     .attr('height', hlight_height)
     .attr('transform', function() {
-      var tmp_translate_x = params.matrix.x_scale(params.matrix.click_hlight_x) + hlight_width*0.99;
+      var tmp_translate_x = params.viz.x_scale(params.matrix.click_hlight_x) + hlight_width*0.99;
       var tmp_translate_y = params.matrix.rect_height - hlight_height;
       return 'translate(' + tmp_translate_x + ','+
         tmp_translate_y+')';

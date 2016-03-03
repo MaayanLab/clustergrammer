@@ -51,7 +51,7 @@ module.exports = function(params, svg_elem) {
     .attr('class', 'row')
     .attr('transform', function(d) {
       var tmp_index = _.indexOf(row_nodes_names, d.name);
-      return 'translate(0,' + params.matrix.y_scale(tmp_index) + ')';
+      return 'translate(0,' + params.viz.y_scale(tmp_index) + ')';
     })
     .each(function(d){
       make_simple_rows(params, d, tip, this);

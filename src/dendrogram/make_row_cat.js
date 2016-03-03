@@ -49,7 +49,7 @@ module.exports = function make_row_cat(params) {
     .attr('class', 'row_cat_group')
     .attr('transform', function(d) {
       var inst_index = _.indexOf(params.network_data.row_nodes_names, d.name);
-      return 'translate(0, ' + params.matrix.y_scale(inst_index) + ')';
+      return 'translate(0, ' + params.viz.y_scale(inst_index) + ')';
     });
 
   d3.selectAll(params.root+' .row_cat_group')
@@ -72,7 +72,7 @@ module.exports = function make_row_cat(params) {
           var inst_width = params.viz.cat_room.symbol_width - 1;
           return inst_width + 'px';
         })
-        .attr('height', params.matrix.y_scale.rangeBand())
+        .attr('height', params.viz.y_scale.rangeBand())
         .style('fill', function(d) {
           if (utils.has(d,'group')){
             var group_colors = build_color_groups(params);
@@ -105,9 +105,9 @@ module.exports = function make_row_cat(params) {
       var origin_x = params.viz.cat_room.symbol_width - 1;
       var origin_y = 0;
       var mid_x = 1;
-      var mid_y = params.matrix.y_scale.rangeBand() / 2;
+      var mid_y = params.viz.y_scale.rangeBand() / 2;
       var final_x = params.viz.cat_room.symbol_width - 1;
-      var final_y = params.matrix.y_scale.rangeBand();
+      var final_y = params.viz.y_scale.rangeBand();
       var output_string = 'M ' + origin_x + ',' + origin_y + ' L ' +
         mid_x + ',' + mid_y + ', L ' + final_x + ',' + final_y + ' Z';
       return output_string;

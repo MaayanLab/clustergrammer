@@ -24,7 +24,7 @@ module.exports = function(params, ini_svg_group, delay_info=false){
       .transition().delay(delays.update).duration(duration)
       .attr('transform', function(d) {
         var inst_index = _.indexOf(col_nodes_names, d.name);
-        return 'translate(' + params.matrix.x_scale(inst_index) + ') rotate(-90)';
+        return 'translate(' + params.viz.x_scale(inst_index) + ') rotate(-90)';
       });
 
   } else {    
@@ -35,13 +35,13 @@ module.exports = function(params, ini_svg_group, delay_info=false){
       .data(col_nodes, function(d){return d.name;})
       .attr('transform', function(d) {
         var inst_index = _.indexOf(col_nodes_names, d.name);
-        return 'translate(' + params.matrix.x_scale(inst_index) + ') rotate(-90)';
+        return 'translate(' + params.viz.x_scale(inst_index) + ') rotate(-90)';
       });
 
   }  
 
   // offset click group column label
-  var x_offset_click = params.matrix.x_scale.rangeBand() / 2 + params.viz.border_width;
+  var x_offset_click = params.viz.x_scale.rangeBand() / 2 + params.viz.border_width;
 
   svg_group
     .select(params.root+' .col_container')
@@ -62,12 +62,12 @@ module.exports = function(params, ini_svg_group, delay_info=false){
 
   svg_group
     .selectAll('.col_label_group')
-    .attr('transform', 'translate(' + params.matrix.x_scale.rangeBand() / 2 + ',' + x_offset_click + ') rotate(45)');
+    .attr('transform', 'translate(' + params.viz.x_scale.rangeBand() / 2 + ',' + x_offset_click + ') rotate(45)');
 
   svg_group
     .selectAll('.col_label_group')
     .select('text')
-    .attr('y', params.matrix.x_scale.rangeBand() * 0.60)
+    .attr('y', params.viz.x_scale.rangeBand() * 0.60)
     .attr('dx', 2 * params.viz.border_width);
 
 

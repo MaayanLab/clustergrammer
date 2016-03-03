@@ -13,7 +13,7 @@ module.exports = function enter_row_groups(params, delays, duration, tip){
     .attr('class','row')
     .attr('transform', function(d) {
       var tmp_index = _.indexOf(row_nodes_names, d.name);
-      return 'translate(0,' + params.matrix.y_scale(tmp_index) + ')';
+      return 'translate(0,' + params.viz.y_scale(tmp_index) + ')';
     })  ;
 
   new_row_groups

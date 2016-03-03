@@ -145,7 +145,7 @@ module.exports = function(params, pan_dx, pan_dy, fin_zoom) {
           .attr('x', bbox.x * 0.5)
           .attr('y', 0)
           .attr('width', bbox.width * 0.5)
-          .attr('height', params.matrix.y_scale.rangeBand())
+          .attr('height', params.viz.y_scale.rangeBand())
           .style('fill', 'yellow');
       });
 

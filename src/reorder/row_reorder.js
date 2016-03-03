@@ -34,7 +34,7 @@ module.exports = function(params, row_selection) {
   });
 
   // resort cols
-  params.matrix.x_scale.domain(tmp_sort);
+  params.viz.x_scale.domain(tmp_sort);
 
   var t;
 
@@ -50,14 +50,14 @@ module.exports = function(params, row_selection) {
       .selectAll('.col_label_text')
       .attr('transform', function(d) {
         var inst_index = _.indexOf(col_nodes_names, d.name);
-        return 'translate(' + params.matrix.x_scale(inst_index) + ')rotate(-90)';
+        return 'translate(' + params.viz.x_scale(inst_index) + ')rotate(-90)';
       });
 
     // reorder col_class groups
     d3.selectAll(params.root+' .col_cat_group')
       .attr('transform', function(d) {
         var inst_index = _.indexOf(col_nodes_names, d.name);
-        return 'translate(' + params.matrix.x_scale(inst_index) + ',0)';
+        return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
       });
 
   } else {
@@ -71,7 +71,7 @@ module.exports = function(params, row_selection) {
       .transition().duration(2500)
       .attr('transform', function(d) {
         var inst_index = _.indexOf(col_nodes_names, d.name);
-        return 'translate(' + params.matrix.x_scale(inst_index) + ')rotate(-90)';
+        return 'translate(' + params.viz.x_scale(inst_index) + ')rotate(-90)';
       });
 
     // reorder col_class groups
@@ -79,7 +79,7 @@ module.exports = function(params, row_selection) {
       .transition().duration(2500)
       .attr('transform', function(d) {
         var inst_index = _.indexOf(col_nodes_names, d.name);
-        return 'translate(' + params.matrix.x_scale(inst_index) + ',0)';
+        return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
       });
       // .each('end', function() {
       //   // set running transition to 0
@@ -90,17 +90,17 @@ module.exports = function(params, row_selection) {
   // reorder matrix
   t.selectAll('.tile')
     .attr('transform', function(d) {
-      return 'translate(' + params.matrix.x_scale(d.pos_x) + ',0)';
+      return 'translate(' + params.viz.x_scale(d.pos_x) + ',0)';
     });
 
   t.selectAll('.tile_up')
     .attr('transform', function(d) {
-      return 'translate(' + params.matrix.x_scale(d.pos_x) + ',0)';
+      return 'translate(' + params.viz.x_scale(d.pos_x) + ',0)';
     });
 
   t.selectAll('.tile_dn')
     .attr('transform', function(d) {
-      return 'translate(' + params.matrix.x_scale(d.pos_x) + ',0)';
+      return 'translate(' + params.viz.x_scale(d.pos_x) + ',0)';
     });
 
 
@@ -119,8 +119,8 @@ module.exports = function(params, row_selection) {
 
   // redefine x and y positions
   params.network_data.links.forEach(function(d){
-    d.x = params.matrix.x_scale(d.target);
-    d.y = params.matrix.y_scale(d.source);
+    d.x = params.viz.x_scale(d.target);
+    d.y = params.viz.y_scale(d.source);
   });
 
   setTimeout(function(){

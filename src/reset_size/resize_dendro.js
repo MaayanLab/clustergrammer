@@ -31,7 +31,7 @@ module.exports = function resize_dendro(params, svg_group, delay_info=false){
         .transition().delay(delays.update).duration(duration)
         .attr('transform', function(d) {
           var inst_index = _.indexOf(col_nodes_names, d.name);
-          return 'translate(' + params.matrix.x_scale(inst_index) + ',0)';
+          return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
         });
 
     } else {
@@ -44,7 +44,7 @@ module.exports = function resize_dendro(params, svg_group, delay_info=false){
         .data(col_nodes, function(d){return d.name;})
         .attr('transform', function(d) {
           var inst_index = _.indexOf(col_nodes_names, d.name);
-          return 'translate(' + params.matrix.x_scale(inst_index) + ',0)';
+          return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
         });
 
     }
@@ -55,7 +55,7 @@ module.exports = function resize_dendro(params, svg_group, delay_info=false){
         var inst_width = params.viz.cat_room.symbol_width - 1;
         return inst_width + 'px';
       })
-      .attr('height', params.matrix.y_scale.rangeBand())
+      .attr('height', params.viz.y_scale.rangeBand())
       .attr('x', function() {
         var inst_offset = params.viz.cat_room.symbol_width + 1;
         return inst_offset + 'px';
@@ -63,7 +63,7 @@ module.exports = function resize_dendro(params, svg_group, delay_info=false){
 
     dendro_group
       .selectAll('.col_cat_rect')
-      .attr('width', params.matrix.x_scale.rangeBand())
+      .attr('width', params.viz.x_scale.rangeBand())
       .attr('height', function() {
         var inst_height = params.viz.cat_room.col - 1;
         return inst_height;

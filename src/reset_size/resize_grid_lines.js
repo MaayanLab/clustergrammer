@@ -7,7 +7,7 @@ module.exports = function resize_grid_lines(params, svg_group){
   svg_group.selectAll('.horz_lines')
     .attr('transform', function(d) {
       var inst_index = _.indexOf(row_nodes_names, d.name);
-      return 'translate(0,' + params.matrix.y_scale(inst_index) + ') rotate(0)';
+      return 'translate(0,' + params.viz.y_scale(inst_index) + ') rotate(0)';
     });
 
   svg_group.selectAll('.horz_lines')
@@ -18,7 +18,7 @@ module.exports = function resize_grid_lines(params, svg_group){
   svg_group.selectAll('.vert_lines')
     .attr('transform', function(d) {
       var inst_index = _.indexOf(col_nodes_names, d.name);
-      return 'translate(' + params.matrix.x_scale(inst_index) + ') rotate(-90)';
+      return 'translate(' + params.viz.x_scale(inst_index) + ') rotate(-90)';
     });
 
   svg_group.selectAll('.vert_lines')

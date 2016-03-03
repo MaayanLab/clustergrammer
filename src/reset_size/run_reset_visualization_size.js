@@ -38,8 +38,8 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
 
   // redefine x and y positions
   _.each(params.network_data.links, function(d){
-    d.x = params.matrix.x_scale(d.target);
-    d.y = params.matrix.y_scale(d.source);
+    d.x = params.viz.x_scale(d.target);
+    d.y = params.viz.y_scale(d.source);
   });
 
 
@@ -81,8 +81,8 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
   resize_row_tiles(params, svg_group);
 
   svg_group.selectAll('.highlighting_rect')
-    .attr('width', params.matrix.x_scale.rangeBand() * 0.80)
-    .attr('height', params.matrix.y_scale.rangeBand() * 0.80);
+    .attr('width', params.viz.x_scale.rangeBand() * 0.80)
+    .attr('height', params.viz.y_scale.rangeBand() * 0.80);
 
   resize_highlights(params);
 
@@ -127,7 +127,7 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
     .selectAll('.row_cat_group')
     .attr('transform', function(d) {
         var inst_index = _.indexOf(row_nodes_names, d.name);
-        return 'translate(0, ' + params.matrix.y_scale(inst_index) + ')';
+        return 'translate(0, ' + params.viz.y_scale(inst_index) + ')';
       });
 
   svg_group

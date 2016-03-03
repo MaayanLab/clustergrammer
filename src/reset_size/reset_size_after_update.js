@@ -36,16 +36,16 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
   }
 
   // redefine x_scale and y_scale rangeBands
-  params.matrix.x_scale.rangeBands([0, params.viz.clust.dim.width]);
-  params.matrix.y_scale.rangeBands([0, params.viz.clust.dim.height]);
+  params.viz.x_scale.rangeBands([0, params.viz.clust.dim.width]);
+  params.viz.y_scale.rangeBands([0, params.viz.clust.dim.height]);
 
   // redefine zoom extent
-  params.viz.real_zoom = params.viz.norm_labels.width.col / (params.matrix.x_scale.rangeBand()/2);
+  params.viz.real_zoom = params.viz.norm_labels.width.col / (params.viz.x_scale.rangeBand()/2);
   params.zoom_behavior
     .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch]);
 
   // redefine border width
-  params.viz.border_width = params.matrix.x_scale.rangeBand() / 40;
+  params.viz.border_width = params.viz.x_scale.rangeBand() / 40;
 
   params = calc_default_fs(params);
 
@@ -81,7 +81,7 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
         .attr('x', bbox.x )
         .attr('y', 0)
         .attr('width', bbox.width )
-        .attr('height', params.matrix.y_scale.rangeBand())
+        .attr('height', params.viz.y_scale.rangeBand())
         .style('fill', 'yellow')
         .style('opacity', function(d) {
           var inst_opacity = 0;
@@ -109,7 +109,7 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
       .transition().delay(delays.update).duration(duration)
       .attr('transform', function(d) {
           var inst_index = _.indexOf(row_nodes_names, d.name);
-          return 'translate(0, ' + params.matrix.y_scale(inst_index) + ')';
+          return 'translate(0, ' + params.viz.y_scale(inst_index) + ')';
         });
 
     svg_group.selectAll('.row_cat_group')
@@ -119,9 +119,9 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
         var origin_x = params.viz.cat_room.symbol_width - 1;
         var origin_y = 0;
         var mid_x = 1;
-        var mid_y = params.matrix.y_scale.rangeBand() / 2;
+        var mid_y = params.viz.y_scale.rangeBand() / 2;
         var final_x = params.viz.cat_room.symbol_width - 1;
-        var final_y = params.matrix.y_scale.rangeBand();
+        var final_y = params.viz.y_scale.rangeBand();
         var output_string = 'M ' + origin_x + ',' + origin_y + ' L ' +
           mid_x + ',' + mid_y + ', L ' + final_x + ',' + final_y + ' Z';
         return output_string;
@@ -138,7 +138,7 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
       .data(row_nodes, function(d){return d.name;})
       .attr('transform', function(d) {
           var inst_index = _.indexOf(row_nodes_names, d.name);
-          return 'translate(0, ' + params.matrix.y_scale(inst_index) + ')';
+          return 'translate(0, ' + params.viz.y_scale(inst_index) + ')';
         });
 
     svg_group.selectAll('.row_cat_group')
@@ -147,9 +147,9 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
         var origin_x = params.viz.cat_room.symbol_width - 1;
         var origin_y = 0;
         var mid_x = 1;
-        var mid_y = params.matrix.y_scale.rangeBand() / 2;
+        var mid_y = params.viz.y_scale.rangeBand() / 2;
         var final_x = params.viz.cat_room.symbol_width - 1;
-        var final_y = params.matrix.y_scale.rangeBand();
+        var final_y = params.viz.y_scale.rangeBand();
         var output_string = 'M ' + origin_x + ',' + origin_y + ' L ' +
           mid_x + ',' + mid_y + ', L ' + final_x + ',' + final_y + ' Z';
         return output_string;

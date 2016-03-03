@@ -57,7 +57,7 @@ module.exports = function(params, text_delay) {
     .attr('class', 'row_label_group')
     .attr('transform', function(d) {
       var inst_index = _.indexOf(row_nodes_names, d.name);
-      return 'translate(0,' + params.matrix.y_scale(inst_index) + ')';
+      return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
     });
 
   d3.select(params.root+' .row_label_zoom_container')
@@ -99,7 +99,7 @@ module.exports = function(params, text_delay) {
         .attr('x', bbox.x )
         .attr('y', 0)
         .attr('width', bbox.width )
-        .attr('height', params.matrix.y_scale.rangeBand())
+        .attr('height', params.viz.y_scale.rangeBand())
         .style('fill', function() {
         var inst_hl = 'yellow';
         return inst_hl;
@@ -131,7 +131,7 @@ module.exports = function(params, text_delay) {
         inst_value = -params.labels.bar_scale_row( Math.abs(d.value) );
         return inst_value;
       })
-      .attr('height', params.matrix.y_scale.rangeBand() )
+      .attr('height', params.viz.y_scale.rangeBand() )
       .attr('fill', function(d) {
         return d.value > 0 ? params.matrix.bar_colors[0] : params.matrix.bar_colors[1];
       })

@@ -21,7 +21,7 @@ module.exports = function resize_row_labels(params, ini_svg_group, delay_info=fa
       .transition().delay(delays.update).duration(duration)
       .attr('transform', function(d) {
         var inst_index = _.indexOf(row_nodes_names, d.name);
-        return 'translate(0,' + params.matrix.y_scale(inst_index) + ')';
+        return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
       })
       .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35 );      
 
@@ -35,7 +35,7 @@ module.exports = function resize_row_labels(params, ini_svg_group, delay_info=fa
       .data(row_nodes, function(d){return d.name;})
       .attr('transform', function(d) {
         var inst_index = _.indexOf(row_nodes_names, d.name);
-        return 'translate(0,' + params.matrix.y_scale(inst_index) + ')';
+        return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
       })
       .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35 );
     

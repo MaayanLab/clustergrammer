@@ -19,12 +19,12 @@ module.exports = function recalc_params_for_resize(params){
   }
 
   // redefine x_scale and y_scale rangeBands
-  params.matrix.x_scale.rangeBands([0, params.viz.clust.dim.width]);
-  params.matrix.y_scale.rangeBands([0, params.viz.clust.dim.height]);
+  params.viz.x_scale.rangeBands([0, params.viz.clust.dim.width]);
+  params.viz.y_scale.rangeBands([0, params.viz.clust.dim.height]);
 
   // precalc rect_width and height
-  params.matrix.rect_width = params.matrix.x_scale.rangeBand();
-  params.matrix.rect_height = params.matrix.y_scale.rangeBand();
+  params.matrix.rect_width = params.viz.x_scale.rangeBand();
+  params.matrix.rect_height = params.viz.y_scale.rangeBand();
 
   // redefine zoom extent
   params.viz.real_zoom = params.viz.norm_labels.width.col / (params.matrix.rect_width/2);

@@ -51,10 +51,10 @@ module.exports = function make_params(input_config) {
   params = calc_default_fs(params);
 
   // rect width needs matrix and zoom parameters 
-  params.matrix.rect_width  = params.matrix.x_scale.rangeBand() 
+  params.matrix.rect_width  = params.viz.x_scale.rangeBand() 
     - params.viz.border_width;
 
-  params.matrix.rect_height = params.matrix.y_scale.rangeBand() 
+  params.matrix.rect_height = params.viz.y_scale.rangeBand() 
     - params.viz.border_width / params.viz.zoom_switch;
 
   return params;

@@ -11,9 +11,9 @@ module.exports = function(params, text_delay) {
   var col_nodes_names = params.network_data.col_nodes_names;
 
   // offset click group column label
-  var x_offset_click = params.matrix.x_scale.rangeBand() / 2 + params.viz.border_width;
+  var x_offset_click = params.viz.x_scale.rangeBand() / 2 + params.viz.border_width;
   // reduce width of rotated rects
-  var reduce_rect_width = params.matrix.x_scale.rangeBand() * 0.36;
+  var reduce_rect_width = params.viz.x_scale.rangeBand() * 0.36;
 
 
   // make container to pre-position zoomable elements
@@ -69,7 +69,7 @@ module.exports = function(params, text_delay) {
     .attr('class', 'col_label_text')
     .attr('transform', function(d) {
       var inst_index = _.indexOf(col_nodes_names, d.name);
-      return 'translate(' + params.matrix.x_scale(inst_index) + ') rotate(-90)';
+      return 'translate(' + params.viz.x_scale(inst_index) + ') rotate(-90)';
     });
 
   // append group for individual column label
@@ -78,7 +78,7 @@ module.exports = function(params, text_delay) {
     .append('g')
     .attr('class', 'col_label_group')
     // rotate column labels
-    .attr('transform', 'translate(' + params.matrix.x_scale.rangeBand() / 2 + ',' + x_offset_click + ') rotate(45)')
+    .attr('transform', 'translate(' + params.viz.x_scale.rangeBand() / 2 + ',' + x_offset_click + ') rotate(45)')
     .on('mouseover', function() {
       d3.select(this).select('text')
         .classed('active',true);
@@ -102,7 +102,7 @@ module.exports = function(params, text_delay) {
         return inst_value;
       })
       // rotate labels - reduce width if rotating
-      .attr('height', params.matrix.x_scale.rangeBand() * 0.66)
+      .attr('height', params.viz.x_scale.rangeBand() * 0.66)
       .style('fill', function(d) {
         return d.value > 0 ? params.matrix.bar_colors[0] : params.matrix.bar_colors[1];
       })
@@ -115,7 +115,7 @@ module.exports = function(params, text_delay) {
     .append('text')
     .attr('x', 0)
     // manually tuned
-    .attr('y', params.matrix.x_scale.rangeBand() * 0.64)
+    .attr('y', params.viz.x_scale.rangeBand() * 0.64)
     .attr('dx', params.viz.border_width)
     .attr('text-anchor', 'start')
     .attr('full_name', function(d) {
@@ -171,8 +171,8 @@ module.exports = function(params, text_delay) {
       // x and y are flipped since its rotated
       var origin_y = -params.viz.border_width;
       var start_x = 0;
-      var final_x = params.matrix.x_scale.rangeBand() - reduce_rect_width;
-      var start_y = -(params.matrix.x_scale.rangeBand() - reduce_rect_width +
+      var final_x = params.viz.x_scale.rangeBand() - reduce_rect_width;
+      var start_y = -(params.viz.x_scale.rangeBand() - reduce_rect_width +
       params.viz.border_width);
       var final_y = -params.viz.border_width;
       var output_string = 'M ' + origin_y + ',0 L ' + start_y + ',' +

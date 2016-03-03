@@ -33,7 +33,7 @@ module.exports = function make_col_cat(params) {
     .attr('class', 'col_cat_group')
     .attr('transform', function(d) {
       var inst_index = _.indexOf(params.network_data.col_nodes_names, d.name);
-      return 'translate(' + params.matrix.x_scale(inst_index) + ',0)';
+      return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
     });
 
   d3.selectAll(params.root+' .col_cat_group')
@@ -52,7 +52,7 @@ module.exports = function make_col_cat(params) {
       }
 
       cat_rect
-        .attr('width', params.matrix.x_scale.rangeBand())
+        .attr('width', params.viz.x_scale.rangeBand())
         .attr('height', function() {
           var inst_height = params.viz.cat_room.col - 1;
           return inst_height;

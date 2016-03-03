@@ -7,7 +7,7 @@ module.exports = function set_zoom_params(params){
   params.viz.zoom_scale_font.col = 1;
 
 
-  var half_col_height = (params.matrix.x_scale.rangeBand() / 2);
+  var half_col_height = (params.viz.x_scale.rangeBand() / 2);
   params.viz.real_zoom = params.viz.norm_labels.width.col / half_col_height;
 
   var width_by_col = params.viz.clust.dim.width / params.viz.num_col_nodes;

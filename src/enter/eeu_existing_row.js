@@ -59,7 +59,7 @@ module.exports = function(params, ini_inp_row_data, delays, duration, row_select
       .attr('transform', function(d) {
         if (_.contains(col_nodes_names, d.col_name)){
           var inst_col_index = _.indexOf(col_nodes_names, d.col_name);
-          var x_pos = params.matrix.x_scale(inst_col_index) + 0.5*params.viz.border_width;
+          var x_pos = params.viz.x_scale(inst_col_index) + 0.5*params.viz.border_width;
           return 'translate(' + x_pos + ',0)';
         }
       });
@@ -70,7 +70,7 @@ module.exports = function(params, ini_inp_row_data, delays, duration, row_select
       .attr('transform', function(d) {
         if (_.contains(col_nodes_names, d.col_name)){
           var inst_col_index = _.indexOf(col_nodes_names, d.col_name);
-          var x_pos = params.matrix.x_scale(inst_col_index) + 0.5*params.viz.border_width;
+          var x_pos = params.viz.x_scale(inst_col_index) + 0.5*params.viz.border_width;
           return 'translate(' + x_pos + ',0)';
         }
       });

@@ -25,7 +25,7 @@ module.exports = function(params, nodes, prop) {
 
       // calc pan_dy 
       var idx = _.indexOf(entities, search_term);
-      var inst_y_pos = params.matrix.y_scale(idx);
+      var inst_y_pos = params.viz.y_scale(idx);
       var pan_dy = params.viz.clust.dim.height / 2 - inst_y_pos;
 
       two_translate_zoom(params, 0, pan_dy, params.viz.zoom_switch);

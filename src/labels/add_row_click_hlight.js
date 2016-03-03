@@ -34,7 +34,7 @@ module.exports = function(params, clicked_row, id_clicked_row) {
       .attr('fill',params.matrix.hlight_color)
       .attr('opacity',opacity_hlight)
       .attr('transform', function(){
-        var tmp_translate_y = params.matrix.y_scale.rangeBand() - hlight_height;
+        var tmp_translate_y = params.viz.y_scale.rangeBand() - hlight_height;
         return 'translate(0,'+tmp_translate_y+')';
       });
   } else{

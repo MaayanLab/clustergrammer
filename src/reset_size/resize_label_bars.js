@@ -26,7 +26,7 @@ module.exports = function resize_label_bars(params, svg_group){
       inst_value = -params.labels.bar_scale_row( Math.abs(d.value) );
       return inst_value;
     })
-    .attr('height', params.matrix.y_scale.rangeBand() );
+    .attr('height', params.viz.y_scale.rangeBand() );
 
 
 };

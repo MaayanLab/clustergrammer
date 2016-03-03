@@ -48,7 +48,7 @@ module.exports = function(params, clicked_col, id_clicked_col) {
       .attr('opacity',opacity_hlight)
       .attr('transform', function(){
         // reverse x and y since rotated
-        var tmp_translate_y = params.matrix.x_scale.rangeBand() - hlight_width;
+        var tmp_translate_y = params.viz.x_scale.rangeBand() - hlight_width;
         var tmp_translate_x = -(params.viz.clust.dim.height +
           params.viz.cat_room.col+params.viz.uni_margin);
         return 'translate('+tmp_translate_x+','+tmp_translate_y+')';
