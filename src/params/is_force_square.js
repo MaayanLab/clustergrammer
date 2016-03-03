@@ -1,10 +1,10 @@
 module.exports = function is_force_square(params){
 
-  var col_info_space = params.labels.super_label_width + 
+  var col_info_space = params.viz.super_labels.dim.width + 
     params.norm_label.width.col + params.viz.cat_room.col + 
     params.viz.dendro_room.col;
   
-  var row_info_space = params.labels.super_label_width + 
+  var row_info_space = params.viz.super_labels.dim.width + 
     params.norm_label.width.row + params.viz.cat_room.row + 
     params.viz.dendro_room.row; 
 

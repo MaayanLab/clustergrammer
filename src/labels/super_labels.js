@@ -4,7 +4,7 @@ module.exports = function(params) {
   d3.select(params.viz.viz_svg)
     .append('rect')
     .attr('fill', params.viz.background_color)
-    .attr('height', params.labels.super_label_width + 'px')
+    .attr('height', params.viz.super_labels.dim.width + 'px')
     .attr('width', '3000px')
     .classed('super_col_bkg',true)
     .classed('white_bars',true)
@@ -22,7 +22,7 @@ module.exports = function(params) {
 
       var inst_x = params.viz.clust.dim.width / 2 + params.norm_label.width
           .row - inst_text_width / 2;
-      var inst_y = params.labels.super_label_width - params.viz.uni_margin;
+      var inst_y = params.viz.super_labels.dim.width - params.viz.uni_margin;
       return 'translate(' + inst_x + ',' + inst_y + ')';
     })
     .style('font-size', function () {
@@ -34,7 +34,7 @@ module.exports = function(params) {
   d3.select(params.viz.viz_svg)
     .append('rect')
     .attr('fill', params.viz.background_color)
-    .attr('width', params.labels.super_label_width + 'px')
+    .attr('width', params.viz.super_labels.dim.width + 'px')
     .attr('height', '3000px')
     .classed('super_row_bkg',true)
     .classed('white_bars',true)
@@ -46,7 +46,7 @@ module.exports = function(params) {
     .classed('super_row',true)
     .attr('transform', function () {
       // position in the middle of the clustergram
-      var inst_x = params.labels.super_label_width - params.viz.uni_margin;
+      var inst_x = params.viz.super_labels.dim.width - params.viz.uni_margin;
       var inst_y = params.viz.clust.dim.height / 2 + params.norm_label.width
           .col;
       return 'translate(' + inst_x + ',' + inst_y + ')';

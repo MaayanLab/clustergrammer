@@ -46,8 +46,14 @@ module.exports = function set_viz_params(config, params){
   // superlabel dimensions 
   params.viz.super_labels = {};
   params.viz.super_labels.margin = {};
+  params.viz.super_labels.dim = {};
   params.viz.super_labels.margin.left = params.viz.grey_border_width;
   params.viz.super_labels.margin.top  = params.viz.grey_border_width;
+  if (params.labels.super_labels){
+    params.viz.super_labels.dim.width = 25 * params.labels.super_label_scale;
+  } else {
+    params.viz.super_labels.dim.with = 0;
+  }
 
   // category colorbar 
   params.viz.cat_room = {};

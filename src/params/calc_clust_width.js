@@ -2,7 +2,7 @@ module.exports = function calc_clust_width(params){
 
   params.viz.clust.dim = {};
 
-  params.viz.row_info_space = params.labels.super_label_width + 
+  params.viz.row_info_space = params.viz.super_labels.dim.width + 
     params.norm_label.width.row + params.viz.cat_room.row + 
     params.viz.dendro_room.row;  
 
