@@ -54,7 +54,7 @@ module.exports = function make_col_cat(params) {
       cat_rect
         .attr('width', params.matrix.x_scale.rangeBand())
         .attr('height', function() {
-          var inst_height = params.cat_room.col - 1;
+          var inst_height = params.viz.cat_room.col - 1;
           return inst_height;
         })
         .style('fill', function(d) {

@@ -34,7 +34,7 @@ module.exports = function(params, clicked_col, id_clicked_col) {
       .attr('transform',function(){
         var tmp_translate_y = 0;
         var tmp_translate_x = -(params.viz.clust.dim.height+
-          params.cat_room.col+params.viz.uni_margin);
+          params.viz.cat_room.col+params.viz.uni_margin);
         return 'translate('+tmp_translate_x+','+tmp_translate_y+')';
       });
 
@@ -50,7 +50,7 @@ module.exports = function(params, clicked_col, id_clicked_col) {
         // reverse x and y since rotated
         var tmp_translate_y = params.matrix.x_scale.rangeBand() - hlight_width;
         var tmp_translate_x = -(params.viz.clust.dim.height +
-          params.cat_room.col+params.viz.uni_margin);
+          params.viz.cat_room.col+params.viz.uni_margin);
         return 'translate('+tmp_translate_x+','+tmp_translate_y+')';
       });
   } else {

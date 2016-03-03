@@ -69,7 +69,7 @@
     .attr('transform',function(){
           var tmp_translate_y = 0;
           var tmp_translate_x = -(params.viz.clust.dim.height+
-            params.cat_room.col+params.viz.uni_margin);
+            params.viz.cat_room.col+params.viz.uni_margin);
           return 'translate('+tmp_translate_x+','+tmp_translate_y+')';
         });
 
@@ -79,7 +79,7 @@
     .attr('transform', function(){
           var tmp_translate_y = params.matrix.rect_width - hlight_width;
           var tmp_translate_x = -(params.viz.clust.dim.height +
-            params.cat_room.col+params.viz.uni_margin);
+            params.viz.cat_room.col+params.viz.uni_margin);
           return 'translate('+tmp_translate_x+','+tmp_translate_y+')';
         });
 

@@ -3,7 +3,7 @@ module.exports = function calc_clust_width(params){
   params.viz.clust.dim = {};
 
   params.viz.row_info_space = params.labels.super_label_width + 
-    params.norm_label.width.row + params.cat_room.row + 
+    params.norm_label.width.row + params.viz.cat_room.row + 
     params.viz.colorbar_room.row;  
 
   // reduce width by row/col labels and by grey_border width

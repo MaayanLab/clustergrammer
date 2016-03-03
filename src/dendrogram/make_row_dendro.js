@@ -1,6 +1,6 @@
-var utils = require('../utils');
-var get_inst_group = require('./get_inst_group');
-var build_color_groups = require('./build_color_groups');
+// var utils = require('../utils');
+// var get_inst_group = require('./get_inst_group');
+// var build_color_groups = require('./build_color_groups');
 
 module.exports = function make_row_dendro(params) {
 
@@ -29,7 +29,7 @@ module.exports = function make_row_dendro(params) {
       .attr('class','white_bars')
       // .attr('fill', params.viz.background_color)
       .attr('fill','green')
-      .attr('width', params.cat_room.row + 'px')
+      .attr('width', params.viz.cat_room.row + 'px')
       .attr('height', function() {
         var inst_height = params.viz.clust.dim.height;
         return inst_height;
@@ -38,7 +38,7 @@ module.exports = function make_row_dendro(params) {
     d3.select(params.root+' .row_dendro_container')
       .select('class','white_bars')
       .attr('fill', params.viz.background_color)
-      .attr('width', params.cat_room.row + 'px')
+      .attr('width', params.viz.cat_room.row + 'px')
       .attr('height', function() {
         var inst_height = params.viz.clust.dim.height;
         return inst_height;
@@ -74,7 +74,7 @@ module.exports = function make_row_dendro(params) {
 
   //     cat_rect
   //       .attr('width', function() {
-  //         var inst_width = params.cat_room.symbol_width - 1;
+  //         var inst_width = params.viz.cat_room.symbol_width - 1;
   //         return inst_width + 'px';
   //       })
   //       .attr('height', params.matrix.y_scale.rangeBand())
@@ -88,7 +88,7 @@ module.exports = function make_row_dendro(params) {
   //         return inst_color;
   //       })
   //       .attr('x', function() {
-  //         var inst_offset = params.cat_room.symbol_width + 1;
+  //         var inst_offset = params.viz.cat_room.symbol_width + 1;
   //         return inst_offset + 'px';
   //       });
 
