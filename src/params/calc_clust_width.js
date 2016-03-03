@@ -12,10 +12,20 @@ module.exports = function calc_clust_width(viz){
   viz.clust.margin.top = viz.norm_labels.margin.top + 
     viz.norm_labels.width.col + viz.cat_room.col + viz.uni_margin;
 
-  var ini_clust_width = viz.svg_dim.width 
-    - viz.norm_labels.margin.left
-    - viz.norm_labels.width.row
-    - viz.cat_room.row
+  // old version of calc clust width 
+  // var ini_clust_width = viz.svg_dim.width 
+  //   - viz.norm_labels.margin.left
+  //   - viz.norm_labels.width.row
+  //   - viz.cat_room.row
+  //   - viz.dendro_room.row
+  //   - viz.spillover_col_slant;
+
+  // the clustergram/matrix width is the svg width minus:
+  // the margin of the clustergram on the left 
+  // the room for the dendrogram 
+  // the room for the spillover on the right 
+  var ini_clust_width = viz.svg_dim.width
+    - viz.clust.margin.left 
     - viz.dendro_room.row
     - viz.spillover_col_slant;
 
