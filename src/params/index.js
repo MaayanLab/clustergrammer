@@ -25,7 +25,10 @@ module.exports = function make_params(input_config) {
 
   // when pre-loading the visualization using a view
   if (params.ini_view !== null) {
-    params.network_data = change_network_view(params, params.network_data, params.ini_view);
+    
+    params.network_data = change_network_view(params, params.network_data, 
+      params.ini_view);
+
     // disable pre-loading of view 
     params.ini_view = null;
   }
@@ -50,7 +53,7 @@ module.exports = function make_params(input_config) {
   // rect width needs matrix and zoom parameters 
   params.matrix.rect_width  = params.matrix.x_scale.rangeBand() 
     - params.viz.border_width;
-    
+
   params.matrix.rect_height = params.matrix.y_scale.rangeBand() 
     - params.viz.border_width / params.viz.zoom_switch;
 

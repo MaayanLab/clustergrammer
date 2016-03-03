@@ -1,10 +1,12 @@
 module.exports = function is_force_square(params){
 
   var col_info_space = params.labels.super_label_width + 
-    params.norm_label.width.col + params.cat_room.col + params.viz.colorbar_room.col;
+    params.norm_label.width.col + params.cat_room.col + 
+    params.viz.colorbar_room.col;
   
   var row_info_space = params.labels.super_label_width + 
-    params.norm_label.width.row + params.cat_room.row + params.viz.colorbar_room.row;    
+    params.norm_label.width.row + params.cat_room.row + 
+    params.viz.colorbar_room.row; 
 
   // there is space between the clustergram and the border
   var ini_clust_height = params.viz.svg_dim.height - col_info_space 
@@ -27,6 +29,7 @@ module.exports = function is_force_square(params){
       params.viz.clust.dim.height = ini_clust_height;
       params.viz.force_square = 0;
     }
+    
   }
   else {
     params.viz.clust.dim.height = ini_clust_height;

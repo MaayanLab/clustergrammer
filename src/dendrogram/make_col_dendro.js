@@ -35,7 +35,6 @@ module.exports = function make_col_dendro(params) {
           .select('.col_cat_rect');
       }
 
-
       dendro_rect
         .attr('width', params.matrix.x_scale.rangeBand())
         .attr('height', function() {

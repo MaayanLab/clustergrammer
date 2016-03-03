@@ -54,8 +54,10 @@ module.exports = function set_viz_params(config, params){
   params.viz.num_row_nodes = params.network_data.row_nodes.length;
 
   params.viz.colorbar_room = {};
-  params.viz.colorbar_room.row = 0;
-  params.viz.colorbar_room.col = 0;
+
+  var colorbar_room = 0;
+  params.viz.colorbar_room.row = colorbar_room;
+  params.viz.colorbar_room.col = colorbar_room;
 
   return params;
 };
