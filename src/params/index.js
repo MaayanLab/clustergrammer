@@ -32,7 +32,7 @@ module.exports = function make_params(input_config) {
   }
 
   params = ini_label_params(config, params);
-  params = ini_viz_params(config, params);
+  params.viz = ini_viz_params(config, params);
   params = ini_matrix_params(config, params);
 
   set_viz_wrapper_size(params);
