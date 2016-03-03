@@ -5,12 +5,9 @@ module.exports = function set_label_params(config, params){
   params.labels.super_labels = config.super_labels;
 
   if (params.labels.super_labels) {
-    // params.viz.super_labels.dim.width = 25 * params.labels.super_label_scale;
     params.labels.super = {};
     params.labels.super.row = config.super.row;
     params.labels.super.col = config.super.col;
-  } else {
-    // params.viz.super_labels.dim.width = 0;
   }
 
   params.labels.show_categories = config.show_categories;
@@ -28,21 +25,6 @@ module.exports = function set_label_params(config, params){
     function (inst) {
       return inst.name.length;
     }).name.length;
-
-  var label_scale = d3.scale.linear()
-    // min and max number of characters
-    .domain([5, 15])
-    // min and max of label width 
-    .range([ 85, 120]).clamp('true');
-
-  params.norm_label = {};
-  params.norm_label.width = {};
-
-  params.norm_label.width.row = label_scale(params.labels.row_max_char) 
-    * params.row_label_scale;
-
-  params.norm_label.width.col = label_scale(params.labels.col_max_char) 
-    * params.col_label_scale;
 
   params.labels.max_allow_fs = 20;
 

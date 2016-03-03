@@ -23,14 +23,14 @@ module.exports = function(params, text_delay) {
       .append('g')
       .attr('class','col_container')
       .attr('transform', 'translate(' + params.viz.clust.margin.left + ',' +
-      params.norm_label.margin.top + ')');
+      params.viz.norm_labels.margin.top + ')');
 
     // white background rect for col labels
     col_container
       .append('rect')
       .attr('fill', params.viz.background_color) //!! prog_colors
       .attr('width', 30 * params.viz.clust.dim.width + 'px')
-      .attr('height', params.norm_label.container.col)
+      .attr('height', params.viz.norm_labels.container.col)
       .attr('class', 'white_bars');
 
     // col labels
@@ -38,7 +38,7 @@ module.exports = function(params, text_delay) {
       .append('g')
       .attr('class','col_label_outer_container')
       // position the outer col label group
-      .attr('transform', 'translate(0,' + params.norm_label.width.col + ')')
+      .attr('transform', 'translate(0,' + params.viz.norm_labels.width.col + ')')
       .append('g')
       .attr('class', 'col_zoom_container');
 
@@ -46,14 +46,14 @@ module.exports = function(params, text_delay) {
 
     col_container = d3.select(params.root+' .col_container')
       .attr('transform', 'translate(' + params.viz.clust.margin.left + ',' +
-      params.norm_label.margin.top + ')');
+      params.viz.norm_labels.margin.top + ')');
 
     // white background rect for col labels
     col_container
       .select('.white_bars')
       .attr('fill', params.viz.background_color) //!! prog_colors
       .attr('width', 30 * params.viz.clust.dim.width + 'px')
-      .attr('height', params.norm_label.container.col);
+      .attr('height', params.viz.norm_labels.container.col);
 
     // col labels
     col_container.select(params.root+' .col_label_outer_container');

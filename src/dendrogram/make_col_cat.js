@@ -10,7 +10,7 @@ module.exports = function make_col_cat(params) {
       .append('g')
       .attr('class', 'col_cat_outer_container')
       .attr('transform', function () {
-        var inst_offset = params.norm_label.width.col + 2; 
+        var inst_offset = params.viz.norm_labels.width.col + 2; 
         return 'translate(0,' + inst_offset + ')'; 
       })
       .append('g')
@@ -19,7 +19,7 @@ module.exports = function make_col_cat(params) {
     d3.select(params.root+' .col_container')
       .select('col_cat_outer_container')
       .attr('transform', function () {
-        var inst_offset = params.norm_label.width.col + 2; 
+        var inst_offset = params.viz.norm_labels.width.col + 2; 
         return 'translate(0,' + inst_offset + ')'; 
       });
   }

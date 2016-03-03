@@ -27,7 +27,7 @@ module.exports = function recalc_params_for_resize(params){
   params.matrix.rect_height = params.matrix.y_scale.rangeBand();
 
   // redefine zoom extent
-  params.viz.real_zoom = params.norm_label.width.col / (params.matrix.rect_width/2);
+  params.viz.real_zoom = params.viz.norm_labels.width.col / (params.matrix.rect_width/2);
 
   // redefine border width
   params.viz.border_width = params.matrix.rect_width / 55;

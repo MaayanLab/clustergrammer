@@ -2,6 +2,8 @@ module.exports = function set_viz_params(config, params){
 
   params.viz = {};
 
+
+
   params.viz.viz_wrapper = config.root + ' .viz_wrapper';
   params.viz.do_zoom = config.do_zoom;
   params.viz.resize = config.resize;
@@ -17,9 +19,25 @@ module.exports = function set_viz_params(config, params){
   params.viz.inst_order = config.inst_order;
   params.viz.expand_button = config.expand_button;
 
+  // the width normal labels is dependent on the length of the labels 
+  var label_scale = d3.scale.linear()
+    // min and max number of characters
+    .domain([5, 15])
+    // min and max of label width 
+    .range([ 85, 120]).clamp('true');
+
+  params.viz.norm_labels = {};
+  params.viz.norm_labels.width = {};
+
+  params.viz.norm_labels.width.row = label_scale(params.labels.row_max_char) 
+    * params.row_label_scale;
+
+  params.viz.norm_labels.width.col = label_scale(params.labels.col_max_char) 
+    * params.col_label_scale;
+
   params.viz.viz_svg = params.viz.viz_wrapper + ' .viz_svg';
   params.viz.uni_duration = 1000;
-  params.viz.spillover_x_offset = params.norm_label.width.col;
+  params.viz.spillover_x_offset = params.viz.norm_labels.width.col;
   params.viz.bottom_space = 15;
   params.viz.run_trans = false;
   params.viz.duration = 1000;

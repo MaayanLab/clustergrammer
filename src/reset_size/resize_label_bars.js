@@ -10,7 +10,7 @@ module.exports = function resize_label_bars(params, svg_group){
   // params.labels.bar_scale_row = d3.scale
   //   .linear()
   //   .domain([0, val_max])
-  //   .range([0, params.norm_label.width.row ]);
+  //   .range([0, params.viz.norm_labels.width.row ]);
 
   params = calc_val_max(params);  
 

@@ -14,12 +14,12 @@ module.exports = function(params, text_delay) {
     row_container = d3.select(params.viz.viz_svg)
       .append('g')
       .attr('class','row_container')
-      .attr('transform', 'translate(' + params.norm_label.margin.left + ',' +
+      .attr('transform', 'translate(' + params.viz.norm_labels.margin.left + ',' +
       params.viz.clust.margin.top + ')');
   } else {
     row_container = d3.select(params.viz.viz_svg)
       .select('.row_container')
-      .attr('transform', 'translate(' + params.norm_label.margin.left + ',' +
+      .attr('transform', 'translate(' + params.viz.norm_labels.margin.left + ',' +
       params.viz.clust.margin.top + ')');
   }
 
@@ -29,7 +29,7 @@ module.exports = function(params, text_delay) {
       .classed('row_white_background',true)
       .classed('white_bars',true)
       .attr('fill', params.viz.background_color)
-      .attr('width', params.norm_label.container.row)
+      .attr('width', params.viz.norm_labels.container.row)
       .attr('height', 30*params.viz.clust.dim.height + 'px');
   }
 
@@ -38,14 +38,14 @@ module.exports = function(params, text_delay) {
     row_container
       .append('g')
       .attr('class','row_label_container')
-      .attr('transform', 'translate(' + params.norm_label.width.row + ',0)')
+      .attr('transform', 'translate(' + params.viz.norm_labels.width.row + ',0)')
       .append('g')
       .attr('class', 'row_label_zoom_container');
   } else {
     // container to hold text row labels
     row_container
       .select(params.root+' .row_label_container')
-      .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
+      .attr('transform', 'translate(' + params.viz.norm_labels.width.row + ',0)');
   }
 
 

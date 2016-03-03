@@ -46,18 +46,18 @@ module.exports = function(params, ini_svg_group, delay_info=false){
   svg_group
     .select(params.root+' .col_container')
     .attr('transform', 'translate(' + params.viz.clust.margin.left + ',' +
-    params.norm_label.margin.top + ')');
+    params.viz.norm_labels.margin.top + ')');
 
   svg_group
     .select(params.root+' .col_container')
     .select('.white_bars')
     .attr('width', 30 * params.viz.clust.dim.width + 'px')
-    .attr('height', params.norm_label.container.col);
+    .attr('height', params.viz.norm_labels.container.col);
 
   svg_group
     .select(params.root+' .col_container')
     .select('.col_label_outer_container')
-    .attr('transform', 'translate(0,' + params.norm_label.width.col + ')');
+    .attr('transform', 'translate(0,' + params.viz.norm_labels.width.col + ')');
 
 
   svg_group

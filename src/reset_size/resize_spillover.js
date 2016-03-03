@@ -20,10 +20,10 @@ module.exports = function resize_spillover(params, ini_svg_group, delay_info=fal
   svg_group
     .select('.right_slant_triangle')
     .attr('transform', 'translate(' + params.viz.clust.dim.width + ',' +
-    params.norm_label.width.col + ')');
+    params.viz.norm_labels.width.col + ')');
 
   svg_group.select('.left_slant_triangle')
-    .attr('transform', 'translate(-1,' + params.norm_label.width.col +')');
+    .attr('transform', 'translate(-1,' + params.viz.norm_labels.width.col +')');
 
   svg_group
     .select('.top_left_white')
@@ -33,7 +33,7 @@ module.exports = function resize_spillover(params, ini_svg_group, delay_info=fal
   svg_group.select('.right_spillover')
     .attr('transform', function() {
       var tmp_left = params.viz.clust.margin.left + params.viz.clust.dim.width;
-      var tmp_top = params.norm_label.margin.top + params.norm_label.width
+      var tmp_top = params.viz.norm_labels.margin.top + params.viz.norm_labels.width
         .col;
       return 'translate(' + tmp_left + ',' + tmp_top + ')';
     });

@@ -10,7 +10,7 @@ module.exports = function(params) {
     .attr('fill', params.viz.background_color) //!! prog_colors
     .attr('class', 'right_slant_triangle')
     .attr('transform', 'translate(' + params.viz.clust.dim.width + ',' +
-    params.norm_label.width.col + ')');
+    params.viz.norm_labels.width.col + ')');
 
   // hide spillover from slanted column labels on left side
   d3.select(params.root+' .col_container')
@@ -20,7 +20,7 @@ module.exports = function(params) {
     .attr('fill', params.viz.background_color)
     .attr('class', 'left_slant_triangle')
     // shift left by 1 px to prevent cutting off labels
-    .attr('transform', 'translate(-1,' + params.norm_label.width.col +
+    .attr('transform', 'translate(-1,' + params.viz.norm_labels.width.col +
     ')');
 
   // white rect to cover excess labels
@@ -39,7 +39,7 @@ module.exports = function(params) {
     .attr('height', '3000px')
     .attr('transform', function() {
       var tmp_left = params.viz.clust.margin.left + params.viz.clust.dim.width;
-      var tmp_top = params.norm_label.margin.top + params.norm_label.width
+      var tmp_top = params.viz.norm_labels.margin.top + params.viz.norm_labels.width
         .col;
       return 'translate(' + tmp_left + ',' + tmp_top + ')';
     })

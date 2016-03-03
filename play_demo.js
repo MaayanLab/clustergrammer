@@ -255,8 +255,8 @@ function play_demo(){
   function initialize_play(){
     // get dimensions of the main_svg
     center = {};
-    center.pos_x = 1.2*cgm.params.norm_label.width.row + cgm.params.viz.clust.dim.width/2;
-    center.pos_y = 1.2*cgm.params.norm_label.width.col + cgm.params.viz.clust.dim.height/2;
+    center.pos_x = 1.2*cgm.params.viz.norm_labels.width.row + cgm.params.viz.clust.dim.width/2;
+    center.pos_y = 1.2*cgm.params.viz.norm_labels.width.col + cgm.params.viz.clust.dim.height/2;
 
     // make play button
     //////////////////////////

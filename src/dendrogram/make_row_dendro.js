@@ -6,7 +6,7 @@ module.exports = function make_row_dendro(params) {
 
   // position row dendro at the right of the clustergram 
   var x_offset = params.viz.super_labels.dim.width + 
-    params.norm_label.width.row + 
+    params.viz.norm_labels.width.row + 
     params.viz.clust.dim.width + 5;
 
   if (d3.select(params.root+' .row_dendro_outer_container').empty()){

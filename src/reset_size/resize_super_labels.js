@@ -24,7 +24,7 @@
   // super col title
   svg_group.select('.super_col')
     .attr('transform', function() {
-      var inst_x = params.viz.clust.dim.width / 2 + params.norm_label.width
+      var inst_x = params.viz.clust.dim.width / 2 + params.viz.norm_labels.width
         .row;
       var inst_y = params.viz.super_labels.dim.width - params.viz.uni_margin;
       return 'translate(' + inst_x + ',' + inst_y + ')';
@@ -37,7 +37,7 @@
   svg_group.select('.super_row')
     .attr('transform', function() {
       var inst_x = params.viz.super_labels.dim.width - params.viz.uni_margin;
-      var inst_y = params.viz.clust.dim.height / 2 + params.norm_label.width
+      var inst_y = params.viz.clust.dim.height / 2 + params.viz.norm_labels.width
         .col;
       return 'translate(' + inst_x + ',' + inst_y + ')';
     });

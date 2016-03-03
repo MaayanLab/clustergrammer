@@ -9,13 +9,13 @@ module.exports = function make_row_cat(params) {
     d3.select(params.root+' .row_container')
       .append('g')
       .attr('class','row_cat_outer_container')
-      .attr('transform', 'translate(' + params.norm_label.width.row + ',0)')
+      .attr('transform', 'translate(' + params.viz.norm_labels.width.row + ',0)')
       .append('g')
       .attr('class', 'row_cat_container');
   } else {
     d3.select(params.root+' .row_container')
       .select('row_cat_outer_container')
-      .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
+      .attr('transform', 'translate(' + params.viz.norm_labels.width.row + ',0)');
   }
 
   // white background 

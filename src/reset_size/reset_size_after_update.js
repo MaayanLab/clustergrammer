@@ -40,7 +40,7 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
   params.matrix.y_scale.rangeBands([0, params.viz.clust.dim.height]);
 
   // redefine zoom extent
-  params.viz.real_zoom = params.norm_label.width.col / (params.matrix.x_scale.rangeBand()/2);
+  params.viz.real_zoom = params.viz.norm_labels.width.col / (params.matrix.x_scale.rangeBand()/2);
   params.zoom_behavior
     .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch]);
 

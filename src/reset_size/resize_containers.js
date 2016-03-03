@@ -7,16 +7,16 @@ module.exports = function resize_containers(params){
 
   // reposition row container
   d3.select(params.root+' .row_cat_outer_container')
-    .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
+    .attr('transform', 'translate(' + params.viz.norm_labels.width.row + ',0)');
 
   // reposition col container
   d3.select(params.root+' .col_label_outer_container')
-    .attr('transform', 'translate(0,' + params.norm_label.width.col + ')');
+    .attr('transform', 'translate(0,' + params.viz.norm_labels.width.col + ')');
 
   // reposition col_viz container
   d3.select(params.root+' .col_cat_outer_container')
     .attr('transform', function() {
-        var inst_offset = params.norm_label.width.col + 2;
+        var inst_offset = params.viz.norm_labels.width.col + 2;
         return 'translate(0,' + inst_offset + ')';
       });  
 };

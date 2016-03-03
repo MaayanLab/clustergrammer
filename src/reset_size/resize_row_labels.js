@@ -43,17 +43,17 @@ module.exports = function resize_row_labels(params, ini_svg_group, delay_info=fa
   }
 
   svg_group.select(params.root+' .row_container')
-    .attr('transform', 'translate(' + params.norm_label.margin.left + ',' +
+    .attr('transform', 'translate(' + params.viz.norm_labels.margin.left + ',' +
     params.viz.clust.margin.top + ')');
 
   svg_group.select(params.root+' .row_container')
     .select('.white_bars')
-    .attr('width', params.norm_label.container.row)
+    .attr('width', params.viz.norm_labels.container.row)
     .attr('height', 30*params.viz.clust.dim.height + 'px');
 
   svg_group.select(params.root + ' .row_container')
     .select('.row_label_container')
-    .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');  
+    .attr('transform', 'translate(' + params.viz.norm_labels.width.row + ',0)');  
 
 };
 
