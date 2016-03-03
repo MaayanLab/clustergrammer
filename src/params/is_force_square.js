@@ -13,8 +13,8 @@ module.exports = function is_force_square(viz){
 
   if ( width_by_col < height_by_row ) {
 
-    viz.clust.dim.height = viz.clust.dim.width * 
-      (viz.num_row_nodes / viz.num_col_nodes );
+    var num_row_vs_col = viz.num_row_nodes / viz.num_col_nodes;
+    viz.clust.dim.height = viz.clust.dim.width * num_row_vs_col;
 
     viz.force_square = 1;
 
