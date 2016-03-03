@@ -29,16 +29,6 @@ module.exports = function set_viz_params(config, params){
     config.group_level = {row: 5, col: 5};
   }
 
-  params.viz.cat_room = {};
-  params.viz.cat_room.symbol_width = 11;
-  if (params.viz.show_dendrogram) {
-    params.viz.cat_room.row = 2 * params.viz.cat_room.symbol_width;
-    params.viz.cat_room.col = params.viz.cat_room.symbol_width;
-  } else {
-    params.viz.cat_room.row = params.viz.cat_room.symbol_width;
-    params.viz.cat_room.col = 0;
-  }
-
   params.sidebar = {};
   params.sidebar.sidebar_class = 'sidebar_wrapper';
 
@@ -53,11 +43,20 @@ module.exports = function set_viz_params(config, params){
   params.viz.num_col_nodes = params.network_data.col_nodes.length;
   params.viz.num_row_nodes = params.network_data.row_nodes.length;
 
+  params.viz.cat_room = {};
+  params.viz.cat_room.symbol_width = 11;
+  if (params.viz.show_dendrogram) {
+    params.viz.cat_room.row = 2 * params.viz.cat_room.symbol_width;
+    params.viz.cat_room.col = params.viz.cat_room.symbol_width;
+  } else {
+    params.viz.cat_room.row = params.viz.cat_room.symbol_width;
+    params.viz.cat_room.col = 0;
+  }
 
-  var dendro_room = 0;
   params.viz.dendro_room = {};
-  params.viz.dendro_room.row = dendro_room;
-  params.viz.dendro_room.col = dendro_room;
+  params.viz.dendro_room.symbol_width = 0;
+  params.viz.dendro_room.row = params.viz.dendro_room.symbol_width;
+  params.viz.dendro_room.col = params.viz.dendro_room.symbol_width;
 
   return params;
 };

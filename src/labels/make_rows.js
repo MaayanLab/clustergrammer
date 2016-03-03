@@ -29,7 +29,7 @@ module.exports = function(params, text_delay) {
       .classed('row_white_background',true)
       .classed('white_bars',true)
       .attr('fill', params.viz.background_color)
-      .attr('width', params.norm_label.background.row)
+      .attr('width', params.norm_label.container.row)
       .attr('height', 30*params.viz.clust.dim.height + 'px');
   }
 
