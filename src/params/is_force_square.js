@@ -4,16 +4,17 @@ module.exports = function is_force_square(params){
     params.viz.norm_labels.width.col + params.viz.cat_room.col + 
     params.viz.dendro_room.col;
   
-  var row_info_space = params.viz.super_labels.dim.width + 
-    params.viz.norm_labels.width.row + params.viz.cat_room.row + 
-    params.viz.dendro_room.row; 
-
   // there is space between the clustergram and the border
   var ini_clust_height = params.viz.svg_dim.height - col_info_space 
     - params.viz.bottom_space;
 
-  var ini_clust_width = params.viz.svg_dim.width - row_info_space 
-    - params.viz.grey_border_width - params.viz.spillover_x_offset;
+  var ini_clust_width = params.viz.svg_dim.width 
+    - params.viz.super_labels.dim.width  
+    - params.viz.norm_labels.width.row 
+    - params.viz.cat_room.row  
+    - params.viz.dendro_room.row
+    - params.viz.grey_border_width 
+    - params.viz.spillover_col_slant;
 
   var width_by_col  = params.viz.clust.dim.width / params.viz.num_col_nodes;
   var height_by_row = ini_clust_height / params.viz.num_row_nodes;

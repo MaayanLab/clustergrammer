@@ -12,21 +12,13 @@ module.exports = function calc_clust_width(viz){
   viz.clust.margin.top = viz.norm_labels.margin.top + 
     viz.norm_labels.width.col + viz.cat_room.col + viz.uni_margin;
 
-  viz.clust.dim = {};
-
-  viz.row_info_space = viz.super_labels.dim.width + 
-    viz.norm_labels.width.row + viz.cat_room.row + 
-    viz.dendro_room.row;  
-
-  var ini_clust_width = viz.svg_dim.width - viz.row_info_space 
-    - viz.grey_border_width - viz.spillover_x_offset;
-
-  // var alt_clust_width = viz.svg_dim.width - viz.clust.margin.left
-  //   - viz.grey_border_width - viz.spillover_x_offset;
-
-
-  // console.log(ini_clust_width)
-  // console.log(alt_clust_width)
+  var ini_clust_width = viz.svg_dim.width 
+    - viz.super_labels.dim.width 
+    - viz.norm_labels.width.row 
+    - viz.cat_room.row  
+    - viz.dendro_room.row
+    - viz.grey_border_width 
+    - viz.spillover_col_slant;
 
   var tmp_x_scale = d3.scale.ordinal().rangeBands([0, ini_clust_width]);
   tmp_x_scale.domain(_.range( viz.num_col_nodes ));
@@ -38,6 +30,8 @@ module.exports = function calc_clust_width(viz){
     ini_clust_width = ini_clust_width * reduce_width;
 
   }
+
+  viz.clust.dim = {};
   viz.clust.dim.width = ini_clust_width;
 
   return viz;

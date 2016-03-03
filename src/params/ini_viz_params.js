@@ -35,7 +35,7 @@ module.exports = function set_viz_params(config, params){
 
   params.viz.viz_svg = params.viz.viz_wrapper + ' .viz_svg';
   params.viz.uni_duration = 1000;
-  params.viz.spillover_x_offset = params.viz.norm_labels.width.col;
+  params.viz.spillover_col_slant = params.viz.norm_labels.width.col;
   params.viz.bottom_space = 15;
   params.viz.run_trans = false;
   params.viz.duration = 1000;
