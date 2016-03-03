@@ -24,5 +24,12 @@ module.exports = function set_zoom_params(params){
       zoomed(params);
     });
 
+  // rect width needs matrix and zoom parameters 
+  params.viz.rect_width  = params.viz.x_scale.rangeBand() 
+    - params.viz.border_width;
+
+  params.viz.rect_height = params.viz.y_scale.rangeBand() 
+    - params.viz.border_width / params.viz.zoom_switch;
+
   return params;
 };
