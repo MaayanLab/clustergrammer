@@ -46,14 +46,14 @@ module.exports = function(params) {
       trim_text(params, this, 'col'); 
     });
 
+  // make category colorbars
+  make_row_cat(params);
   if (params.viz.show_dendrogram) {
-    // make category colorbars
-    make_row_cat(params);
     make_col_cat(params);
+  }
     
     // // make dendrogram colorbar 
     // make_row_dendro(params);
-  }
 
   spillover(params);
 

@@ -52,51 +52,53 @@ module.exports = function make_row_cat(params) {
       return 'translate(0, ' + params.viz.y_scale(inst_index) + ')';
     });
 
-  d3.selectAll(params.root+' .row_cat_group')
-    .each(function() {
-  
-      var inst_level = params.group_level.row;
+  if (params.viz.show_dendrogram){
+    d3.selectAll(params.root+' .row_cat_group')
+      .each(function() {
+    
+        var inst_level = params.group_level.row;
 
-      var cat_rect;
-      if (d3.select(this).select('.row_cat_rect').empty()){
-        cat_rect = d3.select(this)
-          .append('rect')
-          .attr('class', 'row_cat_rect');
-      } else {
-        cat_rect = d3.select(this)
-          .select('.row_cat_rect');
-      }
+        var cat_rect;
+        if (d3.select(this).select('.row_cat_rect').empty()){
+          cat_rect = d3.select(this)
+            .append('rect')
+            .attr('class', 'row_cat_rect');
+        } else {
+          cat_rect = d3.select(this)
+            .select('.row_cat_rect');
+        }
 
-      cat_rect
-        .attr('width', function() {
-          var inst_width = params.viz.cat_room.symbol_width - 1;
-          return inst_width + 'px';
-        })
-        .attr('height', params.viz.y_scale.rangeBand())
-        .style('fill', function(d) {
-          if (utils.has(d,'group')){
-            var group_colors = build_color_groups(params);
-            var inst_color = group_colors[d.group[inst_level]];
-          } else {
-            inst_color = '#eee';
-          }
-          return inst_color;
-        })
-        .attr('x', function() {
-          var inst_offset = params.viz.cat_room.symbol_width + 1;
-          return inst_offset + 'px';
-        });
-
-      // show group in modal
-      if (typeof params.click_group === 'function'){
         cat_rect
-          .on('click', function(d){
-            var group_nodes_list = get_inst_group(params, 'row', d);
-            params.click_group('row', group_nodes_list);
+          .attr('width', function() {
+            var inst_width = params.viz.cat_room.symbol_width - 1;
+            return inst_width + 'px';
+          })
+          .attr('height', params.viz.y_scale.rangeBand())
+          .style('fill', function(d) {
+            if (utils.has(d,'group')){
+              var group_colors = build_color_groups(params);
+              var inst_color = group_colors[d.group[inst_level]];
+            } else {
+              inst_color = '#eee';
+            }
+            return inst_color;
+          })
+          .attr('x', function() {
+            var inst_offset = params.viz.cat_room.symbol_width + 1;
+            return inst_offset + 'px';
           });
-      }
 
-    });
+        // show group in modal
+        if (typeof params.click_group === 'function'){
+          cat_rect
+            .on('click', function(d){
+              var group_nodes_list = get_inst_group(params, 'row', d);
+              params.click_group('row', group_nodes_list);
+            });
+        }
+
+      });
+    }
 
   // add row triangles
   row_cat_group
