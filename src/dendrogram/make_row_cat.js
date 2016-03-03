@@ -4,29 +4,22 @@ var build_color_groups = require('./build_color_groups');
 
 module.exports = function make_row_cat(params) {
 
-  // row visualizations - classification triangles and colorbar rects
+  // make or reuse outer container 
   if (d3.select(params.root+' .row_cat_outer_container').empty()){
-
     d3.select(params.root+' .row_container')
       .append('g')
       .attr('class','row_cat_outer_container')
       .attr('transform', 'translate(' + params.norm_label.width.row + ',0)')
       .append('g')
       .attr('class', 'row_cat_container');
-
   } else {
-
     d3.select(params.root+' .row_container')
       .select('row_cat_outer_container')
-      .attr('transform', 'translate(' + params.norm_label.width.row + ',0)')
-      .append('g')
-      .attr('class', 'row_cat_container');
-
+      .attr('transform', 'translate(' + params.norm_label.width.row + ',0)');
   }
 
-  // white background for triangle
+  // white background 
   if (d3.select(params.root+' .row_cat_container').select('.white_bars').empty()){
-
     d3.select(params.root+' .row_cat_container')
       .append('rect')
       .attr('class','white_bars')
@@ -36,9 +29,7 @@ module.exports = function make_row_cat(params) {
         var inst_height = params.viz.clust.dim.height;
         return inst_height;
       });
-
   } else {
-
     d3.select(params.root+' .row_cat_container')
       .select('class','white_bars')
       .attr('fill', params.viz.background_color)
@@ -47,7 +38,6 @@ module.exports = function make_row_cat(params) {
         var inst_height = params.viz.clust.dim.height;
         return inst_height;
       });
-
   }
 
   // groups that hold classification triangle and colorbar rect
@@ -107,7 +97,6 @@ module.exports = function make_row_cat(params) {
       }
 
     });
-
 
   // add row triangles
   row_cat_group

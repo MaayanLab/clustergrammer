@@ -4,15 +4,25 @@ var build_color_groups = require('./build_color_groups');
 
 module.exports = function make_col_cat(params) {
 
-  d3.select(params.root+' .col_container')
-    .append('g')
-    .attr('class', 'col_cat_outer_container')
-    .attr('transform', function () {
-      var inst_offset = params.norm_label.width.col + 2;
-      return 'translate(0,' + inst_offset + ')';
-    })
-    .append('g')
-    .attr('class', 'col_cat_container');
+  // make or reuse outer container 
+  if (d3.select(params.root+' .col_cat_outer_container').empty()){
+    d3.select(params.root+' .col_container')
+      .append('g')
+      .attr('class', 'col_cat_outer_container')
+      .attr('transform', function () {
+        var inst_offset = params.norm_label.width.col + 2; 
+        return 'translate(0,' + inst_offset + ')'; 
+      })
+      .append('g')
+      .attr('class', 'col_cat_container');
+  } else {
+    d3.select(params.root+' .col_container')
+      .select('col_cat_outer_container')
+      .attr('transform', function () {
+        var inst_offset = params.norm_label.width.col + 2; 
+        return 'translate(0,' + inst_offset + ')'; 
+      });
+  }
   
   // append groups - each will hold a classification rect
   d3.select(params.root+' .col_cat_container')
