@@ -10,7 +10,7 @@ var ini_doubleclick = require('./zoom/ini_doubleclick');
 var make_col_cat = require('./dendrogram/make_col_cat');
 var make_row_cat = require('./dendrogram/make_row_cat');
 var trim_text = require('./zoom/trim_text');
-var make_row_dendro = require('./dendrogram/make_row_dendro');
+// var make_row_dendro = require('./dendrogram/make_row_dendro');
 
 module.exports = function(params) {
   
@@ -51,8 +51,8 @@ module.exports = function(params) {
     make_row_cat(params);
     make_col_cat(params);
     
-    // make dendrogram colorbar 
-    make_row_dendro(params);
+    // // make dendrogram colorbar 
+    // make_row_dendro(params);
   }
 
   spillover(params);
