@@ -1,4 +1,4 @@
-module.exports = function is_force_square(viz){
+module.exports = function calc_clust_height(viz){
 
   // there is space between the clustergram and the border
   var ini_clust_height = viz.svg_dim.height 
