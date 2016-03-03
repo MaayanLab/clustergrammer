@@ -162,44 +162,6 @@ module.exports = function(params, text_delay) {
 
   }
 
-  // groups that hold classification triangle and colorbar rect
-  var row_cat_group = d3.select(params.root+' .row_cat_container')
-    .selectAll('g')
-    .data(row_nodes, function(d){return d.name;})
-    .enter()
-    .append('g')
-    .attr('class', 'row_cat_group')
-    .attr('transform', function(d) {
-      var inst_index = _.indexOf(row_nodes_names, d.name);
-      return 'translate(0, ' + params.matrix.y_scale(inst_index) + ')';
-    });
-
-  // add triangles
-  row_cat_group
-    .append('path')
-    .attr('d', function() {
-      var origin_x = params.cat_room.symbol_width - 1;
-      var origin_y = 0;
-      var mid_x = 1;
-      var mid_y = params.matrix.y_scale.rangeBand() / 2;
-      var final_x = params.cat_room.symbol_width - 1;
-      var final_y = params.matrix.y_scale.rangeBand();
-      var output_string = 'M ' + origin_x + ',' + origin_y + ' L ' +
-        mid_x + ',' + mid_y + ', L ' + final_x + ',' + final_y + ' Z';
-      return output_string;
-    })
-    .attr('fill', function(d) {
-      // initailize color
-      var inst_color = '#eee';
-      if (params.labels.show_categories) {
-        inst_color = params.labels.class_colors.row[d.cl];
-      }
-      return inst_color;
-    })
-    .style('opacity',0)
-    .transition().delay(text_delay).duration(text_delay)
-    .style('opacity',1);
-
 
   if (utils.has(params.network_data.row_nodes[0], 'value')) {
 

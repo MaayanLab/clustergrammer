@@ -4,19 +4,15 @@ var build_color_groups = require('./build_color_groups');
 
 module.exports = function make_col_dendro(params) {
   
-  var col_nodes = params.network_data.col_nodes;
-  var col_nodes_names = _.pluck(col_nodes, 'name');
-
   // append groups - each will hold a classification rect
-  // this is done differently for the rows 
   d3.select(params.root+' .col_cat_container')
     .selectAll('g')
-    .data(col_nodes, function(d){ return d.name; })
+    .data(params.network_data.col_nodes, function(d){ return d.name; })
     .enter()
     .append('g')
     .attr('class', 'col_cat_group')
     .attr('transform', function(d) {
-      var inst_index = _.indexOf(col_nodes_names, d.name);
+      var inst_index = _.indexOf(params.network_data.col_nodes_names, d.name);
       return 'translate(' + params.matrix.x_scale(inst_index) + ',0)';
     });
 
