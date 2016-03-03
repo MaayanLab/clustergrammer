@@ -7,7 +7,7 @@ module.exports = function recalc_params_for_resize(params){
 
   // Resetting some visualization parameters
   params = get_svg_dim(params);
-  params = calc_clust_width(params);
+  params.viz = calc_clust_width(params.viz);
   params = is_force_square(params);  
 
   // zoom_switch from 1 to 2d zoom

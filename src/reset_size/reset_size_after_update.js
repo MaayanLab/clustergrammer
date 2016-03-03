@@ -24,7 +24,7 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
 
   // Resetting some visualization parameters
   params = get_svg_dim(params);
-  params = calc_clust_width(params);
+  params.viz = calc_clust_width(params.viz);
   params = is_force_square(params);
 
   // zoom_switch from 1 to 2d zoom
