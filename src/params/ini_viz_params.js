@@ -43,6 +43,13 @@ module.exports = function set_viz_params(config, params){
   params.viz.num_col_nodes = params.network_data.col_nodes.length;
   params.viz.num_row_nodes = params.network_data.row_nodes.length;
 
+  // superlabel dimensions 
+  params.viz.super_labels = {};
+  params.viz.super_labels.margin = {};
+  params.viz.super_labels.margin.left = params.viz.grey_border_width;
+  params.viz.super_labels.margin.top  = params.viz.grey_border_width;
+
+  // category colorbar 
   params.viz.cat_room = {};
   params.viz.cat_room.symbol_width = 11;
   if (params.viz.show_dendrogram) {
@@ -53,6 +60,7 @@ module.exports = function set_viz_params(config, params){
     params.viz.cat_room.col = 0;
   }
 
+  // dendro colorbar 
   params.viz.dendro_room = {};
   params.viz.dendro_room.symbol_width = 0;
   params.viz.dendro_room.row = params.viz.dendro_room.symbol_width;

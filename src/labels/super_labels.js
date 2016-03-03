@@ -1,8 +1,6 @@
 module.exports = function(params) {
 
-  // super col title
-  /////////////////////////////////////
-  // add super column title background
+
   d3.select(params.viz.viz_svg)
     .append('rect')
     .attr('fill', params.viz.background_color)
@@ -10,9 +8,8 @@ module.exports = function(params) {
     .attr('width', '3000px')
     .classed('super_col_bkg',true)
     .classed('white_bars',true)
-    .attr('transform', 'translate(0,' + params.viz.grey_border_width + ')');
+    .attr('transform', 'translate(0,' + params.viz.super_labels.margin.top + ')');
 
-  // super col title
   d3.select(params.viz.viz_svg)
     .append('text')
     .attr('class', 'super_col')
@@ -34,8 +31,6 @@ module.exports = function(params) {
     })
     .style('font-weight', 300);
 
-  // super row title
-  /////////////////////////////////////
   d3.select(params.viz.viz_svg)
     .append('rect')
     .attr('fill', params.viz.background_color)
@@ -43,10 +38,9 @@ module.exports = function(params) {
     .attr('height', '3000px')
     .classed('super_row_bkg',true)
     .classed('white_bars',true)
-    .attr('transform', 'translate(' + params.viz.grey_border_width + ',0)');
+    .attr('transform', 'translate(' + params.viz.super_labels.margin.left + ',0)');
 
-  // append super title row group
-  // this is used to separate translation from rotation
+  // append super title row group - used to separate translation from rotation
   d3.select(params.viz.viz_svg)
     .append('g')
     .classed('super_row',true)

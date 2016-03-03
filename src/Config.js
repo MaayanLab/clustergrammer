@@ -38,7 +38,7 @@ module.exports = function(args) {
     },
     ini_expand: false,
     // Gray border around the visualization
-    grey_border_width: 3,
+    grey_border_width: 2,
     // the distance between labels and clustergram
     // a universal margin for the clustergram
     uni_margin: 4,
