@@ -54,8 +54,8 @@ module.exports = function(params, ini_inp_row_data, delays, duration, row_select
   if (delays.run_transition){
     update_row_tiles
       .transition().delay(delays.update).duration(duration)
-      .attr('width', params.matrix.rect_width)
-      .attr('height', params.matrix.rect_height)
+      .attr('width', params.viz.rect_width)
+      .attr('height', params.viz.rect_height)
       .attr('transform', function(d) {
         if (_.contains(col_nodes_names, d.col_name)){
           var inst_col_index = _.indexOf(col_nodes_names, d.col_name);
@@ -65,8 +65,8 @@ module.exports = function(params, ini_inp_row_data, delays, duration, row_select
       });
   } else {
     update_row_tiles
-      .attr('width', params.matrix.rect_width)
-      .attr('height', params.matrix.rect_height)
+      .attr('width', params.viz.rect_width)
+      .attr('height', params.viz.rect_height)
       .attr('transform', function(d) {
         if (_.contains(col_nodes_names, d.col_name)){
           var inst_col_index = _.indexOf(col_nodes_names, d.col_name);

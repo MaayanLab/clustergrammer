@@ -5,8 +5,8 @@ module.exports = function enter_existing_row(params, delays, duration, cur_row_t
     .enter()
     .append('rect')
     .attr('class', 'tile row_tile')
-    .attr('width', params.matrix.rect_width)
-    .attr('height', params.matrix.rect_height)
+    .attr('width', params.viz.rect_width)
+    .attr('height', params.viz.rect_height)
     .on('mouseover', function(p) {
       // highlight row - set text to active if
       d3.selectAll(params.root+' .row_label_group text')

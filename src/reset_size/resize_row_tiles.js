@@ -17,8 +17,8 @@ module.exports = function resize_row_tiles(params, svg_group){
       var y_pos = 0.5*params.viz.border_width/params.viz.zoom_switch;
       return 'translate('+x_pos+','+y_pos+')';
     })
-    .attr('width', params.matrix.rect_width)
-    .attr('height', params.matrix.rect_height);
+    .attr('width', params.viz.rect_width)
+    .attr('height', params.viz.rect_height);
 
   // reset tile_up
   svg_group.selectAll('.row')

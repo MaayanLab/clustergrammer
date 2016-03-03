@@ -43,18 +43,17 @@ module.exports = function make_params(input_config) {
   params.viz = calc_label_params(params.viz);
   params.viz = calc_clust_width(params.viz);
   params.viz = is_force_square(params.viz);
-  params = calc_val_max(params);
 
+  params = calc_val_max(params);
   params = calc_matrix_params(config, params);
   params = set_zoom_params(params);
-
   params = calc_default_fs(params);
 
   // rect width needs matrix and zoom parameters 
-  params.matrix.rect_width  = params.viz.x_scale.rangeBand() 
+  params.viz.rect_width  = params.viz.x_scale.rangeBand() 
     - params.viz.border_width;
 
-  params.matrix.rect_height = params.viz.y_scale.rangeBand() 
+  params.viz.rect_height = params.viz.y_scale.rangeBand() 
     - params.viz.border_width / params.viz.zoom_switch;
 
   return params;

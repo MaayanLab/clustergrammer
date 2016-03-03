@@ -23,14 +23,14 @@ module.exports = function recalc_params_for_resize(params){
   params.viz.y_scale.rangeBands([0, params.viz.clust.dim.height]);
 
   // precalc rect_width and height
-  params.matrix.rect_width = params.viz.x_scale.rangeBand();
-  params.matrix.rect_height = params.viz.y_scale.rangeBand();
+  params.viz.rect_width = params.viz.x_scale.rangeBand();
+  params.viz.rect_height = params.viz.y_scale.rangeBand();
 
   // redefine zoom extent
-  params.viz.real_zoom = params.viz.norm_labels.width.col / (params.matrix.rect_width/2);
+  params.viz.real_zoom = params.viz.norm_labels.width.col / (params.viz.rect_width/2);
 
   // redefine border width
-  params.viz.border_width = params.matrix.rect_width / 55;
+  params.viz.border_width = params.viz.rect_width / 55;
 
   // the default font sizes are set here
   params = calc_default_fs(params);

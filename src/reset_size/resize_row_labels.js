@@ -23,7 +23,7 @@ module.exports = function resize_row_labels(params, ini_svg_group, delay_info=fa
         var inst_index = _.indexOf(row_nodes_names, d.name);
         return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
       })
-      .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35 );      
+      .attr('y', params.viz.rect_height * 0.5 + params.labels.default_fs_row*0.35 );      
 
     svg_group = ini_svg_group
       .transition().delay(delays.update).duration(duration);
@@ -37,7 +37,7 @@ module.exports = function resize_row_labels(params, ini_svg_group, delay_info=fa
         var inst_index = _.indexOf(row_nodes_names, d.name);
         return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
       })
-      .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35 );
+      .attr('y', params.viz.rect_height * 0.5 + params.labels.default_fs_row*0.35 );
     
     svg_group = ini_svg_group;
   }

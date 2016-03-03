@@ -79,7 +79,7 @@ module.exports = function(params, text_delay) {
   // append row label text
   row_labels
     .append('text')
-    .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35 )
+    .attr('y', params.viz.rect_height * 0.5 + params.labels.default_fs_row*0.35 )
     .attr('text-anchor', 'end')
     .style('font-size', params.labels.default_fs_row + 'px')
     .text(function(d){ return utils.normal_name(d); })

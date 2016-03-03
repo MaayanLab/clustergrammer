@@ -25,7 +25,7 @@ module.exports = function resize_col_hlight(params, svg_group, delay_info=false)
   //         .select('rect')
   //         .transition().delay(delays.update).duration(duration)
   //         .attr('width', bbox.width * 1.1)
-  //         .attr('height', 0.67*params.matrix.rect_width)
+  //         .attr('height', 0.67*params.viz.rect_width)
   //         .style('fill', function(d){
   //           var inst_color = 'white';
   //           // if (params.labels.show_categories){
@@ -49,7 +49,7 @@ module.exports = function resize_col_hlight(params, svg_group, delay_info=false)
   //       d3.select(this)
   //         .select('rect')
   //         .attr('width', bbox.width * 1.1)
-  //         .attr('height', 0.67*params.matrix.rect_width)
+  //         .attr('height', 0.67*params.viz.rect_width)
   //         .style('fill', function(d){
   //           var inst_color = 'white';
   //           // if (params.labels.show_categories){
@@ -74,7 +74,7 @@ module.exports = function resize_col_hlight(params, svg_group, delay_info=false)
         return inst_value;
       })
       // rotate labels - reduce width if rotating
-      .attr('height', params.matrix.rect_width * 0.66);
+      .attr('height', params.viz.rect_width * 0.66);
   }
 
 };

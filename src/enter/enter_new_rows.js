@@ -18,8 +18,8 @@ module.exports = function enter_new_rows(params, ini_inp_row_data, delays, durat
     .enter()
     .append('rect')
     .attr('class', 'tile row_tile')
-    .attr('width', params.matrix.rect_width)
-    .attr('height', params.matrix.rect_height)
+    .attr('width', params.viz.rect_width)
+    .attr('height', params.viz.rect_height)
     // switch the color based on up/dn value
     .style('fill', function(d) {
       return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];

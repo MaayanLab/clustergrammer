@@ -102,7 +102,7 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
   //       .attr('x', bbox.x )
   //       .attr('y', 0)
   //       .attr('width', bbox.width )
-  //       .attr('height', params.matrix.rect_height)
+  //       .attr('height', params.viz.rect_height)
   //       .style('fill', 'yellow')
   //       .style('opacity', function(d) {
   //         var inst_opacity = 0;
@@ -117,7 +117,7 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
   // necessary to properly position row labels vertically 
   svg_group.selectAll('.row_label_group')
     .select('text')
-    .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35 ); 
+    .attr('y', params.viz.rect_height * 0.5 + params.labels.default_fs_row*0.35 ); 
 
   if (utils.has( params.network_data.row_nodes[0], 'value')) {
     resize_label_bars(params, svg_group);
@@ -137,9 +137,9 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
       var origin_x = params.viz.cat_room.symbol_width - 1;
       var origin_y = 0;
       var mid_x = 1;
-      var mid_y = params.matrix.rect_height / 2;
+      var mid_y = params.viz.rect_height / 2;
       var final_x = params.viz.cat_room.symbol_width - 1;
-      var final_y = params.matrix.rect_height;
+      var final_y = params.viz.rect_height;
       var output_string = 'M ' + origin_x + ',' + origin_y + ' L ' +
         mid_x + ',' + mid_y + ', L ' + final_x + ',' + final_y + ' Z';
       return output_string;

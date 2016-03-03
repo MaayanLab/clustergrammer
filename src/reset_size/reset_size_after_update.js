@@ -102,7 +102,7 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
     svg_group.selectAll('.row_label_group')
       .select('text')
       .transition().delay(delays.update).duration(duration)
-      .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35 );
+      .attr('y', params.viz.rect_height * 0.5 + params.labels.default_fs_row*0.35 );
 
     svg_group.selectAll('.row_cat_group')
       .data(row_nodes, function(d){return d.name;})
@@ -132,7 +132,7 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
     // positioning row text after row text size may have been reduced
     svg_group.selectAll('.row_label_group')
       .select('text')
-      .attr('y', params.matrix.rect_height * 0.5 + params.labels.default_fs_row*0.35 );
+      .attr('y', params.viz.rect_height * 0.5 + params.labels.default_fs_row*0.35 );
 
     svg_group.selectAll('.row_cat_group')
       .data(row_nodes, function(d){return d.name;})

@@ -137,8 +137,8 @@ module.exports = function(params, text_delay) {
     .attr('class','.highlight_rect')
     .attr('x', 0)
     .attr('y', 0)
-    .attr('width', 10*params.matrix.rect_height)
-    .attr('height', 0.67*params.matrix.rect_width)
+    .attr('width', 10*params.viz.rect_height)
+    .attr('height', 0.67*params.viz.rect_width)
     .style('opacity', 0);
 
   // // only run this if there are col categories
@@ -153,7 +153,7 @@ module.exports = function(params, text_delay) {
   //       d3.select(this)
   //         .select('rect')
   //         .attr('width', bbox.width * 1.1)
-  //         .attr('height', 0.67*params.matrix.rect_width)
+  //         .attr('height', 0.67*params.viz.rect_width)
   //         .style('fill', function(d){
   //           var inst_color = 'white';
   //           inst_color = params.labels.class_colors.col[d.cl];
