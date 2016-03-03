@@ -42,7 +42,7 @@ module.exports = function make_params(input_config) {
   params = get_svg_dim(params);
   params.viz = calc_label_params(params.viz);
   params.viz = calc_clust_width(params.viz);
-  params = is_force_square(params);
+  params.viz = is_force_square(params.viz);
   params = calc_val_max(params);
 
   params = calc_matrix_params(config, params);

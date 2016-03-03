@@ -13,11 +13,10 @@ module.exports = function calc_clust_width(viz){
     viz.norm_labels.width.col + viz.cat_room.col + viz.uni_margin;
 
   var ini_clust_width = viz.svg_dim.width 
-    - viz.super_labels.dim.width 
-    - viz.norm_labels.width.row 
-    - viz.cat_room.row  
+    - viz.norm_labels.margin.left
+    - viz.norm_labels.width.row
+    - viz.cat_room.row
     - viz.dendro_room.row
-    - viz.grey_border_width 
     - viz.spillover_col_slant;
 
   var tmp_x_scale = d3.scale.ordinal().rangeBands([0, ini_clust_width]);
