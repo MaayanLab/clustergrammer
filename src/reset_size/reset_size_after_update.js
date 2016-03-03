@@ -14,7 +14,6 @@ var resize_col_triangle = require('./resize_col_triangle');
 var resize_col_hlight = require('./resize_col_hlight');
 var resize_label_bars = require('./resize_label_bars');
 var calc_default_fs = require('../params/calc_default_fs');
-// var trim_text = require('../zoom/trim_text');
 
 module.exports = function(params, row_nodes, col_nodes, links, duration, delays) {
 

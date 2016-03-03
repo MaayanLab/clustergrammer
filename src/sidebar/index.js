@@ -13,7 +13,7 @@ module.exports = function sidebar(config, params) {
   var sidebar = d3
     .select(params.root)
     .append('div')
-    .attr('class', params.sidebar.sidebar_class )
+    .attr('class', 'sidebar_wrapper' )
     .style('margin-left','10px')
     .style('float', 'left')
     .style('width','180px');

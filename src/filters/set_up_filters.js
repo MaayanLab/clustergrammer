@@ -27,7 +27,7 @@ module.exports = function set_up_filters(config, params, filter_type) {
     suffix = ' rows';
   }  
 
-  var row_filters = d3.select(params.root+' .'+params.sidebar.sidebar_class)
+  var row_filters = d3.select(params.root+' .sidebar_wrapper')
     .append('div')
     .classed('row_filters',true);
 

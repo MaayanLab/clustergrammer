@@ -45,9 +45,6 @@ module.exports = function set_viz_params(config, params){
     config.group_level = {row: 5, col: 5};
   }
 
-  params.sidebar = {};
-  params.sidebar.sidebar_class = 'sidebar_wrapper';
-
   // the border of the rects should be 1 over this value of the width/height
   // of the rects 
   params.viz.border_fraction = 55;
