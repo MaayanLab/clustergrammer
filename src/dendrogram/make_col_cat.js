@@ -2,7 +2,17 @@ var utils = require('../utils');
 var get_inst_group = require('./get_inst_group');
 var build_color_groups = require('./build_color_groups');
 
-module.exports = function make_col_dendro(params) {
+module.exports = function make_col_cat(params) {
+
+  d3.select(params.root+' .col_container')
+    .append('g')
+    .attr('class', 'col_cat_outer_container')
+    .attr('transform', function () {
+      var inst_offset = params.norm_label.width.col + 2;
+      return 'translate(0,' + inst_offset + ')';
+    })
+    .append('g')
+    .attr('class', 'col_cat_container');
   
   // append groups - each will hold a classification rect
   d3.select(params.root+' .col_cat_container')
@@ -21,17 +31,17 @@ module.exports = function make_col_dendro(params) {
 
       var inst_level = params.group_level.col;
 
-      var dendro_rect;
+      var cat_rect;
       if (d3.select(this).select('.col_cat_rect').empty()){
-        dendro_rect = d3.select(this)
+        cat_rect = d3.select(this)
           .append('rect')
           .attr('class', 'col_cat_rect');
       } else {
-        dendro_rect = d3.select(this)
+        cat_rect = d3.select(this)
           .select('.col_cat_rect');
       }
 
-      dendro_rect
+      cat_rect
         .attr('width', params.matrix.x_scale.rangeBand())
         .attr('height', function() {
           var inst_height = params.cat_room.col - 1;
@@ -48,7 +58,7 @@ module.exports = function make_col_dendro(params) {
         });
 
       if (typeof params.click_group === 'function'){
-        dendro_rect
+        cat_rect
           .on('click',function(d){
             var group_nodes_list = get_inst_group(params, 'col', d);
             params.click_group('col', group_nodes_list);

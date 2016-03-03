@@ -115,53 +115,6 @@ module.exports = function(params, text_delay) {
     });
 
 
-  // row visualizations - classification triangles and colorbar rects
-  var row_cat_outer_container;
-  if (d3.select(params.root+' .row_cat_outer_container').empty()){
-
-    row_cat_outer_container = row_container
-      .append('g')
-      .attr('class','row_cat_outer_container')
-      .attr('transform', 'translate(' + params.norm_label.width.row + ',0)')
-      .append('g')
-      .attr('class', 'row_cat_container');
-
-  } else {
-
-    row_cat_outer_container = row_container
-      .select('row_cat_outer_container')
-      .attr('transform', 'translate(' + params.norm_label.width.row + ',0)')
-      .append('g')
-      .attr('class', 'row_cat_container');
-
-  }
-
-  // white background for triangle
-  if (d3.select(params.root+' .row_cat_container').select('.white_bars').empty()){
-
-    row_cat_outer_container
-      .append('rect')
-      .attr('class','white_bars')
-      .attr('fill', params.viz.background_color)
-      .attr('width', params.cat_room.row + 'px')
-      .attr('height', function() {
-        var inst_height = params.viz.clust.dim.height;
-        return inst_height;
-      });
-
-  } else {
-
-    row_cat_outer_container
-      .select('class','white_bars')
-      .attr('fill', params.viz.background_color)
-      .attr('width', params.cat_room.row + 'px')
-      .attr('height', function() {
-        var inst_height = params.viz.clust.dim.height;
-        return inst_height;
-      });
-
-  }
-
 
   if (utils.has(params.network_data.row_nodes[0], 'value')) {
 

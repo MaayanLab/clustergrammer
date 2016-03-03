@@ -2,10 +2,12 @@ var utils = require('../utils');
 var get_inst_group = require('./get_inst_group');
 var build_color_groups = require('./build_color_groups');
 
-module.exports = function make_row_dendro(params) {
+module.exports = function make_row_cat(params) {
+
+
 
   // groups that hold classification triangle and colorbar rect
-  var row_cat_group = d3.select(params.root+' .row_cat_container')
+  d3.select(params.root+' .row_cat_container')
     .selectAll('g')
     .data(params.network_data.row_nodes, function(d){return d.name;})
     .enter()
@@ -21,17 +23,17 @@ module.exports = function make_row_dendro(params) {
   
       var inst_level = params.group_level.row;
 
-      var dendro_rect;
+      var cat_rect;
       if (d3.select(this).select('.row_cat_rect').empty()){
-        dendro_rect = d3.select(this)
+        cat_rect = d3.select(this)
           .append('rect')
           .attr('class', 'row_cat_rect');
       } else {
-        dendro_rect = d3.select(this)
+        cat_rect = d3.select(this)
           .select('.row_cat_rect');
       }
 
-      dendro_rect
+      cat_rect
         .attr('width', function() {
           var inst_width = params.cat_room.symbol_width - 1;
           return inst_width + 'px';
@@ -53,7 +55,7 @@ module.exports = function make_row_dendro(params) {
 
       // show group in modal
       if (typeof params.click_group === 'function'){
-        dendro_rect
+        cat_rect
           .on('click', function(d){
             var group_nodes_list = get_inst_group(params, 'row', d);
             params.click_group('row', group_nodes_list);
@@ -63,27 +65,5 @@ module.exports = function make_row_dendro(params) {
     });
 
 
-  // add row triangles
-  row_cat_group
-    .append('path')
-    .attr('d', function() {
-      var origin_x = params.cat_room.symbol_width - 1;
-      var origin_y = 0;
-      var mid_x = 1;
-      var mid_y = params.matrix.y_scale.rangeBand() / 2;
-      var final_x = params.cat_room.symbol_width - 1;
-      var final_y = params.matrix.y_scale.rangeBand();
-      var output_string = 'M ' + origin_x + ',' + origin_y + ' L ' +
-        mid_x + ',' + mid_y + ', L ' + final_x + ',' + final_y + ' Z';
-      return output_string;
-    })
-    .attr('fill', function(d) {
-      // initailize color
-      var inst_color = '#eee';
-      if (params.labels.show_categories) {
-        inst_color = params.labels.class_colors.row[d.cl];
-      }
-      return inst_color;
-    });
-
+ 
 };

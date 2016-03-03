@@ -7,9 +7,10 @@ var search = require('./search');
 var two_translate_zoom = require('./zoom/two_translate_zoom');
 var initialize_resizing = require('./initialize_resizing');
 var ini_doubleclick = require('./zoom/ini_doubleclick');
-var make_col_dendro = require('./dendrogram/make_col_dendro');
-var make_row_dendro = require('./dendrogram/make_row_dendro');
+var make_col_cat = require('./dendrogram/make_col_cat');
+var make_row_cat = require('./dendrogram/make_row_cat');
 var trim_text = require('./zoom/trim_text');
+// var make_row_dendro = require('./dendrogram/make_row_dendro');
 
 module.exports = function(params) {
   
@@ -46,21 +47,12 @@ module.exports = function(params) {
     });
 
   if (params.viz.show_dendrogram) {
-
-    make_row_dendro(params);
-
-    d3.select(params.root+' .col_container')
-      .append('g')
-      .attr('class', 'col_cat_outer_container')
-      .attr('transform', function () {
-        var inst_offset = params.norm_label.width.col + 2;
-        return 'translate(0,' + inst_offset + ')';
-      })
-      .append('g')
-      .attr('class', 'col_cat_container');
-
-    make_col_dendro(params);
-
+    // make category colorbars
+    make_row_cat(params);
+    make_col_cat(params);
+    
+    // // make dendrogram colorbar 
+    // make_row_dendro(params);
   }
 
   spillover(params);
