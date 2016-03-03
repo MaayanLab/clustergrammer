@@ -28,5 +28,4 @@ module.exports = function resize_label_bars(params, svg_group){
     })
     .attr('height', params.viz.y_scale.rangeBand() );
 
-
 };
