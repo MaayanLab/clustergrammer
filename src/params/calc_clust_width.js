@@ -4,7 +4,7 @@ module.exports = function calc_clust_width(params){
 
   params.viz.row_info_space = params.labels.super_label_width + 
     params.norm_label.width.row + params.viz.cat_room.row + 
-    params.viz.colorbar_room.row;  
+    params.viz.dendro_room.row;  
 
   // reduce width by row/col labels and by grey_border width
   // reduce width by less since this is less aparent with slanted col labels

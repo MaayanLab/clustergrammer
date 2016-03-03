@@ -54,10 +54,10 @@ module.exports = function set_viz_params(config, params){
   params.viz.num_row_nodes = params.network_data.row_nodes.length;
 
 
-  var colorbar_room = 0;
-  params.viz.colorbar_room = {};
-  params.viz.colorbar_room.row = colorbar_room;
-  params.viz.colorbar_room.col = colorbar_room;
+  var dendro_room = 0;
+  params.viz.dendro_room = {};
+  params.viz.dendro_room.row = dendro_room;
+  params.viz.dendro_room.col = dendro_room;
 
   return params;
 };
