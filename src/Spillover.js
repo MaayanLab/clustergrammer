@@ -31,20 +31,46 @@ module.exports = function(params) {
     .attr('height', params.viz.clust.margin.top)
     .attr('class', 'top_left_white');
 
+
+
+  var tmp_left = params.viz.clust.margin.left + 
+    params.viz.clust.dim.width +
+    params.viz.uni_margin + 
+    params.viz.dendro_room.row;
+
+  var tmp_top = params.viz.norm_labels.margin.top + params.viz.norm_labels.width.col;
+
   // hide spillover from right
   d3.select(params.viz.viz_svg)
     .append('rect')
     .attr('fill', params.viz.background_color) //!! prog_colors
     .attr('width', '300px')
-    .attr('height', '3000px')
+    .attr('height', params.viz.svg_dim.height+'px')
     .attr('transform', function() {
-      var tmp_left = params.viz.clust.margin.left + params.viz.clust.dim.width;
-      var tmp_top = params.viz.norm_labels.margin.top + params.viz.norm_labels.width
-        .col;
       return 'translate(' + tmp_left + ',' + tmp_top + ')';
     })
     .attr('class', 'white_bars')
     .attr('class','right_spillover');
+
+
+  var x_offset = params.viz.clust.margin.left + params.viz.clust.dim.width;
+  var y_offset = tmp_top;
+  var tmp_width = params.viz.dendro_room.row + params.viz.uni_margin;
+  var tmp_height = params.viz.cat_room.col + params.viz.uni_margin;
+
+  console.log('here')
+  // hide spillover from top of row dendrogram 
+  d3.select(params.viz.viz_svg)
+    .append('rect')
+    .attr('fill', params.viz.background_color)
+    .attr('width',tmp_width)
+    .attr('height',tmp_height)
+    .attr('transform', function(){
+      return 'translate('+x_offset+','+y_offset+')';
+    })
+    .attr('class','new_spillover')
+    // .classed('white_bars',true)
+    // .classed('new_spillover',true);
 
   // white border bottom - prevent clustergram from hitting border
   d3.select(params.viz.viz_svg)
@@ -59,5 +85,7 @@ module.exports = function(params) {
       var inst_offset = params.viz.svg_dim.height - 3 * params.viz.grey_border_width;
       return 'translate(0,' + inst_offset + ')';
     });
+
+
 
 };

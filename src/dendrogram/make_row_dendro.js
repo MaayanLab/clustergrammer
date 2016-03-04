@@ -5,40 +5,42 @@
 module.exports = function make_row_dendro(params) {
 
   // position row dendro at the right of the clustergram 
-  var x_offset = params.viz.super_labels.dim.width + 
-    params.viz.norm_labels.width.row + 
-    params.viz.clust.dim.width + 5;
+  var x_offset = params.viz.clust.margin.left +
+    params.viz.clust.dim.width ;
+  // move to the same position as the clustergram 
+  // var y_offset = params.viz.clust.margin.top;
+  var y_offset = params.viz.clust.margin.top;
 
   if (d3.select(params.root+' .row_dendro_outer_container').empty()){
-    d3.select(params.root+' .row_container')
+    d3.select(params.root+' .viz_svg')
       .append('g')
       .attr('class','row_dendro_outer_container')
-      .attr('transform', 'translate(' + x_offset + ',0)')
+      .attr('transform', 'translate(' + x_offset + ','+ y_offset +')')
       .append('g')
       .attr('class', 'row_dendro_container');
   } else {
-    d3.select(params.root+' .row_container')
+    d3.select(params.root+' .viz_svg')
       .select('row_dendro_outer_container')
       .attr('transform', 'translate(' + x_offset + ',0)');
   }
 
   // white background 
+  var spillover_width = params.viz.dendro_room.row + params.viz.uni_margin;
   if (d3.select(params.root+' .row_dendro_container').select('.white_bars').empty()){
     d3.select(params.root+' .row_dendro_container')
       .append('rect')
       .attr('class','white_bars')
-      // .attr('fill', params.viz.background_color)
-      .attr('fill','green')
-      .attr('width', params.viz.cat_room.row + 'px')
+      .attr('fill', params.viz.background_color)
+      .attr('width', spillover_width + 'px')
       .attr('height', function() {
-        var inst_height = params.viz.clust.dim.height;
+        var inst_height = params.viz.svg_dim.height;
         return inst_height;
       });
   } else {
     d3.select(params.root+' .row_dendro_container')
       .select('class','white_bars')
       .attr('fill', params.viz.background_color)
-      .attr('width', params.viz.cat_room.row + 'px')
+      .attr('width', spillover_width + 'px')
       .attr('height', function() {
         var inst_height = params.viz.clust.dim.height;
         return inst_height;
