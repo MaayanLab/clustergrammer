@@ -5,10 +5,6 @@ module.exports = function resize_containers(params){
       params.viz.clust.margin.left + ',' +
       params.viz.clust.margin.top + ')');
 
-  // reposition row container
-  d3.select(params.root+' .row_cat_outer_container')
-    .attr('transform', 'translate(' + params.viz.norm_labels.width.row + ',0)');
-
   // reposition col container
   d3.select(params.root+' .col_label_outer_container')
     .attr('transform', 'translate(0,' + params.viz.norm_labels.width.col + ')');

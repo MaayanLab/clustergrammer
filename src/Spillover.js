@@ -32,7 +32,6 @@ module.exports = function(params) {
     .attr('class', 'top_left_white');
 
 
-
   var tmp_left = params.viz.clust.margin.left + 
     params.viz.clust.dim.width +
     params.viz.uni_margin + 
@@ -58,7 +57,6 @@ module.exports = function(params) {
   var tmp_width = params.viz.dendro_room.row + params.viz.uni_margin;
   var tmp_height = params.viz.cat_room.col + params.viz.uni_margin;
 
-  console.log('here')
   // hide spillover from top of row dendrogram 
   d3.select(params.viz.viz_svg)
     .append('rect')
@@ -68,9 +66,8 @@ module.exports = function(params) {
     .attr('transform', function(){
       return 'translate('+x_offset+','+y_offset+')';
     })
-    .attr('class','new_spillover')
-    // .classed('white_bars',true)
-    // .classed('new_spillover',true);
+    .classed('white_bars',true)
+    .classed('new_spillover',true);
 
   // white border bottom - prevent clustergram from hitting border
   d3.select(params.viz.viz_svg)
