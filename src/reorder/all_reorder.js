@@ -91,6 +91,14 @@ module.exports = function(params, inst_order, tmp_row_col) {
         return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
       });
 
+    // reorder row_label_triangle groups
+    d3.selectAll(params.root+' .row_dendro_group')
+      .transition().duration(2500)
+      .attr('transform', function(d) {
+        var inst_index = _.indexOf(row_nodes_names, d.name);
+        return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
+      });      
+
     // reorder col_class groups
     d3.selectAll(params.root+' .col_cat_group')
       .transition().duration(2500)
@@ -147,6 +155,13 @@ module.exports = function(params, inst_order, tmp_row_col) {
         var inst_index = _.indexOf(row_nodes_names,d.name);
         return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
       });
+
+    // reorder row_label_triangle groups
+    d3.selectAll(params.root+' .row_dendro_group')
+      .attr('transform', function(d) {
+        var inst_index = _.indexOf(row_nodes_names,d.name);
+        return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
+      });      
 
     // reorder col_class groups
     d3.selectAll(params.root+' .col_cat_group')

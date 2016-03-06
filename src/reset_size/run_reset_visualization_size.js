@@ -145,6 +145,13 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
       return output_string;
     });    
 
+  svg_group
+    .selectAll('.row_dendro_group')
+    .attr('transform', function(d) {
+        var inst_index = _.indexOf(row_nodes_names, d.name);
+        return 'translate(0, ' + params.viz.y_scale(inst_index) + ')';
+      });
+
   resize_col_labels(params, svg_group); 
   resize_col_text(params, svg_group);
   resize_col_triangle(params, svg_group);

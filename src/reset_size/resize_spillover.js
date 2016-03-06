@@ -30,13 +30,17 @@ module.exports = function resize_spillover(params, ini_svg_group, delay_info=fal
     .attr('width', params.viz.clust.margin.left)
     .attr('height', params.viz.clust.margin.top);
 
+  var tmp_left = params.viz.clust.margin.left +   
+    params.viz.clust.dim.width +
+    params.viz.uni_margin + 
+    params.viz.dendro_room.row;
+  var tmp_top = params.viz.norm_labels.margin.top + params.viz.norm_labels.width.col;
+  
   svg_group.select('.right_spillover')
     .attr('transform', function() {
-      var tmp_left = params.viz.clust.margin.left + params.viz.clust.dim.width;
-      var tmp_top = params.viz.norm_labels.margin.top + params.viz.norm_labels.width
-        .col;
       return 'translate(' + tmp_left + ',' + tmp_top + ')';
-    });
+    })
+    .attr('height', params.viz.svg_dim.height+'px');
 
   // white border bottom - prevent clustergram from hitting border
   svg_group.select('.bottom_spillover')

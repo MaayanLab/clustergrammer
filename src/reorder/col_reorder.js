@@ -52,6 +52,12 @@ module.exports = function(params, col_selection) {
         return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
       });
 
+    d3.selectAll(params.root+' .row_dendro_group')
+      .attr('transform', function(d) {
+        var inst_index = _.indexOf(row_nodes_names, d.name);
+        return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
+      });      
+
     // Move Row Labels
     d3.select(params.root+' .row_label_zoom_container')
       .selectAll('.row_label_group')
@@ -72,6 +78,13 @@ module.exports = function(params, col_selection) {
         var inst_index = _.indexOf(row_nodes_names, d.name);
         return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
       });
+
+    d3.selectAll(params.root+' .row_dendro_group')
+      .transition().duration(2500)
+      .attr('transform', function(d) {
+        var inst_index = _.indexOf(row_nodes_names, d.name);
+        return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
+      });      
 
     // Move Row Labels
     d3.select(params.root+' .row_label_zoom_container')

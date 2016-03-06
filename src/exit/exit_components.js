@@ -44,6 +44,14 @@
     .style('opacity',0)
     .remove();
 
+  // remove row triangles and colorbars
+  d3.selectAll(params.root+' .row_dendro_group')
+    .data(row_nodes, function(d){return d.name;})
+    .exit()
+    .transition().duration(duration)
+    .style('opacity',0)
+    .remove();    
+
   d3.selectAll(params.root+' .col_label_text')
     .data(col_nodes, function(d){return d.name;})
     .exit()

@@ -62,6 +62,18 @@ module.exports = function resize_dendro(params, svg_group, delay_info=false){
       });
 
     dendro_group
+      .selectAll('.row_dendro_rect')
+      .attr('width', function() {
+        var inst_width = params.viz.cat_room.symbol_width - 1;
+        return inst_width + 'px';
+      })
+      .attr('height', params.viz.y_scale.rangeBand())
+      .attr('x', function() {
+        var inst_offset = params.viz.uni_margin;
+        return inst_offset + 'px';
+      });
+
+    dendro_group
       .selectAll('.col_cat_rect')
       .attr('width', params.viz.x_scale.rangeBand())
       .attr('height', function() {

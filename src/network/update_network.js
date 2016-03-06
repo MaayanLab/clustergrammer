@@ -6,6 +6,7 @@ var enter_exit_update = require('../enter/enter_exit_update');
 var define_enter_exit_delays = require('./define_enter_exit_delays');
 var make_col_cat = require('../dendrogram/make_col_cat');
 var make_row_cat = require('../dendrogram/make_row_cat');
+var make_row_dendro = require('../dendrogram/make_row_dendro');
 var ini_sidebar = require('../sidebar/ini_sidebar');
 
 module.exports = function(config, old_params, change_view) {
@@ -34,6 +35,9 @@ module.exports = function(config, old_params, change_view) {
   if (params.viz.show_dendrogram){
     make_row_cat(params);
     make_col_cat(params);
+
+    make_row_dendro(params);
+
   }
 
   // initialize screen resizing - necessary for resizing with new params

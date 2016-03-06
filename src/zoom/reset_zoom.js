@@ -22,6 +22,10 @@ module.exports = function(params){
     .attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' +
     1 + ',' + zoom_y + ')' + 'translate(' + [0, pan_dy] + ')');
 
+  d3.select(params.root+' .row_dendro_container')
+    .attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' +
+    1 + ',' + zoom_y + ')' + 'translate(' + [0, pan_dy] + ')');    
+
   d3.select(params.root+' .col_zoom_container')
     .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [pan_dx, 0] + ')');
 

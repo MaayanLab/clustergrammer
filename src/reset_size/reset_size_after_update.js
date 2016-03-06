@@ -126,6 +126,16 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
         return output_string;
       });
 
+    svg_group.selectAll('.row_dendro_group')
+      .data(row_nodes, function(d){return d.name;})
+      .transition().delay(delays.update).duration(duration)
+      .attr('transform', function(d) {
+          var inst_index = _.indexOf(row_nodes_names, d.name);
+          return 'translate(0, ' + params.viz.y_scale(inst_index) + ')';
+        });
+
+
+
   } else {
 
     // positioning row text after row text size may have been reduced
@@ -153,6 +163,13 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
           mid_x + ',' + mid_y + ', L ' + final_x + ',' + final_y + ' Z';
         return output_string;
       });
+
+    svg_group.selectAll('.row_dendro_group')
+      .data(row_nodes, function(d){return d.name;})
+      .attr('transform', function(d) {
+          var inst_index = _.indexOf(row_nodes_names, d.name);
+          return 'translate(0, ' + params.viz.y_scale(inst_index) + ')';
+        });
 
   }
 

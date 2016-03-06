@@ -36,7 +36,6 @@ module.exports = function(params) {
     params.viz.clust.dim.width +
     params.viz.uni_margin + 
     params.viz.dendro_room.row;
-
   var tmp_top = params.viz.norm_labels.margin.top + params.viz.norm_labels.width.col;
 
   // hide spillover from right
