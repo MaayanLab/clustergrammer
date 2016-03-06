@@ -30,15 +30,12 @@ module.exports = function(params) {
 
   var matrix = generate_matrix(params, svg_group);
 
-  // var labels = generate_labels(params);
-
   var delay_text = 0;
   make_rows(params, delay_text);
   make_row_dendro(params);
+
   make_col_dendro(params);
-
   make_cols(params, delay_text);
-
 
   d3.selectAll(params.root+' .row_label_group' )
     .each(function() { 

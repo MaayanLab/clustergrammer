@@ -31,5 +31,8 @@ module.exports = function(params){
 
   d3.select(params.root+' .col_cat_container')
     .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [pan_dx, 0] + ')');
+
+  d3.select(params.root+' .col_dendro_container')
+    .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [pan_dx, 0] + ')');    
     
 };

@@ -93,8 +93,10 @@ module.exports = function(params, trans_x, trans_y, zoom_x, zoom_y) {
 
   // transform col_class
   d3.select(params.root+' .col_cat_container')
-    .attr('transform', 'translate(' + [trans_x, 0] + ') scale(' + zoom_x +
-    ',1)');
+    .attr('transform', 'translate('+[trans_x, 0]+') scale(' +zoom_x+ ',1)');
+
+  d3.select(params.root+' .col_dendro_container')
+    .attr('transform', 'translate('+[trans_x, 0]+') scale(' +zoom_x+ ',1)');
 
   // reset translate vector - add back margins to trans_x and trans_y
   params.zoom_behavior

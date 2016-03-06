@@ -32,4 +32,16 @@ module.exports = function resize_row_viz(params, ini_svg_group, delay_info=false
   svg_group.select('.row_dendro_outer_container')
     .attr('transform','translate('+ x_offset + ','+y_offset+')');
 
+
+  // !! tmp resize col dendro
+  var x_offset = params.viz.clust.margin.left;
+  var y_offset = params.viz.clust.margin.top + 
+    params.viz.clust.dim.height;
+
+  d3.select(params.root+' .col_dendro_outer_container')
+    .attr('transform', function() {
+        var inst_offset = params.viz.norm_labels.width.col + 2;
+        return 'translate('+x_offset+',' + y_offset + ')';
+      });      
+
 };

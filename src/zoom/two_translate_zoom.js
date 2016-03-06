@@ -121,8 +121,13 @@ module.exports = function(params, pan_dx, pan_dy, fin_zoom) {
       .transition()
       .duration(search_duration)
       .attr('transform', ' scale(' + zoom_x + ',' + 1 + ')' + 'translate(' + [
-        pan_dx, 0
-      ] + ')');
+        pan_dx, 0 ] + ')');
+
+    d3.select(params.root+' .col_dendro_container')
+      .transition()
+      .duration(search_duration)
+      .attr('transform', ' scale(' + zoom_x + ',' + 1 + ')' + 'translate(' + [
+        pan_dx, 0 ] + ')');
 
     // set y translate: center_y is positive, positive moves the visualization down
     // the translate vector has the initial margin, the first y centering, and pan_dy

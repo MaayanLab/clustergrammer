@@ -85,19 +85,19 @@ module.exports = function(params) {
     .classed('white_bars',true)
     .classed('new_spillover',true);    
 
-  // white border bottom - prevent clustergram from hitting border
-  d3.select(params.viz.viz_svg)
-    .append('rect')
-    .attr('class','bottom_spillover')
-    .attr('fill', params.viz.background_color) //!! prog_colors
-    .attr('width', params.viz.svg_dim.width)
-    // make this border twice the width of the grey border
-    .attr('height', 2 * params.viz.grey_border_width)
-    .attr('transform', function() {
-      // shift up enough to show the entire border width
-      var inst_offset = params.viz.svg_dim.height - 3 * params.viz.grey_border_width;
-      return 'translate(0,' + inst_offset + ')';
-    });
+  // // white border bottom - prevent clustergram from hitting border
+  // d3.select(params.viz.viz_svg)
+  //   .append('rect')
+  //   .attr('class','bottom_spillover')
+  //   .attr('fill', params.viz.background_color) //!! prog_colors
+  //   .attr('width', params.viz.svg_dim.width)
+  //   // make this border twice the width of the grey border
+  //   .attr('height', 2 * params.viz.grey_border_width)
+  //   .attr('transform', function() {
+  //     // shift up enough to show the entire border width
+  //     var inst_offset = params.viz.svg_dim.height - 3 * params.viz.grey_border_width;
+  //     return 'translate(0,' + inst_offset + ')';
+  //   });
 
 
 

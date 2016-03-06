@@ -81,4 +81,11 @@
     .style('opacity',0)
     .remove();
 
+  d3.selectAll(params.root+' .col_dendro_group')
+    .data(col_nodes, function(d){return d.name;})
+    .exit()
+    .transition().duration(duration)
+    .style('opacity',0)
+    .remove();    
+
  };

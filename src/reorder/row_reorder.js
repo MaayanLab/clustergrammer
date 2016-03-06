@@ -60,6 +60,12 @@ module.exports = function(params, row_selection) {
         return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
       });
 
+    d3.selectAll(params.root+' .col_dendro_group')
+      .attr('transform', function(d) {
+        var inst_index = _.indexOf(col_nodes_names, d.name);
+        return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
+      });      
+
   } else {
 
     // define the t variable as the transition function
@@ -81,10 +87,13 @@ module.exports = function(params, row_selection) {
         var inst_index = _.indexOf(col_nodes_names, d.name);
         return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
       });
-      // .each('end', function() {
-      //   // set running transition to 0
-      //   params.viz.run_trans = false;
-      // });
+
+    d3.selectAll(params.root+' .col_dendro_group')
+      .transition().duration(2500)
+      .attr('transform', function(d) {
+        var inst_index = _.indexOf(col_nodes_names, d.name);
+        return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
+      });      
   }
 
   // reorder matrix

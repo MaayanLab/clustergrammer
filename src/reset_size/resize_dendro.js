@@ -34,6 +34,16 @@ module.exports = function resize_dendro(params, svg_group, delay_info=false){
           return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
         });
 
+      svg_group
+        .selectAll('.col_group_group')
+        // data binding needed for loss/gain of columns
+        .data(col_nodes, function(d){return d.name;})
+        .transition().delay(delays.update).duration(duration)
+        .attr('transform', function(d) {
+          var inst_index = _.indexOf(col_nodes_names, d.name);
+          return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
+        });        
+
     } else {
 
       dendro_group = svg_group;
@@ -46,6 +56,15 @@ module.exports = function resize_dendro(params, svg_group, delay_info=false){
           var inst_index = _.indexOf(col_nodes_names, d.name);
           return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
         });
+
+      d3.select(params.root)
+        .selectAll('.col_dendro_group')
+        // data binding needed for loss/gain of columns
+        .data(col_nodes, function(d){return d.name;})
+        .attr('transform', function(d) {
+          var inst_index = _.indexOf(col_nodes_names, d.name);
+          return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
+        });        
 
     }
 
@@ -80,5 +99,13 @@ module.exports = function resize_dendro(params, svg_group, delay_info=false){
         var inst_height = params.viz.cat_room.col - 1;
         return inst_height;
       });
+
+    d3.select(params.root)
+      .selectAll('.col_rect_rect')
+      .attr('width', params.viz.x_scale.rangeBand())
+      .attr('height', function() {
+        var inst_height = params.viz.cat_room.col - 1;
+        return inst_height;
+      });      
 
   }; 
