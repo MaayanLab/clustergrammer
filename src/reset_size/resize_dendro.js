@@ -101,7 +101,7 @@ module.exports = function resize_dendro(params, svg_group, delay_info=false){
       });
 
     d3.select(params.root)
-      .selectAll('.col_rect_rect')
+      .selectAll('.col_dendro_rect')
       .attr('width', params.viz.x_scale.rangeBand())
       .attr('height', function() {
         var inst_height = params.viz.cat_room.col - 1;

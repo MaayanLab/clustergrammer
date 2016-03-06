@@ -51,12 +51,11 @@ module.exports = function(params) {
     .attr('class','right_spillover');
 
 
+  // hide spillover from top of row dendrogram 
   var x_offset = params.viz.clust.margin.left + params.viz.clust.dim.width;
   var y_offset = tmp_top;
   var tmp_width = params.viz.dendro_room.row + params.viz.uni_margin;
   var tmp_height = params.viz.cat_room.col + params.viz.uni_margin;
-
-  // hide spillover from top of row dendrogram 
   d3.select(params.viz.viz_svg)
     .append('rect')
     .attr('fill', params.viz.background_color)
@@ -66,14 +65,13 @@ module.exports = function(params) {
       return 'translate('+x_offset+','+y_offset+')';
     })
     .classed('white_bars',true)
-    .classed('dendro_spillover',true);
+    .classed('dendro_row_spillover',true); 
 
+  // hide spillover left top of col dendrogram 
   x_offset = 0;
   y_offset = params.viz.clust.margin.top + params.viz.clust.dim.height;
   tmp_width = params.viz.clust.margin.left;
   tmp_height = params.viz.cat_room.row + params.viz.uni_margin;
-
-  // hide spillover left top of col dendrogram 
   d3.select(params.viz.viz_svg)
     .append('rect')
     .attr('fill', params.viz.background_color)
@@ -83,7 +81,22 @@ module.exports = function(params) {
       return 'translate('+x_offset+','+y_offset+')';
     })
     .classed('white_bars',true)
-    .classed('new_spillover',true);    
+    .classed('dendro_col_spillover',true); 
+
+  x_offset = params.viz.clust.margin.left + params.viz.clust.dim.width;
+  y_offset = params.viz.clust.margin.top + params.viz.clust.dim.height;
+  tmp_width = params.viz.cat_room.col + params.viz.uni_margin;
+  tmp_height = params.viz.cat_room.row + params.viz.uni_margin;
+  d3.select(params.viz.viz_svg)
+    .append('rect')
+    .attr('fill', params.viz.background_color)
+    .attr('width',tmp_width)
+    .attr('height',tmp_height)
+    .attr('transform', function(){
+      return 'translate('+x_offset+','+y_offset+')';
+    })
+    .classed('white_bars',true)
+    .classed('dendro_corner_spillover',true);     
 
   // // white border bottom - prevent clustergram from hitting border
   // d3.select(params.viz.viz_svg)
