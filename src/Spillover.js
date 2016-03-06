@@ -66,7 +66,24 @@ module.exports = function(params) {
       return 'translate('+x_offset+','+y_offset+')';
     })
     .classed('white_bars',true)
-    .classed('new_spillover',true);
+    .classed('dendro_spillover',true);
+
+  x_offset = 0;
+  y_offset = params.viz.clust.margin.top + params.viz.clust.dim.height;
+  tmp_width = params.viz.clust.margin.left;
+  tmp_height = params.viz.cat_room.row + params.viz.uni_margin;
+
+  // hide spillover left top of col dendrogram 
+  d3.select(params.viz.viz_svg)
+    .append('rect')
+    .attr('fill', params.viz.background_color)
+    .attr('width',tmp_width)
+    .attr('height',tmp_height)
+    .attr('transform', function(){
+      return 'translate('+x_offset+','+y_offset+')';
+    })
+    .classed('white_bars',true)
+    .classed('new_spillover',true);    
 
   // white border bottom - prevent clustergram from hitting border
   d3.select(params.viz.viz_svg)

@@ -11,6 +11,7 @@ var make_col_cat = require('./dendrogram/make_col_cat');
 var make_row_cat = require('./dendrogram/make_row_cat');
 var trim_text = require('./zoom/trim_text');
 var make_row_dendro = require('./dendrogram/make_row_dendro');
+var make_col_dendro = require('./dendrogram/make_col_dendro');
 
 module.exports = function(params) {
   
@@ -34,6 +35,7 @@ module.exports = function(params) {
   var delay_text = 0;
   make_rows(params, delay_text);
   make_row_dendro(params);
+  make_col_dendro(params);
 
   make_cols(params, delay_text);
 

@@ -6,7 +6,7 @@ module.exports = function make_row_dendro(params) {
 
   // position row dendro at the right of the clustergram 
   var x_offset = params.viz.clust.margin.left +
-    params.viz.clust.dim.width ;
+    params.viz.clust.dim.width;
   // move to the same position as the clustergram 
   // var y_offset = params.viz.clust.margin.top;
   var y_offset = params.viz.clust.margin.top;
@@ -32,19 +32,13 @@ module.exports = function make_row_dendro(params) {
       .attr('class','white_bars')
       .attr('fill', params.viz.background_color)
       .attr('width', spillover_width + 'px')
-      .attr('height', function() {
-        var inst_height = params.viz.svg_dim.height;
-        return inst_height;
-      });
+      .attr('height', params.viz.svg_dim.height);
   } else {
     d3.select(params.root+' .row_dendro_container')
       .select('class','white_bars')
       .attr('fill', params.viz.background_color)
       .attr('width', spillover_width + 'px')
-      .attr('height', function() {
-        var inst_height = params.viz.clust.dim.height;
-        return inst_height;
-      });
+      .attr('height', params.viz.svg_dim.height);
   }
 
   // groups that hold classification triangle and colorbar rect
