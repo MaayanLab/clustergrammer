@@ -9,9 +9,9 @@ module.exports = function (params, inst_rc, inst_index) {
   var group_colors = build_color_groups(params);
 
   if (inst_rc=='row'){
-    dom_class = 'row_cat_rect';
+    dom_class = 'row_dendro_rect';
   } else {
-    dom_class = 'col_cat_rect';
+    dom_class = 'col_dendro_rect';
   }
 
   d3.selectAll(params.root+' .' + dom_class)
