@@ -1,64 +1,16 @@
 // var utils = require('../utils');
 // var get_inst_group = require('./get_inst_group');
 // var build_color_groups = require('./build_color_groups');
+var calc_dendro_triangles = require('./calc_dendro_triangles');
 
 module.exports = function make_row_dendro(params) {
 
-  var inst_level = params.group_level.row;
-
-  // console.log('working on row dendro triangles')
-  var row_nodes = params.network_data.row_nodes;
-
-  var triangle_info = {};
-
-  _.each(row_nodes, function(d){
-
-    var tmp_group = d.group[inst_level];
-
-    var inst_index = _.indexOf(params.network_data.row_nodes_names, d.name);
-    var inst_top = params.viz.y_scale(inst_index);
-    var inst_bot = inst_top + params.viz.y_scale.rangeBand();
-
-    if ( _.has(triangle_info, tmp_group) == false ){
-      triangle_info[tmp_group] = {};
-      triangle_info[tmp_group].name_top = d.name;
-      triangle_info[tmp_group].name_bot = d.name;
-      triangle_info[tmp_group].pos_top = inst_top;
-      triangle_info[tmp_group].pos_bot = inst_bot;
-      triangle_info[tmp_group].pos_mid = (inst_top + inst_bot)/2;
-    } 
-
-    if (inst_top < triangle_info[tmp_group].pos_top){
-      triangle_info[tmp_group].name_top = d.name;
-      triangle_info[tmp_group].pos_top = inst_top;
-      triangle_info[tmp_group].pos_mid = (inst_top + triangle_info[tmp_group].pos_bot)/2;
-    }
-
-    if (inst_bot > triangle_info[tmp_group].pos_bot){
-      triangle_info[tmp_group].name_bot = d.name;
-      triangle_info[tmp_group].pos_bot = inst_bot;
-      triangle_info[tmp_group].pos_mid = (triangle_info[tmp_group].pos_top + inst_bot)/2;
-    }
-
-  });
-
-  var triangle_array = [];
-  
-  _.each(triangle_info, function(d){
-    triangle_array.push(d);
-  });
-
-
-
+  var dendro_info = calc_dendro_triangles(params);
 
   var spillover_width = params.viz.dendro_room.row + params.viz.uni_margin;
 
-
-  // position row dendro at the right of the clustergram 
-  var x_offset = params.viz.clust.margin.left +
-    params.viz.clust.dim.width;
-  // move to the same position as the clustergram 
-  // var y_offset = params.viz.clust.margin.top;
+  // position row_dendro_outer_container
+  var x_offset = params.viz.clust.margin.left + params.viz.clust.dim.width;
   var y_offset = params.viz.clust.margin.top;
 
   if (d3.select(params.root+' .row_dendro_outer_container').empty()){
@@ -82,7 +34,7 @@ module.exports = function make_row_dendro(params) {
   } else {
     d3.select(params.root+' .viz_svg')
       .select('row_dendro_outer_container')
-      .attr('transform', 'translate(' + x_offset + ',0)');
+      .attr('transform', 'translate(' + x_offset + ','+y_offset+')');
 
     d3.select(params.root+' .row_dendro_outer_container')
       .select('class','new_white_bars')
@@ -94,7 +46,7 @@ module.exports = function make_row_dendro(params) {
   // groups that hold classification triangle and colorbar rect
   d3.select(params.root+' .row_dendro_container')
     .selectAll('path')
-    .data(triangle_array)
+    .data(dendro_info, function(d){return d.name;})
     .enter()
     .append('path')
     .attr('class', 'row_dendro_group')
@@ -118,11 +70,6 @@ module.exports = function make_row_dendro(params) {
     })
     .style('fill','black')
     .attr('opacity',0.35);
-
-    // .attr('transform', function(d) {
-    //   var inst_index = _.indexOf(params.network_data.row_nodes_names, d.name);
-    //   return 'translate(0, ' + params.viz.y_scale(inst_index) + ')';
-    // });
 
 
 
