@@ -1,6 +1,6 @@
-var utils = require('../utils');
-var get_inst_group = require('./get_inst_group');
-var build_color_groups = require('./build_color_groups');
+// var utils = require('../utils');
+// var get_inst_group = require('./get_inst_group');
+// var build_color_groups = require('./build_color_groups');
 
 module.exports = function make_row_dendro(params) {
 
@@ -46,9 +46,27 @@ module.exports = function make_row_dendro(params) {
   
   _.each(triangle_info, function(d){
     triangle_array.push(d);
-  })
+  });
 
-  console.log(triangle_array)
+  // console.log(triangle_array)
+
+
+
+  var spillover_width = params.viz.dendro_room.row + params.viz.uni_margin;
+
+
+  // white background 
+  // if (d3.select(params.root+' .row_dendro_outer_container').select('.white_bars').empty()){
+
+  //   console.log('adding background')
+
+
+  // } else {
+
+
+
+  // }
+
 
   // position row dendro at the right of the clustergram 
   var x_offset = params.viz.clust.margin.left +
@@ -61,30 +79,30 @@ module.exports = function make_row_dendro(params) {
     d3.select(params.root+' .viz_svg')
       .append('g')
       .attr('class','row_dendro_outer_container')
-      .attr('transform', 'translate(' + x_offset + ','+ y_offset +')')
+      .attr('transform', 'translate(' + x_offset + ','+ y_offset +')');
+
+    d3.select(params.root+' .row_dendro_outer_container')
+      .append('rect')
+      .classed('new_white_bars',true)
+      .attr('fill', params.viz.background_color)
+      .attr('width', spillover_width + 'px')
+      .attr('height', params.viz.svg_dim.height);
+
+    d3.select(params.root+' .row_dendro_outer_container')
       .append('g')
-      .attr('class', 'row_dendro_container');
+      .attr('class', 'row_dendro_container')
+      .attr('transform', 'translate('+params.viz.uni_margin+',0)');
+
   } else {
     d3.select(params.root+' .viz_svg')
       .select('row_dendro_outer_container')
       .attr('transform', 'translate(' + x_offset + ',0)');
-  }
 
-  // white background 
-  var spillover_width = params.viz.dendro_room.row + params.viz.uni_margin;
-  if (d3.select(params.root+' .row_dendro_container').select('.white_bars').empty()){
-    d3.select(params.root+' .row_dendro_container')
-      .append('rect')
-      .attr('class','white_bars')
+    d3.select(params.root+' .row_dendro_outer_container')
+      .select('class','new_white_bars')
       .attr('fill', params.viz.background_color)
       .attr('width', spillover_width + 'px')
-      .attr('height', params.viz.svg_dim.height);
-  } else {
-    d3.select(params.root+' .row_dendro_container')
-      .select('class','white_bars')
-      .attr('fill', params.viz.background_color)
-      .attr('width', spillover_width + 'px')
-      .attr('height', params.viz.svg_dim.height);
+      .attr('height', params.viz.svg_dim.height);      
   }
 
   // groups that hold classification triangle and colorbar rect
@@ -97,13 +115,13 @@ module.exports = function make_row_dendro(params) {
     .attr('d', function(d) {
 
       // up triangle
-      var start_x = params.viz.uni_margin ;
+      var start_x = 0 ;
       var start_y = d.pos_top;
       
-      var mid_x = params.viz.uni_margin + 30;
+      var mid_x = 30;
       var mid_y = d.pos_mid;
 
-      var final_x = params.viz.uni_margin;
+      var final_x = 0;
       var final_y = d.pos_bot;
 
       var output_string = 'M' + start_x + ',' + start_y + ', L' +
@@ -113,7 +131,7 @@ module.exports = function make_row_dendro(params) {
       return output_string;
     })
     .style('fill','black')
-    .attr('opacity',0.35)
+    .attr('opacity',0.35);
 
     // .attr('transform', function(d) {
     //   var inst_index = _.indexOf(params.network_data.row_nodes_names, d.name);
