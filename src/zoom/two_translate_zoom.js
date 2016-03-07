@@ -105,8 +105,7 @@ module.exports = function(params, pan_dx, pan_dy, fin_zoom) {
     d3.select(params.root+' .row_dendro_container')
       .transition()
       .duration(search_duration)
-      .attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' +
-      1 + ',' + zoom_y + ')' + 'translate(' + [0, pan_dy] + ')');
+      .attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' + zoom_x + ',' + zoom_y + ')' + 'translate(' + [params.viz.uni_margin, pan_dy] + ')');
 
     // transform col labels
     d3.select(params.root+' .col_zoom_container')

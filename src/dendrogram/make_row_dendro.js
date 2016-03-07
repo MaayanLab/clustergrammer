@@ -48,24 +48,10 @@ module.exports = function make_row_dendro(params) {
     triangle_array.push(d);
   });
 
-  // console.log(triangle_array)
 
 
 
   var spillover_width = params.viz.dendro_room.row + params.viz.uni_margin;
-
-
-  // white background 
-  // if (d3.select(params.root+' .row_dendro_outer_container').select('.white_bars').empty()){
-
-  //   console.log('adding background')
-
-
-  // } else {
-
-
-
-  // }
 
 
   // position row dendro at the right of the clustergram 
