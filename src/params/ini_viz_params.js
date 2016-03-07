@@ -81,7 +81,7 @@ module.exports = function set_viz_params(config, params){
 
   // dendro colorbar 
   viz.dendro_room = {};
-  viz.dendro_room.symbol_width = 11;
+  viz.dendro_room.symbol_width = 10;
   viz.dendro_room.row = viz.dendro_room.symbol_width;
   viz.dendro_room.col = viz.dendro_room.symbol_width;
 
