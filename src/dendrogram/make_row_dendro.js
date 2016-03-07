@@ -4,6 +4,47 @@ var build_color_groups = require('./build_color_groups');
 
 module.exports = function make_row_dendro(params) {
 
+  var inst_level = params.group_level.row;
+
+  // console.log('working on row dendro triangles')
+  var row_nodes = params.network_data.row_nodes;
+
+  var triangle_info = {};
+
+  _.each(row_nodes, function(d){
+    var tmp_group = d.group[inst_level];
+
+    var inst_index = _.indexOf(params.network_data.row_nodes_names, d.name);
+    var inst_top = params.viz.y_scale(inst_index);
+    var inst_bot = inst_top + params.viz.y_scale.rangeBand();
+
+    if ( _.has(triangle_info, tmp_group) == false ){
+      triangle_info[tmp_group] = {};
+      triangle_info[tmp_group].name_top = d.name;
+      triangle_info[tmp_group].name_bot = d.name;
+      triangle_info[tmp_group].pos_top = inst_top;
+      triangle_info[tmp_group].pos_bot = inst_bot;
+    } 
+
+    if (inst_top < triangle_info[tmp_group].pos_top){
+      triangle_info[tmp_group].name_top = d.name;
+      triangle_info[tmp_group].pos_top = inst_top;
+    }
+
+    if (inst_bot > triangle_info[tmp_group].pos_bot){
+      triangle_info[tmp_group].name_bot = d.name;
+      triangle_info[tmp_group].pos_bot = inst_top;
+    }
+
+    // console.log(d.name)
+    // console.log()
+    // console.log('\n')
+
+  });
+
+  console.log(triangle_info)
+
+
   // position row dendro at the right of the clustergram 
   var x_offset = params.viz.clust.margin.left +
     params.viz.clust.dim.width;
@@ -56,7 +97,6 @@ module.exports = function make_row_dendro(params) {
   d3.selectAll(params.root+' .row_dendro_group')
     .each(function() {
   
-      var inst_level = params.group_level.row;
 
       var cat_rect;
       if (d3.select(this).select('.row_dendro_rect').empty()){
