@@ -20,9 +20,9 @@ module.exports = function resize_containers(params){
   var y_offset = params.viz.clust.margin.top + 
     params.viz.clust.dim.height;
 
-  d3.select(params.root+' .col_dendro_outer_container')
-    .attr('transform', function() {
-        var inst_offset = params.viz.norm_labels.width.col + 2;
-        return 'translate('+x_offset+',' + y_offset + ')';
-      });      
+  // d3.select(params.root+' .col_dendro_outer_container')
+  //   .attr('transform', function() {
+  //       var inst_offset = params.viz.norm_labels.width.col + 2;
+  //       return 'translate('+x_offset+',' + y_offset + ')';
+  //     });      
 };
