@@ -10,7 +10,7 @@ module.exports = function make_col_dendro(params) {
 
   // make or reuse outer container 
   if (d3.select(params.root+' .col_dendro_outer_container').empty()){
-    
+
     d3.select(params.root+' .viz_svg')
       .append('g')
       .attr('class', 'col_dendro_outer_container')
@@ -39,8 +39,7 @@ module.exports = function make_col_dendro(params) {
   } else {
     d3.select(params.root+' .col_dendro_container')
       .select('class','white_bars')
-      // .attr('fill', params.viz.background_color)
-      .attr('fill', 'red')
+      .attr('fill', params.viz.background_color)
       .attr('width', params.viz.svg_dim.width)
       .attr('height', spillover_height + 'px');
   }  

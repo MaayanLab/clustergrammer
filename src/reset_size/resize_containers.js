@@ -16,13 +16,4 @@ module.exports = function resize_containers(params){
         return 'translate(0,' + inst_offset + ')';
       });  
 
-  var x_offset = params.viz.clust.margin.left;
-  var y_offset = params.viz.clust.margin.top + 
-    params.viz.clust.dim.height;
-
-  // d3.select(params.root+' .col_dendro_outer_container')
-  //   .attr('transform', function() {
-  //       var inst_offset = params.viz.norm_labels.width.col + 2;
-  //       return 'translate('+x_offset+',' + y_offset + ')';
-  //     });      
 };
