@@ -19,6 +19,7 @@ var recalc_params_for_resize = require('./recalc_params_for_resize');
 var resize_row_tiles = require('./resize_row_tiles');
 var resize_label_bars = require('./resize_label_bars');
 var label_constrain_and_trim = require('../labels/label_constrain_and_trim');
+var make_row_dendro_triangles = require('../dendrogram/make_row_dendro_triangles');
 
 module.exports = function(params, inst_clust_width, inst_clust_height, set_margin_left, set_margin_top) {
 
@@ -145,12 +146,15 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
       return output_string;
     });    
 
-  svg_group
-    .selectAll('.row_dendro_group')
-    .attr('transform', function(d) {
-        var inst_index = _.indexOf(row_nodes_names, d.name);
-        return 'translate(0, ' + params.viz.y_scale(inst_index) + ')';
-      });
+  // svg_group
+  //   .selectAll('.row_dendro_group')
+  //   .attr('transform', function(d) {
+  //       var inst_index = _.indexOf(row_nodes_names, d.name);
+  //       return 'translate(0, ' + params.viz.y_scale(inst_index) + ')';
+  //     });
+
+  console.log('replace row_dendro_group changes with make_row_dendro_triangles')
+  make_row_dendro_triangles(params);
 
   resize_col_labels(params, svg_group); 
   resize_col_text(params, svg_group);
