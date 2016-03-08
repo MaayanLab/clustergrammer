@@ -52,7 +52,7 @@ module.exports = function make_row_cat(params) {
       return 'translate(0, ' + params.viz.y_scale(inst_index) + ')';
     });
 
-  if (params.viz.show_dendrogram){
+  if (params.viz.show_categories.row){
     d3.selectAll(params.root+' .row_cat_group')
       .each(function() {
     

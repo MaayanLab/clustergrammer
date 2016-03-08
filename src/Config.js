@@ -144,10 +144,15 @@ module.exports = function(args) {
   }
 
   config.show_dendrogram = utils.has(args.network_data.row_nodes[0], 'group') || utils.has(args.network_data.col_nodes[0], 'group');
-  config.show_categories = utils.has(args.network_data.row_nodes[0], 'cl')    || utils.has(args.network_data.col_nodes[0], 'cl');
+
+  config.show_categories = {};
+  
+  config.show_categories.row = utils.has(args.network_data.row_nodes[0], 'cl') || utils.has(args.network_data.row_nodes[0], 'cat');
+
+  config.show_categories.col = utils.has(args.network_data.col_nodes[0], 'cl') || utils.has(args.network_data.col_nodes[0], 'cat');
 
   // check for category information
-  if (config.show_categories) {
+  if (config.show_categories.row) {
 
     // initialize dictionary of colors
     config.class_colors = {};

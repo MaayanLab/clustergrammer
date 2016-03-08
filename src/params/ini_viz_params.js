@@ -13,6 +13,9 @@ module.exports = function set_viz_params(config, params){
   viz.uni_margin = config.uni_margin;
   viz.grey_border_width = config.grey_border_width;
   viz.show_dendrogram = config.show_dendrogram;
+  viz.show_categories = {};
+  viz.show_categories.row = config.show_categories.row;
+  viz.show_categories.col = config.show_categories.col;
   viz.tile_click_hlight = config.tile_click_hlight;
   viz.inst_order = config.inst_order;
   viz.expand_button = config.expand_button;
@@ -71,17 +74,26 @@ module.exports = function set_viz_params(config, params){
   // category colorbar 
   viz.cat_room = {};
   viz.cat_room.symbol_width = 11;
-  if (viz.show_dendrogram) {
+
+  if (viz.show_categories.row){
     viz.cat_room.row = 2 * viz.cat_room.symbol_width;
-    viz.cat_room.col = viz.cat_room.symbol_width;
   } else {
     viz.cat_room.row = viz.cat_room.symbol_width;
+  }
+
+  if (viz.show_categories.col){
+    viz.cat_room.col = viz.cat_room.symbol_width;
+  } else {
     viz.cat_room.col = 0;
   }
 
   // dendro colorbar 
   viz.dendro_room = {};
-  viz.dendro_room.symbol_width = 10;
+  if (viz.show_dendrogram) {
+    viz.dendro_room.symbol_width = 10;
+  } else {
+    viz.dendro_room.symbol_width = 0;
+  }
   viz.dendro_room.row = viz.dendro_room.symbol_width;
   viz.dendro_room.col = viz.dendro_room.symbol_width + viz.uni_margin;
 

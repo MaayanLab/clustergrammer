@@ -32,9 +32,12 @@ module.exports = function(params) {
 
   var delay_text = 0;
   make_rows(params, delay_text);
-  make_row_dendro(params);
 
-  make_col_dendro(params);
+  if (params.viz.show_dendrogram){
+    make_row_dendro(params);
+    make_col_dendro(params);
+  }
+
   make_cols(params, delay_text);
 
   d3.selectAll(params.root+' .row_label_group' )
@@ -49,7 +52,7 @@ module.exports = function(params) {
 
   // make category colorbars
   make_row_cat(params);
-  if (params.viz.show_dendrogram) {
+  if (params.viz.show_categories.col) {
     make_col_cat(params);
   }
     

@@ -10,10 +10,10 @@ module.exports = function set_label_params(config, network_data){
     labels.super.col = config.super.col;
   }
 
-  labels.show_categories = config.show_categories;
-  if (labels.show_categories) {
-    labels.class_colors = config.class_colors;
-  }
+  // labels.show_categories = config.show_categories;
+  // if (labels.show_categories) {
+  //   labels.class_colors = config.class_colors;
+  // }
   labels.show_label_tooltips = config.show_label_tooltips;
 
   labels.row_max_char = _.max(network_data.row_nodes, 

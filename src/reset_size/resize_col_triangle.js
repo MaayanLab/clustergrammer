@@ -40,14 +40,7 @@ module.exports = function resize_col_triangle(params,  ini_svg_group, delay_info
         start_x + ', L ' + final_y + ',' + final_x + ' Z';
       return output_string;
     })
-    .attr('fill', function() {
-      var inst_color = '#eee';
-      // if (params.labels.show_categories) {
-      //   inst_color = params.labels.class_colors.col[d.cl];
-
-      // }
-      return inst_color;
-    });
+    .attr('fill', '#eee');
 
   
 };
