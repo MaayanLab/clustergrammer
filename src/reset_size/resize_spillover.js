@@ -59,7 +59,9 @@ module.exports = function resize_spillover(params, ini_svg_group, delay_info=fal
   y_offset = params.viz.clust.margin.top + params.viz.clust.dim.height;
   tmp_width = params.viz.clust.margin.left;
   tmp_height = params.viz.clust.dim.height;
-  d3.select(params.root+' .dendro_col_spillover')
+
+  svg_group
+    .select('.dendro_col_spillover')
     .attr('width',tmp_width)
     .attr('height',tmp_height)
     .attr('transform', function(){
@@ -70,7 +72,9 @@ module.exports = function resize_spillover(params, ini_svg_group, delay_info=fal
   y_offset = params.viz.clust.margin.top + params.viz.clust.dim.height;
   tmp_width = params.viz.cat_room.col + params.viz.uni_margin;
   tmp_height = params.viz.cat_room.row + params.viz.uni_margin;
-  d3.select(params.root+' .dendro_corner_spillover')
+
+  svg_group
+    .select('.dendro_corner_spillover')
     .attr('width',tmp_width)
     .attr('height',tmp_height)
     .attr('transform', function(){

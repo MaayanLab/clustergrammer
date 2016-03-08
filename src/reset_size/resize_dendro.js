@@ -85,13 +85,6 @@ module.exports = function resize_dendro(params, svg_group, delay_info=false){
         return inst_height;
       });
 
-    // d3.select(params.root)
-    //   .selectAll('.col_dendro_rect')
-    //   .attr('width', params.viz.x_scale.rangeBand())
-    //   .attr('height', function() {
-    //     var inst_height = params.viz.cat_room.col - 1;
-    //     return inst_height;
-    //   });      
 
   // position row_dendro_outer_container
   var x_offset = params.viz.clust.margin.left + params.viz.clust.dim.width;
