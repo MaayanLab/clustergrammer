@@ -1,4 +1,4 @@
-module.exports = function calc_dendro_triangles(params){
+module.exports = function calc_row_dendro_triangles(params){
 
   var triangle_info = {};
   var inst_level = params.group_level.row;

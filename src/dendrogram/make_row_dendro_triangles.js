@@ -1,8 +1,8 @@
-var calc_dendro_triangles = require('./calc_dendro_triangles');
+var calc_row_dendro_triangles = require('./calc_row_dendro_triangles');
 
 module.exports = function make_row_dendro_triangles(params, is_change_group=false){
 
-  var dendro_info = calc_dendro_triangles(params);
+  var dendro_info = calc_row_dendro_triangles(params);
 
   var run_transition;
   if (d3.selectAll(params.root+' .row_dendro_group').empty()){

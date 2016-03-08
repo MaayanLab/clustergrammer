@@ -1,6 +1,4 @@
-// var utils = require('../utils');
-// var get_inst_group = require('./get_inst_group');
-// var build_color_groups = require('./build_color_groups');
+var make_col_dendro_triangles = require('./make_col_dendro_triangles');
 
 module.exports = function make_col_dendro(params) {
 
@@ -34,7 +32,14 @@ module.exports = function make_col_dendro(params) {
       .select('col_dendro_outer_container')
       .attr('transform', 'translate('+x_offset+','+y_offset+')'); 
 
+    d3.select(params.root+' .col_dendro_outer_container')
+      .select('.col_dendro_spillover')
+      .attr('width', params.viz.svg_dim.width)
+      .attr('height', spillover_height+'px');
+
   }
+
+  make_col_dendro_triangles(params);
   
   // // white background 
   // var spillover_height = params.viz.dendro_room.col + params.viz.uni_margin;
