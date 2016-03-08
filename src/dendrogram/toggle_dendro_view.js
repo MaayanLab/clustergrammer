@@ -1,22 +1,29 @@
 var make_row_dendro_triangles = require('../dendrogram/make_row_dendro_triangles');
+var make_col_dendro_triangles = require('../dendrogram/make_col_dendro_triangles');
 
-module.exports = function toggle_dendro_view(params){
+module.exports = function toggle_dendro_view(params, row_col){
 
   // console.log('toggle_dendro_view')
   // console.log(params.viz.inst_order.col)
 
-  // row and col are reversed
-  if (params.viz.inst_order.col === 'clust'){
-    // d3.selectAll(params.root+' .row_dendro_group')
-    //   // .transition().duration(2000).delay(500)
-    //   .style('opacity',0.35);
+  var wait_time = 1500;
 
-    // make_row_dendro_triangles(params);
-    setTimeout( make_row_dendro_triangles, 2000, params);
-  } else {
-    d3.selectAll(params.root+' .row_dendro_group')
-      // .transition()
-      .style('opacity',0);
+  // row and col are reversed
+  if (row_col === 'row'){
+    if (params.viz.inst_order.col === 'clust'){
+      setTimeout( make_row_dendro_triangles, wait_time, params);
+    } else {
+      d3.selectAll(params.root+' .row_dendro_group').style('opacity',0);
+    }
+  }
+
+  if (row_col === 'col'){
+    if (params.viz.inst_order.row === 'clust'){
+      setTimeout( make_col_dendro_triangles, wait_time, params);
+    } else {
+      d3.selectAll(params.root+' .col_dendro_group').style('opacity',0);
+
+    }
   }
 
 };

@@ -19,7 +19,7 @@ module.exports = function(params, inst_order, tmp_row_col) {
     params.viz.inst_order.col = inst_order;
   }
 
-  toggle_dendro_view(params);
+  toggle_dendro_view(params, tmp_row_col);
 
   var row_nodes_obj = params.network_data.row_nodes;
   var row_nodes_names = _.pluck(row_nodes_obj, 'name');
