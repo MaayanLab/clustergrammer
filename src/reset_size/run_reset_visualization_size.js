@@ -20,6 +20,7 @@ var resize_row_tiles = require('./resize_row_tiles');
 var resize_label_bars = require('./resize_label_bars');
 var label_constrain_and_trim = require('../labels/label_constrain_and_trim');
 var make_row_dendro_triangles = require('../dendrogram/make_row_dendro_triangles');
+var make_col_dendro_triangles = require('../dendrogram/make_col_dendro_triangles');
 
 module.exports = function(params, inst_clust_width, inst_clust_height, set_margin_left, set_margin_top) {
 
@@ -148,6 +149,7 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
 
   var is_resize = true;
   make_row_dendro_triangles(params, is_resize);
+  make_col_dendro_triangles(params, is_resize);
 
   resize_col_labels(params, svg_group); 
   resize_col_text(params, svg_group);
