@@ -34,8 +34,7 @@ module.exports = function resize_row_viz(params, ini_svg_group, delay_info=false
 
   // !! tmp resize col dendro
   x_offset = params.viz.clust.margin.left;
-  y_offset = params.viz.clust.margin.top + 
-    params.viz.clust.dim.height + params.viz.uni_margin;
+  y_offset = params.viz.clust.margin.top + params.viz.clust.dim.height;
 
   svg_group
     .select(' .col_dendro_outer_container')

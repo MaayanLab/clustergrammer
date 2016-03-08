@@ -4,8 +4,7 @@ module.exports = function make_col_dendro(params) {
 
   // position col_dendro_outer_container
   var x_offset = params.viz.clust.margin.left;
-  var y_offset = params.viz.clust.margin.top + params.viz.clust.dim.height + 
-    params.viz.uni_margin;
+  var y_offset = params.viz.clust.margin.top + params.viz.clust.dim.height;
   var spillover_height = params.viz.dendro_room.col + params.viz.uni_margin;
 
   // make or reuse outer container 
@@ -25,7 +24,8 @@ module.exports = function make_col_dendro(params) {
 
     d3.select(params.root+' .col_dendro_outer_container')
       .append('g')
-      .attr('class', 'col_dendro_container');
+      .attr('class', 'col_dendro_container')
+      .attr('transform', 'translate(0,'+params.viz.uni_margin+')');
 
   } else {
 

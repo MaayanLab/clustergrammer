@@ -96,17 +96,16 @@ module.exports = function(params, trans_x, trans_y, zoom_x, zoom_y) {
     .attr('transform', 'translate('+[trans_x, 0]+') scale(' +zoom_x+ ',1)');
 
   d3.select(params.root+' .col_dendro_container')
-    .attr('transform', 'translate('+[trans_x, 0]+') scale(' +zoom_x+ ',1)');
+    .attr('transform', 'translate('+[trans_x, params.viz.uni_margin]+') scale(' +zoom_x+ ',1)');
 
 
   // the amount by which the clustergram has shifted down, the col dendrogram will 
   // need to be shifted down 
-  var max_y = params.viz.svg_dim.height - params.viz.dendro_room.col ;
+  var max_y = params.viz.svg_dim.height - params.viz.dendro_room.col - params.viz.uni_margin;
 
   var shift_down = pan_room_y + trans_y;
   var x_offset = params.viz.clust.margin.left;
-  var y_offset = params.viz.clust.margin.top + params.viz.clust.dim.height +
-    params.viz.uni_margin+ shift_down;
+  var y_offset = params.viz.clust.margin.top + params.viz.clust.dim.height + shift_down;
   if (y_offset > max_y){
     y_offset = max_y;
   }

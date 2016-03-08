@@ -40,7 +40,7 @@ module.exports = function calc_col_dendro_triangles(params){
 
   _.each(triangle_info, function(d){
     group_info.push(d);
-  })
+  });
 
   return group_info;
 
