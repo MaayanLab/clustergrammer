@@ -81,18 +81,6 @@ module.exports = function resize_dendro(params, svg_group, delay_info=false){
       });
 
     dendro_group
-      .selectAll('.row_dendro_rect')
-      .attr('width', function() {
-        var inst_width = params.viz.cat_room.symbol_width - 1;
-        return inst_width + 'px';
-      })
-      .attr('height', params.viz.y_scale.rangeBand())
-      .attr('x', function() {
-        var inst_offset = params.viz.uni_margin;
-        return inst_offset + 'px';
-      });
-
-    dendro_group
       .selectAll('.col_cat_rect')
       .attr('width', params.viz.x_scale.rangeBand())
       .attr('height', function() {
@@ -107,5 +95,21 @@ module.exports = function resize_dendro(params, svg_group, delay_info=false){
         var inst_height = params.viz.cat_room.col - 1;
         return inst_height;
       });      
+
+  // position row_dendro_outer_container
+  var x_offset = params.viz.clust.margin.left + params.viz.clust.dim.width;
+  var y_offset = params.viz.clust.margin.top;
+  var spillover_width = params.viz.dendro_room.row + params.viz.uni_margin;
+
+  console.log('resize dendro spillover ')
+  d3.select(params.root+' .viz_svg')
+    .select('row_dendro_outer_container')
+    .attr('transform', 'translate(' + x_offset + ','+y_offset+')');
+
+  d3.select(params.root+' .row_dendro_outer_container')
+    .select('.row_dendro_spillover')
+    .attr('fill', params.viz.background_color)
+    .attr('width', spillover_width + 'px')
+    .attr('height', params.viz.svg_dim.height); 
 
   }; 

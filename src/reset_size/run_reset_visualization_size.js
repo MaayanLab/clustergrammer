@@ -144,14 +144,7 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
       var output_string = 'M ' + origin_x + ',' + origin_y + ' L ' +
         mid_x + ',' + mid_y + ', L ' + final_x + ',' + final_y + ' Z';
       return output_string;
-    });    
-
-  // svg_group
-  //   .selectAll('.row_dendro_group')
-  //   .attr('transform', function(d) {
-  //       var inst_index = _.indexOf(row_nodes_names, d.name);
-  //       return 'translate(0, ' + params.viz.y_scale(inst_index) + ')';
-  //     });
+    }); 
 
   var is_resize = true;
   make_row_dendro_triangles(params, is_resize);
