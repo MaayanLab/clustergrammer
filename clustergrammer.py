@@ -16,7 +16,7 @@ class Network(object):
     self.dat['nodes']['row'] = []
     self.dat['nodes']['col'] = []
 
-    # node_info holds the orderings (ini, clust, rank), classification ('cl'), 
+    # node_info holds the orderings (ini, clust, rank), classification ('cat'), 
     # and other general information 
     self.dat['node_info'] = {}
     for inst_rc in self.dat['nodes']:
@@ -26,7 +26,7 @@ class Network(object):
       self.dat['node_info'][inst_rc]['rank'] = []
       self.dat['node_info'][inst_rc]['info'] = []
       # classification is specifically used to color the class triangles 
-      self.dat['node_info'][inst_rc]['cl'] = []
+      self.dat['node_info'][inst_rc]['cat'] = []
       self.dat['node_info'][inst_rc]['value'] = []
 
     # initialize matrix 
@@ -87,14 +87,14 @@ class Network(object):
     # add categories if necessary 
     if add_cat:
       cat_line = [i.strip() for i in cat_line]
-      self.dat['node_info']['col']['cl'] = cat_line[1:]
+      self.dat['node_info']['col']['cat'] = cat_line[1:]
 
     # make a dict of columns in categories 
     ##########################################
     col_in_cat = {}
-    for i in range(len(self.dat['node_info']['col']['cl'])):
+    for i in range(len(self.dat['node_info']['col']['cat'])):
 
-      inst_cat = self.dat['node_info']['col']['cl'][i]
+      inst_cat = self.dat['node_info']['col']['cat'][i]
       inst_col = self.dat['nodes']['col'][i]
 
       if inst_cat not in col_in_cat:
@@ -432,7 +432,7 @@ class Network(object):
     self.dat['node_info']['col']['ini']   = clust_order['col']['ini']
     self.dat['node_info']['col']['group'] = clust_order['col']['group']
 
-    if len(self.dat['node_info']['col']['cl']) > 0:
+    if len(self.dat['node_info']['col']['cat']) > 0:
       self.calc_cat_clust_order()
 
     # make the viz json - can optionally leave out dendrogram
@@ -597,8 +597,8 @@ class Network(object):
 
 
         # add node class cl 
-        if len(self.dat['node_info'][inst_rc]['cl']) > 0:
-          inst_dict['cl'] = self.dat['node_info'][inst_rc]['cl'][i]
+        if len(self.dat['node_info'][inst_rc]['cat']) > 0:
+          inst_dict['cat'] = self.dat['node_info'][inst_rc]['cat'][i]
 
         # add node class cl_index
         if 'cl_index' in self.dat['node_info'][inst_rc] > 0:
@@ -728,8 +728,8 @@ class Network(object):
 
     # check for column categories and check whether category specific clustering
     # should be calculated 
-    if len(self.dat['node_info']['col']['cl']) > 0 and calc_col_cats:
-      tmp_cats = sorted(list(set(self.dat['node_info']['col']['cl'])))
+    if len(self.dat['node_info']['col']['cat']) > 0 and calc_col_cats:
+      tmp_cats = sorted(list(set(self.dat['node_info']['col']['cat'])))
 
       # gather all col_cats 
       all_col_cat.extend(tmp_cats)
@@ -783,11 +783,11 @@ class Network(object):
 
     # gather category key 
     is_col_cat = False
-    if len(self.dat['node_info']['col']['cl']) > 0 and current_col_cat=='all_category':
+    if len(self.dat['node_info']['col']['cat']) > 0 and current_col_cat=='all_category':
       is_col_cat = True
       cat_key_col = {}
       for i in range(len(self.dat['nodes']['col'])):
-        cat_key_col[ self.dat['nodes']['col'][i] ] = self.dat['node_info']['col']['cl'][i]
+        cat_key_col[ self.dat['nodes']['col'][i] ] = self.dat['node_info']['col']['cat'][i]
 
     # filter between 0% and 90% of some threshoold 
     all_filt = range(10)
@@ -835,7 +835,7 @@ class Network(object):
           inst_col_cats.append( cat_key_col[inst_col_name] )
 
         # transfer category information 
-        net.dat['node_info']['col']['cl'] = inst_col_cats
+        net.dat['node_info']['col']['cat'] = inst_col_cats
 
         # add col_in_cat
         net.dat['node_info']['col_in_cat'] = copy_net.dat['node_info']['col_in_cat']
@@ -882,11 +882,11 @@ class Network(object):
 
     # gather category key 
     is_col_cat = False
-    if len(self.dat['node_info']['col']['cl']) > 0 and current_col_cat=='all_category':
+    if len(self.dat['node_info']['col']['cat']) > 0 and current_col_cat=='all_category':
       is_col_cat = True
       cat_key_col = {}
       for i in range(len(self.dat['nodes']['col'])):
-        cat_key_col[ self.dat['nodes']['col'][i] ] = self.dat['node_info']['col']['cl'][i]
+        cat_key_col[ self.dat['nodes']['col'][i] ] = self.dat['node_info']['col']['cat'][i]
 
     # keep the following number of top rows 
     keep_top = ['all',500,400,300,200,100,90,80,70,60,50,40,30,20,10]
@@ -963,7 +963,7 @@ class Network(object):
             inst_col_cats.append( cat_key_col[inst_col_name] )
 
           # transfer category information 
-          net.dat['node_info']['col']['cl'] = inst_col_cats
+          net.dat['node_info']['col']['cat'] = inst_col_cats
 
           # add col_in_cat 
           net.dat['node_info']['col_in_cat'] = copy_net.dat['node_info']['col_in_cat']

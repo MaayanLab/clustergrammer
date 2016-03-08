@@ -778,8 +778,8 @@
       ], 
       "name": "H1650", 
       "clust": 12, 
-      "cl": "category-one", 
       "rank": 6, 
+      "cat": "category-one", 
       "ini": 29, 
       "cl_index": 11, 
       "rankvar": 4
@@ -800,8 +800,8 @@
       ], 
       "name": "H23", 
       "clust": 2, 
-      "cl": "category-one", 
       "rank": 17, 
+      "cat": "category-one", 
       "ini": 28, 
       "cl_index": 9, 
       "rankvar": 8
@@ -822,8 +822,8 @@
       ], 
       "name": "CAL-12T", 
       "clust": 4, 
-      "cl": "category-two", 
       "rank": 10, 
+      "cat": "category-two", 
       "ini": 27, 
       "cl_index": 26, 
       "rankvar": 19
@@ -844,8 +844,8 @@
       ], 
       "name": "H358", 
       "clust": 25, 
-      "cl": "category-one", 
       "rank": 4, 
+      "cat": "category-one", 
       "ini": 26, 
       "cl_index": 14, 
       "rankvar": 0
@@ -866,8 +866,8 @@
       ], 
       "name": "H1975", 
       "clust": 22, 
-      "cl": "category-one", 
       "rank": 0, 
+      "cat": "category-one", 
       "ini": 25, 
       "cl_index": 15, 
       "rankvar": 24
@@ -888,8 +888,8 @@
       ], 
       "name": "HCC15", 
       "clust": 1, 
-      "cl": "category-seven", 
       "rank": 24, 
+      "cat": "category-seven", 
       "ini": 24, 
       "cl_index": 18, 
       "rankvar": 20
@@ -910,8 +910,8 @@
       ], 
       "name": "H1355", 
       "clust": 5, 
-      "cl": "category-one", 
       "rank": 9, 
+      "cat": "category-one", 
       "ini": 23, 
       "cl_index": 17, 
       "rankvar": 6
@@ -932,8 +932,8 @@
       ], 
       "name": "HCC827", 
       "clust": 23, 
-      "cl": "category-two", 
       "rank": 28, 
+      "cat": "category-two", 
       "ini": 22, 
       "cl_index": 28, 
       "rankvar": 25
@@ -954,8 +954,8 @@
       ], 
       "name": "H2405", 
       "clust": 20, 
-      "cl": "category-three", 
       "rank": 1, 
+      "cat": "category-three", 
       "ini": 21, 
       "cl_index": 24, 
       "rankvar": 12
@@ -976,8 +976,8 @@
       ], 
       "name": "HCC78", 
       "clust": 21, 
-      "cl": "category-two", 
       "rank": 25, 
+      "cat": "category-two", 
       "ini": 20, 
       "cl_index": 25, 
       "rankvar": 27
@@ -998,8 +998,8 @@
       ], 
       "name": "H1666", 
       "clust": 7, 
-      "cl": "category-one", 
       "rank": 18, 
+      "cat": "category-one", 
       "ini": 19, 
       "cl_index": 7, 
       "rankvar": 15
@@ -1020,8 +1020,8 @@
       ], 
       "name": "H661", 
       "clust": 16, 
-      "cl": "category-three", 
       "rank": 3, 
+      "cat": "category-three", 
       "ini": 18, 
       "cl_index": 21, 
       "rankvar": 26
@@ -1042,8 +1042,8 @@
       ], 
       "name": "H838", 
       "clust": 17, 
-      "cl": "category-five", 
       "rank": 7, 
+      "cat": "category-five", 
       "ini": 17, 
       "cl_index": 0, 
       "rankvar": 23
@@ -1064,8 +1064,8 @@
       ], 
       "name": "H1703", 
       "clust": 14, 
-      "cl": "category-one", 
       "rank": 11, 
+      "cat": "category-one", 
       "ini": 16, 
       "cl_index": 10, 
       "rankvar": 21
@@ -1086,8 +1086,8 @@
       ], 
       "name": "CALU-3", 
       "clust": 19, 
-      "cl": "category-five", 
       "rank": 8, 
+      "cat": "category-five", 
       "ini": 15, 
       "cl_index": 1, 
       "rankvar": 7
@@ -1108,8 +1108,8 @@
       ], 
       "name": "H2342", 
       "clust": 18, 
-      "cl": "category-two", 
       "rank": 26, 
+      "cat": "category-two", 
       "ini": 14, 
       "cl_index": 27, 
       "rankvar": 22
@@ -1130,8 +1130,8 @@
       ], 
       "name": "H2228", 
       "clust": 26, 
-      "cl": "category-four", 
       "rank": 2, 
+      "cat": "category-four", 
       "ini": 13, 
       "cl_index": 2, 
       "rankvar": 5
@@ -1152,8 +1152,8 @@
       ], 
       "name": "H1299", 
       "clust": 15, 
-      "cl": "category-one", 
       "rank": 12, 
+      "cat": "category-one", 
       "ini": 12, 
       "cl_index": 8, 
       "rankvar": 1
@@ -1174,8 +1174,8 @@
       ], 
       "name": "H1792", 
       "clust": 10, 
-      "cl": "category-one", 
       "rank": 20, 
+      "cat": "category-one", 
       "ini": 11, 
       "cl_index": 16, 
       "rankvar": 9
@@ -1196,8 +1196,8 @@
       ], 
       "name": "H460", 
       "clust": 11, 
-      "cl": "category-one", 
       "rank": 5, 
+      "cat": "category-one", 
       "ini": 10, 
       "cl_index": 6, 
       "rankvar": 11
@@ -1218,8 +1218,8 @@
       ], 
       "name": "H2106", 
       "clust": 0, 
-      "cl": "category-six", 
       "rank": 22, 
+      "cat": "category-six", 
       "ini": 9, 
       "cl_index": 19, 
       "rankvar": 28
@@ -1240,8 +1240,8 @@
       ], 
       "name": "H441", 
       "clust": 27, 
-      "cl": "category-one", 
       "rank": 27, 
+      "cat": "category-one", 
       "ini": 8, 
       "cl_index": 12, 
       "rankvar": 14
@@ -1262,8 +1262,8 @@
       ], 
       "name": "H1944", 
       "clust": 8, 
-      "cl": "category-one", 
       "rank": 23, 
+      "cat": "category-one", 
       "ini": 7, 
       "cl_index": 13, 
       "rankvar": 10
@@ -1284,8 +1284,8 @@
       ], 
       "name": "H1437", 
       "clust": 6, 
-      "cl": "category-four", 
       "rank": 16, 
+      "cat": "category-four", 
       "ini": 6, 
       "cl_index": 5, 
       "rankvar": 17
@@ -1306,8 +1306,8 @@
       ], 
       "name": "H1734", 
       "clust": 24, 
-      "cl": "category-three", 
       "rank": 19, 
+      "cat": "category-three", 
       "ini": 5, 
       "cl_index": 22, 
       "rankvar": 18
@@ -1328,8 +1328,8 @@
       ], 
       "name": "LOU-NH91", 
       "clust": 13, 
-      "cl": "category-three", 
       "rank": 15, 
+      "cat": "category-three", 
       "ini": 4, 
       "cl_index": 23, 
       "rankvar": 16
@@ -1350,8 +1350,8 @@
       ], 
       "name": "HCC44", 
       "clust": 3, 
-      "cl": "category-four", 
       "rank": 14, 
+      "cat": "category-four", 
       "ini": 3, 
       "cl_index": 3, 
       "rankvar": 2
@@ -1372,8 +1372,8 @@
       ], 
       "name": "A549", 
       "clust": 9, 
-      "cl": "category-six", 
       "rank": 21, 
+      "cat": "category-six", 
       "ini": 2, 
       "cl_index": 20, 
       "rankvar": 3
@@ -1394,8 +1394,8 @@
       ], 
       "name": "H1781", 
       "clust": 28, 
-      "cl": "category-four", 
       "rank": 13, 
+      "cat": "category-four", 
       "ini": 1, 
       "cl_index": 4, 
       "rankvar": 13
@@ -7698,8 +7698,8 @@
             ], 
             "name": "H1650", 
             "clust": 12, 
-            "cl": "category-one", 
             "rank": 6, 
+            "cat": "category-one", 
             "ini": 29, 
             "cl_index": 11, 
             "rankvar": 4
@@ -7720,8 +7720,8 @@
             ], 
             "name": "H23", 
             "clust": 2, 
-            "cl": "category-one", 
             "rank": 17, 
+            "cat": "category-one", 
             "ini": 28, 
             "cl_index": 9, 
             "rankvar": 8
@@ -7742,8 +7742,8 @@
             ], 
             "name": "CAL-12T", 
             "clust": 4, 
-            "cl": "category-two", 
             "rank": 10, 
+            "cat": "category-two", 
             "ini": 27, 
             "cl_index": 26, 
             "rankvar": 19
@@ -7764,8 +7764,8 @@
             ], 
             "name": "H358", 
             "clust": 25, 
-            "cl": "category-one", 
             "rank": 4, 
+            "cat": "category-one", 
             "ini": 26, 
             "cl_index": 14, 
             "rankvar": 0
@@ -7786,8 +7786,8 @@
             ], 
             "name": "H1975", 
             "clust": 22, 
-            "cl": "category-one", 
             "rank": 0, 
+            "cat": "category-one", 
             "ini": 25, 
             "cl_index": 15, 
             "rankvar": 24
@@ -7808,8 +7808,8 @@
             ], 
             "name": "HCC15", 
             "clust": 1, 
-            "cl": "category-seven", 
             "rank": 24, 
+            "cat": "category-seven", 
             "ini": 24, 
             "cl_index": 18, 
             "rankvar": 20
@@ -7830,8 +7830,8 @@
             ], 
             "name": "H1355", 
             "clust": 5, 
-            "cl": "category-one", 
             "rank": 9, 
+            "cat": "category-one", 
             "ini": 23, 
             "cl_index": 17, 
             "rankvar": 6
@@ -7852,8 +7852,8 @@
             ], 
             "name": "HCC827", 
             "clust": 23, 
-            "cl": "category-two", 
             "rank": 28, 
+            "cat": "category-two", 
             "ini": 22, 
             "cl_index": 28, 
             "rankvar": 25
@@ -7874,8 +7874,8 @@
             ], 
             "name": "H2405", 
             "clust": 20, 
-            "cl": "category-three", 
             "rank": 1, 
+            "cat": "category-three", 
             "ini": 21, 
             "cl_index": 24, 
             "rankvar": 12
@@ -7896,8 +7896,8 @@
             ], 
             "name": "HCC78", 
             "clust": 21, 
-            "cl": "category-two", 
             "rank": 25, 
+            "cat": "category-two", 
             "ini": 20, 
             "cl_index": 25, 
             "rankvar": 27
@@ -7918,8 +7918,8 @@
             ], 
             "name": "H1666", 
             "clust": 7, 
-            "cl": "category-one", 
             "rank": 18, 
+            "cat": "category-one", 
             "ini": 19, 
             "cl_index": 7, 
             "rankvar": 15
@@ -7940,8 +7940,8 @@
             ], 
             "name": "H661", 
             "clust": 16, 
-            "cl": "category-three", 
             "rank": 3, 
+            "cat": "category-three", 
             "ini": 18, 
             "cl_index": 21, 
             "rankvar": 26
@@ -7962,8 +7962,8 @@
             ], 
             "name": "H838", 
             "clust": 17, 
-            "cl": "category-five", 
             "rank": 7, 
+            "cat": "category-five", 
             "ini": 17, 
             "cl_index": 0, 
             "rankvar": 23
@@ -7984,8 +7984,8 @@
             ], 
             "name": "H1703", 
             "clust": 14, 
-            "cl": "category-one", 
             "rank": 11, 
+            "cat": "category-one", 
             "ini": 16, 
             "cl_index": 10, 
             "rankvar": 21
@@ -8006,8 +8006,8 @@
             ], 
             "name": "CALU-3", 
             "clust": 19, 
-            "cl": "category-five", 
             "rank": 8, 
+            "cat": "category-five", 
             "ini": 15, 
             "cl_index": 1, 
             "rankvar": 7
@@ -8028,8 +8028,8 @@
             ], 
             "name": "H2342", 
             "clust": 18, 
-            "cl": "category-two", 
             "rank": 26, 
+            "cat": "category-two", 
             "ini": 14, 
             "cl_index": 27, 
             "rankvar": 22
@@ -8050,8 +8050,8 @@
             ], 
             "name": "H2228", 
             "clust": 26, 
-            "cl": "category-four", 
             "rank": 2, 
+            "cat": "category-four", 
             "ini": 13, 
             "cl_index": 2, 
             "rankvar": 5
@@ -8072,8 +8072,8 @@
             ], 
             "name": "H1299", 
             "clust": 15, 
-            "cl": "category-one", 
             "rank": 12, 
+            "cat": "category-one", 
             "ini": 12, 
             "cl_index": 8, 
             "rankvar": 1
@@ -8094,8 +8094,8 @@
             ], 
             "name": "H1792", 
             "clust": 10, 
-            "cl": "category-one", 
             "rank": 20, 
+            "cat": "category-one", 
             "ini": 11, 
             "cl_index": 16, 
             "rankvar": 9
@@ -8116,8 +8116,8 @@
             ], 
             "name": "H460", 
             "clust": 11, 
-            "cl": "category-one", 
             "rank": 5, 
+            "cat": "category-one", 
             "ini": 10, 
             "cl_index": 6, 
             "rankvar": 11
@@ -8138,8 +8138,8 @@
             ], 
             "name": "H2106", 
             "clust": 0, 
-            "cl": "category-six", 
             "rank": 22, 
+            "cat": "category-six", 
             "ini": 9, 
             "cl_index": 19, 
             "rankvar": 28
@@ -8160,8 +8160,8 @@
             ], 
             "name": "H441", 
             "clust": 27, 
-            "cl": "category-one", 
             "rank": 27, 
+            "cat": "category-one", 
             "ini": 8, 
             "cl_index": 12, 
             "rankvar": 14
@@ -8182,8 +8182,8 @@
             ], 
             "name": "H1944", 
             "clust": 8, 
-            "cl": "category-one", 
             "rank": 23, 
+            "cat": "category-one", 
             "ini": 7, 
             "cl_index": 13, 
             "rankvar": 10
@@ -8204,8 +8204,8 @@
             ], 
             "name": "H1437", 
             "clust": 6, 
-            "cl": "category-four", 
             "rank": 16, 
+            "cat": "category-four", 
             "ini": 6, 
             "cl_index": 5, 
             "rankvar": 17
@@ -8226,8 +8226,8 @@
             ], 
             "name": "H1734", 
             "clust": 24, 
-            "cl": "category-three", 
             "rank": 19, 
+            "cat": "category-three", 
             "ini": 5, 
             "cl_index": 22, 
             "rankvar": 18
@@ -8248,8 +8248,8 @@
             ], 
             "name": "LOU-NH91", 
             "clust": 13, 
-            "cl": "category-three", 
             "rank": 15, 
+            "cat": "category-three", 
             "ini": 4, 
             "cl_index": 23, 
             "rankvar": 16
@@ -8270,8 +8270,8 @@
             ], 
             "name": "HCC44", 
             "clust": 3, 
-            "cl": "category-four", 
             "rank": 14, 
+            "cat": "category-four", 
             "ini": 3, 
             "cl_index": 3, 
             "rankvar": 2
@@ -8292,8 +8292,8 @@
             ], 
             "name": "A549", 
             "clust": 9, 
-            "cl": "category-six", 
             "rank": 21, 
+            "cat": "category-six", 
             "ini": 2, 
             "cl_index": 20, 
             "rankvar": 3
@@ -8314,8 +8314,8 @@
             ], 
             "name": "H1781", 
             "clust": 28, 
-            "cl": "category-four", 
             "rank": 13, 
+            "cat": "category-four", 
             "ini": 1, 
             "cl_index": 4, 
             "rankvar": 13
@@ -8947,8 +8947,8 @@
             ], 
             "name": "H1650", 
             "clust": 21, 
-            "cl": "category-one", 
             "rank": 8, 
+            "cat": "category-one", 
             "ini": 29, 
             "cl_index": 12, 
             "rankvar": 6
@@ -8969,8 +8969,8 @@
             ], 
             "name": "H23", 
             "clust": 11, 
-            "cl": "category-one", 
             "rank": 18, 
+            "cat": "category-one", 
             "ini": 28, 
             "cl_index": 7, 
             "rankvar": 12
@@ -8991,8 +8991,8 @@
             ], 
             "name": "CAL-12T", 
             "clust": 1, 
-            "cl": "category-two", 
             "rank": 9, 
+            "cat": "category-two", 
             "ini": 27, 
             "cl_index": 26, 
             "rankvar": 19
@@ -9013,8 +9013,8 @@
             ], 
             "name": "H358", 
             "clust": 25, 
-            "cl": "category-one", 
             "rank": 14, 
+            "cat": "category-one", 
             "ini": 26, 
             "cl_index": 13, 
             "rankvar": 0
@@ -9035,8 +9035,8 @@
             ], 
             "name": "H1975", 
             "clust": 22, 
-            "cl": "category-one", 
             "rank": 0, 
+            "cat": "category-one", 
             "ini": 25, 
             "cl_index": 10, 
             "rankvar": 25
@@ -9057,8 +9057,8 @@
             ], 
             "name": "HCC15", 
             "clust": 8, 
-            "cl": "category-seven", 
             "rank": 17, 
+            "cat": "category-seven", 
             "ini": 24, 
             "cl_index": 18, 
             "rankvar": 18
@@ -9079,8 +9079,8 @@
             ], 
             "name": "H1355", 
             "clust": 2, 
-            "cl": "category-one", 
             "rank": 16, 
+            "cat": "category-one", 
             "ini": 23, 
             "cl_index": 17, 
             "rankvar": 9
@@ -9101,8 +9101,8 @@
             ], 
             "name": "HCC827", 
             "clust": 23, 
-            "cl": "category-two", 
             "rank": 28, 
+            "cat": "category-two", 
             "ini": 22, 
             "cl_index": 28, 
             "rankvar": 24
@@ -9123,8 +9123,8 @@
             ], 
             "name": "H2405", 
             "clust": 19, 
-            "cl": "category-three", 
             "rank": 2, 
+            "cat": "category-three", 
             "ini": 21, 
             "cl_index": 22, 
             "rankvar": 17
@@ -9145,8 +9145,8 @@
             ], 
             "name": "HCC78", 
             "clust": 16, 
-            "cl": "category-two", 
             "rank": 26, 
+            "cat": "category-two", 
             "ini": 20, 
             "cl_index": 25, 
             "rankvar": 27
@@ -9167,8 +9167,8 @@
             ], 
             "name": "H1666", 
             "clust": 20, 
-            "cl": "category-one", 
             "rank": 4, 
+            "cat": "category-one", 
             "ini": 19, 
             "cl_index": 9, 
             "rankvar": 1
@@ -9189,8 +9189,8 @@
             ], 
             "name": "H661", 
             "clust": 13, 
-            "cl": "category-three", 
             "rank": 6, 
+            "cat": "category-three", 
             "ini": 18, 
             "cl_index": 23, 
             "rankvar": 26
@@ -9211,8 +9211,8 @@
             ], 
             "name": "H838", 
             "clust": 14, 
-            "cl": "category-five", 
             "rank": 5, 
+            "cat": "category-five", 
             "ini": 17, 
             "cl_index": 0, 
             "rankvar": 22
@@ -9233,8 +9233,8 @@
             ], 
             "name": "H1703", 
             "clust": 9, 
-            "cl": "category-one", 
             "rank": 7, 
+            "cat": "category-one", 
             "ini": 16, 
             "cl_index": 14, 
             "rankvar": 8
@@ -9255,8 +9255,8 @@
             ], 
             "name": "CALU-3", 
             "clust": 18, 
-            "cl": "category-five", 
             "rank": 15, 
+            "cat": "category-five", 
             "ini": 15, 
             "cl_index": 1, 
             "rankvar": 11
@@ -9277,8 +9277,8 @@
             ], 
             "name": "H2342", 
             "clust": 15, 
-            "cl": "category-two", 
             "rank": 25, 
+            "cat": "category-two", 
             "ini": 14, 
             "cl_index": 27, 
             "rankvar": 23
@@ -9299,8 +9299,8 @@
             ], 
             "name": "H2228", 
             "clust": 27, 
-            "cl": "category-four", 
             "rank": 10, 
+            "cat": "category-four", 
             "ini": 13, 
             "cl_index": 2, 
             "rankvar": 7
@@ -9321,8 +9321,8 @@
             ], 
             "name": "H1299", 
             "clust": 12, 
-            "cl": "category-one", 
             "rank": 12, 
+            "cat": "category-one", 
             "ini": 12, 
             "cl_index": 15, 
             "rankvar": 2
@@ -9343,8 +9343,8 @@
             ], 
             "name": "H1792", 
             "clust": 5, 
-            "cl": "category-one", 
             "rank": 23, 
+            "cat": "category-one", 
             "ini": 11, 
             "cl_index": 11, 
             "rankvar": 13
@@ -9365,8 +9365,8 @@
             ], 
             "name": "H460", 
             "clust": 6, 
-            "cl": "category-one", 
             "rank": 1, 
+            "cat": "category-one", 
             "ini": 10, 
             "cl_index": 6, 
             "rankvar": 4
@@ -9387,8 +9387,8 @@
             ], 
             "name": "H2106", 
             "clust": 0, 
-            "cl": "category-six", 
             "rank": 24, 
+            "cat": "category-six", 
             "ini": 9, 
             "cl_index": 19, 
             "rankvar": 28
@@ -9409,8 +9409,8 @@
             ], 
             "name": "H441", 
             "clust": 26, 
-            "cl": "category-one", 
             "rank": 27, 
+            "cat": "category-one", 
             "ini": 8, 
             "cl_index": 8, 
             "rankvar": 16
@@ -9431,8 +9431,8 @@
             ], 
             "name": "H1944", 
             "clust": 4, 
-            "cl": "category-one", 
             "rank": 22, 
+            "cat": "category-one", 
             "ini": 7, 
             "cl_index": 16, 
             "rankvar": 15
@@ -9453,8 +9453,8 @@
             ], 
             "name": "H1437", 
             "clust": 3, 
-            "cl": "category-four", 
             "rank": 13, 
+            "cat": "category-four", 
             "ini": 6, 
             "cl_index": 5, 
             "rankvar": 20
@@ -9475,8 +9475,8 @@
             ], 
             "name": "H1734", 
             "clust": 24, 
-            "cl": "category-three", 
             "rank": 20, 
+            "cat": "category-three", 
             "ini": 5, 
             "cl_index": 21, 
             "rankvar": 21
@@ -9497,8 +9497,8 @@
             ], 
             "name": "LOU-NH91", 
             "clust": 17, 
-            "cl": "category-three", 
             "rank": 3, 
+            "cat": "category-three", 
             "ini": 4, 
             "cl_index": 24, 
             "rankvar": 10
@@ -9519,8 +9519,8 @@
             ], 
             "name": "HCC44", 
             "clust": 10, 
-            "cl": "category-four", 
             "rank": 11, 
+            "cat": "category-four", 
             "ini": 3, 
             "cl_index": 3, 
             "rankvar": 3
@@ -9541,8 +9541,8 @@
             ], 
             "name": "A549", 
             "clust": 7, 
-            "cl": "category-six", 
             "rank": 19, 
+            "cat": "category-six", 
             "ini": 2, 
             "cl_index": 20, 
             "rankvar": 5
@@ -9563,8 +9563,8 @@
             ], 
             "name": "H1781", 
             "clust": 28, 
-            "cl": "category-four", 
             "rank": 21, 
+            "cat": "category-four", 
             "ini": 1, 
             "cl_index": 4, 
             "rankvar": 14
@@ -9996,8 +9996,8 @@
             ], 
             "name": "H1650", 
             "clust": 14, 
-            "cl": "category-one", 
             "rank": 7, 
+            "cat": "category-one", 
             "ini": 29, 
             "cl_index": 9, 
             "rankvar": 3
@@ -10018,8 +10018,8 @@
             ], 
             "name": "H23", 
             "clust": 7, 
-            "cl": "category-one", 
             "rank": 14, 
+            "cat": "category-one", 
             "ini": 28, 
             "cl_index": 14, 
             "rankvar": 12
@@ -10040,8 +10040,8 @@
             ], 
             "name": "CAL-12T", 
             "clust": 20, 
-            "cl": "category-two", 
             "rank": 21, 
+            "cat": "category-two", 
             "ini": 27, 
             "cl_index": 26, 
             "rankvar": 18
@@ -10062,8 +10062,8 @@
             ], 
             "name": "H358", 
             "clust": 21, 
-            "cl": "category-one", 
             "rank": 15, 
+            "cat": "category-one", 
             "ini": 26, 
             "cl_index": 12, 
             "rankvar": 2
@@ -10084,8 +10084,8 @@
             ], 
             "name": "H1975", 
             "clust": 27, 
-            "cl": "category-one", 
             "rank": 1, 
+            "cat": "category-one", 
             "ini": 25, 
             "cl_index": 7, 
             "rankvar": 27
@@ -10106,8 +10106,8 @@
             ], 
             "name": "HCC15", 
             "clust": 8, 
-            "cl": "category-seven", 
             "rank": 5, 
+            "cat": "category-seven", 
             "ini": 24, 
             "cl_index": 18, 
             "rankvar": 8
@@ -10128,8 +10128,8 @@
             ], 
             "name": "H1355", 
             "clust": 10, 
-            "cl": "category-one", 
             "rank": 16, 
+            "cat": "category-one", 
             "ini": 23, 
             "cl_index": 13, 
             "rankvar": 9
@@ -10150,8 +10150,8 @@
             ], 
             "name": "HCC827", 
             "clust": 25, 
-            "cl": "category-two", 
             "rank": 28, 
+            "cat": "category-two", 
             "ini": 22, 
             "cl_index": 28, 
             "rankvar": 26
@@ -10172,8 +10172,8 @@
             ], 
             "name": "H2405", 
             "clust": 18, 
-            "cl": "category-three", 
             "rank": 4, 
+            "cat": "category-three", 
             "ini": 21, 
             "cl_index": 22, 
             "rankvar": 20
@@ -10194,8 +10194,8 @@
             ], 
             "name": "HCC78", 
             "clust": 17, 
-            "cl": "category-two", 
             "rank": 26, 
+            "cat": "category-two", 
             "ini": 20, 
             "cl_index": 25, 
             "rankvar": 28
@@ -10216,8 +10216,8 @@
             ], 
             "name": "H1666", 
             "clust": 19, 
-            "cl": "category-one", 
             "rank": 3, 
+            "cat": "category-one", 
             "ini": 19, 
             "cl_index": 17, 
             "rankvar": 4
@@ -10238,8 +10238,8 @@
             ], 
             "name": "H661", 
             "clust": 1, 
-            "cl": "category-three", 
             "rank": 18, 
+            "cat": "category-three", 
             "ini": 18, 
             "cl_index": 23, 
             "rankvar": 21
@@ -10260,8 +10260,8 @@
             ], 
             "name": "H838", 
             "clust": 2, 
-            "cl": "category-five", 
             "rank": 11, 
+            "cat": "category-five", 
             "ini": 17, 
             "cl_index": 0, 
             "rankvar": 23
@@ -10282,8 +10282,8 @@
             ], 
             "name": "H1703", 
             "clust": 4, 
-            "cl": "category-one", 
             "rank": 10, 
+            "cat": "category-one", 
             "ini": 16, 
             "cl_index": 10, 
             "rankvar": 15
@@ -10304,8 +10304,8 @@
             ], 
             "name": "CALU-3", 
             "clust": 15, 
-            "cl": "category-five", 
             "rank": 8, 
+            "cat": "category-five", 
             "ini": 15, 
             "cl_index": 1, 
             "rankvar": 16
@@ -10326,8 +10326,8 @@
             ], 
             "name": "H2342", 
             "clust": 3, 
-            "cl": "category-two", 
             "rank": 27, 
+            "cat": "category-two", 
             "ini": 14, 
             "cl_index": 27, 
             "rankvar": 24
@@ -10348,8 +10348,8 @@
             ], 
             "name": "H2228", 
             "clust": 22, 
-            "cl": "category-four", 
             "rank": 12, 
+            "cat": "category-four", 
             "ini": 13, 
             "cl_index": 3, 
             "rankvar": 11
@@ -10370,8 +10370,8 @@
             ], 
             "name": "H1299", 
             "clust": 6, 
-            "cl": "category-one", 
             "rank": 6, 
+            "cat": "category-one", 
             "ini": 12, 
             "cl_index": 15, 
             "rankvar": 5
@@ -10392,8 +10392,8 @@
             ], 
             "name": "H1792", 
             "clust": 28, 
-            "cl": "category-one", 
             "rank": 22, 
+            "cat": "category-one", 
             "ini": 11, 
             "cl_index": 8, 
             "rankvar": 10
@@ -10414,8 +10414,8 @@
             ], 
             "name": "H460", 
             "clust": 11, 
-            "cl": "category-one", 
             "rank": 0, 
+            "cat": "category-one", 
             "ini": 10, 
             "cl_index": 16, 
             "rankvar": 1
@@ -10436,8 +10436,8 @@
             ], 
             "name": "H2106", 
             "clust": 0, 
-            "cl": "category-six", 
             "rank": 20, 
+            "cat": "category-six", 
             "ini": 9, 
             "cl_index": 19, 
             "rankvar": 25
@@ -10458,8 +10458,8 @@
             ], 
             "name": "H441", 
             "clust": 23, 
-            "cl": "category-one", 
             "rank": 24, 
+            "cat": "category-one", 
             "ini": 8, 
             "cl_index": 6, 
             "rankvar": 13
@@ -10480,8 +10480,8 @@
             ], 
             "name": "H1944", 
             "clust": 12, 
-            "cl": "category-one", 
             "rank": 19, 
+            "cat": "category-one", 
             "ini": 7, 
             "cl_index": 11, 
             "rankvar": 7
@@ -10502,8 +10502,8 @@
             ], 
             "name": "H1437", 
             "clust": 9, 
-            "cl": "category-four", 
             "rank": 17, 
+            "cat": "category-four", 
             "ini": 6, 
             "cl_index": 4, 
             "rankvar": 22
@@ -10524,8 +10524,8 @@
             ], 
             "name": "H1734", 
             "clust": 26, 
-            "cl": "category-three", 
             "rank": 25, 
+            "cat": "category-three", 
             "ini": 5, 
             "cl_index": 21, 
             "rankvar": 19
@@ -10546,8 +10546,8 @@
             ], 
             "name": "LOU-NH91", 
             "clust": 16, 
-            "cl": "category-three", 
             "rank": 2, 
+            "cat": "category-three", 
             "ini": 4, 
             "cl_index": 24, 
             "rankvar": 14
@@ -10568,8 +10568,8 @@
             ], 
             "name": "HCC44", 
             "clust": 5, 
-            "cl": "category-four", 
             "rank": 13, 
+            "cat": "category-four", 
             "ini": 3, 
             "cl_index": 2, 
             "rankvar": 6
@@ -10590,8 +10590,8 @@
             ], 
             "name": "A549", 
             "clust": 13, 
-            "cl": "category-six", 
             "rank": 9, 
+            "cat": "category-six", 
             "ini": 2, 
             "cl_index": 20, 
             "rankvar": 0
@@ -10612,8 +10612,8 @@
             ], 
             "name": "H1781", 
             "clust": 24, 
-            "cl": "category-four", 
             "rank": 23, 
+            "cat": "category-four", 
             "ini": 1, 
             "cl_index": 5, 
             "rankvar": 17
@@ -10845,8 +10845,8 @@
             ], 
             "name": "H1650", 
             "clust": 27, 
-            "cl": "category-one", 
             "rank": 7, 
+            "cat": "category-one", 
             "ini": 29, 
             "cl_index": 14, 
             "rankvar": 9
@@ -10867,8 +10867,8 @@
             ], 
             "name": "H23", 
             "clust": 6, 
-            "cl": "category-one", 
             "rank": 19, 
+            "cat": "category-one", 
             "ini": 28, 
             "cl_index": 9, 
             "rankvar": 20
@@ -10889,8 +10889,8 @@
             ], 
             "name": "CAL-12T", 
             "clust": 0, 
-            "cl": "category-two", 
             "rank": 6, 
+            "cat": "category-two", 
             "ini": 27, 
             "cl_index": 26, 
             "rankvar": 4
@@ -10911,8 +10911,8 @@
             ], 
             "name": "H358", 
             "clust": 25, 
-            "cl": "category-one", 
             "rank": 11, 
+            "cat": "category-one", 
             "ini": 26, 
             "cl_index": 10, 
             "rankvar": 0
@@ -10933,8 +10933,8 @@
             ], 
             "name": "H1975", 
             "clust": 12, 
-            "cl": "category-one", 
             "rank": 0, 
+            "cat": "category-one", 
             "ini": 25, 
             "cl_index": 12, 
             "rankvar": 27
@@ -10955,8 +10955,8 @@
             ], 
             "name": "HCC15", 
             "clust": 8, 
-            "cl": "category-seven", 
             "rank": 13, 
+            "cat": "category-seven", 
             "ini": 24, 
             "cl_index": 18, 
             "rankvar": 16
@@ -10977,8 +10977,8 @@
             ], 
             "name": "H1355", 
             "clust": 13, 
-            "cl": "category-one", 
             "rank": 4, 
+            "cat": "category-one", 
             "ini": 23, 
             "cl_index": 7, 
             "rankvar": 8
@@ -10999,8 +10999,8 @@
             ], 
             "name": "HCC827", 
             "clust": 28, 
-            "cl": "category-two", 
             "rank": 28, 
+            "cat": "category-two", 
             "ini": 22, 
             "cl_index": 28, 
             "rankvar": 26
@@ -11021,8 +11021,8 @@
             ], 
             "name": "H2405", 
             "clust": 3, 
-            "cl": "category-three", 
             "rank": 18, 
+            "cat": "category-three", 
             "ini": 21, 
             "cl_index": 21, 
             "rankvar": 10
@@ -11043,8 +11043,8 @@
             ], 
             "name": "HCC78", 
             "clust": 4, 
-            "cl": "category-two", 
             "rank": 27, 
+            "cat": "category-two", 
             "ini": 20, 
             "cl_index": 25, 
             "rankvar": 28
@@ -11065,8 +11065,8 @@
             ], 
             "name": "H1666", 
             "clust": 1, 
-            "cl": "category-one", 
             "rank": 5, 
+            "cat": "category-one", 
             "ini": 19, 
             "cl_index": 13, 
             "rankvar": 7
@@ -11087,8 +11087,8 @@
             ], 
             "name": "H661", 
             "clust": 19, 
-            "cl": "category-three", 
             "rank": 22, 
+            "cat": "category-three", 
             "ini": 18, 
             "cl_index": 24, 
             "rankvar": 23
@@ -11109,8 +11109,8 @@
             ], 
             "name": "H838", 
             "clust": 20, 
-            "cl": "category-five", 
             "rank": 20, 
+            "cat": "category-five", 
             "ini": 17, 
             "cl_index": 0, 
             "rankvar": 24
@@ -11131,8 +11131,8 @@
             ], 
             "name": "H1703", 
             "clust": 9, 
-            "cl": "category-one", 
             "rank": 12, 
+            "cat": "category-one", 
             "ini": 16, 
             "cl_index": 15, 
             "rankvar": 13
@@ -11153,8 +11153,8 @@
             ], 
             "name": "CALU-3", 
             "clust": 17, 
-            "cl": "category-five", 
             "rank": 9, 
+            "cat": "category-five", 
             "ini": 15, 
             "cl_index": 1, 
             "rankvar": 5
@@ -11175,8 +11175,8 @@
             ], 
             "name": "H2342", 
             "clust": 21, 
-            "cl": "category-two", 
             "rank": 26, 
+            "cat": "category-two", 
             "ini": 14, 
             "cl_index": 27, 
             "rankvar": 25
@@ -11197,8 +11197,8 @@
             ], 
             "name": "H2228", 
             "clust": 23, 
-            "cl": "category-four", 
             "rank": 21, 
+            "cat": "category-four", 
             "ini": 13, 
             "cl_index": 3, 
             "rankvar": 19
@@ -11219,8 +11219,8 @@
             ], 
             "name": "H1299", 
             "clust": 7, 
-            "cl": "category-one", 
             "rank": 8, 
+            "cat": "category-one", 
             "ini": 12, 
             "cl_index": 17, 
             "rankvar": 12
@@ -11241,8 +11241,8 @@
             ], 
             "name": "H1792", 
             "clust": 14, 
-            "cl": "category-one", 
             "rank": 15, 
+            "cat": "category-one", 
             "ini": 11, 
             "cl_index": 8, 
             "rankvar": 17
@@ -11263,8 +11263,8 @@
             ], 
             "name": "H460", 
             "clust": 10, 
-            "cl": "category-one", 
             "rank": 2, 
+            "cat": "category-one", 
             "ini": 10, 
             "cl_index": 16, 
             "rankvar": 3
@@ -11285,8 +11285,8 @@
             ], 
             "name": "H2106", 
             "clust": 18, 
-            "cl": "category-six", 
             "rank": 3, 
+            "cat": "category-six", 
             "ini": 9, 
             "cl_index": 19, 
             "rankvar": 14
@@ -11307,8 +11307,8 @@
             ], 
             "name": "H441", 
             "clust": 22, 
-            "cl": "category-one", 
             "rank": 23, 
+            "cat": "category-one", 
             "ini": 8, 
             "cl_index": 6, 
             "rankvar": 18
@@ -11329,8 +11329,8 @@
             ], 
             "name": "H1944", 
             "clust": 11, 
-            "cl": "category-one", 
             "rank": 16, 
+            "cat": "category-one", 
             "ini": 7, 
             "cl_index": 11, 
             "rankvar": 15
@@ -11351,8 +11351,8 @@
             ], 
             "name": "H1437", 
             "clust": 16, 
-            "cl": "category-four", 
             "rank": 1, 
+            "cat": "category-four", 
             "ini": 6, 
             "cl_index": 4, 
             "rankvar": 1
@@ -11373,8 +11373,8 @@
             ], 
             "name": "H1734", 
             "clust": 26, 
-            "cl": "category-three", 
             "rank": 25, 
+            "cat": "category-three", 
             "ini": 5, 
             "cl_index": 22, 
             "rankvar": 22
@@ -11395,8 +11395,8 @@
             ], 
             "name": "LOU-NH91", 
             "clust": 2, 
-            "cl": "category-three", 
             "rank": 14, 
+            "cat": "category-three", 
             "ini": 4, 
             "cl_index": 23, 
             "rankvar": 6
@@ -11417,8 +11417,8 @@
             ], 
             "name": "HCC44", 
             "clust": 5, 
-            "cl": "category-four", 
             "rank": 17, 
+            "cat": "category-four", 
             "ini": 3, 
             "cl_index": 2, 
             "rankvar": 11
@@ -11439,8 +11439,8 @@
             ], 
             "name": "A549", 
             "clust": 15, 
-            "cl": "category-six", 
             "rank": 10, 
+            "cat": "category-six", 
             "ini": 2, 
             "cl_index": 20, 
             "rankvar": 2
@@ -11461,8 +11461,8 @@
             ], 
             "name": "H1781", 
             "clust": 24, 
-            "cl": "category-four", 
             "rank": 24, 
+            "cat": "category-four", 
             "ini": 1, 
             "cl_index": 5, 
             "rankvar": 21
@@ -12253,8 +12253,8 @@
             ], 
             "name": "H1650", 
             "clust": 12, 
-            "cl": "category-one", 
             "rank": 6, 
+            "cat": "category-one", 
             "ini": 29, 
             "cl_index": 11, 
             "rankvar": 4
@@ -12275,8 +12275,8 @@
             ], 
             "name": "H23", 
             "clust": 2, 
-            "cl": "category-one", 
             "rank": 17, 
+            "cat": "category-one", 
             "ini": 28, 
             "cl_index": 9, 
             "rankvar": 8
@@ -12297,8 +12297,8 @@
             ], 
             "name": "CAL-12T", 
             "clust": 4, 
-            "cl": "category-two", 
             "rank": 10, 
+            "cat": "category-two", 
             "ini": 27, 
             "cl_index": 26, 
             "rankvar": 19
@@ -12319,8 +12319,8 @@
             ], 
             "name": "H358", 
             "clust": 25, 
-            "cl": "category-one", 
             "rank": 4, 
+            "cat": "category-one", 
             "ini": 26, 
             "cl_index": 14, 
             "rankvar": 0
@@ -12341,8 +12341,8 @@
             ], 
             "name": "H1975", 
             "clust": 22, 
-            "cl": "category-one", 
             "rank": 0, 
+            "cat": "category-one", 
             "ini": 25, 
             "cl_index": 15, 
             "rankvar": 24
@@ -12363,8 +12363,8 @@
             ], 
             "name": "HCC15", 
             "clust": 1, 
-            "cl": "category-seven", 
             "rank": 24, 
+            "cat": "category-seven", 
             "ini": 24, 
             "cl_index": 18, 
             "rankvar": 20
@@ -12385,8 +12385,8 @@
             ], 
             "name": "H1355", 
             "clust": 5, 
-            "cl": "category-one", 
             "rank": 9, 
+            "cat": "category-one", 
             "ini": 23, 
             "cl_index": 17, 
             "rankvar": 6
@@ -12407,8 +12407,8 @@
             ], 
             "name": "HCC827", 
             "clust": 23, 
-            "cl": "category-two", 
             "rank": 28, 
+            "cat": "category-two", 
             "ini": 22, 
             "cl_index": 28, 
             "rankvar": 25
@@ -12429,8 +12429,8 @@
             ], 
             "name": "H2405", 
             "clust": 20, 
-            "cl": "category-three", 
             "rank": 1, 
+            "cat": "category-three", 
             "ini": 21, 
             "cl_index": 24, 
             "rankvar": 12
@@ -12451,8 +12451,8 @@
             ], 
             "name": "HCC78", 
             "clust": 21, 
-            "cl": "category-two", 
             "rank": 25, 
+            "cat": "category-two", 
             "ini": 20, 
             "cl_index": 25, 
             "rankvar": 27
@@ -12473,8 +12473,8 @@
             ], 
             "name": "H1666", 
             "clust": 7, 
-            "cl": "category-one", 
             "rank": 18, 
+            "cat": "category-one", 
             "ini": 19, 
             "cl_index": 7, 
             "rankvar": 15
@@ -12495,8 +12495,8 @@
             ], 
             "name": "H661", 
             "clust": 16, 
-            "cl": "category-three", 
             "rank": 3, 
+            "cat": "category-three", 
             "ini": 18, 
             "cl_index": 21, 
             "rankvar": 26
@@ -12517,8 +12517,8 @@
             ], 
             "name": "H838", 
             "clust": 17, 
-            "cl": "category-five", 
             "rank": 7, 
+            "cat": "category-five", 
             "ini": 17, 
             "cl_index": 0, 
             "rankvar": 23
@@ -12539,8 +12539,8 @@
             ], 
             "name": "H1703", 
             "clust": 14, 
-            "cl": "category-one", 
             "rank": 11, 
+            "cat": "category-one", 
             "ini": 16, 
             "cl_index": 10, 
             "rankvar": 21
@@ -12561,8 +12561,8 @@
             ], 
             "name": "CALU-3", 
             "clust": 19, 
-            "cl": "category-five", 
             "rank": 8, 
+            "cat": "category-five", 
             "ini": 15, 
             "cl_index": 1, 
             "rankvar": 7
@@ -12583,8 +12583,8 @@
             ], 
             "name": "H2342", 
             "clust": 18, 
-            "cl": "category-two", 
             "rank": 26, 
+            "cat": "category-two", 
             "ini": 14, 
             "cl_index": 27, 
             "rankvar": 22
@@ -12605,8 +12605,8 @@
             ], 
             "name": "H2228", 
             "clust": 26, 
-            "cl": "category-four", 
             "rank": 2, 
+            "cat": "category-four", 
             "ini": 13, 
             "cl_index": 2, 
             "rankvar": 5
@@ -12627,8 +12627,8 @@
             ], 
             "name": "H1299", 
             "clust": 15, 
-            "cl": "category-one", 
             "rank": 12, 
+            "cat": "category-one", 
             "ini": 12, 
             "cl_index": 8, 
             "rankvar": 1
@@ -12649,8 +12649,8 @@
             ], 
             "name": "H1792", 
             "clust": 10, 
-            "cl": "category-one", 
             "rank": 20, 
+            "cat": "category-one", 
             "ini": 11, 
             "cl_index": 16, 
             "rankvar": 9
@@ -12671,8 +12671,8 @@
             ], 
             "name": "H460", 
             "clust": 11, 
-            "cl": "category-one", 
             "rank": 5, 
+            "cat": "category-one", 
             "ini": 10, 
             "cl_index": 6, 
             "rankvar": 11
@@ -12693,8 +12693,8 @@
             ], 
             "name": "H2106", 
             "clust": 0, 
-            "cl": "category-six", 
             "rank": 22, 
+            "cat": "category-six", 
             "ini": 9, 
             "cl_index": 19, 
             "rankvar": 28
@@ -12715,8 +12715,8 @@
             ], 
             "name": "H441", 
             "clust": 27, 
-            "cl": "category-one", 
             "rank": 27, 
+            "cat": "category-one", 
             "ini": 8, 
             "cl_index": 12, 
             "rankvar": 14
@@ -12737,8 +12737,8 @@
             ], 
             "name": "H1944", 
             "clust": 8, 
-            "cl": "category-one", 
             "rank": 23, 
+            "cat": "category-one", 
             "ini": 7, 
             "cl_index": 13, 
             "rankvar": 10
@@ -12759,8 +12759,8 @@
             ], 
             "name": "H1437", 
             "clust": 6, 
-            "cl": "category-four", 
             "rank": 16, 
+            "cat": "category-four", 
             "ini": 6, 
             "cl_index": 5, 
             "rankvar": 17
@@ -12781,8 +12781,8 @@
             ], 
             "name": "H1734", 
             "clust": 24, 
-            "cl": "category-three", 
             "rank": 19, 
+            "cat": "category-three", 
             "ini": 5, 
             "cl_index": 22, 
             "rankvar": 18
@@ -12803,8 +12803,8 @@
             ], 
             "name": "LOU-NH91", 
             "clust": 13, 
-            "cl": "category-three", 
             "rank": 15, 
+            "cat": "category-three", 
             "ini": 4, 
             "cl_index": 23, 
             "rankvar": 16
@@ -12825,8 +12825,8 @@
             ], 
             "name": "HCC44", 
             "clust": 3, 
-            "cl": "category-four", 
             "rank": 14, 
+            "cat": "category-four", 
             "ini": 3, 
             "cl_index": 3, 
             "rankvar": 2
@@ -12847,8 +12847,8 @@
             ], 
             "name": "A549", 
             "clust": 9, 
-            "cl": "category-six", 
             "rank": 21, 
+            "cat": "category-six", 
             "ini": 2, 
             "cl_index": 20, 
             "rankvar": 3
@@ -12869,8 +12869,8 @@
             ], 
             "name": "H1781", 
             "clust": 28, 
-            "cl": "category-four", 
             "rank": 13, 
+            "cat": "category-four", 
             "ini": 1, 
             "cl_index": 4, 
             "rankvar": 13
@@ -13502,8 +13502,8 @@
             ], 
             "name": "H1650", 
             "clust": 1, 
-            "cl": "category-one", 
             "rank": 6, 
+            "cat": "category-one", 
             "ini": 29, 
             "cl_index": 11, 
             "rankvar": 4
@@ -13524,8 +13524,8 @@
             ], 
             "name": "H23", 
             "clust": 23, 
-            "cl": "category-one", 
             "rank": 19, 
+            "cat": "category-one", 
             "ini": 28, 
             "cl_index": 8, 
             "rankvar": 9
@@ -13546,8 +13546,8 @@
             ], 
             "name": "CAL-12T", 
             "clust": 27, 
-            "cl": "category-two", 
             "rank": 7, 
+            "cat": "category-two", 
             "ini": 27, 
             "cl_index": 26, 
             "rankvar": 10
@@ -13568,8 +13568,8 @@
             ], 
             "name": "H358", 
             "clust": 28, 
-            "cl": "category-one", 
             "rank": 4, 
+            "cat": "category-one", 
             "ini": 26, 
             "cl_index": 16, 
             "rankvar": 0
@@ -13590,8 +13590,8 @@
             ], 
             "name": "H1975", 
             "clust": 5, 
-            "cl": "category-one", 
             "rank": 0, 
+            "cat": "category-one", 
             "ini": 25, 
             "cl_index": 6, 
             "rankvar": 25
@@ -13612,8 +13612,8 @@
             ], 
             "name": "HCC15", 
             "clust": 22, 
-            "cl": "category-seven", 
             "rank": 17, 
+            "cat": "category-seven", 
             "ini": 24, 
             "cl_index": 18, 
             "rankvar": 18
@@ -13634,8 +13634,8 @@
             ], 
             "name": "H1355", 
             "clust": 25, 
-            "cl": "category-one", 
             "rank": 10, 
+            "cat": "category-one", 
             "ini": 23, 
             "cl_index": 12, 
             "rankvar": 7
@@ -13656,8 +13656,8 @@
             ], 
             "name": "HCC827", 
             "clust": 9, 
-            "cl": "category-two", 
             "rank": 28, 
+            "cat": "category-two", 
             "ini": 22, 
             "cl_index": 28, 
             "rankvar": 24
@@ -13678,8 +13678,8 @@
             ], 
             "name": "H2405", 
             "clust": 15, 
-            "cl": "category-three", 
             "rank": 1, 
+            "cat": "category-three", 
             "ini": 21, 
             "cl_index": 24, 
             "rankvar": 14
@@ -13700,8 +13700,8 @@
             ], 
             "name": "HCC78", 
             "clust": 11, 
-            "cl": "category-two", 
             "rank": 25, 
+            "cat": "category-two", 
             "ini": 20, 
             "cl_index": 25, 
             "rankvar": 28
@@ -13722,8 +13722,8 @@
             ], 
             "name": "H1666", 
             "clust": 17, 
-            "cl": "category-one", 
             "rank": 20, 
+            "cat": "category-one", 
             "ini": 19, 
             "cl_index": 13, 
             "rankvar": 17
@@ -13744,8 +13744,8 @@
             ], 
             "name": "H661", 
             "clust": 6, 
-            "cl": "category-three", 
             "rank": 3, 
+            "cat": "category-three", 
             "ini": 18, 
             "cl_index": 21, 
             "rankvar": 26
@@ -13766,8 +13766,8 @@
             ], 
             "name": "H838", 
             "clust": 7, 
-            "cl": "category-five", 
             "rank": 13, 
+            "cat": "category-five", 
             "ini": 17, 
             "cl_index": 0, 
             "rankvar": 22
@@ -13788,8 +13788,8 @@
             ], 
             "name": "H1703", 
             "clust": 3, 
-            "cl": "category-one", 
             "rank": 8, 
+            "cat": "category-one", 
             "ini": 16, 
             "cl_index": 9, 
             "rankvar": 20
@@ -13810,8 +13810,8 @@
             ], 
             "name": "CALU-3", 
             "clust": 16, 
-            "cl": "category-five", 
             "rank": 5, 
+            "cat": "category-five", 
             "ini": 15, 
             "cl_index": 1, 
             "rankvar": 6
@@ -13832,8 +13832,8 @@
             ], 
             "name": "H2342", 
             "clust": 8, 
-            "cl": "category-two", 
             "rank": 26, 
+            "cat": "category-two", 
             "ini": 14, 
             "cl_index": 27, 
             "rankvar": 23
@@ -13854,8 +13854,8 @@
             ], 
             "name": "H2228", 
             "clust": 12, 
-            "cl": "category-four", 
             "rank": 2, 
+            "cat": "category-four", 
             "ini": 13, 
             "cl_index": 2, 
             "rankvar": 5
@@ -13876,8 +13876,8 @@
             ], 
             "name": "H1299", 
             "clust": 4, 
-            "cl": "category-one", 
             "rank": 12, 
+            "cat": "category-one", 
             "ini": 12, 
             "cl_index": 14, 
             "rankvar": 2
@@ -13898,8 +13898,8 @@
             ], 
             "name": "H1792", 
             "clust": 20, 
-            "cl": "category-one", 
             "rank": 14, 
+            "cat": "category-one", 
             "ini": 11, 
             "cl_index": 15, 
             "rankvar": 11
@@ -13920,8 +13920,8 @@
             ], 
             "name": "H460", 
             "clust": 21, 
-            "cl": "category-one", 
             "rank": 9, 
+            "cat": "category-one", 
             "ini": 10, 
             "cl_index": 17, 
             "rankvar": 13
@@ -13942,8 +13942,8 @@
             ], 
             "name": "H2106", 
             "clust": 0, 
-            "cl": "category-six", 
             "rank": 21, 
+            "cat": "category-six", 
             "ini": 9, 
             "cl_index": 19, 
             "rankvar": 27
@@ -13964,8 +13964,8 @@
             ], 
             "name": "H441", 
             "clust": 13, 
-            "cl": "category-one", 
             "rank": 27, 
+            "cat": "category-one", 
             "ini": 8, 
             "cl_index": 7, 
             "rankvar": 15
@@ -13986,8 +13986,8 @@
             ], 
             "name": "H1944", 
             "clust": 18, 
-            "cl": "category-one", 
             "rank": 24, 
+            "cat": "category-one", 
             "ini": 7, 
             "cl_index": 10, 
             "rankvar": 12
@@ -14008,8 +14008,8 @@
             ], 
             "name": "H1437", 
             "clust": 26, 
-            "cl": "category-four", 
             "rank": 16, 
+            "cat": "category-four", 
             "ini": 6, 
             "cl_index": 5, 
             "rankvar": 21
@@ -14030,8 +14030,8 @@
             ], 
             "name": "H1734", 
             "clust": 10, 
-            "cl": "category-three", 
             "rank": 22, 
+            "cat": "category-three", 
             "ini": 5, 
             "cl_index": 22, 
             "rankvar": 19
@@ -14052,8 +14052,8 @@
             ], 
             "name": "LOU-NH91", 
             "clust": 2, 
-            "cl": "category-three", 
             "rank": 18, 
+            "cat": "category-three", 
             "ini": 4, 
             "cl_index": 23, 
             "rankvar": 8
@@ -14074,8 +14074,8 @@
             ], 
             "name": "HCC44", 
             "clust": 24, 
-            "cl": "category-four", 
             "rank": 11, 
+            "cat": "category-four", 
             "ini": 3, 
             "cl_index": 3, 
             "rankvar": 1
@@ -14096,8 +14096,8 @@
             ], 
             "name": "A549", 
             "clust": 19, 
-            "cl": "category-six", 
             "rank": 23, 
+            "cat": "category-six", 
             "ini": 2, 
             "cl_index": 20, 
             "rankvar": 3
@@ -14118,8 +14118,8 @@
             ], 
             "name": "H1781", 
             "clust": 14, 
-            "cl": "category-four", 
             "rank": 15, 
+            "cat": "category-four", 
             "ini": 1, 
             "cl_index": 4, 
             "rankvar": 16
@@ -14551,8 +14551,8 @@
             ], 
             "name": "H1650", 
             "clust": 0, 
-            "cl": "category-one", 
             "rank": 2, 
+            "cat": "category-one", 
             "ini": 29, 
             "cl_index": 11, 
             "rankvar": 2
@@ -14573,8 +14573,8 @@
             ], 
             "name": "H23", 
             "clust": 8, 
-            "cl": "category-one", 
             "rank": 24, 
+            "cat": "category-one", 
             "ini": 28, 
             "cl_index": 17, 
             "rankvar": 13
@@ -14595,8 +14595,8 @@
             ], 
             "name": "CAL-12T", 
             "clust": 17, 
-            "cl": "category-two", 
             "rank": 10, 
+            "cat": "category-two", 
             "ini": 27, 
             "cl_index": 26, 
             "rankvar": 15
@@ -14617,8 +14617,8 @@
             ], 
             "name": "H358", 
             "clust": 18, 
-            "cl": "category-one", 
             "rank": 8, 
+            "cat": "category-one", 
             "ini": 26, 
             "cl_index": 14, 
             "rankvar": 3
@@ -14639,8 +14639,8 @@
             ], 
             "name": "H1975", 
             "clust": 23, 
-            "cl": "category-one", 
             "rank": 0, 
+            "cat": "category-one", 
             "ini": 25, 
             "cl_index": 15, 
             "rankvar": 26
@@ -14661,8 +14661,8 @@
             ], 
             "name": "HCC15", 
             "clust": 7, 
-            "cl": "category-seven", 
             "rank": 22, 
+            "cat": "category-seven", 
             "ini": 24, 
             "cl_index": 18, 
             "rankvar": 21
@@ -14683,8 +14683,8 @@
             ], 
             "name": "H1355", 
             "clust": 15, 
-            "cl": "category-one", 
             "rank": 9, 
+            "cat": "category-one", 
             "ini": 23, 
             "cl_index": 6, 
             "rankvar": 11
@@ -14705,8 +14705,8 @@
             ], 
             "name": "HCC827", 
             "clust": 24, 
-            "cl": "category-two", 
             "rank": 28, 
+            "cat": "category-two", 
             "ini": 22, 
             "cl_index": 28, 
             "rankvar": 25
@@ -14727,8 +14727,8 @@
             ], 
             "name": "H2405", 
             "clust": 21, 
-            "cl": "category-three", 
             "rank": 1, 
+            "cat": "category-three", 
             "ini": 21, 
             "cl_index": 24, 
             "rankvar": 17
@@ -14749,8 +14749,8 @@
             ], 
             "name": "HCC78", 
             "clust": 22, 
-            "cl": "category-two", 
             "rank": 26, 
+            "cat": "category-two", 
             "ini": 20, 
             "cl_index": 25, 
             "rankvar": 28
@@ -14771,8 +14771,8 @@
             ], 
             "name": "H1666", 
             "clust": 19, 
-            "cl": "category-one", 
             "rank": 6, 
+            "cat": "category-one", 
             "ini": 19, 
             "cl_index": 12, 
             "rankvar": 8
@@ -14793,8 +14793,8 @@
             ], 
             "name": "H661", 
             "clust": 4, 
-            "cl": "category-three", 
             "rank": 7, 
+            "cat": "category-three", 
             "ini": 18, 
             "cl_index": 21, 
             "rankvar": 27
@@ -14815,8 +14815,8 @@
             ], 
             "name": "H838", 
             "clust": 5, 
-            "cl": "category-five", 
             "rank": 20, 
+            "cat": "category-five", 
             "ini": 17, 
             "cl_index": 0, 
             "rankvar": 23
@@ -14837,8 +14837,8 @@
             ], 
             "name": "H1703", 
             "clust": 2, 
-            "cl": "category-one", 
             "rank": 17, 
+            "cat": "category-one", 
             "ini": 16, 
             "cl_index": 13, 
             "rankvar": 19
@@ -14859,8 +14859,8 @@
             ], 
             "name": "CALU-3", 
             "clust": 20, 
-            "cl": "category-five", 
             "rank": 3, 
+            "cat": "category-five", 
             "ini": 15, 
             "cl_index": 1, 
             "rankvar": 1
@@ -14881,8 +14881,8 @@
             ], 
             "name": "H2342", 
             "clust": 6, 
-            "cl": "category-two", 
             "rank": 27, 
+            "cat": "category-two", 
             "ini": 14, 
             "cl_index": 27, 
             "rankvar": 24
@@ -14903,8 +14903,8 @@
             ], 
             "name": "H2228", 
             "clust": 26, 
-            "cl": "category-four", 
             "rank": 4, 
+            "cat": "category-four", 
             "ini": 13, 
             "cl_index": 2, 
             "rankvar": 9
@@ -14925,8 +14925,8 @@
             ], 
             "name": "H1299", 
             "clust": 3, 
-            "cl": "category-one", 
             "rank": 13, 
+            "cat": "category-one", 
             "ini": 12, 
             "cl_index": 8, 
             "rankvar": 4
@@ -14947,8 +14947,8 @@
             ], 
             "name": "H1792", 
             "clust": 11, 
-            "cl": "category-one", 
             "rank": 12, 
+            "cat": "category-one", 
             "ini": 11, 
             "cl_index": 16, 
             "rankvar": 14
@@ -14969,8 +14969,8 @@
             ], 
             "name": "H460", 
             "clust": 12, 
-            "cl": "category-one", 
             "rank": 5, 
+            "cat": "category-one", 
             "ini": 10, 
             "cl_index": 9, 
             "rankvar": 7
@@ -14991,8 +14991,8 @@
             ], 
             "name": "H2106", 
             "clust": 14, 
-            "cl": "category-six", 
             "rank": 14, 
+            "cat": "category-six", 
             "ini": 9, 
             "cl_index": 19, 
             "rankvar": 18
@@ -15013,8 +15013,8 @@
             ], 
             "name": "H441", 
             "clust": 27, 
-            "cl": "category-one", 
             "rank": 25, 
+            "cat": "category-one", 
             "ini": 8, 
             "cl_index": 7, 
             "rankvar": 10
@@ -15035,8 +15035,8 @@
             ], 
             "name": "H1944", 
             "clust": 10, 
-            "cl": "category-one", 
             "rank": 23, 
+            "cat": "category-one", 
             "ini": 7, 
             "cl_index": 10, 
             "rankvar": 5
@@ -15057,8 +15057,8 @@
             ], 
             "name": "H1437", 
             "clust": 16, 
-            "cl": "category-four", 
             "rank": 15, 
+            "cat": "category-four", 
             "ini": 6, 
             "cl_index": 5, 
             "rankvar": 20
@@ -15079,8 +15079,8 @@
             ], 
             "name": "H1734", 
             "clust": 25, 
-            "cl": "category-three", 
             "rank": 18, 
+            "cat": "category-three", 
             "ini": 5, 
             "cl_index": 22, 
             "rankvar": 22
@@ -15101,8 +15101,8 @@
             ], 
             "name": "LOU-NH91", 
             "clust": 1, 
-            "cl": "category-three", 
             "rank": 19, 
+            "cat": "category-three", 
             "ini": 4, 
             "cl_index": 23, 
             "rankvar": 12
@@ -15123,8 +15123,8 @@
             ], 
             "name": "HCC44", 
             "clust": 9, 
-            "cl": "category-four", 
             "rank": 11, 
+            "cat": "category-four", 
             "ini": 3, 
             "cl_index": 3, 
             "rankvar": 0
@@ -15145,8 +15145,8 @@
             ], 
             "name": "A549", 
             "clust": 13, 
-            "cl": "category-six", 
             "rank": 21, 
+            "cat": "category-six", 
             "ini": 2, 
             "cl_index": 20, 
             "rankvar": 6
@@ -15167,8 +15167,8 @@
             ], 
             "name": "H1781", 
             "clust": 28, 
-            "cl": "category-four", 
             "rank": 16, 
+            "cat": "category-four", 
             "ini": 1, 
             "cl_index": 4, 
             "rankvar": 16
@@ -15400,8 +15400,8 @@
             ], 
             "name": "H1650", 
             "clust": 0, 
-            "cl": "category-one", 
             "rank": 17, 
+            "cat": "category-one", 
             "ini": 29, 
             "cl_index": 11, 
             "rankvar": 9
@@ -15422,8 +15422,8 @@
             ], 
             "name": "H23", 
             "clust": 10, 
-            "cl": "category-one", 
             "rank": 9, 
+            "cat": "category-one", 
             "ini": 28, 
             "cl_index": 7, 
             "rankvar": 5
@@ -15444,8 +15444,8 @@
             ], 
             "name": "CAL-12T", 
             "clust": 11, 
-            "cl": "category-two", 
             "rank": 11, 
+            "cat": "category-two", 
             "ini": 27, 
             "cl_index": 26, 
             "rankvar": 2
@@ -15466,8 +15466,8 @@
             ], 
             "name": "H358", 
             "clust": 21, 
-            "cl": "category-one", 
             "rank": 13, 
+            "cat": "category-one", 
             "ini": 26, 
             "cl_index": 10, 
             "rankvar": 3
@@ -15488,8 +15488,8 @@
             ], 
             "name": "H1975", 
             "clust": 27, 
-            "cl": "category-one", 
             "rank": 0, 
+            "cat": "category-one", 
             "ini": 25, 
             "cl_index": 15, 
             "rankvar": 27
@@ -15510,8 +15510,8 @@
             ], 
             "name": "HCC15", 
             "clust": 28, 
-            "cl": "category-seven", 
             "rank": 1, 
+            "cat": "category-seven", 
             "ini": 24, 
             "cl_index": 18, 
             "rankvar": 1
@@ -15532,8 +15532,8 @@
             ], 
             "name": "H1355", 
             "clust": 7, 
-            "cl": "category-one", 
             "rank": 8, 
+            "cat": "category-one", 
             "ini": 23, 
             "cl_index": 9, 
             "rankvar": 17
@@ -15554,8 +15554,8 @@
             ], 
             "name": "HCC827", 
             "clust": 22, 
-            "cl": "category-two", 
             "rank": 25, 
+            "cat": "category-two", 
             "ini": 22, 
             "cl_index": 28, 
             "rankvar": 24
@@ -15576,8 +15576,8 @@
             ], 
             "name": "H2405", 
             "clust": 13, 
-            "cl": "category-three", 
             "rank": 3, 
+            "cat": "category-three", 
             "ini": 21, 
             "cl_index": 22, 
             "rankvar": 19
@@ -15598,8 +15598,8 @@
             ], 
             "name": "HCC78", 
             "clust": 12, 
-            "cl": "category-two", 
             "rank": 28, 
+            "cat": "category-two", 
             "ini": 20, 
             "cl_index": 25, 
             "rankvar": 28
@@ -15620,8 +15620,8 @@
             ], 
             "name": "H1666", 
             "clust": 14, 
-            "cl": "category-one", 
             "rank": 4, 
+            "cat": "category-one", 
             "ini": 19, 
             "cl_index": 14, 
             "rankvar": 8
@@ -15642,8 +15642,8 @@
             ], 
             "name": "H661", 
             "clust": 15, 
-            "cl": "category-three", 
             "rank": 18, 
+            "cat": "category-three", 
             "ini": 18, 
             "cl_index": 23, 
             "rankvar": 26
@@ -15664,8 +15664,8 @@
             ], 
             "name": "H838", 
             "clust": 16, 
-            "cl": "category-five", 
             "rank": 19, 
+            "cat": "category-five", 
             "ini": 17, 
             "cl_index": 0, 
             "rankvar": 23
@@ -15686,8 +15686,8 @@
             ], 
             "name": "H1703", 
             "clust": 2, 
-            "cl": "category-one", 
             "rank": 21, 
+            "cat": "category-one", 
             "ini": 16, 
             "cl_index": 6, 
             "rankvar": 21
@@ -15708,8 +15708,8 @@
             ], 
             "name": "CALU-3", 
             "clust": 24, 
-            "cl": "category-five", 
             "rank": 5, 
+            "cat": "category-five", 
             "ini": 15, 
             "cl_index": 1, 
             "rankvar": 7
@@ -15730,8 +15730,8 @@
             ], 
             "name": "H2342", 
             "clust": 17, 
-            "cl": "category-two", 
             "rank": 27, 
+            "cat": "category-two", 
             "ini": 14, 
             "cl_index": 27, 
             "rankvar": 25
@@ -15752,8 +15752,8 @@
             ], 
             "name": "H2228", 
             "clust": 19, 
-            "cl": "category-four", 
             "rank": 16, 
+            "cat": "category-four", 
             "ini": 13, 
             "cl_index": 2, 
             "rankvar": 16
@@ -15774,8 +15774,8 @@
             ], 
             "name": "H1299", 
             "clust": 1, 
-            "cl": "category-one", 
             "rank": 10, 
+            "cat": "category-one", 
             "ini": 12, 
             "cl_index": 12, 
             "rankvar": 11
@@ -15796,8 +15796,8 @@
             ], 
             "name": "H1792", 
             "clust": 26, 
-            "cl": "category-one", 
             "rank": 2, 
+            "cat": "category-one", 
             "ini": 11, 
             "cl_index": 13, 
             "rankvar": 10
@@ -15818,8 +15818,8 @@
             ], 
             "name": "H460", 
             "clust": 8, 
-            "cl": "category-one", 
             "rank": 7, 
+            "cat": "category-one", 
             "ini": 10, 
             "cl_index": 17, 
             "rankvar": 13
@@ -15840,8 +15840,8 @@
             ], 
             "name": "H2106", 
             "clust": 25, 
-            "cl": "category-six", 
             "rank": 6, 
+            "cat": "category-six", 
             "ini": 9, 
             "cl_index": 19, 
             "rankvar": 12
@@ -15862,8 +15862,8 @@
             ], 
             "name": "H441", 
             "clust": 18, 
-            "cl": "category-one", 
             "rank": 26, 
+            "cat": "category-one", 
             "ini": 8, 
             "cl_index": 8, 
             "rankvar": 15
@@ -15884,8 +15884,8 @@
             ], 
             "name": "H1944", 
             "clust": 5, 
-            "cl": "category-one", 
             "rank": 14, 
+            "cat": "category-one", 
             "ini": 7, 
             "cl_index": 16, 
             "rankvar": 4
@@ -15906,8 +15906,8 @@
             ], 
             "name": "H1437", 
             "clust": 9, 
-            "cl": "category-four", 
             "rank": 20, 
+            "cat": "category-four", 
             "ini": 6, 
             "cl_index": 5, 
             "rankvar": 22
@@ -15928,8 +15928,8 @@
             ], 
             "name": "H1734", 
             "clust": 23, 
-            "cl": "category-three", 
             "rank": 23, 
+            "cat": "category-three", 
             "ini": 5, 
             "cl_index": 21, 
             "rankvar": 20
@@ -15950,8 +15950,8 @@
             ], 
             "name": "LOU-NH91", 
             "clust": 3, 
-            "cl": "category-three", 
             "rank": 22, 
+            "cat": "category-three", 
             "ini": 4, 
             "cl_index": 24, 
             "rankvar": 14
@@ -15972,8 +15972,8 @@
             ], 
             "name": "HCC44", 
             "clust": 4, 
-            "cl": "category-four", 
             "rank": 15, 
+            "cat": "category-four", 
             "ini": 3, 
             "cl_index": 3, 
             "rankvar": 0
@@ -15994,8 +15994,8 @@
             ], 
             "name": "A549", 
             "clust": 6, 
-            "cl": "category-six", 
             "rank": 12, 
+            "cat": "category-six", 
             "ini": 2, 
             "cl_index": 20, 
             "rankvar": 6
@@ -16016,8 +16016,8 @@
             ], 
             "name": "H1781", 
             "clust": 20, 
-            "cl": "category-four", 
             "rank": 24, 
+            "cat": "category-four", 
             "ini": 1, 
             "cl_index": 4, 
             "rankvar": 18
