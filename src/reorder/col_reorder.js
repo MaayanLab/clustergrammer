@@ -2,6 +2,11 @@ var reposition_tile_highlight = require('./reposition_tile_highlight');
 
 module.exports = function(params, col_selection) {
 
+  d3.selectAll(params.root+' .row_dendro_group').style('opacity',0);
+
+  d3.selectAll(params.root+' .toggle_row_order .btn')
+    .classed('active',false);
+
   params.viz.run_trans = true;
 
   var mat       = params.matrix.matrix;

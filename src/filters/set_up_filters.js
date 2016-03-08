@@ -87,11 +87,37 @@ module.exports = function set_up_filters(config, params, filter_type) {
       disable_sidebar(params);
 
       // get current row ordering from buttons 
-      params.viz.inst_order.col = d3.select(params.root+' .toggle_row_order')
-        .select('.active').attr('name');
+      if (d3.select(params.root+' .toggle_row_order active').empty() === false){
+        params.viz.inst_order.col = d3.select(params.root+' .toggle_row_order')
+          .select('.active').attr('name');
+      } else {
+        params.viz.inst_order.col = 'clust';
 
-      params.viz.inst_order.row = d3.select(params.root+' .toggle_col_order')
-        .select('.active').attr('name');
+        d3.select(params.root+' .toggle_row_order')
+          .selectAll('.btn')
+          .each(function(d){
+            if (d === 'clust'){
+              d3.select(this)
+                .classed('active',true);
+            }
+          });
+      }
+
+      if (d3.select(params.root+' .toggle_col_order active').empty() === false){
+        params.viz.inst_order.row = d3.select(params.root+' .toggle_col_order')
+          .select('.active').attr('name');
+      } else {
+        params.viz.inst_order.row = 'clust';
+
+        d3.select(params.root+' .toggle_col_order')
+          .selectAll('.btn')
+          .each(function(d){
+            if (d === 'clust'){
+              d3.select(this)
+                .classed('active',true);
+            }
+          });
+      }
 
       params = update_network(config, params, requested_view);
 
