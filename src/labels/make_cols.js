@@ -179,10 +179,7 @@ module.exports = function(params, text_delay) {
         start_x + ', L ' + final_y + ',' + final_x + ' Z';
       return output_string;
     })
-    .attr('fill', function() {
-      var inst_color = '#eee';
-    return inst_color;
-    })
+    .attr('fill', '#eee')
     .style('opacity',0)
     .transition().delay(text_delay).duration(text_delay)
     .style('opacity',1);

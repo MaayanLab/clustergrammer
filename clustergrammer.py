@@ -726,13 +726,13 @@ class Network(object):
     # generate views for each column category (default to only one)
     all_col_cat = ['all_category']
 
-    # check for column categories and check whether category specific clustering
-    # should be calculated 
-    if len(self.dat['node_info']['col']['cat']) > 0 and calc_col_cats:
-      tmp_cats = sorted(list(set(self.dat['node_info']['col']['cat'])))
+    # # check for column categories and check whether category specific clustering
+    # # should be calculated 
+    # if len(self.dat['node_info']['col']['cat']) > 0 and calc_col_cats:
+    #   tmp_cats = sorted(list(set(self.dat['node_info']['col']['cat'])))
 
-      # gather all col_cats 
-      all_col_cat.extend(tmp_cats)
+    #   # gather all col_cats 
+    #   all_col_cat.extend(tmp_cats)
 
     for inst_col_cat in all_col_cat:
 
@@ -776,10 +776,10 @@ class Network(object):
     # make a copy of the network so that filtering is not propagated 
     copy_net = deepcopy(self)
 
-    # filter columns by category if necessary - do this on df, which is a copy
-    if current_col_cat != 'all_category':
-      keep_cols = copy_net.dat['node_info']['col_in_cat'][current_col_cat]
-      df['mat'] = copy_net.grab_df_subset(df['mat'], keep_rows='all', keep_cols=keep_cols)
+    # # filter columns by category if necessary - do this on df, which is a copy
+    # if current_col_cat != 'all_category':
+    #   keep_cols = copy_net.dat['node_info']['col_in_cat'][current_col_cat]
+    #   df['mat'] = copy_net.grab_df_subset(df['mat'], keep_rows='all', keep_cols=keep_cols)
 
     # gather category key 
     is_col_cat = False
@@ -811,15 +811,15 @@ class Network(object):
       # filter row in df 
       inst_df = copy_net.df_filter_row(inst_df, cutoff, take_abs=False)
 
-      # filter columns by category if necessary 
-      if current_col_cat != 'all_category':
-        keep_cols = copy_net.dat['node_info']['col_in_cat'][current_col_cat]
-        inst_df['mat'] = copy_net.grab_df_subset(inst_df['mat'], keep_rows='all', keep_cols=keep_cols)
+      # # filter columns by category if necessary 
+      # if current_col_cat != 'all_category':
+      #   keep_cols = copy_net.dat['node_info']['col_in_cat'][current_col_cat]
+      #   inst_df['mat'] = copy_net.grab_df_subset(inst_df['mat'], keep_rows='all', keep_cols=keep_cols)
 
-        if 'mat_up' in inst_df:
-          # grab up and down data 
-          inst_df['mat_up'] = copy_net.grab_df_subset(inst_df['mat_up'], keep_rows='all', keep_cols=keep_cols)
-          inst_df['mat_dn'] = copy_net.grab_df_subset(inst_df['mat_dn'], keep_rows='all', keep_cols=keep_cols)
+      #   if 'mat_up' in inst_df:
+      #     # grab up and down data 
+      #     inst_df['mat_up'] = copy_net.grab_df_subset(inst_df['mat_up'], keep_rows='all', keep_cols=keep_cols)
+      #     inst_df['mat_dn'] = copy_net.grab_df_subset(inst_df['mat_dn'], keep_rows='all', keep_cols=keep_cols)
 
       # ini net 
       net = deepcopy(Network())
@@ -874,11 +874,11 @@ class Network(object):
     # make a copy of hte network 
     copy_net = deepcopy(self)
     
-    # filter columns by category if necessary 
-    if current_col_cat != 'all_category':
-      keep_cols = copy_net.dat['node_info']['col_in_cat'][current_col_cat]
+    # # filter columns by category if necessary 
+    # if current_col_cat != 'all_category':
+    #   keep_cols = copy_net.dat['node_info']['col_in_cat'][current_col_cat]
 
-      df['mat'] = copy_net.grab_df_subset(df['mat'], keep_rows='all', keep_cols=keep_cols)    
+    #   df['mat'] = copy_net.grab_df_subset(df['mat'], keep_rows='all', keep_cols=keep_cols)    
 
     # gather category key 
     is_col_cat = False
@@ -916,16 +916,16 @@ class Network(object):
       # initialize df
       tmp_df = deepcopy(df)
 
-      # filter columns by category if necessary 
-      if current_col_cat != 'all_category':
-        keep_cols = copy_net.dat['node_info']['col_in_cat'][current_col_cat]
+      # # filter columns by category if necessary 
+      # if current_col_cat != 'all_category':
+      #   keep_cols = copy_net.dat['node_info']['col_in_cat'][current_col_cat]
 
-        tmp_df['mat'] = copy_net.grab_df_subset(tmp_df['mat'], keep_rows='all', keep_cols=keep_cols)
+      #   tmp_df['mat'] = copy_net.grab_df_subset(tmp_df['mat'], keep_rows='all', keep_cols=keep_cols)
 
-        if 'mat_up' in df:
-          # grab up and down data 
-          tmp_df['mat_up'] = copy_net.grab_df_subset(tmp_df['mat_up'], keep_rows='all', keep_cols=keep_cols)
-          tmp_df['mat_dn'] = copy_net.grab_df_subset(tmp_df['mat_dn'], keep_rows='all', keep_cols=keep_cols)      
+      #   if 'mat_up' in df:
+      #     # grab up and down data 
+      #     tmp_df['mat_up'] = copy_net.grab_df_subset(tmp_df['mat_up'], keep_rows='all', keep_cols=keep_cols)
+      #     tmp_df['mat_dn'] = copy_net.grab_df_subset(tmp_df['mat_dn'], keep_rows='all', keep_cols=keep_cols)      
 
       if inst_keep < len(rows_sorted) or inst_keep == 'all':
 

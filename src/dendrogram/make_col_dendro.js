@@ -50,5 +50,8 @@ module.exports = function make_col_dendro(params) {
 
   make_col_dendro_triangles(params);
   
+  if (params.viz.inst_order.row != 'clust'){
+    d3.selectAll(params.root+' .col_dendro_group').remove();
+  }
 
 };

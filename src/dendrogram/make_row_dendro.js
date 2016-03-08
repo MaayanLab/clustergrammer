@@ -41,4 +41,8 @@ module.exports = function make_row_dendro(params) {
 
   make_row_dendro_triangles(params);
 
+  if (params.viz.inst_order.col != 'clust'){
+    d3.selectAll(params.root+' .row_dendro_group').remove();
+  }
+
 };

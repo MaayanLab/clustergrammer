@@ -114,15 +114,7 @@ module.exports = function make_row_cat(params) {
         mid_x + ',' + mid_y + ', L ' + final_x + ',' + final_y + ' Z';
       return output_string;
     })
-    .attr('fill', function(d) {
-      // initailize color
-      var inst_color = '#eee';
-      if (params.viz.show_categories) {
-        // inst_color = params.viz.cat_colors.row[d.cl];
-        inst_color = 'red';
-      }
-      return inst_color;
-    });
+    .attr('fill', '#eee');
 
 
   // // change the size of the highlighting rects

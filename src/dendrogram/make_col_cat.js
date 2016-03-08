@@ -1,6 +1,6 @@
-var utils = require('../utils');
-var get_inst_group = require('./get_inst_group');
-var build_color_groups = require('./build_color_groups');
+// var utils = require('../utils');
+// var get_inst_group = require('./get_inst_group');
+// var build_color_groups = require('./build_color_groups');
 
 module.exports = function make_col_cat(params) {
 
@@ -39,6 +39,7 @@ module.exports = function make_col_cat(params) {
   d3.selectAll(params.root+' .col_cat_group')
     .each(function() {
 
+      console.log('making col cats ')
       var inst_level = params.group_level.col;
 
       var cat_rect;
@@ -58,22 +59,17 @@ module.exports = function make_col_cat(params) {
           return inst_height;
         })
         .style('fill', function(d) {
-          if (utils.has(d,'group')){
-            var group_colors = build_color_groups(params);
-            var inst_color = group_colors[d.group[inst_level]];
-          } else {
-            inst_color = '#eee';
-          }
-          return inst_color;
+          console.log(d.cat)
+          return params.viz.cat_colors.col[d.cat];
         });
 
-      if (typeof params.click_group === 'function'){
-        cat_rect
-          .on('click',function(d){
-            var group_nodes_list = get_inst_group(params, 'col', d);
-            params.click_group('col', group_nodes_list);
-          });
-      }
+      // if (typeof params.click_group === 'function'){
+      //   cat_rect
+      //     .on('click',function(d){
+      //       var group_nodes_list = get_inst_group(params, 'col', d);
+      //       params.click_group('col', group_nodes_list);
+      //     });
+      // }
 
   });
 };
