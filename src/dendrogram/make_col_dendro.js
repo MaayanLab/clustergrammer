@@ -27,6 +27,14 @@ module.exports = function make_col_dendro(params) {
       .attr('class', 'col_dendro_container')
       .attr('transform', 'translate(0,'+params.viz.uni_margin+')');
 
+    d3.select(params.root+' .col_dendro_outer_container')
+      .append('rect')
+      .classed('col_dendro_spillover_top',true)
+      .attr('fill', params.viz.background_color)
+      .attr('width', params.viz.svg_dim.width)
+      .attr('height', '30px')
+      .attr('transform', 'translate(0,'+params.viz.dendro_room.col+')');
+
   } else {
 
     d3.select(params.root+' .viz_svg')
