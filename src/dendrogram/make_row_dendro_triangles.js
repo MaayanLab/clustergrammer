@@ -1,6 +1,6 @@
 var calc_dendro_triangles = require('./calc_dendro_triangles');
 
-module.exports = function make_row_dendro_triangles(params){
+module.exports = function make_row_dendro_triangles(params, is_change_group=false){
 
   var dendro_info = calc_dendro_triangles(params);
 
@@ -11,6 +11,10 @@ module.exports = function make_row_dendro_triangles(params){
     run_transition = true;
     d3.selectAll(params.root+' .row_dendro_group')
       .remove();
+  }
+
+  if (is_change_group){
+    run_transition = false;
   }
 
   // groups that hold classification triangle and colorbar rect
