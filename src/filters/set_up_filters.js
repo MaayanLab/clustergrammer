@@ -87,7 +87,7 @@ module.exports = function set_up_filters(config, params, filter_type) {
       disable_sidebar(params);
 
       // get current row ordering from buttons 
-      if (d3.select(params.root+' .toggle_row_order active').empty() === false){
+      if (d3.select(params.root+' .toggle_row_order .active').empty() === false){
         params.viz.inst_order.col = d3.select(params.root+' .toggle_row_order')
           .select('.active').attr('name');
       } else {
@@ -103,7 +103,7 @@ module.exports = function set_up_filters(config, params, filter_type) {
           });
       }
 
-      if (d3.select(params.root+' .toggle_col_order active').empty() === false){
+      if (d3.select(params.root+' .toggle_col_order .active').empty() === false){
         params.viz.inst_order.row = d3.select(params.root+' .toggle_col_order')
           .select('.active').attr('name');
       } else {
