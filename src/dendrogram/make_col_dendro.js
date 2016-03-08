@@ -4,7 +4,8 @@ module.exports = function make_col_dendro(params) {
 
   // position col_dendro_outer_container
   var x_offset = params.viz.clust.margin.left;
-  var y_offset = params.viz.clust.margin.top + params.viz.clust.dim.height;
+  var y_offset = params.viz.clust.margin.top + params.viz.clust.dim.height + 
+    params.viz.uni_margin;
   var spillover_height = params.viz.dendro_room.col + params.viz.uni_margin;
 
   // make or reuse outer container 

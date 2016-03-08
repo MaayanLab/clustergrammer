@@ -101,11 +101,12 @@ module.exports = function(params, trans_x, trans_y, zoom_x, zoom_y) {
 
   // the amount by which the clustergram has shifted down, the col dendrogram will 
   // need to be shifted down 
-  var max_y = params.viz.svg_dim.height - params.viz.dendro_room.col - params.viz.uni_margin;
+  var max_y = params.viz.svg_dim.height - params.viz.dendro_room.col ;
 
   var shift_down = pan_room_y + trans_y;
   var x_offset = params.viz.clust.margin.left;
-  var y_offset = params.viz.clust.margin.top + params.viz.clust.dim.height + shift_down;
+  var y_offset = params.viz.clust.margin.top + params.viz.clust.dim.height +
+    params.viz.uni_margin+ shift_down;
   if (y_offset > max_y){
     y_offset = max_y;
   }
