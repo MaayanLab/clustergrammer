@@ -1,3 +1,4 @@
+var toggle_dendro_view = require('../dendrogram/toggle_dendro_view');
 
 module.exports = function(params, inst_order, tmp_row_col) {
 
@@ -17,6 +18,8 @@ module.exports = function(params, inst_order, tmp_row_col) {
   } else if (row_col === 'col'){
     params.viz.inst_order.col = inst_order;
   }
+
+  toggle_dendro_view(params);
 
   var row_nodes_obj = params.network_data.row_nodes;
   var row_nodes_names = _.pluck(row_nodes_obj, 'name');
@@ -91,13 +94,13 @@ module.exports = function(params, inst_order, tmp_row_col) {
         return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
       });
 
-    // reorder row_label_triangle groups
-    d3.selectAll(params.root+' .row_dendro_group')
-      .transition().duration(2500)
-      .attr('transform', function(d) {
-        var inst_index = _.indexOf(row_nodes_names, d.name);
-        return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
-      });      
+    // // reorder row_label_triangle groups
+    // d3.selectAll(params.root+' .row_dendro_group')
+    //   .transition().duration(2500)
+    //   .attr('transform', function(d) {
+    //     var inst_index = _.indexOf(row_nodes_names, d.name);
+    //     return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
+    //   });      
 
     // reorder col_class groups
     d3.selectAll(params.root+' .col_cat_group')
@@ -163,12 +166,12 @@ module.exports = function(params, inst_order, tmp_row_col) {
         return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
       });
 
-    // reorder row_label_triangle groups
-    d3.selectAll(params.root+' .row_dendro_group')
-      .attr('transform', function(d) {
-        var inst_index = _.indexOf(row_nodes_names,d.name);
-        return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
-      });      
+    // // reorder row_label_triangle groups
+    // d3.selectAll(params.root+' .row_dendro_group')
+    //   .attr('transform', function(d) {
+    //     var inst_index = _.indexOf(row_nodes_names,d.name);
+    //     return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
+    //   });      
 
     // reorder col_class groups
     d3.selectAll(params.root+' .col_cat_group')

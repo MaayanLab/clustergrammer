@@ -153,7 +153,6 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
   //       return 'translate(0, ' + params.viz.y_scale(inst_index) + ')';
   //     });
 
-  console.log('replace row_dendro_group changes with make_row_dendro_triangles')
   make_row_dendro_triangles(params);
 
   resize_col_labels(params, svg_group); 
