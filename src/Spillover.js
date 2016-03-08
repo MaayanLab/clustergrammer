@@ -71,7 +71,7 @@ module.exports = function(params) {
   x_offset = 0;
   y_offset = params.viz.clust.margin.top + params.viz.clust.dim.height;
   tmp_width = params.viz.clust.margin.left;
-  tmp_height = params.viz.cat_room.row + params.viz.uni_margin;
+  tmp_height = params.viz.clust.dim.height;
   d3.select(params.viz.viz_svg)
     .append('rect')
     .attr('fill', params.viz.background_color)

@@ -58,7 +58,7 @@ module.exports = function resize_spillover(params, ini_svg_group, delay_info=fal
   x_offset = 0;
   y_offset = params.viz.clust.margin.top + params.viz.clust.dim.height;
   tmp_width = params.viz.clust.margin.left;
-  tmp_height = params.viz.cat_room.row + params.viz.uni_margin;
+  tmp_height = params.viz.clust.dim.height;
   d3.select(params.root+' .dendro_col_spillover')
     .attr('width',tmp_width)
     .attr('height',tmp_height)
