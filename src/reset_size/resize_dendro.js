@@ -15,9 +15,6 @@ module.exports = function resize_dendro(params, svg_group, delay_info=false){
   var col_nodes = params.network_data.col_nodes;
   var col_nodes_names = params.network_data.col_nodes_names;
 
-  // var row_nodes = params.network_data.row_noes;
-  // var row_nodes_names = params.network_data.row_nodes_names;
-
   var dendro_group;
   if (delays.run_transition){
 
@@ -88,20 +85,19 @@ module.exports = function resize_dendro(params, svg_group, delay_info=false){
         return inst_height;
       });
 
-    d3.select(params.root)
-      .selectAll('.col_dendro_rect')
-      .attr('width', params.viz.x_scale.rangeBand())
-      .attr('height', function() {
-        var inst_height = params.viz.cat_room.col - 1;
-        return inst_height;
-      });      
+    // d3.select(params.root)
+    //   .selectAll('.col_dendro_rect')
+    //   .attr('width', params.viz.x_scale.rangeBand())
+    //   .attr('height', function() {
+    //     var inst_height = params.viz.cat_room.col - 1;
+    //     return inst_height;
+    //   });      
 
   // position row_dendro_outer_container
   var x_offset = params.viz.clust.margin.left + params.viz.clust.dim.width;
   var y_offset = params.viz.clust.margin.top;
   var spillover_width = params.viz.dendro_room.row + params.viz.uni_margin;
 
-  console.log('resize dendro spillover ')
   d3.select(params.root+' .viz_svg')
     .select('row_dendro_outer_container')
     .attr('transform', 'translate(' + x_offset + ','+y_offset+')');

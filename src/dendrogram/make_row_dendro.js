@@ -8,7 +8,9 @@ module.exports = function make_row_dendro(params) {
   var x_offset = params.viz.clust.margin.left + params.viz.clust.dim.width;
   var y_offset = params.viz.clust.margin.top;
 
+  // make or reuse outer container 
   if (d3.select(params.root+' .row_dendro_outer_container').empty()){
+    
     d3.select(params.root+' .viz_svg')
       .append('g')
       .attr('class','row_dendro_outer_container')
