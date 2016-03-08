@@ -1,4 +1,6 @@
 import time
+# import StringIO
+
 start_time = time.time()
 
 # import network class from Network.py
@@ -6,8 +8,9 @@ from clustergrammer import Network
 
 net = Network()
 
-net.load_tsv_to_net('txt/example_tsv.txt')
-# net.load_tsv_to_net('txt/mat_1mb.txt')
+# net.pandas_load_file('txt/example_tsv.txt')
+net.pandas_load_file('txt/col_categories.txt')
+# net.pandas_load_file('txt/mat_1mb.txt')
 
 net.make_filtered_views(dist_type='cos',views=['N_row_sum','N_row_var'], dendro=True)
 

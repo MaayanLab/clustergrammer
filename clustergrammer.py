@@ -48,6 +48,15 @@ class Network(object):
 
     self.load_lines_from_tsv_to_net(lines)
 
+  def pandas_load_file(self, filename):
+    import StringIO
+
+    f = open(filename,'r')
+    buff = StringIO.StringIO(f.read())
+    f.close()
+
+    self.pandas_load_tsv_to_net(buff)
+
   def pandas_load_tsv_to_net(self, file_buffer):
     '''
     A user can add category information to the columns 
