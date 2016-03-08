@@ -9,15 +9,13 @@ module.exports = function make_row_dendro_triangles(params, is_change_group=fals
     run_transition = false;
   } else {
     run_transition = true;
-    d3.selectAll(params.root+' .row_dendro_group')
-      .remove();
+    d3.selectAll(params.root+' .row_dendro_group').remove();
   }
 
   if (is_change_group){
     run_transition = false;
   }
 
-  // groups that hold classification triangle and colorbar rect
   d3.select(params.root+' .row_dendro_container')
     .selectAll('path')
     .data(dendro_info, function(d){return d.name;})
