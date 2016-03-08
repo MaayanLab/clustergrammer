@@ -74,15 +74,18 @@ module.exports = function set_viz_params(config, params){
   // category colorbar 
   viz.cat_room = {};
   viz.cat_room.symbol_width = 11;
+  viz.cat_colors = {};
 
   if (viz.show_categories.row){
     viz.cat_room.row = 2 * viz.cat_room.symbol_width;
+    viz.cat_colors.row = config.cat_colors.row;
   } else {
     viz.cat_room.row = viz.cat_room.symbol_width;
   }
 
   if (viz.show_categories.col){
     viz.cat_room.col = viz.cat_room.symbol_width;
+    viz.cat_colors.col = config.cat_colors.col;
   } else {
     viz.cat_room.col = 0;
   }

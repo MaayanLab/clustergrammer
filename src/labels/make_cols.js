@@ -142,7 +142,7 @@ module.exports = function(params, text_delay) {
     .style('opacity', 0);
 
   // // only run this if there are col categories
-  // if (params.labels.show_categories){
+  // if (params.viz.show_categories){
   //   // change the size of the highlighting rects
   //   col_label_group
   //     .each(function(d) {
@@ -156,7 +156,7 @@ module.exports = function(params, text_delay) {
   //         .attr('height', 0.67*params.viz.rect_width)
   //         .style('fill', function(d){
   //           var inst_color = 'white';
-  //           inst_color = params.labels.class_colors.col[d.cl];
+  //           inst_color = params.viz.cat_colors.col[d.cl];
   //           return inst_color
   //         })
   //         .style('opacity', 0.30);

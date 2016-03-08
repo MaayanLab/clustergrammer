@@ -117,10 +117,34 @@ module.exports = function make_row_cat(params) {
     .attr('fill', function(d) {
       // initailize color
       var inst_color = '#eee';
-      if (params.labels.show_categories) {
-        inst_color = params.labels.class_colors.row[d.cl];
+      if (params.viz.show_categories) {
+        // inst_color = params.viz.cat_colors.row[d.cl];
+        inst_color = 'red';
       }
       return inst_color;
     });
+
+
+  // // change the size of the highlighting rects
+  // d3.selectAll(params.root+' .col_label_group')
+  //   .each(function() {
+  //     var bbox = d3.select(this)
+  //       .select('text')[0][0]
+  //       .getBBox();
+
+  //     d3.select(this)
+  //       .select('rect')
+  //       .attr('width', bbox.width * 1.1)
+  //       .attr('height', 0.67*params.viz.rect_width)
+  //       .style('fill', function(d){
+  //         var inst_color = 'white';
+  //         // if (params.viz.show_categories){
+  //         //   inst_color = params.viz.cat_colors.col[d.cl];
+  //         // }
+  //         return inst_color;
+  //       })
+  //       .style('opacity', 0.30);
+
+  //   }); 
 
 };

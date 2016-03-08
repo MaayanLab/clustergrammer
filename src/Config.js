@@ -151,43 +151,54 @@ module.exports = function(args) {
 
   config.show_categories.col = utils.has(args.network_data.col_nodes[0], 'cl') || utils.has(args.network_data.col_nodes[0], 'cat');
 
+  // initialize dictionary of colors
+  config.cat_colors = {};
+
   // check for category information
   if (config.show_categories.row) {
 
-    // initialize dictionary of colors
-    config.class_colors = {};
-
     // associate classes with colors
-    var class_rows = _.uniq(_.pluck(args.network_data.row_nodes, 'cl'));
-    config.class_colors.row = {};
+    var class_rows = _.uniq(_.pluck(args.network_data.row_nodes, 'cat'));
+    
+    config.cat_colors.row = {};
     class_rows.forEach(function(c_row, i) {
       if (i === 0) {
-        config.class_colors.row[c_row] = '#eee';
+        config.cat_colors.row[c_row] = '#eee';
       } else {
-        config.class_colors.row[c_row] = colors.get_random_color(i);
+        config.cat_colors.row[c_row] = colors.get_random_color(i);
       }
     });
 
+  }
+
+  // check for category information
+  if (config.show_categories.col) {
+
+    console.log('adding col cat colors')
+
     // associate classes with colors
-    var class_cols = _.uniq(_.pluck(args.network_data.col_nodes, 'cl'));
-    config.class_colors.col = {};
+    var class_cols = _.uniq(_.pluck(args.network_data.col_nodes, 'cat'));
+    
+    console.log(class_cols)
+
+    config.cat_colors.col = {};
 
     // custom column group colors
     var cat_colors = ['#1f77b4','orange','#8c564b','yellow','red','pink','blue','#e377c2','grey'];
 
     class_cols.forEach(function(c_col, i) {
-      config.class_colors.col[c_col] = cat_colors[ i % cat_colors.length ];
+      config.cat_colors.col[c_col] = cat_colors[ i % cat_colors.length ];
     });
 
     // generate a dictionary of columns in each category
-    config.class_dict = {};
+    config.cat_dict = {};
     col_nodes.forEach(function(d){
       // initialize array for each category
-      if (!utils.has(config.class_dict, d.cl)){
-        config.class_dict[d.cl] = [];
+      if (!utils.has(config.cat_dict, d.cl)){
+        config.cat_dict[d.cl] = [];
       }
       // add column name to category array
-      config.class_dict[d.cl].push(d.name);
+      config.cat_dict[d.cl].push(d.name);
     });
 
   }
