@@ -50,4 +50,57 @@ module.exports = function sidebar(config, params) {
   
   ini_sidebar(params);
 
+
+  if (params.show_categories.col){
+
+    // set up column category key 
+    var key_cat_col = d3.select(params.root+' .sidebar_wrapper')
+      // .style('background-color','red')
+      .style('margin-top','10px')
+      .style('padding','5px')
+      .style('border','1px solid #DEDEDE')
+      .style('margin-bottom','10px')
+      .style('overflow','scroll')
+      .style('max-height','200px');
+
+    key_cat_col
+      .append('p')
+      .text('Column Categories')
+      .style('margin-bottom','2px');
+
+    for (var inst_cat in params.viz.cat_colors.col){
+
+      console.log(inst_cat)
+
+      // var inst_group = key_cat_col
+      //   .append('g')
+      //   .attr('class','category_section')
+      //   .on('click', category_key_click);
+
+      // inst_group
+      //   .append('div')
+      //   .attr('class','category_color')
+      //   .style('width','15px')
+      //   .style('height','15px')
+      //   .style('float','left')
+      //   .style('margin-right','5px')
+      //   .style('margin-top','2px')
+      //   .style('background-color',function(){
+      //     var inst_color = params.viz.cat_colors.col[inst_cat];
+      //     return inst_color;
+      //   });
+
+
+      // inst_group
+      //   .append('p')
+      //   .style('margin-bottom','2px')
+      //   .append('text')
+      //   .text(inst_cat)
+      //   .attr('class','noselect')
+      //   .style('cursor','pointer');
+
+    }
+
+  }
+
 };
