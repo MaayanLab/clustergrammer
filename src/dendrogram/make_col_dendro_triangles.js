@@ -1,4 +1,6 @@
 var calc_col_dendro_triangles = require('./calc_col_dendro_triangles');
+var dendro_group_highlight = require('./dendro_group_highlight');
+
 module.exports = function make_col_dendro_triangles(params, is_change_group = false){
 
 
@@ -43,13 +45,15 @@ module.exports = function make_col_dendro_triangles(params, is_change_group = fa
     })
     .style('fill','black')
     .on('mouseover', function(d){
-      d3.select(this)
-        .style('opacity',1);
+      dendro_group_highlight(params, this, d, 'col');
     })
-    .on('mouseout', function(d){
-      d3.select(this)
-        .style('opacity',0.35);
-        
+    .on('mouseout', function(){
+      if (params.viz.inst_order.col === 'clust'){
+        d3.select(this)
+          .style('opacity',0.35);
+      }
+      d3.selectAll(params.root+' .dendro_shadow')
+        .remove();
     });
 
   var triangle_opacity;

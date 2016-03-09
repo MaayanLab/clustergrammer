@@ -44,15 +44,13 @@ module.exports = function make_row_dendro_triangles(params, is_change_group=fals
     })
     .style('fill','black')
     .on('mouseover', function(d){
-      dendro_group_highlight(params, this, d);
+      dendro_group_highlight(params, this, d, 'row');
     })
-    .on('mouseout', function(d){
-
+    .on('mouseout', function(){
       if (params.viz.inst_order.col === 'clust'){
         d3.select(this)
           .style('opacity',0.35);
       }
-
       d3.selectAll(params.root+' .dendro_shadow')
         .remove();
     });

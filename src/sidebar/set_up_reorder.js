@@ -45,13 +45,11 @@ module.exports = function set_up_reorder(params, sidebar){
         possible_orders.push(d.split('_')[0]);
       }
       
-    })
+    });
 
     possible_orders = _.uniq(possible_orders);
 
     possible_orders = possible_orders.sort();
-
-    console.log(possible_orders)
 
     sidebar
       .append('div')
