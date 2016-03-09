@@ -5443,7 +5443,7 @@
           "row_name": "IESENFAOMRYD9MWEKSYSRD EMUIY2YEJ"
         }
       ], 
-      "cat": "brain"
+      "cat": "lung"
     }, 
     {
       "link": "col-link", 
@@ -6350,7 +6350,7 @@
           "row_name": "IESENFAOMRYD9MWEKSYSRD EMUIY2YEJ"
         }
       ], 
-      "cat": "brain"
+      "cat": "lung"
     }, 
     {
       "link": "col-link", 
@@ -7257,7 +7257,7 @@
           "row_name": "IESENFAOMRYD9MWEKSYSRD EMUIY2YEJ"
         }
       ], 
-      "cat": "brain"
+      "cat": "lung"
     }, 
     {
       "link": "col-link", 
@@ -8164,7 +8164,7 @@
           "row_name": "IESENFAOMRYD9MWEKSYSRD EMUIY2YEJ"
         }
       ], 
-      "cat": "brain"
+      "cat": "lung"
     }, 
     {
       "link": "col-link", 
@@ -9071,7 +9071,7 @@
           "row_name": "IESENFAOMRYD9MWEKSYSRD EMUIY2YEJ"
         }
       ], 
-      "cat": "brain"
+      "cat": "lung"
     }
   ], 
   "title": "Some-Clustergram"
