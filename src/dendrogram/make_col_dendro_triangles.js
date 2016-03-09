@@ -41,7 +41,16 @@ module.exports = function make_col_dendro_triangles(params, is_change_group = fa
 
       return output_string;
     })
-    .style('fill','black'); 
+    .style('fill','black')
+    .on('mouseover', function(d){
+      d3.select(this)
+        .style('opacity',1);
+    })
+    .on('mouseout', function(d){
+      d3.select(this)
+        .style('opacity',0.35);
+        
+    });
 
   var triangle_opacity;
 

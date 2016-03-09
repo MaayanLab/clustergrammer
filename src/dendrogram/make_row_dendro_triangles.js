@@ -1,4 +1,5 @@
 var calc_row_dendro_triangles = require('./calc_row_dendro_triangles');
+var dendro_group_highlight = require('./dendro_group_highlight');
 
 module.exports = function make_row_dendro_triangles(params, is_change_group=false){
 
@@ -41,7 +42,20 @@ module.exports = function make_row_dendro_triangles(params, is_change_group=fals
 
       return output_string;
     })
-    .style('fill','black');
+    .style('fill','black')
+    .on('mouseover', function(d){
+      dendro_group_highlight(params, this, d);
+    })
+    .on('mouseout', function(d){
+
+      if (params.viz.inst_order.col === 'clust'){
+        d3.select(this)
+          .style('opacity',0.35);
+      }
+
+      d3.selectAll(params.root+' .dendro_shadow')
+        .remove();
+    });
 
   var triangle_opacity;
   if (params.viz.inst_order.col === 'clust'){
