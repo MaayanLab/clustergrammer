@@ -39,9 +39,6 @@ module.exports = function make_col_cat(params) {
   d3.selectAll(params.root+' .col_cat_group')
     .each(function() {
 
-      console.log('making col cats ')
-      var inst_level = params.group_level.col;
-
       var cat_rect;
       if (d3.select(this).select('.col_cat_rect').empty()){
         cat_rect = d3.select(this)
@@ -59,7 +56,6 @@ module.exports = function make_col_cat(params) {
           return inst_height;
         })
         .style('fill', function(d) {
-          console.log(d.cat)
           return params.viz.cat_colors.col[d.cat];
         });
 

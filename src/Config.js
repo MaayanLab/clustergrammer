@@ -174,13 +174,9 @@ module.exports = function(args) {
   // check for category information
   if (config.show_categories.col) {
 
-    console.log('adding col cat colors')
-
     // associate classes with colors
     var class_cols = _.uniq(_.pluck(args.network_data.col_nodes, 'cat'));
     
-    console.log(class_cols)
-
     config.cat_colors.col = {};
 
     // custom column group colors

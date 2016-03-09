@@ -19,10 +19,12 @@ module.exports = function toggle_dendro_view(params, row_col){
   }
 
   if (params.viz.inst_order.row != 'clust'){
-    d3.selectAll(params.root+' .col_dendro_group').remove();
+    d3.selectAll(params.root+' .col_dendro_group')
+      .style('opacity',0);
   }
 
   if (params.viz.inst_order.col != 'clust'){
-    d3.selectAll(params.root+' .row_dendro_group').remove();
+    d3.selectAll(params.root+' .row_dendro_group')
+      .style('opacity',0);
   }
 };
