@@ -179,22 +179,20 @@ module.exports = function(args) {
     
     config.cat_colors.col = {};
 
-    // custom column group colors
-    var cat_colors = ['#1f77b4','orange','#8c564b','yellow','red','pink','blue','#e377c2','grey'];
-
     class_cols.forEach(function(c_col, i) {
-      config.cat_colors.col[c_col] = cat_colors[ i % cat_colors.length ];
+      config.cat_colors.col[c_col] = colors.get_random_color(i+1);
     });
 
     // generate a dictionary of columns in each category
     config.cat_dict = {};
     col_nodes.forEach(function(d){
+
       // initialize array for each category
-      if (!utils.has(config.cat_dict, d.cl)){
-        config.cat_dict[d.cl] = [];
+      if (!utils.has(config.cat_dict, d.cat)){
+        config.cat_dict[d.cat] = [];
       }
       // add column name to category array
-      config.cat_dict[d.cl].push(d.name);
+      config.cat_dict[d.cat].push(d.name);
     });
 
   }
