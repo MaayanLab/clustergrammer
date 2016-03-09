@@ -9,15 +9,8 @@ module.exports = function set_up_reorder(params, sidebar){
     'cat':'Category'
   };
 
-  var tmp_orders = Object.keys(params.matrix.orders);
+  var tmp_orders; 
 
-  var possible_orders = tmp_orders.map(function(x){return x.split('_')[0];});
-
-  console.log(possible_orders)
-
-  possible_orders = _.uniq(possible_orders);
-
-  possible_orders = possible_orders.sort();
 
   var node_data = [
     {
@@ -32,8 +25,33 @@ module.exports = function set_up_reorder(params, sidebar){
 
   var is_active;
   var inst_reorder; 
+  var inst_rc;
 
   _.each(node_data, function(inst_node){
+
+    tmp_orders = Object.keys(params.matrix.orders);
+
+    var possible_orders = [];
+
+    _.each(tmp_orders, function(d){
+
+      if (inst_node.short_name==='row'){
+        inst_rc = 'col';
+      } else {
+        inst_rc = 'row'; 
+      }
+
+      if (d.split('_')[1] === inst_rc){
+        possible_orders.push(d.split('_')[0]);
+      }
+      
+    })
+
+    possible_orders = _.uniq(possible_orders);
+
+    possible_orders = possible_orders.sort();
+
+    console.log(possible_orders)
 
     sidebar
       .append('div')
