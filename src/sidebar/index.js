@@ -69,12 +69,16 @@ module.exports = function sidebar(config, params) {
       .text('Column Categories')
       .style('margin-bottom','2px');
 
-    for (var inst_cat in params.viz.cat_colors.col){
+    var all_cats = _.keys(params.viz.cat_colors.col);
+
+    all_cats = all_cats.sort();
+
+    _.each(all_cats, function(inst_cat){
 
       var inst_group = key_cat_col
         .append('g')
-        .attr('class','category_section')
-        .on('click', category_key_click);
+        .attr('class','category_section');
+        // .on('click', category_key_click);
 
       inst_group
         .append('div')
@@ -89,7 +93,6 @@ module.exports = function sidebar(config, params) {
           return inst_color;
         });
 
-
       inst_group
         .append('p')
         .style('margin-bottom','2px')
@@ -98,16 +101,16 @@ module.exports = function sidebar(config, params) {
         .attr('class','noselect')
         .style('cursor','pointer');
 
-    }
+    });
 
   }
 
 
-  function category_key_click(){
+  // function category_key_click(){
     
-    var inst_cat = d3.select(this).select('text').text();
+    // var inst_cat = d3.select(this).select('text').text();
 
-    console.log(inst_cat)
+    // console.log(inst_cat)
 
     // // update the category 
     // if (cgm.params.current_col_cat === inst_cat){
@@ -154,6 +157,6 @@ module.exports = function sidebar(config, params) {
     // // update the network after changing the category 
     // cgm.update_network('default');
 
-  }  
+  // }  
 
 };
