@@ -1,6 +1,6 @@
 module.exports = function dendro_group_highlight(params, inst_selection, d, inst_rc){
 
-  var inst_opacity = 0.075;
+  var inst_opacity = 0.2;
   var select_opacity = 0.7;
   var bot_height;
 
