@@ -75,30 +75,30 @@ module.exports = function set_matrix_params(config, params){
     });
   }
 
-  // // define class ordering - define on front-end
-  // if (utils.has(col_nodes[0],'cl')){
+  // define class ordering - define on front-end
+  if (utils.has(col_nodes[0],'cat')){
 
-  //   // the order should be interpreted as the nth node should be positioned here
-  //   // in the order
+    // the order should be interpreted as the nth node should be positioned here
+    // in the order
 
-  //   var tmp_col_nodes = _.sortBy(col_nodes,'cl')
+    var tmp_col_nodes = _.sortBy(col_nodes,'cat')
 
-  //   var ordered_col_names = []
-  //   for (var i=0; i< tmp_col_nodes.length; i++){
-  //     ordered_col_names.push( tmp_col_nodes[i].name );
-  //   }
+    var ordered_col_names = []
+    for (var i=0; i< tmp_col_nodes.length; i++){
+      ordered_col_names.push( tmp_col_nodes[i].name );
+    }
 
-  //   var order_col_class = []
-  //   for (var i=0; i< col_nodes.length; i++){
-  //     var inst_col_name = ordered_col_names[i];
-  //     order_col_class.push( _.indexOf( params.network_data.col_nodes_names, inst_col_name) );
-  //   }
+    var order_col_class = []
+    for (var i=0; i< col_nodes.length; i++){
+      var inst_col_name = ordered_col_names[i];
+      order_col_class.push( _.indexOf( params.network_data.col_nodes_names, inst_col_name) );
+    }
 
-  //   params.matrix.orders.class_row = order_col_class;
-  // }
+    params.matrix.orders.cat_row = order_col_class;
+  }
 
   if (utils.has(col_nodes[0], 'cl_index')) {
-    params.matrix.orders.class_row = d3.range(params.viz.num_col_nodes).sort(function (a, b) {
+    params.matrix.orders.cat_row = d3.range(params.viz.num_col_nodes).sort(function (a, b) {
       return col_nodes[b].cl_index - col_nodes[a].cl_index;
     });
   }

@@ -12,6 +12,9 @@ module.exports = function set_up_reorder(params, sidebar){
   var tmp_orders = Object.keys(params.matrix.orders);
 
   var possible_orders = tmp_orders.map(function(x){return x.split('_')[0];});
+
+  console.log(possible_orders)
+
   possible_orders = _.uniq(possible_orders);
 
   possible_orders = possible_orders.sort();
@@ -62,7 +65,9 @@ module.exports = function set_up_reorder(params, sidebar){
       .attr('name', function(d){
         return d;
       })
-      .html(function(d){return button_dict[d];});
+      .html(function(d){
+        return button_dict[d];
+      });
     
   });
 
