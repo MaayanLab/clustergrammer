@@ -167,7 +167,8 @@ class Network(object):
     # get all rows from signatures 
     all_rows = []
     all_sigs = []
-    all_cat = []
+    tmp_col_cat = {}
+    is_col_cat = False
     for inst_sig in sigs:
 
       # gather sig names 
@@ -175,7 +176,9 @@ class Network(object):
 
       # gather category
       if 'cat' in inst_sig:
-        all_cat.append(inst_sig['cat'])
+        is_col_cat = True
+
+        tmp_col_cat[inst_sig['col_name']] = inst_sig['cat']
 
       # get column 
       col_data = inst_sig['data']
@@ -189,7 +192,7 @@ class Network(object):
 
     # get unique sorted list of genes 
     all_rows = sorted(list(set(all_rows)))
-    # all_sigs = sorted(list(set(all_sigs)))
+    all_sigs = sorted(list(set(all_sigs)))
     print( 'found ' + str(len(all_rows)) + ' rows' )
     print( 'found ' + str(len(all_sigs)) + ' columns\n'  )
 
@@ -197,12 +200,17 @@ class Network(object):
     self.dat['nodes']['row'] = all_rows
     self.dat['nodes']['col'] = all_sigs
 
-    if len(all_cat) > 0:
+    if is_col_cat:
+      all_cat = []
+
+      for tmp_sig in all_sigs:
+        all_cat.append( tmp_col_cat[tmp_sig] )
+
       # save col categories to node_info
       self.dat['node_info']['col']['cat'] = all_cat
 
       self.make_col_in_cat()
-      
+
     # initialize numpy matrix of nans
     self.dat['mat'] = np.empty((len(all_rows),len(all_sigs)))
     self.dat['mat'][:] = np.nan
