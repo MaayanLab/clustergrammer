@@ -73,7 +73,7 @@ module.exports = function set_viz_params(config, params){
 
   // category colorbar 
   viz.cat_room = {};
-  viz.cat_room.symbol_width = 11;
+  viz.cat_room.symbol_width = 12;
   viz.cat_colors = {};
 
   if (viz.show_categories.row){
