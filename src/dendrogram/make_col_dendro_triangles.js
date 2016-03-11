@@ -50,7 +50,7 @@ module.exports = function make_col_dendro_triangles(params, is_change_group = fa
     .on('mouseout', function(){
       if (params.viz.inst_order.col === 'clust'){
         d3.select(this)
-          .style('opacity',0.35);
+          .style('opacity',params.viz.dendro_opacity);
       }
       d3.selectAll(params.root+' .dendro_shadow')
         .remove();
@@ -59,7 +59,7 @@ module.exports = function make_col_dendro_triangles(params, is_change_group = fa
   var triangle_opacity;
 
   if (params.viz.inst_order.col === 'clust'){
-    triangle_opacity = 0.35;
+    triangle_opacity = params.viz.dendro_opacity;
   } else {
     triangle_opacity = 0;
   }
