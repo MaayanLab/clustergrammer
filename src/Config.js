@@ -147,9 +147,9 @@ module.exports = function(args) {
 
   config.show_categories = {};
   
-  config.show_categories.row = utils.has(args.network_data.row_nodes[0], 'cl') || utils.has(args.network_data.row_nodes[0], 'cat');
+  config.show_categories.row = utils.has(args.network_data.row_nodes[0], 'cl') || utils.has(args.network_data.row_nodes[0], 'cat-0');
 
-  config.show_categories.col = utils.has(args.network_data.col_nodes[0], 'cl') || utils.has(args.network_data.col_nodes[0], 'cat');
+  config.show_categories.col = utils.has(args.network_data.col_nodes[0], 'cl') || utils.has(args.network_data.col_nodes[0], 'cat-0');
 
   // initialize dictionary of colors
   config.cat_colors = {};
@@ -158,7 +158,7 @@ module.exports = function(args) {
   if (config.show_categories.row) {
 
     // associate classes with colors
-    var class_rows = _.uniq(_.pluck(args.network_data.row_nodes, 'cat'));
+    var class_rows = _.uniq(_.pluck(args.network_data.row_nodes, 'cat-0'));
     
     config.cat_colors.row = {};
     class_rows.forEach(function(c_row, i) {
@@ -175,7 +175,7 @@ module.exports = function(args) {
   if (config.show_categories.col) {
 
     // associate classes with colors
-    var class_cols = _.uniq(_.pluck(args.network_data.col_nodes, 'cat'));
+    var class_cols = _.uniq(_.pluck(args.network_data.col_nodes, 'cat-0'));
     
     config.cat_colors.col = {};
 

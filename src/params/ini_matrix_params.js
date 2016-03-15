@@ -76,12 +76,12 @@ module.exports = function set_matrix_params(config, params){
   }
 
   // define class ordering - define on front-end
-  if (utils.has(col_nodes[0],'cat')){
+  if (utils.has(col_nodes[0],'cat-0')){
 
     // the order should be interpreted as the nth node should be positioned here
     // in the order
 
-    var tmp_col_nodes = _.sortBy(col_nodes,'cat');
+    var tmp_col_nodes = _.sortBy(col_nodes,'cat-0');
 
     var ordered_col_names = [];
     for (var i=0; i< tmp_col_nodes.length; i++){
@@ -94,11 +94,11 @@ module.exports = function set_matrix_params(config, params){
       order_col_class.push( _.indexOf( params.network_data.col_nodes_names, inst_col_name) );
     }
 
-    params.matrix.orders.cat_row = order_col_class;
+    params.matrix.orders['cat-0_row'] = order_col_class;
   }
 
   if (utils.has(col_nodes[0], 'cl_index')) {
-    params.matrix.orders.cat_row = d3.range(params.viz.num_col_nodes).sort(function (a, b) {
+    params.matrix.orders['cat-0_row'] = d3.range(params.viz.num_col_nodes).sort(function (a, b) {
       return col_nodes[b].cl_index - col_nodes[a].cl_index;
     });
   }

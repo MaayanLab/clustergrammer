@@ -6,7 +6,7 @@ module.exports = function set_up_reorder(params, sidebar){
     'rankvar':'Rank by Variance',
     'ini':'Initial Order',
     'alpha':'Alphabetically',
-    'cat':'Category'
+    'cat-0':'Category'
   };
 
   var tmp_orders; 
@@ -50,6 +50,8 @@ module.exports = function set_up_reorder(params, sidebar){
     possible_orders = _.uniq(possible_orders);
 
     possible_orders = possible_orders.sort();
+
+    console.log(possible_orders)
 
     sidebar
       .append('div')

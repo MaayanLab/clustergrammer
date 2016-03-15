@@ -56,7 +56,7 @@ module.exports = function make_col_cat(params) {
           return inst_height;
         })
         .style('fill', function(d) {
-          return params.viz.cat_colors.col[d.cat];
+          return params.viz.cat_colors.col[d['cat-0']];
         });
 
       // if (typeof params.click_group === 'function'){
