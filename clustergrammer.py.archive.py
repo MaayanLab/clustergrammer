@@ -25,6 +25,7 @@ class Network(object):
       self.dat['node_info'][inst_rc]['clust'] = []
       self.dat['node_info'][inst_rc]['rank'] = []
       self.dat['node_info'][inst_rc]['info'] = []
+      # classification is specifically used to color the class triangles 
       self.dat['node_info'][inst_rc]['cat'] = []
       self.dat['node_info'][inst_rc]['value'] = []
 
@@ -39,6 +40,14 @@ class Network(object):
     self.viz['col_nodes'] = []
     self.viz['links'] = []
 
+  def load_tsv_to_net(self, filename):
+
+    f = open(filename,'r')
+    lines = f.readlines()
+    f.close()
+
+    self.load_lines_from_tsv_to_net(lines)
+
   def pandas_load_file(self, filename):
     import StringIO
 
@@ -49,85 +58,105 @@ class Network(object):
     self.pandas_load_tsv_to_net(buff)
 
   def pandas_load_tsv_to_net(self, file_buffer):
+    '''
+    A user can add category information to the columns 
+    '''
     import pandas as pd 
 
+    # get lines and check for category and value info 
     lines = file_buffer.getvalue().split('\n')
-    num_labels = self.check_categories(lines)
 
-    row_arr = range(num_labels['row'])
-    col_arr = range(num_labels['col'])
+    # check for category info in headers
+    cat_line = lines[1].split('\t')
+
+    add_cat = False
+    if cat_line[0] == '': 
+      add_cat = True
+
     tmp_df = {}
-
-    # use header if there are col categories
-    if len(col_arr) > 1:
-      tmp_df['mat'] = pd.read_table(file_buffer, index_col=row_arr, header=col_arr)
+    if add_cat:
+      # read in names and categories 
+      tmp_df['mat'] = pd.read_table(file_buffer, index_col=0, header=[0,1])
     else:
-      tmp_df['mat'] = pd.read_table(file_buffer, index_col=row_arr )
+      # read in names only 
+      tmp_df['mat'] = pd.read_table(file_buffer, index_col=0, header=0)
 
-    # remove columns with all nans, occurs when there are trailing tabs on rows
-    tmp_df['mat'] = tmp_df['mat'].dropna(axis=1)
-
+    # save to self
     self.df_to_dat(tmp_df)
 
-  @staticmethod
-  def check_categories(lines):
-    # count the number of row categories 
-    rcat_line = lines[0].split('\t')
+    # add categories if necessary 
+    if add_cat:
+      cat_line = [i.strip() for i in cat_line]
+      self.dat['node_info']['col']['cat'] = cat_line[1:]
 
-    # calc the number of row names and categories 
-    num_rc = 0
-    found_end = False
+    # make a dict of columns in categories 
+    self.make_col_in_cat()
 
-    # skip first tab 
-    for inst_string in rcat_line[1:]:
+  def make_col_in_cat(self):
+    # make a dict of columns in categories 
+    ##########################################
+    col_in_cat = {}
+    for i in range(len(self.dat['node_info']['col']['cat'])):
 
-      if inst_string == '':
-        if found_end == False:
-          num_rc = num_rc + 1
+      inst_cat = self.dat['node_info']['col']['cat'][i]
+      inst_col = self.dat['nodes']['col'][i]
 
-      else:
-        found_end = True
+      if inst_cat not in col_in_cat:
+        col_in_cat[inst_cat] = []
 
-    max_rcat = 10
-    num_cc = 0 
+      # collect col names for categories 
+      col_in_cat[inst_cat].append(inst_col) 
 
-    for i in range(max_rcat):
-      ccat_line = lines[i+1].split('\t')
-      if ccat_line[0] == '':
-        num_cc  = num_cc + 1
+    # save to node_info
+    self.dat['node_info']['col_in_cat'] = col_in_cat
 
-    print('\nfound ' + str(num_rc) + ' row categories' )
-    print('found ' + str(num_cc) + ' col categories\n' )
+  def load_lines_from_tsv_to_net(self, lines):
+    import numpy as np
+    # get row/col labels and data from lines 
+    for i in range(len(lines)):
 
-    num_labels = {}
-    num_labels['row'] = num_rc + 1
-    num_labels['col'] = num_cc + 1
+      # get inst_line
+      inst_line = lines[i].rstrip().split('\t')
+      # strip each element 
+      inst_line = [z.strip() for z in inst_line]
 
-    return num_labels
+      # get column labels from first row 
+      if i == 0:
+        tmp_col_labels = inst_line
 
-  def dict_cat(self):
-    
-    for inst_rc in ['row','col']:
+        # add the labels 
+        for inst_elem in range(len(tmp_col_labels)):
 
-      inst_keys = self.dat['node_info'][inst_rc].keys()
+          # skip the first element 
+          if inst_elem > 0:
+            # get the column label 
+            inst_col_label = tmp_col_labels[inst_elem]
 
-      all_cats = [x for x in inst_keys if 'cat-' in x]
+            # add to network data 
+            self.dat['nodes']['col'].append(inst_col_label)
 
-      for inst_name_cat in all_cats:
-        dict_cat = {}
-        tmp_cats = self.dat['node_info'][inst_rc][inst_name_cat]
-        tmp_nodes = self.dat['nodes'][inst_rc]
+      # get row info 
+      if i > 0:
 
-        for i in range(len(tmp_cats)):
-          inst_cat = tmp_cats[i]
-          inst_node = tmp_nodes[i]
+        # save row labels 
+        self.dat['nodes']['row'].append(inst_line[0])
 
-          if inst_cat not in dict_cat:
-            dict_cat[inst_cat] = []
+        # get data - still strings 
+        inst_data_row = inst_line[1:]
 
-          dict_cat[inst_cat].append(inst_node)
+        # convert to float
+        inst_data_row = [float(tmp_dat) for tmp_dat in inst_data_row]
 
-        self.dat['node_info'][inst_rc]['dict_'+inst_name_cat.replace('-','_')] = dict_cat
+        # save the row data as an array 
+        inst_data_row = np.asarray(inst_data_row)
+
+        # initailize matrix 
+        if i == 1:
+          self.dat['mat'] = inst_data_row
+
+        # add rows to matrix
+        if i > 1: 
+          self.dat['mat'] = np.vstack( ( self.dat['mat'], inst_data_row ) )
 
   def load_vect_post_to_net(self, vect_post):
     import numpy as np
@@ -160,10 +189,10 @@ class Network(object):
         # get gene name 
         all_rows.append( inst_row_data['row_name'] )
 
+
     # get unique sorted list of genes 
     all_rows = sorted(list(set(all_rows)))
     all_sigs = sorted(list(set(all_sigs)))
-
     print( 'found ' + str(len(all_rows)) + ' rows' )
     print( 'found ' + str(len(all_sigs)) + ' columns\n'  )
 
@@ -180,7 +209,7 @@ class Network(object):
       # save col categories to node_info
       self.dat['node_info']['col']['cat'] = all_cat
 
-      self.dict_cat()
+      self.make_col_in_cat()
 
     # initialize numpy matrix of nans
     self.dat['mat'] = np.empty((len(all_rows),len(all_sigs)))
@@ -292,6 +321,47 @@ class Network(object):
     import numpy as np
     self.dat['mat'][ np.isnan( self.dat['mat'] ) ] = 0
 
+  def keep_max_num_links(self, keep_num_links):
+
+    print('\trun keep_max_num_links')
+    max_mat_value = abs(self.dat['mat']).max()
+
+    # check the total number of links 
+    inst_thresh = 0
+    inst_pct_max = 0
+    inst_num_links = (abs(self.dat['mat'])>inst_thresh).sum()
+    print('initially there are '+str(inst_num_links)+' links ')
+
+    print('there are initially '+str(inst_num_links)+'\n')
+
+    thresh_fraction = 100
+
+    while (inst_num_links > keep_num_links):
+
+      # increase the threshold as a pct of max value in mat 
+      inst_pct_max = inst_pct_max + 1 
+
+      # increase threshold 
+      inst_thresh = max_mat_value*(float(inst_pct_max)/thresh_fraction)
+
+      # check the number of links above the curr threshold 
+      inst_num_links = (abs(self.dat['mat'])>inst_thresh).sum()
+
+      print('there are '+str(inst_num_links)+ ' links at threshold '+str(inst_pct_max)+'pct and value of ' +str(inst_thresh)+'\n')
+
+    # if there are no links then increas thresh back up 
+    if inst_num_links == 0:
+      inst_pct_max = inst_pct_max - 1 
+      inst_thresh = max_mat_value*(float(inst_pct_max)/thresh_fraction)
+
+    print('final number of links '+str(inst_num_links))
+
+    # replace values that are less than thresh with zero 
+    self.dat['mat'][ abs(self.dat['mat']) < inst_thresh] = 0
+
+    # return number of links 
+    return (abs(self.dat['mat'])>inst_thresh).sum()
+
   def cluster_row_and_col(self, dist_type='cosine', linkage_type='average', dendro=True, \
     run_clustering=True, run_rank=True):
 
@@ -310,209 +380,156 @@ class Network(object):
 
     # make distance matrices 
     ##########################
-    print('\ncluster_row_and_col')
 
-    for inst_rc in ['row','col']:
+    # get number of rows and columns from self.dat 
+    num_row = len(self.dat['nodes']['row'])
+    num_col = len(self.dat['nodes']['col'])
 
-      print(inst_rc)
-      print(self.dat['node_info'][inst_rc].keys())
+    # initialize distance matrices 
+    row_dm = scipy.zeros([num_row,num_row])
+    col_dm = scipy.zeros([num_col,num_col])
 
-      num_nodes = len(self.dat['nodes'][inst_rc])
+    # make copy of matrix 
+    tmp_mat = deepcopy(self.dat['mat'])
 
-      # initialize distance matrices 
-      node_dm = scipy.zeros([num_nodes,num_nodes])
+    # calculate distance matrix 
+    row_dm = pdist( tmp_mat, metric=dist_type )
+    col_dm = pdist( tmp_mat.transpose(), metric=dist_type )
 
-      # make copy of matrix 
-      tmp_mat = deepcopy(self.dat['mat'])
+    # prevent negative values 
+    row_dm[row_dm < 0] = float(0)
+    col_dm[col_dm < 0] = float(0)
 
-      # calculate distance matrix 
-      if inst_rc == 'row':
-        node_dm = pdist( tmp_mat, metric=dist_type )
-      elif inst_rc == 'col':
-        node_dm = pdist( tmp_mat.transpose(), metric=dist_type )
+    # initialize clust order 
+    clust_order = self.ini_clust_order()
 
-      # prevent negative values 
-      node_dm[node_dm < 0] = float(0)
+    # initial ordering
+    ###################
+    clust_order['row']['ini'] = range(num_row, -1, -1)
+    clust_order['col']['ini'] = range(num_col, -1, -1)
 
-      clust_order = self.ini_clust_order()
-      clust_order[inst_rc]['ini'] = range(num_nodes, -1, -1)
+    # cluster 
+    if run_clustering == True:
 
-      # cluster 
-      if run_clustering == True:
-        clust_order[inst_rc]['clust'], clust_order[inst_rc]['group'] = \
-        self.clust_and_group(node_dm, linkage_type=linkage_type)
+      clust_order['row']['clust'], clust_order['row']['group'] = \
+      self.clust_and_group(row_dm, linkage_type=linkage_type)
 
-      # rank: sum and variance 
-      if run_rank == True:
-        clust_order[inst_rc]['rank'] = self.sort_rank_nodes(inst_rc,'sum')
-        clust_order[inst_rc]['rankvar'] = self.sort_rank_nodes(inst_rc,'var')
+      clust_order['col']['clust'], clust_order['col']['group'] = \
+      self.clust_and_group(col_dm, linkage_type=linkage_type)
 
-      # transfer ofders 
-      if run_clustering == True:
-        self.dat['node_info'][inst_rc]['clust'] = clust_order[inst_rc]['clust']
-      else:
-        self.dat['node_info'][inst_rc]['clust'] = clust_order[inst_rc]['ini']
+    # rank 
+    if run_rank == True:
+      # rank based on sum 
+      clust_order['row']['rank'] = self.sort_rank_nodes('row','sum')
+      clust_order['col']['rank'] = self.sort_rank_nodes('col','sum')
 
-      if run_rank == True:
-        self.dat['node_info'][inst_rc]['rank'] = clust_order[inst_rc]['rank']
-        self.dat['node_info'][inst_rc]['rankvar'] = clust_order[inst_rc]['rankvar']
-      else:
-        self.dat['node_info'][inst_rc]['rank'] = clust_order[inst_rc]['ini']
-        self.dat['node_info'][inst_rc]['rankvar'] = clust_order[inst_rc]['ini']
+      # rank based on variance 
+      clust_order['row']['rankvar'] = self.sort_rank_nodes('row','var')
+      clust_order['col']['rankvar'] = self.sort_rank_nodes('col','var')
 
-      self.dat['node_info'][inst_rc]['ini'] = clust_order[inst_rc]['ini']
-      self.dat['node_info'][inst_rc]['group'] = clust_order[inst_rc]['group']
+    # save clustering orders to node_info 
+    if run_clustering == True:
+      self.dat['node_info']['row']['clust'] = clust_order['row']['clust']
+      self.dat['node_info']['col']['clust'] = clust_order['col']['clust']
+    else:
+      self.dat['node_info']['row']['clust'] = clust_order['row']['ini']
+      self.dat['node_info']['col']['clust'] = clust_order['col']['ini']
 
+    if run_rank == True:
+      # sum rank 
+      self.dat['node_info']['row']['rank']  = clust_order['row']['rank']
+      self.dat['node_info']['col']['rank']  = clust_order['col']['rank']
 
-      self.calc_cat_clust_order(inst_rc)
+      # variance rank 
+      self.dat['node_info']['row']['rankvar']  = clust_order['row']['rankvar']
+      self.dat['node_info']['col']['rankvar']  = clust_order['col']['rankvar']
+
+    else:
+      self.dat['node_info']['row']['rank']  = clust_order['row']['ini']
+      self.dat['node_info']['col']['rank']  = clust_order['col']['ini']
+
+    # transfer ordereings
+    # row
+    self.dat['node_info']['row']['ini']   = clust_order['row']['ini']
+    self.dat['node_info']['row']['group'] = clust_order['row']['group']
+    # col 
+    self.dat['node_info']['col']['ini']   = clust_order['col']['ini']
+    self.dat['node_info']['col']['group'] = clust_order['col']['group']
+
+    if len(self.dat['node_info']['col']['cat']) > 0:
+      self.calc_cat_clust_order()
 
     # make the viz json - can optionally leave out dendrogram
     self.viz_json(dendro)
 
-  def calc_cat_clust_order(self, inst_rc):
+  def calc_cat_clust_order(self):
     from clustergrammer import Network 
     from copy import deepcopy 
 
-    print('\ncalculate_cat_clust_order '+ inst_rc)
+    col_in_cat = self.dat['node_info']['col_in_cat']
 
-    inst_keys = self.dat['node_info'][inst_rc].keys()
-    all_cats = [x for x in inst_keys if 'cat-' in x]
+    # alpha order categories 
+    all_cats = sorted(col_in_cat.keys())
 
-    if len(all_cats) > 0:
-      
-      for inst_name_cat in all_cats:
-        print(inst_name_cat)
+    # cluster each category
+    ##############################
 
-        dict_cat = self.dat['node_info'][inst_rc]['dict_'+inst_name_cat.replace('-','_')]
+    # calc clustering of each category 
+    all_cat_orders = []
+    # this is the ordering of the columns based on their category, not 
+    # including their clustering order on top of their category 
+    tmp_col_names_list = []
+    for inst_cat in all_cats:
 
-        all_cats = sorted(dict_cat.keys())
+      inst_cols = col_in_cat[inst_cat]
 
-        # this is the ordering of the columns based on their category, not 
-        # including their clustering ordering within category 
-        all_cat_orders = []
-        tmp_names_list = []
-        for inst_cat in all_cats:
+      # keep a list of the columns 
+      tmp_col_names_list.extend(inst_cols)
 
-          inst_nodes = dict_cat[inst_cat]
+      cat_net = deepcopy(Network())
 
-          tmp_names_list.extend(inst_nodes)
+      cat_net.dat['mat'] = deepcopy(self.dat['mat'])
+      cat_net.dat['nodes'] = deepcopy(self.dat['nodes'])
 
-          cat_net = deepcopy(Network())
+      # get dataframe, to simplify column filtering 
+      cat_df = cat_net.dat_to_df()
 
-          cat_net.dat['mat'] = deepcopy(self.dat['mat'])
-          cat_net.dat['nodes'] = deepcopy(self.dat['nodes'])
+      # get subset of dataframe 
+      sub_df = {}
+      sub_df['mat'] = cat_df['mat'][inst_cols]
 
-          cat_df = cat_net.dat_to_df()
+      # load back to dat 
+      cat_net.df_to_dat(sub_df)
 
-          # 
-          sub_df = {}
-          if inst_rc == 'col':
-            sub_df['mat'] = cat_df['mat'][inst_nodes]
-          elif inst_rc == 'row':
-            # need to transpose df 
-            cat_df['mat'] = cat_df['mat'].transpose()
-            sub_df['mat'] = cat_df['mat'][inst_nodes]
-            sub_df['mat'] = sub_df['mat'].transpose()
+      try:
+        cat_net.cluster_row_and_col('cos')
+        inst_cat_order = cat_net.dat['node_info']['col']['clust']
 
-          # load back to dat 
-          cat_net.df_to_dat(sub_df)
+      except:
+        inst_cat_order = range(len(cat_net.dat['nodes']['col']))
 
-          try:
-            cat_net.cluster_row_and_col('cos')
-            inst_cat_order = cat_net.dat['node_info'][inst_rc]
-          except:
-            inst_cat_order = range(len(cat_net.dat['nodes'][inst_rc]))
+      prev_order_len = len(all_cat_orders) 
 
-          prev_order_len = len(all_cat_orders)
+      # add previous order length to the current order number
+      inst_cat_order = [i+prev_order_len for i in inst_cat_order]
+      all_cat_orders.extend(inst_cat_order)
 
-          # add prev order length to the current order number 
-          inst_cat_order = [str(i)+str(prev_order_len) for i in inst_cat_order]
-          all_cat_orders.extend(inst_cat_order)
+    # sort tmp_col_names_lust by the integers in all_cat_orders 
+    names_col_cat_clust = [x for (y,x) in sorted(zip(all_cat_orders,tmp_col_names_list))]
 
-          # sort tmp_names_list by the integers in all_cat_orders 
-          print('\n\n------------------------------------')
-          print(all_cat_orders)
-          print(tmp_names_list)
-          names_clust_list = [x for (y,x) in sorted(zip(all_cat_orders,tmp_names_list))]
+    # calc category-cluster order 
+    ##############################
+    final_order = []
+    for i in range(len(self.dat['nodes']['col'])):
 
-          print(names_clust_list)
+      # get the rank of the col in the order of col_nodes 
+      inst_col_name = self.dat['nodes']['col'][i]
 
-        # calc category-cluster order 
-        final_order = []
+      inst_col_num = names_col_cat_clust.index(inst_col_name)
 
-        for i in range(len(self.dat['nodes'][inst_rc])):
+      final_order.append(inst_col_num)
 
-          inst_node_name = self.dat['nodes'][inst_rc][i]
-          inst_node_num = names_clust_list.index(inst_node_name)
-          final_order.append(inst_node_num)
-
-        self.dat['node_info'][inst_rc][inst_name_cat.replace('-','_')+'_index'] = final_order
-
-
-    # col_in_cat = self.dat['node_info']['col_in_cat']
-
-    # # alpha order categories 
-    # all_cats = sorted(col_in_cat.keys())
-
-    # # cluster each category
-    # ##############################
-
-    # # calc clustering of each category 
-    # all_cat_orders = []
-    # # this is the ordering of the columns based on their category, not 
-    # # including their clustering order on top of their category 
-    # tmp_col_names_list = []
-    # for inst_cat in all_cats:
-
-    #   inst_cols = col_in_cat[inst_cat]
-
-    #   # keep a list of the columns 
-    #   tmp_col_names_list.extend(inst_cols)
-
-    #   cat_net = deepcopy(Network())
-
-    #   cat_net.dat['mat'] = deepcopy(self.dat['mat'])
-    #   cat_net.dat['nodes'] = deepcopy(self.dat['nodes'])
-
-    #   # get dataframe, to simplify column filtering 
-    #   cat_df = cat_net.dat_to_df()
-
-    #   # get subset of dataframe 
-    #   sub_df = {}
-    #   sub_df['mat'] = cat_df['mat'][inst_cols]
-
-    #   # load back to dat 
-    #   cat_net.df_to_dat(sub_df)
-
-    #   try:
-    #     cat_net.cluster_row_and_col('cos')
-    #     inst_cat_order = cat_net.dat['node_info']['col']['clust']
-
-    #   except:
-    #     inst_cat_order = range(len(cat_net.dat['nodes']['col']))
-
-    #   prev_order_len = len(all_cat_orders) 
-
-    #   # add previous order length to the current order number
-    #   inst_cat_order = [i+prev_order_len for i in inst_cat_order]
-    #   all_cat_orders.extend(inst_cat_order)
-
-    # # sort tmp_col_names_list by the integers in all_cat_orders 
-    # names_col_cat_clust = [x for (y,x) in sorted(zip(all_cat_orders,tmp_col_names_list))]
-
-    # # calc category-cluster order 
-    # ##############################
-    # final_order = []
-    # for i in range(len(self.dat['nodes']['col'])):
-
-    #   # get the rank of the col in the order of col_nodes 
-    #   inst_col_name = self.dat['nodes']['col'][i]
-
-    #   inst_col_num = names_col_cat_clust.index(inst_col_name)
-
-    #   final_order.append(inst_col_num)
-
-    # self.dat['node_info']['col']['cl_index'] = final_order    
+    self.dat['node_info']['col']['cl_index'] = final_order    
 
   def clust_and_group( self, dm, linkage_type='average' ):
     import scipy.cluster.hierarchy as hier
@@ -540,14 +557,14 @@ class Network(object):
     from copy import deepcopy
 
     # make a copy of node information 
-    tmp_nodes = deepcopy(self.dat['nodes'][rowcol])
+    inst_nodes = deepcopy(self.dat['nodes'][rowcol])
     inst_mat   = deepcopy(self.dat['mat'])
 
     sum_term = []
-    for i in range(len(tmp_nodes)):
+    for i in range(len(inst_nodes)):
       inst_dict = {}
       # get name of the node 
-      inst_dict['name'] = tmp_nodes[i]
+      inst_dict['name'] = inst_nodes[i]
       # sum values of the node
       if rowcol == 'row':
         if rank_type == 'sum':
@@ -562,6 +579,7 @@ class Network(object):
       # add this to the list of dicts 
       sum_term.append(inst_dict)
 
+
     # sort dictionary by number of terms 
     sum_term = sorted( sum_term, key=itemgetter('rank'), reverse=False )
 
@@ -572,7 +590,7 @@ class Network(object):
 
     # get the sorted index
     sort_index = []
-    for inst_node in tmp_nodes:
+    for inst_node in inst_nodes:
       sort_index.append( tmp_sort_nodes.index(inst_node) )
 
     return sort_index
@@ -588,10 +606,6 @@ class Network(object):
     # make rows and cols 
     for inst_rc in self.dat['nodes']:
 
-      inst_keys = self.dat['node_info'][inst_rc]
-
-      all_cats = [x for x in inst_keys if 'cat-' in x]
-
       for i in range(len( self.dat['nodes'][inst_rc] )):
         inst_dict = {}
         inst_dict['name']  = self.dat['nodes'][inst_rc][i]
@@ -602,31 +616,24 @@ class Network(object):
 
         inst_dict['rank']  = self.dat['node_info'][inst_rc]['rank'][i]
 
-        if 'rankvar' in inst_keys:
+        if 'rankvar' in self.dat['node_info'][inst_rc]:
           inst_dict['rankvar']  = self.dat['node_info'][inst_rc]['rankvar'][i]
 
-        if len(all_cats) > 0:
 
-          for inst_name_cat in all_cats:
-            # get the cateogry name 
-            inst_dict[inst_name_cat] = self.dat['node_info'][inst_rc][inst_name_cat][i]
-            # get the category order 
-            tmp_index_name = inst_name_cat.replace('-','_')+'_index'
-            inst_dict[tmp_index_name] = self.dat['node_info'][inst_rc][tmp_index_name][i]
+        # add node class cl 
+        if len(self.dat['node_info'][inst_rc]['cat']) > 0:
+          inst_dict['cat'] = self.dat['node_info'][inst_rc]['cat'][i]
 
-        # # add node class cl 
-        # if len(self.dat['node_info'][inst_rc]['cat']) > 0:
-        #   inst_dict['cat'] = self.dat['node_info'][inst_rc]['cat'][i]
-
-        # # add node class cl_index
-        # if 'cl_index' in self.dat['node_info'][inst_rc] > 0:
-        #   inst_dict['cl_index'] = self.dat['node_info'][inst_rc]['cl_index'][i]
+        # add node class cl_index
+        if 'cl_index' in self.dat['node_info'][inst_rc] > 0:
+          inst_dict['cl_index'] = self.dat['node_info'][inst_rc]['cl_index'][i]
 
         # add node class val   
         if len(self.dat['node_info'][inst_rc]['value']) > 0:
           inst_dict['value'] = self.dat['node_info'][inst_rc]['value'][i]
 
         # add node information 
+        # if 'info' in self.dat['node_info'][inst_rc]:
         if len(self.dat['node_info'][inst_rc]['info']) > 0:
           inst_dict['info'] = self.dat['node_info'][inst_rc]['info'][i]
 
@@ -679,27 +686,13 @@ class Network(object):
     self.dat['nodes']['row'] = df['mat'].index.tolist()
     self.dat['nodes']['col'] = df['mat'].columns.tolist()
 
-    # gather category information if necessary 
-    for inst_rc in ['row','col']:
-
-      if type(self.dat['nodes'][inst_rc][0]) is tuple:
-
-        num_cat = len(self.dat['nodes'][inst_rc][0]) - 1
-
-        # save copy of full_names, whicih can contain tuples 
-        self.dat['node_info'][inst_rc]['full_names'] = self.dat['nodes'][inst_rc]
-
-        for inst_rcat in range(num_cat):
-          self.dat['node_info'][inst_rc]['cat-'+str(inst_rcat)] = [i[inst_rcat+1] for i in self.dat['nodes'][inst_rc]]
-
-        self.dat['nodes'][inst_rc] = [i[0] for i in self.dat['nodes'][inst_rc]]
+    # check if there is category information in the column names  
+    if type(self.dat['nodes']['col'][0]) is tuple:
+      self.dat['nodes']['col'] = [i[0] for i in self.dat['nodes']['col']]
 
     if 'mat_up' in df:
       self.dat['mat_up'] = df['mat_up'].values
       self.dat['mat_dn'] = df['mat_dn'].values
-
-    # make a dict of columns in categories 
-    self.dict_cat()
 
   def dat_to_df(self):
     import numpy as np
@@ -707,20 +700,13 @@ class Network(object):
 
     df = {}
   
-    if 'full_names' in self.dat['node_info']['row']:
-      inst_rows = self.dat['node_info']['row']['full_names']
-      inst_cols = self.dat['node_info']['col']['full_names']
-    else:
-      inst_rows = self.dat['nodes']['row']
-      inst_cols = self.dat['nodes']['col']
-
     # always return 'mat' dataframe     
-    df['mat'] = pd.DataFrame(data = self.dat['mat'], columns=inst_cols, index=inst_rows)
+    df['mat'] = pd.DataFrame(data = self.dat['mat'], columns=self.dat['nodes']['col'], index=self.dat['nodes']['row'])
 
     if 'mat_up' in self.dat:
 
-      df['mat_up'] = pd.DataFrame(data = self.dat['mat_up'], columns=inst_cols, index=inst_rows)
-      df['mat_dn'] = pd.DataFrame(data = self.dat['mat_dn'], columns=inst_cols, index=inst_rows)
+      df['mat_up'] = pd.DataFrame(data = self.dat['mat_up'], columns=self.dat['nodes']['col'], index=self.dat['nodes']['row'])
+      df['mat_dn'] = pd.DataFrame(data = self.dat['mat_dn'], columns=self.dat['nodes']['col'], index=self.dat['nodes']['row'])
 
     return df 
 
@@ -737,7 +723,9 @@ class Network(object):
     pct_row_sum was formerly called filter_row_sum
     '''
 
-    print('--- start make_filtered_views')
+    print('running make_filtered_views')
+
+    print('dist_type '+str(dist_type))
 
     # get dataframe dictionary of network and remove rows/cols with all zero values 
     df = self.dat_to_df()
@@ -777,13 +765,13 @@ class Network(object):
 
       # add N_row_sum views 
       if 'N_row_sum' in views:
-        print('\nadd N_row_sum')
+        print('add N_row_sum')
         all_views = self.add_N_top_views( send_df, all_views, \
           dist_type=dist_type, current_col_cat=inst_col_cat, rank_type='sum' )
 
       # add N_row_var views 
       if 'N_row_var' in views:
-        print('\nadd N_row_var')
+        print('add N_row_var')
         all_views = self.add_N_top_views( send_df, all_views, \
           dist_type=dist_type, current_col_cat=inst_col_cat, rank_type='var' )
 
@@ -800,7 +788,7 @@ class Network(object):
     # add views to viz 
     self.viz['views'] = all_views
 
-    print('\n--- end make_filtered_views')
+    print('finished make_filtered_views')
 
   def add_pct_top_views(self, df, all_views, dist_type='cosine', \
     current_col_cat='all_category', rank_type='sum'):
@@ -873,8 +861,8 @@ class Network(object):
         # transfer category information 
         net.dat['node_info']['col']['cat'] = inst_col_cats
 
-        # # add col_in_cat
-        # net.dat['node_info']['col_in_cat'] = copy_net.dat['node_info']['col_in_cat']
+        # add col_in_cat
+        net.dat['node_info']['col_in_cat'] = copy_net.dat['node_info']['col_in_cat']
 
       # try to cluster 
       try: 
@@ -1001,8 +989,8 @@ class Network(object):
           # transfer category information 
           net.dat['node_info']['col']['cat'] = inst_col_cats
 
-          # # add col_in_cat 
-          # net.dat['node_info']['col_in_cat'] = copy_net.dat['node_info']['col_in_cat']
+          # add col_in_cat 
+          net.dat['node_info']['col_in_cat'] = copy_net.dat['node_info']['col_in_cat']
 
         # try to cluster 
         try: 
@@ -1056,6 +1044,7 @@ class Network(object):
     tmp_sum = tmp_sum.abs()
 
     # sort rows by value 
+    # tmp_sum.sort(ascending=False)
     tmp_sum.sort_values(inplace=True, ascending=False)
 
     # filter series using threshold 
@@ -1117,10 +1106,15 @@ class Network(object):
 
   @staticmethod
   def grab_df_subset(df, keep_rows='all', keep_cols='all'):
+
     if keep_cols != 'all':
+      # filter columns 
       df = df[keep_cols]
+
     if keep_rows != 'all':
+      # filter rows 
       df = df.ix[keep_rows]
+
     return df
 
   @staticmethod
@@ -1129,19 +1123,30 @@ class Network(object):
     f = open(filename, 'r')
     lines = f.readlines()
     f.close()
+
     gmt = {}
 
+    # loop through the lines of the gmt 
     for i in range(len(lines)):
+
+      # get the inst line, strip off the new line character 
       inst_line = lines[i].rstrip()
+
       inst_term = inst_line.split('\t')[0]
+
+      # get the elements 
       inst_elems = inst_line.split('\t')[2:]
+
+      # save the drug-kinase sets 
       gmt[inst_term] = inst_elems
 
     return gmt
 
   @staticmethod
   def load_json_to_dict(filename):
+    ''' load json to python dict and return dict '''
     import json
+
     f = open(filename, 'r')
     inst_dict = json.load(f)
     f.close()
@@ -1150,6 +1155,8 @@ class Network(object):
   @staticmethod
   def save_dict_to_json(inst_dict, filename, indent='no-indent'):
     import json
+
+    # save as a json 
     fw = open(filename, 'w')
     if indent == 'indent':
       fw.write( json.dumps(inst_dict, indent=2) )
@@ -1164,13 +1171,67 @@ class Network(object):
     clust_order = {}
     for inst_node in rowcol:
       clust_order[inst_node] = {}
+
       for inst_order in orderings:
         clust_order[inst_node][inst_order] = []
+
     return clust_order
 
   @staticmethod
+  def threshold_vect_comparison(x, y, cutoff):
+    import numpy as np 
+
+    # x vector 
+    ############
+    # take absolute value of x
+    x_abs = np.absolute(x)
+    # this returns a tuple 
+    found_tuple = np.where(x_abs >= cutoff)
+    # get index array 
+    found_index_x = found_tuple[0]
+
+    # y vector 
+    ############
+    # take absolute value of y
+    y_abs = np.absolute(y)
+    # this returns a tuple 
+    found_tuple = np.where(y_abs >= cutoff)
+    # get index array 
+    found_index_y = found_tuple[0]
+
+    # get common intersection 
+    found_common = np.intersect1d(found_index_x, found_index_y)
+
+    # apply cutoff 
+    thresh_x = x[found_common]
+    thresh_y = y[found_common]
+
+    # return the threshold data 
+    return thresh_x, thresh_y
+
+  @staticmethod
   def group_cutoffs():
+    # generate distance cutoffs
     all_dist = []
     for i in range(11):
       all_dist.append(float(i)/10)
+
     return all_dist
+
+  @staticmethod
+  def find_dict_in_list(list_dict, search_value, search_string):
+    ''' find a dict in a list of dicts by searching for a value '''
+    # get all the possible values of search_value
+    all_values = [d[search_value] for d in list_dict]
+
+    # check if the search value is in the keys 
+    if search_string in all_values:
+      # find the dict 
+      found_dict = (item for item in list_dict if item[search_value] == search_string).next()
+    else:
+      found_dict = {}
+
+    # return the found dictionary
+    return found_dict
+
+  
