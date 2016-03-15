@@ -36,5 +36,7 @@ module.exports = function(params, new_nodes, links, views) {
   // pass on all views
   new_network_data.views = views;
 
+  console.log(new_network_data)
+
   return new_network_data;
 };

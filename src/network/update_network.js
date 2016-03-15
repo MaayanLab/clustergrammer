@@ -32,14 +32,16 @@ module.exports = function(config, old_params, change_view) {
 
   enter_exit_update(params, new_network_data, delays);
 
-  // redefine change_group function
-  if (params.viz.show_dendrogram){
+  if (params.viz.show_categories.row){
     make_row_cat(params);
+  }
+  if (params.viz.show_categories.col){
     make_col_cat(params);
+  }
 
+  if (params.viz.show_dendrogram){
     make_row_dendro(params);
     make_col_dendro(params);
-
   }
 
   // initialize screen resizing - necessary for resizing with new params

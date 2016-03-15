@@ -11,11 +11,9 @@ module.exports = function(params, orig_network_data, change_view) {
   var new_network_data;
 
   if (typeof inst_view !== 'undefined'){
-
     var new_nodes = inst_view.nodes;
     var links = orig_network_data.links;
     new_network_data = filter_using_new_nodes(params, new_nodes, links, views);
-
   } else {
     new_network_data = orig_network_data;
   }
