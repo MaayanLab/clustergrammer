@@ -33,11 +33,9 @@ class Network(object):
 
   def pandas_load_file(self, filename):
     import StringIO
-
     f = open(filename,'r')
     buff = StringIO.StringIO(f.read())
     f.close()
-
     self.pandas_load_tsv_to_net(buff)
 
   def pandas_load_tsv_to_net(self, file_buffer):
@@ -207,6 +205,10 @@ class Network(object):
 
     from copy import deepcopy
     df = self.dat_to_df()
+
+    print('-- checking df from dat_to_df in make_filtered_views')
+    print(df['mat'].columns.tolist())
+
     threshold = 0.0001
     df = self.df_filter_row(df, threshold)
     df = self.df_filter_col(df, threshold)
@@ -614,6 +616,8 @@ class Network(object):
     self.dat['nodes']['row'] = df['mat'].index.tolist()
     self.dat['nodes']['col'] = df['mat'].columns.tolist()
 
+    print('df_to_dat: cols '+str(self.dat['nodes']['col']))
+
     for inst_rc in ['row','col']:
 
       if type(self.dat['nodes'][inst_rc][0]) is tuple:
@@ -636,20 +640,21 @@ class Network(object):
     import pandas as pd
 
     df = {}
-  
-    if 'full_names' in self.dat['node_info']['row']:
-      inst_rows = self.dat['node_info']['row']['full_names']
-      inst_cols = self.dat['node_info']['col']['full_names']
-    else:
-      inst_rows = self.dat['nodes']['row']
-      inst_cols = self.dat['nodes']['col']
+    nodes = {}
+    for inst_rc in ['row','col']:
+      if 'full_names' in self.dat['node_info'][inst_rc]:
+        print('\n\nfound full names\n\n')
+        nodes[inst_rc] = self.dat['node_info'][inst_rc]['full_names']
+      else:
+        print('\n\ndid not find full names\n\n')
+        nodes[inst_rc] = self.dat['nodes'][inst_rc]
 
-    df['mat'] = pd.DataFrame(data = self.dat['mat'], columns=inst_cols, index=inst_rows)
+    df['mat'] = pd.DataFrame(data = self.dat['mat'], columns=nodes['col'], index=nodes['row'])
 
     if 'mat_up' in self.dat:
 
-      df['mat_up'] = pd.DataFrame(data = self.dat['mat_up'], columns=inst_cols, index=inst_rows)
-      df['mat_dn'] = pd.DataFrame(data = self.dat['mat_dn'], columns=inst_cols, index=inst_rows)
+      df['mat_up'] = pd.DataFrame(data = self.dat['mat_up'], columns=nodes['col'], index=nodes['row'])
+      df['mat_dn'] = pd.DataFrame(data = self.dat['mat_dn'], columns=nodes['col'], index=nodes['row'])
 
     return df 
   
