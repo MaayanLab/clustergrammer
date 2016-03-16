@@ -131,7 +131,7 @@ module.exports = function make_row_cat(params) {
   //       .style('fill', function(d){
   //         var inst_color = 'white';
   //         // if (params.viz.show_categories){
-  //         //   inst_color = params.viz.cat_colors.col[d.cl];
+  //         //   inst_color = params.viz.cat_colors.col['cat-0'][d.cl];
   //         // }
   //         return inst_color;
   //       })

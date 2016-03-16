@@ -156,7 +156,7 @@ module.exports = function(params, text_delay) {
   //         .attr('height', 0.67*params.viz.rect_width)
   //         .style('fill', function(d){
   //           var inst_color = 'white';
-  //           inst_color = params.viz.cat_colors.col[d.cl];
+  //           inst_color = params.viz.cat_colors.col['cat-0'][d.cl];
   //           return inst_color
   //         })
   //         .style('opacity', 0.30);

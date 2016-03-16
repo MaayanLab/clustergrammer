@@ -69,7 +69,7 @@ module.exports = function sidebar(config, params) {
       .text('Column Categories')
       .style('margin-bottom','2px');
 
-    var all_cats = _.keys(params.viz.cat_colors.col);
+    var all_cats = _.keys(params.viz.cat_colors.col['cat-0']);
 
     all_cats = all_cats.sort();
 
@@ -89,7 +89,7 @@ module.exports = function sidebar(config, params) {
         .style('margin-right','5px')
         .style('margin-top','2px')
         .style('background-color',function(){
-          var inst_color = params.viz.cat_colors.col[inst_cat];
+          var inst_color = params.viz.cat_colors.col['cat-0'][inst_cat];
           return inst_color;
         });
 

@@ -76,19 +76,24 @@ module.exports = function set_viz_params(config, params){
   viz.cat_room.symbol_width = 12;
   viz.cat_colors = {};
 
-  if (viz.show_categories.row){
-    viz.cat_room.row = 2 * viz.cat_room.symbol_width;
-    viz.cat_colors.row = config.cat_colors.row;
-  } else {
-    viz.cat_room.row = viz.cat_room.symbol_width;
-  }
+  
+  _.each(['row','col'], function(inst_rc){
 
-  if (viz.show_categories.col){
-    viz.cat_room.col = viz.cat_room.symbol_width;
-    viz.cat_colors.col = config.cat_colors.col;
-  } else {
-    viz.cat_room.col = 0;
-  }
+    if (viz.show_categories[inst_rc]){
+
+      if (inst_rc === 'row'){
+        viz.cat_room[inst_rc] = 2 * viz.cat_room.symbol_width;
+      } else {
+        viz.cat_room[inst_rc] = viz.cat_room.symbol_width;
+      }
+
+      viz.cat_colors[inst_rc] = {};
+      viz.cat_colors[inst_rc]['cat-0'] = config.cat_colors[inst_rc]['cat-0'];
+    } else {
+      viz.cat_room[inst_rc] = viz.cat_room.symbol_width;
+    }
+
+  }); 
 
   // dendro colorbar 
   viz.dendro_room = {};
