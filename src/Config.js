@@ -147,9 +147,25 @@ module.exports = function(args) {
 
   config.show_categories = {};
   
-  config.show_categories.row = utils.has(args.network_data.row_nodes[0], 'cl') || utils.has(args.network_data.row_nodes[0], 'cat-0');
+  config.show_categories.row = false;
+  config.show_categories.col = false;
 
-  config.show_categories.col = utils.has(args.network_data.col_nodes[0], 'cl') || utils.has(args.network_data.col_nodes[0], 'cat-0');
+  var tmp_row_keys = _.keys(args.network_data.row_nodes[0]);
+  _.each( tmp_row_keys, function(d){
+    if (d.indexOf('cat-') >= 0){
+      config.show_categories.row = true;
+    }
+  });
+
+  var tmp_col_keys = _.keys(args.network_data.col_nodes[0]);
+  _.each( tmp_col_keys, function(d){
+    if (d.indexOf('cat-') >= 0){
+      config.show_categories.col = true;
+    }
+  })
+
+  // config.show_categories.row = utils.has(args.network_data.row_nodes[0], 'cl') || utils.has(args.network_data.row_nodes[0], 'cat-0');
+  // config.show_categories.col = utils.has(args.network_data.col_nodes[0], 'cl') || utils.has(args.network_data.col_nodes[0], 'cat-0');
 
   // initialize dictionary of colors
   config.cat_colors = {};
