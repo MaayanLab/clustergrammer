@@ -145,6 +145,7 @@ module.exports = function(args) {
 
   config.show_categories = {};
   config.all_cats = {};
+  config.cat_colors = {};
 
   _.each(['row','col'], function(inst_rc){
 
@@ -160,36 +161,48 @@ module.exports = function(args) {
       }
     });
 
+    if (config.show_categories[inst_rc]){
+      var tmp_class = _.uniq(_.pluck(args.network_data[inst_rc+'_nodes'], 'cat-0'));
+
+      config.cat_colors[inst_rc] = {};
+      tmp_class.forEach(function(c_tmp, i){
+        config.cat_colors[inst_rc][c_tmp] = colors.get_random_color(i+1);
+      })
+    }
+
+
   });
 
-  // initialize dictionary of colors
-  config.cat_colors = {};
 
-  // check for category information
-  if (config.show_categories.row) {
+  // // check for category information
+  // if (config.show_categories.row) {
 
-    // associate classes with colors
-    var class_rows = _.uniq(_.pluck(args.network_data.row_nodes, 'cat-0'));
+  //   // associate classes with colors
+  //   var class_rows = _.uniq(_.pluck(args.network_data.row_nodes, 'cat-0'));
     
-    config.cat_colors.row = {};
-    class_rows.forEach(function(c_row, i) {
-      config.cat_colors.row[c_row] = colors.get_random_color(i+1);
-    });
+  //   config.cat_colors.row = {};
+  //   class_rows.forEach(function(c_row, i) {
+  //     config.cat_colors.row[c_row] = colors.get_random_color(i+1);
+  //   });
 
-  }
+  // }
+
+  // // check for category information
+  // if (config.show_categories.col) {
+
+  //   // associate classes with colors
+  //   var class_cols = _.uniq(_.pluck(args.network_data.col_nodes, 'cat-0'));
+    
+  //   config.cat_colors.col = {};
+  //   class_cols.forEach(function(c_col, i) {
+  //     config.cat_colors.col[c_col] = colors.get_random_color(i+1);
+  //   });
+
+  // }
+
 
   // check for category information
   if (config.show_categories.col) {
-
-    // associate classes with colors
-    var class_cols = _.uniq(_.pluck(args.network_data.col_nodes, 'cat-0'));
-    
-    config.cat_colors.col = {};
-
-    class_cols.forEach(function(c_col, i) {
-      config.cat_colors.col[c_col] = colors.get_random_color(i+1);
-    });
-
     // generate a dictionary of columns in each category
     config.cat_dict = {};
     col_nodes.forEach(function(d){
