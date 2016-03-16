@@ -35,7 +35,6 @@ module.exports = function make_params(input_config) {
 
   params.network_data.row_nodes_names = _.pluck(params.network_data.row_nodes, 'name');
   params.network_data.col_nodes_names = _.pluck(params.network_data.col_nodes, 'name');
-
   params.matrix = ini_matrix_params(config, params.viz, params.network_data);
 
   set_viz_wrapper_size(params);

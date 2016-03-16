@@ -49,8 +49,6 @@ module.exports = function(args) {
     make_tile_tooltip: function(d) { return d.info; },
     // initialize view, e.g. initialize with row filtering
     ini_view: null,
-    // initialize column category - only show data from one category
-    current_col_cat: 'all_category',
     use_sidebar: true
   };
   // Mixin defaults with user-defined arguments.
@@ -146,22 +144,22 @@ module.exports = function(args) {
   config.show_dendrogram = utils.has(args.network_data.row_nodes[0], 'group') || utils.has(args.network_data.col_nodes[0], 'group');
 
   config.show_categories = {};
-  
-  config.show_categories.row = false;
-  config.show_categories.col = false;
+  config.all_cats = {};
 
-  var tmp_row_keys = _.keys(args.network_data.row_nodes[0]);
-  _.each( tmp_row_keys, function(d){
-    if (d.indexOf('cat-') >= 0){
-      config.show_categories.row = true;
-    }
-  });
+  _.each(['row','col'], function(inst_rc){
 
-  var tmp_col_keys = _.keys(args.network_data.col_nodes[0]);
-  _.each( tmp_col_keys, function(d){
-    if (d.indexOf('cat-') >= 0){
-      config.show_categories.col = true;
-    }
+    config.show_categories[inst_rc] = false;
+
+    config.all_cats[inst_rc] = [];
+    var tmp_keys = _.keys(args.network_data[inst_rc+'_nodes'][0]);
+
+    _.each( tmp_keys, function(d){
+      if (d.indexOf('cat-') >= 0){
+        config.show_categories[inst_rc] = true;
+        config.all_cats[inst_rc].push(d);
+      }
+    });
+
   });
 
   // initialize dictionary of colors
@@ -186,8 +184,6 @@ module.exports = function(args) {
     // associate classes with colors
     var class_cols = _.uniq(_.pluck(args.network_data.col_nodes, 'cat-0'));
     
-    console.log(class_cols)
-
     config.cat_colors.col = {};
 
     class_cols.forEach(function(c_col, i) {
