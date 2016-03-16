@@ -191,44 +191,170 @@ class Network(object):
     self.dat['mat'] = inst_net['mat']
     self.mat_to_numpy_arr()
 
-  def export_net_json(self, net_type, indent='no-indent'):
-    ''' export json string of dat '''
-    import json 
-    from copy import deepcopy
-
-    if net_type == 'dat':
-      exp_dict = deepcopy(self.dat)
-      if type(exp_dict['mat']) is not list:
-        exp_dict['mat'] = exp_dict['mat'].tolist()
-
-    elif net_type == 'viz':
-      exp_dict = self.viz
-
-    # make json 
-    if indent == 'indent':
-      exp_json = json.dumps(exp_dict, indent=2)
-    else:
-      exp_json = json.dumps(exp_dict)
-
-    return exp_json
-
-  def write_json_to_file(self, net_type, filename, indent='no-indent'):
-    import json 
-
-    if net_type == 'dat':
-      exp_json = self.export_net_json('dat', indent)
-    elif net_type == 'viz':
-      exp_json = self.export_net_json('viz', indent)
-
-    fw = open(filename, 'w')
-    fw.write( exp_json ) 
-    fw.close()
-
   def set_node_names(self, row_name, col_name):
     '''give names to the rows and columns'''
     self.dat['node_names'] = {}
     self.dat['node_names']['row'] = row_name
     self.dat['node_names']['col'] = col_name
+
+  def make_filtered_views(self, dist_type='cosine', run_clustering=True, \
+    dendro=True, views=['pct_row_sum','N_row_sum'], linkage_type='average'):
+    ''' This will calculate multiple views of a clustergram by filtering the data 
+    and clustering after each filtering. This filtering will keep the top N 
+    rows based on some quantity (sum, num-non-zero, etc). '''
+
+    print('--- start make_filtered_views')
+
+    from copy import deepcopy
+    df = self.dat_to_df()
+    threshold = 0.0001
+    df = self.df_filter_row(df, threshold)
+    df = self.df_filter_col(df, threshold)
+
+    # calculate initial view with no row filtering
+    self.df_to_dat(df)
+    self.cluster_row_and_col(dist_type=dist_type, linkage_type=linkage_type, \
+      run_clustering=run_clustering, dendro=dendro)
+
+    all_views = []
+    send_df = deepcopy(df)
+
+    if 'N_row_sum' in views:
+      print('\nadd N_row_sum')
+      all_views = self.add_N_top_views( send_df, all_views, \
+        dist_type=dist_type, rank_type='sum' )
+
+    if 'N_row_var' in views:
+      print('\nadd N_row_var')
+      all_views = self.add_N_top_views( send_df, all_views, \
+        dist_type=dist_type, rank_type='var' )
+
+    if 'pct_row_sum' in views:
+      print('add pct_row_sum')
+      all_views = self.add_pct_top_views( send_df, all_views, \
+        dist_type=dist_type, rank_type='sum' )
+
+    if 'pct_row_var' in views:
+      print('add pct_row_var')
+      all_views = self.add_pct_top_views( send_df, all_views, \
+        dist_type=dist_type, rank_type='var' )        
+
+    self.viz['views'] = all_views
+
+    print('\n--- end make_filtered_views')
+
+  def add_pct_top_views(self, df, all_views, dist_type='cosine', rank_type='sum'):
+
+    from clustergrammer import Network 
+    from copy import deepcopy 
+    import numpy as np
+
+    copy_net = deepcopy(self)
+
+    is_col_cat = False
+    if len(self.dat['node_info']['col']['cat']) > 0:
+      is_col_cat = True
+      cat_key_col = {}
+      for i in range(len(self.dat['nodes']['col'])):
+        cat_key_col[ self.dat['nodes']['col'][i] ] = self.dat['node_info']['col']['cat'][i]
+
+    all_filt = range(10)
+    all_filt = [i/float(10) for i in all_filt]
+
+    mat = deepcopy(df['mat'])
+    sum_row = np.sum(mat, axis=1)
+    max_sum = max(sum_row)
+
+    for inst_filt in all_filt:
+
+      cutoff = inst_filt * max_sum
+      copy_net = deepcopy(self)
+      inst_df = deepcopy(df)
+      inst_df = copy_net.df_filter_row(inst_df, cutoff, take_abs=False)
+      net = deepcopy(Network())
+      net.df_to_dat(inst_df)
+
+      try: 
+        try:
+          net.cluster_row_and_col(dist_type=dist_type,run_clustering=True)
+        except:
+          net.cluster_row_and_col(dist_type=dist_type,run_clustering=False)
+
+        inst_view = {}
+        inst_view['pct_row_'+rank_type] = inst_filt
+        inst_view['dist'] = 'cos'
+        inst_view['nodes'] = {}
+        inst_view['nodes']['row_nodes'] = net.viz['row_nodes']
+        inst_view['nodes']['col_nodes'] = net.viz['col_nodes']
+
+        all_views.append(inst_view)          
+
+      except:
+        print('\t*** did not cluster pct filtered view')
+
+    return all_views
+
+  def add_N_top_views(self, df, all_views, dist_type='cosine', rank_type='sum'):
+
+    from clustergrammer import Network
+    from copy import deepcopy 
+
+    copy_net = deepcopy(self)
+    keep_top = ['all',500,400,300,200,100,90,80,70,60,50,40,30,20,10]
+    df_abs = deepcopy(df['mat'])
+    df_abs = df_abs.transpose()
+
+    if rank_type == 'sum':
+      tmp_sum = df_abs.sum(axis=0)
+    elif rank_type == 'var':
+      tmp_sum = df_abs.var(axis=0)
+
+    tmp_sum = tmp_sum.abs()
+    tmp_sum.sort_values(inplace=True, ascending=False)
+    rows_sorted = tmp_sum.index.values.tolist()
+
+    for inst_keep in keep_top:
+
+      tmp_df = deepcopy(df)
+
+      if inst_keep < len(rows_sorted) or inst_keep == 'all':
+
+        net = deepcopy(Network())
+
+        if inst_keep != 'all':
+
+          keep_rows = rows_sorted[0:inst_keep]
+          tmp_df['mat'] = tmp_df['mat'].ix[keep_rows]
+
+          if 'mat_up' in tmp_df:
+            tmp_df['mat_up'] = tmp_df['mat_up'].ix[keep_rows] 
+            tmp_df['mat_dn'] = tmp_df['mat_dn'].ix[keep_rows] 
+
+          tmp_df = self.df_filter_col(tmp_df,0.001)
+          net.df_to_dat(tmp_df)
+
+        else:
+          net.df_to_dat(tmp_df)
+
+        try: 
+
+          try:
+            net.cluster_row_and_col(dist_type,run_clustering=True)
+          except:
+            net.cluster_row_and_col(dist_type,run_clustering=False)
+
+          # add view 
+          inst_view = {}
+          inst_view['N_row_'+rank_type] = inst_keep
+          inst_view['dist'] = 'cos'
+          inst_view['nodes'] = {}
+          inst_view['nodes']['row_nodes'] = net.viz['row_nodes']
+          inst_view['nodes']['col_nodes'] = net.viz['col_nodes']
+          all_views.append(inst_view)
+        except:
+          print('\t*** did not cluster N filtered view') 
+
+    return all_views
 
   def mat_to_numpy_arr(self):
     ''' convert list to numpy array - numpy arrays can not be saved as json '''
@@ -526,165 +652,39 @@ class Network(object):
       df['mat_dn'] = pd.DataFrame(data = self.dat['mat_dn'], columns=inst_cols, index=inst_rows)
 
     return df 
-
-  def make_filtered_views(self, dist_type='cosine', run_clustering=True, \
-    dendro=True, views=['pct_row_sum','N_row_sum'], linkage_type='average'):
-    ''' This will calculate multiple views of a clustergram by filtering the data 
-    and clustering after each filtering. This filtering will keep the top N 
-    rows based on some quantity (sum, num-non-zero, etc). '''
-
-    print('--- start make_filtered_views')
-
+  
+  def export_net_json(self, net_type, indent='no-indent'):
+    ''' export json string of dat '''
+    import json 
     from copy import deepcopy
-    df = self.dat_to_df()
-    threshold = 0.0001
-    df = self.df_filter_row(df, threshold)
-    df = self.df_filter_col(df, threshold)
 
-    # calculate initial view with no row filtering
-    self.df_to_dat(df)
-    self.cluster_row_and_col(dist_type=dist_type, linkage_type=linkage_type, \
-      run_clustering=run_clustering, dendro=dendro)
+    if net_type == 'dat':
+      exp_dict = deepcopy(self.dat)
+      if type(exp_dict['mat']) is not list:
+        exp_dict['mat'] = exp_dict['mat'].tolist()
 
-    all_views = []
-    send_df = deepcopy(df)
+    elif net_type == 'viz':
+      exp_dict = self.viz
 
-    if 'N_row_sum' in views:
-      print('\nadd N_row_sum')
-      all_views = self.add_N_top_views( send_df, all_views, \
-        dist_type=dist_type, rank_type='sum' )
+    # make json 
+    if indent == 'indent':
+      exp_json = json.dumps(exp_dict, indent=2)
+    else:
+      exp_json = json.dumps(exp_dict)
 
-    if 'N_row_var' in views:
-      print('\nadd N_row_var')
-      all_views = self.add_N_top_views( send_df, all_views, \
-        dist_type=dist_type, rank_type='var' )
+    return exp_json
 
-    if 'pct_row_sum' in views:
-      print('add pct_row_sum')
-      all_views = self.add_pct_top_views( send_df, all_views, \
-        dist_type=dist_type, rank_type='sum' )
+  def write_json_to_file(self, net_type, filename, indent='no-indent'):
+    import json 
 
-    if 'pct_row_var' in views:
-      print('add pct_row_var')
-      all_views = self.add_pct_top_views( send_df, all_views, \
-        dist_type=dist_type, rank_type='var' )        
+    if net_type == 'dat':
+      exp_json = self.export_net_json('dat', indent)
+    elif net_type == 'viz':
+      exp_json = self.export_net_json('viz', indent)
 
-    self.viz['views'] = all_views
-
-    print('\n--- end make_filtered_views')
-
-  def add_pct_top_views(self, df, all_views, dist_type='cosine', rank_type='sum'):
-
-    from clustergrammer import Network 
-    from copy import deepcopy 
-    import numpy as np
-
-    copy_net = deepcopy(self)
-
-    is_col_cat = False
-    if len(self.dat['node_info']['col']['cat']) > 0:
-      is_col_cat = True
-      cat_key_col = {}
-      for i in range(len(self.dat['nodes']['col'])):
-        cat_key_col[ self.dat['nodes']['col'][i] ] = self.dat['node_info']['col']['cat'][i]
-
-    all_filt = range(10)
-    all_filt = [i/float(10) for i in all_filt]
-
-    mat = deepcopy(df['mat'])
-    sum_row = np.sum(mat, axis=1)
-    max_sum = max(sum_row)
-
-    for inst_filt in all_filt:
-
-      cutoff = inst_filt * max_sum
-      copy_net = deepcopy(self)
-      inst_df = deepcopy(df)
-      inst_df = copy_net.df_filter_row(inst_df, cutoff, take_abs=False)
-      net = deepcopy(Network())
-      net.df_to_dat(inst_df)
-
-      try: 
-        try:
-          net.cluster_row_and_col(dist_type=dist_type,run_clustering=True)
-        except:
-          net.cluster_row_and_col(dist_type=dist_type,run_clustering=False)
-
-        inst_view = {}
-        inst_view['pct_row_'+rank_type] = inst_filt
-        inst_view['dist'] = 'cos'
-        inst_view['nodes'] = {}
-        inst_view['nodes']['row_nodes'] = net.viz['row_nodes']
-        inst_view['nodes']['col_nodes'] = net.viz['col_nodes']
-
-        all_views.append(inst_view)          
-
-      except:
-        print('\t*** did not cluster pct filtered view')
-
-    return all_views
-
-  def add_N_top_views(self, df, all_views, dist_type='cosine', rank_type='sum'):
-
-    from clustergrammer import Network
-    from copy import deepcopy 
-
-    copy_net = deepcopy(self)
-    keep_top = ['all',500,400,300,200,100,90,80,70,60,50,40,30,20,10]
-    df_abs = deepcopy(df['mat'])
-    df_abs = df_abs.transpose()
-
-    if rank_type == 'sum':
-      tmp_sum = df_abs.sum(axis=0)
-    elif rank_type == 'var':
-      tmp_sum = df_abs.var(axis=0)
-
-    tmp_sum = tmp_sum.abs()
-    tmp_sum.sort_values(inplace=True, ascending=False)
-    rows_sorted = tmp_sum.index.values.tolist()
-
-    for inst_keep in keep_top:
-
-      tmp_df = deepcopy(df)
-
-      if inst_keep < len(rows_sorted) or inst_keep == 'all':
-
-        net = deepcopy(Network())
-
-        if inst_keep != 'all':
-
-          keep_rows = rows_sorted[0:inst_keep]
-          tmp_df['mat'] = tmp_df['mat'].ix[keep_rows]
-
-          if 'mat_up' in tmp_df:
-            tmp_df['mat_up'] = tmp_df['mat_up'].ix[keep_rows] 
-            tmp_df['mat_dn'] = tmp_df['mat_dn'].ix[keep_rows] 
-
-          tmp_df = self.df_filter_col(tmp_df,0.001)
-          net.df_to_dat(tmp_df)
-
-        else:
-          net.df_to_dat(tmp_df)
-
-        try: 
-
-          try:
-            net.cluster_row_and_col(dist_type,run_clustering=True)
-          except:
-            net.cluster_row_and_col(dist_type,run_clustering=False)
-
-          # add view 
-          inst_view = {}
-          inst_view['N_row_'+rank_type] = inst_keep
-          inst_view['dist'] = 'cos'
-          inst_view['nodes'] = {}
-          inst_view['nodes']['row_nodes'] = net.viz['row_nodes']
-          inst_view['nodes']['col_nodes'] = net.viz['col_nodes']
-          all_views.append(inst_view)
-        except:
-          print('\t*** did not cluster N filtered view') 
-
-    return all_views
+    fw = open(filename, 'w')
+    fw.write( exp_json ) 
+    fw.close()
 
   @staticmethod
   def df_filter_row(df, threshold, take_abs=True):
@@ -759,12 +759,10 @@ class Network(object):
 
   @staticmethod
   def load_gmt(filename):
-
     f = open(filename, 'r')
     lines = f.readlines()
     f.close()
     gmt = {}
-
     for i in range(len(lines)):
       inst_line = lines[i].rstrip()
       inst_term = inst_line.split('\t')[0]

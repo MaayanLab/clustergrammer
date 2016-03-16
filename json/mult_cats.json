@@ -893,7 +893,6 @@
   ], 
   "views": [
     {
-      "col_cat": "all_category", 
       "N_row_sum": "all", 
       "dist": "cos", 
       "nodes": {
@@ -1341,7 +1340,6 @@
     }, 
     {
       "N_row_var": "all", 
-      "col_cat": "all_category", 
       "nodes": {
         "row_nodes": [
           {
