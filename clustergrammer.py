@@ -85,9 +85,6 @@ class Network(object):
       if ccat_line[0] == '':
         num_cc  = num_cc + 1
 
-    print('\nfound ' + str(num_rc) + ' row categories' )
-    print('found ' + str(num_cc) + ' col categories\n' )
-
     num_labels = {}
     num_labels['row'] = num_rc + 1
     num_labels['col'] = num_cc + 1
@@ -139,9 +136,6 @@ class Network(object):
 
     all_rows = sorted(list(set(all_rows)))
     all_sigs = sorted(list(set(all_sigs)))
-
-    print( 'found ' + str(len(all_rows)) + ' rows' )
-    print( 'found ' + str(len(all_sigs)) + ' columns\n'  )
 
     self.dat['nodes']['row'] = all_rows
     self.dat['nodes']['col'] = all_sigs
@@ -258,8 +252,6 @@ class Network(object):
     if run_clustering == False:
       dendro = False
 
-    print('\ncluster_row_and_col')
-
     for inst_rc in ['row','col']:
       num_nodes = len(self.dat['nodes'][inst_rc])
       node_dm = scipy.zeros([num_nodes,num_nodes])
@@ -306,15 +298,12 @@ class Network(object):
     from clustergrammer import Network 
     from copy import deepcopy 
 
-    print('\ncalculate_cat_clust_order '+ inst_rc)
-
     inst_keys = self.dat['node_info'][inst_rc].keys()
     all_cats = [x for x in inst_keys if 'cat-' in x]
 
     if len(all_cats) > 0:
       
       for inst_name_cat in all_cats:
-        print(inst_name_cat)
 
         dict_cat = self.dat['node_info'][inst_rc]['dict_'+inst_name_cat.replace('-','_')]
 
@@ -361,13 +350,7 @@ class Network(object):
           inst_cat_order = [str(i)+str(prev_order_len) for i in inst_cat_order]
           all_cat_orders.extend(inst_cat_order)
 
-          # sort tmp_names_list by the integers in all_cat_orders 
-          print('\n\n------------------------------------')
-          print(all_cat_orders)
-          print(tmp_names_list)
           names_clust_list = [x for (y,x) in sorted(zip(all_cat_orders,tmp_names_list))]
-
-          print(names_clust_list)
 
         # calc category-cluster order 
         final_order = []
@@ -700,6 +683,8 @@ class Network(object):
           all_views.append(inst_view)
         except:
           print('\t*** did not cluster N filtered view') 
+
+    return all_views
 
   @staticmethod
   def df_filter_row(df, threshold, take_abs=True):

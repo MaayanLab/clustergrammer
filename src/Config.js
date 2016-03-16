@@ -75,6 +75,7 @@ module.exports = function(args) {
   });
 
   // process view row/col names 
+  console.log('check to make sure views are optional')
   if (_.has(config.network_data,'views')){
     config.network_data.views.forEach(function(inst_view){
 
