@@ -13,9 +13,6 @@ module.exports = function set_viz_params(config, params){
   viz.uni_margin = config.uni_margin;
   viz.grey_border_width = config.grey_border_width;
   viz.show_dendrogram = config.show_dendrogram;
-  viz.show_categories = {};
-  viz.show_categories.row = config.show_categories.row;
-  viz.show_categories.col = config.show_categories.col;
   viz.tile_click_hlight = config.tile_click_hlight;
   viz.inst_order = config.inst_order;
   viz.expand_button = config.expand_button;
@@ -27,26 +24,11 @@ module.exports = function set_viz_params(config, params){
     // min and max of label width 
     .range([ 85, 120]).clamp('true');
 
-  viz.norm_labels = {};
-  viz.norm_labels.width = {};
-
-  viz.norm_labels.width.row = label_scale(params.labels.row_max_char) 
-    * params.row_label_scale;
-
-  viz.norm_labels.width.col = label_scale(params.labels.col_max_char) 
-    * params.col_label_scale;
-
   viz.viz_svg = viz.viz_wrapper + ' .viz_svg';
   viz.uni_duration = 1000;
-  viz.spillover_col_slant = viz.norm_labels.width.col;
   viz.bottom_space = 5;
   viz.run_trans = false;
   viz.duration = 1000;
-
-  if (viz.show_dendrogram){
-    // setting config globally 
-    config.group_level = {row: 5, col: 5};
-  }
 
   // the border of the rects should be 1 over this value of the width/height
   // of the rects 
@@ -55,9 +37,6 @@ module.exports = function set_viz_params(config, params){
   if (config.force_square === 1) {
     viz.force_square = 1;
   }
-
-  viz.num_col_nodes = params.network_data.col_nodes.length;
-  viz.num_row_nodes = params.network_data.row_nodes.length;
 
   // superlabel dimensions 
   viz.super_labels = {};
@@ -76,8 +55,37 @@ module.exports = function set_viz_params(config, params){
   viz.cat_room.symbol_width = 12;
   viz.cat_colors = {};
 
-  
+  viz.norm_labels = {};
+  viz.norm_labels.width = {};
+
+  viz.show_categories = {};
+
+  if (viz.show_dendrogram){
+    config.group_level = {};
+  }
+
+  viz.dendro_room = {};
+  if (viz.show_dendrogram) {
+    viz.dendro_room.symbol_width = 12;
+  } else {
+    viz.dendro_room.symbol_width = 0;
+  }
+
   _.each(['row','col'], function(inst_rc){
+
+    viz.show_categories[inst_rc] = config.show_categories[inst_rc];
+    viz.norm_labels.width[inst_rc] = label_scale(params.labels[inst_rc+'_max_char']) 
+      * params[inst_rc+'_label_scale'];
+
+    viz['num_'+inst_rc+'_nodes'] = params.network_data[inst_rc+'_nodes'].length;
+
+    config.group_level[inst_rc] = 5;
+
+    if(inst_rc === 'row'){
+      viz.dendro_room[inst_rc] = viz.dendro_room.symbol_width;
+    } else {
+      viz.dendro_room[inst_rc] = viz.dendro_room.symbol_width + viz.uni_margin;
+    }
 
     if (viz.show_categories[inst_rc]){
 
@@ -95,16 +103,9 @@ module.exports = function set_viz_params(config, params){
 
   }); 
 
-  // dendro colorbar 
-  viz.dendro_room = {};
-  if (viz.show_dendrogram) {
-    viz.dendro_room.symbol_width = 12;
-  } else {
-    viz.dendro_room.symbol_width = 0;
-  }
-  viz.dendro_room.row = viz.dendro_room.symbol_width;
-  viz.dendro_room.col = viz.dendro_room.symbol_width + viz.uni_margin;
   viz.dendro_opacity = 0.35;
+
+  viz.spillover_col_slant = viz.norm_labels.width.col;
 
   return viz;
 };
