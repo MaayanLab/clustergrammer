@@ -87,6 +87,9 @@ class Network(object):
     num_labels['row'] = num_rc + 1
     num_labels['col'] = num_cc + 1
 
+    print('found '+str(num_rc)+' row cats')
+    print('found '+str(num_cc)+' col cats')
+
     return num_labels
 
   def dict_cat(self):
@@ -423,8 +426,12 @@ class Network(object):
     from clustergrammer import Network 
     from copy import deepcopy 
 
+    print('\n---- inst_rc '+str(inst_rc))
+
     inst_keys = self.dat['node_info'][inst_rc].keys()
     all_cats = [x for x in inst_keys if 'cat-' in x]
+
+    print(all_cats)
 
     if len(all_cats) > 0:
       
@@ -439,6 +446,8 @@ class Network(object):
         all_cat_orders = []
         tmp_names_list = []
         for inst_cat in all_cats:
+
+          print(inst_cat)
 
           inst_nodes = dict_cat[inst_cat]
 
@@ -465,17 +474,26 @@ class Network(object):
 
           try:
             cat_net.cluster_row_and_col('cos')
-            inst_cat_order = cat_net.dat['node_info'][inst_rc]
+            #!!!! tmp 
+            # inst_cat_order = cat_net.dat['node_info'][inst_rc]
+            inst_cat_order = range(len(cat_net.dat['nodes'][inst_rc]))
           except:
             inst_cat_order = range(len(cat_net.dat['nodes'][inst_rc]))
 
           prev_order_len = len(all_cat_orders)
 
           # add prev order length to the current order number 
-          inst_cat_order = [str(i)+str(prev_order_len) for i in inst_cat_order]
+          print('inst_cat_order '+str(inst_cat_order))
+          inst_cat_order = [i+prev_order_len for i in inst_cat_order]
           all_cat_orders.extend(inst_cat_order)
 
-          names_clust_list = [x for (y,x) in sorted(zip(all_cat_orders,tmp_names_list))]
+
+        print('all_cat_orders')
+        print(all_cat_orders)
+
+        names_clust_list = [x for (y,x) in sorted(zip(all_cat_orders,tmp_names_list))]
+        print('names_clust_list')
+        print(names_clust_list)
 
         # calc category-cluster order 
         final_order = []
