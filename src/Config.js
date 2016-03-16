@@ -162,10 +162,7 @@ module.exports = function(args) {
     if (d.indexOf('cat-') >= 0){
       config.show_categories.col = true;
     }
-  })
-
-  // config.show_categories.row = utils.has(args.network_data.row_nodes[0], 'cl') || utils.has(args.network_data.row_nodes[0], 'cat-0');
-  // config.show_categories.col = utils.has(args.network_data.col_nodes[0], 'cl') || utils.has(args.network_data.col_nodes[0], 'cat-0');
+  });
 
   // initialize dictionary of colors
   config.cat_colors = {};
@@ -178,11 +175,7 @@ module.exports = function(args) {
     
     config.cat_colors.row = {};
     class_rows.forEach(function(c_row, i) {
-      if (i === 0) {
-        config.cat_colors.row[c_row] = '#eee';
-      } else {
-        config.cat_colors.row[c_row] = colors.get_random_color(i);
-      }
+      config.cat_colors.row[c_row] = colors.get_random_color(i+1);
     });
 
   }
@@ -193,6 +186,8 @@ module.exports = function(args) {
     // associate classes with colors
     var class_cols = _.uniq(_.pluck(args.network_data.col_nodes, 'cat-0'));
     
+    console.log(class_cols)
+
     config.cat_colors.col = {};
 
     class_cols.forEach(function(c_col, i) {
