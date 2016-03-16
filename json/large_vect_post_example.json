@@ -3019,9 +3019,7 @@
       "name": "Col-1 make name longer", 
       "clust": 4, 
       "rank": 5, 
-      "cat": "brain", 
       "ini": 10, 
-      "cl_index": 3, 
       "rankvar": 4
     }, 
     {
@@ -3041,9 +3039,7 @@
       "name": "Col-10 make name longer", 
       "clust": 5, 
       "rank": 4, 
-      "cat": "lung", 
       "ini": 9, 
-      "cl_index": 5, 
       "rankvar": 9
     }, 
     {
@@ -3063,9 +3059,7 @@
       "name": "Col-2 make name longer", 
       "clust": 8, 
       "rank": 3, 
-      "cat": "brain", 
       "ini": 8, 
-      "cl_index": 4, 
       "rankvar": 0
     }, 
     {
@@ -3085,9 +3079,7 @@
       "name": "Col-3 make name longer", 
       "clust": 6, 
       "rank": 0, 
-      "cat": "brain", 
       "ini": 7, 
-      "cl_index": 0, 
       "rankvar": 3
     }, 
     {
@@ -3107,9 +3099,7 @@
       "name": "Col-4 make name longer", 
       "clust": 2, 
       "rank": 7, 
-      "cat": "brain", 
       "ini": 6, 
-      "cl_index": 1, 
       "rankvar": 6
     }, 
     {
@@ -3129,9 +3119,7 @@
       "name": "Col-5 make name longer", 
       "clust": 0, 
       "rank": 9, 
-      "cat": "brain", 
       "ini": 5, 
-      "cl_index": 2, 
       "rankvar": 1
     }, 
     {
@@ -3151,9 +3139,7 @@
       "name": "Col-6 make name longer", 
       "clust": 1, 
       "rank": 8, 
-      "cat": "lung", 
       "ini": 4, 
-      "cl_index": 6, 
       "rankvar": 8
     }, 
     {
@@ -3173,9 +3159,7 @@
       "name": "Col-7 make name longer", 
       "clust": 7, 
       "rank": 2, 
-      "cat": "lung", 
       "ini": 3, 
-      "cl_index": 7, 
       "rankvar": 5
     }, 
     {
@@ -3195,9 +3179,7 @@
       "name": "Col-8 make name longer", 
       "clust": 3, 
       "rank": 1, 
-      "cat": "lung", 
       "ini": 2, 
-      "cl_index": 8, 
       "rankvar": 7
     }, 
     {
@@ -3217,9 +3199,7 @@
       "name": "Col-9 make name longer", 
       "clust": 9, 
       "rank": 6, 
-      "cat": "lung", 
       "ini": 1, 
-      "cl_index": 9, 
       "rankvar": 2
     }
   ], 
@@ -14119,9 +14099,7 @@
             "name": "Col-1 make name longer", 
             "clust": 4, 
             "rank": 5, 
-            "cat": "brain", 
             "ini": 10, 
-            "cl_index": 3, 
             "rankvar": 4
           }, 
           {
@@ -14141,9 +14119,7 @@
             "name": "Col-10 make name longer", 
             "clust": 5, 
             "rank": 4, 
-            "cat": "lung", 
             "ini": 9, 
-            "cl_index": 5, 
             "rankvar": 9
           }, 
           {
@@ -14163,9 +14139,7 @@
             "name": "Col-2 make name longer", 
             "clust": 8, 
             "rank": 3, 
-            "cat": "brain", 
             "ini": 8, 
-            "cl_index": 4, 
             "rankvar": 0
           }, 
           {
@@ -14185,9 +14159,7 @@
             "name": "Col-3 make name longer", 
             "clust": 6, 
             "rank": 0, 
-            "cat": "brain", 
             "ini": 7, 
-            "cl_index": 0, 
             "rankvar": 3
           }, 
           {
@@ -14207,9 +14179,7 @@
             "name": "Col-4 make name longer", 
             "clust": 2, 
             "rank": 7, 
-            "cat": "brain", 
             "ini": 6, 
-            "cl_index": 1, 
             "rankvar": 6
           }, 
           {
@@ -14229,9 +14199,7 @@
             "name": "Col-5 make name longer", 
             "clust": 0, 
             "rank": 9, 
-            "cat": "brain", 
             "ini": 5, 
-            "cl_index": 2, 
             "rankvar": 1
           }, 
           {
@@ -14251,9 +14219,7 @@
             "name": "Col-6 make name longer", 
             "clust": 1, 
             "rank": 8, 
-            "cat": "lung", 
             "ini": 4, 
-            "cl_index": 6, 
             "rankvar": 8
           }, 
           {
@@ -14273,9 +14239,7 @@
             "name": "Col-7 make name longer", 
             "clust": 7, 
             "rank": 2, 
-            "cat": "lung", 
             "ini": 3, 
-            "cl_index": 7, 
             "rankvar": 5
           }, 
           {
@@ -14295,9 +14259,7 @@
             "name": "Col-8 make name longer", 
             "clust": 3, 
             "rank": 1, 
-            "cat": "lung", 
             "ini": 2, 
-            "cl_index": 8, 
             "rankvar": 7
           }, 
           {
@@ -14317,9 +14279,7 @@
             "name": "Col-9 make name longer", 
             "clust": 9, 
             "rank": 6, 
-            "cat": "lung", 
             "ini": 1, 
-            "cl_index": 9, 
             "rankvar": 2
           }
         ]
@@ -16350,9 +16310,7 @@
             "name": "Col-1 make name longer", 
             "clust": 6, 
             "rank": 4, 
-            "cat": "brain", 
             "ini": 10, 
-            "cl_index": 0, 
             "rankvar": 4
           }, 
           {
@@ -16372,9 +16330,7 @@
             "name": "Col-10 make name longer", 
             "clust": 7, 
             "rank": 5, 
-            "cat": "lung", 
             "ini": 9, 
-            "cl_index": 5, 
             "rankvar": 7
           }, 
           {
@@ -16394,9 +16350,7 @@
             "name": "Col-2 make name longer", 
             "clust": 2, 
             "rank": 6, 
-            "cat": "brain", 
             "ini": 8, 
-            "cl_index": 1, 
             "rankvar": 0
           }, 
           {
@@ -16416,9 +16370,7 @@
             "name": "Col-3 make name longer", 
             "clust": 4, 
             "rank": 2, 
-            "cat": "brain", 
             "ini": 7, 
-            "cl_index": 2, 
             "rankvar": 6
           }, 
           {
@@ -16438,9 +16390,7 @@
             "name": "Col-4 make name longer", 
             "clust": 8, 
             "rank": 7, 
-            "cat": "brain", 
             "ini": 6, 
-            "cl_index": 3, 
             "rankvar": 3
           }, 
           {
@@ -16460,9 +16410,7 @@
             "name": "Col-5 make name longer", 
             "clust": 3, 
             "rank": 9, 
-            "cat": "brain", 
             "ini": 5, 
-            "cl_index": 4, 
             "rankvar": 1
           }, 
           {
@@ -16482,9 +16430,7 @@
             "name": "Col-6 make name longer", 
             "clust": 0, 
             "rank": 8, 
-            "cat": "lung", 
             "ini": 4, 
-            "cl_index": 6, 
             "rankvar": 9
           }, 
           {
@@ -16504,9 +16450,7 @@
             "name": "Col-7 make name longer", 
             "clust": 5, 
             "rank": 0, 
-            "cat": "lung", 
             "ini": 3, 
-            "cl_index": 7, 
             "rankvar": 8
           }, 
           {
@@ -16526,9 +16470,7 @@
             "name": "Col-8 make name longer", 
             "clust": 1, 
             "rank": 1, 
-            "cat": "lung", 
             "ini": 2, 
-            "cl_index": 8, 
             "rankvar": 5
           }, 
           {
@@ -16548,9 +16490,7 @@
             "name": "Col-9 make name longer", 
             "clust": 9, 
             "rank": 3, 
-            "cat": "lung", 
             "ini": 1, 
-            "cl_index": 9, 
             "rankvar": 2
           }
         ]
@@ -18381,9 +18321,7 @@
             "name": "Col-1 make name longer", 
             "clust": 2, 
             "rank": 4, 
-            "cat": "brain", 
             "ini": 10, 
-            "cl_index": 3, 
             "rankvar": 5
           }, 
           {
@@ -18403,9 +18341,7 @@
             "name": "Col-10 make name longer", 
             "clust": 3, 
             "rank": 5, 
-            "cat": "lung", 
             "ini": 9, 
-            "cl_index": 5, 
             "rankvar": 4
           }, 
           {
@@ -18425,9 +18361,7 @@
             "name": "Col-2 make name longer", 
             "clust": 8, 
             "rank": 6, 
-            "cat": "brain", 
             "ini": 8, 
-            "cl_index": 1, 
             "rankvar": 1
           }, 
           {
@@ -18447,9 +18381,7 @@
             "name": "Col-3 make name longer", 
             "clust": 0, 
             "rank": 3, 
-            "cat": "brain", 
             "ini": 7, 
-            "cl_index": 2, 
             "rankvar": 7
           }, 
           {
@@ -18469,9 +18401,7 @@
             "name": "Col-4 make name longer", 
             "clust": 4, 
             "rank": 9, 
-            "cat": "brain", 
             "ini": 6, 
-            "cl_index": 0, 
             "rankvar": 3
           }, 
           {
@@ -18491,9 +18421,7 @@
             "name": "Col-5 make name longer", 
             "clust": 9, 
             "rank": 8, 
-            "cat": "brain", 
             "ini": 5, 
-            "cl_index": 4, 
             "rankvar": 0
           }, 
           {
@@ -18513,9 +18441,7 @@
             "name": "Col-6 make name longer", 
             "clust": 6, 
             "rank": 7, 
-            "cat": "lung", 
             "ini": 4, 
-            "cl_index": 6, 
             "rankvar": 9
           }, 
           {
@@ -18535,9 +18461,7 @@
             "name": "Col-7 make name longer", 
             "clust": 1, 
             "rank": 0, 
-            "cat": "lung", 
             "ini": 3, 
-            "cl_index": 7, 
             "rankvar": 8
           }, 
           {
@@ -18557,9 +18481,7 @@
             "name": "Col-8 make name longer", 
             "clust": 7, 
             "rank": 1, 
-            "cat": "lung", 
             "ini": 2, 
-            "cl_index": 8, 
             "rankvar": 6
           }, 
           {
@@ -18579,9 +18501,7 @@
             "name": "Col-9 make name longer", 
             "clust": 5, 
             "rank": 2, 
-            "cat": "lung", 
             "ini": 1, 
-            "cl_index": 9, 
             "rankvar": 2
           }
         ]
@@ -20212,9 +20132,7 @@
             "name": "Col-1 make name longer", 
             "clust": 4, 
             "rank": 7, 
-            "cat": "brain", 
             "ini": 10, 
-            "cl_index": 3, 
             "rankvar": 5
           }, 
           {
@@ -20234,9 +20152,7 @@
             "name": "Col-10 make name longer", 
             "clust": 5, 
             "rank": 5, 
-            "cat": "lung", 
             "ini": 9, 
-            "cl_index": 5, 
             "rankvar": 6
           }, 
           {
@@ -20256,9 +20172,7 @@
             "name": "Col-2 make name longer", 
             "clust": 2, 
             "rank": 3, 
-            "cat": "brain", 
             "ini": 8, 
-            "cl_index": 2, 
             "rankvar": 2
           }, 
           {
@@ -20278,9 +20192,7 @@
             "name": "Col-3 make name longer", 
             "clust": 6, 
             "rank": 2, 
-            "cat": "brain", 
             "ini": 7, 
-            "cl_index": 0, 
             "rankvar": 8
           }, 
           {
@@ -20300,9 +20212,7 @@
             "name": "Col-4 make name longer", 
             "clust": 8, 
             "rank": 9, 
-            "cat": "brain", 
             "ini": 6, 
-            "cl_index": 1, 
             "rankvar": 3
           }, 
           {
@@ -20322,9 +20232,7 @@
             "name": "Col-5 make name longer", 
             "clust": 3, 
             "rank": 8, 
-            "cat": "brain", 
             "ini": 5, 
-            "cl_index": 4, 
             "rankvar": 0
           }, 
           {
@@ -20344,9 +20252,7 @@
             "name": "Col-6 make name longer", 
             "clust": 0, 
             "rank": 6, 
-            "cat": "lung", 
             "ini": 4, 
-            "cl_index": 6, 
             "rankvar": 9
           }, 
           {
@@ -20366,9 +20272,7 @@
             "name": "Col-7 make name longer", 
             "clust": 7, 
             "rank": 1, 
-            "cat": "lung", 
             "ini": 3, 
-            "cl_index": 7, 
             "rankvar": 7
           }, 
           {
@@ -20388,9 +20292,7 @@
             "name": "Col-8 make name longer", 
             "clust": 1, 
             "rank": 4, 
-            "cat": "lung", 
             "ini": 2, 
-            "cl_index": 8, 
             "rankvar": 4
           }, 
           {
@@ -20410,9 +20312,7 @@
             "name": "Col-9 make name longer", 
             "clust": 9, 
             "rank": 0, 
-            "cat": "lung", 
             "ini": 1, 
-            "cl_index": 9, 
             "rankvar": 1
           }
         ]
@@ -21843,9 +21743,7 @@
             "name": "Col-1 make name longer", 
             "clust": 0, 
             "rank": 9, 
-            "cat": "brain", 
             "ini": 10, 
-            "cl_index": 3, 
             "rankvar": 3
           }, 
           {
@@ -21865,9 +21763,7 @@
             "name": "Col-10 make name longer", 
             "clust": 1, 
             "rank": 3, 
-            "cat": "lung", 
             "ini": 9, 
-            "cl_index": 5, 
             "rankvar": 7
           }, 
           {
@@ -21887,9 +21783,7 @@
             "name": "Col-2 make name longer", 
             "clust": 6, 
             "rank": 4, 
-            "cat": "brain", 
             "ini": 8, 
-            "cl_index": 0, 
             "rankvar": 2
           }, 
           {
@@ -21909,9 +21803,7 @@
             "name": "Col-3 make name longer", 
             "clust": 2, 
             "rank": 5, 
-            "cat": "brain", 
             "ini": 7, 
-            "cl_index": 2, 
             "rankvar": 8
           }, 
           {
@@ -21931,9 +21823,7 @@
             "name": "Col-4 make name longer", 
             "clust": 4, 
             "rank": 7, 
-            "cat": "brain", 
             "ini": 6, 
-            "cl_index": 1, 
             "rankvar": 4
           }, 
           {
@@ -21953,9 +21843,7 @@
             "name": "Col-5 make name longer", 
             "clust": 7, 
             "rank": 8, 
-            "cat": "brain", 
             "ini": 5, 
-            "cl_index": 4, 
             "rankvar": 0
           }, 
           {
@@ -21975,9 +21863,7 @@
             "name": "Col-6 make name longer", 
             "clust": 8, 
             "rank": 2, 
-            "cat": "lung", 
             "ini": 4, 
-            "cl_index": 6, 
             "rankvar": 9
           }, 
           {
@@ -21997,9 +21883,7 @@
             "name": "Col-7 make name longer", 
             "clust": 3, 
             "rank": 0, 
-            "cat": "lung", 
             "ini": 3, 
-            "cl_index": 7, 
             "rankvar": 6
           }, 
           {
@@ -22019,9 +21903,7 @@
             "name": "Col-8 make name longer", 
             "clust": 9, 
             "rank": 6, 
-            "cat": "lung", 
             "ini": 2, 
-            "cl_index": 8, 
             "rankvar": 5
           }, 
           {
@@ -22041,9 +21923,7 @@
             "name": "Col-9 make name longer", 
             "clust": 5, 
             "rank": 1, 
-            "cat": "lung", 
             "ini": 1, 
-            "cl_index": 9, 
             "rankvar": 1
           }
         ]
@@ -23274,9 +23154,7 @@
             "name": "Col-1 make name longer", 
             "clust": 6, 
             "rank": 7, 
-            "cat": "brain", 
             "ini": 10, 
-            "cl_index": 2, 
             "rankvar": 4
           }, 
           {
@@ -23296,9 +23174,7 @@
             "name": "Col-10 make name longer", 
             "clust": 8, 
             "rank": 3, 
-            "cat": "lung", 
             "ini": 9, 
-            "cl_index": 5, 
             "rankvar": 7
           }, 
           {
@@ -23318,9 +23194,7 @@
             "name": "Col-2 make name longer", 
             "clust": 0, 
             "rank": 4, 
-            "cat": "brain", 
             "ini": 8, 
-            "cl_index": 3, 
             "rankvar": 3
           }, 
           {
@@ -23340,9 +23214,7 @@
             "name": "Col-3 make name longer", 
             "clust": 7, 
             "rank": 2, 
-            "cat": "brain", 
             "ini": 7, 
-            "cl_index": 0, 
             "rankvar": 8
           }, 
           {
@@ -23362,9 +23234,7 @@
             "name": "Col-4 make name longer", 
             "clust": 4, 
             "rank": 5, 
-            "cat": "brain", 
             "ini": 6, 
-            "cl_index": 1, 
             "rankvar": 2
           }, 
           {
@@ -23384,9 +23254,7 @@
             "name": "Col-5 make name longer", 
             "clust": 1, 
             "rank": 9, 
-            "cat": "brain", 
             "ini": 5, 
-            "cl_index": 4, 
             "rankvar": 0
           }, 
           {
@@ -23406,9 +23274,7 @@
             "name": "Col-6 make name longer", 
             "clust": 2, 
             "rank": 6, 
-            "cat": "lung", 
             "ini": 4, 
-            "cl_index": 6, 
             "rankvar": 9
           }, 
           {
@@ -23428,9 +23294,7 @@
             "name": "Col-7 make name longer", 
             "clust": 9, 
             "rank": 0, 
-            "cat": "lung", 
             "ini": 3, 
-            "cl_index": 7, 
             "rankvar": 6
           }, 
           {
@@ -23450,9 +23314,7 @@
             "name": "Col-8 make name longer", 
             "clust": 5, 
             "rank": 8, 
-            "cat": "lung", 
             "ini": 2, 
-            "cl_index": 8, 
             "rankvar": 5
           }, 
           {
@@ -23472,9 +23334,7 @@
             "name": "Col-9 make name longer", 
             "clust": 3, 
             "rank": 1, 
-            "cat": "lung", 
             "ini": 1, 
-            "cl_index": 9, 
             "rankvar": 1
           }
         ]
@@ -24505,9 +24365,7 @@
             "name": "Col-1 make name longer", 
             "clust": 7, 
             "rank": 2, 
-            "cat": "brain", 
             "ini": 10, 
-            "cl_index": 1, 
             "rankvar": 3
           }, 
           {
@@ -24527,9 +24385,7 @@
             "name": "Col-10 make name longer", 
             "clust": 8, 
             "rank": 8, 
-            "cat": "lung", 
             "ini": 9, 
-            "cl_index": 5, 
             "rankvar": 9
           }, 
           {
@@ -24549,9 +24405,7 @@
             "name": "Col-2 make name longer", 
             "clust": 6, 
             "rank": 3, 
-            "cat": "brain", 
             "ini": 8, 
-            "cl_index": 4, 
             "rankvar": 2
           }, 
           {
@@ -24571,9 +24425,7 @@
             "name": "Col-3 make name longer", 
             "clust": 1, 
             "rank": 5, 
-            "cat": "brain", 
             "ini": 7, 
-            "cl_index": 0, 
             "rankvar": 7
           }, 
           {
@@ -24593,9 +24445,7 @@
             "name": "Col-4 make name longer", 
             "clust": 4, 
             "rank": 7, 
-            "cat": "brain", 
             "ini": 6, 
-            "cl_index": 2, 
             "rankvar": 4
           }, 
           {
@@ -24615,9 +24465,7 @@
             "name": "Col-5 make name longer", 
             "clust": 0, 
             "rank": 6, 
-            "cat": "brain", 
             "ini": 5, 
-            "cl_index": 3, 
             "rankvar": 0
           }, 
           {
@@ -24637,9 +24485,7 @@
             "name": "Col-6 make name longer", 
             "clust": 2, 
             "rank": 9, 
-            "cat": "lung", 
             "ini": 4, 
-            "cl_index": 6, 
             "rankvar": 8
           }, 
           {
@@ -24659,9 +24505,7 @@
             "name": "Col-7 make name longer", 
             "clust": 9, 
             "rank": 0, 
-            "cat": "lung", 
             "ini": 3, 
-            "cl_index": 7, 
             "rankvar": 6
           }, 
           {
@@ -24681,9 +24525,7 @@
             "name": "Col-8 make name longer", 
             "clust": 5, 
             "rank": 4, 
-            "cat": "lung", 
             "ini": 2, 
-            "cl_index": 8, 
             "rankvar": 5
           }, 
           {
@@ -24703,9 +24545,7 @@
             "name": "Col-9 make name longer", 
             "clust": 3, 
             "rank": 1, 
-            "cat": "lung", 
             "ini": 1, 
-            "cl_index": 9, 
             "rankvar": 1
           }
         ]
@@ -25536,9 +25376,7 @@
             "name": "Col-1 make name longer", 
             "clust": 6, 
             "rank": 3, 
-            "cat": "brain", 
             "ini": 10, 
-            "cl_index": 3, 
             "rankvar": 4
           }, 
           {
@@ -25558,9 +25396,7 @@
             "name": "Col-10 make name longer", 
             "clust": 7, 
             "rank": 5, 
-            "cat": "lung", 
             "ini": 9, 
-            "cl_index": 5, 
             "rankvar": 7
           }, 
           {
@@ -25580,9 +25416,7 @@
             "name": "Col-2 make name longer", 
             "clust": 8, 
             "rank": 2, 
-            "cat": "brain", 
             "ini": 8, 
-            "cl_index": 0, 
             "rankvar": 1
           }, 
           {
@@ -25602,9 +25436,7 @@
             "name": "Col-3 make name longer", 
             "clust": 3, 
             "rank": 7, 
-            "cat": "brain", 
             "ini": 7, 
-            "cl_index": 4, 
             "rankvar": 8
           }, 
           {
@@ -25624,9 +25456,7 @@
             "name": "Col-4 make name longer", 
             "clust": 0, 
             "rank": 8, 
-            "cat": "brain", 
             "ini": 6, 
-            "cl_index": 1, 
             "rankvar": 6
           }, 
           {
@@ -25646,9 +25476,7 @@
             "name": "Col-5 make name longer", 
             "clust": 2, 
             "rank": 6, 
-            "cat": "brain", 
             "ini": 5, 
-            "cl_index": 2, 
             "rankvar": 0
           }, 
           {
@@ -25668,9 +25496,7 @@
             "name": "Col-6 make name longer", 
             "clust": 4, 
             "rank": 9, 
-            "cat": "lung", 
             "ini": 4, 
-            "cl_index": 6, 
             "rankvar": 9
           }, 
           {
@@ -25690,9 +25516,7 @@
             "name": "Col-7 make name longer", 
             "clust": 5, 
             "rank": 0, 
-            "cat": "lung", 
             "ini": 3, 
-            "cl_index": 7, 
             "rankvar": 5
           }, 
           {
@@ -25712,9 +25536,7 @@
             "name": "Col-8 make name longer", 
             "clust": 1, 
             "rank": 4, 
-            "cat": "lung", 
             "ini": 2, 
-            "cl_index": 8, 
             "rankvar": 3
           }, 
           {
@@ -25734,9 +25556,7 @@
             "name": "Col-9 make name longer", 
             "clust": 9, 
             "rank": 1, 
-            "cat": "lung", 
             "ini": 1, 
-            "cl_index": 9, 
             "rankvar": 2
           }
         ]
@@ -26367,9 +26187,7 @@
             "name": "Col-1 make name longer", 
             "clust": 3, 
             "rank": 8, 
-            "cat": "brain", 
             "ini": 10, 
-            "cl_index": 1, 
             "rankvar": 6
           }, 
           {
@@ -26389,9 +26207,7 @@
             "name": "Col-10 make name longer", 
             "clust": 4, 
             "rank": 3, 
-            "cat": "lung", 
             "ini": 9, 
-            "cl_index": 5, 
             "rankvar": 7
           }, 
           {
@@ -26411,9 +26227,7 @@
             "name": "Col-2 make name longer", 
             "clust": 1, 
             "rank": 5, 
-            "cat": "brain", 
             "ini": 8, 
-            "cl_index": 4, 
             "rankvar": 3
           }, 
           {
@@ -26433,9 +26247,7 @@
             "name": "Col-3 make name longer", 
             "clust": 8, 
             "rank": 7, 
-            "cat": "brain", 
             "ini": 7, 
-            "cl_index": 0, 
             "rankvar": 9
           }, 
           {
@@ -26455,9 +26267,7 @@
             "name": "Col-4 make name longer", 
             "clust": 5, 
             "rank": 2, 
-            "cat": "brain", 
             "ini": 6, 
-            "cl_index": 2, 
             "rankvar": 4
           }, 
           {
@@ -26477,9 +26287,7 @@
             "name": "Col-5 make name longer", 
             "clust": 0, 
             "rank": 6, 
-            "cat": "brain", 
             "ini": 5, 
-            "cl_index": 3, 
             "rankvar": 0
           }, 
           {
@@ -26499,9 +26307,7 @@
             "name": "Col-6 make name longer", 
             "clust": 9, 
             "rank": 9, 
-            "cat": "lung", 
             "ini": 4, 
-            "cl_index": 6, 
             "rankvar": 8
           }, 
           {
@@ -26521,9 +26327,7 @@
             "name": "Col-7 make name longer", 
             "clust": 6, 
             "rank": 0, 
-            "cat": "lung", 
             "ini": 3, 
-            "cl_index": 7, 
             "rankvar": 5
           }, 
           {
@@ -26543,9 +26347,7 @@
             "name": "Col-8 make name longer", 
             "clust": 7, 
             "rank": 4, 
-            "cat": "lung", 
             "ini": 2, 
-            "cl_index": 8, 
             "rankvar": 2
           }, 
           {
@@ -26565,9 +26367,7 @@
             "name": "Col-9 make name longer", 
             "clust": 2, 
             "rank": 1, 
-            "cat": "lung", 
             "ini": 1, 
-            "cl_index": 9, 
             "rankvar": 1
           }
         ]
@@ -26998,9 +26798,7 @@
             "name": "Col-1 make name longer", 
             "clust": 1, 
             "rank": 7, 
-            "cat": "brain", 
             "ini": 10, 
-            "cl_index": 4, 
             "rankvar": 4
           }, 
           {
@@ -27020,9 +26818,7 @@
             "name": "Col-10 make name longer", 
             "clust": 2, 
             "rank": 6, 
-            "cat": "lung", 
             "ini": 9, 
-            "cl_index": 5, 
             "rankvar": 7
           }, 
           {
@@ -27042,9 +26838,7 @@
             "name": "Col-2 make name longer", 
             "clust": 5, 
             "rank": 8, 
-            "cat": "brain", 
             "ini": 8, 
-            "cl_index": 2, 
             "rankvar": 2
           }, 
           {
@@ -27064,9 +26858,7 @@
             "name": "Col-3 make name longer", 
             "clust": 3, 
             "rank": 5, 
-            "cat": "brain", 
             "ini": 7, 
-            "cl_index": 3, 
             "rankvar": 9
           }, 
           {
@@ -27086,9 +26878,7 @@
             "name": "Col-4 make name longer", 
             "clust": 4, 
             "rank": 2, 
-            "cat": "brain", 
             "ini": 6, 
-            "cl_index": 0, 
             "rankvar": 5
           }, 
           {
@@ -27108,9 +26898,7 @@
             "name": "Col-5 make name longer", 
             "clust": 8, 
             "rank": 3, 
-            "cat": "brain", 
             "ini": 5, 
-            "cl_index": 1, 
             "rankvar": 0
           }, 
           {
@@ -27130,9 +26918,7 @@
             "name": "Col-6 make name longer", 
             "clust": 7, 
             "rank": 9, 
-            "cat": "lung", 
             "ini": 4, 
-            "cl_index": 6, 
             "rankvar": 8
           }, 
           {
@@ -27152,9 +26938,7 @@
             "name": "Col-7 make name longer", 
             "clust": 0, 
             "rank": 0, 
-            "cat": "lung", 
             "ini": 3, 
-            "cl_index": 7, 
             "rankvar": 6
           }, 
           {
@@ -27174,9 +26958,7 @@
             "name": "Col-8 make name longer", 
             "clust": 9, 
             "rank": 4, 
-            "cat": "lung", 
             "ini": 2, 
-            "cl_index": 8, 
             "rankvar": 3
           }, 
           {
@@ -27196,9 +26978,7 @@
             "name": "Col-9 make name longer", 
             "clust": 6, 
             "rank": 1, 
-            "cat": "lung", 
             "ini": 1, 
-            "cl_index": 9, 
             "rankvar": 1
           }
         ]
@@ -27429,9 +27209,7 @@
             "name": "Col-1 make name longer", 
             "clust": 8, 
             "rank": 6, 
-            "cat": "brain", 
             "ini": 10, 
-            "cl_index": 4, 
             "rankvar": 6
           }, 
           {
@@ -27451,9 +27229,7 @@
             "name": "Col-10 make name longer", 
             "clust": 9, 
             "rank": 7, 
-            "cat": "lung", 
             "ini": 9, 
-            "cl_index": 5, 
             "rankvar": 9
           }, 
           {
@@ -27473,9 +27249,7 @@
             "name": "Col-2 make name longer", 
             "clust": 4, 
             "rank": 8, 
-            "cat": "brain", 
             "ini": 8, 
-            "cl_index": 1, 
             "rankvar": 1
           }, 
           {
@@ -27495,9 +27269,7 @@
             "name": "Col-3 make name longer", 
             "clust": 7, 
             "rank": 9, 
-            "cat": "brain", 
             "ini": 7, 
-            "cl_index": 2, 
             "rankvar": 5
           }, 
           {
@@ -27517,9 +27289,7 @@
             "name": "Col-4 make name longer", 
             "clust": 6, 
             "rank": 4, 
-            "cat": "brain", 
             "ini": 6, 
-            "cl_index": 0, 
             "rankvar": 7
           }, 
           {
@@ -27539,9 +27309,7 @@
             "name": "Col-5 make name longer", 
             "clust": 1, 
             "rank": 5, 
-            "cat": "brain", 
             "ini": 5, 
-            "cl_index": 3, 
             "rankvar": 2
           }, 
           {
@@ -27561,9 +27329,7 @@
             "name": "Col-6 make name longer", 
             "clust": 2, 
             "rank": 3, 
-            "cat": "lung", 
             "ini": 4, 
-            "cl_index": 6, 
             "rankvar": 4
           }, 
           {
@@ -27583,9 +27349,7 @@
             "name": "Col-7 make name longer", 
             "clust": 5, 
             "rank": 0, 
-            "cat": "lung", 
             "ini": 3, 
-            "cl_index": 8, 
             "rankvar": 8
           }, 
           {
@@ -27605,9 +27369,7 @@
             "name": "Col-8 make name longer", 
             "clust": 3, 
             "rank": 2, 
-            "cat": "lung", 
             "ini": 2, 
-            "cl_index": 7, 
             "rankvar": 3
           }, 
           {
@@ -27627,9 +27389,7 @@
             "name": "Col-9 make name longer", 
             "clust": 0, 
             "rank": 1, 
-            "cat": "lung", 
             "ini": 1, 
-            "cl_index": 9, 
             "rankvar": 0
           }
         ]
@@ -30659,9 +30419,7 @@
             "name": "Col-1 make name longer", 
             "clust": 4, 
             "rank": 5, 
-            "cat": "brain", 
             "ini": 10, 
-            "cl_index": 3, 
             "rankvar": 4
           }, 
           {
@@ -30681,9 +30439,7 @@
             "name": "Col-10 make name longer", 
             "clust": 5, 
             "rank": 4, 
-            "cat": "lung", 
             "ini": 9, 
-            "cl_index": 5, 
             "rankvar": 9
           }, 
           {
@@ -30703,9 +30459,7 @@
             "name": "Col-2 make name longer", 
             "clust": 8, 
             "rank": 3, 
-            "cat": "brain", 
             "ini": 8, 
-            "cl_index": 4, 
             "rankvar": 0
           }, 
           {
@@ -30725,9 +30479,7 @@
             "name": "Col-3 make name longer", 
             "clust": 6, 
             "rank": 0, 
-            "cat": "brain", 
             "ini": 7, 
-            "cl_index": 0, 
             "rankvar": 3
           }, 
           {
@@ -30747,9 +30499,7 @@
             "name": "Col-4 make name longer", 
             "clust": 2, 
             "rank": 7, 
-            "cat": "brain", 
             "ini": 6, 
-            "cl_index": 1, 
             "rankvar": 6
           }, 
           {
@@ -30769,9 +30519,7 @@
             "name": "Col-5 make name longer", 
             "clust": 0, 
             "rank": 9, 
-            "cat": "brain", 
             "ini": 5, 
-            "cl_index": 2, 
             "rankvar": 1
           }, 
           {
@@ -30791,9 +30539,7 @@
             "name": "Col-6 make name longer", 
             "clust": 1, 
             "rank": 8, 
-            "cat": "lung", 
             "ini": 4, 
-            "cl_index": 6, 
             "rankvar": 8
           }, 
           {
@@ -30813,9 +30559,7 @@
             "name": "Col-7 make name longer", 
             "clust": 7, 
             "rank": 2, 
-            "cat": "lung", 
             "ini": 3, 
-            "cl_index": 7, 
             "rankvar": 5
           }, 
           {
@@ -30835,9 +30579,7 @@
             "name": "Col-8 make name longer", 
             "clust": 3, 
             "rank": 1, 
-            "cat": "lung", 
             "ini": 2, 
-            "cl_index": 8, 
             "rankvar": 7
           }, 
           {
@@ -30857,9 +30599,7 @@
             "name": "Col-9 make name longer", 
             "clust": 9, 
             "rank": 6, 
-            "cat": "lung", 
             "ini": 1, 
-            "cl_index": 9, 
             "rankvar": 2
           }
         ]
@@ -32890,9 +32630,7 @@
             "name": "Col-1 make name longer", 
             "clust": 2, 
             "rank": 3, 
-            "cat": "brain", 
             "ini": 10, 
-            "cl_index": 2, 
             "rankvar": 3
           }, 
           {
@@ -32912,9 +32650,7 @@
             "name": "Col-10 make name longer", 
             "clust": 3, 
             "rank": 5, 
-            "cat": "lung", 
             "ini": 9, 
-            "cl_index": 5, 
             "rankvar": 6
           }, 
           {
@@ -32934,9 +32670,7 @@
             "name": "Col-2 make name longer", 
             "clust": 8, 
             "rank": 1, 
-            "cat": "brain", 
             "ini": 8, 
-            "cl_index": 3, 
             "rankvar": 0
           }, 
           {
@@ -32956,9 +32690,7 @@
             "name": "Col-3 make name longer", 
             "clust": 0, 
             "rank": 0, 
-            "cat": "brain", 
             "ini": 7, 
-            "cl_index": 0, 
             "rankvar": 1
           }, 
           {
@@ -32978,9 +32710,7 @@
             "name": "Col-4 make name longer", 
             "clust": 4, 
             "rank": 6, 
-            "cat": "brain", 
             "ini": 6, 
-            "cl_index": 1, 
             "rankvar": 8
           }, 
           {
@@ -33000,9 +32730,7 @@
             "name": "Col-5 make name longer", 
             "clust": 6, 
             "rank": 9, 
-            "cat": "brain", 
             "ini": 5, 
-            "cl_index": 4, 
             "rankvar": 2
           }, 
           {
@@ -33022,9 +32750,7 @@
             "name": "Col-6 make name longer", 
             "clust": 7, 
             "rank": 8, 
-            "cat": "lung", 
             "ini": 4, 
-            "cl_index": 7, 
             "rankvar": 5
           }, 
           {
@@ -33044,9 +32770,7 @@
             "name": "Col-7 make name longer", 
             "clust": 1, 
             "rank": 2, 
-            "cat": "lung", 
             "ini": 3, 
-            "cl_index": 6, 
             "rankvar": 7
           }, 
           {
@@ -33066,9 +32790,7 @@
             "name": "Col-8 make name longer", 
             "clust": 5, 
             "rank": 4, 
-            "cat": "lung", 
             "ini": 2, 
-            "cl_index": 8, 
             "rankvar": 9
           }, 
           {
@@ -33088,9 +32810,7 @@
             "name": "Col-9 make name longer", 
             "clust": 9, 
             "rank": 7, 
-            "cat": "lung", 
             "ini": 1, 
-            "cl_index": 9, 
             "rankvar": 4
           }
         ]
@@ -34921,9 +34641,7 @@
             "name": "Col-1 make name longer", 
             "clust": 2, 
             "rank": 2, 
-            "cat": "brain", 
             "ini": 10, 
-            "cl_index": 2, 
             "rankvar": 3
           }, 
           {
@@ -34943,9 +34661,7 @@
             "name": "Col-10 make name longer", 
             "clust": 3, 
             "rank": 5, 
-            "cat": "lung", 
             "ini": 9, 
-            "cl_index": 5, 
             "rankvar": 4
           }, 
           {
@@ -34965,9 +34681,7 @@
             "name": "Col-2 make name longer", 
             "clust": 7, 
             "rank": 3, 
-            "cat": "brain", 
             "ini": 8, 
-            "cl_index": 3, 
             "rankvar": 0
           }, 
           {
@@ -34987,9 +34701,7 @@
             "name": "Col-3 make name longer", 
             "clust": 0, 
             "rank": 0, 
-            "cat": "brain", 
             "ini": 7, 
-            "cl_index": 4, 
             "rankvar": 1
           }, 
           {
@@ -35009,9 +34721,7 @@
             "name": "Col-4 make name longer", 
             "clust": 4, 
             "rank": 6, 
-            "cat": "brain", 
             "ini": 6, 
-            "cl_index": 0, 
             "rankvar": 8
           }, 
           {
@@ -35031,9 +34741,7 @@
             "name": "Col-5 make name longer", 
             "clust": 8, 
             "rank": 9, 
-            "cat": "brain", 
             "ini": 5, 
-            "cl_index": 1, 
             "rankvar": 2
           }, 
           {
@@ -35053,9 +34761,7 @@
             "name": "Col-6 make name longer", 
             "clust": 9, 
             "rank": 7, 
-            "cat": "lung", 
             "ini": 4, 
-            "cl_index": 7, 
             "rankvar": 6
           }, 
           {
@@ -35075,9 +34781,7 @@
             "name": "Col-7 make name longer", 
             "clust": 1, 
             "rank": 1, 
-            "cat": "lung", 
             "ini": 3, 
-            "cl_index": 6, 
             "rankvar": 7
           }, 
           {
@@ -35097,9 +34801,7 @@
             "name": "Col-8 make name longer", 
             "clust": 5, 
             "rank": 4, 
-            "cat": "lung", 
             "ini": 2, 
-            "cl_index": 8, 
             "rankvar": 9
           }, 
           {
@@ -35119,9 +34821,7 @@
             "name": "Col-9 make name longer", 
             "clust": 6, 
             "rank": 8, 
-            "cat": "lung", 
             "ini": 1, 
-            "cl_index": 9, 
             "rankvar": 5
           }
         ]
@@ -36752,9 +36452,7 @@
             "name": "Col-1 make name longer", 
             "clust": 8, 
             "rank": 4, 
-            "cat": "brain", 
             "ini": 10, 
-            "cl_index": 2, 
             "rankvar": 3
           }, 
           {
@@ -36774,9 +36472,7 @@
             "name": "Col-10 make name longer", 
             "clust": 9, 
             "rank": 1, 
-            "cat": "lung", 
             "ini": 9, 
-            "cl_index": 5, 
             "rankvar": 5
           }, 
           {
@@ -36796,9 +36492,7 @@
             "name": "Col-2 make name longer", 
             "clust": 7, 
             "rank": 2, 
-            "cat": "brain", 
             "ini": 8, 
-            "cl_index": 3, 
             "rankvar": 0
           }, 
           {
@@ -36818,9 +36512,7 @@
             "name": "Col-3 make name longer", 
             "clust": 5, 
             "rank": 0, 
-            "cat": "brain", 
             "ini": 7, 
-            "cl_index": 4, 
             "rankvar": 1
           }, 
           {
@@ -36840,9 +36532,7 @@
             "name": "Col-4 make name longer", 
             "clust": 4, 
             "rank": 7, 
-            "cat": "brain", 
             "ini": 6, 
-            "cl_index": 0, 
             "rankvar": 6
           }, 
           {
@@ -36862,9 +36552,7 @@
             "name": "Col-5 make name longer", 
             "clust": 2, 
             "rank": 9, 
-            "cat": "brain", 
             "ini": 5, 
-            "cl_index": 1, 
             "rankvar": 2
           }, 
           {
@@ -36884,9 +36572,7 @@
             "name": "Col-6 make name longer", 
             "clust": 3, 
             "rank": 6, 
-            "cat": "lung", 
             "ini": 4, 
-            "cl_index": 7, 
             "rankvar": 7
           }, 
           {
@@ -36906,9 +36592,7 @@
             "name": "Col-7 make name longer", 
             "clust": 6, 
             "rank": 3, 
-            "cat": "lung", 
             "ini": 3, 
-            "cl_index": 6, 
             "rankvar": 8
           }, 
           {
@@ -36928,9 +36612,7 @@
             "name": "Col-8 make name longer", 
             "clust": 0, 
             "rank": 5, 
-            "cat": "lung", 
             "ini": 2, 
-            "cl_index": 8, 
             "rankvar": 9
           }, 
           {
@@ -36950,9 +36632,7 @@
             "name": "Col-9 make name longer", 
             "clust": 1, 
             "rank": 8, 
-            "cat": "lung", 
             "ini": 1, 
-            "cl_index": 9, 
             "rankvar": 4
           }
         ]
@@ -38383,9 +38063,7 @@
             "name": "Col-1 make name longer", 
             "clust": 3, 
             "rank": 0, 
-            "cat": "brain", 
             "ini": 10, 
-            "cl_index": 3, 
             "rankvar": 4
           }, 
           {
@@ -38405,9 +38083,7 @@
             "name": "Col-10 make name longer", 
             "clust": 4, 
             "rank": 3, 
-            "cat": "lung", 
             "ini": 9, 
-            "cl_index": 5, 
             "rankvar": 5
           }, 
           {
@@ -38427,9 +38103,7 @@
             "name": "Col-2 make name longer", 
             "clust": 0, 
             "rank": 1, 
-            "cat": "brain", 
             "ini": 8, 
-            "cl_index": 4, 
             "rankvar": 0
           }, 
           {
@@ -38449,9 +38123,7 @@
             "name": "Col-3 make name longer", 
             "clust": 1, 
             "rank": 2, 
-            "cat": "brain", 
             "ini": 7, 
-            "cl_index": 1, 
             "rankvar": 1
           }, 
           {
@@ -38471,9 +38143,7 @@
             "name": "Col-4 make name longer", 
             "clust": 5, 
             "rank": 7, 
-            "cat": "brain", 
             "ini": 6, 
-            "cl_index": 0, 
             "rankvar": 8
           }, 
           {
@@ -38493,9 +38163,7 @@
             "name": "Col-5 make name longer", 
             "clust": 6, 
             "rank": 9, 
-            "cat": "brain", 
             "ini": 5, 
-            "cl_index": 2, 
             "rankvar": 2
           }, 
           {
@@ -38515,9 +38183,7 @@
             "name": "Col-6 make name longer", 
             "clust": 7, 
             "rank": 6, 
-            "cat": "lung", 
             "ini": 4, 
-            "cl_index": 8, 
             "rankvar": 7
           }, 
           {
@@ -38537,9 +38203,7 @@
             "name": "Col-7 make name longer", 
             "clust": 2, 
             "rank": 4, 
-            "cat": "lung", 
             "ini": 3, 
-            "cl_index": 9, 
             "rankvar": 6
           }, 
           {
@@ -38559,9 +38223,7 @@
             "name": "Col-8 make name longer", 
             "clust": 8, 
             "rank": 5, 
-            "cat": "lung", 
             "ini": 2, 
-            "cl_index": 6, 
             "rankvar": 9
           }, 
           {
@@ -38581,9 +38243,7 @@
             "name": "Col-9 make name longer", 
             "clust": 9, 
             "rank": 8, 
-            "cat": "lung", 
             "ini": 1, 
-            "cl_index": 7, 
             "rankvar": 3
           }
         ]
@@ -39814,9 +39474,7 @@
             "name": "Col-1 make name longer", 
             "clust": 8, 
             "rank": 1, 
-            "cat": "brain", 
             "ini": 10, 
-            "cl_index": 2, 
             "rankvar": 6
           }, 
           {
@@ -39836,9 +39494,7 @@
             "name": "Col-10 make name longer", 
             "clust": 9, 
             "rank": 4, 
-            "cat": "lung", 
             "ini": 9, 
-            "cl_index": 5, 
             "rankvar": 3
           }, 
           {
@@ -39858,9 +39514,7 @@
             "name": "Col-2 make name longer", 
             "clust": 7, 
             "rank": 3, 
-            "cat": "brain", 
             "ini": 8, 
-            "cl_index": 3, 
             "rankvar": 2
           }, 
           {
@@ -39880,9 +39534,7 @@
             "name": "Col-3 make name longer", 
             "clust": 5, 
             "rank": 0, 
-            "cat": "brain", 
             "ini": 7, 
-            "cl_index": 1, 
             "rankvar": 0
           }, 
           {
@@ -39902,9 +39554,7 @@
             "name": "Col-4 make name longer", 
             "clust": 6, 
             "rank": 7, 
-            "cat": "brain", 
             "ini": 6, 
-            "cl_index": 0, 
             "rankvar": 7
           }, 
           {
@@ -39924,9 +39574,7 @@
             "name": "Col-5 make name longer", 
             "clust": 1, 
             "rank": 9, 
-            "cat": "brain", 
             "ini": 5, 
-            "cl_index": 4, 
             "rankvar": 1
           }, 
           {
@@ -39946,9 +39594,7 @@
             "name": "Col-6 make name longer", 
             "clust": 3, 
             "rank": 6, 
-            "cat": "lung", 
             "ini": 4, 
-            "cl_index": 8, 
             "rankvar": 8
           }, 
           {
@@ -39968,9 +39614,7 @@
             "name": "Col-7 make name longer", 
             "clust": 4, 
             "rank": 2, 
-            "cat": "lung", 
             "ini": 3, 
-            "cl_index": 9, 
             "rankvar": 4
           }, 
           {
@@ -39990,9 +39634,7 @@
             "name": "Col-8 make name longer", 
             "clust": 0, 
             "rank": 5, 
-            "cat": "lung", 
             "ini": 2, 
-            "cl_index": 6, 
             "rankvar": 9
           }, 
           {
@@ -40012,9 +39654,7 @@
             "name": "Col-9 make name longer", 
             "clust": 2, 
             "rank": 8, 
-            "cat": "lung", 
             "ini": 1, 
-            "cl_index": 7, 
             "rankvar": 5
           }
         ]
@@ -41045,9 +40685,7 @@
             "name": "Col-1 make name longer", 
             "clust": 8, 
             "rank": 0, 
-            "cat": "brain", 
             "ini": 10, 
-            "cl_index": 3, 
             "rankvar": 5
           }, 
           {
@@ -41067,9 +40705,7 @@
             "name": "Col-10 make name longer", 
             "clust": 4, 
             "rank": 3, 
-            "cat": "lung", 
             "ini": 9, 
-            "cl_index": 5, 
             "rankvar": 6
           }, 
           {
@@ -41089,9 +40725,7 @@
             "name": "Col-2 make name longer", 
             "clust": 7, 
             "rank": 4, 
-            "cat": "brain", 
             "ini": 8, 
-            "cl_index": 4, 
             "rankvar": 1
           }, 
           {
@@ -41111,9 +40745,7 @@
             "name": "Col-3 make name longer", 
             "clust": 9, 
             "rank": 1, 
-            "cat": "brain", 
             "ini": 7, 
-            "cl_index": 1, 
             "rankvar": 0
           }, 
           {
@@ -41133,9 +40765,7 @@
             "name": "Col-4 make name longer", 
             "clust": 5, 
             "rank": 6, 
-            "cat": "brain", 
             "ini": 6, 
-            "cl_index": 0, 
             "rankvar": 7
           }, 
           {
@@ -41155,9 +40785,7 @@
             "name": "Col-5 make name longer", 
             "clust": 2, 
             "rank": 9, 
-            "cat": "brain", 
             "ini": 5, 
-            "cl_index": 2, 
             "rankvar": 2
           }, 
           {
@@ -41177,9 +40805,7 @@
             "name": "Col-6 make name longer", 
             "clust": 3, 
             "rank": 7, 
-            "cat": "lung", 
             "ini": 4, 
-            "cl_index": 8, 
             "rankvar": 8
           }, 
           {
@@ -41199,9 +40825,7 @@
             "name": "Col-7 make name longer", 
             "clust": 6, 
             "rank": 2, 
-            "cat": "lung", 
             "ini": 3, 
-            "cl_index": 9, 
             "rankvar": 4
           }, 
           {
@@ -41221,9 +40845,7 @@
             "name": "Col-8 make name longer", 
             "clust": 0, 
             "rank": 5, 
-            "cat": "lung", 
             "ini": 2, 
-            "cl_index": 6, 
             "rankvar": 9
           }, 
           {
@@ -41243,9 +40865,7 @@
             "name": "Col-9 make name longer", 
             "clust": 1, 
             "rank": 8, 
-            "cat": "lung", 
             "ini": 1, 
-            "cl_index": 7, 
             "rankvar": 3
           }
         ]
@@ -42076,9 +41696,7 @@
             "name": "Col-1 make name longer", 
             "clust": 6, 
             "rank": 0, 
-            "cat": "brain", 
             "ini": 10, 
-            "cl_index": 3, 
             "rankvar": 6
           }, 
           {
@@ -42098,9 +41716,7 @@
             "name": "Col-10 make name longer", 
             "clust": 8, 
             "rank": 4, 
-            "cat": "lung", 
             "ini": 9, 
-            "cl_index": 5, 
             "rankvar": 7
           }, 
           {
@@ -42120,9 +41736,7 @@
             "name": "Col-2 make name longer", 
             "clust": 5, 
             "rank": 3, 
-            "cat": "brain", 
             "ini": 8, 
-            "cl_index": 4, 
             "rankvar": 2
           }, 
           {
@@ -42142,9 +41756,7 @@
             "name": "Col-3 make name longer", 
             "clust": 7, 
             "rank": 1, 
-            "cat": "brain", 
             "ini": 7, 
-            "cl_index": 1, 
             "rankvar": 0
           }, 
           {
@@ -42164,9 +41776,7 @@
             "name": "Col-4 make name longer", 
             "clust": 4, 
             "rank": 6, 
-            "cat": "brain", 
             "ini": 6, 
-            "cl_index": 0, 
             "rankvar": 5
           }, 
           {
@@ -42186,9 +41796,7 @@
             "name": "Col-5 make name longer", 
             "clust": 0, 
             "rank": 9, 
-            "cat": "brain", 
             "ini": 5, 
-            "cl_index": 2, 
             "rankvar": 3
           }, 
           {
@@ -42208,9 +41816,7 @@
             "name": "Col-6 make name longer", 
             "clust": 2, 
             "rank": 7, 
-            "cat": "lung", 
             "ini": 4, 
-            "cl_index": 8, 
             "rankvar": 8
           }, 
           {
@@ -42230,9 +41836,7 @@
             "name": "Col-7 make name longer", 
             "clust": 9, 
             "rank": 2, 
-            "cat": "lung", 
             "ini": 3, 
-            "cl_index": 9, 
             "rankvar": 1
           }, 
           {
@@ -42252,9 +41856,7 @@
             "name": "Col-8 make name longer", 
             "clust": 3, 
             "rank": 5, 
-            "cat": "lung", 
             "ini": 2, 
-            "cl_index": 6, 
             "rankvar": 9
           }, 
           {
@@ -42274,9 +41876,7 @@
             "name": "Col-9 make name longer", 
             "clust": 1, 
             "rank": 8, 
-            "cat": "lung", 
             "ini": 1, 
-            "cl_index": 7, 
             "rankvar": 4
           }
         ]
@@ -42907,9 +42507,7 @@
             "name": "Col-1 make name longer", 
             "clust": 7, 
             "rank": 0, 
-            "cat": "brain", 
             "ini": 10, 
-            "cl_index": 4, 
             "rankvar": 5
           }, 
           {
@@ -42929,9 +42527,7 @@
             "name": "Col-10 make name longer", 
             "clust": 4, 
             "rank": 1, 
-            "cat": "lung", 
             "ini": 9, 
-            "cl_index": 6, 
             "rankvar": 7
           }, 
           {
@@ -42951,9 +42547,7 @@
             "name": "Col-2 make name longer", 
             "clust": 8, 
             "rank": 3, 
-            "cat": "brain", 
             "ini": 8, 
-            "cl_index": 3, 
             "rankvar": 1
           }, 
           {
@@ -42973,9 +42567,7 @@
             "name": "Col-3 make name longer", 
             "clust": 9, 
             "rank": 2, 
-            "cat": "brain", 
             "ini": 7, 
-            "cl_index": 0, 
             "rankvar": 0
           }, 
           {
@@ -42995,9 +42587,7 @@
             "name": "Col-4 make name longer", 
             "clust": 5, 
             "rank": 7, 
-            "cat": "brain", 
             "ini": 6, 
-            "cl_index": 1, 
             "rankvar": 8
           }, 
           {
@@ -43017,9 +42607,7 @@
             "name": "Col-5 make name longer", 
             "clust": 0, 
             "rank": 9, 
-            "cat": "brain", 
             "ini": 5, 
-            "cl_index": 2, 
             "rankvar": 3
           }, 
           {
@@ -43039,9 +42627,7 @@
             "name": "Col-6 make name longer", 
             "clust": 1, 
             "rank": 6, 
-            "cat": "lung", 
             "ini": 4, 
-            "cl_index": 8, 
             "rankvar": 6
           }, 
           {
@@ -43061,9 +42647,7 @@
             "name": "Col-7 make name longer", 
             "clust": 6, 
             "rank": 4, 
-            "cat": "lung", 
             "ini": 3, 
-            "cl_index": 9, 
             "rankvar": 2
           }, 
           {
@@ -43083,9 +42667,7 @@
             "name": "Col-8 make name longer", 
             "clust": 2, 
             "rank": 5, 
-            "cat": "lung", 
             "ini": 2, 
-            "cl_index": 5, 
             "rankvar": 9
           }, 
           {
@@ -43105,9 +42687,7 @@
             "name": "Col-9 make name longer", 
             "clust": 3, 
             "rank": 8, 
-            "cat": "lung", 
             "ini": 1, 
-            "cl_index": 7, 
             "rankvar": 4
           }
         ]
@@ -43538,9 +43118,7 @@
             "name": "Col-1 make name longer", 
             "clust": 5, 
             "rank": 1, 
-            "cat": "brain", 
             "ini": 10, 
-            "cl_index": 3, 
             "rankvar": 5
           }, 
           {
@@ -43560,9 +43138,7 @@
             "name": "Col-10 make name longer", 
             "clust": 8, 
             "rank": 0, 
-            "cat": "lung", 
             "ini": 9, 
-            "cl_index": 5, 
             "rankvar": 4
           }, 
           {
@@ -43582,9 +43158,7 @@
             "name": "Col-2 make name longer", 
             "clust": 4, 
             "rank": 3, 
-            "cat": "brain", 
             "ini": 8, 
-            "cl_index": 4, 
             "rankvar": 1
           }, 
           {
@@ -43604,9 +43178,7 @@
             "name": "Col-3 make name longer", 
             "clust": 6, 
             "rank": 2, 
-            "cat": "brain", 
             "ini": 7, 
-            "cl_index": 1, 
             "rankvar": 2
           }, 
           {
@@ -43626,9 +43198,7 @@
             "name": "Col-4 make name longer", 
             "clust": 7, 
             "rank": 6, 
-            "cat": "brain", 
             "ini": 6, 
-            "cl_index": 0, 
             "rankvar": 9
           }, 
           {
@@ -43648,9 +43218,7 @@
             "name": "Col-5 make name longer", 
             "clust": 0, 
             "rank": 8, 
-            "cat": "brain", 
             "ini": 5, 
-            "cl_index": 2, 
             "rankvar": 6
           }, 
           {
@@ -43670,9 +43238,7 @@
             "name": "Col-6 make name longer", 
             "clust": 1, 
             "rank": 7, 
-            "cat": "lung", 
             "ini": 4, 
-            "cl_index": 7, 
             "rankvar": 7
           }, 
           {
@@ -43692,9 +43258,7 @@
             "name": "Col-7 make name longer", 
             "clust": 9, 
             "rank": 4, 
-            "cat": "lung", 
             "ini": 3, 
-            "cl_index": 6, 
             "rankvar": 0
           }, 
           {
@@ -43714,9 +43278,7 @@
             "name": "Col-8 make name longer", 
             "clust": 2, 
             "rank": 5, 
-            "cat": "lung", 
             "ini": 2, 
-            "cl_index": 8, 
             "rankvar": 8
           }, 
           {
@@ -43736,9 +43298,7 @@
             "name": "Col-9 make name longer", 
             "clust": 3, 
             "rank": 9, 
-            "cat": "lung", 
             "ini": 1, 
-            "cl_index": 9, 
             "rankvar": 3
           }
         ]
@@ -43969,9 +43529,7 @@
             "name": "Col-1 make name longer", 
             "clust": 3, 
             "rank": 0, 
-            "cat": "brain", 
             "ini": 10, 
-            "cl_index": 1, 
             "rankvar": 3
           }, 
           {
@@ -43991,9 +43549,7 @@
             "name": "Col-10 make name longer", 
             "clust": 4, 
             "rank": 1, 
-            "cat": "lung", 
             "ini": 9, 
-            "cl_index": 5, 
             "rankvar": 5
           }, 
           {
@@ -44013,9 +43569,7 @@
             "name": "Col-2 make name longer", 
             "clust": 5, 
             "rank": 3, 
-            "cat": "brain", 
             "ini": 8, 
-            "cl_index": 4, 
             "rankvar": 1
           }, 
           {
@@ -44035,9 +43589,7 @@
             "name": "Col-3 make name longer", 
             "clust": 2, 
             "rank": 2, 
-            "cat": "brain", 
             "ini": 7, 
-            "cl_index": 3, 
             "rankvar": 2
           }, 
           {
@@ -44057,9 +43609,7 @@
             "name": "Col-4 make name longer", 
             "clust": 1, 
             "rank": 7, 
-            "cat": "brain", 
             "ini": 6, 
-            "cl_index": 0, 
             "rankvar": 8
           }, 
           {
@@ -44079,9 +43629,7 @@
             "name": "Col-5 make name longer", 
             "clust": 8, 
             "rank": 8, 
-            "cat": "brain", 
             "ini": 5, 
-            "cl_index": 2, 
             "rankvar": 4
           }, 
           {
@@ -44101,9 +43649,7 @@
             "name": "Col-6 make name longer", 
             "clust": 9, 
             "rank": 6, 
-            "cat": "lung", 
             "ini": 4, 
-            "cl_index": 7, 
             "rankvar": 9
           }, 
           {
@@ -44123,9 +43669,7 @@
             "name": "Col-7 make name longer", 
             "clust": 0, 
             "rank": 4, 
-            "cat": "lung", 
             "ini": 3, 
-            "cl_index": 9, 
             "rankvar": 0
           }, 
           {
@@ -44145,9 +43689,7 @@
             "name": "Col-8 make name longer", 
             "clust": 7, 
             "rank": 5, 
-            "cat": "lung", 
             "ini": 2, 
-            "cl_index": 6, 
             "rankvar": 7
           }, 
           {
@@ -44167,9 +43709,7 @@
             "name": "Col-9 make name longer", 
             "clust": 6, 
             "rank": 9, 
-            "cat": "lung", 
             "ini": 1, 
-            "cl_index": 8, 
             "rankvar": 6
           }
         ]
