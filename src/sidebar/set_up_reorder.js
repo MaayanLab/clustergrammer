@@ -51,8 +51,6 @@ module.exports = function set_up_reorder(params, sidebar){
 
     possible_orders = possible_orders.sort();
 
-    console.log(possible_orders)
-
     sidebar
       .append('div')
       .html(inst_node.name+' Order');

@@ -206,9 +206,6 @@ class Network(object):
     from copy import deepcopy
     df = self.dat_to_df()
 
-    print('-- checking df from dat_to_df in make_filtered_views')
-    print(df['mat'].columns.tolist())
-
     threshold = 0.0001
     df = self.df_filter_row(df, threshold)
     df = self.df_filter_col(df, threshold)
@@ -616,8 +613,6 @@ class Network(object):
     self.dat['nodes']['row'] = df['mat'].index.tolist()
     self.dat['nodes']['col'] = df['mat'].columns.tolist()
 
-    print('df_to_dat: cols '+str(self.dat['nodes']['col']))
-
     for inst_rc in ['row','col']:
 
       if type(self.dat['nodes'][inst_rc][0]) is tuple:
@@ -643,10 +638,8 @@ class Network(object):
     nodes = {}
     for inst_rc in ['row','col']:
       if 'full_names' in self.dat['node_info'][inst_rc]:
-        print('\n\nfound full names\n\n')
         nodes[inst_rc] = self.dat['node_info'][inst_rc]['full_names']
       else:
-        print('\n\ndid not find full names\n\n')
         nodes[inst_rc] = self.dat['nodes'][inst_rc]
 
     df['mat'] = pd.DataFrame(data = self.dat['mat'], columns=nodes['col'], index=nodes['row'])
