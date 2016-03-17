@@ -36,7 +36,9 @@ module.exports = function ini_matrix_params(config, viz, network_data){
       swap_rc = 'row';
     }
 
+    // the nodes are defined using swap_rc 
     var inst_nodes = network_data[swap_rc+'_nodes'];
+    var num_nodes = inst_nodes.length;
 
     var nodes_names = _.pluck(inst_nodes, 'name');
     var tmp = nodes_names.sort();
@@ -47,55 +49,59 @@ module.exports = function ini_matrix_params(config, viz, network_data){
 
     matrix.orders['alpha_'+inst_rc] = alpha_index;
 
+    var possible_orders = ['clust','rank'];
+
+    if (_.has(inst_nodes[0], 'rankvar')){
+      possible_orders.push('rankvar');
+    }; 
+
+    _.each(possible_orders, function(inst_order){
+
+      matrix.orders[inst_order+'_'+inst_rc] = d3.range(num_nodes)
+        .sort(function(a,b){
+          return inst_nodes[b][inst_order] - inst_nodes[a][inst_order];
+        })
+
+    });
+
+    // matrix.orders['rank_'+inst_rc] = d3.range(num_nodes).sort(function (a, b) {
+    //   return inst_nodes[b].rank - inst_nodes[a].rank;
+    // });
+
   });
 
   var col_nodes = network_data.col_nodes;
   var row_nodes = network_data.row_nodes;
 
-  // var tmp;
-  // var row_nodes_names = _.pluck(row_nodes, 'name');
-  // tmp = row_nodes_names.sort();
-  // var row_alpha_index = _.map(tmp, function(d){
-  //   return network_data.row_nodes_names.indexOf(d);
-  // });
-
-  // var col_nodes_names = _.pluck(col_nodes, 'name');
-  // tmp = col_nodes_names.sort();
-  // var col_alpha_index = _.map(tmp, function(d){
-  //   return network_data.col_nodes_names.indexOf(d);
-  // });  
-
-  // matrix.orders['alpha_row'] = col_alpha_index;
-  // matrix.orders['alpha_col'] = row_alpha_index;
-
   //-------------------------------------------//
 
 
 
-  matrix.orders['rank_row'] = d3.range(viz.num_col_nodes).sort(function (a, b) {
-      return col_nodes[b].rank - col_nodes[a].rank;
-    });
-  matrix.orders['rank_col'] = d3.range(viz.num_row_nodes).sort(function (a, b) {
-      return row_nodes[b].rank - row_nodes[a].rank;
-    });
-  matrix.orders['clust_row'] = d3.range(viz.num_col_nodes).sort(function (a, b) {
-      return col_nodes[b].clust - col_nodes[a].clust;
-    });
+  // matrix.orders['rank_row'] = d3.range(viz.num_col_nodes).sort(function (a, b) {
+  //     return col_nodes[b].rank - col_nodes[a].rank;
+  //   });
+  // matrix.orders['rank_col'] = d3.range(viz.num_row_nodes).sort(function (a, b) {
+  //     return row_nodes[b].rank - row_nodes[a].rank;
+  //   });
 
-  matrix.orders['clust_col'] = d3.range(viz.num_row_nodes).sort(function (a, b) {
-      return row_nodes[b].clust - row_nodes[a].clust;
-    });
+  // matrix.orders['clust_row'] = d3.range(viz.num_col_nodes).sort(function (a, b) {
+  //     return col_nodes[b].clust - col_nodes[a].clust;
+  //   });
 
-  // check if rankvar order is available 
-  if (_.has(network_data.row_nodes[0],'rankvar') ){
-    matrix.orders.rankvar_row = d3.range(viz.num_col_nodes).sort(function (a, b) {
-      return col_nodes[b].rankvar - col_nodes[a].rankvar;
-    });
+  // matrix.orders['clust_col'] = d3.range(viz.num_row_nodes).sort(function (a, b) {
+  //     return row_nodes[b].clust - row_nodes[a].clust;
+  //   });
 
-    matrix.orders.rankvar_col = d3.range(viz.num_row_nodes).sort(function (a, b) {
-      return row_nodes[b].rankvar - row_nodes[a].rankvar;
-    });
-  }
+  // // check if rankvar order is available 
+  // if (_.has(network_data.row_nodes[0],'rankvar') ){
+  //   matrix.orders.rankvar_row = d3.range(viz.num_col_nodes).sort(function (a, b) {
+  //     return col_nodes[b].rankvar - col_nodes[a].rankvar;
+  //   });
+
+  //   matrix.orders.rankvar_col = d3.range(viz.num_row_nodes).sort(function (a, b) {
+  //     return row_nodes[b].rankvar - row_nodes[a].rankvar;
+  //   });
+  // }
 
   // define class ordering - define on front-end
   if (utils.has(col_nodes[0],'cat-0')){
