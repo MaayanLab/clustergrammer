@@ -18,10 +18,8 @@ module.exports = function ini_matrix_params(config, viz, network_data){
   matrix.click_hlight_row = -666;
   matrix.click_hlight_col = -666;
 
-  // definition of a large matrix - based on number of links
-  // below this cutoff reordering is done with transitions
+  // definition of a large matrix (num links) determines if transition is run
   matrix.def_large_matrix = 10000;
-
   matrix.opacity_function = config.opacity_scale;
 
   matrix.orders = {};
@@ -63,9 +61,6 @@ module.exports = function ini_matrix_params(config, viz, network_data){
       });
     }
 
-    // console.log('-- possible_orders in ini_matrix_params')
-    // console.log(possible_orders)
-
     _.each(possible_orders, function(inst_order){
 
       var tmp_order_index = d3.range(num_nodes)
@@ -78,34 +73,6 @@ module.exports = function ini_matrix_params(config, viz, network_data){
     });
 
   });
-
-  // var col_nodes = network_data.col_nodes;
-
-  //-------------------------------------------//
-
-
-  // // define class ordering - define on front-end
-  // if (utils.has(col_nodes[0],'cat-0')){
-
-  //   // the nth node should be positioned at this place in the array 
-  //   var tmp_col_nodes = _.sortBy(col_nodes,'cat-0');
-
-  //   var ordered_col_names = [];
-  //   for (var i=0; i< tmp_col_nodes.length; i++){
-  //     ordered_col_names.push( tmp_col_nodes[i].name );
-  //   }
-
-  //   var order_col_class = [];
-  //   for (i=0; i< col_nodes.length; i++){
-  //     var inst_col_name = ordered_col_names[i];
-  //     order_col_class.push( _.indexOf( network_data.col_nodes_names, inst_col_name) );
-  //   }
-
-  //   matrix.orders['cat-0_row'] = order_col_class;
-  // }
-
-
-
 
 
   if (utils.has(network_data, 'all_links')) {
@@ -140,8 +107,10 @@ module.exports = function ini_matrix_params(config, viz, network_data){
     }
   }
 
+  var has_val_up = utils.has(network_data.links[0], 'value_up');
+  var has_val_dn = utils.has(network_data.links[0], 'value_dn');
 
-  if (utils.has(network_data.links[0], 'value_up') || utils.has(network_data.links[0], 'value_dn')) {
+  if (has_val_up || has_val_dn) {
     matrix.tile_type = 'updn';
   } else {
     matrix.tile_type = 'simple';

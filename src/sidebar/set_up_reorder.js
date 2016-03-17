@@ -1,33 +1,34 @@
 module.exports = function set_up_reorder(params, sidebar){
 
-  var button_dict = {
-    'clust':'Cluster',
-    'rank':'Rank by Sum',
-    'rankvar':'Rank by Variance',
-    'ini':'Initial Order',
-    'alpha':'Alphabetically',
-    'cat_0_index':'Category 1'
-  };
-
+  var button_dict;
   var tmp_orders; 
 
-
-  var node_data = [
-    {
-      'name':'Row',
-      'short_name':'row'
-    },
-    {
-      'name':'Column',
-      'short_name':'col'
-    }
-  ];
-
+  var rc_dict = {'row':'Row', 'col':'Column'};
+  var all_cats;
   var is_active;
-  var inst_reorder; 
-  var inst_rc;
+  var inst_reorder;
+  var inst_order_label;
+  var inst_cat_num;
 
-  _.each(node_data, function(inst_node){
+  _.each(['row','col'], function(inst_rc){
+
+    button_dict = {
+      'clust':'Cluster',
+      'rank':'Rank by Sum',
+      'rankvar':'Rank by Variance',
+      'ini':'Initial Order',
+      'alpha':'Alphabetically'
+    };
+
+    if ( params.viz.all_cats[inst_rc].length > 0){
+      all_cats = params.viz.all_cats[inst_rc];
+
+      _.each(all_cats, function(inst_cat){
+        inst_cat_num = String(parseInt(inst_cat.split('-')[1],10) + 1);
+        inst_order_label = inst_cat.replace('-','_')+'_index';
+        button_dict[inst_order_label] = 'Category '+inst_cat_num;
+      });
+    }
 
     tmp_orders = Object.keys(params.matrix.orders);
 
@@ -36,7 +37,7 @@ module.exports = function set_up_reorder(params, sidebar){
     _.each(tmp_orders, function(inst_name){
 
       // checking if row row or col 
-      if (inst_node.short_name==='row'){
+      if (inst_rc==='row'){
         inst_rc = 'col';
       } else {
         inst_rc = 'row'; 
@@ -55,14 +56,14 @@ module.exports = function set_up_reorder(params, sidebar){
 
     sidebar
       .append('div')
-      .html(inst_node.name+' Order');
+      .html(rc_dict[inst_rc]+' Order');
 
     inst_reorder = sidebar
       .append('div')
       .classed('viz_medium_text',true)
       .append('div')
       .classed('btn-group-vertical',true)
-      .classed('toggle_'+inst_node.short_name+'_order',true)
+      .classed('toggle_'+inst_rc+'_order',true)
       .attr('role','group');
 
     inst_reorder
