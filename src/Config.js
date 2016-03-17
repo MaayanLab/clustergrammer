@@ -137,7 +137,9 @@ module.exports = function(args) {
     config.inst_order.row = args.col_order;
   }
 
-  config.show_dendrogram = utils.has(args.network_data.row_nodes[0], 'group') || utils.has(args.network_data.col_nodes[0], 'group');
+  var row_has_group = utils.has(args.network_data.row_nodes[0], 'group');
+  var col_has_group = utils.has(args.network_data.col_nodes[0], 'group');
+  config.show_dendrogram = row_has_group || col_has_group;
 
   config.show_categories = {};
   config.all_cats = {};
@@ -158,19 +160,26 @@ module.exports = function(args) {
     });
 
     if (config.show_categories[inst_rc]){
-      var tmp_name_cat = _.uniq(_.pluck(args.network_data[inst_rc+'_nodes'], 'cat-0'));
 
       config.cat_colors[inst_rc] = {};
-      config.cat_colors[inst_rc]['cat-0'] = {};
 
-      _.each(tmp_name_cat, function(c_tmp, i){
-        config.cat_colors[inst_rc]['cat-0'][c_tmp] = colors.get_random_color(i+1);
-      });
+      _.each( config.all_cats[inst_rc], function(inst_cat){
+
+        var names_of_cat = _.uniq(_.pluck(args.network_data[inst_rc+'_nodes'], inst_cat));
+
+        config.cat_colors[inst_rc][inst_cat] = {};
+
+        _.each(names_of_cat, function(c_tmp, i){
+          config.cat_colors[inst_rc][inst_cat][c_tmp] = colors.get_random_color(i+1);
+        });
+
+      } );
 
     }
 
   });
 
+  console.log(config.cat_colors)
 
   // check for category information
   if (config.show_categories.col) {
