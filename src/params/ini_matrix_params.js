@@ -24,8 +24,24 @@ module.exports = function ini_matrix_params(config, viz, network_data){
 
   matrix.opacity_function = config.opacity_scale;
 
+  _.each(['row','col'], function(inst_rc){
+
+    var inst_nodes = network_data[inst_rc+'_nodes'];
+
+    var nodes_names = _.pluck(inst_nodes, 'name');
+    var tmp = nodes_names.sort();
+
+    var alpha_index = _.map(tmp, function(d){
+      return network_data[inst_rc+'_nodes_names'].indexOf(d);
+    });
+
+
+
+  });
+
   var col_nodes = network_data.col_nodes;
   var row_nodes = network_data.row_nodes;
+
 
   var tmp;
   var row_nodes_names = _.pluck(row_nodes, 'name');
@@ -40,26 +56,46 @@ module.exports = function ini_matrix_params(config, viz, network_data){
     return network_data.col_nodes_names.indexOf(d);
   });  
 
-  // Define Orderings
-  matrix.orders = {
-    // ini
-    alpha_row: col_alpha_index,
-    alpha_col: row_alpha_index,
-    // rank
-    rank_row: d3.range(viz.num_col_nodes).sort(function (a, b) {
+  //-------------------------------------------//
+
+  matrix.orders = {};
+
+  matrix.orders['alpha_row'] = col_alpha_index;
+  matrix.orders['alpha_col'] = row_alpha_index;
+  matrix.orders['rank_row'] = d3.range(viz.num_col_nodes).sort(function (a, b) {
       return col_nodes[b].rank - col_nodes[a].rank;
-    }),
-    rank_col: d3.range(viz.num_row_nodes).sort(function (a, b) {
+    });
+  matrix.orders['rank_col'] = d3.range(viz.num_row_nodes).sort(function (a, b) {
       return row_nodes[b].rank - row_nodes[a].rank;
-    }),
-    // clustered
-    clust_row: d3.range(viz.num_col_nodes).sort(function (a, b) {
+    });
+  matrix.orders['clust_row'] = d3.range(viz.num_col_nodes).sort(function (a, b) {
       return col_nodes[b].clust - col_nodes[a].clust;
-    }),
-    clust_col: d3.range(viz.num_row_nodes).sort(function (a, b) {
+    });
+  
+  matrix.orders['clust_col'] = d3.range(viz.num_row_nodes).sort(function (a, b) {
       return row_nodes[b].clust - row_nodes[a].clust;
-    })
-  };
+    });
+
+  // // Define Orderings
+  // matrix.orders = {
+  //   // ini
+  //   alpha_row: col_alpha_index,
+  //   alpha_col: row_alpha_index,
+  //   // rank
+  //   rank_row: d3.range(viz.num_col_nodes).sort(function (a, b) {
+  //     return col_nodes[b].rank - col_nodes[a].rank;
+  //   }),
+  //   rank_col: d3.range(viz.num_row_nodes).sort(function (a, b) {
+  //     return row_nodes[b].rank - row_nodes[a].rank;
+  //   }),
+  //   // clustered
+  //   clust_row: d3.range(viz.num_col_nodes).sort(function (a, b) {
+  //     return col_nodes[b].clust - col_nodes[a].clust;
+  //   }),
+  //   clust_col: d3.range(viz.num_row_nodes).sort(function (a, b) {
+  //     return row_nodes[b].clust - row_nodes[a].clust;
+  //   })
+  // };
 
   // check if rankvar order is available 
   if (_.has(network_data.row_nodes[0],'rankvar') ){
@@ -75,8 +111,7 @@ module.exports = function ini_matrix_params(config, viz, network_data){
   // define class ordering - define on front-end
   if (utils.has(col_nodes[0],'cat-0')){
 
-    // the order should be interpreted as the nth node should be positioned here
-    // in the order
+    // the nth node should be positioned at this place in the array 
 
     var tmp_col_nodes = _.sortBy(col_nodes,'cat-0');
 

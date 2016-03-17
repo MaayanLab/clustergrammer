@@ -179,8 +179,6 @@ module.exports = function(args) {
 
   });
 
-  console.log(config.cat_colors)
-
   // check for category information
   if (config.show_categories.col) {
     // generate a dictionary of columns in each category
