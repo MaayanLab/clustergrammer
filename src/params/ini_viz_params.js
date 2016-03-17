@@ -16,27 +16,21 @@ module.exports = function set_viz_params(config, params){
   viz.tile_click_hlight = config.tile_click_hlight;
   viz.inst_order = config.inst_order;
   viz.expand_button = config.expand_button;
-
-  // the width normal labels is dependent on the length of the labels 
-  var label_scale = d3.scale.linear()
-    // min and max number of characters
-    .domain([5, 15])
-    // min and max of label width 
-    .range([ 85, 120]).clamp('true');
-
+  viz.all_cats = config.all_cats;
+  if (config.force_square === 1) {
+    viz.force_square = 1;
+  }
   viz.viz_svg = viz.viz_wrapper + ' .viz_svg';
   viz.uni_duration = 1000;
   viz.bottom_space = 5;
   viz.run_trans = false;
   viz.duration = 1000;
-
-  // the border of the rects should be 1 over this value of the width/height
-  // of the rects 
-  viz.border_fraction = 55;
-
-  if (config.force_square === 1) {
-    viz.force_square = 1;
+  if (viz.show_dendrogram){
+    config.group_level = {};
   }
+
+  // width is 1 over this value
+  viz.border_fraction = 55;
 
   // superlabel dimensions 
   viz.super_labels = {};
@@ -50,7 +44,7 @@ module.exports = function set_viz_params(config, params){
     viz.super_labels.dim.with = 0;
   }
 
-  // category colorbar 
+  viz.show_categories = {};
   viz.cat_room = {};
   viz.cat_room.symbol_width = 12;
   viz.cat_colors = {};
@@ -58,18 +52,17 @@ module.exports = function set_viz_params(config, params){
   viz.norm_labels = {};
   viz.norm_labels.width = {};
 
-  viz.show_categories = {};
-
-  if (viz.show_dendrogram){
-    config.group_level = {};
-  }
-
   viz.dendro_room = {};
   if (viz.show_dendrogram) {
     viz.dendro_room.symbol_width = 12;
   } else {
     viz.dendro_room.symbol_width = 0;
   }
+
+  // the width of normal labels is dependent on the length of the labels 
+  var label_scale = d3.scale.linear()
+    .domain([5, 15])
+    .range([ 85, 120]).clamp('true');
 
   _.each(['row','col'], function(inst_rc){
 
@@ -97,6 +90,7 @@ module.exports = function set_viz_params(config, params){
 
       viz.cat_colors[inst_rc] = {};
       viz.cat_colors[inst_rc]['cat-0'] = config.cat_colors[inst_rc]['cat-0'];
+
     } else {
       viz.cat_room[inst_rc] = viz.cat_room.symbol_width;
     }

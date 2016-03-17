@@ -173,11 +173,7 @@ module.exports = function(args) {
 
     }
 
-
   });
-
-
-
 
 
   // check for category information
