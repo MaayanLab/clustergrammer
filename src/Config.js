@@ -17,7 +17,7 @@ module.exports = function(args) {
     outline_colors: ['orange','black'],
     highlight_color: '#FFFF00',
     tile_title: false,
-    // Default domain is set to 0, which means that the domain will be set automatically
+    // Default domain is set to 0: the domain will be set automatically
     input_domain: 0,
     opacity_scale: 'linear',
     do_zoom: true,
@@ -37,12 +37,8 @@ module.exports = function(args) {
       right: 0
     },
     ini_expand: false,
-    // Gray border around the visualization
     grey_border_width: 2,
-    // the distance between labels and clustergram
-    // a universal margin for the clustergram
     uni_margin: 4,
-    // force the visualization to be square
     force_square: 0,
     tile_click_hlight: false,
     super_label_scale: 1,

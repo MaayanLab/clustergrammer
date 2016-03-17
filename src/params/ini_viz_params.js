@@ -17,6 +17,7 @@ module.exports = function set_viz_params(config, params){
   viz.inst_order = config.inst_order;
   viz.expand_button = config.expand_button;
   viz.all_cats = config.all_cats;
+  viz.cat_colors = config.cat_colors;
   if (config.force_square === 1) {
     viz.force_square = 1;
   }
@@ -32,7 +33,6 @@ module.exports = function set_viz_params(config, params){
   // width is 1 over this value
   viz.border_fraction = 55;
 
-  // superlabel dimensions 
   viz.super_labels = {};
   viz.super_labels.margin = {};
   viz.super_labels.dim = {};
@@ -47,7 +47,6 @@ module.exports = function set_viz_params(config, params){
   viz.show_categories = {};
   viz.cat_room = {};
   viz.cat_room.symbol_width = 12;
-  viz.cat_colors = {};
 
   viz.norm_labels = {};
   viz.norm_labels.width = {};
@@ -59,7 +58,7 @@ module.exports = function set_viz_params(config, params){
     viz.dendro_room.symbol_width = 0;
   }
 
-  // the width of normal labels is dependent on the length of the labels 
+  // increase the width of the label container based on the label length 
   var label_scale = d3.scale.linear()
     .domain([5, 15])
     .range([ 85, 120]).clamp('true');
@@ -87,9 +86,6 @@ module.exports = function set_viz_params(config, params){
       } else {
         viz.cat_room[inst_rc] = viz.cat_room.symbol_width;
       }
-
-      viz.cat_colors[inst_rc] = {};
-      viz.cat_colors[inst_rc]['cat-0'] = config.cat_colors[inst_rc]['cat-0'];
 
     } else {
       viz.cat_room[inst_rc] = viz.cat_room.symbol_width;
