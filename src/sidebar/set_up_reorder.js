@@ -6,7 +6,7 @@ module.exports = function set_up_reorder(params, sidebar){
     'rankvar':'Rank by Variance',
     'ini':'Initial Order',
     'alpha':'Alphabetically',
-    'cat-0':'Category'
+    'cat_0_index':'Category 1'
   };
 
   var tmp_orders; 
@@ -33,16 +33,18 @@ module.exports = function set_up_reorder(params, sidebar){
 
     var possible_orders = [];
 
-    _.each(tmp_orders, function(d){
+    _.each(tmp_orders, function(inst_name){
 
+      // checking if row row or col 
       if (inst_node.short_name==='row'){
         inst_rc = 'col';
       } else {
         inst_rc = 'row'; 
       }
 
-      if (d.split('_')[1] === inst_rc){
-        possible_orders.push(d.split('_')[0]);
+      if (inst_name.indexOf(inst_rc) > -1){
+        inst_name = inst_name.replace('_row','').replace('_col','');
+        possible_orders.push(inst_name);
       }
       
     });

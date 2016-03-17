@@ -53,81 +53,59 @@ module.exports = function ini_matrix_params(config, viz, network_data){
 
     if (_.has(inst_nodes[0], 'rankvar')){
       possible_orders.push('rankvar');
-    }; 
+    } 
+
+    if (viz.all_cats[inst_rc].length > 0){
+      _.each( viz.all_cats[inst_rc], function(inst_cat){
+        // the index of the category has replaced - with _
+        inst_cat = inst_cat.replace('-','_');
+        possible_orders.push(inst_cat+'_index');
+      });
+    }
+
+    // console.log('-- possible_orders in ini_matrix_params')
+    // console.log(possible_orders)
 
     _.each(possible_orders, function(inst_order){
 
-      matrix.orders[inst_order+'_'+inst_rc] = d3.range(num_nodes)
+      var tmp_order_index = d3.range(num_nodes)
         .sort(function(a,b){
           return inst_nodes[b][inst_order] - inst_nodes[a][inst_order];
-        })
+        });
+
+      matrix.orders[inst_order+'_'+inst_rc] = tmp_order_index;
 
     });
 
-    // matrix.orders['rank_'+inst_rc] = d3.range(num_nodes).sort(function (a, b) {
-    //   return inst_nodes[b].rank - inst_nodes[a].rank;
-    // });
-
   });
 
-  var col_nodes = network_data.col_nodes;
-  var row_nodes = network_data.row_nodes;
+  // var col_nodes = network_data.col_nodes;
 
   //-------------------------------------------//
 
 
+  // // define class ordering - define on front-end
+  // if (utils.has(col_nodes[0],'cat-0')){
 
-  // matrix.orders['rank_row'] = d3.range(viz.num_col_nodes).sort(function (a, b) {
-  //     return col_nodes[b].rank - col_nodes[a].rank;
-  //   });
-  // matrix.orders['rank_col'] = d3.range(viz.num_row_nodes).sort(function (a, b) {
-  //     return row_nodes[b].rank - row_nodes[a].rank;
-  //   });
+  //   // the nth node should be positioned at this place in the array 
+  //   var tmp_col_nodes = _.sortBy(col_nodes,'cat-0');
 
-  // matrix.orders['clust_row'] = d3.range(viz.num_col_nodes).sort(function (a, b) {
-  //     return col_nodes[b].clust - col_nodes[a].clust;
-  //   });
+  //   var ordered_col_names = [];
+  //   for (var i=0; i< tmp_col_nodes.length; i++){
+  //     ordered_col_names.push( tmp_col_nodes[i].name );
+  //   }
 
-  // matrix.orders['clust_col'] = d3.range(viz.num_row_nodes).sort(function (a, b) {
-  //     return row_nodes[b].clust - row_nodes[a].clust;
-  //   });
+  //   var order_col_class = [];
+  //   for (i=0; i< col_nodes.length; i++){
+  //     var inst_col_name = ordered_col_names[i];
+  //     order_col_class.push( _.indexOf( network_data.col_nodes_names, inst_col_name) );
+  //   }
 
-  // // check if rankvar order is available 
-  // if (_.has(network_data.row_nodes[0],'rankvar') ){
-  //   matrix.orders.rankvar_row = d3.range(viz.num_col_nodes).sort(function (a, b) {
-  //     return col_nodes[b].rankvar - col_nodes[a].rankvar;
-  //   });
-
-  //   matrix.orders.rankvar_col = d3.range(viz.num_row_nodes).sort(function (a, b) {
-  //     return row_nodes[b].rankvar - row_nodes[a].rankvar;
-  //   });
+  //   matrix.orders['cat-0_row'] = order_col_class;
   // }
 
-  // define class ordering - define on front-end
-  if (utils.has(col_nodes[0],'cat-0')){
 
-    // the nth node should be positioned at this place in the array 
-    var tmp_col_nodes = _.sortBy(col_nodes,'cat-0');
 
-    var ordered_col_names = [];
-    for (var i=0; i< tmp_col_nodes.length; i++){
-      ordered_col_names.push( tmp_col_nodes[i].name );
-    }
-
-    var order_col_class = [];
-    for (i=0; i< col_nodes.length; i++){
-      var inst_col_name = ordered_col_names[i];
-      order_col_class.push( _.indexOf( network_data.col_nodes_names, inst_col_name) );
-    }
-
-    matrix.orders['cat-0_row'] = order_col_class;
-  }
-
-  if (utils.has(col_nodes[0], 'cl_index')) {
-    matrix.orders['cat-0_row'] = d3.range(viz.num_col_nodes).sort(function (a, b) {
-      return col_nodes[b].cl_index - col_nodes[a].cl_index;
-    });
-  }
 
 
   if (utils.has(network_data, 'all_links')) {
