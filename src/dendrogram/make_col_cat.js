@@ -36,7 +36,7 @@ module.exports = function make_col_cat(params) {
       return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
     });
 
-  // add classification rects 
+  // add category rects 
   d3.selectAll(params.root+' .col_cat_group')
     .each(function() {
 
@@ -46,14 +46,14 @@ module.exports = function make_col_cat(params) {
       _.each( params.viz.all_cats.col, function(inst_cat){
 
         var inst_num = parseInt(inst_cat.split('-')[1], 10);
-
         var cat_rect_class = 'col_cat_rect_'+String(inst_num);
+
         if (d3.select(inst_selection).select('.'+cat_rect_class).empty()){
           cat_rect = d3.select(inst_selection)
             .append('rect')
             .attr('class', cat_rect_class)
             .attr('transform',function(){
-              var inst_shift = (inst_num) * params.viz.cat_room.symbol_width +2;
+              var inst_shift = inst_num * params.viz.cat_room.symbol_width +2;
               return 'translate(0,'+ inst_shift +')';
             });
         } else {
