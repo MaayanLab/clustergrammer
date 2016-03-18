@@ -1,6 +1,6 @@
 var change_groups = require('../dendrogram/change_groups');
 var search = require('../search');
-var reorder = require('../reorder/all_reorder');
+var all_reorder = require('../reorder/all_reorder');
 
 module.exports = function ini_sidebar(params){
 
@@ -50,17 +50,21 @@ module.exports = function ini_sidebar(params){
   });
 
   $(params.root+' .toggle_col_order .btn').off().click(function(evt) {
-    var order_id = $(evt.target).attr('name').split('_')[0];
+    var order_id = $(evt.target).attr('name')
+      .replace('_row','').replace('_col','');
+
     d3.selectAll(params.root+' .toggle_col_order .btn').classed('active',false);
     d3.select(this).classed('active',true);
-    reorder(params, order_id,'col');
+    all_reorder(params, order_id,'col');
   });
 
   $(params.root+' .toggle_row_order .btn').off().click(function(evt) {
-    var order_id = $(evt.target).attr('name').split('_')[0];
+    var order_id = $(evt.target).attr('name')
+      .replace('_row','').replace('_col','');
+
     d3.selectAll(params.root+' .toggle_row_order .btn').classed('active',false);
     d3.select(this).classed('active',true);
-    reorder(params, order_id,'row');
+    all_reorder(params, order_id,'row');
   });
 
 };
