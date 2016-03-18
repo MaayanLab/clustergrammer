@@ -145,6 +145,7 @@ module.exports = function(args) {
   config.all_cats = {};
   config.cat_colors = {};
 
+  var num_colors = 0;
   _.each(['row','col'], function(inst_rc){
 
     config.show_categories[inst_rc] = false;
@@ -170,7 +171,8 @@ module.exports = function(args) {
         config.cat_colors[inst_rc][inst_cat] = {};
 
         _.each(names_of_cat, function(c_tmp, i){
-          config.cat_colors[inst_rc][inst_cat][c_tmp] = colors.get_random_color(i+1);
+          config.cat_colors[inst_rc][inst_cat][c_tmp] = colors.get_random_color(i+2+num_colors);
+          num_colors = num_colors + 1;
         });
 
       } );
