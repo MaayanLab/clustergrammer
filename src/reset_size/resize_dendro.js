@@ -77,14 +77,18 @@ module.exports = function resize_dendro(params, svg_group, delay_info=false){
         return inst_offset + 'px';
       });
 
-    dendro_group
-      .selectAll('.col_cat_rect')
-      .attr('width', params.viz.x_scale.rangeBand())
-      .attr('height', function() {
-        var inst_height = params.viz.cat_room.col - 1;
-        return inst_height;
-      });
+    var num_col_cats = params.viz.all_cats.col.length;
 
+    for (var i=0; i<num_col_cats; i++){
+      var inst_class = '.col_cat_rect_'+String(i);
+      dendro_group
+        .selectAll(inst_class)
+        .attr('width', params.viz.x_scale.rangeBand())
+        .attr('height', function() {
+          var inst_height = params.viz.cat_room.symbol_width - 1;
+          return inst_height;
+        });
+    }
 
   // position row_dendro_outer_container
   var x_offset = params.viz.clust.margin.left + params.viz.clust.dim.width;

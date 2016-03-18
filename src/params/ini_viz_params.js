@@ -81,10 +81,12 @@ module.exports = function set_viz_params(config, params){
 
     if (viz.show_categories[inst_rc]){
 
+      var num_cats = viz.all_cats[inst_rc].length;
+
       if (inst_rc === 'row'){
-        viz.cat_room[inst_rc] = 2 * viz.cat_room.symbol_width;
+        viz.cat_room[inst_rc] = (num_cats+1) * viz.cat_room.symbol_width;
       } else {
-        viz.cat_room[inst_rc] = viz.cat_room.symbol_width;
+        viz.cat_room[inst_rc] = num_cats * viz.cat_room.symbol_width;
       }
 
     } else {

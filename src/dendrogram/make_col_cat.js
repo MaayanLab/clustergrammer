@@ -46,21 +46,20 @@ module.exports = function make_col_cat(params) {
       _.each( params.viz.all_cats.col, function(inst_cat){
 
         var inst_num = parseInt(inst_cat.split('-')[1], 10);
-        console.log( 'outside inst_num'+ String(inst_num) +'\n\n')
 
-        // if (d3.select(inst_selection).select('.col_cat_rect').empty()){
+        var cat_rect_class = 'col_cat_rect_'+String(inst_num);
+        if (d3.select(inst_selection).select('.'+cat_rect_class).empty()){
           cat_rect = d3.select(inst_selection)
             .append('rect')
-            .attr('class', 'col_cat_rect')
-            .attr('transform',function(d){
-              var inst_shift = (inst_num)*7;
-              console.log('num '+String(inst_num)+' shift '+String(inst_shift))
+            .attr('class', cat_rect_class)
+            .attr('transform',function(){
+              var inst_shift = (inst_num) * params.viz.cat_room.symbol_width +2;
               return 'translate(0,'+ inst_shift +')';
             });
-        // } else {
-        //   cat_rect = d3.select(inst_selection)
-        //     .select('.col_cat_rect');
-        // }
+        } else {
+          cat_rect = d3.select(inst_selection)
+            .select('.'+cat_rect_class);
+        }
 
         cat_rect
           .attr('width', params.viz.x_scale.rangeBand())
