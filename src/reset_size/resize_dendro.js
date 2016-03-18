@@ -32,7 +32,7 @@ module.exports = function resize_dendro(params, svg_group, delay_info=false){
         });
 
       svg_group
-        .selectAll('.col_group_group')
+        .selectAll('.col_dendro_group')
         // data binding needed for loss/gain of columns
         .data(col_nodes, function(d){return d.name;})
         .transition().delay(delays.update).duration(duration)

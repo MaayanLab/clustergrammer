@@ -24,7 +24,7 @@ module.exports = function make_col_cat(params) {
       });
   }
   
-  // append groups - each will hold a classification rect
+  // append groups - each will hold classification rects 
   d3.select(params.root+' .col_cat_container')
     .selectAll('g')
     .data(params.network_data.col_nodes, function(d){ return d.name; })
@@ -36,36 +36,47 @@ module.exports = function make_col_cat(params) {
       return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
     });
 
+  // add classification rects 
   d3.selectAll(params.root+' .col_cat_group')
     .each(function() {
 
+      var inst_selection = this;
       var cat_rect;
-      if (d3.select(this).select('.col_cat_rect').empty()){
-        cat_rect = d3.select(this)
-          .append('rect')
-          .attr('class', 'col_cat_rect');
-      } else {
-        cat_rect = d3.select(this)
-          .select('.col_cat_rect');
-      }
 
-      cat_rect
-        .attr('width', params.viz.x_scale.rangeBand())
-        .attr('height', function() {
-          var inst_height = params.viz.cat_room.col - 1;
-          return inst_height;
-        })
-        .style('fill', function(d) {
-          return params.viz.cat_colors.col['cat-0'][d['cat-0']];
-        });
+      _.each( params.viz.all_cats.col, function(inst_cat){
 
-      // if (typeof params.click_group === 'function'){
-      //   cat_rect
-      //     .on('click',function(d){
-      //       var group_nodes_list = get_inst_group(params, 'col', d);
-      //       params.click_group('col', group_nodes_list);
-      //     });
-      // }
+        var inst_num = parseInt(inst_cat.split('-')[1], 10);
+        console.log( 'outside inst_num'+ String(inst_num) +'\n\n')
+
+        // if (d3.select(inst_selection).select('.col_cat_rect').empty()){
+          cat_rect = d3.select(inst_selection)
+            .append('rect')
+            .attr('class', 'col_cat_rect')
+            .attr('transform',function(d){
+              var inst_shift = (inst_num)*7;
+              console.log('num '+String(inst_num)+' shift '+String(inst_shift))
+              return 'translate(0,'+ inst_shift +')';
+            });
+        // } else {
+        //   cat_rect = d3.select(inst_selection)
+        //     .select('.col_cat_rect');
+        // }
+
+        cat_rect
+          .attr('width', params.viz.x_scale.rangeBand())
+          .attr('height', function() {
+            var inst_height = params.viz.cat_room.col - 1;
+            inst_height = inst_height/2;
+            return inst_height;
+          })
+          .style('fill', function(d) {
+            return params.viz.cat_colors.col[inst_cat][d[inst_cat]];
+          });
+
+
+
+      });
+
 
   });
 };

@@ -1,6 +1,4 @@
-var utils = require('../utils');
 var get_inst_group = require('./get_inst_group');
-var build_color_groups = require('./build_color_groups');
 
 module.exports = function make_row_cat(params) {
 
@@ -72,8 +70,6 @@ module.exports = function make_row_cat(params) {
     d3.selectAll(params.root+' .row_cat_group')
       .each(function() {
     
-        var inst_level = params.group_level.row;
-
         var cat_rect;
         if (d3.select(this).select('.row_cat_rect').empty()){
           cat_rect = d3.select(this)
