@@ -2,11 +2,12 @@
 var rand_colors;
 
 // generate random colors
-var tmp0 = ['#000000', '#FF34FF', '#FFFF00', '#FF4A46'];
-var tmp1 = d3.scale.category20().range().reverse();
+// var tmp0 = ['#000000', '#FF34FF', '#FFFF00', '#FF4A46'];
+var tmp1 = d3.scale.category20().range();
 var tmp2 = d3.scale.category20b().range();
 var tmp3 = d3.scale.category20c().range();
-rand_colors = tmp0.concat(tmp1).concat(tmp2).concat(tmp3);
+// rand_colors = tmp1.concat(tmp2).concat(tmp3);
+rand_colors = tmp1.concat(tmp3).concat(tmp3);
 
 function get_default_color() {
   //return rand_colors[0];
