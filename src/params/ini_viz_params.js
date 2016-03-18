@@ -82,20 +82,28 @@ module.exports = function set_viz_params(config, params){
       viz.dendro_room[inst_rc] = viz.dendro_room.symbol_width + viz.uni_margin;
     }
 
-    if (viz.show_categories[inst_rc]){
+    var num_cats = viz.all_cats[inst_rc].length;
 
-      var num_cats = viz.all_cats[inst_rc].length;
+    if (viz.show_categories[inst_rc]){
 
       separtion_room = (num_cats-1)*viz.cat_room.separation;
 
+      var adjusted_cats;
       if (inst_rc === 'row'){
-        viz.cat_room[inst_rc] = (num_cats+1) * viz.cat_room.symbol_width + separtion_room;
+        adjusted_cats = num_cats + 1;
       } else {
-        viz.cat_room[inst_rc] = num_cats * viz.cat_room.symbol_width + separtion_room;
+        adjusted_cats = num_cats;
       }
 
+      viz.cat_room[inst_rc] = adjusted_cats * viz.cat_room.symbol_width + separtion_room;
+
     } else {
-      viz.cat_room[inst_rc] = viz.cat_room.symbol_width;
+      // no categories 
+      if (inst_rc == 'row'){
+        viz.cat_room[inst_rc] = viz.cat_room.symbol_width;
+      } else {
+        viz.cat_room[inst_rc] = 0;
+      }
     }
 
   }); 
