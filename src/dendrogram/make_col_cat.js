@@ -24,6 +24,19 @@ module.exports = function make_col_cat(params) {
       });
   }
   
+
+  // d3-tooltip 
+  var cat_tip = d3.tip()
+    .attr('class', 'd3-tip')
+    .direction('s')
+    .offset([5,0])
+    .style('display','block')
+    .html(function(d){
+      var inst_cat = d3.select(this).attr('cat');
+      return 'category: ' + d[inst_cat];
+    });
+
+
   // append groups - each will hold classification rects 
   d3.select(params.root+' .col_cat_container')
     .selectAll('g')
@@ -34,7 +47,8 @@ module.exports = function make_col_cat(params) {
     .attr('transform', function(d) {
       var inst_index = _.indexOf(params.network_data.col_nodes_names, d.name);
       return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
-    });
+    })
+    .call(cat_tip);
 
   // add category rects 
   d3.selectAll(params.root+' .col_cat_group')
@@ -52,6 +66,7 @@ module.exports = function make_col_cat(params) {
           cat_rect = d3.select(inst_selection)
             .append('rect')
             .attr('class', cat_rect_class)
+            .attr('cat', inst_cat)
             .attr('transform',function(){
               var cat_room = params.viz.cat_room.symbol_width + params.viz.cat_room.separation;
               var inst_shift = inst_num * cat_room;
@@ -67,9 +82,9 @@ module.exports = function make_col_cat(params) {
           .attr('height', params.viz.cat_room.symbol_width)
           .style('fill', function(d) {
             return params.viz.cat_colors.col[inst_cat][d[inst_cat]];
-          });
-
-
+          })
+          .on('mouseover', cat_tip.show)
+          .on('mouseout', cat_tip.hide);
 
       });
 
