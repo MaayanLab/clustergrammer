@@ -52,6 +52,22 @@ module.exports = function make_row_cat(params) {
       return 'translate(0, ' + params.viz.y_scale(inst_index) + ')';
     });
 
+  // add row triangles
+  row_cat_group
+    .append('path')
+    .attr('d', function() {
+      var origin_x = params.viz.cat_room.symbol_width - 1;
+      var origin_y = 0;
+      var mid_x = 1;
+      var mid_y = params.viz.y_scale.rangeBand() / 2;
+      var final_x = params.viz.cat_room.symbol_width - 1;
+      var final_y = params.viz.y_scale.rangeBand();
+      var output_string = 'M ' + origin_x + ',' + origin_y + ' L ' +
+        mid_x + ',' + mid_y + ', L ' + final_x + ',' + final_y + ' Z';
+      return output_string;
+    })
+    .attr('fill', '#eee');
+
   if (params.viz.show_categories.row){
     d3.selectAll(params.root+' .row_cat_group')
       .each(function() {
@@ -75,13 +91,10 @@ module.exports = function make_row_cat(params) {
           })
           .attr('height', params.viz.y_scale.rangeBand())
           .style('fill', function(d) {
-            if (utils.has(d,'group')){
-              var group_colors = build_color_groups(params);
-              var inst_color = group_colors[d.group[inst_level]];
-            } else {
-              inst_color = '#eee';
-            }
+
+            var inst_color = params.viz.cat_colors.row['cat-0'][d['cat-0']];
             return inst_color;
+
           })
           .attr('x', function() {
             var inst_offset = params.viz.cat_room.symbol_width + 1;
@@ -100,43 +113,5 @@ module.exports = function make_row_cat(params) {
       });
     }
 
-  // add row triangles
-  row_cat_group
-    .append('path')
-    .attr('d', function() {
-      var origin_x = params.viz.cat_room.symbol_width - 1;
-      var origin_y = 0;
-      var mid_x = 1;
-      var mid_y = params.viz.y_scale.rangeBand() / 2;
-      var final_x = params.viz.cat_room.symbol_width - 1;
-      var final_y = params.viz.y_scale.rangeBand();
-      var output_string = 'M ' + origin_x + ',' + origin_y + ' L ' +
-        mid_x + ',' + mid_y + ', L ' + final_x + ',' + final_y + ' Z';
-      return output_string;
-    })
-    .attr('fill', '#eee');
-
-
-  // // change the size of the highlighting rects
-  // d3.selectAll(params.root+' .col_label_group')
-  //   .each(function() {
-  //     var bbox = d3.select(this)
-  //       .select('text')[0][0]
-  //       .getBBox();
-
-  //     d3.select(this)
-  //       .select('rect')
-  //       .attr('width', bbox.width * 1.1)
-  //       .attr('height', 0.67*params.viz.rect_width)
-  //       .style('fill', function(d){
-  //         var inst_color = 'white';
-  //         // if (params.viz.show_categories){
-  //         //   inst_color = params.viz.cat_colors.col['cat-0'][d.cl];
-  //         // }
-  //         return inst_color;
-  //       })
-  //       .style('opacity', 0.30);
-
-  //   }); 
 
 };

@@ -34,7 +34,6 @@ module.exports = function(params, inst_order, tmp_row_col) {
 
   } else if (row_col == 'col') {
 
-    console.log(params.viz.inst_order.col)
     params.viz.y_scale
       .domain( params.matrix.orders[ params.viz.inst_order.col + '_col' ] );
 
