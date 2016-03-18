@@ -90,7 +90,7 @@ module.exports = function make_row_cat(params) {
 
           cat_rect
             .attr('width', function() {
-              var inst_width = params.viz.cat_room.symbol_width - 1;
+              var inst_width = params.viz.cat_room.symbol_width;
               return inst_width + 'px';
             })
             .attr('height', params.viz.y_scale.rangeBand())
@@ -99,11 +99,12 @@ module.exports = function make_row_cat(params) {
               return inst_color;
             })
             .attr('x', function() {
-              var inst_offset = params.viz.cat_room.symbol_width + 1;
+              var inst_offset = params.viz.cat_room.symbol_width + params.viz.uni_margin/2 ;
               return inst_offset + 'px';
             })
             .attr('transform',function(){
-              var inst_shift = inst_num * params.viz.cat_room.symbol_width +2;
+              var cat_room = (params.viz.cat_room.symbol_width + params.viz.cat_room.separation);
+              var inst_shift = inst_num * cat_room ;
               return 'translate('+inst_shift+',0)';
             });
 

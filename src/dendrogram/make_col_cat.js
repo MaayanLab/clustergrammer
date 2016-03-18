@@ -53,7 +53,8 @@ module.exports = function make_col_cat(params) {
             .append('rect')
             .attr('class', cat_rect_class)
             .attr('transform',function(){
-              var inst_shift = inst_num * params.viz.cat_room.symbol_width +2;
+              var cat_room = params.viz.cat_room.symbol_width + params.viz.cat_room.separation;
+              var inst_shift = inst_num * cat_room;
               return 'translate(0,'+ inst_shift +')';
             });
         } else {
@@ -64,8 +65,9 @@ module.exports = function make_col_cat(params) {
         cat_rect
           .attr('width', params.viz.x_scale.rangeBand())
           .attr('height', function() {
-            var inst_height = params.viz.cat_room.col - 1;
-            inst_height = inst_height/2;
+            var inst_height = params.viz.cat_room.symbol_width;
+            // inst_height = inst_height/2;nsform
+
             return inst_height;
           })
           .style('fill', function(d) {

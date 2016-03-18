@@ -10,7 +10,6 @@ module.exports = function set_viz_params(config, params){
   viz.outer_margins = config.outer_margins;
   viz.outer_margins_expand = config.outer_margins_expand;
   viz.expand = config.ini_expand;
-  viz.uni_margin = config.uni_margin;
   viz.grey_border_width = config.grey_border_width;
   viz.show_dendrogram = config.show_dendrogram;
   viz.tile_click_hlight = config.tile_click_hlight;
@@ -32,6 +31,7 @@ module.exports = function set_viz_params(config, params){
 
   // width is 1 over this value
   viz.border_fraction = 55;
+  viz.uni_margin = 5;
 
   viz.super_labels = {};
   viz.super_labels.margin = {};
@@ -47,6 +47,7 @@ module.exports = function set_viz_params(config, params){
   viz.show_categories = {};
   viz.cat_room = {};
   viz.cat_room.symbol_width = 12;
+  viz.cat_room.separation = 3;
 
   viz.norm_labels = {};
   viz.norm_labels.width = {};
@@ -57,6 +58,8 @@ module.exports = function set_viz_params(config, params){
   } else {
     viz.dendro_room.symbol_width = 0;
   }
+
+  var separtion_room;
 
   // increase the width of the label container based on the label length 
   var label_scale = d3.scale.linear()
@@ -83,10 +86,12 @@ module.exports = function set_viz_params(config, params){
 
       var num_cats = viz.all_cats[inst_rc].length;
 
+      separtion_room = (num_cats-1)*viz.cat_room.separation;
+
       if (inst_rc === 'row'){
-        viz.cat_room[inst_rc] = (num_cats+1) * viz.cat_room.symbol_width;
+        viz.cat_room[inst_rc] = (num_cats+1) * viz.cat_room.symbol_width + separtion_room;
       } else {
-        viz.cat_room[inst_rc] = num_cats * viz.cat_room.symbol_width;
+        viz.cat_room[inst_rc] = num_cats * viz.cat_room.symbol_width + separtion_room;
       }
 
     } else {

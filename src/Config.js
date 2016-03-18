@@ -38,7 +38,6 @@ module.exports = function(args) {
     },
     ini_expand: false,
     grey_border_width: 2,
-    uni_margin: 4,
     force_square: 0,
     tile_click_hlight: false,
     super_label_scale: 1,
