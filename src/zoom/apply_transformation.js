@@ -82,7 +82,7 @@ module.exports = function(params, trans_x, trans_y, zoom_x, zoom_y) {
     zoom_y + ')');
 
   d3.select(params.root+' .row_dendro_container')
-    .attr('transform', 'translate(' + [params.viz.uni_margin, trans_y] + ') '+
+    .attr('transform', 'translate(' + [params.viz.uni_margin/2, trans_y] + ') '+
       'scale( '+zoom_x+',' + zoom_y + ')');    
 
   // transform col labels
@@ -96,7 +96,7 @@ module.exports = function(params, trans_x, trans_y, zoom_x, zoom_y) {
     .attr('transform', 'translate('+[trans_x, 0]+') scale(' +zoom_x+ ',1)');
 
   d3.select(params.root+' .col_dendro_container')
-    .attr('transform', 'translate('+[trans_x, params.viz.uni_margin]+') scale(' +zoom_x+ ',1)');
+    .attr('transform', 'translate('+[trans_x, params.viz.uni_margin/2]+') scale(' +zoom_x+ ',1)');
 
 
   // the amount by which the clustergram has shifted down, the col dendrogram will 

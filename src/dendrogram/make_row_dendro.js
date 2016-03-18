@@ -26,7 +26,7 @@ module.exports = function make_row_dendro(params) {
     d3.select(params.root+' .row_dendro_outer_container')
       .append('g')
       .attr('class', 'row_dendro_container')
-      .attr('transform', 'translate('+params.viz.uni_margin+',0)');
+      .attr('transform', 'translate('+params.viz.uni_margin/2+',0)');
 
   } else {
     d3.select(params.root+' .viz_svg')

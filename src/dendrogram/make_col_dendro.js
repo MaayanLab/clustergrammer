@@ -25,7 +25,7 @@ module.exports = function make_col_dendro(params) {
     d3.select(params.root+' .col_dendro_outer_container')
       .append('g')
       .attr('class', 'col_dendro_container')
-      .attr('transform', 'translate(0,'+params.viz.uni_margin+')');
+      .attr('transform', 'translate(0,'+params.viz.uni_margin/2+')');
 
     d3.select(params.root+' .col_dendro_outer_container')
       .append('rect')
