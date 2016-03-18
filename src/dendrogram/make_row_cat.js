@@ -46,7 +46,7 @@ module.exports = function make_row_cat(params) {
     .html(function(d){
       var inst_cat = d3.select(this).attr('cat');
       return 'category: ' + d[inst_cat];
-    })
+    });
 
   // groups that hold classification triangle and colorbar rect
   var row_cat_group = d3.select(params.root+' .row_cat_container')
@@ -59,7 +59,7 @@ module.exports = function make_row_cat(params) {
       var inst_index = _.indexOf(params.network_data.row_nodes_names, d.name);
       return 'translate(0, ' + params.viz.y_scale(inst_index) + ')';
     })
-    .call(cat_tip)
+    // .call(cat_tip);
 
   // add row triangles
   row_cat_group
@@ -117,8 +117,8 @@ module.exports = function make_row_cat(params) {
               var inst_shift = inst_num * cat_room ;
               return 'translate('+inst_shift+',0)';
             })
-            .on('mouseover', cat_tip.show)
-            .on('mouseout', cat_tip.hide);
+            // .on('mouseover', cat_tip.show)
+            // .on('mouseout', cat_tip.hide);
 
         });
 
