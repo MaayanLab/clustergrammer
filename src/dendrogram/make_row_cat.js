@@ -37,6 +37,17 @@ module.exports = function make_row_cat(params) {
       });
   }
 
+  // d3-tooltip 
+  var cat_tip = d3.tip()
+    .attr('class','d3-tip')
+    .direction('e')
+    .offset([5,0])
+    .style('display','block')
+    .html(function(d){
+      var inst_cat = d3.select(this).attr('cat');
+      return 'category: ' + d[inst_cat];
+    })
+
   // groups that hold classification triangle and colorbar rect
   var row_cat_group = d3.select(params.root+' .row_cat_container')
     .selectAll('g')
@@ -47,7 +58,8 @@ module.exports = function make_row_cat(params) {
     .attr('transform', function(d) {
       var inst_index = _.indexOf(params.network_data.row_nodes_names, d.name);
       return 'translate(0, ' + params.viz.y_scale(inst_index) + ')';
-    });
+    })
+    .call(cat_tip)
 
   // add row triangles
   row_cat_group
@@ -82,7 +94,8 @@ module.exports = function make_row_cat(params) {
           if (d3.select(inst_selection).select('.'+cat_rect_class).empty()){
             cat_rect = d3.select(inst_selection)
               .append('rect')
-              .attr('class', cat_rect_class);
+              .attr('class', cat_rect_class)
+              .attr('cat', inst_cat);
           } else {
             cat_rect = d3.select(inst_selection)
               .select('.'+cat_rect_class);
@@ -103,7 +116,9 @@ module.exports = function make_row_cat(params) {
               var cat_room = (params.viz.cat_room.symbol_width + params.viz.cat_room.separation);
               var inst_shift = inst_num * cat_room ;
               return 'translate('+inst_shift+',0)';
-            });
+            })
+            .on('mouseover', cat_tip.show)
+            .on('mouseout', cat_tip.hide);
 
         });
 
