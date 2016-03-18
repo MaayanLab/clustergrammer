@@ -18,77 +18,74 @@ module.exports = function resize_dendro(params, svg_group, delay_info=false){
   var dendro_group;
   if (delays.run_transition){
 
-      dendro_group = svg_group
-        .transition().delay(delays.update).duration(duration);
+    dendro_group = svg_group
+      .transition().delay(delays.update).duration(duration);
 
-      svg_group
-        .selectAll('.col_cat_group')
-        // data binding needed for loss/gain of columns
-        .data(col_nodes, function(d){return d.name;})
-        .transition().delay(delays.update).duration(duration)
-        .attr('transform', function(d) {
-          var inst_index = _.indexOf(col_nodes_names, d.name);
-          return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
-        });
-
-      svg_group
-        .selectAll('.col_dendro_group')
-        // data binding needed for loss/gain of columns
-        .data(col_nodes, function(d){return d.name;})
-        .transition().delay(delays.update).duration(duration)
-        .attr('transform', function(d) {
-          var inst_index = _.indexOf(col_nodes_names, d.name);
-          return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
-        });        
-
-    } else {
-
-      dendro_group = svg_group;
-
-      svg_group
-        .selectAll('.col_cat_group')
-        // data binding needed for loss/gain of columns
-        .data(col_nodes, function(d){return d.name;})
-        .attr('transform', function(d) {
-          var inst_index = _.indexOf(col_nodes_names, d.name);
-          return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
-        });
-
-      d3.select(params.root)
-        .selectAll('.col_dendro_group')
-        // data binding needed for loss/gain of columns
-        .data(col_nodes, function(d){return d.name;})
-        .attr('transform', function(d) {
-          var inst_index = _.indexOf(col_nodes_names, d.name);
-          return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
-        });        
-
-    }
-
-    dendro_group
-      .selectAll('.row_cat_rect')
-      .attr('width', function() {
-        var inst_width = params.viz.cat_room.symbol_width - 1;
-        return inst_width + 'px';
-      })
-      .attr('height', params.viz.y_scale.rangeBand())
-      .attr('x', function() {
-        var inst_offset = params.viz.cat_room.symbol_width + 1;
-        return inst_offset + 'px';
+    svg_group
+      .selectAll('.col_cat_group')
+      // data binding needed for loss/gain of columns
+      .data(col_nodes, function(d){return d.name;})
+      .transition().delay(delays.update).duration(duration)
+      .attr('transform', function(d) {
+        var inst_index = _.indexOf(col_nodes_names, d.name);
+        return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
       });
 
-    var num_col_cats = params.viz.all_cats.col.length;
+    svg_group
+      .selectAll('.col_dendro_group')
+      // data binding needed for loss/gain of columns
+      .data(col_nodes, function(d){return d.name;})
+      .transition().delay(delays.update).duration(duration)
+      .attr('transform', function(d) {
+        var inst_index = _.indexOf(col_nodes_names, d.name);
+        return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
+      });        
 
-    for (var i=0; i<num_col_cats; i++){
-      var inst_class = '.col_cat_rect_'+String(i);
-      dendro_group
-        .selectAll(inst_class)
-        .attr('width', params.viz.x_scale.rangeBand())
-        .attr('height', function() {
-          var inst_height = params.viz.cat_room.symbol_width - 1;
-          return inst_height;
-        });
+  } else {
+
+    dendro_group = svg_group;
+
+    svg_group
+      .selectAll('.col_cat_group')
+      // data binding needed for loss/gain of columns
+      .data(col_nodes, function(d){return d.name;})
+      .attr('transform', function(d) {
+        var inst_index = _.indexOf(col_nodes_names, d.name);
+        return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
+      });
+
+    d3.select(params.root)
+      .selectAll('.col_dendro_group')
+      // data binding needed for loss/gain of columns
+      .data(col_nodes, function(d){return d.name;})
+      .attr('transform', function(d) {
+        var inst_index = _.indexOf(col_nodes_names, d.name);
+        return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
+      });        
+
+  }
+
+  var i;
+  var inst_class;
+
+  _.each(['row','col'], function(inst_rc){
+
+    var num_cats = params.viz.all_cats[inst_rc].length;
+
+    for (i=0; i<num_cats; i++){
+      inst_class = '.'+inst_rc+'_cat_rect_'+String(i);
+
+      if (inst_rc === 'row'){
+        dendro_group
+          .selectAll(inst_class)
+          .attr('height', params.viz.y_scale.rangeBand());
+      } else {
+        dendro_group
+          .selectAll(inst_class)
+          .attr('width', params.viz.x_scale.rangeBand());
+      }
     }
+  });
 
   // position row_dendro_outer_container
   var x_offset = params.viz.clust.margin.left + params.viz.clust.dim.width;

@@ -64,12 +64,7 @@ module.exports = function make_col_cat(params) {
 
         cat_rect
           .attr('width', params.viz.x_scale.rangeBand())
-          .attr('height', function() {
-            var inst_height = params.viz.cat_room.symbol_width;
-            // inst_height = inst_height/2;nsform
-
-            return inst_height;
-          })
+          .attr('height', params.viz.cat_room.symbol_width)
           .style('fill', function(d) {
             return params.viz.cat_colors.col[inst_cat][d[inst_cat]];
           });

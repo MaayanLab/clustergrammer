@@ -89,10 +89,7 @@ module.exports = function make_row_cat(params) {
           }
 
           cat_rect
-            .attr('width', function() {
-              var inst_width = params.viz.cat_room.symbol_width;
-              return inst_width + 'px';
-            })
+            .attr('width', params.viz.cat_room.symbol_width)
             .attr('height', params.viz.y_scale.rangeBand())
             .style('fill', function(d) {
               var inst_color = params.viz.cat_colors.row[inst_cat][d[inst_cat]];
