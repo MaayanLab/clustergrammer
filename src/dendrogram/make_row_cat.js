@@ -58,8 +58,11 @@ module.exports = function make_row_cat(params) {
     .attr('transform', function(d) {
       var inst_index = _.indexOf(params.network_data.row_nodes_names, d.name);
       return 'translate(0, ' + params.viz.y_scale(inst_index) + ')';
-    })
-    // .call(cat_tip);
+    });
+
+  d3.select(params.root+' .row_cat_container')
+    .selectAll('.row_cat_group')
+    .call(cat_tip);
 
   // add row triangles
   row_cat_group
@@ -117,8 +120,8 @@ module.exports = function make_row_cat(params) {
               var inst_shift = inst_num * cat_room ;
               return 'translate('+inst_shift+',0)';
             })
-            // .on('mouseover', cat_tip.show)
-            // .on('mouseout', cat_tip.hide);
+            .on('mouseover', cat_tip.show)
+            .on('mouseout', cat_tip.hide);
 
         });
 
