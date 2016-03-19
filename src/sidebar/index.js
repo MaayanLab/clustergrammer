@@ -10,13 +10,17 @@ var set_up_reorder = require('./set_up_reorder');
  */
 module.exports = function sidebar(config, params) {
 
+  var sidebar_height = window.innerHeight - 20;
+
   var sidebar = d3
     .select(params.root)
     .append('div')
     .attr('class', 'sidebar_wrapper' )
     .style('margin-left','10px')
     .style('float', 'left')
-    .style('width','180px');
+    .style('width','180px')
+    .style('height', sidebar_height+'px')
+    .style('overflow-y','scroll');
 
   set_up_reorder(params, sidebar);
 
@@ -50,68 +54,80 @@ module.exports = function sidebar(config, params) {
   
   ini_sidebar(params);
 
+  var long_name;
 
-  if (params.show_categories.col){
+  _.each(['row','col'], function(inst_rc){
 
-    var num_cats = params.viz.all_cats.col.length;
+    if (params.show_categories[inst_rc]){
 
-    _.each( d3.range(num_cats).reverse(), function(i){
+      var num_cats = params.viz.all_cats[inst_rc].length;
 
-      var inst_cat = params.viz.all_cats.col[i];
+      _.each( d3.range(num_cats).reverse(), function(i){
 
-      var key_cat = d3.select(params.root+' .sidebar_wrapper')
-        .append('div')
-        .classed('key_cat_col',true)
-        .style('margin-top','10px')
-        .style('padding','5px')
-        .style('border','1px solid #DEDEDE')
-        .style('margin-bottom','10px')
-        .style('overflow','scroll')
-        .style('max-height','200px');
+        var inst_cat = params.viz.all_cats[inst_rc][i];
 
-      var inst_num = parseInt(inst_cat.split('-')[1],10)+1;
-
-      key_cat
-        .append('p')
-        .text('Column Category ' + String(inst_num))
-        .style('margin-bottom','2px');
-
-      var all_cats = _.keys(params.viz.cat_colors.col[inst_cat]);
-
-      all_cats = all_cats.sort();
-
-      _.each(all_cats, function(inst_name){
-
-        var inst_group = key_cat
-          .append('g')
-          .attr('class','category_section');
-
-        inst_group
+        var key_cat = d3.select(params.root+' .sidebar_wrapper')
           .append('div')
-          .attr('class','category_color')
-          .style('width','15px')
-          .style('height','15px')
-          .style('float','left')
-          .style('margin-right','5px')
-          .style('margin-top','2px')
-          .style('background-color',function(){
-            var inst_color = params.viz.cat_colors.col[inst_cat][inst_name];
-            return inst_color;
-          });
+          .classed('key_cat_'+inst_rc,true)
+          .style('margin-top','10px')
+          .style('padding','5px')
+          .style('border','1px solid #DEDEDE')
+          .style('margin-bottom','10px')
+          .style('overflow','scroll')
+          .style('max-height','120px');
 
-        inst_group
+        var inst_num = parseInt(inst_cat.split('-')[1],10)+1;
+
+        if (inst_rc === 'row'){
+          long_name = 'Row';
+        } else {
+          long_name = 'Column';
+        }
+
+        key_cat
           .append('p')
-          .style('margin-bottom','2px')
-          .append('text')
-          .text(inst_name)
-          .attr('class','noselect')
-          .style('cursor','pointer');
+          .text(long_name+' Category ' + String(inst_num))
+          .style('margin-bottom','2px');
+
+        var all_cats = _.keys(params.viz.cat_colors[inst_rc][inst_cat]);
+
+        all_cats = all_cats.sort();
+
+        _.each(all_cats, function(inst_name){
+
+          var inst_group = key_cat
+            .append('g')
+            .attr('class','category_section');
+
+          inst_group
+            .append('div')
+            .attr('class','category_color')
+            .style('width','15px')
+            .style('height','15px')
+            .style('float','left')
+            .style('margin-right','5px')
+            .style('margin-top','2px')
+            .style('background-color',function(){
+              var inst_color = params.viz.cat_colors[inst_rc][inst_cat][inst_name];
+              return inst_color;
+            })
+            .style('opacity', params.viz.cat_colors.opacity);
+
+          inst_group
+            .append('p')
+            .style('margin-bottom','2px')
+            .append('text')
+            .text(inst_name)
+            .attr('class','noselect')
+            .style('cursor','pointer');
+
+        });
 
       });
 
-    });
+    }
 
-  }
+  });
 
 
   // function category_key_click(){

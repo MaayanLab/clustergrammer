@@ -49,6 +49,8 @@ module.exports = function set_viz_params(config, params){
   viz.cat_room.symbol_width = 12;
   viz.cat_room.separation = 3;
 
+  viz.cat_colors.opacity = 0.6;
+
   viz.norm_labels = {};
   viz.norm_labels.width = {};
 

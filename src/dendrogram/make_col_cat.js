@@ -86,7 +86,7 @@ module.exports = function make_col_cat(params) {
           .style('fill', function(d) {
             return params.viz.cat_colors.col[inst_cat][d[inst_cat]];
           })
-          .style('opacity',0.6)
+          .style('opacity', params.viz.cat_colors.opacity)
           .on('mouseover', cat_tip.show)
           .on('mouseout', cat_tip.hide);
 
