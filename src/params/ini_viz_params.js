@@ -56,7 +56,7 @@ module.exports = function set_viz_params(config, params){
 
   viz.dendro_room = {};
   if (viz.show_dendrogram) {
-    viz.dendro_room.symbol_width = 12;
+    viz.dendro_room.symbol_width = 10;
   } else {
     viz.dendro_room.symbol_width = 0;
   }
