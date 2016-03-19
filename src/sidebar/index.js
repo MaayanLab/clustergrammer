@@ -53,53 +53,61 @@ module.exports = function sidebar(config, params) {
 
   if (params.show_categories.col){
 
-    // set up column category key 
-    var key_cat_col = d3.select(params.root+' .sidebar_wrapper')
-      .append('div')
-      .classed('key_cat_col',true)
-      .style('margin-top','10px')
-      .style('padding','5px')
-      .style('border','1px solid #DEDEDE')
-      .style('margin-bottom','10px')
-      .style('overflow','scroll')
-      .style('max-height','200px');
+    var num_cats = params.viz.all_cats.col.length;
 
-    key_cat_col
-      .append('p')
-      .text('Column Categories')
-      .style('margin-bottom','2px');
+    _.each( d3.range(num_cats).reverse(), function(i){
 
-    var all_cats = _.keys(params.viz.cat_colors.col['cat-0']);
+      var inst_cat = params.viz.all_cats.col[i];
 
-    all_cats = all_cats.sort();
-
-    _.each(all_cats, function(inst_cat){
-
-      var inst_group = key_cat_col
-        .append('g')
-        .attr('class','category_section');
-        // .on('click', category_key_click);
-
-      inst_group
+      var key_cat = d3.select(params.root+' .sidebar_wrapper')
         .append('div')
-        .attr('class','category_color')
-        .style('width','15px')
-        .style('height','15px')
-        .style('float','left')
-        .style('margin-right','5px')
-        .style('margin-top','2px')
-        .style('background-color',function(){
-          var inst_color = params.viz.cat_colors.col['cat-0'][inst_cat];
-          return inst_color;
-        });
+        .classed('key_cat_col',true)
+        .style('margin-top','10px')
+        .style('padding','5px')
+        .style('border','1px solid #DEDEDE')
+        .style('margin-bottom','10px')
+        .style('overflow','scroll')
+        .style('max-height','200px');
 
-      inst_group
+      var inst_num = parseInt(inst_cat.split('-')[1],10)+1;
+
+      key_cat
         .append('p')
-        .style('margin-bottom','2px')
-        .append('text')
-        .text(inst_cat)
-        .attr('class','noselect')
-        .style('cursor','pointer');
+        .text('Column Category ' + String(inst_num))
+        .style('margin-bottom','2px');
+
+      var all_cats = _.keys(params.viz.cat_colors.col[inst_cat]);
+
+      all_cats = all_cats.sort();
+
+      _.each(all_cats, function(inst_name){
+
+        var inst_group = key_cat
+          .append('g')
+          .attr('class','category_section');
+
+        inst_group
+          .append('div')
+          .attr('class','category_color')
+          .style('width','15px')
+          .style('height','15px')
+          .style('float','left')
+          .style('margin-right','5px')
+          .style('margin-top','2px')
+          .style('background-color',function(){
+            var inst_color = params.viz.cat_colors.col[inst_cat][inst_name];
+            return inst_color;
+          });
+
+        inst_group
+          .append('p')
+          .style('margin-bottom','2px')
+          .append('text')
+          .text(inst_name)
+          .attr('class','noselect')
+          .style('cursor','pointer');
+
+      });
 
     });
 

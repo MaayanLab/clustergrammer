@@ -47,7 +47,7 @@ module.exports = function make_col_cat(params) {
     .attr('transform', function(d) {
       var inst_index = _.indexOf(params.network_data.col_nodes_names, d.name);
       return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
-    })
+    });
 
   d3.select(params.root+' .col_cat_container')
     .selectAll('.col_cat_group')
@@ -86,6 +86,7 @@ module.exports = function make_col_cat(params) {
           .style('fill', function(d) {
             return params.viz.cat_colors.col[inst_cat][d[inst_cat]];
           })
+          .style('opacity',0.6)
           .on('mouseover', cat_tip.show)
           .on('mouseout', cat_tip.hide);
 

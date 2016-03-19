@@ -120,6 +120,7 @@ module.exports = function make_row_cat(params) {
               var inst_shift = inst_num * cat_room ;
               return 'translate('+inst_shift+',0)';
             })
+            .style('opacity',0.6)
             .on('mouseover', cat_tip.show)
             .on('mouseout', cat_tip.hide);
 

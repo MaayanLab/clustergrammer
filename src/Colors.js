@@ -1,7 +1,7 @@
 // colors from http://graphicdesign.stackexchange.com/revisions/3815/8
 var rand_colors;
 
-rand_colors = d3.scale.category20c().range();
+rand_colors = d3.scale.category20b().range();
 
 function get_default_color() {
   //return rand_colors[0];
