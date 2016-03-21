@@ -170,6 +170,12 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
     .translate([ params.viz.clust.margin.left, params.viz.clust.margin.top ]);
 
   label_constrain_and_trim(params);
+
+  var sidebar_height = window.innerHeight - 20; 
+
+  d3.select(params.root)
+    .select('.sidebar_wrapper')
+    .style('height', sidebar_height+'px');
   
   d3.select(params.viz.viz_svg).style('opacity',1);
 };

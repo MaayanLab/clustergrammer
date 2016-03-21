@@ -12,8 +12,7 @@ module.exports = function sidebar(config, params) {
 
   var sidebar_height = window.innerHeight - 20;
 
-  var sidebar = d3
-    .select(params.root)
+  var sidebar = d3.select(params.root)
     .append('div')
     .attr('class', 'sidebar_wrapper' )
     .style('margin-left','10px')
