@@ -32,7 +32,6 @@ module.exports = function set_up_search(sidebar, params ){
     .style('margin-left','4px')
     .style('float','left')
     .style('padding-top','6px')
-    .style('padding-bottom','6px')
-    .style('height','34px');
+    .style('padding-bottom','6px');
     
 };

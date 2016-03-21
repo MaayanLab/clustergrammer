@@ -57,19 +57,6 @@ text.active {
   margin-bottom: 5px;
 }
 
-/* ordering buttons */
-#toggle_order{
-  /*reduced width sidebar
-  margin-left used to be 45*/
-  margin-left: 5px;
-  margin-top: 20px;
-  margin-bottom:5px;
-}
-
-.order_name{
-  font-size: 11px;
-}
-
 /*reduce the padding on the buttons*/
 .btn{
   padding-top:2px;
@@ -80,18 +67,6 @@ text.active {
   margin-left: 300px;
   margin-top: 10px;
   opacity: 0.5;
-}
-
-#slider_col{
-  width:170px;
-}
-
-#slider_row{
-  width:170px;
-}
-
-#slider_opacity{
-  width:170px;
 }
 
 .d3-tip {
