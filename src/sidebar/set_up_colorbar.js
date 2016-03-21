@@ -9,8 +9,6 @@ module.exports = function set_up_colorbar(sidebar, params){
     .classed('viz_medium_text',true)
     .text('Row Group Size');
 
-  console.log(params.sidebar)
-
   colorbar_sliders
     .append('div')
     .classed('slider_row',true)

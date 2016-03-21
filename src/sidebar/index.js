@@ -18,9 +18,10 @@ module.exports = function sidebar(config, params) {
     .attr('class', 'sidebar_wrapper' )
     .style('margin-left','10px')
     .style('float', 'left')
-    .style('width','180px')
+    .style('width', params.sidebar.wrapper.width)
     .style('height', sidebar_height+'px')
-    .style('overflow-y','scroll');
+    .style('overflow-y','scroll')
+    .style('overflow-x','hidden');
 
   set_up_reorder(params, sidebar);
 
@@ -74,7 +75,9 @@ module.exports = function sidebar(config, params) {
           .style('border','1px solid #DEDEDE')
           .style('margin-bottom','10px')
           .style('overflow','scroll')
-          .style('max-height','120px');
+          .style('max-height','120px')
+          .style('width', params.sidebar.key_cat.width+'px')
+          .style('margin-left', params.sidebar.key_cat.margin_left+'px');
 
         var inst_num = parseInt(inst_cat.split('-')[1],10)+1;
 
