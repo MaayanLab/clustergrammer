@@ -1,10 +1,10 @@
 /* stylize header */
-h1 {
+/*h1 {
   font-size: 45px;
   font-weight: 300;
   margin-top: 10px;
   margin-bottom: 20px;
-}
+}*/
 
 /*stylize footer */
 footer {
@@ -24,27 +24,6 @@ text.active {
 #svg_div{
   width:1000px;
   height:600px;
-}
-
-/* stylize the sidebar instructions */
-#clust_instruct_container{
-  display: block;
-  position:absolute;
-  width:180px;
-  padding-right: 0px;
-  margin-left: 10px;
-}
-
-.viz_small_text{
-  width:99%;
-  margin: 0 auto;
-  margin-top: 3px;
-  margin-bottom: 3px;
-  color:#333;
-  text-align: justify;
-  font-size: 12px;
-  font-weight: 300;
-  padding-left: 0px;
 }
 
 .viz_medium_text{
@@ -89,12 +68,6 @@ text.active {
 
 .order_name{
   font-size: 11px;
-}
-
-.submit_gene_button{
-  padding-top: 6px;
-  padding-bottom: 6px;
-  height: 34px;
 }
 
 /*reduce the padding on the buttons*/

@@ -1,4 +1,4 @@
-module.exports = function set_viz_params(config, params){
+module.exports = function ini_viz_params(config, params){
 
   var viz = {};
 

@@ -24,7 +24,7 @@ module.exports = function sidebar(config, params) {
 
   set_up_reorder(params, sidebar);
 
-  set_up_search(sidebar);
+  set_up_search(sidebar, params);
 
   // only checking rows for dendrogram, should always be present and rows and cols 
   var inst_rows = params.network_data.row_nodes;
@@ -128,59 +128,5 @@ module.exports = function sidebar(config, params) {
     }
 
   });
-
-
-  // function category_key_click(){
-    
-    // var inst_cat = d3.select(this).select('text').text();
-
-    // console.log(inst_cat)
-
-    // // update the category 
-    // if (cgm.params.current_col_cat === inst_cat){
-
-    //   // show all categories 
-    //   cgm.change_category('show_all'); 
-
-    //   // show selection in key 
-    //   d3.selectAll('.category_section')
-    //     .select('.category_color')
-    //     .style('opacity',1);
-
-    //   d3.selectAll('.category_section')
-    //     .select('p')
-    //     .style('opacity',1);
-
-    //   ini_sliders();
-
-    // } else {
-
-    //   // show one category 
-    //   cgm.change_category(inst_cat); 
-
-    //   // show selection in key 
-    //   d3.selectAll('.category_section')
-    //     .select('.category_color')
-    //     .style('opacity',0.35);
-
-    //   d3.selectAll('.category_section')
-    //     .select('p')
-    //     .style('opacity',0.35);
-
-    //   d3.select(this)
-    //     .select('.category_color')
-    //     .style('opacity',1);
-
-    //   d3.select(this)
-    //     .select('p')
-    //     .style('opacity',1);
-
-    //   ini_sliders();
-    // }
-
-    // // update the network after changing the category 
-    // cgm.update_network('default');
-
-  // }  
 
 };

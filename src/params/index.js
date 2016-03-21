@@ -12,6 +12,7 @@ var calc_matrix_params = require('./calc_matrix_params');
 var calc_label_params = require('./calc_label_params');
 var calc_val_max = require('./calc_val_max');
 var set_zoom_params = require('./set_zoom_params');
+var ini_sidebar_params = require('./ini_sidebar_params');
 
 /* 
 Params: calculates the size of all the visualization elements in the
@@ -48,6 +49,10 @@ module.exports = function make_params(input_config) {
   params = calc_matrix_params(config, params);
   params = set_zoom_params(params);
   params = calc_default_fs(params);
+
+  if (params.use_sidebar){
+    params.sidebar = ini_sidebar_params();
+  }
 
   return params;
 };

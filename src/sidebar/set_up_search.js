@@ -1,4 +1,4 @@
-module.exports = function set_up_search(sidebar){
+module.exports = function set_up_search(sidebar, params ){
 
   var search_container = sidebar
     .append('div')
@@ -13,7 +13,8 @@ module.exports = function set_up_search(sidebar){
     .classed('gene_search_box',true)
     .attr('type','text')
     .attr('placeholder','Input Gene')
-    .style('width','100px')
+    .style('width', params.sidebar.row_search.box.width+'px')
+    .style('height', params.sidebar.row_search.box.height+'px')
     .style('float','left');
 
   search_container
@@ -29,6 +30,9 @@ module.exports = function set_up_search(sidebar){
     .classed('btn-primary',true)
     .classed('submit_gene_button',true)
     .style('margin-left','4px')
-    .style('float','left');
+    .style('float','left')
+    .style('padding-top','6px')
+    .style('padding-bottom','6px')
+    .style('height','34px');
     
 };
