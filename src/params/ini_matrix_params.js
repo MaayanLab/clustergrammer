@@ -124,5 +124,7 @@ module.exports = function ini_matrix_params(config, viz, network_data){
 
   matrix.matrix = initialize_matrix(network_data);
 
+  matrix.wait_tooltip = 0;
+
   return matrix;
 };

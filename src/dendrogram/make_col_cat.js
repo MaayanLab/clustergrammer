@@ -53,6 +53,9 @@ module.exports = function make_col_cat(params) {
     .selectAll('.col_cat_group')
     .call(cat_tip);
 
+  var timeout;
+  var delay = 0;
+
   // add category rects 
   d3.selectAll(params.root+' .col_cat_group')
     .each(function() {
@@ -87,7 +90,15 @@ module.exports = function make_col_cat(params) {
             return params.viz.cat_colors.col[inst_cat][d[inst_cat]];
           })
           .style('opacity', params.viz.cat_colors.opacity)
-          .on('mouseover', cat_tip.show)
+          .on('mouseover', function() {
+            var context = this;
+            var args = [].slice.call(arguments);
+            args.push(this);
+            clearTimeout(timeout);
+            timeout = setTimeout(function() {
+              cat_tip.show.apply(context, args);
+            }, delay);
+          })
           .on('mouseout', cat_tip.hide);
       });
 

@@ -7,6 +7,9 @@ module.exports = function make_simple_rows(params, ini_inp_row_data, tip, row_se
     return num.value !== 0;
   });
 
+  var timeout;
+  var delay = 1000;
+
   // generate tiles in the current row
   var tile = d3.select(row_selection)
     .selectAll('rect')
@@ -22,6 +25,9 @@ module.exports = function make_simple_rows(params, ini_inp_row_data, tip, row_se
     })
     .on('mouseover', function(p) {
 
+      var tmp = d3.select(this)
+        .classed('hovering', true);
+
       // highlight row - set text to active if
       d3.selectAll(params.root+' .row_label_group text')
         .classed('active', function(d) {
@@ -33,19 +39,24 @@ module.exports = function make_simple_rows(params, ini_inp_row_data, tip, row_se
           return p.col_name === d.name;
         });
 
-      if (params.matrix.show_tile_tooltips){
-        tip.show(p);
-      }
+      var inst_selection = this;
+      var context = this;
+      var args = [].slice.call(arguments);
+      args.push(this);
+      clearTimeout(timeout);
+      timeout = setTimeout(function() {
+        var is_hovering = d3.select(inst_selection).classed('hovering');
+        if (is_hovering){
+          tip.show.apply(context, args);
+        }
+      }, delay, inst_selection); 
 
     })
     .on('mouseout', function() {
+      d3.select(this)
+        .classed('hovering',false);
       d3.selectAll(params.root+' text').classed('active', false);
-      if (params.matrix.show_tile_tooltips){
-        tip.hide();
-      }
-    })
-    .attr('title', function(d) {
-      return d.value;
+      tip.hide();
     })
     .style('fill-opacity', function(d) {
       // calculate output opacity using the opacity scale
@@ -101,26 +112,26 @@ module.exports = function make_simple_rows(params, ini_inp_row_data, tip, row_se
         return inst_opacity;
       })
       .on('mouseover', function(p) {
-      // highlight row - set text to active if
-      d3.selectAll(params.root+' .row_label_group text')
-        .classed('active', function(d) {
-          return p.row_name.replace(/_/g, ' ') === d.name;
-        });
+        // highlight row - set text to active if
+        d3.selectAll(params.root+' .row_label_group text')
+          .classed('active', function(d) {
+            return p.row_name.replace(/_/g, ' ') === d.name;
+          });
 
-      d3.selectAll(params.root+' .col_label_text text')
-        .classed('active', function(d) {
-          return p.col_name === d.name;
-        });
-      if (params.matrix.show_tile_tooltips){
-        tip.show(p);
-      }
-    })
-    .on('mouseout', function() {
-      d3.selectAll(params.root+' text').classed('active', false);
-      if (params.matrix.show_tile_tooltips){
-        tip.hide();
-      }
-    });
+        d3.selectAll(params.root+' .col_label_text text')
+          .classed('active', function(d) {
+            return p.col_name === d.name;
+          });
+        if (params.matrix.show_tile_tooltips){
+          tip.show(p);
+        }
+      })
+      .on('mouseout', function() {
+        d3.selectAll(params.root+' text').classed('active', false);
+        if (params.matrix.show_tile_tooltips){
+          tip.hide();
+        }
+      });
 
     // tile_dn
     d3.select(row_selection)

@@ -23,16 +23,17 @@ module.exports = function(params, svg_elem) {
     .append('g')
     .attr('class', 'clust_group');
 
-  if (params.matrix.show_tile_tooltips){
-    // d3-tooltip - for tiles
-    var tip = d3.tip()
-      .attr('class', 'd3-tip')
-      .direction('n')
-      .offset([0, 0])
-      .html(params.matrix.make_tile_tooltip);
-    d3.select(params.root+' .clust_group')
-      .call(tip);
-  }
+  // d3-tooltip - for tiles
+  var tip = d3.tip()
+    .attr('class', 'd3-tip')
+    .direction('n')
+    .offset([0, 0])
+    .html(function(d){
+      return d.value;
+    });
+
+  d3.select(params.root+' .clust_group')
+    .call(tip);
 
   // clustergram background rect
   clust_group
