@@ -25,7 +25,7 @@ module.exports = function make_simple_rows(params, ini_inp_row_data, tip, row_se
     })
     .on('mouseover', function(p) {
 
-      var tmp = d3.select(this)
+      d3.select(this)
         .classed('hovering', true);
 
       // highlight row - set text to active if

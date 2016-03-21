@@ -20,7 +20,7 @@ module.exports = function(params, network_data, delays){
     .direction('n')
     .offset([0, 0])
     .html(function(d){
-      return d.value;
+      return d.value.toFixed(2);
     });
 
   d3.select(params.root+' .clust_group')

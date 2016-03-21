@@ -5,8 +5,6 @@ var update_split_tiles = require('../update/update_split_tiles');
 // TODO add tip back to arguments
 module.exports = function eeu_existing_row(params, ini_inp_row_data, delays, duration, row_selection, tip) {
 
-  console.log(tip)
-
   var inp_row_data = ini_inp_row_data.row_data;
 
   // remove zero values from
@@ -27,9 +25,16 @@ module.exports = function eeu_existing_row(params, ini_inp_row_data, delays, dur
   // Update
   ///////////////////////////
 
+  var timeout;
+  var delay = 1000;
+  
   // update tiles in x direction 
   var update_row_tiles = cur_row_tiles
     .on('mouseover', function(p) {
+
+      d3.select(this)
+        .classed('hovering', true);
+
       // highlight row - set text to active if
       d3.selectAll(params.root+' .row_label_group text')
         .classed('active', function(d) {
@@ -40,11 +45,27 @@ module.exports = function eeu_existing_row(params, ini_inp_row_data, delays, dur
         .classed('active', function(d) {
           return p.col_name === d.name;
         });
-      // if (params.matrix.show_tile_tooltips){
-        tip.show(p);
-      // }
+
+      // // if (params.matrix.show_tile_tooltips){
+      //   tip.show(p);
+      // // }
+
+      var inst_selection = this;
+      var context = this;
+      var args = [].slice.call(arguments);
+      args.push(this);
+      clearTimeout(timeout);
+      timeout = setTimeout(function() {
+        var is_hovering = d3.select(inst_selection).classed('hovering');
+        if (is_hovering){
+          tip.show.apply(context, args);
+        }
+      }, delay, inst_selection);       
+
     })
     .on('mouseout', function mouseout() {
+      d3.select(this)
+        .classed('hovering',false);
       d3.selectAll(params.root+' text').classed('active', false);
       // if (params.matrix.show_tile_tooltips){
         tip.hide();
