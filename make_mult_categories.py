@@ -1,6 +1,6 @@
 def main():
 
-  make_mult_cat_tsv(rc_num=1, cc_num=2)
+  make_mult_cat_tsv(rc_num=2, cc_num=2)
 
   # load_tsv()
 
@@ -49,9 +49,9 @@ def load_tsv():
 def make_mult_cat_tsv(rc_num=1, cc_num=1):
   print('make tsv file with '+str(rc_num)+' row and '+str(cc_num)+' col labels')
 
-  tmp = range(10)
+  tmp = range(30)
 
-  fw = open('mat_cats.tsv','w')
+  fw = open('txt/mat_cats.tsv','w')
 
   num_tab = rc_num + 1
   
