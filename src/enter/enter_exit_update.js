@@ -14,17 +14,17 @@ module.exports = function(params, network_data, delays){
   d3.selectAll(params.root+' .d3-tip')
     .style('opacity',0);
 
-  if (params.matrix.show_tile_tooltips){
-    // d3-tooltip - for tiles
-    var tip = d3.tip()
-      .attr('class', 'd3-tip')
-      .direction('n')
-      .offset([0, 0])
-      .html(params.matrix.make_tile_tooltip);
+  // d3-tooltip - for tiles
+  var tip = d3.tip()
+    .attr('class', 'd3-tip')
+    .direction('n')
+    .offset([0, 0])
+    .html(function(d){
+      return d.value;
+    });
 
-    d3.select(params.root+'.clust_group')
-      .call(tip);
-    }
+  d3.select(params.root+' .clust_group')
+    .call(tip);
 
   // TODO check if necessary 
   resize_containers(params);
@@ -73,8 +73,8 @@ module.exports = function(params, network_data, delays){
     .selectAll('.row')
     .each(function(d) {
       // TODO add tip back to arguments 
-      var tmp = this;
-      eeu_existing_row(params, d, delays, duration, tmp);
+      var inst_selection = this;
+      eeu_existing_row(params, d, delays, duration, inst_selection, tip);
     });
 
 

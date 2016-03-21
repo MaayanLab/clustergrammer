@@ -3,7 +3,9 @@ var enter_existing_row = require('./enter_existing_row');
 var update_split_tiles = require('../update/update_split_tiles');
 
 // TODO add tip back to arguments
-module.exports = function(params, ini_inp_row_data, delays, duration, row_selection) {
+module.exports = function eeu_existing_row(params, ini_inp_row_data, delays, duration, row_selection, tip) {
+
+  console.log(tip)
 
   var inp_row_data = ini_inp_row_data.row_data;
 
@@ -39,13 +41,13 @@ module.exports = function(params, ini_inp_row_data, delays, duration, row_select
           return p.col_name === d.name;
         });
       // if (params.matrix.show_tile_tooltips){
-      //   tip.show(p);
+        tip.show(p);
       // }
     })
     .on('mouseout', function mouseout() {
       d3.selectAll(params.root+' text').classed('active', false);
       // if (params.matrix.show_tile_tooltips){
-      //   tip.hide();
+        tip.hide();
       // }
     });
 
