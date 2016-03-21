@@ -40,7 +40,10 @@ module.exports = function set_up_filters(config, params, filter_type) {
   row_filters
     .append('div')
     .classed('slider_'+filter_type,true)
-    .classed('slider',true);
+    .classed('slider',true)
+    .style('width', params.sidebar.slider.width+'px')
+    .style('margin-left', params.sidebar.slider.margin_left+'px');
+    
 
   var views = params.network_data.views;
 

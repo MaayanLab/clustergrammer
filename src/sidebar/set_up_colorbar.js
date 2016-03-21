@@ -1,4 +1,4 @@
-module.exports = function set_up_colorbar(sidebar){
+module.exports = function set_up_colorbar(sidebar, params){
 
   var colorbar_sliders = sidebar
     .append('div')
@@ -9,10 +9,14 @@ module.exports = function set_up_colorbar(sidebar){
     .classed('viz_medium_text',true)
     .text('Row Group Size');
 
+  console.log(params.sidebar)
+
   colorbar_sliders
     .append('div')
     .classed('slider_row',true)
-    .classed('slider',true);
+    .classed('slider',true)
+    .style('width', params.sidebar.slider.width+'px')
+    .style('margin-left', params.sidebar.slider.margin_left+'px');
 
   colorbar_sliders
     .append('p')
@@ -22,6 +26,8 @@ module.exports = function set_up_colorbar(sidebar){
   colorbar_sliders
     .append('div')
     .classed('slider_col',true)
-    .classed('slider',true);
+    .classed('slider',true)
+    .style('width', params.sidebar.slider.width+'px')
+    .style('margin-left', params.sidebar.slider.margin_left+'px');
 
 };

@@ -30,7 +30,7 @@ module.exports = function sidebar(config, params) {
   var inst_rows = params.network_data.row_nodes;
   var found_colorbar = _.filter(inst_rows, function(d) { return utils.has(d,'group'); }).length;
   if (found_colorbar>0){
-    set_up_colorbar(sidebar);
+    set_up_colorbar(sidebar, params);
   }
 
   var views = params.network_data.views;
