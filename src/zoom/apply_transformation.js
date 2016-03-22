@@ -5,6 +5,10 @@ var trim_text = require('./trim_text');
 module.exports = function(params, trans_x, trans_y, zoom_x, zoom_y) {
   var d3_scale = zoom_x;
 
+  // console.log('here')
+  d3.selectAll('.d3-tip')
+    .style('display','none' );
+
   // y - rules
   ///////////////////////////////////////////////////
   // available panning room in the y direction
@@ -18,7 +22,7 @@ module.exports = function(params, trans_x, trans_y, zoom_x, zoom_y) {
     // no panning in either direction
     trans_y = 0;
   }
-  // restrict y pan to pan_room_y if necessary
+  // restrict y pan to pan_room_y if necessaryx
   else if (trans_y <= -pan_room_y) {
     trans_y = -pan_room_y;
   }
