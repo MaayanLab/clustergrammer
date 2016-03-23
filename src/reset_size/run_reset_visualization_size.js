@@ -95,26 +95,26 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
   resize_row_labels(params, svg_group); 
   resize_row_viz(params, svg_group);
 
-  // // change the size of the highlighting rects
-  // svg_group.selectAll('.row_label_group')
-  //   .each(function() {
-  //     var bbox = d3.select(this).select('text')[0][0].getBBox();
-  //     d3.select(this)
-  //       .select('rect')
-  //       .attr('x', bbox.x )
-  //       .attr('y', 0)
-  //       .attr('width', bbox.width )
-  //       .attr('height', params.viz.rect_height)
-  //       .style('fill', 'yellow')
-  //       .style('opacity', function(d) {
-  //         var inst_opacity = 0;
-  //         // highlight target genes
-  //         if (d.target === 1) {
-  //           inst_opacity = 1;
-  //         }
-  //         return inst_opacity;
-  //       });
-  //   });
+  // change the size of the highlighting rects
+  svg_group.selectAll('.row_label_group')
+    .each(function() {
+      var bbox = d3.select(this).select('text')[0][0].getBBox();
+      d3.select(this)
+        .select('rect')
+        .attr('x', bbox.x )
+        .attr('y', 0)
+        .attr('width', bbox.width )
+        .attr('height', params.viz.rect_height)
+        .style('fill', 'yellow')
+        .style('opacity', function(d) {
+          var inst_opacity = 0;
+          // highlight target genes
+          if (d.target === 1) {
+            inst_opacity = 1;
+          }
+          return inst_opacity;
+        });
+    });
 
   // necessary to properly position row labels vertically 
   svg_group.selectAll('.row_label_group')
@@ -171,11 +171,11 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
 
   label_constrain_and_trim(params);
 
-  var sidebar_height = window.innerHeight - 20; 
+  // var sidebar_height = window.innerHeight - 20; 
 
-  d3.select(params.root)
-    .select('.sidebar_wrapper')
-    .style('height', sidebar_height+'px');
+  // d3.select(params.root)
+  //   .select('.sidebar_wrapper')
+  //   .style('height', sidebar_height+'px');
   
   d3.select(params.viz.viz_svg).style('opacity',1);
 };

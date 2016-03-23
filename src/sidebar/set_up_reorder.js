@@ -56,6 +56,7 @@ module.exports = function set_up_reorder(params, sidebar){
 
     sidebar
       .append('div')
+      .style('margin-left','5px')
       .html(rc_dict[inst_rc]+' Order');
 
     inst_reorder = sidebar
