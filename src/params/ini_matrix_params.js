@@ -53,13 +53,6 @@ module.exports = function ini_matrix_params(config, viz, network_data){
       possible_orders.push('rankvar');
     } 
 
-    console.log('all cats')
-    console.log(viz.all_cats[other_rc])
-
-    console.log('BEFORE---------------------- '+ inst_rc)
-    console.log(possible_orders)
-    console.log('----------------------')
-
     if (viz.all_cats[other_rc].length > 0){
       _.each( viz.all_cats[other_rc], function(inst_cat){
         // the index of the category has replaced - with _
@@ -67,10 +60,6 @@ module.exports = function ini_matrix_params(config, viz, network_data){
         possible_orders.push(inst_cat+'_index');
       });
     }
-
-    console.log('AFTER---------------------- '+inst_rc)
-    console.log(possible_orders)
-    console.log('----------------------')
 
     _.each(possible_orders, function(inst_order){
 
