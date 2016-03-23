@@ -147,7 +147,7 @@ class Network(object):
       for tmp_sig in all_sigs:
         all_cat.append( tmp_col_cat[tmp_sig] )
 
-      self.dat['node_info']['col']['cat'] = all_cat
+      self.dat['node_info']['col']['cat-0'] = all_cat
       self.dict_cat()
 
     self.dat['mat'] = np.empty((len(all_rows),len(all_sigs)))
@@ -426,12 +426,12 @@ class Network(object):
     from clustergrammer import Network 
     from copy import deepcopy 
 
-    print('\n---- inst_rc '+str(inst_rc))
+    # print('\n---- inst_rc '+str(inst_rc))
 
     inst_keys = self.dat['node_info'][inst_rc].keys()
     all_cats = [x for x in inst_keys if 'cat-' in x]
 
-    print(all_cats)
+    # print(all_cats)
 
     if len(all_cats) > 0:
       

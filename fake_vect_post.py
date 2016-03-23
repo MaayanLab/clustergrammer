@@ -3,7 +3,7 @@ import random
 random.seed(10)
 
 def main():
-  make_json()
+  # make_json()
   cluster()
 
 def cluster():

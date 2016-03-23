@@ -3018,9 +3018,11 @@
       ], 
       "name": "Col-1 make name longer", 
       "clust": 4, 
+      "cat_0_index": 0, 
       "rank": 5, 
-      "ini": 10, 
-      "rankvar": 4
+      "cat-0": "brain", 
+      "rankvar": 4, 
+      "ini": 10
     }, 
     {
       "group": [
@@ -3038,9 +3040,11 @@
       ], 
       "name": "Col-10 make name longer", 
       "clust": 5, 
+      "cat_0_index": 5, 
       "rank": 4, 
-      "ini": 9, 
-      "rankvar": 9
+      "cat-0": "lung", 
+      "rankvar": 9, 
+      "ini": 9
     }, 
     {
       "group": [
@@ -3058,9 +3062,11 @@
       ], 
       "name": "Col-2 make name longer", 
       "clust": 8, 
+      "cat_0_index": 1, 
       "rank": 3, 
-      "ini": 8, 
-      "rankvar": 0
+      "cat-0": "brain", 
+      "rankvar": 0, 
+      "ini": 8
     }, 
     {
       "group": [
@@ -3078,9 +3084,11 @@
       ], 
       "name": "Col-3 make name longer", 
       "clust": 6, 
+      "cat_0_index": 2, 
       "rank": 0, 
-      "ini": 7, 
-      "rankvar": 3
+      "cat-0": "brain", 
+      "rankvar": 3, 
+      "ini": 7
     }, 
     {
       "group": [
@@ -3098,9 +3106,11 @@
       ], 
       "name": "Col-4 make name longer", 
       "clust": 2, 
+      "cat_0_index": 3, 
       "rank": 7, 
-      "ini": 6, 
-      "rankvar": 6
+      "cat-0": "brain", 
+      "rankvar": 6, 
+      "ini": 6
     }, 
     {
       "group": [
@@ -3118,9 +3128,11 @@
       ], 
       "name": "Col-5 make name longer", 
       "clust": 0, 
+      "cat_0_index": 4, 
       "rank": 9, 
-      "ini": 5, 
-      "rankvar": 1
+      "cat-0": "brain", 
+      "rankvar": 1, 
+      "ini": 5
     }, 
     {
       "group": [
@@ -3138,9 +3150,11 @@
       ], 
       "name": "Col-6 make name longer", 
       "clust": 1, 
+      "cat_0_index": 6, 
       "rank": 8, 
-      "ini": 4, 
-      "rankvar": 8
+      "cat-0": "lung", 
+      "rankvar": 8, 
+      "ini": 4
     }, 
     {
       "group": [
@@ -3158,9 +3172,11 @@
       ], 
       "name": "Col-7 make name longer", 
       "clust": 7, 
+      "cat_0_index": 7, 
       "rank": 2, 
-      "ini": 3, 
-      "rankvar": 5
+      "cat-0": "lung", 
+      "rankvar": 5, 
+      "ini": 3
     }, 
     {
       "group": [
@@ -3178,9 +3194,11 @@
       ], 
       "name": "Col-8 make name longer", 
       "clust": 3, 
+      "cat_0_index": 8, 
       "rank": 1, 
-      "ini": 2, 
-      "rankvar": 7
+      "cat-0": "lung", 
+      "rankvar": 7, 
+      "ini": 2
     }, 
     {
       "group": [
@@ -3198,9 +3216,11 @@
       ], 
       "name": "Col-9 make name longer", 
       "clust": 9, 
+      "cat_0_index": 9, 
       "rank": 6, 
-      "ini": 1, 
-      "rankvar": 2
+      "cat-0": "lung", 
+      "rankvar": 2, 
+      "ini": 1
     }
   ], 
   "links": [
@@ -11075,7 +11095,6 @@
   ], 
   "views": [
     {
-      "col_cat": "all_category", 
       "N_row_sum": "all", 
       "dist": "cos", 
       "nodes": {
@@ -14286,7 +14305,6 @@
       }
     }, 
     {
-      "col_cat": "all_category", 
       "N_row_sum": 100, 
       "dist": "cos", 
       "nodes": {
@@ -16497,7 +16515,6 @@
       }
     }, 
     {
-      "col_cat": "all_category", 
       "N_row_sum": 90, 
       "dist": "cos", 
       "nodes": {
@@ -18508,7 +18525,6 @@
       }
     }, 
     {
-      "col_cat": "all_category", 
       "N_row_sum": 80, 
       "dist": "cos", 
       "nodes": {
@@ -20319,7 +20335,6 @@
       }
     }, 
     {
-      "col_cat": "all_category", 
       "N_row_sum": 70, 
       "dist": "cos", 
       "nodes": {
@@ -21930,7 +21945,6 @@
       }
     }, 
     {
-      "col_cat": "all_category", 
       "N_row_sum": 60, 
       "dist": "cos", 
       "nodes": {
@@ -23341,7 +23355,6 @@
       }
     }, 
     {
-      "col_cat": "all_category", 
       "N_row_sum": 50, 
       "dist": "cos", 
       "nodes": {
@@ -24552,7 +24565,6 @@
       }
     }, 
     {
-      "col_cat": "all_category", 
       "N_row_sum": 40, 
       "dist": "cos", 
       "nodes": {
@@ -25563,7 +25575,6 @@
       }
     }, 
     {
-      "col_cat": "all_category", 
       "N_row_sum": 30, 
       "dist": "cos", 
       "nodes": {
@@ -26374,7 +26385,6 @@
       }
     }, 
     {
-      "col_cat": "all_category", 
       "N_row_sum": 20, 
       "dist": "cos", 
       "nodes": {
@@ -26985,7 +26995,6 @@
       }
     }, 
     {
-      "col_cat": "all_category", 
       "N_row_sum": 10, 
       "dist": "cos", 
       "nodes": {
@@ -27397,7 +27406,6 @@
     }, 
     {
       "N_row_var": "all", 
-      "col_cat": "all_category", 
       "nodes": {
         "row_nodes": [
           {
@@ -30608,7 +30616,6 @@
     }, 
     {
       "N_row_var": 100, 
-      "col_cat": "all_category", 
       "nodes": {
         "row_nodes": [
           {
@@ -32819,7 +32826,6 @@
     }, 
     {
       "N_row_var": 90, 
-      "col_cat": "all_category", 
       "nodes": {
         "row_nodes": [
           {
@@ -34830,7 +34836,6 @@
     }, 
     {
       "N_row_var": 80, 
-      "col_cat": "all_category", 
       "nodes": {
         "row_nodes": [
           {
@@ -36641,7 +36646,6 @@
     }, 
     {
       "N_row_var": 70, 
-      "col_cat": "all_category", 
       "nodes": {
         "row_nodes": [
           {
@@ -38252,7 +38256,6 @@
     }, 
     {
       "N_row_var": 60, 
-      "col_cat": "all_category", 
       "nodes": {
         "row_nodes": [
           {
@@ -39663,7 +39666,6 @@
     }, 
     {
       "N_row_var": 50, 
-      "col_cat": "all_category", 
       "nodes": {
         "row_nodes": [
           {
@@ -40874,7 +40876,6 @@
     }, 
     {
       "N_row_var": 40, 
-      "col_cat": "all_category", 
       "nodes": {
         "row_nodes": [
           {
@@ -41885,7 +41886,6 @@
     }, 
     {
       "N_row_var": 30, 
-      "col_cat": "all_category", 
       "nodes": {
         "row_nodes": [
           {
@@ -42696,7 +42696,6 @@
     }, 
     {
       "N_row_var": 20, 
-      "col_cat": "all_category", 
       "nodes": {
         "row_nodes": [
           {
@@ -43307,7 +43306,6 @@
     }, 
     {
       "N_row_var": 10, 
-      "col_cat": "all_category", 
       "nodes": {
         "row_nodes": [
           {
