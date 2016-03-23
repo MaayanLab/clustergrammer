@@ -58,7 +58,7 @@ module.exports = function make_col_dendro_triangles(params, is_change_group = fa
 
   var triangle_opacity;
 
-  if (params.viz.inst_order.col === 'clust'){
+  if (params.viz.inst_order.row === 'clust'){
     triangle_opacity = params.viz.dendro_opacity;
   } else {
     triangle_opacity = 0;

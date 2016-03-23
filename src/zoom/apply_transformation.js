@@ -150,7 +150,7 @@ module.exports = function apply_transformation(params, trans_x, trans_y, zoom_x,
   // run text trim with delay 
   //////////////////////////////
   var prev_zoom = params.zoom_behavior.scale();
-  setTimeout(still_zooming, 500, prev_zoom)
+  setTimeout(still_zooming, 500, prev_zoom);
   function run_font_trim(){
     d3.selectAll(params.root+' .row_label_group' )
       .each(function() { trim_text(params, this, 'row'); });
