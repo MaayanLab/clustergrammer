@@ -1,6 +1,6 @@
 def main():
 
-  make_mult_cat_tsv(rc_num=2, cc_num=2)
+  make_mult_cat_tsv(rc_num=0, cc_num=1)
 
   # load_tsv()
 

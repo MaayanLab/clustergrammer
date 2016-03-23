@@ -27,6 +27,7 @@ module.exports = function(params, inst_order, tmp_row_col) {
   var col_nodes_obj = params.network_data.col_nodes;
   var col_nodes_names = _.pluck(col_nodes_obj, 'name');
 
+  console.log(params.viz.inst_order)
   if (row_col === 'row'){
 
     params.viz.x_scale

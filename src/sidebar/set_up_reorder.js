@@ -20,8 +20,27 @@ module.exports = function set_up_reorder(params, sidebar){
       'alpha':'Alphabetically'
     };
 
-    if ( params.viz.all_cats[inst_rc].length > 0){
+    var other_rc;
+    if (inst_rc === 'row'){
+      other_rc = 'col';
+    } else {
+      other_rc = 'row';
+    }
+
+    console.log('\n\n\n------------------------------')
+    console.log('------------------------------')
+    console.log('---- set_up_reorder '+inst_rc+' -------')
+    console.log(params.viz.all_cats[inst_rc])
+    console.log('------------------------------')
+    console.log('------------------------------')
+
+    console.log(params.viz.all_cats[inst_rc] )
+    if ( params.viz.all_cats[inst_rc].length > 0 ){
+
       all_cats = params.viz.all_cats[inst_rc];
+
+      console.log('all cats ')
+      console.log(all_cats)
 
       _.each(all_cats, function(inst_cat){
         inst_cat_num = String(parseInt(inst_cat.split('-')[1],10) + 1);
@@ -30,20 +49,16 @@ module.exports = function set_up_reorder(params, sidebar){
       });
     }
 
+    console.log('*** tmp_orders ')
     tmp_orders = Object.keys(params.matrix.orders);
+
+    console.log(tmp_orders)
 
     var possible_orders = [];
 
     _.each(tmp_orders, function(inst_name){
 
-      // checking if row row or col 
-      if (inst_rc==='row'){
-        inst_rc = 'col';
-      } else {
-        inst_rc = 'row'; 
-      }
-
-      if (inst_name.indexOf(inst_rc) > -1){
+      if (inst_name.indexOf(other_rc) > -1){
         inst_name = inst_name.replace('_row','').replace('_col','');
         possible_orders.push(inst_name);
       }
@@ -53,6 +68,9 @@ module.exports = function set_up_reorder(params, sidebar){
     possible_orders = _.uniq(possible_orders);
 
     possible_orders = possible_orders.sort();
+
+    console.log('---> possible orders, setting up buttons ')
+    console.log(possible_orders)
 
     sidebar
       .append('div')

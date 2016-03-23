@@ -27,22 +27,22 @@ module.exports = function ini_matrix_params(config, viz, network_data){
   _.each(['row','col'], function(inst_rc){
 
     // row ordering is based on col info and vice versa 
-    var swap_rc;
+    var other_rc;
     if (inst_rc==='row'){
-      swap_rc = 'col';
+      other_rc = 'col';
     } else {
-      swap_rc = 'row';
+      other_rc = 'row';
     }
 
-    // the nodes are defined using swap_rc 
-    var inst_nodes = network_data[swap_rc+'_nodes'];
+    // the nodes are defined using other_rc 
+    var inst_nodes = network_data[other_rc+'_nodes'];
     var num_nodes = inst_nodes.length;
 
     var nodes_names = _.pluck(inst_nodes, 'name');
     var tmp = nodes_names.sort();
 
     var alpha_index = _.map(tmp, function(d){
-      return network_data[swap_rc+'_nodes_names'].indexOf(d);
+      return network_data[other_rc+'_nodes_names'].indexOf(d);
     });
 
     matrix.orders['alpha_'+inst_rc] = alpha_index;
@@ -53,13 +53,24 @@ module.exports = function ini_matrix_params(config, viz, network_data){
       possible_orders.push('rankvar');
     } 
 
-    if (viz.all_cats[inst_rc].length > 0){
-      _.each( viz.all_cats[inst_rc], function(inst_cat){
+    console.log('all cats')
+    console.log(viz.all_cats[other_rc])
+
+    console.log('BEFORE---------------------- '+ inst_rc)
+    console.log(possible_orders)
+    console.log('----------------------')
+
+    if (viz.all_cats[other_rc].length > 0){
+      _.each( viz.all_cats[other_rc], function(inst_cat){
         // the index of the category has replaced - with _
         inst_cat = inst_cat.replace('-','_');
         possible_orders.push(inst_cat+'_index');
       });
     }
+
+    console.log('AFTER---------------------- '+inst_rc)
+    console.log(possible_orders)
+    console.log('----------------------')
 
     _.each(possible_orders, function(inst_order){
 
