@@ -2,11 +2,10 @@ var utils = require('../utils');
 var constrain_font_size = require('./constrain_font_size');
 var trim_text = require('./trim_text');
 
-module.exports = function(params, trans_x, trans_y, zoom_x, zoom_y) {
+module.exports = function apply_transformation(params, trans_x, trans_y, zoom_x, zoom_y) {
   var d3_scale = zoom_x;
 
-  // console.log('here')
-  d3.selectAll('.d3-tip')
+  d3.selectAll('.tile_tip')
     .style('display','none' );
 
   // y - rules
@@ -129,17 +128,38 @@ module.exports = function(params, trans_x, trans_y, zoom_x, zoom_y) {
     .translate([trans_x + params.viz.clust.margin.left, trans_y + params.viz.clust.margin.top
     ]);
 
+
+  function still_zooming(prev_zoom){
+    var inst_zoom = params.zoom_behavior.scale();
+    var zoom_diff = Math.abs( prev_zoom - inst_zoom )/ inst_zoom;
+    if (zoom_diff > 0.1){
+      run_font_trim();
+    }
+  }
+  
+
   constrain_font_size(params);
 
-  d3.selectAll(params.root+' .row_label_group' )
-    .each(function() { trim_text(params, this, 'row'); });
+  // // run text trim with no delay 
+  // //////////////////////////
+  // d3.selectAll(params.root+' .row_label_group' )
+  //   .each(function() { trim_text(params, this, 'row'); });
+  // d3.selectAll(params.root+' .col_label_group')
+  //   .each(function() { trim_text(params, this, 'col'); });
 
-  d3.selectAll(params.root+' .col_label_group')
-    .each(function() { trim_text(params, this, 'col'); });
+  // run text trim with delay 
+  //////////////////////////////
+  var prev_zoom = params.zoom_behavior.scale();
+  setTimeout(still_zooming, 500, prev_zoom)
+  function run_font_trim(){
+    d3.selectAll(params.root+' .row_label_group' )
+      .each(function() { trim_text(params, this, 'row'); });
+    d3.selectAll(params.root+' .col_label_group')
+      .each(function() { trim_text(params, this, 'col'); });
+  }
 
   // resize label bars if necessary
   ////////////////////////////////////
-
   if (utils.has(params.network_data.row_nodes[0], 'value')) {
     d3.selectAll(params.root+' .row_bars')
     .attr('width', function(d) {

@@ -3,6 +3,9 @@ var label_constrain_and_trim = require('../labels/label_constrain_and_trim');
 
 module.exports = function(params, pan_dx, pan_dy, fin_zoom) {
 
+  d3.selectAll('.tile_tip')
+    .style('display','none' );
+    
   // do not allow while transitioning, e.g. reordering
   if (!params.viz.run_trans) {
 
