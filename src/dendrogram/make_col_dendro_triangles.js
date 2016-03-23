@@ -68,7 +68,7 @@ module.exports = function make_col_dendro_triangles(params, is_change_group = fa
 
     d3.select(params.root+' .col_dendro_container')
       .selectAll('path') 
-      .transition().delay(1000).duration(1500)
+      .transition().delay(1000).duration(1000)
       .style('opacity', triangle_opacity);
 
   } else {

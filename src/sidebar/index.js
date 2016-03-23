@@ -20,7 +20,8 @@ module.exports = function sidebar(config, params) {
     .style('width', params.sidebar.wrapper.width)
     .style('height', sidebar_height+'px')
     .style('overflow-y','scroll')
-    .style('overflow-x','hidden');
+    .style('width','187px');
+    // .style('overflow-x','hidden');
 
   set_up_reorder(params, sidebar);
 

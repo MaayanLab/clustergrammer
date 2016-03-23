@@ -5,15 +5,17 @@ module.exports = function set_up_search(sidebar, params ){
     .classed('row',true)
     .classed('gene_search_container',true)
     .style('margin-top','10px')
-    .style('margin-left','0px');
+    .style('margin-left','0px')
+    .style('width','185px');
 
   search_container
     .append('input')
     .classed('form-control',true)
     .classed('gene_search_box',true)
     .attr('type','text')
-    .attr('placeholder','Input Gene')
-    .style('width', params.sidebar.row_search.box.width+'px')
+    .attr('placeholder','Row')
+    // .style('width', params.sidebar.row_search.box.width+'px')
+    .style('width', '70px')
     .style('height', params.sidebar.row_search.box.height+'px')
     .style('float','left');
 
