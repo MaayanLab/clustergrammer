@@ -1,6 +1,10 @@
 var reposition_tile_highlight = require('./reposition_tile_highlight');
+var toggle_dendro_view = require('../dendrogram/toggle_dendro_view');
 
 module.exports = function(params, row_selection) {
+
+  params.viz.inst_order.row = 'custom';
+  toggle_dendro_view(params, 'col');
 
   d3.selectAll(params.root+' .col_dendro_group').style('opacity',0);
 

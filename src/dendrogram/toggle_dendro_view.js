@@ -1,20 +1,23 @@
 var make_row_dendro_triangles = require('../dendrogram/make_row_dendro_triangles');
 var make_col_dendro_triangles = require('../dendrogram/make_col_dendro_triangles');
 
-module.exports = function toggle_dendro_view(params, row_col){
+module.exports = function toggle_dendro_view(params, row_col, wait_time = 1500){
 
-  var wait_time = 1500;
+  console.log('params.viz.inst_order ' )
+  console.log(params.viz.inst_order)
 
   // row and col are reversed
   if (row_col === 'row'){
     if (params.viz.inst_order.col === 'clust'){
-      setTimeout( make_row_dendro_triangles, wait_time, params);
+      // the last true tells the viz that I'm chaning group size and not to 
+      // delay the change in dendro
+      setTimeout( make_row_dendro_triangles, wait_time, params, true);
     }
   }
 
   if (row_col === 'col'){
     if (params.viz.inst_order.row === 'clust'){
-      setTimeout( make_col_dendro_triangles, wait_time, params);
+      setTimeout( make_col_dendro_triangles, wait_time, params, true);
     }
   }
 

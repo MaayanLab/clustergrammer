@@ -3,7 +3,6 @@ var dendro_group_highlight = require('./dendro_group_highlight');
 
 module.exports = function make_col_dendro_triangles(params, is_change_group = false){
 
-
   var dendro_info = calc_col_dendro_triangles(params);
 
   var run_transition;
