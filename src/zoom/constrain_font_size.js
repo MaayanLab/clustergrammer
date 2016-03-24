@@ -6,6 +6,8 @@ module.exports = function(params) {
   var reduce_fs = {};
   var inst_zoom;
 
+  // zoom_switch behavior has to change with zoom_switch_y
+
   real_font_size.row = params.labels.default_fs_row * params.zoom_behavior.scale();
   real_font_size.col = params.labels.default_fs_col * params.zoom_behavior.scale()/params.viz.zoom_switch;
 

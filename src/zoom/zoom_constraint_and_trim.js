@@ -2,12 +2,12 @@ var constrain_font_size = require('./constrain_font_size');
 var still_zooming = require('./still_zooming');
 var utils = require('../utils');
 
-module.exports = function zoom_constraint_and_trim(params, zoom_x, zoom_y, trans_x, trans_y, pan_room_y){
+module.exports = function zoom_constraint_and_trim(params, zoom_info){
   // the amount by which the clustergram has shifted down, the col dendrogram will 
   // need to be shifted down 
   var max_y = params.viz.svg_dim.height - params.viz.dendro_room.col - params.viz.uni_margin;
 
-  var shift_down = pan_room_y + trans_y;
+  var shift_down = zoom_info.pan_room_y + zoom_info.trans_y;
   var x_offset = params.viz.clust.margin.left;
   var y_offset = params.viz.clust.margin.top + params.viz.clust.dim.height + shift_down;
   if (y_offset > max_y){
@@ -26,7 +26,7 @@ module.exports = function zoom_constraint_and_trim(params, zoom_x, zoom_y, trans
 
   // reset translate vector - add back margins to trans_x and trans_y
   params.zoom_behavior
-    .translate([trans_x + params.viz.clust.margin.left, trans_y + params.viz.clust.margin.top
+    .translate([zoom_info.trans_x + params.viz.clust.margin.left, zoom_info.trans_y + params.viz.clust.margin.top
     ]);
   
   constrain_font_size(params);
@@ -40,12 +40,12 @@ module.exports = function zoom_constraint_and_trim(params, zoom_x, zoom_y, trans
     d3.selectAll(params.root+' .row_bars')
     .attr('width', function(d) {
       var inst_value = 0;
-      inst_value = params.labels.bar_scale_row(Math.abs(d.value))/zoom_y;
+      inst_value = params.labels.bar_scale_row(Math.abs(d.value))/zoom_info.zoom_y;
       return inst_value;
     })
     .attr('x', function(d) {
       var inst_value = 0;
-      inst_value = -params.labels.bar_scale_row(Math.abs(d.value))/zoom_y;
+      inst_value = -params.labels.bar_scale_row(Math.abs(d.value))/zoom_info.zoom_y;
       return inst_value;
     });
   }
@@ -55,7 +55,7 @@ module.exports = function zoom_constraint_and_trim(params, zoom_x, zoom_y, trans
       .attr('width', function(d) {
         var inst_value = 0;
         if (d.value > 0){
-          inst_value = params.labels.bar_scale_col(d.value)/zoom_x;
+          inst_value = params.labels.bar_scale_col(d.value)/zoom_info.zoom_x;
         }
         return inst_value;
       });
