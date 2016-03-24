@@ -1,4 +1,5 @@
 var zoomed = require('../zoom/zoomed');
+var calc_zoom_switching = require('../zoom/calc_zoom_switching');
 
 module.exports = function set_zoom_params(params){
 
@@ -10,16 +11,7 @@ module.exports = function set_zoom_params(params){
   var half_col_height = (params.viz.x_scale.rangeBand() / 2);
   params.viz.real_zoom = params.viz.norm_labels.width.col / half_col_height;
 
-  var width_by_col = params.viz.clust.dim.width / params.viz.num_col_nodes;
-  var height_by_row = params.viz.clust.dim.height / params.viz.num_row_nodes;
-  params.viz.zoom_switch = width_by_col / height_by_row;
-
-  params.viz.zoom_switch_y = 1;
-
-  if (params.viz.zoom_switch < 1) {
-    params.viz.zoom_switch_y = 1/params.viz.zoom_switch;
-    params.viz.zoom_switch = 1;
-  }
+  params.viz = calc_zoom_switching(params.viz);
 
   params.zoom_behavior = d3.behavior.zoom()
     .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch])

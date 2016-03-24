@@ -12,5 +12,4 @@ module.exports = function still_zooming(params, prev_zoom){
       .each(function() { trim_text(params, this, 'col'); });
   }
 
-
 };

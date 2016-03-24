@@ -14,6 +14,7 @@ var resize_col_triangle = require('./resize_col_triangle');
 var resize_col_hlight = require('./resize_col_hlight');
 var resize_label_bars = require('./resize_label_bars');
 var calc_default_fs = require('../params/calc_default_fs');
+var calc_zoom_switching = require('../zoom/calc_zoom_switching');
 
 module.exports = function(params, row_nodes, col_nodes, links, duration, delays) {
 
@@ -26,15 +27,17 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
   params.viz = calc_clust_width(params.viz);
   params.viz = calc_clust_height(params.viz);
 
-  // zoom_switch from 1 to 2d zoom
-  params.viz.zoom_switch = (params.viz.clust.dim.width / params.viz.num_col_nodes) / (params.viz.clust.dim.height / params.viz.num_row_nodes);
-  params.viz.zoom_switch_y = 1;
+  // // zoom_switch from 1 to 2d zoom
+  // params.viz.zoom_switch = (params.viz.clust.dim.width / params.viz.num_col_nodes) / (params.viz.clust.dim.height / params.viz.num_row_nodes);
+  // params.viz.zoom_switch_y = 1;
 
-  // zoom_switch can not be less than 1
-  if (params.viz.zoom_switch < 1) {
-    params.viz.zoom_switch_y = 1/params.viz.zoom_switch;
-    params.viz.zoom_switch = 1;
-  }
+  // // zoom_switch can not be less than 1
+  // if (params.viz.zoom_switch < 1) {
+  //   params.viz.zoom_switch_y = 1/params.viz.zoom_switch;
+  //   params.viz.zoom_switch = 1;
+  // }
+
+  params.viz = calc_zoom_switching(params.viz);
 
   // redefine x_scale and y_scale rangeBands
   params.viz.x_scale.rangeBands([0, params.viz.clust.dim.width]);
