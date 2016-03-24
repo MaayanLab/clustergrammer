@@ -14,11 +14,19 @@ module.exports = function(params, inst_selection, inst_rc) {
 
   if (inst_rc === 'row'){
     max_width = params.viz.norm_labels.width.row ;
-    inst_zoom = params.zoom_behavior.scale();
+    if (params.viz.zoom_switch_y){
+      inst_zoom = params.zoom_behavior.scale()/params.viz.zoom_switch_y;
+    } else {
+      inst_zoom = params.zoom_behavior.scale();
+    }
     num_trims = params.labels.row_max_char;
   } else {
     max_width = params.viz.norm_labels.width.col;
-    inst_zoom = params.zoom_behavior.scale()/params.viz.zoom_switch;
+    if (params.viz.zoom_switch > 1){
+      inst_zoom = params.zoom_behavior.scale()/params.viz.zoom_switch;
+    } else {
+      inst_zoom = params.zoom_behavior.scale();
+    }
     num_trims = params.labels.col_max_char;
   }
 
