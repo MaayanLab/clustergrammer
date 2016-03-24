@@ -1,8 +1,8 @@
 module.exports = function zoom_rules_y(params, zoom_info){
   
-  console.log('\n\nx and y switch')
-  console.log(params.viz.zoom_switch)
-  console.log(params.viz.zoom_switch_y)
+  // console.log('\n\nx and y switch')
+  // console.log(params.viz.zoom_switch)
+  // console.log(params.viz.zoom_switch_y)
 
   zoom_info.pan_room_y = 0;
 
