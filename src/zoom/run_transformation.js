@@ -1,6 +1,6 @@
 var zoom_constraint_and_trim = require('./zoom_constraint_and_trim');
 
-module.exports = function run_transformation(params, zoom_x, zoom_y, trans_x, trans_y, pan_room_x, pan_room_y){
+module.exports = function run_transformation(params, zoom_x, zoom_y, trans_x, trans_y, pan_room_y){
   
   // apply transformation and reset translate vector
   // the zoom vector (zoom.scale) never gets reset

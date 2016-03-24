@@ -1,6 +1,10 @@
 var apply_zoom = require('./apply_zoom');
 
 module.exports = function zoomed(params) {
+
+  d3.selectAll('.tile_tip')
+    .style('display','none' );
+
   var zoom_x = d3.event.scale,
     zoom_y = d3.event.scale,
     trans_x = d3.event.translate[0] - params.viz.clust.margin.left,
