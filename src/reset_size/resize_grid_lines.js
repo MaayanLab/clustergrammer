@@ -13,7 +13,15 @@ module.exports = function resize_grid_lines(params, svg_group){
   svg_group.selectAll('.horz_lines')
     .select('line')
     .attr('x2',params.viz.clust.dim.width)
-    .style('stroke-width', params.viz.border_width/params.viz.zoom_switch+'px');
+    .style('stroke-width', function(){
+      var inst_width;
+      if (params.viz.zoom_switch > 1){
+        inst_width = params.viz.border_width/params.viz.zoom_switch;
+      } else {
+        inst_width = params.viz.border_width;
+      }
+      return inst_width+'px';
+    });
 
   svg_group.selectAll('.vert_lines')
     .attr('transform', function(d) {
@@ -24,6 +32,14 @@ module.exports = function resize_grid_lines(params, svg_group){
   svg_group.selectAll('.vert_lines')
     .select('line')
     .attr('x2', -params.viz.clust.dim.height)
-    .style('stroke-width', params.viz.border_width + 'px');
+    .style('stroke-width', function(){
+      var inst_width;
+       if (params.viz.zoom_switch_y > 1){
+        inst_width = params.viz.border_width/ params.viz.zoom_switch_y;
+       } else {
+        inst_width = params.viz.border_width;
+       }
+       return inst_width + 'px';
+    });
 
 };

@@ -10,20 +10,7 @@ module.exports = function recalc_params_for_resize(params){
   params = get_svg_dim(params);
   params.viz = calc_clust_width(params.viz);
   params.viz = calc_clust_height(params.viz);  
-
-  // // zoom_switch from 1 to 2d zoom
-  // params.viz.zoom_switch = (params.viz.clust.dim.width / params.viz.num_col_nodes) / (params.viz.clust.dim.height / params.viz.num_row_nodes);
-  
-  // params.viz.zoom_switch_y = 1;
-
-  // // zoom_switch can not be less than 1
-  // if (params.viz.zoom_switch < 1) {
-  //   params.viz.zoom_switch_y = 1/params.zoom_switch;
-  //   params.viz.zoom_switch = 1;
-  // }
-
   params.viz = calc_zoom_switching(params.viz);
-
 
   // redefine x_scale and y_scale rangeBands
   params.viz.x_scale.rangeBands([0, params.viz.clust.dim.width]);

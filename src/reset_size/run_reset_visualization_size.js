@@ -67,7 +67,6 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
     .attr('width', params.viz.svg_dim.width)
     .attr('height', params.viz.svg_dim.height);
 
-
   svg_group.select('.super_background')
     .style('width', params.viz.svg_dim.width)
     .style('height', params.viz.svg_dim.height);
@@ -75,7 +74,6 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
   svg_group.select('.grey_background')
     .attr('width', params.viz.clust.dim.width)
     .attr('height', params.viz.clust.dim.height);
-
 
 
   var row_nodes = params.network_data.row_nodes;

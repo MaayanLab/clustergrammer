@@ -12,4 +12,4 @@ module.exports = function calc_zoom_switching(viz){
   }
 
   return viz;
-}
+};

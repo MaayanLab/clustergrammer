@@ -38,14 +38,6 @@ module.exports = function(params, inst_selection, inst_rc) {
 
   inst_width = calc_width(tmp_width, inst_zoom, inst_rc);
 
-  if (inst_rc === 'row'){
-    console.log('\ntrimming text '+ inst_rc)
-    console.log(d3.select(inst_selection).text())
-    console.log(inst_width)
-    console.log(max_width)
-  }
-
-
   if (inst_width > max_width){
 
     for (var i=1; i < num_trims; i++){
@@ -106,7 +98,6 @@ module.exports = function(params, inst_selection, inst_rc) {
 
   function calc_width(tmp_width, inst_zoom, inst_rc){
     if (inst_rc==='row'){
-      console.log('calculating width of row ' + String(inst_zoom))
       if (inst_zoom < 1){
         inst_width = tmp_width;
       } else {
