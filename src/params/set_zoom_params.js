@@ -14,9 +14,16 @@ module.exports = function set_zoom_params(params){
   var height_by_row = params.viz.clust.dim.height / params.viz.num_row_nodes;
   params.viz.zoom_switch = width_by_col / height_by_row;
 
+  params.viz.zoom_switch_y = 1;
+
+  console.log('zoom switch: '+String(params.viz.zoom_switch))
+
   if (params.viz.zoom_switch < 1) {
+    params.viz.zoom_switch_y = 1/params.viz.zoom_switch;
     params.viz.zoom_switch = 1;
   }
+
+  console.log('zoom switch: '+String(params.viz.zoom_switch))
 
   params.zoom_behavior = d3.behavior.zoom()
     .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch])

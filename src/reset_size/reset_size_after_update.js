@@ -28,9 +28,11 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
 
   // zoom_switch from 1 to 2d zoom
   params.viz.zoom_switch = (params.viz.clust.dim.width / params.viz.num_col_nodes) / (params.viz.clust.dim.height / params.viz.num_row_nodes);
+  params.viz.zoom_switch_y = 1;
 
   // zoom_switch can not be less than 1
   if (params.viz.zoom_switch < 1) {
+    params.viz.zoom_switch_y = 1/params.viz.zoom_switch;
     params.viz.zoom_switch = 1;
   }
 

@@ -131,15 +131,17 @@ module.exports = function(params, text_delay) {
 
   make_col_tooltips(params);
 
-  // append rectangle behind text
-  col_label_group
-    .insert('rect')
-    .attr('class','.highlight_rect')
-    .attr('x', 0)
-    .attr('y', 0)
-    .attr('width', 10*params.viz.rect_height)
-    .attr('height', 0.67*params.viz.rect_width)
-    .style('opacity', 0);
+  // this is interferring with text tooltip 
+  //////////////////////////////////////////
+  // // append rectangle behind text
+  // col_label_group
+  //   .insert('rect')
+  //   .attr('class','.highlight_rect')
+  //   .attr('x', 0)
+  //   .attr('y', 0)
+  //   .attr('width', 10*params.viz.rect_height)
+  //   .attr('height', 0.67*params.viz.rect_width)
+  //   .style('opacity', 0);
 
   // add triangle under rotated labels
   col_label_group

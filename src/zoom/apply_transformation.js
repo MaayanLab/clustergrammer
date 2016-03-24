@@ -1,6 +1,6 @@
 var utils = require('../utils');
 var constrain_font_size = require('./constrain_font_size');
-var trim_text = require('./trim_text');
+var still_zooming = require('./still_zooming');
 
 module.exports = function apply_transformation(params, trans_x, trans_y, zoom_x, zoom_y) {
   var d3_scale = zoom_x;
@@ -21,10 +21,11 @@ module.exports = function apply_transformation(params, trans_x, trans_y, zoom_x,
     // no panning in either direction
     trans_y = 0;
   }
-  // restrict y pan to pan_room_y if necessaryx
+  // restrict y pan to pan_room_y if necessary
   else if (trans_y <= -pan_room_y) {
     trans_y = -pan_room_y;
   }
+
 
   // x - rules
   ///////////////////////////////////////////////////
@@ -33,10 +34,11 @@ module.exports = function apply_transformation(params, trans_x, trans_y, zoom_x,
     // no x translate or zoom
     trans_x = 0;
     zoom_x = 1;
+
   }
-  // zoom in both directions
-  // scale is greater than params.viz.zoom_switch
   else {
+    // zoom in both directions
+    // scale is greater than params.viz.zoom_switch
     // available panning room in the x direction
     // multiple extra room (zoom - 1) by the width
     var pan_room_x = (d3_scale / params.viz.zoom_switch - 1) * params.viz.clust.dim.width;
@@ -128,35 +130,21 @@ module.exports = function apply_transformation(params, trans_x, trans_y, zoom_x,
     .translate([trans_x + params.viz.clust.margin.left, trans_y + params.viz.clust.margin.top
     ]);
 
-
-  function still_zooming(prev_zoom){
-    var inst_zoom = params.zoom_behavior.scale();
-    var zoom_diff = Math.abs( prev_zoom - inst_zoom )/ inst_zoom;
-    if (zoom_diff > 0.1){
-      run_font_trim();
-    }
-  }
+  // function still_zooming(params, prev_zoom){
+  //   var inst_zoom = params.zoom_behavior.scale();
+  //   var zoom_diff = Math.abs( prev_zoom - inst_zoom )/ inst_zoom;
+  //   if (zoom_diff > 0.1){
+  //     run_font_trim();
+  //   }
+  // }
   
-
   constrain_font_size(params);
-
-  // // run text trim with no delay 
-  // //////////////////////////
-  // d3.selectAll(params.root+' .row_label_group' )
-  //   .each(function() { trim_text(params, this, 'row'); });
-  // d3.selectAll(params.root+' .col_label_group')
-  //   .each(function() { trim_text(params, this, 'col'); });
 
   // run text trim with delay 
   //////////////////////////////
   var prev_zoom = params.zoom_behavior.scale();
-  setTimeout(still_zooming, 500, prev_zoom);
-  function run_font_trim(){
-    d3.selectAll(params.root+' .row_label_group' )
-      .each(function() { trim_text(params, this, 'row'); });
-    d3.selectAll(params.root+' .col_label_group')
-      .each(function() { trim_text(params, this, 'col'); });
-  }
+  setTimeout(still_zooming, 500, params, prev_zoom);
+
 
   // resize label bars if necessary
   ////////////////////////////////////

@@ -21,6 +21,7 @@ module.exports = function make_col_tooltips(params){
     d3.select(params.root+' .col_zoom_container')
       // .selectAll('.col_label_text')
       .selectAll('.col_label_group')
+      // .select('.highlight_rect')
       .on('mouseover', col_tip.show)
       .on('mouseout',  col_tip.hide);
 
