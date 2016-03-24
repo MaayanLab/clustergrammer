@@ -85,7 +85,7 @@ module.exports = function(params) {
 
   x_offset = params.viz.clust.margin.left + params.viz.clust.dim.width;
   y_offset = params.viz.clust.margin.top + params.viz.clust.dim.height;
-  tmp_width = params.viz.cat_room.col + params.viz.uni_margin;
+  tmp_width = params.viz.cat_room.col + params.viz.clust.dim.width;
   tmp_height = params.viz.cat_room.row + params.viz.uni_margin;
   d3.select(params.viz.viz_svg)
     .append('rect')

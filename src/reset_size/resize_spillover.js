@@ -70,7 +70,7 @@ module.exports = function resize_spillover(params, ini_svg_group, delay_info=fal
 
   x_offset = params.viz.clust.margin.left + params.viz.clust.dim.width;
   y_offset = params.viz.clust.margin.top + params.viz.clust.dim.height;
-  tmp_width = params.viz.cat_room.col + params.viz.uni_margin;
+  tmp_width = params.viz.cat_room.col + params.viz.clust.dim.width;
   tmp_height = params.viz.cat_room.row + params.viz.uni_margin;
 
   svg_group
