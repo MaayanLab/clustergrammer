@@ -3,7 +3,7 @@ import random
 random.seed(10)
 
 def main():
-  # make_json()
+  make_json()
   cluster()
 
 def cluster():
@@ -26,8 +26,8 @@ def make_json():
   from clustergrammer import Network
   net = Network()
 
-  row_num = 150
-  num_columns = 10
+  row_num = 50
+  num_columns = 200
 
   # make up all names for all data 
   row_names = make_up_names(row_num)
