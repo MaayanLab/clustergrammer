@@ -16,14 +16,10 @@ module.exports = function set_zoom_params(params){
 
   params.viz.zoom_switch_y = 1;
 
-  console.log('zoom switch: '+String(params.viz.zoom_switch))
-
   if (params.viz.zoom_switch < 1) {
     params.viz.zoom_switch_y = 1/params.viz.zoom_switch;
     params.viz.zoom_switch = 1;
   }
-
-  console.log('zoom switch: '+String(params.viz.zoom_switch))
 
   params.zoom_behavior = d3.behavior.zoom()
     .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch])

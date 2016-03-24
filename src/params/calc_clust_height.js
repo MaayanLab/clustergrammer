@@ -9,8 +9,8 @@ module.exports = function calc_clust_height(viz){
     - viz.dendro_room.col
     - viz.bottom_space;
 
-  var width_by_col  = viz.clust.dim.width / viz.num_col_nodes;
-  var height_by_row = ini_clust_height / viz.num_row_nodes;
+  // var width_by_col  = viz.clust.dim.width / viz.num_col_nodes;
+  // var height_by_row = ini_clust_height / viz.num_row_nodes;
 
   // if ( width_by_col < height_by_row ) {
 

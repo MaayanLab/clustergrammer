@@ -3,9 +3,6 @@ var make_col_dendro_triangles = require('../dendrogram/make_col_dendro_triangles
 
 module.exports = function toggle_dendro_view(params, row_col, wait_time = 1500){
 
-  console.log('params.viz.inst_order ' )
-  console.log(params.viz.inst_order)
-
   // row and col are reversed
   if (row_col === 'row'){
     if (params.viz.inst_order.col === 'clust'){
