@@ -1,5 +1,7 @@
 var draw_up_tile = require('../enter/draw_up_tile');
 var draw_dn_tile = require('../enter/draw_dn_tile');
+var mouseover_tile = require('./mouseover_tile');
+var mouseout_tile = require('./mouseout_tile');
 
 module.exports = function make_simple_rows(params, ini_inp_row_data, tip, row_selection) {
 
@@ -10,8 +12,6 @@ module.exports = function make_simple_rows(params, ini_inp_row_data, tip, row_se
     return num.value !== 0;
   });
 
-  var timeout;
-  var delay = 1000;
 
   // generate tiles in the current row
   var tile = d3.select(row_selection)
@@ -26,42 +26,11 @@ module.exports = function make_simple_rows(params, ini_inp_row_data, tip, row_se
     .style('fill', function(d) {
       return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
     })
-    .on('mouseover', function(p) {
-
-      d3.select(this)
-        .classed('hovering', true);
-
-      // highlight row - set text to active if
-      d3.selectAll(params.root+' .row_label_group text')
-        .classed('active', function(d) {
-          return p.row_name.replace(/_/g, ' ') === d.name;
-        });
-
-      d3.selectAll(params.root+' .col_label_text text')
-        .classed('active', function(d) {
-          return p.col_name === d.name;
-        });
-
-      var inst_selection = this;
-      var context = this;
-      var args = [].slice.call(arguments);
-      args.push(this);
-      clearTimeout(timeout);
-      timeout = setTimeout(function() {
-        var is_hovering = d3.select(inst_selection).classed('hovering');
-        if (is_hovering){
-          d3.selectAll('.d3-tip')
-            .style('display','block');
-          tip.show.apply(context, args);
-        }
-      }, delay, inst_selection); 
-
+    .on('mouseover', function(...args) {
+      mouseover_tile(params, this, tip, args);
     })
     .on('mouseout', function() {
-      d3.select(this)
-        .classed('hovering',false);
-      d3.selectAll(params.root+' text').classed('active', false);
-      tip.hide();
+      mouseout_tile(params, this, tip);
     })
     .style('fill-opacity', function(d) {
       // calculate output opacity using the opacity scale
@@ -106,19 +75,19 @@ module.exports = function make_simple_rows(params, ini_inp_row_data, tip, row_se
         }
         return inst_opacity;
       })
-      .on('mouseover', function(p) {
+      .on('mouseover', function(inst_data) {
         // highlight row - set text to active if
         d3.selectAll(params.root+' .row_label_group text')
           .classed('active', function(d) {
-            return p.row_name.replace(/_/g, ' ') === d.name;
+            return inst_data.row_name.replace(/_/g, ' ') === d.name;
           });
 
         d3.selectAll(params.root+' .col_label_text text')
           .classed('active', function(d) {
-            return p.col_name === d.name;
+            return inst_data.col_name === d.name;
           });
         if (params.matrix.show_tile_tooltips){
-          tip.show(p);
+          tip.show(inst_data);
         }
       })
       .on('mouseout', function() {
@@ -153,19 +122,19 @@ module.exports = function make_simple_rows(params, ini_inp_row_data, tip, row_se
         }
         return inst_opacity;
       })
-      .on('mouseover', function(p) {
+      .on('mouseover', function(inst_data) {
       // highlight row - set text to active if
       d3.selectAll(params.root+' .row_label_group text')
         .classed('active', function(d) {
-          return p.row_name.replace(/_/g, ' ') === d.name;
+          return inst_data.row_name.replace(/_/g, ' ') === d.name;
         });
 
       d3.selectAll(params.root+' .col_label_text text')
         .classed('active', function(d) {
-          return p.col_name === d.name;
+          return inst_data.col_name === d.name;
         });
       if (params.matrix.show_tile_tooltips){
-        tip.show(p);
+        tip.show(inst_data);
       }
     })
     .on('mouseout', function() {
