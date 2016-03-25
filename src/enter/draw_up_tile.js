@@ -1,5 +1,5 @@
 module.exports = function draw_up_tile(params){
-  
+
   var start_x = 0;
   var final_x = params.viz.x_scale.rangeBand();
   var start_y = 0;

@@ -1,3 +1,5 @@
+var draw_up_tile = require('./draw_up_tile');
+
 module.exports = function enter_split_tiles(params, inp_row_data, row_selection, tip, delays, duration, tile){
 
   // value split
@@ -13,17 +15,7 @@ module.exports = function enter_split_tiles(params, inp_row_data, row_selection,
     .append('path')
     .attr('class','tile_up')
     .attr('d', function() {
-
-      // up triangle
-      var start_x = 0;
-      var final_x = params.viz.x_scale.rangeBand();
-      var start_y = 0;
-      var final_y = params.viz.y_scale.rangeBand() - params.viz.y_scale.rangeBand() /60;
-
-      var output_string = 'M' + start_x + ',' + start_y + ', L' +
-      start_x + ', ' + final_y + ', L' + final_x + ',0 Z';
-
-      return output_string;
+      return draw_up_tile(params);
     })
     .attr('transform', function(d) {
       var x_pos = params.viz.x_scale(d.pos_x) + 0.5*params.viz.border_width;
