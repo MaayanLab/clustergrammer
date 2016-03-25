@@ -150,6 +150,16 @@ class Network(object):
       self.dat['node_info']['col']['cat-0'] = all_cat
       self.dict_cat()
 
+      self.dat['node_info']['col']['full_names'] = []
+
+      # construct full_names from single column category 
+      # need to improve 
+      for inst_index in range(len(all_cat)):
+        inst_cat = all_cat[inst_index]
+        inst_name = self.dat['nodes']['col'][inst_index]
+        inst_tuple = ( inst_name, inst_cat )
+        self.dat['node_info']['col']['full_names'].append( inst_tuple )
+
     self.dat['mat'] = np.empty((len(all_rows),len(all_sigs)))
     self.dat['mat'][:] = np.nan
 
@@ -221,6 +231,11 @@ class Network(object):
     all_views = []
     send_df = deepcopy(df)
 
+    print('\nchecking column keys')
+    print(self.dat['node_info']['col'].keys())
+
+    print(send_df['mat'].columns.tolist())
+    
     if 'N_row_sum' in views:
       print('\nadd N_row_sum')
       all_views = self.add_N_top_views( send_df, all_views, \
@@ -423,14 +438,16 @@ class Network(object):
     self.viz_json(dendro)
 
   def calc_cat_clust_order(self, inst_rc):
+    # print('calc_cat_clust_order')
     from clustergrammer import Network 
     from copy import deepcopy 
-
-    # print('\n---- inst_rc '+str(inst_rc))
 
     inst_keys = self.dat['node_info'][inst_rc].keys()
     all_cats = [x for x in inst_keys if 'cat-' in x]
 
+    # print('node_info '+str(inst_rc))
+    # print(self.dat['node_info'][inst_rc].keys())
+    # print('all_cats')
     # print(all_cats)
 
     if len(all_cats) > 0:
@@ -447,7 +464,7 @@ class Network(object):
         tmp_names_list = []
         for inst_cat in all_cats:
 
-          print(inst_cat)
+          # print(inst_cat)
 
           inst_nodes = dict_cat[inst_cat]
 
@@ -483,17 +500,17 @@ class Network(object):
           prev_order_len = len(all_cat_orders)
 
           # add prev order length to the current order number 
-          print('inst_cat_order '+str(inst_cat_order))
+          # print('inst_cat_order '+str(inst_cat_order))
           inst_cat_order = [i+prev_order_len for i in inst_cat_order]
           all_cat_orders.extend(inst_cat_order)
 
 
-        print('all_cat_orders')
-        print(all_cat_orders)
+        # print('all_cat_orders')
+        # print(all_cat_orders)
 
         names_clust_list = [x for (y,x) in sorted(zip(all_cat_orders,tmp_names_list))]
-        print('names_clust_list')
-        print(names_clust_list)
+        # print('names_clust_list')
+        # print(names_clust_list)
 
         # calc category-cluster order 
         final_order = []
@@ -634,7 +651,14 @@ class Network(object):
     for inst_rc in ['row','col']:
 
       if type(self.dat['nodes'][inst_rc][0]) is tuple:
+        # get the number of categories from the length of the tuple 
+        # subtract 1 because the name is the first element of the tuple 
         num_cat = len(self.dat['nodes'][inst_rc][0]) - 1
+        print(self.dat['nodes'][inst_rc][0])
+        print(len(self.dat['nodes'][inst_rc][0]))
+        print('num_cat')
+        print(num_cat)
+        print('\n\n')
         self.dat['node_info'][inst_rc]['full_names'] = self.dat['nodes'][inst_rc]
 
         for inst_rcat in range(num_cat):
