@@ -75,26 +75,11 @@ module.exports = function make_simple_rows(params, ini_inp_row_data, tip, row_se
         }
         return inst_opacity;
       })
-      .on('mouseover', function(inst_data) {
-        // highlight row - set text to active if
-        d3.selectAll(params.root+' .row_label_group text')
-          .classed('active', function(d) {
-            return inst_data.row_name.replace(/_/g, ' ') === d.name;
-          });
-
-        d3.selectAll(params.root+' .col_label_text text')
-          .classed('active', function(d) {
-            return inst_data.col_name === d.name;
-          });
-        if (params.matrix.show_tile_tooltips){
-          tip.show(inst_data);
-        }
+      .on('mouseover', function(...args) {
+        mouseover_tile(params, this, tip, args);
       })
       .on('mouseout', function() {
-        d3.selectAll(params.root+' text').classed('active', false);
-        if (params.matrix.show_tile_tooltips){
-          tip.hide();
-        }
+        mouseout_tile(params, this, tip);
       });
 
     // tile_dn
@@ -122,35 +107,20 @@ module.exports = function make_simple_rows(params, ini_inp_row_data, tip, row_se
         }
         return inst_opacity;
       })
-      .on('mouseover', function(inst_data) {
-      // highlight row - set text to active if
-      d3.selectAll(params.root+' .row_label_group text')
-        .classed('active', function(d) {
-          return inst_data.row_name.replace(/_/g, ' ') === d.name;
-        });
-
-      d3.selectAll(params.root+' .col_label_text text')
-        .classed('active', function(d) {
-          return inst_data.col_name === d.name;
-        });
-      if (params.matrix.show_tile_tooltips){
-        tip.show(inst_data);
-      }
-    })
-    .on('mouseout', function() {
-      d3.selectAll(params.root+' text').classed('active', false);
-      if (params.matrix.show_tile_tooltips){
-        tip.hide();
-      }
-    });
-
-    // remove rect when tile is split 
-    tile
-      .each(function(d){
-        if ( Math.abs(d.value_up)>0 && Math.abs(d.value_dn)>0 ){
-          d3.select(this).remove();
-        }
+      .on('mouseover', function(...args) {
+        mouseover_tile(params, this, tip, args);
+      })
+      .on('mouseout', function() {
+        mouseout_tile(params, this, tip);
       });
+
+      // remove rect when tile is split 
+      tile
+        .each(function(d){
+          if ( Math.abs(d.value_up)>0 && Math.abs(d.value_dn)>0 ){
+            d3.select(this).remove();
+          }
+        });
 
   }
 
