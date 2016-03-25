@@ -99,7 +99,8 @@ module.exports = function(viz) {
     .classed('dendro_corner_spillover',true); 
 
   x_offset = viz.clust.margin.left + viz.clust.dim.width + viz.uni_margin;
-  y_offset = viz.norm_labels.margin.top + viz.norm_labels.width.col + 2.5*viz.uni_margin;
+  y_offset = viz.norm_labels.margin.top + viz.norm_labels.width.col 
+    + 2.5*viz.uni_margin;
   var cat_text_size = 1.15*viz.cat_room.symbol_width;
 
 
@@ -119,7 +120,8 @@ module.exports = function(viz) {
       .style('opacity', cat_super_opacity)
       .attr('transform', function(d){
         var inst_cat = parseInt( d.split('-')[1], 10);
-        var inst_y = y_offset + extra_y_room * viz.cat_room.symbol_width * inst_cat;
+        var inst_y = y_offset + extra_y_room * viz.cat_room.symbol_width 
+          * inst_cat;
         return 'translate('+x_offset+','+inst_y+')';
       })
       .text(function(d){

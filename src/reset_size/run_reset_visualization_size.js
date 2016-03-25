@@ -163,7 +163,7 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
 
 
   resize_super_labels(params, svg_group);
-  resize_spillover(params, svg_group);
+  resize_spillover(params.viz, svg_group);
 
   // specific to screen resize 
   resize_grid_lines(params, svg_group);

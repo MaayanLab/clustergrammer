@@ -185,7 +185,7 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
 
   resize_dendro(params, svg_group, delays);
   resize_super_labels(params, svg_group, delays);
-  resize_spillover(params, svg_group, delays);
+  resize_spillover(params.viz, svg_group, delays);
 
   // reset zoom and translate
   params.zoom_behavior
