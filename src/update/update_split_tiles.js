@@ -1,7 +1,9 @@
 var draw_up_tile = require('../enter/draw_up_tile');
 var draw_dn_tile = require('../enter/draw_dn_tile');
+var mouseover_tile = require('../matrix/mouseover_tile');
+var mouseout_tile = require('../matrix/mouseout_tile');
 
-module.exports = function update_split_tiles(params, inp_row_data, row_selection, delays, duration, cur_row_tiles){
+module.exports = function update_split_tiles(params, inp_row_data, row_selection, delays, duration, cur_row_tiles, tip){
 
   // value split
   var row_split_data = _.filter(inp_row_data, function(num){
@@ -13,29 +15,13 @@ module.exports = function update_split_tiles(params, inp_row_data, row_selection
     .selectAll('.tile_up')
     .data(row_split_data, function(d){return d.col_name;});
 
-
   // update split tiles_up
   var update_tiles_up = cur_tiles_up
-    .on('mouseover', function(p) {
-      // highlight row - set text to active if
-      d3.selectAll(params.root+' .row_label_group text')
-        .classed('active', function(d) {
-          return p.row_name === d.name;
-        });
-
-      d3.selectAll(params.root+' .col_label_text text')
-        .classed('active', function(d) {
-          return p.col_name === d.name;
-        });
-      // if (params.matrix.show_tile_tooltips){
-      //   tip.show(p);
-      // }
+    .on('mouseover', function(...args) {
+      mouseover_tile(params, this, tip, args);
     })
     .on('mouseout', function mouseout() {
-      d3.selectAll(params.root+' text').classed('active', false);
-      // if (params.matrix.show_tile_tooltips){
-      //   tip.hide();
-      // }
+      mouseout_tile(params, this, tip);
     });
 
   if (delays.run_transition){
@@ -68,26 +54,11 @@ module.exports = function update_split_tiles(params, inp_row_data, row_selection
 
   // update split tiles_dn
   var update_tiles_dn = cur_tiles_dn
-    .on('mouseover', function(p) {
-      // highlight row - set text to active if
-      d3.selectAll(params.root+' .row_label_group text')
-        .classed('active', function(d) {
-          return p.row_name === d.name;
-        });
-
-      d3.selectAll(params.root+' .col_label_text text')
-        .classed('active', function(d) {
-          return p.col_name === d.name;
-        });
-      // if (params.matrix.show_tile_tooltips){
-      //   tip.show(p);
-      // }
+    .on('mouseover', function(...args) {
+      mouseover_tile(params, this, tip, args);
     })
     .on('mouseout', function mouseout() {
-      d3.selectAll(params.root+' text').classed('active', false);
-      // if (params.matrix.show_tile_tooltips){
-      //   tip.hide();
-      // }
+      mouseout_tile(params, this, tip);
     });
 
   if (delays.run_transition){

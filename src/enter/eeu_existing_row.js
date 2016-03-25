@@ -64,9 +64,9 @@ module.exports = function eeu_existing_row(params, ini_inp_row_data, delays, dur
   }
 
   if (params.matrix.tile_type == 'updn'){
-    update_split_tiles(params, inp_row_data, row_selection, delays, duration, cur_row_tiles);
+    update_split_tiles(params, inp_row_data, row_selection, delays, duration, cur_row_tiles, tip);
   }
 
-  enter_existing_row(params, delays, duration, cur_row_tiles);
+  enter_existing_row(params, delays, duration, cur_row_tiles, tip);
 
 };

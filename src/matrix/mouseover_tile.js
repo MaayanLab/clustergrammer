@@ -22,13 +22,17 @@ module.exports = function mouseover_tile(params, inst_selection, tip, inst_argum
   args.push(inst_selection);
 
   clearTimeout(timeout);
-  timeout = setTimeout(function() {
-    var is_hovering = d3.select(inst_selection).classed('hovering');
-    if (is_hovering){
+
+  timeout = setTimeout(check_if_hovering, delay, inst_selection); 
+
+  function check_if_hovering() {
+
+    if ( d3.select(inst_selection).classed('hovering') ){
       d3.selectAll('.d3-tip')
         .style('display','block');
       tip.show.apply(inst_selection, args);
     }
-  }, delay, inst_selection); 
+
+  }
 
 };

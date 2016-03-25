@@ -1,4 +1,7 @@
-module.exports = function enter_existing_row(params, delays, duration, cur_row_tiles){
+var mouseover_tile = require('../matrix/mouseover_tile');
+var mouseout_tile = require('../matrix/mouseout_tile');
+
+module.exports = function enter_existing_row(params, delays, duration, cur_row_tiles, tip){
 
   // enter new tiles
   var new_tiles = cur_row_tiles
@@ -7,26 +10,11 @@ module.exports = function enter_existing_row(params, delays, duration, cur_row_t
     .attr('class', 'tile row_tile')
     .attr('width', params.viz.rect_width)
     .attr('height', params.viz.rect_height)
-    .on('mouseover', function(p) {
-      // highlight row - set text to active if
-      d3.selectAll(params.root+' .row_label_group text')
-        .classed('active', function(d) {
-          return p.row_name === d.name;
-        });
-
-      d3.selectAll(params.root+' .col_label_text text')
-        .classed('active', function(d) {
-          return p.col_name === d.name;
-        });
-      // if (params.matrix.show_tile_tooltips){
-      //   tip.show(p);
-      // }
+    .on('mouseover', function(...args) {
+      mouseover_tile(params, this, tip, args);
     })
     .on('mouseout', function mouseout() {
-      d3.selectAll(params.root+' text').classed('active', false);
-      // if (params.matrix.show_tile_tooltips){
-      //   tip.hide();
-      // }
+      mouseout_tile(params, this, tip);
     })
     .attr('fill-opacity',0)
     .attr('transform', function(d){
