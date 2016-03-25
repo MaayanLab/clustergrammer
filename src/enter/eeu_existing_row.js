@@ -58,6 +58,8 @@ module.exports = function eeu_existing_row(params, ini_inp_row_data, delays, dur
       timeout = setTimeout(function() {
         var is_hovering = d3.select(inst_selection).classed('hovering');
         if (is_hovering){
+          d3.selectAll('.d3-tip')
+            .style('display','block');
           tip.show.apply(context, args);
         }
       }, delay, inst_selection);       

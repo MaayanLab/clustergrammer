@@ -103,6 +103,8 @@ module.exports = function(params) {
   var cat_text_size = 1.15*params.viz.cat_room.symbol_width;
 
 
+  var cat_super_opacity = 0.65;
+
   // col category super labels 
   if (params.viz.show_categories.col){  
     d3.select(params.viz.viz_svg)
@@ -119,7 +121,8 @@ module.exports = function(params) {
       .text(function(d){
         var inst_num = parseInt( d.split('-')[1], 10) + 1;
         return 'Category ' + inst_num;
-      });
+      })
+      .style('opacity', cat_super_opacity);
     }
 
   // row category super labels 
@@ -127,15 +130,16 @@ module.exports = function(params) {
     var row_cat_label_container = d3.select(params.viz.viz_svg)
       .append('g')
       .classed('row_cat_label_container', true)
-      .attr('transform', function(d){ 
+      .attr('transform', function(){ 
         x_offset = params.viz.clust.margin.left - params.viz.uni_margin;
         y_offset = params.viz.clust.margin.top - params.viz.uni_margin;
-        return 'translate('+x_offset+','+y_offset+') rotate(-90)'
-    } )
+        return 'translate('+x_offset+','+y_offset+') rotate(-90)';
+    });
 
     row_cat_label_container
       .append('text')
       .text('something')
+      .style('opacity', cat_super_opacity);
       // .attr('transform','rotate(-90)');
   }
 
