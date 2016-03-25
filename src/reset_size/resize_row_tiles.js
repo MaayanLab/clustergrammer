@@ -1,4 +1,5 @@
 var draw_up_tile = require('../enter/draw_up_tile');
+var draw_dn_tile = require('../enter/draw_dn_tile');
 
 module.exports = function resize_row_tiles(params, svg_group){
 
@@ -37,21 +38,12 @@ module.exports = function resize_row_tiles(params, svg_group){
   svg_group.selectAll('.row')
     .selectAll('.tile_dn')
     .attr('d', function() {
-        // dn triangle
-        var start_x = 0;
-        var final_x = params.viz.x_scale.rangeBand();
-        var start_y = params.viz.y_scale.rangeBand();
-        var final_y = params.viz.y_scale.rangeBand();
-
-        var output_string = 'M' + start_x + ', ' + start_y + ' ,   L' +
-        final_x + ', ' + final_y + ',  L' + final_x + ',0 Z';
-
-        return output_string;
-      })
-      .attr('transform', function(d) {
-        var x_pos = params.viz.x_scale(d.pos_x) + 0.5*params.viz.border_width;
-        var y_pos = 0.5*params.viz.border_width/params.viz.zoom_switch;
-        return 'translate(' + x_pos + ','+y_pos+')';
-      });
+      return draw_dn_tile(params);
+    })
+    .attr('transform', function(d) {
+      var x_pos = params.viz.x_scale(d.pos_x) + 0.5*params.viz.border_width;
+      var y_pos = 0.5*params.viz.border_width/params.viz.zoom_switch;
+      return 'translate(' + x_pos + ','+y_pos+')';
+    });
 
 };
