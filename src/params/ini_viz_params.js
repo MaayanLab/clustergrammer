@@ -2,6 +2,7 @@ module.exports = function ini_viz_params(config, params){
 
   var viz = {};
 
+  viz.root = config.root;
   viz.viz_wrapper = config.root + ' .viz_wrapper';
   viz.do_zoom = config.do_zoom;
   viz.resize = config.resize;

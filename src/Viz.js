@@ -56,7 +56,7 @@ module.exports = function(params) {
     make_col_cat(params);
   }
     
-  spillover(params);
+  spillover(params.viz);
 
 
   if (params.labels.super_labels) {
