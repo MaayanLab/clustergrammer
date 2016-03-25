@@ -114,6 +114,7 @@ module.exports = function(params) {
       .append('text')
       .classed('col_cat_super', true)
       .style('font-size', cat_text_size+'px')
+      .style('opacity', cat_super_opacity)
       .attr('transform', function(d){
         var inst_y = y_offset + 1.2*params.viz.cat_room.symbol_width * parseInt( d.split('-')[1], 10);
         return 'translate('+x_offset+','+inst_y+')';
@@ -121,8 +122,7 @@ module.exports = function(params) {
       .text(function(d){
         var inst_num = parseInt( d.split('-')[1], 10) + 1;
         return 'Category ' + inst_num;
-      })
-      .style('opacity', cat_super_opacity);
+      });
     }
 
   // row category super labels 
@@ -131,16 +131,27 @@ module.exports = function(params) {
       .append('g')
       .classed('row_cat_label_container', true)
       .attr('transform', function(){ 
-        x_offset = params.viz.clust.margin.left - params.viz.uni_margin;
+        x_offset = params.viz.norm_labels.margin.left + params.viz.norm_labels.width.row + params.viz.cat_room.symbol_width +  2.75*params.viz.uni_margin;
         y_offset = params.viz.clust.margin.top - params.viz.uni_margin;
         return 'translate('+x_offset+','+y_offset+') rotate(-90)';
     });
 
     row_cat_label_container
+      .selectAll()
+      .data(params.viz.all_cats.row)
+      .enter()
       .append('text')
-      .text('something')
-      .style('opacity', cat_super_opacity);
-      // .attr('transform','rotate(-90)');
+      .classed('row_cat_super',true)
+      .style('font-size', cat_text_size+'px')
+      .style('opacity', cat_super_opacity)
+      .attr('transform', function(d){
+        var inst_y = 1.2*params.viz.cat_room.symbol_width * parseInt( d.split('-')[1], 10 );
+        return 'translate(0,'+inst_y+')';
+      })
+      .text(function(d){
+        var inst_num = parseInt( d.split('-')[1], 10 ) + 1;
+        return 'Category ' + inst_num;
+      });
   }
 
 
