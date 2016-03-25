@@ -102,8 +102,6 @@ module.exports = function(viz) {
   y_offset = viz.norm_labels.margin.top + viz.norm_labels.width.col 
     + 2.5*viz.uni_margin;
   var cat_text_size = 1.15*viz.cat_room.symbol_width;
-
-
   var cat_super_opacity = 0.65;
   var extra_x_room = 2.75;
   var extra_y_room = 1.2;
@@ -140,7 +138,7 @@ module.exports = function(viz) {
           + viz.cat_room.symbol_width + extra_x_room * viz.uni_margin;
         y_offset = viz.clust.margin.top - viz.uni_margin;
         return 'translate('+x_offset+','+y_offset+') rotate(-90)';
-    });
+      });
 
     row_cat_label_container
       .selectAll()

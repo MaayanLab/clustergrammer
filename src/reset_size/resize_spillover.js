@@ -81,10 +81,33 @@ module.exports = function resize_spillover(viz, ini_svg_group, delay_info=false)
       return 'translate('+x_offset+','+y_offset+')';
     });
 
-  // if (viz.show_categories.col)
-  //   // reposition category superlabels 
-  //   d3.select(viz.root+' .col_cat_super')
+  x_offset = viz.clust.margin.left + viz.clust.dim.width + viz.uni_margin;
+  y_offset = viz.norm_labels.margin.top + viz.norm_labels.width.col 
+    + 2.5*viz.uni_margin;
+  var extra_x_room = 2.75;
+  var extra_y_room = 1.2;
 
+  // reposition category superlabels 
+  if (viz.show_categories.col){
+
+    d3.selectAll(viz.root+' .col_cat_super')
+      .attr('transform', function(d){
+        var inst_cat = parseInt( d.split('-')[1], 10);
+        var inst_y = y_offset + extra_y_room * viz.cat_room.symbol_width 
+          * inst_cat;
+        return 'translate('+x_offset+','+inst_y+')';
+      });
+  }
+
+  if (viz.show_categories.row){
+    d3.select(viz.root+' .row_cat_label_container')
+      .attr('transform', function(){ 
+        x_offset = viz.norm_labels.margin.left + viz.norm_labels.width.row 
+          + viz.cat_room.symbol_width + extra_x_room * viz.uni_margin;
+        y_offset = viz.clust.margin.top - viz.uni_margin;
+        return 'translate('+x_offset+','+y_offset+') rotate(-90)';
+      });
+  }
 
   // white border bottom - prevent clustergram from hitting border
   svg_group.select(viz.root+' .bottom_spillover')
