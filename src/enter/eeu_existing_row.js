@@ -1,6 +1,8 @@
 var exit_existing_row = require('../exit/exit_existing_row');
 var enter_existing_row = require('./enter_existing_row');
 var update_split_tiles = require('../update/update_split_tiles');
+var mouseover_tile = require('../matrix/mouseover_tile');
+var mouseout_tile = require('../matrix/mouseout_tile');
 
 // TODO add tip back to arguments
 module.exports = function eeu_existing_row(params, ini_inp_row_data, delays, duration, row_selection, tip) {
@@ -25,53 +27,13 @@ module.exports = function eeu_existing_row(params, ini_inp_row_data, delays, dur
   // Update
   ///////////////////////////
 
-  var timeout;
-  var delay = 1000;
-  
   // update tiles in x direction 
   var update_row_tiles = cur_row_tiles
-    .on('mouseover', function(p) {
-
-      d3.select(this)
-        .classed('hovering', true);
-
-      // highlight row - set text to active if
-      d3.selectAll(params.root+' .row_label_group text')
-        .classed('active', function(d) {
-          return p.row_name === d.name;
-        });
-
-      d3.selectAll(params.root+' .col_label_text text')
-        .classed('active', function(d) {
-          return p.col_name === d.name;
-        });
-
-      // // if (params.matrix.show_tile_tooltips){
-      //   tip.show(p);
-      // // }
-
-      var inst_selection = this;
-      var context = this;
-      var args = [].slice.call(arguments);
-      args.push(this);
-      clearTimeout(timeout);
-      timeout = setTimeout(function() {
-        var is_hovering = d3.select(inst_selection).classed('hovering');
-        if (is_hovering){
-          d3.selectAll('.d3-tip')
-            .style('display','block');
-          tip.show.apply(context, args);
-        }
-      }, delay, inst_selection);       
-
+    .on('mouseover', function(...args) {
+      mouseover_tile(params, this, tip, args);
     })
     .on('mouseout', function mouseout() {
-      d3.select(this)
-        .classed('hovering',false);
-      d3.selectAll(params.root+' text').classed('active', false);
-      // if (params.matrix.show_tile_tooltips){
-        tip.hide();
-      // }
+      mouseout_tile(params, this, tip);
     });
 
   var col_nodes_names = params.network_data.col_nodes_names;

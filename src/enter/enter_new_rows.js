@@ -1,4 +1,6 @@
 var enter_split_tiles = require('./enter_split_tiles');
+var mouseover_tile = require('../matrix/mouseover_tile');
+var mouseout_tile = require('../matrix/mouseout_tile');
 
 // make each row in the clustergram
 module.exports = function enter_new_rows(params, ini_inp_row_data, delays, duration, tip, row_selection) {
@@ -24,20 +26,11 @@ module.exports = function enter_new_rows(params, ini_inp_row_data, delays, durat
     .style('fill', function(d) {
       return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
     })
-    .on('mouseover', function(p) {
-      // highlight row - set text to active if
-      d3.selectAll(params.root+' .row_label_group text')
-        .classed('active', function(d) {
-          return p.row_name === d.name;
-        });
-
-      d3.selectAll(params.root+' .col_label_text text')
-        .classed('active', function(d) {
-          return p.col_name === d.name;
-        });
+    .on('mouseover', function(...args) {
+      mouseover_tile(params, this, tip, args);
     })
     .on('mouseout', function mouseout() {
-      d3.selectAll(params.root+' text').classed('active', false);
+      mouseout_tile(params, this, tip);
     });
 
   tile
