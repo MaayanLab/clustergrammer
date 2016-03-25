@@ -1,3 +1,5 @@
+var cat_tooltip_text = require('./cat_tooltip_text');
+
 module.exports = function make_row_cat(params) {
 
   // make or reuse outer container 
@@ -43,8 +45,7 @@ module.exports = function make_row_cat(params) {
     .offset([5,0])
     .style('display','block')
     .html(function(d){
-      var inst_cat = d3.select(this).attr('cat');
-      return 'category: ' + d[inst_cat];
+      return cat_tooltip_text(params, d, this);
     });
 
   // groups that hold classification triangle and colorbar rect
