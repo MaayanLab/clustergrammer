@@ -102,23 +102,42 @@ module.exports = function(params) {
   y_offset = params.viz.norm_labels.margin.top + params.viz.norm_labels.width.col + 2.5*params.viz.uni_margin;
   var cat_text_size = 1.15*params.viz.cat_room.symbol_width;
 
-  d3.select(params.viz.viz_svg)
-    .selectAll()
-    .data(params.viz.all_cats.col)
-    .enter()
-    .append('text')
-    .classed('new_text', true)
-    .style('font-size', cat_text_size+'px')
-    .attr('transform', function(d){
-      console.log(d)
-      var inst_y = y_offset + 1.2*params.viz.cat_room.symbol_width * parseInt( d.split('-')[1], 10);
-      console.log(inst_y)
-      return 'translate('+x_offset+','+inst_y+')';
-    })
-    .text(function(d){
-      var inst_num = parseInt( d.split('-')[1], 10) + 1;
-      return 'Category ' + inst_num;
-    })
+
+  // col category super labels 
+  if (params.viz.show_categories.col){  
+    d3.select(params.viz.viz_svg)
+      .selectAll()
+      .data(params.viz.all_cats.col)
+      .enter()
+      .append('text')
+      .classed('col_cat_super', true)
+      .style('font-size', cat_text_size+'px')
+      .attr('transform', function(d){
+        var inst_y = y_offset + 1.2*params.viz.cat_room.symbol_width * parseInt( d.split('-')[1], 10);
+        return 'translate('+x_offset+','+inst_y+')';
+      })
+      .text(function(d){
+        var inst_num = parseInt( d.split('-')[1], 10) + 1;
+        return 'Category ' + inst_num;
+      });
+    }
+
+  // row category super labels 
+  if (params.viz.show_categories.row){
+    var row_cat_label_container = d3.select(params.viz.viz_svg)
+      .append('g')
+      .classed('row_cat_label_container', true)
+      .attr('transform', function(d){ 
+        x_offset = params.viz.clust.margin.left - params.viz.uni_margin;
+        y_offset = params.viz.clust.margin.top - params.viz.uni_margin;
+        return 'translate('+x_offset+','+y_offset+') rotate(-90)'
+    } )
+
+    row_cat_label_container
+      .append('text')
+      .text('something')
+      // .attr('transform','rotate(-90)');
+  }
 
 
   // // white border bottom - prevent clustergram from hitting border
