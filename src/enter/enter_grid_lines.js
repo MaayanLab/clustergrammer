@@ -53,11 +53,11 @@ module.exports = function enter_grid_lines(params, delays, duration){
     .attr('x2', -params.viz.clust.dim.height)
     .style('stroke-width', function(){
       var inst_width;
-       // if (params.viz.zoom_switch_y > 1){
-       //  inst_width = params.viz.border_width/ params.viz.zoom_switch_y;
-       // } else {
+       if (params.viz.zoom_switch_y > 1){
+        inst_width = params.viz.border_width/ params.viz.zoom_switch_y;
+       } else {
         inst_width = params.viz.border_width;
-       // }
+       }
        return inst_width + 'px';
     })
     .style('stroke', 'white')
