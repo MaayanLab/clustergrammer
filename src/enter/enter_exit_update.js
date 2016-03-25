@@ -16,7 +16,7 @@ module.exports = function(params, network_data, delays){
 
   // d3-tooltip - for tiles
   var tip = d3.tip()
-    .attr('class', 'd3-tip')
+    .attr('class', 'd3-tip tile_tip')
     .direction('n')
     .offset([0, 0])
     .html(function(d){
