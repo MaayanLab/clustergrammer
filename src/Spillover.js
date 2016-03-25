@@ -96,7 +96,30 @@ module.exports = function(params) {
       return 'translate('+x_offset+','+y_offset+')';
     })
     .classed('white_bars',true)
-    .classed('dendro_corner_spillover',true);     
+    .classed('dendro_corner_spillover',true); 
+
+  x_offset = params.viz.clust.margin.left + params.viz.clust.dim.width + params.viz.uni_margin;
+  y_offset = params.viz.norm_labels.margin.top + params.viz.norm_labels.width.col + 2.5*params.viz.uni_margin;
+  var cat_text_size = 1.15*params.viz.cat_room.symbol_width;
+
+  d3.select(params.viz.viz_svg)
+    .selectAll()
+    .data(params.viz.all_cats.col)
+    .enter()
+    .append('text')
+    .classed('new_text', true)
+    .style('font-size', cat_text_size+'px')
+    .attr('transform', function(d){
+      console.log(d)
+      var inst_y = y_offset + 1.2*params.viz.cat_room.symbol_width * parseInt( d.split('-')[1], 10);
+      console.log(inst_y)
+      return 'translate('+x_offset+','+inst_y+')';
+    })
+    .text(function(d){
+      var inst_num = parseInt( d.split('-')[1], 10) + 1;
+      return 'Category ' + inst_num;
+    })
+
 
   // // white border bottom - prevent clustergram from hitting border
   // d3.select(params.viz.viz_svg)

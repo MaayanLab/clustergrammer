@@ -1,4 +1,3 @@
-
 module.exports = function make_row_cat(params) {
 
   // make or reuse outer container 

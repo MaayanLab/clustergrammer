@@ -1,7 +1,3 @@
-// var utils = require('../utils');
-// var get_inst_group = require('./get_inst_group');
-// var build_color_groups = require('./build_color_groups');
-
 module.exports = function make_col_cat(params) {
 
   // make or reuse outer container 
@@ -24,7 +20,6 @@ module.exports = function make_col_cat(params) {
       });
   }
   
-
   // d3-tooltip 
   var cat_tip = d3.tip()
     .attr('class', 'd3-tip')
@@ -35,7 +30,6 @@ module.exports = function make_col_cat(params) {
       var inst_cat = d3.select(this).attr('cat');
       return 'category: ' + d[inst_cat];
     });
-
 
   // append groups - each will hold classification rects 
   d3.select(params.root+' .col_cat_container')
