@@ -1,4 +1,5 @@
-// resize parent div
+var calc_viz_dimensions = require('./params/calc_viz_dimensions');
+
 module.exports = function set_viz_wrapper_size(params) {
 
   // Create wrapper around SVG visualization
@@ -14,30 +15,7 @@ module.exports = function set_viz_wrapper_size(params) {
 
   }
 
-  // get outer_margins
-  var outer_margins;
-  if (params.viz.expand === false) {
-    outer_margins = params.viz.outer_margins;
-  } else {
-    outer_margins = params.viz.outer_margins_expand;
-  }
-
-  var cont_dim = {};
-
-  if (params.viz.resize) {
-
-    var screen_width = window.innerWidth;
-    var screen_height = window.innerHeight;
-
-    cont_dim.width = screen_width - outer_margins.left - outer_margins.right;
-    cont_dim.height = screen_height - outer_margins.top - outer_margins.bottom;
-
-  } else {
-
-    cont_dim.width = params.viz.fixed_size.width;
-    cont_dim.height = params.viz.fixed_size.height;
-
-  }
+  var cont_dim = calc_viz_dimensions(params);
 
   d3.select(params.root+' .sidebar_wrapper')
     .style('margin-left','10px')
@@ -49,7 +27,7 @@ module.exports = function set_viz_wrapper_size(params) {
 
   d3.select(params.viz.viz_wrapper)
     .style('float', 'left')
-    .style('margin-top', outer_margins.top + 'px')
+    .style('margin-top', cont_dim.top + 'px')
     .style('width', cont_dim.width + 'px')
     .style('height', cont_dim.height + 'px');
 };

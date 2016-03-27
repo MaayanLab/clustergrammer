@@ -1,33 +1,10 @@
 var run_reset_visualization_size = require('./run_reset_visualization_size');
+var calc_viz_dimensions = require('../params/calc_viz_dimensions');
 
 module.exports = function(params) {
 
-  // get outer_margins
-  var outer_margins = params.viz.expand ? params.viz.outer_margins_expand : params.viz.outer_margins;
+  var cont_dim = calc_viz_dimensions(params); 
 
-  // get the size of the window
-  var screen_width  = window.innerWidth;
-  var screen_height = window.innerHeight;
-
-  // define width and height of clustergram container
-  var cont_dim = {};
-  cont_dim.width  = screen_width  - outer_margins.left - outer_margins.right;
-  cont_dim.height = screen_height - outer_margins.top - outer_margins.bottom;
-
-  run_reset_visualization_size(params, cont_dim.width, cont_dim.height, outer_margins.left, outer_margins.top);
-
-  // get dimensions of the viz_svg
-  var dim = {};
-  dim.viz_svg = {};
-  dim.viz_svg.w = d3.select(params.viz.viz_svg).style('width').replace('px','');
-  dim.viz_svg.h = d3.select(params.viz.viz_svg).style('height').replace('px','');
-
-  // reposition the play button
-  d3.select(params.root+' .play_button')
-    .attr('transform', function(){
-      var pos_x = dim.viz_svg.w/2;
-      var pos_y = dim.viz_svg.h/2;
-      return 'translate('+pos_x+','+pos_y+')';
-    });
+  run_reset_visualization_size(params, cont_dim);
 
 };

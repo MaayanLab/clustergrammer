@@ -23,16 +23,16 @@ var make_row_dendro_triangles = require('../dendrogram/make_row_dendro_triangles
 var make_col_dendro_triangles = require('../dendrogram/make_col_dendro_triangles');
 var toggle_dendro_view = require('../dendrogram/toggle_dendro_view');
 
-module.exports = function(params, inst_clust_width, inst_clust_height, set_margin_left, set_margin_top) {
+module.exports = function(params, cont_dim) {
 
   d3.select(params.root+' .sidebar_wrapper')
-    .style('height', inst_clust_height+'px');
+    .style('height', cont_dim.height+'px');
 
   d3.select(params.viz.viz_wrapper)
     .style('float', 'left')
-    .style('margin-top',  set_margin_top  + 'px')
-    .style('width',  inst_clust_width  + 'px')
-    .style('height', inst_clust_height + 'px');
+    .style('margin-top',  cont_dim.top  + 'px')
+    .style('width',  cont_dim.width  + 'px')
+    .style('height', cont_dim.height + 'px');
 
   params = recalc_params_for_resize(params);
 
