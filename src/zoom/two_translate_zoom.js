@@ -81,7 +81,7 @@ module.exports = function(params, pan_dx, pan_dy, fin_zoom) {
     // transform clust group
     ////////////////////////////
     d3
-      .select('.clust_group')
+      .select(params.root+' .clust_group')
       .transition().duration(search_duration)
       // first apply the margin transformation
       // then zoom, then apply the final transformation

@@ -69,6 +69,10 @@ function make_clust(inst_network){
 
       cgm = Clustergrammer(arguments_obj);
 
+      // arguments_obj.root = '#container-id-2';
+
+      // cgm = Clustergrammer(arguments_obj);
+
       d3.select(cgm.params.root + ' .wait_message').remove();
 
   });

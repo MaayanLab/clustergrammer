@@ -25,13 +25,14 @@ var toggle_dendro_view = require('../dendrogram/toggle_dendro_view');
 
 module.exports = function(params, inst_clust_width, inst_clust_height, set_margin_left, set_margin_top) {
 
-  // first resize hte svg 
-  d3.select(params.viz.viz_wrapper)
-      .style('float', 'right')
-      .style('margin-top',  set_margin_top  + 'px')
-      .style('width',  inst_clust_width  + 'px')
-      .style('height', inst_clust_height + 'px');
+  d3.select(params.root+' .sidebar_wrapper')
+    .style('height', inst_clust_height+'px');
 
+  d3.select(params.viz.viz_wrapper)
+    .style('float', 'left')
+    .style('margin-top',  set_margin_top  + 'px')
+    .style('width',  inst_clust_width  + 'px')
+    .style('height', inst_clust_height + 'px');
 
   params = recalc_params_for_resize(params);
 
@@ -175,12 +176,6 @@ module.exports = function(params, inst_clust_width, inst_clust_height, set_margi
     .translate([ params.viz.clust.margin.left, params.viz.clust.margin.top ]);
 
   label_constrain_and_trim(params);
-
-  // var sidebar_height = window.innerHeight - 20; 
-
-  // d3.select(params.root)
-  //   .select('.sidebar_wrapper')
-  //   .style('height', sidebar_height+'px');
   
   d3.select(params.viz.viz_svg).style('opacity',1);
 };
