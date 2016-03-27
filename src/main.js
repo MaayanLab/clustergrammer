@@ -19,13 +19,15 @@ function Clustergrammer(args) {
   var config = make_config(args);
   // make visualization parameters using configuration object
   var params = make_params(config);
-  // make visualization using parameters
-  var viz = make_viz(params);
 
   if (params.use_sidebar) {
     var make_sidebar = require('./sidebar/');
     make_sidebar(config, params);
   }
+  
+  // make visualization using parameters
+  var viz = make_viz(params);
+
 
   return {
     params: params,

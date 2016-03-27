@@ -131,27 +131,6 @@ module.exports = function(params, pan_dx, pan_dy, fin_zoom) {
       .attr('transform', ' scale(' + zoom_x + ',' + 1 + ')' + 'translate(' + [
         pan_dx, params.viz.uni_margin/2 ] + ')');
 
-    // the amount by which the clustergram has shifted down, the col dendrogram will 
-    // need to be shifted down 
-    var max_y = params.viz.svg_dim.height - params.viz.dendro_room.col - params.viz.uni_margin;
-
-    var y_offset = params.viz.clust.margin.top + params.viz.clust.dim.height;
-    if (y_offset > max_y){
-      y_offset = max_y;
-    }
-
-    d3.select(params.root+' .dendro_col_spillover')
-      .transition()
-      .duration(search_duration)
-      .attr('transform', 'translate('+[0, y_offset]+')');
-
-    var corner_x = params.viz.clust.margin.left + params.viz.clust.dim.width;
-    d3.select(params.root+' .dendro_corner_spillover')
-      .transition()
-      .duration(search_duration)
-      .attr('transform', 'translate('+[corner_x, y_offset]+')');
-
-
     // set y translate: center_y is positive, positive moves the visualization down
     // the translate vector has the initial margin, the first y centering, and pan_dy
     // times the scaling zoom_y

@@ -3,9 +3,15 @@ module.exports = function set_viz_wrapper_size(params) {
 
   // Create wrapper around SVG visualization
   if (d3.select(params.root+' .viz_wrapper').empty()){
+
     d3.select(params.root)
       .append('div')
-      .attr('class', 'viz_wrapper');
+      .classed('sidebar_wrapper', true);
+
+    d3.select(params.root)
+      .append('div')
+      .classed('viz_wrapper', true);
+
   }
 
   // get outer_margins
@@ -28,7 +34,7 @@ module.exports = function set_viz_wrapper_size(params) {
 
     // resize and position
     d3.select(params.viz.viz_wrapper)
-      .style('float', 'right')
+      .style('float', 'left')
       .style('margin-top', outer_margins.top + 'px')
       .style('width', cont_dim.width + 'px')
       .style('height', cont_dim.height + 'px');
@@ -37,7 +43,9 @@ module.exports = function set_viz_wrapper_size(params) {
 
     // position
     d3.select(params.viz.viz_wrapper)
-      .style('float', 'right')
-      .style('margin-top', outer_margins.top + 'px');
+      .style('float', 'left')
+      .style('margin-top', outer_margins.top + 'px')
+      .style('width','500px')
+      .style('height','500px');
   }
 };
