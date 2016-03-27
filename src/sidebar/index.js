@@ -10,16 +10,8 @@ var set_up_reorder = require('./set_up_reorder');
  */
 module.exports = function sidebar(config, params) {
 
-  var sidebar_height = window.innerHeight - 20;
 
-  var sidebar = d3.select(params.root+' .sidebar_wrapper')
-    .style('margin-left','10px')
-    .style('float', 'left')
-    .style('width', params.sidebar.wrapper.width)
-    .style('height', sidebar_height+'px')
-    .style('overflow-y','scroll')
-    .style('width','187px');
-    // .style('overflow-x','hidden');
+  var sidebar = d3.select(params.root+' .sidebar_wrapper');
 
   set_up_reorder(params, sidebar);
 
