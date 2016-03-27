@@ -178,7 +178,6 @@ module.exports = function(params) {
     find_entity: search_obj.find_entity,
     get_entities: search_obj.get_entities,
     opacity_slider: opacity_slider,
-    run_reset_visualization_size: require('./reset_size/run_reset_visualization_size'),
     draw_gridlines: matrix.draw_gridlines,
     reset_zoom: reset_zoom
   };

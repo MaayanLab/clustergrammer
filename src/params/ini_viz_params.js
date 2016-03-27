@@ -1,3 +1,5 @@
+var utils = require('../utils');
+
 module.exports = function ini_viz_params(config, params){
 
   var viz = {};
@@ -5,7 +7,6 @@ module.exports = function ini_viz_params(config, params){
   viz.root = config.root;
   viz.viz_wrapper = config.root + ' .viz_wrapper';
   viz.do_zoom = config.do_zoom;
-  viz.resize = config.resize;
   viz.background_color = config.background_color;
   viz.super_border_color = config.super_border_color;
   viz.outer_margins = config.outer_margins;
@@ -28,6 +29,14 @@ module.exports = function ini_viz_params(config, params){
   viz.duration = 1000;
   if (viz.show_dendrogram){
     config.group_level = {};
+  }
+
+  if (utils.has(config, 'size')){
+    viz.resize = false;
+    viz.fixed_size = config.size;
+  } else { 
+    viz.resize = true;
+    viz.fixed_size = false;
   }
 
   // width is 1 over this value

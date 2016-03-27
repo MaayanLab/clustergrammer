@@ -32,6 +32,11 @@ function make_clust(inst_network){
           'right':2
         };
 
+      var viz_size = {
+        'width':1000,
+        'height':600
+      };
+
       // define arguments object
       var arguments_obj = {
         root: '#container-id-1',
@@ -59,7 +64,7 @@ function make_clust(inst_network){
         // 'background_color':'orange',
         // 'tile_title': true,
         // 'click_group': click_group_callback,
-        // 'resize':false
+        // 'size':viz_size
         // 'order':'rank'
         // 'col_order':'rank',
         // 'row_order':'clust'

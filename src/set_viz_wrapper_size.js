@@ -34,8 +34,8 @@ module.exports = function set_viz_wrapper_size(params) {
 
   } else {
 
-    cont_dim.width = 500;
-    cont_dim.height = 500;
+    cont_dim.width = params.viz.fixed_size.width;
+    cont_dim.height = params.viz.fixed_size.height;
 
   }
 

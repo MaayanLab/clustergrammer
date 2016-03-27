@@ -1,5 +1,4 @@
 var reset_visualization_size = require('./reset_size/reset_visualization_size');
-// var set_viz_wrapper_size = require('./set_viz_wrapper_size'); 
 
 module.exports = function(params) {
 

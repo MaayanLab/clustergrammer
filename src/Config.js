@@ -23,7 +23,6 @@ module.exports = function(args) {
     do_zoom: true,
     background_color: '#FFFFFF',
     super_border_color: '#F5F5F5',
-    resize: true,
     outer_margins: {
       top: 0,
       bottom: 0,
