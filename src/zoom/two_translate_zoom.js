@@ -135,18 +135,10 @@ module.exports = function(params, pan_dx, pan_dy, fin_zoom) {
     // need to be shifted down 
     var max_y = params.viz.svg_dim.height - params.viz.dendro_room.col - params.viz.uni_margin;
 
-    var x_offset = params.viz.clust.margin.left;
     var y_offset = params.viz.clust.margin.top + params.viz.clust.dim.height;
     if (y_offset > max_y){
       y_offset = max_y;
     }
-
-    d3.select(params.root+' .col_dendro_outer_container')
-      .style('opacity',0.1)
-      .transition()
-      .duration(search_duration)
-      .style('opacity',1)
-      .attr('transform', 'translate('+[x_offset, y_offset]+')');
 
     d3.select(params.root+' .dendro_col_spillover')
       .transition()
