@@ -8,17 +8,17 @@ module.exports = function set_up_filters(config, params, filter_type) {
 
   var filter_title = make_filter_title(filter_type);
 
-  var row_filters = d3.select(params.root+' .sidebar_wrapper')
+  var all_filters = d3.select(params.root+' .sidebar_wrapper')
     .append('div')
-    .classed('row_filters',true);
+    .classed('all_filters',true);
 
-  row_filters
+  all_filters
     .append('div')
     .classed('viz_medium_text',true)
     .classed('title_'+filter_type,true)
     .text(filter_title.text + filter_title.value + filter_title.suffix);
 
-  row_filters
+  all_filters
     .append('div')
     .classed('slider_'+filter_type,true)
     .classed('slider',true)
@@ -29,16 +29,6 @@ module.exports = function set_up_filters(config, params, filter_type) {
   var views = params.network_data.views;
 
   var available_views = _.filter(views, function(d) { return utils.has(d,filter_type); });
-
-  // // find views of current category 
-  // if ( utils.has(available_views[0],'col_cat') ) 
-  //   // get views with current_col_cat
-  //   available_views = _.filter(available_views, function(d){
-  //     if (d.col_cat == params.current_col_cat){
-  //       return d;
-  //     }
-  //   })
-  // }
 
   var inst_max = available_views.length - 1;
 
