@@ -1,3 +1,5 @@
+var update_network = require('../network/update_network');
+
 module.exports = function make_button_filter(config, params, filter_type, div_filters){
 
   var buttons = div_filters
@@ -50,6 +52,11 @@ module.exports = function make_button_filter(config, params, filter_type, div_fi
 
       d3.select(this)
         .classed('active',true);
+
+      var inst_filter = d3.select(this)
+        .attr('name');
+
+      update_network(config, params, {'enr_score_type':inst_filter});
 
     });
 

@@ -55,8 +55,10 @@ module.exports = function ini_sidebar(params){
 
     $(params.root+' .toggle_'+inst_rc+'_order .btn').off().click(function(evt) {
 
-      var order_id = $(evt.target).attr('name')
-        .replace('_row','').replace('_col','');
+      var order_id = $(evt.target)
+        .attr('name')
+        .replace('_row','')
+        .replace('_col','');
 
       d3.selectAll(params.root+' .toggle_'+inst_rc+'_order .btn')
         .classed('active',false);
