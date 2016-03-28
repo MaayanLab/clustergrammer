@@ -26,12 +26,21 @@ module.exports = function sidebar(config, params) {
 
   var views = params.network_data.views;
 
-  var possible_filters = [
-    'N_row_sum',
-    'N_row_var',
-    'pct_row_sum',
-    'pct_row_var'
-  ];
+  var top_type = ['N','pct'];
+  var nodes = ['row','col'];
+  var top_measure = ['sum','var'];
+  var inst_filter;
+
+  var possible_filters = [];
+
+  _.each(top_type, function(inst_top){
+    _.each(nodes, function(inst_node){
+      _.each(top_measure, function(inst_measure){
+        inst_filter = inst_top +'_'+ inst_node +'_'+ inst_measure;
+        possible_filters.push(inst_filter);
+      });
+    });
+  });
 
   _.each(possible_filters, function(inst_filter){
     var num_views = _.filter(views, function(d) { 
