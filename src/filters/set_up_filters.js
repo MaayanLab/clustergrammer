@@ -31,7 +31,7 @@ module.exports = function set_up_filters(config, params, filter_type) {
   var available_views = _.filter(views, function(d) { return utils.has(d,filter_type); });
 
   // // find views of current category 
-  // if ( utils.has(available_views[0],'col_cat') ) {
+  // if ( utils.has(available_views[0],'col_cat') ) 
   //   // get views with current_col_cat
   //   available_views = _.filter(available_views, function(d){
   //     if (d.col_cat == params.current_col_cat){
@@ -57,25 +57,14 @@ module.exports = function set_up_filters(config, params, filter_type) {
       var requested_view = {};
       requested_view[filter_type] = inst_view_name;
 
-      // if (filter_type==='pct_row_sum'){
-      //   inst_view_name = String(100-inst_view_name *100);
-      //   $(params.root+' .slider_N_row_sum').slider( "value", 0);
-
-      // } else if (filter_type === 'N_row_sum'){
-      //   $(params.root+' .slider_pct_row_sum').slider( "value", 0);
-      //   $(params.root+' .slider_N_row_var').slider( "value", 0);
-      // } else if (filter_type === 'N_row_var'){
-      //   $(params.root+' .slider_N_row_sum').slider( "value", 0);
-      // }
-
-      // console.log(filter_type)
       _.each(params.viz.possible_filters, function(reset_filter){
         if (filter_type != reset_filter){
 
+          var tmp_title = make_filter_title(reset_filter);
           $(params.root+' .slider_'+reset_filter).slider( "value", 0);
 
           d3.select('.title_'+reset_filter)
-            .text(filter_title.text + filter_title.value + filter_title.suffix);
+            .text(tmp_title.text + tmp_title.value + tmp_title.suffix);
         }
       });
 
@@ -117,7 +106,10 @@ module.exports = function set_up_filters(config, params, filter_type) {
 
       params = update_network(config, params, requested_view);
 
-      d3.select(params.root+' .'+filter_type).text(fitler_title.text + inst_view_name + suffix);
+      var filter_title = make_filter_title(filter_type);
+
+      d3.select(params.root+' .title_'+filter_type)
+        .text(filter_title.text + inst_view_name + filter_title.suffix);
 
       setTimeout(enable_sidebar, 2500, params);
 
