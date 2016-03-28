@@ -1,6 +1,6 @@
 module.exports = function get_available_filters(viz, params){
 
-  viz.possible_filters = [];
+  viz.possible_filters = {};
   viz.filter_data = {};
 
   var views = params.network_data.views;
@@ -30,10 +30,18 @@ module.exports = function get_available_filters(viz, params){
   
   _.each( tmp_filters, function(inst_filter){
      
-    var num_options = viz.filter_data[inst_filter].length; 
-    
+    var options = viz.filter_data[inst_filter];
+    var num_options = options.length; 
+
+    var filter_type = 'categorical';
+    _.each(options, function(inst_option){
+      if (typeof inst_option === 'number'){
+        filter_type = 'numerical';
+      }
+    });
+
     if (num_options > 1){
-      viz.possible_filters.push(inst_filter);
+      viz.possible_filters[inst_filter] = filter_type;
     }
 
   });

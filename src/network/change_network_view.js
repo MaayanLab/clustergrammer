@@ -13,8 +13,6 @@ module.exports = function change_network_view(params, orig_network_data, request
   if (inst_view.length==1){
     inst_view = inst_view[0];
   } else {
-    console.log('\n\n----- found more than one view')
-    console.log(inst_view)
     inst_view = inst_view[0];
   }
 

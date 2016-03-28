@@ -13,7 +13,8 @@ module.exports = function apply_filter_slider(config, params, filter_type, avail
   var requested_view = {};
   requested_view[filter_type] = inst_name;
 
-  _.each(params.viz.possible_filters, function(reset_filter){
+  var possible_filter_names = _.keys(params.viz.possible_filters);
+  _.each( possible_filter_names, function(reset_filter){
     if (filter_type != reset_filter){
 
       var tmp_title = make_filter_title(reset_filter);

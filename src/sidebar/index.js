@@ -23,16 +23,12 @@ module.exports = function sidebar(config, params) {
     set_up_colorbar(sidebar, params);
   }
 
-  var views = params.network_data.views;
+  // var views = params.network_data.views;
 
-  _.each(params.viz.possible_filters, function(inst_filter){
-    var num_views = _.filter(views, function(d) { 
-        return utils.has(d,inst_filter); 
-      }).length;
-
-    if (num_views > 0){
+  var possible_filter_names = _.keys(params.viz.possible_filters);
+  
+  _.each(possible_filter_names, function(inst_filter){
       set_up_filters(config, params, inst_filter);
-    }
   });
   
   ini_sidebar(params);

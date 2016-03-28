@@ -4,9 +4,6 @@ var apply_filter_slider = require('./apply_filter_slider');
 
 module.exports = function set_up_filters(config, params, filter_type) {
 
-  console.log('\nset up filters')
-  console.log(filter_type)
-
   var filter_title = make_filter_title(filter_type);
 
   var all_filters = d3.select(params.root+' .sidebar_wrapper')
