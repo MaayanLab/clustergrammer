@@ -23,10 +23,8 @@ module.exports = function sidebar(config, params) {
     set_up_colorbar(sidebar, params);
   }
 
-  // var views = params.network_data.views;
-
   var possible_filter_names = _.keys(params.viz.possible_filters);
-  
+
   _.each(possible_filter_names, function(inst_filter){
       set_up_filters(config, params, inst_filter);
   });
