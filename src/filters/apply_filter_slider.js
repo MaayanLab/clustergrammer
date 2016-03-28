@@ -3,7 +3,7 @@ var disable_sidebar = require('../sidebar/disable_sidebar');
 var enable_sidebar  = require('../sidebar/enable_sidebar');
 var make_filter_title = require('./make_filter_title');
 
-module.exports = function stop_filter_slider(config, params, filter_type, available_views){
+module.exports = function apply_filter_slider(config, params, filter_type, available_views){
 
   // get value
   var inst_index = $( params.root+' .slider_'+filter_type ).slider( "value" );

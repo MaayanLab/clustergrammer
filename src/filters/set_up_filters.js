@@ -1,6 +1,6 @@
 var utils = require('../utils');
 var make_filter_title = require('./make_filter_title');
-var stop_filter_slider = require('./stop_filter_slider');
+var apply_filter_slider = require('./apply_filter_slider');
 
 module.exports = function set_up_filters(config, params, filter_type) {
 
@@ -37,7 +37,7 @@ module.exports = function set_up_filters(config, params, filter_type) {
     max: inst_max,
     step: 1,
     stop: function() {
-      params = stop_filter_slider(config, params, filter_type, available_views);
+      params = apply_filter_slider(config, params, filter_type, available_views);
     }
   });
 

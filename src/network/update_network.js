@@ -10,12 +10,12 @@ var make_row_dendro = require('../dendrogram/make_row_dendro');
 var make_col_dendro = require('../dendrogram/make_col_dendro');
 var ini_sidebar = require('../sidebar/ini_sidebar');
 
-module.exports = function(config, old_params, change_view) {
+module.exports = function(config, old_params, requested_view) {
 
   // make new_network_data by filtering the original network data
   var config_copy = jQuery.extend(true, {}, config);
 
-  var new_network_data = change_network_view(old_params, config_copy.network_data, change_view);
+  var new_network_data = change_network_view(old_params, config_copy.network_data, requested_view);
 
   // make tmp config to make new params 
   var tmp_config = jQuery.extend(true, {}, config);
