@@ -18,7 +18,7 @@ module.exports = function run_transformation(params, zoom_info){
 
   d3.select(params.root+' .row_dendro_container')
     .attr('transform', 'translate(' + [params.viz.uni_margin/2, zoom_info.trans_y] + ') '+
-      'scale( '+zoom_info.zoom_x+',' + zoom_info.zoom_y + ')');    
+      'scale( 1,' + zoom_info.zoom_y + ')');    
 
   // transform col labels
   // move down col labels as zooming occurs, subtract trans_x - 20 almost works
