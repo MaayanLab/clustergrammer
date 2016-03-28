@@ -2,30 +2,11 @@ var utils = require('../utils');
 var update_network = require('../network/update_network');
 var disable_sidebar = require('../sidebar/disable_sidebar');
 var enable_sidebar  = require('../sidebar/enable_sidebar');
+var make_filter_title = require('./make_filter_title');
 
 module.exports = function set_up_filters(config, params, filter_type) {
 
-  var initial_text;
-  var suffix;
-  var initial_value;
-
-  if (filter_type === 'pct_row_sum'){
-    initial_text = 'Top rows sum: ';
-    initial_value = '100';
-    suffix = '%';
-  } else if (filter_type === 'pct_row_var'){
-    initial_text = 'Top rows variance: ';
-    initial_value = '100';
-    suffix = '%';    
-  } else if (filter_type === 'N_row_sum'){
-    initial_text = 'Top rows sum: ';
-    initial_value = 'all';
-    suffix = ' rows';
-  } else if (filter_type === 'N_row_var'){
-    initial_text = 'Top rows variance: ';
-    initial_value = 'all';
-    suffix = ' rows';
-  }  
+  var filter_title = make_filter_title(filter_type);
 
   var row_filters = d3.select(params.root+' .sidebar_wrapper')
     .append('div')
@@ -34,8 +15,8 @@ module.exports = function set_up_filters(config, params, filter_type) {
   row_filters
     .append('div')
     .classed('viz_medium_text',true)
-    .classed(filter_type,true)
-    .text(initial_text + initial_value + suffix);
+    .classed('title_'+filter_type,true)
+    .text(filter_title.text + filter_title.value + filter_title.suffix);
 
   row_filters
     .append('div')
@@ -76,16 +57,28 @@ module.exports = function set_up_filters(config, params, filter_type) {
       var requested_view = {};
       requested_view[filter_type] = inst_view_name;
 
-      if (filter_type==='pct_row_sum'){
-        inst_view_name = String(100-inst_view_name *100);
-        $(params.root+' .slider_N_row_sum').slider( "value", 0);
+      // if (filter_type==='pct_row_sum'){
+      //   inst_view_name = String(100-inst_view_name *100);
+      //   $(params.root+' .slider_N_row_sum').slider( "value", 0);
 
-      } else if (filter_type === 'N_row_sum'){
-        $(params.root+' .slider_pct_row_sum').slider( "value", 0);
-        $(params.root+' .slider_N_row_var').slider( "value", 0);
-      } else if (filter_type === 'N_row_var'){
-        $(params.root+' .slider_N_row_sum').slider( "value", 0);
-      }
+      // } else if (filter_type === 'N_row_sum'){
+      //   $(params.root+' .slider_pct_row_sum').slider( "value", 0);
+      //   $(params.root+' .slider_N_row_var').slider( "value", 0);
+      // } else if (filter_type === 'N_row_var'){
+      //   $(params.root+' .slider_N_row_sum').slider( "value", 0);
+      // }
+
+      // console.log(filter_type)
+      _.each(params.viz.possible_filters, function(reset_filter){
+        if (filter_type != reset_filter){
+
+          $(params.root+' .slider_'+reset_filter).slider( "value", 0);
+
+          d3.select('.title_'+reset_filter)
+            .text(filter_title.text + filter_title.value + filter_title.suffix);
+        }
+      });
+
 
       disable_sidebar(params);
 
@@ -124,7 +117,7 @@ module.exports = function set_up_filters(config, params, filter_type) {
 
       params = update_network(config, params, requested_view);
 
-      d3.select(params.root+' .'+filter_type).text(initial_text + inst_view_name + suffix);
+      d3.select(params.root+' .'+filter_type).text(fitler_title.text + inst_view_name + suffix);
 
       setTimeout(enable_sidebar, 2500, params);
 
