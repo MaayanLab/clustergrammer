@@ -4,6 +4,8 @@ var all_reorder = require('../reorder/all_reorder');
 
 module.exports = function ini_sidebar(params){
 
+  // initializes sidebar buttons and sliders, used by update_network 
+
   var search_obj = search(params, params.network_data.row_nodes, 'name');
 
   // col groups
@@ -49,22 +51,24 @@ module.exports = function ini_sidebar(params){
     search_obj.find_entity(gene);
   });
 
-  $(params.root+' .toggle_col_order .btn').off().click(function(evt) {
-    var order_id = $(evt.target).attr('name')
-      .replace('_row','').replace('_col','');
+  _.each(['row','col'], function(inst_rc){
 
-    d3.selectAll(params.root+' .toggle_col_order .btn').classed('active',false);
-    d3.select(this).classed('active',true);
-    all_reorder(params, order_id,'col');
+    $(params.root+' .toggle_'+inst_rc+'_order .btn').off().click(function(evt) {
+
+      var order_id = $(evt.target).attr('name')
+        .replace('_row','').replace('_col','');
+
+      d3.selectAll(params.root+' .toggle_'+inst_rc+'_order .btn')
+        .classed('active',false);
+
+      d3.select(this).classed('active',true);
+      
+      all_reorder( params, order_id, inst_rc);
+
+    });
+
   });
 
-  $(params.root+' .toggle_row_order .btn').off().click(function(evt) {
-    var order_id = $(evt.target).attr('name')
-      .replace('_row','').replace('_col','');
 
-    d3.selectAll(params.root+' .toggle_row_order .btn').classed('active',false);
-    d3.select(this).classed('active',true);
-    all_reorder(params, order_id,'row');
-  });
 
 };
