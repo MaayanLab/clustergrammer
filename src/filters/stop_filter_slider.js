@@ -8,10 +8,10 @@ module.exports = function stop_filter_slider(config, params, filter_type, availa
   // get value
   var inst_index = $( params.root+' .slider_'+filter_type ).slider( "value" );
 
-  var inst_view_name = available_views[inst_index][filter_type];
+  var inst_name = available_views[inst_index][filter_type];
 
   var requested_view = {};
-  requested_view[filter_type] = inst_view_name;
+  requested_view[filter_type] = inst_name;
 
   _.each(params.viz.possible_filters, function(reset_filter){
     if (filter_type != reset_filter){
@@ -23,7 +23,6 @@ module.exports = function stop_filter_slider(config, params, filter_type, availa
         .text(tmp_title.text + tmp_title.value + tmp_title.suffix);
     }
   });
-
 
   disable_sidebar(params);
 
@@ -41,6 +40,7 @@ module.exports = function stop_filter_slider(config, params, filter_type, availa
       params.viz.inst_order[rc_int] = d3.select(params.root+' .toggle_'+rc_other+'_order')
         .select('.active').attr('name');
     } else {
+      // default to cluster ordering 
       params.viz.inst_order[rc_int] = 'clust';
 
       d3.select(params.root+' .toggle_'+rc_other+'_order')
@@ -60,7 +60,7 @@ module.exports = function stop_filter_slider(config, params, filter_type, availa
   var filter_title = make_filter_title(filter_type);
 
   d3.select(params.root+' .title_'+filter_type)
-    .text(filter_title.text + inst_view_name + filter_title.suffix);
+    .text(filter_title.text + inst_name + filter_title.suffix);
 
   setTimeout(enable_sidebar, 2500, params);
 

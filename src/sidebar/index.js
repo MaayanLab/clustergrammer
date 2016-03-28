@@ -10,7 +10,6 @@ var set_up_reorder = require('./set_up_reorder');
  */
 module.exports = function sidebar(config, params) {
 
-
   var sidebar = d3.select(params.root+' .sidebar_wrapper');
 
   set_up_reorder(params, sidebar);

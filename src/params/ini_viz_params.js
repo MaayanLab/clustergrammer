@@ -1,4 +1,5 @@
-var utils = require('../utils');
+var utils = require('../utils'); 
+var get_available_filters = require('./get_available_filters');
 
 module.exports = function ini_viz_params(config, params){
 
@@ -126,22 +127,7 @@ module.exports = function ini_viz_params(config, params){
 
   viz.spillover_col_slant = viz.norm_labels.width.col;
 
-  viz.possible_filters = [];
-  
-  var top_type = ['N','pct'];
-  var nodes = ['row','col'];
-  var top_measure = ['sum','var'];
-  var inst_filter;
-
-  _.each(top_type, function(inst_top){
-    _.each(nodes, function(inst_node){
-      _.each(top_measure, function(inst_measure){
-        inst_filter = inst_top +'_'+ inst_node +'_'+ inst_measure;
-        viz.possible_filters.push(inst_filter);
-      });
-    });
-  });
-
+  viz = get_available_filters(viz, params);
 
   return viz;
 };

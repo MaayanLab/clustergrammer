@@ -23,10 +23,11 @@ module.exports = function set_up_filters(config, params, filter_type) {
     .style('width', params.sidebar.slider.width+'px')
     .style('margin-left', params.sidebar.slider.margin_left+'px');
     
-
   var views = params.network_data.views;
 
-  var available_views = _.filter(views, function(d) { return utils.has(d,filter_type); });
+  var available_views = _.filter(views, function(d) { 
+    return utils.has(d,filter_type); 
+  });
 
   var inst_max = available_views.length - 1;
 

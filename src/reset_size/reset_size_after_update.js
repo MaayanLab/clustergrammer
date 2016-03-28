@@ -43,10 +43,6 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
   params = calc_default_fs(params);
 
 
-  // Begin resizing the visualization
-  /////////////////////////////////////////
-  /////////////////////////////////////////
-
   // resize the svg
   ///////////////////////
   var svg_group = d3.select(params.viz.viz_wrapper)
