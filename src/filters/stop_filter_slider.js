@@ -27,38 +27,33 @@ module.exports = function stop_filter_slider(config, params, filter_type, availa
 
   disable_sidebar(params);
 
-  // get current row ordering from buttons 
-  if (d3.select(params.root+' .toggle_row_order .active').empty() === false){
-    params.viz.inst_order.col = d3.select(params.root+' .toggle_row_order')
-      .select('.active').attr('name');
-  } else {
-    params.viz.inst_order.col = 'clust';
+  var rc_other;
 
-    d3.select(params.root+' .toggle_row_order')
-      .selectAll('.btn')
-      .each(function(d){
-        if (d === 'clust'){
-          d3.select(this)
-            .classed('active',true);
-        }
-      });
-  }
+  _.each(['row','col'], function(rc_int){
 
-  if (d3.select(params.root+' .toggle_col_order .active').empty() === false){
-    params.viz.inst_order.row = d3.select(params.root+' .toggle_col_order')
-      .select('.active').attr('name');
-  } else {
-    params.viz.inst_order.row = 'clust';
+    if (rc_int === 'row'){
+      rc_other = 'col';
+    } else {
+      rc_other = 'row';
+    }
+    
+    if (d3.select(params.root+' .toggle_'+rc_other+'_order .active').empty() === false){
+      params.viz.inst_order[rc_int] = d3.select(params.root+' .toggle_'+rc_other+'_order')
+        .select('.active').attr('name');
+    } else {
+      params.viz.inst_order[rc_int] = 'clust';
 
-    d3.select(params.root+' .toggle_col_order')
-      .selectAll('.btn')
-      .each(function(d){
-        if (d === 'clust'){
-          d3.select(this)
-            .classed('active',true);
-        }
-      });
-  }
+      d3.select(params.root+' .toggle_'+rc_other+'_order')
+        .selectAll('.btn')
+        .each(function(d){
+          if (d === 'clust'){
+            d3.select(this)
+              .classed('active',true);
+          }
+        });
+    }
+
+  });
 
   params = update_network(config, params, requested_view);
 
