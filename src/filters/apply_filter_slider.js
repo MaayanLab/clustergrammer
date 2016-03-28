@@ -1,6 +1,4 @@
 var update_network = require('../network/update_network');
-var disable_sidebar = require('../sidebar/disable_sidebar');
-var enable_sidebar  = require('../sidebar/enable_sidebar');
 var make_filter_title = require('./make_filter_title');
 
 module.exports = function apply_filter_slider(config, params, filter_type, available_views){
@@ -24,8 +22,6 @@ module.exports = function apply_filter_slider(config, params, filter_type, avail
         .text(tmp_title.text + tmp_title.value + tmp_title.suffix);
     }
   });
-
-  disable_sidebar(params);
 
   var rc_other;
 
@@ -63,7 +59,6 @@ module.exports = function apply_filter_slider(config, params, filter_type, avail
   d3.select(params.root+' .title_'+filter_type)
     .text(filter_title.text + inst_name + filter_title.suffix);
 
-  setTimeout(enable_sidebar, 2500, params);
 
   return params;
 

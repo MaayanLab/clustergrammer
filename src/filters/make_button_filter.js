@@ -26,6 +26,7 @@ module.exports = function make_button_filter(config, params, filter_type, div_fi
     .attr('type','button')
     .classed('btn',true)
     .classed('btn-primary',true)
+    .classed('.filter_button',true)
     .classed('active', function(d){
       var is_active = false;
       if (d == 'combined_score'){
@@ -40,5 +41,16 @@ module.exports = function make_button_filter(config, params, filter_type, div_fi
       return button_dict[d];
     });
 
+  $(params.root+ ' .categorical_filter .btn')
+    .off()
+    .click(function(){
+
+      d3.selectAll(params.root+' .categorical_filter .btn')
+        .classed('active',false);
+
+      d3.select(this)
+        .classed('active',true);
+
+    });
 
 };

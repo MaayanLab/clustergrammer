@@ -61,8 +61,9 @@ module.exports = function ini_sidebar(params){
       d3.selectAll(params.root+' .toggle_'+inst_rc+'_order .btn')
         .classed('active',false);
 
-      d3.select(this).classed('active',true);
-      
+      d3.select(this)
+        .classed('active',true);
+
       all_reorder( params, order_id, inst_rc);
 
     });

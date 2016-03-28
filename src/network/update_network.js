@@ -9,8 +9,12 @@ var make_row_cat = require('../dendrogram/make_row_cat');
 var make_row_dendro = require('../dendrogram/make_row_dendro');
 var make_col_dendro = require('../dendrogram/make_col_dendro');
 var ini_sidebar = require('../sidebar/ini_sidebar');
+var disable_sidebar = require('../sidebar/disable_sidebar');
+var enable_sidebar  = require('../sidebar/enable_sidebar');
 
 module.exports = function(config, old_params, requested_view) {
+
+  disable_sidebar(old_params);
 
   // make new_network_data by filtering the original network data
   var config_copy = jQuery.extend(true, {}, config);
@@ -60,6 +64,8 @@ module.exports = function(config, old_params, requested_view) {
   // remove any tooltips, not just those from the current viz
   d3.selectAll(params.root+' .d3-tip')
     .style('opacity',0);
+
+  setTimeout(enable_sidebar, 2500, params);
 
   // return updated params 
   return params;
