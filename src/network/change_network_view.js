@@ -1,5 +1,4 @@
 var filter_using_new_nodes = require('./filter_using_new_nodes');
-var utils = require('../utils');
 
 module.exports = function change_network_view(params, orig_network_data, requested_view) {
 
@@ -11,15 +10,11 @@ module.exports = function change_network_view(params, orig_network_data, request
   // find a view that matches all of the requested view/filter-attributes 
   _.each(request_filters, function(inst_filter){
 
-    inst_value = requested_view[inst_filter];
+    inst_value = parseInt(requested_view[inst_filter],10);
 
-    if ( utils.has( views[0], inst_filter )){
-
-      views = _.filter(views, function(d){
-        return d[inst_filter] == inst_value;
-      });
-
-    }
+    views = _.filter(views, function(d){
+      return d[inst_filter] == inst_value;
+    });
 
   });
 
