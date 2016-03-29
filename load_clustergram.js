@@ -66,9 +66,9 @@ function make_clust(inst_network){
         // 'click_group': click_group_callback,
         // 'size':viz_size
         // 'order':'rank'
-        // 'col_order':'rank',
+        'col_order':'rank',
         // 'row_order':'clust'
-        // 'ini_view':{'N_row_sum':'20'}
+        'ini_view':{'N_row_sum':'30'}
         // 'current_col_cat':'category-one'
       };
 
