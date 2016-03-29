@@ -16,12 +16,12 @@ module.exports = function make_filter_title(filter_type){
 
   if (type.top === 'N'){
     filter_title.suffix = ' '+title.node;
-    filter_title.value = 'all';
+    filter_title.state = 'all';
   }
 
   if (type.top === 'pct'){
     filter_title.suffix = '%';
-    filter_title.value = '100';
+    filter_title.state = '100';
   }
 
   if (type.measure == 'sum'){

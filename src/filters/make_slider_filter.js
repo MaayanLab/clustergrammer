@@ -10,14 +10,15 @@ module.exports = function make_slider_filter(config, params, filter_type, div_fi
     .append('div')
     .classed('viz_medium_text',true)
     .classed('title_'+filter_type,true)
-    .text(filter_title.text + filter_title.value + filter_title.suffix);
+    .text(filter_title.text + filter_title.state + filter_title.suffix);
 
   div_filters
     .append('div')
     .classed('slider_'+filter_type,true)
     .classed('slider',true)
     .style('width', params.sidebar.slider.width+'px')
-    .style('margin-left', params.sidebar.slider.margin_left+'px');
+    .style('margin-left', params.sidebar.slider.margin_left+'px')
+    .attr('current_state', filter_title.state);
     
   var views = params.network_data.views;
 
@@ -37,6 +38,8 @@ module.exports = function make_slider_filter(config, params, filter_type, div_fi
           inst_enr = d3.select(this).attr('name');
         }
       }); 
+
+    console.log('current enr_score_type: '+ inst_enr)
 
     // filter out enr_score_type 
     available_views = _.filter(available_views, function(d){

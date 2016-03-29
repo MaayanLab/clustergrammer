@@ -2,6 +2,10 @@ var update_network = require('../network/update_network');
 
 module.exports = function make_button_filter(config, params, filter_type, div_filters){
 
+  /*
+  Enrichr specific code 
+  */
+
   var buttons = div_filters
     .append('div')
     .classed('categorical_filter',true)
@@ -11,7 +15,8 @@ module.exports = function make_button_filter(config, params, filter_type, div_fi
     .classed('btn-group-vertical',true)
     .style('width','135px')
     .style('margin-left','0px')
-    .style('margin-top','10px');
+    .style('margin-top','10px')
+    .attr('current_state','combined_score')
 
   var filter_options = params.viz.filter_data[filter_type];
 
@@ -54,10 +59,13 @@ module.exports = function make_button_filter(config, params, filter_type, div_fi
       d3.select(this)
         .classed('active',true);
 
-      var inst_filter = d3.select(this)
+      var inst_state = d3.select(this)
         .attr('name');
 
-      update_network(config, params, {'enr_score_type':inst_filter});
+      update_network(config, params, {'enr_score_type':inst_state});
+
+      d3.select(params.root+' .toggle_enr_score_type')
+        .attr('current_state', inst_state);
 
     });
 
