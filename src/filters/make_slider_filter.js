@@ -39,8 +39,6 @@ module.exports = function make_slider_filter(config, params, filter_type, div_fi
         }
       }); 
 
-    console.log('current enr_score_type: '+ inst_enr)
-
     // filter out enr_score_type 
     available_views = _.filter(available_views, function(d){
       return d.enr_score_type == inst_enr;

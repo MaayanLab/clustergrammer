@@ -16,7 +16,7 @@ module.exports = function make_button_filter(config, params, filter_type, div_fi
     .style('width','135px')
     .style('margin-left','0px')
     .style('margin-top','10px')
-    .attr('current_state','combined_score')
+    .attr('current_state','combined_score');
 
   var filter_options = params.viz.filter_data[filter_type];
 

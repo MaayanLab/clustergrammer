@@ -16,8 +16,11 @@ module.exports = function apply_filter_slider(config, params, filter_type, avail
   requested_view[filter_type] = inst_state;
 
   if ( _.has(available_views[0],'enr_score_type') ){
-    console.log('\n---- found enr_score_type --- ')
-    console.log('perform additional filtering')
+
+    var enr_state = d3.select(params.root+' .toggle_enr_score_type')
+      .attr('current_state');
+
+    requested_view.enr_score_type = enr_state;
   }
 
   params = update_network(config, params, requested_view);

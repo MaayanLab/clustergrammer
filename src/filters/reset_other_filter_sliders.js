@@ -27,5 +27,4 @@ module.exports = function reset_other_filter_sliders(params, filter_type, inst_s
   d3.select(params.root+' .title_'+filter_type)
     .text(filter_title.text + inst_state + filter_title.suffix);
 
-
 };
