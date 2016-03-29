@@ -13,6 +13,8 @@ var calc_label_params = require('./calc_label_params');
 var calc_val_max = require('./calc_val_max');
 var set_zoom_params = require('./set_zoom_params');
 var ini_sidebar_params = require('./ini_sidebar_params');
+var construct_view_request = require('../filters/construct_view_request');
+var get_available_filters = require('./get_available_filters');
 
 /* 
 Params: calculates the size of all the visualization elements in the
@@ -26,8 +28,16 @@ module.exports = function make_params(input_config) {
 
   // when pre-loading the visualization using a view
   if (params.ini_view !== null) {
-    params.network_data = change_network_view(params, params.network_data, params.ini_view);
-    // disable pre-loading of view 
+
+    var requested_view = params.ini_view;
+
+    params.viz = get_available_filters({}, params);
+    requested_view = construct_view_request(params, requested_view);  
+
+    requested_view.enr_score_type = 'combined_score'
+
+    params.network_data = change_network_view(params, params.network_data, requested_view);
+
     params.ini_view = null;
   }
 

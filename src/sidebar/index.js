@@ -25,8 +25,11 @@ module.exports = function sidebar(config, params) {
 
   var possible_filter_names = _.keys(params.viz.possible_filters);
 
+  console.log('----------- possible filter names')
+  console.log(possible_filter_names)
   _.each(possible_filter_names, function(inst_filter){
-      set_up_filters(config, params, inst_filter);
+    console.log(inst_filter)  
+    set_up_filters(config, params, inst_filter);
   });
   
   ini_sidebar(params);

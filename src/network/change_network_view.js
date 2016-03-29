@@ -25,10 +25,10 @@ module.exports = function change_network_view(params, orig_network_data, request
 
   inst_view = views[0];
 
-  if (views.length > 1){
+  // if (views.length > 1){
     // console.log('found more than one view')
     // console.log(views)
-  }
+  // }
 
   var new_network_data;
 
@@ -40,6 +40,9 @@ module.exports = function change_network_view(params, orig_network_data, request
   } else {
     new_network_data = orig_network_data;
   }
+
+  // pass on views 
+  new_network_data.views = orig_network_data.views;
 
   return new_network_data;
 };
