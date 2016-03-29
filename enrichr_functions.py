@@ -168,20 +168,22 @@ def enrichr_clust_from_response(response_list):
     scores[inst_score_type] = scores[inst_score_type]/scores[inst_score_type].max()
     scores[inst_score_type].sort(ascending=False)
 
+  num_terms = 15
+
   # gather lists of top scores 
   top_terms = {}
-  top_terms['combined_score'] = scores['combined_score'].index.tolist()[:10]
-  top_terms['pval'] = scores['pval'].index.tolist()[:10]
-  top_terms['zscore'] = scores['zscore'].index.tolist()[:10]
+  top_terms['combined_score'] = scores['combined_score'].index.tolist()[:num_terms]
+  top_terms['pval'] = scores['pval'].index.tolist()[:num_terms]
+  top_terms['zscore'] = scores['zscore'].index.tolist()[:num_terms]
 
-  print('\ncombined_score')
-  print(scores['combined_score'])
+  # print('\ncombined_score')
+  # print(scores['combined_score'][:10])
 
-  print('\npval')
-  print(scores['pval'])
+  # print('\npval')
+  # print(scores['pval'][:10])
 
-  print('\nzscore')
-  print(scores['zscore'])
+  # print('\nzscore')
+  # print(scores['zscore'][:10])
 
   # gather the terms that should be kept - they are at the top of the score list
   keep_terms = top_terms['combined_score'] + \
@@ -233,9 +235,18 @@ def enrichr_clust_from_response(response_list):
 
   # cluster full matrix 
   #############################
-  # do not make multiple views 
+  # do not make multiple views
   views = ['']
-  net.make_filtered_views(dist_type='jaccard', views=views, dendro=False)
+
+  # print('\n\n\n')  
+  # print('net nodes')
+  # print(net.dat['nodes']['row'])
+  # print('\n\n\n')  
+
+  if len(net.dat['nodes']['row']) > 1:
+    net.make_filtered_views(dist_type='jaccard', views=views, dendro=False)
+  else: 
+    net.make_filtered_views(dist_type='jaccard', views=views, dendro=False, run_clustering=False)
 
   # get dataframe from full matrix 
   df = net.dat_to_df()
@@ -247,16 +258,18 @@ def enrichr_clust_from_response(response_list):
 
     inst_df['mat'] = inst_df['mat'][top_terms[inst_score_type]]
 
-    print('\n\n'+inst_score_type)
-    print(inst_df['mat'].shape)
-    print(top_terms[inst_score_type])
+    # print('\n\n'+inst_score_type)
+    # print(inst_df['mat'].shape)
+    # print(top_terms[inst_score_type])
 
     # load back into net 
     inst_net.df_to_dat(inst_df)
 
     # make views 
-    inst_net.make_filtered_views(dist_type='jaccard',\
-      views=['N_row_sum'], dendro=False)
+    if len(net.dat['nodes']['row']) > 1:
+      inst_net.make_filtered_views(dist_type='jaccard', views=['N_row_sum'], dendro=False)
+    else:
+      inst_net.make_filtered_views(dist_type='jaccard', views=['N_row_sum'], dendro=False, run_clustering = False)
 
     inst_views = inst_net.viz['views']
 
@@ -267,8 +280,7 @@ def enrichr_clust_from_response(response_list):
       # add values to col_nodes and order according to rank 
       for inst_col in inst_view['nodes']['col_nodes']:
 
-        inst_col['rank'] = len(top_terms[inst_score_type]) - \
-        top_terms[inst_score_type].index(inst_col['name'])
+        inst_col['rank'] = len(top_terms[inst_score_type]) - top_terms[inst_score_type].index(inst_col['name'])
         
         inst_name = inst_col['name']
         inst_col['value'] = scores[inst_score_type][inst_name]

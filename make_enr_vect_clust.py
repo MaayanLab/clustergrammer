@@ -6,7 +6,7 @@ def make_enr_clust():
 
   import enrichr_functions as enr_fun 
 
-  enr, response_list = enr_fun.enrichr_get_request('ChEA_2015', 939279)
+  enr, response_list = enr_fun.enrichr_get_request('KEA_2015', 939279)
 
   net = enr_fun.enrichr_clust_from_response(response_list)
 
@@ -87,8 +87,6 @@ def mock_g2e_json(gl):
   g2e_post['background_type'] = 'ChEA_2015'
 
   net.save_dict_to_json(g2e_post,'json/g2e_enr_vect.json','indent')
-
-
 
 
 def make_updn_lists(inst_num):

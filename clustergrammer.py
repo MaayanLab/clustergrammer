@@ -214,7 +214,7 @@ class Network(object):
     and clustering after each filtering. This filtering will keep the top N 
     rows based on some quantity (sum, num-non-zero, etc). '''
 
-    print('--- start make_filtered_views')
+    print('\n\n--- start make_filtered_views')
 
     from copy import deepcopy
     df = self.dat_to_df()
@@ -231,10 +231,10 @@ class Network(object):
     all_views = []
     send_df = deepcopy(df)
 
-    print('\nchecking column keys')
-    print(self.dat['node_info']['col'].keys())
+    # print('\nchecking column keys')
+    # print(self.dat['node_info']['col'].keys())
 
-    print(send_df['mat'].columns.tolist())
+    # print(send_df['mat'].columns.tolist())
     
     if 'N_row_sum' in views:
       print('\nadd N_row_sum')
