@@ -17,6 +17,10 @@ module.exports = function set_sidebar_ini_view(params){
         inst_value = parseInt(inst_value,10);
       }
 
+      if (params.viz.filter_data[inst_filter].indexOf(inst_value) <= -1){
+        inst_value = 'all';
+      }
+
       var tmp_index = possible_values.indexOf( inst_value );
 
       $(params.root+' .slider_'+inst_filter)

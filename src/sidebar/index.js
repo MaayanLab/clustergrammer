@@ -1,4 +1,3 @@
-var utils = require('../utils');
 var ini_sidebar = require('./ini_sidebar');
 var set_up_filters = require('../filters/set_up_filters');
 var set_up_colorbar = require('./set_up_colorbar');
@@ -17,10 +16,7 @@ module.exports = function sidebar(config, params) {
 
   set_up_search(sidebar, params);
 
-  // only checking rows for dendrogram, should always be present and rows and cols 
-  var inst_rows = params.network_data.row_nodes;
-  var found_colorbar = _.filter(inst_rows, function(d) { return utils.has(d,'group'); }).length;
-  if (found_colorbar>0){
+  if (params.viz.show_dendrogram){
     set_up_colorbar(sidebar, params);
   }
 
