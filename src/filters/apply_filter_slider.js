@@ -19,7 +19,6 @@ module.exports = function apply_filter_slider(config, params, filter_type, avail
   requested_view = construct_view_request(params, requested_view);  
 
   if ( _.has(available_views[0],'enr_score_type') ){
-
     var enr_state = d3.select(params.root+' .toggle_enr_score_type')
       .attr('current_state');
 

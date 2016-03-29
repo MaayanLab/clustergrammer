@@ -5,6 +5,7 @@ var set_up_colorbar = require('./set_up_colorbar');
 var set_up_search = require('./set_up_search');
 var set_up_reorder = require('./set_up_reorder');
 var make_cat_keys = require('./make_cat_keys');
+var set_sidebar_ini_view = require('./set_sidebar_ini_view');
 
 /* Represents sidebar with controls.
  */
@@ -25,15 +26,23 @@ module.exports = function sidebar(config, params) {
 
   var possible_filter_names = _.keys(params.viz.possible_filters);
 
-  console.log('----------- possible filter names')
-  console.log(possible_filter_names)
   _.each(possible_filter_names, function(inst_filter){
-    console.log(inst_filter)  
     set_up_filters(config, params, inst_filter);
   });
   
   ini_sidebar(params);
 
   make_cat_keys(params);
+
+  // when initializing the visualization using a view
+  if (params.ini_view !== null) {
+
+    set_sidebar_ini_view(params);
+
+    params.ini_view = null;
+
+  }
+
+  return params;
 
 };
