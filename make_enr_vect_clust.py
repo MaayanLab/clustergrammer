@@ -6,7 +6,9 @@ def make_enr_clust():
 
   import enrichr_functions as enr_fun 
 
-  net = enr_fun.make_enr_clust(939279,'CORUM')
+  enr, response_list = enr_fun.enrichr_get_request('ChEA_2015', 939279)
+
+  net = enr_fun.enrichr_clust_from_response(response_list)
 
   net.write_json_to_file('viz','json/enr_clust_example.json')  
 

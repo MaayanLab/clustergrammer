@@ -75,7 +75,7 @@ def enrichr_get_request( gmt, userListId, max_num_term=50 ):
   enr = transfer_to_enr_dict( response_list, max_num_term )
 
   # return enrichment json and userListId
-  return enr 
+  return enr, response_list
 
 # transfer the response_list to a list of dictionaries 
 def transfer_to_enr_dict(response_list, max_num_term=50):
