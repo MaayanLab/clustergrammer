@@ -172,10 +172,15 @@ def enrichr_clust_from_response(response_list):
 
   enr_score_types = ['combined_score','pval','zscore']
 
+  num_dict = {'ten':10, 'twenty':20, 'thirty':30}
+
   # gather lists of top scores 
   top_terms = {}
   for enr_type in enr_score_types:
-    top_terms[enr_type] = scores[enr_type].index.tolist()[:max_terms]
+    top_terms[enr_type] = {}
+    for num_terms in ['ten','twenty','thirty']:
+      inst_num = num_dict[num_terms]   
+      top_terms[enr_type][num_terms] = scores[enr_type].index.tolist()[: inst_num]
 
   # top_terms['combined_score'] = scores['combined_score'].index.tolist()[:max_terms]
   # top_terms['pval'] = scores['pval'].index.tolist()[:max_terms]
@@ -191,7 +196,7 @@ def enrichr_clust_from_response(response_list):
   # print(scores['zscore'][:10])
 
   # gather the terms that should be kept - they are at the top of the score list
-  keep_terms = top_terms['combined_score'] + top_terms['pval'] + top_terms['zscore']
+  keep_terms = top_terms['combined_score']['thirty'] + top_terms['pval']['thirty'] + top_terms['zscore']['thirty']
 
   keep_terms = list(set(keep_terms))
 
@@ -260,7 +265,7 @@ def enrichr_clust_from_response(response_list):
     inst_df = deepcopy(df)
     inst_net = deepcopy(Network())
 
-    inst_df['mat'] = inst_df['mat'][top_terms[score_type]]
+    inst_df['mat'] = inst_df['mat'][top_terms[score_type]['thirty']]
 
     # print('\n\n'+score_type)
     # print(inst_df['mat'].shape)
@@ -284,7 +289,7 @@ def enrichr_clust_from_response(response_list):
       # add values to col_nodes and order according to rank 
       for inst_col in inst_view['nodes']['col_nodes']:
 
-        inst_col['rank'] = len(top_terms[score_type]) - top_terms[score_type].index(inst_col['name'])
+        inst_col['rank'] = len(top_terms[score_type]['thirty']) - top_terms[score_type]['thirty'].index(inst_col['name'])
         
         inst_name = inst_col['name']
         inst_col['value'] = scores[score_type][inst_name]
