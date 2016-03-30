@@ -40,5 +40,13 @@ module.exports = function make_filter_title(params, filter_type){
     filter_title.text = 'Top '+ title.node + ' ' + title.measure+': ';
   }
 
+  // Enrichr specific rules 
+  if ( _.keys(params.viz.possible_filters).indexOf('enr_score_type') > -1 ){
+    if (type.node === 'col'){
+      filter_title.text = 'Top Enriched Terms: ';
+      filter_title.suffix = '';
+    }
+  }
+
   return filter_title;
 };
