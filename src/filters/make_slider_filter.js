@@ -5,8 +5,6 @@ var get_subset_views = require('./get_subset_views');
 
 module.exports = function make_slider_filter(config, params, filter_type, div_filters){
 
-  console.log(filter_type)
-
   var requested_view = {};
 
   var possible_filters = _.keys(params.viz.possible_filters);
