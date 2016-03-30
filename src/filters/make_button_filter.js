@@ -1,5 +1,5 @@
 var update_network = require('../network/update_network');
-var construct_view_request = require('./construct_view_request');
+var make_requested_view = require('./make_requested_view');
 
 module.exports = function make_button_filter(config, params, filter_type, div_filters){
 
@@ -65,7 +65,7 @@ module.exports = function make_button_filter(config, params, filter_type, div_fi
 
       var requested_view = {'enr_score_type':inst_state};
 
-      requested_view = construct_view_request(params, requested_view);
+      requested_view = make_requested_view(params, requested_view);
 
       update_network(config, params, requested_view);
 

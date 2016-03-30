@@ -23,13 +23,20 @@ module.exports = function construct_view_request(params, requested_view){
   _.each(possible_filters, function(inst_filter){
     if ( inst_filter.indexOf(other_rc) > -1 ){
 
-      var inst_state = d3.select('.slider_'+inst_filter)
-        .attr('current_state');
+      if (!d3.select(params.root+' .slider_'+inst_filter).empty()){
 
-      requested_view[inst_filter] = inst_state;
+        var inst_state = d3.select(params.root+' .slider_'+inst_filter)
+          .attr('current_state');
+
+        requested_view[inst_filter] = inst_state;
+      } else {
+        console.log('did not find slider')
+      }
 
     }
   });
+
+  console.log(requested_view)
 
   return requested_view;
 

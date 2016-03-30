@@ -262,39 +262,45 @@ def enrichr_clust_from_response(response_list):
 
   for score_type in score_types:
 
-    inst_df = deepcopy(df)
-    inst_net = deepcopy(Network())
+    for num_terms in num_dict:
 
-    inst_df['mat'] = inst_df['mat'][top_terms[score_type]['thirty']]
+      inst_df = deepcopy(df)
+      inst_net = deepcopy(Network())
 
-    # print('\n\n'+score_type)
-    # print(inst_df['mat'].shape)
-    # print(top_terms[score_type])
+      inst_df['mat'] = inst_df['mat'][top_terms[score_type][num_terms]]
 
-    # load back into net 
-    inst_net.df_to_dat(inst_df)
+      # print('\n\n'+score_type)
+      # print(inst_df['mat'].shape)
+      # print(top_terms[score_type])
 
-    # make views 
-    if len(net.dat['nodes']['row']) > 1:
-      inst_net.make_filtered_views(dist_type='jaccard', views=['N_row_sum'], dendro=False)
-    else:
-      inst_net.make_filtered_views(dist_type='jaccard', views=['N_row_sum'], dendro=False, run_clustering = False)
+      # load back into net 
+      inst_net.df_to_dat(inst_df)
 
-    inst_views = inst_net.viz['views']
+      # make views 
+      if len(net.dat['nodes']['row']) > 1:
+        inst_net.make_filtered_views(dist_type='jaccard', views=['N_row_sum'], dendro=False)
+      else:
+        inst_net.make_filtered_views(dist_type='jaccard', views=['N_row_sum'], dendro=False, run_clustering = False)
 
-    # add score_type to views 
-    for inst_view in inst_views:
-      inst_view['enr_score_type'] = score_type
+      inst_views = inst_net.viz['views']
 
-      # add values to col_nodes and order according to rank 
-      for inst_col in inst_view['nodes']['col_nodes']:
 
-        inst_col['rank'] = len(top_terms[score_type]['thirty']) - top_terms[score_type]['thirty'].index(inst_col['name'])
-        
-        inst_name = inst_col['name']
-        inst_col['value'] = scores[score_type][inst_name]
+      # add score_type to views 
+      for inst_view in inst_views:
 
-    # add views to main network 
-    net.viz['views'].extend(inst_views)
+        inst_view['N_col_sum'] = num_dict[num_terms]
+
+        inst_view['enr_score_type'] = score_type
+
+        # add values to col_nodes and order according to rank 
+        for inst_col in inst_view['nodes']['col_nodes']:
+
+          inst_col['rank'] = len(top_terms[score_type][num_terms]) - top_terms[score_type][num_terms].index(inst_col['name'])
+          
+          inst_name = inst_col['name']
+          inst_col['value'] = scores[score_type][inst_name]
+
+      # add views to main network 
+      net.viz['views'].extend(inst_views)
 
   return net  

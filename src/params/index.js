@@ -13,7 +13,7 @@ var calc_label_params = require('./calc_label_params');
 var calc_val_max = require('./calc_val_max');
 var set_zoom_params = require('./set_zoom_params');
 var ini_sidebar_params = require('./ini_sidebar_params');
-var construct_view_request = require('../filters/construct_view_request');
+var make_requested_view = require('../filters/make_requested_view');
 var get_available_filters = require('./get_available_filters');
 
 /* 
@@ -32,7 +32,7 @@ module.exports = function make_params(input_config) {
     var requested_view = params.ini_view;
 
     params.viz = get_available_filters({}, params);
-    requested_view = construct_view_request(params, requested_view);  
+    requested_view = make_requested_view(params, requested_view);  
 
     // requested_view.enr_score_type = 'combined_score';
 
