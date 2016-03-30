@@ -10,13 +10,10 @@ module.exports = function make_slider_filter(config, params, filter_type, div_fi
   var possible_filters = _.keys(params.viz.possible_filters);
 
   _.each(possible_filters, function(tmp_filter){
-
     if (tmp_filter != filter_type){
       var default_state = get_filter_default_state(params.viz.filter_data, tmp_filter);
-
       requested_view[tmp_filter] = default_state;
     }
-
   });
 
   var filter_title = make_filter_title(params, filter_type);

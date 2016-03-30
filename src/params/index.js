@@ -32,6 +32,8 @@ module.exports = function make_params(input_config) {
     var requested_view = params.ini_view;
 
     var filters = get_available_filters(params.network_data.views);
+
+    params.viz = {};
     params.viz.possible_filters = filters.possible_filters;
     params.viz.filter_data = filters.filter_data;
 

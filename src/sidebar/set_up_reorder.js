@@ -52,6 +52,11 @@ module.exports = function set_up_reorder(params, sidebar){
       
     });
 
+    // specific to Enrichr 
+    if ( _.keys(params.viz.filter_data).indexOf('enr_score_type') > -1 ){
+      possible_orders = ['clust','rank'];
+    }
+
     possible_orders = _.uniq(possible_orders);
 
     possible_orders = possible_orders.sort();
@@ -79,7 +84,7 @@ module.exports = function set_up_reorder(params, sidebar){
       .classed('btn-primary',true)
       .classed('active', function(d){
         is_active = false;
-        if (d == 'clust'){
+        if (d == params.viz.inst_order[other_rc]){
           is_active = true;
         }
         return is_active;

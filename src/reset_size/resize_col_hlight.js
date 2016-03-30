@@ -16,6 +16,8 @@ module.exports = function resize_col_hlight(params, svg_group, delay_info=false)
       .selectAll('.col_bars')
       .attr('width', function(d) {
         var inst_value = 0;
+        // console.log(d)
+
         if (d.value > 0){
           inst_value = params.labels.bar_scale_col(d.value);
         }
