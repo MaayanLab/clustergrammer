@@ -23,7 +23,7 @@ module.exports = function apply_filter_slider(config, params, filter_type, avail
       .attr('current_state');
 
     requested_view.enr_score_type = enr_state;
-  }
+  } 
 
   params = update_network(config, params, requested_view);
 
