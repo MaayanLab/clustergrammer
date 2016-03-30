@@ -29,14 +29,10 @@ module.exports = function construct_view_request(params, requested_view){
           .attr('current_state');
 
         requested_view[inst_filter] = inst_state;
-      } else {
-        console.log('did not find slider')
       }
 
     }
   });
-
-  console.log(requested_view)
 
   return requested_view;
 

@@ -1,6 +1,8 @@
 var utils = require('./utils');
 var colors = require('./colors');
 var transpose_network = require('./network/transpose_network');
+var get_available_filters = require('./params/get_available_filters');
+var get_filter_default_state = require('./filters/get_filter_default_state');
 
 module.exports = function(args) {
   var defaults = {
@@ -66,9 +68,25 @@ module.exports = function(args) {
     d.name = d.name.replace(/_/g, ' ');
   });
 
-  // process view row/col names 
+
+  var filters = get_available_filters(config.network_data.views);
+
+  var default_states = {};
+  _.each( _.keys(filters.possible_filters), function(inst_filter){
+    var tmp_state = get_filter_default_state(filters.filter_data, inst_filter);
+
+    default_states[inst_filter] = tmp_state;
+  });
+
+  // process view 
   if (_.has(config.network_data,'views')){
     config.network_data.views.forEach(function(inst_view){
+
+      _.each( _.keys(filters.possible_filters), function(inst_filter){
+        if ( !_.has(inst_view, inst_filter) ){
+          inst_view[inst_filter] = default_states[inst_filter];
+        }
+      });
 
       var inst_nodes = inst_view.nodes;
 

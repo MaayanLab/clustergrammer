@@ -127,7 +127,10 @@ module.exports = function ini_viz_params(config, params){
 
   viz.spillover_col_slant = viz.norm_labels.width.col;
 
-  viz = get_available_filters(viz, params);
+  var filters = get_available_filters(params.network_data.views);
+
+  viz.possible_filters = filters.possible_filters;
+  viz.filter_data = filters.filter_data;
 
   return viz;
 };

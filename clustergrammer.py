@@ -256,6 +256,9 @@ class Network(object):
       all_views = self.add_pct_top_views( send_df, all_views, \
         dist_type=dist_type, rank_type='var' )        
 
+    # for inst_view in all_views:
+    #   pass
+
     self.viz['views'] = all_views
 
     print('\n--- end make_filtered_views')
@@ -317,7 +320,7 @@ class Network(object):
     from copy import deepcopy 
 
     copy_net = deepcopy(self)
-    keep_top = ['all',500,400,300,200,100,90,80,70,60,50,40,30,20,10]
+    keep_top = ['all',500,400,300,200,100,80,60,40,20,10]
     df_abs = deepcopy(df['mat'])
     df_abs = df_abs.transpose()
 

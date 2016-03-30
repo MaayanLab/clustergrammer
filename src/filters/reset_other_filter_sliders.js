@@ -11,7 +11,7 @@ module.exports = function reset_other_filter_sliders(params, filter_type, inst_s
   _.each( possible_filter_names, function(reset_filter){
     if (filter_type != reset_filter){
 
-      var tmp_title = make_filter_title(reset_filter);
+      var tmp_title = make_filter_title(params, reset_filter);
       $(params.root+' .slider_'+reset_filter).slider( "value", 0);
 
       d3.select(params.root+' .title_'+reset_filter)
@@ -22,7 +22,7 @@ module.exports = function reset_other_filter_sliders(params, filter_type, inst_s
     }
   });
 
-  var filter_title = make_filter_title(filter_type);
+  var filter_title = make_filter_title(params, filter_type);
 
   d3.select(params.root+' .title_'+filter_type)
     .text(filter_title.text + inst_state + filter_title.suffix);

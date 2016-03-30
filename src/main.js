@@ -28,7 +28,6 @@ function Clustergrammer(args) {
   // make visualization using parameters
   var viz = make_viz(params);
 
-
   return {
     params: params,
     config: config,

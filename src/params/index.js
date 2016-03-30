@@ -31,7 +31,10 @@ module.exports = function make_params(input_config) {
 
     var requested_view = params.ini_view;
 
-    params.viz = get_available_filters({}, params);
+    var filters = get_available_filters(params.network_data.views);
+    params.viz.possible_filters = filters.possible_filters;
+    params.viz.filter_data = filters.filter_data;
+
     requested_view = make_requested_view(params, requested_view);  
 
     // requested_view.enr_score_type = 'combined_score';

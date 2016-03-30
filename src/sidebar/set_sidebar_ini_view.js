@@ -26,7 +26,7 @@ module.exports = function set_sidebar_ini_view(params){
       $(params.root+' .slider_'+inst_filter)
         .slider( "value", tmp_index);
       
-      var filter_title = make_filter_title(inst_filter);
+      var filter_title = make_filter_title(params, inst_filter);
 
       d3.select(params.root+' .title_'+inst_filter)
         .text(filter_title.text + inst_value + filter_title.suffix);
