@@ -1,9 +1,9 @@
 
-// make_clust('mult_view.json');
+make_clust('mult_view.json');
 // make_clust('mult_cats.json');
 // make_clust('large_vect_post_example.json');
 // make_clust('vect_post_example.json');
-make_clust('enr_clust_example.json');
+// make_clust('enr_clust_example.json');
 // make_clust('default_example.json');
 // make_clust('ccle.json');
 // make_clust('updn_example.json');
@@ -67,8 +67,8 @@ function make_clust(inst_network){
         // 'size':viz_size
         // 'order':'rank'
         // 'row_order':'clust'
-        'col_order':'rank',
-        'ini_view':{'N_row_sum':'40', 'N_col_sum':'10'}
+        // 'col_order':'rank',
+        // 'ini_view':{'N_row_sum':'40', 'N_col_sum':'10'}
         // 'current_col_cat':'category-one'
       };
 

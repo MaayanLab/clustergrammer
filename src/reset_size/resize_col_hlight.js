@@ -12,11 +12,13 @@ module.exports = function resize_col_hlight(params, svg_group, delay_info=false)
   }  
 
   if (utils.has( params.network_data.col_nodes[0], 'value')) {
+
     svg_group
       .selectAll('.col_bars')
+      .data(params.network_data.col_nodes, function(d){return d.name;})
       .attr('width', function(d) {
+
         var inst_value = 0;
-        // console.log(d)
 
         if (d.value > 0){
           inst_value = params.labels.bar_scale_col(d.value);
@@ -25,6 +27,7 @@ module.exports = function resize_col_hlight(params, svg_group, delay_info=false)
       })
       // rotate labels - reduce width if rotating
       .attr('height', params.viz.rect_width * 0.66);
+
   }
 
 };

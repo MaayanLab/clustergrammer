@@ -18,7 +18,7 @@ module.exports = function sidebar(config, params) {
 
   sidebar
     .append('div')
-    .classed('about_section',true)
+    .classed('about_section',true);
 
   set_up_reorder(params, sidebar);
 
