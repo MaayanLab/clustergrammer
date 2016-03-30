@@ -6,22 +6,10 @@ module.exports = function make_view_request(params, requested_view){
   // only one component will be changed at a time 
   var changed_component = _.keys(requested_view)[0];
 
-  // default to row 
-  var other_rc;
-  if ( changed_component.indexOf('row') > -1 ){
-    other_rc = 'col';
-  } else if ( changed_component.indexOf('col') > -1 ){
-    other_rc = 'row';
-  } else {
-    // for Enrichr 
-    other_rc = 'row';
-  }
-
-  var possible_filters = _.keys(params.viz.possible_filters);
-
   // add additional filter information from othe possible filters 
-  _.each(possible_filters, function(inst_filter){
-    if ( inst_filter.indexOf(other_rc) > -1 ){
+  _.each( _.keys(params.viz.possible_filters), function(inst_filter){
+
+    if (inst_filter != changed_component){
 
       if (!d3.select(params.root+' .slider_'+inst_filter).empty()){
 
@@ -32,6 +20,7 @@ module.exports = function make_view_request(params, requested_view){
       }
 
     }
+
   });
 
   return requested_view;

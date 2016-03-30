@@ -168,17 +168,28 @@ def enrichr_clust_from_response(response_list):
     scores[score_type] = scores[score_type]/scores[score_type].max()
     scores[score_type].sort(ascending=False)
 
-  max_terms = 30
+  print('\n************* number of enriched terms')
+  print(len(scores['combined_score']))
+  print(scores['combined_score'])
+
+  number_of_enriched_terms = len(scores['combined_score'])
 
   enr_score_types = ['combined_score','pval','zscore']
 
-  num_dict = {'ten':10, 'twenty':20, 'thirty':30}
+  if number_of_enriched_terms <10:
+    num_dict = {'ten':10}
+  elif number_of_enriched_terms <20:
+    num_dict = {'ten':10, 'twenty':20}
+  else:
+    num_dict = {'ten':10, 'twenty':20, 'thirty':30}
+
+
 
   # gather lists of top scores 
   top_terms = {}
   for enr_type in enr_score_types:
     top_terms[enr_type] = {}
-    for num_terms in ['ten','twenty','thirty']:
+    for num_terms in num_dict.keys():
       inst_num = num_dict[num_terms]   
       top_terms[enr_type][num_terms] = scores[enr_type].index.tolist()[: inst_num]
 
@@ -196,7 +207,12 @@ def enrichr_clust_from_response(response_list):
   # print(scores['zscore'][:10])
 
   # gather the terms that should be kept - they are at the top of the score list
-  keep_terms = top_terms['combined_score']['thirty'] + top_terms['pval']['thirty'] + top_terms['zscore']['thirty']
+  keep_terms = []
+  for inst_enr_score in top_terms:
+    for tmp_num in num_dict.keys():
+      keep_terms.extend( top_terms[inst_enr_score][tmp_num] )
+
+  print(keep_terms)
 
   keep_terms = list(set(keep_terms))
 
@@ -283,7 +299,6 @@ def enrichr_clust_from_response(response_list):
         inst_net.make_filtered_views(dist_type='jaccard', views=['N_row_sum'], dendro=False, run_clustering = False)
 
       inst_views = inst_net.viz['views']
-
 
       # add score_type to views 
       for inst_view in inst_views:

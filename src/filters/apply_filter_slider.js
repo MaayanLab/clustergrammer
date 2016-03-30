@@ -25,6 +25,10 @@ module.exports = function apply_filter_slider(config, params, filter_type, avail
     requested_view.enr_score_type = enr_state;
   } 
 
+  // console.log('\n---------\n requested_view from slider filter')
+  // console.log(requested_view)
+
+
   params = update_network(config, params, requested_view);
 
   return params;

@@ -34,17 +34,14 @@ module.exports = function get_subset_views(params, views, requested_view){
 
   });
 
-  // Enrichr specific rules 
-  if (_.has(views[0], 'enr_score_type')){
-
-    var inst_enr = 'combined_score';
-
-    // filter out enr_score_type 
-    views = _.filter(views, function(d){
-      return d.enr_score_type == inst_enr;
-    });
-
-  }
+  // // Enrichr specific rules 
+  // if (_.has(views[0], 'enr_score_type')){
+  //   var inst_enr = 'combined_score';
+  //   // filter out enr_score_type 
+  //   views = _.filter(views, function(d){
+  //     return d.enr_score_type == inst_enr;
+  //   });
+  // }
 
   // remove duplicate complete default states 
   var export_views = [];
@@ -55,6 +52,7 @@ module.exports = function get_subset_views(params, views, requested_view){
   // check if each view is a default state: all filters are at default 
   // there can only be one of these 
   _.each(views, function(inst_view){
+
     check_default = true;
 
     // check each filter in a view to see if it is in the default state 
