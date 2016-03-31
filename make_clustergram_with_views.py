@@ -4,9 +4,11 @@ import time
 start_time = time.time()
 
 # import network class from Network.py
-from clustergrammer import Network
+import clustergrammer
 
-net = Network()
+net = clustergrammer.Network()
+
+net = clustergrammer.Network()
 
 net.pandas_load_file('txt/rc_two_cats.txt')
 # net.pandas_load_file('txt/example_tsv.txt')

@@ -315,7 +315,6 @@ class Network(object):
     return all_views
 
   def add_N_top_views(self, df, all_views, dist_type='cosine', rank_type='sum'):
-
     from clustergrammer import Network
     from copy import deepcopy 
 
