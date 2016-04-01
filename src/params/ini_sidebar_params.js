@@ -1,4 +1,4 @@
-module.exports = function ini_sidebar_params(){
+module.exports = function ini_sidebar_params(params){
   var sidebar = {};
 
   sidebar.wrapper = {};
@@ -16,6 +16,9 @@ module.exports = function ini_sidebar_params(){
   sidebar.key_cat = {};
   sidebar.key_cat.width = 170;
   sidebar.key_cat.margin_left = 5;
+
+  sidebar.title = params.title;
+  sidebar.about = params.about;
 
   return sidebar;
 };

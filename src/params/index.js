@@ -65,7 +65,7 @@ module.exports = function make_params(input_config) {
   params = calc_default_fs(params);
 
   if (params.use_sidebar){
-    params.sidebar = ini_sidebar_params();
+    params.sidebar = ini_sidebar_params(params);
   }
 
   return params;

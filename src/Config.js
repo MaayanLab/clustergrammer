@@ -45,7 +45,9 @@ module.exports = function(args) {
     make_tile_tooltip: function(d) { return d.info; },
     // initialize view, e.g. initialize with row filtering
     ini_view: null,
-    use_sidebar: true
+    use_sidebar: true,
+    title:null,
+    about:null
   };
   // Mixin defaults with user-defined arguments.
   var config = utils.extend(defaults, args);
