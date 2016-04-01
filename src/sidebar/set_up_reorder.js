@@ -72,7 +72,10 @@ module.exports = function set_up_reorder(params, sidebar){
       .append('div')
       .classed('btn-group-vertical',true)
       .classed('toggle_'+inst_rc+'_order',true)
-      .attr('role','group');
+      .attr('role','group')
+      .style('max-width', params.sidebar.buttons.width+'px')
+
+    console.log(params.sidebar.button)
 
     inst_reorder
       .selectAll('.button')

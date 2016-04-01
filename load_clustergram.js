@@ -63,8 +63,8 @@ function make_clust(inst_network){
         // 'ini_view':{'N_row_sum':'40', 'N_col_sum':'10'}
         // 'current_col_cat':'category-one'
         'title':'Clustergrammer',
-        'about':'Zoom, scroll, and click to interact with the clustergram.',
-        'sidebar_width':175
+        'about':'Zoom, scroll, and click buttons to interact with the clustergram.',
+        // 'sidebar_width':150
       };
 
       cgm = Clustergrammer(arguments_obj);

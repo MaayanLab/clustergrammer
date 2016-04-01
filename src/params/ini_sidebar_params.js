@@ -10,7 +10,7 @@ module.exports = function ini_sidebar_params(params){
   sidebar.row_search.box.width = 95;
 
   sidebar.slider = {};
-  sidebar.slider.width = 140;
+  sidebar.slider.width = params.sidebar_width - 30;
   sidebar.slider.margin_left = 15;
 
   sidebar.key_cat = {};
@@ -21,6 +21,9 @@ module.exports = function ini_sidebar_params(params){
   sidebar.title = params.title;
   sidebar.about = params.about;
   sidebar.width = params.sidebar_width;
+
+  sidebar.buttons = {};
+  sidebar.buttons.width = params.sidebar_width - 15;
 
   return sidebar;
 };

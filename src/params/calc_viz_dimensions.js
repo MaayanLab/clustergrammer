@@ -1,19 +1,19 @@
 module.exports = function calc_viz_dimensions(params){
 
+  var cont_dim = {};
+  var extra_space = 8;
+  
   var screen_width = window.innerWidth;
   var screen_height = window.innerHeight;
-
-
-  var cont_dim = {};
 
   // get outer_margins
   var outer_margins;
   if (params.viz.expand === false) {
     outer_margins = params.viz.outer_margins;
-    cont_dim.width = screen_width - params.sidebar_width - outer_margins.right - 8;
+    cont_dim.width = screen_width - params.sidebar_width - outer_margins.right - extra_space;
   } else {
     outer_margins = params.viz.outer_margins;
-    cont_dim.width = screen_width - outer_margins.right - 8;
+    cont_dim.width = screen_width - outer_margins.right - extra_space;
   }
 
   console.log(cont_dim)
