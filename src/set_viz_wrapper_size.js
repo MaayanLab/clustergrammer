@@ -22,7 +22,7 @@ module.exports = function set_viz_wrapper_size(params) {
     .style('float', 'left')
     .style('overflow-y','scroll')
     .style('overflow-x','hidden')
-    .style('width','187px')
+    .style('width', params.sidebar_width+'px')
     .style('height', cont_dim.height+'px');
 
   d3.select(params.viz.viz_wrapper)

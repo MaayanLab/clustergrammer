@@ -31,12 +31,6 @@ module.exports = function(args) {
       left: 0,
       right: 0
     },
-    outer_margins_expand:{
-      top: -666,
-      bottom: 0,
-      left: 0,
-      right: 0
-    },
     ini_expand: false,
     grey_border_width: 2,
     force_square: 0,
@@ -47,12 +41,13 @@ module.exports = function(args) {
     ini_view: null,
     use_sidebar: true,
     title:null,
-    about:null
+    about:null,
+    sidebar_width:170
   };
   // Mixin defaults with user-defined arguments.
   var config = utils.extend(defaults, args);
 
-  if (config.outer_margins_expand.top === -666){
+  if (config.ini_expand){
     config.expand_button = false;
   } else {
     config.expand_button = true;

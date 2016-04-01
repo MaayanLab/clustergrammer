@@ -69,7 +69,6 @@ module.exports = function(params) {
 
           d3.selectAll(params.root+' .borders').style('fill', 'white');
           d3.select(params.root+' .footer_section').style('display', 'none');
-
           d3.select(params.root+' .sidebar_wrapper')
             .style('display','none');
 

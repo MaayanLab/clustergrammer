@@ -20,7 +20,7 @@ module.exports = function make_cat_keys(params){
           .style('border','1px solid #DEDEDE')
           .style('margin-bottom','10px')
           .style('overflow','scroll')
-          .style('max-height','120px')
+          .style('max-height',params.sidebar.key_cat.max_height+'px')
           .style('width', params.sidebar.key_cat.width+'px')
           .style('margin-left', params.sidebar.key_cat.margin_left+'px');
 

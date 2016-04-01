@@ -20,6 +20,7 @@ module.exports = function sidebar(config, params) {
     sidebar
       .select('.title_section')
       .append('h4')
+      .style('margin-left','3px')
       .style('margin-bottom','5px')
       .text(params.sidebar.title);
   }

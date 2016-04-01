@@ -14,11 +14,13 @@ module.exports = function ini_sidebar_params(params){
   sidebar.slider.margin_left = 15;
 
   sidebar.key_cat = {};
-  sidebar.key_cat.width = 170;
+  sidebar.key_cat.width = params.sidebar_width - 15;
   sidebar.key_cat.margin_left = 5;
+  sidebar.key_cat.max_height = 100;
 
   sidebar.title = params.title;
   sidebar.about = params.about;
+  sidebar.width = params.sidebar_width;
 
   return sidebar;
 };

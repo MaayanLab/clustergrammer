@@ -19,15 +19,8 @@ function make_clust(inst_network){
     d3.json('json/'+inst_network, function(network_data){
 
       var outer_margins = {
-          'top':5,
-          'bottom':33,
-          'left':195,
-          'right':2
-        };
-
-      var outer_margins_expand = {
-          'top':5,
-          'bottom':33,
+          'top':2,
+          'bottom':30,
           'left':5,
           'right':2
         };
@@ -44,7 +37,6 @@ function make_clust(inst_network){
         'row_label':'Row Title',
         'col_label':'Colum Title',
         'outer_margins': outer_margins,
-        'outer_margins_expand': outer_margins_expand,
         // 'outline_colors':['black','yellow'],
         // 'tile_click_hlight':true,
         'show_label_tooltips':true,
@@ -71,7 +63,8 @@ function make_clust(inst_network){
         // 'ini_view':{'N_row_sum':'40', 'N_col_sum':'10'}
         // 'current_col_cat':'category-one'
         'title':'Clustergrammer',
-        'about':'Zoom, scroll, and click to interact with the clustergram.'
+        'about':'Zoom, scroll, and click to interact with the clustergram.',
+        'sidebar_width':175
       };
 
       cgm = Clustergrammer(arguments_obj);

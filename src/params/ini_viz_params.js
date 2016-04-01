@@ -11,7 +11,6 @@ module.exports = function ini_viz_params(config, params){
   viz.background_color = config.background_color;
   viz.super_border_color = config.super_border_color;
   viz.outer_margins = config.outer_margins;
-  viz.outer_margins_expand = config.outer_margins_expand;
   viz.expand = config.ini_expand;
   viz.grey_border_width = config.grey_border_width;
   viz.show_dendrogram = config.show_dendrogram;
