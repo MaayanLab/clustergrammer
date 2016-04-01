@@ -75,8 +75,6 @@ module.exports = function set_up_reorder(params, sidebar){
       .attr('role','group')
       .style('max-width', params.sidebar.buttons.width+'px')
 
-    console.log(params.sidebar.button)
-
     inst_reorder
       .selectAll('.button')
       .data(possible_orders)

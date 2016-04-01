@@ -42,6 +42,10 @@ module.exports = function sidebar(config, params) {
       .text(params.sidebar.about);
   }
 
+  sidebar
+    .append('div')
+    .classed('icons_section',true);
+
   set_up_reorder(params, sidebar);
 
   set_up_search(sidebar, params);
@@ -51,6 +55,12 @@ module.exports = function sidebar(config, params) {
   }
 
   var possible_filter_names = _.keys(params.viz.possible_filters);
+
+  if (possible_filter_names.indexOf('enr_score_type')>-1){
+    possible_filter_names.sort(function (a, b) {
+      return a.toLowerCase().localeCompare(b.toLowerCase());
+    });
+  }
 
   _.each(possible_filter_names, function(inst_filter){
     set_up_filters(config, params, inst_filter);

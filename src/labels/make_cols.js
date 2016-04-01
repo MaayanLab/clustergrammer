@@ -106,7 +106,7 @@ module.exports = function(params, text_delay) {
       .style('fill', function(d) {
         return d.value > 0 ? params.matrix.bar_colors[0] : params.matrix.bar_colors[1];
       })
-      .attr('opacity', 0.4);
+      .attr('opacity', 0.6);
 
   }
 
