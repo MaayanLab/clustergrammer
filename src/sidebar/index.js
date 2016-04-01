@@ -37,6 +37,8 @@ module.exports = function sidebar(config, params) {
       .style('font-weight',400)
       .style('margin-left','4px')
       .style('margin-bottom','5px')
+      .style('width', params.sidebar.text.width+'px')
+      .style('text-align','justify')
       .text(params.sidebar.about);
   }
 

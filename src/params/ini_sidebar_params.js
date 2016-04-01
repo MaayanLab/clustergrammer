@@ -25,5 +25,8 @@ module.exports = function ini_sidebar_params(params){
   sidebar.buttons = {};
   sidebar.buttons.width = params.sidebar_width - 15;
 
+  sidebar.text = {};
+  sidebar.text.width = params.sidebar_width - 15;
+
   return sidebar;
 };
