@@ -36,9 +36,9 @@ module.exports = function(config, old_params, requested_view) {
 
   enter_exit_update(params, new_network_data, delays);
 
-  if (params.viz.show_categories.row){
+  // if (params.viz.show_categories.row){
     make_row_cat(params);
-  }
+  // }
   if (params.viz.show_categories.col){
     make_col_cat(params);
   }
