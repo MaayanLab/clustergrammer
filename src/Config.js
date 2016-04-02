@@ -42,7 +42,8 @@ module.exports = function(args) {
     use_sidebar: true,
     title:null,
     about:null,
-    sidebar_width:170
+    sidebar_width:170,
+    sidebar_icons:true
   };
   // Mixin defaults with user-defined arguments.
   var config = utils.extend(defaults, args);

@@ -16,8 +16,6 @@ module.exports = function calc_viz_dimensions(params){
     cont_dim.width = screen_width - outer_margins.right - extra_space;
   }
 
-  console.log(cont_dim)
-
   cont_dim.top = outer_margins.top;
   cont_dim.left = outer_margins.left;
 

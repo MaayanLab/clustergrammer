@@ -5,6 +5,7 @@ var set_up_search = require('./set_up_search');
 var set_up_reorder = require('./set_up_reorder');
 var make_cat_keys = require('./make_cat_keys');
 var set_sidebar_ini_view = require('./set_sidebar_ini_view');
+var make_icons = require('./make_icons');
 
 /* Represents sidebar with controls.
  */
@@ -45,6 +46,10 @@ module.exports = function sidebar(config, params) {
   sidebar
     .append('div')
     .classed('icons_section',true);
+
+  if (params.sidebar.icons){
+    make_icons(params, sidebar);
+  }
 
   set_up_reorder(params, sidebar);
 
