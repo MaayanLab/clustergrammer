@@ -11,6 +11,10 @@ module.exports = function make_icons(params, sidebar){
     .style('width',params.sidebar.buttons.width+'px')
     .append('row');
 
+
+
+
+
   row
     .append('col')
     .classed('col-xs-4',true)
@@ -20,7 +24,10 @@ module.exports = function make_icons(params, sidebar){
     .classed('fa',true)
     .classed('fa-question-circle',true)
     .classed('icon_buttons',true)
-    .style('font-size','25px'); 
+    .style('font-size','25px')
+    .on('click',function(){
+      console.log('click question');
+    }); 
 
   row
     .append('col')
@@ -31,7 +38,13 @@ module.exports = function make_icons(params, sidebar){
     .classed('fa',true)
     .classed('fa-share-alt',true)
     .classed('icon_buttons',true)
-    .style('font-size','25px');   
+    .style('font-size','25px')
+    .on('click',function(){
+
+      $('#share_info').modal('toggle');
+      $('#share_url').val(window.location.href);
+      
+    }); 
 
   row
     .append('col')
@@ -42,6 +55,11 @@ module.exports = function make_icons(params, sidebar){
     .classed('fa',true)
     .classed('fa-camera',true)
     .classed('icon_buttons',true)
-    .style('font-size','25px');   
+    .style('font-size','25px')
+    .on('click',function(){
+
+      $('#picture_info').modal('toggle');
+
+    }); 
 
 };

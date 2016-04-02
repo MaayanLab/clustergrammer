@@ -94,3 +94,7 @@ text.active {
     -ms-user-select: none;
     user-select: none;
 }
+
+.clustergrammer_logo{
+  width:210px;
+}

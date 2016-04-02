@@ -62,18 +62,23 @@ function make_clust(inst_network){
         // 'col_order':'rank',
         // 'ini_view':{'N_row_sum':'40', 'N_col_sum':'10'}
         // 'current_col_cat':'category-one'
-        'title':'Clustergrammer',
+        // 'title':'Clustergrammer',
         'about':'Zoom, scroll, and click buttons to interact with the clustergram.',
         // 'sidebar_width':150
       };
 
+
       cgm = Clustergrammer(arguments_obj);
 
-      // arguments_obj.root = '#container-id-2';
-
-      // cgm = Clustergrammer(arguments_obj);
-
       d3.select(cgm.params.root + ' .wait_message').remove();
+
+      d3.select(cgm.params.root+ ' .title_section')
+        .append('img')
+        .classed('title_image',true)
+        .attr('src','img/clustergrammer_logo.png')
+        .attr('alt','clustergrammer')
+        .style('width','160px')
+        .style('margin-top','5px');
 
   });
 

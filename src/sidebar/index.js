@@ -22,7 +22,8 @@ module.exports = function sidebar(config, params) {
       .select('.title_section')
       .append('h4')
       .style('margin-left','3px')
-      .style('margin-bottom','5px')
+      .style('margin-top','5px')
+      .style('margin-bottom','0px')
       .text(params.sidebar.title);
   }
 
@@ -37,7 +38,8 @@ module.exports = function sidebar(config, params) {
       .style('font-size','15px')
       .style('font-weight',400)
       .style('margin-left','4px')
-      .style('margin-bottom','5px')
+      .style('margin-top','5px')
+      .style('margin-bottom','2px')
       .style('width', params.sidebar.text.width+'px')
       .style('text-align','justify')
       .text(params.sidebar.about);
