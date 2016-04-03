@@ -15,18 +15,17 @@ module.exports = function make_icons(params, sidebar){
     .append('col')
     .classed('col-xs-4',true)
     .append('a')
-    .classed('help_link',true)
+    .attr('href','http://amp.pharm.mssm.edu/clustergrammer/help')
+    .attr('target','_blank')
     .append('i')
     .classed('fa',true)
     .classed('fa-question-circle',true)
     .classed('icon_buttons',true)
     .style('font-size','25px');
-
+    
   row
     .append('col')
     .classed('col-xs-4',true)
-    .append('a')
-    .classed('help_link',true)
     .append('i')
     .classed('fa',true)
     .classed('fa-share-alt',true)
@@ -42,8 +41,6 @@ module.exports = function make_icons(params, sidebar){
   row
     .append('col')
     .classed('col-xs-4',true)
-    .append('a')
-    .classed('help_link',true)
     .append('i')
     .classed('fa',true)
     .classed('fa-camera',true)
