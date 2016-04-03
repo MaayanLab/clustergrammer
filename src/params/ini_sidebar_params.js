@@ -8,6 +8,7 @@ module.exports = function ini_sidebar_params(params){
   sidebar.row_search.box = {};
   sidebar.row_search.box.height = 34;
   sidebar.row_search.box.width = 95;
+  sidebar.row_search.placeholder = params.row_search_placeholder;
 
   sidebar.slider = {};
   sidebar.slider.width = params.sidebar_width - 30;

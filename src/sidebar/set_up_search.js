@@ -13,7 +13,7 @@ module.exports = function set_up_search(sidebar, params ){
     .classed('form-control',true)
     .classed('gene_search_box',true)
     .attr('type','text')
-    .attr('placeholder','Row')
+    .attr('placeholder', params.sidebar.row_search.placeholder)
     // .style('width', params.sidebar.row_search.box.width+'px')
     .style('width', '70px')
     .style('height', params.sidebar.row_search.box.height+'px')

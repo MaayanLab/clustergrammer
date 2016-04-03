@@ -43,7 +43,8 @@ module.exports = function(args) {
     title:null,
     about:null,
     sidebar_width:170,
-    sidebar_icons:true
+    sidebar_icons:true,
+    row_search_placeholder:'Row'
   };
   // Mixin defaults with user-defined arguments.
   var config = utils.extend(defaults, args);
