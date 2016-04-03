@@ -78,7 +78,8 @@ function make_clust(inst_network){
         .classed('title_image',true)
         .attr('src','img/clustergrammer_logo.png')
         .attr('alt','clustergrammer')
-        .style('width','160px')
+        .style('width','167px')
+        .style('margin-left','-2px')
         .style('margin-top','5px');
 
   });
