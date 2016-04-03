@@ -18,6 +18,7 @@ module.exports = function(params) {
   var svg_group = d3.select(params.viz.viz_wrapper)
     .append('svg')
     .attr('class', 'viz_svg')
+    .attr('id', 'svg_'+params.root.replace('#',''))
     .attr('width', params.viz.svg_dim.width)
     .attr('height', params.viz.svg_dim.height);
 

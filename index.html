@@ -43,7 +43,7 @@
   <!-- end footer -->  
 
   <!-- Share Modal -->
-  <div id="share_info" class="modal fade" role="dialog">
+  <div class="modal fade share_info" role="dialog">
     <div class="modal-dialog">
 
       <!-- Modal content-->
@@ -51,27 +51,24 @@
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
 
-
           <a target='_blank' href="/clustergrammer/">
             <div>
               <img class='clustergrammer_logo' src="img/clustergrammer_logo.png" alt="Clustergrammer"> 
             </div>
           </a>
 
-
           <h4 class="modal-title">Share the visualization using the current URL:</h4>
         </div>
         <div class="modal-body">
-          <input id='share_url' class='bootstrap_highlight'></input>
+          <input class='bootstrap_highlight share_url'></input>
         </div>
       </div>
 
     </div>
   </div>
 
-
   <!-- Picture Modal -->
-  <div id="picture_info" class="modal fade" role="dialog">
+  <div class="modal fade picture_info" role="dialog">
     <div class="modal-dialog">
 
       <!-- Modal content-->
@@ -81,8 +78,8 @@
           <h4 class="modal-title">Save a snapshot of the visualization:</h4>
         </div>
         <div class="modal-body"
-          <!-- <input id='share_url' class='bootstrap_highlight'></input> -->
-          <div id='download_buttons'></div>
+          <input class='bootstrap_highlight share_url'></input> 
+          <div class='download_buttons'></div>
         </div>
       </div>
 
@@ -99,6 +96,7 @@
   <script src="lib/d3.tip.js"></script>
   <script src='lib/crossfilter.js'></script>
   <script src='lib/saveSVGasPNG.js'></script>
+  <script src='lib/FileSaver.js'></script>
 
   <!-- clustergram.js -->
   <script src='clustergrammer.js'></script>
