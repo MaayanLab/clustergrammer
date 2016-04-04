@@ -6,12 +6,28 @@ module.exports = function change_network_view(params, orig_network_data, request
   var views = orig_network_data.views;
   var inst_view;
 
+  var is_enr = false;
+  if (_.has(views[0], 'enr_score_type')){
+    is_enr = true;
+  }
+
   // ////////////////////////////////////////
   // // tmp N_col_sum measure 
   // ////////////////////////////////////////
   // requested_view.N_col_sum = 30;
 
   views = get_subset_views(params, views, requested_view);
+
+  // Enrichr specific rules 
+  if (is_enr && views.length == 0){
+
+    requested_view = {'N_row_sum':'all', 'N_col_sum':'10'};
+
+    views = orig_network_data.views;
+  
+    views = get_subset_views(params, views, requested_view);
+
+  }
 
   inst_view = views[0];
 

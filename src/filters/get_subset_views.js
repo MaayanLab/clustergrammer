@@ -34,14 +34,6 @@ module.exports = function get_subset_views(params, views, requested_view){
 
   });
 
-  // // Enrichr specific rules 
-  // if (_.has(views[0], 'enr_score_type')){
-  //   var inst_enr = 'combined_score';
-  //   // filter out enr_score_type 
-  //   views = _.filter(views, function(d){
-  //     return d.enr_score_type == inst_enr;
-  //   });
-  // }
 
   // remove duplicate complete default states 
   var export_views = [];

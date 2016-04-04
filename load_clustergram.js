@@ -60,7 +60,7 @@ function make_clust(inst_network){
         // 'order':'rank'
         // 'row_order':'clust'
         // 'col_order':'rank',
-        // 'ini_view':{'N_row_sum':'40', 'N_col_sum':'10'}
+        // 'ini_view':{'N_row_sum':'10', 'N_col_sum':'10'},
         // 'current_col_cat':'category-one'
         // 'title':'Clustergrammer',
         'about':'Zoom, scroll, and click buttons to interact with the clustergram.',
