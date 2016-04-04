@@ -41,6 +41,7 @@ module.exports = function(params, svg_elem) {
     .classed('background',true)
     .classed('grey_background',true)
     .style('fill', '#eee')
+    .style('opacity',0.5)
     .attr('width', params.viz.clust.dim.width)
     .attr('height', params.viz.clust.dim.height);
 
