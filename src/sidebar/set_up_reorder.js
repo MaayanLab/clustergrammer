@@ -63,6 +63,8 @@ module.exports = function set_up_reorder(params, sidebar){
 
     sidebar
       .append('div')
+      .classed('sidebar_text',true)
+      .style('clear','both')
       .style('margin-left','5px')
       .html(rc_dict[inst_rc]+' Order');
 
@@ -83,6 +85,7 @@ module.exports = function set_up_reorder(params, sidebar){
       .attr('type','button')
       .classed('btn',true)
       .classed('btn-primary',true)
+      .classed('sidebar_text',true)
       .classed('active', function(d){
         is_active = false;
         if (d == params.viz.inst_order[other_rc]){

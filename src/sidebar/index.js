@@ -35,6 +35,7 @@ module.exports = function sidebar(config, params) {
     sidebar
       .select('.about_section')
       .append('h5')
+      .classed('sidebar_text',true)
       .style('font-size','15px')
       .style('font-weight',400)
       .style('margin-left','4px')

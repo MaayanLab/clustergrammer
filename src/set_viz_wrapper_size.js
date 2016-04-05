@@ -18,10 +18,10 @@ module.exports = function set_viz_wrapper_size(params) {
   var cont_dim = calc_viz_dimensions(params);
 
   d3.select(params.root+' .sidebar_wrapper')
-    .style('margin-left','10px')
+    .style('margin-left','5px')
     .style('float', 'left')
     // .style('overflow-y','scroll')
-    // .style('overflow-x','hidden')
+    .style('overflow-x','hidden')
     .style('width', params.sidebar_width+'px')
     .style('height', cont_dim.height+'px');
 

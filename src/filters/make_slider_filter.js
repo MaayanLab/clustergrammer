@@ -21,6 +21,7 @@ module.exports = function make_slider_filter(config, params, filter_type, div_fi
   div_filters
     .append('div')
     .classed('viz_medium_text',true)
+    .classed('sidebar_text',true)
     .classed('title_'+filter_type,true)
     .text(filter_title.text + filter_title.state + filter_title.suffix);
 
