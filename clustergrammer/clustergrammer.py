@@ -456,7 +456,7 @@ class Network(object):
 
       for inst_name_cat in all_cats:
 
-        tmp_name = 'dict_' + inst_name_cat.replace('-','_')
+        tmp_name = 'dict_' + inst_name_cat.replace('-', '_')
         dict_cat = self.dat['node_info'][inst_rc][tmp_name]
 
         all_cats = sorted(dict_cat.keys())
@@ -503,14 +503,14 @@ class Network(object):
 
           # add prev order length to the current order number
           # print('inst_cat_order '+str(inst_cat_order))
-          inst_cat_order = [i+prev_order_len for i in inst_cat_order]
+          inst_cat_order = [i + prev_order_len for i in inst_cat_order]
           all_cat_orders.extend(inst_cat_order)
-
 
         # print('all_cat_orders')
         # print(all_cat_orders)
 
-        names_clust_list = [x for (y,x) in sorted(zip(all_cat_orders,tmp_names_list))]
+        names_clust_list = [x for (y, x) in sorted(zip(all_cat_orders,
+                            tmp_names_list))]
         # print('names_clust_list')
         # print(names_clust_list)
 
@@ -523,31 +523,33 @@ class Network(object):
           inst_node_num = names_clust_list.index(inst_node_name)
           final_order.append(inst_node_num)
 
-        self.dat['node_info'][inst_rc][inst_name_cat.replace('-','_')+'_index'] = final_order
+        self.dat['node_info'][inst_rc][inst_name_cat.replace('-', '_') +
+                                       '_index'] = final_order
 
-  def clust_and_group( self, dm, linkage_type='average' ):
+  def clust_and_group(self, dm, linkage_type='average'):
     import scipy.cluster.hierarchy as hier
 
-    Y = hier.linkage( dm, method=linkage_type )
-    Z = hier.dendrogram( Y, no_plot=True )
+    Y = hier.linkage(dm, method=linkage_type)
+    Z = hier.dendrogram(Y, no_plot=True)
     inst_clust_order = Z['leaves']
     all_dist = self.group_cutoffs()
 
     inst_groups = {}
     for inst_dist in all_dist:
-      inst_key = str(inst_dist).replace('.','')
-      inst_groups[inst_key] = hier.fcluster(Y, inst_dist*dm.max(), 'distance')
+      inst_key = str(inst_dist).replace('.', '')
+      inst_groups[inst_key] = hier.fcluster(Y, inst_dist * dm.max(),
+                                            'distance')
       inst_groups[inst_key] = inst_groups[inst_key].tolist()
 
     return inst_clust_order, inst_groups
 
-  def sort_rank_nodes( self, rowcol, rank_type ):
+  def sort_rank_nodes(self, rowcol, rank_type):
     import numpy as np
     from operator import itemgetter
     from copy import deepcopy
 
     tmp_nodes = deepcopy(self.dat['nodes'][rowcol])
-    inst_mat   = deepcopy(self.dat['mat'])
+    inst_mat = deepcopy(self.dat['mat'])
 
     sum_term = []
     for i in range(len(tmp_nodes)):
@@ -556,18 +558,18 @@ class Network(object):
 
       if rowcol == 'row':
         if rank_type == 'sum':
-          inst_dict['rank'] = np.sum(inst_mat[i,:])
+          inst_dict['rank'] = np.sum(inst_mat[i, :])
         elif rank_type == 'var':
-          inst_dict['rank'] = np.var(inst_mat[i,:])
+          inst_dict['rank'] = np.var(inst_mat[i, :])
       else:
         if rank_type == 'sum':
-          inst_dict['rank'] = np.sum(inst_mat[:,i])
+          inst_dict['rank'] = np.sum(inst_mat[:, i])
         elif rank_type == 'var':
-          inst_dict['rank'] = np.var(inst_mat[:,i])
+          inst_dict['rank'] = np.var(inst_mat[:, i])
 
       sum_term.append(inst_dict)
 
-    sum_term = sorted( sum_term, key=itemgetter('rank'), reverse=False )
+    sum_term = sorted(sum_term, key=itemgetter('rank'), reverse=False)
 
     tmp_sort_nodes = []
     for inst_dict in sum_term:
@@ -575,7 +577,7 @@ class Network(object):
 
     sort_index = []
     for inst_node in tmp_nodes:
-      sort_index.append( tmp_sort_nodes.index(inst_node) )
+      sort_index.append(tmp_sort_nodes.index(inst_node))
 
     return sort_index
 
@@ -589,22 +591,25 @@ class Network(object):
       inst_keys = self.dat['node_info'][inst_rc]
       all_cats = [x for x in inst_keys if 'cat-' in x]
 
-      for i in range(len( self.dat['nodes'][inst_rc] )):
+      for i in range(len(self.dat['nodes'][inst_rc])):
         inst_dict = {}
-        inst_dict['name']  = self.dat['nodes'][inst_rc][i]
-        inst_dict['ini']   = self.dat['node_info'][inst_rc]['ini'][i]
+        inst_dict['name'] = self.dat['nodes'][inst_rc][i]
+        inst_dict['ini'] = self.dat['node_info'][inst_rc]['ini'][i]
         inst_dict['clust'] = self.dat['node_info'][inst_rc]['clust'].index(i)
-        inst_dict['rank']  = self.dat['node_info'][inst_rc]['rank'][i]
+        inst_dict['rank'] = self.dat['node_info'][inst_rc]['rank'][i]
 
         if 'rankvar' in inst_keys:
-          inst_dict['rankvar']  = self.dat['node_info'][inst_rc]['rankvar'][i]
+          inst_dict['rankvar'] = self.dat['node_info'][inst_rc]['rankvar'][i]
 
         if len(all_cats) > 0:
 
           for inst_name_cat in all_cats:
-            inst_dict[inst_name_cat] = self.dat['node_info'][inst_rc][inst_name_cat][i]
-            tmp_index_name = inst_name_cat.replace('-','_')+'_index'
-            inst_dict[tmp_index_name] = self.dat['node_info'][inst_rc][tmp_index_name][i]
+            inst_dict[inst_name_cat] = self.dat['node_info'][inst_rc] \
+                [inst_name_cat][i]
+
+            tmp_index_name = inst_name_cat.replace('-', '_') + '_index'
+            inst_dict[tmp_index_name] = self.dat['node_info'][inst_rc] \
+                [tmp_index_name][i]
 
         if len(self.dat['node_info'][inst_rc]['value']) > 0:
           inst_dict['value'] = self.dat['node_info'][inst_rc]['value'][i]
@@ -612,45 +617,44 @@ class Network(object):
         if len(self.dat['node_info'][inst_rc]['info']) > 0:
           inst_dict['info'] = self.dat['node_info'][inst_rc]['info'][i]
 
-        if dendro==True:
+        if dendro is True:
           inst_dict['group'] = []
           for tmp_dist in all_dist:
-            tmp_dist = str(tmp_dist).replace('.','')
-            tmp_append = float(self.dat['node_info'][inst_rc]['group'][tmp_dist][i])
-            inst_dict['group'].append( tmp_append )
+            tmp_dist = str(tmp_dist).replace('.', '')
+            tmp_append = float(
+                self.dat['node_info'][inst_rc]['group'][tmp_dist][i])
+            inst_dict['group'].append(tmp_append)
 
-        self.viz[inst_rc+'_nodes'].append(inst_dict)
+        self.viz[inst_rc + '_nodes'].append(inst_dict)
 
-    for i in range(len( self.dat['nodes']['row'] )):
-      for j in range(len( self.dat['nodes']['col'] )):
-        if abs( self.dat['mat'][i,j] ) > 0:
+    for i in range(len(self.dat['nodes']['row'])):
+      for j in range(len(self.dat['nodes']['col'])):
+        if abs(self.dat['mat'][i, j]) > 0:
           inst_dict = {}
           inst_dict['source'] = i
           inst_dict['target'] = j
-          inst_dict['value'] = self.dat['mat'][i,j]
+          inst_dict['value'] = self.dat['mat'][i, j]
 
           if 'mat_up' in self.dat:
-            inst_dict['value_up'] = self.dat['mat_up'][i,j]
+            inst_dict['value_up'] = self.dat['mat_up'][i, j]
           if 'mat_up' in self.dat:
-            inst_dict['value_dn'] = self.dat['mat_dn'][i,j]
+            inst_dict['value_dn'] = self.dat['mat_dn'][i, j]
 
           if 'mat_info' in self.dat:
-            inst_dict['info'] = self.dat['mat_info'][str((i,j))]
+            inst_dict['info'] = self.dat['mat_info'][str((i, j))]
 
           if 'mat_hl' in self.dat:
-            inst_dict['highlight'] = self.dat['mat_hl'][i,j]
+            inst_dict['highlight'] = self.dat['mat_hl'][i, j]
 
-          self.viz['links'].append( inst_dict )
+          self.viz['links'].append(inst_dict)
 
   def df_to_dat(self, df):
-    import numpy as np
-    import pandas as pd
 
     self.dat['mat'] = df['mat'].values
     self.dat['nodes']['row'] = df['mat'].index.tolist()
     self.dat['nodes']['col'] = df['mat'].columns.tolist()
 
-    for inst_rc in ['row','col']:
+    for inst_rc in ['row', 'col']:
 
       if type(self.dat['nodes'][inst_rc][0]) is tuple:
         # get the number of categories from the length of the tuple
@@ -661,10 +665,13 @@ class Network(object):
         print('num_cat')
         print(num_cat)
         print('\n\n')
-        self.dat['node_info'][inst_rc]['full_names'] = self.dat['nodes'][inst_rc]
+
+        self.dat['node_info'][inst_rc]['full_names'] = self.dat['nodes']\
+            [inst_rc]
 
         for inst_rcat in range(num_cat):
-          self.dat['node_info'][inst_rc]['cat-'+str(inst_rcat)] = [i[inst_rcat+1] for i in self.dat['nodes'][inst_rc]]
+          self.dat['node_info'][inst_rc]['cat-' + str(inst_rcat)] = \
+            [i[inst_rcat + 1] for i in self.dat['nodes'][inst_rc]]
 
         self.dat['nodes'][inst_rc] = [i[0] for i in self.dat['nodes'][inst_rc]]
 
@@ -679,20 +686,21 @@ class Network(object):
 
     df = {}
     nodes = {}
-    for inst_rc in ['row','col']:
+    for inst_rc in ['row', 'col']:
       if 'full_names' in self.dat['node_info'][inst_rc]:
         nodes[inst_rc] = self.dat['node_info'][inst_rc]['full_names']
       else:
         nodes[inst_rc] = self.dat['nodes'][inst_rc]
 
-    df['mat'] = pd.DataFrame(data = self.dat['mat'], columns=nodes['col'], index=nodes['row'])
+    df['mat'] = pd.DataFrame(data=self.dat['mat'], columns=nodes['col'],
+        index=nodes['row'])
 
     if 'mat_up' in self.dat:
 
-      df['mat_up'] = pd.DataFrame(data=self.dat['mat_up'], columns=nodes['col'],
-                                  index=nodes['row'])
-      df['mat_dn'] = pd.DataFrame(data=self.dat['mat_dn'], columns=nodes['col'],
-                                  index=nodes['row'])
+      df['mat_up'] = pd.DataFrame(data=self.dat['mat_up'],
+        columns=nodes['col'], index=nodes['row'])
+      df['mat_dn'] = pd.DataFrame(data=self.dat['mat_dn'],
+        columns=nodes['col'], index=nodes['row'])
 
     return df
 
@@ -718,7 +726,6 @@ class Network(object):
     return exp_json
 
   def write_json_to_file(self, net_type, filename, indent='no-indent'):
-    import json
 
     if net_type == 'dat':
       exp_json = self.export_net_json('dat', indent)
@@ -726,7 +733,7 @@ class Network(object):
       exp_json = self.export_net_json('viz', indent)
 
     fw = open(filename, 'w')
-    fw.write( exp_json )
+    fw.write(exp_json)
     fw.close()
 
   @staticmethod
@@ -734,12 +741,11 @@ class Network(object):
     ''' filter rows in matrix at some threshold
     and remove columns that have a sum below this threshold '''
 
-    import pandas as pd
     from copy import deepcopy
     from clustergrammer import Network
     net = Network()
 
-    if take_abs == True:
+    if take_abs is True:
       df_copy = deepcopy(df['mat'].abs())
     else:
       df_copy = deepcopy(df['mat'])
@@ -750,7 +756,7 @@ class Network(object):
     tmp_sum = tmp_sum.abs()
     tmp_sum.sort_values(inplace=True, ascending=False)
 
-    tmp_sum = tmp_sum[tmp_sum>threshold]
+    tmp_sum = tmp_sum[tmp_sum > threshold]
     keep_rows = sorted(tmp_sum.index.values.tolist())
 
     if len(keep_rows) < len(ini_rows):
@@ -767,12 +773,11 @@ class Network(object):
     ''' filter columns in matrix at some threshold
     and remove rows that have all zero values '''
 
-    import pandas
     from copy import deepcopy
     from clustergrammer import Network
     net = Network()
 
-    if take_abs == True:
+    if take_abs is True:
       df_copy = deepcopy(df['mat'].abs())
     else:
       df_copy = deepcopy(df['mat'])
@@ -782,7 +787,7 @@ class Network(object):
     df_copy = df_copy.transpose()
     df_copy = df_copy[df_copy.sum(axis=1) > 0]
 
-    if take_abs == True:
+    if take_abs is True:
       inst_rows = df_copy.index.tolist()
       inst_cols = df_copy.columns.tolist()
       df['mat'] = net.grab_df_subset(df['mat'], inst_rows, inst_cols)
@@ -827,15 +832,15 @@ class Network(object):
     import json
     fw = open(filename, 'w')
     if indent == 'indent':
-      fw.write( json.dumps(inst_dict, indent=2) )
+      fw.write(json.dumps(inst_dict, indent=2))
     else:
-      fw.write( json.dumps(inst_dict) )
+      fw.write(json.dumps(inst_dict))
     fw.close()
 
   @staticmethod
   def ini_clust_order():
-    rowcol = ['row','col']
-    orderings = ['clust','rank','group','ini']
+    rowcol = ['row', 'col']
+    orderings = ['clust', 'rank', 'group', 'ini']
     clust_order = {}
     for inst_node in rowcol:
       clust_order[inst_node] = {}
@@ -847,5 +852,5 @@ class Network(object):
   def group_cutoffs():
     all_dist = []
     for i in range(11):
-      all_dist.append(float(i)/10)
+      all_dist.append(float(i) / 10)
     return all_dist
