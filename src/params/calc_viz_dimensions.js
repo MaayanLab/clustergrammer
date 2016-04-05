@@ -2,7 +2,7 @@ module.exports = function calc_viz_dimensions(params){
 
   var cont_dim = {};
   var extra_space = params.buffer_width;
-  
+
   var screen_width = window.innerWidth;
   var screen_height = window.innerHeight;
 

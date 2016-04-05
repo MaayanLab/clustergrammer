@@ -45,7 +45,7 @@ module.exports = function(args) {
     sidebar_width:170,
     sidebar_icons:true,
     row_search_placeholder:'Row',
-    buffer_width:8
+    buffer_width:15
   };
   // Mixin defaults with user-defined arguments.
   var config = utils.extend(defaults, args);
@@ -78,7 +78,7 @@ module.exports = function(args) {
     default_states[inst_filter] = tmp_state;
   });
 
-  // process view 
+  // process view
   if (_.has(config.network_data,'views')){
     config.network_data.views.forEach(function(inst_view){
 
