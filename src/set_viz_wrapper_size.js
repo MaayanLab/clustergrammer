@@ -21,7 +21,7 @@ module.exports = function set_viz_wrapper_size(params) {
     .style('margin-left','5px')
     .style('float', 'left')
     // .style('overflow-y','scroll')
-    .style('overflow-x','hidden')
+    // .style('overflow-x','hidden')
     .style('width', params.sidebar_width+'px')
     .style('height', cont_dim.height+'px');
 
