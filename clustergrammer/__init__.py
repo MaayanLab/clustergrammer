@@ -97,62 +97,12 @@ class Network(object):
     import numpy as np
     self.dat['mat'][np.isnan(self.dat['mat'])] = 0
 
-  def cluster_row_and_col(self, dist_type='cosine',
-                          linkage_type='average', dendro=True,
-                          run_clustering=True, run_rank=True):
-    ''' cluster net.dat and make visualization json, net.viz.
-    optionally leave out dendrogram colorbar groups with dendro argument '''
+  def cluster_row_and_col(self, dist_type='cosine', linkage_type='average', 
+                          dendro=True, run_clustering=True, run_rank=True):
 
-    import scipy
-    from scipy.spatial.distance import pdist
-    from copy import deepcopy
     import calc_clust
-
-    if run_clustering is False:
-      dendro = False
-
-    for inst_rc in ['row', 'col']:
-      num_nodes = len(self.dat['nodes'][inst_rc])
-      node_dm = scipy.zeros([num_nodes, num_nodes])
-      tmp_mat = deepcopy(self.dat['mat'])
-
-      if inst_rc == 'row':
-        node_dm = pdist(tmp_mat, metric=dist_type)
-      elif inst_rc == 'col':
-        node_dm = pdist(tmp_mat.transpose(), metric=dist_type)
-
-      node_dm[node_dm < 0] = float(0)
-
-      clust_order = self.ini_clust_order()
-      clust_order[inst_rc]['ini'] = range(num_nodes, -1, -1)
-
-      if run_clustering is True:
-        clust_order[inst_rc]['clust'], clust_order[inst_rc]['group'] = \
-            calc_clust.clust_and_group(self, node_dm, linkage_type=linkage_type)
-
-      if run_rank is True:
-        clust_order[inst_rc]['rank'] = self.sort_rank_nodes(inst_rc, 'sum')
-        clust_order[inst_rc]['rankvar'] = self.sort_rank_nodes(inst_rc, 'var')
-
-      if run_clustering is True:
-        self.dat['node_info'][inst_rc]['clust'] = clust_order[inst_rc]['clust']
-      else:
-        self.dat['node_info'][inst_rc]['clust'] = clust_order[inst_rc]['ini']
-
-      if run_rank is True:
-        self.dat['node_info'][inst_rc]['rank'] = clust_order[inst_rc]['rank']
-        self.dat['node_info'][inst_rc]['rankvar'] = \
-            clust_order[inst_rc]['rankvar']
-      else:
-        self.dat['node_info'][inst_rc]['rank'] = clust_order[inst_rc]['ini']
-        self.dat['node_info'][inst_rc]['rankvar'] = clust_order[inst_rc]['ini']
-
-      self.dat['node_info'][inst_rc]['ini'] = clust_order[inst_rc]['ini']
-      self.dat['node_info'][inst_rc]['group'] = clust_order[inst_rc]['group']
-
-      self.calc_cat_clust_order(inst_rc)
-
-    self.viz_json(dendro)
+    calc_clust.cluster_row_and_col(self, dist_type, linkage_type, dendro, 
+                                    run_clustering, run_rank)
 
   def calc_cat_clust_order(self, inst_rc):
     import categories

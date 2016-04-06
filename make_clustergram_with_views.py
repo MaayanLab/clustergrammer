@@ -18,7 +18,7 @@ net.load_file('txt/rc_two_cats.txt')
 net.make_filtered_views(dist_type='cos',views=['N_row_sum','N_row_var'], 
                         dendro=True)
 
-net.write_json_to_file('viz', 'json/mult_view.json', 'indent')
+net.write_json_to_file('viz', 'json/mult_view.json', 'no-indent')
 
 # your code
 elapsed_time = time.time() - start_time
