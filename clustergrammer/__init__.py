@@ -35,8 +35,8 @@ class Network(object):
   def make_clust(self, dist_type='cosine', run_clustering=True,
                           dendro=True, views=['pct_row_sum', 'N_row_sum'],
                           linkage_type='average'):
+    ''' The main function run by the user to make their clustergram '''
     import make_clust_fun
-
     make_clust_fun.make_clust(self, dist_type, run_clustering, dendro, 
                                    views, linkage_type)
 
@@ -64,14 +64,6 @@ class Network(object):
     export_data.write_json_to_file(self, net_type, filename, indent)
 
   @staticmethod
-  def grab_df_subset(df, keep_rows='all', keep_cols='all'):
-    if keep_cols != 'all':
-      df = df[keep_cols]
-    if keep_rows != 'all':
-      df = df.ix[keep_rows]
-    return df
-
-  @staticmethod
   def load_gmt(filename):
     import load_data
     return load_data.load_gmt(filename)
@@ -85,21 +77,3 @@ class Network(object):
   def save_dict_to_json(inst_dict, filename, indent='no-indent'):
     import export_data
     export_data.save_dict_to_json(inst_dict, filename, indent)
-
-  @staticmethod
-  def ini_clust_order():
-    rowcol = ['row', 'col']
-    orderings = ['clust', 'rank', 'group', 'ini']
-    clust_order = {}
-    for inst_node in rowcol:
-      clust_order[inst_node] = {}
-      for inst_order in orderings:
-        clust_order[inst_node][inst_order] = []
-    return clust_order
-
-  @staticmethod
-  def group_cutoffs():
-    all_dist = []
-    for i in range(11):
-      all_dist.append(float(i) / 10)
-    return all_dist

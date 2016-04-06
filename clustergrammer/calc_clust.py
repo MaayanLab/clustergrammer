@@ -24,7 +24,7 @@ def cluster_row_and_col(net, dist_type='cosine', linkage_type='average',
 
     node_dm[node_dm < 0] = float(0)
 
-    clust_order = net.ini_clust_order()
+    clust_order = ini_clust_order()
     clust_order[inst_rc]['ini'] = range(num_nodes, -1, -1)
 
     if run_clustering is True:
@@ -61,7 +61,7 @@ def clust_and_group(net, node_dm, linkage_type='average'):
   Y = hier.linkage(node_dm, method=linkage_type)
   Z = hier.dendrogram(Y, no_plot=True)
   inst_clust_order = Z['leaves']
-  all_dist = net.group_cutoffs()
+  all_dist = group_cutoffs()
 
   groups = {}
   for inst_dist in all_dist:
@@ -108,3 +108,19 @@ def sort_rank_nodes(net, rowcol, rank_type):
     sort_index.append(tmp_sort_nodes.index(inst_node))
 
   return sort_index  
+
+def group_cutoffs():
+  all_dist = []
+  for i in range(11):
+    all_dist.append(float(i) / 10)
+  return all_dist  
+
+def ini_clust_order():
+  rowcol = ['row', 'col']
+  orderings = ['clust', 'rank', 'group', 'ini']
+  clust_order = {}
+  for inst_node in rowcol:
+    clust_order[inst_node] = {}
+    for inst_order in orderings:
+      clust_order[inst_node][inst_order] = []
+  return clust_order  
