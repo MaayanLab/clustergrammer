@@ -569,25 +569,13 @@ class Network(object):
 
   @staticmethod
   def load_gmt(filename):
-    f = open(filename, 'r')
-    lines = f.readlines()
-    f.close()
-    gmt = {}
-    for i in range(len(lines)):
-      inst_line = lines[i].rstrip()
-      inst_term = inst_line.split('\t')[0]
-      inst_elems = inst_line.split('\t')[2:]
-      gmt[inst_term] = inst_elems
-
-    return gmt
+    import load_data
+    return load_data.load_gmt(filename)
 
   @staticmethod
   def load_json_to_dict(filename):
-    import json
-    f = open(filename, 'r')
-    inst_dict = json.load(f)
-    f.close()
-    return inst_dict
+    import load_data
+    return load_data.load_json_to_dict(filename)
 
   @staticmethod
   def save_dict_to_json(inst_dict, filename, indent='no-indent'):

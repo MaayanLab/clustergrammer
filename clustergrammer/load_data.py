@@ -27,3 +27,24 @@ def load_tsv_to_net(net, file_buffer):
   tmp_df['mat'] = tmp_df['mat'].dropna(axis=1)
 
   net.df_to_dat(tmp_df)  
+
+def load_json_to_dict(filename):
+  import json
+  f = open(filename, 'r')
+  inst_dict = json.load(f)
+  f.close()
+  return inst_dict
+
+def load_gmt(filename):
+  f = open(filename, 'r')
+  lines = f.readlines()
+  f.close()
+  gmt = {}
+  for i in range(len(lines)):
+    inst_line = lines[i].rstrip()
+    inst_term = inst_line.split('\t')[0]
+    inst_elems = inst_line.split('\t')[2:]
+    gmt[inst_term] = inst_elems
+
+  return gmt  
+
