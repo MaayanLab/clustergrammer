@@ -86,45 +86,6 @@ class Network(object):
     import numpy as np
     self.dat['mat'][np.isnan(self.dat['mat'])] = 0
 
-
-  def sort_rank_nodes(self, rowcol, rank_type):
-    import numpy as np
-    from operator import itemgetter
-    from copy import deepcopy
-
-    tmp_nodes = deepcopy(self.dat['nodes'][rowcol])
-    inst_mat = deepcopy(self.dat['mat'])
-
-    sum_term = []
-    for i in range(len(tmp_nodes)):
-      inst_dict = {}
-      inst_dict['name'] = tmp_nodes[i]
-
-      if rowcol == 'row':
-        if rank_type == 'sum':
-          inst_dict['rank'] = np.sum(inst_mat[i, :])
-        elif rank_type == 'var':
-          inst_dict['rank'] = np.var(inst_mat[i, :])
-      else:
-        if rank_type == 'sum':
-          inst_dict['rank'] = np.sum(inst_mat[:, i])
-        elif rank_type == 'var':
-          inst_dict['rank'] = np.var(inst_mat[:, i])
-
-      sum_term.append(inst_dict)
-
-    sum_term = sorted(sum_term, key=itemgetter('rank'), reverse=False)
-
-    tmp_sort_nodes = []
-    for inst_dict in sum_term:
-      tmp_sort_nodes.append(inst_dict['name'])
-
-    sort_index = []
-    for inst_node in tmp_nodes:
-      sort_index.append(tmp_sort_nodes.index(inst_node))
-
-    return sort_index
-
   def viz_json(self, dendro=True):
     ''' make the dictionary for the clustergram.js visualization '''
 
@@ -193,7 +154,7 @@ class Network(object):
           self.viz['links'].append(inst_dict)
 
   def df_to_dat(self, df):
-    ''' convert from pandas dataframe to clustergrammers dat format ''' 
+    ''' Convert from pandas dataframe to clustergrammers dat format ''' 
     import data_formats
     data_formats.df_to_dat(self, df)
 
