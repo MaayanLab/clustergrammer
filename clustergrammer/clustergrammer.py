@@ -10,26 +10,8 @@ class Network(object):
   '''
 
   def __init__(self):
-    self.dat = {}
-    self.dat['nodes'] = {}
-    self.dat['nodes']['row'] = []
-    self.dat['nodes']['col'] = []
-    self.dat['mat'] = []
-
-    self.dat['node_info'] = {}
-    for inst_rc in self.dat['nodes']:
-      self.dat['node_info'][inst_rc] = {}
-      self.dat['node_info'][inst_rc]['ini'] = []
-      self.dat['node_info'][inst_rc]['clust'] = []
-      self.dat['node_info'][inst_rc]['rank'] = []
-      self.dat['node_info'][inst_rc]['info'] = []
-      self.dat['node_info'][inst_rc]['cat'] = []
-      self.dat['node_info'][inst_rc]['value'] = []
-
-    self.viz = {}
-    self.viz['row_nodes'] = []
-    self.viz['col_nodes'] = []
-    self.viz['links'] = []
+    import initialize_net
+    initialize_net.main(self)
 
   def load_file(self, filename):
     import load_data
@@ -40,11 +22,6 @@ class Network(object):
     be possible to load data without having to read from a file. ''' 
     import load_data
     load_data.load_tsv_to_net(self, file_buffer)
-
-  def dict_cat(self):
-    print('make dictionary of categories')
-    import categories 
-    categories.dict_cat(self)
 
   def load_vect_post_to_net(self, vect_post):
     import load_vect_post
@@ -59,6 +36,10 @@ class Network(object):
     self.dat['nodes'] = inst_net['nodes']
     self.dat['mat'] = inst_net['mat']
     self.mat_to_numpy_arr()
+
+  def dict_cat(self):
+    import categories 
+    categories.dict_cat(self)
 
   def set_node_names(self, row_name, col_name):
     '''give names to the rows and columns'''
