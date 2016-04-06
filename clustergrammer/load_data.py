@@ -7,9 +7,10 @@ def load_file(net, filename):
 
 def load_tsv_to_net(net, file_buffer):
   import pandas as pd
+  import categories
 
   lines = file_buffer.getvalue().split('\n')
-  num_labels = net.check_categories(lines)
+  num_labels = categories.check_categories(lines)
 
   row_arr = range(num_labels['row'])
   col_arr = range(num_labels['col'])

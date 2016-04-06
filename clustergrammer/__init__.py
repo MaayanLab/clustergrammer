@@ -32,10 +32,6 @@ class Network(object):
     inst_dat = self.load_json_to_dict(filename)
     load_data.load_data_to_net(self, inst_dat)
 
-  def dict_cat(self):
-    import categories 
-    categories.dict_cat(self)
-
   def set_node_names(self, row_name, col_name):
     '''give names to the rows and columns'''
     self.dat['node_names'] = {}
@@ -220,11 +216,6 @@ class Network(object):
   def write_json_to_file(self, net_type, filename, indent='no-indent'):
     import export_data
     export_data.write_json_to_file(self, net_type, filename, indent)
-
-  @staticmethod
-  def check_categories(lines):
-    import categories
-    return categories.check_categories(lines)
 
   @staticmethod
   def df_filter_row(df, threshold, take_abs=True):

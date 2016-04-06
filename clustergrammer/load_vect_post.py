@@ -1,5 +1,6 @@
 def main(net, vect_post):
   import numpy as np
+  import categories
 
   sigs = vect_post['columns']
 
@@ -32,7 +33,8 @@ def main(net, vect_post):
       all_cat.append(tmp_col_cat[tmp_sig])
 
     net.dat['node_info']['col']['cat-0'] = all_cat
-    net.dict_cat()
+    
+    categories.dict_cat(net)
 
     net.dat['node_info']['col']['full_names'] = []
 

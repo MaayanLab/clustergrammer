@@ -1,4 +1,6 @@
 def df_to_dat(net, df):
+  import categories
+
   net.dat['mat'] = df['mat'].values
   net.dat['nodes']['row'] = df['mat'].index.tolist()
   net.dat['nodes']['col'] = df['mat'].columns.tolist()
@@ -23,7 +25,7 @@ def df_to_dat(net, df):
     net.dat['mat_up'] = df['mat_up'].values
     net.dat['mat_dn'] = df['mat_dn'].values
 
-  net.dict_cat()
+  categories.dict_cat(net)
 
 def dat_to_df(net):
   import pandas as pd
