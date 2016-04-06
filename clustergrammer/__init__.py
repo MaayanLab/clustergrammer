@@ -36,9 +36,10 @@ class Network(object):
     load_data.load_data_to_net(self, inst_dat)
 
   def make_clust(self, dist_type='cosine', run_clustering=True,
-                          dendro=True, views=['pct_row_sum', 'N_row_sum'],
-                          linkage_type='average', sim_mat=False):
-    ''' The main function run by the user to make their clustergram '''
+                 dendro=True, views=['pct_row_sum', 'N_row_sum'],
+                 linkage_type='average', sim_mat=False):
+    ''' The main function run by the user to make their clustergram. 
+    views is later referred to as requested_views.'''
     import make_clust_fun
     make_clust_fun.make_clust(self, dist_type, run_clustering, dendro, 
                                    views, linkage_type, sim_mat)
