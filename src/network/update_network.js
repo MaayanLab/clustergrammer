@@ -1,16 +1,7 @@
-var make_params = require('../params/');
 var change_network_view = require('./change_network_view');
-var initialize_resizing = require('../initialize_resizing');
-var ini_doubleclick = require('../zoom/ini_doubleclick');
-var enter_exit_update = require('../enter/enter_exit_update');
-var define_enter_exit_delays = require('./define_enter_exit_delays');
-var make_col_cat = require('../dendrogram/make_col_cat');
-var make_row_cat = require('../dendrogram/make_row_cat');
-var make_row_dendro = require('../dendrogram/make_row_dendro');
-var make_col_dendro = require('../dendrogram/make_col_dendro');
-var ini_sidebar = require('../sidebar/ini_sidebar');
 var disable_sidebar = require('../sidebar/disable_sidebar');
-var enable_sidebar  = require('../sidebar/enable_sidebar');
+
+var update_with_new_network = require('../update/update_with_new_network');
 
 module.exports = function(config, old_params, requested_view) {
 
@@ -21,53 +12,8 @@ module.exports = function(config, old_params, requested_view) {
 
   var new_network_data = change_network_view(old_params, config_copy.network_data, requested_view);
 
-  // make tmp config to make new params 
-  var tmp_config = jQuery.extend(true, {}, config);
+  var params = update_with_new_network(config, old_params, new_network_data);
 
-  tmp_config.network_data = new_network_data;
-  tmp_config.inst_order = old_params.viz.inst_order;
-
-  tmp_config.ini_expand = false;
-  tmp_config.ini_view = null;
-  tmp_config.current_col_cat = old_params.current_col_cat;
-
-  var params = make_params(tmp_config);
-  var delays = define_enter_exit_delays(old_params, params);
-
-  enter_exit_update(params, new_network_data, delays);
-
-  // if (params.viz.show_categories.row){
-    make_row_cat(params);
-  // }
-  if (params.viz.show_categories.col){
-    make_col_cat(params);
-  }
-
-  if (params.viz.show_dendrogram){
-    make_row_dendro(params);
-    make_col_dendro(params);
-  }
-
-  // initialize screen resizing - necessary for resizing with new params
-  initialize_resizing(params);
-
-  // necessary to have zoom behavior updated on updating clustergram
-  d3.select(params.viz.viz_svg).call(params.zoom_behavior);
-
-  // re-initialize the double click behavior
-  ini_doubleclick(params);
-
-  ini_sidebar(params);
-
-  params.viz.run_trans = true;
-  
-  // remove any tooltips, not just those from the current viz
-  d3.selectAll(params.root+' .d3-tip')
-    .style('opacity',0);
-
-  setTimeout(enable_sidebar, 2500, params);
-
-  // return updated params 
   return params;
 
 };

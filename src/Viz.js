@@ -13,8 +13,11 @@ var trim_text = require('./zoom/trim_text');
 var make_row_dendro = require('./dendrogram/make_row_dendro');
 var make_col_dendro = require('./dendrogram/make_col_dendro');
 
-module.exports = function(params) {
+module.exports = function make_viz(params) {
   
+  d3.select(params.viz.viz_wrapper+' svg')
+    .remove();
+
   var svg_group = d3.select(params.viz.viz_wrapper)
     .append('svg')
     .attr('class', 'viz_svg')
