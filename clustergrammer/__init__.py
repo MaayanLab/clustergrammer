@@ -48,7 +48,6 @@ class Network(object):
     print('\tproduce a single view of a matrix, will be used for get requests')
 
     if requested_view != None:
-
       print('requested_view')
       print(requested_view)
 

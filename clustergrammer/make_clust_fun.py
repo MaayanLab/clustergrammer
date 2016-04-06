@@ -20,27 +20,28 @@ def make_clust(net, dist_type='cosine', run_clustering=True,
   # calculate initial view with no row filtering
   net.df_to_dat(df)
 
-  calc_clust.cluster_row_and_col(net, dist_type=dist_type, linkage_type=linkage_type,
-                           run_clustering=run_clustering, dendro=dendro)
+  calc_clust.cluster_row_and_col(net, dist_type=dist_type, 
+                                linkage_type=linkage_type, 
+                                run_clustering=run_clustering, dendro=dendro)
 
   all_views = []
   send_df = deepcopy(df)
 
   if 'N_row_sum' in requested_views:
     all_views = make_views.N_rows(net, send_df, all_views,
-                                     dist_type=dist_type, rank_type='sum')
+                                  dist_type=dist_type, rank_type='sum')
 
   if 'N_row_var' in requested_views:
     all_views = make_views.N_rows(net, send_df, all_views,
-                                     dist_type=dist_type, rank_type='var')
+                                  dist_type=dist_type, rank_type='var')
 
   if 'pct_row_sum' in requested_views:
     all_views = make_views.pct_rows(net, send_df, all_views,
-                                       dist_type=dist_type, rank_type='sum')
+                                    dist_type=dist_type, rank_type='sum')
 
   if 'pct_row_var' in requested_views:
     all_views = make_views.pct_rows(net, send_df, all_views,
-                                       dist_type=dist_type, rank_type='var')
+                                    dist_type=dist_type, rank_type='var')
 
   if sim_mat is True:
     print('make similarity matrices of rows and columns, add to viz data structure')
