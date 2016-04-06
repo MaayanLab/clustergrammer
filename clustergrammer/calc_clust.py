@@ -24,25 +24,24 @@ def cluster_row_and_col(net, dist_type='cosine', linkage_type='average',
     inst_dm[inst_dm < 0] = float(0)
 
     clust_order = ini_clust_order()
+
     clust_order[inst_rc]['ini'] = range(num_nodes, -1, -1)
 
     if run_clustering is True:
+      
       clust_order[inst_rc]['clust'], clust_order[inst_rc]['group'] = \
           clust_and_group(net, inst_dm, linkage_type=linkage_type)
 
-    if run_rank is True:
-      clust_order[inst_rc]['rank'] = sort_rank_nodes(net, inst_rc, 'sum')
-      clust_order[inst_rc]['rankvar'] = sort_rank_nodes(net, inst_rc, 'var')
-
-    if run_clustering is True:
       net.dat['node_info'][inst_rc]['clust'] = clust_order[inst_rc]['clust']
     else:
       net.dat['node_info'][inst_rc]['clust'] = clust_order[inst_rc]['ini']
 
     if run_rank is True:
+      clust_order[inst_rc]['rank'] = sort_rank_nodes(net, inst_rc, 'sum')
+      clust_order[inst_rc]['rankvar'] = sort_rank_nodes(net, inst_rc, 'var')
+
       net.dat['node_info'][inst_rc]['rank'] = clust_order[inst_rc]['rank']
-      net.dat['node_info'][inst_rc]['rankvar'] = \
-          clust_order[inst_rc]['rankvar']
+      net.dat['node_info'][inst_rc]['rankvar'] = clust_order[inst_rc]['rankvar']
     else:
       net.dat['node_info'][inst_rc]['rank'] = clust_order[inst_rc]['ini']
       net.dat['node_info'][inst_rc]['rankvar'] = clust_order[inst_rc]['ini']
