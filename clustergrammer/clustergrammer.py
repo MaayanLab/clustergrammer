@@ -250,13 +250,10 @@ class Network(object):
 
     from clustergrammer import Network
     from copy import deepcopy
+
     import make_views
 
-    keep_top, tmp_sum = make_views.N_rows(df, rank_type)
-
-    tmp_sum = tmp_sum.abs()
-    tmp_sum.sort_values(inplace=True, ascending=False)
-    rows_sorted = tmp_sum.index.values.tolist()
+    keep_top, rows_sorted = make_views.N_rows(df, rank_type)
 
     for inst_keep in keep_top:
 

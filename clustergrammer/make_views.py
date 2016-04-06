@@ -11,4 +11,8 @@ def N_rows(df, rank_type):
   elif rank_type == 'var':
     tmp_sum = df_abs.var(axis=0)
 
-  return keep_top, tmp_sum
+  tmp_sum = tmp_sum.abs()
+  tmp_sum.sort_values(inplace=True, ascending=False)
+  rows_sorted = tmp_sum.index.values.tolist()
+
+  return keep_top, rows_sorted
