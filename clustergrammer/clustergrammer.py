@@ -335,15 +335,8 @@ class Network(object):
     return export_data.export_net_json(self, net_type, indent)
 
   def write_json_to_file(self, net_type, filename, indent='no-indent'):
-
-    if net_type == 'dat':
-      exp_json = self.export_net_json('dat', indent)
-    elif net_type == 'viz':
-      exp_json = self.export_net_json('viz', indent)
-
-    fw = open(filename, 'w')
-    fw.write(exp_json)
-    fw.close()
+    import export_data
+    export_data.write_json_to_file(self, net_type, filename, indent)
 
   @staticmethod
   def check_categories(lines):
@@ -431,13 +424,8 @@ class Network(object):
 
   @staticmethod
   def save_dict_to_json(inst_dict, filename, indent='no-indent'):
-    import json
-    fw = open(filename, 'w')
-    if indent == 'indent':
-      fw.write(json.dumps(inst_dict, indent=2))
-    else:
-      fw.write(json.dumps(inst_dict))
-    fw.close()
+    import export_data
+    export_data.save_dict_to_json(inst_dict, filename, indent)
 
   @staticmethod
   def ini_clust_order():
