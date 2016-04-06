@@ -1,7 +1,7 @@
 def N_rows(net, df, all_views, dist_type='cosine', rank_type='sum'):
   from copy import deepcopy
   from clustergrammer import Network
-  import calc_clust
+  import calc_clust, run_filter
 
   keep_top = ['all', 500, 400, 300, 200, 100, 80, 60, 40, 20, 10]
 
@@ -34,7 +34,7 @@ def N_rows(net, df, all_views, dist_type='cosine', rank_type='sum'):
           tmp_df['mat_up'] = tmp_df['mat_up'].ix[keep_rows]
           tmp_df['mat_dn'] = tmp_df['mat_dn'].ix[keep_rows]
 
-        tmp_df = net.df_filter_col(tmp_df, 0.001)
+        tmp_df = run_filter.df_filter_col(tmp_df, 0.001)
         tmp_net.df_to_dat(tmp_df)
 
       else:
@@ -66,7 +66,7 @@ def pct_rows(net, df, all_views, dist_type, rank_type):
   from clustergrammer import Network
   from copy import deepcopy
   import numpy as np
-  import calc_clust
+  import calc_clust, run_filter
 
   copy_net = deepcopy(net)
 
@@ -88,7 +88,7 @@ def pct_rows(net, df, all_views, dist_type, rank_type):
     cutoff = inst_filt * max_sum
     copy_net = deepcopy(net)
     inst_df = deepcopy(df)
-    inst_df = copy_net.df_filter_row(inst_df, cutoff, take_abs=False)
+    inst_df = run_filter.df_filter_row(inst_df, cutoff, take_abs=False)
 
     tmp_net = deepcopy(Network())
     tmp_net.df_to_dat(inst_df)
