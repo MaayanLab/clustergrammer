@@ -37,11 +37,19 @@ class Network(object):
 
   def make_clust(self, dist_type='cosine', run_clustering=True,
                           dendro=True, views=['pct_row_sum', 'N_row_sum'],
-                          linkage_type='average'):
+                          linkage_type='average', sim_mat=False):
     ''' The main function run by the user to make their clustergram '''
     import make_clust_fun
     make_clust_fun.make_clust(self, dist_type, run_clustering, dendro, 
-                                   views, linkage_type)
+                                   views, linkage_type, sim_mat)
+
+  def produce_view(self, requested_view=None):
+    print('\tproduce a single view of a matrix, will be used for get requests')
+
+    if requested_view != None:
+
+      print('requested_view')
+      print(requested_view)
 
   def swap_nan_for_zero(self):
     ''' Expose this to user for their optional use ''' 
