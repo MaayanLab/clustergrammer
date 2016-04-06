@@ -154,76 +154,8 @@ class Network(object):
     self.viz_json(dendro)
 
   def calc_cat_clust_order(self, inst_rc):
-    from clustergrammer import Network
-    from copy import deepcopy
-
-    inst_keys = self.dat['node_info'][inst_rc].keys()
-    all_cats = [x for x in inst_keys if 'cat-' in x]
-
-    if len(all_cats) > 0:
-
-      for inst_name_cat in all_cats:
-
-        tmp_name = 'dict_' + inst_name_cat.replace('-', '_')
-        dict_cat = self.dat['node_info'][inst_rc][tmp_name]
-
-        all_cats = sorted(dict_cat.keys())
-
-        # this is the ordering of the columns based on their category, not
-        # including their clustering ordering within category
-        all_cat_orders = []
-        tmp_names_list = []
-        for inst_cat in all_cats:
-
-          inst_nodes = dict_cat[inst_cat]
-
-          tmp_names_list.extend(inst_nodes)
-
-          cat_net = deepcopy(Network())
-
-          cat_net.dat['mat'] = deepcopy(self.dat['mat'])
-          cat_net.dat['nodes'] = deepcopy(self.dat['nodes'])
-
-          cat_df = cat_net.dat_to_df()
-
-          sub_df = {}
-          if inst_rc == 'col':
-            sub_df['mat'] = cat_df['mat'][inst_nodes]
-          elif inst_rc == 'row':
-            # need to transpose df
-            cat_df['mat'] = cat_df['mat'].transpose()
-            sub_df['mat'] = cat_df['mat'][inst_nodes]
-            sub_df['mat'] = sub_df['mat'].transpose()
-
-          # load back to dat
-          cat_net.df_to_dat(sub_df)
-
-          try:
-            cat_net.cluster_row_and_col('cos')
-            # inst_cat_order = cat_net.dat['node_info'][inst_rc]
-            inst_cat_order = range(len(cat_net.dat['nodes'][inst_rc]))
-          except:
-            inst_cat_order = range(len(cat_net.dat['nodes'][inst_rc]))
-
-          prev_order_len = len(all_cat_orders)
-
-          # add prev order length to the current order number
-          inst_cat_order = [i + prev_order_len for i in inst_cat_order]
-          all_cat_orders.extend(inst_cat_order)
-
-        names_clust_list = [x for (y, x) in sorted(zip(all_cat_orders,
-                            tmp_names_list))]
-        # calc category-cluster order
-        final_order = []
-
-        for i in range(len(self.dat['nodes'][inst_rc])):
-
-          inst_node_name = self.dat['nodes'][inst_rc][i]
-          inst_node_num = names_clust_list.index(inst_node_name)
-          final_order.append(inst_node_num)
-
-        self.dat['node_info'][inst_rc][inst_name_cat.replace('-', '_') +
-                                       '_index'] = final_order
+    import categories
+    categories.calc_cat_clust_order(self, inst_rc)
 
   def clust_and_group(self, dm, linkage_type='average'):
     import scipy.cluster.hierarchy as hier
