@@ -280,55 +280,14 @@ class Network(object):
           self.viz['links'].append(inst_dict)
 
   def df_to_dat(self, df):
-
-    self.dat['mat'] = df['mat'].values
-    self.dat['nodes']['row'] = df['mat'].index.tolist()
-    self.dat['nodes']['col'] = df['mat'].columns.tolist()
-
-    for inst_rc in ['row', 'col']:
-
-      if type(self.dat['nodes'][inst_rc][0]) is tuple:
-        # get the number of categories from the length of the tuple
-        # subtract 1 because the name is the first element of the tuple
-        num_cat = len(self.dat['nodes'][inst_rc][0]) - 1
-
-        self.dat['node_info'][inst_rc]['full_names'] = self.dat['nodes']\
-            [inst_rc]
-
-        for inst_rcat in range(num_cat):
-          self.dat['node_info'][inst_rc]['cat-' + str(inst_rcat)] = \
-            [i[inst_rcat + 1] for i in self.dat['nodes'][inst_rc]]
-
-        self.dat['nodes'][inst_rc] = [i[0] for i in self.dat['nodes'][inst_rc]]
-
-    if 'mat_up' in df:
-      self.dat['mat_up'] = df['mat_up'].values
-      self.dat['mat_dn'] = df['mat_dn'].values
-
-    self.dict_cat()
+    ''' convert from pandas dataframe to clustergrammers dat format ''' 
+    import data_formats
+    data_formats.df_to_dat(self, df)
 
   def dat_to_df(self):
-    import pandas as pd
-
-    df = {}
-    nodes = {}
-    for inst_rc in ['row', 'col']:
-      if 'full_names' in self.dat['node_info'][inst_rc]:
-        nodes[inst_rc] = self.dat['node_info'][inst_rc]['full_names']
-      else:
-        nodes[inst_rc] = self.dat['nodes'][inst_rc]
-
-    df['mat'] = pd.DataFrame(data=self.dat['mat'], columns=nodes['col'],
-        index=nodes['row'])
-
-    if 'mat_up' in self.dat:
-
-      df['mat_up'] = pd.DataFrame(data=self.dat['mat_up'],
-        columns=nodes['col'], index=nodes['row'])
-      df['mat_dn'] = pd.DataFrame(data=self.dat['mat_dn'],
-        columns=nodes['col'], index=nodes['row'])
-
-    return df
+    ''' convert from clusergrammers dat format to pandas dataframe '''
+    import data_formats
+    return data_formats.dat_to_df(self)
 
   def export_net_json(self, net_type, indent='no-indent'):
     import export_data
