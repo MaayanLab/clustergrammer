@@ -142,6 +142,7 @@ class Network(object):
     data and clustering after each filtering. This filtering will keep the top 
     N rows based on some quantity (sum, num-non-zero, etc). '''
 
+    import make_views
     from copy import deepcopy
     df = self.dat_to_df()
 
@@ -158,32 +159,22 @@ class Network(object):
     send_df = deepcopy(df)
 
     if 'N_row_sum' in views:
-      all_views = self.add_N_top_views(send_df, all_views,
+      all_views = make_views.N_rows(self, send_df, all_views,
                                        dist_type=dist_type, rank_type='sum')
 
     if 'N_row_var' in views:
-      all_views = self.add_N_top_views(send_df, all_views,
+      all_views = make_views.N_rows(self, send_df, all_views,
                                        dist_type=dist_type, rank_type='var')
 
     if 'pct_row_sum' in views:
-      all_views = self.add_pct_top_views(send_df, all_views,
+      all_views = make_views.pct_rows(self, send_df, all_views,
                                          dist_type=dist_type, rank_type='sum')
 
     if 'pct_row_var' in views:
-      all_views = self.add_pct_top_views(send_df, all_views,
+      all_views = make_views.pct_rows(self, send_df, all_views,
                                          dist_type=dist_type, rank_type='var')
 
     self.viz['views'] = all_views
-
-  def add_pct_top_views(self, df, all_views, dist_type='cosine',
-                        rank_type='sum'):
-    import make_views 
-    return make_views.pct_rows(self, df, all_views, dist_type, rank_type)
-
-
-  def add_N_top_views(self, df, all_views, dist_type='cosine', rank_type='sum'):
-    import make_views
-    return make_views.N_rows(self, df, all_views, dist_type, rank_type)
 
   def mat_to_numpy_arr(self):
     ''' convert list to numpy array - numpy arrays can not be saved as json '''

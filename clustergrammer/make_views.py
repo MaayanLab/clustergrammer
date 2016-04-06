@@ -60,19 +60,19 @@ def N_rows(net, df, all_views, dist_type='cosine', rank_type='sum'):
 
   return all_views
 
-def pct_rows(self, df, all_views, dist_type, rank_type):
+def pct_rows(net, df, all_views, dist_type, rank_type):
 
   from clustergrammer import Network
   from copy import deepcopy
   import numpy as np
 
-  copy_net = deepcopy(self)
+  copy_net = deepcopy(net)
 
-  if len(self.dat['node_info']['col']['cat']) > 0:
+  if len(net.dat['node_info']['col']['cat']) > 0:
     cat_key_col = {}
-    for i in range(len(self.dat['nodes']['col'])):
-      cat_key_col[self.dat['nodes']['col'][i]] = \
-          self.dat['node_info']['col']['cat'][i]
+    for i in range(len(net.dat['nodes']['col'])):
+      cat_key_col[net.dat['nodes']['col'][i]] = \
+          net.dat['node_info']['col']['cat'][i]
 
   all_filt = range(10)
   all_filt = [i / float(10) for i in all_filt]
@@ -84,7 +84,7 @@ def pct_rows(self, df, all_views, dist_type, rank_type):
   for inst_filt in all_filt:
 
     cutoff = inst_filt * max_sum
-    copy_net = deepcopy(self)
+    copy_net = deepcopy(net)
     inst_df = deepcopy(df)
     inst_df = copy_net.df_filter_row(inst_df, cutoff, take_abs=False)
 
