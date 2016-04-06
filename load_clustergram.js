@@ -1,8 +1,8 @@
 
-// make_clust('mult_view.json');
+make_clust('mult_view.json');
 // make_clust('filter_row_sum.json');
 // make_clust('mult_cats.json');
-make_clust('large_vect_post_example.json');
+// make_clust('large_vect_post_example.json');
 // make_clust('vect_post_example.json');
 // make_clust('enr_clust_example.json');
 // make_clust('default_example.json');
