@@ -252,19 +252,7 @@ class Network(object):
     from copy import deepcopy
     import make_views
 
-    keep_top = make_views.N_rows()
-
-    print('******************')
-    print(keep_top)
-    print('******************')
-
-    df_abs = deepcopy(df['mat'])
-    df_abs = df_abs.transpose()
-
-    if rank_type == 'sum':
-      tmp_sum = df_abs.sum(axis=0)
-    elif rank_type == 'var':
-      tmp_sum = df_abs.var(axis=0)
+    keep_top, tmp_sum = make_views.N_rows(df, rank_type)
 
     tmp_sum = tmp_sum.abs()
     tmp_sum.sort_values(inplace=True, ascending=False)
