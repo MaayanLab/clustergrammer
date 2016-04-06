@@ -1,4 +1,4 @@
-def N_rows(df, rank_type, net, all_views, dist_type):
+def N_rows(net, df, all_views, dist_type='cosine', rank_type='sum'):
   from copy import deepcopy
   from clustergrammer import Network
 
@@ -59,3 +59,54 @@ def N_rows(df, rank_type, net, all_views, dist_type):
         print('\t*** did not cluster N filtered view')
 
   return all_views
+
+def pct_rows(self, df, all_views, dist_type, rank_type):
+
+  from clustergrammer import Network
+  from copy import deepcopy
+  import numpy as np
+
+  copy_net = deepcopy(self)
+
+  if len(self.dat['node_info']['col']['cat']) > 0:
+    cat_key_col = {}
+    for i in range(len(self.dat['nodes']['col'])):
+      cat_key_col[self.dat['nodes']['col'][i]] = \
+          self.dat['node_info']['col']['cat'][i]
+
+  all_filt = range(10)
+  all_filt = [i / float(10) for i in all_filt]
+
+  mat = deepcopy(df['mat'])
+  sum_row = np.sum(mat, axis=1)
+  max_sum = max(sum_row)
+
+  for inst_filt in all_filt:
+
+    cutoff = inst_filt * max_sum
+    copy_net = deepcopy(self)
+    inst_df = deepcopy(df)
+    inst_df = copy_net.df_filter_row(inst_df, cutoff, take_abs=False)
+
+    tmp_net = deepcopy(Network())
+    tmp_net.df_to_dat(inst_df)
+
+    try:
+      try:
+        tmp_net.cluster_row_and_col(dist_type=dist_type, run_clustering=True)
+      except:
+        tmp_net.cluster_row_and_col(dist_type=dist_type, run_clustering=False)
+
+      inst_view = {}
+      inst_view['pct_row_' + rank_type] = inst_filt
+      inst_view['dist'] = 'cos'
+      inst_view['nodes'] = {}
+      inst_view['nodes']['row_nodes'] = tmp_net.viz['row_nodes']
+      inst_view['nodes']['col_nodes'] = tmp_net.viz['col_nodes']
+
+      all_views.append(inst_view)
+
+    except:
+      pass
+
+  return all_views  
