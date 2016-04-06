@@ -1,6 +1,7 @@
 def N_rows(net, df, all_views, dist_type='cosine', rank_type='sum'):
   from copy import deepcopy
   from clustergrammer import Network
+  import calc_clust
 
   keep_top = ['all', 500, 400, 300, 200, 100, 80, 60, 40, 20, 10]
 
@@ -41,9 +42,9 @@ def N_rows(net, df, all_views, dist_type='cosine', rank_type='sum'):
 
       try:
         try:
-          tmp_net.cluster_row_and_col(dist_type, run_clustering=True)
+          calc_clust.cluster_row_and_col(tmp_net, dist_type, run_clustering=True)
         except:
-          tmp_net.cluster_row_and_col(dist_type, run_clustering=False)
+          calc_clust.cluster_row_and_col(tmp_net, dist_type, run_clustering=False)
 
         # add view
         inst_view = {}
@@ -65,6 +66,7 @@ def pct_rows(net, df, all_views, dist_type, rank_type):
   from clustergrammer import Network
   from copy import deepcopy
   import numpy as np
+  import calc_clust
 
   copy_net = deepcopy(net)
 
@@ -93,9 +95,12 @@ def pct_rows(net, df, all_views, dist_type, rank_type):
 
     try:
       try:
-        tmp_net.cluster_row_and_col(dist_type=dist_type, run_clustering=True)
+        calc_clust.cluster_row_and_col(tmp_net, dist_type=dist_type, 
+                                       run_clustering=True)
+
       except:
-        tmp_net.cluster_row_and_col(dist_type=dist_type, run_clustering=False)
+        calc_clust.cluster_row_and_col(tmp_net, dist_type=dist_type, 
+                                       run_clustering=False)
 
       inst_view = {}
       inst_view['pct_row_' + rank_type] = inst_filt

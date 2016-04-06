@@ -47,6 +47,8 @@ class Network(object):
 
     import make_views
     from copy import deepcopy
+    import calc_clust
+
     df = self.dat_to_df()
 
     threshold = 0.0001
@@ -55,7 +57,7 @@ class Network(object):
 
     # calculate initial view with no row filtering
     self.df_to_dat(df)
-    self.cluster_row_and_col(dist_type=dist_type, linkage_type=linkage_type,
+    calc_clust.cluster_row_and_col(self, dist_type=dist_type, linkage_type=linkage_type,
                              run_clustering=run_clustering, dendro=dendro)
 
     all_views = []
@@ -84,12 +86,6 @@ class Network(object):
     import numpy as np
     self.dat['mat'][np.isnan(self.dat['mat'])] = 0
 
-  def cluster_row_and_col(self, dist_type='cosine', linkage_type='average', 
-                          dendro=True, run_clustering=True, run_rank=True):
-
-    import calc_clust
-    calc_clust.cluster_row_and_col(self, dist_type, linkage_type, dendro, 
-                                    run_clustering, run_rank)
 
   def sort_rank_nodes(self, rowcol, rank_type):
     import numpy as np

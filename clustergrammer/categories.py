@@ -55,6 +55,7 @@ def dict_cat(net):
 def calc_cat_clust_order(net, inst_rc):
   from clustergrammer import Network
   from copy import deepcopy
+  import calc_clust
 
   inst_keys = net.dat['node_info'][inst_rc].keys()
   all_cats = [x for x in inst_keys if 'cat-' in x]
@@ -98,7 +99,7 @@ def calc_cat_clust_order(net, inst_rc):
         cat_net.df_to_dat(sub_df)
 
         try:
-          cat_net.cluster_row_and_col('cos')
+          calc_clust.cluster_row_and_col(cat_net, 'cos')
           # inst_cat_order = cat_net.dat['node_info'][inst_rc]
           inst_cat_order = range(len(cat_net.dat['nodes'][inst_rc]))
         except:
