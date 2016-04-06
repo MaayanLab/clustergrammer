@@ -28,14 +28,9 @@ class Network(object):
     load_vect_post.main(self, vect_post)
 
   def load_data_file_to_net(self, filename):
+    import load_data
     inst_dat = self.load_json_to_dict(filename)
-    self.load_data_to_net(inst_dat)
-
-  def load_data_to_net(self, inst_net):
-    ''' load data into nodes and mat, also convert mat to numpy array'''
-    self.dat['nodes'] = inst_net['nodes']
-    self.dat['mat'] = inst_net['mat']
-    self.mat_to_numpy_arr()
+    load_data.load_data_to_net(self, inst_dat)
 
   def dict_cat(self):
     import categories 
@@ -87,11 +82,6 @@ class Network(object):
                                          dist_type=dist_type, rank_type='var')
 
     self.viz['views'] = all_views
-
-  def mat_to_numpy_arr(self):
-    ''' convert list to numpy array - numpy arrays can not be saved as json '''
-    import numpy as np
-    self.dat['mat'] = np.asarray(self.dat['mat'])
 
   def swap_nan_for_zero(self):
     import numpy as np

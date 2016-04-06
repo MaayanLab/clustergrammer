@@ -48,3 +48,9 @@ def load_gmt(filename):
 
   return gmt  
 
+def load_data_to_net(net, inst_net):
+  ''' load data into nodes and mat, also convert mat to numpy array'''
+  import data_formats
+  net.dat['nodes'] = inst_net['nodes']
+  net.dat['mat'] = inst_net['mat']
+  data_formats.mat_to_numpy_arr(net)

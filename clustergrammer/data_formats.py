@@ -47,3 +47,8 @@ def dat_to_df(net):
       columns=nodes['col'], index=nodes['row'])
 
   return df  
+
+def mat_to_numpy_arr(self):
+  ''' convert list to numpy array - numpy arrays can not be saved as json '''
+  import numpy as np
+  self.dat['mat'] = np.asarray(self.dat['mat'])
