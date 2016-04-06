@@ -247,10 +247,17 @@ class Network(object):
 
   def add_N_top_views(self, df, all_views, dist_type='cosine',
                       rank_type='sum'):
+
     from clustergrammer import Network
     from copy import deepcopy
+    import make_views
 
-    keep_top = ['all', 500, 400, 300, 200, 100, 80, 60, 40, 20, 10]
+    keep_top = make_views.N_rows()
+
+    print('******************')
+    print(keep_top)
+    print('******************')
+
     df_abs = deepcopy(df['mat'])
     df_abs = df_abs.transpose()
 
