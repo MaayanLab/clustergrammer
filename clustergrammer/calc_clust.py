@@ -7,7 +7,7 @@ def cluster_row_and_col(net, dist_type='cosine', linkage_type='average',
   import scipy
   from scipy.spatial.distance import pdist
   from copy import deepcopy
-  import categories
+  import categories, make_viz
 
   if run_clustering is False:
     dendro = False
@@ -53,7 +53,7 @@ def cluster_row_and_col(net, dist_type='cosine', linkage_type='average',
 
     categories.calc_cat_clust_order(net, inst_rc)
 
-  net.viz_json(dendro)
+  make_viz.viz_json(net, dendro)
 
 def clust_and_group(net, node_dm, linkage_type='average'):
   import scipy.cluster.hierarchy as hier
