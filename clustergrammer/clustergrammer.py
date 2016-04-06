@@ -95,9 +95,8 @@ class Network(object):
         self.dat['node_info'][inst_rc][tmp_name] = dict_cat
 
   def load_vect_post_to_net(self, vect_post):
-    import proc_vect_post
-
-    proc_vect_post.main(self, vect_post)
+    import load_vect_post
+    load_vect_post.main(self, vect_post)
 
   def load_data_file_to_net(self, filename):
     inst_dat = self.load_json_to_dict(filename)
