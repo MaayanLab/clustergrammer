@@ -17,6 +17,7 @@ def N_rows(net, df, all_views, dist_type='cosine', rank_type='sum'):
   rows_sorted = tmp_sum.index.values.tolist()
 
   for inst_keep in keep_top:
+    print(inst_keep)
 
     tmp_df = deepcopy(df)
 
@@ -40,8 +41,9 @@ def N_rows(net, df, all_views, dist_type='cosine', rank_type='sum'):
         tmp_net.df_to_dat(tmp_df)
 
       try:
-
+        print('HERE*****')
         try:
+          print('clustering N_row')
           tmp_net.cluster_row_and_col(dist_type, run_clustering=True)
         except:
           tmp_net.cluster_row_and_col(dist_type, run_clustering=False)

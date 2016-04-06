@@ -106,6 +106,7 @@ class Network(object):
     import scipy
     from scipy.spatial.distance import pdist
     from copy import deepcopy
+    import calc_clust
 
     if run_clustering is False:
       dendro = False
@@ -127,7 +128,7 @@ class Network(object):
 
       if run_clustering is True:
         clust_order[inst_rc]['clust'], clust_order[inst_rc]['group'] = \
-            self.clust_and_group(node_dm, linkage_type=linkage_type)
+            calc_clust.clust_and_group(self, node_dm, linkage_type=linkage_type)
 
       if run_rank is True:
         clust_order[inst_rc]['rank'] = self.sort_rank_nodes(inst_rc, 'sum')
@@ -156,23 +157,6 @@ class Network(object):
   def calc_cat_clust_order(self, inst_rc):
     import categories
     categories.calc_cat_clust_order(self, inst_rc)
-
-  def clust_and_group(self, dm, linkage_type='average'):
-    import scipy.cluster.hierarchy as hier
-
-    Y = hier.linkage(dm, method=linkage_type)
-    Z = hier.dendrogram(Y, no_plot=True)
-    inst_clust_order = Z['leaves']
-    all_dist = self.group_cutoffs()
-
-    inst_groups = {}
-    for inst_dist in all_dist:
-      inst_key = str(inst_dist).replace('.', '')
-      inst_groups[inst_key] = hier.fcluster(Y, inst_dist * dm.max(),
-                                            'distance')
-      inst_groups[inst_key] = inst_groups[inst_key].tolist()
-
-    return inst_clust_order, inst_groups
 
   def sort_rank_nodes(self, rowcol, rank_type):
     import numpy as np
