@@ -1,6 +1,5 @@
 def cluster_row_and_col(net, dist_type='cosine', linkage_type='average', 
                         dendro=True, run_clustering=True, run_rank=True):
-
   ''' cluster net.dat and make visualization json, net.viz.
   optionally leave out dendrogram colorbar groups with dendro argument '''
 
@@ -14,22 +13,22 @@ def cluster_row_and_col(net, dist_type='cosine', linkage_type='average',
 
   for inst_rc in ['row', 'col']:
     num_nodes = len(net.dat['nodes'][inst_rc])
-    node_dm = scipy.zeros([num_nodes, num_nodes])
+
     tmp_mat = deepcopy(net.dat['mat'])
 
     if inst_rc == 'row':
-      node_dm = pdist(tmp_mat, metric=dist_type)
+      inst_dm = pdist(tmp_mat, metric=dist_type)
     elif inst_rc == 'col':
-      node_dm = pdist(tmp_mat.transpose(), metric=dist_type)
+      inst_dm = pdist(tmp_mat.transpose(), metric=dist_type)
 
-    node_dm[node_dm < 0] = float(0)
+    inst_dm[inst_dm < 0] = float(0)
 
     clust_order = ini_clust_order()
     clust_order[inst_rc]['ini'] = range(num_nodes, -1, -1)
 
     if run_clustering is True:
       clust_order[inst_rc]['clust'], clust_order[inst_rc]['group'] = \
-          clust_and_group(net, node_dm, linkage_type=linkage_type)
+          clust_and_group(net, inst_dm, linkage_type=linkage_type)
 
     if run_rank is True:
       clust_order[inst_rc]['rank'] = sort_rank_nodes(net, inst_rc, 'sum')
@@ -55,10 +54,10 @@ def cluster_row_and_col(net, dist_type='cosine', linkage_type='average',
 
   make_viz.viz_json(net, dendro)
 
-def clust_and_group(net, node_dm, linkage_type='average'):
+def clust_and_group(net, inst_dm, linkage_type='average'):
   import scipy.cluster.hierarchy as hier
 
-  Y = hier.linkage(node_dm, method=linkage_type)
+  Y = hier.linkage(inst_dm, method=linkage_type)
   Z = hier.dendrogram(Y, no_plot=True)
   inst_clust_order = Z['leaves']
   all_dist = group_cutoffs()
@@ -66,7 +65,7 @@ def clust_and_group(net, node_dm, linkage_type='average'):
   groups = {}
   for inst_dist in all_dist:
     inst_key = str(inst_dist).replace('.', '')
-    groups[inst_key] = hier.fcluster(Y, inst_dist * node_dm.max(), 'distance')
+    groups[inst_key] = hier.fcluster(Y, inst_dist * inst_dm.max(), 'distance')
     groups[inst_key] = groups[inst_key].tolist()
 
   return inst_clust_order, groups
