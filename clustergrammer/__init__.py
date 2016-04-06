@@ -80,6 +80,7 @@ class Network(object):
     self.viz['views'] = all_views
 
   def swap_nan_for_zero(self):
+    ''' Expose this to user for their optional use ''' 
     import numpy as np
     self.dat['mat'][np.isnan(self.dat['mat'])] = 0
 
