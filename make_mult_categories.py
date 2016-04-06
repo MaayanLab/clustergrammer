@@ -14,7 +14,7 @@ def clustergrammer_load():
 
   net.pandas_load_file('mat_cats.tsv')  
 
-  net.make_filtered_views(dist_type='cos',views=['N_row_sum','N_row_var'])
+  net.make_clust(dist_type='cos',views=['N_row_sum','N_row_var'])
 
   net.write_json_to_file('viz','json/mult_cats.json','indent')  
 

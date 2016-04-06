@@ -33,7 +33,7 @@ def main():
   linkage_type = 'average'
 
 
-  net.make_filtered_views(dist_type=dist_type, views=views, calc_col_cats=True,\
+  net.make_clust(dist_type=dist_type, views=views, calc_col_cats=True,\
   linkage_type=linkage_type)
 
   net.write_json_to_file('viz', 'json/mult_view.json', 'no-indent')

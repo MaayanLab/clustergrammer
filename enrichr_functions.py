@@ -269,9 +269,9 @@ def enrichr_clust_from_response(response_list):
   # print('\n\n\n')  
 
   if len(net.dat['nodes']['row']) > 1:
-    net.make_filtered_views(dist_type='jaccard', views=views, dendro=False)
+    net.make_clust(dist_type='jaccard', views=views, dendro=False)
   else: 
-    net.make_filtered_views(dist_type='jaccard', views=views, dendro=False, run_clustering=False)
+    net.make_clust(dist_type='jaccard', views=views, dendro=False, run_clustering=False)
 
   # get dataframe from full matrix 
   df = net.dat_to_df()
@@ -294,9 +294,9 @@ def enrichr_clust_from_response(response_list):
 
       # make views 
       if len(net.dat['nodes']['row']) > 1:
-        inst_net.make_filtered_views(dist_type='jaccard', views=['N_row_sum'], dendro=False)
+        inst_net.make_clust(dist_type='jaccard', views=['N_row_sum'], dendro=False)
       else:
-        inst_net.make_filtered_views(dist_type='jaccard', views=['N_row_sum'], dendro=False, run_clustering = False)
+        inst_net.make_clust(dist_type='jaccard', views=['N_row_sum'], dendro=False, run_clustering = False)
 
       inst_views = inst_net.viz['views']
 
