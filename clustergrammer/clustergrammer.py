@@ -31,35 +31,15 @@ class Network(object):
     self.viz['col_nodes'] = []
     self.viz['links'] = []
 
-  def pandas_load_file(self, filename):
-    import StringIO
-    f = open(filename, 'r')
-    buff = StringIO.StringIO(f.read())
-    f.close()
-    self.pandas_load_tsv_to_net(buff)
+  def load_file(self, filename):
+    import load_data
+    load_data.load_file(self, filename)
 
-  def pandas_load_tsv_to_net(self, file_buffer):
-    import pandas as pd
-
-    lines = file_buffer.getvalue().split('\n')
-    num_labels = self.check_categories(lines)
-
-    row_arr = range(num_labels['row'])
-    col_arr = range(num_labels['col'])
-    tmp_df = {}
-
-    # use header if there are col categories
-    if len(col_arr) > 1:
-      tmp_df['mat'] = pd.read_table(file_buffer, index_col=row_arr,
-                                    header=col_arr)
-    else:
-      tmp_df['mat'] = pd.read_table(file_buffer, index_col=row_arr)
-
-    # remove columns with all nans, occurs when there are trailing
-    # tabs on rows
-    tmp_df['mat'] = tmp_df['mat'].dropna(axis=1)
-
-    self.df_to_dat(tmp_df)
+  def load_tsv_to_net(self, file_buffer):
+    ''' This will load a tsv matrix file buffer, this is exposed so that it will
+    be possible to load data without having to read from a file. ''' 
+    import load_data
+    load_data.load_tsv_to_net(self, file_buffer)
 
   @staticmethod
   def check_categories(lines):
