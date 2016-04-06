@@ -110,6 +110,7 @@ def calc_cat_clust_order(net, inst_rc):
 
       names_clust_list = [x for (y, x) in sorted(zip(all_cat_orders,
                           tmp_names_list))]
+      
       # calc category-cluster order
       final_order = []
 
