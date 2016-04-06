@@ -35,9 +35,9 @@ class Network(object):
   def make_clust(self, dist_type='cosine', run_clustering=True,
                           dendro=True, views=['pct_row_sum', 'N_row_sum'],
                           linkage_type='average'):
-    import make_clust 
+    import make_clust_fun
 
-    make_clust.make_clust(self, dist_type, run_clustering, dendro, 
+    make_clust_fun.make_clust(self, dist_type, run_clustering, dendro, 
                                    views, linkage_type)
 
   def swap_nan_for_zero(self):
