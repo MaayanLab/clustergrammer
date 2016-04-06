@@ -8,9 +8,6 @@ def cluster_row_and_col(net, dist_type='cosine', linkage_type='average',
   from copy import deepcopy
   import categories, make_viz
 
-  if run_clustering is False:
-    dendro = False
-
   for inst_rc in ['row', 'col']:
     num_nodes = len(net.dat['nodes'][inst_rc])
 
@@ -34,6 +31,7 @@ def cluster_row_and_col(net, dist_type='cosine', linkage_type='average',
 
       net.dat['node_info'][inst_rc]['clust'] = clust_order[inst_rc]['clust']
     else:
+      dendro = False
       net.dat['node_info'][inst_rc]['clust'] = clust_order[inst_rc]['ini']
 
     if run_rank is True:
