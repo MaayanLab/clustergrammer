@@ -91,10 +91,6 @@ class Network(object):
     calc_clust.cluster_row_and_col(self, dist_type, linkage_type, dendro, 
                                     run_clustering, run_rank)
 
-  def calc_cat_clust_order(self, inst_rc):
-    import categories
-    categories.calc_cat_clust_order(self, inst_rc)
-
   def sort_rank_nodes(self, rowcol, rank_type):
     import numpy as np
     from operator import itemgetter
