@@ -19,6 +19,7 @@ def viz_json(net, dendro=True):
       if 'rankvar' in inst_keys:
         inst_dict['rankvar'] = net.dat['node_info'][inst_rc]['rankvar'][i]
 
+      # fix for similarity matrix
       if len(all_cats) > 0:
 
         for inst_name_cat in all_cats:

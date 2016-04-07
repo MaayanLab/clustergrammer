@@ -10,6 +10,7 @@ def make_clust(net, dist_type='cosine', run_clustering=True,
   import calc_clust
   import run_filter
   import make_views
+  import scipy
 
   df = net.dat_to_df()
 
@@ -20,9 +21,21 @@ def make_clust(net, dist_type='cosine', run_clustering=True,
   # calculate initial view with no row filtering
   net.df_to_dat(df)
 
+
+  # preparing to make similarity matrices of rows and cols 
+  ###########################################################
+  # tmp_dist_mat = calc_clust.calc_distance_matrix(net.dat['mat'], 'col', 
+  #                                                get_sim=True, 
+  #                                                make_squareform=True, 
+  #                                                filter_sim_below=0.1)
+  # 
+  # print(tmp_dist_mat)
+
+
   calc_clust.cluster_row_and_col(net, dist_type=dist_type, 
                                 linkage_type=linkage_type, 
-                                run_clustering=run_clustering, dendro=dendro)
+                                run_clustering=run_clustering, 
+                                dendro=dendro, ignore_cat=False)
 
   all_views = []
   send_df = deepcopy(df)

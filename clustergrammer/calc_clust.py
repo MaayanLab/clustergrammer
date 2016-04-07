@@ -1,5 +1,6 @@
 def cluster_row_and_col(net, dist_type='cosine', linkage_type='average', 
-                        dendro=True, run_clustering=True, run_rank=True):
+                        dendro=True, run_clustering=True, run_rank=True,
+                        ignore_cat=False):
   ''' cluster net.dat and make visualization json, net.viz.
   optionally leave out dendrogram colorbar groups with dendro argument '''
 
@@ -8,7 +9,6 @@ def cluster_row_and_col(net, dist_type='cosine', linkage_type='average',
   from copy import deepcopy
 
   for inst_rc in ['row', 'col']:
-    num_nodes = len(net.dat['nodes'][inst_rc])
 
     tmp_mat = deepcopy(net.dat['mat'])
     inst_dm = calc_distance_matrix(tmp_mat, inst_rc, dist_type)
@@ -16,7 +16,7 @@ def cluster_row_and_col(net, dist_type='cosine', linkage_type='average',
     # save directly to dat structure 
     node_info = net.dat['node_info'][inst_rc]
 
-    node_info['ini'] = range(num_nodes, -1, -1)
+    node_info['ini'] = range( len(net.dat['nodes'][inst_rc]), -1, -1)
 
     # cluster 
     if run_clustering is True:
@@ -34,12 +34,15 @@ def cluster_row_and_col(net, dist_type='cosine', linkage_type='average',
       node_info['rank'] = node_info['ini']
       node_info['rankvar'] = node_info['ini']
 
-    categories.calc_cat_clust_order(net, inst_rc)
+    if ignore_cat is False:
+      categories.calc_cat_clust_order(net, inst_rc)
 
   make_viz.viz_json(net, dendro)
 
-def calc_distance_matrix(tmp_mat, inst_rc, dist_type='cosine'):
-  from scipy.spatial.distance import pdist
+def calc_distance_matrix(tmp_mat, inst_rc, dist_type='cosine', get_sim=False, 
+                         make_squareform=False, filter_sim_below=False):
+  from scipy.spatial.distance import pdist, squareform
+  import numpy as np
 
   if inst_rc == 'row':
     inst_dm = pdist(tmp_mat, metric=dist_type)
@@ -47,6 +50,15 @@ def calc_distance_matrix(tmp_mat, inst_rc, dist_type='cosine'):
     inst_dm = pdist(tmp_mat.transpose(), metric=dist_type)
 
   inst_dm[inst_dm < 0] = float(0)
+
+  if make_squareform is True:
+    inst_dm = squareform(inst_dm)
+
+  if get_sim is True:
+    inst_dm = 1 - inst_dm
+
+    if filter_sim_below !=False:
+      inst_dm[ np.abs(inst_dm) < filter_sim_below] = 0
 
   return inst_dm
 
