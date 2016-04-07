@@ -24,6 +24,7 @@ def cluster_row_and_col(net, dist_type='cosine', linkage_type='average',
 
     clust_order[inst_rc]['ini'] = range(num_nodes, -1, -1)
 
+
     if run_clustering is True:
       
       clust_order[inst_rc]['clust'], clust_order[inst_rc]['group'] = \
@@ -46,6 +47,8 @@ def cluster_row_and_col(net, dist_type='cosine', linkage_type='average',
 
     net.dat['node_info'][inst_rc]['ini'] = clust_order[inst_rc]['ini']
     net.dat['node_info'][inst_rc]['group'] = clust_order[inst_rc]['group']
+
+
 
     categories.calc_cat_clust_order(net, inst_rc)
 
