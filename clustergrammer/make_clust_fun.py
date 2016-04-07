@@ -21,7 +21,6 @@ def make_clust(net, dist_type='cosine', run_clustering=True,
   # calculate initial view with no row filtering
   net.df_to_dat(df)
 
-
   # preparing to make similarity matrices of rows and cols 
   ###########################################################
   # tmp_dist_mat = calc_clust.calc_distance_matrix(net.dat['mat'], 'col', 
@@ -30,6 +29,10 @@ def make_clust(net, dist_type='cosine', run_clustering=True,
   #                                                filter_sim_below=0.1)
   # 
   # print(tmp_dist_mat)
+
+  print(net.dat['node_info']['row'])
+  print('\n')
+  print(net.dat['node_info']['col'])
 
 
   calc_clust.cluster_row_and_col(net, dist_type=dist_type, 
