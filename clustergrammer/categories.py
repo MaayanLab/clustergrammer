@@ -53,7 +53,7 @@ def dict_cat(net):
 
 
 def calc_cat_clust_order(net, inst_rc):
-  from clustergrammer import Network
+  from __init__ import Network
   from copy import deepcopy
   import calc_clust
 

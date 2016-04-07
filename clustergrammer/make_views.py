@@ -1,6 +1,6 @@
 def N_rows(net, df, all_views, dist_type='cosine', rank_type='sum'):
   from copy import deepcopy
-  from clustergrammer import Network
+  from __init__ import Network
   import calc_clust, run_filter
 
   keep_top = ['all', 500, 400, 300, 200, 100, 80, 60, 40, 20, 10]
@@ -62,8 +62,7 @@ def N_rows(net, df, all_views, dist_type='cosine', rank_type='sum'):
   return all_views
 
 def pct_rows(net, df, all_views, dist_type, rank_type):
-
-  from clustergrammer import Network
+  from __init__ import Network
   from copy import deepcopy
   import numpy as np
   import calc_clust, run_filter

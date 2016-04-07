@@ -30,9 +30,9 @@ def make_clust(net, dist_type='cosine', run_clustering=True,
   # 
   # print(tmp_dist_mat)
 
-  print(net.dat['node_info']['row'])
-  print('\n')
-  print(net.dat['node_info']['col'])
+  # print(net.dat['node_info']['row'])
+  # print('\n')
+  # print(net.dat['node_info']['col'])
 
 
   calc_clust.cluster_row_and_col(net, dist_type=dist_type, 
