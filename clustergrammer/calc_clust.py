@@ -5,11 +5,13 @@ def cluster_row_and_col(net, dist_type='cosine', linkage_type='average',
 
   import scipy
   import categories, make_viz
+  from copy import deepcopy
 
   for inst_rc in ['row', 'col']:
     num_nodes = len(net.dat['nodes'][inst_rc])
 
-    inst_dm = calc_distance_matrix(net, inst_rc, dist_type)
+    tmp_mat = deepcopy(net.dat['mat'])
+    inst_dm = calc_distance_matrix(tmp_mat, inst_rc, dist_type)
 
     # save directly to dat structure 
     node_info = net.dat['node_info'][inst_rc]
@@ -36,11 +38,8 @@ def cluster_row_and_col(net, dist_type='cosine', linkage_type='average',
 
   make_viz.viz_json(net, dendro)
 
-def calc_distance_matrix(net, inst_rc, dist_type='cosine'):
+def calc_distance_matrix(tmp_mat, inst_rc, dist_type='cosine'):
   from scipy.spatial.distance import pdist
-  from copy import deepcopy
-    
-  tmp_mat = deepcopy(net.dat['mat'])
 
   if inst_rc == 'row':
     inst_dm = pdist(tmp_mat, metric=dist_type)
