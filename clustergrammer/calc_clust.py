@@ -4,48 +4,52 @@ def cluster_row_and_col(net, dist_type='cosine', linkage_type='average',
   optionally leave out dendrogram colorbar groups with dendro argument '''
 
   import scipy
-  from scipy.spatial.distance import pdist
-  from copy import deepcopy
   import categories, make_viz
 
   for inst_rc in ['row', 'col']:
     num_nodes = len(net.dat['nodes'][inst_rc])
 
-    tmp_mat = deepcopy(net.dat['mat'])
-
-    if inst_rc == 'row':
-      inst_dm = pdist(tmp_mat, metric=dist_type)
-    elif inst_rc == 'col':
-      inst_dm = pdist(tmp_mat.transpose(), metric=dist_type)
-
-    inst_dm[inst_dm < 0] = float(0)
+    inst_dm = calc_distance_matrix(net, inst_rc, dist_type)
 
     # save directly to dat structure 
     node_info = net.dat['node_info'][inst_rc]
 
     node_info['ini'] = range(num_nodes, -1, -1)
 
+    # cluster 
     if run_clustering is True:
-      
       node_info['clust'], node_info['group'] = \
           clust_and_group(net, inst_dm, linkage_type=linkage_type)
-
     else:
       dendro = False
       node_info['clust'] = node_info['ini']
 
+    # sorting 
     if run_rank is True:
       node_info['rank'] = sort_rank_nodes(net, inst_rc, 'sum')
       node_info['rankvar'] = sort_rank_nodes(net, inst_rc, 'var')
-
     else:
       node_info['rank'] = node_info['ini']
       node_info['rankvar'] = node_info['ini']
 
-
     categories.calc_cat_clust_order(net, inst_rc)
 
   make_viz.viz_json(net, dendro)
+
+def calc_distance_matrix(net, inst_rc, dist_type='cosine'):
+  from scipy.spatial.distance import pdist
+  from copy import deepcopy
+    
+  tmp_mat = deepcopy(net.dat['mat'])
+
+  if inst_rc == 'row':
+    inst_dm = pdist(tmp_mat, metric=dist_type)
+  elif inst_rc == 'col':
+    inst_dm = pdist(tmp_mat.transpose(), metric=dist_type)
+
+  inst_dm[inst_dm < 0] = float(0)
+
+  return inst_dm
 
 def clust_and_group(net, inst_dm, linkage_type='average'):
   import scipy.cluster.hierarchy as hier
