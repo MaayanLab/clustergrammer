@@ -28,10 +28,9 @@ def cluster_row_and_col(net, dist_type='cosine', linkage_type='average',
 
     if run_clustering is True:
       
-      clust_order[inst_rc]['clust'], clust_order[inst_rc]['group'] = \
+      node_info['clust'], node_info['group'] = \
           clust_and_group(net, inst_dm, linkage_type=linkage_type)
 
-      node_info['clust'] = clust_order[inst_rc]['clust']
     else:
       dendro = False
       node_info['clust'] = clust_order[inst_rc]['ini']
@@ -47,7 +46,6 @@ def cluster_row_and_col(net, dist_type='cosine', linkage_type='average',
       node_info['rankvar'] = clust_order[inst_rc]['ini']
 
     node_info['ini'] = clust_order[inst_rc]['ini']
-    node_info['group'] = clust_order[inst_rc]['group']
 
     categories.calc_cat_clust_order(net, inst_rc)
 
