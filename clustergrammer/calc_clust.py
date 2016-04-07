@@ -20,11 +20,10 @@ def cluster_row_and_col(net, dist_type='cosine', linkage_type='average',
 
     inst_dm[inst_dm < 0] = float(0)
 
-    clust_order = ini_clust_order()
-
-    clust_order[inst_rc]['ini'] = range(num_nodes, -1, -1)
-
+    # save directly to dat structure 
     node_info = net.dat['node_info'][inst_rc]
+
+    node_info['ini'] = range(num_nodes, -1, -1)
 
     if run_clustering is True:
       
@@ -33,19 +32,16 @@ def cluster_row_and_col(net, dist_type='cosine', linkage_type='average',
 
     else:
       dendro = False
-      node_info['clust'] = clust_order[inst_rc]['ini']
+      node_info['clust'] = node_info['ini']
 
     if run_rank is True:
-      clust_order[inst_rc]['rank'] = sort_rank_nodes(net, inst_rc, 'sum')
-      clust_order[inst_rc]['rankvar'] = sort_rank_nodes(net, inst_rc, 'var')
+      node_info['rank'] = sort_rank_nodes(net, inst_rc, 'sum')
+      node_info['rankvar'] = sort_rank_nodes(net, inst_rc, 'var')
 
-      node_info['rank'] = clust_order[inst_rc]['rank']
-      node_info['rankvar'] = clust_order[inst_rc]['rankvar']
     else:
-      node_info['rank'] = clust_order[inst_rc]['ini']
-      node_info['rankvar'] = clust_order[inst_rc]['ini']
+      node_info['rank'] = node_info['ini']
+      node_info['rankvar'] = node_info['ini']
 
-    node_info['ini'] = clust_order[inst_rc]['ini']
 
     categories.calc_cat_clust_order(net, inst_rc)
 
@@ -110,13 +106,3 @@ def group_cutoffs():
   for i in range(11):
     all_dist.append(float(i) / 10)
   return all_dist  
-
-def ini_clust_order():
-  rowcol = ['row', 'col']
-  orderings = ['clust', 'rank', 'group', 'ini']
-  clust_order = {}
-  for inst_node in rowcol:
-    clust_order[inst_node] = {}
-    for inst_order in orderings:
-      clust_order[inst_node][inst_order] = []
-  return clust_order  
