@@ -21,27 +21,27 @@ def make_clust(net, dist_type='cosine', run_clustering=True,
   # calculate initial view with no row filtering
   net.df_to_dat(df)
 
-  # preparing to make similarity matrices of rows and cols 
-  ###########################################################
-  sim_type = 'col'
-  if sim_type == 'row':
-    new_row = 'col'
-    new_col = 'row'
-  else:
-    new_row = 'row'
-    new_col = 'col'
+  # # preparing to make similarity matrices of rows and cols 
+  # ###########################################################
+  # sim_type = 'col'
+  # if sim_type == 'row':
+  #   new_row = 'col'
+  #   new_col = 'row'
+  # else:
+  #   new_row = 'row'
+  #   new_col = 'col'
 
-  tmp_dist_mat = calc_clust.calc_distance_matrix(net.dat['mat'], sim_type, 
-                                                 get_sim=True, 
-                                                 make_squareform=True, 
-                                                 filter_sim_below=0.1)
+  # tmp_dist_mat = calc_clust.calc_distance_matrix(net.dat['mat'], sim_type, 
+  #                                                get_sim=True, 
+  #                                                make_squareform=True, 
+  #                                                filter_sim_below=0.1)
 
-  # save the distance matrix for use later 
-  net.dat['nodes'][new_row] = net.dat['nodes'][new_col]
-  net.dat['node_info'][new_row] = net.dat['node_info'][new_col]
-  net.dat['mat'] = tmp_dist_mat
+  # # save the distance matrix for use later 
+  # net.dat['nodes'][new_row] = net.dat['nodes'][new_col]
+  # net.dat['node_info'][new_row] = net.dat['node_info'][new_col]
+  # net.dat['mat'] = tmp_dist_mat
 
-
+  # ##################################################
 
 
   tmp_sim = calc_clust.cluster_row_and_col(net, dist_type=dist_type, 
