@@ -1,17 +1,19 @@
 def cluster_row_and_col(net, dist_type='cosine', linkage_type='average', 
                         dendro=True, run_clustering=True, run_rank=True,
-                        ignore_cat=False):
+                        ignore_cat=False, get_sim=False, filter_sim_below=False):
   ''' cluster net.dat and make visualization json, net.viz.
   optionally leave out dendrogram colorbar groups with dendro argument '''
 
   import scipy
-  import categories, make_viz
   from copy import deepcopy
+  from scipy.spatial.distance import pdist, squareform
+  import categories, make_viz
 
+  dm = {}
   for inst_rc in ['row', 'col']:
 
     tmp_mat = deepcopy(net.dat['mat'])
-    inst_dm = calc_distance_matrix(tmp_mat, inst_rc, dist_type)
+    dm[inst_rc] = calc_distance_matrix(tmp_mat, inst_rc, dist_type)
 
     # save directly to dat structure 
     node_info = net.dat['node_info'][inst_rc]
@@ -21,7 +23,7 @@ def cluster_row_and_col(net, dist_type='cosine', linkage_type='average',
     # cluster 
     if run_clustering is True:
       node_info['clust'], node_info['group'] = \
-          clust_and_group(net, inst_dm, linkage_type=linkage_type)
+          clust_and_group(net, dm[inst_rc], linkage_type=linkage_type)
     else:
       dendro = False
       node_info['clust'] = node_info['ini']
@@ -39,6 +41,17 @@ def cluster_row_and_col(net, dist_type='cosine', linkage_type='average',
 
   make_viz.viz_json(net, dendro)
 
+  # return similarity matrix for possible later use 
+  if get_sim is True:
+
+    sim = {}
+
+    for inst_rc in ['row','col']:
+      sim[inst_rc] = dm_to_sim(dm[inst_rc], make_squareform=True, 
+                               filter_sim_below=0.1)
+
+    return sim
+
 def calc_distance_matrix(tmp_mat, inst_rc, dist_type='cosine', get_sim=False, 
                          make_squareform=False, filter_sim_below=False):
   from scipy.spatial.distance import pdist, squareform
@@ -51,14 +64,29 @@ def calc_distance_matrix(tmp_mat, inst_rc, dist_type='cosine', get_sim=False,
 
   inst_dm[inst_dm < 0] = float(0)
 
-  if make_squareform is True:
-    inst_dm = squareform(inst_dm)
-
   if get_sim is True:
-    inst_dm = 1 - inst_dm
+    inst_dm = dm_to_sim(inst_dm, make_squareform=make_squareform, 
+                        filter_sim_below=filterd_sim_below)
+  return inst_dm
 
-    if filter_sim_below !=False:
-      inst_dm[ np.abs(inst_dm) < filter_sim_below] = 0
+def dm_to_sim(inst_dm, make_squareform=False, filter_sim_below=False):
+  import numpy as np
+  from scipy.spatial.distance import squareform
+
+  print('make_squareform ' + str(make_squareform))
+
+  if make_squareform is True:
+    print('making squareform!!!')
+    inst_dm = squareform(inst_dm)
+    print(inst_dm.shape)
+
+  inst_dm = 1 - inst_dm
+
+  if filter_sim_below !=False:
+    inst_dm[ np.abs(inst_dm) < filter_sim_below] = 0
+
+  print('check shape again')
+  print(inst_dm.shape)
 
   return inst_dm
 
