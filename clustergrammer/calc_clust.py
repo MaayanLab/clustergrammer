@@ -48,7 +48,7 @@ def cluster_row_and_col(net, dist_type='cosine', linkage_type='average',
 
     for inst_rc in ['row','col']:
       sim[inst_rc] = dm_to_sim(dm[inst_rc], make_squareform=True, 
-                               filter_sim_below=0.1)
+                               filter_sim_below=filter_sim_below)
 
     return sim
 
@@ -66,7 +66,7 @@ def calc_distance_matrix(tmp_mat, inst_rc, dist_type='cosine', get_sim=False,
 
   if get_sim is True:
     inst_dm = dm_to_sim(inst_dm, make_squareform=make_squareform, 
-                        filter_sim_below=filterd_sim_below)
+                        filter_sim_below=filter_sim_below)
   return inst_dm
 
 def dm_to_sim(inst_dm, make_squareform=False, filter_sim_below=False):
