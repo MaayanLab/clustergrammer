@@ -1,4 +1,5 @@
 var zoom_constraint_and_trim = require('./zoom_constraint_and_trim');
+var zooming_has_stopped = require('./zooming_has_stopped');
 
 module.exports = function run_transformation(params, zoom_info){
   
@@ -79,26 +80,8 @@ module.exports = function run_transformation(params, zoom_info){
 
     };
 
-    var are_we_zooming = function(){
-      
-      var inst_zoom = Number(d3.select(params.root+' .viz_svg').attr('is_zoom'));
+    setTimeout(not_zooming, 100);
 
-      if ( inst_zoom != 0){
-        console.log('yes zooming')
-
-      } else {
-        var check_stop = Number(d3.select(params.root+' .viz_svg').attr('stopped_zoom'));
-        if (check_stop!=0){
-          d3.select(params.root+' .viz_svg').attr('stopped_zoom',0);
-          console.log('NOT zooming - only run once')
-        }
-      }
-
-    };
-
-    setTimeout(not_zooming, 200);
-
-    // only check 
-    setTimeout(are_we_zooming, 1000);
+    setTimeout(zooming_has_stopped, 500, params);
 
 };
