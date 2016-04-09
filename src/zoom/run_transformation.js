@@ -39,20 +39,24 @@ module.exports = function run_transformation(params, zoom_info){
 
   zoom_constraint_and_trim(params, zoom_info);
 
-  var tmp_opacity = 0.5;
+  // // experimental label processing 
+  // ///////////////////////////////////
+  // var tmp_opacity = 0.5;
 
-  _.each(['row','col'], function(inst_rc){
+  // _.each(['row','col'], function(inst_rc){
 
-    d3.selectAll('.'+inst_rc+'_label_group')
-      .select('text')
-      .text(function(d){
-        return d.name.substring(0,5);
-      })
-      .transition()
-      .style('opacity', tmp_opacity)
-      .transition().delay(1000)
-      .style('opacity',1);
+  //   // d3.sele
 
-  })
+  //   d3.selectAll('.'+inst_rc+'_label_group')
+  //     .select('text')
+  //     .text(function(d){
+  //       return d.name.substring(0,4)+'..';
+  //     })
+  //     .transition()
+  //     .style('opacity', tmp_opacity)
+  //     .transition().delay(1000)
+  //     .style('opacity',1);
+
+  // });
 
 };
