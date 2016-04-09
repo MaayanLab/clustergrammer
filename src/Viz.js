@@ -24,7 +24,8 @@ module.exports = function make_viz(params) {
     .attr('id', 'svg_'+params.root.replace('#',''))
     .attr('width', params.viz.svg_dim.width)
     .attr('height', params.viz.svg_dim.height)
-    .attr('is_zoom',0);
+    .attr('is_zoom',0)
+    .attr('stopped_zoom',1);
 
   svg_group
     .append('rect')

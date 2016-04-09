@@ -63,6 +63,7 @@ module.exports = function run_transformation(params, zoom_info){
   d3.select(params.root+' .viz_svg')
     .attr('is_zoom', function(){
       var inst_zoom = Number(d3.select(params.root+' .viz_svg').attr('is_zoom'));
+      d3.select(params.root+' .viz_svg').attr('stopped_zoom',1);
       return inst_zoom + 1;
     });
 
@@ -78,19 +79,26 @@ module.exports = function run_transformation(params, zoom_info){
 
     };
 
-    // var are_we_zooming = function(){
+    var are_we_zooming = function(){
       
-    //   if (d3.select(params.root+' .viz_svg').classed('is_zooming')){
-    //     console.log('yes zooming')
-    //   } else {
-    //     console.log('NOT zooming')
-    //   }
+      var inst_zoom = Number(d3.select(params.root+' .viz_svg').attr('is_zoom'));
 
+      if ( inst_zoom != 0){
+        console.log('yes zooming')
 
-    // };
+      } else {
+        var check_stop = Number(d3.select(params.root+' .viz_svg').attr('stopped_zoom'));
+        if (check_stop!=0){
+          d3.select(params.root+' .viz_svg').attr('stopped_zoom',0);
+          console.log('NOT zooming - only run once')
+        }
+      }
 
-    setTimeout(not_zooming, 100);
+    };
 
-    // setTimeout(are_we_zooming, 1000);
+    setTimeout(not_zooming, 200);
+
+    // only check 
+    setTimeout(are_we_zooming, 1000);
 
 };
