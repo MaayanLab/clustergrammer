@@ -39,24 +39,58 @@ module.exports = function run_transformation(params, zoom_info){
 
   zoom_constraint_and_trim(params, zoom_info);
 
-  // // experimental label processing 
-  // ///////////////////////////////////
-  // var tmp_opacity = 0.5;
+  // experimental label processing 
+  ///////////////////////////////////
+  var tmp_opacity = 0.5;
 
-  // _.each(['row','col'], function(inst_rc){
+  _.each(['row','col'], function(inst_rc){
 
-  //   // d3.sele
+    d3.selectAll('.'+inst_rc+'_label_group')
+      .select('text')
+      .text(function(d){
+        return d.name.substring(0,4)+'..';
+      })
+      .transition()
+      .style('opacity', tmp_opacity)
+      .transition().delay(1000)
+      .style('opacity',1);
 
-  //   d3.selectAll('.'+inst_rc+'_label_group')
-  //     .select('text')
-  //     .text(function(d){
-  //       return d.name.substring(0,4)+'..';
-  //     })
-  //     .transition()
-  //     .style('opacity', tmp_opacity)
-  //     .transition().delay(1000)
-  //     .style('opacity',1);
+  });
 
-  // });
+  // d3.select(params.root+' .viz_svg')
+  //   .classed('is_zooming',true);
+
+  d3.select(params.root+' .viz_svg')
+    .attr('is_zoom', function(){
+      var inst_zoom = Number(d3.select(params.root+' .viz_svg').attr('is_zoom'));
+      return inst_zoom + 1;
+    });
+
+    // params.is_zoom = params.is_zoom + 1;
+
+    var not_zooming = function(){
+      
+      d3.select(params.root+' .viz_svg')
+        .attr('is_zoom',function(){
+          var inst_zoom = Number(d3.select(params.root+' .viz_svg').attr('is_zoom'));
+          return inst_zoom - 1;
+        });
+
+    };
+
+    // var are_we_zooming = function(){
+      
+    //   if (d3.select(params.root+' .viz_svg').classed('is_zooming')){
+    //     console.log('yes zooming')
+    //   } else {
+    //     console.log('NOT zooming')
+    //   }
+
+
+    // };
+
+    setTimeout(not_zooming, 100);
+
+    // setTimeout(are_we_zooming, 1000);
 
 };

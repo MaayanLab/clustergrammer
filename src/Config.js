@@ -23,6 +23,7 @@ module.exports = function(args) {
     input_domain: 0,
     opacity_scale: 'linear',
     do_zoom: true,
+    is_zoom:0,
     background_color: '#FFFFFF',
     super_border_color: '#F5F5F5',
     outer_margins: {
