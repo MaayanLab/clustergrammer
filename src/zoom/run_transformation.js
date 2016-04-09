@@ -84,4 +84,19 @@ module.exports = function run_transformation(params, zoom_info){
 
     setTimeout(zooming_has_stopped, 500, params);
 
+    // // trim text 
+    // if (d3.select(params.root+' .viz_svg').attr('is_zoom') == '1'){
+
+    //   _.each(['row','col'], function(){
+    //     d3.selectAll('.row_label_group')
+    //       .select('text')
+    //       .text(function(d){
+    //         return d.name.substring(0,3)+'..';
+    //       });
+        
+    //   });
+
+    // }
+
+
 };
