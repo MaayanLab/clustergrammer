@@ -1,5 +1,6 @@
 var zoom_constraint_and_trim = require('./zoom_constraint_and_trim');
 var zooming_has_stopped = require('./zooming_has_stopped');
+var calc_visible_area = require('./calc_visible_area');
 
 module.exports = function run_transformation(params, zoom_info){
   
@@ -98,18 +99,7 @@ module.exports = function run_transformation(params, zoom_info){
 
     // }
 
-    // // get translation vector absolute values 
-    // var buffer = 1;
-    // var min_x = Math.abs(trans_x)/zoom_x -
-    //   buffer*params.matrix.x_scale.rangeBand() ;
-    // var min_y = Math.abs(trans_y)/zoom_y -
-    //   buffer*params.matrix.y_scale.rangeBand() ;
-
-    // var max_x = Math.abs(trans_x)/zoom_x + 
-    //   2*buffer*params.matrix.x_scale.rangeBand() + params.viz.clust.dim.width/zoom_x ;
-    // var max_y = Math.abs(trans_y)/zoom_y +  
-    //   2*buffer*params.matrix.y_scale.rangeBand() + params.viz.clust.dim.height/zoom_y ;
-
+    var vis_area = calc_visible_area(params, zoom_info);
 
 
 };
