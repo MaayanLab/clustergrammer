@@ -45,6 +45,7 @@ module.exports = function run_transformation(params, zoom_info){
     .translate([zoom_info.trans_x + params.viz.clust.margin.left, zoom_info.trans_y + params.viz.clust.margin.top
     ]);
 
+  // try only running when zooming is finished 
   zoom_constraint_and_trim(params, zoom_info);
 
   resize_label_val_bars(params, zoom_info);
@@ -91,7 +92,7 @@ module.exports = function run_transformation(params, zoom_info){
 
     setTimeout(not_zooming, 100);
 
-    setTimeout(zooming_has_stopped, 500, params);
+    setTimeout(zooming_has_stopped, 500, params, zoom_info);
 
     // // trim text 
     // if (d3.select(params.root+' .viz_svg').attr('is_zoom') == '1'){

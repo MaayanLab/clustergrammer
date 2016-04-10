@@ -5,9 +5,8 @@ module.exports = function zoom_constraint_and_trim(params, zoom_info){
 
   constrain_font_size(params);
 
-  // run text trim with delay 
-  var prev_zoom = params.zoom_behavior.scale();
-  setTimeout(still_zooming, 1500, params, prev_zoom);
-
+  // // run text trim with delay 
+  // var prev_zoom = params.zoom_behavior.scale();
+  // setTimeout(still_zooming, 1500, params, prev_zoom);
 
 };
