@@ -62,9 +62,20 @@ module.exports = function(params, inst_selection, inst_rc) {
     // add characters back 
     // wait until the text is 25% smaller than the max area 
 
-    d3.select(inst_selection)  
-      .select('text')
-      // .text( add_back );
+    for (var i=1; i<num_trims; i++){
+      if (inst_width < max_width*0.7){
+
+        d3.select(inst_selection)  
+          .select('text')
+          .text( add_back );
+
+        tmp_width = d3.select(inst_selection)
+          .select('text')
+          .node().getBBox().width;
+
+        inst_width = calc_width(tmp_width, inst_zoom, inst_rc);
+      }
+    }
 
   }
 
