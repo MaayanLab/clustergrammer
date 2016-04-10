@@ -98,5 +98,18 @@ module.exports = function run_transformation(params, zoom_info){
 
     // }
 
+    // // get translation vector absolute values 
+    // var buffer = 1;
+    // var min_x = Math.abs(trans_x)/zoom_x -
+    //   buffer*params.matrix.x_scale.rangeBand() ;
+    // var min_y = Math.abs(trans_y)/zoom_y -
+    //   buffer*params.matrix.y_scale.rangeBand() ;
+
+    // var max_x = Math.abs(trans_x)/zoom_x + 
+    //   2*buffer*params.matrix.x_scale.rangeBand() + params.viz.clust.dim.width/zoom_x ;
+    // var max_y = Math.abs(trans_y)/zoom_y +  
+    //   2*buffer*params.matrix.y_scale.rangeBand() + params.viz.clust.dim.height/zoom_y ;
+
+
 
 };
