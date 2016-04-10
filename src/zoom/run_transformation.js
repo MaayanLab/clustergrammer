@@ -1,6 +1,7 @@
 var zoom_constraint_and_trim = require('./zoom_constraint_and_trim');
 var zooming_has_stopped = require('./zooming_has_stopped');
 var calc_visible_area = require('./calc_visible_area');
+var resize_label_val_bars = require('./resize_label_val_bars');
 
 module.exports = function run_transformation(params, zoom_info){
   
@@ -43,8 +44,10 @@ module.exports = function run_transformation(params, zoom_info){
   params.zoom_behavior
     .translate([zoom_info.trans_x + params.viz.clust.margin.left, zoom_info.trans_y + params.viz.clust.margin.top
     ]);
-    
+
   zoom_constraint_and_trim(params, zoom_info);
+
+  resize_label_val_bars(params, zoom_info);
 
   // // experimental label processing 
   // ///////////////////////////////////
