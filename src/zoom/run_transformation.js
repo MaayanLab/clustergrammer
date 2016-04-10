@@ -1,6 +1,6 @@
 var zoom_constraint_and_trim = require('./zoom_constraint_and_trim');
 var zooming_has_stopped = require('./zooming_has_stopped');
-var calc_visible_area = require('./calc_visible_area');
+var show_visible_area = require('./show_visible_area');
 var resize_label_val_bars = require('./resize_label_val_bars');
 
 module.exports = function run_transformation(params, zoom_info){
@@ -50,26 +50,6 @@ module.exports = function run_transformation(params, zoom_info){
 
   resize_label_val_bars(params, zoom_info);
 
-  // // experimental label processing 
-  // ///////////////////////////////////
-  // var tmp_opacity = 0.5;
-
-  // _.each(['row','col'], function(inst_rc){
-
-  //   d3.selectAll('.'+inst_rc+'_label_group')
-  //     .select('text')
-  //     .text(function(d){
-  //       return d.name.substring(0,4)+'..';
-  //     })
-  //     .transition()
-  //     .style('opacity', tmp_opacity)
-  //     .transition().delay(1000)
-  //     .style('opacity',1);
-
-  // });
-
-  // d3.select(params.root+' .viz_svg')
-  //   .classed('is_zooming',true);
 
   d3.select(params.root+' .viz_svg')
     .attr('is_zoom', function(){
@@ -92,23 +72,25 @@ module.exports = function run_transformation(params, zoom_info){
 
     setTimeout(not_zooming, 100);
 
-    setTimeout(zooming_has_stopped, 500, params, zoom_info);
+    setTimeout(zooming_has_stopped, 200, params, zoom_info);
 
-    // // trim text 
-    // if (d3.select(params.root+' .viz_svg').attr('is_zoom') == '1'){
+    // shorten text
 
-    //   _.each(['row','col'], function(){
-    //     d3.selectAll('.row_label_group')
-    //       .select('text')
-    //       .text(function(d){
-    //         return d.name.substring(0,3)+'..';
-    //       });
+    d3.selectAll('.row_label_group').style('opacity',0.5)
+    if (d3.select(params.root+' .viz_svg').attr('is_zoom') == '1'){
+
+      _.each(['row','col'], function(){
+        d3.selectAll('.row_label_group')
+          .select('text')
+          .text(function(d){
+            return d.name.substring(0,4)+'..';
+          });
         
-    //   });
+      });
 
-    // }
+    }
 
-    var vis_area = calc_visible_area(params, zoom_info);
+    var vis_area = show_visible_area(params, zoom_info);
 
 
 };

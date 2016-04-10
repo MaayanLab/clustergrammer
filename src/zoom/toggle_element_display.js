@@ -1,6 +1,5 @@
 module.exports = function toggle_element_display(vis_area, inst_selection){
 
-
   var inst_trans = d3.select(inst_selection)
     .attr('transform');
 

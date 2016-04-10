@@ -1,11 +1,21 @@
 var utils = require('../utils');
 var label_constrain_and_trim = require('../labels/label_constrain_and_trim');
+var show_visible_area = require('./show_visible_area');
 
-module.exports = function(params, pan_dx, pan_dy, fin_zoom) {
+module.exports = function two_translate_zoom(params, pan_dx, pan_dy, fin_zoom) {
 
   d3.selectAll('.tile_tip')
     .style('display','none' );
     
+  // reset visible area 
+  var zoom_info = {};
+  zoom_info.zoom_x = 1;
+  zoom_info.zoom_y = 1;
+  zoom_info.trans_x = 0;
+  zoom_info.trans_y = 0;
+
+  show_visible_area(params, zoom_info);
+
   // do not allow while transitioning, e.g. reordering
   if (!params.viz.run_trans) {
 
