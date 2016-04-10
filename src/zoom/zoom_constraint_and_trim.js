@@ -4,10 +4,6 @@ var utils = require('../utils');
 
 module.exports = function zoom_constraint_and_trim(params, zoom_info){
 
-  // reset translate vector - add back margins to trans_x and trans_y
-  params.zoom_behavior
-    .translate([zoom_info.trans_x + params.viz.clust.margin.left, zoom_info.trans_y + params.viz.clust.margin.top
-    ]);
   
   constrain_font_size(params);
 

@@ -2,7 +2,7 @@ module.exports = function set_up_search(sidebar, params ){
 
   var search_container = sidebar
     .append('div')
-    .classed('row',true)
+    // .classed('row',true)
     .classed('gene_search_container',true)
     .style('margin-top','10px')
     .style('margin-left','0px')
