@@ -27,7 +27,7 @@ def make_json():
   net = Network()
 
   row_num = 1000
-  num_columns = 200
+  num_columns = 3
 
   # make up all names for all data 
   row_names = make_up_names(row_num)

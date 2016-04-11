@@ -23,13 +23,13 @@ module.exports = function zooming_has_stopped(params, zoom_info){
       d3.selectAll(params.root+' .col_label_group')
         .each(function() { trim_text(params, this, 'col'); });
 
-      setTimeout(delay_fs, 1000)
+      setTimeout(delay_fs, 500)
     }
   }
 
 
   function delay_fs(){
-    // console.log('delayFS!!!!')
+    console.log('delayFS!!!!')
     d3.selectAll('.row_label_group')
       .select('text')
       .style('font-size',function(){
