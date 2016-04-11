@@ -26,8 +26,8 @@ def make_json():
   from clustergrammer import Network
   net = Network()
 
-  row_num = 300
-  num_columns = 10
+  row_num = 1000
+  num_columns = 200
 
   # make up all names for all data 
   row_names = make_up_names(row_num)
@@ -38,7 +38,7 @@ def make_json():
   vect_post['title'] = 'Some-Clustergram'
   vect_post['link'] = 'some-link'
   vect_post['filter'] = 'N_row_sum'
-  vect_post['is_up_down'] = True
+  vect_post['is_up_down'] = False
   vect_post['columns'] = []
 
 

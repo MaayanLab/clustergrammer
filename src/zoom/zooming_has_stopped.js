@@ -15,8 +15,8 @@ module.exports = function zooming_has_stopped(params, zoom_info){
       
       d3.selectAll('.tile').style('display','block')
 
-      console.log('NOT zooming - only run once')
-      console.log('zooming has stopped and running text trim ')
+      // console.log('NOT zooming - only run once')
+      // console.log('zooming has stopped and running text trim ')
 
       d3.selectAll(params.root+' .row_label_group' )
         .each(function() { trim_text(params, this, 'row'); });
@@ -29,14 +29,12 @@ module.exports = function zooming_has_stopped(params, zoom_info){
 
 
   function delay_fs(){
-    console.log('delayFS!!!!')
+    // console.log('delayFS!!!!')
     d3.selectAll('.row_label_group')
       .select('text')
       .style('font-size',function(){
         var inst_fs = d3.select(this).style('font-size').replace('px','');
 
-        // inst_fs = 0.2;
-        console.log('set font size to ' + String(inst_fs))
         return inst_fs;
       })
   }

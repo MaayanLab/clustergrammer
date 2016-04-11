@@ -56,7 +56,7 @@ module.exports = function(params, inst_selection, inst_rc) {
             .select('text')
             .text( trim );
 
-          console.log(d3.select(inst_selection).text())
+          // console.log(d3.select(inst_selection).text())
 
           tmp_width = d3.select(inst_selection)
             .select('text')
