@@ -1,3 +1,4 @@
+var constrain_font_size = require('./constrain_font_size');
 var trim_text = require('./trim_text');
 
 module.exports = function zooming_has_stopped(params, zoom_info){
@@ -9,10 +10,11 @@ module.exports = function zooming_has_stopped(params, zoom_info){
     var check_stop = Number(d3.select(params.root+' .viz_svg').attr('stopped_zoom'));
     if (check_stop!=0){
 
-    d3.selectAll('.row_label_group')
-      .select('text')
-      .style('display','block');
-
+      d3.selectAll('.row_label_group')
+        .select('text')
+        .style('display','block');
+      
+      constrain_font_size(params);
 
       d3.select(params.root+' .viz_svg').attr('stopped_zoom',0);
 
@@ -29,20 +31,7 @@ module.exports = function zooming_has_stopped(params, zoom_info){
       d3.selectAll(params.root+' .col_label_group')
         .each(function() { trim_text(params, this, 'col'); });
 
-      // setTimeout(delay_fs, 500)
     }
-  }
-
-
-  function delay_fs(){
-    console.log('delayFS!!!!')
-    d3.selectAll('.row_label_group')
-      .select('text')
-      .style('font-size',function(){
-        var inst_fs = d3.select(this).style('font-size').replace('px','');
-
-        return inst_fs;
-      })
   }
 
 };

@@ -1,4 +1,4 @@
-var zoom_constraint_and_trim = require('./zoom_constraint_and_trim');
+var constrain_font_size = require('./constrain_font_size');
 var zooming_has_stopped = require('./zooming_has_stopped');
 var show_visible_area = require('./show_visible_area');
 var resize_label_val_bars = require('./resize_label_val_bars');
@@ -45,8 +45,7 @@ module.exports = function run_transformation(params, zoom_info){
     .translate([zoom_info.trans_x + params.viz.clust.margin.left, zoom_info.trans_y + params.viz.clust.margin.top
     ]);
 
-  // try only running when zooming is finished 
-  zoom_constraint_and_trim(params, zoom_info);
+  // constrain_font_size(params);
 
   resize_label_val_bars(params, zoom_info);
 
