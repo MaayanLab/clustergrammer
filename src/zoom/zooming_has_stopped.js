@@ -10,10 +10,9 @@ module.exports = function zooming_has_stopped(params, zoom_info){
     var check_stop = Number(d3.select(params.root+' .viz_svg').attr('stopped_zoom'));
     if (check_stop!=0){
 
-      d3.selectAll('.row_label_group')
-        .select('text')
-        .style('display','block');
-      
+      d3.selectAll('.row_label_group').select('text').style('display','none');
+      d3.selectAll('.row_label_group').select('text').style('display','block');
+
       constrain_font_size(params);
 
       d3.select(params.root+' .viz_svg').attr('stopped_zoom',0);
@@ -31,7 +30,19 @@ module.exports = function zooming_has_stopped(params, zoom_info){
       d3.selectAll(params.root+' .col_label_group')
         .each(function() { trim_text(params, this, 'col'); });
 
+      setTimeout( text_patch, 500 );
+
     }
+  }
+
+  function text_patch(){
+    console.log('text patch')
+    d3.selectAll('.row_label_group')
+      .select('text')
+      .style('font-size',function(){
+        var fs = d3.select(this).style('font-size'); 
+        return fs;
+      })
   }
 
 };

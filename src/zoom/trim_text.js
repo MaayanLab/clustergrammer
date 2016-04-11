@@ -3,11 +3,64 @@ module.exports = function(params, inst_selection, inst_rc) {
 
   if (d3.select(inst_selection).style('display') != 'none'){
 
+    var inst_zoom;
+    var inst_width;
+
+    // console.log('redefine labels ')
+
+    var max_width = params.viz.norm_labels.width[inst_rc];
+
     d3.select(inst_selection)
       .select('text')
       .text( function(d){
-        return d.name;
-      } );  
+
+        // console.log(d.name.length)
+        // console.log(d.name)
+
+        var tmp_width = d3.select(inst_selection)
+          .select('text')
+          .node().getBBox().width;
+
+        if (inst_rc === 'row'){
+          max_width = params.viz.norm_labels.width.row ;
+          if (params.viz.zoom_switch_y){
+            inst_zoom = params.zoom_behavior.scale()/params.viz.zoom_switch_y;
+          } else {
+            inst_zoom = params.zoom_behavior.scale();
+          }
+        } else {
+          max_width = params.viz.norm_labels.width.col;
+          if (params.viz.zoom_switch > 1){
+            inst_zoom = params.zoom_behavior.scale()/params.viz.zoom_switch;
+          } else {
+            inst_zoom = params.zoom_behavior.scale();
+          }
+        }
+
+        if  (inst_zoom < 1){
+          inst_width = tmp_width;
+        } else {
+          inst_width = tmp_width * inst_zoom;
+        }
+
+        // console.log(max_width)
+        // console.log(inst_width)
+
+        var inst_name = d3.select(this).text();
+
+        if (inst_width > max_width){
+          // // var reduce_text_factor = 
+          inst_name = inst_name.substring(0,3)+'..';
+        }
+
+        // console.log('toggle display')
+        d3.select(this).style('display','none');
+        d3.select(this).style('display','block');
+        // console.log('\n')
+
+        return inst_name;
+        
+      });  
 
     // // trim text that is longer than the container 
     // var max_width;
@@ -20,23 +73,8 @@ module.exports = function(params, inst_selection, inst_rc) {
     // var keep_num_char;
     // var num_trims;
 
-    // if (inst_rc === 'row'){
-    //   max_width = params.viz.norm_labels.width.row ;
-    //   if (params.viz.zoom_switch_y){
-    //     inst_zoom = params.zoom_behavior.scale()/params.viz.zoom_switch_y;
-    //   } else {
-    //     inst_zoom = params.zoom_behavior.scale();
-    //   }
-    //   num_trims = params.labels.row_max_char;
-    // } else {
-    //   max_width = params.viz.norm_labels.width.col;
-    //   if (params.viz.zoom_switch > 1){
-    //     inst_zoom = params.zoom_behavior.scale()/params.viz.zoom_switch;
-    //   } else {
-    //     inst_zoom = params.zoom_behavior.scale();
-    //   }
-    //   num_trims = params.labels.col_max_char;
-    // }
+
+    // num_trims = 2;
 
     // var tmp_width = d3.select(inst_selection)
     //   .select('text')
@@ -48,15 +86,15 @@ module.exports = function(params, inst_selection, inst_rc) {
 
     // if (inst_width > max_width){
 
-
     //   for (var i=1; i < num_trims; i++){
 
     //     if (inst_width > max_width){
+
     //       d3.select(inst_selection)
     //         .select('text')
     //         .text( trim );
 
-    //       // console.log(d3.select(inst_selection).text())
+    //       console.log(d3.select(inst_selection).text())
 
     //       tmp_width = d3.select(inst_selection)
     //         .select('text')
@@ -68,18 +106,8 @@ module.exports = function(params, inst_selection, inst_rc) {
     //   }
     // } 
 
-    // setTimeout(fix_text, 1000, inst_selection)
-
-    // d3.selectAll('.row_label_group').select('text').style('font-size',1)
-
   }
 
-  // function fix_text(inst_selection){
-  //   console.log('fix text')
-  //   d3.select(inst_selection)
-  //     .select('text')
-  //     .style('color','black')
-  // }
   
 
   // else if (inst_width < max_width ) {
@@ -136,20 +164,14 @@ module.exports = function(params, inst_selection, inst_rc) {
   //   return trimmed_text;    
   // }
 
-  function calc_width(tmp_width, inst_zoom, inst_rc){
-    if (inst_rc==='row'){
-      if (inst_zoom < 1){
-        inst_width = tmp_width;
-      } else {
-        inst_width = tmp_width * inst_zoom;
-      }
+  function calc_width(tmp_width, inst_zoom){
+
+    if (inst_zoom < 1){
+      inst_width = tmp_width;
     } else {
-      if (inst_zoom < 1){
-        inst_width = tmp_width;
-      } else {
-        inst_width = tmp_width * inst_zoom ;
-      }
+      inst_width = tmp_width * inst_zoom;
     }
+
     return inst_width;
   }    
 
