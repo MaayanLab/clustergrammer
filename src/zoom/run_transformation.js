@@ -45,7 +45,7 @@ module.exports = function run_transformation(params, zoom_info){
     .translate([zoom_info.trans_x + params.viz.clust.margin.left, zoom_info.trans_y + params.viz.clust.margin.top
     ]);
 
-  // constrain_font_size(params);
+  constrain_font_size(params);
 
   resize_label_val_bars(params, zoom_info);
 
@@ -73,22 +73,23 @@ module.exports = function run_transformation(params, zoom_info){
 
     setTimeout(zooming_has_stopped, 200, params, zoom_info);
 
-    d3.selectAll(params.root+' .row_label_group')
-      .select('text')
-      .style('display','none');
+    // d3.selectAll(params.root+' .row_label_group')
+    //   .select('text')
+    //   .style('display','none');
 
-    // // shorten text
-    // // d3.selectAll('.row_label_group').style('opacity',0.5)
+    // shorten text
+    // d3.selectAll('.row_label_group').style('opacity',0.5)
+    
     // if (d3.select(params.root+' .viz_svg').attr('is_zoom') == '1'){
 
-      // _.each(['row','col'], function(){
-      //   d3.selectAll('.row_label_group')
-      //     .select('text')
-      //     .text(function(d){
-      //       return d.name.substring(0,4)+'..';
-      //     });
+      _.each(['row','col'], function(){
+        d3.selectAll('.row_label_group')
+          .select('text')
+          .text(function(d){
+            return d.name.substring(0,4)+'..';
+          });
         
-    //   });
+      });
 
     // }
 
