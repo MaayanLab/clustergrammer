@@ -74,21 +74,24 @@ module.exports = function run_transformation(params, zoom_info){
 
     setTimeout(zooming_has_stopped, 200, params, zoom_info);
 
-    // shorten text
+    d3.selectAll(params.root+' .row_label_group')
+      .select('text')
+      .style('display','none');
 
-    // d3.selectAll('.row_label_group').style('opacity',0.5)
-    if (d3.select(params.root+' .viz_svg').attr('is_zoom') == '1'){
+    // // shorten text
+    // // d3.selectAll('.row_label_group').style('opacity',0.5)
+    // if (d3.select(params.root+' .viz_svg').attr('is_zoom') == '1'){
 
-      _.each(['row','col'], function(){
-        d3.selectAll('.row_label_group')
-          .select('text')
-          .text(function(d){
-            return d.name.substring(0,4)+'..';
-          });
+    //   _.each(['row','col'], function(){
+    //     d3.selectAll('.row_label_group')
+    //       .select('text')
+    //       .text(function(d){
+    //         return d.name.substring(0,4)+'..';
+    //       });
         
-      });
+    //   });
 
-    }
+    // }
 
     var vis_area = show_visible_area(params, zoom_info);
 
