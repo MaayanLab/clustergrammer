@@ -76,7 +76,7 @@ module.exports = function run_transformation(params, zoom_info){
 
     // shorten text
 
-    d3.selectAll('.row_label_group').style('opacity',0.5)
+    // d3.selectAll('.row_label_group').style('opacity',0.5)
     if (d3.select(params.root+' .viz_svg').attr('is_zoom') == '1'){
 
       _.each(['row','col'], function(){

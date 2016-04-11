@@ -68,16 +68,18 @@ module.exports = function(params, inst_selection, inst_rc) {
       }
     } 
 
-    setTimeout(fix_text, 1000, inst_selection)
+    // setTimeout(fix_text, 1000, inst_selection)
+
+    // d3.selectAll('.row_label_group').select('text').style('font-size',1)
 
   }
 
-  function fix_text(inst_selection){
-    console.log('fix text')
-    d3.select(inst_selection)
-      .select('text')
-      .style('color','black')
-  }
+  // function fix_text(inst_selection){
+  //   console.log('fix text')
+  //   d3.select(inst_selection)
+  //     .select('text')
+  //     .style('color','black')
+  // }
   
 
   // else if (inst_width < max_width ) {
