@@ -1,6 +1,7 @@
 
 module.exports = function constrain_font_size(params) {
 
+  console.log('constrain font size')
   var tmp_font_size = params.labels.default_fs_row ;
   var real_font_size = {};
   var reduce_fs = {};

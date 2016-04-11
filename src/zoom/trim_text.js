@@ -1,71 +1,84 @@
 
 module.exports = function(params, inst_selection, inst_rc) {
 
-  d3.select(inst_selection)
-    .select('text')
-    .text( function(d){
-      return d.name;
-    } );
+  if (d3.select(inst_selection).style('display') != 'none'){
 
-  // trim text that is longer than the container 
-  var max_width;
-  var inst_zoom;
-  var inst_width;
-  var trimmed_text;
-  var current_num_char;
-  var inst_text;
-  var original_text;
-  var keep_num_char;
-  var num_trims;
+    d3.select(inst_selection)
+      .select('text')
+      .text( function(d){
+        return d.name;
+      } );  
 
-  if (inst_rc === 'row'){
-    max_width = params.viz.norm_labels.width.row ;
-    if (params.viz.zoom_switch_y){
-      inst_zoom = params.zoom_behavior.scale()/params.viz.zoom_switch_y;
+    // trim text that is longer than the container 
+    var max_width;
+    var inst_zoom;
+    var inst_width;
+    var trimmed_text;
+    var current_num_char;
+    var inst_text;
+    var original_text;
+    var keep_num_char;
+    var num_trims;
+
+    if (inst_rc === 'row'){
+      max_width = params.viz.norm_labels.width.row ;
+      if (params.viz.zoom_switch_y){
+        inst_zoom = params.zoom_behavior.scale()/params.viz.zoom_switch_y;
+      } else {
+        inst_zoom = params.zoom_behavior.scale();
+      }
+      num_trims = params.labels.row_max_char;
     } else {
-      inst_zoom = params.zoom_behavior.scale();
+      max_width = params.viz.norm_labels.width.col;
+      if (params.viz.zoom_switch > 1){
+        inst_zoom = params.zoom_behavior.scale()/params.viz.zoom_switch;
+      } else {
+        inst_zoom = params.zoom_behavior.scale();
+      }
+      num_trims = params.labels.col_max_char;
     }
-    num_trims = params.labels.row_max_char;
-  } else {
-    max_width = params.viz.norm_labels.width.col;
-    if (params.viz.zoom_switch > 1){
-      inst_zoom = params.zoom_behavior.scale()/params.viz.zoom_switch;
-    } else {
-      inst_zoom = params.zoom_behavior.scale();
-    }
-    num_trims = params.labels.col_max_char;
+
+    var tmp_width = d3.select(inst_selection)
+      .select('text')
+      .node()
+      .getBBox()
+      .width;
+
+    inst_width = calc_width(tmp_width, inst_zoom, inst_rc);
+
+    if (inst_width > max_width){
+
+
+      for (var i=1; i < num_trims; i++){
+
+        if (inst_width > max_width){
+          d3.select(inst_selection)
+            .select('text')
+            .text( trim );
+
+          console.log(d3.select(inst_selection).text())
+
+          tmp_width = d3.select(inst_selection)
+            .select('text')
+            .node().getBBox().width;
+
+          inst_width = calc_width(tmp_width, inst_zoom, inst_rc);
+
+        }
+      }
+    } 
+
+    setTimeout(fix_text, 1000, inst_selection)
+
   }
 
-  var tmp_width = d3.select(inst_selection)
-    .select('text')
-    .node()
-    .getBBox()
-    .width;
-
-  inst_width = calc_width(tmp_width, inst_zoom, inst_rc);
-
-
- 
-  if (inst_width > max_width){
-
-    for (var i=1; i < num_trims; i++){
-
-      if (inst_width > max_width){
-        d3.select(inst_selection)
-          .select('text')
-          .text( trim );
-
-        tmp_width = d3.select(inst_selection)
-          .select('text')
-          .node().getBBox().width;
-
-        inst_width = calc_width(tmp_width, inst_zoom, inst_rc);
-
-      }
-    }
-  } 
-
-  d3.selectAll('.row_label_group').style('opacity',1)
+  function fix_text(inst_selection){
+    console.log('fix text')
+    d3.select(inst_selection)
+      .select('text')
+      .style('color','black')
+  }
+  
 
   // else if (inst_width < max_width ) {
 
