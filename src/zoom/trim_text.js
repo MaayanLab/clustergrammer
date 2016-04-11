@@ -2,6 +2,7 @@
 module.exports = function(params, inst_selection, inst_rc) {
   if (d3.select(inst_selection).style('display') != 'none'){
 
+    // not working 
     // d3.selectAll('.row_label_group')
     //   .select('text')
     //   .text(function(d){
@@ -50,11 +51,12 @@ module.exports = function(params, inst_selection, inst_rc) {
       for (var i=1; i < num_trims; i++){
 
         if (inst_width > max_width){
+
           d3.select(inst_selection)
             .select('text')
             .text( trim );
 
-          console.log(d3.select(inst_selection).text())
+          // console.log(d3.select(inst_selection).text())
 
           tmp_width = d3.select(inst_selection)
             .select('text')
@@ -68,43 +70,50 @@ module.exports = function(params, inst_selection, inst_rc) {
 
     else if (inst_width < max_width * 0.75 ) {
 
-      // add characters back 
-      // wait until the text is 25% smaller than the max area 
+      console.log('\n\n')
 
-      d3.select(inst_selection)  
-        .select('text')
-        .text(function(d){
 
-          inst_text = d3.select(this).text();
+        // add characters back 
+        // wait until the text is 25% smaller than the max area 
 
-          if (inst_text.slice(-2)==='..'){
-            current_num_char = inst_text.length-2;
-          } else {
-            current_num_char = inst_text.length;
-          }
-          
-          original_text = d.name;
-          keep_num_char = current_num_char +2;
-          trimmed_text = original_text.substring(0,keep_num_char)+'..';
+        d3.select(inst_selection)  
+          .select('text')
+          .text( add_back );
 
-          // if '..' was added to original text 
-          if (trimmed_text.length > original_text.length){
-            trimmed_text = original_text;
-          }
-
-          return trimmed_text;
-        });
 
     }
   }
 
   function trim(){
-          inst_text = d3.select(this).text();
-          current_num_char = inst_text.length;
-          keep_num_char = current_num_char - 3;
-          trimmed_text = inst_text.substring(0,keep_num_char)+'..';
-          return trimmed_text;
-        }
+    inst_text = d3.select(this).text();
+    current_num_char = inst_text.length;
+    keep_num_char = current_num_char - 3;
+    trimmed_text = inst_text.substring(0,keep_num_char)+'..';
+    return trimmed_text;
+  }
+
+  function add_back(d){
+    console.log('add_back')
+
+    inst_text = d3.select(this).text();
+
+    if (inst_text.slice(-2)==='..'){
+      current_num_char = inst_text.length-2;
+    } else {
+      current_num_char = inst_text.length;
+    }
+    
+    original_text = d.name;
+    keep_num_char = current_num_char +2;
+    trimmed_text = original_text.substring(0,keep_num_char)+'..';
+
+    // if '..' was added to original text 
+    if (trimmed_text.length > original_text.length){
+      trimmed_text = original_text;
+    }
+
+    return trimmed_text;
+  }
 
   function calc_width(tmp_width, inst_zoom, inst_rc){
     if (inst_rc==='row'){
