@@ -30,7 +30,11 @@ module.exports = function zooming_has_stopped(params, zoom_info){
       d3.selectAll(params.root+' .col_label_group')
         .each(function() { trim_text(params, this, 'col'); });
 
-      setTimeout( text_patch, 500 );
+      // this makes sure that the text is visible after zooming and trimming
+      // there is buggy behavior in chrome when zooming into large matrices
+      // I'm running it twice in quick succession 
+      setTimeout( text_patch, 25 );
+      setTimeout( text_patch, 100 );
 
     }
   }
