@@ -29,23 +29,10 @@ module.exports = function zooming_has_stopped(params){
       //   .each(function() { trim_text(params, this, 'col'); });
 
 
-      // use calc real font size to only run trim if needed 
-      //////////////////////////////////////////
-      //////////////////////////////////////////
-      //////////////////////////////////////////
-      //////////////////////////////////////////
-      //////////////////////////////////////////
-      //////////////////////////////////////////
       _.each(['row','col'], function(inst_rc){
         
-        // var inst_fs = Number(d3.select('.'+inst_rc+'_label_group')
-        //   .select('text')
-        //   .style('font-size').replace('px',''));
-
         var inst_num_visible = num_visible_labels(params, inst_rc);
 
-        console.log(inst_num_visible)
-        
         if (inst_num_visible < 125){
           d3.selectAll(params.root+' .'+inst_rc+'_label_group' )
             .each(function() { 
