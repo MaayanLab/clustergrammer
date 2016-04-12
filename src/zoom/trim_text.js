@@ -3,7 +3,6 @@ module.exports = function(params, inst_selection, inst_rc) {
   if (d3.select(inst_selection).style('display') != 'none'){
 
     // trim text that is longer than the container 
-    var max_width;
     var inst_zoom;
     var inst_width;
     var trimmed_text;
@@ -12,7 +11,7 @@ module.exports = function(params, inst_selection, inst_rc) {
     var original_text;
     var keep_num_char;
 
-    max_width = params.viz.norm_labels.width[inst_rc];
+    var max_width = params.viz.norm_labels.width[inst_rc];
 
     if (inst_rc === 'row'){
       if (params.viz.zoom_switch_y){
@@ -40,7 +39,7 @@ module.exports = function(params, inst_selection, inst_rc) {
       .getBBox()
       .width;
 
-    inst_width = calc_width(tmp_width, inst_zoom, inst_rc);
+    inst_width = calc_width(tmp_width, inst_zoom);
 
     if (inst_width > max_width){
 
@@ -57,7 +56,7 @@ module.exports = function(params, inst_selection, inst_rc) {
             .select('text')
             .node().getBBox().width;
 
-          inst_width = calc_width(tmp_width, inst_zoom, inst_rc);
+          inst_width = calc_width(tmp_width, inst_zoom);
 
         }
       }
@@ -77,7 +76,7 @@ module.exports = function(params, inst_selection, inst_rc) {
             .select('text')
             .node().getBBox().width;
 
-          inst_width = calc_width(tmp_width, inst_zoom, inst_rc);
+          inst_width = calc_width(tmp_width, inst_zoom);
 
         }
       }
@@ -117,20 +116,13 @@ module.exports = function(params, inst_selection, inst_rc) {
     return trimmed_text;
   }
 
-  function calc_width(tmp_width, inst_zoom, inst_rc){
-    if (inst_rc==='row'){
-      if (inst_zoom < 1){
-        inst_width = tmp_width;
-      } else {
-        inst_width = tmp_width * inst_zoom;
-      }
+  function calc_width(tmp_width, inst_zoom){
+    if (inst_zoom < 1){
+      inst_width = tmp_width;
     } else {
-      if (inst_zoom < 1){
-        inst_width = tmp_width;
-      } else {
-        inst_width = tmp_width * inst_zoom ;
-      }
+      inst_width = tmp_width * inst_zoom;
     }
+
     return inst_width;
   }    
 
