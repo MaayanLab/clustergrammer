@@ -51,8 +51,6 @@ module.exports = function(params, inst_selection, inst_rc) {
             .select('text')
             .text( trim );
 
-          // console.log(d3.select(inst_selection).text())
-
           tmp_width = d3.select(inst_selection)
             .select('text')
             .node().getBBox().width;
@@ -82,7 +80,6 @@ module.exports = function(params, inst_selection, inst_rc) {
         }
       }
 
-
     }
   }
 
@@ -95,10 +92,7 @@ module.exports = function(params, inst_selection, inst_rc) {
   }
 
   function add_back(d){
-    // console.log('add_back')
-
     inst_text = d3.select(this).text();
-
     if (inst_text.slice(-2)==='..'){
       current_num_char = inst_text.length-2;
     } else {
