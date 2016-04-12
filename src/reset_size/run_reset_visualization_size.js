@@ -22,8 +22,18 @@ var label_constrain_and_trim = require('../labels/label_constrain_and_trim');
 var make_row_dendro_triangles = require('../dendrogram/make_row_dendro_triangles');
 var make_col_dendro_triangles = require('../dendrogram/make_col_dendro_triangles');
 var toggle_dendro_view = require('../dendrogram/toggle_dendro_view');
+var show_visible_area = require('../zoom/show_visible_area');
 
 module.exports = function(params, cont_dim) {
+
+  // reset visible area 
+  var zoom_info = {};
+  zoom_info.zoom_x = 1;
+  zoom_info.zoom_y = 1;
+  zoom_info.trans_x = 0;
+  zoom_info.trans_y = 0;
+
+  show_visible_area(params, zoom_info);
 
   d3.select(params.root+' .sidebar_wrapper')
     .style('height', cont_dim.height+'px');
