@@ -15,8 +15,18 @@ var resize_col_hlight = require('./resize_col_hlight');
 var resize_label_bars = require('./resize_label_bars');
 var calc_default_fs = require('../params/calc_default_fs');
 var calc_zoom_switching = require('../zoom/calc_zoom_switching');
+var show_visible_area = require('../zoom/show_visible_area');
 
 module.exports = function(params, row_nodes, col_nodes, links, duration, delays) {
+
+  // reset visible area 
+  var zoom_info = {};
+  zoom_info.zoom_x = 1;
+  zoom_info.zoom_y = 1;
+  zoom_info.trans_x = 0;
+  zoom_info.trans_y = 0;
+
+  show_visible_area(params, zoom_info);
 
   var row_nodes_names = params.network_data.row_nodes_names;
 
