@@ -1,3 +1,4 @@
+var num_visible_labels = require('./num_visible_labels');
 var constrain_font_size = require('./constrain_font_size');
 var trim_text = require('./trim_text');
 
@@ -37,13 +38,15 @@ module.exports = function zooming_has_stopped(params){
       //////////////////////////////////////////
       _.each(['row','col'], function(inst_rc){
         
-        var inst_fs = Number(d3.select('.'+inst_rc+'_label_group')
-          .select('text')
-          .style('font-size').replace('px',''));
+        // var inst_fs = Number(d3.select('.'+inst_rc+'_label_group')
+        //   .select('text')
+        //   .style('font-size').replace('px',''));
 
-        console.log(inst_fs)
-        var min_trim_fs = 8;
-        if (inst_fs > min_trim_fs){
+        var inst_num_visible = num_visible_labels(params, inst_rc);
+
+        console.log(inst_num_visible)
+        
+        if (inst_num_visible < 125){
           d3.selectAll(params.root+' .'+inst_rc+'_label_group' )
             .each(function() { 
               trim_text(params, this, inst_rc); 

@@ -82,16 +82,18 @@ module.exports = function run_transformation(params, zoom_info){
       d3.selectAll('.'+inst_rc+'_label_group')
         .select('text')
         .style('display','none');
-    } 
+    } else if (inst_num_visible > 30) {
+      
 
-    var calc_show_char = d3.scale.linear().domain([1,500]).range([3,2]);
-    var num_show_char = Math.floor(calc_show_char(inst_num_visible));
+      var calc_show_char = d3.scale.linear().domain([1,500]).range([3,2]);
+      var num_show_char = Math.floor(calc_show_char(inst_num_visible));
 
-    d3.selectAll('.'+inst_rc+'_label_group')
-      .select('text')
-      .text(function(d){
-        return d.name.substring(0,num_show_char)+'..';
-      });
+      d3.selectAll('.'+inst_rc+'_label_group')
+        .select('text')
+        .text(function(d){
+          return d.name.substring(0,num_show_char)+'..';
+        });
+    }
     
   });
 
