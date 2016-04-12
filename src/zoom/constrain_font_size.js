@@ -8,6 +8,8 @@ module.exports = function constrain_font_size(params) {
 
   var real_font_size = calc_real_font_size(params);
 
+  // rows
+  ////////////////////////////////////
   if (real_font_size.row > params.labels.max_allow_fs){
 
     if (params.viz.zoom_switch_y){
@@ -30,6 +32,8 @@ module.exports = function constrain_font_size(params) {
       .attr('y', params.viz.rect_height * 0.5 + params.labels.default_fs_row*0.35 );
   }
 
+  // columns 
+  //////////////////////////////////////
   if (real_font_size.col > params.labels.max_allow_fs){
 
     if (params.viz.zoom_switch > 1){

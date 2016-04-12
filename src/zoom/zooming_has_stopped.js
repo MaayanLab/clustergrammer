@@ -37,12 +37,17 @@ module.exports = function zooming_has_stopped(params){
   }
 
   function text_patch(){
-    d3.selectAll('.row_label_group')
-      .select('text')
-      .style('font-size',function(){
-        var fs = d3.select(this).style('font-size'); 
-        return fs;
-      });
+
+    _.each(['row','col'], function(inst_rc){
+
+      d3.selectAll('.'+inst_rc+'_label_group')
+        .select('text')
+        .style('font-size',function(){
+          var fs = d3.select(this).style('font-size'); 
+          return fs;
+        });
+
+    });
   }
 
 };
