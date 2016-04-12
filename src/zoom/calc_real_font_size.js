@@ -4,7 +4,7 @@
   // zoom_switch behavior has to change with zoom_switch_y
   if (params.viz.zoom_switch > 1){
     real_font_size.row = params.labels.default_fs_row * params.zoom_behavior.scale();
-    real_font_size.col = params.labels.default_fs_col * params.zoom_behavior.scale()/params.viz.zoom_switch;
+    real_font_size.col = params.labels.default_fs_col * params.zoom_behavior.scale(); ///params.viz.zoom_switch;
   } else {
     real_font_size.row = params.labels.default_fs_row * params.zoom_behavior.scale()/params.viz.zoom_switch_y;
     real_font_size.col = params.labels.default_fs_col * params.zoom_behavior.scale();

@@ -2,6 +2,7 @@ var constrain_font_size = require('./constrain_font_size');
 var zooming_has_stopped = require('./zooming_has_stopped');
 var show_visible_area = require('./show_visible_area');
 var resize_label_val_bars = require('./resize_label_val_bars');
+var num_visible_labels = require('./num_visible_labels');
 
 module.exports = function run_transformation(params, zoom_info){
   
@@ -57,43 +58,44 @@ module.exports = function run_transformation(params, zoom_info){
       return inst_zoom + 1;
     });
 
-    // params.is_zoom = params.is_zoom + 1;
+  // params.is_zoom = params.is_zoom + 1;
 
-    var not_zooming = function(){
-      
-      d3.select(params.root+' .viz_svg')
-        .attr('is_zoom',function(){
-          var inst_zoom = Number(d3.select(params.root+' .viz_svg').attr('is_zoom'));
-          return inst_zoom - 1;
-        });
-
-    };
-
-    setTimeout(not_zooming, 100);
-
-    setTimeout(zooming_has_stopped, 200, params);
-
-    // d3.selectAll(params.root+' .row_label_group')
-    //   .select('text')
-    //   .style('display','none');
-
-    // shorten text
-    // d3.selectAll('.row_label_group').style('opacity',0.5)
-
-    // if (d3.select(params.root+' .viz_svg').attr('is_zoom') == '1'){
-
-      _.each(['row','col'], function(){
-        d3.selectAll('.row_label_group')
-          .select('text')
-          .text(function(d){
-            return d.name.substring(0,3)+'..';
-          });
-        
+  var not_zooming = function(){
+    
+    d3.select(params.root+' .viz_svg')
+      .attr('is_zoom',function(){
+        var inst_zoom = Number(d3.select(params.root+' .viz_svg').attr('is_zoom'));
+        return inst_zoom - 1;
       });
 
-    // }
+  };
 
-    show_visible_area(params, zoom_info);
+  setTimeout(not_zooming, 100);
+
+  setTimeout(zooming_has_stopped, 1000, params);
+
+  _.each(['row','col'], function(inst_rc){
+
+    var inst_num_visible = num_visible_labels(params, inst_rc);
+
+    if (inst_num_visible > 500){
+      d3.selectAll('.'+inst_rc+'_label_group')
+        .select('text')
+        .style('display','none');
+    } 
+
+    var calc_show_char = d3.scale.linear().domain([1,500]).range([3,2]);
+    var num_show_char = Math.floor(calc_show_char(inst_num_visible));
+
+    d3.selectAll('.'+inst_rc+'_label_group')
+      .select('text')
+      .text(function(d){
+        return d.name.substring(0,num_show_char)+'..';
+      });
+    
+  });
+
+  show_visible_area(params, zoom_info);
 
 
 };

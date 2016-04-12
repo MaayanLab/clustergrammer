@@ -46,15 +46,22 @@ module.exports = function make_viz(params) {
 
   make_cols(params, delay_text);
 
-  d3.selectAll(params.root+' .row_label_group' )
-    .each(function() { 
-      trim_text(params, this, 'row'); 
-    });
+  _.each(['row','col'], function(inst_rc){
     
-  d3.selectAll(params.root+' .col_label_group')
-    .each(function() { 
-      trim_text(params, this, 'col'); 
-    });
+    var inst_fs = Number(d3.select('.'+inst_rc+'_label_group')
+      .select('text')
+      .style('font-size').replace('px',''));
+
+    var min_trim_fs = 8;
+    if (inst_fs > min_trim_fs){
+      d3.selectAll(params.root+' .'+inst_rc+'_label_group' )
+        .each(function() { 
+          trim_text(params, this, inst_rc); 
+        });
+    }
+
+  });
+  
 
   // make category colorbars
   make_row_cat(params);

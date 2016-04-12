@@ -18,6 +18,10 @@ module.exports = function constrain_font_size(params) {
       inst_zoom = params.zoom_behavior.scale();
     }
 
+    if (inst_zoom < 1){
+      inst_zoom = 1;
+    }
+
     tmp_font_size = params.labels.max_allow_fs/inst_zoom;
 
     d3.selectAll(params.root+' .row_label_group')
@@ -42,6 +46,9 @@ module.exports = function constrain_font_size(params) {
       inst_zoom = params.zoom_behavior.scale();
     }
 
+    if (inst_zoom < 1){
+      inst_zoom = 1;
+    }
     tmp_font_size = params.labels.max_allow_fs/inst_zoom;
 
     d3.selectAll(params.root+' .col_label_text')

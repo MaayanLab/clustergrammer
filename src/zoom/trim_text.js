@@ -20,19 +20,22 @@ module.exports = function(params, inst_selection, inst_rc) {
       } else {
         inst_zoom = params.zoom_behavior.scale();
       }
-      num_trims = params.labels.row_max_char;
+      // num_trims = params.labels.row_max_char;
     } else {
       if (params.viz.zoom_switch > 1){
         inst_zoom = params.zoom_behavior.scale()/params.viz.zoom_switch;
       } else {
         inst_zoom = params.zoom_behavior.scale();
       }
-      num_trims = params.labels.col_max_char;
+      // num_trims = params.labels.col_max_char;
     }
 
-    var num_trims = d3.select(inst_selection)
-                      .select('text')
-                      .text().length;
+    var num_trims;
+    d3.select(inst_selection)
+      .select('text')
+      .each(function(d){
+        num_trims = d.name.length;
+      });
 
     var tmp_width = d3.select(inst_selection)
       .select('text')
