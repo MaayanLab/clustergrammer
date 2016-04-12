@@ -2,13 +2,6 @@
 module.exports = function(params, inst_selection, inst_rc) {
   if (d3.select(inst_selection).style('display') != 'none'){
 
-    // not working 
-    // d3.selectAll('.row_label_group')
-    //   .select('text')
-    //   .text(function(d){
-    //     return d.name;
-    //   });
-
     // trim text that is longer than the container 
     var max_width;
     var inst_zoom;
@@ -18,18 +11,17 @@ module.exports = function(params, inst_selection, inst_rc) {
     var inst_text;
     var original_text;
     var keep_num_char;
-    var num_trims;
+
+    max_width = params.viz.norm_labels.width[inst_rc];
 
     if (inst_rc === 'row'){
-      max_width = params.viz.norm_labels.width.row ;
       if (params.viz.zoom_switch_y){
         inst_zoom = params.zoom_behavior.scale()/params.viz.zoom_switch_y;
-      } else {g
+      } else {
         inst_zoom = params.zoom_behavior.scale();
       }
       num_trims = params.labels.row_max_char;
     } else {
-      max_width = params.viz.norm_labels.width.col;
       if (params.viz.zoom_switch > 1){
         inst_zoom = params.zoom_behavior.scale()/params.viz.zoom_switch;
       } else {
@@ -37,6 +29,10 @@ module.exports = function(params, inst_selection, inst_rc) {
       }
       num_trims = params.labels.col_max_char;
     }
+
+    var num_trims = d3.select(inst_selection)
+                      .select('text')
+                      .text().length;
 
     var tmp_width = d3.select(inst_selection)
       .select('text')
@@ -76,8 +72,6 @@ module.exports = function(params, inst_selection, inst_rc) {
           d3.select(inst_selection)
             .select('text')
             .text( add_back );
-
-          // console.log(d3.select(inst_selection).text())
 
           tmp_width = d3.select(inst_selection)
             .select('text')
