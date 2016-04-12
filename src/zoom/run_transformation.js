@@ -71,7 +71,7 @@ module.exports = function run_transformation(params, zoom_info){
 
     setTimeout(not_zooming, 100);
 
-    setTimeout(zooming_has_stopped, 200, params, zoom_info);
+    setTimeout(zooming_has_stopped, 200, params);
 
     // d3.selectAll(params.root+' .row_label_group')
     //   .select('text')
@@ -93,7 +93,7 @@ module.exports = function run_transformation(params, zoom_info){
 
     // }
 
-    var vis_area = show_visible_area(params, zoom_info);
+    show_visible_area(params, zoom_info);
 
 
 };

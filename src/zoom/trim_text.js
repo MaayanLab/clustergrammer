@@ -10,6 +10,7 @@ module.exports = function(params, inst_selection, inst_rc) {
     var inst_text;
     var original_text;
     var keep_num_char;
+    var i;
 
     var max_width = params.viz.norm_labels.width[inst_rc];
 
@@ -43,7 +44,7 @@ module.exports = function(params, inst_selection, inst_rc) {
 
     if (inst_width > max_width){
 
-      for (var i=1; i < num_trims; i++){
+      for (i=1; i < num_trims; i++){
         if (inst_width > max_width){
 
           d3.select(inst_selection)
@@ -65,7 +66,7 @@ module.exports = function(params, inst_selection, inst_rc) {
 
     else if (inst_width < max_width * 0.75 ) {
 
-      for (var i=1; i < num_trims; i++){
+      for (i=1; i < num_trims; i++){
         if (inst_width < max_width * 0.75){
 
           d3.select(inst_selection)
@@ -94,7 +95,7 @@ module.exports = function(params, inst_selection, inst_rc) {
   }
 
   function add_back(d){
-    console.log('add_back')
+    // console.log('add_back')
 
     inst_text = d3.select(this).text();
 

@@ -1,7 +1,7 @@
 var constrain_font_size = require('./constrain_font_size');
 var trim_text = require('./trim_text');
 
-module.exports = function zooming_has_stopped(params, zoom_info){
+module.exports = function zooming_has_stopped(params){
   
   var inst_zoom = Number(d3.select(params.root+' .viz_svg').attr('is_zoom'));
 
@@ -17,10 +17,10 @@ module.exports = function zooming_has_stopped(params, zoom_info){
 
       d3.select(params.root+' .viz_svg').attr('stopped_zoom',0);
 
-      d3.selectAll('.row_label_group').select('text').style('display','block')
-      d3.selectAll('.col_label_group').select('text').style('display','block')
+      d3.selectAll('.row_label_group').select('text').style('display','block');
+      d3.selectAll('.col_label_group').select('text').style('display','block');
       
-      d3.selectAll('.tile').style('display','block')
+      d3.selectAll('.tile').style('display','block');
 
       // console.log('NOT zooming - only run once')
       // console.log('zooming has stopped and running text trim ')
@@ -40,13 +40,12 @@ module.exports = function zooming_has_stopped(params, zoom_info){
   }
 
   function text_patch(){
-    console.log('text patch')
     d3.selectAll('.row_label_group')
       .select('text')
       .style('font-size',function(){
         var fs = d3.select(this).style('font-size'); 
         return fs;
-      })
+      });
   }
 
 };
