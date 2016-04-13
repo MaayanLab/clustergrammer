@@ -1,5 +1,4 @@
 var num_visible_labels = require('./num_visible_labels');
-var constrain_font_size = require('./constrain_font_size');
 var trim_text = require('./trim_text');
 
 module.exports = function zooming_has_stopped(params){
@@ -9,7 +8,7 @@ module.exports = function zooming_has_stopped(params){
   _.each(['row','col'], function(inst_rc){
       d3.selectAll(params.root+' .'+inst_rc+'_label_group' )
         .select('text')
-        .style('opacity',1)
+        .style('opacity',1);
   });      
 
   if (inst_zoom === 0){
@@ -19,8 +18,6 @@ module.exports = function zooming_has_stopped(params){
 
       d3.selectAll('.row_label_group').select('text').style('display','none');
       d3.selectAll('.row_label_group').select('text').style('display','block');
-
-      // constrain_font_size(params);
 
       d3.select(params.root+' .viz_svg').attr('stopped_zoom',0);
 
@@ -48,7 +45,9 @@ module.exports = function zooming_has_stopped(params){
 
       });  
 
-      text_patch()
+      text_patch();
+
+      // setTimeout(text_patch, 1000);
 
     } 
 
@@ -56,15 +55,11 @@ module.exports = function zooming_has_stopped(params){
       // // there is buggy behavior in chrome when zooming into large matrices
       // // I'm running it twice in quick succession 
       setTimeout( text_patch, 25 );
-      // setTimeout( text_patch, 100 );
+      setTimeout( text_patch, 100 );
       // setTimeout( text_patch, 2000 );
   }
 
   function text_patch(){
-
-    var inst_zoom = Number(d3.select(params.root+' .viz_svg').attr('is_zoom'));
-    // console.log('zoom at time of patch')
-    // console.log(inst_zoom)
 
     _.each(['row','col'], function(inst_rc){
 
@@ -75,7 +70,6 @@ module.exports = function zooming_has_stopped(params){
         .select('text')
         .style('font-size',function(){
           var inst_fs = Number(d3.select(this).style('font-size').replace('px','')); 
-          // console.log( 'FONT-SIZE: '+ String(inst_fs) )
           return inst_fs;
         });
 

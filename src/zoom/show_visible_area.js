@@ -2,8 +2,6 @@ var toggle_element_display = require('./toggle_element_display');
 
 module.exports = function show_visible_area(params, zoom_info){
 
-  console.log('show_visible_area')
-
   var vis_area = {};
 
   // get translation vector absolute values 

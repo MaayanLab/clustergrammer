@@ -45,7 +45,7 @@ module.exports = function(params, inst_selection, inst_rc) {
 
     inst_width = calc_width(tmp_width, inst_zoom);
 
-    if (inst_width > max_width){
+    if (inst_width > max_width*0.9){
 
       for (i=1; i < num_trims; i++){
         if (inst_width > max_width){
