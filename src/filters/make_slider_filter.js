@@ -44,7 +44,7 @@ module.exports = function make_slider_filter(config, params, filter_type, div_fi
 
   var inst_max = available_views.length - 1;
 
-  $( '.slider_'+filter_type ).slider({
+  $( params.root+' .slider_'+filter_type ).slider({
     value:0,
     min: 0,
     max: inst_max,
