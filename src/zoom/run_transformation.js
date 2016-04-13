@@ -78,7 +78,7 @@ module.exports = function run_transformation(params, zoom_info){
 
     var inst_num_visible = num_visible_labels(params, inst_rc);
 
-    if (inst_num_visible > 500){
+    if (inst_num_visible > 300){
 
       d3.selectAll('.'+inst_rc+'_label_group')
         .select('text')
