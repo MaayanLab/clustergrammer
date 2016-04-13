@@ -22,7 +22,7 @@ module.exports = function constrain_font_size(params) {
       inst_zoom = 1;
     }
 
-    tmp_font_size = params.labels.max_allow_fs/inst_zoom;
+    tmp_font_size = (params.labels.max_allow_fs/inst_zoom );
 
     d3.selectAll(params.root+' .row_label_group')
       .select('text')
