@@ -22,7 +22,7 @@ module.exports = function ini_sidebar(params){
   });
 
   // row groups
-  $( ".slider_row" ).slider({
+  $( params.root+' .slider_row' ).slider({
     value:0.5,
     min: 0,
     max: 1,
