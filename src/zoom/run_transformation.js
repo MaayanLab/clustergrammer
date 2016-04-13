@@ -78,6 +78,8 @@ module.exports = function run_transformation(params, zoom_info){
 
     var inst_num_visible = num_visible_labels(params, inst_rc);
 
+    console.log(inst_num_visible)
+
     if (inst_num_visible > 500){
 
       d3.selectAll('.'+inst_rc+'_label_group')
@@ -91,6 +93,7 @@ module.exports = function run_transformation(params, zoom_info){
         .domain([1,500])
         .range([3,1])
         .clamp(true);
+
       var num_show_char = Math.floor(calc_show_char(inst_num_visible));
 
       d3.selectAll(params.root+' .'+inst_rc+'_label_group')
