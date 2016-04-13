@@ -26,8 +26,8 @@ def make_json():
   from clustergrammer import Network
   net = Network()
 
-  row_num = 1100
-  num_columns = 3
+  row_num = 10
+  num_columns = 500
 
   # make up all names for all data 
   row_names = make_up_names(row_num)

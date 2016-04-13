@@ -6,6 +6,12 @@ module.exports = function zooming_has_stopped(params){
   
   var inst_zoom = Number(d3.select(params.root+' .viz_svg').attr('is_zoom'));
 
+  _.each(['row','col'], function(inst_rc){
+      d3.selectAll(params.root+' .'+inst_rc+'_label_group' )
+        .select('text')
+        .style('opacity',1)
+  });      
+
   if (inst_zoom === 0){
 
     var check_stop = Number(d3.select(params.root+' .viz_svg').attr('stopped_zoom'));
@@ -40,7 +46,7 @@ module.exports = function zooming_has_stopped(params){
             });
         }
 
-      });      
+      });  
 
       text_patch()
 

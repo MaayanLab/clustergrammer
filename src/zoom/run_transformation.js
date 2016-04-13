@@ -5,7 +5,7 @@ var resize_label_val_bars = require('./resize_label_val_bars');
 var num_visible_labels = require('./num_visible_labels');
 
 module.exports = function run_transformation(params, zoom_info){
-  
+ 
   // apply transformation and reset translate vector
   // translate clustergram
   d3.select(params.root+' .clust_group')
@@ -79,20 +79,27 @@ module.exports = function run_transformation(params, zoom_info){
     var inst_num_visible = num_visible_labels(params, inst_rc);
 
     if (inst_num_visible > 500){
+
       d3.selectAll('.'+inst_rc+'_label_group')
         .select('text')
         .style('display','none');
-    } else if (inst_num_visible > 30) {
-      
 
-      var calc_show_char = d3.scale.linear().domain([1,500]).range([3,2]);
+    } else if (inst_num_visible > 30) {
+
+      var calc_show_char = d3
+        .scale.linear()
+        .domain([1,500])
+        .range([3,1])
+        .clamp(true);
       var num_show_char = Math.floor(calc_show_char(inst_num_visible));
 
-      d3.selectAll('.'+inst_rc+'_label_group')
+      d3.selectAll(params.root+' .'+inst_rc+'_label_group')
         .select('text')
+        .style('opacity',0.5)
         .text(function(d){
           return d.name.substring(0,num_show_char)+'..';
         });
+
     }
     
   });
