@@ -78,15 +78,13 @@ module.exports = function run_transformation(params, zoom_info){
 
     var inst_num_visible = num_visible_labels(params, inst_rc);
 
-    console.log(inst_num_visible)
-
     if (inst_num_visible > 500){
 
       d3.selectAll('.'+inst_rc+'_label_group')
         .select('text')
         .style('display','none');
 
-    } else if (inst_num_visible > 30) {
+    } else if (inst_num_visible > 10) {
 
       var calc_show_char = d3
         .scale.linear()

@@ -1,4 +1,5 @@
 var toggle_dendro_view = require('../dendrogram/toggle_dendro_view');
+var show_visible_area = require('../zoom/show_visible_area');
 
 module.exports = function(params, inst_order, tmp_row_col) {
 
@@ -167,6 +168,14 @@ module.exports = function(params, inst_order, tmp_row_col) {
     d.x = params.viz.x_scale(d.target);
     d.y = params.viz.y_scale(d.source);
   });
+
+  // reset visible area 
+  var zoom_info = {};
+  zoom_info.zoom_x = 1;
+  zoom_info.zoom_y = 1;
+  zoom_info.trans_x = 0;
+  zoom_info.trans_y = 0;
+  show_visible_area(params, zoom_info);
 
   setTimeout(function(){
     params.viz.run_trans = false;

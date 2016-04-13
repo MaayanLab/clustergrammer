@@ -21,7 +21,7 @@ module.exports = function toggle_element_display(vis_area, inst_selection, inst_
 
   } else {
 
-    var x_trans = Number(inst_trans.split('(')[1].split(')')[0]);
+    var x_trans = Number(inst_trans.split('(')[1].split(',')[0].split(')')[0]);
 
     d3.select(inst_selection)
       .style('display',function(){
