@@ -19,15 +19,19 @@ module.exports = function set_viz_wrapper_size(params) {
 
   var sidebar_margin = 5;
 
+  d3.select(params.root)
+    .style('clear','both');
+
   d3.select(params.root+' .sidebar_wrapper')
     .style('margin-left',sidebar_margin+'px')
     .style('float', 'left')
     .style('width', params.sidebar_width+'px')
-    .style('height', cont_dim.height+'px');
+    .style('height', cont_dim.height+'px')
+    .style('overflow','hidden');
 
 
   d3.select(params.viz.viz_wrapper)
-    .style('float', 'right')
+    .style('float', 'left')
     .style('width', cont_dim.width + 'px')
     .style('height', cont_dim.height + 'px');
 };

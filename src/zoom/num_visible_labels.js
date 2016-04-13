@@ -7,7 +7,7 @@ if (inst_rc === 'row'){
   group_name = 'text';
 }
 
-var num_visible = d3.selectAll('.'+inst_rc+'_label_'+group_name)
+var num_visible = d3.selectAll(params.root+' .'+inst_rc+'_label_'+group_name)
   .filter(function(){
     return d3.select(this).style('display')!='none';
   })[0].length;
