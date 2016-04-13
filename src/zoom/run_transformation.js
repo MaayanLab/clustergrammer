@@ -84,7 +84,7 @@ module.exports = function run_transformation(params, zoom_info){
         .select('text')
         .style('display','none');
 
-    } else if (inst_num_visible > 10) {
+    } else if (inst_num_visible > 40) {
 
       var calc_show_char = d3
         .scale.linear()
