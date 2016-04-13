@@ -1,5 +1,6 @@
 var num_visible_labels = require('./num_visible_labels');
 var trim_text = require('./trim_text');
+var constrain_font_size = require('./constrain_font_size');
 
 module.exports = function zooming_has_stopped(params){
   
@@ -48,6 +49,8 @@ module.exports = function zooming_has_stopped(params){
       text_patch();
 
       // setTimeout(text_patch, 1000);
+
+      constrain_font_size(params);
 
     } 
 

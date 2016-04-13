@@ -2,7 +2,6 @@ var calc_real_font_size = require('./calc_real_font_size');
 
 module.exports = function constrain_font_size(params) {
 
-  // console.log('constrain font size')
   var tmp_font_size = params.labels.default_fs_row ;
   var inst_zoom;
 
@@ -38,10 +37,12 @@ module.exports = function constrain_font_size(params) {
 
   // columns 
   //////////////////////////////////////
+
+
   if (real_font_size.col > params.labels.max_allow_fs){
 
     if (params.viz.zoom_switch > 1){
-      inst_zoom = params.zoom_behavior.scale()/params.viz.zoom_switch;
+      inst_zoom = params.zoom_behavior.scale()/params.viz.zoom_switch ;
     } else {
       inst_zoom = params.zoom_behavior.scale();
     }
@@ -49,7 +50,12 @@ module.exports = function constrain_font_size(params) {
     if (inst_zoom < 1){
       inst_zoom = 1;
     }
+
     tmp_font_size = params.labels.max_allow_fs/inst_zoom;
+
+    if (tmp_font_size > 0.7*params.viz.rect_width){
+      tmp_font_size = 0.7*params.viz.rect_width;
+    }
 
     d3.selectAll(params.root+' .col_label_text')
       .select('text')
