@@ -1,5 +1,7 @@
 var calc_col_dendro_triangles = require('./calc_col_dendro_triangles');
 var dendro_group_highlight = require('./dendro_group_highlight');
+var dendro_mouseover = require('./dendro_mouseover');
+var dendro_mouseout = require('./dendro_mouseout');
 
 module.exports = function make_col_dendro_triangles(params, is_change_group = false){
 
@@ -50,6 +52,7 @@ module.exports = function make_col_dendro_triangles(params, is_change_group = fa
       } else {
         inst_rc = 'col';
       }
+      dendro_mouseover(this);
       dendro_group_highlight(params, this, d, inst_rc);
     })
     .on('mouseout', function(){
@@ -59,6 +62,7 @@ module.exports = function make_col_dendro_triangles(params, is_change_group = fa
       }
       d3.selectAll(params.root+' .dendro_shadow')
         .remove();
+      dendro_mouseout(this);
     });
 
   var triangle_opacity;
