@@ -51,24 +51,40 @@ module.exports = function ini_sidebar(params){
     search_obj.find_entity(gene);
   });
 
-  _.each(['row','col'], function(inst_rc){
+  var reorder_types;
+  if (params.sim_mat){
+    reorder_types = ['both'];
+  } else {
+    reorder_types = ['row','col'];
+  }
 
-    $(params.root+' .toggle_'+inst_rc+'_order .btn').off().click(function(evt) {
+  console.log(reorder_types)
 
-      var order_id = $(evt.target)
-        .attr('name')
-        .replace('_row','')
-        .replace('_col','');
+  _.each( reorder_types, function(inst_rc){
 
-      d3.selectAll(params.root+' .toggle_'+inst_rc+'_order .btn')
-        .classed('active',false);
+    $(params.root+' .toggle_'+inst_rc+'_order .btn')
+      .off()
+      .click(function(evt) {
 
-      d3.select(this)
-        .classed('active',true);
+        var order_id = $(evt.target)
+          .attr('name')
+          .replace('_row','')
+          .replace('_col','');
 
-      all_reorder( params, order_id, inst_rc);
+        d3.selectAll(params.root+' .toggle_'+inst_rc+'_order .btn')
+          .classed('active',false);
 
-    });
+        d3.select(this)
+          .classed('active',true);
+
+        if (inst_rc != 'both'){
+          all_reorder( params, order_id, inst_rc);
+        } else{
+          all_reorder( params, order_id, 'row');
+          all_reorder( params, order_id, 'col');
+        }
+
+      });
 
   });
 

@@ -1,5 +1,5 @@
 
-// make_clust('mult_view.json');
+make_clust('mult_view.json');
 // make_clust('filter_row_sum.json');
 // make_clust('mult_cats.json');
 // make_clust('large_vect_post_example.json');
@@ -13,7 +13,7 @@
 // make_clust('bar_example.json');
 // make_clust('kin_sub_example.json');
 // make_clust('harmonogram_example.json');
-make_clust('sim_mat.json');
+// make_clust('sim_mat.json');
 
 
 function make_clust(inst_network){

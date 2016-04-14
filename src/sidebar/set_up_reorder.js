@@ -2,15 +2,21 @@ module.exports = function set_up_reorder(params, sidebar){
 
   var button_dict;
   var tmp_orders; 
-
-  var rc_dict = {'row':'Row', 'col':'Column'};
+  var rc_dict = {'row':'Row', 'col':'Column', 'both':''};
   var all_cats;
   var is_active;
   var inst_reorder;
   var inst_order_label;
   var inst_cat_num;
 
-  _.each(['row','col'], function(inst_rc){
+  var reorder_types;
+  if (params.sim_mat){
+    reorder_types = ['both'];
+  } else {
+    reorder_types = ['row','col'];
+  }
+
+  _.each( reorder_types, function(inst_rc){
 
     button_dict = {
       'clust':'Cluster',
@@ -27,16 +33,18 @@ module.exports = function set_up_reorder(params, sidebar){
       other_rc = 'row';
     }
 
+    if (inst_rc != 'both'){
 
-    if ( params.viz.all_cats[inst_rc].length > 0 ){
+      if ( params.viz.all_cats[inst_rc].length > 0 ){
+        all_cats = params.viz.all_cats[inst_rc];
 
-      all_cats = params.viz.all_cats[inst_rc];
+        _.each(all_cats, function(inst_cat){
+          inst_cat_num = String(parseInt(inst_cat.split('-')[1],10) + 1);
+          inst_order_label = inst_cat.replace('-','_')+'_index';
+          button_dict[inst_order_label] = 'Category '+inst_cat_num;
 
-      _.each(all_cats, function(inst_cat){
-        inst_cat_num = String(parseInt(inst_cat.split('-')[1],10) + 1);
-        inst_order_label = inst_cat.replace('-','_')+'_index';
-        button_dict[inst_order_label] = 'Category '+inst_cat_num;
-      });
+        });
+      }
     }
 
     tmp_orders = Object.keys(params.matrix.orders);
@@ -61,12 +69,18 @@ module.exports = function set_up_reorder(params, sidebar){
 
     possible_orders = possible_orders.sort();
 
+    var reorder_text;
+    if (inst_rc !='both'){
+      reorder_text = ' Order';
+    } else {
+      reorder_text = 'Reorder Matrix';
+    }
     sidebar
       .append('div')
       .classed('sidebar_text',true)
       .style('clear','both')
       .style('margin-left','5px')
-      .html(rc_dict[inst_rc]+' Order');
+      .html(rc_dict[inst_rc]+reorder_text);
 
     inst_reorder = sidebar
       .append('div')
