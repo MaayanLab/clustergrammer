@@ -1,6 +1,7 @@
 var utils = require('../utils');
 var add_row_click_hlight = require('./add_row_click_hlight');
 var row_reorder = require('../reorder/row_reorder');
+var col_reorder = require('../reorder/col_reorder');
 var make_row_tooltips = require('./make_row_tooltips');
 
 module.exports = function(params, text_delay) {
@@ -63,7 +64,22 @@ module.exports = function(params, text_delay) {
   d3.select(params.root+' .row_label_zoom_container')
     .selectAll('.row_label_group')
     .on('dblclick', function(d) {
-      row_reorder(params, this);
+
+      var row_name;
+      d3.select(this).each(function(d){row_name = d.name})[0];
+
+      if (params.sim_mat){
+        row_reorder(params, this, row_name);
+
+        var col_selection = d3.selectAll(params.root+' .col_label_text')
+          .filter(function(d){
+            return d.name == row_name;}
+            )[0][0];
+
+        col_reorder(params, col_selection, row_name);
+      } else {
+        row_reorder(params, this, row_name);
+      }
       if (params.tile_click_hlight){
         add_row_click_hlight(this,d.ini);
       }

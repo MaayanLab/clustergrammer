@@ -2,7 +2,7 @@ var reposition_tile_highlight = require('./reposition_tile_highlight');
 var toggle_dendro_view = require('../dendrogram/toggle_dendro_view');
 var show_visible_area = require('../zoom/show_visible_area');
 
-module.exports = function(params, row_selection) {
+module.exports = function row_reorder(params, row_selection, inst_row) {
 
   params.viz.inst_order.row = 'custom';
   toggle_dendro_view(params, 'col');
@@ -12,9 +12,8 @@ module.exports = function(params, row_selection) {
   d3.selectAll(params.root+' .toggle_col_order .btn')
     .classed('active',false);
 
-
-  // get inst row (gene)
-  var inst_row = d3.select(row_selection).select('text').text();
+  // // get inst row (gene)
+  // var inst_row = d3.select(row_selection).select('text').text();
 
   params.viz.run_trans = true;
 

@@ -2,7 +2,7 @@ var reposition_tile_highlight = require('./reposition_tile_highlight');
 var toggle_dendro_view = require('../dendrogram/toggle_dendro_view');
 var show_visible_area = require('../zoom/show_visible_area');
 
-module.exports = function(params, col_selection) {
+module.exports = function col_reorder(params, col_selection, inst_term) {
 
   params.viz.inst_order.col = 'custom';
   toggle_dendro_view(params, 'col');
@@ -20,8 +20,8 @@ module.exports = function(params, col_selection) {
 
   var row_nodes_names = _.pluck(row_nodes, 'name');
 
-  // get inst col (term)
-  var inst_term = d3.select(col_selection).select('text').attr('full_name');
+  // // get inst col (term)
+  // var inst_term = d3.select(col_selection).select('text').attr('full_name');
 
   // find the column number of col_selection term from col_nodes
   // gather column node names

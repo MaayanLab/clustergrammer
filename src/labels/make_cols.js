@@ -1,6 +1,7 @@
 var utils = require('../utils');
 var add_col_click_hlight = require('./add_col_click_hlight');
 var col_reorder = require('../reorder/col_reorder');
+var row_reorder = require('../reorder/row_reorder');
 var make_col_tooltips = require('./make_col_tooltips');
 
 module.exports = function(params, text_delay) {
@@ -181,7 +182,24 @@ module.exports = function(params, text_delay) {
 
     })
     .on('dblclick', function(d) {
-      col_reorder(params, this);
+      
+      var col_name;
+      d3.select(this).each(function(d){col_name = d.name})[0];
+
+      if (params.sim_mat){
+        col_reorder(params, this, col_name);
+        
+        var row_selection = d3.selectAll(params.root+' .row_label_group')
+          .filter(function(d){
+            return d.name == col_name;}
+            )[0][0];
+
+        row_reorder(params, row_selection, col_name)
+
+      } else {
+        col_reorder(params, this, col_name);
+      }
+
       if (params.tile_click_hlight){
         add_col_click_hlight(params, this, d.ini);
       }

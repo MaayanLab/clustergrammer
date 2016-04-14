@@ -18,7 +18,7 @@ net.load_file('txt/rc_two_cats.txt')
 
 views = ['N_row_sum','N_row_var']
 
-net.make_clust(dist_type='cos',views=[] , dendro=True,
+net.make_clust(dist_type='cos',views=views , dendro=True,
                sim_mat=True)
 
 net.produce_view({'N_row_sum':10,'dist':'euclidean'})
