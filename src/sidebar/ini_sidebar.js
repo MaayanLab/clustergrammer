@@ -4,11 +4,10 @@ var all_reorder = require('../reorder/all_reorder');
 
 module.exports = function ini_sidebar(params){
 
-  // initializes sidebar buttons and sliders, used by update_network 
+  // initializes sidebar buttons and sliders
+  // this function is also used by update_network
 
   var search_obj = search(params, params.network_data.row_nodes, 'name');
-
-
 
   $(params.root+' .gene_search_box').autocomplete({
     source: search_obj.get_entities
@@ -80,7 +79,5 @@ module.exports = function ini_sidebar(params){
       });
 
   });
-
-
 
 };

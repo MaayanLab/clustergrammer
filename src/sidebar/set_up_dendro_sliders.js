@@ -30,6 +30,6 @@ module.exports = function set_up_dendro_sliders(sidebar, params){
       .style('width', params.sidebar.slider.width+'px')
       .style('margin-left', params.sidebar.slider.margin_left+'px');
 
-  })
+  });
 
 };

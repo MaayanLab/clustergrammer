@@ -44,7 +44,13 @@ module.exports = function make_col_dendro_triangles(params, is_change_group = fa
     })
     .style('fill','black')
     .on('mouseover', function(d){
-      dendro_group_highlight(params, this, d, 'col');
+      var inst_rc;
+      if (params.sim_mat){
+        inst_rc = 'both';
+      } else {
+        inst_rc = 'col';
+      }
+      dendro_group_highlight(params, this, d, inst_rc);
     })
     .on('mouseout', function(){
       if (params.viz.inst_order.col === 'clust'){
