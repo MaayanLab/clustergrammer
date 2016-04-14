@@ -161,7 +161,6 @@ module.exports = function make_config(args) {
           if (inst_node[inst_cat].indexOf(super_string) > 0){
             tmp_super = inst_node[inst_cat].split(super_string)[0];
             tmp_cat = inst_node[inst_cat].split(super_string)[1];
-            inst_node[inst_cat] = tmp_cat;
             config.cat_names[inst_rc][inst_cat] = tmp_super;
           } else {
             config.cat_names[inst_rc][inst_cat] = inst_cat;
