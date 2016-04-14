@@ -6,7 +6,7 @@ module.exports = function(viz) {
   d3.select(viz.root+' .col_container')
     .append('path')
     .style('stroke-width', '0')
-    .attr('d', 'M 0,0 L 500,-500, L 500,0 Z')
+    .attr('d', 'M 0,0 L 1000,-1000, L 1000,0 Z')
     .attr('fill', viz.background_color) //!! prog_colors
     .attr('class', 'right_slant_triangle')
     .attr('transform', 'translate(' + viz.clust.dim.width + ',' +
@@ -42,7 +42,7 @@ module.exports = function(viz) {
   d3.select(viz.viz_svg)
     .append('rect')
     .attr('fill', viz.background_color) //!! prog_colors
-    .attr('width', '300px')
+    .attr('width', 10*viz.clust.dim.width)
     .attr('height', viz.svg_dim.height+'px')
     .attr('transform', function() {
       return 'translate(' + tmp_left + ',' + tmp_top + ')';

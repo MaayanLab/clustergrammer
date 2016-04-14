@@ -58,7 +58,11 @@ module.exports = function make_params(input_config) {
   params.viz = calc_clust_height(params.viz);
 
   if (params.sim_mat){
-    params.viz.clust.dim.height = params.viz.clust.dim.width;
+    if (params.viz.clust.dim.width <= params.viz.clust.dim.height){
+      params.viz.clust.dim.height = params.viz.clust.dim.width;
+    } else {
+      params.viz.clust.dim.width = params.viz.clust.dim.height;
+    }
   }
 
   params = calc_val_max(params);
