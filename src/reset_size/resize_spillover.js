@@ -110,12 +110,17 @@ module.exports = function resize_spillover(viz, ini_svg_group, delay_info=false)
   }
 
   // white border bottom - prevent clustergram from hitting border
+  if (viz.show_dendrogram){
+    y_offset = viz.clust.margin.top + viz.clust.dim.height + viz.dendro_room.col;
+  } else {
+    y_offset = viz.clust.margin.top + viz.clust.dim.height;
+  }
   svg_group.select(viz.root+' .bottom_spillover')
     .attr('width', viz.svg_dim.width)
     .attr('height', 2 * viz.svg_dim.height)
     .attr('transform', function() {
       // shift up enough to show the entire border width
-      var inst_offset = viz.svg_dim.height - 3 * viz.grey_border_width;
+      var inst_offset = y_offset;
       return 'translate(0,' + inst_offset + ')';
     });
 
