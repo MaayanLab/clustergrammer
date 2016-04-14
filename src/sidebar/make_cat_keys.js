@@ -1,8 +1,15 @@
 module.exports = function make_cat_keys(params){
   
   var long_name;
-  
-  _.each(['row','col'], function(inst_rc){
+
+  var reorder_types;
+  if (params.sim_mat){
+    reorder_types = ['both'];
+  } else {
+    reorder_types = ['row','col'];
+  }
+
+  _.each( reorder_types, function(inst_rc){  
 
     if (params.show_categories[inst_rc]){
 
