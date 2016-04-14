@@ -33,18 +33,23 @@ module.exports = function set_up_reorder(params, sidebar){
       other_rc = 'row';
     }
 
+    var cat_rc;
+
     if (inst_rc != 'both'){
+      cat_rc = inst_rc;
+    } else {
+      cat_rc = 'row';
+    }
 
-      if ( params.viz.all_cats[inst_rc].length > 0 ){
-        all_cats = params.viz.all_cats[inst_rc];
+    if ( params.viz.all_cats[cat_rc].length > 0 ){
+      all_cats = params.viz.all_cats[cat_rc];
 
-        _.each(all_cats, function(inst_cat){
-          inst_cat_num = String(parseInt(inst_cat.split('-')[1],10) + 1);
-          inst_order_label = inst_cat.replace('-','_')+'_index';
-          button_dict[inst_order_label] = 'Category '+inst_cat_num;
+      _.each(all_cats, function(inst_cat){
+        inst_cat_num = String(parseInt(inst_cat.split('-')[1],10) + 1);
+        inst_order_label = inst_cat.replace('-','_')+'_index';
+        button_dict[inst_order_label] = 'Category '+inst_cat_num;
 
-        });
-      }
+      });
     }
 
     tmp_orders = Object.keys(params.matrix.orders);
