@@ -1,6 +1,6 @@
 var ini_sidebar = require('./ini_sidebar');
 var set_up_filters = require('../filters/set_up_filters');
-var set_up_colorbar = require('./set_up_colorbar');
+var set_up_dendro_sliders = require('./set_up_dendro_sliders');
 var set_up_search = require('./set_up_search');
 var set_up_reorder = require('./set_up_reorder');
 var make_cat_keys = require('./make_cat_keys');
@@ -59,7 +59,7 @@ module.exports = function sidebar(config, params) {
   set_up_search(sidebar, params);
 
   if (params.viz.show_dendrogram){
-    set_up_colorbar(sidebar, params);
+    set_up_dendro_sliders(sidebar, params);
   }
 
   var possible_filter_names = _.keys(params.viz.possible_filters);

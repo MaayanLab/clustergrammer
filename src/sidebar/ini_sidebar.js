@@ -8,6 +8,8 @@ module.exports = function ini_sidebar(params){
 
   var search_obj = search(params, params.network_data.row_nodes, 'name');
 
+
+
   // col groups
   $( params.root+' .slider_col' ).slider({
     value:0.5,
@@ -34,6 +36,8 @@ module.exports = function ini_sidebar(params){
     }
   });
 
+
+
   $(params.root+' .gene_search_box').autocomplete({
     source: search_obj.get_entities
   });
@@ -57,8 +61,6 @@ module.exports = function ini_sidebar(params){
   } else {
     reorder_types = ['row','col'];
   }
-
-  console.log(reorder_types)
 
   _.each( reorder_types, function(inst_rc){
 
