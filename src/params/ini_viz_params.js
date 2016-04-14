@@ -19,9 +19,6 @@ module.exports = function ini_viz_params(config, params){
   viz.expand_button = config.expand_button;
   viz.all_cats = config.all_cats;
   viz.cat_colors = config.cat_colors;
-  if (config.force_square === 1) {
-    viz.force_square = 1;
-  }
   viz.viz_svg = viz.viz_wrapper + ' .viz_svg';
   viz.uni_duration = 1000;
   viz.bottom_space = 5;

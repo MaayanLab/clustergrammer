@@ -1,12 +1,12 @@
 // var crossfilter = require('crossfilter');
 var change_network_view = require('../network/change_network_view');
 var set_viz_wrapper_size = require('../set_viz_wrapper_size');
+var calc_clust_width = require('./calc_clust_width');
 var calc_clust_height = require('./calc_clust_height');
 var get_svg_dim = require('./get_svg_dim');
 var ini_label_params = require('./ini_label_params');
 var ini_viz_params = require('./ini_viz_params');
 var ini_matrix_params = require('./ini_matrix_params');
-var calc_clust_width = require('./calc_clust_width');
 var calc_default_fs = require('./calc_default_fs');
 var calc_matrix_params = require('./calc_matrix_params');
 var calc_label_params = require('./calc_label_params');
@@ -56,6 +56,10 @@ module.exports = function make_params(input_config) {
   params.viz = calc_label_params(params.viz);
   params.viz = calc_clust_width(params.viz);
   params.viz = calc_clust_height(params.viz);
+
+  if (params.sim_mat){
+    params.viz.clust.dim.height = params.viz.clust.dim.width;
+  }
 
   params = calc_val_max(params);
   params = calc_matrix_params(config, params);

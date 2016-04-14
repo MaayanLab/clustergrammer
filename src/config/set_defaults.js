@@ -29,7 +29,6 @@ module.exports = function set_defaults(){
     },
     ini_expand: false,
     grey_border_width: 2,
-    force_square: 0,
     tile_click_hlight: false,
     super_label_scale: 1,
     make_tile_tooltip: function(d) { return d.info; },

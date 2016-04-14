@@ -38,6 +38,10 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
   params.viz = calc_clust_height(params.viz);
   params.viz = calc_zoom_switching(params.viz);
 
+  if (params.sim_mat){
+    params.viz.clust.dim.height = params.viz.clust.dim.width;
+  }
+
   // redefine x_scale and y_scale rangeBands
   params.viz.x_scale.rangeBands([0, params.viz.clust.dim.width]);
   params.viz.y_scale.rangeBands([0, params.viz.clust.dim.height]);
