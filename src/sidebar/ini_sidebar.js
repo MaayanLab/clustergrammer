@@ -16,13 +16,13 @@ module.exports = function ini_sidebar(params){
   // submit genes button
   $(params.root+' .gene_search_box').keyup(function(e) {
     if (e.keyCode === 13) {
-      var search_gene = $('.gene_search_box').val();
+      var search_gene = $(params.root+' .gene_search_box').val();
       search_obj.find_entity(search_gene);
     }
   });
 
   $(params.root+' .submit_gene_button').off().click(function() {
-    var gene = $('.gene_search_box').val();
+    var gene = $(params.root+' .gene_search_box').val();
     search_obj.find_entity(gene);
   });
 

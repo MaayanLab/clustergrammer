@@ -17,6 +17,7 @@ module.exports = function(params, nodes, prop) {
   /* Find a gene (row) in the clustergram.
    */
   function find_entity(search_term) {
+    
     if (entities.indexOf(search_term) !== -1) {
 
       // unhighlight
