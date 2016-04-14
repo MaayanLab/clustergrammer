@@ -57,7 +57,7 @@ module.exports = function resize_spillover(viz, ini_svg_group, delay_info=false)
   // hide spillover left top of col dendrogram 
   x_offset = 0;
   y_offset = viz.clust.margin.top + viz.clust.dim.height;
-  tmp_width = viz.clust.margin.left + viz.clust.dim.width* 1.2;
+  tmp_width = viz.clust.margin.left ;
   tmp_height = viz.clust.dim.height*10;
 
   svg_group
@@ -112,7 +112,7 @@ module.exports = function resize_spillover(viz, ini_svg_group, delay_info=false)
   // white border bottom - prevent clustergram from hitting border
   svg_group.select(viz.root+' .bottom_spillover')
     .attr('width', viz.svg_dim.width)
-    .attr('height', 2 * viz.grey_border_width)
+    .attr('height', 2 * viz.svg_dim.height)
     .attr('transform', function() {
       // shift up enough to show the entire border width
       var inst_offset = viz.svg_dim.height - 3 * viz.grey_border_width;

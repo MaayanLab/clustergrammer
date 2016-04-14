@@ -32,7 +32,7 @@ module.exports = function make_col_dendro(params) {
       .classed('col_dendro_spillover_top',true)
       .attr('fill', params.viz.background_color)
       .attr('width', params.viz.svg_dim.width)
-      .attr('height', '30px')
+      .attr('height', params.viz.svg_dim.height)
       .attr('transform', 'translate(0,'+params.viz.dendro_room.col+')');
 
   } else {

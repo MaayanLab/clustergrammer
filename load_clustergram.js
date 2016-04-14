@@ -49,6 +49,7 @@ function make_clust(inst_network){
         // 'ini_expand':true,
         // 'col_label_scale':1.5,
         // 'row_label_scale':0.8
+        // 'force_square':1
         // 'opacity_scale':'log',
         // 'input_domain':2,
         // 'do_zoom':false,

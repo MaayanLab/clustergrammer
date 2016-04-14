@@ -113,7 +113,7 @@ module.exports = function resize_dendro(params, svg_group, delay_info=false){
   d3.select(params.root+' .col_dendro_outer_container')
     .select('.col_dendro_spillover_top')
     .attr('width', params.viz.svg_dim.width)
-    .attr('height', '30px')
+    .attr('height', params.viz.svg_dim.height)
     .attr('transform', 'translate(0,'+params.viz.dendro_room.col+')');
 
 }; 
