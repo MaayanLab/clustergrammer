@@ -10,34 +10,6 @@ module.exports = function ini_sidebar(params){
 
 
 
-  // col groups
-  $( params.root+' .slider_col' ).slider({
-    value:0.5,
-    min: 0,
-    max: 1,
-    step: 0.1,
-    slide: function( event, ui ) {
-      $( "#amount" ).val( "$" + ui.value );
-      var inst_index = ui.value*10;
-      change_groups(params, 'col',inst_index);
-    }
-  });
-
-  // row groups
-  $( params.root+' .slider_row' ).slider({
-    value:0.5,
-    min: 0,
-    max: 1,
-    step: 0.1,
-    slide: function( event, ui ) {
-      $( "#amount" ).val( "$" + ui.value );
-      var inst_index = ui.value*10;
-      change_groups(params, 'row',inst_index);
-    }
-  });
-
-
-
   $(params.root+' .gene_search_box').autocomplete({
     source: search_obj.get_entities
   });
@@ -64,6 +36,25 @@ module.exports = function ini_sidebar(params){
 
   _.each( reorder_types, function(inst_rc){
 
+    // dendrogram 
+    $( params.root+' .slider_'+inst_rc ).slider({
+      value:0.5,
+      min: 0,
+      max: 1,
+      step: 0.1,
+      slide: function( event, ui ) {
+        $( "#amount" ).val( "$" + ui.value );
+        var inst_index = ui.value*10;
+        if (inst_rc != 'both'){
+          change_groups(params, inst_rc, inst_index);
+        } else {
+          change_groups(params, 'row', inst_index);
+          change_groups(params, 'col', inst_index);
+        }
+      }
+    });
+
+    // reorder buttons
     $(params.root+' .toggle_'+inst_rc+'_order .btn')
       .off()
       .click(function(evt) {
