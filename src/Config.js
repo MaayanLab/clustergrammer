@@ -155,6 +155,13 @@ module.exports = function make_config(args) {
 
         _.each(names_of_cat, function(c_tmp, i){
           config.cat_colors[inst_rc][inst_cat][c_tmp] = colors.get_random_color(i+2+num_colors);
+
+          // hack to get 'Not' categories to not be dark colored
+          if (c_tmp.indexOf('Not ') == 0){
+            config.cat_colors[inst_rc][inst_cat][c_tmp] = '#eee';
+            console.log('found Not')
+          }
+
           num_colors = num_colors + 1;
         });
 
