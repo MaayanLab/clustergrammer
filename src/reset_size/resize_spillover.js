@@ -58,7 +58,7 @@ module.exports = function resize_spillover(viz, ini_svg_group, delay_info=false)
   x_offset = 0;
   y_offset = viz.clust.margin.top + viz.clust.dim.height;
   tmp_width = viz.clust.margin.left + viz.clust.dim.width* 1.2;
-  tmp_height = viz.clust.dim.height;
+  tmp_height = viz.clust.dim.height*10;
 
   svg_group
     .select('.dendro_col_spillover')

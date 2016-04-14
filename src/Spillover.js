@@ -71,7 +71,7 @@ module.exports = function(viz) {
   x_offset = 0;
   y_offset = viz.clust.margin.top + viz.clust.dim.height;
   tmp_width = viz.clust.margin.left + viz.clust.dim.width * 1.2;
-  tmp_height = viz.clust.dim.height;
+  tmp_height = viz.clust.dim.height*10;
   d3.select(viz.viz_svg)
     .append('rect')
     .attr('fill', viz.background_color)

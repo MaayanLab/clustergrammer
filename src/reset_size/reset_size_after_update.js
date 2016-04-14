@@ -36,7 +36,6 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
   params = get_svg_dim(params);
   params.viz = calc_clust_width(params.viz);
   params.viz = calc_clust_height(params.viz);
-  params.viz = calc_zoom_switching(params.viz);
 
   if (params.sim_mat){
     if (params.viz.clust.dim.width <= params.viz.clust.dim.height){
@@ -45,6 +44,7 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
       params.viz.clust.dim.width = params.viz.clust.dim.height;
     }
   }
+  params.viz = calc_zoom_switching(params.viz);
 
   // redefine x_scale and y_scale rangeBands
   params.viz.x_scale.rangeBands([0, params.viz.clust.dim.width]);
