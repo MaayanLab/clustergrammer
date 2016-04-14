@@ -127,6 +127,7 @@ module.exports = function make_config(args) {
   config.show_categories = {};
   config.all_cats = {};
   config.cat_colors = {};
+  config.cat_names = {};
 
   var num_colors = 0;
   _.each(['row','col'], function(inst_rc){
@@ -146,11 +147,11 @@ module.exports = function make_config(args) {
 
     var tmp_super;
     var tmp_cat;
-    config.cat_names = {};
 
     if (config.show_categories[inst_rc]){
 
       config.cat_colors[inst_rc] = {};
+      config.cat_names[inst_rc] = {};
 
       _.each( config.all_cats[inst_rc], function(inst_cat){
 
@@ -161,9 +162,9 @@ module.exports = function make_config(args) {
             tmp_super = inst_node[inst_cat].split(super_string)[0];
             tmp_cat = inst_node[inst_cat].split(super_string)[1];
             inst_node[inst_cat] = tmp_cat;
-            config.cat_names[inst_cat] = tmp_super;
+            config.cat_names[inst_rc][inst_cat] = tmp_super;
           } else {
-            config.cat_names[inst_cat] = inst_cat;
+            config.cat_names[inst_rc][inst_cat] = inst_cat;
           }
 
         });
@@ -173,7 +174,6 @@ module.exports = function make_config(args) {
         config.cat_colors[inst_rc][inst_cat] = {};
 
         _.each(names_of_cat, function(cat_tmp, i){
-          
           
           config.cat_colors[inst_rc][inst_cat][cat_tmp] = colors.get_random_color(i+2+num_colors);
 

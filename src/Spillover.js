@@ -1,3 +1,4 @@
+var get_cat_name = require('./categories/get_cat_name');
 /* Spillover Module
 */
 module.exports = function(viz) {
@@ -123,8 +124,7 @@ module.exports = function(viz) {
         return 'translate('+x_offset+','+inst_y+')';
       })
       .text(function(d){
-        var inst_num = parseInt( d.split('-')[1], 10) + 1;
-        return 'Category ' + inst_num;
+        return get_cat_name(viz, d, 'col');
       });
     }
 
@@ -154,8 +154,7 @@ module.exports = function(viz) {
         return 'translate(0,'+inst_y+')';
       })
       .text(function(d){
-        var inst_num = parseInt( d.split('-')[1], 10 ) + 1;
-        return 'Category ' + inst_num;
+        return get_cat_name(viz, d, 'row');
       });
   }
 
