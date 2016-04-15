@@ -1,3 +1,5 @@
+var get_cat_title = require('../categories/get_cat_title');
+
 module.exports = function set_up_reorder(params, sidebar){
 
   var button_dict;
@@ -46,10 +48,12 @@ module.exports = function set_up_reorder(params, sidebar){
 
       _.each(all_cats, function(inst_cat){
 
+        var cat_title = get_cat_title(params.viz, inst_cat, cat_rc);
+
         inst_cat_num = String(parseInt(inst_cat.split('-')[1],10) + 1);
         inst_order_label = inst_cat.replace('-','_')+'_index';
         
-        button_dict[inst_order_label] = 'Category '+inst_cat_num;
+        button_dict[inst_order_label] = cat_title;
 
       });
     }
