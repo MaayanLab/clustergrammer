@@ -27,14 +27,10 @@ module.exports = function make_simple_rows(params, ini_inp_row_data, tip, row_se
       return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
     })
     .on('mouseover', function(...args) {
-      if (params.matrix.show_tile_tooltips){
         mouseover_tile(params, this, tip, args);
-      }
     })
     .on('mouseout', function() {
-      if (params.matrix.show_tile_tooltips){
-        mouseout_tile(params, this, tip);
-      }
+      mouseout_tile(params, this, tip);
     })
     .style('fill-opacity', function(d) {
       // calculate output opacity using the opacity scale
@@ -80,14 +76,10 @@ module.exports = function make_simple_rows(params, ini_inp_row_data, tip, row_se
         return inst_opacity;
       })
       .on('mouseover', function(...args) {
-        if (params.matrix.show_tile_tooltips){
-          mouseover_tile(params, this, tip, args);
-        }
+        mouseover_tile(params, this, tip, args);
       })
       .on('mouseout', function() {
-        if (params.matrix.show_tile_tooltips){
-          mouseout_tile(params, this, tip);
-        }
+        mouseout_tile(params, this, tip);
       });
 
     // tile_dn
@@ -116,14 +108,10 @@ module.exports = function make_simple_rows(params, ini_inp_row_data, tip, row_se
         return inst_opacity;
       })
       .on('mouseover', function(...args) {
-        if (params.matrix.show_tile_tooltips){
-          mouseover_tile(params, this, tip, args);
-        }
+        mouseover_tile(params, this, tip, args);
       })
       .on('mouseout', function() {
-        if (params.matrix.show_tile_tooltips){
-          mouseout_tile(params, this, tip);
-        }
+        mouseout_tile(params, this, tip);
       });
 
       // remove rect when tile is split 

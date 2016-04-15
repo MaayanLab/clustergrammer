@@ -42,7 +42,7 @@ function make_clust(inst_network){
         // 'outline_colors':['black','yellow'],
         // 'tile_click_hlight':true,
         // 'show_label_tooltips':true,
-        // 'show_tile_tooltips':true,
+        'show_tile_tooltips':false,
         // 'make_tile_tooltip':make_tile_tooltip,
         // 'highlight_color':'yellow',
         // 'super_label_scale':1.25,
