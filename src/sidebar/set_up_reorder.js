@@ -9,7 +9,6 @@ module.exports = function set_up_reorder(params, sidebar){
   var is_active;
   var inst_reorder;
   var inst_order_label;
-  var inst_cat_num;
 
   var reorder_types;
   if (params.sim_mat){
@@ -50,7 +49,6 @@ module.exports = function set_up_reorder(params, sidebar){
 
         var cat_title = get_cat_title(params.viz, inst_cat, cat_rc);
 
-        inst_cat_num = String(parseInt(inst_cat.split('-')[1],10) + 1);
         inst_order_label = inst_cat.replace('-','_')+'_index';
         
         button_dict[inst_order_label] = cat_title;

@@ -146,8 +146,6 @@ module.exports = function make_config(args) {
 
 
     var tmp_super;
-    var tmp_cat;
-
     if (config.show_categories[inst_rc]){
 
       config.cat_colors[inst_rc] = {};
@@ -155,12 +153,12 @@ module.exports = function make_config(args) {
 
       _.each( config.all_cats[inst_rc], function(inst_cat){
 
-        var super_string = ': '
+        var super_string = ': ';
+
         _.each(args.network_data[inst_rc+'_nodes'], function(inst_node){
 
           if (inst_node[inst_cat].indexOf(super_string) > 0){
             tmp_super = inst_node[inst_cat].split(super_string)[0];
-            tmp_cat = inst_node[inst_cat].split(super_string)[1];
             config.cat_names[inst_rc][inst_cat] = tmp_super;
           } else {
             config.cat_names[inst_rc][inst_cat] = inst_cat;
@@ -189,7 +187,7 @@ module.exports = function make_config(args) {
     }
 
     if (config.sim_mat){
-      config.cat_colors['row'] = config.cat_colors['col'];
+      config.cat_colors.row = config.cat_colors.col;
     }
 
   });

@@ -182,9 +182,9 @@ module.exports = function(params, text_delay) {
 
     })
     .on('dblclick', function(d) {
-      
-      var col_name;
-      d3.select(this).each(function(d){col_name = d.name})[0];
+
+      var data_attr = '__data__';
+      var col_name = this[data_attr].name;
 
       if (params.sim_mat){
         col_reorder(params, this, col_name);
@@ -194,7 +194,7 @@ module.exports = function(params, text_delay) {
             return d.name == col_name;}
             )[0][0];
 
-        row_reorder(params, row_selection, col_name)
+        row_reorder(params, row_selection, col_name);
 
       } else {
         col_reorder(params, this, col_name);

@@ -65,8 +65,8 @@ module.exports = function(params, text_delay) {
     .selectAll('.row_label_group')
     .on('dblclick', function(d) {
 
-      var row_name;
-      d3.select(this).each(function(d){row_name = d.name})[0];
+      var data_attr = '__data__';
+      var row_name = this[data_attr].name;
 
       if (params.sim_mat){
         row_reorder(params, this, row_name);
