@@ -5,8 +5,8 @@ module.exports = function set_defaults(){
     row_label_scale: 1,
     col_label_scale: 1,
     super_labels: false,
-    show_label_tooltips: false,
-    show_tile_tooltips: false,
+    show_label_tooltips: true,
+    show_tile_tooltips: true,
     // matrix options
     transpose: false,
     tile_colors: ['#FF0000', '#1C86EE'],
