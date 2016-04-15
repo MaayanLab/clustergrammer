@@ -29,7 +29,7 @@ module.exports = function make_col_cat(params) {
     .offset([5,0])
     .style('display','block')
     .html(function(d){
-      return cat_tooltip_text(params, d, this);
+      return cat_tooltip_text(params, d, this, 'col');
     });
 
   // append groups - each will hold classification rects 

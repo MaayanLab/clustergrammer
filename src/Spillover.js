@@ -1,4 +1,4 @@
-var get_cat_name = require('./categories/get_cat_name');
+var get_cat_title = require('./categories/get_cat_title');
 /* Spillover Module
 */
 module.exports = function(viz) {
@@ -124,7 +124,7 @@ module.exports = function(viz) {
         return 'translate('+x_offset+','+inst_y+')';
       })
       .text(function(d){
-        return get_cat_name(viz, d, 'col');
+        return get_cat_title(viz, d, 'col');
       });
     }
 
@@ -154,7 +154,7 @@ module.exports = function(viz) {
         return 'translate(0,'+inst_y+')';
       })
       .text(function(d){
-        return get_cat_name(viz, d, 'row');
+        return get_cat_title(viz, d, 'row');
       });
   }
 

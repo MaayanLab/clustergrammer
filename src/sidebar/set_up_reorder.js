@@ -45,8 +45,10 @@ module.exports = function set_up_reorder(params, sidebar){
       all_cats = params.viz.all_cats[cat_rc];
 
       _.each(all_cats, function(inst_cat){
+
         inst_cat_num = String(parseInt(inst_cat.split('-')[1],10) + 1);
         inst_order_label = inst_cat.replace('-','_')+'_index';
+        
         button_dict[inst_order_label] = 'Category '+inst_cat_num;
 
       });

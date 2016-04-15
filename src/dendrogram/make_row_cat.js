@@ -45,7 +45,7 @@ module.exports = function make_row_cat(params) {
     .offset([5,0])
     .style('display','block')
     .html(function(d){
-      return cat_tooltip_text(params, d, this);
+      return cat_tooltip_text(params, d, this, 'row');
     });
 
   // groups that hold classification triangle and colorbar rect
