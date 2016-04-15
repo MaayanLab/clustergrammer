@@ -166,13 +166,16 @@ module.exports = function make_config(args) {
 
         });
 
-        var names_of_cat = _.uniq(_.pluck(args.network_data[inst_rc+'_nodes'], inst_cat));
+        var names_of_cat = _.uniq(_.pluck(args.network_data[inst_rc+'_nodes'], inst_cat)).sort();
 
         config.cat_colors[inst_rc][inst_cat] = {};
 
         _.each(names_of_cat, function(cat_tmp, i){
           
-          config.cat_colors[inst_rc][inst_cat][cat_tmp] = colors.get_random_color(i+2+num_colors);
+          var inst_color = colors.get_random_color(i+2+num_colors);
+
+          config.cat_colors[inst_rc][inst_cat][cat_tmp] = inst_color;
+          // config.cat_colors[inst_rc][inst_cat][cat_tmp] = colors.get_random_color(i+num_colors);
 
           // hack to get 'Not' categories to not be dark colored
           if (cat_tmp.indexOf('Not ') >= 0){
