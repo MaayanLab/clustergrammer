@@ -7,7 +7,7 @@ module.exports = function make_col_tooltips(params){
       .attr('class', 'd3-tip')
       .direction('s')
       .offset([20, 0])
-      .style('display','block')
+      // .style('display','block')
       .html(function(d) { 
         var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
         return "<span>" + inst_name + "</span>";

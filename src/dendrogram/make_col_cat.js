@@ -27,7 +27,7 @@ module.exports = function make_col_cat(params) {
     .attr('class', 'd3-tip')
     .direction('s')
     .offset([5,0])
-    .style('display','block')
+    // .style('display','block')
     .html(function(d){
       return cat_tooltip_text(params, d, this, 'col');
     });

@@ -19,11 +19,16 @@ module.exports = function make_tooltips(params){
     d3.select(params.root+' .row_label_zoom_container')
       .selectAll('g')
       .on('mouseover', function(d) {
-        d3.selectAll('.d3-tip').style('opacity',0);
+
+        d3.selectAll('.d3-tip')
+          .style('opacity',0);
+
         d3.select(this)
           .select('text')
           .classed('active',true);
+
         row_tip.show(d);
+        
       })
       .on('mouseout', function mouseout(d) {
         d3.select(this)

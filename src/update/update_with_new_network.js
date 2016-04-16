@@ -48,8 +48,8 @@ module.exports = function update_with_new_network(config, old_params,  new_netwo
 
   params.viz.run_trans = true;
 
-  d3.selectAll(params.root+' .d3-tip')
-    .style('opacity',0);
+  // d3.selectAll(params.root+' .d3-tip')
+  //   .style('opacity',0);
 
   setTimeout(enable_sidebar, 2500, params);
 
