@@ -7,9 +7,15 @@ module.exports = function zooming_has_stopped(params){
   var inst_zoom = Number(d3.select(params.root+' .viz_svg').attr('is_zoom'));
 
   _.each(['row','col'], function(inst_rc){
-      d3.selectAll(params.root+' .'+inst_rc+'_label_group' )
-        .select('text')
-        .style('opacity',1);
+
+    d3.selectAll(params.root+' .'+inst_rc+'_label_group' )
+      .select('text')
+      .style('opacity',1);
+
+    d3.selectAll(params.root+' .'+inst_rc+'_cat_group')
+      .select('path')
+      .style('display','block');      
+      
   });      
 
   if (inst_zoom === 0){
@@ -27,11 +33,6 @@ module.exports = function zooming_has_stopped(params){
       
       d3.selectAll('.tile').style('display','block');
 
-      // d3.selectAll(params.root+' .row_label_group' )
-      //   .each(function() { trim_text(params, this, 'row'); });
-      // d3.selectAll(params.root+' .col_label_group')
-      //   .each(function() { trim_text(params, this, 'col'); });
-
 
       _.each(['row','col'], function(inst_rc){
         
@@ -48,15 +49,13 @@ module.exports = function zooming_has_stopped(params){
 
       text_patch();
 
-      // setTimeout(text_patch, 1000);
-
       constrain_font_size(params);
 
     } 
 
-      // // this makes sure that the text is visible after zooming and trimming
-      // // there is buggy behavior in chrome when zooming into large matrices
-      // // I'm running it twice in quick succession 
+      // this makes sure that the text is visible after zooming and trimming
+      // there is buggy behavior in chrome when zooming into large matrices
+      // I'm running it twice in quick succession 
       setTimeout( text_patch, 25 );
       setTimeout( text_patch, 100 );
       // setTimeout( text_patch, 2000 );

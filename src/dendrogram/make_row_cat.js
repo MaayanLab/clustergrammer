@@ -43,7 +43,7 @@ module.exports = function make_row_cat(params) {
     .attr('class','d3-tip')
     .direction('e')
     .offset([5,0])
-    // .style('display','block')
+    .style('display','block')
     .html(function(d){
       return cat_tooltip_text(params, d, this, 'row');
     });

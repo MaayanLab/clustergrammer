@@ -80,8 +80,12 @@ module.exports = function run_transformation(params, zoom_info){
 
     if (inst_num_visible > 300){
 
-      d3.selectAll('.'+inst_rc+'_label_group')
+      d3.selectAll(params.root+'.'+inst_rc+'_label_group')
         .select('text')
+        .style('display','none');
+
+      d3.selectAll(params.root+' .'+inst_rc+'_cat_group')
+        .select('path')
         .style('display','none');
 
     } else if (inst_num_visible > 40) {
