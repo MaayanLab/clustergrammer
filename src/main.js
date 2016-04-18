@@ -16,7 +16,13 @@ function Clustergrammer(args) {
   // handle user events
 
   // consume and validate user arguments, produce configuration object
-  var config = make_config(args);
+  var config = make_config(args, args.network_data);
+
+  // // make_config(config, args.network_data);
+  // make_config(config, config.backup_net);
+  // make_config(config, config.backup_net);
+
+
   // make visualization parameters using configuration object
   var params = make_params(config);
 

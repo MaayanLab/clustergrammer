@@ -40,7 +40,8 @@ module.exports = function set_defaults(){
     sidebar_width:170,
     sidebar_icons:true,
     row_search_placeholder:'Row',
-    buffer_width:15
+    buffer_width:15,
+    show_sim_mat:false
   };
 
   return defaults;

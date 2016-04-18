@@ -26,6 +26,8 @@ module.exports = function make_params(input_config) {
   var config = $.extend(true, {}, input_config);
   var params = config;
 
+  
+
   // when pre-loading the visualization using a view
   if (params.ini_view !== null) {
 

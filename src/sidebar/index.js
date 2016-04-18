@@ -54,6 +54,14 @@ module.exports = function sidebar(config, params) {
     make_icons(params, sidebar);
   }
 
+  // // tmp sim mat button 
+  // sidebar
+  //   .append('text')
+  //   .text('here')
+  //   .on('click',function(){
+  //     console.log('change to sim_mat')
+  //   })
+
   set_up_reorder(params, sidebar);
 
   set_up_search(sidebar, params);

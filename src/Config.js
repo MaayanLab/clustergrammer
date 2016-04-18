@@ -6,7 +6,7 @@ var get_filter_default_state = require('./filters/get_filter_default_state');
 var set_defaults = require('./config/set_defaults');
 var check_sim_mat = require('./config/check_sim_mat');
 
-module.exports = function make_config(args) {
+module.exports = function make_config(args, backup_net=null) {
 
   var defaults = set_defaults();
 
@@ -18,18 +18,13 @@ module.exports = function make_config(args) {
   } else {
     config.expand_button = true;
   }
-
-  // save network_data to config
-  // extend does not properly pass network_data
+ 
   config.network_data = args.network_data;
+  config.backup_net = backup_net;
 
-  // replace undersores with space in row/col names
-  config.network_data.row_nodes.forEach(function(d){
-    d.name = d.name.replace(/_/g, ' ');
-  });
-  config.network_data.col_nodes.forEach(function(d){
-    d.name = d.name.replace(/_/g, ' ');
-  });
+  if (config.show_sim_mat === 'col'){
+    config.network_data = backup_net.sim.col;
+  }
 
   config.network_data.row_nodes_names = _.pluck(config.network_data.row_nodes, 'name');
   config.network_data.col_nodes_names = _.pluck(config.network_data.col_nodes, 'name');
@@ -55,18 +50,6 @@ module.exports = function make_config(args) {
         }
       });
 
-      var inst_nodes = inst_view.nodes;
-
-      // fix rows in views
-      inst_nodes.row_nodes.forEach(function(d){
-        d.name = d.name.replace(/_/g, ' ');
-      });
-
-      // fix cols in views
-      inst_nodes.col_nodes.forEach(function(d){
-        d.name = d.name.replace(/_/g, ' ');
-      });
-
     });
   }
 
@@ -83,7 +66,7 @@ module.exports = function make_config(args) {
 
   // transpose network if necessary
   if (config.transpose) {
-    config.network_data = transpose_network(args.network_data);
+    config.network_data = transpose_network(config.network_data);
     var tmp_col_label = args.col_label;
     var tmp_row_label = args.row_label;
     args.row_label = tmp_col_label;
@@ -120,8 +103,9 @@ module.exports = function make_config(args) {
     config.inst_order.row = args.col_order;
   }
 
-  var row_has_group = utils.has(args.network_data.row_nodes[0], 'group');
-  var col_has_group = utils.has(args.network_data.col_nodes[0], 'group');
+  var row_has_group = utils.has(config.network_data.row_nodes[0], 'group');
+  var col_has_group = utils.has(config.network_data.col_nodes[0], 'group');
+
   config.show_dendrogram = row_has_group || col_has_group;
 
   config.show_categories = {};
@@ -135,7 +119,7 @@ module.exports = function make_config(args) {
     config.show_categories[inst_rc] = false;
 
     config.all_cats[inst_rc] = [];
-    var tmp_keys = _.keys(args.network_data[inst_rc+'_nodes'][0]);
+    var tmp_keys = _.keys(config.network_data[inst_rc+'_nodes'][0]);
 
     _.each( tmp_keys, function(d){
       if (d.indexOf('cat-') >= 0){
@@ -155,7 +139,7 @@ module.exports = function make_config(args) {
 
         var super_string = ': ';
 
-        _.each(args.network_data[inst_rc+'_nodes'], function(inst_node){
+        _.each(config.network_data[inst_rc+'_nodes'], function(inst_node){
 
           if (inst_node[inst_cat].indexOf(super_string) > 0){
             tmp_super = inst_node[inst_cat].split(super_string)[0];
@@ -166,7 +150,7 @@ module.exports = function make_config(args) {
 
         });
 
-        var names_of_cat = _.uniq(_.pluck(args.network_data[inst_rc+'_nodes'], inst_cat)).sort();
+        var names_of_cat = _.uniq(_.pluck(config.network_data[inst_rc+'_nodes'], inst_cat)).sort();
 
         config.cat_colors[inst_rc][inst_cat] = {};
 

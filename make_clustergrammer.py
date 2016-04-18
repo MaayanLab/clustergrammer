@@ -8,12 +8,12 @@ start_time = time.time()
 from clustergrammer import Network
 net = Network()
 
-net.load_file('txt/rc_two_cats.txt')
+# net.load_file('txt/rc_two_cats.txt')
 # net.load_file('txt/example_tsv.txt')
 # net.load_file('txt/col_categories.txt')
 # net.load_file('txt/mat_cats.tsv')
 # net.load_file('txt/mat_1mb.Txt')
-# net.load_file('txt/mnist.txt')
+net.load_file('txt/mnist.txt')
 # net.load_file('txt/sim_mat_4_cats.txt')
 
 views = ['N_row_sum','N_row_var']
@@ -26,7 +26,7 @@ views = ['N_row_sum','N_row_var']
 # net.filter_N_top('row', 10, 'sum')
 
 net.make_clust(dist_type='cos',views=views , dendro=True,
-               sim_mat=False)
+               sim_mat=True)
 
 
 # net.produce_view({'N_row_sum':10,'dist':'euclidean'})
