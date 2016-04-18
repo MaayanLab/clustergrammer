@@ -18,10 +18,10 @@ net.load_file('txt/rc_two_cats.txt')
 
 views = ['N_row_sum','N_row_var']
 
-threshold = 0
-net.filter_sum('row', threshold)
-threshold = 0
-net.filter_sum('col', threshold)
+# threshold = 0
+# net.filter_sum('row', threshold)
+# threshold = 0
+# net.filter_sum('col', threshold)
 
 net.make_clust(dist_type='cos',views=views , dendro=True,
                sim_mat=True)

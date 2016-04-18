@@ -67,3 +67,20 @@ def grab_df_subset(df, keep_rows='all', keep_cols='all'):
   if keep_rows != 'all':
     df = df.ix[keep_rows]
   return df  
+
+def get_sorted_rows(df, rank_type='sum'):
+  from copy import deepcopy
+
+  inst_df = deepcopy(df)
+  inst_df = inst_df.transpose()
+
+  if rank_type == 'sum':
+    tmp_sum = inst_df.sum(axis=0)
+  elif rank_type == 'var':
+    tmp_sum = inst_df.var(axis=0)
+
+  tmp_sum = tmp_sum.abs()
+  tmp_sum.sort_values(inplace=True, ascending=False)
+  rows_sorted = tmp_sum.index.values.tolist()  
+
+  return rows_sorted
