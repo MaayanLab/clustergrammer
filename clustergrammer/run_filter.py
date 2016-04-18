@@ -84,3 +84,17 @@ def get_sorted_rows(df, rank_type='sum'):
   rows_sorted = tmp_sum.index.values.tolist()  
 
   return rows_sorted
+
+def filter_N_top(df, N_top, rank_type='sum'):
+
+  rows_sorted = get_sorted_rows(df['mat'], rank_type)
+
+  keep_rows = rows_sorted[:N_top]
+
+  df['mat'] = df['mat'].ix[keep_rows]
+  if 'mat_up' in df:
+    df['mat_up'] = df['mat_up'].ix[keep_rows]
+    df['mat_dn'] = df['mat_dn'].ix[keep_rows]  
+
+  return df
+

@@ -18,8 +18,8 @@ def N_rows(net, df, all_views, dist_type='cosine', rank_type='sum'):
       if inst_keep != 'all':
 
         keep_rows = rows_sorted[0:inst_keep]
-        tmp_df['mat'] = tmp_df['mat'].ix[keep_rows]
 
+        tmp_df['mat'] = tmp_df['mat'].ix[keep_rows]
         if 'mat_up' in tmp_df:
           tmp_df['mat_up'] = tmp_df['mat_up'].ix[keep_rows]
           tmp_df['mat_dn'] = tmp_df['mat_dn'].ix[keep_rows]
