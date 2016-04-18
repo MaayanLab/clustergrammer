@@ -74,6 +74,15 @@ class Network(object):
     import export_data
     export_data.write_json_to_file(self, net_type, filename, indent)
 
+  def filter_sum(self, inst_rc, threshold, take_abs=True):
+    import run_filter
+    inst_df = self.dat_to_df()
+    if inst_rc == 'row':
+      inst_df = run_filter.df_filter_row_sum(inst_df, threshold, take_abs)
+    elif inst_rc == 'col':
+      inst_df = run_filter.df_filter_col_sum(inst_df, threshold, take_abs)
+    self.df_to_dat(inst_df)
+
   @staticmethod
   def load_gmt(filename):
     import load_data

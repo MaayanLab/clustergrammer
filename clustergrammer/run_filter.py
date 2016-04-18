@@ -1,4 +1,4 @@
-def df_filter_row(df, threshold, take_abs=True):
+def df_filter_row_sum(df, threshold, take_abs=True):
   ''' filter rows in matrix at some threshold
   and remove columns that have a sum below this threshold '''
 
@@ -29,7 +29,7 @@ def df_filter_row(df, threshold, take_abs=True):
 
   return df
 
-def df_filter_col(df, threshold, take_abs=True):
+def df_filter_col_sum(df, threshold, take_abs=True):
   ''' filter columns in matrix at some threshold
   and remove rows that have all zero values '''
 

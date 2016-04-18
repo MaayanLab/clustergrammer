@@ -15,8 +15,8 @@ def make_clust(net, dist_type='cosine', run_clustering=True,
   df = net.dat_to_df()
 
   threshold = 0.0001
-  df = run_filter.df_filter_row(df, threshold)
-  df = run_filter.df_filter_col(df, threshold)
+  df = run_filter.df_filter_row_sum(df, threshold)
+  df = run_filter.df_filter_col_sum(df, threshold)
 
   # calculate initial view with no row filtering
   net.df_to_dat(df)

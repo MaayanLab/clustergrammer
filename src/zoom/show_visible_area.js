@@ -13,7 +13,6 @@ module.exports = function show_visible_area(params, zoom_info){
   vis_area.max_y = Math.abs(zoom_info.trans_y)/zoom_info.zoom_y + 
                       params.viz.clust.dim.height/zoom_info.zoom_y ;
 
- 
   // toggle labels and rows 
   ///////////////////////////////////////////////
   d3.selectAll(params.root+' .row_label_group')

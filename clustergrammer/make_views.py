@@ -34,7 +34,7 @@ def N_rows(net, df, all_views, dist_type='cosine', rank_type='sum'):
           tmp_df['mat_up'] = tmp_df['mat_up'].ix[keep_rows]
           tmp_df['mat_dn'] = tmp_df['mat_dn'].ix[keep_rows]
 
-        tmp_df = run_filter.df_filter_col(tmp_df, 0.001)
+        tmp_df = run_filter.df_filter_col_sum(tmp_df, 0.001)
         tmp_net.df_to_dat(tmp_df)
 
       else:
@@ -87,7 +87,7 @@ def pct_rows(net, df, all_views, dist_type, rank_type):
     cutoff = inst_filt * max_sum
     copy_net = deepcopy(net)
     inst_df = deepcopy(df)
-    inst_df = run_filter.df_filter_row(inst_df, cutoff, take_abs=False)
+    inst_df = run_filter.df_filter_row_sum(inst_df, cutoff, take_abs=False)
 
     tmp_net = deepcopy(Network())
     tmp_net.df_to_dat(inst_df)
