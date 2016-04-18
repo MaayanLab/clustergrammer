@@ -26,7 +26,7 @@ views = ['N_row_sum','N_row_var']
 # net.filter_N_top('row', 10, 'sum')
 
 net.make_clust(dist_type='cos',views=views , dendro=True,
-               sim_mat=True)
+               sim_mat=False)
 
 
 # net.produce_view({'N_row_sum':10,'dist':'euclidean'})

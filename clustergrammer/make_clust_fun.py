@@ -7,9 +7,7 @@ def make_clust(net, dist_type='cosine', run_clustering=True,
   N rows based on some quantity (sum, num-non-zero, etc). '''
 
   from copy import deepcopy
-  import calc_clust
-  import run_filter
-  import make_views
+  import calc_clust, run_filter, make_views, make_sim_mat
   import scipy
 
   df = net.dat_to_df()
@@ -43,15 +41,11 @@ def make_clust(net, dist_type='cosine', run_clustering=True,
 
   # ##################################################
 
-
-  tmp_sim = calc_clust.cluster_row_and_col(net, dist_type=dist_type, 
+  inst_sim_mat = calc_clust.cluster_row_and_col(net, dist_type=dist_type, 
                                 linkage_type=linkage_type, 
                                 run_clustering=run_clustering, 
                                 dendro=dendro, ignore_cat=False, get_sim=True,
                                 filter_sim_below=0.1)
-
-  print(tmp_sim['row'].shape)
-  print(tmp_sim['col'].shape)
 
   all_views = []
   send_df = deepcopy(df)
@@ -74,5 +68,10 @@ def make_clust(net, dist_type='cosine', run_clustering=True,
 
   if sim_mat is True:
     print('make similarity matrices of rows and columns, add to viz data structure')
+    sim_net = make_sim_mat.main(net, inst_sim_mat)
+
+    net.viz['sim'] = {}
+    net.viz['sim']['row'] = sim_net['row'].viz
+    net.viz['sim']['col'] = sim_net['col'].viz
 
   net.viz['views'] = all_views

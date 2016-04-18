@@ -73,20 +73,13 @@ def dm_to_sim(inst_dm, make_squareform=False, filter_sim_below=False):
   import numpy as np
   from scipy.spatial.distance import squareform
 
-  print('make_squareform ' + str(make_squareform))
-
   if make_squareform is True:
-    print('making squareform!!!')
     inst_dm = squareform(inst_dm)
-    print(inst_dm.shape)
 
   inst_dm = 1 - inst_dm
 
   if filter_sim_below !=False:
     inst_dm[ np.abs(inst_dm) < filter_sim_below] = 0
-
-  print('check shape again')
-  print(inst_dm.shape)
 
   return inst_dm
 
