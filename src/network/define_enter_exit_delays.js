@@ -38,7 +38,7 @@ module.exports = function(old_params, params) {
 
   var old_num_links = old_params.network_data.links.length;
   var new_num_links = params.network_data.links.length;
-  var cutoff_num_links = 0.35*params.matrix.def_large_matrix;
+  var cutoff_num_links = 0.5*params.matrix.def_large_matrix;
 
   if ( old_num_links > cutoff_num_links || new_num_links > cutoff_num_links ){
     delays.run_transition = false;

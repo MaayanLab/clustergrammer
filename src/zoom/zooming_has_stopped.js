@@ -20,7 +20,10 @@ module.exports = function zooming_has_stopped(params){
 
   if (inst_zoom === 0){
 
-    var check_stop = Number(d3.select(params.root+' .viz_svg').attr('stopped_zoom'));
+    var check_stop = Number(
+        d3.select(params.root+' .viz_svg').attr('stopped_zoom')
+      );
+    
     if (check_stop!=0){
 
       d3.selectAll('.row_label_group').select('text').style('display','none');
@@ -31,7 +34,10 @@ module.exports = function zooming_has_stopped(params){
       d3.selectAll('.row_label_group').select('text').style('display','block');
       d3.selectAll('.col_label_group').select('text').style('display','block');
       
-      d3.selectAll('.tile').style('display','block');
+      // d3.selectAll('.tile').style('display','block');
+
+      d3.selectAll('.horz_lines').select('line').style('display','block');
+      d3.selectAll('.vert_lines').select('line').style('display','block');
 
 
       _.each(['row','col'], function(inst_rc){
