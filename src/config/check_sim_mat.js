@@ -7,8 +7,9 @@ module.exports = function check_sim_mat(config){
   
   if (num_rows == num_cols){
 
-    var rows = config.network_data.row_nodes_names.sort();
-    var cols = config.network_data.col_nodes_names.sort();
+    // the sort here was causing errors 
+    var rows = config.network_data.row_nodes_names;
+    var cols = config.network_data.col_nodes_names;
     sim_mat = true;
 
     _.each(rows, function(inst_row){
