@@ -262,6 +262,7 @@ h2 {
   color: #fff;
   border-radius: 2px;
   max-width: 500px;
+  top:0px;
 }
 
 /* Style northward tooltips differently */
