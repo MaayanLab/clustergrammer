@@ -41,7 +41,7 @@ module.exports = function make_row_cat(params) {
   // d3-tooltip 
   var cat_tip = d3.tip()
     .attr('class','d3-tip')
-    .direction('e')
+    .direction('s')
     .offset([5,0])
     .style('display','block')
     .html(function(d){
