@@ -1,5 +1,5 @@
 
-all_clusts = ['mult_view.json', 'large_vect_post_example.json'];
+all_clusts = ['mult_view.json'];
 
 var outer_margins = {
     'top':2,
