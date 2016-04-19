@@ -5,7 +5,7 @@ module.exports = function make_col_tooltips(params){
     // d3-tooltip
     var col_tip = d3.tip()
       .attr('class', 'd3-tip')
-      .direction('s')
+      .direction('w')
       .offset([20, 0])
       .style('display','block')
       .html(function(d) { 
@@ -23,7 +23,7 @@ module.exports = function make_col_tooltips(params){
     d3.select(params.root+' .col_zoom_container')
       // .selectAll('.col_label_text')
       .selectAll('.col_label_group')
-      .selectAll('text')
+      // .selectAll('text')
       .on('mouseover', col_tip.show)
       .on('mouseout',  col_tip.hide);
 
