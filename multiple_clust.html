@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- <base href='/clustergrammer/'> -->
+
+    <title>Clustergrammer</title>
+
+    <!-- <link rel="shortcut icon" href="static/map-o_32_transparent.ico"  type="image/x-icon"> -->
+    <link rel="shortcut icon" href="static/icons/graham_cracker.ico"  type="image/x-icon">
+
+    <!-- Bootstrap Core CSS -->
+    <link href="lib/bootstrap.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <!-- <link rel="stylesheet" href="static/css/specific.css" /> -->
+    <link rel="stylesheet" href="css/custom_multiple_clust.css">
+    <!-- <link rel="stylesheet" href="static/lib/css/prettify.css"> -->
+    <link rel="stylesheet" href="lib/font-awesome.min.css">
+
+    <style>
+      #input_form {display: none}
+    </style>
+
+</head>
+
+<body>
+
+  <!-- Wrap all page content here -->
+  <div id="wrap" class='toggled'>
+
+      <!-- main container - required --> 
+      <div id='main_container'>
+
+          <!-- this row is - required fluid causes problems --> 
+          <div class="row" > 
+
+            <!-- svg_div - visualization will be put here -->
+            <div id='container-id-1'>
+                <h1 class='wait_message'>Please wait ...</h1>
+            </div>
+
+            <!--<div id='container-id-2'>
+                <h1 class='wait_message'>Please wait ...</h1>
+            </div> -->
+
+          </div>                            
+
+        </div>
+        <!-- end row -->
+
+
+      </div>
+      <!-- end main container -->
+
+  </div> 
+  <!-- End Wrap all page content here -->
+
+  <div id='footer'>
+    <div class="row" > 
+      <div id='footer_text_container' class="col-xs-12 footer_section"> 
+        <div class="text-muted footer_text">Clustergrammer is being developed by the <a class='blue_links' target="_blank"  href="http://icahn.mssm.edu/research/labs/maayan-laboratory">Ma'ayan Lab</a> at the <a class='blue_links' target="_blank"   href="http://icahn.mssm.edu/">Icahn School of Medicine at Mount Sinai</a>  for the <a target="_blank" href="http://lincs-dcic.org/">BD2K-LINCS DCIC</a> and the <a target="_blank" href="http://commonfund.nih.gov/idg/overview">KMC-IDG</a>  </div>
+        <!-- DCIC, BD2K, KMC, and GitHub -->
+        <div class="text-muted footer_text">
+        and is an open source project available on GitHub: <a class='blue_links' target="_blank"  href="https://github.com/MaayanLab/clustergrammer">Clustergrammer</a> and <a class='blue_links' target="_blank"  href="https://github.com/cornhundred/clustergrammer.js">Clustergrammer.js</a>
+         
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  
+
+  <!-- Required JS Libraries -->
+  <script src="lib/d3.js"></script>
+  <script src="lib/jquery-1.11.2.min.js"></script>
+  <script src="lib/jquery-ui.js"></script>
+  <script src="lib/bootstrap.min.js"></script>
+  <script src="lib/underscore-min.js"></script>
+  <script src="lib/underscore.strings.js"></script>
+  <script src="lib/d3.tip.js"></script>
+  <!-- <script src='lib/crossfilter.js'></script> -->
+  <script src='lib/saveSVGasPNG.js'></script>
+  <script src='lib/FileSaver.js'></script>
+
+  <!-- clustergram.js -->
+  <script src='clustergrammer.js'></script>
+  <!-- <script src='play_demo.js'></script> -->
+  <script src='load_multiple_clustergrams.js'></script>
+  
+
+
+
+</body>
+
