@@ -93,7 +93,7 @@ h2 {
 
 #main_container{
   position: relative;
-  margin-left: 55px;
+  /*margin-left: 55px;*/
   /*height:2000px;*/
 }
 
@@ -132,6 +132,11 @@ h2 {
 /*color choose file button*/
 .btn-default {
   background-color: #D0D0D0;
+}
+
+.btn{
+  padding-top:2px;
+  padding-bottom:2px;
 }
 
 #iframe_preview{

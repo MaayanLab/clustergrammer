@@ -1,6 +1,5 @@
 
-inst_network = 'mult_view.json';
-// make_clust('large_vect_post_example.json');
+all_clusts = ['mult_view.json', 'large_vect_post_example.json'];
 
 var outer_margins = {
     'top':2,
@@ -15,8 +14,8 @@ var viz_size = {
 };
 
 // define arguments object
-var arguments_obj = {
-  root: '#container-id-1',
+var args = {
+  // root: '#container-id-1',
   'row_label':'Row Title',
   'col_label':'Colum Title',
   'outer_margins': outer_margins,
@@ -26,62 +25,19 @@ var arguments_obj = {
   'row_search_placeholder':'Gene',
 };
 
-d3.json('json/'+inst_network, function(network_data){
+_.each(all_clusts, function(clust_name){
 
-  arguments_obj.network_data = network_data;
+  d3.json('json/'+clust_name, function(network_data){
 
-  cgm = Clustergrammer(arguments_obj);
+    var tmp_num = all_clusts.indexOf(clust_name)+1;
 
-  d3.select(cgm.params.root + ' .wait_message').remove();
+    args.root = '#container-id-'+tmp_num;
+    args.network_data = network_data;
 
-  d3.select(cgm.params.root+ ' .title_section')
-    .append('img')
-    .classed('title_image',true)
-    .attr('src','img/clustergrammer_logo.png')
-    .attr('alt','clustergrammer')
-    .style('width','167px')
-    .style('margin-left','-2px')
-    .style('margin-top','5px');
+    cgm = Clustergrammer(args);
 
-});
+    d3.selectAll('.wait_message').remove();
 
-d3.json('json/'+inst_network, function(network_data){
-
-  arguments_obj.root = '#container-id-2';
-  arguments_obj.network_data = network_data;
-
-  cgm = Clustergrammer(arguments_obj);
-
-  d3.select(cgm.params.root + ' .wait_message').remove();
-
-  d3.select(cgm.params.root+ ' .title_section')
-    .append('img')
-    .classed('title_image',true)
-    .attr('src','img/clustergrammer_logo.png')
-    .attr('alt','clustergrammer')
-    .style('width','167px')
-    .style('margin-left','-2px')
-    .style('margin-top','5px');
-
-});
-
-
-d3.json('json/'+inst_network, function(network_data){
-
-  arguments_obj.root = '#container-id-3';
-  arguments_obj.network_data = network_data;
-
-  cgm = Clustergrammer(arguments_obj);
-
-  d3.select(cgm.params.root + ' .wait_message').remove();
-
-  d3.select(cgm.params.root+ ' .title_section')
-    .append('img')
-    .classed('title_image',true)
-    .attr('src','img/clustergrammer_logo.png')
-    .attr('alt','clustergrammer')
-    .style('width','167px')
-    .style('margin-left','-2px')
-    .style('margin-top','5px');
+  });
 
 });
