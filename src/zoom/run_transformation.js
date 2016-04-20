@@ -78,9 +78,10 @@ module.exports = function run_transformation(params, zoom_info){
 
     var inst_num_visible = num_visible_labels(params, inst_rc);
 
+
     if (inst_num_visible > 300){
 
-      d3.selectAll(params.root+'.'+inst_rc+'_label_group')
+      d3.selectAll(params.root+' .'+inst_rc+'_label_group')
         .select('text')
         .style('display','none');
 
@@ -91,22 +92,26 @@ module.exports = function run_transformation(params, zoom_info){
       d3.selectAll('.horz_lines').select('line').style('display','none');
       d3.selectAll('.vert_lines').select('line').style('display','none');
 
-    } else if (inst_num_visible > 40) {
+    } else {
 
-      var calc_show_char = d3
-        .scale.linear()
-        .domain([1,500])
-        .range([3,1])
-        .clamp(true);
+      if (inst_num_visible > 40){
 
-      var num_show_char = Math.floor(calc_show_char(inst_num_visible));
+        var calc_show_char = d3
+          .scale.linear()
+          .domain([1,500])
+          .range([3,1])
+          .clamp(true);
 
-      d3.selectAll(params.root+' .'+inst_rc+'_label_group')
-        .select('text')
-        .style('opacity',0.5)
-        .text(function(d){
-          return d.name.substring(0,num_show_char)+'..';
-        });
+        var num_show_char = Math.floor(calc_show_char(inst_num_visible));
+
+        d3.selectAll(params.root+' .'+inst_rc+'_label_group')
+          .select('text')
+          .style('opacity',0.5)
+          .text(function(d){
+            return d.name.substring(0,num_show_char)+'..';
+          });
+
+      }
 
     }
     

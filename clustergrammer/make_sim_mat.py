@@ -48,7 +48,7 @@ def dm_to_sim(inst_dm, make_squareform=False, filter_sim=0):
   return inst_sim_mat
 
 
-def adjust_filter_sim(inst_dm, filter_sim, keep_top=500):
+def adjust_filter_sim(inst_dm, filter_sim, keep_top=20000):
   import pandas as pd
   import numpy as np
 
