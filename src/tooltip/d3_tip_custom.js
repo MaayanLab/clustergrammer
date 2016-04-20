@@ -17,31 +17,36 @@ module.exports = function d3_tip_custom(){
       node      = initNode(),
       svg       = null,
       point     = null,
-      target    = null
+      target    = null;
 
   function tip(vis) {
-    svg = getSVGNode(vis)
-    point = svg.createSVGPoint()
-    document.body.appendChild(node)
+    svg = getSVGNode(vis);
+    point = svg.createSVGPoint();
+    document.body.appendChild(node);
   }
 
   // Public - show the tooltip on the screen
   //
   // Returns a tip
   tip.show = function() {
-    var args = Array.prototype.slice.call(arguments)
-    if(args[args.length - 1] instanceof SVGElement) target = args.pop()
+    var args = Array.prototype.slice.call(arguments);
+    if (args[args.length - 1] instanceof SVGElement) {
+      target = args.pop();
+    }
 
-    var content = html.apply(this, args),
-        poffset = offset.apply(this, args),
-        dir     = direction.apply(this, args),
-        nodel   = d3.select(node), i = 0,
-        coords
+    var content = html.apply(this, args);
+    var poffset = offset.apply(this, args);
+    var dir     = direction.apply(this, args);
+    var nodel   = d3.select(node);
+    var i = 0;
+    var coords;
 
     nodel.html(content)
-      .style({ opacity: 1, 'pointer-events': 'all' })
+      .style({opacity: 1, 'pointer-events': 'all'});
 
-    while(i--) nodel.classed(directions[i], false)
+    while(i--) {
+      nodel.classed(directions[i], false);
+    }
     coords = direction_callbacks.get(dir).apply(this)
     nodel.classed(dir, true).style({
       top: (coords.top +  poffset[0]) + 'px',
