@@ -1,6 +1,6 @@
 def make_clust(net, dist_type='cosine', run_clustering=True,
                           dendro=True, requested_views=['pct_row_sum', 'N_row_sum'],
-                          linkage_type='average', sim_mat=False):
+                          linkage_type='average', sim_mat=False, filter_sim_below=0.1):
 
   ''' This will calculate multiple views of a clustergram by filtering the 
   data and clustering after each filtering. This filtering will keep the top 
@@ -45,7 +45,7 @@ def make_clust(net, dist_type='cosine', run_clustering=True,
                                 linkage_type=linkage_type, 
                                 run_clustering=run_clustering, 
                                 dendro=dendro, ignore_cat=False, get_sim=True,
-                                filter_sim_below=0.1)
+                                filter_sim_below=filter_sim_below)
 
   all_views = []
   send_df = deepcopy(df)

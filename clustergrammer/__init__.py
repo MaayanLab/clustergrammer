@@ -37,12 +37,12 @@ class Network(object):
 
   def make_clust(self, dist_type='cosine', run_clustering=True,
                  dendro=True, views=['pct_row_sum', 'N_row_sum'],
-                 linkage_type='average', sim_mat=False):
+                 linkage_type='average', sim_mat=False, filter_sim_below=0.1):
     ''' The main function run by the user to make their clustergram. 
     views is later referred to as requested_views.'''
     import make_clust_fun
     make_clust_fun.make_clust(self, dist_type, run_clustering, dendro, 
-                                   views, linkage_type, sim_mat)
+                                   views, linkage_type, sim_mat, filter_sim_below)
 
   def produce_view(self, requested_view=None):
     print('\tproduce a single view of a matrix, will be used for get requests')
