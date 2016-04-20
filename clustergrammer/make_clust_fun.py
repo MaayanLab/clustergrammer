@@ -1,6 +1,6 @@
 def make_clust(net, dist_type='cosine', run_clustering=True,
                           dendro=True, requested_views=['pct_row_sum', 'N_row_sum'],
-                          linkage_type='average', sim_mat=False, filter_sim_below=0.1):
+                          linkage_type='average', sim_mat=False, filter_sim=0.1):
 
   ''' This will calculate multiple views of a clustergram by filtering the 
   data and clustering after each filtering. This filtering will keep the top 
@@ -22,8 +22,7 @@ def make_clust(net, dist_type='cosine', run_clustering=True,
   inst_dm = calc_clust.cluster_row_and_col(net, dist_type=dist_type, 
                                 linkage_type=linkage_type, 
                                 run_clustering=run_clustering, 
-                                dendro=dendro, ignore_cat=False, get_sim=True,
-                                filter_sim_below=filter_sim_below)
+                                dendro=dendro, ignore_cat=False)
 
   all_views = []
   send_df = deepcopy(df)
@@ -46,7 +45,7 @@ def make_clust(net, dist_type='cosine', run_clustering=True,
 
   if sim_mat is True:
     print('make similarity matrices of rows and columns, add to viz data structure')
-    sim_net = make_sim_mat.main(net, inst_dm, filter_sim_below)
+    sim_net = make_sim_mat.main(net, inst_dm, filter_sim)
 
     net.sim = {}
     net.sim['row'] = sim_net['row'].viz

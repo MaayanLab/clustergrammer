@@ -1,6 +1,6 @@
 def cluster_row_and_col(net, dist_type='cosine', linkage_type='average', 
                         dendro=True, run_clustering=True, run_rank=True,
-                        ignore_cat=False, get_sim=False, filter_sim_below=False):
+                        ignore_cat=False):
   ''' cluster net.dat and make visualization json, net.viz.
   optionally leave out dendrogram colorbar groups with dendro argument '''
 
