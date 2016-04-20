@@ -138,12 +138,12 @@ module.exports = function make_viz(params) {
   ini_doubleclick(params);
 
   if (params.viz.do_zoom) {
-    d3.select(params.root+' .viz_svg')
+    d3.select(params.viz.zoom_element)
     // d3.select(params.root+' .clust_container')
       .call(params.zoom_behavior);
   }
 
-  d3.select(params.root+' .viz_svg')
+  d3.select(params.viz.zoom_element)
   // d3.select(params.root+' .clust_container')
     .on('dblclick.zoom', null);
 
