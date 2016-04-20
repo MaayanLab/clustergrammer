@@ -3,6 +3,9 @@ def export_net_json(net, net_type, indent='no-indent'):
   import json
   from copy import deepcopy
 
+  print('net_type')
+  print(net_type)
+
   if net_type == 'dat':
     exp_dict = deepcopy(net.dat)
     if type(exp_dict['mat']) is not list:
@@ -10,6 +13,12 @@ def export_net_json(net, net_type, indent='no-indent'):
 
   elif net_type == 'viz':
     exp_dict = net.viz
+
+  elif net_type == 'sim_row':
+    exp_dict = net.sim['row']
+
+  elif net_type == 'sim_col':
+    exp_dict = net.sim['col']
 
   # make json
   if indent == 'indent':
@@ -20,10 +29,8 @@ def export_net_json(net, net_type, indent='no-indent'):
   return exp_json  
 
 def write_json_to_file(net, net_type, filename, indent='no-indent'):
-  if net_type == 'dat':
-    exp_json = net.export_net_json('dat', indent)
-  elif net_type == 'viz':
-    exp_json = net.export_net_json('viz', indent)
+
+  exp_json = net.export_net_json(net_type, indent)
 
   fw = open(filename, 'w')
   fw.write(exp_json)

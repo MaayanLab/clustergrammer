@@ -70,8 +70,8 @@ def make_clust(net, dist_type='cosine', run_clustering=True,
     print('make similarity matrices of rows and columns, add to viz data structure')
     sim_net = make_sim_mat.main(net, inst_sim_mat)
 
-    net.viz['sim'] = {}
-    net.viz['sim']['row'] = sim_net['row'].viz
-    net.viz['sim']['col'] = sim_net['col'].viz
+    net.sim = {}
+    net.sim['row'] = sim_net['row'].viz
+    net.sim['col'] = sim_net['col'].viz
 
   net.viz['views'] = all_views
