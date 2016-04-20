@@ -28,7 +28,7 @@ module.exports = function(params, svg_elem) {
   // d3-tooltip - for tiles
   var tip = d3_tip_custom()
     .attr('class', 'd3-tip tile_tip')
-    .direction('n')
+    .direction('nw')
     .offset([0, 0])
     .html(function(d){
       return d.value.toFixed(2);

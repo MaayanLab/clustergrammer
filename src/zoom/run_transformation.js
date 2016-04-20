@@ -5,7 +5,7 @@ var resize_label_val_bars = require('./resize_label_val_bars');
 var num_visible_labels = require('./num_visible_labels');
 
 module.exports = function run_transformation(params, zoom_info){
- 
+
   // apply transformation and reset translate vector
   // translate clustergram
   d3.select(params.root+' .clust_group')

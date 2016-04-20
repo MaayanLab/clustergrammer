@@ -3,7 +3,7 @@ def N_rows(net, df, all_views, dist_type='cosine', rank_type='sum'):
   from __init__ import Network
   import calc_clust, run_filter
 
-  keep_top = ['all', 500, 400, 300, 200, 100, 80, 60, 40, 20, 10]
+  keep_top = ['all', 500, 250, 100, 50, 20, 10]
 
   rows_sorted = run_filter.get_sorted_rows(df['mat'], rank_type)
 

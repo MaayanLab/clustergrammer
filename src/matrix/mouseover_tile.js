@@ -26,11 +26,18 @@ module.exports = function mouseover_tile(params, inst_selection, tip, inst_argum
 
   function check_if_hovering() {
     if ( d3.select(inst_selection).classed('hovering') ){
-      if (params.matrix.show_tile_tooltips){
-        d3.selectAll('.d3-tip')
-          .style('display','block');
-        tip.show.apply(inst_selection, args);
+
+      var inst_zoom = Number(d3.select(params.root+' .viz_svg').attr('is_zoom'));
+
+      if (inst_zoom === 0){
         
+        if (params.matrix.show_tile_tooltips){
+          d3.selectAll('.d3-tip')
+            .style('display','block');
+          tip.show.apply(inst_selection, args);
+          
+        }
+
       }
     }
   }
