@@ -4,11 +4,14 @@ def main(net, inst_dm, filter_sim):
   from copy import deepcopy
   import calc_clust
 
-  inst_sim_mat = {}
+  sim_dict = {}
 
   for inst_rc in ['row','col']:
-    inst_sim_mat[inst_rc] = dm_to_sim(inst_dm[inst_rc], make_squareform=True, 
+
+
+    sim_dict[inst_rc] = dm_to_sim(inst_dm[inst_rc], make_squareform=True, 
                              filter_sim=filter_sim)
+
 
   sim_net = {}
 
@@ -16,7 +19,7 @@ def main(net, inst_dm, filter_sim):
 
     sim_net[inst_rc] = deepcopy(Network())
 
-    sim_net[inst_rc].dat['mat'] = inst_sim_mat[inst_rc]
+    sim_net[inst_rc].dat['mat'] = sim_dict[inst_rc]
 
     sim_net[inst_rc].dat['nodes']['row'] = net.dat['nodes'][inst_rc]
     sim_net[inst_rc].dat['nodes']['col'] = net.dat['nodes'][inst_rc]
@@ -28,16 +31,40 @@ def main(net, inst_dm, filter_sim):
 
   return sim_net
 
-def dm_to_sim(inst_dm, make_squareform=False, filter_sim=False):
+
+def dm_to_sim(inst_dm, make_squareform=False, filter_sim=0):
   import numpy as np
   from scipy.spatial.distance import squareform
 
   if make_squareform is True:
     inst_dm = squareform(inst_dm)
 
-  inst_dm = 1 - inst_dm
+  inst_sim_mat = 1 - inst_dm
 
-  if filter_sim !=False:
-    inst_dm[ np.abs(inst_dm) < filter_sim] = 0
+  if filter_sim > 0:
+    filter_sim = adjust_filter_sim(inst_sim_mat, filter_sim)
+    inst_sim_mat[ np.abs(inst_sim_mat) < filter_sim] = 0
 
-  return inst_dm
+  return inst_sim_mat
+
+
+def adjust_filter_sim(inst_dm, filter_sim, keep_top=500):
+  import pandas as pd
+  import numpy as np
+
+  inst_df = pd.DataFrame(inst_dm)
+  val_vect = np.abs(inst_df.values.flatten())
+
+  val_vect = val_vect[val_vect > 0.01]
+
+  if len(val_vect) > keep_top:
+
+
+    inst_series = pd.Series(val_vect)
+    inst_series.sort(ascending=False)
+
+    sort_values = inst_series.values
+
+    filter_sim = sort_values[keep_top]
+
+  return filter_sim  
