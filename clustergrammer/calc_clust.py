@@ -36,6 +36,7 @@ def cluster_row_and_col(net, dist_type='cosine', linkage_type='average',
       node_info['rank'] = node_info['ini']
       node_info['rankvar'] = node_info['ini']
 
+    ##################################
     if ignore_cat is False:
       categories.calc_cat_clust_order(net, inst_rc)
 
@@ -85,7 +86,6 @@ def dm_to_sim(inst_dm, make_squareform=False, filter_sim_below=False):
 
 def clust_and_group(net, inst_dm, linkage_type='average'):
   import scipy.cluster.hierarchy as hier
-
   Y = hier.linkage(inst_dm, method=linkage_type)
   Z = hier.dendrogram(Y, no_plot=True)
   inst_clust_order = Z['leaves']

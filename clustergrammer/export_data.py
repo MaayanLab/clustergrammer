@@ -3,9 +3,6 @@ def export_net_json(net, net_type, indent='no-indent'):
   import json
   from copy import deepcopy
 
-  print('net_type')
-  print(net_type)
-
   if net_type == 'dat':
     exp_dict = deepcopy(net.dat)
     if type(exp_dict['mat']) is not list:

@@ -98,12 +98,20 @@ def calc_cat_clust_order(net, inst_rc):
         # load back to dat
         cat_net.df_to_dat(sub_df)
 
+        cat_mat_shape = cat_net.dat['mat'].shape
+        
         try:
-          calc_clust.cluster_row_and_col(cat_net, 'cos')
-          # inst_cat_order = cat_net.dat['node_info'][inst_rc]
-          inst_cat_order = range(len(cat_net.dat['nodes'][inst_rc]))
+          if cat_mat_shape[0]>1 and cat_mat_shape[1] > 1:
+
+            calc_clust.cluster_row_and_col(cat_net, 'cos')
+            inst_cat_order = cat_net.dat['node_info'][inst_rc]['clust']
+          else:
+            inst_cat_order = range(len(cat_net.dat['nodes'][inst_rc]))
+
         except:
           inst_cat_order = range(len(cat_net.dat['nodes'][inst_rc]))
+
+
 
         prev_order_len = len(all_cat_orders)
 
