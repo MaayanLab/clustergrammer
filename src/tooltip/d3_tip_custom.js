@@ -53,6 +53,12 @@ module.exports = function d3_tip_custom(){
       left: (coords.left + poffset[1]) + 'px'
     });
 
+    d3.selectAll('.d3-tip')
+      .transition()
+      .duration(500)
+      .delay(5000)
+      .style('opacity',0);
+
     return tip;
   };
 
