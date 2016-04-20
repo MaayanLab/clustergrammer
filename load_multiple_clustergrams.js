@@ -14,7 +14,7 @@ var viz_size = {
 };
 
 // define arguments object
-var args = {
+var default_args = {
   'row_label':'Row Title',
   'col_label':'Colum Title',
   'outer_margins': outer_margins,
@@ -30,8 +30,14 @@ _.each(all_clusts, function(clust_name){
 
     var tmp_num = all_clusts.indexOf(clust_name)+1;
 
+    var args = $.extend(true, {}, default_args);
+
     args.root = '#container-id-'+tmp_num;
     args.network_data = network_data;
+
+    if (clust_name == 'large_vect_post_example.json'){
+      args.ini_view = {'N_row_var':20};
+    }
 
     cgm = Clustergrammer(args);
 
