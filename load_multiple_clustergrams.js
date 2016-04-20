@@ -1,5 +1,5 @@
 
-all_clusts = ['mult_view.json'];
+all_clusts = ['mult_view.json', 'large_vect_post_example.json', 'sim_mat.json'];
 
 var outer_margins = {
     'top':2,
@@ -15,7 +15,6 @@ var viz_size = {
 
 // define arguments object
 var args = {
-  // root: '#container-id-1',
   'row_label':'Row Title',
   'col_label':'Colum Title',
   'outer_margins': outer_margins,

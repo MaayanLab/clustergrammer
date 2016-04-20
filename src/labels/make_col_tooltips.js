@@ -1,9 +1,12 @@
+var d3_tip_custom = require('../tooltip/d3_tip_custom');
+
 module.exports = function make_col_tooltips(params){
 
   if (params.labels.show_label_tooltips){
 
     // d3-tooltip
-    var col_tip = d3.tip()
+    // var col_tip = d3.tip()
+    var col_tip = d3_tip_custom()
       .attr('class', 'd3-tip')
       .direction('w')
       .offset([20, 0])
@@ -25,7 +28,9 @@ module.exports = function make_col_tooltips(params){
       .selectAll('.col_label_group')
       // .selectAll('text')
       .on('mouseover', col_tip.show)
-      .on('mouseout',  col_tip.hide);
+      .on('mouseout', function(){
+         col_tip.hide(this); 
+      });
 
   }
 

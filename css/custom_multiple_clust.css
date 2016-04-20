@@ -276,3 +276,12 @@ h2 {
   top: 100%;
   left: 0;
 }
+
+.row{
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.clustergrammer_container{
+  margin-top: 50px;
+}
