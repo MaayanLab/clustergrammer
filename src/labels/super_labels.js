@@ -22,11 +22,11 @@ module.exports = function(params) {
 
       var inst_x = params.viz.clust.dim.width / 2 + params.viz.norm_labels.width
           .row - inst_text_width / 2;
-      var inst_y = params.viz.super_labels.dim.width - params.viz.uni_margin;
+      var inst_y = params.viz.super_labels.dim.width;
       return 'translate(' + inst_x + ',' + inst_y + ')';
     })
     .style('font-size', function () {
-      var inst_font_size = 18 * params.labels.super_label_scale;
+      var inst_font_size = params.labels.super_label_fs * params.labels.super_label_scale;
       return inst_font_size + 'px';
     })
     .style('font-weight', 300);
@@ -46,7 +46,7 @@ module.exports = function(params) {
     .classed('super_row',true)
     .attr('transform', function () {
       // position in the middle of the clustergram
-      var inst_x = params.viz.super_labels.dim.width - params.viz.uni_margin;
+      var inst_x = params.viz.super_labels.dim.width;
       var inst_y = params.viz.clust.dim.height / 2 + params.viz.norm_labels.width
           .col;
       return 'translate(' + inst_x + ',' + inst_y + ')';
@@ -64,7 +64,7 @@ module.exports = function(params) {
       return inst_offset;
     })
     .style('font-size', function () {
-      var inst_font_size = 18 * params.labels.super_label_scale;
+      var inst_font_size = params.labels.super_label_fs * params.labels.super_label_scale;
       return inst_font_size + 'px';
     })
     .style('font-weight', 300);

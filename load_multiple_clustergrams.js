@@ -1,7 +1,7 @@
 
 all_clusts = ['mult_view.json',
-'mult_view_sim_row.json',
-'mult_view_sim_col.json'];
+'mult_view_sim_col.json',
+'mult_view_sim_row.json'];
 
 var outer_margins = {
     'top':2,

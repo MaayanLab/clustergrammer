@@ -3,6 +3,7 @@ module.exports = function set_label_params(config, network_data){
   var labels = {};
   labels.super_label_scale = config.super_label_scale;
   labels.super_labels = config.super_labels;
+  labels.super_label_fs = 13.8;
 
   if (labels.super_labels) {
     labels.super = {};

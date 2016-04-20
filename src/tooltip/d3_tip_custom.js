@@ -53,11 +53,11 @@ module.exports = function d3_tip_custom(){
       left: (coords.left + poffset[1]) + 'px'
     });
 
-    d3.selectAll('.d3-tip')
-      .transition()
-      .duration(500)
-      .delay(5000)
-      .style('opacity',0);
+    var inst_class = d3.select(this).attr('class');
+
+    if (inst_class.indexOf('tile') >= 0){
+      setTimeout(fade_tips, 10000, this);
+    }
 
     return tip;
   };
@@ -311,6 +311,20 @@ module.exports = function d3_tip_custom(){
 
     return bbox;
   }
+
+  // only fade tips if you are still hovering on the current tip 
+  function fade_tips(inst_selection){
+
+    var is_hovering = d3.select(inst_selection)
+      .classed('hovering');
+
+    if (is_hovering){
+      d3.selectAll('.d3-tip')
+        .transition()
+        .duration(250)
+        .style('opacity',0);
+      }
+    }  
 
   return tip;
 };
