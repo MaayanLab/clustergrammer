@@ -138,7 +138,8 @@ module.exports = function make_viz(params) {
   ini_doubleclick(params);
 
   if (params.viz.do_zoom) {
-    svg_group.call(params.zoom_behavior);
+    d3.select(params.root+' .viz_svg')
+      .call(params.zoom_behavior);
   }
 
   d3.select(params.viz.viz_svg).on('dblclick.zoom', null);
