@@ -287,20 +287,20 @@ module.exports = function d3_tip_custom(){
     point.y = y; //+ scrollTop 
 
     bbox.nw = point.matrixTransform(matrix);
-    point.x += width;
+    point.x = point.x + width;
     bbox.ne = point.matrixTransform(matrix);
-    point.y += height;  
+    point.y = point.y + height;  
     bbox.se = point.matrixTransform(matrix);
-    point.x -= width;
+    point.x = point.x - width;
     bbox.sw = point.matrixTransform(matrix);
-    point.y -= height / 2;
+    point.y = point.y - height / 2;
     bbox.w  = point.matrixTransform(matrix);
-    point.x += width;
+    point.x = point.x + width;
     bbox.e = point.matrixTransform(matrix);
-    point.x -= width / 2;
-    point.y -= height / 2;
+    point.x = point.x - width / 2;
+    point.y = point.y - height / 2;
     bbox.n = point.matrixTransform(matrix);
-    point.y += height;
+    point.y = point.y + height;
     bbox.s = point.matrixTransform(matrix);
 
     return bbox;
