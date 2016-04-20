@@ -1,9 +1,11 @@
+var d3_tip_custom = require('../tooltip/d3_tip_custom');
+
 module.exports = function make_tooltips(params){
 
   if (params.labels.show_label_tooltips){
 
     // d3-tooltip
-    var row_tip = d3.tip()
+    var row_tip = d3_tip_custom()
       .attr('class', 'd3-tip')
       .direction('e')
       .offset([0, 10])

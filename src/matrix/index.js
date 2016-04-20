@@ -2,6 +2,7 @@ var utils = require('../utils');
 var draw_gridlines = require('../draw_gridlines');
 var add_click_hlight = require('./add_click_hlight');
 var make_simple_rows = require('./make_simple_rows');
+var d3_tip_custom = require('../tooltip/d3_tip_custom');
 
 module.exports = function(params, svg_elem) {
   var network_data = params.network_data;
@@ -24,7 +25,7 @@ module.exports = function(params, svg_elem) {
     .attr('class', 'clust_group');
 
   // d3-tooltip - for tiles
-  var tip = d3.tip()
+  var tip = d3_tip_custom()
     .attr('class', 'd3-tip tile_tip')
     .direction('n')
     .offset([0, 0])

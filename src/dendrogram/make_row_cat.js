@@ -1,4 +1,5 @@
 var cat_tooltip_text = require('./cat_tooltip_text');
+var d3_tip_custom = require('../tooltip/d3_tip_custom');
 
 module.exports = function make_row_cat(params) {
 
@@ -39,7 +40,7 @@ module.exports = function make_row_cat(params) {
   }
 
   // d3-tooltip 
-  var cat_tip = d3.tip()
+  var cat_tip = d3_tip_custom()
     .attr('class','d3-tip')
     .direction('e')
     .offset([5,0])

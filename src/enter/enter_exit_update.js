@@ -7,6 +7,7 @@ var enter_grid_lines = require('../enter/enter_grid_lines');
 var enter_row_groups = require('../enter/enter_row_groups');
 var resize_containers = require('../reset_size/resize_containers');
 var label_constrain_and_trim = require('../labels/label_constrain_and_trim');
+var d3_tip_custom = require('../tooltip/d3_tip_custom');
 
 module.exports = function(params, network_data, delays){
 
@@ -15,7 +16,7 @@ module.exports = function(params, network_data, delays){
     .style('opacity',0);
 
   // d3-tooltip - for tiles
-  var tip = d3.tip()
+  var tip = d3_tip_custom()
     .attr('class', 'd3-tip tile_tip')
     .direction('n')
     .offset([0, 0])

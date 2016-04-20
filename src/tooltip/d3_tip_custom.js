@@ -1,6 +1,4 @@
 module.exports = function d3_tip_custom(){
-// d3.tip = function() {
-// d3.tip
 // Copyright (c) 2013 Justin Palmer
 //
 // Tooltips for d3.js SVG visualizations
@@ -10,6 +8,8 @@ module.exports = function d3_tip_custom(){
 // Returns a tip
 // ****************** 
 // Nick Fernandez modified version 4-19-2016 
+// improved multiple svg, scrolling+zooming support
+// made syntax fixes
 //////////////////////////////////////////////
   var direction = d3_tip_direction,
       offset    = d3_tip_offset,

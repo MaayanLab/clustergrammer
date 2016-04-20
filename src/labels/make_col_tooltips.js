@@ -5,7 +5,6 @@ module.exports = function make_col_tooltips(params){
   if (params.labels.show_label_tooltips){
 
     // d3-tooltip
-    // var col_tip = d3.tip()
     var col_tip = d3_tip_custom()
       .attr('class', 'd3-tip')
       .direction('w')
