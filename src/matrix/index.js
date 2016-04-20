@@ -22,7 +22,8 @@ module.exports = function(params, svg_elem) {
       params.viz.clust.margin.left + ',' +
       params.viz.clust.margin.top + ')')
     .append('g')
-    .attr('class', 'clust_group');
+    .attr('class', 'clust_group')
+    .classed('clust_group',true);
 
   // d3-tooltip - for tiles
   var tip = d3_tip_custom()

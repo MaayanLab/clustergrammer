@@ -139,10 +139,13 @@ module.exports = function make_viz(params) {
 
   if (params.viz.do_zoom) {
     d3.select(params.root+' .viz_svg')
+    // d3.select(params.root+' .clust_container')
       .call(params.zoom_behavior);
   }
 
-  d3.select(params.viz.viz_svg).on('dblclick.zoom', null);
+  d3.select(params.root+' .viz_svg')
+  // d3.select(params.root+' .clust_container')
+    .on('dblclick.zoom', null);
 
   var search_obj = search(params, params.network_data.row_nodes, 'name');
 
