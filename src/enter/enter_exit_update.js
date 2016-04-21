@@ -21,7 +21,10 @@ module.exports = function(params, network_data, delays){
     .direction('n')
     .offset([0, 0])
     .html(function(d){
-      return d.value.toFixed(2);
+      var inst_value = String(d.value.toFixed(2));
+      var tooltip_string = '<p>' + d.row_name + ' and ' + d.col_name + '</p>' +
+      '<div> value: ' + inst_value +'</div>';
+      return tooltip_string;
     });
 
   d3.select(params.root+' .clust_group')
