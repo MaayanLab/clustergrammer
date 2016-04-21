@@ -17,10 +17,7 @@ body {
 /* Sticky footer styles
 -------------------------------------------------- */
 
-/* for highlighting row/col labels on hover*/
-text.active {
-  font-weight: bold;
-}
+
 
 body {
   height: 100%;

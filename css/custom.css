@@ -15,11 +15,6 @@ footer {
   padding-right:10px;
 }
 
-/* for highlighting row/col labels on hover*/
-text.active {
-  font-weight: bold;
-}
-
 /* default svg size for fixed svg option*/
 #svg_div{
   width:1000px;

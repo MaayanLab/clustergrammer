@@ -9,16 +9,21 @@ module.exports = function mouseover_tile(params, inst_selection, tip, inst_argum
   d3.select(inst_selection)
     .classed('hovering', true);
 
-  d3.selectAll(params.root+' .row_label_group text')
-    .classed('active', function(d) {
-      return inst_data.row_name.replace(/_/g, ' ') === d.name;
-    });
+  _.each(['row','col'], function(inst_rc){
 
-  d3.selectAll(params.root+' .col_label_text text')
-    .classed('active', function(d) {
-      return inst_data.col_name === d.name;
-    });
+    d3.selectAll(params.root+' .'+inst_rc+'_label_group text')
+      .style('font-weight', function(d) {
+        var font_weight;
+        var inst_found = inst_data[inst_rc+'_name'].replace(/_/g, ' ') === d.name;
+        if (inst_found){
+          font_weight = 'bold';
+        } else {
+          font_weight = 'normal';
+        }
+        return font_weight;
+      });
 
+  });
 
   args.push(inst_selection);
   clearTimeout(timeout);
@@ -30,7 +35,7 @@ module.exports = function mouseover_tile(params, inst_selection, tip, inst_argum
       var inst_zoom = Number(d3.select(params.root+' .viz_svg').attr('is_zoom'));
 
       if (inst_zoom === 0){
-        
+
         if (params.matrix.show_tile_tooltips){
           d3.selectAll('.d3-tip')
             .style('display','block');
