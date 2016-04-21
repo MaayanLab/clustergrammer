@@ -11,7 +11,7 @@ var outer_margins = {
   };
 
 var viz_size = {
-  'width':940,
+  'width':1140,
   'height':800
 };
 

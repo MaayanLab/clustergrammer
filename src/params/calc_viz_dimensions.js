@@ -25,11 +25,12 @@ module.exports = function calc_viz_dimensions(params){
 
   } else {
 
-    cont_dim.width = params.viz.fixed_size.width;
+    cont_dim.width = params.viz.fixed_size.width - params.sidebar_width;
     cont_dim.height = params.viz.fixed_size.height;
 
   }
 
+  console.log(cont_dim)
   return cont_dim;
 
 };
