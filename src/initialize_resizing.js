@@ -68,7 +68,7 @@ module.exports = function(params) {
           params.viz.expand = true;
 
           d3.selectAll(params.root+' .borders').style('fill', 'white');
-          d3.select(params.root+' .footer_section').style('display', 'none');
+          // d3.select(params.root+' .footer_section').style('display', 'none');
           d3.select(params.root+' .sidebar_wrapper')
             .style('display','none');
 
@@ -84,7 +84,8 @@ module.exports = function(params) {
           params.viz.expand = false;
 
           d3.selectAll(params.root+' .borders').style('fill', '#eee');
-          d3.select(params.root+' .footer_section').style('display', 'block');
+          // d3.select(params.root+' .footer_section').style('display', 'block');
+          d3.select(params.root+' .viz_wrapper').style('width','100px');
           d3.select(params.root+' .sidebar_wrapper')
             .style('display','block');
         }
