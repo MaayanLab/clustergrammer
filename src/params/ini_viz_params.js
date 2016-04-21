@@ -20,6 +20,7 @@ module.exports = function ini_viz_params(config, params){
   viz.all_cats = config.all_cats;
   viz.cat_colors = config.cat_colors;
   viz.cat_names = config.cat_names;
+  viz.sim_mat = config.sim_mat;
 
   viz.viz_svg = viz.viz_wrapper + ' .viz_svg';
 

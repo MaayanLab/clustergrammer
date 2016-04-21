@@ -140,22 +140,25 @@ module.exports = function(viz) {
         return 'translate('+x_offset+','+y_offset+') rotate(-90)';
       });
 
-    row_cat_label_container
-      .selectAll()
-      .data(viz.all_cats.row)
-      .enter()
-      .append('text')
-      .classed('row_cat_super',true)
-      .style('font-size', cat_text_size+'px')
-      .style('opacity', cat_super_opacity)
-      .attr('transform', function(d){
-        var inst_y = extra_y_room*viz.cat_room.symbol_width 
-          * parseInt( d.split('-')[1], 10 );
-        return 'translate(0,'+inst_y+')';
-      })
-      .text(function(d){
-        return get_cat_title(viz, d, 'row');
-      });
+    if (viz.sim_mat === false){
+
+      row_cat_label_container
+        .selectAll()
+        .data(viz.all_cats.row)
+        .enter()
+        .append('text')
+        .classed('row_cat_super',true)
+        .style('font-size', cat_text_size+'px')
+        .style('opacity', cat_super_opacity)
+        .attr('transform', function(d){
+          var inst_y = extra_y_room*viz.cat_room.symbol_width 
+            * parseInt( d.split('-')[1], 10 );
+          return 'translate(0,'+inst_y+')';
+        })
+        .text(function(d){
+          return get_cat_title(viz, d, 'row');
+        });
+    }  
   }
 
 
