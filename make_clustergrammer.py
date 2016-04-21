@@ -15,6 +15,7 @@ net.load_file('txt/rc_two_cats.txt')
 # net.load_file('txt/mat_1mb.Txt')
 # net.load_file('txt/mnist.txt')
 # net.load_file('txt/sim_mat_4_cats.txt')
+# net.load_file('txt/number_names.txt')
 
 views = ['N_row_sum','N_row_var']
 
