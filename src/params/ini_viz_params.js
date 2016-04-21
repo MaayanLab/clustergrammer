@@ -62,7 +62,7 @@ module.exports = function ini_viz_params(config, params){
   viz.cat_room.separation = 3;
 
   viz.cat_colors.opacity = 0.6;
-  viz.cat_colors.active_opacity = 0.8;
+  viz.cat_colors.active_opacity = 0.9;
 
   viz.norm_labels = {};
   viz.norm_labels.width = {};

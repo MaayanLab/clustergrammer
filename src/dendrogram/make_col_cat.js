@@ -1,5 +1,6 @@
 var cat_tooltip_text = require('./cat_tooltip_text');
 var d3_tip_custom = require('../tooltip/d3_tip_custom');
+var reset_cat_opacity = require('./reset_cat_opacity');
 
 module.exports = function make_col_cat(params) {
 
@@ -88,9 +89,7 @@ module.exports = function make_col_cat(params) {
 
             cat_tip.hide(this);
 
-            d3.selectAll(params.root+' .col_cat_group')
-              .selectAll('rect')
-              .style('opacity', params.viz.cat_colors.opacity);
+            reset_cat_opacity(params);
 
             d3.select(this)
               .classed('hovering', false);  

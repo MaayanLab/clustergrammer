@@ -48,7 +48,7 @@ module.exports = function cat_tooltip_text(params, inst_data, inst_selection, in
               if (tmp_cat === inst_cat && tmp_name === cat_name){
                 inst_opacity = params.viz.cat_colors.active_opacity;
               } else {
-                inst_opacity = params.viz.cat_colors.opacity/2;
+                inst_opacity = params.viz.cat_colors.opacity/4;
               }
 
               return inst_opacity;
