@@ -84,7 +84,18 @@ module.exports = function make_col_cat(params) {
           })
           .style('opacity', params.viz.cat_colors.opacity)
           .on('mouseover', cat_tip.show)
-          .on('mouseout', cat_tip.hide);
+          .on('mouseout', function(){
+
+            cat_tip.hide(this);
+
+            d3.selectAll(params.root+' .col_cat_group')
+              .selectAll('rect')
+              .style('opacity', params.viz.cat_colors.opacity);
+
+            d3.select(this)
+              .classed('hovering', false);  
+
+          });
       });
 
   });
