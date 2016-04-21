@@ -58,8 +58,6 @@ module.exports = function run_transformation(params, zoom_info){
       return inst_zoom + 1;
     });
 
-  // params.is_zoom = params.is_zoom + 1;
-
   var not_zooming = function(){
     
     d3.select(params.root+' .viz_svg')
@@ -91,7 +89,6 @@ module.exports = function run_transformation(params, zoom_info){
 
       d3.selectAll('.horz_lines').select('line').style('display','none');
       d3.selectAll('.vert_lines').select('line').style('display','none');
-
     } else {
 
       if (inst_num_visible > 40){
@@ -117,7 +114,15 @@ module.exports = function run_transformation(params, zoom_info){
     
   });
 
-  show_visible_area(params, zoom_info);
 
+  // // experimental tile display toggling 
+  // var inst_zoom = Number(d3.select(params.root+' .viz_svg').attr('is_zoom'));
+
+  // if (inst_zoom == 1){
+  //   d3.selectAll(params.root+' .hide_tile')
+  //     .style('display', 'none');
+  // }
+
+  show_visible_area(params, zoom_info);
 
 };

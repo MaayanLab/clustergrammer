@@ -16,9 +16,11 @@ module.exports = function zooming_has_stopped(params){
       .select('path')
       .style('display','block');      
       
+
   });      
 
   if (inst_zoom === 0){
+
 
     var check_stop = Number(
         d3.select(params.root+' .viz_svg').attr('stopped_zoom')
@@ -26,18 +28,21 @@ module.exports = function zooming_has_stopped(params){
     
     if (check_stop!=0){
 
-      d3.selectAll('.row_label_group').select('text').style('display','none');
-      d3.selectAll('.row_label_group').select('text').style('display','block');
+      // // experimental tile display toggling 
+      // d3.selectAll(params.root+' .hide_tile')
+      //   .style('display','block');
+
+      d3.selectAll(params.root+' .row_label_group').select('text').style('display','none');
+      d3.selectAll(params.root+' .row_label_group').select('text').style('display','block');
 
       d3.select(params.root+' .viz_svg').attr('stopped_zoom',0);
 
-      d3.selectAll('.row_label_group').select('text').style('display','block');
-      d3.selectAll('.col_label_group').select('text').style('display','block');
+      d3.selectAll(params.root+' .row_label_group').select('text').style('display','block');
+      d3.selectAll(params.root+' .col_label_group').select('text').style('display','block');
       
-      // d3.selectAll('.tile').style('display','block');
 
-      d3.selectAll('.horz_lines').select('line').style('display','block');
-      d3.selectAll('.vert_lines').select('line').style('display','block');
+      d3.selectAll(params.root+' .horz_lines').select('line').style('display','block');
+      d3.selectAll(params.root+' .vert_lines').select('line').style('display','block');
 
 
       _.each(['row','col'], function(inst_rc){

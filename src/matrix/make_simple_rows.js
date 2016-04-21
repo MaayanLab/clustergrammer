@@ -43,6 +43,16 @@ module.exports = function make_simple_rows(params, ini_inp_row_data, tip, row_se
       return 'translate(' + x_pos + ','+y_pos+')';
     });
 
+    // // experimental tile display toggling 
+    // .classed('hide_tile', function(){
+    //   var inst_opacity = Number(d3.select(this).style('fill-opacity'));
+    //   var inst_status = false;
+    //   if (inst_opacity<0.5){
+    //     var inst_status = true;
+    //   }
+    //   return inst_status;
+    // });
+
   if (params.matrix.tile_type == 'updn'){
 
     // value split
