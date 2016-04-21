@@ -21,5 +21,9 @@ module.exports = function check_sim_mat(config){
 
   }
 
+  if (sim_mat){
+    config.expand_button = false;
+  }
+
   return sim_mat;
 };
