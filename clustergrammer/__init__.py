@@ -93,6 +93,12 @@ class Network(object):
 
     self.df_to_dat(inst_df)
 
+  def normalize(self, df=None, axis='row'):
+    import normalize_fun
+
+    normalize_fun.run_norm(self, df, axis) 
+
+
   @staticmethod
   def load_gmt(filename):
     import load_data
