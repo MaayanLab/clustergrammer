@@ -1,4 +1,4 @@
-def run_norm(net, df=None, axis='row', keep_orig=False):
+def run_norm(net, df=None, norm_type='zscore', axis='row', keep_orig=False):
   ''' 
   A dataframe (more accurately a dictionary of dataframes, e.g. mat, 
   mat_up...) can be passed to run_norm and a normalization will be run (
@@ -8,7 +8,8 @@ def run_norm(net, df=None, axis='row', keep_orig=False):
   if df is None:
     df = net.dat_to_df()
 
-  df = zscore_df(df, axis)
+  if norm_type == 'zscore':
+    df = zscore_df(df, axis)
 
   net.df_to_dat(df)
 
@@ -33,6 +34,3 @@ def zscore_df(df, axis='row'):
   tmp_col_sum = df_z['mat'].sum(axis=0)
 
   return df_z
-
-
-

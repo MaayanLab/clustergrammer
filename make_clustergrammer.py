@@ -18,16 +18,19 @@ net.load_file('txt/rc_two_cats.txt')
 # net.load_file('txt/sim_mat_4_cats.txt')
 # net.load_file('txt/number_names.txt')
 
-# net.normalize(axis='row')
 
 views = ['N_row_sum','N_row_var']
 
 # # filtering rows and cols by sum 
 # net.filter_sum('row', threshold=20)
 # net.filter_sum('col', threshold=30)
-  
+
 # # keep top rows based on sum 
-# net.filter_N_top('row', 10, 'sum')
+# net.filter_N_top('row', 300, 'sum')
+
+
+# net.normalize(axis='row', norm_type='zscore')
+  
 
 net.make_clust(dist_type='cos',views=views , dendro=True,
                sim_mat=True, filter_sim=0.1)

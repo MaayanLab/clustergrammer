@@ -124,13 +124,13 @@ class Network(object):
 
     self.df_to_dat(inst_df)
 
-  def normalize(self, df=None, axis='row', keep_orig=False):
+  def normalize(self, df=None, norm_type='zscore', axis='row', keep_orig=False):
     '''
     under development, normalize the network rows/cols using zscore 
     ''' 
     import normalize_fun
 
-    normalize_fun.run_norm(self, df, axis, keep_orig) 
+    normalize_fun.run_norm(self, df, norm_type, axis, keep_orig) 
 
   @staticmethod
   def load_gmt(filename):
