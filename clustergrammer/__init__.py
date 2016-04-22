@@ -132,7 +132,6 @@ class Network(object):
 
     normalize_fun.run_norm(self, df, axis, keep_orig) 
 
-
   @staticmethod
   def load_gmt(filename):
     import load_data
