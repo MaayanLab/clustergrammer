@@ -17,20 +17,32 @@ class Network(object):
     initialize_net.main(self)
 
   def load_file(self, filename):
+    ''' 
+    load file to network, currently supporting only tsv
+    '''
     import load_data
     load_data.load_file(self, filename)
 
   def load_tsv_to_net(self, file_buffer):
-    ''' This will load a tsv matrix file buffer, this is exposed so that it will
-    be possible to load data without having to read from a file. ''' 
+    ''' 
+    This will load a tsv matrix file buffer, this is exposed so that it will
+    be possible to load data without having to read from a file. 
+    ''' 
     import load_data
     load_data.load_tsv_to_net(self, file_buffer)
 
   def load_vect_post_to_net(self, vect_post):
+    ''' 
+    load vector format to network 
+    '''
     import load_vect_post
     load_vect_post.main(self, vect_post)
 
   def load_data_file_to_net(self, filename):
+    '''
+    load my .dat format (saved as json) for a network to a netowrk  
+    '''
+
     import load_data
     inst_dat = self.load_json_to_dict(filename)
     load_data.load_data_to_net(self, inst_dat)
@@ -38,13 +50,18 @@ class Network(object):
   def make_clust(self, dist_type='cosine', run_clustering=True,
                  dendro=True, views=['pct_row_sum', 'N_row_sum'],
                  linkage_type='average', sim_mat=False, filter_sim=0.1):
-    ''' The main function run by the user to make their clustergram. 
-    views is later referred to as requested_views.'''
+    ''' 
+    The main function run by the user to make their clustergram. 
+    views is later referred to as requested_views.
+    '''
     import make_clust_fun
     make_clust_fun.make_clust(self, dist_type, run_clustering, dendro, 
                                    views, linkage_type, sim_mat, filter_sim)
 
   def produce_view(self, requested_view=None):
+    '''
+    under development, will produce a single view on demand from .dat data 
+    '''
     print('\tproduce a single view of a matrix, will be used for get requests')
 
     if requested_view != None:
@@ -52,17 +69,23 @@ class Network(object):
       print(requested_view)
 
   def swap_nan_for_zero(self):
-    ''' Expose this to user for their optional use ''' 
+    ''' 
+    Expose this to user for their optional use 
+    ''' 
     import numpy as np
     self.dat['mat'][np.isnan(self.dat['mat'])] = 0
 
   def df_to_dat(self, df):
-    ''' Convert from pandas dataframe to clustergrammers dat format ''' 
+    ''' 
+    Convert from pandas dataframe to clustergrammers dat format 
+    ''' 
     import data_formats
     data_formats.df_to_dat(self, df)
 
   def dat_to_df(self):
-    ''' convert from clusergrammers dat format to pandas dataframe '''
+    ''' 
+    convert from clusergrammers dat format to pandas dataframe 
+    '''
     import data_formats
     return data_formats.dat_to_df(self)
 
@@ -75,6 +98,10 @@ class Network(object):
     export_data.write_json_to_file(self, net_type, filename, indent)
 
   def filter_sum(self, inst_rc, threshold, take_abs=True):
+    ''' 
+    Filter a network's rows or columns based on the sum across rows or columns 
+    Works on the network object 
+    '''
     import run_filter
     inst_df = self.dat_to_df()
     if inst_rc == 'row':
@@ -84,6 +111,10 @@ class Network(object):
     self.df_to_dat(inst_df)
 
   def filter_N_top(self, inst_rc, N_top, rank_type='sum'):
+    '''
+    Filter a network's rows or cols based on sum/variance, and only keep the top
+    N  
+    '''
     import run_filter
 
     inst_df = self.dat_to_df()
@@ -94,6 +125,9 @@ class Network(object):
     self.df_to_dat(inst_df)
 
   def normalize(self, df=None, axis='row', keep_orig=False):
+    '''
+    under development, normalize the network rows/cols using zscore 
+    ''' 
     import normalize_fun
 
     normalize_fun.run_norm(self, df, axis, keep_orig) 
