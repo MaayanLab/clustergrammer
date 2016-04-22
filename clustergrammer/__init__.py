@@ -93,10 +93,10 @@ class Network(object):
 
     self.df_to_dat(inst_df)
 
-  def normalize(self, df=None, axis='row'):
+  def normalize(self, df=None, axis='row', keep_orig=False):
     import normalize_fun
 
-    normalize_fun.run_norm(self, df, axis) 
+    normalize_fun.run_norm(self, df, axis, keep_orig) 
 
 
   @staticmethod
