@@ -105,7 +105,7 @@ module.exports = function(viz) {
   var cat_text_size = 1.15*viz.cat_room.symbol_width;
   var cat_super_opacity = 0.65;
   var extra_x_room = 2.75;
-  var extra_y_room = 1.2;
+  var extra_y_room = 1.25;
 
   // col category super labels 
   if (viz.show_categories.col){  

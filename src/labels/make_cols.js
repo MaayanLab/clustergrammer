@@ -163,7 +163,7 @@ module.exports = function(params, text_delay) {
     .attr('fill', '#eee')
     .style('opacity',0)
     .transition().delay(text_delay).duration(text_delay)
-    .style('opacity',1);
+    .style('opacity', params.viz.triangle_opacity);
 
   // add col callback function
   d3.selectAll(params.root+' .col_label_text')

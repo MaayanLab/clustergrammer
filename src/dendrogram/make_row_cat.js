@@ -80,7 +80,8 @@ module.exports = function make_row_cat(params) {
         mid_x + ',' + mid_y + ', L ' + final_x + ',' + final_y + ' Z';
       return output_string;
     })
-    .attr('fill', '#eee');
+    .attr('fill', '#eee')
+    .style('opacity', params.viz.triangle_opacity);
 
   var cat_rect;
   var inst_selection;
