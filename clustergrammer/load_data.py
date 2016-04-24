@@ -23,8 +23,7 @@ def load_tsv_to_net(net, file_buffer):
   else:
     tmp_df['mat'] = pd.read_table(file_buffer, index_col=row_arr)
 
-  # # make sure that row and col names are strings 
-
+  # make sure that row and col names are strings 
   test_row = tmp_df['mat'].index.tolist()[0]
   test_col = tmp_df['mat'].columns.tolist()[0]
 
@@ -38,10 +37,9 @@ def load_tsv_to_net(net, file_buffer):
     col_names = [str(x) for x in col_names]
     tmp_df['mat'].columns = col_names
 
-
-  # remove columns with all nans, occurs when there are trailing
-  # tabs on rows
-  tmp_df['mat'] = tmp_df['mat'].dropna(axis=1)
+  # # remove columns with all nans, occurs when there are trailing
+  # # tabs on rows
+  # tmp_df['mat'] = tmp_df['mat'].dropna(axis=1, how='all')
 
   net.df_to_dat(tmp_df)  
 

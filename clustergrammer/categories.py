@@ -16,10 +16,16 @@ def check_categories(lines):
       found_end = True
 
   max_rcat = 10
+  if max_rcat > len(lines):
+    max_rcat = len(lines) - 1
+
   num_cc = 0
   for i in range(max_rcat):
     ccat_line = lines[i + 1].split('\t')
-    if ccat_line[0] == '':
+
+    # make sure that line has length greater than one to prevent false cats from
+    # trailing new lines at end of matrix
+    if ccat_line[0] == '' and len(ccat_line) > 1:
       num_cc = num_cc + 1
 
   num_labels = {}

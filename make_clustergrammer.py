@@ -19,6 +19,8 @@ net.load_file('txt/rc_two_cats.txt')
 # net.load_file('txt/number_names.txt')
 
 
+net.swap_nan_for_zero()
+
 views = ['N_row_sum','N_row_var']
 
 # # filtering rows and cols by sum 
