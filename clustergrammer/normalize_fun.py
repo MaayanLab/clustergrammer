@@ -30,7 +30,4 @@ def zscore_df(df, axis='row'):
     if axis == 'row':
       df_z[mat_type] = df_z[mat_type].transpose()
 
-  tmp_row_sum = df_z['mat'].sum(axis=1)
-  tmp_col_sum = df_z['mat'].sum(axis=0)
-
   return df_z

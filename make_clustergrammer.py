@@ -26,7 +26,7 @@ views = ['N_row_sum','N_row_var']
 # net.filter_sum('col', threshold=30)
 
 # # keep top rows based on sum 
-# net.filter_N_top('row', 300, 'sum')
+# net.filter_N_top('row', 200, 'sum')
 
 
 # net.normalize(axis='row', norm_type='zscore')
