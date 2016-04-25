@@ -29,8 +29,9 @@ net.load_file('txt/rc_two_cats.txt')
 # # take zscore
 # net.normalize(axis='col', norm_type='zscore', keep_orig=True)
 
-# # only keep most differentially expressed genes
-# net.filter_N_top('row', 10, 'sum')
+# only keep most differentially expressed genes
+# net.filter_N_top('row', 5, rank_type='sum')
+# net.filter_N_top('col', 5, rank_type='sum')
 
 net.swap_nan_for_zero()
   

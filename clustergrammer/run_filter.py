@@ -91,7 +91,11 @@ def get_sorted_rows(df, rank_type='sum'):
 
   return rows_sorted
 
-def filter_N_top(df, N_top, rank_type='sum'):
+def filter_N_top(inst_rc, df, N_top, rank_type='sum'):
+
+  if inst_rc == 'col':
+    for inst_type in df:
+      df[inst_type] = df[inst_type].transpose()
 
   rows_sorted = get_sorted_rows(df['mat'], rank_type)
 
@@ -104,6 +108,10 @@ def filter_N_top(df, N_top, rank_type='sum'):
 
   if 'mat_orig' in df:
     df['mat_orig'] = df['mat_orig'].ix[keep_rows]
+
+  if inst_rc == 'col':
+    for inst_type in df:
+      df[inst_type] = df[inst_type].transpose()
 
   return df
 
