@@ -11,7 +11,25 @@ def run_norm(net, df=None, norm_type='zscore', axis='row', keep_orig=False):
   if norm_type == 'zscore':
     df = zscore_df(df, axis)
 
+  if norm_type == 'qn':
+    df = qn_df(df, axis)
+
   net.df_to_dat(df)
+
+def qn_df(df, axis='row'):
+  '''
+  do quantile normalization of a dataframe dictionary, does not write to net 
+  '''
+  df_qn = {}
+
+  for mat_type in df:
+    df_qn[mat_type] = df[mat_type]
+
+    print('calc qn')
+    print(df_qn[mat_type].shape)
+
+  return df_qn
+
 
 def zscore_df(df, axis='row'):
   '''  
