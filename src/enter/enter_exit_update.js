@@ -21,9 +21,19 @@ module.exports = function(params, network_data, delays){
     .direction('nw')
     .offset([0, 0])
     .html(function(d){
-      var inst_value = String(d.value.toFixed(2));
-      var tooltip_string = '<p>' + d.row_name + ' and ' + d.col_name + '</p>' +
-      '<div> value: ' + inst_value +'</div>';
+      var inst_value = String(d.value.toFixed(3));
+      var tooltip_string;
+
+      if (params.keep_orig){
+        var orig_value = String(d.value_orig.toFixed(3));
+        tooltip_string = '<p>' + d.row_name + ' and ' + d.col_name + '</p>' +
+        '<p> normalized value: ' + inst_value +'</p>' + 
+        '<div> original value: ' + orig_value +'</div>'  ;
+      } else {
+        tooltip_string = '<p>' + d.row_name + ' and ' + d.col_name + '</p>' +
+        '<div> value: ' + inst_value +'</div>';
+      }
+
       return tooltip_string;
     });
 

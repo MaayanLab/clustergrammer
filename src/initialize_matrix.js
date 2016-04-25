@@ -8,7 +8,7 @@ module.exports = function(network_data) {
   if (utils.has(network_data.links[0], 'value_orig')){
     keep_orig = true;
   } else {
-    keep_orig;
+    keep_orig = false;
   }
 
   network_data.row_nodes.forEach(function (tmp, row_index) {

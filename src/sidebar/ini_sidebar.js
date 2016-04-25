@@ -80,32 +80,23 @@ module.exports = function ini_sidebar(params){
 
   });
 
+  _.each(['row','col'], function(inst_rc){
 
-  if (params.viz.show_categories.col){  
-    d3.selectAll(params.root+' .col_cat_super')
-      .on('dblclick',function(){
-        var order_id = this.__data__.replace('-','_') + '_index';
-        if (params.viz.sim_mat){
-          all_reorder( params, order_id, 'row');
-          all_reorder( params, order_id, 'col');
-        }
-        else {
-          all_reorder( params, order_id, 'col');
-        }
-      });
+    if (params.viz.show_categories[inst_rc]){  
+      d3.selectAll(params.root+' .'+inst_rc+'_cat_super')
+        .on('dblclick',function(){
 
-    d3.selectAll(params.root+' .row_cat_super')
-      .on('dblclick',function(){
           var order_id = this.__data__.replace('-','_') + '_index';
           if (params.viz.sim_mat){
             all_reorder( params, order_id, 'row');
             all_reorder( params, order_id, 'col');
-          } else {
-            all_reorder( params, order_id, 'row');
           }
-            
+          else {
+            all_reorder( params, order_id, inst_rc);
+          }
         });
+    }
 
-  }
+  });
 
 };
