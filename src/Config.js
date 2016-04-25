@@ -215,5 +215,11 @@ module.exports = function make_config(args) {
 
   }
 
+  if (utils.has(config.network_data.links[0], 'value_orig')){
+    config.keep_orig = true;
+  } else {
+    config.keep_orig = false;
+  }
+
   return config;
 };

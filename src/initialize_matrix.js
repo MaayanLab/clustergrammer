@@ -4,6 +4,13 @@ module.exports = function(network_data) {
   var matrix = [];
   var ini_object;
 
+  var keep_orig;
+  if (utils.has(network_data.links[0], 'value_orig')){
+    keep_orig = true;
+  } else {
+    keep_orig;
+  }
+
   network_data.row_nodes.forEach(function (tmp, row_index) {
 
     matrix[row_index] = {};
@@ -12,6 +19,7 @@ module.exports = function(network_data) {
       function (col_index) {
 
         if (utils.has(network_data.links[0], 'value_up') || utils.has(network_data.links[0], 'value_dn')) {
+
           ini_object = {
             pos_x: col_index,
             pos_y: row_index,
@@ -31,6 +39,11 @@ module.exports = function(network_data) {
           };
 
         }
+
+        if (keep_orig){
+          ini_object.value_orig = 0;
+        }
+
         return ini_object;
       });
 
@@ -46,6 +59,10 @@ module.exports = function(network_data) {
     if (utils.has(link, 'value_up') || utils.has(link, 'value_dn')) {
       matrix[link.source].row_data[link.target].value_up = link.value_up;
       matrix[link.source].row_data[link.target].value_dn = link.value_dn;
+    }
+
+    if (keep_orig){
+      matrix[link.source].row_data[link.target].value_orig = link.value_orig;
     }
 
     if (link.highlight) {

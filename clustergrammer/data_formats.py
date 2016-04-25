@@ -48,7 +48,12 @@ def dat_to_df(net):
 
     df['mat_up'] = pd.DataFrame(data=net.dat['mat_up'],
       columns=nodes['col'], index=nodes['row'])
+
     df['mat_dn'] = pd.DataFrame(data=net.dat['mat_dn'],
+      columns=nodes['col'], index=nodes['row'])
+
+  if 'mat_orig' in net.dat:
+    df['mat_orig'] = pd.DataFrame(data=net.dat['mat_orig'], 
       columns=nodes['col'], index=nodes['row'])
 
   return df  

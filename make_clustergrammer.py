@@ -25,12 +25,12 @@ net.load_file('txt/rc_two_cats.txt')
 # # quantile normalize to normalize cell lines
 # net.normalize(axis='row', norm_type='qn')
 
-# # only keep most differentially expressed genes
-# net.filter_N_top('row', 700, 'sum')
 
 # # take zscore
 # net.normalize(axis='col', norm_type='zscore', keep_orig=True)
 
+# # only keep most differentially expressed genes
+# net.filter_N_top('row', 10, 'sum')
 
 net.swap_nan_for_zero()
   
