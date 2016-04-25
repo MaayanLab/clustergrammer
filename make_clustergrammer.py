@@ -8,7 +8,6 @@ start_time = time.time()
 from clustergrammer import Network
 net = Network()
 
-
 net.load_file('txt/rc_two_cats.txt')
 # net.load_file('txt/example_tsv.txt')
 # net.load_file('txt/col_categories.txt')
@@ -18,22 +17,19 @@ net.load_file('txt/rc_two_cats.txt')
 # net.load_file('txt/sim_mat_4_cats.txt')
 # net.load_file('txt/number_names.txt')
 
-
 net.swap_nan_for_zero()
 
 views = ['N_row_sum','N_row_var']
+# views = ['N_row_sum']
 
 # # filtering rows and cols by sum 
 # net.filter_sum('row', threshold=20)
 # net.filter_sum('col', threshold=30)
 
-# # keep top rows based on sum 
-# net.filter_N_top('row', 200, 'sum')
-
+# net.filter_N_top('row', 500, 'sum')
 
 # net.normalize(axis='row', norm_type='zscore')
   
-
 net.make_clust(dist_type='cos',views=views , dendro=True,
                sim_mat=True, filter_sim=0.1)
 
