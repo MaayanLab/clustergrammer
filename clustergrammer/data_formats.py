@@ -25,6 +25,9 @@ def df_to_dat(net, df):
     net.dat['mat_up'] = df['mat_up'].values
     net.dat['mat_dn'] = df['mat_dn'].values
 
+  if 'mat_orig' in df:
+    net.dat['mat_orig'] = df['mat_orig'].values
+
   categories.dict_cat(net)
 
 def dat_to_df(net):

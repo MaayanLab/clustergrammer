@@ -129,6 +129,9 @@ def zscore_df(df, axis='row', keep_orig=False):
   df_z = {}
 
   for mat_type in df: 
+    if keep_orig and mat_type == 'mat':
+      mat_orig = deepcopy(df[mat_type])
+
     inst_df = df[mat_type]
 
     if axis == 'row':
@@ -138,5 +141,8 @@ def zscore_df(df, axis='row', keep_orig=False):
 
     if axis == 'row':
       df_z[mat_type] = df_z[mat_type].transpose()
+
+  if keep_orig:
+    df_z['mat_orig'] = mat_orig
 
   return df_z

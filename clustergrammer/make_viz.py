@@ -59,8 +59,10 @@ def viz_json(net, dendro=True):
 
         if 'mat_up' in net.dat:
           inst_dict['value_up'] = net.dat['mat_up'][i, j]
-        if 'mat_up' in net.dat:
           inst_dict['value_dn'] = net.dat['mat_dn'][i, j]
+
+        if 'mat_orig' in net.dat:
+          inst_dict['value_orig'] = net.dat['mat_orig'][i, j]
 
         if 'mat_info' in net.dat:
           inst_dict['info'] = net.dat['mat_info'][str((i, j))]

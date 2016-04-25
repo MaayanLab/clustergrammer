@@ -29,7 +29,7 @@ net.load_file('txt/rc_two_cats.txt')
 # net.filter_N_top('row', 700, 'sum')
 
 # # take zscore
-# net.normalize(axis='col', norm_type='zscore')
+# net.normalize(axis='col', norm_type='zscore', keep_orig=True)
 
 
 net.swap_nan_for_zero()

@@ -27,6 +27,9 @@ def df_filter_row_sum(df, threshold, take_abs=True):
       df['mat_up'] = grab_df_subset(df['mat_up'], keep_rows=keep_rows)
       df['mat_dn'] = grab_df_subset(df['mat_dn'], keep_rows=keep_rows)
 
+    if 'mat_orig' in df:
+      df['mat_orig'] = grab_df_subset(df['mat_orig'], keep_rows=keep_rows)
+
   return df
 
 def df_filter_col_sum(df, threshold, take_abs=True):
@@ -55,6 +58,9 @@ def df_filter_col_sum(df, threshold, take_abs=True):
     if 'mat_up' in df:
       df['mat_up'] = grab_df_subset(df['mat_up'], inst_rows, inst_cols)
       df['mat_dn'] = grab_df_subset(df['mat_dn'], inst_rows, inst_cols)
+
+    if 'mat_orig' in df:
+      df['mat_orig'] = grab_df_subset(df['mat_orig'], inst_rows, inst_cols)
 
   else:
     df['mat'] = df_copy
@@ -95,6 +101,9 @@ def filter_N_top(df, N_top, rank_type='sum'):
   if 'mat_up' in df:
     df['mat_up'] = df['mat_up'].ix[keep_rows]
     df['mat_dn'] = df['mat_dn'].ix[keep_rows]  
+
+  if 'mat_orig' in df:
+    df['mat_orig'] = df['mat_orig'].ix[keep_rows]
 
   return df
 

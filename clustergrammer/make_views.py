@@ -23,6 +23,8 @@ def N_rows(net, df, all_views, dist_type='cosine', rank_type='sum'):
         if 'mat_up' in tmp_df:
           tmp_df['mat_up'] = tmp_df['mat_up'].ix[keep_rows]
           tmp_df['mat_dn'] = tmp_df['mat_dn'].ix[keep_rows]
+        if 'mat_orig' in tmp_df:
+          tmp_df['mat_orig'] = tmp_df['mat_orig'].ix[keep_rows]
 
         tmp_df = run_filter.df_filter_col_sum(tmp_df, 0.001)
         tmp_net.df_to_dat(tmp_df)
