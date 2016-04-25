@@ -1,8 +1,11 @@
 var get_cat_title = require('./categories/get_cat_title');
+var all_reorder = require('./reorder/all_reorder');
 /* Spillover Module
 */
-module.exports = function(viz) {
-  
+module.exports = function(params) {
+
+  var viz = params.viz;
+
   // hide spillover from slanted column labels on right side
   d3.select(viz.root+' .col_container')
     .append('path')
@@ -125,6 +128,16 @@ module.exports = function(viz) {
       })
       .text(function(d){
         return get_cat_title(viz, d, 'col');
+      })
+      .on('dblclick',function(){
+        var order_id = this.__data__.replace('-','_') + '_index';
+        if (viz.sim_mat){
+          all_reorder( params, order_id, 'row');
+          all_reorder( params, order_id, 'col');
+        }
+        else {
+          all_reorder( params, order_id, 'col');
+        }
       });
     }
 
@@ -157,6 +170,16 @@ module.exports = function(viz) {
         })
         .text(function(d){
           return get_cat_title(viz, d, 'row');
+        })
+        .on('dblclick',function(){
+          var order_id = this.__data__.replace('-','_') + '_index';
+          if (viz.sim_mat){
+            all_reorder( params, order_id, 'row');
+            all_reorder( params, order_id, 'col');
+          } else {
+            all_reorder( params, order_id, 'row');
+          }
+            
         });
     }  
   }

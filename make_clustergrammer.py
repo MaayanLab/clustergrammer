@@ -18,8 +18,6 @@ net.load_file('txt/rc_two_cats.txt')
 # net.load_file('txt/sim_mat_4_cats.txt')
 # net.load_file('txt/number_names.txt')
 
-
-
 # # filtering rows and cols by sum 
 # net.filter_sum('row', threshold=20)
 # net.filter_sum('col', threshold=30)
@@ -36,8 +34,8 @@ net.load_file('txt/rc_two_cats.txt')
 
 net.swap_nan_for_zero()
   
-# views = ['N_row_sum', 'N_row_var']
-views = []
+views = ['N_row_sum', 'N_row_var']
+# views = []
 
 net.make_clust(dist_type='cos',views=views , dendro=True,
                sim_mat=True, filter_sim=0.1)

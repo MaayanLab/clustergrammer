@@ -1,14 +1,14 @@
-var get_cat_title = require('../categories/get_cat_title');
+// var get_cat_title = require('../categories/get_cat_title');
 
 module.exports = function set_up_reorder(params, sidebar){
 
   var button_dict;
   var tmp_orders; 
   var rc_dict = {'row':'Row', 'col':'Column', 'both':''};
-  var all_cats;
   var is_active;
   var inst_reorder;
-  var inst_order_label;
+  // var all_cats;
+  // var inst_order_label;
 
   var reorder_types;
   if (params.sim_mat){
@@ -34,27 +34,22 @@ module.exports = function set_up_reorder(params, sidebar){
       other_rc = 'row';
     }
 
-    var cat_rc;
-
-    if (inst_rc != 'both'){
-      cat_rc = inst_rc;
-    } else {
-      cat_rc = 'row';
-    }
-
-    if ( params.viz.all_cats[cat_rc].length > 0 ){
-      all_cats = params.viz.all_cats[cat_rc];
-
-      _.each(all_cats, function(inst_cat){
-
-        var cat_title = get_cat_title(params.viz, inst_cat, cat_rc);
-
-        inst_order_label = inst_cat.replace('-','_')+'_index';
-        
-        button_dict[inst_order_label] = cat_title;
-
-      });
-    }
+    // // removing categories from reorder buttons 
+    // /////////////////////////////////////////////
+    // var cat_rc;
+    // if (inst_rc != 'both'){
+    //   cat_rc = inst_rc;
+    // } else {
+    //   cat_rc = 'row';
+    // }
+    // if ( params.viz.all_cats[cat_rc].length > 0 ){
+    //   all_cats = params.viz.all_cats[cat_rc];
+    //   _.each(all_cats, function(inst_cat){
+    //     var cat_title = get_cat_title(params.viz, inst_cat, cat_rc);
+    //     inst_order_label = inst_cat.replace('-','_')+'_index';
+    //     button_dict[inst_order_label] = cat_title;
+    //   });
+    // }
 
     tmp_orders = Object.keys(params.matrix.orders);
 
@@ -64,7 +59,10 @@ module.exports = function set_up_reorder(params, sidebar){
 
       if (inst_name.indexOf(other_rc) > -1){
         inst_name = inst_name.replace('_row','').replace('_col','');
-        possible_orders.push(inst_name);
+
+        if ( inst_name.indexOf('cat_') < 0 ){
+          possible_orders.push(inst_name);
+        }
       }
       
     });
