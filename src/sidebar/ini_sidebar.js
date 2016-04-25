@@ -80,4 +80,32 @@ module.exports = function ini_sidebar(params){
 
   });
 
+
+  if (params.viz.show_categories.col){  
+    d3.selectAll(params.root+' .col_cat_super')
+      .on('dblclick',function(){
+        var order_id = this.__data__.replace('-','_') + '_index';
+        if (params.viz.sim_mat){
+          all_reorder( params, order_id, 'row');
+          all_reorder( params, order_id, 'col');
+        }
+        else {
+          all_reorder( params, order_id, 'col');
+        }
+      });
+
+    d3.selectAll(params.root+' .row_cat_super')
+      .on('dblclick',function(){
+          var order_id = this.__data__.replace('-','_') + '_index';
+          if (params.viz.sim_mat){
+            all_reorder( params, order_id, 'row');
+            all_reorder( params, order_id, 'col');
+          } else {
+            all_reorder( params, order_id, 'row');
+          }
+            
+        });
+
+  }
+
 };
