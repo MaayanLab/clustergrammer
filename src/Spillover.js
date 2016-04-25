@@ -54,7 +54,6 @@ module.exports = function(params) {
     .attr('class', 'white_bars')
     .attr('class','right_spillover');
 
-
   // hide spillover from top of row dendrogram 
   var x_offset = viz.clust.margin.left + viz.clust.dim.width;
   var y_offset = tmp_top;
