@@ -28,7 +28,7 @@ views = ['N_row_sum', 'N_row_var']
 
 # net.filter_N_top('row', 500, 'sum')
 
-# net.normalize(axis='row', norm_type='qn')
+# net.normalize(axis='col', norm_type='qn')
 
 net.swap_nan_for_zero()
   
