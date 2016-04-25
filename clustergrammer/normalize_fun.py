@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from copy import deepcopy
 
 def run_norm(net, df=None, norm_type='zscore', axis='row', keep_orig=False):
   ''' 
@@ -43,19 +44,48 @@ def qn_df(df, axis='row'):
     common_dist = calc_common_dist(inst_df, axis)
 
     # swap in common distribution 
-    # import pdb; pdb.set_trace()
+    inst_df = swap_in_common_dist(inst_df, common_dist, axis)
 
     # swap back in missing values 
     if missing_values:
       inst_df = inst_df.mask(missing_mask, other=np.nan)
 
-      
-    # print('calc qn')
-    
     df_qn[mat_type] = inst_df
 
-
   return df_qn
+
+def swap_in_common_dist(df, common_dist, axis):
+
+  col_names = df.columns.tolist()
+
+  qn_arr = np.array([])
+  orig_rows = df.index.tolist()
+
+  # loop through each column 
+  for inst_col in col_names:
+
+    # get the sorted list of row names for the given column 
+    tmp_series = deepcopy(df[inst_col])
+    tmp_series = tmp_series.sort_values(ascending=False)
+    sorted_names = tmp_series.index.tolist()
+
+    qn_vect = np.array([])
+    for inst_row in orig_rows:
+      inst_index = sorted_names.index(inst_row)
+      inst_val = common_dist[inst_index]
+      qn_vect = np.hstack((qn_vect, inst_val))
+
+    if qn_arr.shape[0] == 0:
+      qn_arr = qn_vect
+    else:
+      qn_arr = np.vstack((qn_arr, qn_vect))
+
+  # transpose (because of vstacking)
+  qn_arr = qn_arr.transpose()
+
+  qn_df = pd.DataFrame(data=qn_arr, columns=col_names, index=orig_rows)
+
+  return qn_df
 
 def calc_common_dist(df, axis='row'):
   '''
