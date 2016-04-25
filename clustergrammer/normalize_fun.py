@@ -20,13 +20,38 @@ def qn_df(df, axis='row'):
   '''
   do quantile normalization of a dataframe dictionary, does not write to net 
   '''
+  import pandas as pd
+  import numpy as np
   df_qn = {}
 
   for mat_type in df:
-    df_qn[mat_type] = df[mat_type]
+    inst_df = df[mat_type]
 
-    print('calc qn')
-    print(df_qn[mat_type].shape)
+    missing_values = inst_df.isnull().values.any()
+
+    # make mask of missing values 
+    if missing_values:
+
+      # get nan mask 
+      missing_mask = pd.isnull(inst_df)
+
+      # tmp fill in na with zero, will not affect qn 
+      inst_df = inst_df.fillna(value=0)
+
+    # calc common distribution 
+
+    # swap in common distribution 
+    # import pdb; pdb.set_trace()
+
+    # swap back in missing values 
+    if missing_values:
+      inst_df = inst_df.mask(missing_mask, other=np.nan)
+
+      
+    # print('calc qn')
+    
+    df_qn[mat_type] = inst_df
+
 
   return df_qn
 

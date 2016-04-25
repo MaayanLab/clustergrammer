@@ -9,6 +9,7 @@ from clustergrammer import Network
 net = Network()
 
 net.load_file('txt/rc_two_cats.txt')
+# net.load_file('txt/missing_values.txt')
 # net.load_file('txt/example_tsv.txt')
 # net.load_file('txt/col_categories.txt')
 # net.load_file('txt/mat_cats.tsv')
@@ -27,7 +28,7 @@ views = ['N_row_sum', 'N_row_var']
 
 # net.filter_N_top('row', 500, 'sum')
 
-net.normalize(axis='row', norm_type='qn')
+# net.normalize(axis='row', norm_type='qn')
 
 net.swap_nan_for_zero()
   
