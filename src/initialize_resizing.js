@@ -11,7 +11,7 @@ module.exports = function(params) {
     d3.select(window).on('resize', function () {
       d3.select(params.viz.viz_svg).style('opacity', 0.5);
       var wait_time = 500;
-      if (params.viz.run_trans == true) {
+      if (params.viz.run_trans === true) {
         wait_time = 2500;
       }
       setTimeout(reset_visualization_size, wait_time, params);
