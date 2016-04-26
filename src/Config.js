@@ -8,10 +8,17 @@ var check_sim_mat = require('./config/check_sim_mat');
 
 module.exports = function make_config(args) {
 
+  // console.log('\n\n\n')
+  // console.log('checking args for cat_colors')
+  // console.log(args.cat_colors)
+
   var defaults = set_defaults();
 
   // Mixin defaults with user-defined arguments.
   var config = utils.extend(defaults, args);
+
+  // console.log('\n\nchecking for cat_colors')
+  // console.log(config.cat_colors)
 
   if (config.ini_expand){
     config.expand_button = false;
@@ -130,8 +137,14 @@ module.exports = function make_config(args) {
 
   config.show_categories = {};
   config.all_cats = {};
-  config.cat_colors = {};
   config.cat_names = {};
+
+  var predefine_colors = false;
+  if (config.cat_colors === null){
+    config.cat_colors = {};
+    predefine_colors = false;
+  }
+
 
   var num_colors = 0;
   _.each(['row','col'], function(inst_rc){
@@ -152,7 +165,9 @@ module.exports = function make_config(args) {
     var tmp_super;
     if (config.show_categories[inst_rc]){
 
-      config.cat_colors[inst_rc] = {};
+      if (predefine_colors === false){
+        config.cat_colors[inst_rc] = {};
+      } 
       config.cat_names[inst_rc] = {};
 
       _.each( config.all_cats[inst_rc], function(inst_cat){
@@ -172,22 +187,25 @@ module.exports = function make_config(args) {
 
         var names_of_cat = _.uniq(_.pluck(config.network_data[inst_rc+'_nodes'], inst_cat)).sort();
 
-        config.cat_colors[inst_rc][inst_cat] = {};
+        if (predefine_colors === false){
 
-        _.each(names_of_cat, function(cat_tmp, i){
-          
-          var inst_color = colors.get_random_color(i+2+num_colors);
+          config.cat_colors[inst_rc][inst_cat] = {};
 
-          config.cat_colors[inst_rc][inst_cat][cat_tmp] = inst_color;
-          // config.cat_colors[inst_rc][inst_cat][cat_tmp] = colors.get_random_color(i+num_colors);
+          _.each(names_of_cat, function(cat_tmp, i){
+            
+            var inst_color = colors.get_random_color(i+2+num_colors);
 
-          // hack to get 'Not' categories to not be dark colored
-          if (cat_tmp.indexOf('Not ') >= 0){
-            config.cat_colors[inst_rc][inst_cat][cat_tmp] = '#eee';
-          }
+            config.cat_colors[inst_rc][inst_cat][cat_tmp] = inst_color;
 
-          num_colors = num_colors + 1;
-        });
+            // hack to get 'Not' categories to not be dark colored
+            if (cat_tmp.indexOf('Not ') >= 0){
+              config.cat_colors[inst_rc][inst_cat][cat_tmp] = '#eee';
+            }
+
+            num_colors = num_colors + 1;
+          });
+
+        }
 
       } );
 

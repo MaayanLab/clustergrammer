@@ -41,7 +41,8 @@ module.exports = function set_defaults(){
     sidebar_icons:true,
     row_search_placeholder:'Row',
     buffer_width:15,
-    show_sim_mat:false
+    show_sim_mat:false,
+    cat_colors:null
   };
 
   return defaults;
