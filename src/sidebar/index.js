@@ -3,7 +3,7 @@ var set_up_filters = require('../filters/set_up_filters');
 var set_up_dendro_sliders = require('./set_up_dendro_sliders');
 var set_up_search = require('./set_up_search');
 var set_up_reorder = require('./set_up_reorder');
-var make_cat_keys = require('./make_cat_keys');
+// var make_cat_keys = require('./make_cat_keys');
 var set_sidebar_ini_view = require('./set_sidebar_ini_view');
 var make_icons = require('./make_icons');
 
@@ -84,7 +84,8 @@ module.exports = function sidebar(config, params) {
   
   ini_sidebar(params);
 
-  make_cat_keys(params);
+  // disable for now 
+  // make_cat_keys(params);
 
   // when initializing the visualization using a view
   if (params.ini_view !== null) {
