@@ -3,13 +3,12 @@ var all_colors;
 // var seed = 101;
 var seed = 8;
 
-var tmp1 = d3.scale.category20b().range();
-var tmp2 = d3.scale.category20().range();
-
-// all_colors = tmp1;
-all_colors = tmp1.concat(tmp2);
-
-all_colors = shuffle(all_colors);
+all_colors = [ "#393b79", "#bcbd22", "#aec7e8", "#ff7f0e", "#ffbb78", "#98df8a", 
+    "#ff9896", "#9467bd", "#c5b0d5", "#e7969c", "#8c564b", "#1f77b4", "#5254a3", 
+    "#c49c94", "#e377c2", "#f7b6d2", "#7f7f7f", "#c7c7c7", "#2ca02c", "#dbdb8d", 
+    "#17becf", "#9edae5", "#637939", "#6b6ecf", "#9c9ede", "#d62728", "#8ca252", 
+    "#cedb9c", "#8c6d31", "#bd9e39", "#e7cb94", "#843c39", "#ad494a", "#d6616b", 
+    "#7b4173", "#a55194", "#ce6dbd", "#de9ed6"];
 
 function get_default_color() {
   return '#EEE';
@@ -22,34 +21,6 @@ function get_random_color(i) {
 function get_num_colors() {
   return all_colors.length;
 }
-
-function random_gen() {
-  var x = Math.sin(seed++) * 10000;
-  return x - Math.floor(x);
-}
-
-function shuffle(array) {
-
-  var currentIndex = array.length, temporaryValue, randomIndex;
-
-  // While there remain elements to shuffle...
-  while (0 !== currentIndex) {
-
-    // Pick a remaining element...
-    // randomIndex = Math.floor(Math.random() * currentIndex);
-    randomIndex = Math.floor(random_gen() * currentIndex);
-
-    currentIndex -= 1;
-
-    // And swap it with the current element.
-    temporaryValue = array[currentIndex];
-    array[currentIndex] = array[randomIndex];
-    array[randomIndex] = temporaryValue;
-  }
-
-  return array;
-}
-
 
 module.exports = {
   get_default_color: get_default_color,
