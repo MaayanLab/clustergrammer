@@ -8,17 +8,10 @@ var check_sim_mat = require('./config/check_sim_mat');
 
 module.exports = function make_config(args) {
 
-  // console.log('\n\n\n')
-  // console.log('checking args for cat_colors')
-  // console.log(args.cat_colors)
-
   var defaults = set_defaults();
 
   // Mixin defaults with user-defined arguments.
   var config = utils.extend(defaults, args);
-
-  // console.log('\n\nchecking for cat_colors')
-  // console.log(config.cat_colors)
 
   if (config.ini_expand){
     config.expand_button = false;
@@ -143,6 +136,8 @@ module.exports = function make_config(args) {
   if (config.cat_colors === null){
     config.cat_colors = {};
     predefine_colors = false;
+  } else {
+    predefine_colors = true;
   }
 
 
