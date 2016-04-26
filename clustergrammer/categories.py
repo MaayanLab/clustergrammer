@@ -15,7 +15,7 @@ def check_categories(lines):
     else:
       found_end = True
 
-  max_rcat = 10
+  max_rcat = 15
   if max_rcat > len(lines):
     max_rcat = len(lines) - 1
 
