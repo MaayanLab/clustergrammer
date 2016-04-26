@@ -53,10 +53,15 @@ module.exports = function d3_tip_custom(){
       left: (coords.left + poffset[1]) + 'px'
     });
 
-    var inst_class = d3.select(this).attr('class');
+    // quick fix for fading tile tooltips
+    if (isFunction(this) === false){
 
-    if (inst_class.indexOf('tile') >= 0){
-      setTimeout(fade_tips, 10000, this);
+      var inst_class = d3.select(this).attr('class');
+
+      if (inst_class.indexOf('tile') >= 0){
+        setTimeout(fade_tips, 10000, this);
+      }
+
     }
 
     return tip;
@@ -323,8 +328,13 @@ module.exports = function d3_tip_custom(){
         .transition()
         .duration(250)
         .style('opacity',0);
-      }
-    }  
+    }
+  }
+
+  function isFunction(functionToCheck) {
+   var getType = {};
+   return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
+  }
 
   return tip;
 };
