@@ -5,6 +5,7 @@ module.exports = function set_defaults(){
     row_label_scale: 1,
     col_label_scale: 1,
     super_labels: false,
+    super: {},
     show_label_tooltips: true,
     show_tile_tooltips: true,
     // matrix options

@@ -17,8 +17,8 @@ var viz_size = {
 
 // define arguments object
 var default_args = {
-  'row_label':'Row Title',
-  'col_label':'Colum Title',
+  // 'row_label':'Row Title',
+  // 'col_label':'Colum Title',
   'outer_margins': outer_margins,
   'show_tile_tooltips':true,
   'size':viz_size,
