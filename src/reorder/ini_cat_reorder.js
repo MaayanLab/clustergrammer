@@ -10,6 +10,10 @@ module.exports = function ini_cat_reorder(params){
       d3.selectAll(params.root+' .'+inst_rc+'_cat_super')
         .on('dblclick',function(){
 
+          if (params.sim_mat){
+            inst_rc = 'both';
+          }
+
           d3.selectAll(params.root+' .toggle_'+inst_rc+'_order .btn')
             .classed('active',false);
 
