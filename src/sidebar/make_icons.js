@@ -1,8 +1,12 @@
+var save_svg_png = require('../screenshot/save_svg_png');
+
 module.exports = function make_icons(params, sidebar){
 
   // <a href="help" target="_blank"  id="help_link">
   //   <i class="fa fa-question-circle icon_buttons"></i>
   // </a>
+
+  var saveSvgAsPng = save_svg_png();
 
   var row = sidebar
     .select('.icons_section')
