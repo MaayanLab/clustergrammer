@@ -1,8 +1,8 @@
 var get_cat_title = require('./categories/get_cat_title');
 var all_reorder = require('./reorder/all_reorder');
-/* Spillover Module
-*/
-module.exports = function(params) {
+var ini_cat_reorder = require('./reorder/ini_cat_reorder');
+
+module.exports = function Spillover(params) {
 
   var viz = params.viz;
 
@@ -119,6 +119,7 @@ module.exports = function(params) {
       .classed('col_cat_super', true)
       .style('font-size', cat_text_size+'px')
       .style('opacity', cat_super_opacity)
+      .style('cursor','default')
       .attr('transform', function(d){
         var inst_cat = parseInt( d.split('-')[1], 10);
         var inst_y = y_offset + extra_y_room * viz.cat_room.symbol_width 
@@ -127,16 +128,6 @@ module.exports = function(params) {
       })
       .text(function(d){
         return get_cat_title(viz, d, 'col');
-      })
-      .on('dblclick',function(){
-        var order_id = this.__data__.replace('-','_') + '_index';
-        if (viz.sim_mat){
-          all_reorder( params, order_id, 'row');
-          all_reorder( params, order_id, 'col');
-        }
-        else {
-          all_reorder( params, order_id, 'col');
-        }
       });
     }
 
@@ -162,6 +153,7 @@ module.exports = function(params) {
         .classed('row_cat_super',true)
         .style('font-size', cat_text_size+'px')
         .style('opacity', cat_super_opacity)
+        .style('cursor','default')
         .attr('transform', function(d){
           var inst_y = extra_y_room*viz.cat_room.symbol_width 
             * parseInt( d.split('-')[1], 10 );
@@ -169,17 +161,8 @@ module.exports = function(params) {
         })
         .text(function(d){
           return get_cat_title(viz, d, 'row');
-        })
-        .on('dblclick',function(){
-          var order_id = this.__data__.replace('-','_') + '_index';
-          if (viz.sim_mat){
-            all_reorder( params, order_id, 'row');
-            all_reorder( params, order_id, 'col');
-          } else {
-            all_reorder( params, order_id, 'row');
-          }
-            
         });
+
     }  
   }
 
@@ -202,6 +185,10 @@ module.exports = function(params) {
       var inst_offset = y_offset;
       return 'translate(0,' + inst_offset + ')';
     });
+
+
+
+  ini_cat_reorder(params);
 
 
 

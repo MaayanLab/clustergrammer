@@ -124,6 +124,7 @@ module.exports = function(params, text_delay) {
     })
     // original font size
     .style('font-size', params.labels.default_fs_col + 'px')
+    .style('cursor','default')
     .text(function(d){ return utils.normal_name(d); })
     // .attr('pointer-events','none')
     .style('opacity',0)

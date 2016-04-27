@@ -1,6 +1,7 @@
 var change_groups = require('../dendrogram/change_groups');
 var search = require('../search');
 var all_reorder = require('../reorder/all_reorder');
+var ini_cat_reorder = require('../reorder/ini_cat_reorder');
 
 module.exports = function ini_sidebar(params){
 
@@ -80,23 +81,6 @@ module.exports = function ini_sidebar(params){
 
   });
 
-  _.each(['row','col'], function(inst_rc){
-
-    if (params.viz.show_categories[inst_rc]){  
-      d3.selectAll(params.root+' .'+inst_rc+'_cat_super')
-        .on('dblclick',function(){
-
-          var order_id = this.__data__.replace('-','_') + '_index';
-          if (params.viz.sim_mat){
-            all_reorder( params, order_id, 'row');
-            all_reorder( params, order_id, 'col');
-          }
-          else {
-            all_reorder( params, order_id, inst_rc);
-          }
-        });
-    }
-
-  });
+  ini_cat_reorder(params);
 
 };

@@ -101,6 +101,7 @@ module.exports = function(params, text_delay) {
     .text(function(d){ return utils.normal_name(d); })
     .attr('pointer-events','none')
     .style('opacity',0)
+    .style('cursor','default')
     .transition().delay(text_delay).duration(text_delay)
     .style('opacity',1);
 
