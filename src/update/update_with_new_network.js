@@ -9,6 +9,7 @@ var make_col_dendro = require('../dendrogram/make_col_dendro');
 var ini_sidebar = require('../sidebar/ini_sidebar');
 var enable_sidebar  = require('../sidebar/enable_sidebar');
 var ini_doubleclick = require('../zoom/ini_doubleclick');
+var update_reorder_buttons = require('../reorder/update_reorder_buttons');
 
 module.exports = function update_with_new_network(config, old_params,  new_network_data){
 
@@ -18,24 +19,7 @@ module.exports = function update_with_new_network(config, old_params,  new_netwo
   tmp_config.network_data = new_network_data;
   tmp_config.inst_order = old_params.viz.inst_order;
 
-  _.each(['row','col'], function(inst_rc){
-
-    var other_rc;
-    if (inst_rc === 'row'){
-      other_rc = 'col';
-    } else {
-      other_rc = 'row'
-    }
-
-    d3.selectAll(old_params.root+' .toggle_'+other_rc+'_order .btn')
-      .filter(function(){
-        return d3.select(this).attr('name') === tmp_config.inst_order[inst_rc];
-      })
-      .classed('active',true);
-
-
-  });
-  console.log(tmp_config.inst_order)
+  update_reorder_buttons(tmp_config, old_params);
 
   tmp_config.ini_expand = false;
   tmp_config.ini_view = null;

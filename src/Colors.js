@@ -1,7 +1,5 @@
 // colors from http://graphicdesign.stackexchange.com/revisions/3815/8
 var all_colors;
-// var seed = 101;
-var seed = 8;
 
 all_colors = [ "#393b79", "#bcbd22", "#aec7e8", "#ff7f0e", "#ffbb78", "#98df8a", 
     "#404040", "#ff9896", "#9467bd", "#c5b0d5", "#e7969c", "#8c564b", "#1f77b4", 

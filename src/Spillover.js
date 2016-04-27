@@ -1,5 +1,4 @@
 var get_cat_title = require('./categories/get_cat_title');
-var all_reorder = require('./reorder/all_reorder');
 var ini_cat_reorder = require('./reorder/ini_cat_reorder');
 
 module.exports = function Spillover(params) {

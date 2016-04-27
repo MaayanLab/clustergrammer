@@ -2,8 +2,6 @@ var all_reorder = require('./all_reorder');
 
 module.exports = function ini_cat_reorder(params){
 
-  console.log('initialize cat_reorder')
-
   _.each(['row','col'], function(inst_rc){
 
     if (params.viz.show_categories[inst_rc]){  
