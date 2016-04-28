@@ -19,7 +19,8 @@ module.exports = function make_filter_title(params, filter_type){
   }
 
   if (type.top === 'N'){
-    filter_title.suffix = ' '+title.node;
+    // filter_title.suffix = ' '+title.node;
+    filter_title.suffix = '';
   }
 
   if (type.top === 'pct'){

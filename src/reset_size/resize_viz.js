@@ -23,8 +23,11 @@ var make_row_dendro_triangles = require('../dendrogram/make_row_dendro_triangles
 var make_col_dendro_triangles = require('../dendrogram/make_col_dendro_triangles');
 var toggle_dendro_view = require('../dendrogram/toggle_dendro_view');
 var show_visible_area = require('../zoom/show_visible_area');
+var calc_viz_dimensions = require('../params/calc_viz_dimensions');
 
-module.exports = function(params, cont_dim) {
+module.exports = function(params) {
+
+  var cont_dim = calc_viz_dimensions(params); 
 
   // reset visible area 
   var zoom_info = {};

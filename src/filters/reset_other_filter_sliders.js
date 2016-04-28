@@ -34,7 +34,7 @@ module.exports = function reset_other_filter_sliders(params, filter_type, inst_s
         $(params.root+' .slider_'+reset_filter).slider( "value", 0);
 
         d3.select(params.root+' .title_'+reset_filter)
-          .text(tmp_title.text + tmp_title.state + tmp_title.suffix);
+          .text(tmp_title.text + tmp_title.state);
 
         d3.select(params.root+' .slider_'+reset_filter)
           .attr('current_state', tmp_title.state);

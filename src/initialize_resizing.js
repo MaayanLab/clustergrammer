@@ -1,4 +1,4 @@
-var reset_visualization_size = require('./reset_size/reset_visualization_size');
+var resize_viz = require('./reset_size/resize_viz');
 
 module.exports = function(params) {
 
@@ -14,7 +14,7 @@ module.exports = function(params) {
       if (params.viz.run_trans === true) {
         wait_time = 2500;
       }
-      setTimeout(reset_visualization_size, wait_time, params);
+      setTimeout(resize_viz, wait_time, params);
     });
   }
 
@@ -98,7 +98,7 @@ module.exports = function(params) {
         if (params.viz.run_trans == true) {
           wait_time = 2500;
         }
-        setTimeout(reset_visualization_size, wait_time, params);
+        setTimeout(resize_viz, wait_time, params);
       });
   }
 };
