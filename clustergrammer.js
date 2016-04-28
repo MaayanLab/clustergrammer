@@ -580,7 +580,7 @@ var Clustergrammer =
 	    sidebar_width: 170,
 	    sidebar_icons: true,
 	    row_search_placeholder: 'Row',
-	    buffer_width: 15,
+	    buffer_width: 10,
 	    show_sim_mat: false,
 	    cat_colors: null
 	  };
@@ -6419,6 +6419,7 @@ var Clustergrammer =
 	  sidebar.append('div').classed('icons_section', true);
 
 	  if (params.sidebar.icons) {
+	    make_modals(params);
 	    make_icons(params, sidebar);
 	  }
 
@@ -6462,8 +6463,6 @@ var Clustergrammer =
 
 	    params.ini_view = null;
 	  }
-
-	  make_modals(params);
 
 	  return params;
 		};
@@ -8199,7 +8198,7 @@ var Clustergrammer =
 
 	  row.append('col').classed('col-xs-4', true).append('i').classed('fa', true).classed('fa-camera', true).classed('icon_buttons', true).style('font-size', '25px').on('click', function () {
 
-	    $('.picture_info').modal('toggle');
+	    $(params.root + ' .picture_info').modal('toggle');
 	  });
 
 	  // save svg: example from: http://bl.ocks.org/pgiraud/8955139#profile.json
@@ -8223,6 +8222,7 @@ var Clustergrammer =
 
 	  var svg_id = 'svg_' + params.root.replace('#', '');
 
+	  console.log(d3.select(params.root + ' .download_buttons').empty());
 	  // save as PNG
 	  /////////////////////////////////////////
 	  d3.select(params.root + ' .download_buttons').append('p').append('a').html('Download PNG').on('click', function () {
@@ -8675,16 +8675,11 @@ var Clustergrammer =
 
 	  share_modal.body.append('input').classed('bootstrap_highlight', true).classed('share_url', true);
 
-	  // var screenshot_modal = make_modal_skeleton(params, 'picture_info');
+	  var screenshot_modal = make_modal_skeleton(params, 'picture_info');
 
-	  // screenshot_modal.header
-	  //   .append('h4')
-	  //   .classed('modal-title', true)
-	  //   .html('Save a snapshot of the visualization');
+	  screenshot_modal.header.append('h4').classed('modal-title', true).html('Save a snapshot of the visualization');
 
-	  // screenshot_modal.body
-	  //   .append('div')
-	  //   .classed('download_buttons', true);
+	  screenshot_modal.body.append('div').classed('download_buttons', true);
 		};
 
 /***/ },

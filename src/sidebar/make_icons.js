@@ -54,7 +54,7 @@ module.exports = function make_icons(params, sidebar){
     .style('font-size','25px')
     .on('click',function(){
 
-      $('.picture_info').modal('toggle');
+      $(params.root+' .picture_info').modal('toggle');
 
     }); 
 
@@ -88,6 +88,7 @@ module.exports = function make_icons(params, sidebar){
 
     var svg_id = 'svg_'+params.root.replace('#','');
 
+    console.log(d3.select(params.root+' .download_buttons').empty())
     // save as PNG 
     /////////////////////////////////////////
     d3.select(params.root+' .download_buttons')

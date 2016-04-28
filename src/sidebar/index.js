@@ -51,6 +51,7 @@ module.exports = function sidebar(config, params) {
     .classed('icons_section',true);
 
   if (params.sidebar.icons){
+    make_modals(params);
     make_icons(params, sidebar);
   }
 
@@ -95,8 +96,6 @@ module.exports = function sidebar(config, params) {
     params.ini_view = null;
 
   }
-
-  make_modals(params);
 
   return params;
 

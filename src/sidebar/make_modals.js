@@ -27,15 +27,15 @@ module.exports = function ini_modals(params){
     .classed('share_url', true);
 
 
-  // var screenshot_modal = make_modal_skeleton(params, 'picture_info');
+  var screenshot_modal = make_modal_skeleton(params, 'picture_info');
 
-  // screenshot_modal.header
-  //   .append('h4')
-  //   .classed('modal-title', true)
-  //   .html('Save a snapshot of the visualization');
+  screenshot_modal.header
+    .append('h4')
+    .classed('modal-title', true)
+    .html('Save a snapshot of the visualization');
 
-  // screenshot_modal.body
-  //   .append('div')
-  //   .classed('download_buttons', true);
+  screenshot_modal.body
+    .append('div')
+    .classed('download_buttons', true);
 
 };
