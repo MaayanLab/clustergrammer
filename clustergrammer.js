@@ -918,11 +918,13 @@ var Clustergrammer =
 
 	  var cont_dim = calc_viz_dimensions(params);
 
-	  var sidebar_margin = 5;
+	  // var sidebar_margin = 5;
 
 	  d3.select(params.root).style('clear', 'both');
 
-	  d3.select(params.root + ' .sidebar_wrapper').style('margin-left', sidebar_margin + 'px').style('float', 'left').style('width', params.sidebar_width + 'px').style('height', cont_dim.height + 'px').style('overflow', 'hidden');
+	  d3.select(params.root + ' .sidebar_wrapper')
+	  // .style('margin-left',sidebar_margin+'px')
+	  .style('float', 'left').style('width', params.sidebar_width + 'px').style('height', cont_dim.height + 'px').style('overflow', 'hidden');
 
 	  d3.select(params.viz.viz_wrapper).style('float', 'right').style('width', cont_dim.width + 'px')
 	  // .style('width', '100px')
@@ -947,10 +949,10 @@ var Clustergrammer =
 	  var outer_margins;
 	  if (params.viz.expand === false) {
 	    outer_margins = params.viz.outer_margins;
-	    cont_dim.width = screen_width - params.sidebar_width - outer_margins.right - extra_space;
+	    cont_dim.width = screen_width - params.sidebar_width - extra_space;
 	  } else {
 	    outer_margins = params.viz.outer_margins;
-	    cont_dim.width = screen_width - outer_margins.right - extra_space;
+	    cont_dim.width = screen_width - extra_space;
 	  }
 
 	  cont_dim.top = outer_margins.top;
@@ -2276,6 +2278,9 @@ var Clustergrammer =
 	var make_col_dendro = __webpack_require__(104);
 
 	module.exports = function make_viz(params) {
+
+	  // d3.select(params.root)
+	  //   .style('white-space','nowrap')
 
 	  d3.select(params.viz.viz_wrapper + ' svg').remove();
 

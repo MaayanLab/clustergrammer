@@ -10,10 +10,10 @@ module.exports = function calc_viz_dimensions(params){
   var outer_margins;
   if (params.viz.expand === false) {
     outer_margins = params.viz.outer_margins;
-    cont_dim.width = screen_width - params.sidebar_width - outer_margins.right - extra_space;
+    cont_dim.width = screen_width - params.sidebar_width - extra_space;
   } else {
     outer_margins = params.viz.outer_margins;
-    cont_dim.width = screen_width - outer_margins.right - extra_space;
+    cont_dim.width = screen_width - extra_space;
   }
 
   cont_dim.top = outer_margins.top;
