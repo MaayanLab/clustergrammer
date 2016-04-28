@@ -84,7 +84,7 @@ function make_clust(inst_network){
         .attr('src','img/clustergrammer_logo.png')
         .attr('alt','clustergrammer')
         .style('width','167px')
-        .style('margin-left','-2px')
+        .style('margin-left','3px')
         .style('margin-top','5px');
 
   });

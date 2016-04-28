@@ -13,7 +13,7 @@ module.exports = function make_icons(params, sidebar){
   var row = sidebar
     .select('.icons_section')
     .style('margin-top','7px')
-    .style('margin-left','-10px')
+    .style('margin-left', params.sidebar.icon_margin_left+'px')
     .style('width',params.sidebar.buttons.width+'px')
     .append('row');
 

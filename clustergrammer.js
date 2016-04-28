@@ -2200,6 +2200,7 @@ var Clustergrammer =
 	  sidebar.row_search.box.height = 34;
 	  sidebar.row_search.box.width = 95;
 	  sidebar.row_search.placeholder = params.row_search_placeholder;
+	  sidebar.row_search.margin_left = 7;
 
 	  sidebar.slider = {};
 	  sidebar.slider.width = params.sidebar_width - 30;
@@ -2211,6 +2212,7 @@ var Clustergrammer =
 	  sidebar.key_cat.max_height = 100;
 
 	  sidebar.title = params.title;
+	  sidebar.title_margin_left = 7;
 	  sidebar.about = params.about;
 	  sidebar.width = params.sidebar_width;
 
@@ -2221,6 +2223,7 @@ var Clustergrammer =
 	  sidebar.text.width = params.sidebar_width - 15;
 
 	  sidebar.icons = params.sidebar_icons;
+	  sidebar.icon_margin_left = -5;
 
 	  return sidebar;
 		};
@@ -6412,13 +6415,20 @@ var Clustergrammer =
 	  sidebar.append('div').classed('title_section', true);
 
 	  if (params.sidebar.title != null) {
-	    sidebar.select('.title_section').append('h4').style('margin-left', '3px').style('margin-top', '5px').style('margin-bottom', '0px').text(params.sidebar.title);
+	    sidebar.select('.title_section').append('h4')
+	    // .style('margin-left', params.sidebar.title_margin_left+'px')
+	    .style('margin-left', '20px').style('margin-top', '5px').style('margin-bottom', '0px').text(params.sidebar.title);
 	  }
 
 	  sidebar.append('div').classed('about_section', true);
 
 	  if (params.sidebar.about != null) {
-	    sidebar.select('.about_section').append('h5').classed('sidebar_text', true).style('font-size', '15px').style('font-weight', 400).style('margin-left', '4px').style('margin-top', '5px').style('margin-bottom', '2px').style('width', params.sidebar.text.width + 'px').style('text-align', 'justify').text(params.sidebar.about);
+
+	    var about_section_width = params.sidebar.text.width - 5;
+	    sidebar.select('.about_section').append('h5').classed('viz_medium_text', true)
+	    // .style('font-size','15px')
+	    // .style('font-weight',400)
+	    .style('margin-left', '7px').style('margin-top', '5px').style('margin-bottom', '2px').style('width', about_section_width + 'px').style('text-align', 'justify').text(params.sidebar.about);
 	  }
 
 	  sidebar.append('div').classed('icons_section', true);
@@ -6626,7 +6636,9 @@ var Clustergrammer =
 
 	  var filter_title = make_filter_title(params, filter_type);
 
-	  div_filters.append('div').classed('viz_medium_text', true).classed('sidebar_text', true).classed('title_' + filter_type, true).text(filter_title.text + filter_title.state + filter_title.suffix);
+	  div_filters.append('div').classed('viz_medium_text', true)
+	  // .classed('sidebar_text',true)
+	  .classed('title_' + filter_type, true).text(filter_title.text + filter_title.state + filter_title.suffix);
 
 	  div_filters.append('div').classed('slider_' + filter_type, true).classed('slider', true).style('width', params.sidebar.slider.width + 'px').style('margin-left', params.sidebar.slider.margin_left + 'px').attr('current_state', filter_title.state);
 
@@ -8011,7 +8023,7 @@ var Clustergrammer =
 
 	  var search_container = sidebar.append('div')
 	  // .classed('row',true)
-	  .classed('gene_search_container', true).style('margin-top', '10px').style('margin-left', '0px').style('width', '185px');
+	  .classed('gene_search_container', true).style('margin-top', '10px').style('margin-left', params.sidebar.row_search.margin_left + 'px').style('width', '185px');
 
 	  search_container.append('input').classed('form-control', true).classed('gene_search_box', true).attr('type', 'text').classed('sidebar_text', true).attr('placeholder', params.sidebar.row_search.placeholder)
 	  // .style('width', params.sidebar.row_search.box.width+'px')
@@ -8037,6 +8049,8 @@ var Clustergrammer =
 	  var inst_reorder;
 	  // var all_cats;
 	  // var inst_order_label;
+
+	  var reorder_section = sidebar.append('div').classed('something', true).style('margin-left', '7px');
 
 	  var reorder_types;
 	  if (params.sim_mat) {
@@ -8109,11 +8123,12 @@ var Clustergrammer =
 	    } else {
 	      reorder_text = 'Reorder Matrix';
 	    }
-	    sidebar.append('div').classed('sidebar_text', true).style('clear', 'both').style('margin-left', '5px').style('font-size', '14px').html(rc_dict[inst_rc] + reorder_text);
 
-	    inst_reorder = sidebar.append('div').classed('viz_medium_text', true).append('div').classed('btn-group-vertical', true).classed('toggle_' + inst_rc + '_order', true).attr('role', 'group').style('max-width', params.sidebar.buttons.width + 'px');
+	    reorder_section.append('div').classed('viz_medium_text', true).style('clear', 'both').style('margin-left', '7px').style('margin-top', '10px').style('font-size', '13px').html(rc_dict[inst_rc] + reorder_text);
 
-	    inst_reorder.selectAll('.button').data(possible_orders).enter().append('button').attr('type', 'button').style('font-size', '14px').classed('btn', true).classed('btn-primary', true).classed('sidebar_text', true).classed('active', function (d) {
+	    inst_reorder = reorder_section.append('div').classed('viz_medium_text', true).append('div').classed('btn-group-vertical', true).classed('toggle_' + inst_rc + '_order', true).attr('role', 'group').style('max-width', params.sidebar.buttons.width + 'px');
+
+	    inst_reorder.selectAll('.button').data(possible_orders).enter().append('button').attr('type', 'button').style('font-size', '13px').classed('btn', true).classed('btn-primary', true).classed('sidebar_text', true).classed('active', function (d) {
 	      is_active = false;
 	      if (d == params.viz.inst_order[other_rc]) {
 	        is_active = true;
@@ -8191,7 +8206,7 @@ var Clustergrammer =
 	  var saveSvgAsPng = save_svg_png();
 	  var saveAs = file_saver();
 
-	  var row = sidebar.select('.icons_section').style('margin-top', '7px').style('margin-left', '-10px').style('width', params.sidebar.buttons.width + 'px').append('row');
+	  var row = sidebar.select('.icons_section').style('margin-top', '7px').style('margin-left', params.sidebar.icon_margin_left + 'px').style('width', params.sidebar.buttons.width + 'px').append('row');
 
 	  row.append('col').classed('col-xs-4', true).append('a').attr('href', 'http://amp.pharm.mssm.edu/clustergrammer/help').attr('target', '_blank').append('i').classed('fa', true).classed('fa-question-circle', true).classed('icon_buttons', true).style('font-size', '25px');
 

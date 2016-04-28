@@ -10,6 +10,11 @@ module.exports = function set_up_reorder(params, sidebar){
   // var all_cats;
   // var inst_order_label;
 
+  var reorder_section = sidebar
+    .append('div')
+    .classed('something',true)
+    .style('margin-left','7px');
+
   var reorder_types;
   if (params.sim_mat){
     reorder_types = ['both'];
@@ -82,15 +87,17 @@ module.exports = function set_up_reorder(params, sidebar){
     } else {
       reorder_text = 'Reorder Matrix';
     }
-    sidebar
+
+    reorder_section
       .append('div')
-      .classed('sidebar_text',true)
+      .classed('viz_medium_text',true)
       .style('clear','both')
-      .style('margin-left','5px')
-      .style('font-size','14px')
+      .style('margin-left','7px')
+      .style('margin-top','10px')
+      .style('font-size','13px')
       .html(rc_dict[inst_rc]+reorder_text);
 
-    inst_reorder = sidebar
+    inst_reorder = reorder_section
       .append('div')
       .classed('viz_medium_text',true)
       .append('div')
@@ -105,7 +112,7 @@ module.exports = function set_up_reorder(params, sidebar){
       .enter()
       .append('button')
       .attr('type','button')
-      .style('font-size','14px')
+      .style('font-size','13px')
       .classed('btn',true)
       .classed('btn-primary',true)
       .classed('sidebar_text',true)

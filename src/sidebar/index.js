@@ -21,7 +21,8 @@ module.exports = function sidebar(config, params) {
     sidebar
       .select('.title_section')
       .append('h4')
-      .style('margin-left','3px')
+      // .style('margin-left', params.sidebar.title_margin_left+'px')
+      .style('margin-left', '20px')
       .style('margin-top','5px')
       .style('margin-bottom','0px')
       .text(params.sidebar.title);
@@ -32,16 +33,18 @@ module.exports = function sidebar(config, params) {
     .classed('about_section',true);
 
   if (params.sidebar.about != null){
+
+    var about_section_width = params.sidebar.text.width - 5;
     sidebar
       .select('.about_section')
       .append('h5')
-      .classed('sidebar_text',true)
-      .style('font-size','15px')
-      .style('font-weight',400)
-      .style('margin-left','4px')
+      .classed('viz_medium_text',true)
+      // .style('font-size','15px')
+      // .style('font-weight',400)
+      .style('margin-left','7px')
       .style('margin-top','5px')
       .style('margin-bottom','2px')
-      .style('width', params.sidebar.text.width+'px')
+      .style('width', about_section_width+'px')
       .style('text-align','justify')
       .text(params.sidebar.about);
   }
