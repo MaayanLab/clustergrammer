@@ -1,4 +1,5 @@
 var save_svg_png = require('../screenshot/save_svg_png');
+var file_saver = require('../screenshot/file_saver');
 
 module.exports = function make_icons(params, sidebar){
 
@@ -7,6 +8,7 @@ module.exports = function make_icons(params, sidebar){
   // </a>
 
   var saveSvgAsPng = save_svg_png();
+  var saveAs = file_saver();
 
   var row = sidebar
     .select('.icons_section')
