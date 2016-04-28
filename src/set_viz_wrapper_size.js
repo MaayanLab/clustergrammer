@@ -15,6 +15,7 @@ module.exports = function set_viz_wrapper_size(params) {
 
   }
 
+
   var cont_dim = calc_viz_dimensions(params);
 
   // var sidebar_margin = 5;

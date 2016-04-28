@@ -942,11 +942,13 @@ var Clustergrammer =
 	  var cont_dim = {};
 	  var extra_space = params.buffer_width;
 
-	  var screen_width = window.innerWidth;
-	  var screen_height = window.innerHeight;
+	  // var screen_width = window.innerWidth;
+	  // var screen_height = window.innerHeight;
 
-	  // resize container, then resize visualization within container
-	  d3.select(params.root).style('width', screen_width + 'px').style('height', screen_height + 'px');
+	  // // resize container, then resize visualization within container
+	  // d3.select(params.root)
+	  //   .style('width', screen_width+'px')
+	  //   .style('height', screen_height+'px');
 
 	  var container_width = d3.select(params.root).style('width').replace('px', '');
 	  var container_height = d3.select(params.root).style('height').replace('px', '');
@@ -966,7 +968,7 @@ var Clustergrammer =
 
 	  if (params.viz.resize) {
 
-	    cont_dim.height = container_height - outer_margins.top - outer_margins.bottom;
+	    cont_dim.height = container_height;
 	  } else {
 
 	    if (params.viz.expand) {
