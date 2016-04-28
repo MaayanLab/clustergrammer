@@ -62,9 +62,9 @@ module.exports = function make_icons(params, sidebar){
     ////////////////////////////////////////////////////////////////////////////
     function save_clust_svg(){
 
-      d3.select('.expand_button').style('opacity',0);
+      d3.select(params.root+' .expand_button').style('opacity',0);
 
-      var html = d3.select("svg")
+      var html = d3.select(params.root+" svg")
             .attr("title", "test2")
             .attr("version", 1.1)
             .attr("xmlns", "http://www.w3.org/2000/svg")
@@ -74,10 +74,10 @@ module.exports = function make_icons(params, sidebar){
 
       saveAs(blob, "clustergrammer.svg");
 
-      d3.select('.expand_button').style('opacity',0.4);
+      d3.select(params.root+' .expand_button').style('opacity',0.4);
     }
 
-    d3.select('.download_buttons')
+    d3.select(params.root+' .download_buttons')
       .append('p')
       .append('a')
       .html('Download SVG')
@@ -90,14 +90,14 @@ module.exports = function make_icons(params, sidebar){
 
     // save as PNG 
     /////////////////////////////////////////
-    d3.select('.download_buttons')
+    d3.select(params.root+' .download_buttons')
       .append('p')
       .append('a')
       .html('Download PNG')
       .on('click',function(){
-        d3.select('.expand_button').style('opacity',0);
+        d3.select(params.root+' .expand_button').style('opacity',0);
         saveSvgAsPng(document.getElementById(svg_id), "clustergrammer.png");
-        d3.select('.expand_button').style('opacity',0.4);
+        d3.select(params.root+' .expand_button').style('opacity',0.4);
       });    
 
 };

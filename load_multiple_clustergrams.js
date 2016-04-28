@@ -3,15 +3,13 @@ var all_clusts = ['mult_view.json',
 'mult_view_sim_col.json',
 'mult_view_sim_row.json'];
 
-var viz_size = {
-  'width':1140,
-  'height':800
-};
-
 // define arguments object
 var default_args = {
   'show_tile_tooltips':true,
-  'size':viz_size,
+  'size':{
+    'width':1140,
+    'height':800
+  },
   'about':'Zoom, scroll, and click buttons to interact with the clustergram.',
   'row_search_placeholder':'Gene',
 };
