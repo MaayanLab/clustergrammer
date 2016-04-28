@@ -87,7 +87,7 @@ var Clustergrammer =
 	    opacity_slider: viz.opacity_slider,
 	    opacity_function: viz.opacity_function,
 	    reset_zoom: viz.reset_zoom,
-	    change_category: __webpack_require__(141)
+	    change_category: __webpack_require__(142)
 	  };
 	}
 
@@ -923,7 +923,7 @@ var Clustergrammer =
 
 	  d3.select(params.root + ' .sidebar_wrapper').style('margin-left', sidebar_margin + 'px').style('float', 'left').style('width', params.sidebar_width + 'px').style('height', cont_dim.height + 'px').style('overflow', 'hidden');
 
-	  d3.select(params.viz.viz_wrapper).style('float', 'left').style('width', cont_dim.width + 'px')
+	  d3.select(params.viz.viz_wrapper).style('float', 'right').style('width', cont_dim.width + 'px')
 	  // .style('width', '100px')
 	  .style('height', cont_dim.height + 'px');
 		};
@@ -5108,7 +5108,9 @@ var Clustergrammer =
 
 	  d3.select(params.root + ' .sidebar_wrapper').style('height', cont_dim.height + 'px');
 
-	  d3.select(params.viz.viz_wrapper).style('float', 'left').style('margin-top', cont_dim.top + 'px').style('width', cont_dim.width + 'px').style('height', cont_dim.height + 'px');
+	  d3.select(params.viz.viz_wrapper)
+	  // .style('float', 'left')
+	  .style('margin-top', cont_dim.top + 'px').style('width', cont_dim.width + 'px').style('height', cont_dim.height + 'px');
 
 	  params = recalc_params_for_resize(params);
 
@@ -8659,7 +8661,7 @@ var Clustergrammer =
 
 	'use strict';
 
-	var make_modal_skeleton = __webpack_require__(142);
+	var make_modal_skeleton = __webpack_require__(141);
 
 	module.exports = function ini_modals(params) {
 
@@ -8689,17 +8691,6 @@ var Clustergrammer =
 /* 141 */
 /***/ function(module, exports) {
 
-	"use strict";
-
-	module.exports = function (params, inst_cat) {
-	  // change the category
-	  params.current_col_cat = inst_cat;
-		};
-
-/***/ },
-/* 142 */
-/***/ function(module, exports) {
-
 	'use strict';
 
 	module.exports = function make_skeleton(params, modal_class) {
@@ -8719,6 +8710,17 @@ var Clustergrammer =
 	  modal_skeleton.body = modal_content.append('div').classed('modal-body', true);
 
 	  return modal_skeleton;
+		};
+
+/***/ },
+/* 142 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	module.exports = function (params, inst_cat) {
+	  // change the category
+	  params.current_col_cat = inst_cat;
 		};
 
 /***/ }

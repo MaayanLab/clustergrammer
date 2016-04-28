@@ -31,7 +31,7 @@ module.exports = function set_viz_wrapper_size(params) {
 
 
   d3.select(params.viz.viz_wrapper)
-    .style('float', 'left')
+    .style('float', 'right')
     .style('width', cont_dim.width + 'px')
     // .style('width', '100px')
     .style('height', cont_dim.height + 'px');

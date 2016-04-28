@@ -39,7 +39,7 @@ module.exports = function(params, cont_dim) {
     .style('height', cont_dim.height+'px');
 
   d3.select(params.viz.viz_wrapper)
-    .style('float', 'left')
+    // .style('float', 'left')
     .style('margin-top',  cont_dim.top  + 'px')
     .style('width',  cont_dim.width  + 'px')
     .style('height', cont_dim.height + 'px');
