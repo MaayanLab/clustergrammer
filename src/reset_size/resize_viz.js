@@ -59,7 +59,6 @@ module.exports = function(params) {
     d.y = params.viz.y_scale(d.source);
   });
 
-
   // disable zoom while transitioning
   svg_group.on('.zoom', null);
 
@@ -100,7 +99,6 @@ module.exports = function(params) {
     .attr('height', params.viz.y_scale.rangeBand() * 0.80);
 
   resize_highlights(params);
-
 
   // resize row labels
   ///////////////////////////

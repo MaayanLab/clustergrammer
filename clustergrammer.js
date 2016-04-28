@@ -935,7 +935,7 @@ var Clustergrammer =
 /* 14 */
 /***/ function(module, exports) {
 
-	"use strict";
+	'use strict';
 
 	module.exports = function calc_viz_dimensions(params) {
 
@@ -945,14 +945,20 @@ var Clustergrammer =
 	  var screen_width = window.innerWidth;
 	  var screen_height = window.innerHeight;
 
+	  // resize container, then resize visualization within container
+	  d3.select(params.root).style('width', screen_width + 'px').style('height', screen_height + 'px');
+
+	  var container_width = d3.select(params.root).style('width').replace('px', '');
+	  var container_height = d3.select(params.root).style('height').replace('px', '');
+
 	  // get outer_margins
 	  var outer_margins;
 	  if (params.viz.expand === false) {
 	    outer_margins = params.viz.outer_margins;
-	    cont_dim.width = screen_width - params.sidebar_width - extra_space;
+	    cont_dim.width = container_width - params.sidebar_width - extra_space;
 	  } else {
 	    outer_margins = params.viz.outer_margins;
-	    cont_dim.width = screen_width - extra_space;
+	    cont_dim.width = container_width - extra_space;
 	  }
 
 	  cont_dim.top = outer_margins.top;
@@ -960,7 +966,7 @@ var Clustergrammer =
 
 	  if (params.viz.resize) {
 
-	    cont_dim.height = screen_height - outer_margins.top - outer_margins.bottom;
+	    cont_dim.height = container_height - outer_margins.top - outer_margins.bottom;
 	  } else {
 
 	    if (params.viz.expand) {
@@ -4976,11 +4982,14 @@ var Clustergrammer =
 	  // resize window
 	  if (params.viz.resize) {
 	    d3.select(window).on('resize', function () {
+
 	      d3.select(params.viz.viz_svg).style('opacity', 0.5);
+
 	      var wait_time = 500;
 	      if (params.viz.run_trans === true) {
 	        wait_time = 2500;
 	      }
+
 	      setTimeout(resize_viz, wait_time, params);
 	    });
 	  }
