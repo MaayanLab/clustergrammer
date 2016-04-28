@@ -1,25 +1,8 @@
 module.exports = function ini_modals(params){
 
-  var modal = d3.select(params.root)
-    .append('div')
-    .classed('modal', true)
-    .classed('fade', true)
-    .classed('share_info', true)
-    .attr('role','dialog');
+  var modal_skeleton = make_skeleton(params, 'share_info');
 
-  var modal_dialog = modal
-    .append('div')
-    .classed('modal-dialog', true);
-
-  var modal_content = modal_dialog
-    .append('div')
-    .classed('modal-content', true);
-
-  var modal_header = modal_content
-    .append('div')
-    .classed('modal-header', true);
-
-  modal_header
+  modal_skeleton.header
     .append('button')
     .attr('type','button')
     .classed('close', true)
@@ -29,25 +12,51 @@ module.exports = function ini_modals(params){
     .attr('target','_blank')
     .attr('href', '/clustergrammer/');
 
-  modal_header
+  modal_skeleton.header
     .append('div')
     .append('img')
     .classed('clustergrammer_logo', true)
     .attr('src', 'img/clustergrammer_logo.png')
     .attr('alt', 'Clustergrammer');
 
-  modal_header
+  modal_skeleton.header
     .append('h4')
     .classed('modal-title', true)
-    .html('Share the visualization using the current URL:')
+    .html('Share the visualization using the current URL:');
 
-  var modal_body = modal_content
-    .append('div')
-    .classed('modal-body', true);
-
-  modal_body
+  modal_skeleton.body
     .append('input')
     .classed('bootstrap_highlight', true)
     .classed('share_url', true);
+
+
+  function make_skeleton(params, modal_class){
+    modal_skeleton = {};
+
+    var modal = d3.select(params.root)
+      .append('div')
+      .classed('modal', true)
+      .classed('fade', true)
+      .classed(modal_class, true)
+      .attr('role','dialog');
+
+    var modal_dialog = modal
+      .append('div')
+      .classed('modal-dialog', true);
+
+    var modal_content = modal_dialog
+      .append('div')
+      .classed('modal-content', true);
+
+    modal_skeleton.header = modal_content
+      .append('div')
+      .classed('modal-header', true);
+
+    modal_skeleton.body = modal_content
+      .append('div')
+      .classed('modal-body', true);
+
+    return modal_skeleton;
+  }
 
 };

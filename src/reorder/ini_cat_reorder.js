@@ -1,6 +1,7 @@
 var all_reorder = require('./all_reorder');
 
 module.exports = function ini_cat_reorder(params){
+/* eslint-disable */
 
   _.each(['row','col'], function(inst_rc){
 
@@ -15,7 +16,7 @@ module.exports = function ini_cat_reorder(params){
           d3.selectAll(params.root+' .toggle_'+inst_rc+'_order .btn')
             .classed('active',false);
 
-          var order_id = this.__data__.replace('-','_') + '_index';
+          var order_id = this.__data__.replace('-','_') + '_index'; 
           if (params.viz.sim_mat){
             all_reorder( params, order_id, 'row');
             all_reorder( params, order_id, 'col');

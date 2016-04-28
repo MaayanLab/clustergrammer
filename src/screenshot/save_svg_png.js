@@ -1,5 +1,5 @@
 module.exports = function save_svg_png(){
-
+/* eslint-disable */
 // (function() {
   var out$ = typeof exports != 'undefined' && exports || this;
 

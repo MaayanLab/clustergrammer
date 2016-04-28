@@ -1,4 +1,5 @@
 module.exports = function file_saver(){
+/* eslint-disable */
 /* FileSaver.js
  * A saveAs() FileSaver implementation.
  * 2013-01-23
