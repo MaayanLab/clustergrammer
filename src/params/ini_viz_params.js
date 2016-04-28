@@ -34,11 +34,10 @@ module.exports = function ini_viz_params(config, params){
     config.group_level = {};
   }
 
+  viz.resize = config.resize;
   if (utils.has(config, 'size')){
-    viz.resize = false;
     viz.fixed_size = config.size;
   } else { 
-    viz.resize = true;
     viz.fixed_size = false;
   }
 

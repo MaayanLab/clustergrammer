@@ -582,7 +582,8 @@ var Clustergrammer =
 	    row_search_placeholder: 'Row',
 	    buffer_width: 10,
 	    show_sim_mat: false,
-	    cat_colors: null
+	    cat_colors: null,
+	    resize: true
 	  };
 
 	  return defaults;
@@ -1124,11 +1125,10 @@ var Clustergrammer =
 	    config.group_level = {};
 	  }
 
+	  viz.resize = config.resize;
 	  if (utils.has(config, 'size')) {
-	    viz.resize = false;
 	    viz.fixed_size = config.size;
 	  } else {
-	    viz.resize = true;
 	    viz.fixed_size = false;
 	  }
 
@@ -8222,7 +8222,6 @@ var Clustergrammer =
 
 	  var svg_id = 'svg_' + params.root.replace('#', '');
 
-	  console.log(d3.select(params.root + ' .download_buttons').empty());
 	  // save as PNG
 	  /////////////////////////////////////////
 	  d3.select(params.root + ' .download_buttons').append('p').append('a').html('Download PNG').on('click', function () {

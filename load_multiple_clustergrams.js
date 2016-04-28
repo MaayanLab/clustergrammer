@@ -12,6 +12,7 @@ var default_args = {
   },
   'about':'Zoom, scroll, and click buttons to interact with the clustergram.',
   'row_search_placeholder':'Gene',
+  // 'resize':true
 };
 
 make_clust(make_sim_mats)

@@ -88,7 +88,6 @@ module.exports = function make_icons(params, sidebar){
 
     var svg_id = 'svg_'+params.root.replace('#','');
 
-    console.log(d3.select(params.root+' .download_buttons').empty())
     // save as PNG 
     /////////////////////////////////////////
     d3.select(params.root+' .download_buttons')

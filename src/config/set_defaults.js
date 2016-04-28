@@ -43,7 +43,8 @@ module.exports = function set_defaults(){
     row_search_placeholder:'Row',
     buffer_width:10,
     show_sim_mat:false,
-    cat_colors:null
+    cat_colors:null,
+    resize:true
   };
 
   return defaults;

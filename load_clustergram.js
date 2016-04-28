@@ -67,7 +67,8 @@ function make_clust(inst_network){
         // 'title':'Clustergrammer',
         'about':'Zoom, scroll, and click buttons to interact with the clustergram.',
         // 'sidebar_width':150,
-        'row_search_placeholder':'Gene',
+        // 'sidebar_icons':false,
+        // 'row_search_placeholder':'Gene',
         // 'buffer_width':10,
         // 'show_sim_mat':'col',
       };
