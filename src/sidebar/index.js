@@ -3,9 +3,9 @@ var set_up_filters = require('../filters/set_up_filters');
 var set_up_dendro_sliders = require('./set_up_dendro_sliders');
 var set_up_search = require('./set_up_search');
 var set_up_reorder = require('./set_up_reorder');
-// var make_cat_keys = require('./make_cat_keys');
 var set_sidebar_ini_view = require('./set_sidebar_ini_view');
 var make_icons = require('./make_icons');
+var make_modals = require('./make_modals');
 
 /* Represents sidebar with controls.
  */
@@ -95,6 +95,8 @@ module.exports = function sidebar(config, params) {
     params.ini_view = null;
 
   }
+
+  make_modals(params);
 
   return params;
 

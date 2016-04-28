@@ -1,5 +1,4 @@
 module.exports = function file_saver(){
-console.log('running file_saver')
 /* FileSaver.js
  * A saveAs() FileSaver implementation.
  * 2013-01-23

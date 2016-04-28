@@ -1,14 +1,7 @@
 
-all_clusts = ['mult_view.json',
+var all_clusts = ['mult_view.json',
 'mult_view_sim_col.json',
 'mult_view_sim_row.json'];
-
-var outer_margins = {
-    'top':2,
-    'bottom':30,
-    'left':5,
-    'right':2
-  };
 
 var viz_size = {
   'width':1140,
@@ -17,20 +10,16 @@ var viz_size = {
 
 // define arguments object
 var default_args = {
-  // 'row_label':'Row Title',
-  // 'col_label':'Colum Title',
-  'outer_margins': outer_margins,
   'show_tile_tooltips':true,
   'size':viz_size,
   'about':'Zoom, scroll, and click buttons to interact with the clustergram.',
   'row_search_placeholder':'Gene',
 };
 
-var cat_colors;
-var tmp_num;
-
 make_clust(make_sim_mats)
 
+var tmp_num;
+var cat_colors;
 function make_clust(make_sim_mats){
   var clust_name = 'mult_view.json'
 
@@ -74,16 +63,4 @@ function make_sim_mats(cat_colors){
   });
 }
 
-
-    // if (clust_name === ){
-    //   // args.cat_colors = {};
-    //   // args.cat_colors.row = cat_colors.col;
-    //   // args.cat_colors.col = cat_colors.col; 
-    // }
-
-    // if (clust_name === 'mult_view_sim_row.json'){
-    //   // args.cat_colors = {};
-    //   // args.cat_colors.row = cat_colors.row;
-    //   // args.cat_colors.col = cat_colors.row; 
-    // }
 
