@@ -22,9 +22,13 @@ function Clustergrammer(args) {
   // make visualization parameters using configuration object
   var params = make_params(config);
 
+  var cgm = {};
+  cgm.params = params;
+  cgm.config = config;
+
   if (params.use_sidebar) {
     var make_sidebar = require('./sidebar/');
-    params = make_sidebar(config, params);
+    params = make_sidebar(cgm);
   }
   
   // make visualization using parameters
@@ -38,9 +42,6 @@ function Clustergrammer(args) {
     this.params.something = 'here';
   }
 
-  var cgm = {};
-  cgm.params = params;
-  cgm.config = config;
   cgm.resize_viz = external_resize;
   cgm.modify_params = modify_params;
 

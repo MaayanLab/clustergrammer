@@ -9,7 +9,10 @@ var make_modals = require('./make_modals');
 
 /* Represents sidebar with controls.
  */
-module.exports = function sidebar(config, params) {
+module.exports = function sidebar(cgm) {
+
+  var params = cgm.params;
+  var config = cgm.config;
 
   var sidebar = d3.select(params.root+' .sidebar_wrapper');
 
