@@ -27,13 +27,7 @@ module.exports = function apply_filter_slider(cgm, filter_type, available_views)
     requested_view.enr_score_type = enr_state;
   } 
 
-  // console.log('\n---------\n requested_view from slider filter')
-  // console.log(requested_view)
-
-
   params = update_network(cgm, requested_view);
-
-  console.log('row nodes in apply_filter_slider ', params.network_data.row_nodes.length)
 
   return params;
 

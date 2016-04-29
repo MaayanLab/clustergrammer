@@ -18,8 +18,6 @@ module.exports = function(cgm, requested_view) {
 
   cgm.params = params;
 
-  console.log('cgm row nodes in update_network ', cgm.params.network_data.row_nodes.length)
-
   return params;
 
 };

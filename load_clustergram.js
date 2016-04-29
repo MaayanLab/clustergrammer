@@ -88,6 +88,7 @@ function make_clust(inst_network){
 
       d3.select(window).on('resize',function(){
         resize_container();
+        cgm.resize_viz();
       });
 
       cgm = Clustergrammer(arguments_obj);

@@ -81,11 +81,23 @@ var Clustergrammer =
 	  }
 
 	  // make visualization using parameters
-	  var viz = make_viz(params);
+	  make_viz(params);
 
 	  function external_resize() {
+
+	    d3.select(params.viz.viz_svg).style('opacity', 0.5);
+
+	    var wait_time = 500;
+	    if (this.params.viz.run_trans === true) {
+	      wait_time = 2500;
+	    }
+
+	    setTimeout(resize_fun, wait_time, this);
+	  }
+
+	  function resize_fun(cgm) {
 	    // use this params, because this will have the latest params
-	    resize_viz(this.params);
+	    resize_viz(cgm.params);
 	  }
 
 	  function modify_params() {
@@ -2406,22 +2418,22 @@ var Clustergrammer =
 	    two_translate_zoom(params, 0, 0, inst_scale);
 	  }
 
-	  return {
-	    get_clust_group: function get_clust_group() {
-	      return matrix.get_clust_group();
-	    },
-	    get_matrix: function get_matrix() {
-	      return matrix.get_matrix();
-	    },
-	    get_nodes: function get_nodes(type) {
-	      return matrix.get_nodes(type);
-	    },
-	    find_entity: search_obj.find_entity,
-	    get_entities: search_obj.get_entities,
-	    opacity_slider: opacity_slider,
-	    draw_gridlines: matrix.draw_gridlines,
-	    reset_zoom: reset_zoom
-	  };
+	  // return {
+	  //   get_clust_group: function () {
+	  //     return matrix.get_clust_group();
+	  //   },
+	  //   get_matrix: function () {
+	  //     return matrix.get_matrix();
+	  //   },
+	  //   get_nodes: function(type) {
+	  //     return matrix.get_nodes(type);
+	  //   },
+	  //   find_entity: search_obj.find_entity,
+	  //   get_entities: search_obj.get_entities,
+	  //   opacity_slider: opacity_slider,
+	  //   draw_gridlines: matrix.draw_gridlines,
+	  //   reset_zoom: reset_zoom
+	  // };
 		};
 
 /***/ },
@@ -6251,13 +6263,8 @@ var Clustergrammer =
 	    step: 1,
 	    stop: function stop() {
 	      params = apply_filter_slider(cgm, filter_type, available_views);
-	      console.log('row nodes in make_slider_filter ', params.network_data.row_nodes.length);
-
-	      return params;
 	    }
 	  });
-
-	  console.log('row nodes outside of fliter ', params.network_data.row_nodes.length);
 		};
 
 /***/ },
@@ -6354,12 +6361,7 @@ var Clustergrammer =
 	    requested_view.enr_score_type = enr_state;
 	  }
 
-	  // console.log('\n---------\n requested_view from slider filter')
-	  // console.log(requested_view)
-
 	  params = update_network(cgm, requested_view);
-
-	  console.log('row nodes in apply_filter_slider ', params.network_data.row_nodes.length);
 
 	  return params;
 		};
@@ -6389,8 +6391,6 @@ var Clustergrammer =
 	  var params = update_with_new_network(config, old_params, new_network_data);
 
 	  cgm.params = params;
-
-	  console.log('cgm row nodes in update_network ', cgm.params.network_data.row_nodes.length);
 
 	  return params;
 		};

@@ -32,11 +32,23 @@ function Clustergrammer(args) {
   }
   
   // make visualization using parameters
-  var viz = make_viz(params);
+  make_viz(params);
 
   function external_resize(){
+
+    d3.select(params.viz.viz_svg).style('opacity', 0.5);
+
+    var wait_time = 500;
+    if (this.params.viz.run_trans === true){
+      wait_time = 2500;
+    }
+
+    setTimeout(resize_fun, wait_time, this);
+  }
+
+  function resize_fun(cgm){
     // use this params, because this will have the latest params 
-    resize_viz(this.params);
+    resize_viz(cgm.params);
   }
 
   function modify_params(){

@@ -181,20 +181,20 @@ module.exports = function make_viz(params) {
     two_translate_zoom(params, 0, 0, inst_scale);
   }
 
-  return {
-    get_clust_group: function () {
-      return matrix.get_clust_group();
-    },
-    get_matrix: function () {
-      return matrix.get_matrix();
-    },
-    get_nodes: function(type) {
-      return matrix.get_nodes(type);
-    },
-    find_entity: search_obj.find_entity,
-    get_entities: search_obj.get_entities,
-    opacity_slider: opacity_slider,
-    draw_gridlines: matrix.draw_gridlines,
-    reset_zoom: reset_zoom
-  };
+  // return {
+  //   get_clust_group: function () {
+  //     return matrix.get_clust_group();
+  //   },
+  //   get_matrix: function () {
+  //     return matrix.get_matrix();
+  //   },
+  //   get_nodes: function(type) {
+  //     return matrix.get_nodes(type);
+  //   },
+  //   find_entity: search_obj.find_entity,
+  //   get_entities: search_obj.get_entities,
+  //   opacity_slider: opacity_slider,
+  //   draw_gridlines: matrix.draw_gridlines,
+  //   reset_zoom: reset_zoom
+  // };
 };
