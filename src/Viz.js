@@ -4,7 +4,6 @@ var make_cols = require('./labels/make_cols');
 var generate_super_labels = require('./labels/super_labels');
 var spillover = require('./spillover');
 var search = require('./search');
-var two_translate_zoom = require('./zoom/two_translate_zoom');
 var initialize_resizing = require('./initialize_resizing');
 var ini_doubleclick = require('./zoom/ini_doubleclick');
 var make_col_cat = require('./dendrogram/make_col_cat');
@@ -34,7 +33,7 @@ module.exports = function make_viz(params) {
     .style('height', params.viz.svg_dim.height)
     .style('fill', 'white');
 
-  var matrix = generate_matrix(params, svg_group);
+  generate_matrix(params, svg_group);
 
   var delay_text = 0;
   make_rows(params, delay_text);
@@ -146,55 +145,39 @@ module.exports = function make_viz(params) {
   // d3.select(params.root+' .clust_container')
     .on('dblclick.zoom', null);
 
-  var search_obj = search(params, params.network_data.row_nodes, 'name');
+  search(params, params.network_data.row_nodes, 'name');
 
-  var opacity_slider = function (inst_slider) {
+  // var opacity_slider = function (inst_slider) {
 
-    // var max_link = params.matrix.max_link;
-    var slider_scale = d3.scale
-      .linear()
-      .domain([0, 1])
-      .range([1, 0.1]);
+  //   // var max_link = params.matrix.max_link;
+  //   var slider_scale = d3.scale
+  //     .linear()
+  //     .domain([0, 1])
+  //     .range([1, 0.1]);
 
-    var slider_factor = slider_scale(inst_slider);
+  //   var slider_factor = slider_scale(inst_slider);
 
-    if (params.matrix.opacity_function === 'linear') {
-      params.matrix.opacity_scale = d3.scale.linear()
-        .domain([0, slider_factor * Math.abs(params.matrix.max_link)])
-        .clamp(true)
-        .range([0.0, 1.0]);
-    } else if (params.matrix.opacity_function === 'log') {
-      params.matrix.opacity_scale = d3.scale.log()
-        .domain([0.0001, slider_factor * Math.abs(params.matrix.max_link)])
-        .clamp(true)
-        .range([0.0, 1.0]);
-    }
+  //   if (params.matrix.opacity_function === 'linear') {
+  //     params.matrix.opacity_scale = d3.scale.linear()
+  //       .domain([0, slider_factor * Math.abs(params.matrix.max_link)])
+  //       .clamp(true)
+  //       .range([0.0, 1.0]);
+  //   } else if (params.matrix.opacity_function === 'log') {
+  //     params.matrix.opacity_scale = d3.scale.log()
+  //       .domain([0.0001, slider_factor * Math.abs(params.matrix.max_link)])
+  //       .clamp(true)
+  //       .range([0.0, 1.0]);
+  //   }
 
-    d3.selectAll(params.root+' .tile')
-      .style('fill-opacity', function (d) {
-        return params.matrix.opacity_scale(Math.abs(d.value));
-      });
+  //   d3.selectAll(params.root+' .tile')
+  //     .style('fill-opacity', function (d) {
+  //       return params.matrix.opacity_scale(Math.abs(d.value));
+  //     });
 
-  };
-
-  function reset_zoom(inst_scale) {
-    two_translate_zoom(params, 0, 0, inst_scale);
-  }
-
-  // return {
-  //   get_clust_group: function () {
-  //     return matrix.get_clust_group();
-  //   },
-  //   get_matrix: function () {
-  //     return matrix.get_matrix();
-  //   },
-  //   get_nodes: function(type) {
-  //     return matrix.get_nodes(type);
-  //   },
-  //   find_entity: search_obj.find_entity,
-  //   get_entities: search_obj.get_entities,
-  //   opacity_slider: opacity_slider,
-  //   draw_gridlines: matrix.draw_gridlines,
-  //   reset_zoom: reset_zoom
   // };
+
+  // function reset_zoom(inst_scale) {
+  //   two_translate_zoom(params, 0, 0, inst_scale);
+  // }
+
 };
