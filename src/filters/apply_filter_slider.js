@@ -3,7 +3,9 @@ var reset_other_filter_sliders = require('./reset_other_filter_sliders');
 var get_current_orders = require('./get_current_orders');
 var make_requested_view = require('./make_requested_view');
 
-module.exports = function apply_filter_slider(config, params, filter_type, available_views){
+module.exports = function apply_filter_slider(cgm, filter_type, available_views){
+
+  var params = cgm.params;
 
   // get value
   var inst_index = $( params.root+' .slider_'+filter_type ).slider( "value" );
@@ -29,7 +31,7 @@ module.exports = function apply_filter_slider(config, params, filter_type, avail
   // console.log(requested_view)
 
 
-  params = update_network(config, params, requested_view);
+  params = update_network(cgm, requested_view);
 
   console.log('row nodes in apply_filter_slider ', params.network_data.row_nodes.length)
 

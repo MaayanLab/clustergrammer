@@ -3,7 +3,9 @@ var apply_filter_slider = require('./apply_filter_slider');
 var get_filter_default_state = require('./get_filter_default_state');
 var get_subset_views = require('./get_subset_views');
 
-module.exports = function make_slider_filter(config, params, filter_type, div_filters){
+module.exports = function make_slider_filter(cgm, filter_type, div_filters){
+
+  var params = cgm.params;
 
   var requested_view = {};
 
@@ -50,7 +52,7 @@ module.exports = function make_slider_filter(config, params, filter_type, div_fi
     max: inst_max,
     step: 1,
     stop: function() {
-      params = apply_filter_slider(config, params, filter_type, available_views);
+      params = apply_filter_slider(cgm, filter_type, available_views);
       console.log('row nodes in make_slider_filter ', params.network_data.row_nodes.length)
 
       return params;

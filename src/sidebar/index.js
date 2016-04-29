@@ -12,7 +12,6 @@ var make_modals = require('./make_modals');
 module.exports = function sidebar(cgm) {
 
   var params = cgm.params;
-  var config = cgm.config;
 
   var sidebar = d3.select(params.root+' .sidebar_wrapper');
 
@@ -86,7 +85,7 @@ module.exports = function sidebar(cgm) {
   }
 
   _.each(possible_filter_names, function(inst_filter){
-    set_up_filters(config, params, inst_filter);
+    set_up_filters(cgm, inst_filter);
   });
   
   ini_sidebar(params);

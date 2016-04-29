@@ -84,7 +84,8 @@ var Clustergrammer =
 	  var viz = make_viz(params);
 
 	  function external_resize() {
-	    resize_viz(params);
+	    // use this params, because this will have the latest params
+	    resize_viz(this.params);
 	  }
 
 	  function modify_params() {
@@ -5944,7 +5945,6 @@ var Clustergrammer =
 	module.exports = function sidebar(cgm) {
 
 	  var params = cgm.params;
-	  var config = cgm.config;
 
 	  var sidebar = d3.select(params.root + ' .sidebar_wrapper');
 
@@ -5999,7 +5999,7 @@ var Clustergrammer =
 	  }
 
 	  _.each(possible_filter_names, function (inst_filter) {
-	    set_up_filters(config, params, inst_filter);
+	    set_up_filters(cgm, inst_filter);
 	  });
 
 	  ini_sidebar(params);
@@ -6186,14 +6186,16 @@ var Clustergrammer =
 	var make_slider_filter = __webpack_require__(102);
 	var make_button_filter = __webpack_require__(127);
 
-	module.exports = function set_up_filters(config, params, filter_type) {
+	module.exports = function set_up_filters(cgm, filter_type) {
+
+	  var params = cgm.params;
 
 	  var div_filters = d3.select(params.root + ' .sidebar_wrapper').append('div').classed('div_filters', true);
 
 	  if (params.viz.possible_filters[filter_type] == 'numerical') {
-	    make_slider_filter(config, params, filter_type, div_filters);
+	    make_slider_filter(cgm, filter_type, div_filters);
 	  } else if (params.viz.possible_filters[filter_type] == 'categorical') {
-	    make_button_filter(config, params, filter_type, div_filters);
+	    make_button_filter(cgm, filter_type, div_filters);
 	  }
 		};
 
@@ -6208,7 +6210,9 @@ var Clustergrammer =
 	var get_filter_default_state = __webpack_require__(6);
 	var get_subset_views = __webpack_require__(12);
 
-	module.exports = function make_slider_filter(config, params, filter_type, div_filters) {
+	module.exports = function make_slider_filter(cgm, filter_type, div_filters) {
+
+	  var params = cgm.params;
 
 	  var requested_view = {};
 
@@ -6246,7 +6250,7 @@ var Clustergrammer =
 	    max: inst_max,
 	    step: 1,
 	    stop: function stop() {
-	      params = apply_filter_slider(config, params, filter_type, available_views);
+	      params = apply_filter_slider(cgm, filter_type, available_views);
 	      console.log('row nodes in make_slider_filter ', params.network_data.row_nodes.length);
 
 	      return params;
@@ -6327,7 +6331,9 @@ var Clustergrammer =
 	var get_current_orders = __webpack_require__(126);
 	var make_requested_view = __webpack_require__(42);
 
-	module.exports = function apply_filter_slider(config, params, filter_type, available_views) {
+	module.exports = function apply_filter_slider(cgm, filter_type, available_views) {
+
+	  var params = cgm.params;
 
 	  // get value
 	  var inst_index = $(params.root + ' .slider_' + filter_type).slider("value");
@@ -6351,7 +6357,7 @@ var Clustergrammer =
 	  // console.log('\n---------\n requested_view from slider filter')
 	  // console.log(requested_view)
 
-	  params = update_network(config, params, requested_view);
+	  params = update_network(cgm, requested_view);
 
 	  console.log('row nodes in apply_filter_slider ', params.network_data.row_nodes.length);
 
@@ -6369,7 +6375,9 @@ var Clustergrammer =
 
 	var update_with_new_network = __webpack_require__(107);
 
-	module.exports = function (config, old_params, requested_view) {
+	module.exports = function (cgm, requested_view) {
+	  var old_params = cgm.params;
+	  var config = cgm.config;
 
 	  disable_sidebar(old_params);
 
@@ -6380,7 +6388,9 @@ var Clustergrammer =
 
 	  var params = update_with_new_network(config, old_params, new_network_data);
 
-	  console.log('row nodes in update_network ', params.network_data.row_nodes.length);
+	  cgm.params = params;
+
+	  console.log('cgm row nodes in update_network ', cgm.params.network_data.row_nodes.length);
 
 	  return params;
 		};

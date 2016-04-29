@@ -35,7 +35,8 @@ function Clustergrammer(args) {
   var viz = make_viz(params);
 
   function external_resize(){
-    resize_viz(params);
+    // use this params, because this will have the latest params 
+    resize_viz(this.params);
   }
 
   function modify_params(){
