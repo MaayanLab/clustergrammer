@@ -31,6 +31,8 @@ module.exports = function apply_filter_slider(config, params, filter_type, avail
 
   params = update_network(config, params, requested_view);
 
+  console.log('row nodes in apply_filter_slider ', params.network_data.row_nodes.length)
+
   return params;
 
 };

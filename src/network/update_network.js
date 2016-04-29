@@ -14,6 +14,8 @@ module.exports = function(config, old_params, requested_view) {
 
   var params = update_with_new_network(config, old_params, new_network_data);
 
+  console.log('row nodes in update_network ', params.network_data.row_nodes.length)
+
   return params;
 
 };

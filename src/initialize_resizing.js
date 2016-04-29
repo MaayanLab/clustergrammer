@@ -4,22 +4,22 @@ module.exports = function(params) {
 
   var exp_button;
 
-  d3.select(window).on('resize', null);
+  // d3.select(window).on('resize', null);
 
-  // resize window
-  if (params.viz.resize) {
-    d3.select(window).on('resize', function () {
+  // // resize window
+  // if (params.viz.resize) {
+  //   d3.select(window).on('resize', function () {
 
-      d3.select(params.viz.viz_svg).style('opacity', 0.5);
+  //     d3.select(params.viz.viz_svg).style('opacity', 0.5);
 
-      var wait_time = 500;
-      if (params.viz.run_trans === true) {
-        wait_time = 2500;
-      }
+  //     var wait_time = 500;
+  //     if (params.viz.run_trans === true) {
+  //       wait_time = 2500;
+  //     }
       
-      setTimeout(resize_viz, wait_time, params);
-    });
-  }
+  //     setTimeout(resize_viz, wait_time, params);
+  //   });
+  // }
 
   if (params.viz.expand_button) {
 

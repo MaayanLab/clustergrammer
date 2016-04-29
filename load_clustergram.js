@@ -73,13 +73,22 @@ function make_clust(inst_network){
         // 'show_sim_mat':'col',
       };
 
+      function resize_container(){
 
-      // size the container
-      var screen_width = window.innerWidth;
-      var screen_height = window.innerHeight - 30;
-      d3.select(arguments_obj.root)
-        .style('width', screen_width+'px')
-        .style('height', screen_height+'px');
+        // size the container
+        var screen_width = window.innerWidth;
+        var screen_height = window.innerHeight - 30;
+
+        d3.select(arguments_obj.root)
+          .style('width', screen_width+'px')
+          .style('height', screen_height+'px');
+      }
+
+      resize_container();
+
+      d3.select(window).on('resize',function(){
+        resize_container();
+      });
 
       cgm = Clustergrammer(arguments_obj);
 

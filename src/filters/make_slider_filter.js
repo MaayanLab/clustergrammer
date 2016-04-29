@@ -51,7 +51,14 @@ module.exports = function make_slider_filter(config, params, filter_type, div_fi
     step: 1,
     stop: function() {
       params = apply_filter_slider(config, params, filter_type, available_views);
+      console.log('row nodes in make_slider_filter ', params.network_data.row_nodes.length)
+
+      return params;
+
     }
   });
+
+
+  console.log('row nodes outside of fliter ', params.network_data.row_nodes.length)
 
 };

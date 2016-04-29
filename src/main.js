@@ -1,6 +1,7 @@
 var make_config = require('./config');
 var make_params = require('./params/');
 var make_viz = require('./viz');
+var resize_viz = require('./reset_size/resize_viz');
 
 /* clustergrammer 1.0
  * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
@@ -29,17 +30,21 @@ function Clustergrammer(args) {
   // make visualization using parameters
   var viz = make_viz(params);
 
-  return {
-    params: params,
-    config: config,
-    find_entity: viz.find_entity,
-    get_entities: viz.get_entities,
-    reorder: require('./reorder/all_reorder'),
-    opacity_slider: viz.opacity_slider,
-    opacity_function: viz.opacity_function,
-    reset_zoom: viz.reset_zoom,
-    change_category: require('./network/change_category')
-  };
+  function external_resize(){
+    resize_viz(params);
+  }
+
+  function modify_params(){
+    this.params.something = 'here';
+  }
+
+  var cgm = {};
+  cgm.params = params;
+  cgm.config = config;
+  cgm.resize_viz = external_resize;
+  cgm.modify_params = modify_params;
+
+  return cgm;
 }
 
 module.exports = Clustergrammer;
