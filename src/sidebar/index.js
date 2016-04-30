@@ -40,9 +40,7 @@ module.exports = function sidebar(cgm) {
     sidebar
       .select('.about_section')
       .append('h5')
-      .classed('viz_medium_text',true)
-      // .style('font-size','15px')
-      // .style('font-weight',400)
+      .classed('sidebar_text',true)
       .style('margin-left','7px')
       .style('margin-top','5px')
       .style('margin-bottom','2px')

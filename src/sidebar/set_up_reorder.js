@@ -90,7 +90,7 @@ module.exports = function set_up_reorder(params, sidebar){
 
     reorder_section
       .append('div')
-      .classed('viz_medium_text',true)
+      .classed('sidebar_text',true)
       .style('clear','both')
       .style('margin-left','7px')
       .style('margin-top','10px')
@@ -98,8 +98,6 @@ module.exports = function set_up_reorder(params, sidebar){
       .html(rc_dict[inst_rc]+reorder_text);
 
     inst_reorder = reorder_section
-      .append('div')
-      .classed('viz_medium_text',true)
       .append('div')
       .classed('btn-group-vertical',true)
       .classed('toggle_'+inst_rc+'_order',true)

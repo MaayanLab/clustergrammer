@@ -5966,10 +5966,7 @@ var Clustergrammer =
 	  if (params.sidebar.about != null) {
 
 	    var about_section_width = params.sidebar.text.width - 5;
-	    sidebar.select('.about_section').append('h5').classed('viz_medium_text', true)
-	    // .style('font-size','15px')
-	    // .style('font-weight',400)
-	    .style('margin-left', '7px').style('margin-top', '5px').style('margin-bottom', '2px').style('width', about_section_width + 'px').style('text-align', 'justify').text(params.sidebar.about);
+	    sidebar.select('.about_section').append('h5').classed('sidebar_text', true).style('margin-left', '7px').style('margin-top', '5px').style('margin-bottom', '2px').style('width', about_section_width + 'px').style('text-align', 'justify').text(params.sidebar.about);
 	  }
 
 	  sidebar.append('div').classed('icons_section', true);
@@ -6232,9 +6229,7 @@ var Clustergrammer =
 
 	  var filter_title = make_filter_title(params, filter_type);
 
-	  div_filters.append('div').classed('viz_medium_text', true)
-	  // .classed('sidebar_text',true)
-	  .classed('title_' + filter_type, true).text(filter_title.text + filter_title.state + filter_title.suffix);
+	  div_filters.append('div').classed('title_' + filter_type, true).classed('sidebar_text', true).classed('slider_description', true).style('margin-top', '5px').style('margin-bottom', '3px').style('margin-left', '5px').text(filter_title.text + filter_title.state + filter_title.suffix);
 
 	  div_filters.append('div').classed('slider_' + filter_type, true).classed('slider', true).style('width', params.sidebar.slider.width + 'px').style('margin-left', params.sidebar.slider.margin_left + 'px').attr('current_state', filter_title.state);
 
@@ -7618,7 +7613,7 @@ var Clustergrammer =
 	    'zscore': 'Z-score'
 	  };
 
-	  buttons.selectAll('button').data(filter_options).enter().append('button').attr('type', 'button').classed('btn', true).classed('btn-primary', true).classed('.filter_button', true).classed('sidebar_text', true).classed('active', function (d) {
+	  buttons.selectAll('button').data(filter_options).enter().append('button').attr('type', 'button').classed('btn', true).classed('btn-primary', true).classed('.filter_button', true).classed('active', function (d) {
 	    var is_active = false;
 	    if (d == 'combined_score') {
 	      is_active = true;
@@ -7675,7 +7670,7 @@ var Clustergrammer =
 
 	  _.each(dendro_types, function (inst_rc) {
 
-	    dendro_sliders.append('p').classed('viz_medium_text', true).text(dendro_text[inst_rc]);
+	    dendro_sliders.append('div').classed('sidebar_text', true).classed('slider_description', true).style('margin-top', '5px').style('margin-bottom', '3px').style('margin-left', '5px').text(dendro_text[inst_rc]);
 
 	    dendro_sliders.append('div').classed('slider_' + inst_rc, true).classed('slider', true).style('width', params.sidebar.slider.width + 'px').style('margin-left', params.sidebar.slider.margin_left + 'px');
 	  });
@@ -7693,9 +7688,7 @@ var Clustergrammer =
 	  // .classed('row',true)
 	  .classed('gene_search_container', true).style('margin-top', '10px').style('margin-left', params.sidebar.row_search.margin_left + 'px').style('width', '185px');
 
-	  search_container.append('input').classed('form-control', true).classed('gene_search_box', true).attr('type', 'text').classed('sidebar_text', true).attr('placeholder', params.sidebar.row_search.placeholder)
-	  // .style('width', params.sidebar.row_search.box.width+'px')
-	  .style('width', '70px').style('height', params.sidebar.row_search.box.height + 'px').style('float', 'left');
+	  search_container.append('input').classed('form-control', true).classed('gene_search_box', true).classed('sidebar_text', true).attr('type', 'text').attr('placeholder', params.sidebar.row_search.placeholder).style('width', '70px').style('height', params.sidebar.row_search.box.height + 'px').style('float', 'left');
 
 	  search_container.append('div').classed('btn-group', true).classed('gene_search_button', true).attr('data-toggle', 'buttons').append('div').append('button').classed('sidebar_text', true).html('Search').attr('type', 'button').classed('btn', true).classed('btn-primary', true).classed('submit_gene_button', true).style('margin-left', '4px').style('float', 'left').style('padding-top', '6px').style('padding-bottom', '6px');
 		};
@@ -7792,9 +7785,9 @@ var Clustergrammer =
 	      reorder_text = 'Reorder Matrix';
 	    }
 
-	    reorder_section.append('div').classed('viz_medium_text', true).style('clear', 'both').style('margin-left', '7px').style('margin-top', '10px').style('font-size', '13px').html(rc_dict[inst_rc] + reorder_text);
+	    reorder_section.append('div').classed('sidebar_text', true).style('clear', 'both').style('margin-left', '7px').style('margin-top', '10px').style('font-size', '13px').html(rc_dict[inst_rc] + reorder_text);
 
-	    inst_reorder = reorder_section.append('div').classed('viz_medium_text', true).append('div').classed('btn-group-vertical', true).classed('toggle_' + inst_rc + '_order', true).attr('role', 'group').style('max-width', params.sidebar.buttons.width + 'px');
+	    inst_reorder = reorder_section.append('div').classed('btn-group-vertical', true).classed('toggle_' + inst_rc + '_order', true).attr('role', 'group').style('max-width', params.sidebar.buttons.width + 'px');
 
 	    inst_reorder.selectAll('.button').data(possible_orders).enter().append('button').attr('type', 'button').style('font-size', '13px').classed('btn', true).classed('btn-primary', true).classed('sidebar_text', true).classed('active', function (d) {
 	      is_active = false;

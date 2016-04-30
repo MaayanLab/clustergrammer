@@ -19,8 +19,12 @@ module.exports = function set_up_dendro_sliders(sidebar, params){
   _.each( dendro_types, function(inst_rc){
 
     dendro_sliders
-      .append('p')
-      .classed('viz_medium_text',true)
+      .append('div')
+      .classed('sidebar_text', true)
+      .classed('slider_description', true)
+      .style('margin-top', '5px')
+      .style('margin-bottom', '3px')
+      .style('margin-left', '5px')
       .text(dendro_text[inst_rc]);
 
     dendro_sliders

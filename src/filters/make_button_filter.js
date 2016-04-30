@@ -36,7 +36,6 @@ module.exports = function make_button_filter(config, params, filter_type, div_fi
     .classed('btn',true)
     .classed('btn-primary',true)
     .classed('.filter_button',true)
-    .classed('sidebar_text',true)
     .classed('active', function(d){
       var is_active = false;
       if (d == 'combined_score'){
