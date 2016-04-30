@@ -1,12 +1,10 @@
 
 /* Sticky footer styles
 -------------------------------------------------- */
-body {
-  height: 100%;
-}
-
-html {
-  height: 100%;
+html, body {
+  /*height: 100%;*/
+  max-width: 100%;
+  overflow-x:hidden;
 }
 
 /* Wrapper for page content to push down footer */
@@ -71,7 +69,7 @@ h1 {
 
 .clustergrammer_container{
   width: 1140px;
-  height: 800px;
+  height: 750px;
   margin-bottom: 10px;
   overflow: hidden;
 }

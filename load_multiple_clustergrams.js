@@ -1,9 +1,5 @@
 
-var all_clusts = ['mult_view.json',
-'mult_view_sim_col.json',
-'mult_view_sim_row.json'];
-
-var viz_size = {'width':1140, 'height':800};
+var viz_size = {'width':1140, 'height':750};
 
 // define arguments object
 var default_args = {
@@ -13,9 +9,55 @@ var default_args = {
   // 'ini_view':{'N_row_sum':100}
 };
 
+$(document).ready(function(){
+    $(this).scrollTop(0);
+});
+
 make_clust(make_sim_mats)
 
 resize_container();
+
+window.onscroll = function() {
+
+  var show_col_sim = 200;
+  var show_row_sim = 1200;
+  var hide_clust = 900;
+  var hide_col_sim = 1800;
+  var inst_scroll = $(document).scrollTop();
+
+  // load col sim mat 
+  if (inst_scroll > show_col_sim){
+    if (d3.select('#container-id-2 .viz_svg').empty()){
+      make_sim_mats('col', cat_colors)
+    }
+  }
+
+  // load row sim mat 
+  if (inst_scroll > show_row_sim){
+    if (d3.select('#container-id-3 .viz_svg').empty()){
+      make_sim_mats('row', cat_colors)
+    }
+  }
+
+  // hide clust 
+  if (inst_scroll > hide_clust){
+    d3.select('#container-id-1 .viz_svg')
+      .style('display', 'none');
+  } else {
+    d3.select('#container-id-1 .viz_svg')
+      .style('display', 'block');
+  }
+
+  // hide col sim mat
+  if (inst_scroll > hide_col_sim || inst_scroll < show_col_sim){
+    d3.select('#container-id-2 .viz_svg')
+      .style('display', 'none');
+  } else {
+    d3.select('#container-id-2 .viz_svg')
+      .style('display', 'block');
+  }
+
+}
 
 var tmp_num;
 var cat_colors;
@@ -23,46 +65,45 @@ function make_clust(make_sim_mats){
   var clust_name = 'mult_view.json'
 
   d3.json('json/'+clust_name, function(network_data){
-    var tmp_num = all_clusts.indexOf(clust_name)+1;
     var args = $.extend(true, {}, default_args);
-    args.root = '#container-id-'+tmp_num;
+    args.root = '#container-id-1';
     args.network_data = network_data;
 
     cgm = Clustergrammer(args);
     d3.select(cgm.params.root+' .wait_message').remove();
     cat_colors = cgm.params.cat_colors;
 
-    make_sim_mats(cat_colors);
+    // make_sim_mats(cat_colors);
     
   });
 
 }
 
-function make_sim_mats(cat_colors){
 
-  _.each(['row','col'], function(inst_rc){
-    clust_name = 'mult_view_sim_'+inst_rc+'.json'
-    d3.json('json/'+clust_name, function(network_data){
+function make_sim_mats(inst_rc, cat_colors){
 
-      var args = $.extend(true, {}, default_args);
-      args.cat_colors = {};
-      if (inst_rc === 'col'){
-        tmp_num = 2;
-        args.cat_colors.row = cat_colors.col;
-        args.cat_colors.col = cat_colors.col;
-      } else if (inst_rc === 'row'){
-        tmp_num = 3;
-        args.cat_colors.row = cat_colors.row;
-        args.cat_colors.col = cat_colors.row;
-      }
+  clust_name = 'mult_view_sim_'+inst_rc+'.json'
+  d3.json('json/'+clust_name, function(network_data){
 
-      args.root = '#container-id-'+tmp_num;
+    var args = $.extend(true, {}, default_args);
+    args.cat_colors = {};
+    if (inst_rc === 'col'){
+      tmp_num = 2;
+      args.cat_colors.row = cat_colors.col;
+      args.cat_colors.col = cat_colors.col;
+    } else if (inst_rc === 'row'){
+      tmp_num = 3;
+      args.cat_colors.row = cat_colors.row;
+      args.cat_colors.col = cat_colors.row;
+    }
 
-      args.network_data = network_data;
-      cgm = Clustergrammer(args);
-      d3.select(cgm.params.root+' .wait_message').remove();
-    });
+    args.root = '#container-id-'+tmp_num;
+
+    args.network_data = network_data;
+    cgm = Clustergrammer(args);
+    d3.select(cgm.params.root+' .wait_message').remove();
   });
+
 }
 
 function resize_container(){
