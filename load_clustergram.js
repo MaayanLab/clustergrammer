@@ -75,7 +75,6 @@ function make_clust(inst_network){
 
       function resize_container(){
 
-        // size the container
         var screen_width = window.innerWidth;
         var screen_height = window.innerHeight - 30;
 

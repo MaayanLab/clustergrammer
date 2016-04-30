@@ -1,52 +1,21 @@
-/* prevents horizontal scrolling */
-/*html {
-  max-width: 100%;
-  overflow-x: hidden;
-  position:relative;
-}
-
-body {
-  position: relative;
-  width: 1000px;
-  height:900px;
-  margin: 0px auto 10px auto;
-}*/
-
-
 
 /* Sticky footer styles
 -------------------------------------------------- */
-
-
-
 body {
   height: 100%;
-  /* The html and body elements cannot have any padding or margin. */
-  position: relative;
-  /*width: 1000px;*/
-  /*height:900px;*/
-  margin: 0px auto 0px auto;
-  overflow-x:hidden;
 }
 
 html {
   height: 100%;
-  /* The html and body elements cannot have any padding or margin. */
-  position: relative;
-  /*width: 1000px;*/
-  /*height:900px;*/
-  margin: 0px auto 0px auto;
 }
 
-
 /* Wrapper for page content to push down footer */
+/* Negative indent footer by its height */
+/* Pad bottom by footer height */
 #wrap {
   width: 1140px;
   min-height: 100%;
-  height: auto;
-  /* Negative indent footer by its height */
   margin: 0 auto -50px;
-  /* Pad bottom by footer height */
   padding: 0 0 50px;
 }
 
@@ -54,7 +23,6 @@ html {
 #footer {
   height: 60px;
   background-color: #f5f5f5;
-  /*margin-left: 200px;*/
   text-align: center;
   background-color: #f5f5f5;
   font-size: 13px;
@@ -63,10 +31,6 @@ html {
   margin-top: 50px;
 }
 
-
-
-
-
 h1 {
   font-size: 45px;
   font-weight: 300;
@@ -74,103 +38,9 @@ h1 {
   margin-bottom: 20px;
 }
 
-h2 {
-  margin-top: 2em;
-}
-
-/*footer {*/
-  /*position: absolute;
-  bottom: 0;
-  width: 100%;
-  height:60;
-  background-color: red;*/
-  /*margin-left: 200px;
-  text-align: center;
-  background-color: #f5f5f5;
-  font-size: 13px;
-  padding-left:10px;
-  padding-right:10px;*/
-/*}*/
-
-#main_container{
-  position: relative;
-  /*margin-left: 55px;*/
-  /*height:2000px;*/
-}
-
-#website_title{
-  margin-top: 12px;
-  margin-bottom: 10px;
-  display: inline-block;
-  /*margin-left: 5px;*/
-  font-size: 30px;
-}
-
-.initial_paragraph{
-  font-size: 19px;
-  width:940px;
-  font-weight: 300;
-}
-
-
-/*footer - shift it with the sidebar*/
-#footer_div{
-  margin-left: 0px;
-}
-
-/*position file upload button*/
-#file_upload_button{
-  margin-left: 5px;
-}
-
-/*style example_tsv*/
-#example_tsv{
-  width:275px;
-  padding-left: 23px;
-  margin-left: 30px;
-}
-
-/*color choose file button*/
-.btn-default {
-  background-color: #D0D0D0;
-}
-
 .btn{
   padding-top:2px;
   padding-bottom:2px;
-}
-
-#iframe_preview{
-  display: block;
-  height: 520px;
-  width: 920px;
-  border: 1px solid #DEDEDE;
-}
-
-#input_form{
-  margin-bottom: 10px;
-  float:left;
-}
-
-#demo_paragraph{
-  margin-top: 25px;
-  margin-bottom: 5px;
-}
-
-#demo_link{
-  color: #009dff;
-  font-size: 12px;
-  margin-left: 788px;
-}
-
-#upload_section{
-  margin-top: 10px;
-  margin-left: 15px;
-}
-
-.footer_text{
-  padding-top: 2px;
-  padding-bottom: 2px;
 }
 
 #footer_text_container{
@@ -179,86 +49,6 @@ h2 {
   min-width: 950px;
 }
 
-.first_instructions{
-  margin-left: 0px;
-  text-align: justify;
-}
-
-#home_graham_cracker{
-  margin-top: -13px;
-}
-
-#homepage_examples{
-  /*divider*/
-  margin-top: 55px;
-  padding-top: 40px;
-  border-top: 1px solid #DEDEDE;
-  width:920px;a
-  height: 300px;
-  margin-left: 0px;
-}
-
-#example_title{
-  font-size: 25px;
-  font-weight: 300; 
-  margin-bottom: 20px;
-  margin-left: 15px;
-}
-
-.example_single_title{
-  font-size: 19px;
-  font-weight: 300; 
-  text-align: center;
-}
-
-.example_single_description{
-  font-size: 15px;
-  font-weight: 300; 
-  text-align: justify;
-  padding: 5px;
-}
-
-.example_image_container{
-  width:100%;
-  height: 200px;
-  /*background: red;*/ 
-  border: 1px solid #DEDEDE
-}
-
-.example_image{
-  margin-left: 5px;
-  margin-top: 10px;
-  width:285px;
-  height: 180px;
-  border: 0;
-}
-
-#CCLE_image{
-  margin-left: 5px;
-  margin-top: 5px;
-  width:290px;
-  height: 190px;
-  border: 0;
-}
-
-#harmonizome{
-  margin-left: 10px;
-}
-
-#L1000CDS2{
-  margin-left: 10px;
-}
-
-.example_col{
-  padding-left: 7px;
-  padding-right: 7px;
-}
-
-#help_link{
-  font-size: 30px;
-  margin-top: -11px;
-  margin-left: 10px;
-}
 
 .d3-tip {
   line-height: 1;
@@ -269,13 +59,6 @@ h2 {
   border-radius: 2px;
   max-width: 500px;
   top:0px;
-}
-
-/* Style northward tooltips differently */
-.d3-tip.n:after {
-  margin: -1px 0 0 0;
-  top: 100%;
-  left: 0;
 }
 
 .row{

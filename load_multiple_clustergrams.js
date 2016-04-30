@@ -12,6 +12,8 @@ var default_args = {
   'row_search_placeholder':'Gene',
 };
 
+add_styles();
+
 make_clust(make_sim_mats)
 
 resize_container();
@@ -75,3 +77,5 @@ function resize_container(){
 }
 
 
+function add_styles(){
+}
