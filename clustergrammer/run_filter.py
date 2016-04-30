@@ -115,3 +115,6 @@ def filter_N_top(inst_rc, df, N_top, rank_type='sum'):
 
   return df
 
+def filter_threshold(df, inst_rc, threshold, num_occur=1):
+  print('filter_value_threshold')
+  return df

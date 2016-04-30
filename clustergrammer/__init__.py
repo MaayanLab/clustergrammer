@@ -110,7 +110,7 @@ class Network(object):
       inst_df = run_filter.df_filter_col_sum(inst_df, threshold, take_abs)
     self.df_to_dat(inst_df)
 
-  def filter_N_top(self, inst_rc, N_top, axis='row', rank_type='sum'):
+  def filter_N_top(self, inst_rc, N_top, rank_type='sum'):
     '''
     Filter a network's rows or cols based on sum/variance, and only keep the top
     N  
@@ -120,6 +120,20 @@ class Network(object):
     inst_df = self.dat_to_df()
 
     inst_df = run_filter.filter_N_top(inst_rc, inst_df, N_top, rank_type)
+
+    self.df_to_dat(inst_df)
+
+  def filter_threshold(self, inst_rc, threshold, num_occur=1):
+    '''
+    Filter a network's rows or cols based on num_occur values being above a 
+    threshold (in absolute value) 
+    '''
+    import run_filter
+
+    inst_df = self.dat_to_df()
+
+    inst_df = run_filter.filter_threshold(inst_df, inst_rc, threshold, 
+      num_occur)
 
     self.df_to_dat(inst_df)
 

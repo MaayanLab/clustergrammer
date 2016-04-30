@@ -29,9 +29,12 @@ net.load_file('txt/rc_two_cats.txt')
 # # take zscore
 # net.normalize(axis='col', norm_type='zscore', keep_orig=True)
 
-# only keep most differentially expressed genes
+# # only keep most differentially expressed genes
 # net.filter_N_top('row', 500, rank_type='var')
 # net.filter_N_top('col', 100, rank_type='var ')
+
+# filter for rows that contain num_occur values above threshold (abs value)
+net.filter_threshold('row', threshold=1, num_occur=1)
 
 net.swap_nan_for_zero()
   
