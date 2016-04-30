@@ -14,6 +14,8 @@ var default_args = {
 
 make_clust(make_sim_mats)
 
+resize_container();
+
 var tmp_num;
 var cat_colors;
 function make_clust(make_sim_mats){
@@ -24,10 +26,6 @@ function make_clust(make_sim_mats){
     var args = $.extend(true, {}, default_args);
     args.root = '#container-id-'+tmp_num;
     args.network_data = network_data;
-
-    d3.select(args.root)
-      .style('width', viz_size.width+'px')
-      .style('height', viz_size.height+'px');
 
     cgm = Clustergrammer(args);
     d3.select(cgm.params.root+' .wait_message').remove();
@@ -59,15 +57,21 @@ function make_sim_mats(cat_colors){
 
       args.root = '#container-id-'+tmp_num;
 
-      d3.select(args.root)
-        .style('width', viz_size.width+'px')
-        .style('height', viz_size.height+'px');
-
       args.network_data = network_data;
       cgm = Clustergrammer(args);
       d3.select(cgm.params.root+' .wait_message').remove();
     });
   });
+}
+
+function resize_container(){
+
+  var screen_width = viz_size.width;
+  var screen_height = viz_size.height;
+
+  d3.selectAll('.clustergrammer_container')
+    .style('width', screen_width+'px')
+    .style('height', screen_height+'px');
 }
 
 
