@@ -9,7 +9,8 @@ var viz_size = {'width':1140, 'height':800};
 var default_args = {
   'show_tile_tooltips':true,
   'about':'Zoom, scroll, and click buttons to interact with the clustergram.',
-  'row_search_placeholder':'Gene',
+  'row_search_placeholder':'Gene'
+  // 'ini_view':{'N_row_sum':100}
 };
 
 make_clust(make_sim_mats)
