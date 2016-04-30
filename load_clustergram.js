@@ -33,7 +33,7 @@ function make_clust(inst_network){
       };
 
       // define arguments object
-      var arguments_obj = {
+      var args = {
         root: '#container-id-1',
         'network_data': network_data,
         // 'row_label':'Row Title',
@@ -79,7 +79,7 @@ function make_clust(inst_network){
         var screen_width = window.innerWidth;
         var screen_height = window.innerHeight - 30;
 
-        d3.select(arguments_obj.root)
+        d3.select(args.root)
           .style('width', screen_width+'px')
           .style('height', screen_height+'px');
       }
@@ -91,7 +91,7 @@ function make_clust(inst_network){
         cgm.resize_viz();
       });
 
-      cgm = Clustergrammer(arguments_obj);
+      cgm = Clustergrammer(args);
 
       d3.select(cgm.params.root + ' .wait_message').remove();
 

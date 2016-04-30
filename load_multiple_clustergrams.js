@@ -3,16 +3,13 @@ var all_clusts = ['mult_view.json',
 'mult_view_sim_col.json',
 'mult_view_sim_row.json'];
 
+var viz_size = {'width':1140, 'height':800};
+
 // define arguments object
 var default_args = {
   'show_tile_tooltips':true,
-  'size':{
-    'width':1140,
-    'height':800
-  },
   'about':'Zoom, scroll, and click buttons to interact with the clustergram.',
   'row_search_placeholder':'Gene',
-  // 'resize':true
 };
 
 make_clust(make_sim_mats)
@@ -27,6 +24,11 @@ function make_clust(make_sim_mats){
     var args = $.extend(true, {}, default_args);
     args.root = '#container-id-'+tmp_num;
     args.network_data = network_data;
+
+    d3.select(args.root)
+      .style('width', viz_size.width+'px')
+      .style('height', viz_size.height+'px');
+
     cgm = Clustergrammer(args);
     d3.select(cgm.params.root+' .wait_message').remove();
     cat_colors = cgm.params.cat_colors;
@@ -42,6 +44,7 @@ function make_sim_mats(cat_colors){
   _.each(['row','col'], function(inst_rc){
     clust_name = 'mult_view_sim_'+inst_rc+'.json'
     d3.json('json/'+clust_name, function(network_data){
+
       var args = $.extend(true, {}, default_args);
       args.cat_colors = {};
       if (inst_rc === 'col'){
@@ -55,6 +58,11 @@ function make_sim_mats(cat_colors){
       }
 
       args.root = '#container-id-'+tmp_num;
+
+      d3.select(args.root)
+        .style('width', viz_size.width+'px')
+        .style('height', viz_size.height+'px');
+
       args.network_data = network_data;
       cgm = Clustergrammer(args);
       d3.select(cgm.params.root+' .wait_message').remove();
