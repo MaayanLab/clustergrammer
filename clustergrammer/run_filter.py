@@ -132,7 +132,7 @@ def filter_threshold(df, inst_rc, threshold, num_occur=1):
   ini_rows = inst_df.index.values.tolist()
 
   inst_df[inst_df < threshold] = 0  
-  inst_df[inst_df > threshold] = 1
+  inst_df[inst_df >= threshold] = 1
 
   tmp_sum = inst_df.sum(axis=1)
 
