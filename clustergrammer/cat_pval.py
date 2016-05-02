@@ -25,12 +25,23 @@ def main(net):
     subset = tmp_dict[inst_cat]
     print(subset)
     inst_mean = calc_mean_dist_subset(dm, subset)
-    print(inst_mean)
+    # print(inst_mean)
 
     hist = calc_hist_distances(dm, subset, inst_cols)
-    print(hist['prob'])
-    print(hist['bins'])
-    print('\n\n')
+
+    pval = 0
+    for i in range(len(hist['prob'])):
+      if i == 0:
+        pval = hist['prob'][i]
+      if i >= 1:
+        if inst_mean >= hist['bins'][i]:
+          # print('inst_bin '+str(hist['bins'][i]))
+          pval = pval + hist['prob'][i]
+          # print('add ' + str(hist['prob'][i]) + ' total:' + str(pval) + '\n')
+
+    print('pval '+str(pval)+'\n-------------\n\n')
+
+  # net.dat['node_info']['col']
 
 def dist_matrix_lattice(names):  
   from scipy.spatial.distance import pdist, squareform
@@ -65,12 +76,12 @@ def calc_hist_distances(dm, subset, inst_cols):
     mean_dist.append( np.mean(dm[tmp].ix[tmp].values)  )
 
   tmp_dist = sorted(deepcopy(mean_dist))
-  print('lowest distances')
-  print(tmp_dist[0:4])
+  # print('lowest distances')
+  # print(tmp_dist[0:4])
 
   mean_dist = np.asarray(mean_dist)
   s1 = pd.Series(mean_dist)
-  hist = np.histogram(s1, bins=20)
+  hist = np.histogram(s1, bins=30)
 
   H = {}
   H['prob'] = hist[0]/np.float(num_null)
