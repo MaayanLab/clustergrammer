@@ -37,10 +37,9 @@ net.load_file('txt/rc_two_cats.txt')
 # net.filter_threshold('col', threshold=2, num_occur=3)
 # net.filter_threshold('row', threshold=100, num_occur=200)
 
-net.swap_nan_for_zero()
+# net.swap_nan_for_zero()
   
 views = ['N_row_sum', 'N_row_var']
-# views = []
 
 net.make_clust(dist_type='cos',views=views , dendro=True,
                sim_mat=True, filter_sim=0.1)
