@@ -6,7 +6,7 @@ def cluster_row_and_col(net, dist_type='cosine', linkage_type='average',
 
   import scipy
   from copy import deepcopy
-  from scipy.spatial.distance import pdist, squareform
+  from scipy.spatial.distance import pdist
   import categories, make_viz
 
   dm = {}
@@ -45,7 +45,7 @@ def cluster_row_and_col(net, dist_type='cosine', linkage_type='average',
   return dm
 
 def calc_distance_matrix(tmp_mat, inst_rc, dist_type='cosine'):
-  from scipy.spatial.distance import pdist, squareform
+  from scipy.spatial.distance import pdist
   import numpy as np
 
   if inst_rc == 'row':

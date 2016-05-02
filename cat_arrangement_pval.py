@@ -5,7 +5,7 @@ def main():
 
   net.load_file('txt/rc_two_cats.txt')
 
-  tmp_size = 1000
+  tmp_size = 50
 
   inst_dm = make_distance_matrix(net, tmp_size)
 
@@ -14,6 +14,7 @@ def main():
 def randomly_sample_rows(net, inst_dm, tmp_size):
   import numpy as np
   import pandas as pd 
+  from copy import deepcopy
   inst_rows = net.dat['nodes']['row']
 
   inst_rows = np.asarray(inst_rows[:tmp_size])
@@ -24,8 +25,8 @@ def randomly_sample_rows(net, inst_dm, tmp_size):
 
   mean_dist = []
 
-  num_null = 20000
-  num_points = 50
+  num_null = 2000
+  num_points = 10
 
   np.random.seed(100)
   for i in range(num_null):
@@ -36,10 +37,12 @@ def randomly_sample_rows(net, inst_dm, tmp_size):
     mean_dist.append( np.mean(df[tmp].ix[tmp].values) )
     # print('------------\n')
 
+  tmp = sorted(list(set(deepcopy(mean_dist))))
+  print(len(tmp))
   mean_dist = np.asarray(mean_dist)
 
   s1 = pd.Series(mean_dist)
-  hist = np.histogram(s1)
+  hist = np.histogram(s1, bins=20)
 
   print(hist[0]/np.float(num_null))
   print(hist[1])

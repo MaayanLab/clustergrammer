@@ -1,5 +1,4 @@
 def main(net, inst_dm, filter_sim):
-
   from __init__ import Network
   from copy import deepcopy
   import calc_clust
@@ -11,7 +10,6 @@ def main(net, inst_dm, filter_sim):
 
     sim_dict[inst_rc] = dm_to_sim(inst_dm[inst_rc], make_squareform=True, 
                              filter_sim=filter_sim)
-
 
   sim_net = {}
 
@@ -31,7 +29,6 @@ def main(net, inst_dm, filter_sim):
 
   return sim_net
 
-
 def dm_to_sim(inst_dm, make_squareform=False, filter_sim=0):
   import numpy as np
   from scipy.spatial.distance import squareform
@@ -46,7 +43,6 @@ def dm_to_sim(inst_dm, make_squareform=False, filter_sim=0):
     inst_sim_mat[ np.abs(inst_sim_mat) < filter_sim] = 0
 
   return inst_sim_mat
-
 
 def adjust_filter_sim(inst_dm, filter_sim, keep_top=20000):
   import pandas as pd
