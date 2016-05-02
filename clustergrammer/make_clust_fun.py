@@ -8,7 +8,7 @@ def make_clust(net, dist_type='cosine', run_clustering=True,
   '''
 
   from copy import deepcopy
-  import calc_clust, run_filter, make_views, make_sim_mat
+  import calc_clust, run_filter, make_views, make_sim_mat, cat_pval
   import scipy
 
   df = net.dat_to_df()
@@ -25,7 +25,7 @@ def make_clust(net, dist_type='cosine', run_clustering=True,
                                 run_clustering=run_clustering, 
                                 dendro=dendro, ignore_cat=False)
 
-
+  cat_pval.main(net)
 
   all_views = []
   send_df = deepcopy(df)

@@ -1,5 +1,7 @@
 def check_categories(lines):
-  ''' find out how many row and col categories are available ''' 
+  ''' 
+  find out how many row and col categories are available 
+  ''' 
   # count the number of row categories
   rcat_line = lines[0].split('\t')
 
@@ -35,7 +37,9 @@ def check_categories(lines):
   return num_labels
 
 def dict_cat(net):
-  ''' make a dictionary of node-category associations ''' 
+  ''' 
+  make a dictionary of node-category associations 
+  ''' 
   for inst_rc in ['row', 'col']:
     inst_keys = net.dat['node_info'][inst_rc].keys()
     all_cats = [x for x in inst_keys if 'cat-' in x]
@@ -57,8 +61,10 @@ def dict_cat(net):
       tmp_name = 'dict_' + inst_name_cat.replace('-', '_')
       net.dat['node_info'][inst_rc][tmp_name] = dict_cat  
 
-
 def calc_cat_clust_order(net, inst_rc):
+  ''' 
+  cluster category subset of data 
+  '''
   from __init__ import Network
   from copy import deepcopy
   import calc_clust

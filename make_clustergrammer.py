@@ -34,7 +34,7 @@ net.load_file('txt/rc_two_cats.txt')
 # net.filter_N_top('col', 100, rank_type='var ')
 
 # filter for rows that contain num_occur values above threshold (abs value)
-# net.filter_threshold('col', threshold=2, num_occur=3)
+# net.filter_threShold('col', threshold=2, num_occur=3)
 # net.filter_threshold('row', threshold=100, num_occur=200)
 
 # net.swap_nan_for_zero()
