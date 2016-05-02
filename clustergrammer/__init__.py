@@ -49,14 +49,16 @@ class Network(object):
 
   def make_clust(self, dist_type='cosine', run_clustering=True,
                  dendro=True, views=['pct_row_sum', 'N_row_sum'],
-                 linkage_type='average', sim_mat=False, filter_sim=0.1):
+                 linkage_type='average', sim_mat=False, filter_sim=0.1,
+                 calc_cat_pval=False):
     ''' 
     The main function run by the user to make their clustergram. 
     views is later referred to as requested_views.
     '''
     import make_clust_fun
     make_clust_fun.make_clust(self, dist_type, run_clustering, dendro, 
-                                   views, linkage_type, sim_mat, filter_sim)
+                                   views, linkage_type, sim_mat, filter_sim,
+                                   calc_cat_pval)
 
   def produce_view(self, requested_view=None):
     '''
