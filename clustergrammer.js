@@ -6445,10 +6445,10 @@ var Clustergrammer =
 
 	  make_demo_text_containers(params, demo_text_size);
 
-	  // inst_time = run_segment(params, inst_time, play_intro);
-	  // inst_time = run_segment(params, inst_time, play_zoom);
-	  // inst_time = run_segment(params, inst_time, play_reset_zoom);
-	  // inst_time = run_segment(params, inst_time, play_reorder_row);
+	  inst_time = run_segment(params, inst_time, play_intro);
+	  inst_time = run_segment(params, inst_time, play_zoom);
+	  inst_time = run_segment(params, inst_time, play_reset_zoom);
+	  inst_time = run_segment(params, inst_time, play_reorder_row);
 	  inst_time = run_segment(params, inst_time, play_reorder_buttons);
 	  inst_time = run_segment(params, inst_time, play_search);
 	  inst_time = run_segment(cgm, inst_time, play_filter);
@@ -9071,15 +9071,15 @@ var Clustergrammer =
 	    var text = 'Reorder all rows and columns\nby clicking the reorder\n buttons';
 	    demo_text(params, text, 9000);
 
-	    setTimeout(highlight_sidebar_element, 2000, params, 'toggle_row_order');
-	    setTimeout(click_reorder_button, 2500, params, 'row', 'rank');
+	    setTimeout(highlight_sidebar_element, 3000, params, 'toggle_row_order');
+	    setTimeout(click_reorder_button, 3500, params, 'row', 'rank');
 
-	    setTimeout(highlight_sidebar_element, 6000, params, 'toggle_col_order');
-	    setTimeout(click_reorder_button, 6500, params, 'col', 'rank');
+	    setTimeout(highlight_sidebar_element, 7000, params, 'toggle_col_order');
+	    setTimeout(click_reorder_button, 7500, params, 'col', 'rank');
 	  }
 
 	  function get_duration() {
-	    return 10000;
+	    return 11000;
 	  }
 
 	  function click_reorder_button(params, inst_rc, inst_order) {
@@ -9180,27 +9180,27 @@ var Clustergrammer =
 	    var params = cgm.params;
 
 	    var text = 'Filter rows based on \nsum or variance';
-	    demo_text(params, text, 3000);
+	    demo_text(params, text, 4000);
 
 	    var filter_type = 'N_row_sum';
 
-	    setTimeout(highlight_sidebar_element, 3500, params, 'slider_' + filter_type, 12500);
+	    setTimeout(highlight_sidebar_element, 5000, params, 'slider_' + filter_type, 13000);
 
 	    text = 'Filter: Top 20 rows by sum';
-	    setTimeout(demo_text, 4000, params, text, 3000);
-	    setTimeout(run_update, 4000, cgm, filter_type, 20, 1);
+	    setTimeout(demo_text, 5000, params, text, 4000);
+	    setTimeout(run_update, 5000, cgm, filter_type, 20, 1);
 
 	    text = 'Filter: Top 10 rows by sum';
-	    setTimeout(demo_text, 8000, params, text, 3000);
-	    setTimeout(run_update, 8000, cgm, filter_type, 10, 2);
+	    setTimeout(demo_text, 10000, params, text, 4000);
+	    setTimeout(run_update, 10000, cgm, filter_type, 10, 2);
 
 	    text = 'Filter: All rows';
-	    setTimeout(demo_text, 12000, params, text, 3000);
-	    setTimeout(run_update, 12000, cgm, filter_type, 'all', 0);
+	    setTimeout(demo_text, 15000, params, text, 4000);
+	    setTimeout(run_update, 15000, cgm, filter_type, 'all', 0);
 	  }
 
 	  function get_duration() {
-	    return 14000;
+	    return 19000;
 	  }
 
 	  function run_update(cgm, filter_type, filter_value, filter_index) {

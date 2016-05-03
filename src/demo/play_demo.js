@@ -23,10 +23,10 @@ module.exports = function play_demo(){
 
   make_demo_text_containers(params, demo_text_size);
 
-  // inst_time = run_segment(params, inst_time, play_intro);
-  // inst_time = run_segment(params, inst_time, play_zoom);
-  // inst_time = run_segment(params, inst_time, play_reset_zoom);
-  // inst_time = run_segment(params, inst_time, play_reorder_row);
+  inst_time = run_segment(params, inst_time, play_intro);
+  inst_time = run_segment(params, inst_time, play_zoom);
+  inst_time = run_segment(params, inst_time, play_reset_zoom);
+  inst_time = run_segment(params, inst_time, play_reorder_row);
   inst_time = run_segment(params, inst_time, play_reorder_buttons);
   inst_time = run_segment(params, inst_time, play_search);
   inst_time = run_segment(cgm, inst_time, play_filter);
