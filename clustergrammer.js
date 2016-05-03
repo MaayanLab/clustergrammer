@@ -8804,9 +8804,11 @@ var Clustergrammer =
 	'use strict';
 
 	var demo_text = __webpack_require__(143);
+	var make_demo_text_containers = __webpack_require__(145);
 
 	module.exports = function play_demo() {
 	  var cgm = this;
+	  var params = cgm.params;
 	  console.log('play demo');
 
 	  // intro text
@@ -8814,7 +8816,10 @@ var Clustergrammer =
 	  var inst_time = 0;
 	  var prev_duration = 0;
 
-	  demo_text('something', 1000);
+	  var demo_text_size = 38;
+	  make_demo_text_containers(params, demo_text_size);
+
+	  demo_text(params, 'something\nsomething\nsomething', 3000);
 		};
 
 /***/ },
@@ -8823,47 +8828,66 @@ var Clustergrammer =
 
 	'use strict';
 
-	module.exports = function demo_text(text, read_duration) {
+	module.exports = function demo_text(params, text, read_duration) {
 
-	  console.log('making demo text');
+	  var split_text = text.split('\n');
 
-	  // var split_text = text.split('\n');
+	  if (split_text.length < 3) {
+	    split_text.push('');
+	  }
 
-	  // if (split_text.length < 3){
-	  //   split_text.push('');
-	  // }
+	  d3.select(params.root + ' .demo_group').style('opacity', 0).transition().duration(250).style('opacity', 1).transition().duration(250).delay(read_duration).style('opacity', 0);
 
-	  // d3.select('#demo_group')
-	  //   .style('opacity',0)
-	  //   .transition().duration(250)
-	  //   .style('opacity',1)
-	  //   .transition().duration(250).delay(read_duration)
-	  //   .style('opacity',0);
+	  var box_scale = 1.1;
 
-	  // var box_scale = 1.1;
+	  for (var i = 0; i < split_text.length; i++) {
 
-	  // for (i=0; i<split_text.length; i++){
+	    var inst_text_num = i + 1;
 
-	  //   var inst_text_num = i+1;
+	    // make text box
+	    //////////////////
+	    var inst_text_obj = d3.select(params.root + ' .demo_group').select('#text_' + inst_text_num).text(split_text[i]);
+	    var bbox = inst_text_obj[0][0].getBBox();
 
-	  //   // make text box
-	  //   //////////////////
-	  //   var inst_text_obj = d3.select('#demo_group')
-	  //     .select('#text_'+inst_text_num)
-	  //     .text(split_text[i]);
-	  //   var bbox = inst_text_obj[0][0].getBBox();
+	    var box_opacity = 0.85;
 
-	  //   var box_opacity = 0.85;
+	    d3.select(params.root + ' .demo_group').select('#rect_' + inst_text_num).style('fill', 'white').attr('width', bbox.width + 20).attr('height', bbox.height).attr('x', -10).attr('y', bbox.y + i * 50).style('opacity', box_opacity);
+	  }
+		};
 
-	  //   d3.select('#demo_group')
-	  //     .select('#rect_'+inst_text_num)
-	  //     .style('fill','white')
-	  //     .attr('width', bbox.width+20)
-	  //     .attr('height',bbox.height)
-	  //     .attr('x',-10)
-	  //     .attr('y',bbox.y+i*50)
-	  //     .style('opacity',box_opacity);
-	  // }
+/***/ },
+/* 144 */,
+/* 145 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = function make_demo_text_containers(params, demo_text_size) {
+
+	  console.log('make_demo_text_containers');
+
+	  // demo text container
+	  var demo_group = d3.select(params.root + ' .viz_svg').append('g').classed('demo_group', true).attr('transform', function () {
+	    var pos_x = 200;
+	    var pos_y = 200;
+	    return 'translate(' + pos_x + ',' + pos_y + ')';
+	  });
+
+	  demo_group.append('rect').attr('id', 'rect_1');
+
+	  demo_group.append('rect').attr('id', 'rect_2');
+
+	  demo_group.append('rect').attr('id', 'rect_3');
+
+	  demo_group.append('text').attr('id', 'text_1').attr('font-size', demo_text_size + 'px').attr('font-weight', 1000).attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif');
+
+	  demo_group.append('text').attr('id', 'text_2').attr('font-size', demo_text_size + 'px').attr('font-weight', 1000).attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('transform', function () {
+	    return 'translate(0,50)';
+	  });
+
+	  demo_group.append('text').attr('id', 'text_3').attr('font-size', demo_text_size + 'px').attr('font-weight', 1000).attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('transform', function () {
+	    return 'translate(0,100)';
+	  });
 		};
 
 /***/ }
