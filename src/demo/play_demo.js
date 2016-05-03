@@ -1,6 +1,7 @@
 var make_demo_text_containers = require('./make_demo_text_containers');
 var run_segment = require('./run_segment');
 var play_intro = require('./play_intro');
+var play_zoom = require('./play_zoom');
 
 module.exports = function play_demo(){
   var cgm = this;
@@ -16,13 +17,8 @@ module.exports = function play_demo(){
   make_demo_text_containers(params, demo_text_size);
 
   inst_time = run_segment(params, inst_time, play_intro);
-  
-  inst_time = run_segment(params, inst_time, play_intro);
 
-
-  // // debugger
-  // console.log('prev_duration', prev_duration)
-
+  inst_time = run_segment(params, inst_time, play_zoom);
 
 
 };

@@ -8806,6 +8806,7 @@ var Clustergrammer =
 	var make_demo_text_containers = __webpack_require__(145);
 	var run_segment = __webpack_require__(147);
 	var play_intro = __webpack_require__(146);
+	var play_zoom = __webpack_require__(149);
 
 	module.exports = function play_demo() {
 	  var cgm = this;
@@ -8822,10 +8823,7 @@ var Clustergrammer =
 
 	  inst_time = run_segment(params, inst_time, play_intro);
 
-	  inst_time = run_segment(params, inst_time, play_intro);
-
-	  // // debugger
-	  // console.log('prev_duration', prev_duration)
+	  inst_time = run_segment(params, inst_time, play_zoom);
 		};
 
 /***/ },
@@ -8907,6 +8905,7 @@ var Clustergrammer =
 	  function run(params) {
 	    var text_1 = 'Clustergrammer allows users to generate\ninteractive and ' + 'sharable visualizations\nby uploading a matrix';
 	    var text_2 = "This demo will quickly overview some\nof Clustergrammer's " + "interactive features";
+
 	    setTimeout(demo_text, 0, params, text_1, 5000);
 	    setTimeout(demo_text, 5000, params, text_2, 3500);
 	  }
@@ -8941,6 +8940,33 @@ var Clustergrammer =
 	  inst_time = inst_time + inst_duration;
 
 	  return inst_time;
+		};
+
+/***/ },
+/* 148 */,
+/* 149 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var demo_text = __webpack_require__(143);
+
+	module.exports = function play_zoom(params) {
+
+	  function run(params) {
+	    var text = 'Zoom and pan by\nscrolling and dragging';
+	    // setTimeout(demo_text, )
+	    demo_text(params, text, 4000);
+	  }
+
+	  function get_duration() {
+	    return 4000;
+	  }
+
+	  return {
+	    run: run,
+	    get_duration: get_duration
+	  };
 		};
 
 /***/ }
