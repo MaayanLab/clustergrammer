@@ -1,7 +1,5 @@
 module.exports = function sim_click(params, single_double, pos_x, pos_y){
 
-  console.log('sim_click')
-
   var click_duration = 200;
 
   var click_circle = d3.select(params.root+' .viz_svg')

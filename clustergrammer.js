@@ -6440,11 +6440,11 @@ var Clustergrammer =
 
 	  make_demo_text_containers(params, demo_text_size);
 
-	  inst_time = run_segment(params, inst_time, play_intro);
-	  inst_time = run_segment(params, inst_time, play_zoom);
-	  inst_time = run_segment(params, inst_time, play_reset_zoom);
-	  inst_time = run_segment(params, inst_time, play_reorder_row);
-	  inst_time = run_segment(params, inst_time, play_reorder_buttons);
+	  // inst_time = run_segment(params, inst_time, play_intro);
+	  // inst_time = run_segment(params, inst_time, play_zoom);
+	  // inst_time = run_segment(params, inst_time, play_reset_zoom);
+	  // inst_time = run_segment(params, inst_time, play_reorder_row);
+	  // inst_time = run_segment(params, inst_time, play_reorder_buttons);
 	  inst_time = run_segment(params, inst_time, play_search);
 		};
 
@@ -6630,8 +6630,6 @@ var Clustergrammer =
 
 	module.exports = function sim_click(params, single_double, pos_x, pos_y) {
 
-	  console.log('sim_click');
-
 	  var click_duration = 200;
 
 	  var click_circle = d3.select(params.root + ' .viz_svg').append('circle').attr('cx', pos_x).attr('cy', pos_y).attr('r', 25).style('stroke', 'black').style('stroke-width', '3px').style('fill', '#007f00').style('opacity', 0.5);
@@ -6665,7 +6663,7 @@ var Clustergrammer =
 
 	  function run(params) {
 
-	    var text = 'Reorder the matrix based on a single\nrow of column by double-clicking a\nlabel';
+	    var text = 'Reorder the matrix based on a single\nrow or column by double-clicking a\nlabel';
 	    demo_text(params, text, 4000);
 
 	    var inst_element = get_row_element(params, 'EGFR');
@@ -6686,7 +6684,7 @@ var Clustergrammer =
 	  }
 
 	  function get_duration() {
-	    return 4000;
+	    return 4500;
 	  }
 
 	  function get_row_element(params, inst_row) {
@@ -9107,6 +9105,7 @@ var Clustergrammer =
 
 	var demo_text = __webpack_require__(108);
 	var highlight_sidebar_element = __webpack_require__(151);
+	var two_translate_zoom = __webpack_require__(77);
 
 	module.exports = function play_search(params) {
 
@@ -9116,12 +9115,19 @@ var Clustergrammer =
 	    demo_text(params, text, 4000);
 
 	    setTimeout(highlight_sidebar_element, 1500, params, 'gene_search_container');
-	    // setTimeout(click_reorder_button, 2500, params, 'row', 'rank');
 
-	    // setTimeout(highlight_sidebar_element, 6000, params, 'toggle_col_order');
-	    // setTimeout(click_reorder_button, 6500, params, 'col', 'rank');
+	    var ini_delay = 1500;
+	    // manually mimic typing and autocomplete
+	    setTimeout(type_out_search, ini_delay + 1000, params, 'E');
+	    setTimeout(type_out_search, ini_delay + 1500, params, 'EG');
+	    setTimeout(type_out_search, ini_delay + 2000, params, 'EGF');
+	    setTimeout(type_out_search, ini_delay + 2500, params, 'EGFR');
+
+	    setTimeout(run_search, 4000, params);
+
+	    setTimeout(two_translate_zoom, 6000, params, 0, 0, 1);
 	  }
-	
+
 	  function get_duration() {
 	    return 9000;
 	  }
@@ -9132,6 +9138,16 @@ var Clustergrammer =
 	    })[0];
 
 	    $(inst_button).click();
+	  }
+
+	  function type_out_search(params, inst_string) {
+	    $(params.root + ' .gene_search_box').val(inst_string);
+	    $(params.root + ' .gene_search_box').autocomplete("search", inst_string);
+	  }
+
+	  function run_search(params) {
+	    $(params.root + ' .submit_gene_button').click();
+	    $(params.root + ' .gene_search_box').autocomplete("search", '');
 	  }
 
 	  return {

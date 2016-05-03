@@ -1,5 +1,6 @@
 var demo_text = require('./demo_text');
 var highlight_sidebar_element = require('./highlight_sidebar_element');
+var two_translate_zoom = require('../zoom/two_translate_zoom');
 
 module.exports = function play_search(params){
 
@@ -10,11 +11,17 @@ module.exports = function play_search(params){
     demo_text(params, text, 4000);
     
     setTimeout(highlight_sidebar_element, 1500, params, 'gene_search_container');
-    // setTimeout(click_reorder_button, 2500, params, 'row', 'rank');
 
-    // setTimeout(highlight_sidebar_element, 6000, params, 'toggle_col_order');
-    // setTimeout(click_reorder_button, 6500, params, 'col', 'rank');
+    var ini_delay = 1500;
+    // manually mimic typing and autocomplete 
+    setTimeout( type_out_search, ini_delay+1000, params, 'E' );
+    setTimeout( type_out_search, ini_delay+1500, params, 'EG' );
+    setTimeout( type_out_search, ini_delay+2000, params, 'EGF' );
+    setTimeout( type_out_search, ini_delay+2500, params, 'EGFR' );
 
+    setTimeout(run_search, 4000, params );
+
+    setTimeout(two_translate_zoom, 6000, params, 0, 0, 1);
   }
 
   function get_duration(){
@@ -26,6 +33,16 @@ module.exports = function play_search(params){
       .filter(function(){return this.__data__ == 'rank'})[0];
 
     $(inst_button).click();
+  }
+
+  function type_out_search(params, inst_string){
+    $(params.root+' .gene_search_box').val(inst_string);
+    $(params.root+' .gene_search_box').autocomplete( "search", inst_string );
+  }  
+
+  function run_search(params){
+    $(params.root+' .submit_gene_button').click();
+    $(params.root+' .gene_search_box').autocomplete( "search", '' );
   }
 
   return {

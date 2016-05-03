@@ -14,7 +14,7 @@ module.exports = function play_reorder_row(params){
 
   function run(params){
 
-    var text = 'Reorder the matrix based on a single\nrow of column by double-clicking a\nlabel';
+    var text = 'Reorder the matrix based on a single\nrow or column by double-clicking a\nlabel';
     demo_text(params, text, 4000);
 
     var inst_element = get_row_element(params, 'EGFR');
@@ -39,7 +39,7 @@ module.exports = function play_reorder_row(params){
   }
 
   function get_duration(){
-    return 4000;
+    return 4500;
   }
 
   function get_row_element(params, inst_row){
