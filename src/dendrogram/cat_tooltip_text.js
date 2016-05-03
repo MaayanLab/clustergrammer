@@ -18,7 +18,8 @@ module.exports = function cat_tooltip_text(params, inst_data, inst_selection, in
   var inst_pval ;
   if (utils.has(inst_data, pval_name)){
     inst_pval = inst_data[inst_cat.replace('-','_')+'_pval'];
-    inst_pval = inst_pval.toFixed(4);
+    // there are three significant digits in the pval
+    inst_pval = inst_pval.toFixed(3);
     cat_string = cat_string + ' (pval: '+ String(inst_pval) + ')';
 
   }

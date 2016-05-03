@@ -25,7 +25,6 @@ net.load_file('txt/rc_two_cats.txt')
 # # quantile normalize to normalize cell lines
 # net.normalize(axis='row', norm_type='qn')
 
-
 # # take zscore
 # net.normalize(axis='col', norm_type='zscore', keep_orig=True)
 

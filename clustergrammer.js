@@ -76,7 +76,7 @@ var Clustergrammer =
 	  cgm.config = config;
 
 	  if (params.use_sidebar) {
-	    var make_sidebar = __webpack_require__(104);
+	    var make_sidebar = __webpack_require__(105);
 	    params = make_sidebar(cgm);
 	  }
 
@@ -2301,10 +2301,10 @@ var Clustergrammer =
 	var initialize_resizing = __webpack_require__(79);
 	var ini_doubleclick = __webpack_require__(81);
 	var make_col_cat = __webpack_require__(98);
-	var make_row_cat = __webpack_require__(101);
+	var make_row_cat = __webpack_require__(102);
 	var trim_text = __webpack_require__(34);
-	var make_row_dendro = __webpack_require__(102);
-	var make_col_dendro = __webpack_require__(103);
+	var make_row_dendro = __webpack_require__(103);
+	var make_col_dendro = __webpack_require__(104);
 
 	module.exports = function make_viz(params) {
 
@@ -6078,7 +6078,7 @@ var Clustergrammer =
 
 	var cat_tooltip_text = __webpack_require__(99);
 	var d3_tip_custom = __webpack_require__(52);
-	var reset_cat_opacity = __webpack_require__(100);
+	var reset_cat_opacity = __webpack_require__(101);
 
 	module.exports = function make_col_cat(params) {
 
@@ -6152,7 +6152,7 @@ var Clustergrammer =
 	'use strict';
 
 	var get_cat_title = __webpack_require__(73);
-	var utils = __webpack_require__(141);
+	var utils = __webpack_require__(100);
 
 	module.exports = function cat_tooltip_text(params, inst_data, inst_selection, inst_rc) {
 
@@ -6171,7 +6171,8 @@ var Clustergrammer =
 	  var inst_pval;
 	  if (utils.has(inst_data, pval_name)) {
 	    inst_pval = inst_data[inst_cat.replace('-', '_') + '_pval'];
-	    inst_pval = inst_pval.toFixed(4);
+	    // there are three significant digits in the pval
+	    inst_pval = inst_pval.toFixed(3);
 	    cat_string = cat_string + ' (pval: ' + String(inst_pval) + ')';
 	  }
 
@@ -6225,6 +6226,52 @@ var Clustergrammer =
 
 	'use strict';
 
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+	/* Utility functions
+	 * ----------------------------------------------------------------------- */
+	module.exports = {
+	  normal_name: function normal_name(d) {
+	    var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
+	    return inst_name;
+	  },
+	  is_supported_order: function is_supported_order(order) {
+	    return order === 'ini' || order === 'clust' || order === 'rank_var' || order === 'rank' || order === 'class' || order == 'alpha';
+	  },
+
+	  /* Returns whether or not an object has a certain property.
+	   */
+	  has: function has(obj, key) {
+	    return obj != null && hasOwnProperty.call(obj, key);
+	  },
+
+	  /* Returns true if the object is undefined.
+	   */
+	  is_undefined: function is_undefined(obj) {
+	    return obj === void 0;
+	  },
+
+	  /* Mixes two objects in together, overwriting a target with a source.
+	   */
+	  extend: function extend(target, source) {
+	    target = target || {};
+	    for (var prop in source) {
+	      if (_typeof(source[prop]) === 'object') {
+	        target[prop] = this.extend(target[prop], source[prop]);
+	      } else {
+	        target[prop] = source[prop];
+	      }
+	    }
+	    return target;
+	  }
+		};
+
+/***/ },
+/* 101 */
+/***/ function(module, exports) {
+
+	'use strict';
+
 	module.exports = function reset_cat_opacity(params) {
 
 	  _.each(['row', 'col'], function (inst_rc) {
@@ -6233,14 +6280,14 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 101 */
+/* 102 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var cat_tooltip_text = __webpack_require__(99);
 	var d3_tip_custom = __webpack_require__(52);
-	var reset_cat_opacity = __webpack_require__(100);
+	var reset_cat_opacity = __webpack_require__(101);
 
 	module.exports = function make_row_cat(params) {
 
@@ -6334,7 +6381,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 102 */
+/* 103 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6371,7 +6418,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 103 */
+/* 104 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6410,19 +6457,19 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 104 */
+/* 105 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var ini_sidebar = __webpack_require__(105);
-	var set_up_filters = __webpack_require__(107);
-	var set_up_dendro_sliders = __webpack_require__(132);
-	var set_up_search = __webpack_require__(133);
-	var set_up_reorder = __webpack_require__(134);
-	var set_sidebar_ini_view = __webpack_require__(135);
-	var make_icons = __webpack_require__(136);
-	var make_modals = __webpack_require__(139);
+	var ini_sidebar = __webpack_require__(106);
+	var set_up_filters = __webpack_require__(108);
+	var set_up_dendro_sliders = __webpack_require__(133);
+	var set_up_search = __webpack_require__(134);
+	var set_up_reorder = __webpack_require__(135);
+	var set_sidebar_ini_view = __webpack_require__(136);
+	var make_icons = __webpack_require__(137);
+	var make_modals = __webpack_require__(140);
 
 	/* Represents sidebar with controls.
 	 */
@@ -6500,12 +6547,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 105 */
+/* 106 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var change_groups = __webpack_require__(106);
+	var change_groups = __webpack_require__(107);
 	var search = __webpack_require__(76);
 	var all_reorder = __webpack_require__(75);
 	var ini_cat_reorder = __webpack_require__(74);
@@ -6583,7 +6630,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 106 */
+/* 107 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6608,13 +6655,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 107 */
+/* 108 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_slider_filter = __webpack_require__(108);
-	var make_button_filter = __webpack_require__(131);
+	var make_slider_filter = __webpack_require__(109);
+	var make_button_filter = __webpack_require__(132);
 
 	module.exports = function set_up_filters(cgm, filter_type) {
 
@@ -6630,13 +6677,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 108 */
+/* 109 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_filter_title = __webpack_require__(109);
-	var apply_filter_slider = __webpack_require__(110);
+	var make_filter_title = __webpack_require__(110);
+	var apply_filter_slider = __webpack_require__(111);
 	var get_filter_default_state = __webpack_require__(6);
 	var get_subset_views = __webpack_require__(12);
 
@@ -6684,7 +6731,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 109 */
+/* 110 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6744,14 +6791,14 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 110 */
+/* 111 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var update_network = __webpack_require__(111);
-	var reset_other_filter_sliders = __webpack_require__(129);
-	var get_current_orders = __webpack_require__(130);
+	var update_network = __webpack_require__(112);
+	var reset_other_filter_sliders = __webpack_require__(130);
+	var get_current_orders = __webpack_require__(131);
 	var make_requested_view = __webpack_require__(42);
 
 	module.exports = function apply_filter_slider(cgm, filter_type, available_views) {
@@ -6783,15 +6830,15 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 111 */
+/* 112 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var change_network_view = __webpack_require__(10);
-	var disable_sidebar = __webpack_require__(112);
+	var disable_sidebar = __webpack_require__(113);
 
-	var update_with_new_network = __webpack_require__(113);
+	var update_with_new_network = __webpack_require__(114);
 
 	module.exports = function (cgm, requested_view) {
 	  var old_params = cgm.params;
@@ -6812,7 +6859,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 112 */
+/* 113 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -6829,23 +6876,23 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 113 */
+/* 114 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var make_params = __webpack_require__(9);
-	var define_enter_exit_delays = __webpack_require__(114);
-	var enter_exit_update = __webpack_require__(115);
+	var define_enter_exit_delays = __webpack_require__(115);
+	var enter_exit_update = __webpack_require__(116);
 	var initialize_resizing = __webpack_require__(79);
 	var make_col_cat = __webpack_require__(98);
-	var make_row_cat = __webpack_require__(101);
-	var make_row_dendro = __webpack_require__(102);
-	var make_col_dendro = __webpack_require__(103);
-	var ini_sidebar = __webpack_require__(105);
-	var enable_sidebar = __webpack_require__(127);
+	var make_row_cat = __webpack_require__(102);
+	var make_row_dendro = __webpack_require__(103);
+	var make_col_dendro = __webpack_require__(104);
+	var ini_sidebar = __webpack_require__(106);
+	var enable_sidebar = __webpack_require__(128);
 	var ini_doubleclick = __webpack_require__(81);
-	var update_reorder_buttons = __webpack_require__(128);
+	var update_reorder_buttons = __webpack_require__(129);
 
 	module.exports = function update_with_new_network(config, old_params, new_network_data) {
 
@@ -6895,7 +6942,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 114 */
+/* 115 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -6968,19 +7015,19 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 115 */
+/* 116 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var resize_after_update = __webpack_require__(116);
+	var resize_after_update = __webpack_require__(117);
 	var make_rows = __webpack_require__(53);
 	var make_cols = __webpack_require__(68);
-	var eeu_existing_row = __webpack_require__(117);
-	var exit_components = __webpack_require__(121);
-	var enter_grid_lines = __webpack_require__(122);
-	var enter_row_groups = __webpack_require__(123);
-	var resize_containers = __webpack_require__(126);
+	var eeu_existing_row = __webpack_require__(118);
+	var exit_components = __webpack_require__(122);
+	var enter_grid_lines = __webpack_require__(123);
+	var enter_row_groups = __webpack_require__(124);
+	var resize_containers = __webpack_require__(127);
 	var label_constrain_and_trim = __webpack_require__(78);
 	var d3_tip_custom = __webpack_require__(52);
 
@@ -7076,7 +7123,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 116 */
+/* 117 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7254,14 +7301,14 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 117 */
+/* 118 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var exit_existing_row = __webpack_require__(118);
-	var enter_existing_row = __webpack_require__(119);
-	var update_split_tiles = __webpack_require__(120);
+	var exit_existing_row = __webpack_require__(119);
+	var enter_existing_row = __webpack_require__(120);
+	var update_split_tiles = __webpack_require__(121);
 	var mouseover_tile = __webpack_require__(50);
 	var mouseout_tile = __webpack_require__(51);
 
@@ -7325,7 +7372,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 118 */
+/* 119 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7370,7 +7417,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 119 */
+/* 120 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7420,7 +7467,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 120 */
+/* 121 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7514,7 +7561,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 121 */
+/* 122 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7578,7 +7625,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 122 */
+/* 123 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7626,12 +7673,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 123 */
+/* 124 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var enter_new_rows = __webpack_require__(124);
+	var enter_new_rows = __webpack_require__(125);
 
 	module.exports = function enter_row_groups(params, delays, duration, tip) {
 
@@ -7651,12 +7698,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 124 */
+/* 125 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var enter_split_tiles = __webpack_require__(125);
+	var enter_split_tiles = __webpack_require__(126);
 	var mouseover_tile = __webpack_require__(50);
 	var mouseout_tile = __webpack_require__(51);
 
@@ -7706,7 +7753,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 125 */
+/* 126 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7806,7 +7853,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 126 */
+/* 127 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7826,7 +7873,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 127 */
+/* 128 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7844,7 +7891,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 128 */
+/* 129 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7866,12 +7913,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 129 */
+/* 130 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_filter_title = __webpack_require__(109);
+	var make_filter_title = __webpack_require__(110);
 
 	module.exports = function reset_other_filter_sliders(params, filter_type, inst_state) {
 
@@ -7918,7 +7965,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 130 */
+/* 131 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7949,12 +7996,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 131 */
+/* 132 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var update_network = __webpack_require__(111);
+	var update_network = __webpack_require__(112);
 	var make_requested_view = __webpack_require__(42);
 
 	module.exports = function make_button_filter(config, params, filter_type, div_filters) {
@@ -8007,7 +8054,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 132 */
+/* 133 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8037,7 +8084,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 133 */
+/* 134 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8054,7 +8101,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 134 */
+/* 135 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8164,12 +8211,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 135 */
+/* 136 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_filter_title = __webpack_require__(109);
+	var make_filter_title = __webpack_require__(110);
 
 	module.exports = function set_sidebar_ini_view(params) {
 
@@ -8210,13 +8257,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 136 */
+/* 137 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var save_svg_png = __webpack_require__(137);
-	var file_saver = __webpack_require__(138);
+	var save_svg_png = __webpack_require__(138);
+	var file_saver = __webpack_require__(139);
 
 	module.exports = function make_icons(params, sidebar) {
 
@@ -8273,7 +8320,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 137 */
+/* 138 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8479,7 +8526,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 138 */
+/* 139 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8696,12 +8743,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 139 */
+/* 140 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_modal_skeleton = __webpack_require__(140);
+	var make_modal_skeleton = __webpack_require__(141);
 
 	module.exports = function ini_modals(params) {
 
@@ -8723,7 +8770,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 140 */
+/* 141 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8745,52 +8792,6 @@ var Clustergrammer =
 	  modal_skeleton.body = modal_content.append('div').classed('modal-body', true);
 
 	  return modal_skeleton;
-		};
-
-/***/ },
-/* 141 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
-
-	/* Utility functions
-	 * ----------------------------------------------------------------------- */
-	module.exports = {
-	  normal_name: function normal_name(d) {
-	    var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
-	    return inst_name;
-	  },
-	  is_supported_order: function is_supported_order(order) {
-	    return order === 'ini' || order === 'clust' || order === 'rank_var' || order === 'rank' || order === 'class' || order == 'alpha';
-	  },
-
-	  /* Returns whether or not an object has a certain property.
-	   */
-	  has: function has(obj, key) {
-	    return obj != null && hasOwnProperty.call(obj, key);
-	  },
-
-	  /* Returns true if the object is undefined.
-	   */
-	  is_undefined: function is_undefined(obj) {
-	    return obj === void 0;
-	  },
-
-	  /* Mixes two objects in together, overwriting a target with a source.
-	   */
-	  extend: function extend(target, source) {
-	    target = target || {};
-	    for (var prop in source) {
-	      if (_typeof(source[prop]) === 'object') {
-	        target[prop] = this.extend(target[prop], source[prop]);
-	      } else {
-	        target[prop] = source[prop];
-	      }
-	    }
-	    return target;
-	  }
 		};
 
 /***/ }
