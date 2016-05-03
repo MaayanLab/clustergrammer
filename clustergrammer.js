@@ -6432,6 +6432,7 @@ var Clustergrammer =
 	var play_search = __webpack_require__(152);
 	var play_filter = __webpack_require__(153);
 	var quick_cluster = __webpack_require__(154);
+	var play_groups = __webpack_require__(155);
 
 	module.exports = function play_demo() {
 
@@ -6451,10 +6452,11 @@ var Clustergrammer =
 	  // inst_time = run_segment(params, inst_time, play_reorder_row);
 	  // inst_time = run_segment(params, inst_time, play_reorder_buttons);
 	  // inst_time = run_segment(params, inst_time, play_search);
-	  inst_time = run_segment(cgm, inst_time, play_filter);
+	  // inst_time = run_segment(cgm, inst_time, play_filter);
 	  inst_time = run_segment(params, inst_time, quick_cluster);
 
 	  // groups
+	  inst_time = run_segment(params, inst_time, play_groups);
 
 	  // categories
 
@@ -9262,6 +9264,54 @@ var Clustergrammer =
 	    })[0];
 
 	    $(inst_button).click();
+	  }
+
+	  return {
+	    run: run,
+	    get_duration: get_duration
+	  };
+		};
+
+/***/ },
+/* 155 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var demo_text = __webpack_require__(108);
+	var highlight_sidebar_element = __webpack_require__(151);
+	var change_groups = __webpack_require__(115);
+
+	module.exports = function play_groups() {
+	  /* eslint-disable */
+
+	  function run(params) {
+
+	    var text = 'Identify row and column\ngroups of varying sizes\nusing the sliders';
+	    demo_text(params, text, 4000);
+
+	    setTimeout(highlight_sidebar_element, 3000, params, 'slider_col', 7000);
+
+	    setTimeout(change_group_slider, 4000, params, 'row', 3);
+
+	    setTimeout(change_group_slider, 5000, params, 'row', 4);
+
+	    setTimeout(change_group_slider, 6000, params, 'row', 5);
+
+	    setTimeout(change_group_slider, 7000, params, 'row', 6);
+
+	    setTimeout(change_group_slider, 8000, params, 'row', 7);
+
+	    setTimeout(change_group_slider, 9000, params, 'row', 5);
+	  }
+
+	  function get_duration() {
+	    return 8000;
+	  }
+
+	  function change_group_slider(params, inst_rc, inst_value) {
+	    $(cgm.params.root + ' .slider_col').slider("value", inst_value / 10);
+	    change_groups(params, inst_rc, inst_value);
 	  }
 
 	  return {

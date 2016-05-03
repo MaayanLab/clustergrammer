@@ -54,7 +54,6 @@ module.exports = function play_filter(){
     d3.select(params.root+' .title_'+filter_type)
       .text('Top rows '+unit_name+': '+filter_value);
 
-
   }
 
   return {
