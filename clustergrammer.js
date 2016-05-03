@@ -6442,12 +6442,12 @@ var Clustergrammer =
 
 	  make_demo_text_containers(params, demo_text_size);
 
-	  // inst_time = run_segment(params, inst_time, play_intro);
-	  // inst_time = run_segment(params, inst_time, play_zoom);
-	  // inst_time = run_segment(params, inst_time, play_reset_zoom);
-	  // inst_time = run_segment(params, inst_time, play_reorder_row);
-	  // inst_time = run_segment(params, inst_time, play_reorder_buttons);
-	  // inst_time = run_segment(params, inst_time, play_search);
+	  inst_time = run_segment(params, inst_time, play_intro);
+	  inst_time = run_segment(params, inst_time, play_zoom);
+	  inst_time = run_segment(params, inst_time, play_reset_zoom);
+	  inst_time = run_segment(params, inst_time, play_reorder_row);
+	  inst_time = run_segment(params, inst_time, play_reorder_buttons);
+	  inst_time = run_segment(params, inst_time, play_search);
 	  inst_time = run_segment(cgm, inst_time, play_filter);
 		};
 
@@ -9097,11 +9097,13 @@ var Clustergrammer =
 	'use strict';
 
 	module.exports = function highlight_sidebar_element(params, highlight_class) {
+	  var duration = arguments.length <= 2 || arguments[2] === undefined ? 4000 : arguments[2];
+
 
 	  if (highlight_class.indexOf('slider') < 0) {
-	    d3.select(params.root + ' .' + highlight_class).style('background', '#007f00').style('box-shadow', '0px 0px 10px 5px #007f00').transition().duration(1).delay(4000).style('background', '#FFFFFF').style('box-shadow', 'none');
+	    d3.select(params.root + ' .' + highlight_class).style('background', '#007f00').style('box-shadow', '0px 0px 10px 5px #007f00').transition().duration(1).delay(duration).style('background', '#FFFFFF').style('box-shadow', 'none');
 	  } else {
-	    d3.select(params.root + ' .' + highlight_class).style('box-shadow', '0px 0px 10px 5px #007f00').transition().duration(1).delay(4000).style('box-shadow', 'none');
+	    d3.select(params.root + ' .' + highlight_class).style('box-shadow', '0px 0px 10px 5px #007f00').transition().duration(1).delay(duration).style('box-shadow', 'none');
 	  }
 		};
 
@@ -9172,16 +9174,26 @@ var Clustergrammer =
 	  function run(cgm) {
 	    var params = cgm.params;
 
-	    var text = 'Filter the matrix rows based\non sum or variance';
-	    demo_text(params, text, 4000);
+	    var text = 'Filter rows based on \nsum or variance';
+	    demo_text(params, text, 3000);
 
-	    // setTimeout(highlight_sidebar_element, 1500, params, 'slider_N_row_sum');
+	    var filter_type = 'N_row_sum';
 
-	    run_update(cgm, 'N_row_sum', 20, 1);
-	    // run_update(cgm, 'N_row_sum', 10, 2);
-	    // run_update(cgm, 'N_row_sum', 'all', 0 );
+	    setTimeout(highlight_sidebar_element, 3500, params, 'slider_' + filter_type, 12500);
+
+	    text = 'Top 20 rows by sum';
+	    setTimeout(demo_text, 4000, params, text, 3000);
+	    setTimeout(run_update, 4000, cgm, filter_type, 20, 1);;
+
+	    text = 'Top 10 rows by sum';
+	    setTimeout(demo_text, 8000, params, text, 3000);
+	    setTimeout(run_update, 8000, cgm, filter_type, 10, 2);;
+
+	    text = 'All rows';
+	    setTimeout(demo_text, 12000, params, text, 3000);
+	    setTimeout(run_update, 12000, cgm, filter_type, 'all', 0);;
 	  }
-	
+
 	  function get_duration() {
 	    return 1400;
 	  }
@@ -9205,8 +9217,6 @@ var Clustergrammer =
 	    }
 
 	    d3.select(params.root + ' .title_' + filter_type).text('Top rows ' + unit_name + ': ' + filter_value);
-
-	    highlight_sidebar_element(params, 'slider_' + filter_type);
 	  }
 
 	  return {

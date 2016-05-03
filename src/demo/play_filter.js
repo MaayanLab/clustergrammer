@@ -8,14 +8,25 @@ module.exports = function play_filter(cgm){
   function run(cgm){
     var params = cgm.params;
 
-    var text = 'Filter the matrix rows based\non sum or variance';
-    demo_text(params, text, 4000);
+    var text = 'Filter rows based on \nsum or variance';
+    demo_text(params, text, 3000);
     
-    // setTimeout(highlight_sidebar_element, 1500, params, 'slider_N_row_sum');
+    var filter_type = 'N_row_sum';
 
-    run_update(cgm, 'N_row_sum', 20, 1);
-    // run_update(cgm, 'N_row_sum', 10, 2);
-    // run_update(cgm, 'N_row_sum', 'all', 0 );
+    setTimeout(highlight_sidebar_element, 3500, params, 'slider_'+filter_type, 
+      12500);
+
+    text = 'Top 20 rows by sum';
+    setTimeout(demo_text, 4000, params, text, 3000);
+    setTimeout(run_update, 4000, cgm, filter_type, 20, 1);;
+
+    text = 'Top 10 rows by sum';
+    setTimeout(demo_text, 8000, params, text, 3000);
+    setTimeout(run_update, 8000, cgm, filter_type, 10, 2);;
+
+    text = 'All rows';
+    setTimeout(demo_text, 12000, params, text, 3000);
+    setTimeout(run_update, 12000, cgm, filter_type, 'all', 0);;
 
   }
 
@@ -44,7 +55,6 @@ module.exports = function play_filter(cgm){
     d3.select(params.root+' .title_'+filter_type)
       .text('Top rows '+unit_name+': '+filter_value);
 
-    highlight_sidebar_element(params, 'slider_'+filter_type)
 
   }
 
