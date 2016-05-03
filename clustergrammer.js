@@ -8804,6 +8804,7 @@ var Clustergrammer =
 	'use strict';
 
 	var make_demo_text_containers = __webpack_require__(145);
+	var run_segment = __webpack_require__(147);
 	var play_intro = __webpack_require__(146);
 
 	module.exports = function play_demo() {
@@ -8815,10 +8816,16 @@ var Clustergrammer =
 	  var inst_time = 0;
 	  var prev_duration = 0;
 	  var demo_text_size = 38;
+	  var sec_scale = 1000;
 
 	  make_demo_text_containers(params, demo_text_size);
 
-	  play_intro(params);
+	  inst_time = run_segment(params, inst_time, play_intro);
+
+	  inst_time = run_segment(params, inst_time, play_intro);
+
+	  // // debugger
+	  // console.log('prev_duration', prev_duration)
 		};
 
 /***/ },
@@ -8896,9 +8903,37 @@ var Clustergrammer =
 	var demo_text = __webpack_require__(143);
 
 	module.exports = function play_intro(params) {
-	  var text = 'Clustergrammer allows users to generate\ninteractive and sharable visualizations\nby uploading a matrix';
-	  setTimeout(demo_text, 0, params, text, 5000);
-	  setTimeout(demo_text, 5000, params, "This demo will quickly overview some\nof Clustergrammer's interactive features", 3500);
+
+	  function run(params) {
+	    var text_1 = 'Clustergrammer allows users to generate\ninteractive and sharable visualizations\nby uploading a matrix';
+	    var text_2 = "This demo will quickly overview some\nof Clustergrammer's interactive features";
+	    setTimeout(demo_text, 0, params, text_1, 5000);
+	    setTimeout(demo_text, 5000, params, text_2, 3500);
+	  }
+
+	  function get_duration() {
+	    return 9000;
+	  }
+
+	  return {
+	    run: run,
+	    get_duration: get_duration
+	  };
+		};
+
+/***/ },
+/* 147 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	module.exports = function run_segment(params, inst_time, inst_segment) {
+
+	  setTimeout(inst_segment().run, inst_time, params);
+	  var inst_duration = inst_segment().get_duration();
+	  inst_time = inst_time + inst_duration;
+
+	  return inst_time;
 		};
 
 /***/ }
