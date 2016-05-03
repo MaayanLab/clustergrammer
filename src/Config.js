@@ -24,9 +24,6 @@ module.exports = function make_config(args) {
   var super_string = ': ';
   var tmp_super;
 
-
-
-
   // replace undersores with space in row/col names
   _.each(['row', 'col'], function(inst_rc){
 

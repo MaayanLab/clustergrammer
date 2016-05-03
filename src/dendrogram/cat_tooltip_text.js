@@ -1,4 +1,5 @@
 var get_cat_title = require('../categories/get_cat_title');
+var utils = require('../Utils');
 
 module.exports = function cat_tooltip_text(params, inst_data, inst_selection, inst_rc){
 
@@ -11,12 +12,23 @@ module.exports = function cat_tooltip_text(params, inst_data, inst_selection, in
     cat_name = cat_name.split(': ')[1];
   }
 
+  var cat_string = cat_title + ': '+ cat_name;
+
+  var pval_name = inst_cat.replace('-','_')+'_pval';
+  var inst_pval ;
+  if (utils.has(inst_data, pval_name)){
+    inst_pval = inst_data[inst_cat.replace('-','_')+'_pval'];
+    inst_pval = inst_pval.toFixed(4);
+    cat_string = cat_string + ' (pval: '+ String(inst_pval) + ')';
+
+  }
+
   d3.select(inst_selection)
     .classed('hovering',true);
 
   setTimeout(highlight_categories, 700);
 
-  return cat_title + ': '+ cat_name;
+  return cat_string
 
 
   function highlight_categories(){
