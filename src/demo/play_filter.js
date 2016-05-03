@@ -7,7 +7,7 @@ module.exports = function play_filter(){
   function run(cgm){
     var params = cgm.params;
 
-    var text = 'Filter rows based on \nsum or variance';
+    var text = 'Filter rows based on sum or\nvariance using the sliders';
     demo_text(params, text, 4000);
     
     var filter_type = 'N_row_sum';

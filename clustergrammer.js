@@ -6445,14 +6445,20 @@ var Clustergrammer =
 
 	  make_demo_text_containers(params, demo_text_size);
 
-	  inst_time = run_segment(params, inst_time, play_intro);
-	  inst_time = run_segment(params, inst_time, play_zoom);
-	  inst_time = run_segment(params, inst_time, play_reset_zoom);
-	  inst_time = run_segment(params, inst_time, play_reorder_row);
-	  inst_time = run_segment(params, inst_time, play_reorder_buttons);
-	  inst_time = run_segment(params, inst_time, play_search);
+	  // inst_time = run_segment(params, inst_time, play_intro);
+	  // inst_time = run_segment(params, inst_time, play_zoom);
+	  // inst_time = run_segment(params, inst_time, play_reset_zoom);
+	  // inst_time = run_segment(params, inst_time, play_reorder_row);
+	  // inst_time = run_segment(params, inst_time, play_reorder_buttons);
+	  // inst_time = run_segment(params, inst_time, play_search);
 	  inst_time = run_segment(cgm, inst_time, play_filter);
 	  inst_time = run_segment(params, inst_time, quick_cluster);
+
+	  // groups
+
+	  // categories
+
+	  // conclusion
 		};
 
 /***/ },
@@ -6616,8 +6622,8 @@ var Clustergrammer =
 	    var text = 'Reset zoom by double-clicking\n';
 	    demo_text(params, text, 4000);
 
-	    setTimeout(sim_click, 2400, params, 'double', 300, 300);
-	    setTimeout(two_translate_zoom, 2800, params, 0, 0, 1);
+	    setTimeout(sim_click, 2000, params, 'double', 300, 300);
+	    setTimeout(two_translate_zoom, 2400, params, 0, 0, 1);
 	  }
 
 	  function get_duration() {
@@ -9071,11 +9077,11 @@ var Clustergrammer =
 	    var text = 'Reorder all rows and columns\nby clicking the reorder\n buttons';
 	    demo_text(params, text, 9000);
 
-	    setTimeout(highlight_sidebar_element, 3000, params, 'toggle_row_order');
-	    setTimeout(click_reorder_button, 3500, params, 'row', 'rank');
+	    setTimeout(highlight_sidebar_element, 3000, params, 'toggle_col_order');
+	    setTimeout(click_reorder_button, 3500, params, 'col', 'rank');
 
-	    setTimeout(highlight_sidebar_element, 7000, params, 'toggle_col_order');
-	    setTimeout(click_reorder_button, 7500, params, 'col', 'rank');
+	    setTimeout(highlight_sidebar_element, 7000, params, 'toggle_row_order');
+	    setTimeout(click_reorder_button, 7500, params, 'row', 'rank');
 	  }
 
 	  function get_duration() {
@@ -9179,7 +9185,7 @@ var Clustergrammer =
 	  function run(cgm) {
 	    var params = cgm.params;
 
-	    var text = 'Filter rows based on \nsum or variance';
+	    var text = 'Filter rows based on sum or\nvariance using the sliders';
 	    demo_text(params, text, 4000);
 
 	    var filter_type = 'N_row_sum';
