@@ -8807,6 +8807,7 @@ var Clustergrammer =
 	var run_segment = __webpack_require__(147);
 	var play_intro = __webpack_require__(146);
 	var play_zoom = __webpack_require__(149);
+	var play_reset_zoom = __webpack_require__(150);
 
 	module.exports = function play_demo() {
 	  var cgm = this;
@@ -8821,9 +8822,11 @@ var Clustergrammer =
 
 	  make_demo_text_containers(params, demo_text_size);
 
-	  inst_time = run_segment(params, inst_time, play_intro);
+	  // inst_time = run_segment(params, inst_time, play_intro);
 
 	  inst_time = run_segment(params, inst_time, play_zoom);
+
+	  inst_time = run_segment(params, inst_time, play_reset_zoom);
 		};
 
 /***/ },
@@ -8902,7 +8905,7 @@ var Clustergrammer =
 
 	module.exports = function play_intro(params) {
 
-	  var speed_up = 5;
+	  var speed_up = 1;
 
 	  function run(params) {
 	    var text_1 = 'Clustergrammer allows users to generate\ninteractive and ' + 'sharable visualizations\nby uploading a matrix';
@@ -8971,6 +8974,56 @@ var Clustergrammer =
 	    run: run,
 	    get_duration: get_duration
 	  };
+		};
+
+/***/ },
+/* 150 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var demo_text = __webpack_require__(143);
+	var two_translate_zoom = __webpack_require__(77);
+	var sim_click = __webpack_require__(151);
+
+	module.exports = function play_reset_zoom(params) {
+
+	  function run(params) {
+
+	    var text = 'Reset zoom by double-clicking\n';
+	    demo_text(params, text, 3000);
+
+	    setTimeout(sim_click, 1500, params, 'double', 300, 300);
+	    setTimeout(two_translate_zoom, 1700, params, 0, 0, 1);
+	  }
+
+	  function get_duration() {
+	    return 4000;
+	  }
+
+	  return {
+	    run: run,
+	    get_duration: get_duration
+	  };
+		};
+
+/***/ },
+/* 151 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = function sim_click(params, single_double, pos_x, pos_y) {
+
+	  var click_duration = 150;
+
+	  var click_circle = d3.select(params.root + ' .viz_svg').append('circle').attr('cx', pos_x).attr('cy', pos_y).attr('r', 25).style('stroke', 'black').style('stroke-width', '3px').style('fill', '#007f00').style('opacity', 0.5);
+
+	  if (single_double === 'double') {
+	    click_circle.transition().duration(click_duration).style('opacity', 0.0).transition().duration(50).style('opacity', 0.5).transition().duration(click_duration).style('opacity', 0.0).remove();
+	  } else {
+	    click_circle.transition().duration(click_duration).style('opacity', 0.0).transition().duration(250).remove();
+	  }
 		};
 
 /***/ }

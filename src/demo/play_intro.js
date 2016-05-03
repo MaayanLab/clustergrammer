@@ -2,7 +2,7 @@ var demo_text = require('./demo_text');
 
 module.exports = function play_intro(params){
 
-  var speed_up = 5;
+  var speed_up = 1;
 
   function run(params){
     var text_1 = 'Clustergrammer allows users to generate\ninteractive and '+
