@@ -15,22 +15,22 @@ module.exports = function play_filter(){
     setTimeout(highlight_sidebar_element, 3500, params, 'slider_'+filter_type, 
       12500);
 
-    text = 'Top 20 rows by sum';
+    text = 'Filter: Top 20 rows by sum';
     setTimeout(demo_text, 4000, params, text, 3000);
     setTimeout(run_update, 4000, cgm, filter_type, 20, 1);
 
-    text = 'Top 10 rows by sum';
+    text = 'Filter: Top 10 rows by sum';
     setTimeout(demo_text, 8000, params, text, 3000);
     setTimeout(run_update, 8000, cgm, filter_type, 10, 2);
 
-    text = 'All rows';
+    text = 'Filter: All rows';
     setTimeout(demo_text, 12000, params, text, 3000);
     setTimeout(run_update, 12000, cgm, filter_type, 'all', 0);
 
   }
 
   function get_duration(){
-    return 1400;
+    return 14000;
   }
 
   function run_update(cgm, filter_type, filter_value, filter_index ){

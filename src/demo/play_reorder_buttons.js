@@ -7,7 +7,7 @@ module.exports = function play_reorder_buttons(){
   function run(params){
 
     var text = 'Reorder all rows and columns\nby clicking the reorder\n buttons';
-    demo_text(params, text, 7000);
+    demo_text(params, text, 9000);
     
     setTimeout(highlight_sidebar_element, 2000, params, 'toggle_row_order');
     setTimeout(click_reorder_button, 2500, params, 'row', 'rank');
@@ -18,7 +18,7 @@ module.exports = function play_reorder_buttons(){
   }
 
   function get_duration(){
-    return 9000;
+    return 10000;
   }
 
   function click_reorder_button(params, inst_rc, inst_order){

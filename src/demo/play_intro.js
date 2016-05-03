@@ -10,12 +10,12 @@ module.exports = function play_intro(){
     var text_2 = "This demo will quickly overview some\nof Clustergrammer's "+
                  "interactive features";
 
-    setTimeout( demo_text,    0, params, text_1, 5000/speed_up );
-    setTimeout( demo_text, 5000/speed_up, params, text_2, 3500/speed_up );
+    setTimeout( demo_text,    0, params, text_1, 4500/speed_up );
+    setTimeout( demo_text, 4500/speed_up, params, text_2, 4500/speed_up );
   }
 
   function get_duration(){
-    return 9000/speed_up;
+    return 10000/speed_up;
   }
 
   return {

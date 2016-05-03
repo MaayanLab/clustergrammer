@@ -6445,12 +6445,12 @@ var Clustergrammer =
 
 	  make_demo_text_containers(params, demo_text_size);
 
-	  inst_time = run_segment(params, inst_time, play_intro);
+	  // inst_time = run_segment(params, inst_time, play_intro);
 	  // inst_time = run_segment(params, inst_time, play_zoom);
 	  // inst_time = run_segment(params, inst_time, play_reset_zoom);
 	  // inst_time = run_segment(params, inst_time, play_reorder_row);
 	  inst_time = run_segment(params, inst_time, play_reorder_buttons);
-	  // inst_time = run_segment(params, inst_time, play_search);
+	  inst_time = run_segment(params, inst_time, play_search);
 	  inst_time = run_segment(cgm, inst_time, play_filter);
 	  inst_time = run_segment(params, inst_time, quick_cluster);
 		};
@@ -6526,12 +6526,12 @@ var Clustergrammer =
 	    var text_1 = 'Clustergrammer allows users to generate\ninteractive and ' + 'sharable visualizations\nby uploading a matrix';
 	    var text_2 = "This demo will quickly overview some\nof Clustergrammer's " + "interactive features";
 
-	    setTimeout(demo_text, 0, params, text_1, 5000 / speed_up);
-	    setTimeout(demo_text, 5000 / speed_up, params, text_2, 3500 / speed_up);
+	    setTimeout(demo_text, 0, params, text_1, 4500 / speed_up);
+	    setTimeout(demo_text, 4500 / speed_up, params, text_2, 4500 / speed_up);
 	  }
 
 	  function get_duration() {
-	    return 9000 / speed_up;
+	    return 10000 / speed_up;
 	  }
 
 	  return {
@@ -6614,14 +6614,14 @@ var Clustergrammer =
 	  function run(params) {
 
 	    var text = 'Reset zoom by double-clicking\n';
-	    demo_text(params, text, 3000);
+	    demo_text(params, text, 4000);
 
-	    setTimeout(sim_click, 1300, params, 'double', 300, 300);
-	    setTimeout(two_translate_zoom, 1700, params, 0, 0, 1);
+	    setTimeout(sim_click, 2400, params, 'double', 300, 300);
+	    setTimeout(two_translate_zoom, 2800, params, 0, 0, 1);
 	  }
 
 	  function get_duration() {
-	    return 4000;
+	    return 4500;
 	  }
 
 	  return {
@@ -6661,19 +6661,10 @@ var Clustergrammer =
 	module.exports = function play_reorder_row() {
 	  /* eslint-disable */
 
-	  // allows doubleclicking on d3 element
-	  jQuery.fn.d3DblClick = function () {
-	    this.each(function (i, e) {
-	      var evt = document.createEvent("MouseEvents");
-	      evt.initMouseEvent("dblclick", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-	      e.dispatchEvent(evt);
-	    });
-	  };
-
 	  function run(params) {
 
 	    var text = 'Reorder the matrix based on a single\nrow or column by double-clicking a\nlabel';
-	    demo_text(params, text, 4000);
+	    demo_text(params, text, 7000);
 
 	    var inst_element = get_row_element(params, 'EGFR');
 
@@ -6686,14 +6677,14 @@ var Clustergrammer =
 	    var row_trans = group_trans.split(',')[1].replace(')', '');
 	    var y_trans = String(Number(row_trans) + Number(container_trans) + params.viz.rect_height / 2);
 
-	    var wait_click = 1500;
+	    var wait_click = 4000;
 	    setTimeout(sim_click, wait_click, params, 'double', x_trans, y_trans);
 	    var wait_reorder = wait_click + 300;
 	    setTimeout(fire_double_click_row, wait_reorder, params, inst_element);
 	  }
 
 	  function get_duration() {
-	    return 4500;
+	    return 9000;
 	  }
 
 	  function get_row_element(params, inst_row) {
@@ -6711,6 +6702,14 @@ var Clustergrammer =
 	    $(inst_element).d3DblClick();
 	  }
 
+	  // allows doubleclicking on d3 element
+	  jQuery.fn.d3DblClick = function () {
+	    this.each(function (i, e) {
+	      var evt = document.createEvent("MouseEvents");
+	      evt.initMouseEvent("dblclick", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+	      e.dispatchEvent(evt);
+	    });
+	  };
 	  return {
 	    run: run,
 	    get_duration: get_duration
@@ -9070,7 +9069,7 @@ var Clustergrammer =
 	  function run(params) {
 
 	    var text = 'Reorder all rows and columns\nby clicking the reorder\n buttons';
-	    demo_text(params, text, 7000);
+	    demo_text(params, text, 9000);
 
 	    setTimeout(highlight_sidebar_element, 2000, params, 'toggle_row_order');
 	    setTimeout(click_reorder_button, 2500, params, 'row', 'rank');
@@ -9080,7 +9079,7 @@ var Clustergrammer =
 	  }
 
 	  function get_duration() {
-	    return 9000;
+	    return 10000;
 	  }
 
 	  function click_reorder_button(params, inst_rc, inst_order) {
@@ -9129,24 +9128,24 @@ var Clustergrammer =
 	  function run(params) {
 
 	    var text = 'Search for rows using\nthe search box';
-	    demo_text(params, text, 4000);
+	    demo_text(params, text, 5000);
 
-	    setTimeout(highlight_sidebar_element, 1500, params, 'gene_search_container');
+	    var ini_delay = 2500;
+	    setTimeout(highlight_sidebar_element, ini_delay, params, 'gene_search_container');
 
-	    var ini_delay = 1500;
 	    // manually mimic typing and autocomplete
 	    setTimeout(type_out_search, ini_delay + 1000, params, 'E');
 	    setTimeout(type_out_search, ini_delay + 1500, params, 'EG');
 	    setTimeout(type_out_search, ini_delay + 2000, params, 'EGF');
 	    setTimeout(type_out_search, ini_delay + 2500, params, 'EGFR');
 
-	    setTimeout(run_search, 4000, params);
+	    setTimeout(run_search, 5500, params);
 
-	    setTimeout(two_translate_zoom, 6000, params, 0, 0, 1);
+	    setTimeout(two_translate_zoom, 7500, params, 0, 0, 1);
 	  }
 
 	  function get_duration() {
-	    return 7500;
+	    return 10000;
 	  }
 
 	  function type_out_search(params, inst_string) {
@@ -9187,21 +9186,21 @@ var Clustergrammer =
 
 	    setTimeout(highlight_sidebar_element, 3500, params, 'slider_' + filter_type, 12500);
 
-	    text = 'Top 20 rows by sum';
+	    text = 'Filter: Top 20 rows by sum';
 	    setTimeout(demo_text, 4000, params, text, 3000);
 	    setTimeout(run_update, 4000, cgm, filter_type, 20, 1);
 
-	    text = 'Top 10 rows by sum';
+	    text = 'Filter: Top 10 rows by sum';
 	    setTimeout(demo_text, 8000, params, text, 3000);
 	    setTimeout(run_update, 8000, cgm, filter_type, 10, 2);
 
-	    text = 'All rows';
+	    text = 'Filter: All rows';
 	    setTimeout(demo_text, 12000, params, text, 3000);
 	    setTimeout(run_update, 12000, cgm, filter_type, 'all', 0);
 	  }
 
 	  function get_duration() {
-	    return 1400;
+	    return 14000;
 	  }
 
 	  function run_update(cgm, filter_type, filter_value, filter_index) {
