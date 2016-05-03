@@ -30,7 +30,7 @@ net.load_file('txt/rc_two_cats.txt')
 # net.normalize(axis='col', norm_type='zscore', keep_orig=True)
 
 # # only keep most differentially expressed genes
-net.filter_N_top('row', 200, rank_type='var')
+# net.filter_N_top('row', 200, rank_type='var')
 # net.filter_N_top('col', 100, rank_type='var ')
 
 # filter for rows that contain num_occur values above threshold (abs value)
@@ -38,11 +38,12 @@ net.filter_N_top('row', 200, rank_type='var')
 # net.filter_threshold('row', threshold=100, num_occur=200)
 
 # net.swap_nan_for_zero()
-  
+ 
+# views = ['N_row_sum', 'N_row_var']
 views = ['N_row_sum', 'N_row_var']
 
 net.make_clust(dist_type='cos',views=views , dendro=True,
-               sim_mat=True, filter_sim=0.1, calc_cat_pval=True)
+               sim_mat=True, filter_sim=0.1, calc_cat_pval=False)
 
 # net.produce_view({'N_row_sum':10,'dist':'euclidean'})
 

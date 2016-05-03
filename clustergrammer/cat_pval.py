@@ -21,26 +21,42 @@ def main(net):
     # make distance matrix dataframe 
     dm = dist_matrix_lattice(inst_nodes)
 
-    tmp_dict = net.dat['node_info'][inst_rc]['dict_cat_0']
 
-    for inst_cat in tmp_dict:
+    node_infos = net.dat['node_info'][inst_rc].keys()
+
+    all_cats = []
+    for inst_info in node_infos:
+      if 'dict_cat_' in inst_info:
+        all_cats.append(inst_info)
+
+    for cat_dict in all_cats:
+
+      tmp_dict = net.dat['node_info'][inst_rc][cat_dict]
+
+      pval_name = cat_dict.replace('dict_','pval_')
+      net.dat['node_info'][inst_rc][pval_name] = {}
       
-      subset = tmp_dict[inst_cat]
+      for cat_name in tmp_dict:
+        
+        subset = tmp_dict[cat_name]
 
-      inst_mean = calc_mean_dist_subset(dm, subset)
+        inst_mean = calc_mean_dist_subset(dm, subset)
 
-      hist = calc_hist_distances(dm, subset, inst_nodes)
+        hist = calc_hist_distances(dm, subset, inst_nodes)
 
-      pval = 0
+        pval = 0
 
-      for i in range(len(hist['prob'])):
-        if i == 0:
-          pval = hist['prob'][i]
-        if i >= 1:
-          if inst_mean >= hist['bins'][i]:
-            pval = pval + hist['prob'][i]
+        for i in range(len(hist['prob'])):
+          if i == 0:
+            pval = hist['prob'][i]
+          if i >= 1:
+            if inst_mean >= hist['bins'][i]:
+              pval = pval + hist['prob'][i]
 
-      print('pval '+str(pval)+'\n-------------\n\n')
+        net.dat['node_info'][inst_rc][pval_name][cat_name] = pval
+
+        # print(net.dat['node_info'][inst_rc].keys())
+
 
 def dist_matrix_lattice(names):  
   from scipy.spatial.distance import pdist, squareform

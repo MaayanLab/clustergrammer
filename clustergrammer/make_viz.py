@@ -23,15 +23,21 @@ def viz_json(net, dendro=True):
       if len(all_cats) > 0:
 
         for inst_name_cat in all_cats:
-          inst_dict[inst_name_cat] = net.dat['node_info'][inst_rc] \
-              [inst_name_cat][i]
+
+          actual_cat_name = net.dat['node_info'][inst_rc][inst_name_cat][i]
+          inst_dict[inst_name_cat] = actual_cat_name
+
+          check_pval = 'pval_'+inst_name_cat.replace('-','_')
+
+          if check_pval in net.dat['node_info'][inst_rc]:
+            tmp_pval_name = inst_name_cat.replace('-','_') + '_pval'
+            inst_dict[tmp_pval_name] = net.dat['node_info'][inst_rc][check_pval][actual_cat_name]
 
           tmp_index_name = inst_name_cat.replace('-', '_') + '_index'
 
-          # print(tmp_index_name)
-          ############################
           inst_dict[tmp_index_name] = net.dat['node_info'][inst_rc] \
               [tmp_index_name][i]
+
 
       if len(net.dat['node_info'][inst_rc]['value']) > 0:
         inst_dict['value'] = net.dat['node_info'][inst_rc]['value'][i]

@@ -23,10 +23,8 @@ def make_clust(net, dist_type='cosine', run_clustering=True, dendro=True,
   inst_dm = calc_clust.cluster_row_and_col(net, dist_type=dist_type, 
                                 linkage_type=linkage_type, 
                                 run_clustering=run_clustering, 
-                                dendro=dendro, ignore_cat=False)
-
-  if calc_cat_pval is True:
-    cat_pval.main(net)
+                                dendro=dendro, ignore_cat=False, 
+                                calc_cat_pval=calc_cat_pval)
 
   all_views = []
   send_df = deepcopy(df)

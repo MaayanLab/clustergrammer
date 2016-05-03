@@ -1,13 +1,13 @@
 def cluster_row_and_col(net, dist_type='cosine', linkage_type='average', 
                         dendro=True, run_clustering=True, run_rank=True,
-                        ignore_cat=False):
+                        ignore_cat=False, calc_cat_pval=False):
   ''' cluster net.dat and make visualization json, net.viz.
   optionally leave out dendrogram colorbar groups with dendro argument '''
 
   import scipy
   from copy import deepcopy
   from scipy.spatial.distance import pdist
-  import categories, make_viz
+  import categories, make_viz, cat_pval
 
   dm = {}
   for inst_rc in ['row', 'col']:
@@ -39,6 +39,9 @@ def cluster_row_and_col(net, dist_type='cosine', linkage_type='average',
     ##################################
     if ignore_cat is False:
       categories.calc_cat_clust_order(net, inst_rc)
+
+  if calc_cat_pval is True:
+    cat_pval.main(net)
 
   make_viz.viz_json(net, dendro)
 
