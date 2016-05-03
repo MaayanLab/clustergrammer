@@ -6,7 +6,7 @@ module.exports = function set_up_search(sidebar, params ){
     .classed('gene_search_container',true)
     .style('margin-top','10px')
     .style('margin-left', params.sidebar.row_search.margin_left+'px')
-    .style('width','185px');
+    .style('width','145px');
 
   search_container
     .append('input')

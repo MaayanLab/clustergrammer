@@ -1,19 +1,19 @@
 var demo_text = require('./demo_text');
 var highlight_sidebar_element = require('./highlight_sidebar_element');
 
-module.exports = function play_reorder_buttons(params){
+module.exports = function play_search(params){
 
 
   function run(params){
 
-    var text = 'Reorder all rows and columns\nby clicking the reorder\n buttons';
-    demo_text(params, text, 7000);
+    var text = 'Search for rows using\nthe search box';
+    demo_text(params, text, 4000);
     
-    setTimeout(highlight_sidebar_element, 2000, params, 'toggle_row_order');
-    setTimeout(click_reorder_button, 2500, params, 'row', 'rank');
+    setTimeout(highlight_sidebar_element, 1500, params, 'gene_search_container');
+    // setTimeout(click_reorder_button, 2500, params, 'row', 'rank');
 
-    setTimeout(highlight_sidebar_element, 6000, params, 'toggle_col_order');
-    setTimeout(click_reorder_button, 6500, params, 'col', 'rank');
+    // setTimeout(highlight_sidebar_element, 6000, params, 'toggle_col_order');
+    // setTimeout(click_reorder_button, 6500, params, 'col', 'rank');
 
   }
 
