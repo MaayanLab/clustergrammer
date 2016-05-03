@@ -3,6 +3,7 @@ var make_params = require('./params/');
 var make_viz = require('./viz');
 var resize_viz = require('./reset_size/resize_viz');
 var play_demo = require('./demo/play_demo');
+var update_network = require('./network/update_network');
 
 /* clustergrammer 1.0
  * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
@@ -52,13 +53,13 @@ function Clustergrammer(args) {
     resize_viz(cgm.params);
   }
 
-  function modify_params(){
-    this.params.something = 'here';
+  function external_update_view(requested_view){
+    params = update_network(this, requested_view)
   }
 
+  // add more API endpoints 
+  cgm.update_view = external_update_view;
   cgm.resize_viz = external_resize;
-  cgm.modify_params = modify_params;
-
   cgm.play_demo = play_demo;
 
   return cgm;
