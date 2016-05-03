@@ -1,9 +1,8 @@
 var demo_text = require('./demo_text');
 var highlight_sidebar_element = require('./highlight_sidebar_element');
-var two_translate_zoom = require('../zoom/two_translate_zoom');
 var update_network = require('../network/update_network');
 
-module.exports = function play_filter(cgm){
+module.exports = function play_filter(){
 
   function run(cgm){
     var params = cgm.params;
@@ -18,15 +17,15 @@ module.exports = function play_filter(cgm){
 
     text = 'Top 20 rows by sum';
     setTimeout(demo_text, 4000, params, text, 3000);
-    setTimeout(run_update, 4000, cgm, filter_type, 20, 1);;
+    setTimeout(run_update, 4000, cgm, filter_type, 20, 1);
 
     text = 'Top 10 rows by sum';
     setTimeout(demo_text, 8000, params, text, 3000);
-    setTimeout(run_update, 8000, cgm, filter_type, 10, 2);;
+    setTimeout(run_update, 8000, cgm, filter_type, 10, 2);
 
     text = 'All rows';
     setTimeout(demo_text, 12000, params, text, 3000);
-    setTimeout(run_update, 12000, cgm, filter_type, 'all', 0);;
+    setTimeout(run_update, 12000, cgm, filter_type, 'all', 0);
 
   }
 
@@ -39,7 +38,7 @@ module.exports = function play_filter(cgm){
     var params = cgm.params;
 
     var requested_view = {};
-    requested_view[filter_type] = filter_value
+    requested_view[filter_type] = filter_value;
     update_network(cgm, requested_view);
 
     // quick fix for slider 

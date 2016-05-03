@@ -2,7 +2,7 @@ var demo_text = require('./demo_text');
 var highlight_sidebar_element = require('./highlight_sidebar_element');
 var two_translate_zoom = require('../zoom/two_translate_zoom');
 
-module.exports = function play_search(params){
+module.exports = function play_search(){
 
 
   function run(params){

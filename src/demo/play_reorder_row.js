@@ -1,7 +1,8 @@
 var demo_text = require('./demo_text');
 var sim_click = require('./sim_click');
 
-module.exports = function play_reorder_row(params){
+module.exports = function play_reorder_row(){
+  /* eslint-disable */
 
   // allows doubleclicking on d3 element
   jQuery.fn.d3DblClick = function () {
@@ -61,5 +62,5 @@ module.exports = function play_reorder_row(params){
   return {
     run: run,
     get_duration: get_duration
-  }
-}
+  };
+};

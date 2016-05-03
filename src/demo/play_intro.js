@@ -1,6 +1,6 @@
 var demo_text = require('./demo_text');
 
-module.exports = function play_intro(params){
+module.exports = function play_intro(){
 
   var speed_up = 1;
 

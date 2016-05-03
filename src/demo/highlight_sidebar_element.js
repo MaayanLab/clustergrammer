@@ -15,5 +15,4 @@ module.exports = function highlight_sidebar_element(params, highlight_class,
       .style('box-shadow','none');
   }
 
-
-}
+};

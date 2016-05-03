@@ -6420,6 +6420,8 @@ var Clustergrammer =
 
 	'use strict';
 
+	/* eslint-disable */
+
 	var make_demo_text_containers = __webpack_require__(105);
 	var run_segment = __webpack_require__(106);
 	var play_intro = __webpack_require__(107);
@@ -6429,8 +6431,10 @@ var Clustergrammer =
 	var play_reorder_buttons = __webpack_require__(150);
 	var play_search = __webpack_require__(152);
 	var play_filter = __webpack_require__(153);
+	var quick_cluster = __webpack_require__(154);
 
 	module.exports = function play_demo() {
+
 	  var cgm = this;
 	  var params = cgm.params;
 
@@ -6438,17 +6442,17 @@ var Clustergrammer =
 	  var inst_time = 0;
 	  var prev_duration = 0;
 	  var demo_text_size = 38;
-	  var sec_scale = 1000;
 
 	  make_demo_text_containers(params, demo_text_size);
 
 	  inst_time = run_segment(params, inst_time, play_intro);
-	  inst_time = run_segment(params, inst_time, play_zoom);
-	  inst_time = run_segment(params, inst_time, play_reset_zoom);
-	  inst_time = run_segment(params, inst_time, play_reorder_row);
+	  // inst_time = run_segment(params, inst_time, play_zoom);
+	  // inst_time = run_segment(params, inst_time, play_reset_zoom);
+	  // inst_time = run_segment(params, inst_time, play_reorder_row);
 	  inst_time = run_segment(params, inst_time, play_reorder_buttons);
-	  inst_time = run_segment(params, inst_time, play_search);
+	  // inst_time = run_segment(params, inst_time, play_search);
 	  inst_time = run_segment(cgm, inst_time, play_filter);
+	  inst_time = run_segment(params, inst_time, quick_cluster);
 		};
 
 /***/ },
@@ -6490,6 +6494,7 @@ var Clustergrammer =
 	"use strict";
 
 	module.exports = function run_segment(segment_data, inst_time, inst_segment) {
+	  /* eslint-disable */
 
 	  var timer = setTimeout(inst_segment().run, inst_time, segment_data);
 
@@ -6513,7 +6518,7 @@ var Clustergrammer =
 
 	var demo_text = __webpack_require__(108);
 
-	module.exports = function play_intro(params) {
+	module.exports = function play_intro() {
 
 	  var speed_up = 1;
 
@@ -6575,7 +6580,7 @@ var Clustergrammer =
 	var demo_text = __webpack_require__(108);
 	var two_translate_zoom = __webpack_require__(77);
 
-	module.exports = function play_zoom(params) {
+	module.exports = function play_zoom() {
 
 	  function run(params) {
 	    var text = 'Zoom and pan by\nscrolling and dragging';
@@ -6604,7 +6609,7 @@ var Clustergrammer =
 	var two_translate_zoom = __webpack_require__(77);
 	var sim_click = __webpack_require__(111);
 
-	module.exports = function play_reset_zoom(params) {
+	module.exports = function play_reset_zoom() {
 
 	  function run(params) {
 
@@ -6653,7 +6658,8 @@ var Clustergrammer =
 	var demo_text = __webpack_require__(108);
 	var sim_click = __webpack_require__(111);
 
-	module.exports = function play_reorder_row(params) {
+	module.exports = function play_reorder_row() {
+	  /* eslint-disable */
 
 	  // allows doubleclicking on d3 element
 	  jQuery.fn.d3DblClick = function () {
@@ -9058,7 +9064,8 @@ var Clustergrammer =
 	var demo_text = __webpack_require__(108);
 	var highlight_sidebar_element = __webpack_require__(151);
 
-	module.exports = function play_reorder_buttons(params) {
+	module.exports = function play_reorder_buttons() {
+	  /* eslint-disable */
 
 	  function run(params) {
 
@@ -9078,7 +9085,7 @@ var Clustergrammer =
 
 	  function click_reorder_button(params, inst_rc, inst_order) {
 	    var inst_button = d3.selectAll('.toggle_' + inst_rc + '_order .btn').filter(function () {
-	      return this.__data__ == 'rank';
+	      return this.__data__ == inst_order;
 	    })[0];
 
 	    $(inst_button).click();
@@ -9117,7 +9124,7 @@ var Clustergrammer =
 	var highlight_sidebar_element = __webpack_require__(151);
 	var two_translate_zoom = __webpack_require__(77);
 
-	module.exports = function play_search(params) {
+	module.exports = function play_search() {
 
 	  function run(params) {
 
@@ -9166,10 +9173,9 @@ var Clustergrammer =
 
 	var demo_text = __webpack_require__(108);
 	var highlight_sidebar_element = __webpack_require__(151);
-	var two_translate_zoom = __webpack_require__(77);
 	var update_network = __webpack_require__(120);
 
-	module.exports = function play_filter(cgm) {
+	module.exports = function play_filter() {
 
 	  function run(cgm) {
 	    var params = cgm.params;
@@ -9183,15 +9189,15 @@ var Clustergrammer =
 
 	    text = 'Top 20 rows by sum';
 	    setTimeout(demo_text, 4000, params, text, 3000);
-	    setTimeout(run_update, 4000, cgm, filter_type, 20, 1);;
+	    setTimeout(run_update, 4000, cgm, filter_type, 20, 1);
 
 	    text = 'Top 10 rows by sum';
 	    setTimeout(demo_text, 8000, params, text, 3000);
-	    setTimeout(run_update, 8000, cgm, filter_type, 10, 2);;
+	    setTimeout(run_update, 8000, cgm, filter_type, 10, 2);
 
 	    text = 'All rows';
 	    setTimeout(demo_text, 12000, params, text, 3000);
-	    setTimeout(run_update, 12000, cgm, filter_type, 'all', 0);;
+	    setTimeout(run_update, 12000, cgm, filter_type, 'all', 0);
 	  }
 
 	  function get_duration() {
@@ -9217,6 +9223,40 @@ var Clustergrammer =
 	    }
 
 	    d3.select(params.root + ' .title_' + filter_type).text('Top rows ' + unit_name + ': ' + filter_value);
+	  }
+
+	  return {
+	    run: run,
+	    get_duration: get_duration
+	  };
+		};
+
+/***/ },
+/* 154 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	// var demo_text = require('./demo_text');
+	module.exports = function quick_cluster() {
+	  /* eslint-disable */
+
+	  function run(params) {
+
+	    click_reorder_button(params, 'row', 'clust');
+	    click_reorder_button(params, 'col', 'clust');
+	  }
+
+	  function get_duration() {
+	    return 1000;
+	  }
+
+	  function click_reorder_button(params, inst_rc, inst_order) {
+	    var inst_button = d3.selectAll('.toggle_' + inst_rc + '_order .btn').filter(function () {
+	      return this.__data__ == inst_order;
+	    })[0];
+
+	    $(inst_button).click();
 	  }
 
 	  return {

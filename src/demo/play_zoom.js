@@ -1,7 +1,7 @@
 var demo_text = require('./demo_text');
 var two_translate_zoom = require('../zoom/two_translate_zoom');
 
-module.exports = function play_zoom(params){
+module.exports = function play_zoom(){
 
   function run(params){
     var text = 'Zoom and pan by\nscrolling and dragging';
@@ -18,5 +18,5 @@ module.exports = function play_zoom(params){
   return {
     run: run,
     get_duration: get_duration
-  }
-}
+  };
+};

@@ -2,7 +2,7 @@ var demo_text = require('./demo_text');
 var two_translate_zoom = require('../zoom/two_translate_zoom');
 var sim_click = require('./sim_click');
 
-module.exports = function play_reset_zoom(params){
+module.exports = function play_reset_zoom(){
 
   function run(params){
 
@@ -21,5 +21,5 @@ module.exports = function play_reset_zoom(params){
   return {
     run: run,
     get_duration: get_duration
-  }
-}
+  };
+};

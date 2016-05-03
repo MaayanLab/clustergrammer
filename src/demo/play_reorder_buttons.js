@@ -1,8 +1,8 @@
 var demo_text = require('./demo_text');
 var highlight_sidebar_element = require('./highlight_sidebar_element');
 
-module.exports = function play_reorder_buttons(params){
-
+module.exports = function play_reorder_buttons(){
+  /* eslint-disable */
 
   function run(params){
 
@@ -23,7 +23,9 @@ module.exports = function play_reorder_buttons(params){
 
   function click_reorder_button(params, inst_rc, inst_order){
     var inst_button = d3.selectAll('.toggle_'+inst_rc+'_order .btn')
-      .filter(function(){return this.__data__ == 'rank'})[0];
+      .filter(function(){
+        return this.__data__ == inst_order;
+      })[0];
 
     $(inst_button).click();
   }
