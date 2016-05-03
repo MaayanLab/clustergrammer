@@ -8808,6 +8808,7 @@ var Clustergrammer =
 	var play_intro = __webpack_require__(146);
 	var play_zoom = __webpack_require__(149);
 	var play_reset_zoom = __webpack_require__(150);
+	var play_reorder_row = __webpack_require__(152);
 
 	module.exports = function play_demo() {
 	  var cgm = this;
@@ -8823,10 +8824,9 @@ var Clustergrammer =
 	  make_demo_text_containers(params, demo_text_size);
 
 	  // inst_time = run_segment(params, inst_time, play_intro);
-
-	  inst_time = run_segment(params, inst_time, play_zoom);
-
-	  inst_time = run_segment(params, inst_time, play_reset_zoom);
+	  // inst_time = run_segment(params, inst_time, play_zoom);
+	  // inst_time = run_segment(params, inst_time, play_reset_zoom);
+	  inst_time = run_segment(params, inst_time, play_reorder_row);
 		};
 
 /***/ },
@@ -8868,8 +8868,6 @@ var Clustergrammer =
 	'use strict';
 
 	module.exports = function make_demo_text_containers(params, demo_text_size) {
-
-	  console.log('make_demo_text_containers');
 
 	  // demo text container
 	  var demo_group = d3.select(params.root + ' .viz_svg').append('g').classed('demo_group', true).attr('transform', function () {
@@ -9024,6 +9022,54 @@ var Clustergrammer =
 	  } else {
 	    click_circle.transition().duration(click_duration).style('opacity', 0.0).transition().duration(250).remove();
 	  }
+		};
+
+/***/ },
+/* 152 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var demo_text = __webpack_require__(143);
+	var sim_click = __webpack_require__(151);
+
+	module.exports = function play_reorder_row(params) {
+
+	  // allows doubleclicking on d3 element
+	  jQuery.fn.d3DblClick = function () {
+	    this.each(function (i, e) {
+	      var evt = document.createEvent("MouseEvents");
+	      evt.initMouseEvent("dblclick", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+	      e.dispatchEvent(evt);
+	    });
+	  };
+
+	  function run(params) {
+
+	    var text = 'Reorder the matrix based on a single\nrow of column by double-clicking a\nlabel';
+	    demo_text(params, text, 4000);
+
+	    setTimeout(fire_double_click_row, 1000, params, 'EGFR');
+	  }
+
+	  function get_duration() {
+	    return 4000;
+	  }
+
+	  function fire_double_click_row(params, inst_row) {
+
+	    var tmp = d3.selectAll(params.root + ' .row_label_group').filter(function () {
+	      var inst_data = this.__data__;
+	      return inst_data.name == inst_row;
+	    })[0][0];
+
+	    $(tmp).d3DblClick();
+	  }
+
+	  return {
+	    run: run,
+	    get_duration: get_duration
+	  };
 		};
 
 /***/ }

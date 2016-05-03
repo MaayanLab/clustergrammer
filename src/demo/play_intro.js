@@ -21,6 +21,6 @@ module.exports = function play_intro(params){
   return {
     run: run,
     get_duration: get_duration
-  }
+  };
 
 };
