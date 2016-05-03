@@ -1,7 +1,5 @@
 function ini_play_button(cgm, demo_text_size){
 
-// d3.select('.blockMsg').select('h1').text('Please wait...');
-
 var inst_play = false;
 
 function play_demo(){
@@ -301,8 +299,8 @@ function play_demo(){
   function initialize_play(){
     // get dimensions of the main_svg
     center = {};
-    center.pos_x = 1.2*cgm.params.norm_label.width.row + cgm.params.viz.clust.dim.width/2;
-    center.pos_y = 1.2*cgm.params.norm_label.width.col + cgm.params.viz.clust.dim.height/2;
+    center.pos_x = 100; // 1.2*cgm.params.norm_label.width.row + cgm.params.viz.clust.dim.width/2;
+    center.pos_y = 100; //1.2*cgm.params.norm_label.width.col + cgm.params.viz.clust.dim.height/2;
 
     // make play button
     //////////////////////////

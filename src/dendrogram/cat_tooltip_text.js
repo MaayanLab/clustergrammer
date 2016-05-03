@@ -29,7 +29,7 @@ module.exports = function cat_tooltip_text(params, inst_data, inst_selection, in
 
   setTimeout(highlight_categories, 700);
 
-  return cat_string
+  return cat_string;
 
 
   function highlight_categories(){

@@ -28,7 +28,7 @@ module.exports = function make_slider_filter(cgm, filter_type, div_filters){
     .style('margin-top', '5px')
     .style('margin-bottom', '3px')
     .style('margin-left', '5px')
-    .text(filter_title.text + filter_title.state + filter_title.suffix)
+    .text(filter_title.text + filter_title.state + filter_title.suffix);
 
   div_filters
     .append('div')

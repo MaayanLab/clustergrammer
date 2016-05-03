@@ -2,6 +2,7 @@ var make_config = require('./config');
 var make_params = require('./params/');
 var make_viz = require('./viz');
 var resize_viz = require('./reset_size/resize_viz');
+var play_demo = require('./demo/play_demo');
 
 /* clustergrammer 1.0
  * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
@@ -57,6 +58,8 @@ function Clustergrammer(args) {
 
   cgm.resize_viz = external_resize;
   cgm.modify_params = modify_params;
+
+  cgm.play_demo = play_demo;
 
   return cgm;
 }
