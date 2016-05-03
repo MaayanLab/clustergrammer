@@ -1,5 +1,5 @@
 var get_cat_title = require('../categories/get_cat_title');
-var utils = require('../Utils');
+var utils = require('../Utils_clust');
 
 module.exports = function cat_tooltip_text(params, inst_data, inst_selection, inst_rc){
 

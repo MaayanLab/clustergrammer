@@ -1,4 +1,4 @@
-var utils = require('../utils');
+var utils = require('../Utils_clust');
 
 module.exports = function resize_col_hlight(params, svg_group, delay_info=false){
 

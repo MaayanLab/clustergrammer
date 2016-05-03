@@ -1,4 +1,4 @@
-var utils = require('../utils');
+var utils = require('../Utils_clust');
 var add_col_click_hlight = require('./add_col_click_hlight');
 var col_reorder = require('../reorder/col_reorder');
 var row_reorder = require('../reorder/row_reorder');

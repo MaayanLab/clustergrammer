@@ -1,4 +1,4 @@
-var utils = require('../utils');
+var utils = require('../Utils_clust');
 var draw_gridlines = require('../draw_gridlines');
 var add_click_hlight = require('./add_click_hlight');
 var make_simple_rows = require('./make_simple_rows');

@@ -1,4 +1,4 @@
-var utils = require('../utils'); 
+var utils = require('../Utils_clust'); 
 var get_available_filters = require('./get_available_filters');
 
 module.exports = function ini_viz_params(config, params){

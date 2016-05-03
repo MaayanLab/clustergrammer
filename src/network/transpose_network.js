@@ -1,4 +1,4 @@
-var utils = require('../utils');
+var utils = require('../Utils_clust');
 /* Transpose network.
  */
 module.exports = function (net) {

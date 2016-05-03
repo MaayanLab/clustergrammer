@@ -1,4 +1,4 @@
-var utils = require('../utils');
+var utils = require('../Utils_clust');
 var get_filter_default_state = require('./get_filter_default_state');
 
 module.exports = function get_subset_views(params, views, requested_view){

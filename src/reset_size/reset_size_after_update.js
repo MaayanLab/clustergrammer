@@ -1,4 +1,4 @@
-var utils = require('../utils');
+var utils = require('../Utils_clust');
 var calc_clust_height = require('../params/calc_clust_height');
 var get_svg_dim = require('../params/get_svg_dim');
 var calc_clust_width = require('../params/calc_clust_width');

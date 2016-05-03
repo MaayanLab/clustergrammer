@@ -1,4 +1,4 @@
-var utils = require('../utils');
+var utils = require('../Utils_clust');
 var initialize_matrix = require('../initialize_matrix');
 
 module.exports = function ini_matrix_params(config, viz, network_data){

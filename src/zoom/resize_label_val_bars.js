@@ -1,4 +1,4 @@
-var utils = require('../utils');
+var utils = require('../Utils_clust');
 
 module.exports = function resize_label_val_bars(params, zoom_info){
 

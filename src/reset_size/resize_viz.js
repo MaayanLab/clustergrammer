@@ -1,5 +1,5 @@
 // var crossfilter = require('crossfilter');
-var utils = require('../utils');
+var utils = require('../Utils_clust');
 var zoomed = require('../zoom/zoomed');
 var ini_doubleclick = require('../zoom/ini_doubleclick');
 var reset_zoom = require('../zoom/reset_zoom');

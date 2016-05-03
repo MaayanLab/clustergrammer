@@ -1,4 +1,4 @@
-var utils = require('./utils');
+var utils = require('./Utils_clust');
 var colors = require('./colors');
 var transpose_network = require('./network/transpose_network');
 var get_available_filters = require('./params/get_available_filters');
