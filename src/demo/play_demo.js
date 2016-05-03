@@ -6,6 +6,7 @@ var play_reset_zoom = require('./play_reset_zoom');
 var play_reorder_row = require('./play_reorder_row');
 var play_reorder_buttons = require('./play_reorder_buttons');
 var play_search = require('./play_search'); 
+var play_filter = require('./play_filter');
 
 module.exports = function play_demo(){
   var cgm = this;
@@ -25,5 +26,6 @@ module.exports = function play_demo(){
   // inst_time = run_segment(params, inst_time, play_reorder_row);
   // inst_time = run_segment(params, inst_time, play_reorder_buttons);
   inst_time = run_segment(params, inst_time, play_search);
+  inst_time = run_segment(params, inst_time, play_filter);
 
 };

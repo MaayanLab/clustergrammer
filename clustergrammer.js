@@ -6427,6 +6427,7 @@ var Clustergrammer =
 	var play_reorder_row = __webpack_require__(112);
 	var play_reorder_buttons = __webpack_require__(150);
 	var play_search = __webpack_require__(152);
+	var play_filter = __webpack_require__(153);
 
 	module.exports = function play_demo() {
 	  var cgm = this;
@@ -6446,6 +6447,7 @@ var Clustergrammer =
 	  // inst_time = run_segment(params, inst_time, play_reorder_row);
 	  // inst_time = run_segment(params, inst_time, play_reorder_buttons);
 	  inst_time = run_segment(params, inst_time, play_search);
+	  inst_time = run_segment(params, inst_time, play_filter);
 		};
 
 /***/ },
@@ -9094,7 +9096,12 @@ var Clustergrammer =
 	'use strict';
 
 	module.exports = function highlight_sidebar_element(params, highlight_class) {
+
+	  if (highlight_class.indexOf('slider') < 0) {
 	    d3.select(params.root + ' .' + highlight_class).style('background', '#007f00').style('box-shadow', '0px 0px 10px 5px #007f00').transition().duration(1).delay(4000).style('background', '#FFFFFF').style('box-shadow', 'none');
+	  } else {
+	    d3.select(params.root + ' .' + highlight_class).style('box-shadow', '0px 0px 10px 5px #007f00').transition().duration(1).delay(4000).style('box-shadow', 'none');
+	  }
 		};
 
 /***/ },
@@ -9129,7 +9136,66 @@ var Clustergrammer =
 	  }
 
 	  function get_duration() {
-	    return 9000;
+	    return 7500;
+	  }
+
+	  function click_reorder_button(params, inst_rc, inst_order) {
+	    var inst_button = d3.selectAll('.toggle_' + inst_rc + '_order .btn').filter(function () {
+	      return this.__data__ == 'rank';
+	    })[0];
+
+	    $(inst_button).click();
+	  }
+
+	  function type_out_search(params, inst_string) {
+	    $(params.root + ' .gene_search_box').val(inst_string);
+	    $(params.root + ' .gene_search_box').autocomplete("search", inst_string);
+	  }
+
+	  function run_search(params) {
+	    $(params.root + ' .submit_gene_button').click();
+	    $(params.root + ' .gene_search_box').autocomplete("search", '');
+	  }
+
+	  return {
+	    run: run,
+	    get_duration: get_duration
+	  };
+		};
+
+/***/ },
+/* 153 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var demo_text = __webpack_require__(108);
+	var highlight_sidebar_element = __webpack_require__(151);
+	var two_translate_zoom = __webpack_require__(77);
+
+	module.exports = function play_filter(params) {
+
+	  function run(params) {
+
+	    var text = 'Filter the matrix rows based\non sum or variance';
+	    demo_text(params, text, 4000);
+
+	    setTimeout(highlight_sidebar_element, 1500, params, 'slider_N_row_sum');
+
+	    // var ini_delay = 1500;
+	    // // manually mimic typing and autocomplete
+	    // setTimeout( type_out_search, ini_delay+1000, params, 'E' );
+	    // setTimeout( type_out_search, ini_delay+1500, params, 'EG' );
+	    // setTimeout( type_out_search, ini_delay+2000, params, 'EGF' );
+	    // setTimeout( type_out_search, ini_delay+2500, params, 'EGFR' );
+
+	    // setTimeout(run_search, 4000, params );
+
+	    // setTimeout(two_translate_zoom, 6000, params, 0, 0, 1);
+	  }
+
+	  function get_duration() {
+	    return 1400;
 	  }
 
 	  function click_reorder_button(params, inst_rc, inst_order) {

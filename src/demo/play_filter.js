@@ -2,30 +2,30 @@ var demo_text = require('./demo_text');
 var highlight_sidebar_element = require('./highlight_sidebar_element');
 var two_translate_zoom = require('../zoom/two_translate_zoom');
 
-module.exports = function play_search(params){
+module.exports = function play_filter(params){
 
 
   function run(params){
 
-    var text = 'Search for rows using\nthe search box';
+    var text = 'Filter the matrix rows based\non sum or variance';
     demo_text(params, text, 4000);
     
-    setTimeout(highlight_sidebar_element, 1500, params, 'gene_search_container');
+    setTimeout(highlight_sidebar_element, 1500, params, 'slider_N_row_sum');
 
-    var ini_delay = 1500;
-    // manually mimic typing and autocomplete 
-    setTimeout( type_out_search, ini_delay+1000, params, 'E' );
-    setTimeout( type_out_search, ini_delay+1500, params, 'EG' );
-    setTimeout( type_out_search, ini_delay+2000, params, 'EGF' );
-    setTimeout( type_out_search, ini_delay+2500, params, 'EGFR' );
+    // var ini_delay = 1500;
+    // // manually mimic typing and autocomplete 
+    // setTimeout( type_out_search, ini_delay+1000, params, 'E' );
+    // setTimeout( type_out_search, ini_delay+1500, params, 'EG' );
+    // setTimeout( type_out_search, ini_delay+2000, params, 'EGF' );
+    // setTimeout( type_out_search, ini_delay+2500, params, 'EGFR' );
 
-    setTimeout(run_search, 4000, params );
+    // setTimeout(run_search, 4000, params );
 
-    setTimeout(two_translate_zoom, 6000, params, 0, 0, 1);
+    // setTimeout(two_translate_zoom, 6000, params, 0, 0, 1);
   }
 
   function get_duration(){
-    return 7500;
+    return 1400;
   }
 
   function click_reorder_button(params, inst_rc, inst_order){
