@@ -6448,7 +6448,7 @@ var Clustergrammer =
 	  // inst_time = run_segment(params, inst_time, play_reorder_row);
 	  // inst_time = run_segment(params, inst_time, play_reorder_buttons);
 	  // inst_time = run_segment(params, inst_time, play_search);
-	  inst_time = run_segment(params, inst_time, play_filter);
+	  inst_time = run_segment(cgm, inst_time, play_filter);
 		};
 
 /***/ },
@@ -6489,9 +6489,9 @@ var Clustergrammer =
 
 	"use strict";
 
-	module.exports = function run_segment(params, inst_time, inst_segment) {
+	module.exports = function run_segment(segment_data, inst_time, inst_segment) {
 
-	  var timer = setTimeout(inst_segment().run, inst_time, params);
+	  var timer = setTimeout(inst_segment().run, inst_time, segment_data);
 
 	  // set up kill demo that will stop setTimeouts
 	  //////////////////////////////////////////////////
@@ -9173,15 +9173,19 @@ var Clustergrammer =
 	var demo_text = __webpack_require__(108);
 	var highlight_sidebar_element = __webpack_require__(151);
 	var two_translate_zoom = __webpack_require__(77);
+	var update_network = __webpack_require__(120);
 
-	module.exports = function play_filter(params) {
+	module.exports = function play_filter(cgm) {
 
-	  function run(params) {
+	  function run(cgm) {
+	    var params = cgm.params;
 
 	    var text = 'Filter the matrix rows based\non sum or variance';
 	    demo_text(params, text, 4000);
 
 	    setTimeout(highlight_sidebar_element, 1500, params, 'slider_N_row_sum');
+
+	    update_network(cgm, { 'N_row_sum': 10 });
 
 	    // var ini_delay = 1500;
 	    // // manually mimic typing and autocomplete

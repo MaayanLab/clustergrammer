@@ -1,16 +1,19 @@
 var demo_text = require('./demo_text');
 var highlight_sidebar_element = require('./highlight_sidebar_element');
 var two_translate_zoom = require('../zoom/two_translate_zoom');
+var update_network = require('../network/update_network');
 
-module.exports = function play_filter(params){
+module.exports = function play_filter(cgm){
 
-
-  function run(params){
+  function run(cgm){
+    var params = cgm.params;
 
     var text = 'Filter the matrix rows based\non sum or variance';
     demo_text(params, text, 4000);
     
     setTimeout(highlight_sidebar_element, 1500, params, 'slider_N_row_sum');
+
+    update_network(cgm, {'N_row_sum':10});
 
     // var ini_delay = 1500;
     // // manually mimic typing and autocomplete 
