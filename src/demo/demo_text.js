@@ -13,8 +13,6 @@ module.exports = function demo_text(params, text, read_duration){
     .transition().duration(250).delay(read_duration)
     .style('opacity',0);
   
-  var box_scale = 1.1;
-
   for (var i=0; i<split_text.length; i++){
 
     var inst_text_num = i+1;
