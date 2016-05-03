@@ -7,41 +7,40 @@ def main(net):
   calculate pvalue of category closeness 
   '''
 
-  # calculate the distance between the cols within the same category and compare
-  # to null distribution 
+  # calculate the distance between the data points within the same category and 
+  # compare to null distribution 
+  for inst_rc in ['row', 'col']:
 
-  inst_cols = deepcopy(net.dat['nodes']['col'])
+    inst_nodes = deepcopy(net.dat['nodes'][inst_rc])
 
-  inst_index = deepcopy(net.dat['node_info']['col']['clust'])
-  # reorder based on clustered order 
-  inst_cols = [ inst_cols[i] for i in inst_index]
+    inst_index = deepcopy(net.dat['node_info'][inst_rc]['clust'])
 
-  # make distance matrix dataframe 
-  dm = dist_matrix_lattice(inst_cols)
+    # reorder based on clustered order 
+    inst_nodes = [ inst_nodes[i] for i in inst_index]
 
-  tmp_dict = net.dat['node_info']['col']['dict_cat_0']
+    # make distance matrix dataframe 
+    dm = dist_matrix_lattice(inst_nodes)
 
-  for inst_cat in tmp_dict:
-    subset = tmp_dict[inst_cat]
-    print(subset)
-    inst_mean = calc_mean_dist_subset(dm, subset)
-    # print(inst_mean)
+    tmp_dict = net.dat['node_info'][inst_rc]['dict_cat_0']
 
-    hist = calc_hist_distances(dm, subset, inst_cols)
+    for inst_cat in tmp_dict:
+      
+      subset = tmp_dict[inst_cat]
 
-    pval = 0
-    for i in range(len(hist['prob'])):
-      if i == 0:
-        pval = hist['prob'][i]
-      if i >= 1:
-        if inst_mean >= hist['bins'][i]:
-          # print('inst_bin '+str(hist['bins'][i]))
-          pval = pval + hist['prob'][i]
-          # print('add ' + str(hist['prob'][i]) + ' total:' + str(pval) + '\n')
+      inst_mean = calc_mean_dist_subset(dm, subset)
 
-    print('pval '+str(pval)+'\n-------------\n\n')
+      hist = calc_hist_distances(dm, subset, inst_nodes)
 
-  # net.dat['node_info']['col']
+      pval = 0
+
+      for i in range(len(hist['prob'])):
+        if i == 0:
+          pval = hist['prob'][i]
+        if i >= 1:
+          if inst_mean >= hist['bins'][i]:
+            pval = pval + hist['prob'][i]
+
+      print('pval '+str(pval)+'\n-------------\n\n')
 
 def dist_matrix_lattice(names):  
   from scipy.spatial.distance import pdist, squareform
@@ -64,7 +63,7 @@ def dist_matrix_lattice(names):
 def calc_mean_dist_subset(dm, subset):
   return np.mean(dm[subset].ix[subset].values)
   
-def calc_hist_distances(dm, subset, inst_cols):
+def calc_hist_distances(dm, subset, inst_nodes):
   np.random.seed(100)
 
   num_null = 1000
@@ -72,7 +71,7 @@ def calc_hist_distances(dm, subset, inst_cols):
 
   mean_dist = []
   for i in range(num_null):
-    tmp = np.random.choice(inst_cols, num_points, replace=False)
+    tmp = np.random.choice(inst_nodes, num_points, replace=False)
     mean_dist.append( np.mean(dm[tmp].ix[tmp].values)  )
 
   tmp_dist = sorted(deepcopy(mean_dist))

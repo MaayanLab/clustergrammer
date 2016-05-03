@@ -42,7 +42,7 @@ net.filter_N_top('row', 200, rank_type='var')
 views = ['N_row_sum', 'N_row_var']
 
 net.make_clust(dist_type='cos',views=views , dendro=True,
-               sim_mat=True, filter_sim=0.1, calc_cat_pval=False)
+               sim_mat=True, filter_sim=0.1, calc_cat_pval=True)
 
 # net.produce_view({'N_row_sum':10,'dist':'euclidean'})
 
