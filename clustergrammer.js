@@ -9013,7 +9013,9 @@ var Clustergrammer =
 
 	module.exports = function sim_click(params, single_double, pos_x, pos_y) {
 
-	  var click_duration = 150;
+	  console.log('sim_click');
+
+	  var click_duration = 200;
 
 	  var click_circle = d3.select(params.root + ' .viz_svg').append('circle').attr('cx', pos_x).attr('cy', pos_y).attr('r', 25).style('stroke', 'black').style('stroke-width', '3px').style('fill', '#007f00').style('opacity', 0.5);
 
@@ -9049,7 +9051,8 @@ var Clustergrammer =
 	    var text = 'Reorder the matrix based on a single\nrow of column by double-clicking a\nlabel';
 	    demo_text(params, text, 4000);
 
-	    setTimeout(fire_double_click_row, 1000, params, 'EGFR');
+	    // setTimeout(fire_double_click_row, 1000, params, 'EGFR');
+	    setTimeout(sim_click, 900, params, 'double', 300, 300);
 	  }
 
 	  function get_duration() {

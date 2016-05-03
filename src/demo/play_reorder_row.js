@@ -17,7 +17,8 @@ module.exports = function play_reorder_row(params){
     var text = 'Reorder the matrix based on a single\nrow of column by double-clicking a\nlabel';
     demo_text(params, text, 4000);
 
-    setTimeout(fire_double_click_row, 1000, params, 'EGFR');
+    // setTimeout(fire_double_click_row, 1000, params, 'EGFR');
+    setTimeout(sim_click, 900, params, 'double', 300, 300);
 
   }
 
