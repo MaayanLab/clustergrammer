@@ -8902,16 +8902,18 @@ var Clustergrammer =
 
 	module.exports = function play_intro(params) {
 
+	  var speed_up = 5;
+
 	  function run(params) {
 	    var text_1 = 'Clustergrammer allows users to generate\ninteractive and ' + 'sharable visualizations\nby uploading a matrix';
 	    var text_2 = "This demo will quickly overview some\nof Clustergrammer's " + "interactive features";
 
-	    setTimeout(demo_text, 0, params, text_1, 5000);
-	    setTimeout(demo_text, 5000, params, text_2, 3500);
+	    setTimeout(demo_text, 0, params, text_1, 5000 / speed_up);
+	    setTimeout(demo_text, 5000 / speed_up, params, text_2, 3500 / speed_up);
 	  }
 
 	  function get_duration() {
-	    return 9000;
+	    return 9000 / speed_up;
 	  }
 
 	  return {
@@ -8950,13 +8952,15 @@ var Clustergrammer =
 	'use strict';
 
 	var demo_text = __webpack_require__(143);
+	var two_translate_zoom = __webpack_require__(77);
 
 	module.exports = function play_zoom(params) {
 
 	  function run(params) {
 	    var text = 'Zoom and pan by\nscrolling and dragging';
-	    // setTimeout(demo_text, )
 	    demo_text(params, text, 4000);
+
+	    setTimeout(two_translate_zoom, 1500, params, 0, 0, 4);
 	  }
 
 	  function get_duration() {

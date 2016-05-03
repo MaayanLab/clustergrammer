@@ -20,5 +20,4 @@ module.exports = function play_demo(){
 
   inst_time = run_segment(params, inst_time, play_zoom);
 
-
 };
