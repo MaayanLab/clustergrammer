@@ -4,6 +4,7 @@ var play_intro = require('./play_intro');
 var play_zoom = require('./play_zoom');
 var play_reset_zoom = require('./play_reset_zoom');
 var play_reorder_row = require('./play_reorder_row');
+var play_reorder_buttons = require('./play_reorder_buttons');
 
 module.exports = function play_demo(){
   var cgm = this;
@@ -21,6 +22,7 @@ module.exports = function play_demo(){
   // inst_time = run_segment(params, inst_time, play_intro);
   // inst_time = run_segment(params, inst_time, play_zoom);
   // inst_time = run_segment(params, inst_time, play_reset_zoom);
-  inst_time = run_segment(params, inst_time, play_reorder_row);
+  // inst_time = run_segment(params, inst_time, play_reorder_row);
+  inst_text = run_segment(params, inst_time, play_reorder_buttons);
 
 };

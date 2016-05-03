@@ -6425,6 +6425,7 @@ var Clustergrammer =
 	var play_zoom = __webpack_require__(109);
 	var play_reset_zoom = __webpack_require__(110);
 	var play_reorder_row = __webpack_require__(112);
+	var play_reorder_buttons = __webpack_require__(150);
 
 	module.exports = function play_demo() {
 	  var cgm = this;
@@ -6442,7 +6443,8 @@ var Clustergrammer =
 	  // inst_time = run_segment(params, inst_time, play_intro);
 	  // inst_time = run_segment(params, inst_time, play_zoom);
 	  // inst_time = run_segment(params, inst_time, play_reset_zoom);
-	  inst_time = run_segment(params, inst_time, play_reorder_row);
+	  // inst_time = run_segment(params, inst_time, play_reorder_row);
+	  inst_text = run_segment(params, inst_time, play_reorder_buttons);
 		};
 
 /***/ },
@@ -6671,7 +6673,7 @@ var Clustergrammer =
 
 	    var container_trans = d3.select(params.root + ' .clust_container').attr('transform').split(',')[1].replace(')', '');
 
-	    var x_trans = cgm.params.viz.norm_labels.width.row * 0.9;
+	    var x_trans = params.viz.norm_labels.width.row * 0.9;
 
 	    var row_trans = group_trans.split(',')[1].replace(')', '');
 	    var y_trans = String(Number(row_trans) + Number(container_trans) + params.viz.rect_height / 2);
@@ -9043,6 +9045,57 @@ var Clustergrammer =
 	  modal_skeleton.body = modal_content.append('div').classed('modal-body', true);
 
 	  return modal_skeleton;
+		};
+
+/***/ },
+/* 150 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var demo_text = __webpack_require__(108);
+	var highlight_sidebar_element = __webpack_require__(151);
+
+	module.exports = function play_reorder_buttons(params) {
+
+	  function run(params) {
+	    var text = 'Reorder all rows and columns\nby clicking the reorder\n buttons';
+
+	    demo_text(params, text, 7000);
+
+	    setTimeout(highlight_sidebar_element, 2000, params, 'toggle_row_order');
+	    setTimeout(click_reorder_button, 2500, params, 'row', 'rank');
+
+	    setTimeout(highlight_sidebar_element, 6000, params, 'toggle_col_order');
+	    setTimeout(click_reorder_button, 6500, params, 'col', 'rank');
+	  }
+
+	  function get_duration() {
+	    return 9000;
+	  }
+
+	  function click_reorder_button(params, inst_rc, inst_order) {
+	    var inst_button = d3.selectAll('.toggle_' + inst_rc + '_order .btn').filter(function () {
+	      return this.__data__ == 'rank';
+	    })[0];
+
+	    $(inst_button).click();
+	  }
+
+	  return {
+	    run: run,
+	    get_duration: get_duration
+	  };
+		};
+
+/***/ },
+/* 151 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = function highlight_sidebar_element(params, highlight_class) {
+	    d3.select(params.root + ' .' + highlight_class).transition().style('background', '#007f00').style('box-shadow', '0px 0px 10px 5px #007f00').transition().duration(1).delay(4000).style('background', '#FFFFFF').style('box-shadow', '0px 0px 0px 0px #FFFFFF');
 		};
 
 /***/ }

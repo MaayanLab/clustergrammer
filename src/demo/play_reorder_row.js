@@ -25,7 +25,7 @@ module.exports = function play_reorder_row(params){
       .attr('transform')
       .split(',')[1].replace(')','');
 
-    var x_trans = cgm.params.viz.norm_labels.width.row * 0.9;
+    var x_trans = params.viz.norm_labels.width.row * 0.9;
 
     var row_trans = group_trans.split(',')[1].replace(')','');
     var y_trans = String(Number(row_trans) + Number(container_trans) + 
