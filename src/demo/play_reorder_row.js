@@ -17,7 +17,6 @@ module.exports = function play_reorder_row(params){
     var text = 'Reorder the matrix based on a single\nrow of column by double-clicking a\nlabel';
     demo_text(params, text, 4000);
 
-
     var inst_element = get_row_element(params, 'EGFR');
 
     var group_trans = d3.select(inst_element).attr('transform');
@@ -26,14 +25,16 @@ module.exports = function play_reorder_row(params){
       .attr('transform')
       .split(',')[1].replace(')','');
 
-    var row_trans = group_trans.split(',')[1].replace(')','');
-
     var x_trans = cgm.params.viz.norm_labels.width.row * 0.9;
+
+    var row_trans = group_trans.split(',')[1].replace(')','');
     var y_trans = String(Number(row_trans) + Number(container_trans) + 
       params.viz.rect_height/2);
 
-    setTimeout(fire_double_click_row, 1000, params, inst_element);
-    setTimeout(sim_click, 900, params, 'double', x_trans, y_trans);
+    var wait_click = 1500;
+    setTimeout(sim_click, wait_click, params, 'double', x_trans, y_trans);
+    var wait_reorder = wait_click + 300;
+    setTimeout(fire_double_click_row, wait_reorder, params, inst_element);
 
   }
 

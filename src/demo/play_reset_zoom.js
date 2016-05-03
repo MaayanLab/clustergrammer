@@ -9,9 +9,8 @@ module.exports = function play_reset_zoom(params){
     var text = 'Reset zoom by double-clicking\n';
     demo_text(params, text, 3000);
     
-    setTimeout(sim_click, 1500, params, 'double', 300, 300);
+    setTimeout(sim_click, 1300, params, 'double', 300, 300);
     setTimeout(two_translate_zoom, 1700, params, 0, 0, 1);
-
 
   }
 
