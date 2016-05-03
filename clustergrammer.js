@@ -6665,22 +6665,38 @@ var Clustergrammer =
 	    var text = 'Reorder the matrix based on a single\nrow of column by double-clicking a\nlabel';
 	    demo_text(params, text, 4000);
 
-	    // setTimeout(fire_double_click_row, 1000, params, 'EGFR');
-	    setTimeout(sim_click, 900, params, 'double', 300, 300);
+	    var inst_element = get_row_element(params, 'EGFR');
+
+	    var group_trans = d3.select(inst_element).attr('transform');
+
+	    var container_trans = d3.select(params.root + ' .clust_container').attr('transform').split(',')[1].replace(')', '');
+
+	    var row_trans = group_trans.split(',')[1].replace(')', '');
+
+	    var x_trans = cgm.params.viz.norm_labels.width.row * 0.9;
+	    var y_trans = String(Number(row_trans) + Number(container_trans) + params.viz.rect_height / 2);
+
+	    setTimeout(fire_double_click_row, 1000, params, inst_element);
+	    setTimeout(sim_click, 900, params, 'double', x_trans, y_trans);
 	  }
 
 	  function get_duration() {
 	    return 4000;
 	  }
 
-	  function fire_double_click_row(params, inst_row) {
+	  function get_row_element(params, inst_row) {
 
-	    var tmp = d3.selectAll(params.root + ' .row_label_group').filter(function () {
+	    var inst_element = d3.selectAll(params.root + ' .row_label_group').filter(function () {
 	      var inst_data = this.__data__;
 	      return inst_data.name == inst_row;
 	    })[0][0];
 
-	    $(tmp).d3DblClick();
+	    return inst_element;
+	  }
+
+	  function fire_double_click_row(params, inst_element) {
+
+	    $(inst_element).d3DblClick();
 	  }
 
 	  return {
