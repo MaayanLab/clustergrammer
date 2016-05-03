@@ -117,7 +117,6 @@ function make_sim_mats(inst_rc, cat_colors, unblock){
     args.network_data = network_data;
     cgm = Clustergrammer(args);
     d3.select(cgm.params.root+' .wait_message').remove();
-    console.log('sim mats')
     unblock();
   });
 
@@ -125,7 +124,6 @@ function make_sim_mats(inst_rc, cat_colors, unblock){
 
 function unblock(){
   $.unblockUI();
-  console.log('unblock')
 }
 
 function resize_container(){
