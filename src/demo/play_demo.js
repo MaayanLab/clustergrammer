@@ -30,7 +30,7 @@ module.exports = function play_demo(){
   // inst_time = run_segment(params, inst_time, play_reorder_row);
   // inst_time = run_segment(params, inst_time, play_reorder_buttons);
   // inst_time = run_segment(params, inst_time, play_search);
-  // inst_time = run_segment(cgm, inst_time, play_filter);
+  inst_time = run_segment(cgm, inst_time, play_filter);
   inst_time = run_segment(params, inst_time, quick_cluster);
 
   // groups

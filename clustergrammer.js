@@ -6452,7 +6452,7 @@ var Clustergrammer =
 	  // inst_time = run_segment(params, inst_time, play_reorder_row);
 	  // inst_time = run_segment(params, inst_time, play_reorder_buttons);
 	  // inst_time = run_segment(params, inst_time, play_search);
-	  // inst_time = run_segment(cgm, inst_time, play_filter);
+	  inst_time = run_segment(cgm, inst_time, play_filter);
 	  inst_time = run_segment(params, inst_time, quick_cluster);
 
 	  // groups
@@ -9195,16 +9195,16 @@ var Clustergrammer =
 	    setTimeout(highlight_sidebar_element, 5000, params, 'slider_' + filter_type, 13000);
 
 	    text = 'Filter: Top 20 rows by sum';
-	    setTimeout(demo_text, 5000, params, text, 4000);
-	    setTimeout(run_update, 5000, cgm, filter_type, 20, 1);
+	    setTimeout(demo_text, 5000, params, text, 3500);
+	    setTimeout(run_update, 5300, cgm, filter_type, 20, 1);
 
 	    text = 'Filter: Top 10 rows by sum';
-	    setTimeout(demo_text, 10000, params, text, 4000);
-	    setTimeout(run_update, 10000, cgm, filter_type, 10, 2);
+	    setTimeout(demo_text, 10000, params, text, 3500);
+	    setTimeout(run_update, 10300, cgm, filter_type, 10, 2);
 
 	    text = 'Filter: All rows';
-	    setTimeout(demo_text, 15000, params, text, 4000);
-	    setTimeout(run_update, 15000, cgm, filter_type, 'all', 0);
+	    setTimeout(demo_text, 15000, params, text, 3500);
+	    setTimeout(run_update, 15300, cgm, filter_type, 'all', 0);
 	  }
 
 	  function get_duration() {
