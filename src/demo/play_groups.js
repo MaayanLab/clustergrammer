@@ -12,7 +12,6 @@ module.exports = function play_groups(){
     
     setTimeout(highlight_sidebar_element, 3000, params, 'slider_col', 7000);
 
-
     setTimeout(change_group_slider, 4000, params, 'row', 3);
 
     setTimeout(change_group_slider, 5000, params, 'row', 4);
@@ -28,7 +27,7 @@ module.exports = function play_groups(){
   }
 
   function get_duration(){
-    return 8000;
+    return 10000;
   }
 
   function change_group_slider(params, inst_rc, inst_value){

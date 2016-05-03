@@ -10,7 +10,8 @@ var play_reorder_buttons = require('./play_reorder_buttons');
 var play_search = require('./play_search'); 
 var play_filter = require('./play_filter');
 var quick_cluster = require('./quick_cluster');
-var play_groups = require('./play_groups'); 
+var play_groups = require('./play_groups');
+var play_categories = require('./play_categories'); 
 
 module.exports = function play_demo(){
 
@@ -24,19 +25,16 @@ module.exports = function play_demo(){
 
   make_demo_text_containers(params, demo_text_size);
 
-  // inst_time = run_segment(params, inst_time, play_intro);
-  // inst_time = run_segment(params, inst_time, play_zoom);
-  // inst_time = run_segment(params, inst_time, play_reset_zoom);
-  // inst_time = run_segment(params, inst_time, play_reorder_row);
-  // inst_time = run_segment(params, inst_time, play_reorder_buttons);
-  // inst_time = run_segment(params, inst_time, play_search);
+  inst_time = run_segment(params, inst_time, play_intro);
+  inst_time = run_segment(params, inst_time, play_zoom);
+  inst_time = run_segment(params, inst_time, play_reset_zoom);
+  inst_time = run_segment(params, inst_time, play_groups);
+  inst_time = run_segment(params, inst_time, play_categories);
+  inst_time = run_segment(params, inst_time, play_reorder_row);
+  inst_time = run_segment(params, inst_time, play_reorder_buttons);
+  inst_time = run_segment(params, inst_time, play_search);
   inst_time = run_segment(cgm, inst_time, play_filter);
   inst_time = run_segment(params, inst_time, quick_cluster);
-
-  // groups
-  inst_time = run_segment(params, inst_time, play_groups);
-
-  // categories 
 
   // conclusion 
 

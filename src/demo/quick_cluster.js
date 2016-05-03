@@ -10,7 +10,7 @@ module.exports = function quick_cluster(){
   }
 
   function get_duration(){
-    return 1000;
+    return 2000;
   }
 
   function click_reorder_button(params, inst_rc, inst_order){

@@ -30,7 +30,7 @@ module.exports = function play_filter(){
   }
 
   function get_duration(){
-    return 19000;
+    return 19500;
   }
 
   function run_update(cgm, filter_type, filter_value, filter_index ){

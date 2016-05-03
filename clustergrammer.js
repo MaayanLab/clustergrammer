@@ -6433,6 +6433,7 @@ var Clustergrammer =
 	var play_filter = __webpack_require__(153);
 	var quick_cluster = __webpack_require__(154);
 	var play_groups = __webpack_require__(155);
+	var play_categories = __webpack_require__(156);
 
 	module.exports = function play_demo() {
 
@@ -6446,19 +6447,16 @@ var Clustergrammer =
 
 	  make_demo_text_containers(params, demo_text_size);
 
-	  // inst_time = run_segment(params, inst_time, play_intro);
-	  // inst_time = run_segment(params, inst_time, play_zoom);
-	  // inst_time = run_segment(params, inst_time, play_reset_zoom);
-	  // inst_time = run_segment(params, inst_time, play_reorder_row);
-	  // inst_time = run_segment(params, inst_time, play_reorder_buttons);
-	  // inst_time = run_segment(params, inst_time, play_search);
+	  inst_time = run_segment(params, inst_time, play_intro);
+	  inst_time = run_segment(params, inst_time, play_zoom);
+	  inst_time = run_segment(params, inst_time, play_reset_zoom);
+	  inst_time = run_segment(params, inst_time, play_groups);
+	  inst_time = run_segment(params, inst_time, play_categories);
+	  inst_time = run_segment(params, inst_time, play_reorder_row);
+	  inst_time = run_segment(params, inst_time, play_reorder_buttons);
+	  inst_time = run_segment(params, inst_time, play_search);
 	  inst_time = run_segment(cgm, inst_time, play_filter);
 	  inst_time = run_segment(params, inst_time, quick_cluster);
-
-	  // groups
-	  inst_time = run_segment(params, inst_time, play_groups);
-
-	  // categories
 
 	  // conclusion
 		};
@@ -6692,7 +6690,7 @@ var Clustergrammer =
 	  }
 
 	  function get_duration() {
-	    return 9000;
+	    return 8000;
 	  }
 
 	  function get_row_element(params, inst_row) {
@@ -9208,7 +9206,7 @@ var Clustergrammer =
 	  }
 
 	  function get_duration() {
-	    return 19000;
+	    return 19500;
 	  }
 
 	  function run_update(cgm, filter_type, filter_value, filter_index) {
@@ -9255,7 +9253,7 @@ var Clustergrammer =
 	  }
 
 	  function get_duration() {
-	    return 1000;
+	    return 2000;
 	  }
 
 	  function click_reorder_button(params, inst_rc, inst_order) {
@@ -9306,7 +9304,7 @@ var Clustergrammer =
 	  }
 
 	  function get_duration() {
-	    return 8000;
+	    return 10000;
 	  }
 
 	  function change_group_slider(params, inst_rc, inst_value) {
@@ -9314,6 +9312,60 @@ var Clustergrammer =
 	    change_groups(params, inst_rc, inst_value);
 	  }
 
+	  return {
+	    run: run,
+	    get_duration: get_duration
+	  };
+		};
+
+/***/ },
+/* 156 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var demo_text = __webpack_require__(108);
+	var sim_click = __webpack_require__(111);
+
+	module.exports = function play_category() {
+	  /* eslint-disable */
+
+	  function run(params) {
+
+	    var text = 'Rows and columns can have\ncategorical data that \ncan be used to reorder ';
+	    demo_text(params, text, 7000);
+
+	    var inst_element = d3.selectAll(params.root + ' .col_cat_super').filter(function () {
+	      return this.__data__ === 'cat-1';
+	    })[0];
+
+	    var tmp_pos = d3.select('.col_cat_super').attr('transform');
+	    var x_trans = Number(tmp_pos.split('(')[1].replace(',', '').replace(')', '')) + 10;
+	    var y_trans = tmp_pos.split(',')[1].replace(')', '');
+
+	    var wait_click = 4000;
+	    setTimeout(sim_click, wait_click, params, 'double', x_trans, y_trans);
+
+	    var wait_reorder = wait_click + 300;
+	    setTimeout(fire_double_click_row, wait_reorder, params, inst_element);
+	  }
+
+	  function get_duration() {
+	    return 8000;
+	  }
+
+	  function fire_double_click_row(params, inst_element) {
+	    $(inst_element).d3DblClick();
+	  }
+
+	  // allows doubleclicking on d3 element
+	  jQuery.fn.d3DblClick = function () {
+	    this.each(function (i, e) {
+	      var evt = document.createEvent("MouseEvents");
+	      evt.initMouseEvent("dblclick", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+	      e.dispatchEvent(evt);
+	    });
+	  };
 	  return {
 	    run: run,
 	    get_duration: get_duration
