@@ -28,13 +28,6 @@ module.exports = function play_search(params){
     return 7500;
   }
 
-  function click_reorder_button(params, inst_rc, inst_order){
-    var inst_button = d3.selectAll('.toggle_'+inst_rc+'_order .btn')
-      .filter(function(){return this.__data__ == 'rank'})[0];
-
-    $(inst_button).click();
-  }
-
   function type_out_search(params, inst_string){
     $(params.root+' .gene_search_box').val(inst_string);
     $(params.root+' .gene_search_box').autocomplete( "search", inst_string );
