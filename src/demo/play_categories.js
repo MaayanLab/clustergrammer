@@ -6,7 +6,7 @@ module.exports = function play_category(){
 
   function run(params){
 
-    var text = 'Rows and columns can have\ncategorical data that \ncan be used to reorder ';
+    var text = 'Rows and columns categories\ncan be use to reorder\nby double-clicking';
     demo_text(params, text, 7000);
 
     var inst_element = d3.selectAll(params.root+' .col_cat_super')

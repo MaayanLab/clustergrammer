@@ -6434,6 +6434,7 @@ var Clustergrammer =
 	var quick_cluster = __webpack_require__(154);
 	var play_groups = __webpack_require__(155);
 	var play_categories = __webpack_require__(156);
+	var play_conclusion = __webpack_require__(157);
 
 	module.exports = function play_demo() {
 
@@ -6447,16 +6448,17 @@ var Clustergrammer =
 
 	  make_demo_text_containers(params, demo_text_size);
 
-	  inst_time = run_segment(params, inst_time, play_intro);
-	  inst_time = run_segment(params, inst_time, play_zoom);
-	  inst_time = run_segment(params, inst_time, play_reset_zoom);
-	  inst_time = run_segment(params, inst_time, play_groups);
-	  inst_time = run_segment(params, inst_time, play_categories);
-	  inst_time = run_segment(params, inst_time, play_reorder_row);
-	  inst_time = run_segment(params, inst_time, play_reorder_buttons);
-	  inst_time = run_segment(params, inst_time, play_search);
-	  inst_time = run_segment(cgm, inst_time, play_filter);
-	  inst_time = run_segment(params, inst_time, quick_cluster);
+	  // inst_time = run_segment(params, inst_time, play_intro);
+	  // inst_time = run_segment(params, inst_time, play_zoom);
+	  // inst_time = run_segment(params, inst_time, play_reset_zoom);
+	  // inst_time = run_segment(params, inst_time, play_groups);
+	  // inst_time = run_segment(params, inst_time, play_categories);
+	  // inst_time = run_segment(params, inst_time, play_reorder_row);
+	  // inst_time = run_segment(params, inst_time, play_reorder_buttons);
+	  // inst_time = run_segment(params, inst_time, play_search);
+	  // inst_time = run_segment(cgm, inst_time, play_filter);
+	  // inst_time = run_segment(params, inst_time, quick_cluster);
+	  inst_time = run_segment(params, inst_time, play_conclusion);
 
 	  // conclusion
 		};
@@ -9332,7 +9334,7 @@ var Clustergrammer =
 
 	  function run(params) {
 
-	    var text = 'Rows and columns can have\ncategorical data that \ncan be used to reorder ';
+	    var text = 'Rows and columns categories\ncan be use to reorder\nby double-clicking';
 	    demo_text(params, text, 7000);
 
 	    var inst_element = d3.selectAll(params.root + ' .col_cat_super').filter(function () {
@@ -9366,6 +9368,36 @@ var Clustergrammer =
 	      e.dispatchEvent(evt);
 	    });
 	  };
+	  return {
+	    run: run,
+	    get_duration: get_duration
+	  };
+		};
+
+/***/ },
+/* 157 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var demo_text = __webpack_require__(108);
+
+	module.exports = function play_conclusion() {
+
+	  function run(params) {
+	    var text_1 = "Clustergrammer is built with gene\nexpression data in mind" + " and interfaces\nwith several Ma'ayan lab web tools";
+	    var text_2 = "The example data being visualized is\ngene expression data" + " obtained from the\nCancer Cell Line Encyclopedia";
+	    var text_3 = "For more information please view\nthe help documentation";
+
+	    setTimeout(demo_text, 0, params, text_1, 4500);
+	    setTimeout(demo_text, 4500, params, text_2, 4500);
+	    setTimeout(demo_text, 9000, params, text_3, 4500);
+	  }
+
+	  function get_duration() {
+	    return 12000;
+	  }
+
 	  return {
 	    run: run,
 	    get_duration: get_duration
