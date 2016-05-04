@@ -71,6 +71,7 @@ function make_clust(inst_network){
         // 'row_search_placeholder':'Gene',
         // 'buffer_width':10,
         // 'show_sim_mat':'col',
+        // 'clamp_opacity':0.85
       };
 
       function resize_container(){
