@@ -6436,26 +6436,35 @@ var Clustergrammer =
 	var play_groups = __webpack_require__(155);
 	var play_categories = __webpack_require__(156);
 	var play_conclusion = __webpack_require__(157);
+	var toggle_play_button = __webpack_require__(160);
 
 	module.exports = function play_demo() {
 
 	  var cgm = this;
 	  var params = cgm.params;
 
-	  // intro text
-	  var inst_time = 0;
+	  if (d3.select(params.root + ' .running_demo').empty()) {
 
-	  inst_time = run_segment(params, inst_time, play_intro);
-	  // inst_time = run_segment(params, inst_time, play_zoom);
-	  // inst_time = run_segment(params, inst_time, play_reset_zoom);
-	  // inst_time = run_segment(params, inst_time, play_groups);
-	  // inst_time = run_segment(params, inst_time, play_categories);
-	  // inst_time = run_segment(params, inst_time, play_reorder_row);
-	  // inst_time = run_segment(params, inst_time, play_reorder_buttons);
-	  // inst_time = run_segment(params, inst_time, play_search);
-	  // inst_time = run_segment(cgm, inst_time, play_filter);
-	  // inst_time = run_segment(params, inst_time, quick_cluster);
-	  // inst_time = run_segment(params, inst_time, play_conclusion);
+	    // prevent more than one demo from running at once
+	    d3.select(params.root + ' .play_button').classed('running_demo', true);
+
+	    toggle_play_button(params, false);
+
+	    // intro text
+	    var inst_time = 750;
+
+	    inst_time = run_segment(params, inst_time, play_intro);
+	    inst_time = run_segment(params, inst_time, play_zoom);
+	    inst_time = run_segment(params, inst_time, play_reset_zoom);
+	    inst_time = run_segment(params, inst_time, play_groups);
+	    inst_time = run_segment(params, inst_time, play_categories);
+	    inst_time = run_segment(params, inst_time, play_reorder_row);
+	    inst_time = run_segment(params, inst_time, play_reorder_buttons);
+	    inst_time = run_segment(params, inst_time, play_search);
+	    inst_time = run_segment(cgm, inst_time, play_filter);
+	    inst_time = run_segment(params, inst_time, quick_cluster);
+	    inst_time = run_segment(params, inst_time, play_conclusion);
+	  }
 		};
 
 /***/ },
@@ -9376,9 +9385,10 @@ var Clustergrammer =
 /* 157 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	var demo_text = __webpack_require__(108);
+	var toggle_play_button = __webpack_require__(160);
 
 	module.exports = function play_conclusion() {
 
@@ -9390,6 +9400,16 @@ var Clustergrammer =
 	    setTimeout(demo_text, 0, params, text_1, 4500);
 	    setTimeout(demo_text, 4500, params, text_2, 4500);
 	    setTimeout(demo_text, 9000, params, text_3, 4500);
+
+	    setTimeout(reset_demo, 14000, params);
+	  }
+
+	  function reset_demo(params) {
+
+	    // prevent more than one demo from running at once
+	    d3.select(params.root + ' .play_button').classed('running_demo', false);
+
+	    toggle_play_button(params, true);
 	  }
 
 	  function get_duration() {
@@ -9413,7 +9433,7 @@ var Clustergrammer =
 	  var params = cgm.params;
 
 	  if (d3.select(params.root + ' .play_button').empty()) {
-	    var play_button = d3.select(params.root + ' .viz_svg').append('g').classed('play_button', true);
+	    var play_button = d3.select(params.root + ' .viz_svg').append('g').classed('play_button', true).classed('running_demo', false);
 
 	    var trans_x = 400;
 	    var trans_y = 350;
@@ -9466,6 +9486,21 @@ var Clustergrammer =
 
 	  var demo_text_size = 38;
 	  make_demo_text_containers(params, demo_text_size);
+		};
+
+/***/ },
+/* 160 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = function toggle_play_button(params, show) {
+
+	  if (show === false) {
+	    d3.select(params.root + ' .play_button').transition().duration(500).style('opacity', 0);
+	  } else {
+	    d3.select(params.root + ' .play_button').transition().duration(500).style('opacity', 1);
+	  }
 		};
 
 /***/ }

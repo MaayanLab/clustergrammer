@@ -1,4 +1,5 @@
 var demo_text = require('./demo_text');
+var toggle_play_button = require('./toggle_play_button');
 
 module.exports = function play_conclusion(){
 
@@ -12,6 +13,17 @@ module.exports = function play_conclusion(){
     setTimeout( demo_text,    0, params, text_1, 4500 );
     setTimeout( demo_text, 4500, params, text_2, 4500 );
     setTimeout( demo_text, 9000, params, text_3, 4500 );
+
+    setTimeout( reset_demo, 14000, params);
+  }
+
+  function reset_demo(params){
+
+    // prevent more than one demo from running at once 
+    d3.select(params.root+' .play_button')
+      .classed('running_demo', false);
+
+    toggle_play_button(params, true);
   }
 
   function get_duration(){

@@ -5,7 +5,8 @@ module.exports = function make_play_button(cgm){
   if (d3.select(params.root+' .play_button').empty()){
     var play_button = d3.select(params.root+' .viz_svg')
       .append('g')
-      .classed('play_button', true);
+      .classed('play_button', true)
+      .classed('running_demo', false);
 
     var trans_x = 400;
     var trans_y = 350;

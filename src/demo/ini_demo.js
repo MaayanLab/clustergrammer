@@ -11,6 +11,4 @@ module.exports = function ini_demo(){
   var demo_text_size = 38;
   make_demo_text_containers(params, demo_text_size);
 
-  
-
 };
