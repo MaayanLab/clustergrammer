@@ -8,7 +8,7 @@ module.exports = function ini_demo(){
 
   make_play_button(cgm);
 
-  var demo_text_size = 38;
+  var demo_text_size = 30;
   make_demo_text_containers(params, demo_text_size);
 
 };

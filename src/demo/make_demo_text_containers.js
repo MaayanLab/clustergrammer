@@ -19,15 +19,17 @@ module.exports = function make_demo_text_containers(params, demo_text_size){
 
     demo_group
       .append('rect')
-      .attr('id','rect_1');
+      .classed('rect_1', true);
 
     demo_group
       .append('rect')
-      .attr('id','rect_2');
+      .classed('rect_2', true);
 
     demo_group
       .append('rect')
-      .attr('id','rect_3');
+      .classed('rect_3', true);
+
+    var shift_height = 1.3*demo_text_size;
 
     demo_group
       .append('text')
@@ -43,7 +45,7 @@ module.exports = function make_demo_text_containers(params, demo_text_size){
       .attr('font-weight',1000)
       .attr('font-family','"Helvetica Neue", Helvetica, Arial, sans-serif')
       .attr('transform', function(){
-        return 'translate(0,50)';
+        return 'translate(0,'+String(shift_height)+')';
       });
 
     demo_group
@@ -53,7 +55,7 @@ module.exports = function make_demo_text_containers(params, demo_text_size){
       .attr('font-weight',1000)
       .attr('font-family','"Helvetica Neue", Helvetica, Arial, sans-serif')
       .attr('transform', function(){
-        return 'translate(0,100)';
+        return 'translate(0,'+String(2*shift_height)+')';
       });
 
   }

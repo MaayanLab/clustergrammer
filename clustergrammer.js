@@ -6506,20 +6506,22 @@ var Clustergrammer =
 	      return 'translate(' + pos_x + ',' + pos_y + ')';
 	    });
 
-	    demo_group.append('rect').attr('id', 'rect_1');
+	    demo_group.append('rect').classed('rect_1', true);
 
-	    demo_group.append('rect').attr('id', 'rect_2');
+	    demo_group.append('rect').classed('rect_2', true);
 
-	    demo_group.append('rect').attr('id', 'rect_3');
+	    demo_group.append('rect').classed('rect_3', true);
+
+	    var shift_height = 1.3 * demo_text_size;
 
 	    demo_group.append('text').attr('id', 'text_1').attr('font-size', demo_text_size + 'px').attr('font-weight', 1000).attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif');
 
 	    demo_group.append('text').attr('id', 'text_2').attr('font-size', demo_text_size + 'px').attr('font-weight', 1000).attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('transform', function () {
-	      return 'translate(0,50)';
+	      return 'translate(0,' + String(shift_height) + ')';
 	    });
 
 	    demo_group.append('text').attr('id', 'text_3').attr('font-size', demo_text_size + 'px').attr('font-weight', 1000).attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('transform', function () {
-	      return 'translate(0,100)';
+	      return 'translate(0,' + String(2 * shift_height) + ')';
 	    });
 	  }
 		};
@@ -6602,9 +6604,12 @@ var Clustergrammer =
 	    var inst_text_obj = d3.select(params.root + ' .demo_group').select('#text_' + inst_text_num).text(split_text[i]);
 	    var bbox = inst_text_obj[0][0].getBBox();
 
-	    var box_opacity = 0.85;
+	    var box_opacity = 0.9;
 
-	    d3.select(params.root + ' .demo_group').select('#rect_' + inst_text_num).style('fill', 'white').attr('width', bbox.width + 20).attr('height', bbox.height).attr('x', -10).attr('y', bbox.y + i * 50).style('opacity', box_opacity);
+	    var tmp_fs = Number(d3.select('.demo_group').select('text').style('font-size').replace('px', ''));
+	    var shift_height = tmp_fs * 1.3;
+
+	    d3.select(params.root + ' .demo_group').select('.rect_' + inst_text_num).style('fill', 'white').attr('width', bbox.width + 20).attr('height', bbox.height).attr('x', -10).attr('y', bbox.y + i * shift_height).style('opacity', box_opacity);
 	  }
 		};
 
@@ -9506,7 +9511,7 @@ var Clustergrammer =
 
 	  make_play_button(cgm);
 
-	  var demo_text_size = 38;
+	  var demo_text_size = 30;
 	  make_demo_text_containers(params, demo_text_size);
 		};
 

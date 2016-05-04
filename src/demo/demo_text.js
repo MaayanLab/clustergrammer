@@ -24,15 +24,19 @@ module.exports = function demo_text(params, text, read_duration){
       .text(split_text[i]);
     var bbox = inst_text_obj[0][0].getBBox();
 
-    var box_opacity = 0.85;
+    var box_opacity = 0.9;
+
+    var tmp_fs = Number(d3.select('.demo_group').select('text').style('font-size')
+                    .replace('px',''));
+    var shift_height = tmp_fs * 1.3;
 
     d3.select(params.root+' .demo_group')
-      .select('#rect_'+inst_text_num)
+      .select('.rect_'+inst_text_num)
       .style('fill','white')
       .attr('width', bbox.width+20)
       .attr('height',bbox.height)
       .attr('x',-10)
-      .attr('y',bbox.y+i*50)
+      .attr('y',bbox.y+i * shift_height)
       .style('opacity',box_opacity);
   }
      
