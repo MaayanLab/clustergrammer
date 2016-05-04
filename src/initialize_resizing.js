@@ -40,7 +40,7 @@ module.exports = function(params) {
       .attr('font-family', 'FontAwesome')
       .attr('font-size', '30px')
       .text(function () {
-        if (params.viz.expand === false) {
+        if (params.viz.is_expand === false) {
           // expand button
           return '\uf0b2';
         } else {
@@ -61,14 +61,14 @@ module.exports = function(params) {
       .on('click', function () {
 
         // expand view
-        if (params.viz.expand === false) {
+        if (params.viz.is_expand === false) {
 
           d3.select(this)
             .text(function() {
               // menu button
               return '\uf0c9';
             });
-          params.viz.expand = true;
+          params.viz.is_expand = true;
 
           d3.selectAll(params.root+' .borders').style('fill', 'white');
           // d3.select(params.root+' .footer_section').style('display', 'none');
@@ -84,7 +84,7 @@ module.exports = function(params) {
               return '\uf0b2';
             });
 
-          params.viz.expand = false;
+          params.viz.is_expand = false;
 
           d3.selectAll(params.root+' .borders').style('fill', '#eee');
           // d3.select(params.root+' .footer_section').style('display', 'block');

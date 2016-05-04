@@ -16,7 +16,7 @@ module.exports = function calc_viz_dimensions(params){
 
   // get outer_margins
   var outer_margins;
-  if (params.viz.expand === false) {
+  if (params.viz.is_expand === false) {
     outer_margins = params.viz.outer_margins;
     cont_dim.width = container_width - params.sidebar_width - extra_space;
   } else {
@@ -33,7 +33,7 @@ module.exports = function calc_viz_dimensions(params){
 
   } else {
 
-    if (params.viz.expand){
+    if (params.viz.is_expand){
       cont_dim.width = params.viz.fixed_size.width;
     } else {
       cont_dim.width = params.viz.fixed_size.width - params.sidebar_width;

@@ -76,7 +76,7 @@ module.exports = function make_viz(params) {
 
   function border_colors() {
     var inst_color = params.viz.super_border_color;
-    if (params.viz.expand) {
+    if (params.viz.is_expand) {
       inst_color = 'white';
     }
     return inst_color;

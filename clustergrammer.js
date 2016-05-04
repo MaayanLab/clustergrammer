@@ -982,7 +982,7 @@ var Clustergrammer =
 
 	  // get outer_margins
 	  var outer_margins;
-	  if (params.viz.expand === false) {
+	  if (params.viz.is_expand === false) {
 	    outer_margins = params.viz.outer_margins;
 	    cont_dim.width = container_width - params.sidebar_width - extra_space;
 	  } else {
@@ -998,7 +998,7 @@ var Clustergrammer =
 	    cont_dim.height = container_height;
 	  } else {
 
-	    if (params.viz.expand) {
+	    if (params.viz.is_expand) {
 	      cont_dim.width = params.viz.fixed_size.width;
 	    } else {
 	      cont_dim.width = params.viz.fixed_size.width - params.sidebar_width;
@@ -1139,7 +1139,7 @@ var Clustergrammer =
 	  viz.background_color = config.background_color;
 	  viz.super_border_color = config.super_border_color;
 	  viz.outer_margins = config.outer_margins;
-	  viz.expand = config.ini_expand;
+	  viz.is_expand = config.ini_expand;
 	  viz.grey_border_width = config.grey_border_width;
 	  viz.show_dendrogram = config.show_dendrogram;
 	  viz.tile_click_hlight = config.tile_click_hlight;
@@ -2362,7 +2362,7 @@ var Clustergrammer =
 
 	  function border_colors() {
 	    var inst_color = params.viz.super_border_color;
-	    if (params.viz.expand) {
+	    if (params.viz.is_expand) {
 	      inst_color = 'white';
 	    }
 	    return inst_color;
@@ -5030,7 +5030,7 @@ var Clustergrammer =
 	    }
 
 	    exp_button.attr('text-anchor', 'middle').attr('dominant-baseline', 'central').attr('font-family', 'FontAwesome').attr('font-size', '30px').text(function () {
-	      if (params.viz.expand === false) {
+	      if (params.viz.is_expand === false) {
 	        // expand button
 	        return '';
 	      } else {
@@ -5044,13 +5044,13 @@ var Clustergrammer =
 	    }).on('click', function () {
 
 	      // expand view
-	      if (params.viz.expand === false) {
+	      if (params.viz.is_expand === false) {
 
 	        d3.select(this).text(function () {
 	          // menu button
 	          return '';
 	        });
-	        params.viz.expand = true;
+	        params.viz.is_expand = true;
 
 	        d3.selectAll(params.root + ' .borders').style('fill', 'white');
 	        // d3.select(params.root+' .footer_section').style('display', 'none');
@@ -5064,7 +5064,7 @@ var Clustergrammer =
 	            return '';
 	          });
 
-	          params.viz.expand = false;
+	          params.viz.is_expand = false;
 
 	          d3.selectAll(params.root + ' .borders').style('fill', '#eee');
 	          // d3.select(params.root+' .footer_section').style('display', 'block');
