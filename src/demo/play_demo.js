@@ -30,9 +30,9 @@ module.exports = function play_demo(){
     // intro text 
     var inst_time = 750;
 
-    inst_time = run_segment(params, inst_time, play_intro);
-    inst_time = run_segment(params, inst_time, play_zoom);
-    inst_time = run_segment(params, inst_time, play_reset_zoom);
+    // inst_time = run_segment(params, inst_time, play_intro);
+    // inst_time = run_segment(params, inst_time, play_zoom);
+    // inst_time = run_segment(params, inst_time, play_reset_zoom);
     inst_time = run_segment(params, inst_time, play_groups);
     inst_time = run_segment(params, inst_time, play_categories);
     inst_time = run_segment(params, inst_time, play_reorder_row);

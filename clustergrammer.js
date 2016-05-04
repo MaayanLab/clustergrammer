@@ -6453,9 +6453,9 @@ var Clustergrammer =
 	    // intro text
 	    var inst_time = 750;
 
-	    inst_time = run_segment(params, inst_time, play_intro);
-	    inst_time = run_segment(params, inst_time, play_zoom);
-	    inst_time = run_segment(params, inst_time, play_reset_zoom);
+	    // inst_time = run_segment(params, inst_time, play_intro);
+	    // inst_time = run_segment(params, inst_time, play_zoom);
+	    // inst_time = run_segment(params, inst_time, play_reset_zoom);
 	    inst_time = run_segment(params, inst_time, play_groups);
 	    inst_time = run_segment(params, inst_time, play_categories);
 	    inst_time = run_segment(params, inst_time, play_reorder_row);
@@ -9294,7 +9294,7 @@ var Clustergrammer =
 
 	  function run(params) {
 
-	    var text = 'Identify row and column\ngroups of varying sizes\nusing the sliders';
+	    var text = 'Identify row and column groups\nof varying sizes using ' + ' the\nsliders and dendrogram';
 	    demo_text(params, text, 4000);
 
 	    setTimeout(highlight_sidebar_element, 3000, params, 'slider_col', 7000);
