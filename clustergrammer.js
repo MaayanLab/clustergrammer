@@ -6450,12 +6450,26 @@ var Clustergrammer =
 
 	    toggle_play_button(params, false);
 
+	    // prevent user interaction while playing
+	    $.blockUI({ css: {
+	        border: 'none',
+	        padding: '15px',
+	        backgroundColor: '#000',
+	        '-webkit-border-radius': '10px',
+	        '-moz-border-radius': '10px',
+	        opacity: 0,
+	        color: '#fff',
+	        cursor: 'default'
+	      } });
+
+	    d3.selectAll('.blockUI').style('opacity', 0);
+
 	    // intro text
 	    var inst_time = 750;
 
-	    // inst_time = run_segment(params, inst_time, play_intro);
-	    // inst_time = run_segment(params, inst_time, play_zoom);
-	    // inst_time = run_segment(params, inst_time, play_reset_zoom);
+	    inst_time = run_segment(params, inst_time, play_intro);
+	    inst_time = run_segment(params, inst_time, play_zoom);
+	    inst_time = run_segment(params, inst_time, play_reset_zoom);
 	    inst_time = run_segment(params, inst_time, play_groups);
 	    inst_time = run_segment(params, inst_time, play_categories);
 	    inst_time = run_segment(params, inst_time, play_reorder_row);
@@ -9295,25 +9309,20 @@ var Clustergrammer =
 	  function run(params) {
 
 	    var text = 'Identify row and column groups\nof varying sizes using ' + ' the\nsliders and dendrogram';
-	    demo_text(params, text, 4000);
+	    demo_text(params, text, 10000);
 
 	    setTimeout(highlight_sidebar_element, 3000, params, 'slider_col', 7000);
 
 	    setTimeout(change_group_slider, 4000, params, 'row', 3);
-
 	    setTimeout(change_group_slider, 5000, params, 'row', 4);
-
 	    setTimeout(change_group_slider, 6000, params, 'row', 5);
-
 	    setTimeout(change_group_slider, 7000, params, 'row', 6);
-
 	    setTimeout(change_group_slider, 8000, params, 'row', 7);
-
 	    setTimeout(change_group_slider, 9000, params, 'row', 5);
 	  }
 
 	  function get_duration() {
-	    return 10000;
+	    return 11000;
 	  }
 
 	  function change_group_slider(params, inst_rc, inst_value) {
@@ -9500,6 +9509,8 @@ var Clustergrammer =
 	    d3.select(params.root + ' .play_button').transition().duration(500).style('opacity', 0);
 	  } else {
 	    d3.select(params.root + ' .play_button').transition().duration(500).style('opacity', 1);
+
+	    $.unblockUI();
 	  }
 		};
 

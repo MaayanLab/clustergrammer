@@ -27,12 +27,26 @@ module.exports = function play_demo(){
 
     toggle_play_button(params, false);
 
+    // prevent user interaction while playing 
+    $.blockUI({ css: { 
+        border: 'none', 
+        padding: '15px', 
+        backgroundColor: '#000', 
+        '-webkit-border-radius': '10px', 
+        '-moz-border-radius': '10px', 
+        opacity: 0, 
+        color: '#fff',
+        cursor:'default'
+    } });
+
+    d3.selectAll('.blockUI').style('opacity',0);    
+
     // intro text 
     var inst_time = 750;
 
-    // inst_time = run_segment(params, inst_time, play_intro);
-    // inst_time = run_segment(params, inst_time, play_zoom);
-    // inst_time = run_segment(params, inst_time, play_reset_zoom);
+    inst_time = run_segment(params, inst_time, play_intro);
+    inst_time = run_segment(params, inst_time, play_zoom);
+    inst_time = run_segment(params, inst_time, play_reset_zoom);
     inst_time = run_segment(params, inst_time, play_groups);
     inst_time = run_segment(params, inst_time, play_categories);
     inst_time = run_segment(params, inst_time, play_reorder_row);
