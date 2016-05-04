@@ -6424,6 +6424,7 @@ var Clustergrammer =
 
 	var make_demo_text_containers = __webpack_require__(105);
 	var run_segment = __webpack_require__(106);
+	var make_play_button = __webpack_require__(158);
 	var play_intro = __webpack_require__(107);
 	var play_zoom = __webpack_require__(109);
 	var play_reset_zoom = __webpack_require__(110);
@@ -6446,9 +6447,11 @@ var Clustergrammer =
 	  var prev_duration = 0;
 	  var demo_text_size = 38;
 
+	  make_play_button(params);
+
 	  make_demo_text_containers(params, demo_text_size);
 
-	  // inst_time = run_segment(params, inst_time, play_intro);
+	  inst_time = run_segment(params, inst_time, play_intro);
 	  // inst_time = run_segment(params, inst_time, play_zoom);
 	  // inst_time = run_segment(params, inst_time, play_reset_zoom);
 	  // inst_time = run_segment(params, inst_time, play_groups);
@@ -6458,9 +6461,7 @@ var Clustergrammer =
 	  // inst_time = run_segment(params, inst_time, play_search);
 	  // inst_time = run_segment(cgm, inst_time, play_filter);
 	  // inst_time = run_segment(params, inst_time, quick_cluster);
-	  inst_time = run_segment(params, inst_time, play_conclusion);
-
-	  // conclusion
+	  // inst_time = run_segment(params, inst_time, play_conclusion);
 		};
 
 /***/ },
@@ -6471,28 +6472,32 @@ var Clustergrammer =
 
 	module.exports = function make_demo_text_containers(params, demo_text_size) {
 
-	  // demo text container
-	  var demo_group = d3.select(params.root + ' .viz_svg').append('g').classed('demo_group', true).attr('transform', function () {
-	    var pos_x = 200;
-	    var pos_y = 200;
-	    return 'translate(' + pos_x + ',' + pos_y + ')';
-	  });
+	  if (d3.select(params.root + ' .demo_group').empty()) {
 
-	  demo_group.append('rect').attr('id', 'rect_1');
+	    console.log('making container');
+	    // demo text container
+	    var demo_group = d3.select(params.root + ' .viz_svg').append('g').classed('demo_group', true).attr('transform', function () {
+	      var pos_x = 200;
+	      var pos_y = 200;
+	      return 'translate(' + pos_x + ',' + pos_y + ')';
+	    });
 
-	  demo_group.append('rect').attr('id', 'rect_2');
+	    demo_group.append('rect').attr('id', 'rect_1');
 
-	  demo_group.append('rect').attr('id', 'rect_3');
+	    demo_group.append('rect').attr('id', 'rect_2');
 
-	  demo_group.append('text').attr('id', 'text_1').attr('font-size', demo_text_size + 'px').attr('font-weight', 1000).attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif');
+	    demo_group.append('rect').attr('id', 'rect_3');
 
-	  demo_group.append('text').attr('id', 'text_2').attr('font-size', demo_text_size + 'px').attr('font-weight', 1000).attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('transform', function () {
-	    return 'translate(0,50)';
-	  });
+	    demo_group.append('text').attr('id', 'text_1').attr('font-size', demo_text_size + 'px').attr('font-weight', 1000).attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif');
 
-	  demo_group.append('text').attr('id', 'text_3').attr('font-size', demo_text_size + 'px').attr('font-weight', 1000).attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('transform', function () {
-	    return 'translate(0,100)';
-	  });
+	    demo_group.append('text').attr('id', 'text_2').attr('font-size', demo_text_size + 'px').attr('font-weight', 1000).attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('transform', function () {
+	      return 'translate(0,50)';
+	    });
+
+	    demo_group.append('text').attr('id', 'text_3').attr('font-size', demo_text_size + 'px').attr('font-weight', 1000).attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('transform', function () {
+	      return 'translate(0,100)';
+	    });
+	  }
 		};
 
 /***/ },
@@ -9402,6 +9407,26 @@ var Clustergrammer =
 	    run: run,
 	    get_duration: get_duration
 	  };
+		};
+
+/***/ },
+/* 158 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = function make_play_button(params) {
+
+	  if (d3.select(params.root + ' .play_button').empty()) {
+	    console.log('make play button');
+	    var play_button = d3.select(params.root + ' .viz_svg').append('g').classed('play_button', true);
+
+	    var trans_x = 100;
+	    var trans_y = 100;
+	    play_button.attr('transform', function () {
+	      return 'translate(' + trans_x + ',' + trans_y + ')';
+	    });
+	  }
 		};
 
 /***/ }
