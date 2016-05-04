@@ -139,12 +139,6 @@ var Clustergrammer =
 	  // Mixin defaults with user-defined arguments.
 	  var config = utils.extend(defaults, args);
 
-	  if (config.ini_expand) {
-	    config.expand_button = false;
-	  } else {
-	    config.expand_button = true;
-	  }
-
 	  config.network_data = args.network_data;
 
 	  var super_string = ': ';
@@ -610,7 +604,8 @@ var Clustergrammer =
 	    show_sim_mat: false,
 	    cat_colors: null,
 	    resize: true,
-	    clamp_opacity: 0.85
+	    clamp_opacity: 0.85,
+	    expand_button: true
 	  };
 
 	  return defaults;
@@ -5018,71 +5013,71 @@ var Clustergrammer =
 	  //   });
 	  // }
 
-	  if (params.viz.expand_button) {
+	  // if (params.viz.expand_button) {
 
-	    d3.select(params.root + ' .expand_button').on('click', null);
-	    var expand_opacity = 0.4;
+	  d3.select(params.root + ' .expand_button').on('click', null);
+	  var expand_opacity = 0.4;
 
-	    if (d3.select(params.root + ' .expand_button').empty()) {
-	      exp_button = d3.select(params.viz.viz_svg).append('text').attr('class', 'expand_button');
+	  if (d3.select(params.root + ' .expand_button').empty()) {
+	    exp_button = d3.select(params.viz.viz_svg).append('text').attr('class', 'expand_button');
+	  } else {
+	    exp_button = d3.select(params.root + ' .expand_button');
+	  }
+
+	  exp_button.attr('text-anchor', 'middle').attr('dominant-baseline', 'central').attr('font-family', 'FontAwesome').attr('font-size', '30px').text(function () {
+	    if (params.viz.is_expand === false) {
+	      // expand button
+	      return '';
 	    } else {
-	      exp_button = d3.select(params.root + ' .expand_button');
+	      // menu button
+	      return '';
 	    }
+	  }).attr('y', '25px').attr('x', '25px').style('cursor', 'pointer').style('opacity', expand_opacity).on('mouseover', function () {
+	    d3.select(this).style('opacity', 0.75);
+	  }).on('mouseout', function () {
+	    d3.select(this).style('opacity', expand_opacity);
+	  }).on('click', function () {
 
-	    exp_button.attr('text-anchor', 'middle').attr('dominant-baseline', 'central').attr('font-family', 'FontAwesome').attr('font-size', '30px').text(function () {
-	      if (params.viz.is_expand === false) {
-	        // expand button
-	        return '';
-	      } else {
+	    // expand view
+	    if (params.viz.is_expand === false) {
+
+	      d3.select(this).text(function () {
 	        // menu button
 	        return '';
-	      }
-	    }).attr('y', '25px').attr('x', '25px').style('cursor', 'pointer').style('opacity', expand_opacity).on('mouseover', function () {
-	      d3.select(this).style('opacity', 0.75);
-	    }).on('mouseout', function () {
-	      d3.select(this).style('opacity', expand_opacity);
-	    }).on('click', function () {
+	      });
+	      params.viz.is_expand = true;
 
-	      // expand view
-	      if (params.viz.is_expand === false) {
+	      d3.selectAll(params.root + ' .borders').style('fill', 'white');
+	      // d3.select(params.root+' .footer_section').style('display', 'none');
+	      d3.select(params.root + ' .sidebar_wrapper').style('display', 'none');
+
+	      // contract view
+	    } else {
 
 	        d3.select(this).text(function () {
-	          // menu button
-	          return '';
+	          // expand button
+	          return '';
 	        });
-	        params.viz.is_expand = true;
 
-	        d3.selectAll(params.root + ' .borders').style('fill', 'white');
-	        // d3.select(params.root+' .footer_section').style('display', 'none');
-	        d3.select(params.root + ' .sidebar_wrapper').style('display', 'none');
+	        params.viz.is_expand = false;
 
-	        // contract view
-	      } else {
-
-	          d3.select(this).text(function () {
-	            // expand button
-	            return '';
-	          });
-
-	          params.viz.is_expand = false;
-
-	          d3.selectAll(params.root + ' .borders').style('fill', '#eee');
-	          // d3.select(params.root+' .footer_section').style('display', 'block');
-	          d3.select(params.root + ' .viz_wrapper').style('width', '100px');
-	          d3.select(params.root + ' .sidebar_wrapper').style('display', 'block');
-	        }
-
-	      // // resize parent div
-	      // set_viz_wrapper_size(params);
-
-	      d3.select(params.viz.viz_svg).style('opacity', 0.5);
-	      var wait_time = 500;
-	      if (params.viz.run_trans == true) {
-	        wait_time = 2500;
+	        d3.selectAll(params.root + ' .borders').style('fill', '#eee');
+	        // d3.select(params.root+' .footer_section').style('display', 'block');
+	        d3.select(params.root + ' .viz_wrapper').style('width', '100px');
+	        d3.select(params.root + ' .sidebar_wrapper').style('display', 'block');
 	      }
-	      setTimeout(resize_viz, wait_time, params);
-	    });
-	  }
+
+	    // // resize parent div
+	    // set_viz_wrapper_size(params);
+
+	    d3.select(params.viz.viz_svg).style('opacity', 0.5);
+	    var wait_time = 500;
+	    if (params.viz.run_trans == true) {
+	      wait_time = 2500;
+	    }
+	    setTimeout(resize_viz, wait_time, params);
+	  });
+	  // }
 		};
 
 /***/ },
@@ -6780,6 +6775,12 @@ var Clustergrammer =
 	  var params = cgm.params;
 
 	  var sidebar = d3.select(params.root + ' .sidebar_wrapper');
+
+	  // console.log('is_expand ',params.viz.is_expand)
+
+	  if (params.viz.is_expand) {
+	    sidebar.style('display', 'none');
+	  }
 
 	  sidebar.append('div').classed('title_section', true);
 

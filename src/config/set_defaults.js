@@ -45,7 +45,8 @@ module.exports = function set_defaults(){
     show_sim_mat:false,
     cat_colors:null,
     resize:true,
-    clamp_opacity:0.85
+    clamp_opacity:0.85,
+    expand_button:true
   };
 
   return defaults;

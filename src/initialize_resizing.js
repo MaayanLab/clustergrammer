@@ -21,7 +21,7 @@ module.exports = function(params) {
   //   });
   // }
 
-  if (params.viz.expand_button) {
+  // if (params.viz.expand_button) {
 
     d3.select(params.root + ' .expand_button').on('click', null);
     var expand_opacity = 0.4;
@@ -103,5 +103,5 @@ module.exports = function(params) {
         }
         setTimeout(resize_viz, wait_time, params);
       });
-  }
+  // }
 };

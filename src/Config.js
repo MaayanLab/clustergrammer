@@ -12,12 +12,6 @@ module.exports = function make_config(args) {
 
   // Mixin defaults with user-defined arguments.
   var config = utils.extend(defaults, args);
-
-  if (config.ini_expand){
-    config.expand_button = false;
-  } else {
-    config.expand_button = true;
-  }
  
   config.network_data = args.network_data;
 

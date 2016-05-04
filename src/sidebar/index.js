@@ -15,6 +15,13 @@ module.exports = function sidebar(cgm) {
 
   var sidebar = d3.select(params.root+' .sidebar_wrapper');
 
+  // console.log('is_expand ',params.viz.is_expand)
+
+  if (params.viz.is_expand){
+    sidebar
+      .style('display','none');
+  }
+
   sidebar
     .append('div')
     .classed('title_section',true);
