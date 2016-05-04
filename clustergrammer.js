@@ -52,6 +52,7 @@ var Clustergrammer =
 	var make_viz = __webpack_require__(43);
 	var resize_viz = __webpack_require__(80);
 	var play_demo = __webpack_require__(104);
+	var ini_demo = __webpack_require__(159);
 	var update_network = __webpack_require__(120);
 
 	/* clustergrammer 1.0
@@ -110,6 +111,7 @@ var Clustergrammer =
 	  cgm.update_view = external_update_view;
 	  cgm.resize_viz = external_resize;
 	  cgm.play_demo = play_demo;
+	  cgm.ini_demo = ini_demo;
 
 	  return cgm;
 	}
@@ -6422,9 +6424,7 @@ var Clustergrammer =
 
 	/* eslint-disable */
 
-	var make_demo_text_containers = __webpack_require__(105);
 	var run_segment = __webpack_require__(106);
-	var make_play_button = __webpack_require__(158);
 	var play_intro = __webpack_require__(107);
 	var play_zoom = __webpack_require__(109);
 	var play_reset_zoom = __webpack_require__(110);
@@ -6444,12 +6444,6 @@ var Clustergrammer =
 
 	  // intro text
 	  var inst_time = 0;
-	  var prev_duration = 0;
-	  var demo_text_size = 38;
-
-	  make_play_button(params);
-
-	  make_demo_text_containers(params, demo_text_size);
 
 	  inst_time = run_segment(params, inst_time, play_intro);
 	  // inst_time = run_segment(params, inst_time, play_zoom);
@@ -6474,7 +6468,6 @@ var Clustergrammer =
 
 	  if (d3.select(params.root + ' .demo_group').empty()) {
 
-	    console.log('making container');
 	    // demo text container
 	    var demo_group = d3.select(params.root + ' .viz_svg').append('g').classed('demo_group', true).attr('transform', function () {
 	      var pos_x = 200;
@@ -9415,18 +9408,64 @@ var Clustergrammer =
 
 	'use strict';
 
-	module.exports = function make_play_button(params) {
+	module.exports = function make_play_button(cgm) {
+
+	  var params = cgm.params;
 
 	  if (d3.select(params.root + ' .play_button').empty()) {
-	    console.log('make play button');
 	    var play_button = d3.select(params.root + ' .viz_svg').append('g').classed('play_button', true);
 
-	    var trans_x = 100;
-	    var trans_y = 100;
+	    var trans_x = 400;
+	    var trans_y = 350;
+
 	    play_button.attr('transform', function () {
 	      return 'translate(' + trans_x + ',' + trans_y + ')';
 	    });
+
+	    play_button.append('circle').style('r', 45).style('fill', 'white').style('stroke', 'black').style('stroke-width', '3px').style('opacity', 0.5);
+
+	    play_button.append('path').attr('d', function () {
+
+	      var tri_w = 40;
+	      var tri_h = 22;
+	      var tri_offset = 15;
+
+	      return 'M-' + tri_offset + ',-' + tri_h + ' l ' + tri_w + ',' + tri_h + ' l -' + tri_w + ',' + tri_h + ' z ';
+	    }).style('fill', 'black').style('opacity', 0.5);
+
+	    // mouseover behavior
+	    play_button.on('mouseover', function () {
+	      d3.select(this).select('path').style('fill', 'red').style('opacity', 1);
+
+	      d3.select(this).select('circle').style('opacity', 1);
+	    }).on('mouseout', function () {
+	      d3.select(this).select('path').style('fill', 'black').style('opacity', 0.5);
+	      d3.select(this).select('circle').style('opacity', 0.5);
+	    }).on('click', function () {
+	      // running from anonymous function to keep this defined correctly
+	      cgm.play_demo();
+	    });
 	  }
+		};
+
+/***/ },
+/* 159 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var make_play_button = __webpack_require__(158);
+	var make_demo_text_containers = __webpack_require__(105);
+
+	module.exports = function ini_demo() {
+
+	  var cgm = this;
+	  var params = cgm.params;
+
+	  make_play_button(cgm);
+
+	  var demo_text_size = 38;
+	  make_demo_text_containers(params, demo_text_size);
 		};
 
 /***/ }

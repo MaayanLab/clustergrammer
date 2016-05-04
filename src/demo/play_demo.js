@@ -1,8 +1,6 @@
 /* eslint-disable */
 
-var make_demo_text_containers = require('./make_demo_text_containers');
 var run_segment = require('./run_segment');
-var make_play_button = require('./make_play_button');
 var play_intro = require('./play_intro');
 var play_zoom = require('./play_zoom');
 var play_reset_zoom = require('./play_reset_zoom');
@@ -22,12 +20,6 @@ module.exports = function play_demo(){
 
   // intro text 
   var inst_time = 0;
-  var prev_duration = 0;
-  var demo_text_size = 38;
-
-  make_play_button(params);
-
-  make_demo_text_containers(params, demo_text_size);
 
   inst_time = run_segment(params, inst_time, play_intro);
   // inst_time = run_segment(params, inst_time, play_zoom);

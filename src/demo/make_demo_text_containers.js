@@ -2,7 +2,6 @@ module.exports = function make_demo_text_containers(params, demo_text_size){
 
   if (d3.select(params.root+' .demo_group').empty()){
 
-    console.log('making container')
     // demo text container 
     var demo_group = d3.select(params.root+' .viz_svg')
       .append('g')

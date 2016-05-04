@@ -3,6 +3,7 @@ var make_params = require('./params/');
 var make_viz = require('./viz');
 var resize_viz = require('./reset_size/resize_viz');
 var play_demo = require('./demo/play_demo');
+var ini_demo = require('./demo/ini_demo');
 var update_network = require('./network/update_network');
 
 /* clustergrammer 1.0
@@ -61,6 +62,7 @@ function Clustergrammer(args) {
   cgm.update_view = external_update_view;
   cgm.resize_viz = external_resize;
   cgm.play_demo = play_demo;
+  cgm.ini_demo = ini_demo;
 
   return cgm;
 }
