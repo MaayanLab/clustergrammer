@@ -44,7 +44,8 @@ module.exports = function set_defaults(){
     buffer_width:10,
     show_sim_mat:false,
     cat_colors:null,
-    resize:true
+    resize:true,
+    clamp_opacity:0.85
   };
 
   return defaults;

@@ -608,7 +608,8 @@ var Clustergrammer =
 	    buffer_width: 10,
 	    show_sim_mat: false,
 	    cat_colors: null,
-	    resize: true
+	    resize: true,
+	    clamp_opacity: 0.85
 	  };
 
 	  return defaults;
@@ -1348,11 +1349,13 @@ var Clustergrammer =
 	    }).value;
 	  }
 
+	  var abs_max_val = Math.abs(matrix.max_link) * config.clamp_opacity;
+
 	  if (config.input_domain === 0) {
 	    if (matrix.opacity_function === 'linear') {
-	      matrix.opacity_scale = d3.scale.linear().domain([0, Math.abs(matrix.max_link)]).clamp(true).range([0.0, 1.0]);
+	      matrix.opacity_scale = d3.scale.linear().domain([0, abs_max_val]).clamp(true).range([0.0, 1.0]);
 	    } else if (matrix.opacity_function === 'log') {
-	      matrix.opacity_scale = d3.scale.log().domain([0.001, Math.abs(matrix.max_link)]).clamp(true).range([0.0, 1.0]);
+	      matrix.opacity_scale = d3.scale.log().domain([0.001, abs_max_val]).clamp(true).range([0.0, 1.0]);
 	    }
 	  } else {
 	    if (matrix.opacity_function === 'linear') {
