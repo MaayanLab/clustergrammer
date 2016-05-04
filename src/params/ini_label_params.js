@@ -23,7 +23,7 @@ module.exports = function set_label_params(config, network_data){
       return inst.name.length;
     }).name.length;
 
-  labels.max_allow_fs = 20;
+  labels.max_allow_fs = config.max_allow_fs;
 
   return labels;
 };
