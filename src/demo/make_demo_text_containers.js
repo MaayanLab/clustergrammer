@@ -2,13 +2,18 @@ module.exports = function make_demo_text_containers(params, demo_text_size){
 
   if (d3.select(params.root+' .demo_group').empty()){
 
+    var clust_transform = d3.select(params.root+' .clust_container')
+      .attr('transform');
+    var clust_x = Number(clust_transform.split('(')[1].split(',')[0]);
+    var clust_y = Number(clust_transform.split(',')[1].replace(')',''));
+
     // demo text container 
     var demo_group = d3.select(params.root+' .viz_svg')
       .append('g')
       .classed('demo_group', true)
       .attr('transform', function(){
-          var pos_x = 200;
-          var pos_y = 200;
+          var pos_x = clust_x+20;
+          var pos_y = clust_y+40;
           return 'translate('+pos_x+','+pos_y+')';
         });
 
