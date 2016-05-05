@@ -131,6 +131,7 @@ var Clustergrammer =
 	var get_filter_default_state = __webpack_require__(6);
 	var set_defaults = __webpack_require__(7);
 	var check_sim_mat = __webpack_require__(8);
+	var check_nodes_for_categories = __webpack_require__(162);
 
 	module.exports = function make_config(args) {
 
@@ -147,9 +148,13 @@ var Clustergrammer =
 	  // replace undersores with space in row/col names
 	  _.each(['row', 'col'], function (inst_rc) {
 
-	    config.network_data[inst_rc + '_nodes'].forEach(function (d) {
+	    var inst_nodes = config.network_data[inst_rc + '_nodes'];
 
-	      if (d.name.indexOf(super_string) > 0) {
+	    var has_cats = check_nodes_for_categories(inst_nodes);
+
+	    inst_nodes.forEach(function (d) {
+
+	      if (has_cats) {
 	        config.super_labels = true;
 	        config.super[inst_rc] = d.name.split(super_string)[0];
 	        d.name = d.name.split(super_string)[1];
@@ -188,9 +193,11 @@ var Clustergrammer =
 	      // proc row/col nodes names in views
 	      _.each(['row', 'col'], function (inst_rc) {
 
+	        var has_cats = check_nodes_for_categories(inst_nodes[inst_rc + '_nodes']);
+
 	        inst_nodes[inst_rc + '_nodes'].forEach(function (d) {
 
-	          if (d.name.indexOf(super_string) > 0) {
+	          if (has_cats) {
 	            d.name = d.name.split(super_string)[1];
 	          }
 
@@ -9651,6 +9658,26 @@ var Clustergrammer =
 	    run: run,
 	    get_duration: get_duration
 	  };
+		};
+
+/***/ },
+/* 162 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = function check_nodes_for_categories(nodes) {
+
+	  var super_string = ': ';
+	  var has_cat = true;
+
+	  _.each(nodes, function (inst_node) {
+	    if (inst_node.name.indexOf(super_string) < 0) {
+	      has_cat = false;
+	    }
+	  });
+
+	  return has_cat;
 		};
 
 /***/ }

@@ -5,6 +5,7 @@ var get_available_filters = require('./params/get_available_filters');
 var get_filter_default_state = require('./filters/get_filter_default_state');
 var set_defaults = require('./config/set_defaults');
 var check_sim_mat = require('./config/check_sim_mat');
+var check_nodes_for_categories = require('./config/check_nodes_for_categories');
 
 module.exports = function make_config(args) {
 
@@ -21,9 +22,13 @@ module.exports = function make_config(args) {
   // replace undersores with space in row/col names
   _.each(['row', 'col'], function(inst_rc){
 
-    config.network_data[inst_rc+'_nodes'].forEach(function(d){
+    var inst_nodes = config.network_data[inst_rc+'_nodes'];
 
-      if (d.name.indexOf(super_string) > 0){
+    var has_cats = check_nodes_for_categories(inst_nodes);
+
+    inst_nodes.forEach(function(d){
+
+      if (has_cats){
         config.super_labels = true;
         config.super[inst_rc] = d.name.split(super_string)[0];
         d.name = d.name.split(super_string)[1];
@@ -63,9 +68,11 @@ module.exports = function make_config(args) {
       // proc row/col nodes names in views 
       _.each(['row','col'], function(inst_rc){
 
+        var has_cats = check_nodes_for_categories(inst_nodes[inst_rc+'_nodes']);
+
         inst_nodes[inst_rc+'_nodes'].forEach(function(d){
 
-        if (d.name.indexOf(super_string) > 0){
+        if (has_cats){
           d.name = d.name.split(super_string)[1];
         }
 
