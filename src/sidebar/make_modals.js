@@ -9,12 +9,12 @@ module.exports = function ini_modals(params){
     .attr('target','_blank')
     .attr('href', '/clustergrammer/');
 
-  share_modal.header
-    .append('div')
-    .append('img')
-    .classed('clustergrammer_logo', true)
-    .attr('src', 'img/clustergrammer_logo.png')
-    .attr('alt', 'Clustergrammer');
+  // share_modal.header
+  //   .append('div')
+    // .append('img');
+    // .classed('clustergrammer_logo', true)
+    // .attr('src', 'img/clustergrammer_logo.png')
+    // .attr('alt', 'Clustergrammer');
 
   share_modal.header
     .append('h4')

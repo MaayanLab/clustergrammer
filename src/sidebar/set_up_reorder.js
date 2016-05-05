@@ -12,8 +12,8 @@ module.exports = function set_up_reorder(params, sidebar){
 
   var reorder_section = sidebar
     .append('div')
-    .classed('something',true)
-    .style('margin-left','7px');
+    .classed('reorder_section',true)
+    .style('margin-left','18px');
 
   var reorder_types;
   if (params.sim_mat){

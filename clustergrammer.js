@@ -8441,7 +8441,7 @@ var Clustergrammer =
 	  // var all_cats;
 	  // var inst_order_label;
 
-	  var reorder_section = sidebar.append('div').classed('something', true).style('margin-left', '7px');
+	  var reorder_section = sidebar.append('div').classed('reorder_section', true).style('margin-left', '18px');
 
 	  var reorder_types;
 	  if (params.sim_mat) {
@@ -9079,7 +9079,12 @@ var Clustergrammer =
 
 	  share_modal.header.append('a').attr('target', '_blank').attr('href', '/clustergrammer/');
 
-	  share_modal.header.append('div').append('img').classed('clustergrammer_logo', true).attr('src', 'img/clustergrammer_logo.png').attr('alt', 'Clustergrammer');
+	  // share_modal.header
+	  //   .append('div')
+	  // .append('img');
+	  // .classed('clustergrammer_logo', true)
+	  // .attr('src', 'img/clustergrammer_logo.png')
+	  // .attr('alt', 'Clustergrammer');
 
 	  share_modal.header.append('h4').classed('modal-title', true).html('Share the visualization using the current URL:');
 
