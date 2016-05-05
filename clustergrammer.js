@@ -6468,6 +6468,8 @@ var Clustergrammer =
 	    // intro text
 	    var inst_time = 750;
 
+	    inst_time = run_segment(params, inst_time, quick_cluster);
+
 	    // clustergram interaction
 	    ///////////////////////////////////
 	    inst_time = run_segment(params, inst_time, play_intro);

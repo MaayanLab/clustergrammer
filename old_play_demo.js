@@ -1,13 +1,28 @@
-function ini_play_button(cgm){
+function ini_play_button(cgm, demo_text_size){
 
 var inst_play = false;
 
 function play_demo(){
-  console.log(inst_play)
 
   if (inst_play === false){
 
-    console.log('here')
+    // prevent user interaction while playing 
+    $.blockUI({ css: { 
+        border: 'none', 
+        padding: '15px', 
+        backgroundColor: '#000', 
+        '-webkit-border-radius': '10px', 
+        '-moz-border-radius': '10px', 
+        opacity: 0, 
+        color: '#fff',
+        cursor:'default'
+    } });
+
+    // $(document.body).css({ 'cursor': 'default' })
+
+    // document.body.style.cursor = 'default';
+
+    d3.selectAll('.blockUI').style('opacity',0);
 
       inst_play = true;
       var sec_scale = 1000;
@@ -17,15 +32,33 @@ function play_demo(){
       var inst_time = 0;
       var prev_duration = 0;
 
+      if ($('#slider_filter').slider("option", "value") > 0){
+        inst_time = inst_time + prev_duration;
+        reset_filter();
 
+        // if (cgm.params.viz.expand === false){
+        console.log('expanding')
+        setTimeout(ini_maximize, 4000);
+        prev_duration = 3*sec_scale;
+        cgm.params.viz.expand = true;
+        // }
+      }
 
-      setTimeout( play_intro(), inst_time);
+      if (cgm.params.viz.expand === false){
+        inst_time = inst_time + prev_duration;
+        setTimeout(ini_maximize, inst_time);
+        prev_duration = 2*sec_scale
+      }
+
+      console.log('start intro: '+String(inst_time))
+      inst_time = inst_time + prev_duration;
+      setTimeout( play_intro, inst_time);
       prev_duration = 9*sec_scale;
 
       // zoom and pan: duration 4
-      var inst_time = inst_time + prev_duration;
+      inst_time = inst_time + prev_duration;
       setTimeout( play_zoom, inst_time);
-      var prev_duration = 4*sec_scale;
+      prev_duration = 4*sec_scale;
 
       // reset zoom: duration 4
       inst_time = inst_time + prev_duration;
@@ -82,10 +115,20 @@ function play_demo(){
 
   }
 
+  function reset_filter(){
+    var inst_filt = 0.0;
+    var change_view = {'filter_row_sum':inst_filt, 'num_meet':1};
+    setTimeout( update_view, 0, change_view);
+  }
+
+  function ini_maximize(){
+    click_expand_button();
+  }
+
   function play_intro(){
     var text = 'Clustergrammer allows users to generate\ninteractive and sharable visualizations\nby uploading a matrix';
     setTimeout( demo_text, 0, text, 5000 )
-    setTimeout( demo_text, 5000, "This demo will quickly overview\nClustergrammer's interactive features", 3500 )
+    setTimeout( demo_text, 5000, "This demo will quickly overview some\nof Clustergrammer's interactive features", 3500 )
 
     // duration 11000
   }
@@ -99,9 +142,10 @@ function play_demo(){
   function replay_demo(){
     setTimeout(demo_text, 0, "Clustergrammer is built with gene-\nexpression data in mind and interfaces\nwith several Ma'ayan lab web-tools\n", 5000);
     setTimeout(demo_text, 5000, "The example data being visualized is\ngene-expression data obtained from the\nCancer Cell Line Encyclopedia", 5000);
-    setTimeout(demo_text, 10000, "For more information please view\nthe help documents", 5000);
+    setTimeout(demo_text, 10000, "For more information please view\nthe help documentation", 5000);
     setTimeout(toggle_play_button, 16000, true);
     inst_play = false;
+    $.unblockUI();
   }
 
   function play_groups(){
@@ -110,7 +154,7 @@ function play_demo(){
 
     setTimeout(
       function(){
-        d3.select('.slider_col')
+        d3.select('#slider_col')
             .transition()
             .style('box-shadow','0px 0px 10px 5px #007f00')
             .transition().duration(1).delay(5500)
@@ -142,7 +186,7 @@ function play_demo(){
 
     demo_text('Search for rows using\nthe search box', 4000);
 
-    d3.select('.gene_search_container')
+    d3.select('#gene_search_container')
       .transition()
         .style('background','#007f00')
         .style('box-shadow','0px 0px 10px 5px #007f00')
@@ -174,7 +218,7 @@ function play_demo(){
   }
 
   function type_out_search(inst_string){
-    $('#gene_search_box').val(inst_string)
+    $('#gene_search_box').val(inst_string);
     $( "#gene_search_box" ).autocomplete( "search", inst_string );
   }
 
@@ -209,7 +253,7 @@ function play_demo(){
     sim_click('single',25,25);
 
     setTimeout( function(){      
-      $('.expand_button').d3Click()
+      $("#expand_button").d3Click()
     }, 500);
   }
 
@@ -218,13 +262,13 @@ function play_demo(){
     demo_text('Reorder the matrix based on a single\nrow or column by double-clicking a \n label', 6000)
 
     // select column to be reordered 
-    tmp = d3.selectAll('.row_label_group')
+    tmp = d3.selectAll('.row_label_text')
       .filter(function(d){
         return d.name == 'EGFR';
       });
 
     tmp
-      .attr('class','demo_col_click');
+      .attr('id','demo_col_click');
 
     setTimeout(delay_clicking_row, 3500);
     // duration 7000
@@ -255,14 +299,14 @@ function play_demo(){
   function initialize_play(){
     // get dimensions of the main_svg
     center = {};
-    center.pos_x = 1.2*cgm.params.viz.norm_labels.width.row + cgm.params.viz.clust.dim.width/2;
-    center.pos_y = 1.2*cgm.params.viz.norm_labels.width.col + cgm.params.viz.clust.dim.height/2;
+    center.pos_x = 100; // 1.2*cgm.params.norm_label.width.row + cgm.params.viz.clust.dim.width/2;
+    center.pos_y = 100; //1.2*cgm.params.norm_label.width.col + cgm.params.viz.clust.dim.height/2;
 
     // make play button
     //////////////////////////
-    var play_button = d3.select('.main_svg')
+    var play_button = d3.select('#main_svg')
       .append('g')
-      .attr('class','play_button');
+      .attr('id','play_button');
 
     play_button
       .attr('transform', function(){
@@ -293,7 +337,7 @@ function play_demo(){
       .style('opacity',0.5);
 
     // mouseover behavior
-    d3.select('.play_button')
+    d3.select('#play_button')
       .on('mouseover', function(){
         d3.select(this)
           .select('path')
@@ -318,9 +362,9 @@ function play_demo(){
 
     // play text group 
     ///////////////////////////
-    var demo_group = d3.select('.main_svg')
+    var demo_group = d3.select('#main_svg')
       .append('g')
-      .attr('class','demo_group')
+      .attr('id','demo_group')
       .attr('transform', function(){
           var pos_x = 100;
           var pos_y = 130 ;
@@ -329,27 +373,26 @@ function play_demo(){
       
     demo_group
       .append('rect')
-      .attr('class','rect_1');
+      .attr('id','rect_1');
 
     demo_group
       .append('rect')
-      .attr('class','rect_2');
+      .attr('id','rect_2');
 
     demo_group
       .append('rect')
-      .attr('class','rect_3');
+      .attr('id','rect_3');
 
-    var demo_text_size = 40;
     demo_group
       .append('text')
-      .attr('class','text_1')
+      .attr('id','text_1')
       .attr('font-size',demo_text_size+'px')
       .attr('font-weight',1000)
       .attr('font-family','"Helvetica Neue", Helvetica, Arial, sans-serif');
 
     demo_group
       .append('text')
-      .attr('class','text_2')
+      .attr('id','text_2')
       .attr('font-size',demo_text_size+'px')
       .attr('font-weight',1000)
       .attr('font-family','"Helvetica Neue", Helvetica, Arial, sans-serif')
@@ -359,7 +402,7 @@ function play_demo(){
 
     demo_group
       .append('text')
-      .attr('class','text_3')
+      .attr('id','text_3')
       .attr('font-size',demo_text_size+'px')
       .attr('font-weight',1000)
       .attr('font-family','"Helvetica Neue", Helvetica, Arial, sans-serif')
@@ -371,11 +414,11 @@ function play_demo(){
   function toggle_play_button(appear){
 
     if (appear === false){
-      d3.select('.play_button')
+      d3.select('#play_button')
         .transition().duration(500)
         .style('opacity',0);
     } else {
-      d3.select('.play_button')
+      d3.select('#play_button')
         .transition().duration(500)
         .style('opacity',1)
     }
@@ -412,7 +455,7 @@ function play_demo(){
     demo_text(reorder_text, 7000);
 
     setTimeout( function(){
-      d3.select('.toggle_col_order')
+      d3.select('#toggle_col_order')
           .transition()
           .style('background','#007f00')
           .style('box-shadow','0px 0px 10px 5px #007f00')
@@ -425,7 +468,7 @@ function play_demo(){
     setTimeout( click_reorder , 2000,  inst_order, 'row');
 
     setTimeout( function(){
-      d3.select('.toggle_row_order')
+      d3.select('#toggle_row_order')
           .transition()
           .style('background','#007f00')
           .style('box-shadow','0px 0px 10px 5px #007f00')
@@ -443,27 +486,27 @@ function play_demo(){
 
   function play_filter(){
 
-    var text = 'Filter the matrix at varying \nthresholds using the slider';
+    var text = 'Filter the matrix rows at varying \nthresholds using the slider';
 
     var ini_wait = 4500;
     demo_text(text, ini_wait);
 
-    d3.select('.slider_filter')
+    d3.select('#slider_filter')
         .transition()
         .style('box-shadow','0px 0px 10px 5px #007f00')
         .transition().duration(1).delay(12000)
         .style('box-shadow','0px 0px 0px 0px #FFFFFF');
 
-    var inst_filt = 0.3;
-    var change_view = {'filter':inst_filt, 'num_meet':1};
+    var inst_filt = 0.7;
+    var change_view = {'filter_row_sum':inst_filt, 'num_meet':1};
     setTimeout( update_view, ini_wait, change_view);
 
-    var inst_filt = 0.6;
-    var change_view = {'filter':inst_filt, 'num_meet':1};
+    var inst_filt = 0.8;
+    var change_view = {'filter_row_sum':inst_filt, 'num_meet':1};
     setTimeout( update_view, ini_wait+3000, change_view);
 
     var inst_filt = 0.0;
-    var change_view = {'filter':inst_filt, 'num_meet':1};
+    var change_view = {'filter_row_sum':inst_filt, 'num_meet':1};
     setTimeout( update_view, ini_wait+6000, change_view);
 
   }
@@ -471,7 +514,7 @@ function play_demo(){
   function sim_click(single_double, pos_x, pos_y){
     var click_duration = 200;
 
-    var click_circle = d3.select('.main_svg')
+    var click_circle = d3.select('#main_svg')
       .append('circle')
       .attr('cx',pos_x)
       .attr('cy',pos_y)
@@ -502,13 +545,13 @@ function play_demo(){
 
   function update_view(change_view){
 
-    var text = 'Filter threshold: '+ String(change_view.filter*100)+'%\n'
+    var text = 'Filter threshold: '+ String(change_view.filter_row_sum*100)+'%\n'
 
     // delay text slightly
     setTimeout( demo_text, 300, text, 1900 );
 
-    $("#slider_filter").slider( "value", change_view.filter);
-    d3.select('.filter_value').text('Filter: '+change_view.filter*100+'%');
+    $("#slider_filter").slider( "value", change_view.filter_row_sum*10);
+    d3.select('#filter_value').text('Filter Row: '+change_view.filter_row_sum*100+'%');
     cgm.update_network(change_view);
   }
 
@@ -526,7 +569,7 @@ function play_demo(){
       split_text.push('');
     }
 
-    d3.select('.demo_group')
+    d3.select('#demo_group')
       .style('opacity',0)
       .transition().duration(250)
       .style('opacity',1)
@@ -541,15 +584,15 @@ function play_demo(){
 
       // make text box 
       //////////////////
-      var inst_text_obj = d3.select('.demo_group')
-        .select('.text_'+inst_text_num)
+      var inst_text_obj = d3.select('#demo_group')
+        .select('#text_'+inst_text_num)
         .text(split_text[i]);
       var bbox = inst_text_obj[0][0].getBBox();
 
       var box_opacity = 0.85;
 
-      d3.select('.demo_group')
-        .select('.rect_'+inst_text_num)
+      d3.select('#demo_group')
+        .select('#rect_'+inst_text_num)
         .style('fill','white')
         .attr('width', bbox.width+20)
         .attr('height',bbox.height)
