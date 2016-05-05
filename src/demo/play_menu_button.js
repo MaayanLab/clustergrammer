@@ -36,7 +36,7 @@ module.exports = function play_menu_button(){
   }
 
   function get_duration(){
-    return 4000;
+    return 5000;
   }
 
   function click_menu_button(params){
@@ -58,7 +58,8 @@ module.exports = function play_menu_button(){
   jQuery.fn.d3Click = function () {
     this.each(function (i, e) {
       var evt = document.createEvent("MouseEvents");
-      evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+      evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, 
+        false, false, false, 0, null);
       e.dispatchEvent(evt);
     });
   };  
@@ -67,7 +68,8 @@ module.exports = function play_menu_button(){
   jQuery.fn.d3DblClick = function () {
     this.each(function (i, e) {
       var evt = document.createEvent("MouseEvents");
-      evt.initMouseEvent("dblclick", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+      evt.initMouseEvent("dblclick", true, true, window, 0, 0, 0, 0, 0, false,
+       false, false, false, 0, null);
       e.dispatchEvent(evt);
     });
   };

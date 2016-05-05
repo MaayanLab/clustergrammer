@@ -57,13 +57,13 @@ module.exports = function play_demo(){
     ///////////////////////////////////
     inst_time = run_segment(params, inst_time, play_menu_button);       
     // inst_time = run_segment(params, inst_time, play_groups);
-    // inst_time = run_segment(params, inst_time, play_reorder_buttons);
+    inst_time = run_segment(params, inst_time, play_reorder_buttons);
     // inst_time = run_segment(params, inst_time, play_search);
     // inst_time = run_segment(cgm, inst_time, play_filter);
 
     // // conclusion 
     // ///////////////////////////////////
-    // inst_time = run_segment(params, inst_time, quick_cluster);
+    inst_time = run_segment(params, inst_time, quick_cluster);
     // inst_time = run_segment(params, inst_time, play_conclusion);
 
   }
