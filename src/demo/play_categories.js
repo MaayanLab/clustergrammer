@@ -15,9 +15,9 @@ module.exports = function play_category(){
     })[0];
 
     var tmp_pos = d3.select('.col_cat_super').attr('transform');
-    var x_trans = Number(tmp_pos.split('(')[1].replace(',','')
-      .replace(')',''))+10;
-    var y_trans = tmp_pos.split(',')[1].replace(')','');
+    var x_trans = Number(tmp_pos.split('(')[1].split(',')[0]
+      .replace(')',''))+20;
+    var y_trans = Number(tmp_pos.split(',')[1].replace(')',''));
 
     var wait_click = 4000;
     setTimeout(sim_click, wait_click, params, 'double', x_trans, y_trans);

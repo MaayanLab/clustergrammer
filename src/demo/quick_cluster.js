@@ -20,7 +20,7 @@ module.exports = function quick_cluster(){
   }
 
   function get_duration(){
-    return 3000;
+    return 3500;
   }
 
   function click_menu_button(params){
