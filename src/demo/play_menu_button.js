@@ -27,17 +27,21 @@ module.exports = function play_menu_button(){
         .replace('px',''));
     var y_trans = Number(d3.select(params.root+' .expand_button').attr('y')
         .replace('px',''));
-    
+
     var wait_click = 3000;
+    var wait_real_click = 3400;
     setTimeout(sim_click, wait_click, params, 'single', x_trans, y_trans);
-    // var wait_reorder = wait_click + 300;
-    // setTimeout(fire_double_click_row, wait_reorder, params, inst_element);
+    setTimeout(click_menu_button, wait_real_click, params);
 
   }
 
   function get_duration(){
     return 4000;
   }
+
+  function click_menu_button(params){
+    $(params.root+' .expand_button').d3Click();
+  };
 
   function get_row_element(params, inst_row){
 
@@ -50,10 +54,14 @@ module.exports = function play_menu_button(){
     return inst_element;
   }
 
-  function fire_double_click_row(params, inst_element){
-
-    $(inst_element).d3DblClick();    
-  }
+  // allows doubleclicking on d3 element
+  jQuery.fn.d3Click = function () {
+    this.each(function (i, e) {
+      var evt = document.createEvent("MouseEvents");
+      evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+      e.dispatchEvent(evt);
+    });
+  };  
 
   // allows doubleclicking on d3 element
   jQuery.fn.d3DblClick = function () {
