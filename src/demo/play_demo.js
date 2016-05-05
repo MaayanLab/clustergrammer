@@ -47,24 +47,24 @@ module.exports = function play_demo(){
 
     // clustergram interaction 
     ///////////////////////////////////
-    // inst_time = run_segment(params, inst_time, play_intro);
-    // inst_time = run_segment(params, inst_time, play_zoom);
-    // inst_time = run_segment(params, inst_time, play_reset_zoom);
-    // inst_time = run_segment(params, inst_time, play_categories);
-    // inst_time = run_segment(params, inst_time, play_reorder_row);
+    inst_time = run_segment(params, inst_time, play_intro);
+    inst_time = run_segment(params, inst_time, play_zoom);
+    inst_time = run_segment(params, inst_time, play_reset_zoom);
+    inst_time = run_segment(params, inst_time, play_categories);
+    inst_time = run_segment(params, inst_time, play_reorder_row);
 
     // sidebar interaction 
     ///////////////////////////////////
     inst_time = run_segment(params, inst_time, play_menu_button);       
-    // inst_time = run_segment(params, inst_time, play_groups);
+    inst_time = run_segment(params, inst_time, play_groups);
     inst_time = run_segment(params, inst_time, play_reorder_buttons);
-    // inst_time = run_segment(params, inst_time, play_search);
-    // inst_time = run_segment(cgm, inst_time, play_filter);
+    inst_time = run_segment(params, inst_time, play_search);
+    inst_time = run_segment(cgm, inst_time, play_filter);
 
-    // // conclusion 
-    // ///////////////////////////////////
+    // conclusion 
+    ///////////////////////////////////
     inst_time = run_segment(params, inst_time, quick_cluster);
-    // inst_time = run_segment(params, inst_time, play_conclusion);
+    inst_time = run_segment(params, inst_time, play_conclusion);
 
   }
 

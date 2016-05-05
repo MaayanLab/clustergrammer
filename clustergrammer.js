@@ -6470,24 +6470,24 @@ var Clustergrammer =
 
 	    // clustergram interaction
 	    ///////////////////////////////////
-	    // inst_time = run_segment(params, inst_time, play_intro);
-	    // inst_time = run_segment(params, inst_time, play_zoom);
-	    // inst_time = run_segment(params, inst_time, play_reset_zoom);
-	    // inst_time = run_segment(params, inst_time, play_categories);
-	    // inst_time = run_segment(params, inst_time, play_reorder_row);
+	    inst_time = run_segment(params, inst_time, play_intro);
+	    inst_time = run_segment(params, inst_time, play_zoom);
+	    inst_time = run_segment(params, inst_time, play_reset_zoom);
+	    inst_time = run_segment(params, inst_time, play_categories);
+	    inst_time = run_segment(params, inst_time, play_reorder_row);
 
 	    // sidebar interaction
 	    ///////////////////////////////////
 	    inst_time = run_segment(params, inst_time, play_menu_button);
-	    // inst_time = run_segment(params, inst_time, play_groups);
+	    inst_time = run_segment(params, inst_time, play_groups);
 	    inst_time = run_segment(params, inst_time, play_reorder_buttons);
-	    // inst_time = run_segment(params, inst_time, play_search);
-	    // inst_time = run_segment(cgm, inst_time, play_filter);
+	    inst_time = run_segment(params, inst_time, play_search);
+	    inst_time = run_segment(cgm, inst_time, play_filter);
 
-	    // // conclusion
-	    // ///////////////////////////////////
+	    // conclusion
+	    ///////////////////////////////////
 	    inst_time = run_segment(params, inst_time, quick_cluster);
-	    // inst_time = run_segment(params, inst_time, play_conclusion);
+	    inst_time = run_segment(params, inst_time, play_conclusion);
 	  }
 		};
 
@@ -9241,15 +9241,15 @@ var Clustergrammer =
 	    setTimeout(highlight_sidebar_element, 5000, params, 'slider_' + filter_type, 13000);
 
 	    text = 'Filter: Top 20 rows by sum';
-	    setTimeout(demo_text, 5000, params, text, 3500);
+	    setTimeout(demo_text, 5000, params, text, 4000);
 	    setTimeout(run_update, 5300, cgm, filter_type, 20, 1);
 
 	    text = 'Filter: Top 10 rows by sum';
-	    setTimeout(demo_text, 10000, params, text, 3500);
+	    setTimeout(demo_text, 10000, params, text, 4000);
 	    setTimeout(run_update, 10300, cgm, filter_type, 10, 2);
 
 	    text = 'Filter: All rows';
-	    setTimeout(demo_text, 15000, params, text, 3500);
+	    setTimeout(demo_text, 15000, params, text, 4000);
 	    setTimeout(run_update, 15300, cgm, filter_type, 'all', 0);
 	  }
 
@@ -9309,7 +9309,7 @@ var Clustergrammer =
 	  }
 
 	  function get_duration() {
-	    return 2000;
+	    return 3000;
 	  }
 
 	  function click_menu_button(params) {
