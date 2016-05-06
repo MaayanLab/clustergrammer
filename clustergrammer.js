@@ -2723,15 +2723,45 @@ var Clustergrammer =
 	    return 'translate(' + x_pos + ',' + y_pos + ')';
 	  });
 
-	  // // experimental tile display toggling
-	  // .classed('hide_tile', function(){
-	  //   var inst_opacity = Number(d3.select(this).style('fill-opacity'));
-	  //   var inst_status = false;
-	  //   if (inst_opacity<0.5){
-	  //     var inst_status = true;
-	  //   }
-	  //   return inst_status;
-	  // });
+	  // // generate tiles in the current row
+	  // var tile = d3.select(row_selection)
+	  //   .selectAll('circle')
+	  //   .data(row_values, function(d){ return d.col_name; })
+	  //   .enter()
+	  //   .append('circle')
+	  //   .attr('cx', params.viz.rect_height/4)
+	  //   .attr('cy', params.viz.rect_height/4)
+	  //   .attr('r', params.viz.rect_height/4)
+	  //   // .attr('class', 'tile row_tile_highlight')
+	  //   // .attr('width', params.viz.rect_width/2)
+	  //   // .attr('height', params.viz.rect_height/2)
+	  //   // // switch the color based on up/dn value
+	  //   // .style('fill', function(d) {
+	  //   //   // return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
+	  //   //   return 'black';
+	  //   // })
+	  //   // .on('mouseover', function(...args) {
+	  //   //     mouseover_tile(params, this, tip, args);
+	  //   // })
+	  //   // .on('mouseout', function() {
+	  //   //   mouseout_tile(params, this, tip);
+	  //   // })
+	  //   .style('fill-opacity', function(d) {
+	  //     // calculate output opacity using the opacity scale
+	  //     var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
+	  //     if (output_opacity < 0.3){
+	  //       output_opacity = 0;
+	  //     } else {
+	  //       output_opacity = 0.75;
+	  //     }
+	  //     return output_opacity;
+	  //     // return 0.1;
+	  //   })
+	  //   .attr('transform', function(d) {
+	  //     var x_pos = params.viz.x_scale(d.pos_x) + 0.5*params.viz.border_width + params.viz.rect_width/4;
+	  //     var y_pos = 0.5*params.viz.border_width/params.viz.zoom_switch + params.viz.rect_height/4;
+	  //     return 'translate(' + x_pos + ','+y_pos+')';
+	  //   });
 
 	  if (params.matrix.tile_type == 'updn') {
 
