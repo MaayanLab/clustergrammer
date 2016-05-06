@@ -1,3 +1,24 @@
+var tmp_num;
+var cat_colors;
+function make_clust(make_sim_mats){
+  var clust_name = 'mult_view.json'
+
+  d3.json('json/'+clust_name, function(network_data){
+    var args = $.extend(true, {}, default_args);
+    args.root = '#container-id-1';
+    args.network_data = network_data;
+
+    cgm = Clustergrammer(args);
+    d3.select(cgm.params.root+' .wait_message').remove();
+    cat_colors = cgm.params.cat_colors;
+
+    make_sim_mats('col', cat_colors, unblock);
+    make_sim_mats('row', cat_colors, unblock);
+    
+    
+  });
+
+}
 
 // make wait sign 
 $.blockUI({ css: { 
@@ -72,27 +93,7 @@ window.onscroll = function() {
 
 }
 
-var tmp_num;
-var cat_colors;
-function make_clust(make_sim_mats){
-  var clust_name = 'mult_view.json'
 
-  d3.json('json/'+clust_name, function(network_data){
-    var args = $.extend(true, {}, default_args);
-    args.root = '#container-id-1';
-    args.network_data = network_data;
-
-    cgm = Clustergrammer(args);
-    d3.select(cgm.params.root+' .wait_message').remove();
-    cat_colors = cgm.params.cat_colors;
-
-    make_sim_mats('col', cat_colors, unblock);
-    make_sim_mats('row', cat_colors, unblock);
-    
-    
-  });
-
-}
 
 
 function make_sim_mats(inst_rc, cat_colors, unblock){

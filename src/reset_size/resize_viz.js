@@ -24,10 +24,14 @@ var make_col_dendro_triangles = require('../dendrogram/make_col_dendro_triangles
 var toggle_dendro_view = require('../dendrogram/toggle_dendro_view');
 var show_visible_area = require('../zoom/show_visible_area');
 var calc_viz_dimensions = require('../params/calc_viz_dimensions');
+var position_play_button = require('../demo/position_play_button');
 
 module.exports = function(params) {
 
   var cont_dim = calc_viz_dimensions(params); 
+
+  d3.select(params.root+' .play_button');
+    // .style('opacity', 0.2);
 
   // reset visible area 
   var zoom_info = {};
@@ -88,6 +92,7 @@ module.exports = function(params) {
     .attr('width', params.viz.clust.dim.width)
     .attr('height', params.viz.clust.dim.height);
 
+  setTimeout(position_play_button, 100, params);
 
   var row_nodes = params.network_data.row_nodes;
   var row_nodes_names = _.pluck(row_nodes, 'name');

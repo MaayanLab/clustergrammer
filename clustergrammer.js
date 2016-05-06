@@ -48,12 +48,12 @@ var Clustergrammer =
 	'use strict';
 
 	var make_config = __webpack_require__(1);
-	var make_params = __webpack_require__(9);
-	var make_viz = __webpack_require__(43);
-	var resize_viz = __webpack_require__(80);
-	var play_demo = __webpack_require__(104);
-	var ini_demo = __webpack_require__(159);
-	var update_network = __webpack_require__(120);
+	var make_params = __webpack_require__(10);
+	var make_viz = __webpack_require__(44);
+	var resize_viz = __webpack_require__(81);
+	var play_demo = __webpack_require__(106);
+	var ini_demo = __webpack_require__(144);
+	var update_network = __webpack_require__(118);
 
 	/* clustergrammer 1.0
 	 * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
@@ -79,7 +79,7 @@ var Clustergrammer =
 	  cgm.config = config;
 
 	  if (params.use_sidebar) {
-	    var make_sidebar = __webpack_require__(113);
+	    var make_sidebar = __webpack_require__(147);
 	    params = make_sidebar(cgm);
 	  }
 
@@ -131,7 +131,7 @@ var Clustergrammer =
 	var get_filter_default_state = __webpack_require__(6);
 	var set_defaults = __webpack_require__(7);
 	var check_sim_mat = __webpack_require__(8);
-	var check_nodes_for_categories = __webpack_require__(162);
+	var check_nodes_for_categories = __webpack_require__(9);
 
 	module.exports = function make_config(args) {
 
@@ -656,26 +656,46 @@ var Clustergrammer =
 
 /***/ },
 /* 9 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = function check_nodes_for_categories(nodes) {
+
+	  var super_string = ': ';
+	  var has_cat = true;
+
+	  _.each(nodes, function (inst_node) {
+	    if (inst_node.name.indexOf(super_string) < 0) {
+	      has_cat = false;
+	    }
+	  });
+
+	  return has_cat;
+		};
+
+/***/ },
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	// var crossfilter = require('crossfilter');
-	var change_network_view = __webpack_require__(10);
-	var set_viz_wrapper_size = __webpack_require__(13);
-	var calc_clust_width = __webpack_require__(15);
-	var calc_clust_height = __webpack_require__(16);
-	var get_svg_dim = __webpack_require__(17);
-	var ini_label_params = __webpack_require__(18);
-	var ini_viz_params = __webpack_require__(19);
-	var ini_matrix_params = __webpack_require__(20);
-	var calc_default_fs = __webpack_require__(22);
-	var calc_matrix_params = __webpack_require__(23);
-	var calc_label_params = __webpack_require__(24);
-	var calc_val_max = __webpack_require__(25);
-	var set_zoom_params = __webpack_require__(26);
-	var ini_sidebar_params = __webpack_require__(41);
-	var make_requested_view = __webpack_require__(42);
+	var change_network_view = __webpack_require__(11);
+	var set_viz_wrapper_size = __webpack_require__(14);
+	var calc_clust_width = __webpack_require__(16);
+	var calc_clust_height = __webpack_require__(17);
+	var get_svg_dim = __webpack_require__(18);
+	var ini_label_params = __webpack_require__(19);
+	var ini_viz_params = __webpack_require__(20);
+	var ini_matrix_params = __webpack_require__(21);
+	var calc_default_fs = __webpack_require__(23);
+	var calc_matrix_params = __webpack_require__(24);
+	var calc_label_params = __webpack_require__(25);
+	var calc_val_max = __webpack_require__(26);
+	var set_zoom_params = __webpack_require__(27);
+	var ini_sidebar_params = __webpack_require__(42);
+	var make_requested_view = __webpack_require__(43);
 	var get_available_filters = __webpack_require__(5);
 
 	/* 
@@ -739,13 +759,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var filter_using_new_nodes = __webpack_require__(11);
-	var get_subset_views = __webpack_require__(12);
+	var filter_using_new_nodes = __webpack_require__(12);
+	var get_subset_views = __webpack_require__(13);
 
 	module.exports = function change_network_view(params, orig_network_data, requested_view) {
 
@@ -794,7 +814,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 11 */
+/* 12 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -841,7 +861,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 12 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -929,12 +949,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 13 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var calc_viz_dimensions = __webpack_require__(14);
+	var calc_viz_dimensions = __webpack_require__(15);
 
 	module.exports = function set_viz_wrapper_size(params) {
 
@@ -962,7 +982,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 14 */
+/* 15 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1014,7 +1034,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 15 */
+/* 16 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1055,7 +1075,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 16 */
+/* 17 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1074,7 +1094,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 17 */
+/* 18 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1090,7 +1110,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 18 */
+/* 19 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1124,7 +1144,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 19 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1265,13 +1285,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 20 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var utils = __webpack_require__(2);
-	var initialize_matrix = __webpack_require__(21);
+	var initialize_matrix = __webpack_require__(22);
 
 	module.exports = function ini_matrix_params(config, viz, network_data) {
 
@@ -1392,7 +1412,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 21 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1472,7 +1492,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 22 */
+/* 23 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1494,7 +1514,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 23 */
+/* 24 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1515,7 +1535,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 24 */
+/* 25 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1538,7 +1558,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 25 */
+/* 26 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1561,13 +1581,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 26 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var zoomed = __webpack_require__(27);
-	var calc_zoom_switching = __webpack_require__(40);
+	var zoomed = __webpack_require__(28);
+	var calc_zoom_switching = __webpack_require__(41);
 
 	module.exports = function set_zoom_params(params) {
 
@@ -1594,12 +1614,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 27 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var apply_zoom = __webpack_require__(28);
+	var apply_zoom = __webpack_require__(29);
 
 	module.exports = function zoomed(params) {
 
@@ -1613,14 +1633,14 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 28 */
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var run_transformation = __webpack_require__(29);
-	var zoom_rules_y = __webpack_require__(38);
-	var zoom_rules_x = __webpack_require__(39);
+	var run_transformation = __webpack_require__(30);
+	var zoom_rules_y = __webpack_require__(39);
+	var zoom_rules_x = __webpack_require__(40);
 
 	module.exports = function apply_zoom(params, zoom_info) {
 
@@ -1634,16 +1654,16 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 29 */
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var constrain_font_size = __webpack_require__(30);
-	var zooming_has_stopped = __webpack_require__(32);
-	var show_visible_area = __webpack_require__(35);
-	var resize_label_val_bars = __webpack_require__(37);
-	var num_visible_labels = __webpack_require__(33);
+	var constrain_font_size = __webpack_require__(31);
+	var zooming_has_stopped = __webpack_require__(33);
+	var show_visible_area = __webpack_require__(36);
+	var resize_label_val_bars = __webpack_require__(38);
+	var num_visible_labels = __webpack_require__(34);
 
 	module.exports = function run_transformation(params, zoom_info) {
 
@@ -1731,12 +1751,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 30 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var calc_real_font_size = __webpack_require__(31);
+	var calc_real_font_size = __webpack_require__(32);
 
 	module.exports = function constrain_font_size(params) {
 
@@ -1794,7 +1814,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 31 */
+/* 32 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1815,14 +1835,14 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 32 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var num_visible_labels = __webpack_require__(33);
-	var trim_text = __webpack_require__(34);
-	var constrain_font_size = __webpack_require__(30);
+	var num_visible_labels = __webpack_require__(34);
+	var trim_text = __webpack_require__(35);
+	var constrain_font_size = __webpack_require__(31);
 
 	module.exports = function zooming_has_stopped(params) {
 
@@ -1895,7 +1915,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 33 */
+/* 34 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1917,7 +1937,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 34 */
+/* 35 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -2029,12 +2049,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 35 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var toggle_element_display = __webpack_require__(36);
+	var toggle_element_display = __webpack_require__(37);
 
 	module.exports = function show_visible_area(params, zoom_info) {
 
@@ -2066,7 +2086,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 36 */
+/* 37 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -2106,7 +2126,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 37 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2140,7 +2160,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 38 */
+/* 39 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -2171,7 +2191,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 39 */
+/* 40 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -2202,7 +2222,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 40 */
+/* 41 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -2224,7 +2244,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 41 */
+/* 42 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -2269,7 +2289,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 42 */
+/* 43 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -2300,24 +2320,24 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 43 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var generate_matrix = __webpack_require__(44);
-	var make_rows = __webpack_require__(53);
-	var make_cols = __webpack_require__(68);
-	var generate_super_labels = __webpack_require__(71);
-	var spillover = __webpack_require__(72);
-	var search = __webpack_require__(76);
-	var initialize_resizing = __webpack_require__(79);
-	var ini_doubleclick = __webpack_require__(81);
-	var make_col_cat = __webpack_require__(98);
-	var make_row_cat = __webpack_require__(101);
-	var trim_text = __webpack_require__(34);
-	var make_row_dendro = __webpack_require__(102);
-	var make_col_dendro = __webpack_require__(103);
+	var generate_matrix = __webpack_require__(45);
+	var make_rows = __webpack_require__(54);
+	var make_cols = __webpack_require__(69);
+	var generate_super_labels = __webpack_require__(72);
+	var spillover = __webpack_require__(73);
+	var search = __webpack_require__(77);
+	var initialize_resizing = __webpack_require__(80);
+	var ini_doubleclick = __webpack_require__(82);
+	var make_col_cat = __webpack_require__(100);
+	var make_row_cat = __webpack_require__(103);
+	var trim_text = __webpack_require__(35);
+	var make_row_dendro = __webpack_require__(104);
+	var make_col_dendro = __webpack_require__(105);
 
 	module.exports = function make_viz(params) {
 
@@ -2443,16 +2463,16 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 44 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var utils = __webpack_require__(2);
-	var draw_gridlines = __webpack_require__(45);
-	var add_click_hlight = __webpack_require__(46);
-	var make_simple_rows = __webpack_require__(47);
-	var d3_tip_custom = __webpack_require__(52);
+	var draw_gridlines = __webpack_require__(46);
+	var add_click_hlight = __webpack_require__(47);
+	var make_simple_rows = __webpack_require__(48);
+	var d3_tip_custom = __webpack_require__(53);
 
 	module.exports = function (params, svg_elem) {
 	  var network_data = params.network_data;
@@ -2551,7 +2571,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 45 */
+/* 46 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -2597,7 +2617,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 46 */
+/* 47 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -2659,15 +2679,15 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 47 */
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var draw_up_tile = __webpack_require__(48);
-	var draw_dn_tile = __webpack_require__(49);
-	var mouseover_tile = __webpack_require__(50);
-	var mouseout_tile = __webpack_require__(51);
+	var draw_up_tile = __webpack_require__(49);
+	var draw_dn_tile = __webpack_require__(50);
+	var mouseover_tile = __webpack_require__(51);
+	var mouseout_tile = __webpack_require__(52);
 
 	module.exports = function make_simple_rows(params, ini_inp_row_data, tip, row_selection) {
 
@@ -2792,7 +2812,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 48 */
+/* 49 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -2810,7 +2830,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 49 */
+/* 50 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -2828,7 +2848,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 50 */
+/* 51 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -2878,7 +2898,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 51 */
+/* 52 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -2896,7 +2916,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 52 */
+/* 53 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -3237,16 +3257,16 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 53 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var utils = __webpack_require__(2);
-	var add_row_click_hlight = __webpack_require__(54);
-	var row_reorder = __webpack_require__(55);
-	var col_reorder = __webpack_require__(66);
-	var make_row_tooltips = __webpack_require__(67);
+	var add_row_click_hlight = __webpack_require__(55);
+	var row_reorder = __webpack_require__(56);
+	var col_reorder = __webpack_require__(67);
+	var make_row_tooltips = __webpack_require__(68);
 
 	module.exports = function (params, text_delay) {
 	  var row_nodes = params.network_data.row_nodes;
@@ -3356,7 +3376,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 54 */
+/* 55 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -3391,14 +3411,14 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 55 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var reposition_tile_highlight = __webpack_require__(56);
-	var toggle_dendro_view = __webpack_require__(57);
-	var show_visible_area = __webpack_require__(35);
+	var reposition_tile_highlight = __webpack_require__(57);
+	var toggle_dendro_view = __webpack_require__(58);
+	var show_visible_area = __webpack_require__(36);
 
 	module.exports = function row_reorder(params, row_selection, inst_row) {
 
@@ -3523,7 +3543,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 56 */
+/* 57 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -3566,13 +3586,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 57 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_row_dendro_triangles = __webpack_require__(58);
-	var make_col_dendro_triangles = __webpack_require__(64);
+	var make_row_dendro_triangles = __webpack_require__(59);
+	var make_col_dendro_triangles = __webpack_require__(65);
 
 	module.exports = function toggle_dendro_view(params, row_col) {
 	  var wait_time = arguments.length <= 2 || arguments[2] === undefined ? 1500 : arguments[2];
@@ -3603,15 +3623,15 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 58 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var calc_row_dendro_triangles = __webpack_require__(59);
-	var dendro_group_highlight = __webpack_require__(60);
-	var dendro_mouseover = __webpack_require__(62);
-	var dendro_mouseout = __webpack_require__(63);
+	var calc_row_dendro_triangles = __webpack_require__(60);
+	var dendro_group_highlight = __webpack_require__(61);
+	var dendro_mouseover = __webpack_require__(63);
+	var dendro_mouseout = __webpack_require__(64);
 
 	module.exports = function make_row_dendro_triangles(params) {
 	  var is_change_group = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
@@ -3682,7 +3702,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 59 */
+/* 60 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -3734,12 +3754,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 60 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var dendro_shade_bars = __webpack_require__(61);
+	var dendro_shade_bars = __webpack_require__(62);
 	module.exports = function dendro_group_highlight(params, inst_selection, inst_data, inst_rc) {
 
 	  var wait_before_make_shade = 200;
@@ -3779,7 +3799,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 61 */
+/* 62 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -3814,7 +3834,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 62 */
+/* 63 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -3824,7 +3844,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 63 */
+/* 64 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -3834,15 +3854,15 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 64 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var calc_col_dendro_triangles = __webpack_require__(65);
-	var dendro_group_highlight = __webpack_require__(60);
-	var dendro_mouseover = __webpack_require__(62);
-	var dendro_mouseout = __webpack_require__(63);
+	var calc_col_dendro_triangles = __webpack_require__(66);
+	var dendro_group_highlight = __webpack_require__(61);
+	var dendro_mouseover = __webpack_require__(63);
+	var dendro_mouseout = __webpack_require__(64);
 
 	module.exports = function make_col_dendro_triangles(params) {
 	  var is_change_group = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
@@ -3914,7 +3934,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 65 */
+/* 66 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -3966,14 +3986,14 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 66 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var reposition_tile_highlight = __webpack_require__(56);
-	var toggle_dendro_view = __webpack_require__(57);
-	var show_visible_area = __webpack_require__(35);
+	var reposition_tile_highlight = __webpack_require__(57);
+	var toggle_dendro_view = __webpack_require__(58);
+	var show_visible_area = __webpack_require__(36);
 
 	module.exports = function col_reorder(params, col_selection, inst_term) {
 
@@ -4089,12 +4109,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 67 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var d3_tip_custom = __webpack_require__(52);
+	var d3_tip_custom = __webpack_require__(53);
 
 	module.exports = function make_tooltips(params) {
 
@@ -4130,16 +4150,16 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 68 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var utils = __webpack_require__(2);
-	var add_col_click_hlight = __webpack_require__(69);
-	var col_reorder = __webpack_require__(66);
-	var row_reorder = __webpack_require__(55);
-	var make_col_tooltips = __webpack_require__(70);
+	var add_col_click_hlight = __webpack_require__(70);
+	var col_reorder = __webpack_require__(67);
+	var row_reorder = __webpack_require__(56);
+	var make_col_tooltips = __webpack_require__(71);
 
 	module.exports = function (params, text_delay) {
 
@@ -4288,7 +4308,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 69 */
+/* 70 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -4336,12 +4356,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 70 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var d3_tip_custom = __webpack_require__(52);
+	var d3_tip_custom = __webpack_require__(53);
 
 	module.exports = function make_col_tooltips(params) {
 
@@ -4366,7 +4386,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 71 */
+/* 72 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -4410,13 +4430,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 72 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var get_cat_title = __webpack_require__(73);
-	var ini_cat_reorder = __webpack_require__(74);
+	var get_cat_title = __webpack_require__(74);
+	var ini_cat_reorder = __webpack_require__(75);
 
 	module.exports = function Spillover(params) {
 
@@ -4526,7 +4546,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 73 */
+/* 74 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -4546,12 +4566,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 74 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var all_reorder = __webpack_require__(75);
+	var all_reorder = __webpack_require__(76);
 
 	module.exports = function ini_cat_reorder(params) {
 	  /* eslint-disable */
@@ -4580,13 +4600,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 75 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var toggle_dendro_view = __webpack_require__(57);
-	var show_visible_area = __webpack_require__(35);
+	var toggle_dendro_view = __webpack_require__(58);
+	var show_visible_area = __webpack_require__(36);
 
 	module.exports = function (params, inst_order, tmp_row_col) {
 
@@ -4737,12 +4757,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 76 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var two_translate_zoom = __webpack_require__(77);
+	var two_translate_zoom = __webpack_require__(78);
 
 	/* Handles searching rows or columns.
 	 TODO need to generalize to column and row
@@ -4788,14 +4808,14 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 77 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var utils = __webpack_require__(2);
-	var label_constrain_and_trim = __webpack_require__(78);
-	var show_visible_area = __webpack_require__(35);
+	var label_constrain_and_trim = __webpack_require__(79);
+	var show_visible_area = __webpack_require__(36);
 
 	module.exports = function two_translate_zoom(params, pan_dx, pan_dy, fin_zoom) {
 
@@ -4959,14 +4979,14 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 78 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var utils = __webpack_require__(2);
-	var trim_text = __webpack_require__(34);
-	var constrain_font_size = __webpack_require__(30);
+	var trim_text = __webpack_require__(35);
+	var constrain_font_size = __webpack_require__(31);
 
 	module.exports = function label_constrain_and_trim(params) {
 
@@ -4993,12 +5013,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 79 */
+/* 80 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var resize_viz = __webpack_require__(80);
+	var resize_viz = __webpack_require__(81);
 
 	module.exports = function (params) {
 
@@ -5089,41 +5109,45 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 80 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	// var crossfilter = require('crossfilter');
 	var utils = __webpack_require__(2);
-	var zoomed = __webpack_require__(27);
-	var ini_doubleclick = __webpack_require__(81);
-	var reset_zoom = __webpack_require__(82);
-	var resize_dendro = __webpack_require__(83);
-	var resize_grid_lines = __webpack_require__(84);
-	var resize_super_labels = __webpack_require__(85);
-	var resize_spillover = __webpack_require__(86);
-	var resize_borders = __webpack_require__(87);
-	var resize_row_labels = __webpack_require__(88);
-	var resize_highlights = __webpack_require__(89);
-	var resize_row_viz = __webpack_require__(90);
-	var resize_col_labels = __webpack_require__(91);
-	var resize_col_text = __webpack_require__(92);
-	var resize_col_triangle = __webpack_require__(93);
-	var resize_col_hlight = __webpack_require__(94);
-	var recalc_params_for_resize = __webpack_require__(95);
-	var resize_row_tiles = __webpack_require__(96);
-	var resize_label_bars = __webpack_require__(97);
-	var label_constrain_and_trim = __webpack_require__(78);
-	var make_row_dendro_triangles = __webpack_require__(58);
-	var make_col_dendro_triangles = __webpack_require__(64);
-	var toggle_dendro_view = __webpack_require__(57);
-	var show_visible_area = __webpack_require__(35);
-	var calc_viz_dimensions = __webpack_require__(14);
+	var zoomed = __webpack_require__(28);
+	var ini_doubleclick = __webpack_require__(82);
+	var reset_zoom = __webpack_require__(83);
+	var resize_dendro = __webpack_require__(84);
+	var resize_grid_lines = __webpack_require__(85);
+	var resize_super_labels = __webpack_require__(86);
+	var resize_spillover = __webpack_require__(87);
+	var resize_borders = __webpack_require__(88);
+	var resize_row_labels = __webpack_require__(89);
+	var resize_highlights = __webpack_require__(90);
+	var resize_row_viz = __webpack_require__(91);
+	var resize_col_labels = __webpack_require__(92);
+	var resize_col_text = __webpack_require__(93);
+	var resize_col_triangle = __webpack_require__(94);
+	var resize_col_hlight = __webpack_require__(95);
+	var recalc_params_for_resize = __webpack_require__(96);
+	var resize_row_tiles = __webpack_require__(97);
+	var resize_label_bars = __webpack_require__(98);
+	var label_constrain_and_trim = __webpack_require__(79);
+	var make_row_dendro_triangles = __webpack_require__(59);
+	var make_col_dendro_triangles = __webpack_require__(65);
+	var toggle_dendro_view = __webpack_require__(58);
+	var show_visible_area = __webpack_require__(36);
+	var calc_viz_dimensions = __webpack_require__(15);
+	var position_play_button = __webpack_require__(99);
 
 	module.exports = function (params) {
 
 	  var cont_dim = calc_viz_dimensions(params);
+
+	  d3.select(params.root + ' .play_button');
+	  // .style('opacity', 0.2);
 
 	  // reset visible area
 	  var zoom_info = {};
@@ -5172,6 +5196,8 @@ var Clustergrammer =
 	  svg_group.select('.super_background').style('width', params.viz.svg_dim.width).style('height', params.viz.svg_dim.height);
 
 	  svg_group.select('.grey_background').attr('width', params.viz.clust.dim.width).attr('height', params.viz.clust.dim.height);
+
+	  setTimeout(position_play_button, 100, params);
 
 	  var row_nodes = params.network_data.row_nodes;
 	  var row_nodes_names = _.pluck(row_nodes, 'name');
@@ -5255,12 +5281,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 81 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var two_translate_zoom = __webpack_require__(77);
+	var two_translate_zoom = __webpack_require__(78);
 
 	module.exports = function (params) {
 	  // disable double-click zoom
@@ -5272,7 +5298,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 82 */
+/* 83 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -5305,7 +5331,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 83 */
+/* 84 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -5411,7 +5437,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 84 */
+/* 85 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -5454,7 +5480,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 85 */
+/* 86 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -5498,7 +5524,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 86 */
+/* 87 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -5601,7 +5627,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 87 */
+/* 88 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -5631,7 +5657,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 88 */
+/* 89 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -5687,7 +5713,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 89 */
+/* 90 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -5752,7 +5778,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 90 */
+/* 91 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -5796,7 +5822,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 91 */
+/* 92 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -5853,7 +5879,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 92 */
+/* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5871,7 +5897,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 93 */
+/* 94 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -5917,7 +5943,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 94 */
+/* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5956,16 +5982,16 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 95 */
+/* 96 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var get_svg_dim = __webpack_require__(17);
-	var calc_clust_height = __webpack_require__(16);
-	var calc_clust_width = __webpack_require__(15);
-	var calc_default_fs = __webpack_require__(22);
-	var calc_zoom_switching = __webpack_require__(40);
+	var get_svg_dim = __webpack_require__(18);
+	var calc_clust_height = __webpack_require__(17);
+	var calc_clust_width = __webpack_require__(16);
+	var calc_default_fs = __webpack_require__(23);
+	var calc_zoom_switching = __webpack_require__(41);
 
 	module.exports = function recalc_params_for_resize(params) {
 
@@ -6005,13 +6031,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 96 */
+/* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var draw_up_tile = __webpack_require__(48);
-	var draw_dn_tile = __webpack_require__(49);
+	var draw_up_tile = __webpack_require__(49);
+	var draw_dn_tile = __webpack_require__(50);
 
 	module.exports = function resize_row_tiles(params, svg_group) {
 
@@ -6049,12 +6075,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 97 */
+/* 98 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var calc_val_max = __webpack_require__(25);
+	var calc_val_max = __webpack_require__(26);
 
 	module.exports = function resize_label_bars(params, svg_group) {
 
@@ -6084,14 +6110,34 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 98 */
+/* 99 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = function position_play_button(params) {
+
+	  var clust_transform = d3.select(params.root + ' .clust_container').attr('transform');
+
+	  var clust_x = Number(clust_transform.split('(')[1].split(',')[0]);
+	  var clust_y = Number(clust_transform.split(',')[1].replace(')', ''));
+	  var trans_x = clust_x + params.viz.clust.dim.width / 2;
+	  var trans_y = clust_y + params.viz.clust.dim.height / 2;
+
+	  d3.select(params.root + ' .play_button').attr('transform', function () {
+	    return 'translate(' + trans_x + ',' + trans_y + ')';
+	  });
+		};
+
+/***/ },
+/* 100 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var cat_tooltip_text = __webpack_require__(99);
-	var d3_tip_custom = __webpack_require__(52);
-	var reset_cat_opacity = __webpack_require__(100);
+	var cat_tooltip_text = __webpack_require__(101);
+	var d3_tip_custom = __webpack_require__(53);
+	var reset_cat_opacity = __webpack_require__(102);
 
 	module.exports = function make_col_cat(params) {
 
@@ -6159,12 +6205,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 99 */
+/* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var get_cat_title = __webpack_require__(73);
+	var get_cat_title = __webpack_require__(74);
 	var utils = __webpack_require__(2);
 
 	module.exports = function cat_tooltip_text(params, inst_data, inst_selection, inst_rc) {
@@ -6234,7 +6280,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 100 */
+/* 102 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -6247,14 +6293,14 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 101 */
+/* 103 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var cat_tooltip_text = __webpack_require__(99);
-	var d3_tip_custom = __webpack_require__(52);
-	var reset_cat_opacity = __webpack_require__(100);
+	var cat_tooltip_text = __webpack_require__(101);
+	var d3_tip_custom = __webpack_require__(53);
+	var reset_cat_opacity = __webpack_require__(102);
 
 	module.exports = function make_row_cat(params) {
 
@@ -6348,12 +6394,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 102 */
+/* 104 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_row_dendro_triangles = __webpack_require__(58);
+	var make_row_dendro_triangles = __webpack_require__(59);
 
 	module.exports = function make_row_dendro(params) {
 
@@ -6385,12 +6431,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 103 */
+/* 105 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_col_dendro_triangles = __webpack_require__(64);
+	var make_col_dendro_triangles = __webpack_require__(65);
 
 	module.exports = function make_col_dendro(params) {
 
@@ -6424,27 +6470,27 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 104 */
+/* 106 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	/* eslint-disable */
 
-	var run_segment = __webpack_require__(106);
-	var play_intro = __webpack_require__(107);
-	var play_zoom = __webpack_require__(109);
-	var play_reset_zoom = __webpack_require__(110);
-	var play_reorder_row = __webpack_require__(112);
-	var play_reorder_buttons = __webpack_require__(150);
-	var play_search = __webpack_require__(152);
-	var play_filter = __webpack_require__(153);
-	var quick_cluster = __webpack_require__(154);
-	var play_groups = __webpack_require__(155);
-	var play_categories = __webpack_require__(156);
-	var play_conclusion = __webpack_require__(157);
-	var toggle_play_button = __webpack_require__(160);
-	var play_menu_button = __webpack_require__(161);
+	var run_segment = __webpack_require__(107);
+	var play_intro = __webpack_require__(108);
+	var play_zoom = __webpack_require__(110);
+	var play_reset_zoom = __webpack_require__(111);
+	var play_reorder_row = __webpack_require__(113);
+	var play_reorder_buttons = __webpack_require__(114);
+	var play_search = __webpack_require__(116);
+	var play_filter = __webpack_require__(117);
+	var quick_cluster = __webpack_require__(138);
+	var play_groups = __webpack_require__(139);
+	var play_categories = __webpack_require__(140);
+	var play_conclusion = __webpack_require__(141);
+	var toggle_play_button = __webpack_require__(142);
+	var play_menu_button = __webpack_require__(143);
 
 	module.exports = function play_demo() {
 
@@ -6475,7 +6521,10 @@ var Clustergrammer =
 	    // intro text
 	    var inst_time = 750;
 
-	    inst_time = run_segment(params, inst_time, quick_cluster);
+	    if (cgm.params.viz.is_expand === false) {
+	      inst_time = run_segment(params, inst_time, quick_cluster);
+	      inst_time = inst_time - 1500;
+	    }
 
 	    // clustergram interaction
 	    ///////////////////////////////////
@@ -6501,48 +6550,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 105 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	module.exports = function make_demo_text_containers(params, demo_text_size) {
-
-	  if (d3.select(params.root + ' .demo_group').empty()) {
-
-	    var clust_transform = d3.select(params.root + ' .clust_container').attr('transform');
-	    var clust_x = Number(clust_transform.split('(')[1].split(',')[0]);
-	    var clust_y = Number(clust_transform.split(',')[1].replace(')', ''));
-
-	    // demo text container
-	    var demo_group = d3.select(params.root + ' .viz_svg').append('g').classed('demo_group', true).attr('transform', function () {
-	      var pos_x = clust_x + 20;
-	      var pos_y = clust_y + 40;
-	      return 'translate(' + pos_x + ',' + pos_y + ')';
-	    });
-
-	    demo_group.append('rect').classed('rect_1', true);
-
-	    demo_group.append('rect').classed('rect_2', true);
-
-	    demo_group.append('rect').classed('rect_3', true);
-
-	    var shift_height = 1.3 * demo_text_size;
-
-	    demo_group.append('text').attr('id', 'text_1').attr('font-size', demo_text_size + 'px').attr('font-weight', 1000).attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif');
-
-	    demo_group.append('text').attr('id', 'text_2').attr('font-size', demo_text_size + 'px').attr('font-weight', 1000).attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('transform', function () {
-	      return 'translate(0,' + String(shift_height) + ')';
-	    });
-
-	    demo_group.append('text').attr('id', 'text_3').attr('font-size', demo_text_size + 'px').attr('font-weight', 1000).attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('transform', function () {
-	      return 'translate(0,' + String(2 * shift_height) + ')';
-	    });
-	  }
-		};
-
-/***/ },
-/* 106 */
+/* 107 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -6565,12 +6573,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 107 */
+/* 108 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var demo_text = __webpack_require__(108);
+	var demo_text = __webpack_require__(109);
 
 	module.exports = function play_intro() {
 
@@ -6595,7 +6603,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 108 */
+/* 109 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -6629,13 +6637,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 109 */
+/* 110 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var demo_text = __webpack_require__(108);
-	var two_translate_zoom = __webpack_require__(77);
+	var demo_text = __webpack_require__(109);
+	var two_translate_zoom = __webpack_require__(78);
 
 	module.exports = function play_zoom() {
 
@@ -6657,14 +6665,14 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 110 */
+/* 111 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var demo_text = __webpack_require__(108);
-	var two_translate_zoom = __webpack_require__(77);
-	var sim_click = __webpack_require__(111);
+	var demo_text = __webpack_require__(109);
+	var two_translate_zoom = __webpack_require__(78);
+	var sim_click = __webpack_require__(112);
 
 	module.exports = function play_reset_zoom() {
 
@@ -6688,7 +6696,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 111 */
+/* 112 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -6707,13 +6715,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 112 */
+/* 113 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var demo_text = __webpack_require__(108);
-	var sim_click = __webpack_require__(111);
+	var demo_text = __webpack_require__(109);
+	var sim_click = __webpack_require__(112);
 
 	module.exports = function play_reorder_row() {
 	  /* eslint-disable */
@@ -6774,207 +6782,62 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 113 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var ini_sidebar = __webpack_require__(114);
-	var set_up_filters = __webpack_require__(116);
-	var set_up_dendro_sliders = __webpack_require__(141);
-	var set_up_search = __webpack_require__(142);
-	var set_up_reorder = __webpack_require__(143);
-	var set_sidebar_ini_view = __webpack_require__(144);
-	var make_icons = __webpack_require__(145);
-	var make_modals = __webpack_require__(148);
-
-	/* Represents sidebar with controls.
-	 */
-	module.exports = function sidebar(cgm) {
-
-	  var params = cgm.params;
-
-	  var sidebar = d3.select(params.root + ' .sidebar_wrapper');
-
-	  // console.log('is_expand ',params.viz.is_expand)
-
-	  if (params.viz.is_expand) {
-	    sidebar.style('display', 'none');
-	  }
-
-	  sidebar.append('div').classed('title_section', true);
-
-	  if (params.sidebar.title != null) {
-	    sidebar.select('.title_section').append('h4')
-	    // .style('margin-left', params.sidebar.title_margin_left+'px')
-	    .style('margin-left', '20px').style('margin-top', '5px').style('margin-bottom', '0px').text(params.sidebar.title);
-	  }
-
-	  sidebar.append('div').classed('about_section', true);
-
-	  if (params.sidebar.about != null) {
-
-	    var about_section_width = params.sidebar.text.width - 5;
-	    sidebar.select('.about_section').append('h5').classed('sidebar_text', true).style('margin-left', '7px').style('margin-top', '5px').style('margin-bottom', '2px').style('width', about_section_width + 'px').style('text-align', 'justify').text(params.sidebar.about);
-	  }
-
-	  sidebar.append('div').classed('icons_section', true);
-
-	  if (params.sidebar.icons) {
-	    make_modals(params);
-	    make_icons(params, sidebar);
-	  }
-
-	  // // tmp sim mat button
-	  // sidebar
-	  //   .append('text')
-	  //   .text('here')
-	  //   .on('click',function(){
-	  //     console.log('change to sim_mat')
-	  //   })
-
-	  set_up_reorder(params, sidebar);
-
-	  set_up_search(sidebar, params);
-
-	  if (params.viz.show_dendrogram) {
-	    set_up_dendro_sliders(sidebar, params);
-	  }
-
-	  var possible_filter_names = _.keys(params.viz.possible_filters);
-
-	  if (possible_filter_names.indexOf('enr_score_type') > -1) {
-	    possible_filter_names.sort(function (a, b) {
-	      return a.toLowerCase().localeCompare(b.toLowerCase());
-	    });
-	  }
-
-	  _.each(possible_filter_names, function (inst_filter) {
-	    set_up_filters(cgm, inst_filter);
-	  });
-
-	  ini_sidebar(params);
-
-	  // disable for now
-	  // make_cat_keys(params);
-
-	  // when initializing the visualization using a view
-	  if (params.ini_view !== null) {
-
-	    set_sidebar_ini_view(params);
-
-	    params.ini_view = null;
-	  }
-
-	  return params;
-		};
-
-/***/ },
 /* 114 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var change_groups = __webpack_require__(115);
-	var search = __webpack_require__(76);
-	var all_reorder = __webpack_require__(75);
-	var ini_cat_reorder = __webpack_require__(74);
+	var demo_text = __webpack_require__(109);
+	var highlight_sidebar_element = __webpack_require__(115);
 
-	module.exports = function ini_sidebar(params) {
+	module.exports = function play_reorder_buttons() {
+	  /* eslint-disable */
 
-	  // initializes sidebar buttons and sliders
-	  // this function is also used by update_network
+	  function run(params) {
 
-	  var search_obj = search(params, params.network_data.row_nodes, 'name');
+	    var text = 'Reorder all rows and columns\nby clicking the reorder\n buttons';
+	    demo_text(params, text, 9000);
 
-	  $(params.root + ' .gene_search_box').autocomplete({
-	    source: search_obj.get_entities
-	  });
+	    setTimeout(highlight_sidebar_element, 3000, params, 'toggle_col_order');
+	    setTimeout(click_reorder_button, 3500, params, 'col', 'rank');
 
-	  // submit genes button
-	  $(params.root + ' .gene_search_box').keyup(function (e) {
-	    if (e.keyCode === 13) {
-	      var search_gene = $(params.root + ' .gene_search_box').val();
-	      search_obj.find_entity(search_gene);
-	    }
-	  });
-
-	  $(params.root + ' .submit_gene_button').off().click(function () {
-	    var gene = $(params.root + ' .gene_search_box').val();
-	    search_obj.find_entity(gene);
-	  });
-
-	  var reorder_types;
-	  if (params.sim_mat) {
-	    reorder_types = ['both'];
-	  } else {
-	    reorder_types = ['row', 'col'];
+	    setTimeout(highlight_sidebar_element, 7000, params, 'toggle_row_order');
+	    setTimeout(click_reorder_button, 7500, params, 'row', 'rank');
 	  }
 
-	  _.each(reorder_types, function (inst_rc) {
+	  function get_duration() {
+	    return 11000;
+	  }
 
-	    // dendrogram
-	    $(params.root + ' .slider_' + inst_rc).slider({
-	      value: 0.5,
-	      min: 0,
-	      max: 1,
-	      step: 0.1,
-	      slide: function slide(event, ui) {
-	        $("#amount").val("$" + ui.value);
-	        var inst_index = ui.value * 10;
-	        if (inst_rc != 'both') {
-	          change_groups(params, inst_rc, inst_index);
-	        } else {
-	          change_groups(params, 'row', inst_index);
-	          change_groups(params, 'col', inst_index);
-	        }
-	      }
-	    });
+	  function click_reorder_button(params, inst_rc, inst_order) {
+	    var inst_button = d3.selectAll('.toggle_' + inst_rc + '_order .btn').filter(function () {
+	      return this.__data__ == inst_order;
+	    })[0];
 
-	    // reorder buttons
-	    $(params.root + ' .toggle_' + inst_rc + '_order .btn').off().click(function (evt) {
+	    $(inst_button).click();
+	  }
 
-	      var order_id = $(evt.target).attr('name').replace('_row', '').replace('_col', '');
-
-	      d3.selectAll(params.root + ' .toggle_' + inst_rc + '_order .btn').classed('active', false);
-
-	      d3.select(this).classed('active', true);
-
-	      if (inst_rc != 'both') {
-	        all_reorder(params, order_id, inst_rc);
-	      } else {
-	        all_reorder(params, order_id, 'row');
-	        all_reorder(params, order_id, 'col');
-	      }
-	    });
-	  });
-
-	  ini_cat_reorder(params);
+	  return {
+	    run: run,
+	    get_duration: get_duration
+	  };
 		};
 
 /***/ },
 /* 115 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
 	'use strict';
 
-	// var build_color_groups = require('./build_color_groups');
-	var make_row_dendro_triangles = __webpack_require__(58);
-	var make_col_dendro_triangles = __webpack_require__(64);
+	module.exports = function highlight_sidebar_element(params, highlight_class) {
+	  var duration = arguments.length <= 2 || arguments[2] === undefined ? 4000 : arguments[2];
 
-	/* Changes the groupings (x- and y-axis color bars).
-	 */
-	module.exports = function (params, inst_rc, inst_index) {
 
-	  if (inst_rc === 'row') {
-	    params.group_level.row = inst_index;
-	  } else if (inst_rc === 'col') {
-	    params.group_level.col = inst_index;
+	  if (highlight_class.indexOf('slider') < 0) {
+	    d3.select(params.root + ' .' + highlight_class).style('background', '#007f00').style('box-shadow', '0px 0px 10px 5px #007f00').transition().duration(1).delay(duration).style('background', '#FFFFFF').style('box-shadow', 'none');
+	  } else {
+	    d3.select(params.root + ' .' + highlight_class).style('box-shadow', '0px 0px 10px 5px #007f00').transition().duration(1).delay(duration).style('box-shadow', 'none');
 	  }
-
-	  var is_change_group = true;
-	  make_row_dendro_triangles(params, is_change_group);
-	  make_col_dendro_triangles(params, is_change_group);
 		};
 
 /***/ },
@@ -6983,20 +6846,49 @@ var Clustergrammer =
 
 	'use strict';
 
-	var make_slider_filter = __webpack_require__(117);
-	var make_button_filter = __webpack_require__(140);
+	var demo_text = __webpack_require__(109);
+	var highlight_sidebar_element = __webpack_require__(115);
+	var two_translate_zoom = __webpack_require__(78);
 
-	module.exports = function set_up_filters(cgm, filter_type) {
+	module.exports = function play_search() {
 
-	  var params = cgm.params;
+	  function run(params) {
 
-	  var div_filters = d3.select(params.root + ' .sidebar_wrapper').append('div').classed('div_filters', true);
+	    var text = 'Search for rows using\nthe search box';
+	    demo_text(params, text, 5000);
 
-	  if (params.viz.possible_filters[filter_type] == 'numerical') {
-	    make_slider_filter(cgm, filter_type, div_filters);
-	  } else if (params.viz.possible_filters[filter_type] == 'categorical') {
-	    make_button_filter(cgm, filter_type, div_filters);
+	    var ini_delay = 2500;
+	    setTimeout(highlight_sidebar_element, ini_delay, params, 'gene_search_container');
+
+	    // manually mimic typing and autocomplete
+	    setTimeout(type_out_search, ini_delay + 1000, params, 'E');
+	    setTimeout(type_out_search, ini_delay + 1500, params, 'EG');
+	    setTimeout(type_out_search, ini_delay + 2000, params, 'EGF');
+	    setTimeout(type_out_search, ini_delay + 2500, params, 'EGFR');
+
+	    setTimeout(run_search, 5500, params);
+
+	    setTimeout(two_translate_zoom, 7500, params, 0, 0, 1);
 	  }
+
+	  function get_duration() {
+	    return 10000;
+	  }
+
+	  function type_out_search(params, inst_string) {
+	    $(params.root + ' .gene_search_box').val(inst_string);
+	    $(params.root + ' .gene_search_box').autocomplete("search", inst_string);
+	  }
+
+	  function run_search(params) {
+	    $(params.root + ' .submit_gene_button').click();
+	    $(params.root + ' .gene_search_box').autocomplete("search", '');
+	  }
+
+	  return {
+	    run: run,
+	    get_duration: get_duration
+	  };
 		};
 
 /***/ },
@@ -7005,52 +6897,64 @@ var Clustergrammer =
 
 	'use strict';
 
-	var make_filter_title = __webpack_require__(118);
-	var apply_filter_slider = __webpack_require__(119);
-	var get_filter_default_state = __webpack_require__(6);
-	var get_subset_views = __webpack_require__(12);
+	var demo_text = __webpack_require__(109);
+	var highlight_sidebar_element = __webpack_require__(115);
+	var update_network = __webpack_require__(118);
 
-	module.exports = function make_slider_filter(cgm, filter_type, div_filters) {
+	module.exports = function play_filter() {
 
-	  var params = cgm.params;
+	  function run(cgm) {
+	    var params = cgm.params;
 
-	  var requested_view = {};
+	    var text = 'Filter rows based on sum or\nvariance using the sliders';
+	    demo_text(params, text, 4000);
 
-	  var possible_filters = _.keys(params.viz.possible_filters);
+	    var filter_type = 'N_row_sum';
 
-	  _.each(possible_filters, function (tmp_filter) {
-	    if (tmp_filter != filter_type) {
-	      var default_state = get_filter_default_state(params.viz.filter_data, tmp_filter);
-	      requested_view[tmp_filter] = default_state;
+	    setTimeout(highlight_sidebar_element, 5000, params, 'slider_' + filter_type, 13000);
+
+	    text = 'Filter: Top 20 rows by sum';
+	    setTimeout(demo_text, 5000, params, text, 4000);
+	    setTimeout(run_update, 5300, cgm, filter_type, 20, 1);
+
+	    text = 'Filter: Top 10 rows by sum';
+	    setTimeout(demo_text, 10000, params, text, 4000);
+	    setTimeout(run_update, 10300, cgm, filter_type, 10, 2);
+
+	    text = 'Filter: All rows';
+	    setTimeout(demo_text, 15000, params, text, 4000);
+	    setTimeout(run_update, 15300, cgm, filter_type, 'all', 0);
+	  }
+
+	  function get_duration() {
+	    return 19500;
+	  }
+
+	  function run_update(cgm, filter_type, filter_value, filter_index) {
+
+	    var params = cgm.params;
+
+	    var requested_view = {};
+	    requested_view[filter_type] = filter_value;
+	    update_network(cgm, requested_view);
+
+	    // quick fix for slider
+	    $(params.root + ' .slider_' + filter_type).slider("value", filter_index);
+
+	    var unit_name;
+	    if (filter_type === 'N_row_sum') {
+	      unit_name = 'sum';
+	    } else {
+	      unit_name = 'variance';
 	    }
-	  });
 
-	  var filter_title = make_filter_title(params, filter_type);
+	    d3.select(params.root + ' .title_' + filter_type).text('Top rows ' + unit_name + ': ' + filter_value);
+	  }
 
-	  div_filters.append('div').classed('title_' + filter_type, true).classed('sidebar_text', true).classed('slider_description', true).style('margin-top', '5px').style('margin-bottom', '3px').style('margin-left', '5px').text(filter_title.text + filter_title.state + filter_title.suffix);
-
-	  div_filters.append('div').classed('slider_' + filter_type, true).classed('slider', true).style('width', params.sidebar.slider.width + 'px').style('margin-left', params.sidebar.slider.margin_left + 'px').attr('current_state', filter_title.state);
-
-	  var views = params.network_data.views;
-
-	  var available_views = get_subset_views(params, views, requested_view);
-
-	  // sort available views by filter_type value
-	  available_views = available_views.sort(function (a, b) {
-	    return b[filter_type] - a[filter_type];
-	  });
-
-	  var inst_max = available_views.length - 1;
-
-	  $(params.root + ' .slider_' + filter_type).slider({
-	    value: 0,
-	    min: 0,
-	    max: inst_max,
-	    step: 1,
-	    stop: function stop() {
-	      params = apply_filter_slider(cgm, filter_type, available_views);
-	    }
-	  });
+	  return {
+	    run: run,
+	    get_duration: get_duration
+	  };
 		};
 
 /***/ },
@@ -7059,109 +6963,10 @@ var Clustergrammer =
 
 	'use strict';
 
-	var get_filter_default_state = __webpack_require__(6);
+	var change_network_view = __webpack_require__(11);
+	var disable_sidebar = __webpack_require__(119);
 
-	module.exports = function make_filter_title(params, filter_type) {
-
-	  var filter_title = {};
-	  var title = {};
-	  var type = {};
-
-	  filter_title.state = get_filter_default_state(params.viz.filter_data, filter_type);
-
-	  type.top = filter_type.split('_')[0];
-	  type.node = filter_type.split('_')[1];
-	  type.measure = filter_type.split('_')[2];
-
-	  if (type.node === 'row') {
-	    title.node = 'rows';
-	  } else {
-	    title.node = 'columns';
-	  }
-
-	  if (type.top === 'N') {
-	    // filter_title.suffix = ' '+title.node;
-	    filter_title.suffix = '';
-	  }
-
-	  if (type.top === 'pct') {
-	    filter_title.suffix = '%';
-	  }
-
-	  if (type.measure == 'sum') {
-	    title.measure = 'sum';
-	  } else if (type.measure == 'var') {
-	    title.measure = 'variance';
-	  }
-
-	  if (type.measure === 'sum') {
-	    filter_title.text = 'Top ' + title.node + ' ' + title.measure + ': ';
-	  }
-
-	  if (type.measure === 'var') {
-	    filter_title.text = 'Top ' + title.node + ' ' + title.measure + ': ';
-	  }
-
-	  // Enrichr specific rules
-	  if (_.keys(params.viz.possible_filters).indexOf('enr_score_type') > -1) {
-	    if (type.node === 'col') {
-	      filter_title.text = 'Top Enriched Terms: ';
-	      filter_title.suffix = '';
-	    }
-	  }
-
-	  return filter_title;
-		};
-
-/***/ },
-/* 119 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var update_network = __webpack_require__(120);
-	var reset_other_filter_sliders = __webpack_require__(138);
-	var get_current_orders = __webpack_require__(139);
-	var make_requested_view = __webpack_require__(42);
-
-	module.exports = function apply_filter_slider(cgm, filter_type, available_views) {
-
-	  var params = cgm.params;
-
-	  // get value
-	  var inst_index = $(params.root + ' .slider_' + filter_type).slider("value");
-	  var inst_state = available_views[inst_index][filter_type];
-
-	  reset_other_filter_sliders(params, filter_type, inst_state);
-
-	  params = get_current_orders(params);
-
-	  var requested_view = {};
-	  requested_view[filter_type] = inst_state;
-
-	  requested_view = make_requested_view(params, requested_view);
-
-	  if (_.has(available_views[0], 'enr_score_type')) {
-	    var enr_state = d3.select(params.root + ' .toggle_enr_score_type').attr('current_state');
-
-	    requested_view.enr_score_type = enr_state;
-	  }
-
-	  params = update_network(cgm, requested_view);
-
-	  return params;
-		};
-
-/***/ },
-/* 120 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var change_network_view = __webpack_require__(10);
-	var disable_sidebar = __webpack_require__(121);
-
-	var update_with_new_network = __webpack_require__(122);
+	var update_with_new_network = __webpack_require__(120);
 
 	module.exports = function (cgm, requested_view) {
 	  var old_params = cgm.params;
@@ -7182,7 +6987,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 121 */
+/* 119 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7199,22 +7004,22 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 122 */
+/* 120 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_params = __webpack_require__(9);
-	var define_enter_exit_delays = __webpack_require__(123);
-	var enter_exit_update = __webpack_require__(124);
-	var initialize_resizing = __webpack_require__(79);
-	var make_col_cat = __webpack_require__(98);
-	var make_row_cat = __webpack_require__(101);
-	var make_row_dendro = __webpack_require__(102);
-	var make_col_dendro = __webpack_require__(103);
-	var ini_sidebar = __webpack_require__(114);
+	var make_params = __webpack_require__(10);
+	var define_enter_exit_delays = __webpack_require__(121);
+	var enter_exit_update = __webpack_require__(122);
+	var initialize_resizing = __webpack_require__(80);
+	var make_col_cat = __webpack_require__(100);
+	var make_row_cat = __webpack_require__(103);
+	var make_row_dendro = __webpack_require__(104);
+	var make_col_dendro = __webpack_require__(105);
+	var ini_sidebar = __webpack_require__(134);
 	var enable_sidebar = __webpack_require__(136);
-	var ini_doubleclick = __webpack_require__(81);
+	var ini_doubleclick = __webpack_require__(82);
 	var update_reorder_buttons = __webpack_require__(137);
 
 	module.exports = function update_with_new_network(config, old_params, new_network_data) {
@@ -7265,7 +7070,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 123 */
+/* 121 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7338,21 +7143,21 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 124 */
+/* 122 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var resize_after_update = __webpack_require__(125);
-	var make_rows = __webpack_require__(53);
-	var make_cols = __webpack_require__(68);
-	var eeu_existing_row = __webpack_require__(126);
-	var exit_components = __webpack_require__(130);
-	var enter_grid_lines = __webpack_require__(131);
-	var enter_row_groups = __webpack_require__(132);
-	var resize_containers = __webpack_require__(135);
-	var label_constrain_and_trim = __webpack_require__(78);
-	var d3_tip_custom = __webpack_require__(52);
+	var resize_after_update = __webpack_require__(123);
+	var make_rows = __webpack_require__(54);
+	var make_cols = __webpack_require__(69);
+	var eeu_existing_row = __webpack_require__(124);
+	var exit_components = __webpack_require__(128);
+	var enter_grid_lines = __webpack_require__(129);
+	var enter_row_groups = __webpack_require__(130);
+	var resize_containers = __webpack_require__(133);
+	var label_constrain_and_trim = __webpack_require__(79);
+	var d3_tip_custom = __webpack_require__(53);
 
 	module.exports = function (params, network_data, delays) {
 
@@ -7446,29 +7251,29 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 125 */
+/* 123 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var utils = __webpack_require__(2);
-	var calc_clust_height = __webpack_require__(16);
-	var get_svg_dim = __webpack_require__(17);
-	var calc_clust_width = __webpack_require__(15);
-	var reset_zoom = __webpack_require__(82);
-	var resize_dendro = __webpack_require__(83);
-	var resize_super_labels = __webpack_require__(85);
-	var resize_spillover = __webpack_require__(86);
-	var resize_row_labels = __webpack_require__(88);
-	var resize_row_viz = __webpack_require__(90);
-	var resize_col_labels = __webpack_require__(91);
-	var resize_col_text = __webpack_require__(92);
-	var resize_col_triangle = __webpack_require__(93);
-	var resize_col_hlight = __webpack_require__(94);
-	var resize_label_bars = __webpack_require__(97);
-	var calc_default_fs = __webpack_require__(22);
-	var calc_zoom_switching = __webpack_require__(40);
-	var show_visible_area = __webpack_require__(35);
+	var calc_clust_height = __webpack_require__(17);
+	var get_svg_dim = __webpack_require__(18);
+	var calc_clust_width = __webpack_require__(16);
+	var reset_zoom = __webpack_require__(83);
+	var resize_dendro = __webpack_require__(84);
+	var resize_super_labels = __webpack_require__(86);
+	var resize_spillover = __webpack_require__(87);
+	var resize_row_labels = __webpack_require__(89);
+	var resize_row_viz = __webpack_require__(91);
+	var resize_col_labels = __webpack_require__(92);
+	var resize_col_text = __webpack_require__(93);
+	var resize_col_triangle = __webpack_require__(94);
+	var resize_col_hlight = __webpack_require__(95);
+	var resize_label_bars = __webpack_require__(98);
+	var calc_default_fs = __webpack_require__(23);
+	var calc_zoom_switching = __webpack_require__(41);
+	var show_visible_area = __webpack_require__(36);
 
 	module.exports = function (params, row_nodes, col_nodes, links, duration, delays) {
 
@@ -7624,16 +7429,16 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 126 */
+/* 124 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var exit_existing_row = __webpack_require__(127);
-	var enter_existing_row = __webpack_require__(128);
-	var update_split_tiles = __webpack_require__(129);
-	var mouseover_tile = __webpack_require__(50);
-	var mouseout_tile = __webpack_require__(51);
+	var exit_existing_row = __webpack_require__(125);
+	var enter_existing_row = __webpack_require__(126);
+	var update_split_tiles = __webpack_require__(127);
+	var mouseover_tile = __webpack_require__(51);
+	var mouseout_tile = __webpack_require__(52);
 
 	// TODO add tip back to arguments
 	module.exports = function eeu_existing_row(params, ini_inp_row_data, delays, duration, row_selection, tip) {
@@ -7695,7 +7500,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 127 */
+/* 125 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7740,13 +7545,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 128 */
+/* 126 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var mouseover_tile = __webpack_require__(50);
-	var mouseout_tile = __webpack_require__(51);
+	var mouseover_tile = __webpack_require__(51);
+	var mouseout_tile = __webpack_require__(52);
 
 	module.exports = function enter_existing_row(params, delays, duration, cur_row_tiles, tip) {
 
@@ -7790,15 +7595,15 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 129 */
+/* 127 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var draw_up_tile = __webpack_require__(48);
-	var draw_dn_tile = __webpack_require__(49);
-	var mouseover_tile = __webpack_require__(50);
-	var mouseout_tile = __webpack_require__(51);
+	var draw_up_tile = __webpack_require__(49);
+	var draw_dn_tile = __webpack_require__(50);
+	var mouseover_tile = __webpack_require__(51);
+	var mouseout_tile = __webpack_require__(52);
 
 	module.exports = function update_split_tiles(params, inp_row_data, row_selection, delays, duration, cur_row_tiles, tip) {
 
@@ -7884,7 +7689,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 130 */
+/* 128 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7948,7 +7753,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 131 */
+/* 129 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7996,12 +7801,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 132 */
+/* 130 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var enter_new_rows = __webpack_require__(133);
+	var enter_new_rows = __webpack_require__(131);
 
 	module.exports = function enter_row_groups(params, delays, duration, tip) {
 
@@ -8021,14 +7826,14 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 133 */
+/* 131 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var enter_split_tiles = __webpack_require__(134);
-	var mouseover_tile = __webpack_require__(50);
-	var mouseout_tile = __webpack_require__(51);
+	var enter_split_tiles = __webpack_require__(132);
+	var mouseover_tile = __webpack_require__(51);
+	var mouseout_tile = __webpack_require__(52);
 
 	// make each row in the clustergram
 	module.exports = function enter_new_rows(params, ini_inp_row_data, delays, duration, tip, row_selection) {
@@ -8076,13 +7881,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 134 */
+/* 132 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var draw_up_tile = __webpack_require__(48);
-	var draw_dn_tile = __webpack_require__(49);
+	var draw_up_tile = __webpack_require__(49);
+	var draw_dn_tile = __webpack_require__(50);
 
 	module.exports = function enter_split_tiles(params, inp_row_data, row_selection, tip, delays, duration, tile) {
 
@@ -8176,7 +7981,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 135 */
+/* 133 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8193,6 +7998,114 @@ var Clustergrammer =
 	    var inst_offset = params.viz.norm_labels.width.col + 2;
 	    return 'translate(0,' + inst_offset + ')';
 	  });
+		};
+
+/***/ },
+/* 134 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var change_groups = __webpack_require__(135);
+	var search = __webpack_require__(77);
+	var all_reorder = __webpack_require__(76);
+	var ini_cat_reorder = __webpack_require__(75);
+
+	module.exports = function ini_sidebar(params) {
+
+	  // initializes sidebar buttons and sliders
+	  // this function is also used by update_network
+
+	  var search_obj = search(params, params.network_data.row_nodes, 'name');
+
+	  $(params.root + ' .gene_search_box').autocomplete({
+	    source: search_obj.get_entities
+	  });
+
+	  // submit genes button
+	  $(params.root + ' .gene_search_box').keyup(function (e) {
+	    if (e.keyCode === 13) {
+	      var search_gene = $(params.root + ' .gene_search_box').val();
+	      search_obj.find_entity(search_gene);
+	    }
+	  });
+
+	  $(params.root + ' .submit_gene_button').off().click(function () {
+	    var gene = $(params.root + ' .gene_search_box').val();
+	    search_obj.find_entity(gene);
+	  });
+
+	  var reorder_types;
+	  if (params.sim_mat) {
+	    reorder_types = ['both'];
+	  } else {
+	    reorder_types = ['row', 'col'];
+	  }
+
+	  _.each(reorder_types, function (inst_rc) {
+
+	    // dendrogram
+	    $(params.root + ' .slider_' + inst_rc).slider({
+	      value: 0.5,
+	      min: 0,
+	      max: 1,
+	      step: 0.1,
+	      slide: function slide(event, ui) {
+	        $("#amount").val("$" + ui.value);
+	        var inst_index = ui.value * 10;
+	        if (inst_rc != 'both') {
+	          change_groups(params, inst_rc, inst_index);
+	        } else {
+	          change_groups(params, 'row', inst_index);
+	          change_groups(params, 'col', inst_index);
+	        }
+	      }
+	    });
+
+	    // reorder buttons
+	    $(params.root + ' .toggle_' + inst_rc + '_order .btn').off().click(function (evt) {
+
+	      var order_id = $(evt.target).attr('name').replace('_row', '').replace('_col', '');
+
+	      d3.selectAll(params.root + ' .toggle_' + inst_rc + '_order .btn').classed('active', false);
+
+	      d3.select(this).classed('active', true);
+
+	      if (inst_rc != 'both') {
+	        all_reorder(params, order_id, inst_rc);
+	      } else {
+	        all_reorder(params, order_id, 'row');
+	        all_reorder(params, order_id, 'col');
+	      }
+	    });
+	  });
+
+	  ini_cat_reorder(params);
+		};
+
+/***/ },
+/* 135 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	// var build_color_groups = require('./build_color_groups');
+	var make_row_dendro_triangles = __webpack_require__(59);
+	var make_col_dendro_triangles = __webpack_require__(65);
+
+	/* Changes the groupings (x- and y-axis color bars).
+	 */
+	module.exports = function (params, inst_rc, inst_index) {
+
+	  if (inst_rc === 'row') {
+	    params.group_level.row = inst_index;
+	  } else if (inst_rc === 'col') {
+	    params.group_level.col = inst_index;
+	  }
+
+	  var is_change_group = true;
+	  make_row_dendro_triangles(params, is_change_group);
+	  make_col_dendro_triangles(params, is_change_group);
 		};
 
 /***/ },
@@ -8241,7 +8154,679 @@ var Clustergrammer =
 
 	'use strict';
 
-	var make_filter_title = __webpack_require__(118);
+	var sim_click = __webpack_require__(112);
+
+	module.exports = function quick_cluster() {
+	  /* eslint-disable */
+
+	  function run(params) {
+
+	    var x_trans = Number(d3.select(params.root + ' .expand_button').attr('x').replace('px', ''));
+	    var y_trans = Number(d3.select(params.root + ' .expand_button').attr('y').replace('px', ''));
+
+	    var wait_click = 0;
+	    var wait_real_click = 400;
+	    setTimeout(sim_click, wait_click, params, 'single', x_trans, y_trans);
+	    setTimeout(click_menu_button, wait_real_click, params);
+
+	    setTimeout(reset_cluster_order, 1500, params);
+	  }
+
+	  function get_duration() {
+	    return 3500;
+	  }
+
+	  function click_menu_button(params) {
+	    $(params.root + ' .expand_button').d3Click();
+	  };
+
+	  function reset_cluster_order(params) {
+	    click_reorder_button(params, 'row', 'clust');
+	    click_reorder_button(params, 'col', 'clust');
+	  }
+
+	  function click_reorder_button(params, inst_rc, inst_order) {
+	    var inst_button = d3.selectAll('.toggle_' + inst_rc + '_order .btn').filter(function () {
+	      return this.__data__ == inst_order;
+	    })[0];
+
+	    $(inst_button).click();
+	  }
+
+	  // allows doubleclicking on d3 element
+	  jQuery.fn.d3Click = function () {
+	    this.each(function (i, e) {
+	      var evt = document.createEvent("MouseEvents");
+	      evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+	      e.dispatchEvent(evt);
+	    });
+	  };
+
+	  return {
+	    run: run,
+	    get_duration: get_duration
+	  };
+		};
+
+/***/ },
+/* 139 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var demo_text = __webpack_require__(109);
+	var highlight_sidebar_element = __webpack_require__(115);
+	var change_groups = __webpack_require__(135);
+
+	module.exports = function play_groups() {
+	  /* eslint-disable */
+
+	  function run(params) {
+
+	    var text = 'Identify row and column groups\nof varying sizes using ' + ' the\nsliders and dendrogram';
+	    demo_text(params, text, 10000);
+
+	    setTimeout(highlight_sidebar_element, 3000, params, 'slider_col', 7000);
+
+	    setTimeout(change_group_slider, 4000, params, 'row', 3);
+	    setTimeout(change_group_slider, 5000, params, 'row', 4);
+	    setTimeout(change_group_slider, 6000, params, 'row', 5);
+	    setTimeout(change_group_slider, 7000, params, 'row', 6);
+	    setTimeout(change_group_slider, 8000, params, 'row', 7);
+	    setTimeout(change_group_slider, 9000, params, 'row', 5);
+	  }
+
+	  function get_duration() {
+	    return 11000;
+	  }
+
+	  function change_group_slider(params, inst_rc, inst_value) {
+	    $(cgm.params.root + ' .slider_col').slider("value", inst_value / 10);
+	    change_groups(params, inst_rc, inst_value);
+	  }
+
+	  return {
+	    run: run,
+	    get_duration: get_duration
+	  };
+		};
+
+/***/ },
+/* 140 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var demo_text = __webpack_require__(109);
+	var sim_click = __webpack_require__(112);
+
+	module.exports = function play_category() {
+	  /* eslint-disable */
+
+	  function run(params) {
+
+	    var text = 'Row and column categories\ncan be use to reorder\nby double-clicking';
+	    demo_text(params, text, 7000);
+
+	    var inst_element = d3.selectAll(params.root + ' .col_cat_super').filter(function () {
+	      return this.__data__ === 'cat-1';
+	    })[0];
+
+	    var tmp_pos = d3.select('.col_cat_super').attr('transform');
+	    var x_trans = Number(tmp_pos.split('(')[1].split(',')[0].replace(')', '')) + 20;
+	    var y_trans = Number(tmp_pos.split(',')[1].replace(')', ''));
+
+	    var wait_click = 4000;
+	    setTimeout(sim_click, wait_click, params, 'double', x_trans, y_trans);
+
+	    var wait_reorder = wait_click + 300;
+	    setTimeout(fire_double_click_row, wait_reorder, params, inst_element);
+	  }
+
+	  function get_duration() {
+	    return 8000;
+	  }
+
+	  function fire_double_click_row(params, inst_element) {
+	    $(inst_element).d3DblClick();
+	  }
+
+	  // allows doubleclicking on d3 element
+	  jQuery.fn.d3DblClick = function () {
+	    this.each(function (i, e) {
+	      var evt = document.createEvent("MouseEvents");
+	      evt.initMouseEvent("dblclick", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+	      e.dispatchEvent(evt);
+	    });
+	  };
+	  return {
+	    run: run,
+	    get_duration: get_duration
+	  };
+		};
+
+/***/ },
+/* 141 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var demo_text = __webpack_require__(109);
+	var toggle_play_button = __webpack_require__(142);
+
+	module.exports = function play_conclusion() {
+
+	  function run(params) {
+	    var text_1 = "Clustergrammer is built with gene\nexpression data in mind" + " and interfaces\nwith several Ma'ayan lab web tools";
+	    var text_2 = "The example data being visualized is\ngene expression data" + " obtained from the\nCancer Cell Line Encyclopedia";
+	    var text_3 = "For more information please view\nthe help documentation";
+
+	    setTimeout(demo_text, 0, params, text_1, 4500);
+	    setTimeout(demo_text, 4500, params, text_2, 4500);
+	    setTimeout(demo_text, 9000, params, text_3, 4500);
+
+	    setTimeout(reset_demo, 14000, params);
+	  }
+
+	  function reset_demo(params) {
+
+	    // prevent more than one demo from running at once
+	    d3.select(params.root + ' .play_button').classed('running_demo', false);
+
+	    toggle_play_button(params, true);
+	  }
+
+	  function get_duration() {
+	    return 12000;
+	  }
+
+	  return {
+	    run: run,
+	    get_duration: get_duration
+	  };
+		};
+
+/***/ },
+/* 142 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = function toggle_play_button(params, show) {
+
+	  if (show === false) {
+	    d3.select(params.root + ' .play_button').transition().duration(500).style('opacity', 0);
+	  } else {
+	    d3.select(params.root + ' .play_button').transition().duration(500).style('opacity', 1);
+
+	    $.unblockUI();
+	  }
+		};
+
+/***/ },
+/* 143 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var demo_text = __webpack_require__(109);
+	var sim_click = __webpack_require__(112);
+
+	module.exports = function play_menu_button() {
+	  /* eslint-disable */
+
+	  function run(params) {
+
+	    var text = 'View additional controls\nby clicking the menu button';
+	    demo_text(params, text, 4000);
+
+	    // var inst_element = get_row_element(params, 'EGFR');
+
+	    // var group_trans = d3.select(inst_element).attr('transform');
+
+	    // var container_trans = d3.select(params.root+' .clust_container')
+	    //   .attr('transform')
+	    //   .split(',')[1].replace(')','');
+
+	    // var x_trans = params.viz.norm_labels.width.row * 0.9;
+
+	    // var row_trans = group_trans.split(',')[1].replace(')','');
+	    // var y_trans = String(Number(row_trans) + Number(container_trans) +
+	    //   params.viz.rect_height/2);
+
+	    var x_trans = Number(d3.select(params.root + ' .expand_button').attr('x').replace('px', ''));
+	    var y_trans = Number(d3.select(params.root + ' .expand_button').attr('y').replace('px', ''));
+
+	    var wait_click = 3000;
+	    var wait_real_click = 3400;
+	    setTimeout(sim_click, wait_click, params, 'single', x_trans, y_trans);
+	    setTimeout(click_menu_button, wait_real_click, params);
+	  }
+
+	  function get_duration() {
+	    return 5000;
+	  }
+
+	  function click_menu_button(params) {
+	    $(params.root + ' .expand_button').d3Click();
+	  };
+
+	  function get_row_element(params, inst_row) {
+
+	    var inst_element = d3.selectAll(params.root + ' .row_label_group').filter(function () {
+	      var inst_data = this.__data__;
+	      return inst_data.name == inst_row;
+	    })[0][0];
+
+	    return inst_element;
+	  }
+
+	  // allows doubleclicking on d3 element
+	  jQuery.fn.d3Click = function () {
+	    this.each(function (i, e) {
+	      var evt = document.createEvent("MouseEvents");
+	      evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+	      e.dispatchEvent(evt);
+	    });
+	  };
+
+	  // allows doubleclicking on d3 element
+	  jQuery.fn.d3DblClick = function () {
+	    this.each(function (i, e) {
+	      var evt = document.createEvent("MouseEvents");
+	      evt.initMouseEvent("dblclick", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+	      e.dispatchEvent(evt);
+	    });
+	  };
+	  return {
+	    run: run,
+	    get_duration: get_duration
+	  };
+		};
+
+/***/ },
+/* 144 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var make_play_button = __webpack_require__(145);
+	var make_demo_text_containers = __webpack_require__(146);
+
+	module.exports = function ini_demo() {
+
+	  var cgm = this;
+	  var params = cgm.params;
+
+	  make_play_button(cgm);
+
+	  var demo_text_size = 30;
+	  make_demo_text_containers(params, demo_text_size);
+		};
+
+/***/ },
+/* 145 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var position_play_button = __webpack_require__(99);
+
+	module.exports = function make_play_button(cgm) {
+
+	  var params = cgm.params;
+
+	  if (d3.select(params.root + ' .play_button').empty()) {
+
+	    var play_button = d3.select(params.root + ' .viz_svg').append('g').classed('play_button', true).classed('running_demo', false);
+
+	    position_play_button(params);
+
+	    play_button.append('circle').style('r', 45).style('fill', 'white').style('stroke', 'black').style('stroke-width', '3px').style('opacity', 0.5);
+
+	    play_button.append('path').attr('d', function () {
+
+	      var tri_w = 40;
+	      var tri_h = 22;
+	      var tri_offset = 15;
+
+	      return 'M-' + tri_offset + ',-' + tri_h + ' l ' + tri_w + ',' + tri_h + ' l -' + tri_w + ',' + tri_h + ' z ';
+	    }).style('fill', 'black').style('opacity', 0.5);
+
+	    // mouseover behavior
+	    play_button.on('mouseover', function () {
+	      d3.select(this).select('path').style('fill', 'red').style('opacity', 1);
+
+	      d3.select(this).select('circle').style('opacity', 1);
+	    }).on('mouseout', function () {
+	      d3.select(this).select('path').style('fill', 'black').style('opacity', 0.5);
+	      d3.select(this).select('circle').style('opacity', 0.5);
+	    }).on('click', function () {
+	      // running from anonymous function to keep this defined correctly
+	      cgm.play_demo();
+	    });
+	  }
+		};
+
+/***/ },
+/* 146 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = function make_demo_text_containers(params, demo_text_size) {
+
+	  if (d3.select(params.root + ' .demo_group').empty()) {
+
+	    var clust_transform = d3.select(params.root + ' .clust_container').attr('transform');
+	    var clust_x = Number(clust_transform.split('(')[1].split(',')[0]);
+	    var clust_y = Number(clust_transform.split(',')[1].replace(')', ''));
+
+	    // demo text container
+	    var demo_group = d3.select(params.root + ' .viz_svg').append('g').classed('demo_group', true).attr('transform', function () {
+	      var pos_x = clust_x + 20;
+	      var pos_y = clust_y + 40;
+	      return 'translate(' + pos_x + ',' + pos_y + ')';
+	    });
+
+	    demo_group.append('rect').classed('rect_1', true);
+
+	    demo_group.append('rect').classed('rect_2', true);
+
+	    demo_group.append('rect').classed('rect_3', true);
+
+	    var shift_height = 1.3 * demo_text_size;
+
+	    demo_group.append('text').attr('id', 'text_1').attr('font-size', demo_text_size + 'px').attr('font-weight', 1000).attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif');
+
+	    demo_group.append('text').attr('id', 'text_2').attr('font-size', demo_text_size + 'px').attr('font-weight', 1000).attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('transform', function () {
+	      return 'translate(0,' + String(shift_height) + ')';
+	    });
+
+	    demo_group.append('text').attr('id', 'text_3').attr('font-size', demo_text_size + 'px').attr('font-weight', 1000).attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('transform', function () {
+	      return 'translate(0,' + String(2 * shift_height) + ')';
+	    });
+	  }
+		};
+
+/***/ },
+/* 147 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var ini_sidebar = __webpack_require__(134);
+	var set_up_filters = __webpack_require__(148);
+	var set_up_dendro_sliders = __webpack_require__(155);
+	var set_up_search = __webpack_require__(156);
+	var set_up_reorder = __webpack_require__(157);
+	var set_sidebar_ini_view = __webpack_require__(158);
+	var make_icons = __webpack_require__(159);
+	var make_modals = __webpack_require__(162);
+
+	/* Represents sidebar with controls.
+	 */
+	module.exports = function sidebar(cgm) {
+
+	  var params = cgm.params;
+
+	  var sidebar = d3.select(params.root + ' .sidebar_wrapper');
+
+	  // console.log('is_expand ',params.viz.is_expand)
+
+	  if (params.viz.is_expand) {
+	    sidebar.style('display', 'none');
+	  }
+
+	  sidebar.append('div').classed('title_section', true);
+
+	  if (params.sidebar.title != null) {
+	    sidebar.select('.title_section').append('h4')
+	    // .style('margin-left', params.sidebar.title_margin_left+'px')
+	    .style('margin-left', '20px').style('margin-top', '5px').style('margin-bottom', '0px').text(params.sidebar.title);
+	  }
+
+	  sidebar.append('div').classed('about_section', true);
+
+	  if (params.sidebar.about != null) {
+
+	    var about_section_width = params.sidebar.text.width - 5;
+	    sidebar.select('.about_section').append('h5').classed('sidebar_text', true).style('margin-left', '7px').style('margin-top', '5px').style('margin-bottom', '2px').style('width', about_section_width + 'px').style('text-align', 'justify').text(params.sidebar.about);
+	  }
+
+	  sidebar.append('div').classed('icons_section', true);
+
+	  if (params.sidebar.icons) {
+	    make_modals(params);
+	    make_icons(params, sidebar);
+	  }
+
+	  // // tmp sim mat button
+	  // sidebar
+	  //   .append('text')
+	  //   .text('here')
+	  //   .on('click',function(){
+	  //     console.log('change to sim_mat')
+	  //   })
+
+	  set_up_reorder(params, sidebar);
+
+	  set_up_search(sidebar, params);
+
+	  if (params.viz.show_dendrogram) {
+	    set_up_dendro_sliders(sidebar, params);
+	  }
+
+	  var possible_filter_names = _.keys(params.viz.possible_filters);
+
+	  if (possible_filter_names.indexOf('enr_score_type') > -1) {
+	    possible_filter_names.sort(function (a, b) {
+	      return a.toLowerCase().localeCompare(b.toLowerCase());
+	    });
+	  }
+
+	  _.each(possible_filter_names, function (inst_filter) {
+	    set_up_filters(cgm, inst_filter);
+	  });
+
+	  ini_sidebar(params);
+
+	  // disable for now
+	  // make_cat_keys(params);
+
+	  // when initializing the visualization using a view
+	  if (params.ini_view !== null) {
+
+	    set_sidebar_ini_view(params);
+
+	    params.ini_view = null;
+	  }
+
+	  return params;
+		};
+
+/***/ },
+/* 148 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var make_slider_filter = __webpack_require__(149);
+	var make_button_filter = __webpack_require__(154);
+
+	module.exports = function set_up_filters(cgm, filter_type) {
+
+	  var params = cgm.params;
+
+	  var div_filters = d3.select(params.root + ' .sidebar_wrapper').append('div').classed('div_filters', true);
+
+	  if (params.viz.possible_filters[filter_type] == 'numerical') {
+	    make_slider_filter(cgm, filter_type, div_filters);
+	  } else if (params.viz.possible_filters[filter_type] == 'categorical') {
+	    make_button_filter(cgm, filter_type, div_filters);
+	  }
+		};
+
+/***/ },
+/* 149 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var make_filter_title = __webpack_require__(150);
+	var apply_filter_slider = __webpack_require__(151);
+	var get_filter_default_state = __webpack_require__(6);
+	var get_subset_views = __webpack_require__(13);
+
+	module.exports = function make_slider_filter(cgm, filter_type, div_filters) {
+
+	  var params = cgm.params;
+
+	  var requested_view = {};
+
+	  var possible_filters = _.keys(params.viz.possible_filters);
+
+	  _.each(possible_filters, function (tmp_filter) {
+	    if (tmp_filter != filter_type) {
+	      var default_state = get_filter_default_state(params.viz.filter_data, tmp_filter);
+	      requested_view[tmp_filter] = default_state;
+	    }
+	  });
+
+	  var filter_title = make_filter_title(params, filter_type);
+
+	  div_filters.append('div').classed('title_' + filter_type, true).classed('sidebar_text', true).classed('slider_description', true).style('margin-top', '5px').style('margin-bottom', '3px').style('margin-left', '5px').text(filter_title.text + filter_title.state + filter_title.suffix);
+
+	  div_filters.append('div').classed('slider_' + filter_type, true).classed('slider', true).style('width', params.sidebar.slider.width + 'px').style('margin-left', params.sidebar.slider.margin_left + 'px').attr('current_state', filter_title.state);
+
+	  var views = params.network_data.views;
+
+	  var available_views = get_subset_views(params, views, requested_view);
+
+	  // sort available views by filter_type value
+	  available_views = available_views.sort(function (a, b) {
+	    return b[filter_type] - a[filter_type];
+	  });
+
+	  var inst_max = available_views.length - 1;
+
+	  $(params.root + ' .slider_' + filter_type).slider({
+	    value: 0,
+	    min: 0,
+	    max: inst_max,
+	    step: 1,
+	    stop: function stop() {
+	      params = apply_filter_slider(cgm, filter_type, available_views);
+	    }
+	  });
+		};
+
+/***/ },
+/* 150 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var get_filter_default_state = __webpack_require__(6);
+
+	module.exports = function make_filter_title(params, filter_type) {
+
+	  var filter_title = {};
+	  var title = {};
+	  var type = {};
+
+	  filter_title.state = get_filter_default_state(params.viz.filter_data, filter_type);
+
+	  type.top = filter_type.split('_')[0];
+	  type.node = filter_type.split('_')[1];
+	  type.measure = filter_type.split('_')[2];
+
+	  if (type.node === 'row') {
+	    title.node = 'rows';
+	  } else {
+	    title.node = 'columns';
+	  }
+
+	  if (type.top === 'N') {
+	    // filter_title.suffix = ' '+title.node;
+	    filter_title.suffix = '';
+	  }
+
+	  if (type.top === 'pct') {
+	    filter_title.suffix = '%';
+	  }
+
+	  if (type.measure == 'sum') {
+	    title.measure = 'sum';
+	  } else if (type.measure == 'var') {
+	    title.measure = 'variance';
+	  }
+
+	  if (type.measure === 'sum') {
+	    filter_title.text = 'Top ' + title.node + ' ' + title.measure + ': ';
+	  }
+
+	  if (type.measure === 'var') {
+	    filter_title.text = 'Top ' + title.node + ' ' + title.measure + ': ';
+	  }
+
+	  // Enrichr specific rules
+	  if (_.keys(params.viz.possible_filters).indexOf('enr_score_type') > -1) {
+	    if (type.node === 'col') {
+	      filter_title.text = 'Top Enriched Terms: ';
+	      filter_title.suffix = '';
+	    }
+	  }
+
+	  return filter_title;
+		};
+
+/***/ },
+/* 151 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var update_network = __webpack_require__(118);
+	var reset_other_filter_sliders = __webpack_require__(152);
+	var get_current_orders = __webpack_require__(153);
+	var make_requested_view = __webpack_require__(43);
+
+	module.exports = function apply_filter_slider(cgm, filter_type, available_views) {
+
+	  var params = cgm.params;
+
+	  // get value
+	  var inst_index = $(params.root + ' .slider_' + filter_type).slider("value");
+	  var inst_state = available_views[inst_index][filter_type];
+
+	  reset_other_filter_sliders(params, filter_type, inst_state);
+
+	  params = get_current_orders(params);
+
+	  var requested_view = {};
+	  requested_view[filter_type] = inst_state;
+
+	  requested_view = make_requested_view(params, requested_view);
+
+	  if (_.has(available_views[0], 'enr_score_type')) {
+	    var enr_state = d3.select(params.root + ' .toggle_enr_score_type').attr('current_state');
+
+	    requested_view.enr_score_type = enr_state;
+	  }
+
+	  params = update_network(cgm, requested_view);
+
+	  return params;
+		};
+
+/***/ },
+/* 152 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var make_filter_title = __webpack_require__(150);
 
 	module.exports = function reset_other_filter_sliders(params, filter_type, inst_state) {
 
@@ -8288,7 +8873,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 139 */
+/* 153 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8319,13 +8904,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 140 */
+/* 154 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var update_network = __webpack_require__(120);
-	var make_requested_view = __webpack_require__(42);
+	var update_network = __webpack_require__(118);
+	var make_requested_view = __webpack_require__(43);
 
 	module.exports = function make_button_filter(config, params, filter_type, div_filters) {
 
@@ -8377,7 +8962,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 141 */
+/* 155 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8407,7 +8992,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 142 */
+/* 156 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8424,7 +9009,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 143 */
+/* 157 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8534,12 +9119,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 144 */
+/* 158 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_filter_title = __webpack_require__(118);
+	var make_filter_title = __webpack_require__(150);
 
 	module.exports = function set_sidebar_ini_view(params) {
 
@@ -8580,13 +9165,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 145 */
+/* 159 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var save_svg_png = __webpack_require__(146);
-	var file_saver = __webpack_require__(147);
+	var save_svg_png = __webpack_require__(160);
+	var file_saver = __webpack_require__(161);
 
 	module.exports = function make_icons(params, sidebar) {
 
@@ -8643,7 +9228,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 146 */
+/* 160 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8849,7 +9434,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 147 */
+/* 161 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -9066,12 +9651,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 148 */
+/* 162 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_modal_skeleton = __webpack_require__(149);
+	var make_modal_skeleton = __webpack_require__(163);
 
 	module.exports = function ini_modals(params) {
 
@@ -9098,7 +9683,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 149 */
+/* 163 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9120,569 +9705,6 @@ var Clustergrammer =
 	  modal_skeleton.body = modal_content.append('div').classed('modal-body', true);
 
 	  return modal_skeleton;
-		};
-
-/***/ },
-/* 150 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var demo_text = __webpack_require__(108);
-	var highlight_sidebar_element = __webpack_require__(151);
-
-	module.exports = function play_reorder_buttons() {
-	  /* eslint-disable */
-
-	  function run(params) {
-
-	    var text = 'Reorder all rows and columns\nby clicking the reorder\n buttons';
-	    demo_text(params, text, 9000);
-
-	    setTimeout(highlight_sidebar_element, 3000, params, 'toggle_col_order');
-	    setTimeout(click_reorder_button, 3500, params, 'col', 'rank');
-
-	    setTimeout(highlight_sidebar_element, 7000, params, 'toggle_row_order');
-	    setTimeout(click_reorder_button, 7500, params, 'row', 'rank');
-	  }
-
-	  function get_duration() {
-	    return 11000;
-	  }
-
-	  function click_reorder_button(params, inst_rc, inst_order) {
-	    var inst_button = d3.selectAll('.toggle_' + inst_rc + '_order .btn').filter(function () {
-	      return this.__data__ == inst_order;
-	    })[0];
-
-	    $(inst_button).click();
-	  }
-
-	  return {
-	    run: run,
-	    get_duration: get_duration
-	  };
-		};
-
-/***/ },
-/* 151 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	module.exports = function highlight_sidebar_element(params, highlight_class) {
-	  var duration = arguments.length <= 2 || arguments[2] === undefined ? 4000 : arguments[2];
-
-
-	  if (highlight_class.indexOf('slider') < 0) {
-	    d3.select(params.root + ' .' + highlight_class).style('background', '#007f00').style('box-shadow', '0px 0px 10px 5px #007f00').transition().duration(1).delay(duration).style('background', '#FFFFFF').style('box-shadow', 'none');
-	  } else {
-	    d3.select(params.root + ' .' + highlight_class).style('box-shadow', '0px 0px 10px 5px #007f00').transition().duration(1).delay(duration).style('box-shadow', 'none');
-	  }
-		};
-
-/***/ },
-/* 152 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var demo_text = __webpack_require__(108);
-	var highlight_sidebar_element = __webpack_require__(151);
-	var two_translate_zoom = __webpack_require__(77);
-
-	module.exports = function play_search() {
-
-	  function run(params) {
-
-	    var text = 'Search for rows using\nthe search box';
-	    demo_text(params, text, 5000);
-
-	    var ini_delay = 2500;
-	    setTimeout(highlight_sidebar_element, ini_delay, params, 'gene_search_container');
-
-	    // manually mimic typing and autocomplete
-	    setTimeout(type_out_search, ini_delay + 1000, params, 'E');
-	    setTimeout(type_out_search, ini_delay + 1500, params, 'EG');
-	    setTimeout(type_out_search, ini_delay + 2000, params, 'EGF');
-	    setTimeout(type_out_search, ini_delay + 2500, params, 'EGFR');
-
-	    setTimeout(run_search, 5500, params);
-
-	    setTimeout(two_translate_zoom, 7500, params, 0, 0, 1);
-	  }
-
-	  function get_duration() {
-	    return 10000;
-	  }
-
-	  function type_out_search(params, inst_string) {
-	    $(params.root + ' .gene_search_box').val(inst_string);
-	    $(params.root + ' .gene_search_box').autocomplete("search", inst_string);
-	  }
-
-	  function run_search(params) {
-	    $(params.root + ' .submit_gene_button').click();
-	    $(params.root + ' .gene_search_box').autocomplete("search", '');
-	  }
-
-	  return {
-	    run: run,
-	    get_duration: get_duration
-	  };
-		};
-
-/***/ },
-/* 153 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var demo_text = __webpack_require__(108);
-	var highlight_sidebar_element = __webpack_require__(151);
-	var update_network = __webpack_require__(120);
-
-	module.exports = function play_filter() {
-
-	  function run(cgm) {
-	    var params = cgm.params;
-
-	    var text = 'Filter rows based on sum or\nvariance using the sliders';
-	    demo_text(params, text, 4000);
-
-	    var filter_type = 'N_row_sum';
-
-	    setTimeout(highlight_sidebar_element, 5000, params, 'slider_' + filter_type, 13000);
-
-	    text = 'Filter: Top 20 rows by sum';
-	    setTimeout(demo_text, 5000, params, text, 4000);
-	    setTimeout(run_update, 5300, cgm, filter_type, 20, 1);
-
-	    text = 'Filter: Top 10 rows by sum';
-	    setTimeout(demo_text, 10000, params, text, 4000);
-	    setTimeout(run_update, 10300, cgm, filter_type, 10, 2);
-
-	    text = 'Filter: All rows';
-	    setTimeout(demo_text, 15000, params, text, 4000);
-	    setTimeout(run_update, 15300, cgm, filter_type, 'all', 0);
-	  }
-
-	  function get_duration() {
-	    return 19500;
-	  }
-
-	  function run_update(cgm, filter_type, filter_value, filter_index) {
-
-	    var params = cgm.params;
-
-	    var requested_view = {};
-	    requested_view[filter_type] = filter_value;
-	    update_network(cgm, requested_view);
-
-	    // quick fix for slider
-	    $(params.root + ' .slider_' + filter_type).slider("value", filter_index);
-
-	    var unit_name;
-	    if (filter_type === 'N_row_sum') {
-	      unit_name = 'sum';
-	    } else {
-	      unit_name = 'variance';
-	    }
-
-	    d3.select(params.root + ' .title_' + filter_type).text('Top rows ' + unit_name + ': ' + filter_value);
-	  }
-
-	  return {
-	    run: run,
-	    get_duration: get_duration
-	  };
-		};
-
-/***/ },
-/* 154 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var sim_click = __webpack_require__(111);
-
-	module.exports = function quick_cluster() {
-	  /* eslint-disable */
-
-	  function run(params) {
-
-	    var x_trans = Number(d3.select(params.root + ' .expand_button').attr('x').replace('px', ''));
-	    var y_trans = Number(d3.select(params.root + ' .expand_button').attr('y').replace('px', ''));
-
-	    var wait_click = 0;
-	    var wait_real_click = 400;
-	    setTimeout(sim_click, wait_click, params, 'single', x_trans, y_trans);
-	    setTimeout(click_menu_button, wait_real_click, params);
-
-	    setTimeout(reset_cluster_order, 1500, params);
-	  }
-
-	  function get_duration() {
-	    return 3500;
-	  }
-
-	  function click_menu_button(params) {
-	    $(params.root + ' .expand_button').d3Click();
-	  };
-
-	  function reset_cluster_order(params) {
-	    click_reorder_button(params, 'row', 'clust');
-	    click_reorder_button(params, 'col', 'clust');
-	  }
-
-	  function click_reorder_button(params, inst_rc, inst_order) {
-	    var inst_button = d3.selectAll('.toggle_' + inst_rc + '_order .btn').filter(function () {
-	      return this.__data__ == inst_order;
-	    })[0];
-
-	    $(inst_button).click();
-	  }
-
-	  // allows doubleclicking on d3 element
-	  jQuery.fn.d3Click = function () {
-	    this.each(function (i, e) {
-	      var evt = document.createEvent("MouseEvents");
-	      evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-	      e.dispatchEvent(evt);
-	    });
-	  };
-
-	  return {
-	    run: run,
-	    get_duration: get_duration
-	  };
-		};
-
-/***/ },
-/* 155 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var demo_text = __webpack_require__(108);
-	var highlight_sidebar_element = __webpack_require__(151);
-	var change_groups = __webpack_require__(115);
-
-	module.exports = function play_groups() {
-	  /* eslint-disable */
-
-	  function run(params) {
-
-	    var text = 'Identify row and column groups\nof varying sizes using ' + ' the\nsliders and dendrogram';
-	    demo_text(params, text, 10000);
-
-	    setTimeout(highlight_sidebar_element, 3000, params, 'slider_col', 7000);
-
-	    setTimeout(change_group_slider, 4000, params, 'row', 3);
-	    setTimeout(change_group_slider, 5000, params, 'row', 4);
-	    setTimeout(change_group_slider, 6000, params, 'row', 5);
-	    setTimeout(change_group_slider, 7000, params, 'row', 6);
-	    setTimeout(change_group_slider, 8000, params, 'row', 7);
-	    setTimeout(change_group_slider, 9000, params, 'row', 5);
-	  }
-
-	  function get_duration() {
-	    return 11000;
-	  }
-
-	  function change_group_slider(params, inst_rc, inst_value) {
-	    $(cgm.params.root + ' .slider_col').slider("value", inst_value / 10);
-	    change_groups(params, inst_rc, inst_value);
-	  }
-
-	  return {
-	    run: run,
-	    get_duration: get_duration
-	  };
-		};
-
-/***/ },
-/* 156 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var demo_text = __webpack_require__(108);
-	var sim_click = __webpack_require__(111);
-
-	module.exports = function play_category() {
-	  /* eslint-disable */
-
-	  function run(params) {
-
-	    var text = 'Row and column categories\ncan be use to reorder\nby double-clicking';
-	    demo_text(params, text, 7000);
-
-	    var inst_element = d3.selectAll(params.root + ' .col_cat_super').filter(function () {
-	      return this.__data__ === 'cat-1';
-	    })[0];
-
-	    var tmp_pos = d3.select('.col_cat_super').attr('transform');
-	    var x_trans = Number(tmp_pos.split('(')[1].split(',')[0].replace(')', '')) + 20;
-	    var y_trans = Number(tmp_pos.split(',')[1].replace(')', ''));
-
-	    var wait_click = 4000;
-	    setTimeout(sim_click, wait_click, params, 'double', x_trans, y_trans);
-
-	    var wait_reorder = wait_click + 300;
-	    setTimeout(fire_double_click_row, wait_reorder, params, inst_element);
-	  }
-
-	  function get_duration() {
-	    return 8000;
-	  }
-
-	  function fire_double_click_row(params, inst_element) {
-	    $(inst_element).d3DblClick();
-	  }
-
-	  // allows doubleclicking on d3 element
-	  jQuery.fn.d3DblClick = function () {
-	    this.each(function (i, e) {
-	      var evt = document.createEvent("MouseEvents");
-	      evt.initMouseEvent("dblclick", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-	      e.dispatchEvent(evt);
-	    });
-	  };
-	  return {
-	    run: run,
-	    get_duration: get_duration
-	  };
-		};
-
-/***/ },
-/* 157 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var demo_text = __webpack_require__(108);
-	var toggle_play_button = __webpack_require__(160);
-
-	module.exports = function play_conclusion() {
-
-	  function run(params) {
-	    var text_1 = "Clustergrammer is built with gene\nexpression data in mind" + " and interfaces\nwith several Ma'ayan lab web tools";
-	    var text_2 = "The example data being visualized is\ngene expression data" + " obtained from the\nCancer Cell Line Encyclopedia";
-	    var text_3 = "For more information please view\nthe help documentation";
-
-	    setTimeout(demo_text, 0, params, text_1, 4500);
-	    setTimeout(demo_text, 4500, params, text_2, 4500);
-	    setTimeout(demo_text, 9000, params, text_3, 4500);
-
-	    setTimeout(reset_demo, 14000, params);
-	  }
-
-	  function reset_demo(params) {
-
-	    // prevent more than one demo from running at once
-	    d3.select(params.root + ' .play_button').classed('running_demo', false);
-
-	    toggle_play_button(params, true);
-	  }
-
-	  function get_duration() {
-	    return 12000;
-	  }
-
-	  return {
-	    run: run,
-	    get_duration: get_duration
-	  };
-		};
-
-/***/ },
-/* 158 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	module.exports = function make_play_button(cgm) {
-
-	  var params = cgm.params;
-
-	  if (d3.select(params.root + ' .play_button').empty()) {
-
-	    var play_button = d3.select(params.root + ' .viz_svg').append('g').classed('play_button', true).classed('running_demo', false);
-
-	    var clust_transform = d3.select(params.root + ' .clust_container').attr('transform');
-	    var clust_x = Number(clust_transform.split('(')[1].split(',')[0]);
-	    var clust_y = Number(clust_transform.split(',')[1].replace(')', ''));
-
-	    var trans_x = clust_x + params.viz.clust.dim.width / 2;
-	    var trans_y = clust_y + params.viz.clust.dim.height / 2;
-
-	    play_button.attr('transform', function () {
-	      return 'translate(' + trans_x + ',' + trans_y + ')';
-	    });
-
-	    play_button.append('circle').style('r', 45).style('fill', 'white').style('stroke', 'black').style('stroke-width', '3px').style('opacity', 0.5);
-
-	    play_button.append('path').attr('d', function () {
-
-	      var tri_w = 40;
-	      var tri_h = 22;
-	      var tri_offset = 15;
-
-	      return 'M-' + tri_offset + ',-' + tri_h + ' l ' + tri_w + ',' + tri_h + ' l -' + tri_w + ',' + tri_h + ' z ';
-	    }).style('fill', 'black').style('opacity', 0.5);
-
-	    // mouseover behavior
-	    play_button.on('mouseover', function () {
-	      d3.select(this).select('path').style('fill', 'red').style('opacity', 1);
-
-	      d3.select(this).select('circle').style('opacity', 1);
-	    }).on('mouseout', function () {
-	      d3.select(this).select('path').style('fill', 'black').style('opacity', 0.5);
-	      d3.select(this).select('circle').style('opacity', 0.5);
-	    }).on('click', function () {
-	      // running from anonymous function to keep this defined correctly
-	      cgm.play_demo();
-	    });
-	  }
-		};
-
-/***/ },
-/* 159 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var make_play_button = __webpack_require__(158);
-	var make_demo_text_containers = __webpack_require__(105);
-
-	module.exports = function ini_demo() {
-
-	  var cgm = this;
-	  var params = cgm.params;
-
-	  make_play_button(cgm);
-
-	  var demo_text_size = 30;
-	  make_demo_text_containers(params, demo_text_size);
-		};
-
-/***/ },
-/* 160 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	module.exports = function toggle_play_button(params, show) {
-
-	  if (show === false) {
-	    d3.select(params.root + ' .play_button').transition().duration(500).style('opacity', 0);
-	  } else {
-	    d3.select(params.root + ' .play_button').transition().duration(500).style('opacity', 1);
-
-	    $.unblockUI();
-	  }
-		};
-
-/***/ },
-/* 161 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var demo_text = __webpack_require__(108);
-	var sim_click = __webpack_require__(111);
-
-	module.exports = function play_menu_button() {
-	  /* eslint-disable */
-
-	  function run(params) {
-
-	    var text = 'View additional controls\nby clicking the menu button';
-	    demo_text(params, text, 4000);
-
-	    // var inst_element = get_row_element(params, 'EGFR');
-
-	    // var group_trans = d3.select(inst_element).attr('transform');
-
-	    // var container_trans = d3.select(params.root+' .clust_container')
-	    //   .attr('transform')
-	    //   .split(',')[1].replace(')','');
-
-	    // var x_trans = params.viz.norm_labels.width.row * 0.9;
-
-	    // var row_trans = group_trans.split(',')[1].replace(')','');
-	    // var y_trans = String(Number(row_trans) + Number(container_trans) +
-	    //   params.viz.rect_height/2);
-
-	    var x_trans = Number(d3.select(params.root + ' .expand_button').attr('x').replace('px', ''));
-	    var y_trans = Number(d3.select(params.root + ' .expand_button').attr('y').replace('px', ''));
-
-	    var wait_click = 3000;
-	    var wait_real_click = 3400;
-	    setTimeout(sim_click, wait_click, params, 'single', x_trans, y_trans);
-	    setTimeout(click_menu_button, wait_real_click, params);
-	  }
-
-	  function get_duration() {
-	    return 5000;
-	  }
-
-	  function click_menu_button(params) {
-	    $(params.root + ' .expand_button').d3Click();
-	  };
-
-	  function get_row_element(params, inst_row) {
-
-	    var inst_element = d3.selectAll(params.root + ' .row_label_group').filter(function () {
-	      var inst_data = this.__data__;
-	      return inst_data.name == inst_row;
-	    })[0][0];
-
-	    return inst_element;
-	  }
-
-	  // allows doubleclicking on d3 element
-	  jQuery.fn.d3Click = function () {
-	    this.each(function (i, e) {
-	      var evt = document.createEvent("MouseEvents");
-	      evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-	      e.dispatchEvent(evt);
-	    });
-	  };
-
-	  // allows doubleclicking on d3 element
-	  jQuery.fn.d3DblClick = function () {
-	    this.each(function (i, e) {
-	      var evt = document.createEvent("MouseEvents");
-	      evt.initMouseEvent("dblclick", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-	      e.dispatchEvent(evt);
-	    });
-	  };
-	  return {
-	    run: run,
-	    get_duration: get_duration
-	  };
-		};
-
-/***/ },
-/* 162 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	module.exports = function check_nodes_for_categories(nodes) {
-
-	  var super_string = ': ';
-	  var has_cat = true;
-
-	  _.each(nodes, function (inst_node) {
-	    if (inst_node.name.indexOf(super_string) < 0) {
-	      has_cat = false;
-	    }
-	  });
-
-	  return has_cat;
 		};
 
 /***/ }

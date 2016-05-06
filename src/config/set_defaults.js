@@ -47,7 +47,7 @@ module.exports = function set_defaults(){
     resize:true,
     clamp_opacity:0.85,
     expand_button:true,
-    max_allow_fs: 20,
+    max_allow_fs: 20
   };
 
   return defaults;

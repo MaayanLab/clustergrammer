@@ -45,8 +45,10 @@ module.exports = function play_demo(){
     // intro text 
     var inst_time = 750;
 
-    
-    inst_time = run_segment(params, inst_time, quick_cluster);
+    if (cgm.params.viz.is_expand === false){
+        inst_time = run_segment(params, inst_time, quick_cluster);
+        inst_time = inst_time - 1500;
+    }
 
     // clustergram interaction 
     ///////////////////////////////////
