@@ -55,11 +55,21 @@ module.exports = function(params, inst_order, tmp_row_col) {
       .attr('transform', function(d) {
         var tmp_index = _.indexOf(row_nodes_names, d.name);
         return 'translate(0,' + params.viz.y_scale(tmp_index) + ')';
-        })
+        });
+
+    t.selectAll('.row')
       .selectAll('.tile')
       .attr('transform', function(d) {
         return 'translate(' + params.viz.x_scale(d.pos_x) + ' , 0)';
       });
+
+    t.selectAll('.row')
+      .selectAll('.tile_circle')
+      .attr('transform', function(d) {
+        var x_pos = params.viz.x_scale(d.pos_x) + 0.5*params.viz.border_width + params.viz.rect_width/4;
+        var y_pos = 0.5*params.viz.border_width/params.viz.zoom_switch + params.viz.rect_height/4;
+        return 'translate(' + x_pos + ' , '+y_pos+')';
+      });      
 
     t.selectAll('.tile_up')
       .attr('transform', function(d) {

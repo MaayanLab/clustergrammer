@@ -44,7 +44,8 @@ module.exports = function make_simple_rows(params, ini_inp_row_data, tip, row_se
     });
 
 
-  // // generate tiles in the current row
+  // // tile circles 
+  // /////////////////////////////
   // var tile = d3.select(row_selection)
   //   .selectAll('circle')
   //   .data(row_values, function(d){ return d.col_name; })
@@ -53,7 +54,7 @@ module.exports = function make_simple_rows(params, ini_inp_row_data, tip, row_se
   //   .attr('cx', params.viz.rect_height/4)
   //   .attr('cy', params.viz.rect_height/4)
   //   .attr('r', params.viz.rect_height/4)
-  //   // .attr('class', 'tile row_tile_highlight')
+  //   .attr('class', 'tile_circle')
   //   // .attr('width', params.viz.rect_width/2)
   //   // .attr('height', params.viz.rect_height/2)
   //   // // switch the color based on up/dn value

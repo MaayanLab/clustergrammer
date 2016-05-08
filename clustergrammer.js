@@ -2723,7 +2723,8 @@ var Clustergrammer =
 	    return 'translate(' + x_pos + ',' + y_pos + ')';
 	  });
 
-	  // // generate tiles in the current row
+	  // // tile circles
+	  // /////////////////////////////
 	  // var tile = d3.select(row_selection)
 	  //   .selectAll('circle')
 	  //   .data(row_values, function(d){ return d.col_name; })
@@ -2732,7 +2733,7 @@ var Clustergrammer =
 	  //   .attr('cx', params.viz.rect_height/4)
 	  //   .attr('cy', params.viz.rect_height/4)
 	  //   .attr('r', params.viz.rect_height/4)
-	  //   // .attr('class', 'tile row_tile_highlight')
+	  //   .attr('class', 'tile_circle')
 	  //   // .attr('width', params.viz.rect_width/2)
 	  //   // .attr('height', params.viz.rect_height/2)
 	  //   // // switch the color based on up/dn value
@@ -4686,8 +4687,16 @@ var Clustergrammer =
 	    t.selectAll('.row').attr('transform', function (d) {
 	      var tmp_index = _.indexOf(row_nodes_names, d.name);
 	      return 'translate(0,' + params.viz.y_scale(tmp_index) + ')';
-	    }).selectAll('.tile').attr('transform', function (d) {
+	    });
+
+	    t.selectAll('.row').selectAll('.tile').attr('transform', function (d) {
 	      return 'translate(' + params.viz.x_scale(d.pos_x) + ' , 0)';
+	    });
+
+	    t.selectAll('.row').selectAll('.tile_circle').attr('transform', function (d) {
+	      var x_pos = params.viz.x_scale(d.pos_x) + 0.5 * params.viz.border_width + params.viz.rect_width / 4;
+	      var y_pos = 0.5 * params.viz.border_width / params.viz.zoom_switch + params.viz.rect_height / 4;
+	      return 'translate(' + x_pos + ' , ' + y_pos + ')';
 	    });
 
 	    t.selectAll('.tile_up').attr('transform', function (d) {
