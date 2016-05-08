@@ -13,7 +13,7 @@ module.exports = function dendro_shade_bars(params, inst_selection, inst_rc, ins
     d3.select(params.root+' .clust_group')
       .append('rect')
       .style('width', params.viz.clust.dim.width+'px')
-      .style('height',inst_data.pos_top+'px')
+      .style('height', inst_data.pos_top+'px')
       .style('fill','black')
       .style('opacity', inst_opacity)
       .classed('dendro_shadow',true);

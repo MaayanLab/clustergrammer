@@ -3714,6 +3714,8 @@ var Clustergrammer =
 	    }
 	    d3.selectAll(params.root + ' .dendro_shadow').remove();
 	    dendro_mouseout(this);
+	  }).on('click', function (d) {
+	    console.log(d.all_names);
 	  });
 
 	  var triangle_opacity;
@@ -3760,7 +3762,10 @@ var Clustergrammer =
 	      triangle_info[tmp_group].pos_bot = inst_bot;
 	      triangle_info[tmp_group].pos_mid = (inst_top + inst_bot) / 2;
 	      triangle_info[tmp_group].name = tmp_group;
+	      triangle_info[tmp_group].all_names = [];
 	    }
+
+	    triangle_info[tmp_group].all_names.push(d.name);
 
 	    if (inst_top < triangle_info[tmp_group].pos_top) {
 	      triangle_info[tmp_group].name_top = d.name;
@@ -3945,6 +3950,8 @@ var Clustergrammer =
 	    }
 	    d3.selectAll(params.root + ' .dendro_shadow').remove();
 	    dendro_mouseout(this);
+	  }).on('click', function (d) {
+	    console.log(d.all_names);
 	  });
 
 	  var triangle_opacity;
@@ -3992,7 +3999,10 @@ var Clustergrammer =
 	      triangle_info[tmp_group].pos_bot = inst_bot;
 	      triangle_info[tmp_group].pos_mid = (inst_top + inst_bot) / 2;
 	      triangle_info[tmp_group].name = tmp_group;
+	      triangle_info[tmp_group].all_names = [];
 	    }
+
+	    triangle_info[tmp_group].all_names.push(d.name);
 
 	    if (inst_top < triangle_info[tmp_group].pos_top) {
 	      triangle_info[tmp_group].name_top = d.name;

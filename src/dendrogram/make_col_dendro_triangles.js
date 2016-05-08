@@ -63,6 +63,9 @@ module.exports = function make_col_dendro_triangles(params, is_change_group = fa
       d3.selectAll(params.root+' .dendro_shadow')
         .remove();
       dendro_mouseout(this);
+    })
+    .on('click', function(d){
+      console.log(d.all_names);
     });
 
   var triangle_opacity;
