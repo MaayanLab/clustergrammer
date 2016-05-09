@@ -1,6 +1,6 @@
 # clustergrammer.js 
 
-This is a clustergram implemented in D3.js. I started from the example http://bost.ocks.org/mike/miserables/ and added the following features 
+Clustergrammer.js is a clustergram/heatmap visualization implemented in D3.js. The project started from the example http://bost.ocks.org/mike/miserables/ and added the following features 
   
 - zooming/panning
 - more ordering options 
