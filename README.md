@@ -3,19 +3,14 @@
 Clustergrammer.js is a clustergram/heatmap visualization implemented in D3.js. The project started from the example http://bost.ocks.org/mike/miserables/ and added the following features 
   
 - zooming/panning
-- more ordering options 
+- additional ordering options 
 - row searching
-- dendrogram-like colorbar
-- optional value bars for col/row nodes 
-- optional split tiles and highlighting tiles
+- dendrogram
+- row/column categories 
 - row filtering
+- optional split tiles and highlighting tiles
 
-The clustergrammer.js repo is being hosted on github and gist and a live example of the visualization can be found on blocks. 
-- github: https://github.com/cornhundred/clustergrammer.js 
-- gist: https://gist.github.com/cornhundred/c56253a5f3579a63406f
-- blocks http://bl.ocks.org/cornhundred/c56253a5f3579a63406f
-
-The source code is under the src directory and webpack module developer is being used to make clustergrammer.js. 
+The source code is under the src directory and webpack module developer is being used to make clustergrammer.js. The python module, clustergrammer.py, takes an input matrix, e.g. a matrix in a tsv file, clusters the matrix, and makes the visualization json for clustergrammer.js. 
 
 # Dependencies
 
@@ -23,8 +18,12 @@ clustergrammer.js requires:
 - jQuery
 - jQuery UI
 - Underscore.js
-- Underscore.Strings.js
 - Bootstrap
+
+clustergrammer.py requires
+- numpy
+- scipy 
+- pandas 
 
 # clustergrammer.js API
 
