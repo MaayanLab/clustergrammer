@@ -1,4 +1,4 @@
-module.exports = function make_skeleton(params, modal_class){
+module.exports = function make_modal_skeleton(params, modal_class){
 
   var modal_skeleton = {};
 

@@ -65,7 +65,16 @@ module.exports = function make_col_dendro_triangles(params, is_change_group = fa
       dendro_mouseout(this);
     })
     .on('click', function(d){
-      console.log(d.all_names);
+      
+      d3.select(params.root+' .dendro_info')
+        .select('.modal-title')
+        .html('Columns in Group');
+
+      $(params.root+' .dendro_info .current_names')
+        .val(d.all_names.join(', '))
+
+      $(params.root+' .dendro_info').modal('toggle');
+
     });
 
   var triangle_opacity;

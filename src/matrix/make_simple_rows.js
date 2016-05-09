@@ -73,8 +73,10 @@ module.exports = function make_simple_rows(params, ini_inp_row_data, tip, row_se
   //     var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
   //     if (output_opacity < 0.3){
   //       output_opacity = 0;
+  //     } else if (output_opacity < 0.6){
+  //       output_opacity = 0.35;
   //     } else {
-  //       output_opacity = 0.75;
+  //       output_opacity = 1;
   //     }
   //     return output_opacity;
   //     // return 0.1;
