@@ -1,13 +1,13 @@
 # clustergrammer.js 
 
-Clustergrammer.js is a clustergram/heatmap visualization implemented in D3.js. The project started from the example http://bost.ocks.org/mike/miserables/ and added the following features 
+Clustergrammer.js is a clustergram/heatmap visualization implemented in D3.js. The project started from the example http://bost.ocks.org/mike/miserables/. Some of the features that have been added include:
   
 - zooming/panning
 - additional ordering options 
-- row searching
 - dendrogram
-- row/column categories 
 - row filtering
+- row searching
+- row/column categories 
 - optional split tiles and highlighting tiles
 
 The source code is under the src directory and webpack module developer is being used to make clustergrammer.js. The python module, clustergrammer.py, takes an input matrix, e.g. a matrix in a tsv file, clusters the matrix, and makes the visualization json for clustergrammer.js. 
@@ -33,27 +33,12 @@ clustergrammer.py requires
 To make a clustergram pass in an object with your network (network_data) and other optinal arguments. An example is in load_clustergram.js and shown below 
 
 ```
-// define arguments object 
-var arguments_obj = {
-  'network_data': network_data,
-  'svg_div_id': 'svg_div',
-  'row_label':'Row-Data-Name',
-  'col_label':'Column-Data-Name',
-  'outer_margins': outer_margins,
-  'opacity_scale':'log',
-  'input_domain':7,
-  'title_tile': true,
-  'click_tile': click_tile_callback,
-  'click_group': click_group_callback
-  'resize':false
-  'order':'rank'
-  'transpose':true,
-  'zoom':false,
-  'tile_colors':['#ED9124','#1C86EE'],
-  'background_color':'white',
+var args = {
+  'root':'#id_of_container',
+  'network_data': network_data
 };
 
-Clustergrammer( arguments_obj );
+var cgm = Clustergrammer(args);
 ``` 
 
 ### network_data json
