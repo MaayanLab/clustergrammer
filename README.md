@@ -54,6 +54,8 @@ This will make a clustergram visualization in the container referred to as root 
 
 ## Optional Arguments
 
+These arguments can also be passsed to Clustergrammer as part of the args object. 
+
 ##### row_label and col_label
 Pass strings that will be used as 'super-labels' for the rows and columns. 
 
@@ -80,16 +82,27 @@ This determines the colors that indicate positive and negative values, respectiv
 
 ##### row_order and col_order
 This sets the initial ordering of rows and columns. The default is clust. The options are 
-* alpha = ordering based on names of rows or columns 
-  * clust - ordering based on clustering (covered [here](clustergrammer-python-module))
-  * rank - ordering based on the sum of the values in row/column 
-  * rank_var - ordering based on the variance of the values in the row/column 
+  * alpha: ordering based on names of rows or columns 
+  * clust: ordering based on clustering (covered [here](clustergrammer-python-module))
+  * rank: ordering based on the sum of the values in row/column 
+  * rank_var: ordering based on the variance of the values in the row/column 
 
 ##### ini_view
 This defines the initial view of the clustergram. A clutergram can have many views available (discussed [here](#making-additional-views)) and these views generally consist of filtered versions of the clustergram. 
 
+##### sidebar_width
+The width, in pixels, of the sidebar. The default is 150px. 
+
+##### sidebar_icons
+This determines whether the sidebar will have icons for help, share, and screenshot. The default is true. 
+
+##### max_allow_fs
+This sets the maximum allowed font-size. The default is set to 16px. 
 
 # Input Matrix Format
+Clustergrammer.js requires a specific json [format](#clustergrammer-json-format) to make the visualization and you can use the python module [clustergrammer.py](#clustergrammer-python-module) to create this json from an input tab-separated matrix file in the following format: 
+
+
 
 
 # Clustergrammer JSON Format
