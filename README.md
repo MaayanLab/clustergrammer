@@ -1,12 +1,12 @@
 # clustergrammer.js
 
-Clustergrammer.js is an interactive clustergram/heatmap matrix visualization tool implemented in D3.js. A live example of Clustergrammer.js that includes an interactive demo can be seen [here](http://amp.pharm.mssm.edu/clustergrammer/) and a screenshot is show below.  
+Clustergrammer.js is an interactive clustergram/heatmap matrix visualization tool implemented in D3.js. A live example that includes an interactive demo can be seen [here](http://amp.pharm.mssm.edu/clustergrammer/) and a screenshot is show below.  
 
 [![demo_screenshot](img/demo_screenshot.png "demo_screenshot.png")](http://amp.pharm.mssm.edu/clustergrammer/)
 
 The project began as an extension of this example http://bost.ocks.org/mike/miserables/. 
 
-Some of clustergrammer's features include:
+Some of clustergrammer's interacive features include:
   
 - zooming/panning
 - row/column reordering based on sum/variance/clustering etc.
@@ -18,7 +18,7 @@ Some of clustergrammer's features include:
 
 Clustergrammer.js' source code is under the src directory and Webpack Module Developer is being used to make clustergrammer.js. 
 
-The easiest way to visualize a matrix of your own data (see [matrix format](#input-matrix-format)) is to use the Python module, [clustergrammer.py](#clustergrammer-python-module). Clustergrammer.py, takes a tab-separated matrix file as input, calculates clustering, and generates the visualization json for clustergrammer.js (see [example workflow](#example-workflow)). Users can also generate the visualization json using their own script as long as they adhere to the [format](#clustergrammer-json-format).
+The easiest way to visualize a matrix of your own data (see [matrix format](#input-matrix-format)) is to use the Python module, [clustergrammer.py](#clustergrammer-python-module). This module takes a tab-separated matrix file as input, calculates clustering, and generates the visualization json for clustergrammer.js (see [example workflow](#example-workflow)). Users can also generate the visualization json on their own using another programming language (e.g. Matlab) as long as they adhere to the [format](#clustergrammer-json-format).
 
 Clustergrammer is designed to be a reusable chart and has been integrated into several [Ma'ayan lab](http://icahn.mssm.edu/research/labs/maayan-laboratory) web tools including:
 
@@ -32,6 +32,7 @@ Clustergrammer is designed to be a reusable chart and has been integrated into s
 # Dependencies
 
 clustergrammer.js requires:
+- D3.js
 - jQuery
 - jQuery UI
 - Underscore.js
@@ -45,7 +46,7 @@ clustergrammer.py requires
 # clustergrammer API
 
 ## Required Arguments 
-To make a clustergram pass an arguments object with the following required values to Clustergrammer:
+To make a visualization pass an arguments object with the following required values to Clustergrammer:
 ```
 var args = {
   'root':'#id_of_container',
@@ -54,7 +55,21 @@ var args = {
 
 var cgm = Clustergrammer(args);
 ``` 
-This will make a clustergram visualization in the container referred to as root (specified using a css id selector) using the visualization json (referred to as netowrk_data). The visualization json format is defined [here](#clustergrammer-json-format).
+This will make a clustergram visualization in the 'root' container using the visualization json (referred to as netowrk_data). The user must generate the root container and define its width and height, which will be used to define the visualization size. Resizing the container can be done using Clustergrammer's resize_viz() function. An example is shown below. 
+
+```
+d3.select(window).on('resize',function(){
+
+  // first, resize the container when the screen size changes
+
+  // then, resize the visualization to match the container's new size
+  cgm.resize_viz();
+
+
+});
+```
+
+The visualization json format is defined [here](#clustergrammer-json-format). Clustergrammer can make more than one visualization per page, but each visualization requires its own container. The visualization will be 
 
 ## Optional Arguments
 
