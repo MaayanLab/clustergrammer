@@ -145,7 +145,7 @@ This Excel screenshot shows a single row category being added as an additional c
 The 'title' of row/column names and categories can also be included by prefixing each string with 'Title: ' - e.g. the title of the column names is 'Cell Line' and the title of the column categories is 'Gender'. 
 
 ## Matrix Examples
-Several examples can be found in the [txt/]('/txt/rc_two_cats.tsv') directory. 
+Several examples can be found in the [txt/](txt/rc_two_cats.tsv) directory. 
 
 # Clustergrammer JSON Format
 Your network (called network_data here) must be in the following json format - make_clust.py and clustergrammer.py can be used to make a json of this format from a matrix given in tab separated format (see make_clust.py, which produces example_network.json from example_tsv_network.txt)
