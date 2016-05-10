@@ -102,12 +102,12 @@ This sets the maximum allowed font-size. The default is set to 16px.
 # Input Matrix Format
 Clustergrammer.js requires a specific json [format](#clustergrammer-json-format) to make the visualization and you can use the python module [clustergrammer.py](#clustergrammer-python-module) to create this json from an input tab-separated matrix file in the following format: 
 
-'''
+```
        Col-A   Col-B   Col-C
 Row-A   0.0    -0.1     1.0
 Row-B   3.0     0.0     8.0
 Row-C   0.2     0.1     2.5
-'''
+```
 
 # Clustergrammer JSON Format
 Your network (called network_data here) must be in the following json format - make_clust.py and clustergrammer.py can be used to make a json of this format from a matrix given in tab separated format (see make_clust.py, which produces example_network.json from example_tsv_network.txt)
