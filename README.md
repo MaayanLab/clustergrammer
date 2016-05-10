@@ -55,21 +55,28 @@ var args = {
 
 var cgm = Clustergrammer(args);
 ``` 
-This will make a clustergram visualization in the 'root' container using the visualization json (referred to as netowrk_data). The user must generate the root container and define its width and height, which will be used to define the visualization size. Resizing the container can be done using Clustergrammer's resize_viz() function. An example is shown below. 
+This will make a clustergram visualization in the 'root' container using the [visualization json](#clustergrammer-json-format) (referred to as netowrk_data). The user must generate the root container and define its width and height, which will be used to define the visualization size. 
+
+Resizing the visualization can be done by first resizing the container and then resizing the clustergram using Clustergrammer's resize_viz() function. An example of resizing when the window change size is shown below. 
 
 ```
-d3.select(window).on('resize',function(){
+d3.select(window).on('resize', function(){
 
   // first, resize the container when the screen size changes
+  your_function_to_resize_the_container();
 
   // then, resize the visualization to match the container's new size
   cgm.resize_viz();
 
-
 });
 ```
 
-The visualization json format is defined [here](#clustergrammer-json-format). Clustergrammer can make more than one visualization per page, but each visualization requires its own container. The visualization will be 
+The visualization json format is defined [here](#clustergrammer-json-format). Clustergrammer can make more than one visualization per page, but each visualization requires its own container. 
+
+## API Examples
+The page [index.html](index.html) and the corresponding loading scripg load_clustergram.js show an example of how to make a full-screen visualization that resizes with the window. 
+
+The page multiple_clust.html and corresponding loading script load_multiple_clustergrams.js show an example of visualizing multiple clustergrams on one page.  
 
 ## Optional Arguments
 
