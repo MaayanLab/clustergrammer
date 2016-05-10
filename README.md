@@ -51,7 +51,7 @@ var args = {
 var cgm = Clustergrammer(args);
 ``` 
 
-There are two values that are required in the arguments object: 1) the id of the html container where the visualization will be made, and 2) the visualization json (referred to as network_data here). The visualization-json format is covered [here](#clustergrammer.js-json-format).
+There are two values that are required in the arguments object: 1) the id of the html container where the visualization will be made, and 2) the visualization json (referred to as network_data here). The visualization-json format is covered [here](#clustergrammerjs-json-format).
 
 
 
