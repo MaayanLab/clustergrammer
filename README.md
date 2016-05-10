@@ -14,7 +14,7 @@ Some of clustergrammer's features include:
 
 Clustergrammer.js' source code is under the src directory and Webpack Module Developer is being used to make clustergrammer.js. 
 
-The easiest way to visualize a matrix of your own data with clustergrammer.js is to use the Python module, clustergrammer.py. Clustergrammer.py, takes a tab-separated matrix file as input, calculates clustering, and generates the visualization json for clustergrammer.js (see example below). Users can also generate the visualization json using their own script as long as they adhere to the format requirements (see below).
+The easiest way to visualize a matrix of your own data with clustergrammer.js is to use the Python module, [clustergrammer.py](#clustergrammerpy). Clustergrammer.py, takes a tab-separated matrix file as input, calculates clustering, and generates the visualization json for clustergrammer.js (see example below). Users can also generate the visualization json using their own script as long as they adhere to the format requirements (see below).
 
 Clustergrammer is designed to be a reusable chart and has been integrated into several [Ma'ayan lab](http://icahn.mssm.edu/research/labs/maayan-laboratory) web tools including:
 
