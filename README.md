@@ -112,8 +112,11 @@ Row-C   0.2     0.1     2.5
 
 The matrix must have unique names for rows and columns. Row and column categories can also be included in the matrix in the following way: 
 
-
 ![cat_tsv](img/cat_tsv.png "cat_tsv.png")
+
+This Excel screenshot shows a single row category being added as an additional column of strings (e.g. 'Type: Interesting') and a single column category being added as an additional row of strings (e.g. 'Gender: Male'). Up to 15 categories can be added in a similar manner. 
+
+The 'title' of row/column names and categories can also be included by prefixing each string with 'Title: ' - e.g. the title of the column names is 'Cell Line' and the title of the column categories is 'Gender'. 
 
 # Clustergrammer JSON Format
 Your network (called network_data here) must be in the following json format - make_clust.py and clustergrammer.py can be used to make a json of this format from a matrix given in tab separated format (see make_clust.py, which produces example_network.json from example_tsv_network.txt)
