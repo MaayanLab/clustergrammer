@@ -74,9 +74,9 @@ d3.select(window).on('resize', function(){
 The visualization json format is defined [here](#clustergrammer-json-format). Clustergrammer can make more than one visualization per page, but each visualization requires its own container. 
 
 ## API Examples
-The page [index.html](index.html) and the corresponding loading scripg load_clustergram.js show an example of how to make a full-screen visualization that resizes with the window. 
+The page [index.html](index.html) and the corresponding script [load_clustergram.js](load_clustergram.js) show an example of how to make a full-screen visualization that resizes with the window. 
 
-The page multiple_clust.html and corresponding loading script load_multiple_clustergrams.js show an example of visualizing multiple clustergrams on one page.  
+The page [multiple_clust.html](multiple_clust.html) and corresponding script [load_multiple_clustergrams.js](load_multiple_clustergrams.js) show an example of visualizing multiple clustergrams on one page.  
 
 ## Optional Arguments
 
@@ -143,6 +143,9 @@ The matrix must have unique names for rows and columns. Row and column categorie
 This Excel screenshot shows a single row category being added as an additional column of strings (e.g. 'Type: Interesting') and a single column category being added as an additional row of strings (e.g. 'Gender: Male'). Up to 15 categories can be added in a similar manner. 
 
 The 'title' of row/column names and categories can also be included by prefixing each string with 'Title: ' - e.g. the title of the column names is 'Cell Line' and the title of the column categories is 'Gender'. 
+
+## Matrix Examples
+Several examples can be found in the [txt/]('txt/') directory. 
 
 # Clustergrammer JSON Format
 Your network (called network_data here) must be in the following json format - make_clust.py and clustergrammer.py can be used to make a json of this format from a matrix given in tab separated format (see make_clust.py, which produces example_network.json from example_tsv_network.txt)
