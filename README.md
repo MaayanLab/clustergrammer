@@ -1,5 +1,4 @@
 # clustergrammer.js
-![alt text](img/clustergrammer_logo.png "Logo Title Text 1")
 
 Clustergrammer.js is an interactive clustergram/heatmap matrix visualization tool implemented in D3.js. A live example of Clustergrammer.js can be seen [here](http://amp.pharm.mssm.edu/clustergrammer/). The project began as an extension of this example http://bost.ocks.org/mike/miserables/. 
 
@@ -113,9 +112,8 @@ Row-C   0.2     0.1     2.5
 
 The matrix must have unique names for rows and columns. Row and column categories can also be included in the matrix in the following way: 
 
-```
-    Cell Line: A549 Cell Line
-```
+
+![cat_tsv](img/cat_tsv.png "cat_tsv.png")
 
 # Clustergrammer JSON Format
 Your network (called network_data here) must be in the following json format - make_clust.py and clustergrammer.py can be used to make a json of this format from a matrix given in tab separated format (see make_clust.py, which produces example_network.json from example_tsv_network.txt)
