@@ -197,7 +197,7 @@ Optional 'views' of the clustergram are encoded in the 'views' value at the base
 
 There are three required properties: ```row_nodes```, ```col_nodes```, and ```links```. Each of these properties is an array of objects and these objects are discussed below. 
 
-## ```row_nodes``` and ```col_nodes``` properties 
+#### ```row_nodes``` and ```col_nodes``` properties 
 
 ##### required properties: ```name```, ```clust```, ```rank``` 
 row_node and col_node objects are required to have the three properties: ```name```, ```clust```, ```rank``` . ```name``` specifies the name given to the row or column. ```clust``` and ```rank``` give the ordering of the row or column in the clustergram. 
@@ -207,7 +207,7 @@ row_nodes and col_nodes have optional properties: ```group``` and ```value```. G
 
 If row_nodes or col_nodes have the property ```value```, then semi-transpaent bars will be made behind the labels that represent this value.
 
-#### links properties 
+#### ```links``` properties 
 
 ##### required properties: ```source```, ```target```, ```value```
 Link objects are required to have three properties: ```source```, ```target```, ```value```. ```source``` and ```target``` give the integer value of the row and column of the tile in the visualization. ```value``` specifies the opacity and color of the tile, where positive/negative values result in red/blue tiles (tiles are not made for links with zero value). 
@@ -216,10 +216,22 @@ Link objects are required to have three properties: ```source```, ```target```, 
 Links also have the optional properties ```value_up``` and ```value_dn``` which allow the user to split a tile into up- and down-triangles if a link has both up- and down-values. If a link has only an up- or down-value then a normal square tile is shown. 
 
 # clustergrammer Python Module
-The example network json, mult_view.json, used in the visualization was produced using the python script make_clustergram.py. The python script clustergrammer.py defines the class, Network, that loads the example network in tab separated format, example_tsv_network.txt, calculates clustering, and saves the network in the required format. To remake example_network.json run make_clust.py. 
-
-D3 Clustergram was developed by Nick Fernandez at Icahn School of Medicine at Mount Sinai. 
+The python module [clutergrammer.py](clustergrammer, takes a tab-separated matrix file as inpyt, calculates clustering, and generates the visualization json for clustergrammer.js - see the example python script below:
 
 ## Example Workflow
+```
+from clustergrammer import Network
+net = Network()
+
+net.load_file('txt/rc_two_cats.txt')
+ 
+net.make_clust(dist_type='cos',views=['N_row_sum', 'N_row_var'])
+
+net.write_json_to_file('viz', 'json/mult_view.json', 'no-indent')
+```
+
+The python script [make_clustergrammer.py](make_clustergrammer.py) generates the visualization jsons for the examples pages. You can modify the script to make a visualization from your own file'
 
 ## Making Additional Views 
+
+D3 Clustergram was developed by Nick Fernandez at Icahn School of Medicine at Mount Sinai. 
