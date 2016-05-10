@@ -14,7 +14,7 @@ Some of clustergrammer's features include:
 
 Clustergrammer.js' source code is under the src directory and Webpack Module Developer is being used to make clustergrammer.js. 
 
-The simplest way to visualize a matrix of your own data with clustergrammer.js is to use the Python module, clustergrammer.py. Clustergrammer.py, takes a tab-separated matrix file as input, calculates clustering, and generates the visualization json for clustergrammer.js. Users can also generate the visualization json using their own script as long as they adhere to the format requirements (see below).
+The easiest way to visualize a matrix of your own data with clustergrammer.js is to use the Python module, clustergrammer.py. Clustergrammer.py, takes a tab-separated matrix file as input, calculates clustering, and generates the visualization json for clustergrammer.js (see example below). Users can also generate the visualization json using their own script as long as they adhere to the format requirements (see below).
 
 Clustergrammer is designed to be a reusable chart and has been integrated into several [Ma'ayan lab](http://icahn.mssm.edu/research/labs/maayan-laboratory) web tools including:
 
@@ -40,11 +40,8 @@ clustergrammer.py requires
 
 # clustergrammer.js API
 
-## making a clustergram using clustergrammer.js.make
-
-### make arguments 
-To make a clustergram pass in an object with your network (network_data) and other optinal arguments. An example is in load_clustergram.js and shown below 
-
+### Required Arguments 
+To make a clustergram simply pass an arguments object to Clustergrammer - see below:
 ```
 var args = {
   'root':'#id_of_container',
@@ -53,6 +50,9 @@ var args = {
 
 var cgm = Clustergrammer(args);
 ``` 
+
+There are two values that are required in the arguments object: 1) the id of the html container where the visualization will be made, and 2) the visualization json (referred to as network_data here). 
+
 
 ### network_data json
 Your network (called network_data here) must be in the following json format - make_clust.py and clustergrammer.py can be used to make a json of this format from a matrix given in tab separated format (see make_clust.py, which produces example_network.json from example_tsv_network.txt)
