@@ -1,4 +1,5 @@
 # clustergrammer.js
+![alt text](img/clustergrammer_logo.png "Logo Title Text 1")
 
 Clustergrammer.js is an interactive clustergram/heatmap matrix visualization tool implemented in D3.js. A live example of Clustergrammer.js can be seen [here](http://amp.pharm.mssm.edu/clustergrammer/). The project began as an extension of this example http://bost.ocks.org/mike/miserables/. 
 
@@ -100,7 +101,7 @@ This determines whether the sidebar will have icons for help, share, and screens
 This sets the maximum allowed font-size. The default is set to 16px. 
 
 # Input Matrix Format
-Clustergrammer.js requires a specific json [format](#clustergrammer-json-format) to make the visualization and you can use the python module [clustergrammer.py](#clustergrammer-python-module) to create this json from an input tab-separated matrix file in the following format (note that): 
+Clustergrammer.js requires a specific json [format](#clustergrammer-json-format) to make the visualization and you can use the python module [clustergrammer.py](#clustergrammer-python-module) to create this json from an input tab-separated matrix file in the following format: 
 
 ```
        Col-A   Col-B   Col-C
@@ -108,12 +109,12 @@ Row-A   0.0    -0.1     1.0
 Row-B   3.0     0.0     8.0
 Row-C   0.2     0.1     2.5
 ```
+(note that tabs are required, but spaces are used in the example below to increase readability)
+
+The matrix must have unique names for rows and columns. Row and column categories can also be included in the matrix in the following way: 
 
 ```
-		Col-A	Col-B	Col-C
-Row-A	0.0	-0.1	1.0
-Row-B	3.0	0.0	8.0
-Row-C	0.2	0.1	2.5
+    Cell Line: A549 Cell Line
 ```
 
 # Clustergrammer JSON Format
