@@ -40,7 +40,7 @@ clustergrammer.py requires
 
 # clustergrammer API
 
-### Required Arguments 
+## Required Arguments 
 To make a clustergram pass an arguments object with the following required values to Clustergrammer:
 ```
 var args = {
@@ -52,19 +52,40 @@ var cgm = Clustergrammer(args);
 ``` 
 This will make a clustergram visualization in the container referred to as root (specified using a css id selector) using the visualization json (referred to as netowrk_data). The visualization json format is defined [here](#clustergrammer-json-format).
 
-### Optional Arguments
+## Optional Arguments
 
-#### row_label and col_label
+##### row_label and col_label
 Pass strings that will be used as 'super-labels' for the rows and columns. 
 
-#### row_label_scale and col_label_scale
-Pass in a scaling factor that can increase or decrease the size of row and column labels (as well as the font-size of the text). 
+##### row_label_scale and col_label_scale
+A number that will be used as a scaling factor that increases or decreases the size of row and column labels (as well as the font-size of the text). 
 
-#### ini_expand
+#### super_label_scale
+A number that will be used a a scaling factor that increases or decreases the size of the 'super-labels'. 
+
+##### ini_expand
 Initialize the visualization in 'expanded' mode so that the sidebar controls are not visible. 
 
+#### opacity_scale
+This defines the function that will map values in your matrix to opacities of cells in the visualization. The default is 'linear', and 'log' is also possible. 
 
+#### input_domain
+This defines the maximum (absolute) value from your input matrix that corresponds to an opacity of 1. The default is defined based on the maximum absolute value of any cell in your matrix. Lowering this value will increase the opacity of the overall visualization and effectively cutoff the visualization opacity at the value you choose. 
 
+#### do_zoom
+This determines whether zooming will be available in the visualization. The default is set to true. 
+
+#### tile_colors
+This determines the colors that indicate positive and negative values, respectively, in the visualization. The default are red and blue. The input for this is an array of hexcode or color names, e.g. ['#ED9124','#1C86EE'].
+
+#### row_order and col_order
+This sets the initial ordering of rows and columns. The default is clust. The options are 
+* alpha = ordering based on names of rows or columns 
+  * clust - ordering based on clustering (covered [here](clustergrammer-python-module))
+  * rank - ordering based on the sum of the values in row/column 
+  * rank_var - ordering based on the variance of the values in the row/column 
+
+  
 
 # Input Matrix Format
 
