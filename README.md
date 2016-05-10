@@ -100,13 +100,20 @@ This determines whether the sidebar will have icons for help, share, and screens
 This sets the maximum allowed font-size. The default is set to 16px. 
 
 # Input Matrix Format
-Clustergrammer.js requires a specific json [format](#clustergrammer-json-format) to make the visualization and you can use the python module [clustergrammer.py](#clustergrammer-python-module) to create this json from an input tab-separated matrix file in the following format: 
+Clustergrammer.js requires a specific json [format](#clustergrammer-json-format) to make the visualization and you can use the python module [clustergrammer.py](#clustergrammer-python-module) to create this json from an input tab-separated matrix file in the following format (note that): 
 
 ```
        Col-A   Col-B   Col-C
 Row-A   0.0    -0.1     1.0
 Row-B   3.0     0.0     8.0
 Row-C   0.2     0.1     2.5
+```
+
+```
+		Col-A	Col-B	Col-C
+Row-A	0.0	-0.1	1.0
+Row-B	3.0	0.0	8.0
+Row-C	0.2	0.1	2.5
 ```
 
 # Clustergrammer JSON Format
