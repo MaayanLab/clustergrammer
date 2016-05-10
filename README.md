@@ -14,7 +14,7 @@ Some of clustergrammer's features include:
 
 Clustergrammer.js' source code is under the src directory and Webpack Module Developer is being used to make clustergrammer.js. 
 
-The easiest way to visualize a matrix of your own data with clustergrammer.js is to use the Python module, [clustergrammer.py](#clustergrammerpy). Clustergrammer.py, takes a tab-separated matrix file as input, calculates clustering, and generates the visualization json for clustergrammer.js (see example below). Users can also generate the visualization json using their own script as long as they adhere to the format requirements (see below).
+The easiest way to visualize a matrix of your own data with clustergrammer.js is to use the Python module, [clustergrammer.py](#clustergrammer-python-module). Clustergrammer.py, takes a tab-separated matrix file as input, calculates clustering, and generates the visualization json for clustergrammer.js (see example below). Users can also generate the visualization json using their own script as long as they adhere to the format requirements (see below).
 
 Clustergrammer is designed to be a reusable chart and has been integrated into several [Ma'ayan lab](http://icahn.mssm.edu/research/labs/maayan-laboratory) web tools including:
 
@@ -127,7 +127,7 @@ clustergrammer.reorder takes a single argument that can take the values: 'clust'
 ## find row in clustergram
 clustergrammer.find_row will find and zoom into the row that is specified by the input DOM element with id 'gene_search_box'. 
 
-# clustergrammer.py
+# clustergrammer Python Module
 The example network json, mult_view.json, used in the visualization was produced using the python script make_clustergram.py. The python script clustergrammer.js.py defines the class, Network, that loads the example network in tab separated format, example_tsv_network.txt, calculates clustering, and saves the network in the required format. To remake example_network.json run make_clust.py. 
 
 D3 Clustergram was developed by Nick Fernandez at Icahn School of Medicine at Mount Sinai. 
