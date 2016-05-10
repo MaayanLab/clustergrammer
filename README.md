@@ -233,4 +233,4 @@ Link objects are required to have three properties: ```source```, ```target```, 
 Links also have the optional properties ```value_up``` and ```value_dn``` which allow the user to split a tile into up- and down-triangles if a link has both up- and down-values. If a link has only an up- or down-value then a normal square tile is shown. 
 
 
-D3 Clustergram was developed by Nick Fernandez at Icahn School of Medicine at Mount Sinai. 
+Clustergrammer was developed by Nick Fernandez at Icahn School of Medicine at Mount Sinai. 
