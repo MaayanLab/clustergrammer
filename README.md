@@ -205,8 +205,7 @@ row_node and col_node objects are required to have the three properties: ```name
 ##### optional properties: ```group```, ```value```
 row_nodes and col_nodes have optional properties: ```group``` and ```value```. Group is an array that contains group-membership of the row/column at different dendrogram distance cutoffs. If ```row_nodes``` and ```col_nodes``` have the property ```group``` then a dendrogram will be added the clustergram. 
 
-If row_nodes or col_nodes have the property ```value```, then semi-transpaent bars will be made behind the labels that represent this 
-```value```.
+If row_nodes or col_nodes have the property ```value```, then semi-transpaent bars will be made behind the labels that represent this value.
 
 #### links properties 
 
