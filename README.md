@@ -51,7 +51,7 @@ var args = {
 var cgm = Clustergrammer(args);
 ``` 
 
-There are two values that are required in the arguments object: 1) the id of the html container where the visualization will be made, and 2) the visualization json (referred to as network_data here). The visualization-json format is covered [here](#clustergrammerjs-json-format).
+There are two values that are required in the arguments object: 1) the id of the html container where the visualization will be made, and 2) the visualization json (referred to as network_data here). The visualization-json format is covered [here](#clustergrammer-json-format).
 
 
 
@@ -59,7 +59,7 @@ There are two values that are required in the arguments object: 1) the id of the
 # Clustergrammer Matrix Format
 
 
-# Clustergrammer.js JSON Format
+# Clustergrammer JSON Format
 Your network (called network_data here) must be in the following json format - make_clust.py and clustergrammer.py can be used to make a json of this format from a matrix given in tab separated format (see make_clust.py, which produces example_network.json from example_tsv_network.txt)
 
 ```
