@@ -18,7 +18,7 @@ Some of clustergrammer's interacive features include:
 
 Clustergrammer.js' source code is under the src directory and Webpack Module Developer is being used to make clustergrammer.js. 
 
-The easiest way to visualize a matrix of your own data (see [matrix format](#input-matrix-format)) is to use the Python module, [clustergrammer.py](#clustergrammer-python-module). This module takes a tab-separated matrix file as input, calculates clustering, and generates the visualization json for clustergrammer.js (see [example workflow](#example-workflow)). Users can also generate the visualization json on their own using another programming language (e.g. Matlab) as long as they adhere to the [format](#clustergrammer-json-format).
+The easiest way to visualize a matrix of your own data (see [matrix format](#input-matrix-format)) is to use the Python module, [clustergrammer.py](#clustergrammer-python-module). This module takes a tab-separated matrix file as input, calculates clustering, and generates the visualization json for clustergrammer.js (see [example workflow](##example-workflow)). Users can also generate the visualization json on their own using another programming language (e.g. Matlab) as long as they adhere to the [format](#clustergrammer-json-format).
 
 Clustergrammer is designed to be a reusable chart and has been integrated into several [Ma'ayan lab](http://icahn.mssm.edu/research/labs/maayan-laboratory) web tools including:
 
@@ -145,7 +145,7 @@ This Excel screenshot shows a single row category being added as an additional c
 The 'title' of row/column names and categories can also be included by prefixing each string with 'Title: ' - e.g. the title of the column names is 'Cell Line' and the title of the column categories is 'Gender'. 
 
 ## Matrix Examples
-Several examples can be found in the [txt](txt) directory. [rc_two_cats.txt](txt/rc_two_cats.txt) is an example with row and column categories. See [here](#example-workflow) or [make_clustergrammer.py](make_clustergrammer.py) for an examples of how to use the python module to generate a visualization json from a matrix file. 
+Several examples can be found in the [txt](txt) directory. [rc_two_cats.txt](txt/rc_two_cats.txt) is an example with row and column categories. See [here](##example-workflow) or [make_clustergrammer.py](make_clustergrammer.py) for an examples of how to use the python module to generate a visualization json from a matrix file. 
 
 # Clustergrammer JSON Format
 Your network (called network_data here) must be in the following json format - make_clust.py and clustergrammer.py can be used to make a json of this format from a matrix given in tab separated format (see make_clust.py, which produces example_network.json from example_tsv_network.txt)
