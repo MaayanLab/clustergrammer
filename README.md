@@ -1,4 +1,4 @@
-# clustergrammer
+# clustergrammer.js
 
 Clustergrammer.js is a clustergram/heatmap matrix visualization tool implemented in D3.js. A live example of Clustergrammer.js can be seen [here](http://amp.pharm.mssm.edu/clustergrammer/). The project began as an extension of this example http://bost.ocks.org/mike/miserables/. 
 
@@ -14,7 +14,7 @@ Some of clustergrammer's features include:
 
 Clustergrammer.js' source code is under the src directory and Webpack Module Developer is being used to make clustergrammer.js. 
 
-The easiest way to visualize a matrix with your own data is to use the Python module, [clustergrammer.py](#clustergrammer-python-module). Clustergrammer.py, takes a tab-separated matrix file as input, calculates clustering, and generates the visualization json for clustergrammer.js (see example below). Users can also generate the visualization json using their own script as long as they adhere to the format requirements (see [here](#clustergrammer-matrix-format)).
+The easiest way to visualize a matrix of your own data (see [matrix format](#input-matrix-format)) is to use the Python module, [clustergrammer.py](#clustergrammer-python-module). Clustergrammer.py, takes a tab-separated matrix file as input, calculates clustering, and generates the visualization json for clustergrammer.js (see [example workflow](#example-workflow)). Users can also generate the visualization json using their own script as long as they adhere to the [format](#clustergrammer-json-format).
 
 Clustergrammer is designed to be a reusable chart and has been integrated into several [Ma'ayan lab](http://icahn.mssm.edu/research/labs/maayan-laboratory) web tools including:
 
@@ -41,7 +41,7 @@ clustergrammer.py requires
 # clustergrammer API
 
 ### Required Arguments 
-To make a clustergram simply pass an arguments object to Clustergrammer - see below:
+To make a clustergram pass an arguments object with the following required values to Clustergrammer:
 ```
 var args = {
   'root':'#id_of_container',
@@ -50,13 +50,10 @@ var args = {
 
 var cgm = Clustergrammer(args);
 ``` 
-
-There are two values that are required in the arguments object: 1) the id of the html container where the visualization will be made, and 2) the visualization json (referred to as network_data here). The visualization-json format is covered [here](#clustergrammer-json-format).
-
+This will make a clustergram visualization in the container referred to as root (specified using a css id selector) using the visualization json (referred to as netowrk_data). The visualization json format is defined [here](#clustergrammer-json-format).
 
 
-
-# Clustergrammer Matrix Format
+# Input Matrix Format
 
 
 # Clustergrammer JSON Format
