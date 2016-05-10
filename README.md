@@ -147,6 +147,23 @@ The 'title' of row/column names and categories can also be included by prefixing
 ## Matrix Examples
 Several examples can be found in the [txt](txt) directory. [rc_two_cats.txt](txt/rc_two_cats.txt) is an example with row and column categories. See [here](#example-workflow) or [make_clustergrammer.py](make_clustergrammer.py) for examples of how to use the python module to generate a visualization json from a matrix file. 
 
+# clustergrammer Python Module
+The python module [clutergrammer.py](clustergrammer), takes a tab-separated matrix file as input, calculates clustering, and generates the visualization json for clustergrammer.js. See an example workflow below:
+
+## Example Workflow
+```
+from clustergrammer import Network
+net = Network()
+
+net.load_file('txt/rc_two_cats.txt')
+ 
+net.make_clust(dist_type='cos',views=['N_row_sum', 'N_row_var'])
+
+net.write_json_to_file('viz', 'json/mult_view.json', 'no-indent')
+```
+
+The python script [make_clustergrammer.py](make_clustergrammer.py) generates the visualization jsons for the examples pages. You can modify the script to make a visualization from your own file'
+
 # Clustergrammer JSON Format
 Your network (referred to as network_data) must be in the following json format - make_clust.py and clustergrammer.py can be used to make a json of this format from a matrix given in tab separated format (see make_clust.py, which produces example_network.json from example_tsv_network.txt)
 
@@ -215,23 +232,5 @@ Link objects are required to have three properties: ```source```, ```target```, 
 ##### optional properties: ```value_up```, ```value_dn```
 Links also have the optional properties ```value_up``` and ```value_dn``` which allow the user to split a tile into up- and down-triangles if a link has both up- and down-values. If a link has only an up- or down-value then a normal square tile is shown. 
 
-# clustergrammer Python Module
-The python module [clutergrammer.py](clustergrammer), takes a tab-separated matrix file as input, calculates clustering, and generates the visualization json for clustergrammer.js - see the example python script below:
-
-## Example Workflow
-```
-from clustergrammer import Network
-net = Network()
-
-net.load_file('txt/rc_two_cats.txt')
- 
-net.make_clust(dist_type='cos',views=['N_row_sum', 'N_row_var'])
-
-net.write_json_to_file('viz', 'json/mult_view.json', 'no-indent')
-```
-
-The python script [make_clustergrammer.py](make_clustergrammer.py) generates the visualization jsons for the examples pages. You can modify the script to make a visualization from your own file'
-
-## Making Additional Views 
 
 D3 Clustergram was developed by Nick Fernandez at Icahn School of Medicine at Mount Sinai. 
