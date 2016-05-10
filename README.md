@@ -145,7 +145,7 @@ This Excel screenshot shows a single row category being added as an additional c
 The 'title' of row/column names and categories can also be included by prefixing each string with 'Title: ' - e.g. the title of the column names is 'Cell Line' and the title of the column categories is 'Gender'. 
 
 ## Matrix Examples
-Several examples can be found in the [txt](txt) directory. [rc_two_cats.txt](txt/rc_two_cats.txt) is an example with row and column categories. See [here](#example-workflow) or [make_clustergrammer.py](make_clustergrammer.py) for an examples of how to use the python module to generate a visualization json from a matrix file. 
+Several examples can be found in the [txt](txt) directory. [rc_two_cats.txt](txt/rc_two_cats.txt) is an example with row and column categories. See [here](#example-workflow) or [make_clustergrammer.py](make_clustergrammer.py) for examples of how to use the python module to generate a visualization json from a matrix file. 
 
 # Clustergrammer JSON Format
 Your network (referred to as network_data) must be in the following json format - make_clust.py and clustergrammer.py can be used to make a json of this format from a matrix given in tab separated format (see make_clust.py, which produces example_network.json from example_tsv_network.txt)
@@ -180,7 +180,7 @@ Your network (referred to as network_data) must be in the following json format 
 }
 ```
 
-Additional 'views' of the clustergram are encoded in the optional 'views' value at the base level of the visualization json. These views are used to store filtered versions of the matrix - the links are shared but the views have their own row_nodes/col_nodes. The view attributes are stored in the view object (e.g. N_row_sum). Views are discussed in the python module [section](#clustergrammer-python-module). 
+Optional 'views' of the clustergram are encoded in the 'views' value at the base level of the visualization json. These views are used to store filtered versions of the matrix - the links are shared but the views have their own row_nodes/col_nodes. The view attributes are stored in the view object (e.g. N_row_sum). Views are discussed in the python module [section](#clustergrammer-python-module). 
 
 ```
 "views":[
@@ -195,37 +195,26 @@ Additional 'views' of the clustergram are encoded in the optional 'views' value 
 ```
 
 
-There are three required properties: row_nodes, col_nodes, and links. Each of these properties is an array of objects with required and optional properties. 
+There are three required properties: ```row_nodes```, ```col_nodes```, and ```links```. Each of these properties is an array of objects and these objects are discussed below. 
 
-#### row_nodes and col_nodes properties 
+## ```row_nodes``` and ```col_nodes``` properties 
 
-##### required properties: "name", "clust", "rank" 
-Both row_node and col_node objects are required to have the three properties: "name", "clust", "rank" . "name" specifies the name given to the row or column. "clust" and "rank" give the ordering of the row or column in the clustergram - these orderings have to be precalculated by the user and the python script make_clust.py can be used for this. 
+##### required properties: ```name```, ```clust```, ```rank``` 
+row_node and col_node objects are required to have the three properties: ```name```, ```clust```, ```rank``` . ```name``` specifies the name given to the row or column. ```clust``` and ```rank``` give the ordering of the row or column in the clustergram. 
 
-##### optional properties: "group", "cl", "value"
-row_nodes and col_nodes have optional properties: "group" and "cl" (group is given as an array of group membership at different distance cutoffs and used for the dendrogram-like colorbar - see clustergrammer.py). If row_nodes and col_nodes have the property "group" then a dendrogram like colorbar will be added to the visualization and a slider can be used to change the group size. 
+##### optional properties: ```group```, ```value```
+row_nodes and col_nodes have optional properties: ```group``` and ```value```. Group is an array that contains group-membership of the row/column at different dendrogram distance cutoffs. If ```row_nodes``` and ```col_nodes``` have the property ```group``` then a dendrogram will be added the clustergram. 
 
-If row_nodes and col_nodes have the property "cl" then the triangles on each row/column label will be colored based on the classification (cl) of each row/column. 
-
-If row_nodes or col_nodes have the property "value", then semi-transpaent bars will be made behind the labels that represent 
-"value". Currently this is only implemented for columns, values can only be positive, and the bars are always red. 
+If row_nodes or col_nodes have the property ```value```, then semi-transpaent bars will be made behind the labels that represent this 
+```value```.
 
 #### links properties 
 
-##### required properties: "source", "target", "value"
-Link objects are required to have three properties: "source", "target", "value". "source" and "target" give the integer value of the row and column of the tile in the visualization. "value" specifies the opacity and color of the tile, where positive/negative values result in red/blue tiles (tiles are not made for links with zero value). If no 'input_domain' is specified then the domain for input values is given by the maximum absolute value of all link values. The positive and negative tile colors can be modified ysing the 'tile_colors' property in the arguments_obj. 
+##### required properties: ```source```, ```target```, ```value```
+Link objects are required to have three properties: ```source```, ```target```, ```value```. ```source``` and ```target``` give the integer value of the row and column of the tile in the visualization. ```value``` specifies the opacity and color of the tile, where positive/negative values result in red/blue tiles (tiles are not made for links with zero value). 
 
-##### optional properties: "highlight", "value_up", "value_dn", "info"
-Links have the opional property "highlight" that can be used to highlight a tile with a black border. Links also have the optional properties "value_up" and "value_dn" which allow the user to split a tile into up- and down-triangles if a link has both up- and down-values. If a link has only an up- or down-value then a normal square tile is shown. Note that adding "highlight", "value_up", or "value_dn" will result in additional svg components and will slow down the visualization. The property info can be used to pass additional information to the tile clickback funciton. 
-
-### Optional make_clust Properties 
-
-## reorder clustergram
-
-clustergrammer.reorder takes a single argument that can take the values: 'clust' or 'rank'; and will reorder the clustergram accordingly. 
-
-## find row in clustergram
-clustergrammer.find_row will find and zoom into the row that is specified by the input DOM element with id 'gene_search_box'. 
+##### optional properties: ```value_up```, ```value_dn```
+Links also have the optional properties ```value_up``` and ```value_dn``` which allow the user to split a tile into up- and down-triangles if a link has both up- and down-values. If a link has only an up- or down-value then a normal square tile is shown. 
 
 # clustergrammer Python Module
 The example network json, mult_view.json, used in the visualization was produced using the python script make_clustergram.py. The python script clustergrammer.py defines the class, Network, that loads the example network in tab separated format, example_tsv_network.txt, calculates clustering, and saves the network in the required format. To remake example_network.json run make_clust.py. 
