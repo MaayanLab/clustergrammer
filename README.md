@@ -57,7 +57,7 @@ var cgm = Clustergrammer(args);
 ``` 
 This will make a clustergram visualization in the 'root' container using the [visualization json](#clustergrammer-json-format) (referred to as netowrk_data). The user must generate the root container and define its width and height, which will be used to define the visualization size. 
 
-Resizing the visualization can be done by first resizing the container and then resizing the clustergram using Clustergrammer's resize_viz() function. An example of resizing when the window change size is shown below. 
+Resizing the visualization can be done by first resizing the container and then resizing the clustergram using Clustergrammer's ```cgm.resize_viz()``` function. An example of resizing when the window change size is shown below. 
 
 ```
 d3.select(window).on('resize', function(){
@@ -71,7 +71,7 @@ d3.select(window).on('resize', function(){
 });
 ```
 
-The visualization json format is defined [here](#clustergrammer-json-format). Clustergrammer can make more than one visualization per page, but each visualization requires its own container. 
+The visualization json format is defined [here](#clustergrammer-json-format). Clustergrammer can make more than one visualization per page (see [example](multiple_clust.html)), but each visualization requires its own container. 
 
 ## API Examples
 The page [index.html](index.html) and the corresponding script [load_clustergram.js](load_clustergram.js) show an example of how to make a full-screen visualization that resizes with the window. 
@@ -145,7 +145,7 @@ This Excel screenshot shows a single row category being added as an additional c
 The 'title' of row/column names and categories can also be included by prefixing each string with 'Title: ' - e.g. the title of the column names is 'Cell Line' and the title of the column categories is 'Gender'. 
 
 ## Matrix Examples
-Several examples can be found in the [txt](txt) directory. [txt/rc_two_cats.txt](txt/rc_two_cats.txt) is an example with row and column categories. 
+Several examples can be found in the [txt](txt) directory. [rc_two_cats.txt](txt/rc_two_cats.txt) is an example with row and column categories. 
 
 # Clustergrammer JSON Format
 Your network (called network_data here) must be in the following json format - make_clust.py and clustergrammer.py can be used to make a json of this format from a matrix given in tab separated format (see make_clust.py, which produces example_network.json from example_tsv_network.txt)
@@ -220,5 +220,6 @@ The example network json, mult_view.json, used in the visualization was produced
 
 D3 Clustergram was developed by Nick Fernandez at Icahn School of Medicine at Mount Sinai. 
 
+## Example Workflow
 
 ## Making Additional Views 
