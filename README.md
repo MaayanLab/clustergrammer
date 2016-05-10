@@ -43,7 +43,7 @@ clustergrammer.py requires
 - scipy 
 - pandas 
 
-# clustergrammer API
+# Clustergrammer API
 
 ## Required Arguments 
 To make a visualization pass an arguments object with the following required values to Clustergrammer:
@@ -147,7 +147,7 @@ The 'title' of row/column names and categories can also be included by prefixing
 ## Matrix Examples
 Several examples can be found in the [txt](txt) directory. [rc_two_cats.txt](txt/rc_two_cats.txt) is an example with row and column categories. See [here](#example-workflow) or [make_clustergrammer.py](make_clustergrammer.py) for examples of how to use the python module to generate a visualization json from a matrix file. 
 
-# clustergrammer Python Module
+# Clustergrammer Python Module
 The python module [clutergrammer.py](clustergrammer), takes a tab-separated matrix file as input, calculates clustering, and generates the visualization json for clustergrammer.js. See an example workflow below:
 
 ## Example Workflow
