@@ -1,6 +1,6 @@
-# clustergrammer.js 
+# clustergrammer
 
-Clustergrammer.js is a clustergram/heatmap matrix visualization tool implemented in D3.js. The project began as an extension of this example http://bost.ocks.org/mike/miserables/. 
+Clustergrammer.js is a clustergram/heatmap matrix visualization tool implemented in D3.js. A live example of Clustergrammer.js can be seen [here](http://amp.pharm.mssm.edu/clustergrammer/). The project began as an extension of this example http://bost.ocks.org/mike/miserables/. 
 
 Some of clustergrammer's features include:
   
@@ -14,7 +14,7 @@ Some of clustergrammer's features include:
 
 Clustergrammer.js' source code is under the src directory and Webpack Module Developer is being used to make clustergrammer.js. 
 
-The easiest way to visualize a matrix of your own data with clustergrammer.js is to use the Python module, [clustergrammer.py](#clustergrammer-python-module). Clustergrammer.py, takes a tab-separated matrix file as input, calculates clustering, and generates the visualization json for clustergrammer.js (see example below). Users can also generate the visualization json using their own script as long as they adhere to the format requirements (see below).
+The easiest way to visualize a matrix with your own data is to use the Python module, [clustergrammer.py](#clustergrammer-python-module). Clustergrammer.py, takes a tab-separated matrix file as input, calculates clustering, and generates the visualization json for clustergrammer.js (see example below). Users can also generate the visualization json using their own script as long as they adhere to the format requirements (see [here](#clustergrammer-matrix-format)).
 
 Clustergrammer is designed to be a reusable chart and has been integrated into several [Ma'ayan lab](http://icahn.mssm.edu/research/labs/maayan-laboratory) web tools including:
 
@@ -38,7 +38,7 @@ clustergrammer.py requires
 - scipy 
 - pandas 
 
-# clustergrammer.js API
+# clustergrammer API
 
 ### Required Arguments 
 To make a clustergram simply pass an arguments object to Clustergrammer - see below:
@@ -128,7 +128,7 @@ clustergrammer.reorder takes a single argument that can take the values: 'clust'
 clustergrammer.find_row will find and zoom into the row that is specified by the input DOM element with id 'gene_search_box'. 
 
 # clustergrammer Python Module
-The example network json, mult_view.json, used in the visualization was produced using the python script make_clustergram.py. The python script clustergrammer.js.py defines the class, Network, that loads the example network in tab separated format, example_tsv_network.txt, calculates clustering, and saves the network in the required format. To remake example_network.json run make_clust.py. 
+The example network json, mult_view.json, used in the visualization was produced using the python script make_clustergram.py. The python script clustergrammer.py defines the class, Network, that loads the example network in tab separated format, example_tsv_network.txt, calculates clustering, and saves the network in the required format. To remake example_network.json run make_clust.py. 
 
 D3 Clustergram was developed by Nick Fernandez at Icahn School of Medicine at Mount Sinai. 
 
