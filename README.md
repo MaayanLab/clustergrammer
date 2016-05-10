@@ -1,6 +1,6 @@
 # clustergrammer.js 
 
-Clustergrammer.js is a clustergram/heatmap matrix visualization implemented in D3.js. The project began as an extension of this example http://bost.ocks.org/mike/miserables/. 
+Clustergrammer.js is a clustergram/heatmap matrix visualization tool implemented in D3.js. The project began as an extension of this example http://bost.ocks.org/mike/miserables/. 
 
 Some of the clustergrammer's include:
   
@@ -10,9 +10,11 @@ Some of the clustergrammer's include:
 - row filtering
 - row searching
 - row/column categories 
-- optional split tiles and highlighting tiles
+- optional 'split' matrix cells for up/down values
 
-The source code is under the src directory and webpack module developer is being used to make clustergrammer.js. The python module, clustergrammer.py, takes an input matrix, e.g. a matrix in a tsv file, clusters the matrix, and makes the visualization json for clustergrammer.js. 
+The JavaScript source code is under the src directory and webpack module developer is being used to make clustergrammer.js. 
+
+The python module, clustergrammer.py, calculates clustering and generates the visualization json for clustergrammer.js. The python module takes a matrix, e.g. a tab-separated matrix file, as input. Users can also generate the visualization json using their own script as long as they adhere to the format requirements (see below).
 
 Clustergrammer is designed to be a reusable chart and has been integrated into several [Ma'ayan lab](http://icahn.mssm.edu/research/labs/maayan-laboratory) web tools including:
 
