@@ -60,32 +60,34 @@ Pass strings that will be used as 'super-labels' for the rows and columns.
 ##### row_label_scale and col_label_scale
 A number that will be used as a scaling factor that increases or decreases the size of row and column labels (as well as the font-size of the text). 
 
-#### super_label_scale
+##### super_label_scale
 A number that will be used a a scaling factor that increases or decreases the size of the 'super-labels'. 
 
 ##### ini_expand
 Initialize the visualization in 'expanded' mode so that the sidebar controls are not visible. 
 
-#### opacity_scale
+##### opacity_scale
 This defines the function that will map values in your matrix to opacities of cells in the visualization. The default is 'linear', and 'log' is also possible. 
 
-#### input_domain
+##### input_domain
 This defines the maximum (absolute) value from your input matrix that corresponds to an opacity of 1. The default is defined based on the maximum absolute value of any cell in your matrix. Lowering this value will increase the opacity of the overall visualization and effectively cutoff the visualization opacity at the value you choose. 
 
-#### do_zoom
+##### do_zoom
 This determines whether zooming will be available in the visualization. The default is set to true. 
 
-#### tile_colors
+##### tile_colors
 This determines the colors that indicate positive and negative values, respectively, in the visualization. The default are red and blue. The input for this is an array of hexcode or color names, e.g. ['#ED9124','#1C86EE'].
 
-#### row_order and col_order
+##### row_order and col_order
 This sets the initial ordering of rows and columns. The default is clust. The options are 
 * alpha = ordering based on names of rows or columns 
   * clust - ordering based on clustering (covered [here](clustergrammer-python-module))
   * rank - ordering based on the sum of the values in row/column 
   * rank_var - ordering based on the variance of the values in the row/column 
 
-  
+##### ini_view
+This defines the initial view of the clustergram. A clutergram can have many views available (discussed [here](#making-additional-views)) and these views generally consist of filtered versions of the clustergram. 
+
 
 # Input Matrix Format
 
@@ -163,3 +165,5 @@ The example network json, mult_view.json, used in the visualization was produced
 
 D3 Clustergram was developed by Nick Fernandez at Icahn School of Medicine at Mount Sinai. 
 
+
+## Making Additional Views 
