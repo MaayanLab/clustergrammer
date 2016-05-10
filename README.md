@@ -14,7 +14,7 @@ Some of clustergrammer's features include:
 
 Clustergrammer.js' source code is under the src directory and Webpack Module Developer is being used to make clustergrammer.js. 
 
-The easiest way to visualize a matrix of your own data (see [matrix format](#input-matrix-format)) is to use the Python module, [clustergrammer.py](#clustergrammer-python-module). Clustergrammer.py, takes a tab-separated matrix file as input, calculates clustering, and generates the visualization json for clustergrammer.js (see [example workflow](#example-workflow)). Users can also generate the visualization json using their own script as long as they adhere to the [format](#clustergrammer-json-format).
+The easiest way to visualize a matrix of your own data (see [matrix format](#input-matrix-format)) is to use the Python module, [clustergrammer.py](#clustergrammer-python-module). Clustergrammer.py, takes a tab-separated matrix file as input, calculates clustering, and generates the visualization json for clustergrammer.js (see [example workflow](#example-workflow)). Users can also generate the visualization json using their own script as long as they adhere to the [format](#clustergrammer_js-json-format).
 
 Clustergrammer is designed to be a reusable chart and has been integrated into several [Ma'ayan lab](http://icahn.mssm.edu/research/labs/maayan-laboratory) web tools including:
 
@@ -50,13 +50,13 @@ var args = {
 
 var cgm = Clustergrammer(args);
 ``` 
-This will make a clustergram visualization in the container referred to as root (specified using a css id selector) using the visualization json (referred to as netowrk_data). The visualization json format is defined [here](#clustergrammer-json-format).
+This will make a clustergram visualization in the container referred to as root (specified using a css id selector) using the visualization json (referred to as netowrk_data). The visualization json format is defined [here](#clustergrammer_js-json-format).
 
 
 # Input Matrix Format
 
 
-# Clustergrammer JSON Format
+# Clustergrammer.js JSON Format
 Your network (called network_data here) must be in the following json format - make_clust.py and clustergrammer.py can be used to make a json of this format from a matrix given in tab separated format (see make_clust.py, which produces example_network.json from example_tsv_network.txt)
 
 ```
