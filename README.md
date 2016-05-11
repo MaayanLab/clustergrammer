@@ -55,7 +55,7 @@ var args = {
 
 var cgm = Clustergrammer(args);
 ``` 
-This will make a clustergram visualization in the 'root' container using the [visualization json](#clustergrammer-json-format) (referred to as netowrk_data). The user must generate the root container and define its width and height, which will be used to define the visualization size. 
+This will make a clustergram visualization in the 'root' container using the [visualization json](#clustergrammer-json-format) (referred to as netowrk_data and made using the python module [clustergrammer.py](#clustergrammer-python-module)). The user must generate the root container and define its width and height, which will be used to define the visualization size. 
 
 Resizing the visualization can be done by first resizing the container and then resizing the clustergram using Clustergrammer's ```cgm.resize_viz()``` function. An example of resizing when the window change size is shown below. 
 
@@ -95,7 +95,7 @@ A number that will be used a a scaling factor that increases or decreases the si
 Initialize the visualization in 'expanded' mode so that the sidebar controls are not visible. 
 
 ##### ```opacity_scale```
-This defines the function that will map values in your matrix to opacities of cells in the visualization. The default is 'linear', and 'log' is also possible. 
+This defines the function that will map values in your matrix to opacities of cells in the visualization. The default is 'linear', but 'log' is also available. 
 
 ##### ```input_domain```
 This defines the maximum (absolute) value from your input matrix that corresponds to an opacity of 1. The default is defined based on the maximum absolute value of any cell in your matrix. Lowering this value will increase the opacity of the overall visualization and effectively cutoff the visualization opacity at the value you choose. 
@@ -142,10 +142,10 @@ The matrix must have unique names for rows and columns. Row and column categorie
 
 This Excel screenshot shows a single row category being added as an additional column of strings (e.g. 'Type: Interesting') and a single column category being added as an additional row of strings (e.g. 'Gender: Male'). Up to 15 categories can be added in a similar manner. 
 
-The 'title' of row/column names and categories can also be included by prefixing each string with 'Title: ' - e.g. the title of the column names is 'Cell Line' and the title of the column categories is 'Gender'. 
+The 'title' of row/column names and categories can also be included by prefixing each string with 'Title: ' - e.g. the title of the column names is 'Cell Line' and the title of the row categories is 'Gender'. 
 
 ## Matrix Examples
-Several examples can be found in the [txt](txt) directory. [rc_two_cats.txt](txt/rc_two_cats.txt) is an example with row and column categories. See [here](#example-workflow) or [make_clustergrammer.py](make_clustergrammer.py) for examples of how to use the python module to generate a visualization json from a matrix file. 
+Several examples can be found in the [txt](txt) directory. An example matrix tab-separated file with row and column categories can be seen here: [rc_two_cats.txt](txt/rc_two_cats.txt). See [example workflow](#example-workflow) or [make_clustergrammer.py](make_clustergrammer.py) for examples of how to use the python module to generate a visualization json from a matrix file. 
 
 # Clustergrammer Python Module
 The python module [clutergrammer.py](clustergrammer), takes a tab-separated matrix file as input, calculates clustering, and generates the visualization json for clustergrammer.js. See an example workflow below:
@@ -165,7 +165,7 @@ net.write_json_to_file('viz', 'json/mult_view.json', 'no-indent')
 The python script [make_clustergrammer.py](make_clustergrammer.py) generates the visualization jsons for the examples pages. You can modify the script to make a visualization from your own file'
 
 # Clustergrammer JSON Format
-Your network (referred to as network_data) must be in the following json format - make_clust.py and clustergrammer.py can be used to make a json of this format from a matrix given in tab separated format (see make_clust.py, which produces example_network.json from example_tsv_network.txt)
+Your visualization JSON (referred to as network_data) must be in the following format (group arrays are not shown): 
 
 ```
 {
@@ -196,6 +196,7 @@ Your network (referred to as network_data) must be in the following json format 
   ]
 }
 ```
+See [example workflow](#example-workflow) or [make_clustergrammer.py](make_clustergrammer.py) for examples of how to use the python module to generate a visualization json from a matrix file.
 
 Optional 'views' of the clustergram are encoded in the 'views' value at the base level of the visualization json. These views are used to store filtered versions of the matrix - the links are shared but the views have their own row_nodes/col_nodes. The view attributes are stored in the view object (e.g. N_row_sum). Views are discussed in the python module [section](#clustergrammer-python-module). 
 
