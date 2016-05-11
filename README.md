@@ -167,8 +167,10 @@ The python script [make_clustergrammer.py](make_clustergrammer.py) generates the
 ## Clustergrammer Python Module API
 The python module, [clustergrammer.py](clustergrammer), allows users to upload a matrix, normalize or filter data, and make a visualization json for clustergrammer.js - see [example workflow](#example-workflow) and [make_clustergrammer.py](make_clustergrammer.py) for examples. 
 
+The python module works in the following way. First, data is loaded into a data state (net.dat), then a clustered visualization json is calculated and saved in the viz state (net.viz). The module documentation is shown below:
 
 ```
+from clustergrammer import Network
 print(net.__doc__)
 
   Networks have two states: 
@@ -180,13 +182,18 @@ print(net.__doc__)
 
   The goal is to start in a data-state and produce a viz-state of
   the network that will be used as input to clustergram.js.
-
 ```
+
+The data state is similar to a Pandas Data Frame. A matrix also can be loaded directly as a [Data Frame](#df_to_dat) or [exported](#dat_to_df). 
 
 Below are the available functions:
 
-##### load_file
+##### ```load_file```
 This function loads a tsv file into
+
+##### ```df_to_dat```
+
+##### ```dat_to_df```
 
 # Clustergrammer JSON Format
 Your visualization JSON (referred to as network_data) must be in the following format (group arrays are not shown): 
