@@ -195,7 +195,7 @@ Calculate clustering and produce a visualization object (stored as ```net.viz```
 
 - ```dendro=True``` This determines whether a dendrogram will be included in the visualization. The default is True. 
 
-- ```views=['N_row_sum', 'N_row_var']``` This determines which row-filtered views will be calculated for the clustergram. Filters can be based on sum or variance and the cutoffs can be defined in absolute numbers (```N```) or as a percentage of the number of rows (```pct```). These views are available on the front-end visualization using the sliders. The four options are:
+- ```views=['N_row_sum', 'N_row_var']``` This determines which row-filtered views will be calculated for the clustergram. Filters can be based on sum or variance and the cutoffs can be defined in absolute numbers (```N```) or as a percentage of the number of rows (```pct```). These views are available on the front-end visualization using the sliders. The defalt is ```['N_row_sum', 'N_row_var']```. The four options are: 
   - ```N_row_sum``` This indicates that additional row-filtered views should be calculated based on the sum of the values in the rows with cutoffs defined by absolute number. For instance, additional views will be calculated showing the top 500, 250, 100, 50, 20, and 10 rows based on the absolute sum of their values. 
 
   - ```pct_row_sum``` This indicates that additional row-filtered views should be calculated based on the sum of the values in the rows with cutoffs defined by the percentage of rows. For instance, additional views will be calculated showing the top 10%, 20%, 30%, ... rows based on the absolute sum of their values. 
@@ -203,6 +203,11 @@ Calculate clustering and produce a visualization object (stored as ```net.viz```
   - ```N_row_var``` This indicates that additional row-filtered views should be calculated based on the variance of the values in the rows with cutoffs defined by absolute number. For instance, additional views will be calculated showing the top 500, 250, 100, 50, 20, and 10 rows based on the variance of their values. 
 
   - ```pct_row_sum``` This indicates that additional row-filtered views should be calculated based on the variance of the values in the rows with cutoffs defined by the percentage of rows. For instance, additional views will be calculated showing the top 10%, 20%, 30%, ... rows based on the variance of their values.   
+
+- ```write_json_to_file(net_type, filename, indent='no-indent')''' This writes a json of the network object data, either ```net.viz``` or ```net.dat```, to a file. Choose ```'viz'``` in order to write a visualization json for clustergrammer.js, e.g. ```net.write_json_to_file('viz','clustergram.json')```
+
+- ```export_net_json(net_type, indent='no-indent')``` This exports a json string from either ```net.dat``` or ```net.viz```. This is useful if for uploading a visualization json to a database. 
+
 
 
 ##### ```dat_to_df()```
