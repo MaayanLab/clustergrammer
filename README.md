@@ -204,7 +204,9 @@ Calculate clustering and produce a visualization object (stored as ```net.viz```
 
   - ```N_row_var``` This indicates that additional row-filtered views should be calculated based on the variance of the values in the rows with cutoffs defined by absolute number. For instance, additional views will be calculated showing the top 500, 250, 100, 50, 20, and 10 rows based on the variance of their values. 
 
-  - ```pct_row_sum``` This indicates that additional row-filtered views should be calculated based on the variance of the values in the rows with cutoffs defined by the percentage of rows. For instance, additional views will be calculated showing the top 10%, 20%, 30%, ... rows based on the variance of their values.   
+  - ```pct_row_sum``` This indicates that additional row-filtered views should be calculated based on the variance of the values in the rows with cutoffs defined by the percentage of rows. For instance, additional views will be calculated showing the top 10%, 20%, 30%, ... rows based on the variance of their values. 
+
+- ```sim_mat=False``` This determines whether row and column similarity matrix visualizations will be calculated from your input matrix. The default is ```False```. If it is set to ```True```, then the row and column distance matrices used to calculate hierarchical clustering will be convered to similarity matrices and clustered. These visualization jsons will be stored as ```net.sim['row']``` and ```net.sim['col']```. These can be exporeted for visualization using ```net.write_json_to_file('sim_row', 'sim_row.json')``` and an example of this can be seen in [make_clustergrammer.py](make_clustergrammer.py). 
 
 ##### ```write_json_to_file(net_type, filename, indent='no-indent')''' 
 This writes a json of the network object data, either ```net.viz``` or ```net.dat```, to a file. Choose ```'viz'``` in order to write a visualization json for clustergrammer.js, e.g. ```net.write_json_to_file('viz','clustergram.json')```
