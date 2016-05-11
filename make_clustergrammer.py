@@ -4,11 +4,10 @@ start_time = time.time()
 from clustergrammer import Network
 net = Network()
 
-print(net.__doc__)
-
 # choose tsv file 
 #######################
 net.load_file('txt/rc_two_cats.txt')
+# net.load_file('txt/export.txt')
 # net.load_file('txt/missing_values.txt')
 # net.load_file('txt/example_tsv.txt')
 # net.load_file('txt/col_categories.txt')
@@ -33,7 +32,10 @@ net.load_file('txt/rc_two_cats.txt')
 # net.filter_threshold('row', threshold=100, num_occur=200)
 
 # net.swap_nan_for_zero()
- 
+
+# df = net.dat_to_df()
+# df['mat'].to_csv('txt/export.txt', sep='\t')
+
 # views = ['N_row_sum', 'N_row_var']
 views = ['N_row_sum', 'N_row_var']
 
