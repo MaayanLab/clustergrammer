@@ -4,6 +4,8 @@ start_time = time.time()
 from clustergrammer import Network
 net = Network()
 
+print(net.__doc__)
+
 # choose tsv file 
 #######################
 net.load_file('txt/rc_two_cats.txt')

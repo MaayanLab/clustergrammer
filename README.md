@@ -164,6 +164,30 @@ net.write_json_to_file('viz', 'json/mult_view.json', 'no-indent')
 
 The python script [make_clustergrammer.py](make_clustergrammer.py) generates the visualization jsons for the examples pages. You can modify the script to make a visualization from your own file'
 
+## Clustergrammer Python Module API
+The python module, [clustergrammer.py](clustergrammer), allows users to upload a matrix, normalize or filter data, and make a visualization json for clustergrammer.js - see [example workflow](#example-workflow) and [make_clustergrammer.py](make_clustergrammer.py) for examples. 
+
+
+```
+print(net.__doc__)
+
+  Networks have two states: 
+
+  1) the data state, where they are stored as a matrix and nodes 
+
+  2) the viz state where they are stored as viz.links, viz.row_nodes, and 
+  viz.col_nodes.
+
+  The goal is to start in a data-state and produce a viz-state of
+  the network that will be used as input to clustergram.js.
+
+```
+
+Below are the available functions:
+
+##### load_file
+This function loads a tsv file into
+
 # Clustergrammer JSON Format
 Your visualization JSON (referred to as network_data) must be in the following format (group arrays are not shown): 
 
