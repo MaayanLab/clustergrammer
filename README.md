@@ -186,6 +186,19 @@ This function loads a Pandas Data Frame into the ```net.dat``` state. This allow
 ##### ```swap_nan_for_zero()```
 Swap all NaNs in a matrix for zeros. 
 
+##### ```filter_sum(inst_rc, threshold, take_abs=True)```
+This is a filtering function that can be run before ```make_clust``` that performs a permanent filtering on rows/columns based on their sum. For instance, to filter the matrix to only include rows with a sum above a threshold, 100, do the following: ```net.filter_sum('row', threshold=100)```. Additional, filtered views can also be added using the ```views``` argument in ```make_clust```. 
+
+##### ```filter_N_top(inst_rc, N_top, rank_type='sum')```
+This is a filtering function that can be run before ```make_clust``` that performs a permanent filtering on rows/columns based on their sum/variance and return the top ```N``` rows/columns with the greatest (absolute value) sum or variance. For instance, to filter a matrix with >100 rows down to the top 100 rows based on their sum do the following: ```net.filter_N_top('row', N_top=100, rank_type='sum')```. This is useful for pre-filtering very large matrices to make them easier to visualize. 
+
+##### '''filter_threshold(inst_rc, threshold, num_occur)```
+This is a filtering function that can be run before ```make_clust``` that performs a permanent filterin on rows/columns based on whether ```num_occur``` of their values have an absolute value greater than ```threshold```. For instance, to filter a matrix to only include rows that have at least 3 values with an absolute value above 10 do the following: ```net.filter_threshold('row', threshold=3, num_occur=10)```. This is useful for filtering rows/columns that have the same or simlar sums and variances. 
+
+##### ```normalize(df=None, norm_type='zscore', axis='row', keep_orig=False)```
+
+
+
 ##### ```make_clust()```
 Calculate clustering and produce a visualization object (stored as ```net.viz```). The optional arguments are listed below:
 
@@ -208,13 +221,11 @@ Calculate clustering and produce a visualization object (stored as ```net.viz```
 
 - ```sim_mat=False``` This determines whether row and column similarity matrix visualizations will be calculated from your input matrix. The default is ```False```. If it is set to ```True```, then the row and column distance matrices used to calculate hierarchical clustering will be convered to similarity matrices and clustered. These visualization jsons will be stored as ```net.sim['row']``` and ```net.sim['col']```. These can be exporeted for visualization using ```net.write_json_to_file('sim_row', 'sim_row.json')``` and an example of this can be seen in [make_clustergrammer.py](make_clustergrammer.py). 
 
-##### ```write_json_to_file(net_type, filename, indent='no-indent')''' 
+##### ```write_json_to_file(net_type, filename, indent='no-indent')```
 This writes a json of the network object data, either ```net.viz``` or ```net.dat```, to a file. Choose ```'viz'``` in order to write a visualization json for clustergrammer.js, e.g. ```net.write_json_to_file('viz','clustergram.json')```
 
 ##### ```export_net_json(net_type, indent='no-indent')``` 
-This exports a json string from either ```net.dat``` or ```net.viz```. This is useful if for uploading a visualization json to a database. 
-
-
+This exports a json string from either ```net.dat``` or ```net.viz```. This is useful if a user wants the json, but does not want to first write to file. 
 
 ##### ```dat_to_df()```
 Export a matrix that has been loaded into the ```Network``` object as a Pandas Data Frame.  
