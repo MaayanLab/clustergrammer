@@ -161,39 +161,39 @@ net.make_clust(dist_type='cos',views=['N_row_sum', 'N_row_var'])
 
 net.write_json_to_file('viz', 'json/mult_view.json', 'no-indent')
 ```
+The above workflow instaitiates an instance of the ```Network``` class as ```net```, loads a matrix tsv file, calculates clustering (with distance set to cosine and optional view requested), and writes the visualization json to a file. 
 
-The python script [make_clustergrammer.py](make_clustergrammer.py) generates the visualization jsons for the examples pages. You can modify the script to make a visualization from your own file and find out more about the API below.
+The python script [make_clustergrammer.py](make_clustergrammer.py) generates the visualization jsons for the examples pages on this repo. You can modify the script to make a visualization from your own file and find out more about the API below.
 
 ## Clustergrammer Python Module API
-The python module, [clustergrammer.py](clustergrammer), allows users to upload a matrix, normalize or filter data, and make a visualization json for clustergrammer.js - see [example workflow](#example-workflow) and [make_clustergrammer.py](make_clustergrammer.py) for examples. 
+The python module, [clustergrammer.py](clustergrammer), allows users to upload a matrix, normalize or filter data, and make a visualization json for clustergrammer.js. 
 
 The python module works in the following way. First, data is loaded into a data state (net.dat). Second, a clustered visualization json is calculated and saved in the viz state (net.viz). Third, the visualization object is exported as a json for clustergrammer.js. These three steps are shown in the [example workflow](#example-workflow) as: ```net.load_file```, ```net.make_clust```, and ```net.write_json_to_file```. 
 
-```
-from clustergrammer import Network
-print(net.__doc__)
-
-  Networks have two states: 
-
-  1) the data state, where they are stored as a matrix and nodes 
-
-  2) the viz state where they are stored as viz.links, viz.row_nodes, and 
-  viz.col_nodes.
-
-  The goal is to start in a data-state and produce a viz-state of
-  the network that will be used as input to clustergram.js.
-```
-
 The data state is similar to a Pandas Data Frame. A matrix also can be loaded directly as a [Data Frame](#df_to_dat) or [exported](#dat_to_df). 
 
-Below are the available functions:
+Below are the available functions in the ```Network``` object:
 
-##### ```load_file```
-This function loads a tsv file into
+##### ```load_file(filename)```
+Load a tsv file, given by filename, into the ```Network``` object (stored as ```net.dat```). 
 
-##### ```df_to_dat```
+##### ```load_tsv_to_net(file_buffer)```
+Load a file buffer directly into the ```Network``` object. 
 
-##### ```dat_to_df```
+##### ```df_to_dat()```
+This function loads a Pandas Data Frame into the ```net.dat``` state. This allows a user to directly load a Data Frame rather than have to load from a file. 
+
+##### ```swap_nan_for_zero()```
+Swap all NaNs in a matrix for zeros. 
+
+##### ```make_clust()```
+Calculate clustering and produce a visualization object (stored as ```net.viz```). The optional arguments are listed below:
+  - ```dist_type='cosine'``` the distance metric used to calculate the distance between all rows and columns (using Scipy). The defalt is cosine distance. 
+
+  - ```run_clustering=True``` this determines whether clustering will be calculated. The default is set to ```True```. If ```False``` is given then a visualization of the matrix in its original ordering will be returned.
+
+##### ```dat_to_df()```
+Export a matrix that has been loaded into the ```Network``` object as a Pandas Data Frame.  
 
 # Clustergrammer JSON Format
 Your visualization JSON (referred to as network_data) must be in the following format (group arrays are not shown): 
