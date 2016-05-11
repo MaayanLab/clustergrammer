@@ -99,6 +99,10 @@ class Network(object):
     import export_data
     export_data.write_json_to_file(self, net_type, filename, indent)
 
+  def write_matrix_to_tsv(self, filename, df=None):
+    import export_data
+    export_data.write_matrix_to_tsv(self, filename, df)
+
   def filter_sum(self, inst_rc, threshold, take_abs=True):
     ''' 
     Filter a network's rows or columns based on the sum across rows or columns 

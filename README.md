@@ -220,6 +220,9 @@ Calculate clustering and produce a visualization object (stored as ```net.viz```
 ##### ```write_json_to_file(net_type, filename, indent='no-indent')```
 This writes a json of the network object data, either ```net.viz``` or ```net.dat```, to a file. Choose ```'viz'``` in order to write a visualization json for clustergrammer.js, e.g. ```net.write_json_to_file('viz','clustergram.json')```
 
+##### ```write_matrix_to_tsv(filename, df=None)
+This write the matrix, stored in the network object, to a tsv file. Optional row/column categories are saved as tuples. 
+
 ##### ```export_net_json(net_type, indent='no-indent')``` 
 This exports a json string from either ```net.dat``` or ```net.viz```. This is useful if a user wants the json, but does not want to first write to file. 
 
