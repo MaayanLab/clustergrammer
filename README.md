@@ -162,7 +162,7 @@ net.make_clust(dist_type='cos',views=['N_row_sum', 'N_row_var'])
 net.write_json_to_file('viz', 'json/mult_view.json', 'no-indent')
 ```
 
-The python script [make_clustergrammer.py](make_clustergrammer.py) generates the visualization jsons for the examples pages. You can modify the script to make a visualization from your own file'
+The python script [make_clustergrammer.py](make_clustergrammer.py) generates the visualization jsons for the examples pages. You can modify the script to make a visualization from your own file and find out more about the API below.
 
 ## Clustergrammer Python Module API
 The python module, [clustergrammer.py](clustergrammer), allows users to upload a matrix, normalize or filter data, and make a visualization json for clustergrammer.js - see [example workflow](#example-workflow) and [make_clustergrammer.py](make_clustergrammer.py) for examples. 
