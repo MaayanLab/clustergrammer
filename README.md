@@ -148,7 +148,7 @@ The 'title' of row/column names and categories can also be included by prefixing
 Several examples can be found in the [txt](txt) directory. An example matrix tab-separated file with row and column categories can be seen here: [rc_two_cats.txt](txt/rc_two_cats.txt). See [example workflow](#example-workflow) or [make_clustergrammer.py](make_clustergrammer.py) for examples of how to use the python module to generate a visualization json from a matrix file. 
 
 # Clustergrammer Python Module
-The python module [clutergrammer.py](clustergrammer), takes a tab-separated matrix file as input, calculates clustering, and generates the visualization json for clustergrammer.js. See an example workflow below:
+The python module [clutergrammer.py](clustergrammer), takes a tab-separated matrix file as input, calculates clustering, and generates the visualization json for clustergrammer.js. See a simple example workflow below:
 
 ## Example Workflow
 ```
@@ -167,7 +167,7 @@ The python script [make_clustergrammer.py](make_clustergrammer.py) generates the
 ## Clustergrammer Python Module API
 The python module, [clustergrammer.py](clustergrammer), allows users to upload a matrix, normalize or filter data, and make a visualization json for clustergrammer.js - see [example workflow](#example-workflow) and [make_clustergrammer.py](make_clustergrammer.py) for examples. 
 
-The python module works in the following way. First, data is loaded into a data state (net.dat), then a clustered visualization json is calculated and saved in the viz state (net.viz). The module documentation is shown below:
+The python module works in the following way. First, data is loaded into a data state (net.dat). Second, a clustered visualization json is calculated and saved in the viz state (net.viz). Third, the visualization object is exported as a json for clustergrammer.js. These three steps are shown in the [example workflow](#example-workflow) as: ```net.load_file```, ```net.make_clust```, and ```net.write_json_to_file```. 
 
 ```
 from clustergrammer import Network
