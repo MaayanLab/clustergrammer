@@ -188,9 +188,22 @@ Swap all NaNs in a matrix for zeros.
 
 ##### ```make_clust()```
 Calculate clustering and produce a visualization object (stored as ```net.viz```). The optional arguments are listed below:
-  - ```dist_type='cosine'``` the distance metric used to calculate the distance between all rows and columns (using Scipy). The defalt is cosine distance. 
 
-  - ```run_clustering=True``` this determines whether clustering will be calculated. The default is set to ```True```. If ```False``` is given then a visualization of the matrix in its original ordering will be returned.
+- ```dist_type='cosine'``` The distance metric used to calculate the distance between all rows and columns (using Scipy). The defalt is cosine distance. 
+
+- ```run_clustering=True``` This determines whether clustering will be calculated. The default is set to ```True```. If ```False``` is given then a visualization of the matrix in its original ordering will be returned.
+
+- ```dendro=True``` This determines whether a dendrogram will be included in the visualization. The default is True. 
+
+- ```views=['N_row_sum', 'N_row_var']``` This determines which row-filtered views will be calculated for the clustergram. Filters can be based on sum or variance and the cutoffs can be defined in absolute numbers (```N```) or as a percentage of the number of rows (```pct```). These views are available on the front-end visualization using the sliders. The four options are:
+  - ```N_row_sum``` This indicates that additional row-filtered views should be calculated based on the sum of the values in the rows with cutoffs defined by absolute number. For instance, additional views will be calculated showing the top 500, 250, 100, 50, 20, and 10 rows based on the absolute sum of their values. 
+
+  - ```pct_row_sum``` This indicates that additional row-filtered views should be calculated based on the sum of the values in the rows with cutoffs defined by the percentage of rows. For instance, additional views will be calculated showing the top 10%, 20%, 30%, ... rows based on the absolute sum of their values. 
+
+  - ```N_row_var``` This indicates that additional row-filtered views should be calculated based on the variance of the values in the rows with cutoffs defined by absolute number. For instance, additional views will be calculated showing the top 500, 250, 100, 50, 20, and 10 rows based on the variance of their values. 
+
+  - ```pct_row_sum``` This indicates that additional row-filtered views should be calculated based on the variance of the values in the rows with cutoffs defined by the percentage of rows. For instance, additional views will be calculated showing the top 10%, 20%, 30%, ... rows based on the variance of their values.   
+
 
 ##### ```dat_to_df()```
 Export a matrix that has been loaded into the ```Network``` object as a Pandas Data Frame.  

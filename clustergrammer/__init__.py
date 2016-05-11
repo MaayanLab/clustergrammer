@@ -48,7 +48,7 @@ class Network(object):
     load_data.load_data_to_net(self, inst_dat)
 
   def make_clust(self, dist_type='cosine', run_clustering=True,
-                 dendro=True, views=['pct_row_sum', 'N_row_sum'],
+                 dendro=True, views=['N_row_sum', 'N_row_var'],
                  linkage_type='average', sim_mat=False, filter_sim=0.1,
                  calc_cat_pval=False):
     ''' 
