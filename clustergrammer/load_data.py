@@ -6,6 +6,7 @@ def load_file(net, filename):
   net.load_tsv_to_net(buff)
 
 def load_tsv_to_net(net, file_buffer):
+  import numpy as np
   import pandas as pd
   import categories
   from ast import literal_eval as make_tuple
@@ -43,16 +44,17 @@ def load_tsv_to_net(net, file_buffer):
 
     if type(inst_name) != tuple:
 
-      if type(inst_name) is int or type(inst_name) is float:
+      if type(inst_name) is int or type(inst_name) is float or type(inst_name) is np.int64:
         found_number[inst_rc] = True
 
-      check_open = inst_name[0]
-      check_comma = inst_name.find(',')
-      check_close = inst_name[-1]
+      else:
+        check_open = inst_name[0]
+        check_comma = inst_name.find(',')
+        check_close = inst_name[-1]
 
-      if check_open == '(' and check_close == ')' and check_comma > 0 \
-        and check_comma < len(inst_name):
-        found_tuple[inst_rc] = True
+        if check_open == '(' and check_close == ')' and check_comma > 0 \
+          and check_comma < len(inst_name):
+          found_tuple[inst_rc] = True
 
   # convert to tuple if necessary 
   #################################################
