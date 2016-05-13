@@ -29,8 +29,8 @@ module.exports = function set_up_dendro_sliders(sidebar, params){
 
     dendro_sliders
       .append('div')
-      .classed('slider_'+inst_rc,true)
-      .classed('slider',true)
+      .classed('slider_'+inst_rc, true)
+      .classed('slider', true)
       .style('width', params.sidebar.slider.width+'px')
       .style('margin-left', params.sidebar.slider.margin_left+'px');
 

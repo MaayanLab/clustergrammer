@@ -85,16 +85,16 @@ module.exports = function ini_matrix_params(config, viz, network_data){
     }).value;
   }
 
-  var abs_max_val = Math.abs(matrix.max_link) * config.clamp_opacity;
+  matrix.abs_max_val = Math.abs(matrix.max_link) * config.clamp_opacity;
 
   if (config.input_domain === 0) {
     if (matrix.opacity_function === 'linear') {
       matrix.opacity_scale = d3.scale.linear()
-        .domain([0, abs_max_val]).clamp(true)
+        .domain([0, matrix.abs_max_val]).clamp(true)
         .range([0.0, 1.0]);
     } else if (matrix.opacity_function === 'log') {
       matrix.opacity_scale = d3.scale.log()
-        .domain([0.001, abs_max_val]).clamp(true)
+        .domain([0.001, matrix.abs_max_val]).clamp(true)
         .range([0.0, 1.0]);
     }
   } else {

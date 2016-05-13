@@ -83,4 +83,31 @@ module.exports = function ini_sidebar(params){
 
   ini_cat_reorder(params);
 
+  $( params.root+' .opacity_slider' ).slider({
+    // value:0.5,
+    min: 0.1,
+    max: 2.0,
+    step: 0.1,  
+    slide: function( event, ui ) {
+
+      $( "#amount" ).val( "$" + ui.value );
+      var inst_index = 2 - ui.value;
+      console.log('inst_index ' +String(inst_index))
+
+      var scaled_max = params.matrix.abs_max_val * inst_index;
+      // console.log('scaled_max ' +String(scaled_max));
+
+      params.matrix.opacity_scale.domain([0, scaled_max]);
+
+      d3.selectAll(params.root+' .tile')
+        .style('fill-opacity', function(d) {
+          // calculate output opacity using the opacity scale
+          var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
+          return output_opacity;
+        });
+
+
+    }
+  });
+
 };

@@ -77,6 +77,8 @@ module.exports = function sidebar(cgm) {
   set_up_reorder(params, sidebar);
 
   set_up_search(sidebar, params);
+  
+  set_up_opacity_slider(sidebar, params);
 
   if (params.viz.show_dendrogram){
     set_up_dendro_sliders(sidebar, params);
@@ -95,9 +97,7 @@ module.exports = function sidebar(cgm) {
   _.each(possible_filter_names, function(inst_filter){
     set_up_filters(cgm, inst_filter);
   });
-  
-  set_up_opacity_slider(sidebar, params);
-  
+
   ini_sidebar(params);
 
   // disable for now 

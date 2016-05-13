@@ -1386,13 +1386,13 @@ var Clustergrammer =
 	    }).value;
 	  }
 
-	  var abs_max_val = Math.abs(matrix.max_link) * config.clamp_opacity;
+	  matrix.abs_max_val = Math.abs(matrix.max_link) * config.clamp_opacity;
 
 	  if (config.input_domain === 0) {
 	    if (matrix.opacity_function === 'linear') {
-	      matrix.opacity_scale = d3.scale.linear().domain([0, abs_max_val]).clamp(true).range([0.0, 1.0]);
+	      matrix.opacity_scale = d3.scale.linear().domain([0, matrix.abs_max_val]).clamp(true).range([0.0, 1.0]);
 	    } else if (matrix.opacity_function === 'log') {
-	      matrix.opacity_scale = d3.scale.log().domain([0.001, abs_max_val]).clamp(true).range([0.0, 1.0]);
+	      matrix.opacity_scale = d3.scale.log().domain([0.001, matrix.abs_max_val]).clamp(true).range([0.0, 1.0]);
 	    }
 	  } else {
 	    if (matrix.opacity_function === 'linear') {
@@ -7097,9 +7097,6 @@ var Clustergrammer =
 
 	module.exports = function update_with_new_network(config, old_params, new_network_data) {
 
-	  console.log('old params');
-	  console.log(old_params.matrix.opacity_scale.domain());
-
 	  // make tmp config to make new params
 	  var tmp_config = jQuery.extend(true, {}, config);
 
@@ -8158,6 +8155,30 @@ var Clustergrammer =
 	  });
 
 	  ini_cat_reorder(params);
+
+	  $(params.root + ' .opacity_slider').slider({
+	    // value:0.5,
+	    min: 0.1,
+	    max: 2.0,
+	    step: 0.1,
+	    slide: function slide(event, ui) {
+
+	      $("#amount").val("$" + ui.value);
+	      var inst_index = 2 - ui.value;
+	      console.log('inst_index ' + String(inst_index));
+
+	      var scaled_max = params.matrix.abs_max_val * inst_index;
+	      // console.log('scaled_max ' +String(scaled_max));
+
+	      params.matrix.opacity_scale.domain([0, scaled_max]);
+
+	      d3.selectAll(params.root + ' .tile').style('fill-opacity', function (d) {
+	        // calculate output opacity using the opacity scale
+	        var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
+	        return output_opacity;
+	      });
+	    }
+	  });
 		};
 
 /***/ },
@@ -8691,6 +8712,8 @@ var Clustergrammer =
 
 	  set_up_search(sidebar, params);
 
+	  set_up_opacity_slider(sidebar, params);
+
 	  if (params.viz.show_dendrogram) {
 	    set_up_dendro_sliders(sidebar, params);
 	  }
@@ -8706,8 +8729,6 @@ var Clustergrammer =
 	  _.each(possible_filter_names, function (inst_filter) {
 	    set_up_filters(cgm, inst_filter);
 	  });
-
-	  set_up_opacity_slider(sidebar, params);
 
 	  ini_sidebar(params);
 
@@ -9803,7 +9824,13 @@ var Clustergrammer =
 
 	  var slider_container = sidebar.append('div').classed('opacity_slider_container', true).style('margin-top', '5px');
 
-	  slider_container.append('div').classed('sidebar_text', true).append('opacity_slider', true).style('margin-bottom', '3px').style('margin-left', '5px').text('Opacity Slider');
+	  slider_container.append('div').classed('sidebar_text', true).classed('opacity_slider_text', true).style('margin-bottom', '3px').style('margin-left', '5px').text('Opacity Slider');
+
+	  slider_container.append('div').classed('opacity_slider', true)
+	  // .classed('slider', true)
+	  .style('width', params.sidebar.slider.width + 'px').style('margin-left', params.sidebar.slider.margin_left + 'px');
+
+	  $(params.root + ' .opacity_slider').slider({ value: 1.0 });
 		};
 
 /***/ }
