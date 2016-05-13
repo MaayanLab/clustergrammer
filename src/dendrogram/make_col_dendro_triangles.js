@@ -71,7 +71,7 @@ module.exports = function make_col_dendro_triangles(params, is_change_group = fa
         .html('Columns in Group');
 
       $(params.root+' .dendro_info .current_names')
-        .val(d.all_names.join(', '))
+        .val(d.all_names.join(', '));
 
       $(params.root+' .dendro_info').modal('toggle');
 

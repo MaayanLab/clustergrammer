@@ -92,10 +92,8 @@ module.exports = function ini_sidebar(params){
 
       $( "#amount" ).val( "$" + ui.value );
       var inst_index = 2 - ui.value;
-      console.log('inst_index ' +String(inst_index))
 
       var scaled_max = params.matrix.abs_max_val * inst_index;
-      // console.log('scaled_max ' +String(scaled_max));
 
       params.matrix.opacity_scale.domain([0, scaled_max]);
 

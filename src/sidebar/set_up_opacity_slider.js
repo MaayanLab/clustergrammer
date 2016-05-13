@@ -20,6 +20,8 @@ module.exports = function set_up_opacity_slider(sidebar, params){
     .style('width', params.sidebar.slider.width+'px')
     .style('margin-left', params.sidebar.slider.margin_left+'px');
 
-  $( params.root+' .opacity_slider' ).slider({ value:1.0 });
+  $( params.root+' .opacity_slider' ).slider({
+    value:1.0
+  });
 
-}
+};

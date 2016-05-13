@@ -52,24 +52,10 @@ function Clustergrammer(args) {
   function resize_fun(cgm){
     // use this params, because this will have the latest params 
     resize_viz(cgm.params);
-    console.log(cgm.params.matrix.opacity_scale.domain())
   }
 
   function external_update_view(requested_view){
     params = update_network(this, requested_view);
-  }
-
-  function change_input_domain(){
-    var params = this.params;
-    params.matrix.opacity_scale.domain([0,1]);
-
-    d3.selectAll(params.root+' .tile')
-      .style('fill-opacity', function(d) {
-        // calculate output opacity using the opacity scale
-        var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
-        return output_opacity;
-      });
-
   }
 
   // add more API endpoints 
@@ -77,7 +63,6 @@ function Clustergrammer(args) {
   cgm.resize_viz = external_resize;
   cgm.play_demo = play_demo;
   cgm.ini_demo = ini_demo;
-  cgm.change_input_domain = change_input_domain;
 
   return cgm;
 }

@@ -70,7 +70,7 @@ module.exports = function make_row_dendro_triangles(params, is_change_group=fals
         .html('Rows in Group');
 
       $(params.root+' .dendro_info .current_names')
-        .val(d.all_names.join(', '))
+        .val(d.all_names.join(', '));
 
       $(params.root+' .dendro_info').modal('toggle');      
     });
