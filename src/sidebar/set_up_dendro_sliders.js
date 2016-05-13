@@ -2,7 +2,7 @@ module.exports = function set_up_dendro_sliders(sidebar, params){
 
   var dendro_sliders = sidebar
     .append('div')
-    .classed('dendro_sliders',true);
+    .classed('dendro_sliders', true);
 
   var dendro_types;
   if (params.sim_mat){

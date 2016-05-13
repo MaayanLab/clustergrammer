@@ -101,10 +101,22 @@ var Clustergrammer =
 	  function resize_fun(cgm) {
 	    // use this params, because this will have the latest params
 	    resize_viz(cgm.params);
+	    console.log(cgm.params.matrix.opacity_scale.domain());
 	  }
 
 	  function external_update_view(requested_view) {
 	    params = update_network(this, requested_view);
+	  }
+
+	  function change_input_domain() {
+	    var params = this.params;
+	    params.matrix.opacity_scale.domain([0, 1]);
+
+	    d3.selectAll(params.root + ' .tile').style('fill-opacity', function (d) {
+	      // calculate output opacity using the opacity scale
+	      var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
+	      return output_opacity;
+	    });
 	  }
 
 	  // add more API endpoints
@@ -112,6 +124,7 @@ var Clustergrammer =
 	  cgm.resize_viz = external_resize;
 	  cgm.play_demo = play_demo;
 	  cgm.ini_demo = ini_demo;
+	  cgm.change_input_domain = change_input_domain;
 
 	  return cgm;
 	}
@@ -7084,11 +7097,15 @@ var Clustergrammer =
 
 	module.exports = function update_with_new_network(config, old_params, new_network_data) {
 
+	  console.log('old params');
+	  console.log(old_params.matrix.opacity_scale.domain());
+
 	  // make tmp config to make new params
 	  var tmp_config = jQuery.extend(true, {}, config);
 
 	  tmp_config.network_data = new_network_data;
 	  tmp_config.inst_order = old_params.viz.inst_order;
+	  tmp_config.input_domain = old_params.matrix.opacity_scale.domain()[1];
 
 	  update_reorder_buttons(tmp_config, old_params);
 
@@ -8623,6 +8640,7 @@ var Clustergrammer =
 	var set_sidebar_ini_view = __webpack_require__(158);
 	var make_icons = __webpack_require__(159);
 	var make_modals = __webpack_require__(162);
+	var set_up_opacity_slider = __webpack_require__(164);
 
 	/* Represents sidebar with controls.
 	 */
@@ -8688,6 +8706,8 @@ var Clustergrammer =
 	  _.each(possible_filter_names, function (inst_filter) {
 	    set_up_filters(cgm, inst_filter);
 	  });
+
+	  set_up_opacity_slider(sidebar, params);
 
 	  ini_sidebar(params);
 
@@ -9771,6 +9791,19 @@ var Clustergrammer =
 	  modal_skeleton.body = modal_content.append('div').classed('modal-body', true);
 
 	  return modal_skeleton;
+		};
+
+/***/ },
+/* 164 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = function set_up_opacity_slider(sidebar, params) {
+
+	  var slider_container = sidebar.append('div').classed('opacity_slider_container', true).style('margin-top', '5px');
+
+	  slider_container.append('div').classed('sidebar_text', true).append('opacity_slider', true).style('margin-bottom', '3px').style('margin-left', '5px').text('Opacity Slider');
 		};
 
 /***/ }

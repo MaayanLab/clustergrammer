@@ -6,6 +6,7 @@ var set_up_reorder = require('./set_up_reorder');
 var set_sidebar_ini_view = require('./set_sidebar_ini_view');
 var make_icons = require('./make_icons');
 var make_modals = require('./make_modals');
+var set_up_opacity_slider = require('./set_up_opacity_slider');
 
 /* Represents sidebar with controls.
  */
@@ -81,6 +82,8 @@ module.exports = function sidebar(cgm) {
     set_up_dendro_sliders(sidebar, params);
   }
 
+
+
   var possible_filter_names = _.keys(params.viz.possible_filters);
 
   if (possible_filter_names.indexOf('enr_score_type')>-1){
@@ -92,6 +95,8 @@ module.exports = function sidebar(cgm) {
   _.each(possible_filter_names, function(inst_filter){
     set_up_filters(cgm, inst_filter);
   });
+  
+  set_up_opacity_slider(sidebar, params);
   
   ini_sidebar(params);
 

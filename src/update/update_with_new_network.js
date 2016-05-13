@@ -13,11 +13,15 @@ var update_reorder_buttons = require('../reorder/update_reorder_buttons');
 
 module.exports = function update_with_new_network(config, old_params,  new_network_data){
 
+  console.log('old params')
+  console.log(old_params.matrix.opacity_scale.domain())
+
   // make tmp config to make new params 
   var tmp_config = jQuery.extend(true, {}, config);
 
   tmp_config.network_data = new_network_data;
   tmp_config.inst_order = old_params.viz.inst_order;
+  tmp_config.input_domain = old_params.matrix.opacity_scale.domain()[1];
 
   update_reorder_buttons(tmp_config, old_params);
 
