@@ -17,6 +17,8 @@ net.load_file('txt/rc_two_cats.txt')
 # net.load_file('txt/sim_mat_4_cats.txt')
 # net.load_file('txt/number_names.txt')
 
+# net.Iframe_web_app('txt/rc_two_cats.txt', width=1000, height=800)
+
 # possible filtering and normalization 
 ##########################################
 # net.filter_sum('row', threshold=20)

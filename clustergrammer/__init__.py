@@ -151,6 +151,13 @@ class Network(object):
 
     normalize_fun.run_norm(self, df, norm_type, axis, keep_orig) 
 
+  def Iframe_web_app(self, filename=None, width=1000, height=800):
+    import iframe_web_app
+
+    link = iframe_web_app.main(self, filename, width, height)
+
+    return link 
+
   @staticmethod
   def load_gmt(filename):
     import load_data
