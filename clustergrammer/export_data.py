@@ -25,7 +25,7 @@ def export_net_json(net, net_type, indent='no-indent'):
 
   return exp_json  
 
-def write_matrix_to_tsv(net, filename, df = None):
+def write_matrix_to_tsv(net, filename=None, df=None):
   '''
   This will export the matrix in net.dat or a dataframe (optional df in 
   arguments) as a tsv file. Row/column categories will be saved as tuples in 
@@ -36,7 +36,7 @@ def write_matrix_to_tsv(net, filename, df = None):
   if df is None:
     df = net.dat_to_df()
 
-  df['mat'].to_csv(filename, sep='\t')
+  return df['mat'].to_csv(filename, sep='\t')
 
 def write_json_to_file(net, net_type, filename, indent='no-indent'):
 

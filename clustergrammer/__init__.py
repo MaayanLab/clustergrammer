@@ -23,13 +23,13 @@ class Network(object):
     import load_data
     load_data.load_file(self, filename)
 
-  def load_tsv_to_net(self, file_buffer):
+  def load_tsv_to_net(self, file_buffer, filename=None):
     ''' 
     This will load a tsv matrix file buffer, this is exposed so that it will
     be possible to load data without having to read from a file. 
     ''' 
     import load_data
-    load_data.load_tsv_to_net(self, file_buffer)
+    load_data.load_tsv_to_net(self, file_buffer, filename)
 
   def load_vect_post_to_net(self, vect_post):
     ''' 
@@ -99,9 +99,9 @@ class Network(object):
     import export_data
     export_data.write_json_to_file(self, net_type, filename, indent)
 
-  def write_matrix_to_tsv(self, filename, df=None):
+  def write_matrix_to_tsv(self, filename=None, df=None):
     import export_data
-    export_data.write_matrix_to_tsv(self, filename, df)
+    return export_data.write_matrix_to_tsv(self, filename, df)
 
   def filter_sum(self, inst_rc, threshold, take_abs=True):
     ''' 

@@ -17,7 +17,10 @@ net.load_file('txt/rc_two_cats.txt')
 # net.load_file('txt/sim_mat_4_cats.txt')
 # net.load_file('txt/number_names.txt')
 
-# net.Iframe_web_app('txt/rc_two_cats.txt', width=1000, height=800)
+# link = net.Iframe_web_app('txt/rc_two_cats.txt', width=1000, height=800)
+# link = net.Iframe_web_app( width=1000, height=800)
+
+# print(link)
 
 # possible filtering and normalization 
 ##########################################
@@ -36,8 +39,6 @@ net.load_file('txt/rc_two_cats.txt')
 # net.swap_nan_for_zero()
 
 # df = net.dat_to_df()
-
-# net.write_matrix_to_tsv('txt/tuple_names.txt', df)
 
 views = ['N_row_sum', 'N_row_var']
 
