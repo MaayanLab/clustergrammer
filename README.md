@@ -165,7 +165,7 @@ The above workflow instaitiates an instance of the ```Network``` class as ```net
 
 The python script [make_clustergrammer.py](make_clustergrammer.py) generates the visualization jsons for the examples pages on this repo. You can modify the script to make a visualization from your own file and find out more about the API below.
 
-## Jupyter Notebook Example 
+## Jupyter Notebook Example Workflow
 The python module can also produce visualizations for Jupyter/Ipython Python notebooks. See [Jupyter_Notebook_Example.ipynb](Jupyter_Notebook_Example.ipynb) for and example notebook or the example workflow below:
 
 ```
