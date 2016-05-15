@@ -148,7 +148,7 @@ The 'title' of row/column names and categories can also be included by prefixing
 Several examples can be found in the [txt](txt) directory. An example matrix tab-separated file with row and column categories can be seen here: [rc_two_cats.txt](txt/rc_two_cats.txt). See [example workflow](#example-workflow) or [make_clustergrammer.py](make_clustergrammer.py) for examples of how to use the python module to generate a visualization json from a matrix file. 
 
 # Clustergrammer Python Module
-The python module [clutergrammer.py](clustergrammer), takes a tab-separated matrix file as input, calculates clustering, and generates the visualization json for clustergrammer.js. See a simple example workflow below:
+The python module [clutergrammer.py](clustergrammer), takes a tab-separated matrix file as input, calculates clustering, and generates the visualization json for clustergrammer.js. See a simple example workflows below:
 
 ## Example Workflow
 ```
@@ -164,6 +164,18 @@ net.write_json_to_file('viz', 'json/mult_view.json', 'no-indent')
 The above workflow instaitiates an instance of the ```Network``` class as ```net```, loads a matrix tsv file, calculates clustering (with distance set to cosine and optional view requested), and writes the visualization json to a file. 
 
 The python script [make_clustergrammer.py](make_clustergrammer.py) generates the visualization jsons for the examples pages on this repo. You can modify the script to make a visualization from your own file and find out more about the API below.
+
+## Jupyter Notebook Example 
+The python module can also produce visualizations for Jupyter/Ipython Python notebooks. See [Jupyter_Notebook_Example.ipynb](Jupyter_Notebook_Example.ipynb) for and example notebook or the example workflow below:
+
+```
+# upload a file to the clustergrammer web app and visualize using an Iframe
+from clustergrammer import Network
+from copy import deepcopy
+net = deepcopy(Network())
+link = net.Iframe_web_app('txt/rc_two_cats.txt')
+print(link)
+```
 
 ## Clustergrammer Python Module API
 The python module, [clustergrammer.py](clustergrammer), allows users to upload a matrix, normalize or filter data, and make a visualization json for clustergrammer.js. 
