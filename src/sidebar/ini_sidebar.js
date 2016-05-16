@@ -1,3 +1,4 @@
+require('jquery-ui/slider');
 var change_groups = require('../dendrogram/change_groups');
 var search = require('../search');
 var all_reorder = require('../reorder/all_reorder');
@@ -36,7 +37,7 @@ module.exports = function ini_sidebar(params){
 
   _.each( reorder_types, function(inst_rc){
 
-    // dendrogram 
+    // dendrogram
     $( params.root+' .slider_'+inst_rc ).slider({
       value:0.5,
       min: 0,
@@ -87,7 +88,7 @@ module.exports = function ini_sidebar(params){
     // value:0.5,
     min: 0.1,
     max: 2.0,
-    step: 0.1,  
+    step: 0.1,
     slide: function( event, ui ) {
 
       $( "#amount" ).val( "$" + ui.value );

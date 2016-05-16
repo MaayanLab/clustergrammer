@@ -25,10 +25,10 @@ module.exports = function(params, inst_order, tmp_row_col) {
   }
 
   var row_nodes_obj = params.network_data.row_nodes;
-  var row_nodes_names = _.pluck(row_nodes_obj, 'name');
+  var row_nodes_names = _.map(row_nodes_obj, 'name');
 
   var col_nodes_obj = params.network_data.col_nodes;
-  var col_nodes_names = _.pluck(col_nodes_obj, 'name');
+  var col_nodes_names = _.map(col_nodes_obj, 'name');
 
   if (row_col === 'row'){
 

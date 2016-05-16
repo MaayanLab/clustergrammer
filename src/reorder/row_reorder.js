@@ -21,7 +21,7 @@ module.exports = function row_reorder(params, row_selection, inst_row) {
   var row_nodes = params.network_data.row_nodes;
   var col_nodes = params.network_data.col_nodes;
 
-  var col_nodes_names = _.pluck(col_nodes, 'name');
+  var col_nodes_names = _.map(col_nodes, 'name');
 
   // find the index of the row
   var tmp_arr = [];

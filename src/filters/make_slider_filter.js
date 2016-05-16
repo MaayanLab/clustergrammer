@@ -19,7 +19,7 @@ module.exports = function make_slider_filter(cgm, filter_type, div_filters){
   });
 
   var filter_title = make_filter_title(params, filter_type);
-  
+
   div_filters
     .append('div')
     .classed('title_'+filter_type,true)
@@ -27,22 +27,19 @@ module.exports = function make_slider_filter(cgm, filter_type, div_filters){
     .classed('slider_description', true)
     .style('margin-top', '5px')
     .style('margin-bottom', '3px')
-    .style('margin-left', '5px')
     .text(filter_title.text + filter_title.state + filter_title.suffix);
 
   div_filters
     .append('div')
     .classed('slider_'+filter_type,true)
     .classed('slider',true)
-    .style('width', params.sidebar.slider.width+'px')
-    .style('margin-left', params.sidebar.slider.margin_left+'px')
     .attr('current_state', filter_title.state);
-    
+
   var views = params.network_data.views;
 
   var available_views = get_subset_views(params, views, requested_view);
 
-  // sort available views by filter_type value 
+  // sort available views by filter_type value
   available_views = available_views.sort(function(a, b) {
       return b[filter_type] - a[filter_type];
   });

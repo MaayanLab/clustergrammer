@@ -16,7 +16,7 @@ module.exports = function get_available_filters(views){
 
         filter_data[inst_key].push(inst_view[inst_key]);
 
-        filter_data[inst_key] = _.unique( filter_data[inst_key] );
+        filter_data[inst_key] = _.uniq( filter_data[inst_key] );
 
       }
 

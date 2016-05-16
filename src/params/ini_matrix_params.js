@@ -38,7 +38,7 @@ module.exports = function ini_matrix_params(config, viz, network_data){
     var inst_nodes = network_data[other_rc+'_nodes'];
     var num_nodes = inst_nodes.length;
 
-    var nodes_names = _.pluck(inst_nodes, 'name');
+    var nodes_names = _.map(inst_nodes, 'name');
     var tmp = nodes_names.sort();
 
     var alpha_index = _.map(tmp, function(d){

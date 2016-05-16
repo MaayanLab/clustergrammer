@@ -21,7 +21,6 @@ function Clustergrammer(args) {
 
   // consume and validate user arguments, produce configuration object
   var config = make_config(args);
-
   // make visualization parameters using configuration object
   var params = make_params(config);
 
@@ -33,11 +32,11 @@ function Clustergrammer(args) {
     var make_sidebar = require('./sidebar/');
     params = make_sidebar(cgm);
   }
-  
+
   // make visualization using parameters
   make_viz(params);
 
-  function external_resize(){
+  function external_resize() {
 
     d3.select(params.viz.viz_svg).style('opacity', 0.5);
 
@@ -50,7 +49,7 @@ function Clustergrammer(args) {
   }
 
   function resize_fun(cgm){
-    // use this params, because this will have the latest params 
+    // use this params, because this will have the latest params
     resize_viz(cgm.params);
   }
 
@@ -58,7 +57,7 @@ function Clustergrammer(args) {
     params = update_network(this, requested_view);
   }
 
-  // add more API endpoints 
+  // add more API endpoints
   cgm.update_view = external_update_view;
   cgm.resize_viz = external_resize;
   cgm.play_demo = play_demo;

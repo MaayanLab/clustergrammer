@@ -1,3 +1,4 @@
+require('jquery-ui/slider');
 var ini_sidebar = require('./ini_sidebar');
 var set_up_filters = require('../filters/set_up_filters');
 var set_up_dendro_sliders = require('./set_up_dendro_sliders');
@@ -59,14 +60,15 @@ module.exports = function sidebar(cgm) {
 
   sidebar
     .append('div')
-    .classed('icons_section',true);
+    .classed('icons_section',true)
+    .style('text-align', 'center');
 
   if (params.sidebar.icons){
     make_modals(params);
     make_icons(params, sidebar);
   }
 
-  // // tmp sim mat button 
+  // // tmp sim mat button
   // sidebar
   //   .append('text')
   //   .text('here')
@@ -77,7 +79,7 @@ module.exports = function sidebar(cgm) {
   set_up_reorder(params, sidebar);
 
   set_up_search(sidebar, params);
-  
+
   set_up_opacity_slider(sidebar, params);
 
   if (params.viz.show_dendrogram){
@@ -100,7 +102,7 @@ module.exports = function sidebar(cgm) {
 
   ini_sidebar(params);
 
-  // disable for now 
+  // disable for now
   // make_cat_keys(params);
 
   // when initializing the visualization using a view

@@ -1,10 +1,11 @@
 var make_filter_title = require('../filters/make_filter_title');
 
+
 module.exports = function set_sidebar_ini_view(params){
-  
+
   _.each( _.keys(params.ini_view), function(inst_filter){
 
-    // initialize filter slider using ini_view 
+    // initialize filter slider using ini_view
     var inst_value = params.ini_view[inst_filter];
 
     var filter_type = params.viz.possible_filters[inst_filter];
@@ -25,7 +26,7 @@ module.exports = function set_sidebar_ini_view(params){
 
       $(params.root+' .slider_'+inst_filter)
         .slider( "value", tmp_index);
-      
+
       var filter_title = make_filter_title(params, inst_filter);
 
       d3.select(params.root+' .title_'+inst_filter)
@@ -36,7 +37,7 @@ module.exports = function set_sidebar_ini_view(params){
 
     } else {
 
-      // set up button initialization 
+      // set up button initialization
 
     }
 
