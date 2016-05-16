@@ -1,3 +1,4 @@
+var utils = require('../Utils_clust');
 var reposition_tile_highlight = require('./reposition_tile_highlight');
 var toggle_dendro_view = require('../dendrogram/toggle_dendro_view');
 var show_visible_area = require('../zoom/show_visible_area');
@@ -18,7 +19,7 @@ module.exports = function col_reorder(params, col_selection, inst_term) {
   var row_nodes = params.network_data.row_nodes;
   var col_nodes = params.network_data.col_nodes;
 
-  var row_nodes_names = _.map(row_nodes, 'name');
+  var row_nodes_names = utils.pluck(row_nodes, 'name');
 
   // // get inst col (term)
   // var inst_term = d3.select(col_selection).select('text').attr('full_name');
@@ -120,7 +121,7 @@ module.exports = function col_reorder(params, col_selection, inst_term) {
 
   reposition_tile_highlight(params);
 
-  // reset visible area 
+  // reset visible area
   var zoom_info = {};
   zoom_info.zoom_x = 1;
   zoom_info.zoom_y = 1;

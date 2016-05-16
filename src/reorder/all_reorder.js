@@ -1,3 +1,4 @@
+var utils = require('../Utils_clust');
 var toggle_dendro_view = require('../dendrogram/toggle_dendro_view');
 var show_visible_area = require('../zoom/show_visible_area');
 
@@ -25,10 +26,10 @@ module.exports = function(params, inst_order, tmp_row_col) {
   }
 
   var row_nodes_obj = params.network_data.row_nodes;
-  var row_nodes_names = _.map(row_nodes_obj, 'name');
+  var row_nodes_names = utils.pluck(row_nodes_obj, 'name');
 
   var col_nodes_obj = params.network_data.col_nodes;
-  var col_nodes_names = _.map(col_nodes_obj, 'name');
+  var col_nodes_names = utils.pluck(col_nodes_obj, 'name');
 
   if (row_col === 'row'){
 
@@ -69,7 +70,7 @@ module.exports = function(params, inst_order, tmp_row_col) {
         var x_pos = params.viz.x_scale(d.pos_x) + 0.5*params.viz.border_width + params.viz.rect_width/4;
         var y_pos = 0.5*params.viz.border_width/params.viz.zoom_switch + params.viz.rect_height/4;
         return 'translate(' + x_pos + ' , '+y_pos+')';
-      });      
+      });
 
     t.selectAll('.tile_up')
       .attr('transform', function(d) {
@@ -179,7 +180,7 @@ module.exports = function(params, inst_order, tmp_row_col) {
     d.y = params.viz.y_scale(d.source);
   });
 
-  // reset visible area 
+  // reset visible area
   var zoom_info = {};
   zoom_info.zoom_x = 1;
   zoom_info.zoom_y = 1;

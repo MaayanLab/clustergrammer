@@ -1,8 +1,10 @@
+var utils = require('../Utils_clust');
+
 module.exports = function(params, new_nodes, links, views) {
 
   // get new names of rows and cols
-  var row_names = _.map(new_nodes.row_nodes, 'name');
-  var col_names = _.map(new_nodes.col_nodes, 'name');
+  var row_names = utils.pluck(new_nodes.row_nodes, 'name');
+  var col_names = utils.pluck(new_nodes.col_nodes, 'name');
 
   var new_links = _.filter(links, function(d){
     var inst_row = d.name.split('_')[0];
