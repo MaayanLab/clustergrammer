@@ -1,4 +1,3 @@
-require('jquery-ui/slider');
 var change_groups = require('../dendrogram/change_groups');
 var search = require('../search');
 var all_reorder = require('../reorder/all_reorder');

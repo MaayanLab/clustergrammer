@@ -1,4 +1,3 @@
-require('jquery-ui/slider');
 var ini_sidebar = require('./ini_sidebar');
 var set_up_filters = require('../filters/set_up_filters');
 var set_up_dendro_sliders = require('./set_up_dendro_sliders');

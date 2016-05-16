@@ -1,4 +1,3 @@
-require('jquery-ui/slider');
 module.exports = function set_up_opacity_slider(sidebar, params){
 
   var slider_container = sidebar
