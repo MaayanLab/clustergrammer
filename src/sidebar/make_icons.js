@@ -12,13 +12,10 @@ module.exports = function make_icons(params, sidebar){
 
   var row = sidebar
     .select('.icons_section')
-    .style('margin-top','7px')
-    .style('margin-left', params.sidebar.icon_margin_left+'px')
-    .style('width',params.sidebar.buttons.width+'px')
-    .append('row');
+    .style('margin-top','7px');
 
   row
-    .append('col')
+    .append('div')
     .classed('col-xs-4',true)
     .append('a')
     .attr('href','http://amp.pharm.mssm.edu/clustergrammer/help')
@@ -28,9 +25,9 @@ module.exports = function make_icons(params, sidebar){
     .classed('fa-question-circle',true)
     .classed('icon_buttons',true)
     .style('font-size','25px');
-    
+
   row
-    .append('col')
+    .append('div')
     .classed('col-xs-4',true)
     .append('i')
     .classed('fa',true)
@@ -41,22 +38,22 @@ module.exports = function make_icons(params, sidebar){
 
       $(params.root+' .share_info').modal('toggle');
       $('.share_url').val(window.location.href);
-      
-    }); 
+
+    });
 
   row
-    .append('col')
+    .append('div')
     .classed('col-xs-4',true)
     .append('i')
     .classed('fa',true)
     .classed('fa-camera',true)
     .classed('icon_buttons',true)
     .style('font-size','25px')
-    .on('click',function(){
+    .on('click', function() {
 
       $(params.root+' .picture_info').modal('toggle');
 
-    }); 
+    });
 
     // save svg: example from: http://bl.ocks.org/pgiraud/8955139#profile.json
     ////////////////////////////////////////////////////////////////////////////
@@ -68,9 +65,9 @@ module.exports = function make_icons(params, sidebar){
             .attr("title", "test2")
             .attr("version", 1.1)
             .attr("xmlns", "http://www.w3.org/2000/svg")
-            .node().parentNode.innerHTML;        
+            .node().parentNode.innerHTML;
 
-      var blob = new Blob([html], {type: "image/svg+xml"});              
+      var blob = new Blob([html], {type: "image/svg+xml"});
 
       saveAs(blob, "clustergrammer.svg");
 
@@ -88,7 +85,7 @@ module.exports = function make_icons(params, sidebar){
 
     var svg_id = 'svg_'+params.root.replace('#','');
 
-    // save as PNG 
+    // save as PNG
     /////////////////////////////////////////
     d3.select(params.root+' .download_buttons')
       .append('p')
@@ -98,6 +95,6 @@ module.exports = function make_icons(params, sidebar){
         d3.select(params.root+' .expand_button').style('opacity',0);
         saveSvgAsPng(document.getElementById(svg_id), "clustergrammer.png");
         d3.select(params.root+' .expand_button').style('opacity',0.4);
-      });    
+      });
 
 };

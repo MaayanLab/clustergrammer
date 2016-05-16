@@ -4,18 +4,15 @@ var make_requested_view = require('./make_requested_view');
 module.exports = function make_button_filter(config, params, filter_type, div_filters){
 
   /*
-  Enrichr specific code 
+  Enrichr specific code
   */
 
   var buttons = div_filters
     .append('div')
     .classed('categorical_filter',true)
     .classed('toggle_'+filter_type,true)
-    .style('width', params.sidebar.slider.width+'px')
-    .style('margin-left', params.sidebar.slider.margin_left+'px')
     .classed('btn-group-vertical',true)
-    .style('width','135px')
-    .style('margin-left','0px')
+    .style('width', '100%')
     .style('margin-top','10px')
     .attr('current_state','combined_score');
 

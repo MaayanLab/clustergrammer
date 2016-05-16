@@ -12,7 +12,7 @@ module.exports = function(params, svg_elem) {
   col_nodes = network_data.col_nodes,
   clust_group;
 
-  var row_nodes_names = _.pluck(row_nodes, 'name');
+  var row_nodes_names = _.map(row_nodes, 'name');
 
   // append a group that will hold clust_group and position it once
   clust_group = svg_elem

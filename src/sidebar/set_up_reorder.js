@@ -3,7 +3,7 @@
 module.exports = function set_up_reorder(params, sidebar){
 
   var button_dict;
-  var tmp_orders; 
+  var tmp_orders;
   var rc_dict = {'row':'Row', 'col':'Column', 'both':''};
   var is_active;
   var inst_reorder;
@@ -12,8 +12,9 @@ module.exports = function set_up_reorder(params, sidebar){
 
   var reorder_section = sidebar
     .append('div')
-    .classed('reorder_section',true)
-    .style('margin-left','18px');
+    .style('padding-left', '15px')
+    .style('padding-right', '15px')
+    .classed('reorder_section', true);
 
   var reorder_types;
   if (params.sim_mat){
@@ -22,7 +23,7 @@ module.exports = function set_up_reorder(params, sidebar){
     reorder_types = ['row','col'];
   }
 
-  _.each( reorder_types, function(inst_rc){
+  _.each(reorder_types, function(inst_rc){
 
     button_dict = {
       'clust':'Cluster',
@@ -39,7 +40,7 @@ module.exports = function set_up_reorder(params, sidebar){
       other_rc = 'row';
     }
 
-    // // removing categories from reorder buttons 
+    // // removing categories from reorder buttons
     // /////////////////////////////////////////////
     // var cat_rc;
     // if (inst_rc != 'both'){
@@ -69,10 +70,10 @@ module.exports = function set_up_reorder(params, sidebar){
           possible_orders.push(inst_name);
         }
       }
-      
+
     });
 
-    // specific to Enrichr 
+    // specific to Enrichr
     if ( _.keys(params.viz.filter_data).indexOf('enr_score_type') > -1 ){
       possible_orders = ['clust','rank'];
     }
@@ -92,7 +93,6 @@ module.exports = function set_up_reorder(params, sidebar){
       .append('div')
       .classed('sidebar_text',true)
       .style('clear','both')
-      .style('margin-left','7px')
       .style('margin-top','10px')
       .style('font-size','13px')
       .html(rc_dict[inst_rc]+reorder_text);
@@ -100,9 +100,9 @@ module.exports = function set_up_reorder(params, sidebar){
     inst_reorder = reorder_section
       .append('div')
       .classed('btn-group-vertical',true)
+      .style('width', '100%')
       .classed('toggle_'+inst_rc+'_order',true)
-      .attr('role','group')
-      .style('max-width', params.sidebar.buttons.width+'px');
+      .attr('role','group');
 
     inst_reorder
       .selectAll('.button')
@@ -127,7 +127,7 @@ module.exports = function set_up_reorder(params, sidebar){
       .html(function(d){
         return button_dict[d];
       });
-    
+
   });
 
 };

@@ -39,8 +39,8 @@ module.exports = function make_config(args) {
 
   });
 
-  config.network_data.row_nodes_names = _.pluck(config.network_data.row_nodes, 'name');
-  config.network_data.col_nodes_names = _.pluck(config.network_data.col_nodes, 'name');
+  config.network_data.row_nodes_names = _.map(config.network_data.row_nodes, 'name');
+  config.network_data.col_nodes_names = _.map(config.network_data.col_nodes, 'name');
 
   config.sim_mat = check_sim_mat(config);
 
@@ -190,7 +190,7 @@ module.exports = function make_config(args) {
 
         });
 
-        var names_of_cat = _.uniq(_.pluck(config.network_data[inst_rc+'_nodes'], inst_cat)).sort();
+        var names_of_cat = _.uniq(_.map(config.network_data[inst_rc+'_nodes'], inst_cat)).sort();
 
         if (predefine_colors === false){
 

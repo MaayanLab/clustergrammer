@@ -7,7 +7,9 @@ module.exports = function set_up_filters(cgm, filter_type) {
 
   var div_filters = d3.select(params.root+' .sidebar_wrapper')
     .append('div')
-    .classed('div_filters',true);
+    .classed('div_filters',true)
+    .style('padding-left', '15px')
+    .style('padding-right', '15px');
 
   if (params.viz.possible_filters[filter_type] == 'numerical'){
     make_slider_filter(cgm, filter_type, div_filters);

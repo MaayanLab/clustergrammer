@@ -95,7 +95,7 @@ module.exports = function(params) {
   setTimeout(position_play_button, 100, params);
 
   var row_nodes = params.network_data.row_nodes;
-  var row_nodes_names = _.pluck(row_nodes, 'name');
+  var row_nodes_names = _.map(row_nodes, 'name');
 
   resize_row_tiles(params, svg_group);
 
