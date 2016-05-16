@@ -1,4 +1,4 @@
-def enrichr_clust_from_response(response_list):
+def clust_from_response(response_list):
   from clustergrammer import Network
   import scipy
   import json 
@@ -164,8 +164,8 @@ def enrichr_clust_from_response(response_list):
   return net  
 
 # make the get request to enrichr using the requests library 
-# this is done before making the get request with the gmt name 
-def enrichr_post_request( input_genes, meta=''):
+# this is done before making the get request with the lib name 
+def post_request(input_genes, meta=''):
   # get metadata 
   import requests
   import json
@@ -191,7 +191,7 @@ def enrichr_post_request( input_genes, meta=''):
 
 # make the get request to enrichr using the requests library 
 # this is done after submitting post request with the input gene list 
-def enrichr_get_request( gmt, userListId, max_num_term=50 ):
+def get_request( lib, userListId, max_terms=50 ):
   import requests
   import json
 
@@ -202,7 +202,7 @@ def enrichr_get_request( gmt, userListId, max_num_term=50 ):
   get_url = 'http://amp.pharm.mssm.edu/Enrichr/enrich'
 
   # get parameters 
-  params = {'backgroundType':gmt,'userListId':userListId}
+  params = {'backgroundType':lib,'userListId':userListId}
 
   # try get request until status code is 200 
   inst_status_code = 400
@@ -237,13 +237,13 @@ def enrichr_get_request( gmt, userListId, max_num_term=50 ):
   response_list = resp_json[only_key]
 
   # transfer the response_list to the enr_dict 
-  enr = transfer_to_enr_dict( response_list, max_num_term )
+  enr = transfer_to_enr_dict( response_list, max_terms )
 
   # return enrichment json and userListId
   return enr, response_list
 
 # transfer the response_list to a list of dictionaries 
-def transfer_to_enr_dict(response_list, max_num_term=50):
+def transfer_to_enr_dict(response_list, max_terms=50):
 
   # # reduce the number of enriched terms if necessary
   # if len(response_list) < num_terms:
@@ -258,8 +258,8 @@ def transfer_to_enr_dict(response_list, max_num_term=50):
   # 6: pval_bh
 
   num_enr_term = len(response_list)
-  if num_enr_term > max_num_term:
-    num_enr_term = max_num_term
+  if num_enr_term > max_terms:
+    num_enr_term = max_terms
 
   # transfer response_list to enr structure 
   # and only keep the top terms 

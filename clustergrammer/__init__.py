@@ -158,10 +158,20 @@ class Network(object):
 
     return link 
 
-  def enrichr(self):
+  def enrichr(self, req_type, gene_list=None, lib=None, list_id=None, 
+    max_terms=None):
+  ''' 
+  under development, get enrichment results from Enrichr and add them to 
+  clustergram 
+  '''
+
     import enrichr_functions as enr_fun
 
-    print('working on clustergrammer-Enrichr API')
+    if req_type == 'post':
+      return enr_fun.post_request(gene_list)
+
+    if req_type == 'get':
+      return enr_fun.get_request(lib, list_id, max_terms)
 
   @staticmethod
   def load_gmt(filename):
