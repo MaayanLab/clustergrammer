@@ -158,6 +158,11 @@ class Network(object):
 
     return link 
 
+  def enrichr(self):
+    import enrichr_functions as enr_fun
+
+    print('working on clustergrammer-Enrichr API')
+
   @staticmethod
   def load_gmt(filename):
     import load_data
