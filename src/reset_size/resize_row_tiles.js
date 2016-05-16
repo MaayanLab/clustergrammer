@@ -1,10 +1,11 @@
+var utils = require('../Utils_clust');
 var draw_up_tile = require('../enter/draw_up_tile');
 var draw_dn_tile = require('../enter/draw_dn_tile');
 
 module.exports = function resize_row_tiles(params, svg_group){
 
   var row_nodes = params.network_data.row_nodes;
-  var row_nodes_names = _.map(row_nodes, 'name');
+  var row_nodes_names = utils.pluck(row_nodes, 'name');
 
   svg_group.selectAll('.row')
     .attr('transform', function(d){

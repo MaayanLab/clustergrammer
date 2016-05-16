@@ -12,7 +12,7 @@ module.exports = function(params, svg_elem) {
   col_nodes = network_data.col_nodes,
   clust_group;
 
-  var row_nodes_names = _.map(row_nodes, 'name');
+  var row_nodes_names = utils.pluck(row_nodes, 'name');
 
   // append a group that will hold clust_group and position it once
   clust_group = svg_elem
@@ -37,7 +37,7 @@ module.exports = function(params, svg_elem) {
       if (params.keep_orig){
         var orig_value = String(d.value_orig.toFixed(3));
         tooltip_string = '<p>' + d.row_name + ' and ' + d.col_name + '</p>' +
-        '<p> normalized value: ' + inst_value +'</p>' + 
+        '<p> normalized value: ' + inst_value +'</p>' +
         '<div> original value: ' + orig_value +'</div>'  ;
       } else {
         tooltip_string = '<p>' + d.row_name + ' and ' + d.col_name + '</p>' +

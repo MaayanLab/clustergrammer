@@ -13,7 +13,7 @@ module.exports = function make_config(args) {
 
   // Mixin defaults with user-defined arguments.
   var config = utils.extend(defaults, args);
- 
+
   config.network_data = args.network_data;
 
   var super_string = ': ';
@@ -39,8 +39,8 @@ module.exports = function make_config(args) {
 
   });
 
-  config.network_data.row_nodes_names = _.map(config.network_data.row_nodes, 'name');
-  config.network_data.col_nodes_names = _.map(config.network_data.col_nodes, 'name');
+  config.network_data.row_nodes_names = utils.pluck(config.network_data.row_nodes, 'name');
+  config.network_data.col_nodes_names = utils.pluck(config.network_data.col_nodes, 'name');
 
   config.sim_mat = check_sim_mat(config);
 
@@ -65,7 +65,7 @@ module.exports = function make_config(args) {
 
       var inst_nodes = inst_view.nodes;
 
-      // proc row/col nodes names in views 
+      // proc row/col nodes names in views
       _.each(['row','col'], function(inst_rc){
 
         var has_cats = check_nodes_for_categories(inst_nodes[inst_rc+'_nodes']);
@@ -111,7 +111,7 @@ module.exports = function make_config(args) {
     config.super = {};
     config.super.row = args.row_label;
     config.super.col = args.col_label;
-  } 
+  }
 
   // initialize cluster ordering - both rows and columns
   config.inst_order = {};
@@ -173,7 +173,7 @@ module.exports = function make_config(args) {
 
       if (predefine_colors === false){
         config.cat_colors[inst_rc] = {};
-      } 
+      }
       config.cat_names[inst_rc] = {};
 
       _.each( config.all_cats[inst_rc], function(inst_cat){
@@ -197,7 +197,7 @@ module.exports = function make_config(args) {
           config.cat_colors[inst_rc][inst_cat] = {};
 
           _.each(names_of_cat, function(cat_tmp, i){
-            
+
             var inst_color = colors.get_random_color(i+num_colors);
 
             config.cat_colors[inst_rc][inst_cat][cat_tmp] = inst_color;

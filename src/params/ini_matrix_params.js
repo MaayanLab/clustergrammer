@@ -26,7 +26,7 @@ module.exports = function ini_matrix_params(config, viz, network_data){
 
   _.each(['row','col'], function(inst_rc){
 
-    // row ordering is based on col info and vice versa 
+    // row ordering is based on col info and vice versa
     var other_rc;
     if (inst_rc==='row'){
       other_rc = 'col';
@@ -34,11 +34,11 @@ module.exports = function ini_matrix_params(config, viz, network_data){
       other_rc = 'row';
     }
 
-    // the nodes are defined using other_rc 
+    // the nodes are defined using other_rc
     var inst_nodes = network_data[other_rc+'_nodes'];
     var num_nodes = inst_nodes.length;
 
-    var nodes_names = _.map(inst_nodes, 'name');
+    var nodes_names = utils.pluck(inst_nodes, 'name');
     var tmp = nodes_names.sort();
 
     var alpha_index = _.map(tmp, function(d){
@@ -51,7 +51,7 @@ module.exports = function ini_matrix_params(config, viz, network_data){
 
     if (_.has(inst_nodes[0], 'rankvar')){
       possible_orders.push('rankvar');
-    } 
+    }
 
     if (viz.all_cats[other_rc].length > 0){
       _.each( viz.all_cats[other_rc], function(inst_cat){

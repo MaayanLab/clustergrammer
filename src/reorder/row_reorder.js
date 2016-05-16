@@ -1,3 +1,4 @@
+var utils = require('../Utils_clust');
 var reposition_tile_highlight = require('./reposition_tile_highlight');
 var toggle_dendro_view = require('../dendrogram/toggle_dendro_view');
 var show_visible_area = require('../zoom/show_visible_area');
@@ -21,7 +22,7 @@ module.exports = function row_reorder(params, row_selection, inst_row) {
   var row_nodes = params.network_data.row_nodes;
   var col_nodes = params.network_data.col_nodes;
 
-  var col_nodes_names = _.map(col_nodes, 'name');
+  var col_nodes_names = utils.pluck(col_nodes, 'name');
 
   // find the index of the row
   var tmp_arr = [];
@@ -130,7 +131,7 @@ module.exports = function row_reorder(params, row_selection, inst_row) {
     d.y = params.viz.y_scale(d.source);
   });
 
-  // reset visible area 
+  // reset visible area
   var zoom_info = {};
   zoom_info.zoom_x = 1;
   zoom_info.zoom_y = 1;
