@@ -8,7 +8,7 @@ def main():
 
   print(list_id)
 
-  enr, response_list = net.enrichr('get', lib='ChEA_2015', list_id=list_id, 
+  enr, response_list = net.enrichr('get', lib='ChEA_2015', list_id=list_id,
     max_terms=10)
 
   print(response_list)

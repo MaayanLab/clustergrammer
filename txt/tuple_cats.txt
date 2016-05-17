@@ -1,4 +1,4 @@
-  ('Cell Line: A549', 'Gender: Male') ('Cell Line: H1299', 'Gender: Female')  ('Cell Line: H661', 'Gender: Female')
-('Gene: EGFR','Type: Interesting')  -3.234  5.03  0.001
-('Gene: TP53','Type: Not Interesting')  8.3 4.098 -12.2
-('Gene: IRAK','Type: Not Interesting')  7.23  3.01  0.88
+	('Cell Line: A549', 'Gender: Male')	('Cell Line: H1299', 'Gender: Female')	('Cell Line: H661', 'Gender: Female')
+('Gene: EGFR','Type: Interesting')	-3.234	5.03	0.001
+('Gene: TP53','Type: Not Interesting')	8.3	4.098	-12.2
+('Gene: IRAK','Type: Not Interesting')	7.23	3.01	0.88

@@ -144,7 +144,7 @@ This Excel screenshot shows a single row category being added as an additional c
 
 The 'title' of row/column names and categories can also be included by prefixing each string with 'Title: ' - e.g. the title of the column names is 'Cell Line' and the title of the row categories is 'Gender'.
 
-Alternatively, row/column names and categories can be stored as Python tuples as shown below (or see [tuple_cats.txt](txt/tuple_cats.txt).
+Alternatively, row/column names and categories can be stored as Python tuples as shown below (or see [tuple_cats.txt](txt/tuple_cats.txt)).
 
 ```
 	('Cell Line: A549', 'Gender: Male')	('Cell Line: H1299', 'Gender: Female')	('Cell Line: H661', 'Gender: Female')
@@ -242,7 +242,7 @@ Calculate clustering and produce a visualization object (stored as ```net.viz```
 This writes a json of the network object data, either ```net.viz``` or ```net.dat```, to a file. Choose ```'viz'``` in order to write a visualization json for clustergrammer.js, e.g. ```net.write_json_to_file('viz','clustergram.json')```
 
 ##### ```write_matrix_to_tsv(filename, df=None)```
-This write the matrix, stored in the network object, to a tsv file. Optional row/column categories are saved as tuples.
+This write the matrix, stored in the network object, to a tsv file. Optional row/column categories are saved as tuples. See [tuple_cats.txt](txt/tuple_cats.txt) or [export.txt](txt/export.txt) for examples of the exported matrix file format.
 
 ##### ```export_net_json(net_type, indent='no-indent')```
 This exports a json string from either ```net.dat``` or ```net.viz```. This is useful if a user wants the json, but does not want to first write to file.
