@@ -11,10 +11,12 @@ html, body {
 /* Negative indent footer by its height */
 /* Pad bottom by footer height */
 #wrap {
-  width: 1140px;
+  /*width: 1140px;*/
   min-height: 100%;
-  margin: 0 auto -50px;
-  padding: 0 0 50px;
+  padding-left: 30px;
+  padding-right: 30px;
+  /*margin: 0 auto -50px;*/
+  /*padding: 0 0 50px;*/
 }
 
 /* Set the fixed height of the footer here */
