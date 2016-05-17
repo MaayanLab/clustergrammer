@@ -7084,14 +7084,12 @@ var Clustergrammer =
 	'use strict';
 
 	module.exports = function disable_sidebar(params) {
-	  $(params.root + ' .slider').slider('disable');
-	  d3.selectAll(params.root + ' .btn').attr('disabled', true);
-	  d3.select(params.viz.viz_svg).style('opacity', 0.70);
 
-	  // d3.selectAll(params.root+' .category_section')
-	  // .on('click', '')
-	  // .select('text')
-	  // .style('opacity',0.5);
+	  $(params.root + ' .slider').slider('disable');
+
+	  d3.selectAll(params.root + ' .btn').attr('disabled', true);
+
+	  d3.select(params.viz.viz_svg).style('opacity', 0.70);
 		};
 
 /***/ },
@@ -9845,7 +9843,7 @@ var Clustergrammer =
 
 	  slider_container.append('div').classed('sidebar_text', true).classed('opacity_slider_text', true).style('margin-bottom', '3px').text('Opacity Slider');
 
-	  slider_container.append('div').classed('opacity_slider', true);
+	  slider_container.append('div').classed('slider', true).classed('opacity_slider', true);
 
 	  $(params.root + ' .opacity_slider').slider({
 	    value: 1.0

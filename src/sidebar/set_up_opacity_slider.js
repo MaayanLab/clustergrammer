@@ -16,6 +16,7 @@ module.exports = function set_up_opacity_slider(sidebar, params){
 
   slider_container
     .append('div')
+    .classed('slider', true)
     .classed('opacity_slider', true);
 
   $( params.root+' .opacity_slider' ).slider({
