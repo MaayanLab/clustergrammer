@@ -4,9 +4,10 @@ start_time = time.time()
 from clustergrammer import Network
 net = Network()
 
-# choose tsv file 
+# choose tsv file
 #######################
 net.load_file('txt/rc_two_cats.txt')
+# net.load_file('txt/tuple_cats.txt')
 # net.load_file('txt/tuple_names.txt')
 # net.load_file('txt/missing_values.txt')
 # net.load_file('txt/example_tsv.txt')
@@ -22,11 +23,11 @@ net.load_file('txt/rc_two_cats.txt')
 
 # print(link)
 
-# possible filtering and normalization 
+# possible filtering and normalization
 ##########################################
 # net.filter_sum('row', threshold=20)
 # net.filter_sum('col', threshold=30)
-  
+
 # net.normalize(axis='row', norm_type='qn')
 # net.normalize(axis='col', norm_type='zscore', keep_orig=True)
 
