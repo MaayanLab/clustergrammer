@@ -1,5 +1,6 @@
 var tmp_num;
 var cat_colors;
+cgm = {};
 function make_clust(make_sim_mats){
   var clust_name = 'mult_view.json'
 
@@ -8,27 +9,27 @@ function make_clust(make_sim_mats){
     args.root = '#container-id-1';
     args.network_data = network_data;
 
-    cgm = Clustergrammer(args);
-    d3.select(cgm.params.root+' .wait_message').remove();
-    cat_colors = cgm.params.cat_colors;
+    cgm['clust'] = Clustergrammer(args);
+    d3.select(cgm['clust'].params.root+' .wait_message').remove();
+    cat_colors = cgm['clust'].params.cat_colors;
 
     make_sim_mats('col', cat_colors, unblock);
     make_sim_mats('row', cat_colors, unblock);
-    
-    
+
+
   });
 
 }
 
-// make wait sign 
-$.blockUI({ css: { 
-    border: 'none', 
-    padding: '15px', 
-    backgroundColor: '#000', 
-    '-webkit-border-radius': '10px', 
-    '-moz-border-radius': '10px', 
-    opacity: .8, 
-    color: '#fff' 
+// make wait sign
+$.blockUI({ css: {
+    border: 'none',
+    padding: '15px',
+    backgroundColor: '#000',
+    '-webkit-border-radius': '10px',
+    '-moz-border-radius': '10px',
+    opacity: .8,
+    color: '#fff'
 } });
 
 d3.select('.blockMsg').select('h1').text('Please wait...');
@@ -49,7 +50,17 @@ $(document).ready(function(){
 
 make_clust(make_sim_mats)
 
-resize_container();
+// resize_container();
+
+d3.select(window).on('resize',function(){
+  resize_container();
+
+  _.each(cgm, function(inst_cgm){
+    inst_cgm.resize_viz();
+  })
+
+  // cgm.resize_viz();
+});
 
 window.onscroll = function() {
 
@@ -59,21 +70,21 @@ window.onscroll = function() {
   var hide_col_sim = 1800;
   var inst_scroll = $(document).scrollTop();
 
-  // // load col sim mat 
+  // // load col sim mat
   // if (inst_scroll > show_col_sim){
   //   if (d3.select('#container-id-2 .viz_svg').empty()){
   //     make_sim_mats('col', cat_colors)
   //   }
   // }
 
-  // // load row sim mat 
+  // // load row sim mat
   // if (inst_scroll > show_row_sim){
   //   if (d3.select('#container-id-3 .viz_svg').empty()){
   //     make_sim_mats('row', cat_colors)
   //   }
   // }
 
-  // hide clust 
+  // hide clust
   if (inst_scroll > hide_clust){
     d3.select('#container-id-1 .viz_svg')
       .style('display', 'none');
@@ -98,7 +109,7 @@ window.onscroll = function() {
 
 function make_sim_mats(inst_rc, cat_colors, unblock){
 
-  clust_name = 'mult_view_sim_'+inst_rc+'.json'
+  clust_name = 'mult_view_sim_'+inst_rc+'.json';
   d3.json('json/'+clust_name, function(network_data){
 
     var args = $.extend(true, {}, default_args);
@@ -116,8 +127,8 @@ function make_sim_mats(inst_rc, cat_colors, unblock){
     args.root = '#container-id-'+tmp_num;
 
     args.network_data = network_data;
-    cgm = Clustergrammer(args);
-    d3.select(cgm.params.root+' .wait_message').remove();
+    cgm[inst_rc] = Clustergrammer(args);
+    d3.select(cgm[inst_rc].params.root+' .wait_message').remove();
     unblock();
   });
 
@@ -129,12 +140,13 @@ function unblock(){
 
 function resize_container(){
 
-  var screen_width = viz_size.width;
-  var screen_height = viz_size.height;
+  var screen_width = d3.select('#wrap').style('width').replace('px','');
+
+  screen_width = Number(screen_width) - 30;
 
   d3.selectAll('.clustergrammer_container')
-    .style('width', screen_width+'px')
-    .style('height', screen_height+'px');
+    .style('width', screen_width+'px');
+
 }
 
 
