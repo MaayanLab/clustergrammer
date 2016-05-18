@@ -50,15 +50,21 @@ class Network(object):
   def make_clust(self, dist_type='cosine', run_clustering=True,
                  dendro=True, views=['N_row_sum', 'N_row_var'],
                  linkage_type='average', sim_mat=False, filter_sim=0.1,
-                 calc_cat_pval=False):
+                 calc_cat_pval=False, run_enrichr=None):
     '''
     The main function run by the user to make their clustergram.
     views is later referred to as requested_views.
     '''
     import make_clust_fun
-    make_clust_fun.make_clust(self, dist_type, run_clustering, dendro,
-                                   views, linkage_type, sim_mat, filter_sim,
-                                   calc_cat_pval)
+    print(run_enrichr)
+    make_clust_fun.make_clust(self, dist_type=dist_type, run_clustering=run_clustering,
+                                   dendro=dendro,
+                                   requested_views=views,
+                                   linkage_type=linkage_type,
+                                   sim_mat=sim_mat,
+                                   filter_sim=filter_sim,
+                                   calc_cat_pval=calc_cat_pval,
+                                   run_enrichr=run_enrichr)
 
   def produce_view(self, requested_view=None):
     '''
@@ -172,6 +178,8 @@ class Network(object):
 
     if req_type == 'get':
       return enr_fun.get_request(lib, list_id, max_terms)
+
+    # if req_type == ''
 
   @staticmethod
   def load_gmt(filename):

@@ -44,7 +44,8 @@ net.load_file('txt/rc_two_cats.txt')
 views = ['N_row_sum', 'N_row_var']
 
 net.make_clust(dist_type='cos',views=views , dendro=True,
-               sim_mat=True, filter_sim=0.1, calc_cat_pval=False)
+               sim_mat=True, filter_sim=0.1, calc_cat_pval=False,
+               run_enrichr=['ChEA'])
 
 net.write_json_to_file('viz', 'json/mult_view.json', 'no-indent')
 net.write_json_to_file('sim_row', 'json/mult_view_sim_row.json', 'no-indent')
