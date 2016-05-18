@@ -9,8 +9,9 @@ def make_clust(net, dist_type='cosine', run_clustering=True, dendro=True,
   N rows based on some quantity (sum, num-non-zero, etc).
   '''
   from copy import deepcopy
-  import calc_clust, run_filter, make_views, make_sim_mat, cat_pval
   import scipy
+  import calc_clust, run_filter, make_views, make_sim_mat, cat_pval
+  import enrichr_functions as enr_fun
 
   df = net.dat_to_df()
 
@@ -22,7 +23,7 @@ def make_clust(net, dist_type='cosine', run_clustering=True, dendro=True,
   net.df_to_dat(df)
 
   if run_enrichr is not None:
-    print(run_enrichr)
+    enr_fun.add_enrichr_cats(net, 'row', run_enrichr)
 
   inst_dm = calc_clust.cluster_row_and_col(net, dist_type=dist_type,
                                 linkage_type=linkage_type,

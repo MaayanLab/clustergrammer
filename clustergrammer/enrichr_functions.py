@@ -1,10 +1,23 @@
+def add_enrichr_cats(net, inst_rc, run_enrichr):
+  from copy import deepcopy
+  print('add enrichr categories to genes')
+
+  gene_list = deepcopy(net.dat['nodes'][inst_rc])
+
+  # set up for non-tuple case first
+  gene_list = [inst_gene.split(': ')[1] for inst_gene in gene_list]
+
+  print(gene_list)
+
+
+
 def clust_from_response(response_list):
   from clustergrammer import Network
   import scipy
-  import json 
-  import pandas as pd 
-  import math 
-  from copy import deepcopy 
+  import json
+  import pandas as pd
+  import math
+  from copy import deepcopy
 
   print('----------------------')
   print('enrichr_clust_from_response')
@@ -22,10 +35,10 @@ def clust_from_response(response_list):
   for inst_enr in ini_enr:
     if inst_enr['combined_score'] > 0:
 
-      # make series of enriched terms with scores 
+      # make series of enriched terms with scores
       for score_type in score_types:
 
-        # collect the scores of the enriched terms 
+        # collect the scores of the enriched terms
         if score_type == 'combined_score':
           scores[score_type][inst_enr['name']] = inst_enr[score_type]
         if score_type == 'pval':
@@ -33,10 +46,10 @@ def clust_from_response(response_list):
         if score_type == 'zscore':
           scores[score_type][inst_enr['name']] = -inst_enr[score_type]
 
-      # keep enrichement values 
+      # keep enrichement values
       enr.append(inst_enr)
 
-  # sort and normalize the scores 
+  # sort and normalize the scores
   for score_type in score_types:
     scores[score_type] = scores[score_type]/scores[score_type].max()
     scores[score_type].sort(ascending=False)
@@ -52,12 +65,12 @@ def clust_from_response(response_list):
   else:
     num_dict = {'ten':10, 'twenty':20, 'thirty':30}
 
-  # gather lists of top scores 
+  # gather lists of top scores
   top_terms = {}
   for enr_type in enr_score_types:
     top_terms[enr_type] = {}
     for num_terms in num_dict.keys():
-      inst_num = num_dict[num_terms]   
+      inst_num = num_dict[num_terms]
       top_terms[enr_type][num_terms] = scores[enr_type].index.tolist()[: inst_num]
 
   # gather the terms that should be kept - they are at the top of the score list
@@ -68,22 +81,22 @@ def clust_from_response(response_list):
 
   keep_terms = list(set(keep_terms))
 
-  # keep enriched terms that are at the top 10 based on at least one score 
+  # keep enriched terms that are at the top 10 based on at least one score
   keep_enr = []
   for inst_enr in enr:
     if inst_enr['name'] in keep_terms:
       keep_enr.append(inst_enr)
 
 
-  # fill in full matrix 
+  # fill in full matrix
   #######################
 
-  # genes 
+  # genes
   row_node_names = []
-  # enriched terms 
+  # enriched terms
   col_node_names = []
 
-  # gather information from the list of enriched terms 
+  # gather information from the list of enriched terms
   for inst_enr in keep_enr:
     col_node_names.append(inst_enr['name'])
     row_node_names.extend(inst_enr['int_genes'])
@@ -107,20 +120,20 @@ def clust_from_response(response_list):
     for inst_gene in inst_enr['int_genes']:
       row_index = row_node_names.index(inst_gene)
 
-      # save association 
+      # save association
       net.dat['mat'][row_index, col_index] = 1
 
-  # cluster full matrix 
+  # cluster full matrix
   #############################
   # do not make multiple views
   views = ['']
 
   if len(net.dat['nodes']['row']) > 1:
     net.make_clust(dist_type='jaccard', views=views, dendro=False)
-  else: 
+  else:
     net.make_clust(dist_type='jaccard', views=views, dendro=False, run_clustering=False)
 
-  # get dataframe from full matrix 
+  # get dataframe from full matrix
   df = net.dat_to_df()
 
   for score_type in score_types:
@@ -132,10 +145,10 @@ def clust_from_response(response_list):
 
       inst_df['mat'] = inst_df['mat'][top_terms[score_type][num_terms]]
 
-      # load back into net 
+      # load back into net
       inst_net.df_to_dat(inst_df)
 
-      # make views 
+      # make views
       if len(net.dat['nodes']['row']) > 1:
         inst_net.make_clust(dist_type='jaccard', views=['N_row_sum'], dendro=False)
       else:
@@ -143,77 +156,77 @@ def clust_from_response(response_list):
 
       inst_views = inst_net.viz['views']
 
-      # add score_type to views 
+      # add score_type to views
       for inst_view in inst_views:
 
         inst_view['N_col_sum'] = num_dict[num_terms]
 
         inst_view['enr_score_type'] = score_type
 
-        # add values to col_nodes and order according to rank 
+        # add values to col_nodes and order according to rank
         for inst_col in inst_view['nodes']['col_nodes']:
 
           inst_col['rank'] = len(top_terms[score_type][num_terms]) - top_terms[score_type][num_terms].index(inst_col['name'])
-          
+
           inst_name = inst_col['name']
           inst_col['value'] = scores[score_type][inst_name]
 
-      # add views to main network 
+      # add views to main network
       net.viz['views'].extend(inst_views)
 
-  return net  
+  return net
 
-# make the get request to enrichr using the requests library 
-# this is done before making the get request with the lib name 
+# make the get request to enrichr using the requests library
+# this is done before making the get request with the lib name
 def post_request(input_genes, meta=''):
-  # get metadata 
+  # get metadata
   import requests
   import json
 
-  # stringify list 
+  # stringify list
   input_genes = '\n'.join(input_genes)
 
-  # define post url 
+  # define post url
   post_url = 'http://amp.pharm.mssm.edu/Enrichr/addList'
 
-  # define parameters 
+  # define parameters
   params = {'list':input_genes, 'description':''}
 
   # make request: post the gene list
   post_response = requests.post( post_url, files=params)
 
-  # load json 
+  # load json
   inst_dict = json.loads( post_response.text )
   userListId = str(inst_dict['userListId'])
 
-  # return the userListId that is needed to reference the list later 
+  # return the userListId that is needed to reference the list later
   return userListId
 
-# make the get request to enrichr using the requests library 
-# this is done after submitting post request with the input gene list 
+# make the get request to enrichr using the requests library
+# this is done after submitting post request with the input gene list
 def get_request( lib, userListId, max_terms=50 ):
   import requests
   import json
 
-  # convert userListId to string 
+  # convert userListId to string
   userListId = str(userListId)
 
-  # define the get url 
+  # define the get url
   get_url = 'http://amp.pharm.mssm.edu/Enrichr/enrich'
 
-  # get parameters 
+  # get parameters
   params = {'backgroundType':lib,'userListId':userListId}
 
-  # try get request until status code is 200 
+  # try get request until status code is 200
   inst_status_code = 400
 
-  # wait until okay status code is returned 
+  # wait until okay status code is returned
   num_try = 0
   print('\tEnrichr enrichment get req userListId: '+str(userListId))
   while inst_status_code == 400 and num_try < 100:
-    num_try = num_try +1 
+    num_try = num_try +1
     try:
-      # make the get request to get the enrichr results 
+      # make the get request to get the enrichr results
 
       try:
         get_response = requests.get( get_url, params=params )
@@ -227,30 +240,30 @@ def get_request( lib, userListId, max_terms=50 ):
     except:
       print('get requests failed')
 
-  # load as dictionary 
+  # load as dictionary
   resp_json = json.loads( get_response.text )
 
-  # get the key 
+  # get the key
   only_key = resp_json.keys()[0]
 
-  # get response_list 
+  # get response_list
   response_list = resp_json[only_key]
 
-  # transfer the response_list to the enr_dict 
+  # transfer the response_list to the enr_dict
   enr = transfer_to_enr_dict( response_list, max_terms )
 
   # return enrichment json and userListId
   return enr, response_list
 
-# transfer the response_list to a list of dictionaries 
+# transfer the response_list to a list of dictionaries
 def transfer_to_enr_dict(response_list, max_terms=50):
 
   # # reduce the number of enriched terms if necessary
   # if len(response_list) < num_terms:
   #   num_terms = len(response_list)
 
-  # p-value, adjusted pvalue, z-score, combined score, genes 
-  # 1: Term 
+  # p-value, adjusted pvalue, z-score, combined score, genes
+  # 1: Term
   # 2: P-value
   # 3: Z-score
   # 4: Combined Score
@@ -261,20 +274,20 @@ def transfer_to_enr_dict(response_list, max_terms=50):
   if num_enr_term > max_terms:
     num_enr_term = max_terms
 
-  # transfer response_list to enr structure 
-  # and only keep the top terms 
+  # transfer response_list to enr structure
+  # and only keep the top terms
   #
   # initialize enr
   enr = []
   for i in range(num_enr_term):
 
-    # get list element 
+    # get list element
     inst_enr = response_list[i]
 
-    # initialize dict 
+    # initialize dict
     inst_dict = {}
 
-    # transfer term 
+    # transfer term
     inst_dict['name'] = inst_enr[1]
     # transfer pval
     inst_dict['pval'] = inst_enr[2]
@@ -282,7 +295,7 @@ def transfer_to_enr_dict(response_list, max_terms=50):
     inst_dict['zscore'] = inst_enr[3]
     # transfer combined_score
     inst_dict['combined_score'] = inst_enr[4]
-    # transfer int_genes 
+    # transfer int_genes
     inst_dict['int_genes'] = inst_enr[5]
     # adjusted pval
     inst_dict['pval_bh'] = inst_enr[6]
@@ -290,5 +303,5 @@ def transfer_to_enr_dict(response_list, max_terms=50):
     # append dict
     enr.append(inst_dict)
 
-  return enr 
+  return enr
 
