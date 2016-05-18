@@ -19,11 +19,12 @@ def make_clust(net, dist_type='cosine', run_clustering=True, dendro=True,
   df = run_filter.df_filter_row_sum(df, threshold)
   df = run_filter.df_filter_col_sum(df, threshold)
 
+  if run_enrichr is not None:
+    df = enr_fun.add_enrichr_cats(df, 'row', run_enrichr)
+
   # calculate initial view with no row filtering
   net.df_to_dat(df)
 
-  if run_enrichr is not None:
-    enr_fun.add_enrichr_cats(net, 'row', run_enrichr)
 
   inst_dm = calc_clust.cluster_row_and_col(net, dist_type=dist_type,
                                 linkage_type=linkage_type,

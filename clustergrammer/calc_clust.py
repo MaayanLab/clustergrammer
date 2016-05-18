@@ -1,4 +1,4 @@
-def cluster_row_and_col(net, dist_type='cosine', linkage_type='average', 
+def cluster_row_and_col(net, dist_type='cosine', linkage_type='average',
                         dendro=True, run_clustering=True, run_rank=True,
                         ignore_cat=False, calc_cat_pval=False):
   ''' cluster net.dat and make visualization json, net.viz.
@@ -15,12 +15,12 @@ def cluster_row_and_col(net, dist_type='cosine', linkage_type='average',
     tmp_mat = deepcopy(net.dat['mat'])
     dm[inst_rc] = calc_distance_matrix(tmp_mat, inst_rc, dist_type)
 
-    # save directly to dat structure 
+    # save directly to dat structure
     node_info = net.dat['node_info'][inst_rc]
 
     node_info['ini'] = range( len(net.dat['nodes'][inst_rc]), -1, -1)
 
-    # cluster 
+    # cluster
     if run_clustering is True:
       node_info['clust'], node_info['group'] = \
           clust_and_group(net, dm[inst_rc], linkage_type=linkage_type)
@@ -28,7 +28,7 @@ def cluster_row_and_col(net, dist_type='cosine', linkage_type='average',
       dendro = False
       node_info['clust'] = node_info['ini']
 
-    # sorting 
+    # sorting
     if run_rank is True:
       node_info['rank'] = sort_rank_nodes(net, inst_rc, 'sum')
       node_info['rankvar'] = sort_rank_nodes(net, inst_rc, 'var')
@@ -111,10 +111,10 @@ def sort_rank_nodes(net, rowcol, rank_type):
   for inst_node in tmp_nodes:
     sort_index.append(tmp_sort_nodes.index(inst_node))
 
-  return sort_index  
+  return sort_index
 
 def group_cutoffs():
   all_dist = []
   for i in range(11):
     all_dist.append(float(i) / 10)
-  return all_dist  
+  return all_dist

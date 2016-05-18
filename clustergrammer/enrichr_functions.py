@@ -1,15 +1,63 @@
-def add_enrichr_cats(net, inst_rc, run_enrichr):
+def add_enrichr_cats(df, inst_rc, run_enrichr):
   from copy import deepcopy
   print('add enrichr categories to genes')
 
-  gene_list = deepcopy(net.dat['nodes'][inst_rc])
+  tmp_gene_list = deepcopy(df['mat'].index.tolist())
+
+  gene_list = []
+  for inst_tuple in tmp_gene_list:
+    gene_list.append(inst_tuple[0])
 
   # set up for non-tuple case first
   gene_list = [inst_gene.split(': ')[1] for inst_gene in gene_list]
 
-  print(gene_list)
+  user_list_id = post_request(gene_list)
+
+  print(user_list_id)
+
+  enr, response_list = get_request(run_enrichr[0], user_list_id, max_terms=10)
+
+  print(type(response_list))
+
+  # import pdb; pdb.set_trace()
+
+  # p-value, adjusted pvalue, z-score, combined score, genes
+  # 1: Term
+  # 2: P-value
+  # 3: Z-score
+  # 4: Combined Score
+  # 5: Genes
+  # 6: pval_bh
+
+  cat_list = []
+  for inst_gene in gene_list:
+    cat_list.append([inst_gene])
+
+  for inst_enr in response_list[0:9]:
+    inst_term = inst_enr[1]
+    inst_list = inst_enr[5]
+
+    for inst_info in cat_list:
+
+      gene_name = inst_info[0].split(': ')[-1]
+
+      print(gene_name)
 
 
+      if gene_name in inst_list:
+        inst_info.append(inst_term+': '+inst_term)
+      else:
+        inst_info.append(inst_term+': Not '+inst_term)
+
+  cat_list = [tuple(x) for x in cat_list]
+
+  # df = deepcopy(net.dat_to_df())
+  df['mat'].index = cat_list
+  # net.df_to_dat(df)
+
+  # net.dat['nodes'][inst_rc] = cat_list
+
+  return df
 
 def clust_from_response(response_list):
   from clustergrammer import Network
