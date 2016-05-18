@@ -56,7 +56,6 @@ class Network(object):
     views is later referred to as requested_views.
     '''
     import make_clust_fun
-    print(run_enrichr)
     make_clust_fun.make_clust(self, dist_type=dist_type, run_clustering=run_clustering,
                                    dendro=dendro,
                                    requested_views=views,

@@ -1,21 +1,25 @@
-def add_enrichr_cats(df, inst_rc, run_enrichr):
+def add_enrichr_cats(df, inst_rc, run_enrichr, num_terms=10):
   from copy import deepcopy
   print('add enrichr categories to genes')
 
   tmp_gene_list = deepcopy(df['mat'].index.tolist())
 
   gene_list = []
-  for inst_tuple in tmp_gene_list:
-    gene_list.append(inst_tuple[0])
+  if type(tmp_gene_list[0]) is tuple:
+    for inst_tuple in tmp_gene_list:
+      gene_list.append(inst_tuple[0])
+  else:
+    gene_list = tmp_gene_list
 
   # set up for non-tuple case first
-  gene_list = [inst_gene.split(': ')[1] for inst_gene in gene_list]
+  if ': ' in  gene_list[0]:
+    gene_list = [inst_gene.split(': ')[1] for inst_gene in gene_list]
 
   user_list_id = post_request(gene_list)
 
   print(user_list_id)
 
-  enr, response_list = get_request(run_enrichr[0], user_list_id, max_terms=10)
+  enr, response_list = get_request(run_enrichr[0], user_list_id, max_terms=20)
 
   print(type(response_list))
 
@@ -33,7 +37,7 @@ def add_enrichr_cats(df, inst_rc, run_enrichr):
   for inst_gene in gene_list:
     cat_list.append([inst_gene])
 
-  for inst_enr in response_list[0:9]:
+  for inst_enr in response_list[0:num_terms]:
     inst_term = inst_enr[1]
     inst_list = inst_enr[5]
 
