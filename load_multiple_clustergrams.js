@@ -1,6 +1,9 @@
 var tmp_num;
 var cat_colors;
 cgm = {};
+
+resize_container();
+
 function make_clust(make_sim_mats){
   var clust_name = 'mult_view.json'
 
@@ -50,8 +53,6 @@ $(document).ready(function(){
 
 make_clust(make_sim_mats)
 
-// resize_container();
-
 d3.select(window).on('resize',function(){
   resize_container();
 
@@ -59,7 +60,6 @@ d3.select(window).on('resize',function(){
     inst_cgm.resize_viz();
   })
 
-  // cgm.resize_viz();
 });
 
 window.onscroll = function() {
@@ -140,12 +140,16 @@ function unblock(){
 
 function resize_container(){
 
-  var screen_width = d3.select('#wrap').style('width').replace('px','');
+  var container_width = d3.select('#wrap').style('width').replace('px','');
 
-  screen_width = Number(screen_width) - 30;
+  var container_width = Number(container_width) - 30;
 
   d3.selectAll('.clustergrammer_container')
-    .style('width', screen_width+'px');
+    .style('width', container_width+'px');
+
+  // var container_height = 700;
+  // d3.selectAll('.sim_mat_container')
+  //   .style('height', container_height+'px');
 
 }
 
