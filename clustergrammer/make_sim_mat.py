@@ -1,14 +1,13 @@
-def main(net, inst_dm, filter_sim):
+def main(net, inst_dm, filter_sim, sim_mat_views=['N_row_sum']):
   from __init__ import Network
   from copy import deepcopy
-  import calc_clust
+  import calc_clust, make_views
 
   sim_dict = {}
 
   for inst_rc in ['row','col']:
 
-
-    sim_dict[inst_rc] = dm_to_sim(inst_dm[inst_rc], make_squareform=True, 
+    sim_dict[inst_rc] = dm_to_sim(inst_dm[inst_rc], make_squareform=True,
                              filter_sim=filter_sim)
 
   sim_net = {}
@@ -26,6 +25,16 @@ def main(net, inst_dm, filter_sim):
     sim_net[inst_rc].dat['node_info']['col'] = net.dat['node_info'][inst_rc]
 
     calc_clust.cluster_row_and_col(sim_net[inst_rc])
+
+    all_views = []
+    df = sim_net[inst_rc].dat_to_df()
+    send_df = deepcopy(df)
+
+    if 'N_row_sum' in sim_mat_views:
+      all_views = make_views.N_rows(net, send_df, all_views,
+                                    dist_type='cos', rank_type='sum')
+
+    sim_net[inst_rc].viz['views'] = all_views
 
   return sim_net
 
@@ -63,4 +72,4 @@ def adjust_filter_sim(inst_dm, filter_sim, keep_top=20000):
 
     filter_sim = sort_values[keep_top]
 
-  return filter_sim  
+  return filter_sim

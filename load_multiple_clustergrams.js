@@ -19,7 +19,6 @@ function make_clust(make_sim_mats){
     make_sim_mats('col', cat_colors, unblock);
     make_sim_mats('row', cat_colors, unblock);
 
-
   });
 
 }

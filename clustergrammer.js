@@ -52,7 +52,7 @@ var Clustergrammer =
 	var make_viz = __webpack_require__(44);
 	var resize_viz = __webpack_require__(81);
 	var play_demo = __webpack_require__(106);
-	var ini_demo = __webpack_require__(147);
+	var ini_demo = __webpack_require__(144);
 	var update_network = __webpack_require__(118);
 
 	/* clustergrammer 1.0
@@ -78,7 +78,7 @@ var Clustergrammer =
 	  cgm.config = config;
 
 	  if (params.use_sidebar) {
-	    var make_sidebar = __webpack_require__(150);
+	    var make_sidebar = __webpack_require__(147);
 	    params = make_sidebar(cgm);
 	  }
 
@@ -6576,12 +6576,12 @@ var Clustergrammer =
 	var play_reorder_buttons = __webpack_require__(114);
 	var play_search = __webpack_require__(116);
 	var play_filter = __webpack_require__(117);
-	var quick_cluster = __webpack_require__(141);
-	var play_groups = __webpack_require__(142);
-	var play_categories = __webpack_require__(143);
-	var play_conclusion = __webpack_require__(144);
-	var toggle_play_button = __webpack_require__(145);
-	var play_menu_button = __webpack_require__(146);
+	var quick_cluster = __webpack_require__(138);
+	var play_groups = __webpack_require__(139);
+	var play_categories = __webpack_require__(140);
+	var play_conclusion = __webpack_require__(141);
+	var toggle_play_button = __webpack_require__(142);
+	var play_menu_button = __webpack_require__(143);
 
 	module.exports = function play_demo() {
 
@@ -7057,7 +7057,7 @@ var Clustergrammer =
 	var change_network_view = __webpack_require__(11);
 	var disable_sidebar = __webpack_require__(119);
 
-	var update_with_new_network = __webpack_require__(123);
+	var update_with_new_network = __webpack_require__(120);
 
 	module.exports = function (cgm, requested_view) {
 	  var old_params = cgm.params;
@@ -7093,26 +7093,23 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 120 */,
-/* 121 */,
-/* 122 */,
-/* 123 */
+/* 120 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var make_params = __webpack_require__(10);
-	var define_enter_exit_delays = __webpack_require__(124);
-	var enter_exit_update = __webpack_require__(125);
+	var define_enter_exit_delays = __webpack_require__(121);
+	var enter_exit_update = __webpack_require__(122);
 	var initialize_resizing = __webpack_require__(80);
 	var make_col_cat = __webpack_require__(100);
 	var make_row_cat = __webpack_require__(103);
 	var make_row_dendro = __webpack_require__(104);
 	var make_col_dendro = __webpack_require__(105);
-	var ini_sidebar = __webpack_require__(137);
-	var enable_sidebar = __webpack_require__(139);
+	var ini_sidebar = __webpack_require__(134);
+	var enable_sidebar = __webpack_require__(136);
 	var ini_doubleclick = __webpack_require__(82);
-	var update_reorder_buttons = __webpack_require__(140);
+	var update_reorder_buttons = __webpack_require__(137);
 
 	module.exports = function update_with_new_network(config, old_params, new_network_data) {
 
@@ -7163,7 +7160,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 124 */
+/* 121 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7236,19 +7233,19 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 125 */
+/* 122 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var resize_after_update = __webpack_require__(126);
+	var resize_after_update = __webpack_require__(123);
 	var make_rows = __webpack_require__(54);
 	var make_cols = __webpack_require__(69);
-	var eeu_existing_row = __webpack_require__(127);
-	var exit_components = __webpack_require__(131);
-	var enter_grid_lines = __webpack_require__(132);
-	var enter_row_groups = __webpack_require__(133);
-	var resize_containers = __webpack_require__(136);
+	var eeu_existing_row = __webpack_require__(124);
+	var exit_components = __webpack_require__(128);
+	var enter_grid_lines = __webpack_require__(129);
+	var enter_row_groups = __webpack_require__(130);
+	var resize_containers = __webpack_require__(133);
 	var label_constrain_and_trim = __webpack_require__(79);
 	var d3_tip_custom = __webpack_require__(53);
 
@@ -7344,7 +7341,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 126 */
+/* 123 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7522,14 +7519,14 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 127 */
+/* 124 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var exit_existing_row = __webpack_require__(128);
-	var enter_existing_row = __webpack_require__(129);
-	var update_split_tiles = __webpack_require__(130);
+	var exit_existing_row = __webpack_require__(125);
+	var enter_existing_row = __webpack_require__(126);
+	var update_split_tiles = __webpack_require__(127);
 	var mouseover_tile = __webpack_require__(51);
 	var mouseout_tile = __webpack_require__(52);
 
@@ -7593,7 +7590,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 128 */
+/* 125 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7638,7 +7635,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 129 */
+/* 126 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7688,7 +7685,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 130 */
+/* 127 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7782,7 +7779,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 131 */
+/* 128 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7846,7 +7843,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 132 */
+/* 129 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7894,12 +7891,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 133 */
+/* 130 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var enter_new_rows = __webpack_require__(134);
+	var enter_new_rows = __webpack_require__(131);
 
 	module.exports = function enter_row_groups(params, delays, duration, tip) {
 
@@ -7919,12 +7916,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 134 */
+/* 131 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var enter_split_tiles = __webpack_require__(135);
+	var enter_split_tiles = __webpack_require__(132);
 	var mouseover_tile = __webpack_require__(51);
 	var mouseout_tile = __webpack_require__(52);
 
@@ -7974,7 +7971,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 135 */
+/* 132 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8074,7 +8071,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 136 */
+/* 133 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8094,12 +8091,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 137 */
+/* 134 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var change_groups = __webpack_require__(138);
+	var change_groups = __webpack_require__(135);
 	var search = __webpack_require__(77);
 	var all_reorder = __webpack_require__(76);
 	var ini_cat_reorder = __webpack_require__(75);
@@ -8199,7 +8196,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 138 */
+/* 135 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8224,7 +8221,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 139 */
+/* 136 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8242,7 +8239,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 140 */
+/* 137 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8264,7 +8261,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 141 */
+/* 138 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8324,14 +8321,14 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 142 */
+/* 139 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var demo_text = __webpack_require__(109);
 	var highlight_sidebar_element = __webpack_require__(115);
-	var change_groups = __webpack_require__(138);
+	var change_groups = __webpack_require__(135);
 
 	module.exports = function play_groups() {
 	  /* eslint-disable */
@@ -8367,7 +8364,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 143 */
+/* 140 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8421,13 +8418,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 144 */
+/* 141 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var demo_text = __webpack_require__(109);
-	var toggle_play_button = __webpack_require__(145);
+	var toggle_play_button = __webpack_require__(142);
 
 	module.exports = function play_conclusion() {
 
@@ -8462,7 +8459,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 145 */
+/* 142 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8479,7 +8476,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 146 */
+/* 143 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8560,13 +8557,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 147 */
+/* 144 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_play_button = __webpack_require__(148);
-	var make_demo_text_containers = __webpack_require__(149);
+	var make_play_button = __webpack_require__(145);
+	var make_demo_text_containers = __webpack_require__(146);
 
 	module.exports = function ini_demo() {
 
@@ -8580,7 +8577,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 148 */
+/* 145 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8624,7 +8621,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 149 */
+/* 146 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8665,20 +8662,20 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 150 */
+/* 147 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var ini_sidebar = __webpack_require__(137);
-	var set_up_filters = __webpack_require__(151);
-	var set_up_dendro_sliders = __webpack_require__(158);
-	var set_up_search = __webpack_require__(159);
-	var set_up_reorder = __webpack_require__(160);
-	var set_sidebar_ini_view = __webpack_require__(161);
-	var make_icons = __webpack_require__(162);
-	var make_modals = __webpack_require__(165);
-	var set_up_opacity_slider = __webpack_require__(167);
+	var ini_sidebar = __webpack_require__(134);
+	var set_up_filters = __webpack_require__(148);
+	var set_up_dendro_sliders = __webpack_require__(155);
+	var set_up_search = __webpack_require__(156);
+	var set_up_reorder = __webpack_require__(157);
+	var set_sidebar_ini_view = __webpack_require__(158);
+	var make_icons = __webpack_require__(159);
+	var make_modals = __webpack_require__(162);
+	var set_up_opacity_slider = __webpack_require__(164);
 
 	/* Represents sidebar with controls.
 	 */
@@ -8764,13 +8761,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 151 */
+/* 148 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_slider_filter = __webpack_require__(152);
-	var make_button_filter = __webpack_require__(157);
+	var make_slider_filter = __webpack_require__(149);
+	var make_button_filter = __webpack_require__(154);
 
 	module.exports = function set_up_filters(cgm, filter_type) {
 
@@ -8786,13 +8783,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 152 */
+/* 149 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_filter_title = __webpack_require__(153);
-	var apply_filter_slider = __webpack_require__(154);
+	var make_filter_title = __webpack_require__(150);
+	var apply_filter_slider = __webpack_require__(151);
 	var get_filter_default_state = __webpack_require__(6);
 	var get_subset_views = __webpack_require__(13);
 
@@ -8840,7 +8837,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 153 */
+/* 150 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8900,14 +8897,14 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 154 */
+/* 151 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var update_network = __webpack_require__(118);
-	var reset_other_filter_sliders = __webpack_require__(155);
-	var get_current_orders = __webpack_require__(156);
+	var reset_other_filter_sliders = __webpack_require__(152);
+	var get_current_orders = __webpack_require__(153);
 	var make_requested_view = __webpack_require__(43);
 
 	module.exports = function apply_filter_slider(cgm, filter_type, available_views) {
@@ -8939,12 +8936,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 155 */
+/* 152 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_filter_title = __webpack_require__(153);
+	var make_filter_title = __webpack_require__(150);
 
 	module.exports = function reset_other_filter_sliders(params, filter_type, inst_state) {
 
@@ -8991,7 +8988,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 156 */
+/* 153 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9022,7 +9019,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 157 */
+/* 154 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9080,7 +9077,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 158 */
+/* 155 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9110,7 +9107,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 159 */
+/* 156 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9127,7 +9124,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 160 */
+/* 157 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9237,12 +9234,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 161 */
+/* 158 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_filter_title = __webpack_require__(153);
+	var make_filter_title = __webpack_require__(150);
 
 	module.exports = function set_sidebar_ini_view(params) {
 
@@ -9283,13 +9280,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 162 */
+/* 159 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var save_svg_png = __webpack_require__(163);
-	var file_saver = __webpack_require__(164);
+	var save_svg_png = __webpack_require__(160);
+	var file_saver = __webpack_require__(161);
 
 	module.exports = function make_icons(params, sidebar) {
 
@@ -9346,7 +9343,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 163 */
+/* 160 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9552,7 +9549,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 164 */
+/* 161 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -9769,12 +9766,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 165 */
+/* 162 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_modal_skeleton = __webpack_require__(166);
+	var make_modal_skeleton = __webpack_require__(163);
 
 	module.exports = function ini_modals(params) {
 
@@ -9807,7 +9804,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 166 */
+/* 163 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9832,7 +9829,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 167 */
+/* 164 */
 /***/ function(module, exports) {
 
 	'use strict';
