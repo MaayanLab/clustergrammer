@@ -4,14 +4,14 @@ var reset_cat_opacity = require('./reset_cat_opacity');
 
 module.exports = function make_col_cat(params) {
 
-  // make or reuse outer container 
+  // make or reuse outer container
   if (d3.select(params.root+' .col_cat_outer_container').empty()){
     d3.select(params.root+' .col_container')
       .append('g')
       .attr('class', 'col_cat_outer_container')
       .attr('transform', function () {
-        var inst_offset = params.viz.norm_labels.width.col + 2; 
-        return 'translate(0,' + inst_offset + ')'; 
+        var inst_offset = params.viz.norm_labels.width.col + 2;
+        return 'translate(0,' + inst_offset + ')';
       })
       .append('g')
       .attr('class', 'col_cat_container');
@@ -19,12 +19,12 @@ module.exports = function make_col_cat(params) {
     d3.select(params.root+' .col_container')
       .select('col_cat_outer_container')
       .attr('transform', function () {
-        var inst_offset = params.viz.norm_labels.width.col + 2; 
-        return 'translate(0,' + inst_offset + ')'; 
+        var inst_offset = params.viz.norm_labels.width.col + 2;
+        return 'translate(0,' + inst_offset + ')';
       });
   }
-  
-  // d3-tooltip 
+
+  // d3-tooltip
   var cat_tip = d3_tip_custom()
     .attr('class', 'd3-tip')
     .direction('s')
@@ -34,7 +34,7 @@ module.exports = function make_col_cat(params) {
       return cat_tooltip_text(params, d, this, 'col');
     });
 
-  // append groups - each will hold classification rects 
+  // append groups - each will hold classification rects
   d3.select(params.root+' .col_cat_container')
     .selectAll('g')
     .data(params.network_data.col_nodes, function(d){ return d.name; })
@@ -50,7 +50,7 @@ module.exports = function make_col_cat(params) {
     .selectAll('.col_cat_group')
     .call(cat_tip);
 
-  // add category rects 
+  // add category rects
   d3.selectAll(params.root+' .col_cat_group')
     .each(function() {
 
@@ -92,7 +92,7 @@ module.exports = function make_col_cat(params) {
             reset_cat_opacity(params);
 
             d3.select(this)
-              .classed('hovering', false);  
+              .classed('hovering', false);
 
           });
       });

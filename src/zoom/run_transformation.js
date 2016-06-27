@@ -13,7 +13,7 @@ module.exports = function run_transformation(params, zoom_info){
     zoom_info.zoom_x + ',' + zoom_info.zoom_y + ')');
 
 
-  // labels 
+  // labels
   /////////////////////////////
   d3.select(params.root+' .row_label_zoom_container')
     .attr('transform', 'translate(' + [0, zoom_info.trans_y] + ') scale(' + zoom_info.zoom_y +
@@ -31,7 +31,7 @@ module.exports = function run_transformation(params, zoom_info){
 
   d3.select(params.root+' .row_dendro_container')
     .attr('transform', 'translate(' + [params.viz.uni_margin/2, zoom_info.trans_y] + ') '+
-      'scale( 1,' + zoom_info.zoom_y + ')');    
+      'scale( 1,' + zoom_info.zoom_y + ')');
 
 
   // transform col_class
@@ -59,7 +59,7 @@ module.exports = function run_transformation(params, zoom_info){
     });
 
   var not_zooming = function(){
-    
+
     d3.select(params.root+' .viz_svg')
       .attr('is_zoom',function(){
         var inst_zoom = Number(d3.select(params.root+' .viz_svg').attr('is_zoom'));
@@ -111,11 +111,11 @@ module.exports = function run_transformation(params, zoom_info){
       }
 
     }
-    
+
   });
 
 
-  // // experimental tile display toggling 
+  // // experimental tile display toggling
   // var inst_zoom = Number(d3.select(params.root+' .viz_svg').attr('is_zoom'));
 
   // if (inst_zoom == 1){

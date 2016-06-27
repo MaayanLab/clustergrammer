@@ -6446,6 +6446,7 @@ var Clustergrammer =
 	  var inst_selection;
 
 	  if (params.viz.show_categories.row) {
+
 	    d3.selectAll(params.root + ' .row_cat_group').each(function () {
 
 	      inst_selection = this;

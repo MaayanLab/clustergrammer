@@ -13,7 +13,7 @@ var update_reorder_buttons = require('../reorder/update_reorder_buttons');
 
 module.exports = function update_with_new_network(config, old_params,  new_network_data){
 
-  // make tmp config to make new params 
+  // make tmp config to make new params
   var tmp_config = jQuery.extend(true, {}, config);
 
   tmp_config.network_data = new_network_data;

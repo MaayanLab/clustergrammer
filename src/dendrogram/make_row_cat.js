@@ -4,7 +4,7 @@ var reset_cat_opacity = require('./reset_cat_opacity');
 
 module.exports = function make_row_cat(params) {
 
-  // make or reuse outer container 
+  // make or reuse outer container
   if (d3.select(params.root+' .row_cat_outer_container').empty()){
     d3.select(params.root+' .row_container')
       .append('g')
@@ -18,7 +18,7 @@ module.exports = function make_row_cat(params) {
       .attr('transform', 'translate(' + params.viz.norm_labels.width.row + ',0)');
   }
 
-  // white background 
+  // white background
   if (d3.select(params.root+' .row_cat_container').select('.white_bars').empty()){
     d3.select(params.root+' .row_cat_container')
       .append('rect')
@@ -40,7 +40,7 @@ module.exports = function make_row_cat(params) {
       });
   }
 
-  // d3-tooltip 
+  // d3-tooltip
   var cat_tip = d3_tip_custom()
     .attr('class','d3-tip')
     .direction('e')
@@ -87,9 +87,10 @@ module.exports = function make_row_cat(params) {
   var inst_selection;
 
   if (params.viz.show_categories.row){
+
     d3.selectAll(params.root+' .row_cat_group')
       .each(function() {
-    
+
         inst_selection = this;
 
         _.each( params.viz.all_cats.row, function(inst_cat){
@@ -127,7 +128,7 @@ module.exports = function make_row_cat(params) {
             .on('mouseover', cat_tip.show)
             .on('mouseout', function(){
 
-              cat_tip.hide(this); 
+              cat_tip.hide(this);
 
               reset_cat_opacity(params);
 

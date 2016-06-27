@@ -45,10 +45,8 @@ views = ['N_row_sum', 'N_row_var']
 
 net.make_clust(dist_type='cos',views=views , dendro=True,
                sim_mat=True, filter_sim=0.1, calc_cat_pval=False)
-
-               # run_enrichr=['ChEA_2015'])
-               # run_enrichr=['ENCODE_TF_ChIP-seq_2014'])
                # run_enrichr=['KEA_2015'])
+               # run_enrichr=['ENCODE_TF_ChIP-seq_2014'])
                # run_enrichr=['GO_Biological_Process_2015'])
 
 net.write_json_to_file('viz', 'json/mult_view.json', 'no-indent')
