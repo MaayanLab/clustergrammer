@@ -41,8 +41,6 @@ def make_json():
   vect_post['is_up_down'] = True
   vect_post['columns'] = []
 
-  split = True
-
   # fraction of rows in each column - 1 means all columns have all rows
   inst_prob = 1
 
@@ -93,12 +91,6 @@ def make_json():
 
       value = value_up + value_dn
 
-      # # generate vector component
-      # #############################
-      # vector.append([ inst_row, value ])
-      # vector_up.append([ inst_row, value_up ])
-      # vector_dn.append([ inst_row, value_dn ])
-
       # define row object - within column
       row_obj = {}
       row_obj['row_name'] = inst_row
@@ -107,12 +99,6 @@ def make_json():
       row_obj['val_dn'] = value_dn
 
       inst_col['data'].append(row_obj)
-
-
-    # if split:
-    #   inst_col['vector_up'] = vector_up
-    #   inst_col['vector_dn'] = vector_dn
-
 
     # save columns to vect_post
     vect_post['columns'].append(inst_col)
@@ -137,7 +123,14 @@ def make_up_names(num_names):
 
   for i in range(num_names):
     length_of_names = int(30*random.random()) + 3
-    row_names.append(id_generator(length_of_names, "WERJASDFNYKEM1219UIO "))
+    inst_name = id_generator(length_of_names, "WERJASDFNYKEM1219UIO ")
+
+    if inst_name[0] == 'A':
+      inst_name = "('" + inst_name + "', 'gene: A', 'Cat: cat')"
+    else:
+      inst_name = "('" + inst_name + "', 'gene: Other', 'Cat: dog')"
+
+    row_names.append(inst_name)
 
   row_names = list(set(row_names))
 
