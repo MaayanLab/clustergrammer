@@ -53,7 +53,10 @@ def make_json():
 
     inst_col = {}
 
-    col_name = 'Col-' + str( col_num+1 ) + ' make name longer'
+    # original names
+    # col_name = 'Col-' + str( col_num+1 ) + ' make name longer'
+
+    col_name = '(Col-' + str( col_num+1 ) + ', something)'
 
     inst_col['col_name'] = col_name
     inst_col['link'] = 'col-link'
