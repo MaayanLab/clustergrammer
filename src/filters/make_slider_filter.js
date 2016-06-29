@@ -52,7 +52,7 @@ module.exports = function make_slider_filter(cgm, filter_type, div_filters){
     max: inst_max,
     step: 1,
     stop: function() {
-      params = apply_filter_slider(cgm, filter_type, available_views);
+      apply_filter_slider(cgm, filter_type, available_views);
     }
   });
 

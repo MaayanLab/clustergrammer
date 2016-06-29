@@ -14,21 +14,19 @@ module.exports = function apply_filter_slider(cgm, filter_type, available_views)
   reset_other_filter_sliders(params, filter_type, inst_state);
 
   params = get_current_orders(params);
-  
+
   var requested_view = {};
   requested_view[filter_type] = inst_state;
 
-  requested_view = make_requested_view(params, requested_view);  
+  requested_view = make_requested_view(params, requested_view);
 
   if ( _.has(available_views[0],'enr_score_type') ){
     var enr_state = d3.select(params.root+' .toggle_enr_score_type')
       .attr('current_state');
 
     requested_view.enr_score_type = enr_state;
-  } 
+  }
 
-  params = update_network(cgm, requested_view);
-
-  return params;
+  update_network(cgm, requested_view);
 
 };

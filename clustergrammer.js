@@ -103,7 +103,7 @@ var Clustergrammer =
 	  }
 
 	  function external_update_view(requested_view) {
-	    params = update_network(this, requested_view);
+	    update_network(this, requested_view);
 	  }
 
 	  // add more API endpoints
@@ -7057,7 +7057,6 @@ var Clustergrammer =
 
 	var change_network_view = __webpack_require__(11);
 	var disable_sidebar = __webpack_require__(119);
-
 	var update_with_new_network = __webpack_require__(120);
 
 	module.exports = function (cgm, requested_view) {
@@ -7073,9 +7072,8 @@ var Clustergrammer =
 
 	  var params = update_with_new_network(config, old_params, new_network_data);
 
+	  // params on the cgm object are updated
 	  cgm.params = params;
-
-	  return params;
 		};
 
 /***/ },
@@ -8832,7 +8830,7 @@ var Clustergrammer =
 	    max: inst_max,
 	    step: 1,
 	    stop: function stop() {
-	      params = apply_filter_slider(cgm, filter_type, available_views);
+	      apply_filter_slider(cgm, filter_type, available_views);
 	    }
 	  });
 		};
@@ -8931,9 +8929,7 @@ var Clustergrammer =
 	    requested_view.enr_score_type = enr_state;
 	  }
 
-	  params = update_network(cgm, requested_view);
-
-	  return params;
+	  update_network(cgm, requested_view);
 		};
 
 /***/ },

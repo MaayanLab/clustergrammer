@@ -54,7 +54,7 @@ function Clustergrammer(args) {
   }
 
   function external_update_view(requested_view){
-    params = update_network(this, requested_view);
+    update_network(this, requested_view);
   }
 
   // add more API endpoints
