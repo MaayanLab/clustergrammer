@@ -1,6 +1,5 @@
 def main(real_net, vect_post):
   import numpy as np
-  import categories
   from copy import deepcopy
   from __init__ import Network
   import proc_df_labels
@@ -11,14 +10,8 @@ def main(real_net, vect_post):
 
   all_rows = []
   all_sigs = []
-  tmp_col_cat = {}
-  is_col_cat = False
   for inst_sig in sigs:
     all_sigs.append(inst_sig['col_name'])
-
-    if 'cat' in inst_sig:
-      is_col_cat = True
-      tmp_col_cat[inst_sig['col_name']] = inst_sig['cat']
 
     col_data = inst_sig['data']
 
@@ -30,26 +23,6 @@ def main(real_net, vect_post):
 
   net.dat['nodes']['row'] = all_rows
   net.dat['nodes']['col'] = all_sigs
-
-  if is_col_cat:
-    all_cat = []
-
-    for tmp_sig in all_sigs:
-      all_cat.append(tmp_col_cat[tmp_sig])
-
-    net.dat['node_info']['col']['cat-0'] = all_cat
-
-    categories.dict_cat(net)
-
-    net.dat['node_info']['col']['full_names'] = []
-
-    # construct full_names from single column category
-    # need to improve
-    for inst_index in range(len(all_cat)):
-      inst_cat = all_cat[inst_index]
-      inst_name = net.dat['nodes']['col'][inst_index]
-      inst_tuple = (inst_name, inst_cat)
-      net.dat['node_info']['col']['full_names'].append(inst_tuple)
 
   net.dat['mat'] = np.empty((len(all_rows), len(all_sigs)))
   net.dat['mat'][:] = np.nan

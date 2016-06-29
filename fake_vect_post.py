@@ -61,11 +61,6 @@ def make_json():
     inst_col['col_name'] = col_name
     inst_col['link'] = 'col-link'
 
-    # if col_num < 5:
-    #   inst_col['cat'] = 'brain'
-    # else:
-    #   inst_col['cat'] = 'lung'
-
     # save to columns
     inst_col['data'] = [] #vector
 
