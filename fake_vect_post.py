@@ -3,26 +3,7 @@ import random
 random.seed(10)
 
 def main():
-  make_json()
-  # cluster()
 
-def cluster():
-  from clustergrammer import Network
-
-  net = Network()
-
-  vect_post = net.load_json_to_dict('json/fake_vect_post.json')
-
-  net.load_vect_post_to_net(vect_post)
-
-  net.swap_nan_for_zero()
-
-  # net.N_top_views()
-  net.make_clust(dist_type='cos',views=['N_row_sum','N_row_var'], dendro=True)
-
-  net.write_json_to_file('viz','json/large_vect_post_example.json','indent')
-
-def make_json():
   from clustergrammer import Network
   net = Network()
 
@@ -44,14 +25,10 @@ def make_json():
   # fraction of rows in each column - 1 means all columns have all rows
   inst_prob = 1
 
-
   # make column data
   for col_num in range(num_columns):
 
     inst_col = {}
-
-    # original names
-    # col_name = 'Col-' + str( col_num+1 ) + ' make name longer'
 
     if col_num < 5:
       col_name = "('Columns: Col-" + str( col_num+1 ) + "', 'tissue: brain')"
