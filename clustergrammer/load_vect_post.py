@@ -1,6 +1,11 @@
-def main(net, vect_post):
+def main(real_net, vect_post):
   import numpy as np
   import categories
+  from copy import deepcopy
+  from __init__ import Network
+  import proc_df_labels
+
+  net = deepcopy(Network())
 
   sigs = vect_post['columns']
 
@@ -33,7 +38,7 @@ def main(net, vect_post):
       all_cat.append(tmp_col_cat[tmp_sig])
 
     net.dat['node_info']['col']['cat-0'] = all_cat
-    
+
     categories.dict_cat(net)
 
     net.dat['node_info']['col']['full_names'] = []
@@ -77,3 +82,8 @@ def main(net, vect_post):
       if is_up_down is True:
         net.dat['mat_up'][row_index, col_index] = inst_row_data['val_up']
         net.dat['mat_dn'][row_index, col_index] = inst_row_data['val_dn']
+
+  tmp_df = net.dat_to_df()
+  tmp_df = proc_df_labels.main(tmp_df)
+
+  real_net.df_to_dat(tmp_df)

@@ -5,7 +5,7 @@ from clustergrammer import Network
 net = Network()
 
 # choose tsv file
-#######################
+####################
 net.load_file('txt/rc_two_cats.txt')
 # net.load_file('txt/tuple_cats.txt')
 # net.load_file('txt/tuple_names.txt')
@@ -19,6 +19,7 @@ net.load_file('txt/rc_two_cats.txt')
 # net.load_file('txt/number_names.txt')
 
 # # upload vector format
+# ########################
 # vect_format = net.load_json_to_dict('json/fake_vect_post.json')
 # net.load_vect_post_to_net(vect_format)
 

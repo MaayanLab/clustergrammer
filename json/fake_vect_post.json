@@ -1,11 +1,11 @@
 {
   "filter": "N_row_sum", 
   "link": "some-link", 
-  "is_up_down": false, 
+  "is_up_down": true, 
   "columns": [
     {
       "link": "col-link", 
-      "col_name": "(Col-1, something)", 
+      "col_name": "('Columns: Col-1', 'tissue: brain')", 
       "data": [
         {
           "val_up": 0, 
@@ -1211,7 +1211,7 @@
     }, 
     {
       "link": "col-link", 
-      "col_name": "(Col-2, something)", 
+      "col_name": "('Columns: Col-2', 'tissue: brain')", 
       "data": [
         {
           "val_up": 0, 
@@ -2417,7 +2417,7 @@
     }, 
     {
       "link": "col-link", 
-      "col_name": "(Col-3, something)", 
+      "col_name": "('Columns: Col-3', 'tissue: brain')", 
       "data": [
         {
           "val_up": 4.7426954580005285, 
@@ -3623,7 +3623,7 @@
     }, 
     {
       "link": "col-link", 
-      "col_name": "(Col-4, something)", 
+      "col_name": "('Columns: Col-4', 'tissue: brain')", 
       "data": [
         {
           "val_up": 0, 
@@ -4829,7 +4829,7 @@
     }, 
     {
       "link": "col-link", 
-      "col_name": "(Col-5, something)", 
+      "col_name": "('Columns: Col-5', 'tissue: brain')", 
       "data": [
         {
           "val_up": 4.470870979357765, 
@@ -6035,7 +6035,7 @@
     }, 
     {
       "link": "col-link", 
-      "col_name": "(Col-6, something)", 
+      "col_name": "('Columns: Col-6', 'tissue: lung')", 
       "data": [
         {
           "val_up": 5.014594790071339, 
@@ -7241,7 +7241,7 @@
     }, 
     {
       "link": "col-link", 
-      "col_name": "(Col-7, something)", 
+      "col_name": "('Columns: Col-7', 'tissue: lung')", 
       "data": [
         {
           "val_up": 0, 
@@ -8447,7 +8447,7 @@
     }, 
     {
       "link": "col-link", 
-      "col_name": "(Col-8, something)", 
+      "col_name": "('Columns: Col-8', 'tissue: lung')", 
       "data": [
         {
           "val_up": 0, 
@@ -9653,7 +9653,7 @@
     }, 
     {
       "link": "col-link", 
-      "col_name": "(Col-9, something)", 
+      "col_name": "('Columns: Col-9', 'tissue: lung')", 
       "data": [
         {
           "val_up": 9.623734196909034, 
@@ -10859,7 +10859,7 @@
     }, 
     {
       "link": "col-link", 
-      "col_name": "(Col-10, something)", 
+      "col_name": "('Columns: Col-10', 'tissue: lung')", 
       "data": [
         {
           "val_up": 0, 
@@ -12065,7 +12065,7 @@
     }, 
     {
       "link": "col-link", 
-      "col_name": "(Col-11, something)", 
+      "col_name": "('Columns: Col-11', 'tissue: lung')", 
       "data": [
         {
           "val_up": 0, 
@@ -13271,7 +13271,7 @@
     }, 
     {
       "link": "col-link", 
-      "col_name": "(Col-12, something)", 
+      "col_name": "('Columns: Col-12', 'tissue: lung')", 
       "data": [
         {
           "val_up": 0, 
@@ -14477,7 +14477,7 @@
     }, 
     {
       "link": "col-link", 
-      "col_name": "(Col-13, something)", 
+      "col_name": "('Columns: Col-13', 'tissue: lung')", 
       "data": [
         {
           "val_up": 3.7477690616433823, 
@@ -15683,7 +15683,7 @@
     }, 
     {
       "link": "col-link", 
-      "col_name": "(Col-14, something)", 
+      "col_name": "('Columns: Col-14', 'tissue: lung')", 
       "data": [
         {
           "val_up": 1.593492155658024, 
@@ -16889,7 +16889,7 @@
     }, 
     {
       "link": "col-link", 
-      "col_name": "(Col-15, something)", 
+      "col_name": "('Columns: Col-15', 'tissue: lung')", 
       "data": [
         {
           "val_up": 0.03536824404215322, 
@@ -18095,7 +18095,7 @@
     }, 
     {
       "link": "col-link", 
-      "col_name": "(Col-16, something)", 
+      "col_name": "('Columns: Col-16', 'tissue: lung')", 
       "data": [
         {
           "val_up": 0, 
@@ -19301,7 +19301,7 @@
     }, 
     {
       "link": "col-link", 
-      "col_name": "(Col-17, something)", 
+      "col_name": "('Columns: Col-17', 'tissue: lung')", 
       "data": [
         {
           "val_up": 6.125168562173072, 
@@ -20507,7 +20507,7 @@
     }, 
     {
       "link": "col-link", 
-      "col_name": "(Col-18, something)", 
+      "col_name": "('Columns: Col-18', 'tissue: lung')", 
       "data": [
         {
           "val_up": 0, 
@@ -21713,7 +21713,7 @@
     }, 
     {
       "link": "col-link", 
-      "col_name": "(Col-19, something)", 
+      "col_name": "('Columns: Col-19', 'tissue: lung')", 
       "data": [
         {
           "val_up": 0, 
@@ -22919,7 +22919,7 @@
     }, 
     {
       "link": "col-link", 
-      "col_name": "(Col-20, something)", 
+      "col_name": "('Columns: Col-20', 'tissue: lung')", 
       "data": [
         {
           "val_up": 0, 

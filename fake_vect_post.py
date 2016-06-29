@@ -38,9 +38,8 @@ def make_json():
   vect_post['title'] = 'Some-Clustergram'
   vect_post['link'] = 'some-link'
   vect_post['filter'] = 'N_row_sum'
-  vect_post['is_up_down'] = False
+  vect_post['is_up_down'] = True
   vect_post['columns'] = []
-
 
   split = True
 
@@ -56,7 +55,10 @@ def make_json():
     # original names
     # col_name = 'Col-' + str( col_num+1 ) + ' make name longer'
 
-    col_name = '(Col-' + str( col_num+1 ) + ', something)'
+    if col_num < 5:
+      col_name = "('Columns: Col-" + str( col_num+1 ) + "', 'tissue: brain')"
+    else:
+      col_name = "('Columns: Col-" + str( col_num+1 ) + "', 'tissue: lung')"
 
     inst_col['col_name'] = col_name
     inst_col['link'] = 'col-link'
