@@ -1,33 +1,29 @@
 var filter_using_new_nodes = require('./filter_using_new_nodes');
 var get_subset_views = require('../filters/get_subset_views');
 
-module.exports = function make_network_using_view(params, orig_network_data,
+module.exports = function make_network_using_view(cgm, orig_network_data,
   requested_view) {
 
+  var params = cgm.params;
   var views = orig_network_data.views;
-  var inst_view;
 
   var is_enr = false;
   if (_.has(views[0], 'enr_score_type')){
     is_enr = true;
   }
 
-  views = get_subset_views(params, views, requested_view);
+  var sub_views = get_subset_views(params, views, requested_view);
 
   //////////////////////////////
   // Enrichr specific rules
   //////////////////////////////
-  if (is_enr && views.length == 0){
-
+  if (is_enr && sub_views.length == 0){
     requested_view = {'N_row_sum':'all', 'N_col_sum':'10'};
-
-    views = orig_network_data.views;
-
-    views = get_subset_views(params, views, requested_view);
-
+    sub_views = orig_network_data.views;
+    sub_views = get_subset_views(params, views, requested_view);
   }
 
-  inst_view = views[0];
+  var inst_view = sub_views[0];
 
   var new_network_data;
 
