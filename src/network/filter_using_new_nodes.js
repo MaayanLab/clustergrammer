@@ -1,6 +1,6 @@
 var utils = require('../Utils_clust');
 
-module.exports = function filter_using_new_nodes(params, new_nodes, links) {
+module.exports = function filter_using_new_nodes(new_nodes, links) {
 
   // get new names of rows and cols
   var row_names = utils.pluck(new_nodes.row_nodes, 'name');

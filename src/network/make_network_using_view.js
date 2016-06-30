@@ -1,9 +1,9 @@
 var filter_using_new_nodes = require('./filter_using_new_nodes');
 var get_subset_views = require('../filters/get_subset_views');
 
-module.exports = function make_network_using_view(cgm, orig_network_data,
-  requested_view) {
+module.exports = function make_network_using_view(cgm, requested_view) {
 
+  var orig_network_data = cgm.config.network_data;
   var params = cgm.params;
   var views = orig_network_data.views;
 
@@ -31,7 +31,7 @@ module.exports = function make_network_using_view(cgm, orig_network_data,
   if (typeof inst_view !== 'undefined'){
     var new_nodes = inst_view.nodes;
     var links = orig_network_data.links;
-    new_network_data = filter_using_new_nodes(params, new_nodes, links);
+    new_network_data = filter_using_new_nodes(new_nodes, links);
   } else {
     new_network_data = orig_network_data;
   }

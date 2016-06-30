@@ -791,7 +791,7 @@ var Clustergrammer =
 
 	var utils = __webpack_require__(2);
 
-	module.exports = function filter_using_new_nodes(params, new_nodes, links) {
+	module.exports = function filter_using_new_nodes(new_nodes, links) {
 
 	  // get new names of rows and cols
 	  var row_names = utils.pluck(new_nodes.row_nodes, 'name');
@@ -9709,10 +9709,8 @@ var Clustergrammer =
 
 	  disable_sidebar(cgm.params);
 
-	  var config_copy = jQuery.extend(true, {}, cgm.config);
-
 	  // make new_network_data by filtering the original network data
-	  var new_network_data = make_network_using_view(cgm, config_copy.network_data, requested_view);
+	  var new_network_data = make_network_using_view(cgm, requested_view);
 
 	  update_viz_with_network(cgm, new_network_data);
 		};
@@ -9794,8 +9792,9 @@ var Clustergrammer =
 	var filter_using_new_nodes = __webpack_require__(12);
 	var get_subset_views = __webpack_require__(13);
 
-	module.exports = function make_network_using_view(cgm, orig_network_data, requested_view) {
+	module.exports = function make_network_using_view(cgm, requested_view) {
 
+	  var orig_network_data = cgm.config.network_data;
 	  var params = cgm.params;
 	  var views = orig_network_data.views;
 
@@ -9823,7 +9822,7 @@ var Clustergrammer =
 	  if (typeof inst_view !== 'undefined') {
 	    var new_nodes = inst_view.nodes;
 	    var links = orig_network_data.links;
-	    new_network_data = filter_using_new_nodes(params, new_nodes, links);
+	    new_network_data = filter_using_new_nodes(new_nodes, links);
 	  } else {
 	    new_network_data = orig_network_data;
 	  }
