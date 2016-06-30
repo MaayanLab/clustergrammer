@@ -53,7 +53,7 @@ var Clustergrammer =
 	var resize_viz = __webpack_require__(81);
 	var play_demo = __webpack_require__(106);
 	var ini_demo = __webpack_require__(144);
-	var update_network = __webpack_require__(118);
+	var update_viz_with_view = __webpack_require__(167);
 
 	/* clustergrammer 1.0
 	 * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
@@ -103,7 +103,7 @@ var Clustergrammer =
 	  }
 
 	  function external_update_view(requested_view) {
-	    update_network(this, requested_view);
+	    update_viz_with_view(this, requested_view);
 	  }
 
 	  // add more API endpoints
@@ -6991,7 +6991,7 @@ var Clustergrammer =
 
 	var demo_text = __webpack_require__(109);
 	var highlight_sidebar_element = __webpack_require__(115);
-	var update_network = __webpack_require__(118);
+	var update_viz_with_view = __webpack_require__(167);
 
 	module.exports = function play_filter() {
 
@@ -7028,7 +7028,7 @@ var Clustergrammer =
 
 	    var requested_view = {};
 	    requested_view[filter_type] = filter_value;
-	    update_network(cgm, requested_view);
+	    update_viz_with_view(cgm, requested_view);
 
 	    // quick fix for slider
 	    $(params.root + ' .slider_' + filter_type).slider("value", filter_index);
@@ -7050,33 +7050,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 118 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var change_network_view = __webpack_require__(11);
-	var disable_sidebar = __webpack_require__(119);
-	var update_with_new_network = __webpack_require__(120);
-
-	module.exports = function (cgm, requested_view) {
-	  var old_params = cgm.params;
-	  var config = cgm.config;
-
-	  disable_sidebar(old_params);
-
-	  // make new_network_data by filtering the original network data
-	  var config_copy = jQuery.extend(true, {}, config);
-
-	  var new_network_data = change_network_view(old_params, config_copy.network_data, requested_view);
-
-	  var params = update_with_new_network(config, old_params, new_network_data);
-
-	  // params on the cgm object are updated
-	  cgm.params = params;
-		};
-
-/***/ },
+/* 118 */,
 /* 119 */
 /***/ function(module, exports) {
 
@@ -8103,7 +8077,6 @@ var Clustergrammer =
 	module.exports = function ini_sidebar(params) {
 
 	  // initializes sidebar buttons and sliders
-	  // this function is also used by update_network
 
 	  var search_obj = search(params, params.network_data.row_nodes, 'name');
 
@@ -8901,7 +8874,7 @@ var Clustergrammer =
 
 	'use strict';
 
-	var update_network = __webpack_require__(118);
+	var update_viz_with_view = __webpack_require__(167);
 	var reset_other_filter_sliders = __webpack_require__(152);
 	var get_current_orders = __webpack_require__(153);
 	var make_requested_view = __webpack_require__(43);
@@ -8929,7 +8902,7 @@ var Clustergrammer =
 	    requested_view.enr_score_type = enr_state;
 	  }
 
-	  update_network(cgm, requested_view);
+	  update_viz_with_view(cgm, requested_view);
 		};
 
 /***/ },
@@ -9021,7 +8994,7 @@ var Clustergrammer =
 
 	'use strict';
 
-	var update_network = __webpack_require__(118);
+	// var update_network = require('../network/update_network');
 	var make_requested_view = __webpack_require__(43);
 
 	module.exports = function make_button_filter(config, params, filter_type, div_filters) {
@@ -9067,7 +9040,7 @@ var Clustergrammer =
 	    // console.log('\n---------\n requested_view from button filter')
 	    // console.log(requested_view)
 
-	    update_network(config, params, requested_view);
+	    // update_network(config, params, requested_view);
 
 	    d3.select(params.root + ' .toggle_enr_score_type').attr('current_state', inst_state);
 	  });
@@ -9842,6 +9815,35 @@ var Clustergrammer =
 	  $(params.root + ' .opacity_slider').slider({
 	    value: 1.0
 	  });
+		};
+
+/***/ },
+/* 165 */,
+/* 166 */,
+/* 167 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var change_network_view = __webpack_require__(11);
+	var disable_sidebar = __webpack_require__(119);
+	var update_with_new_network = __webpack_require__(120);
+
+	module.exports = function update_network_with_view(cgm, requested_view) {
+	  var old_params = cgm.params;
+	  var config = cgm.config;
+
+	  disable_sidebar(old_params);
+
+	  // make new_network_data by filtering the original network data
+	  var config_copy = jQuery.extend(true, {}, config);
+
+	  var new_network_data = change_network_view(old_params, config_copy.network_data, requested_view);
+
+	  var params = update_with_new_network(config, old_params, new_network_data);
+
+	  // params on the cgm object are updated
+	  cgm.params = params;
 		};
 
 /***/ }

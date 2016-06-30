@@ -6,7 +6,6 @@ var ini_cat_reorder = require('../reorder/ini_cat_reorder');
 module.exports = function ini_sidebar(params){
 
   // initializes sidebar buttons and sliders
-  // this function is also used by update_network
 
   var search_obj = search(params, params.network_data.row_nodes, 'name');
 

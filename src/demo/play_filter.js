@@ -1,6 +1,6 @@
 var demo_text = require('./demo_text');
 var highlight_sidebar_element = require('./highlight_sidebar_element');
-var update_network = require('../network/update_network');
+var update_viz_with_view = require('../network/update_viz_with_view');
 
 module.exports = function play_filter(){
 
@@ -9,10 +9,10 @@ module.exports = function play_filter(){
 
     var text = 'Filter rows based on sum or\nvariance using the sliders';
     demo_text(params, text, 4000);
-    
+
     var filter_type = 'N_row_sum';
 
-    setTimeout(highlight_sidebar_element, 5000, params, 'slider_'+filter_type, 
+    setTimeout(highlight_sidebar_element, 5000, params, 'slider_'+filter_type,
       13000);
 
     text = 'Filter: Top 20 rows by sum';
@@ -39,9 +39,9 @@ module.exports = function play_filter(){
 
     var requested_view = {};
     requested_view[filter_type] = filter_value;
-    update_network(cgm, requested_view);
+    update_viz_with_view(cgm, requested_view);
 
-    // quick fix for slider 
+    // quick fix for slider
     $(params.root+' .slider_'+filter_type).slider( "value", filter_index);
 
     var unit_name;

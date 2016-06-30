@@ -1,4 +1,4 @@
-var update_network = require('../network/update_network');
+var update_viz_with_view = require('../network/update_viz_with_view');
 var reset_other_filter_sliders = require('./reset_other_filter_sliders');
 var get_current_orders = require('./get_current_orders');
 var make_requested_view = require('./make_requested_view');
@@ -27,6 +27,6 @@ module.exports = function apply_filter_slider(cgm, filter_type, available_views)
     requested_view.enr_score_type = enr_state;
   }
 
-  update_network(cgm, requested_view);
+  update_viz_with_view(cgm, requested_view);
 
 };

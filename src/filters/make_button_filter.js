@@ -1,4 +1,4 @@
-var update_network = require('../network/update_network');
+// var update_network = require('../network/update_network');
 var make_requested_view = require('./make_requested_view');
 
 module.exports = function make_button_filter(config, params, filter_type, div_filters){
@@ -67,7 +67,7 @@ module.exports = function make_button_filter(config, params, filter_type, div_fi
       // console.log('\n---------\n requested_view from button filter')
       // console.log(requested_view)
 
-      update_network(config, params, requested_view);
+      // update_network(config, params, requested_view);
 
       d3.select(params.root+' .toggle_enr_score_type')
         .attr('current_state', inst_state);

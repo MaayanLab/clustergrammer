@@ -2,7 +2,7 @@ var change_network_view = require('./change_network_view');
 var disable_sidebar = require('../sidebar/disable_sidebar');
 var update_with_new_network = require('../update/update_with_new_network');
 
-module.exports = function(cgm, requested_view) {
+module.exports = function update_network_with_view(cgm, requested_view) {
   var old_params = cgm.params;
   var config = cgm.config;
 
