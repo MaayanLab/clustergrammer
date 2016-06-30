@@ -744,10 +744,7 @@ var Clustergrammer =
 	    params.viz.filter_data = filters.filter_data;
 
 	    requested_view = make_requested_view(params, requested_view);
-
-	    // requested_view.enr_score_type = 'combined_score';
-
-	    params.network_data = make_network_using_view(params, params.network_data, requested_view);
+	    params.network_data = make_network_using_view(config, params, requested_view);
 	  }
 
 	  params.labels = ini_label_params(config, params.network_data);
@@ -9665,7 +9662,7 @@ var Clustergrammer =
 	  disable_sidebar(cgm.params);
 
 	  // make new_network_data by filtering the original network data
-	  var new_network_data = make_network_using_view(cgm, requested_view);
+	  var new_network_data = make_network_using_view(cgm.config, cgm.params, requested_view);
 
 	  update_viz_with_network(cgm, new_network_data);
 		};
@@ -9747,23 +9744,23 @@ var Clustergrammer =
 	var filter_network_using_new_nodes = __webpack_require__(170);
 	var get_subset_views = __webpack_require__(13);
 
-	module.exports = function make_network_using_view(cgm, requested_view) {
+	module.exports = function make_network_using_view(config, params, requested_view) {
 
-	  var orig_views = cgm.config.network_data.views;
+	  var orig_views = config.network_data.views;
 
 	  var is_enr = false;
 	  if (_.has(orig_views[0], 'enr_score_type')) {
 	    is_enr = true;
 	  }
 
-	  var sub_views = get_subset_views(cgm.params, orig_views, requested_view);
+	  var sub_views = get_subset_views(params, orig_views, requested_view);
 
 	  //////////////////////////////
 	  // Enrichr specific rules
 	  //////////////////////////////
 	  if (is_enr && sub_views.length == 0) {
 	    requested_view = { 'N_row_sum': 'all', 'N_col_sum': '10' };
-	    sub_views = get_subset_views(cgm.params, orig_views, requested_view);
+	    sub_views = get_subset_views(params, orig_views, requested_view);
 	  }
 
 	  var inst_view = sub_views[0];
@@ -9773,9 +9770,9 @@ var Clustergrammer =
 	  // get new_network_data or default back to old_network_data
 	  if (typeof inst_view !== 'undefined') {
 	    var new_nodes = inst_view.nodes;
-	    new_network_data = filter_network_using_new_nodes(cgm, new_nodes);
+	    new_network_data = filter_network_using_new_nodes(config, new_nodes);
 	  } else {
-	    new_network_data = cgm.config.network_data;
+	    new_network_data = config.network_data;
 	  }
 
 	  // add back all views
@@ -9792,9 +9789,9 @@ var Clustergrammer =
 
 	var utils = __webpack_require__(2);
 
-	module.exports = function filter_network_using_new_nodes(cgm, new_nodes) {
+	module.exports = function filter_network_using_new_nodes(config, new_nodes) {
 
-	  var links = cgm.config.network_data.links;
+	  var links = config.network_data.links;
 
 	  // get new names of rows and cols
 	  var row_names = utils.pluck(new_nodes.row_nodes, 'name');
