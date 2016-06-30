@@ -33,9 +33,10 @@ module.exports = function filter_network_using_new_nodes(config, new_nodes) {
   new_network_data.col_nodes_names = col_names;
   // links
   new_network_data.links = new_links;
-
   // save all links
   new_network_data.all_links = links;
+  // add back all views
+  new_network_data.views = config.network_data.views;
 
   return new_network_data;
 };

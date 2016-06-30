@@ -32,8 +32,5 @@ module.exports = function make_network_using_view(config, params, requested_view
     new_network_data = config.network_data;
   }
 
-  // add back all views
-  new_network_data.views = orig_views;
-
   return new_network_data;
 };
