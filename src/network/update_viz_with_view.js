@@ -1,6 +1,6 @@
 var change_network_view = require('./change_network_view');
 var disable_sidebar = require('../sidebar/disable_sidebar');
-var update_with_new_network = require('../update/update_with_new_network');
+var update_viz_with_network = require('../update/update_viz_with_network');
 
 module.exports = function update_network_with_view(cgm, requested_view) {
   var old_params = cgm.params;
@@ -14,9 +14,6 @@ module.exports = function update_network_with_view(cgm, requested_view) {
   var new_network_data = change_network_view(old_params,
     config_copy.network_data, requested_view);
 
-  var params = update_with_new_network(config, old_params, new_network_data);
-
-  // params on the cgm object are updated
-  cgm.params = params;
+  update_viz_with_network(cgm, config, old_params, new_network_data);
 
 };

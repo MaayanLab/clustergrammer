@@ -11,7 +11,8 @@ var enable_sidebar  = require('../sidebar/enable_sidebar');
 var ini_doubleclick = require('../zoom/ini_doubleclick');
 var update_reorder_buttons = require('../reorder/update_reorder_buttons');
 
-module.exports = function update_with_new_network(config, old_params,  new_network_data){
+module.exports = function update_viz_with_network(cgm, config, old_params,
+  new_network_data){
 
   // make tmp config to make new params
   var tmp_config = jQuery.extend(true, {}, config);
@@ -57,5 +58,6 @@ module.exports = function update_with_new_network(config, old_params,  new_netwo
 
   setTimeout(enable_sidebar, 2500, params);
 
-  return params;
+  cgm.params = params;
+
 };

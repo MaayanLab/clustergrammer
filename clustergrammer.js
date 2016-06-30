@@ -7066,73 +7066,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 120 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var make_params = __webpack_require__(10);
-	var define_enter_exit_delays = __webpack_require__(121);
-	var enter_exit_update = __webpack_require__(122);
-	var initialize_resizing = __webpack_require__(80);
-	var make_col_cat = __webpack_require__(100);
-	var make_row_cat = __webpack_require__(103);
-	var make_row_dendro = __webpack_require__(104);
-	var make_col_dendro = __webpack_require__(105);
-	var ini_sidebar = __webpack_require__(134);
-	var enable_sidebar = __webpack_require__(136);
-	var ini_doubleclick = __webpack_require__(82);
-	var update_reorder_buttons = __webpack_require__(137);
-
-	module.exports = function update_with_new_network(config, old_params, new_network_data) {
-
-	  // make tmp config to make new params
-	  var tmp_config = jQuery.extend(true, {}, config);
-
-	  tmp_config.network_data = new_network_data;
-	  tmp_config.inst_order = old_params.viz.inst_order;
-	  tmp_config.input_domain = old_params.matrix.opacity_scale.domain()[1];
-
-	  update_reorder_buttons(tmp_config, old_params);
-
-	  tmp_config.ini_expand = false;
-	  tmp_config.ini_view = null;
-	  tmp_config.current_col_cat = old_params.current_col_cat;
-
-	  var params = make_params(tmp_config);
-	  var delays = define_enter_exit_delays(old_params, params);
-
-	  enter_exit_update(params, new_network_data, delays);
-
-	  make_row_cat(params);
-
-	  if (params.viz.show_categories.col) {
-	    make_col_cat(params);
-	  }
-
-	  if (params.viz.show_dendrogram) {
-	    make_row_dendro(params);
-	    make_col_dendro(params);
-	  }
-
-	  initialize_resizing(params);
-
-	  d3.select(params.viz.viz_svg).call(params.zoom_behavior);
-
-	  ini_doubleclick(params);
-
-	  ini_sidebar(params);
-
-	  params.viz.run_trans = true;
-
-	  d3.selectAll(params.root + ' .d3-tip').style('opacity', 0);
-
-	  setTimeout(enable_sidebar, 2500, params);
-
-	  return params;
-		};
-
-/***/ },
+/* 120 */,
 /* 121 */
 /***/ function(module, exports) {
 
@@ -9827,7 +9761,7 @@ var Clustergrammer =
 
 	var change_network_view = __webpack_require__(11);
 	var disable_sidebar = __webpack_require__(119);
-	var update_with_new_network = __webpack_require__(120);
+	var update_viz_with_network = __webpack_require__(168);
 
 	module.exports = function update_network_with_view(cgm, requested_view) {
 	  var old_params = cgm.params;
@@ -9840,9 +9774,73 @@ var Clustergrammer =
 
 	  var new_network_data = change_network_view(old_params, config_copy.network_data, requested_view);
 
-	  var params = update_with_new_network(config, old_params, new_network_data);
+	  update_viz_with_network(cgm, config, old_params, new_network_data);
+		};
 
-	  // params on the cgm object are updated
+/***/ },
+/* 168 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var make_params = __webpack_require__(10);
+	var define_enter_exit_delays = __webpack_require__(121);
+	var enter_exit_update = __webpack_require__(122);
+	var initialize_resizing = __webpack_require__(80);
+	var make_col_cat = __webpack_require__(100);
+	var make_row_cat = __webpack_require__(103);
+	var make_row_dendro = __webpack_require__(104);
+	var make_col_dendro = __webpack_require__(105);
+	var ini_sidebar = __webpack_require__(134);
+	var enable_sidebar = __webpack_require__(136);
+	var ini_doubleclick = __webpack_require__(82);
+	var update_reorder_buttons = __webpack_require__(137);
+
+	module.exports = function update_viz_with_network(cgm, config, old_params, new_network_data) {
+
+	  // make tmp config to make new params
+	  var tmp_config = jQuery.extend(true, {}, config);
+
+	  tmp_config.network_data = new_network_data;
+	  tmp_config.inst_order = old_params.viz.inst_order;
+	  tmp_config.input_domain = old_params.matrix.opacity_scale.domain()[1];
+
+	  update_reorder_buttons(tmp_config, old_params);
+
+	  tmp_config.ini_expand = false;
+	  tmp_config.ini_view = null;
+	  tmp_config.current_col_cat = old_params.current_col_cat;
+
+	  var params = make_params(tmp_config);
+	  var delays = define_enter_exit_delays(old_params, params);
+
+	  enter_exit_update(params, new_network_data, delays);
+
+	  make_row_cat(params);
+
+	  if (params.viz.show_categories.col) {
+	    make_col_cat(params);
+	  }
+
+	  if (params.viz.show_dendrogram) {
+	    make_row_dendro(params);
+	    make_col_dendro(params);
+	  }
+
+	  initialize_resizing(params);
+
+	  d3.select(params.viz.viz_svg).call(params.zoom_behavior);
+
+	  ini_doubleclick(params);
+
+	  ini_sidebar(params);
+
+	  params.viz.run_trans = true;
+
+	  d3.selectAll(params.root + ' .d3-tip').style('opacity', 0);
+
+	  setTimeout(enable_sidebar, 2500, params);
+
 	  cgm.params = params;
 		};
 
