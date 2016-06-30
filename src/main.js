@@ -5,6 +5,7 @@ var resize_viz = require('./reset_size/resize_viz');
 var play_demo = require('./demo/play_demo');
 var ini_demo = require('./demo/ini_demo');
 var update_viz_with_view = require('./network/update_viz_with_view');
+var filter_viz_using_nodes = require('./network/filter_viz_using_nodes');
 
 /* clustergrammer 1.0
  * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
@@ -62,6 +63,7 @@ function Clustergrammer(args) {
   cgm.resize_viz = external_resize;
   cgm.play_demo = play_demo;
   cgm.ini_demo = ini_demo;
+  cgm.filter_using_nodes = filter_viz_using_nodes;
 
   return cgm;
 }

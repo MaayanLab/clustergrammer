@@ -31,7 +31,7 @@ module.exports = function make_row_dendro_triangles(params, is_change_group=fals
       // up triangle
       var start_x = 0 ;
       var start_y = d.pos_top;
-      
+
       var mid_x = 30;
       var mid_y = d.pos_mid;
 
@@ -39,7 +39,7 @@ module.exports = function make_row_dendro_triangles(params, is_change_group=fals
       var final_y = d.pos_bot;
 
       var output_string = 'M' + start_x + ',' + start_y + ', L' +
-      mid_x + ', ' + mid_y + ', L' 
+      mid_x + ', ' + mid_y + ', L'
       + final_x + ','+ final_y +' Z';
 
       return output_string;
@@ -72,7 +72,7 @@ module.exports = function make_row_dendro_triangles(params, is_change_group=fals
       $(params.root+' .dendro_info .current_names')
         .val(d.all_names.join(', '));
 
-      $(params.root+' .dendro_info').modal('toggle');      
+      $(params.root+' .dendro_info').modal('toggle');
     });
 
   var triangle_opacity;
@@ -85,14 +85,14 @@ module.exports = function make_row_dendro_triangles(params, is_change_group=fals
   if (run_transition){
 
     d3.select(params.root+' .row_dendro_container')
-      .selectAll('path') 
+      .selectAll('path')
       .transition().delay(1000).duration(1000)
       .style('opacity', triangle_opacity);
 
   } else {
 
     d3.select(params.root+' .row_dendro_container')
-      .selectAll('path') 
+      .selectAll('path')
       .style('opacity', triangle_opacity);
 
   }

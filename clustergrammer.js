@@ -54,6 +54,7 @@ var Clustergrammer =
 	var play_demo = __webpack_require__(106);
 	var ini_demo = __webpack_require__(144);
 	var update_viz_with_view = __webpack_require__(167);
+	var filter_viz_using_nodes = __webpack_require__(171);
 
 	/* clustergrammer 1.0
 	 * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
@@ -111,6 +112,7 @@ var Clustergrammer =
 	  cgm.resize_viz = external_resize;
 	  cgm.play_demo = play_demo;
 	  cgm.ini_demo = ini_demo;
+	  cgm.filter_using_nodes = filter_viz_using_nodes;
 
 	  return cgm;
 	}
@@ -9827,6 +9829,25 @@ var Clustergrammer =
 	  new_network_data.all_links = links;
 
 	  return new_network_data;
+		};
+
+/***/ },
+/* 171 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var filter_network_using_new_nodes = __webpack_require__(170);
+	var update_viz_with_network = __webpack_require__(168);
+
+	module.exports = function filter_viz_using_nodes() {
+
+	  var config = this.config;
+	  var new_nodes = this.params.network_data.views[4].nodes;
+
+	  var new_network_data = filter_network_using_new_nodes(config, new_nodes);
+
+	  update_viz_with_network(this, new_network_data);
 		};
 
 /***/ }
