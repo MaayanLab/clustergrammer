@@ -170,6 +170,8 @@ var Clustergrammer =
 
 	  config.sim_mat = check_sim_mat(config);
 
+	  console.log('about to run get_available_filters');
+	  console.log(config.network_data.views);
 	  var filters = get_available_filters(config.network_data.views);
 
 	  var default_states = {};
@@ -9840,12 +9842,14 @@ var Clustergrammer =
 	var filter_network_using_new_nodes = __webpack_require__(170);
 	var update_viz_with_network = __webpack_require__(168);
 
-	module.exports = function filter_viz_using_nodes() {
+	module.exports = function filter_viz_using_nodes(new_nodes) {
 
 	  var config = this.config;
-	  var new_nodes = this.params.network_data.views[4].nodes;
 
 	  var new_network_data = filter_network_using_new_nodes(config, new_nodes);
+
+	  // add views back to filtered network
+	  new_network_data.views = this.config.network_data.views;
 
 	  update_viz_with_network(this, new_network_data);
 		};

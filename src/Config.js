@@ -44,6 +44,8 @@ module.exports = function make_config(args) {
 
   config.sim_mat = check_sim_mat(config);
 
+  console.log('about to run get_available_filters')
+  console.log(config.network_data.views)
   var filters = get_available_filters(config.network_data.views);
 
   var default_states = {};
