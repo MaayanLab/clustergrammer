@@ -57,6 +57,7 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
 
   setTimeout(enable_sidebar, 2500, params);
 
+  // pass the newly calcluated params back to teh cgm object
   cgm.params = params;
 
 };

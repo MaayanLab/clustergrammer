@@ -1,5 +1,4 @@
-// var crossfilter = require('crossfilter');
-var change_network_view = require('../network/change_network_view');
+var make_network_using_view = require('../network/make_network_using_view');
 var set_viz_wrapper_size = require('../set_viz_wrapper_size');
 var calc_clust_width = require('./calc_clust_width');
 var calc_clust_height = require('./calc_clust_height');
@@ -16,7 +15,7 @@ var ini_sidebar_params = require('./ini_sidebar_params');
 var make_requested_view = require('../filters/make_requested_view');
 var get_available_filters = require('./get_available_filters');
 
-/* 
+/*
 Params: calculates the size of all the visualization elements in the
 clustergram.
  */
@@ -37,11 +36,11 @@ module.exports = function make_params(input_config) {
     params.viz.possible_filters = filters.possible_filters;
     params.viz.filter_data = filters.filter_data;
 
-    requested_view = make_requested_view(params, requested_view);  
+    requested_view = make_requested_view(params, requested_view);
 
     // requested_view.enr_score_type = 'combined_score';
 
-    params.network_data = change_network_view(params, params.network_data, requested_view);
+    params.network_data = make_network_using_view(params, params.network_data, requested_view);
 
   }
 
