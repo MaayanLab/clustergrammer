@@ -1,6 +1,8 @@
 var utils = require('../Utils_clust');
 
-module.exports = function filter_using_new_nodes(new_nodes, links) {
+module.exports = function filter_network_using_new_nodes(cgm, new_nodes) {
+
+  var links = cgm.config.network_data.links;
 
   // get new names of rows and cols
   var row_names = utils.pluck(new_nodes.row_nodes, 'name');

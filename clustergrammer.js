@@ -784,52 +784,7 @@ var Clustergrammer =
 
 /***/ },
 /* 11 */,
-/* 12 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var utils = __webpack_require__(2);
-
-	module.exports = function filter_using_new_nodes(new_nodes, links) {
-
-	  // get new names of rows and cols
-	  var row_names = utils.pluck(new_nodes.row_nodes, 'name');
-	  var col_names = utils.pluck(new_nodes.col_nodes, 'name');
-
-	  var new_links = _.filter(links, function (d) {
-	    var inst_row = d.name.split('_')[0];
-	    var inst_col = d.name.split('_')[1];
-
-	    var row_index = _.indexOf(row_names, inst_row);
-	    var col_index = _.indexOf(col_names, inst_col);
-
-	    if (row_index > -1 & col_index > -1) {
-	      // redefine source and target
-	      d.source = row_index;
-	      d.target = col_index;
-	      return d;
-	    }
-	  });
-
-	  // set up new_network_data
-	  var new_network_data = {};
-	  // rows
-	  new_network_data.row_nodes = new_nodes.row_nodes;
-	  new_network_data.row_nodes_names = row_names;
-	  // cols
-	  new_network_data.col_nodes = new_nodes.col_nodes;
-	  new_network_data.col_nodes_names = col_names;
-	  // links
-	  new_network_data.links = new_links;
-
-	  // save all links
-	  new_network_data.all_links = links;
-
-	  return new_network_data;
-		};
-
-/***/ },
+/* 12 */,
 /* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -9789,28 +9744,26 @@ var Clustergrammer =
 
 	'use strict';
 
-	var filter_using_new_nodes = __webpack_require__(12);
+	var filter_network_using_new_nodes = __webpack_require__(170);
 	var get_subset_views = __webpack_require__(13);
 
 	module.exports = function make_network_using_view(cgm, requested_view) {
 
-	  var orig_network_data = cgm.config.network_data;
-	  var params = cgm.params;
-	  var orig_views = orig_network_data.views;
+	  var orig_views = cgm.config.network_data.views;
 
 	  var is_enr = false;
 	  if (_.has(orig_views[0], 'enr_score_type')) {
 	    is_enr = true;
 	  }
 
-	  var sub_views = get_subset_views(params, orig_views, requested_view);
+	  var sub_views = get_subset_views(cgm.params, orig_views, requested_view);
 
 	  //////////////////////////////
 	  // Enrichr specific rules
 	  //////////////////////////////
 	  if (is_enr && sub_views.length == 0) {
 	    requested_view = { 'N_row_sum': 'all', 'N_col_sum': '10' };
-	    sub_views = get_subset_views(params, orig_views, requested_view);
+	    sub_views = get_subset_views(cgm.params, orig_views, requested_view);
 	  }
 
 	  var inst_view = sub_views[0];
@@ -9820,14 +9773,61 @@ var Clustergrammer =
 	  // get new_network_data or default back to old_network_data
 	  if (typeof inst_view !== 'undefined') {
 	    var new_nodes = inst_view.nodes;
-	    var links = orig_network_data.links;
-	    new_network_data = filter_using_new_nodes(new_nodes, links);
+	    new_network_data = filter_network_using_new_nodes(cgm, new_nodes);
 	  } else {
-	    new_network_data = orig_network_data;
+	    new_network_data = cgm.config.network_data;
 	  }
 
 	  // add back all views
 	  new_network_data.views = orig_views;
+
+	  return new_network_data;
+		};
+
+/***/ },
+/* 170 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var utils = __webpack_require__(2);
+
+	module.exports = function filter_network_using_new_nodes(cgm, new_nodes) {
+
+	  var links = cgm.config.network_data.links;
+
+	  // get new names of rows and cols
+	  var row_names = utils.pluck(new_nodes.row_nodes, 'name');
+	  var col_names = utils.pluck(new_nodes.col_nodes, 'name');
+
+	  var new_links = _.filter(links, function (d) {
+	    var inst_row = d.name.split('_')[0];
+	    var inst_col = d.name.split('_')[1];
+
+	    var row_index = _.indexOf(row_names, inst_row);
+	    var col_index = _.indexOf(col_names, inst_col);
+
+	    if (row_index > -1 & col_index > -1) {
+	      // redefine source and target
+	      d.source = row_index;
+	      d.target = col_index;
+	      return d;
+	    }
+	  });
+
+	  // set up new_network_data
+	  var new_network_data = {};
+	  // rows
+	  new_network_data.row_nodes = new_nodes.row_nodes;
+	  new_network_data.row_nodes_names = row_names;
+	  // cols
+	  new_network_data.col_nodes = new_nodes.col_nodes;
+	  new_network_data.col_nodes_names = col_names;
+	  // links
+	  new_network_data.links = new_links;
+
+	  // save all links
+	  new_network_data.all_links = links;
 
 	  return new_network_data;
 		};
