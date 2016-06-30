@@ -1,6 +1,6 @@
 var utils = require('../Utils_clust');
 
-module.exports = function(params, new_nodes, links, views) {
+module.exports = function filter_using_new_nodes(params, new_nodes, links) {
 
   // get new names of rows and cols
   var row_names = utils.pluck(new_nodes.row_nodes, 'name');
@@ -34,9 +34,6 @@ module.exports = function(params, new_nodes, links, views) {
 
   // save all links
   new_network_data.all_links = links;
-
-  // pass on all views
-  new_network_data.views = views;
 
   return new_network_data;
 };

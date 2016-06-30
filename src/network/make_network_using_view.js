@@ -1,7 +1,8 @@
 var filter_using_new_nodes = require('./filter_using_new_nodes');
 var get_subset_views = require('../filters/get_subset_views');
 
-module.exports = function make_network_using_view(params, orig_network_data, requested_view) {
+module.exports = function make_network_using_view(params, orig_network_data,
+  requested_view) {
 
   var views = orig_network_data.views;
   var inst_view;
@@ -11,14 +12,11 @@ module.exports = function make_network_using_view(params, orig_network_data, req
     is_enr = true;
   }
 
-  // ////////////////////////////////////////
-  // // tmp N_col_sum measure
-  // ////////////////////////////////////////
-  // requested_view.N_col_sum = 30;
-
   views = get_subset_views(params, views, requested_view);
 
+  //////////////////////////////
   // Enrichr specific rules
+  //////////////////////////////
   if (is_enr && views.length == 0){
 
     requested_view = {'N_row_sum':'all', 'N_col_sum':'10'};
@@ -37,12 +35,12 @@ module.exports = function make_network_using_view(params, orig_network_data, req
   if (typeof inst_view !== 'undefined'){
     var new_nodes = inst_view.nodes;
     var links = orig_network_data.links;
-    new_network_data = filter_using_new_nodes(params, new_nodes, links, views);
+    new_network_data = filter_using_new_nodes(params, new_nodes, links);
   } else {
     new_network_data = orig_network_data;
   }
 
-  // pass on views
+  // add back all views
   new_network_data.views = orig_network_data.views;
 
   return new_network_data;
