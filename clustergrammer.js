@@ -9764,17 +9764,15 @@ var Clustergrammer =
 	var update_viz_with_network = __webpack_require__(168);
 
 	module.exports = function update_network_with_view(cgm, requested_view) {
-	  var old_params = cgm.params;
-	  var config = cgm.config;
 
-	  disable_sidebar(old_params);
+	  disable_sidebar(cgm.params);
+
+	  var config_copy = jQuery.extend(true, {}, cgm.config);
 
 	  // make new_network_data by filtering the original network data
-	  var config_copy = jQuery.extend(true, {}, config);
+	  var new_network_data = change_network_view(cgm.params, config_copy.network_data, requested_view);
 
-	  var new_network_data = change_network_view(old_params, config_copy.network_data, requested_view);
-
-	  update_viz_with_network(cgm, config, old_params, new_network_data);
+	  update_viz_with_network(cgm, new_network_data);
 		};
 
 /***/ },
@@ -9796,23 +9794,23 @@ var Clustergrammer =
 	var ini_doubleclick = __webpack_require__(82);
 	var update_reorder_buttons = __webpack_require__(137);
 
-	module.exports = function update_viz_with_network(cgm, config, old_params, new_network_data) {
+	module.exports = function update_viz_with_network(cgm, new_network_data) {
 
 	  // make tmp config to make new params
-	  var tmp_config = jQuery.extend(true, {}, config);
+	  var tmp_config = jQuery.extend(true, {}, cgm.config);
 
 	  tmp_config.network_data = new_network_data;
-	  tmp_config.inst_order = old_params.viz.inst_order;
-	  tmp_config.input_domain = old_params.matrix.opacity_scale.domain()[1];
+	  tmp_config.inst_order = cgm.params.viz.inst_order;
+	  tmp_config.input_domain = cgm.params.matrix.opacity_scale.domain()[1];
 
-	  update_reorder_buttons(tmp_config, old_params);
+	  update_reorder_buttons(tmp_config, cgm.params);
 
 	  tmp_config.ini_expand = false;
 	  tmp_config.ini_view = null;
-	  tmp_config.current_col_cat = old_params.current_col_cat;
+	  tmp_config.current_col_cat = cgm.params.current_col_cat;
 
 	  var params = make_params(tmp_config);
-	  var delays = define_enter_exit_delays(old_params, params);
+	  var delays = define_enter_exit_delays(cgm.params, params);
 
 	  enter_exit_update(params, new_network_data, delays);
 
