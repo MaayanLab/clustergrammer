@@ -7180,6 +7180,8 @@ var Clustergrammer =
 	  zoom_info.trans_y = 0;
 
 	  show_visible_area(params, zoom_info);
+	  // quick fix for column filtering
+	  setTimeout(show_visible_area, 2200, params, zoom_info);
 
 	  var row_nodes_names = params.network_data.row_nodes_names;
 
@@ -8031,6 +8033,7 @@ var Clustergrammer =
 	'use strict';
 
 	module.exports = function enable_sidebar(params) {
+
 	  $(params.root + ' .slider').slider('enable');
 	  d3.selectAll(params.root + ' .btn').attr('disabled', null);
 

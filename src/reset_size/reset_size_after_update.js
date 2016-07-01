@@ -19,7 +19,7 @@ var show_visible_area = require('../zoom/show_visible_area');
 
 module.exports = function(params, row_nodes, col_nodes, links, duration, delays) {
 
-  // reset visible area 
+  // reset visible area
   var zoom_info = {};
   zoom_info.zoom_x = 1;
   zoom_info.zoom_y = 1;
@@ -27,6 +27,8 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
   zoom_info.trans_y = 0;
 
   show_visible_area(params, zoom_info);
+  // quick fix for column filtering
+  setTimeout(show_visible_area, 2200, params, zoom_info);
 
   var row_nodes_names = params.network_data.row_nodes_names;
 
