@@ -12,8 +12,8 @@ var trim_text = require('./zoom/trim_text');
 var make_row_dendro = require('./dendrogram/make_row_dendro');
 var make_col_dendro = require('./dendrogram/make_col_dendro');
 
-module.exports = function make_viz(params) {
-  
+module.exports = function make_viz(cgm, params) {
+
   d3.select(params.viz.viz_wrapper+' svg')
     .remove();
 
@@ -46,7 +46,7 @@ module.exports = function make_viz(params) {
   make_cols(params, delay_text);
 
   _.each(['row','col'], function(inst_rc){
-    
+
     var inst_fs = Number(d3.select('.'+inst_rc+'_label_group')
       .select('text')
       .style('font-size').replace('px',''));
@@ -54,20 +54,20 @@ module.exports = function make_viz(params) {
     var min_trim_fs = 8;
     if (inst_fs > min_trim_fs){
       d3.selectAll(params.root+' .'+inst_rc+'_label_group' )
-        .each(function() { 
-          trim_text(params, this, inst_rc); 
+        .each(function() {
+          trim_text(params, this, inst_rc);
         });
     }
 
   });
-  
+
 
   // make category colorbars
   make_row_cat(params);
   if (params.viz.show_categories.col) {
     make_col_cat(params);
   }
-    
+
   spillover(params);
 
   if (params.labels.super_labels) {

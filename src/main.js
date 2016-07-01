@@ -36,7 +36,7 @@ function Clustergrammer(args) {
   }
 
   // make visualization using parameters
-  make_viz(params);
+  make_viz(cgm, params);
 
   function external_resize() {
 

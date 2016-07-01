@@ -5,6 +5,8 @@ var dendro_mouseout = require('./dendro_mouseout');
 
 module.exports = function make_row_dendro_triangles(params, is_change_group=false){
 
+  // var params = cgm.params;
+
   var dendro_info = calc_row_dendro_triangles(params);
 
   var run_transition;
@@ -69,10 +71,15 @@ module.exports = function make_row_dendro_triangles(params, is_change_group=fals
         .select('.modal-title')
         .html('Rows in Group');
 
-      $(params.root+' .dendro_info .current_names')
-        .val(d.all_names.join(', '));
+      // $(params.root+' .dendro_info .current_names')
+      //   .val(d.all_names.join(', '));
 
-      $(params.root+' .dendro_info').modal('toggle');
+      // $(params.root+' .dendro_info').modal('toggle');
+
+      console.log(d.all_names)
+
+
+
     });
 
   var triangle_opacity;

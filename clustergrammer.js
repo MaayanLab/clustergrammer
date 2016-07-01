@@ -85,7 +85,7 @@ var Clustergrammer =
 	  }
 
 	  // make visualization using parameters
-	  make_viz(params);
+	  make_viz(cgm, params);
 
 	  function external_resize() {
 
@@ -2264,7 +2264,7 @@ var Clustergrammer =
 	var make_row_dendro = __webpack_require__(104);
 	var make_col_dendro = __webpack_require__(105);
 
-	module.exports = function make_viz(params) {
+	module.exports = function make_viz(cgm, params) {
 
 	  d3.select(params.viz.viz_wrapper + ' svg').remove();
 
@@ -3596,6 +3596,8 @@ var Clustergrammer =
 	  var is_change_group = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
 
 
+	  // var params = cgm.params;
+
 	  var dendro_info = calc_row_dendro_triangles(params);
 
 	  var run_transition;
@@ -3645,9 +3647,12 @@ var Clustergrammer =
 	  }).on('click', function (d) {
 	    d3.select(params.root + ' .dendro_info').select('.modal-title').html('Rows in Group');
 
-	    $(params.root + ' .dendro_info .current_names').val(d.all_names.join(', '));
+	    // $(params.root+' .dendro_info .current_names')
+	    //   .val(d.all_names.join(', '));
 
-	    $(params.root + ' .dendro_info').modal('toggle');
+	    // $(params.root+' .dendro_info').modal('toggle');
+
+	    console.log(d.all_names);
 	  });
 
 	  var triangle_opacity;
@@ -9887,6 +9892,8 @@ var Clustergrammer =
 	  // new_nodes.col_nodes = params.network_data.col_nodes;
 
 	  var new_network_data = filter_network_using_new_nodes(this.config, new_nodes);
+
+	  // takes entire cgm object
 	  update_viz_with_network(this, new_network_data);
 		};
 

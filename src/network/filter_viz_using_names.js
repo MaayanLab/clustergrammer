@@ -32,6 +32,8 @@ module.exports = function filter_viz_using_names(names){
   // new_nodes.col_nodes = params.network_data.col_nodes;
 
   var new_network_data = filter_network_using_new_nodes(this.config, new_nodes);
+
+  // takes entire cgm object
   update_viz_with_network(this, new_network_data);
 
 };
