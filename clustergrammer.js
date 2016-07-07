@@ -2394,7 +2394,7 @@ var Clustergrammer =
 	    make_col_cat(params);
 	  }
 
-	  spillover(params);
+	  spillover(cgm);
 
 	  if (params.labels.super_labels) {
 	    generate_super_labels(params);
@@ -3645,16 +3645,18 @@ var Clustergrammer =
 	var make_row_dendro_triangles = __webpack_require__(59);
 	var make_col_dendro_triangles = __webpack_require__(104);
 
-	module.exports = function toggle_dendro_view(params, row_col) {
+	module.exports = function toggle_dendro_view(cgm, row_col) {
 	  var wait_time = arguments.length <= 2 || arguments[2] === undefined ? 1500 : arguments[2];
 
+
+	  var params = cgm.params;
 
 	  // row and col are reversed
 	  if (row_col === 'row') {
 	    if (params.viz.inst_order.col === 'clust') {
 	      // the last true tells the viz that I'm chaning group size and not to
 	      // delay the change in dendro
-	      setTimeout(make_row_dendro_triangles, wait_time, params, true);
+	      setTimeout(make_row_dendro_triangles, wait_time, params, true, cgm);
 	    }
 	  }
 
@@ -6005,7 +6007,6 @@ var Clustergrammer =
 
 	'use strict';
 
-	// var crossfilter = require('crossfilter');
 	var utils = __webpack_require__(2);
 	var zoomed = __webpack_require__(28);
 	var ini_doubleclick = __webpack_require__(97);
@@ -7197,7 +7198,7 @@ var Clustergrammer =
 	    });
 	  });
 
-	  ini_cat_reorder(params);
+	  ini_cat_reorder(cgm);
 
 	  $(params.root + ' .opacity_slider').slider({
 	    // value:0.5,
@@ -7245,7 +7246,7 @@ var Clustergrammer =
 	  }
 
 	  var is_change_group = true;
-	  make_row_dendro_triangles(params, is_change_group);
+	  make_row_dendro_triangles(params, is_change_group, cgm);
 	  make_col_dendro_triangles(params, is_change_group);
 		};
 
@@ -7310,7 +7311,9 @@ var Clustergrammer =
 	var toggle_dendro_view = __webpack_require__(58);
 	var show_visible_area = __webpack_require__(36);
 
-	module.exports = function (params, inst_order, tmp_row_col) {
+	module.exports = function (cgm, inst_order, tmp_row_col) {
+
+	  var params = cgm.params;
 
 	  // row/col names are swapped, will improve later
 	  var row_col;
@@ -7474,8 +7477,10 @@ var Clustergrammer =
 
 	var all_reorder = __webpack_require__(117);
 
-	module.exports = function ini_cat_reorder(params) {
+	module.exports = function ini_cat_reorder(cgm) {
 	  /* eslint-disable */
+
+	  var params = cgm.params;
 
 	  _.each(['row', 'col'], function (inst_rc) {
 
@@ -7635,7 +7640,9 @@ var Clustergrammer =
 	var get_cat_title = __webpack_require__(109);
 	var ini_cat_reorder = __webpack_require__(118);
 
-	module.exports = function Spillover(params) {
+	module.exports = function Spillover(cgm) {
+
+	  var params = cgm.params;
 
 	  var viz = params.viz;
 
@@ -7739,7 +7746,7 @@ var Clustergrammer =
 	    return 'translate(0,' + inst_offset + ')';
 	  });
 
-	  ini_cat_reorder(params);
+	  ini_cat_reorder(cgm);
 		};
 
 /***/ },

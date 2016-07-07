@@ -70,7 +70,7 @@ module.exports = function make_viz(cgm) {
     make_col_cat(params);
   }
 
-  spillover(params);
+  spillover(cgm);
 
   if (params.labels.super_labels) {
     generate_super_labels(params);

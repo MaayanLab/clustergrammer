@@ -82,7 +82,7 @@ module.exports = function ini_sidebar(cgm){
 
   });
 
-  ini_cat_reorder(params);
+  ini_cat_reorder(cgm);
 
   $( params.root+' .opacity_slider' ).slider({
     // value:0.5,

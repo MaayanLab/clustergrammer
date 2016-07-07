@@ -2,7 +2,9 @@ var utils = require('../Utils_clust');
 var toggle_dendro_view = require('../dendrogram/toggle_dendro_view');
 var show_visible_area = require('../zoom/show_visible_area');
 
-module.exports = function(params, inst_order, tmp_row_col) {
+module.exports = function(cgm, inst_order, tmp_row_col) {
+
+  var params = cgm.params;
 
   // row/col names are swapped, will improve later
   var row_col;

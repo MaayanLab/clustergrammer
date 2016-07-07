@@ -1,7 +1,9 @@
 var get_cat_title = require('./categories/get_cat_title');
 var ini_cat_reorder = require('./reorder/ini_cat_reorder');
 
-module.exports = function Spillover(params) {
+module.exports = function Spillover(cgm) {
+
+  var params = cgm.params;
 
   var viz = params.viz;
 
@@ -35,9 +37,9 @@ module.exports = function Spillover(params) {
     .attr('class', 'top_left_white');
 
 
-  var tmp_left = viz.clust.margin.left + 
+  var tmp_left = viz.clust.margin.left +
     viz.clust.dim.width +
-    viz.uni_margin + 
+    viz.uni_margin +
     viz.dendro_room.row;
   var tmp_top = viz.norm_labels.margin.top + viz.norm_labels.width.col;
 
@@ -53,7 +55,7 @@ module.exports = function Spillover(params) {
     .attr('class', 'white_bars')
     .attr('class','right_spillover');
 
-  // hide spillover from top of row dendrogram 
+  // hide spillover from top of row dendrogram
   var x_offset = viz.clust.margin.left + viz.clust.dim.width;
   var y_offset = tmp_top;
   var tmp_width = viz.dendro_room.row + viz.uni_margin;
@@ -67,9 +69,9 @@ module.exports = function Spillover(params) {
       return 'translate('+x_offset+','+y_offset+')';
     })
     .classed('white_bars',true)
-    .classed('dendro_row_spillover',true); 
+    .classed('dendro_row_spillover',true);
 
-  // hide spillover left top of col dendrogram 
+  // hide spillover left top of col dendrogram
   x_offset = 0;
   y_offset = viz.clust.margin.top + viz.clust.dim.height;
   tmp_width = viz.clust.margin.left;
@@ -83,7 +85,7 @@ module.exports = function Spillover(params) {
       return 'translate('+x_offset+','+y_offset+')';
     })
     .classed('white_bars',true)
-    .classed('dendro_col_spillover',true); 
+    .classed('dendro_col_spillover',true);
 
   x_offset = viz.clust.margin.left + viz.clust.dim.width;
   y_offset = viz.clust.margin.top + viz.clust.dim.height;
@@ -98,18 +100,18 @@ module.exports = function Spillover(params) {
       return 'translate('+x_offset+','+y_offset+')';
     })
     .classed('white_bars',true)
-    .classed('dendro_corner_spillover',true); 
+    .classed('dendro_corner_spillover',true);
 
   x_offset = viz.clust.margin.left + viz.clust.dim.width + viz.uni_margin;
-  y_offset = viz.norm_labels.margin.top + viz.norm_labels.width.col 
+  y_offset = viz.norm_labels.margin.top + viz.norm_labels.width.col
     + 2.5*viz.uni_margin;
   var cat_text_size = 1.15*viz.cat_room.symbol_width;
   var cat_super_opacity = 0.65;
   var extra_x_room = 2.75;
   var extra_y_room = 1.25;
 
-  // col category super labels 
-  if (viz.show_categories.col){  
+  // col category super labels
+  if (viz.show_categories.col){
     d3.select(viz.viz_svg)
       .selectAll()
       .data(viz.all_cats.col)
@@ -121,7 +123,7 @@ module.exports = function Spillover(params) {
       .style('cursor','default')
       .attr('transform', function(d){
         var inst_cat = parseInt( d.split('-')[1], 10);
-        var inst_y = y_offset + extra_y_room * viz.cat_room.symbol_width 
+        var inst_y = y_offset + extra_y_room * viz.cat_room.symbol_width
           * inst_cat;
         return 'translate('+x_offset+','+inst_y+')';
       })
@@ -130,13 +132,13 @@ module.exports = function Spillover(params) {
       });
     }
 
-  // row category super labels 
+  // row category super labels
   if (viz.show_categories.row){
     var row_cat_label_container = d3.select(viz.viz_svg)
       .append('g')
       .classed('row_cat_label_container', true)
-      .attr('transform', function(){ 
-        x_offset = viz.norm_labels.margin.left + viz.norm_labels.width.row 
+      .attr('transform', function(){
+        x_offset = viz.norm_labels.margin.left + viz.norm_labels.width.row
           + viz.cat_room.symbol_width + extra_x_room * viz.uni_margin;
         y_offset = viz.clust.margin.top - viz.uni_margin;
         return 'translate('+x_offset+','+y_offset+') rotate(-90)';
@@ -154,7 +156,7 @@ module.exports = function Spillover(params) {
         .style('opacity', cat_super_opacity)
         .style('cursor','default')
         .attr('transform', function(d){
-          var inst_y = extra_y_room*viz.cat_room.symbol_width 
+          var inst_y = extra_y_room*viz.cat_room.symbol_width
             * parseInt( d.split('-')[1], 10 );
           return 'translate(0,'+inst_y+')';
         })
@@ -162,7 +164,7 @@ module.exports = function Spillover(params) {
           return get_cat_title(viz, d, 'row');
         });
 
-    }  
+    }
   }
 
 
@@ -187,7 +189,7 @@ module.exports = function Spillover(params) {
 
 
 
-  ini_cat_reorder(params);
+  ini_cat_reorder(cgm);
 
 
 
