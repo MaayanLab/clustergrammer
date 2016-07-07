@@ -24,7 +24,7 @@ module.exports = function(cgm, inst_order, tmp_row_col) {
   }
 
   if (params.viz.show_dendrogram){
-    toggle_dendro_view(params, tmp_row_col);
+    toggle_dendro_view(cgm, tmp_row_col);
   }
 
   var row_nodes_obj = params.network_data.row_nodes;

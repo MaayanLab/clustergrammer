@@ -72,10 +72,10 @@ module.exports = function ini_sidebar(cgm){
           .classed('active',true);
 
         if (inst_rc != 'both'){
-          all_reorder( params, order_id, inst_rc);
+          all_reorder( cgm, order_id, inst_rc);
         } else{
-          all_reorder( params, order_id, 'row');
-          all_reorder( params, order_id, 'col');
+          all_reorder( cgm, order_id, 'row');
+          all_reorder( cgm, order_id, 'col');
         }
 
       });

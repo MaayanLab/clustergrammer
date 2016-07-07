@@ -7190,10 +7190,10 @@ var Clustergrammer =
 	      d3.select(this).classed('active', true);
 
 	      if (inst_rc != 'both') {
-	        all_reorder(params, order_id, inst_rc);
+	        all_reorder(cgm, order_id, inst_rc);
 	      } else {
-	        all_reorder(params, order_id, 'row');
-	        all_reorder(params, order_id, 'col');
+	        all_reorder(cgm, order_id, 'row');
+	        all_reorder(cgm, order_id, 'col');
 	      }
 	    });
 	  });
@@ -7333,7 +7333,7 @@ var Clustergrammer =
 	  }
 
 	  if (params.viz.show_dendrogram) {
-	    toggle_dendro_view(params, tmp_row_col);
+	    toggle_dendro_view(cgm, tmp_row_col);
 	  }
 
 	  var row_nodes_obj = params.network_data.row_nodes;
