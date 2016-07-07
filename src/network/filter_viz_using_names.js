@@ -1,12 +1,19 @@
 var filter_network_using_new_nodes = require('./filter_network_using_new_nodes');
 var update_viz_with_network = require('../update/update_viz_with_network');
 
-module.exports = function filter_viz_using_names(names){
+module.exports = function filter_viz_using_names(names, external_cgm = false){
 
   // names is an object with row and column names that will be used to filter
   // the matrix
 
-  var params = this.params;
+  var cgm;
+  if (external_cgm === false){
+    cgm = this;
+  } else {
+    cgm = external_cgm;
+  }
+
+  var params = cgm.params;
   var new_nodes = {};
   var found_nodes;
 
@@ -31,9 +38,9 @@ module.exports = function filter_viz_using_names(names){
 
   // new_nodes.col_nodes = params.network_data.col_nodes;
 
-  var new_network_data = filter_network_using_new_nodes(this.config, new_nodes);
+  var new_network_data = filter_network_using_new_nodes(cgm.config, new_nodes);
 
   // takes entire cgm object
-  update_viz_with_network(this, new_network_data);
+  update_viz_with_network(cgm, new_network_data);
 
 };

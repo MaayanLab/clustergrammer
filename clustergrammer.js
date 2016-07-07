@@ -3654,10 +3654,11 @@ var Clustergrammer =
 	    d3.select(params.root + ' .dendro_info').select('.modal-title').html('Rows in Group');
 
 	    $(params.root + ' .dendro_info .current_names').val(d.all_names.join(', '));
-
 	    $(params.root + ' .dendro_info').modal('toggle');
-	  });
 
+	    // console.log(d.all_names)
+	  });
+	
 	  var triangle_opacity;
 	  if (params.viz.inst_order.col === 'clust') {
 	    triangle_opacity = params.viz.dendro_opacity;
@@ -9863,11 +9864,20 @@ var Clustergrammer =
 	var update_viz_with_network = __webpack_require__(168);
 
 	module.exports = function filter_viz_using_names(names) {
+	  var external_cgm = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+
 
 	  // names is an object with row and column names that will be used to filter
 	  // the matrix
 
-	  var params = this.params;
+	  var cgm;
+	  if (external_cgm === false) {
+	    cgm = this;
+	  } else {
+	    cgm = external_cgm;
+	  }
+
+	  var params = cgm.params;
 	  var new_nodes = {};
 	  var found_nodes;
 
@@ -9890,10 +9900,10 @@ var Clustergrammer =
 
 	  // new_nodes.col_nodes = params.network_data.col_nodes;
 
-	  var new_network_data = filter_network_using_new_nodes(this.config, new_nodes);
+	  var new_network_data = filter_network_using_new_nodes(cgm.config, new_nodes);
 
 	  // takes entire cgm object
-	  update_viz_with_network(this, new_network_data);
+	  update_viz_with_network(cgm, new_network_data);
 		};
 
 /***/ }

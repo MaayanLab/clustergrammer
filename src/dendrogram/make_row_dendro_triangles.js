@@ -79,8 +79,9 @@ module.exports = function make_row_dendro_triangles(params,
 
       $(params.root+' .dendro_info .current_names')
         .val(d.all_names.join(', '));
-
       $(params.root+' .dendro_info').modal('toggle');
+
+      // console.log(d.all_names)
 
     });
 
