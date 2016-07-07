@@ -4,7 +4,10 @@ var row_reorder = require('../reorder/row_reorder');
 var col_reorder = require('../reorder/col_reorder');
 var make_row_tooltips = require('./make_row_tooltips');
 
-module.exports = function(params, text_delay) {
+module.exports = function(cgm, text_delay) {
+
+  var params = cgm.params;
+
   var row_nodes = params.network_data.row_nodes;
 
   var row_nodes_names = params.network_data.row_nodes_names;
@@ -69,16 +72,16 @@ module.exports = function(params, text_delay) {
       var row_name = this[data_attr].name;
 
       if (params.sim_mat){
-        row_reorder(params, this, row_name);
+        row_reorder(cgm, this, row_name);
 
         var col_selection = d3.selectAll(params.root+' .col_label_text')
           .filter(function(d){
             return d.name == row_name;}
             )[0][0];
 
-        col_reorder(params, col_selection, row_name);
+        col_reorder(cgm, col_selection, row_name);
       } else {
-        row_reorder(params, this, row_name);
+        row_reorder(cgm, this, row_name);
       }
       if (params.tile_click_hlight){
         add_row_click_hlight(this,d.ini);

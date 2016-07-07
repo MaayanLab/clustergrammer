@@ -4,8 +4,9 @@ var col_reorder = require('../reorder/col_reorder');
 var row_reorder = require('../reorder/row_reorder');
 var make_col_tooltips = require('./make_col_tooltips');
 
-module.exports = function(params, text_delay) {
+module.exports = function(cgm, text_delay) {
 
+  var params = cgm.params;
   var col_container;
 
   var col_nodes = params.network_data.col_nodes;
@@ -133,7 +134,7 @@ module.exports = function(params, text_delay) {
 
   make_col_tooltips(params);
 
-  // this is interferring with text tooltip 
+  // this is interferring with text tooltip
   //////////////////////////////////////////
   // // append rectangle behind text
   // col_label_group
@@ -188,17 +189,17 @@ module.exports = function(params, text_delay) {
       var col_name = this[data_attr].name;
 
       if (params.sim_mat){
-        col_reorder(params, this, col_name);
-        
+        col_reorder(cgm, this, col_name);
+
         var row_selection = d3.selectAll(params.root+' .row_label_group')
           .filter(function(d){
             return d.name == col_name;}
             )[0][0];
 
-        row_reorder(params, row_selection, col_name);
+        row_reorder(cgm, row_selection, col_name);
 
       } else {
-        col_reorder(params, this, col_name);
+        col_reorder(cgm, this, col_name);
       }
 
       if (params.tile_click_hlight){

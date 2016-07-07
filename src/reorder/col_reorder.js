@@ -3,10 +3,12 @@ var reposition_tile_highlight = require('./reposition_tile_highlight');
 var toggle_dendro_view = require('../dendrogram/toggle_dendro_view');
 var show_visible_area = require('../zoom/show_visible_area');
 
-module.exports = function col_reorder(params, col_selection, inst_term) {
+module.exports = function col_reorder(cgm, col_selection, inst_term) {
+
+  var params = cgm.params;
 
   params.viz.inst_order.col = 'custom';
-  toggle_dendro_view(params, 'col');
+  toggle_dendro_view(cgm, 'col');
 
   d3.selectAll(params.root+' .row_dendro_group').style('opacity',0);
 

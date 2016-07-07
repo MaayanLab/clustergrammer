@@ -9,9 +9,11 @@ var resize_containers = require('../reset_size/resize_containers');
 var label_constrain_and_trim = require('../labels/label_constrain_and_trim');
 var d3_tip_custom = require('../tooltip/d3_tip_custom');
 
-module.exports = function(params, network_data, delays){
+module.exports = function(cgm, network_data, delays){
 
-  // remove old tooltips 
+  var params = cgm.params;
+
+  // remove old tooltips
   d3.selectAll(params.root+' .d3-tip')
     .style('opacity',0);
 
@@ -27,7 +29,7 @@ module.exports = function(params, network_data, delays){
       if (params.keep_orig){
         var orig_value = String(d.value_orig.toFixed(3));
         tooltip_string = '<p>' + d.row_name + ' and ' + d.col_name + '</p>' +
-        '<p> normalized value: ' + inst_value +'</p>' + 
+        '<p> normalized value: ' + inst_value +'</p>' +
         '<div> original value: ' + orig_value +'</div>'  ;
       } else {
         tooltip_string = '<p>' + d.row_name + ' and ' + d.col_name + '</p>' +
@@ -40,7 +42,7 @@ module.exports = function(params, network_data, delays){
   d3.select(params.root+' .clust_group')
     .call(tip);
 
-  // TODO check if necessary 
+  // TODO check if necessary
   resize_containers(params);
 
   // get row and col names
@@ -86,7 +88,7 @@ module.exports = function(params, network_data, delays){
   d3.select(params.root+' .clust_group')
     .selectAll('.row')
     .each(function(d) {
-      // TODO add tip back to arguments 
+      // TODO add tip back to arguments
       var inst_selection = this;
       eeu_existing_row(params, d, delays, duration, inst_selection, tip);
     });
@@ -106,9 +108,9 @@ module.exports = function(params, network_data, delays){
   //////////////////////////
   enter_row_groups(params, delays, duration, tip);
 
-  // update existing rows 
-  make_rows(params, duration);
-  make_cols(params, duration);
+  // update existing rows
+  make_rows(cgm, duration);
+  make_cols(cgm, duration);
 
   enter_grid_lines(params, delays, duration);
 

@@ -38,14 +38,14 @@ module.exports = function make_viz(cgm) {
   generate_matrix(params, svg_group);
 
   var delay_text = 0;
-  make_rows(params, delay_text);
+  make_rows(cgm, delay_text);
 
   if (params.viz.show_dendrogram){
     make_row_dendro(params, cgm);
     make_col_dendro(params);
   }
 
-  make_cols(params, delay_text);
+  make_cols(cgm, delay_text);
 
   _.each(['row','col'], function(inst_rc){
 

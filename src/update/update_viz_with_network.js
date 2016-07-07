@@ -26,38 +26,39 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
   tmp_config.ini_view = null;
   tmp_config.current_col_cat = cgm.params.current_col_cat;
 
-  var params = make_params(tmp_config);
-  var delays = define_enter_exit_delays(cgm.params, params);
+  var new_params = make_params(tmp_config);
+  var delays = define_enter_exit_delays(cgm.params, new_params);
 
-  enter_exit_update(params, new_network_data, delays);
+  // pass the newly calcluated params back to teh cgm object
+  cgm.params = new_params;
 
-  make_row_cat(params);
+  enter_exit_update(cgm, new_network_data, delays);
 
-  if (params.viz.show_categories.col){
-    make_col_cat(params);
+  make_row_cat(cgm.params);
+
+  if (cgm.params.viz.show_categories.col){
+    make_col_cat(cgm.params);
   }
 
-  if (params.viz.show_dendrogram){
-    make_row_dendro(params, cgm);
-    make_col_dendro(params);
+  if (cgm.params.viz.show_dendrogram){
+    make_row_dendro(cgm.params, cgm);
+    make_col_dendro(cgm.params);
   }
 
-  initialize_resizing(params);
+  initialize_resizing(cgm.params);
 
-  d3.select(params.viz.viz_svg).call(params.zoom_behavior);
+  d3.select(cgm.params.viz.viz_svg).call(cgm.params.zoom_behavior);
 
-  ini_doubleclick(params);
+  ini_doubleclick(cgm.params);
 
   ini_sidebar(cgm);
 
-  params.viz.run_trans = true;
+  cgm.params.viz.run_trans = true;
 
-  d3.selectAll(params.root+' .d3-tip')
+  d3.selectAll(cgm.params.root+' .d3-tip')
     .style('opacity',0);
 
-  setTimeout(enable_sidebar, 2500, params);
+  setTimeout(enable_sidebar, 2500, cgm.params);
 
-  // pass the newly calcluated params back to teh cgm object
-  cgm.params = params;
 
 };
