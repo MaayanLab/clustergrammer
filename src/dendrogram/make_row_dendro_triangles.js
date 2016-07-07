@@ -71,14 +71,10 @@ module.exports = function make_row_dendro_triangles(params, is_change_group=fals
         .select('.modal-title')
         .html('Rows in Group');
 
-      // $(params.root+' .dendro_info .current_names')
-      //   .val(d.all_names.join(', '));
+      $(params.root+' .dendro_info .current_names')
+        .val(d.all_names.join(', '));
 
-      // $(params.root+' .dendro_info').modal('toggle');
-
-      console.log(d.all_names)
-
-
+      $(params.root+' .dendro_info').modal('toggle');
 
     });
 

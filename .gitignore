@@ -55,6 +55,9 @@ sftp-config.json
 #TernJS
 .tern-port
 
+# webpack
+*.js.map
+
 # how to retroactively use
 ############################
 # git rm -r --cached .
