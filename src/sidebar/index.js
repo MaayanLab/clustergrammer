@@ -67,14 +67,6 @@ module.exports = function sidebar(cgm) {
     make_icons(params, sidebar);
   }
 
-  // // tmp sim mat button
-  // sidebar
-  //   .append('text')
-  //   .text('here')
-  //   .on('click',function(){
-  //     console.log('change to sim_mat')
-  //   })
-
   set_up_reorder(params, sidebar);
 
   set_up_search(sidebar, params);
@@ -101,9 +93,6 @@ module.exports = function sidebar(cgm) {
 
   ini_sidebar(params);
 
-  // disable for now
-  // make_cat_keys(params);
-
   // when initializing the visualization using a view
   if (params.ini_view !== null) {
 
@@ -112,7 +101,5 @@ module.exports = function sidebar(cgm) {
     params.ini_view = null;
 
   }
-
-  return params;
 
 };

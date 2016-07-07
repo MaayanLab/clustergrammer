@@ -72,24 +72,23 @@ var Clustergrammer =
 
 	  // consume and validate user arguments, produce configuration object
 	  var config = make_config(args);
-	  // make visualization parameters using configuration object
-	  var params = make_params(config);
 
 	  var cgm = {};
-	  cgm.params = params;
+	  // make visualization parameters using configuration object
+	  cgm.params = make_params(config);
 	  cgm.config = config;
 
-	  if (params.use_sidebar) {
+	  if (cgm.params.use_sidebar) {
 	    var make_sidebar = __webpack_require__(147);
-	    params = make_sidebar(cgm);
+	    make_sidebar(cgm);
 	  }
 
 	  // make visualization using parameters
-	  make_viz(cgm, params);
+	  make_viz(cgm);
 
 	  function external_resize() {
 
-	    d3.select(params.viz.viz_svg).style('opacity', 0.5);
+	    d3.select(cgm.params.viz.viz_svg).style('opacity', 0.5);
 
 	    var wait_time = 500;
 	    if (this.params.viz.run_trans === true) {
@@ -100,7 +99,6 @@ var Clustergrammer =
 	  }
 
 	  function resize_fun(cgm) {
-	    // use this params, because this will have the latest params
 	    resize_viz(cgm.params);
 	  }
 
@@ -2264,7 +2262,9 @@ var Clustergrammer =
 	var make_row_dendro = __webpack_require__(104);
 	var make_col_dendro = __webpack_require__(105);
 
-	module.exports = function make_viz(cgm, params) {
+	module.exports = function make_viz(cgm) {
+
+	  var params = cgm.params;
 
 	  d3.select(params.viz.viz_wrapper + ' svg').remove();
 
@@ -8523,14 +8523,6 @@ var Clustergrammer =
 	    make_icons(params, sidebar);
 	  }
 
-	  // // tmp sim mat button
-	  // sidebar
-	  //   .append('text')
-	  //   .text('here')
-	  //   .on('click',function(){
-	  //     console.log('change to sim_mat')
-	  //   })
-
 	  set_up_reorder(params, sidebar);
 
 	  set_up_search(sidebar, params);
@@ -8555,9 +8547,6 @@ var Clustergrammer =
 
 	  ini_sidebar(params);
 
-	  // disable for now
-	  // make_cat_keys(params);
-
 	  // when initializing the visualization using a view
 	  if (params.ini_view !== null) {
 
@@ -8565,8 +8554,6 @@ var Clustergrammer =
 
 	    params.ini_view = null;
 	  }
-
-	  return params;
 		};
 
 /***/ },
