@@ -51,7 +51,7 @@ function Clustergrammer(args) {
   }
 
   function resize_fun(cgm){
-    resize_viz(cgm.params);
+    resize_viz(cgm);
   }
 
   function external_update_view(requested_view){

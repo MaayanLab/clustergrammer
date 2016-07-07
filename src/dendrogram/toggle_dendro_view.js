@@ -10,7 +10,7 @@ module.exports = function toggle_dendro_view(cgm, row_col, wait_time = 1500){
     if (params.viz.inst_order.col === 'clust'){
       // the last true tells the viz that I'm chaning group size and not to
       // delay the change in dendro
-      setTimeout( make_row_dendro_triangles, wait_time, params, true, cgm);
+      setTimeout( make_row_dendro_triangles, wait_time, cgm, true);
     }
   }
 

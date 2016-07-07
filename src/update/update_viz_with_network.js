@@ -41,11 +41,11 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
   }
 
   if (cgm.params.viz.show_dendrogram){
-    make_row_dendro(cgm.params, cgm);
+    make_row_dendro(cgm);
     make_col_dendro(cgm.params);
   }
 
-  initialize_resizing(cgm.params);
+  initialize_resizing(cgm);
 
   d3.select(cgm.params.viz.viz_svg).call(cgm.params.zoom_behavior);
 

@@ -41,7 +41,7 @@ module.exports = function make_viz(cgm) {
   make_rows(cgm, delay_text);
 
   if (params.viz.show_dendrogram){
-    make_row_dendro(params, cgm);
+    make_row_dendro(cgm);
     make_col_dendro(params);
   }
 
@@ -133,7 +133,7 @@ module.exports = function make_viz(cgm) {
       return 'translate(0,' + inst_offset + ')';
     });
 
-  initialize_resizing(params);
+  initialize_resizing(cgm);
 
   ini_doubleclick(params);
 

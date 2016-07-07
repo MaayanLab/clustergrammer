@@ -3,8 +3,10 @@ var dendro_group_highlight = require('./dendro_group_highlight');
 var dendro_mouseover = require('./dendro_mouseover');
 var dendro_mouseout = require('./dendro_mouseout');
 
-module.exports = function make_row_dendro_triangles(params,
-  is_change_group = false, cgm = false){
+module.exports = function make_row_dendro_triangles(cgm,
+  is_change_group = false){
+
+  var params = cgm.params;
 
   var dendro_info = calc_row_dendro_triangles(params);
 
@@ -76,21 +78,19 @@ module.exports = function make_row_dendro_triangles(params,
       //   .val(d.all_names.join(', '));
       // $(params.root+' .dendro_info').modal('toggle');
 
-      if (cgm != false){
 
-        var names = {};
-        names.row = d.all_names;
-        cgm.filter_viz_using_names(names);
+      var names = {};
+      names.row = d.all_names;
+      cgm.filter_viz_using_names(names);
 
-        d3.selectAll(params.root+' .dendro_shadow')
-          .transition()
-          .duration(1000)
-          .style('opacity',0)
-          .remove();
+      d3.selectAll(params.root+' .dendro_shadow')
+        .transition()
+        .duration(1000)
+        .style('opacity',0)
+        .remove();
 
-        cgm.params.dendro_filter.row = true;
+      cgm.params.dendro_filter.row = true;
 
-      }
 
     });
 

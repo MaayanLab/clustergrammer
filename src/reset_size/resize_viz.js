@@ -25,7 +25,9 @@ var show_visible_area = require('../zoom/show_visible_area');
 var calc_viz_dimensions = require('../params/calc_viz_dimensions');
 var position_play_button = require('../demo/position_play_button');
 
-module.exports = function(params) {
+module.exports = function(cgm) {
+
+  var params = cgm.params;
 
   var cont_dim = calc_viz_dimensions(params);
 
@@ -164,12 +166,12 @@ module.exports = function(params) {
 
   var is_resize = true;
   if (params.viz.show_dendrogram){
-    make_row_dendro_triangles(params, is_resize);
+    make_row_dendro_triangles(cgm, is_resize);
     make_col_dendro_triangles(params, is_resize);
     resize_dendro(params, svg_group);
 
-    toggle_dendro_view(params, 'row', 0);
-    toggle_dendro_view(params, 'col', 0);
+    toggle_dendro_view(cgm, 'row', 0);
+    toggle_dendro_view(cgm, 'col', 0);
   }
 
   resize_col_labels(params, svg_group);

@@ -1,6 +1,8 @@
 var resize_viz = require('./reset_size/resize_viz');
 
-module.exports = function(params) {
+module.exports = function(cgm) {
+
+  var params = cgm.params;
 
   var exp_button;
 
@@ -16,7 +18,7 @@ module.exports = function(params) {
   //     if (params.viz.run_trans === true) {
   //       wait_time = 2500;
   //     }
-      
+
   //     setTimeout(resize_viz, wait_time, params);
   //   });
   // }
@@ -101,7 +103,7 @@ module.exports = function(params) {
         if (params.viz.run_trans == true) {
           wait_time = 2500;
         }
-        setTimeout(resize_viz, wait_time, params);
+        setTimeout(resize_viz, wait_time, cgm);
       });
   // }
 };
