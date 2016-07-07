@@ -2278,7 +2278,7 @@ var Clustergrammer =
 	  make_rows(params, delay_text);
 
 	  if (params.viz.show_dendrogram) {
-	    make_row_dendro(params);
+	    make_row_dendro(params, cgm);
 	    make_col_dendro(params);
 	  }
 
@@ -3594,9 +3594,15 @@ var Clustergrammer =
 
 	module.exports = function make_row_dendro_triangles(params) {
 	  var is_change_group = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+	  var cgm = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
 
 
-	  // var params = cgm.params;
+	  if (cgm === false) {
+	    console.log('no cgm passed to make_row_dendro_triangles');
+	  } else {
+	    console.log('passed cgm to make_row_dendro_triangles');
+	    console.log(cgm);
+	  }
 
 	  var dendro_info = calc_row_dendro_triangles(params);
 
@@ -6394,6 +6400,15 @@ var Clustergrammer =
 	var make_row_dendro_triangles = __webpack_require__(59);
 
 	module.exports = function make_row_dendro(params) {
+	  var cgm = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+
+
+	  if (cgm === false) {
+	    console.log('no cgm passed to make_row_dendro');
+	  } else {
+	    console.log('passed cgm to make_row_dendro');
+	    console.log(cgm);
+	  }
 
 	  var spillover_width = params.viz.dendro_room.row + params.viz.uni_margin;
 
@@ -6415,7 +6430,7 @@ var Clustergrammer =
 	    d3.select(params.root + ' .row_dendro_outer_container').select('.row_dendro_spillover').attr('width', spillover_width + 'px').attr('height', params.viz.svg_dim.height);
 	  }
 
-	  make_row_dendro_triangles(params);
+	  make_row_dendro_triangles(params, false, cgm);
 
 	  if (params.viz.inst_order.col != 'clust') {
 	    d3.selectAll(params.root + ' .row_dendro_group').remove();

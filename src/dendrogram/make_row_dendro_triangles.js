@@ -3,9 +3,15 @@ var dendro_group_highlight = require('./dendro_group_highlight');
 var dendro_mouseover = require('./dendro_mouseover');
 var dendro_mouseout = require('./dendro_mouseout');
 
-module.exports = function make_row_dendro_triangles(params, is_change_group=false){
+module.exports = function make_row_dendro_triangles(params,
+  is_change_group = false, cgm = false){
 
-  // var params = cgm.params;
+  if (cgm === false){
+    console.log('no cgm passed to make_row_dendro_triangles')
+  } else{
+    console.log('passed cgm to make_row_dendro_triangles')
+    console.log(cgm)
+  }
 
   var dendro_info = calc_row_dendro_triangles(params);
 
