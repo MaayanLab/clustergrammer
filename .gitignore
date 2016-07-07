@@ -58,6 +58,12 @@ sftp-config.json
 # webpack
 *.js.map
 
+# python
+*.ipynb_checkpoints
+
+# eslint
+.eslint*
+
 # how to retroactively use
 ############################
 # git rm -r --cached .
