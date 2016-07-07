@@ -26,14 +26,6 @@ function Clustergrammer(args) {
 
   var cgm = {};
 
-  // add more API endpoints
-  cgm.update_view = external_update_view;
-  cgm.resize_viz = external_resize;
-  cgm.play_demo = play_demo;
-  cgm.ini_demo = ini_demo;
-  cgm.filter_viz_using_nodes = filter_viz_using_nodes;
-  cgm.filter_viz_using_names = filter_viz_using_names;
-
   // make visualization parameters using configuration object
   cgm.params = make_params(config);
   cgm.config = config;
@@ -67,6 +59,13 @@ function Clustergrammer(args) {
   }
 
 
+  // add more API endpoints
+  cgm.update_view = external_update_view;
+  cgm.resize_viz = external_resize;
+  cgm.play_demo = play_demo;
+  cgm.ini_demo = ini_demo;
+  cgm.filter_viz_using_nodes = filter_viz_using_nodes;
+  cgm.filter_viz_using_names = filter_viz_using_names;
   return cgm;
 }
 

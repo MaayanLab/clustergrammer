@@ -67,8 +67,10 @@ module.exports = function make_row_dendro_triangles(params,
         d3.select(this)
           .style('opacity',params.viz.dendro_opacity);
       }
+
       d3.selectAll(params.root+' .dendro_shadow')
         .remove();
+
       dendro_mouseout(this);
     })
     .on('click', function(d){
@@ -86,6 +88,14 @@ module.exports = function make_row_dendro_triangles(params,
         var names = {};
         names.row = d.all_names;
         cgm.filter_viz_using_names(names);
+
+        d3.selectAll(params.root+' .dendro_shadow')
+          .transition()
+          .duration(1000)
+          .style('opacity',0)
+          .remove();
+
+        cgm.params.dendro_filter.row = true;
 
       }
 

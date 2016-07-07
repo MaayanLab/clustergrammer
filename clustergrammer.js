@@ -75,14 +75,6 @@ var Clustergrammer =
 
 	  var cgm = {};
 
-	  // add more API endpoints
-	  cgm.update_view = external_update_view;
-	  cgm.resize_viz = external_resize;
-	  cgm.play_demo = play_demo;
-	  cgm.ini_demo = ini_demo;
-	  cgm.filter_viz_using_nodes = filter_viz_using_nodes;
-	  cgm.filter_viz_using_names = filter_viz_using_names;
-
 	  // make visualization parameters using configuration object
 	  cgm.params = make_params(config);
 	  cgm.config = config;
@@ -115,6 +107,13 @@ var Clustergrammer =
 	    update_viz_with_view(this, requested_view);
 	  }
 
+	  // add more API endpoints
+	  cgm.update_view = external_update_view;
+	  cgm.resize_viz = external_resize;
+	  cgm.play_demo = play_demo;
+	  cgm.ini_demo = ini_demo;
+	  cgm.filter_viz_using_nodes = filter_viz_using_nodes;
+	  cgm.filter_viz_using_names = filter_viz_using_names;
 	  return cgm;
 	}
 
@@ -641,7 +640,8 @@ var Clustergrammer =
 	    resize: true,
 	    clamp_opacity: 0.85,
 	    expand_button: true,
-	    max_allow_fs: 20
+	    max_allow_fs: 20,
+	    dendro_filter: { 'row': false, 'col': false }
 	  };
 
 	  return defaults;
@@ -1186,6 +1186,7 @@ var Clustergrammer =
 	  viz.cat_colors = config.cat_colors;
 	  viz.cat_names = config.cat_names;
 	  viz.sim_mat = config.sim_mat;
+	  viz.dendro_filter = config.dendro_filter;
 
 	  viz.viz_svg = viz.viz_wrapper + ' .viz_svg';
 
@@ -3738,7 +3739,9 @@ var Clustergrammer =
 	    if (params.viz.inst_order.col === 'clust') {
 	      d3.select(this).style('opacity', params.viz.dendro_opacity);
 	    }
+
 	    d3.selectAll(params.root + ' .dendro_shadow').remove();
+
 	    dendro_mouseout(this);
 	  }).on('click', function (d) {
 	    d3.select(params.root + ' .dendro_info').select('.modal-title').html('Rows in Group');
@@ -3753,6 +3756,10 @@ var Clustergrammer =
 	      var names = {};
 	      names.row = d.all_names;
 	      cgm.filter_viz_using_names(names);
+
+	      d3.selectAll(params.root + ' .dendro_shadow').transition().duration(1000).style('opacity', 0).remove();
+
+	      cgm.params.dendro_filter.row = true;
 	    }
 	  });
 

@@ -1,4 +1,4 @@
-var utils = require('../Utils_clust'); 
+var utils = require('../Utils_clust');
 var get_available_filters = require('./get_available_filters');
 
 module.exports = function ini_viz_params(config, params){
@@ -21,6 +21,7 @@ module.exports = function ini_viz_params(config, params){
   viz.cat_colors = config.cat_colors;
   viz.cat_names = config.cat_names;
   viz.sim_mat = config.sim_mat;
+  viz.dendro_filter = config.dendro_filter;
 
   viz.viz_svg = viz.viz_wrapper + ' .viz_svg';
 
@@ -37,7 +38,7 @@ module.exports = function ini_viz_params(config, params){
   viz.resize = config.resize;
   if (utils.has(config, 'size')){
     viz.fixed_size = config.size;
-  } else { 
+  } else {
     viz.fixed_size = false;
   }
 
@@ -53,7 +54,7 @@ module.exports = function ini_viz_params(config, params){
   viz.super_labels.dim.width = 0;
   if (params.labels.super_labels){
     viz.super_labels.dim.width = 15 * params.labels.super_label_scale;
-  } 
+  }
 
   viz.show_categories = {};
   viz.cat_room = {};
@@ -77,7 +78,7 @@ module.exports = function ini_viz_params(config, params){
 
   var separtion_room;
 
-  // increase the width of the label container based on the label length 
+  // increase the width of the label container based on the label length
   var label_scale = d3.scale.linear()
     .domain([5, 15])
     .range([ 85, 120]).clamp('true');
@@ -85,7 +86,7 @@ module.exports = function ini_viz_params(config, params){
   _.each(['row','col'], function(inst_rc){
 
     viz.show_categories[inst_rc] = config.show_categories[inst_rc];
-    viz.norm_labels.width[inst_rc] = label_scale(params.labels[inst_rc+'_max_char']) 
+    viz.norm_labels.width[inst_rc] = label_scale(params.labels[inst_rc+'_max_char'])
       * params[inst_rc+'_label_scale'];
 
     viz['num_'+inst_rc+'_nodes'] = params.network_data[inst_rc+'_nodes'].length;
@@ -116,7 +117,7 @@ module.exports = function ini_viz_params(config, params){
       viz.cat_room[inst_rc] = adjusted_cats * viz.cat_room.symbol_width + separtion_room;
 
     } else {
-      // no categories 
+      // no categories
       if (inst_rc == 'row'){
         viz.cat_room[inst_rc] = viz.cat_room.symbol_width;
       } else {
@@ -124,7 +125,7 @@ module.exports = function ini_viz_params(config, params){
       }
     }
 
-  }); 
+  });
 
   viz.dendro_opacity = 0.35;
 
