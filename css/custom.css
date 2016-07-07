@@ -6,14 +6,7 @@
   margin-bottom: 20px;
 }*/
 
-/*stylize footer */
-footer {
-  text-align: center;
-  background-color: #f5f5f5;
-  font-size: 13px;
-  padding-left:10px;
-  padding-right:10px;
-}
+
 
 /* default svg size for fixed svg option*/
 #svg_div{
@@ -45,25 +38,7 @@ footer {
   padding-left: 0px;
 }
 
-/* title */
-#viz_website_title{
-  font-size: 23px;
-  margin-top: 10px;
-  margin-bottom: 5px;
-}
-
-/*reduce the padding on the buttons*/
-.btn{
-  padding-top:2px;
-  padding-bottom:2px;
-}
-
-.wait_message{
-  margin-left: 50px;
-  margin-top: 10px;
-  opacity: 0.5;
-}
-
+/* need to move d3-tip into stypes */
 .d3-tip {
   line-height: 1;
   font-weight: bold;
@@ -90,17 +65,14 @@ footer {
     user-select: none;
 }
 
-.clustergrammer_logo{
-  width:210px;
-}
 
 .icon_buttons{
   color: #337ab7;
 }
 
-.share_url{
+/*.share_url{
   width: 570px;
-}
+}*/
 
 .sidebar_text{
   font-weight: 300;
