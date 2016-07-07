@@ -6,12 +6,6 @@ var dendro_mouseout = require('./dendro_mouseout');
 module.exports = function make_row_dendro_triangles(params,
   is_change_group = false, cgm = false){
 
-  if (cgm === false){
-    console.log('no cgm passed to make_row_dendro_triangles')
-  } else{
-    console.log('passed cgm to make_row_dendro_triangles')
-  }
-
   var dendro_info = calc_row_dendro_triangles(params);
 
   var run_transition;
@@ -84,7 +78,6 @@ module.exports = function make_row_dendro_triangles(params,
 
       if (cgm != false){
 
-        console.log(d.all_names)
         var names = {};
         names.row = d.all_names;
         cgm.filter_viz_using_names(names);

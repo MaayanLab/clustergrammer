@@ -10,7 +10,7 @@ module.exports = function play_groups(){
     var text = 'Identify row and column groups\nof varying sizes using '+
       ' the\nsliders and dendrogram';
     demo_text(params, text, 10000);
-    
+
     setTimeout(highlight_sidebar_element, 3000, params, 'slider_col', 7000);
 
     setTimeout(change_group_slider, 4000, params, 'row', 3);
@@ -28,7 +28,7 @@ module.exports = function play_groups(){
 
   function change_group_slider(params, inst_rc, inst_value){
     $(cgm.params.root+' .slider_col').slider( "value", inst_value/10);
-    change_groups(params, inst_rc, inst_value);
+    change_groups(cgm, inst_rc, inst_value);
   }
 
   return {

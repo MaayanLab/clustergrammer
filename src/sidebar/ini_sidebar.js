@@ -3,7 +3,9 @@ var search = require('../search');
 var all_reorder = require('../reorder/all_reorder');
 var ini_cat_reorder = require('../reorder/ini_cat_reorder');
 
-module.exports = function ini_sidebar(params){
+module.exports = function ini_sidebar(cgm){
+
+  var params = cgm.params;
 
   // initializes sidebar buttons and sliders
 
@@ -45,10 +47,10 @@ module.exports = function ini_sidebar(params){
         $( "#amount" ).val( "$" + ui.value );
         var inst_index = ui.value*10;
         if (inst_rc != 'both'){
-          change_groups(params, inst_rc, inst_index);
+          change_groups(cgm, inst_rc, inst_index);
         } else {
-          change_groups(params, 'row', inst_index);
-          change_groups(params, 'col', inst_index);
+          change_groups(cgm, 'row', inst_index);
+          change_groups(cgm, 'col', inst_index);
         }
       }
     });

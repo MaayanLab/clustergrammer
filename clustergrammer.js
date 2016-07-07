@@ -3689,12 +3689,6 @@ var Clustergrammer =
 	  var cgm = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
 
 
-	  if (cgm === false) {
-	    console.log('no cgm passed to make_row_dendro_triangles');
-	  } else {
-	    console.log('passed cgm to make_row_dendro_triangles');
-	  }
-
 	  var dendro_info = calc_row_dendro_triangles(params);
 
 	  var run_transition;
@@ -3752,7 +3746,6 @@ var Clustergrammer =
 
 	    if (cgm != false) {
 
-	      console.log(d.all_names);
 	      var names = {};
 	      names.row = d.all_names;
 	      cgm.filter_viz_using_names(names);
@@ -3990,7 +3983,7 @@ var Clustergrammer =
 
 	  ini_doubleclick(params);
 
-	  ini_sidebar(params);
+	  ini_sidebar(cgm);
 
 	  params.viz.run_trans = true;
 
@@ -7057,13 +7050,6 @@ var Clustergrammer =
 	  var cgm = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
 
 
-	  if (cgm === false) {
-	    console.log('no cgm passed to make_row_dendro');
-	  } else {
-	    console.log('passed cgm to make_row_dendro');
-	    console.log(cgm);
-	  }
-
 	  var spillover_width = params.viz.dendro_room.row + params.viz.uni_margin;
 
 	  // position row_dendro_outer_container
@@ -7141,7 +7127,9 @@ var Clustergrammer =
 	var all_reorder = __webpack_require__(117);
 	var ini_cat_reorder = __webpack_require__(118);
 
-	module.exports = function ini_sidebar(params) {
+	module.exports = function ini_sidebar(cgm) {
+
+	  var params = cgm.params;
 
 	  // initializes sidebar buttons and sliders
 
@@ -7183,10 +7171,10 @@ var Clustergrammer =
 	        $("#amount").val("$" + ui.value);
 	        var inst_index = ui.value * 10;
 	        if (inst_rc != 'both') {
-	          change_groups(params, inst_rc, inst_index);
+	          change_groups(cgm, inst_rc, inst_index);
 	        } else {
-	          change_groups(params, 'row', inst_index);
-	          change_groups(params, 'col', inst_index);
+	          change_groups(cgm, 'row', inst_index);
+	          change_groups(cgm, 'col', inst_index);
 	        }
 	      }
 	    });
@@ -7246,7 +7234,9 @@ var Clustergrammer =
 
 	/* Changes the groupings (x- and y-axis color bars).
 	 */
-	module.exports = function (params, inst_rc, inst_index) {
+	module.exports = function (cgm, inst_rc, inst_index) {
+
+	  var params = cgm.params;
 
 	  if (inst_rc === 'row') {
 	    params.group_level.row = inst_index;
@@ -8369,7 +8359,7 @@ var Clustergrammer =
 
 	  function change_group_slider(params, inst_rc, inst_value) {
 	    $(cgm.params.root + ' .slider_col').slider("value", inst_value / 10);
-	    change_groups(params, inst_rc, inst_value);
+	    change_groups(cgm, inst_rc, inst_value);
 	  }
 
 	  return {
@@ -8818,7 +8808,7 @@ var Clustergrammer =
 	    set_up_filters(cgm, inst_filter);
 	  });
 
-	  ini_sidebar(params);
+	  ini_sidebar(cgm);
 
 	  // when initializing the visualization using a view
 	  if (params.ini_view !== null) {

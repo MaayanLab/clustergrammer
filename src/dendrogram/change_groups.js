@@ -4,7 +4,9 @@ var make_col_dendro_triangles = require('./make_col_dendro_triangles');
 
 /* Changes the groupings (x- and y-axis color bars).
  */
-module.exports = function (params, inst_rc, inst_index) {
+module.exports = function (cgm, inst_rc, inst_index) {
+
+  var params = cgm.params;
 
   if (inst_rc==='row'){
     params.group_level.row = inst_index;

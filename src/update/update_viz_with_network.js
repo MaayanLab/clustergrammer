@@ -48,7 +48,7 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
 
   ini_doubleclick(params);
 
-  ini_sidebar(params);
+  ini_sidebar(cgm);
 
   params.viz.run_trans = true;
 

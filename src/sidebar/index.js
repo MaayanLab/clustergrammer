@@ -91,7 +91,7 @@ module.exports = function sidebar(cgm) {
     set_up_filters(cgm, inst_filter);
   });
 
-  ini_sidebar(params);
+  ini_sidebar(cgm);
 
   // when initializing the visualization using a view
   if (params.ini_view !== null) {
