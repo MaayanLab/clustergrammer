@@ -10,7 +10,6 @@ module.exports = function make_row_dendro_triangles(params,
     console.log('no cgm passed to make_row_dendro_triangles')
   } else{
     console.log('passed cgm to make_row_dendro_triangles')
-    console.log(cgm)
   }
 
   var dendro_info = calc_row_dendro_triangles(params);
@@ -77,11 +76,18 @@ module.exports = function make_row_dendro_triangles(params,
         .select('.modal-title')
         .html('Rows in Group');
 
-      $(params.root+' .dendro_info .current_names')
-        .val(d.all_names.join(', '));
-      $(params.root+' .dendro_info').modal('toggle');
+      // $(params.root+' .dendro_info .current_names')
+      //   .val(d.all_names.join(', '));
+      // $(params.root+' .dendro_info').modal('toggle');
 
-      // console.log(d.all_names)
+      if (cgm != false){
+
+        console.log(d.all_names)
+        var names = {};
+        names.row = d.all_names;
+        cgm.filter_viz_using_names(names);
+
+      }
 
     });
 
