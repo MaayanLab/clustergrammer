@@ -3,7 +3,7 @@ module.exports = function resize_row_labels(params, ini_svg_group, delay_info=fa
   var delays = {};
   var duration = params.viz.duration;
   var svg_group;
-  
+
   var row_nodes = params.network_data.row_nodes;
   var row_nodes_names = params.network_data.row_nodes_names;
 
@@ -23,7 +23,7 @@ module.exports = function resize_row_labels(params, ini_svg_group, delay_info=fa
         var inst_index = _.indexOf(row_nodes_names, d.name);
         return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
       })
-      .attr('y', params.viz.rect_height * 0.5 + params.labels.default_fs_row*0.35 );      
+      .attr('y', params.viz.rect_height * 0.5 + params.labels.default_fs_row*0.35 );
 
     svg_group = ini_svg_group
       .transition().delay(delays.update).duration(duration);
@@ -38,7 +38,7 @@ module.exports = function resize_row_labels(params, ini_svg_group, delay_info=fa
         return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
       })
       .attr('y', params.viz.rect_height * 0.5 + params.labels.default_fs_row*0.35 );
-    
+
     svg_group = ini_svg_group;
   }
 
@@ -53,7 +53,7 @@ module.exports = function resize_row_labels(params, ini_svg_group, delay_info=fa
 
   svg_group.select(params.root + ' .row_container')
     .select('.row_label_container')
-    .attr('transform', 'translate(' + params.viz.norm_labels.width.row + ',0)');  
+    .attr('transform', 'translate(' + params.viz.norm_labels.width.row + ',0)');
 
 };
 
