@@ -79,18 +79,33 @@ module.exports = function make_row_dendro_triangles(cgm,
       // $(params.root+' .dendro_info').modal('toggle');
 
 
-      var names = {};
-      names.row = d.all_names;
-      cgm.filter_viz_using_names(names);
+      if (cgm.params.dendro_filter.row === false){
 
-      d3.selectAll(params.root+' .dendro_shadow')
-        .transition()
-        .duration(1000)
-        .style('opacity',0)
-        .remove();
+        var names = {};
+        names.row = d.all_names;
 
-      cgm.params.dendro_filter.row = true;
+        var tmp_names = cgm.params.network_data.row_nodes_names;
 
+        cgm.filter_viz_using_names(names);
+
+        d3.selectAll(params.root+' .dendro_shadow')
+          .transition()
+          .duration(1000)
+          .style('opacity',0)
+          .remove();
+
+        cgm.params.dendro_filter.row = tmp_names;
+
+      } else {
+        var names = {};
+        names.row = cgm.params.dendro_filter.row;
+
+        console.log(names)
+
+        cgm.filter_viz_using_names(names);
+        cgm.params.dendro_filter.row = false;
+
+      }
 
     });
 
