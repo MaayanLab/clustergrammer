@@ -3697,6 +3697,13 @@ var Clustergrammer =
 
 	  var dendro_info = calc_row_dendro_triangles(params);
 
+	  var inst_dendro_opacity;
+	  if (dendro_info.length > 1) {
+	    inst_dendro_opacity = params.viz.dendro_opacity;
+	  } else {
+	    inst_dendro_opacity = 0.6;
+	  }
+
 	  var run_transition;
 	  if (d3.selectAll(params.root + ' .row_dendro_group').empty()) {
 	    run_transition = false;
@@ -3737,7 +3744,7 @@ var Clustergrammer =
 	    dendro_group_highlight(params, this, d, inst_rc);
 	  }).on('mouseout', function () {
 	    if (params.viz.inst_order.col === 'clust') {
-	      d3.select(this).style('opacity', params.viz.dendro_opacity);
+	      d3.select(this).style('opacity', inst_dendro_opacity);
 	    }
 
 	    d3.selectAll(params.root + ' .dendro_shadow').remove();
@@ -3752,6 +3759,8 @@ var Clustergrammer =
 
 	    if (cgm.params.dendro_filter.row === false) {
 
+	      console.log('not currently filtering rows');
+
 	      var names = {};
 	      names.row = d.all_names;
 
@@ -3761,12 +3770,14 @@ var Clustergrammer =
 
 	      d3.selectAll(params.root + ' .dendro_shadow').transition().duration(1000).style('opacity', 0).remove();
 
+	      // keep the names of all the rows
 	      cgm.params.dendro_filter.row = tmp_names;
+
+	      d3.select(this).style('opacity', 1);
 	    } else {
+
 	      var names = {};
 	      names.row = cgm.params.dendro_filter.row;
-
-	      console.log(names);
 
 	      cgm.filter_viz_using_names(names);
 	      cgm.params.dendro_filter.row = false;
@@ -3775,7 +3786,7 @@ var Clustergrammer =
 
 	  var triangle_opacity;
 	  if (params.viz.inst_order.col === 'clust') {
-	    triangle_opacity = params.viz.dendro_opacity;
+	    triangle_opacity = inst_dendro_opacity;
 	  } else {
 	    triangle_opacity = 0;
 	  }

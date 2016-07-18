@@ -8,7 +8,7 @@ module.exports = function play_reorder_buttons(){
 
     var text = 'Reorder all rows and columns\nby clicking the reorder\n buttons';
     demo_text(params, text, 9000);
-    
+
     setTimeout(highlight_sidebar_element, 3000, params, 'toggle_col_order');
     setTimeout(click_reorder_button, 3500, params, 'col', 'rank');
 
