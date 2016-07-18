@@ -7,6 +7,8 @@ module.exports = function calc_row_dendro_triangles(params){
 
   _.each(row_nodes, function(d){
 
+    console.log('row_node '+d.name)
+
     var tmp_group = d.group[inst_level];
     var inst_index = _.indexOf(row_nodes_names, d.name);
     var inst_top = params.viz.y_scale(inst_index);
@@ -21,7 +23,7 @@ module.exports = function calc_row_dendro_triangles(params){
       triangle_info[tmp_group].pos_mid = (inst_top + inst_bot)/2;
       triangle_info[tmp_group].name = tmp_group;
       triangle_info[tmp_group].all_names = [];
-    } 
+    }
 
     triangle_info[tmp_group].all_names.push(d.name);
 
@@ -40,7 +42,7 @@ module.exports = function calc_row_dendro_triangles(params){
   });
 
   var group_info = [];
-  
+
   _.each(triangle_info, function(d){
     group_info.push(d);
   });

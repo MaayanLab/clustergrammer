@@ -10,6 +10,8 @@ module.exports = function make_row_dendro_triangles(cgm,
 
   var dendro_info = calc_row_dendro_triangles(params);
 
+  console.log(dendro_info)
+
   var inst_dendro_opacity;
   if (dendro_info.length > 1){
      inst_dendro_opacity = params.viz.dendro_opacity;
@@ -86,8 +88,6 @@ module.exports = function make_row_dendro_triangles(cgm,
       // $(params.root+' .dendro_info').modal('toggle');
 
       if (cgm.params.dendro_filter.row === false){
-
-        console.log('not currently filtering rows')
 
         var names = {};
         names.row = d.all_names;

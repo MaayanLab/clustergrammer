@@ -3697,6 +3697,8 @@ var Clustergrammer =
 
 	  var dendro_info = calc_row_dendro_triangles(params);
 
+	  console.log(dendro_info);
+
 	  var inst_dendro_opacity;
 	  if (dendro_info.length > 1) {
 	    inst_dendro_opacity = params.viz.dendro_opacity;
@@ -3759,8 +3761,6 @@ var Clustergrammer =
 
 	    if (cgm.params.dendro_filter.row === false) {
 
-	      console.log('not currently filtering rows');
-
 	      var names = {};
 	      names.row = d.all_names;
 
@@ -3804,7 +3804,7 @@ var Clustergrammer =
 /* 60 */
 /***/ function(module, exports) {
 
-	"use strict";
+	'use strict';
 
 	module.exports = function calc_row_dendro_triangles(params) {
 
@@ -3814,6 +3814,8 @@ var Clustergrammer =
 	  var row_nodes_names = params.network_data.row_nodes_names;
 
 	  _.each(row_nodes, function (d) {
+
+	    console.log('row_node ' + d.name);
 
 	    var tmp_group = d.group[inst_level];
 	    var inst_index = _.indexOf(row_nodes_names, d.name);
