@@ -13,6 +13,8 @@ var update_reorder_buttons = require('../reorder/update_reorder_buttons');
 
 module.exports = function update_viz_with_network(cgm, new_network_data){
 
+  var inst_group_level = cgm.params.group_level;
+
   // make tmp config to make new params
   var tmp_config = jQuery.extend(true, {}, cgm.config);
 
@@ -31,6 +33,9 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
 
   // pass the newly calcluated params back to teh cgm object
   cgm.params = new_params;
+
+  // have persistent group levels while updating
+  cgm.params.group_level = inst_group_level;
 
   enter_exit_update(cgm, new_network_data, delays);
 
