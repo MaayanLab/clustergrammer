@@ -3773,6 +3773,27 @@ var Clustergrammer =
 
 	    dendro_mouseout(this);
 	  }).on('click', function (d) {
+	    row_dendro_filter_db(d);
+	  });
+
+	  var triangle_opacity;
+	  if (params.viz.inst_order.col === 'clust') {
+	    triangle_opacity = inst_dendro_opacity;
+	  } else {
+	    triangle_opacity = 0;
+	  }
+
+	  if (run_transition) {
+
+	    d3.select(params.root + ' .row_dendro_container').selectAll('path').transition().delay(1000).duration(1000).style('opacity', triangle_opacity);
+	  } else {
+
+	    d3.select(params.root + ' .row_dendro_container').selectAll('path').style('opacity', triangle_opacity);
+	  }
+
+	  var row_dendro_filter_db = _.debounce(row_dendro_filter, 700);
+
+	  function row_dendro_filter(d) {
 
 	    if (cgm.params.dendro_filter.col === false) {
 
@@ -3814,21 +3835,6 @@ var Clustergrammer =
 	          cgm.params.dendro_filter.row = false;
 	        }
 	    }
-	  });
-
-	  var triangle_opacity;
-	  if (params.viz.inst_order.col === 'clust') {
-	    triangle_opacity = inst_dendro_opacity;
-	  } else {
-	    triangle_opacity = 0;
-	  }
-
-	  if (run_transition) {
-
-	    d3.select(params.root + ' .row_dendro_container').selectAll('path').transition().delay(1000).duration(1000).style('opacity', triangle_opacity);
-	  } else {
-
-	    d3.select(params.root + ' .row_dendro_container').selectAll('path').style('opacity', triangle_opacity);
 	  }
 		};
 
@@ -4060,6 +4066,28 @@ var Clustergrammer =
 	    d3.selectAll(params.root + ' .dendro_shadow').remove();
 	    dendro_mouseout(this);
 	  }).on('click', function (d) {
+	    col_dendro_filter_db(d);
+	  });
+
+	  var triangle_opacity;
+
+	  if (params.viz.inst_order.row === 'clust') {
+	    triangle_opacity = inst_dendro_opacity;
+	  } else {
+	    triangle_opacity = 0;
+	  }
+
+	  if (run_transition) {
+
+	    d3.select(params.root + ' .col_dendro_container').selectAll('path').transition().delay(1000).duration(1000).style('opacity', triangle_opacity);
+	  } else {
+
+	    d3.select(params.root + ' .col_dendro_container').selectAll('path').style('opacity', triangle_opacity);
+	  }
+
+	  var col_dendro_filter_db = _.debounce(col_dendro_filter, 700);
+
+	  function col_dendro_filter(d) {
 
 	    if (cgm.params.dendro_filter.row === false) {
 
@@ -4101,22 +4129,6 @@ var Clustergrammer =
 	          cgm.params.dendro_filter.col = false;
 	        }
 	    }
-	  });
-
-	  var triangle_opacity;
-
-	  if (params.viz.inst_order.row === 'clust') {
-	    triangle_opacity = inst_dendro_opacity;
-	  } else {
-	    triangle_opacity = 0;
-	  }
-
-	  if (run_transition) {
-
-	    d3.select(params.root + ' .col_dendro_container').selectAll('path').transition().delay(1000).duration(1000).style('opacity', triangle_opacity);
-	  } else {
-
-	    d3.select(params.root + ' .col_dendro_container').selectAll('path').style('opacity', triangle_opacity);
 	  }
 		};
 
@@ -4790,10 +4802,10 @@ var Clustergrammer =
 
 	        var order_id = this.__data__.replace('-', '_') + '_index';
 	        if (params.viz.sim_mat) {
-	          all_reorder(params, order_id, 'row');
-	          all_reorder(params, order_id, 'col');
+	          all_reorder(cgm, order_id, 'row');
+	          all_reorder(cgm, order_id, 'col');
 	        } else {
-	          all_reorder(params, order_id, inst_rc);
+	          all_reorder(cgm, order_id, inst_rc);
 	        }
 	      });
 	    }

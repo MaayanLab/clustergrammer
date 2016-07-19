@@ -74,54 +74,7 @@ module.exports = function make_col_dendro_triangles(cgm, is_change_group = false
       dendro_mouseout(this);
     })
     .on('click', function(d){
-
-      if (cgm.params.dendro_filter.row === false){
-
-        /* filter cols using dendrogram */
-        if (cgm.params.dendro_filter.col === false){
-
-          // disable col ordering and dendro slider
-          d3.selectAll('.toggle_col_order .btn').attr('disabled', true);
-          $(params.root+' .slider_col').slider('disable');
-
-          var names = {};
-          names.col = d.all_names;
-
-          var tmp_names = cgm.params.network_data.col_nodes_names;
-
-          // keep a backup of the inst_view
-          var inst_row_nodes = cgm.params.network_data.row_nodes;
-          var inst_col_nodes = cgm.params.network_data.col_nodes;
-
-          cgm.filter_viz_using_names(names);
-
-          cgm.params.inst_nodes.row_nodes = inst_row_nodes;
-          cgm.params.inst_nodes.col_nodes = inst_col_nodes;
-
-          d3.selectAll(params.root+' .dendro_shadow')
-            .transition()
-            .duration(1000)
-            .style('opacity',0)
-            .remove();
-
-          // keep the names of all the cols
-          cgm.params.dendro_filter.col = tmp_names;
-
-          d3.select(this)
-            .style('opacity',1);
-
-        /* reset filter */
-        } else {
-
-          var names = {};
-          names.col = cgm.params.dendro_filter.col;
-
-          cgm.filter_viz_using_names(names);
-          cgm.params.dendro_filter.col = false;
-
-        }
-      }
-
+      col_dendro_filter_db(d);
     });
 
   var triangle_opacity;
@@ -145,6 +98,58 @@ module.exports = function make_col_dendro_triangles(cgm, is_change_group = false
       .selectAll('path')
       .style('opacity', triangle_opacity);
 
+  }
+
+  var col_dendro_filter_db = _.debounce(col_dendro_filter, 700);
+
+  function col_dendro_filter(d){
+
+    if (cgm.params.dendro_filter.row === false){
+
+      /* filter cols using dendrogram */
+      if (cgm.params.dendro_filter.col === false){
+
+        // disable col ordering and dendro slider
+        d3.selectAll('.toggle_col_order .btn').attr('disabled', true);
+        $(params.root+' .slider_col').slider('disable');
+
+        var names = {};
+        names.col = d.all_names;
+
+        var tmp_names = cgm.params.network_data.col_nodes_names;
+
+        // keep a backup of the inst_view
+        var inst_row_nodes = cgm.params.network_data.row_nodes;
+        var inst_col_nodes = cgm.params.network_data.col_nodes;
+
+        cgm.filter_viz_using_names(names);
+
+        cgm.params.inst_nodes.row_nodes = inst_row_nodes;
+        cgm.params.inst_nodes.col_nodes = inst_col_nodes;
+
+        d3.selectAll(params.root+' .dendro_shadow')
+          .transition()
+          .duration(1000)
+          .style('opacity',0)
+          .remove();
+
+        // keep the names of all the cols
+        cgm.params.dendro_filter.col = tmp_names;
+
+        d3.select(this)
+          .style('opacity',1);
+
+      /* reset filter */
+      } else {
+
+        var names = {};
+        names.col = cgm.params.dendro_filter.col;
+
+        cgm.filter_viz_using_names(names);
+        cgm.params.dendro_filter.col = false;
+
+      }
+    }
   }
 
 };

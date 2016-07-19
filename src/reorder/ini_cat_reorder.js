@@ -20,11 +20,11 @@ module.exports = function ini_cat_reorder(cgm){
 
           var order_id = this.__data__.replace('-','_') + '_index';
           if (params.viz.sim_mat){
-            all_reorder( params, order_id, 'row');
-            all_reorder( params, order_id, 'col');
+            all_reorder( cgm, order_id, 'row');
+            all_reorder( cgm, order_id, 'col');
           }
           else {
-            all_reorder( params, order_id, inst_rc);
+            all_reorder( cgm, order_id, inst_rc);
           }
         });
     }
