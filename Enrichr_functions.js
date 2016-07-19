@@ -21,17 +21,21 @@ function post_list(gene_list, callback_function){
    "data": form
   }
 
+  if (typeof callback_function === 'undefined'){
+    callback_function = save_user_list_id;
+  }
+
   $.ajax(settings)
-   .done(got_user_list_id);
+   .done(callback_function);
 }
 
-function got_user_list_id(response){
+function save_user_list_id(response){
   response = JSON.parse(response);
   enr_obj.user_list_id = response.userListId;
-  console.log('set user_list_id ' + String(enr_obj.user_list_id))
+  console.log('save the user_list_id ' + String(enr_obj.user_list_id));
 }
 
-function get_request(library){
+function get_enr(library){
 
   if (enr_obj.user_list_id !== null){
     var form = new FormData();
@@ -69,7 +73,7 @@ function Enrichr_request(){
 
   var enr_obj = {};
   enr_obj.post_list = post_list;
-  enr_obj.get = get_request;
+  enr_obj.get_enr = get_enr;
   enr_obj.user_list_id = null;
 
   return enr_obj;
