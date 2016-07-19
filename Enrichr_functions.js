@@ -1,9 +1,15 @@
 
 function Enrichr_request(){
-  function get_enr_with_list(gene_list, library){
+
+  function get_enr_with_list(gene_list, library, callback_function){
     enr_obj.post_list(gene_list, function(){
-      console.log('\nrunning after list has been posted\n')
-      enr_obj.get_enr(library);
+
+      if (typeof callback_function != 'undefined'){
+        enr_obj.get_enr(library, callback_function);
+      } else {
+        enr_obj.get_enr(library);
+      }
+
     });
 
   }
@@ -46,7 +52,7 @@ function Enrichr_request(){
     console.log('saved user_list_id '+String(enr_obj.user_list_id));
   }
 
-  function get_enr(library){
+  function get_enr(library, callback_function){
 
     if (enr_obj.user_list_id !== null){
       var form = new FormData();
@@ -72,6 +78,11 @@ function Enrichr_request(){
       $.ajax(settings).done(function (response) {
         response = JSON.parse(response);
         enr_obj.enr_data = response;
+
+      if (typeof callback_function != 'undefined'){
+        callback_function(enr_obj);
+      }
+
       });
     } else {
       console.log('no user_list_id defined')
@@ -95,3 +106,10 @@ function Enrichr_request(){
 }
 
 var enr_obj = Enrichr_request();
+
+
+function update_viz_with_enr(enr_obj){
+  console.log('\n\nUpdating viz with enr\n------------------')
+  console.log(enr_obj.enr_data)
+  console.log('\n\n\n')
+}
