@@ -3371,24 +3371,27 @@ var Clustergrammer =
 
 	  d3.select(params.root + ' .row_label_zoom_container').selectAll('.row_label_group').on('dblclick', function (d) {
 
-	    console.log('reorder single row');
+	    if (params.dendro_filter.col === false) {
 
-	    var data_attr = '__data__';
-	    var row_name = this[data_attr].name;
+	      console.log('reorder single row');
 
-	    if (params.sim_mat) {
-	      row_reorder(cgm, this, row_name);
+	      var data_attr = '__data__';
+	      var row_name = this[data_attr].name;
 
-	      var col_selection = d3.selectAll(params.root + ' .col_label_text').filter(function (d) {
-	        return d.name == row_name;
-	      })[0][0];
+	      if (params.sim_mat) {
+	        row_reorder(cgm, this, row_name);
 
-	      col_reorder(cgm, col_selection, row_name);
-	    } else {
-	      row_reorder(cgm, this, row_name);
-	    }
-	    if (params.tile_click_hlight) {
-	      add_row_click_hlight(this, d.ini);
+	        var col_selection = d3.selectAll(params.root + ' .col_label_text').filter(function (d) {
+	          return d.name == row_name;
+	        })[0][0];
+
+	        col_reorder(cgm, col_selection, row_name);
+	      } else {
+	        row_reorder(cgm, this, row_name);
+	      }
+	      if (params.tile_click_hlight) {
+	        add_row_click_hlight(this, d.ini);
+	      }
 	    }
 	  });
 
@@ -4432,25 +4435,26 @@ var Clustergrammer =
 	    }
 	  }).on('dblclick', function (d) {
 
-	    console.log('reorder single col');
+	    if (params.dendro_filter.row === false) {
 
-	    var data_attr = '__data__';
-	    var col_name = this[data_attr].name;
+	      var data_attr = '__data__';
+	      var col_name = this[data_attr].name;
 
-	    if (params.sim_mat) {
-	      col_reorder(cgm, this, col_name);
+	      if (params.sim_mat) {
+	        col_reorder(cgm, this, col_name);
 
-	      var row_selection = d3.selectAll(params.root + ' .row_label_group').filter(function (d) {
-	        return d.name == col_name;
-	      })[0][0];
+	        var row_selection = d3.selectAll(params.root + ' .row_label_group').filter(function (d) {
+	          return d.name == col_name;
+	        })[0][0];
 
-	      row_reorder(cgm, row_selection, col_name);
-	    } else {
-	      col_reorder(cgm, this, col_name);
-	    }
+	        row_reorder(cgm, row_selection, col_name);
+	      } else {
+	        col_reorder(cgm, this, col_name);
+	      }
 
-	    if (params.tile_click_hlight) {
-	      add_col_click_hlight(params, this, d.ini);
+	      if (params.tile_click_hlight) {
+	        add_col_click_hlight(params, this, d.ini);
+	      }
 	    }
 	  });
 		};

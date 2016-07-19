@@ -68,26 +68,30 @@ module.exports = function(cgm, text_delay) {
     .selectAll('.row_label_group')
     .on('dblclick', function(d) {
 
-      console.log('reorder single row')
+      if (params.dendro_filter.col === false){
 
-      var data_attr = '__data__';
-      var row_name = this[data_attr].name;
+        console.log('reorder single row')
 
-      if (params.sim_mat){
-        row_reorder(cgm, this, row_name);
+        var data_attr = '__data__';
+        var row_name = this[data_attr].name;
 
-        var col_selection = d3.selectAll(params.root+' .col_label_text')
-          .filter(function(d){
-            return d.name == row_name;}
-            )[0][0];
+        if (params.sim_mat){
+          row_reorder(cgm, this, row_name);
 
-        col_reorder(cgm, col_selection, row_name);
-      } else {
-        row_reorder(cgm, this, row_name);
+          var col_selection = d3.selectAll(params.root+' .col_label_text')
+            .filter(function(d){
+              return d.name == row_name;}
+              )[0][0];
+
+          col_reorder(cgm, col_selection, row_name);
+        } else {
+          row_reorder(cgm, this, row_name);
+        }
+        if (params.tile_click_hlight){
+          add_row_click_hlight(this,d.ini);
+        }
       }
-      if (params.tile_click_hlight){
-        add_row_click_hlight(this,d.ini);
-      }
+
     });
 
   make_row_tooltips(params);

@@ -185,28 +185,31 @@ module.exports = function(cgm, text_delay) {
     })
     .on('dblclick', function(d) {
 
-      console.log('reorder single col')
+      if (params.dendro_filter.row === false){
 
-      var data_attr = '__data__';
-      var col_name = this[data_attr].name;
+        var data_attr = '__data__';
+        var col_name = this[data_attr].name;
 
-      if (params.sim_mat){
-        col_reorder(cgm, this, col_name);
+        if (params.sim_mat){
+          col_reorder(cgm, this, col_name);
 
-        var row_selection = d3.selectAll(params.root+' .row_label_group')
-          .filter(function(d){
-            return d.name == col_name;}
-            )[0][0];
+          var row_selection = d3.selectAll(params.root+' .row_label_group')
+            .filter(function(d){
+              return d.name == col_name;}
+              )[0][0];
 
-        row_reorder(cgm, row_selection, col_name);
+          row_reorder(cgm, row_selection, col_name);
 
-      } else {
-        col_reorder(cgm, this, col_name);
+        } else {
+          col_reorder(cgm, this, col_name);
+        }
+
+        if (params.tile_click_hlight){
+          add_col_click_hlight(params, this, d.ini);
+        }
+
       }
 
-      if (params.tile_click_hlight){
-        add_col_click_hlight(params, this, d.ini);
-      }
     });
 
 };
