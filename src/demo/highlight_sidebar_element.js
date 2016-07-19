@@ -1,4 +1,4 @@
-module.exports = function highlight_sidebar_element(params, highlight_class, 
+module.exports = function highlight_sidebar_element(params, highlight_class,
   duration=4000){
 
   if (highlight_class.indexOf('slider') < 0){

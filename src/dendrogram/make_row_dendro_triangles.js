@@ -16,7 +16,7 @@ module.exports = function make_row_dendro_triangles(cgm,
   if (dendro_info.length > 1){
      inst_dendro_opacity = params.viz.dendro_opacity;
   } else {
-     inst_dendro_opacity = 0.6;
+     inst_dendro_opacity = 0.90;
   }
 
   var run_transition;
@@ -84,9 +84,11 @@ module.exports = function make_row_dendro_triangles(cgm,
         .select('.modal-title')
         .html('Rows in Group');
 
+      /* filter rows using dendrogram */
       if (cgm.params.dendro_filter.row === false){
 
-        /* filter rows using dendrogram */
+        d3.selectAll('.toggle_row_order .btn').attr('disabled', true);
+
         var names = {};
         names.row = d.all_names;
 
@@ -113,14 +115,11 @@ module.exports = function make_row_dendro_triangles(cgm,
         d3.select(this)
           .style('opacity',1);
 
+      /* reset filter */
       } else {
 
-        console.log('resetting filter\n')
-        /* reset filter */
         var names = {};
         names.row = cgm.params.dendro_filter.row;
-
-        console.log(names.row)
 
         cgm.filter_viz_using_names(names);
         cgm.params.dendro_filter.row = false;
