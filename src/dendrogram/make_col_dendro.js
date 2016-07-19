@@ -1,13 +1,15 @@
 var make_col_dendro_triangles = require('./make_col_dendro_triangles');
 
-module.exports = function make_col_dendro(params) {
+module.exports = function make_col_dendro(cgm) {
+
+  var params = cgm.params;
 
   // position col_dendro_outer_container
   var x_offset = params.viz.clust.margin.left;
   var y_offset = params.viz.clust.margin.top + params.viz.clust.dim.height;
   var spillover_height = params.viz.dendro_room.col + params.viz.uni_margin;
 
-  // make or reuse outer container 
+  // make or reuse outer container
   if (d3.select(params.root+' .col_dendro_outer_container').empty()){
 
     d3.select(params.root+' .viz_svg')
@@ -39,7 +41,7 @@ module.exports = function make_col_dendro(params) {
 
     d3.select(params.root+' .viz_svg')
       .select('col_dendro_outer_container')
-      .attr('transform', 'translate('+x_offset+','+y_offset+')'); 
+      .attr('transform', 'translate('+x_offset+','+y_offset+')');
 
     d3.select(params.root+' .col_dendro_outer_container')
       .select('.col_dendro_spillover')
@@ -48,8 +50,8 @@ module.exports = function make_col_dendro(params) {
 
   }
 
-  make_col_dendro_triangles(params);
-  
+  make_col_dendro_triangles(cgm, false);
+
   if (params.viz.inst_order.row != 'clust'){
     d3.selectAll(params.root+' .col_dendro_group').remove();
   }

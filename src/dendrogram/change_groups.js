@@ -16,6 +16,6 @@ module.exports = function (cgm, inst_rc, inst_index) {
 
   var is_change_group = true;
   make_row_dendro_triangles(cgm, is_change_group);
-  make_col_dendro_triangles(params, is_change_group);
+  make_col_dendro_triangles(cgm, is_change_group);
 
 };

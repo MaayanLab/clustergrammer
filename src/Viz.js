@@ -42,7 +42,7 @@ module.exports = function make_viz(cgm) {
 
   if (params.viz.show_dendrogram){
     make_row_dendro(cgm);
-    make_col_dendro(params);
+    make_col_dendro(cgm);
   }
 
   make_cols(cgm, delay_text);

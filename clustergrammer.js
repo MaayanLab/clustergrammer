@@ -2387,7 +2387,7 @@ var Clustergrammer =
 
 	  if (params.viz.show_dendrogram) {
 	    make_row_dendro(cgm);
-	    make_col_dendro(params);
+	    make_col_dendro(cgm);
 	  }
 
 	  make_cols(cgm, delay_text);
@@ -3687,7 +3687,7 @@ var Clustergrammer =
 
 	  if (row_col === 'col') {
 	    if (params.viz.inst_order.row === 'clust') {
-	      setTimeout(make_col_dendro_triangles, wait_time, params, true);
+	      setTimeout(make_col_dendro_triangles, wait_time, cgm, true);
 	    }
 	  }
 
@@ -3718,8 +3718,6 @@ var Clustergrammer =
 	  var params = cgm.params;
 
 	  var dendro_info = calc_row_dendro_triangles(params);
-
-	  // console.log(dendro_info)
 
 	  var inst_dendro_opacity;
 	  if (dendro_info.length > 1) {
@@ -4000,9 +3998,11 @@ var Clustergrammer =
 	var dendro_mouseover = __webpack_require__(63);
 	var dendro_mouseout = __webpack_require__(64);
 
-	module.exports = function make_col_dendro_triangles(params) {
+	module.exports = function make_col_dendro_triangles(cgm) {
 	  var is_change_group = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
 
+
+	  var params = cgm.params;
 
 	  var dendro_info = calc_col_dendro_triangles(params);
 
@@ -5464,7 +5464,7 @@ var Clustergrammer =
 	  var is_resize = true;
 	  if (params.viz.show_dendrogram) {
 	    make_row_dendro_triangles(cgm, is_resize);
-	    make_col_dendro_triangles(params, is_resize);
+	    make_col_dendro_triangles(cgm, is_resize);
 	    resize_dendro(params, svg_group);
 
 	    toggle_dendro_view(cgm, 'row', 0);
@@ -6653,7 +6653,9 @@ var Clustergrammer =
 
 	var make_col_dendro_triangles = __webpack_require__(65);
 
-	module.exports = function make_col_dendro(params) {
+	module.exports = function make_col_dendro(cgm) {
+
+	  var params = cgm.params;
 
 	  // position col_dendro_outer_container
 	  var x_offset = params.viz.clust.margin.left;
@@ -6677,7 +6679,7 @@ var Clustergrammer =
 	    d3.select(params.root + ' .col_dendro_outer_container').select('.col_dendro_spillover').attr('width', params.viz.svg_dim.width).attr('height', spillover_height + 'px');
 	  }
 
-	  make_col_dendro_triangles(params);
+	  make_col_dendro_triangles(cgm, false);
 
 	  if (params.viz.inst_order.row != 'clust') {
 	    d3.selectAll(params.root + ' .col_dendro_group').remove();
@@ -7257,7 +7259,7 @@ var Clustergrammer =
 
 	  if (cgm.params.viz.show_dendrogram) {
 	    make_row_dendro(cgm);
-	    make_col_dendro(cgm.params);
+	    make_col_dendro(cgm);
 	  }
 
 	  initialize_resizing(cgm);
@@ -8340,7 +8342,7 @@ var Clustergrammer =
 
 	  var is_change_group = true;
 	  make_row_dendro_triangles(cgm, is_change_group);
-	  make_col_dendro_triangles(params, is_change_group);
+	  make_col_dendro_triangles(cgm, is_change_group);
 		};
 
 /***/ },

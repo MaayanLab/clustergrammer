@@ -42,7 +42,7 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
 
   if (cgm.params.viz.show_dendrogram){
     make_row_dendro(cgm);
-    make_col_dendro(cgm.params);
+    make_col_dendro(cgm);
   }
 
   initialize_resizing(cgm);

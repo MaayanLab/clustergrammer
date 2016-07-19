@@ -10,8 +10,6 @@ module.exports = function make_row_dendro_triangles(cgm,
 
   var dendro_info = calc_row_dendro_triangles(params);
 
-  // console.log(dendro_info)
-
   var inst_dendro_opacity;
   if (dendro_info.length > 1){
      inst_dendro_opacity = params.viz.dendro_opacity;

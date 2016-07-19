@@ -3,7 +3,9 @@ var dendro_group_highlight = require('./dendro_group_highlight');
 var dendro_mouseover = require('./dendro_mouseover');
 var dendro_mouseout = require('./dendro_mouseout');
 
-module.exports = function make_col_dendro_triangles(params, is_change_group = false){
+module.exports = function make_col_dendro_triangles(cgm, is_change_group = false){
+
+  var params = cgm.params;
 
   var dendro_info = calc_col_dendro_triangles(params);
 

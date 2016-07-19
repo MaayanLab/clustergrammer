@@ -16,7 +16,7 @@ module.exports = function toggle_dendro_view(cgm, row_col, wait_time = 1500){
 
   if (row_col === 'col'){
     if (params.viz.inst_order.row === 'clust'){
-      setTimeout( make_col_dendro_triangles, wait_time, params, true);
+      setTimeout( make_col_dendro_triangles, wait_time, cgm, true);
     }
   }
 
