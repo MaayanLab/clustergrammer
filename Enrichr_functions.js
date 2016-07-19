@@ -24,17 +24,40 @@ function Enrichr_request(){
      "data": form
     }
 
-    return $.ajax(settings)
-            .done(run_when_done);
+    $.ajax(settings)
+     .done(got_user_list_id);
 
   }
 
-  function run_when_done(response){
+  function got_user_list_id(response){
     response = JSON.parse(response);
     user_list_id = response.userListId;
-    console.log('run_when_done: user_list_id')
-    console.log(user_list_id);
     return user_list_id;
+  }
+
+  function get_request(user_list_id){
+
+    var form = new FormData();
+
+    // get request
+    var settings = {
+     "async": true,
+     "crossDomain": true,
+     "url": "http://amp.pharm.mssm.edu/Enrichr/enrich?backgroundType=KEGG_2015&userListId=1",
+     "method": "GET",
+     "headers": {
+       "cache-control": "no-cache",
+       "postman-token": "c02faca5-979a-6caa-06ce-c2f646c73158"
+     },
+     "processData": false,
+     "contentType": false,
+     "mimeType": "multipart/form-data",
+     "data": form
+    }
+
+    $.ajax(settings).done(function (response) {
+     console.log(response);
+    });
   }
 
   // example of how to check gene list
@@ -42,6 +65,7 @@ function Enrichr_request(){
 
   var enr_obj = {};
   enr_obj.post = post_request;
+  enr_obj.get = get_request;
 
   return enr_obj;
 
