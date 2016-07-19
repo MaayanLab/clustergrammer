@@ -3,8 +3,9 @@ var reposition_tile_highlight = require('./reposition_tile_highlight');
 var toggle_dendro_view = require('../dendrogram/toggle_dendro_view');
 var show_visible_area = require('../zoom/show_visible_area');
 
-module.exports = function row_reorder(params, row_selection, inst_row) {
+module.exports = function row_reorder(cgm, row_selection, inst_row) {
 
+  var params = cgm.params;
   params.viz.inst_order.row = 'custom';
   toggle_dendro_view(params, 'col');
 

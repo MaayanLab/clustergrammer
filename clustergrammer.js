@@ -3479,8 +3479,9 @@ var Clustergrammer =
 	var toggle_dendro_view = __webpack_require__(58);
 	var show_visible_area = __webpack_require__(36);
 
-	module.exports = function row_reorder(params, row_selection, inst_row) {
+	module.exports = function row_reorder(cgm, row_selection, inst_row) {
 
+	  var params = cgm.params;
 	  params.viz.inst_order.row = 'custom';
 	  toggle_dendro_view(params, 'col');
 
