@@ -3779,7 +3779,9 @@ var Clustergrammer =
 	      /* filter rows using dendrogram */
 	      if (cgm.params.dendro_filter.row === false) {
 
+	        // disable row ordering and dendro slider
 	        d3.selectAll('.toggle_row_order .btn').attr('disabled', true);
+	        $(params.root + ' .slider_row').slider('disable');
 
 	        var names = {};
 	        names.row = d.all_names;
@@ -4064,7 +4066,9 @@ var Clustergrammer =
 	      /* filter cols using dendrogram */
 	      if (cgm.params.dendro_filter.col === false) {
 
+	        // disable col ordering and dendro slider
 	        d3.selectAll('.toggle_col_order .btn').attr('disabled', true);
+	        $(params.root + ' .slider_col').slider('disable');
 
 	        var names = {};
 	        names.col = d.all_names;
@@ -8362,14 +8366,23 @@ var Clustergrammer =
 
 	module.exports = function enable_sidebar(params) {
 
-	  $(params.root + ' .slider').slider('enable');
+	  /* only enable dendrogram sliders if there has been no dendro_filtering */
+
+	  $(params.root + ' .opacity_slider').slider('enable');
+
+	  $(params.root + ' .slider_N_row_sum').slider('enable');
+	  $(params.root + ' .slider_N_row_var').slider('enable');
 
 	  // only enable reordering if params.dendro_filter.row === false
 	  if (params.dendro_filter.row === false) {
+	    $(params.root + ' .slider_row').slider('enable');
+
 	    d3.selectAll(params.root + ' .toggle_row_order .btn').attr('disabled', null);
 	  }
 
-	  if (params.dendro_filter.row === false) {
+	  if (params.dendro_filter.col === false) {
+	    $(params.root + ' .slider_col').slider('enable');
+
 	    d3.selectAll(params.root + ' .toggle_col_order .btn').attr('disabled', null);
 	  }
 

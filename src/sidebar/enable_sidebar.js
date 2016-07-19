@@ -1,14 +1,23 @@
 module.exports = function enable_sidebar(params) {
 
-  $(params.root+' .slider').slider('enable');
+  /* only enable dendrogram sliders if there has been no dendro_filtering */
+
+  $(params.root+' .opacity_slider').slider('enable');
+
+  $(params.root+' .slider_N_row_sum').slider('enable');
+  $(params.root+' .slider_N_row_var').slider('enable');
 
   // only enable reordering if params.dendro_filter.row === false
   if (params.dendro_filter.row === false){
+    $(params.root+' .slider_row').slider('enable');
+
     d3.selectAll(params.root+' .toggle_row_order .btn')
       .attr('disabled',null);
   }
 
-  if (params.dendro_filter.row === false){
+  if (params.dendro_filter.col === false){
+    $(params.root+' .slider_col').slider('enable');
+
     d3.selectAll(params.root+' .toggle_col_order .btn')
       .attr('disabled',null);
   }

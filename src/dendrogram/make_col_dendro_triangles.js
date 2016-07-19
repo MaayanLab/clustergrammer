@@ -80,7 +80,9 @@ module.exports = function make_col_dendro_triangles(cgm, is_change_group = false
         /* filter cols using dendrogram */
         if (cgm.params.dendro_filter.col === false){
 
+          // disable col ordering and dendro slider
           d3.selectAll('.toggle_col_order .btn').attr('disabled', true);
+          $(params.root+' .slider_col').slider('disable');
 
           var names = {};
           names.col = d.all_names;
