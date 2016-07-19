@@ -38,7 +38,11 @@ module.exports = function ini_sidebar(cgm){
   /* initialize dendro sliders */
   _.each( reorder_types, function(inst_rc){
 
-    var inst_group = cgm.params.group_level[inst_rc];
+    var tmp_rc = inst_rc;
+    if (tmp_rc === 'both'){
+      tmp_rc = 'row';
+    }
+    var inst_group = cgm.params.group_level[tmp_rc];
     var inst_group_value = inst_group/10;
 
     // dendrogram

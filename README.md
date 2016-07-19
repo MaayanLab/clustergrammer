@@ -1,4 +1,4 @@
-# clustergrammer.js
+# clustergrammer
 
 Clustergrammer.js is an interactive clustergram/heatmap matrix visualization tool implemented in D3.js. A live example that includes an interactive demo can be seen [here](http://amp.pharm.mssm.edu/clustergrammer/) and a screenshot is show below.
 
