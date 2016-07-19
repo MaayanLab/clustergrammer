@@ -185,6 +185,8 @@ module.exports = function(cgm, text_delay) {
     })
     .on('dblclick', function(d) {
 
+      console.log('reorder single col')
+
       var data_attr = '__data__';
       var col_name = this[data_attr].name;
 

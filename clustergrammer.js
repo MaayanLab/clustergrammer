@@ -1545,9 +1545,20 @@ var Clustergrammer =
 
 	  params.viz.y_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.height]);
 
-	  params.viz.x_scale.domain(params.matrix.orders[params.viz.inst_order.row + '_row']);
+	  _.each(['row', 'col'], function (inst_rc) {
 
-	  params.viz.y_scale.domain(params.matrix.orders[params.viz.inst_order.col + '_col']);
+	    var inst_order = params.viz.inst_order[inst_rc];
+
+	    if (inst_order === 'custom') {
+	      inst_order = 'clust';
+	    }
+
+	    if (inst_rc === 'row') {
+	      params.viz.x_scale.domain(params.matrix.orders[inst_order + '_' + inst_rc]);
+	    } else {
+	      params.viz.y_scale.domain(params.matrix.orders[inst_order + '_' + inst_rc]);
+	    }
+	  });
 
 	  params.viz.border_width = params.viz.x_scale.rangeBand() / params.viz.border_fraction;
 
@@ -3360,6 +3371,8 @@ var Clustergrammer =
 
 	  d3.select(params.root + ' .row_label_zoom_container').selectAll('.row_label_group').on('dblclick', function (d) {
 
+	    console.log('reorder single row');
+
 	    var data_attr = '__data__';
 	    var row_name = this[data_attr].name;
 
@@ -3483,7 +3496,7 @@ var Clustergrammer =
 
 	  var params = cgm.params;
 	  params.viz.inst_order.row = 'custom';
-	  toggle_dendro_view(cgm, 'col');
+	  // toggle_dendro_view(cgm, 'col');
 
 	  d3.selectAll(params.root + ' .col_dendro_group').style('opacity', 0);
 
@@ -4418,6 +4431,8 @@ var Clustergrammer =
 	      }
 	    }
 	  }).on('dblclick', function (d) {
+
+	    console.log('reorder single col');
 
 	    var data_attr = '__data__';
 	    var col_name = this[data_attr].name;

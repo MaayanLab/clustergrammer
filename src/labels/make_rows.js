@@ -68,6 +68,8 @@ module.exports = function(cgm, text_delay) {
     .selectAll('.row_label_group')
     .on('dblclick', function(d) {
 
+      console.log('reorder single row')
+
       var data_attr = '__data__';
       var row_name = this[data_attr].name;
 
