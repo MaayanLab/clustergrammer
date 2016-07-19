@@ -5,7 +5,6 @@ function get_enr_with_list(gene_list, library){
     enr_obj.get_enr(library);
   });
 
-  // enr_obj.get_enr(library, function())
 }
 
 function post_list(gene_list, callback_function){
@@ -70,7 +69,8 @@ function get_enr(library){
     }
 
     $.ajax(settings).done(function (response) {
-     console.log(response);
+      response = JSON.parse(response);
+      enr_obj.enr_data = response;
     });
   } else {
     console.log('no user_list_id defined')
@@ -84,6 +84,8 @@ function Enrichr_request(){
 
   var enr_obj = {};
   enr_obj.user_list_id = null;
+  enr_obj.enr_data = null;
+
   enr_obj.post_list = post_list;
   enr_obj.get_enr = get_enr;
   enr_obj.get_enr_with_list = get_enr_with_list;
