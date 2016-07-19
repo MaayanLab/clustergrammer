@@ -989,7 +989,8 @@ var Clustergrammer =
 
 	  // var sidebar_margin = 5;
 
-	  d3.select(params.root).style('clear', 'both');
+	  // d3.select(params.root)
+	  //   .style('clear','both');
 
 	  d3.select(params.root + ' .sidebar_wrapper')
 	  // .style('margin-left',sidebar_margin+'px')
