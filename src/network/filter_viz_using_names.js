@@ -19,13 +19,9 @@ module.exports = function filter_viz_using_names(names, external_cgm = false){
 
   _.each(['row', 'col'], function(inst_rc){
 
-    // var orig_nodes = params.network_data[inst_rc+'_nodes'];
-
     // I'm requiring view 0
-    var orig_nodes = params.network_data.views[0].nodes[inst_rc+'_nodes'];
-
-    // console.log(inst_rc +' orig_nodes')
-    // console.log(orig_nodes)
+    // var orig_nodes = params.network_data.views[0].nodes[inst_rc+'_nodes'];
+    var orig_nodes = params.inst_nodes[inst_rc+'_nodes'];
 
     if (_.has(names, inst_rc)){
 

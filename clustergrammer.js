@@ -735,6 +735,11 @@ var Clustergrammer =
 	  var config = $.extend(true, {}, input_config);
 	  var params = config;
 
+	  // keep a copy of inst_view
+	  params.inst_nodes = {};
+	  params.inst_nodes.row_nodes = params.network_data.row_nodes;
+	  params.inst_nodes.col_nodes = params.network_data.col_nodes;
+
 	  // when pre-loading the visualization using a view
 	  if (params.ini_view !== null) {
 
@@ -3697,7 +3702,7 @@ var Clustergrammer =
 
 	  var dendro_info = calc_row_dendro_triangles(params);
 
-	  console.log(dendro_info);
+	  // console.log(dendro_info)
 
 	  var inst_dendro_opacity;
 	  if (dendro_info.length > 1) {
@@ -3753,20 +3758,25 @@ var Clustergrammer =
 
 	    dendro_mouseout(this);
 	  }).on('click', function (d) {
-	    d3.select(params.root + ' .dendro_info').select('.modal-title').html('Rows in Group');
 
-	    // $(params.root+' .dendro_info .current_names')
-	    //   .val(d.all_names.join(', '));
-	    // $(params.root+' .dendro_info').modal('toggle');
+	    d3.select(params.root + ' .dendro_info').select('.modal-title').html('Rows in Group');
 
 	    if (cgm.params.dendro_filter.row === false) {
 
+	      /* filter rows using dendrogram */
 	      var names = {};
 	      names.row = d.all_names;
 
 	      var tmp_names = cgm.params.network_data.row_nodes_names;
 
+	      // keep a backup of the inst_view
+	      var inst_row_nodes = cgm.params.network_data.row_nodes;
+	      var inst_col_nodes = cgm.params.network_data.col_nodes;
+
 	      cgm.filter_viz_using_names(names);
+
+	      cgm.params.inst_nodes.row_nodes = inst_row_nodes;
+	      cgm.params.inst_nodes.col_nodes = inst_col_nodes;
 
 	      d3.selectAll(params.root + ' .dendro_shadow').transition().duration(1000).style('opacity', 0).remove();
 
@@ -3776,8 +3786,12 @@ var Clustergrammer =
 	      d3.select(this).style('opacity', 1);
 	    } else {
 
+	      console.log('resetting filter\n');
+	      /* reset filter */
 	      var names = {};
 	      names.row = cgm.params.dendro_filter.row;
+
+	      console.log(names.row);
 
 	      cgm.filter_viz_using_names(names);
 	      cgm.params.dendro_filter.row = false;
@@ -3804,7 +3818,7 @@ var Clustergrammer =
 /* 60 */
 /***/ function(module, exports) {
 
-	'use strict';
+	"use strict";
 
 	module.exports = function calc_row_dendro_triangles(params) {
 
@@ -3815,7 +3829,7 @@ var Clustergrammer =
 
 	  _.each(row_nodes, function (d) {
 
-	    console.log('row_node ' + d.name);
+	    // console.log('row_node '+d.name)
 
 	    var tmp_group = d.group[inst_level];
 	    var inst_index = _.indexOf(row_nodes_names, d.name);
@@ -8754,13 +8768,9 @@ var Clustergrammer =
 
 	  _.each(['row', 'col'], function (inst_rc) {
 
-	    // var orig_nodes = params.network_data[inst_rc+'_nodes'];
-
 	    // I'm requiring view 0
-	    var orig_nodes = params.network_data.views[0].nodes[inst_rc + '_nodes'];
-
-	    // console.log(inst_rc +' orig_nodes')
-	    // console.log(orig_nodes)
+	    // var orig_nodes = params.network_data.views[0].nodes[inst_rc+'_nodes'];
+	    var orig_nodes = params.inst_nodes[inst_rc + '_nodes'];
 
 	    if (_.has(names, inst_rc)) {
 

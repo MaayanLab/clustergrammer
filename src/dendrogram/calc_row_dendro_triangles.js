@@ -7,7 +7,7 @@ module.exports = function calc_row_dendro_triangles(params){
 
   _.each(row_nodes, function(d){
 
-    console.log('row_node '+d.name)
+    // console.log('row_node '+d.name)
 
     var tmp_group = d.group[inst_level];
     var inst_index = _.indexOf(row_nodes_names, d.name);

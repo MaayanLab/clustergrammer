@@ -25,6 +25,11 @@ module.exports = function make_params(input_config) {
   var config = $.extend(true, {}, input_config);
   var params = config;
 
+  // keep a copy of inst_view
+  params.inst_nodes = {};
+  params.inst_nodes.row_nodes = params.network_data.row_nodes;
+  params.inst_nodes.col_nodes = params.network_data.col_nodes;
+
   // when pre-loading the visualization using a view
   if (params.ini_view !== null) {
 

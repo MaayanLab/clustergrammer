@@ -10,7 +10,7 @@ module.exports = function make_row_dendro_triangles(cgm,
 
   var dendro_info = calc_row_dendro_triangles(params);
 
-  console.log(dendro_info)
+  // console.log(dendro_info)
 
   var inst_dendro_opacity;
   if (dendro_info.length > 1){
@@ -79,22 +79,27 @@ module.exports = function make_row_dendro_triangles(cgm,
       dendro_mouseout(this);
     })
     .on('click', function(d){
+
       d3.select(params.root+' .dendro_info')
         .select('.modal-title')
         .html('Rows in Group');
 
-      // $(params.root+' .dendro_info .current_names')
-      //   .val(d.all_names.join(', '));
-      // $(params.root+' .dendro_info').modal('toggle');
-
       if (cgm.params.dendro_filter.row === false){
 
+        /* filter rows using dendrogram */
         var names = {};
         names.row = d.all_names;
 
         var tmp_names = cgm.params.network_data.row_nodes_names;
 
+        // keep a backup of the inst_view
+        var inst_row_nodes = cgm.params.network_data.row_nodes;
+        var inst_col_nodes = cgm.params.network_data.col_nodes;
+
         cgm.filter_viz_using_names(names);
+
+        cgm.params.inst_nodes.row_nodes = inst_row_nodes;
+        cgm.params.inst_nodes.col_nodes = inst_col_nodes;
 
         d3.selectAll(params.root+' .dendro_shadow')
           .transition()
@@ -110,8 +115,12 @@ module.exports = function make_row_dendro_triangles(cgm,
 
       } else {
 
+        console.log('resetting filter\n')
+        /* reset filter */
         var names = {};
         names.row = cgm.params.dendro_filter.row;
+
+        console.log(names.row)
 
         cgm.filter_viz_using_names(names);
         cgm.params.dendro_filter.row = false;
