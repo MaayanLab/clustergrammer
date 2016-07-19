@@ -35,11 +35,15 @@ module.exports = function ini_sidebar(cgm){
     reorder_types = ['row','col'];
   }
 
+  /* initialize dendro sliders */
   _.each( reorder_types, function(inst_rc){
+
+    var inst_group = cgm.params.group_level[inst_rc];
+    var inst_group_value = inst_group/10;
 
     // dendrogram
     $( params.root+' .slider_'+inst_rc ).slider({
-      value:0.5,
+      value:inst_group_value,
       min: 0,
       max: 1,
       step: 0.1,
