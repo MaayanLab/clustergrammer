@@ -7,7 +7,7 @@ module.exports = function row_reorder(cgm, row_selection, inst_row) {
 
   var params = cgm.params;
   params.viz.inst_order.row = 'custom';
-  toggle_dendro_view(params, 'col');
+  toggle_dendro_view(cgm, 'col');
 
   d3.selectAll(params.root+' .col_dendro_group').style('opacity',0);
 
