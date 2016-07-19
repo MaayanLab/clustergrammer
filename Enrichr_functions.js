@@ -35,20 +35,22 @@ function Enrichr_request(){
     return user_list_id;
   }
 
-  function get_request(user_list_id){
+  function get_request(library, user_list_id){
 
     var form = new FormData();
+
+    var base_url = 'http://amp.pharm.mssm.edu/Enrichr/enrich?';
+    var library_string = 'backgroundType=' + String(library);
+    var list_id_string = 'userListId=' + String(user_list_id);
+
+    var full_url = base_url + library_string + '&' + list_id_string;
 
     // get request
     var settings = {
      "async": true,
      "crossDomain": true,
-     "url": "http://amp.pharm.mssm.edu/Enrichr/enrich?backgroundType=KEGG_2015&userListId=1",
+     "url": full_url,
      "method": "GET",
-     "headers": {
-       "cache-control": "no-cache",
-       "postman-token": "c02faca5-979a-6caa-06ce-c2f646c73158"
-     },
      "processData": false,
      "contentType": false,
      "mimeType": "multipart/form-data",
