@@ -113,3 +113,6 @@ function update_viz_with_enr(enr_obj){
   console.log(enr_obj.enr_data)
   console.log('\n\n\n')
 }
+
+// tmp = cgm.params.network_data.row_nodes_names;
+// enr_obj.get_enr_with_list(tmp, 'KEGG_2015', update_viz_with_enr);

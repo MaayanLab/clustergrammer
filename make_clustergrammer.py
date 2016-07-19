@@ -7,6 +7,7 @@ net = Network()
 # choose tsv file
 ####################
 net.load_file('txt/rc_two_cats.txt')
+# net.load_file('txt/true_false_cats.txt')
 # net.load_file('txt/tuple_cats.txt')
 # net.load_file('txt/tuple_names.txt')
 # net.load_file('txt/missing_values.txt')

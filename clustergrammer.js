@@ -321,7 +321,8 @@ var Clustergrammer =
 	            config.cat_colors[inst_rc][inst_cat][cat_tmp] = inst_color;
 
 	            // hack to get 'Not' categories to not be dark colored
-	            if (cat_tmp.indexOf('Not ') >= 0) {
+	            // also doing this for false
+	            if (cat_tmp.indexOf('Not ') >= 0 || cat_tmp.indexOf(': false') > 0) {
 	              config.cat_colors[inst_rc][inst_cat][cat_tmp] = '#eee';
 	            }
 
