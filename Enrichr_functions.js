@@ -1,4 +1,13 @@
 
+function get_enr_with_list(gene_list, library){
+  enr_obj.post_list(gene_list, function(){
+    console.log('\nrunning after list has been posted\n')
+    enr_obj.get_enr(library);
+  });
+
+  // enr_obj.get_enr(library, function())
+}
+
 function post_list(gene_list, callback_function){
 
   var gene_list_string = gene_list.join('\n');
@@ -22,17 +31,19 @@ function post_list(gene_list, callback_function){
   }
 
   if (typeof callback_function === 'undefined'){
-    callback_function = save_user_list_id;
+    callback_function = confirm_save;
   }
 
   $.ajax(settings)
-   .done(callback_function);
+   .done(function(response){
+    response = JSON.parse(response);
+    enr_obj.user_list_id = response.userListId;
+    callback_function(response);
+   });
 }
 
-function save_user_list_id(response){
-  response = JSON.parse(response);
-  enr_obj.user_list_id = response.userListId;
-  console.log('save the user_list_id ' + String(enr_obj.user_list_id));
+function confirm_save(response){
+  console.log('saved user_list_id '+String(enr_obj.user_list_id));
 }
 
 function get_enr(library){
@@ -72,9 +83,10 @@ function Enrichr_request(){
   // http://amp.pharm.mssm.edu/Enrichr/view?userListId=1284420
 
   var enr_obj = {};
+  enr_obj.user_list_id = null;
   enr_obj.post_list = post_list;
   enr_obj.get_enr = get_enr;
-  enr_obj.user_list_id = null;
+  enr_obj.get_enr_with_list = get_enr_with_list;
 
   return enr_obj;
 
