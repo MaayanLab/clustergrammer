@@ -1,3 +1,5 @@
+var user_list_id;
+
 function Enrichr_request(){
 
   function post_request(gene_list){
@@ -16,23 +18,23 @@ function Enrichr_request(){
      "crossDomain": true,
      "url": "http://amp.pharm.mssm.edu/Enrichr/addList",
      "method": "POST",
-     "headers": {
-       "cache-control": "no-cache",
-       "postman-token": "2b1d201e-ae99-9e22-99a8-d8495a01cc42"
-     },
      "processData": false,
      "contentType": false,
      "mimeType": "multipart/form-data",
      "data": form
     }
 
-    $.ajax(settings).done(function (response) {
-     console.log(response);
+    return $.ajax(settings)
+            .done(run_when_done);
 
-     return response;
-    });
+  }
 
-    return response;
+  function run_when_done(response){
+    response = JSON.parse(response);
+    user_list_id = response.userListId;
+    console.log('run_when_done: user_list_id')
+    console.log(user_list_id);
+    return user_list_id;
   }
 
   // example of how to check gene list
@@ -41,6 +43,6 @@ function Enrichr_request(){
   var enr_obj = {};
   enr_obj.post = post_request;
 
-  return enr_obj
+  return enr_obj;
 
 }
