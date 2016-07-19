@@ -56,6 +56,7 @@ var Clustergrammer =
 	var update_viz_with_view = __webpack_require__(118);
 	var filter_viz_using_nodes = __webpack_require__(147);
 	var filter_viz_using_names = __webpack_require__(148);
+	var make_row_cat = __webpack_require__(103);
 
 	/* clustergrammer 1.0
 	 * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
@@ -107,6 +108,13 @@ var Clustergrammer =
 	    update_viz_with_view(this, requested_view);
 	  }
 
+	  function update_row_cats() {
+	    var tmp_params = this.params;
+
+	    console.log('cgm.update_row_cats');
+	    make_row_cat(tmp_params, true);
+	  }
+
 	  // add more API endpoints
 	  cgm.update_view = external_update_view;
 	  cgm.resize_viz = external_resize;
@@ -114,6 +122,7 @@ var Clustergrammer =
 	  cgm.ini_demo = ini_demo;
 	  cgm.filter_viz_using_nodes = filter_viz_using_nodes;
 	  cgm.filter_viz_using_names = filter_viz_using_names;
+	  cgm.update_row_cats = update_row_cats;
 	  return cgm;
 	}
 
@@ -6533,6 +6542,10 @@ var Clustergrammer =
 	var reset_cat_opacity = __webpack_require__(102);
 
 	module.exports = function make_row_cat(params) {
+	  var updating = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+
+
+	  console.log('make_row_cat');
 
 	  // make or reuse outer container
 	  if (d3.select(params.root + ' .row_cat_outer_container').empty()) {
@@ -6611,14 +6624,17 @@ var Clustergrammer =
 	          var cat_room = params.viz.cat_room.symbol_width + params.viz.cat_room.separation;
 	          var inst_shift = inst_num * cat_room;
 	          return 'translate(' + inst_shift + ',0)';
-	        }).style('opacity', params.viz.cat_colors.opacity).on('mouseover', cat_tip.show).on('mouseout', function () {
-
+	        }).on('mouseover', cat_tip.show).on('mouseout', function () {
 	          cat_tip.hide(this);
-
 	          reset_cat_opacity(params);
-
 	          d3.select(this).classed('hovering', false);
 	        });
+
+	        if (updating) {
+	          cat_rect.style('opacity', 0).transition().duration(1000).style('opacity', params.viz.cat_colors.opacity);
+	        } else {
+	          cat_rect.style('opacity', params.viz.cat_colors.opacity);
+	        }
 	      });
 	    });
 	  }

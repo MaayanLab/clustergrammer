@@ -2,7 +2,9 @@ var cat_tooltip_text = require('./cat_tooltip_text');
 var d3_tip_custom = require('../tooltip/d3_tip_custom');
 var reset_cat_opacity = require('./reset_cat_opacity');
 
-module.exports = function make_row_cat(params) {
+module.exports = function make_row_cat(params, updating=false) {
+
+  console.log('make_row_cat')
 
   // make or reuse outer container
   if (d3.select(params.root+' .row_cat_outer_container').empty()){
@@ -124,19 +126,24 @@ module.exports = function make_row_cat(params) {
               var inst_shift = inst_num * cat_room ;
               return 'translate('+inst_shift+',0)';
             })
-            .style('opacity', params.viz.cat_colors.opacity)
             .on('mouseover', cat_tip.show)
             .on('mouseout', function(){
-
               cat_tip.hide(this);
-
               reset_cat_opacity(params);
-
               d3.select(this)
                 .classed('hovering', false);
-
-
             });
+
+          if (updating){
+            cat_rect
+              .style('opacity', 0)
+              .transition()
+              .duration(1000)
+              .style('opacity', params.viz.cat_colors.opacity);
+          } else {
+            cat_rect
+              .style('opacity', params.viz.cat_colors.opacity);
+          }
 
         });
 

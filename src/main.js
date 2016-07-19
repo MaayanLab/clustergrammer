@@ -7,6 +7,7 @@ var ini_demo = require('./demo/ini_demo');
 var update_viz_with_view = require('./network/update_viz_with_view');
 var filter_viz_using_nodes = require('./network/filter_viz_using_nodes');
 var filter_viz_using_names = require('./network/filter_viz_using_names');
+var make_row_cat = require('./dendrogram/make_row_cat');
 
 /* clustergrammer 1.0
  * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
@@ -58,6 +59,14 @@ function Clustergrammer(args) {
     update_viz_with_view(this, requested_view);
   }
 
+  function update_row_cats(){
+    var tmp_params = this.params;
+
+    console.log('cgm.update_row_cats')
+    make_row_cat(tmp_params, true);
+
+  }
+
 
   // add more API endpoints
   cgm.update_view = external_update_view;
@@ -66,6 +75,7 @@ function Clustergrammer(args) {
   cgm.ini_demo = ini_demo;
   cgm.filter_viz_using_nodes = filter_viz_using_nodes;
   cgm.filter_viz_using_names = filter_viz_using_names;
+  cgm.update_row_cats = update_row_cats;
   return cgm;
 }
 
