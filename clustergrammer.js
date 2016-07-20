@@ -126,6 +126,8 @@ var Clustergrammer =
 	    names.row = this.params.network_data.row_nodes_names;
 	    names.col = this.params.network_data.col_nodes_names;
 
+	    this.params.viz.all_cats.row = ['cat-0', 'cat-1'];
+
 	    // possibly update entire visualization
 	    filter_viz_using_names(names, cgm);
 
@@ -761,6 +763,8 @@ var Clustergrammer =
 
 	module.exports = function make_params(input_config) {
 
+	  console.log('--------------\nmaking params\n------------------\n');
+
 	  var config = $.extend(true, {}, input_config);
 	  var params = config;
 
@@ -1218,6 +1222,7 @@ var Clustergrammer =
 	  viz.inst_order = config.inst_order;
 	  viz.expand_button = config.expand_button;
 	  viz.all_cats = config.all_cats;
+	  console.log('initializing all_cats in ini_viz_params');
 	  viz.cat_colors = config.cat_colors;
 	  viz.cat_names = config.cat_names;
 	  viz.sim_mat = config.sim_mat;
@@ -7292,6 +7297,10 @@ var Clustergrammer =
 	  tmp_config.ini_expand = false;
 	  tmp_config.ini_view = null;
 	  tmp_config.current_col_cat = cgm.params.current_col_cat;
+
+	  // pass on category info to new config
+	  console.log('passing on category info from previous viz');
+	  tmp_config.all_cats = cgm.params.viz.all_cats;
 
 	  var new_params = make_params(tmp_config);
 	  var delays = define_enter_exit_delays(cgm.params, new_params);

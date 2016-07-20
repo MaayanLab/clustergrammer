@@ -78,6 +78,8 @@ function Clustergrammer(args) {
     names.row = this.params.network_data.row_nodes_names;
     names.col = this.params.network_data.col_nodes_names;
 
+    this.params.viz.all_cats.row = ['cat-0','cat-1'];
+
     // possibly update entire visualization
     filter_viz_using_names(names, cgm);
 

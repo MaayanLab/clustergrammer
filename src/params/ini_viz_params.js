@@ -18,6 +18,7 @@ module.exports = function ini_viz_params(config, params){
   viz.inst_order = config.inst_order;
   viz.expand_button = config.expand_button;
   viz.all_cats = config.all_cats;
+  console.log('initializing all_cats in ini_viz_params')
   viz.cat_colors = config.cat_colors;
   viz.cat_names = config.cat_names;
   viz.sim_mat = config.sim_mat;

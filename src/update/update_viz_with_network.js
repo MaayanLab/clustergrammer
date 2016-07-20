@@ -28,6 +28,10 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
   tmp_config.ini_view = null;
   tmp_config.current_col_cat = cgm.params.current_col_cat;
 
+  // pass on category info to new config
+  console.log('passing on category info from previous viz')
+  tmp_config.all_cats = cgm.params.viz.all_cats;
+
   var new_params = make_params(tmp_config);
   var delays = define_enter_exit_delays(cgm.params, new_params);
 
