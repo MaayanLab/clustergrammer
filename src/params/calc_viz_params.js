@@ -12,7 +12,7 @@ var calc_default_fs = require('./calc_default_fs');
 
 module.exports = function calc_viz_params(config, params){
 
-  params.labels = ini_label_params(config, params.network_data);
+  params.labels = ini_label_params(params);
   params.viz    = ini_viz_params(config, params);
 
   set_viz_wrapper_size(params);
