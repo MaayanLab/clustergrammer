@@ -122,20 +122,26 @@ var Clustergrammer =
 	      inst_node['cat-1'] = 'Very Interesting';
 	    });
 
+	    // _.each(this.params.network_data.col_nodes, function(inst_node){
+	    //   delete inst_node['cat_1_index'];
+	    //   delete inst_node['cat-1'];
+	    // })
+
 	    var names = {};
 	    names.row = this.params.network_data.row_nodes_names;
 	    names.col = this.params.network_data.col_nodes_names;
 
 	    this.params.viz.all_cats.row = ['cat-0', 'cat-1'];
+	    // this.params.viz.all_cats.col = ['cat-0'];
 
 	    // possibly update entire visualization
 	    filter_viz_using_names(names, cgm);
 
 	    // only update make_row_cat - probably not going to work
 	    // console.log('cgm.update_cats')
-	    // make_row_cat(tmp_params, true);
+	    make_row_cat(tmp_params, true);
 	  }
-	
+
 	  // add more API endpoints
 	  cgm.update_view = external_update_view;
 	  cgm.resize_viz = external_resize;
@@ -7301,6 +7307,7 @@ var Clustergrammer =
 	  // pass on category info to new config
 	  console.log('passing on category info from previous viz');
 	  tmp_config.all_cats = cgm.params.viz.all_cats;
+	  tmp_config.cat_colors.row['cat-1'] = tmp_config.cat_colors.row['cat-0'];
 
 	  var new_params = make_params(tmp_config);
 	  var delays = define_enter_exit_delays(cgm.params, new_params);

@@ -74,18 +74,24 @@ function Clustergrammer(args) {
 
     });
 
+    // _.each(this.params.network_data.col_nodes, function(inst_node){
+    //   delete inst_node['cat_1_index'];
+    //   delete inst_node['cat-1'];
+    // })
+
     var names = {};
     names.row = this.params.network_data.row_nodes_names;
     names.col = this.params.network_data.col_nodes_names;
 
     this.params.viz.all_cats.row = ['cat-0','cat-1'];
+    // this.params.viz.all_cats.col = ['cat-0'];
 
     // possibly update entire visualization
     filter_viz_using_names(names, cgm);
 
     // only update make_row_cat - probably not going to work
     // console.log('cgm.update_cats')
-    // make_row_cat(tmp_params, true);
+    make_row_cat(tmp_params, true);
 
   }
 
