@@ -137,11 +137,11 @@ var Clustergrammer =
 	    // possibly update entire visualization
 	    filter_viz_using_names(names, cgm);
 
-	    // only update make_row_cat - probably not going to work
-	    // console.log('cgm.update_cats')
-	    make_row_cat(tmp_params, true);
+	    // // only update make_row_cat - probably not going to work
+	    // // console.log('cgm.update_cats')
+	    // make_row_cat(tmp_params, true);
 	  }
-
+	
 	  // add more API endpoints
 	  cgm.update_view = external_update_view;
 	  cgm.resize_viz = external_resize;
@@ -6624,6 +6624,8 @@ var Clustergrammer =
 
 	  if (params.viz.show_categories.row) {
 
+	    console.log('--- make_row_cat ----');
+
 	    d3.selectAll(params.root + ' .row_cat_group').each(function () {
 
 	      inst_selection = this;
@@ -6640,6 +6642,9 @@ var Clustergrammer =
 	        }
 
 	        cat_rect.attr('width', params.viz.cat_room.symbol_width).attr('height', params.viz.y_scale.rangeBand()).style('fill', function (d) {
+	          // console.log(inst_cat)
+	          // console.log(d[inst_cat])
+	          // console.log( Object.keys(params.viz.cat_colors.row) )
 	          var inst_color = params.viz.cat_colors.row[inst_cat][d[inst_cat]];
 	          return inst_color;
 	        }).attr('x', function () {

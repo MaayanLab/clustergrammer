@@ -89,9 +89,9 @@ function Clustergrammer(args) {
     // possibly update entire visualization
     filter_viz_using_names(names, cgm);
 
-    // only update make_row_cat - probably not going to work
-    // console.log('cgm.update_cats')
-    make_row_cat(tmp_params, true);
+    // // only update make_row_cat - probably not going to work
+    // // console.log('cgm.update_cats')
+    // make_row_cat(tmp_params, true);
 
   }
 
