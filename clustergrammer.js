@@ -108,13 +108,32 @@ var Clustergrammer =
 	    update_viz_with_view(this, requested_view);
 	  }
 
-	  function update_row_cats() {
+	  function update_cats() {
 	    var tmp_params = this.params;
 
-	    console.log('cgm.update_row_cats');
-	    make_row_cat(tmp_params, true);
-	  }
+	    var row_nodes = tmp_params.network_data.row_nodes;
 
+	    _.each(this.params.network_data.row_nodes, function (inst_node) {
+
+	      inst_node['cat_0_index'] = 0;
+	      inst_node['cat-0'] = 'Very Interesting';
+
+	      inst_node['cat_1_index'] = 0;
+	      inst_node['cat-1'] = 'Very Interesting';
+	    });
+
+	    var names = {};
+	    names.row = this.params.network_data.row_nodes_names;
+	    names.col = this.params.network_data.col_nodes_names;
+
+	    // possibly update entire visualization
+	    filter_viz_using_names(names, cgm);
+
+	    // only update make_row_cat - probably not going to work
+	    // console.log('cgm.update_cats')
+	    // make_row_cat(tmp_params, true);
+	  }
+	
 	  // add more API endpoints
 	  cgm.update_view = external_update_view;
 	  cgm.resize_viz = external_resize;
@@ -122,7 +141,7 @@ var Clustergrammer =
 	  cgm.ini_demo = ini_demo;
 	  cgm.filter_viz_using_nodes = filter_viz_using_nodes;
 	  cgm.filter_viz_using_names = filter_viz_using_names;
-	  cgm.update_row_cats = update_row_cats;
+	  cgm.update_cats = update_cats;
 	  return cgm;
 	}
 
@@ -3384,8 +3403,6 @@ var Clustergrammer =
 
 	    // if (params.dendro_filter.col === false){
 
-	    console.log('reorder single row');
-
 	    var data_attr = '__data__';
 	    var row_name = this[data_attr].name;
 
@@ -3806,6 +3823,7 @@ var Clustergrammer =
 
 	  function row_dendro_filter(d, inst_selection) {
 
+	    var names = {};
 	    if (cgm.params.dendro_filter.col === false) {
 
 	      /* filter rows using dendrogram */
@@ -3815,7 +3833,6 @@ var Clustergrammer =
 	        // d3.selectAll('.toggle_row_order .btn').attr('disabled', true);
 	        $(params.root + ' .slider_row').slider('disable');
 
-	        var names = {};
 	        names.row = d.all_names;
 
 	        var tmp_names = cgm.params.network_data.row_nodes_names;
@@ -3839,7 +3856,6 @@ var Clustergrammer =
 	        /* reset filter */
 	      } else {
 
-	          var names = {};
 	          names.row = cgm.params.dendro_filter.row;
 
 	          cgm.filter_viz_using_names(names);
@@ -4100,8 +4116,7 @@ var Clustergrammer =
 
 	  function col_dendro_filter(d, inst_selection) {
 
-	    console.log('something!');
-
+	    var names = {};
 	    if (cgm.params.dendro_filter.row === false) {
 
 	      /* filter cols using dendrogram */
@@ -4111,7 +4126,6 @@ var Clustergrammer =
 	        // d3.selectAll('.toggle_col_order .btn').attr('disabled', true);
 	        $(params.root + ' .slider_col').slider('disable');
 
-	        var names = {};
 	        names.col = d.all_names;
 
 	        var tmp_names = cgm.params.network_data.col_nodes_names;
@@ -4135,7 +4149,6 @@ var Clustergrammer =
 	        /* reset filter */
 	      } else {
 
-	          var names = {};
 	          names.col = cgm.params.dendro_filter.col;
 
 	          cgm.filter_viz_using_names(names);
@@ -6547,8 +6560,6 @@ var Clustergrammer =
 	module.exports = function make_row_cat(params) {
 	  var updating = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
 
-
-	  console.log('make_row_cat');
 
 	  // make or reuse outer container
 	  if (d3.select(params.root + ' .row_cat_outer_container').empty()) {

@@ -59,11 +59,31 @@ function Clustergrammer(args) {
     update_viz_with_view(this, requested_view);
   }
 
-  function update_row_cats(){
+  function update_cats(){
     var tmp_params = this.params;
 
-    console.log('cgm.update_row_cats')
-    make_row_cat(tmp_params, true);
+    var row_nodes = tmp_params.network_data.row_nodes;
+
+    _.each(this.params.network_data.row_nodes, function(inst_node){
+
+      inst_node['cat_0_index'] = 0
+      inst_node['cat-0'] = 'Very Interesting';
+
+      inst_node['cat_1_index'] = 0
+      inst_node['cat-1'] = 'Very Interesting';
+
+    });
+
+    var names = {};
+    names.row = this.params.network_data.row_nodes_names;
+    names.col = this.params.network_data.col_nodes_names;
+
+    // possibly update entire visualization
+    filter_viz_using_names(names, cgm);
+
+    // only update make_row_cat - probably not going to work
+    // console.log('cgm.update_cats')
+    // make_row_cat(tmp_params, true);
 
   }
 
@@ -75,7 +95,7 @@ function Clustergrammer(args) {
   cgm.ini_demo = ini_demo;
   cgm.filter_viz_using_nodes = filter_viz_using_nodes;
   cgm.filter_viz_using_names = filter_viz_using_names;
-  cgm.update_row_cats = update_row_cats;
+  cgm.update_cats = update_cats;
   return cgm;
 }
 
