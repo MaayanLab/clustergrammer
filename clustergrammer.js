@@ -142,8 +142,8 @@ var Clustergrammer =
 
 	    this.params.viz = ini_viz_params(this.config, this.params);
 
-	    make_row_cat(this.params, true);
-	    resize_viz(this);
+	    // make_row_cat(this.params, true);
+	    // resize_viz(this);
 
 	    // // only update make_row_cat - probably not going to work
 	    // // console.log('cgm.update_cats')
@@ -380,20 +380,21 @@ var Clustergrammer =
 	    }
 	  });
 
-	  // check for category information
-	  if (config.show_categories.col) {
-	    // generate a dictionary of columns in each category
-	    config.cat_dict = {};
-	    col_nodes.forEach(function (d) {
+	  // // check for category information
+	  // if (config.show_categories.col) {
+	  //   // generate a dictionary of columns in each category
+	  //   config.cat_dict = {};
+	  //   col_nodes.forEach(function(d){
 
-	      // initialize array for each category
-	      if (!utils.has(config.cat_dict, d.cat)) {
-	        config.cat_dict[d.cat] = [];
-	      }
-	      // add column name to category array
-	      config.cat_dict[d.cat].push(d.name);
-	    });
-	  }
+	  //     // initialize array for each category
+	  //     if (!utils.has(config.cat_dict, d.cat)){
+	  //       config.cat_dict[d.cat] = [];
+	  //     }
+	  //     // add column name to category array
+	  //     config.cat_dict[d.cat].push(d.name);
+	  //   });
+
+	  // }
 
 	  if (utils.has(config.network_data.links[0], 'value_orig')) {
 	    config.keep_orig = true;

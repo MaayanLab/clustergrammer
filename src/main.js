@@ -94,8 +94,8 @@ function Clustergrammer(args) {
 
     this.params.viz = ini_viz_params(this.config, this.params)
 
-    make_row_cat(this.params, true);
-    resize_viz(this);
+    // make_row_cat(this.params, true);
+    // resize_viz(this);
 
     // // only update make_row_cat - probably not going to work
     // // console.log('cgm.update_cats')
