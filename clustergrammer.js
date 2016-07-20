@@ -5519,6 +5519,9 @@ var Clustergrammer =
 
 	  label_constrain_and_trim(params);
 
+	  // reposition matrix
+	  d3.select(params.root + ' .clust_container').attr('transform', 'translate(' + params.viz.clust.margin.left + ',' + params.viz.clust.margin.top + ')');
+
 	  d3.select(params.viz.viz_svg).style('opacity', 1);
 		};
 
@@ -8245,6 +8248,9 @@ var Clustergrammer =
 	'use strict';
 
 	module.exports = function resize_containers(params) {
+
+	  console.log('resize_containers');
+
 	  // reposition matrix
 	  d3.select(params.root + ' .clust_container').attr('transform', 'translate(' + params.viz.clust.margin.left + ',' + params.viz.clust.margin.top + ')');
 

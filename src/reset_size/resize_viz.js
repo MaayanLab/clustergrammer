@@ -194,5 +194,12 @@ module.exports = function(cgm) {
 
   label_constrain_and_trim(params);
 
+  // reposition matrix
+  d3.select(params.root+' .clust_container')
+    .attr('transform', 'translate(' +
+      params.viz.clust.margin.left + ',' +
+      params.viz.clust.margin.top + ')');
+
+
   d3.select(params.viz.viz_svg).style('opacity',1);
 };

@@ -1,4 +1,7 @@
 module.exports = function resize_containers(params){
+
+  console.log('resize_containers')
+
   // reposition matrix
   d3.select(params.root+' .clust_container')
     .attr('transform', 'translate(' +
@@ -14,6 +17,6 @@ module.exports = function resize_containers(params){
     .attr('transform', function() {
         var inst_offset = params.viz.norm_labels.width.col + 2;
         return 'translate(0,' + inst_offset + ')';
-      });  
+      });
 
 };
