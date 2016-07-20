@@ -67,7 +67,12 @@ module.exports = function ini_viz_params(config, params){
     viz.dendro_room.symbol_width = 0;
   }
 
-  viz = calc_cat_params(config, params, viz);
+  viz = calc_cat_params(params, viz);
+
+  if (_.has(config, 'group_level')){
+    config.group_level.row = 5;
+    config.group_level.col = 5;
+  }
 
   viz.dendro_opacity = 0.35;
 

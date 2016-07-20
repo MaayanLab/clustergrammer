@@ -1289,7 +1289,12 @@ var Clustergrammer =
 	    viz.dendro_room.symbol_width = 0;
 	  }
 
-	  viz = calc_cat_params(config, params, viz);
+	  viz = calc_cat_params(params, viz);
+
+	  if (_.has(config, 'group_level')) {
+	    config.group_level.row = 5;
+	    config.group_level.col = 5;
+	  }
 
 	  viz.dendro_opacity = 0.35;
 
@@ -1309,7 +1314,7 @@ var Clustergrammer =
 
 	'use strict';
 
-	module.exports = function calc_cat_params(config, params, viz) {
+	module.exports = function calc_cat_params(params, viz) {
 
 	  console.log('in calc_cat_params');
 
@@ -1318,29 +1323,29 @@ var Clustergrammer =
 	  // increase the width of the label container based on the label length
 	  var label_scale = d3.scale.linear().domain([5, 15]).range([85, 120]).clamp('true');
 
-	  viz.all_cats = config.all_cats;
+	  viz.all_cats = params.all_cats;
 
-	  viz.cat_names = config.cat_names;
+	  viz.cat_names = params.cat_names;
 
 	  viz.show_categories = {};
 	  viz.cat_room = {};
 	  viz.cat_room.symbol_width = 12;
 	  viz.cat_room.separation = 3;
 
-	  viz.cat_colors = config.cat_colors;
+	  viz.cat_colors = params.cat_colors;
 	  viz.cat_colors.opacity = 0.6;
 	  viz.cat_colors.active_opacity = 0.9;
 
 	  _.each(['row', 'col'], function (inst_rc) {
 
-	    viz.show_categories[inst_rc] = config.show_categories[inst_rc];
+	    viz.show_categories[inst_rc] = params.show_categories[inst_rc];
 	    viz.norm_labels.width[inst_rc] = label_scale(params.labels[inst_rc + '_max_char']) * params[inst_rc + '_label_scale'];
 
 	    viz['num_' + inst_rc + '_nodes'] = params.network_data[inst_rc + '_nodes'].length;
 
-	    if (_.has(config, 'group_level')) {
-	      config.group_level[inst_rc] = 5;
-	    }
+	    // if (_.has(config, 'group_level')){
+	    //   config.group_level[inst_rc] = 5;
+	    // }
 
 	    if (inst_rc === 'row') {
 	      viz.dendro_room[inst_rc] = viz.dendro_room.symbol_width;
