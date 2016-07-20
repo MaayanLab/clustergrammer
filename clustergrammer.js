@@ -663,16 +663,16 @@ var Clustergrammer =
 	var utils = __webpack_require__(2);
 	var colors = __webpack_require__(3);
 
-	module.exports = function process_category_info(params) {
+	module.exports = function process_category_info(params, viz) {
 
 	  console.log('process_category_info...');
 
 	  var super_string = ': ';
 	  var tmp_super;
 
-	  params.show_categories = {};
-	  params.all_cats = {};
-	  params.cat_names = {};
+	  viz.show_categories = {};
+	  viz.all_cats = {};
+	  viz.cat_names = {};
 
 	  var predefine_colors = false;
 	  if (params.cat_colors === null) {
@@ -685,34 +685,34 @@ var Clustergrammer =
 	  var num_colors = 0;
 	  _.each(['row', 'col'], function (inst_rc) {
 
-	    params.show_categories[inst_rc] = false;
+	    viz.show_categories[inst_rc] = false;
 
-	    params.all_cats[inst_rc] = [];
+	    viz.all_cats[inst_rc] = [];
 	    var tmp_keys = _.keys(params.network_data[inst_rc + '_nodes'][0]);
 
 	    _.each(tmp_keys, function (d) {
 	      if (d.indexOf('cat-') >= 0) {
-	        params.show_categories[inst_rc] = true;
-	        params.all_cats[inst_rc].push(d);
+	        viz.show_categories[inst_rc] = true;
+	        viz.all_cats[inst_rc].push(d);
 	      }
 	    });
 
-	    if (params.show_categories[inst_rc]) {
+	    if (viz.show_categories[inst_rc]) {
 
 	      if (predefine_colors === false) {
 	        params.cat_colors[inst_rc] = {};
 	      }
-	      params.cat_names[inst_rc] = {};
+	      viz.cat_names[inst_rc] = {};
 
-	      _.each(params.all_cats[inst_rc], function (inst_cat) {
+	      _.each(viz.all_cats[inst_rc], function (inst_cat) {
 
 	        _.each(params.network_data[inst_rc + '_nodes'], function (inst_node) {
 
 	          if (inst_node[inst_cat].indexOf(super_string) > 0) {
 	            tmp_super = inst_node[inst_cat].split(super_string)[0];
-	            params.cat_names[inst_rc][inst_cat] = tmp_super;
+	            viz.cat_names[inst_rc][inst_cat] = tmp_super;
 	          } else {
-	            params.cat_names[inst_rc][inst_cat] = inst_cat;
+	            viz.cat_names[inst_rc][inst_cat] = inst_cat;
 	          }
 	        });
 
@@ -745,7 +745,9 @@ var Clustergrammer =
 	    }
 	  });
 
-	  return params;
+	  viz.cat_colors = params.cat_colors;
+
+	  return { 'params': params, 'viz': viz };
 		};
 
 /***/ },
@@ -770,7 +772,6 @@ var Clustergrammer =
 	var ini_sidebar_params = __webpack_require__(44);
 	var make_requested_view = __webpack_require__(45);
 	var get_available_filters = __webpack_require__(5);
-	var process_category_info = __webpack_require__(10);
 
 	/*
 	Params: calculates the size of all the visualization elements in the
@@ -784,8 +785,6 @@ var Clustergrammer =
 	  var config = $.extend(true, {}, input_config);
 
 	  var params = config;
-
-	  params = process_category_info(params);
 
 	  // keep a copy of inst_view
 	  params.inst_nodes = {};
@@ -808,6 +807,7 @@ var Clustergrammer =
 	  }
 
 	  params.labels = ini_label_params(config, params.network_data);
+
 	  params.viz = ini_viz_params(config, params);
 
 	  params.matrix = ini_matrix_params(config, params.viz, params.network_data);
@@ -1223,11 +1223,19 @@ var Clustergrammer =
 
 	var utils = __webpack_require__(2);
 	var get_available_filters = __webpack_require__(5);
+	var process_category_info = __webpack_require__(10);
 	var calc_cat_params = __webpack_require__(22);
 
 	module.exports = function ini_viz_params(config, params) {
 
+	  console.log('in ini_viz_params');
+
 	  var viz = {};
+
+	  var tmp_info = process_category_info(params, viz);
+
+	  params = tmp_info.params;
+	  viz = tmp_info.viz;
 
 	  viz.root = config.root;
 	  viz.viz_wrapper = config.root + ' .viz_wrapper';
@@ -1323,22 +1331,15 @@ var Clustergrammer =
 	  // increase the width of the label container based on the label length
 	  var label_scale = d3.scale.linear().domain([5, 15]).range([85, 120]).clamp('true');
 
-	  viz.all_cats = params.all_cats;
-
-	  viz.cat_names = params.cat_names;
-
-	  viz.show_categories = {};
 	  viz.cat_room = {};
 	  viz.cat_room.symbol_width = 12;
 	  viz.cat_room.separation = 3;
 
-	  viz.cat_colors = params.cat_colors;
 	  viz.cat_colors.opacity = 0.6;
 	  viz.cat_colors.active_opacity = 0.9;
 
 	  _.each(['row', 'col'], function (inst_rc) {
 
-	    viz.show_categories[inst_rc] = params.show_categories[inst_rc];
 	    viz.norm_labels.width[inst_rc] = label_scale(params.labels[inst_rc + '_max_char']) * params[inst_rc + '_label_scale'];
 
 	    viz['num_' + inst_rc + '_nodes'] = params.network_data[inst_rc + '_nodes'].length;

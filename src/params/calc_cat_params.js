@@ -9,22 +9,15 @@ module.exports = function calc_cat_params(params, viz){
     .domain([5, 15])
     .range([ 85, 120]).clamp('true');
 
-  viz.all_cats = params.all_cats;
-
-  viz.cat_names = params.cat_names;
-
-  viz.show_categories = {};
   viz.cat_room = {};
   viz.cat_room.symbol_width = 12;
   viz.cat_room.separation = 3;
 
-  viz.cat_colors = params.cat_colors;
   viz.cat_colors.opacity = 0.6;
   viz.cat_colors.active_opacity = 0.9;
 
   _.each(['row','col'], function(inst_rc){
 
-    viz.show_categories[inst_rc] = params.show_categories[inst_rc];
     viz.norm_labels.width[inst_rc] = label_scale(params.labels[inst_rc+'_max_char'])
       * params[inst_rc+'_label_scale'];
 

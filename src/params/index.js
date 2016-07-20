@@ -14,7 +14,6 @@ var set_zoom_params = require('./set_zoom_params');
 var ini_sidebar_params = require('./ini_sidebar_params');
 var make_requested_view = require('../filters/make_requested_view');
 var get_available_filters = require('./get_available_filters');
-var process_category_info = require('./process_category_info');
 
 /*
 Params: calculates the size of all the visualization elements in the
@@ -30,7 +29,6 @@ module.exports = function make_params(input_config) {
 
   var params = config;
 
-  params = process_category_info(params);
 
   // keep a copy of inst_view
   params.inst_nodes = {};
@@ -54,6 +52,8 @@ module.exports = function make_params(input_config) {
   }
 
   params.labels = ini_label_params(config, params.network_data);
+
+
   params.viz    = ini_viz_params(config, params);
 
   params.matrix = ini_matrix_params(config, params.viz, params.network_data);

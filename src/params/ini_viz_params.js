@@ -1,10 +1,18 @@
 var utils = require('../Utils_clust');
 var get_available_filters = require('./get_available_filters');
+var process_category_info = require('./process_category_info');
 var calc_cat_params = require('./calc_cat_params');
 
 module.exports = function ini_viz_params(config, params){
 
+  console.log('in ini_viz_params')
+
   var viz = {};
+
+  var tmp_info = process_category_info(params, viz);
+
+  params = tmp_info.params;
+  viz = tmp_info.viz;
 
   viz.root = config.root;
   viz.viz_wrapper = config.root + ' .viz_wrapper';
