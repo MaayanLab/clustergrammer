@@ -10,7 +10,7 @@ var calc_matrix_params = require('./calc_matrix_params');
 var set_zoom_params = require('./set_zoom_params');
 var calc_default_fs = require('./calc_default_fs');
 
-module.exports = function calc_viz_params(config, params){
+module.exports = function calc_viz_params(params){
 
   params.labels = ini_label_params(params);
   params.viz    = ini_viz_params(params);

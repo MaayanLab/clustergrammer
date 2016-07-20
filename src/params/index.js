@@ -35,7 +35,7 @@ module.exports = function make_params(input_config) {
 
   }
 
-  params = calc_viz_params(params, params);
+  params = calc_viz_params(params);
 
   if (params.use_sidebar){
     params.sidebar = ini_sidebar_params(params);

@@ -787,7 +787,7 @@ var Clustergrammer =
 	    params.network_data = make_network_using_view(config, params, requested_view);
 	  }
 
-	  params = calc_viz_params(params, params);
+	  params = calc_viz_params(params);
 
 	  if (params.use_sidebar) {
 	    params.sidebar = ini_sidebar_params(params);
@@ -1174,8 +1174,6 @@ var Clustergrammer =
 	var make_cat_params = __webpack_require__(169);
 
 	module.exports = function ini_viz_params(params) {
-
-	  console.log('ini_viz_params only requires params');
 
 	  var viz = {};
 
@@ -10144,7 +10142,7 @@ var Clustergrammer =
 	var set_zoom_params = __webpack_require__(29);
 	var calc_default_fs = __webpack_require__(25);
 
-	module.exports = function calc_viz_params(config, params) {
+	module.exports = function calc_viz_params(params) {
 
 	  params.labels = ini_label_params(params);
 	  params.viz = ini_viz_params(params);

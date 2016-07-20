@@ -4,8 +4,6 @@ var make_cat_params = require('./make_cat_params');
 
 module.exports = function ini_viz_params(params){
 
-  console.log('ini_viz_params only requires params')
-
   var viz = {};
 
   viz.root = params.root;
