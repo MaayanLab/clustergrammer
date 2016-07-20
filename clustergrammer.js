@@ -58,6 +58,7 @@ var Clustergrammer =
 	var filter_viz_using_nodes = __webpack_require__(149);
 	var filter_viz_using_names = __webpack_require__(150);
 	var make_row_cat = __webpack_require__(105);
+	var calc_viz_params = __webpack_require__(170);
 
 	/* clustergrammer 1.0
 	 * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
@@ -110,9 +111,6 @@ var Clustergrammer =
 	  }
 
 	  function update_cats() {
-	    var tmp_params = this.params;
-
-	    // var row_nodes = tmp_params.network_data.row_nodes;
 
 	    _.each(this.params.network_data.row_nodes, function (inst_node) {
 
@@ -121,6 +119,9 @@ var Clustergrammer =
 
 	      inst_node['cat_1_index'] = 0;
 	      inst_node['cat-1'] = 'Very Interesting';
+
+	      inst_node['cat_2_index'] = 0;
+	      inst_node['cat-2'] = 'Very Interesting';
 	    });
 
 	    // _.each(this.params.network_data.col_nodes, function(inst_node){
@@ -132,15 +133,8 @@ var Clustergrammer =
 	    names.row = this.params.network_data.row_nodes_names;
 	    names.col = this.params.network_data.col_nodes_names;
 
-	    this.params.viz.all_cats.row = ['cat-0', 'cat-1'];
-	    this.params.viz.cat_colors.row['cat-1'] = this.params.viz.cat_colors.row['cat-0'];
-
-	    // this.params.viz.all_cats.col = ['cat-0'];
-
-	    // // possibly update entire visualization
-	    // filter_viz_using_names(names, cgm);
-
-	    this.params = make_params(this.config);
+	    // recalculate the visualization parameters using the updated network_data
+	    this.params = calc_viz_params(this.params);
 
 	    make_row_cat(this.params, true);
 	    resize_viz(this);
