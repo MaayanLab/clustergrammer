@@ -754,20 +754,10 @@ var Clustergrammer =
 	'use strict';
 
 	var make_network_using_view = __webpack_require__(12);
-	var set_viz_wrapper_size = __webpack_require__(15);
-	var calc_clust_width = __webpack_require__(17);
-	var calc_clust_height = __webpack_require__(18);
-	var get_svg_dim = __webpack_require__(19);
-	var ini_label_params = __webpack_require__(20);
-	var ini_viz_params = __webpack_require__(21);
-	var calc_default_fs = __webpack_require__(25);
-	var calc_matrix_params = __webpack_require__(26);
-	var calc_label_params = __webpack_require__(27);
-	var calc_val_max = __webpack_require__(28);
-	var set_zoom_params = __webpack_require__(29);
 	var ini_sidebar_params = __webpack_require__(44);
 	var make_requested_view = __webpack_require__(45);
 	var get_available_filters = __webpack_require__(5);
+	var calc_viz_params = __webpack_require__(170);
 
 	/*
 	Params: calculates the size of all the visualization elements in the
@@ -799,28 +789,7 @@ var Clustergrammer =
 	    params.network_data = make_network_using_view(config, params, requested_view);
 	  }
 
-	  params.labels = ini_label_params(config, params.network_data);
-	  params.viz = ini_viz_params(config, params);
-
-	  set_viz_wrapper_size(params);
-
-	  params = get_svg_dim(params);
-	  params.viz = calc_label_params(params.viz);
-	  params.viz = calc_clust_width(params.viz);
-	  params.viz = calc_clust_height(params.viz);
-
-	  if (params.sim_mat) {
-	    if (params.viz.clust.dim.width <= params.viz.clust.dim.height) {
-	      params.viz.clust.dim.height = params.viz.clust.dim.width;
-	    } else {
-	      params.viz.clust.dim.width = params.viz.clust.dim.height;
-	    }
-	  }
-
-	  params = calc_val_max(params);
-	  params = calc_matrix_params(config, params);
-	  params = set_zoom_params(params);
-	  params = calc_default_fs(params);
+	  params = calc_viz_params(params, params);
 
 	  if (params.use_sidebar) {
 	    params.sidebar = ini_sidebar_params(params);
@@ -1029,18 +998,9 @@ var Clustergrammer =
 
 	  var cont_dim = calc_viz_dimensions(params);
 
-	  // var sidebar_margin = 5;
+	  d3.select(params.root + ' .sidebar_wrapper').style('float', 'left').style('width', params.sidebar_width + 'px').style('height', cont_dim.height + 'px').style('overflow', 'hidden');
 
-	  // d3.select(params.root)
-	  //   .style('clear','both');
-
-	  d3.select(params.root + ' .sidebar_wrapper')
-	  // .style('margin-left',sidebar_margin+'px')
-	  .style('float', 'left').style('width', params.sidebar_width + 'px').style('height', cont_dim.height + 'px').style('overflow', 'hidden');
-
-	  d3.select(params.viz.viz_wrapper).style('float', 'left').style('width', cont_dim.width + 'px')
-	  // .style('width', '100px')
-	  .style('height', cont_dim.height + 'px');
+	  d3.select(params.viz.viz_wrapper).style('float', 'left').style('width', cont_dim.width + 'px').style('height', cont_dim.height + 'px');
 		};
 
 /***/ },
@@ -10161,6 +10121,52 @@ var Clustergrammer =
 	  viz = calc_cat_params(params, viz);
 
 	  return viz;
+		};
+
+/***/ },
+/* 170 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var ini_label_params = __webpack_require__(20);
+	var ini_viz_params = __webpack_require__(21);
+	var set_viz_wrapper_size = __webpack_require__(15);
+	var get_svg_dim = __webpack_require__(19);
+	var calc_label_params = __webpack_require__(27);
+	var calc_clust_width = __webpack_require__(17);
+	var calc_clust_height = __webpack_require__(18);
+	var calc_val_max = __webpack_require__(28);
+	var calc_matrix_params = __webpack_require__(26);
+	var set_zoom_params = __webpack_require__(29);
+	var calc_default_fs = __webpack_require__(25);
+
+	module.exports = function calc_viz_params(config, params) {
+
+	  params.labels = ini_label_params(config, params.network_data);
+	  params.viz = ini_viz_params(config, params);
+
+	  set_viz_wrapper_size(params);
+
+	  params = get_svg_dim(params);
+	  params.viz = calc_label_params(params.viz);
+	  params.viz = calc_clust_width(params.viz);
+	  params.viz = calc_clust_height(params.viz);
+
+	  if (params.sim_mat) {
+	    if (params.viz.clust.dim.width <= params.viz.clust.dim.height) {
+	      params.viz.clust.dim.height = params.viz.clust.dim.width;
+	    } else {
+	      params.viz.clust.dim.width = params.viz.clust.dim.height;
+	    }
+	  }
+
+	  params = calc_val_max(params);
+	  params = calc_matrix_params(config, params);
+	  params = set_zoom_params(params);
+	  params = calc_default_fs(params);
+
+	  return params;
 		};
 
 /***/ }
