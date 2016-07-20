@@ -114,14 +114,20 @@ var Clustergrammer =
 
 	    _.each(this.params.network_data.row_nodes, function (inst_node) {
 
+	      var tmp = Math.random();
+	      var is_interesting = false;
+	      if (tmp > 0.5) {
+	        is_interesting = true;
+	      }
+
 	      inst_node['cat_0_index'] = 0;
-	      inst_node['cat-0'] = 'Very Interesting: true';
+	      inst_node['cat-0'] = 'Very Interesting: ' + String(is_interesting);
 
 	      inst_node['cat_1_index'] = 0;
-	      inst_node['cat-1'] = 'Very Interesting: true';
+	      inst_node['cat-1'] = 'Very Interesting: ' + String(is_interesting);
 
 	      inst_node['cat_2_index'] = 0;
-	      inst_node['cat-2'] = 'Very Interesting: true';
+	      inst_node['cat-2'] = 'Very Interesting: ' + String(is_interesting);
 	    });
 
 	    // _.each(this.params.network_data.col_nodes, function(inst_node){
