@@ -25,6 +25,7 @@ var show_visible_area = require('../zoom/show_visible_area');
 var calc_viz_dimensions = require('../params/calc_viz_dimensions');
 var position_play_button = require('../demo/position_play_button');
 var make_row_cat_super_labels = require('../labels/make_row_cat_super_labels');
+var ini_cat_reorder = require('../reorder/ini_cat_reorder');
 
 module.exports = function(cgm) {
 
@@ -201,7 +202,10 @@ module.exports = function(cgm) {
 
   show_visible_area(params, zoom_info);
 
-  make_row_cat_super_labels(params);
+  make_row_cat_super_labels(cgm);
 
   d3.select(params.viz.viz_svg).style('opacity',1);
+
+  ini_cat_reorder(cgm);
+
 };

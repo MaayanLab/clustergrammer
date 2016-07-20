@@ -1,6 +1,8 @@
 var get_cat_title = require('../categories/get_cat_title');
 
-module.exports = function make_row_cat_super_labels(params){
+module.exports = function make_row_cat_super_labels(cgm){
+
+  var params = cgm.params;
 
   var viz = params.viz;
   var extra_x_room = 2.75;

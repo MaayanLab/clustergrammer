@@ -112,22 +112,24 @@ var Clustergrammer =
 
 	  function update_cats() {
 
+	    var inst_index = 0;
 	    _.each(this.params.network_data.row_nodes, function (inst_node) {
 
-	      var tmp = Math.random();
 	      var is_interesting = false;
-	      if (tmp > 0.5) {
+	      if (inst_index < 10) {
 	        is_interesting = true;
 	      }
 
-	      inst_node['cat_0_index'] = 0;
+	      inst_node['cat_0_index'] = inst_index;
 	      inst_node['cat-0'] = 'Very Interesting: ' + String(is_interesting);
 
-	      inst_node['cat_1_index'] = 0;
+	      inst_node['cat_1_index'] = inst_index;
 	      inst_node['cat-1'] = 'Very Interesting: ' + String(is_interesting);
 
-	      inst_node['cat_2_index'] = 0;
+	      inst_node['cat_2_index'] = inst_index;
 	      inst_node['cat-2'] = 'Very Interesting: ' + String(is_interesting);
+
+	      inst_index = inst_index + 1;
 	    });
 
 	    // _.each(this.params.network_data.col_nodes, function(inst_node){
@@ -4743,9 +4745,9 @@ var Clustergrammer =
 
 	  // row category super labels
 	  if (viz.show_categories.row) {
-	    var row_cat_label_container = d3.select(viz.viz_svg).append('g').classed('row_cat_label_container', true);
+	    d3.select(viz.viz_svg).append('g').classed('row_cat_label_container', true);
 
-	    make_row_cat_super_labels(params);
+	    make_row_cat_super_labels(cgm);
 	  }
 
 	  // white border bottom - prevent clustergram from hitting border
@@ -5377,6 +5379,7 @@ var Clustergrammer =
 	var calc_viz_dimensions = __webpack_require__(16);
 	var position_play_button = __webpack_require__(101);
 	var make_row_cat_super_labels = __webpack_require__(172);
+	var ini_cat_reorder = __webpack_require__(77);
 
 	module.exports = function (cgm) {
 
@@ -5518,9 +5521,11 @@ var Clustergrammer =
 
 	  show_visible_area(params, zoom_info);
 
-	  make_row_cat_super_labels(params);
+	  make_row_cat_super_labels(cgm);
 
 	  d3.select(params.viz.viz_svg).style('opacity', 1);
+
+	  ini_cat_reorder(cgm);
 		};
 
 /***/ },
@@ -8247,8 +8252,6 @@ var Clustergrammer =
 
 	module.exports = function resize_containers(params) {
 
-	  console.log('resize_containers');
-
 	  // reposition matrix
 	  d3.select(params.root + ' .clust_container').attr('transform', 'translate(' + params.viz.clust.margin.left + ',' + params.viz.clust.margin.top + ')');
 
@@ -10177,7 +10180,9 @@ var Clustergrammer =
 
 	var get_cat_title = __webpack_require__(76);
 
-	module.exports = function make_row_cat_super_labels(params) {
+	module.exports = function make_row_cat_super_labels(cgm) {
+
+	  var params = cgm.params;
 
 	  var viz = params.viz;
 	  var extra_x_room = 2.75;

@@ -63,22 +63,24 @@ function Clustergrammer(args) {
 
   function update_cats(){
 
+    var inst_index = 0;
     _.each(this.params.network_data.row_nodes, function(inst_node){
 
-      var tmp = Math.random();
       var is_interesting = false;
-      if (tmp > 0.5){
+      if (inst_index < 10){
         is_interesting = true;
       }
 
-      inst_node['cat_0_index'] = 0
+      inst_node['cat_0_index'] = inst_index
       inst_node['cat-0'] = 'Very Interesting: '+String(is_interesting);
 
-      inst_node['cat_1_index'] = 0
+      inst_node['cat_1_index'] = inst_index
       inst_node['cat-1'] = 'Very Interesting: '+String(is_interesting);
 
-      inst_node['cat_2_index'] = 0
+      inst_node['cat_2_index'] = inst_index
       inst_node['cat-2'] = 'Very Interesting: '+String(is_interesting);
+
+      inst_index = inst_index + 1;
 
     });
 

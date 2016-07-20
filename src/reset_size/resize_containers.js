@@ -1,7 +1,5 @@
 module.exports = function resize_containers(params){
 
-  console.log('resize_containers')
-
   // reposition matrix
   d3.select(params.root+' .clust_container')
     .attr('transform', 'translate(' +

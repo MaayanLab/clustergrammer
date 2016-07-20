@@ -136,12 +136,11 @@ module.exports = function Spillover(cgm) {
 
   // row category super labels
   if (viz.show_categories.row){
-    var row_cat_label_container = d3.select(viz.viz_svg)
+    d3.select(viz.viz_svg)
       .append('g')
       .classed('row_cat_label_container', true);
 
-    make_row_cat_super_labels(params);
-
+    make_row_cat_super_labels(cgm);
 
   }
 
@@ -165,10 +164,6 @@ module.exports = function Spillover(cgm) {
       return 'translate(0,' + inst_offset + ')';
     });
 
-
-
   ini_cat_reorder(cgm);
-
-
 
 };
