@@ -185,7 +185,7 @@ module.exports = function(cgm, text_delay) {
     })
     .on('dblclick', function(d) {
 
-      if (params.dendro_filter.row === false){
+      // if (params.dendro_filter.row === false){
 
         var data_attr = '__data__';
         var col_name = this[data_attr].name;
@@ -208,7 +208,7 @@ module.exports = function(cgm, text_delay) {
           add_col_click_hlight(params, this, d.ini);
         }
 
-      }
+      // }
 
     });
 

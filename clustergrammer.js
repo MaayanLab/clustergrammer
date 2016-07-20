@@ -3382,30 +3382,30 @@ var Clustergrammer =
 
 	  d3.select(params.root + ' .row_label_zoom_container').selectAll('.row_label_group').on('dblclick', function (d) {
 
-	    if (params.dendro_filter.col === false) {
+	    // if (params.dendro_filter.col === false){
 
-	      console.log('reorder single row');
+	    console.log('reorder single row');
 
-	      var data_attr = '__data__';
-	      var row_name = this[data_attr].name;
+	    var data_attr = '__data__';
+	    var row_name = this[data_attr].name;
 
-	      if (params.sim_mat) {
-	        row_reorder(cgm, this, row_name);
+	    if (params.sim_mat) {
+	      row_reorder(cgm, this, row_name);
 
-	        var col_selection = d3.selectAll(params.root + ' .col_label_text').filter(function (d) {
-	          return d.name == row_name;
-	        })[0][0];
+	      var col_selection = d3.selectAll(params.root + ' .col_label_text').filter(function (d) {
+	        return d.name == row_name;
+	      })[0][0];
 
-	        col_reorder(cgm, col_selection, row_name);
-	      } else {
-	        row_reorder(cgm, this, row_name);
-	      }
-	      if (params.tile_click_hlight) {
-	        add_row_click_hlight(this, d.ini);
-	      }
+	      col_reorder(cgm, col_selection, row_name);
+	    } else {
+	      row_reorder(cgm, this, row_name);
 	    }
+	    if (params.tile_click_hlight) {
+	      add_row_click_hlight(this, d.ini);
+	    }
+	    // }
 	  });
-
+	
 	  make_row_tooltips(params);
 
 	  // append rectangle behind text
@@ -3510,9 +3510,9 @@ var Clustergrammer =
 
 	  var params = cgm.params;
 	  params.viz.inst_order.row = 'custom';
-	  // toggle_dendro_view(cgm, 'col');
+	  toggle_dendro_view(cgm, 'col');
 
-	  d3.selectAll(params.root + ' .col_dendro_group').style('opacity', 0);
+	  // d3.selectAll(params.root+' .col_dendro_group').style('opacity',0);
 
 	  d3.selectAll(params.root + ' .toggle_col_order .btn').classed('active', false);
 
@@ -3702,11 +3702,11 @@ var Clustergrammer =
 	    }
 	  }
 
-	  if (params.viz.inst_order.row != 'clust') {
+	  if (params.viz.inst_order.row != 'clust' && params.viz.dendro_filter.col === false) {
 	    d3.selectAll(params.root + ' .col_dendro_group').style('opacity', 0).on('mouseover', null).on('mouseout', null);
 	  }
 
-	  if (params.viz.inst_order.col != 'clust') {
+	  if (params.viz.inst_order.col != 'clust' && params.viz.dendro_filter.row === false) {
 	    d3.selectAll(params.root + ' .row_dendro_group').style('opacity', 0).on('mouseover', null).on('mouseout', null);
 	  }
 		};
@@ -3811,8 +3811,8 @@ var Clustergrammer =
 	      /* filter rows using dendrogram */
 	      if (cgm.params.dendro_filter.row === false) {
 
-	        // disable row ordering and dendro slider
-	        d3.selectAll('.toggle_row_order .btn').attr('disabled', true);
+	        // // disable row ordering and dendro slider
+	        // d3.selectAll('.toggle_row_order .btn').attr('disabled', true);
 	        $(params.root + ' .slider_row').slider('disable');
 
 	        var names = {};
@@ -4100,13 +4100,15 @@ var Clustergrammer =
 
 	  function col_dendro_filter(d, inst_selection) {
 
+	    console.log('something!');
+
 	    if (cgm.params.dendro_filter.row === false) {
 
 	      /* filter cols using dendrogram */
 	      if (cgm.params.dendro_filter.col === false) {
 
-	        // disable col ordering and dendro slider
-	        d3.selectAll('.toggle_col_order .btn').attr('disabled', true);
+	        // // disable col ordering and dendro slider
+	        // d3.selectAll('.toggle_col_order .btn').attr('disabled', true);
 	        $(params.root + ' .slider_col').slider('disable');
 
 	        var names = {};
@@ -4216,7 +4218,7 @@ var Clustergrammer =
 	  params.viz.inst_order.col = 'custom';
 	  toggle_dendro_view(cgm, 'col');
 
-	  d3.selectAll(params.root + ' .row_dendro_group').style('opacity', 0);
+	  // d3.selectAll(params.root+' .row_dendro_group').style('opacity',0);
 
 	  d3.selectAll(params.root + ' .toggle_row_order .btn').classed('active', false);
 
@@ -4503,27 +4505,28 @@ var Clustergrammer =
 	    }
 	  }).on('dblclick', function (d) {
 
-	    if (params.dendro_filter.row === false) {
+	    // if (params.dendro_filter.row === false){
 
-	      var data_attr = '__data__';
-	      var col_name = this[data_attr].name;
+	    var data_attr = '__data__';
+	    var col_name = this[data_attr].name;
 
-	      if (params.sim_mat) {
-	        col_reorder(cgm, this, col_name);
+	    if (params.sim_mat) {
+	      col_reorder(cgm, this, col_name);
 
-	        var row_selection = d3.selectAll(params.root + ' .row_label_group').filter(function (d) {
-	          return d.name == col_name;
-	        })[0][0];
+	      var row_selection = d3.selectAll(params.root + ' .row_label_group').filter(function (d) {
+	        return d.name == col_name;
+	      })[0][0];
 
-	        row_reorder(cgm, row_selection, col_name);
-	      } else {
-	        col_reorder(cgm, this, col_name);
-	      }
-
-	      if (params.tile_click_hlight) {
-	        add_col_click_hlight(params, this, d.ini);
-	      }
+	      row_reorder(cgm, row_selection, col_name);
+	    } else {
+	      col_reorder(cgm, this, col_name);
 	    }
+
+	    if (params.tile_click_hlight) {
+	      add_col_click_hlight(params, this, d.ini);
+	    }
+
+	    // }
 	  });
 		};
 
@@ -8408,17 +8411,18 @@ var Clustergrammer =
 	  $(params.root + ' .slider_N_row_var').slider('enable');
 
 	  // only enable reordering if params.dendro_filter.row === false
+
 	  if (params.dendro_filter.row === false) {
 	    $(params.root + ' .slider_row').slider('enable');
-
-	    d3.selectAll(params.root + ' .toggle_row_order .btn').attr('disabled', null);
 	  }
+
+	  d3.selectAll(params.root + ' .toggle_row_order .btn').attr('disabled', null);
 
 	  if (params.dendro_filter.col === false) {
 	    $(params.root + ' .slider_col').slider('enable');
-
-	    d3.selectAll(params.root + ' .toggle_col_order .btn').attr('disabled', null);
 	  }
+
+	  d3.selectAll(params.root + ' .toggle_col_order .btn').attr('disabled', null);
 
 	  d3.selectAll(params.root + ' .gene_search_button .btn').attr('disabled', null);
 

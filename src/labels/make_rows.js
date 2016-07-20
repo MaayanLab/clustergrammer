@@ -68,7 +68,7 @@ module.exports = function(cgm, text_delay) {
     .selectAll('.row_label_group')
     .on('dblclick', function(d) {
 
-      if (params.dendro_filter.col === false){
+      // if (params.dendro_filter.col === false){
 
         console.log('reorder single row')
 
@@ -90,7 +90,7 @@ module.exports = function(cgm, text_delay) {
         if (params.tile_click_hlight){
           add_row_click_hlight(this,d.ini);
         }
-      }
+      // }
 
     });
 

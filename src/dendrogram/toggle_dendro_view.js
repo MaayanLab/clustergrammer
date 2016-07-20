@@ -20,14 +20,14 @@ module.exports = function toggle_dendro_view(cgm, row_col, wait_time = 1500){
     }
   }
 
-  if (params.viz.inst_order.row != 'clust'){
+  if (params.viz.inst_order.row != 'clust' && params.viz.dendro_filter.col === false){
     d3.selectAll(params.root+' .col_dendro_group')
       .style('opacity',0)
       .on('mouseover',null)
       .on('mouseout',null);
   }
 
-  if (params.viz.inst_order.col != 'clust'){
+  if (params.viz.inst_order.col != 'clust' && params.viz.dendro_filter.row === false){
     d3.selectAll(params.root+' .row_dendro_group')
       .style('opacity',0)
       .on('mouseover',null)
