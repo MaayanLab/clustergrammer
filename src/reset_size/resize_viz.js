@@ -27,7 +27,6 @@ var position_play_button = require('../demo/position_play_button');
 
 module.exports = function(cgm) {
 
-  console.log('resize_viz')
   var params = cgm.params;
 
   var cont_dim = calc_viz_dimensions(params);

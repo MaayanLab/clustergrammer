@@ -22,13 +22,8 @@ clustergram.
 
 module.exports = function make_params(input_config) {
 
-  console.log('--------------\nmaking params\n------------------\n')
-
   var config = $.extend(true, {}, input_config);
-
-
   var params = config;
-
 
   // keep a copy of inst_view
   params.inst_nodes = {};

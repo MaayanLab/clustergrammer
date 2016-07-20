@@ -1,17 +1,10 @@
 var utils = require('../Utils_clust');
 var get_available_filters = require('./get_available_filters');
-var process_category_info = require('./process_category_info');
-var calc_cat_params = require('./calc_cat_params');
+var make_cat_params = require('./make_cat_params');
 
 module.exports = function ini_viz_params(config, params){
 
-  console.log('in ini_viz_params')
-
   var viz = {};
-
-  viz.cat_colors = config.cat_colors;
-
-  viz = process_category_info(params.network_data, params.sim_mat, viz);
 
   viz.root = config.root;
   viz.viz_wrapper = config.root + ' .viz_wrapper';
@@ -73,7 +66,9 @@ module.exports = function ini_viz_params(config, params){
     viz.dendro_room.symbol_width = 0;
   }
 
-  viz = calc_cat_params(params, viz);
+  viz.cat_colors = params.cat_colors;
+
+  viz = make_cat_params(params, viz);
 
   if (_.has(config, 'group_level')){
     config.group_level.row = 5;

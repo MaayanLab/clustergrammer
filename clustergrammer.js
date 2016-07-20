@@ -663,9 +663,7 @@ var Clustergrammer =
 	var utils = __webpack_require__(2);
 	var colors = __webpack_require__(3);
 
-	module.exports = function process_category_info(network_data, sim_mat, viz) {
-
-	  console.log('process_category_info...');
+	module.exports = function process_category_info(params, viz) {
 
 	  var super_string = ': ';
 	  var tmp_super;
@@ -688,7 +686,7 @@ var Clustergrammer =
 	    viz.show_categories[inst_rc] = false;
 
 	    viz.all_cats[inst_rc] = [];
-	    var tmp_keys = _.keys(network_data[inst_rc + '_nodes'][0]);
+	    var tmp_keys = _.keys(params.network_data[inst_rc + '_nodes'][0]);
 
 	    _.each(tmp_keys, function (d) {
 	      if (d.indexOf('cat-') >= 0) {
@@ -706,7 +704,7 @@ var Clustergrammer =
 
 	      _.each(viz.all_cats[inst_rc], function (inst_cat) {
 
-	        _.each(network_data[inst_rc + '_nodes'], function (inst_node) {
+	        _.each(params.network_data[inst_rc + '_nodes'], function (inst_node) {
 
 	          if (inst_node[inst_cat].indexOf(super_string) > 0) {
 	            tmp_super = inst_node[inst_cat].split(super_string)[0];
@@ -716,7 +714,7 @@ var Clustergrammer =
 	          }
 	        });
 
-	        var names_of_cat = _.uniq(utils.pluck(network_data[inst_rc + '_nodes'], inst_cat)).sort();
+	        var names_of_cat = _.uniq(utils.pluck(params.network_data[inst_rc + '_nodes'], inst_cat)).sort();
 
 	        if (predefine_colors === false) {
 
@@ -740,7 +738,7 @@ var Clustergrammer =
 	      });
 	    }
 
-	    if (sim_mat) {
+	    if (params.sim_mat) {
 	      viz.cat_colors.row = viz.cat_colors.col;
 	    }
 	  });
@@ -780,10 +778,7 @@ var Clustergrammer =
 
 	module.exports = function make_params(input_config) {
 
-	  console.log('--------------\nmaking params\n------------------\n');
-
 	  var config = $.extend(true, {}, input_config);
-
 	  var params = config;
 
 	  // keep a copy of inst_view
@@ -1223,18 +1218,11 @@ var Clustergrammer =
 
 	var utils = __webpack_require__(2);
 	var get_available_filters = __webpack_require__(5);
-	var process_category_info = __webpack_require__(10);
-	var calc_cat_params = __webpack_require__(22);
+	var make_cat_params = __webpack_require__(169);
 
 	module.exports = function ini_viz_params(config, params) {
 
-	  console.log('in ini_viz_params');
-
 	  var viz = {};
-
-	  viz.cat_colors = config.cat_colors;
-
-	  viz = process_category_info(params.network_data, params.sim_mat, viz);
 
 	  viz.root = config.root;
 	  viz.viz_wrapper = config.root + ' .viz_wrapper';
@@ -1296,7 +1284,9 @@ var Clustergrammer =
 	    viz.dendro_room.symbol_width = 0;
 	  }
 
-	  viz = calc_cat_params(params, viz);
+	  viz.cat_colors = params.cat_colors;
+
+	  viz = make_cat_params(params, viz);
 
 	  if (_.has(config, 'group_level')) {
 	    config.group_level.row = 5;
@@ -1322,8 +1312,6 @@ var Clustergrammer =
 	'use strict';
 
 	module.exports = function calc_cat_params(params, viz) {
-
-	  console.log('in calc_cat_params');
 
 	  var separtion_room;
 
@@ -5442,7 +5430,6 @@ var Clustergrammer =
 
 	module.exports = function (cgm) {
 
-	  console.log('resize_viz');
 	  var params = cgm.params;
 
 	  var cont_dim = calc_viz_dimensions(params);
@@ -10158,6 +10145,23 @@ var Clustergrammer =
 	  $(params.root + ' .opacity_slider').slider({
 	    value: 1.0
 	  });
+		};
+
+/***/ },
+/* 169 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var process_category_info = __webpack_require__(10);
+	var calc_cat_params = __webpack_require__(22);
+
+	module.exports = function make_cat_params(params, viz) {
+
+	  viz = process_category_info(params, viz);
+	  viz = calc_cat_params(params, viz);
+
+	  return viz;
 		};
 
 /***/ }

@@ -1,7 +1,5 @@
 module.exports = function calc_cat_params(params, viz){
 
-  console.log('in calc_cat_params')
-
   var separtion_room;
 
   // increase the width of the label container based on the label length
