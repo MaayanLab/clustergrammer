@@ -9,10 +9,9 @@ module.exports = function ini_viz_params(config, params){
 
   var viz = {};
 
-  var tmp_info = process_category_info(params, viz);
+  viz.cat_colors = config.cat_colors;
 
-  params = tmp_info.params;
-  viz = tmp_info.viz;
+  viz = process_category_info(params.network_data, params.sim_mat, viz);
 
   viz.root = config.root;
   viz.viz_wrapper = config.root + ' .viz_wrapper';
@@ -61,7 +60,6 @@ module.exports = function ini_viz_params(config, params){
   if (params.labels.super_labels){
     viz.super_labels.dim.width = 15 * params.labels.super_label_scale;
   }
-
 
   viz.triangle_opacity = 0.6;
 
