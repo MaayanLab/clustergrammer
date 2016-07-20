@@ -27,9 +27,10 @@ module.exports = function make_params(input_config) {
 
   var config = $.extend(true, {}, input_config);
 
-  config = process_category_info(config);
 
   var params = config;
+
+  params = process_category_info(params);
 
   // keep a copy of inst_view
   params.inst_nodes = {};
