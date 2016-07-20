@@ -8,7 +8,7 @@ var ini_demo = require('./demo/ini_demo');
 var update_viz_with_view = require('./network/update_viz_with_view');
 var filter_viz_using_nodes = require('./network/filter_viz_using_nodes');
 var filter_viz_using_names = require('./network/filter_viz_using_names');
-var make_row_cat = require('./dendrogram/make_row_cat');
+// var make_row_cat = require('./dendrogram/make_row_cat');
 
 /* clustergrammer 1.0
  * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
@@ -63,7 +63,7 @@ function Clustergrammer(args) {
   function update_cats(){
     var tmp_params = this.params;
 
-    var row_nodes = tmp_params.network_data.row_nodes;
+    // var row_nodes = tmp_params.network_data.row_nodes;
 
     _.each(this.params.network_data.row_nodes, function(inst_node){
 
