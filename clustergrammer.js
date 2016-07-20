@@ -115,13 +115,13 @@ var Clustergrammer =
 	    _.each(this.params.network_data.row_nodes, function (inst_node) {
 
 	      inst_node['cat_0_index'] = 0;
-	      inst_node['cat-0'] = 'Very Interesting';
+	      inst_node['cat-0'] = 'Very Interesting: true';
 
 	      inst_node['cat_1_index'] = 0;
-	      inst_node['cat-1'] = 'Very Interesting';
+	      inst_node['cat-1'] = 'Very Interesting: true';
 
 	      inst_node['cat_2_index'] = 0;
-	      inst_node['cat-2'] = 'Very Interesting';
+	      inst_node['cat-2'] = 'Very Interesting: true';
 	    });
 
 	    // _.each(this.params.network_data.col_nodes, function(inst_node){
@@ -5398,8 +5398,6 @@ var Clustergrammer =
 	  zoom_info.trans_x = 0;
 	  zoom_info.trans_y = 0;
 
-	  show_visible_area(params, zoom_info);
-
 	  d3.select(params.root + ' .sidebar_wrapper').style('height', cont_dim.height + 'px');
 
 	  d3.select(params.viz.viz_wrapper)
@@ -5521,6 +5519,8 @@ var Clustergrammer =
 
 	  // reposition matrix
 	  d3.select(params.root + ' .clust_container').attr('transform', 'translate(' + params.viz.clust.margin.left + ',' + params.viz.clust.margin.top + ')');
+
+	  show_visible_area(params, zoom_info);
 
 	  d3.select(params.viz.viz_svg).style('opacity', 1);
 		};

@@ -41,8 +41,6 @@ module.exports = function(cgm) {
   zoom_info.trans_x = 0;
   zoom_info.trans_y = 0;
 
-  show_visible_area(params, zoom_info);
-
   d3.select(params.root+' .sidebar_wrapper')
     .style('height', cont_dim.height+'px');
 
@@ -200,6 +198,7 @@ module.exports = function(cgm) {
       params.viz.clust.margin.left + ',' +
       params.viz.clust.margin.top + ')');
 
+  show_visible_area(params, zoom_info);
 
   d3.select(params.viz.viz_svg).style('opacity',1);
 };
