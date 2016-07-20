@@ -55,7 +55,9 @@ module.exports = function process_category_info(config){
 
         });
 
-        var names_of_cat = _.uniq( utils.pluck(config.network_data[inst_rc+'_nodes'], inst_cat)).sort();
+        var names_of_cat = _.uniq(
+            utils.pluck(config.network_data[inst_rc+'_nodes'], inst_cat)
+          ).sort();
 
         if (predefine_colors === false){
 

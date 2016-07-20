@@ -175,7 +175,6 @@ var Clustergrammer =
 	var set_defaults = __webpack_require__(7);
 	var check_sim_mat = __webpack_require__(8);
 	var check_nodes_for_categories = __webpack_require__(9);
-	var process_category_info = __webpack_require__(10);
 
 	module.exports = function make_config(args) {
 
@@ -303,8 +302,6 @@ var Clustergrammer =
 	  var col_has_group = utils.has(config.network_data.col_nodes[0], 'group');
 
 	  config.show_dendrogram = row_has_group || col_has_group;
-
-	  config = process_category_info(config);
 
 	  if (utils.has(config.network_data.links[0], 'value_orig')) {
 	    config.keep_orig = true;
@@ -771,6 +768,7 @@ var Clustergrammer =
 	var ini_sidebar_params = __webpack_require__(44);
 	var make_requested_view = __webpack_require__(45);
 	var get_available_filters = __webpack_require__(5);
+	var process_category_info = __webpack_require__(10);
 
 	/*
 	Params: calculates the size of all the visualization elements in the
@@ -782,6 +780,9 @@ var Clustergrammer =
 	  console.log('--------------\nmaking params\n------------------\n');
 
 	  var config = $.extend(true, {}, input_config);
+
+	  config = process_category_info(config);
+
 	  var params = config;
 
 	  // keep a copy of inst_view

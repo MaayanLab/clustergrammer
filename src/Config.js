@@ -5,7 +5,6 @@ var get_filter_default_state = require('./filters/get_filter_default_state');
 var set_defaults = require('./config/set_defaults');
 var check_sim_mat = require('./config/check_sim_mat');
 var check_nodes_for_categories = require('./config/check_nodes_for_categories');
-var process_category_info = require('./params/process_category_info');
 
 module.exports = function make_config(args) {
 
@@ -138,9 +137,6 @@ module.exports = function make_config(args) {
   var col_has_group = utils.has(config.network_data.col_nodes[0], 'group');
 
   config.show_dendrogram = row_has_group || col_has_group;
-
-
-  config = process_category_info(config);
 
 
   if (utils.has(config.network_data.links[0], 'value_orig')){

@@ -14,6 +14,7 @@ var set_zoom_params = require('./set_zoom_params');
 var ini_sidebar_params = require('./ini_sidebar_params');
 var make_requested_view = require('../filters/make_requested_view');
 var get_available_filters = require('./get_available_filters');
+var process_category_info = require('./process_category_info');
 
 /*
 Params: calculates the size of all the visualization elements in the
@@ -25,6 +26,9 @@ module.exports = function make_params(input_config) {
   console.log('--------------\nmaking params\n------------------\n')
 
   var config = $.extend(true, {}, input_config);
+
+  config = process_category_info(config);
+
   var params = config;
 
   // keep a copy of inst_view
