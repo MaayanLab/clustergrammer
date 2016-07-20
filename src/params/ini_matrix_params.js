@@ -1,16 +1,19 @@
 var utils = require('../Utils_clust');
 var initialize_matrix = require('../initialize_matrix');
 
-module.exports = function ini_matrix_params(config, viz, network_data){
+module.exports = function ini_matrix_params(params){
 
   var matrix = {};
-  matrix.tile_colors = config.tile_colors;
-  matrix.bar_colors = config.bar_colors;
-  matrix.outline_colors = config.outline_colors;
-  matrix.hlight_color = config.highlight_color;
-  matrix.tile_title = config.tile_title;
-  matrix.show_tile_tooltips = config.show_tile_tooltips;
-  matrix.make_tile_tooltip = config.make_tile_tooltip;
+
+  var network_data = params.network_data;
+
+  matrix.tile_colors = params.tile_colors;
+  matrix.bar_colors = params.bar_colors;
+  matrix.outline_colors = params.outline_colors;
+  matrix.hlight_color = params.highlight_color;
+  matrix.tile_title = params.tile_title;
+  matrix.show_tile_tooltips = params.show_tile_tooltips;
+  matrix.make_tile_tooltip = params.make_tile_tooltip;
 
   // initialized clicked tile and rows
   matrix.click_hlight_x = -666;
@@ -20,7 +23,7 @@ module.exports = function ini_matrix_params(config, viz, network_data){
 
   // definition of a large matrix (num links) determines if transition is run
   matrix.def_large_matrix = 10000;
-  matrix.opacity_function = config.opacity_scale;
+  matrix.opacity_function = params.opacity_scale;
 
   matrix.orders = {};
 
@@ -53,8 +56,8 @@ module.exports = function ini_matrix_params(config, viz, network_data){
       possible_orders.push('rankvar');
     }
 
-    if (viz.all_cats[other_rc].length > 0){
-      _.each( viz.all_cats[other_rc], function(inst_cat){
+    if (params.viz.all_cats[other_rc].length > 0){
+      _.each( params.viz.all_cats[other_rc], function(inst_cat){
         // the index of the category has replaced - with _
         inst_cat = inst_cat.replace('-','_');
         possible_orders.push(inst_cat+'_index');
@@ -85,9 +88,9 @@ module.exports = function ini_matrix_params(config, viz, network_data){
     }).value;
   }
 
-  matrix.abs_max_val = Math.abs(matrix.max_link) * config.clamp_opacity;
+  matrix.abs_max_val = Math.abs(matrix.max_link) * params.clamp_opacity;
 
-  if (config.input_domain === 0) {
+  if (params.input_domain === 0) {
     if (matrix.opacity_function === 'linear') {
       matrix.opacity_scale = d3.scale.linear()
         .domain([0, matrix.abs_max_val]).clamp(true)
@@ -100,11 +103,11 @@ module.exports = function ini_matrix_params(config, viz, network_data){
   } else {
     if (matrix.opacity_function === 'linear') {
       matrix.opacity_scale = d3.scale.linear()
-        .domain([0, config.input_domain]).clamp(true)
+        .domain([0, params.input_domain]).clamp(true)
         .range([0.0, 1.0]);
     } else if (matrix.opacity_function === 'log') {
       matrix.opacity_scale = d3.scale.log()
-        .domain([0.001, config.input_domain]).clamp(true)
+        .domain([0.001, params.input_domain]).clamp(true)
         .range([0.0, 1.0]);
     }
   }

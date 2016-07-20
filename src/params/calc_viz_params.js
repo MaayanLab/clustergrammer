@@ -13,7 +13,7 @@ var calc_default_fs = require('./calc_default_fs');
 module.exports = function calc_viz_params(config, params){
 
   params.labels = ini_label_params(params);
-  params.viz    = ini_viz_params(config, params);
+  params.viz    = ini_viz_params(params);
 
   set_viz_wrapper_size(params);
 
@@ -31,7 +31,7 @@ module.exports = function calc_viz_params(config, params){
   }
 
   params = calc_val_max(params);
-  params = calc_matrix_params(config, params);
+  params = calc_matrix_params(params);
   params = set_zoom_params(params);
   params = calc_default_fs(params);
 

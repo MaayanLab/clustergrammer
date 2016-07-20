@@ -2,24 +2,26 @@ var utils = require('../Utils_clust');
 var get_available_filters = require('./get_available_filters');
 var make_cat_params = require('./make_cat_params');
 
-module.exports = function ini_viz_params(config, params){
+module.exports = function ini_viz_params(params){
+
+  console.log('ini_viz_params only requires params')
 
   var viz = {};
 
-  viz.root = config.root;
-  viz.viz_wrapper = config.root + ' .viz_wrapper';
-  viz.do_zoom = config.do_zoom;
-  viz.background_color = config.background_color;
-  viz.super_border_color = config.super_border_color;
-  viz.outer_margins = config.outer_margins;
-  viz.is_expand = config.ini_expand;
-  viz.grey_border_width = config.grey_border_width;
-  viz.show_dendrogram = config.show_dendrogram;
-  viz.tile_click_hlight = config.tile_click_hlight;
-  viz.inst_order = config.inst_order;
-  viz.expand_button = config.expand_button;
-  viz.sim_mat = config.sim_mat;
-  viz.dendro_filter = config.dendro_filter;
+  viz.root = params.root;
+  viz.viz_wrapper = params.root + ' .viz_wrapper';
+  viz.do_zoom = params.do_zoom;
+  viz.background_color = params.background_color;
+  viz.super_border_color = params.super_border_color;
+  viz.outer_margins = params.outer_margins;
+  viz.is_expand = params.ini_expand;
+  viz.grey_border_width = params.grey_border_width;
+  viz.show_dendrogram = params.show_dendrogram;
+  viz.tile_click_hlight = params.tile_click_hlight;
+  viz.inst_order = params.inst_order;
+  viz.expand_button = params.expand_button;
+  viz.sim_mat = params.sim_mat;
+  viz.dendro_filter = params.dendro_filter;
 
   viz.viz_svg = viz.viz_wrapper + ' .viz_svg';
 
@@ -30,12 +32,12 @@ module.exports = function ini_viz_params(config, params){
   viz.run_trans = false;
   viz.duration = 1000;
   if (viz.show_dendrogram){
-    config.group_level = {};
+    params.group_level = {};
   }
 
-  viz.resize = config.resize;
-  if (utils.has(config, 'size')){
-    viz.fixed_size = config.size;
+  viz.resize = params.resize;
+  if (utils.has(params, 'size')){
+    viz.fixed_size = params.size;
   } else {
     viz.fixed_size = false;
   }
@@ -70,9 +72,9 @@ module.exports = function ini_viz_params(config, params){
 
   viz = make_cat_params(params, viz);
 
-  if (_.has(config, 'group_level')){
-    config.group_level.row = 5;
-    config.group_level.col = 5;
+  if (_.has(params, 'group_level')){
+    params.group_level.row = 5;
+    params.group_level.col = 5;
   }
 
   viz.dendro_opacity = 0.35;

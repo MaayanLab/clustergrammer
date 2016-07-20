@@ -92,8 +92,6 @@ function Clustergrammer(args) {
     // // possibly update entire visualization
     // filter_viz_using_names(names, cgm);
 
-    // this.params.viz = ini_viz_params(this.config, this.params)
-
     this.params = make_params(this.config);
 
     make_row_cat(this.params, true);

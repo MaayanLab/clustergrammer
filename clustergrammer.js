@@ -140,8 +140,6 @@ var Clustergrammer =
 	    // // possibly update entire visualization
 	    // filter_viz_using_names(names, cgm);
 
-	    // this.params.viz = ini_viz_params(this.config, this.params)
-
 	    this.params = make_params(this.config);
 
 	    make_row_cat(this.params, true);
@@ -1175,24 +1173,26 @@ var Clustergrammer =
 	var get_available_filters = __webpack_require__(5);
 	var make_cat_params = __webpack_require__(169);
 
-	module.exports = function ini_viz_params(config, params) {
+	module.exports = function ini_viz_params(params) {
+
+	  console.log('ini_viz_params only requires params');
 
 	  var viz = {};
 
-	  viz.root = config.root;
-	  viz.viz_wrapper = config.root + ' .viz_wrapper';
-	  viz.do_zoom = config.do_zoom;
-	  viz.background_color = config.background_color;
-	  viz.super_border_color = config.super_border_color;
-	  viz.outer_margins = config.outer_margins;
-	  viz.is_expand = config.ini_expand;
-	  viz.grey_border_width = config.grey_border_width;
-	  viz.show_dendrogram = config.show_dendrogram;
-	  viz.tile_click_hlight = config.tile_click_hlight;
-	  viz.inst_order = config.inst_order;
-	  viz.expand_button = config.expand_button;
-	  viz.sim_mat = config.sim_mat;
-	  viz.dendro_filter = config.dendro_filter;
+	  viz.root = params.root;
+	  viz.viz_wrapper = params.root + ' .viz_wrapper';
+	  viz.do_zoom = params.do_zoom;
+	  viz.background_color = params.background_color;
+	  viz.super_border_color = params.super_border_color;
+	  viz.outer_margins = params.outer_margins;
+	  viz.is_expand = params.ini_expand;
+	  viz.grey_border_width = params.grey_border_width;
+	  viz.show_dendrogram = params.show_dendrogram;
+	  viz.tile_click_hlight = params.tile_click_hlight;
+	  viz.inst_order = params.inst_order;
+	  viz.expand_button = params.expand_button;
+	  viz.sim_mat = params.sim_mat;
+	  viz.dendro_filter = params.dendro_filter;
 
 	  viz.viz_svg = viz.viz_wrapper + ' .viz_svg';
 
@@ -1203,12 +1203,12 @@ var Clustergrammer =
 	  viz.run_trans = false;
 	  viz.duration = 1000;
 	  if (viz.show_dendrogram) {
-	    config.group_level = {};
+	    params.group_level = {};
 	  }
 
-	  viz.resize = config.resize;
-	  if (utils.has(config, 'size')) {
-	    viz.fixed_size = config.size;
+	  viz.resize = params.resize;
+	  if (utils.has(params, 'size')) {
+	    viz.fixed_size = params.size;
 	  } else {
 	    viz.fixed_size = false;
 	  }
@@ -1243,9 +1243,9 @@ var Clustergrammer =
 
 	  viz = make_cat_params(params, viz);
 
-	  if (_.has(config, 'group_level')) {
-	    config.group_level.row = 5;
-	    config.group_level.col = 5;
+	  if (_.has(params, 'group_level')) {
+	    params.group_level.row = 5;
+	    params.group_level.col = 5;
 	  }
 
 	  viz.dendro_opacity = 0.35;
@@ -1332,16 +1332,19 @@ var Clustergrammer =
 	var utils = __webpack_require__(2);
 	var initialize_matrix = __webpack_require__(24);
 
-	module.exports = function ini_matrix_params(config, viz, network_data) {
+	module.exports = function ini_matrix_params(params) {
 
 	  var matrix = {};
-	  matrix.tile_colors = config.tile_colors;
-	  matrix.bar_colors = config.bar_colors;
-	  matrix.outline_colors = config.outline_colors;
-	  matrix.hlight_color = config.highlight_color;
-	  matrix.tile_title = config.tile_title;
-	  matrix.show_tile_tooltips = config.show_tile_tooltips;
-	  matrix.make_tile_tooltip = config.make_tile_tooltip;
+
+	  var network_data = params.network_data;
+
+	  matrix.tile_colors = params.tile_colors;
+	  matrix.bar_colors = params.bar_colors;
+	  matrix.outline_colors = params.outline_colors;
+	  matrix.hlight_color = params.highlight_color;
+	  matrix.tile_title = params.tile_title;
+	  matrix.show_tile_tooltips = params.show_tile_tooltips;
+	  matrix.make_tile_tooltip = params.make_tile_tooltip;
 
 	  // initialized clicked tile and rows
 	  matrix.click_hlight_x = -666;
@@ -1351,7 +1354,7 @@ var Clustergrammer =
 
 	  // definition of a large matrix (num links) determines if transition is run
 	  matrix.def_large_matrix = 10000;
-	  matrix.opacity_function = config.opacity_scale;
+	  matrix.opacity_function = params.opacity_scale;
 
 	  matrix.orders = {};
 
@@ -1384,8 +1387,8 @@ var Clustergrammer =
 	      possible_orders.push('rankvar');
 	    }
 
-	    if (viz.all_cats[other_rc].length > 0) {
-	      _.each(viz.all_cats[other_rc], function (inst_cat) {
+	    if (params.viz.all_cats[other_rc].length > 0) {
+	      _.each(params.viz.all_cats[other_rc], function (inst_cat) {
 	        // the index of the category has replaced - with _
 	        inst_cat = inst_cat.replace('-', '_');
 	        possible_orders.push(inst_cat + '_index');
@@ -1412,9 +1415,9 @@ var Clustergrammer =
 	    }).value;
 	  }
 
-	  matrix.abs_max_val = Math.abs(matrix.max_link) * config.clamp_opacity;
+	  matrix.abs_max_val = Math.abs(matrix.max_link) * params.clamp_opacity;
 
-	  if (config.input_domain === 0) {
+	  if (params.input_domain === 0) {
 	    if (matrix.opacity_function === 'linear') {
 	      matrix.opacity_scale = d3.scale.linear().domain([0, matrix.abs_max_val]).clamp(true).range([0.0, 1.0]);
 	    } else if (matrix.opacity_function === 'log') {
@@ -1422,9 +1425,9 @@ var Clustergrammer =
 	    }
 	  } else {
 	    if (matrix.opacity_function === 'linear') {
-	      matrix.opacity_scale = d3.scale.linear().domain([0, config.input_domain]).clamp(true).range([0.0, 1.0]);
+	      matrix.opacity_scale = d3.scale.linear().domain([0, params.input_domain]).clamp(true).range([0.0, 1.0]);
 	    } else if (matrix.opacity_function === 'log') {
-	      matrix.opacity_scale = d3.scale.log().domain([0.001, config.input_domain]).clamp(true).range([0.0, 1.0]);
+	      matrix.opacity_scale = d3.scale.log().domain([0.001, params.input_domain]).clamp(true).range([0.0, 1.0]);
 	    }
 	  }
 
@@ -1560,9 +1563,9 @@ var Clustergrammer =
 
 	var ini_matrix_params = __webpack_require__(23);
 
-	module.exports = function calc_matrix_params(config, params) {
+	module.exports = function calc_matrix_params(params) {
 
-	  params.matrix = ini_matrix_params(config, params.viz, params.network_data);
+	  params.matrix = ini_matrix_params(params);
 
 	  params.viz.x_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.width]);
 
@@ -10144,7 +10147,7 @@ var Clustergrammer =
 	module.exports = function calc_viz_params(config, params) {
 
 	  params.labels = ini_label_params(params);
-	  params.viz = ini_viz_params(config, params);
+	  params.viz = ini_viz_params(params);
 
 	  set_viz_wrapper_size(params);
 
@@ -10162,7 +10165,7 @@ var Clustergrammer =
 	  }
 
 	  params = calc_val_max(params);
-	  params = calc_matrix_params(config, params);
+	  params = calc_matrix_params(params);
 	  params = set_zoom_params(params);
 	  params = calc_default_fs(params);
 
