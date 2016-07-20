@@ -4,8 +4,6 @@ var reset_cat_opacity = require('./reset_cat_opacity');
 
 module.exports = function make_row_cat(params, updating=false) {
 
-  console.log('make_row_cat')
-
   // make or reuse outer container
   if (d3.select(params.root+' .row_cat_outer_container').empty()){
     d3.select(params.root+' .row_container')

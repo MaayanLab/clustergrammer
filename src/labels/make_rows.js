@@ -70,8 +70,6 @@ module.exports = function(cgm, text_delay) {
 
       // if (params.dendro_filter.col === false){
 
-        console.log('reorder single row')
-
         var data_attr = '__data__';
         var row_name = this[data_attr].name;
 

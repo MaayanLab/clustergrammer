@@ -8,7 +8,7 @@ module.exports = function calc_matrix_params(config, params){
 
   _.each(['row','col'], function(inst_rc){
 
-    var inst_order = params.viz.inst_order[inst_rc]
+    var inst_order = params.viz.inst_order[inst_rc];
 
     if (inst_order === 'custom'){
       inst_order = 'clust';

@@ -106,6 +106,7 @@ module.exports = function make_row_dendro_triangles(cgm,
 
   function row_dendro_filter(d, inst_selection){
 
+    var names = {};
     if (cgm.params.dendro_filter.col === false){
 
       /* filter rows using dendrogram */
@@ -115,7 +116,6 @@ module.exports = function make_row_dendro_triangles(cgm,
         // d3.selectAll('.toggle_row_order .btn').attr('disabled', true);
         $(params.root+' .slider_row').slider('disable');
 
-        var names = {};
         names.row = d.all_names;
 
         var tmp_names = cgm.params.network_data.row_nodes_names;
@@ -144,7 +144,6 @@ module.exports = function make_row_dendro_triangles(cgm,
       /* reset filter */
       } else {
 
-        var names = {};
         names.row = cgm.params.dendro_filter.row;
 
         cgm.filter_viz_using_names(names);
