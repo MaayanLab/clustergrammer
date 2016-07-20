@@ -1,5 +1,6 @@
 var make_config = require('./config');
 var make_params = require('./params/');
+var ini_viz_params = require('./params/ini_viz_params');
 var make_viz = require('./viz');
 var resize_viz = require('./reset_size/resize_viz');
 var play_demo = require('./demo/play_demo');
@@ -84,14 +85,20 @@ function Clustergrammer(args) {
     names.col = this.params.network_data.col_nodes_names;
 
     this.params.viz.all_cats.row = ['cat-0','cat-1'];
+    this.params.viz.cat_colors.row['cat-1'] = this.params.viz.cat_colors.row['cat-0']
+
     // this.params.viz.all_cats.col = ['cat-0'];
 
-    // possibly update entire visualization
-    filter_viz_using_names(names, cgm);
+    // // possibly update entire visualization
+    // filter_viz_using_names(names, cgm);
+
+    this.params.viz = ini_viz_params(this.config, this.params)
+
+    make_row_cat(this.params, true);
+    resize_viz(this);
 
     // // only update make_row_cat - probably not going to work
     // // console.log('cgm.update_cats')
-    // make_row_cat(tmp_params, true);
 
   }
 

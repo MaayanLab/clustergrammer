@@ -49,6 +49,7 @@ var Clustergrammer =
 
 	var make_config = __webpack_require__(1);
 	var make_params = __webpack_require__(10);
+	var ini_viz_params = __webpack_require__(20);
 	var make_viz = __webpack_require__(44);
 	var resize_viz = __webpack_require__(81);
 	var play_demo = __webpack_require__(106);
@@ -132,14 +133,20 @@ var Clustergrammer =
 	    names.col = this.params.network_data.col_nodes_names;
 
 	    this.params.viz.all_cats.row = ['cat-0', 'cat-1'];
+	    this.params.viz.cat_colors.row['cat-1'] = this.params.viz.cat_colors.row['cat-0'];
+
 	    // this.params.viz.all_cats.col = ['cat-0'];
 
-	    // possibly update entire visualization
-	    filter_viz_using_names(names, cgm);
+	    // // possibly update entire visualization
+	    // filter_viz_using_names(names, cgm);
+
+	    this.params.viz = ini_viz_params(this.config, this.params);
+
+	    make_row_cat(this.params, true);
+	    resize_viz(this);
 
 	    // // only update make_row_cat - probably not going to work
 	    // // console.log('cgm.update_cats')
-	    // make_row_cat(tmp_params, true);
 	  }
 	
 	  // add more API endpoints
@@ -1210,6 +1217,7 @@ var Clustergrammer =
 
 	var utils = __webpack_require__(2);
 	var get_available_filters = __webpack_require__(5);
+	var calc_cat_params = __webpack_require__(167);
 
 	module.exports = function ini_viz_params(config, params) {
 
@@ -1227,10 +1235,6 @@ var Clustergrammer =
 	  viz.tile_click_hlight = config.tile_click_hlight;
 	  viz.inst_order = config.inst_order;
 	  viz.expand_button = config.expand_button;
-	  viz.all_cats = config.all_cats;
-	  console.log('initializing all_cats in ini_viz_params');
-	  viz.cat_colors = config.cat_colors;
-	  viz.cat_names = config.cat_names;
 	  viz.sim_mat = config.sim_mat;
 	  viz.dendro_filter = config.dendro_filter;
 
@@ -1267,14 +1271,6 @@ var Clustergrammer =
 	    viz.super_labels.dim.width = 15 * params.labels.super_label_scale;
 	  }
 
-	  viz.show_categories = {};
-	  viz.cat_room = {};
-	  viz.cat_room.symbol_width = 12;
-	  viz.cat_room.separation = 3;
-
-	  viz.cat_colors.opacity = 0.6;
-	  viz.cat_colors.active_opacity = 0.9;
-
 	  viz.triangle_opacity = 0.6;
 
 	  viz.norm_labels = {};
@@ -1287,51 +1283,7 @@ var Clustergrammer =
 	    viz.dendro_room.symbol_width = 0;
 	  }
 
-	  var separtion_room;
-
-	  // increase the width of the label container based on the label length
-	  var label_scale = d3.scale.linear().domain([5, 15]).range([85, 120]).clamp('true');
-
-	  _.each(['row', 'col'], function (inst_rc) {
-
-	    viz.show_categories[inst_rc] = config.show_categories[inst_rc];
-	    viz.norm_labels.width[inst_rc] = label_scale(params.labels[inst_rc + '_max_char']) * params[inst_rc + '_label_scale'];
-
-	    viz['num_' + inst_rc + '_nodes'] = params.network_data[inst_rc + '_nodes'].length;
-
-	    if (_.has(config, 'group_level')) {
-	      config.group_level[inst_rc] = 5;
-	    }
-
-	    if (inst_rc === 'row') {
-	      viz.dendro_room[inst_rc] = viz.dendro_room.symbol_width;
-	    } else {
-	      viz.dendro_room[inst_rc] = viz.dendro_room.symbol_width + viz.uni_margin;
-	    }
-
-	    var num_cats = viz.all_cats[inst_rc].length;
-
-	    if (viz.show_categories[inst_rc]) {
-
-	      separtion_room = (num_cats - 1) * viz.cat_room.separation;
-
-	      var adjusted_cats;
-	      if (inst_rc === 'row') {
-	        adjusted_cats = num_cats + 1;
-	      } else {
-	        adjusted_cats = num_cats;
-	      }
-
-	      viz.cat_room[inst_rc] = adjusted_cats * viz.cat_room.symbol_width + separtion_room;
-	    } else {
-	      // no categories
-	      if (inst_rc == 'row') {
-	        viz.cat_room[inst_rc] = viz.cat_room.symbol_width;
-	      } else {
-	        viz.cat_room[inst_rc] = 0;
-	      }
-	    }
-	  });
+	  viz = calc_cat_params(config, params, viz);
 
 	  viz.dendro_opacity = 0.35;
 
@@ -5407,6 +5359,7 @@ var Clustergrammer =
 
 	module.exports = function (cgm) {
 
+	  console.log('resize_viz');
 	  var params = cgm.params;
 
 	  var cont_dim = calc_viz_dimensions(params);
@@ -7309,10 +7262,10 @@ var Clustergrammer =
 	  tmp_config.ini_view = null;
 	  tmp_config.current_col_cat = cgm.params.current_col_cat;
 
-	  // pass on category info to new config
-	  console.log('passing on category info from previous viz');
-	  tmp_config.all_cats = cgm.params.viz.all_cats;
-	  tmp_config.cat_colors.row['cat-1'] = tmp_config.cat_colors.row['cat-0'];
+	  // // pass on category info to new config
+	  // console.log('passing on category info from previous viz')
+	  // tmp_config.all_cats = cgm.params.viz.all_cats;
+	  // tmp_config.cat_colors.row['cat-1'] = tmp_config.cat_colors.row['cat-0']
 
 	  var new_params = make_params(tmp_config);
 	  var delays = define_enter_exit_delays(cgm.params, new_params);
@@ -10127,6 +10080,78 @@ var Clustergrammer =
 	  $(params.root + ' .opacity_slider').slider({
 	    value: 1.0
 	  });
+		};
+
+/***/ },
+/* 167 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = function calc_cat_params(config, params, viz) {
+
+	  console.log('in calc_cat_params');
+
+	  var separtion_room;
+
+	  // increase the width of the label container based on the label length
+	  var label_scale = d3.scale.linear().domain([5, 15]).range([85, 120]).clamp('true');
+
+	  viz.all_cats = config.all_cats;
+
+	  viz.cat_names = config.cat_names;
+
+	  viz.show_categories = {};
+	  viz.cat_room = {};
+	  viz.cat_room.symbol_width = 12;
+	  viz.cat_room.separation = 3;
+
+	  viz.cat_colors = config.cat_colors;
+	  viz.cat_colors.opacity = 0.6;
+	  viz.cat_colors.active_opacity = 0.9;
+
+	  _.each(['row', 'col'], function (inst_rc) {
+
+	    viz.show_categories[inst_rc] = config.show_categories[inst_rc];
+	    viz.norm_labels.width[inst_rc] = label_scale(params.labels[inst_rc + '_max_char']) * params[inst_rc + '_label_scale'];
+
+	    viz['num_' + inst_rc + '_nodes'] = params.network_data[inst_rc + '_nodes'].length;
+
+	    if (_.has(config, 'group_level')) {
+	      config.group_level[inst_rc] = 5;
+	    }
+
+	    if (inst_rc === 'row') {
+	      viz.dendro_room[inst_rc] = viz.dendro_room.symbol_width;
+	    } else {
+	      viz.dendro_room[inst_rc] = viz.dendro_room.symbol_width + viz.uni_margin;
+	    }
+
+	    var num_cats = viz.all_cats[inst_rc].length;
+
+	    if (viz.show_categories[inst_rc]) {
+
+	      separtion_room = (num_cats - 1) * viz.cat_room.separation;
+
+	      var adjusted_cats;
+	      if (inst_rc === 'row') {
+	        adjusted_cats = num_cats + 1;
+	      } else {
+	        adjusted_cats = num_cats;
+	      }
+
+	      viz.cat_room[inst_rc] = adjusted_cats * viz.cat_room.symbol_width + separtion_room;
+	    } else {
+	      // no categories
+	      if (inst_rc == 'row') {
+	        viz.cat_room[inst_rc] = viz.cat_room.symbol_width;
+	      } else {
+	        viz.cat_room[inst_rc] = 0;
+	      }
+	    }
+	  });
+
+	  return viz;
 		};
 
 /***/ }
