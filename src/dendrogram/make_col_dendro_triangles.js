@@ -104,8 +104,6 @@ module.exports = function make_col_dendro_triangles(cgm, is_change_group = false
 
   function col_dendro_filter(d, inst_selection){
 
-    console.log('something!')
-
     if (cgm.params.dendro_filter.row === false){
 
       /* filter cols using dendrogram */
