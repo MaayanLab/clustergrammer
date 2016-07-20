@@ -24,6 +24,7 @@ var toggle_dendro_view = require('../dendrogram/toggle_dendro_view');
 var show_visible_area = require('../zoom/show_visible_area');
 var calc_viz_dimensions = require('../params/calc_viz_dimensions');
 var position_play_button = require('../demo/position_play_button');
+var make_row_cat_super_labels = require('../labels/make_row_cat_super_labels');
 
 module.exports = function(cgm) {
 
@@ -199,6 +200,8 @@ module.exports = function(cgm) {
       params.viz.clust.margin.top + ')');
 
   show_visible_area(params, zoom_info);
+
+  make_row_cat_super_labels(params);
 
   d3.select(params.viz.viz_svg).style('opacity',1);
 };

@@ -1,5 +1,5 @@
 var make_filter_title = require('./make_filter_title');
-var apply_filter_slider = require('./apply_filter_slider');
+var run_filter_slider = require('./run_filter_slider');
 var get_filter_default_state = require('./get_filter_default_state');
 var get_subset_views = require('./get_subset_views');
 
@@ -52,7 +52,7 @@ module.exports = function make_slider_filter(cgm, filter_type, div_filters){
     max: inst_max,
     step: 1,
     stop: function() {
-      apply_filter_slider(cgm, filter_type, available_views);
+      run_filter_slider(cgm, filter_type, available_views);
     }
   });
 

@@ -4661,6 +4661,7 @@ var Clustergrammer =
 
 	var get_cat_title = __webpack_require__(76);
 	var ini_cat_reorder = __webpack_require__(77);
+	var make_row_cat_super_labels = __webpack_require__(172);
 
 	module.exports = function Spillover(cgm) {
 
@@ -4720,11 +4721,11 @@ var Clustergrammer =
 	  y_offset = viz.norm_labels.margin.top + viz.norm_labels.width.col + 2.5 * viz.uni_margin;
 	  var cat_text_size = 1.15 * viz.cat_room.symbol_width;
 	  var cat_super_opacity = 0.65;
-	  var extra_x_room = 2.75;
 	  var extra_y_room = 1.25;
 
 	  // col category super labels
 	  if (viz.show_categories.col) {
+
 	    d3.select(viz.viz_svg).selectAll().data(viz.all_cats.col).enter().append('text').classed('col_cat_super', true).style('font-size', cat_text_size + 'px').style('opacity', cat_super_opacity).style('cursor', 'default').attr('transform', function (d) {
 	      var inst_cat = parseInt(d.split('-')[1], 10);
 	      var inst_y = y_offset + extra_y_room * viz.cat_room.symbol_width * inst_cat;
@@ -4736,21 +4737,9 @@ var Clustergrammer =
 
 	  // row category super labels
 	  if (viz.show_categories.row) {
-	    var row_cat_label_container = d3.select(viz.viz_svg).append('g').classed('row_cat_label_container', true).attr('transform', function () {
-	      x_offset = viz.norm_labels.margin.left + viz.norm_labels.width.row + viz.cat_room.symbol_width + extra_x_room * viz.uni_margin;
-	      y_offset = viz.clust.margin.top - viz.uni_margin;
-	      return 'translate(' + x_offset + ',' + y_offset + ') rotate(-90)';
-	    });
+	    var row_cat_label_container = d3.select(viz.viz_svg).append('g').classed('row_cat_label_container', true);
 
-	    if (viz.sim_mat === false) {
-
-	      row_cat_label_container.selectAll().data(viz.all_cats.row).enter().append('text').classed('row_cat_super', true).style('font-size', cat_text_size + 'px').style('opacity', cat_super_opacity).style('cursor', 'default').attr('transform', function (d) {
-	        var inst_y = extra_y_room * viz.cat_room.symbol_width * parseInt(d.split('-')[1], 10);
-	        return 'translate(0,' + inst_y + ')';
-	      }).text(function (d) {
-	        return get_cat_title(viz, d, 'row');
-	      });
-	    }
+	    make_row_cat_super_labels(params);
 	  }
 
 	  // white border bottom - prevent clustergram from hitting border
@@ -5381,6 +5370,7 @@ var Clustergrammer =
 	var show_visible_area = __webpack_require__(38);
 	var calc_viz_dimensions = __webpack_require__(16);
 	var position_play_button = __webpack_require__(101);
+	var make_row_cat_super_labels = __webpack_require__(172);
 
 	module.exports = function (cgm) {
 
@@ -5521,6 +5511,8 @@ var Clustergrammer =
 	  d3.select(params.root + ' .clust_container').attr('transform', 'translate(' + params.viz.clust.margin.left + ',' + params.viz.clust.margin.top + ')');
 
 	  show_visible_area(params, zoom_info);
+
+	  make_row_cat_super_labels(params);
 
 	  d3.select(params.viz.viz_svg).style('opacity', 1);
 		};
@@ -9051,7 +9043,7 @@ var Clustergrammer =
 	'use strict';
 
 	var make_filter_title = __webpack_require__(154);
-	var apply_filter_slider = __webpack_require__(155);
+	var run_filter_slider = __webpack_require__(171);
 	var get_filter_default_state = __webpack_require__(6);
 	var get_subset_views = __webpack_require__(14);
 
@@ -9093,7 +9085,7 @@ var Clustergrammer =
 	    max: inst_max,
 	    step: 1,
 	    stop: function stop() {
-	      apply_filter_slider(cgm, filter_type, available_views);
+	      run_filter_slider(cgm, filter_type, available_views);
 	    }
 	  });
 		};
@@ -9159,43 +9151,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 155 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var update_viz_with_view = __webpack_require__(120);
-	var reset_other_filter_sliders = __webpack_require__(156);
-	var get_current_orders = __webpack_require__(157);
-	var make_requested_view = __webpack_require__(45);
-
-	module.exports = function apply_filter_slider(cgm, filter_type, available_views) {
-
-	  var params = cgm.params;
-
-	  // get value
-	  var inst_index = $(params.root + ' .slider_' + filter_type).slider("value");
-	  var inst_state = available_views[inst_index][filter_type];
-
-	  reset_other_filter_sliders(params, filter_type, inst_state);
-
-	  params = get_current_orders(params);
-
-	  var requested_view = {};
-	  requested_view[filter_type] = inst_state;
-
-	  requested_view = make_requested_view(params, requested_view);
-
-	  if (_.has(available_views[0], 'enr_score_type')) {
-	    var enr_state = d3.select(params.root + ' .toggle_enr_score_type').attr('current_state');
-
-	    requested_view.enr_score_type = enr_state;
-	  }
-
-	  update_viz_with_view(cgm, requested_view);
-		};
-
-/***/ },
+/* 155 */,
 /* 156 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -10168,6 +10124,81 @@ var Clustergrammer =
 	  params = calc_default_fs(params);
 
 	  return params;
+		};
+
+/***/ },
+/* 171 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var update_viz_with_view = __webpack_require__(120);
+	var reset_other_filter_sliders = __webpack_require__(156);
+	var get_current_orders = __webpack_require__(157);
+	var make_requested_view = __webpack_require__(45);
+
+	module.exports = function run_filter_slider(cgm, filter_type, available_views) {
+
+	  var params = cgm.params;
+
+	  // get value
+	  var inst_index = $(params.root + ' .slider_' + filter_type).slider("value");
+	  var inst_state = available_views[inst_index][filter_type];
+
+	  reset_other_filter_sliders(params, filter_type, inst_state);
+
+	  params = get_current_orders(params);
+
+	  var requested_view = {};
+	  requested_view[filter_type] = inst_state;
+
+	  requested_view = make_requested_view(params, requested_view);
+
+	  if (_.has(available_views[0], 'enr_score_type')) {
+	    var enr_state = d3.select(params.root + ' .toggle_enr_score_type').attr('current_state');
+
+	    requested_view.enr_score_type = enr_state;
+	  }
+
+	  update_viz_with_view(cgm, requested_view);
+		};
+
+/***/ },
+/* 172 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var get_cat_title = __webpack_require__(76);
+
+	module.exports = function make_row_cat_super_labels(params) {
+
+	  var viz = params.viz;
+	  var extra_x_room = 2.75;
+
+	  var x_offset = viz.clust.margin.left + viz.clust.dim.width + viz.uni_margin;
+	  var y_offset = viz.norm_labels.margin.top + viz.norm_labels.width.col + 2.5 * viz.uni_margin;
+	  var cat_text_size = 1.15 * viz.cat_room.symbol_width;
+	  var cat_super_opacity = 0.65;
+	  var extra_y_room = 1.25;
+
+	  d3.select(params.root + ' .row_cat_label_container').attr('transform', function () {
+	    x_offset = viz.norm_labels.margin.left + viz.norm_labels.width.row + viz.cat_room.symbol_width + extra_x_room * viz.uni_margin;
+	    y_offset = viz.clust.margin.top - viz.uni_margin;
+	    return 'translate(' + x_offset + ',' + y_offset + ') rotate(-90)';
+	  });
+
+	  if (viz.sim_mat === false) {
+
+	    d3.selectAll(params.root + ' .row_cat_label_container text').remove();
+
+	    d3.select(params.root + ' .row_cat_label_container').selectAll().data(viz.all_cats.row).enter().append('text').classed('row_cat_super', true).style('font-size', cat_text_size + 'px').style('opacity', cat_super_opacity).style('cursor', 'default').attr('transform', function (d) {
+	      var inst_y = extra_y_room * viz.cat_room.symbol_width * parseInt(d.split('-')[1], 10);
+	      return 'translate(0,' + inst_y + ')';
+	    }).text(function (d) {
+	      return get_cat_title(viz, d, 'row');
+	    });
+	  }
 		};
 
 /***/ }

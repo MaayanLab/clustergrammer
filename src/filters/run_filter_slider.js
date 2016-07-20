@@ -3,7 +3,7 @@ var reset_other_filter_sliders = require('./reset_other_filter_sliders');
 var get_current_orders = require('./get_current_orders');
 var make_requested_view = require('./make_requested_view');
 
-module.exports = function apply_filter_slider(cgm, filter_type, available_views){
+module.exports = function run_filter_slider(cgm, filter_type, available_views){
 
   var params = cgm.params;
 

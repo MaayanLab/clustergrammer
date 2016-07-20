@@ -1,5 +1,6 @@
 var get_cat_title = require('./categories/get_cat_title');
 var ini_cat_reorder = require('./reorder/ini_cat_reorder');
+var make_row_cat_super_labels = require('./labels/make_row_cat_super_labels');
 
 module.exports = function Spillover(cgm) {
 
@@ -107,11 +108,11 @@ module.exports = function Spillover(cgm) {
     + 2.5*viz.uni_margin;
   var cat_text_size = 1.15*viz.cat_room.symbol_width;
   var cat_super_opacity = 0.65;
-  var extra_x_room = 2.75;
   var extra_y_room = 1.25;
 
   // col category super labels
   if (viz.show_categories.col){
+
     d3.select(viz.viz_svg)
       .selectAll()
       .data(viz.all_cats.col)
@@ -130,41 +131,18 @@ module.exports = function Spillover(cgm) {
       .text(function(d){
         return get_cat_title(viz, d, 'col');
       });
+
     }
 
   // row category super labels
   if (viz.show_categories.row){
     var row_cat_label_container = d3.select(viz.viz_svg)
       .append('g')
-      .classed('row_cat_label_container', true)
-      .attr('transform', function(){
-        x_offset = viz.norm_labels.margin.left + viz.norm_labels.width.row
-          + viz.cat_room.symbol_width + extra_x_room * viz.uni_margin;
-        y_offset = viz.clust.margin.top - viz.uni_margin;
-        return 'translate('+x_offset+','+y_offset+') rotate(-90)';
-      });
+      .classed('row_cat_label_container', true);
 
-    if (viz.sim_mat === false){
+    make_row_cat_super_labels(params);
 
-      row_cat_label_container
-        .selectAll()
-        .data(viz.all_cats.row)
-        .enter()
-        .append('text')
-        .classed('row_cat_super',true)
-        .style('font-size', cat_text_size+'px')
-        .style('opacity', cat_super_opacity)
-        .style('cursor','default')
-        .attr('transform', function(d){
-          var inst_y = extra_y_room*viz.cat_room.symbol_width
-            * parseInt( d.split('-')[1], 10 );
-          return 'translate(0,'+inst_y+')';
-        })
-        .text(function(d){
-          return get_cat_title(viz, d, 'row');
-        });
 
-    }
   }
 
 
