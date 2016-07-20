@@ -5,7 +5,6 @@ var calc_clust_height = require('./calc_clust_height');
 var get_svg_dim = require('./get_svg_dim');
 var ini_label_params = require('./ini_label_params');
 var ini_viz_params = require('./ini_viz_params');
-var ini_matrix_params = require('./ini_matrix_params');
 var calc_default_fs = require('./calc_default_fs');
 var calc_matrix_params = require('./calc_matrix_params');
 var calc_label_params = require('./calc_label_params');
@@ -47,11 +46,7 @@ module.exports = function make_params(input_config) {
   }
 
   params.labels = ini_label_params(config, params.network_data);
-
-
   params.viz    = ini_viz_params(config, params);
-
-  params.matrix = ini_matrix_params(config, params.viz, params.network_data);
 
   set_viz_wrapper_size(params);
 

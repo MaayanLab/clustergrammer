@@ -57,7 +57,7 @@ var Clustergrammer =
 	var update_viz_with_view = __webpack_require__(120);
 	var filter_viz_using_nodes = __webpack_require__(149);
 	var filter_viz_using_names = __webpack_require__(150);
-	// var make_row_cat = require('./dendrogram/make_row_cat');
+	var make_row_cat = __webpack_require__(105);
 
 	/* clustergrammer 1.0
 	 * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
@@ -140,15 +140,14 @@ var Clustergrammer =
 	    // // possibly update entire visualization
 	    // filter_viz_using_names(names, cgm);
 
-	    this.params.viz = ini_viz_params(this.config, this.params);
+	    // this.params.viz = ini_viz_params(this.config, this.params)
 
-	    // make_row_cat(this.params, true);
-	    // resize_viz(this);
+	    this.params = make_params(this.config);
 
-	    // // only update make_row_cat - probably not going to work
-	    // // console.log('cgm.update_cats')
+	    make_row_cat(this.params, true);
+	    resize_viz(this);
 	  }
-	
+
 	  // add more API endpoints
 	  cgm.update_view = external_update_view;
 	  cgm.resize_viz = external_resize;
@@ -761,7 +760,6 @@ var Clustergrammer =
 	var get_svg_dim = __webpack_require__(19);
 	var ini_label_params = __webpack_require__(20);
 	var ini_viz_params = __webpack_require__(21);
-	var ini_matrix_params = __webpack_require__(23);
 	var calc_default_fs = __webpack_require__(25);
 	var calc_matrix_params = __webpack_require__(26);
 	var calc_label_params = __webpack_require__(27);
@@ -802,10 +800,7 @@ var Clustergrammer =
 	  }
 
 	  params.labels = ini_label_params(config, params.network_data);
-
 	  params.viz = ini_viz_params(config, params);
-
-	  params.matrix = ini_matrix_params(config, params.viz, params.network_data);
 
 	  set_viz_wrapper_size(params);
 
@@ -1599,11 +1594,15 @@ var Clustergrammer =
 
 /***/ },
 /* 26 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
+	var ini_matrix_params = __webpack_require__(23);
+
 	module.exports = function calc_matrix_params(config, params) {
+
+	  params.matrix = ini_matrix_params(config, params.viz, params.network_data);
 
 	  params.viz.x_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.width]);
 

@@ -8,7 +8,7 @@ var ini_demo = require('./demo/ini_demo');
 var update_viz_with_view = require('./network/update_viz_with_view');
 var filter_viz_using_nodes = require('./network/filter_viz_using_nodes');
 var filter_viz_using_names = require('./network/filter_viz_using_names');
-// var make_row_cat = require('./dendrogram/make_row_cat');
+var make_row_cat = require('./dendrogram/make_row_cat');
 
 /* clustergrammer 1.0
  * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
@@ -92,13 +92,12 @@ function Clustergrammer(args) {
     // // possibly update entire visualization
     // filter_viz_using_names(names, cgm);
 
-    this.params.viz = ini_viz_params(this.config, this.params)
+    // this.params.viz = ini_viz_params(this.config, this.params)
 
-    // make_row_cat(this.params, true);
-    // resize_viz(this);
+    this.params = make_params(this.config);
 
-    // // only update make_row_cat - probably not going to work
-    // // console.log('cgm.update_cats')
+    make_row_cat(this.params, true);
+    resize_viz(this);
 
   }
 

@@ -1,4 +1,8 @@
+var ini_matrix_params = require('./ini_matrix_params');
+
 module.exports = function calc_matrix_params(config, params){
+
+  params.matrix = ini_matrix_params(config, params.viz, params.network_data);
 
   params.viz.x_scale = d3.scale.ordinal()
     .rangeBands([0, params.viz.clust.dim.width]);
