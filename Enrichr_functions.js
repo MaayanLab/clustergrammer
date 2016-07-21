@@ -1,4 +1,6 @@
 
+var enr_obj = Enrichr_request();
+
 function Enrichr_request(){
 
   function get_enr_with_list(gene_list, library, callback_function){
@@ -11,7 +13,6 @@ function Enrichr_request(){
       }
 
     });
-
   }
 
   function post_list(gene_list, callback_function){
@@ -89,6 +90,18 @@ function Enrichr_request(){
     }
   }
 
+  function enrichr_rows(library, callback_function){
+    var inst_rows = cgm.params.network_data.row_nodes_names;
+
+    // console.log('send these rows to enrichr')
+    // console.log(inst_rows)
+
+    if (typeof callback_function != 'undefined'){
+      callback_function();
+    }
+
+  }
+
   // example of how to check gene list
   // http://amp.pharm.mssm.edu/Enrichr/view?userListId=1284420
 
@@ -99,27 +112,27 @@ function Enrichr_request(){
   enr_obj.post_list = post_list;
   enr_obj.get_enr = get_enr;
   enr_obj.get_enr_with_list = get_enr_with_list;
+  enr_obj.enrichr_rows = enrichr_rows;
 
   return enr_obj;
 
 }
 
-var enr_obj = Enrichr_request();
-
-
-function update_viz_with_enr(enr_obj){
-  console.log('\n\nUpdating viz with enr\n------------------')
-  console.log(enr_obj.enr_data)
-  console.log('\n\n\n')
+function update_viz_callback(enr_obj){
+  console.log('\nUpdating viz with enr\n------------------\n')
+  // console.log(enr_obj.enr_data)
 }
 
 // tmp = cgm.params.network_data.row_nodes_names;
-// enr_obj.get_enr_with_list(tmp, 'KEGG_2015', update_viz_with_enr);
+// enr_obj.get_enr_with_list(tmp, 'KEGG_2015', update_viz_callback);
 
-enr_obj.cat_data;
-d3.json('json/category_mockup.json', function(cat_data){
-  console.log('cat_data')
-  console.log(cat_data)
-  // return cat_data;
-  enr_obj.cat_data = cat_data;
-})
+
+
+// // load toy category data
+// enr_obj.cat_data;
+// d3.json('json/category_mockup.json', function(cat_data){
+//   console.log('cat_data')
+//   console.log(cat_data)
+//   // return cat_data;
+//   enr_obj.cat_data = cat_data;
+// })
