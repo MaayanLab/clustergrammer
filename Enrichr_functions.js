@@ -77,15 +77,23 @@ function Enrichr_request(){
        "data": form
       }
 
-      $.ajax(settings).done(function (response) {
-        response = JSON.parse(response);
-        enr_obj.enr_data = response;
+      $.ajax(settings)
+        .done(function (response) {
 
-      if (typeof callback_function != 'undefined'){
-        callback_function(enr_obj);
-      }
+          response = JSON.parse(response);
+          enr_obj.enr_data = response;
 
-      });
+          // parse enr_data to cat_data format
+          /////////////////////////////////////
+          enr_obj.cat_data = enr_obj.enr_data
+
+
+          if (typeof callback_function != 'undefined'){
+            callback_function(enr_obj);
+          }
+
+        });
+
     } else {
       console.log('no user_list_id defined')
     }
@@ -112,6 +120,7 @@ function Enrichr_request(){
   var enr_obj = {};
   enr_obj.user_list_id = null;
   enr_obj.enr_data = null;
+  enr_obj.cat_data = null;
 
   enr_obj.post_list = post_list;
   enr_obj.get_enr = get_enr;
@@ -124,7 +133,7 @@ function Enrichr_request(){
 
 function update_viz_callback(enr_obj){
   console.log('\nUpdating viz with enr\n------------------\n')
-  console.log(enr_obj.enr_data)
+  console.log(enr_obj.cat_data)
   // console.log(enr_obj.enr_data)
 }
 
