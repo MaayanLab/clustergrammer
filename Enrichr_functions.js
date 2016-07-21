@@ -136,7 +136,6 @@ function Enrichr_request(){
 function enr_data_to_cats(){
 
   console.log('enr_data_to_cats');
-  // this.cat_data = this.enr_data;
 
   var library_name = _.keys(this.enr_data)[0];
 
@@ -144,16 +143,27 @@ function enr_data_to_cats(){
 
   enr_terms = enr_terms.slice(0,5);
 
-  this.cat_data = enr_terms;
+  cat_data = []
 
-  // console.log(enr_terms)
-  // debugger
+  _.each(enr_terms, function(inst_term){
 
-  // _.each(enr_terms, function(inst_term){
-  //   console.log(inst_term[1])
-  // });
+    inst_data = {};
+    inst_data['cat_title'] = inst_term[1];
+    inst_data['cats'] = [];
 
-  // console.log('\n\n\n')
+    cat_details = {};
+    cat_details.cat_name = 'true';
+    cat_details.members = inst_term[5]
+
+    // there are only two categories for Enrichr: true/false
+    inst_data['cats'].push(cat_details)
+
+    cat_data.push(inst_data);
+  });
+
+  console.log(cat_data)
+
+  this.cat_data = cat_data;
 
 }
 
