@@ -7,6 +7,7 @@ net = Network()
 # choose tsv file
 ####################
 net.load_file('txt/rc_two_cats.txt')
+# net.load_file('txt/ccle_example.txt')
 # net.load_file('txt/true_false_cats.txt')
 # net.load_file('txt/tuple_cats.txt')
 # net.load_file('txt/tuple_names.txt')
@@ -37,7 +38,7 @@ net.load_file('txt/rc_two_cats.txt')
 # net.normalize(axis='row', norm_type='qn')
 # net.normalize(axis='col', norm_type='zscore', keep_orig=True)
 
-# net.filter_N_top('row', 100, rank_type='var')
+# net.filter_N_top('row', 250, rank_type='sum')
 # net.filter_N_top('col', 3, rank_type='var')
 
 # net.filter_threShold('col', threshold=2, num_occur=3

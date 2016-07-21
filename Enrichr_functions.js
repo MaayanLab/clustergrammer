@@ -141,7 +141,7 @@ function enr_data_to_cats(){
 
   var enr_terms = this.enr_data[library_name];
 
-  enr_terms = enr_terms.slice(0,5);
+  enr_terms = enr_terms.slice(0,10);
 
   cat_data = []
 
