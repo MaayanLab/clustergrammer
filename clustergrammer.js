@@ -120,36 +120,47 @@ var Clustergrammer =
 	    var inst_cats;
 	    var inst_members;
 	    var inst_name;
+	    var inst_category;
+	    var inst_cat_name;
+	    var inst_full_cat;
+
 	    // loop through row nodes
 	    //////////////////////////
 	    _.each(this.params.network_data.row_nodes, function (inst_node) {
 
 	      inst_name = inst_node.name;
 
-	      // var inst_category = false;
-	      // loop through all categories and check if the row node is of this
-	      // category
+	      console.log(inst_name);
+	      console.log('***************');
+
+	      // loop through each category-type
 	      _.each(cat_data, function (inst_cat_data) {
 
 	        inst_cat_title = inst_cat_data.cat_title;
 	        inst_cats = inst_cat_data.cats;
 
+	        // initialize with no category
+	        inst_category = 'false';
+
+	        // loop through each category in the category-type
 	        _.each(inst_cats, function (inst_cat) {
 
+	          inst_cat_name = inst_cat.cat_name;
 	          inst_members = inst_cat.members;
 
+	          // add category if node is a member
 	          if (_.contains(inst_members, inst_name)) {
 
-	            console.log(inst_name);
-	            console.log('***************');
-	            console.log(inst_cat_title);
-	            console.log(inst_cat.cat_name);
-	            console.log('inst_members');
-	            console.log(inst_members);
-	            console.log('\n\n');
+	            inst_category = inst_cat_name;
 	          }
 	        });
+
+	        inst_full_cat = inst_cat_title + ': ' + inst_category;
+
+	        console.log(inst_full_cat);
 	      });
+
+	      console.log('\n\n');
 
 	      // var is_interesting = false;
 	      // if (inst_index < 10){
