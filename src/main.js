@@ -67,6 +67,7 @@ function Clustergrammer(args) {
     console.log(cat_data)
 
 
+    var cat_num = 0;
     var inst_index = 0;
     var inst_cat_title;
     var inst_cats;
@@ -85,8 +86,11 @@ function Clustergrammer(args) {
       console.log(inst_name)
       console.log('***************')
 
+
+      cat_num = 0;
       // loop through each category-type
       _.each(cat_data, function(inst_cat_data){
+
 
         inst_cat_title = inst_cat_data.cat_title;
         inst_cats = inst_cat_data.cats;
@@ -106,17 +110,20 @@ function Clustergrammer(args) {
 
             inst_category = inst_cat_name;
 
-
           }
 
         })
 
         inst_full_cat = inst_cat_title + ': ' + inst_category
 
+        inst_node['cat-'+String(cat_num)] = inst_full_cat
+        inst_node['cat_'+String(cat_num)+'_index'] = 0
+
         console.log(inst_full_cat)
+        console.log(cat_num)
 
-
-      })
+        cat_num = cat_num + 1
+      });
 
       console.log('\n\n')
 
