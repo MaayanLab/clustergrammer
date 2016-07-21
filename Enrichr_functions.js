@@ -4,6 +4,7 @@ var enr_obj = Enrichr_request();
 function Enrichr_request(){
 
   function get_enr_with_list(gene_list, library, callback_function){
+    console.log('get_enr_with_list: post and get requests')
     enr_obj.post_list(gene_list, function(){
 
       if (typeof callback_function != 'undefined'){
@@ -91,14 +92,17 @@ function Enrichr_request(){
   }
 
   function enrichr_rows(library, callback_function){
-    var inst_rows = cgm.params.network_data.row_nodes_names;
+
+    var gene_list = cgm.params.network_data.row_nodes_names;
+
+    enr_obj.get_enr_with_list(gene_list, library, callback_function)
 
     // console.log('send these rows to enrichr')
     // console.log(inst_rows)
 
-    if (typeof callback_function != 'undefined'){
-      callback_function();
-    }
+    // if (typeof callback_function != 'undefined'){
+    //   callback_function();
+    // }
 
   }
 
@@ -120,6 +124,7 @@ function Enrichr_request(){
 
 function update_viz_callback(enr_obj){
   console.log('\nUpdating viz with enr\n------------------\n')
+  console.log(enr_obj.enr_data)
   // console.log(enr_obj.enr_data)
 }
 
