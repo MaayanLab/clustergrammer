@@ -168,9 +168,9 @@ function enr_data_to_cats(){
 }
 
 function update_viz_callback(enr_obj){
-  console.log('\nUpdating viz with enr\n------------------\n')
-  console.log(enr_obj.cat_data)
-  // console.log(enr_obj.enr_data)
+  console.log('\nUpdating viz with enr\n------------------\n');
+  console.log(enr_obj.cat_data);
+  cgm.update_cats(enr_obj.cat_data);
 }
 
 // tmp = cgm.params.network_data.row_nodes_names;
