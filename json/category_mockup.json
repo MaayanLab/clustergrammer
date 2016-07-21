@@ -1,0 +1,24 @@
+[
+  {
+    "cat_title": "title_1",
+    "cats":[
+      {"cat_name":"category_1",
+        "members":["node_1","node_2"]
+      },
+      {"cat_name":"category_2",
+        "members":["node_3","node_4"]
+      }
+    ]
+  },
+  {
+    "cat_title": "title_2",
+    "cats":[
+      {"cat_name":"category_1",
+        "members":["node_1","node_2"]
+      },
+      {"cat_name":"category_2",
+        "members":["node_3","node_4"]
+      }
+    ]
+  }
+]
