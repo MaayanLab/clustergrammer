@@ -63,6 +63,11 @@ function Clustergrammer(args) {
 
   function update_cats(){
 
+    d3.json('json/category_mockup.json', function(cat_data){
+      console.log('cat_data')
+      console.log(cat_data)
+    })
+
     var inst_index = 0;
     _.each(this.params.network_data.row_nodes, function(inst_node){
 
@@ -84,18 +89,8 @@ function Clustergrammer(args) {
 
     });
 
-    // _.each(this.params.network_data.col_nodes, function(inst_node){
-    //   delete inst_node['cat_1_index'];
-    //   delete inst_node['cat-1'];
-    // })
-
-    var names = {};
-    names.row = this.params.network_data.row_nodes_names;
-    names.col = this.params.network_data.col_nodes_names;
-
     // recalculate the visualization parameters using the updated network_data
     this.params = calc_viz_params(this.params);
-
     make_row_cat(this.params, true);
     resize_viz(this);
 

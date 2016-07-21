@@ -89,7 +89,6 @@ function Enrichr_request(){
     }
   }
 
-
   // example of how to check gene list
   // http://amp.pharm.mssm.edu/Enrichr/view?userListId=1284420
 
@@ -116,3 +115,11 @@ function update_viz_with_enr(enr_obj){
 
 // tmp = cgm.params.network_data.row_nodes_names;
 // enr_obj.get_enr_with_list(tmp, 'KEGG_2015', update_viz_with_enr);
+
+enr_obj.cat_data;
+d3.json('json/category_mockup.json', function(cat_data){
+  console.log('cat_data')
+  console.log(cat_data)
+  // return cat_data;
+  enr_obj.cat_data = cat_data;
+})

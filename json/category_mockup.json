@@ -1,23 +1,46 @@
 [
   {
-    "cat_title": "title_1",
-    "cats":[
-      {"cat_name":"category_1",
-        "members":["node_1","node_2"]
-      },
-      {"cat_name":"category_2",
-        "members":["node_3","node_4"]
+    "cat_title": "Intereseting",
+    "cats": [
+      {
+        "cat_name": "true",
+        "members": [
+          "EGFR",
+          "STK32A",
+          "PDGFRA"
+        ]
       }
     ]
   },
   {
-    "cat_title": "title_2",
-    "cats":[
-      {"cat_name":"category_1",
-        "members":["node_1","node_2"]
+    "cat_title": "First Letter",
+    "cats": [
+      {
+        "cat_name": "letter-A",
+        "members": [
+          "AAK1"
+        ]
       },
-      {"cat_name":"category_2",
-        "members":["node_3","node_4"]
+      {
+        "cat_name": "letter-C",
+        "members": [
+          "CAMK2B",
+          "CDK4"
+        ]
+      },
+      {
+        "cat_name": "letter-D",
+        "members": [
+          "DCLK3"
+        ]
+      },
+      {
+        "cat_name": "letter-E",
+        "members": [
+          "EGFR",
+          "ERBB2",
+          "ERBB4"
+        ]
       }
     ]
   }
