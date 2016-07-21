@@ -110,33 +110,37 @@ var Clustergrammer =
 	    update_viz_with_view(this, requested_view);
 	  }
 
-	  function update_cats() {
+	  function update_cats(cat_data) {
 
-	    d3.json('json/category_mockup.json', function (cat_data) {
-	      console.log('cat_data');
-	      console.log(cat_data);
-	    });
+	    console.log('---------\nupdate_Cats\n-------------');
+	    console.log(cat_data);
 
 	    var inst_index = 0;
+	    // loop through row nodes
+	    //////////////////////////
 	    _.each(this.params.network_data.row_nodes, function (inst_node) {
 
-	      var is_interesting = false;
-	      if (inst_index < 10) {
-	        is_interesting = true;
-	      }
+	      _.each(cat_data, function (inst_cat) {
+	        console.log(inst_cat);
+	      });
 
-	      inst_node['cat_0_index'] = inst_index;
-	      inst_node['cat-0'] = 'Very Interesting: ' + String(is_interesting);
+	      // var is_interesting = false;
+	      // if (inst_index < 10){
+	      //   is_interesting = true;
+	      // }
 
-	      inst_node['cat_1_index'] = inst_index;
-	      inst_node['cat-1'] = 'Very Interesting: ' + String(is_interesting);
+	      // inst_node['cat_0_index'] = inst_index
+	      // inst_node['cat-0'] = 'Very Interesting: '+String(is_interesting);
 
-	      inst_node['cat_2_index'] = inst_index;
-	      inst_node['cat-2'] = 'Very Interesting: ' + String(is_interesting);
+	      // inst_node['cat_1_index'] = inst_index
+	      // inst_node['cat-1'] = 'Very Interesting: '+String(is_interesting);
 
-	      inst_index = inst_index + 1;
+	      // inst_node['cat_2_index'] = inst_index
+	      // inst_node['cat-2'] = 'Very Interesting: '+String(is_interesting);
+
+	      // inst_index = inst_index + 1;
 	    });
-
+	
 	    // recalculate the visualization parameters using the updated network_data
 	    this.params = calc_viz_params(this.params);
 	    make_row_cat(this.params, true);
