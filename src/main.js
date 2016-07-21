@@ -63,8 +63,8 @@ function Clustergrammer(args) {
 
   function update_cats(cat_data){
 
-    console.log('---------\nupdate_Cats\n-------------')
-    console.log(cat_data)
+    // console.log('---------\nupdate_Cats\n-------------')
+    // console.log(cat_data)
 
 
     var cat_type_num = 0;
@@ -84,8 +84,8 @@ function Clustergrammer(args) {
 
       inst_name = inst_node.name;
 
-      console.log(inst_name)
-      console.log('***************')
+      // console.log(inst_name)
+      // console.log('***************')
 
 
       cat_type_num = 0
@@ -124,13 +124,13 @@ function Clustergrammer(args) {
         inst_node['cat-'+String(cat_type_num)] = inst_full_cat
         inst_node['cat_'+String(cat_type_num)+'_index'] = inst_index
 
-        console.log(inst_full_cat)
-        console.log(cat_type_num)
+        // console.log(inst_full_cat)
+        // console.log(cat_type_num)
 
         cat_type_num = cat_type_num + 1
       });
 
-      console.log('\n\n')
+      // console.log('\n\n')
 
       // var is_interesting = false;
       // if (inst_index < 10){

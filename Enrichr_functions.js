@@ -4,7 +4,7 @@ var enr_obj = Enrichr_request();
 function Enrichr_request(){
 
   function get_enr_with_list(gene_list, library, callback_function){
-    console.log('get_enr_with_list: post and get requests')
+    // console.log('get_enr_with_list: post and get requests')
     enr_obj.post_list(gene_list, function(){
 
       if (typeof callback_function != 'undefined'){
@@ -135,7 +135,7 @@ function Enrichr_request(){
 
 function enr_data_to_cats(){
 
-  console.log('enr_data_to_cats');
+  // console.log('enr_data_to_cats');
 
   var library_name = _.keys(this.enr_data)[0];
 
@@ -161,15 +161,15 @@ function enr_data_to_cats(){
     cat_data.push(inst_data);
   });
 
-  console.log(cat_data)
+  // console.log(cat_data)
 
   this.cat_data = cat_data;
 
 }
 
 function update_viz_callback(enr_obj){
-  console.log('\nUpdating viz with enr\n------------------\n');
-  console.log(enr_obj.cat_data);
+  // console.log('\nUpdating viz with enr\n------------------\n');
+  // console.log(enr_obj.cat_data);
   cgm.update_cats(enr_obj.cat_data);
 }
 
