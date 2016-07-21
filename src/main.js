@@ -68,12 +68,46 @@ function Clustergrammer(args) {
 
 
     var inst_index = 0;
+    var inst_cat_title;
+    var inst_cats;
+    var inst_members;
+    var inst_name;
     // loop through row nodes
     //////////////////////////
     _.each(this.params.network_data.row_nodes, function(inst_node){
 
-      _.each(cat_data, function(inst_cat){
-        console.log(inst_cat)
+      inst_name = inst_node.name;
+
+      // var inst_category = false;
+      // loop through all categories and check if the row node is of this
+      // category
+      _.each(cat_data, function(inst_cat_data){
+
+
+        inst_cat_title = inst_cat_data.cat_title;
+        inst_cats = inst_cat_data.cats;
+
+
+        _.each(inst_cats, function(inst_cat){
+
+          inst_members = inst_cat.members;
+
+          if ( _.contains(inst_members, inst_name) ){
+
+            console.log(inst_name)
+            console.log('***************')
+            console.log( inst_cat_title )
+            console.log(inst_cat.cat_name)
+            console.log('inst_members')
+            console.log(inst_members)
+            console.log('\n\n')
+
+          }
+
+
+        })
+
+
       })
 
 
