@@ -85,7 +85,8 @@ function Enrichr_request(){
 
           // parse enr_data to cat_data format
           /////////////////////////////////////
-          enr_obj.cat_data = enr_obj.enr_data
+          // enr_obj.cat_data = enr_obj.enr_data
+          enr_obj.enr_data_to_cats();
 
 
           if (typeof callback_function != 'undefined'){
@@ -126,8 +127,33 @@ function Enrichr_request(){
   enr_obj.get_enr = get_enr;
   enr_obj.get_enr_with_list = get_enr_with_list;
   enr_obj.enrichr_rows = enrichr_rows;
+  enr_obj.enr_data_to_cats = enr_data_to_cats;
 
   return enr_obj;
+
+}
+
+function enr_data_to_cats(){
+
+  console.log('enr_data_to_cats');
+  // this.cat_data = this.enr_data;
+
+  var library_name = _.keys(this.enr_data)[0];
+
+  var enr_terms = this.enr_data[library_name];
+
+  enr_terms = enr_terms.slice(0,5);
+
+  this.cat_data = enr_terms;
+
+  // console.log(enr_terms)
+  // debugger
+
+  // _.each(enr_terms, function(inst_term){
+  //   console.log(inst_term[1])
+  // });
+
+  // console.log('\n\n\n')
 
 }
 
@@ -141,6 +167,9 @@ function update_viz_callback(enr_obj){
 // enr_obj.get_enr_with_list(tmp, 'KEGG_2015', update_viz_callback);
 
 
+// // example
+// /////////////////
+// enr_obj.enrichr_rows('ChEA_2015',update_viz_callback)
 
 // // load toy category data
 // enr_obj.cat_data;
