@@ -22,12 +22,16 @@ module.exports = function make_tooltips(params){
       .selectAll('g')
       .on('mouseover', function(d) {
 
+        // do not include params.root selector since tooltips are not in root
+        d3.select(' .row_tip')
+          .classed('is_hover', true);
+
         d3.selectAll('.d3-tip')
           .style('opacity',0);
 
         d3.select(this)
           .select('text')
-          .classed('active',true);
+          .classed('active', true);
 
         row_tip.show(d);
 
@@ -41,9 +45,14 @@ module.exports = function make_tooltips(params){
 
       })
       .on('mouseout', function mouseout(d) {
+
+        d3.select(' .row_tip')
+          .classed('is_hover', false);
+
         d3.select(this)
           .select('text')
           .classed('active',false);
+
         row_tip.hide(d);
       });
 

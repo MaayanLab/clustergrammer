@@ -4386,6 +4386,9 @@ var Clustergrammer =
 
 	    d3.select(params.root + ' .row_label_zoom_container').selectAll('g').on('mouseover', function (d) {
 
+	      // do not include params.root selector since tooltips are not in root
+	      d3.select(' .row_tip').classed('is_hover', true);
+
 	      d3.selectAll('.d3-tip').style('opacity', 0);
 
 	      d3.select(this).select('text').classed('active', true);
@@ -4400,7 +4403,11 @@ var Clustergrammer =
 	      }
 	      // setTimeout(tmp_update_row_tip, 1000, params);
 	    }).on('mouseout', function mouseout(d) {
+	
+	      d3.select(' .row_tip').classed('is_hover', false);
+
 	      d3.select(this).select('text').classed('active', false);
+
 	      row_tip.hide(d);
 	    });
 	  } else {
