@@ -10,6 +10,7 @@ var ini_sidebar = require('../sidebar/ini_sidebar');
 var enable_sidebar  = require('../sidebar/enable_sidebar');
 var ini_doubleclick = require('../zoom/ini_doubleclick');
 var update_reorder_buttons = require('../reorder/update_reorder_buttons');
+var make_row_cat_super_labels = require('../labels/make_row_cat_super_labels');
 
 module.exports = function update_viz_with_network(cgm, new_network_data){
 
@@ -45,6 +46,7 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
   enter_exit_update(cgm, new_network_data, delays);
 
   make_row_cat(cgm.params);
+  make_row_cat_super_labels(cgm);
 
   if (cgm.params.viz.show_categories.col){
     make_col_cat(cgm.params);
@@ -69,6 +71,5 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
     .style('opacity',0);
 
   setTimeout(enable_sidebar, 2500, cgm.params);
-
 
 };

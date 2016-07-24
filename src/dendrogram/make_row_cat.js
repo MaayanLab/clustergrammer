@@ -62,6 +62,16 @@ module.exports = function make_row_cat(params, updating=false) {
       return 'translate(0, ' + params.viz.y_scale(inst_index) + ')';
     });
 
+  // // working on removing old categories
+  // console.log('trying to')
+  // d3.select(params.root+' .row_cat_container')
+  //   .selectAll('g')
+  //   .data(params.network_data.row_nodes, function(d){return d.name;})
+  //   .exit()
+  //   .each(function(d){
+  //     console.log('here')
+  //   });
+
   d3.select(params.root+' .row_cat_container')
     .selectAll('.row_cat_group')
     .call(cat_tip);
@@ -85,6 +95,9 @@ module.exports = function make_row_cat(params, updating=false) {
 
   var cat_rect;
   var inst_selection;
+
+  d3.selectAll(params.root+' .row_cat_group rect')
+    .remove();
 
   if (params.viz.show_categories.row){
 

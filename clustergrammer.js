@@ -5028,14 +5028,16 @@ var Clustergrammer =
 
 	module.exports = function make_row_cat_super_labels(cgm) {
 
-	  if (d3.select('.row_cat_label_container').empty()) {
-	    d3.select(cgm.params.viz.viz_svg).append('g').classed('row_cat_label_container', true);
-	  }
-
 	  var params = cgm.params;
 
 	  var viz = params.viz;
 	  var extra_x_room = 2.75;
+
+	  if (d3.select('.row_cat_label_container').empty()) {
+	    d3.select(cgm.params.viz.viz_svg).append('g').classed('row_cat_label_container', true);
+	  }
+
+	  d3.selectAll(params.root + ' .row_cat_label_container text').remove();
 
 	  var x_offset = viz.clust.margin.left + viz.clust.dim.width + viz.uni_margin;
 	  var y_offset = viz.norm_labels.margin.top + viz.norm_labels.width.col + 2.5 * viz.uni_margin;
@@ -5049,9 +5051,9 @@ var Clustergrammer =
 	    return 'translate(' + x_offset + ',' + y_offset + ') rotate(-90)';
 	  });
 
-	  if (viz.sim_mat === false) {
+	  d3.selectAll(params.root + ' .row_cat_label_container text').remove();
 
-	    d3.selectAll(params.root + ' .row_cat_label_container text').remove();
+	  if (viz.sim_mat === false) {
 
 	    d3.select(params.root + ' .row_cat_label_container').selectAll().data(viz.all_cats.row).enter().append('text').classed('row_cat_super', true).style('font-size', cat_text_size + 'px').style('opacity', cat_super_opacity).style('cursor', 'default').attr('transform', function (d) {
 	      var inst_y = extra_y_room * viz.cat_room.symbol_width * parseInt(d.split('-')[1], 10);
@@ -6658,6 +6660,16 @@ var Clustergrammer =
 	    return 'translate(0, ' + params.viz.y_scale(inst_index) + ')';
 	  });
 
+	  // // working on removing old categories
+	  // console.log('trying to')
+	  // d3.select(params.root+' .row_cat_container')
+	  //   .selectAll('g')
+	  //   .data(params.network_data.row_nodes, function(d){return d.name;})
+	  //   .exit()
+	  //   .each(function(d){
+	  //     console.log('here')
+	  //   });
+
 	  d3.select(params.root + ' .row_cat_container').selectAll('.row_cat_group').call(cat_tip);
 
 	  // add row triangles
@@ -6674,6 +6686,8 @@ var Clustergrammer =
 
 	  var cat_rect;
 	  var inst_selection;
+
+	  d3.selectAll(params.root + ' .row_cat_group rect').remove();
 
 	  if (params.viz.show_categories.row) {
 
@@ -7339,6 +7353,7 @@ var Clustergrammer =
 	var enable_sidebar = __webpack_require__(141);
 	var ini_doubleclick = __webpack_require__(87);
 	var update_reorder_buttons = __webpack_require__(142);
+	var make_row_cat_super_labels = __webpack_require__(81);
 
 	module.exports = function update_viz_with_network(cgm, new_network_data) {
 
@@ -7374,6 +7389,7 @@ var Clustergrammer =
 	  enter_exit_update(cgm, new_network_data, delays);
 
 	  make_row_cat(cgm.params);
+	  make_row_cat_super_labels(cgm);
 
 	  if (cgm.params.viz.show_categories.col) {
 	    make_col_cat(cgm.params);

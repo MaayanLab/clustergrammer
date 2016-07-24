@@ -2,16 +2,19 @@ var get_cat_title = require('../categories/get_cat_title');
 
 module.exports = function make_row_cat_super_labels(cgm){
 
+  var params = cgm.params;
+
+  var viz = params.viz;
+  var extra_x_room = 2.75;
+
   if (d3.select('.row_cat_label_container').empty()){
     d3.select(cgm.params.viz.viz_svg)
       .append('g')
       .classed('row_cat_label_container', true);
   }
 
-  var params = cgm.params;
-
-  var viz = params.viz;
-  var extra_x_room = 2.75;
+  d3.selectAll(params.root+' .row_cat_label_container text')
+    .remove();
 
   var x_offset = viz.clust.margin.left + viz.clust.dim.width + viz.uni_margin;
   var y_offset = viz.norm_labels.margin.top + viz.norm_labels.width.col
@@ -28,10 +31,10 @@ module.exports = function make_row_cat_super_labels(cgm){
       return 'translate('+x_offset+','+y_offset+') rotate(-90)';
     });
 
-  if (viz.sim_mat === false){
 
-    d3.selectAll(params.root+' .row_cat_label_container text')
-      .remove();
+  d3.selectAll(params.root+' .row_cat_label_container text').remove()
+
+  if (viz.sim_mat === false){
 
     d3.select(params.root+' .row_cat_label_container')
       .selectAll()
