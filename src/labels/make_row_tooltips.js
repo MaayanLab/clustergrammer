@@ -6,7 +6,7 @@ module.exports = function make_tooltips(params){
 
     // d3-tooltip
     var row_tip = d3_tip_custom()
-      .attr('class', 'd3-tip')
+      .attr('class', 'd3-tip row_tip')
       .direction('e')
       .offset([0, 10])
       .html(function(d) {
@@ -30,7 +30,9 @@ module.exports = function make_tooltips(params){
           .classed('active',true);
 
         row_tip.show(d);
-        
+
+        setTimeout(tmp_update_row_tip, 1000, params);
+
       })
       .on('mouseout', function mouseout(d) {
         d3.select(this)
@@ -41,7 +43,7 @@ module.exports = function make_tooltips(params){
 
 
   } else{
-    
+
     d3.select(params.root+' .row_label_zoom_container')
       .selectAll('g')
       .on('mouseover', function() {
@@ -53,6 +55,13 @@ module.exports = function make_tooltips(params){
         d3.select(this)
           .select('text')
           .classed('active',false);
+      });
+  }
+
+  function tmp_update_row_tip(params){
+    d3.select('.row_tip')
+      .html(function(){
+        return 'something';
       });
   }
 

@@ -4376,7 +4376,7 @@ var Clustergrammer =
 	  if (params.labels.show_label_tooltips) {
 
 	    // d3-tooltip
-	    var row_tip = d3_tip_custom().attr('class', 'd3-tip').direction('e').offset([0, 10]).html(function (d) {
+	    var row_tip = d3_tip_custom().attr('class', 'd3-tip row_tip').direction('e').offset([0, 10]).html(function (d) {
 	      var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
 	      return "<span>" + inst_name + "</span>";
 	    });
@@ -4390,6 +4390,8 @@ var Clustergrammer =
 	      d3.select(this).select('text').classed('active', true);
 
 	      row_tip.show(d);
+
+	      setTimeout(tmp_update_row_tip, 1000, params);
 	    }).on('mouseout', function mouseout(d) {
 	      d3.select(this).select('text').classed('active', false);
 	      row_tip.hide(d);
@@ -4400,6 +4402,12 @@ var Clustergrammer =
 	      d3.select(this).select('text').classed('active', true);
 	    }).on('mouseout', function mouseout() {
 	      d3.select(this).select('text').classed('active', false);
+	    });
+	  }
+
+	  function tmp_update_row_tip(params) {
+	    d3.select('.row_tip').html(function () {
+	      return 'something';
 	    });
 	  }
 		};
