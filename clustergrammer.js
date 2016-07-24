@@ -6656,7 +6656,7 @@ var Clustergrammer =
 
 	      _.each(node_types, function (tmp_rc) {
 
-	        if (cat_name.indexOf('Not ') < 0) {
+	        if (cat_name.indexOf('Not ') < 0 && cat_name != 'false') {
 	          d3.selectAll(params.root + ' .' + tmp_rc + '_cat_group').selectAll('rect').style('opacity', function (d) {
 	            var inst_opacity;
 	            var tmp_name;

@@ -3,7 +3,7 @@ var utils = require('../Utils_clust');
 
 module.exports = function cat_tooltip_text(params, inst_data, inst_selection, inst_rc){
 
-  // category index 
+  // category index
   var inst_cat = d3.select(inst_selection).attr('cat');
   var cat_title = get_cat_title(params.viz, inst_cat, inst_rc);
   var cat_name = inst_data[inst_cat];
@@ -44,7 +44,7 @@ module.exports = function cat_tooltip_text(params, inst_data, inst_selection, in
 
       _.each(node_types, function(tmp_rc){
 
-        if (cat_name.indexOf('Not ') < 0){
+        if (cat_name.indexOf('Not ') < 0 && cat_name != 'false'){
           d3.selectAll(params.root+' .'+tmp_rc+'_cat_group')
             .selectAll('rect')
             .style('opacity', function(d){
@@ -70,7 +70,7 @@ module.exports = function cat_tooltip_text(params, inst_data, inst_selection, in
 
       });
 
-    } 
+    }
 
   }
 
