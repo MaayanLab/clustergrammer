@@ -4859,8 +4859,6 @@ var Clustergrammer =
 
 	  // row category super labels
 	  if (viz.show_categories.row) {
-	    d3.select(viz.viz_svg).append('g').classed('row_cat_label_container', true);
-
 	    make_row_cat_super_labels(cgm);
 	  }
 
@@ -5115,6 +5113,10 @@ var Clustergrammer =
 	var get_cat_title = __webpack_require__(78);
 
 	module.exports = function make_row_cat_super_labels(cgm) {
+
+	  if (d3.select('.row_cat_label_container').empty()) {
+	    d3.select(cgm.params.viz.viz_svg).append('g').classed('row_cat_label_container', true);
+	  }
 
 	  var params = cgm.params;
 

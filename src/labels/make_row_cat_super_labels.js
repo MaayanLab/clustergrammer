@@ -2,6 +2,12 @@ var get_cat_title = require('../categories/get_cat_title');
 
 module.exports = function make_row_cat_super_labels(cgm){
 
+  if (d3.select('.row_cat_label_container').empty()){
+    d3.select(cgm.params.viz.viz_svg)
+      .append('g')
+      .classed('row_cat_label_container', true);
+  }
+
   var params = cgm.params;
 
   var viz = params.viz;

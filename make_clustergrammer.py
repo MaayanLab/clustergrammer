@@ -19,6 +19,7 @@ net.load_file('txt/rc_two_cats.txt')
 # net.load_file('txt/mnist.txt')
 # net.load_file('txt/sim_mat_4_cats.txt')
 # net.load_file('txt/number_names.txt')
+# net.load_file('txt/example_tsv.txt')
 
 # # upload vector format
 # ########################

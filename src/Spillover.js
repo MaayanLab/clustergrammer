@@ -136,12 +136,7 @@ module.exports = function Spillover(cgm) {
 
   // row category super labels
   if (viz.show_categories.row){
-    d3.select(viz.viz_svg)
-      .append('g')
-      .classed('row_cat_label_container', true);
-
     make_row_cat_super_labels(cgm);
-
   }
 
 
