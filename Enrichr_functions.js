@@ -4,7 +4,7 @@ var enr_obj = Enrichr_request();
 function Enrichr_request(){
 
   function get_enr_with_list(gene_list, library, callback_function){
-    // console.log('get_enr_with_list: post and get requests')
+
     enr_obj.post_list(gene_list, function(){
 
       if (typeof callback_function != 'undefined'){
@@ -105,13 +105,6 @@ function Enrichr_request(){
     var gene_list = cgm.params.network_data.row_nodes_names;
 
     enr_obj.get_enr_with_list(gene_list, library, callback_function)
-
-    // console.log('send these rows to enrichr')
-    // console.log(inst_rows)
-
-    // if (typeof callback_function != 'undefined'){
-    //   callback_function();
-    // }
 
   }
 
