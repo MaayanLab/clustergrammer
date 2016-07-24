@@ -31,7 +31,13 @@ module.exports = function make_tooltips(params){
 
         row_tip.show(d);
 
-        setTimeout(tmp_update_row_tip, 1000, params);
+        if (params.row_tip_callback != null){
+          console.log('run callback')
+          params.row_tip_callback(d.name)
+        } else {
+          console.log('no callback found')
+        }
+        // setTimeout(tmp_update_row_tip, 1000, params);
 
       })
       .on('mouseout', function mouseout(d) {

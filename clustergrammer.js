@@ -521,7 +521,8 @@ var Clustergrammer =
 	    clamp_opacity: 0.85,
 	    expand_button: true,
 	    max_allow_fs: 20,
-	    dendro_filter: { 'row': false, 'col': false }
+	    dendro_filter: { 'row': false, 'col': false },
+	    row_tip_callback: null
 	  };
 
 	  return defaults;
@@ -4391,7 +4392,13 @@ var Clustergrammer =
 
 	      row_tip.show(d);
 
-	      setTimeout(tmp_update_row_tip, 1000, params);
+	      if (params.row_tip_callback != null) {
+	        console.log('run callback');
+	        params.row_tip_callback(d.name);
+	      } else {
+	        console.log('no callback found');
+	      }
+	      // setTimeout(tmp_update_row_tip, 1000, params);
 	    }).on('mouseout', function mouseout(d) {
 	      d3.select(this).select('text').classed('active', false);
 	      row_tip.hide(d);

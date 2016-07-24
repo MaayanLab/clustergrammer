@@ -12,6 +12,12 @@ function gene_info(gene_symbol){
     console.log(data.name)
     console.log(data.description)
 
+    d3.select('.row_tip')
+      .html(function(){
+        console.log('adding name')
+        return data.name;
+      });
+
 
   });
 

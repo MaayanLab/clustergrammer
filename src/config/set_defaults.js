@@ -48,7 +48,8 @@ module.exports = function set_defaults(){
     clamp_opacity:0.85,
     expand_button:true,
     max_allow_fs: 20,
-    dendro_filter:{'row':false, 'col':false}
+    dendro_filter:{'row':false, 'col':false},
+    row_tip_callback:null
   };
 
   return defaults;
