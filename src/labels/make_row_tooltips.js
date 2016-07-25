@@ -2,6 +2,7 @@ var d3_tip_custom = require('../tooltip/d3_tip_custom');
 
 module.exports = function make_tooltips(params){
 
+  d3.selectAll('.row_tip').remove();
   if (params.labels.show_label_tooltips){
 
     // d3-tooltip
@@ -36,6 +37,7 @@ module.exports = function make_tooltips(params){
         row_tip.show(d);
 
         if (params.row_tip_callback != null){
+          console.log('run callback')
           params.row_tip_callback(d.name)
         }
         // setTimeout(tmp_update_row_tip, 1000, params);
