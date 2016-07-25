@@ -9,10 +9,12 @@ function gene_info(gene_symbol){
 
     d3.select('.row_tip')
       .html(function(){
-        var sym_name = gene_symbol + ': ' + data.name;
-        var full_html = '<p>' + sym_name + '</p>' +  '<p>' +
-          data.description + '</p>';
-        return full_html;
+
+          var sym_name = gene_symbol + ': ' + data.name;
+          var full_html = '<p>' + sym_name + '</p>' +  '<p>' +
+            data.description + '</p>';
+          return full_html;
+
       });
 
   });
