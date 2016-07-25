@@ -3,6 +3,31 @@ var enr_obj = Enrichr_request();
 
 function Enrichr_request(){
 
+  function enrichr_icon(){
+
+    var low_opacity = 0.7;
+    var high_opacity = 1.0;
+    var icon_size = 45;
+
+    d3.select('.viz_svg').append("svg:image")
+     .attr('x', 50)
+     .attr('y', 2)
+     .attr('width', icon_size)
+     .attr('height', icon_size)
+     .attr("xlink:href","img/enrichr_logo.png")
+     .style('opacity', low_opacity)
+     .on('click', function(){
+       console.log('open enrichr library')
+     })
+     .on('mouseover', function(){
+       d3.select(this).style('opacity', high_opacity);
+     })
+     .on('mouseout', function(){
+       d3.select(this).style('opacity', low_opacity);
+     });
+
+  }
+
   function get_enr_with_list(gene_list, library, callback_function){
 
     enr_obj.post_list(gene_list, function(){
@@ -116,6 +141,7 @@ function Enrichr_request(){
   enr_obj.enr_data = null;
   enr_obj.cat_data = null;
 
+  enr_obj.enrichr_icon = enrichr_icon;
   enr_obj.post_list = post_list;
   enr_obj.get_enr = get_enr;
   enr_obj.get_enr_with_list = get_enr_with_list;

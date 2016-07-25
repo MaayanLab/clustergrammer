@@ -41,6 +41,8 @@ function make_clust(inst_network){
 
       d3.select(cgm.params.root + ' .wait_message').remove();
 
+      enr_obj.enrichr_icon();
+
   });
 
 }

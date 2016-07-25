@@ -37,7 +37,6 @@ module.exports = function make_tooltips(params){
         row_tip.show(d);
 
         if (params.row_tip_callback != null){
-          console.log('run callback')
           params.row_tip_callback(d.name)
         }
         // setTimeout(tmp_update_row_tip, 1000, params);
