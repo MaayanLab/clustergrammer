@@ -25,19 +25,28 @@ function Enrichr_request(cgm){
        d3.select(this).style('opacity', low_opacity);
      });
 
-    d3.select(cgm.params.root+' .viz_svg')
-      .append('rect')
-      .classed('enrichr_menu', true)
+    var enr_menu = d3.select(cgm.params.root+' .viz_svg')
+      .append('g')
       .classed('showing', false)
-      .attr('x', 85)
-      .attr('y', 40)
+      .classed('enrichr_menu', true)
+      // .attr('x', 85)
+      // .attr('y', 40)
+      .attr('transform', 'translate(85,40)')
+      .style('display', 'none');
+
+    enr_menu
+      .append('rect')
       .style('width', 500)
       .style('height', 400)
       .style('opacity', 0.9)
       .style('fill', 'white')
       .style('stroke', '#A3A3A3')
-      .style('stroke-width', '3px')
-      .style('display', 'none');
+      .style('stroke-width', '3px');
+
+    enr_menu
+      .append('text')
+      .attr('transform', 'translate(10,20)')
+      .text('something')
 
   }
 
