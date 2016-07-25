@@ -6,7 +6,7 @@ function Enrichr_request(cgm){
 
     var low_opacity = 0.7;
     var high_opacity = 1.0;
-    var icon_size = 45;
+    var icon_size = 42;
 
     d3.select('.viz_svg').append("svg:image")
      .attr('x', 50)
@@ -29,12 +29,14 @@ function Enrichr_request(cgm){
       .append('rect')
       .classed('enrichr_menu', true)
       .classed('showing', false)
-      .attr('x', 100)
-      .attr('y', 50)
+      .attr('x', 85)
+      .attr('y', 40)
       .style('width', 500)
       .style('height', 400)
-      .style('opacity', 0.25)
-      .style('fill', 'black')
+      .style('opacity', 0.9)
+      .style('fill', 'white')
+      .style('stroke', '#A3A3A3')
+      .style('stroke-width', '3px')
       .style('display', 'none');
 
   }
