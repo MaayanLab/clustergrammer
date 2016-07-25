@@ -24,7 +24,7 @@ module.exports = function make_tooltips(params){
 
         // do not include params.root selector since tooltips are not in root
         d3.select(' .row_tip')
-          .classed('is_hover', true);
+          .classed(d.name, true);
 
         d3.selectAll('.d3-tip')
           .style('opacity',0);
@@ -36,10 +36,7 @@ module.exports = function make_tooltips(params){
         row_tip.show(d);
 
         if (params.row_tip_callback != null){
-          console.log('run callback')
           params.row_tip_callback(d.name)
-        } else {
-          console.log('no callback found')
         }
         // setTimeout(tmp_update_row_tip, 1000, params);
 
@@ -47,7 +44,7 @@ module.exports = function make_tooltips(params){
       .on('mouseout', function mouseout(d) {
 
         d3.select(' .row_tip')
-          .classed('is_hover', false);
+          .classed(d.name, false);
 
         d3.select(this)
           .select('text')

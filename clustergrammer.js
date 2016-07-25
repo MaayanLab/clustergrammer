@@ -4387,7 +4387,7 @@ var Clustergrammer =
 	    d3.select(params.root + ' .row_label_zoom_container').selectAll('g').on('mouseover', function (d) {
 
 	      // do not include params.root selector since tooltips are not in root
-	      d3.select(' .row_tip').classed('is_hover', true);
+	      d3.select(' .row_tip').classed(d.name, true);
 
 	      d3.selectAll('.d3-tip').style('opacity', 0);
 
@@ -4396,15 +4396,12 @@ var Clustergrammer =
 	      row_tip.show(d);
 
 	      if (params.row_tip_callback != null) {
-	        console.log('run callback');
 	        params.row_tip_callback(d.name);
-	      } else {
-	        console.log('no callback found');
 	      }
 	      // setTimeout(tmp_update_row_tip, 1000, params);
 	    }).on('mouseout', function mouseout(d) {
 	
-	      d3.select(' .row_tip').classed('is_hover', false);
+	      d3.select(' .row_tip').classed(d.name, false);
 
 	      d3.select(this).select('text').classed('active', false);
 
