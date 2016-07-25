@@ -1,7 +1,6 @@
 
-var enr_obj = Enrichr_request();
 
-function Enrichr_request(){
+function Enrichr_request(cgm){
 
   function enrichr_icon(){
 
@@ -17,7 +16,7 @@ function Enrichr_request(){
      .attr("xlink:href","img/enrichr_logo.png")
      .style('opacity', low_opacity)
      .on('click', function(){
-       console.log('open enrichr library')
+       make_enrichr_menu();
      })
      .on('mouseover', function(){
        d3.select(this).style('opacity', high_opacity);
@@ -26,6 +25,10 @@ function Enrichr_request(){
        d3.select(this).style('opacity', low_opacity);
      });
 
+  }
+
+  function make_enrichr_menu(){
+    console.log('making enrichr menu')
   }
 
   function get_enr_with_list(gene_list, library, callback_function){
@@ -133,6 +136,40 @@ function Enrichr_request(){
 
   }
 
+  function enr_data_to_cats(){
+
+    // console.log('enr_data_to_cats');
+
+    var library_name = _.keys(this.enr_data)[0];
+
+    var enr_terms = this.enr_data[library_name];
+
+    enr_terms = enr_terms.slice(0,10);
+
+    cat_data = []
+
+    _.each(enr_terms, function(inst_term){
+
+      inst_data = {};
+      inst_data['cat_title'] = inst_term[1];
+      inst_data['cats'] = [];
+
+      cat_details = {};
+      cat_details.cat_name = 'true';
+      cat_details.members = inst_term[5]
+
+      // there are only two categories for Enrichr: true/false
+      inst_data['cats'].push(cat_details)
+
+      cat_data.push(inst_data);
+    });
+
+    // console.log(cat_data)
+
+    this.cat_data = cat_data;
+
+  }
+
   // example of how to check gene list
   // http://amp.pharm.mssm.edu/Enrichr/view?userListId=1284420
 
@@ -152,45 +189,12 @@ function Enrichr_request(){
 
 }
 
-function enr_data_to_cats(){
-
-  // console.log('enr_data_to_cats');
-
-  var library_name = _.keys(this.enr_data)[0];
-
-  var enr_terms = this.enr_data[library_name];
-
-  enr_terms = enr_terms.slice(0,10);
-
-  cat_data = []
-
-  _.each(enr_terms, function(inst_term){
-
-    inst_data = {};
-    inst_data['cat_title'] = inst_term[1];
-    inst_data['cats'] = [];
-
-    cat_details = {};
-    cat_details.cat_name = 'true';
-    cat_details.members = inst_term[5]
-
-    // there are only two categories for Enrichr: true/false
-    inst_data['cats'].push(cat_details)
-
-    cat_data.push(inst_data);
-  });
-
-  // console.log(cat_data)
-
-  this.cat_data = cat_data;
-
-}
-
 function update_viz_callback(enr_obj){
   // console.log('\nUpdating viz with enr\n------------------\n');
   // console.log(enr_obj.cat_data);
   cgm.update_cats(enr_obj.cat_data);
 }
+
 
 // tmp = cgm.params.network_data.row_nodes_names;
 // enr_obj.get_enr_with_list(tmp, 'KEGG_2015', update_viz_callback);
