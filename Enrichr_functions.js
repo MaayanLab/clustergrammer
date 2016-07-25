@@ -16,7 +16,7 @@ function Enrichr_request(cgm){
      .attr("xlink:href","img/enrichr_logo.png")
      .style('opacity', low_opacity)
      .on('click', function(){
-       make_enrichr_menu();
+       toggle_enrichr_menu();
      })
      .on('mouseover', function(){
        d3.select(this).style('opacity', high_opacity);
@@ -29,13 +29,12 @@ function Enrichr_request(cgm){
       .append('g')
       .classed('showing', false)
       .classed('enrichr_menu', true)
-      // .attr('x', 85)
-      // .attr('y', 40)
       .attr('transform', 'translate(85,40)')
       .style('display', 'none');
 
     enr_menu
       .append('rect')
+      .classed('enr_menu_background', true)
       .style('width', 500)
       .style('height', 400)
       .style('opacity', 0.9)
@@ -76,7 +75,8 @@ function Enrichr_request(cgm){
     lib_groups
       .on('click', function(d){
         console.log(d);
-        enr_obj.enrichr_rows(d, update_viz_callback)
+        enr_obj.enrichr_rows(d, update_viz_callback);
+        toggle_enrichr_menu();
       })
 
     lib_groups
@@ -89,7 +89,7 @@ function Enrichr_request(cgm){
 
   }
 
-  function make_enrichr_menu(){
+  function toggle_enrichr_menu(){
 
     var enr_menu = d3.select(cgm.params.root+' .enrichr_menu');
 
@@ -97,10 +97,21 @@ function Enrichr_request(cgm){
       enr_menu
         .classed('showing', true)
         .style('display', 'block');
+
+      d3.select(cgm.params.root+' .enrichr_menu')
+        .style('opacity',0)
+        .transition()
+        .style('opacity',1)
+
     } else {
-      enr_menu
+
+      setTimeout(function(){enr_menu.style('display', 'none');}, 1000)
+
+      d3.select(cgm.params.root+' .enrichr_menu')
         .classed('showing', false)
-        .style('display', 'none');
+        .style('opacity',1)
+        .transition()
+        .style('opacity',0)
     }
 
   }
