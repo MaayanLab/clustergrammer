@@ -45,8 +45,39 @@ function Enrichr_request(cgm){
 
     enr_menu
       .append('text')
-      .attr('transform', 'translate(10,20)')
-      .text('something')
+      .attr('transform', 'translate(20,30)')
+      .attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif')
+      .style('font-size','18px')
+      .style('font-weight', 800)
+      .text('Choose Enrichr Library');
+
+    var lib_section = enr_menu
+      .append('g')
+      .attr('transform', 'translate(20,60)')
+      .style('width', 460)
+      .style('height', 330)
+      .classed('enr_lib_section','true');
+
+    var possible_libraries = ['ChEA_2015','KEA_2015','Disease_Perturbations_from_GEO_up'];
+    var vertical_space = 30;
+
+    lib_section
+      .selectAll('g')
+      .data(possible_libraries)
+      .enter()
+      .append('g')
+      .attr('transform', function(d,i){
+        var vert =  i*vertical_space
+        var transform_string = 'translate(0,'+ vert+')';
+        return transform_string;
+      })
+      .append('text')
+      .style('font-size','16px')
+      .attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif')
+      .text(function(d){
+        console.log(d);
+        return d.replace(/_/g, ' ');
+      });
 
   }
 
