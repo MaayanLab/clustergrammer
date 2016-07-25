@@ -37,7 +37,7 @@ function Enrichr_request(cgm){
       .classed('enr_menu_background', true)
       .style('width', 500)
       .style('height', 400)
-      .style('opacity', 0.9)
+      .style('opacity', 0.95)
       .style('fill', 'white')
       .style('stroke', '#A3A3A3')
       .style('stroke-width', '3px');
@@ -59,7 +59,7 @@ function Enrichr_request(cgm){
 
     var possible_libraries = ['ChEA_2015','KEA_2015',
       'Disease_Perturbations_from_GEO_up'];
-    var vertical_space = 30;
+    var vertical_space = 35;
 
     var lib_groups = lib_section
       .selectAll('g')
@@ -73,19 +73,34 @@ function Enrichr_request(cgm){
       })
 
     lib_groups
-      .on('click', function(d){
-        console.log(d);
-        enr_obj.enrichr_rows(d, update_viz_callback);
-        toggle_enrichr_menu();
-      })
+      .append('circle')
+      .attr('cx', 10)
+      .attr('cy', -6)
+      .attr('r', 7)
+      .style('stroke', '#A3A3A3')
+      .style('stroke-width', '2px')
+      .style('fill','white')
 
     lib_groups
       .append('text')
-      .style('font-size','16px')
+      .attr('transform', 'translate(25,0)')
+      .style('font-size','18px')
       .attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif')
       .text(function(d){
         return d.replace(/_/g, ' ');
       });
+
+    lib_groups
+      .on('click', function(d){
+
+        // indicate that library was selected
+        d3.select(this)
+          .select('circle')
+          .style('fill','red')
+
+        enr_obj.enrichr_rows(d, update_viz_callback);
+        toggle_enrichr_menu();
+      })
 
   }
 
