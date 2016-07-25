@@ -58,7 +58,10 @@ function Enrichr_request(cgm){
       .classed('enr_lib_section','true');
 
     var possible_libraries = ['ChEA_2015','KEA_2015',
-      'Disease_Perturbations_from_GEO_up'];
+      'ENCODE_TF_ChIP-seq_2015',
+      'ENCODE_Histone_Modifications_2015',
+      'Disease_Perturbations_from_GEO_up',
+      'Disease_Perturbations_from_GEO_down'];
     var vertical_space = 35;
 
     var lib_groups = lib_section
@@ -206,7 +209,11 @@ function Enrichr_request(cgm){
       }
 
       $.ajax(settings)
-        .done(function (response) {
+        .done(function (response, textStatus, jqXHR) {
+
+          // console.log(response)
+          // console.log(textStatus)
+          console.log(jqXHR.status)
 
           response = JSON.parse(response);
           enr_obj.enr_data = response;
@@ -216,10 +223,16 @@ function Enrichr_request(cgm){
           // enr_obj.cat_data = enr_obj.enr_data
           enr_obj.enr_data_to_cats();
 
-
           if (typeof callback_function != 'undefined'){
             callback_function(enr_obj);
           }
+
+        })
+        .fail(function( jqXHR, textStatus, errorThrown ){
+          console.log(jqXHR.status)
+          console.log('trying again')
+
+          enr_obj.get_enr(library, callback_function);
 
         });
 
