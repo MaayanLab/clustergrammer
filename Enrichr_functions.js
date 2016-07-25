@@ -58,10 +58,11 @@ function Enrichr_request(cgm){
       .style('height', 330)
       .classed('enr_lib_section','true');
 
-    var possible_libraries = ['ChEA_2015','KEA_2015','Disease_Perturbations_from_GEO_up'];
+    var possible_libraries = ['ChEA_2015','KEA_2015',
+      'Disease_Perturbations_from_GEO_up'];
     var vertical_space = 30;
 
-    lib_section
+    var lib_groups = lib_section
       .selectAll('g')
       .data(possible_libraries)
       .enter()
@@ -71,11 +72,18 @@ function Enrichr_request(cgm){
         var transform_string = 'translate(0,'+ vert+')';
         return transform_string;
       })
+
+    lib_groups
+      .on('click', function(d){
+        console.log(d);
+        enr_obj.enrichr_rows(d, update_viz_callback)
+      })
+
+    lib_groups
       .append('text')
       .style('font-size','16px')
       .attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif')
       .text(function(d){
-        console.log(d);
         return d.replace(/_/g, ' ');
       });
 
