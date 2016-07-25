@@ -25,10 +25,34 @@ function Enrichr_request(cgm){
        d3.select(this).style('opacity', low_opacity);
      });
 
+    d3.select(cgm.params.root+' .viz_svg')
+      .append('rect')
+      .classed('enrichr_menu', true)
+      .classed('showing', false)
+      .attr('x', 100)
+      .attr('y', 50)
+      .style('width', 500)
+      .style('height', 400)
+      .style('opacity', 0.25)
+      .style('fill', 'black')
+      .style('display', 'none');
+
   }
 
   function make_enrichr_menu(){
-    console.log('making enrichr menu')
+
+    var enr_menu = d3.select(cgm.params.root+' .enrichr_menu');
+
+    if (enr_menu.classed('showing') === false){
+      enr_menu
+        .classed('showing', true)
+        .style('display', 'block');
+    } else {
+      enr_menu
+        .classed('showing', false)
+        .style('display', 'none');
+    }
+
   }
 
   function get_enr_with_list(gene_list, library, callback_function){
