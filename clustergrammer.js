@@ -3856,7 +3856,7 @@ var Clustergrammer =
 	    d3.select(params.root + ' .row_dendro_container').selectAll('path').style('opacity', triangle_opacity);
 	  }
 
-	  var row_dendro_filter_db = _.debounce(row_dendro_filter, 700);
+	  var row_dendro_filter_db = _.debounce(row_dendro_filter, 1500);
 
 	  function row_dendro_filter(d, inst_selection) {
 

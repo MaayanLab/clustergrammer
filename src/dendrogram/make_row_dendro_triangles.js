@@ -102,7 +102,7 @@ module.exports = function make_row_dendro_triangles(cgm,
 
   }
 
-  var row_dendro_filter_db = _.debounce(row_dendro_filter, 700);
+  var row_dendro_filter_db = _.debounce(row_dendro_filter, 1500);
 
   function row_dendro_filter(d, inst_selection){
 
