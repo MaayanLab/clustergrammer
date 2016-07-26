@@ -49,7 +49,6 @@ var Clustergrammer =
 
 	var make_config = __webpack_require__(1);
 	var make_params = __webpack_require__(9);
-	var ini_viz_params = __webpack_require__(17);
 	var make_viz = __webpack_require__(48);
 	var resize_viz = __webpack_require__(86);
 	var play_demo = __webpack_require__(111);
@@ -4412,9 +4411,8 @@ var Clustergrammer =
 	      if (params.row_tip_callback != null) {
 	        params.row_tip_callback(d.name);
 	      }
-	      // setTimeout(tmp_update_row_tip, 1000, params);
 	    }).on('mouseout', function mouseout(d) {
-	
+
 	      d3.select(' .row_tip').classed(d.name, false);
 
 	      d3.select(this).select('text').classed('active', false);
@@ -4427,12 +4425,6 @@ var Clustergrammer =
 	      d3.select(this).select('text').classed('active', true);
 	    }).on('mouseout', function mouseout() {
 	      d3.select(this).select('text').classed('active', false);
-	    });
-	  }
-
-	  function tmp_update_row_tip(params) {
-	    d3.select('.row_tip').html(function () {
-	      return 'something';
 	    });
 	  }
 		};
@@ -7398,10 +7390,7 @@ var Clustergrammer =
 
 	  var new_cat_data = null;
 	  if (cgm.params.new_cat_data != null) {
-	    console.log('********* updating new_network_data categories');
-	    console.log('checking new_cat_data');
 	    modify_row_node_cats(cgm.params.new_cat_data, new_network_data.row_nodes);
-
 	    new_cat_data = cgm.params.new_cat_data;
 	  }
 
@@ -9037,8 +9026,6 @@ var Clustergrammer =
 	  // names is an object with row and column names that will be used to filter
 	  // the matrix
 
-	  console.log('filter_viz_using_names');
-
 	  var cgm;
 	  if (external_cgm === false) {
 	    cgm = this;
@@ -10292,8 +10279,6 @@ var Clustergrammer =
 	  var inst_full_cat;
 	  var inst_cat_num;
 
-	  console.log(cat_data);
-
 	  // loop through row nodes
 	  //////////////////////////
 	  _.each(inst_nodes, function (inst_node) {
@@ -10335,11 +10320,6 @@ var Clustergrammer =
 	      cat_type_num = cat_type_num + 1;
 	    });
 	  });
-
-	  console.log('\n\n');
-	  console.log('modify_row_node_cats');
-	  console.log(_.keys(inst_nodes[0]));
-	  console.log('\n\n');
 		};
 
 /***/ }

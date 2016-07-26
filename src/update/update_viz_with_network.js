@@ -11,7 +11,7 @@ var enable_sidebar  = require('../sidebar/enable_sidebar');
 var ini_doubleclick = require('../zoom/ini_doubleclick');
 var update_reorder_buttons = require('../reorder/update_reorder_buttons');
 var make_row_cat_super_labels = require('../labels/make_row_cat_super_labels');
-var modify_row_node_cats = require('./modify_row_node_cats')
+var modify_row_node_cats = require('./modify_row_node_cats');
 
 module.exports = function update_viz_with_network(cgm, new_network_data){
 
@@ -22,10 +22,7 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
 
   var new_cat_data = null;
   if (cgm.params.new_cat_data != null){
-    console.log('********* updating new_network_data categories')
-    console.log('checking new_cat_data')
     modify_row_node_cats(cgm.params.new_cat_data, new_network_data.row_nodes);
-
     new_cat_data = cgm.params.new_cat_data;
   }
 
@@ -39,7 +36,6 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
   tmp_config.ini_expand = false;
   tmp_config.ini_view = null;
   tmp_config.current_col_cat = cgm.params.current_col_cat;
-
 
   // // pass on category info to new config
   // console.log('passing on category info from previous viz')

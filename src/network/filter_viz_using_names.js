@@ -6,8 +6,6 @@ module.exports = function filter_viz_using_names(names, external_cgm = false){
   // names is an object with row and column names that will be used to filter
   // the matrix
 
-  console.log('filter_viz_using_names')
-
   var cgm;
   if (external_cgm === false){
     cgm = this;

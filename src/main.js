@@ -1,6 +1,5 @@
 var make_config = require('./config');
 var make_params = require('./params/');
-var ini_viz_params = require('./params/ini_viz_params');
 var make_viz = require('./viz');
 var resize_viz = require('./reset_size/resize_viz');
 var play_demo = require('./demo/play_demo');

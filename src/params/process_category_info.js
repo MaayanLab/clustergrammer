@@ -19,7 +19,7 @@ module.exports = function process_category_info(params, viz, preserve_cats=true)
   }
 
   if (preserve_cats === false){
-    predefine_colors = false
+    predefine_colors = false;
   }
 
   var num_colors = 0;

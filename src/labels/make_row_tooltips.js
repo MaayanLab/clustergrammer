@@ -37,9 +37,8 @@ module.exports = function make_tooltips(params){
         row_tip.show(d);
 
         if (params.row_tip_callback != null){
-          params.row_tip_callback(d.name)
+          params.row_tip_callback(d.name);
         }
-        // setTimeout(tmp_update_row_tip, 1000, params);
 
       })
       .on('mouseout', function mouseout(d) {
@@ -68,13 +67,6 @@ module.exports = function make_tooltips(params){
         d3.select(this)
           .select('text')
           .classed('active',false);
-      });
-  }
-
-  function tmp_update_row_tip(params){
-    d3.select('.row_tip')
-      .html(function(){
-        return 'something';
       });
   }
 

@@ -32,7 +32,7 @@ module.exports = function make_row_cat_super_labels(cgm){
     });
 
 
-  d3.selectAll(params.root+' .row_cat_label_container text').remove()
+  d3.selectAll(params.root+' .row_cat_label_container text').remove();
 
   if (viz.sim_mat === false){
 

@@ -10,14 +10,12 @@ module.exports = function modify_row_node_cats(cat_data, inst_nodes){
   var inst_full_cat;
   var inst_cat_num;
 
-  console.log(cat_data)
-
   // loop through row nodes
   //////////////////////////
   _.each(inst_nodes, function(inst_node){
 
     inst_name = inst_node.name;
-    cat_type_num = 0
+    cat_type_num = 0;
 
     _.each(cat_data, function(inst_cat_data){
 
@@ -27,9 +25,9 @@ module.exports = function modify_row_node_cats(cat_data, inst_nodes){
 
       // initialize with no category
       inst_category = 'false';
-      inst_index = -1
+      inst_index = -1;
 
-      inst_cat_num = 0
+      inst_cat_num = 0;
       // loop through each category in the category-type
       _.each(inst_cats, function(inst_cat){
 
@@ -39,27 +37,23 @@ module.exports = function modify_row_node_cats(cat_data, inst_nodes){
         // add category if node is a member
         if ( _.contains(inst_members, inst_name) ){
 
-          inst_category = inst_cat_name
-          inst_index = inst_cat_num
+          inst_category = inst_cat_name;
+          inst_index = inst_cat_num;
 
         }
 
-        inst_cat_num = inst_cat_num + 1
+        inst_cat_num = inst_cat_num + 1;
 
-      })
+      });
 
-      inst_full_cat = inst_cat_title + ': ' + inst_category
+      inst_full_cat = inst_cat_title + ': ' + inst_category;
 
-      inst_node['cat-'+String(cat_type_num)] = inst_full_cat
-      inst_node['cat_'+String(cat_type_num)+'_index'] = inst_index
+      inst_node['cat-'+String(cat_type_num)] = inst_full_cat;
+      inst_node['cat_'+String(cat_type_num)+'_index'] = inst_index;
 
-      cat_type_num = cat_type_num + 1
+      cat_type_num = cat_type_num + 1;
     });
 
   });
 
-  console.log('\n\n')
-  console.log('modify_row_node_cats')
-  console.log( _.keys(inst_nodes[0]) )
-  console.log('\n\n')
 };
