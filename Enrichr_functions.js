@@ -116,7 +116,7 @@ function Enrichr_request(cgm){
           .style('fill','red')
 
         // request enrichment results from Enrichr
-        enr_obj.enrichr_rows(d, update_viz_callback);
+        enr_obj.enrichr_rows(d, update_viz_callback, 10);
 
         make_enr_wait_circle();
         animate_wait();
@@ -272,19 +272,17 @@ function Enrichr_request(cgm){
     }
   }
 
-  function enrichr_rows(library, callback_function){
+  function enrichr_rows(library, callback_function, num_terms){
+
+    // set up a variable number of terms
 
     enr_obj.library = library;
-
     var gene_list = cgm.params.network_data.row_nodes_names;
-
     enr_obj.get_enr_with_list(gene_list, library, callback_function)
 
   }
 
   function enr_data_to_cats(){
-
-    // console.log('enr_data_to_cats');
 
     var library_name = _.keys(this.enr_data)[0];
 
@@ -339,8 +337,6 @@ function Enrichr_request(cgm){
 
 function update_viz_callback(enr_obj){
 
-  // console.log('\nUpdating viz with enr\n------------------\n');
-  // console.log(enr_obj.cat_data);
   cgm.update_cats(enr_obj.cat_data);
 
   d3.select(cgm.params.root+' .enr_title').remove();
@@ -373,24 +369,6 @@ function update_viz_callback(enr_obj){
     .attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif');
 
 }
-
-
-// tmp = cgm.params.network_data.row_nodes_names;
-// enr_obj.get_enr_with_list(tmp, 'KEGG_2015', update_viz_callback);
-
-
-// // example
-// /////////////////
-// enr_obj.enrichr_rows('ChEA_2015',update_viz_callback)
-
-// // load toy category data
-// enr_obj.cat_data;
-// d3.json('json/category_mockup.json', function(cat_data){
-//   console.log('cat_data')
-//   console.log(cat_data)
-//   // return cat_data;
-//   enr_obj.cat_data = cat_data;
-// })
 
 function make_enr_wait_circle(){
   var pos_x = 71;
