@@ -5,6 +5,9 @@ var modify_row_node_cats = require('./modify_row_node_cats');
 
 module.exports = function update_cats(cgm, cat_data){
 
+  // do not change column category info
+  var col_cat_colors = cgm.params.viz.cat_colors.col;
+
   modify_row_node_cats(cat_data, cgm.params.network_data.row_nodes);
   modify_row_node_cats(cat_data, cgm.params.inst_nodes.row_nodes);
 
@@ -15,5 +18,7 @@ module.exports = function update_cats(cgm, cat_data){
   resize_viz(cgm);
 
   cgm.params.new_cat_data = cat_data;
+
+  cgm.params.viz.cat_colors.col = col_cat_colors;
 
 };

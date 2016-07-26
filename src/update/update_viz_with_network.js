@@ -21,6 +21,8 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
   var tmp_config = jQuery.extend(true, {}, cgm.config);
 
   var new_cat_data = null;
+
+  // bring in 'new' category data
   if (cgm.params.new_cat_data != null){
     modify_row_node_cats(cgm.params.new_cat_data, new_network_data.row_nodes);
     new_cat_data = cgm.params.new_cat_data;
@@ -42,10 +44,8 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
   // tmp_config.all_cats = cgm.params.viz.all_cats;
   // tmp_config.cat_colors.row['cat-1'] = tmp_config.cat_colors.row['cat-0']
 
-  // preserve category colors when updating
+  // always preserve category colors when updating
   tmp_config.cat_colors = cgm.params.viz.cat_colors;
-
-  // var tmp_cat_colors = cgm.params.viz.cat_colors;
 
   var new_params = make_params(tmp_config);
   var delays = define_enter_exit_delays(cgm.params, new_params);

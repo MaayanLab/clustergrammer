@@ -19,7 +19,6 @@ module.exports = function modify_row_node_cats(cat_data, inst_nodes){
 
     _.each(cat_data, function(inst_cat_data){
 
-
       inst_cat_title = inst_cat_data.cat_title;
       inst_cats = inst_cat_data.cats;
 
