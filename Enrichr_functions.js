@@ -109,7 +109,12 @@ function Enrichr_request(cgm){
           .select('circle')
           .style('fill','red')
 
+        // request enrichment results from Enrichr
         enr_obj.enrichr_rows(d, update_viz_callback);
+
+        make_enr_wait_circle();
+        animate_wait();
+
 
         setTimeout(toggle_enrichr_menu, 500);
         // toggle_enrichr_menu();
@@ -244,6 +249,8 @@ function Enrichr_request(cgm){
           if (enr_obj.get_tries < 2){
             // enr_obj.get_enr(library, callback_function);
             setTimeout( enr_obj.get_enr, 500, library_string, callback_function )
+          } else {
+            console.log('did not get response from Enrichr - need to remove wait circle')
           }
 
         });
@@ -319,6 +326,7 @@ function update_viz_callback(enr_obj){
   // console.log('\nUpdating viz with enr\n------------------\n');
   // console.log(enr_obj.cat_data);
   cgm.update_cats(enr_obj.cat_data);
+  d3.select(cgm.params.root+' .enr_wait_circle').remove();
 }
 
 
@@ -339,8 +347,7 @@ function update_viz_callback(enr_obj){
 //   enr_obj.cat_data = cat_data;
 // })
 
-function enr_wait_circle(){
-
+function make_enr_wait_circle(){
   var pos_x = 71;
   var pos_y = 25;
 
@@ -353,7 +360,27 @@ function enr_wait_circle(){
       .style('stroke','#666666')
       .style('stroke-width','3px')
       .style('fill','white')
-      .style('fill-opacity',0);
-      // .style('opacity', 0.5)
+      .style('fill-opacity',0)
+      .style('opacity', 0);
+}
 
+
+function animate_wait() {
+  var repeat_time = 700;
+  var max_opacity = 0.8;
+  var min_opacity = 0.2
+
+  d3.select(cgm.params.root+' .enr_wait_circle')
+    .transition()
+    .ease('linear')
+    .style('opacity', min_opacity)
+    .transition()
+    .ease('linear')
+    .duration(repeat_time)
+    .style('opacity', max_opacity)
+    .transition()
+    .ease('linear')
+    .duration(repeat_time)
+    .style('opacity', min_opacity)
+    .each("end", animate_wait);
 }
