@@ -6,6 +6,8 @@ module.exports = function filter_viz_using_names(names, external_cgm = false){
   // names is an object with row and column names that will be used to filter
   // the matrix
 
+  console.log('filter_viz_using_names')
+
   var cgm;
   if (external_cgm === false){
     cgm = this;
@@ -43,6 +45,7 @@ module.exports = function filter_viz_using_names(names, external_cgm = false){
   var new_network_data = filter_network_using_new_nodes(cgm.config, new_nodes);
 
   // takes entire cgm object
+  // last argument tells it to not preserve categoty colors
   update_viz_with_network(cgm, new_network_data);
 
 };

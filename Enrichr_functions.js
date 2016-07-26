@@ -37,7 +37,7 @@ function Enrichr_request(cgm){
       .append('rect')
       .classed('enr_menu_background', true)
       .style('width', 500)
-      .style('height', 400)
+      .style('height', 425)
       .style('opacity', 0.95)
       .style('fill', 'white')
       .style('stroke', '#A3A3A3')
@@ -63,7 +63,13 @@ function Enrichr_request(cgm){
       'ENCODE_TF_ChIP-seq_2015',
       'ENCODE_Histone_Modifications_2015',
       'Disease_Perturbations_from_GEO_up',
-      'Disease_Perturbations_from_GEO_down'];
+      'Disease_Perturbations_from_GEO_down',
+      'GO_Molecular_Function_2015',
+      'GO_Biological_Process_2015',
+      'GO_Cellular_Component_2015',
+      'Reactome_2015',
+      'PPI_Hub_Proteins'
+      ];
     var vertical_space = 35;
 
     var lib_groups = lib_section
@@ -332,6 +338,7 @@ function Enrichr_request(cgm){
 }
 
 function update_viz_callback(enr_obj){
+
   // console.log('\nUpdating viz with enr\n------------------\n');
   // console.log(enr_obj.cat_data);
   cgm.update_cats(enr_obj.cat_data);

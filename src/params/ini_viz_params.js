@@ -2,7 +2,7 @@ var utils = require('../Utils_clust');
 var get_available_filters = require('./get_available_filters');
 var make_cat_params = require('./make_cat_params');
 
-module.exports = function ini_viz_params(params){
+module.exports = function ini_viz_params(params, preserve_cats=true){
 
   var viz = {};
 
@@ -68,7 +68,7 @@ module.exports = function ini_viz_params(params){
 
   viz.cat_colors = params.cat_colors;
 
-  viz = make_cat_params(params, viz);
+  viz = make_cat_params(params, viz, preserve_cats);
 
   if (_.has(params, 'group_level')){
     params.group_level.row = 5;

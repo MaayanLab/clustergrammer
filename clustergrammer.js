@@ -909,9 +909,11 @@ var Clustergrammer =
 	var calc_default_fs = __webpack_require__(47);
 
 	module.exports = function calc_viz_params(params) {
+	  var preserve_cats = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
+
 
 	  params.labels = ini_label_params(params);
-	  params.viz = ini_viz_params(params);
+	  params.viz = ini_viz_params(params, preserve_cats);
 
 	  set_viz_wrapper_size(params);
 
@@ -981,6 +983,8 @@ var Clustergrammer =
 	var make_cat_params = __webpack_require__(18);
 
 	module.exports = function ini_viz_params(params) {
+	  var preserve_cats = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
+
 
 	  var viz = {};
 
@@ -1046,7 +1050,7 @@ var Clustergrammer =
 
 	  viz.cat_colors = params.cat_colors;
 
-	  viz = make_cat_params(params, viz);
+	  viz = make_cat_params(params, viz, preserve_cats);
 
 	  if (_.has(params, 'group_level')) {
 	    params.group_level.row = 5;
@@ -1075,8 +1079,11 @@ var Clustergrammer =
 	var calc_cat_params = __webpack_require__(21);
 
 	module.exports = function make_cat_params(params, viz) {
+	  var preserve_cats = arguments.length <= 2 || arguments[2] === undefined ? true : arguments[2];
 
-	  viz = process_category_info(params, viz);
+
+	  console.log('\n----- make_cat_params');
+	  viz = process_category_info(params, viz, preserve_cats);
 	  viz = calc_cat_params(params, viz);
 
 	  return viz;
@@ -1092,6 +1099,10 @@ var Clustergrammer =
 	var colors = __webpack_require__(20);
 
 	module.exports = function process_category_info(params, viz) {
+	  var preserve_cats = arguments.length <= 2 || arguments[2] === undefined ? true : arguments[2];
+
+
+	  console.log('process_category_info');
 
 	  var super_string = ': ';
 	  var tmp_super;
@@ -1106,6 +1117,10 @@ var Clustergrammer =
 	    predefine_colors = false;
 	  } else {
 	    predefine_colors = true;
+	  }
+
+	  if (preserve_cats === false) {
+	    predefine_colors = false;
 	  }
 
 	  var num_colors = 0;
@@ -1172,6 +1187,10 @@ var Clustergrammer =
 	  });
 
 	  viz.cat_colors = viz.cat_colors;
+
+	  console.log('viz.cat_colors.row in process_category_info');
+	  console.log('-----------------------------------------------');
+	  console.log(viz.cat_colors.row);
 
 	  return viz;
 		};
@@ -7400,11 +7419,15 @@ var Clustergrammer =
 	  // preserve category colors when updating
 	  tmp_config.cat_colors = cgm.params.viz.cat_colors;
 
+	  // var tmp_cat_colors = cgm.params.viz.cat_colors;
+
 	  var new_params = make_params(tmp_config);
 	  var delays = define_enter_exit_delays(cgm.params, new_params);
 
 	  // pass the newly calcluated params back to teh cgm object
 	  cgm.params = new_params;
+
+	  // cgm.params.viz.cat_colors = tmp_cat_colors;
 
 	  // have persistent group levels while updating
 	  cgm.params.group_level = inst_group_level;
@@ -9008,6 +9031,8 @@ var Clustergrammer =
 	  // names is an object with row and column names that will be used to filter
 	  // the matrix
 
+	  console.log('filter_viz_using_names');
+
 	  var cgm;
 	  if (external_cgm === false) {
 	    cgm = this;
@@ -9043,6 +9068,7 @@ var Clustergrammer =
 	  var new_network_data = filter_network_using_new_nodes(cgm.config, new_nodes);
 
 	  // takes entire cgm object
+	  // last argument tells it to not preserve categoty colors
 	  update_viz_with_network(cgm, new_network_data);
 		};
 
@@ -10310,8 +10336,13 @@ var Clustergrammer =
 	    // inst_index = inst_index + 1;
 	  });
 	
+	  // console.log('update_cats')
+
 	  // recalculate the visualization parameters using the updated network_data
-	  cgm.params = calc_viz_params(cgm.params);
+	  cgm.params = calc_viz_params(cgm.params, false);
+
+	  // console.log(cgm.params.viz.cat_colors.row)
+
 	  make_row_cat(cgm.params, true);
 	  resize_viz(cgm);
 		};

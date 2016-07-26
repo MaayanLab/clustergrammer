@@ -91,8 +91,13 @@ module.exports = function update_cats(cgm, cat_data){
 
     });
 
+    // console.log('update_cats')
+
     // recalculate the visualization parameters using the updated network_data
-    cgm.params = calc_viz_params(cgm.params);
+    cgm.params = calc_viz_params(cgm.params, false);
+
+    // console.log(cgm.params.viz.cat_colors.row)
+
     make_row_cat(cgm.params, true);
     resize_viz(cgm);
 

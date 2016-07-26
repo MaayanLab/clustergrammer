@@ -37,11 +37,15 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
   // preserve category colors when updating
   tmp_config.cat_colors = cgm.params.viz.cat_colors;
 
+  // var tmp_cat_colors = cgm.params.viz.cat_colors;
+
   var new_params = make_params(tmp_config);
   var delays = define_enter_exit_delays(cgm.params, new_params);
 
   // pass the newly calcluated params back to teh cgm object
   cgm.params = new_params;
+
+  // cgm.params.viz.cat_colors = tmp_cat_colors;
 
   // have persistent group levels while updating
   cgm.params.group_level = inst_group_level;
