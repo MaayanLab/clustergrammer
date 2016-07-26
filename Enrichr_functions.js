@@ -115,9 +115,7 @@ function Enrichr_request(cgm){
         make_enr_wait_circle();
         animate_wait();
 
-
         setTimeout(toggle_enrichr_menu, 500);
-        // toggle_enrichr_menu();
       })
 
   }
@@ -136,6 +134,8 @@ function Enrichr_request(cgm){
         .transition()
         .style('opacity',1)
 
+    d3.selectAll('.row_cat_super').style('display','none');
+
     } else {
 
       setTimeout(function(){enr_menu.style('display', 'none');}, 1000)
@@ -145,6 +145,8 @@ function Enrichr_request(cgm){
         .style('opacity',1)
         .transition()
         .style('opacity',0)
+
+      d3.selectAll('.row_cat_super').style('display','block');
     }
 
   }
@@ -334,21 +336,34 @@ function update_viz_callback(enr_obj){
   // console.log(enr_obj.cat_data);
   cgm.update_cats(enr_obj.cat_data);
 
-  // var library_name = 'something something something something something';
+  d3.select(cgm.params.root+' .enr_title').remove();
 
-  d3.select(cgm.params.root+' .viz_svg')
-    .append('text')
-    .text(enr_obj.library.substring(0,20))
-    .style('font-size', '16px')
+  var enr_title = d3.select(cgm.params.root+' .viz_svg')
+    .append('g')
+    .classed('enr_title', true)
     .attr('transform', function(){
 
       var trans = d3.select('.row_cat_label_container')
                     .attr('transform').split('(')[1].split(')')[0];
       x_offset = Number(trans.split(',')[0]) - 10;
 
-      return 'translate('+ String(x_offset)+', 20)';
+      return 'translate('+ String(x_offset)+', 0)';
 
-    })
+    });
+
+  enr_title
+    .append('rect')
+    .attr('width', cgm.params.viz.cat_room.row)
+    .attr('height', 25)
+    .attr('fill', 'white');
+
+  var library_string = enr_obj.library.substring(0,40);
+  enr_title
+    .append('text')
+    .attr('transform', 'translate(0, 17)')
+    .text(library_string.replace(/_/g, ' '))
+    .style('font-size', '15px')
+    .attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif');
 
 }
 
