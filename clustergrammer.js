@@ -7397,6 +7397,9 @@ var Clustergrammer =
 	  // tmp_config.all_cats = cgm.params.viz.all_cats;
 	  // tmp_config.cat_colors.row['cat-1'] = tmp_config.cat_colors.row['cat-0']
 
+	  // preserve category colors when updating
+	  tmp_config.cat_colors = cgm.params.viz.cat_colors;
+
 	  var new_params = make_params(tmp_config);
 	  var delays = define_enter_exit_delays(cgm.params, new_params);
 
