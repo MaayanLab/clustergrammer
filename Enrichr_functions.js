@@ -48,6 +48,7 @@ function Enrichr_request(cgm){
       .attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif')
       .style('font-size','18px')
       .style('font-weight', 800)
+      .style('cursor', 'default')
       .text('Choose Enrichr Library');
 
     var lib_section = enr_menu
@@ -89,6 +90,7 @@ function Enrichr_request(cgm){
       .attr('transform', 'translate(25,0)')
       .style('font-size','18px')
       .attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif')
+      .style('cursor', 'default')
       .text(function(d){
         return d.replace(/_/g, ' ');
       });
@@ -96,13 +98,20 @@ function Enrichr_request(cgm){
     lib_groups
       .on('click', function(d){
 
+        d3.select(cgm.params.root+' .enr_lib_section')
+          .selectAll('g')
+          .select('circle')
+          .style('fill','white');
+
         // indicate that library was selected
         d3.select(this)
           .select('circle')
           .style('fill','red')
 
         enr_obj.enrichr_rows(d, update_viz_callback);
-        toggle_enrichr_menu();
+
+        setTimeout(toggle_enrichr_menu, 500);
+        // toggle_enrichr_menu();
       })
 
   }
@@ -177,7 +186,10 @@ function Enrichr_request(cgm){
      .done(function(response){
       response = JSON.parse(response);
       enr_obj.user_list_id = response.userListId;
-      callback_function(response);
+
+      // make get request
+      setTimeout(callback_function, 500, response);
+      // callback_function(response);
      });
   }
 
