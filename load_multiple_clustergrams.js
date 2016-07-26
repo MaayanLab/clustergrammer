@@ -14,7 +14,7 @@ function make_clust(make_sim_mats){
 
     cgm['clust'] = Clustergrammer(args);
     d3.select(cgm['clust'].params.root+' .wait_message').remove();
-    cat_colors = cgm['clust'].params.cat_colors;
+    cat_colors = cgm['clust'].params.viz.cat_colors;
 
     make_sim_mats('col', cat_colors, unblock);
     make_sim_mats('row', cat_colors, unblock);

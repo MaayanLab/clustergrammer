@@ -211,10 +211,6 @@ function Enrichr_request(cgm){
       $.ajax(settings)
         .done(function (response, textStatus, jqXHR) {
 
-          // console.log(response)
-          // console.log(textStatus)
-          console.log(jqXHR.status)
-
           response = JSON.parse(response);
           enr_obj.enr_data = response;
 
@@ -229,10 +225,13 @@ function Enrichr_request(cgm){
 
         })
         .fail(function( jqXHR, textStatus, errorThrown ){
-          console.log(jqXHR.status)
-          console.log('trying again')
 
-          enr_obj.get_enr(library, callback_function);
+          enr_obj.get_tries = enr_obj.get_tries + 1;
+
+          if (enr_obj.get_tries < 2){
+            // enr_obj.get_enr(library, callback_function);
+            setTimeout( enr_obj.get_enr, 500, library_string, callback_function )
+          }
 
         });
 
@@ -290,6 +289,7 @@ function Enrichr_request(cgm){
   enr_obj.user_list_id = null;
   enr_obj.enr_data = null;
   enr_obj.cat_data = null;
+  enr_obj.get_tries = 0;
 
   enr_obj.enrichr_icon = enrichr_icon;
   enr_obj.post_list = post_list;
