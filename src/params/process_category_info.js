@@ -3,8 +3,6 @@ var colors = require('../colors');
 
 module.exports = function process_category_info(params, viz, preserve_cats=true){
 
-  console.log('process_category_info')
-
   var super_string = ': ';
   var tmp_super;
 
@@ -97,10 +95,6 @@ module.exports = function process_category_info(params, viz, preserve_cats=true)
   });
 
   viz.cat_colors = viz.cat_colors;
-
-  console.log('viz.cat_colors.row in process_category_info')
-  console.log('-----------------------------------------------')
-  console.log(viz.cat_colors.row)
 
   return viz;
 };

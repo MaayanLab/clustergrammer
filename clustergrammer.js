@@ -522,7 +522,8 @@ var Clustergrammer =
 	    expand_button: true,
 	    max_allow_fs: 20,
 	    dendro_filter: { 'row': false, 'col': false },
-	    row_tip_callback: null
+	    row_tip_callback: null,
+	    new_cat_data: null
 	  };
 
 	  return defaults;
@@ -1082,7 +1083,6 @@ var Clustergrammer =
 	  var preserve_cats = arguments.length <= 2 || arguments[2] === undefined ? true : arguments[2];
 
 
-	  console.log('\n----- make_cat_params');
 	  viz = process_category_info(params, viz, preserve_cats);
 	  viz = calc_cat_params(params, viz);
 
@@ -1101,8 +1101,6 @@ var Clustergrammer =
 	module.exports = function process_category_info(params, viz) {
 	  var preserve_cats = arguments.length <= 2 || arguments[2] === undefined ? true : arguments[2];
 
-
-	  console.log('process_category_info');
 
 	  var super_string = ': ';
 	  var tmp_super;
@@ -1187,10 +1185,6 @@ var Clustergrammer =
 	  });
 
 	  viz.cat_colors = viz.cat_colors;
-
-	  console.log('viz.cat_colors.row in process_category_info');
-	  console.log('-----------------------------------------------');
-	  console.log(viz.cat_colors.row);
 
 	  return viz;
 		};
@@ -7393,6 +7387,7 @@ var Clustergrammer =
 	var ini_doubleclick = __webpack_require__(87);
 	var update_reorder_buttons = __webpack_require__(142);
 	var make_row_cat_super_labels = __webpack_require__(81);
+	var modify_row_node_cats = __webpack_require__(173);
 
 	module.exports = function update_viz_with_network(cgm, new_network_data) {
 
@@ -7400,6 +7395,15 @@ var Clustergrammer =
 
 	  // make tmp config to make new params
 	  var tmp_config = jQuery.extend(true, {}, cgm.config);
+
+	  var new_cat_data = null;
+	  if (cgm.params.new_cat_data != null) {
+	    console.log('********* updating new_network_data categories');
+	    console.log('checking new_cat_data');
+	    modify_row_node_cats(cgm.params.new_cat_data, new_network_data.row_nodes);
+
+	    new_cat_data = cgm.params.new_cat_data;
+	  }
 
 	  tmp_config.network_data = new_network_data;
 	  tmp_config.inst_order = cgm.params.viz.inst_order;
@@ -7427,7 +7431,9 @@ var Clustergrammer =
 	  // pass the newly calcluated params back to teh cgm object
 	  cgm.params = new_params;
 
-	  // cgm.params.viz.cat_colors = tmp_cat_colors;
+	  if (new_cat_data != null) {
+	    cgm.params.new_cat_data = new_cat_data;
+	  }
 
 	  // have persistent group levels while updating
 	  cgm.params.group_level = inst_group_level;
@@ -9081,22 +9087,12 @@ var Clustergrammer =
 	var make_row_cat = __webpack_require__(108);
 	var calc_viz_params = __webpack_require__(15);
 	var resize_viz = __webpack_require__(86);
+	var modify_row_node_cats = __webpack_require__(173);
 
 	module.exports = function update_cats(cgm, cat_data) {
 
-	  var cat_type_num = 0;
-	  var inst_index = 0;
-	  var inst_cat_title;
-	  var inst_cats;
-	  var inst_members;
-	  var inst_name;
-	  var inst_category;
-	  var inst_cat_name;
-	  var inst_full_cat;
-	  var inst_cat_num;
-
-	  modify_row_node_cats(cgm.params.network_data.row_nodes);
-	  modify_row_node_cats(cgm.params.inst_nodes.row_nodes);
+	  modify_row_node_cats(cat_data, cgm.params.network_data.row_nodes);
+	  modify_row_node_cats(cat_data, cgm.params.inst_nodes.row_nodes);
 
 	  // recalculate the visualization parameters using the updated network_data
 	  cgm.params = calc_viz_params(cgm.params, false);
@@ -9104,49 +9100,7 @@ var Clustergrammer =
 	  make_row_cat(cgm.params, true);
 	  resize_viz(cgm);
 
-	  function modify_row_node_cats(inst_nodes) {
-	    // loop through row nodes
-	    //////////////////////////
-	    _.each(inst_nodes, function (inst_node) {
-
-	      inst_name = inst_node.name;
-	      cat_type_num = 0;
-
-	      _.each(cat_data, function (inst_cat_data) {
-
-	        inst_cat_title = inst_cat_data.cat_title;
-	        inst_cats = inst_cat_data.cats;
-
-	        // initialize with no category
-	        inst_category = 'false';
-	        inst_index = -1;
-
-	        inst_cat_num = 0;
-	        // loop through each category in the category-type
-	        _.each(inst_cats, function (inst_cat) {
-
-	          inst_cat_name = inst_cat.cat_name;
-	          inst_members = inst_cat.members;
-
-	          // add category if node is a member
-	          if (_.contains(inst_members, inst_name)) {
-
-	            inst_category = inst_cat_name;
-	            inst_index = inst_cat_num;
-	          }
-
-	          inst_cat_num = inst_cat_num + 1;
-	        });
-
-	        inst_full_cat = inst_cat_title + ': ' + inst_category;
-
-	        inst_node['cat-' + String(cat_type_num)] = inst_full_cat;
-	        inst_node['cat_' + String(cat_type_num) + '_index'] = inst_index;
-
-	        cat_type_num = cat_type_num + 1;
-	      });
-	    });
-	  }
+	  cgm.params.new_cat_data = cat_data;
 		};
 
 /***/ },
@@ -10318,6 +10272,74 @@ var Clustergrammer =
 	  $(params.root + ' .opacity_slider').slider({
 	    value: 1.0
 	  });
+		};
+
+/***/ },
+/* 173 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = function modify_row_node_cats(cat_data, inst_nodes) {
+	  var cat_type_num = 0;
+	  var inst_index = 0;
+	  var inst_cat_title;
+	  var inst_cats;
+	  var inst_members;
+	  var inst_name;
+	  var inst_category;
+	  var inst_cat_name;
+	  var inst_full_cat;
+	  var inst_cat_num;
+
+	  console.log(cat_data);
+
+	  // loop through row nodes
+	  //////////////////////////
+	  _.each(inst_nodes, function (inst_node) {
+
+	    inst_name = inst_node.name;
+	    cat_type_num = 0;
+
+	    _.each(cat_data, function (inst_cat_data) {
+
+	      inst_cat_title = inst_cat_data.cat_title;
+	      inst_cats = inst_cat_data.cats;
+
+	      // initialize with no category
+	      inst_category = 'false';
+	      inst_index = -1;
+
+	      inst_cat_num = 0;
+	      // loop through each category in the category-type
+	      _.each(inst_cats, function (inst_cat) {
+
+	        inst_cat_name = inst_cat.cat_name;
+	        inst_members = inst_cat.members;
+
+	        // add category if node is a member
+	        if (_.contains(inst_members, inst_name)) {
+
+	          inst_category = inst_cat_name;
+	          inst_index = inst_cat_num;
+	        }
+
+	        inst_cat_num = inst_cat_num + 1;
+	      });
+
+	      inst_full_cat = inst_cat_title + ': ' + inst_category;
+
+	      inst_node['cat-' + String(cat_type_num)] = inst_full_cat;
+	      inst_node['cat_' + String(cat_type_num) + '_index'] = inst_index;
+
+	      cat_type_num = cat_type_num + 1;
+	    });
+	  });
+
+	  console.log('\n\n');
+	  console.log('modify_row_node_cats');
+	  console.log(_.keys(inst_nodes[0]));
+	  console.log('\n\n');
 		};
 
 /***/ }

@@ -3,7 +3,6 @@ var calc_cat_params = require('./calc_cat_params');
 
 module.exports = function make_cat_params(params, viz, preserve_cats=true){
 
-  console.log('\n----- make_cat_params')
   viz = process_category_info(params, viz, preserve_cats);
   viz = calc_cat_params(params, viz);
 
