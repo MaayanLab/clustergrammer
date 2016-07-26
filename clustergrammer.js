@@ -57,7 +57,7 @@ var Clustergrammer =
 	var update_viz_with_view = __webpack_require__(123);
 	var filter_viz_using_nodes = __webpack_require__(152);
 	var filter_viz_using_names = __webpack_require__(153);
-	var update_cats = __webpack_require__(172);
+	var update_cats = __webpack_require__(154);
 
 	/* clustergrammer 1.0
 	 * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
@@ -82,7 +82,7 @@ var Clustergrammer =
 	  cgm.config = config;
 
 	  if (cgm.params.use_sidebar) {
-	    var make_sidebar = __webpack_require__(154);
+	    var make_sidebar = __webpack_require__(155);
 	    make_sidebar(cgm);
 	  }
 
@@ -9078,15 +9078,119 @@ var Clustergrammer =
 
 	'use strict';
 
+	var make_row_cat = __webpack_require__(108);
+	var calc_viz_params = __webpack_require__(15);
+	var resize_viz = __webpack_require__(86);
+
+	module.exports = function update_cats(cgm, cat_data) {
+
+	  // console.log('---------\nupdate_Cats\n-------------')
+	  // console.log(cat_data)
+
+	  var cat_type_num = 0;
+	  var inst_index = 0;
+	  var inst_cat_title;
+	  var inst_cats;
+	  var inst_members;
+	  var inst_name;
+	  var inst_category;
+	  var inst_cat_name;
+	  var inst_full_cat;
+	  var inst_cat_num;
+
+	  // loop through row nodes
+	  //////////////////////////
+	  _.each(cgm.params.network_data.row_nodes, function (inst_node) {
+
+	    inst_name = inst_node.name;
+
+	    // console.log(inst_name)
+	    // console.log('***************')
+
+	    cat_type_num = 0;
+	    // loop through each category-type
+	    _.each(cat_data, function (inst_cat_data) {
+
+	      inst_cat_title = inst_cat_data.cat_title;
+	      inst_cats = inst_cat_data.cats;
+
+	      // initialize with no category
+	      inst_category = 'false';
+	      inst_index = -1;
+
+	      inst_cat_num = 0;
+	      // loop through each category in the category-type
+	      _.each(inst_cats, function (inst_cat) {
+
+	        inst_cat_name = inst_cat.cat_name;
+	        inst_members = inst_cat.members;
+
+	        // add category if node is a member
+	        if (_.contains(inst_members, inst_name)) {
+
+	          inst_category = inst_cat_name;
+	          inst_index = inst_cat_num;
+	        }
+
+	        inst_cat_num = inst_cat_num + 1;
+	      });
+
+	      inst_full_cat = inst_cat_title + ': ' + inst_category;
+
+	      inst_node['cat-' + String(cat_type_num)] = inst_full_cat;
+	      inst_node['cat_' + String(cat_type_num) + '_index'] = inst_index;
+
+	      // console.log(inst_full_cat)
+	      // console.log(cat_type_num)
+
+	      cat_type_num = cat_type_num + 1;
+	    });
+
+	    // console.log('\n\n')
+
+	    // var is_interesting = false;
+	    // if (inst_index < 10){
+	    //   is_interesting = true;
+	    // }
+
+	    // inst_node['cat_0_index'] = inst_index
+	    // inst_node['cat-0'] = 'Very Interesting: '+String(is_interesting);
+
+	    // inst_node['cat_1_index'] = inst_index
+	    // inst_node['cat-1'] = 'Very Interesting: '+String(is_interesting);
+
+	    // inst_node['cat_2_index'] = inst_index
+	    // inst_node['cat-2'] = 'Very Interesting: '+String(is_interesting);
+
+	    // inst_index = inst_index + 1;
+	  });
+	
+	  // console.log('update_cats')
+
+	  // recalculate the visualization parameters using the updated network_data
+	  cgm.params = calc_viz_params(cgm.params, false);
+
+	  // console.log(cgm.params.viz.cat_colors.row)
+
+	  make_row_cat(cgm.params, true);
+	  resize_viz(cgm);
+		};
+
+/***/ },
+/* 155 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
 	var ini_sidebar = __webpack_require__(139);
-	var set_up_filters = __webpack_require__(155);
-	var set_up_dendro_sliders = __webpack_require__(162);
-	var set_up_search = __webpack_require__(163);
-	var set_up_reorder = __webpack_require__(164);
-	var set_sidebar_ini_view = __webpack_require__(165);
-	var make_icons = __webpack_require__(166);
-	var make_modals = __webpack_require__(169);
-	var set_up_opacity_slider = __webpack_require__(171);
+	var set_up_filters = __webpack_require__(156);
+	var set_up_dendro_sliders = __webpack_require__(163);
+	var set_up_search = __webpack_require__(164);
+	var set_up_reorder = __webpack_require__(165);
+	var set_sidebar_ini_view = __webpack_require__(166);
+	var make_icons = __webpack_require__(167);
+	var make_modals = __webpack_require__(170);
+	var set_up_opacity_slider = __webpack_require__(172);
 
 	/* Represents sidebar with controls.
 	 */
@@ -9159,13 +9263,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 155 */
+/* 156 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_slider_filter = __webpack_require__(156);
-	var make_button_filter = __webpack_require__(161);
+	var make_slider_filter = __webpack_require__(157);
+	var make_button_filter = __webpack_require__(162);
 
 	module.exports = function set_up_filters(cgm, filter_type) {
 
@@ -9181,13 +9285,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 156 */
+/* 157 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_filter_title = __webpack_require__(157);
-	var run_filter_slider = __webpack_require__(158);
+	var make_filter_title = __webpack_require__(158);
+	var run_filter_slider = __webpack_require__(159);
 	var get_filter_default_state = __webpack_require__(5);
 	var get_subset_views = __webpack_require__(12);
 
@@ -9235,7 +9339,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 157 */
+/* 158 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9295,14 +9399,14 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 158 */
+/* 159 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var update_viz_with_view = __webpack_require__(123);
-	var reset_other_filter_sliders = __webpack_require__(159);
-	var get_current_orders = __webpack_require__(160);
+	var reset_other_filter_sliders = __webpack_require__(160);
+	var get_current_orders = __webpack_require__(161);
 	var make_requested_view = __webpack_require__(14);
 
 	module.exports = function run_filter_slider(cgm, filter_type, available_views) {
@@ -9332,12 +9436,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 159 */
+/* 160 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_filter_title = __webpack_require__(157);
+	var make_filter_title = __webpack_require__(158);
 
 	module.exports = function reset_other_filter_sliders(params, filter_type, inst_state) {
 
@@ -9384,7 +9488,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 160 */
+/* 161 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9415,7 +9519,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 161 */
+/* 162 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9473,7 +9577,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 162 */
+/* 163 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9503,7 +9607,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 163 */
+/* 164 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9520,7 +9624,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 164 */
+/* 165 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9630,12 +9734,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 165 */
+/* 166 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_filter_title = __webpack_require__(157);
+	var make_filter_title = __webpack_require__(158);
 
 	module.exports = function set_sidebar_ini_view(params) {
 
@@ -9676,13 +9780,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 166 */
+/* 167 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var save_svg_png = __webpack_require__(167);
-	var file_saver = __webpack_require__(168);
+	var save_svg_png = __webpack_require__(168);
+	var file_saver = __webpack_require__(169);
 
 	module.exports = function make_icons(params, sidebar) {
 
@@ -9739,7 +9843,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 167 */
+/* 168 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9945,7 +10049,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 168 */
+/* 169 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -10162,12 +10266,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 169 */
+/* 170 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_modal_skeleton = __webpack_require__(170);
+	var make_modal_skeleton = __webpack_require__(171);
 
 	module.exports = function ini_modals(params) {
 
@@ -10200,7 +10304,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 170 */
+/* 171 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -10225,7 +10329,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 171 */
+/* 172 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -10241,110 +10345,6 @@ var Clustergrammer =
 	  $(params.root + ' .opacity_slider').slider({
 	    value: 1.0
 	  });
-		};
-
-/***/ },
-/* 172 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var make_row_cat = __webpack_require__(108);
-	var calc_viz_params = __webpack_require__(15);
-	var resize_viz = __webpack_require__(86);
-
-	module.exports = function update_cats(cgm, cat_data) {
-
-	  // console.log('---------\nupdate_Cats\n-------------')
-	  // console.log(cat_data)
-
-	  var cat_type_num = 0;
-	  var inst_index = 0;
-	  var inst_cat_title;
-	  var inst_cats;
-	  var inst_members;
-	  var inst_name;
-	  var inst_category;
-	  var inst_cat_name;
-	  var inst_full_cat;
-	  var inst_cat_num;
-
-	  // loop through row nodes
-	  //////////////////////////
-	  _.each(cgm.params.network_data.row_nodes, function (inst_node) {
-
-	    inst_name = inst_node.name;
-
-	    // console.log(inst_name)
-	    // console.log('***************')
-
-	    cat_type_num = 0;
-	    // loop through each category-type
-	    _.each(cat_data, function (inst_cat_data) {
-
-	      inst_cat_title = inst_cat_data.cat_title;
-	      inst_cats = inst_cat_data.cats;
-
-	      // initialize with no category
-	      inst_category = 'false';
-	      inst_index = -1;
-
-	      inst_cat_num = 0;
-	      // loop through each category in the category-type
-	      _.each(inst_cats, function (inst_cat) {
-
-	        inst_cat_name = inst_cat.cat_name;
-	        inst_members = inst_cat.members;
-
-	        // add category if node is a member
-	        if (_.contains(inst_members, inst_name)) {
-
-	          inst_category = inst_cat_name;
-	          inst_index = inst_cat_num;
-	        }
-
-	        inst_cat_num = inst_cat_num + 1;
-	      });
-
-	      inst_full_cat = inst_cat_title + ': ' + inst_category;
-
-	      inst_node['cat-' + String(cat_type_num)] = inst_full_cat;
-	      inst_node['cat_' + String(cat_type_num) + '_index'] = inst_index;
-
-	      // console.log(inst_full_cat)
-	      // console.log(cat_type_num)
-
-	      cat_type_num = cat_type_num + 1;
-	    });
-
-	    // console.log('\n\n')
-
-	    // var is_interesting = false;
-	    // if (inst_index < 10){
-	    //   is_interesting = true;
-	    // }
-
-	    // inst_node['cat_0_index'] = inst_index
-	    // inst_node['cat-0'] = 'Very Interesting: '+String(is_interesting);
-
-	    // inst_node['cat_1_index'] = inst_index
-	    // inst_node['cat-1'] = 'Very Interesting: '+String(is_interesting);
-
-	    // inst_node['cat_2_index'] = inst_index
-	    // inst_node['cat-2'] = 'Very Interesting: '+String(is_interesting);
-
-	    // inst_index = inst_index + 1;
-	  });
-	
-	  // console.log('update_cats')
-
-	  // recalculate the visualization parameters using the updated network_data
-	  cgm.params = calc_viz_params(cgm.params, false);
-
-	  // console.log(cgm.params.viz.cat_colors.row)
-
-	  make_row_cat(cgm.params, true);
-	  resize_viz(cgm);
 		};
 
 /***/ }
