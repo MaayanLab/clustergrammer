@@ -61,8 +61,8 @@ sftp-config.json
 # python
 *.ipynb_checkpoints
 
-# eslint
-.eslint*
+# # eslint
+# .eslint*
 
 # how to retroactively use
 ############################
