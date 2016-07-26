@@ -151,6 +151,8 @@ function Enrichr_request(cgm){
 
   function get_enr_with_list(gene_list, library, callback_function){
 
+    enr_obj.library = library;
+
     enr_obj.post_list(gene_list, function(){
 
       if (typeof callback_function != 'undefined'){
@@ -240,6 +242,7 @@ function Enrichr_request(cgm){
           if (typeof callback_function != 'undefined'){
             callback_function(enr_obj);
           }
+          d3.select(cgm.params.root+' .enr_wait_circle').remove();
 
         })
         .fail(function( jqXHR, textStatus, errorThrown ){
@@ -251,6 +254,7 @@ function Enrichr_request(cgm){
             setTimeout( enr_obj.get_enr, 500, library_string, callback_function )
           } else {
             console.log('did not get response from Enrichr - need to remove wait circle')
+            d3.select(cgm.params.root+' .enr_wait_circle').remove();
           }
 
         });
@@ -261,6 +265,8 @@ function Enrichr_request(cgm){
   }
 
   function enrichr_rows(library, callback_function){
+
+    enr_obj.library = library;
 
     var gene_list = cgm.params.network_data.row_nodes_names;
 
@@ -310,6 +316,7 @@ function Enrichr_request(cgm){
   enr_obj.enr_data = null;
   enr_obj.cat_data = null;
   enr_obj.get_tries = 0;
+  enr_obj.library = null;
 
   enr_obj.enrichr_icon = enrichr_icon;
   enr_obj.post_list = post_list;
@@ -326,7 +333,23 @@ function update_viz_callback(enr_obj){
   // console.log('\nUpdating viz with enr\n------------------\n');
   // console.log(enr_obj.cat_data);
   cgm.update_cats(enr_obj.cat_data);
-  d3.select(cgm.params.root+' .enr_wait_circle').remove();
+
+  // var library_name = 'something something something something something';
+
+  d3.select(cgm.params.root+' .viz_svg')
+    .append('text')
+    .text(enr_obj.library.substring(0,20))
+    .style('font-size', '16px')
+    .attr('transform', function(){
+
+      var trans = d3.select('.row_cat_label_container')
+                    .attr('transform').split('(')[1].split(')')[0];
+      x_offset = Number(trans.split(',')[0]) - 10;
+
+      return 'translate('+ String(x_offset)+', 20)';
+
+    })
+
 }
 
 
