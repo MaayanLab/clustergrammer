@@ -15,6 +15,7 @@ function Enrichr_request(cgm){
      .attr('height', icon_size)
      .attr("xlink:href","img/enrichr_logo.png")
      .style('opacity', low_opacity)
+     .classed('enrichr_logo', true)
      .on('click', function(){
        toggle_enrichr_menu();
      })
@@ -337,3 +338,22 @@ function update_viz_callback(enr_obj){
 //   // return cat_data;
 //   enr_obj.cat_data = cat_data;
 // })
+
+function enr_wait_circle(){
+
+  var pos_x = 71;
+  var pos_y = 25;
+
+   var click_circle = d3.select(cgm.params.root+' .viz_svg')
+      .append('circle')
+      .classed('enr_wait_circle', true)
+      .attr('cx',pos_x)
+      .attr('cy',pos_y)
+      .attr('r',22)
+      .style('stroke','#666666')
+      .style('stroke-width','3px')
+      .style('fill','white')
+      .style('fill-opacity',0);
+      // .style('opacity', 0.5)
+
+}
