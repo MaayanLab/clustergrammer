@@ -57,6 +57,8 @@ var Clustergrammer =
 	var filter_viz_using_nodes = __webpack_require__(153);
 	var filter_viz_using_names = __webpack_require__(154);
 	var update_cats = __webpack_require__(155);
+	var d3 = __webpack_require__(175);
+	d3.slider = __webpack_require__(176);
 
 	/* clustergrammer 1.0
 	 * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
@@ -81,7 +83,7 @@ var Clustergrammer =
 	  cgm.config = config;
 
 	  if (cgm.params.use_sidebar) {
-	    var make_sidebar = __webpack_require__(158);
+	    var make_sidebar = __webpack_require__(156);
 	    make_sidebar(cgm);
 	  }
 
@@ -9157,22 +9159,20 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 156 */,
-/* 157 */,
-/* 158 */
+/* 156 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var ini_sidebar = __webpack_require__(139);
-	var set_up_filters = __webpack_require__(159);
-	var set_up_dendro_sliders = __webpack_require__(166);
-	var set_up_search = __webpack_require__(167);
-	var set_up_reorder = __webpack_require__(168);
-	var set_sidebar_ini_view = __webpack_require__(169);
-	var make_icons = __webpack_require__(170);
-	var make_modals = __webpack_require__(173);
-	var set_up_opacity_slider = __webpack_require__(175);
+	var set_up_filters = __webpack_require__(157);
+	var set_up_dendro_sliders = __webpack_require__(164);
+	var set_up_search = __webpack_require__(165);
+	var set_up_reorder = __webpack_require__(166);
+	var set_sidebar_ini_view = __webpack_require__(167);
+	var make_icons = __webpack_require__(168);
+	var make_modals = __webpack_require__(171);
+	var set_up_opacity_slider = __webpack_require__(173);
 
 	/* Represents sidebar with controls.
 	 */
@@ -9245,13 +9245,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 159 */
+/* 157 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_slider_filter = __webpack_require__(160);
-	var make_button_filter = __webpack_require__(165);
+	var make_slider_filter = __webpack_require__(158);
+	var make_button_filter = __webpack_require__(163);
 
 	module.exports = function set_up_filters(cgm, filter_type) {
 
@@ -9267,13 +9267,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 160 */
+/* 158 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_filter_title = __webpack_require__(161);
-	var run_filter_slider = __webpack_require__(162);
+	var make_filter_title = __webpack_require__(159);
+	var run_filter_slider = __webpack_require__(160);
 	var get_filter_default_state = __webpack_require__(5);
 	var get_subset_views = __webpack_require__(12);
 
@@ -9321,7 +9321,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 161 */
+/* 159 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9381,14 +9381,14 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 162 */
+/* 160 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var update_viz_with_view = __webpack_require__(123);
-	var reset_other_filter_sliders = __webpack_require__(163);
-	var get_current_orders = __webpack_require__(164);
+	var reset_other_filter_sliders = __webpack_require__(161);
+	var get_current_orders = __webpack_require__(162);
 	var make_requested_view = __webpack_require__(14);
 
 	module.exports = function run_filter_slider(cgm, filter_type, available_views) {
@@ -9418,12 +9418,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 163 */
+/* 161 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_filter_title = __webpack_require__(161);
+	var make_filter_title = __webpack_require__(159);
 
 	module.exports = function reset_other_filter_sliders(params, filter_type, inst_state) {
 
@@ -9470,7 +9470,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 164 */
+/* 162 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9501,7 +9501,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 165 */
+/* 163 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9559,7 +9559,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 166 */
+/* 164 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9589,7 +9589,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 167 */
+/* 165 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9606,7 +9606,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 168 */
+/* 166 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9716,12 +9716,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 169 */
+/* 167 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_filter_title = __webpack_require__(161);
+	var make_filter_title = __webpack_require__(159);
 
 	module.exports = function set_sidebar_ini_view(params) {
 
@@ -9762,13 +9762,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 170 */
+/* 168 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var save_svg_png = __webpack_require__(171);
-	var file_saver = __webpack_require__(172);
+	var save_svg_png = __webpack_require__(169);
+	var file_saver = __webpack_require__(170);
 
 	module.exports = function make_icons(params, sidebar) {
 
@@ -9825,7 +9825,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 171 */
+/* 169 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -10031,7 +10031,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 172 */
+/* 170 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -10248,12 +10248,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 173 */
+/* 171 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_modal_skeleton = __webpack_require__(174);
+	var make_modal_skeleton = __webpack_require__(172);
 
 	module.exports = function ini_modals(params) {
 
@@ -10286,7 +10286,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 174 */
+/* 172 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -10311,7 +10311,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 175 */
+/* 173 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -10328,6 +10328,415 @@ var Clustergrammer =
 	    value: 1.0
 	  });
 		};
+
+/***/ },
+/* 174 */,
+/* 175 */
+/***/ function(module, exports) {
+
+	module.exports = d3;
+
+/***/ },
+/* 176 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
+
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+	/*
+	    D3.js Slider
+	    Inspired by jQuery UI Slider
+	    Copyright (c) 2013, Bjorn Sandvik - http://blog.thematicmapping.org
+	    BSD license: http://opensource.org/licenses/BSD-3-Clause
+	*/
+	(function (root, factory) {
+	  if (true) {
+	    // AMD. Register as an anonymous module.
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(175)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	  } else if ((typeof exports === 'undefined' ? 'undefined' : _typeof(exports)) === 'object') {
+	    if (process.browser) {
+	      // Browserify. Import css too using cssify.
+	      require('./d3.slider.css');
+	    }
+	    // Node. Does not work with strict CommonJS, but
+	    // only CommonJS-like environments that support module.exports,
+	    // like Node.
+	    module.exports = factory(require('d3'));
+	  } else {
+	    // Browser globals (root is window)
+	    root.d3.slider = factory(root.d3);
+	  }
+	})(undefined, function (d3) {
+	  return function module() {
+	    "use strict";
+
+	    // Public variables width default settings
+	
+	    var min = 0,
+	        max = 100,
+	        step = 0.01,
+	        animate = true,
+	        orientation = "horizontal",
+	        axis = false,
+	        margin = 50,
+	        value,
+	        active = 1,
+	        snap = false,
+	        scale;
+
+	    // Private variables
+	    var axisScale,
+	        dispatch = d3.dispatch("slide", "slideend"),
+	        formatPercent = d3.format(".2%"),
+	        tickFormat = d3.format(".0"),
+	        handle1,
+	        handle2 = null,
+	        divRange,
+	        sliderLength;
+
+	    function slider(selection) {
+	      selection.each(function () {
+
+	        // Create scale if not defined by user
+	        if (!scale) {
+	          scale = d3.scale.linear().domain([min, max]);
+	        }
+
+	        // Start value
+	        value = value || scale.domain()[0];
+
+	        // DIV container
+	        var div = d3.select(this).classed("d3-slider d3-slider-" + orientation, true);
+
+	        var drag = d3.behavior.drag();
+	        drag.on('dragend', function () {
+	          dispatch.slideend(d3.event, value);
+	        });
+
+	        // Slider handle
+	        //if range slider, create two
+	        // var divRange;
+
+	        if (toType(value) == "array" && value.length == 2) {
+	          handle1 = div.append("a").classed("d3-slider-handle", true).attr("xlink:href", "#").attr('id', "handle-one").on("click", stopPropagation).call(drag);
+	          handle2 = div.append("a").classed("d3-slider-handle", true).attr('id', "handle-two").attr("xlink:href", "#").on("click", stopPropagation).call(drag);
+	        } else {
+	          handle1 = div.append("a").classed("d3-slider-handle", true).attr("xlink:href", "#").attr('id', "handle-one").on("click", stopPropagation).call(drag);
+	        }
+
+	        // Horizontal slider
+	        if (orientation === "horizontal") {
+
+	          div.on("click", onClickHorizontal);
+
+	          if (toType(value) == "array" && value.length == 2) {
+	            divRange = d3.select(this).append('div').classed("d3-slider-range", true);
+
+	            handle1.style("left", formatPercent(scale(value[0])));
+	            divRange.style("left", formatPercent(scale(value[0])));
+	            drag.on("drag", onDragHorizontal);
+
+	            var width = 100 - parseFloat(formatPercent(scale(value[1])));
+	            handle2.style("left", formatPercent(scale(value[1])));
+	            divRange.style("right", width + "%");
+	            drag.on("drag", onDragHorizontal);
+	          } else {
+	            handle1.style("left", formatPercent(scale(value)));
+	            drag.on("drag", onDragHorizontal);
+	          }
+
+	          sliderLength = parseInt(div.style("width"), 10);
+	        } else {
+	          // Vertical
+
+	          div.on("click", onClickVertical);
+	          drag.on("drag", onDragVertical);
+	          if (toType(value) == "array" && value.length == 2) {
+	            divRange = d3.select(this).append('div').classed("d3-slider-range-vertical", true);
+
+	            handle1.style("bottom", formatPercent(scale(value[0])));
+	            divRange.style("bottom", formatPercent(scale(value[0])));
+	            drag.on("drag", onDragVertical);
+
+	            var top = 100 - parseFloat(formatPercent(scale(value[1])));
+	            handle2.style("bottom", formatPercent(scale(value[1])));
+	            divRange.style("top", top + "%");
+	            drag.on("drag", onDragVertical);
+	          } else {
+	            handle1.style("bottom", formatPercent(scale(value)));
+	            drag.on("drag", onDragVertical);
+	          }
+
+	          sliderLength = parseInt(div.style("height"), 10);
+	        }
+
+	        if (axis) {
+	          createAxis(div);
+	        }
+
+	        function createAxis(dom) {
+
+	          // Create axis if not defined by user
+	          if (typeof axis === "boolean") {
+
+	            axis = d3.svg.axis().ticks(Math.round(sliderLength / 100)).tickFormat(tickFormat).orient(orientation === "horizontal" ? "bottom" : "right");
+	          }
+
+	          // Copy slider scale to move from percentages to pixels
+	          axisScale = scale.ticks ? scale.copy().range([0, sliderLength]) : scale.copy().rangePoints([0, sliderLength], 0.5);
+	          axis.scale(axisScale);
+
+	          // Create SVG axis container
+	          var svg = dom.append("svg").classed("d3-slider-axis d3-slider-axis-" + axis.orient(), true).on("click", stopPropagation);
+
+	          var g = svg.append("g");
+
+	          // Horizontal axis
+	          if (orientation === "horizontal") {
+
+	            svg.style("margin-left", -margin + "px");
+
+	            svg.attr({
+	              width: sliderLength + margin * 2,
+	              height: margin
+	            });
+
+	            if (axis.orient() === "top") {
+	              svg.style("top", -margin + "px");
+	              g.attr("transform", "translate(" + margin + "," + margin + ")");
+	            } else {
+	              // bottom
+	              g.attr("transform", "translate(" + margin + ",0)");
+	            }
+	          } else {
+	            // Vertical
+
+	            svg.style("top", -margin + "px");
+
+	            svg.attr({
+	              width: margin,
+	              height: sliderLength + margin * 2
+	            });
+
+	            if (axis.orient() === "left") {
+	              svg.style("left", -margin + "px");
+	              g.attr("transform", "translate(" + margin + "," + margin + ")");
+	            } else {
+	              // right         
+	              g.attr("transform", "translate(" + 0 + "," + margin + ")");
+	            }
+	          }
+
+	          g.call(axis);
+	        }
+
+	        function onClickHorizontal() {
+	          if (toType(value) != "array") {
+	            var pos = Math.max(0, Math.min(sliderLength, d3.event.offsetX || d3.event.layerX));
+	            moveHandle(scale.invert ? stepValue(scale.invert(pos / sliderLength)) : nearestTick(pos / sliderLength));
+	          }
+	        }
+
+	        function onClickVertical() {
+	          if (toType(value) != "array") {
+	            var pos = sliderLength - Math.max(0, Math.min(sliderLength, d3.event.offsetY || d3.event.layerY));
+	            moveHandle(scale.invert ? stepValue(scale.invert(pos / sliderLength)) : nearestTick(pos / sliderLength));
+	          }
+	        }
+
+	        function onDragHorizontal() {
+	          if (d3.event.sourceEvent.target.id === "handle-one") {
+	            active = 1;
+	          } else if (d3.event.sourceEvent.target.id == "handle-two") {
+	            active = 2;
+	          }
+	          var pos = Math.max(0, Math.min(sliderLength, d3.event.x));
+	          moveHandle(scale.invert ? stepValue(scale.invert(pos / sliderLength)) : nearestTick(pos / sliderLength));
+	        }
+
+	        function onDragVertical() {
+	          if (d3.event.sourceEvent.target.id === "handle-one") {
+	            active = 1;
+	          } else if (d3.event.sourceEvent.target.id == "handle-two") {
+	            active = 2;
+	          }
+	          var pos = sliderLength - Math.max(0, Math.min(sliderLength, d3.event.y));
+	          moveHandle(scale.invert ? stepValue(scale.invert(pos / sliderLength)) : nearestTick(pos / sliderLength));
+	        }
+
+	        function stopPropagation() {
+	          d3.event.stopPropagation();
+	        }
+	      });
+	    }
+
+	    // Move slider handle on click/drag
+	    function moveHandle(newValue) {
+	      var currentValue = toType(value) == "array" && value.length == 2 ? value[active - 1] : value,
+	          oldPos = formatPercent(scale(stepValue(currentValue))),
+	          newPos = formatPercent(scale(stepValue(newValue))),
+	          position = orientation === "horizontal" ? "left" : "bottom";
+	      if (oldPos !== newPos) {
+
+	        if (toType(value) == "array" && value.length == 2) {
+	          value[active - 1] = newValue;
+	          if (d3.event) {
+	            dispatch.slide(d3.event, value);
+	          };
+	        } else {
+	          if (d3.event) {
+	            dispatch.slide(d3.event.sourceEvent || d3.event, value = newValue);
+	          };
+	        }
+
+	        if (value[0] >= value[1]) return;
+	        if (active === 1) {
+	          if (toType(value) == "array" && value.length == 2) {
+	            position === "left" ? divRange.style("left", newPos) : divRange.style("bottom", newPos);
+	          }
+
+	          if (animate) {
+	            handle1.transition().styleTween(position, function () {
+	              return d3.interpolate(oldPos, newPos);
+	            }).duration(typeof animate === "number" ? animate : 250);
+	          } else {
+	            handle1.style(position, newPos);
+	          }
+	        } else {
+
+	          var width = 100 - parseFloat(newPos);
+	          var top = 100 - parseFloat(newPos);
+
+	          position === "left" ? divRange.style("right", width + "%") : divRange.style("top", top + "%");
+
+	          if (animate) {
+	            handle2.transition().styleTween(position, function () {
+	              return d3.interpolate(oldPos, newPos);
+	            }).duration(typeof animate === "number" ? animate : 250);
+	          } else {
+	            handle2.style(position, newPos);
+	          }
+	        }
+	      }
+	    }
+
+	    // Calculate nearest step value
+	    function stepValue(val) {
+
+	      if (val === scale.domain()[0] || val === scale.domain()[1]) {
+	        return val;
+	      }
+
+	      var alignValue = val;
+	      if (snap) {
+	        alignValue = nearestTick(scale(val));
+	      } else {
+	        var valModStep = (val - scale.domain()[0]) % step;
+	        alignValue = val - valModStep;
+
+	        if (Math.abs(valModStep) * 2 >= step) {
+	          alignValue += valModStep > 0 ? step : -step;
+	        }
+	      };
+
+	      return alignValue;
+	    }
+
+	    // Find the nearest tick
+	    function nearestTick(pos) {
+	      var ticks = scale.ticks ? scale.ticks() : scale.domain();
+	      var dist = ticks.map(function (d) {
+	        return pos - scale(d);
+	      });
+	      var i = -1,
+	          index = 0,
+	          r = scale.ticks ? scale.range()[1] : scale.rangeExtent()[1];
+	      do {
+	        i++;
+	        if (Math.abs(dist[i]) < r) {
+	          r = Math.abs(dist[i]);
+	          index = i;
+	        };
+	      } while (dist[i] > 0 && i < dist.length - 1);
+
+	      return ticks[index];
+	    };
+
+	    // Return the type of an object
+	    function toType(v) {
+	      return {}.toString.call(v).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
+	    };
+
+	    // Getter/setter functions
+	    slider.min = function (_) {
+	      if (!arguments.length) return min;
+	      min = _;
+	      return slider;
+	    };
+
+	    slider.max = function (_) {
+	      if (!arguments.length) return max;
+	      max = _;
+	      return slider;
+	    };
+
+	    slider.step = function (_) {
+	      if (!arguments.length) return step;
+	      step = _;
+	      return slider;
+	    };
+
+	    slider.animate = function (_) {
+	      if (!arguments.length) return animate;
+	      animate = _;
+	      return slider;
+	    };
+
+	    slider.orientation = function (_) {
+	      if (!arguments.length) return orientation;
+	      orientation = _;
+	      return slider;
+	    };
+
+	    slider.axis = function (_) {
+	      if (!arguments.length) return axis;
+	      axis = _;
+	      return slider;
+	    };
+
+	    slider.margin = function (_) {
+	      if (!arguments.length) return margin;
+	      margin = _;
+	      return slider;
+	    };
+
+	    slider.value = function (_) {
+	      if (!arguments.length) return value;
+	      if (value) {
+	        moveHandle(stepValue(_));
+	      };
+	      value = _;
+	      return slider;
+	    };
+
+	    slider.snap = function (_) {
+	      if (!arguments.length) return snap;
+	      snap = _;
+	      return slider;
+	    };
+
+	    slider.scale = function (_) {
+	      if (!arguments.length) return scale;
+	      scale = _;
+	      return slider;
+	    };
+
+	    d3.rebind(slider, dispatch, "on");
+
+	    return slider;
+	  };
+		});
 
 /***/ }
 /******/ ]);

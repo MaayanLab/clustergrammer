@@ -8,6 +8,9 @@ var update_viz_with_view = require('./network/update_viz_with_view');
 var filter_viz_using_nodes = require('./network/filter_viz_using_nodes');
 var filter_viz_using_names = require('./network/filter_viz_using_names');
 var update_cats = require('./update/update_cats');
+var d3 = require('d3')
+d3.slider = require('d3.slider')
+
 
 /* clustergrammer 1.0
  * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
