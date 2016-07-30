@@ -92,6 +92,34 @@ module.exports = function ini_sidebar(cgm){
 
   ini_cat_reorder(cgm);
 
+  var slider_fun =  d3.slider()
+                      // .axis(d3.svg.axis())
+                      .snap(true)
+                      .value(1)
+                      .min(0.1)
+                      .max(1.9)
+                      .step(0.1)
+                      .on("slide", run_on_opacity_slide);
+
+  d3.select(params.root+' .opacity_slider')
+    .call(slider_fun);
+
+
+  function run_on_opacity_slide(evt, value){
+
+    var inst_index = 2 - value;
+
+    var scaled_max = params.matrix.abs_max_val * inst_index;
+
+    params.matrix.opacity_scale.domain([0, scaled_max]);
+
+    d3.selectAll(params.root+' .tile')
+      .style('fill-opacity', function(d) {
+        // calculate output opacity using the opacity scale
+        var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
+        return output_opacity;
+      });
+  }
 
 
   // $( params.root+' .opacity_slider' ).slider({
