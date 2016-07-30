@@ -19,8 +19,8 @@ module.exports = function set_up_opacity_slider(sidebar, params){
     .classed('slider', true)
     .classed('opacity_slider', true);
 
-  $( params.root+' .opacity_slider' ).slider({
-    value:1.0
-  });
+  // $( params.root+' .opacity_slider' ).slider({
+  //   value:1.0
+  // });
 
 };

@@ -11,6 +11,8 @@ var update_cats = require('./update/update_cats');
 var d3 = require('d3');
 d3.slider = require('d3.slider');
 var awesomplete = require('awesomplete');
+require('!style!css!d3.slider/d3.slider.css');
+require('!style!css!awesomplete/awesomplete.css');
 
 /* clustergrammer 1.0
  * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai

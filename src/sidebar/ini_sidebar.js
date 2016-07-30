@@ -11,9 +11,9 @@ module.exports = function ini_sidebar(cgm){
 
   var search_obj = search(params, params.network_data.row_nodes, 'name');
 
-  $(params.root+' .gene_search_box').autocomplete({
-    source: search_obj.get_entities
-  });
+  // $(params.root+' .gene_search_box').autocomplete({
+  //   source: search_obj.get_entities
+  // });
 
   // submit genes button
   $(params.root+' .gene_search_box').keyup(function(e) {
@@ -45,23 +45,23 @@ module.exports = function ini_sidebar(cgm){
     var inst_group = cgm.params.group_level[tmp_rc];
     var inst_group_value = inst_group/10;
 
-    // dendrogram
-    $( params.root+' .slider_'+inst_rc ).slider({
-      value:inst_group_value,
-      min: 0,
-      max: 1,
-      step: 0.1,
-      slide: function( event, ui ) {
-        $( "#amount" ).val( "$" + ui.value );
-        var inst_index = ui.value*10;
-        if (inst_rc != 'both'){
-          change_groups(cgm, inst_rc, inst_index);
-        } else {
-          change_groups(cgm, 'row', inst_index);
-          change_groups(cgm, 'col', inst_index);
-        }
-      }
-    });
+    // // dendrogram
+    // $( params.root+' .slider_'+inst_rc ).slider({
+    //   value:inst_group_value,
+    //   min: 0,
+    //   max: 1,
+    //   step: 0.1,
+    //   slide: function( event, ui ) {
+    //     $( "#amount" ).val( "$" + ui.value );
+    //     var inst_index = ui.value*10;
+    //     if (inst_rc != 'both'){
+    //       change_groups(cgm, inst_rc, inst_index);
+    //     } else {
+    //       change_groups(cgm, 'row', inst_index);
+    //       change_groups(cgm, 'col', inst_index);
+    //     }
+    //   }
+    // });
 
     // reorder buttons
     $(params.root+' .toggle_'+inst_rc+'_order .btn')
@@ -92,29 +92,31 @@ module.exports = function ini_sidebar(cgm){
 
   ini_cat_reorder(cgm);
 
-  $( params.root+' .opacity_slider' ).slider({
-    // value:0.5,
-    min: 0.1,
-    max: 2.0,
-    step: 0.1,
-    slide: function( event, ui ) {
-
-      $( "#amount" ).val( "$" + ui.value );
-      var inst_index = 2 - ui.value;
-
-      var scaled_max = params.matrix.abs_max_val * inst_index;
-
-      params.matrix.opacity_scale.domain([0, scaled_max]);
-
-      d3.selectAll(params.root+' .tile')
-        .style('fill-opacity', function(d) {
-          // calculate output opacity using the opacity scale
-          var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
-          return output_opacity;
-        });
 
 
-    }
-  });
+  // $( params.root+' .opacity_slider' ).slider({
+  //   // value:0.5,
+  //   min: 0.1,
+  //   max: 2.0,
+  //   step: 0.1,
+  //   slide: function( event, ui ) {
+
+  //     $( "#amount" ).val( "$" + ui.value );
+  //     var inst_index = 2 - ui.value;
+
+  //     var scaled_max = params.matrix.abs_max_val * inst_index;
+
+  //     params.matrix.opacity_scale.domain([0, scaled_max]);
+
+  //     d3.selectAll(params.root+' .tile')
+  //       .style('fill-opacity', function(d) {
+  //         // calculate output opacity using the opacity scale
+  //         var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
+  //         return output_opacity;
+  //       });
+
+
+  //   }
+  // });
 
 };

@@ -46,15 +46,15 @@ module.exports = function make_slider_filter(cgm, filter_type, div_filters){
 
   var inst_max = available_views.length - 1;
 
-  $( params.root+' .slider_'+filter_type ).slider({
-    value:0,
-    min: 0,
-    max: inst_max,
-    step: 1,
-    stop: function() {
-      run_filter_slider(cgm, filter_type, available_views);
-    }
-  });
+  // $( params.root+' .slider_'+filter_type ).slider({
+  //   value:0,
+  //   min: 0,
+  //   max: inst_max,
+  //   step: 1,
+  //   stop: function() {
+  //     run_filter_slider(cgm, filter_type, available_views);
+  //   }
+  // });
 
 
 };
