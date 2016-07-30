@@ -8420,6 +8420,15 @@ var Clustergrammer =
 	  //   source: search_obj.get_entities
 	  // });
 
+	  // debugger
+
+	  // var input = document.getElementById("myinput");
+	  var input = d3.select(params.root + ' .gene_search_box')[0][0];
+	  var awesomplete = new Awesomplete(input, { minChars: 1, maxItems: 15 });
+
+	  // awesomplete.list = ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.js", "Ruby on Rails"];
+	  awesomplete.list = search_obj.get_entities;
+
 	  // submit genes button
 	  $(params.root + ' .gene_search_box').keyup(function (e) {
 	    if (e.keyCode === 13) {
