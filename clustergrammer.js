@@ -8423,8 +8423,6 @@ var Clustergrammer =
 	  //   source: search_obj.get_entities
 	  // });
 
-	  // debugger
-
 	  // var input = document.getElementById("myinput");
 	  var input = d3.select(params.root + ' .gene_search_box')[0][0];
 	  var awesomplete = new Awesomplete(input, { minChars: 1, maxItems: 15 });
@@ -8451,7 +8449,6 @@ var Clustergrammer =
 	    reorder_types = ['row', 'col'];
 	  }
 
-	  console.log('ini_sidebar');
 	  /* initialize dendro sliders */
 	  _.each(reorder_types, function (inst_rc) {
 
@@ -8496,7 +8493,6 @@ var Clustergrammer =
 	        };
 
 	        dendro_slider = d3.slider().snap(true).value(inst_group_value).min(0).max(1).step(0.1).on('slide', function (evt, value) {
-	          console.log('changing dendrogram');
 	          run_on_dendro_slide(evt, value);
 	        });
 
@@ -9286,7 +9282,7 @@ var Clustergrammer =
 
 	  set_up_search(sidebar, params);
 
-	  set_up_opacity_slider(sidebar, params);
+	  set_up_opacity_slider(sidebar);
 
 	  if (params.viz.show_dendrogram) {
 	    set_up_dendro_sliders(sidebar, params);
@@ -10387,7 +10383,7 @@ var Clustergrammer =
 
 	'use strict';
 
-	module.exports = function set_up_opacity_slider(sidebar, params) {
+	module.exports = function set_up_opacity_slider(sidebar) {
 
 	  var slider_container = sidebar.append('div').classed('opacity_slider_container', true).style('margin-top', '5px').style('padding-left', '15px').style('padding-right', '15px');
 
@@ -10817,6 +10813,7 @@ var Clustergrammer =
 
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
+	/* eslint-disable */
 	/**
 	 * Simple, lightweight, usable local autocomplete library for modern browsers
 	 * Because there weren’t enough autocomplete scripts in the world? Because I’m completely insane and have NIH syndrome? Probably both. :P

@@ -1,4 +1,4 @@
-module.exports = function set_up_opacity_slider(sidebar, params){
+module.exports = function set_up_opacity_slider(sidebar){
 
   var slider_container = sidebar
     .append('div')

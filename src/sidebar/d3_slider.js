@@ -1,3 +1,4 @@
+/* eslint-disable */
 module.exports = function d3_slider(){
 console.log('here');
 /*

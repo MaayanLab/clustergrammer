@@ -15,8 +15,6 @@ module.exports = function ini_sidebar(cgm){
   //   source: search_obj.get_entities
   // });
 
-  // debugger
-
   // var input = document.getElementById("myinput");
   var input = d3.select(params.root+' .gene_search_box')[0][0];
   var awesomplete = new Awesomplete(input, {minChars: 1, maxItems: 15});
@@ -43,7 +41,6 @@ module.exports = function ini_sidebar(cgm){
     reorder_types = ['row','col'];
   }
 
-  console.log('ini_sidebar')
   /* initialize dendro sliders */
   _.each( reorder_types, function(inst_rc){
 
@@ -81,7 +78,6 @@ module.exports = function ini_sidebar(cgm){
                             .max(1)
                             .step(0.1)
                             .on('slide', function(evt, value){
-                              console.log('changing dendrogram')
                               run_on_dendro_slide(evt, value)
                             });
 

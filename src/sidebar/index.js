@@ -71,7 +71,7 @@ module.exports = function sidebar(cgm) {
 
   set_up_search(sidebar, params);
 
-  set_up_opacity_slider(sidebar, params);
+  set_up_opacity_slider(sidebar);
 
   if (params.viz.show_dendrogram){
     set_up_dendro_sliders(sidebar, params);
