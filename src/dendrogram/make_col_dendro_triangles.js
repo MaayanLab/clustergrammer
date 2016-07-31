@@ -112,7 +112,12 @@ module.exports = function make_col_dendro_triangles(cgm, is_change_group = false
 
         // // disable col ordering and dendro slider
         // d3.selectAll('.toggle_col_order .btn').attr('disabled', true);
-        $(params.root+' .slider_col').slider('disable');
+
+        // $(params.root+' .slider_col').slider('disable');
+
+        d3.select(params.root+' .slider_col')
+          .style('opacity', 0.5)
+          .style('pointer-events','none');
 
         names.col = d.all_names;
 

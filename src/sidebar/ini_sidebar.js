@@ -21,7 +21,6 @@ module.exports = function ini_sidebar(cgm){
   var input = d3.select(params.root+' .gene_search_box')[0][0];
   var awesomplete = new Awesomplete(input, {minChars: 1, maxItems: 15});
 
-  // awesomplete.list = ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.js", "Ruby on Rails"];
   awesomplete.list = search_obj.get_entities;
 
   // submit genes button
@@ -44,6 +43,7 @@ module.exports = function ini_sidebar(cgm){
     reorder_types = ['row','col'];
   }
 
+  console.log('ini_sidebar')
   /* initialize dendro sliders */
   _.each( reorder_types, function(inst_rc){
 
@@ -71,6 +71,36 @@ module.exports = function ini_sidebar(cgm){
     //     }
     //   }
     // });
+
+    if (d3.select(params.root+' .slider_'+inst_rc).select('#handle-one').empty()){
+
+      var dendro_slider = d3.slider()
+                            .snap(true)
+                            .value(inst_group_value)
+                            .min(0)
+                            .max(1)
+                            .step(0.1)
+                            .on('slide', function(evt, value){
+                              console.log('changing dendrogram')
+                              run_on_dendro_slide(evt, value)
+                            });
+
+      d3.select(params.root+' .slider_'+inst_rc)
+        .call(dendro_slider);
+
+
+      function run_on_dendro_slide( evt, value ) {
+        $( "#amount" ).val( "$" + value );
+        var inst_index = value*10;
+        if (inst_rc != 'both'){
+          change_groups(cgm, inst_rc, inst_index);
+        } else {
+          change_groups(cgm, 'row', inst_index);
+          change_groups(cgm, 'col', inst_index);
+        }
+      }
+
+    }
 
     // reorder buttons
     $(params.root+' .toggle_'+inst_rc+'_order .btn')
@@ -101,35 +131,42 @@ module.exports = function ini_sidebar(cgm){
 
   ini_cat_reorder(cgm);
 
-  var slider_fun =  d3.slider()
-                      // .axis(d3.svg.axis())
-                      .snap(true)
-                      .value(1)
-                      .min(0.1)
-                      .max(1.9)
-                      .step(0.1)
-                      .on("slide", run_on_opacity_slide);
+  // Opacity Slider
+  //////////////////////////////////////////////////////////////////////
 
-  d3.select(params.root+' .opacity_slider')
-    .call(slider_fun);
+  if (d3.select(params.root+' .opacity_slider').select('#handle-one').empty()){
 
+    var slider_fun =  d3.slider()
+                        // .axis(d3.svg.axis())
+                        .snap(true)
+                        .value(1)
+                        .min(0.1)
+                        .max(1.9)
+                        .step(0.1)
+                        .on('slide', run_on_opacity_slide);
 
-  function run_on_opacity_slide(evt, value){
+    d3.select(params.root+' .opacity_slider')
+      .call(slider_fun);
 
-    var inst_index = 2 - value;
+    function run_on_opacity_slide(evt, value){
 
-    var scaled_max = params.matrix.abs_max_val * inst_index;
+      var inst_index = 2 - value;
+      var scaled_max = params.matrix.abs_max_val * inst_index;
 
-    params.matrix.opacity_scale.domain([0, scaled_max]);
+      params.matrix.opacity_scale.domain([0, scaled_max]);
 
-    d3.selectAll(params.root+' .tile')
-      .style('fill-opacity', function(d) {
-        // calculate output opacity using the opacity scale
-        var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
-        return output_opacity;
-      });
+      d3.selectAll(params.root+' .tile')
+        .style('fill-opacity', function(d) {
+          // calculate output opacity using the opacity scale
+          var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
+          return output_opacity;
+        });
+    }
+
   }
 
+
+  //////////////////////////////////////////////////////////////////////
 
   // $( params.root+' .opacity_slider' ).slider({
   //   // value:0.5,
