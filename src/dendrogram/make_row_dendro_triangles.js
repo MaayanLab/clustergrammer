@@ -114,7 +114,11 @@ module.exports = function make_row_dendro_triangles(cgm,
 
         // // disable row ordering and dendro slider
         // d3.selectAll('.toggle_row_order .btn').attr('disabled', true);
-        $(params.root+' .slider_row').slider('disable');
+        // $(params.root+' .slider_row').slider('disable');
+
+        d3.select(params.root+' .slider_row')
+          .style('opacity', 0.5)
+          .style('pointer-events','none');
 
         names.row = d.all_names;
 

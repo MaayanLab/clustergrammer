@@ -3873,7 +3873,9 @@ var Clustergrammer =
 
 	        // // disable row ordering and dendro slider
 	        // d3.selectAll('.toggle_row_order .btn').attr('disabled', true);
-	        $(params.root + ' .slider_row').slider('disable');
+	        // $(params.root+' .slider_row').slider('disable');
+
+	        d3.select(params.root + ' .slider_row').style('opacity', 0.5).style('pointer-events', 'none');
 
 	        names.row = d.all_names;
 
@@ -9371,17 +9373,15 @@ var Clustergrammer =
 	  //////////////////////////////////////////////////////////////////////
 	  var slide_filter_fun = d3.slider()
 	  // .snap(true)
-	  .value(0).min(0).max(inst_max).step(1).on('slideend', function (evt, value) {
-	    run_filter_slider(cgm, filter_type, available_views, value);
-	    console.log('clicking ' + String(value));
+	  .value(0).min(0).max(inst_max).step(1).on('slide', function (evt, value) {
+	    run_filter_slider_db(cgm, filter_type, available_views, value);
 	  });
-	  // .on('slideend', function(evt, value){
-	  //   console.log('slideend '+String(value))
-	  // });
 
 	  d3.select(cgm.params.root + ' .slider_' + filter_type).call(slide_filter_fun);
 
 	  //////////////////////////////////////////////////////////////////////
+
+	  var run_filter_slider_db = _.debounce(run_filter_slider, 1500);
 		};
 
 /***/ },
@@ -9460,11 +9460,10 @@ var Clustergrammer =
 	  var params = cgm.params;
 
 	  // get value
-	  // var inst_index = $( params.root+' .slider_'+filter_type ).slider( "value" );
 	  var inst_state = available_views[inst_index][filter_type];
 
-	  console.log('fix this');
-	  // reset_other_filter_sliders(params, filter_type, inst_state);
+	  // console.log('fix this')
+	  reset_other_filter_sliders(params, filter_type, inst_state);
 
 	  params = get_current_orders(params);
 
@@ -9520,7 +9519,10 @@ var Clustergrammer =
 	      if (inst_rc == reset_rc) {
 
 	        var tmp_title = make_filter_title(params, reset_filter);
-	        $(params.root + ' .slider_' + reset_filter).slider("value", 0);
+
+	        // reset other filter slider positions
+	        // $(params.root+' .slider_'+reset_filter).slider( "value", 0);
+	        d3.select('.slider_' + reset_filter).select('a').style('left', '0%');
 
 	        d3.select(params.root + ' .title_' + reset_filter).text(tmp_title.text + tmp_title.state);
 
@@ -9811,7 +9813,9 @@ var Clustergrammer =
 
 	      var tmp_index = possible_values.indexOf(inst_value);
 
-	      $(params.root + ' .slider_' + inst_filter).slider("value", tmp_index);
+	      console.log('fix this');
+	      // $(params.root+' .slider_'+inst_filter)
+	      //   .slider( "value", tmp_index);
 
 	      var filter_title = make_filter_title(params, inst_filter);
 

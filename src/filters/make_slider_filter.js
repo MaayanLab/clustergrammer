@@ -66,18 +66,16 @@ module.exports = function make_slider_filter(cgm, filter_type, div_filters){
                            .min(0)
                            .max(inst_max)
                            .step(1)
-                           .on('slideend', function(evt, value){
-                            run_filter_slider(cgm, filter_type, available_views, value);
-                            console.log('clicking '+String(value))
-                          })
-                          // .on('slideend', function(evt, value){
-                          //   console.log('slideend '+String(value))
-                          // });
+                           .on('slide', function(evt, value){
+                             run_filter_slider_db(cgm, filter_type, available_views, value);
+                           });
+
 
   d3.select(cgm.params.root+' .slider_'+filter_type)
     .call(slide_filter_fun);
 
   //////////////////////////////////////////////////////////////////////
 
+  var run_filter_slider_db = _.debounce(run_filter_slider, 1500);
 
 };

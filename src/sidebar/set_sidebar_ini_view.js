@@ -22,10 +22,12 @@ module.exports = function set_sidebar_ini_view(params){
         inst_value = 'all';
       }
 
+
       var tmp_index = possible_values.indexOf( inst_value );
 
-      $(params.root+' .slider_'+inst_filter)
-        .slider( "value", tmp_index);
+      console.log('fix this')
+      // $(params.root+' .slider_'+inst_filter)
+      //   .slider( "value", tmp_index);
 
       var filter_title = make_filter_title(params, inst_filter);
 
