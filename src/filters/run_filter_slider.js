@@ -3,15 +3,16 @@ var reset_other_filter_sliders = require('./reset_other_filter_sliders');
 var get_current_orders = require('./get_current_orders');
 var make_requested_view = require('./make_requested_view');
 
-module.exports = function run_filter_slider(cgm, filter_type, available_views){
+module.exports = function run_filter_slider(cgm, filter_type, available_views, inst_index){
 
   var params = cgm.params;
 
   // get value
-  var inst_index = $( params.root+' .slider_'+filter_type ).slider( "value" );
+  // var inst_index = $( params.root+' .slider_'+filter_type ).slider( "value" );
   var inst_state = available_views[inst_index][filter_type];
 
-  reset_other_filter_sliders(params, filter_type, inst_state);
+  console.log('fix this')
+  // reset_other_filter_sliders(params, filter_type, inst_state);
 
   params = get_current_orders(params);
 

@@ -7361,7 +7361,8 @@ var Clustergrammer =
 
 	module.exports = function disable_sidebar(params) {
 
-	  $(params.root + ' .slider').slider('disable');
+	  console.log('fix this');
+	  // $(params.root+' .slider').slider('disable');
 
 	  d3.selectAll(params.root + ' .btn').attr('disabled', true);
 
@@ -8419,10 +8420,6 @@ var Clustergrammer =
 
 	  var search_obj = search(params, params.network_data.row_nodes, 'name');
 
-	  // $(params.root+' .gene_search_box').autocomplete({
-	  //   source: search_obj.get_entities
-	  // });
-
 	  // var input = document.getElementById("myinput");
 	  var input = d3.select(params.root + ' .gene_search_box')[0][0];
 	  var awesomplete = new Awesomplete(input, { minChars: 1, maxItems: 15 });
@@ -8458,24 +8455,6 @@ var Clustergrammer =
 	    }
 	    var inst_group = cgm.params.group_level[tmp_rc];
 	    var inst_group_value = inst_group / 10;
-
-	    // // dendrogram
-	    // $( params.root+' .slider_'+inst_rc ).slider({
-	    //   value:inst_group_value,
-	    //   min: 0,
-	    //   max: 1,
-	    //   step: 0.1,
-	    //   slide: function( event, ui ) {
-	    //     $( "#amount" ).val( "$" + ui.value );
-	    //     var inst_index = ui.value*10;
-	    //     if (inst_rc != 'both'){
-	    //       change_groups(cgm, inst_rc, inst_index);
-	    //     } else {
-	    //       change_groups(cgm, 'row', inst_index);
-	    //       change_groups(cgm, 'col', inst_index);
-	    //     }
-	    //   }
-	    // });
 
 	    if (d3.select(params.root + ' .slider_' + inst_rc).select('#handle-one').empty()) {
 	      var dendro_slider;
@@ -9385,6 +9364,24 @@ var Clustergrammer =
 	  //     run_filter_slider(cgm, filter_type, available_views);
 	  //   }
 	  // });
+
+	  // console.log( 'inst_max '+ String(inst_max))
+
+	  // Filter Slider
+	  //////////////////////////////////////////////////////////////////////
+	  var slide_filter_fun = d3.slider()
+	  // .snap(true)
+	  .value(0).min(0).max(inst_max).step(1).on('slideend', function (evt, value) {
+	    run_filter_slider(cgm, filter_type, available_views, value);
+	    console.log('clicking ' + String(value));
+	  });
+	  // .on('slideend', function(evt, value){
+	  //   console.log('slideend '+String(value))
+	  // });
+
+	  d3.select(cgm.params.root + ' .slider_' + filter_type).call(slide_filter_fun);
+
+	  //////////////////////////////////////////////////////////////////////
 		};
 
 /***/ },
@@ -9458,15 +9455,16 @@ var Clustergrammer =
 	var get_current_orders = __webpack_require__(162);
 	var make_requested_view = __webpack_require__(14);
 
-	module.exports = function run_filter_slider(cgm, filter_type, available_views) {
+	module.exports = function run_filter_slider(cgm, filter_type, available_views, inst_index) {
 
 	  var params = cgm.params;
 
 	  // get value
-	  var inst_index = $(params.root + ' .slider_' + filter_type).slider("value");
+	  // var inst_index = $( params.root+' .slider_'+filter_type ).slider( "value" );
 	  var inst_state = available_views[inst_index][filter_type];
 
-	  reset_other_filter_sliders(params, filter_type, inst_state);
+	  console.log('fix this');
+	  // reset_other_filter_sliders(params, filter_type, inst_state);
 
 	  params = get_current_orders(params);
 

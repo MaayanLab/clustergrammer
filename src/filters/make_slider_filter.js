@@ -56,5 +56,28 @@ module.exports = function make_slider_filter(cgm, filter_type, div_filters){
   //   }
   // });
 
+  // console.log( 'inst_max '+ String(inst_max))
+
+  // Filter Slider
+  //////////////////////////////////////////////////////////////////////
+  var slide_filter_fun = d3.slider()
+                           // .snap(true)
+                           .value(0)
+                           .min(0)
+                           .max(inst_max)
+                           .step(1)
+                           .on('slideend', function(evt, value){
+                            run_filter_slider(cgm, filter_type, available_views, value);
+                            console.log('clicking '+String(value))
+                          })
+                          // .on('slideend', function(evt, value){
+                          //   console.log('slideend '+String(value))
+                          // });
+
+  d3.select(cgm.params.root+' .slider_'+filter_type)
+    .call(slide_filter_fun);
+
+  //////////////////////////////////////////////////////////////////////
+
 
 };
