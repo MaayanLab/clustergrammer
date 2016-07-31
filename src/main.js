@@ -13,6 +13,11 @@ d3.slider = require('d3.slider');
 var awesomplete = require('awesomplete');
 require('!style!css!d3.slider/d3.slider.css');
 require('!style!css!awesomplete/awesomplete.css');
+require('!style!css!./bootstrap.css');
+require('!style!css!./custom.css');
+// require('!style!css!./font_awesome.css');
+
+// require("font-awesome-webpack");
 
 /* clustergrammer 1.0
  * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
