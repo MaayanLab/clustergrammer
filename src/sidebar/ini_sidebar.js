@@ -134,7 +134,7 @@ module.exports = function ini_sidebar(cgm){
   // Opacity Slider
   //////////////////////////////////////////////////////////////////////
 
-  if (d3.select(params.root+' .opacity_slider').select('#handle-one').empty()){
+  if (d3.select(cgm.params.root+' .opacity_slider').select('#handle-one').empty()){
 
     var slider_fun =  d3.slider()
                         // .axis(d3.svg.axis())
@@ -145,20 +145,20 @@ module.exports = function ini_sidebar(cgm){
                         .step(0.1)
                         .on('slide', run_on_opacity_slide);
 
-    d3.select(params.root+' .opacity_slider')
+    d3.select(cgm.params.root+' .opacity_slider')
       .call(slider_fun);
 
     function run_on_opacity_slide(evt, value){
 
       var inst_index = 2 - value;
-      var scaled_max = params.matrix.abs_max_val * inst_index;
+      var scaled_max = cgm.params.matrix.abs_max_val * inst_index;
 
-      params.matrix.opacity_scale.domain([0, scaled_max]);
+      cgm.params.matrix.opacity_scale.domain([0, scaled_max]);
 
-      d3.selectAll(params.root+' .tile')
+      d3.selectAll(cgm.params.root+' .tile')
         .style('fill-opacity', function(d) {
           // calculate output opacity using the opacity scale
-          var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
+          var output_opacity = cgm.params.matrix.opacity_scale(Math.abs(d.value));
           return output_opacity;
         });
     }
