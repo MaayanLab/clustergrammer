@@ -96,7 +96,7 @@ class Network(object):
     import data_formats
     return data_formats.dat_to_df(self)
 
-  def export_net_json(self, net_type, indent='no-indent'):
+  def export_net_json(self, net_type='viz', indent='no-indent'):
     import export_data
     return export_data.export_net_json(self, net_type, indent)
 
