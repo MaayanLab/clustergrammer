@@ -288,6 +288,7 @@ function Enrichr_request(cgm){
 
     var enr_terms = this.enr_data[library_name];
 
+    // keep the top 10 enriched terms
     enr_terms = enr_terms.slice(0,10);
 
     cat_data = []

@@ -31,7 +31,7 @@ module.exports = function make_row_cat(params, updating=false) {
       });
   } else {
     d3.select(params.root+' .row_cat_container')
-      .select('class','white_bars')
+      .select('.white_bars')
       .attr('fill', params.viz.background_color)
       .attr('width', params.viz.cat_room.row + 'px')
       .attr('height', function() {

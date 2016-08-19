@@ -9,6 +9,7 @@ module.exports = function update_cats(cgm, cat_data){
   var col_cat_colors = cgm.params.viz.cat_colors.col;
 
   modify_row_node_cats(cat_data, cgm.params.network_data.row_nodes);
+  // modify the current inst copy of nodes
   modify_row_node_cats(cat_data, cgm.params.inst_nodes.row_nodes);
 
   // recalculate the visualization parameters using the updated network_data
