@@ -24,39 +24,6 @@ module.exports = function make_config(args) {
 
     var has_cats = check_nodes_for_categories(inst_nodes);
 
-    // // save category data to cat_data format, for returning to original cats
-    // if (has_cats && inst_rc === 'row'){
-    //   var cat_dict = {};
-    //   _.each(inst_nodes, function(tmp_node){
-    //     var inst_props = _.keys(tmp_node);
-
-    //     _.each(inst_props, function(inst_prop){
-    //       if (inst_prop.indexOf('cat-') > -1){
-    //         var tmp_title = tmp_node[inst_prop];
-
-    //         // backup title is cat-#
-    //         var inst_title = inst_prop;
-
-    //         // check if there is an actual category title
-    //         if (tmp_title.indexOf(': ') > -1){
-    //           inst_title = tmp_title.split(': ')[0];
-    //         }
-
-    //         if (_.has(cat_dict)){
-
-    //         } else {
-    //           cat_dict[inst_title] = {};
-    //           cat_dict[inst_title].cat_name = 'tmp';
-    //           cat_dict[inst_title].members = []
-    //         }
-
-    //       }
-    //     })
-
-    //   })
-    //   console.log(cat_dict)
-    // }
-
     inst_nodes.forEach(function(d){
 
       if (has_cats){

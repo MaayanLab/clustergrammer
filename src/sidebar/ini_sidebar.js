@@ -56,23 +56,13 @@ module.exports = function ini_sidebar(cgm){
                             .max(1)
                             .step(0.1)
                             .on('slide', function(evt, value){
-                              run_on_dendro_slide(evt, value)
+                              run_on_dendro_slide(evt, value);
                             });
 
       d3.select(params.root+' .slider_'+inst_rc)
         .call(dendro_slider);
 
 
-      function run_on_dendro_slide( evt, value ) {
-        $( "#amount" ).val( "$" + value );
-        var inst_index = value*10;
-        if (inst_rc != 'both'){
-          change_groups(cgm, inst_rc, inst_index);
-        } else {
-          change_groups(cgm, 'row', inst_index);
-          change_groups(cgm, 'col', inst_index);
-        }
-      }
 
     }
 
@@ -122,20 +112,7 @@ module.exports = function ini_sidebar(cgm){
     d3.select(cgm.params.root+' .opacity_slider')
       .call(slider_fun);
 
-    function run_on_opacity_slide(evt, value){
 
-      var inst_index = 2 - value;
-      var scaled_max = cgm.params.matrix.abs_max_val * inst_index;
-
-      cgm.params.matrix.opacity_scale.domain([0, scaled_max]);
-
-      d3.selectAll(cgm.params.root+' .tile')
-        .style('fill-opacity', function(d) {
-          // calculate output opacity using the opacity scale
-          var output_opacity = cgm.params.matrix.opacity_scale(Math.abs(d.value));
-          return output_opacity;
-        });
-    }
 
   }
 
@@ -166,5 +143,33 @@ module.exports = function ini_sidebar(cgm){
 
   //   }
   // });
+
+  function run_on_dendro_slide( evt, value ) {
+    $( "#amount" ).val( "$" + value );
+    var inst_index = value*10;
+    var inst_rc;
+    if (inst_rc != 'both'){
+      change_groups(cgm, inst_rc, inst_index);
+    } else {
+      change_groups(cgm, 'row', inst_index);
+      change_groups(cgm, 'col', inst_index);
+    }
+  }
+
+  function run_on_opacity_slide(evt, value){
+
+    var inst_index = 2 - value;
+    var scaled_max = cgm.params.matrix.abs_max_val * inst_index;
+
+    cgm.params.matrix.opacity_scale.domain([0, scaled_max]);
+
+    d3.selectAll(cgm.params.root+' .tile')
+      .style('fill-opacity', function(d) {
+        // calculate output opacity using the opacity scale
+        var output_opacity = cgm.params.matrix.opacity_scale(Math.abs(d.value));
+        return output_opacity;
+      });
+  }
+
 
 };
