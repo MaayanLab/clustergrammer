@@ -43,10 +43,10 @@ module.exports = function process_category_info(params, viz, preserve_cats=true)
       if (predefine_colors === false){
         viz.cat_colors[inst_rc] = {};
       }
+
       viz.cat_names[inst_rc] = {};
 
       _.each( viz.all_cats[inst_rc], function(inst_cat){
-
 
         _.each(params.network_data[inst_rc+'_nodes'], function(inst_node){
 

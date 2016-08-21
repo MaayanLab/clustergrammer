@@ -57,6 +57,8 @@ var Clustergrammer =
 	var filter_viz_using_nodes = __webpack_require__(153);
 	var filter_viz_using_names = __webpack_require__(154);
 	var update_cats = __webpack_require__(155);
+	var reset_cats = __webpack_require__(188);
+
 	var d3 = __webpack_require__(156);
 	d3.slider = __webpack_require__(157);
 	var awesomplete = __webpack_require__(158);
@@ -130,6 +132,7 @@ var Clustergrammer =
 	  cgm.filter_viz_using_nodes = filter_viz_using_nodes;
 	  cgm.filter_viz_using_names = filter_viz_using_names;
 	  cgm.update_cats = run_update_cats;
+	  cgm.reset_cats = reset_cats;
 	  return cgm;
 	}
 
@@ -166,6 +169,39 @@ var Clustergrammer =
 	    var inst_nodes = config.network_data[inst_rc + '_nodes'];
 
 	    var has_cats = check_nodes_for_categories(inst_nodes);
+
+	    // // save category data to cat_data format, for returning to original cats
+	    // if (has_cats && inst_rc === 'row'){
+	    //   var cat_dict = {};
+	    //   _.each(inst_nodes, function(tmp_node){
+	    //     var inst_props = _.keys(tmp_node);
+
+	    //     _.each(inst_props, function(inst_prop){
+	    //       if (inst_prop.indexOf('cat-') > -1){
+	    //         var tmp_title = tmp_node[inst_prop];
+
+	    //         // backup title is cat-#
+	    //         var inst_title = inst_prop;
+
+	    //         // check if there is an actual category title
+	    //         if (tmp_title.indexOf(': ') > -1){
+	    //           inst_title = tmp_title.split(': ')[0];
+	    //         }
+
+	    //         if (_.has(cat_dict)){
+
+	    //         } else {
+	    //           cat_dict[inst_title] = {};
+	    //           cat_dict[inst_title].cat_name = 'tmp';
+	    //           cat_dict[inst_title].members = []
+	    //         }
+
+	    //       }
+	    //     })
+
+	    //   })
+	    //   console.log(cat_dict)
+	    // }
 
 	    inst_nodes.forEach(function (d) {
 
@@ -1150,6 +1186,7 @@ var Clustergrammer =
 	      if (predefine_colors === false) {
 	        viz.cat_colors[inst_rc] = {};
 	      }
+
 	      viz.cat_names[inst_rc] = {};
 
 	      _.each(viz.all_cats[inst_rc], function (inst_cat) {
@@ -8651,11 +8688,14 @@ var Clustergrammer =
 
 /***/ },
 /* 143 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
+	var remove_node_cats = __webpack_require__(189);
+
 	module.exports = function modify_row_node_cats(cat_data, inst_nodes) {
+
 	  var cat_type_num = 0;
 	  var inst_index = 0;
 	  var inst_cat_title;
@@ -8674,7 +8714,7 @@ var Clustergrammer =
 	    inst_name = inst_node.name;
 	    cat_type_num = 0;
 
-	    remove_row_cats(inst_node);
+	    remove_node_cats(inst_node);
 
 	    // loop through each category type
 	    _.each(cat_data, function (inst_cat_data) {
@@ -8711,21 +8751,6 @@ var Clustergrammer =
 	      cat_type_num = cat_type_num + 1;
 	    });
 	  });
-
-	  function remove_row_cats(inst_node) {
-	    var all_props = _.keys(inst_node);
-
-	    _.each(all_props, function (inst_prop) {
-
-	      if (inst_prop.indexOf('cat-') > -1) {
-	        delete inst_node[inst_prop];
-	      }
-
-	      if (inst_prop.indexOf('cat_') > -1) {
-	        delete inst_node[inst_prop];
-	      }
-	    });
-	  }
 		};
 
 /***/ },
@@ -11755,6 +11780,109 @@ var Clustergrammer =
 	  // $( params.root+' .opacity_slider' ).slider({
 	  //   value:1.0
 	  // });
+		};
+
+/***/ },
+/* 188 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var make_row_cat = __webpack_require__(108);
+	var calc_viz_params = __webpack_require__(15);
+	var resize_viz = __webpack_require__(86);
+	var modify_row_node_cats = __webpack_require__(143);
+	var make_default_cat_data = __webpack_require__(190);
+
+	module.exports = function reset_cats() {
+
+	  // _.each(cgm.params.network_data.row_nodes, function(inst_node){
+	  //   remove_node_cats(inst_node);
+	  // })
+
+	  var cat_data = make_default_cat_data(cgm);
+
+	  // do not change column category info
+	  var col_cat_colors = cgm.params.viz.cat_colors.col;
+
+	  modify_row_node_cats(cat_data, cgm.params.network_data.row_nodes);
+	  // modify the current inst copy of nodes
+	  modify_row_node_cats(cat_data, cgm.params.inst_nodes.row_nodes);
+
+	  // recalculate the visualization parameters using the updated network_data
+	  cgm.params = calc_viz_params(cgm.params, false);
+
+	  make_row_cat(cgm.params, true);
+	  resize_viz(cgm);
+
+	  cgm.params.new_cat_data = cat_data;
+
+	  cgm.params.viz.cat_colors.col = col_cat_colors;
+		};
+
+/***/ },
+/* 189 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = function remove_node_cats(inst_node) {
+
+	  var all_props = _.keys(inst_node);
+
+	  _.each(all_props, function (inst_prop) {
+
+	    if (inst_prop.indexOf('cat-') > -1) {
+	      delete inst_node[inst_prop];
+	    }
+
+	    if (inst_prop.indexOf('cat_') > -1) {
+	      delete inst_node[inst_prop];
+	    }
+	  });
+		};
+
+/***/ },
+/* 190 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = function make_default_cat_data(cgm) {
+
+	  // working for rows only since only rows are supported for updating
+
+	  var cat_data = [];
+
+	  var row_nodes = cgm.params.network_data.row_nodes;
+
+	  _.each(row_nodes, function (inst_node) {
+	    console.log(inst_node.name);
+
+	    var all_props = _.keys(inst_node);
+
+	    _.each(all_props, function (inst_prop) {
+
+	      if (inst_prop.indexOf('cat-') > -1) {
+	        var cat_name = inst_node[inst_prop];
+	        console.log('\t' + cat_name);
+	      }
+	    });
+	  });
+
+	  var cat_type = {};
+	  cat_type.cat_title = 'cat_title';
+	  cat_type.cats = [];
+
+	  var inst_cat_obj = {};
+	  inst_cat_obj.cat_name = 'cat_name';
+	  inst_cat_obj.members = ['SRC', 'STK24'];
+	  cat_type.cats.push(inst_cat_obj);
+
+	  cat_type.cats.push(cat_type);
+	  cat_data.push(cat_type);
+
+	  return cat_data;
 		};
 
 /***/ }

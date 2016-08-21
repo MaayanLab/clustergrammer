@@ -8,6 +8,8 @@ var update_viz_with_view = require('./network/update_viz_with_view');
 var filter_viz_using_nodes = require('./network/filter_viz_using_nodes');
 var filter_viz_using_names = require('./network/filter_viz_using_names');
 var update_cats = require('./update/update_cats');
+var reset_cats = require('./update/reset_cats');
+
 var d3 = require('d3');
 d3.slider = require('d3.slider');
 var awesomplete = require('awesomplete');
@@ -73,7 +75,6 @@ function Clustergrammer(args) {
     update_cats(this, cat_data);
   }
 
-
   // add more API endpoints
   cgm.update_view = external_update_view;
   cgm.resize_viz = external_resize;
@@ -82,6 +83,7 @@ function Clustergrammer(args) {
   cgm.filter_viz_using_nodes = filter_viz_using_nodes;
   cgm.filter_viz_using_names = filter_viz_using_names;
   cgm.update_cats = run_update_cats;
+  cgm.reset_cats = reset_cats;
   return cgm;
 }
 

@@ -1,4 +1,7 @@
+var remove_node_cats = require('./remove_node_cats');
+
 module.exports = function modify_row_node_cats(cat_data, inst_nodes){
+
   var cat_type_num = 0;
   var inst_index = 0;
   var inst_cat_title;
@@ -17,7 +20,7 @@ module.exports = function modify_row_node_cats(cat_data, inst_nodes){
     inst_name = inst_node.name;
     cat_type_num = 0;
 
-    remove_row_cats(inst_node);
+    remove_node_cats(inst_node);
 
     // loop through each category type
     _.each(cat_data, function(inst_cat_data){
@@ -57,21 +60,5 @@ module.exports = function modify_row_node_cats(cat_data, inst_nodes){
     });
 
   });
-
-  function remove_row_cats(inst_node){
-    var all_props = _.keys(inst_node);
-
-    _.each(all_props, function(inst_prop){
-
-      if (inst_prop.indexOf('cat-') > -1){
-        delete inst_node[inst_prop];
-      }
-
-      if (inst_prop.indexOf('cat_') > -1){
-        delete inst_node[inst_prop];
-      }
-
-    });
-  }
 
 };
