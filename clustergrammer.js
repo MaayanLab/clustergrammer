@@ -11861,6 +11861,7 @@ var Clustergrammer =
 	  var cat_type;
 	  var cat_info;
 	  var found_cat_title;
+	  var found_cat_name;
 
 	  _.each(row_nodes, function (inst_node) {
 
@@ -11898,11 +11899,37 @@ var Clustergrammer =
 	              // check each cat_type object for a matching title
 	              if (cat_title === inst_cat_type.cat_title) {
 	                found_cat_title = true;
+
+	                // check if cat_name is in cats
+	                found_cat_name = false;
+	                _.each(inst_cat_type.cats, function (inst_cat_obj) {
+
+	                  // found category name, add cat_row_name to members
+	                  if (cat_name === inst_cat_obj.cat_name) {
+	                    found_cat_name = true;
+
+	                    // add cat_row_name to members
+	                    inst_cat_obj.members.push(cat_row_name);
+	                  }
+	                });
+
+	                // did not find cat name in cat_type - add cat_info for new
+	                // category
+	                if (found_cat_name === false) {
+	                  cat_info = {};
+	                  cat_info.cat_name = cat_name;
+	                  cat_info.members = [];
+	                  cat_info.members.push(cat_row_name);
+	                  inst_cat_type.cats.push(cat_info);
+	                }
 	              }
 	            });
 
 	            // did not find category type, initialize category type object
-	            if (found_cat_title === false) {}
+	            if (found_cat_title === false) {
+
+	              add_new_cat_type(cat_title, cat_name, cat_row_name);
+	            }
 	          }
 
 	        // // save to cat_type dictionary
