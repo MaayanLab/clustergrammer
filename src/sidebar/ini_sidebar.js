@@ -56,13 +56,11 @@ module.exports = function ini_sidebar(cgm){
                             .max(1)
                             .step(0.1)
                             .on('slide', function(evt, value){
-                              run_on_dendro_slide(evt, value);
+                              run_on_dendro_slide(evt, value, inst_rc);
                             });
 
       d3.select(params.root+' .slider_'+inst_rc)
         .call(dendro_slider);
-
-
 
     }
 
@@ -144,10 +142,11 @@ module.exports = function ini_sidebar(cgm){
   //   }
   // });
 
-  function run_on_dendro_slide( evt, value ) {
+  function run_on_dendro_slide(evt, value, inst_rc) {
     $( "#amount" ).val( "$" + value );
     var inst_index = value*10;
-    var inst_rc;
+    // var inst_rc;
+
     if (inst_rc != 'both'){
       change_groups(cgm, inst_rc, inst_index);
     } else {
