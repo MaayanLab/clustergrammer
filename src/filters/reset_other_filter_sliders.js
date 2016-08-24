@@ -1,7 +1,8 @@
 var make_filter_title = require('./make_filter_title');
 
-module.exports = function reset_other_filter_sliders(params, filter_type, inst_state){
+module.exports = function reset_other_filter_sliders(cgm, filter_type, inst_state){
 
+  var params = cgm.params;
   var inst_rc;
   var reset_rc;
 
@@ -34,7 +35,13 @@ module.exports = function reset_other_filter_sliders(params, filter_type, inst_s
 
         // reset other filter slider positions
         // $(params.root+' .slider_'+reset_filter).slider( "value", 0);
-        d3.select('.slider_'+reset_filter).select('a').style('left','0%')
+
+        // d3.select('.slider_'+reset_filter).select('a').style('left','0%')
+
+        // console.log('reset_filter '+String(reset_filter))
+        // debugger
+
+        cgm.slider_functions[reset_filter].value(0);
 
         d3.select(params.root+' .title_'+reset_filter)
           .text(tmp_title.text + tmp_title.state);

@@ -105,7 +105,9 @@ module.exports = function ini_sidebar(cgm){
                         .min(0.1)
                         .max(1.9)
                         .step(0.1)
-                        .on('slide', run_on_opacity_slide);
+                        .on('slide', function(evt, value){
+                          run_on_opacity_slide(evt, value);
+                        });
 
     d3.select(cgm.params.root+' .opacity_slider')
       .call(slider_fun);

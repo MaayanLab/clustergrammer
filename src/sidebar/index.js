@@ -87,6 +87,8 @@ module.exports = function sidebar(cgm) {
     });
   }
 
+  cgm.slider_functions = {};
+
   _.each(possible_filter_names, function(inst_filter){
     set_up_filters(cgm, inst_filter);
   });

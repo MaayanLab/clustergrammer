@@ -67,8 +67,17 @@ module.exports = function make_slider_filter(cgm, filter_type, div_filters){
                            .max(inst_max)
                            .step(1)
                            .on('slide', function(evt, value){
-                             run_filter_slider_db(cgm, filter_type, available_views, value);
+                              console.log(value)
+                              run_filter_slider_db(cgm, filter_type, available_views, value);
+                           })
+                           .on('slideend', function(evt, value){
+                              console.log(value)
+                              run_filter_slider_db(cgm, filter_type, available_views, value);
                            });
+
+
+  // save slider function in order to reset value later
+  cgm.slider_functions[filter_type] = slide_filter_fun;
 
 
   d3.select(cgm.params.root+' .slider_'+filter_type)

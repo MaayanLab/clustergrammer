@@ -1079,6 +1079,8 @@ var Clustergrammer =
 	  viz.possible_filters = filters.possible_filters;
 	  viz.filter_data = filters.filter_data;
 
+	  console.log('--------------- remaking viz params');
+
 	  return viz;
 		};
 
@@ -8503,7 +8505,9 @@ var Clustergrammer =
 
 	    var slider_fun = d3.slider()
 	    // .axis(d3.svg.axis())
-	    .snap(true).value(1).min(0.1).max(1.9).step(0.1).on('slide', run_on_opacity_slide);
+	    .snap(true).value(1).min(0.1).max(1.9).step(0.1).on('slide', function (evt, value) {
+	      run_on_opacity_slide(evt, value);
+	    });
 
 	    d3.select(cgm.params.root + ' .opacity_slider').call(slider_fun);
 	  }
@@ -9471,11 +9475,14 @@ var Clustergrammer =
 	        // Start value
 	        value = value || scale.domain()[0];
 
+	        console.log('scale.domain[0] ' + String(scale.domain()[0]));
+
 	        // DIV container
 	        var div = d3.select(this).classed("d3-slider d3-slider-" + orientation, true);
 
 	        var drag = d3.behavior.drag();
 	        drag.on('dragend', function () {
+	          console.log('value at dragend: ' + String(value));
 	          dispatch.slideend(d3.event, value);
 	        });
 
@@ -9638,10 +9645,12 @@ var Clustergrammer =
 
 	    // Move slider handle on click/drag
 	    function moveHandle(newValue) {
+
 	      var currentValue = toType(value) == "array" && value.length == 2 ? value[active - 1] : value,
 	          oldPos = formatPercent(scale(stepValue(currentValue))),
 	          newPos = formatPercent(scale(stepValue(newValue))),
 	          position = orientation === "horizontal" ? "left" : "bottom";
+
 	      if (oldPos !== newPos) {
 
 	        if (toType(value) == "array" && value.length == 2) {
@@ -10801,6 +10810,8 @@ var Clustergrammer =
 	    });
 	  }
 
+	  cgm.slider_functions = {};
+
 	  _.each(possible_filter_names, function (inst_filter) {
 	    set_up_filters(cgm, inst_filter);
 	  });
@@ -10898,8 +10909,15 @@ var Clustergrammer =
 	  var slide_filter_fun = d3.slider()
 	  // .snap(true)
 	  .value(0).min(0).max(inst_max).step(1).on('slide', function (evt, value) {
+	    console.log(value);
+	    run_filter_slider_db(cgm, filter_type, available_views, value);
+	  }).on('slideend', function (evt, value) {
+	    console.log(value);
 	    run_filter_slider_db(cgm, filter_type, available_views, value);
 	  });
+
+	  // save slider function in order to reset value later
+	  cgm.slider_functions[filter_type] = slide_filter_fun;
 
 	  d3.select(cgm.params.root + ' .slider_' + filter_type).call(slide_filter_fun);
 
@@ -10987,7 +11005,7 @@ var Clustergrammer =
 	  var inst_state = available_views[inst_index][filter_type];
 
 	  // console.log('fix this')
-	  reset_other_filter_sliders(params, filter_type, inst_state);
+	  reset_other_filter_sliders(cgm, filter_type, inst_state);
 
 	  params = get_current_orders(params);
 
@@ -11013,8 +11031,9 @@ var Clustergrammer =
 
 	var make_filter_title = __webpack_require__(176);
 
-	module.exports = function reset_other_filter_sliders(params, filter_type, inst_state) {
+	module.exports = function reset_other_filter_sliders(cgm, filter_type, inst_state) {
 
+	  var params = cgm.params;
 	  var inst_rc;
 	  var reset_rc;
 
@@ -11046,7 +11065,13 @@ var Clustergrammer =
 
 	        // reset other filter slider positions
 	        // $(params.root+' .slider_'+reset_filter).slider( "value", 0);
-	        d3.select('.slider_' + reset_filter).select('a').style('left', '0%');
+
+	        // d3.select('.slider_'+reset_filter).select('a').style('left','0%')
+
+	        // console.log('reset_filter '+String(reset_filter))
+	        // debugger
+
+	        cgm.slider_functions[reset_filter].value(0);
 
 	        d3.select(params.root + ' .title_' + reset_filter).text(tmp_title.text + tmp_title.state);
 
