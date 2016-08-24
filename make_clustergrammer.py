@@ -1,7 +1,14 @@
 import time
 start_time = time.time()
 
-from clustergrammer import Network
+# from clustergrammer import Network
+
+# install clustergrammer using pip, see below
+# pip install clustergrammer
+#
+# or install from source code available from
+# https://github.com/MaayanLab/clustergrammer-py
+
 net = Network()
 
 # choose tsv file
