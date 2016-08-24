@@ -1,7 +1,7 @@
 import time
 start_time = time.time()
 
-# from clustergrammer import Network
+from clustergrammer import Network
 
 # install clustergrammer using pip, see below
 # pip install clustergrammer
