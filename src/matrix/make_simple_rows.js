@@ -7,11 +7,22 @@ module.exports = function make_simple_rows(params, ini_inp_row_data, tip, row_se
 
   var inp_row_data = ini_inp_row_data.row_data;
 
-  // value: remove zero values to make visualization faster
-  var row_values = _.filter(inp_row_data, function(num) {
-    return num.value !== 0;
-  });
+  var keep_orig;
+  if (_.has(params.network_data.links[0], 'value_orig')) {
+    keep_orig = true;
+  } else {
+    keep_orig = false;
+  }
 
+  var row_values;
+  if (keep_orig === false){
+    // value: remove zero values to make visualization faster
+    row_values = _.filter(inp_row_data, function(num) {
+      return num.value !== 0;
+    });
+  } else {
+    row_values = inp_row_data;
+  }
 
   // // generate tiles in the current row
   // var tile = d3.select(row_selection)

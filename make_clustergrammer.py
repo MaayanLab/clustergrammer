@@ -52,7 +52,7 @@ net.load_file('txt/rc_two_cats.txt')
 # net.filter_threShold('col', threshold=2, num_occur=3
 # net.filter_threshold('row', threshold=3.0, num_occur=4)
 
-net.swap_nan_for_zero()
+# net.swap_nan_for_zero()
 
 # df = net.dat_to_df()
 
