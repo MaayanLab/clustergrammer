@@ -13,38 +13,80 @@ module.exports = function make_simple_rows(params, ini_inp_row_data, tip, row_se
   });
 
 
+  // // generate tiles in the current row
+  // var tile = d3.select(row_selection)
+  //   .selectAll('rect')
+  //   .data(row_values, function(d){ return d.col_name; })
+  //   .enter()
+  //   .append('rect')
+  //   .attr('class', 'tile row_tile')
+  //   .attr('width', params.viz.rect_width)
+  //   .attr('height', params.viz.rect_height)
+  //   // switch the color based on up/dn value
+  //   .style('fill', function(d) {
+  //     return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
+  //   })
+  //   .on('mouseover', function(...args) {
+  //       mouseover_tile(params, this, tip, args);
+  //   })
+  //   .on('mouseout', function() {
+  //     mouseout_tile(params, this, tip);
+  //   })
+  //   .style('fill-opacity', function(d) {
+  //     // calculate output opacity using the opacity scale
+  //     var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
+  //     return output_opacity;
+  //   })
+  //   .attr('transform', function(d) {
+  //     var x_pos = params.viz.x_scale(d.pos_x) + 0.5*params.viz.border_width;
+  //     var y_pos = 0.5*params.viz.border_width/params.viz.zoom_switch;
+  //     return 'translate(' + x_pos + ','+y_pos+')';
+  //   });
+
   // generate tiles in the current row
-  var tile = d3.select(row_selection)
-    .selectAll('rect')
-    .data(row_values, function(d){ return d.col_name; })
-    .enter()
-    .append('rect')
-    .attr('class', 'tile row_tile')
-    .attr('width', params.viz.rect_width)
-    .attr('height', params.viz.rect_height)
-    // switch the color based on up/dn value
-    .style('fill', function(d) {
-      return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
-    })
-    .on('mouseover', function(...args) {
-        mouseover_tile(params, this, tip, args);
-    })
-    .on('mouseout', function() {
-      mouseout_tile(params, this, tip);
-    })
-    .style('fill-opacity', function(d) {
-      // calculate output opacity using the opacity scale
-      var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
-      return output_opacity;
-    })
-    .attr('transform', function(d) {
-      var x_pos = params.viz.x_scale(d.pos_x) + 0.5*params.viz.border_width;
-      var y_pos = 0.5*params.viz.border_width/params.viz.zoom_switch;
-      return 'translate(' + x_pos + ','+y_pos+')';
-    });
+  var tile = d3.select(row_selection).selectAll('rect').data(row_values, function (d) {
+    return d.col_name;
+  }).enter().append('rect').attr('class', 'tile row_tile').attr('width', params.viz.rect_width).attr('height', params.viz.rect_height)
+  // switch the color based on up/dn value
+  .style('fill', function (d) {
+
+    var inst_fill;
+    if (d.value_orig === 'NaN') {
+      // console.log('found NaN while making tiles');
+      inst_fill = '#000000';
+    } else {
+      inst_fill = d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
+    }
+
+    return inst_fill;
+  }).on('mouseover', function () {
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    mouseover_tile(params, this, tip, args);
+  }).on('mouseout', function () {
+    mouseout_tile(params, this, tip);
+  }).style('fill-opacity', function (d) {
+    // calculate output opacity using the opacity scale
+
+    var inst_opacity;
+    if (d.value_orig === 'NaN') {
+      // console.log('found NaN while making tiles');
+      inst_opacity = 0.175;
+    } else {
+      inst_opacity = params.matrix.opacity_scale(Math.abs(d.value));
+    }
+
+    return inst_opacity;
+  }).attr('transform', function (d) {
+    var x_pos = params.viz.x_scale(d.pos_x) + 0.5 * params.viz.border_width;
+    var y_pos = 0.5 * params.viz.border_width / params.viz.zoom_switch;
+    return 'translate(' + x_pos + ',' + y_pos + ')';
+  });
 
 
-  // // tile circles 
+  // // tile circles
   // /////////////////////////////
   // var tile = d3.select(row_selection)
   //   .selectAll('circle')
@@ -159,7 +201,7 @@ module.exports = function make_simple_rows(params, ini_inp_row_data, tip, row_se
         mouseout_tile(params, this, tip);
       });
 
-      // remove rect when tile is split 
+      // remove rect when tile is split
       tile
         .each(function(d){
           if ( Math.abs(d.value_up)>0 && Math.abs(d.value_dn)>0 ){
