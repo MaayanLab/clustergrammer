@@ -34,9 +34,7 @@ Clustergrammer is designed to be a reusable chart and has been integrated into s
 clustergrammer.js requires:
 - D3.js
 - jQuery
-- jQuery UI
 - Underscore.js
-- Bootstrap
 
 clustergrammer.py requires
 - numpy
@@ -74,9 +72,9 @@ d3.select(window).on('resize', function(){
 The visualization json format is defined [here](#clustergrammer-json-format). Clustergrammer can make more than one visualization per page (see [example](multiple_clust.html)), but each visualization requires its own container.
 
 ## API Examples
-The page [index.html](index.html) and the corresponding script [load_clustergram.js](load_clustergram.js) show an example of how to make a full-screen visualization that resizes with the window.
+The page [index.html](index.html) and the corresponding script [load_clustergram.js](js/load_clustergram.js) show an example of how to make a full-screen visualization that resizes with the window.
 
-The page [multiple_clust.html](multiple_clust.html) and corresponding script [load_multiple_clustergrams.js](load_multiple_clustergrams.js) show an example of visualizing multiple clustergrams on one page.
+The page [multiple_clust.html](multiple_clust.html) and corresponding script [load_multiple_clustergrams.js](js/load_multiple_clustergrams.js) show an example of visualizing multiple clustergrams on one page.
 
 ## Optional Arguments
 
@@ -235,6 +233,21 @@ The python module [clutergrammer.py](https://github.com/MaayanLab/clustergrammer
 ```
 pip install clustergrammer
 ```
+
+## Example Workflow
+```
+from clustergrammer import Network
+net = Network()
+
+net.load_file('txt/rc_two_cats.txt')
+
+net.make_clust(dist_type='cos',views=['N_row_sum', 'N_row_var'])
+
+net.write_json_to_file('viz', 'json/mult_view.json', 'no-indent')
+```
+The above workflow instaitiates an instance of the ```Network``` class as ```net```, loads a matrix tsv file, calculates clustering (with distance set to cosine and optional view requested), and writes the visualization json to a file.
+
+The python script [make_clustergrammer.py](make_clustergrammer.py) generates the visualization jsons for the examples pages on this repo. You can modify the script to make a visualization from your own file and find out more about the API below.
 
 or by using the source code found here: https://github.com/MaayanLab/clustergrammer-py.
 
