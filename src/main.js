@@ -11,9 +11,21 @@ var update_cats = require('./update/update_cats');
 var reset_cats = require('./update/reset_cats');
 
 var d3 = require('d3');
-d3.slider = require('d3.slider');
+
+// moved d3.slider to src
+d3.slider = require('./d3.slider');
+
+// // getting d3.slider through node_modules
+// d3.slider = require('d3.slider');
+
 var awesomplete = require('awesomplete');
-require('!style!css!d3.slider/d3.slider.css');
+
+// getting css from src
+require('!style!css!./d3.slider/d3.slider.css');
+
+// // getting style from node_modules
+// require('!style!css!d3.slider/d3.slider.css');
+
 require('!style!css!awesomplete/awesomplete.css');
 require('!style!css!./bootstrap.css');
 require('!style!css!./custom.css');

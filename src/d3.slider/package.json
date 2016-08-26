@@ -1,0 +1,75 @@
+{
+  "_args": [
+    [
+      "git://github.com/turban/d3.slider",
+      "/Users/nickfernandez"
+    ]
+  ],
+  "_from": "git://github.com/turban/d3.slider.git",
+  "_id": "d3.slider@0.1.0",
+  "_inCache": true,
+  "_installable": true,
+  "_location": "/d3.slider",
+  "_phantomChildren": {
+    "jsdom": "1.0.0"
+  },
+  "_requested": {
+    "hosted": {
+      "directUrl": "https://raw.githubusercontent.com/turban/d3.slider/master/package.json",
+      "gitUrl": "git://github.com/turban/d3.slider.git",
+      "httpsUrl": "git+https://github.com/turban/d3.slider.git",
+      "shortcut": "github:turban/d3.slider",
+      "ssh": "git@github.com:turban/d3.slider.git",
+      "sshUrl": "git+ssh://git@github.com/turban/d3.slider.git",
+      "type": "github"
+    },
+    "name": null,
+    "raw": "git://github.com/turban/d3.slider",
+    "rawSpec": "git://github.com/turban/d3.slider",
+    "scope": null,
+    "spec": "git://github.com/turban/d3.slider.git",
+    "type": "hosted"
+  },
+  "_requiredBy": [
+    "#USER"
+  ],
+  "_resolved": "git://github.com/turban/d3.slider.git#d18dff4b6b212d72bb80c4ec0d017337b32730d3",
+  "_shasum": "b7c7a1f14d633057cc14682aff092f1c64512312",
+  "_shrinkwrap": null,
+  "_spec": "git://github.com/turban/d3.slider",
+  "_where": "/Users/nickfernandez",
+  "author": {
+    "name": "turban"
+  },
+  "browserify": {
+    "transform": [
+      "cssify"
+    ]
+  },
+  "bugs": {
+    "url": "https://github.com/turban/d3.slider/issues"
+  },
+  "dependencies": {
+    "browserify": "~4.1.5",
+    "cssify": "~0.5.1",
+    "d3": "~3.4.8"
+  },
+  "description": "D3.js Slider",
+  "devDependencies": {},
+  "gitHead": "d18dff4b6b212d72bb80c4ec0d017337b32730d3",
+  "homepage": "https://github.com/turban/d3.slider",
+  "license": "BSD",
+  "main": "d3.slider.js",
+  "name": "d3.slider",
+  "optionalDependencies": {},
+  "readme": "D3.js Slider\n============\n\nThis is a pure D3.js slider inspired by the <a href=\"\">jQuery UI Slider</a>. Supports <a href=\"https://github.com/mbostock/d3/wiki/SVG-Axes\">D3’s axis component</a>. Feel free to contribute!\n\n<a href=\"http://thematicmapping.org/playground/d3/d3.slider/\">Examples</a>\n",
+  "readmeFilename": "README.md",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/turban/d3.slider.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "0.1.0"
+}
