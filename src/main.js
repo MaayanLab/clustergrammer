@@ -27,8 +27,6 @@ require('!style!css!./custom.css');
  */
 function Clustergrammer(args) {
 
-  console.log('modifying clustergrammer source code')
-
   /* Main program
    * ----------------------------------------------------------------------- */
   // consume and validate user input
