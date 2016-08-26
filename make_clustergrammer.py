@@ -15,18 +15,7 @@ net = Network()
 ####################
 net.load_file('txt/rc_two_cats.txt')
 # net.load_file('txt/ccle_example.txt')
-# net.load_file('txt/true_false_cats.txt')
 # net.load_file('txt/tuple_cats.txt')
-# net.load_file('txt/tuple_names.txt')
-# net.load_file('txt/missing_values.txt')
-# net.load_file('txt/example_tsv.txt')
-# net.load_file('txt/col_categories.txt')
-# net.load_file('txt/mat_cats.tsv')
-# net.load_file('txt/mat_1mb.txt')
-# net.load_file('txt/mnist.txt')
-# net.load_file('txt/sim_mat_4_cats.txt')
-# net.load_file('txt/number_names.txt')
-# net.load_file('txt/example_tsv.txt')
 
 # # upload vector format
 # ########################
@@ -35,8 +24,6 @@ net.load_file('txt/rc_two_cats.txt')
 
 # link = net.Iframe_web_app('txt/rc_two_cats.txt', width=1000, height=800)
 # link = net.Iframe_web_app( width=1000, height=800)
-
-# print(link)
 
 # possible filtering and normalization
 ##########################################
