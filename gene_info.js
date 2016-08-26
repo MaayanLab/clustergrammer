@@ -15,7 +15,9 @@ function gene_info(gene_symbol){
     if ( d3.select('.row_tip').classed(gene_symbol) ){
 
       // var base_url = 'http://localhost:9000/clustergrammer/gene_info/';
+      // var base_url = 'http://yan.1425mad.mssm.edu:31331/Harmonizome/api/1.0/gene/'
       var base_url = 'http://amp.pharm.mssm.edu/Harmonizome/api/1.0/gene/'
+
       var url = base_url + gene_symbol;
 
       $.get(url, function(data) {
