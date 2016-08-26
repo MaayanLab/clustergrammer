@@ -23,16 +23,16 @@ function make_clust(make_sim_mats){
 
 }
 
-// make wait sign
-$.blockUI({ css: {
-    border: 'none',
-    padding: '15px',
-    backgroundColor: '#000',
-    '-webkit-border-radius': '10px',
-    '-moz-border-radius': '10px',
-    opacity: .8,
-    color: '#fff'
-} });
+// // make wait sign
+// $.blockUI({ css: {
+//     border: 'none',
+//     padding: '15px',
+//     backgroundColor: '#000',
+//     '-webkit-border-radius': '10px',
+//     '-moz-border-radius': '10px',
+//     opacity: .8,
+//     color: '#fff'
+// } });
 
 d3.select('.blockMsg').select('h1').text('Please wait...');
 
@@ -134,7 +134,7 @@ function make_sim_mats(inst_rc, cat_colors, unblock){
 }
 
 function unblock(){
-  $.unblockUI();
+  // $.unblockUI();
 }
 
 function resize_container(){
