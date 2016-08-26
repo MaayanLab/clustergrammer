@@ -57,6 +57,7 @@ sftp-config.json
 
 # webpack
 *.js.map
+.eslint*
 
 # python
 *.ipynb_checkpoints
