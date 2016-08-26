@@ -1,0 +1,84 @@
+/* stylize header */
+/*h1 {
+  font-size: 45px;
+  font-weight: 300;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}*/
+
+
+
+/* default svg size for fixed svg option*/
+#svg_div{
+  width:1000px;
+  height:600px;
+}
+
+.viz_medium_text{
+  width:99%;
+  margin-left: 5px;
+  margin-top: 3px;
+  margin-bottom: 3px;
+  color:#333;
+  text-align: justify;
+  font-size: 14px;
+  font-weight: 300;
+  padding-left: 0px;
+}
+
+.viz_large_text{
+  width:99%;
+  margin: 0 auto;
+  margin-top: 6px;
+  margin-bottom: 3px;
+  color:#333;
+  text-align: justify;
+  font-size: 16px;
+  font-weight: 300;
+  padding-left: 0px;
+}
+
+/* need to move d3-tip into stypes */
+.d3-tip {
+  line-height: 1;
+  font-weight: bold;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
+  max-width: 500px;
+}
+
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+}
+
+.noselect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+
+.icon_buttons{
+  color: #337ab7;
+}
+
+/*.share_url{
+  width: 570px;
+}*/
+
+.sidebar_text{
+  font-weight: 300;
+}
+
+.btn{
+  padding-top:2px;
+  padding-bottom:2px;
+}

@@ -76,6 +76,8 @@ var Clustergrammer =
 	 */
 	function Clustergrammer(args) {
 
+	  console.log('modifying clustergrammer source code');
+
 	  /* Main program
 	   * ----------------------------------------------------------------------- */
 	  // consume and validate user input
@@ -4467,6 +4469,7 @@ var Clustergrammer =
 	module.exports = function make_tooltips(params) {
 
 	  d3.selectAll(params.root + ' .row_tip').remove();
+
 	  if (params.labels.show_label_tooltips) {
 
 	    // d3-tooltip
@@ -9504,7 +9507,7 @@ var Clustergrammer =
 	    var min = 0,
 	        max = 100,
 	        step = 0.01,
-	        animate = false,
+	        animate = true,
 	        orientation = "horizontal",
 	        axis = false,
 	        margin = 50,
@@ -9534,14 +9537,11 @@ var Clustergrammer =
 	        // Start value
 	        value = value || scale.domain()[0];
 
-	        console.log('scale.domain[0] ' + String(scale.domain()[0]));
-
 	        // DIV container
 	        var div = d3.select(this).classed("d3-slider d3-slider-" + orientation, true);
 
 	        var drag = d3.behavior.drag();
 	        drag.on('dragend', function () {
-	          console.log('value at dragend: ' + String(value));
 	          dispatch.slideend(d3.event, value);
 	        });
 
@@ -9654,7 +9654,7 @@ var Clustergrammer =
 	              svg.style("left", -margin + "px");
 	              g.attr("transform", "translate(" + margin + "," + margin + ")");
 	            } else {
-	              // right
+	              // right         
 	              g.attr("transform", "translate(" + 0 + "," + margin + ")");
 	            }
 	          }
@@ -9704,12 +9704,10 @@ var Clustergrammer =
 
 	    // Move slider handle on click/drag
 	    function moveHandle(newValue) {
-
 	      var currentValue = toType(value) == "array" && value.length == 2 ? value[active - 1] : value,
 	          oldPos = formatPercent(scale(stepValue(currentValue))),
 	          newPos = formatPercent(scale(stepValue(newValue))),
 	          position = orientation === "horizontal" ? "left" : "bottom";
-
 	      if (oldPos !== newPos) {
 
 	        if (toType(value) == "array" && value.length == 2) {

@@ -1,0 +1,40 @@
+{
+  "name": "clustergrammer.js",
+  "version": "1.0.0",
+  "description": "This is a clustergram implemented in D3.js. I started from the example http://bost.ocks.org/mike/miserables/ and added the following features",
+  "main": "clustergrammer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cornhundred/clustergrammer.js.git"
+  },
+  "author": "Nicolas Fernandez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cornhundred/clustergrammer.js/issues"
+  },
+  "homepage": "https://github.com/cornhundred/clustergrammer.js#readme",
+  "devDependencies": {
+    "babel-core": "^6.14.0",
+    "babel-eslint": "^4.1.8",
+    "babel-loader": "^6.2.5",
+    "babel-preset-es2015": "^6.14.0",
+    "css-loader": "^0.23.1",
+    "eslint": "^2.1.0",
+    "expose-loader": "^0.7.1",
+    "less-loader": "^2.2.3",
+    "object-assign": "^4.1.0",
+    "webpack": "^1.13.2"
+  },
+  "dependencies": {
+    "d3": "^3.5.15",
+    "extend": "^3.0.0",
+    "lodash": "^4.3.0",
+    "jquery": "1.5.1",
+    "underscore": "1.8.3",
+    "awesomplete": "1.1.1",
+    "style-loader": "^0.13.1"
+  }
+}
