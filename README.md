@@ -229,4 +229,14 @@ Link objects are required to have three properties: ```source```, ```target```, 
 Links also have the optional properties ```value_up``` and ```value_dn``` which allow the user to split a tile into up- and down-triangles if a link has both up- and down-values. If a link has only an up- or down-value then a normal square tile is shown.
 
 
+# Clustergrammer Python Module
+The python module [clutergrammer.py](https://github.com/MaayanLab/clustergrammer-py), takes a tab-separated matrix file as input, calculates clustering, and generates the visualization json for clustergrammer.js. The clustergrammer python module can be installed using pip
+
+```
+pip install clustergrammer
+```
+
+or by using the source code found here: https://github.com/MaayanLab/clustergrammer-py.
+
+
 Clustergrammer was developed by Nick Fernandez at Icahn School of Medicine at Mount Sinai.
