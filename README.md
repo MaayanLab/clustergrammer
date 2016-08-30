@@ -80,7 +80,7 @@ net.make_clust(dist_type='cos',views=['N_row_sum', 'N_row_var'])
 # write visualization json to file
 net.write_json_to_file('viz', 'json/mult_view.json')
 ```
-The script [make_clustergrammer.py](make_clustergrammer.py) is used to generate the visualization jsons (see [json](json) directory) for the examples pages in this repo. To visualize your own data modify the [make_clustergrammer.py](make_clustergrammer.py) script.
+The script [make_clustergrammer.py](make_clustergrammer.py) is used to generate the visualization jsons (see [json](json)) for the [examples pages](#example-pages) in this repo. To visualize your own data modify the [make_clustergrammer.py](make_clustergrammer.py) script.
 
 # Input Matrix Format
 Clustergrammer.py discussed [here](#clustergrammer-python-module) takes a tab separated matrix with unique row and column names as input. The simplest format is shown here (note: that tabs are required, but spaces are used in the example below to increase readability):
