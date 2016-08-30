@@ -74,7 +74,7 @@ The visualization json format is defined [here](#clustergrammer-json-format). Cl
 ## API Examples
 The page [index.html](index.html) and the corresponding script [load_clustergram.js](js/load_clustergram.js) show an example of how to make a full-screen visualization that resizes with the window.
 
-The page [multiple_clust.html](multiple_clust.html) and corresponding script [load_multiple_clustergrams.js](js/load_multiple_clustergrams.js) show an example of visualizing multiple clustergrams on one page. For more options see (see [Optional Clustergrammer.js Arguments](#optional-clustergrammer.js-arguments))
+The page [multiple_clust.html](multiple_clust.html) and corresponding script [load_multiple_clustergrams.js](js/load_multiple_clustergrams.js) show an example of visualizing multiple clustergrams on one page. For more options see (see [Optional Arguments](#optional-arguments))
 
 # Input Matrix Format
 Clustergrammer.js requires a specific json [format](#clustergrammer-json-format) to make the visualization and you can use the python module [clustergrammer.py](#clustergrammer-python-module) to create this json from an input tab-separated matrix file in the following format:
@@ -206,7 +206,7 @@ Link objects are required to have three properties: ```source```, ```target```, 
 Links also have the optional properties ```value_up``` and ```value_dn``` which allow the user to split a tile into up- and down-triangles if a link has both up- and down-values. If a link has only an up- or down-value then a normal square tile is shown.
 
 
-# Optional Clustergrammer.js Arguments
+# Optional Arguments
 
 These arguments can also be passsed to Clustergrammer as part of the args object.
 
