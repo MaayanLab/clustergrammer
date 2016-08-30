@@ -27,8 +27,8 @@ function make_clust(inst_network){
 
       d3.select(cgm.params.root + ' .wait_message').remove();
 
-      // temporarily disabling enrichr categories
-      ////////////////////////////////////////////
+      // Enrichr categories
+      //////////////////////
       enr_obj = Enrichr_request(cgm);
       enr_obj.enrichr_icon();
 

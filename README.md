@@ -53,7 +53,7 @@ var args = {
 
 var cgm = Clustergrammer(args);
 ```
-This will make a clustergram visualization in the 'root' container using the [visualization json](#clustergrammer-json-format) (referred to as netowrk_data and made using the python module [clustergrammer.py](#clustergrammer-python-module)). The user must generate the root container and define its width and height, which will be used to define the visualization size.
+This will make a clustergram visualization in the 'root' container using the [visualization json](#clustergrammer-json-format) (referred to as network_data and made using the python module [clustergrammer.py](#clustergrammer-python-module)). The user must generate the root container and define its width and height, which will be used to define the visualization size.
 
 Resizing the visualization can be done by first resizing the container and then resizing the clustergram using Clustergrammer's ```cgm.resize_viz()``` function. An example of resizing when the window change size is shown below.
 
