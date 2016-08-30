@@ -12,7 +12,7 @@ The project began as an extension of this example http://bost.ocks.org/mike/mise
 - row filtering and searching
 - multiple categories for rows and columns
 
-The Clustergrammer.js source code is under the [src](src) directory and Webpack Module Developer is being used to make clustergrammer.js. The easiest way to visualize a matrix of your own data (see [matrix format](#input-matrix-format)) is to use the Python module: discussed [here](#clustergrammer-python-module) and repo here [clustergrammer.py](https://github.com/MaayanLab/clustergrammer-py). Clustergrammer.py takes a tab-separated matrix file as input, calculates clustering, and generates the visualization json for clustergrammer.js (see [example workflow](#example-workflow)). Users can also generate the visualization json (see example [mult_view.json](json/mult_view.json)) on their own using another programming language (e.g. Matlab) as long as they adhere to the [format](https://github.com/MaayanLab/clustergrammer-json). Clustergrammer is designed to be a reusable chart and has been integrated into several [Ma'ayan lab](http://icahn.mssm.edu/research/labs/maayan-laboratory) web tools including:
+The Clustergrammer.js source code is under the [src](src) directory and Webpack Module Developer is being used to make clustergrammer.js. The easiest way to visualize a matrix of your own data is to follow the [example workflow](#example-workflow)) that uses the Clustergrammer python module (discussed [here](#clustergrammer-python-module) and repo here [clustergrammer.py](https://github.com/MaayanLab/clustergrammer-py)). Users can also generate the visualization json (see example [mult_view.json](json/mult_view.json)) using another programming language as long as they adhere to the [format](https://github.com/MaayanLab/clustergrammer-json). Clustergrammer is designed to be a reusable chart and has been integrated into several [Ma'ayan lab](http://icahn.mssm.edu/research/labs/maayan-laboratory) web tools including:
 
 - [Clustergrammer](http://amp.pharm.mssm.edu/clustergrammer/)
 - [Enrichr](http://amp.pharm.mssm.edu/Enrichr/)
@@ -31,9 +31,9 @@ var args = {
 
 var cgm = Clustergrammer(args);
 ```
-```root``` is the id of the container where the visualization SVG will be made (the container must be made by the user). ```network_data``` is the visualization JSON (example here [mult_view.json](json/mult_view.json) and format [here](https://github.com/MaayanLab/clustergrammer-json)) that contains the information necessary to make your visualization. See [Optional Arguments](#optional-arguments) for more information on available arguments.
+The id of the container where the visualization SVG will be placed is passed as ```root``` (this root container must be made by the user). The visualization JSON (example here [mult_view.json](json/mult_view.json) and format discussed [here](https://github.com/MaayanLab/clustergrammer-json)) contains the information necessary to make your visualization and  is passed as ```network_data```. The visualization JSON is produced by [clustergrammer.py](https://github.com/MaayanLab/clustergrammer-py/). See additional [Optional Arguments](#optional-arguments) for more information.
 
-### Page Examples
+### Example Pages
 The page [index.html](index.html) (and the corresponding script [load_clustergram.js](js/load_clustergram.js)) show how to make a full-screen resizable clustergrammer visualization.
 
 The page [multiple_clust.html](multiple_clust.html) (and corresponding script [load_multiple_clustergrams.js](js/load_multiple_clustergrams.js)) show how to visualize multiple clustergrams on one page. Note that each visualization requires its own container.
