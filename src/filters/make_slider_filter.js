@@ -56,8 +56,6 @@ module.exports = function make_slider_filter(cgm, filter_type, div_filters){
   //   }
   // });
 
-  // console.log( 'inst_max '+ String(inst_max))
-
   // Filter Slider
   //////////////////////////////////////////////////////////////////////
   var slide_filter_fun = d3.slider()
@@ -67,11 +65,9 @@ module.exports = function make_slider_filter(cgm, filter_type, div_filters){
                            .max(inst_max)
                            .step(1)
                            .on('slide', function(evt, value){
-                              console.log(value)
                               run_filter_slider_db(cgm, filter_type, available_views, value);
                            })
                            .on('slideend', function(evt, value){
-                              console.log(value)
                               run_filter_slider_db(cgm, filter_type, available_views, value);
                            });
 

@@ -1082,8 +1082,6 @@ var Clustergrammer =
 	  viz.possible_filters = filters.possible_filters;
 	  viz.filter_data = filters.filter_data;
 
-	  console.log('--------------- remaking viz params');
-
 	  return viz;
 	};
 
@@ -2803,6 +2801,8 @@ var Clustergrammer =
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
+
+	/* eslint-disable */
 
 	var draw_up_tile = __webpack_require__(53);
 	var draw_dn_tile = __webpack_require__(54);
@@ -7407,9 +7407,10 @@ var Clustergrammer =
 
 	'use strict';
 
+	/* eslint-disable */
 	module.exports = function disable_sidebar(params) {
 
-	  console.log('fix this');
+	  console.log('improve sidebar disable');
 	  // $(params.root+' .slider').slider('disable');
 
 	  d3.selectAll(params.root + ' .btn').attr('disabled', true);
@@ -8454,6 +8455,8 @@ var Clustergrammer =
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
+
+	/* eslint-disable */
 
 	var change_groups = __webpack_require__(140);
 	var search = __webpack_require__(82);
@@ -59537,17 +59540,13 @@ var Clustergrammer =
 	  //   }
 	  // });
 
-	  // console.log( 'inst_max '+ String(inst_max))
-
 	  // Filter Slider
 	  //////////////////////////////////////////////////////////////////////
 	  var slide_filter_fun = d3.slider()
 	  // .snap(true)
 	  .value(0).min(0).max(inst_max).step(1).on('slide', function (evt, value) {
-	    console.log(value);
 	    run_filter_slider_db(cgm, filter_type, available_views, value);
 	  }).on('slideend', function (evt, value) {
-	    console.log(value);
 	    run_filter_slider_db(cgm, filter_type, available_views, value);
 	  });
 

@@ -1,6 +1,7 @@
+/* eslint-disable */
 module.exports = function disable_sidebar(params){
 
-  console.log('fix this')
+  console.log('improve sidebar disable');
   // $(params.root+' .slider').slider('disable');
 
   d3.selectAll(params.root+' .btn').attr('disabled',true);

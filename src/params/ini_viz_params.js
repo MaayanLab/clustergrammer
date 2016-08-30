@@ -84,7 +84,5 @@ module.exports = function ini_viz_params(params, preserve_cats=true){
   viz.possible_filters = filters.possible_filters;
   viz.filter_data = filters.filter_data;
 
-  console.log('--------------- remaking viz params')
-
   return viz;
 };

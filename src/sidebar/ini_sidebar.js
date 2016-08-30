@@ -1,7 +1,10 @@
+/* eslint-disable */
+
 var change_groups = require('../dendrogram/change_groups');
 var search = require('../search');
 var all_reorder = require('../reorder/all_reorder');
 var ini_cat_reorder = require('../reorder/ini_cat_reorder');
+
 
 module.exports = function ini_sidebar(cgm){
 
