@@ -43,7 +43,7 @@ clustergrammer.py requires
 
 # Clustergrammer API
 
-## Required Arguments
+## Arguments
 To make a visualization pass an arguments object with the following required values to Clustergrammer:
 ```
 var args = {
@@ -53,8 +53,16 @@ var args = {
 
 var cgm = Clustergrammer(args);
 ```
-This will make a clustergram visualization in the 'root' container using the [visualization json](#clustergrammer-json-format) (referred to as network_data and made using the python module [clustergrammer.py](#clustergrammer-python-module)). The user must generate the root container and define its width and height, which will be used to define the visualization size.
+This will make a clustergram visualization in the 'root' container using the [visualization json](#clustergrammer-json-format) (referred to as network_data and made using the python module [clustergrammer.py](#clustergrammer-python-module)). The user must generate the root container and define its width and height, which will be used to define the visualization size. See [Optional Arguments](#optional-arguments) for more information on available arguments.
 
+The format of the JSON network_data (e.g. [mult_view.json](json/mult_view.json)) is defined [here](#clustergrammer-json-format).
+
+## Page Examples
+The page [index.html](index.html) (and the corresponding script [load_clustergram.js](js/load_clustergram.js)) show how to make a full-screen resizable clustergrammer visualization.
+
+The page [multiple_clust.html](multiple_clust.html) (and corresponding script [load_multiple_clustergrams.js](js/load_multiple_clustergrams.js)) show how to visualize multiple clustergrams on one page. Note that each visualization requires its own container.
+
+## Visualization Resizing
 Resizing the visualization can be done by first resizing the container and then resizing the clustergram using Clustergrammer's ```cgm.resize_viz()``` function. An example of resizing when the window change size is shown below.
 
 ```
@@ -68,13 +76,6 @@ d3.select(window).on('resize', function(){
 
 });
 ```
-
-The visualization json format is defined [here](#clustergrammer-json-format). Clustergrammer can make more than one visualization per page (see [example](multiple_clust.html)), but each visualization requires its own container.
-
-## API Examples
-The page [index.html](index.html) and the corresponding script [load_clustergram.js](js/load_clustergram.js) show an example of how to make a full-screen visualization that resizes with the window.
-
-The page [multiple_clust.html](multiple_clust.html) and corresponding script [load_multiple_clustergrams.js](js/load_multiple_clustergrams.js) show an example of visualizing multiple clustergrams on one page. For more options see (see [Optional Arguments](#optional-arguments))
 
 # Input Matrix Format
 Clustergrammer.js requires a specific json [format](#clustergrammer-json-format) to make the visualization and you can use the python module [clustergrammer.py](#clustergrammer-python-module) to create this json from an input tab-separated matrix file in the following format:
