@@ -137,7 +137,7 @@ These arguments can also be passsed to Clustergrammer as part of the args object
   * rank: ordering based on the sum of the values in row/column
   * rank_var: ordering based on the variance of the values in the row/column
 
-```ini_view```: This defines the initial view of the clustergram. A clutergram can have many views available (discussed [here](#making-additional-views)) and these views generally consist of filtered versions of the clustergram.
+```ini_view```: This defines the initial view of the clustergram. A clutergram can have many views available (discussed [here](#clustergrammer-python-module)) and these views generally consist of filtered versions of the clustergram.
 
 ```sidebar_width```: The width, in pixels, of the sidebar. The default is 150px.
 
