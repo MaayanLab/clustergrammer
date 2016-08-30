@@ -24,36 +24,6 @@ module.exports = function make_simple_rows(params, ini_inp_row_data, tip, row_se
     row_values = inp_row_data;
   }
 
-  // // generate tiles in the current row
-  // var tile = d3.select(row_selection)
-  //   .selectAll('rect')
-  //   .data(row_values, function(d){ return d.col_name; })
-  //   .enter()
-  //   .append('rect')
-  //   .attr('class', 'tile row_tile')
-  //   .attr('width', params.viz.rect_width)
-  //   .attr('height', params.viz.rect_height)
-  //   // switch the color based on up/dn value
-  //   .style('fill', function(d) {
-  //     return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
-  //   })
-  //   .on('mouseover', function(...args) {
-  //       mouseover_tile(params, this, tip, args);
-  //   })
-  //   .on('mouseout', function() {
-  //     mouseout_tile(params, this, tip);
-  //   })
-  //   .style('fill-opacity', function(d) {
-  //     // calculate output opacity using the opacity scale
-  //     var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
-  //     return output_opacity;
-  //   })
-  //   .attr('transform', function(d) {
-  //     var x_pos = params.viz.x_scale(d.pos_x) + 0.5*params.viz.border_width;
-  //     var y_pos = 0.5*params.viz.border_width/params.viz.zoom_switch;
-  //     return 'translate(' + x_pos + ','+y_pos+')';
-  //   });
-
   // generate tiles in the current row
   var tile = d3.select(row_selection).selectAll('rect').data(row_values, function (d) {
     return d.col_name;
