@@ -12,7 +12,7 @@ The project began as an extension of this example http://bost.ocks.org/mike/mise
 - row filtering and searching
 - multiple categories for rows and columns
 
-The Clustergrammer.js source code is under the [src](src) directory and Webpack Module Developer is being used to make clustergrammer.js. The easiest way to visualize a matrix of your own data (see [matrix format](#input-matrix-format)) is to use the Python module: discussed here [Clustergrammer.py](#clustergrammer-py) and repo here [clustergrammer.py](https://github.com/MaayanLab/clustergrammer-py). Clustergrammer.py takes a tab-separated matrix file as input, calculates clustering, and generates the visualization json for clustergrammer.js (see [example workflow](#example-workflow)). Users can also generate the visualization json (see example [mult_view.json](json/mult_view.json)) on their own using another programming language (e.g. Matlab) as long as they adhere to the [format](https://github.com/MaayanLab/clustergrammer-json). Clustergrammer is designed to be a reusable chart and has been integrated into several [Ma'ayan lab](http://icahn.mssm.edu/research/labs/maayan-laboratory) web tools including:
+The Clustergrammer.js source code is under the [src](src) directory and Webpack Module Developer is being used to make clustergrammer.js. The easiest way to visualize a matrix of your own data (see [matrix format](#input-matrix-format)) is to use the Python module: discussed here [Clustergrammer.py](#clustergrammer-python-module) and repo here [clustergrammer.py](https://github.com/MaayanLab/clustergrammer-py). Clustergrammer.py takes a tab-separated matrix file as input, calculates clustering, and generates the visualization json for clustergrammer.js (see [example workflow](#example-workflow)). Users can also generate the visualization json (see example [mult_view.json](json/mult_view.json)) on their own using another programming language (e.g. Matlab) as long as they adhere to the [format](https://github.com/MaayanLab/clustergrammer-json). Clustergrammer is designed to be a reusable chart and has been integrated into several [Ma'ayan lab](http://icahn.mssm.edu/research/labs/maayan-laboratory) web tools including:
 
 - [Clustergrammer](http://amp.pharm.mssm.edu/clustergrammer/)
 - [Enrichr](http://amp.pharm.mssm.edu/Enrichr/)
@@ -53,14 +53,14 @@ d3.select(window).on('resize', function(){
 });
 ```
 
-### clustergrammer.js Dependencies
+### Clustergrammer.js Dependencies
 - D3.js
 - jQuery
 - Underscore.js
 
 
 # Input Matrix Format
-[Clustergrammer.py](#clustergrammer-py) takes a tab separated matrix with unique row and column names as input. The simplest format is shown here (note: that tabs are required, but spaces are used in the example below to increase readability):
+[Clustergrammer.py](#clustergrammer-python-module) takes a tab separated matrix with unique row and column names as input. The simplest format is shown here (note: that tabs are required, but spaces are used in the example below to increase readability):
 
 ```
        Col-A   Col-B   Col-C
@@ -87,7 +87,7 @@ This format is easier to export from a Python Pandas DataFrame (see [net.write_m
 
 Several example tab-separated matrix files can be found in the [txt](txt) directory. See [example workflow](#example-workflow) or [make_clustergrammer.py](make_clustergrammer.py) for examples of how to use Clustergrammer.py to generate a visualization json from these matrix files.
 
-# clustergrammer.py
+# Clustergrammer Python Module
 The python module [clutergrammer.py](https://github.com/MaayanLab/clustergrammer-py), takes a tab-separated matrix file as input, calculates clustering, and generates the visualization json for clustergrammer.js. The clustergrammer python module can be installed using pip
 
 ```
@@ -133,7 +133,7 @@ These arguments can also be passsed to Clustergrammer as part of the args object
 
 ```row_order``` and ```col_order```: This sets the initial ordering of rows and columns. The default is clust. The options are
   * alpha: ordering based on names of rows or columns
-  * clust: ordering based on clustering (covered [here](clustergrammer.py))
+  * clust: ordering based on clustering (covered [here](clustergrammer-python-module))
   * rank: ordering based on the sum of the values in row/column
   * rank_var: ordering based on the variance of the values in the row/column
 
