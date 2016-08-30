@@ -58,6 +58,29 @@ d3.select(window).on('resize', function(){
 - jQuery
 - Underscore.js
 
+# Clustergrammer Python Module
+The Clustergrammer python module [clutergrammer.py](https://github.com/MaayanLab/clustergrammer-py), takes a tab-separated matrix file as input (see format [here](#input-matrix-format)), calculates clustering, and generates the visualization json for clustergrammer.js. The module can be installed using pip:
+```
+pip install clustergrammer
+```
+or the source code can be obtained from clustergrammer.py [repo](https://github.com/MaayanLab/clustergrammer-py): simply copy the clustergrammer directory with the source code to the main directory to use the module in this repo.
+
+### Example Workflow
+
+```
+from clustergrammer import Network
+net = Network()
+
+# load matrix file
+net.load_file('txt/rc_two_cats.txt')
+
+# calculate clustering
+net.make_clust(dist_type='cos',views=['N_row_sum', 'N_row_var'])
+
+# write visualization json to file
+net.write_json_to_file('viz', 'json/mult_view.json')
+```
+The script [make_clustergrammer.py](make_clustergrammer.py) is used to generate the visualization jsons (see [json](json) directory) for the examples pages in this repo. To visualize your own data modify the [make_clustergrammer.py](make_clustergrammer.py) script.
 
 # Input Matrix Format
 Clustergrammer.py discussed [here](#clustergrammer-python-module) takes a tab separated matrix with unique row and column names as input. The simplest format is shown here (note: that tabs are required, but spaces are used in the example below to increase readability):
@@ -87,29 +110,6 @@ This format is easier to export from a Python Pandas DataFrame (see [net.write_m
 
 Several example tab-separated matrix files can be found in the [txt](txt) directory. See [example workflow](#example-workflow) or [make_clustergrammer.py](make_clustergrammer.py) for examples of how to use Clustergrammer.py to generate a visualization json from these matrix files.
 
-# Clustergrammer Python Module
-The Clustergrammer python module [clutergrammer.py](https://github.com/MaayanLab/clustergrammer-py), takes a tab-separated matrix file as input, calculates clustering, and generates the visualization json for clustergrammer.js. The module can be installed using pip:
-```
-pip install clustergrammer
-```
-or the source code can be obtained from clustergrammer.py [repo](https://github.com/MaayanLab/clustergrammer-py): simply copy the clustergrammer directory with the source code to the main directory to use the module in this repo.
-
-### Example Workflow
-
-```
-from clustergrammer import Network
-net = Network()
-
-# load matrix file
-net.load_file('txt/rc_two_cats.txt')
-
-# calculate clustering
-net.make_clust(dist_type='cos',views=['N_row_sum', 'N_row_var'])
-
-# write visualization json to file
-net.write_json_to_file('viz', 'json/mult_view.json')
-```
-The script [make_clustergrammer.py](make_clustergrammer.py) is used to generate the visualization jsons (see [json](json) directory) for the examples pages in this repo. To visualize your own data modify the [make_clustergrammer.py](make_clustergrammer.py) script.
 
 # Optional clustergrammer.js Arguments
 
