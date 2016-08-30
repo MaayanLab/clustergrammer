@@ -80,7 +80,7 @@ net.make_clust(dist_type='cos',views=['N_row_sum', 'N_row_var'])
 # write visualization json to file
 net.write_json_to_file('viz', 'json/mult_view.json')
 ```
-The script [make_clustergrammer.py](make_clustergrammer.py) is used to generate the visualization jsons (see [json](json)) for the [examples pages](#example-pages) in this repo. To visualize your own data modify the [make_clustergrammer.py](make_clustergrammer.py) script.
+The script [make_clustergrammer.py](make_clustergrammer.py) is used to generate the visualization [jsons](json) for the [examples pages](#example-pages) in this repo. To visualize your own data modify the [make_clustergrammer.py](make_clustergrammer.py) script.
 
 # Input Matrix Format
 Clustergrammer.py discussed [here](#clustergrammer-python-module) takes a tab separated matrix with unique row and column names as input. The simplest format is shown here (note: that tabs are required, but spaces are used in the example below to increase readability):
@@ -129,7 +129,7 @@ These arguments can also be passsed to Clustergrammer as part of the args object
 
 ```do_zoom```: This determines whether zooming will be available in the visualization. The default is set to true.
 
-```tile_colors```: This determines the colors that indicate positive and negative values, respectively, in the visualization. The default are red and blue. The input for this is an array of hexcode or color names, e.g. ['#ED9124','#1C86EE'].
+```tile_colors```: This determines the colors that indicate positive and negative values, respectively, in the visualization. The default are red and blue. The input for this is an array of hexcode or color names, e.g. ```['#ED9124','#1C86EE']```.
 
 ```row_order``` and ```col_order```: This sets the initial ordering of rows and columns. The default is clust. The options are
   * alpha: ordering based on names of rows or columns
