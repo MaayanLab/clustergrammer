@@ -80,11 +80,9 @@ The page [multiple_clust.html](multiple_clust.html) and corresponding script [lo
 
 These arguments can also be passsed to Clustergrammer as part of the args object.
 
-##### ```row_label``` and ```col_label```
-Pass strings that will be used as 'super-labels' for the rows and columns.
+```row_label``` and ```col_label```: Pass strings that will be used as 'super-labels' for the rows and columns.
 
-##### ```row_label_scale``` and ```col_label_scale```
-A number that will be used as a scaling factor that increases or decreases the size of row and column labels (as well as the font-size of the text).
+```row_label_scale``` and ```col_label_scale```: A number that will be used as a scaling factor that increases or decreases the size of row and column labels (as well as the font-size of the text).
 
 ##### ```super_label_scale```
 A number that will be used a a scaling factor that increases or decreases the size of the 'super-labels'.
