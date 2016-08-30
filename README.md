@@ -55,7 +55,7 @@ d3.select(window).on('resize', function(){
 });
 ```
 
-### Dependencies
+### Clustergrammer.js Dependencies
 - D3.js
 - jQuery
 - Underscore.js
@@ -75,7 +75,7 @@ Row and column categories can also be included in the matrix in the following wa
 
 ![cat_tsv](img/cat_tsv.png "cat_tsv.png")
 
-This screenshot of an Excel spreadsheet shows a single row category being added as an additional column of strings (e.g. 'Type: Interesting') and a single column category being added as an additional row of strings (e.g. 'Gender: Male'). Up to 15 categories can be added in a similar manner. The 'title' of row/column names and categories can also be included by prefixing each string with 'Title: ' - e.g. the title of the column names is 'Cell Line' and the title of the row categories is 'Gender'.
+This screenshot of an Excel spreadsheet shows a single row category being added as an additional column of strings (e.g. ```'Type: Interesting'```) and a single column category being added as an additional row of strings (e.g. '```Gender: Male'```). Up to 15 categories can be added in a similar manner. The 'title' of row/column names and categories can also be included by prefixing each string with ```Title: ```; e.g. the title of the column names is ```Cell Line``` and the title of the row categories is ```Gender``` (note a space is required after the ```:``` in order to specify a title).
 
 Alternatively, row/column names and categories can be stored as Python tuples as shown below (or see [tuple_cats.txt](txt/tuple_cats.txt)).
 
@@ -85,7 +85,7 @@ Alternatively, row/column names and categories can be stored as Python tuples as
 ('Gene: TP53','Type: Not Interesting')	8.3	4.098	-12.2
 ('Gene: IRAK','Type: Not Interesting')	7.23	3.01	0.88
 ```
-This format is easier to export from a Python Pandas DataFrame.
+This format is easier to export from a Python Pandas DataFrame (see [net.write_matrix_to_tsv](https://github.com/MaayanLab/clustergrammer-py/blob/master/clustergrammer/export_data.py)).
 
 Several example matrix tab-separated files can be found in the [txt](txt) directory. An example matrix tab-separated file with row and column categories can be seen here: [rc_two_cats.txt](txt/rc_two_cats.txt). See [example workflow](#example-workflow) or [make_clustergrammer.py](make_clustergrammer.py) for examples of how to use the python module to generate a visualization json from these matrix files.
 
