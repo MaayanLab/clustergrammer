@@ -1,22 +1,18 @@
 '''
-  You can install clustergrammer python module using pip:
-  pip install clustergrammer
+The clustergrammer python module can be installed using pip:
+pip install clustergrammer
 
-  or get the source code from
-  https://github.com/MaayanLab/clustergrammer-py
+or by getting the code from the repo:
+https://github.com/MaayanLab/clustergrammer-py
 '''
 
 from clustergrammer import Network
-
 net = Network()
 
-# choose tsv file
-####################
+# load matrix tsv file
 net.load_file('txt/rc_two_cats.txt')
-# net.load_file('txt/ccle_example.txt')
-# net.load_file('txt/tuple_cats.txt')
 
-# possible filtering and normalization
+# optional filtering and normalization
 ##########################################
 # net.filter_sum('row', threshold=20)
 # net.normalize(axis='col', norm_type='zscore', keep_orig=True)
@@ -24,9 +20,7 @@ net.load_file('txt/rc_two_cats.txt')
 # net.filter_threshold('row', threshold=3.0, num_occur=4)
 # net.swap_nan_for_zero()
 
-views = ['N_row_sum', 'N_row_var']
-
-net.make_clust(dist_type='cos',views=views , dendro=True,
+net.make_clust(dist_type='cos',views=['N_row_sum', 'N_row_var'] , dendro=True,
                sim_mat=True, filter_sim=0.1, calc_cat_pval=False)
 
 # write jsons for front-end visualizations
