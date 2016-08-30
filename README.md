@@ -12,9 +12,7 @@ The project began as an extension of this example http://bost.ocks.org/mike/mise
 - row filtering and searching
 - multiple categories for rows and columns
 
-The Clustergrammer.js source code is under the [src](src) directory and Webpack Module Developer is being used to make clustergrammer.js. The easiest way to visualize a matrix of your own data (see [matrix format](#input-matrix-format)) is to use the Python module: discussed here [Clustergrammer.py](#clustergrammer-python-module) and repo here [clustergrammer.py](https://github.com/MaayanLab/clustergrammer-py). Clustergrammer.py takes a tab-separated matrix file as input, calculates clustering, and generates the visualization json for clustergrammer.js (see [example workflow](#example-workflow)). Users can also generate the visualization json (see example [mult_view.json](json/mult_view.json)) on their own using another programming language (e.g. Matlab) as long as they adhere to the [format](#clustergrammer-json-format).
-
-Clustergrammer is designed to be a reusable chart and has been integrated into several [Ma'ayan lab](http://icahn.mssm.edu/research/labs/maayan-laboratory) web tools including:
+The Clustergrammer.js source code is under the [src](src) directory and Webpack Module Developer is being used to make clustergrammer.js. The easiest way to visualize a matrix of your own data (see [matrix format](#input-matrix-format)) is to use the Python module: discussed here [Clustergrammer.py](#clustergrammer-python-module) and repo here [clustergrammer.py](https://github.com/MaayanLab/clustergrammer-py). Clustergrammer.py takes a tab-separated matrix file as input, calculates clustering, and generates the visualization json for clustergrammer.js (see [example workflow](#example-workflow)). Users can also generate the visualization json (see example [mult_view.json](json/mult_view.json)) on their own using another programming language (e.g. Matlab) as long as they adhere to the [format](#clustergrammer-json-format). Clustergrammer is designed to be a reusable chart and has been integrated into several [Ma'ayan lab](http://icahn.mssm.edu/research/labs/maayan-laboratory) web tools including:
 
 - [Clustergrammer](http://amp.pharm.mssm.edu/clustergrammer/)
 - [Enrichr](http://amp.pharm.mssm.edu/Enrichr/)
@@ -35,12 +33,12 @@ var cgm = Clustergrammer(args);
 ```
 ```root``` is the id of the container where the visualization SVG will be made (the container must be made by the user). ```network_data``` is the visualization JSON (example here [mult_view.json](json/mult_view.json) and format [here](#clustergrammer-json-format)) that contains the information necessary to make your visualization. See [Optional Arguments](#optional-arguments) for more information on available arguments.
 
-## Page Examples
+### Page Examples
 The page [index.html](index.html) (and the corresponding script [load_clustergram.js](js/load_clustergram.js)) show how to make a full-screen resizable clustergrammer visualization.
 
 The page [multiple_clust.html](multiple_clust.html) (and corresponding script [load_multiple_clustergrams.js](js/load_multiple_clustergrams.js)) show how to visualize multiple clustergrams on one page. Note that each visualization requires its own container.
 
-## Visualization Resizing
+### Visualization Resizing
 The visualization can be resized by first resizing the container and then resizing the visualization using ```cgm.resize_viz()```. An example of resizing when the window change size is shown below.
 
 ```
@@ -80,10 +78,10 @@ This screenshot of an Excel spreadsheet shows a single row category being added 
 Alternatively, row/column names and categories can be stored as Python tuples as shown below (or see [tuple_cats.txt](txt/tuple_cats.txt)).
 
 ```
-	('Cell Line: A549', 'Gender: Male')	('Cell Line: H1299', 'Gender: Female')	('Cell Line: H661', 'Gender: Female')
-('Gene: EGFR','Type: Interesting')	-3.234	5.03	0.001
-('Gene: TP53','Type: Not Interesting')	8.3	4.098	-12.2
-('Gene: IRAK','Type: Not Interesting')	7.23	3.01	0.88
+  ('Cell Line: A549', 'Gender: Male') ('Cell Line: H1299', 'Gender: Female')  ('Cell Line: H661', 'Gender: Female')
+('Gene: EGFR','Type: Interesting')  -3.234  5.03  0.001
+('Gene: TP53','Type: Not Interesting')  8.3 4.098 -12.2
+('Gene: IRAK','Type: Not Interesting')  7.23  3.01  0.88
 ```
 This format is easier to export from a Python Pandas DataFrame (see [net.write_matrix_to_tsv](https://github.com/MaayanLab/clustergrammer-py/blob/master/clustergrammer/export_data.py)). Note that 'titles' have been added to row and column names as well as row and column categories.
 
@@ -96,7 +94,7 @@ The python module [clutergrammer.py](https://github.com/MaayanLab/clustergrammer
 pip install clustergrammer
 ```
 
-## Example Workflow
+### Example Workflow
 
 ```
 from clustergrammer import Network
@@ -167,20 +165,20 @@ There are three required properties: ```row_nodes```, ```col_nodes```, and ```li
 
 #### ```row_nodes``` and ```col_nodes``` properties
 
-##### required properties: ```name```, ```clust```, ```rank```
+#### required properties: ```name```, ```clust```, ```rank```
 row_node and col_node objects are required to have the three properties: ```name```, ```clust```, ```rank``` . ```name``` specifies the name given to the row or column. ```clust``` and ```rank``` give the ordering of the row or column in the clustergram.
 
-##### optional properties: ```group```, ```value```
+#### optional properties: ```group```, ```value```
 row_nodes and col_nodes have optional properties: ```group``` and ```value```. Group is an array that contains group-membership of the row/column at different dendrogram distance cutoffs. If ```row_nodes``` and ```col_nodes``` have the property ```group``` then a dendrogram will be added the clustergram.
 
 If row_nodes or col_nodes have the property ```value```, then semi-transpaent bars will be made behind the labels that represent this value.
 
 #### ```links``` properties
 
-##### required properties: ```source```, ```target```, ```value```
+#### required properties: ```source```, ```target```, ```value```
 Link objects are required to have three properties: ```source```, ```target```, ```value```. ```source``` and ```target``` give the integer value of the row and column of the tile in the visualization. ```value``` specifies the opacity and color of the tile, where positive/negative values result in red/blue tiles (tiles are not made for links with zero value).
 
-##### optional properties: ```value_up```, ```value_dn```
+#### optional properties: ```value_up```, ```value_dn```
 Links also have the optional properties ```value_up``` and ```value_dn``` which allow the user to split a tile into up- and down-triangles if a link has both up- and down-values. If a link has only an up- or down-value then a normal square tile is shown.
 
 
