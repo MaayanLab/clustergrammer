@@ -92,7 +92,7 @@ The Clustergrammer python module [clutergrammer.py](https://github.com/MaayanLab
 ```
 pip install clustergrammer
 ```
-or the source code can be obtained from clustergrammer.py [repo](https://github.com/MaayanLab/clustergrammer-py).
+or the source code can be obtained from clustergrammer.py [repo](https://github.com/MaayanLab/clustergrammer-py): simply copy the clustergrammer directory with the source code to the main directory to use the module in this repo.
 
 ### Example Workflow
 
