@@ -60,7 +60,7 @@ d3.select(window).on('resize', function(){
 
 
 # Input Matrix Format
-Clustergrammer.py [discussed here](#clustergrammer-python-module) takes a tab separated matrix with unique row and column names as input. The simplest format is shown here (note: that tabs are required, but spaces are used in the example below to increase readability):
+Clustergrammer.py discussed [here](#clustergrammer-python-module) takes a tab separated matrix with unique row and column names as input. The simplest format is shown here (note: that tabs are required, but spaces are used in the example below to increase readability):
 
 ```
        Col-A   Col-B   Col-C
@@ -133,7 +133,7 @@ These arguments can also be passsed to Clustergrammer as part of the args object
 
 ```row_order``` and ```col_order```: This sets the initial ordering of rows and columns. The default is clust. The options are
   * alpha: ordering based on names of rows or columns
-  * clust: ordering based on clustering (covered [here](clustergrammer-python-module))
+  * clust: ordering based on clustering (covered [here](#clustergrammer-python-module))
   * rank: ordering based on the sum of the values in row/column
   * rank_var: ordering based on the variance of the values in the row/column
 
