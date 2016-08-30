@@ -23,13 +23,6 @@ Clustergrammer is designed to be a reusable chart and has been integrated into s
 - [GEO2Enrichr](http://amp.pharm.mssm.edu/g2e/)
 - [Harmoniozome](http://amp.pharm.mssm.edu/Harmonizome/)
 
-# Dependencies
-
-clustergrammer.js requires:
-- D3.js
-- jQuery
-- Underscore.js
-
 # Clustergrammer.js
 To make a visualization pass an arguments object with the following required values to Clustergrammer:
 ```
@@ -61,6 +54,12 @@ d3.select(window).on('resize', function(){
 
 });
 ```
+
+### Dependencies
+- D3.js
+- jQuery
+- Underscore.js
+
 
 # Input Matrix Format
 [Clustergrammer.py](#clustergrammer-python-module) takes a tab separated matrix with unique row and column names as input. The simplest format is shown here (note: that tabs are required, but spaces are used in the example below to increase readability):
@@ -98,25 +97,21 @@ pip install clustergrammer
 ```
 
 ## Example Workflow
+
 ```
 from clustergrammer import Network
 net = Network()
 
+# load matrix file
 net.load_file('txt/rc_two_cats.txt')
 
+# calculate clustering
 net.make_clust(dist_type='cos',views=['N_row_sum', 'N_row_var'])
 
-net.write_json_to_file('viz', 'json/mult_view.json', 'no-indent')
+# write visualization json to file
+net.write_json_to_file('viz', 'json/mult_view.json')
 ```
-The above workflow instaitiates an instance of the ```Network``` class as ```net```, loads a matrix tsv file, calculates clustering (with distance set to cosine and optional view requested), and writes the visualization json to a file.
-
-The python script [make_clustergrammer.py](make_clustergrammer.py) generates the visualization jsons for the examples pages on this repo. You can modify the script to make a visualization from your own file and find out more about the API below.
-
 The script [make_clustergrammer.py](make_clustergrammer.py) is used to generate the visualization jsons (see [json](json) directory) for the examples pages in this repo. To visualize your own data modify the [make_clustergrammer.py](make_clustergrammer.py) script.
-
-or by using the source code found here: https://github.com/MaayanLab/clustergrammer-py.
-
-Clustergrammer was developed by Nick Fernandez at Icahn School of Medicine at Mount Sinai.
 
 
 # Clustergrammer JSON Format
@@ -222,3 +217,5 @@ These arguments can also be passsed to Clustergrammer as part of the args object
 ```sidebar_icons```: This determines whether the sidebar will have icons for help, share, and screenshot. The default is true.
 
 ```max_allow_fs```: This sets the maximum allowed font-size. The default is set to 16px.
+
+Clustergrammer was developed by Nick Fernandez at Icahn School of Medicine at Mount Sinai.
