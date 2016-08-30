@@ -4,7 +4,7 @@ Clustergrammer.js is an interactive heatmap/clustergram matrix visualization too
 
 [![demo_screenshot](img/demo_screenshot.png "demo_screenshot.png")](http://amp.pharm.mssm.edu/clustergrammer/)
 
-The project began as an extension of this example http://bost.ocks.org/mike/miserables/. Some of clustergrammer's interacive features include:
+The project began as an extension of this example http://bost.ocks.org/mike/miserables/ and some of clustergrammer's interacive features include:
 
 - zooming/panning
 - reordering based on sum, variance etc.
@@ -12,7 +12,7 @@ The project began as an extension of this example http://bost.ocks.org/mike/mise
 - row filtering and searching
 - multiple categories for rows and columns
 
-The Clustergrammer.js source code is under the [src](src) directory and Webpack Module Developer is being used to make clustergrammer.js. The easiest way to visualize a matrix of your own data (see [matrix format](#input-matrix-format)) is to use the Python module: discussed here [Clustergrammer.py](#clustergrammer-python-module) and repo here [clustergrammer.py](https://github.com/MaayanLab/clustergrammer-py). Clustergrammer.py takes a tab-separated matrix file as input, calculates clustering, and generates the visualization json for clustergrammer.js (see [example workflow](#example-workflow)). Users can also generate the visualization json (see example (mult_view.json)[json/mult_view]) on their own using another programming language (e.g. Matlab) as long as they adhere to the [format](#clustergrammer-json-format).
+The Clustergrammer.js source code is under the [src](src) directory and Webpack Module Developer is being used to make clustergrammer.js. The easiest way to visualize a matrix of your own data (see [matrix format](#input-matrix-format)) is to use the Python module: discussed here [Clustergrammer.py](#clustergrammer-python-module) and repo here [clustergrammer.py](https://github.com/MaayanLab/clustergrammer-py). Clustergrammer.py takes a tab-separated matrix file as input, calculates clustering, and generates the visualization json for clustergrammer.js (see [example workflow](#example-workflow)). Users can also generate the visualization json (see example [mult_view.json](json/mult_view.json)) on their own using another programming language (e.g. Matlab) as long as they adhere to the [format](#clustergrammer-json-format).
 
 Clustergrammer is designed to be a reusable chart and has been integrated into several [Ma'ayan lab](http://icahn.mssm.edu/research/labs/maayan-laboratory) web tools including:
 
