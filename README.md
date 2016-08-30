@@ -30,9 +30,7 @@ clustergrammer.js requires:
 - jQuery
 - Underscore.js
 
-# Clustergrammer API
-
-## Arguments
+# Clustergrammer.js
 To make a visualization pass an arguments object with the following required values to Clustergrammer:
 ```
 var args = {
@@ -42,9 +40,7 @@ var args = {
 
 var cgm = Clustergrammer(args);
 ```
-This will make a clustergram visualization in the 'root' container using the [visualization json](#clustergrammer-json-format) (referred to as network_data and made using the python module [clustergrammer.py](#clustergrammer-python-module)). The user must generate the root container and define its width and height, which will be used to define the visualization size. See [Optional Arguments](#optional-arguments) for more information on available arguments.
-
-The format of the JSON network_data (e.g. [mult_view.json](json/mult_view.json)) is defined [here](#clustergrammer-json-format).
+```root``` is the id of the container where the visualization SVG will be made (the container must be made by the user). ```network_data``` is the visualization JSON (example here [mult_view.json](json/mult_view.json) and format [here](#clustergrammer-json-format)) that contains the information necessary to make your visualization. See [Optional Arguments](#optional-arguments) for more information on available arguments.
 
 ## Page Examples
 The page [index.html](index.html) (and the corresponding script [load_clustergram.js](js/load_clustergram.js)) show how to make a full-screen resizable clustergrammer visualization.
@@ -52,7 +48,7 @@ The page [index.html](index.html) (and the corresponding script [load_clustergra
 The page [multiple_clust.html](multiple_clust.html) (and corresponding script [load_multiple_clustergrams.js](js/load_multiple_clustergrams.js)) show how to visualize multiple clustergrams on one page. Note that each visualization requires its own container.
 
 ## Visualization Resizing
-Resizing the visualization can be done by first resizing the container and then resizing the clustergram using Clustergrammer's ```cgm.resize_viz()``` function. An example of resizing when the window change size is shown below.
+The visualization can be resized by first resizing the container and then resizing the visualization using ```cgm.resize_viz()```. An example of resizing when the window change size is shown below.
 
 ```
 d3.select(window).on('resize', function(){
@@ -67,7 +63,7 @@ d3.select(window).on('resize', function(){
 ```
 
 # Input Matrix Format
-Clustergrammer.js requires a specific json [format](#clustergrammer-json-format) to make the visualization and you can use the python module [clustergrammer.py](#clustergrammer-python-module) to create this json from an input tab-separated matrix file in the following format:
+[Clustergrammer.py](#clustergrammer-python-module) takes a tab separated matrix with unique row and column names as input. The simplest format is shown here (note: that tabs are required, but spaces are used in the example below to increase readability):
 
 ```
        Col-A   Col-B   Col-C
@@ -75,15 +71,12 @@ Row-A   0.0    -0.1     1.0
 Row-B   3.0     0.0     8.0
 Row-C   0.2     0.1     2.5
 ```
-(note that tabs are required, but spaces are used in the example below to increase readability)
 
-The matrix must have unique names for rows and columns. Row and column categories can also be included in the matrix in the following way:
+Row and column categories can also be included in the matrix in the following way:
 
 ![cat_tsv](img/cat_tsv.png "cat_tsv.png")
 
-This Excel screenshot shows a single row category being added as an additional column of strings (e.g. 'Type: Interesting') and a single column category being added as an additional row of strings (e.g. 'Gender: Male'). Up to 15 categories can be added in a similar manner.
-
-The 'title' of row/column names and categories can also be included by prefixing each string with 'Title: ' - e.g. the title of the column names is 'Cell Line' and the title of the row categories is 'Gender'.
+This screenshot of an Excel spreadsheet shows a single row category being added as an additional column of strings (e.g. 'Type: Interesting') and a single column category being added as an additional row of strings (e.g. 'Gender: Male'). Up to 15 categories can be added in a similar manner. The 'title' of row/column names and categories can also be included by prefixing each string with 'Title: ' - e.g. the title of the column names is 'Cell Line' and the title of the row categories is 'Gender'.
 
 Alternatively, row/column names and categories can be stored as Python tuples as shown below (or see [tuple_cats.txt](txt/tuple_cats.txt)).
 
@@ -93,8 +86,9 @@ Alternatively, row/column names and categories can be stored as Python tuples as
 ('Gene: TP53','Type: Not Interesting')	8.3	4.098	-12.2
 ('Gene: IRAK','Type: Not Interesting')	7.23	3.01	0.88
 ```
+This format is easier to export from a Python Pandas DataFrame.
 
-Several examples can be found in the [txt](txt) directory. An example matrix tab-separated file with row and column categories can be seen here: [rc_two_cats.txt](txt/rc_two_cats.txt). See [example workflow](#example-workflow) or [make_clustergrammer.py](make_clustergrammer.py) for examples of how to use the python module to generate a visualization json from a matrix file.
+Several example matrix tab-separated files can be found in the [txt](txt) directory. An example matrix tab-separated file with row and column categories can be seen here: [rc_two_cats.txt](txt/rc_two_cats.txt). See [example workflow](#example-workflow) or [make_clustergrammer.py](make_clustergrammer.py) for examples of how to use the python module to generate a visualization json from these matrix files.
 
 # Clustergrammer Python Module
 The python module [clutergrammer.py](https://github.com/MaayanLab/clustergrammer-py), takes a tab-separated matrix file as input, calculates clustering, and generates the visualization json for clustergrammer.js. The clustergrammer python module can be installed using pip
