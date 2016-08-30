@@ -11,27 +11,18 @@ var update_cats = require('./update/update_cats');
 var reset_cats = require('./update/reset_cats');
 
 var d3 = require('d3');
+var math = require('mathjs');
 
 // moved d3.slider to src
 d3.slider = require('./d3.slider');
-
-// // getting d3.slider through node_modules
-// d3.slider = require('d3.slider');
 
 var awesomplete = require('awesomplete');
 
 // getting css from src
 require('!style!css!./d3.slider/d3.slider.css');
-
-// // getting style from node_modules
-// require('!style!css!d3.slider/d3.slider.css');
-
 require('!style!css!awesomplete/awesomplete.css');
 require('!style!css!./bootstrap.css');
 require('!style!css!./custom.css');
-// require('!style!css!./font_awesome.css');
-
-// require("font-awesome-webpack");
 
 /* clustergrammer 1.0
  * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
