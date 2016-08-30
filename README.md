@@ -34,12 +34,12 @@ var cgm = Clustergrammer(args);
 The id of the container where the visualization SVG will be placed is passed as ```root``` (this root container must be made by the user). The visualization JSON (example here [mult_view.json](json/mult_view.json) and format discussed [here](https://github.com/MaayanLab/clustergrammer-json)) contains the information necessary to make your visualization and  is passed as ```network_data```. The visualization JSON is produced by [clustergrammer.py](https://github.com/MaayanLab/clustergrammer-py/). See additional [Optional Arguments](#optional-arguments) for more information.
 
 ### Example Pages
-The page [index.html](index.html) (and the corresponding script [load_clustergram.js](js/load_clustergram.js)) show how to make a full-screen resizable clustergrammer visualization.
+The page [index.html](index.html) (and the corresponding script [load_clustergram.js](js/load_clustergram.js)) demonstrates how to make a full-screen resizable clustergrammer visualization.
 
-The page [multiple_clust.html](multiple_clust.html) (and corresponding script [load_multiple_clustergrams.js](js/load_multiple_clustergrams.js)) show how to visualize multiple clustergrams on one page. Note that each visualization requires its own container.
+The page [multiple_clust.html](multiple_clust.html) (and corresponding script [load_multiple_clustergrams.js](js/load_multiple_clustergrams.js)) demonstrates how to visualize multiple clustergrams on one page. Note that each visualization requires its own container.
 
 ### Visualization Resizing
-The visualization can be resized by first resizing the container and then resizing the visualization using ```cgm.resize_viz()```. An example of resizing when the window change size is shown below.
+The visualization can be resized by: first resizing the container and then resizing the visualization using ```cgm.resize_viz()```. An example of resizing when the window change size is shown below.
 
 ```
 d3.select(window).on('resize', function(){
@@ -59,7 +59,7 @@ d3.select(window).on('resize', function(){
 - Underscore.js
 
 # Clustergrammer Python Module
-The Clustergrammer python module [clutergrammer.py](https://github.com/MaayanLab/clustergrammer-py), takes a tab-separated matrix file as input (see format [here](#input-matrix-format)), calculates clustering, and generates the visualization json for clustergrammer.js. The module can be installed using pip:
+The Clustergrammer python module [clutergrammer.py](https://github.com/MaayanLab/clustergrammer-py), takes a tab-separated matrix file as input (see format [here](#input-matrix-format)), calculates clustering, and generates the visualization json (see format [here](https://github.com/MaayanLab/clustergrammer-json)) for clustergrammer.js. The module can be installed using [pip](https://pypi.python.org/pypi/clustergrammer/0.1.6):
 ```
 pip install clustergrammer
 ```
