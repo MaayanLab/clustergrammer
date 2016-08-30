@@ -154,7 +154,33 @@ Alternatively, row/column names and categories can be stored as Python tuples as
 ## Matrix Examples
 Several examples can be found in the [txt](txt) directory. An example matrix tab-separated file with row and column categories can be seen here: [rc_two_cats.txt](txt/rc_two_cats.txt). See [example workflow](#example-workflow) or [make_clustergrammer.py](make_clustergrammer.py) for examples of how to use the python module to generate a visualization json from a matrix file.
 
-# Clustergrammer-py
+# Clustergrammer Python Module
+The python module [clutergrammer.py](https://github.com/MaayanLab/clustergrammer-py), takes a tab-separated matrix file as input, calculates clustering, and generates the visualization json for clustergrammer.js. The clustergrammer python module can be installed using pip
+
+```
+pip install clustergrammer
+```
+
+## Example Workflow
+```
+from clustergrammer import Network
+net = Network()
+
+net.load_file('txt/rc_two_cats.txt')
+
+net.make_clust(dist_type='cos',views=['N_row_sum', 'N_row_var'])
+
+net.write_json_to_file('viz', 'json/mult_view.json', 'no-indent')
+```
+The above workflow instaitiates an instance of the ```Network``` class as ```net```, loads a matrix tsv file, calculates clustering (with distance set to cosine and optional view requested), and writes the visualization json to a file.
+
+The python script [make_clustergrammer.py](make_clustergrammer.py) generates the visualization jsons for the examples pages on this repo. You can modify the script to make a visualization from your own file and find out more about the API below.
+
+The script [make_clustergrammer.py](make_clustergrammer.py) is used to generate the visualization jsons (see [json](json) directory) for the examples pages in this repo. To visualize your own data modify the [make_clustergrammer.py](make_clustergrammer.py) script.
+
+or by using the source code found here: https://github.com/MaayanLab/clustergrammer-py.
+
+Clustergrammer was developed by Nick Fernandez at Icahn School of Medicine at Mount Sinai.
 
 
 # Clustergrammer JSON Format
@@ -227,29 +253,4 @@ Link objects are required to have three properties: ```source```, ```target```, 
 Links also have the optional properties ```value_up``` and ```value_dn``` which allow the user to split a tile into up- and down-triangles if a link has both up- and down-values. If a link has only an up- or down-value then a normal square tile is shown.
 
 
-# Clustergrammer Python Module
-The python module [clutergrammer.py](https://github.com/MaayanLab/clustergrammer-py), takes a tab-separated matrix file as input, calculates clustering, and generates the visualization json for clustergrammer.js. The clustergrammer python module can be installed using pip
 
-```
-pip install clustergrammer
-```
-
-## Example Workflow
-```
-from clustergrammer import Network
-net = Network()
-
-net.load_file('txt/rc_two_cats.txt')
-
-net.make_clust(dist_type='cos',views=['N_row_sum', 'N_row_var'])
-
-net.write_json_to_file('viz', 'json/mult_view.json', 'no-indent')
-```
-The above workflow instaitiates an instance of the ```Network``` class as ```net```, loads a matrix tsv file, calculates clustering (with distance set to cosine and optional view requested), and writes the visualization json to a file.
-
-The python script [make_clustergrammer.py](make_clustergrammer.py) generates the visualization jsons for the examples pages on this repo. You can modify the script to make a visualization from your own file and find out more about the API below.
-
-or by using the source code found here: https://github.com/MaayanLab/clustergrammer-py.
-
-
-Clustergrammer was developed by Nick Fernandez at Icahn School of Medicine at Mount Sinai.
