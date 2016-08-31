@@ -72,6 +72,9 @@ var Clustergrammer =
 	__webpack_require__(167);
 	__webpack_require__(169);
 	__webpack_require__(171);
+	// require('!style!css!./css/font-awesome.min.css');
+
+	// require("font-awesome-webpack");
 
 	/* clustergrammer 1.0
 	 * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
@@ -10709,8 +10712,8 @@ var Clustergrammer =
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../node_modules/css-loader/index.js!./bootstrap.css", function() {
-				var newContent = require("!!./../node_modules/css-loader/index.js!./bootstrap.css");
+			module.hot.accept("!!./../../node_modules/css-loader/index.js!./bootstrap.css", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js!./bootstrap.css");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -10749,8 +10752,8 @@ var Clustergrammer =
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../node_modules/css-loader/index.js!./custom.css", function() {
-				var newContent = require("!!./../node_modules/css-loader/index.js!./custom.css");
+			module.hot.accept("!!./../../node_modules/css-loader/index.js!./custom.css", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js!./custom.css");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});

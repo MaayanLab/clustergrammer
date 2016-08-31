@@ -24,7 +24,6 @@
     "css-loader": "^0.23.1",
     "eslint": "^2.1.0",
     "expose-loader": "^0.7.1",
-    "font-awesome-webpack": "0.0.4",
     "less-loader": "^2.2.3",
     "object-assign": "^4.1.0",
     "webpack": "^1.13.2"
