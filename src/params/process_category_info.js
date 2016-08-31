@@ -6,6 +6,8 @@ module.exports = function process_category_info(params, viz, preserve_cats=true)
 
   var super_string = ': ';
   var tmp_super;
+  var all_are_values;
+  var inst_color;
 
   viz.show_categories = {};
   viz.all_cats = {};
@@ -64,7 +66,8 @@ module.exports = function process_category_info(params, viz, preserve_cats=true)
             utils.pluck(params.network_data[inst_rc+'_nodes'], inst_cat)
           ).sort();
 
-        check_if_value_cats(names_of_cat);
+        // check whether all the categories are of value type
+        all_are_values = check_if_value_cats(names_of_cat);
 
         if (predefine_colors === false){
 
@@ -72,7 +75,11 @@ module.exports = function process_category_info(params, viz, preserve_cats=true)
 
           _.each(names_of_cat, function(cat_tmp, i){
 
-            var inst_color = colors.get_random_color(i+num_colors);
+            inst_color = colors.get_random_color(i+num_colors);
+
+            if (all_are_values){
+              inst_color = '#000000'
+            }
 
             viz.cat_colors[inst_rc][inst_cat][cat_tmp] = inst_color;
 

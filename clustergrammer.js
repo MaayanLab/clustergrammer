@@ -1122,6 +1122,8 @@ var Clustergrammer =
 
 	  var super_string = ': ';
 	  var tmp_super;
+	  var all_are_values;
+	  var inst_color;
 
 	  viz.show_categories = {};
 	  viz.all_cats = {};
@@ -1176,7 +1178,8 @@ var Clustergrammer =
 
 	        var names_of_cat = _.uniq(utils.pluck(params.network_data[inst_rc + '_nodes'], inst_cat)).sort();
 
-	        check_if_value_cats(names_of_cat);
+	        // check whether all the categories are of value type
+	        all_are_values = check_if_value_cats(names_of_cat);
 
 	        if (predefine_colors === false) {
 
@@ -1184,7 +1187,11 @@ var Clustergrammer =
 
 	          _.each(names_of_cat, function (cat_tmp, i) {
 
-	            var inst_color = colors.get_random_color(i + num_colors);
+	            inst_color = colors.get_random_color(i + num_colors);
+
+	            if (all_are_values) {
+	              inst_color = '#000000';
+	            }
 
 	            viz.cat_colors[inst_rc][inst_cat][cat_tmp] = inst_color;
 
@@ -1254,21 +1261,44 @@ var Clustergrammer =
 
 	module.exports = function check_if_value_cats(names_of_cat) {
 
+	  console.log('track the highest absolute value of the values categories to calc opacity ');
+
 	  var super_string = ': ';
 
 	  var tmp_cat = names_of_cat[0];
 
-	  console.log('\n***********************');
+	  var has_title = false;
+	  var might_have_values = false;
+	  var all_are_values = false;
 
 	  if (tmp_cat.indexOf(super_string) > -1) {
-	    console.log('does contain super_string');
-	  } else {
-	    console.log('does not contain super_string');
+	    has_title = true;
+	    tmp_cat = tmp_cat.split(super_string)[1];
 	  }
 
-	  _.each(names_of_cat, function (inst_cat) {
-	    console.log(inst_cat);
-	  });
+	  if (isNaN(tmp_cat) == false) {
+	    might_have_values = true;
+	  }
+
+	  // check each value for number
+	  if (might_have_values) {
+
+	    // the default state is that all are now values, check each one
+	    all_are_values = true;
+
+	    _.each(names_of_cat, function (inst_cat) {
+
+	      if (has_title) {
+	        inst_cat = inst_cat.split(super_string)[1];
+	      }
+
+	      if (isNaN(inst_cat) == true) {
+	        all_are_values = false;
+	      }
+	    });
+	  }
+
+	  return all_are_values;
 		};
 
 /***/ },
