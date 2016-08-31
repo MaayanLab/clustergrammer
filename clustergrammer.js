@@ -1176,9 +1176,7 @@ var Clustergrammer =
 
 	        var names_of_cat = _.uniq(utils.pluck(params.network_data[inst_rc + '_nodes'], inst_cat)).sort();
 
-	        console.log(names_of_cat);
-
-	        check_if_value_cats();
+	        check_if_value_cats(names_of_cat);
 
 	        if (predefine_colors === false) {
 
@@ -11982,9 +11980,12 @@ var Clustergrammer =
 
 	'use strict';
 
-	module.exports = function check_if_value_cats() {
-	  console.log('checking if the cats are all value based');
-	};
+	module.exports = function check_if_value_cats(names_of_cat) {
+
+	  var super_string = ': ';
+
+	  names_of_cat[0];
+		};
 
 /***/ }
 /******/ ]);

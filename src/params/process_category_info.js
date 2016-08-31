@@ -64,9 +64,7 @@ module.exports = function process_category_info(params, viz, preserve_cats=true)
             utils.pluck(params.network_data[inst_rc+'_nodes'], inst_cat)
           ).sort();
 
-        console.log(names_of_cat)
-
-        check_if_value_cats();
+        check_if_value_cats(names_of_cat);
 
         if (predefine_colors === false){
 
