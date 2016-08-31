@@ -23,9 +23,6 @@ require('!style!css!./d3.slider/d3.slider.css');
 require('!style!css!awesomplete/awesomplete.css');
 require('!style!css!./css/bootstrap.css');
 require('!style!css!./css/custom.css');
-// require('!style!css!./css/font-awesome.min.css');
-
-// require("font-awesome-webpack");
 
 /* clustergrammer 1.0
  * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
