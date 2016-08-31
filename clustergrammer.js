@@ -1098,6 +1098,8 @@ var Clustergrammer =
 	  var preserve_cats = arguments.length <= 2 || arguments[2] === undefined ? true : arguments[2];
 
 
+	  console.log('make cat params');
+
 	  viz = process_category_info(params, viz, preserve_cats);
 	  viz = calc_cat_params(params, viz);
 
@@ -1112,6 +1114,7 @@ var Clustergrammer =
 
 	var utils = __webpack_require__(2);
 	var colors = __webpack_require__(20);
+	var check_if_value_cats = __webpack_require__(191);
 
 	module.exports = function process_category_info(params, viz) {
 	  var preserve_cats = arguments.length <= 2 || arguments[2] === undefined ? true : arguments[2];
@@ -1172,6 +1175,10 @@ var Clustergrammer =
 	        });
 
 	        var names_of_cat = _.uniq(utils.pluck(params.network_data[inst_rc + '_nodes'], inst_cat)).sort();
+
+	        console.log(names_of_cat);
+
+	        check_if_value_cats();
 
 	        if (predefine_colors === false) {
 
@@ -11968,6 +11975,16 @@ var Clustergrammer =
 	  //   value:1.0
 	  // });
 		};
+
+/***/ },
+/* 191 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = function check_if_value_cats() {
+	  console.log('checking if the cats are all value based');
+	};
 
 /***/ }
 /******/ ]);

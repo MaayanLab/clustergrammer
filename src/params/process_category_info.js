@@ -1,5 +1,6 @@
 var utils = require('../Utils_clust');
 var colors = require('../colors');
+var check_if_value_cats = require('./check_if_value_cats');
 
 module.exports = function process_category_info(params, viz, preserve_cats=true){
 
@@ -62,6 +63,10 @@ module.exports = function process_category_info(params, viz, preserve_cats=true)
         var names_of_cat = _.uniq(
             utils.pluck(params.network_data[inst_rc+'_nodes'], inst_cat)
           ).sort();
+
+        console.log(names_of_cat)
+
+        check_if_value_cats();
 
         if (predefine_colors === false){
 
