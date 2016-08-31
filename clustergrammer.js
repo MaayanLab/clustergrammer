@@ -72,9 +72,6 @@ var Clustergrammer =
 	__webpack_require__(167);
 	__webpack_require__(169);
 	__webpack_require__(171);
-	// require('!style!css!./css/font-awesome.min.css');
-
-	// require("font-awesome-webpack");
 
 	/* clustergrammer 1.0
 	 * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
