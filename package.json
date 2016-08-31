@@ -34,7 +34,6 @@
     "extend": "^3.0.0",
     "jquery": "1.5.1",
     "lodash": "^4.3.0",
-    "mathjs": "^3.4.1",
     "style-loader": "^0.13.1",
     "underscore": "1.8.3"
   }

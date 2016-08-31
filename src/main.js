@@ -10,8 +10,8 @@ var filter_viz_using_names = require('./network/filter_viz_using_names');
 var update_cats = require('./update/update_cats');
 var reset_cats = require('./update/reset_cats');
 
-var d3 = require('d3');
-var math = require('mathjs');
+// var d3 = require('d3');
+// var math = require('mathjs');
 
 // moved d3.slider to src
 d3.slider = require('./d3.slider');
