@@ -13,9 +13,16 @@ module.exports = function process_category_info(params, viz, preserve_cats=true)
   viz.all_cats = {};
   viz.cat_names = {};
 
+  // this will hold the information for calculating the opacity of the value
+  // function
+  var ini_val_opacity = {};
+  ini_val_opacity.row = null;
+  ini_val_opacity.col = null;
+
   var predefine_colors = false;
   if (viz.cat_colors === null){
     viz.cat_colors = {};
+    viz.cat_colors.value_opacity = ini_val_opacity;
     predefine_colors = false;
   } else {
     predefine_colors = true;
@@ -105,6 +112,9 @@ module.exports = function process_category_info(params, viz, preserve_cats=true)
   });
 
   viz.cat_colors = viz.cat_colors;
+
+  viz.cat_colors.opacity = 0.6;
+  viz.cat_colors.active_opacity = 0.9;
 
   return viz;
 };

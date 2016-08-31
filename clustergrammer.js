@@ -1129,9 +1129,16 @@ var Clustergrammer =
 	  viz.all_cats = {};
 	  viz.cat_names = {};
 
+	  // this will hold the information for calculating the opacity of the value
+	  // function
+	  var ini_val_opacity = {};
+	  ini_val_opacity.row = null;
+	  ini_val_opacity.col = null;
+
 	  var predefine_colors = false;
 	  if (viz.cat_colors === null) {
 	    viz.cat_colors = {};
+	    viz.cat_colors.value_opacity = ini_val_opacity;
 	    predefine_colors = false;
 	  } else {
 	    predefine_colors = true;
@@ -1213,6 +1220,9 @@ var Clustergrammer =
 	  });
 
 	  viz.cat_colors = viz.cat_colors;
+
+	  viz.cat_colors.opacity = 0.6;
+	  viz.cat_colors.active_opacity = 0.9;
 
 	  return viz;
 	};
@@ -1317,9 +1327,6 @@ var Clustergrammer =
 	  viz.cat_room = {};
 	  viz.cat_room.symbol_width = 12;
 	  viz.cat_room.separation = 3;
-
-	  viz.cat_colors.opacity = 0.6;
-	  viz.cat_colors.active_opacity = 0.9;
 
 	  _.each(['row', 'col'], function (inst_rc) {
 
@@ -6653,13 +6660,12 @@ var Clustergrammer =
 	      }
 
 	      cat_rect.attr('width', params.viz.x_scale.rangeBand()).attr('height', params.viz.cat_room.symbol_width).style('fill', function (d) {
-	        return params.viz.cat_colors.col[inst_cat][d[inst_cat]];
+	        var cat_name = d[inst_cat];
+	        var inst_color = params.viz.cat_colors.col[inst_cat][cat_name];
+	        return inst_color;
 	      }).style('opacity', params.viz.cat_colors.opacity).on('mouseover', cat_tip.show).on('mouseout', function () {
-
 	        cat_tip.hide(this);
-
 	        reset_cat_opacity(params);
-
 	        d3.select(this).classed('hovering', false);
 	      });
 	    });
@@ -6848,7 +6854,8 @@ var Clustergrammer =
 	        }
 
 	        cat_rect.attr('width', params.viz.cat_room.symbol_width).attr('height', params.viz.y_scale.rangeBand()).style('fill', function (d) {
-	          var inst_color = params.viz.cat_colors.row[inst_cat][d[inst_cat]];
+	          var cat_name = d[inst_cat];
+	          var inst_color = params.viz.cat_colors.row[inst_cat][cat_name];
 	          return inst_color;
 	        }).attr('x', function () {
 	          var inst_offset = params.viz.cat_room.symbol_width + params.viz.uni_margin / 2;
@@ -7523,11 +7530,6 @@ var Clustergrammer =
 	  tmp_config.ini_expand = false;
 	  tmp_config.ini_view = null;
 	  tmp_config.current_col_cat = cgm.params.current_col_cat;
-
-	  // // pass on category info to new config
-	  // console.log('passing on category info from previous viz')
-	  // tmp_config.all_cats = cgm.params.viz.all_cats;
-	  // tmp_config.cat_colors.row['cat-1'] = tmp_config.cat_colors.row['cat-0']
 
 	  // always preserve category colors when updating
 	  tmp_config.cat_colors = cgm.params.viz.cat_colors;

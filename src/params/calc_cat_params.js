@@ -11,9 +11,6 @@ module.exports = function calc_cat_params(params, viz){
   viz.cat_room.symbol_width = 12;
   viz.cat_room.separation = 3;
 
-  viz.cat_colors.opacity = 0.6;
-  viz.cat_colors.active_opacity = 0.9;
-
   _.each(['row','col'], function(inst_rc){
 
     viz.norm_labels.width[inst_rc] = label_scale(params.labels[inst_rc+'_max_char'])

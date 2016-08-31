@@ -74,26 +74,24 @@ module.exports = function make_col_cat(params) {
             });
         } else {
           cat_rect = d3.select(inst_selection)
-            .select('.'+cat_rect_class);
+            .select('.' + cat_rect_class);
         }
 
         cat_rect
           .attr('width', params.viz.x_scale.rangeBand())
           .attr('height', params.viz.cat_room.symbol_width)
           .style('fill', function(d) {
-            return params.viz.cat_colors.col[inst_cat][d[inst_cat]];
+            var cat_name = d[inst_cat]
+            var inst_color = params.viz.cat_colors.col[inst_cat][cat_name];
+            return inst_color;
           })
           .style('opacity', params.viz.cat_colors.opacity)
           .on('mouseover', cat_tip.show)
           .on('mouseout', function(){
-
             cat_tip.hide(this);
-
             reset_cat_opacity(params);
-
             d3.select(this)
               .classed('hovering', false);
-
           });
       });
 

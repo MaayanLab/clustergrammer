@@ -39,11 +39,6 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
   tmp_config.ini_view = null;
   tmp_config.current_col_cat = cgm.params.current_col_cat;
 
-  // // pass on category info to new config
-  // console.log('passing on category info from previous viz')
-  // tmp_config.all_cats = cgm.params.viz.all_cats;
-  // tmp_config.cat_colors.row['cat-1'] = tmp_config.cat_colors.row['cat-0']
-
   // always preserve category colors when updating
   tmp_config.cat_colors = cgm.params.viz.cat_colors;
 

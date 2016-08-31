@@ -118,14 +118,15 @@ module.exports = function make_row_cat(params, updating=false) {
               .attr('cat', inst_cat);
           } else {
             cat_rect = d3.select(inst_selection)
-              .select('.'+cat_rect_class);
+              .select('.' + cat_rect_class);
           }
 
           cat_rect
             .attr('width', params.viz.cat_room.symbol_width)
             .attr('height', params.viz.y_scale.rangeBand())
             .style('fill', function(d) {
-              var inst_color = params.viz.cat_colors.row[inst_cat][d[inst_cat]];
+              var cat_name = d[inst_cat];
+              var inst_color = params.viz.cat_colors.row[inst_cat][cat_name];
               return inst_color;
             })
             .attr('x', function() {
