@@ -145,4 +145,4 @@ These arguments can also be passsed to Clustergrammer as part of the args object
 
 ```max_allow_fs```: This sets the maximum allowed font-size. The default is set to 16px.
 
-Clustergrammer was developed by Nick Fernandez at Icahn School of Medicine at Mount Sinai.
+Clustergrammer was developed by Nicolas Fernandez at Icahn School of Medicine at Mount Sinai.
