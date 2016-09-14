@@ -81,7 +81,7 @@ module.exports = function make_col_cat(params) {
           .attr('width', params.viz.x_scale.rangeBand())
           .attr('height', params.viz.cat_room.symbol_width)
           .style('fill', function(d) {
-            var cat_name = d[inst_cat]
+            var cat_name = d[inst_cat];
             var inst_color = params.viz.cat_colors.col[inst_cat][cat_name];
             return inst_color;
           })

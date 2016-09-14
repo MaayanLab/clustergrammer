@@ -39,7 +39,7 @@ function gene_info(gene_symbol){
   function set_tooltip(data){
 
     if (data.name != undefined){
-      d3.select('.row_tip')
+      d3.selectAll('.row_tip')
         .html(function(){
             var sym_name = gene_symbol + ': ' + data.name;
             var full_html = '<p>' + sym_name + '</p>' +  '<p>' +

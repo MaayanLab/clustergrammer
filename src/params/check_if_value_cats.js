@@ -1,7 +1,5 @@
 module.exports = function check_if_value_cats(names_of_cat){
 
-  console.log('track the highest absolute value of the values categories to calc opacity ')
-
   var super_string = ': ';
 
   var tmp_cat = names_of_cat[0];

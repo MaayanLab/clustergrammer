@@ -76,6 +76,11 @@ module.exports = function process_category_info(params, viz, preserve_cats=true)
         // check whether all the categories are of value type
         all_are_values = check_if_value_cats(names_of_cat);
 
+        // tmp disable value categories
+        ///////////////////////////////////
+        ///////////////////////////////////
+        all_are_values = false;
+
         if (predefine_colors === false){
 
           viz.cat_colors[inst_rc][inst_cat] = {};
@@ -85,7 +90,7 @@ module.exports = function process_category_info(params, viz, preserve_cats=true)
             inst_color = colors.get_random_color(i+num_colors);
 
             if (all_are_values){
-              inst_color = '#000000'
+              inst_color = '#000000';
             }
 
             viz.cat_colors[inst_rc][inst_cat][cat_tmp] = inst_color;

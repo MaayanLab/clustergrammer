@@ -163,18 +163,18 @@ module.exports = function make_rows(cgm, text_delay) {
 
   }
 
-  // add row callback function
-  d3.selectAll(params.root+' .row_label_group')
-    .on('click',function(d){
-      if (typeof params.click_label == 'function'){
-        params.click_label(d.name, 'row');
-        add_row_click_hlight(params, this, d.ini);
-      } else {
-        if (params.tile_click_hlight){
-          add_row_click_hlight(params, this, d.ini);
-        }
-      }
+  // // add row callback function
+  // d3.selectAll(params.root+' .row_label_group')
+  //   .on('click',function(d){
+  //     if (typeof params.click_label == 'function'){
+  //       params.click_label(d.name, 'row');
+  //       add_row_click_hlight(params, this, d.ini);
+  //     } else {
+  //       if (params.tile_click_hlight){
+  //         add_row_click_hlight(params, this, d.ini);
+  //       }
+  //     }
 
-    });
+  //   });
 
 };
