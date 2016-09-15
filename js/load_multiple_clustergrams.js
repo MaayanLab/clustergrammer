@@ -11,10 +11,16 @@ function make_clust(make_sim_mats){
     var args = $.extend(true, {}, default_args);
     args.root = '#container-id-1';
     args.network_data = network_data;
+    args.row_tip_callback = gene_info;
 
     cgm['clust'] = Clustergrammer(args);
     d3.select(cgm['clust'].params.root+' .wait_message').remove();
     cat_colors = cgm['clust'].params.viz.cat_colors;
+
+    // Enrichr categories
+    //////////////////////
+    enr_obj = Enrichr_request(cgm['clust']);
+    enr_obj.enrichr_icon();
 
     make_sim_mats('col', cat_colors, unblock);
     make_sim_mats('row', cat_colors, unblock);

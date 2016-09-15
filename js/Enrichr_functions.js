@@ -1,6 +1,6 @@
 
 
-function Enrichr_request(cgm){
+function Enrichr_request(inst_cgm){
 
   function enrichr_icon(){
 
@@ -26,7 +26,7 @@ function Enrichr_request(cgm){
        d3.select(this).style('opacity', low_opacity);
      });
 
-    var enr_menu = d3.select(cgm.params.root+' .viz_svg')
+    var enr_menu = d3.select(inst_cgm.params.root+' .viz_svg')
       .append('g')
       .classed('showing', false)
       .classed('enrichr_menu', true)
@@ -105,7 +105,7 @@ function Enrichr_request(cgm){
     lib_groups
       .on('click', function(d){
 
-        d3.select(cgm.params.root+' .enr_lib_section')
+        d3.select(inst_cgm.params.root+' .enr_lib_section')
           .selectAll('g')
           .select('circle')
           .style('fill','white');
@@ -128,14 +128,14 @@ function Enrichr_request(cgm){
 
   function toggle_enrichr_menu(){
 
-    var enr_menu = d3.select(cgm.params.root+' .enrichr_menu');
+    var enr_menu = d3.select(inst_cgm.params.root+' .enrichr_menu');
 
     if (enr_menu.classed('showing') === false){
       enr_menu
         .classed('showing', true)
         .style('display', 'block');
 
-      d3.select(cgm.params.root+' .enrichr_menu')
+      d3.select(inst_cgm.params.root+' .enrichr_menu')
         .style('opacity',0)
         .transition()
         .style('opacity',1)
@@ -146,7 +146,7 @@ function Enrichr_request(cgm){
 
       setTimeout(function(){enr_menu.style('display', 'none');}, 1000)
 
-      d3.select(cgm.params.root+' .enrichr_menu')
+      d3.select(inst_cgm.params.root+' .enrichr_menu')
         .classed('showing', false)
         .style('opacity',1)
         .transition()
@@ -250,7 +250,7 @@ function Enrichr_request(cgm){
           if (typeof callback_function != 'undefined'){
             callback_function(enr_obj);
           }
-          d3.select(cgm.params.root+' .enr_wait_circle').remove();
+          d3.select(inst_cgm.params.root+' .enr_wait_circle').remove();
 
         })
         .fail(function( jqXHR, textStatus, errorThrown ){
@@ -262,7 +262,7 @@ function Enrichr_request(cgm){
             setTimeout( enr_obj.get_enr, 500, library_string, callback_function )
           } else {
             console.log('did not get response from Enrichr - need to remove wait circle')
-            d3.select(cgm.params.root+' .enr_wait_circle').remove();
+            d3.select(inst_cgm.params.root+' .enr_wait_circle').remove();
           }
 
         });
@@ -277,7 +277,7 @@ function Enrichr_request(cgm){
     // set up a variable number of terms
 
     enr_obj.library = library;
-    var gene_list = cgm.params.network_data.row_nodes_names;
+    var gene_list = inst_cgm.params.network_data.row_nodes_names;
     enr_obj.get_enr_with_list(gene_list, library, callback_function)
 
   }
@@ -309,10 +309,81 @@ function Enrichr_request(cgm){
       cat_data.push(inst_data);
     });
 
-    // console.log(cat_data)
-
     this.cat_data = cat_data;
 
+  }
+
+  function animate_wait() {
+
+    var repeat_time = 700;
+    var max_opacity = 0.8;
+    var min_opacity = 0.2
+
+    d3.select(inst_cgm.params.root+' .enr_wait_circle')
+      .transition()
+      .ease('linear')
+      .style('opacity', min_opacity)
+      .transition()
+      .ease('linear')
+      .duration(repeat_time)
+      .style('opacity', max_opacity)
+      .transition()
+      .ease('linear')
+      .duration(repeat_time)
+      .style('opacity', min_opacity)
+      .each("end", animate_wait);
+  }
+
+  function update_viz_callback(enr_obj){
+
+    inst_cgm.update_cats(enr_obj.cat_data);
+
+    d3.select(inst_cgm.params.root+' .enr_title').remove();
+
+    var enr_title = d3.select(inst_cgm.params.root+' .viz_svg')
+      .append('g')
+      .classed('enr_title', true)
+      .attr('transform', function(){
+
+        var trans = d3.select('.row_cat_label_container')
+                      .attr('transform').split('(')[1].split(')')[0];
+        x_offset = Number(trans.split(',')[0]) - 10;
+
+        return 'translate('+ String(x_offset)+', 0)';
+
+      });
+
+    enr_title
+      .append('rect')
+      .attr('width', inst_cgm.params.viz.cat_room.row)
+      .attr('height', 25)
+      .attr('fill', 'white');
+
+    var library_string = enr_obj.library.substring(0,40);
+    enr_title
+      .append('text')
+      .attr('transform', 'translate(0, 17)')
+      .text(library_string.replace(/_/g, ' '))
+      .style('font-size', '15px')
+      .attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif');
+
+  }
+
+  function make_enr_wait_circle(){
+    var pos_x = 71;
+    var pos_y = 25;
+
+     var click_circle = d3.select(inst_cgm.params.root+' .viz_svg')
+        .append('circle')
+        .classed('enr_wait_circle', true)
+        .attr('cx',pos_x)
+        .attr('cy',pos_y)
+        .attr('r',22)
+        .style('stroke','#666666')
+        .style('stroke-width','3px')
+        .style('fill','white')
+        .style('fill-opacity',0)
+        .style('opacity', 0);
   }
 
   // example of how to check gene list
@@ -336,75 +407,8 @@ function Enrichr_request(cgm){
 
 }
 
-function update_viz_callback(enr_obj){
-
-  cgm.update_cats(enr_obj.cat_data);
-
-  d3.select(cgm.params.root+' .enr_title').remove();
-
-  var enr_title = d3.select(cgm.params.root+' .viz_svg')
-    .append('g')
-    .classed('enr_title', true)
-    .attr('transform', function(){
-
-      var trans = d3.select('.row_cat_label_container')
-                    .attr('transform').split('(')[1].split(')')[0];
-      x_offset = Number(trans.split(',')[0]) - 10;
-
-      return 'translate('+ String(x_offset)+', 0)';
-
-    });
-
-  enr_title
-    .append('rect')
-    .attr('width', cgm.params.viz.cat_room.row)
-    .attr('height', 25)
-    .attr('fill', 'white');
-
-  var library_string = enr_obj.library.substring(0,40);
-  enr_title
-    .append('text')
-    .attr('transform', 'translate(0, 17)')
-    .text(library_string.replace(/_/g, ' '))
-    .style('font-size', '15px')
-    .attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif');
-
-}
-
-function make_enr_wait_circle(){
-  var pos_x = 71;
-  var pos_y = 25;
-
-   var click_circle = d3.select(cgm.params.root+' .viz_svg')
-      .append('circle')
-      .classed('enr_wait_circle', true)
-      .attr('cx',pos_x)
-      .attr('cy',pos_y)
-      .attr('r',22)
-      .style('stroke','#666666')
-      .style('stroke-width','3px')
-      .style('fill','white')
-      .style('fill-opacity',0)
-      .style('opacity', 0);
-}
 
 
-function animate_wait() {
-  var repeat_time = 700;
-  var max_opacity = 0.8;
-  var min_opacity = 0.2
 
-  d3.select(cgm.params.root+' .enr_wait_circle')
-    .transition()
-    .ease('linear')
-    .style('opacity', min_opacity)
-    .transition()
-    .ease('linear')
-    .duration(repeat_time)
-    .style('opacity', max_opacity)
-    .transition()
-    .ease('linear')
-    .duration(repeat_time)
-    .style('opacity', min_opacity)
-    .each("end", animate_wait);
-}
+
+

@@ -2,7 +2,7 @@ var d3_tip_custom = require('../tooltip/d3_tip_custom');
 
 module.exports = function make_tooltips(params){
 
-  d3.selectAll('.row_tip').remove();
+  // d3.selectAll('.row_tip').remove();
 
   if (params.labels.show_label_tooltips){
 
