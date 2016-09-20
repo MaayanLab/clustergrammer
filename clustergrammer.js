@@ -94,7 +94,7 @@ var Clustergrammer =
 	  cgm.config = config;
 
 	  if (cgm.params.use_sidebar) {
-	    var make_sidebar = __webpack_require__(174);
+	    var make_sidebar = __webpack_require__(170);
 	    make_sidebar(cgm);
 	  }
 
@@ -10757,24 +10757,20 @@ var Clustergrammer =
 
 
 /***/ },
-/* 170 */,
-/* 171 */,
-/* 172 */,
-/* 173 */,
-/* 174 */
+/* 170 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var ini_sidebar = __webpack_require__(140);
-	var set_up_filters = __webpack_require__(175);
-	var set_up_dendro_sliders = __webpack_require__(182);
-	var set_up_search = __webpack_require__(183);
-	var set_up_reorder = __webpack_require__(184);
-	var set_sidebar_ini_view = __webpack_require__(185);
-	var make_icons = __webpack_require__(186);
-	var make_modals = __webpack_require__(189);
-	var set_up_opacity_slider = __webpack_require__(191);
+	var set_up_filters = __webpack_require__(171);
+	var set_up_dendro_sliders = __webpack_require__(178);
+	var set_up_search = __webpack_require__(179);
+	var set_up_reorder = __webpack_require__(180);
+	var set_sidebar_ini_view = __webpack_require__(181);
+	var make_icons = __webpack_require__(182);
+	var make_modals = __webpack_require__(185);
+	var set_up_opacity_slider = __webpack_require__(187);
 
 	/* Represents sidebar with controls.
 	 */
@@ -10849,13 +10845,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 175 */
+/* 171 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_slider_filter = __webpack_require__(176);
-	var make_button_filter = __webpack_require__(181);
+	var make_slider_filter = __webpack_require__(172);
+	var make_button_filter = __webpack_require__(177);
 
 	module.exports = function set_up_filters(cgm, filter_type) {
 
@@ -10871,13 +10867,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 176 */
+/* 172 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_filter_title = __webpack_require__(177);
-	var run_filter_slider = __webpack_require__(178);
+	var make_filter_title = __webpack_require__(173);
+	var run_filter_slider = __webpack_require__(174);
 	var get_filter_default_state = __webpack_require__(5);
 	var get_subset_views = __webpack_require__(12);
 
@@ -10944,7 +10940,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 177 */
+/* 173 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11004,14 +11000,14 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 178 */
+/* 174 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var update_viz_with_view = __webpack_require__(124);
-	var reset_other_filter_sliders = __webpack_require__(179);
-	var get_current_orders = __webpack_require__(180);
+	var reset_other_filter_sliders = __webpack_require__(175);
+	var get_current_orders = __webpack_require__(176);
 	var make_requested_view = __webpack_require__(14);
 
 	module.exports = function run_filter_slider(cgm, filter_type, available_views, inst_index) {
@@ -11041,12 +11037,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 179 */
+/* 175 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_filter_title = __webpack_require__(177);
+	var make_filter_title = __webpack_require__(173);
 
 	module.exports = function reset_other_filter_sliders(cgm, filter_type, inst_state) {
 
@@ -11103,7 +11099,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 180 */
+/* 176 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -11134,7 +11130,7 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 181 */
+/* 177 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11192,7 +11188,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 182 */
+/* 178 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -11222,7 +11218,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 183 */
+/* 179 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -11239,7 +11235,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 184 */
+/* 180 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -11349,12 +11345,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 185 */
+/* 181 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_filter_title = __webpack_require__(177);
+	var make_filter_title = __webpack_require__(173);
 
 	module.exports = function set_sidebar_ini_view(params) {
 
@@ -11389,13 +11385,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 186 */
+/* 182 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var save_svg_png = __webpack_require__(187);
-	var file_saver = __webpack_require__(188);
+	var save_svg_png = __webpack_require__(183);
+	var file_saver = __webpack_require__(184);
 
 	module.exports = function make_icons(params, sidebar) {
 
@@ -11452,7 +11448,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 187 */
+/* 183 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -11658,7 +11654,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 188 */
+/* 184 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -11875,12 +11871,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 189 */
+/* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_modal_skeleton = __webpack_require__(190);
+	var make_modal_skeleton = __webpack_require__(186);
 
 	module.exports = function ini_modals(params) {
 
@@ -11913,7 +11909,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 190 */
+/* 186 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -11938,7 +11934,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 191 */
+/* 187 */
 /***/ function(module, exports) {
 
 	'use strict';
