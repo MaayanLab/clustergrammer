@@ -1,4 +1,5 @@
 '''
+Python 2.7
 The clustergrammer python module can be installed using pip:
 pip install clustergrammer
 
