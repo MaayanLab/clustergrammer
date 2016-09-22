@@ -10877,6 +10877,8 @@ var Clustergrammer =
 	var get_filter_default_state = __webpack_require__(5);
 	var get_subset_views = __webpack_require__(12);
 
+	d3.slider = __webpack_require__(160);
+
 	module.exports = function make_slider_filter(cgm, filter_type, div_filters) {
 
 	  var params = cgm.params;
