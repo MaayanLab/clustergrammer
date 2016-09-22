@@ -71,7 +71,7 @@ var Clustergrammer =
 	__webpack_require__(164);
 	__webpack_require__(168);
 
-	/* clustergrammer 1.4.7
+	/* clustergrammer 1.4.12
 	 * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
 	 * (c) 2016
 	 */
