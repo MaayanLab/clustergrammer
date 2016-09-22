@@ -2,7 +2,8 @@
   "name": "clustergrammer.js",
   "version": "1.4.6",
   "description": "This is a clustergram implemented in D3.js. I started from the example http://bost.ocks.org/mike/miserables/ and added the following features",
-  "main": "clustergrammer.js",
+  "main": "clustergrammer.node.js",
+  "browser": "clustergrammer.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -11,7 +12,7 @@
     "url": "git+https://github.com/cornhundred/clustergrammer.js.git"
   },
   "author": "Nicolas Fernandez",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/cornhundred/clustergrammer.js/issues"
   },
