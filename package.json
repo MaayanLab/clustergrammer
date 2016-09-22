@@ -1,5 +1,5 @@
 {
-  "name": "clustergrammer.js",
+  "name": "clustergrammer",
   "version": "1.4.7",
   "description": "This is a clustergram implemented in D3.js. I started from the example http://bost.ocks.org/mike/miserables/ and added the following features",
   "main": "clustergrammer.node.js",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cornhundred/clustergrammer.js.git"
+    "url": "git+https://github.com/MaayanLab/clustergrammer.git"
   },
   "author": "Nicolas Fernandez",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/cornhundred/clustergrammer.js/issues"
+    "url": "https://github.com/MaayanLab/clustergrammer/issues"
   },
-  "homepage": "https://github.com/cornhundred/clustergrammer.js#readme",
+  "homepage": "https://github.com/MaayanLab/clustergrammer#readme",
   "devDependencies": {
     "babel-core": "^6.14.0",
     "babel-eslint": "^4.1.8",
