@@ -1,5 +1,3 @@
-
-
 function Enrichr_request(inst_cgm){
 
   function enrichr_icon(){
@@ -406,9 +404,3 @@ function Enrichr_request(inst_cgm){
   return enr_obj;
 
 }
-
-
-
-
-
-
