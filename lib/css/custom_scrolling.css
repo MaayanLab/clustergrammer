@@ -1,0 +1,107 @@
+
+body{
+  width: 100%;
+  margin: 0px auto;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+#wrap{
+  margin-left: 50px;
+  margin-right: 50px;
+}
+
+#container{
+  position: relative;
+  width: 100%;
+  overflow: auto;
+  padding-left: 50px;
+  padding-right: 50px;
+  min-width: 900px;
+}
+
+#sections{
+  width: 200px;
+  float: left;
+  /*margin-right: 10px;*/
+  /*background-color: red;*/
+}
+
+#sections > div{
+  opacity: 0.2;
+}
+
+#sections > div.graph-scroll-active{
+  opacity: 1;
+}
+
+#graph{
+  margin-top: 50px;
+  float: left;
+  margin-left: 15px;
+  width: 925px;
+}
+
+#graph.graph-scroll-fixed{
+  position: fixed;
+  top: 0px;
+  margin-left: 215px;
+}
+
+#graph.graph-scroll-below, #graph2.graph-scroll-below {
+  position: absolute;
+  bottom: 0px;
+  margin-left: 215px;
+}
+
+#end-div{
+  height: 100px;
+}
+
+h1{
+  margin: 50px;
+}
+
+h1{
+  text-align: center;
+}
+
+.instruction_text{
+  font-size: 18px;
+  font-weight: 300;
+  margin-bottom: 15px;
+}
+
+.instruction{
+  border: 1px;
+  border-top: 7px solid #8F8F8F;
+  height: 350px;
+  margin-top: 200px;
+}
+
+.conclusions{
+  height: 700px;
+}
+
+#source{
+  margin-top: 200px;
+  display: none;
+}
+
+.highlight_word{
+  font-weight: bold;
+}
+
+
+#main_title_container{
+  border: 1px;
+  border-bottom: 1px solid #DEDEDE;
+  margin-left: 50px;
+  margin-right: 50px;
+}
+
+#title_image{
+  width: 250px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: -125px;
+}

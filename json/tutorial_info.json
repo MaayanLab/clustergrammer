@@ -1,0 +1,48 @@
+[
+  {
+    "title": "Introduction",
+    "text": [
+      "Clustergrammer enables users to easily generate interactive and shareable visualizations by uploading a matrix.",
+      "<em class='highlight_word'>Scroll down</em> or <em class='highlight_word'>interact</em> to see some of Clustergrammer's interactive features."
+    ],
+    "run_function": "initialize_view"
+  },
+  {
+    "title": "Zooming and Panning",
+    "text": [
+      "Zoom and pan by scrolling and dragging the matrix."
+    ],
+    "run_function": "run_zoom_and_pan"
+  },
+  {
+    "title": "Reordering using buttons",
+    "text": [
+      "Rows and columns can be reordered using the reorder buttons.",
+      "Here rows are being ordered based on their variance."
+    ],
+    "run_function": "run_reorder_row_var"
+  },
+  {
+    "title": "More reordering options",
+    "text": [
+      "You can also reorder the matrix based on the data in a single row or column.",
+      "Here rows are being ordered based on the values in the row EGFR."
+    ],
+    "run_function": "run_reorder_single_row"
+  },
+  {
+    "title": "Filter rows",
+    "text": [
+      "Filtering your data to reduce dimensionality can be useful for investegating complex datasets.",
+      "Clustergrammer allows you to filter your rows based on their sum or variance - here we are filtering for the top 10 rows based on variance."
+    ],
+    "run_function": "run_filter_var_10"
+  },
+  {
+    "title": "Conclusions",
+    "text": [
+      "In conclusion ... "
+    ],
+    "run_function": "run_conclusions"
+  }
+]
