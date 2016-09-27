@@ -2640,10 +2640,6 @@ var Clustergrammer =
 	  //     });
 
 	  // };
-
-	  // function reset_zoom(inst_scale) {
-	  //   two_translate_zoom(params, 0, 0, inst_scale);
-	  // }
 		};
 
 /***/ },
@@ -10805,7 +10801,7 @@ var Clustergrammer =
 	  sidebar.append('div').classed('icons_section', true).style('text-align', 'center');
 
 	  if (params.sidebar.icons) {
-	    make_modals(params);
+	    // make_modals(params);
 	    make_icons(params, sidebar);
 	  }
 
@@ -11397,24 +11393,22 @@ var Clustergrammer =
 
 	module.exports = function make_icons(params, sidebar) {
 
-	  // <a href="help" target="_blank"  id="help_link">
-	  //   <i class="fa fa-question-circle icon_buttons"></i>
-	  // </a>
+	  // this should be done outside of the main project
 
 	  var saveSvgAsPng = save_svg_png();
 	  var saveAs = file_saver();
 
 	  var row = sidebar.select('.icons_section').style('margin-top', '7px');
 
-	  row.append('div').classed('col-xs-4', true).append('a').attr('href', 'http://amp.pharm.mssm.edu/clustergrammer/help').attr('target', '_blank').append('i').classed('fa', true).classed('fa-question-circle', true).classed('icon_buttons', true).style('font-size', '25px');
+	  row.append('div').classed('clust_icon', true).append('a').attr('href', 'http://amp.pharm.mssm.edu/clustergrammer/help').attr('target', '_blank').append('i').classed('fa', true).classed('fa-question-circle', true).classed('icon_buttons', true).style('font-size', '25px');
 
-	  row.append('div').classed('col-xs-4', true).append('i').classed('fa', true).classed('fa-share-alt', true).classed('icon_buttons', true).style('font-size', '25px').on('click', function () {
+	  row.append('div').classed('clust_icon', true).append('i').classed('fa', true).classed('fa-share-alt', true).classed('icon_buttons', true).style('font-size', '25px').on('click', function () {
 
 	    $(params.root + ' .share_info').modal('toggle');
 	    $('.share_url').val(window.location.href);
 	  });
 
-	  row.append('div').classed('col-xs-4', true).append('i').classed('fa', true).classed('fa-camera', true).classed('icon_buttons', true).style('font-size', '25px').on('click', function () {
+	  row.append('div').classed('clust_icon', true).append('i').classed('fa', true).classed('fa-camera', true).classed('icon_buttons', true).style('font-size', '25px').on('click', function () {
 
 	    $(params.root + ' .picture_info').modal('toggle');
 	  });

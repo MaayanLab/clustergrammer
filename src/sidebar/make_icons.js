@@ -3,9 +3,7 @@ var file_saver = require('../screenshot/file_saver');
 
 module.exports = function make_icons(params, sidebar){
 
-  // <a href="help" target="_blank"  id="help_link">
-  //   <i class="fa fa-question-circle icon_buttons"></i>
-  // </a>
+  // this should be done outside of the main project
 
   var saveSvgAsPng = save_svg_png();
   var saveAs = file_saver();
@@ -16,7 +14,7 @@ module.exports = function make_icons(params, sidebar){
 
   row
     .append('div')
-    .classed('col-xs-4',true)
+    .classed('clust_icon',true)
     .append('a')
     .attr('href','http://amp.pharm.mssm.edu/clustergrammer/help')
     .attr('target','_blank')
@@ -28,7 +26,7 @@ module.exports = function make_icons(params, sidebar){
 
   row
     .append('div')
-    .classed('col-xs-4',true)
+    .classed('clust_icon',true)
     .append('i')
     .classed('fa',true)
     .classed('fa-share-alt',true)
@@ -43,7 +41,7 @@ module.exports = function make_icons(params, sidebar){
 
   row
     .append('div')
-    .classed('col-xs-4',true)
+    .classed('clust_icon',true)
     .append('i')
     .classed('fa',true)
     .classed('fa-camera',true)

@@ -178,8 +178,4 @@ module.exports = function make_viz(cgm) {
 
   // };
 
-  // function reset_zoom(inst_scale) {
-  //   two_translate_zoom(params, 0, 0, inst_scale);
-  // }
-
 };

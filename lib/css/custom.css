@@ -1,3 +1,21 @@
+* {
+  -webkit-box-sizing: border-box;
+}
+
+body{
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.428;
+  color: #333;
+  background-color: #fff;
+}
+
+.clust_icon{
+  float:left;
+  width: 33.3333333%;
+  padding-left: 15px;
+  padding-right: 15px;
+}
 
 .viz_medium_text{
   width:99%;
@@ -57,6 +75,8 @@
 
 .sidebar_text{
   font-weight: 300;
+  font-size: 14px;
+  line-height: 1.1;
 }
 
 .btn{
