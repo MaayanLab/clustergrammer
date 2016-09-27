@@ -2,7 +2,7 @@
   {
     "title": "Introduction",
     "text": [
-      "Clustergrammer enables users to easily generate interactive and shareable visualizations by uploading a matrix.",
+      "Clustergrammer is an visualization library built using D3.js that enables users to intuitively interact with high-dimensional data.",
       "<em class='highlight_word'>Scroll down</em> or <em class='highlight_word'>interact</em> to see some of Clustergrammer's interactive features."
     ],
     "run_function": "initialize_view"

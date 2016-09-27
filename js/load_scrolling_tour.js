@@ -22,10 +22,6 @@ if (graph_height > max_height){
   graph_height = max_height;
 }
 
-// if (graph_width > max_width){
-//   graph_width = max_width;
-// }
-
 if (graph_height > 1.5*matrix_width){
   graph_height = 1.5*matrix_width;
 }
@@ -131,6 +127,7 @@ d3.json('json/mult_view.json', function(network_data){
     root: '#graph',
     'network_data': network_data,
     'sidebar_width':130,
+    'sidebar_icons':false,
     'row_tip_callback':gene_info
   };
 
