@@ -9,15 +9,12 @@ var filter_viz_using_nodes = require('./network/filter_viz_using_nodes');
 var filter_viz_using_names = require('./network/filter_viz_using_names');
 var update_cats = require('./update/update_cats');
 var reset_cats = require('./update/reset_cats');
-
-// var d3 = require('d3');
-// var math = require('mathjs');
+var two_translate_zoom = require('./zoom/two_translate_zoom');
 
 // moved d3.slider to src
 d3.slider = require('./d3.slider');
 
 var awesomplete = require('awesomplete');
-
 // getting css from src
 require('!style!css!./d3.slider/d3.slider.css');
 require('!style!css!awesomplete/awesomplete.css');
@@ -76,6 +73,10 @@ function Clustergrammer(args) {
     update_cats(this, cat_data);
   }
 
+  function zoom_api(pan_dx, pan_dy, fin_zoom){
+    two_translate_zoom(this.params, pan_dx, pan_dy, fin_zoom);
+  }
+
   // add more API endpoints
   cgm.update_view = external_update_view;
   cgm.resize_viz = external_resize;
@@ -85,6 +86,8 @@ function Clustergrammer(args) {
   cgm.filter_viz_using_names = filter_viz_using_names;
   cgm.update_cats = run_update_cats;
   cgm.reset_cats = reset_cats;
+  cgm.zoom = zoom_api;
+
   return cgm;
 }
 

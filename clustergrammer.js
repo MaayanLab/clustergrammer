@@ -58,15 +58,12 @@ var Clustergrammer =
 	var filter_viz_using_names = __webpack_require__(156);
 	var update_cats = __webpack_require__(157);
 	var reset_cats = __webpack_require__(158);
-
-	// var d3 = require('d3');
-	// var math = require('mathjs');
+	var two_translate_zoom = __webpack_require__(84);
 
 	// moved d3.slider to src
 	d3.slider = __webpack_require__(160);
 
 	var awesomplete = __webpack_require__(162);
-
 	// getting css from src
 	__webpack_require__(164);
 	__webpack_require__(168);
@@ -125,6 +122,10 @@ var Clustergrammer =
 	    update_cats(this, cat_data);
 	  }
 
+	  function zoom_api(pan_dx, pan_dy, fin_zoom) {
+	    two_translate_zoom(this.params, pan_dx, pan_dy, fin_zoom);
+	  }
+
 	  // add more API endpoints
 	  cgm.update_view = external_update_view;
 	  cgm.resize_viz = external_resize;
@@ -134,6 +135,8 @@ var Clustergrammer =
 	  cgm.filter_viz_using_names = filter_viz_using_names;
 	  cgm.update_cats = run_update_cats;
 	  cgm.reset_cats = reset_cats;
+	  cgm.zoom = zoom_api;
+
 	  return cgm;
 	}
 
