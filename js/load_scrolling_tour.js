@@ -180,8 +180,19 @@ section_fun['run_filter_var_10'] = function(){
   console.log('variance filtering');
   click_reorder_button('row','clust');
   click_reorder_button('col','clust');
-  highlight_sidebar_element(cgm.params, 'slider_N_row_sum');
+  highlight_sidebar_element(cgm.params, 'slider_N_row_var');
   cgm.update_view({'N_row_var':10});
+
+  // update slider manually - 2 means the third position of the slider
+  // for some reason I need to call it twice
+  cgm.slider_functions['N_row_var'].value(1);
+  cgm.slider_functions['N_row_var'].value(2);
+
+  d3.select(cgm.params.root+' .title_N_row_var')
+    .text('Top rows variance: 10');
+
+  d3.select(cgm.params.root+' .slider_N_row_var')
+    .attr('current_state', '10');
 }
 
 section_fun['run_reorder_row_var'] = function(){

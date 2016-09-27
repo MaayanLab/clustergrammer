@@ -11077,26 +11077,23 @@ var Clustergrammer =
 
 	        var tmp_title = make_filter_title(params, reset_filter);
 
-	        // reset other filter slider positions
-	        // $(params.root+' .slider_'+reset_filter).slider( "value", 0);
-
-	        // d3.select('.slider_'+reset_filter).select('a').style('left','0%')
-
-	        // console.log('reset_filter '+String(reset_filter))
-	        // debugger
+	        console.log(reset_filter);
 
 	        cgm.slider_functions[reset_filter].value(0);
 
-	        d3.select(params.root + ' .title_' + reset_filter).text(tmp_title.text + tmp_title.state);
+	        // d3.select(params.root+' .title_'+reset_filter)
+	        //   .text(tmp_title.text + tmp_title.state);
 
-	        d3.select(params.root + ' .slider_' + reset_filter).attr('current_state', tmp_title.state);
+	        // d3.select(params.root+' .slider_'+reset_filter)
+	        //   .attr('current_state', tmp_title.state);
 	      }
 	    }
 	  });
 
-	  var filter_title = make_filter_title(params, filter_type);
+	  // var filter_title = make_filter_title(params, filter_type);
 
-	  d3.select(params.root + ' .title_' + filter_type).text(filter_title.text + inst_state + filter_title.suffix);
+	  // d3.select(params.root+' .title_'+filter_type)
+	  //   .text(filter_title.text + inst_state + filter_title.suffix);
 		};
 
 /***/ },
