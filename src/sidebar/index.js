@@ -40,11 +40,12 @@ module.exports = function sidebar(cgm) {
 
   sidebar
     .append('div')
+    .style('padding-left', '10px')
+    .style('padding-right', '10px')
     .classed('about_section',true);
 
   if (params.sidebar.about != null){
 
-    var about_section_width = params.sidebar.text.width - 5;
     sidebar
       .select('.about_section')
       .append('h5')
@@ -52,7 +53,6 @@ module.exports = function sidebar(cgm) {
       .style('margin-left','7px')
       .style('margin-top','5px')
       .style('margin-bottom','2px')
-      .style('width', about_section_width+'px')
       .style('text-align','justify')
       .text(params.sidebar.about);
   }

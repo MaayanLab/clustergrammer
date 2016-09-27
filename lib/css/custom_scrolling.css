@@ -113,3 +113,10 @@ h1{
   margin-bottom: 10px;
   margin-left: -125px;
 }
+
+.sidebar_text{
+  font-size: 13px;
+}
+.sidebar_button_text{
+  font-size: 12px;
+}

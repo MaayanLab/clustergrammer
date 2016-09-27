@@ -523,7 +523,7 @@ module.exports =
 	    use_sidebar: true,
 	    title: null,
 	    about: null,
-	    sidebar_width: 170,
+	    sidebar_width: 160,
 	    sidebar_icons: true,
 	    row_search_placeholder: 'Row',
 	    buffer_width: 10,
@@ -837,7 +837,7 @@ module.exports =
 	  var sidebar = {};
 
 	  sidebar.wrapper = {};
-	  sidebar.wrapper.width = 170;
+	  // sidebar.wrapper.width = 170;
 
 	  sidebar.row_search = {};
 	  sidebar.row_search.box = {};
@@ -864,7 +864,6 @@ module.exports =
 	  sidebar.buttons.width = params.sidebar_width - 15;
 
 	  sidebar.text = {};
-	  sidebar.text.width = params.sidebar_width - 15;
 
 	  sidebar.icons = params.sidebar_icons;
 	  sidebar.icon_margin_left = -5;
@@ -10789,12 +10788,11 @@ module.exports =
 	    .style('margin-left', '20px').style('margin-top', '5px').style('margin-bottom', '0px').text(params.sidebar.title);
 	  }
 
-	  sidebar.append('div').classed('about_section', true);
+	  sidebar.append('div').style('padding-left', '10px').style('padding-right', '10px').classed('about_section', true);
 
 	  if (params.sidebar.about != null) {
 
-	    var about_section_width = params.sidebar.text.width - 5;
-	    sidebar.select('.about_section').append('h5').classed('sidebar_text', true).style('margin-left', '7px').style('margin-top', '5px').style('margin-bottom', '2px').style('width', about_section_width + 'px').style('text-align', 'justify').text(params.sidebar.about);
+	    sidebar.select('.about_section').append('h5').classed('sidebar_text', true).style('margin-left', '7px').style('margin-top', '5px').style('margin-bottom', '2px').style('text-align', 'justify').text(params.sidebar.about);
 	  }
 
 	  sidebar.append('div').classed('icons_section', true).style('text-align', 'center');
@@ -10852,7 +10850,7 @@ module.exports =
 
 	  var params = cgm.params;
 
-	  var div_filters = d3.select(params.root + ' .sidebar_wrapper').append('div').classed('div_filters', true).style('padding-left', '15px').style('padding-right', '15px');
+	  var div_filters = d3.select(params.root + ' .sidebar_wrapper').append('div').classed('div_filters', true).style('padding-left', '10px').style('padding-right', '10px');
 
 	  if (params.viz.possible_filters[filter_type] == 'numerical') {
 	    make_slider_filter(cgm, filter_type, div_filters);
@@ -11187,7 +11185,7 @@ module.exports =
 
 	module.exports = function set_up_dendro_sliders(sidebar, params) {
 
-	  var dendro_sliders = sidebar.append('div').classed('dendro_sliders', true).style('padding-left', '15px').style('padding-right', '15px');
+	  var dendro_sliders = sidebar.append('div').classed('dendro_sliders', true).style('padding-left', '10px').style('padding-right', '10px');
 
 	  var dendro_types;
 	  if (params.sim_mat) {
@@ -11219,7 +11217,7 @@ module.exports =
 
 	  var search_container = sidebar.append('div')
 	  // .classed('row',true)
-	  .classed('gene_search_container', true).style('padding-left', '15px').style('padding-right', '15px').style('margin-top', '10px');
+	  .classed('gene_search_container', true).style('padding-left', '10px').style('padding-right', '10px').style('margin-top', '10px');
 
 	  search_container.append('input').classed('form-control', true).classed('gene_search_box', true).classed('sidebar_text', true).attr('type', 'text').attr('placeholder', params.sidebar.row_search.placeholder).style('height', params.sidebar.row_search.box.height + 'px');
 
@@ -11244,7 +11242,7 @@ module.exports =
 	  // var all_cats;
 	  // var inst_order_label;
 
-	  var reorder_section = sidebar.append('div').style('padding-left', '15px').style('padding-right', '15px').classed('reorder_section', true);
+	  var reorder_section = sidebar.append('div').style('padding-left', '10px').style('padding-right', '10px').classed('reorder_section', true);
 
 	  var reorder_types;
 	  if (params.sim_mat) {
@@ -11269,23 +11267,6 @@ module.exports =
 	    } else {
 	      other_rc = 'row';
 	    }
-
-	    // // removing categories from reorder buttons
-	    // /////////////////////////////////////////////
-	    // var cat_rc;
-	    // if (inst_rc != 'both'){
-	    //   cat_rc = inst_rc;
-	    // } else {
-	    //   cat_rc = 'row';
-	    // }
-	    // if ( params.viz.all_cats[cat_rc].length > 0 ){
-	    //   all_cats = params.viz.all_cats[cat_rc];
-	    //   _.each(all_cats, function(inst_cat){
-	    //     var cat_title = get_cat_title(params.viz, inst_cat, cat_rc);
-	    //     inst_order_label = inst_cat.replace('-','_')+'_index';
-	    //     button_dict[inst_order_label] = cat_title;
-	    //   });
-	    // }
 
 	    tmp_orders = Object.keys(params.matrix.orders);
 
@@ -11318,11 +11299,11 @@ module.exports =
 	      reorder_text = 'Reorder Matrix';
 	    }
 
-	    reorder_section.append('div').classed('sidebar_text', true).style('clear', 'both').style('margin-top', '10px').style('font-size', '13px').html(rc_dict[inst_rc] + reorder_text);
+	    reorder_section.append('div').classed('sidebar_button_text', true).style('clear', 'both').style('margin-top', '10px').html(rc_dict[inst_rc] + reorder_text);
 
 	    inst_reorder = reorder_section.append('div').classed('btn-group-vertical', true).style('width', '100%').classed('toggle_' + inst_rc + '_order', true).attr('role', 'group');
 
-	    inst_reorder.selectAll('.button').data(possible_orders).enter().append('button').attr('type', 'button').style('font-size', '13px').classed('btn', true).classed('btn-primary', true).classed('sidebar_text', true).classed('active', function (d) {
+	    inst_reorder.selectAll('.button').data(possible_orders).enter().append('button').attr('type', 'button').classed('btn', true).classed('btn-primary', true).classed('sidebar_button_text', true).classed('active', function (d) {
 	      is_active = false;
 	      if (d == params.viz.inst_order[other_rc]) {
 	        is_active = true;
@@ -11931,7 +11912,7 @@ module.exports =
 
 	module.exports = function set_up_opacity_slider(sidebar) {
 
-	  var slider_container = sidebar.append('div').classed('opacity_slider_container', true).style('margin-top', '5px').style('padding-left', '15px').style('padding-right', '15px');
+	  var slider_container = sidebar.append('div').classed('opacity_slider_container', true).style('margin-top', '5px').style('padding-left', '10px').style('padding-right', '10px');
 
 	  slider_container.append('div').classed('sidebar_text', true).classed('opacity_slider_text', true).style('margin-bottom', '3px').text('Opacity Slider');
 

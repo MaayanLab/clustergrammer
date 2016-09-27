@@ -3,8 +3,8 @@ module.exports = function set_up_dendro_sliders(sidebar, params){
   var dendro_sliders = sidebar
     .append('div')
     .classed('dendro_sliders', true)
-    .style('padding-left', '15px')
-    .style('padding-right', '15px');
+    .style('padding-left', '10px')
+    .style('padding-right', '10px');
 
   var dendro_types;
   if (params.sim_mat){

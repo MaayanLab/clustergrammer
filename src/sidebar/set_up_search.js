@@ -4,8 +4,8 @@ module.exports = function set_up_search(sidebar, params ){
     .append('div')
     // .classed('row',true)
     .classed('gene_search_container',true)
-    .style('padding-left','15px')
-    .style('padding-right','15px')
+    .style('padding-left','10px')
+    .style('padding-right','10px')
     .style('margin-top','10px');
 
   search_container

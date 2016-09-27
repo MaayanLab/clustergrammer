@@ -1,7 +1,7 @@
 
 var tutorial_info;
 var graph_height = window.innerHeight - 150;
-left_tutorial_width = 315;
+left_tutorial_width = 215;
 var right_graph_margin = left_tutorial_width;
 var inst_page_width = d3.select('#container')
                         .style('width')
@@ -130,6 +130,7 @@ d3.json('json/mult_view.json', function(network_data){
   var args = {
     root: '#graph',
     'network_data': network_data,
+    'sidebar_width':130,
     'row_tip_callback':gene_info
   };
 

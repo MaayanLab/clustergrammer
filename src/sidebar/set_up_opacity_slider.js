@@ -4,8 +4,8 @@ module.exports = function set_up_opacity_slider(sidebar){
     .append('div')
     .classed('opacity_slider_container', true)
     .style('margin-top', '5px')
-    .style('padding-left', '15px')
-    .style('padding-right', '15px');
+    .style('padding-left', '10px')
+    .style('padding-right', '10px');
 
   slider_container
     .append('div')

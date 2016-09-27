@@ -2,7 +2,7 @@ module.exports = function ini_sidebar_params(params){
   var sidebar = {};
 
   sidebar.wrapper = {};
-  sidebar.wrapper.width = 170;
+  // sidebar.wrapper.width = 170;
 
   sidebar.row_search = {};
   sidebar.row_search.box = {};
@@ -30,7 +30,6 @@ module.exports = function ini_sidebar_params(params){
   sidebar.buttons.width = params.sidebar_width - 15;
 
   sidebar.text = {};
-  sidebar.text.width = params.sidebar_width - 15;
 
   sidebar.icons = params.sidebar_icons;
   sidebar.icon_margin_left = -5;

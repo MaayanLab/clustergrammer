@@ -38,7 +38,7 @@ module.exports = function set_defaults(){
     use_sidebar: true,
     title:null,
     about:null,
-    sidebar_width:170,
+    sidebar_width:160,
     sidebar_icons:true,
     row_search_placeholder:'Row',
     buffer_width:10,

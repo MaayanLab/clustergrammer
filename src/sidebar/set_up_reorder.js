@@ -12,8 +12,8 @@ module.exports = function set_up_reorder(params, sidebar){
 
   var reorder_section = sidebar
     .append('div')
-    .style('padding-left', '15px')
-    .style('padding-right', '15px')
+    .style('padding-left', '10px')
+    .style('padding-right', '10px')
     .classed('reorder_section', true);
 
   var reorder_types;
@@ -39,23 +39,6 @@ module.exports = function set_up_reorder(params, sidebar){
     } else {
       other_rc = 'row';
     }
-
-    // // removing categories from reorder buttons
-    // /////////////////////////////////////////////
-    // var cat_rc;
-    // if (inst_rc != 'both'){
-    //   cat_rc = inst_rc;
-    // } else {
-    //   cat_rc = 'row';
-    // }
-    // if ( params.viz.all_cats[cat_rc].length > 0 ){
-    //   all_cats = params.viz.all_cats[cat_rc];
-    //   _.each(all_cats, function(inst_cat){
-    //     var cat_title = get_cat_title(params.viz, inst_cat, cat_rc);
-    //     inst_order_label = inst_cat.replace('-','_')+'_index';
-    //     button_dict[inst_order_label] = cat_title;
-    //   });
-    // }
 
     tmp_orders = Object.keys(params.matrix.orders);
 
@@ -91,10 +74,9 @@ module.exports = function set_up_reorder(params, sidebar){
 
     reorder_section
       .append('div')
-      .classed('sidebar_text',true)
+      .classed('sidebar_button_text',true)
       .style('clear','both')
       .style('margin-top','10px')
-      .style('font-size','13px')
       .html(rc_dict[inst_rc]+reorder_text);
 
     inst_reorder = reorder_section
@@ -110,10 +92,9 @@ module.exports = function set_up_reorder(params, sidebar){
       .enter()
       .append('button')
       .attr('type','button')
-      .style('font-size','13px')
       .classed('btn',true)
       .classed('btn-primary',true)
-      .classed('sidebar_text',true)
+      .classed('sidebar_button_text',true)
       .classed('active', function(d){
         is_active = false;
         if (d == params.viz.inst_order[other_rc]){
