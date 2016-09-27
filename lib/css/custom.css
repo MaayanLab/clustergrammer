@@ -83,3 +83,11 @@ body{
   padding-top:2px;
   padding-bottom:2px;
 }
+
+.toggle_row_order{
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+
