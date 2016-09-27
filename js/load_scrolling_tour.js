@@ -244,7 +244,7 @@ section_fun['run_conclusions'] = function(){
 
 section_fun['run_zoom_and_pan'] = function(){
   console.log('zoom_and_pan');
-  setTimeout(function(){cgm.zoom(-50, 0, 3)}, 0);
+  setTimeout(function(){cgm.zoom(0, 0, 3)}, 0);
   setTimeout(function(){cgm.zoom(0, 0, 1)}, 1500);
 }
 
