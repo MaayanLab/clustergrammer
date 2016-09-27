@@ -53,12 +53,12 @@ module.exports =
 	var resize_viz = __webpack_require__(87);
 	var play_demo = __webpack_require__(112);
 	var ini_demo = __webpack_require__(152);
-	var update_viz_with_view = __webpack_require__(124);
 	var filter_viz_using_nodes = __webpack_require__(155);
 	var filter_viz_using_names = __webpack_require__(156);
 	var update_cats = __webpack_require__(157);
 	var reset_cats = __webpack_require__(158);
 	var two_translate_zoom = __webpack_require__(84);
+	var external_update_view = __webpack_require__(188);
 
 	// moved d3.slider to src
 	d3.slider = __webpack_require__(160);
@@ -112,10 +112,6 @@ module.exports =
 
 	  function resize_fun(cgm) {
 	    resize_viz(cgm);
-	  }
-
-	  function external_update_view(requested_view) {
-	    update_viz_with_view(this, requested_view);
 	  }
 
 	  function run_update_cats(cat_data) {
@@ -11018,7 +11014,8 @@ module.exports =
 	  // get value
 	  var inst_state = available_views[inst_index][filter_type];
 
-	  // console.log('fix this')
+	  console.log('inst_state');
+	  console.log(inst_state);
 	  reset_other_filter_sliders(cgm, filter_type, inst_state);
 
 	  params = get_current_orders(params);
@@ -11046,6 +11043,8 @@ module.exports =
 	var make_filter_title = __webpack_require__(173);
 
 	module.exports = function reset_other_filter_sliders(cgm, filter_type, inst_state) {
+
+	  console.log('reset other filter sliders');
 
 	  var params = cgm.params;
 	  var inst_rc;
@@ -11942,6 +11941,29 @@ module.exports =
 	  //   value:1.0
 	  // });
 		};
+
+/***/ },
+/* 188 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var update_viz_with_view = __webpack_require__(124);
+	var reset_other_filter_sliders = __webpack_require__(175);
+
+	module.exports = function external_update_view(filter_type, inst_state) {
+
+	  // add something to control slider position
+	  /////////////////////////////////////////////
+
+	  var cgm = this;
+
+	  var requested_view = {};
+	  requested_view[filter_type] = inst_state;
+	  update_viz_with_view(this, requested_view);
+
+	  reset_other_filter_sliders(cgm, filter_type, inst_state);
+	};
 
 /***/ }
 /******/ ]);

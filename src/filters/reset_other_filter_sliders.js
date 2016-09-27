@@ -2,6 +2,8 @@ var make_filter_title = require('./make_filter_title');
 
 module.exports = function reset_other_filter_sliders(cgm, filter_type, inst_state){
 
+  console.log('reset other filter sliders')
+
   var params = cgm.params;
   var inst_rc;
   var reset_rc;

@@ -163,17 +163,17 @@ section_fun['initialize_view'] = function(){
   console.log('initializing view');
   click_reorder_button('row','clust');
   click_reorder_button('col','clust');
-  cgm.update_view({'N_row_sum':'all'});
+  cgm.update_view('N_row_sum','all');
 }
 
 section_fun['run_filter_sum_10'] = function(){
   console.log('sum filtering');
-  cgm.update_view({'N_row_sum':10});
+  cgm.update_view('N_row_sum', 10);
 }
 
 section_fun['run_filter_sum_20'] = function(){
   console.log('sum filtering');
-  cgm.update_view({'N_row_sum':20});
+  cgm.update_view('N_row_sum', 20);
 }
 
 section_fun['run_filter_var_10'] = function(){
@@ -181,7 +181,7 @@ section_fun['run_filter_var_10'] = function(){
   click_reorder_button('row','clust');
   click_reorder_button('col','clust');
   highlight_sidebar_element(cgm.params, 'slider_N_row_var');
-  cgm.update_view({'N_row_var':10});
+  cgm.update_view('N_row_var', 10);
 
   // update slider manually - 2 means the third position of the slider
   // for some reason I need to call it twice
