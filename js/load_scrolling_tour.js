@@ -1,11 +1,20 @@
 
 var tutorial_info;
 var graph_height = window.innerHeight - 150;
-var right_graph_margin = 315;
-var graph_width = Number(d3.select('#container').style('width').replace('px','')) - right_graph_margin;
+left_tutorial_width = 315;
+var right_graph_margin = left_tutorial_width;
+var inst_page_width = d3.select('#container')
+                        .style('width')
+                        .replace('px','');
 
-var max_height = 800;
-var max_width = 1300;
+inst_page_width = Number(inst_page_width);
+var graph_width = inst_page_width - right_graph_margin;
+
+console.log('inst_page_width', inst_page_width)
+console.log('graph_width', graph_width)
+
+var max_height = 1000;
+var max_width = 2000;
 
 var matrix_width = graph_width - 250;
 
@@ -13,14 +22,13 @@ if (graph_height > max_height){
   graph_height = max_height;
 }
 
-if (graph_width > max_width){
-  graph_width = max_width;
-}
+// if (graph_width > max_width){
+//   graph_width = max_width;
+// }
 
 if (graph_height > 1.5*matrix_width){
   graph_height = 1.5*matrix_width;
 }
-
 
 d3.select('#source')
   .style('margin-top', function(){
@@ -107,9 +115,7 @@ d3.json('json/tutorial_info.json', function(tmp_info){
     });
 
     tutorial_info = tmp_info;
-
 });
-
 
 var prev_section = 0;
 
@@ -117,16 +123,23 @@ d3.select('#graph')
   .style('width', graph_width+'px')
   .style('height', graph_height+'px');
 
-
 // make clustergram
 ////////////////////////////////
 d3.json('json/mult_view.json', function(network_data){
 
   var args = {
     root: '#graph',
-    'network_data': network_data
+    'network_data': network_data,
+    'row_tip_callback':gene_info
   };
+
   cgm = Clustergrammer(args);
+
+  // Enrichr categories
+  //////////////////////
+  enr_obj = Enrichr_request(cgm);
+  enr_obj.enrichr_icon();
+
   ini_scroll();
 
   d3.select('#source')
@@ -134,8 +147,8 @@ d3.json('json/mult_view.json', function(network_data){
 
   animate_arrow();
 
-});
 
+});
 
 function ini_scroll(){
   // define the container and graph
@@ -157,7 +170,6 @@ function click_reorder_button(inst_rc, inst_order){
 }
 
 var section_fun = {};
-
 
 section_fun['initialize_view'] = function(){
   console.log('initializing view');
@@ -236,7 +248,6 @@ section_fun['run_zoom_and_pan'] = function(){
   setTimeout(function(){cgm.zoom(0, 0, 1)}, 1500);
 }
 
-
 var update_section_db = _.debounce(update_section, 1500);
 
 function update_section(current_section){
@@ -263,7 +274,6 @@ function update_section(current_section){
   } else {
     console.log('already in section - do not run\n')
   }
-
 }
 
 function highlight_sidebar_element(params, highlight_class){
@@ -283,7 +293,6 @@ function highlight_sidebar_element(params, highlight_class){
       .transition().duration(1).delay(duration)
       .style('box-shadow','none');
   }
-
 }
 
 function sim_click(params, single_double, pos_x, pos_y){
@@ -318,7 +327,6 @@ function sim_click(params, single_double, pos_x, pos_y){
   }
 
 }
-
 
 function get_row_element(params, inst_row){
 

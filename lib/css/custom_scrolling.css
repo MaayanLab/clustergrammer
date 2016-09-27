@@ -3,20 +3,24 @@ body{
   width: 100%;
   margin: 0px auto;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 #wrap{
-  margin-left: 50px;
-  margin-right: 50px;
+  margin-left: 5%;
+  margin-right: 5%;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
 #container{
   position: relative;
   width: 100%;
   overflow: auto;
-  padding-left: 50px;
-  padding-right: 50px;
-  min-width: 900px;
+  /*padding-left: 50px;*/
+  /*padding-right: 50px;*/
+  min-width: 950px;
 }
 
 #sections{
@@ -95,13 +99,13 @@ h1{
 #main_title_container{
   border: 1px;
   border-bottom: 1px solid #DEDEDE;
-  margin-left: 50px;
-  margin-right: 50px;
+  /*margin-left: 50px;*/
+  /*margin-right: 50px;*/
 }
 
 #title_image{
   width: 250px;
   margin-top: 10px;
   margin-bottom: 10px;
-  margin-left: -125px;
+  /*margin-left: -125px;*/
 }
