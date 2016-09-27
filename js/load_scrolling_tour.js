@@ -79,6 +79,7 @@ d3.json('json/tutorial_info.json', function(tmp_info){
 
       d3.select(this)
         .append('h3')
+        .classed('tour_title_text', true)
         .text(d.title);
 
 
