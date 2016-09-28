@@ -70,9 +70,9 @@ h1{
 }
 
 .instruction_text{
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 300;
-  margin-bottom: 15px;
+  margin-bottom: 5px;
 }
 
 .instruction{
@@ -123,4 +123,5 @@ h1{
 
 .tour_title_text{
   margin-top: 10px;
+  margin-bottom: 5px;
 }
