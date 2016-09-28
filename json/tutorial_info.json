@@ -2,8 +2,9 @@
   {
     "title": "Introduction",
     "text": [
-      "Clustergrammer is a visualization library built using D3.js that enables intuitive interaction with high-dimensional data and was built with biological data in mind. ",
-      "<em class='highlight_word'>Scroll down</em> or <em class='highlight_word'>interact</em> to see some of Clustergrammer's interactive features."
+      "Clustergrammer is a visualization library built using D3.js that enables intuitive interaction with high-dimensional data. ",
+      "Clustergrammer was built with biological data in mind and this example shows kinase gene expression levels obtained from the CCLE.",
+      "<em class='highlight_word'>Scroll down</em> to take an interactive tour."
     ],
     "run_function": "initialize_view"
   },
