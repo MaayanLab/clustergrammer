@@ -1116,7 +1116,7 @@ module.exports =
 
 	  var super_string = ': ';
 	  var tmp_super;
-	  var cat_types;
+	  var inst_types;
 	  var inst_color;
 
 	  viz.show_categories = {};
@@ -1132,6 +1132,7 @@ module.exports =
 	  var predefine_colors = false;
 	  if (viz.cat_colors === null) {
 	    viz.cat_colors = {};
+	    viz.cat_types = {};
 	    viz.cat_colors.value_opacity = ini_val_opacity;
 	    predefine_colors = false;
 	  } else {
@@ -1161,6 +1162,7 @@ module.exports =
 
 	      if (predefine_colors === false) {
 	        viz.cat_colors[inst_rc] = {};
+	        viz.cat_types[inst_rc] = {};
 	      }
 
 	      viz.cat_names[inst_rc] = {};
@@ -1180,23 +1182,25 @@ module.exports =
 	        var names_of_cat = _.uniq(utils.pluck(params.network_data[inst_rc + '_nodes'], inst_cat)).sort();
 
 	        // check whether all the categories are of value type
-	        cat_types = check_if_value_cats(names_of_cat);
+	        inst_types = check_if_value_cats(names_of_cat);
 
 	        // !!! tmp disable value categories
 	        ///////////////////////////////////
 	        ///////////////////////////////////
-	        cat_types = 'cat_strings';
+	        inst_types = 'cat_strings';
 
 	        if (predefine_colors === false) {
 
 	          viz.cat_colors[inst_rc][inst_cat] = {};
+
+	          viz.cat_types[inst_rc][inst_cat] = inst_types;
 
 	          _.each(names_of_cat, function (cat_tmp, i) {
 
 	            inst_color = colors.get_random_color(i + num_colors);
 
 	            // if all categories are of value type
-	            if (cat_types == 'cat_values') {
+	            if (inst_types == 'cat_values') {
 	              inst_color = 'red';
 	            }
 
@@ -1302,6 +1306,7 @@ module.exports =
 	        inst_cat = inst_cat.split(super_string)[1];
 	      }
 
+	      // checking whether inst_cat is 'not a number'
 	      if (isNaN(inst_cat) == true) {
 	        cat_types = 'cat_strings';
 	      }

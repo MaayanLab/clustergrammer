@@ -19,6 +19,7 @@ module.exports = function check_if_value_cats(names_of_cat){
     might_have_values = true;
   }
 
+
   // check each value for number
   if (might_have_values){
 
@@ -31,6 +32,7 @@ module.exports = function check_if_value_cats(names_of_cat){
         inst_cat = inst_cat.split(super_string)[1];
       }
 
+      // checking whether inst_cat is 'not a number'
       if ( isNaN(inst_cat) == true ){
         cat_types = 'cat_strings';
       }
