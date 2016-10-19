@@ -19,7 +19,6 @@ module.exports = function check_if_value_cats(names_of_cat){
     might_have_values = true;
   }
 
-
   // check each value for number
   if (might_have_values){
 
@@ -40,6 +39,14 @@ module.exports = function check_if_value_cats(names_of_cat){
     });
 
   }
+
+
+  // // use something like this to get abs max value
+  // matrix.max_link = _.max(network_data.links, function (d) {
+  //   return Math.abs(d.value);
+  // }).value;
+  // matrix.abs_max_val = Math.abs(matrix.max_link) * params.clamp_opacity;
+
 
   return cat_types;
 

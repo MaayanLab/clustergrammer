@@ -1313,6 +1313,13 @@ module.exports =
 	    });
 	  }
 
+	  // // use something like this to get abs max value
+	  // matrix.max_link = _.max(network_data.links, function (d) {
+	  //   return Math.abs(d.value);
+	  // }).value;
+	  // matrix.abs_max_val = Math.abs(matrix.max_link) * params.clamp_opacity;
+
+
 	  return cat_types;
 		};
 
