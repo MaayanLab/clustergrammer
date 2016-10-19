@@ -58,9 +58,13 @@ d3.select(window).on('resize', function(){
 - Underscore.js
 
 # Clustergrammer Python Module
-The Clustergrammer python module [clutergrammer.py](https://github.com/MaayanLab/clustergrammer-py), takes a tab-separated matrix file as input (see format [here](#input-matrix-format)), calculates clustering, and generates the visualization json (see format [here](https://github.com/MaayanLab/clustergrammer-json)) for clustergrammer.js. The module can be installed using [pip](https://pypi.python.org/pypi/clustergrammer/0.1.6):
+The Clustergrammer python module [clutergrammer.py](https://github.com/MaayanLab/clustergrammer-py), takes a tab-separated matrix file as input (see format [here](#input-matrix-format)), calculates clustering, and generates the visualization json (see format [here](https://github.com/MaayanLab/clustergrammer-json)) for clustergrammer.js. The module can be installed using [pip](https://pypi.python.org/pypi/clustergrammer/) and is compatable with Python 2.7 and 3.5:
 ```
-pip install clustergrammer
+# Python 2
+$ pip install clustergrammer
+
+# Python 3
+$ pip3 install clustergrammer
 ```
 or the source code can be obtained from clustergrammer.py [repo](https://github.com/MaayanLab/clustergrammer-py): simply copy the clustergrammer directory with the source code to the main directory to use the module in this repo.
 
