@@ -1,12 +1,14 @@
 module.exports = function check_if_value_cats(names_of_cat){
 
+  console.log('checking if there are value cats')
+
   var super_string = ': ';
 
   var tmp_cat = names_of_cat[0];
 
   var has_title = false;
   var might_have_values = false;
-  var all_are_values = false;
+  var cat_types = 'cat_strings';
 
   if ( tmp_cat.indexOf(super_string) > -1 ){
     has_title = true;
@@ -21,7 +23,7 @@ module.exports = function check_if_value_cats(names_of_cat){
   if (might_have_values){
 
     // the default state is that all are now values, check each one
-    all_are_values = true;
+    cat_types = 'cat_values';
 
     _.each(names_of_cat, function(inst_cat){
 
@@ -30,13 +32,13 @@ module.exports = function check_if_value_cats(names_of_cat){
       }
 
       if ( isNaN(inst_cat) == true ){
-        all_are_values = false;
+        cat_types = 'cat_strings';
       }
 
     });
 
   }
 
-  return all_are_values;
+  return cat_types;
 
 };

@@ -1116,7 +1116,7 @@ var Clustergrammer =
 
 	  var super_string = ': ';
 	  var tmp_super;
-	  var all_are_values;
+	  var cat_types;
 	  var inst_color;
 
 	  viz.show_categories = {};
@@ -1180,12 +1180,12 @@ var Clustergrammer =
 	        var names_of_cat = _.uniq(utils.pluck(params.network_data[inst_rc + '_nodes'], inst_cat)).sort();
 
 	        // check whether all the categories are of value type
-	        all_are_values = check_if_value_cats(names_of_cat);
+	        cat_types = check_if_value_cats(names_of_cat);
 
-	        // tmp disable value categories
+	        // !!! tmp disable value categories
 	        ///////////////////////////////////
 	        ///////////////////////////////////
-	        all_are_values = false;
+	        cat_types = 'cat_strings';
 
 	        if (predefine_colors === false) {
 
@@ -1195,8 +1195,9 @@ var Clustergrammer =
 
 	            inst_color = colors.get_random_color(i + num_colors);
 
-	            if (all_are_values) {
-	              inst_color = '#000000';
+	            // if all categories are of value type
+	            if (cat_types == 'cat_values') {
+	              inst_color = 'red';
 	            }
 
 	            viz.cat_colors[inst_rc][inst_cat][cat_tmp] = inst_color;
@@ -1270,13 +1271,15 @@ var Clustergrammer =
 
 	module.exports = function check_if_value_cats(names_of_cat) {
 
+	  console.log('checking if there are value cats');
+
 	  var super_string = ': ';
 
 	  var tmp_cat = names_of_cat[0];
 
 	  var has_title = false;
 	  var might_have_values = false;
-	  var all_are_values = false;
+	  var cat_types = 'cat_strings';
 
 	  if (tmp_cat.indexOf(super_string) > -1) {
 	    has_title = true;
@@ -1291,7 +1294,7 @@ var Clustergrammer =
 	  if (might_have_values) {
 
 	    // the default state is that all are now values, check each one
-	    all_are_values = true;
+	    cat_types = 'cat_values';
 
 	    _.each(names_of_cat, function (inst_cat) {
 
@@ -1300,12 +1303,12 @@ var Clustergrammer =
 	      }
 
 	      if (isNaN(inst_cat) == true) {
-	        all_are_values = false;
+	        cat_types = 'cat_strings';
 	      }
 	    });
 	  }
 
-	  return all_are_values;
+	  return cat_types;
 		};
 
 /***/ },
@@ -6658,11 +6661,13 @@ var Clustergrammer =
 	        var cat_name = d[inst_cat];
 	        var inst_color = params.viz.cat_colors.col[inst_cat][cat_name];
 	        return inst_color;
-	      }).style('opacity', params.viz.cat_colors.opacity).on('mouseover', cat_tip.show).on('mouseout', function () {
+	      }).on('mouseover', cat_tip.show).on('mouseout', function () {
 	        cat_tip.hide(this);
 	        reset_cat_opacity(params);
 	        d3.select(this).classed('hovering', false);
 	      });
+
+	      cat_rect.style('opacity', params.viz.cat_colors.opacity);
 	    });
 	  });
 	};

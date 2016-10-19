@@ -6,7 +6,7 @@ module.exports = function process_category_info(params, viz, preserve_cats=true)
 
   var super_string = ': ';
   var tmp_super;
-  var all_are_values;
+  var cat_types;
   var inst_color;
 
   viz.show_categories = {};
@@ -74,23 +74,25 @@ module.exports = function process_category_info(params, viz, preserve_cats=true)
           ).sort();
 
         // check whether all the categories are of value type
-        all_are_values = check_if_value_cats(names_of_cat);
+        cat_types = check_if_value_cats(names_of_cat);
 
-        // tmp disable value categories
+        // !!! tmp disable value categories
         ///////////////////////////////////
         ///////////////////////////////////
-        all_are_values = false;
+        cat_types = 'cat_strings';
 
         if (predefine_colors === false){
 
           viz.cat_colors[inst_rc][inst_cat] = {};
 
+
           _.each(names_of_cat, function(cat_tmp, i){
 
             inst_color = colors.get_random_color(i+num_colors);
 
-            if (all_are_values){
-              inst_color = '#000000';
+            // if all categories are of value type
+            if (cat_types == 'cat_values'){
+              inst_color = 'red';
             }
 
             viz.cat_colors[inst_rc][inst_cat][cat_tmp] = inst_color;
