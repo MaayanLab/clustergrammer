@@ -11,7 +11,7 @@ The project began as an extension of this example http://bost.ocks.org/mike/mise
 - row/column categories
 
 Clustergrammer can be used as:
-* clustergrammer.js and clustergrammer.py [libraries](#using-clustergrammer-libraries) by web-developers
+* [clustergrammer.js](#clustergrammer-javascript-library) and [clustergrammer.py](#clustergrammer-python-library) libraries by web-developers
 * IPython/Jupyter notebook [widget](https://github.com/MaayanLab/clustergrammer-widget)
 * Web-app [http://amp.pharm.mssm.edu/clustergrammer/](http://amp.pharm.mssm.edu/clustergrammer/)
 
@@ -23,11 +23,9 @@ Clustergrammer is designed to be a reusable chart and has been integrated into s
 - [GEO2Enrichr](http://amp.pharm.mssm.edu/g2e/)
 - [Harmoniozome](http://amp.pharm.mssm.edu/Harmonizome/)
 
-
 # Using Clustergrammer Libraries
 
 The Clustergrammer.js source code is under the [src](src) directory and Webpack Module Developer is being used to make clustergrammer.js. The easiest way to visualize a matrix of your own data is to follow the [example Python workflow](#example-python-workflow)) that uses the Clustergrammer python library (discussed [here](#clustergrammer-python-library) and repo here [clustergrammer.py](https://github.com/MaayanLab/clustergrammer-py)). Users can also generate the visualization json (see example [mult_view.json](json/mult_view.json)) using another programming language as long as they adhere to the [format](https://github.com/MaayanLab/clustergrammer-json).
-
 
 # Clustergrammer JavaScript Library
 To make a visualization pass an arguments object with the following required values to Clustergrammer:
@@ -78,6 +76,11 @@ $ pip3 install clustergrammer
 ```
 
 or the source code can be obtained from clustergrammer.py [repo](https://github.com/MaayanLab/clustergrammer-py): simply copy the clustergrammer directory with the source code to the main directory to use the library in this repo.
+
+### Clustergrammer.py Dependencies
+- Numpy
+- Scipy
+- Pandas
 
 ## Example Python Workflow
 
