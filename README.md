@@ -127,6 +127,6 @@ This format is easier to export from a Python Pandas DataFrame (see [net.write_m
 
 Several example tab-separated matrix files can be found in the [txt](txt) directory. See [example Python workflow](#example-python-workflow) or [make_clustergrammer.py](make_clustergrammer.py) for examples of how to use Clustergrammer.py to generate a visualization json from these matrix files.
 
-
 ----------------------------------------------------------------------------------
-Clustergrammer was developed by Nicolas Fernandez at Icahn School of Medicine at Mount Sinai.
+## Licensing
+Clustergrammer was developed by Nicolas Fernandez at Icahn School of Medicine at Mount Sinai. Clustergrammer's license and third-party licenses are in the LICENSES directory.
