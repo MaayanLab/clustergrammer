@@ -6633,6 +6633,7 @@ module.exports =
 	var cat_tooltip_text = __webpack_require__(107);
 	var d3_tip_custom = __webpack_require__(58);
 	var reset_cat_opacity = __webpack_require__(108);
+	var ini_cat_opacity = __webpack_require__(189);
 
 	module.exports = function make_col_cat(params) {
 
@@ -6665,9 +6666,6 @@ module.exports =
 	  d3.select(params.root + ' .col_cat_container').selectAll('.col_cat_group').call(cat_tip);
 
 	  // add category rects
-	  var super_string = ': ';
-	  var has_title;
-
 	  d3.selectAll(params.root + ' .col_cat_group').each(function () {
 
 	    var inst_selection = this;
@@ -6698,31 +6696,7 @@ module.exports =
 	        d3.select(this).classed('hovering', false);
 	      });
 
-	      var inst_type = params.viz.cat_info.col[inst_cat]['type'];
-
-	      // set opacity based on string or value cats
-	      if (inst_type === 'cat_strings') {
-
-	        // opacity is fixed
-	        cat_rect.style('opacity', params.viz.cat_colors.opacity);
-	      } else {
-
-	        // opacity varies based on value
-	        cat_rect.style('opacity', function (d) {
-
-	          var cat_value = d[inst_cat];
-
-	          if (cat_value.indexOf(super_string) > -1) {
-	            has_title = true;
-	            cat_value = cat_value.split(super_string)[1];
-	          }
-
-	          cat_value = parseFloat(cat_value);
-
-	          return params.viz.cat_info.col[inst_cat]['cat_scale'](cat_value);
-	          // return 1;
-	        });
-	      }
+	      ini_cat_opacity(params.viz, 'col', cat_rect, inst_cat);
 	    });
 	  });
 	};
@@ -6824,6 +6798,7 @@ module.exports =
 	var cat_tooltip_text = __webpack_require__(107);
 	var d3_tip_custom = __webpack_require__(58);
 	var reset_cat_opacity = __webpack_require__(108);
+	var ini_cat_opacity = __webpack_require__(189);
 
 	module.exports = function make_row_cat(params) {
 	  var updating = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
@@ -6862,16 +6837,6 @@ module.exports =
 	    return 'translate(0, ' + params.viz.y_scale(inst_index) + ')';
 	  });
 
-	  // // working on removing old categories
-	  // console.log('trying to')
-	  // d3.select(params.root+' .row_cat_container')
-	  //   .selectAll('g')
-	  //   .data(params.network_data.row_nodes, function(d){return d.name;})
-	  //   .exit()
-	  //   .each(function(d){
-	  //     console.log('here')
-	  //   });
-
 	  d3.select(params.root + ' .row_cat_container').selectAll('.row_cat_group').call(cat_tip);
 
 	  // add row triangles
@@ -6888,9 +6853,6 @@ module.exports =
 
 	  var cat_rect;
 	  var inst_selection;
-
-	  var super_string = ': ';
-	  var has_title;
 
 	  d3.selectAll(params.root + ' .row_cat_group rect').remove();
 
@@ -6939,32 +6901,7 @@ module.exports =
 	        // updating_selector
 	        //   .style('opacity', params.viz.cat_colors.opacity);
 
-
-	        var inst_type = params.viz.cat_info.row[inst_cat]['type'];
-
-	        // set opacity based on string or value cats
-	        if (inst_type === 'cat_strings') {
-
-	          // opacity is fixed
-	          updating_selector.style('opacity', params.viz.cat_colors.opacity);
-	        } else {
-
-	          // opacity varies based on value
-	          updating_selector.style('opacity', function (d) {
-
-	            var cat_value = d[inst_cat];
-
-	            if (cat_value.indexOf(super_string) > -1) {
-	              has_title = true;
-	              cat_value = cat_value.split(super_string)[1];
-	            }
-
-	            cat_value = parseFloat(cat_value);
-
-	            return params.viz.cat_info.row[inst_cat]['cat_scale'](cat_value);
-	            // return 1;
-	          });
-	        }
+	        ini_cat_opacity(params.viz, 'row', updating_selector, inst_cat);
 	      });
 	    });
 	  }
@@ -12039,6 +11976,44 @@ module.exports =
 	  // $( params.root+' .opacity_slider' ).slider({
 	  //   value:1.0
 	  // });
+		};
+
+/***/ },
+/* 189 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = function ini_cat_opacity(viz, inst_rc, cat_rect, inst_cat) {
+
+	  console.log('initializing cat opacity ' + inst_rc);
+
+	  var super_string = ': ';
+	  var has_title;
+	  var inst_type = viz.cat_info[inst_rc][inst_cat]['type'];
+
+	  // set opacity based on string or value cats
+	  if (inst_type === 'cat_strings') {
+
+	    // opacity is fixed
+	    cat_rect.style('opacity', viz.cat_colors.opacity);
+	  } else {
+
+	    // opacity varies based on value
+	    cat_rect.style('opacity', function (d) {
+
+	      var cat_value = d[inst_cat];
+
+	      if (cat_value.indexOf(super_string) > -1) {
+	        has_title = true;
+	        cat_value = cat_value.split(super_string)[1];
+	      }
+
+	      cat_value = parseFloat(cat_value);
+
+	      return viz.cat_info[inst_rc][inst_cat]['cat_scale'](cat_value);
+	    });
+	  }
 		};
 
 /***/ }

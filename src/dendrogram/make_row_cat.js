@@ -1,6 +1,7 @@
 var cat_tooltip_text = require('./cat_tooltip_text');
 var d3_tip_custom = require('../tooltip/d3_tip_custom');
 var reset_cat_opacity = require('./reset_cat_opacity');
+var ini_cat_opacity = require('./ini_cat_opacity');
 
 module.exports = function make_row_cat(params, updating=false) {
 
@@ -62,16 +63,6 @@ module.exports = function make_row_cat(params, updating=false) {
       return 'translate(0, ' + params.viz.y_scale(inst_index) + ')';
     });
 
-  // // working on removing old categories
-  // console.log('trying to')
-  // d3.select(params.root+' .row_cat_container')
-  //   .selectAll('g')
-  //   .data(params.network_data.row_nodes, function(d){return d.name;})
-  //   .exit()
-  //   .each(function(d){
-  //     console.log('here')
-  //   });
-
   d3.select(params.root+' .row_cat_container')
     .selectAll('.row_cat_group')
     .call(cat_tip);
@@ -95,9 +86,6 @@ module.exports = function make_row_cat(params, updating=false) {
 
   var cat_rect;
   var inst_selection;
-
-  var super_string = ': ';
-  var has_title;
 
   d3.selectAll(params.root+' .row_cat_group rect')
     .remove();
@@ -163,38 +151,7 @@ module.exports = function make_row_cat(params, updating=false) {
           // updating_selector
           //   .style('opacity', params.viz.cat_colors.opacity);
 
-
-
-        var inst_type = params.viz.cat_info.row[inst_cat]['type'];
-
-        // set opacity based on string or value cats
-        if (inst_type === 'cat_strings'){
-
-          // opacity is fixed
-          updating_selector
-            .style('opacity', params.viz.cat_colors.opacity);
-
-        } else {
-
-          // opacity varies based on value
-          updating_selector
-            .style('opacity', function(d){
-
-              var cat_value = d[inst_cat];
-
-              if ( cat_value.indexOf(super_string) > -1 ){
-                has_title = true;
-                cat_value = cat_value.split(super_string)[1];
-              }
-
-              cat_value = parseFloat(cat_value);
-
-              return params.viz.cat_info.row[inst_cat]['cat_scale'](cat_value);
-              // return 1;
-            });
-        }
-
-
+        ini_cat_opacity(params.viz, 'row', updating_selector, inst_cat);
 
         });
 
