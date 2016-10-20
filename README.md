@@ -4,7 +4,6 @@ Clustergrammer is an interactive web-based tool for visualizing high-dimensional
 [![demo_screenshot](img/demo_screenshot.png "demo_screenshot.png")](http://maayanlab.github.io/clustergrammer/scrolling_tour)
 
 The project began as an extension of this example http://bost.ocks.org/mike/miserables/ and some of clustergrammer's interacive features include:
-
 - zooming/panning
 - multiple reordering options (e.g. variance)
 - interactive dendrogram
@@ -12,21 +11,23 @@ The project began as an extension of this example http://bost.ocks.org/mike/mise
 - row/column categories
 
 Clustergrammer can be used as:
-
-* clustergrammer.js and clustergrammer.py libraries by developers
-* IPython/Jupyter notebook
+* clustergrammer.js and clustergrammer.py [libraries](#using-clustergrammer-libraries) by web-developers
+* IPython/Jupyter notebook [widget](https://github.com/MaayanLab/clustergrammer-widget)
 * Web-app [http://amp.pharm.mssm.edu/clustergrammer/](http://amp.pharm.mssm.edu/clustergrammer/)
 
-# Clustergrammer Libraries
-
-The Clustergrammer.js source code is under the [src](src) directory and Webpack Module Developer is being used to make clustergrammer.js. The easiest way to visualize a matrix of your own data is to follow the [example workflow](#example-workflow)) that uses the Clustergrammer python library (discussed [here](#clustergrammer-python-library) and repo here [clustergrammer.py](https://github.com/MaayanLab/clustergrammer-py)). Users can also generate the visualization json (see example [mult_view.json](json/mult_view.json)) using another programming language as long as they adhere to the [format](https://github.com/MaayanLab/clustergrammer-json). Clustergrammer is designed to be a reusable chart and has been integrated into several [Ma'ayan lab](http://icahn.mssm.edu/research/labs/maayan-laboratory) web tools including:
-
+Clustergrammer is designed to be a reusable chart and has been integrated into several [Ma'ayan lab](http://icahn.mssm.edu/research/labs/maayan-laboratory) web tools including:
 - [Clustergrammer](http://amp.pharm.mssm.edu/clustergrammer/)
 - [Enrichr](http://amp.pharm.mssm.edu/Enrichr/)
 - [GEN3VA](http://amp.pharm.mssm.edu/gen3va/)
 - [L1000CDS2](http://amp.pharm.mssm.edu/l1000cds2/)
 - [GEO2Enrichr](http://amp.pharm.mssm.edu/g2e/)
 - [Harmoniozome](http://amp.pharm.mssm.edu/Harmonizome/)
+
+
+# Using Clustergrammer Libraries
+
+The Clustergrammer.js source code is under the [src](src) directory and Webpack Module Developer is being used to make clustergrammer.js. The easiest way to visualize a matrix of your own data is to follow the [example Python workflow](#example-python-workflow)) that uses the Clustergrammer python library (discussed [here](#clustergrammer-python-library) and repo here [clustergrammer.py](https://github.com/MaayanLab/clustergrammer-py)). Users can also generate the visualization json (see example [mult_view.json](json/mult_view.json)) using another programming language as long as they adhere to the [format](https://github.com/MaayanLab/clustergrammer-json).
+
 
 # Clustergrammer JavaScript Library
 To make a visualization pass an arguments object with the following required values to Clustergrammer:
@@ -67,6 +68,7 @@ d3.select(window).on('resize', function(){
 
 # Clustergrammer Python Library
 The Clustergrammer python library [clutergrammer.py](https://github.com/MaayanLab/clustergrammer-py), takes a tab-separated matrix file as input (see format [here](#input-matrix-format)), calculates clustering, and generates the visualization json (see format [here](https://github.com/MaayanLab/clustergrammer-json)) for clustergrammer.js. The library can be installed using [pip](https://pypi.python.org/pypi/clustergrammer/) and is compatable with Python 2.7 and 3.5:
+
 ```
 # Python 2
 $ pip install clustergrammer
@@ -74,9 +76,10 @@ $ pip install clustergrammer
 # Python 3
 $ pip3 install clustergrammer
 ```
+
 or the source code can be obtained from clustergrammer.py [repo](https://github.com/MaayanLab/clustergrammer-py): simply copy the clustergrammer directory with the source code to the main directory to use the library in this repo.
 
-### Example Workflow
+## Example Python Workflow
 
 ```
 from clustergrammer import Network
@@ -119,7 +122,7 @@ Alternatively, row/column names and categories can be stored as Python tuples as
 ```
 This format is easier to export from a Python Pandas DataFrame (see [net.write_matrix_to_tsv](https://github.com/MaayanLab/clustergrammer-py/blob/master/clustergrammer/export_data.py)). Note that 'titles' have been added to row and column names as well as row and column categories.
 
-Several example tab-separated matrix files can be found in the [txt](txt) directory. See [example workflow](#example-workflow) or [make_clustergrammer.py](make_clustergrammer.py) for examples of how to use Clustergrammer.py to generate a visualization json from these matrix files.
+Several example tab-separated matrix files can be found in the [txt](txt) directory. See [example Python workflow](#example-python-workflow) or [make_clustergrammer.py](make_clustergrammer.py) for examples of how to use Clustergrammer.py to generate a visualization json from these matrix files.
 
 
 # Optional clustergrammer.js Arguments
