@@ -96,6 +96,9 @@ module.exports = function make_row_cat(params, updating=false) {
   var cat_rect;
   var inst_selection;
 
+  var super_string = ': ';
+  var has_title;
+
   d3.selectAll(params.root+' .row_cat_group rect')
     .remove();
 
@@ -146,16 +149,52 @@ module.exports = function make_row_cat(params, updating=false) {
                 .classed('hovering', false);
             });
 
+          // optionally have categories transition in
+          var updating_selector;
           if (updating){
-            cat_rect
-              .style('opacity', 0)
-              .transition()
-              .duration(1000)
-              .style('opacity', params.viz.cat_colors.opacity);
+            updating_selector = cat_rect
+                                .style('opacity', 0)
+                                .transition()
+                                .duration(1000);
           } else {
-            cat_rect
-              .style('opacity', params.viz.cat_colors.opacity);
+            updating_selector = cat_rect;
           }
+
+          // updating_selector
+          //   .style('opacity', params.viz.cat_colors.opacity);
+
+
+
+        var inst_type = params.viz.cat_info.row[inst_cat]['type'];
+
+        // set opacity based on string or value cats
+        if (inst_type === 'cat_strings'){
+
+          // opacity is fixed
+          updating_selector
+            .style('opacity', params.viz.cat_colors.opacity);
+
+        } else {
+
+          // opacity varies based on value
+          updating_selector
+            .style('opacity', function(d){
+
+              var cat_value = d[inst_cat];
+
+              if ( cat_value.indexOf(super_string) > -1 ){
+                has_title = true;
+                cat_value = cat_value.split(super_string)[1];
+              }
+
+              cat_value = parseFloat(cat_value);
+
+              return params.viz.cat_info.row[inst_cat]['cat_scale'](cat_value);
+              // return 1;
+            });
+        }
+
+
 
         });
 
