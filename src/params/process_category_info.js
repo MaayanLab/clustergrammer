@@ -42,10 +42,12 @@ module.exports = function process_category_info(params, viz, preserve_cats=true)
     var tmp_keys = _.keys(params.network_data[inst_rc+'_nodes'][0]);
 
     _.each( tmp_keys, function(d){
+
       if (d.indexOf('cat-') >= 0){
         viz.show_categories[inst_rc] = true;
         viz.all_cats[inst_rc].push(d);
       }
+
     });
 
 
@@ -62,9 +64,19 @@ module.exports = function process_category_info(params, viz, preserve_cats=true)
 
         _.each(params.network_data[inst_rc+'_nodes'], function(inst_node){
 
-          if (inst_node[inst_cat].indexOf(super_string) > 0){
-            tmp_super = inst_node[inst_cat].split(super_string)[0];
-            viz.cat_names[inst_rc][inst_cat] = tmp_super;
+          // look for title of category in category name
+          if (typeof inst_node[inst_cat] === 'string' ){
+
+            if (inst_node[inst_cat].indexOf(super_string) > 0){
+              tmp_super = inst_node[inst_cat].split(super_string)[0];
+              viz.cat_names[inst_rc][inst_cat] = tmp_super;
+            } else {
+              viz.cat_names[inst_rc][inst_cat] = inst_cat;
+            }
+
+            // ////////////////////////////
+            // viz.cat_names[inst_rc][inst_cat] = inst_cat;
+
           } else {
             viz.cat_names[inst_rc][inst_cat] = inst_cat;
           }
@@ -103,8 +115,10 @@ module.exports = function process_category_info(params, viz, preserve_cats=true)
 
             // hack to get 'Not' categories to not be dark colored
             // also doing this for false
-            if (cat_tmp.indexOf('Not ') >= 0 || cat_tmp.indexOf(': false') > 0){
-              viz.cat_colors[inst_rc][inst_cat][cat_tmp] = '#eee';
+            if (typeof cat_tmp === 'string'){
+              if (cat_tmp.indexOf('Not ') >= 0 || cat_tmp.indexOf(': false') > 0){
+                viz.cat_colors[inst_rc][inst_cat][cat_tmp] = '#eee';
+              }
             }
 
             num_colors = num_colors + 1;

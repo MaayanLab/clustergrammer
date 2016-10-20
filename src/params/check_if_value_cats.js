@@ -10,9 +10,12 @@ module.exports = function check_if_value_cats(cat_states){
   var cat_scale = null;
 
   var super_string = ': ';
-  if ( tmp_cat.indexOf(super_string) > -1 ){
-    has_title = true;
-    tmp_cat = tmp_cat.split(super_string)[1];
+
+  if (typeof tmp_cat === 'string'){
+    if ( tmp_cat.indexOf(super_string) > -1 ){
+      has_title = true;
+      tmp_cat = tmp_cat.split(super_string)[1];
+    }
   }
 
   if ( isNaN(tmp_cat) == false ){

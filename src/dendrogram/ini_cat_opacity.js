@@ -35,9 +35,12 @@ module.exports = function ini_cat_opacity(viz, inst_rc, cat_rect, inst_cat, upda
 
         var cat_value = d[inst_cat];
 
-        if ( cat_value.indexOf(super_string) > -1 ){
-          has_title = true;
-          cat_value = cat_value.split(super_string)[1];
+        if (typeof cat_value === 'string'){
+
+          if ( cat_value.indexOf(super_string) > -1 ){
+            has_title = true;
+            cat_value = cat_value.split(super_string)[1];
+          }
         }
 
         cat_value = parseFloat(cat_value);
