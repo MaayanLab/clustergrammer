@@ -6904,18 +6904,7 @@ module.exports =
 	          d3.select(this).classed('hovering', false);
 	        });
 
-	        // optionally have categories transition in
-	        var updating_selector;
-	        if (updating) {
-	          updating_selector = cat_rect.style('opacity', 0).transition().duration(1000);
-	        } else {
-	          updating_selector = cat_rect;
-	        }
-
-	        // updating_selector
-	        //   .style('opacity', params.viz.cat_colors.opacity);
-
-	        ini_cat_opacity(params.viz, 'row', updating_selector, inst_cat);
+	        ini_cat_opacity(params.viz, 'row', cat_rect, inst_cat, updating);
 	      });
 	    });
 	  }
@@ -11999,6 +11988,8 @@ module.exports =
 	'use strict';
 
 	module.exports = function ini_cat_opacity(viz, inst_rc, cat_rect, inst_cat) {
+	  var updating = arguments.length <= 4 || arguments[4] === undefined ? false : arguments[4];
+
 
 	  var super_string = ': ';
 	  var has_title;
@@ -12007,8 +11998,13 @@ module.exports =
 	  // set opacity based on string or value cats
 	  if (inst_type === 'cat_strings') {
 
-	    // opacity is fixed
-	    cat_rect.classed('cat_strings', true).style('opacity', viz.cat_colors.opacity);
+	    // optionally have categories transition in
+	    if (updating) {
+	      cat_rect.classed('cat_strings', true).style('opacity', 0).transition().duration(1000).style('opacity', viz.cat_colors.opacity);
+	    } else {
+	      // opacity is fixed
+	      cat_rect.classed('cat_strings', true).style('opacity', viz.cat_colors.opacity);
+	    }
 	  } else {
 
 	    // opacity varies based on value

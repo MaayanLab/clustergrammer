@@ -137,21 +137,7 @@ module.exports = function make_row_cat(params, updating=false) {
                 .classed('hovering', false);
             });
 
-          // optionally have categories transition in
-          var updating_selector;
-          if (updating){
-            updating_selector = cat_rect
-                                .style('opacity', 0)
-                                .transition()
-                                .duration(1000);
-          } else {
-            updating_selector = cat_rect;
-          }
-
-          // updating_selector
-          //   .style('opacity', params.viz.cat_colors.opacity);
-
-        ini_cat_opacity(params.viz, 'row', updating_selector, inst_cat);
+        ini_cat_opacity(params.viz, 'row', cat_rect, inst_cat, updating);
 
         });
 
