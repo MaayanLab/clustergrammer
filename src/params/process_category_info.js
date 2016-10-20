@@ -6,7 +6,7 @@ module.exports = function process_category_info(params, viz, preserve_cats=true)
 
   var super_string = ': ';
   var tmp_super;
-  var inst_types;
+  var inst_info;
   var inst_color;
 
   viz.show_categories = {};
@@ -22,7 +22,7 @@ module.exports = function process_category_info(params, viz, preserve_cats=true)
   var predefine_colors = false;
   if (viz.cat_colors === null){
     viz.cat_colors = {};
-    viz.cat_types = {};
+    viz.cat_info = {};
     viz.cat_colors.value_opacity = ini_val_opacity;
     predefine_colors = false;
   } else {
@@ -53,7 +53,7 @@ module.exports = function process_category_info(params, viz, preserve_cats=true)
 
       if (predefine_colors === false){
         viz.cat_colors[inst_rc] = {};
-        viz.cat_types[inst_rc] = {};
+        viz.cat_info[inst_rc] = {};
       }
 
       viz.cat_names[inst_rc] = {};
@@ -71,30 +71,31 @@ module.exports = function process_category_info(params, viz, preserve_cats=true)
 
         });
 
-        var names_of_cat = _.uniq(
+        var cat_states = _.uniq(
             utils.pluck(params.network_data[inst_rc+'_nodes'], inst_cat)
           ).sort();
 
         // check whether all the categories are of value type
-        inst_types = check_if_value_cats(names_of_cat);
+        inst_info = check_if_value_cats(cat_states);
 
         // !!! tmp disable value categories
         ///////////////////////////////////
         ///////////////////////////////////
-        inst_types = 'cat_strings';
+        inst_info.type = 'cat_strings';
 
         if (predefine_colors === false){
 
           viz.cat_colors[inst_rc][inst_cat] = {};
 
-          viz.cat_types[inst_rc][inst_cat] = inst_types;
+          // pass info_info object
+          viz.cat_info[inst_rc][inst_cat] = inst_info;
 
-          _.each(names_of_cat, function(cat_tmp, i){
+          _.each(cat_states, function(cat_tmp, i){
 
             inst_color = colors.get_random_color(i+num_colors);
 
             // if all categories are of value type
-            if (inst_types == 'cat_values'){
+            if (inst_info.type == 'cat_values'){
               inst_color = 'red';
             }
 

@@ -1116,7 +1116,7 @@ module.exports =
 
 	  var super_string = ': ';
 	  var tmp_super;
-	  var inst_types;
+	  var inst_info;
 	  var inst_color;
 
 	  viz.show_categories = {};
@@ -1132,7 +1132,7 @@ module.exports =
 	  var predefine_colors = false;
 	  if (viz.cat_colors === null) {
 	    viz.cat_colors = {};
-	    viz.cat_types = {};
+	    viz.cat_info = {};
 	    viz.cat_colors.value_opacity = ini_val_opacity;
 	    predefine_colors = false;
 	  } else {
@@ -1162,7 +1162,7 @@ module.exports =
 
 	      if (predefine_colors === false) {
 	        viz.cat_colors[inst_rc] = {};
-	        viz.cat_types[inst_rc] = {};
+	        viz.cat_info[inst_rc] = {};
 	      }
 
 	      viz.cat_names[inst_rc] = {};
@@ -1179,28 +1179,29 @@ module.exports =
 	          }
 	        });
 
-	        var names_of_cat = _.uniq(utils.pluck(params.network_data[inst_rc + '_nodes'], inst_cat)).sort();
+	        var cat_states = _.uniq(utils.pluck(params.network_data[inst_rc + '_nodes'], inst_cat)).sort();
 
 	        // check whether all the categories are of value type
-	        inst_types = check_if_value_cats(names_of_cat);
+	        inst_info = check_if_value_cats(cat_states);
 
 	        // !!! tmp disable value categories
 	        ///////////////////////////////////
 	        ///////////////////////////////////
-	        inst_types = 'cat_strings';
+	        inst_info.type = 'cat_strings';
 
 	        if (predefine_colors === false) {
 
 	          viz.cat_colors[inst_rc][inst_cat] = {};
 
-	          viz.cat_types[inst_rc][inst_cat] = inst_types;
+	          // pass info_info object
+	          viz.cat_info[inst_rc][inst_cat] = inst_info;
 
-	          _.each(names_of_cat, function (cat_tmp, i) {
+	          _.each(cat_states, function (cat_tmp, i) {
 
 	            inst_color = colors.get_random_color(i + num_colors);
 
 	            // if all categories are of value type
-	            if (inst_types == 'cat_values') {
+	            if (inst_info.type == 'cat_values') {
 	              inst_color = 'red';
 	            }
 
@@ -1273,17 +1274,19 @@ module.exports =
 
 	'use strict';
 
-	module.exports = function check_if_value_cats(names_of_cat) {
+	module.exports = function check_if_value_cats(cat_states) {
 
 	  console.log('checking if there are value cats');
 
 	  var super_string = ': ';
 
-	  var tmp_cat = names_of_cat[0];
+	  var tmp_cat = cat_states[0];
 
 	  var has_title = false;
 	  var might_have_values = false;
 	  var cat_types = 'cat_strings';
+	  var max_abs_val = NaN;
+	  var all_values = [];
 
 	  if (tmp_cat.indexOf(super_string) > -1) {
 	    has_title = true;
@@ -1300,7 +1303,7 @@ module.exports =
 	    // the default state is that all are now values, check each one
 	    cat_types = 'cat_values';
 
-	    _.each(names_of_cat, function (inst_cat) {
+	    _.each(cat_states, function (inst_cat) {
 
 	      if (has_title) {
 	        inst_cat = inst_cat.split(super_string)[1];
@@ -1309,18 +1312,28 @@ module.exports =
 	      // checking whether inst_cat is 'not a number'
 	      if (isNaN(inst_cat) == true) {
 	        cat_types = 'cat_strings';
+	      } else {
+	        inst_cat = parseFloat(inst_cat);
+	        all_values.push(inst_cat);
 	      }
 	    });
 	  }
 
-	  // // use something like this to get abs max value
-	  // matrix.max_link = _.max(network_data.links, function (d) {
-	  //   return Math.abs(d.value);
-	  // }).value;
-	  // matrix.abs_max_val = Math.abs(matrix.max_link) * params.clamp_opacity;
+	  if (cat_types === 'cat_values') {
 
+	    // get absolute value
+	    var max_value = _.max(all_values, function (d) {
+	      return Math.abs(d);
+	    });
 
-	  return cat_types;
+	    max_abs_val = Math.abs(max_value);
+	  }
+
+	  var inst_info = {};
+	  inst_info.type = cat_types;
+	  inst_info.max_abs_val = max_abs_val;
+
+	  return inst_info;
 		};
 
 /***/ },

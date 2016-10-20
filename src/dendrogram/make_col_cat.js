@@ -93,7 +93,6 @@ module.exports = function make_col_cat(params) {
               .classed('hovering', false);
           });
 
-
         cat_rect
           .style('opacity', params.viz.cat_colors.opacity);
       });
