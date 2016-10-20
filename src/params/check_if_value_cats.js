@@ -1,8 +1,5 @@
 module.exports = function check_if_value_cats(cat_states){
 
-  console.log('checking if there are value cats')
-
-
   var tmp_cat = cat_states[0];
 
   var has_title = false;

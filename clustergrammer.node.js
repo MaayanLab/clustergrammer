@@ -1184,10 +1184,10 @@ module.exports =
 	        // check whether all the categories are of value type
 	        inst_info = check_if_value_cats(cat_states);
 
-	        // !!! tmp disable value categories
-	        ///////////////////////////////////
-	        ///////////////////////////////////
-	        inst_info.type = 'cat_strings';
+	        // // !!! tmp disable value categories
+	        // ///////////////////////////////////
+	        // ///////////////////////////////////
+	        // inst_info.type = 'cat_strings';
 
 	        if (predefine_colors === false) {
 
@@ -1275,8 +1275,6 @@ module.exports =
 	'use strict';
 
 	module.exports = function check_if_value_cats(cat_states) {
-
-	  console.log('checking if there are value cats');
 
 	  var tmp_cat = cat_states[0];
 
@@ -6751,21 +6749,27 @@ module.exports =
 	      _.each(node_types, function (tmp_rc) {
 
 	        if (cat_name.indexOf('Not ') < 0 && cat_name != 'false') {
+
 	          d3.selectAll(params.root + ' .' + tmp_rc + '_cat_group').selectAll('rect').style('opacity', function (d) {
-	            var inst_opacity;
-	            var tmp_name;
-	            var tmp_cat = d3.select(this).attr('cat');
 
-	            if (d[tmp_cat].indexOf(': ') >= 0) {
-	              tmp_name = d[tmp_cat].split(': ')[1];
-	            } else {
-	              tmp_name = d[tmp_cat];
-	            }
+	            var inst_opacity = d3.select(this).style('opacity');
 
-	            if (tmp_cat === inst_cat && tmp_name === cat_name) {
-	              inst_opacity = params.viz.cat_colors.active_opacity;
-	            } else {
-	              inst_opacity = params.viz.cat_colors.opacity / 4;
+	            if (d3.select(this).classed('cat_strings')) {
+
+	              var tmp_name;
+	              var tmp_cat = d3.select(this).attr('cat');
+
+	              if (d[tmp_cat].indexOf(': ') >= 0) {
+	                tmp_name = d[tmp_cat].split(': ')[1];
+	              } else {
+	                tmp_name = d[tmp_cat];
+	              }
+
+	              if (tmp_cat === inst_cat && tmp_name === cat_name) {
+	                inst_opacity = params.viz.cat_colors.active_opacity;
+	              } else {
+	                inst_opacity = params.viz.cat_colors.opacity / 4;
+	              }
 	            }
 
 	            return inst_opacity;
@@ -6785,7 +6789,17 @@ module.exports =
 	module.exports = function reset_cat_opacity(params) {
 
 	  _.each(['row', 'col'], function (inst_rc) {
-	    d3.selectAll(params.root + ' .' + inst_rc + '_cat_group').selectAll('rect').style('opacity', params.viz.cat_colors.opacity);
+
+	    d3.selectAll(params.root + ' .' + inst_rc + '_cat_group').selectAll('rect').style('opacity', function (d) {
+
+	      var inst_opacity = d3.select(this).style('opacity');
+
+	      if (d3.select(this).classed('cat_strings')) {
+	        inst_opacity = params.viz.cat_colors.opacity;
+	      }
+
+	      return inst_opacity;
+	    });
 	  });
 		};
 
@@ -11986,8 +12000,6 @@ module.exports =
 
 	module.exports = function ini_cat_opacity(viz, inst_rc, cat_rect, inst_cat) {
 
-	  console.log('initializing cat opacity ' + inst_rc);
-
 	  var super_string = ': ';
 	  var has_title;
 	  var inst_type = viz.cat_info[inst_rc][inst_cat]['type'];
@@ -11996,11 +12008,11 @@ module.exports =
 	  if (inst_type === 'cat_strings') {
 
 	    // opacity is fixed
-	    cat_rect.style('opacity', viz.cat_colors.opacity);
+	    cat_rect.classed('cat_strings', true).style('opacity', viz.cat_colors.opacity);
 	  } else {
 
 	    // opacity varies based on value
-	    cat_rect.style('opacity', function (d) {
+	    cat_rect.classed('cat_values', true).style('opacity', function (d) {
 
 	      var cat_value = d[inst_cat];
 

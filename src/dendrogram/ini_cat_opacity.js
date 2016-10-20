@@ -1,7 +1,5 @@
 module.exports = function ini_cat_opacity(viz, inst_rc, cat_rect, inst_cat){
 
-  console.log('initializing cat opacity '+ inst_rc)
-
   var super_string = ': ';
   var has_title;
   var inst_type = viz.cat_info[inst_rc][inst_cat]['type'];
@@ -11,12 +9,14 @@ module.exports = function ini_cat_opacity(viz, inst_rc, cat_rect, inst_cat){
 
     // opacity is fixed
     cat_rect
+      .classed('cat_strings', true)
       .style('opacity', viz.cat_colors.opacity);
 
   } else {
 
     // opacity varies based on value
     cat_rect
+      .classed('cat_values', true)
       .style('opacity', function(d){
 
         var cat_value = d[inst_cat];

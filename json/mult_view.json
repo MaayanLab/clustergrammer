@@ -855,11 +855,11 @@
       "name": "Cell Line: H1650", 
       "clust": 12, 
       "cat_1_index": 25, 
-      "cat_0_index": 6, 
+      "cat_0_index": 24, 
       "rank": 6, 
       "cat-1": "Gender: Male", 
       "ini": 29, 
-      "cat-0": "Category: 2", 
+      "cat-0": "Category: two", 
       "rankvar": 4
     }, 
     {
@@ -879,11 +879,11 @@
       "name": "Cell Line: H23", 
       "clust": 2, 
       "cat_1_index": 24, 
-      "cat_0_index": 9, 
+      "cat_0_index": 27, 
       "rank": 17, 
       "cat-1": "Gender: Male", 
       "ini": 28, 
-      "cat-0": "Category: 2", 
+      "cat-0": "Category: two", 
       "rankvar": 8
     }, 
     {
@@ -903,11 +903,11 @@
       "name": "Cell Line: CAL-12T", 
       "clust": 4, 
       "cat_1_index": 23, 
-      "cat_0_index": 8, 
+      "cat_0_index": 26, 
       "rank": 10, 
       "cat-1": "Gender: Male", 
       "ini": 27, 
-      "cat-0": "Category: 2", 
+      "cat-0": "Category: two", 
       "rankvar": 19
     }, 
     {
@@ -927,11 +927,11 @@
       "name": "Cell Line: H358", 
       "clust": 25, 
       "cat_1_index": 28, 
-      "cat_0_index": 1, 
+      "cat_0_index": 14, 
       "rank": 4, 
       "cat-1": "Gender: Male", 
       "ini": 26, 
-      "cat-0": "Category: 1", 
+      "cat-0": "Category: one", 
       "rankvar": 0
     }, 
     {
@@ -951,11 +951,11 @@
       "name": "Cell Line: H1975", 
       "clust": 22, 
       "cat_1_index": 3, 
-      "cat_0_index": 7, 
+      "cat_0_index": 25, 
       "rank": 0, 
       "cat-1": "Gender: Female", 
       "ini": 25, 
-      "cat-0": "Category: 2", 
+      "cat-0": "Category: two", 
       "rankvar": 24
     }, 
     {
@@ -975,11 +975,11 @@
       "name": "Cell Line: HCC15", 
       "clust": 1, 
       "cat_1_index": 11, 
-      "cat_0_index": 10, 
+      "cat_0_index": 28, 
       "rank": 24, 
       "cat-1": "Gender: Male", 
       "ini": 24, 
-      "cat-0": "Category: 2", 
+      "cat-0": "Category: two", 
       "rankvar": 20
     }, 
     {
@@ -999,11 +999,11 @@
       "name": "Cell Line: H1355", 
       "clust": 5, 
       "cat_1_index": 14, 
-      "cat_0_index": 13, 
+      "cat_0_index": 21, 
       "rank": 9, 
       "cat-1": "Gender: Male", 
       "ini": 23, 
-      "cat-0": "Category: 3", 
+      "cat-0": "Category: three", 
       "rankvar": 6
     }, 
     {
@@ -1023,11 +1023,11 @@
       "name": "Cell Line: HCC827", 
       "clust": 23, 
       "cat_1_index": 0, 
-      "cat_0_index": 4, 
+      "cat_0_index": 17, 
       "rank": 28, 
       "cat-1": "Gender: Female", 
       "ini": 22, 
-      "cat-0": "Category: 1", 
+      "cat-0": "Category: one", 
       "rankvar": 25
     }, 
     {
@@ -1047,11 +1047,11 @@
       "name": "Cell Line: H2405", 
       "clust": 20, 
       "cat_1_index": 12, 
-      "cat_0_index": 25, 
+      "cat_0_index": 2, 
       "rank": 1, 
       "cat-1": "Gender: Male", 
       "ini": 21, 
-      "cat-0": "Category: 5", 
+      "cat-0": "Category: five", 
       "rankvar": 12
     }, 
     {
@@ -1071,11 +1071,11 @@
       "name": "Cell Line: HCC78", 
       "clust": 21, 
       "cat_1_index": 15, 
-      "cat_0_index": 26, 
+      "cat_0_index": 3, 
       "rank": 25, 
       "cat-1": "Gender: Male", 
       "ini": 20, 
-      "cat-0": "Category: 5", 
+      "cat-0": "Category: five", 
       "rankvar": 27
     }, 
     {
@@ -1095,11 +1095,11 @@
       "name": "Cell Line: H1666", 
       "clust": 7, 
       "cat_1_index": 4, 
-      "cat_0_index": 19, 
+      "cat_0_index": 9, 
       "rank": 18, 
       "cat-1": "Gender: Female", 
       "ini": 19, 
-      "cat-0": "Category: 4", 
+      "cat-0": "Category: four", 
       "rankvar": 15
     }, 
     {
@@ -1119,11 +1119,11 @@
       "name": "Cell Line: H661", 
       "clust": 16, 
       "cat_1_index": 27, 
-      "cat_0_index": 27, 
+      "cat_0_index": 4, 
       "rank": 3, 
       "cat-1": "Gender: Male", 
       "ini": 18, 
-      "cat-0": "Category: 5", 
+      "cat-0": "Category: five", 
       "rankvar": 26
     }, 
     {
@@ -1143,11 +1143,11 @@
       "name": "Cell Line: H838", 
       "clust": 17, 
       "cat_1_index": 18, 
-      "cat_0_index": 28, 
+      "cat_0_index": 5, 
       "rank": 7, 
       "cat-1": "Gender: Male", 
       "ini": 17, 
-      "cat-0": "Category: 5", 
+      "cat-0": "Category: five", 
       "rankvar": 23
     }, 
     {
@@ -1167,11 +1167,11 @@
       "name": "Cell Line: H1703", 
       "clust": 14, 
       "cat_1_index": 19, 
-      "cat_0_index": 23, 
+      "cat_0_index": 0, 
       "rank": 11, 
       "cat-1": "Gender: Male", 
       "ini": 16, 
-      "cat-0": "Category: 5", 
+      "cat-0": "Category: five", 
       "rankvar": 21
     }, 
     {
@@ -1191,11 +1191,11 @@
       "name": "Cell Line: CALU-3", 
       "clust": 19, 
       "cat_1_index": 21, 
-      "cat_0_index": 16, 
+      "cat_0_index": 6, 
       "rank": 8, 
       "cat-1": "Gender: Male", 
       "ini": 15, 
-      "cat-0": "Category: 4", 
+      "cat-0": "Category: four", 
       "rankvar": 7
     }, 
     {
@@ -1215,11 +1215,11 @@
       "name": "Cell Line: H2342", 
       "clust": 18, 
       "cat_1_index": 9, 
-      "cat_0_index": 22, 
+      "cat_0_index": 12, 
       "rank": 26, 
       "cat-1": "Gender: Female", 
       "ini": 14, 
-      "cat-0": "Category: 4", 
+      "cat-0": "Category: four", 
       "rankvar": 22
     }, 
     {
@@ -1239,11 +1239,11 @@
       "name": "Cell Line: H2228", 
       "clust": 26, 
       "cat_1_index": 1, 
-      "cat_0_index": 0, 
+      "cat_0_index": 13, 
       "rank": 2, 
       "cat-1": "Gender: Female", 
       "ini": 13, 
-      "cat-0": "Category: 1", 
+      "cat-0": "Category: one", 
       "rankvar": 5
     }, 
     {
@@ -1263,11 +1263,11 @@
       "name": "Cell Line: H1299", 
       "clust": 15, 
       "cat_1_index": 16, 
-      "cat_0_index": 14, 
+      "cat_0_index": 22, 
       "rank": 12, 
       "cat-1": "Gender: Male", 
       "ini": 12, 
-      "cat-0": "Category: 3", 
+      "cat-0": "Category: three", 
       "rankvar": 1
     }, 
     {
@@ -1287,11 +1287,11 @@
       "name": "Cell Line: H1792", 
       "clust": 10, 
       "cat_1_index": 17, 
-      "cat_0_index": 12, 
+      "cat_0_index": 20, 
       "rank": 20, 
       "cat-1": "Gender: Male", 
       "ini": 11, 
-      "cat-0": "Category: 3", 
+      "cat-0": "Category: three", 
       "rankvar": 9
     }, 
     {
@@ -1311,11 +1311,11 @@
       "name": "Cell Line: H460", 
       "clust": 11, 
       "cat_1_index": 13, 
-      "cat_0_index": 11, 
+      "cat_0_index": 19, 
       "rank": 5, 
       "cat-1": "Gender: Male", 
       "ini": 10, 
-      "cat-0": "Category: 3", 
+      "cat-0": "Category: three", 
       "rankvar": 11
     }, 
     {
@@ -1335,11 +1335,11 @@
       "name": "Cell Line: H2106", 
       "clust": 0, 
       "cat_1_index": 26, 
-      "cat_0_index": 20, 
+      "cat_0_index": 10, 
       "rank": 22, 
       "cat-1": "Gender: Male", 
       "ini": 9, 
-      "cat-0": "Category: 4", 
+      "cat-0": "Category: four", 
       "rankvar": 28
     }, 
     {
@@ -1359,11 +1359,11 @@
       "name": "Cell Line: H441", 
       "clust": 27, 
       "cat_1_index": 10, 
-      "cat_0_index": 2, 
+      "cat_0_index": 15, 
       "rank": 27, 
       "cat-1": "Gender: Male", 
       "ini": 8, 
-      "cat-0": "Category: 1", 
+      "cat-0": "Category: one", 
       "rankvar": 14
     }, 
     {
@@ -1383,11 +1383,11 @@
       "name": "Cell Line: H1944", 
       "clust": 8, 
       "cat_1_index": 6, 
-      "cat_0_index": 15, 
+      "cat_0_index": 23, 
       "rank": 23, 
       "cat-1": "Gender: Female", 
       "ini": 7, 
-      "cat-0": "Category: 3", 
+      "cat-0": "Category: three", 
       "rankvar": 10
     }, 
     {
@@ -1407,11 +1407,11 @@
       "name": "Cell Line: H1437", 
       "clust": 6, 
       "cat_1_index": 20, 
-      "cat_0_index": 21, 
+      "cat_0_index": 11, 
       "rank": 16, 
       "cat-1": "Gender: Male", 
       "ini": 6, 
-      "cat-0": "Category: 4", 
+      "cat-0": "Category: four", 
       "rankvar": 17
     }, 
     {
@@ -1431,11 +1431,11 @@
       "name": "Cell Line: H1734", 
       "clust": 24, 
       "cat_1_index": 2, 
-      "cat_0_index": 3, 
+      "cat_0_index": 16, 
       "rank": 19, 
       "cat-1": "Gender: Female", 
       "ini": 5, 
-      "cat-0": "Category: 1", 
+      "cat-0": "Category: one", 
       "rankvar": 18
     }, 
     {
@@ -1455,11 +1455,11 @@
       "name": "Cell Line: LOU-NH91", 
       "clust": 13, 
       "cat_1_index": 7, 
-      "cat_0_index": 24, 
+      "cat_0_index": 1, 
       "rank": 15, 
       "cat-1": "Gender: Female", 
       "ini": 4, 
-      "cat-0": "Category: 5", 
+      "cat-0": "Category: five", 
       "rankvar": 16
     }, 
     {
@@ -1479,11 +1479,11 @@
       "name": "Cell Line: HCC44", 
       "clust": 3, 
       "cat_1_index": 5, 
-      "cat_0_index": 17, 
+      "cat_0_index": 7, 
       "rank": 14, 
       "cat-1": "Gender: Female", 
       "ini": 3, 
-      "cat-0": "Category: 4", 
+      "cat-0": "Category: four", 
       "rankvar": 2
     }, 
     {
@@ -1503,11 +1503,11 @@
       "name": "Cell Line: A549", 
       "clust": 9, 
       "cat_1_index": 22, 
-      "cat_0_index": 18, 
+      "cat_0_index": 8, 
       "rank": 21, 
       "cat-1": "Gender: Male", 
       "ini": 2, 
-      "cat-0": "Category: 4", 
+      "cat-0": "Category: four", 
       "rankvar": 3
     }, 
     {
@@ -1527,11 +1527,11 @@
       "name": "Cell Line: H1781", 
       "clust": 28, 
       "cat_1_index": 8, 
-      "cat_0_index": 5, 
+      "cat_0_index": 18, 
       "rank": 13, 
       "cat-1": "Gender: Female", 
       "ini": 1, 
-      "cat-0": "Category: 1", 
+      "cat-0": "Category: one", 
       "rankvar": 13
     }
   ], 
@@ -7908,11 +7908,11 @@
             "name": "Cell Line: H1650", 
             "clust": 12, 
             "cat_1_index": 25, 
-            "cat_0_index": 6, 
+            "cat_0_index": 24, 
             "rank": 6, 
             "cat-1": "Gender: Male", 
             "ini": 29, 
-            "cat-0": "Category: 2", 
+            "cat-0": "Category: two", 
             "rankvar": 4
           }, 
           {
@@ -7932,11 +7932,11 @@
             "name": "Cell Line: H23", 
             "clust": 2, 
             "cat_1_index": 24, 
-            "cat_0_index": 9, 
+            "cat_0_index": 27, 
             "rank": 17, 
             "cat-1": "Gender: Male", 
             "ini": 28, 
-            "cat-0": "Category: 2", 
+            "cat-0": "Category: two", 
             "rankvar": 8
           }, 
           {
@@ -7956,11 +7956,11 @@
             "name": "Cell Line: CAL-12T", 
             "clust": 4, 
             "cat_1_index": 23, 
-            "cat_0_index": 8, 
+            "cat_0_index": 26, 
             "rank": 10, 
             "cat-1": "Gender: Male", 
             "ini": 27, 
-            "cat-0": "Category: 2", 
+            "cat-0": "Category: two", 
             "rankvar": 19
           }, 
           {
@@ -7980,11 +7980,11 @@
             "name": "Cell Line: H358", 
             "clust": 25, 
             "cat_1_index": 28, 
-            "cat_0_index": 1, 
+            "cat_0_index": 14, 
             "rank": 4, 
             "cat-1": "Gender: Male", 
             "ini": 26, 
-            "cat-0": "Category: 1", 
+            "cat-0": "Category: one", 
             "rankvar": 0
           }, 
           {
@@ -8004,11 +8004,11 @@
             "name": "Cell Line: H1975", 
             "clust": 22, 
             "cat_1_index": 3, 
-            "cat_0_index": 7, 
+            "cat_0_index": 25, 
             "rank": 0, 
             "cat-1": "Gender: Female", 
             "ini": 25, 
-            "cat-0": "Category: 2", 
+            "cat-0": "Category: two", 
             "rankvar": 24
           }, 
           {
@@ -8028,11 +8028,11 @@
             "name": "Cell Line: HCC15", 
             "clust": 1, 
             "cat_1_index": 11, 
-            "cat_0_index": 10, 
+            "cat_0_index": 28, 
             "rank": 24, 
             "cat-1": "Gender: Male", 
             "ini": 24, 
-            "cat-0": "Category: 2", 
+            "cat-0": "Category: two", 
             "rankvar": 20
           }, 
           {
@@ -8052,11 +8052,11 @@
             "name": "Cell Line: H1355", 
             "clust": 5, 
             "cat_1_index": 14, 
-            "cat_0_index": 13, 
+            "cat_0_index": 21, 
             "rank": 9, 
             "cat-1": "Gender: Male", 
             "ini": 23, 
-            "cat-0": "Category: 3", 
+            "cat-0": "Category: three", 
             "rankvar": 6
           }, 
           {
@@ -8076,11 +8076,11 @@
             "name": "Cell Line: HCC827", 
             "clust": 23, 
             "cat_1_index": 0, 
-            "cat_0_index": 4, 
+            "cat_0_index": 17, 
             "rank": 28, 
             "cat-1": "Gender: Female", 
             "ini": 22, 
-            "cat-0": "Category: 1", 
+            "cat-0": "Category: one", 
             "rankvar": 25
           }, 
           {
@@ -8100,11 +8100,11 @@
             "name": "Cell Line: H2405", 
             "clust": 20, 
             "cat_1_index": 12, 
-            "cat_0_index": 25, 
+            "cat_0_index": 2, 
             "rank": 1, 
             "cat-1": "Gender: Male", 
             "ini": 21, 
-            "cat-0": "Category: 5", 
+            "cat-0": "Category: five", 
             "rankvar": 12
           }, 
           {
@@ -8124,11 +8124,11 @@
             "name": "Cell Line: HCC78", 
             "clust": 21, 
             "cat_1_index": 15, 
-            "cat_0_index": 26, 
+            "cat_0_index": 3, 
             "rank": 25, 
             "cat-1": "Gender: Male", 
             "ini": 20, 
-            "cat-0": "Category: 5", 
+            "cat-0": "Category: five", 
             "rankvar": 27
           }, 
           {
@@ -8148,11 +8148,11 @@
             "name": "Cell Line: H1666", 
             "clust": 7, 
             "cat_1_index": 4, 
-            "cat_0_index": 19, 
+            "cat_0_index": 9, 
             "rank": 18, 
             "cat-1": "Gender: Female", 
             "ini": 19, 
-            "cat-0": "Category: 4", 
+            "cat-0": "Category: four", 
             "rankvar": 15
           }, 
           {
@@ -8172,11 +8172,11 @@
             "name": "Cell Line: H661", 
             "clust": 16, 
             "cat_1_index": 27, 
-            "cat_0_index": 27, 
+            "cat_0_index": 4, 
             "rank": 3, 
             "cat-1": "Gender: Male", 
             "ini": 18, 
-            "cat-0": "Category: 5", 
+            "cat-0": "Category: five", 
             "rankvar": 26
           }, 
           {
@@ -8196,11 +8196,11 @@
             "name": "Cell Line: H838", 
             "clust": 17, 
             "cat_1_index": 18, 
-            "cat_0_index": 28, 
+            "cat_0_index": 5, 
             "rank": 7, 
             "cat-1": "Gender: Male", 
             "ini": 17, 
-            "cat-0": "Category: 5", 
+            "cat-0": "Category: five", 
             "rankvar": 23
           }, 
           {
@@ -8220,11 +8220,11 @@
             "name": "Cell Line: H1703", 
             "clust": 14, 
             "cat_1_index": 19, 
-            "cat_0_index": 23, 
+            "cat_0_index": 0, 
             "rank": 11, 
             "cat-1": "Gender: Male", 
             "ini": 16, 
-            "cat-0": "Category: 5", 
+            "cat-0": "Category: five", 
             "rankvar": 21
           }, 
           {
@@ -8244,11 +8244,11 @@
             "name": "Cell Line: CALU-3", 
             "clust": 19, 
             "cat_1_index": 21, 
-            "cat_0_index": 16, 
+            "cat_0_index": 6, 
             "rank": 8, 
             "cat-1": "Gender: Male", 
             "ini": 15, 
-            "cat-0": "Category: 4", 
+            "cat-0": "Category: four", 
             "rankvar": 7
           }, 
           {
@@ -8268,11 +8268,11 @@
             "name": "Cell Line: H2342", 
             "clust": 18, 
             "cat_1_index": 9, 
-            "cat_0_index": 22, 
+            "cat_0_index": 12, 
             "rank": 26, 
             "cat-1": "Gender: Female", 
             "ini": 14, 
-            "cat-0": "Category: 4", 
+            "cat-0": "Category: four", 
             "rankvar": 22
           }, 
           {
@@ -8292,11 +8292,11 @@
             "name": "Cell Line: H2228", 
             "clust": 26, 
             "cat_1_index": 1, 
-            "cat_0_index": 0, 
+            "cat_0_index": 13, 
             "rank": 2, 
             "cat-1": "Gender: Female", 
             "ini": 13, 
-            "cat-0": "Category: 1", 
+            "cat-0": "Category: one", 
             "rankvar": 5
           }, 
           {
@@ -8316,11 +8316,11 @@
             "name": "Cell Line: H1299", 
             "clust": 15, 
             "cat_1_index": 16, 
-            "cat_0_index": 14, 
+            "cat_0_index": 22, 
             "rank": 12, 
             "cat-1": "Gender: Male", 
             "ini": 12, 
-            "cat-0": "Category: 3", 
+            "cat-0": "Category: three", 
             "rankvar": 1
           }, 
           {
@@ -8340,11 +8340,11 @@
             "name": "Cell Line: H1792", 
             "clust": 10, 
             "cat_1_index": 17, 
-            "cat_0_index": 12, 
+            "cat_0_index": 20, 
             "rank": 20, 
             "cat-1": "Gender: Male", 
             "ini": 11, 
-            "cat-0": "Category: 3", 
+            "cat-0": "Category: three", 
             "rankvar": 9
           }, 
           {
@@ -8364,11 +8364,11 @@
             "name": "Cell Line: H460", 
             "clust": 11, 
             "cat_1_index": 13, 
-            "cat_0_index": 11, 
+            "cat_0_index": 19, 
             "rank": 5, 
             "cat-1": "Gender: Male", 
             "ini": 10, 
-            "cat-0": "Category: 3", 
+            "cat-0": "Category: three", 
             "rankvar": 11
           }, 
           {
@@ -8388,11 +8388,11 @@
             "name": "Cell Line: H2106", 
             "clust": 0, 
             "cat_1_index": 26, 
-            "cat_0_index": 20, 
+            "cat_0_index": 10, 
             "rank": 22, 
             "cat-1": "Gender: Male", 
             "ini": 9, 
-            "cat-0": "Category: 4", 
+            "cat-0": "Category: four", 
             "rankvar": 28
           }, 
           {
@@ -8412,11 +8412,11 @@
             "name": "Cell Line: H441", 
             "clust": 27, 
             "cat_1_index": 10, 
-            "cat_0_index": 2, 
+            "cat_0_index": 15, 
             "rank": 27, 
             "cat-1": "Gender: Male", 
             "ini": 8, 
-            "cat-0": "Category: 1", 
+            "cat-0": "Category: one", 
             "rankvar": 14
           }, 
           {
@@ -8436,11 +8436,11 @@
             "name": "Cell Line: H1944", 
             "clust": 8, 
             "cat_1_index": 6, 
-            "cat_0_index": 15, 
+            "cat_0_index": 23, 
             "rank": 23, 
             "cat-1": "Gender: Female", 
             "ini": 7, 
-            "cat-0": "Category: 3", 
+            "cat-0": "Category: three", 
             "rankvar": 10
           }, 
           {
@@ -8460,11 +8460,11 @@
             "name": "Cell Line: H1437", 
             "clust": 6, 
             "cat_1_index": 20, 
-            "cat_0_index": 21, 
+            "cat_0_index": 11, 
             "rank": 16, 
             "cat-1": "Gender: Male", 
             "ini": 6, 
-            "cat-0": "Category: 4", 
+            "cat-0": "Category: four", 
             "rankvar": 17
           }, 
           {
@@ -8484,11 +8484,11 @@
             "name": "Cell Line: H1734", 
             "clust": 24, 
             "cat_1_index": 2, 
-            "cat_0_index": 3, 
+            "cat_0_index": 16, 
             "rank": 19, 
             "cat-1": "Gender: Female", 
             "ini": 5, 
-            "cat-0": "Category: 1", 
+            "cat-0": "Category: one", 
             "rankvar": 18
           }, 
           {
@@ -8508,11 +8508,11 @@
             "name": "Cell Line: LOU-NH91", 
             "clust": 13, 
             "cat_1_index": 7, 
-            "cat_0_index": 24, 
+            "cat_0_index": 1, 
             "rank": 15, 
             "cat-1": "Gender: Female", 
             "ini": 4, 
-            "cat-0": "Category: 5", 
+            "cat-0": "Category: five", 
             "rankvar": 16
           }, 
           {
@@ -8532,11 +8532,11 @@
             "name": "Cell Line: HCC44", 
             "clust": 3, 
             "cat_1_index": 5, 
-            "cat_0_index": 17, 
+            "cat_0_index": 7, 
             "rank": 14, 
             "cat-1": "Gender: Female", 
             "ini": 3, 
-            "cat-0": "Category: 4", 
+            "cat-0": "Category: four", 
             "rankvar": 2
           }, 
           {
@@ -8556,11 +8556,11 @@
             "name": "Cell Line: A549", 
             "clust": 9, 
             "cat_1_index": 22, 
-            "cat_0_index": 18, 
+            "cat_0_index": 8, 
             "rank": 21, 
             "cat-1": "Gender: Male", 
             "ini": 2, 
-            "cat-0": "Category: 4", 
+            "cat-0": "Category: four", 
             "rankvar": 3
           }, 
           {
@@ -8580,11 +8580,11 @@
             "name": "Cell Line: H1781", 
             "clust": 28, 
             "cat_1_index": 8, 
-            "cat_0_index": 5, 
+            "cat_0_index": 18, 
             "rank": 13, 
             "cat-1": "Gender: Female", 
             "ini": 1, 
-            "cat-0": "Category: 1", 
+            "cat-0": "Category: one", 
             "rankvar": 13
           }
         ]
@@ -9054,11 +9054,11 @@
             "name": "Cell Line: H1650", 
             "clust": 14, 
             "cat_1_index": 25, 
-            "cat_0_index": 7, 
+            "cat_0_index": 25, 
             "rank": 7, 
             "cat-1": "Gender: Male", 
             "ini": 29, 
-            "cat-0": "Category: 2", 
+            "cat-0": "Category: two", 
             "rankvar": 3
           }, 
           {
@@ -9078,11 +9078,11 @@
             "name": "Cell Line: H23", 
             "clust": 7, 
             "cat_1_index": 12, 
-            "cat_0_index": 10, 
+            "cat_0_index": 28, 
             "rank": 14, 
             "cat-1": "Gender: Male", 
             "ini": 28, 
-            "cat-0": "Category: 2", 
+            "cat-0": "Category: two", 
             "rankvar": 12
           }, 
           {
@@ -9102,11 +9102,11 @@
             "name": "Cell Line: CAL-12T", 
             "clust": 20, 
             "cat_1_index": 13, 
-            "cat_0_index": 8, 
+            "cat_0_index": 26, 
             "rank": 21, 
             "cat-1": "Gender: Male", 
             "ini": 27, 
-            "cat-0": "Category: 2", 
+            "cat-0": "Category: two", 
             "rankvar": 18
           }, 
           {
@@ -9126,11 +9126,11 @@
             "name": "Cell Line: H358", 
             "clust": 21, 
             "cat_1_index": 26, 
-            "cat_0_index": 0, 
+            "cat_0_index": 13, 
             "rank": 15, 
             "cat-1": "Gender: Male", 
             "ini": 26, 
-            "cat-0": "Category: 1", 
+            "cat-0": "Category: one", 
             "rankvar": 2
           }, 
           {
@@ -9150,11 +9150,11 @@
             "name": "Cell Line: H1975", 
             "clust": 27, 
             "cat_1_index": 5, 
-            "cat_0_index": 6, 
+            "cat_0_index": 24, 
             "rank": 1, 
             "cat-1": "Gender: Female", 
             "ini": 25, 
-            "cat-0": "Category: 2", 
+            "cat-0": "Category: two", 
             "rankvar": 27
           }, 
           {
@@ -9174,11 +9174,11 @@
             "name": "Cell Line: HCC15", 
             "clust": 8, 
             "cat_1_index": 10, 
-            "cat_0_index": 9, 
+            "cat_0_index": 27, 
             "rank": 5, 
             "cat-1": "Gender: Male", 
             "ini": 24, 
-            "cat-0": "Category: 2", 
+            "cat-0": "Category: two", 
             "rankvar": 8
           }, 
           {
@@ -9198,11 +9198,11 @@
             "name": "Cell Line: H1355", 
             "clust": 10, 
             "cat_1_index": 21, 
-            "cat_0_index": 13, 
+            "cat_0_index": 21, 
             "rank": 16, 
             "cat-1": "Gender: Male", 
             "ini": 23, 
-            "cat-0": "Category: 3", 
+            "cat-0": "Category: three", 
             "rankvar": 9
           }, 
           {
@@ -9222,11 +9222,11 @@
             "name": "Cell Line: HCC827", 
             "clust": 25, 
             "cat_1_index": 8, 
-            "cat_0_index": 2, 
+            "cat_0_index": 15, 
             "rank": 28, 
             "cat-1": "Gender: Female", 
             "ini": 22, 
-            "cat-0": "Category: 1", 
+            "cat-0": "Category: one", 
             "rankvar": 26
           }, 
           {
@@ -9246,11 +9246,11 @@
             "name": "Cell Line: H2405", 
             "clust": 18, 
             "cat_1_index": 16, 
-            "cat_0_index": 25, 
+            "cat_0_index": 2, 
             "rank": 4, 
             "cat-1": "Gender: Male", 
             "ini": 21, 
-            "cat-0": "Category: 5", 
+            "cat-0": "Category: five", 
             "rankvar": 20
           }, 
           {
@@ -9270,11 +9270,11 @@
             "name": "Cell Line: HCC78", 
             "clust": 17, 
             "cat_1_index": 17, 
-            "cat_0_index": 26, 
+            "cat_0_index": 3, 
             "rank": 26, 
             "cat-1": "Gender: Male", 
             "ini": 20, 
-            "cat-0": "Category: 5", 
+            "cat-0": "Category: five", 
             "rankvar": 28
           }, 
           {
@@ -9294,11 +9294,11 @@
             "name": "Cell Line: H1666", 
             "clust": 19, 
             "cat_1_index": 2, 
-            "cat_0_index": 16, 
+            "cat_0_index": 6, 
             "rank": 3, 
             "cat-1": "Gender: Female", 
             "ini": 19, 
-            "cat-0": "Category: 4", 
+            "cat-0": "Category: four", 
             "rankvar": 4
           }, 
           {
@@ -9318,11 +9318,11 @@
             "name": "Cell Line: H661", 
             "clust": 1, 
             "cat_1_index": 18, 
-            "cat_0_index": 27, 
+            "cat_0_index": 4, 
             "rank": 18, 
             "cat-1": "Gender: Male", 
             "ini": 18, 
-            "cat-0": "Category: 5", 
+            "cat-0": "Category: five", 
             "rankvar": 21
           }, 
           {
@@ -9342,11 +9342,11 @@
             "name": "Cell Line: H838", 
             "clust": 2, 
             "cat_1_index": 19, 
-            "cat_0_index": 23, 
+            "cat_0_index": 0, 
             "rank": 11, 
             "cat-1": "Gender: Male", 
             "ini": 17, 
-            "cat-0": "Category: 5", 
+            "cat-0": "Category: five", 
             "rankvar": 23
           }, 
           {
@@ -9366,11 +9366,11 @@
             "name": "Cell Line: H1703", 
             "clust": 4, 
             "cat_1_index": 20, 
-            "cat_0_index": 24, 
+            "cat_0_index": 1, 
             "rank": 10, 
             "cat-1": "Gender: Male", 
             "ini": 16, 
-            "cat-0": "Category: 5", 
+            "cat-0": "Category: five", 
             "rankvar": 15
           }, 
           {
@@ -9390,11 +9390,11 @@
             "name": "Cell Line: CALU-3", 
             "clust": 15, 
             "cat_1_index": 22, 
-            "cat_0_index": 17, 
+            "cat_0_index": 7, 
             "rank": 8, 
             "cat-1": "Gender: Male", 
             "ini": 15, 
-            "cat-0": "Category: 4", 
+            "cat-0": "Category: four", 
             "rankvar": 16
           }, 
           {
@@ -9414,11 +9414,11 @@
             "name": "Cell Line: H2342", 
             "clust": 3, 
             "cat_1_index": 7, 
-            "cat_0_index": 19, 
+            "cat_0_index": 9, 
             "rank": 27, 
             "cat-1": "Gender: Female", 
             "ini": 14, 
-            "cat-0": "Category: 4", 
+            "cat-0": "Category: four", 
             "rankvar": 24
           }, 
           {
@@ -9438,11 +9438,11 @@
             "name": "Cell Line: H2228", 
             "clust": 22, 
             "cat_1_index": 3, 
-            "cat_0_index": 3, 
+            "cat_0_index": 16, 
             "rank": 12, 
             "cat-1": "Gender: Female", 
             "ini": 13, 
-            "cat-0": "Category: 1", 
+            "cat-0": "Category: one", 
             "rankvar": 11
           }, 
           {
@@ -9462,11 +9462,11 @@
             "name": "Cell Line: H1299", 
             "clust": 6, 
             "cat_1_index": 11, 
-            "cat_0_index": 11, 
+            "cat_0_index": 19, 
             "rank": 6, 
             "cat-1": "Gender: Male", 
             "ini": 12, 
-            "cat-0": "Category: 3", 
+            "cat-0": "Category: three", 
             "rankvar": 5
           }, 
           {
@@ -9486,11 +9486,11 @@
             "name": "Cell Line: H1792", 
             "clust": 28, 
             "cat_1_index": 14, 
-            "cat_0_index": 14, 
+            "cat_0_index": 22, 
             "rank": 22, 
             "cat-1": "Gender: Male", 
             "ini": 11, 
-            "cat-0": "Category: 3", 
+            "cat-0": "Category: three", 
             "rankvar": 10
           }, 
           {
@@ -9510,11 +9510,11 @@
             "name": "Cell Line: H460", 
             "clust": 11, 
             "cat_1_index": 23, 
-            "cat_0_index": 12, 
+            "cat_0_index": 20, 
             "rank": 0, 
             "cat-1": "Gender: Male", 
             "ini": 10, 
-            "cat-0": "Category: 3", 
+            "cat-0": "Category: three", 
             "rankvar": 1
           }, 
           {
@@ -9534,11 +9534,11 @@
             "name": "Cell Line: H2106", 
             "clust": 0, 
             "cat_1_index": 28, 
-            "cat_0_index": 18, 
+            "cat_0_index": 8, 
             "rank": 20, 
             "cat-1": "Gender: Male", 
             "ini": 9, 
-            "cat-0": "Category: 4", 
+            "cat-0": "Category: four", 
             "rankvar": 25
           }, 
           {
@@ -9558,11 +9558,11 @@
             "name": "Cell Line: H441", 
             "clust": 23, 
             "cat_1_index": 27, 
-            "cat_0_index": 5, 
+            "cat_0_index": 18, 
             "rank": 24, 
             "cat-1": "Gender: Male", 
             "ini": 8, 
-            "cat-0": "Category: 1", 
+            "cat-0": "Category: one", 
             "rankvar": 13
           }, 
           {
@@ -9582,11 +9582,11 @@
             "name": "Cell Line: H1944", 
             "clust": 12, 
             "cat_1_index": 1, 
-            "cat_0_index": 15, 
+            "cat_0_index": 23, 
             "rank": 19, 
             "cat-1": "Gender: Female", 
             "ini": 7, 
-            "cat-0": "Category: 3", 
+            "cat-0": "Category: three", 
             "rankvar": 7
           }, 
           {
@@ -9606,11 +9606,11 @@
             "name": "Cell Line: H1437", 
             "clust": 9, 
             "cat_1_index": 15, 
-            "cat_0_index": 20, 
+            "cat_0_index": 10, 
             "rank": 17, 
             "cat-1": "Gender: Male", 
             "ini": 6, 
-            "cat-0": "Category: 4", 
+            "cat-0": "Category: four", 
             "rankvar": 22
           }, 
           {
@@ -9630,11 +9630,11 @@
             "name": "Cell Line: H1734", 
             "clust": 26, 
             "cat_1_index": 6, 
-            "cat_0_index": 1, 
+            "cat_0_index": 14, 
             "rank": 25, 
             "cat-1": "Gender: Female", 
             "ini": 5, 
-            "cat-0": "Category: 1", 
+            "cat-0": "Category: one", 
             "rankvar": 19
           }, 
           {
@@ -9654,11 +9654,11 @@
             "name": "Cell Line: LOU-NH91", 
             "clust": 16, 
             "cat_1_index": 0, 
-            "cat_0_index": 28, 
+            "cat_0_index": 5, 
             "rank": 2, 
             "cat-1": "Gender: Female", 
             "ini": 4, 
-            "cat-0": "Category: 5", 
+            "cat-0": "Category: five", 
             "rankvar": 14
           }, 
           {
@@ -9678,11 +9678,11 @@
             "name": "Cell Line: HCC44", 
             "clust": 5, 
             "cat_1_index": 4, 
-            "cat_0_index": 21, 
+            "cat_0_index": 11, 
             "rank": 13, 
             "cat-1": "Gender: Female", 
             "ini": 3, 
-            "cat-0": "Category: 4", 
+            "cat-0": "Category: four", 
             "rankvar": 6
           }, 
           {
@@ -9702,11 +9702,11 @@
             "name": "Cell Line: A549", 
             "clust": 13, 
             "cat_1_index": 24, 
-            "cat_0_index": 22, 
+            "cat_0_index": 12, 
             "rank": 9, 
             "cat-1": "Gender: Male", 
             "ini": 2, 
-            "cat-0": "Category: 4", 
+            "cat-0": "Category: four", 
             "rankvar": 0
           }, 
           {
@@ -9726,11 +9726,11 @@
             "name": "Cell Line: H1781", 
             "clust": 24, 
             "cat_1_index": 9, 
-            "cat_0_index": 4, 
+            "cat_0_index": 17, 
             "rank": 23, 
             "cat-1": "Gender: Female", 
             "ini": 1, 
-            "cat-0": "Category: 1", 
+            "cat-0": "Category: one", 
             "rankvar": 17
           }
         ]
@@ -9980,11 +9980,11 @@
             "name": "Cell Line: H1650", 
             "clust": 27, 
             "cat_1_index": 11, 
-            "cat_0_index": 9, 
+            "cat_0_index": 27, 
             "rank": 7, 
             "cat-1": "Gender: Male", 
             "ini": 29, 
-            "cat-0": "Category: 2", 
+            "cat-0": "Category: two", 
             "rankvar": 9
           }, 
           {
@@ -10004,11 +10004,11 @@
             "name": "Cell Line: H23", 
             "clust": 6, 
             "cat_1_index": 22, 
-            "cat_0_index": 7, 
+            "cat_0_index": 25, 
             "rank": 19, 
             "cat-1": "Gender: Male", 
             "ini": 28, 
-            "cat-0": "Category: 2", 
+            "cat-0": "Category: two", 
             "rankvar": 20
           }, 
           {
@@ -10028,11 +10028,11 @@
             "name": "Cell Line: CAL-12T", 
             "clust": 0, 
             "cat_1_index": 14, 
-            "cat_0_index": 10, 
+            "cat_0_index": 28, 
             "rank": 6, 
             "cat-1": "Gender: Male", 
             "ini": 27, 
-            "cat-0": "Category: 2", 
+            "cat-0": "Category: two", 
             "rankvar": 4
           }, 
           {
@@ -10052,11 +10052,11 @@
             "name": "Cell Line: H358", 
             "clust": 25, 
             "cat_1_index": 20, 
-            "cat_0_index": 1, 
+            "cat_0_index": 14, 
             "rank": 11, 
             "cat-1": "Gender: Male", 
             "ini": 26, 
-            "cat-0": "Category: 1", 
+            "cat-0": "Category: one", 
             "rankvar": 0
           }, 
           {
@@ -10076,11 +10076,11 @@
             "name": "Cell Line: H1975", 
             "clust": 12, 
             "cat_1_index": 2, 
-            "cat_0_index": 6, 
+            "cat_0_index": 24, 
             "rank": 0, 
             "cat-1": "Gender: Female", 
             "ini": 25, 
-            "cat-0": "Category: 2", 
+            "cat-0": "Category: two", 
             "rankvar": 27
           }, 
           {
@@ -10100,11 +10100,11 @@
             "name": "Cell Line: HCC15", 
             "clust": 8, 
             "cat_1_index": 23, 
-            "cat_0_index": 8, 
+            "cat_0_index": 26, 
             "rank": 13, 
             "cat-1": "Gender: Male", 
             "ini": 24, 
-            "cat-0": "Category: 2", 
+            "cat-0": "Category: two", 
             "rankvar": 16
           }, 
           {
@@ -10124,11 +10124,11 @@
             "name": "Cell Line: H1355", 
             "clust": 13, 
             "cat_1_index": 15, 
-            "cat_0_index": 14, 
+            "cat_0_index": 22, 
             "rank": 4, 
             "cat-1": "Gender: Male", 
             "ini": 23, 
-            "cat-0": "Category: 3", 
+            "cat-0": "Category: three", 
             "rankvar": 8
           }, 
           {
@@ -10148,11 +10148,11 @@
             "name": "Cell Line: HCC827", 
             "clust": 28, 
             "cat_1_index": 7, 
-            "cat_0_index": 3, 
+            "cat_0_index": 16, 
             "rank": 28, 
             "cat-1": "Gender: Female", 
             "ini": 22, 
-            "cat-0": "Category: 1", 
+            "cat-0": "Category: one", 
             "rankvar": 26
           }, 
           {
@@ -10172,11 +10172,11 @@
             "name": "Cell Line: H2405", 
             "clust": 3, 
             "cat_1_index": 24, 
-            "cat_0_index": 25, 
+            "cat_0_index": 2, 
             "rank": 18, 
             "cat-1": "Gender: Male", 
             "ini": 21, 
-            "cat-0": "Category: 5", 
+            "cat-0": "Category: five", 
             "rankvar": 10
           }, 
           {
@@ -10196,11 +10196,11 @@
             "name": "Cell Line: HCC78", 
             "clust": 4, 
             "cat_1_index": 28, 
-            "cat_0_index": 26, 
+            "cat_0_index": 3, 
             "rank": 27, 
             "cat-1": "Gender: Male", 
             "ini": 20, 
-            "cat-0": "Category: 5", 
+            "cat-0": "Category: five", 
             "rankvar": 28
           }, 
           {
@@ -10220,11 +10220,11 @@
             "name": "Cell Line: H1666", 
             "clust": 1, 
             "cat_1_index": 3, 
-            "cat_0_index": 18, 
+            "cat_0_index": 8, 
             "rank": 5, 
             "cat-1": "Gender: Female", 
             "ini": 19, 
-            "cat-0": "Category: 4", 
+            "cat-0": "Category: four", 
             "rankvar": 7
           }, 
           {
@@ -10244,11 +10244,11 @@
             "name": "Cell Line: H661", 
             "clust": 19, 
             "cat_1_index": 10, 
-            "cat_0_index": 27, 
+            "cat_0_index": 4, 
             "rank": 22, 
             "cat-1": "Gender: Male", 
             "ini": 18, 
-            "cat-0": "Category: 5", 
+            "cat-0": "Category: five", 
             "rankvar": 23
           }, 
           {
@@ -10268,11 +10268,11 @@
             "name": "Cell Line: H838", 
             "clust": 20, 
             "cat_1_index": 12, 
-            "cat_0_index": 28, 
+            "cat_0_index": 5, 
             "rank": 20, 
             "cat-1": "Gender: Male", 
             "ini": 17, 
-            "cat-0": "Category: 5", 
+            "cat-0": "Category: five", 
             "rankvar": 24
           }, 
           {
@@ -10292,11 +10292,11 @@
             "name": "Cell Line: H1703", 
             "clust": 9, 
             "cat_1_index": 16, 
-            "cat_0_index": 23, 
+            "cat_0_index": 0, 
             "rank": 12, 
             "cat-1": "Gender: Male", 
             "ini": 16, 
-            "cat-0": "Category: 5", 
+            "cat-0": "Category: five", 
             "rankvar": 13
           }, 
           {
@@ -10316,11 +10316,11 @@
             "name": "Cell Line: CALU-3", 
             "clust": 17, 
             "cat_1_index": 17, 
-            "cat_0_index": 21, 
+            "cat_0_index": 11, 
             "rank": 9, 
             "cat-1": "Gender: Male", 
             "ini": 15, 
-            "cat-0": "Category: 4", 
+            "cat-0": "Category: four", 
             "rankvar": 5
           }, 
           {
@@ -10340,11 +10340,11 @@
             "name": "Cell Line: H2342", 
             "clust": 21, 
             "cat_1_index": 0, 
-            "cat_0_index": 22, 
+            "cat_0_index": 12, 
             "rank": 26, 
             "cat-1": "Gender: Female", 
             "ini": 14, 
-            "cat-0": "Category: 4", 
+            "cat-0": "Category: four", 
             "rankvar": 25
           }, 
           {
@@ -10364,11 +10364,11 @@
             "name": "Cell Line: H2228", 
             "clust": 23, 
             "cat_1_index": 4, 
-            "cat_0_index": 2, 
+            "cat_0_index": 15, 
             "rank": 21, 
             "cat-1": "Gender: Female", 
             "ini": 13, 
-            "cat-0": "Category: 1", 
+            "cat-0": "Category: one", 
             "rankvar": 19
           }, 
           {
@@ -10388,11 +10388,11 @@
             "name": "Cell Line: H1299", 
             "clust": 7, 
             "cat_1_index": 13, 
-            "cat_0_index": 15, 
+            "cat_0_index": 23, 
             "rank": 8, 
             "cat-1": "Gender: Male", 
             "ini": 12, 
-            "cat-0": "Category: 3", 
+            "cat-0": "Category: three", 
             "rankvar": 12
           }, 
           {
@@ -10412,11 +10412,11 @@
             "name": "Cell Line: H1792", 
             "clust": 14, 
             "cat_1_index": 26, 
-            "cat_0_index": 13, 
+            "cat_0_index": 21, 
             "rank": 15, 
             "cat-1": "Gender: Male", 
             "ini": 11, 
-            "cat-0": "Category: 3", 
+            "cat-0": "Category: three", 
             "rankvar": 17
           }, 
           {
@@ -10436,11 +10436,11 @@
             "name": "Cell Line: H460", 
             "clust": 10, 
             "cat_1_index": 18, 
-            "cat_0_index": 11, 
+            "cat_0_index": 19, 
             "rank": 2, 
             "cat-1": "Gender: Male", 
             "ini": 10, 
-            "cat-0": "Category: 3", 
+            "cat-0": "Category: three", 
             "rankvar": 3
           }, 
           {
@@ -10460,11 +10460,11 @@
             "name": "Cell Line: H2106", 
             "clust": 18, 
             "cat_1_index": 19, 
-            "cat_0_index": 16, 
+            "cat_0_index": 6, 
             "rank": 3, 
             "cat-1": "Gender: Male", 
             "ini": 9, 
-            "cat-0": "Category: 4", 
+            "cat-0": "Category: four", 
             "rankvar": 14
           }, 
           {
@@ -10484,11 +10484,11 @@
             "name": "Cell Line: H441", 
             "clust": 22, 
             "cat_1_index": 27, 
-            "cat_0_index": 5, 
+            "cat_0_index": 18, 
             "rank": 23, 
             "cat-1": "Gender: Male", 
             "ini": 8, 
-            "cat-0": "Category: 1", 
+            "cat-0": "Category: one", 
             "rankvar": 18
           }, 
           {
@@ -10508,11 +10508,11 @@
             "name": "Cell Line: H1944", 
             "clust": 11, 
             "cat_1_index": 9, 
-            "cat_0_index": 12, 
+            "cat_0_index": 20, 
             "rank": 16, 
             "cat-1": "Gender: Female", 
             "ini": 7, 
-            "cat-0": "Category: 3", 
+            "cat-0": "Category: three", 
             "rankvar": 15
           }, 
           {
@@ -10532,11 +10532,11 @@
             "name": "Cell Line: H1437", 
             "clust": 16, 
             "cat_1_index": 21, 
-            "cat_0_index": 20, 
+            "cat_0_index": 10, 
             "rank": 1, 
             "cat-1": "Gender: Male", 
             "ini": 6, 
-            "cat-0": "Category: 4", 
+            "cat-0": "Category: four", 
             "rankvar": 1
           }, 
           {
@@ -10556,11 +10556,11 @@
             "name": "Cell Line: H1734", 
             "clust": 26, 
             "cat_1_index": 1, 
-            "cat_0_index": 0, 
+            "cat_0_index": 13, 
             "rank": 25, 
             "cat-1": "Gender: Female", 
             "ini": 5, 
-            "cat-0": "Category: 1", 
+            "cat-0": "Category: one", 
             "rankvar": 22
           }, 
           {
@@ -10580,11 +10580,11 @@
             "name": "Cell Line: LOU-NH91", 
             "clust": 2, 
             "cat_1_index": 6, 
-            "cat_0_index": 24, 
+            "cat_0_index": 1, 
             "rank": 14, 
             "cat-1": "Gender: Female", 
             "ini": 4, 
-            "cat-0": "Category: 5", 
+            "cat-0": "Category: five", 
             "rankvar": 6
           }, 
           {
@@ -10604,11 +10604,11 @@
             "name": "Cell Line: HCC44", 
             "clust": 5, 
             "cat_1_index": 5, 
-            "cat_0_index": 17, 
+            "cat_0_index": 7, 
             "rank": 17, 
             "cat-1": "Gender: Female", 
             "ini": 3, 
-            "cat-0": "Category: 4", 
+            "cat-0": "Category: four", 
             "rankvar": 11
           }, 
           {
@@ -10628,11 +10628,11 @@
             "name": "Cell Line: A549", 
             "clust": 15, 
             "cat_1_index": 25, 
-            "cat_0_index": 19, 
+            "cat_0_index": 9, 
             "rank": 10, 
             "cat-1": "Gender: Male", 
             "ini": 2, 
-            "cat-0": "Category: 4", 
+            "cat-0": "Category: four", 
             "rankvar": 2
           }, 
           {
@@ -10652,11 +10652,11 @@
             "name": "Cell Line: H1781", 
             "clust": 24, 
             "cat_1_index": 8, 
-            "cat_0_index": 4, 
+            "cat_0_index": 17, 
             "rank": 24, 
             "cat-1": "Gender: Female", 
             "ini": 1, 
-            "cat-0": "Category: 1", 
+            "cat-0": "Category: one", 
             "rankvar": 21
           }
         ]
@@ -11521,11 +11521,11 @@
             "name": "Cell Line: H1650", 
             "clust": 12, 
             "cat_1_index": 25, 
-            "cat_0_index": 6, 
+            "cat_0_index": 24, 
             "rank": 6, 
             "cat-1": "Gender: Male", 
             "ini": 29, 
-            "cat-0": "Category: 2", 
+            "cat-0": "Category: two", 
             "rankvar": 4
           }, 
           {
@@ -11545,11 +11545,11 @@
             "name": "Cell Line: H23", 
             "clust": 2, 
             "cat_1_index": 24, 
-            "cat_0_index": 9, 
+            "cat_0_index": 27, 
             "rank": 17, 
             "cat-1": "Gender: Male", 
             "ini": 28, 
-            "cat-0": "Category: 2", 
+            "cat-0": "Category: two", 
             "rankvar": 8
           }, 
           {
@@ -11569,11 +11569,11 @@
             "name": "Cell Line: CAL-12T", 
             "clust": 4, 
             "cat_1_index": 23, 
-            "cat_0_index": 8, 
+            "cat_0_index": 26, 
             "rank": 10, 
             "cat-1": "Gender: Male", 
             "ini": 27, 
-            "cat-0": "Category: 2", 
+            "cat-0": "Category: two", 
             "rankvar": 19
           }, 
           {
@@ -11593,11 +11593,11 @@
             "name": "Cell Line: H358", 
             "clust": 25, 
             "cat_1_index": 28, 
-            "cat_0_index": 1, 
+            "cat_0_index": 14, 
             "rank": 4, 
             "cat-1": "Gender: Male", 
             "ini": 26, 
-            "cat-0": "Category: 1", 
+            "cat-0": "Category: one", 
             "rankvar": 0
           }, 
           {
@@ -11617,11 +11617,11 @@
             "name": "Cell Line: H1975", 
             "clust": 22, 
             "cat_1_index": 3, 
-            "cat_0_index": 7, 
+            "cat_0_index": 25, 
             "rank": 0, 
             "cat-1": "Gender: Female", 
             "ini": 25, 
-            "cat-0": "Category: 2", 
+            "cat-0": "Category: two", 
             "rankvar": 24
           }, 
           {
@@ -11641,11 +11641,11 @@
             "name": "Cell Line: HCC15", 
             "clust": 1, 
             "cat_1_index": 11, 
-            "cat_0_index": 10, 
+            "cat_0_index": 28, 
             "rank": 24, 
             "cat-1": "Gender: Male", 
             "ini": 24, 
-            "cat-0": "Category: 2", 
+            "cat-0": "Category: two", 
             "rankvar": 20
           }, 
           {
@@ -11665,11 +11665,11 @@
             "name": "Cell Line: H1355", 
             "clust": 5, 
             "cat_1_index": 14, 
-            "cat_0_index": 13, 
+            "cat_0_index": 21, 
             "rank": 9, 
             "cat-1": "Gender: Male", 
             "ini": 23, 
-            "cat-0": "Category: 3", 
+            "cat-0": "Category: three", 
             "rankvar": 6
           }, 
           {
@@ -11689,11 +11689,11 @@
             "name": "Cell Line: HCC827", 
             "clust": 23, 
             "cat_1_index": 0, 
-            "cat_0_index": 4, 
+            "cat_0_index": 17, 
             "rank": 28, 
             "cat-1": "Gender: Female", 
             "ini": 22, 
-            "cat-0": "Category: 1", 
+            "cat-0": "Category: one", 
             "rankvar": 25
           }, 
           {
@@ -11713,11 +11713,11 @@
             "name": "Cell Line: H2405", 
             "clust": 20, 
             "cat_1_index": 12, 
-            "cat_0_index": 25, 
+            "cat_0_index": 2, 
             "rank": 1, 
             "cat-1": "Gender: Male", 
             "ini": 21, 
-            "cat-0": "Category: 5", 
+            "cat-0": "Category: five", 
             "rankvar": 12
           }, 
           {
@@ -11737,11 +11737,11 @@
             "name": "Cell Line: HCC78", 
             "clust": 21, 
             "cat_1_index": 15, 
-            "cat_0_index": 26, 
+            "cat_0_index": 3, 
             "rank": 25, 
             "cat-1": "Gender: Male", 
             "ini": 20, 
-            "cat-0": "Category: 5", 
+            "cat-0": "Category: five", 
             "rankvar": 27
           }, 
           {
@@ -11761,11 +11761,11 @@
             "name": "Cell Line: H1666", 
             "clust": 7, 
             "cat_1_index": 4, 
-            "cat_0_index": 19, 
+            "cat_0_index": 9, 
             "rank": 18, 
             "cat-1": "Gender: Female", 
             "ini": 19, 
-            "cat-0": "Category: 4", 
+            "cat-0": "Category: four", 
             "rankvar": 15
           }, 
           {
@@ -11785,11 +11785,11 @@
             "name": "Cell Line: H661", 
             "clust": 16, 
             "cat_1_index": 27, 
-            "cat_0_index": 27, 
+            "cat_0_index": 4, 
             "rank": 3, 
             "cat-1": "Gender: Male", 
             "ini": 18, 
-            "cat-0": "Category: 5", 
+            "cat-0": "Category: five", 
             "rankvar": 26
           }, 
           {
@@ -11809,11 +11809,11 @@
             "name": "Cell Line: H838", 
             "clust": 17, 
             "cat_1_index": 18, 
-            "cat_0_index": 28, 
+            "cat_0_index": 5, 
             "rank": 7, 
             "cat-1": "Gender: Male", 
             "ini": 17, 
-            "cat-0": "Category: 5", 
+            "cat-0": "Category: five", 
             "rankvar": 23
           }, 
           {
@@ -11833,11 +11833,11 @@
             "name": "Cell Line: H1703", 
             "clust": 14, 
             "cat_1_index": 19, 
-            "cat_0_index": 23, 
+            "cat_0_index": 0, 
             "rank": 11, 
             "cat-1": "Gender: Male", 
             "ini": 16, 
-            "cat-0": "Category: 5", 
+            "cat-0": "Category: five", 
             "rankvar": 21
           }, 
           {
@@ -11857,11 +11857,11 @@
             "name": "Cell Line: CALU-3", 
             "clust": 19, 
             "cat_1_index": 21, 
-            "cat_0_index": 16, 
+            "cat_0_index": 6, 
             "rank": 8, 
             "cat-1": "Gender: Male", 
             "ini": 15, 
-            "cat-0": "Category: 4", 
+            "cat-0": "Category: four", 
             "rankvar": 7
           }, 
           {
@@ -11881,11 +11881,11 @@
             "name": "Cell Line: H2342", 
             "clust": 18, 
             "cat_1_index": 9, 
-            "cat_0_index": 22, 
+            "cat_0_index": 12, 
             "rank": 26, 
             "cat-1": "Gender: Female", 
             "ini": 14, 
-            "cat-0": "Category: 4", 
+            "cat-0": "Category: four", 
             "rankvar": 22
           }, 
           {
@@ -11905,11 +11905,11 @@
             "name": "Cell Line: H2228", 
             "clust": 26, 
             "cat_1_index": 1, 
-            "cat_0_index": 0, 
+            "cat_0_index": 13, 
             "rank": 2, 
             "cat-1": "Gender: Female", 
             "ini": 13, 
-            "cat-0": "Category: 1", 
+            "cat-0": "Category: one", 
             "rankvar": 5
           }, 
           {
@@ -11929,11 +11929,11 @@
             "name": "Cell Line: H1299", 
             "clust": 15, 
             "cat_1_index": 16, 
-            "cat_0_index": 14, 
+            "cat_0_index": 22, 
             "rank": 12, 
             "cat-1": "Gender: Male", 
             "ini": 12, 
-            "cat-0": "Category: 3", 
+            "cat-0": "Category: three", 
             "rankvar": 1
           }, 
           {
@@ -11953,11 +11953,11 @@
             "name": "Cell Line: H1792", 
             "clust": 10, 
             "cat_1_index": 17, 
-            "cat_0_index": 12, 
+            "cat_0_index": 20, 
             "rank": 20, 
             "cat-1": "Gender: Male", 
             "ini": 11, 
-            "cat-0": "Category: 3", 
+            "cat-0": "Category: three", 
             "rankvar": 9
           }, 
           {
@@ -11977,11 +11977,11 @@
             "name": "Cell Line: H460", 
             "clust": 11, 
             "cat_1_index": 13, 
-            "cat_0_index": 11, 
+            "cat_0_index": 19, 
             "rank": 5, 
             "cat-1": "Gender: Male", 
             "ini": 10, 
-            "cat-0": "Category: 3", 
+            "cat-0": "Category: three", 
             "rankvar": 11
           }, 
           {
@@ -12001,11 +12001,11 @@
             "name": "Cell Line: H2106", 
             "clust": 0, 
             "cat_1_index": 26, 
-            "cat_0_index": 20, 
+            "cat_0_index": 10, 
             "rank": 22, 
             "cat-1": "Gender: Male", 
             "ini": 9, 
-            "cat-0": "Category: 4", 
+            "cat-0": "Category: four", 
             "rankvar": 28
           }, 
           {
@@ -12025,11 +12025,11 @@
             "name": "Cell Line: H441", 
             "clust": 27, 
             "cat_1_index": 10, 
-            "cat_0_index": 2, 
+            "cat_0_index": 15, 
             "rank": 27, 
             "cat-1": "Gender: Male", 
             "ini": 8, 
-            "cat-0": "Category: 1", 
+            "cat-0": "Category: one", 
             "rankvar": 14
           }, 
           {
@@ -12049,11 +12049,11 @@
             "name": "Cell Line: H1944", 
             "clust": 8, 
             "cat_1_index": 6, 
-            "cat_0_index": 15, 
+            "cat_0_index": 23, 
             "rank": 23, 
             "cat-1": "Gender: Female", 
             "ini": 7, 
-            "cat-0": "Category: 3", 
+            "cat-0": "Category: three", 
             "rankvar": 10
           }, 
           {
@@ -12073,11 +12073,11 @@
             "name": "Cell Line: H1437", 
             "clust": 6, 
             "cat_1_index": 20, 
-            "cat_0_index": 21, 
+            "cat_0_index": 11, 
             "rank": 16, 
             "cat-1": "Gender: Male", 
             "ini": 6, 
-            "cat-0": "Category: 4", 
+            "cat-0": "Category: four", 
             "rankvar": 17
           }, 
           {
@@ -12097,11 +12097,11 @@
             "name": "Cell Line: H1734", 
             "clust": 24, 
             "cat_1_index": 2, 
-            "cat_0_index": 3, 
+            "cat_0_index": 16, 
             "rank": 19, 
             "cat-1": "Gender: Female", 
             "ini": 5, 
-            "cat-0": "Category: 1", 
+            "cat-0": "Category: one", 
             "rankvar": 18
           }, 
           {
@@ -12121,11 +12121,11 @@
             "name": "Cell Line: LOU-NH91", 
             "clust": 13, 
             "cat_1_index": 7, 
-            "cat_0_index": 24, 
+            "cat_0_index": 1, 
             "rank": 15, 
             "cat-1": "Gender: Female", 
             "ini": 4, 
-            "cat-0": "Category: 5", 
+            "cat-0": "Category: five", 
             "rankvar": 16
           }, 
           {
@@ -12145,11 +12145,11 @@
             "name": "Cell Line: HCC44", 
             "clust": 3, 
             "cat_1_index": 5, 
-            "cat_0_index": 17, 
+            "cat_0_index": 7, 
             "rank": 14, 
             "cat-1": "Gender: Female", 
             "ini": 3, 
-            "cat-0": "Category: 4", 
+            "cat-0": "Category: four", 
             "rankvar": 2
           }, 
           {
@@ -12169,11 +12169,11 @@
             "name": "Cell Line: A549", 
             "clust": 9, 
             "cat_1_index": 22, 
-            "cat_0_index": 18, 
+            "cat_0_index": 8, 
             "rank": 21, 
             "cat-1": "Gender: Male", 
             "ini": 2, 
-            "cat-0": "Category: 4", 
+            "cat-0": "Category: four", 
             "rankvar": 3
           }, 
           {
@@ -12193,11 +12193,11 @@
             "name": "Cell Line: H1781", 
             "clust": 28, 
             "cat_1_index": 8, 
-            "cat_0_index": 5, 
+            "cat_0_index": 18, 
             "rank": 13, 
             "cat-1": "Gender: Female", 
             "ini": 1, 
-            "cat-0": "Category: 1", 
+            "cat-0": "Category: one", 
             "rankvar": 13
           }
         ]
@@ -12667,11 +12667,11 @@
             "name": "Cell Line: H1650", 
             "clust": 0, 
             "cat_1_index": 16, 
-            "cat_0_index": 6, 
+            "cat_0_index": 24, 
             "rank": 2, 
             "cat-1": "Gender: Male", 
             "ini": 29, 
-            "cat-0": "Category: 2", 
+            "cat-0": "Category: two", 
             "rankvar": 2
           }, 
           {
@@ -12691,11 +12691,11 @@
             "name": "Cell Line: H23", 
             "clust": 8, 
             "cat_1_index": 21, 
-            "cat_0_index": 8, 
+            "cat_0_index": 26, 
             "rank": 24, 
             "cat-1": "Gender: Male", 
             "ini": 28, 
-            "cat-0": "Category: 2", 
+            "cat-0": "Category: two", 
             "rankvar": 13
           }, 
           {
@@ -12715,11 +12715,11 @@
             "name": "Cell Line: CAL-12T", 
             "clust": 17, 
             "cat_1_index": 25, 
-            "cat_0_index": 9, 
+            "cat_0_index": 27, 
             "rank": 10, 
             "cat-1": "Gender: Male", 
             "ini": 27, 
-            "cat-0": "Category: 2", 
+            "cat-0": "Category: two", 
             "rankvar": 15
           }, 
           {
@@ -12739,11 +12739,11 @@
             "name": "Cell Line: H358", 
             "clust": 18, 
             "cat_1_index": 12, 
-            "cat_0_index": 0, 
+            "cat_0_index": 13, 
             "rank": 8, 
             "cat-1": "Gender: Male", 
             "ini": 26, 
-            "cat-0": "Category: 1", 
+            "cat-0": "Category: one", 
             "rankvar": 3
           }, 
           {
@@ -12763,11 +12763,11 @@
             "name": "Cell Line: H1975", 
             "clust": 23, 
             "cat_1_index": 2, 
-            "cat_0_index": 7, 
+            "cat_0_index": 25, 
             "rank": 0, 
             "cat-1": "Gender: Female", 
             "ini": 25, 
-            "cat-0": "Category: 2", 
+            "cat-0": "Category: two", 
             "rankvar": 26
           }, 
           {
@@ -12787,11 +12787,11 @@
             "name": "Cell Line: HCC15", 
             "clust": 7, 
             "cat_1_index": 13, 
-            "cat_0_index": 10, 
+            "cat_0_index": 28, 
             "rank": 22, 
             "cat-1": "Gender: Male", 
             "ini": 24, 
-            "cat-0": "Category: 2", 
+            "cat-0": "Category: two", 
             "rankvar": 21
           }, 
           {
@@ -12811,11 +12811,11 @@
             "name": "Cell Line: H1355", 
             "clust": 15, 
             "cat_1_index": 17, 
-            "cat_0_index": 11, 
+            "cat_0_index": 19, 
             "rank": 9, 
             "cat-1": "Gender: Male", 
             "ini": 23, 
-            "cat-0": "Category: 3", 
+            "cat-0": "Category: three", 
             "rankvar": 11
           }, 
           {
@@ -12835,11 +12835,11 @@
             "name": "Cell Line: HCC827", 
             "clust": 24, 
             "cat_1_index": 7, 
-            "cat_0_index": 1, 
+            "cat_0_index": 14, 
             "rank": 28, 
             "cat-1": "Gender: Female", 
             "ini": 22, 
-            "cat-0": "Category: 1", 
+            "cat-0": "Category: one", 
             "rankvar": 25
           }, 
           {
@@ -12859,11 +12859,11 @@
             "name": "Cell Line: H2405", 
             "clust": 21, 
             "cat_1_index": 26, 
-            "cat_0_index": 25, 
+            "cat_0_index": 2, 
             "rank": 1, 
             "cat-1": "Gender: Male", 
             "ini": 21, 
-            "cat-0": "Category: 5", 
+            "cat-0": "Category: five", 
             "rankvar": 17
           }, 
           {
@@ -12883,11 +12883,11 @@
             "name": "Cell Line: HCC78", 
             "clust": 22, 
             "cat_1_index": 10, 
-            "cat_0_index": 26, 
+            "cat_0_index": 3, 
             "rank": 26, 
             "cat-1": "Gender: Male", 
             "ini": 20, 
-            "cat-0": "Category: 5", 
+            "cat-0": "Category: five", 
             "rankvar": 28
           }, 
           {
@@ -12907,11 +12907,11 @@
             "name": "Cell Line: H1666", 
             "clust": 19, 
             "cat_1_index": 3, 
-            "cat_0_index": 20, 
+            "cat_0_index": 10, 
             "rank": 6, 
             "cat-1": "Gender: Female", 
             "ini": 19, 
-            "cat-0": "Category: 4", 
+            "cat-0": "Category: four", 
             "rankvar": 8
           }, 
           {
@@ -12931,11 +12931,11 @@
             "name": "Cell Line: H661", 
             "clust": 4, 
             "cat_1_index": 20, 
-            "cat_0_index": 27, 
+            "cat_0_index": 4, 
             "rank": 7, 
             "cat-1": "Gender: Male", 
             "ini": 18, 
-            "cat-0": "Category: 5", 
+            "cat-0": "Category: five", 
             "rankvar": 27
           }, 
           {
@@ -12955,11 +12955,11 @@
             "name": "Cell Line: H838", 
             "clust": 5, 
             "cat_1_index": 22, 
-            "cat_0_index": 28, 
+            "cat_0_index": 5, 
             "rank": 20, 
             "cat-1": "Gender: Male", 
             "ini": 17, 
-            "cat-0": "Category: 5", 
+            "cat-0": "Category: five", 
             "rankvar": 23
           }, 
           {
@@ -12979,11 +12979,11 @@
             "name": "Cell Line: H1703", 
             "clust": 2, 
             "cat_1_index": 18, 
-            "cat_0_index": 23, 
+            "cat_0_index": 0, 
             "rank": 17, 
             "cat-1": "Gender: Male", 
             "ini": 16, 
-            "cat-0": "Category: 5", 
+            "cat-0": "Category: five", 
             "rankvar": 19
           }, 
           {
@@ -13003,11 +13003,11 @@
             "name": "Cell Line: CALU-3", 
             "clust": 20, 
             "cat_1_index": 19, 
-            "cat_0_index": 21, 
+            "cat_0_index": 11, 
             "rank": 3, 
             "cat-1": "Gender: Male", 
             "ini": 15, 
-            "cat-0": "Category: 4", 
+            "cat-0": "Category: four", 
             "rankvar": 1
           }, 
           {
@@ -13027,11 +13027,11 @@
             "name": "Cell Line: H2342", 
             "clust": 6, 
             "cat_1_index": 0, 
-            "cat_0_index": 22, 
+            "cat_0_index": 12, 
             "rank": 27, 
             "cat-1": "Gender: Female", 
             "ini": 14, 
-            "cat-0": "Category: 4", 
+            "cat-0": "Category: four", 
             "rankvar": 24
           }, 
           {
@@ -13051,11 +13051,11 @@
             "name": "Cell Line: H2228", 
             "clust": 26, 
             "cat_1_index": 4, 
-            "cat_0_index": 4, 
+            "cat_0_index": 17, 
             "rank": 4, 
             "cat-1": "Gender: Female", 
             "ini": 13, 
-            "cat-0": "Category: 1", 
+            "cat-0": "Category: one", 
             "rankvar": 9
           }, 
           {
@@ -13075,11 +13075,11 @@
             "name": "Cell Line: H1299", 
             "clust": 3, 
             "cat_1_index": 23, 
-            "cat_0_index": 12, 
+            "cat_0_index": 20, 
             "rank": 13, 
             "cat-1": "Gender: Male", 
             "ini": 12, 
-            "cat-0": "Category: 3", 
+            "cat-0": "Category: three", 
             "rankvar": 4
           }, 
           {
@@ -13099,11 +13099,11 @@
             "name": "Cell Line: H1792", 
             "clust": 11, 
             "cat_1_index": 24, 
-            "cat_0_index": 15, 
+            "cat_0_index": 23, 
             "rank": 12, 
             "cat-1": "Gender: Male", 
             "ini": 11, 
-            "cat-0": "Category: 3", 
+            "cat-0": "Category: three", 
             "rankvar": 14
           }, 
           {
@@ -13123,11 +13123,11 @@
             "name": "Cell Line: H460", 
             "clust": 12, 
             "cat_1_index": 28, 
-            "cat_0_index": 13, 
+            "cat_0_index": 21, 
             "rank": 5, 
             "cat-1": "Gender: Male", 
             "ini": 10, 
-            "cat-0": "Category: 3", 
+            "cat-0": "Category: three", 
             "rankvar": 7
           }, 
           {
@@ -13147,11 +13147,11 @@
             "name": "Cell Line: H2106", 
             "clust": 14, 
             "cat_1_index": 15, 
-            "cat_0_index": 16, 
+            "cat_0_index": 6, 
             "rank": 14, 
             "cat-1": "Gender: Male", 
             "ini": 9, 
-            "cat-0": "Category: 4", 
+            "cat-0": "Category: four", 
             "rankvar": 18
           }, 
           {
@@ -13171,11 +13171,11 @@
             "name": "Cell Line: H441", 
             "clust": 27, 
             "cat_1_index": 27, 
-            "cat_0_index": 2, 
+            "cat_0_index": 15, 
             "rank": 25, 
             "cat-1": "Gender: Male", 
             "ini": 8, 
-            "cat-0": "Category: 1", 
+            "cat-0": "Category: one", 
             "rankvar": 10
           }, 
           {
@@ -13195,11 +13195,11 @@
             "name": "Cell Line: H1944", 
             "clust": 10, 
             "cat_1_index": 9, 
-            "cat_0_index": 14, 
+            "cat_0_index": 22, 
             "rank": 23, 
             "cat-1": "Gender: Female", 
             "ini": 7, 
-            "cat-0": "Category: 3", 
+            "cat-0": "Category: three", 
             "rankvar": 5
           }, 
           {
@@ -13219,11 +13219,11 @@
             "name": "Cell Line: H1437", 
             "clust": 16, 
             "cat_1_index": 11, 
-            "cat_0_index": 17, 
+            "cat_0_index": 7, 
             "rank": 15, 
             "cat-1": "Gender: Male", 
             "ini": 6, 
-            "cat-0": "Category: 4", 
+            "cat-0": "Category: four", 
             "rankvar": 20
           }, 
           {
@@ -13243,11 +13243,11 @@
             "name": "Cell Line: H1734", 
             "clust": 25, 
             "cat_1_index": 1, 
-            "cat_0_index": 3, 
+            "cat_0_index": 16, 
             "rank": 18, 
             "cat-1": "Gender: Female", 
             "ini": 5, 
-            "cat-0": "Category: 1", 
+            "cat-0": "Category: one", 
             "rankvar": 22
           }, 
           {
@@ -13267,11 +13267,11 @@
             "name": "Cell Line: LOU-NH91", 
             "clust": 1, 
             "cat_1_index": 6, 
-            "cat_0_index": 24, 
+            "cat_0_index": 1, 
             "rank": 19, 
             "cat-1": "Gender: Female", 
             "ini": 4, 
-            "cat-0": "Category: 5", 
+            "cat-0": "Category: five", 
             "rankvar": 12
           }, 
           {
@@ -13291,11 +13291,11 @@
             "name": "Cell Line: HCC44", 
             "clust": 9, 
             "cat_1_index": 5, 
-            "cat_0_index": 18, 
+            "cat_0_index": 8, 
             "rank": 11, 
             "cat-1": "Gender: Female", 
             "ini": 3, 
-            "cat-0": "Category: 4", 
+            "cat-0": "Category: four", 
             "rankvar": 0
           }, 
           {
@@ -13315,11 +13315,11 @@
             "name": "Cell Line: A549", 
             "clust": 13, 
             "cat_1_index": 14, 
-            "cat_0_index": 19, 
+            "cat_0_index": 9, 
             "rank": 21, 
             "cat-1": "Gender: Male", 
             "ini": 2, 
-            "cat-0": "Category: 4", 
+            "cat-0": "Category: four", 
             "rankvar": 6
           }, 
           {
@@ -13339,11 +13339,11 @@
             "name": "Cell Line: H1781", 
             "clust": 28, 
             "cat_1_index": 8, 
-            "cat_0_index": 5, 
+            "cat_0_index": 18, 
             "rank": 16, 
             "cat-1": "Gender: Female", 
             "ini": 1, 
-            "cat-0": "Category: 1", 
+            "cat-0": "Category: one", 
             "rankvar": 16
           }
         ]
@@ -13593,11 +13593,11 @@
             "name": "Cell Line: H1650", 
             "clust": 0, 
             "cat_1_index": 12, 
-            "cat_0_index": 6, 
+            "cat_0_index": 24, 
             "rank": 17, 
             "cat-1": "Gender: Male", 
             "ini": 29, 
-            "cat-0": "Category: 2", 
+            "cat-0": "Category: two", 
             "rankvar": 9
           }, 
           {
@@ -13617,11 +13617,11 @@
             "name": "Cell Line: H23", 
             "clust": 10, 
             "cat_1_index": 13, 
-            "cat_0_index": 7, 
+            "cat_0_index": 25, 
             "rank": 9, 
             "cat-1": "Gender: Male", 
             "ini": 28, 
-            "cat-0": "Category: 2", 
+            "cat-0": "Category: two", 
             "rankvar": 5
           }, 
           {
@@ -13641,11 +13641,11 @@
             "name": "Cell Line: CAL-12T", 
             "clust": 11, 
             "cat_1_index": 15, 
-            "cat_0_index": 8, 
+            "cat_0_index": 26, 
             "rank": 11, 
             "cat-1": "Gender: Male", 
             "ini": 27, 
-            "cat-0": "Category: 2", 
+            "cat-0": "Category: two", 
             "rankvar": 2
           }, 
           {
@@ -13665,11 +13665,11 @@
             "name": "Cell Line: H358", 
             "clust": 21, 
             "cat_1_index": 24, 
-            "cat_0_index": 3, 
+            "cat_0_index": 16, 
             "rank": 13, 
             "cat-1": "Gender: Male", 
             "ini": 26, 
-            "cat-0": "Category: 1", 
+            "cat-0": "Category: one", 
             "rankvar": 3
           }, 
           {
@@ -13689,11 +13689,11 @@
             "name": "Cell Line: H1975", 
             "clust": 27, 
             "cat_1_index": 7, 
-            "cat_0_index": 9, 
+            "cat_0_index": 27, 
             "rank": 0, 
             "cat-1": "Gender: Female", 
             "ini": 25, 
-            "cat-0": "Category: 2", 
+            "cat-0": "Category: two", 
             "rankvar": 27
           }, 
           {
@@ -13713,11 +13713,11 @@
             "name": "Cell Line: HCC15", 
             "clust": 28, 
             "cat_1_index": 27, 
-            "cat_0_index": 10, 
+            "cat_0_index": 28, 
             "rank": 1, 
             "cat-1": "Gender: Male", 
             "ini": 24, 
-            "cat-0": "Category: 2", 
+            "cat-0": "Category: two", 
             "rankvar": 1
           }, 
           {
@@ -13737,11 +13737,11 @@
             "name": "Cell Line: H1355", 
             "clust": 7, 
             "cat_1_index": 11, 
-            "cat_0_index": 13, 
+            "cat_0_index": 21, 
             "rank": 8, 
             "cat-1": "Gender: Male", 
             "ini": 23, 
-            "cat-0": "Category: 3", 
+            "cat-0": "Category: three", 
             "rankvar": 17
           }, 
           {
@@ -13761,11 +13761,11 @@
             "name": "Cell Line: HCC827", 
             "clust": 22, 
             "cat_1_index": 5, 
-            "cat_0_index": 2, 
+            "cat_0_index": 15, 
             "rank": 25, 
             "cat-1": "Gender: Female", 
             "ini": 22, 
-            "cat-0": "Category: 1", 
+            "cat-0": "Category: one", 
             "rankvar": 24
           }, 
           {
@@ -13785,11 +13785,11 @@
             "name": "Cell Line: H2405", 
             "clust": 13, 
             "cat_1_index": 28, 
-            "cat_0_index": 25, 
+            "cat_0_index": 2, 
             "rank": 3, 
             "cat-1": "Gender: Male", 
             "ini": 21, 
-            "cat-0": "Category: 5", 
+            "cat-0": "Category: five", 
             "rankvar": 19
           }, 
           {
@@ -13809,11 +13809,11 @@
             "name": "Cell Line: HCC78", 
             "clust": 12, 
             "cat_1_index": 14, 
-            "cat_0_index": 26, 
+            "cat_0_index": 3, 
             "rank": 28, 
             "cat-1": "Gender: Male", 
             "ini": 20, 
-            "cat-0": "Category: 5", 
+            "cat-0": "Category: five", 
             "rankvar": 28
           }, 
           {
@@ -13833,11 +13833,11 @@
             "name": "Cell Line: H1666", 
             "clust": 14, 
             "cat_1_index": 8, 
-            "cat_0_index": 22, 
+            "cat_0_index": 12, 
             "rank": 4, 
             "cat-1": "Gender: Female", 
             "ini": 19, 
-            "cat-0": "Category: 4", 
+            "cat-0": "Category: four", 
             "rankvar": 8
           }, 
           {
@@ -13857,11 +13857,11 @@
             "name": "Cell Line: H661", 
             "clust": 15, 
             "cat_1_index": 23, 
-            "cat_0_index": 27, 
+            "cat_0_index": 4, 
             "rank": 18, 
             "cat-1": "Gender: Male", 
             "ini": 18, 
-            "cat-0": "Category: 5", 
+            "cat-0": "Category: five", 
             "rankvar": 26
           }, 
           {
@@ -13881,11 +13881,11 @@
             "name": "Cell Line: H838", 
             "clust": 16, 
             "cat_1_index": 10, 
-            "cat_0_index": 28, 
+            "cat_0_index": 5, 
             "rank": 19, 
             "cat-1": "Gender: Male", 
             "ini": 17, 
-            "cat-0": "Category: 5", 
+            "cat-0": "Category: five", 
             "rankvar": 23
           }, 
           {
@@ -13905,11 +13905,11 @@
             "name": "Cell Line: H1703", 
             "clust": 2, 
             "cat_1_index": 20, 
-            "cat_0_index": 23, 
+            "cat_0_index": 0, 
             "rank": 21, 
             "cat-1": "Gender: Male", 
             "ini": 16, 
-            "cat-0": "Category: 5", 
+            "cat-0": "Category: five", 
             "rankvar": 21
           }, 
           {
@@ -13929,11 +13929,11 @@
             "name": "Cell Line: CALU-3", 
             "clust": 24, 
             "cat_1_index": 22, 
-            "cat_0_index": 20, 
+            "cat_0_index": 10, 
             "rank": 5, 
             "cat-1": "Gender: Male", 
             "ini": 15, 
-            "cat-0": "Category: 4", 
+            "cat-0": "Category: four", 
             "rankvar": 7
           }, 
           {
@@ -13953,11 +13953,11 @@
             "name": "Cell Line: H2342", 
             "clust": 17, 
             "cat_1_index": 2, 
-            "cat_0_index": 21, 
+            "cat_0_index": 11, 
             "rank": 27, 
             "cat-1": "Gender: Female", 
             "ini": 14, 
-            "cat-0": "Category: 4", 
+            "cat-0": "Category: four", 
             "rankvar": 25
           }, 
           {
@@ -13977,11 +13977,11 @@
             "name": "Cell Line: H2228", 
             "clust": 19, 
             "cat_1_index": 3, 
-            "cat_0_index": 5, 
+            "cat_0_index": 18, 
             "rank": 16, 
             "cat-1": "Gender: Female", 
             "ini": 13, 
-            "cat-0": "Category: 1", 
+            "cat-0": "Category: one", 
             "rankvar": 16
           }, 
           {
@@ -14001,11 +14001,11 @@
             "name": "Cell Line: H1299", 
             "clust": 1, 
             "cat_1_index": 18, 
-            "cat_0_index": 11, 
+            "cat_0_index": 19, 
             "rank": 10, 
             "cat-1": "Gender: Male", 
             "ini": 12, 
-            "cat-0": "Category: 3", 
+            "cat-0": "Category: three", 
             "rankvar": 11
           }, 
           {
@@ -14025,11 +14025,11 @@
             "name": "Cell Line: H1792", 
             "clust": 26, 
             "cat_1_index": 19, 
-            "cat_0_index": 14, 
+            "cat_0_index": 22, 
             "rank": 2, 
             "cat-1": "Gender: Male", 
             "ini": 11, 
-            "cat-0": "Category: 3", 
+            "cat-0": "Category: three", 
             "rankvar": 10
           }, 
           {
@@ -14049,11 +14049,11 @@
             "name": "Cell Line: H460", 
             "clust": 8, 
             "cat_1_index": 16, 
-            "cat_0_index": 12, 
+            "cat_0_index": 20, 
             "rank": 7, 
             "cat-1": "Gender: Male", 
             "ini": 10, 
-            "cat-0": "Category: 3", 
+            "cat-0": "Category: three", 
             "rankvar": 13
           }, 
           {
@@ -14073,11 +14073,11 @@
             "name": "Cell Line: H2106", 
             "clust": 25, 
             "cat_1_index": 21, 
-            "cat_0_index": 16, 
+            "cat_0_index": 6, 
             "rank": 6, 
             "cat-1": "Gender: Male", 
             "ini": 9, 
-            "cat-0": "Category: 4", 
+            "cat-0": "Category: four", 
             "rankvar": 12
           }, 
           {
@@ -14097,11 +14097,11 @@
             "name": "Cell Line: H441", 
             "clust": 18, 
             "cat_1_index": 25, 
-            "cat_0_index": 0, 
+            "cat_0_index": 13, 
             "rank": 26, 
             "cat-1": "Gender: Male", 
             "ini": 8, 
-            "cat-0": "Category: 1", 
+            "cat-0": "Category: one", 
             "rankvar": 15
           }, 
           {
@@ -14121,11 +14121,11 @@
             "name": "Cell Line: H1944", 
             "clust": 5, 
             "cat_1_index": 0, 
-            "cat_0_index": 15, 
+            "cat_0_index": 23, 
             "rank": 14, 
             "cat-1": "Gender: Female", 
             "ini": 7, 
-            "cat-0": "Category: 3", 
+            "cat-0": "Category: three", 
             "rankvar": 4
           }, 
           {
@@ -14145,11 +14145,11 @@
             "name": "Cell Line: H1437", 
             "clust": 9, 
             "cat_1_index": 17, 
-            "cat_0_index": 18, 
+            "cat_0_index": 8, 
             "rank": 20, 
             "cat-1": "Gender: Male", 
             "ini": 6, 
-            "cat-0": "Category: 4", 
+            "cat-0": "Category: four", 
             "rankvar": 22
           }, 
           {
@@ -14169,11 +14169,11 @@
             "name": "Cell Line: H1734", 
             "clust": 23, 
             "cat_1_index": 4, 
-            "cat_0_index": 1, 
+            "cat_0_index": 14, 
             "rank": 23, 
             "cat-1": "Gender: Female", 
             "ini": 5, 
-            "cat-0": "Category: 1", 
+            "cat-0": "Category: one", 
             "rankvar": 20
           }, 
           {
@@ -14193,11 +14193,11 @@
             "name": "Cell Line: LOU-NH91", 
             "clust": 3, 
             "cat_1_index": 9, 
-            "cat_0_index": 24, 
+            "cat_0_index": 1, 
             "rank": 22, 
             "cat-1": "Gender: Female", 
             "ini": 4, 
-            "cat-0": "Category: 5", 
+            "cat-0": "Category: five", 
             "rankvar": 14
           }, 
           {
@@ -14217,11 +14217,11 @@
             "name": "Cell Line: HCC44", 
             "clust": 4, 
             "cat_1_index": 1, 
-            "cat_0_index": 17, 
+            "cat_0_index": 7, 
             "rank": 15, 
             "cat-1": "Gender: Female", 
             "ini": 3, 
-            "cat-0": "Category: 4", 
+            "cat-0": "Category: four", 
             "rankvar": 0
           }, 
           {
@@ -14241,11 +14241,11 @@
             "name": "Cell Line: A549", 
             "clust": 6, 
             "cat_1_index": 26, 
-            "cat_0_index": 19, 
+            "cat_0_index": 9, 
             "rank": 12, 
             "cat-1": "Gender: Male", 
             "ini": 2, 
-            "cat-0": "Category: 4", 
+            "cat-0": "Category: four", 
             "rankvar": 6
           }, 
           {
@@ -14265,11 +14265,11 @@
             "name": "Cell Line: H1781", 
             "clust": 20, 
             "cat_1_index": 6, 
-            "cat_0_index": 4, 
+            "cat_0_index": 17, 
             "rank": 24, 
             "cat-1": "Gender: Female", 
             "ini": 1, 
-            "cat-0": "Category: 1", 
+            "cat-0": "Category: one", 
             "rankvar": 18
           }
         ]

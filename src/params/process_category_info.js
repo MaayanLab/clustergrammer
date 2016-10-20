@@ -78,10 +78,10 @@ module.exports = function process_category_info(params, viz, preserve_cats=true)
         // check whether all the categories are of value type
         inst_info = check_if_value_cats(cat_states);
 
-        // !!! tmp disable value categories
-        ///////////////////////////////////
-        ///////////////////////////////////
-        inst_info.type = 'cat_strings';
+        // // !!! tmp disable value categories
+        // ///////////////////////////////////
+        // ///////////////////////////////////
+        // inst_info.type = 'cat_strings';
 
         if (predefine_colors === false){
 
