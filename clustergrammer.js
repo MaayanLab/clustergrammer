@@ -1278,8 +1278,6 @@ var Clustergrammer =
 
 	  console.log('checking if there are value cats');
 
-	  var super_string = ': ';
-
 	  var tmp_cat = cat_states[0];
 
 	  var has_title = false;
@@ -1287,7 +1285,9 @@ var Clustergrammer =
 	  var cat_types = 'cat_strings';
 	  var max_abs_val = NaN;
 	  var all_values = [];
+	  var cat_scale = null;
 
+	  var super_string = ': ';
 	  if (tmp_cat.indexOf(super_string) > -1) {
 	    has_title = true;
 	    tmp_cat = tmp_cat.split(super_string)[1];
@@ -1327,11 +1327,14 @@ var Clustergrammer =
 	    });
 
 	    max_abs_val = Math.abs(max_value);
+
+	    cat_scale = d3.scale.linear().domain([0, max_abs_val]).range([0, 1]);
 	  }
 
 	  var inst_info = {};
 	  inst_info.type = cat_types;
 	  inst_info.max_abs_val = max_abs_val;
+	  inst_info.cat_scale = cat_scale;
 
 	  return inst_info;
 		};
@@ -6662,6 +6665,9 @@ var Clustergrammer =
 	  d3.select(params.root + ' .col_cat_container').selectAll('.col_cat_group').call(cat_tip);
 
 	  // add category rects
+	  var super_string = ': ';
+	  var has_title;
+
 	  d3.selectAll(params.root + ' .col_cat_group').each(function () {
 
 	    var inst_selection = this;
@@ -6692,7 +6698,31 @@ var Clustergrammer =
 	        d3.select(this).classed('hovering', false);
 	      });
 
-	      cat_rect.style('opacity', params.viz.cat_colors.opacity);
+	      var inst_type = params.viz.cat_info.col[inst_cat]['type'];
+
+	      // set opacity based on string or value cats
+	      if (inst_type === 'cat_strings') {
+
+	        // opacity is fixed
+	        cat_rect.style('opacity', params.viz.cat_colors.opacity);
+	      } else {
+
+	        // opacity varies based on value
+	        cat_rect.style('opacity', function (d) {
+
+	          var cat_value = d[inst_cat];
+
+	          if (cat_value.indexOf(super_string) > -1) {
+	            has_title = true;
+	            cat_value = cat_value.split(super_string)[1];
+	          }
+
+	          cat_value = parseFloat(cat_value);
+
+	          return params.viz.cat_info.col[inst_cat]['cat_scale'](cat_value);
+	          // return 1;
+	        });
+	      }
 	    });
 	  });
 	};

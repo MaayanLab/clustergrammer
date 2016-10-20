@@ -2,7 +2,6 @@ module.exports = function check_if_value_cats(cat_states){
 
   console.log('checking if there are value cats')
 
-  var super_string = ': ';
 
   var tmp_cat = cat_states[0];
 
@@ -11,7 +10,9 @@ module.exports = function check_if_value_cats(cat_states){
   var cat_types = 'cat_strings';
   var max_abs_val = NaN;
   var all_values = [];
+  var cat_scale = null;
 
+  var super_string = ': ';
   if ( tmp_cat.indexOf(super_string) > -1 ){
     has_title = true;
     tmp_cat = tmp_cat.split(super_string)[1];
@@ -53,12 +54,15 @@ module.exports = function check_if_value_cats(cat_states){
     });
 
     max_abs_val = Math.abs(max_value);
+
+    cat_scale = d3.scale.linear().domain([0, max_abs_val]).range([0,1]);
   }
 
 
   var inst_info = {};
   inst_info.type = cat_types;
   inst_info.max_abs_val = max_abs_val;
+  inst_info.cat_scale = cat_scale;
 
   return inst_info;
 
