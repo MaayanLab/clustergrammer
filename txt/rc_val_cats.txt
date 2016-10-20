@@ -1,0 +1,6 @@
+		col-A	col-B	col-C
+		val: 1	val: 2	val: 3
+row-A	val: 1	1	2	3
+row-B	val: 2	4	5	6
+row-C	val: 3	7	8	9
+row-D	val: 19	10	11	12
