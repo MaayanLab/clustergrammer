@@ -16,7 +16,7 @@ function gene_info(gene_symbol){
 
       // var base_url = 'http://amp.pharm.mssm.edu/Harmonizome/api/1.0/gene/'
       // var base_url = 'http://cleopatra.1425mad.mssm.edu:31731/Harmonizome/api/1.0/gene/'
-      var base_url = 'http://amp.pharm.mssm.edu/clustergrammer/gene_info/'
+      var base_url = 'https://amp.pharm.mssm.edu/clustergrammer/gene_info/'
 
       var url = base_url + gene_symbol;
 

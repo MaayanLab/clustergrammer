@@ -36,8 +36,6 @@ module.exports = function cat_tooltip_text(params, inst_data, inst_selection, in
 
   function highlight_categories(){
 
-    console.log('running highlight_categories')
-
     var run_highlighting = false;
 
     if (d3.select(inst_selection).classed('hovering')){
@@ -56,8 +54,6 @@ module.exports = function cat_tooltip_text(params, inst_data, inst_selection, in
             run_highlighting = true;
           }
         }
-
-        console.log(run_highlighting)
 
         if (run_highlighting){
           d3.selectAll(params.root+' .'+tmp_rc+'_cat_group')
