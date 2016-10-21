@@ -1122,6 +1122,7 @@ module.exports =
 	  viz.show_categories = {};
 	  viz.all_cats = {};
 	  viz.cat_names = {};
+	  viz.cat_info = {};
 
 	  // this will hold the information for calculating the opacity of the value
 	  // function
@@ -1132,7 +1133,6 @@ module.exports =
 	  var predefine_colors = false;
 	  if (viz.cat_colors === null) {
 	    viz.cat_colors = {};
-	    viz.cat_info = {};
 	    viz.cat_colors.value_opacity = ini_val_opacity;
 	    predefine_colors = false;
 	  } else {
@@ -1163,9 +1163,9 @@ module.exports =
 
 	      if (predefine_colors === false) {
 	        viz.cat_colors[inst_rc] = {};
-	        viz.cat_info[inst_rc] = {};
 	      }
 
+	      viz.cat_info[inst_rc] = {};
 	      viz.cat_names[inst_rc] = {};
 
 	      _.each(viz.all_cats[inst_rc], function (inst_cat) {
@@ -1199,12 +1199,12 @@ module.exports =
 	        // ///////////////////////////////////
 	        // inst_info.type = 'cat_strings';
 
+	        // pass info_info object
+	        viz.cat_info[inst_rc][inst_cat] = inst_info;
+
 	        if (predefine_colors === false) {
 
 	          viz.cat_colors[inst_rc][inst_cat] = {};
-
-	          // pass info_info object
-	          viz.cat_info[inst_rc][inst_cat] = inst_info;
 
 	          _.each(cat_states, function (cat_tmp, i) {
 
@@ -11151,8 +11151,6 @@ module.exports =
 	  // get value
 	  var inst_state = available_views[inst_index][filter_type];
 
-	  console.log('inst_state');
-	  console.log(inst_state);
 	  reset_other_filter_sliders(cgm, filter_type, inst_state);
 
 	  params = get_current_orders(params);
@@ -12015,6 +12013,8 @@ module.exports =
 	module.exports = function ini_cat_opacity(viz, inst_rc, cat_rect, inst_cat) {
 	  var updating = arguments.length <= 4 || arguments[4] === undefined ? false : arguments[4];
 
+
+	  // debugger;
 
 	  var super_string = ': ';
 	  var has_title;

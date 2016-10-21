@@ -1,5 +1,7 @@
 module.exports = function ini_cat_opacity(viz, inst_rc, cat_rect, inst_cat, updating=false){
 
+  // debugger;
+
   var super_string = ': ';
   var has_title;
   var inst_type = viz.cat_info[inst_rc][inst_cat]['type'];

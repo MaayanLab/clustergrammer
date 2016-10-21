@@ -10,8 +10,6 @@ module.exports = function run_filter_slider(cgm, filter_type, available_views, i
   // get value
   var inst_state = available_views[inst_index][filter_type];
 
-  console.log('inst_state')
-  console.log(inst_state)
   reset_other_filter_sliders(cgm, filter_type, inst_state);
 
   params = get_current_orders(params);

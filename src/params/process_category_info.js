@@ -12,6 +12,7 @@ module.exports = function process_category_info(params, viz, preserve_cats=true)
   viz.show_categories = {};
   viz.all_cats = {};
   viz.cat_names = {};
+  viz.cat_info = {};
 
   // this will hold the information for calculating the opacity of the value
   // function
@@ -22,7 +23,6 @@ module.exports = function process_category_info(params, viz, preserve_cats=true)
   var predefine_colors = false;
   if (viz.cat_colors === null){
     viz.cat_colors = {};
-    viz.cat_info = {};
     viz.cat_colors.value_opacity = ini_val_opacity;
     predefine_colors = false;
   } else {
@@ -55,9 +55,9 @@ module.exports = function process_category_info(params, viz, preserve_cats=true)
 
       if (predefine_colors === false){
         viz.cat_colors[inst_rc] = {};
-        viz.cat_info[inst_rc] = {};
       }
 
+      viz.cat_info[inst_rc] = {};
       viz.cat_names[inst_rc] = {};
 
       _.each( viz.all_cats[inst_rc], function(inst_cat){
@@ -95,12 +95,12 @@ module.exports = function process_category_info(params, viz, preserve_cats=true)
         // ///////////////////////////////////
         // inst_info.type = 'cat_strings';
 
+        // pass info_info object
+        viz.cat_info[inst_rc][inst_cat] = inst_info;
+
         if (predefine_colors === false){
 
           viz.cat_colors[inst_rc][inst_cat] = {};
-
-          // pass info_info object
-          viz.cat_info[inst_rc][inst_cat] = inst_info;
 
           _.each(cat_states, function(cat_tmp, i){
 
