@@ -28,7 +28,7 @@ Clustergrammer consists of two parts: 1) the front-end JavaScript library [clust
 
 You can install [clustergrammer.js](#clustergrammer-javascript-library) by downloading the [latest release](https://github.com/MaayanLab/clustergrammer/releases/latest) or with npm `npm install clustergrammer`. You also install [clustergrammer.py](#clustergrammer-python-library) by downloading the [latest release](https://github.com/MaayanLab/clustergrammer-py/releases/latest) or with pip `pip install clustergrammer`.
 
-The easiest way to visualize a matrix of your own data is to follow the [example Python workflow](#example-python-workflow)) that demonstrates how to use the Python library [clustergrammer.py](#clustergrammer-python-library)). Users can also generate the visualization json (see example [mult_view.json](json/mult_view.json)) using another programming language as long as they adhere to the [format](https://github.com/MaayanLab/clustergrammer-json).
+The easiest way to visualize a matrix of your own data is to follow the [example Python workflow](#example-python-workflow) that demonstrates how to use the Python library [clustergrammer.py](#clustergrammer-python-library). Users can also generate the JSON for clustergrammer.js (see the example [mult_view.json](json/mult_view.json)) using their own scripts as long as they adhere to the [format](https://github.com/MaayanLab/clustergrammer-json).
 
 
 # Clustergrammer JavaScript Library
@@ -36,6 +36,8 @@ Clustergrammer.js uses the visualization library D3.js to build an interactive h
 
 To make a visualization pass an arguments object with the following required values to Clustergrammer:
 ```
+// load visualization JSON to network_data
+
 var args = {
   'root':'#id_of_container',
   'network_data': network_data
@@ -43,12 +45,12 @@ var args = {
 
 var cgm = Clustergrammer(args);
 ```
-The id of the container where the visualization SVG will be placed is passed as ```root``` (this root container must be made by the user). The visualization JSON (example here [mult_view.json](json/mult_view.json) and format discussed [here](https://github.com/MaayanLab/clustergrammer-json)) contains the information necessary to make your visualization and  is passed as ```network_data```. The visualization JSON is produced by [clustergrammer.py](https://github.com/MaayanLab/clustergrammer-py/). See additional [optional arguments](optional_clustergrammerjs_arguments.md) for more information.
+The id of the container where the visualization SVG will be placed is passed as ```root``` (this root container must be made by the user). The visualization JSON (example here [mult_view.json](json/mult_view.json) and format discussed [here](https://github.com/MaayanLab/clustergrammer-json)) contains the information necessary to make your visualization and  is passed as ```network_data```. The visualization JSON is produced by [clustergrammer.py](https://github.com/MaayanLab/clustergrammer-py/). See additional [optional clustergrammer.js arguments](optional_clustergrammerjs_arguments.md) for additional options that can be passed to clustergrammer.js.
 
-### Example Pages
-The page [index.html](index.html) (and the corresponding script [load_clustergram.js](js/load_clustergram.js)) demonstrates how to make a full-screen resizable clustergrammer visualization.
-
-The page [multiple_clust.html](multiple_clust.html) (and corresponding script [load_multiple_clustergrams.js](js/load_multiple_clustergrams.js)) demonstrates how to visualize multiple clustergrams on one page. Note that each visualization requires its own container.
+### Clustergrammer.js Dependencies
+- D3.js
+- jQuery
+- Underscore.js
 
 ### Visualization Resizing
 The visualization can be resized by: first resizing the container and then resizing the visualization using ```cgm.resize_viz()```. An example of resizing when the window change size is shown below.
@@ -65,10 +67,10 @@ d3.select(window).on('resize', function(){
 });
 ```
 
-### Clustergrammer.js Dependencies
-- D3.js
-- jQuery
-- Underscore.js
+# Example Webpages
+The page [index.html](index.html) (and the corresponding script [load_clustergram.js](js/load_clustergram.js)) demonstrates how to make a full-screen resizable clustergrammer visualization.
+
+The page [multiple_clust.html](multiple_clust.html) (and corresponding script [load_multiple_clustergrams.js](js/load_multiple_clustergrams.js)) demonstrates how to visualize multiple clustergrams on one page. Note that each visualization requires its own container.
 
 # Clustergrammer Python Library
 The Clustergrammer python library [clutergrammer.py](https://github.com/MaayanLab/clustergrammer-py), takes a tab-separated matrix file as input (see format [here](#input-matrix-format)), calculates clustering, and generates the visualization json (see format [here](https://github.com/MaayanLab/clustergrammer-json)) for clustergrammer.js. The library can be installed using [pip](https://pypi.python.org/pypi/clustergrammer/) and is compatable with Python 2.7 and 3.5:
