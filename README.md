@@ -1,5 +1,5 @@
 # clustergrammer
-Clustergrammer is an interactive web-based tool for visualizing high-dimensional data as heatmaps. The front-end JavaScript library, [clustergrammer.js](#clustergrammer-javascript-library) is built using D3.js and back-end calculations are done using the Python library [clustergrammer.py](#clustergrammer-python-library). Click the screenshot below to view an interacive tutorial:
+Clustergrammer is an interactive web-based tool for visualizing high-dimensional data as heatmaps. The front-end JavaScript library, [clustergrammer.js](#clustergrammer-javascript-library) is built using D3.js and 'back-end' calculations are done using the Python library [clustergrammer.py](#clustergrammer-python-library). Click the screenshot below to view an interaceive tutorial:
 
 [![demo_screenshot](img/demo_screenshot.png "demo_screenshot.png")](http://maayanlab.github.io/clustergrammer/scrolling_tour)
 
@@ -16,7 +16,7 @@ Clustergrammer can be used as:
 * Web-app [http://amp.pharm.mssm.edu/clustergrammer/](http://amp.pharm.mssm.edu/clustergrammer/)
 
 Clustergrammer is designed to be a reusable chart and has been integrated into several [Ma'ayan lab](http://icahn.mssm.edu/research/labs/maayan-laboratory) web tools including:
-- [Clustergrammer](http://amp.pharm.mssm.edu/clustergrammer/)
+- [Clustergrammer (web application)](http://amp.pharm.mssm.edu/clustergrammer/)
 - [Enrichr](http://amp.pharm.mssm.edu/Enrichr/)
 - [GEN3VA](http://amp.pharm.mssm.edu/gen3va/)
 - [L1000CDS2](http://amp.pharm.mssm.edu/l1000cds2/)
@@ -24,15 +24,15 @@ Clustergrammer is designed to be a reusable chart and has been integrated into s
 - [Harmoniozome](http://amp.pharm.mssm.edu/Harmonizome/)
 
 # Using Clustergrammer
-Clustergrammer consists of two parts: 1) the front-end JavaScript library [clustergrammer.js](#clustergrammer-javascript-library), and 2) the 'back-end' [clustergrammer.py](#clustergrammer-python-library) used to cluster your data and make the [JSON](https://github.com/MaayanLab/clustergrammer-json) for the front-end visualization.
+Clustergrammer consists of two parts: 1) the front-end JavaScript library [clustergrammer.js](#clustergrammer-javascript-library) used the make the interactive visualization, and 2) the 'back-end' [clustergrammer.py](#clustergrammer-python-library) used to cluster your data and make the [JSON](https://github.com/MaayanLab/clustergrammer-json) for the front-end visualization.
 
-You can install [clustergrammer.js](#clustergrammer-javascript-library) by downloading the [latest release](https://github.com/MaayanLab/clustergrammer/releases/latest) or with npm `npm install clustergrammer`. You also install clustergrammer.py by downloading the [latest release](https://github.com/MaayanLab/clustergrammer-py/releases/latest) or with pip `pip install clustergrammer`.
+You can install [clustergrammer.js](#clustergrammer-javascript-library) by downloading the [latest release](https://github.com/MaayanLab/clustergrammer/releases/latest) or with npm `npm install clustergrammer`. You also install [clustergrammer.py](#clustergrammer-python-library) by downloading the [latest release](https://github.com/MaayanLab/clustergrammer-py/releases/latest) or with pip `pip install clustergrammer`.
 
 The easiest way to visualize a matrix of your own data is to follow the [example Python workflow](#example-python-workflow)) that demonstrates how to use the Python library [clustergrammer.py](#clustergrammer-python-library)). Users can also generate the visualization json (see example [mult_view.json](json/mult_view.json)) using another programming language as long as they adhere to the [format](https://github.com/MaayanLab/clustergrammer-json).
 
 
 # Clustergrammer JavaScript Library
-The Clustergrammer.js source code is under the [src](src) directory and Webpack Module Developer is being used to make clustergrammer.js.
+Clustergrammer.js uses the visualization library D3.js to build an interactive heatmap visualization made using SVG. The Clustergrammer.js source code is under the [src](src) directory and Webpack Module Developer is being used to make clustergrammer.js.
 
 To make a visualization pass an arguments object with the following required values to Clustergrammer:
 ```
