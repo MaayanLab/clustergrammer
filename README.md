@@ -23,11 +23,17 @@ Clustergrammer is designed to be a reusable chart and has been integrated into s
 - [GEO2Enrichr](http://amp.pharm.mssm.edu/g2e/)
 - [Harmoniozome](http://amp.pharm.mssm.edu/Harmonizome/)
 
-# Using Clustergrammer Libraries
+# Using Clustergrammer
+Clustergrammer consists of two parts: 1) the front-end JavaScript library [clustergrammer.js](#clustergrammer-javascript-library), and 2) the 'back-end' [clustergrammer.py](#clustergrammer-python-library) used to cluster your data and make the [JSON](https://github.com/MaayanLab/clustergrammer-json) for the front-end visualization.
 
-The Clustergrammer.js source code is under the [src](src) directory and Webpack Module Developer is being used to make clustergrammer.js. The easiest way to visualize a matrix of your own data is to follow the [example Python workflow](#example-python-workflow)) that uses the Clustergrammer python library (discussed [here](#clustergrammer-python-library) and repo here [clustergrammer.py](https://github.com/MaayanLab/clustergrammer-py)). Users can also generate the visualization json (see example [mult_view.json](json/mult_view.json)) using another programming language as long as they adhere to the [format](https://github.com/MaayanLab/clustergrammer-json).
+You can install [clustergrammer.js](#clustergrammer-javascript-library) by downloading the [latest release](https://github.com/MaayanLab/clustergrammer/releases/latest) or with npm `npm install clustergrammer`. You also install clustergrammer.py by downloading the [latest release](https://github.com/MaayanLab/clustergrammer-py/releases/latest) or with pip `pip install clustergrammer`.
+
+The easiest way to visualize a matrix of your own data is to follow the [example Python workflow](#example-python-workflow)) that demonstrates how to use the Python library [clustergrammer.py](#clustergrammer-python-library)). Users can also generate the visualization json (see example [mult_view.json](json/mult_view.json)) using another programming language as long as they adhere to the [format](https://github.com/MaayanLab/clustergrammer-json).
+
 
 # Clustergrammer JavaScript Library
+The Clustergrammer.js source code is under the [src](src) directory and Webpack Module Developer is being used to make clustergrammer.js.
+
 To make a visualization pass an arguments object with the following required values to Clustergrammer:
 ```
 var args = {
