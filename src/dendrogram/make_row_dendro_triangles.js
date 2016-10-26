@@ -77,8 +77,11 @@ module.exports = function make_row_dendro_triangles(cgm,
       dendro_mouseout(this);
     })
     .on('click', function(d){
-      console.log(d3.event.shiftKey)
-      row_dendro_filter_db(d, this);
+      if (d3.event.shiftKey === false){
+        row_dendro_filter_db(d, this);
+      } else {
+        console.log('shift clicking the row dendrogram')
+      }
     });
 
   var triangle_opacity;

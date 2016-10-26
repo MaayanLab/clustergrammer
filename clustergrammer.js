@@ -3994,8 +3994,11 @@ var Clustergrammer =
 
 	    dendro_mouseout(this);
 	  }).on('click', function (d) {
-	    console.log(d3.event.shiftKey);
-	    row_dendro_filter_db(d, this);
+	    if (d3.event.shiftKey === false) {
+	      row_dendro_filter_db(d, this);
+	    } else {
+	      console.log('shift clicking the row dendrogram');
+	    }
 	  });
 
 	  var triangle_opacity;
@@ -4292,7 +4295,11 @@ var Clustergrammer =
 	    d3.selectAll(params.root + ' .dendro_shadow').remove();
 	    dendro_mouseout(this);
 	  }).on('click', function (d) {
-	    col_dendro_filter_db(d, this);
+	    if (d3.event.shiftKey === false) {
+	      col_dendro_filter_db(d, this);
+	    } else {
+	      console.log('shift clicking column dendrogram');
+	    }
 	  });
 
 	  var triangle_opacity;
@@ -11986,7 +11993,7 @@ var Clustergrammer =
 
 	module.exports = function ini_modals(params) {
 
-	  // share modal 
+	  // share modal
 	  ///////////////////////////////////////
 	  var share_modal = make_modal_skeleton(params, 'share_info');
 
@@ -11996,7 +12003,7 @@ var Clustergrammer =
 
 	  share_modal.body.append('input').classed('bootstrap_highlight', true).classed('share_url', true);
 
-	  // picture modal 
+	  // picture modal
 	  ///////////////////////////////////////
 	  var screenshot_modal = make_modal_skeleton(params, 'picture_info');
 
@@ -12004,7 +12011,7 @@ var Clustergrammer =
 
 	  screenshot_modal.body.append('div').classed('download_buttons', true);
 
-	  // dendro modal 
+	  // dendro modal
 	  ///////////////////////////////////////
 	  var dendro_modal = make_modal_skeleton(params, 'dendro_info');
 

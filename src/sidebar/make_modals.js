@@ -2,7 +2,7 @@ var make_modal_skeleton = require('../modal/make_modal_skeleton');
 
 module.exports = function ini_modals(params){
 
-  // share modal 
+  // share modal
   ///////////////////////////////////////
   var share_modal = make_modal_skeleton(params, 'share_info');
 
@@ -21,7 +21,7 @@ module.exports = function ini_modals(params){
     .classed('bootstrap_highlight', true)
     .classed('share_url', true);
 
-  // picture modal 
+  // picture modal
   ///////////////////////////////////////
   var screenshot_modal = make_modal_skeleton(params, 'picture_info');
 
@@ -34,7 +34,7 @@ module.exports = function ini_modals(params){
     .append('div')
     .classed('download_buttons', true);
 
-  // dendro modal 
+  // dendro modal
   ///////////////////////////////////////
   var dendro_modal = make_modal_skeleton(params, 'dendro_info');
 
