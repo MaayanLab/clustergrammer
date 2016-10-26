@@ -77,6 +77,7 @@ module.exports = function make_row_dendro_triangles(cgm,
       dendro_mouseout(this);
     })
     .on('click', function(d){
+      console.log(d3.event.shiftKey)
       row_dendro_filter_db(d, this);
     });
 
@@ -141,6 +142,9 @@ module.exports = function make_row_dendro_triangles(cgm,
 
         // keep the names of all the rows
         cgm.params.dendro_filter.row = tmp_names;
+
+        console.log(tmp_names)
+        console.log(d3.event.shiftKey)
 
         d3.select(inst_selection)
           .style('opacity',1);
