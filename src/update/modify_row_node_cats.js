@@ -18,6 +18,8 @@ module.exports = function modify_row_node_cats(cat_data, inst_nodes){
   _.each(inst_nodes, function(inst_node){
 
     inst_name = inst_node.name;
+    inst_name = inst_name.toUpperCase();
+
     cat_type_num = 0;
 
     remove_node_cats(inst_node);
