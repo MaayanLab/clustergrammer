@@ -89,6 +89,8 @@ module.exports = function make_row_dendro_triangles(cgm,
         d3.select(params.root+' .dendro_info input')
           .attr('value', group_string);
 
+
+
       }
     });
 
