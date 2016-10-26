@@ -63,7 +63,7 @@ module.exports = function sidebar(cgm) {
     .style('text-align', 'center');
 
   if (params.sidebar.icons){
-    // make_modals(params);
+    make_modals(params);
     make_icons(params, sidebar);
   }
 

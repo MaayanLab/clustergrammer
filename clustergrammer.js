@@ -3998,6 +3998,7 @@ var Clustergrammer =
 	      row_dendro_filter_db(d, this);
 	    } else {
 	      console.log('shift clicking the row dendrogram');
+	      $(params.root + ' .dendro_info').modal('toggle');
 	    }
 	  });
 
@@ -11058,7 +11059,7 @@ var Clustergrammer =
 	  sidebar.append('div').classed('icons_section', true).style('text-align', 'center');
 
 	  if (params.sidebar.icons) {
-	    // make_modals(params);
+	    make_modals(params);
 	    make_icons(params, sidebar);
 	  }
 
@@ -11520,6 +11521,8 @@ var Clustergrammer =
 	  row.append('div').classed('clust_icon', true).append('a').attr('href', 'http://amp.pharm.mssm.edu/clustergrammer/help').attr('target', '_blank').append('i').classed('fa', true).classed('fa-question-circle', true).classed('icon_buttons', true).style('font-size', '25px');
 
 	  row.append('div').classed('clust_icon', true).append('i').classed('fa', true).classed('fa-share-alt', true).classed('icon_buttons', true).style('font-size', '25px').on('click', function () {
+
+	    console.log('clicking button');
 
 	    $(params.root + ' .share_info').modal('toggle');
 	    $('.share_url').val(window.location.href);
@@ -12015,8 +12018,7 @@ var Clustergrammer =
 	  ///////////////////////////////////////
 	  var dendro_modal = make_modal_skeleton(params, 'dendro_info');
 
-	  dendro_modal.header.append('h4').classed('modal-title', true);
-	  // .html('Group data points');
+	  dendro_modal.header.append('h4').classed('modal-title', true).html('Group data points');
 
 	  dendro_modal.body.append('div').classed('dendro_text', true).append('input').classed('bootstrap_highlight', true).classed('current_names', true).style('width', '100%');
 		};

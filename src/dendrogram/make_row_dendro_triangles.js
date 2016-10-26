@@ -81,6 +81,7 @@ module.exports = function make_row_dendro_triangles(cgm,
         row_dendro_filter_db(d, this);
       } else {
         console.log('shift clicking the row dendrogram')
+        $(params.root+' .dendro_info').modal('toggle');
       }
     });
 

@@ -34,6 +34,8 @@ module.exports = function make_icons(params, sidebar){
     .style('font-size','25px')
     .on('click',function(){
 
+      console.log('clicking button')
+
       $(params.root+' .share_info').modal('toggle');
       $('.share_url').val(window.location.href);
 

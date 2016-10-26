@@ -40,8 +40,8 @@ module.exports = function ini_modals(params){
 
   dendro_modal.header
     .append('h4')
-    .classed('modal-title', true);
-    // .html('Group data points');
+    .classed('modal-title', true)
+    .html('Group data points');
 
   dendro_modal.body
     .append('div')
