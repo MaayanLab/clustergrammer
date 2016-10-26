@@ -3994,11 +3994,16 @@ module.exports =
 
 	    dendro_mouseout(this);
 	  }).on('click', function (d) {
+
 	    if (d3.event.shiftKey === false) {
 	      row_dendro_filter_db(d, this);
 	    } else {
-	      console.log('shift clicking the row dendrogram');
+
 	      $(params.root + ' .dendro_info').modal('toggle');
+
+	      var group_string = d.all_names.join(', ');
+
+	      d3.select(params.root + ' .dendro_info input').attr('value', group_string);
 	    }
 	  });
 
@@ -4050,9 +4055,6 @@ module.exports =
 
 	        // keep the names of all the rows
 	        cgm.params.dendro_filter.row = tmp_names;
-
-	        console.log(tmp_names);
-	        console.log(d3.event.shiftKey);
 
 	        d3.select(inst_selection).style('opacity', 1);
 
@@ -4299,7 +4301,12 @@ module.exports =
 	    if (d3.event.shiftKey === false) {
 	      col_dendro_filter_db(d, this);
 	    } else {
-	      console.log('shift clicking column dendrogram');
+
+	      $(params.root + ' .dendro_info').modal('toggle');
+
+	      var group_string = d.all_names.join(', ');
+
+	      d3.select(params.root + ' .dendro_info input').attr('value', group_string);
 	    }
 	  });
 
