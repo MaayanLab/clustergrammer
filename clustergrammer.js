@@ -4835,7 +4835,7 @@ var Clustergrammer =
 	  if (params.labels.show_label_tooltips) {
 
 	    // d3-tooltip
-	    var col_tip = d3_tip_custom().attr('class', 'd3-tip').direction('w').offset([20, 0]).style('display', 'block').html(function (d) {
+	    var col_tip = d3_tip_custom().attr('class', 'd3-tip col_tip').direction('w').offset([20, 0]).style('display', 'block').html(function (d) {
 	      var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
 	      return "<span>" + inst_name + "</span>";
 	    });
