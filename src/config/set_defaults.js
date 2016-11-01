@@ -50,6 +50,7 @@ module.exports = function set_defaults(){
     max_allow_fs: 20,
     dendro_filter:{'row':false, 'col':false},
     row_tip_callback:null,
+    col_tip_callback:null,
     new_cat_data:null
   };
 

@@ -14,6 +14,7 @@ function make_clust(inst_network){
         'network_data': network_data,
         'about':'Zoom, scroll, and click buttons to interact with the clustergram.',
         'row_tip_callback':gene_info,
+        'col_tip_callback':test_col_callback,
         'sidebar_width':150
       };
 
@@ -35,6 +36,10 @@ function make_clust(inst_network){
 
   });
 
+}
+
+function test_col_callback(col_name){
+  console.log('test_col_callback: '+String(col_name));
 }
 
 function resize_container(args){

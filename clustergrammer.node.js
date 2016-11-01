@@ -535,6 +535,7 @@ module.exports =
 	    max_allow_fs: 20,
 	    dendro_filter: { 'row': false, 'col': false },
 	    row_tip_callback: null,
+	    col_tip_callback: null,
 	    new_cat_data: null
 	  };
 
@@ -4845,7 +4846,12 @@ module.exports =
 	    // .selectAll('.col_label_text')
 	    .selectAll('.col_label_group')
 	    // .selectAll('text')
-	    .on('mouseover', col_tip.show).on('mouseout', function () {
+	    .on('mouseover', function (d) {
+	      col_tip.show(d);
+	      if (params.col_tip_callback != null) {
+	        params.col_tip_callback(d.name);
+	      }
+	    }).on('mouseout', function () {
 	      col_tip.hide(this);
 	    });
 	  }

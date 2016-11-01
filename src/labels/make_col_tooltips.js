@@ -10,7 +10,7 @@ module.exports = function make_col_tooltips(params){
       .direction('w')
       .offset([20, 0])
       .style('display','block')
-      .html(function(d) { 
+      .html(function(d) {
         var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
         return "<span>" + inst_name + "</span>";
       });
@@ -26,9 +26,14 @@ module.exports = function make_col_tooltips(params){
       // .selectAll('.col_label_text')
       .selectAll('.col_label_group')
       // .selectAll('text')
-      .on('mouseover', col_tip.show)
+      .on('mouseover', function(d){
+        col_tip.show(d);
+        if (params.col_tip_callback != null){
+          params.col_tip_callback(d.name);
+        }
+      })
       .on('mouseout', function(){
-         col_tip.hide(this); 
+         col_tip.hide(this);
       });
 
   }
