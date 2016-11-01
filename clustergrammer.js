@@ -536,6 +536,7 @@ var Clustergrammer =
 	    dendro_filter: { 'row': false, 'col': false },
 	    row_tip_callback: null,
 	    col_tip_callback: null,
+	    tile_tip_callback: null,
 	    new_cat_data: null
 	  };
 
@@ -3177,8 +3178,17 @@ var Clustergrammer =
 	      if (inst_zoom === 0) {
 
 	        if (params.matrix.show_tile_tooltips) {
+
 	          d3.selectAll('.d3-tip').style('display', 'block');
+
 	          tip.show.apply(inst_selection, args);
+
+	          console.log('show tile tooltip');
+
+	          if (params.tile_tip_callback != null) {
+	            var tile_info = args[0];
+	            params.tile_tip_callback(tile_info);
+	          }
 	        }
 	      }
 	    }

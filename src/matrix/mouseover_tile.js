@@ -27,7 +27,7 @@ module.exports = function mouseover_tile(params, inst_selection, tip, inst_argum
 
   args.push(inst_selection);
   clearTimeout(timeout);
-  timeout = setTimeout(check_if_hovering, delay, inst_selection); 
+  timeout = setTimeout(check_if_hovering, delay, inst_selection);
 
   function check_if_hovering() {
     if ( d3.select(inst_selection).classed('hovering') ){
@@ -37,10 +37,19 @@ module.exports = function mouseover_tile(params, inst_selection, tip, inst_argum
       if (inst_zoom === 0){
 
         if (params.matrix.show_tile_tooltips){
+
           d3.selectAll('.d3-tip')
             .style('display','block');
+
           tip.show.apply(inst_selection, args);
-          
+
+          console.log('show tile tooltip')
+
+          if (params.tile_tip_callback != null){
+            var tile_info = args[0];
+            params.tile_tip_callback(tile_info);
+          }
+
         }
 
       }

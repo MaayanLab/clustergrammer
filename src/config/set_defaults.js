@@ -51,6 +51,7 @@ module.exports = function set_defaults(){
     dendro_filter:{'row':false, 'col':false},
     row_tip_callback:null,
     col_tip_callback:null,
+    tile_tip_callback:null,
     new_cat_data:null
   };
 
