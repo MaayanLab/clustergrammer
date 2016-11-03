@@ -4618,7 +4618,7 @@ module.exports =
 	      row_tip.show(d);
 
 	      if (params.row_tip_callback != null) {
-	        params.row_tip_callback(d.name);
+	        params.row_tip_callback(d);
 	      }
 	    }).on('mouseout', function mouseout(d) {
 
@@ -4879,7 +4879,7 @@ module.exports =
 
 	      col_tip.show(d);
 	      if (params.col_tip_callback != null) {
-	        params.col_tip_callback(d.name);
+	        params.col_tip_callback(d);
 	      }
 	    }).on('mouseout', function () {
 	      col_tip.hide(this);

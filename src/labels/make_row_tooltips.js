@@ -41,7 +41,7 @@ module.exports = function make_tooltips(params){
         row_tip.show(d);
 
         if (params.row_tip_callback != null){
-          params.row_tip_callback(d.name);
+          params.row_tip_callback(d);
         }
 
       })

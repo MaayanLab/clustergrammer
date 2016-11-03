@@ -1,7 +1,8 @@
 // save gene data
 gene_data = {};
 
-function gene_info(gene_symbol){
+function gene_info(gene_info){
+  var gene_symbol = gene_info.name;
 
   if (_.has(gene_data, gene_symbol)){
     var inst_data = gene_data[gene_symbol];

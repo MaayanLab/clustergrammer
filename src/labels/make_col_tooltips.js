@@ -35,7 +35,7 @@ module.exports = function make_col_tooltips(params){
 
         col_tip.show(d);
         if (params.col_tip_callback != null){
-          params.col_tip_callback(d.name);
+          params.col_tip_callback(d);
         }
       })
       .on('mouseout', function(){
