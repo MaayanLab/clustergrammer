@@ -57,7 +57,7 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
 
   enter_exit_update(cgm, new_network_data, delays);
 
-  make_row_cat(cgm.params);
+  make_row_cat(cgm);
   make_row_cat_super_labels(cgm);
 
   if (cgm.params.viz.show_categories.col){

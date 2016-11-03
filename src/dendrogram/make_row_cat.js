@@ -2,8 +2,11 @@ var cat_tooltip_text = require('./cat_tooltip_text');
 var d3_tip_custom = require('../tooltip/d3_tip_custom');
 var reset_cat_opacity = require('./reset_cat_opacity');
 var ini_cat_opacity = require('./ini_cat_opacity');
+var click_filter_cats = require('./click_filter_cats');
 
-module.exports = function make_row_cat(params, updating=false) {
+module.exports = function make_row_cat(cgm, updating=false) {
+
+  var params = cgm.params;
 
   // make or reuse outer container
   if (d3.select(params.root+' .row_cat_outer_container').empty()){

@@ -2611,7 +2611,7 @@ module.exports =
 	  });
 
 	  // make category colorbars
-	  make_row_cat(params);
+	  make_row_cat(cgm);
 	  if (params.viz.show_categories.col) {
 	    make_col_cat(cgm);
 	  }
@@ -4048,7 +4048,7 @@ module.exports =
 	    d3.select(params.root + ' .row_dendro_container').selectAll('path').style('opacity', triangle_opacity);
 	  }
 
-	  var row_dendro_filter_db = _.debounce(row_dendro_filter, 1500);
+	  var row_dendro_filter_db = _.debounce(row_dendro_filter, 700);
 
 	  function row_dendro_filter(d, inst_selection) {
 
@@ -6763,7 +6763,7 @@ module.exports =
 	          return 'translate(0,' + inst_shift + ')';
 	        }).on('click', function (d) {
 
-	          click_filter_cats(cgm, d, this, 'col');
+	          click_filter_cats_db(cgm, d, this, 'col');
 	        });
 	      } else {
 	        cat_rect = d3.select(inst_selection).select('.' + cat_rect_class);
@@ -6784,6 +6784,8 @@ module.exports =
 	      ini_cat_opacity(params.viz, 'col', cat_rect, inst_cat);
 	    });
 	  });
+
+	  var click_filter_cats_db = _.debounce(click_filter_cats, 1500);
 	};
 
 /***/ },
@@ -6960,10 +6962,13 @@ module.exports =
 	var d3_tip_custom = __webpack_require__(58);
 	var reset_cat_opacity = __webpack_require__(108);
 	var ini_cat_opacity = __webpack_require__(109);
+	var click_filter_cats = __webpack_require__(191);
 
-	module.exports = function make_row_cat(params) {
+	module.exports = function make_row_cat(cgm) {
 	  var updating = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
 
+
+	  var params = cgm.params;
 
 	  // make or reuse outer container
 	  if (d3.select(params.root + ' .row_cat_outer_container').empty()) {
@@ -7732,7 +7737,7 @@ module.exports =
 
 	  enter_exit_update(cgm, new_network_data, delays);
 
-	  make_row_cat(cgm.params);
+	  make_row_cat(cgm);
 	  make_row_cat_super_labels(cgm);
 
 	  if (cgm.params.viz.show_categories.col) {
@@ -9562,7 +9567,7 @@ module.exports =
 	  // recalculate the visualization parameters using the updated network_data
 	  tmp_cgm.params = calc_viz_params(tmp_cgm.params, false);
 
-	  make_row_cat(tmp_cgm.params, true);
+	  make_row_cat(tmp_cgm, true);
 	  resize_viz(tmp_cgm);
 
 	  tmp_cgm.params.new_cat_data = cat_data;
@@ -12167,15 +12172,16 @@ module.exports =
 	    return d[inst_cat] == cat_name;
 	  });
 
-	  console.log('found_nodes');
+	  // console.log('found_nodes')
 
 	  var found_names = utils.pluck(found_nodes, 'name');
-	  console.log(found_names);
+	  // console.log(found_names);
 
 	  var filter_names = {};
 	  filter_names[inst_rc] = found_names;
 
-	  cgm.filter_viz_using_names(filter_names);
+	  console.log('running cat filter');
+	  // cgm.filter_viz_using_names(filter_names)
 		};
 
 /***/ }

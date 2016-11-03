@@ -83,7 +83,7 @@ module.exports = function make_col_cat(cgm) {
             })
             .on('click', function(d){
 
-              click_filter_cats(cgm, d, this, 'col');
+              click_filter_cats_db(cgm, d, this, 'col');
 
             });
 
@@ -117,4 +117,6 @@ module.exports = function make_col_cat(cgm) {
       });
 
   });
+
+  var click_filter_cats_db = _.debounce(click_filter_cats, 1500);
 };

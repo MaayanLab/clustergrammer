@@ -16,14 +16,16 @@ module.exports = function click_filter_cats(cgm, inst_data, inst_selection, inst
     return d[inst_cat] == cat_name;
   });
 
-  console.log('found_nodes')
+  // console.log('found_nodes')
 
   var found_names = utils.pluck(found_nodes, 'name');
-  console.log(found_names);
+  // console.log(found_names);
 
   var filter_names = {};
   filter_names[inst_rc] = found_names;
 
-  cgm.filter_viz_using_names(filter_names)
+
+  console.log('running cat filter')
+  // cgm.filter_viz_using_names(filter_names)
 
 };

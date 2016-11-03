@@ -65,7 +65,7 @@ module.exports = function make_viz(cgm) {
 
 
   // make category colorbars
-  make_row_cat(params);
+  make_row_cat(cgm);
   if (params.viz.show_categories.col) {
     make_col_cat(cgm);
   }
