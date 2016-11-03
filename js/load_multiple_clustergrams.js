@@ -47,7 +47,7 @@ var viz_size = {'width':1140, 'height':750};
 // define arguments object
 var default_args = {
   'show_tile_tooltips':true,
-  'about':'Zoom, scroll, and click buttons to interact with the clustergram.',
+  // 'about':'Zoom, scroll, and click buttons to interact with the clustergram.',
   'row_search_placeholder':'Gene'
   // 'ini_view':{'N_row_sum':100}
 };
