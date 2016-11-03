@@ -6773,6 +6773,8 @@ module.exports =
 	        cat_tip.hide(this);
 	        reset_cat_opacity(params);
 	        d3.select(this).classed('hovering', false);
+
+	        d3.selectAll('.d3-tip').style('display', 'none');
 	      });
 
 	      ini_cat_opacity(params.viz, 'col', cat_rect, inst_cat);
@@ -7050,6 +7052,8 @@ module.exports =
 	          cat_tip.hide(this);
 	          reset_cat_opacity(params);
 	          d3.select(this).classed('hovering', false);
+
+	          d3.selectAll('.d3-tip').style('display', 'none');
 	        });
 
 	        ini_cat_opacity(params.viz, 'row', cat_rect, inst_cat, updating);

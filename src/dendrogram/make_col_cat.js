@@ -97,6 +97,9 @@ module.exports = function make_col_cat(params) {
             reset_cat_opacity(params);
             d3.select(this)
               .classed('hovering', false);
+
+            d3.selectAll('.d3-tip')
+              .style('display','none');
           });
 
 
