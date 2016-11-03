@@ -14,6 +14,8 @@ var external_update_view = require('./update/external_update_view');
 // moved d3.slider to src
 d3.slider = require('./d3.slider');
 
+/* eslint-disable */
+
 var awesomplete = require('awesomplete');
 // getting css from src
 require('!style!css!./d3.slider/d3.slider.css');

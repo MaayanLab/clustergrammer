@@ -1,4 +1,4 @@
-module.exports = function sum_rows_mat(mat){
+module.exports = function sum_rows_mat(){
 
   // this function is under construction
   var row_sum = 0;

@@ -49,7 +49,7 @@ module.exports = function make_tooltips(params){
 
         d3.selectAll('.row_tip')
           .style('display', 'none')
-          .classed(d.name, false)
+          .classed(d.name, false);
 
         d3.select(this)
           .select('text')

@@ -63,6 +63,8 @@ module.exports =
 	// moved d3.slider to src
 	d3.slider = __webpack_require__(164);
 
+	/* eslint-disable */
+
 	var awesomplete = __webpack_require__(166);
 	// getting css from src
 	__webpack_require__(168);
@@ -6888,7 +6890,7 @@ module.exports =
 
 	  _.each(['row', 'col'], function (inst_rc) {
 
-	    d3.selectAll(params.root + ' .' + inst_rc + '_cat_group').selectAll('rect').style('opacity', function (d) {
+	    d3.selectAll(params.root + ' .' + inst_rc + '_cat_group').selectAll('rect').style('opacity', function () {
 
 	      var inst_opacity = d3.select(this).style('opacity');
 
@@ -6914,8 +6916,7 @@ module.exports =
 	  // debugger;
 
 	  var super_string = ': ';
-	  var has_title;
-	  var inst_type = viz.cat_info[inst_rc][inst_cat]['type'];
+	  var inst_type = viz.cat_info[inst_rc][inst_cat].type;
 
 	  // set opacity based on string or value cats
 	  if (inst_type === 'cat_strings') {
@@ -6937,14 +6938,13 @@ module.exports =
 	      if (typeof cat_value === 'string') {
 
 	        if (cat_value.indexOf(super_string) > -1) {
-	          has_title = true;
 	          cat_value = cat_value.split(super_string)[1];
 	        }
 	      }
 
 	      cat_value = parseFloat(cat_value);
 
-	      return viz.cat_info[inst_rc][inst_cat]['cat_scale'](cat_value);
+	      return viz.cat_info[inst_rc][inst_cat].cat_scale(cat_value);
 	    });
 	  }
 		};
@@ -9718,8 +9718,6 @@ module.exports =
 
 	module.exports = function reset_other_filter_sliders(cgm, filter_type, inst_state) {
 
-	  console.log('reset other filter sliders');
-
 	  var params = cgm.params;
 	  var inst_rc;
 	  var reset_rc;
@@ -11377,12 +11375,7 @@ module.exports =
 
 	    var requested_view = { 'enr_score_type': inst_state };
 
-	    requested_view = make_requested_view(params, requested_view);
-
-	    // console.log('\n---------\n requested_view from button filter')
-	    // console.log(requested_view)
-
-	    // update_network(config, params, requested_view);
+	    make_requested_view(params, requested_view);
 
 	    d3.select(params.root + ' .toggle_enr_score_type').attr('current_state', inst_state);
 	  });
@@ -11589,9 +11582,6 @@ module.exports =
 	  row.append('div').classed('clust_icon', true).append('a').attr('href', 'http://amp.pharm.mssm.edu/clustergrammer/help').attr('target', '_blank').append('i').classed('fa', true).classed('fa-question-circle', true).classed('icon_buttons', true).style('font-size', '25px');
 
 	  row.append('div').classed('clust_icon', true).append('i').classed('fa', true).classed('fa-share-alt', true).classed('icon_buttons', true).style('font-size', '25px').on('click', function () {
-
-	    console.log('clicking button');
-
 	    $(params.root + ' .share_info').modal('toggle');
 	    $('.share_url').val(window.location.href);
 	  });
@@ -12096,14 +12086,13 @@ module.exports =
 
 	  enrichr_section.append('a').html('Enrichr').on('click', function () {
 
-	    console.log('clicking export to Enrichr');
-
 	    var group_string = d3.select('.dendro_text input').attr('value');
 
 	    // replace all instances of commas with new line
 	    var gene_list = group_string.replace(/, /g, '\n');
 
 	    var enrichr_info = { list: gene_list, description: 'clustergrammer group list', popup: true };
+
 	    enrich(enrichr_info);
 	  });
 		};

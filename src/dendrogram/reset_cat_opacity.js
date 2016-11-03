@@ -4,7 +4,7 @@ module.exports = function reset_cat_opacity(params){
 
     d3.selectAll(params.root+' .'+inst_rc+'_cat_group')
       .selectAll('rect')
-      .style('opacity', function(d){
+      .style('opacity', function(){
 
         var inst_opacity = d3.select(this).style('opacity');
 
@@ -12,7 +12,7 @@ module.exports = function reset_cat_opacity(params){
           inst_opacity = params.viz.cat_colors.opacity;
         }
 
-        return inst_opacity
+        return inst_opacity;
       });
 
   });

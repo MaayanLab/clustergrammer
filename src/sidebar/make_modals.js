@@ -57,21 +57,20 @@ module.exports = function ini_modals(params){
 
   enrichr_section
     .append('text')
-    .text('send to ')
+    .text('send to ');
 
   enrichr_section
     .append('a')
     .html('Enrichr')
     .on('click', function(){
 
-      console.log('clicking export to Enrichr')
-
       var group_string = d3.select('.dendro_text input').attr('value');
 
       // replace all instances of commas with new line
-      var gene_list = group_string.replace(/, /g, '\n')
+      var gene_list = group_string.replace(/, /g, '\n');
 
       var enrichr_info = {list: gene_list, description: 'clustergrammer group list' , popup: true};
+
       enrich(enrichr_info);
 
     });

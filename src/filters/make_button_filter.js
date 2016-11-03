@@ -62,12 +62,7 @@ module.exports = function make_button_filter(config, params, filter_type, div_fi
 
       var requested_view = {'enr_score_type':inst_state};
 
-      requested_view = make_requested_view(params, requested_view);
-
-      // console.log('\n---------\n requested_view from button filter')
-      // console.log(requested_view)
-
-      // update_network(config, params, requested_view);
+      make_requested_view(params, requested_view);
 
       d3.select(params.root+' .toggle_enr_score_type')
         .attr('current_state', inst_state);
