@@ -83,7 +83,7 @@ module.exports = function make_col_cat(cgm) {
             })
             .on('click', function(d){
 
-              click_filter_cats(params, d, this, 'col');
+              click_filter_cats(cgm, d, this, 'col');
 
             });
 
