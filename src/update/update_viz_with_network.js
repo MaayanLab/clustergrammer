@@ -79,7 +79,7 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
 
   cgm.params.viz.run_trans = true;
 
-  d3.selectAll(cgm.params.root+' .d3-tip')
+  d3.selectAll(cgm.params.viz.root_tips)
     .style('opacity',0);
 
   setTimeout(enable_sidebar, 2500, cgm.params);

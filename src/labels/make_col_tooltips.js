@@ -6,7 +6,10 @@ module.exports = function make_col_tooltips(params){
 
     // d3-tooltip
     var col_tip = d3_tip_custom()
-      .attr('class', 'd3-tip col_tip')
+      .attr('class', function(){
+        var class_string = params.viz.root_tips + ' d3-tip col_tip';
+        return class_string;
+      })
       .direction('w')
       .offset([20, 0])
       .style('display','block')

@@ -43,7 +43,10 @@ module.exports = function make_row_cat(params, updating=false) {
 
   // d3-tooltip
   var cat_tip = d3_tip_custom()
-    .attr('class','d3-tip')
+    .attr('class',function(){
+      var class_string = params.viz.root_tips;
+      return class_string;
+    })
     .direction('e')
     .offset([5,0])
     .style('display','block')

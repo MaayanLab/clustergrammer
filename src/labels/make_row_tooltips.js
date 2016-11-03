@@ -8,7 +8,10 @@ module.exports = function make_tooltips(params){
 
     // d3-tooltip
     var row_tip = d3_tip_custom()
-      .attr('class', 'd3-tip row_tip')
+      .attr('class', function(){
+        var class_string = params.viz.root_tips + ' d3-tip row_tip';
+        return class_string;
+      })
       .direction('e')
       .offset([0, 10])
       .html(function(d) {
@@ -28,7 +31,7 @@ module.exports = function make_tooltips(params){
         d3.select(' .row_tip')
           .classed(d.name, true);
 
-        d3.selectAll('.d3-tip')
+        d3.selectAll(params.viz.root_tips)
           .style('opacity',0);
 
         d3.select(this)

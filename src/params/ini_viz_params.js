@@ -7,6 +7,9 @@ module.exports = function ini_viz_params(params, preserve_cats=true){
   var viz = {};
 
   viz.root = params.root;
+
+  viz.root_tips = params.root.replace('#','.') + '_' + 'd3-tip';
+
   viz.viz_wrapper = params.root + ' .viz_wrapper';
   viz.do_zoom = params.do_zoom;
   viz.background_color = params.background_color;

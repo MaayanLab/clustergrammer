@@ -14,7 +14,7 @@ module.exports = function(cgm, network_data, delays){
   var params = cgm.params;
 
   // remove old tooltips
-  d3.selectAll(' .d3-tip')
+  d3.selectAll(params.viz.root_tips)
     .remove();
 
   // d3-tooltip - for tiles

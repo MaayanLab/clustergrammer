@@ -1003,6 +1003,9 @@ module.exports =
 	  var viz = {};
 
 	  viz.root = params.root;
+
+	  viz.root_tips = params.root.replace('#', '.') + '_' + 'd3-tip';
+
 	  viz.viz_wrapper = params.root + ' .viz_wrapper';
 	  viz.do_zoom = params.do_zoom;
 	  viz.background_color = params.background_color;
@@ -2712,7 +2715,10 @@ module.exports =
 	  clust_group = svg_elem.append('g').attr('class', 'clust_container').attr('transform', 'translate(' + params.viz.clust.margin.left + ',' + params.viz.clust.margin.top + ')').append('g').attr('class', 'clust_group').classed('clust_group', true);
 
 	  // d3-tooltip - for tiles
-	  var tip = d3_tip_custom().attr('class', 'd3-tip tile_tip').direction('nw').offset([0, 0]).html(function (d) {
+	  var tip = d3_tip_custom().attr('class', function () {
+	    var class_string = params.viz.root_tips + ' d3-tip tile_tip';
+	    return class_string;
+	  }).direction('nw').offset([0, 0]).html(function (d) {
 	    var inst_value = String(d.value.toFixed(3));
 	    var tooltip_string;
 
@@ -3179,7 +3185,7 @@ module.exports =
 
 	        if (params.matrix.show_tile_tooltips) {
 
-	          d3.selectAll('.d3-tip').style('display', 'block');
+	          d3.selectAll(params.viz.root_tips).style('display', 'block');
 
 	          tip.show.apply(inst_selection, args);
 
@@ -4582,7 +4588,10 @@ module.exports =
 	  if (params.labels.show_label_tooltips) {
 
 	    // d3-tooltip
-	    var row_tip = d3_tip_custom().attr('class', 'd3-tip row_tip').direction('e').offset([0, 10]).html(function (d) {
+	    var row_tip = d3_tip_custom().attr('class', function () {
+	      var class_string = params.viz.root_tips + ' d3-tip row_tip';
+	      return class_string;
+	    }).direction('e').offset([0, 10]).html(function (d) {
 	      var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
 	      return "<span>" + inst_name + "</span>";
 	    });
@@ -4594,7 +4603,7 @@ module.exports =
 	      // do not include params.root selector since tooltips are not in root
 	      d3.select(' .row_tip').classed(d.name, true);
 
-	      d3.selectAll('.d3-tip').style('opacity', 0);
+	      d3.selectAll(params.viz.root_tips).style('opacity', 0);
 
 	      d3.select(this).select('text').classed('active', true);
 
@@ -4845,7 +4854,10 @@ module.exports =
 	  if (params.labels.show_label_tooltips) {
 
 	    // d3-tooltip
-	    var col_tip = d3_tip_custom().attr('class', 'd3-tip col_tip').direction('w').offset([20, 0]).style('display', 'block').html(function (d) {
+	    var col_tip = d3_tip_custom().attr('class', function () {
+	      var class_string = params.viz.root_tips + ' d3-tip col_tip';
+	      return class_string;
+	    }).direction('w').offset([20, 0]).style('display', 'block').html(function (d) {
 	      var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
 	      return "<span>" + inst_name + "</span>";
 	    });
@@ -6699,7 +6711,10 @@ module.exports =
 	  }
 
 	  // d3-tooltip
-	  var cat_tip = d3_tip_custom().attr('class', 'd3-tip').direction('s').offset([5, 0]).style('display', 'block').html(function (d) {
+	  var cat_tip = d3_tip_custom().attr('class', function () {
+	    var class_string = params.viz.root_tips;
+	    return class_string;
+	  }).direction('s').offset([5, 0]).style('display', 'block').html(function (d) {
 	    return cat_tooltip_text(params, d, this, 'col');
 	  });
 
@@ -6947,7 +6962,10 @@ module.exports =
 	  }
 
 	  // d3-tooltip
-	  var cat_tip = d3_tip_custom().attr('class', 'd3-tip').direction('e').offset([5, 0]).style('display', 'block').html(function (d) {
+	  var cat_tip = d3_tip_custom().attr('class', function () {
+	    var class_string = params.viz.root_tips;
+	    return class_string;
+	  }).direction('e').offset([5, 0]).style('display', 'block').html(function (d) {
 	    return cat_tooltip_text(params, d, this, 'row');
 	  });
 
@@ -7709,7 +7727,7 @@ module.exports =
 
 	  cgm.params.viz.run_trans = true;
 
-	  d3.selectAll(cgm.params.root + ' .d3-tip').style('opacity', 0);
+	  d3.selectAll(cgm.params.viz.root_tips).style('opacity', 0);
 
 	  setTimeout(enable_sidebar, 2500, cgm.params);
 		};
@@ -7809,7 +7827,7 @@ module.exports =
 	  var params = cgm.params;
 
 	  // remove old tooltips
-	  d3.selectAll(' .d3-tip').remove();
+	  d3.selectAll(params.viz.root_tips).remove();
 
 	  // d3-tooltip - for tiles
 	  var tip = d3_tip_custom().attr('class', 'd3-tip tile_tip').direction('nw').offset([0, 0]).html(function (d) {
