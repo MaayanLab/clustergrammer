@@ -6,6 +6,9 @@ module.exports = function cat_tooltip_text(params, inst_data, inst_selection, in
   d3.selectAll('.col_cat_tip')
     .style('display', 'block');
 
+  d3.selectAll('.row_cat_tip')
+    .style('display', 'block');
+
   // category index
   // debugger
   var inst_cat = d3.select(inst_selection).attr('cat');

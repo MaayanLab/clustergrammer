@@ -4597,7 +4597,7 @@ var Clustergrammer =
 	      var root_tip_selector = params.viz.root_tips.replace('.', '');
 	      var class_string = root_tip_selector + ' d3-tip row_tip';
 	      return class_string;
-	    }).direction('e').offset([0, 10]).html(function (d) {
+	    }).direction('e').offset([0, 10]).style('display', 'none').html(function (d) {
 	      var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
 	      return "<span>" + inst_name + "</span>";
 	    });
@@ -4609,7 +4609,7 @@ var Clustergrammer =
 	      // do not include params.root selector since tooltips are not in root
 	      d3.select(' .row_tip').classed(d.name, true);
 
-	      d3.selectAll(params.viz.root_tips).style('opacity', 0);
+	      d3.selectAll('.row_tip').style('display', 'block');
 
 	      d3.select(this).select('text').classed('active', true);
 
@@ -4620,7 +4620,7 @@ var Clustergrammer =
 	      }
 	    }).on('mouseout', function mouseout(d) {
 
-	      d3.select(' .row_tip').classed(d.name, false);
+	      d3.select(' .row_tip').style('display', 'none').classed(d.name, false);
 
 	      d3.select(this).select('text').classed('active', false);
 
@@ -6791,6 +6791,8 @@ var Clustergrammer =
 
 	  d3.selectAll('.col_cat_tip').style('display', 'block');
 
+	  d3.selectAll('.row_cat_tip').style('display', 'block');
+
 	  // category index
 	  // debugger
 	  var inst_cat = d3.select(inst_selection).attr('cat');
@@ -6981,9 +6983,9 @@ var Clustergrammer =
 	  // d3-tooltip
 	  var cat_tip = d3_tip_custom().attr('class', function () {
 	    var root_tip_selector = params.viz.root_tips.replace('.', '');
-	    var class_string = root_tip_selector + ' d3-tip';
+	    var class_string = root_tip_selector + ' d3-tip row_cat_tip';
 	    return class_string;
-	  }).direction('e').offset([5, 0]).style('display', 'block').html(function (d) {
+	  }).direction('e').offset([5, 0]).style('display', 'none').html(function (d) {
 	    return cat_tooltip_text(params, d, this, 'row');
 	  });
 

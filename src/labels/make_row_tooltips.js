@@ -13,6 +13,7 @@ module.exports = function make_tooltips(params){
       })
       .direction('e')
       .offset([0, 10])
+      .style('display','none')
       .html(function(d) {
         var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
         return "<span>" + inst_name + "</span>";
@@ -30,8 +31,8 @@ module.exports = function make_tooltips(params){
         d3.select(' .row_tip')
           .classed(d.name, true);
 
-        d3.selectAll(params.viz.root_tips)
-          .style('opacity',0);
+        d3.selectAll('.row_tip')
+          .style('display', 'block');
 
         d3.select(this)
           .select('text')
@@ -47,7 +48,8 @@ module.exports = function make_tooltips(params){
       .on('mouseout', function mouseout(d) {
 
         d3.select(' .row_tip')
-          .classed(d.name, false);
+          .style('display', 'none')
+          .classed(d.name, false)
 
         d3.select(this)
           .select('text')

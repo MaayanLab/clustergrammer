@@ -45,12 +45,12 @@ module.exports = function make_row_cat(params, updating=false) {
   var cat_tip = d3_tip_custom()
     .attr('class',function(){
       var root_tip_selector = params.viz.root_tips.replace('.','');
-      var class_string = root_tip_selector + ' d3-tip';
+      var class_string = root_tip_selector + ' d3-tip row_cat_tip';
       return class_string;
     })
     .direction('e')
     .offset([5,0])
-    .style('display','block')
+    .style('display','none')
     .html(function(d){
       return cat_tooltip_text(params, d, this, 'row');
     });
