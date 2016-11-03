@@ -2725,7 +2725,7 @@ module.exports =
 	    var root_tip_selector = params.viz.root_tips.replace('.', '');
 	    var class_string = root_tip_selector + ' d3-tip tile_tip';
 	    return class_string;
-	  }).direction('nw').offset([0, 0]).html(function (d) {
+	  }).style('display', 'none').direction('nw').offset([0, 0]).html(function (d) {
 	    var inst_value = String(d.value.toFixed(3));
 	    var tooltip_string;
 
@@ -3192,11 +3192,9 @@ module.exports =
 
 	        if (params.matrix.show_tile_tooltips) {
 
-	          d3.selectAll(params.viz.root_tips).style('display', 'block');
+	          d3.selectAll('.tile_tip').style('display', 'block');
 
 	          tip.show.apply(inst_selection, args);
-
-	          console.log('show tile tooltip');
 
 	          if (params.tile_tip_callback != null) {
 	            var tile_info = args[0];
@@ -3217,6 +3215,8 @@ module.exports =
 	module.exports = function mouseout_tile(params, inst_selection, tip) {
 
 	  d3.select(inst_selection).classed('hovering', false);
+
+	  d3.selectAll('.tile_tip').style('display', 'none');
 
 	  _.each(['row', 'col'], function (inst_rc) {
 
@@ -3241,8 +3241,8 @@ module.exports =
 	  // Public - contructs a new tooltip
 	  //
 	  // Returns a tip
-	  // ****************** 
-	  // Nick Fernandez modified version 4-19-2016 
+	  // ******************
+	  // Nick Fernandez modified version 4-19-2016
 	  // improved multiple svg, scrolling+zooming support
 	  // made syntax fixes
 	  //////////////////////////////////////////////
@@ -3293,7 +3293,7 @@ module.exports =
 	      var inst_class = d3.select(this).attr('class');
 
 	      if (inst_class.indexOf('tile') >= 0) {
-	        setTimeout(fade_tips, 10000, this);
+	        setTimeout(fade_tips, 5000, this);
 	      }
 	    }
 
@@ -3518,16 +3518,16 @@ module.exports =
 	    var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
 	    var scrollLeft = document.documentElement.scrollLeft || document.body.scrollLeft;
 
-	    // Nick - prevents bugs with scrolling and zooming on the same object 
+	    // Nick - prevents bugs with scrolling and zooming on the same object
 	    matrix.a = 1;
 	    matrix.d = 1;
-	    // changing order of adding scrolling, 
+	    // changing order of adding scrolling,
 	    // original ordering was causing problems with pre-translated or rotated
-	    // elements. 
+	    // elements.
 	    matrix.e = matrix.e + scrollLeft;
 	    matrix.f = matrix.f + scrollTop;
-	    point.x = x; //+ scrollLeft 
-	    point.y = y; //+ scrollTop 
+	    point.x = x; //+ scrollLeft
+	    point.y = y; //+ scrollTop
 
 	    bbox.nw = point.matrixTransform(matrix);
 	    point.x = point.x + width;
@@ -3549,7 +3549,7 @@ module.exports =
 	    return bbox;
 	  }
 
-	  // only fade tips if you are still hovering on the current tip 
+	  // only fade tips if you are still hovering on the current tip
 	  function fade_tips(inst_selection) {
 
 	    var is_hovering = d3.select(inst_selection).classed('hovering');
@@ -4864,24 +4864,25 @@ module.exports =
 	      var root_tip_selector = params.viz.root_tips.replace('.', '');
 	      var class_string = root_tip_selector + ' d3-tip col_tip';
 	      return class_string;
-	    }).direction('w').offset([20, 0]).style('display', 'block').html(function (d) {
+	    }).direction('w').offset([20, 0]).style('display', 'none').html(function (d) {
 	      var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
 	      return "<span>" + inst_name + "</span>";
 	    });
 
 	    d3.select(params.viz.viz_wrapper).select('svg').select(params.root + ' .col_zoom_container').selectAll('.col_label_group').select('text').call(col_tip);
 
-	    d3.select(params.root + ' .col_zoom_container')
-	    // .selectAll('.col_label_text')
-	    .selectAll('.col_label_group')
-	    // .selectAll('text')
-	    .on('mouseover', function (d) {
+	    d3.select(params.root + ' .col_zoom_container').selectAll('.col_label_group').on('mouseover', function (d) {
+
+	      d3.selectAll('.col_tip').style('display', 'block');
+
 	      col_tip.show(d);
 	      if (params.col_tip_callback != null) {
 	        params.col_tip_callback(d.name);
 	      }
 	    }).on('mouseout', function () {
 	      col_tip.hide(this);
+
+	      d3.selectAll('.col_tip').style('display', 'none');
 	    });
 	  }
 		};
@@ -5368,13 +5369,14 @@ module.exports =
 
 	module.exports = function two_translate_zoom(params, pan_dx, pan_dy, fin_zoom) {
 
-	  d3.selectAll('.tile_tip').style('opacity', 0);
+	  d3.selectAll(params.viz.root_tips).style('display', 'none');
 
-	  setTimeout(show_tooltips, 1000);
+	  // setTimeout(show_tooltips, 1000);
 
-	  function show_tooltips() {
-	    d3.selectAll(params.viz.root_tips).style('display', 'none');
-	  }
+	  // function show_tooltips(){
+	  //   d3.selectAll(params.viz.root_tips)
+	  //     .style('display', 'none');
+	  // }
 
 	  // reset visible area
 	  var zoom_info = {};
@@ -7851,7 +7853,7 @@ module.exports =
 	  d3.selectAll(params.viz.root_tips).remove();
 
 	  // d3-tooltip - for tiles
-	  var tip = d3_tip_custom().attr('class', 'd3-tip tile_tip').direction('nw').offset([0, 0]).html(function (d) {
+	  var tip = d3_tip_custom().attr('class', 'd3-tip tile_tip').direction('nw').offset([0, 0]).style('display', 'none').html(function (d) {
 	    var inst_value = String(d.value.toFixed(3));
 	    var tooltip_string;
 

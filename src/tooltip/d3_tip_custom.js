@@ -7,8 +7,8 @@ module.exports = function d3_tip_custom(){
 // Public - contructs a new tooltip
 //
 // Returns a tip
-// ****************** 
-// Nick Fernandez modified version 4-19-2016 
+// ******************
+// Nick Fernandez modified version 4-19-2016
 // improved multiple svg, scrolling+zooming support
 // made syntax fixes
 //////////////////////////////////////////////
@@ -32,7 +32,7 @@ module.exports = function d3_tip_custom(){
   tip.show = function() {
     var args = Array.prototype.slice.call(arguments);
     if (args[args.length - 1] instanceof SVGElement) {
-      target = args.pop();  
+      target = args.pop();
     }
 
     var content = html.apply(this, args);
@@ -60,7 +60,7 @@ module.exports = function d3_tip_custom(){
       var inst_class = d3.select(this).attr('class');
 
       if (inst_class.indexOf('tile') >= 0){
-        setTimeout(fade_tips, 10000, this);
+        setTimeout(fade_tips, 5000, this);
       }
 
     }
@@ -120,7 +120,7 @@ module.exports = function d3_tip_custom(){
   tip.direction = function(v) {
     if (!arguments.length){
       return direction;
-    } 
+    }
     direction = v == null ? v : d3.functor(v);
 
     return tip;
@@ -154,14 +154,14 @@ module.exports = function d3_tip_custom(){
     return tip;
   };
 
-  function d3_tip_direction() { 
-    return 'n'; 
+  function d3_tip_direction() {
+    return 'n';
   }
-  function d3_tip_offset() { 
-    return [0, 0]; 
+  function d3_tip_offset() {
+    return [0, 0];
   }
-  function d3_tip_html() { 
-    return ' '; 
+  function d3_tip_html() {
+    return ' ';
   }
 
   var direction_callbacks = d3.map({
@@ -287,21 +287,21 @@ module.exports = function d3_tip_custom(){
     var scrollTop  = document.documentElement.scrollTop || document.body.scrollTop;
     var scrollLeft = document.documentElement.scrollLeft || document.body.scrollLeft;
 
-    // Nick - prevents bugs with scrolling and zooming on the same object 
+    // Nick - prevents bugs with scrolling and zooming on the same object
     matrix.a = 1;
     matrix.d = 1;
-    // changing order of adding scrolling, 
+    // changing order of adding scrolling,
     // original ordering was causing problems with pre-translated or rotated
-    // elements. 
+    // elements.
     matrix.e = matrix.e + scrollLeft;
     matrix.f = matrix.f + scrollTop;
-    point.x = x; //+ scrollLeft 
-    point.y = y; //+ scrollTop 
+    point.x = x; //+ scrollLeft
+    point.y = y; //+ scrollTop
 
     bbox.nw = point.matrixTransform(matrix);
     point.x = point.x + width;
     bbox.ne = point.matrixTransform(matrix);
-    point.y = point.y + height;  
+    point.y = point.y + height;
     bbox.se = point.matrixTransform(matrix);
     point.x = point.x - width;
     bbox.sw = point.matrixTransform(matrix);
@@ -318,7 +318,7 @@ module.exports = function d3_tip_custom(){
     return bbox;
   }
 
-  // only fade tips if you are still hovering on the current tip 
+  // only fade tips if you are still hovering on the current tip
   function fade_tips(inst_selection){
 
     var is_hovering = d3.select(inst_selection)

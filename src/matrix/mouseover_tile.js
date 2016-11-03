@@ -38,12 +38,10 @@ module.exports = function mouseover_tile(params, inst_selection, tip, inst_argum
 
         if (params.matrix.show_tile_tooltips){
 
-          d3.selectAll(params.viz.root_tips)
+          d3.selectAll('.tile_tip')
             .style('display','block');
 
           tip.show.apply(inst_selection, args);
-
-          console.log('show tile tooltip')
 
           if (params.tile_tip_callback != null){
             var tile_info = args[0];

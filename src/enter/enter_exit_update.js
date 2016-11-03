@@ -22,6 +22,7 @@ module.exports = function(cgm, network_data, delays){
     .attr('class', 'd3-tip tile_tip')
     .direction('nw')
     .offset([0, 0])
+    .style('display', 'none')
     .html(function(d){
       var inst_value = String(d.value.toFixed(3));
       var tooltip_string;

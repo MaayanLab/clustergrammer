@@ -4,15 +4,15 @@ var show_visible_area = require('./show_visible_area');
 
 module.exports = function two_translate_zoom(params, pan_dx, pan_dy, fin_zoom) {
 
-  d3.selectAll('.tile_tip')
-    .style('opacity', 0);
+  d3.selectAll(params.viz.root_tips)
+    .style('display','none');
 
-  setTimeout(show_tooltips, 1000);
+  // setTimeout(show_tooltips, 1000);
 
-  function show_tooltips(){
-    d3.selectAll(params.viz.root_tips)
-      .style('display', 'none');
-  }
+  // function show_tooltips(){
+  //   d3.selectAll(params.viz.root_tips)
+  //     .style('display', 'none');
+  // }
 
   // reset visible area
   var zoom_info = {};

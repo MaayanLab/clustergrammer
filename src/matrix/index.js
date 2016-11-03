@@ -32,6 +32,7 @@ module.exports = function(params, svg_elem) {
       var class_string = root_tip_selector + ' d3-tip tile_tip'
       return class_string;
     })
+    .style('display','none')
     .direction('nw')
     .offset([0, 0])
     .html(function(d){

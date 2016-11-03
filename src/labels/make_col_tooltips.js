@@ -13,7 +13,7 @@ module.exports = function make_col_tooltips(params){
       })
       .direction('w')
       .offset([20, 0])
-      .style('display','block')
+      .style('display','none')
       .html(function(d) {
         var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
         return "<span>" + inst_name + "</span>";
@@ -27,10 +27,12 @@ module.exports = function make_col_tooltips(params){
       .call(col_tip);
 
     d3.select(params.root+' .col_zoom_container')
-      // .selectAll('.col_label_text')
       .selectAll('.col_label_group')
-      // .selectAll('text')
       .on('mouseover', function(d){
+
+        d3.selectAll('.col_tip')
+          .style('display', 'block');
+
         col_tip.show(d);
         if (params.col_tip_callback != null){
           params.col_tip_callback(d.name);
@@ -38,6 +40,10 @@ module.exports = function make_col_tooltips(params){
       })
       .on('mouseout', function(){
          col_tip.hide(this);
+
+        d3.selectAll('.col_tip')
+          .style('display', 'none');
+
       });
 
   }
