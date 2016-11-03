@@ -49,6 +49,7 @@ module.exports = function set_defaults(){
     expand_button:true,
     max_allow_fs: 20,
     dendro_filter:{'row':false, 'col':false},
+    cat_filter:{'row':false, 'col':false},
     row_tip_callback:null,
     col_tip_callback:null,
     tile_tip_callback:null,

@@ -68,8 +68,6 @@ module.exports = function make_rows(cgm, text_delay) {
     .selectAll('.row_label_group')
     .on('dblclick', function(d) {
 
-      // if (params.dendro_filter.col === false){
-
         var data_attr = '__data__';
         var row_name = this[data_attr].name;
 
@@ -88,7 +86,6 @@ module.exports = function make_rows(cgm, text_delay) {
         if (params.tile_click_hlight){
           add_row_click_hlight(this,d.ini);
         }
-      // }
 
     });
 

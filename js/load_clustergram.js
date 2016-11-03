@@ -40,19 +40,13 @@ function make_clust(inst_network){
 }
 
 function test_tile_callback(tile_data){
-  console.log('\n\ntest_tile_callback')
-
   var row_name = tile_data.row_name;
   var col_name = tile_data.col_name;
-
-  console.log('row_name: ' + row_name)
-  console.log('col_name: ' + col_name)
 
 }
 
 function test_col_callback(col_data){
   var col_name = col_data.name;
-  console.log('test_col_callback: '+String(col_name));
 }
 
 function resize_container(args){

@@ -536,6 +536,7 @@ module.exports =
 	    expand_button: true,
 	    max_allow_fs: 20,
 	    dendro_filter: { 'row': false, 'col': false },
+	    cat_filter: { 'row': false, 'col': false },
 	    row_tip_callback: null,
 	    col_tip_callback: null,
 	    tile_tip_callback: null,
@@ -1021,6 +1022,7 @@ module.exports =
 	  viz.expand_button = params.expand_button;
 	  viz.sim_mat = params.sim_mat;
 	  viz.dendro_filter = params.dendro_filter;
+	  viz.cat_filter = params.cat_filter;
 
 	  viz.viz_svg = viz.viz_wrapper + ' .viz_svg';
 
@@ -3618,8 +3620,6 @@ module.exports =
 
 	  d3.select(params.root + ' .row_label_zoom_container').selectAll('.row_label_group').on('dblclick', function (d) {
 
-	    // if (params.dendro_filter.col === false){
-
 	    var data_attr = '__data__';
 	    var row_name = this[data_attr].name;
 
@@ -3637,7 +3637,6 @@ module.exports =
 	    if (params.tile_click_hlight) {
 	      add_row_click_hlight(this, d.ini);
 	    }
-	    // }
 	  });
 
 	  make_row_tooltips(params);
@@ -4358,11 +4357,6 @@ module.exports =
 	      /* filter cols using dendrogram */
 	      if (cgm.params.dendro_filter.col === false) {
 
-	        // // disable col ordering and dendro slider
-	        // d3.selectAll('.toggle_col_order .btn').attr('disabled', true);
-
-	        // $(params.root+' .slider_col').slider('disable');
-
 	        d3.select(params.root + ' .slider_col').style('opacity', 0.5).style('pointer-events', 'none');
 
 	        names.col = d.all_names;
@@ -4375,6 +4369,7 @@ module.exports =
 
 	        cgm.filter_viz_using_names(names);
 
+	        // save backup of the inst_view
 	        cgm.params.inst_nodes.row_nodes = inst_row_nodes;
 	        cgm.params.inst_nodes.col_nodes = inst_col_nodes;
 
@@ -4772,8 +4767,6 @@ module.exports =
 	    }
 	  }).on('dblclick', function (d) {
 
-	    // if (params.dendro_filter.row === false){
-
 	    var data_attr = '__data__';
 	    var col_name = this[data_attr].name;
 
@@ -4792,8 +4785,6 @@ module.exports =
 	    if (params.tile_click_hlight) {
 	      add_col_click_hlight(params, this, d.ini);
 	    }
-
-	    // }
 	  });
 		};
 
@@ -6763,7 +6754,8 @@ module.exports =
 	          return 'translate(0,' + inst_shift + ')';
 	        }).on('click', function (d) {
 
-	          click_filter_cats_db(cgm, d, this, 'col');
+	          // var filter_names = click_filter_cats_db(cgm, d, this, 'col');
+	          var filter_names = click_filter_cats(cgm, d, this, 'col');
 	        });
 	      } else {
 	        cat_rect = d3.select(inst_selection).select('.' + cat_rect_class);
@@ -12172,16 +12164,44 @@ module.exports =
 	    return d[inst_cat] == cat_name;
 	  });
 
-	  // console.log('found_nodes')
-
 	  var found_names = utils.pluck(found_nodes, 'name');
-	  // console.log(found_names);
 
 	  var filter_names = {};
 	  filter_names[inst_rc] = found_names;
 
-	  console.log('running cat filter');
-	  // cgm.filter_viz_using_names(filter_names)
+	  if (cgm.params.cat_filter[inst_rc] === false) {
+
+	    var tmp_names = cgm.params.network_data.col_nodes_names;
+
+	    // keep a backup of the inst_view
+	    var inst_row_nodes = cgm.params.network_data.row_nodes;
+	    var inst_col_nodes = cgm.params.network_data.col_nodes;
+
+	    // run filtering using found names
+	    cgm.filter_viz_using_names(filter_names);
+
+	    // save backup of the inst_view
+	    cgm.params.inst_nodes.row_nodes = inst_row_nodes;
+	    cgm.params.inst_nodes.col_nodes = inst_col_nodes;
+
+	    // must set this after filtering has been run
+	    cgm.params.cat_filter[inst_rc] = tmp_names;
+	  } else {
+
+	    console.log('reset filtering');
+
+	    // get backup of names
+	    filter_names = cgm.params.cat_filter[inst_rc];
+
+	    console.log(filter_names);
+
+	    // reset filter
+	    cgm.filter_viz_using_names(filter_names);
+	    // must set this after filtering has been run
+	    cgm.params.cat_filter[inst_rc] = false;
+	  }
+
+	  return filter_names;
 		};
 
 /***/ }

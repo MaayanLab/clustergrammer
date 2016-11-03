@@ -121,11 +121,6 @@ module.exports = function make_col_dendro_triangles(cgm, is_change_group = false
       /* filter cols using dendrogram */
       if (cgm.params.dendro_filter.col === false){
 
-        // // disable col ordering and dendro slider
-        // d3.selectAll('.toggle_col_order .btn').attr('disabled', true);
-
-        // $(params.root+' .slider_col').slider('disable');
-
         d3.select(params.root+' .slider_col')
           .style('opacity', 0.5)
           .style('pointer-events','none');
@@ -140,6 +135,7 @@ module.exports = function make_col_dendro_triangles(cgm, is_change_group = false
 
         cgm.filter_viz_using_names(names);
 
+        // save backup of the inst_view
         cgm.params.inst_nodes.row_nodes = inst_row_nodes;
         cgm.params.inst_nodes.col_nodes = inst_col_nodes;
 
