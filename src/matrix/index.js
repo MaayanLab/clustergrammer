@@ -28,7 +28,8 @@ module.exports = function(params, svg_elem) {
   // d3-tooltip - for tiles
   var tip = d3_tip_custom()
     .attr('class', function(){
-      var class_string = params.viz.root_tips + ' d3-tip tile_tip'
+      var root_tip_selector = params.viz.root_tips.replace('.','');
+      var class_string = root_tip_selector + ' d3-tip tile_tip'
       return class_string;
     })
     .direction('nw')

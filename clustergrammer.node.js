@@ -1926,7 +1926,7 @@ module.exports =
 
 	module.exports = function apply_zoom(params, zoom_info) {
 
-	  d3.selectAll('.tile_tip').style('display', 'none');
+	  d3.selectAll(params.viz.root_tips).style('display', 'none');
 
 	  zoom_info = zoom_rules_y(params, zoom_info);
 
@@ -2144,7 +2144,13 @@ module.exports =
 
 	    if (check_stop != 0) {
 
-	      // // experimental tile display toggling 
+	      /////////////////////////////////////////////////
+	      // zooming has stopped
+	      /////////////////////////////////////////////////
+
+	      d3.selectAll(params.viz.root_tips).style('display', 'block');
+
+	      // // experimental tile display toggling
 	      // d3.selectAll(params.root+' .hide_tile')
 	      //   .style('display','block');
 
@@ -2177,7 +2183,7 @@ module.exports =
 
 	    // this makes sure that the text is visible after zooming and trimming
 	    // there is buggy behavior in chrome when zooming into large matrices
-	    // I'm running it twice in quick succession 
+	    // I'm running it twice in quick succession
 	    setTimeout(text_patch, 25);
 	    setTimeout(text_patch, 100);
 	    // setTimeout( text_patch, 2000 );
@@ -2716,7 +2722,8 @@ module.exports =
 
 	  // d3-tooltip - for tiles
 	  var tip = d3_tip_custom().attr('class', function () {
-	    var class_string = params.viz.root_tips + ' d3-tip tile_tip';
+	    var root_tip_selector = params.viz.root_tips.replace('.', '');
+	    var class_string = root_tip_selector + ' d3-tip tile_tip';
 	    return class_string;
 	  }).direction('nw').offset([0, 0]).html(function (d) {
 	    var inst_value = String(d.value.toFixed(3));
@@ -4583,13 +4590,12 @@ module.exports =
 
 	module.exports = function make_tooltips(params) {
 
-	  // d3.selectAll('.row_tip').remove();
-
 	  if (params.labels.show_label_tooltips) {
 
 	    // d3-tooltip
 	    var row_tip = d3_tip_custom().attr('class', function () {
-	      var class_string = params.viz.root_tips + ' d3-tip row_tip';
+	      var root_tip_selector = params.viz.root_tips.replace('.', '');
+	      var class_string = root_tip_selector + ' d3-tip row_tip';
 	      return class_string;
 	    }).direction('e').offset([0, 10]).html(function (d) {
 	      var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
@@ -4855,7 +4861,8 @@ module.exports =
 
 	    // d3-tooltip
 	    var col_tip = d3_tip_custom().attr('class', function () {
-	      var class_string = params.viz.root_tips + ' d3-tip col_tip';
+	      var root_tip_selector = params.viz.root_tips.replace('.', '');
+	      var class_string = root_tip_selector + ' d3-tip col_tip';
 	      return class_string;
 	    }).direction('w').offset([20, 0]).style('display', 'block').html(function (d) {
 	      var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
@@ -5361,9 +5368,15 @@ module.exports =
 
 	module.exports = function two_translate_zoom(params, pan_dx, pan_dy, fin_zoom) {
 
-	  d3.selectAll('.tile_tip').style('display', 'none');
+	  d3.selectAll('.tile_tip').style('opacity', 0);
 
-	  // reset visible area 
+	  setTimeout(show_tooltips, 1000);
+
+	  function show_tooltips() {
+	    d3.selectAll(params.viz.root_tips).style('display', 'none');
+	  }
+
+	  // reset visible area
 	  var zoom_info = {};
 	  zoom_info.zoom_x = 1;
 	  zoom_info.zoom_y = 1;
@@ -5471,7 +5484,7 @@ module.exports =
 	    // times the scaling zoom_y
 	    var net_y_offset = params.viz.clust.margin.top + center_y + pan_dy * zoom_y;
 
-	    // reset the zoom and translate 
+	    // reset the zoom and translate
 	    params.zoom_behavior.scale(zoom_y).translate([pan_dx, net_y_offset]);
 
 	    label_constrain_and_trim(params);
@@ -6712,7 +6725,8 @@ module.exports =
 
 	  // d3-tooltip
 	  var cat_tip = d3_tip_custom().attr('class', function () {
-	    var class_string = params.viz.root_tips;
+	    var root_tip_selector = params.viz.root_tips.replace('.', '');
+	    var class_string = root_tip_selector + ' d3-tip';
 	    return class_string;
 	  }).direction('s').offset([5, 0]).style('display', 'block').html(function (d) {
 	    return cat_tooltip_text(params, d, this, 'col');
@@ -6963,7 +6977,8 @@ module.exports =
 
 	  // d3-tooltip
 	  var cat_tip = d3_tip_custom().attr('class', function () {
-	    var class_string = params.viz.root_tips;
+	    var root_tip_selector = params.viz.root_tips.replace('.', '');
+	    var class_string = root_tip_selector + ' d3-tip';
 	    return class_string;
 	  }).direction('e').offset([5, 0]).style('display', 'block').html(function (d) {
 	    return cat_tooltip_text(params, d, this, 'row');
@@ -7727,7 +7742,8 @@ module.exports =
 
 	  cgm.params.viz.run_trans = true;
 
-	  d3.selectAll(cgm.params.viz.root_tips).style('opacity', 0);
+	  // d3.selectAll(cgm.params.viz.root_tips)
+	  //   .style('opacity',0);
 
 	  setTimeout(enable_sidebar, 2500, cgm.params);
 		};

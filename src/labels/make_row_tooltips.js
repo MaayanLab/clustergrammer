@@ -2,14 +2,13 @@ var d3_tip_custom = require('../tooltip/d3_tip_custom');
 
 module.exports = function make_tooltips(params){
 
-  // d3.selectAll('.row_tip').remove();
-
   if (params.labels.show_label_tooltips){
 
     // d3-tooltip
     var row_tip = d3_tip_custom()
       .attr('class', function(){
-        var class_string = params.viz.root_tips + ' d3-tip row_tip';
+        var root_tip_selector = params.viz.root_tips.replace('.','');
+        var class_string = root_tip_selector + ' d3-tip row_tip';
         return class_string;
       })
       .direction('e')

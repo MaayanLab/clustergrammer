@@ -5,9 +5,16 @@ var show_visible_area = require('./show_visible_area');
 module.exports = function two_translate_zoom(params, pan_dx, pan_dy, fin_zoom) {
 
   d3.selectAll('.tile_tip')
-    .style('display','none' );
-    
-  // reset visible area 
+    .style('opacity', 0);
+
+  setTimeout(show_tooltips, 1000);
+
+  function show_tooltips(){
+    d3.selectAll(params.viz.root_tips)
+      .style('display', 'none');
+  }
+
+  // reset visible area
   var zoom_info = {};
   zoom_info.zoom_x = 1;
   zoom_info.zoom_y = 1;
@@ -145,7 +152,7 @@ module.exports = function two_translate_zoom(params, pan_dx, pan_dy, fin_zoom) {
     // times the scaling zoom_y
     var net_y_offset = params.viz.clust.margin.top + center_y + pan_dy * zoom_y;
 
-    // reset the zoom and translate 
+    // reset the zoom and translate
     params.zoom_behavior
       .scale(zoom_y)
       .translate([pan_dx, net_y_offset]);

@@ -4,8 +4,9 @@ var zoom_rules_x = require('./zoom_rules_x');
 
 module.exports = function apply_zoom(params, zoom_info) {
 
-  d3.selectAll('.tile_tip')
-    .style('display','none' );
+  d3.selectAll(params.viz.root_tips)
+    .style('display','none');
+
 
   zoom_info = zoom_rules_y(params, zoom_info);
 
