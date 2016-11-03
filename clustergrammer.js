@@ -3555,7 +3555,7 @@ var Clustergrammer =
 	    var is_hovering = d3.select(inst_selection).classed('hovering');
 
 	    if (is_hovering) {
-	      d3.selectAll('.d3-tip').transition().duration(250).style('opacity', 0);
+	      d3.selectAll('.d3-tip').transition().duration(250).style('opacity', 0).style('display', 'none');
 	    }
 	  }
 
@@ -4620,7 +4620,7 @@ var Clustergrammer =
 	      }
 	    }).on('mouseout', function mouseout(d) {
 
-	      d3.select(' .row_tip').style('display', 'none').classed(d.name, false);
+	      d3.selectAll('.row_tip').style('display', 'none').classed(d.name, false);
 
 	      d3.select(this).select('text').classed('active', false);
 

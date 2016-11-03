@@ -47,7 +47,7 @@ module.exports = function make_tooltips(params){
       })
       .on('mouseout', function mouseout(d) {
 
-        d3.select(' .row_tip')
+        d3.selectAll('.row_tip')
           .style('display', 'none')
           .classed(d.name, false)
 

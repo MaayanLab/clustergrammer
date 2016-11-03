@@ -328,7 +328,8 @@ module.exports = function d3_tip_custom(){
       d3.selectAll('.d3-tip')
         .transition()
         .duration(250)
-        .style('opacity',0);
+        .style('opacity',0)
+        .style('display', 'none');
     }
   }
 
