@@ -17,9 +17,15 @@ module.exports = function(cgm, network_data, delays){
   d3.selectAll(params.viz.root_tips)
     .remove();
 
+  console.log( 'number of tile_tips: ' + String(d3.selectAll('.tile_tip')[0].length))
+
   // d3-tooltip - for tiles
   var tip = d3_tip_custom()
-    .attr('class', 'd3-tip tile_tip')
+    .attr('class', function(){
+      var root_tip_selector = params.viz.root_tips.replace('.','');
+      var class_string = root_tip_selector + ' d3-tip tile_tip';
+      return class_string;
+    })
     .direction('nw')
     .offset([0, 0])
     .style('display', 'none')

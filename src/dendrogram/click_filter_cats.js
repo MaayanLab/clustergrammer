@@ -1,4 +1,3 @@
-var get_cat_title = require('../categories/get_cat_title');
 var utils = require('../Utils_clust');
 
 module.exports = function click_filter_cats(cgm, inst_data, inst_selection, inst_rc){
@@ -7,7 +6,6 @@ module.exports = function click_filter_cats(cgm, inst_data, inst_selection, inst
 
   // category index
   var inst_cat = d3.select(inst_selection).attr('cat');
-  var cat_title = get_cat_title(params.viz, inst_cat, inst_rc);
   var cat_name = inst_data[inst_cat];
   var tmp_nodes = params.network_data[inst_rc+'_nodes'];
 
@@ -39,21 +37,56 @@ module.exports = function click_filter_cats(cgm, inst_data, inst_selection, inst
     // must set this after filtering has been run
     cgm.params.cat_filter[inst_rc] = tmp_names;
 
-  } else {
+    highlight_filtered_cat(inst_rc, inst_cat, cat_name);
 
-    console.log('reset filtering')
+  } else {
 
     // get backup of names
     filter_names = cgm.params.cat_filter[inst_rc];
-
-    console.log(filter_names)
 
     // reset filter
     cgm.filter_viz_using_names(filter_names);
     // must set this after filtering has been run
     cgm.params.cat_filter[inst_rc] = false;
+
+    // there are no filtered cats
+    d3.selectAll(params.root+' .'+inst_rc+'_cat_group')
+      .selectAll('rect')
+      .classed('filtered_cat', false);
+
   }
 
-  return filter_names;
+function highlight_filtered_cat(inst_rc, inst_cat, cat_name){
+
+  d3.selectAll(params.root+' .'+inst_rc+'_cat_group')
+    .selectAll('rect')
+    .style('opacity', function(d){
+
+      var inst_opacity = d3.select(this).style('opacity');
+
+      if (d3.select(this).classed('cat_strings')){
+
+        var tmp_name;
+        var tmp_cat = d3.select(this).attr('cat');
+
+        // no need to filter out title
+        tmp_name = d[tmp_cat];
+
+        if (tmp_cat === inst_cat && tmp_name === cat_name){
+          inst_opacity = 1;
+
+          d3.select(this)
+            .classed('filtered_cat', true);
+
+        }
+        // else {
+        //   inst_opacity = params.viz.cat_colors.opacity/4;
+        // }
+      }
+
+      return inst_opacity;
+
+    });
+}
 
 };

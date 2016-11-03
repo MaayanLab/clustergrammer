@@ -62,13 +62,14 @@ module.exports = function cat_tooltip_text(params, inst_data, inst_selection, in
         }
 
         if (run_highlighting){
+
           d3.selectAll(params.root+' .'+tmp_rc+'_cat_group')
             .selectAll('rect')
             .style('opacity', function(d){
 
               var inst_opacity = d3.select(this).style('opacity');
 
-              if (d3.select(this).classed('cat_strings')){
+              if (d3.select(this).classed('cat_strings') && d3.select(this).classed('filtered_cat') === false){
 
                 var tmp_name;
                 var tmp_cat = d3.select(this).attr('cat');

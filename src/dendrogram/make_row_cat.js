@@ -136,6 +136,13 @@ module.exports = function make_row_cat(cgm, updating=false) {
               var inst_shift = inst_num * cat_room ;
               return 'translate('+inst_shift+',0)';
             })
+            .on('click', function(d){
+
+              if (d3.select(this).classed('cat_strings')){
+                click_filter_cats_db(cgm, d, this, 'row');
+              }
+
+            })
             .on('mouseover', cat_tip.show)
             .on('mouseout', function(){
               cat_tip.hide(this);
@@ -156,5 +163,6 @@ module.exports = function make_row_cat(cgm, updating=false) {
       });
     }
 
+  var click_filter_cats_db = _.debounce(click_filter_cats, 1500);
 
 };

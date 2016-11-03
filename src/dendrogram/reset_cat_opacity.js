@@ -8,7 +8,7 @@ module.exports = function reset_cat_opacity(params){
 
         var inst_opacity = d3.select(this).style('opacity');
 
-        if (d3.select(this).classed('cat_strings')){
+        if (d3.select(this).classed('cat_strings') && d3.select(this).classed('filtered_cat') === false){
           inst_opacity = params.viz.cat_colors.opacity;
         }
 

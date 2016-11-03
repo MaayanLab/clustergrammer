@@ -6754,8 +6754,9 @@ var Clustergrammer =
 	          return 'translate(0,' + inst_shift + ')';
 	        }).on('click', function (d) {
 
-	          // var filter_names = click_filter_cats_db(cgm, d, this, 'col');
-	          var filter_names = click_filter_cats(cgm, d, this, 'col');
+	          if (d3.select(this).classed('cat_strings')) {
+	            click_filter_cats_db(cgm, d, this, 'col');
+	          }
 	        });
 	      } else {
 	        cat_rect = d3.select(inst_selection).select('.' + cat_rect_class);
@@ -6778,7 +6779,7 @@ var Clustergrammer =
 	  });
 
 	  var click_filter_cats_db = _.debounce(click_filter_cats, 1500);
-	};
+		};
 
 /***/ },
 /* 107 */
@@ -6845,11 +6846,12 @@ var Clustergrammer =
 	        }
 
 	        if (run_highlighting) {
+
 	          d3.selectAll(params.root + ' .' + tmp_rc + '_cat_group').selectAll('rect').style('opacity', function (d) {
 
 	            var inst_opacity = d3.select(this).style('opacity');
 
-	            if (d3.select(this).classed('cat_strings')) {
+	            if (d3.select(this).classed('cat_strings') && d3.select(this).classed('filtered_cat') === false) {
 
 	              var tmp_name;
 	              var tmp_cat = d3.select(this).attr('cat');
@@ -6889,7 +6891,7 @@ var Clustergrammer =
 
 	      var inst_opacity = d3.select(this).style('opacity');
 
-	      if (d3.select(this).classed('cat_strings')) {
+	      if (d3.select(this).classed('cat_strings') && d3.select(this).classed('filtered_cat') === false) {
 	        inst_opacity = params.viz.cat_colors.opacity;
 	      }
 
@@ -7046,6 +7048,11 @@ var Clustergrammer =
 	          var cat_room = params.viz.cat_room.symbol_width + params.viz.cat_room.separation;
 	          var inst_shift = inst_num * cat_room;
 	          return 'translate(' + inst_shift + ',0)';
+	        }).on('click', function (d) {
+
+	          if (d3.select(this).classed('cat_strings')) {
+	            click_filter_cats_db(cgm, d, this, 'row');
+	          }
 	        }).on('mouseover', cat_tip.show).on('mouseout', function () {
 	          cat_tip.hide(this);
 	          reset_cat_opacity(params);
@@ -7058,6 +7065,8 @@ var Clustergrammer =
 	      });
 	    });
 	  }
+
+	  var click_filter_cats_db = _.debounce(click_filter_cats, 1500);
 		};
 
 /***/ },
@@ -7854,8 +7863,14 @@ var Clustergrammer =
 	  // remove old tooltips
 	  d3.selectAll(params.viz.root_tips).remove();
 
+	  console.log('number of tile_tips: ' + String(d3.selectAll('.tile_tip')[0].length));
+
 	  // d3-tooltip - for tiles
-	  var tip = d3_tip_custom().attr('class', 'd3-tip tile_tip').direction('nw').offset([0, 0]).style('display', 'none').html(function (d) {
+	  var tip = d3_tip_custom().attr('class', function () {
+	    var root_tip_selector = params.viz.root_tips.replace('.', '');
+	    var class_string = root_tip_selector + ' d3-tip tile_tip';
+	    return class_string;
+	  }).direction('nw').offset([0, 0]).style('display', 'none').html(function (d) {
 	    var inst_value = String(d.value.toFixed(3));
 	    var tooltip_string;
 
@@ -12146,7 +12161,6 @@ var Clustergrammer =
 
 	'use strict';
 
-	var get_cat_title = __webpack_require__(79);
 	var utils = __webpack_require__(2);
 
 	module.exports = function click_filter_cats(cgm, inst_data, inst_selection, inst_rc) {
@@ -12155,7 +12169,6 @@ var Clustergrammer =
 
 	  // category index
 	  var inst_cat = d3.select(inst_selection).attr('cat');
-	  var cat_title = get_cat_title(params.viz, inst_cat, inst_rc);
 	  var cat_name = inst_data[inst_cat];
 	  var tmp_nodes = params.network_data[inst_rc + '_nodes'];
 
@@ -12186,22 +12199,49 @@ var Clustergrammer =
 
 	    // must set this after filtering has been run
 	    cgm.params.cat_filter[inst_rc] = tmp_names;
-	  } else {
 
-	    console.log('reset filtering');
+	    highlight_filtered_cat(inst_rc, inst_cat, cat_name);
+	  } else {
 
 	    // get backup of names
 	    filter_names = cgm.params.cat_filter[inst_rc];
-
-	    console.log(filter_names);
 
 	    // reset filter
 	    cgm.filter_viz_using_names(filter_names);
 	    // must set this after filtering has been run
 	    cgm.params.cat_filter[inst_rc] = false;
+
+	    // there are no filtered cats
+	    d3.selectAll(params.root + ' .' + inst_rc + '_cat_group').selectAll('rect').classed('filtered_cat', false);
 	  }
 
-	  return filter_names;
+	  function highlight_filtered_cat(inst_rc, inst_cat, cat_name) {
+
+	    d3.selectAll(params.root + ' .' + inst_rc + '_cat_group').selectAll('rect').style('opacity', function (d) {
+
+	      var inst_opacity = d3.select(this).style('opacity');
+
+	      if (d3.select(this).classed('cat_strings')) {
+
+	        var tmp_name;
+	        var tmp_cat = d3.select(this).attr('cat');
+
+	        // no need to filter out title
+	        tmp_name = d[tmp_cat];
+
+	        if (tmp_cat === inst_cat && tmp_name === cat_name) {
+	          inst_opacity = 1;
+
+	          d3.select(this).classed('filtered_cat', true);
+	        }
+	        // else {
+	        //   inst_opacity = params.viz.cat_colors.opacity/4;
+	        // }
+	      }
+
+	      return inst_opacity;
+	    });
+	  }
 		};
 
 /***/ }
