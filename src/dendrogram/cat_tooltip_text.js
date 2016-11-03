@@ -10,7 +10,6 @@ module.exports = function cat_tooltip_text(params, inst_data, inst_selection, in
     .style('display', 'block');
 
   // category index
-  // debugger
   var inst_cat = d3.select(inst_selection).attr('cat');
   var cat_title = get_cat_title(params.viz, inst_cat, inst_rc);
   var cat_name = inst_data[inst_cat];
@@ -36,7 +35,7 @@ module.exports = function cat_tooltip_text(params, inst_data, inst_selection, in
   d3.select(inst_selection)
     .classed('hovering',true);
 
-  setTimeout(highlight_categories, 700);
+  setTimeout(highlight_categories, 500);
 
   return cat_string;
 

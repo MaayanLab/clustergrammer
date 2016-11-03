@@ -2613,7 +2613,7 @@ var Clustergrammer =
 	  // make category colorbars
 	  make_row_cat(params);
 	  if (params.viz.show_categories.col) {
-	    make_col_cat(params);
+	    make_col_cat(cgm);
 	  }
 
 	  spillover(cgm);
@@ -4057,10 +4057,6 @@ var Clustergrammer =
 
 	      /* filter rows using dendrogram */
 	      if (cgm.params.dendro_filter.row === false) {
-
-	        // // disable row ordering and dendro slider
-	        // d3.selectAll('.toggle_row_order .btn').attr('disabled', true);
-	        // $(params.root+' .slider_row').slider('disable');
 
 	        d3.select(params.root + ' .slider_row').style('opacity', 0.5).style('pointer-events', 'none');
 
@@ -6711,8 +6707,11 @@ var Clustergrammer =
 	var d3_tip_custom = __webpack_require__(58);
 	var reset_cat_opacity = __webpack_require__(108);
 	var ini_cat_opacity = __webpack_require__(109);
+	var click_filter_cats = __webpack_require__(191);
 
-	module.exports = function make_col_cat(params) {
+	module.exports = function make_col_cat(cgm) {
+
+	  var params = cgm.params;
 
 	  // make or reuse outer container
 	  if (d3.select(params.root + ' .col_cat_outer_container').empty()) {
@@ -6762,6 +6761,9 @@ var Clustergrammer =
 	          var cat_room = params.viz.cat_room.symbol_width + params.viz.cat_room.separation;
 	          var inst_shift = inst_num * cat_room;
 	          return 'translate(0,' + inst_shift + ')';
+	        }).on('click', function (d) {
+
+	          click_filter_cats(params, d, this, 'col');
 	        });
 	      } else {
 	        cat_rect = d3.select(inst_selection).select('.' + cat_rect_class);
@@ -6800,7 +6802,6 @@ var Clustergrammer =
 	  d3.selectAll('.row_cat_tip').style('display', 'block');
 
 	  // category index
-	  // debugger
 	  var inst_cat = d3.select(inst_selection).attr('cat');
 	  var cat_title = get_cat_title(params.viz, inst_cat, inst_rc);
 	  var cat_name = inst_data[inst_cat];
@@ -6824,7 +6825,7 @@ var Clustergrammer =
 
 	  d3.select(inst_selection).classed('hovering', true);
 
-	  setTimeout(highlight_categories, 700);
+	  setTimeout(highlight_categories, 500);
 
 	  return cat_string;
 
@@ -7735,7 +7736,7 @@ var Clustergrammer =
 	  make_row_cat_super_labels(cgm);
 
 	  if (cgm.params.viz.show_categories.col) {
-	    make_col_cat(cgm.params);
+	    make_col_cat(cgm);
 	  }
 
 	  if (cgm.params.viz.show_dendrogram) {
@@ -12139,6 +12140,33 @@ var Clustergrammer =
 	  // $( params.root+' .opacity_slider' ).slider({
 	  //   value:1.0
 	  // });
+		};
+
+/***/ },
+/* 190 */,
+/* 191 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var get_cat_title = __webpack_require__(79);
+
+	module.exports = function click_filter_cats(params, inst_data, inst_selection, inst_rc) {
+
+	  // category index
+	  var inst_cat = d3.select(inst_selection).attr('cat');
+	  var cat_title = get_cat_title(params.viz, inst_cat, inst_rc);
+	  var cat_name = inst_data[inst_cat];
+
+	  var tmp_nodes = params.network_data[inst_rc + '_nodes'];
+
+	  var found_nodes = _.filter(tmp_nodes, function (d) {
+
+	    return d[inst_cat] == cat_name;
+	  });
+
+	  console.log('found_nodes');
+	  console.log(found_nodes);
 		};
 
 /***/ }

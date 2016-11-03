@@ -61,7 +61,7 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
   make_row_cat_super_labels(cgm);
 
   if (cgm.params.viz.show_categories.col){
-    make_col_cat(cgm.params);
+    make_col_cat(cgm);
   }
 
   if (cgm.params.viz.show_dendrogram){

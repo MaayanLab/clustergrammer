@@ -126,10 +126,6 @@ module.exports = function make_row_dendro_triangles(cgm,
       /* filter rows using dendrogram */
       if (cgm.params.dendro_filter.row === false){
 
-        // // disable row ordering and dendro slider
-        // d3.selectAll('.toggle_row_order .btn').attr('disabled', true);
-        // $(params.root+' .slider_row').slider('disable');
-
         d3.select(params.root+' .slider_row')
           .style('opacity', 0.5)
           .style('pointer-events','none');
