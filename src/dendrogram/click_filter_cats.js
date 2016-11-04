@@ -16,31 +16,42 @@ module.exports = function click_filter_cats(cgm, inst_data, inst_selection, inst
 
   var found_names = utils.pluck(found_nodes, 'name');
 
+  var switch_rc = {'row':'col','col':'row'};
+  var other_rc = switch_rc[inst_rc];
+
   var filter_names = {};
   filter_names[inst_rc] = found_names;
 
-  if (cgm.params.cat_filter[inst_rc] === false){
+  if (cgm.params.cat_filter[inst_rc] === false ){
 
-    var tmp_names = cgm.params.network_data.col_nodes_names;
+    if (cgm.params.dendro_filter.row === false &&
+    cgm.params.dendro_filter.col === false &&
+    cgm.params.cat_filter[other_rc] === false){
 
-    // keep a backup of the inst_view
-    var inst_row_nodes = cgm.params.network_data.row_nodes;
-    var inst_col_nodes = cgm.params.network_data.col_nodes;
+      console.log('run filtering')
 
-    // run filtering using found names
-    cgm.filter_viz_using_names(filter_names);
+      var tmp_names = cgm.params.network_data.col_nodes_names;
 
-    // save backup of the inst_view
-    cgm.params.inst_nodes.row_nodes = inst_row_nodes;
-    cgm.params.inst_nodes.col_nodes = inst_col_nodes;
+      // keep a backup of the inst_view
+      var inst_row_nodes = cgm.params.network_data.row_nodes;
+      var inst_col_nodes = cgm.params.network_data.col_nodes;
 
-    // must set this after filtering has been run
-    cgm.params.cat_filter[inst_rc] = tmp_names;
+      // run filtering using found names
+      cgm.filter_viz_using_names(filter_names);
 
-    highlight_filtered_cat(inst_rc, inst_cat, cat_name);
+      // save backup of the inst_view
+      cgm.params.inst_nodes.row_nodes = inst_row_nodes;
+      cgm.params.inst_nodes.col_nodes = inst_col_nodes;
+
+      // must set this after filtering has been run
+      cgm.params.cat_filter[inst_rc] = tmp_names;
+
+      highlight_filtered_cat(inst_rc, inst_cat, cat_name);
+    }
 
   } else {
 
+    console.log('reset filtering')
     // get backup of names
     filter_names = cgm.params.cat_filter[inst_rc];
 
