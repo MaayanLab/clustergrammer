@@ -50,6 +50,37 @@ function Enrichr_request(inst_cgm){
       .style('cursor', 'default')
       .text('Choose Enrichr Library');
 
+    // clear results button
+    enr_menu
+      .append('text')
+      .classed('enr_menu_clear', true)
+      .attr('transform', 'translate(350, 30)')
+      .attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif')
+      .style('font-size','18px')
+      .style('font-weight', 800)
+      .style('cursor', 'default')
+      .text('Clear Results')
+      .style('fill', 'red')
+      .style('opacity', 0.75)
+      .style('display', 'none')
+      .on('click', function(){
+
+        // reset enrichr menu
+        toggle_enrichr_menu();
+
+        d3.select(this)
+          .style('display', 'none');
+
+        d3.select(inst_cgm.params.root+' .enr_lib_section')
+          .selectAll('g')
+          .select('circle')
+          .style('fill','white');
+
+        // clear categories
+        inst_cgm.reset_cats();
+
+      })
+
     var lib_section = enr_menu
       .append('g')
       .attr('transform', 'translate(20,60)')
@@ -112,6 +143,12 @@ function Enrichr_request(inst_cgm){
         d3.select(this)
           .select('circle')
           .style('fill','red')
+
+        // turn on clear sign
+        d3.select(inst_cgm.params.root+' .enr_menu_clear')
+          .transition()
+          .delay(1000)
+          .style('display', 'block');
 
         // request enrichment results from Enrichr
         enr_obj.enrichr_rows(d, update_viz_callback, 10);
