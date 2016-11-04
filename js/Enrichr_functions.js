@@ -11,7 +11,7 @@ function Enrichr_request(inst_cgm){
      .attr('y', 2)
      .attr('width', icon_size)
      .attr('height', icon_size)
-     .attr("xlink:href","img/enrichr_logo.png")
+     .attr("xlink:href", "http://amp.pharm.mssm.edu/Enrichr/images/enrichr-icon.png")
      .style('opacity', low_opacity)
      .classed('enrichr_logo', true)
      .on('click', function(){

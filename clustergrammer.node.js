@@ -7498,6 +7498,7 @@ module.exports =
 	      e.dispatchEvent(evt);
 	    });
 	  };
+
 	  return {
 	    run: run,
 	    get_duration: get_duration

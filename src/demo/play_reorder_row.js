@@ -20,7 +20,7 @@ module.exports = function play_reorder_row(){
     var x_trans = params.viz.norm_labels.width.row * 0.9;
 
     var row_trans = group_trans.split(',')[1].replace(')','');
-    var y_trans = String(Number(row_trans) + Number(container_trans) + 
+    var y_trans = String(Number(row_trans) + Number(container_trans) +
       params.viz.rect_height/2);
 
     var wait_click = 4000;
@@ -47,7 +47,8 @@ module.exports = function play_reorder_row(){
 
   function fire_double_click_row(params, inst_element){
 
-    $(inst_element).d3DblClick();    
+    $(inst_element).d3DblClick();
+
   }
 
 
@@ -59,6 +60,7 @@ module.exports = function play_reorder_row(){
       e.dispatchEvent(evt);
     });
   };
+
   return {
     run: run,
     get_duration: get_duration
