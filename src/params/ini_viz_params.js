@@ -24,6 +24,7 @@ module.exports = function ini_viz_params(params, preserve_cats=true){
   viz.sim_mat = params.sim_mat;
   viz.dendro_filter = params.dendro_filter;
   viz.cat_filter = params.cat_filter;
+  viz.cat_value_colors = params.cat_value_colors;
 
   viz.viz_svg = viz.viz_wrapper + ' .viz_svg';
 

@@ -34,19 +34,42 @@ module.exports = function ini_cat_opacity(viz, inst_rc, cat_rect, inst_cat, upda
       .classed('cat_values', true)
       .style('opacity', function(d){
 
-        var cat_value = d[inst_cat];
+        var unprocessed_val = d[inst_cat];
 
-        if (typeof cat_value === 'string'){
+        var cat_value = get_cat_value(unprocessed_val);
 
-          if ( cat_value.indexOf(super_string) > -1 ){
-            cat_value = cat_value.split(super_string)[1];
-          }
+        return viz.cat_info[inst_rc][inst_cat].cat_scale(Math.abs(cat_value));
+      })
+      .style('fill', function(d){
+        var inst_color;
+
+        var cat_value = get_cat_value(d[inst_cat]);
+
+        // get positive and negative colors
+        console.log(cat_value)
+        if (cat_value > 0){
+          console.log('positive')
+          inst_color = viz.cat_value_colors[0]
+        } else {
+          console.log('negative')
+          inst_color = viz.cat_value_colors[1]
         }
 
-        cat_value = parseFloat(cat_value);
-
-        return viz.cat_info[inst_rc][inst_cat].cat_scale(cat_value);
+        return inst_color;
       });
+  }
+
+  function get_cat_value(unprocessed_value){
+    if (typeof unprocessed_value === 'string'){
+
+      if ( unprocessed_value.indexOf(super_string) > -1 ){
+        unprocessed_value = unprocessed_value.split(super_string)[1];
+      }
+    }
+
+    var cat_value = parseFloat(unprocessed_value);
+
+    return cat_value;
   }
 
 };

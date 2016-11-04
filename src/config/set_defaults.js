@@ -12,6 +12,9 @@ module.exports = function set_defaults(){
     transpose: false,
     tile_colors: ['#FF0000', '#1C86EE'],
     bar_colors: ['#FF0000', '#1C86EE'],
+    // value-cat colors
+    // cat_value_colors: ['#2F4F4F', '#8A2BE2'],
+    cat_value_colors: ['#2F4F4F', '#9370DB'],
     outline_colors: ['orange','black'],
     highlight_color: '#FFFF00',
     tile_title: false,
