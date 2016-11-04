@@ -97,7 +97,7 @@ function Enrichr_request(inst_cgm){
       'GO_Biological_Process_2015',
       'GO_Cellular_Component_2015',
       'Reactome_2015',
-      'PPI_Hub_Proteins'
+      'MGI_Mammalian_Phenotype_Level_4'
       ];
     var vertical_space = 35;
 
