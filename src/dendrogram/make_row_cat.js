@@ -3,6 +3,7 @@ var d3_tip_custom = require('../tooltip/d3_tip_custom');
 var reset_cat_opacity = require('./reset_cat_opacity');
 var ini_cat_opacity = require('./ini_cat_opacity');
 var click_filter_cats = require('./click_filter_cats');
+var get_cat_names = require('../categories/get_cat_names');
 
 module.exports = function make_row_cat(cgm, updating=false) {
 
@@ -139,7 +140,20 @@ module.exports = function make_row_cat(cgm, updating=false) {
             .on('click', function(d){
 
               if (d3.select(this).classed('cat_strings')){
-                click_filter_cats_db(cgm, d, this, 'row');
+
+                if (d3.event.shiftKey === false){
+                  click_filter_cats_db(cgm, d, this, 'row');
+                } else {
+
+                  var found_names = get_cat_names(params, d, this, 'row');
+
+                  $(params.root+' .dendro_info').modal('toggle');
+                  var group_string = found_names.join(', ');
+                  d3.select(params.root+' .dendro_info input')
+                    .attr('value', group_string);
+
+                }
+
               }
 
             })

@@ -1,20 +1,14 @@
-var utils = require('../Utils_clust');
+var get_cat_names = require('../categories/get_cat_names');
 
 module.exports = function click_filter_cats(cgm, inst_data, inst_selection, inst_rc){
 
   var params = cgm.params;
 
-  // category index
+
   var inst_cat = d3.select(inst_selection).attr('cat');
   var cat_name = inst_data[inst_cat];
-  var tmp_nodes = params.network_data[inst_rc+'_nodes'];
 
-  var found_nodes = _.filter(tmp_nodes, function(d){
-
-    return d[inst_cat] == cat_name;
-  });
-
-  var found_names = utils.pluck(found_nodes, 'name');
+  var found_names = get_cat_names(params, inst_data, inst_selection, inst_rc);
 
   var switch_rc = {'row':'col','col':'row'};
   var other_rc = switch_rc[inst_rc];
@@ -27,8 +21,6 @@ module.exports = function click_filter_cats(cgm, inst_data, inst_selection, inst
     if (cgm.params.dendro_filter.row === false &&
     cgm.params.dendro_filter.col === false &&
     cgm.params.cat_filter[other_rc] === false){
-
-      console.log('run filtering')
 
       var tmp_names = cgm.params.network_data.col_nodes_names;
 
@@ -51,7 +43,6 @@ module.exports = function click_filter_cats(cgm, inst_data, inst_selection, inst
 
   } else {
 
-    console.log('reset filtering')
     // get backup of names
     filter_names = cgm.params.cat_filter[inst_rc];
 

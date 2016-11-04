@@ -17,8 +17,6 @@ module.exports = function(cgm, network_data, delays){
   d3.selectAll(params.viz.root_tips)
     .remove();
 
-  console.log( 'number of tile_tips: ' + String(d3.selectAll('.tile_tip')[0].length))
-
   // d3-tooltip - for tiles
   var tip = d3_tip_custom()
     .attr('class', function(){

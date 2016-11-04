@@ -15,7 +15,7 @@ module.exports = function update_cats(cgm, cat_data){
   // recalculate the visualization parameters using the updated network_data
   cgm.params = calc_viz_params(cgm.params, false);
 
-  make_row_cat(cgm.params, true);
+  make_row_cat(cgm, true);
   resize_viz(cgm);
 
   cgm.params.new_cat_data = cat_data;

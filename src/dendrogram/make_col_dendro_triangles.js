@@ -79,9 +79,7 @@ module.exports = function make_col_dendro_triangles(cgm, is_change_group = false
       } else {
 
         $(params.root+' .dendro_info').modal('toggle');
-
         var group_string = d.all_names.join(', ');
-
         d3.select(params.root+' .dendro_info input')
           .attr('value', group_string);
 
