@@ -46,13 +46,10 @@ module.exports = function ini_cat_opacity(viz, inst_rc, cat_rect, inst_cat, upda
         var cat_value = get_cat_value(d[inst_cat]);
 
         // get positive and negative colors
-        console.log(cat_value)
         if (cat_value > 0){
-          console.log('positive')
-          inst_color = viz.cat_value_colors[0]
+          inst_color = viz.cat_value_colors[0];
         } else {
-          console.log('negative')
-          inst_color = viz.cat_value_colors[1]
+          inst_color = viz.cat_value_colors[1];
         }
 
         return inst_color;

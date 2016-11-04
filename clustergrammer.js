@@ -6954,12 +6954,9 @@ var Clustergrammer =
 	      var cat_value = get_cat_value(d[inst_cat]);
 
 	      // get positive and negative colors
-	      console.log(cat_value);
 	      if (cat_value > 0) {
-	        console.log('positive');
 	        inst_color = viz.cat_value_colors[0];
 	      } else {
-	        console.log('negative');
 	        inst_color = viz.cat_value_colors[1];
 	      }
 
