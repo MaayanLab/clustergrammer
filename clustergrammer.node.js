@@ -4055,7 +4055,7 @@ module.exports =
 	    if (cgm.params.dendro_filter.col === false) {
 
 	      /* filter rows using dendrogram */
-	      if (cgm.params.dendro_filter.row === false) {
+	      if (cgm.params.dendro_filter.row === false && cgm.params.cat_filter.row === false && cgm.params.cat_filter.col === false) {
 
 	        d3.select(params.root + ' .slider_row').style('opacity', 0.5).style('pointer-events', 'none');
 
@@ -4355,7 +4355,7 @@ module.exports =
 	    if (cgm.params.dendro_filter.row === false) {
 
 	      /* filter cols using dendrogram */
-	      if (cgm.params.dendro_filter.col === false) {
+	      if (cgm.params.dendro_filter.col === false && cgm.params.cat_filter.row === false && cgm.params.cat_filter.col === false) {
 
 	        d3.select(params.root + ' .slider_col').style('opacity', 0.5).style('pointer-events', 'none');
 

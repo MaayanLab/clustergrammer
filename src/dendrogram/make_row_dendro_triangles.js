@@ -122,7 +122,10 @@ module.exports = function make_row_dendro_triangles(cgm,
     if (cgm.params.dendro_filter.col === false){
 
       /* filter rows using dendrogram */
-      if (cgm.params.dendro_filter.row === false){
+      if (cgm.params.dendro_filter.row === false &&
+          cgm.params.cat_filter.row === false &&
+          cgm.params.cat_filter.col === false
+        ){
 
         d3.select(params.root+' .slider_row')
           .style('opacity', 0.5)
