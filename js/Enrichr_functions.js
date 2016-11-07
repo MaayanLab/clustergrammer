@@ -333,6 +333,7 @@ function Enrichr_request(inst_cgm){
       inst_data = {};
       inst_data['cat_title'] = inst_term[1];
       inst_data['cats'] = [];
+      inst_data['pval'] = inst_term[2];
 
       cat_details = {};
       cat_details.cat_name = 'true';

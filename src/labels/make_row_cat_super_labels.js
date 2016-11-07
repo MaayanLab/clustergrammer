@@ -37,20 +37,22 @@ module.exports = function make_row_cat_super_labels(cgm){
 
   d3.selectAll(params.root+' .row_cat_label_container text').remove();
 
-  // d3-tooltip
-  var cat_tip = d3_tip_custom()
-    .attr('class',function(){
-      var root_tip_selector = params.viz.root_tips.replace('.','');
-      var class_string = root_tip_selector + ' d3-tip row_cat_tip_super';
-      return class_string;
-    })
-    .direction('e')
-    .offset([5,0])
-    .style('display','none')
-    .html(function(d){
-      console.log('d: ' + d)
-      return cat_tooltip_text(params, d, this, 'row');
-    });
+  // // d3-tooltip
+  // var cat_tip = d3_tip_custom()
+  //   .attr('class',function(){
+  //     var root_tip_selector = params.viz.root_tips.replace('.','');
+  //     var class_string = root_tip_selector + ' d3-tip row_cat_tip_super';
+  //     return class_string;
+  //   })
+  //   .direction('e')
+  //   .offset([5,0])
+  //   .style('display','block')
+  //   .style('opacity', 1)
+  //   .html(function(d){
+  //     console.log('mouseover title d: ' + d)
+  //     // return cat_tooltip_text(params, d, this, 'row');
+  //     return get_cat_title(viz, d, 'row');
+  //   });
 
 
 
@@ -73,12 +75,14 @@ module.exports = function make_row_cat_super_labels(cgm){
       .text(function(d){
         return get_cat_title(viz, d, 'row');
       })
-      .on('mouseover', cat_tip.show)
+      // .on('mouseover', cat_tip.show)
 
   }
 
-  d3.select(params.root+' .row_cat_label_container')
-    .selectAll('.row_cat_super')
-    .call(cat_tip);
+  // // disable mouseover
+  // //////////////////////////////////////
+  // d3.select(params.root+' .row_cat_label_container')
+  //   .selectAll('.row_cat_super')
+  //   .call(cat_tip);
 
 };

@@ -51,24 +51,24 @@ var Clustergrammer =
 	var make_params = __webpack_require__(9);
 	var make_viz = __webpack_require__(49);
 	var resize_viz = __webpack_require__(87);
-	var play_demo = __webpack_require__(115);
-	var ini_demo = __webpack_require__(155);
-	var filter_viz_using_nodes = __webpack_require__(158);
-	var filter_viz_using_names = __webpack_require__(159);
-	var update_cats = __webpack_require__(160);
-	var reset_cats = __webpack_require__(161);
+	var play_demo = __webpack_require__(113);
+	var ini_demo = __webpack_require__(153);
+	var filter_viz_using_nodes = __webpack_require__(156);
+	var filter_viz_using_names = __webpack_require__(157);
+	var update_cats = __webpack_require__(158);
+	var reset_cats = __webpack_require__(159);
 	var two_translate_zoom = __webpack_require__(84);
-	var external_update_view = __webpack_require__(163);
+	var external_update_view = __webpack_require__(161);
 
 	// moved d3.slider to src
-	d3.slider = __webpack_require__(166);
+	d3.slider = __webpack_require__(164);
 
 	/* eslint-disable */
 
-	var awesomplete = __webpack_require__(168);
+	var awesomplete = __webpack_require__(166);
 	// getting css from src
-	__webpack_require__(170);
-	__webpack_require__(174);
+	__webpack_require__(168);
+	__webpack_require__(172);
 
 	/* clustergrammer v1.7.2
 	 * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
@@ -93,7 +93,7 @@ var Clustergrammer =
 	  cgm.config = config;
 
 	  if (cgm.params.use_sidebar) {
-	    var make_sidebar = __webpack_require__(176);
+	    var make_sidebar = __webpack_require__(174);
 	    make_sidebar(cgm);
 	  }
 
@@ -2577,10 +2577,10 @@ var Clustergrammer =
 	var initialize_resizing = __webpack_require__(86);
 	var ini_doubleclick = __webpack_require__(88);
 	var make_col_cat = __webpack_require__(106);
-	var make_row_cat = __webpack_require__(112);
+	var make_row_cat = __webpack_require__(110);
 	var trim_text = __webpack_require__(41);
-	var make_row_dendro = __webpack_require__(113);
-	var make_col_dendro = __webpack_require__(114);
+	var make_row_dendro = __webpack_require__(111);
+	var make_col_dendro = __webpack_require__(112);
 
 	module.exports = function make_viz(cgm) {
 
@@ -5289,15 +5289,23 @@ var Clustergrammer =
 
 	  d3.selectAll(params.root + ' .row_cat_label_container text').remove();
 
-	  // d3-tooltip
-	  var cat_tip = d3_tip_custom().attr('class', function () {
-	    var root_tip_selector = params.viz.root_tips.replace('.', '');
-	    var class_string = root_tip_selector + ' d3-tip row_cat_tip_super';
-	    return class_string;
-	  }).direction('e').offset([5, 0]).style('display', 'none').html(function (d) {
-	    console.log('d: ' + d);
-	    return cat_tooltip_text(params, d, this, 'row');
-	  });
+	  // // d3-tooltip
+	  // var cat_tip = d3_tip_custom()
+	  //   .attr('class',function(){
+	  //     var root_tip_selector = params.viz.root_tips.replace('.','');
+	  //     var class_string = root_tip_selector + ' d3-tip row_cat_tip_super';
+	  //     return class_string;
+	  //   })
+	  //   .direction('e')
+	  //   .offset([5,0])
+	  //   .style('display','block')
+	  //   .style('opacity', 1)
+	  //   .html(function(d){
+	  //     console.log('mouseover title d: ' + d)
+	  //     // return cat_tooltip_text(params, d, this, 'row');
+	  //     return get_cat_title(viz, d, 'row');
+	  //   });
+
 
 	  if (viz.sim_mat === false) {
 
@@ -5306,10 +5314,15 @@ var Clustergrammer =
 	      return 'translate(0,' + inst_y + ')';
 	    }).text(function (d) {
 	      return get_cat_title(viz, d, 'row');
-	    }).on('mouseover', cat_tip.show);
+	    });
+	    // .on('mouseover', cat_tip.show)
 	  }
 
-	  d3.select(params.root + ' .row_cat_label_container').selectAll('.row_cat_super').call(cat_tip);
+	  // // disable mouseover
+	  // //////////////////////////////////////
+	  // d3.select(params.root+' .row_cat_label_container')
+	  //   .selectAll('.row_cat_super')
+	  //   .call(cat_tip);
 		};
 
 /***/ },
@@ -6715,8 +6728,8 @@ var Clustergrammer =
 	var d3_tip_custom = __webpack_require__(58);
 	var reset_cat_opacity = __webpack_require__(108);
 	var ini_cat_opacity = __webpack_require__(109);
-	var click_filter_cats = __webpack_require__(110);
-	var get_cat_names = __webpack_require__(111);
+	var click_filter_cats = __webpack_require__(191);
+	var get_cat_names = __webpack_require__(192);
 
 	module.exports = function make_col_cat(cgm) {
 
@@ -6999,124 +7012,12 @@ var Clustergrammer =
 
 	'use strict';
 
-	var get_cat_names = __webpack_require__(111);
-
-	module.exports = function click_filter_cats(cgm, inst_data, inst_selection, inst_rc) {
-
-	  var params = cgm.params;
-
-	  var inst_cat = d3.select(inst_selection).attr('cat');
-	  var cat_name = inst_data[inst_cat];
-
-	  var found_names = get_cat_names(params, inst_data, inst_selection, inst_rc);
-
-	  var switch_rc = { 'row': 'col', 'col': 'row' };
-	  var other_rc = switch_rc[inst_rc];
-
-	  var filter_names = {};
-	  filter_names[inst_rc] = found_names;
-
-	  if (cgm.params.cat_filter[inst_rc] === false) {
-
-	    if (cgm.params.dendro_filter.row === false && cgm.params.dendro_filter.col === false && cgm.params.cat_filter[other_rc] === false) {
-
-	      var tmp_names = cgm.params.network_data.col_nodes_names;
-
-	      // keep a backup of the inst_view
-	      var inst_row_nodes = cgm.params.network_data.row_nodes;
-	      var inst_col_nodes = cgm.params.network_data.col_nodes;
-
-	      // run filtering using found names
-	      cgm.filter_viz_using_names(filter_names);
-
-	      // save backup of the inst_view
-	      cgm.params.inst_nodes.row_nodes = inst_row_nodes;
-	      cgm.params.inst_nodes.col_nodes = inst_col_nodes;
-
-	      // must set this after filtering has been run
-	      cgm.params.cat_filter[inst_rc] = tmp_names;
-
-	      highlight_filtered_cat(inst_rc, inst_cat, cat_name);
-	    }
-	  } else {
-
-	    // get backup of names
-	    filter_names = cgm.params.cat_filter[inst_rc];
-
-	    // reset filter
-	    cgm.filter_viz_using_names(filter_names);
-	    // must set this after filtering has been run
-	    cgm.params.cat_filter[inst_rc] = false;
-
-	    // there are no filtered cats
-	    d3.selectAll(params.root + ' .' + inst_rc + '_cat_group').selectAll('rect').classed('filtered_cat', false);
-	  }
-
-	  function highlight_filtered_cat(inst_rc, inst_cat, cat_name) {
-
-	    d3.selectAll(params.root + ' .' + inst_rc + '_cat_group').selectAll('rect').style('opacity', function (d) {
-
-	      var inst_opacity = d3.select(this).style('opacity');
-
-	      if (d3.select(this).classed('cat_strings')) {
-
-	        var tmp_name;
-	        var tmp_cat = d3.select(this).attr('cat');
-
-	        // no need to filter out title
-	        tmp_name = d[tmp_cat];
-
-	        if (tmp_cat === inst_cat && tmp_name === cat_name) {
-	          inst_opacity = 1;
-
-	          d3.select(this).classed('filtered_cat', true);
-	        }
-	        // else {
-	        //   inst_opacity = params.viz.cat_colors.opacity/4;
-	        // }
-	      }
-
-	      return inst_opacity;
-	    });
-	  }
-		};
-
-/***/ },
-/* 111 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var utils = __webpack_require__(2);
-
-	module.exports = function get_cat_nodes(params, inst_data, inst_selection, inst_rc) {
-
-	  // category index
-	  var inst_cat = d3.select(inst_selection).attr('cat');
-	  var cat_name = inst_data[inst_cat];
-	  var tmp_nodes = params.network_data[inst_rc + '_nodes'];
-
-	  var found_nodes = _.filter(tmp_nodes, function (d) {
-	    return d[inst_cat] == cat_name;
-	  });
-
-	  var found_names = utils.pluck(found_nodes, 'name');
-
-	  return found_names;
-	};
-
-/***/ },
-/* 112 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
 	var cat_tooltip_text = __webpack_require__(107);
 	var d3_tip_custom = __webpack_require__(58);
 	var reset_cat_opacity = __webpack_require__(108);
 	var ini_cat_opacity = __webpack_require__(109);
-	var click_filter_cats = __webpack_require__(110);
-	var get_cat_names = __webpack_require__(111);
+	var click_filter_cats = __webpack_require__(191);
+	var get_cat_names = __webpack_require__(192);
 
 	module.exports = function make_row_cat(cgm) {
 	  var updating = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
@@ -7240,7 +7141,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 113 */
+/* 111 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7279,7 +7180,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 114 */
+/* 112 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7320,27 +7221,27 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 115 */
+/* 113 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	/* eslint-disable */
 
-	var run_segment = __webpack_require__(116);
-	var play_intro = __webpack_require__(117);
-	var play_zoom = __webpack_require__(119);
-	var play_reset_zoom = __webpack_require__(120);
-	var play_reorder_row = __webpack_require__(122);
-	var play_reorder_buttons = __webpack_require__(123);
-	var play_search = __webpack_require__(125);
-	var play_filter = __webpack_require__(126);
-	var quick_cluster = __webpack_require__(149);
-	var play_groups = __webpack_require__(150);
-	var play_categories = __webpack_require__(151);
-	var play_conclusion = __webpack_require__(152);
-	var toggle_play_button = __webpack_require__(153);
-	var play_menu_button = __webpack_require__(154);
+	var run_segment = __webpack_require__(114);
+	var play_intro = __webpack_require__(115);
+	var play_zoom = __webpack_require__(117);
+	var play_reset_zoom = __webpack_require__(118);
+	var play_reorder_row = __webpack_require__(120);
+	var play_reorder_buttons = __webpack_require__(121);
+	var play_search = __webpack_require__(123);
+	var play_filter = __webpack_require__(124);
+	var quick_cluster = __webpack_require__(147);
+	var play_groups = __webpack_require__(148);
+	var play_categories = __webpack_require__(149);
+	var play_conclusion = __webpack_require__(150);
+	var toggle_play_button = __webpack_require__(151);
+	var play_menu_button = __webpack_require__(152);
 
 	module.exports = function play_demo() {
 
@@ -7400,7 +7301,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 116 */
+/* 114 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -7423,12 +7324,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 117 */
+/* 115 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var demo_text = __webpack_require__(118);
+	var demo_text = __webpack_require__(116);
 
 	module.exports = function play_intro() {
 
@@ -7453,7 +7354,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 118 */
+/* 116 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7487,12 +7388,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 119 */
+/* 117 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var demo_text = __webpack_require__(118);
+	var demo_text = __webpack_require__(116);
 	var two_translate_zoom = __webpack_require__(84);
 
 	module.exports = function play_zoom() {
@@ -7515,14 +7416,14 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 120 */
+/* 118 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var demo_text = __webpack_require__(118);
+	var demo_text = __webpack_require__(116);
 	var two_translate_zoom = __webpack_require__(84);
-	var sim_click = __webpack_require__(121);
+	var sim_click = __webpack_require__(119);
 
 	module.exports = function play_reset_zoom() {
 
@@ -7546,7 +7447,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 121 */
+/* 119 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7565,13 +7466,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 122 */
+/* 120 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var demo_text = __webpack_require__(118);
-	var sim_click = __webpack_require__(121);
+	var demo_text = __webpack_require__(116);
+	var sim_click = __webpack_require__(119);
 
 	module.exports = function play_reorder_row() {
 	  /* eslint-disable */
@@ -7633,13 +7534,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 123 */
+/* 121 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var demo_text = __webpack_require__(118);
-	var highlight_sidebar_element = __webpack_require__(124);
+	var demo_text = __webpack_require__(116);
+	var highlight_sidebar_element = __webpack_require__(122);
 
 	module.exports = function play_reorder_buttons() {
 	  /* eslint-disable */
@@ -7675,7 +7576,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 124 */
+/* 122 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7692,13 +7593,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 125 */
+/* 123 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var demo_text = __webpack_require__(118);
-	var highlight_sidebar_element = __webpack_require__(124);
+	var demo_text = __webpack_require__(116);
+	var highlight_sidebar_element = __webpack_require__(122);
 	var two_translate_zoom = __webpack_require__(84);
 
 	module.exports = function play_search() {
@@ -7743,14 +7644,14 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 126 */
+/* 124 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var demo_text = __webpack_require__(118);
-	var highlight_sidebar_element = __webpack_require__(124);
-	var update_viz_with_view = __webpack_require__(127);
+	var demo_text = __webpack_require__(116);
+	var highlight_sidebar_element = __webpack_require__(122);
+	var update_viz_with_view = __webpack_require__(125);
 
 	module.exports = function play_filter() {
 
@@ -7809,14 +7710,14 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 127 */
+/* 125 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var make_network_using_view = __webpack_require__(10);
-	var disable_sidebar = __webpack_require__(128);
-	var update_viz_with_network = __webpack_require__(129);
+	var disable_sidebar = __webpack_require__(126);
+	var update_viz_with_network = __webpack_require__(127);
 
 	module.exports = function update_network_with_view(cgm, requested_view) {
 
@@ -7829,7 +7730,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 128 */
+/* 126 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7846,25 +7747,25 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 129 */
+/* 127 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var make_params = __webpack_require__(9);
-	var define_enter_exit_delays = __webpack_require__(130);
-	var enter_exit_update = __webpack_require__(131);
+	var define_enter_exit_delays = __webpack_require__(128);
+	var enter_exit_update = __webpack_require__(129);
 	var initialize_resizing = __webpack_require__(86);
 	var make_col_cat = __webpack_require__(106);
-	var make_row_cat = __webpack_require__(112);
-	var make_row_dendro = __webpack_require__(113);
-	var make_col_dendro = __webpack_require__(114);
-	var ini_sidebar = __webpack_require__(143);
-	var enable_sidebar = __webpack_require__(145);
+	var make_row_cat = __webpack_require__(110);
+	var make_row_dendro = __webpack_require__(111);
+	var make_col_dendro = __webpack_require__(112);
+	var ini_sidebar = __webpack_require__(141);
+	var enable_sidebar = __webpack_require__(143);
 	var ini_doubleclick = __webpack_require__(88);
-	var update_reorder_buttons = __webpack_require__(146);
+	var update_reorder_buttons = __webpack_require__(144);
 	var make_row_cat_super_labels = __webpack_require__(82);
-	var modify_row_node_cats = __webpack_require__(147);
+	var modify_row_node_cats = __webpack_require__(145);
 
 	module.exports = function update_viz_with_network(cgm, new_network_data) {
 
@@ -7938,7 +7839,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 130 */
+/* 128 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8011,19 +7912,19 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 131 */
+/* 129 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var resize_after_update = __webpack_require__(132);
+	var resize_after_update = __webpack_require__(130);
 	var make_rows = __webpack_require__(59);
 	var make_cols = __webpack_require__(74);
-	var eeu_existing_row = __webpack_require__(133);
-	var exit_components = __webpack_require__(137);
-	var enter_grid_lines = __webpack_require__(138);
-	var enter_row_groups = __webpack_require__(139);
-	var resize_containers = __webpack_require__(142);
+	var eeu_existing_row = __webpack_require__(131);
+	var exit_components = __webpack_require__(135);
+	var enter_grid_lines = __webpack_require__(136);
+	var enter_row_groups = __webpack_require__(137);
+	var resize_containers = __webpack_require__(140);
 	var label_constrain_and_trim = __webpack_require__(85);
 	var d3_tip_custom = __webpack_require__(58);
 
@@ -8125,7 +8026,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 132 */
+/* 130 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8305,14 +8206,14 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 133 */
+/* 131 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var exit_existing_row = __webpack_require__(134);
-	var enter_existing_row = __webpack_require__(135);
-	var update_split_tiles = __webpack_require__(136);
+	var exit_existing_row = __webpack_require__(132);
+	var enter_existing_row = __webpack_require__(133);
+	var update_split_tiles = __webpack_require__(134);
 	var mouseover_tile = __webpack_require__(56);
 	var mouseout_tile = __webpack_require__(57);
 
@@ -8376,7 +8277,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 134 */
+/* 132 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8421,7 +8322,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 135 */
+/* 133 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8471,7 +8372,7 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 136 */
+/* 134 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8565,7 +8466,7 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 137 */
+/* 135 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8629,7 +8530,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 138 */
+/* 136 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8677,12 +8578,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 139 */
+/* 137 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var enter_new_rows = __webpack_require__(140);
+	var enter_new_rows = __webpack_require__(138);
 
 	module.exports = function enter_row_groups(params, delays, duration, tip) {
 
@@ -8702,12 +8603,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 140 */
+/* 138 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var enter_split_tiles = __webpack_require__(141);
+	var enter_split_tiles = __webpack_require__(139);
 	var mouseover_tile = __webpack_require__(56);
 	var mouseout_tile = __webpack_require__(57);
 
@@ -8757,7 +8658,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 141 */
+/* 139 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8857,7 +8758,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 142 */
+/* 140 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8878,14 +8779,14 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 143 */
+/* 141 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	/* eslint-disable */
 
-	var change_groups = __webpack_require__(144);
+	var change_groups = __webpack_require__(142);
 	var search = __webpack_require__(83);
 	var all_reorder = __webpack_require__(81);
 	var ini_cat_reorder = __webpack_require__(80);
@@ -9033,7 +8934,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 144 */
+/* 142 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9060,7 +8961,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 145 */
+/* 143 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9101,7 +9002,7 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 146 */
+/* 144 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9123,12 +9024,13 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 147 */
+/* 145 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var remove_node_cats = __webpack_require__(148);
+	var remove_node_cats = __webpack_require__(146);
+	var utils = __webpack_require__(2);
 
 	module.exports = function modify_row_node_cats(cat_data, inst_nodes) {
 
@@ -9181,7 +9083,14 @@ var Clustergrammer =
 	        inst_cat_num = inst_cat_num + 1;
 	      });
 
-	      inst_full_cat = inst_cat_title + ': ' + inst_category;
+	      if (utils.has(inst_cat_data, 'pval')) {
+
+	        var inst_pval = inst_cat_data.pval.toExponential();
+	        inst_full_cat = inst_cat_title + ': ' + inst_category + '; Pval ' + String(inst_pval);
+	      } else {
+
+	        inst_full_cat = inst_cat_title + ': ' + inst_category;
+	      }
 
 	      inst_node['cat-' + String(cat_type_num)] = inst_full_cat;
 	      inst_node['cat_' + String(cat_type_num) + '_index'] = inst_index;
@@ -9192,7 +9101,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 148 */
+/* 146 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9214,12 +9123,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 149 */
+/* 147 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var sim_click = __webpack_require__(121);
+	var sim_click = __webpack_require__(119);
 
 	module.exports = function quick_cluster() {
 	  /* eslint-disable */
@@ -9274,14 +9183,14 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 150 */
+/* 148 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var demo_text = __webpack_require__(118);
-	var highlight_sidebar_element = __webpack_require__(124);
-	var change_groups = __webpack_require__(144);
+	var demo_text = __webpack_require__(116);
+	var highlight_sidebar_element = __webpack_require__(122);
+	var change_groups = __webpack_require__(142);
 
 	module.exports = function play_groups() {
 	  /* eslint-disable */
@@ -9317,13 +9226,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 151 */
+/* 149 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var demo_text = __webpack_require__(118);
-	var sim_click = __webpack_require__(121);
+	var demo_text = __webpack_require__(116);
+	var sim_click = __webpack_require__(119);
 
 	module.exports = function play_category() {
 	  /* eslint-disable */
@@ -9371,13 +9280,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 152 */
+/* 150 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var demo_text = __webpack_require__(118);
-	var toggle_play_button = __webpack_require__(153);
+	var demo_text = __webpack_require__(116);
+	var toggle_play_button = __webpack_require__(151);
 
 	module.exports = function play_conclusion() {
 
@@ -9412,7 +9321,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 153 */
+/* 151 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9429,13 +9338,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 154 */
+/* 152 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var demo_text = __webpack_require__(118);
-	var sim_click = __webpack_require__(121);
+	var demo_text = __webpack_require__(116);
+	var sim_click = __webpack_require__(119);
 
 	module.exports = function play_menu_button() {
 	  /* eslint-disable */
@@ -9510,13 +9419,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 155 */
+/* 153 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_play_button = __webpack_require__(156);
-	var make_demo_text_containers = __webpack_require__(157);
+	var make_play_button = __webpack_require__(154);
+	var make_demo_text_containers = __webpack_require__(155);
 
 	module.exports = function ini_demo() {
 
@@ -9530,7 +9439,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 156 */
+/* 154 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9574,7 +9483,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 157 */
+/* 155 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9615,13 +9524,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 158 */
+/* 156 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var filter_network_using_new_nodes = __webpack_require__(11);
-	var update_viz_with_network = __webpack_require__(129);
+	var update_viz_with_network = __webpack_require__(127);
 
 	module.exports = function filter_viz_using_nodes(new_nodes) {
 
@@ -9630,13 +9539,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 159 */
+/* 157 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var filter_network_using_new_nodes = __webpack_require__(11);
-	var update_viz_with_network = __webpack_require__(129);
+	var update_viz_with_network = __webpack_require__(127);
 
 	module.exports = function filter_viz_using_names(names) {
 	  var external_cgm = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
@@ -9685,15 +9594,15 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 160 */
+/* 158 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_row_cat = __webpack_require__(112);
+	var make_row_cat = __webpack_require__(110);
 	var calc_viz_params = __webpack_require__(15);
 	var resize_viz = __webpack_require__(87);
-	var modify_row_node_cats = __webpack_require__(147);
+	var modify_row_node_cats = __webpack_require__(145);
 
 	module.exports = function update_cats(cgm, cat_data) {
 
@@ -9716,16 +9625,16 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 161 */
+/* 159 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_row_cat = __webpack_require__(112);
+	var make_row_cat = __webpack_require__(110);
 	var calc_viz_params = __webpack_require__(15);
 	var resize_viz = __webpack_require__(87);
-	var modify_row_node_cats = __webpack_require__(147);
-	var make_default_cat_data = __webpack_require__(162);
+	var modify_row_node_cats = __webpack_require__(145);
+	var make_default_cat_data = __webpack_require__(160);
 
 	module.exports = function reset_cats() {
 
@@ -9752,7 +9661,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 162 */
+/* 160 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9868,13 +9777,13 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 163 */
+/* 161 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var update_viz_with_view = __webpack_require__(127);
-	var reset_other_filter_sliders = __webpack_require__(164);
+	var update_viz_with_view = __webpack_require__(125);
+	var reset_other_filter_sliders = __webpack_require__(162);
 
 	module.exports = function external_update_view(filter_type, inst_state) {
 
@@ -9891,12 +9800,12 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 164 */
+/* 162 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_filter_title = __webpack_require__(165);
+	var make_filter_title = __webpack_require__(163);
 
 	module.exports = function reset_other_filter_sliders(cgm, filter_type, inst_state) {
 
@@ -9945,7 +9854,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 165 */
+/* 163 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10005,7 +9914,7 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 166 */
+/* 164 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -10021,7 +9930,7 @@ var Clustergrammer =
 	(function (root, factory) {
 	  if (true) {
 	    // AMD. Register as an anonymous module.
-	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(167)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(165)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	  } else if ((typeof exports === 'undefined' ? 'undefined' : _typeof(exports)) === 'object') {
 	    if (process.browser) {
 	      // Browserify. Import css too using cssify.
@@ -10407,13 +10316,13 @@ var Clustergrammer =
 	});
 
 /***/ },
-/* 167 */
+/* 165 */
 /***/ function(module, exports) {
 
 	module.exports = d3;
 
 /***/ },
-/* 168 */
+/* 166 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {"use strict";
@@ -10853,10 +10762,10 @@ var Clustergrammer =
 
 		return _;
 		})();
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(169)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(167)(module)))
 
 /***/ },
-/* 169 */
+/* 167 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -10873,16 +10782,16 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 170 */
+/* 168 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(171);
+	var content = __webpack_require__(169);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(173)(content, {});
+	var update = __webpack_require__(171)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -10899,10 +10808,10 @@ var Clustergrammer =
 	}
 
 /***/ },
-/* 171 */
+/* 169 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(172)();
+	exports = module.exports = __webpack_require__(170)();
 	// imports
 
 
@@ -10913,7 +10822,7 @@ var Clustergrammer =
 
 
 /***/ },
-/* 172 */
+/* 170 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -10968,7 +10877,7 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 173 */
+/* 171 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -11220,16 +11129,16 @@ var Clustergrammer =
 
 
 /***/ },
-/* 174 */
+/* 172 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(175);
+	var content = __webpack_require__(173);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(173)(content, {});
+	var update = __webpack_require__(171)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -11246,10 +11155,10 @@ var Clustergrammer =
 	}
 
 /***/ },
-/* 175 */
+/* 173 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(172)();
+	exports = module.exports = __webpack_require__(170)();
 	// imports
 
 
@@ -11260,20 +11169,20 @@ var Clustergrammer =
 
 
 /***/ },
-/* 176 */
+/* 174 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var ini_sidebar = __webpack_require__(143);
-	var set_up_filters = __webpack_require__(177);
-	var set_up_dendro_sliders = __webpack_require__(182);
-	var set_up_search = __webpack_require__(183);
-	var set_up_reorder = __webpack_require__(184);
-	var set_sidebar_ini_view = __webpack_require__(185);
-	var make_icons = __webpack_require__(186);
-	var make_modals = __webpack_require__(189);
-	var set_up_opacity_slider = __webpack_require__(191);
+	var ini_sidebar = __webpack_require__(141);
+	var set_up_filters = __webpack_require__(175);
+	var set_up_dendro_sliders = __webpack_require__(180);
+	var set_up_search = __webpack_require__(181);
+	var set_up_reorder = __webpack_require__(182);
+	var set_sidebar_ini_view = __webpack_require__(183);
+	var make_icons = __webpack_require__(184);
+	var make_modals = __webpack_require__(187);
+	var set_up_opacity_slider = __webpack_require__(189);
 
 	/* Represents sidebar with controls.
 	 */
@@ -11347,13 +11256,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 177 */
+/* 175 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_slider_filter = __webpack_require__(178);
-	var make_button_filter = __webpack_require__(181);
+	var make_slider_filter = __webpack_require__(176);
+	var make_button_filter = __webpack_require__(179);
 
 	module.exports = function set_up_filters(cgm, filter_type) {
 
@@ -11369,17 +11278,17 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 178 */
+/* 176 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_filter_title = __webpack_require__(165);
-	var run_filter_slider = __webpack_require__(179);
+	var make_filter_title = __webpack_require__(163);
+	var run_filter_slider = __webpack_require__(177);
 	var get_filter_default_state = __webpack_require__(5);
 	var get_subset_views = __webpack_require__(12);
 
-	d3.slider = __webpack_require__(166);
+	d3.slider = __webpack_require__(164);
 
 	module.exports = function make_slider_filter(cgm, filter_type, div_filters) {
 
@@ -11444,14 +11353,14 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 179 */
+/* 177 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var update_viz_with_view = __webpack_require__(127);
-	var reset_other_filter_sliders = __webpack_require__(164);
-	var get_current_orders = __webpack_require__(180);
+	var update_viz_with_view = __webpack_require__(125);
+	var reset_other_filter_sliders = __webpack_require__(162);
+	var get_current_orders = __webpack_require__(178);
 	var make_requested_view = __webpack_require__(14);
 
 	module.exports = function run_filter_slider(cgm, filter_type, available_views, inst_index) {
@@ -11480,7 +11389,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 180 */
+/* 178 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -11511,7 +11420,7 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 181 */
+/* 179 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11564,7 +11473,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 182 */
+/* 180 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -11594,7 +11503,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 183 */
+/* 181 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -11611,7 +11520,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 184 */
+/* 182 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -11704,12 +11613,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 185 */
+/* 183 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_filter_title = __webpack_require__(165);
+	var make_filter_title = __webpack_require__(163);
 
 	module.exports = function set_sidebar_ini_view(params) {
 
@@ -11744,13 +11653,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 186 */
+/* 184 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var save_svg_png = __webpack_require__(187);
-	var file_saver = __webpack_require__(188);
+	var save_svg_png = __webpack_require__(185);
+	var file_saver = __webpack_require__(186);
 
 	module.exports = function make_icons(params, sidebar) {
 
@@ -11804,7 +11713,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 187 */
+/* 185 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -12010,7 +11919,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 188 */
+/* 186 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -12227,12 +12136,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 189 */
+/* 187 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_modal_skeleton = __webpack_require__(190);
+	var make_modal_skeleton = __webpack_require__(188);
 
 	module.exports = function ini_modals(params) {
 
@@ -12280,7 +12189,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 190 */
+/* 188 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -12305,7 +12214,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 191 */
+/* 189 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -12322,6 +12231,119 @@ var Clustergrammer =
 	  //   value:1.0
 	  // });
 		};
+
+/***/ },
+/* 190 */,
+/* 191 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var get_cat_names = __webpack_require__(192);
+
+	module.exports = function click_filter_cats(cgm, inst_data, inst_selection, inst_rc) {
+
+	  var params = cgm.params;
+
+	  var inst_cat = d3.select(inst_selection).attr('cat');
+	  var cat_name = inst_data[inst_cat];
+
+	  var found_names = get_cat_names(params, inst_data, inst_selection, inst_rc);
+
+	  var switch_rc = { 'row': 'col', 'col': 'row' };
+	  var other_rc = switch_rc[inst_rc];
+
+	  var filter_names = {};
+	  filter_names[inst_rc] = found_names;
+
+	  if (cgm.params.cat_filter[inst_rc] === false) {
+
+	    if (cgm.params.dendro_filter.row === false && cgm.params.dendro_filter.col === false && cgm.params.cat_filter[other_rc] === false) {
+
+	      var tmp_names = cgm.params.network_data.col_nodes_names;
+
+	      // keep a backup of the inst_view
+	      var inst_row_nodes = cgm.params.network_data.row_nodes;
+	      var inst_col_nodes = cgm.params.network_data.col_nodes;
+
+	      // run filtering using found names
+	      cgm.filter_viz_using_names(filter_names);
+
+	      // save backup of the inst_view
+	      cgm.params.inst_nodes.row_nodes = inst_row_nodes;
+	      cgm.params.inst_nodes.col_nodes = inst_col_nodes;
+
+	      // must set this after filtering has been run
+	      cgm.params.cat_filter[inst_rc] = tmp_names;
+
+	      highlight_filtered_cat(inst_rc, inst_cat, cat_name);
+	    }
+	  } else {
+
+	    // get backup of names
+	    filter_names = cgm.params.cat_filter[inst_rc];
+
+	    // reset filter
+	    cgm.filter_viz_using_names(filter_names);
+	    // must set this after filtering has been run
+	    cgm.params.cat_filter[inst_rc] = false;
+
+	    // there are no filtered cats
+	    d3.selectAll(params.root + ' .' + inst_rc + '_cat_group').selectAll('rect').classed('filtered_cat', false);
+	  }
+
+	  function highlight_filtered_cat(inst_rc, inst_cat, cat_name) {
+
+	    d3.selectAll(params.root + ' .' + inst_rc + '_cat_group').selectAll('rect').style('opacity', function (d) {
+
+	      var inst_opacity = d3.select(this).style('opacity');
+
+	      if (d3.select(this).classed('cat_strings')) {
+
+	        var tmp_name;
+	        var tmp_cat = d3.select(this).attr('cat');
+
+	        // no need to filter out title
+	        tmp_name = d[tmp_cat];
+
+	        if (tmp_cat === inst_cat && tmp_name === cat_name) {
+	          inst_opacity = 1;
+
+	          d3.select(this).classed('filtered_cat', true);
+	        }
+	        // else {
+	        //   inst_opacity = params.viz.cat_colors.opacity/4;
+	        // }
+	      }
+
+	      return inst_opacity;
+	    });
+	  }
+		};
+
+/***/ },
+/* 192 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var utils = __webpack_require__(2);
+
+	module.exports = function get_cat_nodes(params, inst_data, inst_selection, inst_rc) {
+
+	  // category index
+	  var inst_cat = d3.select(inst_selection).attr('cat');
+	  var cat_name = inst_data[inst_cat];
+	  var tmp_nodes = params.network_data[inst_rc + '_nodes'];
+
+	  var found_nodes = _.filter(tmp_nodes, function (d) {
+	    return d[inst_cat] == cat_name;
+	  });
+
+	  var found_names = utils.pluck(found_nodes, 'name');
+
+	  return found_names;
+	};
 
 /***/ }
 /******/ ]);

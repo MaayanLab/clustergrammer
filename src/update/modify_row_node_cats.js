@@ -1,4 +1,5 @@
 var remove_node_cats = require('./remove_node_cats');
+var utils = require('../Utils_clust');
 
 module.exports = function modify_row_node_cats(cat_data, inst_nodes){
 
@@ -53,7 +54,17 @@ module.exports = function modify_row_node_cats(cat_data, inst_nodes){
 
       });
 
-      inst_full_cat = inst_cat_title + ': ' + inst_category;
+
+      if (utils.has(inst_cat_data, 'pval')){
+
+        var inst_pval = inst_cat_data.pval.toExponential();
+        inst_full_cat = inst_cat_title + ': ' + inst_category + '; Pval ' + String(inst_pval);
+
+      } else {
+
+        inst_full_cat = inst_cat_title + ': ' + inst_category ;
+
+      }
 
       inst_node['cat-'+String(cat_type_num)] = inst_full_cat;
       inst_node['cat_'+String(cat_type_num)+'_index'] = inst_index;
