@@ -1,5 +1,5 @@
 var utils = require('../Utils_clust');
-var colors = require('../colors');
+var colors = require('../Colors');
 var check_if_value_cats = require('./check_if_value_cats');
 
 module.exports = function process_category_info(params, viz, preserve_cats=true){
