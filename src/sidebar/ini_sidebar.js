@@ -47,24 +47,26 @@ module.exports = function ini_sidebar(cgm){
     if (tmp_rc === 'both'){
       tmp_rc = 'row';
     }
-    var inst_group = cgm.params.group_level[tmp_rc];
-    var inst_group_value = inst_group/10;
+    if(params.show_dendrogram){
+      var inst_group = cgm.params.group_level[tmp_rc];
+      var inst_group_value = inst_group/10;
 
-    if (d3.select(params.root+' .slider_'+inst_rc).select('#handle-one').empty()){
+      if (d3.select(params.root+' .slider_'+inst_rc).select('#handle-one').empty()){
 
-      var dendro_slider = d3.slider()
-                            .snap(true)
-                            .value(inst_group_value)
-                            .min(0)
-                            .max(1)
-                            .step(0.1)
-                            .on('slide', function(evt, value){
-                              run_on_dendro_slide(evt, value, inst_rc);
-                            });
+        var dendro_slider = d3.slider()
+                              .snap(true)
+                              .value(inst_group_value)
+                              .min(0)
+                              .max(1)
+                              .step(0.1)
+                              .on('slide', function(evt, value){
+                                run_on_dendro_slide(evt, value, inst_rc);
+                              });
 
-      d3.select(params.root+' .slider_'+inst_rc)
-        .call(dendro_slider);
+        d3.select(params.root+' .slider_'+inst_rc)
+          .call(dendro_slider);
 
+      }
     }
 
     // reorder buttons

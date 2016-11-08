@@ -172,6 +172,8 @@ module.exports = function(cgm) {
 
     toggle_dendro_view(cgm, 'row', 0);
     toggle_dendro_view(cgm, 'col', 0);
+  } else {
+    resize_dendro(params, svg_group);
   }
 
   resize_col_labels(params, svg_group);
