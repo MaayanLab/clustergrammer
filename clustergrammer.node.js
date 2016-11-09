@@ -296,7 +296,7 @@ module.exports =
 
 	'use strict';
 
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
 	/* Utility functions
 	 * ----------------------------------------------------------------------- */
@@ -929,7 +929,7 @@ module.exports =
 	var calc_default_fs = __webpack_require__(48);
 
 	module.exports = function calc_viz_params(params) {
-	  var preserve_cats = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+	  var preserve_cats = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
 
 
 	  params.labels = ini_label_params(params);
@@ -1003,7 +1003,7 @@ module.exports =
 	var make_cat_params = __webpack_require__(18);
 
 	module.exports = function ini_viz_params(params) {
-	  var preserve_cats = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+	  var preserve_cats = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
 
 
 	  var viz = {};
@@ -1104,7 +1104,7 @@ module.exports =
 	var calc_cat_params = __webpack_require__(22);
 
 	module.exports = function make_cat_params(params, viz) {
-	  var preserve_cats = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+	  var preserve_cats = arguments.length <= 2 || arguments[2] === undefined ? true : arguments[2];
 
 
 	  viz = process_category_info(params, viz, preserve_cats);
@@ -1124,7 +1124,7 @@ module.exports =
 	var check_if_value_cats = __webpack_require__(21);
 
 	module.exports = function process_category_info(params, viz) {
-	  var preserve_cats = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+	  var preserve_cats = arguments.length <= 2 || arguments[2] === undefined ? true : arguments[2];
 
 
 	  var super_string = ': ';
@@ -1245,7 +1245,9 @@ module.exports =
 	    }
 
 	    if (params.sim_mat) {
-	      viz.cat_colors.row = viz.cat_colors.col;
+	      // sending row color info to columns since row color info can be updated
+	      // using the update_cats endpoint
+	      viz.cat_colors.col = viz.cat_colors.row;
 	    }
 	  });
 
@@ -3921,7 +3923,7 @@ module.exports =
 	var make_col_dendro_triangles = __webpack_require__(70);
 
 	module.exports = function toggle_dendro_view(cgm, row_col) {
-	  var wait_time = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1500;
+	  var wait_time = arguments.length <= 2 || arguments[2] === undefined ? 1500 : arguments[2];
 
 
 	  var params = cgm.params;
@@ -3962,7 +3964,7 @@ module.exports =
 	var dendro_mouseout = __webpack_require__(69);
 
 	module.exports = function make_row_dendro_triangles(cgm) {
-	  var is_change_group = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+	  var is_change_group = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
 
 
 	  var params = cgm.params;
@@ -4264,7 +4266,7 @@ module.exports =
 	var dendro_mouseout = __webpack_require__(69);
 
 	module.exports = function make_col_dendro_triangles(cgm) {
-	  var is_change_group = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+	  var is_change_group = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
 
 
 	  var params = cgm.params;
@@ -5729,10 +5731,10 @@ module.exports =
 	  exp_button.attr('text-anchor', 'middle').attr('dominant-baseline', 'central').attr('font-family', 'FontAwesome').attr('font-size', '30px').text(function () {
 	    if (params.viz.is_expand === false) {
 	      // expand button
-	      return '\uF0B2';
+	      return '';
 	    } else {
 	      // menu button
-	      return '\uF0C9';
+	      return '';
 	    }
 	  }).attr('y', '25px').attr('x', '25px').style('cursor', 'pointer').style('opacity', expand_opacity).on('mouseover', function () {
 	    d3.select(this).style('opacity', 0.75);
@@ -5745,7 +5747,7 @@ module.exports =
 
 	      d3.select(this).text(function () {
 	        // menu button
-	        return '\uF0C9';
+	        return '';
 	      });
 	      params.viz.is_expand = true;
 
@@ -5758,7 +5760,7 @@ module.exports =
 
 	      d3.select(this).text(function () {
 	        // expand button
-	        return '\uF0B2';
+	        return '';
 	      });
 
 	      params.viz.is_expand = false;
@@ -6023,7 +6025,7 @@ module.exports =
 	'use strict';
 
 	module.exports = function resize_dendro(params, svg_group) {
-	  var delay_info = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+	  var delay_info = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
 
 
 	  // resize dendrogram
@@ -6172,7 +6174,7 @@ module.exports =
 	'use strict';
 
 	module.exports = function resize_super_labels(params, ini_svg_group) {
-	  var delay_info = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+	  var delay_info = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
 
 
 	  var delays = {};
@@ -6216,7 +6218,7 @@ module.exports =
 	'use strict';
 
 	module.exports = function resize_spillover(viz, ini_svg_group) {
-	  var delay_info = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+	  var delay_info = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
 
 
 	  var delays = {};
@@ -6349,7 +6351,7 @@ module.exports =
 	'use strict';
 
 	module.exports = function resize_row_labels(params, ini_svg_group) {
-	  var delay_info = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+	  var delay_info = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
 
 
 	  var delays = {};
@@ -6470,7 +6472,7 @@ module.exports =
 	'use strict';
 
 	module.exports = function resize_row_viz(params, ini_svg_group) {
-	  var delay_info = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+	  var delay_info = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
 
 
 	  var delays = {};
@@ -6514,7 +6516,7 @@ module.exports =
 	'use strict';
 
 	module.exports = function (params, ini_svg_group) {
-	  var delay_info = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+	  var delay_info = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
 
 
 	  var delays = {};
@@ -6589,7 +6591,7 @@ module.exports =
 	'use strict';
 
 	module.exports = function resize_col_triangle(params, ini_svg_group) {
-	  var delay_info = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+	  var delay_info = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
 
 
 	  // resize column triangle
@@ -6637,7 +6639,7 @@ module.exports =
 	var utils = __webpack_require__(2);
 
 	module.exports = function resize_col_hlight(params, svg_group) {
-	  var delay_info = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+	  var delay_info = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
 
 
 	  var delays = {};
@@ -6950,7 +6952,7 @@ module.exports =
 	'use strict';
 
 	module.exports = function ini_cat_opacity(viz, inst_rc, cat_rect, inst_cat) {
-	  var updating = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
+	  var updating = arguments.length <= 4 || arguments[4] === undefined ? false : arguments[4];
 
 
 	  // debugger;
@@ -7134,7 +7136,7 @@ module.exports =
 	var get_cat_names = __webpack_require__(111);
 
 	module.exports = function make_row_cat(cgm) {
-	  var updating = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+	  var updating = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
 
 
 	  var params = cgm.params;
@@ -7696,7 +7698,7 @@ module.exports =
 	'use strict';
 
 	module.exports = function highlight_sidebar_element(params, highlight_class) {
-	  var duration = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 4000;
+	  var duration = arguments.length <= 2 || arguments[2] === undefined ? 4000 : arguments[2];
 
 
 	  if (highlight_class.indexOf('slider') < 0) {
@@ -9664,7 +9666,7 @@ module.exports =
 	var update_viz_with_network = __webpack_require__(129);
 
 	module.exports = function filter_viz_using_names(names) {
-	  var external_cgm = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+	  var external_cgm = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
 
 
 	  // names is an object with row and column names that will be used to filter
@@ -10035,7 +10037,7 @@ module.exports =
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
 	/*
 	    D3.js Slider
@@ -10443,7 +10445,7 @@ module.exports =
 
 	/* WEBPACK VAR INJECTION */(function(module) {"use strict";
 
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
 	/**
 	 * Simple, lightweight, usable local autocomplete library for modern browsers

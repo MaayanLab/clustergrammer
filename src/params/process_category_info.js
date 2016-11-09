@@ -131,7 +131,9 @@ module.exports = function process_category_info(params, viz, preserve_cats=true)
     }
 
     if (params.sim_mat){
-      viz.cat_colors.row = viz.cat_colors.col;
+      // sending row color info to columns since row color info can be updated
+      // using the update_cats endpoint
+      viz.cat_colors.col = viz.cat_colors.row;
     }
 
   });
