@@ -1,36 +1,52 @@
 
-var graph_height = window.innerHeight - 150;
-left_tutorial_width = 215;
-var right_graph_margin = left_tutorial_width;
-var inst_page_width = d3.select('#container')
-                        .style('width')
-                        .replace('px','');
+function get_graph_dim(){
 
-inst_page_width = Number(inst_page_width);
-var graph_width = inst_page_width - right_graph_margin;
+  var graph_height = window.innerHeight - 150;
+  var left_tutorial_width = 215;
+  var right_graph_margin = left_tutorial_width;
+  var inst_page_width = d3.select('#container')
+                          .style('width')
+                          .replace('px','');
 
-console.log('inst_page_width', inst_page_width)
-console.log('graph_width', graph_width)
+  inst_page_width = Number(inst_page_width);
+  var graph_width = inst_page_width - right_graph_margin;
 
-var max_height = 1000;
-var max_width = 2000;
+  // console.log('inst_page_width', inst_page_width)
+  // console.log('graph_width', graph_width)
 
-var matrix_width = graph_width - 250;
+  var max_height = 1000;
+  var max_width = 2000;
 
-if (graph_height > max_height){
-  graph_height = max_height;
+  var matrix_width = graph_width - 250;
+
+  if (graph_height > max_height){
+    graph_height = max_height;
+  }
+
+  if (graph_height > 1.5*matrix_width){
+    graph_height = 1.5*matrix_width;
+  }
+
+
+  var graph_dim = {};
+  graph_dim.width = graph_width;
+  graph_dim.height = graph_height
+
+  return graph_dim;
 }
 
-if (graph_height > 1.5*matrix_width){
-  graph_height = 1.5*matrix_width;
+function resize_container(args){
+
+  var graph_dim = get_graph_dim();
+
+  var screen_width = window.innerWidth;
+  var screen_height = window.innerHeight - 20;
+
+  d3.select(args.root)
+    .style('width', graph_dim.width+'px')
+    .style('height', graph_dim.height+'px');
+
 }
-
-// d3.select('#source')
-//   .style('margin-top', function(){
-//     var inst_height = graph_height + 200;
-//     return inst_height+'px'
-//   });
-
 
 
 function animate_arrow() {
@@ -51,9 +67,12 @@ function animate_arrow() {
     .each("end", animate_arrow);
 }
 
+var graph_dim = get_graph_dim();
+
 // make text section
 var tutorial_info;
 d3.json('json/tutorial_info.json', function(tmp_info){
+
 
   d3.select('#sections')
     .selectAll('.instruction')
@@ -61,16 +80,13 @@ d3.json('json/tutorial_info.json', function(tmp_info){
     .enter()
     .append('div')
     .classed('instruction', true)
-    // .style('padding-right','12px')
-    // .style('padding-left','12px')
-    // .style('background-color','green')
     .each(function(d){
 
       if (d.title === 'Conclusions') {
         d3.select(this)
           .style('margin-top','200px')
           .style('height', function(){
-            var inst_height = graph_height;
+            var inst_height = graph_dim.height;
             return inst_height + 'px';
           });
       } else if (d.title === 'Introduction'){
@@ -118,8 +134,8 @@ d3.json('json/tutorial_info.json', function(tmp_info){
 var prev_section = 0;
 
 d3.select('#graph')
-  .style('width', graph_width+'px')
-  .style('height', graph_height+'px');
+  .style('width', graph_dim.width+'px')
+  .style('height', graph_dim.height+'px');
 
 // make clustergram
 ////////////////////////////////
@@ -133,12 +149,12 @@ d3.json('json/mult_view.json', function(network_data){
     'row_tip_callback':gene_info
   };
 
-  // resize_container(args);
+  resize_container(args);
 
-  // d3.select(window).on('resize',function(){
-  //   resize_container(args);
-  //   cgm.resize_viz();
-  // });
+  d3.select(window).on('resize',function(){
+    resize_container(args);
+    cgm.resize_viz();
+  });
 
   cgm = Clustergrammer(args);
 
