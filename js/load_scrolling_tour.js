@@ -1,7 +1,6 @@
 
-var tutorial_info;
 var graph_height = window.innerHeight - 150;
-left_tutorial_width = 190;
+left_tutorial_width = 215;
 var right_graph_margin = left_tutorial_width;
 var inst_page_width = d3.select('#container')
                         .style('width')
