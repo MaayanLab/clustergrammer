@@ -83,7 +83,6 @@ section_fun['open_enrichr_menu'] = function(){
 
   var x_trans = 72;
   var y_trans = 25;
-
   var wait_click = 500;
   setTimeout(sim_click, wait_click, cgm.params, 'single', x_trans, y_trans);
 
@@ -92,23 +91,35 @@ section_fun['open_enrichr_menu'] = function(){
 
 section_fun['run_enrichr_cats'] = function(){
 
-  console.log('run_enrichr_cats')
+  console.log('run_enrichr_cats\n--------------')
   var lib_of_interest = 'ChEA 2015'
-  click_lib(lib_of_interest);
 
-  setTimeout(close_enrichr_menu, 1000);
+  var x_trans = 115;
+  var y_trans = 93;
+  var wait_click = 500;
+  setTimeout(sim_click, wait_click, cgm.params, 'single', x_trans, y_trans);
+
+  setTimeout(click_lib, 750, lib_of_interest);
+
+  setTimeout(close_enrichr_menu, 1500);
 
 }
 
 section_fun['clear_enrichr_cats'] = function(){
-  open_enrichr_menu();
+
+  setTimeout(open_enrichr_menu, 500);
+
+  var x_trans = 460;
+  var y_trans = 65;
+  var wait_click = 1500;
+  setTimeout(sim_click, wait_click, cgm.params, 'single', x_trans, y_trans);
 
   function delay_enr_clear(){
     console.log('delay_enr_clear')
     $(d3.select('.enr_menu_clear')[0]).d3Click();
   }
 
-  setTimeout(delay_enr_clear, 1000);
+  setTimeout(delay_enr_clear, 2000);
 }
 
 var update_section_db = _.debounce(update_section, 1500);
@@ -192,7 +203,7 @@ function sim_click(params, single_double, pos_x, pos_y){
 
 
 function click_lib(lib_of_interest){
-  console.log('clicking lib_of_interest ' + lib_of_interest)
+
   found_lib = d3.select(cgm.params.root+' .enr_lib_section')
     .selectAll('g')
     .filter(function(){
@@ -200,6 +211,7 @@ function click_lib(lib_of_interest){
       return inst_text === lib_of_interest;
     })[0];
   $(found_lib).d3Click();
+  console.log('click_lib')
 }
 
 function open_enrichr_menu(){
@@ -210,10 +222,11 @@ function open_enrichr_menu(){
 }
 
 function close_enrichr_menu(){
-  // only open, do not close
-  if (d3.select('.enrichr_menu').classed('showing') === true){
-    $(d3.select('#enrichr_menu_button_graph')[0]).d3Click();
-  }
+  console.log('close_enrichr_menu')
+  // // only open, do not close
+  // if (d3.select('.enrichr_menu').classed('showing') === true){
+  //   $(d3.select('#enrichr_menu_button_graph')[0]).d3Click();
+  // }
 }
 
 function click_reorder_button(inst_rc, inst_order){

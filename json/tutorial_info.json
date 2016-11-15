@@ -8,7 +8,6 @@
     ],
     "run_function": "initialize_view"
   },
-
   {
     "title": "Enrichment Analysis",
     "text": [
@@ -18,9 +17,6 @@
     ],
     "run_function": "open_enrichr_menu"
   },
-
-
-
   {
     "title": "Enrichment Analysis",
     "text": [
@@ -29,7 +25,6 @@
     ],
     "run_function": "run_enrichr_cats"
   },
-
   {
     "title": "Enrichment Analysis",
     "text": [
@@ -37,7 +32,6 @@
     ],
     "run_function": "clear_enrichr_cats"
   },
-
   {
     "title": "Zooming and Panning",
     "text": [
@@ -59,7 +53,6 @@
       "You can also reorder the matrix based on the data in a single row/column or category by double-clicking its label.",
       "Here rows are being ordered based on the values in the row EGFR.",
       "Try double-clicking a row/column or category label to reorder."
-
     ],
     "run_function": "run_reorder_single_row"
   },
@@ -74,9 +67,8 @@
   {
     "title": "Conclusion",
     "text": [
-      " The Clustergrammer web app can be found <a href='http://amp.pharm.mssm.edu/clustergrammer/'> here</a> and the Jupyter/IPython widget can be found <a href='https://github.com/MaayanLab/clustergrammer-widget'>here</a>" ,
+      " The Clustergrammer web app can be found <a href='http://amp.pharm.mssm.edu/clustergrammer/'> here</a> and the Jupyter/IPython widget can be found <a href='https://github.com/MaayanLab/clustergrammer-widget'>here</a>",
       "Clustergrammer is an open source project available on <a href='https://github.com/MaayanLab/clustergrammer'>GitHub</a>."
-
     ],
     "run_function": "run_conclusions"
   }
