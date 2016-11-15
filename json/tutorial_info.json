@@ -13,17 +13,29 @@
     "title": "Enrichment Analysis",
     "text": [
       "Users can run enrichment analysis on their genes (where genes are rows) using <a href='http://amp.pharm.mssm.edu/Enrichr/'>Enrichr</a>. ",
-      "Clicking the Enrichr logo brings up an Enrichr menu with a list of available libraries. Scroll down to run an example enrichment."
+      "Clicking the Enrichr logo brings up an Enrichr menu with a list of available libraries.",
+      "Scroll down to run an example enrichment or click a library."
     ],
     "run_function": "open_enrichr_menu"
+  },
+
+
+
+  {
+    "title": "Enrichment Analysis",
+    "text": [
+      "Clicking on the ChEA 2015 library sends your gene list to Enrichr and resturns the top 10 enriched transcription factors as row categories.",
+      "You can send subsets of gene lists to Enrichr using the dendrogram to select subsets of genes."
+    ],
+    "run_function": "run_enrichr_cats"
   },
 
   {
     "title": "Enrichment Analysis",
     "text": [
-      "Clustergrammer displays the top 10 enriched terms as row-categories. This allows "
+      "You can clear your results by opening the Enrichr menu and clicking 'Clear Results'"
     ],
-    "run_function": "run_enrichr_cats"
+    "run_function": "clear_enrichr_cats"
   },
 
   {

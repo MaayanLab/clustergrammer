@@ -87,6 +87,19 @@ section_fun['run_enrichr_cats'] = function(){
   var lib_of_interest = 'ChEA 2015'
   click_lib(lib_of_interest);
 
+  setTimeout(close_enrichr_menu, 1000);
+
+}
+
+section_fun['clear_enrichr_cats'] = function(){
+  open_enrichr_menu();
+
+  function delay_enr_clear(){
+    console.log('delay_enr_clear')
+    $(d3.select('.enr_menu_clear')[0]).d3Click();
+  }
+
+  setTimeout(delay_enr_clear, 1000);
 }
 
 var update_section_db = _.debounce(update_section, 1500);
