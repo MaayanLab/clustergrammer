@@ -82,6 +82,8 @@ section_fun['run_zoom_and_pan'] = function(){
 
 section_fun['open_enrichr_menu'] = function(){
 
+  cgm.update_view('N_row_sum','all');
+
   var x_trans = 72;
   var y_trans = 25;
   var wait_click = 500;
@@ -121,6 +123,20 @@ section_fun['clear_enrichr_cats'] = function(){
   }
 
   setTimeout(delay_enr_clear, 2000);
+}
+
+section_fun['dendro_groups'] = function(){
+  click_reorder_button('row','clust');
+  click_reorder_button('col','clust');
+  function highlight_dendro(){
+    highlight_sidebar_element(cgm.params, 'slider_row');
+    highlight_sidebar_element(cgm.params, 'slider_col');
+  }
+  setTimeout(highlight_dendro, 1500);
+}
+
+section_fun['row_search'] = function(){
+  highlight_sidebar_element(cgm.params, 'gene_search_container');
 }
 
 var update_section_db = _.debounce(update_section, 1500);

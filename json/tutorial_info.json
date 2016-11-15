@@ -9,30 +9,6 @@
     "run_function": "initialize_view"
   },
   {
-    "title": "Enrichment Analysis",
-    "text": [
-      "Users can run enrichment analysis on their genes (where genes are rows) using <a href='http://amp.pharm.mssm.edu/Enrichr/'>Enrichr</a>. ",
-      "Clicking the Enrichr logo brings up an Enrichr menu with a list of available libraries.",
-      "Scroll down to run an example enrichment or click a library."
-    ],
-    "run_function": "open_enrichr_menu"
-  },
-  {
-    "title": "Enrichment Analysis",
-    "text": [
-      "Clicking on the ChEA 2015 library sends your gene list to Enrichr and resturns the top 10 enriched transcription factors as row categories.",
-      "You can send subsets of gene lists to Enrichr using the dendrogram to select subsets of genes."
-    ],
-    "run_function": "run_enrichr_cats"
-  },
-  {
-    "title": "Enrichment Analysis",
-    "text": [
-      "You can clear your results by opening the Enrichr menu and clicking 'Clear Results'"
-    ],
-    "run_function": "clear_enrichr_cats"
-  },
-  {
     "title": "Zooming and Panning",
     "text": [
       "Zoom and pan by scrolling and dragging the matrix."
@@ -48,13 +24,29 @@
     "run_function": "run_reorder_row_var"
   },
   {
-    "title": "More reordering options",
+    "title": "More reordering",
     "text": [
       "You can also reorder the matrix based on the data in a single row/column or category by double-clicking its label.",
       "Here rows are being ordered based on the values in the row EGFR.",
       "Try double-clicking a row/column or category label to reorder."
     ],
     "run_function": "run_reorder_single_row"
+  },
+  {
+    "title": "Dendrograms",
+    "text": [
+      "Row and column dendrograms are shown when in clustered order. The dendrogram shows groups at different hierarchical levels and sliders can be used to change group sizes.",
+      "Clicking on a dendrogram group filters out data not in the group and pressing shift while clicking allows you to export group names."
+    ],
+    "run_function": "dendro_groups"
+  },
+  {
+    "title": "Row Search Descriptions",
+    "text": [
+      "You can search for a row using the search box. This can be useful if you are working with a large matrix.",
+      "Hovering over a row gene symbol automatically brings up the full gene name and description obtained from the <a href='http://amp.pharm.mssm.edu/Harmonizome/'>Harmonizome</a>"
+    ],
+    "run_function": "row_search"
   },
   {
     "title": "Filter rows",
@@ -65,9 +57,33 @@
     "run_function": "run_filter_var_10"
   },
   {
+    "title": "Enrichr Menu",
+    "text": [
+      "Users can run enrichment analysis on their genes (where genes are rows) using <a href='http://amp.pharm.mssm.edu/Enrichr/'>Enrichr</a>. ",
+      "Clicking the Enrichr logo brings up an Enrichr menu with a list of available libraries.",
+      "Scroll down to run an example enrichment or click a library."
+    ],
+    "run_function": "open_enrichr_menu"
+  },
+  {
+    "title": "Run Enrichr",
+    "text": [
+      "Clicking on the ChEA 2015 library sends your gene list to Enrichr and resturns the top 10 enriched transcription factors as row categories.",
+      "You can send subsets of gene lists to Enrichr using the dendrogram to select subsets of genes."
+    ],
+    "run_function": "run_enrichr_cats"
+  },
+  {
+    "title": "Clear Categories",
+    "text": [
+      "You can clear your results by opening the Enrichr menu and clicking 'Clear Results'"
+    ],
+    "run_function": "clear_enrichr_cats"
+  },
+  {
     "title": "Conclusion",
     "text": [
-      " The Clustergrammer web app can be found <a href='http://amp.pharm.mssm.edu/clustergrammer/'> here</a> and the Jupyter/IPython widget can be found <a href='https://github.com/MaayanLab/clustergrammer-widget'>here</a>",
+      "The Clustergrammer web app can be found <a href='http://amp.pharm.mssm.edu/clustergrammer/'> here</a> and the Jupyter/IPython widget can be found <a href='https://github.com/MaayanLab/clustergrammer-widget'>here</a>",
       "Clustergrammer is an open source project available on <a href='https://github.com/MaayanLab/clustergrammer'>GitHub</a>."
     ],
     "run_function": "run_conclusions"
