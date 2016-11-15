@@ -79,7 +79,16 @@ section_fun['run_zoom_and_pan'] = function(){
   setTimeout(function(){cgm.zoom(0, 0, 1)}, 1500);
 }
 
-section_fun['open_enrichr_menu'] = open_enrichr_menu;
+section_fun['open_enrichr_menu'] = function(){
+
+  var x_trans = 72;
+  var y_trans = 25;
+
+  var wait_click = 500;
+  setTimeout(sim_click, wait_click, cgm.params, 'single', x_trans, y_trans);
+
+  setTimeout(open_enrichr_menu, 750);
+}
 
 section_fun['run_enrichr_cats'] = function(){
 
