@@ -8,6 +8,24 @@
     ],
     "run_function": "initialize_view"
   },
+
+  {
+    "title": "Enrichment Analysis",
+    "text": [
+      "Users can run enrichment analysis on their genes (where genes are rows) using <a href='http://amp.pharm.mssm.edu/Enrichr/'>Enrichr</a>. ",
+      "Clicking the Enrichr logo brings up an Enrichr menu with a list of available libraries. Scroll down to run an example enrichment."
+    ],
+    "run_function": "open_enrichr_menu"
+  },
+
+  {
+    "title": "Enrichment Analysis",
+    "text": [
+      "Clustergrammer displays the top 10 enriched terms as row-categories. This allows "
+    ],
+    "run_function": "run_enrichr_cats"
+  },
+
   {
     "title": "Zooming and Panning",
     "text": [
@@ -26,8 +44,10 @@
   {
     "title": "More reordering options",
     "text": [
-      "You can also reorder the matrix based on the data in a single row or column.",
-      "Here rows are being ordered based on the values in the row EGFR."
+      "You can also reorder the matrix based on the data in a single row/column or category by double-clicking its label.",
+      "Here rows are being ordered based on the values in the row EGFR.",
+      "Try double-clicking a row/column or category label to reorder."
+
     ],
     "run_function": "run_reorder_single_row"
   },

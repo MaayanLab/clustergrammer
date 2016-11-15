@@ -1,11 +1,9 @@
 
-
 var graph_dim = get_graph_dim();
 
-// make text section
+// make text sections
 var tutorial_info;
 d3.json('json/tutorial_info.json', function(tmp_info){
-
 
   d3.select('#sections')
     .selectAll('.instruction')

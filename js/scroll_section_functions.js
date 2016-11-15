@@ -5,6 +5,7 @@ section_fun['initialize_view'] = function(){
   click_reorder_button('row','clust');
   click_reorder_button('col','clust');
   cgm.update_view('N_row_sum','all');
+  close_enrichr_menu();
 }
 
 section_fun['run_filter_sum_10'] = function(){
@@ -66,9 +67,10 @@ section_fun['run_reorder_single_row'] = function(){
 }
 
 section_fun['run_conclusions'] = function(){
-  console.log('in conclusion');
+  console.log('run conclusions');
   click_reorder_button('row','clust');
   click_reorder_button('col ','clust');
+  cgm.update_view('N_row_sum','all');
 }
 
 section_fun['run_zoom_and_pan'] = function(){
@@ -77,7 +79,15 @@ section_fun['run_zoom_and_pan'] = function(){
   setTimeout(function(){cgm.zoom(0, 0, 1)}, 1500);
 }
 
+section_fun['open_enrichr_menu'] = open_enrichr_menu;
 
+section_fun['run_enrichr_cats'] = function(){
+
+  console.log('run_enrichr_cats')
+  var lib_of_interest = 'ChEA 2015'
+  click_lib(lib_of_interest);
+
+}
 
 var update_section_db = _.debounce(update_section, 1500);
 
@@ -158,11 +168,38 @@ function sim_click(params, single_double, pos_x, pos_y){
 
 }
 
+
+function click_lib(lib_of_interest){
+  console.log('clicking lib_of_interest ' + lib_of_interest)
+  found_lib = d3.select(cgm.params.root+' .enr_lib_section')
+    .selectAll('g')
+    .filter(function(){
+      var inst_text = d3.select(this).select('text').text();
+      return inst_text === lib_of_interest;
+    })[0];
+  $(found_lib).d3Click();
+}
+
+function open_enrichr_menu(){
+  // only open, do not close
+  if (d3.select('.enrichr_menu').classed('showing') === false){
+    $(d3.select('#enrichr_menu_button_graph')[0]).d3Click();
+  }
+}
+
+function close_enrichr_menu(){
+  // only open, do not close
+  if (d3.select('.enrichr_menu').classed('showing') === true){
+    $(d3.select('#enrichr_menu_button_graph')[0]).d3Click();
+  }
+}
+
 function click_reorder_button(inst_rc, inst_order){
   var inst_button = d3.selectAll('.toggle_'+inst_rc+'_order .btn')
     .filter(function(){
       return this.__data__ == inst_order;
     })[0];
+
   $(inst_button).click();
 }
 

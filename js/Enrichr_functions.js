@@ -14,6 +14,10 @@ function Enrichr_request(inst_cgm){
      .attr("xlink:href", "http://amp.pharm.mssm.edu/Enrichr/images/enrichr-icon.png")
      .style('opacity', low_opacity)
      .classed('enrichr_logo', true)
+     .attr('id', function(){
+      var inst_id = 'enrichr_menu_button_' + inst_cgm.params.root.replace('#','');
+      return inst_id;
+     })
      .on('click', function(){
        toggle_enrichr_menu();
      })
