@@ -3,7 +3,7 @@
     "title": "Introduction",
     "text": [
       "Clustergrammer is a visualization library built using D3.js that enables intuitive interaction with high-dimensional data. ",
-      "Clustergrammer was built with biological data in mind and this example shows kinase gene expression levels obtained from the CCLE.",
+      "Clustergrammer was built with biological data in mind and this example shows kinase gene expression levels obtained from the <a href='https://portals.broadinstitute.org/ccle/home'>CCLE</a>.",
       "<em class='highlight_word'>Scroll down</em> to take an interactive tour."
     ],
     "run_function": "initialize_view"
@@ -40,9 +40,11 @@
     "run_function": "run_filter_var_10"
   },
   {
-    "title": "Conclusions",
+    "title": "Conclusion",
     "text": [
-      "In conclusion ... "
+      " The Clustergrammer web app can be found <a href='http://amp.pharm.mssm.edu/clustergrammer/'> here</a> and the Jupyter/IPython widget can be found <a href='https://github.com/MaayanLab/clustergrammer-widget'>here</a>" ,
+      "Clustergrammer is an open source project available on <a href='https://github.com/MaayanLab/clustergrammer'>GitHub</a>."
+
     ],
     "run_function": "run_conclusions"
   }
