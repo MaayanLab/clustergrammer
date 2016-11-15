@@ -62,8 +62,8 @@ module.exports = function sidebar(cgm) {
     .classed('icons_section',true)
     .style('text-align', 'center');
 
+  make_modals(params);
   if (params.sidebar.icons){
-    make_modals(params);
     make_icons(params, sidebar);
   }
 

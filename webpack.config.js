@@ -51,7 +51,7 @@ module.exports = [
         'd3': 'd3'
       },
       plugins:[
-        new webpack.optimize.UglifyJsPlugin({minimize: true})
+        new webpack.optimize.UglifyJsPlugin({compress: { warnings: false }})
       ],
       module: {
           loaders: [
@@ -112,7 +112,7 @@ module.exports = [
         'd3': 'd3'
       },
       plugins:[
-        new webpack.optimize.UglifyJsPlugin({minimize: true})
+        new webpack.optimize.UglifyJsPlugin({compress: { warnings: false }})
       ],
       module: {
           loaders: [

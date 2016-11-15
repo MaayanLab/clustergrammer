@@ -4,6 +4,7 @@ section_fun['initialize_view'] = function(){
   console.log('initializing view');
   click_reorder_button('row','clust');
   click_reorder_button('col','clust');
+  cgm.reset_cats();
   cgm.update_view('N_row_sum','all');
   close_enrichr_menu();
 }
@@ -223,10 +224,10 @@ function open_enrichr_menu(){
 
 function close_enrichr_menu(){
   console.log('close_enrichr_menu')
-  // // only open, do not close
-  // if (d3.select('.enrichr_menu').classed('showing') === true){
-  //   $(d3.select('#enrichr_menu_button_graph')[0]).d3Click();
-  // }
+  // only open, do not close
+  if (d3.select('.enrichr_menu').classed('showing') === true){
+    $(d3.select('#enrichr_menu_button_graph')[0]).d3Click();
+  }
 }
 
 function click_reorder_button(inst_rc, inst_order){
