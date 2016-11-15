@@ -83,8 +83,9 @@
   {
     "title": "Conclusion",
     "text": [
-      "The Clustergrammer web app can be found <a href='http://amp.pharm.mssm.edu/clustergrammer/'> here</a> and the Jupyter/IPython widget can be found <a href='https://github.com/MaayanLab/clustergrammer-widget'>here</a>",
-      "Clustergrammer is an open source project available on <a href='https://github.com/MaayanLab/clustergrammer'>GitHub</a>."
+      "Clustergrammer enables intuitive exploration of high-dimensional biological data and allows users to gain insights through integration of prior biological knowledge (e.g. enrichment analysis).",
+      "Clustergrammer is an open source project available on <a href='https://github.com/MaayanLab/clustergrammer'>GitHub</a>. Clustergrammer can be used as a <a href='http://amp.pharm.mssm.edu/clustergrammer/'>web app</a> and as a Jupyter/IPython <a href='https://github.com/MaayanLab/clustergrammer-widget'>widget</a>."
+
     ],
     "run_function": "run_conclusions"
   }
