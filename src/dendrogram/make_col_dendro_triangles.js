@@ -74,7 +74,7 @@ module.exports = function make_col_dendro_triangles(cgm, is_change_group = false
       dendro_mouseout(this);
     })
     .on('click', function(d){
-      if (d3.event.shiftKey === false){
+      if (d3.event.shiftKey === true){
         col_dendro_filter_db(d, this);
       } else {
 

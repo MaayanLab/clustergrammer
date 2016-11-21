@@ -78,7 +78,7 @@ module.exports = function make_row_dendro_triangles(cgm,
     })
     .on('click', function(d){
 
-      if (d3.event.shiftKey === false){
+      if (d3.event.shiftKey === true){
         row_dendro_filter_db(d, this);
       } else {
 

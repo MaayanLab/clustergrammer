@@ -4026,7 +4026,7 @@ module.exports =
 	    dendro_mouseout(this);
 	  }).on('click', function (d) {
 
-	    if (d3.event.shiftKey === false) {
+	    if (d3.event.shiftKey === true) {
 	      row_dendro_filter_db(d, this);
 	    } else {
 
@@ -4325,7 +4325,7 @@ module.exports =
 	    d3.selectAll(params.root + ' .dendro_shadow').remove();
 	    dendro_mouseout(this);
 	  }).on('click', function (d) {
-	    if (d3.event.shiftKey === false) {
+	    if (d3.event.shiftKey === true) {
 	      col_dendro_filter_db(d, this);
 	    } else {
 
