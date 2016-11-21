@@ -86,7 +86,7 @@ module.exports = function make_col_cat(cgm) {
 
               if (d3.select(this).classed('cat_strings')){
 
-                if (d3.event.shiftKey === false){
+                if (d3.event.shiftKey === true){
                   click_filter_cats_db(cgm, d, this, 'col');
                 } else {
 
