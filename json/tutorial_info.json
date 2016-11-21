@@ -11,15 +11,15 @@
   {
     "title": "Zooming and Panning",
     "text": [
-      "Zoom and pan by scrolling and dragging the matrix."
+      "Zoom and pan into large datasetsby scrolling and dragging."
     ],
     "run_function": "run_zoom_and_pan"
   },
   {
     "title": "Reordering using buttons",
     "text": [
-      "Rows and columns can be reordered using the reorder buttons.",
-      "Here rows are being ordered based on their variance."
+      "Rows and columns can be reordered using the buttons on the sidebar.",
+      "Here rows are ordered based on their variance."
     ],
     "run_function": "run_reorder_row_var"
   },
@@ -27,8 +27,8 @@
     "title": "More reordering",
     "text": [
       "You can also reorder the matrix based on the data in a single row/column or category by double-clicking its label.",
-      "Here rows are being ordered based on the values in the row EGFR.",
-      "Try double-clicking a row/column or category label to reorder."
+      "Here columns are ordered based on the data in the EGFR row.",
+      "Try double-clicking a row/column label or category label to reorder."
     ],
     "run_function": "run_reorder_single_row"
   },
@@ -36,7 +36,7 @@
     "title": "Dendrograms",
     "text": [
       "Row and column dendrograms are shown when in clustered order. The dendrogram shows groups at different hierarchical levels and sliders can be used to change group sizes.",
-      "Clicking on a dendrogram group filters out data not in the group and pressing shift while clicking allows you to export group names."
+      "Clicking on a dendrogram group allows you to export the row/column names in the group. Pressing Shift while clicking filters the matrix and only shows the group data."
     ],
     "run_function": "dendro_groups"
   },

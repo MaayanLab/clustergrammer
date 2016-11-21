@@ -11,7 +11,7 @@ function Enrichr_request(inst_cgm){
      .attr('y', 2)
      .attr('width', icon_size)
      .attr('height', icon_size)
-     .attr("xlink:href", "http://amp.pharm.mssm.edu/Enrichr/images/enrichr-icon.png")
+     .attr("xlink:href", "https://amp.pharm.mssm.edu/Enrichr/images/enrichr-icon.png")
      .style('opacity', low_opacity)
      .classed('enrichr_logo', true)
      .attr('id', function(){
@@ -225,7 +225,7 @@ function Enrichr_request(inst_cgm){
     var settings = {
      "async": true,
      "crossDomain": true,
-     "url": "http://amp.pharm.mssm.edu/Enrichr/addList",
+     "url": "https://amp.pharm.mssm.edu/Enrichr/addList",
      "method": "POST",
      "processData": false,
      "contentType": false,
@@ -257,7 +257,7 @@ function Enrichr_request(inst_cgm){
     if (enr_obj.user_list_id !== null){
       var form = new FormData();
 
-      var base_url = 'http://amp.pharm.mssm.edu/Enrichr/enrich?';
+      var base_url = 'https://amp.pharm.mssm.edu/Enrichr/enrich?';
       var library_string = 'backgroundType=' + String(library);
       var list_id_string = 'userListId=' + String(enr_obj.user_list_id);
 
