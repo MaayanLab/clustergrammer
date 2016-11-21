@@ -94,3 +94,15 @@ body{
   display: inline-block;
   vertical-align: middle;
 }
+
+.modal-backdrop{
+  display: none;
+}
+
+.modal-backdrop.fade{
+  display: none;
+}
+
+.modal-backdrop.in{
+  display: none;
+}

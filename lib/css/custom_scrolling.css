@@ -128,3 +128,15 @@ h1{
   margin-top: 10px;
   margin-bottom: 5px;
 }
+
+.modal-backdrop{
+  display: none;
+}
+
+.modal-backdrop.fade{
+  display: none;
+}
+
+.modal-backdrop.in{
+  display: none;
+}
