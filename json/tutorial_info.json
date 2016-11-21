@@ -11,7 +11,7 @@
   {
     "title": "Zooming and Panning",
     "text": [
-      "Zoom and pan into large datasetsby scrolling and dragging."
+      "Zoom and pan into large datasets by scrolling and dragging."
     ],
     "run_function": "run_zoom_and_pan"
   },
@@ -35,13 +35,13 @@
   {
     "title": "Dendrograms",
     "text": [
-      "Row and column dendrograms are shown when in clustered order. The dendrogram shows groups at different hierarchical levels and sliders can be used to change group sizes.",
-      "Clicking on a dendrogram group allows you to export the row/column names in the group. Pressing Shift while clicking filters the matrix and only shows the group data."
+      "Row and column dendrogram-groups (grey trapezoids) show clusters at different hierarchical levels. Cluster sizes can be adjusted using the sliders.",
+      "Clicking on a dendrogram-group exports the row/column names. Pressing Shift while clicking filters the matrix to only show data in this group."
     ],
     "run_function": "dendro_groups"
   },
   {
-    "title": "Row Search Descriptions",
+    "title": "Row Search and Descriptions",
     "text": [
       "You can search for a row using the search box. This can be useful if you are working with a large matrix.",
       "Hovering over a row gene symbol automatically brings up the full gene name and description obtained from the <a href='http://amp.pharm.mssm.edu/Harmonizome/'>Harmonizome</a>"
@@ -59,7 +59,7 @@
   {
     "title": "Enrichr Menu",
     "text": [
-      "Users can run enrichment analysis on their genes (where genes are rows) using <a href='http://amp.pharm.mssm.edu/Enrichr/'>Enrichr</a>. ",
+      "Users can run enrichment analysis on their genes (where rows are genes) using <a href='http://amp.pharm.mssm.edu/Enrichr/'>Enrichr</a>. ",
       "Clicking the Enrichr logo brings up an Enrichr menu with a list of available libraries.",
       "Scroll down to run an example enrichment or click a library."
     ],
@@ -68,8 +68,8 @@
   {
     "title": "Run Enrichr",
     "text": [
-      "Clicking on the ChEA 2015 library sends your gene list to Enrichr and resturns the top 10 enriched transcription factors as row categories.",
-      "You can send subsets of gene lists to Enrichr using the dendrogram to select subsets of genes."
+      "Clicking on the ChEA 2015 library sends your genes (all roows) to Enrichr and resturns the top 10 enriched terms (e.g. transcription factors) as categories.",
+      "You can select subsets of genes to Enrichr using the dendrogram-group filter (see above)."
     ],
     "run_function": "run_enrichr_cats"
   },
