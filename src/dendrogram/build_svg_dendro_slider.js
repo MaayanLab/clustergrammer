@@ -15,9 +15,6 @@ module.exports = function build_svg_dendro_slider(cgm, inst_rc){
     var tmp_top =  viz.svg_dim.height - 2 * viz.uni_margin;
   }
 
-    // var tmp_left = 10;
-    // var tmp_top =  975;
-
   var drag = d3.behavior.drag()
       // .origin(function(d) {
       //   return {x: d[0], y: d[1]};
@@ -31,22 +28,19 @@ module.exports = function build_svg_dendro_slider(cgm, inst_rc){
 
   var slider_group = d3.select(cgm.params.root +' .viz_svg')
       .append('g')
-      .attr('transform', function() {
-
-        // for row rotate -90 degrees
-
-        var inst_translation;
-
-        if (inst_rc === 'row'){
-          inst_translation = 'translate(' + tmp_left + ',' + tmp_top + ')'
-        } else {
-          inst_translation = 'translate(' + tmp_left + ',' + tmp_top +
-                             '), rotate(-90)';
-        }
-
-        return inst_translation;
-      })
       .classed('slider_group', true);
+
+  slider_group
+    .attr('transform', function() {
+      var inst_translation;
+      if (inst_rc === 'row'){
+        inst_translation = 'translate(' + tmp_left + ',' + tmp_top + ')'
+      } else {
+        inst_translation = 'translate(' + tmp_left + ',' + tmp_top +
+                           '), rotate(-90)';
+      }
+      return inst_translation;
+    });
 
     slider_group
       .append("line")
@@ -60,6 +54,8 @@ module.exports = function build_svg_dendro_slider(cgm, inst_rc){
       })
       .on('click', click_dendro_slider)
 
+    var default_opacity = 0.35;
+    var high_opacity = 0.6;
     slider_group
       .append('circle')
       .classed(inst_rc+'_group_circle', true)
@@ -68,7 +64,13 @@ module.exports = function build_svg_dendro_slider(cgm, inst_rc){
         return 'translate(0, '+slider_length/2+')';
       })
       .style('fill', 'blue')
-      .style('opacity', 0.5)
+      .style('opacity', default_opacity)
+      .on('mouseover', function(){
+        d3.select(this).style('opacity', high_opacity)
+      })
+      .on('mouseout', function(){
+        d3.select(this).style('opacity', default_opacity)
+      })
       .call(drag);
 
     slider_group

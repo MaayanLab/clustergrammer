@@ -7386,9 +7386,6 @@ var Clustergrammer =
 	    var tmp_top = viz.svg_dim.height - 2 * viz.uni_margin;
 	  }
 
-	  // var tmp_left = 10;
-	  // var tmp_top =  975;
-
 	  var drag = d3.behavior.drag()
 	  // .origin(function(d) {
 	  //   return {x: d[0], y: d[1]};
@@ -7399,28 +7396,31 @@ var Clustergrammer =
 
 	  var main_svg = d3.select('.viz_svg');
 
-	  var slider_group = d3.select(cgm.params.root + ' .viz_svg').append('g').attr('transform', function () {
+	  var slider_group = d3.select(cgm.params.root + ' .viz_svg').append('g').classed('slider_group', true);
 
-	    // for row rotate -90 degrees
-
+	  slider_group.attr('transform', function () {
 	    var inst_translation;
-
 	    if (inst_rc === 'row') {
 	      inst_translation = 'translate(' + tmp_left + ',' + tmp_top + ')';
 	    } else {
 	      inst_translation = 'translate(' + tmp_left + ',' + tmp_top + '), rotate(-90)';
 	    }
-
 	    return inst_translation;
-	  }).classed('slider_group', true);
+	  });
 
 	  slider_group.append("line").style('stroke-width', slider_length / 20 + 'px').style('stroke', 'black').style('stroke-linecap', 'round').style('opacity', 0.20).attr("y1", 0).attr("y2", function () {
 	    return slider_length - 2;
 	  }).on('click', click_dendro_slider);
 
+	  var default_opacity = 0.35;
+	  var high_opacity = 0.6;
 	  slider_group.append('circle').classed(inst_rc + '_group_circle', true).attr('r', 8).attr('transform', function () {
 	    return 'translate(0, ' + slider_length / 2 + ')';
-	  }).style('fill', 'blue').style('opacity', 0.5).call(drag);
+	  }).style('fill', 'blue').style('opacity', default_opacity).on('mouseover', function () {
+	    d3.select(this).style('opacity', high_opacity);
+	  }).on('mouseout', function () {
+	    d3.select(this).style('opacity', default_opacity);
+	  }).call(drag);
 
 	  slider_group.append('path').style('fill', 'black').attr('transform', 'translate(' + slider_length / 10 + ', 0)').attr('d', function (d) {
 
