@@ -1,9 +1,21 @@
 function tmp_slider(){
 
-  var width = self.frameElement ? 960 : innerWidth,
-      height = self.frameElement ? 500 : innerHeight;
+  var viz = cgm.params.viz;
 
-  var data = [800,100]
+  // var tmp_left = viz.clust.margin.left +
+  //   viz.clust.dim.width +
+  //   4*viz.uni_margin +
+  //   viz.dendro_room.row;
+
+  // var tmp_left = viz.clust.dim.width + viz.clust.margin.left;
+
+  var tmp_left = viz.svg_dim.width - 5*viz.uni_margin;
+
+  var tmp_top =  viz.clust.margin.top + 3*viz.uni_margin;
+
+  var data = [];
+  data[0] = 800;
+  data[1] = 100;
 
   var color = d3.scale.category10();
 
@@ -17,25 +29,22 @@ function tmp_slider(){
         cgm.params.is_slider_drag = false;
       })
 
-  // var main_svg = d3.select("body")
-  //     .on("touchstart", nozoom)
-  //     .on("touchmove", nozoom)
-  //     .append("svg")
-  //     .attr("width", width)
-  //     .attr("height", height);
-
   var main_svg = d3.select('.viz_svg');
 
   var slider_group = main_svg
       .append('g')
-      .attr('transform', function(){ return 'translate(' + data + ')'; })
+      // .attr('transform', function(){ return 'translate(' + data + ')'; })
+      .attr('transform', function() {
+        return 'translate(' + tmp_left + ',' + tmp_top + ')';
+      })
       .classed('slider_group', true);
 
     slider_group
       .append("line")
       .style('stroke-width', '10px')
       .style('stroke', 'black')
-      .style('opacity', 0.5)
+      .style('stroke-linecap', 'round')
+      .style('opacity', 0.35)
       .attr("y1", 0)
       .attr("y2", 100)
 
