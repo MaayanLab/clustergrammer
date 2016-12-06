@@ -47,10 +47,22 @@ function tmp_slider(){
       .style('opacity', 0.20)
       .attr("y1", 0)
       .attr("y2", 100)
+      .on('click', function(d){
+        // console.log('clicking slider line!');
+        var clicked_line_position = d3.mouse(this)
+        var y_pos = d3.round(clicked_line_position[1], -1)
+        // console.log(y_pos)
+
+        // reposition circle
+        d3.select('.row_group_circle')
+          .attr('transform', 'translate(0, '+ y_pos + ')');
+
+      })
 
     slider_group
       .append('circle')
-      .attr('r', 9)
+      .classed('row_group_circle', true)
+      .attr('r', 8)
       // .attr('y', 50)
       .attr('transform', function(){
         return 'translate(0, 50)';
@@ -62,18 +74,18 @@ function tmp_slider(){
     slider_group
       .append('path')
       .style('fill', 'black')
-      .attr('transform', 'translate(12, 0)')
+      .attr('transform', 'translate(10, 0)')
       .attr('d', function(d) {
 
         // up triangle
         var start_x = 0 ;
-        var start_y = -5;
+        var start_y = -2;
 
         var mid_x = 0;
-        var mid_y = 105;
+        var mid_y = 100;
 
-        var final_x = 12;
-        var final_y = -5;
+        var final_x = 10;
+        var final_y = -2;
 
         var output_string = 'M' + start_x + ',' + start_y + ', L' +
         mid_x + ', ' + mid_y + ', L'
