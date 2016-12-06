@@ -11,9 +11,10 @@ function tmp_slider(){
       // .origin(function(d) {
       //   return {x: d[0], y: d[1]};
       // })
-      .on("drag", dragged)
+      .on("drag", dragging)
       .on('dragend', function(){
         console.log('dragging has ended\n')
+        cgm.params.slider_drag = false;
       })
 
   // var main_svg = d3.select("body")
@@ -46,7 +47,12 @@ function tmp_slider(){
       .style('opacity', 0.5)
       .call(drag);
 
-  function dragged() {
+  function dragging() {
+
+    cgm.params.slider_drag = true;
+
+    console.log(cgm.params.slider_drag)
+
     // d[0] = d3.event.x;
     var new_y = d3.event.y;
 
