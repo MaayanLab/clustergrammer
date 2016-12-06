@@ -8,6 +8,11 @@ module.exports = function make_row_dendro_triangles(cgm,
 
   var params = cgm.params;
 
+  if (params.viz.inst_order.row === 'clust'){
+    d3.select(params.root+' .row_slider_group')
+      .style('opacity', 1);
+  }
+
   var dendro_info = calc_row_dendro_triangles(params);
 
   var inst_dendro_opacity;
@@ -127,8 +132,9 @@ module.exports = function make_row_dendro_triangles(cgm,
           cgm.params.cat_filter.col === false
         ){
 
-        d3.select(params.root+' .slider_row')
-          .style('opacity', 0.5)
+        // d3.select(params.root+' .slider_row')
+        d3.select(params.root+' .row_slider_group')
+          .style('opacity', 0.35)
           .style('pointer-events','none');
 
         names.row = d.all_names;

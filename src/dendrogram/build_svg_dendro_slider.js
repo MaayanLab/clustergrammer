@@ -3,7 +3,7 @@ var position_svg_dendro_slider = require('./position_svg_dendro_slider');
 
 module.exports = function build_svg_dendro_slider(cgm, inst_rc){
 
-  // console.log('build svg sliders: ' + inst_rc)
+  console.log('build svg sliders: ' + inst_rc)
 
   var slider_length = 100;
 
@@ -41,7 +41,7 @@ module.exports = function build_svg_dendro_slider(cgm, inst_rc){
     slider_group
       .append('circle')
       .classed(inst_rc+'_group_circle', true)
-      .attr('r', 8)
+      .attr('r', slider_length * 0.08)
       .attr('transform', function(){
         return 'translate(0, '+slider_length/2+')';
       })

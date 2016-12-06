@@ -3955,10 +3955,14 @@ var Clustergrammer =
 
 	  if (params.viz.inst_order.row != 'clust' && params.viz.dendro_filter.col === false) {
 	    d3.selectAll(params.root + ' .col_dendro_group').style('opacity', 0).on('mouseover', null).on('mouseout', null);
+
+	    d3.select(params.root + ' .col_slider_group').style('opacity', 0);
 	  }
 
 	  if (params.viz.inst_order.col != 'clust' && params.viz.dendro_filter.row === false) {
 	    d3.selectAll(params.root + ' .row_dendro_group').style('opacity', 0).on('mouseover', null).on('mouseout', null);
+
+	    d3.select(params.root + ' .row_slider_group').style('opacity', 0);
 	  }
 	};
 
@@ -3978,6 +3982,10 @@ var Clustergrammer =
 
 
 	  var params = cgm.params;
+
+	  if (params.viz.inst_order.row === 'clust') {
+	    d3.select(params.root + ' .row_slider_group').style('opacity', 1);
+	  }
 
 	  var dendro_info = calc_row_dendro_triangles(params);
 
@@ -4073,7 +4081,8 @@ var Clustergrammer =
 	      /* filter rows using dendrogram */
 	      if (cgm.params.dendro_filter.row === false && cgm.params.cat_filter.row === false && cgm.params.cat_filter.col === false) {
 
-	        d3.select(params.root + ' .slider_row').style('opacity', 0.5).style('pointer-events', 'none');
+	        // d3.select(params.root+' .slider_row')
+	        d3.select(params.root + ' .row_slider_group').style('opacity', 0.35).style('pointer-events', 'none');
 
 	        names.row = d.all_names;
 
@@ -4284,6 +4293,10 @@ var Clustergrammer =
 
 	  var params = cgm.params;
 
+	  if (params.viz.inst_order.col === 'clust') {
+	    d3.select(params.root + ' .col_slider_group').style('opacity', 1);
+	  }
+
 	  var dendro_info = calc_col_dendro_triangles(params);
 
 	  var inst_dendro_opacity;
@@ -4374,7 +4387,8 @@ var Clustergrammer =
 	      /* filter cols using dendrogram */
 	      if (cgm.params.dendro_filter.col === false && cgm.params.cat_filter.row === false && cgm.params.cat_filter.col === false) {
 
-	        d3.select(params.root + ' .slider_col').style('opacity', 0.5).style('pointer-events', 'none');
+	        // d3.select(params.root+' .slider_col')
+	        d3.select(params.root + ' .col_slider_group').style('opacity', 0.35).style('pointer-events', 'none');
 
 	        names.col = d.all_names;
 
@@ -7378,7 +7392,7 @@ var Clustergrammer =
 
 	module.exports = function build_svg_dendro_slider(cgm, inst_rc) {
 
-	  // console.log('build svg sliders: ' + inst_rc)
+	  console.log('build svg sliders: ' + inst_rc);
 
 	  var slider_length = 100;
 
@@ -7402,7 +7416,7 @@ var Clustergrammer =
 
 	  var default_opacity = 0.35;
 	  var high_opacity = 0.6;
-	  slider_group.append('circle').classed(inst_rc + '_group_circle', true).attr('r', 8).attr('transform', function () {
+	  slider_group.append('circle').classed(inst_rc + '_group_circle', true).attr('r', slider_length * 0.08).attr('transform', function () {
 	    return 'translate(0, ' + slider_length / 2 + ')';
 	  }).style('fill', 'blue').style('opacity', default_opacity).on('mouseover', function () {
 	    d3.select(this).style('opacity', high_opacity);
@@ -7498,8 +7512,14 @@ var Clustergrammer =
 	  }
 
 	  var is_change_group = true;
-	  make_row_dendro_triangles(cgm, is_change_group);
-	  make_col_dendro_triangles(cgm, is_change_group);
+
+	  if (inst_rc === 'row') {
+	    make_row_dendro_triangles(cgm, is_change_group);
+	  }
+
+	  if (inst_rc === 'col') {
+	    make_col_dendro_triangles(cgm, is_change_group);
+	  }
 		};
 
 /***/ },
@@ -9235,15 +9255,19 @@ var Clustergrammer =
 	  // only enable reordering if params.dendro_filter.row === false
 
 	  if (params.dendro_filter.row === false) {
-	    // $(params.root+' .slider_row').slider('enable');
-	    d3.select(params.root + ' .slider_row').style('opacity', 1).style('pointer-events', 'all');
+
+	    if (params.viz.inst_order.row === 'clust') {
+	      d3.select(params.root + ' .row_slider_group').style('opacity', 1).style('pointer-events', 'all');
+	    }
 	  }
 
 	  d3.selectAll(params.root + ' .toggle_row_order .btn').attr('disabled', null);
 
 	  if (params.dendro_filter.col === false) {
-	    // $(params.root+' .slider_col').slider('enable');
-	    d3.select(params.root + ' .slider_col').style('opacity', 1).style('pointer-events', 'all');
+
+	    if (params.viz.inst_order.col === 'clust') {
+	      d3.select(params.root + ' .col_slider_group').style('opacity', 1).style('pointer-events', 'all');
+	    }
 	  }
 
 	  d3.selectAll(params.root + ' .toggle_col_order .btn').attr('disabled', null);
