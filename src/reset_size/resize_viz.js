@@ -26,6 +26,7 @@ var calc_viz_dimensions = require('../params/calc_viz_dimensions');
 var position_play_button = require('../demo/position_play_button');
 var make_row_cat_super_labels = require('../labels/make_row_cat_super_labels');
 var ini_cat_reorder = require('../reorder/ini_cat_reorder');
+var position_svg_dendro_slider = require('../dendrogram/position_svg_dendro_slider');
 
 module.exports = function(cgm) {
 
@@ -209,5 +210,8 @@ module.exports = function(cgm) {
   d3.select(params.viz.viz_svg).style('opacity',1);
 
   ini_cat_reorder(cgm);
+
+  position_svg_dendro_slider(cgm, 'row');
+  position_svg_dendro_slider(cgm, 'col');
 
 };
