@@ -9,7 +9,7 @@ function tmp_slider(){
 
   // var tmp_left = viz.clust.dim.width + viz.clust.margin.left;
 
-  var tmp_left = viz.svg_dim.width - 5*viz.uni_margin;
+  var tmp_left = viz.svg_dim.width - 7*viz.uni_margin;
 
   var tmp_top =  viz.clust.margin.top + 3*viz.uni_margin;
 
@@ -41,20 +41,47 @@ function tmp_slider(){
 
     slider_group
       .append("line")
-      .style('stroke-width', '10px')
+      .style('stroke-width', '5px')
       .style('stroke', 'black')
       .style('stroke-linecap', 'round')
-      .style('opacity', 0.35)
+      .style('opacity', 0.20)
       .attr("y1", 0)
       .attr("y2", 100)
 
     slider_group
       .append('circle')
-      .attr('r', 12)
-      // .attr('y', 30)
+      .attr('r', 9)
+      // .attr('y', 50)
+      .attr('transform', function(){
+        return 'translate(0, 50)';
+      })
       .style('fill', 'blue')
       .style('opacity', 0.5)
       .call(drag);
+
+    slider_group
+      .append('path')
+      .style('fill', 'black')
+      .attr('transform', 'translate(12, 0)')
+      .attr('d', function(d) {
+
+        // up triangle
+        var start_x = 0 ;
+        var start_y = -5;
+
+        var mid_x = 0;
+        var mid_y = 105;
+
+        var final_x = 12;
+        var final_y = -5;
+
+        var output_string = 'M' + start_x + ',' + start_y + ', L' +
+        mid_x + ', ' + mid_y + ', L'
+        + final_x + ','+ final_y +' Z';
+
+        return output_string;
+      })
+      .style('opacity', 0.35)
 
   function dragging() {
 
