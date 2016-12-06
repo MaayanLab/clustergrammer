@@ -1,4 +1,5 @@
-function tmp_slider(){
+module.exports = function svg_dendro_sliders(cgm){
+  console.log('build svg sliders')
 
   var slider_length = 100;
   var viz = cgm.params.viz;
@@ -39,9 +40,8 @@ function tmp_slider(){
       .append('circle')
       .classed('row_group_circle', true)
       .attr('r', 8)
-      // .attr('y', 50)
       .attr('transform', function(){
-        return 'translate(0, 50)';
+        return 'translate(0, '+slider_length/2+')';
       })
       .style('fill', 'blue')
       .style('opacity', 0.5)
@@ -90,9 +90,11 @@ function tmp_slider(){
 
     slider_pos = d3.round(slider_pos, -1);
 
+    var slider_value = 10 - slider_pos/10;
+
     d3.select(this).attr("transform", "translate(0, " + slider_pos + ")");
 
-    console.log('slider_pos: ' + String(slider_pos))
+    console.log('slider_value: ' + String(slider_value))
 
   }
 
@@ -109,5 +111,4 @@ function tmp_slider(){
     d3.select('.row_group_circle')
       .attr('transform', 'translate(0, '+ y_pos + ')');
   }
-
-}
+};
