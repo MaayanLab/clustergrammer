@@ -51,24 +51,24 @@ module.exports =
 	var make_params = __webpack_require__(9);
 	var make_viz = __webpack_require__(49);
 	var resize_viz = __webpack_require__(88);
-	var play_demo = __webpack_require__(115);
-	var ini_demo = __webpack_require__(155);
-	var filter_viz_using_nodes = __webpack_require__(158);
-	var filter_viz_using_names = __webpack_require__(159);
-	var update_cats = __webpack_require__(160);
-	var reset_cats = __webpack_require__(161);
+	var play_demo = __webpack_require__(116);
+	var ini_demo = __webpack_require__(156);
+	var filter_viz_using_nodes = __webpack_require__(159);
+	var filter_viz_using_names = __webpack_require__(160);
+	var update_cats = __webpack_require__(161);
+	var reset_cats = __webpack_require__(162);
 	var two_translate_zoom = __webpack_require__(85);
-	var external_update_view = __webpack_require__(163);
+	var external_update_view = __webpack_require__(164);
 
 	// moved d3.slider to src
-	d3.slider = __webpack_require__(166);
+	d3.slider = __webpack_require__(167);
 
 	/* eslint-disable */
 
-	var awesomplete = __webpack_require__(168);
+	var awesomplete = __webpack_require__(169);
 	// getting css from src
-	__webpack_require__(170);
-	__webpack_require__(174);
+	__webpack_require__(171);
+	__webpack_require__(175);
 
 	/* clustergrammer v1.7.3
 	 * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
@@ -93,7 +93,7 @@ module.exports =
 	  cgm.config = config;
 
 	  if (cgm.params.use_sidebar) {
-	    var make_sidebar = __webpack_require__(176);
+	    var make_sidebar = __webpack_require__(177);
 	    make_sidebar(cgm);
 	  }
 
@@ -2586,8 +2586,8 @@ module.exports =
 	var make_row_cat = __webpack_require__(112);
 	var trim_text = __webpack_require__(41);
 	var make_row_dendro = __webpack_require__(113);
-	var make_col_dendro = __webpack_require__(114);
-	var svg_dendro_sliders = __webpack_require__(192);
+	var make_col_dendro = __webpack_require__(144);
+	var make_svg_dendro_sliders = __webpack_require__(114);
 
 	module.exports = function make_viz(cgm) {
 
@@ -2631,7 +2631,7 @@ module.exports =
 
 	  spillover(cgm);
 
-	  svg_dendro_sliders(cgm);
+	  make_svg_dendro_sliders(cgm);
 
 	  if (params.labels.super_labels) {
 	    generate_super_labels(params);
@@ -7308,39 +7308,11 @@ module.exports =
 
 	'use strict';
 
-	var make_col_dendro_triangles = __webpack_require__(70);
+	var build_svg_dendro_slider = __webpack_require__(193);
 
-	module.exports = function make_col_dendro(cgm) {
+	module.exports = function make_svg_dendro_sliders(cgm) {
 
-	  var params = cgm.params;
-
-	  // position col_dendro_outer_container
-	  var x_offset = params.viz.clust.margin.left;
-	  var y_offset = params.viz.clust.margin.top + params.viz.clust.dim.height;
-	  var spillover_height = params.viz.dendro_room.col + params.viz.uni_margin;
-
-	  // make or reuse outer container
-	  if (d3.select(params.root + ' .col_dendro_outer_container').empty()) {
-
-	    d3.select(params.root + ' .viz_svg').append('g').attr('class', 'col_dendro_outer_container').attr('transform', 'translate(' + x_offset + ',' + y_offset + ')');
-
-	    d3.select(params.root + ' .col_dendro_outer_container').append('rect').classed('col_dendro_spillover', true).attr('fill', params.viz.background_color).attr('width', params.viz.svg_dim.width).attr('height', spillover_height + 'px');
-
-	    d3.select(params.root + ' .col_dendro_outer_container').append('g').attr('class', 'col_dendro_container').attr('transform', 'translate(0,' + params.viz.uni_margin / 2 + ')');
-
-	    d3.select(params.root + ' .col_dendro_outer_container').append('rect').classed('col_dendro_spillover_top', true).attr('fill', params.viz.background_color).attr('width', params.viz.svg_dim.width).attr('height', params.viz.svg_dim.height).attr('transform', 'translate(0,' + params.viz.dendro_room.col + ')');
-	  } else {
-
-	    d3.select(params.root + ' .viz_svg').select('col_dendro_outer_container').attr('transform', 'translate(' + x_offset + ',' + y_offset + ')');
-
-	    d3.select(params.root + ' .col_dendro_outer_container').select('.col_dendro_spillover').attr('width', params.viz.svg_dim.width).attr('height', spillover_height + 'px');
-	  }
-
-	  make_col_dendro_triangles(cgm, false);
-
-	  if (params.viz.inst_order.row != 'clust') {
-	    d3.selectAll(params.root + ' .col_dendro_group').remove();
-	  }
+	  build_svg_dendro_slider(cgm, 'row');
 		};
 
 /***/ },
@@ -7349,22 +7321,49 @@ module.exports =
 
 	'use strict';
 
+	// var build_color_groups = require('./build_color_groups');
+	var make_row_dendro_triangles = __webpack_require__(64);
+	var make_col_dendro_triangles = __webpack_require__(70);
+
+	/* Changes the groupings (x- and y-axis color bars).
+	 */
+	module.exports = function (cgm, inst_rc, inst_index) {
+
+	  var params = cgm.params;
+
+	  if (inst_rc === 'row') {
+	    params.group_level.row = inst_index;
+	  } else if (inst_rc === 'col') {
+	    params.group_level.col = inst_index;
+	  }
+
+	  var is_change_group = true;
+	  make_row_dendro_triangles(cgm, is_change_group);
+	  make_col_dendro_triangles(cgm, is_change_group);
+		};
+
+/***/ },
+/* 116 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
 	/* eslint-disable */
 
-	var run_segment = __webpack_require__(116);
-	var play_intro = __webpack_require__(117);
-	var play_zoom = __webpack_require__(119);
-	var play_reset_zoom = __webpack_require__(120);
-	var play_reorder_row = __webpack_require__(122);
-	var play_reorder_buttons = __webpack_require__(123);
-	var play_search = __webpack_require__(125);
-	var play_filter = __webpack_require__(126);
-	var quick_cluster = __webpack_require__(149);
-	var play_groups = __webpack_require__(150);
-	var play_categories = __webpack_require__(151);
-	var play_conclusion = __webpack_require__(152);
-	var toggle_play_button = __webpack_require__(153);
-	var play_menu_button = __webpack_require__(154);
+	var run_segment = __webpack_require__(117);
+	var play_intro = __webpack_require__(118);
+	var play_zoom = __webpack_require__(120);
+	var play_reset_zoom = __webpack_require__(121);
+	var play_reorder_row = __webpack_require__(123);
+	var play_reorder_buttons = __webpack_require__(124);
+	var play_search = __webpack_require__(126);
+	var play_filter = __webpack_require__(127);
+	var quick_cluster = __webpack_require__(150);
+	var play_groups = __webpack_require__(151);
+	var play_categories = __webpack_require__(152);
+	var play_conclusion = __webpack_require__(153);
+	var toggle_play_button = __webpack_require__(154);
+	var play_menu_button = __webpack_require__(155);
 
 	module.exports = function play_demo() {
 
@@ -7424,7 +7423,7 @@ module.exports =
 		};
 
 /***/ },
-/* 116 */
+/* 117 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -7447,12 +7446,12 @@ module.exports =
 		};
 
 /***/ },
-/* 117 */
+/* 118 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var demo_text = __webpack_require__(118);
+	var demo_text = __webpack_require__(119);
 
 	module.exports = function play_intro() {
 
@@ -7477,7 +7476,7 @@ module.exports =
 		};
 
 /***/ },
-/* 118 */
+/* 119 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7511,12 +7510,12 @@ module.exports =
 		};
 
 /***/ },
-/* 119 */
+/* 120 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var demo_text = __webpack_require__(118);
+	var demo_text = __webpack_require__(119);
 	var two_translate_zoom = __webpack_require__(85);
 
 	module.exports = function play_zoom() {
@@ -7539,14 +7538,14 @@ module.exports =
 		};
 
 /***/ },
-/* 120 */
+/* 121 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var demo_text = __webpack_require__(118);
+	var demo_text = __webpack_require__(119);
 	var two_translate_zoom = __webpack_require__(85);
-	var sim_click = __webpack_require__(121);
+	var sim_click = __webpack_require__(122);
 
 	module.exports = function play_reset_zoom() {
 
@@ -7570,7 +7569,7 @@ module.exports =
 		};
 
 /***/ },
-/* 121 */
+/* 122 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7589,13 +7588,13 @@ module.exports =
 		};
 
 /***/ },
-/* 122 */
+/* 123 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var demo_text = __webpack_require__(118);
-	var sim_click = __webpack_require__(121);
+	var demo_text = __webpack_require__(119);
+	var sim_click = __webpack_require__(122);
 
 	module.exports = function play_reorder_row() {
 	  /* eslint-disable */
@@ -7657,13 +7656,13 @@ module.exports =
 		};
 
 /***/ },
-/* 123 */
+/* 124 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var demo_text = __webpack_require__(118);
-	var highlight_sidebar_element = __webpack_require__(124);
+	var demo_text = __webpack_require__(119);
+	var highlight_sidebar_element = __webpack_require__(125);
 
 	module.exports = function play_reorder_buttons() {
 	  /* eslint-disable */
@@ -7699,7 +7698,7 @@ module.exports =
 		};
 
 /***/ },
-/* 124 */
+/* 125 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7716,13 +7715,13 @@ module.exports =
 		};
 
 /***/ },
-/* 125 */
+/* 126 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var demo_text = __webpack_require__(118);
-	var highlight_sidebar_element = __webpack_require__(124);
+	var demo_text = __webpack_require__(119);
+	var highlight_sidebar_element = __webpack_require__(125);
 	var two_translate_zoom = __webpack_require__(85);
 
 	module.exports = function play_search() {
@@ -7767,14 +7766,14 @@ module.exports =
 		};
 
 /***/ },
-/* 126 */
+/* 127 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var demo_text = __webpack_require__(118);
-	var highlight_sidebar_element = __webpack_require__(124);
-	var update_viz_with_view = __webpack_require__(127);
+	var demo_text = __webpack_require__(119);
+	var highlight_sidebar_element = __webpack_require__(125);
+	var update_viz_with_view = __webpack_require__(128);
 
 	module.exports = function play_filter() {
 
@@ -7833,14 +7832,14 @@ module.exports =
 		};
 
 /***/ },
-/* 127 */
+/* 128 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var make_network_using_view = __webpack_require__(10);
-	var disable_sidebar = __webpack_require__(128);
-	var update_viz_with_network = __webpack_require__(129);
+	var disable_sidebar = __webpack_require__(129);
+	var update_viz_with_network = __webpack_require__(130);
 
 	module.exports = function update_network_with_view(cgm, requested_view) {
 
@@ -7853,7 +7852,7 @@ module.exports =
 		};
 
 /***/ },
-/* 128 */
+/* 129 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7870,25 +7869,25 @@ module.exports =
 		};
 
 /***/ },
-/* 129 */
+/* 130 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var make_params = __webpack_require__(9);
-	var define_enter_exit_delays = __webpack_require__(130);
-	var enter_exit_update = __webpack_require__(131);
+	var define_enter_exit_delays = __webpack_require__(131);
+	var enter_exit_update = __webpack_require__(132);
 	var initialize_resizing = __webpack_require__(87);
 	var make_col_cat = __webpack_require__(107);
 	var make_row_cat = __webpack_require__(112);
 	var make_row_dendro = __webpack_require__(113);
-	var make_col_dendro = __webpack_require__(114);
-	var ini_sidebar = __webpack_require__(143);
-	var enable_sidebar = __webpack_require__(145);
+	var make_col_dendro = __webpack_require__(144);
+	var ini_sidebar = __webpack_require__(145);
+	var enable_sidebar = __webpack_require__(146);
 	var ini_doubleclick = __webpack_require__(89);
-	var update_reorder_buttons = __webpack_require__(146);
+	var update_reorder_buttons = __webpack_require__(147);
 	var make_row_cat_super_labels = __webpack_require__(82);
-	var modify_row_node_cats = __webpack_require__(147);
+	var modify_row_node_cats = __webpack_require__(148);
 
 	module.exports = function update_viz_with_network(cgm, new_network_data) {
 
@@ -7962,7 +7961,7 @@ module.exports =
 		};
 
 /***/ },
-/* 130 */
+/* 131 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8035,19 +8034,19 @@ module.exports =
 	};
 
 /***/ },
-/* 131 */
+/* 132 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var resize_after_update = __webpack_require__(132);
+	var resize_after_update = __webpack_require__(133);
 	var make_rows = __webpack_require__(59);
 	var make_cols = __webpack_require__(74);
-	var eeu_existing_row = __webpack_require__(133);
-	var exit_components = __webpack_require__(137);
-	var enter_grid_lines = __webpack_require__(138);
-	var enter_row_groups = __webpack_require__(139);
-	var resize_containers = __webpack_require__(142);
+	var eeu_existing_row = __webpack_require__(134);
+	var exit_components = __webpack_require__(138);
+	var enter_grid_lines = __webpack_require__(139);
+	var enter_row_groups = __webpack_require__(140);
+	var resize_containers = __webpack_require__(143);
 	var label_constrain_and_trim = __webpack_require__(86);
 	var d3_tip_custom = __webpack_require__(58);
 
@@ -8149,7 +8148,7 @@ module.exports =
 		};
 
 /***/ },
-/* 132 */
+/* 133 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8329,14 +8328,14 @@ module.exports =
 		};
 
 /***/ },
-/* 133 */
+/* 134 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var exit_existing_row = __webpack_require__(134);
-	var enter_existing_row = __webpack_require__(135);
-	var update_split_tiles = __webpack_require__(136);
+	var exit_existing_row = __webpack_require__(135);
+	var enter_existing_row = __webpack_require__(136);
+	var update_split_tiles = __webpack_require__(137);
 	var mouseover_tile = __webpack_require__(56);
 	var mouseout_tile = __webpack_require__(57);
 
@@ -8400,7 +8399,7 @@ module.exports =
 		};
 
 /***/ },
-/* 134 */
+/* 135 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8445,7 +8444,7 @@ module.exports =
 		};
 
 /***/ },
-/* 135 */
+/* 136 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8495,7 +8494,7 @@ module.exports =
 	};
 
 /***/ },
-/* 136 */
+/* 137 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8589,7 +8588,7 @@ module.exports =
 	};
 
 /***/ },
-/* 137 */
+/* 138 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8653,7 +8652,7 @@ module.exports =
 		};
 
 /***/ },
-/* 138 */
+/* 139 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8701,12 +8700,12 @@ module.exports =
 		};
 
 /***/ },
-/* 139 */
+/* 140 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var enter_new_rows = __webpack_require__(140);
+	var enter_new_rows = __webpack_require__(141);
 
 	module.exports = function enter_row_groups(params, delays, duration, tip) {
 
@@ -8726,12 +8725,12 @@ module.exports =
 		};
 
 /***/ },
-/* 140 */
+/* 141 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var enter_split_tiles = __webpack_require__(141);
+	var enter_split_tiles = __webpack_require__(142);
 	var mouseover_tile = __webpack_require__(56);
 	var mouseout_tile = __webpack_require__(57);
 
@@ -8781,7 +8780,7 @@ module.exports =
 		};
 
 /***/ },
-/* 141 */
+/* 142 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8881,7 +8880,7 @@ module.exports =
 		};
 
 /***/ },
-/* 142 */
+/* 143 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8902,14 +8901,55 @@ module.exports =
 		};
 
 /***/ },
-/* 143 */
+/* 144 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var make_col_dendro_triangles = __webpack_require__(70);
+
+	module.exports = function make_col_dendro(cgm) {
+
+	  var params = cgm.params;
+
+	  // position col_dendro_outer_container
+	  var x_offset = params.viz.clust.margin.left;
+	  var y_offset = params.viz.clust.margin.top + params.viz.clust.dim.height;
+	  var spillover_height = params.viz.dendro_room.col + params.viz.uni_margin;
+
+	  // make or reuse outer container
+	  if (d3.select(params.root + ' .col_dendro_outer_container').empty()) {
+
+	    d3.select(params.root + ' .viz_svg').append('g').attr('class', 'col_dendro_outer_container').attr('transform', 'translate(' + x_offset + ',' + y_offset + ')');
+
+	    d3.select(params.root + ' .col_dendro_outer_container').append('rect').classed('col_dendro_spillover', true).attr('fill', params.viz.background_color).attr('width', params.viz.svg_dim.width).attr('height', spillover_height + 'px');
+
+	    d3.select(params.root + ' .col_dendro_outer_container').append('g').attr('class', 'col_dendro_container').attr('transform', 'translate(0,' + params.viz.uni_margin / 2 + ')');
+
+	    d3.select(params.root + ' .col_dendro_outer_container').append('rect').classed('col_dendro_spillover_top', true).attr('fill', params.viz.background_color).attr('width', params.viz.svg_dim.width).attr('height', params.viz.svg_dim.height).attr('transform', 'translate(0,' + params.viz.dendro_room.col + ')');
+	  } else {
+
+	    d3.select(params.root + ' .viz_svg').select('col_dendro_outer_container').attr('transform', 'translate(' + x_offset + ',' + y_offset + ')');
+
+	    d3.select(params.root + ' .col_dendro_outer_container').select('.col_dendro_spillover').attr('width', params.viz.svg_dim.width).attr('height', spillover_height + 'px');
+	  }
+
+	  make_col_dendro_triangles(cgm, false);
+
+	  if (params.viz.inst_order.row != 'clust') {
+	    d3.selectAll(params.root + ' .col_dendro_group').remove();
+	  }
+		};
+
+/***/ },
+/* 145 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	/* eslint-disable */
 
-	var change_groups = __webpack_require__(144);
+	var change_groups = __webpack_require__(115);
 	var search = __webpack_require__(84);
 	var all_reorder = __webpack_require__(81);
 	var ini_cat_reorder = __webpack_require__(80);
@@ -9059,34 +9099,7 @@ module.exports =
 		};
 
 /***/ },
-/* 144 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	// var build_color_groups = require('./build_color_groups');
-	var make_row_dendro_triangles = __webpack_require__(64);
-	var make_col_dendro_triangles = __webpack_require__(70);
-
-	/* Changes the groupings (x- and y-axis color bars).
-	 */
-	module.exports = function (cgm, inst_rc, inst_index) {
-
-	  var params = cgm.params;
-
-	  if (inst_rc === 'row') {
-	    params.group_level.row = inst_index;
-	  } else if (inst_rc === 'col') {
-	    params.group_level.col = inst_index;
-	  }
-
-	  var is_change_group = true;
-	  make_row_dendro_triangles(cgm, is_change_group);
-	  make_col_dendro_triangles(cgm, is_change_group);
-		};
-
-/***/ },
-/* 145 */
+/* 146 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9127,7 +9140,7 @@ module.exports =
 	};
 
 /***/ },
-/* 146 */
+/* 147 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9149,12 +9162,12 @@ module.exports =
 	};
 
 /***/ },
-/* 147 */
+/* 148 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var remove_node_cats = __webpack_require__(148);
+	var remove_node_cats = __webpack_require__(149);
 	var utils = __webpack_require__(2);
 
 	module.exports = function modify_row_node_cats(cat_data, inst_nodes) {
@@ -9226,7 +9239,7 @@ module.exports =
 		};
 
 /***/ },
-/* 148 */
+/* 149 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9248,12 +9261,12 @@ module.exports =
 		};
 
 /***/ },
-/* 149 */
+/* 150 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var sim_click = __webpack_require__(121);
+	var sim_click = __webpack_require__(122);
 
 	module.exports = function quick_cluster() {
 	  /* eslint-disable */
@@ -9308,14 +9321,14 @@ module.exports =
 		};
 
 /***/ },
-/* 150 */
+/* 151 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var demo_text = __webpack_require__(118);
-	var highlight_sidebar_element = __webpack_require__(124);
-	var change_groups = __webpack_require__(144);
+	var demo_text = __webpack_require__(119);
+	var highlight_sidebar_element = __webpack_require__(125);
+	var change_groups = __webpack_require__(115);
 
 	module.exports = function play_groups() {
 	  /* eslint-disable */
@@ -9351,13 +9364,13 @@ module.exports =
 		};
 
 /***/ },
-/* 151 */
+/* 152 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var demo_text = __webpack_require__(118);
-	var sim_click = __webpack_require__(121);
+	var demo_text = __webpack_require__(119);
+	var sim_click = __webpack_require__(122);
 
 	module.exports = function play_category() {
 	  /* eslint-disable */
@@ -9405,13 +9418,13 @@ module.exports =
 		};
 
 /***/ },
-/* 152 */
+/* 153 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var demo_text = __webpack_require__(118);
-	var toggle_play_button = __webpack_require__(153);
+	var demo_text = __webpack_require__(119);
+	var toggle_play_button = __webpack_require__(154);
 
 	module.exports = function play_conclusion() {
 
@@ -9446,7 +9459,7 @@ module.exports =
 		};
 
 /***/ },
-/* 153 */
+/* 154 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9463,13 +9476,13 @@ module.exports =
 		};
 
 /***/ },
-/* 154 */
+/* 155 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var demo_text = __webpack_require__(118);
-	var sim_click = __webpack_require__(121);
+	var demo_text = __webpack_require__(119);
+	var sim_click = __webpack_require__(122);
 
 	module.exports = function play_menu_button() {
 	  /* eslint-disable */
@@ -9544,13 +9557,13 @@ module.exports =
 		};
 
 /***/ },
-/* 155 */
+/* 156 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_play_button = __webpack_require__(156);
-	var make_demo_text_containers = __webpack_require__(157);
+	var make_play_button = __webpack_require__(157);
+	var make_demo_text_containers = __webpack_require__(158);
 
 	module.exports = function ini_demo() {
 
@@ -9564,7 +9577,7 @@ module.exports =
 		};
 
 /***/ },
-/* 156 */
+/* 157 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9608,7 +9621,7 @@ module.exports =
 		};
 
 /***/ },
-/* 157 */
+/* 158 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9649,13 +9662,13 @@ module.exports =
 		};
 
 /***/ },
-/* 158 */
+/* 159 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var filter_network_using_new_nodes = __webpack_require__(11);
-	var update_viz_with_network = __webpack_require__(129);
+	var update_viz_with_network = __webpack_require__(130);
 
 	module.exports = function filter_viz_using_nodes(new_nodes) {
 
@@ -9664,13 +9677,13 @@ module.exports =
 		};
 
 /***/ },
-/* 159 */
+/* 160 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var filter_network_using_new_nodes = __webpack_require__(11);
-	var update_viz_with_network = __webpack_require__(129);
+	var update_viz_with_network = __webpack_require__(130);
 
 	module.exports = function filter_viz_using_names(names) {
 	  var external_cgm = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
@@ -9719,7 +9732,7 @@ module.exports =
 		};
 
 /***/ },
-/* 160 */
+/* 161 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9727,7 +9740,7 @@ module.exports =
 	var make_row_cat = __webpack_require__(112);
 	var calc_viz_params = __webpack_require__(15);
 	var resize_viz = __webpack_require__(88);
-	var modify_row_node_cats = __webpack_require__(147);
+	var modify_row_node_cats = __webpack_require__(148);
 
 	module.exports = function update_cats(cgm, cat_data) {
 
@@ -9750,7 +9763,7 @@ module.exports =
 		};
 
 /***/ },
-/* 161 */
+/* 162 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9758,8 +9771,8 @@ module.exports =
 	var make_row_cat = __webpack_require__(112);
 	var calc_viz_params = __webpack_require__(15);
 	var resize_viz = __webpack_require__(88);
-	var modify_row_node_cats = __webpack_require__(147);
-	var make_default_cat_data = __webpack_require__(162);
+	var modify_row_node_cats = __webpack_require__(148);
+	var make_default_cat_data = __webpack_require__(163);
 
 	module.exports = function reset_cats() {
 
@@ -9786,7 +9799,7 @@ module.exports =
 		};
 
 /***/ },
-/* 162 */
+/* 163 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9902,13 +9915,13 @@ module.exports =
 	};
 
 /***/ },
-/* 163 */
+/* 164 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var update_viz_with_view = __webpack_require__(127);
-	var reset_other_filter_sliders = __webpack_require__(164);
+	var update_viz_with_view = __webpack_require__(128);
+	var reset_other_filter_sliders = __webpack_require__(165);
 
 	module.exports = function external_update_view(filter_type, inst_state) {
 
@@ -9925,12 +9938,12 @@ module.exports =
 	};
 
 /***/ },
-/* 164 */
+/* 165 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_filter_title = __webpack_require__(165);
+	var make_filter_title = __webpack_require__(166);
 
 	module.exports = function reset_other_filter_sliders(cgm, filter_type, inst_state) {
 
@@ -9979,7 +9992,7 @@ module.exports =
 		};
 
 /***/ },
-/* 165 */
+/* 166 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10039,7 +10052,7 @@ module.exports =
 	};
 
 /***/ },
-/* 166 */
+/* 167 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -10055,7 +10068,7 @@ module.exports =
 	(function (root, factory) {
 	  if (true) {
 	    // AMD. Register as an anonymous module.
-	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(167)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(168)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	  } else if ((typeof exports === 'undefined' ? 'undefined' : _typeof(exports)) === 'object') {
 	    if (process.browser) {
 	      // Browserify. Import css too using cssify.
@@ -10441,13 +10454,13 @@ module.exports =
 	});
 
 /***/ },
-/* 167 */
+/* 168 */
 /***/ function(module, exports) {
 
 	module.exports = require("d3");
 
 /***/ },
-/* 168 */
+/* 169 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {"use strict";
@@ -10887,10 +10900,10 @@ module.exports =
 
 		return _;
 		})();
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(169)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(170)(module)))
 
 /***/ },
-/* 169 */
+/* 170 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -10907,16 +10920,16 @@ module.exports =
 		};
 
 /***/ },
-/* 170 */
+/* 171 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(171);
+	var content = __webpack_require__(172);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(173)(content, {});
+	var update = __webpack_require__(174)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -10933,10 +10946,10 @@ module.exports =
 	}
 
 /***/ },
-/* 171 */
+/* 172 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(172)();
+	exports = module.exports = __webpack_require__(173)();
 	// imports
 
 
@@ -10947,7 +10960,7 @@ module.exports =
 
 
 /***/ },
-/* 172 */
+/* 173 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -11002,7 +11015,7 @@ module.exports =
 	};
 
 /***/ },
-/* 173 */
+/* 174 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -11254,16 +11267,16 @@ module.exports =
 
 
 /***/ },
-/* 174 */
+/* 175 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(175);
+	var content = __webpack_require__(176);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(173)(content, {});
+	var update = __webpack_require__(174)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -11280,10 +11293,10 @@ module.exports =
 	}
 
 /***/ },
-/* 175 */
+/* 176 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(172)();
+	exports = module.exports = __webpack_require__(173)();
 	// imports
 
 
@@ -11294,20 +11307,20 @@ module.exports =
 
 
 /***/ },
-/* 176 */
+/* 177 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var ini_sidebar = __webpack_require__(143);
-	var set_up_filters = __webpack_require__(177);
-	var set_up_dendro_sliders = __webpack_require__(182);
-	var set_up_search = __webpack_require__(183);
-	var set_up_reorder = __webpack_require__(184);
-	var set_sidebar_ini_view = __webpack_require__(185);
-	var make_icons = __webpack_require__(186);
-	var make_modals = __webpack_require__(189);
-	var set_up_opacity_slider = __webpack_require__(191);
+	var ini_sidebar = __webpack_require__(145);
+	var set_up_filters = __webpack_require__(178);
+	var set_up_dendro_sliders = __webpack_require__(183);
+	var set_up_search = __webpack_require__(184);
+	var set_up_reorder = __webpack_require__(185);
+	var set_sidebar_ini_view = __webpack_require__(186);
+	var make_icons = __webpack_require__(187);
+	var make_modals = __webpack_require__(190);
+	var set_up_opacity_slider = __webpack_require__(192);
 
 	/* Represents sidebar with controls.
 	 */
@@ -11381,13 +11394,13 @@ module.exports =
 		};
 
 /***/ },
-/* 177 */
+/* 178 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_slider_filter = __webpack_require__(178);
-	var make_button_filter = __webpack_require__(181);
+	var make_slider_filter = __webpack_require__(179);
+	var make_button_filter = __webpack_require__(182);
 
 	module.exports = function set_up_filters(cgm, filter_type) {
 
@@ -11403,17 +11416,17 @@ module.exports =
 		};
 
 /***/ },
-/* 178 */
+/* 179 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_filter_title = __webpack_require__(165);
-	var run_filter_slider = __webpack_require__(179);
+	var make_filter_title = __webpack_require__(166);
+	var run_filter_slider = __webpack_require__(180);
 	var get_filter_default_state = __webpack_require__(5);
 	var get_subset_views = __webpack_require__(12);
 
-	d3.slider = __webpack_require__(166);
+	d3.slider = __webpack_require__(167);
 
 	module.exports = function make_slider_filter(cgm, filter_type, div_filters) {
 
@@ -11478,14 +11491,14 @@ module.exports =
 		};
 
 /***/ },
-/* 179 */
+/* 180 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var update_viz_with_view = __webpack_require__(127);
-	var reset_other_filter_sliders = __webpack_require__(164);
-	var get_current_orders = __webpack_require__(180);
+	var update_viz_with_view = __webpack_require__(128);
+	var reset_other_filter_sliders = __webpack_require__(165);
+	var get_current_orders = __webpack_require__(181);
 	var make_requested_view = __webpack_require__(14);
 
 	module.exports = function run_filter_slider(cgm, filter_type, available_views, inst_index) {
@@ -11514,7 +11527,7 @@ module.exports =
 		};
 
 /***/ },
-/* 180 */
+/* 181 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -11545,7 +11558,7 @@ module.exports =
 	};
 
 /***/ },
-/* 181 */
+/* 182 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11598,7 +11611,7 @@ module.exports =
 		};
 
 /***/ },
-/* 182 */
+/* 183 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -11628,7 +11641,7 @@ module.exports =
 		};
 
 /***/ },
-/* 183 */
+/* 184 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -11645,7 +11658,7 @@ module.exports =
 		};
 
 /***/ },
-/* 184 */
+/* 185 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -11738,12 +11751,12 @@ module.exports =
 		};
 
 /***/ },
-/* 185 */
+/* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_filter_title = __webpack_require__(165);
+	var make_filter_title = __webpack_require__(166);
 
 	module.exports = function set_sidebar_ini_view(params) {
 
@@ -11778,13 +11791,13 @@ module.exports =
 		};
 
 /***/ },
-/* 186 */
+/* 187 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var save_svg_png = __webpack_require__(187);
-	var file_saver = __webpack_require__(188);
+	var save_svg_png = __webpack_require__(188);
+	var file_saver = __webpack_require__(189);
 
 	module.exports = function make_icons(params, sidebar) {
 
@@ -11838,7 +11851,7 @@ module.exports =
 		};
 
 /***/ },
-/* 187 */
+/* 188 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -12044,7 +12057,7 @@ module.exports =
 		};
 
 /***/ },
-/* 188 */
+/* 189 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -12261,12 +12274,12 @@ module.exports =
 		};
 
 /***/ },
-/* 189 */
+/* 190 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_modal_skeleton = __webpack_require__(190);
+	var make_modal_skeleton = __webpack_require__(191);
 
 	module.exports = function ini_modals(params) {
 
@@ -12314,7 +12327,7 @@ module.exports =
 		};
 
 /***/ },
-/* 190 */
+/* 191 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -12339,7 +12352,7 @@ module.exports =
 		};
 
 /***/ },
-/* 191 */
+/* 192 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -12358,13 +12371,16 @@ module.exports =
 		};
 
 /***/ },
-/* 192 */
-/***/ function(module, exports) {
+/* 193 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	module.exports = function svg_dendro_sliders(cgm) {
-	  console.log('build svg sliders');
+	var change_groups = __webpack_require__(115);
+
+	module.exports = function build_svg_dendro_slider(cgm, inst_rc) {
+
+	  console.log('build svg sliders: ' + inst_rc);
 
 	  var slider_length = 100;
 	  var viz = cgm.params.viz;
@@ -12381,7 +12397,7 @@ module.exports =
 
 	  var main_svg = d3.select('.viz_svg');
 
-	  var slider_group = main_svg.append('g').attr('transform', function () {
+	  var slider_group = d3.select(cgm.params.root + ' .viz_svg').append('g').attr('transform', function () {
 	    return 'translate(' + tmp_left + ',' + tmp_top + ')';
 	  }).classed('slider_group', true);
 
@@ -12434,6 +12450,8 @@ module.exports =
 	    d3.select(this).attr("transform", "translate(0, " + slider_pos + ")");
 
 	    console.log('slider_value: ' + String(slider_value));
+
+	    change_groups(cgm, 'row', slider_value);
 	  }
 
 	  function nozoom() {

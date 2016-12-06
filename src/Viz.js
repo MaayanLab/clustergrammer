@@ -11,7 +11,7 @@ var make_row_cat = require('./dendrogram/make_row_cat');
 var trim_text = require('./zoom/trim_text');
 var make_row_dendro = require('./dendrogram/make_row_dendro');
 var make_col_dendro = require('./dendrogram/make_col_dendro');
-var svg_dendro_sliders = require('./dendrogram/svg_dendro_sliders');
+var make_svg_dendro_sliders = require('./dendrogram/make_svg_dendro_sliders');
 
 module.exports = function make_viz(cgm) {
 
@@ -73,7 +73,7 @@ module.exports = function make_viz(cgm) {
 
   spillover(cgm);
 
-  svg_dendro_sliders(cgm);
+  make_svg_dendro_sliders(cgm);
 
   if (params.labels.super_labels) {
     generate_super_labels(params);
