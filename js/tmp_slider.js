@@ -1,23 +1,9 @@
 function tmp_slider(){
 
+  var slider_length = 100;
   var viz = cgm.params.viz;
-
-  // var tmp_left = viz.clust.margin.left +
-  //   viz.clust.dim.width +
-  //   4*viz.uni_margin +
-  //   viz.dendro_room.row;
-
-  // var tmp_left = viz.clust.dim.width + viz.clust.margin.left;
-
   var tmp_left = viz.svg_dim.width - 7*viz.uni_margin;
-
   var tmp_top =  viz.clust.margin.top + 3*viz.uni_margin;
-
-  var data = [];
-  data[0] = 800;
-  data[1] = 100;
-
-  var color = d3.scale.category10();
 
   var drag = d3.behavior.drag()
       // .origin(function(d) {
@@ -25,7 +11,6 @@ function tmp_slider(){
       // })
       .on("drag", dragging)
       .on('dragend', function(){
-        // console.log('dragging has ended\n')
         cgm.params.is_slider_drag = false;
       })
 
@@ -33,7 +18,6 @@ function tmp_slider(){
 
   var slider_group = main_svg
       .append('g')
-      // .attr('transform', function(){ return 'translate(' + data + ')'; })
       .attr('transform', function() {
         return 'translate(' + tmp_left + ',' + tmp_top + ')';
       })
@@ -41,23 +25,15 @@ function tmp_slider(){
 
     slider_group
       .append("line")
-      .style('stroke-width', '5px')
+      .style('stroke-width', slider_length/20+'px')
       .style('stroke', 'black')
       .style('stroke-linecap', 'round')
       .style('opacity', 0.20)
       .attr("y1", 0)
-      .attr("y2", 100)
-      .on('click', function(d){
-        // console.log('clicking slider line!');
-        var clicked_line_position = d3.mouse(this)
-        var y_pos = d3.round(clicked_line_position[1], -1)
-        // console.log(y_pos)
-
-        // reposition circle
-        d3.select('.row_group_circle')
-          .attr('transform', 'translate(0, '+ y_pos + ')');
-
+      .attr("y2", function(){
+        return slider_length-2;
       })
+      .on('click', click_dendro_slider)
 
     slider_group
       .append('circle')
@@ -82,9 +58,9 @@ function tmp_slider(){
         var start_y = -2;
 
         var mid_x = 0;
-        var mid_y = 100;
+        var mid_y = slider_length;
 
-        var final_x = 10;
+        var final_x = slider_length/10;
         var final_y = -2;
 
         var output_string = 'M' + start_x + ',' + start_y + ', L' +
@@ -99,33 +75,39 @@ function tmp_slider(){
 
     cgm.params.is_slider_drag = true;
 
-    // console.log(cgm.params.is_slider_drag)
-
     // d[0] = d3.event.x;
-    var new_y = d3.event.y;
+    var slider_pos = d3.event.y;
 
-    if (new_y < 0){
-      new_y = 0;
+    if (slider_pos < 0){
+      slider_pos = 0;
     }
 
-    if (new_y > 100){
-      new_y = 100;
+    if (slider_pos > slider_length){
+      slider_pos = slider_length;
     }
 
     if (this.nextSibling) this.parentNode.appendChild(this);
 
-    new_y = d3.round(new_y, -1);
+    slider_pos = d3.round(slider_pos, -1);
 
-    // console.log('final y')
-    // console.log(new_y)
+    d3.select(this).attr("transform", "translate(0, " + slider_pos + ")");
 
-    d3.select(this).attr("transform", "translate(0, " + new_y + ")");
+    console.log('slider_pos: ' + String(slider_pos))
+
   }
 
 
 
   function nozoom() {
     d3.event.preventDefault();
+  }
+
+  function click_dendro_slider(d){
+    var clicked_line_position = d3.mouse(this)
+    var y_pos = d3.round(clicked_line_position[1], -1)
+    // reposition circle
+    d3.select('.row_group_circle')
+      .attr('transform', 'translate(0, '+ y_pos + ')');
   }
 
 }
