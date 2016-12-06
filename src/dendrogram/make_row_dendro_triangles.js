@@ -8,7 +8,8 @@ module.exports = function make_row_dendro_triangles(cgm,
 
   var params = cgm.params;
 
-  if (params.viz.inst_order.row === 'clust'){
+  // orders are switched!
+  if (params.viz.inst_order.col === 'clust'){
     d3.select(params.root+' .row_slider_group')
       .style('opacity', 1);
   }

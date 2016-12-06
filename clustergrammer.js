@@ -3983,7 +3983,8 @@ var Clustergrammer =
 
 	  var params = cgm.params;
 
-	  if (params.viz.inst_order.row === 'clust') {
+	  // orders are switched!
+	  if (params.viz.inst_order.col === 'clust') {
 	    d3.select(params.root + ' .row_slider_group').style('opacity', 1);
 	  }
 
@@ -4293,7 +4294,7 @@ var Clustergrammer =
 
 	  var params = cgm.params;
 
-	  if (params.viz.inst_order.col === 'clust') {
+	  if (params.viz.inst_order.row === 'clust') {
 	    d3.select(params.root + ' .col_slider_group').style('opacity', 1);
 	  }
 
@@ -9256,7 +9257,8 @@ var Clustergrammer =
 	  // only enable reordering if params.dendro_filter.row === false
 	  if (params.dendro_filter.row === false) {
 
-	    if (params.viz.inst_order.row === 'clust') {
+	    // orders are switched!
+	    if (params.viz.inst_order.col === 'clust') {
 	      d3.select(params.root + ' .row_slider_group').style('opacity', 1).style('pointer-events', 'all');
 	    }
 	  }
@@ -9265,7 +9267,8 @@ var Clustergrammer =
 
 	  if (params.dendro_filter.col === false) {
 
-	    if (params.viz.inst_order.col === 'clust') {
+	    // orders are switched!
+	    if (params.viz.inst_order.row === 'clust') {
 	      d3.select(params.root + ' .col_slider_group').style('opacity', 1).style('pointer-events', 'all');
 	    }
 	  }

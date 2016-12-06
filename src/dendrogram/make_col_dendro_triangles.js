@@ -7,7 +7,7 @@ module.exports = function make_col_dendro_triangles(cgm, is_change_group = false
 
   var params = cgm.params;
 
-  if (params.viz.inst_order.col === 'clust'){
+  if (params.viz.inst_order.row === 'clust'){
     d3.select(params.root+' .col_slider_group')
       .style('opacity', 1);
   }
