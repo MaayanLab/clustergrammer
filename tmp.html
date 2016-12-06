@@ -32,60 +32,57 @@ var drag = d3.behavior.drag()
     // })
     .on("drag", dragged);
 
-d3.select("body")
+var main_svg = d3.select("body")
     .on("touchstart", nozoom)
     .on("touchmove", nozoom)
     .append("svg")
     .attr("width", width)
-    .attr("height", height)
-    .append('circle')
-    .attr('transform', function(){ return 'translate(' + data + ')'; })
-    .attr('r', 15)
-    .style('fill', 'blue')
-    .call(drag);
+    .attr("height", height);
 
-    // .selectAll("circle")
-    // .data(data)
-    // .enter().append("circle")
-    // .attr("transform", function(d) { return "translate(" + d + ")"; })
-    // .attr("r", 15)
-    // .style("fill", function(d, i) { return color(i); })
-    // // .on("click", clicked)
-    // .call(drag);
+var slider_group = main_svg
+    .append('g')
+    .attr('transform', function(){ return 'translate(' + data + ')'; })
+    .classed('slider_group', true);
+
+  slider_group
+    .append("line")
+    .style('stroke-width', '10px')
+    .style('stroke', 'black')
+    .style('opacity', 0.5)
+    .attr("y1", 0)
+    .attr("y2", 100)
+
+  slider_group
+    .append('circle')
+    .attr('r', 12)
+    // .attr('y', 30)
+    .style('fill', 'blue')
+    .style('opacity', 0.5)
+    .call(drag);
 
 function dragged() {
   // d[0] = d3.event.x;
   var new_y = d3.event.y;
 
-  if (new_y < 100){
-    new_y = 100;
+  if (new_y < 0){
+    new_y = 0;
   }
 
-  if (new_y > 200){
-    new_y = 200;
+  if (new_y > 100){
+    new_y = 100;
   }
 
   if (this.nextSibling) this.parentNode.appendChild(this);
 
+  new_y = d3.round(new_y, -1);
+
   console.log('final y')
   console.log(new_y)
 
-  new_y = d3.round(new_y, -1);
-
-
-  d3.select(this).attr("transform", "translate(100, " + new_y + ")");
+  d3.select(this).attr("transform", "translate(0, " + new_y + ")");
 }
 
-// function clicked(d, i) {
-//   if (d3.event.defaultPrevented) return; // dragged
 
-//   d3.select(this).transition()
-//       .style("fill", "black")
-//       .attr("r", 64)
-//     .transition()
-//       .attr("r", 32)
-//       .style("fill", color(i));
-// }
 
 function nozoom() {
   d3.event.preventDefault();
