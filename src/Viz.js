@@ -73,11 +73,12 @@ module.exports = function make_viz(cgm) {
 
   spillover(cgm);
 
-  make_svg_dendro_sliders(cgm);
-
   if (params.labels.super_labels) {
     generate_super_labels(params);
   }
+
+  // sliders should go above super labels
+  make_svg_dendro_sliders(cgm);
 
   function border_colors() {
     var inst_color = params.viz.super_border_color;

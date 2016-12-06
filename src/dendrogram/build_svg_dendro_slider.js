@@ -6,11 +6,17 @@ module.exports = function build_svg_dendro_slider(cgm, inst_rc){
 
   var slider_length = 100;
   var viz = cgm.params.viz;
-  var tmp_left = viz.svg_dim.width - 7*viz.uni_margin;
-  var tmp_top =  viz.clust.margin.top + 3*viz.uni_margin;
 
-  // var tmp_left = 10;
-  // var tmp_top =  975;
+  if (inst_rc === 'row'){
+    var tmp_left = viz.svg_dim.width - 7 * viz.uni_margin;
+    var tmp_top =  viz.clust.margin.top + 3 * viz.uni_margin;
+  } else {
+    var tmp_left = 2 * viz.uni_margin;
+    var tmp_top =  viz.svg_dim.height - 2 * viz.uni_margin;
+  }
+
+    // var tmp_left = 10;
+    // var tmp_top =  975;
 
   var drag = d3.behavior.drag()
       // .origin(function(d) {
@@ -29,7 +35,16 @@ module.exports = function build_svg_dendro_slider(cgm, inst_rc){
 
         // for row rotate -90 degrees
 
-        return 'translate(' + tmp_left + ',' + tmp_top + ')';
+        var inst_translation;
+
+        if (inst_rc === 'row'){
+          inst_translation = 'translate(' + tmp_left + ',' + tmp_top + ')'
+        } else {
+          inst_translation = 'translate(' + tmp_left + ',' + tmp_top +
+                             '), rotate(-90)';
+        }
+
+        return inst_translation;
       })
       .classed('slider_group', true);
 
@@ -47,7 +62,7 @@ module.exports = function build_svg_dendro_slider(cgm, inst_rc){
 
     slider_group
       .append('circle')
-      .classed('row_group_circle', true)
+      .classed(inst_rc+'_group_circle', true)
       .attr('r', 8)
       .attr('transform', function(){
         return 'translate(0, '+slider_length/2+')';
@@ -105,10 +120,9 @@ module.exports = function build_svg_dendro_slider(cgm, inst_rc){
 
     console.log('slider_value: ' + String(slider_value))
 
-    change_groups(cgm, 'row', slider_value);
+    change_groups(cgm, inst_rc, slider_value);
 
   }
-
 
 
   function nozoom() {
@@ -116,10 +130,19 @@ module.exports = function build_svg_dendro_slider(cgm, inst_rc){
   }
 
   function click_dendro_slider(d){
+
     var clicked_line_position = d3.mouse(this)
-    var y_pos = d3.round(clicked_line_position[1], -1)
-    // reposition circle
-    d3.select('.row_group_circle')
-      .attr('transform', 'translate(0, '+ y_pos + ')');
+
+    var rel_pos;
+
+    rel_pos = d3.round(clicked_line_position[1], -1)
+
+    d3.select(cgm.params.root+ ' .'+inst_rc+'_group_circle')
+      .attr('transform', 'translate(0, '+ rel_pos + ')');
+
+    var slider_value = 10 - rel_pos/10;
+
+    change_groups(cgm, inst_rc, slider_value);
+
   }
 };
