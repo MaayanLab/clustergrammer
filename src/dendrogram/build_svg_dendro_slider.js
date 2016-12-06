@@ -2,7 +2,7 @@ var change_groups = require('./change_groups');
 
 module.exports = function build_svg_dendro_slider(cgm, inst_rc){
 
-  console.log('build svg sliders: ' + inst_rc)
+  // console.log('build svg sliders: ' + inst_rc)
 
   var slider_length = 100;
   var viz = cgm.params.viz;
@@ -118,7 +118,7 @@ module.exports = function build_svg_dendro_slider(cgm, inst_rc){
 
     d3.select(this).attr("transform", "translate(0, " + slider_pos + ")");
 
-    console.log('slider_value: ' + String(slider_value))
+    // console.log('slider_value: ' + String(slider_value))
 
     change_groups(cgm, inst_rc, slider_value);
 

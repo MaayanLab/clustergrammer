@@ -7,7 +7,11 @@ module.exports = function dendro_group_highlight(params, inst_selection, inst_da
 
   function still_hovering(){
     if (d3.select(inst_selection).classed('hovering')){
-      make_shade_bars();
+
+      if (params.is_slider_drag === false){
+        make_shade_bars();
+      }
+
     }
   }
 
@@ -21,7 +25,7 @@ module.exports = function dendro_group_highlight(params, inst_selection, inst_da
       }
 
     } else if (inst_rc === 'col') {
-      
+
       // row and col labeling are reversed
       if (params.viz.inst_order.row === 'clust'){
         dendro_shade_bars(params, inst_selection, inst_rc, inst_data);
@@ -31,10 +35,10 @@ module.exports = function dendro_group_highlight(params, inst_selection, inst_da
 
       if (params.viz.inst_order.col === 'clust'){
         dendro_shade_bars(params, inst_selection, 'row', inst_data);
-      } 
+      }
       if (params.viz.inst_order.row === 'clust'){
         dendro_shade_bars(params, inst_selection, 'col', inst_data);
-      } 
+      }
 
     }
 
