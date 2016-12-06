@@ -9,6 +9,9 @@ module.exports = function build_svg_dendro_slider(cgm, inst_rc){
   var tmp_left = viz.svg_dim.width - 7*viz.uni_margin;
   var tmp_top =  viz.clust.margin.top + 3*viz.uni_margin;
 
+  // var tmp_left = 10;
+  // var tmp_top =  975;
+
   var drag = d3.behavior.drag()
       // .origin(function(d) {
       //   return {x: d[0], y: d[1]};
@@ -23,6 +26,9 @@ module.exports = function build_svg_dendro_slider(cgm, inst_rc){
   var slider_group = d3.select(cgm.params.root +' .viz_svg')
       .append('g')
       .attr('transform', function() {
+
+        // for row rotate -90 degrees
+
         return 'translate(' + tmp_left + ',' + tmp_top + ')';
       })
       .classed('slider_group', true);
@@ -53,7 +59,7 @@ module.exports = function build_svg_dendro_slider(cgm, inst_rc){
     slider_group
       .append('path')
       .style('fill', 'black')
-      .attr('transform', 'translate(10, 0)')
+      .attr('transform', 'translate('+slider_length/10+', 0)')
       .attr('d', function(d) {
 
         // up triangle

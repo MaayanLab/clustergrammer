@@ -1034,7 +1034,9 @@ var Clustergrammer =
 	  viz.zoom_element = viz.viz_wrapper + ' .viz_svg';
 
 	  viz.uni_duration = 1000;
-	  viz.bottom_space = 5;
+	  // extra space below the clustergram (was 5)
+	  // will increase this to accomidate dendro slider
+	  viz.bottom_space = 15;
 	  viz.run_trans = false;
 	  viz.duration = 1000;
 	  if (viz.show_dendrogram) {
@@ -7373,6 +7375,9 @@ var Clustergrammer =
 	  var tmp_left = viz.svg_dim.width - 7 * viz.uni_margin;
 	  var tmp_top = viz.clust.margin.top + 3 * viz.uni_margin;
 
+	  // var tmp_left = 10;
+	  // var tmp_top =  975;
+
 	  var drag = d3.behavior.drag()
 	  // .origin(function(d) {
 	  //   return {x: d[0], y: d[1]};
@@ -7384,6 +7389,9 @@ var Clustergrammer =
 	  var main_svg = d3.select('.viz_svg');
 
 	  var slider_group = d3.select(cgm.params.root + ' .viz_svg').append('g').attr('transform', function () {
+
+	    // for row rotate -90 degrees
+
 	    return 'translate(' + tmp_left + ',' + tmp_top + ')';
 	  }).classed('slider_group', true);
 
@@ -7395,7 +7403,7 @@ var Clustergrammer =
 	    return 'translate(0, ' + slider_length / 2 + ')';
 	  }).style('fill', 'blue').style('opacity', 0.5).call(drag);
 
-	  slider_group.append('path').style('fill', 'black').attr('transform', 'translate(10, 0)').attr('d', function (d) {
+	  slider_group.append('path').style('fill', 'black').attr('transform', 'translate(' + slider_length / 10 + ', 0)').attr('d', function (d) {
 
 	    // up triangle
 	    var start_x = 0;

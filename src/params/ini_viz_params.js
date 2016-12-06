@@ -31,7 +31,9 @@ module.exports = function ini_viz_params(params, preserve_cats=true){
   viz.zoom_element = viz.viz_wrapper + ' .viz_svg';
 
   viz.uni_duration = 1000;
-  viz.bottom_space = 5;
+  // extra space below the clustergram (was 5)
+  // will increase this to accomidate dendro slider
+  viz.bottom_space = 15;
   viz.run_trans = false;
   viz.duration = 1000;
   if (viz.show_dendrogram){
