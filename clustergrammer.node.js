@@ -508,6 +508,7 @@ module.exports =
 	    opacity_scale: 'linear',
 	    do_zoom: true,
 	    is_zoom: 0,
+	    is_slider_drag: false,
 	    background_color: '#FFFFFF',
 	    super_border_color: '#F5F5F5',
 	    outer_margins: {
@@ -1942,7 +1943,10 @@ module.exports =
 
 	  zoom_info = zoom_rules_x(params, zoom_info);
 
-	  run_transformation(params, zoom_info);
+	  // do not run transformation if moving slider
+	  if (params.is_slider_drag === false) {
+	    run_transformation(params, zoom_info);
+	  }
 		};
 
 /***/ },
@@ -2497,7 +2501,7 @@ module.exports =
 
 	module.exports = function zoom_rules_x(params, zoom_info) {
 
-	  // zoom in the y direction before zooming in the x direction 
+	  // zoom in the y direction before zooming in the x direction
 	  if (params.viz.zoom_switch > 1) {
 	    if (zoom_info.zoom_x < params.viz.zoom_switch) {
 	      zoom_info.trans_x = 0;
@@ -2507,7 +2511,7 @@ module.exports =
 	    }
 	  }
 
-	  // calculate panning room available in the x direction 
+	  // calculate panning room available in the x direction
 	  zoom_info.pan_room_x = (zoom_info.zoom_x - 1) * params.viz.clust.dim.width;
 
 	  // no positive panning or panning more than pan_room

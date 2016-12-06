@@ -23,6 +23,7 @@ module.exports = function set_defaults(){
     opacity_scale: 'linear',
     do_zoom: true,
     is_zoom:0,
+    is_slider_drag:false,
     background_color: '#FFFFFF',
     super_border_color: '#F5F5F5',
     outer_margins: {

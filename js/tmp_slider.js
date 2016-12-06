@@ -13,8 +13,8 @@ function tmp_slider(){
       // })
       .on("drag", dragging)
       .on('dragend', function(){
-        console.log('dragging has ended\n')
-        cgm.params.slider_drag = false;
+        // console.log('dragging has ended\n')
+        cgm.params.is_slider_drag = false;
       })
 
   // var main_svg = d3.select("body")
@@ -49,9 +49,9 @@ function tmp_slider(){
 
   function dragging() {
 
-    cgm.params.slider_drag = true;
+    cgm.params.is_slider_drag = true;
 
-    console.log(cgm.params.slider_drag)
+    // console.log(cgm.params.is_slider_drag)
 
     // d[0] = d3.event.x;
     var new_y = d3.event.y;

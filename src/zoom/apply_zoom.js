@@ -12,6 +12,9 @@ module.exports = function apply_zoom(params, zoom_info) {
 
   zoom_info = zoom_rules_x(params, zoom_info);
 
-  run_transformation(params, zoom_info);
+  // do not run transformation if moving slider
+  if (params.is_slider_drag === false){
+    run_transformation(params, zoom_info);
+  }
 
 };
