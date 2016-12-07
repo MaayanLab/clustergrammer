@@ -4,7 +4,16 @@ module.exports = function position_svg_dendro_slider(cgm, inst_rc){
   var tmp_left;
   var tmp_top;
   if (inst_rc === 'row'){
-    tmp_left = viz.svg_dim.width - 3 * viz.uni_margin;
+
+    // keep slider near clustergram
+    var max_room = viz.svg_dim.width - 3 * viz.uni_margin;
+
+    tmp_left = viz.clust.margin.left + viz.clust.dim.width + 100;
+
+    if (tmp_left > max_room){
+      tmp_left = max_room;
+    }
+
     tmp_top =  viz.clust.margin.top + 3 * viz.uni_margin;
   } else {
     tmp_left = 2 * viz.uni_margin;
