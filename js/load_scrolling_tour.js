@@ -1,7 +1,6 @@
 
 var graph_dim = get_graph_dim();
-
-var gene_info_obj = ini_gene_info();
+var hzome = ini_hzome();
 
 // make text sections
 var tutorial_info;
@@ -78,7 +77,7 @@ d3.json('json/mult_view.json', function(network_data){
     'network_data': network_data,
     'sidebar_width':130,
     'sidebar_icons':false,
-    'row_tip_callback':gene_info_obj.gene_info
+    'row_tip_callback':hzome.gene_info
   };
 
   resize_container(args);

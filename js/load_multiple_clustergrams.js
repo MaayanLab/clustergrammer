@@ -4,7 +4,7 @@ cgm = {};
 
 resize_container();
 
-var gene_info_obj = ini_gene_info();
+var hzome = ini_hzome();
 
 function make_clust(make_sim_mats){
   var clust_name = 'mult_view.json'
@@ -13,7 +13,7 @@ function make_clust(make_sim_mats){
     var args = $.extend(true, {}, default_args);
     args.root = '#container-id-1';
     args.network_data = network_data;
-    args.row_tip_callback = gene_info_obj.gene_info;
+    args.row_tip_callback = hzome.gene_info;
 
     cgm['clust'] = Clustergrammer(args);
     d3.select(cgm['clust'].params.root+' .wait_message').remove();
