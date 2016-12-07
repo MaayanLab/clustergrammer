@@ -4,29 +4,41 @@ function ini_hzome(){
   // save gene data
   gene_data = {};
 
-  function get_request(gene_symbol){
+  function get_info(gene_symbol){
+
 
     if ( d3.select('.row_tip').classed(gene_symbol) ){
 
-      var base_url = 'https://amp.pharm.mssm.edu/Harmonizome/api/1.0/gene/'
-      // var base_url = 'https://amp.pharm.mssm.edu/clustergrammer/gene_info/'
+      get_request(gene_symbol);
 
-      var url = base_url + gene_symbol;
 
-      $.get(url, function(data) {
-        data = JSON.parse(data);
-
-        // save data for repeated use
-        gene_data[gene_symbol] = {}
-        gene_data[gene_symbol].name = data.name;
-        gene_data[gene_symbol].description = data.description;
-
-        set_tooltip(data, gene_symbol);
-
-      });
 
     }
 
+  }
+
+  function get_request(gene_symbol){
+
+    var base_url = 'https://amp.pharm.mssm.edu/Harmonizome/api/1.0/gene/';
+    var url = base_url + gene_symbol;
+
+    console.log(url)
+
+    $.get(url, function(data) {
+
+      console.log('making get request')
+      console.log(d3.select('.row_tip').classed())
+      console.log(data);
+      data = JSON.parse(data);
+
+      // save data for repeated use
+      gene_data[gene_symbol] = {}
+      gene_data[gene_symbol].name = data.name;
+      gene_data[gene_symbol].description = data.description;
+
+      set_tooltip(data, gene_symbol);
+
+    });
   }
 
   function set_tooltip(data, gene_symbol){
@@ -51,11 +63,8 @@ function ini_hzome(){
       var inst_data = gene_data[gene_symbol];
       set_tooltip(inst_data)
     } else{
-      setTimeout(get_request, 500, gene_symbol);
+      setTimeout(get_info, 250, gene_symbol);
     }
-
-
-
 
   }
 
@@ -63,7 +72,7 @@ function ini_hzome(){
 
   hzome.gene_info = gene_info;
   hzome.gene_data = gene_data;
-  // hzome.get_request = get_request;
+  hzome.get_request = get_info;
 
   return hzome;
 
