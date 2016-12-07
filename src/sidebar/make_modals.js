@@ -71,6 +71,7 @@ module.exports = function ini_modals(params){
 
       var enrichr_info = {list: gene_list, description: 'clustergrammer group list' , popup: true};
 
+      // defined globally - will improve
       enrich(enrichr_info);
 
     });

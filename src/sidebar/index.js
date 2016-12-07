@@ -1,6 +1,5 @@
 var ini_sidebar = require('./ini_sidebar');
 var set_up_filters = require('../filters/set_up_filters');
-var set_up_dendro_sliders = require('./set_up_dendro_sliders');
 var set_up_search = require('./set_up_search');
 var set_up_reorder = require('./set_up_reorder');
 var set_sidebar_ini_view = require('./set_sidebar_ini_view');
@@ -72,12 +71,6 @@ module.exports = function sidebar(cgm) {
   set_up_search(sidebar, params);
 
   set_up_opacity_slider(sidebar);
-
-  // if (params.viz.show_dendrogram){
-  //   set_up_dendro_sliders(sidebar, params);
-  // }
-
-
 
   var possible_filter_names = _.keys(params.viz.possible_filters);
 

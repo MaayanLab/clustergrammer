@@ -5288,8 +5288,8 @@ module.exports =
 	'use strict';
 
 	var get_cat_title = __webpack_require__(79);
-	var d3_tip_custom = __webpack_require__(58);
-	var cat_tooltip_text = __webpack_require__(83);
+	// var d3_tip_custom = require('../tooltip/d3_tip_custom');
+	// var cat_tooltip_text = require('../dendrogram/cat_tooltip_text');
 
 	module.exports = function make_row_cat_super_labels(cgm) {
 
@@ -6859,12 +6859,14 @@ module.exports =
 	module.exports = function position_svg_dendro_slider(cgm, inst_rc) {
 
 	  var viz = cgm.params.viz;
+	  var tmp_left;
+	  var tmp_top;
 	  if (inst_rc === 'row') {
-	    var tmp_left = viz.svg_dim.width - 3 * viz.uni_margin;
-	    var tmp_top = viz.clust.margin.top + 3 * viz.uni_margin;
+	    tmp_left = viz.svg_dim.width - 3 * viz.uni_margin;
+	    tmp_top = viz.clust.margin.top + 3 * viz.uni_margin;
 	  } else {
-	    var tmp_left = 2 * viz.uni_margin;
-	    var tmp_top = viz.svg_dim.height - 2.5 * viz.uni_margin;
+	    tmp_left = 2 * viz.uni_margin;
+	    tmp_top = viz.svg_dim.height - 2.5 * viz.uni_margin;
 	  }
 
 	  d3.select(cgm.params.root + ' .' + inst_rc + '_slider_group').attr('transform', function () {
@@ -7421,8 +7423,6 @@ module.exports =
 
 	module.exports = function build_svg_dendro_slider(cgm, inst_rc) {
 
-	  console.log('build svg sliders: ' + inst_rc);
-
 	  var slider_length = 100;
 
 	  var drag = d3.behavior.drag()
@@ -7433,8 +7433,6 @@ module.exports =
 	    cgm.params.is_slider_drag = false;
 	  });
 
-	  var main_svg = d3.select('.viz_svg');
-
 	  var slider_group = d3.select(cgm.params.root + ' .viz_svg').append('g').classed(inst_rc + '_slider_group', true);
 
 	  position_svg_dendro_slider(cgm, inst_rc);
@@ -7444,7 +7442,7 @@ module.exports =
 	  }).on('click', click_dendro_slider);
 
 	  var offset_triangle = -slider_length / 40;
-	  slider_group.append('path').style('fill', 'black').attr('transform', 'translate(' + offset_triangle + ', 0)').attr('d', function (d) {
+	  slider_group.append('path').style('fill', 'black').attr('transform', 'translate(' + offset_triangle + ', 0)').attr('d', function () {
 
 	    // up triangle
 	    var start_x = 0;
@@ -7486,7 +7484,9 @@ module.exports =
 	      slider_pos = slider_length;
 	    }
 
-	    if (this.nextSibling) this.parentNode.appendChild(this);
+	    if (this.nextSibling) {
+	      this.parentNode.appendChild(this);
+	    }
 
 	    slider_pos = d3.round(slider_pos, -1);
 
@@ -7494,22 +7494,14 @@ module.exports =
 
 	    d3.select(this).attr("transform", "translate(0, " + slider_pos + ")");
 
-	    // console.log('slider_value: ' + String(slider_value))
-
 	    change_groups(cgm, inst_rc, slider_value);
 	  }
 
-	  function nozoom() {
-	    d3.event.preventDefault();
-	  }
-
-	  function click_dendro_slider(d) {
+	  function click_dendro_slider() {
 
 	    var clicked_line_position = d3.mouse(this);
 
-	    var rel_pos;
-
-	    rel_pos = d3.round(clicked_line_position[1], -1);
+	    var rel_pos = d3.round(clicked_line_position[1], -1);
 
 	    d3.select(cgm.params.root + ' .' + inst_rc + '_group_circle').attr('transform', 'translate(0, ' + rel_pos + ')');
 
@@ -11489,7 +11481,6 @@ module.exports =
 
 	var ini_sidebar = __webpack_require__(147);
 	var set_up_filters = __webpack_require__(180);
-	var set_up_dendro_sliders = __webpack_require__(185);
 	var set_up_search = __webpack_require__(186);
 	var set_up_reorder = __webpack_require__(187);
 	var set_sidebar_ini_view = __webpack_require__(188);
@@ -11538,11 +11529,6 @@ module.exports =
 	  set_up_search(sidebar, params);
 
 	  set_up_opacity_slider(sidebar);
-
-	  // if (params.viz.show_dendrogram){
-	  //   set_up_dendro_sliders(sidebar, params);
-	  // }
-
 
 	  var possible_filter_names = _.keys(params.viz.possible_filters);
 
@@ -11787,36 +11773,7 @@ module.exports =
 		};
 
 /***/ },
-/* 185 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	module.exports = function set_up_dendro_sliders(sidebar, params) {
-
-	  var dendro_sliders = sidebar.append('div').classed('dendro_sliders', true).style('padding-left', '10px').style('padding-right', '10px');
-
-	  var dendro_types;
-	  if (params.sim_mat) {
-	    dendro_types = ['both'];
-	  } else {
-	    dendro_types = ['row', 'col'];
-	  }
-
-	  var dendro_text = {};
-	  dendro_text.row = 'Row Group Size';
-	  dendro_text.col = 'Column Group Size';
-	  dendro_text.both = 'Group Size';
-
-	  _.each(dendro_types, function (inst_rc) {
-
-	    dendro_sliders.append('div').classed('sidebar_text', true).classed('slider_description', true).style('margin-top', '5px').style('margin-bottom', '3px').text(dendro_text[inst_rc]);
-
-	    dendro_sliders.append('div').classed('slider_' + inst_rc, true).classed('slider', true);
-	  });
-		};
-
-/***/ },
+/* 185 */,
 /* 186 */
 /***/ function(module, exports) {
 
@@ -12498,6 +12455,7 @@ module.exports =
 
 	    var enrichr_info = { list: gene_list, description: 'clustergrammer group list', popup: true };
 
+	    // defined globally - will improve
 	    enrich(enrichr_info);
 	  });
 		};

@@ -3,8 +3,6 @@ var position_svg_dendro_slider = require('./position_svg_dendro_slider');
 
 module.exports = function build_svg_dendro_slider(cgm, inst_rc){
 
-  console.log('build svg sliders: ' + inst_rc)
-
   var slider_length = 100;
 
   var drag = d3.behavior.drag()
@@ -14,9 +12,7 @@ module.exports = function build_svg_dendro_slider(cgm, inst_rc){
       .on("drag", dragging)
       .on('dragend', function(){
         cgm.params.is_slider_drag = false;
-      })
-
-  var main_svg = d3.select('.viz_svg');
+      });
 
   var slider_group = d3.select(cgm.params.root +' .viz_svg')
       .append('g')
@@ -34,7 +30,7 @@ module.exports = function build_svg_dendro_slider(cgm, inst_rc){
       .attr("y2", function(){
         return slider_length-2;
       })
-      .on('click', click_dendro_slider)
+      .on('click', click_dendro_slider);
 
 
 
@@ -43,7 +39,7 @@ module.exports = function build_svg_dendro_slider(cgm, inst_rc){
       .append('path')
       .style('fill', 'black')
       .attr('transform', 'translate('+offset_triangle+', 0)')
-      .attr('d', function(d) {
+      .attr('d', function() {
 
         // up triangle
         var start_x = 0 ;
@@ -62,7 +58,7 @@ module.exports = function build_svg_dendro_slider(cgm, inst_rc){
         return output_string;
       })
       .style('opacity', 0.35)
-      .on('click', click_dendro_slider)
+      .on('click', click_dendro_slider);
 
 
     var default_opacity = 0.35;
@@ -77,10 +73,10 @@ module.exports = function build_svg_dendro_slider(cgm, inst_rc){
       .style('fill', 'blue')
       .style('opacity', default_opacity)
       .on('mouseover', function(){
-        d3.select(this).style('opacity', high_opacity)
+        d3.select(this).style('opacity', high_opacity);
       })
       .on('mouseout', function(){
-        d3.select(this).style('opacity', default_opacity)
+        d3.select(this).style('opacity', default_opacity);
       })
       .call(drag);
 
@@ -99,7 +95,9 @@ module.exports = function build_svg_dendro_slider(cgm, inst_rc){
       slider_pos = slider_length;
     }
 
-    if (this.nextSibling) this.parentNode.appendChild(this);
+    if (this.nextSibling) {
+      this.parentNode.appendChild(this);
+    }
 
     slider_pos = d3.round(slider_pos, -1);
 
@@ -107,24 +105,15 @@ module.exports = function build_svg_dendro_slider(cgm, inst_rc){
 
     d3.select(this).attr("transform", "translate(0, " + slider_pos + ")");
 
-    // console.log('slider_value: ' + String(slider_value))
-
     change_groups(cgm, inst_rc, slider_value);
 
   }
 
+  function click_dendro_slider(){
 
-  function nozoom() {
-    d3.event.preventDefault();
-  }
+    var clicked_line_position = d3.mouse(this);
 
-  function click_dendro_slider(d){
-
-    var clicked_line_position = d3.mouse(this)
-
-    var rel_pos;
-
-    rel_pos = d3.round(clicked_line_position[1], -1)
+    var rel_pos = d3.round(clicked_line_position[1], -1);
 
     d3.select(cgm.params.root+ ' .'+inst_rc+'_group_circle')
       .attr('transform', 'translate(0, '+ rel_pos + ')');

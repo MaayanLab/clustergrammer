@@ -1,6 +1,6 @@
 var get_cat_title = require('../categories/get_cat_title');
-var d3_tip_custom = require('../tooltip/d3_tip_custom');
-var cat_tooltip_text = require('../dendrogram/cat_tooltip_text');
+// var d3_tip_custom = require('../tooltip/d3_tip_custom');
+// var cat_tooltip_text = require('../dendrogram/cat_tooltip_text');
 
 module.exports = function make_row_cat_super_labels(cgm){
 
@@ -74,7 +74,7 @@ module.exports = function make_row_cat_super_labels(cgm){
       })
       .text(function(d){
         return get_cat_title(viz, d, 'row');
-      })
+      });
       // .on('mouseover', cat_tip.show)
 
   }
