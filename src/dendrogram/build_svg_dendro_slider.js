@@ -26,39 +26,23 @@ module.exports = function build_svg_dendro_slider(cgm, inst_rc){
 
     slider_group
       .append("line")
-      .style('stroke-width', slider_length/20+'px')
+      .style('stroke-width', slider_length/7+'px')
       .style('stroke', 'black')
       .style('stroke-linecap', 'round')
-      .style('opacity', 0.20)
+      .style('opacity', 0.0)
       .attr("y1", 0)
       .attr("y2", function(){
         return slider_length-2;
       })
       .on('click', click_dendro_slider)
 
-    var default_opacity = 0.35;
-    var high_opacity = 0.6;
-    slider_group
-      .append('circle')
-      .classed(inst_rc+'_group_circle', true)
-      .attr('r', slider_length * 0.08)
-      .attr('transform', function(){
-        return 'translate(0, '+slider_length/2+')';
-      })
-      .style('fill', 'blue')
-      .style('opacity', default_opacity)
-      .on('mouseover', function(){
-        d3.select(this).style('opacity', high_opacity)
-      })
-      .on('mouseout', function(){
-        d3.select(this).style('opacity', default_opacity)
-      })
-      .call(drag);
 
+
+    var offset_triangle = -slider_length/40;
     slider_group
       .append('path')
       .style('fill', 'black')
-      .attr('transform', 'translate('+slider_length/10+', 0)')
+      .attr('transform', 'translate('+offset_triangle+', 0)')
       .attr('d', function(d) {
 
         // up triangle
@@ -78,6 +62,27 @@ module.exports = function build_svg_dendro_slider(cgm, inst_rc){
         return output_string;
       })
       .style('opacity', 0.35)
+      .on('click', click_dendro_slider)
+
+
+    var default_opacity = 0.35;
+    var high_opacity = 0.6;
+    slider_group
+      .append('circle')
+      .classed(inst_rc+'_group_circle', true)
+      .attr('r', slider_length * 0.08)
+      .attr('transform', function(){
+        return 'translate(0, '+slider_length/2+')';
+      })
+      .style('fill', 'blue')
+      .style('opacity', default_opacity)
+      .on('mouseover', function(){
+        d3.select(this).style('opacity', high_opacity)
+      })
+      .on('mouseout', function(){
+        d3.select(this).style('opacity', default_opacity)
+      })
+      .call(drag);
 
   function dragging() {
 
