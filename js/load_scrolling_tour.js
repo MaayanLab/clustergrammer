@@ -1,6 +1,8 @@
 
 var graph_dim = get_graph_dim();
 
+var gene_info_obj = ini_gene_info();
+
 // make text sections
 var tutorial_info;
 d3.json('json/tutorial_info.json', function(tmp_info){
@@ -29,7 +31,6 @@ d3.json('json/tutorial_info.json', function(tmp_info){
         .append('h3')
         .classed('tour_title_text', true)
         .text(d.title);
-
 
       var paragraphs = d.text;
 
@@ -77,7 +78,7 @@ d3.json('json/mult_view.json', function(network_data){
     'network_data': network_data,
     'sidebar_width':130,
     'sidebar_icons':false,
-    'row_tip_callback':gene_info
+    'row_tip_callback':gene_info_obj.gene_info
   };
 
   resize_container(args);

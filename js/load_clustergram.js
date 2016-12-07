@@ -2,6 +2,9 @@
 /*
 Example files
 */
+
+var gene_info_obj = ini_gene_info();
+
 make_clust('mult_view.json');
 
 function make_clust(inst_network){
@@ -13,7 +16,7 @@ function make_clust(inst_network){
         root: '#container-id-1',
         'network_data': network_data,
         'about':'Zoom, scroll, and click buttons to interact with the clustergram.',
-        'row_tip_callback':gene_info,
+        'row_tip_callback':gene_info_obj.gene_info,
         'col_tip_callback':test_col_callback,
         'tile_tip_callback':test_tile_callback,
         'sidebar_width':150
