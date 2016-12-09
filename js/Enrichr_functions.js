@@ -32,7 +32,6 @@ function run_ini_enrichr(inst_cgm, inst_name){
 
 }
 
-
 function check_gene_request(inst_cgm, gene_symbol, check_enrichr_callback){
 
   var base_url = 'https://amp.pharm.mssm.edu/Harmonizome/api/1.0/gene/';
@@ -52,7 +51,6 @@ function check_gene_request(inst_cgm, gene_symbol, check_enrichr_callback){
 
   });
 }
-
 
 function Enrichr_request(inst_cgm){
 

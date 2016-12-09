@@ -1,4 +1,5 @@
 var get_cat_title = require('../categories/get_cat_title');
+
 // var d3_tip_custom = require('../tooltip/d3_tip_custom');
 // var cat_tooltip_text = require('../dendrogram/cat_tooltip_text');
 
@@ -14,10 +15,13 @@ module.exports = function make_row_cat_super_labels(cgm){
     d3.select(cgm.params.viz.viz_svg)
       .append('g')
       .classed('row_cat_label_container', true);
+
+    // append background section for optional value-bars (e.g. enrichment pvals)
+    d3.select(cgm.params.viz.viz_svg + ' .row_cat_label_container')
+      .append('g')
+      .classed('row_cat_label_bars', true);
   }
 
-  d3.selectAll(params.root+' .row_cat_label_container text')
-    .remove();
 
   var x_offset = viz.clust.margin.left + viz.clust.dim.width + viz.uni_margin;
   var y_offset = viz.norm_labels.margin.top + viz.norm_labels.width.col
@@ -35,7 +39,9 @@ module.exports = function make_row_cat_super_labels(cgm){
     });
 
 
+  // clear old categories
   d3.selectAll(params.root+' .row_cat_label_container text').remove();
+  d3.selectAll(params.root+' .row_cat_label_bars rect').remove();
 
   // // d3-tooltip
   // var cat_tip = d3_tip_custom()
@@ -55,7 +61,7 @@ module.exports = function make_row_cat_super_labels(cgm){
   //   });
 
 
-
+  // do not show row label categories if you are viewing a similarity matrix
   if (viz.sim_mat === false){
 
     d3.select(params.root+' .row_cat_label_container')
@@ -76,6 +82,22 @@ module.exports = function make_row_cat_super_labels(cgm){
         return get_cat_title(viz, d, 'row');
       });
       // .on('mouseover', cat_tip.show)
+
+
+    // // optional bar behind name
+    // ///////////////////////////////
+    // d3.select('.row_cat_label_bars')
+    //   .append('rect')
+    //   .style('height','12px')
+    //   .style('width','70px')
+    //   .style('opacity',0.5)
+    //   .attr('transform', function(d){
+    //     // var inst_y = extra_y_room*viz.cat_room.symbol_width
+    //     //   * parseInt( d.split('-')[1], 10 );
+    //     var inst_y = -10;
+    //     return 'translate(0,'+inst_y+')';
+    //   });
+
 
   }
 
