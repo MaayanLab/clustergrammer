@@ -1,3 +1,59 @@
+function check_setup_enrichr(inst_cgm){
+
+  var genes_were_found = false;
+
+  var all_rows = inst_cgm.params.network_data.row_nodes_names;
+
+  if (all_rows.length > 10){
+    all_rows = all_rows.slice(0,10);
+  }
+
+  // check each gene using Harmonizome
+  _.each(all_rows, function(inst_name){
+
+    console.log(inst_name)
+    check_gene_request(inst_cgm, inst_name, run_ini_enrichr);
+
+  });
+
+}
+
+function run_ini_enrichr(inst_cgm, inst_name){
+
+  if (genes_were_found){
+
+    if (d3.select('.enrichr_logo').empty()){
+      console.log('set up enrichr once')
+      enr_obj = Enrichr_request(inst_cgm);
+      enr_obj.enrichr_icon();
+    }
+
+  }
+
+}
+
+
+function check_gene_request(inst_cgm, gene_symbol, check_enrichr_callback){
+
+  var base_url = 'https://amp.pharm.mssm.edu/Harmonizome/api/1.0/gene/';
+  var url = base_url + gene_symbol;
+
+  $.get(url, function(data) {
+
+    data = JSON.parse(data);
+
+    if (data.name != undefined){
+      genes_were_found = true;
+    }
+
+    check_enrichr_callback(inst_cgm, gene_symbol);
+
+    return data;
+
+  });
+}
+
+
 function Enrichr_request(inst_cgm){
 
   function enrichr_icon(){
