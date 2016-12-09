@@ -33,10 +33,12 @@ function make_clust(inst_network){
 
       d3.select(cgm.params.root + ' .wait_message').remove();
 
-      // Enrichr categories
-      //////////////////////
-      enr_obj = Enrichr_request(cgm);
-      enr_obj.enrichr_icon();
+      check_setup_enrichr(cgm);
+
+      // // Enrichr categories
+      // //////////////////////
+      // enr_obj = Enrichr_request(cgm);
+      // enr_obj.enrichr_icon();
 
   });
 

@@ -18,8 +18,6 @@ function ini_hzome(){
 
   function get_request(gene_symbol, optional_callback){
 
-
-
     var base_url = 'https://amp.pharm.mssm.edu/Harmonizome/api/1.0/gene/';
     var url = base_url + gene_symbol;
 
@@ -85,13 +83,18 @@ function ini_hzome(){
 
 }
 
-function check_for_genes(){
+function check_setup_enrichr(inst_cgm){
 
-  var all_names = ['sometthing', 'not-a-gene', 'asfas', 'EGFR', '2134qw'];
+  var all_rows = inst_cgm.params.network_data.row_nodes_names;
+
+  if (all_rows.length > 10){
+    all_rows = all_rows.slice(0,10);
+  }
 
   // check each gene using Harmonizome
-  _.each(all_names, function(inst_name){
+  _.each(all_rows, function(inst_name){
 
+    console.log(inst_name)
     hzome.get_request(inst_name, check_ini_enrichr);
 
   });
@@ -101,7 +104,13 @@ function check_for_genes(){
 function check_ini_enrichr(inst_name){
 
   if (were_genes_found){
-    console.log('** set up Enrichr')
+
+    if (d3.select('.enrichr_logo').empty()){
+      console.log('set up enrichr once')
+      enr_obj = Enrichr_request(cgm);
+      enr_obj.enrichr_icon();
+    }
+
   }
 
 }
