@@ -89,10 +89,12 @@ d3.json('json/mult_view.json', function(network_data){
 
   cgm = Clustergrammer(args);
 
-  // Enrichr categories
-  //////////////////////
-  enr_obj = Enrichr_request(cgm);
-  enr_obj.enrichr_icon();
+  check_setup_enrichr(cgm);
+
+  // // Enrichr categories
+  // //////////////////////
+  // enr_obj = Enrichr_request(cgm);
+  // enr_obj.enrichr_icon();
 
   ini_scroll();
 
