@@ -19,10 +19,12 @@ function make_clust(make_sim_mats){
     d3.select(cgm['clust'].params.root+' .wait_message').remove();
     cat_colors = cgm['clust'].params.viz.cat_colors;
 
-    // Enrichr categories
-    //////////////////////
-    enr_obj = Enrichr_request(cgm['clust']);
-    enr_obj.enrichr_icon();
+    check_setup_enrichr(cgm['clust']);
+
+    // // Enrichr categories
+    // //////////////////////
+    // enr_obj = Enrichr_request(cgm['clust']);
+    // enr_obj.enrichr_icon();
 
     make_sim_mats('col', cat_colors, unblock);
     make_sim_mats('row', cat_colors, unblock);

@@ -16,7 +16,7 @@ function ini_hzome(){
 
   }
 
-  function get_request(gene_symbol, optional_callback){
+  function get_request(gene_symbol){
 
     var base_url = 'https://amp.pharm.mssm.edu/Harmonizome/api/1.0/gene/';
     var url = base_url + gene_symbol;
@@ -35,10 +35,6 @@ function ini_hzome(){
       }
 
       set_tooltip(data, gene_symbol);
-
-      if (typeof optional_callback === 'function'){
-        optional_callback(gene_symbol);
-      }
 
       return data;
 
@@ -83,6 +79,7 @@ function ini_hzome(){
 
 }
 
+
 function check_setup_enrichr(inst_cgm){
 
   var all_rows = inst_cgm.params.network_data.row_nodes_names;
@@ -95,19 +92,19 @@ function check_setup_enrichr(inst_cgm){
   _.each(all_rows, function(inst_name){
 
     console.log(inst_name)
-    hzome.get_request(inst_name, check_ini_enrichr);
+    check_gene_request(inst_cgm, inst_name, run_ini_enrichr);
 
   });
 
 }
 
-function check_ini_enrichr(inst_name){
+function run_ini_enrichr(inst_cgm, inst_name){
 
   if (were_genes_found){
 
     if (d3.select('.enrichr_logo').empty()){
       console.log('set up enrichr once')
-      enr_obj = Enrichr_request(cgm);
+      enr_obj = Enrichr_request(inst_cgm);
       enr_obj.enrichr_icon();
     }
 
@@ -116,3 +113,24 @@ function check_ini_enrichr(inst_name){
 }
 
 
+function check_gene_request(inst_cgm, gene_symbol, check_enrichr_callback){
+
+  var base_url = 'https://amp.pharm.mssm.edu/Harmonizome/api/1.0/gene/';
+  var url = base_url + gene_symbol;
+
+  $.get(url, function(data) {
+
+    data = JSON.parse(data);
+
+    if (data.name != undefined){
+      were_genes_found = true;
+    }
+
+    if (typeof check_enrichr_callback === 'function'){
+      check_enrichr_callback(inst_cgm, gene_symbol);
+    }
+
+    return data;
+
+  });
+}
