@@ -54,7 +54,7 @@ function ini_hzome(){
 
     if (_.has(gene_data, gene_symbol)){
       var inst_data = gene_data[gene_symbol];
-      set_tooltip(inst_data)
+      set_tooltip(inst_data, gene_symbol);
     } else{
       setTimeout(get_mouseover, 250, gene_symbol);
     }
