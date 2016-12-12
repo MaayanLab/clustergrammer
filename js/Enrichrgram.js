@@ -231,7 +231,7 @@ function Enrichr_request(inst_cgm){
         .transition()
         .style('opacity',1)
 
-    d3.selectAll('.row_cat_super').style('display','none');
+      d3.selectAll('.row_cat_super').style('display','none');
 
     } else {
 
@@ -458,6 +458,27 @@ function Enrichr_request(inst_cgm){
       .text(library_string.replace(/_/g, ' '))
       .style('font-size', '15px')
       .attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif');
+
+    var extra_y_room = 1.25;
+    var unit_length = extra_y_room * inst_cgm.params.viz.cat_room.symbol_width;
+    var bar_width = unit_length * 0.9;
+
+    // optional bar behind name
+    ///////////////////////////////
+    d3.select('.row_cat_label_bars')
+      .selectAll()
+      .data(inst_cgm.params.viz.all_cats.row)
+      .enter()
+      .append('rect')
+      .classed('enrichr_bars', true)
+      .style('height', bar_width +'px')
+      .style('fill', 'green')
+      .style('width','60px')
+      .style('opacity', 0.0)
+      .attr('transform', function(d){
+        var inst_y = unit_length * (parseInt( d.split('-')[1], 10 ) -0.75 );
+        return 'translate(0,'+inst_y+')';
+      })
 
   }
 
