@@ -18,7 +18,7 @@ module.exports = function make_row_cat_super_labels(cgm){
     // append background section for optional value-bars (e.g. enrichment pvals)
     d3.select(cgm.params.viz.viz_svg + ' .row_cat_label_container')
       .append('g')
-      .classed('row_cat_label_bars', true);
+      .classed('row_cat_label_bar_container', true);
   }
 
 
@@ -40,7 +40,7 @@ module.exports = function make_row_cat_super_labels(cgm){
 
   // clear old categories
   d3.selectAll(params.root+' .row_cat_label_container text').remove();
-  d3.selectAll(params.root+' .row_cat_label_bars rect').remove();
+  d3.selectAll(params.root+' .row_cat_label_bar_container rect').remove();
 
   // d3-tooltip
   var tmp_y_offset = 50 ; // viz.clust.margin.top - viz.uni_margin;
@@ -88,7 +88,7 @@ module.exports = function make_row_cat_super_labels(cgm){
 
     // // optional bar behind name
     // ///////////////////////////////
-    // d3.select('.row_cat_label_bars')
+    // d3.select('.row_cat_label_bar_container')
     //   .selectAll()
     //   .data(viz.all_cats.row)
     //   .enter()
@@ -134,7 +134,7 @@ module.exports = function make_row_cat_super_labels(cgm){
 
   // disable mouseover
   //////////////////////////////////////
-  d3.selectAll('.row_cat_label_bars')
+  d3.selectAll('.row_cat_label_bar_container')
     .call(cat_tip);
 
 };

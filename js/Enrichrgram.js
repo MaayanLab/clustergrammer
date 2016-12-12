@@ -10,7 +10,6 @@ function check_setup_enrichr(inst_cgm){
 
   // check each gene using Harmonizome
   _.each(all_rows, function(inst_name){
-    // console.log(inst_name)
     check_gene_request(inst_cgm, inst_name, run_ini_enrichr);
   });
 
@@ -21,7 +20,6 @@ function run_ini_enrichr(inst_cgm, inst_name){
   if (genes_were_found){
 
     if (d3.select('.enrichr_logo').empty()){
-      // console.log('set up enrichr once')
       enr_obj = Enrichr_request(inst_cgm);
       enr_obj.enrichr_icon();
     }
@@ -391,6 +389,9 @@ function Enrichr_request(inst_cgm){
       inst_data['cats'] = [];
       inst_data['pval'] = inst_term[2];
 
+      // keep the combined score
+      inst_data['combined_score'] = inst_term[4]
+
       cat_details = {};
       cat_details.cat_name = 'true';
       cat_details.members = inst_term[5]
@@ -463,18 +464,29 @@ function Enrichr_request(inst_cgm){
     var unit_length = extra_y_room * inst_cgm.params.viz.cat_room.symbol_width;
     var bar_width = unit_length * 0.9;
 
-    // optional bar behind name
+    // Enrichr bars
     ///////////////////////////////
-    d3.select('.row_cat_label_bars')
+
+    var max_score = enr_obj.cat_data[0].combined_score;
+    var bar_scale = d3.scale.linear().domain([0, max_score]).range([0,100]);
+
+    d3.select('.row_cat_label_bar_container')
       .selectAll()
       .data(inst_cgm.params.viz.all_cats.row)
       .enter()
       .append('rect')
       .classed('enrichr_bars', true)
       .style('height', bar_width +'px')
-      .style('fill', 'green')
-      .style('width','60px')
-      .style('opacity', 0.0)
+      .style('fill', 'red')
+      .style('width', function(d){
+
+        var enr_index = d.split('-')[1];
+        var inst_comb_score = enr_obj.cat_data[enr_index].combined_score;
+        var bar_lenth = bar_scale(inst_comb_score);
+        var bar_length_string = bar_lenth + 'px'
+        return bar_length_string;
+      })
+      .style('opacity', 0.4)
       .attr('transform', function(d){
         var inst_y = unit_length * (parseInt( d.split('-')[1], 10 ) -0.75 );
         return 'translate(0,'+inst_y+')';

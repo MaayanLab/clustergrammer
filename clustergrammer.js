@@ -5313,7 +5313,7 @@ var Clustergrammer =
 	    d3.select(cgm.params.viz.viz_svg).append('g').classed('row_cat_label_container', true);
 
 	    // append background section for optional value-bars (e.g. enrichment pvals)
-	    d3.select(cgm.params.viz.viz_svg + ' .row_cat_label_container').append('g').classed('row_cat_label_bars', true);
+	    d3.select(cgm.params.viz.viz_svg + ' .row_cat_label_container').append('g').classed('row_cat_label_bar_container', true);
 	  }
 
 	  var x_offset = viz.clust.margin.left + viz.clust.dim.width + viz.uni_margin;
@@ -5330,7 +5330,7 @@ var Clustergrammer =
 
 	  // clear old categories
 	  d3.selectAll(params.root + ' .row_cat_label_container text').remove();
-	  d3.selectAll(params.root + ' .row_cat_label_bars rect').remove();
+	  d3.selectAll(params.root + ' .row_cat_label_bar_container rect').remove();
 
 	  // d3-tooltip
 	  var tmp_y_offset = 50; // viz.clust.margin.top - viz.uni_margin;
@@ -5359,7 +5359,7 @@ var Clustergrammer =
 
 	    // // optional bar behind name
 	    // ///////////////////////////////
-	    // d3.select('.row_cat_label_bars')
+	    // d3.select('.row_cat_label_bar_container')
 	    //   .selectAll()
 	    //   .data(viz.all_cats.row)
 	    //   .enter()
@@ -5391,7 +5391,7 @@ var Clustergrammer =
 
 	  // disable mouseover
 	  //////////////////////////////////////
-	  d3.selectAll('.row_cat_label_bars').call(cat_tip);
+	  d3.selectAll('.row_cat_label_bar_container').call(cat_tip);
 		};
 
 /***/ },
