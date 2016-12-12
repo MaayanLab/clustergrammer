@@ -172,10 +172,27 @@ module.exports = function d3_tip_custom(){
     nw: direction_nw,
     ne: direction_ne,
     sw: direction_sw,
-    se: direction_se
+    se: direction_se,
+    south_custom: direction_south_custom
   }),
 
   directions = direction_callbacks.keys();
+
+  function direction_south_custom() {
+    var bbox = getScreenBBox();
+    console.log(bbox.s)
+
+    // return {
+    //   top:  bbox.s.y,
+    //   left: bbox.s.x - node.offsetWidth / 2
+    // };
+
+    return {
+      top:  5,
+      left: bbox.s.x - node.offsetWidth / 2
+    };
+
+  }
 
   function direction_n() {
     var bbox = getScreenBBox();

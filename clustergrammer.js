@@ -3424,9 +3424,25 @@ var Clustergrammer =
 	    nw: direction_nw,
 	    ne: direction_ne,
 	    sw: direction_sw,
-	    se: direction_se
+	    se: direction_se,
+	    south_custom: direction_south_custom
 	  }),
 	      directions = direction_callbacks.keys();
+
+	  function direction_south_custom() {
+	    var bbox = getScreenBBox();
+	    console.log(bbox.s);
+
+	    // return {
+	    //   top:  bbox.s.y,
+	    //   left: bbox.s.x - node.offsetWidth / 2
+	    // };
+
+	    return {
+	      top: 5,
+	      left: bbox.s.x - node.offsetWidth / 2
+	    };
+	  }
 
 	  function direction_n() {
 	    var bbox = getScreenBBox();
@@ -5324,11 +5340,13 @@ var Clustergrammer =
 	  d3.selectAll(params.root + ' .row_cat_label_bars rect').remove();
 
 	  // d3-tooltip
+	  var tmp_y_offset = viz.clust.margin.top - viz.uni_margin;
+	  console.log(tmp_y_offset);
 	  var cat_tip = d3_tip_custom().attr('class', function () {
 	    var root_tip_selector = params.viz.root_tips.replace('.', '');
 	    var class_string = root_tip_selector + ' d3-tip row_cat_tip_super';
 	    return class_string;
-	  }).direction('s').offset([0, 0]).style('display', 'block').style('opacity', 1).html(function (d) {
+	  }).direction('south_custom').offset([tmp_y_offset, 0]).style('display', 'block').style('opacity', 1).html(function (d) {
 	    console.log('mouseover title d: ' + d);
 	    // return cat_tooltip_text(params, d, this, 'row');
 	    return get_cat_title(viz, d, 'row');

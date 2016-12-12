@@ -44,14 +44,16 @@ module.exports = function make_row_cat_super_labels(cgm){
   d3.selectAll(params.root+' .row_cat_label_bars rect').remove();
 
   // d3-tooltip
+  var tmp_y_offset = viz.clust.margin.top - viz.uni_margin;
+  console.log(tmp_y_offset)
   var cat_tip = d3_tip_custom()
     .attr('class',function(){
       var root_tip_selector = params.viz.root_tips.replace('.','');
       var class_string = root_tip_selector + ' d3-tip row_cat_tip_super';
       return class_string;
     })
-    .direction('s')
-    .offset([0,0])
+    .direction('south_custom')
+    .offset([tmp_y_offset,0])
     .style('display','block')
     .style('opacity', 1)
     .html(function(d){
