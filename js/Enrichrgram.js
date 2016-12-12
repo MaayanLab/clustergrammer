@@ -10,10 +10,8 @@ function check_setup_enrichr(inst_cgm){
 
   // check each gene using Harmonizome
   _.each(all_rows, function(inst_name){
-
-    console.log(inst_name)
+    // console.log(inst_name)
     check_gene_request(inst_cgm, inst_name, run_ini_enrichr);
-
   });
 
 }
@@ -23,7 +21,7 @@ function run_ini_enrichr(inst_cgm, inst_name){
   if (genes_were_found){
 
     if (d3.select('.enrichr_logo').empty()){
-      console.log('set up enrichr once')
+      // console.log('set up enrichr once')
       enr_obj = Enrichr_request(inst_cgm);
       enr_obj.enrichr_icon();
     }

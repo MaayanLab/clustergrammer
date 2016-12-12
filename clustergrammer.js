@@ -5289,8 +5289,8 @@ var Clustergrammer =
 
 	var get_cat_title = __webpack_require__(79);
 
-	// var d3_tip_custom = require('../tooltip/d3_tip_custom');
-	// var cat_tooltip_text = require('../dendrogram/cat_tooltip_text');
+	var d3_tip_custom = __webpack_require__(58);
+	var cat_tooltip_text = __webpack_require__(108);
 
 	module.exports = function make_row_cat_super_labels(cgm) {
 
@@ -5323,23 +5323,16 @@ var Clustergrammer =
 	  d3.selectAll(params.root + ' .row_cat_label_container text').remove();
 	  d3.selectAll(params.root + ' .row_cat_label_bars rect').remove();
 
-	  // // d3-tooltip
-	  // var cat_tip = d3_tip_custom()
-	  //   .attr('class',function(){
-	  //     var root_tip_selector = params.viz.root_tips.replace('.','');
-	  //     var class_string = root_tip_selector + ' d3-tip row_cat_tip_super';
-	  //     return class_string;
-	  //   })
-	  //   .direction('e')
-	  //   .offset([5,0])
-	  //   .style('display','block')
-	  //   .style('opacity', 1)
-	  //   .html(function(d){
-	  //     console.log('mouseover title d: ' + d)
-	  //     // return cat_tooltip_text(params, d, this, 'row');
-	  //     return get_cat_title(viz, d, 'row');
-	  //   });
-
+	  // d3-tooltip
+	  var cat_tip = d3_tip_custom().attr('class', function () {
+	    var root_tip_selector = params.viz.root_tips.replace('.', '');
+	    var class_string = root_tip_selector + ' d3-tip row_cat_tip_super';
+	    return class_string;
+	  }).direction('s').offset([0, 0]).style('display', 'block').style('opacity', 1).html(function (d) {
+	    console.log('mouseover title d: ' + d);
+	    // return cat_tooltip_text(params, d, this, 'row');
+	    return get_cat_title(viz, d, 'row');
+	  });
 
 	  // do not show row label categories if you are viewing a similarity matrix
 	  if (viz.sim_mat === false) {
@@ -5349,8 +5342,19 @@ var Clustergrammer =
 	      return 'translate(0,' + inst_y + ')';
 	    }).text(function (d) {
 	      return get_cat_title(viz, d, 'row');
+	    }).on('mouseover', function (d) {
+
+	      d3.selectAll('.row_cat_tip_super').style('display', 'block');
+
+	      cat_tip.show(d);
+	    }).on('mouseout', function () {
+
+	      cat_tip.hide(this);
+
+	      // // might not need
+	      // d3.selectAll('.d3-tip')
+	      //   .style('display', 'none');
 	    });
-	    // .on('mouseover', cat_tip.show)
 
 	    var unit_length = extra_y_room * viz.cat_room.symbol_width;
 	    var bar_width = unit_length * 0.9;
@@ -5364,11 +5368,9 @@ var Clustergrammer =
 	    });
 	  }
 
-	  // // disable mouseover
-	  // //////////////////////////////////////
-	  // d3.select(params.root+' .row_cat_label_container')
-	  //   .selectAll('.row_cat_super')
-	  //   .call(cat_tip);
+	  // disable mouseover
+	  //////////////////////////////////////
+	  d3.select(params.root + ' .row_cat_label_container').selectAll('.row_cat_super').call(cat_tip);
 		};
 
 /***/ },
