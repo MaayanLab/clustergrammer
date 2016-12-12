@@ -180,16 +180,11 @@ module.exports = function d3_tip_custom(){
 
   function direction_south_custom() {
     var bbox = getScreenBBox();
-    console.log(bbox.s)
 
-    // return {
-    //   top:  bbox.s.y,
-    //   left: bbox.s.x - node.offsetWidth / 2
-    // };
 
     return {
-      top:  5,
-      left: bbox.s.x - node.offsetWidth / 2
+      top:  bbox.s.y,
+      left: bbox.s.x ,
     };
 
   }
