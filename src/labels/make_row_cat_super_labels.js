@@ -40,7 +40,8 @@ module.exports = function make_row_cat_super_labels(cgm){
 
   // clear old categories
   d3.selectAll(params.root+' .row_cat_label_container text').remove();
-  d3.selectAll(params.root+' .row_cat_label_bar_container rect').remove();
+  d3.selectAll(params.root+' .row_cat_selection_bar').remove();
+  // d3.selectAll(params.root+' .row_cat_label_bar_container rect').remove();
 
   // d3-tooltip
   var tmp_y_offset = 50 ; // viz.clust.margin.top - viz.uni_margin;
@@ -110,6 +111,7 @@ module.exports = function make_row_cat_super_labels(cgm){
       .enter()
       .append('rect')
       .classed('row_cat_super',true)
+      .classed('row_cat_selection_bar', true)
       .style('height', bar_width +'px')
       .style('fill', 'green')
       .style('width','120px')

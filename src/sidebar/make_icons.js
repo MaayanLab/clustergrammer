@@ -3,8 +3,6 @@ var file_saver = require('../screenshot/file_saver');
 
 module.exports = function make_icons(params, sidebar){
 
-  // this should be done outside of the main project
-
   var saveSvgAsPng = save_svg_png();
   var saveAs = file_saver();
 

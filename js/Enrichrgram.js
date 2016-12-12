@@ -134,6 +134,8 @@ function Enrichr_request(inst_cgm){
         // clear categories
         inst_cgm.reset_cats();
 
+        d3.selectAll(inst_cgm.params.root+' .enrichr_bars').remove();
+
       })
 
     var lib_section = enr_menu
@@ -468,10 +470,12 @@ function Enrichr_request(inst_cgm){
     // Enrichr bars
     ///////////////////////////////
 
+    d3.selectAll(inst_cgm.params.root+' .enrichr_bars').remove();
+
     var max_score = enr_obj.cat_data[0].combined_score;
     var bar_scale = d3.scale.linear().domain([0, max_score]).range([0,100]);
 
-    d3.select('.row_cat_label_bar_container')
+    d3.select(inst_cgm.params.root+' .row_cat_label_bar_container')
       .selectAll()
       .data(inst_cgm.params.viz.all_cats.row)
       .enter()
@@ -528,6 +532,7 @@ function Enrichr_request(inst_cgm){
   enr_obj.get_enr_with_list = get_enr_with_list;
   enr_obj.enrichr_rows = enrichr_rows;
   enr_obj.enr_data_to_cats = enr_data_to_cats;
+  enr_obj.update_viz_callback = update_viz_callback;
 
   return enr_obj;
 
