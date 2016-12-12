@@ -57,8 +57,25 @@ module.exports = function make_row_cat_super_labels(cgm){
     .style('display','none')
     .style('opacity', 1)
     .html(function(d){
-      // return cat_tooltip_text(params, d, this, 'row');
-      return get_cat_title(viz, d, 'row');
+
+      var full_string;
+
+      var tmp_string = params.network_data.row_nodes[0][d]
+
+      if (tmp_string.indexOf('<p>') > -1){
+
+        var start_string = tmp_string.split(': ')[0];
+        var end_string = tmp_string.split('<p>')[1];
+
+        full_string = start_string + '<p>' + end_string;
+      }
+      else{
+
+        // return cat_tooltip_text(params, d, this, 'row');
+        full_string = get_cat_title(viz, d, 'row');
+      }
+
+      return full_string;
     });
 
   var unit_length = extra_y_room * viz.cat_room.symbol_width;
@@ -136,7 +153,7 @@ module.exports = function make_row_cat_super_labels(cgm){
 
   // disable mouseover
   //////////////////////////////////////
-  d3.selectAll('.row_cat_label_bar_container')
+  d3.selectAll(params.root+' .row_cat_selection_bar')
     .call(cat_tip);
 
 };

@@ -58,7 +58,7 @@ module.exports = function modify_row_node_cats(cat_data, inst_nodes){
       if (utils.has(inst_cat_data, 'pval')){
 
         var inst_pval = inst_cat_data.pval.toExponential();
-        inst_full_cat = inst_cat_title + ': ' + inst_category + '; Pval ' + String(inst_pval);
+        inst_full_cat = inst_cat_title + ': ' + inst_category + '<p> Pval ' + String(inst_pval) + '</p>';
 
       } else {
 
