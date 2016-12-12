@@ -5340,7 +5340,7 @@ var Clustergrammer =
 	    var root_tip_selector = params.viz.root_tips.replace('.', '');
 	    var class_string = root_tip_selector + ' d3-tip row_cat_tip_super';
 	    return class_string;
-	  }).direction('south_custom').offset([tmp_y_offset, tmp_x_offset]).style('display', 'block').style('opacity', 1).html(function (d) {
+	  }).direction('south_custom').offset([tmp_y_offset, tmp_x_offset]).style('display', 'none').style('opacity', 1).html(function (d) {
 	    // return cat_tooltip_text(params, d, this, 'row');
 	    return get_cat_title(viz, d, 'row');
 	  });
@@ -5384,9 +5384,8 @@ var Clustergrammer =
 	      cat_tip.show(d);
 	    }).on('mouseout', function () {
 	      cat_tip.hide(this);
-	      // // might not need
-	      // d3.selectAll('.d3-tip')
-	      //   .style('display', 'none');
+	      // might not need
+	      d3.selectAll('.d3-tip').style('display', 'none');
 	    });
 	  }
 

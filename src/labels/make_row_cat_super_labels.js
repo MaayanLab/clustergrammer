@@ -54,7 +54,7 @@ module.exports = function make_row_cat_super_labels(cgm){
     })
     .direction('south_custom')
     .offset([tmp_y_offset, tmp_x_offset])
-    .style('display','block')
+    .style('display','none')
     .style('opacity', 1)
     .html(function(d){
       // return cat_tooltip_text(params, d, this, 'row');
@@ -127,9 +127,9 @@ module.exports = function make_row_cat_super_labels(cgm){
       })
       .on('mouseout', function(){
         cat_tip.hide(this);
-        // // might not need
-        // d3.selectAll('.d3-tip')
-        //   .style('display', 'none');
+        // might not need
+        d3.selectAll('.d3-tip')
+          .style('display', 'none');
       });
 
   }
