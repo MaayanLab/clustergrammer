@@ -5355,22 +5355,13 @@ module.exports =
 	    var unit_length = extra_y_room * viz.cat_room.symbol_width;
 	    var bar_width = unit_length * 0.9;
 
-	    // // optional bar behind name
-	    // ///////////////////////////////
-	    // d3.select('.row_cat_label_bars')
-	    //   .selectAll()
-	    //   .data(viz.all_cats.row)
-	    //   .enter()
-	    //   .append('rect')
-	    //   .style('height', bar_width +'px')
-	    //   .style('width','70px')
-	    //   .style('opacity',0.0)
-	    //   .attr('transform', function(d){
-	    //     var inst_y = unit_length * (parseInt( d.split('-')[1], 10 ) -0.75 );
-	    //     // var inst_y = -10;
-	    //     return 'translate(0,'+inst_y+')';
-	    //   });
-
+	    // optional bar behind name
+	    ///////////////////////////////
+	    d3.select('.row_cat_label_bars').selectAll().data(viz.all_cats.row).enter().append('rect').style('height', bar_width + 'px').style('fill', 'red').style('width', '70px').style('opacity', 0.0).attr('transform', function (d) {
+	      var inst_y = unit_length * (parseInt(d.split('-')[1], 10) - 0.75);
+	      // var inst_y = -10;
+	      return 'translate(0,' + inst_y + ')';
+	    });
 	  }
 
 	  // // disable mouseover
