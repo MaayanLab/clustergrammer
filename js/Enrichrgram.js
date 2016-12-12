@@ -1,6 +1,7 @@
 var genes_were_found = false;
 function check_setup_enrichr(inst_cgm){
 
+  console.log('checking ')
 
   var all_rows = inst_cgm.params.network_data.row_nodes_names;
 
