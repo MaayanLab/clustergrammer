@@ -10,6 +10,7 @@ var update_cats = require('./update/update_cats');
 var reset_cats = require('./update/reset_cats');
 var two_translate_zoom = require('./zoom/two_translate_zoom');
 var external_update_view = require('./update/external_update_view');
+var export_matrix = require('./matrix/export_matrix');
 
 // moved d3.slider to src
 d3.slider = require('./d3.slider');
@@ -85,6 +86,7 @@ function Clustergrammer(args) {
   cgm.update_cats = run_update_cats;
   cgm.reset_cats = reset_cats;
   cgm.zoom = zoom_api;
+  cgm.export_matrix = export_matrix;
 
   return cgm;
 }

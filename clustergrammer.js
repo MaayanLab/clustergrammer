@@ -59,6 +59,7 @@ var Clustergrammer =
 	var reset_cats = __webpack_require__(164);
 	var two_translate_zoom = __webpack_require__(85);
 	var external_update_view = __webpack_require__(166);
+	var export_matrix = __webpack_require__(194);
 
 	// moved d3.slider to src
 	d3.slider = __webpack_require__(169);
@@ -134,6 +135,7 @@ var Clustergrammer =
 	  cgm.update_cats = run_update_cats;
 	  cgm.reset_cats = reset_cats;
 	  cgm.zoom = zoom_api;
+	  cgm.export_matrix = export_matrix;
 
 	  return cgm;
 	}
@@ -12548,6 +12550,24 @@ var Clustergrammer =
 	  // $( params.root+' .opacity_slider' ).slider({
 	  //   value:1.0
 	  // });
+		};
+
+/***/ },
+/* 194 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = function export_matrix() {
+
+	  console.log('export matrix\n');
+	  var inst_cgm = this;
+	  var inst_order = inst_cgm.params.matrix.orders.clust_row;
+	  var row_data = inst_cgm.params.matrix.matrix[0].row_data;
+
+	  _.each(inst_order, function (inst_index) {
+	    console.log(row_data[inst_index].col_name);
+	  });
 		};
 
 /***/ }
