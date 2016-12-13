@@ -5294,7 +5294,6 @@ var Clustergrammer =
 
 	var get_cat_title = __webpack_require__(79);
 	var d3_tip_custom = __webpack_require__(58);
-	var cat_tooltip_text = __webpack_require__(83);
 
 	module.exports = function make_row_cat_super_labels(cgm) {
 
@@ -5349,7 +5348,6 @@ var Clustergrammer =
 	      full_string = start_string + '<p>' + end_string;
 	    } else {
 
-	      // return cat_tooltip_text(params, d, this, 'row');
 	      full_string = get_cat_title(viz, d, 'row');
 	    }
 
@@ -5414,7 +5412,6 @@ var Clustergrammer =
 	'use strict';
 
 	var get_cat_title = __webpack_require__(79);
-	var utils = __webpack_require__(2);
 
 	module.exports = function cat_tooltip_text(params, inst_data, inst_selection, inst_rc) {
 
@@ -5434,15 +5431,6 @@ var Clustergrammer =
 	  }
 
 	  var cat_string = cat_title + ': ' + cat_name;
-
-	  // var pval_name = inst_cat.replace('-','_')+'_pval';
-	  // var inst_pval ;
-	  // if (utils.has(inst_data, pval_name)){
-	  //   inst_pval = inst_data[inst_cat.replace('-','_')+'_pval'];
-	  //   // there are three significant digits in the pval
-	  //   inst_pval = inst_pval.toFixed(3);
-	  //   cat_string = cat_string + ' (pval: '+ String(inst_pval) + ')';
-	  // }
 
 	  d3.select(inst_selection).classed('hovering', true);
 

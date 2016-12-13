@@ -30,7 +30,7 @@ module.exports = function make_simple_rows(params, ini_inp_row_data, tip, row_se
   var tile = d3.select(row_selection)
     .selectAll('rect')
     .data(row_values, function (d) {
-     return d.col_name;
+      return d.col_name;
     })
     .enter()
     .append('rect')

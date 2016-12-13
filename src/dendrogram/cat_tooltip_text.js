@@ -1,5 +1,4 @@
 var get_cat_title = require('../categories/get_cat_title');
-var utils = require('../Utils_clust');
 
 module.exports = function cat_tooltip_text(params, inst_data, inst_selection, inst_rc){
 
@@ -21,15 +20,6 @@ module.exports = function cat_tooltip_text(params, inst_data, inst_selection, in
   }
 
   var cat_string = cat_title + ': '+ cat_name;
-
-  // var pval_name = inst_cat.replace('-','_')+'_pval';
-  // var inst_pval ;
-  // if (utils.has(inst_data, pval_name)){
-  //   inst_pval = inst_data[inst_cat.replace('-','_')+'_pval'];
-  //   // there are three significant digits in the pval
-  //   inst_pval = inst_pval.toFixed(3);
-  //   cat_string = cat_string + ' (pval: '+ String(inst_pval) + ')';
-  // }
 
   d3.select(inst_selection)
     .classed('hovering',true);

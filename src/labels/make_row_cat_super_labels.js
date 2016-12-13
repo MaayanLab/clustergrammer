@@ -1,6 +1,5 @@
 var get_cat_title = require('../categories/get_cat_title');
 var d3_tip_custom = require('../tooltip/d3_tip_custom');
-var cat_tooltip_text = require('../dendrogram/cat_tooltip_text');
 
 module.exports = function make_row_cat_super_labels(cgm){
 
@@ -60,7 +59,7 @@ module.exports = function make_row_cat_super_labels(cgm){
 
       var full_string;
 
-      var tmp_string = params.network_data.row_nodes[0][d]
+      var tmp_string = params.network_data.row_nodes[0][d];
 
       if (tmp_string.indexOf('<p>') > -1){
 
@@ -71,7 +70,6 @@ module.exports = function make_row_cat_super_labels(cgm){
       }
       else{
 
-        // return cat_tooltip_text(params, d, this, 'row');
         full_string = get_cat_title(viz, d, 'row');
       }
 
