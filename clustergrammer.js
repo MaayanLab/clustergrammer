@@ -1724,7 +1724,6 @@ var Clustergrammer =
 	    });
 
 	    matrix.orders['alpha_' + inst_rc] = alpha_index;
-	    // matrix.orders['custom_'+inst_rc] = alpha_index;
 
 	    var possible_orders = ['clust', 'rank'];
 
@@ -3808,7 +3807,7 @@ var Clustergrammer =
 	  params.viz.x_scale.domain(tmp_sort);
 
 	  // save to custom col order
-	  params.matrix.orders.custom_col = tmp_sort;
+	  params.matrix.orders.custom_row = tmp_sort;
 
 	  var t;
 
@@ -4546,7 +4545,7 @@ var Clustergrammer =
 	  params.viz.y_scale.domain(tmp_sort);
 
 	  // save to custom row order
-	  params.matrix.orders.custom_row = tmp_sort;
+	  params.matrix.orders.custom_col = tmp_sort;
 
 	  var t;
 
@@ -12566,19 +12565,16 @@ var Clustergrammer =
 
 	module.exports = function export_matrix() {
 
-	  console.log('export matrix\n');
 	  var inst_cgm = this;
-	  var inst_order = inst_cgm.params.matrix.orders.clust_row;
+	  // var inst_order = inst_cgm.params.matrix.orders.clust_row;
 	  var row_data = inst_cgm.params.matrix.matrix[0].row_data;
 
-	  _.each(inst_order, function (inst_index) {
-	    console.log(row_data[inst_index].col_name);
-	  });
-
-	  var order_name = {};
+	  // get order indexes
+	  var order_indexes = {};
+	  var inst_order_name;
 	  _.each(['row', 'col'], function (tmp_rc) {
-	    var inst_rc;
 
+	    var inst_rc;
 	    // row/col names are reversed in saved orders
 	    if (tmp_rc === 'row') {
 	      inst_rc = 'col';
@@ -12586,9 +12582,27 @@ var Clustergrammer =
 	      inst_rc = 'row';
 	    }
 
-	    order_name[inst_rc] = cgm.params.inst_order[tmp_rc];
+	    // use tmp_rc
+	    inst_order_name = inst_cgm.params.inst_order[tmp_rc];
 
-	    console.log(inst_rc + ' are in ' + order_name[inst_rc]);
+	    // use tmp_rc
+	    order_indexes[inst_rc] = inst_cgm.params.matrix.orders[inst_order_name + '_' + tmp_rc];
+	  });
+
+	  // console.log('cols')
+	  _.each(order_indexes['col'], function (inst_index) {
+
+	    // column names
+	    // console.log(row_data[inst_index].col_name);
+
+	  });
+
+	  // console.log('\n\n\n')
+
+	  // console.log('rows')
+	  _.each(order_indexes['row'], function (inst_index) {
+	    // row names
+	    // console.log(inst_cgm.params.matrix.matrix[inst_index].name)
 	  });
 		};
 

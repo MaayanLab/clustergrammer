@@ -52,7 +52,7 @@ module.exports = function col_reorder(cgm, col_selection, inst_term) {
   params.viz.y_scale.domain(tmp_sort);
 
   // save to custom row order
-  params.matrix.orders.custom_row = tmp_sort;
+  params.matrix.orders.custom_col = tmp_sort;
 
   var t;
 
