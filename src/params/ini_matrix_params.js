@@ -49,7 +49,7 @@ module.exports = function ini_matrix_params(params){
     });
 
     matrix.orders['alpha_'+inst_rc] = alpha_index;
-    matrix.orders['custom_'+inst_rc] = alpha_index;
+    // matrix.orders['custom_'+inst_rc] = alpha_index;
 
     var possible_orders = ['clust','rank'];
 
