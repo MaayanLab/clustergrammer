@@ -7,14 +7,15 @@ function check_setup_enrichr(inst_cgm){
     all_rows = all_rows.slice(0,10);
   }
 
-  var wait_time = 100;
+  var wait_unit = 500;
+  var wait_time = 0;
   // check each gene using Harmonizome
   _.each(all_rows, function(inst_name){
 
     // check_gene_request(inst_cgm, inst_name, run_ini_enrichr);
     setTimeout(check_gene_request, wait_time, inst_cgm, inst_name, run_ini_enrichr);
 
-    wait_time = wait_time + 100;
+    wait_time = wait_time + wait_unit;
 
   });
 

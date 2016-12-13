@@ -2972,30 +2972,24 @@ var Clustergrammer =
 	  // generate tiles in the current row
 	  var tile = d3.select(row_selection).selectAll('rect').data(row_values, function (d) {
 	    return d.col_name;
-	  }).enter().append('rect').attr('class', 'tile row_tile').attr('width', params.viz.rect_width).attr('height', params.viz.rect_height)
-	  // switch the color based on up/dn value
-	  .style('fill', function (d) {
-
+	  }).enter().append('rect').attr('class', 'tile row_tile').attr('width', params.viz.rect_width).attr('height', params.viz.rect_height).style('fill', function (d) {
+	    // switch the color based on up/dn value
 	    var inst_fill;
 	    if (d.value_orig === 'NaN') {
-	      // console.log('found NaN while making tiles');
 	      inst_fill = '#000000';
 	    } else {
 	      inst_fill = d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
 	    }
-
 	    return inst_fill;
 	  }).on('mouseover', function () {
 	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
 	      args[_key] = arguments[_key];
 	    }
-
 	    mouseover_tile(params, this, tip, args);
 	  }).on('mouseout', function () {
 	    mouseout_tile(params, this, tip);
 	  }).style('fill-opacity', function (d) {
 	    // calculate output opacity using the opacity scale
-
 	    var inst_opacity;
 	    if (d.value_orig === 'NaN') {
 	      // console.log('found NaN while making tiles');
@@ -3003,7 +2997,6 @@ var Clustergrammer =
 	    } else {
 	      inst_opacity = params.matrix.opacity_scale(Math.abs(d.value));
 	    }
-
 	    return inst_opacity;
 	  }).attr('transform', function (d) {
 	    var x_pos = params.viz.x_scale(d.pos_x) + 0.5 * params.viz.border_width;
