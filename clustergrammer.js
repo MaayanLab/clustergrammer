@@ -5394,7 +5394,7 @@ var Clustergrammer =
 
 	    // selection bar
 	    ///////////////////////////////
-	    d3.select('.row_cat_label_container').selectAll().data(viz.all_cats.row).enter().append('rect').classed('row_cat_super', true).classed('row_cat_selection_bar', true).style('height', bar_width + 'px').style('fill', 'green').style('width', '120px').style('opacity', 0).attr('transform', function (d) {
+	    d3.select(params.root + ' .row_cat_label_container').selectAll().data(viz.all_cats.row).enter().append('rect').classed('row_cat_super', true).classed('row_cat_selection_bar', true).style('height', bar_width + 'px').style('fill', 'green').style('width', '120px').style('opacity', 0).attr('transform', function (d) {
 	      var inst_y = unit_length * (parseInt(d.split('-')[1], 10) - 0.75);
 	      return 'translate(0,' + inst_y + ')';
 	    }).on('mouseover', function (d) {
@@ -5407,9 +5407,11 @@ var Clustergrammer =
 	    });
 	  }
 
-	  // disable mouseover
+	  // row category super-label mouseover
 	  //////////////////////////////////////
-	  d3.selectAll(params.root + ' .row_cat_selection_bar').call(cat_tip);
+	  if (d3.select(params.root + ' .row_cat_selection_bar').empty() === false) {
+	    d3.selectAll(params.root + ' .row_cat_selection_bar').call(cat_tip);
+	  }
 		};
 
 /***/ },

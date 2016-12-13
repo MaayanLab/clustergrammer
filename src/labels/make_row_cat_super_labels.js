@@ -122,7 +122,7 @@ module.exports = function make_row_cat_super_labels(cgm){
 
     // selection bar
     ///////////////////////////////
-    d3.select('.row_cat_label_container')
+    d3.select(params.root+' .row_cat_label_container')
       .selectAll()
       .data(viz.all_cats.row)
       .enter()
@@ -151,9 +151,11 @@ module.exports = function make_row_cat_super_labels(cgm){
 
   }
 
-  // disable mouseover
+  // row category super-label mouseover
   //////////////////////////////////////
-  d3.selectAll(params.root+' .row_cat_selection_bar')
-    .call(cat_tip);
+  if (d3.select(params.root+' .row_cat_selection_bar').empty() === false){
+    d3.selectAll(params.root+' .row_cat_selection_bar')
+      .call(cat_tip);
+  }
 
 };
