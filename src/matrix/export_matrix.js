@@ -4,11 +4,12 @@ module.exports = function export_matrix(){
 
   var saveAs = file_saver();
 
-  var inst_cgm = this;
+  var params = this.params;
+  var inst_matrix = params.matrix;
 
   // get order indexes
   var order_indexes = {}
-  var inst_order_name;
+  var inst_name;
   _.each(['row', 'col'], function(tmp_rc){
 
     var inst_rc;
@@ -20,44 +21,44 @@ module.exports = function export_matrix(){
     }
 
     // use tmp_rc
-    inst_order_name = inst_cgm.params.inst_order[tmp_rc];
+    inst_name = params.inst_order[tmp_rc];
 
     // use tmp_rc
-    order_indexes[inst_rc] = inst_cgm.params.matrix.orders[ inst_order_name+ '_' + tmp_rc ]
+    order_indexes[inst_rc] = inst_matrix.orders[ inst_name+ '_' + tmp_rc ];
 
   });
 
   var matrix_string = '\t';
 
-  var row_data = inst_cgm.params.matrix.matrix[0].row_data;
-
-  // console.log('cols')
+  var tmp_row_data = inst_matrix.matrix[0].row_data;
 
   _.each(order_indexes['col'], function(inst_index){
 
-    // console.log(row_data[inst_index].col_name);
-    matrix_string = matrix_string + row_data[inst_index].col_name + '\t';
+    // var col_name = tmp_row_data[inst_index].col_name;
+    var col_name = params.network_data.col_nodes[inst_index].name;
+
+    // console.log('* '+col_name)
+    // console.log(params.network_data.col_nodes[inst_index].name)
+
+    matrix_string = matrix_string + col_name + '\t';
 
   });
 
-  // console.log('\n\n\n')
 
+  var row_data;
   matrix_string = matrix_string + '\n';
 
-  // console.log('rows')
   _.each(order_indexes['row'], function(inst_index){
 
     // row names
-    row_data = inst_cgm.params.matrix.matrix[inst_index].row_data;
+    row_data = inst_matrix.matrix[inst_index].row_data;
 
-    // console.log('\n')
-    // console.log(inst_cgm.params.matrix.matrix[inst_index].name)
+    // var row_name = inst_matrix.matrix[inst_index].name;
+    var row_name = params.network_data.row_nodes[inst_index].name;
 
-    matrix_string = matrix_string + inst_cgm.params.matrix.matrix[inst_index].name + '\t'
-
+    matrix_string = matrix_string + row_name + '\t'
 
     _.each(order_indexes['col'], function(col_index){
-      // console.log(String(row_data[col_index].col_name) + ': ' + String(row_data[col_index].value))
 
       matrix_string = matrix_string + String(row_data[col_index].value) + '\t';
 
@@ -69,8 +70,7 @@ module.exports = function export_matrix(){
 
   console.log(matrix_string)
 
-  var blob = new Blob([matrix_string], {type: 'text/plain;charset=utf-8'});
-
-  saveAs(blob, 'clustergrammer.txt');
+  // var blob = new Blob([matrix_string], {type: 'text/plain;charset=utf-8'});
+  // saveAs(blob, 'clustergrammer.txt');
 
 };
