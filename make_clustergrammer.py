@@ -13,7 +13,7 @@ net = Network()
 # load matrix tsv file
 net.load_file('txt/rc_two_cats.txt')
 # net.load_file('txt/rc_val_cats.txt')
-# net.load_file('txt/mnist.txt')
+# net.load_file('txt/mniSt.txt')
 # net.load_file('txt/tuple_cats.txt')
 # net.load_file('txt/example_tsv.txt')
 

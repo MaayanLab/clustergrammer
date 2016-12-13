@@ -7,9 +7,15 @@ function check_setup_enrichr(inst_cgm){
     all_rows = all_rows.slice(0,10);
   }
 
+  var wait_time = 100;
   // check each gene using Harmonizome
   _.each(all_rows, function(inst_name){
-    check_gene_request(inst_cgm, inst_name, run_ini_enrichr);
+
+    // check_gene_request(inst_cgm, inst_name, run_ini_enrichr);
+    setTimeout(check_gene_request, wait_time, inst_cgm, inst_name, run_ini_enrichr);
+
+    wait_time = wait_time + 100;
+
   });
 
 }
@@ -32,19 +38,23 @@ function check_gene_request(inst_cgm, gene_symbol, check_enrichr_callback){
   var base_url = 'https://amp.pharm.mssm.edu/Harmonizome/api/1.0/gene/';
   var url = base_url + gene_symbol;
 
-  $.get(url, function(data) {
+  if (genes_were_found === false){
 
-    data = JSON.parse(data);
+    // console.log('making gene request - genes were not found yet')
 
-    if (data.name != undefined){
-      genes_were_found = true;
-    }
+    $.get(url, function(data) {
 
-    check_enrichr_callback(inst_cgm, gene_symbol);
+      data = JSON.parse(data);
 
-    return data;
+      if (data.name != undefined){
+        genes_were_found = true;
+      }
 
-  });
+      check_enrichr_callback(inst_cgm, gene_symbol);
+
+    });
+  }
+
 }
 
 function Enrichr_request(inst_cgm){
