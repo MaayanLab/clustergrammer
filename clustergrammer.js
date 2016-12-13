@@ -12566,8 +12566,6 @@ var Clustergrammer =
 	module.exports = function export_matrix() {
 
 	  var inst_cgm = this;
-	  // var inst_order = inst_cgm.params.matrix.orders.clust_row;
-	  var row_data = inst_cgm.params.matrix.matrix[0].row_data;
 
 	  // get order indexes
 	  var order_indexes = {};
@@ -12589,20 +12587,27 @@ var Clustergrammer =
 	    order_indexes[inst_rc] = inst_cgm.params.matrix.orders[inst_order_name + '_' + tmp_rc];
 	  });
 
-	  // console.log('cols')
+	  var row_data = inst_cgm.params.matrix.matrix[0].row_data;
+	  console.log('cols');
 	  _.each(order_indexes['col'], function (inst_index) {
 
 	    // column names
-	    // console.log(row_data[inst_index].col_name);
-
+	    console.log(row_data[inst_index].col_name);
 	  });
 
-	  // console.log('\n\n\n')
-
-	  // console.log('rows')
 	  _.each(order_indexes['row'], function (inst_index) {
+
 	    // row names
-	    // console.log(inst_cgm.params.matrix.matrix[inst_index].name)
+	    console.log('rows');
+	    console.log('\n\n\n');
+	    console.log(inst_cgm.params.matrix.matrix[inst_index].name);
+
+	    row_data = inst_cgm.params.matrix.matrix[inst_index].row_data;
+
+	    console.log('\n');
+	    _.each(order_indexes['col'], function (col_index) {
+	      console.log(String(row_data[col_index].col_name) + ': ' + String(row_data[col_index].value));
+	    });
 	  });
 		};
 
