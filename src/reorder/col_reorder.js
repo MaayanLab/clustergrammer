@@ -48,9 +48,11 @@ module.exports = function col_reorder(cgm, col_selection, inst_term) {
   });
 
 
-  // resort cols
-  ////////////////////////////
+  // resort rows (rows are reorderd by double clicking a col)
   params.viz.y_scale.domain(tmp_sort);
+
+  // save to custom row order
+  params.matrix.orders.custom_row = tmp_sort;
 
   var t;
 

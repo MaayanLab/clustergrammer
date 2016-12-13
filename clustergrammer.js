@@ -1724,6 +1724,7 @@ var Clustergrammer =
 	    });
 
 	    matrix.orders['alpha_' + inst_rc] = alpha_index;
+	    matrix.orders['custom_' + inst_rc] = alpha_index;
 
 	    var possible_orders = ['clust', 'rank'];
 
@@ -3803,8 +3804,11 @@ var Clustergrammer =
 	    return tmp_arr[b] - tmp_arr[a];
 	  });
 
-	  // resort cols
+	  // resort cols (cols are reorderd by double clicking a row)
 	  params.viz.x_scale.domain(tmp_sort);
+
+	  // save to custom col order
+	  params.matrix.orders.custom_col = tmp_sort;
 
 	  var t;
 
@@ -4538,9 +4542,11 @@ var Clustergrammer =
 	    return tmp_arr[b] - tmp_arr[a];
 	  });
 
-	  // resort cols
-	  ////////////////////////////
+	  // resort rows (rows are reorderd by double clicking a col)
 	  params.viz.y_scale.domain(tmp_sort);
+
+	  // save to custom row order
+	  params.matrix.orders.custom_row = tmp_sort;
 
 	  var t;
 
