@@ -71,7 +71,7 @@ module.exports =
 	__webpack_require__(175);
 	__webpack_require__(179);
 
-	/* clustergrammer v1.8.1
+	/* clustergrammer v1.8.2
 	 * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
 	 * (c) 2016
 	 */
@@ -10324,7 +10324,9 @@ module.exports =
 	  // alternate column entry
 	  for (var c_i = 0; c_i < order_indexes['col'].length; c_i++) {
 
-	    var inst_col = col_nodes[c_i];
+	    var inst_index = order_indexes['col'][c_i];
+
+	    var inst_col = col_nodes[inst_index];
 	    var col_name = make_full_name(inst_col, 'col');
 
 	    if (c_i < order_indexes['col'].length - 1) {
@@ -10357,10 +10359,14 @@ module.exports =
 
 	    // alternate data entry
 	    for (var r_i = 0; r_i < order_indexes['col'].length; r_i++) {
+
+	      // get the order
+	      var col_index = order_indexes['col'][r_i];
+
 	      if (r_i < order_indexes['col'].length - 1) {
-	        matrix_string = matrix_string + String(row_data[r_i].value) + '\t';
+	        matrix_string = matrix_string + String(row_data[col_index].value) + '\t';
 	      } else {
-	        matrix_string = matrix_string + String(row_data[r_i].value);
+	        matrix_string = matrix_string + String(row_data[col_index].value);
 	      }
 	    }
 
@@ -10390,6 +10396,8 @@ module.exports =
 
 	    return inst_name;
 	  }
+
+	  console.log(matrix_string);
 
 	  var blob = new Blob([matrix_string], { type: 'text/plain;charset=utf-8' });
 	  saveAs(blob, 'clustergrammer.txt');
