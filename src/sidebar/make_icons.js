@@ -31,7 +31,12 @@ module.exports = function make_icons(cgm, sidebar){
     .on('click',function(){
       $(params.root+' .share_info').modal('toggle');
       $('.share_url').val(window.location.href);
-    });
+    })
+    .classed('sidebar_tooltip', true)
+    .append('span')
+    .classed('sidebar_tooltip_text', true)
+    .html('Share')
+    .style('left','0%')
 
   row
     .append('div')
@@ -49,7 +54,12 @@ module.exports = function make_icons(cgm, sidebar){
 
       $(params.root+' .picture_info').modal('toggle');
 
-    });
+    })
+    .classed('sidebar_tooltip', true)
+    .append('span')
+    .classed('sidebar_tooltip_text', true)
+    .html('Take snapshot')
+    .style('left','-100%')
 
   row
     .append('div')
@@ -67,7 +77,12 @@ module.exports = function make_icons(cgm, sidebar){
 
       cgm.export_matrix();
 
-    });
+    })
+    .classed('sidebar_tooltip', true)
+    .append('span')
+    .classed('sidebar_tooltip_text', true)
+    .html('Download matrix')
+    .style('left','-200%')
 
   row
     .append('div')
@@ -86,9 +101,11 @@ module.exports = function make_icons(cgm, sidebar){
       // console.log('in crop mode')
       cgm.crop_matrix();
     })
-    // .append('span')
-    // .classed('tooltiptext', true)
-    // .html('something')
+    .classed('sidebar_tooltip', true)
+    .append('span')
+    .classed('sidebar_tooltip_text', true)
+    .html('Crop matrix')
+    .style('left','-400%')
 
     // save svg: example from: http://bl.ocks.org/pgiraud/8955139#profile.json
     ////////////////////////////////////////////////////////////////////////////

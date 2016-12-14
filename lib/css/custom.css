@@ -116,8 +116,8 @@ body{
 .sidebar_tooltip .sidebar_tooltip_text {
     visibility: hidden;
     width: 120px;
-    background-color: black;
-    opacity: 0.9;
+    background: rgba(0, 0, 0, 1);
+    /*opacity: 0.95;*/
     color: #fff;
     text-align: center;
     border-radius: 6px;
@@ -126,8 +126,12 @@ body{
     position: absolute;
     z-index: 1000;
     top:100%;
-    left:0%;
+    /*left:-400%;*/
+    font-size: 15px;
     /*margin-left: 60px;*/
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    font-weight: bold;
 }
 
 .sidebar_tooltip:hover .sidebar_tooltip_text {

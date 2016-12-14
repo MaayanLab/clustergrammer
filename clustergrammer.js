@@ -12267,7 +12267,11 @@ var Clustergrammer =
 	      reorder_text = 'Reorder Matrix';
 	    }
 
-	    reorder_section.append('div').classed('sidebar_button_text', true).style('clear', 'both').style('margin-top', '10px').html(rc_dict[inst_rc] + reorder_text).classed('sidebar_tooltip', true).append('span').classed('sidebar_tooltip_text', true).html('Reorder the rows based on different properties, e.g. sum.');
+	    reorder_section.append('div').classed('sidebar_button_text', true).style('clear', 'both').style('margin-top', '10px').html(rc_dict[inst_rc] + reorder_text);
+	    // .classed('sidebar_tooltip', true)
+	    // .append('span')
+	    // .classed('sidebar_tooltip_text', true)
+	    // .html('Reorder the rows based on different properties, e.g. sum.');
 
 	    inst_reorder = reorder_section.append('div').classed('btn-group-vertical', true).style('width', '100%').classed('toggle_' + inst_rc + '_order', true).attr('role', 'group');
 
@@ -12349,27 +12353,24 @@ var Clustergrammer =
 	  row.append('div').classed('clust_icon', true).style('float', 'left').style('width', width_pct).style('padding-left', padding_left).style('padding-right', padding_right).append('i').classed('fa', true).classed('fa-share-alt', true).classed('icon_buttons', true).style('font-size', '25px').on('click', function () {
 	    $(params.root + ' .share_info').modal('toggle');
 	    $('.share_url').val(window.location.href);
-	  });
+	  }).classed('sidebar_tooltip', true).append('span').classed('sidebar_tooltip_text', true).html('Share').style('left', '0%');
 
 	  row.append('div').classed('clust_icon', true).style('float', 'left').style('width', width_pct).style('padding-left', padding_left).style('padding-right', padding_right).append('i').classed('fa', true).classed('fa-camera', true).classed('icon_buttons', true).style('font-size', '25px').on('click', function () {
 
 	    $(params.root + ' .picture_info').modal('toggle');
-	  });
+	  }).classed('sidebar_tooltip', true).append('span').classed('sidebar_tooltip_text', true).html('Take snapshot').style('left', '-100%');
 
 	  row.append('div').classed('clust_icon', true).style('float', 'left').style('width', width_pct).style('padding-left', padding_left).style('padding-right', padding_right).append('i').classed('fa', true).classed('fa fa-cloud-download', true).classed('icon_buttons', true).style('font-size', '25px').on('click', function () {
 
 	    cgm.export_matrix();
-	  });
+	  }).classed('sidebar_tooltip', true).append('span').classed('sidebar_tooltip_text', true).html('Download matrix').style('left', '-200%');
 
 	  row.append('div').classed('clust_icon', true).style('float', 'left').style('width', width_pct).style('padding-left', padding_left).style('padding-right', '-5px').append('i')
 	  // .classed('tooltip', true)
 	  .classed('fa', true).classed('fa-crop', true).classed('icon_buttons', true).style('font-size', '25px').on('click', function () {
 	    // console.log('in crop mode')
 	    cgm.crop_matrix();
-	  });
-	  // .append('span')
-	  // .classed('tooltiptext', true)
-	  // .html('something')
+	  }).classed('sidebar_tooltip', true).append('span').classed('sidebar_tooltip_text', true).html('Crop matrix').style('left', '-400%');
 
 	  // save svg: example from: http://bl.ocks.org/pgiraud/8955139#profile.json
 	  ////////////////////////////////////////////////////////////////////////////
