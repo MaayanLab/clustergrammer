@@ -53,7 +53,7 @@ module.exports = function sidebar(cgm) {
       .style('margin-top','5px')
       .style('margin-bottom','2px')
       .style('text-align','justify')
-      .text(params.sidebar.about);
+      .html(params.sidebar.about);
   }
 
   sidebar

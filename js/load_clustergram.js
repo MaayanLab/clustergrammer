@@ -7,6 +7,8 @@ var hzome = ini_hzome();
 
 make_clust('mult_view.json');
 
+var about_string = 'Zoom, scroll, and click buttons to interact with the clustergram. <a href="http://amp.pharm.mssm.edu/clustergrammer/help"> <i class="fa fa-question-circle" aria-hidden="true"></i> </a>';
+
 function make_clust(inst_network){
 
     d3.json('json/'+inst_network, function(network_data){
@@ -15,7 +17,7 @@ function make_clust(inst_network){
       var args = {
         root: '#container-id-1',
         'network_data': network_data,
-        'about':'Zoom, scroll, and click buttons to interact with the clustergram.',
+        'about':about_string,
         'row_tip_callback':hzome.gene_info,
         'col_tip_callback':test_col_callback,
         'tile_tip_callback':test_tile_callback,

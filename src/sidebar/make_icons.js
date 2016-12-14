@@ -2,6 +2,7 @@ var save_svg_png = require('../screenshot/save_svg_png');
 var file_saver = require('../screenshot/file_saver');
 
 module.exports = function make_icons(cgm, sidebar){
+
   var params = cgm.params;
   var saveSvgAsPng = save_svg_png();
   var saveAs = file_saver();
@@ -14,22 +15,6 @@ module.exports = function make_icons(cgm, sidebar){
   var width_pct = '22%';
   var padding_left = '0px';
   var padding_right = '0px';
-
-  row
-    .append('div')
-    .classed('clust_icon',true)
-    .style('float','left')
-    .style('width', width_pct)
-    .style('padding-left', padding_left)
-    .style('padding-right', '-5px')
-    .append('a')
-    .attr('href','http://amp.pharm.mssm.edu/clustergrammer/help')
-    .attr('target','_blank')
-    .append('i')
-    .classed('fa',true)
-    .classed('fa-question-circle',true)
-    .classed('icon_buttons',true)
-    .style('font-size','25px');
 
   row
     .append('div')
@@ -84,6 +69,26 @@ module.exports = function make_icons(cgm, sidebar){
 
     });
 
+  row
+    .append('div')
+    .classed('clust_icon',true)
+    .style('float','left')
+    .style('width', width_pct)
+    .style('padding-left', padding_left)
+    .style('padding-right', '-5px')
+    .append('i')
+    // .classed('tooltip', true)
+    .classed('fa',true)
+    .classed('fa-crop',true)
+    .classed('icon_buttons',true)
+    .style('font-size','25px')
+    .on('click', function(){
+      // console.log('in crop mode')
+      cgm.crop_matrix();
+    })
+    // .append('span')
+    // .classed('tooltiptext', true)
+    // .html('something')
 
     // save svg: example from: http://bl.ocks.org/pgiraud/8955139#profile.json
     ////////////////////////////////////////////////////////////////////////////

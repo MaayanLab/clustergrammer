@@ -106,3 +106,30 @@ body{
 .modal-backdrop.in{
   display: none;
 }
+
+/* sidebar tooltips */
+.sidebar_tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.sidebar_tooltip .sidebar_tooltip_text {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    opacity: 0.9;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+
+    position: absolute;
+    z-index: 1000;
+    top:100%;
+    left:0%;
+    /*margin-left: 60px;*/
+}
+
+.sidebar_tooltip:hover .sidebar_tooltip_text {
+    visibility: visible;
+}

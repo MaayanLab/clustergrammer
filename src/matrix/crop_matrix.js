@@ -51,6 +51,12 @@ module.exports = function crop_matrix(){
 
     setTimeout(apply_crop, 500);
 
+    var brushing_extent = brush.extent();
+
+    console.log('here')
+    console.log(brushing_extent)
+
+
   }
 
   function apply_crop(){
