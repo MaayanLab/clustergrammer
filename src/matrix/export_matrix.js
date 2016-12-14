@@ -8,7 +8,7 @@ module.exports = function export_matrix(){
   var inst_matrix = params.matrix;
 
   // get order indexes
-  var order_indexes = {}
+  var order_indexes = {};
   var inst_name;
   _.each(['row', 'col'], function(tmp_rc){
 
@@ -17,7 +17,7 @@ module.exports = function export_matrix(){
     if (tmp_rc === 'row'){
       inst_rc = 'col';
     } else {
-      inst_rc = 'row'
+      inst_rc = 'row';
     }
 
     // use tmp_rc
@@ -41,14 +41,14 @@ module.exports = function export_matrix(){
   // });
 
   // alternate column entry
-  for (var c_i=0; c_i<order_indexes['col'].length; c_i++){
+  for (var c_i=0; c_i<order_indexes.col.length; c_i++){
 
-    var inst_index = order_indexes['col'][c_i];
+    var inst_index = order_indexes.col[c_i];
 
     var inst_col = col_nodes[inst_index];
     var col_name = make_full_name(inst_col, 'col');
 
-    if (c_i < order_indexes['col'].length-1){
+    if (c_i < order_indexes.col.length-1){
       matrix_string = matrix_string + col_name + '\t';
     } else {
       matrix_string = matrix_string + col_name ;
@@ -59,7 +59,7 @@ module.exports = function export_matrix(){
   var row_data;
   matrix_string = matrix_string + '\n';
 
-  _.each(order_indexes['row'], function(inst_index){
+  _.each(order_indexes.row, function(inst_index){
 
     // row names
     row_data = inst_matrix.matrix[inst_index].row_data;
@@ -70,7 +70,7 @@ module.exports = function export_matrix(){
     // var row_name = inst_row.name;
     var row_name = make_full_name(inst_row, 'row');
 
-    matrix_string = matrix_string + row_name + '\t'
+    matrix_string = matrix_string + row_name + '\t';
 
     // // original data entry
     // _.each(order_indexes['col'], function(col_index){
@@ -78,12 +78,12 @@ module.exports = function export_matrix(){
     // })
 
     // alternate data entry
-    for (var r_i=0; r_i<order_indexes['col'].length; r_i++){
+    for (var r_i=0; r_i<order_indexes.col.length; r_i++){
 
       // get the order
-      var col_index = order_indexes['col'][r_i];
+      var col_index = order_indexes.col[r_i];
 
-      if (r_i < order_indexes['col'].length-1){
+      if (r_i < order_indexes.col.length-1){
         matrix_string = matrix_string + String(row_data[col_index].value) + '\t';
       } else {
         matrix_string = matrix_string + String(row_data[col_index].value);
@@ -115,12 +115,10 @@ module.exports = function export_matrix(){
 
     }
 
-    inst_name = inst_name + ')'
+    inst_name = inst_name + ')';
 
     return inst_name;
   }
-
-  console.log(matrix_string)
 
   var blob = new Blob([matrix_string], {type: 'text/plain;charset=utf-8'});
   saveAs(blob, 'clustergrammer.txt');

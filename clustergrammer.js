@@ -71,7 +71,7 @@ var Clustergrammer =
 	__webpack_require__(175);
 	__webpack_require__(179);
 
-	/* clustergrammer v1.8.2
+	/* clustergrammer v1.8.3
 	 * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
 	 * (c) 2016
 	 */
@@ -10322,14 +10322,14 @@ var Clustergrammer =
 	  // });
 
 	  // alternate column entry
-	  for (var c_i = 0; c_i < order_indexes['col'].length; c_i++) {
+	  for (var c_i = 0; c_i < order_indexes.col.length; c_i++) {
 
-	    var inst_index = order_indexes['col'][c_i];
+	    var inst_index = order_indexes.col[c_i];
 
 	    var inst_col = col_nodes[inst_index];
 	    var col_name = make_full_name(inst_col, 'col');
 
-	    if (c_i < order_indexes['col'].length - 1) {
+	    if (c_i < order_indexes.col.length - 1) {
 	      matrix_string = matrix_string + col_name + '\t';
 	    } else {
 	      matrix_string = matrix_string + col_name;
@@ -10339,7 +10339,7 @@ var Clustergrammer =
 	  var row_data;
 	  matrix_string = matrix_string + '\n';
 
-	  _.each(order_indexes['row'], function (inst_index) {
+	  _.each(order_indexes.row, function (inst_index) {
 
 	    // row names
 	    row_data = inst_matrix.matrix[inst_index].row_data;
@@ -10358,12 +10358,12 @@ var Clustergrammer =
 	    // })
 
 	    // alternate data entry
-	    for (var r_i = 0; r_i < order_indexes['col'].length; r_i++) {
+	    for (var r_i = 0; r_i < order_indexes.col.length; r_i++) {
 
 	      // get the order
-	      var col_index = order_indexes['col'][r_i];
+	      var col_index = order_indexes.col[r_i];
 
-	      if (r_i < order_indexes['col'].length - 1) {
+	      if (r_i < order_indexes.col.length - 1) {
 	        matrix_string = matrix_string + String(row_data[col_index].value) + '\t';
 	      } else {
 	        matrix_string = matrix_string + String(row_data[col_index].value);
@@ -10396,8 +10396,6 @@ var Clustergrammer =
 
 	    return inst_name;
 	  }
-
-	  console.log(matrix_string);
 
 	  var blob = new Blob([matrix_string], { type: 'text/plain;charset=utf-8' });
 	  saveAs(blob, 'clustergrammer.txt');
@@ -12358,7 +12356,6 @@ var Clustergrammer =
 
 	  row.append('div').classed('clust_icon', true).style('float', 'left').style('width', width_pct).style('padding-left', padding_left).style('padding-right', padding_right).append('i').classed('fa', true).classed('fa fa-cloud-download', true).classed('icon_buttons', true).style('font-size', '25px').on('click', function () {
 
-	    console.log('download data');
 	    cgm.export_matrix();
 	  });
 

@@ -80,7 +80,6 @@ module.exports = function make_icons(cgm, sidebar){
     .style('font-size','25px')
     .on('click', function() {
 
-      console.log('download data')
       cgm.export_matrix();
 
     });
