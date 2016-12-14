@@ -63,7 +63,7 @@ module.exports = function sidebar(cgm) {
 
   make_modals(params);
   if (params.sidebar.icons){
-    make_icons(params, sidebar);
+    make_icons(cgm, sidebar);
   }
 
   set_up_reorder(params, sidebar);

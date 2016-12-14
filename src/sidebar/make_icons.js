@@ -1,8 +1,8 @@
 var save_svg_png = require('../screenshot/save_svg_png');
 var file_saver = require('../screenshot/file_saver');
 
-module.exports = function make_icons(params, sidebar){
-
+module.exports = function make_icons(cgm, sidebar){
+  var params = cgm.params;
   var saveSvgAsPng = save_svg_png();
   var saveAs = file_saver();
 
@@ -81,7 +81,7 @@ module.exports = function make_icons(params, sidebar){
     .on('click', function() {
 
       console.log('download data')
-      // $(params.root+' .picture_info').modal('toggle');
+      cgm.export_matrix();
 
     });
 

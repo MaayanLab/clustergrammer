@@ -11577,7 +11577,7 @@ var Clustergrammer =
 
 	  make_modals(params);
 	  if (params.sidebar.icons) {
-	    make_icons(params, sidebar);
+	    make_icons(cgm, sidebar);
 	  }
 
 	  set_up_reorder(params, sidebar);
@@ -11987,8 +11987,8 @@ var Clustergrammer =
 	var save_svg_png = __webpack_require__(189);
 	var file_saver = __webpack_require__(190);
 
-	module.exports = function make_icons(params, sidebar) {
-
+	module.exports = function make_icons(cgm, sidebar) {
+	  var params = cgm.params;
 	  var saveSvgAsPng = save_svg_png();
 	  var saveAs = file_saver();
 
@@ -12013,7 +12013,7 @@ var Clustergrammer =
 	  row.append('div').classed('clust_icon', true).style('float', 'left').style('width', width_pct).style('padding-left', padding_left).style('padding-right', padding_right).append('i').classed('fa', true).classed('fa fa-cloud-download', true).classed('icon_buttons', true).style('font-size', '25px').on('click', function () {
 
 	    console.log('download data');
-	    // $(params.root+' .picture_info').modal('toggle');
+	    cgm.export_matrix();
 	  });
 
 	  // save svg: example from: http://bl.ocks.org/pgiraud/8955139#profile.json
