@@ -59,18 +59,19 @@ module.exports =
 	var reset_cats = __webpack_require__(164);
 	var two_translate_zoom = __webpack_require__(84);
 	var external_update_view = __webpack_require__(166);
+	var export_matrix = __webpack_require__(169);
 
 	// moved d3.slider to src
-	d3.slider = __webpack_require__(169);
+	d3.slider = __webpack_require__(171);
 
 	/* eslint-disable */
 
-	var awesomplete = __webpack_require__(171);
+	var awesomplete = __webpack_require__(173);
 	// getting css from src
-	__webpack_require__(173);
-	__webpack_require__(177);
+	__webpack_require__(175);
+	__webpack_require__(179);
 
-	/* clustergrammer v1.8.0
+	/* clustergrammer v1.8.1
 	 * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
 	 * (c) 2016
 	 */
@@ -93,7 +94,7 @@ module.exports =
 	  cgm.config = config;
 
 	  if (cgm.params.use_sidebar) {
-	    var make_sidebar = __webpack_require__(179);
+	    var make_sidebar = __webpack_require__(181);
 	    make_sidebar(cgm);
 	  }
 
@@ -134,6 +135,7 @@ module.exports =
 	  cgm.update_cats = run_update_cats;
 	  cgm.reset_cats = reset_cats;
 	  cgm.zoom = zoom_api;
+	  cgm.export_matrix = export_matrix;
 
 	  return cgm;
 	}
@@ -2972,30 +2974,24 @@ module.exports =
 	  // generate tiles in the current row
 	  var tile = d3.select(row_selection).selectAll('rect').data(row_values, function (d) {
 	    return d.col_name;
-	  }).enter().append('rect').attr('class', 'tile row_tile').attr('width', params.viz.rect_width).attr('height', params.viz.rect_height)
-	  // switch the color based on up/dn value
-	  .style('fill', function (d) {
-
+	  }).enter().append('rect').attr('class', 'tile row_tile').attr('width', params.viz.rect_width).attr('height', params.viz.rect_height).style('fill', function (d) {
+	    // switch the color based on up/dn value
 	    var inst_fill;
 	    if (d.value_orig === 'NaN') {
-	      // console.log('found NaN while making tiles');
 	      inst_fill = '#000000';
 	    } else {
 	      inst_fill = d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
 	    }
-
 	    return inst_fill;
 	  }).on('mouseover', function () {
 	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
 	      args[_key] = arguments[_key];
 	    }
-
 	    mouseover_tile(params, this, tip, args);
 	  }).on('mouseout', function () {
 	    mouseout_tile(params, this, tip);
 	  }).style('fill-opacity', function (d) {
 	    // calculate output opacity using the opacity scale
-
 	    var inst_opacity;
 	    if (d.value_orig === 'NaN') {
 	      // console.log('found NaN while making tiles');
@@ -3003,7 +2999,6 @@ module.exports =
 	    } else {
 	      inst_opacity = params.matrix.opacity_scale(Math.abs(d.value));
 	    }
-
 	    return inst_opacity;
 	  }).attr('transform', function (d) {
 	    var x_pos = params.viz.x_scale(d.pos_x) + 0.5 * params.viz.border_width;
@@ -3424,9 +3419,19 @@ module.exports =
 	    nw: direction_nw,
 	    ne: direction_ne,
 	    sw: direction_sw,
-	    se: direction_se
+	    se: direction_se,
+	    south_custom: direction_south_custom
 	  }),
 	      directions = direction_callbacks.keys();
+
+	  function direction_south_custom() {
+	    var bbox = getScreenBBox();
+
+	    return {
+	      top: bbox.s.y,
+	      left: bbox.s.x
+	    };
+	  }
 
 	  function direction_n() {
 	    var bbox = getScreenBBox();
@@ -3798,8 +3803,11 @@ module.exports =
 	    return tmp_arr[b] - tmp_arr[a];
 	  });
 
-	  // resort cols
+	  // resort cols (cols are reorderd by double clicking a row)
 	  params.viz.x_scale.domain(tmp_sort);
+
+	  // save to custom col order
+	  params.matrix.orders.custom_row = tmp_sort;
 
 	  var t;
 
@@ -4533,9 +4541,11 @@ module.exports =
 	    return tmp_arr[b] - tmp_arr[a];
 	  });
 
-	  // resort cols
-	  ////////////////////////////
+	  // resort rows (rows are reorderd by double clicking a col)
 	  params.viz.y_scale.domain(tmp_sort);
+
+	  // save to custom row order
+	  params.matrix.orders.custom_col = tmp_sort;
 
 	  var t;
 
@@ -5066,11 +5076,13 @@ module.exports =
 	module.exports = function get_cat_title(viz, inst_cat, inst_rc) {
 	  var cat_title;
 
-	  // make default title if none is given 
+	  // make default title if none is given
 	  if (viz.cat_names[inst_rc][inst_cat] === inst_cat) {
 	    var inst_num = parseInt(inst_cat.split('-')[1], 10) + 1;
+	    // generate placeholder title
 	    cat_title = 'Category ' + inst_num;
 	  } else {
+	    // make real title
 	    cat_title = viz.cat_names[inst_rc][inst_cat];
 	  }
 
@@ -5288,9 +5300,7 @@ module.exports =
 	'use strict';
 
 	var get_cat_title = __webpack_require__(79);
-
-	// var d3_tip_custom = require('../tooltip/d3_tip_custom');
-	// var cat_tooltip_text = require('../dendrogram/cat_tooltip_text');
+	var d3_tip_custom = __webpack_require__(58);
 
 	module.exports = function make_row_cat_super_labels(cgm) {
 
@@ -5304,7 +5314,7 @@ module.exports =
 	    d3.select(cgm.params.viz.viz_svg).append('g').classed('row_cat_label_container', true);
 
 	    // append background section for optional value-bars (e.g. enrichment pvals)
-	    d3.select(cgm.params.viz.viz_svg + ' .row_cat_label_container').append('g').classed('row_cat_label_bars', true);
+	    d3.select(cgm.params.viz.viz_svg + ' .row_cat_label_container').append('g').classed('row_cat_label_bar_container', true);
 	  }
 
 	  var x_offset = viz.clust.margin.left + viz.clust.dim.width + viz.uni_margin;
@@ -5321,54 +5331,85 @@ module.exports =
 
 	  // clear old categories
 	  d3.selectAll(params.root + ' .row_cat_label_container text').remove();
-	  d3.selectAll(params.root + ' .row_cat_label_bars rect').remove();
+	  d3.selectAll(params.root + ' .row_cat_selection_bar').remove();
+	  // d3.selectAll(params.root+' .row_cat_label_bar_container rect').remove();
 
-	  // // d3-tooltip
-	  // var cat_tip = d3_tip_custom()
-	  //   .attr('class',function(){
-	  //     var root_tip_selector = params.viz.root_tips.replace('.','');
-	  //     var class_string = root_tip_selector + ' d3-tip row_cat_tip_super';
-	  //     return class_string;
-	  //   })
-	  //   .direction('e')
-	  //   .offset([5,0])
-	  //   .style('display','block')
-	  //   .style('opacity', 1)
-	  //   .html(function(d){
-	  //     console.log('mouseover title d: ' + d)
-	  //     // return cat_tooltip_text(params, d, this, 'row');
-	  //     return get_cat_title(viz, d, 'row');
-	  //   });
+	  // d3-tooltip
+	  var tmp_y_offset = 50; // viz.clust.margin.top - viz.uni_margin;
+	  var tmp_x_offset = -75;
+	  var cat_tip = d3_tip_custom().attr('class', function () {
+	    var root_tip_selector = params.viz.root_tips.replace('.', '');
+	    var class_string = root_tip_selector + ' d3-tip row_cat_tip_super';
+	    return class_string;
+	  }).direction('south_custom').offset([tmp_y_offset, tmp_x_offset]).style('display', 'none').style('opacity', 1).html(function (d) {
 
+	    var full_string;
+
+	    var tmp_string = params.network_data.row_nodes[0][d];
+
+	    if (tmp_string.indexOf('<p>') > -1) {
+
+	      var start_string = tmp_string.split(': ')[0];
+	      var end_string = tmp_string.split('<p>')[1];
+
+	      full_string = start_string + '<p>' + end_string;
+	    } else {
+
+	      full_string = get_cat_title(viz, d, 'row');
+	    }
+
+	    return full_string;
+	  });
+
+	  var unit_length = extra_y_room * viz.cat_room.symbol_width;
+	  var bar_width = unit_length * 0.9;
 
 	  // do not show row label categories if you are viewing a similarity matrix
 	  if (viz.sim_mat === false) {
 
-	    d3.select(params.root + ' .row_cat_label_container').selectAll().data(viz.all_cats.row).enter().append('text').classed('row_cat_super', true).style('font-size', cat_text_size + 'px').style('opacity', cat_super_opacity).style('cursor', 'default').attr('transform', function (d) {
+	    d3.select(params.root + ' .row_cat_label_container').selectAll().data(viz.all_cats.row).enter().append('text').style('width', '100px').style('height', bar_width + 'px').classed('row_cat_super', true).style('font-size', cat_text_size + 'px').style('opacity', cat_super_opacity).style('cursor', 'default').attr('transform', function (d) {
 	      var inst_y = extra_y_room * viz.cat_room.symbol_width * parseInt(d.split('-')[1], 10);
 	      return 'translate(0,' + inst_y + ')';
 	    }).text(function (d) {
 	      return get_cat_title(viz, d, 'row');
 	    });
-	    // .on('mouseover', cat_tip.show)
 
-	    var unit_length = extra_y_room * viz.cat_room.symbol_width;
-	    var bar_width = unit_length * 0.9;
+	    // // optional bar behind name
+	    // ///////////////////////////////
+	    // d3.select('.row_cat_label_bar_container')
+	    //   .selectAll()
+	    //   .data(viz.all_cats.row)
+	    //   .enter()
+	    //   .append('rect')
+	    //   .style('height', bar_width +'px')
+	    //   .style('fill', 'green')
+	    //   .style('width','60px')
+	    //   .style('opacity', 0)
+	    //   .attr('transform', function(d){
+	    //     var inst_y = unit_length * (parseInt( d.split('-')[1], 10 ) -0.75 );
+	    //     return 'translate(0,'+inst_y+')';
+	    //   })
 
-	    // optional bar behind name
+	    // selection bar
 	    ///////////////////////////////
-	    d3.select('.row_cat_label_bars').selectAll().data(viz.all_cats.row).enter().append('rect').style('height', bar_width + 'px').style('fill', 'red').style('width', '70px').style('opacity', 0.0).attr('transform', function (d) {
+	    d3.select(params.root + ' .row_cat_label_container').selectAll().data(viz.all_cats.row).enter().append('rect').classed('row_cat_super', true).classed('row_cat_selection_bar', true).style('height', bar_width + 'px').style('fill', 'green').style('width', '120px').style('opacity', 0).attr('transform', function (d) {
 	      var inst_y = unit_length * (parseInt(d.split('-')[1], 10) - 0.75);
-	      // var inst_y = -10;
 	      return 'translate(0,' + inst_y + ')';
+	    }).on('mouseover', function (d) {
+	      d3.selectAll('.row_cat_tip_super').style('display', 'block');
+	      cat_tip.show(d);
+	    }).on('mouseout', function () {
+	      cat_tip.hide(this);
+	      // might not need
+	      d3.selectAll('.d3-tip').style('display', 'none');
 	    });
 	  }
 
-	  // // disable mouseover
-	  // //////////////////////////////////////
-	  // d3.select(params.root+' .row_cat_label_container')
-	  //   .selectAll('.row_cat_super')
-	  //   .call(cat_tip);
+	  // row category super-label mouseover
+	  //////////////////////////////////////
+	  if (d3.select(params.root + ' .row_cat_selection_bar').empty() === false) {
+	    d3.selectAll(params.root + ' .row_cat_selection_bar').call(cat_tip);
+	  }
 		};
 
 /***/ },
@@ -6920,7 +6961,6 @@ module.exports =
 	'use strict';
 
 	var get_cat_title = __webpack_require__(79);
-	var utils = __webpack_require__(2);
 
 	module.exports = function cat_tooltip_text(params, inst_data, inst_selection, inst_rc) {
 
@@ -6940,15 +6980,6 @@ module.exports =
 	  }
 
 	  var cat_string = cat_title + ': ' + cat_name;
-
-	  var pval_name = inst_cat.replace('-', '_') + '_pval';
-	  var inst_pval;
-	  if (utils.has(inst_data, pval_name)) {
-	    inst_pval = inst_data[inst_cat.replace('-', '_') + '_pval'];
-	    // there are three significant digits in the pval
-	    inst_pval = inst_pval.toFixed(3);
-	    cat_string = cat_string + ' (pval: ' + String(inst_pval) + ')';
-	  }
 
 	  d3.select(inst_selection).classed('hovering', true);
 
@@ -9416,7 +9447,7 @@ module.exports =
 	      if (utils.has(inst_cat_data, 'pval')) {
 
 	        var inst_pval = inst_cat_data.pval.toExponential();
-	        inst_full_cat = inst_cat_title + ': ' + inst_category + '; Pval ' + String(inst_pval);
+	        inst_full_cat = inst_cat_title + ': ' + inst_category + '<p> Pval ' + String(inst_pval) + '</p>';
 	      } else {
 
 	        inst_full_cat = inst_cat_title + ': ' + inst_category;
@@ -10247,6 +10278,344 @@ module.exports =
 /* 169 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+
+	var file_saver = __webpack_require__(170);
+
+	module.exports = function export_matrix() {
+
+	  var saveAs = file_saver();
+
+	  var params = this.params;
+	  var inst_matrix = params.matrix;
+
+	  // get order indexes
+	  var order_indexes = {};
+	  var inst_name;
+	  _.each(['row', 'col'], function (tmp_rc) {
+
+	    var inst_rc;
+	    // row/col names are reversed in saved orders
+	    if (tmp_rc === 'row') {
+	      inst_rc = 'col';
+	    } else {
+	      inst_rc = 'row';
+	    }
+
+	    // use tmp_rc
+	    inst_name = params.inst_order[tmp_rc];
+
+	    // use tmp_rc
+	    order_indexes[inst_rc] = inst_matrix.orders[inst_name + '_' + tmp_rc];
+	  });
+
+	  var matrix_string = '\t';
+	  var row_nodes = params.network_data.row_nodes;
+	  var col_nodes = params.network_data.col_nodes;
+	  var cat_name;
+
+	  // // original column entry
+	  // _.each(order_indexes['col'], function(inst_index){
+	  //   var inst_col = col_nodes[inst_index];
+	  //   var col_name = make_full_name(inst_col, 'col');
+	  //   matrix_string = matrix_string + col_name + '\t';
+	  // });
+
+	  // alternate column entry
+	  for (var c_i = 0; c_i < order_indexes['col'].length; c_i++) {
+
+	    var inst_col = col_nodes[c_i];
+	    var col_name = make_full_name(inst_col, 'col');
+
+	    if (c_i < order_indexes['col'].length - 1) {
+	      matrix_string = matrix_string + col_name + '\t';
+	    } else {
+	      matrix_string = matrix_string + col_name;
+	    }
+	  }
+
+	  var row_data;
+	  matrix_string = matrix_string + '\n';
+
+	  _.each(order_indexes['row'], function (inst_index) {
+
+	    // row names
+	    row_data = inst_matrix.matrix[inst_index].row_data;
+
+	    // var row_name = inst_matrix.matrix[inst_index].name;
+	    var inst_row = row_nodes[inst_index];
+
+	    // var row_name = inst_row.name;
+	    var row_name = make_full_name(inst_row, 'row');
+
+	    matrix_string = matrix_string + row_name + '\t';
+
+	    // // original data entry
+	    // _.each(order_indexes['col'], function(col_index){
+	    //   matrix_string = matrix_string + String(row_data[col_index].value) + '\t';
+	    // })
+
+	    // alternate data entry
+	    for (var r_i = 0; r_i < order_indexes['col'].length; r_i++) {
+	      if (r_i < order_indexes['col'].length - 1) {
+	        matrix_string = matrix_string + String(row_data[r_i].value) + '\t';
+	      } else {
+	        matrix_string = matrix_string + String(row_data[r_i].value);
+	      }
+	    }
+
+	    matrix_string = matrix_string + '\n';
+	  });
+
+	  function make_full_name(inst_node, inst_rc) {
+
+	    var inst_name = inst_node.name;
+
+	    var num_cats = params.viz.all_cats[inst_rc].length;
+
+	    // make tuple if necessary
+	    if (num_cats > 0) {
+
+	      inst_name = "('" + inst_name + "'";
+
+	      for (var cat_index = 0; cat_index < num_cats; cat_index++) {
+	        cat_name = 'cat-' + String(cat_index);
+
+	        // inst_name =  inst_name + ", " + inst_node[cat_name];
+	        inst_name = inst_name + ", '" + inst_node[cat_name] + "'";
+	      }
+	    }
+
+	    inst_name = inst_name + ')';
+
+	    return inst_name;
+	  }
+
+	  var blob = new Blob([matrix_string], { type: 'text/plain;charset=utf-8' });
+	  saveAs(blob, 'clustergrammer.txt');
+		};
+
+/***/ },
+/* 170 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	module.exports = function file_saver() {
+	  /* eslint-disable */
+	  /* FileSaver.js
+	   * A saveAs() FileSaver implementation.
+	   * 2013-01-23
+	   * 
+	   * By Eli Grey, http://eligrey.com
+	   * License: X11/MIT
+	   *   See LICENSE.md
+	   */
+
+	  /*global self */
+	  /*jslint bitwise: true, regexp: true, confusion: true, es5: true, vars: true, white: true,
+	    plusplus: true */
+
+	  /*! @source http://purl.eligrey.com/github/FileSaver.js/blob/master/FileSaver.js */
+
+	  var saveAs = saveAs || navigator.msSaveBlob && navigator.msSaveBlob.bind(navigator) || function (view) {
+	    "use strict";
+
+	    var doc = view.document
+	    // only get URL when necessary in case BlobBuilder.js hasn't overridden it yet
+	    ,
+	        get_URL = function get_URL() {
+	      return view.URL || view.webkitURL || view;
+	    },
+	        URL = view.URL || view.webkitURL || view,
+	        save_link = doc.createElementNS("http://www.w3.org/1999/xhtml", "a"),
+	        can_use_save_link = "download" in save_link,
+	        click = function click(node) {
+	      var event = doc.createEvent("MouseEvents");
+	      event.initMouseEvent("click", true, false, view, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+	      node.dispatchEvent(event);
+	    },
+	        webkit_req_fs = view.webkitRequestFileSystem,
+	        req_fs = view.requestFileSystem || webkit_req_fs || view.mozRequestFileSystem,
+	        throw_outside = function throw_outside(ex) {
+	      (view.setImmediate || view.setTimeout)(function () {
+	        throw ex;
+	      }, 0);
+	    },
+	        force_saveable_type = "application/octet-stream",
+	        fs_min_size = 0,
+	        deletion_queue = [],
+	        process_deletion_queue = function process_deletion_queue() {
+	      var i = deletion_queue.length;
+	      while (i--) {
+	        var file = deletion_queue[i];
+	        if (typeof file === "string") {
+	          // file is an object URL
+	          URL.revokeObjectURL(file);
+	        } else {
+	          // file is a File
+	          file.remove();
+	        }
+	      }
+	      deletion_queue.length = 0; // clear queue
+	    },
+	        dispatch = function dispatch(filesaver, event_types, event) {
+	      event_types = [].concat(event_types);
+	      var i = event_types.length;
+	      while (i--) {
+	        var listener = filesaver["on" + event_types[i]];
+	        if (typeof listener === "function") {
+	          try {
+	            listener.call(filesaver, event || filesaver);
+	          } catch (ex) {
+	            throw_outside(ex);
+	          }
+	        }
+	      }
+	    },
+	        FileSaver = function FileSaver(blob, name) {
+	      // First try a.download, then web filesystem, then object URLs
+	      var filesaver = this,
+	          type = blob.type,
+	          blob_changed = false,
+	          object_url,
+	          target_view,
+	          get_object_url = function get_object_url() {
+	        var object_url = get_URL().createObjectURL(blob);
+	        deletion_queue.push(object_url);
+	        return object_url;
+	      },
+	          dispatch_all = function dispatch_all() {
+	        dispatch(filesaver, "writestart progress write writeend".split(" "));
+	      }
+	      // on any filesys errors revert to saving with object URLs
+	      ,
+	          fs_error = function fs_error() {
+	        // don't create more object URLs than needed
+	        if (blob_changed || !object_url) {
+	          object_url = get_object_url(blob);
+	        }
+	        if (target_view) {
+	          target_view.location.href = object_url;
+	        }
+	        filesaver.readyState = filesaver.DONE;
+	        dispatch_all();
+	      },
+	          abortable = function abortable(func) {
+	        return function () {
+	          if (filesaver.readyState !== filesaver.DONE) {
+	            return func.apply(this, arguments);
+	          }
+	        };
+	      },
+	          create_if_not_found = { create: true, exclusive: false },
+	          slice;
+	      filesaver.readyState = filesaver.INIT;
+	      if (!name) {
+	        name = "download";
+	      }
+	      if (can_use_save_link) {
+	        object_url = get_object_url(blob);
+	        save_link.href = object_url;
+	        save_link.download = name;
+	        click(save_link);
+	        filesaver.readyState = filesaver.DONE;
+	        dispatch_all();
+	        return;
+	      }
+	      // Object and web filesystem URLs have a problem saving in Google Chrome when
+	      // viewed in a tab, so I force save with application/octet-stream
+	      // http://code.google.com/p/chromium/issues/detail?id=91158
+	      if (view.chrome && type && type !== force_saveable_type) {
+	        slice = blob.slice || blob.webkitSlice;
+	        blob = slice.call(blob, 0, blob.size, force_saveable_type);
+	        blob_changed = true;
+	      }
+	      // Since I can't be sure that the guessed media type will trigger a download
+	      // in WebKit, I append .download to the filename.
+	      // https://bugs.webkit.org/show_bug.cgi?id=65440
+	      if (webkit_req_fs && name !== "download") {
+	        name += ".download";
+	      }
+	      if (type === force_saveable_type || webkit_req_fs) {
+	        target_view = view;
+	      } else {
+	        target_view = view.open();
+	      }
+	      if (!req_fs) {
+	        fs_error();
+	        return;
+	      }
+	      fs_min_size += blob.size;
+	      req_fs(view.TEMPORARY, fs_min_size, abortable(function (fs) {
+	        fs.root.getDirectory("saved", create_if_not_found, abortable(function (dir) {
+	          var save = function save() {
+	            dir.getFile(name, create_if_not_found, abortable(function (file) {
+	              file.createWriter(abortable(function (writer) {
+	                writer.onwriteend = function (event) {
+	                  target_view.location.href = file.toURL();
+	                  deletion_queue.push(file);
+	                  filesaver.readyState = filesaver.DONE;
+	                  dispatch(filesaver, "writeend", event);
+	                };
+	                writer.onerror = function () {
+	                  var error = writer.error;
+	                  if (error.code !== error.ABORT_ERR) {
+	                    fs_error();
+	                  }
+	                };
+	                "writestart progress write abort".split(" ").forEach(function (event) {
+	                  writer["on" + event] = filesaver["on" + event];
+	                });
+	                writer.write(blob);
+	                filesaver.abort = function () {
+	                  writer.abort();
+	                  filesaver.readyState = filesaver.DONE;
+	                };
+	                filesaver.readyState = filesaver.WRITING;
+	              }), fs_error);
+	            }), fs_error);
+	          };
+	          dir.getFile(name, { create: false }, abortable(function (file) {
+	            // delete file if it already exists
+	            file.remove();
+	            save();
+	          }), abortable(function (ex) {
+	            if (ex.code === ex.NOT_FOUND_ERR) {
+	              save();
+	            } else {
+	              fs_error();
+	            }
+	          }));
+	        }), fs_error);
+	      }), fs_error);
+	    },
+	        FS_proto = FileSaver.prototype,
+	        saveAs = function saveAs(blob, name) {
+	      return new FileSaver(blob, name);
+	    };
+	    FS_proto.abort = function () {
+	      var filesaver = this;
+	      filesaver.readyState = filesaver.DONE;
+	      dispatch(filesaver, "abort");
+	    };
+	    FS_proto.readyState = FS_proto.INIT = 0;
+	    FS_proto.WRITING = 1;
+	    FS_proto.DONE = 2;
+
+	    FS_proto.error = FS_proto.onwritestart = FS_proto.onprogress = FS_proto.onwrite = FS_proto.onabort = FS_proto.onerror = FS_proto.onwriteend = null;
+
+	    view.addEventListener("unload", process_deletion_queue, false);
+	    return saveAs;
+	  }(self);
+
+	  return saveAs;
+		};
+
+/***/ },
+/* 171 */
+/***/ function(module, exports, __webpack_require__) {
+
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -10260,7 +10629,7 @@ module.exports =
 	(function (root, factory) {
 	  if (true) {
 	    // AMD. Register as an anonymous module.
-	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(170)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(172)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	  } else if ((typeof exports === 'undefined' ? 'undefined' : _typeof(exports)) === 'object') {
 	    if (process.browser) {
 	      // Browserify. Import css too using cssify.
@@ -10646,13 +11015,13 @@ module.exports =
 	});
 
 /***/ },
-/* 170 */
+/* 172 */
 /***/ function(module, exports) {
 
 	module.exports = require("d3");
 
 /***/ },
-/* 171 */
+/* 173 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {"use strict";
@@ -11092,10 +11461,10 @@ module.exports =
 
 		return _;
 		})();
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(172)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(174)(module)))
 
 /***/ },
-/* 172 */
+/* 174 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -11112,16 +11481,16 @@ module.exports =
 		};
 
 /***/ },
-/* 173 */
+/* 175 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(174);
+	var content = __webpack_require__(176);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(176)(content, {});
+	var update = __webpack_require__(178)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -11138,10 +11507,10 @@ module.exports =
 	}
 
 /***/ },
-/* 174 */
+/* 176 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(175)();
+	exports = module.exports = __webpack_require__(177)();
 	// imports
 
 
@@ -11152,7 +11521,7 @@ module.exports =
 
 
 /***/ },
-/* 175 */
+/* 177 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -11207,7 +11576,7 @@ module.exports =
 	};
 
 /***/ },
-/* 176 */
+/* 178 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -11459,16 +11828,16 @@ module.exports =
 
 
 /***/ },
-/* 177 */
+/* 179 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(178);
+	var content = __webpack_require__(180);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(176)(content, {});
+	var update = __webpack_require__(178)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -11485,10 +11854,10 @@ module.exports =
 	}
 
 /***/ },
-/* 178 */
+/* 180 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(175)();
+	exports = module.exports = __webpack_require__(177)();
 	// imports
 
 
@@ -11499,19 +11868,19 @@ module.exports =
 
 
 /***/ },
-/* 179 */
+/* 181 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var ini_sidebar = __webpack_require__(147);
-	var set_up_filters = __webpack_require__(180);
-	var set_up_search = __webpack_require__(185);
-	var set_up_reorder = __webpack_require__(186);
-	var set_sidebar_ini_view = __webpack_require__(187);
-	var make_icons = __webpack_require__(188);
-	var make_modals = __webpack_require__(191);
-	var set_up_opacity_slider = __webpack_require__(193);
+	var set_up_filters = __webpack_require__(182);
+	var set_up_search = __webpack_require__(187);
+	var set_up_reorder = __webpack_require__(188);
+	var set_sidebar_ini_view = __webpack_require__(189);
+	var make_icons = __webpack_require__(190);
+	var make_modals = __webpack_require__(192);
+	var set_up_opacity_slider = __webpack_require__(194);
 
 	/* Represents sidebar with controls.
 	 */
@@ -11546,7 +11915,7 @@ module.exports =
 
 	  make_modals(params);
 	  if (params.sidebar.icons) {
-	    make_icons(params, sidebar);
+	    make_icons(cgm, sidebar);
 	  }
 
 	  set_up_reorder(params, sidebar);
@@ -11581,13 +11950,13 @@ module.exports =
 		};
 
 /***/ },
-/* 180 */
+/* 182 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_slider_filter = __webpack_require__(181);
-	var make_button_filter = __webpack_require__(184);
+	var make_slider_filter = __webpack_require__(183);
+	var make_button_filter = __webpack_require__(186);
 
 	module.exports = function set_up_filters(cgm, filter_type) {
 
@@ -11603,17 +11972,17 @@ module.exports =
 		};
 
 /***/ },
-/* 181 */
+/* 183 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var make_filter_title = __webpack_require__(168);
-	var run_filter_slider = __webpack_require__(182);
+	var run_filter_slider = __webpack_require__(184);
 	var get_filter_default_state = __webpack_require__(5);
 	var get_subset_views = __webpack_require__(12);
 
-	d3.slider = __webpack_require__(169);
+	d3.slider = __webpack_require__(171);
 
 	module.exports = function make_slider_filter(cgm, filter_type, div_filters) {
 
@@ -11678,14 +12047,14 @@ module.exports =
 		};
 
 /***/ },
-/* 182 */
+/* 184 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var update_viz_with_view = __webpack_require__(131);
 	var reset_other_filter_sliders = __webpack_require__(167);
-	var get_current_orders = __webpack_require__(183);
+	var get_current_orders = __webpack_require__(185);
 	var make_requested_view = __webpack_require__(14);
 
 	module.exports = function run_filter_slider(cgm, filter_type, available_views, inst_index) {
@@ -11714,7 +12083,7 @@ module.exports =
 		};
 
 /***/ },
-/* 183 */
+/* 185 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -11745,7 +12114,7 @@ module.exports =
 	};
 
 /***/ },
-/* 184 */
+/* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11798,7 +12167,7 @@ module.exports =
 		};
 
 /***/ },
-/* 185 */
+/* 187 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -11815,7 +12184,7 @@ module.exports =
 		};
 
 /***/ },
-/* 186 */
+/* 188 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -11908,7 +12277,7 @@ module.exports =
 		};
 
 /***/ },
-/* 187 */
+/* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11948,33 +12317,41 @@ module.exports =
 		};
 
 /***/ },
-/* 188 */
+/* 190 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var save_svg_png = __webpack_require__(189);
-	var file_saver = __webpack_require__(190);
+	var save_svg_png = __webpack_require__(191);
+	var file_saver = __webpack_require__(170);
 
-	module.exports = function make_icons(params, sidebar) {
-
-	  // this should be done outside of the main project
-
+	module.exports = function make_icons(cgm, sidebar) {
+	  var params = cgm.params;
 	  var saveSvgAsPng = save_svg_png();
 	  var saveAs = file_saver();
 
-	  var row = sidebar.select('.icons_section').style('margin-top', '7px');
+	  var row = sidebar.select('.icons_section').style('margin-top', '7px').style('margin-left', '5%');
 
-	  row.append('div').classed('clust_icon', true).append('a').attr('href', 'http://amp.pharm.mssm.edu/clustergrammer/help').attr('target', '_blank').append('i').classed('fa', true).classed('fa-question-circle', true).classed('icon_buttons', true).style('font-size', '25px');
+	  var width_pct = '22%';
+	  var padding_left = '0px';
+	  var padding_right = '0px';
 
-	  row.append('div').classed('clust_icon', true).append('i').classed('fa', true).classed('fa-share-alt', true).classed('icon_buttons', true).style('font-size', '25px').on('click', function () {
+	  row.append('div').classed('clust_icon', true).style('float', 'left').style('width', width_pct).style('padding-left', padding_left).style('padding-right', '-5px').append('a').attr('href', 'http://amp.pharm.mssm.edu/clustergrammer/help').attr('target', '_blank').append('i').classed('fa', true).classed('fa-question-circle', true).classed('icon_buttons', true).style('font-size', '25px');
+
+	  row.append('div').classed('clust_icon', true).style('float', 'left').style('width', width_pct).style('padding-left', padding_left).style('padding-right', padding_right).append('i').classed('fa', true).classed('fa-share-alt', true).classed('icon_buttons', true).style('font-size', '25px').on('click', function () {
 	    $(params.root + ' .share_info').modal('toggle');
 	    $('.share_url').val(window.location.href);
 	  });
 
-	  row.append('div').classed('clust_icon', true).append('i').classed('fa', true).classed('fa-camera', true).classed('icon_buttons', true).style('font-size', '25px').on('click', function () {
+	  row.append('div').classed('clust_icon', true).style('float', 'left').style('width', width_pct).style('padding-left', padding_left).style('padding-right', padding_right).append('i').classed('fa', true).classed('fa-camera', true).classed('icon_buttons', true).style('font-size', '25px').on('click', function () {
 
 	    $(params.root + ' .picture_info').modal('toggle');
+	  });
+
+	  row.append('div').classed('clust_icon', true).style('float', 'left').style('width', width_pct).style('padding-left', padding_left).style('padding-right', padding_right).append('i').classed('fa', true).classed('fa fa-cloud-download', true).classed('icon_buttons', true).style('font-size', '25px').on('click', function () {
+
+	    console.log('download data');
+	    cgm.export_matrix();
 	  });
 
 	  // save svg: example from: http://bl.ocks.org/pgiraud/8955139#profile.json
@@ -12008,7 +12385,7 @@ module.exports =
 		};
 
 /***/ },
-/* 189 */
+/* 191 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -12214,229 +12591,12 @@ module.exports =
 		};
 
 /***/ },
-/* 190 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	module.exports = function file_saver() {
-	  /* eslint-disable */
-	  /* FileSaver.js
-	   * A saveAs() FileSaver implementation.
-	   * 2013-01-23
-	   * 
-	   * By Eli Grey, http://eligrey.com
-	   * License: X11/MIT
-	   *   See LICENSE.md
-	   */
-
-	  /*global self */
-	  /*jslint bitwise: true, regexp: true, confusion: true, es5: true, vars: true, white: true,
-	    plusplus: true */
-
-	  /*! @source http://purl.eligrey.com/github/FileSaver.js/blob/master/FileSaver.js */
-
-	  var saveAs = saveAs || navigator.msSaveBlob && navigator.msSaveBlob.bind(navigator) || function (view) {
-	    "use strict";
-
-	    var doc = view.document
-	    // only get URL when necessary in case BlobBuilder.js hasn't overridden it yet
-	    ,
-	        get_URL = function get_URL() {
-	      return view.URL || view.webkitURL || view;
-	    },
-	        URL = view.URL || view.webkitURL || view,
-	        save_link = doc.createElementNS("http://www.w3.org/1999/xhtml", "a"),
-	        can_use_save_link = "download" in save_link,
-	        click = function click(node) {
-	      var event = doc.createEvent("MouseEvents");
-	      event.initMouseEvent("click", true, false, view, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-	      node.dispatchEvent(event);
-	    },
-	        webkit_req_fs = view.webkitRequestFileSystem,
-	        req_fs = view.requestFileSystem || webkit_req_fs || view.mozRequestFileSystem,
-	        throw_outside = function throw_outside(ex) {
-	      (view.setImmediate || view.setTimeout)(function () {
-	        throw ex;
-	      }, 0);
-	    },
-	        force_saveable_type = "application/octet-stream",
-	        fs_min_size = 0,
-	        deletion_queue = [],
-	        process_deletion_queue = function process_deletion_queue() {
-	      var i = deletion_queue.length;
-	      while (i--) {
-	        var file = deletion_queue[i];
-	        if (typeof file === "string") {
-	          // file is an object URL
-	          URL.revokeObjectURL(file);
-	        } else {
-	          // file is a File
-	          file.remove();
-	        }
-	      }
-	      deletion_queue.length = 0; // clear queue
-	    },
-	        dispatch = function dispatch(filesaver, event_types, event) {
-	      event_types = [].concat(event_types);
-	      var i = event_types.length;
-	      while (i--) {
-	        var listener = filesaver["on" + event_types[i]];
-	        if (typeof listener === "function") {
-	          try {
-	            listener.call(filesaver, event || filesaver);
-	          } catch (ex) {
-	            throw_outside(ex);
-	          }
-	        }
-	      }
-	    },
-	        FileSaver = function FileSaver(blob, name) {
-	      // First try a.download, then web filesystem, then object URLs
-	      var filesaver = this,
-	          type = blob.type,
-	          blob_changed = false,
-	          object_url,
-	          target_view,
-	          get_object_url = function get_object_url() {
-	        var object_url = get_URL().createObjectURL(blob);
-	        deletion_queue.push(object_url);
-	        return object_url;
-	      },
-	          dispatch_all = function dispatch_all() {
-	        dispatch(filesaver, "writestart progress write writeend".split(" "));
-	      }
-	      // on any filesys errors revert to saving with object URLs
-	      ,
-	          fs_error = function fs_error() {
-	        // don't create more object URLs than needed
-	        if (blob_changed || !object_url) {
-	          object_url = get_object_url(blob);
-	        }
-	        if (target_view) {
-	          target_view.location.href = object_url;
-	        }
-	        filesaver.readyState = filesaver.DONE;
-	        dispatch_all();
-	      },
-	          abortable = function abortable(func) {
-	        return function () {
-	          if (filesaver.readyState !== filesaver.DONE) {
-	            return func.apply(this, arguments);
-	          }
-	        };
-	      },
-	          create_if_not_found = { create: true, exclusive: false },
-	          slice;
-	      filesaver.readyState = filesaver.INIT;
-	      if (!name) {
-	        name = "download";
-	      }
-	      if (can_use_save_link) {
-	        object_url = get_object_url(blob);
-	        save_link.href = object_url;
-	        save_link.download = name;
-	        click(save_link);
-	        filesaver.readyState = filesaver.DONE;
-	        dispatch_all();
-	        return;
-	      }
-	      // Object and web filesystem URLs have a problem saving in Google Chrome when
-	      // viewed in a tab, so I force save with application/octet-stream
-	      // http://code.google.com/p/chromium/issues/detail?id=91158
-	      if (view.chrome && type && type !== force_saveable_type) {
-	        slice = blob.slice || blob.webkitSlice;
-	        blob = slice.call(blob, 0, blob.size, force_saveable_type);
-	        blob_changed = true;
-	      }
-	      // Since I can't be sure that the guessed media type will trigger a download
-	      // in WebKit, I append .download to the filename.
-	      // https://bugs.webkit.org/show_bug.cgi?id=65440
-	      if (webkit_req_fs && name !== "download") {
-	        name += ".download";
-	      }
-	      if (type === force_saveable_type || webkit_req_fs) {
-	        target_view = view;
-	      } else {
-	        target_view = view.open();
-	      }
-	      if (!req_fs) {
-	        fs_error();
-	        return;
-	      }
-	      fs_min_size += blob.size;
-	      req_fs(view.TEMPORARY, fs_min_size, abortable(function (fs) {
-	        fs.root.getDirectory("saved", create_if_not_found, abortable(function (dir) {
-	          var save = function save() {
-	            dir.getFile(name, create_if_not_found, abortable(function (file) {
-	              file.createWriter(abortable(function (writer) {
-	                writer.onwriteend = function (event) {
-	                  target_view.location.href = file.toURL();
-	                  deletion_queue.push(file);
-	                  filesaver.readyState = filesaver.DONE;
-	                  dispatch(filesaver, "writeend", event);
-	                };
-	                writer.onerror = function () {
-	                  var error = writer.error;
-	                  if (error.code !== error.ABORT_ERR) {
-	                    fs_error();
-	                  }
-	                };
-	                "writestart progress write abort".split(" ").forEach(function (event) {
-	                  writer["on" + event] = filesaver["on" + event];
-	                });
-	                writer.write(blob);
-	                filesaver.abort = function () {
-	                  writer.abort();
-	                  filesaver.readyState = filesaver.DONE;
-	                };
-	                filesaver.readyState = filesaver.WRITING;
-	              }), fs_error);
-	            }), fs_error);
-	          };
-	          dir.getFile(name, { create: false }, abortable(function (file) {
-	            // delete file if it already exists
-	            file.remove();
-	            save();
-	          }), abortable(function (ex) {
-	            if (ex.code === ex.NOT_FOUND_ERR) {
-	              save();
-	            } else {
-	              fs_error();
-	            }
-	          }));
-	        }), fs_error);
-	      }), fs_error);
-	    },
-	        FS_proto = FileSaver.prototype,
-	        saveAs = function saveAs(blob, name) {
-	      return new FileSaver(blob, name);
-	    };
-	    FS_proto.abort = function () {
-	      var filesaver = this;
-	      filesaver.readyState = filesaver.DONE;
-	      dispatch(filesaver, "abort");
-	    };
-	    FS_proto.readyState = FS_proto.INIT = 0;
-	    FS_proto.WRITING = 1;
-	    FS_proto.DONE = 2;
-
-	    FS_proto.error = FS_proto.onwritestart = FS_proto.onprogress = FS_proto.onwrite = FS_proto.onabort = FS_proto.onerror = FS_proto.onwriteend = null;
-
-	    view.addEventListener("unload", process_deletion_queue, false);
-	    return saveAs;
-	  }(self);
-
-	  return saveAs;
-		};
-
-/***/ },
-/* 191 */
+/* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_modal_skeleton = __webpack_require__(192);
+	var make_modal_skeleton = __webpack_require__(193);
 
 	module.exports = function ini_modals(params) {
 
@@ -12485,7 +12645,7 @@ module.exports =
 		};
 
 /***/ },
-/* 192 */
+/* 193 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -12510,7 +12670,7 @@ module.exports =
 		};
 
 /***/ },
-/* 193 */
+/* 194 */
 /***/ function(module, exports) {
 
 	'use strict';
