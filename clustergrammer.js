@@ -12593,19 +12593,29 @@ var Clustergrammer =
 	  });
 
 	  var matrix_string = '\t';
+	  var row_nodes = params.network_data.row_nodes;
+	  var col_nodes = params.network_data.col_nodes;
+	  var cat_name;
 
-	  var tmp_row_data = inst_matrix.matrix[0].row_data;
+	  // // original column entry
+	  // _.each(order_indexes['col'], function(inst_index){
+	  //   var inst_col = col_nodes[inst_index];
+	  //   var col_name = make_full_name(inst_col, 'col');
+	  //   matrix_string = matrix_string + col_name + '\t';
+	  // });
 
-	  _.each(order_indexes['col'], function (inst_index) {
+	  // alternate column entry
+	  for (var c_i = 0; c_i < order_indexes['col'].length; c_i++) {
 
-	    // var col_name = tmp_row_data[inst_index].col_name;
-	    var col_name = params.network_data.col_nodes[inst_index].name;
+	    var inst_col = col_nodes[c_i];
+	    var col_name = make_full_name(inst_col, 'col');
 
-	    // console.log('* '+col_name)
-	    // console.log(params.network_data.col_nodes[inst_index].name)
-
-	    matrix_string = matrix_string + col_name + '\t';
-	  });
+	    if (c_i < order_indexes['col'].length - 1) {
+	      matrix_string = matrix_string + col_name + '\t';
+	    } else {
+	      matrix_string = matrix_string + col_name;
+	    }
+	  }
 
 	  var row_data;
 	  matrix_string = matrix_string + '\n';
@@ -12616,22 +12626,56 @@ var Clustergrammer =
 	    row_data = inst_matrix.matrix[inst_index].row_data;
 
 	    // var row_name = inst_matrix.matrix[inst_index].name;
-	    var row_name = params.network_data.row_nodes[inst_index].name;
+	    var inst_row = row_nodes[inst_index];
+
+	    // var row_name = inst_row.name;
+	    var row_name = make_full_name(inst_row, 'row');
 
 	    matrix_string = matrix_string + row_name + '\t';
 
-	    _.each(order_indexes['col'], function (col_index) {
+	    // // original data entry
+	    // _.each(order_indexes['col'], function(col_index){
+	    //   matrix_string = matrix_string + String(row_data[col_index].value) + '\t';
+	    // })
 
-	      matrix_string = matrix_string + String(row_data[col_index].value) + '\t';
-	    });
+	    // alternate data entry
+	    for (var r_i = 0; r_i < order_indexes['col'].length; r_i++) {
+	      if (r_i < order_indexes['col'].length - 1) {
+	        matrix_string = matrix_string + String(row_data[r_i].value) + '\t';
+	      } else {
+	        matrix_string = matrix_string + String(row_data[r_i].value);
+	      }
+	    }
 
 	    matrix_string = matrix_string + '\n';
 	  });
 
-	  console.log(matrix_string);
+	  function make_full_name(inst_node, inst_rc) {
 
-	  // var blob = new Blob([matrix_string], {type: 'text/plain;charset=utf-8'});
-	  // saveAs(blob, 'clustergrammer.txt');
+	    var inst_name = inst_node.name;
+
+	    var num_cats = params.viz.all_cats[inst_rc].length;
+
+	    // make tuple if necessary
+	    if (num_cats > 0) {
+
+	      inst_name = "('" + inst_name + "'";
+
+	      for (var cat_index = 0; cat_index < num_cats; cat_index++) {
+	        cat_name = 'cat-' + String(cat_index);
+
+	        // inst_name =  inst_name + ", " + inst_node[cat_name];
+	        inst_name = inst_name + ", '" + inst_node[cat_name] + "'";
+	      }
+	    }
+
+	    inst_name = inst_name + ')';
+
+	    return inst_name;
+	  }
+
+	  var blob = new Blob([matrix_string], { type: 'text/plain;charset=utf-8' });
+	  saveAs(blob, 'clustergrammer.txt');
 		};
 
 /***/ }
