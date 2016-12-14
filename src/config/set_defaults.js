@@ -24,6 +24,7 @@ module.exports = function set_defaults(){
     do_zoom: true,
     is_zoom:0,
     is_slider_drag:false,
+    is_cropping:false,
     background_color: '#FFFFFF',
     super_border_color: '#F5F5F5',
     outer_margins: {
