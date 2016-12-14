@@ -10,12 +10,12 @@ body{
   background-color: #fff;
 }
 
-.clust_icon{
+./*clust_icon{
   float:left;
   width: 33.3333333%;
   padding-left: 15px;
   padding-right: 15px;
-}
+}*/
 
 .viz_medium_text{
   width:99%;

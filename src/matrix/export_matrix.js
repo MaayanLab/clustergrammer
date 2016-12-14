@@ -54,7 +54,6 @@ module.exports = function export_matrix(){
 
   }
 
-
   var row_data;
   matrix_string = matrix_string + '\n';
 
@@ -68,7 +67,6 @@ module.exports = function export_matrix(){
 
     // var row_name = inst_row.name;
     var row_name = make_full_name(inst_row, 'row');
-
 
     matrix_string = matrix_string + row_name + '\t'
 
@@ -90,8 +88,6 @@ module.exports = function export_matrix(){
     matrix_string = matrix_string + '\n';
 
   });
-
-
 
   function make_full_name(inst_node, inst_rc){
 

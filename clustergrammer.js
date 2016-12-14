@@ -11992,18 +11992,28 @@ var Clustergrammer =
 	  var saveSvgAsPng = save_svg_png();
 	  var saveAs = file_saver();
 
-	  var row = sidebar.select('.icons_section').style('margin-top', '7px');
+	  var row = sidebar.select('.icons_section').style('margin-top', '7px').style('margin-left', '5%');
 
-	  row.append('div').classed('clust_icon', true).append('a').attr('href', 'http://amp.pharm.mssm.edu/clustergrammer/help').attr('target', '_blank').append('i').classed('fa', true).classed('fa-question-circle', true).classed('icon_buttons', true).style('font-size', '25px');
+	  var width_pct = '22%';
+	  var padding_left = '0px';
+	  var padding_right = '0px';
 
-	  row.append('div').classed('clust_icon', true).append('i').classed('fa', true).classed('fa-share-alt', true).classed('icon_buttons', true).style('font-size', '25px').on('click', function () {
+	  row.append('div').classed('clust_icon', true).style('float', 'left').style('width', width_pct).style('padding-left', padding_left).style('padding-right', '-5px').append('a').attr('href', 'http://amp.pharm.mssm.edu/clustergrammer/help').attr('target', '_blank').append('i').classed('fa', true).classed('fa-question-circle', true).classed('icon_buttons', true).style('font-size', '25px');
+
+	  row.append('div').classed('clust_icon', true).style('float', 'left').style('width', width_pct).style('padding-left', padding_left).style('padding-right', padding_right).append('i').classed('fa', true).classed('fa-share-alt', true).classed('icon_buttons', true).style('font-size', '25px').on('click', function () {
 	    $(params.root + ' .share_info').modal('toggle');
 	    $('.share_url').val(window.location.href);
 	  });
 
-	  row.append('div').classed('clust_icon', true).append('i').classed('fa', true).classed('fa-camera', true).classed('icon_buttons', true).style('font-size', '25px').on('click', function () {
+	  row.append('div').classed('clust_icon', true).style('float', 'left').style('width', width_pct).style('padding-left', padding_left).style('padding-right', padding_right).append('i').classed('fa', true).classed('fa-camera', true).classed('icon_buttons', true).style('font-size', '25px').on('click', function () {
 
 	    $(params.root + ' .picture_info').modal('toggle');
+	  });
+
+	  row.append('div').classed('clust_icon', true).style('float', 'left').style('width', width_pct).style('padding-left', padding_left).style('padding-right', padding_right).append('i').classed('fa', true).classed('fa fa-cloud-download', true).classed('icon_buttons', true).style('font-size', '25px').on('click', function () {
+
+	    console.log('download data');
+	    // $(params.root+' .picture_info').modal('toggle');
 	  });
 
 	  // save svg: example from: http://bl.ocks.org/pgiraud/8955139#profile.json
