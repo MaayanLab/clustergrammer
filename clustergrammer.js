@@ -12268,10 +12268,6 @@ var Clustergrammer =
 	    }
 
 	    reorder_section.append('div').classed('sidebar_button_text', true).style('clear', 'both').style('margin-top', '10px').html(rc_dict[inst_rc] + reorder_text);
-	    // .classed('sidebar_tooltip', true)
-	    // .append('span')
-	    // .classed('sidebar_tooltip_text', true)
-	    // .html('Reorder the rows based on different properties, e.g. sum.');
 
 	    inst_reorder = reorder_section.append('div').classed('btn-group-vertical', true).style('width', '100%').classed('toggle_' + inst_rc + '_order', true).attr('role', 'group');
 
@@ -12714,6 +12710,10 @@ var Clustergrammer =
 
 	module.exports = function crop_matrix() {
 
+	  // transform brush-extent based on zoom/translate
+	  // get rows/cols from brush-extent
+	  // must work for differnt brushing directions (e.g. start end sites)
+
 	  var cgm = this;
 	  var params = cgm.params;
 
@@ -12756,8 +12756,32 @@ var Clustergrammer =
 
 	    var brushing_extent = brush.extent();
 
-	    console.log('here');
-	    console.log(brushing_extent);
+	    // console.log(brushing_extent)
+
+	    console.log('start ' + String(brushing_extent[0]));
+	    console.log('end ' + String(brushing_extent[1]));
+
+	    var brush_start = brushing_extent[0];
+	    var brush_end = brushing_extent[1];
+
+	    d3.selectAll(params.root + ' .row_label_group').each(function (inst_row) {
+
+	      // there is already bound data on the rows
+	      var inst_trans = d3.select(this).attr('transform');
+
+	      var y_trans = Number(inst_trans.split(',')[1].split(')')[0]);
+
+	      if (y_trans > brush_start[1] && y_trans < brush_end[1]) {
+
+	        console.log('found: ' + inst_row.name);
+	        // console.log('greater than: ' + String(y_trans))
+	        // console.log('y_trans: '+ String(y_trans) + '\n')
+
+	        // console.log('brush_end: '+String(brush_end))
+	        console.log('\n');
+	        // if (y_trans < brush_end[1])
+	      }
+	    });
 	  }
 
 	  function apply_crop() {

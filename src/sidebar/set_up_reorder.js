@@ -78,10 +78,7 @@ module.exports = function set_up_reorder(params, sidebar){
       .style('clear','both')
       .style('margin-top','10px')
       .html(rc_dict[inst_rc]+reorder_text);
-      // .classed('sidebar_tooltip', true)
-      // .append('span')
-      // .classed('sidebar_tooltip_text', true)
-      // .html('Reorder the rows based on different properties, e.g. sum.');
+
 
     inst_reorder = reorder_section
       .append('div')

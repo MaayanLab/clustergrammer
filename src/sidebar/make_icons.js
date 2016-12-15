@@ -36,7 +36,7 @@ module.exports = function make_icons(cgm, sidebar){
     .append('span')
     .classed('sidebar_tooltip_text', true)
     .html('Share')
-    .style('left','0%')
+    .style('left','0%');
 
   row
     .append('div')
@@ -59,7 +59,7 @@ module.exports = function make_icons(cgm, sidebar){
     .append('span')
     .classed('sidebar_tooltip_text', true)
     .html('Take snapshot')
-    .style('left','-100%')
+    .style('left','-100%');
 
   row
     .append('div')
@@ -82,7 +82,7 @@ module.exports = function make_icons(cgm, sidebar){
     .append('span')
     .classed('sidebar_tooltip_text', true)
     .html('Download matrix')
-    .style('left','-200%')
+    .style('left','-200%');
 
   row
     .append('div')
@@ -105,7 +105,7 @@ module.exports = function make_icons(cgm, sidebar){
     .append('span')
     .classed('sidebar_tooltip_text', true)
     .html('Crop matrix')
-    .style('left','-400%')
+    .style('left','-400%');
 
     // save svg: example from: http://bl.ocks.org/pgiraud/8955139#profile.json
     ////////////////////////////////////////////////////////////////////////////

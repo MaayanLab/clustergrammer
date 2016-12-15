@@ -5,7 +5,6 @@ module.exports = function toggle_element_display(vis_area, inst_selection, inst_
 
   if (inst_rc === 'row'){
 
-
     var y_trans = Number(inst_trans.split(',')[1].split(')')[0]);
 
     d3.select(inst_selection)
@@ -17,7 +16,7 @@ module.exports = function toggle_element_display(vis_area, inst_selection, inst_
           inst_display = 'none';
         }
         return inst_display;
-      });  
+      });
 
   } else {
 
@@ -33,7 +32,7 @@ module.exports = function toggle_element_display(vis_area, inst_selection, inst_
         }
 
         return inst_display;
-      });  
+      });
 
     }
 
