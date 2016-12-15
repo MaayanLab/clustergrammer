@@ -129,14 +129,16 @@ module.exports = function crop_matrix(){
     console.log('found cols')
     console.log(found_nodes.col)
 
+    cgm.filter_viz_using_names(found_nodes);
+
   }
 
   function apply_crop(){
 
     d3.select('.brush_group')
       .transition()
-      // .style('opacity', 0)
-      // .remove();
+      .style('opacity', 0)
+      .remove();
 
     cgm.params.is_cropping = false;
   }

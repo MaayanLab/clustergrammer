@@ -12819,13 +12819,13 @@ var Clustergrammer =
 	    console.log(found_nodes.row);
 	    console.log('found cols');
 	    console.log(found_nodes.col);
+
+	    cgm.filter_viz_using_names(found_nodes);
 	  }
 
 	  function apply_crop() {
 
-	    d3.select('.brush_group').transition();
-	    // .style('opacity', 0)
-	    // .remove();
+	    d3.select('.brush_group').transition().style('opacity', 0).remove();
 
 	    cgm.params.is_cropping = false;
 	  }
