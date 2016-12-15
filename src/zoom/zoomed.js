@@ -8,6 +8,8 @@ module.exports = function zoomed(params) {
   zoom_info.trans_x = d3.event.translate[0] - params.viz.clust.margin.left;
   zoom_info.trans_y = d3.event.translate[1] - params.viz.clust.margin.top;
 
+  // params.zoom_info = zoom_info;
+
   apply_zoom(params, zoom_info);
 
 };

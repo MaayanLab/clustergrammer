@@ -658,6 +658,15 @@ var Clustergrammer =
 	    params.sidebar = ini_sidebar_params(params);
 	  }
 
+	  // reset visible area
+	  var zoom_info = {};
+	  zoom_info.zoom_x = 1;
+	  zoom_info.zoom_y = 1;
+	  zoom_info.trans_x = 0;
+	  zoom_info.trans_y = 0;
+
+	  params.zoom_info = zoom_info;
+
 	  return params;
 	};
 
@@ -1928,6 +1937,8 @@ var Clustergrammer =
 	  zoom_info.zoom_y = d3.event.scale;
 	  zoom_info.trans_x = d3.event.translate[0] - params.viz.clust.margin.left;
 	  zoom_info.trans_y = d3.event.translate[1] - params.viz.clust.margin.top;
+
+	  // params.zoom_info = zoom_info;
 
 	  apply_zoom(params, zoom_info);
 		};
@@ -12366,6 +12377,9 @@ var Clustergrammer =
 	  .classed('fa', true).classed('fa-crop', true).classed('icon_buttons', true).style('font-size', '25px').on('click', function () {
 	    // console.log('in crop mode')
 	    cgm.crop_matrix();
+
+	    d3.select(this).style('color', 'rgba(0, 0, 0, 8)');
+	    // .style('opacity', 0.1);
 	  }).classed('sidebar_tooltip', true).append('span').classed('sidebar_tooltip_text', true).html('Crop matrix').style('left', '-400%');
 
 	  // save svg: example from: http://bl.ocks.org/pgiraud/8955139#profile.json
@@ -12756,11 +12770,6 @@ var Clustergrammer =
 
 	    var brushing_extent = brush.extent();
 
-	    // console.log(brushing_extent)
-
-	    console.log('start ' + String(brushing_extent[0]));
-	    console.log('end ' + String(brushing_extent[1]));
-
 	    var brush_start = brushing_extent[0];
 	    var brush_end = brushing_extent[1];
 
@@ -12769,6 +12778,30 @@ var Clustergrammer =
 
 	    var y_start = brush_start[1];
 	    var y_end = brush_end[1];
+
+	    if (x_start != x_end && y_start != y_end) {
+
+	      console.log('x: ' + String(x_start) + ' ' + String(x_end));
+	      console.log('y: ' + String(y_start) + ' ' + String(y_end));
+
+	      console.log('start ' + String(brushing_extent[0]));
+	      console.log('end ' + String(brushing_extent[1]));
+
+	      // find cropped nodes
+	      var found_nodes = find_cropped_nodes(x_start, x_end, y_start, y_end);
+
+	      console.log('found rows');
+	      console.log(found_nodes.row);
+	      console.log('found cols');
+	      console.log(found_nodes.col);
+
+	      // cgm.filter_viz_using_names(found_nodes);
+
+	      d3.select(params.root + ' .fa-crop').style('color', '#337ab7');
+	    }
+	  }
+
+	  function find_cropped_nodes(x_start, x_end, y_start, y_end) {
 
 	    // reverse if necessary (depending on how brushing was done)
 	    if (x_start > x_end) {
@@ -12815,12 +12848,7 @@ var Clustergrammer =
 	      }
 	    });
 
-	    console.log('found rows');
-	    console.log(found_nodes.row);
-	    console.log('found cols');
-	    console.log(found_nodes.col);
-
-	    cgm.filter_viz_using_names(found_nodes);
+	    return found_nodes;
 	  }
 
 	  function apply_crop() {

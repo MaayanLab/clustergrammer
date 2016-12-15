@@ -100,6 +100,11 @@ module.exports = function make_icons(cgm, sidebar){
     .on('click', function(){
       // console.log('in crop mode')
       cgm.crop_matrix();
+
+      d3.select(this)
+        .style('color', 'rgba(0, 0, 0, 8)')
+        // .style('opacity', 0.1);
+
     })
     .classed('sidebar_tooltip', true)
     .append('span')

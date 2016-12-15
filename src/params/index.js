@@ -41,5 +41,14 @@ module.exports = function make_params(input_config) {
     params.sidebar = ini_sidebar_params(params);
   }
 
+  // reset visible area
+  var zoom_info = {};
+  zoom_info.zoom_x = 1;
+  zoom_info.zoom_y = 1;
+  zoom_info.trans_x = 0;
+  zoom_info.trans_y = 0;
+
+  params.zoom_info = zoom_info;
+
   return params;
 };
