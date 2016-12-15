@@ -3,7 +3,7 @@ var make_rows = require('./labels/make_rows');
 var make_cols = require('./labels/make_cols');
 var generate_super_labels = require('./labels/super_labels');
 var spillover = require('./Spillover');
-var search = require('./search');
+// var search = require('./search');
 var initialize_resizing = require('./initialize_resizing');
 var ini_doubleclick = require('./zoom/ini_doubleclick');
 var make_col_cat = require('./dendrogram/make_col_cat');
@@ -151,7 +151,7 @@ module.exports = function make_viz(cgm) {
   // d3.select(params.root+' .clust_container')
     .on('dblclick.zoom', null);
 
-  search(cgm, params.network_data.row_nodes, 'name');
+  // search(cgm, params.network_data.row_nodes, 'name');
 
   // var opacity_slider = function (inst_slider) {
 

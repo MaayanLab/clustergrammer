@@ -10,7 +10,7 @@ module.exports = function crop_matrix(){
   var clust_width = params.viz.clust.dim.width;
   var clust_height = params.viz.clust.dim.height;
 
-  console.log('cropping matrix');
+  // console.log('cropping matrix');
   var x = d3.scale.linear()
     .domain([0, clust_width]).range([0, clust_width]);
   var y = d3.scale.linear()
@@ -18,7 +18,7 @@ module.exports = function crop_matrix(){
 
 
 // make brush group
-  var brush_group = d3.select(params.root+' .clust_container')
+  d3.select(params.root+' .clust_container')
     .append('g')
     .classed('brush_group', true);
 
@@ -39,19 +39,19 @@ module.exports = function crop_matrix(){
       .on("brush", brushmove)
       .on("brushend", brushend);
 
-  var brush_selection = d3.select(params.root+' .brush_group')
+  d3.select(params.root+' .brush_group')
     .call(brush);
 
-  function brushstart(p) {
-    console.log('brush start')
+  function brushstart() {
+    // console.log('brush start')
   }
 
-  function brushmove(p) {
-    console.log('brushing')
+  function brushmove() {
+    // console.log('brushing')
   }
 
   function brushend() {
-    console.log('brush end')
+    // console.log('brush end')
 
     setTimeout(apply_crop, 500);
 
@@ -69,21 +69,21 @@ module.exports = function crop_matrix(){
 
     if (x_start != x_end && y_start != y_end){
 
-      console.log('x: '+ String(x_start) + ' ' + String(x_end))
-      console.log('y: '+ String(y_start) + ' ' + String(y_end))
+      // console.log('x: '+ String(x_start) + ' ' + String(x_end))
+      // console.log('y: '+ String(y_start) + ' ' + String(y_end))
 
-      console.log('start ' + String(brushing_extent[0]))
-      console.log('end ' + String(brushing_extent[1]))
+      // console.log('start ' + String(brushing_extent[0]))
+      // console.log('end ' + String(brushing_extent[1]))
 
       // find cropped nodes
-      var found_nodes = find_cropped_nodes(x_start, x_end, y_start, y_end);
+      var found_nodes = find_cropped_nodes(x_start, x_end, y_start, y_end, brush_start, brush_end);
 
       console.log('found rows')
       console.log(found_nodes.row)
       console.log('found cols')
       console.log(found_nodes.col)
 
-      // cgm.filter_viz_using_names(found_nodes);
+      cgm.filter_viz_using_names(found_nodes);
 
       d3.select(params.root+' .fa-crop')
         .style('color', '#337ab7');
@@ -93,7 +93,7 @@ module.exports = function crop_matrix(){
   }
 
 
-  function find_cropped_nodes(x_start, x_end, y_start, y_end){
+  function find_cropped_nodes(x_start, x_end, y_start, y_end, brush_start, brush_end){
 
     // reverse if necessary (depending on how brushing was done)
     if (x_start > x_end){

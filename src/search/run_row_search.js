@@ -2,8 +2,6 @@ var two_translate_zoom = require('../zoom/two_translate_zoom');
 
 module.exports = function run_row_search(cgm, search_term, entities){
 
-  console.log(entities)
-
   var prop = 'name';
 
   if (entities.indexOf(search_term) !== -1) {

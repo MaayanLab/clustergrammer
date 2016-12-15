@@ -22,8 +22,6 @@ module.exports = function two_translate_zoom(params, pan_dx, pan_dy, fin_zoom) {
   // params.zoom_info.trans_x = pan_dx;
   // params.zoom_info.trans_y = pan_dy;
 
-  console.log(params.zoom_info.zoom_y)
-
   show_visible_area(params);
 
   // do not allow while transitioning, e.g. reordering
