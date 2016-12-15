@@ -1,5 +1,6 @@
 var save_svg_png = require('../screenshot/save_svg_png');
 var file_saver = require('../screenshot/file_saver');
+var two_translate_zoom = require('../zoom/two_translate_zoom');
 
 module.exports = function make_icons(cgm, sidebar){
 
@@ -104,6 +105,8 @@ module.exports = function make_icons(cgm, sidebar){
       d3.select(this)
         .style('color', 'rgba(0, 0, 0, 8)');
         // .style('opacity', 0.1);
+
+      two_translate_zoom(params, 0, 0, 1);
 
     })
     .classed('sidebar_tooltip', true)

@@ -7,12 +7,12 @@ module.exports = function(params, ini_svg_group, delay_info=false){
   var col_nodes = params.network_data.col_nodes;
   var col_nodes_names = params.network_data.col_nodes_names;
 
-  
+
   if(delay_info === false){
     delays.run_transition = false;
   } else {
     delays = delay_info;
-  }  
+  }
 
   if (delays.run_transition){
     svg_group = ini_svg_group
@@ -24,10 +24,10 @@ module.exports = function(params, ini_svg_group, delay_info=false){
       .transition().delay(delays.update).duration(duration)
       .attr('transform', function(d) {
         var inst_index = _.indexOf(col_nodes_names, d.name);
-        return 'translate(' + params.viz.x_scale(inst_index) + ') rotate(-90)';
+        return 'translate(' + params.viz.x_scale(inst_index) + ', 0) rotate(-90)';
       });
 
-  } else {    
+  } else {
     svg_group = ini_svg_group;
 
     ini_svg_group
@@ -35,10 +35,10 @@ module.exports = function(params, ini_svg_group, delay_info=false){
       .data(col_nodes, function(d){return d.name;})
       .attr('transform', function(d) {
         var inst_index = _.indexOf(col_nodes_names, d.name);
-        return 'translate(' + params.viz.x_scale(inst_index) + ') rotate(-90)';
+        return 'translate(' + params.viz.x_scale(inst_index) + ', 0) rotate(-90)';
       });
 
-  }  
+  }
 
   // offset click group column label
   var x_offset_click = params.viz.x_scale.rangeBand() / 2 + params.viz.border_width;
