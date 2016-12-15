@@ -52,25 +52,25 @@ var Clustergrammer =
 	var make_viz = __webpack_require__(49);
 	var resize_viz = __webpack_require__(87);
 	var play_demo = __webpack_require__(119);
-	var ini_demo = __webpack_require__(158);
-	var filter_viz_using_nodes = __webpack_require__(161);
-	var filter_viz_using_names = __webpack_require__(162);
-	var update_cats = __webpack_require__(163);
-	var reset_cats = __webpack_require__(164);
+	var ini_demo = __webpack_require__(160);
+	var filter_viz_using_nodes = __webpack_require__(163);
+	var filter_viz_using_names = __webpack_require__(164);
+	var update_cats = __webpack_require__(165);
+	var reset_cats = __webpack_require__(166);
 	var two_translate_zoom = __webpack_require__(84);
-	var external_update_view = __webpack_require__(166);
-	var export_matrix = __webpack_require__(169);
-	var crop_matrix = __webpack_require__(171);
+	var external_update_view = __webpack_require__(168);
+	var export_matrix = __webpack_require__(171);
+	var crop_matrix = __webpack_require__(173);
 
 	// moved d3.slider to src
-	d3.slider = __webpack_require__(172);
+	d3.slider = __webpack_require__(174);
 
 	/* eslint-disable */
 
-	var awesomplete = __webpack_require__(174);
+	var awesomplete = __webpack_require__(176);
 	// getting css from src
-	__webpack_require__(176);
-	__webpack_require__(180);
+	__webpack_require__(178);
+	__webpack_require__(182);
 
 	/* clustergrammer v1.8.3
 	 * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
@@ -95,7 +95,7 @@ var Clustergrammer =
 	  cgm.config = config;
 
 	  if (cgm.params.use_sidebar) {
-	    var make_sidebar = __webpack_require__(182);
+	    var make_sidebar = __webpack_require__(184);
 	    make_sidebar(cgm);
 	  }
 
@@ -2362,6 +2362,10 @@ var Clustergrammer =
 
 	module.exports = function show_visible_area(params) {
 
+	  console.log('show_visible_area');
+
+	  console.log(params.zoom_info.zoom_y);
+
 	  var vis_area = {};
 	  var zoom_info = params.zoom_info;
 
@@ -2706,7 +2710,7 @@ var Clustergrammer =
 	  // d3.select(params.root+' .clust_container')
 	  .on('dblclick.zoom', null);
 
-	  search(params, params.network_data.row_nodes, 'name');
+	  search(cgm, params.network_data.row_nodes, 'name');
 
 	  // var opacity_slider = function (inst_slider) {
 
@@ -5435,45 +5439,52 @@ var Clustergrammer =
 	/* Handles searching rows or columns.
 	 TODO need to generalize to column and row
 	 * ----------------------------------------------------------------------- */
-	module.exports = function (params, nodes, prop) {
+	module.exports = function (cgm, nodes, prop) {
 
-	  /* Collect entities from row or columns.
-	   */
-	  var entities = [];
-	  var i;
+	  // /* Collect entities from row or columns.
+	  //  */
+	  // var entities = [];
+	  // var i;
 
-	  for (i = 0; i < nodes.length; i++) {
-	    entities.push(nodes[i][prop]);
-	  }
+	  // for (i = 0; i < nodes.length; i++) {
+	  //   entities.push(nodes[i][prop]);
+	  // }
 
-	  /* Find a gene (row) in the clustergram.
-	   */
-	  function find_entity(search_term) {
+	  // /* Find a gene (row) in the clustergram.
+	  //  */
+	  // function find_entity(search_term) {
 
-	    if (entities.indexOf(search_term) !== -1) {
+	  //   if (entities.indexOf(search_term) !== -1) {
 
-	      // unhighlight
-	      d3.selectAll(params.root + ' .row_label_group').select('rect').style('opacity', 0);
+	  //     console.log(cgm)
+	  //     console.log(cgm.params.root)
 
-	      // calc pan_dy 
-	      var idx = _.indexOf(entities, search_term);
-	      var inst_y_pos = params.viz.y_scale(idx);
-	      var pan_dy = params.viz.clust.dim.height / 2 - inst_y_pos;
+	  //     // unhighlight
+	  //     d3.selectAll(cgm.params.root+' .row_label_group')
+	  //       .select('rect').style('opacity', 0);
 
-	      two_translate_zoom(params, 0, pan_dy, params.viz.zoom_switch);
+	  //     // calc pan_dy
+	  //     var idx = _.indexOf(entities, search_term);
+	  //     var inst_y_pos = cgm.params.viz.y_scale(idx);
+	  //     var pan_dy = cgm.params.viz.clust.dim.height / 2 - inst_y_pos;
 
-	      // highlight 
-	      d3.selectAll(params.root + ' .row_label_group').filter(function (d) {
-	        return d[prop] === search_term;
-	      }).select('rect').style('opacity', 1);
-	    }
-	  }
+	  //     two_translate_zoom(cgm.params, 0, pan_dy, cgm.params.viz.zoom_switch);
 
-	  return {
-	    find_entity: find_entity,
-	    get_entities: entities
-	  };
-		};
+	  //     // highlight
+	  //     d3.selectAll(cgm.params.root+' .row_label_group')
+	  //       .filter(function(d) {
+	  //         return d[prop] === search_term;
+	  //       })
+	  //       .select('rect')
+	  //       .style('opacity', 1);
+	  //   }
+	  // }
+
+	  // return {
+	  //   find_entity: find_entity
+	  //   // get_entities: entities
+	  // };
+	};
 
 /***/ },
 /* 84 */
@@ -5498,6 +5509,13 @@ var Clustergrammer =
 	  // }
 
 	  params.zoom_info = ini_zoom_info();
+
+	  // params.zoom_info.zoom_x = fin_zoom;
+	  // params.zoom_info.zoom_y = fin_zoom;
+	  // params.zoom_info.trans_x = pan_dx;
+	  // params.zoom_info.trans_y = pan_dy;
+
+	  console.log(params.zoom_info.zoom_y);
 
 	  show_visible_area(params);
 
@@ -7622,12 +7640,12 @@ var Clustergrammer =
 	var play_reorder_buttons = __webpack_require__(127);
 	var play_search = __webpack_require__(129);
 	var play_filter = __webpack_require__(130);
-	var quick_cluster = __webpack_require__(152);
-	var play_groups = __webpack_require__(153);
-	var play_categories = __webpack_require__(154);
-	var play_conclusion = __webpack_require__(155);
-	var toggle_play_button = __webpack_require__(156);
-	var play_menu_button = __webpack_require__(157);
+	var quick_cluster = __webpack_require__(154);
+	var play_groups = __webpack_require__(155);
+	var play_categories = __webpack_require__(156);
+	var play_conclusion = __webpack_require__(157);
+	var toggle_play_button = __webpack_require__(158);
+	var play_menu_button = __webpack_require__(159);
 
 	module.exports = function play_demo() {
 
@@ -8147,11 +8165,11 @@ var Clustergrammer =
 	var make_row_dendro = __webpack_require__(114);
 	var make_col_dendro = __webpack_require__(115);
 	var ini_sidebar = __webpack_require__(147);
-	var enable_sidebar = __webpack_require__(148);
+	var enable_sidebar = __webpack_require__(150);
 	var ini_doubleclick = __webpack_require__(88);
-	var update_reorder_buttons = __webpack_require__(149);
+	var update_reorder_buttons = __webpack_require__(151);
 	var make_row_cat_super_labels = __webpack_require__(82);
-	var modify_row_node_cats = __webpack_require__(150);
+	var modify_row_node_cats = __webpack_require__(152);
 
 	module.exports = function update_viz_with_network(cgm, new_network_data) {
 
@@ -9174,6 +9192,8 @@ var Clustergrammer =
 	var search = __webpack_require__(83);
 	var all_reorder = __webpack_require__(81);
 	var ini_cat_reorder = __webpack_require__(80);
+	var get_all_rows = __webpack_require__(148);
+	var run_row_search = __webpack_require__(149);
 
 	module.exports = function ini_sidebar(cgm) {
 
@@ -9181,25 +9201,31 @@ var Clustergrammer =
 
 	  // initializes sidebar buttons and sliders
 
-	  var search_obj = search(params, params.network_data.row_nodes, 'name');
+	  // var search_obj = search(params, params.network_data.row_nodes, 'name');
 
 	  // var input = document.getElementById("myinput");
 	  var input = d3.select(params.root + ' .gene_search_box')[0][0];
 	  var awesomplete = new Awesomplete(input, { minChars: 1, maxItems: 15 });
 
-	  awesomplete.list = search_obj.get_entities;
+	  // awesomplete.list = search_obj.get_entities;
+
+	  var entities = get_all_rows(cgm);
+	  awesomplete.list = entities;
 
 	  // submit genes button
 	  $(params.root + ' .gene_search_box').keyup(function (e) {
 	    if (e.keyCode === 13) {
 	      var search_gene = $(params.root + ' .gene_search_box').val();
-	      search_obj.find_entity(search_gene);
+	      // search_obj.find_entity(search_gene);
+	      run_row_search(cgm, search_gene, entities);
 	    }
 	  });
 
 	  $(params.root + ' .submit_gene_button').off().click(function () {
+	    console.log('search button');
 	    var gene = $(params.root + ' .gene_search_box').val();
-	    search_obj.find_entity(gene);
+	    // search_obj.find_entity(gene);
+	    run_row_search(cgm, search_gene, entities);
 	  });
 
 	  var reorder_types;
@@ -9325,6 +9351,66 @@ var Clustergrammer =
 
 	'use strict';
 
+	module.exports = function get_all_rows(cgm) {
+
+	  /* Collect entities from row or columns.
+	   */
+
+	  var nodes = cgm.params.network_data.row_nodes;
+	  var prop = 'name';
+
+	  var entities = [];
+	  var i;
+
+	  for (i = 0; i < nodes.length; i++) {
+	    entities.push(nodes[i][prop]);
+	  }
+
+	  return entities;
+		};
+
+/***/ },
+/* 149 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var two_translate_zoom = __webpack_require__(84);
+
+	module.exports = function run_row_search(cgm, search_term, entities) {
+
+	  console.log(entities);
+
+	  var prop = 'name';
+
+	  if (entities.indexOf(search_term) !== -1) {
+
+	    // unhighlight
+	    d3.selectAll(cgm.params.root + ' .row_label_group').select('rect').style('opacity', 0);
+
+	    // calc pan_dy
+	    var idx = _.indexOf(entities, search_term);
+	    var inst_y_pos = cgm.params.viz.y_scale(idx);
+	    var pan_dy = cgm.params.viz.clust.dim.height / 2 - inst_y_pos;
+
+	    two_translate_zoom(cgm.params, 0, pan_dy, cgm.params.viz.zoom_switch);
+
+	    // set y zoom to zoom_switch
+	    cgm.params.zoom_info.zoom_y = cgm.params.viz.zoom_switch;
+
+	    // highlight
+	    d3.selectAll(cgm.params.root + ' .row_label_group').filter(function (d) {
+	      return d[prop] === search_term;
+	    }).select('rect').style('opacity', 1);
+	  }
+		};
+
+/***/ },
+/* 150 */
+/***/ function(module, exports) {
+
+	'use strict';
+
 	module.exports = function enable_sidebar(params) {
 
 	  /* only enable dendrogram sliders if there has been no dendro_filtering */
@@ -9367,7 +9453,7 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 149 */
+/* 151 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9389,12 +9475,12 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 150 */
+/* 152 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var remove_node_cats = __webpack_require__(151);
+	var remove_node_cats = __webpack_require__(153);
 	var utils = __webpack_require__(2);
 
 	module.exports = function modify_row_node_cats(cat_data, inst_nodes) {
@@ -9466,7 +9552,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 151 */
+/* 153 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9488,7 +9574,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 152 */
+/* 154 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9548,7 +9634,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 153 */
+/* 155 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9591,7 +9677,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 154 */
+/* 156 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9645,13 +9731,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 155 */
+/* 157 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var demo_text = __webpack_require__(122);
-	var toggle_play_button = __webpack_require__(156);
+	var toggle_play_button = __webpack_require__(158);
 
 	module.exports = function play_conclusion() {
 
@@ -9686,7 +9772,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 156 */
+/* 158 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9703,7 +9789,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 157 */
+/* 159 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9784,13 +9870,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 158 */
+/* 160 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_play_button = __webpack_require__(159);
-	var make_demo_text_containers = __webpack_require__(160);
+	var make_play_button = __webpack_require__(161);
+	var make_demo_text_containers = __webpack_require__(162);
 
 	module.exports = function ini_demo() {
 
@@ -9804,7 +9890,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 159 */
+/* 161 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9848,7 +9934,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 160 */
+/* 162 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9889,7 +9975,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 161 */
+/* 163 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9904,7 +9990,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 162 */
+/* 164 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9959,7 +10045,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 163 */
+/* 165 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9967,7 +10053,7 @@ var Clustergrammer =
 	var make_row_cat = __webpack_require__(113);
 	var calc_viz_params = __webpack_require__(15);
 	var resize_viz = __webpack_require__(87);
-	var modify_row_node_cats = __webpack_require__(150);
+	var modify_row_node_cats = __webpack_require__(152);
 
 	module.exports = function update_cats(cgm, cat_data) {
 
@@ -9990,7 +10076,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 164 */
+/* 166 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9998,8 +10084,8 @@ var Clustergrammer =
 	var make_row_cat = __webpack_require__(113);
 	var calc_viz_params = __webpack_require__(15);
 	var resize_viz = __webpack_require__(87);
-	var modify_row_node_cats = __webpack_require__(150);
-	var make_default_cat_data = __webpack_require__(165);
+	var modify_row_node_cats = __webpack_require__(152);
+	var make_default_cat_data = __webpack_require__(167);
 
 	module.exports = function reset_cats() {
 
@@ -10026,7 +10112,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 165 */
+/* 167 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -10142,13 +10228,13 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 166 */
+/* 168 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var update_viz_with_view = __webpack_require__(131);
-	var reset_other_filter_sliders = __webpack_require__(167);
+	var reset_other_filter_sliders = __webpack_require__(169);
 
 	module.exports = function external_update_view(filter_type, inst_state) {
 
@@ -10165,12 +10251,12 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 167 */
+/* 169 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_filter_title = __webpack_require__(168);
+	var make_filter_title = __webpack_require__(170);
 
 	module.exports = function reset_other_filter_sliders(cgm, filter_type, inst_state) {
 
@@ -10219,7 +10305,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 168 */
+/* 170 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10279,12 +10365,12 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 169 */
+/* 171 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var file_saver = __webpack_require__(170);
+	var file_saver = __webpack_require__(172);
 
 	module.exports = function export_matrix() {
 
@@ -10406,7 +10492,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 170 */
+/* 172 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -10623,7 +10709,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 171 */
+/* 173 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -10768,7 +10854,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 172 */
+/* 174 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -10784,7 +10870,7 @@ var Clustergrammer =
 	(function (root, factory) {
 	  if (true) {
 	    // AMD. Register as an anonymous module.
-	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(173)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(175)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	  } else if ((typeof exports === 'undefined' ? 'undefined' : _typeof(exports)) === 'object') {
 	    if (process.browser) {
 	      // Browserify. Import css too using cssify.
@@ -11170,13 +11256,13 @@ var Clustergrammer =
 	});
 
 /***/ },
-/* 173 */
+/* 175 */
 /***/ function(module, exports) {
 
 	module.exports = d3;
 
 /***/ },
-/* 174 */
+/* 176 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {"use strict";
@@ -11616,10 +11702,10 @@ var Clustergrammer =
 
 		return _;
 		})();
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(175)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(177)(module)))
 
 /***/ },
-/* 175 */
+/* 177 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -11636,16 +11722,16 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 176 */
+/* 178 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(177);
+	var content = __webpack_require__(179);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(179)(content, {});
+	var update = __webpack_require__(181)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -11662,10 +11748,10 @@ var Clustergrammer =
 	}
 
 /***/ },
-/* 177 */
+/* 179 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(178)();
+	exports = module.exports = __webpack_require__(180)();
 	// imports
 
 
@@ -11676,7 +11762,7 @@ var Clustergrammer =
 
 
 /***/ },
-/* 178 */
+/* 180 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -11731,7 +11817,7 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 179 */
+/* 181 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -11983,16 +12069,16 @@ var Clustergrammer =
 
 
 /***/ },
-/* 180 */
+/* 182 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(181);
+	var content = __webpack_require__(183);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(179)(content, {});
+	var update = __webpack_require__(181)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -12009,10 +12095,10 @@ var Clustergrammer =
 	}
 
 /***/ },
-/* 181 */
+/* 183 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(178)();
+	exports = module.exports = __webpack_require__(180)();
 	// imports
 
 
@@ -12023,19 +12109,19 @@ var Clustergrammer =
 
 
 /***/ },
-/* 182 */
+/* 184 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var ini_sidebar = __webpack_require__(147);
-	var set_up_filters = __webpack_require__(183);
-	var set_up_search = __webpack_require__(188);
-	var set_up_reorder = __webpack_require__(189);
-	var set_sidebar_ini_view = __webpack_require__(190);
-	var make_icons = __webpack_require__(191);
-	var make_modals = __webpack_require__(193);
-	var set_up_opacity_slider = __webpack_require__(195);
+	var set_up_filters = __webpack_require__(185);
+	var set_up_search = __webpack_require__(190);
+	var set_up_reorder = __webpack_require__(191);
+	var set_sidebar_ini_view = __webpack_require__(192);
+	var make_icons = __webpack_require__(193);
+	var make_modals = __webpack_require__(195);
+	var set_up_opacity_slider = __webpack_require__(197);
 
 	/* Represents sidebar with controls.
 	 */
@@ -12105,13 +12191,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 183 */
+/* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_slider_filter = __webpack_require__(184);
-	var make_button_filter = __webpack_require__(187);
+	var make_slider_filter = __webpack_require__(186);
+	var make_button_filter = __webpack_require__(189);
 
 	module.exports = function set_up_filters(cgm, filter_type) {
 
@@ -12127,17 +12213,17 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 184 */
+/* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_filter_title = __webpack_require__(168);
-	var run_filter_slider = __webpack_require__(185);
+	var make_filter_title = __webpack_require__(170);
+	var run_filter_slider = __webpack_require__(187);
 	var get_filter_default_state = __webpack_require__(5);
 	var get_subset_views = __webpack_require__(12);
 
-	d3.slider = __webpack_require__(172);
+	d3.slider = __webpack_require__(174);
 
 	module.exports = function make_slider_filter(cgm, filter_type, div_filters) {
 
@@ -12202,14 +12288,14 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 185 */
+/* 187 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var update_viz_with_view = __webpack_require__(131);
-	var reset_other_filter_sliders = __webpack_require__(167);
-	var get_current_orders = __webpack_require__(186);
+	var reset_other_filter_sliders = __webpack_require__(169);
+	var get_current_orders = __webpack_require__(188);
 	var make_requested_view = __webpack_require__(14);
 
 	module.exports = function run_filter_slider(cgm, filter_type, available_views, inst_index) {
@@ -12238,7 +12324,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 186 */
+/* 188 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -12269,7 +12355,7 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 187 */
+/* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12322,7 +12408,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 188 */
+/* 190 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -12339,7 +12425,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 189 */
+/* 191 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -12432,12 +12518,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 190 */
+/* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_filter_title = __webpack_require__(168);
+	var make_filter_title = __webpack_require__(170);
 
 	module.exports = function set_sidebar_ini_view(params) {
 
@@ -12472,13 +12558,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 191 */
+/* 193 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var save_svg_png = __webpack_require__(192);
-	var file_saver = __webpack_require__(170);
+	var save_svg_png = __webpack_require__(194);
+	var file_saver = __webpack_require__(172);
 
 	module.exports = function make_icons(cgm, sidebar) {
 
@@ -12548,7 +12634,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 192 */
+/* 194 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -12754,12 +12840,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 193 */
+/* 195 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_modal_skeleton = __webpack_require__(194);
+	var make_modal_skeleton = __webpack_require__(196);
 
 	module.exports = function ini_modals(params) {
 
@@ -12808,7 +12894,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 194 */
+/* 196 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -12833,7 +12919,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 195 */
+/* 197 */
 /***/ function(module, exports) {
 
 	'use strict';

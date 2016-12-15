@@ -2,6 +2,10 @@ var toggle_element_display = require('./toggle_element_display');
 
 module.exports = function show_visible_area(params){
 
+  console.log('show_visible_area')
+
+  console.log(params.zoom_info.zoom_y)
+
   var vis_area = {};
   var zoom_info = params.zoom_info;
 

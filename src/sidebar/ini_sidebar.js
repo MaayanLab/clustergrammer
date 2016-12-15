@@ -4,7 +4,8 @@ var change_groups = require('../dendrogram/change_groups');
 var search = require('../search');
 var all_reorder = require('../reorder/all_reorder');
 var ini_cat_reorder = require('../reorder/ini_cat_reorder');
-
+var get_all_rows = require('../search/get_all_rows');
+var run_row_search = require('../search/run_row_search');
 
 module.exports = function ini_sidebar(cgm){
 
@@ -12,25 +13,31 @@ module.exports = function ini_sidebar(cgm){
 
   // initializes sidebar buttons and sliders
 
-  var search_obj = search(params, params.network_data.row_nodes, 'name');
+  // var search_obj = search(params, params.network_data.row_nodes, 'name');
 
   // var input = document.getElementById("myinput");
   var input = d3.select(params.root+' .gene_search_box')[0][0];
   var awesomplete = new Awesomplete(input, {minChars: 1, maxItems: 15});
 
-  awesomplete.list = search_obj.get_entities;
+  // awesomplete.list = search_obj.get_entities;
+
+  var entities = get_all_rows(cgm);
+  awesomplete.list = entities;
 
   // submit genes button
   $(params.root+' .gene_search_box').keyup(function(e) {
     if (e.keyCode === 13) {
       var search_gene = $(params.root+' .gene_search_box').val();
-      search_obj.find_entity(search_gene);
+      // search_obj.find_entity(search_gene);
+      run_row_search(cgm, search_gene, entities);
     }
   });
 
   $(params.root+' .submit_gene_button').off().click(function() {
+    console.log('search button')
     var gene = $(params.root+' .gene_search_box').val();
-    search_obj.find_entity(gene);
+    // search_obj.find_entity(gene);
+      run_row_search(cgm, search_gene, entities);
   });
 
   var reorder_types;

@@ -35,7 +35,7 @@ function make_clust(inst_network){
 
       d3.select(cgm.params.root + ' .wait_message').remove();
 
-      // check_setup_enrichr(cgm);
+      check_setup_enrichr(cgm);
 
       // // Enrichr categories
       // //////////////////////

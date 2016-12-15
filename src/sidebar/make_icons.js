@@ -102,7 +102,7 @@ module.exports = function make_icons(cgm, sidebar){
       cgm.crop_matrix();
 
       d3.select(this)
-        .style('color', 'rgba(0, 0, 0, 8)')
+        .style('color', 'rgba(0, 0, 0, 8)');
         // .style('opacity', 0.1);
 
     })

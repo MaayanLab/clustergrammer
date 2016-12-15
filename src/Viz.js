@@ -151,7 +151,7 @@ module.exports = function make_viz(cgm) {
   // d3.select(params.root+' .clust_container')
     .on('dblclick.zoom', null);
 
-  search(params, params.network_data.row_nodes, 'name');
+  search(cgm, params.network_data.row_nodes, 'name');
 
   // var opacity_slider = function (inst_slider) {
 
