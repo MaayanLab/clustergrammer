@@ -1,6 +1,7 @@
 var utils = require('../Utils_clust');
 var label_constrain_and_trim = require('../labels/label_constrain_and_trim');
 var show_visible_area = require('./show_visible_area');
+var ini_zoom_info = require('../zoom/ini_zoom_info');
 
 module.exports = function two_translate_zoom(params, pan_dx, pan_dy, fin_zoom) {
 
@@ -14,12 +15,7 @@ module.exports = function two_translate_zoom(params, pan_dx, pan_dy, fin_zoom) {
   //     .style('display', 'none');
   // }
 
-  // reset visible area
-  var zoom_info = {};
-  zoom_info.zoom_x = 1;
-  zoom_info.zoom_y = 1;
-  zoom_info.trans_x = 0;
-  zoom_info.trans_y = 0;
+  var zoom_info = ini_zoom_info();
 
   show_visible_area(params, zoom_info);
 

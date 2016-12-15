@@ -2,6 +2,7 @@ var utils = require('../Utils_clust');
 var reposition_tile_highlight = require('./reposition_tile_highlight');
 var toggle_dendro_view = require('../dendrogram/toggle_dendro_view');
 var show_visible_area = require('../zoom/show_visible_area');
+var ini_zoom_info = require('../zoom/ini_zoom_info');
 
 module.exports = function row_reorder(cgm, row_selection, inst_row) {
 
@@ -135,12 +136,8 @@ module.exports = function row_reorder(cgm, row_selection, inst_row) {
     d.y = params.viz.y_scale(d.source);
   });
 
-  // reset visible area
-  var zoom_info = {};
-  zoom_info.zoom_x = 1;
-  zoom_info.zoom_y = 1;
-  zoom_info.trans_x = 0;
-  zoom_info.trans_y = 0;
+  var zoom_info = ini_zoom_info();
+
   show_visible_area(params, zoom_info);
 
   setTimeout(function(){

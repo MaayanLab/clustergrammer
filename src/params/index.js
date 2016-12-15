@@ -3,6 +3,7 @@ var ini_sidebar_params = require('./ini_sidebar_params');
 var make_requested_view = require('../filters/make_requested_view');
 var get_available_filters = require('./get_available_filters');
 var calc_viz_params = require('./calc_viz_params');
+var ini_zoom_info = require('../zoom/ini_zoom_info');
 
 /*
 Params: calculates the size of all the visualization elements in the
@@ -41,12 +42,7 @@ module.exports = function make_params(input_config) {
     params.sidebar = ini_sidebar_params(params);
   }
 
-  // reset visible area
-  var zoom_info = {};
-  zoom_info.zoom_x = 1;
-  zoom_info.zoom_y = 1;
-  zoom_info.trans_x = 0;
-  zoom_info.trans_y = 0;
+  var zoom_info = ini_zoom_info();
 
   params.zoom_info = zoom_info;
 

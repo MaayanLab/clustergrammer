@@ -27,6 +27,7 @@ var position_play_button = require('../demo/position_play_button');
 var make_row_cat_super_labels = require('../labels/make_row_cat_super_labels');
 var ini_cat_reorder = require('../reorder/ini_cat_reorder');
 var position_svg_dendro_slider = require('../dendrogram/position_svg_dendro_slider');
+var ini_zoom_info = require('../zoom/ini_zoom_info');
 
 module.exports = function(cgm) {
 
@@ -37,12 +38,7 @@ module.exports = function(cgm) {
   d3.select(params.root+' .play_button');
     // .style('opacity', 0.2);
 
-  // reset visible area
-  var zoom_info = {};
-  zoom_info.zoom_x = 1;
-  zoom_info.zoom_y = 1;
-  zoom_info.trans_x = 0;
-  zoom_info.trans_y = 0;
+  var zoom_info = ini_zoom_info();
 
   d3.select(params.root+' .sidebar_wrapper')
     .style('height', cont_dim.height+'px');
