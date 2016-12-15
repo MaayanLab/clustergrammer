@@ -71,7 +71,7 @@ module.exports = function(cgm, text_delay) {
     .attr('class', 'col_label_text')
     .attr('transform', function(d) {
       var inst_index = _.indexOf(col_nodes_names, d.name);
-      return 'translate(' + params.viz.x_scale(inst_index) + ') rotate(-90)';
+      return 'translate(' + params.viz.x_scale(inst_index) + ', 0) rotate(-90)';
     });
 
   // append group for individual column label

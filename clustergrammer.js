@@ -4729,7 +4729,7 @@ var Clustergrammer =
 	    return d.name;
 	  }).enter().append('g').attr('class', 'col_label_text').attr('transform', function (d) {
 	    var inst_index = _.indexOf(col_nodes_names, d.name);
-	    return 'translate(' + params.viz.x_scale(inst_index) + ') rotate(-90)';
+	    return 'translate(' + params.viz.x_scale(inst_index) + ', 0) rotate(-90)';
 	  });
 
 	  // append group for individual column label
@@ -12764,6 +12764,31 @@ var Clustergrammer =
 	    var brush_start = brushing_extent[0];
 	    var brush_end = brushing_extent[1];
 
+	    var x_start = brush_start[0];
+	    var x_end = brush_end[0];
+
+	    var y_start = brush_start[1];
+	    var y_end = brush_end[1];
+
+	    // reverse if necessary (depending on how brushing was done)
+	    if (x_start > x_end) {
+	      x_start = brush_end[0];
+	      x_end = brush_start[0];
+	    }
+
+	    if (y_start > y_end) {
+	      y_start = brush_end[1];
+	      y_end = brush_start[1];
+	    }
+
+	    // add room to brushing
+	    y_start = y_start - params.viz.rect_height;
+	    x_start = x_start - params.viz.rect_width;
+
+	    var found_nodes = {};
+	    found_nodes.row = [];
+	    found_nodes.col = [];
+
 	    d3.selectAll(params.root + ' .row_label_group').each(function (inst_row) {
 
 	      // there is already bound data on the rows
@@ -12771,22 +12796,36 @@ var Clustergrammer =
 
 	      var y_trans = Number(inst_trans.split(',')[1].split(')')[0]);
 
-	      if (y_trans > brush_start[1] && y_trans < brush_end[1]) {
+	      if (y_trans > y_start && y_trans < y_end) {
 
-	        console.log('found: ' + inst_row.name);
-	        // console.log('greater than: ' + String(y_trans))
-	        // console.log('y_trans: '+ String(y_trans) + '\n')
-
-	        // console.log('brush_end: '+String(brush_end))
-	        console.log('\n');
-	        // if (y_trans < brush_end[1])
+	        found_nodes.row.push(inst_row.name);
 	      }
 	    });
+
+	    d3.selectAll(params.root + ' .col_label_text').each(function (inst_col) {
+
+	      // there is already bound data on the cols
+	      var inst_trans = d3.select(this).attr('transform');
+
+	      var x_trans = Number(inst_trans.split(',')[0].split('(')[1]);
+
+	      if (x_trans > x_start && x_trans < x_end) {
+
+	        found_nodes.col.push(inst_col.name);
+	      }
+	    });
+
+	    console.log('found rows');
+	    console.log(found_nodes.row);
+	    console.log('found cols');
+	    console.log(found_nodes.col);
 	  }
 
 	  function apply_crop() {
 
-	    d3.select('.brush_group').transition().style('opacity', 0).remove();
+	    d3.select('.brush_group').transition();
+	    // .style('opacity', 0)
+	    // .remove();
 
 	    cgm.params.is_cropping = false;
 	  }
