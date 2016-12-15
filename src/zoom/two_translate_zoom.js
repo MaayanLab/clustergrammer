@@ -15,9 +15,9 @@ module.exports = function two_translate_zoom(params, pan_dx, pan_dy, fin_zoom) {
   //     .style('display', 'none');
   // }
 
-  var zoom_info = ini_zoom_info();
+  params.zoom_info = ini_zoom_info();
 
-  show_visible_area(params, zoom_info);
+  show_visible_area(params);
 
   // do not allow while transitioning, e.g. reordering
   if (!params.viz.run_trans) {

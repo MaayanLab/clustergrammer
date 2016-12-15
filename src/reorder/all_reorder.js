@@ -183,9 +183,9 @@ module.exports = function(cgm, inst_order, tmp_row_col) {
     d.y = params.viz.y_scale(d.source);
   });
 
-  var zoom_info = ini_zoom_info();
+  params.zoom_info = ini_zoom_info();
 
-  show_visible_area(params, zoom_info);
+  show_visible_area(params);
 
   setTimeout(function(){
     params.viz.run_trans = false;

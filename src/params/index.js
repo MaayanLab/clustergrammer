@@ -42,9 +42,7 @@ module.exports = function make_params(input_config) {
     params.sidebar = ini_sidebar_params(params);
   }
 
-  var zoom_info = ini_zoom_info();
-
-  params.zoom_info = zoom_info;
+  params.zoom_info = ini_zoom_info();
 
   return params;
 };

@@ -126,9 +126,9 @@ module.exports = function col_reorder(cgm, col_selection, inst_term) {
 
   reposition_tile_highlight(params);
 
-  var zoom_info = ini_zoom_info();
+  params.zoom_info = ini_zoom_info();
 
-  show_visible_area(params, zoom_info);
+  show_visible_area(params);
 
   setTimeout(function(){
     params.viz.run_trans = false;

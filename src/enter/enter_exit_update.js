@@ -1,4 +1,4 @@
-var resize_after_update = require('../reset_size/reset_size_after_update');
+var reset_size_after_update = require('../reset_size/reset_size_after_update');
 var make_rows = require('../labels/make_rows');
 var make_cols = require('../labels/make_cols');
 var eeu_existing_row = require('./eeu_existing_row');
@@ -107,7 +107,7 @@ module.exports = function(cgm, network_data, delays){
   exit_components(params, delays, duration);
 
   // resize clust components using appropriate delays
-  resize_after_update(params, row_nodes, col_nodes, links, duration, delays);
+  reset_size_after_update(cgm, row_nodes, col_nodes, links, duration, delays);
 
   // enter new elements
   //////////////////////////

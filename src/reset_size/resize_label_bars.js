@@ -1,10 +1,11 @@
 var calc_val_max = require('../params/calc_val_max');
 
-module.exports = function resize_label_bars(params, svg_group){
+module.exports = function resize_label_bars(cgm, svg_group){
+  var params = cgm.params;
 
   // // set bar scale
-  // var val_max = Math.abs(_.max( params.network_data.row_nodes, function(d) { 
-  //   return Math.abs(d.value); 
+  // var val_max = Math.abs(_.max( params.network_data.row_nodes, function(d) {
+  //   return Math.abs(d.value);
   // } ).value) ;
 
   // params.labels.bar_scale_row = d3.scale
@@ -12,7 +13,7 @@ module.exports = function resize_label_bars(params, svg_group){
   //   .domain([0, val_max])
   //   .range([0, params.viz.norm_labels.width.row ]);
 
-  params = calc_val_max(params);  
+  params = calc_val_max(params);
 
   svg_group.selectAll('.row_bars')
     // .transition().delay(delays.update).duration(duration)

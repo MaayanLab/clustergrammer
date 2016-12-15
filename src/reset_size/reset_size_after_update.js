@@ -18,13 +18,15 @@ var calc_zoom_switching = require('../zoom/calc_zoom_switching');
 var show_visible_area = require('../zoom/show_visible_area');
 var ini_zoom_info = require('../zoom/ini_zoom_info');
 
-module.exports = function(params, row_nodes, col_nodes, links, duration, delays) {
+module.exports = function(cgm, row_nodes, col_nodes, links, duration, delays) {
 
-  var zoom_info = ini_zoom_info();
+  var params = cgm.params;
 
-  show_visible_area(params, zoom_info);
+  params.zoom_info = ini_zoom_info();
+
+  show_visible_area(params);
   // quick fix for column filtering
-  setTimeout(show_visible_area, 2200, params, zoom_info);
+  setTimeout(show_visible_area, 2200, params, params.zoom_info);
 
   var row_nodes_names = params.network_data.row_nodes_names;
 
@@ -181,7 +183,7 @@ module.exports = function(params, row_nodes, col_nodes, links, duration, delays)
 
   if (utils.has( params.network_data.row_nodes[0], 'value')) {
 
-    resize_label_bars(params, svg_group);
+    resize_label_bars(cgm, svg_group);
 
   }
 

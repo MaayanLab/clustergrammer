@@ -38,7 +38,6 @@ module.exports = function(cgm) {
   d3.select(params.root+' .play_button');
     // .style('opacity', 0.2);
 
-  var zoom_info = ini_zoom_info();
 
   d3.select(params.root+' .sidebar_wrapper')
     .style('height', cont_dim.height+'px');
@@ -50,6 +49,8 @@ module.exports = function(cgm) {
     .style('height', cont_dim.height + 'px');
 
   params = recalc_params_for_resize(params);
+
+  params.zoom_info = ini_zoom_info();
 
   reset_zoom(params);
 
@@ -136,7 +137,7 @@ module.exports = function(cgm) {
     .attr('y', params.viz.rect_height * 0.5 + params.labels.default_fs_row*0.35 );
 
   if (utils.has( params.network_data.row_nodes[0], 'value')) {
-    resize_label_bars(params, svg_group);
+    resize_label_bars(cgm, svg_group);
   }
 
   svg_group
@@ -199,7 +200,7 @@ module.exports = function(cgm) {
       params.viz.clust.margin.left + ',' +
       params.viz.clust.margin.top + ')');
 
-  show_visible_area(params, zoom_info);
+  show_visible_area(params);
 
   make_row_cat_super_labels(cgm);
 

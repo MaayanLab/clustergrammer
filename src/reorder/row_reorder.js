@@ -136,9 +136,9 @@ module.exports = function row_reorder(cgm, row_selection, inst_row) {
     d.y = params.viz.y_scale(d.source);
   });
 
-  var zoom_info = ini_zoom_info();
+  params.zoom_info = ini_zoom_info();
 
-  show_visible_area(params, zoom_info);
+  show_visible_area(params);
 
   setTimeout(function(){
     params.viz.run_trans = false;

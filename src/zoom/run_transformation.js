@@ -4,7 +4,9 @@ var show_visible_area = require('./show_visible_area');
 var resize_label_val_bars = require('./resize_label_val_bars');
 var num_visible_labels = require('./num_visible_labels');
 
-module.exports = function run_transformation(params, zoom_info){
+module.exports = function run_transformation(params){
+
+  var zoom_info = params.zoom_info;
 
   // apply transformation and reset translate vector
   // translate clustergram

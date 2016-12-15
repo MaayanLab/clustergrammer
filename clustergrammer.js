@@ -659,9 +659,7 @@ var Clustergrammer =
 	    params.sidebar = ini_sidebar_params(params);
 	  }
 
-	  var zoom_info = ini_zoom_info();
-
-	  params.zoom_info = zoom_info;
+	  params.zoom_info = ini_zoom_info();
 
 	  return params;
 	};
@@ -1936,17 +1934,17 @@ var Clustergrammer =
 	  zoom_info.trans_x = d3.event.translate[0] - params.viz.clust.margin.left;
 	  zoom_info.trans_y = d3.event.translate[1] - params.viz.clust.margin.top;
 
-	  // params.zoom_info = zoom_info;
+	  params.zoom_info = zoom_info;
 
 	  d3.selectAll(params.viz.root_tips).style('display', 'none');
 
-	  zoom_info = zoom_rules_y(params, zoom_info);
+	  params.zoom_info = zoom_rules_y(params);
 
-	  zoom_info = zoom_rules_x(params, zoom_info);
+	  params.zoom_info = zoom_rules_x(params);
 
 	  // do not run transformation if moving slider
 	  if (params.is_slider_drag === false && params.is_cropping === false) {
-	    run_transformation(params, zoom_info);
+	    run_transformation(params);
 	  }
 		};
 
@@ -1962,7 +1960,9 @@ var Clustergrammer =
 	var resize_label_val_bars = __webpack_require__(43);
 	var num_visible_labels = __webpack_require__(39);
 
-	module.exports = function run_transformation(params, zoom_info) {
+	module.exports = function run_transformation(params) {
+
+	  var zoom_info = params.zoom_info;
 
 	  // apply transformation and reset translate vector
 	  // translate clustergram
@@ -2360,9 +2360,10 @@ var Clustergrammer =
 
 	var toggle_element_display = __webpack_require__(42);
 
-	module.exports = function show_visible_area(params, zoom_info) {
+	module.exports = function show_visible_area(params) {
 
 	  var vis_area = {};
+	  var zoom_info = params.zoom_info;
 
 	  // get translation vector absolute values
 	  vis_area.min_x = Math.abs(zoom_info.trans_x) / zoom_info.zoom_x - 3 * params.viz.rect_width;
@@ -2437,7 +2438,9 @@ var Clustergrammer =
 
 	var utils = __webpack_require__(2);
 
-	module.exports = function resize_label_val_bars(params, zoom_info) {
+	module.exports = function resize_label_val_bars(params) {
+
+	  var zoom_info = params.zoom_info;
 
 	  // resize label bars if necessary
 	  if (utils.has(params.network_data.row_nodes[0], 'value')) {
@@ -2469,7 +2472,9 @@ var Clustergrammer =
 
 	"use strict";
 
-	module.exports = function zoom_rules_y(params, zoom_info) {
+	module.exports = function zoom_rules_y(params) {
+
+	  var zoom_info = params.zoom_info;
 
 	  // zoom in the x direction before zooming in the y direction
 	  if (params.viz.zoom_switch_y > 1) {
@@ -2500,7 +2505,9 @@ var Clustergrammer =
 
 	"use strict";
 
-	module.exports = function zoom_rules_x(params, zoom_info) {
+	module.exports = function zoom_rules_x(params) {
+
+	  var zoom_info = params.zoom_info;
 
 	  // zoom in the y direction before zooming in the x direction
 	  if (params.viz.zoom_switch > 1) {
@@ -3890,9 +3897,9 @@ var Clustergrammer =
 	    d.y = params.viz.y_scale(d.source);
 	  });
 
-	  var zoom_info = ini_zoom_info();
+	  params.zoom_info = ini_zoom_info();
 
-	  show_visible_area(params, zoom_info);
+	  show_visible_area(params);
 
 	  setTimeout(function () {
 	    params.viz.run_trans = false;
@@ -4614,9 +4621,9 @@ var Clustergrammer =
 
 	  reposition_tile_highlight(params);
 
-	  var zoom_info = ini_zoom_info();
+	  params.zoom_info = ini_zoom_info();
 
-	  show_visible_area(params, zoom_info);
+	  show_visible_area(params);
 
 	  setTimeout(function () {
 	    params.viz.run_trans = false;
@@ -5289,9 +5296,9 @@ var Clustergrammer =
 	    d.y = params.viz.y_scale(d.source);
 	  });
 
-	  var zoom_info = ini_zoom_info();
+	  params.zoom_info = ini_zoom_info();
 
-	  show_visible_area(params, zoom_info);
+	  show_visible_area(params);
 
 	  setTimeout(function () {
 	    params.viz.run_trans = false;
@@ -5490,9 +5497,9 @@ var Clustergrammer =
 	  //     .style('display', 'none');
 	  // }
 
-	  var zoom_info = ini_zoom_info();
+	  params.zoom_info = ini_zoom_info();
 
-	  show_visible_area(params, zoom_info);
+	  show_visible_area(params);
 
 	  // do not allow while transitioning, e.g. reordering
 	  if (!params.viz.run_trans) {
@@ -5820,7 +5827,6 @@ var Clustergrammer =
 	  d3.select(params.root + ' .play_button');
 	  // .style('opacity', 0.2);
 
-	  var zoom_info = ini_zoom_info();
 
 	  d3.select(params.root + ' .sidebar_wrapper').style('height', cont_dim.height + 'px');
 
@@ -5829,6 +5835,8 @@ var Clustergrammer =
 	  .style('margin-top', cont_dim.top + 'px').style('width', cont_dim.width + 'px').style('height', cont_dim.height + 'px');
 
 	  params = recalc_params_for_resize(params);
+
+	  params.zoom_info = ini_zoom_info();
 
 	  reset_zoom(params);
 
@@ -5895,7 +5903,7 @@ var Clustergrammer =
 	  svg_group.selectAll('.row_label_group').select('text').attr('y', params.viz.rect_height * 0.5 + params.labels.default_fs_row * 0.35);
 
 	  if (utils.has(params.network_data.row_nodes[0], 'value')) {
-	    resize_label_bars(params, svg_group);
+	    resize_label_bars(cgm, svg_group);
 	  }
 
 	  svg_group.selectAll('.row_cat_group').attr('transform', function (d) {
@@ -5946,7 +5954,7 @@ var Clustergrammer =
 	  // reposition matrix
 	  d3.select(params.root + ' .clust_container').attr('transform', 'translate(' + params.viz.clust.margin.left + ',' + params.viz.clust.margin.top + ')');
 
-	  show_visible_area(params, zoom_info);
+	  show_visible_area(params);
 
 	  make_row_cat_super_labels(cgm);
 
@@ -6761,11 +6769,12 @@ var Clustergrammer =
 
 	var calc_val_max = __webpack_require__(29);
 
-	module.exports = function resize_label_bars(params, svg_group) {
+	module.exports = function resize_label_bars(cgm, svg_group) {
+	  var params = cgm.params;
 
 	  // // set bar scale
-	  // var val_max = Math.abs(_.max( params.network_data.row_nodes, function(d) { 
-	  //   return Math.abs(d.value); 
+	  // var val_max = Math.abs(_.max( params.network_data.row_nodes, function(d) {
+	  //   return Math.abs(d.value);
 	  // } ).value) ;
 
 	  // params.labels.bar_scale_row = d3.scale
@@ -8294,7 +8303,7 @@ var Clustergrammer =
 
 	'use strict';
 
-	var resize_after_update = __webpack_require__(136);
+	var reset_size_after_update = __webpack_require__(136);
 	var make_rows = __webpack_require__(59);
 	var make_cols = __webpack_require__(74);
 	var eeu_existing_row = __webpack_require__(137);
@@ -8387,7 +8396,7 @@ var Clustergrammer =
 	  exit_components(params, delays, duration);
 
 	  // resize clust components using appropriate delays
-	  resize_after_update(params, row_nodes, col_nodes, links, duration, delays);
+	  reset_size_after_update(cgm, row_nodes, col_nodes, links, duration, delays);
 
 	  // enter new elements
 	  //////////////////////////
@@ -8428,13 +8437,15 @@ var Clustergrammer =
 	var show_visible_area = __webpack_require__(41);
 	var ini_zoom_info = __webpack_require__(48);
 
-	module.exports = function (params, row_nodes, col_nodes, links, duration, delays) {
+	module.exports = function (cgm, row_nodes, col_nodes, links, duration, delays) {
 
-	  var zoom_info = ini_zoom_info();
+	  var params = cgm.params;
 
-	  show_visible_area(params, zoom_info);
+	  params.zoom_info = ini_zoom_info();
+
+	  show_visible_area(params);
 	  // quick fix for column filtering
-	  setTimeout(show_visible_area, 2200, params, zoom_info);
+	  setTimeout(show_visible_area, 2200, params, params.zoom_info);
 
 	  var row_nodes_names = params.network_data.row_nodes_names;
 
@@ -8557,7 +8568,7 @@ var Clustergrammer =
 
 	  if (utils.has(params.network_data.row_nodes[0], 'value')) {
 
-	    resize_label_bars(params, svg_group);
+	    resize_label_bars(cgm, svg_group);
 	  }
 
 	  // resize col labels

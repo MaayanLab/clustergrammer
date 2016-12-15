@@ -1,6 +1,8 @@
 var utils = require('../Utils_clust');
 
-module.exports = function resize_label_val_bars(params, zoom_info){
+module.exports = function resize_label_val_bars(params){
+
+  var zoom_info = params.zoom_info;
 
   // resize label bars if necessary
   if (utils.has(params.network_data.row_nodes[0], 'value')) {
