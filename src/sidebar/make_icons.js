@@ -108,14 +108,14 @@ module.exports = function make_icons(cgm, sidebar){
       var is_undo = d3.select(this)
         .classed('fa-undo');
 
-      console.log('is crop '+ String(is_crop))
-      console.log('is undo '+ String(is_undo))
+      // console.log('is crop '+ String(is_crop))
+      // console.log('is undo '+ String(is_undo))
 
       // press crop button
       if (is_crop){
 
         // keep list of names to return to state
-        cgm.params.crop_filter_nodes = {}
+        cgm.params.crop_filter_nodes = {};
         cgm.params.crop_filter_nodes.row_nodes = cgm.params.network_data.row_nodes;
         cgm.params.crop_filter_nodes.col_nodes = cgm.params.network_data.col_nodes;
 
@@ -135,8 +135,9 @@ module.exports = function make_icons(cgm, sidebar){
           .classed('fa-undo', false);
 
 
-        console.log('****** reset to previous state')
-        console.log(cgm.params.crop_filter_nodes)
+        // console.log('****** reset to previous state')
+        // console.log(cgm.params.crop_filter_nodes)
+
         // cgm.filter_viz_using_names(cgm.params.crop_filter_nodes);
         cgm.filter_viz_using_nodes(cgm.params.crop_filter_nodes);
 

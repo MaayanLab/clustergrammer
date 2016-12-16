@@ -16,8 +16,6 @@ var run_zoom = require('../zoom/run_zoom');
 
 module.exports = function update_viz_with_network(cgm, new_network_data){
 
-  console.log('update viz ')
-
   var inst_group_level = cgm.params.group_level;
   var inst_crop_fitler = cgm.params.crop_filter_nodes;
 

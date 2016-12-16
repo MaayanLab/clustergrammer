@@ -1,7 +1,5 @@
 module.exports = function set_defaults(){
 
-console.log('set_defaults')
-
   var defaults = {
     // Label options
     row_label_scale: 1,

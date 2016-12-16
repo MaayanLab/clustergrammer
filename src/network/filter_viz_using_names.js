@@ -17,7 +17,6 @@ module.exports = function filter_viz_using_names(names, external_cgm = false){
   var new_nodes = {};
   var found_nodes;
 
-  console.log(names)
   _.each(['row', 'col'], function(inst_rc){
 
     // I'm requiring view 0
@@ -38,10 +37,6 @@ module.exports = function filter_viz_using_names(names, external_cgm = false){
     new_nodes[inst_rc+'_nodes'] = found_nodes;
 
   });
-
-  console.log('new nodes')
-  console.log(new_nodes)
-  // new_nodes.col_nodes = params.network_data.col_nodes;
 
   var new_network_data = filter_network_using_new_nodes(cgm.config, new_nodes);
 

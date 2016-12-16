@@ -29,7 +29,6 @@ module.exports = function click_filter_cats(cgm, inst_data, inst_selection, inst
       var inst_col_nodes = cgm.params.network_data.col_nodes;
 
       // run filtering using found names
-      console.log('filter with cat')
       cgm.filter_viz_using_names(filter_names);
 
       // save backup of the inst_view
@@ -48,10 +47,6 @@ module.exports = function click_filter_cats(cgm, inst_data, inst_selection, inst
     filter_names = cgm.params.cat_filter[inst_rc];
 
     // reset filter
-    console.log('reset filter with cat')
-
-    console.log(filter_names)
-
     cgm.filter_viz_using_names(filter_names);
     // must set this after filtering has been run
     cgm.params.cat_filter[inst_rc] = false;

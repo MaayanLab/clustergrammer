@@ -497,8 +497,6 @@ var Clustergrammer =
 
 	module.exports = function set_defaults() {
 
-	  console.log('set_defaults');
-
 	  var defaults = {
 	    // Label options
 	    row_label_scale: 1,
@@ -7098,7 +7096,6 @@ var Clustergrammer =
 	      var inst_col_nodes = cgm.params.network_data.col_nodes;
 
 	      // run filtering using found names
-	      console.log('filter with cat');
 	      cgm.filter_viz_using_names(filter_names);
 
 	      // save backup of the inst_view
@@ -7116,10 +7113,6 @@ var Clustergrammer =
 	    filter_names = cgm.params.cat_filter[inst_rc];
 
 	    // reset filter
-	    console.log('reset filter with cat');
-
-	    console.log(filter_names);
-
 	    cgm.filter_viz_using_names(filter_names);
 	    // must set this after filtering has been run
 	    cgm.params.cat_filter[inst_rc] = false;
@@ -8090,8 +8083,6 @@ var Clustergrammer =
 	var run_zoom = __webpack_require__(196);
 
 	module.exports = function update_viz_with_network(cgm, new_network_data) {
-
-	  console.log('update viz ');
 
 	  var inst_group_level = cgm.params.group_level;
 	  var inst_crop_fitler = cgm.params.crop_filter_nodes;
@@ -9911,7 +9902,6 @@ var Clustergrammer =
 	  var new_nodes = {};
 	  var found_nodes;
 
-	  console.log(names);
 	  _.each(['row', 'col'], function (inst_rc) {
 
 	    // I'm requiring view 0
@@ -9930,10 +9920,6 @@ var Clustergrammer =
 
 	    new_nodes[inst_rc + '_nodes'] = found_nodes;
 	  });
-
-	  console.log('new nodes');
-	  console.log(new_nodes);
-	  // new_nodes.col_nodes = params.network_data.col_nodes;
 
 	  var new_network_data = filter_network_using_new_nodes(cgm.config, new_nodes);
 
@@ -12503,8 +12489,8 @@ var Clustergrammer =
 
 	    var is_undo = d3.select(this).classed('fa-undo');
 
-	    console.log('is crop ' + String(is_crop));
-	    console.log('is undo ' + String(is_undo));
+	    // console.log('is crop '+ String(is_crop))
+	    // console.log('is undo '+ String(is_undo))
 
 	    // press crop button
 	    if (is_crop) {
@@ -12525,8 +12511,9 @@ var Clustergrammer =
 
 	      d3.select(params.root + ' .crop_button').style('color', '#337ab7').classed('fa-crop', true).classed('fa-undo', false);
 
-	      console.log('****** reset to previous state');
-	      console.log(cgm.params.crop_filter_nodes);
+	      // console.log('****** reset to previous state')
+	      // console.log(cgm.params.crop_filter_nodes)
+
 	      // cgm.filter_viz_using_names(cgm.params.crop_filter_nodes);
 	      cgm.filter_viz_using_nodes(cgm.params.crop_filter_nodes);
 	    }
