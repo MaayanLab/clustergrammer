@@ -57,7 +57,7 @@ console.log('set_defaults')
     max_allow_fs: 20,
     dendro_filter:{'row':false, 'col':false},
     cat_filter:{'row':false, 'col':false},
-    // crop_filter:{'row':false, 'col':false},
+    crop_filter_nodes:{'row':false, 'col':false},
     row_tip_callback:null,
     col_tip_callback:null,
     tile_tip_callback:null,

@@ -115,9 +115,9 @@ module.exports = function make_icons(cgm, sidebar){
       if (is_crop){
 
         // keep list of names to return to state
-        cgm.params.crop_filter = {}
-        cgm.params.crop_filter.row = cgm.params.network_data.row_nodes_names;
-        cgm.params.crop_filter.col = cgm.params.network_data.col_nodes_names;
+        cgm.params.crop_filter_nodes = {}
+        cgm.params.crop_filter_nodes.row_nodes = cgm.params.network_data.row_nodes;
+        cgm.params.crop_filter_nodes.col_nodes = cgm.params.network_data.col_nodes;
 
         cgm.crop_matrix();
 
@@ -133,6 +133,13 @@ module.exports = function make_icons(cgm, sidebar){
           .style('color', '#337ab7')
           .classed('fa-crop', true)
           .classed('fa-undo', false);
+
+
+        console.log('****** reset to previous state')
+        console.log(cgm.params.crop_filter_nodes)
+        // cgm.filter_viz_using_names(cgm.params.crop_filter_nodes);
+        cgm.filter_viz_using_nodes(cgm.params.crop_filter_nodes);
+
 
       }
 

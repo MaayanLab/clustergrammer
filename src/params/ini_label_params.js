@@ -1,4 +1,4 @@
-module.exports = function set_label_params(params){
+module.exports = function ini_label_params(params){
 
   var labels = {};
   labels.super_label_scale = params.super_label_scale;

@@ -19,7 +19,7 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
   console.log('update viz ')
 
   var inst_group_level = cgm.params.group_level;
-  var inst_crop_fitler = cgm.params.crop_filter;
+  var inst_crop_fitler = cgm.params.crop_filter_nodes;
 
   // make tmp config to make new params
   var tmp_config = jQuery.extend(true, {}, cgm.config);
@@ -66,8 +66,8 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
   // have persistent group levels while updating
   cgm.params.group_level = inst_group_level;
 
-  // have persistent crop_filter while updating
-  cgm.params.crop_filter = inst_crop_fitler;
+  // have persistent crop_filter_nodes while updating
+  cgm.params.crop_filter_nodes = inst_crop_fitler;
 
   enter_exit_update(cgm, new_network_data, delays);
 

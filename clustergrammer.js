@@ -556,7 +556,7 @@ var Clustergrammer =
 	    max_allow_fs: 20,
 	    dendro_filter: { 'row': false, 'col': false },
 	    cat_filter: { 'row': false, 'col': false },
-	    // crop_filter:{'row':false, 'col':false},
+	    crop_filter_nodes: { 'row': false, 'col': false },
 	    row_tip_callback: null,
 	    col_tip_callback: null,
 	    tile_tip_callback: null,
@@ -984,7 +984,7 @@ var Clustergrammer =
 
 	"use strict";
 
-	module.exports = function set_label_params(params) {
+	module.exports = function ini_label_params(params) {
 
 	  var labels = {};
 	  labels.super_label_scale = params.super_label_scale;
@@ -7098,6 +7098,7 @@ var Clustergrammer =
 	      var inst_col_nodes = cgm.params.network_data.col_nodes;
 
 	      // run filtering using found names
+	      console.log('filter with cat');
 	      cgm.filter_viz_using_names(filter_names);
 
 	      // save backup of the inst_view
@@ -7115,6 +7116,10 @@ var Clustergrammer =
 	    filter_names = cgm.params.cat_filter[inst_rc];
 
 	    // reset filter
+	    console.log('reset filter with cat');
+
+	    console.log(filter_names);
+
 	    cgm.filter_viz_using_names(filter_names);
 	    // must set this after filtering has been run
 	    cgm.params.cat_filter[inst_rc] = false;
@@ -8089,7 +8094,7 @@ var Clustergrammer =
 	  console.log('update viz ');
 
 	  var inst_group_level = cgm.params.group_level;
-	  var inst_crop_fitler = cgm.params.crop_filter;
+	  var inst_crop_fitler = cgm.params.crop_filter_nodes;
 
 	  // make tmp config to make new params
 	  var tmp_config = jQuery.extend(true, {}, cgm.config);
@@ -8133,8 +8138,8 @@ var Clustergrammer =
 	  // have persistent group levels while updating
 	  cgm.params.group_level = inst_group_level;
 
-	  // have persistent crop_filter while updating
-	  cgm.params.crop_filter = inst_crop_fitler;
+	  // have persistent crop_filter_nodes while updating
+	  cgm.params.crop_filter_nodes = inst_crop_fitler;
 
 	  enter_exit_update(cgm, new_network_data, delays);
 
@@ -9906,6 +9911,7 @@ var Clustergrammer =
 	  var new_nodes = {};
 	  var found_nodes;
 
+	  console.log(names);
 	  _.each(['row', 'col'], function (inst_rc) {
 
 	    // I'm requiring view 0
@@ -9925,6 +9931,8 @@ var Clustergrammer =
 	    new_nodes[inst_rc + '_nodes'] = found_nodes;
 	  });
 
+	  console.log('new nodes');
+	  console.log(new_nodes);
 	  // new_nodes.col_nodes = params.network_data.col_nodes;
 
 	  var new_network_data = filter_network_using_new_nodes(cgm.config, new_nodes);
@@ -12502,9 +12510,9 @@ var Clustergrammer =
 	    if (is_crop) {
 
 	      // keep list of names to return to state
-	      cgm.params.crop_filter = {};
-	      cgm.params.crop_filter.row = cgm.params.network_data.row_nodes_names;
-	      cgm.params.crop_filter.col = cgm.params.network_data.col_nodes_names;
+	      cgm.params.crop_filter_nodes = {};
+	      cgm.params.crop_filter_nodes.row_nodes = cgm.params.network_data.row_nodes;
+	      cgm.params.crop_filter_nodes.col_nodes = cgm.params.network_data.col_nodes;
 
 	      cgm.crop_matrix();
 
@@ -12516,6 +12524,11 @@ var Clustergrammer =
 	    if (is_undo) {
 
 	      d3.select(params.root + ' .crop_button').style('color', '#337ab7').classed('fa-crop', true).classed('fa-undo', false);
+
+	      console.log('****** reset to previous state');
+	      console.log(cgm.params.crop_filter_nodes);
+	      // cgm.filter_viz_using_names(cgm.params.crop_filter_nodes);
+	      cgm.filter_viz_using_nodes(cgm.params.crop_filter_nodes);
 	    }
 
 	    two_translate_zoom(params, 0, 0, 1);
