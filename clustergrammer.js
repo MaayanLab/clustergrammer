@@ -61,6 +61,7 @@ var Clustergrammer =
 	var external_update_view = __webpack_require__(166);
 	var export_matrix = __webpack_require__(169);
 	var crop_matrix = __webpack_require__(171);
+	var zoomed = __webpack_require__(34);
 
 	// moved d3.slider to src
 	d3.slider = __webpack_require__(172);
@@ -93,6 +94,11 @@ var Clustergrammer =
 	  // make visualization parameters using configuration object
 	  cgm.params = make_params(config);
 	  cgm.config = config;
+
+	  // set up zoom
+	  cgm.params.zoom_behavior = d3.behavior.zoom().scaleExtent([1, cgm.params.viz.real_zoom * cgm.params.viz.zoom_switch]).on('zoom', function () {
+	    zoomed(cgm.params);
+	  });
 
 	  if (cgm.params.use_sidebar) {
 	    var make_sidebar = __webpack_require__(182);
@@ -1889,9 +1895,7 @@ var Clustergrammer =
 
 	'use strict';
 
-	var zoomed = __webpack_require__(34);
 	var calc_zoom_switching = __webpack_require__(46);
-	var two_translate_zoom = __webpack_require__(86);
 
 	module.exports = function set_zoom_params(params) {
 
@@ -1904,13 +1908,6 @@ var Clustergrammer =
 	  params.viz.real_zoom = params.viz.norm_labels.width.col / half_col_height * max_zoom_limit;
 
 	  params.viz = calc_zoom_switching(params.viz);
-
-	  params.zoom_behavior = d3.behavior.zoom().scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch]).on('zoom', function () {
-	    zoomed(params);
-	  });
-
-	  // initialize with two translate zoom (improves behavior)
-	  two_translate_zoom(params, 0, 0, 1);
 
 	  // rect width needs matrix and zoom parameters
 	  params.viz.rect_width = params.viz.x_scale.rangeBand() - params.viz.border_width;
@@ -1932,25 +1929,39 @@ var Clustergrammer =
 
 	module.exports = function zoomed(params) {
 
+	  console.log('check before ');
+	  console.log(params.zoom_behavior.translate());
+
+	  var tmp_trans_y = d3.event.translate[1] - params.viz.clust.margin.top;
+
+	  if (params.viz.zoom_switch > 1) {
+	    if (d3.event.scale < params.viz.zoom_switch) {
+
+	      // reset the zoom and translate
+	      console.log('############## reset zoom');
+	      params.zoom_behavior.translate([0, tmp_trans_y]);
+	      console.log('check here ');
+	      console.log(params.zoom_behavior.translate());
+	    }
+	  }
+
 	  var zoom_info = {};
 	  zoom_info.zoom_x = d3.event.scale;
 	  zoom_info.zoom_y = d3.event.scale;
-	  zoom_info.trans_x = d3.event.translate[0] - params.viz.clust.margin.left;
-	  zoom_info.trans_y = d3.event.translate[1] - params.viz.clust.margin.top;
 
-	  console.log('translate: ' + String(d3.event.translate[0]));
-	  console.log('zoom_info: ' + String(zoom_info.trans_x));
+	  // zoom_info.trans_x = d3.event.translate[0] - params.viz.clust.margin.left;
+	  // zoom_info.trans_y = d3.event.translate[1] - params.viz.clust.margin.top;
+
+
+	  console.log('ZOOM BEHAVIOR (trans_x): ' + String(params.zoom_behavior.translate()[0]));
+
+	  zoom_info.trans_x = params.zoom_behavior.translate()[0] - params.viz.clust.margin.left;
+	  zoom_info.trans_y = params.zoom_behavior.translate()[1] - params.viz.clust.margin.top;
+
+	  // console.log('translate: ' + String(d3.event.translate[0]))
+	  // console.log('zoom_info: ' + String(zoom_info.trans_x))
 	  // console.log('\n')
 
-	  if (params.viz.zoom_switch > 1) {
-	    if (zoom_info.zoom_x < params.viz.zoom_switch) {
-
-	      // console.log('000000000000000000000000000000000000000000000000000000000000000')
-	      // // set the current zoom parameters
-	      // d3.event.translate([0,0])
-
-	    }
-	  }
 
 	  params.zoom_info = zoom_info;
 
@@ -1958,6 +1969,11 @@ var Clustergrammer =
 
 	  params.zoom_info = zoom_rules_y(params);
 	  params.zoom_info = zoom_rules_x(params);
+
+	  console.log('check outside ');
+	  console.log(params.zoom_behavior.translate());
+
+	  console.log('............................................\n\n');
 
 	  // do not run transformation if moving slider
 	  if (params.is_slider_drag === false && params.is_cropping === false) {
@@ -2532,16 +2548,14 @@ var Clustergrammer =
 	      zoom_info.trans_x = 0;
 	      zoom_info.zoom_x = 1;
 
-	      // // try to reset transltae
-	      // d3.event.translate[0] = 0
+	      var tmp_trans_y = params.zoom_behavior.translate()[1];
 	    } else {
 	      zoom_info.zoom_x = zoom_info.zoom_x / params.viz.zoom_switch;
 	    }
 	  }
 
-	  console.log('zoom_x: ' + String(zoom_info.zoom_x));
-	  console.log('zoom_y: ' + String(zoom_info.zoom_y));
-	  console.log('............................................');
+	  // console.log('zoom_x: ' + String(zoom_info.zoom_x))
+	  // console.log('zoom_y: ' + String(zoom_info.zoom_y))
 
 	  // calculate panning room available in the x direction
 	  zoom_info.pan_room_x = (zoom_info.zoom_x - 1) * params.viz.clust.dim.width;
@@ -2556,8 +2570,8 @@ var Clustergrammer =
 	    zoom_info.trans_x = -zoom_info.pan_room_x;
 	  }
 
-	  console.log('corrected zoom_info: ' + String(zoom_info.trans_x));
-	  console.log('\n\n');
+	  // console.log('corrected zoom_info: ' + String(zoom_info.trans_x))
+	  // console.log('\n\n')
 
 	  return zoom_info;
 	};
@@ -8136,6 +8150,7 @@ var Clustergrammer =
 	var update_reorder_buttons = __webpack_require__(149);
 	var make_row_cat_super_labels = __webpack_require__(82);
 	var modify_row_node_cats = __webpack_require__(150);
+	var zoomed = __webpack_require__(34);
 
 	module.exports = function update_viz_with_network(cgm, new_network_data) {
 
@@ -8168,8 +8183,13 @@ var Clustergrammer =
 	  var new_params = make_params(tmp_config);
 	  var delays = define_enter_exit_delays(cgm.params, new_params);
 
-	  // pass the newly calcluated params back to teh cgm object
+	  // pass the newly calcluated params back to the cgm object
 	  cgm.params = new_params;
+
+	  // set up zoom
+	  cgm.params.zoom_behavior = d3.behavior.zoom().scaleExtent([1, cgm.params.viz.real_zoom * cgm.params.viz.zoom_switch]).on('zoom', function () {
+	    zoomed(cgm.params);
+	  });
 
 	  if (new_cat_data != null) {
 	    cgm.params.new_cat_data = new_cat_data;
@@ -9999,6 +10019,11 @@ var Clustergrammer =
 	  // recalculate the visualization parameters using the updated network_data
 	  cgm.params = calc_viz_params(cgm.params, false);
 
+	  // set up zoom
+	  cgm.params.zoom_behavior = d3.behavior.zoom().scaleExtent([1, cgm.params.viz.real_zoom * cgm.params.viz.zoom_switch]).on('zoom', function () {
+	    zoomed(cgm.params);
+	  });
+
 	  make_row_cat(cgm, true);
 	  resize_viz(cgm);
 
@@ -10034,6 +10059,11 @@ var Clustergrammer =
 
 	  // recalculate the visualization parameters using the updated network_data
 	  tmp_cgm.params = calc_viz_params(tmp_cgm.params, false);
+
+	  // set up zoom (zoom is modified by room for categories)
+	  tmp_cgm.params.zoom_behavior = d3.behavior.zoom().scaleExtent([1, tmp_cgm.params.viz.real_zoom * tmp_cgm.params.viz.zoom_switch]).on('zoom', function () {
+	    zoomed(tmp_cgm.params);
+	  });
 
 	  make_row_cat(tmp_cgm, true);
 	  resize_viz(tmp_cgm);

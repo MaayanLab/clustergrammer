@@ -20,6 +20,13 @@ module.exports = function reset_cats(){
   // recalculate the visualization parameters using the updated network_data
   tmp_cgm.params = calc_viz_params(tmp_cgm.params, false);
 
+  // set up zoom (zoom is modified by room for categories)
+  tmp_cgm.params.zoom_behavior = d3.behavior.zoom()
+    .scaleExtent([1, tmp_cgm.params.viz.real_zoom * tmp_cgm.params.viz.zoom_switch])
+    .on('zoom', function(){
+      zoomed(tmp_cgm.params);
+    });
+
   make_row_cat(tmp_cgm, true);
   resize_viz(tmp_cgm);
 

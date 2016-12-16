@@ -15,6 +15,13 @@ module.exports = function update_cats(cgm, cat_data){
   // recalculate the visualization parameters using the updated network_data
   cgm.params = calc_viz_params(cgm.params, false);
 
+  // set up zoom
+  cgm.params.zoom_behavior = d3.behavior.zoom()
+    .scaleExtent([1, cgm.params.viz.real_zoom * cgm.params.viz.zoom_switch])
+    .on('zoom', function(){
+      zoomed(cgm.params);
+    });
+
   make_row_cat(cgm, true);
   resize_viz(cgm);
 

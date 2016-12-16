@@ -1,6 +1,4 @@
-var zoomed = require('../zoom/zoomed');
 var calc_zoom_switching = require('../zoom/calc_zoom_switching');
-var two_translate_zoom = require('../zoom/two_translate_zoom');
 
 module.exports = function set_zoom_params(params){
 
@@ -13,15 +11,6 @@ module.exports = function set_zoom_params(params){
   params.viz.real_zoom = (params.viz.norm_labels.width.col / half_col_height )*max_zoom_limit;
 
   params.viz = calc_zoom_switching(params.viz);
-
-  params.zoom_behavior = d3.behavior.zoom()
-    .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch])
-    .on('zoom', function(){
-      zoomed(params);
-    });
-
-  // initialize with two translate zoom (improves behavior)
-  two_translate_zoom(params, 0, 0, 1);
 
   // rect width needs matrix and zoom parameters
   params.viz.rect_width  = params.viz.x_scale.rangeBand()

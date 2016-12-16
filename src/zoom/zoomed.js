@@ -5,25 +5,42 @@ var zoom_rules_x = require('./zoom_rules_x');
 module.exports = function zoomed(params) {
 
 
-  var zoom_info = {};
-  zoom_info.zoom_x = d3.event.scale;
-  zoom_info.zoom_y = d3.event.scale;
-  zoom_info.trans_x = d3.event.translate[0] - params.viz.clust.margin.left;
-  zoom_info.trans_y = d3.event.translate[1] - params.viz.clust.margin.top;
+  console.log('check before ')
+  console.log(params.zoom_behavior.translate())
 
-  console.log('translate: ' + String(d3.event.translate[0]))
-  console.log('zoom_info: ' + String(zoom_info.trans_x))
-  // console.log('\n')
+    var tmp_trans_y = d3.event.translate[1] - params.viz.clust.margin.top;
 
   if (params.viz.zoom_switch > 1){
-    if (zoom_info.zoom_x < params.viz.zoom_switch) {
+    if (d3.event.scale < params.viz.zoom_switch) {
 
-      // console.log('000000000000000000000000000000000000000000000000000000000000000')
-      // // set the current zoom parameters
-      // d3.event.translate([0,0])
+    // reset the zoom and translate
+    console.log('############## reset zoom')
+    params.zoom_behavior
+      .translate([0, tmp_trans_y]);
+    console.log('check here ')
+    console.log(params.zoom_behavior.translate())
 
     }
   }
+
+
+  var zoom_info = {};
+  zoom_info.zoom_x = d3.event.scale;
+  zoom_info.zoom_y = d3.event.scale;
+
+  // zoom_info.trans_x = d3.event.translate[0] - params.viz.clust.margin.left;
+  // zoom_info.trans_y = d3.event.translate[1] - params.viz.clust.margin.top;
+
+
+  console.log('ZOOM BEHAVIOR (trans_x): ' + String(params.zoom_behavior.translate()[0]))
+
+  zoom_info.trans_x = params.zoom_behavior.translate()[0] - params.viz.clust.margin.left;
+  zoom_info.trans_y = params.zoom_behavior.translate()[1] - params.viz.clust.margin.top;
+
+  // console.log('translate: ' + String(d3.event.translate[0]))
+  // console.log('zoom_info: ' + String(zoom_info.trans_x))
+  // console.log('\n')
+
 
   params.zoom_info = zoom_info;
 
@@ -33,6 +50,13 @@ module.exports = function zoomed(params) {
 
   params.zoom_info = zoom_rules_y(params);
   params.zoom_info = zoom_rules_x(params);
+
+
+  console.log('check outside ')
+  console.log(params.zoom_behavior.translate())
+
+
+  console.log('............................................\n\n')
 
   // do not run transformation if moving slider
   if (params.is_slider_drag === false && params.is_cropping === false){

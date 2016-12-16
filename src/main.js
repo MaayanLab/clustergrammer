@@ -12,6 +12,7 @@ var two_translate_zoom = require('./zoom/two_translate_zoom');
 var external_update_view = require('./update/external_update_view');
 var export_matrix = require('./matrix/export_matrix');
 var crop_matrix = require('./matrix/crop_matrix');
+var zoomed = require('./zoom/zoomed');
 
 // moved d3.slider to src
 d3.slider = require('./d3.slider');
@@ -44,6 +45,13 @@ function Clustergrammer(args) {
   // make visualization parameters using configuration object
   cgm.params = make_params(config);
   cgm.config = config;
+
+  // set up zoom
+  cgm.params.zoom_behavior = d3.behavior.zoom()
+    .scaleExtent([1, cgm.params.viz.real_zoom * cgm.params.viz.zoom_switch])
+    .on('zoom', function(){
+      zoomed(cgm.params);
+    });
 
   if (cgm.params.use_sidebar) {
     var make_sidebar = require('./sidebar/');
