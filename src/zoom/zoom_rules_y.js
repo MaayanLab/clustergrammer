@@ -1,4 +1,6 @@
-module.exports = function zoom_rules_y(params){
+module.exports = function zoom_rules_y(cgm){
+
+  var params = cgm.params;
 
   var zoom_info = params.zoom_info;
 

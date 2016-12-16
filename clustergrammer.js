@@ -97,8 +97,17 @@ var Clustergrammer =
 
 	  // set up zoom
 	  cgm.params.zoom_behavior = d3.behavior.zoom().scaleExtent([1, cgm.params.viz.real_zoom * cgm.params.viz.zoom_switch]).on('zoom', function () {
-	    zoomed(cgm.params);
+
+	    console.log('\n\n\non zoom');
+	    console.log(cgm.params.new_object);
+	    // cgm.params.zoom_behavior
+	    //   .translate([0, 0]);
+	    console.log(cgm.params.zoom_behavior.translate());
+
+	    zoomed(cgm);
 	  });
+
+	  cgm.params.zoom_behavior.translate([0, cgm.params.viz.clust.margin.top]);
 
 	  if (cgm.params.use_sidebar) {
 	    var make_sidebar = __webpack_require__(182);
@@ -1927,23 +1936,35 @@ var Clustergrammer =
 	var zoom_rules_y = __webpack_require__(44);
 	var zoom_rules_x = __webpack_require__(45);
 
-	module.exports = function zoomed(params) {
+	module.exports = function zoomed(cgm) {
+
+	  var params = cgm.params;
+
+	  // debugger;
 
 	  console.log('check before ');
 	  console.log(params.zoom_behavior.translate());
 
 	  var tmp_trans_y = d3.event.translate[1] - params.viz.clust.margin.top;
 
-	  if (params.viz.zoom_switch > 1) {
-	    if (d3.event.scale < params.viz.zoom_switch) {
+	  // // zero out translation vector
+	  // cgm.params.zoom_behavior
+	  //   .translate([0, 0]);
 
-	      // reset the zoom and translate
-	      console.log('############## reset zoom');
-	      params.zoom_behavior.translate([0, tmp_trans_y]);
-	      console.log('check here ');
-	      console.log(params.zoom_behavior.translate());
-	    }
-	  }
+	  console.log('$$$$$$$$$$$ in the middle of zoomed');
+	  console.log(cgm.params.zoom_behavior.translate());
+
+	  cgm.params.new_object = 'something_set_in_zdm_rules';
+
+	  // // reset the zoom and translate
+	  // console.log('############## reset zoom')
+	  // console.log('check here ')
+	  // console.log(params.zoom_behavior.translate())
+	  // if (params.viz.zoom_switch > 1){
+	  //   if (d3.event.scale < params.viz.zoom_switch) {
+	  //   }
+	  // }
+
 
 	  var zoom_info = {};
 	  zoom_info.zoom_x = d3.event.scale;
@@ -1951,9 +1972,7 @@ var Clustergrammer =
 
 	  // zoom_info.trans_x = d3.event.translate[0] - params.viz.clust.margin.left;
 	  // zoom_info.trans_y = d3.event.translate[1] - params.viz.clust.margin.top;
-
-
-	  console.log('ZOOM BEHAVIOR (trans_x): ' + String(params.zoom_behavior.translate()[0]));
+	  // console.log('ZOOM BEHAVIOR (trans_x): ' + String(params.zoom_behavior.translate()[0]))
 
 	  zoom_info.trans_x = params.zoom_behavior.translate()[0] - params.viz.clust.margin.left;
 	  zoom_info.trans_y = params.zoom_behavior.translate()[1] - params.viz.clust.margin.top;
@@ -1962,23 +1981,25 @@ var Clustergrammer =
 	  // console.log('zoom_info: ' + String(zoom_info.trans_x))
 	  // console.log('\n')
 
-
 	  params.zoom_info = zoom_info;
 
 	  d3.selectAll(params.viz.root_tips).style('display', 'none');
 
-	  params.zoom_info = zoom_rules_y(params);
-	  params.zoom_info = zoom_rules_x(params);
+	  params.zoom_info = zoom_rules_y(cgm);
+	  params.zoom_info = zoom_rules_x(cgm);
 
-	  console.log('check outside ');
-	  console.log(params.zoom_behavior.translate());
+	  console.log('$$$$$$$$$$$$ check right before');
+	  console.log(cgm.params.zoom_behavior.translate());
 
-	  console.log('............................................\n\n');
+	  // console.log('............................................\n\n')
 
 	  // do not run transformation if moving slider
 	  if (params.is_slider_drag === false && params.is_cropping === false) {
 	    run_transformation(params);
 	  }
+
+	  console.log('$$$$$$$$$$$ at end of zoomed');
+	  console.log(cgm.params.zoom_behavior.translate());
 		};
 
 /***/ },
@@ -2505,7 +2526,9 @@ var Clustergrammer =
 
 	"use strict";
 
-	module.exports = function zoom_rules_y(params) {
+	module.exports = function zoom_rules_y(cgm) {
+
+	  var params = cgm.params;
 
 	  var zoom_info = params.zoom_info;
 
@@ -2538,7 +2561,9 @@ var Clustergrammer =
 
 	'use strict';
 
-	module.exports = function zoom_rules_x(params) {
+	module.exports = function zoom_rules_x(cgm) {
+
+	  var params = cgm.params;
 
 	  var zoom_info = params.zoom_info;
 
@@ -8188,7 +8213,7 @@ var Clustergrammer =
 
 	  // set up zoom
 	  cgm.params.zoom_behavior = d3.behavior.zoom().scaleExtent([1, cgm.params.viz.real_zoom * cgm.params.viz.zoom_switch]).on('zoom', function () {
-	    zoomed(cgm.params);
+	    zoomed(cgm);
 	  });
 
 	  if (new_cat_data != null) {
@@ -10021,7 +10046,7 @@ var Clustergrammer =
 
 	  // set up zoom
 	  cgm.params.zoom_behavior = d3.behavior.zoom().scaleExtent([1, cgm.params.viz.real_zoom * cgm.params.viz.zoom_switch]).on('zoom', function () {
-	    zoomed(cgm.params);
+	    zoomed(cgm);
 	  });
 
 	  make_row_cat(cgm, true);
@@ -10062,7 +10087,7 @@ var Clustergrammer =
 
 	  // set up zoom (zoom is modified by room for categories)
 	  tmp_cgm.params.zoom_behavior = d3.behavior.zoom().scaleExtent([1, tmp_cgm.params.viz.real_zoom * tmp_cgm.params.viz.zoom_switch]).on('zoom', function () {
-	    zoomed(tmp_cgm.params);
+	    zoomed(tmp_cgm);
 	  });
 
 	  make_row_cat(tmp_cgm, true);

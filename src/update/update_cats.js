@@ -19,7 +19,7 @@ module.exports = function update_cats(cgm, cat_data){
   cgm.params.zoom_behavior = d3.behavior.zoom()
     .scaleExtent([1, cgm.params.viz.real_zoom * cgm.params.viz.zoom_switch])
     .on('zoom', function(){
-      zoomed(cgm.params);
+      zoomed(cgm);
     });
 
   make_row_cat(cgm, true);
