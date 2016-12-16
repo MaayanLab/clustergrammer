@@ -497,6 +497,8 @@ var Clustergrammer =
 
 	module.exports = function set_defaults() {
 
+	  console.log('set_defaults');
+
 	  var defaults = {
 	    // Label options
 	    row_label_scale: 1,
@@ -554,6 +556,7 @@ var Clustergrammer =
 	    max_allow_fs: 20,
 	    dendro_filter: { 'row': false, 'col': false },
 	    cat_filter: { 'row': false, 'col': false },
+	    // crop_filter:{'row':false, 'col':false},
 	    row_tip_callback: null,
 	    col_tip_callback: null,
 	    tile_tip_callback: null,
@@ -8083,7 +8086,10 @@ var Clustergrammer =
 
 	module.exports = function update_viz_with_network(cgm, new_network_data) {
 
+	  console.log('update viz ');
+
 	  var inst_group_level = cgm.params.group_level;
+	  var inst_crop_fitler = cgm.params.crop_filter;
 
 	  // make tmp config to make new params
 	  var tmp_config = jQuery.extend(true, {}, cgm.config);
@@ -8126,6 +8132,9 @@ var Clustergrammer =
 
 	  // have persistent group levels while updating
 	  cgm.params.group_level = inst_group_level;
+
+	  // have persistent crop_filter while updating
+	  cgm.params.crop_filter = inst_crop_fitler;
 
 	  enter_exit_update(cgm, new_network_data, delays);
 
@@ -10668,23 +10677,12 @@ var Clustergrammer =
 
 	    if (x_start != x_end && y_start != y_end) {
 
-	      // console.log('x: '+ String(x_start) + ' ' + String(x_end))
-	      // console.log('y: '+ String(y_start) + ' ' + String(y_end))
-
-	      // console.log('start ' + String(brushing_extent[0]))
-	      // console.log('end ' + String(brushing_extent[1]))
-
 	      // find cropped nodes
 	      var found_nodes = find_cropped_nodes(x_start, x_end, y_start, y_end, brush_start, brush_end);
 
-	      // console.log('found rows')
-	      // console.log(found_nodes.row)
-	      // console.log('found cols')
-	      // console.log(found_nodes.col)
-
 	      cgm.filter_viz_using_names(found_nodes);
 
-	      d3.select(params.root + ' .fa-crop').style('color', '#337ab7');
+	      d3.select(params.root + ' .crop_button').style('color', '#337ab7').classed('fa-crop', false).classed('fa-undo', true);
 	    }
 	  }
 
@@ -12491,12 +12489,34 @@ var Clustergrammer =
 
 	  row.append('div').classed('clust_icon', true).style('float', 'left').style('width', width_pct).style('padding-left', padding_left).style('padding-right', '-5px').append('i')
 	  // .classed('tooltip', true)
-	  .classed('fa', true).classed('fa-crop', true).classed('icon_buttons', true).style('font-size', '25px').on('click', function () {
-	    // console.log('in crop mode')
-	    cgm.crop_matrix();
+	  .classed('fa', true).classed('fa-crop', true).classed('crop_button', true).classed('icon_buttons', true).style('font-size', '25px').on('click', function () {
 
-	    d3.select(this).style('color', 'rgba(0, 0, 0, 8)');
-	    // .style('opacity', 0.1);
+	    var is_crop = d3.select(this).classed('fa-crop');
+
+	    var is_undo = d3.select(this).classed('fa-undo');
+
+	    console.log('is crop ' + String(is_crop));
+	    console.log('is undo ' + String(is_undo));
+
+	    // press crop button
+	    if (is_crop) {
+
+	      // keep list of names to return to state
+	      cgm.params.crop_filter = {};
+	      cgm.params.crop_filter.row = cgm.params.network_data.row_nodes_names;
+	      cgm.params.crop_filter.col = cgm.params.network_data.col_nodes_names;
+
+	      cgm.crop_matrix();
+
+	      // show in crop mode (make icon red)
+	      d3.select(this).style('color', 'red');
+	    }
+
+	    // press undo button
+	    if (is_undo) {
+
+	      d3.select(params.root + ' .crop_button').style('color', '#337ab7').classed('fa-crop', true).classed('fa-undo', false);
+	    }
 
 	    two_translate_zoom(params, 0, 0, 1);
 	  }).classed('sidebar_tooltip', true).append('span').classed('sidebar_tooltip_text', true).html('Crop matrix').style('left', '-400%');

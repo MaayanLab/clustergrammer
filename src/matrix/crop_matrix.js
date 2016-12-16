@@ -57,7 +57,6 @@ module.exports = function crop_matrix(){
 
     var brushing_extent = brush.extent();
 
-
     var brush_start = brushing_extent[0];
     var brush_end = brushing_extent[1];
 
@@ -69,24 +68,15 @@ module.exports = function crop_matrix(){
 
     if (x_start != x_end && y_start != y_end){
 
-      // console.log('x: '+ String(x_start) + ' ' + String(x_end))
-      // console.log('y: '+ String(y_start) + ' ' + String(y_end))
-
-      // console.log('start ' + String(brushing_extent[0]))
-      // console.log('end ' + String(brushing_extent[1]))
-
       // find cropped nodes
       var found_nodes = find_cropped_nodes(x_start, x_end, y_start, y_end, brush_start, brush_end);
 
-      // console.log('found rows')
-      // console.log(found_nodes.row)
-      // console.log('found cols')
-      // console.log(found_nodes.col)
-
       cgm.filter_viz_using_names(found_nodes);
 
-      d3.select(params.root+' .fa-crop')
-        .style('color', '#337ab7');
+      d3.select(params.root+' .crop_button')
+        .style('color', '#337ab7')
+        .classed('fa-crop', false)
+        .classed('fa-undo', true);
 
     }
 

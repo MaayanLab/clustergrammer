@@ -94,17 +94,47 @@ module.exports = function make_icons(cgm, sidebar){
     .style('padding-right', '-5px')
     .append('i')
     // .classed('tooltip', true)
-    .classed('fa',true)
-    .classed('fa-crop',true)
+    .classed('fa', true)
+    .classed('fa-crop', true)
+    .classed('crop_button', true)
     .classed('icon_buttons',true)
     .style('font-size','25px')
     .on('click', function(){
-      // console.log('in crop mode')
-      cgm.crop_matrix();
 
-      d3.select(this)
-        .style('color', 'rgba(0, 0, 0, 8)');
-        // .style('opacity', 0.1);
+
+      var is_crop = d3.select(this)
+        .classed('fa-crop');
+
+      var is_undo = d3.select(this)
+        .classed('fa-undo');
+
+      console.log('is crop '+ String(is_crop))
+      console.log('is undo '+ String(is_undo))
+
+      // press crop button
+      if (is_crop){
+
+        // keep list of names to return to state
+        cgm.params.crop_filter = {}
+        cgm.params.crop_filter.row = cgm.params.network_data.row_nodes_names;
+        cgm.params.crop_filter.col = cgm.params.network_data.col_nodes_names;
+
+        cgm.crop_matrix();
+
+        // show in crop mode (make icon red)
+        d3.select(this)
+          .style('color', 'red');
+      }
+
+      // press undo button
+      if (is_undo){
+
+        d3.select(params.root+' .crop_button')
+          .style('color', '#337ab7')
+          .classed('fa-crop', true)
+          .classed('fa-undo', false);
+
+      }
 
       two_translate_zoom(params, 0, 0, 1);
 
