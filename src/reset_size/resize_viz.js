@@ -1,5 +1,5 @@
 var utils = require('../Utils_clust');
-var zoomed = require('../zoom/zoomed');
+var run_zoom = require('../zoom/run_zoom');
 var ini_doubleclick = require('../zoom/ini_doubleclick');
 var reset_zoom = require('../zoom/reset_zoom');
 var resize_dendro = require('./resize_dendro');
@@ -68,7 +68,7 @@ module.exports = function(cgm) {
   params.zoom_behavior
     .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch])
     .on('zoom', function(){
-      zoomed(cgm);
+      run_zoom(cgm);
     });
 
   // reenable zoom after transition

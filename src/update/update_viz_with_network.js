@@ -12,7 +12,7 @@ var ini_doubleclick = require('../zoom/ini_doubleclick');
 var update_reorder_buttons = require('../reorder/update_reorder_buttons');
 var make_row_cat_super_labels = require('../labels/make_row_cat_super_labels');
 var modify_row_node_cats = require('./modify_row_node_cats');
-var zoomed = require('../zoom/zoomed');
+var run_zoom = require('../zoom/run_zoom');
 
 module.exports = function update_viz_with_network(cgm, new_network_data){
 
@@ -54,7 +54,7 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
   cgm.params.zoom_behavior = d3.behavior.zoom()
     .scaleExtent([1, cgm.params.viz.real_zoom * cgm.params.viz.zoom_switch])
     .on('zoom', function(){
-      zoomed(cgm);
+      run_zoom(cgm);
     });
 
   if (new_cat_data != null){

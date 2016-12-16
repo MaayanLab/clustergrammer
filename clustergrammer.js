@@ -61,7 +61,7 @@ var Clustergrammer =
 	var external_update_view = __webpack_require__(166);
 	var export_matrix = __webpack_require__(169);
 	var crop_matrix = __webpack_require__(171);
-	var zoomed = __webpack_require__(34);
+	var run_zoom = __webpack_require__(196);
 
 	// moved d3.slider to src
 	d3.slider = __webpack_require__(172);
@@ -104,7 +104,7 @@ var Clustergrammer =
 	    //   .translate([0, 0]);
 	    console.log(cgm.params.zoom_behavior.translate());
 
-	    zoomed(cgm);
+	    run_zoom(cgm);
 	  });
 
 	  cgm.params.zoom_behavior.translate([0, cgm.params.viz.clust.margin.top]);
@@ -1927,82 +1927,7 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 34 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var run_transformation = __webpack_require__(35);
-	var zoom_rules_y = __webpack_require__(44);
-	var zoom_rules_x = __webpack_require__(45);
-
-	module.exports = function zoomed(cgm) {
-
-	  var params = cgm.params;
-
-	  // debugger;
-
-	  console.log('check before ');
-	  console.log(params.zoom_behavior.translate());
-
-	  var tmp_trans_y = d3.event.translate[1] - params.viz.clust.margin.top;
-
-	  // // zero out translation vector
-	  // cgm.params.zoom_behavior
-	  //   .translate([0, 0]);
-
-	  console.log('$$$$$$$$$$$ in the middle of zoomed');
-	  console.log(cgm.params.zoom_behavior.translate());
-
-	  cgm.params.new_object = 'something_set_in_zdm_rules';
-
-	  // // reset the zoom and translate
-	  // console.log('############## reset zoom')
-	  // console.log('check here ')
-	  // console.log(params.zoom_behavior.translate())
-	  // if (params.viz.zoom_switch > 1){
-	  //   if (d3.event.scale < params.viz.zoom_switch) {
-	  //   }
-	  // }
-
-
-	  var zoom_info = {};
-	  zoom_info.zoom_x = d3.event.scale;
-	  zoom_info.zoom_y = d3.event.scale;
-
-	  // zoom_info.trans_x = d3.event.translate[0] - params.viz.clust.margin.left;
-	  // zoom_info.trans_y = d3.event.translate[1] - params.viz.clust.margin.top;
-	  // console.log('ZOOM BEHAVIOR (trans_x): ' + String(params.zoom_behavior.translate()[0]))
-
-	  zoom_info.trans_x = params.zoom_behavior.translate()[0] - params.viz.clust.margin.left;
-	  zoom_info.trans_y = params.zoom_behavior.translate()[1] - params.viz.clust.margin.top;
-
-	  // console.log('translate: ' + String(d3.event.translate[0]))
-	  // console.log('zoom_info: ' + String(zoom_info.trans_x))
-	  // console.log('\n')
-
-	  params.zoom_info = zoom_info;
-
-	  d3.selectAll(params.viz.root_tips).style('display', 'none');
-
-	  params.zoom_info = zoom_rules_y(cgm);
-	  params.zoom_info = zoom_rules_x(cgm);
-
-	  console.log('$$$$$$$$$$$$ check right before');
-	  console.log(cgm.params.zoom_behavior.translate());
-
-	  // console.log('............................................\n\n')
-
-	  // do not run transformation if moving slider
-	  if (params.is_slider_drag === false && params.is_cropping === false) {
-	    run_transformation(params);
-	  }
-
-	  console.log('$$$$$$$$$$$ at end of zoomed');
-	  console.log(cgm.params.zoom_behavior.translate());
-		};
-
-/***/ },
+/* 34 */,
 /* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -5598,7 +5523,7 @@ var Clustergrammer =
 	'use strict';
 
 	var utils = __webpack_require__(2);
-	var zoomed = __webpack_require__(34);
+	var run_zoom = __webpack_require__(196);
 	var ini_doubleclick = __webpack_require__(85);
 	var reset_zoom = __webpack_require__(88);
 	var resize_dendro = __webpack_require__(89);
@@ -5662,7 +5587,7 @@ var Clustergrammer =
 	  svg_group.on('.zoom', null);
 
 	  params.zoom_behavior.scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch]).on('zoom', function () {
-	    zoomed(cgm);
+	    run_zoom(cgm);
 	  });
 
 	  // reenable zoom after transition
@@ -8175,7 +8100,7 @@ var Clustergrammer =
 	var update_reorder_buttons = __webpack_require__(149);
 	var make_row_cat_super_labels = __webpack_require__(82);
 	var modify_row_node_cats = __webpack_require__(150);
-	var zoomed = __webpack_require__(34);
+	var run_zoom = __webpack_require__(196);
 
 	module.exports = function update_viz_with_network(cgm, new_network_data) {
 
@@ -8214,7 +8139,7 @@ var Clustergrammer =
 
 	  // set up zoom
 	  cgm.params.zoom_behavior = d3.behavior.zoom().scaleExtent([1, cgm.params.viz.real_zoom * cgm.params.viz.zoom_switch]).on('zoom', function () {
-	    zoomed(cgm);
+	    run_zoom(cgm);
 	  });
 
 	  if (new_cat_data != null) {
@@ -12930,6 +12855,82 @@ var Clustergrammer =
 	  // $( params.root+' .opacity_slider' ).slider({
 	  //   value:1.0
 	  // });
+		};
+
+/***/ },
+/* 196 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var run_transformation = __webpack_require__(35);
+	var zoom_rules_y = __webpack_require__(44);
+	var zoom_rules_x = __webpack_require__(45);
+
+	module.exports = function zoomed(cgm) {
+
+	  var params = cgm.params;
+
+	  // debugger;
+
+	  console.log('check before ');
+	  console.log(params.zoom_behavior.translate());
+
+	  var tmp_trans_y = d3.event.translate[1] - params.viz.clust.margin.top;
+
+	  // // zero out translation vector
+	  // cgm.params.zoom_behavior
+	  //   .translate([0, 0]);
+
+	  console.log('$$$$$$$$$$$ in the middle of zoomed');
+	  console.log(cgm.params.zoom_behavior.translate());
+
+	  cgm.params.new_object = 'something_set_in_zdm_rules';
+
+	  // // reset the zoom and translate
+	  // console.log('############## reset zoom')
+	  // console.log('check here ')
+	  // console.log(params.zoom_behavior.translate())
+	  // if (params.viz.zoom_switch > 1){
+	  //   if (d3.event.scale < params.viz.zoom_switch) {
+	  //   }
+	  // }
+
+
+	  var zoom_info = {};
+	  zoom_info.zoom_x = d3.event.scale;
+	  zoom_info.zoom_y = d3.event.scale;
+
+	  // zoom_info.trans_x = d3.event.translate[0] - params.viz.clust.margin.left;
+	  // zoom_info.trans_y = d3.event.translate[1] - params.viz.clust.margin.top;
+	  // console.log('ZOOM BEHAVIOR (trans_x): ' + String(params.zoom_behavior.translate()[0]))
+
+	  zoom_info.trans_x = params.zoom_behavior.translate()[0] - params.viz.clust.margin.left;
+	  zoom_info.trans_y = params.zoom_behavior.translate()[1] - params.viz.clust.margin.top;
+
+	  // console.log('translate: ' + String(d3.event.translate[0]))
+	  // console.log('zoom_info: ' + String(zoom_info.trans_x))
+	  // console.log('\n')
+
+	  params.zoom_info = zoom_info;
+
+	  d3.selectAll(params.viz.root_tips).style('display', 'none');
+
+	  params.zoom_info = zoom_rules_y(cgm);
+	  params.zoom_info = zoom_rules_x(cgm);
+
+	  console.log('$$$$$$$$$$$$ check right before');
+	  console.log(cgm.params.zoom_behavior.translate());
+
+	  // console.log('............................................\n\n')
+
+	  // do not run transformation if moving slider
+	  if (params.is_slider_drag === false && params.is_cropping === false) {
+	    run_transformation(params);
+	  }
+
+	  console.log('$$$$$$$$$$$ at end of zoomed');
+	  console.log(cgm.params.zoom_behavior.translate());
 		};
 
 /***/ }
