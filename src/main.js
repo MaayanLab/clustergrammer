@@ -50,13 +50,6 @@ function Clustergrammer(args) {
   cgm.params.zoom_behavior = d3.behavior.zoom()
     .scaleExtent([1, cgm.params.viz.real_zoom * cgm.params.viz.zoom_switch])
     .on('zoom', function(){
-
-      console.log('\n\n\non zoom')
-      console.log(cgm.params.new_object)
-      // cgm.params.zoom_behavior
-      //   .translate([0, 0]);
-      console.log(cgm.params.zoom_behavior.translate())
-
       run_zoom(cgm);
     });
 

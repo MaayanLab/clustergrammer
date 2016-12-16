@@ -43,11 +43,6 @@ module.exports = function run_transformation(params){
   d3.select(params.root+' .col_dendro_container')
     .attr('transform', 'translate('+[zoom_info.trans_x, params.viz.uni_margin/2]+') scale(' +zoom_info.zoom_x+ ',1)');
 
-  // reset translate vector - add back margins to trans_x and trans_y
-  params.zoom_behavior
-    .translate([zoom_info.trans_x + params.viz.clust.margin.left, zoom_info.trans_y + params.viz.clust.margin.top
-    ]);
-
   constrain_font_size(params);
 
   resize_label_val_bars(params, zoom_info);

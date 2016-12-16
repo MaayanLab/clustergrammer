@@ -16,7 +16,6 @@ var run_zoom = require('../zoom/run_zoom');
 
 module.exports = function update_viz_with_network(cgm, new_network_data){
 
-  console.log('update viz with network')
   var inst_group_level = cgm.params.group_level;
 
   // make tmp config to make new params

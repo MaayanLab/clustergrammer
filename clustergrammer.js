@@ -97,13 +97,6 @@ var Clustergrammer =
 
 	  // set up zoom
 	  cgm.params.zoom_behavior = d3.behavior.zoom().scaleExtent([1, cgm.params.viz.real_zoom * cgm.params.viz.zoom_switch]).on('zoom', function () {
-
-	    console.log('\n\n\non zoom');
-	    console.log(cgm.params.new_object);
-	    // cgm.params.zoom_behavior
-	    //   .translate([0, 0]);
-	    console.log(cgm.params.zoom_behavior.translate());
-
 	    run_zoom(cgm);
 	  });
 
@@ -1963,9 +1956,6 @@ var Clustergrammer =
 
 	  d3.select(params.root + ' .col_dendro_container').attr('transform', 'translate(' + [zoom_info.trans_x, params.viz.uni_margin / 2] + ') scale(' + zoom_info.zoom_x + ',1)');
 
-	  // reset translate vector - add back margins to trans_x and trans_y
-	  params.zoom_behavior.translate([zoom_info.trans_x + params.viz.clust.margin.left, zoom_info.trans_y + params.viz.clust.margin.top]);
-
 	  constrain_font_size(params);
 
 	  resize_label_val_bars(params, zoom_info);
@@ -2484,7 +2474,7 @@ var Clustergrammer =
 /* 45 */
 /***/ function(module, exports) {
 
-	'use strict';
+	"use strict";
 
 	module.exports = function zoom_rules_x(cgm) {
 
@@ -2497,31 +2487,20 @@ var Clustergrammer =
 	    if (zoom_info.zoom_x < params.viz.zoom_switch) {
 	      zoom_info.trans_x = 0;
 	      zoom_info.zoom_x = 1;
-
-	      var tmp_trans_y = params.zoom_behavior.translate()[1];
 	    } else {
 	      zoom_info.zoom_x = zoom_info.zoom_x / params.viz.zoom_switch;
 	    }
 	  }
 
-	  // console.log('zoom_x: ' + String(zoom_info.zoom_x))
-	  // console.log('zoom_y: ' + String(zoom_info.zoom_y))
-
 	  // calculate panning room available in the x direction
 	  zoom_info.pan_room_x = (zoom_info.zoom_x - 1) * params.viz.clust.dim.width;
 
-	  console.log('pan room: ' + String(-zoom_info.pan_room_x));
 	  // no positive panning or panning more than pan_room
 	  if (zoom_info.trans_x > 0) {
-	    console.log('------------ no positive panning');
 	    zoom_info.trans_x = 0;
 	  } else if (zoom_info.trans_x <= -zoom_info.pan_room_x) {
-	    console.log('**** pan room restriction \n*************************');
 	    zoom_info.trans_x = -zoom_info.pan_room_x;
 	  }
-
-	  // console.log('corrected zoom_info: ' + String(zoom_info.trans_x))
-	  // console.log('\n\n')
 
 	  return zoom_info;
 	};
@@ -8104,7 +8083,6 @@ var Clustergrammer =
 
 	module.exports = function update_viz_with_network(cgm, new_network_data) {
 
-	  console.log('update viz with network');
 	  var inst_group_level = cgm.params.group_level;
 
 	  // make tmp config to make new params
@@ -10699,10 +10677,10 @@ var Clustergrammer =
 	      // find cropped nodes
 	      var found_nodes = find_cropped_nodes(x_start, x_end, y_start, y_end, brush_start, brush_end);
 
-	      console.log('found rows');
-	      console.log(found_nodes.row);
-	      console.log('found cols');
-	      console.log(found_nodes.col);
+	      // console.log('found rows')
+	      // console.log(found_nodes.row)
+	      // console.log('found cols')
+	      // console.log(found_nodes.col)
 
 	      cgm.filter_viz_using_names(found_nodes);
 
@@ -12871,46 +12849,12 @@ var Clustergrammer =
 
 	  var params = cgm.params;
 
-	  // debugger;
-
-	  console.log('check before ');
-	  console.log(params.zoom_behavior.translate());
-
-	  var tmp_trans_y = d3.event.translate[1] - params.viz.clust.margin.top;
-
-	  // // zero out translation vector
-	  // cgm.params.zoom_behavior
-	  //   .translate([0, 0]);
-
-	  console.log('$$$$$$$$$$$ in the middle of zoomed');
-	  console.log(cgm.params.zoom_behavior.translate());
-
-	  cgm.params.new_object = 'something_set_in_zdm_rules';
-
-	  // // reset the zoom and translate
-	  // console.log('############## reset zoom')
-	  // console.log('check here ')
-	  // console.log(params.zoom_behavior.translate())
-	  // if (params.viz.zoom_switch > 1){
-	  //   if (d3.event.scale < params.viz.zoom_switch) {
-	  //   }
-	  // }
-
-
 	  var zoom_info = {};
 	  zoom_info.zoom_x = d3.event.scale;
 	  zoom_info.zoom_y = d3.event.scale;
 
-	  // zoom_info.trans_x = d3.event.translate[0] - params.viz.clust.margin.left;
-	  // zoom_info.trans_y = d3.event.translate[1] - params.viz.clust.margin.top;
-	  // console.log('ZOOM BEHAVIOR (trans_x): ' + String(params.zoom_behavior.translate()[0]))
-
 	  zoom_info.trans_x = params.zoom_behavior.translate()[0] - params.viz.clust.margin.left;
 	  zoom_info.trans_y = params.zoom_behavior.translate()[1] - params.viz.clust.margin.top;
-
-	  // console.log('translate: ' + String(d3.event.translate[0]))
-	  // console.log('zoom_info: ' + String(zoom_info.trans_x))
-	  // console.log('\n')
 
 	  params.zoom_info = zoom_info;
 
@@ -12919,18 +12863,16 @@ var Clustergrammer =
 	  params.zoom_info = zoom_rules_y(cgm);
 	  params.zoom_info = zoom_rules_x(cgm);
 
-	  console.log('$$$$$$$$$$$$ check right before');
-	  console.log(cgm.params.zoom_behavior.translate());
-
-	  // console.log('............................................\n\n')
-
 	  // do not run transformation if moving slider
 	  if (params.is_slider_drag === false && params.is_cropping === false) {
+
+	    // reset translate vector - add back margins to trans_x and trans_y
+	    var new_x = zoom_info.trans_x + params.viz.clust.margin.left;
+	    var new_y = zoom_info.trans_y + params.viz.clust.margin.top;
+	    params.zoom_behavior.translate([new_x, new_y]);
+
 	    run_transformation(params);
 	  }
-
-	  console.log('$$$$$$$$$$$ at end of zoomed');
-	  console.log(cgm.params.zoom_behavior.translate());
 		};
 
 /***/ }

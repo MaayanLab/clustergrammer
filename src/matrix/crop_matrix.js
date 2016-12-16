@@ -78,10 +78,10 @@ module.exports = function crop_matrix(){
       // find cropped nodes
       var found_nodes = find_cropped_nodes(x_start, x_end, y_start, y_end, brush_start, brush_end);
 
-      console.log('found rows')
-      console.log(found_nodes.row)
-      console.log('found cols')
-      console.log(found_nodes.col)
+      // console.log('found rows')
+      // console.log(found_nodes.row)
+      // console.log('found cols')
+      // console.log(found_nodes.col)
 
       cgm.filter_viz_using_names(found_nodes);
 
