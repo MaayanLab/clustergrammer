@@ -1891,6 +1891,7 @@ var Clustergrammer =
 
 	var zoomed = __webpack_require__(34);
 	var calc_zoom_switching = __webpack_require__(46);
+	var two_translate_zoom = __webpack_require__(86);
 
 	module.exports = function set_zoom_params(params) {
 
@@ -1908,7 +1909,10 @@ var Clustergrammer =
 	    zoomed(params);
 	  });
 
-	  // rect width needs matrix and zoom parameters 
+	  // initialize with two translate zoom (improves behavior)
+	  two_translate_zoom(params, 0, 0, 1);
+
+	  // rect width needs matrix and zoom parameters
 	  params.viz.rect_width = params.viz.x_scale.rangeBand() - params.viz.border_width;
 
 	  params.viz.rect_height = params.viz.y_scale.rangeBand() - params.viz.border_width / params.viz.zoom_switch;
@@ -1934,12 +1938,25 @@ var Clustergrammer =
 	  zoom_info.trans_x = d3.event.translate[0] - params.viz.clust.margin.left;
 	  zoom_info.trans_y = d3.event.translate[1] - params.viz.clust.margin.top;
 
+	  console.log('translate: ' + String(d3.event.translate[0]));
+	  console.log('zoom_info: ' + String(zoom_info.trans_x));
+	  // console.log('\n')
+
+	  if (params.viz.zoom_switch > 1) {
+	    if (zoom_info.zoom_x < params.viz.zoom_switch) {
+
+	      // console.log('000000000000000000000000000000000000000000000000000000000000000')
+	      // // set the current zoom parameters
+	      // d3.event.translate([0,0])
+
+	    }
+	  }
+
 	  params.zoom_info = zoom_info;
 
 	  d3.selectAll(params.viz.root_tips).style('display', 'none');
 
 	  params.zoom_info = zoom_rules_y(params);
-
 	  params.zoom_info = zoom_rules_x(params);
 
 	  // do not run transformation if moving slider
@@ -2503,7 +2520,7 @@ var Clustergrammer =
 /* 45 */
 /***/ function(module, exports) {
 
-	"use strict";
+	'use strict';
 
 	module.exports = function zoom_rules_x(params) {
 
@@ -2514,20 +2531,33 @@ var Clustergrammer =
 	    if (zoom_info.zoom_x < params.viz.zoom_switch) {
 	      zoom_info.trans_x = 0;
 	      zoom_info.zoom_x = 1;
+
+	      // // try to reset transltae
+	      // d3.event.translate[0] = 0
 	    } else {
 	      zoom_info.zoom_x = zoom_info.zoom_x / params.viz.zoom_switch;
 	    }
 	  }
 
+	  console.log('zoom_x: ' + String(zoom_info.zoom_x));
+	  console.log('zoom_y: ' + String(zoom_info.zoom_y));
+	  console.log('............................................');
+
 	  // calculate panning room available in the x direction
 	  zoom_info.pan_room_x = (zoom_info.zoom_x - 1) * params.viz.clust.dim.width;
 
+	  console.log('pan room: ' + String(-zoom_info.pan_room_x));
 	  // no positive panning or panning more than pan_room
 	  if (zoom_info.trans_x > 0) {
+	    console.log('------------ no positive panning');
 	    zoom_info.trans_x = 0;
 	  } else if (zoom_info.trans_x <= -zoom_info.pan_room_x) {
+	    console.log('**** pan room restriction \n*************************');
 	    zoom_info.trans_x = -zoom_info.pan_room_x;
 	  }
+
+	  console.log('corrected zoom_info: ' + String(zoom_info.trans_x));
+	  console.log('\n\n');
 
 	  return zoom_info;
 	};

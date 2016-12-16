@@ -1,5 +1,6 @@
 var zoomed = require('../zoom/zoomed');
 var calc_zoom_switching = require('../zoom/calc_zoom_switching');
+var two_translate_zoom = require('../zoom/two_translate_zoom');
 
 module.exports = function set_zoom_params(params){
 
@@ -19,11 +20,14 @@ module.exports = function set_zoom_params(params){
       zoomed(params);
     });
 
-  // rect width needs matrix and zoom parameters 
-  params.viz.rect_width  = params.viz.x_scale.rangeBand() 
+  // initialize with two translate zoom (improves behavior)
+  two_translate_zoom(params, 0, 0, 1);
+
+  // rect width needs matrix and zoom parameters
+  params.viz.rect_width  = params.viz.x_scale.rangeBand()
     - params.viz.border_width;
 
-  params.viz.rect_height = params.viz.y_scale.rangeBand() 
+  params.viz.rect_height = params.viz.y_scale.rangeBand()
     - params.viz.border_width / params.viz.zoom_switch;
 
   return params;
