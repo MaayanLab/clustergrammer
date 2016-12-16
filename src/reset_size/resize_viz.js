@@ -68,7 +68,7 @@ module.exports = function(cgm) {
   params.zoom_behavior
     .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch])
     .on('zoom', function(){
-      zoomed(params);
+      zoomed(cgm);
     });
 
   // reenable zoom after transition

@@ -5662,7 +5662,7 @@ var Clustergrammer =
 	  svg_group.on('.zoom', null);
 
 	  params.zoom_behavior.scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch]).on('zoom', function () {
-	    zoomed(params);
+	    zoomed(cgm);
 	  });
 
 	  // reenable zoom after transition
@@ -8179,6 +8179,7 @@ var Clustergrammer =
 
 	module.exports = function update_viz_with_network(cgm, new_network_data) {
 
+	  console.log('update viz with network');
 	  var inst_group_level = cgm.params.group_level;
 
 	  // make tmp config to make new params
@@ -10044,10 +10045,12 @@ var Clustergrammer =
 	  // recalculate the visualization parameters using the updated network_data
 	  cgm.params = calc_viz_params(cgm.params, false);
 
-	  // set up zoom
-	  cgm.params.zoom_behavior = d3.behavior.zoom().scaleExtent([1, cgm.params.viz.real_zoom * cgm.params.viz.zoom_switch]).on('zoom', function () {
-	    zoomed(cgm);
-	  });
+	  // // set up zoom
+	  // cgm.params.zoom_behavior = d3.behavior.zoom()
+	  //   .scaleExtent([1, cgm.params.viz.real_zoom * cgm.params.viz.zoom_switch])
+	  //   .on('zoom', function(){
+	  //     zoomed(cgm);
+	  //   });
 
 	  make_row_cat(cgm, true);
 	  resize_viz(cgm);
@@ -10085,10 +10088,12 @@ var Clustergrammer =
 	  // recalculate the visualization parameters using the updated network_data
 	  tmp_cgm.params = calc_viz_params(tmp_cgm.params, false);
 
-	  // set up zoom (zoom is modified by room for categories)
-	  tmp_cgm.params.zoom_behavior = d3.behavior.zoom().scaleExtent([1, tmp_cgm.params.viz.real_zoom * tmp_cgm.params.viz.zoom_switch]).on('zoom', function () {
-	    zoomed(tmp_cgm);
-	  });
+	  // // set up zoom (zoom is modified by room for categories)
+	  // tmp_cgm.params.zoom_behavior = d3.behavior.zoom()
+	  //   .scaleExtent([1, tmp_cgm.params.viz.real_zoom * tmp_cgm.params.viz.zoom_switch])
+	  //   .on('zoom', function(){
+	  //     zoomed(tmp_cgm);
+	  //   });
 
 	  make_row_cat(tmp_cgm, true);
 	  resize_viz(tmp_cgm);
