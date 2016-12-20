@@ -51,9 +51,12 @@ module.exports = function ini_modals(params){
     .classed('current_names', true)
     .style('width', '100%');
 
+  // only display for rows
   var enrichr_section = dendro_modal.body
     .append('div')
-    .style('margin-top', '10px');
+    .classed('enrichr_export_section', true)
+    .style('margin-top', '10px')
+    .style('display','none');
 
   enrichr_section
     .append('text')

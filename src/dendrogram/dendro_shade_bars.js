@@ -4,12 +4,14 @@ module.exports = function dendro_shade_bars(params, inst_selection, inst_rc, ins
   var select_opacity = 0.7;
   var bot_height;
 
+  console.log(inst_data)
+
   if (inst_rc == 'row'){
 
     d3.select(inst_selection)
       .style('opacity',select_opacity);
 
-    // top shade 
+    // top shade
     d3.select(params.root+' .clust_group')
       .append('rect')
       .style('width', params.viz.clust.dim.width+'px')
@@ -19,7 +21,7 @@ module.exports = function dendro_shade_bars(params, inst_selection, inst_rc, ins
       .classed('dendro_shadow',true);
 
     bot_height = params.viz.clust.dim.height - inst_data.pos_bot;
-    // bottom shade 
+    // bottom shade
     d3.select(params.root+' .clust_group')
       .append('rect')
       .style('width', params.viz.clust.dim.width+'px')
@@ -34,7 +36,7 @@ module.exports = function dendro_shade_bars(params, inst_selection, inst_rc, ins
     d3.select(inst_selection)
       .style('opacity', select_opacity);
 
-    // top shade 
+    // top shade
     d3.select(params.root+' .clust_group')
       .append('rect')
       .style('width', inst_data.pos_top+'px')
@@ -43,7 +45,7 @@ module.exports = function dendro_shade_bars(params, inst_selection, inst_rc, ins
       .style('opacity', inst_opacity)
       .classed('dendro_shadow',true);
 
-    // bottom shade 
+    // bottom shade
     bot_height = params.viz.clust.dim.width - inst_data.pos_bot;
     d3.select(params.root+' .clust_group')
       .append('rect')

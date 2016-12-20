@@ -3465,6 +3465,9 @@ var Clustergrammer =
 
 	      $(params.root + ' .dendro_info').modal('toggle');
 
+	      // toggle enrichr export section
+	      d3.select('.enrichr_export_section').style('display', 'block');
+
 	      var group_string = d.all_names.join(', ');
 
 	      d3.select(params.root + ' .dendro_info input').attr('value', group_string);
@@ -3649,24 +3652,26 @@ var Clustergrammer =
 	  var select_opacity = 0.7;
 	  var bot_height;
 
+	  console.log(inst_data);
+
 	  if (inst_rc == 'row') {
 
 	    d3.select(inst_selection).style('opacity', select_opacity);
 
-	    // top shade 
+	    // top shade
 	    d3.select(params.root + ' .clust_group').append('rect').style('width', params.viz.clust.dim.width + 'px').style('height', inst_data.pos_top + 'px').style('fill', 'black').style('opacity', inst_opacity).classed('dendro_shadow', true);
 
 	    bot_height = params.viz.clust.dim.height - inst_data.pos_bot;
-	    // bottom shade 
+	    // bottom shade
 	    d3.select(params.root + ' .clust_group').append('rect').style('width', params.viz.clust.dim.width + 'px').style('height', bot_height + 'px').attr('transform', 'translate(0,' + inst_data.pos_bot + ')').style('fill', 'black').style('opacity', inst_opacity).classed('dendro_shadow', true);
 	  } else if (inst_rc === 'col') {
 
 	    d3.select(inst_selection).style('opacity', select_opacity);
 
-	    // top shade 
+	    // top shade
 	    d3.select(params.root + ' .clust_group').append('rect').style('width', inst_data.pos_top + 'px').style('height', params.viz.clust.dim.height + 'px').style('fill', 'black').style('opacity', inst_opacity).classed('dendro_shadow', true);
 
-	    // bottom shade 
+	    // bottom shade
 	    bot_height = params.viz.clust.dim.width - inst_data.pos_bot;
 	    d3.select(params.root + ' .clust_group').append('rect').style('width', bot_height + 'px').style('height', params.viz.clust.dim.height + 'px').attr('transform', 'translate(' + inst_data.pos_bot + ',0)').style('fill', 'black').style('opacity', inst_opacity).classed('dendro_shadow', true);
 	  }
@@ -3775,6 +3780,9 @@ var Clustergrammer =
 	      $(params.root + ' .dendro_info').modal('toggle');
 	      var group_string = d.all_names.join(', ');
 	      d3.select(params.root + ' .dendro_info input').attr('value', group_string);
+
+	      // toggle enrichr export section
+	      d3.select('.enrichr_export_section').style('display', 'none');
 	    }
 	  });
 
@@ -12835,7 +12843,8 @@ var Clustergrammer =
 
 	  dendro_modal.body.append('div').classed('dendro_text', true).append('input').classed('bootstrap_highlight', true).classed('current_names', true).style('width', '100%');
 
-	  var enrichr_section = dendro_modal.body.append('div').style('margin-top', '10px');
+	  // only display for rows
+	  var enrichr_section = dendro_modal.body.append('div').classed('enrichr_export_section', true).style('margin-top', '10px').style('display', 'none');
 
 	  enrichr_section.append('text').text('send to ');
 

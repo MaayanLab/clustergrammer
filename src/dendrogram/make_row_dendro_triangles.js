@@ -90,6 +90,10 @@ module.exports = function make_row_dendro_triangles(cgm,
 
         $(params.root+' .dendro_info').modal('toggle');
 
+        // toggle enrichr export section
+        d3.select('.enrichr_export_section')
+          .style('display', 'block');
+
         var group_string = d.all_names.join(', ');
 
         d3.select(params.root+' .dendro_info input')

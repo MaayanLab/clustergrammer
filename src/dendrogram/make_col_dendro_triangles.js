@@ -88,6 +88,10 @@ module.exports = function make_col_dendro_triangles(cgm, is_change_group = false
         d3.select(params.root+' .dendro_info input')
           .attr('value', group_string);
 
+        // toggle enrichr export section
+        d3.select('.enrichr_export_section')
+          .style('display', 'none');
+
       }
     });
 
