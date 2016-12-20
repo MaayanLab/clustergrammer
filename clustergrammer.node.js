@@ -3605,6 +3605,7 @@ module.exports =
 	    if (d3.select(inst_selection).classed('hovering')) {
 
 	      if (params.is_slider_drag === false) {
+
 	        make_shade_bars();
 	      }
 	    }
@@ -3678,6 +3679,7 @@ module.exports =
 	'use strict';
 
 	module.exports = function dendro_mouseover(inst_selection) {
+	  console.log('dendro_mouseover');
 	  d3.select(inst_selection).classed('hovering', true);
 		};
 
@@ -10695,7 +10697,6 @@ module.exports =
 	  function brushend() {
 	    // console.log('brush end')
 
-	    setTimeout(apply_crop, 500);
 
 	    var brushing_extent = brush.extent();
 
@@ -10709,6 +10710,8 @@ module.exports =
 	    var y_end = brush_end[1];
 
 	    if (x_start != x_end && y_start != y_end) {
+
+	      setTimeout(disable_cropping, 500);
 
 	      // find cropped nodes
 	      var found_nodes = find_cropped_nodes(x_start, x_end, y_start, y_end, brush_start, brush_end);
@@ -10769,7 +10772,7 @@ module.exports =
 	    return found_nodes;
 	  }
 
-	  function apply_crop() {
+	  function disable_cropping() {
 
 	    d3.select('.brush_group').transition().style('opacity', 0).remove();
 

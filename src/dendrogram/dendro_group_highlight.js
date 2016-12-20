@@ -9,7 +9,9 @@ module.exports = function dendro_group_highlight(params, inst_selection, inst_da
     if (d3.select(inst_selection).classed('hovering')){
 
       if (params.is_slider_drag === false){
+
         make_shade_bars();
+
       }
 
     }
