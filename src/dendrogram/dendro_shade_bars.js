@@ -4,7 +4,7 @@ module.exports = function dendro_shade_bars(params, inst_selection, inst_rc, ins
   var select_opacity = 0.7;
   var bot_height;
 
-  console.log(inst_data)
+  // console.log(inst_data)
 
   if (inst_rc == 'row'){
 

@@ -51,32 +51,4 @@ module.exports = function ini_modals(params){
     .classed('current_names', true)
     .style('width', '100%');
 
-  // only display for rows
-  var enrichr_section = dendro_modal.body
-    .append('div')
-    .classed('enrichr_export_section', true)
-    .style('margin-top', '10px')
-    .style('display','none');
-
-  enrichr_section
-    .append('text')
-    .text('send to ');
-
-  enrichr_section
-    .append('a')
-    .html('Enrichr')
-    .on('click', function(){
-
-      var group_string = d3.select('.dendro_text input').attr('value');
-
-      // replace all instances of commas with new line
-      var gene_list = group_string.replace(/, /g, '\n');
-
-      var enrichr_info = {list: gene_list, description: 'clustergrammer group list' , popup: true};
-
-      // defined globally - will improve
-      enrich(enrichr_info);
-
-    });
-
 };

@@ -68,7 +68,7 @@ module.exports = function make_row_dendro_triangles(cgm,
       } else {
         inst_rc = 'row';
       }
-      dendro_mouseover(this);
+      dendro_mouseover(cgm, this);
       dendro_group_highlight(params, this, d, inst_rc);
     })
     .on('mouseout', function(){
@@ -89,10 +89,6 @@ module.exports = function make_row_dendro_triangles(cgm,
       } else {
 
         $(params.root+' .dendro_info').modal('toggle');
-
-        // toggle enrichr export section
-        d3.select('.enrichr_export_section')
-          .style('display', 'block');
 
         var group_string = d.all_names.join(', ');
 

@@ -558,6 +558,7 @@ var Clustergrammer =
 	    row_tip_callback: null,
 	    col_tip_callback: null,
 	    tile_tip_callback: null,
+	    dendro_callback: null,
 	    new_cat_data: null
 	  };
 
@@ -3447,7 +3448,7 @@ var Clustergrammer =
 	    } else {
 	      inst_rc = 'row';
 	    }
-	    dendro_mouseover(this);
+	    dendro_mouseover(cgm, this);
 	    dendro_group_highlight(params, this, d, inst_rc);
 	  }).on('mouseout', function () {
 	    if (params.viz.inst_order.col === 'clust') {
@@ -3464,9 +3465,6 @@ var Clustergrammer =
 	    } else {
 
 	      $(params.root + ' .dendro_info').modal('toggle');
-
-	      // toggle enrichr export section
-	      d3.select('.enrichr_export_section').style('display', 'block');
 
 	      var group_string = d.all_names.join(', ');
 
@@ -3538,7 +3536,7 @@ var Clustergrammer =
 /* 53 */
 /***/ function(module, exports) {
 
-	"use strict";
+	'use strict';
 
 	module.exports = function calc_row_dendro_triangles(params) {
 
@@ -3565,6 +3563,7 @@ var Clustergrammer =
 	      triangle_info[tmp_group].pos_mid = (inst_top + inst_bot) / 2;
 	      triangle_info[tmp_group].name = tmp_group;
 	      triangle_info[tmp_group].all_names = [];
+	      triangle_info[tmp_group].inst_rc = 'row';
 	    }
 
 	    triangle_info[tmp_group].all_names.push(d.name);
@@ -3652,7 +3651,7 @@ var Clustergrammer =
 	  var select_opacity = 0.7;
 	  var bot_height;
 
-	  console.log(inst_data);
+	  // console.log(inst_data)
 
 	  if (inst_rc == 'row') {
 
@@ -3683,9 +3682,12 @@ var Clustergrammer =
 
 	'use strict';
 
-	module.exports = function dendro_mouseover(inst_selection) {
-	  console.log('dendro_mouseover');
+	module.exports = function dendro_mouseover(cgm, inst_selection) {
 	  d3.select(inst_selection).classed('hovering', true);
+
+	  if (cgm.params.dendro_callback != null) {
+	    cgm.params.dendro_callback(inst_selection);
+	  }
 		};
 
 /***/ },
@@ -3764,7 +3766,7 @@ var Clustergrammer =
 	    } else {
 	      inst_rc = 'col';
 	    }
-	    dendro_mouseover(this);
+	    dendro_mouseover(cgm, this);
 	    dendro_group_highlight(params, this, d, inst_rc);
 	  }).on('mouseout', function () {
 	    if (params.viz.inst_order.col === 'clust') {
@@ -3780,9 +3782,6 @@ var Clustergrammer =
 	      $(params.root + ' .dendro_info').modal('toggle');
 	      var group_string = d.all_names.join(', ');
 	      d3.select(params.root + ' .dendro_info input').attr('value', group_string);
-
-	      // toggle enrichr export section
-	      d3.select('.enrichr_export_section').style('display', 'none');
 	    }
 	  });
 
@@ -3852,7 +3851,7 @@ var Clustergrammer =
 /* 59 */
 /***/ function(module, exports) {
 
-	"use strict";
+	'use strict';
 
 	module.exports = function calc_col_dendro_triangles(params) {
 
@@ -3877,6 +3876,7 @@ var Clustergrammer =
 	      triangle_info[tmp_group].pos_mid = (inst_top + inst_bot) / 2;
 	      triangle_info[tmp_group].name = tmp_group;
 	      triangle_info[tmp_group].all_names = [];
+	      triangle_info[tmp_group].inst_rc = 'col';
 	    }
 
 	    triangle_info[tmp_group].all_names.push(d.name);
@@ -12842,24 +12842,6 @@ var Clustergrammer =
 	  dendro_modal.header.append('h4').classed('modal-title', true).html('Group data points');
 
 	  dendro_modal.body.append('div').classed('dendro_text', true).append('input').classed('bootstrap_highlight', true).classed('current_names', true).style('width', '100%');
-
-	  // only display for rows
-	  var enrichr_section = dendro_modal.body.append('div').classed('enrichr_export_section', true).style('margin-top', '10px').style('display', 'none');
-
-	  enrichr_section.append('text').text('send to ');
-
-	  enrichr_section.append('a').html('Enrichr').on('click', function () {
-
-	    var group_string = d3.select('.dendro_text input').attr('value');
-
-	    // replace all instances of commas with new line
-	    var gene_list = group_string.replace(/, /g, '\n');
-
-	    var enrichr_info = { list: gene_list, description: 'clustergrammer group list', popup: true };
-
-	    // defined globally - will improve
-	    enrich(enrichr_info);
-	  });
 		};
 
 /***/ },

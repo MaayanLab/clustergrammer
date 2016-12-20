@@ -26,8 +26,43 @@ function run_ini_enrichr(inst_cgm, inst_name){
   if (genes_were_found){
 
     if (d3.select('.enrichr_logo').empty()){
+
+      // set up Enrichr category import
       enr_obj = Enrichr_request(inst_cgm);
       enr_obj.enrichr_icon();
+
+      // set up Enrichr export in dendro modal
+
+      // only display for rows
+      var enrichr_section = d3.selectAll('.dendro_info')
+        .select('.modal-body')
+        .append('div')
+        .classed('enrichr_export_section', true)
+        .style('margin-top', '10px')
+        .style('display','none');
+
+      enrichr_section
+        .append('text')
+        .text('Export genes to ');
+
+      enrichr_section
+        .append('a')
+        .html('Enrichr')
+        .on('click', function(){
+
+          var group_string = d3.select('.dendro_text input').attr('value');
+
+          // replace all instances of commas with new line
+          var gene_list = group_string.replace(/, /g, '\n');
+
+          var enrichr_info = {list: gene_list, description: 'clustergrammer group list' , popup: true};
+
+          // defined globally - will improve
+          enrich(enrichr_info);
+
+        });
+
+
     }
 
   }

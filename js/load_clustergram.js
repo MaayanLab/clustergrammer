@@ -21,6 +21,7 @@ function make_clust(inst_network){
         'row_tip_callback':hzome.gene_info,
         'col_tip_callback':test_col_callback,
         'tile_tip_callback':test_tile_callback,
+        'dendro_callback':dendro_callback,
         'sidebar_width':150
       };
 
@@ -54,6 +55,22 @@ function test_tile_callback(tile_data){
 
 function test_col_callback(col_data){
   var col_name = col_data.name;
+}
+
+function dendro_callback(inst_selection){
+
+  var inst_rc;
+  var inst_data = inst_selection.__data__;
+
+  // toggle enrichr export section
+  if (inst_data.inst_rc === 'row'){
+    d3.select('.enrichr_export_section')
+      .style('display', 'block');
+  } else {
+    d3.select('.enrichr_export_section')
+      .style('display', 'none');
+  }
+
 }
 
 function resize_container(args){
