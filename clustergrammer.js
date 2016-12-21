@@ -3391,6 +3391,7 @@ var Clustergrammer =
 	var dendro_group_highlight = __webpack_require__(54);
 	var dendro_mouseover = __webpack_require__(56);
 	var dendro_mouseout = __webpack_require__(57);
+	var d3_tip_custom = __webpack_require__(46);
 
 	module.exports = function make_row_dendro_triangles(cgm) {
 	  var is_change_group = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
@@ -3415,6 +3416,21 @@ var Clustergrammer =
 	  // } else {
 	  //    inst_dendro_opacity = 0.90;
 	  // }
+
+	  // d3-tooltip
+	  var tmp_y_offset = 0; // viz.clust.margin.top - viz.uni_margin;
+	  var tmp_x_offset = -5;
+	  var dendro_tip = d3_tip_custom().attr('class', function () {
+	    var root_tip_selector = params.viz.root_tips.replace('.', '');
+	    var class_string = root_tip_selector + ' d3-tip row_dendro_tip';
+	    return class_string;
+	  }).direction('nw').offset([tmp_y_offset, tmp_x_offset])
+	  // .style('display','none')
+	  .style('opacity', 1).html(function () {
+
+	    var full_string = 'Click for group information <br> and additional options.';
+	    return full_string;
+	  });
 
 	  var run_transition;
 	  if (d3.selectAll(params.root + ' .row_dendro_group').empty()) {
@@ -3454,6 +3470,8 @@ var Clustergrammer =
 	    }
 	    dendro_mouseover(cgm, this);
 	    dendro_group_highlight(params, this, d, inst_rc);
+
+	    dendro_tip.show(d);
 	  }).on('mouseout', function () {
 	    if (params.viz.inst_order.col === 'clust') {
 	      d3.select(this).style('opacity', inst_dendro_opacity);
@@ -3462,6 +3480,7 @@ var Clustergrammer =
 	    d3.selectAll(params.root + ' .dendro_shadow').remove();
 
 	    dendro_mouseout(this);
+	    dendro_tip.hide(this);
 	  }).on('click', function (d) {
 
 	    if (d3.event.shiftKey === true) {
@@ -3474,7 +3493,7 @@ var Clustergrammer =
 
 	      d3.select(params.root + ' .dendro_info input').attr('value', group_string);
 	    }
-	  });
+	  }).call(dendro_tip);
 
 	  var triangle_opacity;
 	  if (params.viz.inst_order.col === 'clust') {
