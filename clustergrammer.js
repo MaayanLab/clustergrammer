@@ -3397,6 +3397,8 @@ var Clustergrammer =
 	  var is_change_group = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
 
 
+	  console.log('make_row_dendro_triangles');
+
 	  var params = cgm.params;
 
 	  // orders are switched!
@@ -3421,6 +3423,8 @@ var Clustergrammer =
 	  var tmp_y_offset = 0; // viz.clust.margin.top - viz.uni_margin;
 	  var tmp_x_offset = -5;
 	  var dendro_tip = d3_tip_custom().attr('class', function () {
+
+	    // add root element to class
 	    var root_tip_selector = params.viz.root_tips.replace('.', '');
 	    var class_string = root_tip_selector + ' d3-tip row_dendro_tip';
 	    return class_string;
@@ -3438,6 +3442,7 @@ var Clustergrammer =
 	  } else {
 	    run_transition = true;
 	    d3.selectAll(params.root + ' .row_dendro_group').remove();
+	    d3.selectAll(params.root + ' .dendro_tip').remove();
 	  }
 
 	  if (is_change_group) {
@@ -3471,6 +3476,9 @@ var Clustergrammer =
 	    dendro_mouseover(cgm, this);
 	    dendro_group_highlight(params, this, d, inst_rc);
 
+	    // need to improve
+	    d3.selectAll(' .row_dendro_tip').style('display', 'block');
+
 	    dendro_tip.show(d);
 	  }).on('mouseout', function () {
 	    if (params.viz.inst_order.col === 'clust') {
@@ -3489,9 +3497,9 @@ var Clustergrammer =
 
 	      $(params.root + ' .dendro_info').modal('toggle');
 
-	      var group_string = d.all_names.join(', ');
-
-	      d3.select(params.root + ' .dendro_info input').attr('value', group_string);
+	      // var group_string = d.all_names.join(', ');
+	      // d3.select(params.root+' .dendro_info input')
+	      //   .attr('value', group_string);
 	    }
 	  }).call(dendro_tip);
 

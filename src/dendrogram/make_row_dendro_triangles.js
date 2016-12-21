@@ -7,6 +7,8 @@ var d3_tip_custom = require('../tooltip/d3_tip_custom');
 module.exports = function make_row_dendro_triangles(cgm,
   is_change_group = false){
 
+  console.log('make_row_dendro_triangles');
+
   var params = cgm.params;
 
   // orders are switched!
@@ -33,6 +35,8 @@ module.exports = function make_row_dendro_triangles(cgm,
   var tmp_x_offset = -5;
   var dendro_tip = d3_tip_custom()
     .attr('class',function(){
+
+      // add root element to class
       var root_tip_selector = params.viz.root_tips.replace('.','');
       var class_string = root_tip_selector + ' d3-tip row_dendro_tip';
       return class_string;
@@ -54,6 +58,7 @@ module.exports = function make_row_dendro_triangles(cgm,
   } else {
     run_transition = true;
     d3.selectAll(params.root+' .row_dendro_group').remove();
+    d3.selectAll(params.root+' .dendro_tip').remove();
   }
 
   if (is_change_group){
@@ -96,6 +101,10 @@ module.exports = function make_row_dendro_triangles(cgm,
       dendro_mouseover(cgm, this);
       dendro_group_highlight(params, this, d, inst_rc);
 
+      // need to improve
+      d3.selectAll(' .row_dendro_tip')
+        .style('display', 'block');
+
       dendro_tip.show(d);
     })
     .on('mouseout', function(){
@@ -118,16 +127,13 @@ module.exports = function make_row_dendro_triangles(cgm,
 
         $(params.root+' .dendro_info').modal('toggle');
 
-        var group_string = d.all_names.join(', ');
-
-        d3.select(params.root+' .dendro_info input')
-          .attr('value', group_string);
+        // var group_string = d.all_names.join(', ');
+        // d3.select(params.root+' .dendro_info input')
+        //   .attr('value', group_string);
 
       }
     })
     .call(dendro_tip);
-
-
 
   var triangle_opacity;
   if (params.viz.inst_order.col === 'clust'){
