@@ -6,8 +6,11 @@ module.exports = function dendro_group_highlight(params, inst_selection, inst_da
   setTimeout(still_hovering, wait_before_make_shade);
 
   function still_hovering(){
+
+    // check that user is still hovering over dendrogram group
     if (d3.select(inst_selection).classed('hovering')){
 
+      // check that user is not using dendrogram slider
       if (params.is_slider_drag === false){
 
         make_shade_bars();
@@ -18,6 +21,8 @@ module.exports = function dendro_group_highlight(params, inst_selection, inst_da
   }
 
   function make_shade_bars(){
+
+    // console.log('make shade bars')
 
     if (inst_rc === 'row'){
 

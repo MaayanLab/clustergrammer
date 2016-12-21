@@ -16,12 +16,16 @@ module.exports = function make_row_dendro_triangles(cgm,
 
   var dendro_info = calc_row_dendro_triangles(params);
 
-  var inst_dendro_opacity;
-  if (dendro_info.length > 1){
-     inst_dendro_opacity = params.viz.dendro_opacity;
-  } else {
-     inst_dendro_opacity = 0.90;
-  }
+  // constant dendrogram opacity
+  var inst_dendro_opacity = params.viz.dendro_opacity;
+
+  // toggle dendro opacity
+  // var inst_dendro_opacity;
+  // if (dendro_info.length > 1){
+  //   inst_dendro_opacity = params.viz.dendro_opacity;
+  // } else {
+  //    inst_dendro_opacity = 0.90;
+  // }
 
   var run_transition;
   if (d3.selectAll(params.root+' .row_dendro_group').empty()){

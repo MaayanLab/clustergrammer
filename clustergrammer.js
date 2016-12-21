@@ -3405,12 +3405,16 @@ var Clustergrammer =
 
 	  var dendro_info = calc_row_dendro_triangles(params);
 
-	  var inst_dendro_opacity;
-	  if (dendro_info.length > 1) {
-	    inst_dendro_opacity = params.viz.dendro_opacity;
-	  } else {
-	    inst_dendro_opacity = 0.90;
-	  }
+	  // constant dendrogram opacity
+	  var inst_dendro_opacity = params.viz.dendro_opacity;
+
+	  // toggle dendro opacity
+	  // var inst_dendro_opacity;
+	  // if (dendro_info.length > 1){
+	  //   inst_dendro_opacity = params.viz.dendro_opacity;
+	  // } else {
+	  //    inst_dendro_opacity = 0.90;
+	  // }
 
 	  var run_transition;
 	  if (d3.selectAll(params.root + ' .row_dendro_group').empty()) {
@@ -3604,8 +3608,11 @@ var Clustergrammer =
 	  setTimeout(still_hovering, wait_before_make_shade);
 
 	  function still_hovering() {
+
+	    // check that user is still hovering over dendrogram group
 	    if (d3.select(inst_selection).classed('hovering')) {
 
+	      // check that user is not using dendrogram slider
 	      if (params.is_slider_drag === false) {
 
 	        make_shade_bars();
@@ -3614,6 +3621,8 @@ var Clustergrammer =
 	  }
 
 	  function make_shade_bars() {
+
+	    // console.log('make shade bars')
 
 	    if (inst_rc === 'row') {
 
@@ -3683,6 +3692,8 @@ var Clustergrammer =
 	'use strict';
 
 	module.exports = function dendro_mouseover(cgm, inst_selection) {
+
+	  // run instantly on mouseover
 	  d3.select(inst_selection).classed('hovering', true);
 
 	  if (cgm.params.dendro_callback != null) {
