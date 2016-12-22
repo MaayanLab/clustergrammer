@@ -46,6 +46,8 @@ module.exports = function Spillover(cgm) {
 
   // hide spillover from right
   d3.select(viz.viz_svg)
+    .append('g')
+    .classed('right_spillover_container', true)
     .append('rect')
     .attr('fill', viz.background_color) //!! prog_colors
     .attr('width', 10*viz.clust.dim.width)

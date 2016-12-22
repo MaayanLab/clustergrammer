@@ -43,7 +43,7 @@ function run_ini_enrichr(inst_cgm, inst_name){
 
       enrichr_section
         .append('text')
-        .text('Export genes to ');
+        .text('Send genes to ');
 
       enrichr_section
         .append('a')

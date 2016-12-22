@@ -30,15 +30,19 @@ module.exports = function make_row_dendro_triangles(cgm,
   //    inst_dendro_opacity = 0.90;
   // }
 
+  // remove any old row dendro tooltips from this visualization
+  d3.selectAll(cgm.params.viz.root_tips+'_row_dendro').remove();
+
   // d3-tooltip
   var tmp_y_offset = 0; // viz.clust.margin.top - viz.uni_margin;
   var tmp_x_offset = -5;
   var dendro_tip = d3_tip_custom()
     .attr('class',function(){
-
       // add root element to class
       var root_tip_selector = params.viz.root_tips.replace('.','');
-      var class_string = root_tip_selector + ' d3-tip row_dendro_tip';
+      var class_string = root_tip_selector + ' d3-tip ' +
+                         root_tip_selector +  '_row_dendro';
+
       return class_string;
     })
     .direction('nw')
@@ -102,7 +106,7 @@ module.exports = function make_row_dendro_triangles(cgm,
       dendro_group_highlight(params, this, d, inst_rc);
 
       // need to improve
-      d3.selectAll(' .row_dendro_tip')
+      d3.selectAll( params.viz.root_tips + '_row_dendro')
         .style('display', 'block');
 
       dendro_tip.show(d);
