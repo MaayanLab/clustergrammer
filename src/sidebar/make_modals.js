@@ -41,7 +41,7 @@ module.exports = function ini_modals(params){
   dendro_modal.header
     .append('h4')
     .classed('modal-title', true)
-    .html('Group data points');
+    .html('Cluster Information');
 
   dendro_modal.body
     .append('div')

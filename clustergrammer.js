@@ -3432,7 +3432,7 @@ var Clustergrammer =
 	  // .style('display','none')
 	  .style('opacity', 1).html(function () {
 
-	    var full_string = 'Click for group information <br> and additional options.';
+	    var full_string = 'Click for cluster information <br> and additional options.';
 	    return full_string;
 	  });
 
@@ -3497,9 +3497,8 @@ var Clustergrammer =
 
 	      $(params.root + ' .dendro_info').modal('toggle');
 
-	      // var group_string = d.all_names.join(', ');
-	      // d3.select(params.root+' .dendro_info input')
-	      //   .attr('value', group_string);
+	      var group_string = d.all_names.join(', ');
+	      d3.select(params.root + ' .dendro_info input').attr('value', group_string);
 	    }
 	  }).call(dendro_tip);
 
@@ -12877,7 +12876,7 @@ var Clustergrammer =
 	  ///////////////////////////////////////
 	  var dendro_modal = make_modal_skeleton(params, 'dendro_info');
 
-	  dendro_modal.header.append('h4').classed('modal-title', true).html('Group data points');
+	  dendro_modal.header.append('h4').classed('modal-title', true).html('Cluster Information');
 
 	  dendro_modal.body.append('div').classed('dendro_text', true).append('input').classed('bootstrap_highlight', true).classed('current_names', true).style('width', '100%');
 		};

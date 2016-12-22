@@ -47,7 +47,7 @@ module.exports = function make_row_dendro_triangles(cgm,
     .style('opacity', 1)
     .html(function(){
 
-      var full_string = 'Click for group information <br> and additional options.';
+      var full_string = 'Click for cluster information <br> and additional options.';
       return full_string;
 
     });
@@ -127,9 +127,9 @@ module.exports = function make_row_dendro_triangles(cgm,
 
         $(params.root+' .dendro_info').modal('toggle');
 
-        // var group_string = d.all_names.join(', ');
-        // d3.select(params.root+' .dendro_info input')
-        //   .attr('value', group_string);
+        var group_string = d.all_names.join(', ');
+        d3.select(params.root+' .dendro_info input')
+          .attr('value', group_string);
 
       }
     })
