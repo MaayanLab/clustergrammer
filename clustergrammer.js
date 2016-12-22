@@ -3431,9 +3431,7 @@ var Clustergrammer =
 	    var class_string = root_tip_selector + ' d3-tip ' + root_tip_selector + '_row_dendro';
 
 	    return class_string;
-	  }).direction('nw').offset([tmp_y_offset, tmp_x_offset])
-	  // .style('display','none')
-	  .style('opacity', 1).html(function () {
+	  }).direction('nw').offset([tmp_y_offset, tmp_x_offset]).style('display', 'none').style('opacity', 0).html(function () {
 
 	    var full_string = 'Click for cluster information <br> and additional options.';
 	    return full_string;
@@ -3480,7 +3478,7 @@ var Clustergrammer =
 	    dendro_group_highlight(params, this, d, inst_rc);
 
 	    // need to improve
-	    d3.selectAll(params.viz.root_tips + '_row_dendro').style('display', 'block');
+	    d3.selectAll(params.viz.root_tips + '_row_dendro').style('opacity', 1).style('display', 'block');
 
 	    dendro_tip.show(d);
 	  }).on('mouseout', function () {
@@ -3492,6 +3490,9 @@ var Clustergrammer =
 
 	    dendro_mouseout(this);
 	    dendro_tip.hide(this);
+
+	    // need to improve
+	    d3.selectAll(params.viz.root_tips + '_row_dendro').style('opacity', 0).style('display', 'none');
 	  }).on('click', function (d) {
 
 	    if (d3.event.shiftKey === true) {
@@ -4526,10 +4527,10 @@ var Clustergrammer =
 	  var tmp_top = viz.norm_labels.margin.top + viz.norm_labels.width.col;
 
 	  // hide spillover from right
-	  d3.select(viz.viz_svg).append('g').classed('right_spillover_container', true).append('rect').attr('fill', viz.background_color) //!! prog_colors
-	  .attr('width', 10 * viz.clust.dim.width).attr('height', viz.svg_dim.height + 'px').attr('transform', function () {
+	  d3.select(viz.viz_svg).append('g').classed('right_spillover_container', true).attr('transform', function () {
 	    return 'translate(' + tmp_left + ',' + tmp_top + ')';
-	  }).attr('class', 'white_bars').attr('class', 'right_spillover');
+	  }).append('rect').attr('fill', viz.background_color) //!! prog_colors
+	  .attr('width', 10 * viz.clust.dim.width).attr('height', viz.svg_dim.height + 'px').attr('class', 'white_bars').attr('class', 'right_spillover');
 
 	  // hide spillover from top of row dendrogram
 	  var x_offset = viz.clust.margin.left + viz.clust.dim.width;
@@ -6268,11 +6269,13 @@ var Clustergrammer =
 	  var tmp_left = viz.clust.margin.left + viz.clust.dim.width + viz.uni_margin + viz.dendro_room.row;
 	  var tmp_top = viz.norm_labels.margin.top + viz.norm_labels.width.col;
 
-	  svg_group.select(viz.root + ' .right_spillover').attr('transform', function () {
+	  svg_group.select(viz.root + ' .right_spillover_container').attr('transform', function () {
 	    return 'translate(' + tmp_left + ',' + tmp_top + ')';
-	  }).attr('height', viz.svg_dim.height + 'px');
+	  });
 
-	  // resize dendro spillovers 
+	  svg_group.select(viz.root + ' .right_spillover').attr('height', viz.svg_dim.height + 'px');
+
+	  // resize dendro spillovers
 	  var x_offset = viz.clust.margin.left + viz.clust.dim.width;
 	  var y_offset = tmp_top;
 	  var tmp_width = viz.dendro_room.row + viz.uni_margin;
@@ -6281,7 +6284,7 @@ var Clustergrammer =
 	    return 'translate(' + x_offset + ',' + y_offset + ')';
 	  });
 
-	  // hide spillover left top of col dendrogram 
+	  // hide spillover left top of col dendrogram
 	  x_offset = 0;
 	  y_offset = viz.clust.margin.top + viz.clust.dim.height;
 	  tmp_width = viz.clust.margin.left;
@@ -6305,7 +6308,7 @@ var Clustergrammer =
 	  var extra_x_room = 2.75;
 	  var extra_y_room = 1.2;
 
-	  // reposition category superlabels 
+	  // reposition category superlabels
 	  if (viz.show_categories.col) {
 
 	    d3.selectAll(viz.root + ' .col_cat_super').attr('transform', function (d) {

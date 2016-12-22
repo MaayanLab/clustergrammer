@@ -48,13 +48,13 @@ module.exports = function Spillover(cgm) {
   d3.select(viz.viz_svg)
     .append('g')
     .classed('right_spillover_container', true)
+    .attr('transform', function() {
+      return 'translate(' + tmp_left + ',' + tmp_top + ')';
+    })
     .append('rect')
     .attr('fill', viz.background_color) //!! prog_colors
     .attr('width', 10*viz.clust.dim.width)
     .attr('height', viz.svg_dim.height+'px')
-    .attr('transform', function() {
-      return 'translate(' + tmp_left + ',' + tmp_top + ')';
-    })
     .attr('class', 'white_bars')
     .attr('class','right_spillover');
 

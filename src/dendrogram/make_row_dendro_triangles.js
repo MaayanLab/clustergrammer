@@ -47,8 +47,8 @@ module.exports = function make_row_dendro_triangles(cgm,
     })
     .direction('nw')
     .offset([tmp_y_offset, tmp_x_offset])
-    // .style('display','none')
-    .style('opacity', 1)
+    .style('display','none')
+    .style('opacity', 0)
     .html(function(){
 
       var full_string = 'Click for cluster information <br> and additional options.';
@@ -107,6 +107,7 @@ module.exports = function make_row_dendro_triangles(cgm,
 
       // need to improve
       d3.selectAll( params.viz.root_tips + '_row_dendro')
+        .style('opacity', 1)
         .style('display', 'block');
 
       dendro_tip.show(d);
@@ -122,6 +123,12 @@ module.exports = function make_row_dendro_triangles(cgm,
 
       dendro_mouseout(this);
       dendro_tip.hide(this);
+
+      // need to improve
+      d3.selectAll( params.viz.root_tips + '_row_dendro')
+        .style('opacity', 0)
+        .style('display', 'none');
+
     })
     .on('click', function(d){
 
