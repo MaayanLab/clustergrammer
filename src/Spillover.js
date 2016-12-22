@@ -1,6 +1,7 @@
 var get_cat_title = require('./categories/get_cat_title');
 var ini_cat_reorder = require('./reorder/ini_cat_reorder');
 var make_row_cat_super_labels = require('./labels/make_row_cat_super_labels');
+var calc_row_dendro_triangles = require('./dendrogram/calc_row_dendro_triangles');
 
 module.exports = function Spillover(cgm) {
 
@@ -69,8 +70,18 @@ module.exports = function Spillover(cgm) {
   var y_offset = viz.clust.margin.top;
   r_spill_container
     .append('g')
-    .classed('row_dendro_icons', true)
+    .classed('row_dendro_icons_container', true)
     .attr('transform', 'translate(' + x_offset + ','+ y_offset +')');
+
+  // information needed to make dendro
+  var dendro_info = calc_row_dendro_triangles(params);
+
+  d3.select('.row_dendro_icons_container')
+    .append('rect')
+    .style('height',30)
+    .style('width',30)
+    .style('opacity', 0);
+
 
   // hide spillover from top of row dendrogram
   var x_offset = viz.clust.margin.left + viz.clust.dim.width;
