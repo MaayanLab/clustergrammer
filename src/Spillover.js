@@ -42,15 +42,17 @@ module.exports = function Spillover(cgm) {
     viz.clust.dim.width +
     viz.uni_margin +
     viz.dendro_room.row;
-  var tmp_top = viz.norm_labels.margin.top + viz.norm_labels.width.col;
+
 
   // hide spillover from right
   var r_spill_container = d3.select(viz.viz_svg)
     .append('g')
     .classed('right_spillover_container', true)
     .attr('transform', function() {
-      return 'translate(' + tmp_left + ',' + tmp_top + ')';
+      return 'translate(' + tmp_left + ', 0)';
     });
+
+  var tmp_top = viz.norm_labels.margin.top + viz.norm_labels.width.col;
 
   r_spill_container
     .append('rect')
@@ -58,11 +60,17 @@ module.exports = function Spillover(cgm) {
     .attr('width', 10*viz.clust.dim.width)
     .attr('height', viz.svg_dim.height+'px')
     .attr('class', 'white_bars')
-    .attr('class','right_spillover');
+    .attr('class','right_spillover')
+    .attr('transform', function() {
+      return 'translate( 0,' + tmp_top + ')';
+    });
 
+  var x_offset = 0;
+  var y_offset = viz.clust.margin.top;
   r_spill_container
     .append('g')
-    .classed('row_dendro_icons', true);
+    .classed('row_dendro_icons', true)
+    .attr('transform', 'translate(' + x_offset + ','+ y_offset +')');
 
   // hide spillover from top of row dendrogram
   var x_offset = viz.clust.margin.left + viz.clust.dim.width;

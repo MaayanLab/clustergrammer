@@ -3433,7 +3433,7 @@ var Clustergrammer =
 	    return class_string;
 	  }).direction('nw').offset([tmp_y_offset, tmp_x_offset]).style('display', 'none').style('opacity', 0).html(function () {
 
-	    var full_string = 'Click for cluster information <br> and additional options.';
+	    var full_string = 'Click for cluster information <br>' + 'and additional options. <br>' + 'Use slider to adjust cluster size.';
 	    return full_string;
 	  });
 
@@ -4524,17 +4524,22 @@ var Clustergrammer =
 	  .attr('width', viz.clust.margin.left).attr('height', viz.clust.margin.top).attr('class', 'top_left_white');
 
 	  var tmp_left = viz.clust.margin.left + viz.clust.dim.width + viz.uni_margin + viz.dendro_room.row;
-	  var tmp_top = viz.norm_labels.margin.top + viz.norm_labels.width.col;
 
 	  // hide spillover from right
 	  var r_spill_container = d3.select(viz.viz_svg).append('g').classed('right_spillover_container', true).attr('transform', function () {
-	    return 'translate(' + tmp_left + ',' + tmp_top + ')';
+	    return 'translate(' + tmp_left + ', 0)';
 	  });
 
-	  r_spill_container.append('rect').attr('fill', viz.background_color) //!! prog_colors
-	  .attr('width', 10 * viz.clust.dim.width).attr('height', viz.svg_dim.height + 'px').attr('class', 'white_bars').attr('class', 'right_spillover');
+	  var tmp_top = viz.norm_labels.margin.top + viz.norm_labels.width.col;
 
-	  r_spill_container.append('g').classed('row_dendro_icons', true);
+	  r_spill_container.append('rect').attr('fill', viz.background_color) //!! prog_colors
+	  .attr('width', 10 * viz.clust.dim.width).attr('height', viz.svg_dim.height + 'px').attr('class', 'white_bars').attr('class', 'right_spillover').attr('transform', function () {
+	    return 'translate( 0,' + tmp_top + ')';
+	  });
+
+	  var x_offset = 0;
+	  var y_offset = viz.clust.margin.top;
+	  r_spill_container.append('g').classed('row_dendro_icons', true).attr('transform', 'translate(' + x_offset + ',' + y_offset + ')');
 
 	  // hide spillover from top of row dendrogram
 	  var x_offset = viz.clust.margin.left + viz.clust.dim.width;

@@ -43,7 +43,7 @@ body{
 
 /* need to move d3-tip into stypes */
 .d3-tip {
-  line-height: 1;
+  line-height: 1.25;
   font-weight: bold;
   padding: 12px;
   background: rgba(0, 0, 0, 0.8);
