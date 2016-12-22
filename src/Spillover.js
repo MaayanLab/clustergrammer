@@ -45,18 +45,24 @@ module.exports = function Spillover(cgm) {
   var tmp_top = viz.norm_labels.margin.top + viz.norm_labels.width.col;
 
   // hide spillover from right
-  d3.select(viz.viz_svg)
+  var r_spill_container = d3.select(viz.viz_svg)
     .append('g')
     .classed('right_spillover_container', true)
     .attr('transform', function() {
       return 'translate(' + tmp_left + ',' + tmp_top + ')';
-    })
+    });
+
+  r_spill_container
     .append('rect')
     .attr('fill', viz.background_color) //!! prog_colors
     .attr('width', 10*viz.clust.dim.width)
     .attr('height', viz.svg_dim.height+'px')
     .attr('class', 'white_bars')
     .attr('class','right_spillover');
+
+  r_spill_container
+    .append('g')
+    .classed('row_dendro_icons', true);
 
   // hide spillover from top of row dendrogram
   var x_offset = viz.clust.margin.left + viz.clust.dim.width;
