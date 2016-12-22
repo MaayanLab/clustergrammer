@@ -4862,14 +4862,17 @@ var Clustergrammer =
 	  d3.selectAll(params.root + ' .row_cat_selection_bar').remove();
 	  // d3.selectAll(params.root+' .row_cat_label_bar_container rect').remove();
 
+	  // remove any old row_cat_super tooltips from this visualization
+	  d3.selectAll(cgm.params.viz.root_tips + '_row_cat_super').remove();
+
 	  // d3-tooltip
 	  var tmp_y_offset = 50; // viz.clust.margin.top - viz.uni_margin;
 	  var tmp_x_offset = -75;
 	  var cat_tip = d3_tip_custom().attr('class', function () {
 	    var root_tip_selector = params.viz.root_tips.replace('.', '');
-	    var class_string = root_tip_selector + ' d3-tip row_cat_tip_super';
+	    var class_string = root_tip_selector + ' d3-tip ' + root_tip_selector + '_row_cat_super';
 	    return class_string;
-	  }).direction('south_custom').offset([tmp_y_offset, tmp_x_offset]).style('display', 'none').style('opacity', 1).html(function (d) {
+	  }).direction('south_custom').offset([tmp_y_offset, tmp_x_offset]).style('display', 'none').style('opacity', 0).html(function (d) {
 
 	    var full_string;
 
@@ -4924,12 +4927,16 @@ var Clustergrammer =
 	      var inst_y = unit_length * (parseInt(d.split('-')[1], 10) - 0.75);
 	      return 'translate(0,' + inst_y + ')';
 	    }).on('mouseover', function (d) {
-	      d3.selectAll('.row_cat_tip_super').style('display', 'block');
+
+	      d3.selectAll(params.viz.root_tips + '_row_cat_super').style('display', 'block').style('opacity', 1);
+
 	      cat_tip.show(d);
 	    }).on('mouseout', function () {
 	      cat_tip.hide(this);
 	      // might not need
 	      d3.selectAll('.d3-tip').style('display', 'none');
+
+	      d3.selectAll(params.viz.root_tips + '_row_cat_super').style('display', 'none').style('opacity', 0);
 	    });
 	  }
 

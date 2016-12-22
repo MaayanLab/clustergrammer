@@ -62,7 +62,6 @@ function run_ini_enrichr(inst_cgm, inst_name){
 
         });
 
-
     }
 
   }
