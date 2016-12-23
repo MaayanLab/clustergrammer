@@ -3452,7 +3452,7 @@ var Clustergrammer =
 
 	  d3.select(params.root + ' .row_dendro_container').selectAll('path').data(dendro_info, function (d) {
 	    return d.name;
-	  }).enter().append('path').style('opacity', 0).attr('class', 'row_dendro_group').attr('d', function (d) {
+	  }).enter().append('path').style('opacity', 0).attr('d', function (d) {
 
 	    // up triangle
 	    var start_x = 0;
@@ -3467,7 +3467,7 @@ var Clustergrammer =
 	    var output_string = 'M' + start_x + ',' + start_y + ', L' + mid_x + ', ' + mid_y + ', L' + final_x + ',' + final_y + ' Z';
 
 	    return output_string;
-	  }).style('fill', 'black').on('mouseover', function (d) {
+	  }).attr('class', 'row_dendro_group').style('fill', 'black').on('mouseover', function (d) {
 	    var inst_rc;
 	    if (params.sim_mat) {
 	      inst_rc = 'both';
@@ -4548,23 +4548,52 @@ var Clustergrammer =
 	  d3.select('.row_dendro_icons_container').selectAll('rect').data(dendro_info, function (d) {
 	    return d.name;
 	  }).enter()
-	  // .append('rect')
-	  // .style('height',20)
-	  // .style('width',20)
 
-	  .append('text').attr('text-anchor', 'middle').attr('dominant-baseline', 'central').attr('font-family', 'FontAwesome').attr('font-size', '20px').attr('font-weight', 'bold').text(function () {
-	    // chevron
-	    return '';
-	    // // angle right
-	    // return '\uf105';
-	  }).style('cursor', 'pointer').style('opacity', params.viz.dendro_opacity).style('display', 'none').attr('transform', function (d, i) {
+	  // .append('circle')
+	  // .attr('r', 7)
+	  // // .style('height',20)
+	  // // .style('width',20)
+
+	  .append('path').attr('d', function (d) {
+
+	    // up triangle
+	    var start_x = 0;
+	    var start_y = -10;
+
+	    var mid_x = 10;
+	    var mid_y = 0;
+
+	    var final_x = 0;
+	    var final_y = 10;
+
+	    var output_string = 'M' + start_x + ',' + start_y + ', L' + mid_x + ', ' + mid_y + ', L' + final_x + ',' + final_y + ' Z';
+
+	    return output_string;
+	  })
+
+	  // .append('text')
+	  // .attr('text-anchor', 'middle')
+	  // .attr('dominant-baseline', 'central')
+	  // .attr('font-family', 'FontAwesome')
+	  // .attr('font-size', '20px')
+	  // // .attr('font-weight', 'bold')
+	  // .text(function () {
+	  //   // chevron
+	  //   return '\uf054'
+	  //   // // angle right
+	  //   // return '\uf105';
+	  //   // // dot circle
+	  //   // return '\uf192';
+	  // })
+
+	  .style('cursor', 'pointer').style('opacity', params.viz.dendro_opacity).attr('transform', function (d, i) {
 	    var inst_translate;
 	    // var inst_y = String(100 * i);
 	    var inst_y = d.pos_mid;
-	    var inst_x = 15;
+	    var inst_x = 5;
 	    inst_translate = 'translate(' + inst_x + ',' + inst_y + ')';
 	    return inst_translate;
-	  });
+	  }).style('display', 'none');
 
 	  // hide spillover from top of row dendrogram
 	  var x_offset = viz.clust.margin.left + viz.clust.dim.width;

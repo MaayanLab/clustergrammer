@@ -76,7 +76,6 @@ module.exports = function make_row_dendro_triangles(cgm,
     .enter()
     .append('path')
     .style('opacity',0)
-    .attr('class', 'row_dendro_group')
     .attr('d', function(d) {
 
       // up triangle
@@ -95,6 +94,8 @@ module.exports = function make_row_dendro_triangles(cgm,
 
       return output_string;
     })
+    .attr('class', 'row_dendro_group')
+
     .style('fill','black')
     .on('mouseover', function(d){
       var inst_rc;
