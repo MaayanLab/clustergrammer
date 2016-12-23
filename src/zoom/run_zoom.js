@@ -31,6 +31,9 @@ module.exports = function zoomed(cgm) {
           .translate([new_x, new_y]);
 
     run_transformation(params);
+
+    // tmp
+    d3.selectAll('.row_dendro_crop_buttons').style('display','none');
   }
 
 };
