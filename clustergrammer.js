@@ -12991,7 +12991,7 @@ var Clustergrammer =
 	    var tri_height = 10;
 
 	    var tmp_height = d.pos_bot - d.pos_top;
-	    if (tmp_height < 30) {
+	    if (tmp_height < 45) {
 	      tri_height = tmp_height * 0.20;
 	    }
 
