@@ -3,11 +3,11 @@ var dendro_group_highlight = require('./dendro_group_highlight');
 var dendro_mouseover = require('./dendro_mouseover');
 var dendro_mouseout = require('./dendro_mouseout');
 var d3_tip_custom = require('../tooltip/d3_tip_custom');
+var make_dendro_crop_buttons = require('./make_dendro_crop_buttons');
 
-module.exports = function make_row_dendro_triangles(cgm,
-  is_change_group = false){
+module.exports = function make_row_dendro_triangles(cgm, is_change_group = false){
 
-  console.log('make_row_dendro_triangles');
+  // console.log('make_row_dendro_triangles');
 
   var params = cgm.params;
 
@@ -18,6 +18,10 @@ module.exports = function make_row_dendro_triangles(cgm,
   }
 
   var dendro_info = calc_row_dendro_triangles(params);
+
+  if (d3.select('.row_dendro_crop_buttons').empty() === false){
+    make_dendro_crop_buttons(cgm);
+  }
 
   // constant dendrogram opacity
   var inst_dendro_opacity = params.viz.dendro_opacity;

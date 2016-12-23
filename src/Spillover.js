@@ -1,7 +1,7 @@
 var get_cat_title = require('./categories/get_cat_title');
 var ini_cat_reorder = require('./reorder/ini_cat_reorder');
 var make_row_cat_super_labels = require('./labels/make_row_cat_super_labels');
-var calc_row_dendro_triangles = require('./dendrogram/calc_row_dendro_triangles');
+var make_dendro_crop_buttons = require('./dendrogram/make_dendro_crop_buttons');
 
 module.exports = function Spillover(cgm) {
 
@@ -73,70 +73,14 @@ module.exports = function Spillover(cgm) {
     .classed('row_dendro_icons_container', true)
     .attr('transform', 'translate(' + x_offset + ','+ y_offset +')');
 
-  // information needed to make dendro
-  var dendro_info = calc_row_dendro_triangles(params);
 
-  d3.select('.row_dendro_icons_container')
-    .selectAll('rect')
-    .data(dendro_info, function(d){return d.name;})
-    .enter()
-
-    // .append('circle')
-    // .attr('r', 7)
-    // // .style('height',20)
-    // // .style('width',20)
-
-    .append('path')
-    .attr('d', function(d) {
-
-      // up triangle
-      var start_x = 0 ;
-      var start_y = -10;
-
-      var mid_x = 10;
-      var mid_y = 0;
-
-      var final_x = 0;
-      var final_y = 10;
-
-      var output_string = 'M' + start_x + ',' + start_y + ', L' +
-      mid_x + ', ' + mid_y + ', L'
-      + final_x + ','+ final_y +' Z';
-
-      return output_string;
-    })
-
-    // .append('text')
-    // .attr('text-anchor', 'middle')
-    // .attr('dominant-baseline', 'central')
-    // .attr('font-family', 'FontAwesome')
-    // .attr('font-size', '20px')
-    // // .attr('font-weight', 'bold')
-    // .text(function () {
-    //   // chevron
-    //   return '\uf054'
-    //   // // angle right
-    //   // return '\uf105';
-    //   // // dot circle
-    //   // return '\uf192';
-    // })
-
-    .style('cursor', 'pointer')
-    .style('opacity', params.viz.dendro_opacity)
-    .attr('transform', function(d, i){
-      var inst_translate;
-      // var inst_y = String(100 * i);
-      var inst_y = d.pos_mid ;
-      var inst_x = 5;
-      inst_translate = 'translate('+ inst_x +',' + inst_y + ')';
-      return inst_translate;
-    })
-    .style('display','none')
+  make_dendro_crop_buttons(cgm);
 
 
   // hide spillover from top of row dendrogram
-  var x_offset = viz.clust.margin.left + viz.clust.dim.width;
-  var y_offset = tmp_top;
+  x_offset = viz.clust.margin.left + viz.clust.dim.width;
+  y_offset = tmp_top;
+
   var tmp_width = viz.dendro_room.row + viz.uni_margin;
   var tmp_height = viz.cat_room.col + viz.uni_margin;
   d3.select(viz.viz_svg)

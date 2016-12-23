@@ -41,7 +41,7 @@ module.exports = function resize_spillover(viz, ini_svg_group, delay_info=false)
       return 'translate(' + tmp_left + ', 0)';
     });
 
-  var tmp_top = viz.norm_labels.margin.top + viz.norm_labels.width.col;
+  tmp_top = viz.norm_labels.margin.top + viz.norm_labels.width.col;
 
   svg_group.select(viz.root+' .right_spillover_container rect')
     .attr('transform', function() {

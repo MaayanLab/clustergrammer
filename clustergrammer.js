@@ -3392,12 +3392,13 @@ var Clustergrammer =
 	var dendro_mouseover = __webpack_require__(56);
 	var dendro_mouseout = __webpack_require__(57);
 	var d3_tip_custom = __webpack_require__(46);
+	var make_dendro_crop_buttons = __webpack_require__(196);
 
 	module.exports = function make_row_dendro_triangles(cgm) {
 	  var is_change_group = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
 
 
-	  console.log('make_row_dendro_triangles');
+	  // console.log('make_row_dendro_triangles');
 
 	  var params = cgm.params;
 
@@ -3407,6 +3408,10 @@ var Clustergrammer =
 	  }
 
 	  var dendro_info = calc_row_dendro_triangles(params);
+
+	  if (d3.select('.row_dendro_crop_buttons').empty() === false) {
+	    make_dendro_crop_buttons(cgm);
+	  }
 
 	  // constant dendrogram opacity
 	  var inst_dendro_opacity = params.viz.dendro_opacity;
@@ -4503,7 +4508,7 @@ var Clustergrammer =
 	var get_cat_title = __webpack_require__(69);
 	var ini_cat_reorder = __webpack_require__(70);
 	var make_row_cat_super_labels = __webpack_require__(72);
-	var calc_row_dendro_triangles = __webpack_require__(53);
+	var make_dendro_crop_buttons = __webpack_require__(196);
 
 	module.exports = function Spillover(cgm) {
 
@@ -4542,62 +4547,12 @@ var Clustergrammer =
 	  var y_offset = viz.clust.margin.top;
 	  r_spill_container.append('g').classed('row_dendro_icons_container', true).attr('transform', 'translate(' + x_offset + ',' + y_offset + ')');
 
-	  // information needed to make dendro
-	  var dendro_info = calc_row_dendro_triangles(params);
-
-	  d3.select('.row_dendro_icons_container').selectAll('rect').data(dendro_info, function (d) {
-	    return d.name;
-	  }).enter()
-
-	  // .append('circle')
-	  // .attr('r', 7)
-	  // // .style('height',20)
-	  // // .style('width',20)
-
-	  .append('path').attr('d', function (d) {
-
-	    // up triangle
-	    var start_x = 0;
-	    var start_y = -10;
-
-	    var mid_x = 10;
-	    var mid_y = 0;
-
-	    var final_x = 0;
-	    var final_y = 10;
-
-	    var output_string = 'M' + start_x + ',' + start_y + ', L' + mid_x + ', ' + mid_y + ', L' + final_x + ',' + final_y + ' Z';
-
-	    return output_string;
-	  })
-
-	  // .append('text')
-	  // .attr('text-anchor', 'middle')
-	  // .attr('dominant-baseline', 'central')
-	  // .attr('font-family', 'FontAwesome')
-	  // .attr('font-size', '20px')
-	  // // .attr('font-weight', 'bold')
-	  // .text(function () {
-	  //   // chevron
-	  //   return '\uf054'
-	  //   // // angle right
-	  //   // return '\uf105';
-	  //   // // dot circle
-	  //   // return '\uf192';
-	  // })
-
-	  .style('cursor', 'pointer').style('opacity', params.viz.dendro_opacity).attr('transform', function (d, i) {
-	    var inst_translate;
-	    // var inst_y = String(100 * i);
-	    var inst_y = d.pos_mid;
-	    var inst_x = 5;
-	    inst_translate = 'translate(' + inst_x + ',' + inst_y + ')';
-	    return inst_translate;
-	  }).style('display', 'none');
+	  make_dendro_crop_buttons(cgm);
 
 	  // hide spillover from top of row dendrogram
-	  var x_offset = viz.clust.margin.left + viz.clust.dim.width;
-	  var y_offset = tmp_top;
+	  x_offset = viz.clust.margin.left + viz.clust.dim.width;
+	  y_offset = tmp_top;
+
 	  var tmp_width = viz.dendro_room.row + viz.uni_margin;
 	  var tmp_height = viz.cat_room.col + viz.uni_margin;
 	  d3.select(viz.viz_svg).append('rect').attr('fill', viz.background_color).attr('width', tmp_width).attr('height', tmp_height).attr('transform', function () {
@@ -6336,7 +6291,7 @@ var Clustergrammer =
 	    return 'translate(' + tmp_left + ', 0)';
 	  });
 
-	  var tmp_top = viz.norm_labels.margin.top + viz.norm_labels.width.col;
+	  tmp_top = viz.norm_labels.margin.top + viz.norm_labels.width.col;
 
 	  svg_group.select(viz.root + ' .right_spillover_container rect').attr('transform', function () {
 	    return 'translate( 0,' + tmp_top + ')';
@@ -13005,6 +12960,78 @@ var Clustergrammer =
 	  // $( params.root+' .opacity_slider' ).slider({
 	  //   value:1.0
 	  // });
+		};
+
+/***/ },
+/* 196 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var calc_row_dendro_triangles = __webpack_require__(53);
+
+	module.exports = function make_dendro_crop_buttons(cgm) {
+
+	  var params = cgm.params;
+
+	  var button_opacity = params.viz.dendro_opacity * 0.8;
+
+	  // information needed to make dendro
+	  var dendro_info = calc_row_dendro_triangles(params);
+
+	  d3.selectAll(params.root + ' .row_dendro_crop_buttons').remove();
+
+	  d3.select(params.root + ' .row_dendro_icons_container').selectAll('path').data(dendro_info, function (d) {
+	    return d.name;
+	  }).enter().append('path').classed('row_dendro_crop_buttons', true).attr('d', function (d) {
+
+	    var tri_height = 10;
+
+	    var tmp_height = d.pos_bot - d.pos_top;
+	    if (tmp_height < 30) {
+	      tri_height = tmp_height * 0.20;
+	    }
+
+	    // up triangle
+	    var start_x = 0;
+	    var start_y = -tri_height;
+
+	    var mid_x = 10;
+	    var mid_y = 0;
+
+	    var final_x = 0;
+	    var final_y = tri_height;
+
+	    var output_string = 'M' + start_x + ',' + start_y + ', L' + mid_x + ', ' + mid_y + ', L' + final_x + ',' + final_y + ' Z';
+
+	    return output_string;
+	  })
+	  // .append('text')
+	  // .attr('text-anchor', 'middle')
+	  // .attr('dominant-baseline', 'central')
+	  // .attr('font-family', 'FontAwesome')
+	  // .attr('font-size', '20px')
+	  // // .attr('font-weight', 'bold')
+	  // .text(function () {
+	  //   // chevron
+	  //   return '\uf054'
+	  //   // // angle right
+	  //   // return '\uf105';
+	  //   // // dot circle
+	  //   // return '\uf192';
+	  // })
+	  .style('cursor', 'pointer').style('opacity', button_opacity).attr('transform', function (d) {
+	    var inst_translate;
+	    // var inst_y = String(100 * i);
+	    var inst_y = d.pos_mid;
+	    var inst_x = 5;
+	    inst_translate = 'translate(' + inst_x + ',' + inst_y + ')';
+	    return inst_translate;
+	  }).on('mouseover', function () {
+	    d3.select(this).style('opacity', 0.7);
+	  }).on('mouseout', function () {
+	    d3.select(this).style('opacity', button_opacity);
+	  }).style('display', 'none');
 		};
 
 /***/ }
