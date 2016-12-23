@@ -77,10 +77,24 @@ module.exports = function Spillover(cgm) {
   var dendro_info = calc_row_dendro_triangles(params);
 
   d3.select('.row_dendro_icons_container')
+    .selectAll('rect')
+    .data(dendro_info, function(d){return d.name;})
+    .enter()
     .append('rect')
-    .style('height',30)
-    .style('width',30)
-    .style('opacity', 0);
+    .style('height',20)
+    .style('width',20)
+    .style('opacity', 0.25)
+    .attr('transform', function(d, i){
+      var inst_translate;
+
+      // var inst_y = String(100 * i);
+      var inst_y = d.pos_mid - 10;
+      var inst_x = 5;
+
+      inst_translate = 'translate('+ inst_x +',' + inst_y + ')';
+      console.log(inst_translate)
+      return inst_translate;
+    })
 
 
   // hide spillover from top of row dendrogram

@@ -52,8 +52,7 @@ module.exports = function make_row_dendro_triangles(cgm,
     .html(function(){
 
       var full_string = 'Click for cluster information <br>'+
-                        'and additional options. <br>' +
-                        'Use slider to adjust cluster size.';
+                        'and additional options.';
       return full_string;
 
     });
