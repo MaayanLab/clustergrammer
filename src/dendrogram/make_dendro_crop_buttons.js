@@ -4,7 +4,7 @@ module.exports = function make_dendro_crop_buttons(cgm){
 
   var params = cgm.params;
 
-  var button_opacity = params.viz.dendro_opacity * 0.8;
+  var button_opacity = params.viz.dendro_opacity * 0.70;
 
   // information needed to make dendro
   var dendro_info = calc_row_dendro_triangles(params);
@@ -63,7 +63,7 @@ module.exports = function make_dendro_crop_buttons(cgm){
       var inst_translate;
       // var inst_y = String(100 * i);
       var inst_y = d.pos_mid ;
-      var inst_x = 5;
+      var inst_x = 7;
       inst_translate = 'translate('+ inst_x +',' + inst_y + ')';
       return inst_translate;
     })
@@ -75,6 +75,6 @@ module.exports = function make_dendro_crop_buttons(cgm){
       d3.select(this)
         .style('opacity', button_opacity);
     })
-    .style('display', 'none');
+    // .style('display', 'none');
 
 };
