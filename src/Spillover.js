@@ -80,19 +80,31 @@ module.exports = function Spillover(cgm) {
     .selectAll('rect')
     .data(dendro_info, function(d){return d.name;})
     .enter()
-    .append('rect')
-    .style('height',20)
-    .style('width',20)
-    .style('opacity', 0.25)
+    // .append('rect')
+    // .style('height',20)
+    // .style('width',20)
+
+    .append('text')
+    .attr('text-anchor', 'middle')
+    .attr('dominant-baseline', 'central')
+    .attr('font-family', 'FontAwesome')
+    .attr('font-size', '20px')
+    .attr('font-weight', 'bold')
+    .text(function () {
+      // chevron
+      return '\uf054'
+      // // angle right
+      // return '\uf105';
+    })
+    .style('cursor', 'pointer')
+    .style('opacity', params.viz.dendro_opacity)
+    .style('display', 'none')
     .attr('transform', function(d, i){
       var inst_translate;
-
       // var inst_y = String(100 * i);
-      var inst_y = d.pos_mid - 10;
-      var inst_x = 5;
-
+      var inst_y = d.pos_mid ;
+      var inst_x = 15;
       inst_translate = 'translate('+ inst_x +',' + inst_y + ')';
-      console.log(inst_translate)
       return inst_translate;
     })
 

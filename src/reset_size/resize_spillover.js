@@ -38,7 +38,14 @@ module.exports = function resize_spillover(viz, ini_svg_group, delay_info=false)
 
   svg_group.select(viz.root+' .right_spillover_container')
     .attr('transform', function() {
-      return 'translate(' + tmp_left + ',' + tmp_top + ')';
+      return 'translate(' + tmp_left + ', 0)';
+    });
+
+  var tmp_top = viz.norm_labels.margin.top + viz.norm_labels.width.col;
+
+  svg_group.select(viz.root+' .right_spillover_container rect')
+    .attr('transform', function() {
+      return 'translate( 0,' + tmp_top + ')';
     });
 
   svg_group.select(viz.root+' .right_spillover')
