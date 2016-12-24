@@ -13,6 +13,9 @@ module.exports = function dendro_group_highlight(params, inst_selection, inst_da
       // check that user is not using dendrogram slider
       if (params.is_slider_drag === false){
 
+        d3.select(inst_selection)
+          .style('opacity', 0.7);
+
         make_shade_bars();
 
       }
@@ -21,8 +24,6 @@ module.exports = function dendro_group_highlight(params, inst_selection, inst_da
   }
 
   function make_shade_bars(){
-
-    // console.log('make shade bars')
 
     if (inst_rc === 'row'){
 

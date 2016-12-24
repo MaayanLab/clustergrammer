@@ -54,12 +54,13 @@ module.exports = function make_dendro_crop_buttons(cgm, is_change_group = false)
     .remove();
 
   var inst_x;
+  var icons;
 
   // make crop buttons or undo buttons
   if (d3.select('.row_dendro_icons_container').classed('ran_filter') === false){
 
     // append path
-    var icons = d3.select(params.root+' .row_dendro_icons_container')
+    icons = d3.select(params.root+' .row_dendro_icons_container')
       .selectAll('path')
       .data(dendro_info, function(d){return d.name;})
       .enter()
@@ -99,7 +100,7 @@ module.exports = function make_dendro_crop_buttons(cgm, is_change_group = false)
     run_transition = true;
 
     // append icon
-    var icons = d3.select(params.root+' .row_dendro_icons_container')
+    icons = d3.select(params.root+' .row_dendro_icons_container')
       .selectAll('text')
       .data(dendro_info, function(d){return d.name;})
       .enter()
@@ -140,7 +141,7 @@ module.exports = function make_dendro_crop_buttons(cgm, is_change_group = false)
       d3.select(this)
         .classed('hovering', true);
 
-      row_dendro_crop_tip.show(d)
+      row_dendro_crop_tip.show(d);
 
       dendro_group_highlight(params, this, d, inst_rc);
 
@@ -148,12 +149,11 @@ module.exports = function make_dendro_crop_buttons(cgm, is_change_group = false)
     .on('mouseout', function(){
 
       d3.select(this)
-        .classed('hovering', true);
+        .classed('hovering', false);
 
       d3.selectAll(params.root+' .dendro_shadow')
         .remove();
 
-      console.log('mouseout')
       d3.select(this)
         .style('opacity', button_opacity);
 
@@ -168,7 +168,7 @@ module.exports = function make_dendro_crop_buttons(cgm, is_change_group = false)
         .style('fill', 'blue')
         .transition()
         .duration(1000)
-        .style('opacity', 0)
+        .style('opacity', 0);
 
       /* filter rows using dendrogram */
       if (cgm.params.dendro_filter.row === false &&
@@ -186,7 +186,7 @@ module.exports = function make_dendro_crop_buttons(cgm, is_change_group = false)
           .classed('ran_filter', false);
       }
 
-      row_dendro_filter(cgm, d, this);
+      row_dendro_filter(cgm, d);
 
     })
     .call(row_dendro_crop_tip);
@@ -221,7 +221,7 @@ module.exports = function make_dendro_crop_buttons(cgm, is_change_group = false)
 
   }
 
-  function row_dendro_filter(cgm, d, inst_selection){
+  function row_dendro_filter(cgm, d){
 
     var names = {};
     if (cgm.params.dendro_filter.col === false){
@@ -257,9 +257,6 @@ module.exports = function make_dendro_crop_buttons(cgm, is_change_group = false)
 
         // keep the names of all the rows
         cgm.params.dendro_filter.row = tmp_names;
-
-        // d3.select(inst_selection)
-        //   .style('opacity',1);
 
       /* reset filter */
       } else {
