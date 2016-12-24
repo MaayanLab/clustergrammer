@@ -3753,8 +3753,10 @@ var Clustergrammer =
 	  } else {
 	    run_transition = true;
 	    // d3.selectAll(params.root+' .row_dendro_group').remove();
-	    d3.selectAll(params.root + ' .row_dendro_crop_tip').remove();
 	  }
+
+	  // d3.selectAll(params.root+' .row_dendro_crop_tip').remove();
+	  d3.selectAll(params.viz.root_tips + '_row_dendro_crop_tip').remove();
 
 	  if (is_change_group) {
 	    run_transition = false;
@@ -3835,6 +3837,9 @@ var Clustergrammer =
 	    row_dendro_crop_tip.show(d);
 
 	    dendro_group_highlight(params, this, d, inst_rc);
+
+	    // need to improve
+	    d3.selectAll(params.viz.root_tips + '_row_dendro_crop_tip').style('opacity', 1).style('display', 'block');
 	  }).on('mouseout', function () {
 
 	    d3.select(this).classed('hovering', false);
@@ -3844,6 +3849,11 @@ var Clustergrammer =
 	    d3.select(this).style('opacity', button_opacity);
 
 	    row_dendro_crop_tip.hide(this);
+
+	    // // need to improve
+	    // d3.selectAll( params.viz.root_tips + '_row_dendro_crop_tip')
+	    //   .style('opacity', 0)
+	    //   .style('display', 'none');
 	  }).on('click', function (d) {
 
 	    // give user visual cue
