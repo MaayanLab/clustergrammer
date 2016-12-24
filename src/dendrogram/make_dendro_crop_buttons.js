@@ -1,11 +1,14 @@
 var calc_row_dendro_triangles = require('./calc_row_dendro_triangles');
 var d3_tip_custom = require('../tooltip/d3_tip_custom');
+var dendro_group_highlight = require('./dendro_group_highlight');
 
 module.exports = function make_dendro_crop_buttons(cgm, is_change_group = false){
 
   var params = cgm.params;
 
   var button_opacity = params.viz.dendro_opacity * 0.60;
+
+  var inst_rc = 'row';
 
   // information needed to make dendro
   var dendro_info = calc_row_dendro_triangles(params);
@@ -18,7 +21,7 @@ module.exports = function make_dendro_crop_buttons(cgm, is_change_group = false)
       // add root element to class
       var root_tip_selector = params.viz.root_tips.replace('.','');
       var class_string = root_tip_selector + ' d3-tip ' +
-                         root_tip_selector +  '_row_dendro';
+                         root_tip_selector +  '_row_dendro_crop_tip';
 
       return class_string;
     })
@@ -66,13 +69,13 @@ module.exports = function make_dendro_crop_buttons(cgm, is_change_group = false)
       }
 
       // up triangle
-      var start_x = 10 ;
+      var start_x = 12 ;
       var start_y = -tri_height;
 
       var mid_x = 0;
       var mid_y = 0;
 
-      var final_x = 10;
+      var final_x = 12;
       var final_y = tri_height;
 
       var output_string = 'M' + start_x + ',' + start_y + ', L' +
@@ -106,16 +109,34 @@ module.exports = function make_dendro_crop_buttons(cgm, is_change_group = false)
       return inst_translate;
     })
     .on('mouseover', function(d){
+
+      d3.select(this)
+        .classed('hovering', true);
+
       d3.select(this)
         .style('opacity', 0.7);
 
       row_dendro_crop_tip.show(d)
+
+      dendro_group_highlight(params, this, d, inst_rc);
+
     })
     .on('mouseout', function(){
+
+      d3.select(this)
+        .classed('hovering', true);
+
+      d3.selectAll(params.root+' .dendro_shadow')
+        .remove();
+
       d3.select(this)
         .style('opacity', button_opacity);
 
       row_dendro_crop_tip.hide(this);
+
+    })
+    .on('click', function(d){
+      console.log('cropping');
     })
     .call(row_dendro_crop_tip);
 

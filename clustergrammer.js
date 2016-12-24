@@ -3474,12 +3474,14 @@ var Clustergrammer =
 
 	    return output_string;
 	  }).attr('class', 'row_dendro_group').style('fill', 'black').on('mouseover', function (d) {
+
 	    var inst_rc;
 	    if (params.sim_mat) {
 	      inst_rc = 'both';
 	    } else {
 	      inst_rc = 'row';
 	    }
+
 	    dendro_mouseover(cgm, this);
 	    dendro_group_highlight(params, this, d, inst_rc);
 
@@ -3696,28 +3698,28 @@ var Clustergrammer =
 	  var select_opacity = 0.7;
 	  var bot_height;
 
-	  // console.log(inst_data)
+	  d3.selectAll(params.root + ' .dendro_shadow').remove();
 
 	  if (inst_rc == 'row') {
 
 	    d3.select(inst_selection).style('opacity', select_opacity);
 
 	    // top shade
-	    d3.select(params.root + ' .clust_group').append('rect').style('width', params.viz.clust.dim.width + 'px').style('height', inst_data.pos_top + 'px').style('fill', 'black').style('opacity', inst_opacity).classed('dendro_shadow', true);
+	    d3.select(params.root + ' .clust_group').append('rect').style('width', params.viz.clust.dim.width + 'px').style('height', inst_data.pos_top + 'px').style('fill', 'black').classed('dendro_shadow', true).style('opacity', 0).transition().style('opacity', inst_opacity);
 
 	    bot_height = params.viz.clust.dim.height - inst_data.pos_bot;
 	    // bottom shade
-	    d3.select(params.root + ' .clust_group').append('rect').style('width', params.viz.clust.dim.width + 'px').style('height', bot_height + 'px').attr('transform', 'translate(0,' + inst_data.pos_bot + ')').style('fill', 'black').style('opacity', inst_opacity).classed('dendro_shadow', true);
+	    d3.select(params.root + ' .clust_group').append('rect').style('width', params.viz.clust.dim.width + 'px').style('height', bot_height + 'px').attr('transform', 'translate(0,' + inst_data.pos_bot + ')').style('fill', 'black').classed('dendro_shadow', true).style('opacity', 0).transition().style('opacity', inst_opacity);
 	  } else if (inst_rc === 'col') {
 
 	    d3.select(inst_selection).style('opacity', select_opacity);
 
 	    // top shade
-	    d3.select(params.root + ' .clust_group').append('rect').style('width', inst_data.pos_top + 'px').style('height', params.viz.clust.dim.height + 'px').style('fill', 'black').style('opacity', inst_opacity).classed('dendro_shadow', true);
+	    d3.select(params.root + ' .clust_group').append('rect').style('width', inst_data.pos_top + 'px').style('height', params.viz.clust.dim.height + 'px').style('fill', 'black').classed('dendro_shadow', true).style('opacity', 0).transition().style('opacity', inst_opacity);
 
 	    // bottom shade
 	    bot_height = params.viz.clust.dim.width - inst_data.pos_bot;
-	    d3.select(params.root + ' .clust_group').append('rect').style('width', bot_height + 'px').style('height', params.viz.clust.dim.height + 'px').attr('transform', 'translate(' + inst_data.pos_bot + ',0)').style('fill', 'black').style('opacity', inst_opacity).classed('dendro_shadow', true);
+	    d3.select(params.root + ' .clust_group').append('rect').style('width', bot_height + 'px').style('height', params.viz.clust.dim.height + 'px').attr('transform', 'translate(' + inst_data.pos_bot + ',0)').style('fill', 'black').classed('dendro_shadow', true).style('opacity', 0).transition().style('opacity', inst_opacity);
 	  }
 		};
 
@@ -3755,6 +3757,7 @@ var Clustergrammer =
 
 	var calc_row_dendro_triangles = __webpack_require__(53);
 	var d3_tip_custom = __webpack_require__(46);
+	var dendro_group_highlight = __webpack_require__(54);
 
 	module.exports = function make_dendro_crop_buttons(cgm) {
 	  var is_change_group = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
@@ -3763,6 +3766,8 @@ var Clustergrammer =
 	  var params = cgm.params;
 
 	  var button_opacity = params.viz.dendro_opacity * 0.60;
+
+	  var inst_rc = 'row';
 
 	  // information needed to make dendro
 	  var dendro_info = calc_row_dendro_triangles(params);
@@ -3773,7 +3778,7 @@ var Clustergrammer =
 	  var row_dendro_crop_tip = d3_tip_custom().attr('class', function () {
 	    // add root element to class
 	    var root_tip_selector = params.viz.root_tips.replace('.', '');
-	    var class_string = root_tip_selector + ' d3-tip ' + root_tip_selector + '_row_dendro';
+	    var class_string = root_tip_selector + ' d3-tip ' + root_tip_selector + '_row_dendro_crop_tip';
 
 	    return class_string;
 	  }).direction('nw').offset([tmp_y_offset, tmp_x_offset])
@@ -3813,13 +3818,13 @@ var Clustergrammer =
 	    }
 
 	    // up triangle
-	    var start_x = 10;
+	    var start_x = 12;
 	    var start_y = -tri_height;
 
 	    var mid_x = 0;
 	    var mid_y = 0;
 
-	    var final_x = 10;
+	    var final_x = 12;
 	    var final_y = tri_height;
 
 	    var output_string = 'M' + start_x + ',' + start_y + ', L' + mid_x + ', ' + mid_y + ', L' + final_x + ',' + final_y + ' Z';
@@ -3848,13 +3853,25 @@ var Clustergrammer =
 	    inst_translate = 'translate(' + inst_x + ',' + inst_y + ')';
 	    return inst_translate;
 	  }).on('mouseover', function (d) {
+
+	    d3.select(this).classed('hovering', true);
+
 	    d3.select(this).style('opacity', 0.7);
 
 	    row_dendro_crop_tip.show(d);
+
+	    dendro_group_highlight(params, this, d, inst_rc);
 	  }).on('mouseout', function () {
+
+	    d3.select(this).classed('hovering', true);
+
+	    d3.selectAll(params.root + ' .dendro_shadow').remove();
+
 	    d3.select(this).style('opacity', button_opacity);
 
 	    row_dendro_crop_tip.hide(this);
+	  }).on('click', function (d) {
+	    console.log('cropping');
 	  }).call(row_dendro_crop_tip);
 
 	  var triangle_opacity;

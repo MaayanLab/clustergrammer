@@ -103,12 +103,14 @@ module.exports = function make_row_dendro_triangles(cgm, is_change_group = false
 
     .style('fill','black')
     .on('mouseover', function(d){
+
       var inst_rc;
       if (params.sim_mat){
         inst_rc = 'both';
       } else {
         inst_rc = 'row';
       }
+
       dendro_mouseover(cgm, this);
       dendro_group_highlight(params, this, d, inst_rc);
 
