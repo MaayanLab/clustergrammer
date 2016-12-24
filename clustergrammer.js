@@ -3856,8 +3856,6 @@ var Clustergrammer =
 
 	    d3.select(this).classed('hovering', true);
 
-	    d3.select(this).style('opacity', 0.7);
-
 	    row_dendro_crop_tip.show(d);
 
 	    dendro_group_highlight(params, this, d, inst_rc);
