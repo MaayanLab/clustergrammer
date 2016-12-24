@@ -20,7 +20,7 @@ module.exports = function make_row_dendro_triangles(cgm, is_change_group = false
   var dendro_info = calc_row_dendro_triangles(params);
 
   if (d3.select('.row_dendro_crop_buttons').empty() === false){
-    make_dendro_crop_buttons(cgm);
+    make_dendro_crop_buttons(cgm, is_change_group);
   }
 
   // constant dendrogram opacity
@@ -38,7 +38,7 @@ module.exports = function make_row_dendro_triangles(cgm, is_change_group = false
   d3.selectAll(cgm.params.viz.root_tips+'_row_dendro').remove();
 
   // d3-tooltip
-  var tmp_y_offset = 0; // viz.clust.margin.top - viz.uni_margin;
+  var tmp_y_offset = 0;
   var tmp_x_offset = -5;
   var dendro_tip = d3_tip_custom()
     .attr('class',function(){
@@ -61,6 +61,7 @@ module.exports = function make_row_dendro_triangles(cgm, is_change_group = false
 
     });
 
+  // run transition rules
   var run_transition;
   if (d3.selectAll(params.root+' .row_dendro_group').empty()){
     run_transition = false;

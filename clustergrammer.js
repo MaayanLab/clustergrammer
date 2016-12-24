@@ -3410,7 +3410,7 @@ var Clustergrammer =
 	  var dendro_info = calc_row_dendro_triangles(params);
 
 	  if (d3.select('.row_dendro_crop_buttons').empty() === false) {
-	    make_dendro_crop_buttons(cgm);
+	    make_dendro_crop_buttons(cgm, is_change_group);
 	  }
 
 	  // constant dendrogram opacity
@@ -3428,7 +3428,7 @@ var Clustergrammer =
 	  d3.selectAll(cgm.params.viz.root_tips + '_row_dendro').remove();
 
 	  // d3-tooltip
-	  var tmp_y_offset = 0; // viz.clust.margin.top - viz.uni_margin;
+	  var tmp_y_offset = 0;
 	  var tmp_x_offset = -5;
 	  var dendro_tip = d3_tip_custom().attr('class', function () {
 	    // add root element to class
@@ -3442,6 +3442,7 @@ var Clustergrammer =
 	    return full_string;
 	  });
 
+	  // run transition rules
 	  var run_transition;
 	  if (d3.selectAll(params.root + ' .row_dendro_group').empty()) {
 	    run_transition = false;
@@ -3753,8 +3754,11 @@ var Clustergrammer =
 	'use strict';
 
 	var calc_row_dendro_triangles = __webpack_require__(53);
+	var d3_tip_custom = __webpack_require__(46);
 
 	module.exports = function make_dendro_crop_buttons(cgm) {
+	  var is_change_group = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+
 
 	  var params = cgm.params;
 
@@ -3762,6 +3766,35 @@ var Clustergrammer =
 
 	  // information needed to make dendro
 	  var dendro_info = calc_row_dendro_triangles(params);
+
+	  // d3-tooltip
+	  var tmp_y_offset = 0;
+	  var tmp_x_offset = -5;
+	  var row_dendro_crop_tip = d3_tip_custom().attr('class', function () {
+	    // add root element to class
+	    var root_tip_selector = params.viz.root_tips.replace('.', '');
+	    var class_string = root_tip_selector + ' d3-tip ' + root_tip_selector + '_row_dendro';
+
+	    return class_string;
+	  }).direction('nw').offset([tmp_y_offset, tmp_x_offset]).style('display', 'none').style('opacity', 0).html(function () {
+
+	    var full_string = 'Click for cluster information <br>' + 'and additional options.';
+	    return full_string;
+	  });
+
+	  // check if there are crop buttons, then remove any old ones
+	  var run_transition;
+	  if (d3.selectAll(params.root + ' .row_dendro_crop_buttons').empty()) {
+	    run_transition = false;
+	  } else {
+	    run_transition = true;
+	    // d3.selectAll(params.root+' .row_dendro_group').remove();
+	    // d3.selectAll(params.root+' .dendro_tip').remove();
+	  }
+
+	  if (is_change_group) {
+	    run_transition = false;
+	  }
 
 	  d3.selectAll(params.root + ' .row_dendro_crop_buttons').remove();
 
@@ -3817,7 +3850,23 @@ var Clustergrammer =
 	    d3.select(this).style('opacity', button_opacity);
 	  });
 	  // .style('display', 'none');
-		};
+
+
+	  var triangle_opacity;
+	  if (params.viz.inst_order.col === 'clust') {
+	    triangle_opacity = button_opacity;
+	  } else {
+	    triangle_opacity = 0;
+	  }
+
+	  if (run_transition) {
+
+	    d3.select(params.root + ' .row_dendro_icons_container').selectAll('path').style('opacity', 0).transition().delay(1000).duration(1000).style('opacity', triangle_opacity);
+	  } else {
+
+	    d3.select(params.root + ' .row_dendro_icons_container').selectAll('path').style('opacity', triangle_opacity);
+	  }
+	};
 
 /***/ },
 /* 59 */
