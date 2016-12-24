@@ -110,7 +110,8 @@ module.exports = function make_row_dendro_triangles(cgm, is_change_group = false
       }
 
       dendro_mouseover(cgm, this);
-      dendro_group_highlight(params, this, d, inst_rc);
+
+      dendro_group_highlight(params, this, d, inst_rc, dendro_tip);
 
       // need to improve
       d3.selectAll( params.viz.root_tips + '_row_dendro')
@@ -118,6 +119,8 @@ module.exports = function make_row_dendro_triangles(cgm, is_change_group = false
         .style('display', 'block');
 
       dendro_tip.show(d);
+
+
     })
     .on('mouseout', function(){
       if (params.viz.inst_order.col === 'clust'){
@@ -130,11 +133,6 @@ module.exports = function make_row_dendro_triangles(cgm, is_change_group = false
 
       dendro_mouseout(this);
       dendro_tip.hide(this);
-
-      // need to improve
-      d3.selectAll( params.viz.root_tips + '_row_dendro')
-        .style('opacity', 0)
-        .style('display', 'none');
 
     })
     .on('click', function(d){

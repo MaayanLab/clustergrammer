@@ -3488,7 +3488,8 @@ var Clustergrammer =
 	    }
 
 	    dendro_mouseover(cgm, this);
-	    dendro_group_highlight(params, this, d, inst_rc);
+
+	    dendro_group_highlight(params, this, d, inst_rc, dendro_tip);
 
 	    // need to improve
 	    d3.selectAll(params.viz.root_tips + '_row_dendro').style('opacity', 1).style('display', 'block');
@@ -3503,9 +3504,6 @@ var Clustergrammer =
 
 	    dendro_mouseout(this);
 	    dendro_tip.hide(this);
-
-	    // need to improve
-	    d3.selectAll(params.viz.root_tips + '_row_dendro').style('opacity', 0).style('display', 'none');
 	  }).on('click', function (d) {
 
 	    $(params.root + ' .dendro_info').modal('toggle');
@@ -5477,8 +5475,8 @@ var Clustergrammer =
 
 	    run_transformation(params);
 
-	    // tmp
-	    d3.selectAll('.row_dendro_crop_buttons').style('display', 'none');
+	    // // tmp
+	    // d3.selectAll('.row_dendro_crop_buttons').style('display','none');
 	  }
 		};
 
