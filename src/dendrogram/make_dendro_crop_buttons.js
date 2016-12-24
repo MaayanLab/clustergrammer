@@ -55,15 +55,8 @@ module.exports = function make_dendro_crop_buttons(cgm, is_change_group = false)
 
   var inst_x;
 
-  // debugger
-  // console.log('\n\nDENDRO FILTER ROW')
-  console.log(cgm.params.ran_dendro_filter.row)
-
-  // debugger
   // make crop buttons or undo buttons
-  if (cgm.params.ran_dendro_filter.row === false){
-
-    console.log('MAKE PATH')
+  if (d3.select('.row_dendro_icons_container').classed('ran_filter') === false){
 
     // append path
     var icons = d3.select(params.root+' .row_dendro_icons_container')
@@ -102,7 +95,8 @@ module.exports = function make_dendro_crop_buttons(cgm, is_change_group = false)
 
   } else {
 
-    console.log('MAKE UNDO ICON')
+    // trantiion in undo icon always
+    run_transition = true;
 
     // append icon
     var icons = d3.select(params.root+' .row_dendro_icons_container')
@@ -159,6 +153,7 @@ module.exports = function make_dendro_crop_buttons(cgm, is_change_group = false)
       d3.selectAll(params.root+' .dendro_shadow')
         .remove();
 
+      console.log('mouseout')
       d3.select(this)
         .style('opacity', button_opacity);
 
@@ -176,26 +171,20 @@ module.exports = function make_dendro_crop_buttons(cgm, is_change_group = false)
         .style('opacity', 0)
 
       /* filter rows using dendrogram */
-      var run_filtering;
       if (cgm.params.dendro_filter.row === false &&
           cgm.params.cat_filter.row === false &&
           cgm.params.cat_filter.col === false
         ){
 
-        run_filtering = true;
-        cgm.params.ran_dendro_filter.row = true;
+        // use class as 'global' variable
+        d3.select(cgm.params.root+' .row_dendro_icons_container')
+          .classed('ran_filter', true);
 
       } else {
-        run_filtering = false;
-        cgm.params.ran_dendro_filter.row = false;
+        // use class as 'global' variable
+        d3.select(cgm.params.root+' .row_dendro_icons_container')
+          .classed('ran_filter', false);
       }
-
-      console.log('HERE!!!')
-      console.log(cgm.params.ran_dendro_filter.row)
-
-      // debugger
-      // console.log('run_filtering ' + String(run_filtering))
-      // console.log(cgm.params.dendro_filter.row)
 
       row_dendro_filter(cgm, d, this);
 
@@ -218,6 +207,12 @@ module.exports = function make_dendro_crop_buttons(cgm, is_change_group = false)
       .transition().delay(1000).duration(1000)
       .style('opacity', triangle_opacity);
 
+   d3.select(params.root+' .row_dendro_icons_container')
+      .selectAll('text')
+      .style('opacity', 0)
+      .transition().delay(1000).duration(1000)
+      .style('opacity', triangle_opacity);
+
   } else {
 
     d3.select(params.root+' .row_dendro_icons_container')
@@ -235,8 +230,6 @@ module.exports = function make_dendro_crop_buttons(cgm, is_change_group = false)
           cgm.params.cat_filter.row === false &&
           cgm.params.cat_filter.col === false
         ){
-
-        // console.log('RUN FILTER')
 
         // d3.select(params.root+' .slider_row')
         d3.select(params.root+' .row_slider_group')
@@ -265,22 +258,16 @@ module.exports = function make_dendro_crop_buttons(cgm, is_change_group = false)
         // keep the names of all the rows
         cgm.params.dendro_filter.row = tmp_names;
 
-        d3.select(inst_selection)
-          .style('opacity',1);
-
-        cgm.params.ran_dendro_filter.row = true;
+        // d3.select(inst_selection)
+        //   .style('opacity',1);
 
       /* reset filter */
       } else {
-
-        // console.log('RESET FILTER')
 
         names.row = cgm.params.dendro_filter.row;
 
         cgm.filter_viz_using_names(names);
         cgm.params.dendro_filter.row = false;
-
-        cgm.params.ran_dendro_filter.row = false;
 
       }
 
