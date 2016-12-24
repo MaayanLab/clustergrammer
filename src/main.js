@@ -13,6 +13,7 @@ var external_update_view = require('./update/external_update_view');
 var export_matrix = require('./matrix/export_matrix');
 var crop_matrix = require('./matrix/crop_matrix');
 var run_zoom = require('./zoom/run_zoom');
+var d3_tip_custom = require('./tooltip/d3_tip_custom');
 
 // moved d3.slider to src
 d3.slider = require('./d3.slider');
@@ -87,6 +88,11 @@ function Clustergrammer(args) {
     two_translate_zoom(this.params, pan_dx, pan_dy, fin_zoom);
   }
 
+  function expose_d3_tip_custom(){
+    // this allows external modules to have access to d3_tip
+    return d3_tip_custom
+  }
+
   // add more API endpoints
   cgm.update_view = external_update_view;
   cgm.resize_viz = external_resize;
@@ -99,6 +105,7 @@ function Clustergrammer(args) {
   cgm.zoom = zoom_api;
   cgm.export_matrix = export_matrix;
   cgm.crop_matrix = crop_matrix;
+  cgm.d3_tip_custom = expose_d3_tip_custom;
 
   return cgm;
 }
