@@ -3776,9 +3776,12 @@ var Clustergrammer =
 	    var class_string = root_tip_selector + ' d3-tip ' + root_tip_selector + '_row_dendro';
 
 	    return class_string;
-	  }).direction('nw').offset([tmp_y_offset, tmp_x_offset]).style('display', 'none').style('opacity', 0).html(function () {
+	  }).direction('nw').offset([tmp_y_offset, tmp_x_offset])
+	  // .style('display','none')
+	  // .style('opacity', 0)
+	  .html(function () {
 
-	    var full_string = 'Click for cluster information <br>' + 'and additional options.';
+	    var full_string = 'Click to crop cluster';
 	    return full_string;
 	  });
 
@@ -3789,7 +3792,7 @@ var Clustergrammer =
 	  } else {
 	    run_transition = true;
 	    // d3.selectAll(params.root+' .row_dendro_group').remove();
-	    // d3.selectAll(params.root+' .dendro_tip').remove();
+	    d3.selectAll(params.root + ' .row_dendro_crop_tip').remove();
 	  }
 
 	  if (is_change_group) {
@@ -3844,13 +3847,15 @@ var Clustergrammer =
 	    var inst_x = 7;
 	    inst_translate = 'translate(' + inst_x + ',' + inst_y + ')';
 	    return inst_translate;
-	  }).on('mouseover', function () {
+	  }).on('mouseover', function (d) {
 	    d3.select(this).style('opacity', 0.7);
+
+	    row_dendro_crop_tip.show(d);
 	  }).on('mouseout', function () {
 	    d3.select(this).style('opacity', button_opacity);
-	  });
-	  // .style('display', 'none');
 
+	    row_dendro_crop_tip.hide(this);
+	  }).call(row_dendro_crop_tip);
 
 	  var triangle_opacity;
 	  if (params.viz.inst_order.col === 'clust') {

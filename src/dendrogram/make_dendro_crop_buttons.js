@@ -24,12 +24,11 @@ module.exports = function make_dendro_crop_buttons(cgm, is_change_group = false)
     })
     .direction('nw')
     .offset([tmp_y_offset, tmp_x_offset])
-    .style('display','none')
-    .style('opacity', 0)
+    // .style('display','none')
+    // .style('opacity', 0)
     .html(function(){
 
-      var full_string = 'Click for cluster information <br>'+
-                        'and additional options.';
+      var full_string = 'Click to crop cluster';
       return full_string;
 
     });
@@ -41,7 +40,7 @@ module.exports = function make_dendro_crop_buttons(cgm, is_change_group = false)
   } else {
     run_transition = true;
     // d3.selectAll(params.root+' .row_dendro_group').remove();
-    // d3.selectAll(params.root+' .dendro_tip').remove();
+    d3.selectAll(params.root+' .row_dendro_crop_tip').remove();
   }
 
   if (is_change_group){
@@ -106,15 +105,19 @@ module.exports = function make_dendro_crop_buttons(cgm, is_change_group = false)
       inst_translate = 'translate('+ inst_x +',' + inst_y + ')';
       return inst_translate;
     })
-    .on('mouseover', function(){
+    .on('mouseover', function(d){
       d3.select(this)
         .style('opacity', 0.7);
+
+      row_dendro_crop_tip.show(d)
     })
     .on('mouseout', function(){
       d3.select(this)
         .style('opacity', button_opacity);
-    });
-    // .style('display', 'none');
+
+      row_dendro_crop_tip.hide(this);
+    })
+    .call(row_dendro_crop_tip);
 
 
   var triangle_opacity;
