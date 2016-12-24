@@ -35,6 +35,11 @@ module.exports = function run_transformation(params){
     .attr('transform', 'translate(' + [params.viz.uni_margin/2, zoom_info.trans_y] + ') '+
       'scale( 1,' + zoom_info.zoom_y + ')');
 
+  // console.log('here')
+  // // dendrogram icons
+  // d3.select(params.root+' .row_dendro_icons_container')
+  //   .attr('transform', 'translate(' + [0, zoom_info.trans_y] + ') scale(' + zoom_info.zoom_y +
+  //   ')');
 
   // transform col_class
   d3.select(params.root+' .col_cat_container')

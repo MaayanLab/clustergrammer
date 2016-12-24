@@ -5474,9 +5474,6 @@ var Clustergrammer =
 	    params.zoom_behavior.translate([new_x, new_y]);
 
 	    run_transformation(params);
-
-	    // // tmp
-	    // d3.selectAll('.row_dendro_crop_buttons').style('display','none');
 	  }
 		};
 
@@ -5510,6 +5507,12 @@ var Clustergrammer =
 	  d3.select(params.root + ' .row_cat_container').attr('transform', 'translate(' + [0, zoom_info.trans_y] + ') scale( 1,' + zoom_info.zoom_y + ')');
 
 	  d3.select(params.root + ' .row_dendro_container').attr('transform', 'translate(' + [params.viz.uni_margin / 2, zoom_info.trans_y] + ') ' + 'scale( 1,' + zoom_info.zoom_y + ')');
+
+	  // console.log('here')
+	  // // dendrogram icons
+	  // d3.select(params.root+' .row_dendro_icons_container')
+	  //   .attr('transform', 'translate(' + [0, zoom_info.trans_y] + ') scale(' + zoom_info.zoom_y +
+	  //   ')');
 
 	  // transform col_class
 	  d3.select(params.root + ' .col_cat_container').attr('transform', 'translate(' + [zoom_info.trans_x, 0] + ') scale(' + zoom_info.zoom_x + ',1)');
