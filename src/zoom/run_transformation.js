@@ -35,11 +35,45 @@ module.exports = function run_transformation(params){
     .attr('transform', 'translate(' + [params.viz.uni_margin/2, zoom_info.trans_y] + ') '+
       'scale( 1,' + zoom_info.zoom_y + ')');
 
-  // console.log('here')
-  // // dendrogram icons
-  // d3.select(params.root+' .row_dendro_icons_container')
-  //   .attr('transform', 'translate(' + [0, zoom_info.trans_y] + ') scale(' + zoom_info.zoom_y +
-  //   ')');
+  // dendrogram icons
+  d3.select(params.root+' .row_dendro_icons_container')
+    .attr('transform', function(){
+      var inst_y = zoom_info.trans_y + params.viz.clust.margin.top;
+      var inst_translate = 'translate(' + [0, inst_y] + ') ' ;
+      var inst_zoom = 'scale(1, ' + zoom_info.zoom_y + ')';
+      var transform_string = inst_translate + inst_zoom;
+      return transform_string;
+    });
+
+  d3.select(params.root+' .row_dendro_icons_container')
+    .selectAll('path')
+    .attr('d', function(d) {
+
+      var tri_height = 10;
+
+      var tmp_height = d.pos_bot - d.pos_top;
+      if (tmp_height < 45){
+        tri_height = tmp_height * 0.20;
+      }
+
+      tri_height = tri_height / zoom_info.zoom_y;
+
+      // up triangle
+      var start_x = 12 ;
+      var start_y = -tri_height;
+
+      var mid_x = 0;
+      var mid_y = 0;
+
+      var final_x = 12;
+      var final_y = tri_height;
+
+      var output_string = 'M' + start_x + ',' + start_y + ', L' +
+      mid_x + ', ' + mid_y + ', L'
+      + final_x + ','+ final_y +' Z';
+
+      return output_string;
+    })
 
   // transform col_class
   d3.select(params.root+' .col_cat_container')
