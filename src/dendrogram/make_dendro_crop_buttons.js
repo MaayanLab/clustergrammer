@@ -101,31 +101,66 @@ module.exports = function make_dendro_crop_buttons(cgm, is_change_group = false)
     // trantiion in undo icon always
     run_transition = true;
 
-    // append icon
+    // append path
     icons = d3.select(params.root+' .row_dendro_icons_container')
-      .selectAll('text')
+      .selectAll('path')
       .data(dendro_info, function(d){return d.name;})
       .enter()
-      // append undo icon
-      .append('text')
+      .append('path')
       .classed('row_dendro_crop_buttons', true)
-      .attr('text-anchor', 'middle')
-      .attr('dominant-baseline', 'central')
-      .attr('font-family', 'FontAwesome')
-      .attr('font-size', '20px')
-      // .attr('font-weight', 'bold')
-      .text(function () {
-        // // chevron
-        // return '\uf054'
-        // // angle right
-        // return '\uf105';
-        // // dot circle
-        // return '\uf192';
-        // undo
-        return '\uf0e2';
+      .attr('d', function(d) {
+
+        var tri_height = 10;
+
+        var tmp_height = d.pos_bot - d.pos_top;
+        if (tmp_height < 45){
+          tri_height = tmp_height * 0.20;
+        }
+
+        // up triangle
+        var start_x = 0 ;
+        var start_y = -tri_height;
+
+        var mid_x = 12;
+        var mid_y = 0;
+
+        var final_x = 0;
+        var final_y = tri_height;
+
+        var output_string = 'M' + start_x + ',' + start_y + ', L' +
+        mid_x + ', ' + mid_y + ', L'
+        + final_x + ','+ final_y +' Z';
+
+        return output_string;
       });
 
-      inst_x = 15;
+      inst_x = 7;
+
+    // // append icon
+    // icons = d3.select(params.root+' .row_dendro_icons_container')
+    //   .selectAll('text')
+    //   .data(dendro_info, function(d){return d.name;})
+    //   .enter()
+    //   // append undo icon
+    //   .append('text')
+    //   .classed('row_dendro_crop_buttons', true)
+    //   .attr('text-anchor', 'middle')
+    //   .attr('dominant-baseline', 'central')
+    //   .attr('font-family', 'FontAwesome')
+    //   .attr('font-size', '20px')
+    //   // .attr('font-weight', 'bold')
+    //   .text(function () {
+    //     // // chevron
+    //     // return '\uf054'
+    //     // // angle right
+    //     // return '\uf105';
+    //     // // dot circle
+    //     // return '\uf192';
+    //     // undo
+    //     return '\uf0e2';
+    //   });
+
+    //   inst_x = 15;
   }
 
   icons
