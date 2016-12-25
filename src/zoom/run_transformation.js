@@ -47,32 +47,10 @@ module.exports = function run_transformation(params){
 
   d3.select(params.root+' .row_dendro_icons_container')
     .selectAll('path')
-    .attr('d', function(d) {
-
-      var tri_height = 10;
-
-      var tmp_height = d.pos_bot - d.pos_top;
-      if (tmp_height < 45){
-        tri_height = tmp_height * 0.20;
-      }
-
-      tri_height = tri_height / zoom_info.zoom_y;
-
-      // up triangle
-      var start_x = 12 ;
-      var start_y = -tri_height;
-
-      var mid_x = 0;
-      var mid_y = 0;
-
-      var final_x = 12;
-      var final_y = tri_height;
-
-      var output_string = 'M' + start_x + ',' + start_y + ', L' +
-      mid_x + ', ' + mid_y + ', L'
-      + final_x + ','+ final_y +' Z';
-
-      return output_string;
+    .attr('transform', function(d){
+      var inst_x = 7;
+      var inst_y = d.pos_mid;
+      return 'translate('+ inst_x +',' + inst_y + ') ' + 'scale(1, '+ 1/zoom_info.zoom_y +')';
     })
 
   // transform col_class

@@ -179,6 +179,20 @@ module.exports = function two_translate_zoom(params, pan_dx, pan_dy, fin_zoom) {
           .style('fill', 'yellow');
       });
 
+    d3.select(params.root+' .row_dendro_icons_container')
+      .transition().duration(search_duration)
+      .attr('transform', function(){
+        return 'translate(0,'+params.viz.clust.margin.top+') scale(1)';
+      });
+
+    d3.select(params.root+' .row_dendro_icons_container')
+      .selectAll('path')
+      .transition().duration(search_duration)
+      .attr('transform', function(d){
+        var inst_x = 7;
+        var inst_y = d.pos_mid;
+        return 'translate('+ inst_x +',' + inst_y + ') ' + 'scale(1, 1)';
+      })
 
     // column value bars
     ///////////////////////

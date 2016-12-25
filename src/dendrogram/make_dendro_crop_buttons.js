@@ -26,15 +26,7 @@ module.exports = function make_dendro_crop_buttons(cgm, is_change_group = false)
       return class_string;
     })
     .direction('nw')
-    .offset([tmp_y_offset, tmp_x_offset])
-    // .style('display','none')
-    // .style('opacity', 0)
-    .html(function(){
-
-      var full_string = 'Click to crop cluster';
-      return full_string;
-
-    });
+    .offset([tmp_y_offset, tmp_x_offset]);
 
   // check if there are crop buttons, then remove any old ones
   var run_transition;
@@ -96,6 +88,12 @@ module.exports = function make_dendro_crop_buttons(cgm, is_change_group = false)
 
       inst_x = 7;
 
+      row_dendro_crop_tip
+        .html(function(){
+          var full_string = 'Click to crop cluster';
+          return full_string;
+        });
+
   } else {
 
     // trantiion in undo icon always
@@ -136,31 +134,12 @@ module.exports = function make_dendro_crop_buttons(cgm, is_change_group = false)
 
       inst_x = 7;
 
-    // // append icon
-    // icons = d3.select(params.root+' .row_dendro_icons_container')
-    //   .selectAll('text')
-    //   .data(dendro_info, function(d){return d.name;})
-    //   .enter()
-    //   // append undo icon
-    //   .append('text')
-    //   .classed('row_dendro_crop_buttons', true)
-    //   .attr('text-anchor', 'middle')
-    //   .attr('dominant-baseline', 'central')
-    //   .attr('font-family', 'FontAwesome')
-    //   .attr('font-size', '20px')
-    //   // .attr('font-weight', 'bold')
-    //   .text(function () {
-    //     // // chevron
-    //     // return '\uf054'
-    //     // // angle right
-    //     // return '\uf105';
-    //     // // dot circle
-    //     // return '\uf192';
-    //     // undo
-    //     return '\uf0e2';
-    //   });
+      row_dendro_crop_tip
+        .html(function(){
+          var full_string = 'Click to undo crop';
+          return full_string;
+        });
 
-    //   inst_x = 15;
   }
 
   icons

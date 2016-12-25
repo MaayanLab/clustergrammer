@@ -3742,14 +3742,7 @@ var Clustergrammer =
 	    var class_string = root_tip_selector + ' d3-tip ' + root_tip_selector + '_row_dendro_crop_tip';
 
 	    return class_string;
-	  }).direction('nw').offset([tmp_y_offset, tmp_x_offset])
-	  // .style('display','none')
-	  // .style('opacity', 0)
-	  .html(function () {
-
-	    var full_string = 'Click to crop cluster';
-	    return full_string;
-	  });
+	  }).direction('nw').offset([tmp_y_offset, tmp_x_offset]);
 
 	  // check if there are crop buttons, then remove any old ones
 	  var run_transition;
@@ -3803,6 +3796,11 @@ var Clustergrammer =
 	    });
 
 	    inst_x = 7;
+
+	    row_dendro_crop_tip.html(function () {
+	      var full_string = 'Click to crop cluster';
+	      return full_string;
+	    });
 	  } else {
 
 	    // trantiion in undo icon always
@@ -3837,31 +3835,10 @@ var Clustergrammer =
 
 	    inst_x = 7;
 
-	    // // append icon
-	    // icons = d3.select(params.root+' .row_dendro_icons_container')
-	    //   .selectAll('text')
-	    //   .data(dendro_info, function(d){return d.name;})
-	    //   .enter()
-	    //   // append undo icon
-	    //   .append('text')
-	    //   .classed('row_dendro_crop_buttons', true)
-	    //   .attr('text-anchor', 'middle')
-	    //   .attr('dominant-baseline', 'central')
-	    //   .attr('font-family', 'FontAwesome')
-	    //   .attr('font-size', '20px')
-	    //   // .attr('font-weight', 'bold')
-	    //   .text(function () {
-	    //     // // chevron
-	    //     // return '\uf054'
-	    //     // // angle right
-	    //     // return '\uf105';
-	    //     // // dot circle
-	    //     // return '\uf192';
-	    //     // undo
-	    //     return '\uf0e2';
-	    //   });
-
-	    //   inst_x = 15;
+	    row_dendro_crop_tip.html(function () {
+	      var full_string = 'Click to undo crop';
+	      return full_string;
+	    });
 	  }
 
 	  icons.style('cursor', 'pointer').style('opacity', button_opacity).attr('transform', function (d) {
@@ -5552,30 +5529,10 @@ var Clustergrammer =
 	    return transform_string;
 	  });
 
-	  d3.select(params.root + ' .row_dendro_icons_container').selectAll('path').attr('d', function (d) {
-
-	    var tri_height = 10;
-
-	    var tmp_height = d.pos_bot - d.pos_top;
-	    if (tmp_height < 45) {
-	      tri_height = tmp_height * 0.20;
-	    }
-
-	    tri_height = tri_height / zoom_info.zoom_y;
-
-	    // up triangle
-	    var start_x = 12;
-	    var start_y = -tri_height;
-
-	    var mid_x = 0;
-	    var mid_y = 0;
-
-	    var final_x = 12;
-	    var final_y = tri_height;
-
-	    var output_string = 'M' + start_x + ',' + start_y + ', L' + mid_x + ', ' + mid_y + ', L' + final_x + ',' + final_y + ' Z';
-
-	    return output_string;
+	  d3.select(params.root + ' .row_dendro_icons_container').selectAll('path').attr('transform', function (d) {
+	    var inst_x = 7;
+	    var inst_y = d.pos_mid;
+	    return 'translate(' + inst_x + ',' + inst_y + ') ' + 'scale(1, ' + 1 / zoom_info.zoom_y + ')';
 	  });
 
 	  // transform col_class
@@ -6214,6 +6171,16 @@ var Clustergrammer =
 
 	      // use the bounding box to set the size of the rect
 	      d3.select(this).select('rect').attr('x', bbox.x * 0.5).attr('y', 0).attr('width', bbox.width * 0.5).attr('height', params.viz.y_scale.rangeBand()).style('fill', 'yellow');
+	    });
+
+	    d3.select(params.root + ' .row_dendro_icons_container').transition().duration(search_duration).attr('transform', function () {
+	      return 'translate(0,' + params.viz.clust.margin.top + ') scale(1)';
+	    });
+
+	    d3.select(params.root + ' .row_dendro_icons_container').selectAll('path').transition().duration(search_duration).attr('transform', function (d) {
+	      var inst_x = 7;
+	      var inst_y = d.pos_mid;
+	      return 'translate(' + inst_x + ',' + inst_y + ') ' + 'scale(1, 1)';
 	    });
 
 	    // column value bars
