@@ -3890,21 +3890,30 @@ var Clustergrammer =
 	  }).call(row_dendro_crop_tip);
 
 	  var triangle_opacity;
-	  if (params.viz.inst_order.col === 'clust') {
+	  if (params.viz.inst_order.row === 'clust') {
 	    triangle_opacity = button_opacity;
 	  } else {
 	    triangle_opacity = 0;
 	  }
 
-	  if (run_transition) {
+	  // if (run_transition){
+	  //   // console.log('delay')
+	  //   d3.select(params.root+' .row_dendro_icons_container')
+	  //     .selectAll('path')
+	  //     .style('opacity', 0)
+	  //     .transition()
+	  //     // .delay(1000)
+	  //     .duration(1000)
+	  //     .style('opacity', triangle_opacity);
+	  // } else {
+	  //   // console.log('no delay')
+	  //   d3.select(params.root+' .row_dendro_icons_container')
+	  //     .selectAll('path')
+	  //     .style('opacity', triangle_opacity);
+	  // }
 
-	    d3.select(params.root + ' .row_dendro_icons_container').selectAll('path').style('opacity', 0).transition().delay(1000).duration(1000).style('opacity', triangle_opacity);
-
-	    d3.select(params.root + ' .row_dendro_icons_container').selectAll('text').style('opacity', 0).transition().delay(1000).duration(1000).style('opacity', triangle_opacity);
-	  } else {
-
-	    d3.select(params.root + ' .row_dendro_icons_container').selectAll('path').style('opacity', triangle_opacity);
-	  }
+	  // console.log('no delay')
+	  d3.select(params.root + ' .row_dendro_icons_container').selectAll('path').style('opacity', triangle_opacity);
 
 	  function row_dendro_filter(cgm, d) {
 
@@ -6173,6 +6182,7 @@ var Clustergrammer =
 	      d3.select(this).select('rect').attr('x', bbox.x * 0.5).attr('y', 0).attr('width', bbox.width * 0.5).attr('height', params.viz.y_scale.rangeBand()).style('fill', 'yellow');
 	    });
 
+	    // reset crop button zooming
 	    d3.select(params.root + ' .row_dendro_icons_container').transition().duration(search_duration).attr('transform', function () {
 	      return 'translate(0,' + params.viz.clust.margin.top + ') scale(1)';
 	    });
@@ -6282,6 +6292,17 @@ var Clustergrammer =
 	  d3.select(params.root + ' .col_cat_container').attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [pan_dx, 0] + ')');
 
 	  d3.select(params.root + ' .col_dendro_container').attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [pan_dx, params.viz.uni_margin / 2] + ')');
+
+	  // reset crop button zooming
+	  d3.select(params.root + ' .row_dendro_icons_container').attr('transform', function () {
+	    return 'translate(0,' + params.viz.clust.margin.top + ') scale(1)';
+	  });
+
+	  d3.select(params.root + ' .row_dendro_icons_container').selectAll('path').attr('transform', function (d) {
+	    var inst_x = 7;
+	    var inst_y = d.pos_mid;
+	    return 'translate(' + inst_x + ',' + inst_y + ') ' + 'scale(1, 1)';
+	  });
 		};
 
 /***/ },
@@ -8432,6 +8453,9 @@ var Clustergrammer =
 
 	module.exports = function update_viz_with_network(cgm, new_network_data) {
 
+	  console.log('update viz with network');
+	  console.log(d3.selectAll('.row_dendro_crop_buttons').style('opacity'));
+
 	  var inst_group_level = cgm.params.group_level;
 	  var inst_crop_fitler = cgm.params.crop_filter_nodes;
 
@@ -8493,6 +8517,9 @@ var Clustergrammer =
 	    make_row_dendro(cgm);
 	    make_col_dendro(cgm);
 	  }
+
+	  console.log('update viz with network');
+	  console.log(d3.selectAll('.row_dendro_crop_buttons').style('opacity'));
 
 	  initialize_resizing(cgm);
 

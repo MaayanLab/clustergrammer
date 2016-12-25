@@ -24,7 +24,7 @@ module.exports = function(params){
 
   d3.select(params.root+' .row_dendro_container')
     .attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' +
-    zoom_y + ',' + zoom_y + ')' + 'translate(' + [params.viz.uni_margin/2, pan_dy] + ')');    
+    zoom_y + ',' + zoom_y + ')' + 'translate(' + [params.viz.uni_margin/2, pan_dy] + ')');
 
   d3.select(params.root+' .col_zoom_container')
     .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [pan_dx, 0] + ')');
@@ -33,6 +33,20 @@ module.exports = function(params){
     .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [pan_dx, 0] + ')');
 
   d3.select(params.root+' .col_dendro_container')
-    .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [pan_dx, params.viz.uni_margin/2] + ')');    
-    
+    .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [pan_dx, params.viz.uni_margin/2] + ')');
+
+  // reset crop button zooming
+  d3.select(params.root+' .row_dendro_icons_container')
+    .attr('transform', function(){
+      return 'translate(0,'+params.viz.clust.margin.top+') scale(1)';
+    });
+
+  d3.select(params.root+' .row_dendro_icons_container')
+    .selectAll('path')
+    .attr('transform', function(d){
+      var inst_x = 7;
+      var inst_y = d.pos_mid;
+      return 'translate('+ inst_x +',' + inst_y + ') ' + 'scale(1, 1)';
+    });
+
 };

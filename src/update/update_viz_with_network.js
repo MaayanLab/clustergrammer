@@ -16,6 +16,9 @@ var run_zoom = require('../zoom/run_zoom');
 
 module.exports = function update_viz_with_network(cgm, new_network_data){
 
+  console.log('update viz with network')
+  console.log(d3.selectAll('.row_dendro_crop_buttons').style('opacity'))
+
   var inst_group_level = cgm.params.group_level;
   var inst_crop_fitler = cgm.params.crop_filter_nodes;
 
@@ -80,6 +83,10 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
     make_row_dendro(cgm);
     make_col_dendro(cgm);
   }
+
+  console.log('update viz with network')
+  console.log(d3.selectAll('.row_dendro_crop_buttons').style('opacity'))
+
 
   initialize_resizing(cgm);
 
