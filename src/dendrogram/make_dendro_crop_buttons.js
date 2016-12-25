@@ -29,11 +29,11 @@ module.exports = function make_dendro_crop_buttons(cgm, is_change_group = false)
     .offset([tmp_y_offset, tmp_x_offset]);
 
   // check if there are crop buttons, then remove any old ones
-  var run_transition;
+  // var run_transition;
   if (d3.selectAll(params.root+' .row_dendro_crop_buttons').empty()){
-    run_transition = false;
+    // run_transition = false;
   } else {
-    run_transition = true;
+    // run_transition = true;
     // d3.selectAll(params.root+' .row_dendro_group').remove();
   }
 
@@ -41,7 +41,7 @@ module.exports = function make_dendro_crop_buttons(cgm, is_change_group = false)
   d3.selectAll( params.viz.root_tips + '_row_dendro_crop_tip').remove();
 
   if (is_change_group){
-    run_transition = false;
+    // run_transition = false;
   }
 
   d3.selectAll(params.root+' .row_dendro_crop_buttons')
@@ -97,7 +97,7 @@ module.exports = function make_dendro_crop_buttons(cgm, is_change_group = false)
   } else {
 
     // trantiion in undo icon always
-    run_transition = true;
+    // run_transition = true;
 
     // append path
     icons = d3.select(params.root+' .row_dendro_icons_container')
@@ -225,7 +225,6 @@ module.exports = function make_dendro_crop_buttons(cgm, is_change_group = false)
   }
 
   // if (run_transition){
-  //   // console.log('delay')
   //   d3.select(params.root+' .row_dendro_icons_container')
   //     .selectAll('path')
   //     .style('opacity', 0)
@@ -234,13 +233,11 @@ module.exports = function make_dendro_crop_buttons(cgm, is_change_group = false)
   //     .duration(1000)
   //     .style('opacity', triangle_opacity);
   // } else {
-  //   // console.log('no delay')
   //   d3.select(params.root+' .row_dendro_icons_container')
   //     .selectAll('path')
   //     .style('opacity', triangle_opacity);
   // }
 
-  // console.log('no delay')
   d3.select(params.root+' .row_dendro_icons_container')
     .selectAll('path')
     .style('opacity', triangle_opacity);

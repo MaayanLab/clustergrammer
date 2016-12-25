@@ -51,7 +51,7 @@ module.exports = function run_transformation(params){
       var inst_x = 7;
       var inst_y = d.pos_mid;
       return 'translate('+ inst_x +',' + inst_y + ') ' + 'scale(1, '+ 1/zoom_info.zoom_y +')';
-    })
+    });
 
   // transform col_class
   d3.select(params.root+' .col_cat_container')

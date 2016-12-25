@@ -1,7 +1,7 @@
 var get_cat_title = require('./categories/get_cat_title');
 var ini_cat_reorder = require('./reorder/ini_cat_reorder');
 var make_row_cat_super_labels = require('./labels/make_row_cat_super_labels');
-var make_dendro_crop_buttons = require('./dendrogram/make_dendro_crop_buttons');
+// var make_dendro_crop_buttons = require('./dendrogram/make_dendro_crop_buttons');
 
 module.exports = function Spillover(cgm) {
 
@@ -38,82 +38,97 @@ module.exports = function Spillover(cgm) {
     .attr('height', viz.clust.margin.top)
     .attr('class', 'top_left_white');
 
-
-  var tmp_left = viz.clust.margin.left +
-    viz.clust.dim.width +
-    viz.uni_margin +
-    viz.dendro_room.row;
-
-
-  // hide spillover from right
-  var r_spill_container = d3.select(viz.viz_svg)
-    .append('g')
-    .classed('right_spillover_container', true)
-    .attr('transform', function() {
-      return 'translate(' + tmp_left + ', 0)';
-    });
-
-  var tmp_top = viz.norm_labels.margin.top + viz.norm_labels.width.col;
-
-  r_spill_container
-    .append('rect')
-    .attr('fill', viz.background_color) //!! prog_colors
-    .attr('width', 10*viz.clust.dim.width)
-    .attr('height', viz.svg_dim.height+'px')
-    .attr('class', 'white_bars')
-    .attr('class','right_spillover')
-    .attr('transform', function() {
-      return 'translate( 0,' + tmp_top + ')';
-    });
-
-  var x_offset = 0;
-  var y_offset = viz.clust.margin.top;
-  r_spill_container
-    .append('g')
-    .classed('row_dendro_icons_container', true)
-    .attr('transform', 'translate(' + x_offset + ','+ y_offset +')');
-
-
-  make_dendro_crop_buttons(cgm);
-
-
-  // hide spillover from top of row dendrogram
-  x_offset = viz.clust.margin.left + viz.clust.dim.width;
-  y_offset = tmp_top;
-
-  var tmp_width = viz.dendro_room.row + viz.uni_margin;
-  var tmp_height = viz.cat_room.col + viz.uni_margin;
+  // white rect to cover excess labels
   d3.select(viz.viz_svg)
     .append('rect')
     .attr('fill', viz.background_color)
-    .attr('width',tmp_width)
-    .attr('height',tmp_height)
+    // .attr('fill', 'red')
+    .attr('width', viz.clust.margin.left)
+    .attr('height', viz.cat_room.col)
+    .attr('class', 'top_left_white')
     .attr('transform', function(){
-      return 'translate('+x_offset+','+y_offset+')';
+      var tmp_left = viz.clust.margin.left + viz.clust.dim.width;
+      var tmp_top = viz.norm_labels.width.col + viz.norm_labels.margin.top + 2;
+      return 'translate('+tmp_left+', '+ tmp_top +')';
     })
-    .classed('white_bars',true)
-    .classed('dendro_row_spillover',true);
 
-  // hide spillover left top of col dendrogram
-  x_offset = 0;
-  y_offset = viz.clust.margin.top + viz.clust.dim.height;
-  tmp_width = viz.clust.margin.left;
-  tmp_height = viz.clust.dim.height*10;
-  d3.select(viz.viz_svg)
-    .append('rect')
-    .attr('fill', viz.background_color)
-    .attr('width',tmp_width)
-    .attr('height',tmp_height)
-    .attr('transform', function(){
-      return 'translate('+x_offset+','+y_offset+')';
-    })
-    .classed('white_bars',true)
-    .classed('dendro_col_spillover',true);
 
-  x_offset = viz.clust.margin.left + viz.clust.dim.width;
-  y_offset = viz.clust.margin.top + viz.clust.dim.height;
-  tmp_width = viz.cat_room.col + viz.clust.dim.width;
-  tmp_height = viz.cat_room.row + viz.uni_margin;
+
+  // // hide spillover from right
+  // // -----------------------------------------------------
+  // var tmp_left = viz.clust.margin.left +
+  //   viz.clust.dim.width +
+  //   viz.uni_margin +
+  //   viz.dendro_room.row;
+  // var r_spill_container = d3.select(viz.viz_svg)
+  //   .append('g')
+  //   .classed('right_spillover_container', true)
+  //   .attr('transform', function() {
+  //     return 'translate(' + tmp_left + ', 0)';
+  //   });
+
+  // var tmp_top = viz.norm_labels.margin.top + viz.norm_labels.width.col;
+
+  // r_spill_container
+  //   .append('rect')
+  //   .attr('fill', viz.background_color) //!! prog_colors
+  //   .attr('width', 10*viz.clust.dim.width)
+  //   .attr('height', viz.svg_dim.height+'px')
+  //   .attr('class', 'white_bars')
+  //   .attr('class','right_spillover')
+  //   .attr('transform', function() {
+  //     return 'translate( 0,' + tmp_top + ')';
+  //   });
+
+  // var x_offset = 0;
+  // var y_offset = viz.clust.margin.top;
+  // r_spill_container
+  //   .append('g')
+  //   .classed('row_dendro_icons_container', true)
+  //   .attr('transform', 'translate(' + x_offset + ','+ y_offset +')');
+
+  // make_dendro_crop_buttons(cgm);
+
+  // // hide spillover from top of row dendrogram
+  // x_offset = viz.clust.margin.left + viz.clust.dim.width;
+  // y_offset = tmp_top;
+
+  // var tmp_width = viz.dendro_room.row + viz.uni_margin;
+  // var tmp_height = viz.cat_room.col + viz.uni_margin;
+  // d3.select(viz.viz_svg)
+  //   .append('rect')
+  //   .attr('fill', viz.background_color)
+  //   .attr('width',tmp_width)
+  //   .attr('height',tmp_height)
+  //   .attr('transform', function(){
+  //     return 'translate('+x_offset+','+y_offset+')';
+  //   })
+  //   .classed('white_bars',true)
+  //   .classed('dendro_row_spillover',true);
+
+  // // hide spillover left top of col dendrogram
+  // x_offset = 0;
+  // y_offset = viz.clust.margin.top + viz.clust.dim.height;
+  // tmp_width = viz.clust.margin.left;
+  // tmp_height = viz.clust.dim.height*10;
+  // d3.select(viz.viz_svg)
+  //   .append('rect')
+  //   .attr('fill', viz.background_color)
+  //   .attr('width',tmp_width)
+  //   .attr('height',tmp_height)
+  //   .attr('transform', function(){
+  //     return 'translate('+x_offset+','+y_offset+')';
+  //   })
+  //   .classed('white_bars',true)
+  //   .classed('dendro_col_spillover',true);
+
+  // // -----------------------------------------------------
+
+
+  var x_offset = viz.clust.margin.left + viz.clust.dim.width;
+  var y_offset = viz.clust.margin.top + viz.clust.dim.height;
+  var tmp_width = viz.cat_room.col + viz.clust.dim.width;
+  var tmp_height = viz.cat_room.row + viz.uni_margin;
   d3.select(viz.viz_svg)
     .append('rect')
     .attr('fill', viz.background_color)
