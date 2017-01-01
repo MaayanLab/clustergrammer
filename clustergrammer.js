@@ -3425,9 +3425,13 @@ var Clustergrammer =
 	  }
 
 	  if (params.viz.inst_order.col != 'clust' && params.viz.dendro_filter.row === false) {
-	    d3.selectAll(params.root + ' .row_dendro_group').style('opacity', 0).on('mouseover', null).on('mouseout', null);
+
+	    d3.selectAll(params.root + ' .row_dendro_group').style('opacity', 0).on('mouseover', null).on('mouseout', null).on('click', null);
 
 	    d3.select(params.root + ' .row_slider_group').style('opacity', 0);
+
+	    // toggle crop buttons
+	    d3.selectAll(params.root + ' .row_dendro_crop_buttons').style('opacity', 0).on('mouseover', null).on('mouseout', null);
 	  }
 	};
 
@@ -6156,8 +6160,7 @@ var Clustergrammer =
 	  // do not allow while transitioning, e.g. reordering
 	  if (!params.viz.run_trans) {
 	    var show_crop_buttons = function show_crop_buttons() {
-	      d3.selectAll(params.root + ' .row_dendro_crop_buttons').transition().duration(search_duration).style('opacity', button_opacity);
-	      console.log('show_crop_buttons');
+	      d3.selectAll(params.root + ' .row_dendro_crop_buttons').transition().duration(search_duration).style('opacity', inst_button_opacity);
 	    };
 
 	    // define the commonly used variable half_height
@@ -6244,9 +6247,8 @@ var Clustergrammer =
 	    d3.select(params.root + ' .row_dendro_container').transition().duration(search_duration).attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' + zoom_x + ',' + zoom_y + ')' + 'translate(' + [params.viz.uni_margin / 2, pan_dy] + ')');
 
 	    // toggle crop buttons
+	    var inst_button_opacity = d3.select(params.root + ' .row_dendro_crop_buttons').style('opacity');
 	    d3.selectAll(params.root + ' .row_dendro_crop_buttons').style('opacity', 0);
-
-	    var button_opacity = params.viz.dendro_opacity * 0.60;
 
 	    setTimeout(show_crop_buttons, 700);
 

@@ -31,12 +31,21 @@ module.exports = function toggle_dendro_view(cgm, row_col, wait_time = 1500){
   }
 
   if (params.viz.inst_order.col != 'clust' && params.viz.dendro_filter.row === false){
+
     d3.selectAll(params.root+' .row_dendro_group')
       .style('opacity',0)
       .on('mouseover',null)
-      .on('mouseout',null);
+      .on('mouseout',null)
+      .on('click', null);
 
     d3.select(params.root+' .row_slider_group')
       .style('opacity', 0);
+
+    // toggle crop buttons
+    d3.selectAll(params.root+' .row_dendro_crop_buttons')
+      .style('opacity',0)
+      .on('mouseover', null)
+      .on('mouseout', null);
+
   }
 };
