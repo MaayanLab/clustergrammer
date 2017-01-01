@@ -127,6 +127,20 @@ module.exports = function two_translate_zoom(params, pan_dx, pan_dy, fin_zoom) {
       .duration(search_duration)
       .attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' + zoom_x + ',' + zoom_y + ')' + 'translate(' + [params.viz.uni_margin/2, pan_dy] + ')');
 
+    // toggle crop buttons
+    d3.selectAll(params.root+' .row_dendro_crop_buttons')
+      .style('opacity',0);
+
+    var button_opacity = params.viz.dendro_opacity * 0.60;
+    function show_crop_buttons(){
+      d3.selectAll(params.root+' .row_dendro_crop_buttons')
+        .transition()
+        .duration(search_duration)
+        .style('opacity', button_opacity);
+      console.log('show_crop_buttons')
+    }
+    setTimeout(show_crop_buttons, 700);
+
     // transform col labels
     d3.select(params.root+' .col_zoom_container')
       .transition()

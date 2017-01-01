@@ -41,11 +41,11 @@ module.exports = function Spillover(cgm) {
   // white rect to cover excess labels
   d3.select(viz.viz_svg)
     .append('rect')
+    // .attr('fill', viz.background_color)
     .attr('fill', viz.background_color)
-    // .attr('fill', 'red')
     .attr('width', viz.clust.margin.left)
     .attr('height', viz.cat_room.col)
-    .attr('class', 'top_left_white')
+    .attr('class', 'top_right_white')
     .attr('transform', function(){
       var tmp_left = viz.clust.margin.left + viz.clust.dim.width;
       var tmp_top = viz.norm_labels.width.col + viz.norm_labels.margin.top + 2;

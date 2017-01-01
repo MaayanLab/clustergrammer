@@ -3808,6 +3808,10 @@ var Clustergrammer =
 	  var inst_x;
 	  var icons;
 
+	  // need to improve to account for zooming
+	  var min_tri_height = 45;
+	  var scale_down_tri = 0.25;
+
 	  // make crop buttons or undo buttons
 	  if (d3.select('.row_dendro_icons_container').classed('ran_filter') === false) {
 
@@ -3819,8 +3823,8 @@ var Clustergrammer =
 	      var tri_height = 10;
 
 	      var tmp_height = d.pos_bot - d.pos_top;
-	      if (tmp_height < 45) {
-	        tri_height = tmp_height * 0.20;
+	      if (tmp_height < min_tri_height) {
+	        tri_height = tmp_height * scale_down_tri;
 	      }
 
 	      // up triangle
@@ -3857,8 +3861,8 @@ var Clustergrammer =
 	      var tri_height = 10;
 
 	      var tmp_height = d.pos_bot - d.pos_top;
-	      if (tmp_height < 45) {
-	        tri_height = tmp_height * 0.20;
+	      if (tmp_height < min_tri_height) {
+	        tri_height = tmp_height * scale_down_tri;
 	      }
 
 	      // up triangle
@@ -4779,9 +4783,9 @@ var Clustergrammer =
 	  .attr('width', viz.clust.margin.left).attr('height', viz.clust.margin.top).attr('class', 'top_left_white');
 
 	  // white rect to cover excess labels
-	  d3.select(viz.viz_svg).append('rect').attr('fill', viz.background_color)
-	  // .attr('fill', 'red')
-	  .attr('width', viz.clust.margin.left).attr('height', viz.cat_room.col).attr('class', 'top_left_white').attr('transform', function () {
+	  d3.select(viz.viz_svg).append('rect')
+	  // .attr('fill', viz.background_color)
+	  .attr('fill', viz.background_color).attr('width', viz.clust.margin.left).attr('height', viz.cat_room.col).attr('class', 'top_right_white').attr('transform', function () {
 	    var tmp_left = viz.clust.margin.left + viz.clust.dim.width;
 	    var tmp_top = viz.norm_labels.width.col + viz.norm_labels.margin.top + 2;
 	    return 'translate(' + tmp_left + ', ' + tmp_top + ')';
@@ -6151,6 +6155,10 @@ var Clustergrammer =
 
 	  // do not allow while transitioning, e.g. reordering
 	  if (!params.viz.run_trans) {
+	    var show_crop_buttons = function show_crop_buttons() {
+	      d3.selectAll(params.root + ' .row_dendro_crop_buttons').transition().duration(search_duration).style('opacity', button_opacity);
+	      console.log('show_crop_buttons');
+	    };
 
 	    // define the commonly used variable half_height
 	    var half_height = params.viz.clust.dim.height / 2;
@@ -6234,6 +6242,13 @@ var Clustergrammer =
 	    d3.select(params.root + ' .row_cat_container').transition().duration(search_duration).attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' + 1 + ',' + zoom_y + ')' + 'translate(' + [0, pan_dy] + ')');
 
 	    d3.select(params.root + ' .row_dendro_container').transition().duration(search_duration).attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' + zoom_x + ',' + zoom_y + ')' + 'translate(' + [params.viz.uni_margin / 2, pan_dy] + ')');
+
+	    // toggle crop buttons
+	    d3.selectAll(params.root + ' .row_dendro_crop_buttons').style('opacity', 0);
+
+	    var button_opacity = params.viz.dendro_opacity * 0.60;
+
+	    setTimeout(show_crop_buttons, 700);
 
 	    // transform col labels
 	    d3.select(params.root + ' .col_zoom_container').transition().duration(search_duration).attr('transform', ' scale(' + zoom_x + ',' + zoom_x + ')' + 'translate(' + [pan_dx, 0] + ')');
@@ -6687,6 +6702,16 @@ var Clustergrammer =
 	    // shift up enough to show the entire border width
 	    var inst_offset = y_offset;
 	    return 'translate(0,' + inst_offset + ')';
+	  });
+
+	  // white rect to cover excess labels
+	  d3.select(viz.viz_svg + ' .top_right_white')
+	  // .append('rect')
+	  // .attr('fill', viz.background_color)
+	  .attr('width', viz.clust.margin.left).attr('height', viz.cat_room.col).attr('transform', function () {
+	    var tmp_left = viz.clust.margin.left + viz.clust.dim.width;
+	    var tmp_top = viz.norm_labels.width.col + viz.norm_labels.margin.top + 2;
+	    return 'translate(' + tmp_left + ', ' + tmp_top + ')';
 	  });
 		};
 

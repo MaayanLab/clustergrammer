@@ -50,6 +50,10 @@ module.exports = function make_dendro_crop_buttons(cgm, is_change_group = false)
   var inst_x;
   var icons;
 
+  // need to improve to account for zooming
+  var min_tri_height = 45;
+  var scale_down_tri = 0.25;
+
   // make crop buttons or undo buttons
   if (d3.select('.row_dendro_icons_container').classed('ran_filter') === false){
 
@@ -65,8 +69,8 @@ module.exports = function make_dendro_crop_buttons(cgm, is_change_group = false)
         var tri_height = 10;
 
         var tmp_height = d.pos_bot - d.pos_top;
-        if (tmp_height < 45){
-          tri_height = tmp_height * 0.20;
+        if (tmp_height < min_tri_height){
+          tri_height = tmp_height * scale_down_tri;
         }
 
         // up triangle
@@ -111,8 +115,8 @@ module.exports = function make_dendro_crop_buttons(cgm, is_change_group = false)
         var tri_height = 10;
 
         var tmp_height = d.pos_bot - d.pos_top;
-        if (tmp_height < 45){
-          tri_height = tmp_height * 0.20;
+        if (tmp_height < min_tri_height){
+          tri_height = tmp_height * scale_down_tri;
         }
 
         // up triangle
