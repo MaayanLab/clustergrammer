@@ -127,6 +127,15 @@ module.exports = function Spillover(cgm) {
     .attr('width', viz.svg_dim.width)
     .attr('height', 2 * viz.svg_dim.height);
 
+  x_offset = viz.clust.margin.left;
+  y_offset = 0;
+  b_spill_container
+    .append('g')
+    .classed('col_dendro_icons_container', true)
+    .attr('transform', 'translate(' + x_offset + ',' + y_offset + ')')
+    .append('g')
+    .classed('col_dendro_icons_group', true);
+
   ini_cat_reorder(cgm);
 
 };

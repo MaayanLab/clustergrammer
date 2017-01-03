@@ -18,7 +18,6 @@ module.exports = function make_dendro_crop_buttons(cgm, is_change_group = false)
   var tmp_x_offset = -5;
   var row_dendro_crop_tip = d3_tip_custom()
     .attr('class',function(){
-      // add root element to class
       var root_tip_selector = params.viz.root_tips.replace('.','');
       var class_string = root_tip_selector + ' d3-tip ' +
                          root_tip_selector +  '_row_dendro_crop_tip';
@@ -41,16 +40,6 @@ module.exports = function make_dendro_crop_buttons(cgm, is_change_group = false)
 
   var wait_before_tooltip = 500;
 
-  // check if there are crop buttons, then remove any old ones
-  // var run_transition;
-  if (d3.selectAll(params.root+' .row_dendro_crop_buttons').empty()){
-    // run_transition = false;
-  } else {
-    // run_transition = true;
-    // d3.selectAll(params.root+' .row_dendro_group').remove();
-  }
-
-  // d3.selectAll(params.root+' .row_dendro_crop_tip').remove();
   d3.selectAll( params.viz.root_tips + '_row_dendro_crop_tip').remove();
 
   if (is_change_group){

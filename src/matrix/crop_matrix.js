@@ -4,7 +4,7 @@ module.exports = function crop_matrix(){
 
   // transform brush-extent based on zoom/translate
   // get rows/cols from brush-extent
-  // must work for differnt brushing directions (e.g. start end sites)
+  // works for differnt brushing directions (e.g. start end sites)
 
   var cgm = this;
   var params = cgm.params;
@@ -23,31 +23,15 @@ module.exports = function crop_matrix(){
     .append('g')
     .classed('brush_group', true);
 
-  // var brush_area = brush_group
-  //   .append('rect')
-  //   .classed('brush_area', true)
-  //   .style('fill', 'red')
-  //   .style('opacity', 0.5)
-  //   .attr('width', clust_width)
-  //   .attr('height', clust_height);
-
   cgm.params.is_cropping = true;
 
   var brush = d3.svg.brush()
       .x(x)
       .y(y)
-      // .on("brushstart", brushstart)
-      // .on("brush", brushmove)
       .on("brushend", brushend);
 
   d3.select(params.root+' .brush_group')
     .call(brush);
-
-  // function brushstart() {
-  // }
-
-  // function brushmove() {
-  // }
 
   function brushend() {
 
@@ -79,7 +63,6 @@ module.exports = function crop_matrix(){
     }
 
   }
-
 
   function find_cropped_nodes(x_start, x_end, y_start, y_end, brush_start, brush_end){
 
@@ -139,11 +122,8 @@ module.exports = function crop_matrix(){
       return found_nodes;
   }
 
-
-
   d3.selectAll(params.root+ ' .extent')
     .style('opacity', 0.2)
     .style('fill', 'black');
 
 };
-

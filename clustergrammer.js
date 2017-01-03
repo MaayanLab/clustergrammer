@@ -3711,7 +3711,6 @@ var Clustergrammer =
 	  var tmp_y_offset = 0;
 	  var tmp_x_offset = -5;
 	  var row_dendro_crop_tip = d3_tip_custom().attr('class', function () {
-	    // add root element to class
 	    var root_tip_selector = params.viz.root_tips.replace('.', '');
 	    var class_string = root_tip_selector + ' d3-tip ' + root_tip_selector + '_row_dendro_crop_tip';
 
@@ -3728,16 +3727,6 @@ var Clustergrammer =
 
 	  var wait_before_tooltip = 500;
 
-	  // check if there are crop buttons, then remove any old ones
-	  // var run_transition;
-	  if (d3.selectAll(params.root + ' .row_dendro_crop_buttons').empty()) {
-	    // run_transition = false;
-	  } else {}
-	    // run_transition = true;
-	    // d3.selectAll(params.root+' .row_dendro_group').remove();
-
-
-	    // d3.selectAll(params.root+' .row_dendro_crop_tip').remove();
 	  d3.selectAll(params.viz.root_tips + '_row_dendro_crop_tip').remove();
 
 	  if (is_change_group) {
@@ -10841,7 +10830,7 @@ var Clustergrammer =
 
 	  // transform brush-extent based on zoom/translate
 	  // get rows/cols from brush-extent
-	  // must work for differnt brushing directions (e.g. start end sites)
+	  // works for differnt brushing directions (e.g. start end sites)
 
 	  var cgm = this;
 	  var params = cgm.params;
@@ -10855,28 +10844,11 @@ var Clustergrammer =
 	  // make brush group
 	  d3.select(params.root + ' .clust_container').append('g').classed('brush_group', true);
 
-	  // var brush_area = brush_group
-	  //   .append('rect')
-	  //   .classed('brush_area', true)
-	  //   .style('fill', 'red')
-	  //   .style('opacity', 0.5)
-	  //   .attr('width', clust_width)
-	  //   .attr('height', clust_height);
-
 	  cgm.params.is_cropping = true;
 
-	  var brush = d3.svg.brush().x(x).y(y)
-	  // .on("brushstart", brushstart)
-	  // .on("brush", brushmove)
-	  .on("brushend", brushend);
+	  var brush = d3.svg.brush().x(x).y(y).on("brushend", brushend);
 
 	  d3.select(params.root + ' .brush_group').call(brush);
-
-	  // function brushstart() {
-	  // }
-
-	  // function brushmove() {
-	  // }
 
 	  function brushend() {
 
@@ -13154,6 +13126,10 @@ var Clustergrammer =
 	  b_spill_container.append('rect').attr('class', 'bottom_spillover')
 	  // .attr('fill', viz.background_color) //!! prog_colors
 	  .attr('fill', 'red').attr('width', viz.svg_dim.width).attr('height', 2 * viz.svg_dim.height);
+
+	  x_offset = viz.clust.margin.left;
+	  y_offset = 0;
+	  b_spill_container.append('g').classed('col_dendro_icons_container', true).attr('transform', 'translate(' + x_offset + ',' + y_offset + ')').append('g').classed('col_dendro_icons_group', true);
 
 	  ini_cat_reorder(cgm);
 		};
