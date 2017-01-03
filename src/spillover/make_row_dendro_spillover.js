@@ -39,7 +39,7 @@ module.exports = function make_row_dendro_spillover(cgm){
     .append('g')
     .classed('row_dendro_icons_group', true);
 
-  make_dendro_crop_buttons(cgm);
+  make_dendro_crop_buttons(cgm, 'row');
 
   // hide spillover from top of row dendrogram
   x_offset = viz.clust.margin.left + viz.clust.dim.width;
