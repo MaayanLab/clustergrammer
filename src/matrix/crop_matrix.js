@@ -36,18 +36,18 @@ module.exports = function crop_matrix(){
   var brush = d3.svg.brush()
       .x(x)
       .y(y)
-      .on("brushstart", brushstart)
-      .on("brush", brushmove)
+      // .on("brushstart", brushstart)
+      // .on("brush", brushmove)
       .on("brushend", brushend);
 
   d3.select(params.root+' .brush_group')
     .call(brush);
 
-  function brushstart() {
-  }
+  // function brushstart() {
+  // }
 
-  function brushmove() {
-  }
+  // function brushmove() {
+  // }
 
   function brushend() {
 

@@ -2,7 +2,7 @@ var generate_matrix = require('./matrix');
 var make_rows = require('./labels/make_rows');
 var make_cols = require('./labels/make_cols');
 var generate_super_labels = require('./labels/super_labels');
-var spillover = require('./Spillover');
+var spillover = require('./spillover/main_spillover');
 var initialize_resizing = require('./initialize_resizing');
 var ini_doubleclick = require('./zoom/ini_doubleclick');
 var make_col_cat = require('./dendrogram/make_col_cat');
@@ -11,7 +11,7 @@ var trim_text = require('./zoom/trim_text');
 var make_row_dendro = require('./dendrogram/make_row_dendro');
 var make_col_dendro = require('./dendrogram/make_col_dendro');
 var make_svg_dendro_sliders = require('./dendrogram/make_svg_dendro_sliders');
-var make_row_dendro_spillover = require('./make_row_dendro_spillover');
+var make_row_dendro_spillover = require('./spillover/make_row_dendro_spillover');
 
 module.exports = function make_viz(cgm) {
 

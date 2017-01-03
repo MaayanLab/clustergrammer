@@ -1,8 +1,6 @@
-var make_dendro_crop_buttons = require('./dendrogram/make_dendro_crop_buttons');
+var make_dendro_crop_buttons = require('../dendrogram/make_dendro_crop_buttons');
 
 module.exports = function make_row_dendro_spillover(cgm){
-
-  console.log('make_row_dendro_spillover')
 
   var viz = cgm.params.viz;
 
@@ -76,4 +74,4 @@ module.exports = function make_row_dendro_spillover(cgm){
     .classed('white_bars',true)
     .classed('dendro_col_spillover',true);
 
-}
+};
