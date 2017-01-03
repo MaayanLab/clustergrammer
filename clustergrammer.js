@@ -2012,8 +2012,6 @@ var Clustergrammer =
 
 	module.exports = function make_viz(cgm) {
 
-	  console.log('here');
-
 	  var params = cgm.params;
 
 	  d3.select(params.viz.viz_wrapper + ' svg').remove();
@@ -6209,25 +6207,8 @@ var Clustergrammer =
 	    //     return 'translate('+ inst_x +',' + inst_y + ') ' + 'scale(1, 1)';
 	    //   });
 
-	    // console.log('center_y: ' + String(center_y))
-	    console.log('pan_dy: ' + String(pan_dy) + '\n');
-
 	    // dendrogram icons
-	    d3.select(params.root + ' .row_dendro_icons_group').attr('transform', function () {
-
-	      // var inst_y = params.zoom_info.trans_y + params.viz.clust.margin.top;
-
-	      // var inst_y = params.viz.clust.margin.top ;
-	      var inst_y = pan_dy;
-
-	      var inst_translate = 'translate(' + [0, inst_y] + ') ';
-
-	      // var inst_zoom = 'scale(1, ' + params.zoom_info.zoom_y + ')';
-	      var inst_zoom = 'scale(1, ' + zoom_y + ')';
-
-	      var transform_string = inst_translate + inst_zoom;
-	      return transform_string;
-	    });
+	    d3.select(params.root + ' .row_dendro_icons_group').attr('transform', 'translate(' + [0, 0 + center_y] + ')' + ' scale(' + zoom_x + ',' + zoom_y + ')' + 'translate(' + [pan_dx, pan_dy] + ')');
 
 	    d3.select(params.root + ' .row_dendro_icons_group').selectAll('path').attr('transform', function (d) {
 	      var inst_x = 7;

@@ -15,8 +15,6 @@ var make_dendro_crop_buttons = require('./dendrogram/make_dendro_crop_buttons');
 
 module.exports = function make_viz(cgm) {
 
-  console.log('here')
-
   var params = cgm.params;
 
   d3.select(params.viz.viz_wrapper+' svg')
