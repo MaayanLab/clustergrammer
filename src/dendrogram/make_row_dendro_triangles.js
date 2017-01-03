@@ -24,16 +24,18 @@ module.exports = function make_row_dendro_triangles(cgm, is_change_group = false
   // constant dendrogram opacity
   var inst_dendro_opacity = params.viz.dendro_opacity;
 
-  // toggle dendro opacity
-  // var inst_dendro_opacity;
-  // if (dendro_info.length > 1){
-  //   inst_dendro_opacity = params.viz.dendro_opacity;
-  // } else {
-  //    inst_dendro_opacity = 0.90;
-  // }
+  function still_hovering(inst_selection){
+    if (d3.select(inst_selection).classed('hovering')){
+      d3.selectAll(params.viz.root_tips + '_row_dendro_tip')
+        .style('opacity', 1)
+        .style('display', 'block');
+    }
+  }
+
+  var wait_before_tooltip = 500;
 
   // remove any old row dendro tooltips from this visualization
-  d3.selectAll(cgm.params.viz.root_tips+'_row_dendro').remove();
+  d3.selectAll(cgm.params.viz.root_tips+'_row_dendro_tip').remove();
 
   // d3-tooltip
   var tmp_y_offset = 0;
@@ -43,7 +45,7 @@ module.exports = function make_row_dendro_triangles(cgm, is_change_group = false
       // add root element to class
       var root_tip_selector = params.viz.root_tips.replace('.','');
       var class_string = root_tip_selector + ' d3-tip ' +
-                         root_tip_selector +  '_row_dendro';
+                         root_tip_selector +  '_row_dendro_tip';
 
       return class_string;
     })
@@ -113,13 +115,15 @@ module.exports = function make_row_dendro_triangles(cgm, is_change_group = false
 
       dendro_group_highlight(params, this, d, inst_rc, dendro_tip);
 
-      // need to improve
-      d3.selectAll( params.viz.root_tips + '_row_dendro')
-        .style('opacity', 1)
-        .style('display', 'block');
-
       dendro_tip.show(d);
 
+      // set opacity to zero
+      d3.selectAll( params.viz.root_tips + '_row_dendro_tip')
+        .style('opacity', 0)
+        .style('display', 'block');
+
+      // check if still hovering
+      setTimeout(still_hovering, wait_before_tooltip, this);
 
     })
     .on('mouseout', function(){

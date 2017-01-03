@@ -1,7 +1,7 @@
 var dendro_shade_bars = require('./dendro_shade_bars');
 module.exports = function dendro_group_highlight(params, inst_selection, inst_data, inst_rc){
 
-  var wait_before_make_shade = 200;
+  var wait_before_make_shade = 500;
 
   setTimeout(still_hovering, wait_before_make_shade);
 

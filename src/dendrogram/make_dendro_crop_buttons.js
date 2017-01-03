@@ -39,7 +39,7 @@ module.exports = function make_dendro_crop_buttons(cgm, is_change_group = false)
 
   }
 
-  var wait_before_tooltip = 200;
+  var wait_before_tooltip = 500;
 
   // check if there are crop buttons, then remove any old ones
   // var run_transition;

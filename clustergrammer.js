@@ -3467,16 +3467,16 @@ var Clustergrammer =
 	  // constant dendrogram opacity
 	  var inst_dendro_opacity = params.viz.dendro_opacity;
 
-	  // toggle dendro opacity
-	  // var inst_dendro_opacity;
-	  // if (dendro_info.length > 1){
-	  //   inst_dendro_opacity = params.viz.dendro_opacity;
-	  // } else {
-	  //    inst_dendro_opacity = 0.90;
-	  // }
+	  function still_hovering(inst_selection) {
+	    if (d3.select(inst_selection).classed('hovering')) {
+	      d3.selectAll(params.viz.root_tips + '_row_dendro_tip').style('opacity', 1).style('display', 'block');
+	    }
+	  }
+
+	  var wait_before_tooltip = 500;
 
 	  // remove any old row dendro tooltips from this visualization
-	  d3.selectAll(cgm.params.viz.root_tips + '_row_dendro').remove();
+	  d3.selectAll(cgm.params.viz.root_tips + '_row_dendro_tip').remove();
 
 	  // d3-tooltip
 	  var tmp_y_offset = 0;
@@ -3484,7 +3484,7 @@ var Clustergrammer =
 	  var dendro_tip = d3_tip_custom().attr('class', function () {
 	    // add root element to class
 	    var root_tip_selector = params.viz.root_tips.replace('.', '');
-	    var class_string = root_tip_selector + ' d3-tip ' + root_tip_selector + '_row_dendro';
+	    var class_string = root_tip_selector + ' d3-tip ' + root_tip_selector + '_row_dendro_tip';
 
 	    return class_string;
 	  }).direction('nw').offset([tmp_y_offset, tmp_x_offset]).style('display', 'none').style('opacity', 0).html(function () {
@@ -3537,10 +3537,13 @@ var Clustergrammer =
 
 	    dendro_group_highlight(params, this, d, inst_rc, dendro_tip);
 
-	    // need to improve
-	    d3.selectAll(params.viz.root_tips + '_row_dendro').style('opacity', 1).style('display', 'block');
-
 	    dendro_tip.show(d);
+
+	    // set opacity to zero
+	    d3.selectAll(params.viz.root_tips + '_row_dendro_tip').style('opacity', 0).style('display', 'block');
+
+	    // check if still hovering
+	    setTimeout(still_hovering, wait_before_tooltip, this);
 	  }).on('mouseout', function () {
 	    if (params.viz.inst_order.col === 'clust') {
 	      d3.select(this).style('opacity', inst_dendro_opacity);
@@ -3641,7 +3644,7 @@ var Clustergrammer =
 	var dendro_shade_bars = __webpack_require__(55);
 	module.exports = function dendro_group_highlight(params, inst_selection, inst_data, inst_rc) {
 
-	  var wait_before_make_shade = 200;
+	  var wait_before_make_shade = 500;
 
 	  setTimeout(still_hovering, wait_before_make_shade);
 
@@ -3798,7 +3801,7 @@ var Clustergrammer =
 	    }
 	  }
 
-	  var wait_before_tooltip = 200;
+	  var wait_before_tooltip = 500;
 
 	  // check if there are crop buttons, then remove any old ones
 	  // var run_transition;
