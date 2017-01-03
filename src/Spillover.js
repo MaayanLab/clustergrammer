@@ -103,7 +103,6 @@ module.exports = function Spillover(cgm) {
     make_row_cat_super_labels(cgm);
   }
 
-
   // white border bottom - prevent clustergram from hitting border
   if (viz.show_dendrogram){
     // quick fix to make room for crop buttons
