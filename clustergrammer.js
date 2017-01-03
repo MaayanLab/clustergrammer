@@ -5940,11 +5940,15 @@ var Clustergrammer =
 	  // calculate panning room available in the y direction
 	  zoom_info.pan_room_y = (zoom_info.zoom_y - 1) * viz.clust.dim.height;
 
+	  // console.log( 'pan_room_y: ' +  String(zoom_info.pan_room_y) + ' ' + String(-zoom_info.trans_y))
+
 	  // no positive panning or panning more than pan_room
 	  if (zoom_info.trans_y >= 0) {
 	    zoom_info.trans_y = 0;
+	    // console.log('y no positive panning\n\n')
 	  } else if (zoom_info.trans_y <= -zoom_info.pan_room_y) {
 	    zoom_info.trans_y = -zoom_info.pan_room_y;
+	    // console.log('y restrict pan room \n\n')
 	  }
 
 	  return zoom_info;
@@ -5971,11 +5975,15 @@ var Clustergrammer =
 	  // calculate panning room available in the x direction
 	  zoom_info.pan_room_x = (zoom_info.zoom_x - 1) * viz.clust.dim.width;
 
+	  // console.log( 'pan_room_x: ' +  String(zoom_info.pan_room_x) + ' ' + String(-zoom_info.trans_x))
+
 	  // no positive panning or panning more than pan_room
 	  if (zoom_info.trans_x > 0) {
 	    zoom_info.trans_x = 0;
+	    // console.log('no positive panning\n\n')
 	  } else if (zoom_info.trans_x <= -zoom_info.pan_room_x) {
 	    zoom_info.trans_x = -zoom_info.pan_room_x;
+	    // console.log('restrict pan room\n\n')
 	  }
 
 	  return zoom_info;
