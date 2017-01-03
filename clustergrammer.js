@@ -4724,7 +4724,6 @@ var Clustergrammer =
 	var get_cat_title = __webpack_require__(70);
 	var ini_cat_reorder = __webpack_require__(71);
 	var make_row_cat_super_labels = __webpack_require__(73);
-	// var make_dendro_crop_buttons = require('./dendrogram/make_dendro_crop_buttons');
 
 	module.exports = function Spillover(cgm) {
 
@@ -4791,15 +4790,15 @@ var Clustergrammer =
 	  } else {
 	    y_offset = viz.clust.margin.top + viz.clust.dim.height;
 	  }
-	  d3.select(viz.viz_svg).append('rect').attr('class', 'bottom_spillover')
-	  // .attr('fill', viz.background_color) //!! prog_colors
-	  .attr('fill', 'red').attr('width', viz.svg_dim.width)
-	  // make this border twice the width of the grey border
-	  .attr('height', 2 * viz.svg_dim.height).attr('transform', function () {
+
+	  var b_spill_container = d3.select(viz.viz_svg).append('g').classed('bottom_spillover_container', true).attr('transform', function () {
 	    // shift up enough to show the entire border width
-	    var inst_offset = y_offset;
-	    return 'translate(0,' + inst_offset + ')';
+	    return 'translate(0,' + y_offset + ')';
 	  });
+
+	  b_spill_container.append('rect').attr('class', 'bottom_spillover')
+	  // .attr('fill', viz.background_color) //!! prog_colors
+	  .attr('fill', 'red').attr('width', viz.svg_dim.width).attr('height', 2 * viz.svg_dim.height);
 
 	  ini_cat_reorder(cgm);
 		};
@@ -6572,15 +6571,17 @@ var Clustergrammer =
 
 	  // white border bottom - prevent clustergram from hitting border
 	  if (viz.show_dendrogram) {
-	    y_offset = viz.clust.margin.top + viz.clust.dim.height + viz.dendro_room.col;
+	    y_offset = viz.clust.margin.top + viz.clust.dim.height + viz.dendro_room.col - 2 * viz.uni_margin;
 	  } else {
 	    y_offset = viz.clust.margin.top + viz.clust.dim.height;
 	  }
-	  svg_group.select(viz.root + ' .bottom_spillover').attr('width', viz.svg_dim.width).attr('height', 2 * viz.svg_dim.height).attr('transform', function () {
+
+	  d3.select(viz.root + ' .bottom_spillover_container').attr('transform', function () {
 	    // shift up enough to show the entire border width
-	    var inst_offset = y_offset;
-	    return 'translate(0,' + inst_offset + ')';
+	    return 'translate(0,' + y_offset + ')';
 	  });
+
+	  svg_group.select(viz.root + ' .bottom_spillover').attr('width', viz.svg_dim.width).attr('height', 2 * viz.svg_dim.height);
 
 	  var inst_height = viz.cat_room.col + viz.uni_margin;
 	  // white rect to cover excess labels

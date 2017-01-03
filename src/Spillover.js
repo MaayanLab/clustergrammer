@@ -1,7 +1,6 @@
 var get_cat_title = require('./categories/get_cat_title');
 var ini_cat_reorder = require('./reorder/ini_cat_reorder');
 var make_row_cat_super_labels = require('./labels/make_row_cat_super_labels');
-// var make_dendro_crop_buttons = require('./dendrogram/make_dendro_crop_buttons');
 
 module.exports = function Spillover(cgm) {
 
@@ -112,19 +111,22 @@ module.exports = function Spillover(cgm) {
   } else {
     y_offset = viz.clust.margin.top + viz.clust.dim.height;
   }
-  d3.select(viz.viz_svg)
+
+  var b_spill_container = d3.select(viz.viz_svg)
+    .append('g')
+      .classed('bottom_spillover_container', true)
+      .attr('transform', function() {
+        // shift up enough to show the entire border width
+        return 'translate(0,' + y_offset + ')';
+      });
+
+  b_spill_container
     .append('rect')
     .attr('class','bottom_spillover')
     // .attr('fill', viz.background_color) //!! prog_colors
     .attr('fill', 'red')
     .attr('width', viz.svg_dim.width)
-    // make this border twice the width of the grey border
-    .attr('height', 2 * viz.svg_dim.height)
-    .attr('transform', function() {
-      // shift up enough to show the entire border width
-      var inst_offset = y_offset;
-      return 'translate(0,' + inst_offset + ')';
-    });
+    .attr('height', 2 * viz.svg_dim.height);
 
   ini_cat_reorder(cgm);
 

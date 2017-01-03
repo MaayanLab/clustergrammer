@@ -120,18 +120,20 @@ module.exports = function resize_spillover(viz, ini_svg_group, delay_info=false)
 
   // white border bottom - prevent clustergram from hitting border
   if (viz.show_dendrogram){
-    y_offset = viz.clust.margin.top + viz.clust.dim.height + viz.dendro_room.col;
+    y_offset = viz.clust.margin.top + viz.clust.dim.height + viz.dendro_room.col - 2*viz.uni_margin;
   } else {
     y_offset = viz.clust.margin.top + viz.clust.dim.height;
   }
-  svg_group.select(viz.root+' .bottom_spillover')
-    .attr('width', viz.svg_dim.width)
-    .attr('height', 2 * viz.svg_dim.height)
+
+  d3.select(viz.root+' .bottom_spillover_container')
     .attr('transform', function() {
       // shift up enough to show the entire border width
-      var inst_offset = y_offset;
-      return 'translate(0,' + inst_offset + ')';
+      return 'translate(0,' + y_offset + ')';
     });
+
+  svg_group.select(viz.root+' .bottom_spillover')
+    .attr('width', viz.svg_dim.width)
+    .attr('height', 2 * viz.svg_dim.height);
 
   var inst_height = viz.cat_room.col + viz.uni_margin;
   // white rect to cover excess labels
