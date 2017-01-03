@@ -60,7 +60,7 @@ module.exports = function make_dendro_crop_buttons(cgm, is_change_group = false)
   d3.selectAll(params.root+' .row_dendro_crop_buttons')
     .remove();
 
-  var inst_x;
+  var inst_x = params.viz.uni_margin;
   var icons;
 
   // need to improve to account for zooming
@@ -102,8 +102,6 @@ module.exports = function make_dendro_crop_buttons(cgm, is_change_group = false)
 
         return output_string;
       });
-
-      inst_x = 7;
 
       row_dendro_crop_tip
         .html(function(){
@@ -148,8 +146,6 @@ module.exports = function make_dendro_crop_buttons(cgm, is_change_group = false)
 
         return output_string;
       });
-
-      inst_x = 7;
 
       row_dendro_crop_tip
         .html(function(){

@@ -1425,7 +1425,7 @@ var Clustergrammer =
 	    if (inst_rc === 'row') {
 	      viz.dendro_room[inst_rc] = viz.dendro_room.symbol_width;
 	    } else {
-	      viz.dendro_room[inst_rc] = viz.dendro_room.symbol_width + viz.uni_margin;
+	      viz.dendro_room[inst_rc] = viz.dendro_room.symbol_width + 3 * viz.uni_margin;
 	    }
 
 	    var num_cats = viz.all_cats[inst_rc].length;
@@ -2031,9 +2031,11 @@ var Clustergrammer =
 	  }
 
 	  var viz = params.viz;
+
 	  // hide spillover from right
 	  // -----------------------------------------------------
 	  var tmp_left = viz.clust.margin.left + viz.clust.dim.width + viz.uni_margin + viz.dendro_room.row;
+
 	  var r_spill_container = d3.select(viz.viz_svg).append('g').classed('right_spillover_container', true).attr('transform', function () {
 	    return 'translate(' + tmp_left + ', 0)';
 	  });
@@ -3786,7 +3788,7 @@ var Clustergrammer =
 
 	  d3.selectAll(params.root + ' .row_dendro_crop_buttons').remove();
 
-	  var inst_x;
+	  var inst_x = params.viz.uni_margin;
 	  var icons;
 
 	  // need to improve to account for zooming
@@ -3823,8 +3825,6 @@ var Clustergrammer =
 	      return output_string;
 	    });
 
-	    inst_x = 7;
-
 	    row_dendro_crop_tip.html(function () {
 	      var full_string = 'Click to crop cluster';
 	      return full_string;
@@ -3860,8 +3860,6 @@ var Clustergrammer =
 
 	      return output_string;
 	    });
-
-	    inst_x = 7;
 
 	    row_dendro_crop_tip.html(function () {
 	      var full_string = 'Click to undo crop';
@@ -4788,12 +4786,14 @@ var Clustergrammer =
 
 	  // white border bottom - prevent clustergram from hitting border
 	  if (viz.show_dendrogram) {
-	    y_offset = viz.clust.margin.top + viz.clust.dim.height + viz.dendro_room.col;
+	    // quick fix to make room for crop buttons
+	    y_offset = viz.clust.margin.top + viz.clust.dim.height + viz.dendro_room.col - 2 * viz.uni_margin;
 	  } else {
 	    y_offset = viz.clust.margin.top + viz.clust.dim.height;
 	  }
-	  d3.select(viz.viz_svg).append('rect').attr('class', 'bottom_spillover').attr('fill', viz.background_color) //!! prog_colors
-	  .attr('width', viz.svg_dim.width)
+	  d3.select(viz.viz_svg).append('rect').attr('class', 'bottom_spillover')
+	  // .attr('fill', viz.background_color) //!! prog_colors
+	  .attr('fill', 'red').attr('width', viz.svg_dim.width)
 	  // make this border twice the width of the grey border
 	  .attr('height', 2 * viz.svg_dim.height).attr('transform', function () {
 	    // shift up enough to show the entire border width

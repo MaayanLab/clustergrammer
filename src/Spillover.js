@@ -107,14 +107,16 @@ module.exports = function Spillover(cgm) {
 
   // white border bottom - prevent clustergram from hitting border
   if (viz.show_dendrogram){
-    y_offset = viz.clust.margin.top + viz.clust.dim.height + viz.dendro_room.col;
+    // quick fix to make room for crop buttons
+    y_offset = viz.clust.margin.top + viz.clust.dim.height + viz.dendro_room.col - 2*viz.uni_margin;
   } else {
     y_offset = viz.clust.margin.top + viz.clust.dim.height;
   }
   d3.select(viz.viz_svg)
     .append('rect')
     .attr('class','bottom_spillover')
-    .attr('fill', viz.background_color) //!! prog_colors
+    // .attr('fill', viz.background_color) //!! prog_colors
+    .attr('fill', 'red')
     .attr('width', viz.svg_dim.width)
     // make this border twice the width of the grey border
     .attr('height', 2 * viz.svg_dim.height)

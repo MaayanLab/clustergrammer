@@ -25,7 +25,7 @@ module.exports = function calc_cat_params(params, viz){
     if(inst_rc === 'row'){
       viz.dendro_room[inst_rc] = viz.dendro_room.symbol_width;
     } else {
-      viz.dendro_room[inst_rc] = viz.dendro_room.symbol_width + viz.uni_margin;
+      viz.dendro_room[inst_rc] = viz.dendro_room.symbol_width + 3*viz.uni_margin;
     }
 
     var num_cats = viz.all_cats[inst_rc].length;

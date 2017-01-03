@@ -47,12 +47,14 @@ module.exports = function make_viz(cgm) {
   }
 
   var viz = params.viz;
+
   // hide spillover from right
   // -----------------------------------------------------
   var tmp_left = viz.clust.margin.left +
     viz.clust.dim.width +
     viz.uni_margin +
     viz.dendro_room.row;
+
   var r_spill_container = d3.select(viz.viz_svg)
     .append('g')
     .classed('right_spillover_container', true)
