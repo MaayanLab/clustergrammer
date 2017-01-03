@@ -3790,6 +3790,16 @@ var Clustergrammer =
 	    return class_string;
 	  }).direction('nw').offset([tmp_y_offset, tmp_x_offset]);
 
+	  function still_hovering(inst_selection) {
+
+	    if (d3.select(inst_selection).classed('hovering')) {
+	      // increase opacity
+	      d3.selectAll(params.viz.root_tips + '_row_dendro_crop_tip').style('opacity', 1).style('display', 'block');
+	    }
+	  }
+
+	  var wait_before_tooltip = 200;
+
 	  // check if there are crop buttons, then remove any old ones
 	  // var run_transition;
 	  if (d3.selectAll(params.root + ' .row_dendro_crop_buttons').empty()) {
@@ -3905,8 +3915,11 @@ var Clustergrammer =
 
 	    dendro_group_highlight(params, this, d, inst_rc);
 
-	    // need to improve
-	    d3.selectAll(params.viz.root_tips + '_row_dendro_crop_tip').style('opacity', 1).style('display', 'block');
+	    // display with zero opacity
+	    d3.selectAll(params.viz.root_tips + '_row_dendro_crop_tip').style('opacity', 0).style('display', 'block');
+
+	    // check if still hovering
+	    setTimeout(still_hovering, wait_before_tooltip, this);
 	  }).on('mouseout', function () {
 
 	    d3.select(this).classed('hovering', false);
@@ -3916,11 +3929,6 @@ var Clustergrammer =
 	    d3.select(this).style('opacity', button_opacity);
 
 	    row_dendro_crop_tip.hide(this);
-
-	    // // need to improve
-	    // d3.selectAll( params.viz.root_tips + '_row_dendro_crop_tip')
-	    //   .style('opacity', 0)
-	    //   .style('display', 'none');
 	  }).on('click', function (d) {
 
 	    // give user visual cue
@@ -6191,23 +6199,7 @@ var Clustergrammer =
 	      d3.select(this).select('rect').attr('x', bbox.x * 0.5).attr('y', 0).attr('width', bbox.width * 0.5).attr('height', params.viz.y_scale.rangeBand()).style('fill', 'yellow');
 	    });
 
-	    // // reset crop button zooming
-	    // d3.select(params.root+' .row_dendro_icons_group')
-	    //   .transition().duration(search_duration)
-	    //   .attr('transform', function(){
-	    //     return 'translate(0,'+params.viz.clust.margin.top+') scale(1)';
-	    //   });
-
-	    // d3.select(params.root+' .row_dendro_icons_group')
-	    //   .selectAll('path')
-	    //   .transition().duration(search_duration)
-	    //   .attr('transform', function(d){
-	    //     var inst_x = 7;
-	    //     var inst_y = d.pos_mid;
-	    //     return 'translate('+ inst_x +',' + inst_y + ') ' + 'scale(1, 1)';
-	    //   });
-
-	    // dendrogram icons
+	    // reset crop button zooming
 	    d3.select(params.root + ' .row_dendro_icons_group').attr('transform', 'translate(' + [0, 0 + center_y] + ')' + ' scale(' + zoom_x + ',' + zoom_y + ')' + 'translate(' + [pan_dx, pan_dy] + ')');
 
 	    d3.select(params.root + ' .row_dendro_icons_group').selectAll('path').attr('transform', function (d) {

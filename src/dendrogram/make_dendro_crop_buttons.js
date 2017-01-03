@@ -28,6 +28,19 @@ module.exports = function make_dendro_crop_buttons(cgm, is_change_group = false)
     .direction('nw')
     .offset([tmp_y_offset, tmp_x_offset]);
 
+  function still_hovering(inst_selection){
+
+    if (d3.select(inst_selection).classed('hovering')){
+      // increase opacity
+      d3.selectAll( params.viz.root_tips + '_row_dendro_crop_tip')
+        .style('opacity', 1)
+        .style('display', 'block');
+    }
+
+  }
+
+  var wait_before_tooltip = 200;
+
   // check if there are crop buttons, then remove any old ones
   // var run_transition;
   if (d3.selectAll(params.root+' .row_dendro_crop_buttons').empty()){
@@ -165,10 +178,13 @@ module.exports = function make_dendro_crop_buttons(cgm, is_change_group = false)
 
       dendro_group_highlight(params, this, d, inst_rc);
 
-      // need to improve
+      // display with zero opacity
       d3.selectAll( params.viz.root_tips + '_row_dendro_crop_tip')
-        .style('opacity', 1)
+        .style('opacity', 0)
         .style('display', 'block');
+
+      // check if still hovering
+      setTimeout(still_hovering, wait_before_tooltip, this);
 
     })
     .on('mouseout', function(){
@@ -183,11 +199,6 @@ module.exports = function make_dendro_crop_buttons(cgm, is_change_group = false)
         .style('opacity', button_opacity);
 
       row_dendro_crop_tip.hide(this);
-
-      // // need to improve
-      // d3.selectAll( params.viz.root_tips + '_row_dendro_crop_tip')
-      //   .style('opacity', 0)
-      //   .style('display', 'none');
 
     })
     .on('click', function(d){

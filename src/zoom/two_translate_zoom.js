@@ -192,23 +192,7 @@ module.exports = function two_translate_zoom(params, pan_dx, pan_dy, fin_zoom) {
           .style('fill', 'yellow');
       });
 
-    // // reset crop button zooming
-    // d3.select(params.root+' .row_dendro_icons_group')
-    //   .transition().duration(search_duration)
-    //   .attr('transform', function(){
-    //     return 'translate(0,'+params.viz.clust.margin.top+') scale(1)';
-    //   });
-
-    // d3.select(params.root+' .row_dendro_icons_group')
-    //   .selectAll('path')
-    //   .transition().duration(search_duration)
-    //   .attr('transform', function(d){
-    //     var inst_x = 7;
-    //     var inst_y = d.pos_mid;
-    //     return 'translate('+ inst_x +',' + inst_y + ') ' + 'scale(1, 1)';
-    //   });
-
-    // dendrogram icons
+    // reset crop button zooming
     d3.select(params.root+' .row_dendro_icons_group')
       .attr('transform', 'translate(' + [0, 0 + center_y] + ')' +
       ' scale(' + zoom_x + ',' + zoom_y + ')' + 'translate(' + [pan_dx,
@@ -222,7 +206,6 @@ module.exports = function two_translate_zoom(params, pan_dx, pan_dy, fin_zoom) {
         var inst_y = d.pos_mid;
         return 'translate('+ inst_x +',' + inst_y + ') ' + 'scale(1, '+ 1/zoom_y +')';
       });
-
 
     // column value bars
     ///////////////////////
