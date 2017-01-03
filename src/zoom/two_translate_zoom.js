@@ -165,11 +165,12 @@ module.exports = function two_translate_zoom(params, pan_dx, pan_dy, fin_zoom) {
     // the translate vector has the initial margin, the first y centering, and pan_dy
     // times the scaling zoom_y
     var net_y_offset = params.viz.clust.margin.top + center_y + pan_dy * zoom_y;
+    var net_x_offset = params.viz.clust.margin.left + pan_dx;
 
     // reset the zoom and translate
     params.zoom_behavior
       .scale(zoom_y)
-      .translate([pan_dx, net_y_offset]);
+      .translate([net_x_offset, net_y_offset]);
 
     label_constrain_and_trim(params);
 

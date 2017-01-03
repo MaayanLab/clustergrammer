@@ -76,7 +76,6 @@ d3.json('json/mult_view.json', function(network_data){
     root: '#graph',
     'network_data': network_data,
     'sidebar_width':130,
-    'sidebar_icons':false,
     'row_tip_callback':hzome.gene_info
   };
 

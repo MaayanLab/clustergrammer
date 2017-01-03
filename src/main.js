@@ -54,7 +54,7 @@ function Clustergrammer(args) {
       run_zoom(cgm);
     });
 
-  cgm.params.zoom_behavior.translate([0, cgm.params.viz.clust.margin.top]);
+  cgm.params.zoom_behavior.translate([cgm.params.viz.clust.margin.left, cgm.params.viz.clust.margin.top]);
 
   if (cgm.params.use_sidebar) {
     var make_sidebar = require('./sidebar/');

@@ -101,7 +101,7 @@ var Clustergrammer =
 	    run_zoom(cgm);
 	  });
 
-	  cgm.params.zoom_behavior.translate([0, cgm.params.viz.clust.margin.top]);
+	  cgm.params.zoom_behavior.translate([cgm.params.viz.clust.margin.left, cgm.params.viz.clust.margin.top]);
 
 	  if (cgm.params.use_sidebar) {
 	    var make_sidebar = __webpack_require__(183);
@@ -2135,45 +2135,10 @@ var Clustergrammer =
 	  ini_doubleclick(params);
 
 	  if (params.viz.do_zoom) {
-	    d3.select(params.viz.zoom_element)
-	    // d3.select(params.root+' .clust_container')
-	    .call(params.zoom_behavior);
+	    d3.select(params.viz.zoom_element).call(params.zoom_behavior);
 	  }
 
-	  d3.select(params.viz.zoom_element)
-	  // d3.select(params.root+' .clust_container')
-	  .on('dblclick.zoom', null);
-
-	  // search(cgm, params.network_data.row_nodes, 'name');
-
-	  // var opacity_slider = function (inst_slider) {
-
-	  //   // var max_link = params.matrix.max_link;
-	  //   var slider_scale = d3.scale
-	  //     .linear()
-	  //     .domain([0, 1])
-	  //     .range([1, 0.1]);
-
-	  //   var slider_factor = slider_scale(inst_slider);
-
-	  //   if (params.matrix.opacity_function === 'linear') {
-	  //     params.matrix.opacity_scale = d3.scale.linear()
-	  //       .domain([0, slider_factor * Math.abs(params.matrix.max_link)])
-	  //       .clamp(true)
-	  //       .range([0.0, 1.0]);
-	  //   } else if (params.matrix.opacity_function === 'log') {
-	  //     params.matrix.opacity_scale = d3.scale.log()
-	  //       .domain([0.0001, slider_factor * Math.abs(params.matrix.max_link)])
-	  //       .clamp(true)
-	  //       .range([0.0, 1.0]);
-	  //   }
-
-	  //   d3.selectAll(params.root+' .tile')
-	  //     .style('fill-opacity', function (d) {
-	  //       return params.matrix.opacity_scale(Math.abs(d.value));
-	  //     });
-
-	  // };
+	  d3.select(params.viz.zoom_element).on('dblclick.zoom', null);
 		};
 
 /***/ },
@@ -6185,9 +6150,10 @@ var Clustergrammer =
 	    // the translate vector has the initial margin, the first y centering, and pan_dy
 	    // times the scaling zoom_y
 	    var net_y_offset = params.viz.clust.margin.top + center_y + pan_dy * zoom_y;
+	    var net_x_offset = params.viz.clust.margin.left + pan_dx;
 
 	    // reset the zoom and translate
-	    params.zoom_behavior.scale(zoom_y).translate([pan_dx, net_y_offset]);
+	    params.zoom_behavior.scale(zoom_y).translate([net_x_offset, net_y_offset]);
 
 	    label_constrain_and_trim(params);
 
