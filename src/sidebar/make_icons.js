@@ -1,6 +1,7 @@
 var save_svg_png = require('../screenshot/save_svg_png');
 var file_saver = require('../screenshot/file_saver');
 var two_translate_zoom = require('../zoom/two_translate_zoom');
+var deactivate_cropping = require('../matrix/deactivate_cropping');
 
 module.exports = function make_icons(cgm, sidebar){
 
@@ -93,7 +94,6 @@ module.exports = function make_icons(cgm, sidebar){
     .style('padding-left', padding_left)
     .style('padding-right', '-5px')
     .append('i')
-    // .classed('tooltip', true)
     .classed('fa', true)
     .classed('fa-crop', true)
     .classed('crop_button', true)
@@ -108,10 +108,7 @@ module.exports = function make_icons(cgm, sidebar){
       var is_undo = d3.select(this)
         .classed('fa-undo');
 
-      // console.log('is crop '+ String(is_crop))
-      // console.log('is undo '+ String(is_undo))
-
-      // press crop button
+      // press crop button (can be active/incative)
       if (is_crop){
 
         // keep list of names to return to state
@@ -121,9 +118,21 @@ module.exports = function make_icons(cgm, sidebar){
 
         cgm.crop_matrix();
 
-        // show in crop mode (make icon red)
-        d3.select(this)
-          .style('color', 'red');
+        if (d3.select(this).classed('active_cropping') === false){
+          // set active_cropping (button turns red)
+          d3.select(this)
+            .classed('active_cropping', true)
+            .style('color', 'red');
+        } else {
+          // deactivate cropping (button turns blue)
+          d3.select(this)
+            .classed('active_cropping', false)
+            .style('color', '#337ab7');
+
+          deactivate_cropping(cgm);
+        }
+
+
       }
 
       // press undo button
@@ -134,13 +143,8 @@ module.exports = function make_icons(cgm, sidebar){
           .classed('fa-crop', true)
           .classed('fa-undo', false);
 
-
-        // console.log('****** reset to previous state')
-        // console.log(cgm.params.crop_filter_nodes)
-
         // cgm.filter_viz_using_names(cgm.params.crop_filter_nodes);
         cgm.filter_viz_using_nodes(cgm.params.crop_filter_nodes);
-
 
       }
 

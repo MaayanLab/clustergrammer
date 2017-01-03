@@ -11002,9 +11002,11 @@ var Clustergrammer =
 
 /***/ },
 /* 172 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
+
+	var deactivate_cropping = __webpack_require__(198);
 
 	module.exports = function crop_matrix() {
 
@@ -11018,7 +11020,6 @@ var Clustergrammer =
 	  var clust_width = params.viz.clust.dim.width;
 	  var clust_height = params.viz.clust.dim.height;
 
-	  // console.log('cropping matrix');
 	  var x = d3.scale.linear().domain([0, clust_width]).range([0, clust_width]);
 	  var y = d3.scale.linear().domain([0, clust_height]).range([0, clust_height]);
 
@@ -11039,17 +11040,11 @@ var Clustergrammer =
 
 	  d3.select(params.root + ' .brush_group').call(brush);
 
-	  function brushstart() {
-	    // console.log('brush start')
-	  }
+	  function brushstart() {}
 
-	  function brushmove() {
-	    // console.log('brushing')
-	  }
+	  function brushmove() {}
 
 	  function brushend() {
-	    // console.log('brush end')
-
 
 	    var brushing_extent = brush.extent();
 
@@ -11064,7 +11059,7 @@ var Clustergrammer =
 
 	    if (x_start != x_end && y_start != y_end) {
 
-	      setTimeout(disable_cropping, 500);
+	      setTimeout(deactivate_cropping, 500, cgm);
 
 	      // find cropped nodes
 	      var found_nodes = find_cropped_nodes(x_start, x_end, y_start, y_end, brush_start, brush_end);
@@ -11123,13 +11118,6 @@ var Clustergrammer =
 	    });
 
 	    return found_nodes;
-	  }
-
-	  function disable_cropping() {
-
-	    d3.select('.brush_group').transition().style('opacity', 0).remove();
-
-	    cgm.params.is_cropping = false;
 	  }
 
 	  d3.selectAll(params.root + ' .extent').style('opacity', 0.2).style('fill', 'black');
@@ -12848,6 +12836,7 @@ var Clustergrammer =
 	var save_svg_png = __webpack_require__(193);
 	var file_saver = __webpack_require__(171);
 	var two_translate_zoom = __webpack_require__(87);
+	var deactivate_cropping = __webpack_require__(198);
 
 	module.exports = function make_icons(cgm, sidebar) {
 
@@ -12876,18 +12865,13 @@ var Clustergrammer =
 	    cgm.export_matrix();
 	  }).classed('sidebar_tooltip', true).append('span').classed('sidebar_tooltip_text', true).html('Download matrix').style('left', '-200%');
 
-	  row.append('div').classed('clust_icon', true).style('float', 'left').style('width', width_pct).style('padding-left', padding_left).style('padding-right', '-5px').append('i')
-	  // .classed('tooltip', true)
-	  .classed('fa', true).classed('fa-crop', true).classed('crop_button', true).classed('icon_buttons', true).style('font-size', '25px').on('click', function () {
+	  row.append('div').classed('clust_icon', true).style('float', 'left').style('width', width_pct).style('padding-left', padding_left).style('padding-right', '-5px').append('i').classed('fa', true).classed('fa-crop', true).classed('crop_button', true).classed('icon_buttons', true).style('font-size', '25px').on('click', function () {
 
 	    var is_crop = d3.select(this).classed('fa-crop');
 
 	    var is_undo = d3.select(this).classed('fa-undo');
 
-	    // console.log('is crop '+ String(is_crop))
-	    // console.log('is undo '+ String(is_undo))
-
-	    // press crop button
+	    // press crop button (can be active/incative)
 	    if (is_crop) {
 
 	      // keep list of names to return to state
@@ -12897,17 +12881,21 @@ var Clustergrammer =
 
 	      cgm.crop_matrix();
 
-	      // show in crop mode (make icon red)
-	      d3.select(this).style('color', 'red');
+	      if (d3.select(this).classed('active_cropping') === false) {
+	        // set active_cropping (button turns red)
+	        d3.select(this).classed('active_cropping', true).style('color', 'red');
+	      } else {
+	        // deactivate cropping (button turns blue)
+	        d3.select(this).classed('active_cropping', false).style('color', '#337ab7');
+
+	        deactivate_cropping(cgm);
+	      }
 	    }
 
 	    // press undo button
 	    if (is_undo) {
 
 	      d3.select(params.root + ' .crop_button').style('color', '#337ab7').classed('fa-crop', true).classed('fa-undo', false);
-
-	      // console.log('****** reset to previous state')
-	      // console.log(cgm.params.crop_filter_nodes)
 
 	      // cgm.filter_viz_using_names(cgm.params.crop_filter_nodes);
 	      cgm.filter_viz_using_nodes(cgm.params.crop_filter_nodes);
@@ -13231,6 +13219,20 @@ var Clustergrammer =
 	  // $( params.root+' .opacity_slider' ).slider({
 	  //   value:1.0
 	  // });
+		};
+
+/***/ },
+/* 197 */,
+/* 198 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = function deactivate_cropping(cgm) {
+
+	  d3.select('.brush_group').transition().style('opacity', 0).remove();
+
+	  cgm.params.is_cropping = false;
 		};
 
 /***/ }

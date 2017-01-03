@@ -1,3 +1,5 @@
+var deactivate_cropping = require('./deactivate_cropping');
+
 module.exports = function crop_matrix(){
 
   // transform brush-extent based on zoom/translate
@@ -10,7 +12,6 @@ module.exports = function crop_matrix(){
   var clust_width = params.viz.clust.dim.width;
   var clust_height = params.viz.clust.dim.height;
 
-  // console.log('cropping matrix');
   var x = d3.scale.linear()
     .domain([0, clust_width]).range([0, clust_width]);
   var y = d3.scale.linear()
@@ -43,16 +44,12 @@ module.exports = function crop_matrix(){
     .call(brush);
 
   function brushstart() {
-    // console.log('brush start')
   }
 
   function brushmove() {
-    // console.log('brushing')
   }
 
   function brushend() {
-    // console.log('brush end')
-
 
     var brushing_extent = brush.extent();
 
@@ -67,7 +64,7 @@ module.exports = function crop_matrix(){
 
     if (x_start != x_end && y_start != y_end){
 
-      setTimeout(disable_cropping, 500);
+      setTimeout(deactivate_cropping, 500, cgm);
 
       // find cropped nodes
       var found_nodes = find_cropped_nodes(x_start, x_end, y_start, y_end, brush_start, brush_end);
@@ -139,19 +136,10 @@ module.exports = function crop_matrix(){
 
       });
 
-
       return found_nodes;
   }
 
-  function disable_cropping(){
 
-    d3.select('.brush_group')
-      .transition()
-      .style('opacity', 0)
-      .remove();
-
-    cgm.params.is_cropping = false;
-  }
 
   d3.selectAll(params.root+ ' .extent')
     .style('opacity', 0.2)
