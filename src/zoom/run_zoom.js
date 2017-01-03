@@ -13,21 +13,20 @@ module.exports = function zoomed(cgm) {
   zoom_info.trans_x = params.zoom_behavior.translate()[0] - params.viz.clust.margin.left;
   zoom_info.trans_y = params.zoom_behavior.translate()[1] - params.viz.clust.margin.top;
 
-  params.zoom_info = zoom_info;
-
   d3.selectAll(params.viz.root_tips)
     .style('display','none');
 
-  params.zoom_info = zoom_rules_y(cgm);
-  params.zoom_info = zoom_rules_x(cgm);
+  // transfer zoom_info to params
+  params.zoom_info = zoom_rules_y(params.viz, zoom_info);
+  params.zoom_info = zoom_rules_x(params.viz, zoom_info);
 
   // do not run transformation if moving slider
   if (params.is_slider_drag === false && params.is_cropping === false){
 
-    // reset translate vector - add back margins to trans_x and trans_y
-    var new_x = zoom_info.trans_x + params.viz.clust.margin.left;
-    var new_y = zoom_info.trans_y + params.viz.clust.margin.top;
-    params.zoom_behavior.translate([new_x, new_y]);
+    // // reset translate vector - add back margins to trans_x and trans_y
+    // var new_x = zoom_info.trans_x + params.viz.clust.margin.left;
+    // var new_y = zoom_info.trans_y + params.viz.clust.margin.top;
+    // params.zoom_behavior.translate([new_x, new_y]);
 
     run_transformation(params);
 

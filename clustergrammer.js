@@ -5457,20 +5457,19 @@ var Clustergrammer =
 	  zoom_info.trans_x = params.zoom_behavior.translate()[0] - params.viz.clust.margin.left;
 	  zoom_info.trans_y = params.zoom_behavior.translate()[1] - params.viz.clust.margin.top;
 
-	  params.zoom_info = zoom_info;
-
 	  d3.selectAll(params.viz.root_tips).style('display', 'none');
 
-	  params.zoom_info = zoom_rules_y(cgm);
-	  params.zoom_info = zoom_rules_x(cgm);
+	  // transfer zoom_info to params
+	  params.zoom_info = zoom_rules_y(params.viz, zoom_info);
+	  params.zoom_info = zoom_rules_x(params.viz, zoom_info);
 
 	  // do not run transformation if moving slider
 	  if (params.is_slider_drag === false && params.is_cropping === false) {
 
-	    // reset translate vector - add back margins to trans_x and trans_y
-	    var new_x = zoom_info.trans_x + params.viz.clust.margin.left;
-	    var new_y = zoom_info.trans_y + params.viz.clust.margin.top;
-	    params.zoom_behavior.translate([new_x, new_y]);
+	    // // reset translate vector - add back margins to trans_x and trans_y
+	    // var new_x = zoom_info.trans_x + params.viz.clust.margin.left;
+	    // var new_y = zoom_info.trans_y + params.viz.clust.margin.top;
+	    // params.zoom_behavior.translate([new_x, new_y]);
 
 	    run_transformation(params);
 	  }
@@ -5575,14 +5574,6 @@ var Clustergrammer =
 	      }
 	    }
 	  });
-
-	  // // experimental tile display toggling
-	  // var inst_zoom = Number(d3.select(params.root+' .viz_svg').attr('is_zoom'));
-
-	  // if (inst_zoom == 1){
-	  //   d3.selectAll(params.root+' .hide_tile')
-	  //     .style('display', 'none');
-	  // }
 
 	  show_visible_area(params, zoom_info);
 		};
@@ -5934,24 +5925,20 @@ var Clustergrammer =
 
 	"use strict";
 
-	module.exports = function zoom_rules_y(cgm) {
-
-	  var params = cgm.params;
-
-	  var zoom_info = params.zoom_info;
+	module.exports = function zoom_rules_y(viz, zoom_info) {
 
 	  // zoom in the x direction before zooming in the y direction
-	  if (params.viz.zoom_switch_y > 1) {
-	    if (zoom_info.zoom_y < params.viz.zoom_switch_y) {
+	  if (viz.zoom_switch_y > 1) {
+	    if (zoom_info.zoom_y < viz.zoom_switch_y) {
 	      zoom_info.trans_y = 0;
 	      zoom_info.zoom_y = 1;
 	    } else {
-	      zoom_info.zoom_y = zoom_info.zoom_y / params.viz.zoom_switch_y;
+	      zoom_info.zoom_y = zoom_info.zoom_y / viz.zoom_switch_y;
 	    }
 	  }
 
 	  // calculate panning room available in the y direction
-	  zoom_info.pan_room_y = (zoom_info.zoom_y - 1) * params.viz.clust.dim.height;
+	  zoom_info.pan_room_y = (zoom_info.zoom_y - 1) * viz.clust.dim.height;
 
 	  // no positive panning or panning more than pan_room
 	  if (zoom_info.trans_y >= 0) {
@@ -5969,24 +5956,20 @@ var Clustergrammer =
 
 	"use strict";
 
-	module.exports = function zoom_rules_x(cgm) {
-
-	  var params = cgm.params;
-
-	  var zoom_info = params.zoom_info;
+	module.exports = function zoom_rules_x(viz, zoom_info) {
 
 	  // zoom in the y direction before zooming in the x direction
-	  if (params.viz.zoom_switch > 1) {
-	    if (zoom_info.zoom_x < params.viz.zoom_switch) {
+	  if (viz.zoom_switch > 1) {
+	    if (zoom_info.zoom_x < viz.zoom_switch) {
 	      zoom_info.trans_x = 0;
 	      zoom_info.zoom_x = 1;
 	    } else {
-	      zoom_info.zoom_x = zoom_info.zoom_x / params.viz.zoom_switch;
+	      zoom_info.zoom_x = zoom_info.zoom_x / viz.zoom_switch;
 	    }
 	  }
 
 	  // calculate panning room available in the x direction
-	  zoom_info.pan_room_x = (zoom_info.zoom_x - 1) * params.viz.clust.dim.width;
+	  zoom_info.pan_room_x = (zoom_info.zoom_x - 1) * viz.clust.dim.width;
 
 	  // no positive panning or panning more than pan_room
 	  if (zoom_info.trans_x > 0) {

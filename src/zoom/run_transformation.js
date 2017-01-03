@@ -64,7 +64,6 @@ module.exports = function run_transformation(params){
 
   resize_label_val_bars(params, zoom_info);
 
-
   d3.select(params.root+' .viz_svg')
     .attr('is_zoom', function(){
       var inst_zoom = Number(d3.select(params.root+' .viz_svg').attr('is_zoom'));
@@ -126,15 +125,6 @@ module.exports = function run_transformation(params){
     }
 
   });
-
-
-  // // experimental tile display toggling
-  // var inst_zoom = Number(d3.select(params.root+' .viz_svg').attr('is_zoom'));
-
-  // if (inst_zoom == 1){
-  //   d3.selectAll(params.root+' .hide_tile')
-  //     .style('display', 'none');
-  // }
 
   show_visible_area(params, zoom_info);
 

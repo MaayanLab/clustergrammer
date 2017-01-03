@@ -1,21 +1,17 @@
-module.exports = function zoom_rules_y(cgm){
-
-  var params = cgm.params;
-
-  var zoom_info = params.zoom_info;
+module.exports = function zoom_rules_y(viz, zoom_info){
 
   // zoom in the x direction before zooming in the y direction
-  if (params.viz.zoom_switch_y > 1){
-    if (zoom_info.zoom_y < params.viz.zoom_switch_y){
+  if (viz.zoom_switch_y > 1){
+    if (zoom_info.zoom_y < viz.zoom_switch_y){
       zoom_info.trans_y = 0;
       zoom_info.zoom_y = 1;
     } else {
-      zoom_info.zoom_y = zoom_info.zoom_y / params.viz.zoom_switch_y;
+      zoom_info.zoom_y = zoom_info.zoom_y / viz.zoom_switch_y;
     }
   }
 
   // calculate panning room available in the y direction
-  zoom_info.pan_room_y = (zoom_info.zoom_y - 1) * params.viz.clust.dim.height;
+  zoom_info.pan_room_y = (zoom_info.zoom_y - 1) * viz.clust.dim.height;
 
   // no positive panning or panning more than pan_room
   if (zoom_info.trans_y >= 0) {
