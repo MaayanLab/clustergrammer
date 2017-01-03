@@ -3,7 +3,6 @@ var make_rows = require('./labels/make_rows');
 var make_cols = require('./labels/make_cols');
 var generate_super_labels = require('./labels/super_labels');
 var spillover = require('./Spillover');
-// var search = require('./search');
 var initialize_resizing = require('./initialize_resizing');
 var ini_doubleclick = require('./zoom/ini_doubleclick');
 var make_col_cat = require('./dendrogram/make_col_cat');
@@ -15,6 +14,8 @@ var make_svg_dendro_sliders = require('./dendrogram/make_svg_dendro_sliders');
 var make_dendro_crop_buttons = require('./dendrogram/make_dendro_crop_buttons');
 
 module.exports = function make_viz(cgm) {
+
+  console.log('here')
 
   var params = cgm.params;
 
@@ -79,7 +80,9 @@ module.exports = function make_viz(cgm) {
   r_spill_container
     .append('g')
     .classed('row_dendro_icons_container', true)
-    .attr('transform', 'translate(' + x_offset + ','+ y_offset +')');
+    .attr('transform', 'translate(' + x_offset + ','+ y_offset +')')
+    .append('g')
+    .classed('row_dendro_icons_group', true);
 
   make_dendro_crop_buttons(cgm);
 

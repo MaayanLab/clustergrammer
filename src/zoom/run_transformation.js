@@ -36,16 +36,16 @@ module.exports = function run_transformation(params){
       'scale( 1,' + zoom_info.zoom_y + ')');
 
   // dendrogram icons
-  d3.select(params.root+' .row_dendro_icons_container')
+  d3.select(params.root+' .row_dendro_icons_group')
     .attr('transform', function(){
-      var inst_y = zoom_info.trans_y + params.viz.clust.margin.top;
+      var inst_y = zoom_info.trans_y;
       var inst_translate = 'translate(' + [0, inst_y] + ') ' ;
       var inst_zoom = 'scale(1, ' + zoom_info.zoom_y + ')';
       var transform_string = inst_translate + inst_zoom;
       return transform_string;
     });
 
-  d3.select(params.root+' .row_dendro_icons_container')
+  d3.select(params.root+' .row_dendro_icons_group')
     .selectAll('path')
     .attr('transform', function(d){
       var inst_x = 7;

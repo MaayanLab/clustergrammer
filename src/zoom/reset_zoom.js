@@ -36,12 +36,12 @@ module.exports = function(params){
     .attr('transform', ' scale(' + 1 + ',' + 1 + ')' + 'translate(' + [pan_dx, params.viz.uni_margin/2] + ')');
 
   // reset crop button zooming
-  d3.select(params.root+' .row_dendro_icons_container')
+  d3.select(params.root+' .row_dendro_icons_group')
     .attr('transform', function(){
-      return 'translate(0,'+params.viz.clust.margin.top+') scale(1)';
+      return 'translate(0,0) scale(1)';
     });
 
-  d3.select(params.root+' .row_dendro_icons_container')
+  d3.select(params.root+' .row_dendro_icons_group')
     .selectAll('path')
     .attr('transform', function(d){
       var inst_x = 7;

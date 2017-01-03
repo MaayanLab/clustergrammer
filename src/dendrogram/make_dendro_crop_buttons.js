@@ -55,10 +55,10 @@ module.exports = function make_dendro_crop_buttons(cgm, is_change_group = false)
   var scale_down_tri = 0.25;
 
   // make crop buttons or undo buttons
-  if (d3.select('.row_dendro_icons_container').classed('ran_filter') === false){
+  if (d3.select('.row_dendro_icons_group').classed('ran_filter') === false){
 
     // append path
-    icons = d3.select(params.root+' .row_dendro_icons_container')
+    icons = d3.select(params.root+' .row_dendro_icons_group')
       .selectAll('path')
       .data(dendro_info, function(d){return d.name;})
       .enter()
@@ -104,7 +104,7 @@ module.exports = function make_dendro_crop_buttons(cgm, is_change_group = false)
     // run_transition = true;
 
     // append path
-    icons = d3.select(params.root+' .row_dendro_icons_container')
+    icons = d3.select(params.root+' .row_dendro_icons_group')
       .selectAll('path')
       .data(dendro_info, function(d){return d.name;})
       .enter()
@@ -207,12 +207,12 @@ module.exports = function make_dendro_crop_buttons(cgm, is_change_group = false)
         ){
 
         // use class as 'global' variable
-        d3.select(cgm.params.root+' .row_dendro_icons_container')
+        d3.select(cgm.params.root+' .row_dendro_icons_group')
           .classed('ran_filter', true);
 
       } else {
         // use class as 'global' variable
-        d3.select(cgm.params.root+' .row_dendro_icons_container')
+        d3.select(cgm.params.root+' .row_dendro_icons_group')
           .classed('ran_filter', false);
       }
 
@@ -228,21 +228,7 @@ module.exports = function make_dendro_crop_buttons(cgm, is_change_group = false)
     triangle_opacity = 0;
   }
 
-  // if (run_transition){
-  //   d3.select(params.root+' .row_dendro_icons_container')
-  //     .selectAll('path')
-  //     .style('opacity', 0)
-  //     .transition()
-  //     // .delay(1000)
-  //     .duration(1000)
-  //     .style('opacity', triangle_opacity);
-  // } else {
-  //   d3.select(params.root+' .row_dendro_icons_container')
-  //     .selectAll('path')
-  //     .style('opacity', triangle_opacity);
-  // }
-
-  d3.select(params.root+' .row_dendro_icons_container')
+  d3.select(params.root+' .row_dendro_icons_group')
     .selectAll('path')
     .style('opacity', triangle_opacity);
 
