@@ -5,6 +5,13 @@ var ini_zoom_info = require('../zoom/ini_zoom_info');
 
 module.exports = function two_translate_zoom(params, pan_dx, pan_dy, fin_zoom) {
 
+  function show_crop_buttons(){
+    d3.selectAll(params.root+' .row_dendro_crop_buttons')
+      .transition()
+      .duration(search_duration)
+      .style('opacity', inst_button_opacity);
+  }
+
   d3.selectAll(params.viz.root_tips)
     .style('display','none');
 
@@ -133,12 +140,7 @@ module.exports = function two_translate_zoom(params, pan_dx, pan_dy, fin_zoom) {
     d3.selectAll(params.root+' .row_dendro_crop_buttons')
       .style('opacity',0);
 
-    function show_crop_buttons(){
-      d3.selectAll(params.root+' .row_dendro_crop_buttons')
-        .transition()
-        .duration(search_duration)
-        .style('opacity', inst_button_opacity);
-    }
+
     setTimeout(show_crop_buttons, 700);
 
     // transform col labels

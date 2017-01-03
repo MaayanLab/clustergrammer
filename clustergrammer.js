@@ -6139,6 +6139,10 @@ var Clustergrammer =
 
 	module.exports = function two_translate_zoom(params, pan_dx, pan_dy, fin_zoom) {
 
+	  function show_crop_buttons() {
+	    d3.selectAll(params.root + ' .row_dendro_crop_buttons').transition().duration(search_duration).style('opacity', inst_button_opacity);
+	  }
+
 	  d3.selectAll(params.viz.root_tips).style('display', 'none');
 
 	  // setTimeout(show_tooltips, 1000);
@@ -6159,9 +6163,6 @@ var Clustergrammer =
 
 	  // do not allow while transitioning, e.g. reordering
 	  if (!params.viz.run_trans) {
-	    var show_crop_buttons = function show_crop_buttons() {
-	      d3.selectAll(params.root + ' .row_dendro_crop_buttons').transition().duration(search_duration).style('opacity', inst_button_opacity);
-	    };
 
 	    // define the commonly used variable half_height
 	    var half_height = params.viz.clust.dim.height / 2;
