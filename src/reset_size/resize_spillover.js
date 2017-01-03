@@ -133,12 +133,12 @@ module.exports = function resize_spillover(viz, ini_svg_group, delay_info=false)
       return 'translate(0,' + inst_offset + ')';
     });
 
+  var inst_height = viz.cat_room.col + viz.uni_margin;
   // white rect to cover excess labels
   d3.select(viz.viz_svg + ' .top_right_white')
-    // .append('rect')
-    // .attr('fill', viz.background_color)
-    .attr('width', viz.clust.margin.left)
-    .attr('height', viz.cat_room.col)
+    .attr('fill', viz.background_color)
+    .attr('width', 2*viz.clust.dim.width)
+    .attr('height', inst_height)
     .attr('transform', function(){
       var tmp_left = viz.clust.margin.left + viz.clust.dim.width;
       var tmp_top = viz.norm_labels.width.col + viz.norm_labels.margin.top + 2;

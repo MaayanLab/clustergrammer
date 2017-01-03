@@ -4782,12 +4782,11 @@ var Clustergrammer =
 	  d3.select(viz.viz_svg).append('rect').attr('fill', viz.background_color) //!! prog_colors
 	  .attr('width', viz.clust.margin.left).attr('height', viz.clust.margin.top).attr('class', 'top_left_white');
 
+	  var inst_height = viz.cat_room.col + viz.uni_margin;
 	  // white rect to cover excess labels
-	  d3.select(viz.viz_svg).append('rect')
-	  // .attr('fill', viz.background_color)
-	  .attr('fill', viz.background_color).attr('width', viz.clust.margin.left).attr('height', viz.cat_room.col).attr('class', 'top_right_white').attr('transform', function () {
+	  d3.select(viz.viz_svg).append('rect').attr('fill', viz.background_color).attr('width', 2 * viz.clust.dim.width).attr('height', inst_height).attr('class', 'top_right_white').attr('transform', function () {
 	    var tmp_left = viz.clust.margin.left + viz.clust.dim.width;
-	    var tmp_top = viz.norm_labels.width.col + viz.norm_labels.margin.top + 2;
+	    var tmp_top = viz.norm_labels.width.col + viz.norm_labels.margin.top;
 	    return 'translate(' + tmp_left + ', ' + tmp_top + ')';
 	  });
 
@@ -6626,11 +6625,9 @@ var Clustergrammer =
 	    return 'translate(0,' + inst_offset + ')';
 	  });
 
+	  var inst_height = viz.cat_room.col + viz.uni_margin;
 	  // white rect to cover excess labels
-	  d3.select(viz.viz_svg + ' .top_right_white')
-	  // .append('rect')
-	  // .attr('fill', viz.background_color)
-	  .attr('width', viz.clust.margin.left).attr('height', viz.cat_room.col).attr('transform', function () {
+	  d3.select(viz.viz_svg + ' .top_right_white').attr('fill', viz.background_color).attr('width', 2 * viz.clust.dim.width).attr('height', inst_height).attr('transform', function () {
 	    var tmp_left = viz.clust.margin.left + viz.clust.dim.width;
 	    var tmp_top = viz.norm_labels.width.col + viz.norm_labels.margin.top + 2;
 	    return 'translate(' + tmp_left + ', ' + tmp_top + ')';
