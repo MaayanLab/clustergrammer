@@ -1,6 +1,5 @@
 // var build_color_groups = require('./build_color_groups');
 var make_dendro_triangles = require('./make_dendro_triangles');
-var make_col_dendro_triangles = require('./make_col_dendro_triangles');
 
 /* Changes the groupings (x- and y-axis color bars).
  */
@@ -16,12 +15,6 @@ module.exports = function (cgm, inst_rc, inst_index) {
 
   var is_change_group = true;
 
-  if (inst_rc === 'row'){
-    make_dendro_triangles(cgm, 'row', is_change_group);
-  }
-
-  if (inst_rc === 'col'){
-    make_col_dendro_triangles(cgm, is_change_group);
-  }
+  make_dendro_triangles(cgm, inst_rc, is_change_group);
 
 };

@@ -1,5 +1,4 @@
 var make_dendro_triangles = require('../dendrogram/make_dendro_triangles');
-var make_col_dendro_triangles = require('../dendrogram/make_col_dendro_triangles');
 
 module.exports = function toggle_dendro_view(cgm, inst_rc, wait_time = 1500){
 
@@ -16,7 +15,7 @@ module.exports = function toggle_dendro_view(cgm, inst_rc, wait_time = 1500){
 
   if (inst_rc === 'col'){
     if (params.viz.inst_order.row === 'clust'){
-      setTimeout( make_col_dendro_triangles, wait_time, cgm, true);
+      setTimeout( make_dendro_triangles, wait_time, cgm, 'col', true);
     }
   }
 

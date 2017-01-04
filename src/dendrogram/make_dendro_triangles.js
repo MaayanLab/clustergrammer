@@ -40,6 +40,7 @@ module.exports = function make_dendro_triangles(cgm, inst_rc, is_change_group = 
   var inst_dendro_opacity = params.viz.dendro_opacity;
 
   function still_hovering(inst_selection){
+
     if (d3.select(inst_selection).classed('hovering')){
       d3.selectAll(params.viz.root_tips + '_'+ inst_rc +'_dendro_tip')
         .style('opacity', 1)
