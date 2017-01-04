@@ -1,7 +1,5 @@
 module.exports = function run_dendro_filter(cgm, d, inst_rc){
 
-  console.log('run dendro filter\n------------------')
-
   var names = {};
 
   if (cgm.params.dendro_filter.row === false &&
@@ -9,8 +7,6 @@ module.exports = function run_dendro_filter(cgm, d, inst_rc){
       cgm.params.cat_filter.row === false &&
       cgm.params.cat_filter.col === false
     ){
-
-    console.log('run filtering')
 
     d3.select(cgm.params.root+' .'+inst_rc+'_slider_group')
       .style('opacity', 0.35)
@@ -40,8 +36,6 @@ module.exports = function run_dendro_filter(cgm, d, inst_rc){
 
   /* reset filter */
   } else {
-
-    console.log('reset filtering')
 
     names[inst_rc] = cgm.params.dendro_filter[inst_rc];
 

@@ -67,7 +67,7 @@ module.exports = function run_transformation(params){
       var inst_translate = 'translate('+ [inst_x, 0] + ')';
       var inst_zoom = 'scale('+ zoom_info.zoom_x + ', 1)';
       var transform_string = inst_translate + inst_zoom;
-      return transform_string
+      return transform_string;
     });
 
   // transform icons (undo zoom on triangles)
