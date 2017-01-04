@@ -3992,6 +3992,8 @@ module.exports =
 	    /* filter using dendrogram */
 	    if (cgm.params.dendro_filter.row === false && cgm.params.dendro_filter.col === false && cgm.params.cat_filter.row === false && cgm.params.cat_filter.col === false) {
 
+	      // Run Filtering
+	      ///////////////////
 	      // use class as 'global' variable
 	      d3.select(cgm.params.root + ' .' + inst_rc + '_dendro_icons_group').attr('transform', 'translate(0,0), scale(1,1)').classed('ran_filter', true);
 
@@ -4003,6 +4005,9 @@ module.exports =
 	      // do not display other crop buttons since they are inactive
 	      d3.select(cgm.params.root + ' .' + other_rc + '_dendro_icons_container').style('display', 'none');
 	    } else {
+
+	      // Undo Filtering
+	      ///////////////////
 	      // use class as 'global' variable
 	      d3.select(cgm.params.root + ' .' + inst_rc + '_dendro_icons_group').attr('transform', 'translate(0,0), scale(1,1)').classed('ran_filter', false);
 
@@ -4018,6 +4023,8 @@ module.exports =
 	    }
 
 	    run_dendro_filter(cgm, d, inst_rc);
+
+	    cgm.reset_cats();
 	  }).call(dendro_crop_tip);
 
 	  // ordering has been reversed

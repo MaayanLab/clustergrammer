@@ -261,6 +261,8 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc){
           cgm.params.cat_filter.col === false
         ){
 
+        // Run Filtering
+        ///////////////////
         // use class as 'global' variable
         d3.select(cgm.params.root+' .'+inst_rc+'_dendro_icons_group')
           .attr('transform', 'translate(0,0), scale(1,1)')
@@ -278,6 +280,9 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc){
           .style('display', 'none');
 
       } else {
+
+        // Undo Filtering
+        ///////////////////
         // use class as 'global' variable
         d3.select(cgm.params.root+' .'+inst_rc+'_dendro_icons_group')
           .attr('transform', 'translate(0,0), scale(1,1)')
@@ -298,6 +303,8 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc){
       }
 
       run_dendro_filter(cgm, d, inst_rc);
+
+      // cgm.reset_cats();
 
     })
     .call(dendro_crop_tip);

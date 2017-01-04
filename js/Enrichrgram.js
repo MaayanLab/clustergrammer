@@ -163,21 +163,11 @@ function Enrichr_request(inst_cgm){
       .style('display', 'none')
       .on('click', function(){
 
+
         // reset enrichr menu
         toggle_enrichr_menu();
 
-        d3.select(this)
-          .style('display', 'none');
-
-        d3.select(inst_cgm.params.root+' .enr_lib_section')
-          .selectAll('g')
-          .select('circle')
-          .style('fill','white');
-
-        // clear categories
-        inst_cgm.reset_cats();
-
-        d3.selectAll(inst_cgm.params.root+' .enrichr_bars').remove();
+        clear_enrichr_results();
 
       })
 
@@ -258,6 +248,26 @@ function Enrichr_request(inst_cgm){
 
         setTimeout(toggle_enrichr_menu, 500);
       })
+
+  }
+
+  function clear_enrichr_results(){
+
+    d3.select(inst_cgm.params.root+ ' .enr_menu_clear')
+      .style('display', 'none');
+
+    // unselect library
+    d3.select(inst_cgm.params.root+' .enr_lib_section')
+      .selectAll('g')
+      .select('circle')
+      .style('fill','white');
+
+    // clear categories
+    inst_cgm.reset_cats();
+
+    // remove title and bars
+    d3.select(inst_cgm.params.root+' .enr_title').remove();
+    d3.selectAll(inst_cgm.params.root+' .enrichr_bars').remove();
 
   }
 
@@ -576,6 +586,7 @@ function Enrichr_request(inst_cgm){
   enr_obj.enrichr_rows = enrichr_rows;
   enr_obj.enr_data_to_cats = enr_data_to_cats;
   enr_obj.update_viz_callback = update_viz_callback;
+  enr_obj.clear_enrichr_results = clear_enrichr_results;
 
   return enr_obj;
 
