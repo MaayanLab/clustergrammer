@@ -280,9 +280,11 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc){
         d3.select(cgm.params.root+' .'+inst_rc+'_dendro_icons_group')
           .classed('ran_filter', false);
 
-        // display slider when cropping has not been done
-        d3.select(cgm.params.root+' .'+inst_rc+'_slider_group')
-          .style('display', 'block');
+        if (params.viz.inst_order[other_rc] === 'clust'){
+          // display slider when cropping has not been done
+          d3.select(cgm.params.root+' .'+inst_rc+'_slider_group')
+            .style('display', 'block');
+          }
 
         // display other crop buttons when cropping has not been done
         d3.select(cgm.params.root+' .'+other_rc+'_dendro_icons_container')
@@ -294,16 +296,22 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc){
     })
     .call(dendro_crop_tip);
 
+  // ordering has been reversed
   var triangle_opacity;
-  if (params.viz.inst_order[inst_rc] === 'clust'){
+  if (params.viz.inst_order[other_rc] === 'clust'){
     triangle_opacity = button_opacity;
   } else {
     triangle_opacity = 0;
+
+    // do not display if not in cluster order
+    d3.select(params.root+' .'+inst_rc+'_dendro_icons_group')
+      .selectAll('path')
+      .style('display', 'none');
+
   }
 
   d3.select(params.root+' .'+inst_rc+'_dendro_icons_group')
     .selectAll('path')
     .style('opacity', triangle_opacity);
-
 
 };

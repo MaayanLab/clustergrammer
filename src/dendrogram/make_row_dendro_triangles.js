@@ -1,24 +1,39 @@
 var calc_row_dendro_triangles = require('./calc_row_dendro_triangles');
+var calc_col_dendro_triangles = require('./calc_col_dendro_triangles');
 var dendro_group_highlight = require('./dendro_group_highlight');
 var dendro_mouseover = require('./dendro_mouseover');
 var dendro_mouseout = require('./dendro_mouseout');
 var d3_tip_custom = require('../tooltip/d3_tip_custom');
 var make_dendro_crop_buttons = require('./make_dendro_crop_buttons');
 
-module.exports = function make_row_dendro_triangles(cgm, is_change_group = false){
+module.exports = function make_row_dendro_triangles(cgm, inst_rc, is_change_group = false)
+{
 
   var params = cgm.params;
 
+  var other_rc;
+  if (inst_rc === 'row'){
+    other_rc = 'col';
+  } else {
+    other_rc = 'row';
+  }
+
   // orders are switched!
-  if (params.viz.inst_order.col === 'clust'){
-    d3.select(params.root+' .row_slider_group')
+  if (params.viz.inst_order[other_rc] === 'clust'){
+    d3.select(params.root+' .'+ inst_rc +'_slider_group')
       .style('opacity', 1);
   }
 
-  var dendro_info = calc_row_dendro_triangles(params);
+  var dendro_info;
 
-  if (d3.select(cgm.params.root+' .row_dendro_crop_buttons').empty() === false){
-    make_dendro_crop_buttons(cgm, 'row');
+  if (inst_rc === 'row'){
+    dendro_info = calc_row_dendro_triangles(params);
+  } else {
+    dendro_info = calc_col_dendro_triangles(params);
+  }
+
+  if (d3.select(cgm.params.root+' .'+ inst_rc +'_dendro_crop_buttons').empty() === false){
+    make_dendro_crop_buttons(cgm, inst_rc);
   }
 
   // constant dendrogram opacity
@@ -54,11 +69,9 @@ module.exports = function make_row_dendro_triangles(cgm, is_change_group = false
     .style('display','none')
     .style('opacity', 0)
     .html(function(){
-
       var full_string = 'Click for cluster information <br>'+
                         'and additional options.';
       return full_string;
-
     });
 
   // run transition rules
@@ -113,7 +126,7 @@ module.exports = function make_row_dendro_triangles(cgm, is_change_group = false
 
       dendro_mouseover(cgm, this);
 
-      dendro_group_highlight(params, this, d, inst_rc, dendro_tip);
+      dendro_group_highlight(params, this, d, inst_rc);
 
       dendro_tip.show(d);
 
@@ -127,7 +140,7 @@ module.exports = function make_row_dendro_triangles(cgm, is_change_group = false
 
     })
     .on('mouseout', function(){
-      if (params.viz.inst_order.col === 'clust'){
+      if (params.viz.inst_order[other_rc] === 'clust'){
         d3.select(this)
           .style('opacity', inst_dendro_opacity);
       }
@@ -151,7 +164,7 @@ module.exports = function make_row_dendro_triangles(cgm, is_change_group = false
     .call(dendro_tip);
 
   var triangle_opacity;
-  if (params.viz.inst_order.col === 'clust'){
+  if (params.viz.inst_order[other_rc] === 'clust'){
     triangle_opacity = inst_dendro_opacity;
   } else {
     triangle_opacity = 0;

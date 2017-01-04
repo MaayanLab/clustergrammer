@@ -17,7 +17,7 @@ module.exports = function (cgm, inst_rc, inst_index) {
   var is_change_group = true;
 
   if (inst_rc === 'row'){
-    make_row_dendro_triangles(cgm, is_change_group);
+    make_row_dendro_triangles(cgm, 'row', is_change_group);
   }
 
   if (inst_rc === 'col'){

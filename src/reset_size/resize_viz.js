@@ -164,7 +164,7 @@ module.exports = function(cgm) {
 
   var is_resize = true;
   if (params.viz.show_dendrogram){
-    make_row_dendro_triangles(cgm, is_resize);
+    make_row_dendro_triangles(cgm, 'row', is_resize);
     make_col_dendro_triangles(cgm, is_resize);
     resize_dendro(params, svg_group);
 
