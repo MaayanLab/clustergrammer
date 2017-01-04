@@ -3750,32 +3750,52 @@ var Clustergrammer =
 	  // need to improve to account for zooming
 	  var min_tri_height = 45;
 	  var scale_down_tri = 0.25;
-	  var tri_height = 10;
-	  var tri_width = 12;
+	  var tri_height;
+	  var tri_width;
 
 	  // make crop buttons or undo buttons
 	  var button_class = inst_rc + '_dendro_crop_buttons';
 	  if (d3.select('.' + inst_rc + '_dendro_icons_group').classed('ran_filter') === false) {
 
-	    // append path
+	    // Inward pointing triangle
+	    //////////////////////////////
 	    icons = d3.select(params.root + ' .' + inst_rc + '_dendro_icons_group').selectAll('path').data(dendro_info, function (d) {
 	      return d.name;
 	    }).enter().append('path').classed(button_class, true).attr('d', function (d) {
 
+	      // redefine
+	      tri_height = 10;
+	      tri_width = 12;
+
 	      var tmp_height = d.pos_bot - d.pos_top;
-	      if (tmp_height < min_tri_height) {
-	        tri_height = tmp_height * scale_down_tri;
+
+	      if (inst_rc === 'row') {
+
+	        if (tmp_height < min_tri_height) {
+	          tri_height = tmp_height * scale_down_tri;
+	        }
+
+	        // pointing left
+	        var start_x = tri_width;
+	        var start_y = -tri_height;
+	        var mid_x = 0;
+	        var mid_y = 0;
+	        var final_x = tri_width;
+	        var final_y = tri_height;
+	      } else {
+
+	        if (tmp_height < min_tri_height) {
+	          tri_width = tmp_height * scale_down_tri;
+	        }
+
+	        // pointing upward
+	        var start_x = -tri_width;
+	        var start_y = tri_height;
+	        var mid_x = 0;
+	        var mid_y = 0;
+	        var final_x = tri_width;
+	        var final_y = tri_height;
 	      }
-
-	      // up triangle
-	      var start_x = tri_width;
-	      var start_y = -tri_height;
-
-	      var mid_x = 0;
-	      var mid_y = 0;
-
-	      var final_x = tri_width;
-	      var final_y = tri_height;
 
 	      var output_string = 'M' + start_x + ',' + start_y + ', L' + mid_x + ', ' + mid_y + ', L' + final_x + ',' + final_y + ' Z';
 
@@ -3788,28 +3808,45 @@ var Clustergrammer =
 	    });
 	  } else {
 
-	    // trantiion in undo icon always
-	    // run_transition = true;
-
-	    // append path
+	    // Inward pointing triangle
+	    //////////////////////////////
 	    icons = d3.select(params.root + ' .' + inst_rc + '_dendro_icons_group').selectAll('path').data(dendro_info, function (d) {
 	      return d.name;
 	    }).enter().append('path').classed(button_class, true).attr('d', function (d) {
 
+	      // redefine
+	      tri_height = 10;
+	      tri_width = 12;
+
 	      var tmp_height = d.pos_bot - d.pos_top;
-	      if (tmp_height < min_tri_height) {
-	        tri_height = tmp_height * scale_down_tri;
+
+	      if (inst_rc === 'row') {
+
+	        if (tmp_height < min_tri_height) {
+	          tri_height = tmp_height * scale_down_tri;
+	        }
+
+	        // pointing right
+	        var start_x = 0;
+	        var start_y = -tri_height;
+	        var mid_x = tri_width;
+	        var mid_y = 0;
+	        var final_x = 0;
+	        var final_y = tri_height;
+	      } else {
+
+	        if (tmp_height < min_tri_height) {
+	          tri_width = tmp_height * scale_down_tri;
+	        }
+
+	        // pointing downward
+	        var start_x = -tri_width;
+	        var start_y = 0;
+	        var mid_x = 0;
+	        var mid_y = tri_height;
+	        var final_x = tri_width;
+	        var final_y = 0;
 	      }
-
-	      // up triangle
-	      var start_x = 0;
-	      var start_y = -tri_height;
-
-	      var mid_x = tri_width;
-	      var mid_y = 0;
-
-	      var final_x = 0;
-	      var final_y = tri_height;
 
 	      var output_string = 'M' + start_x + ',' + start_y + ', L' + mid_x + ', ' + mid_y + ', L' + final_x + ',' + final_y + ' Z';
 
