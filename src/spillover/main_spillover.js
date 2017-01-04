@@ -38,7 +38,7 @@ module.exports = function Spillover(cgm) {
     .attr('height', viz.clust.margin.top)
     .attr('class', 'top_left_white');
 
-  var inst_height = viz.cat_room.col + viz.uni_margin;
+  var inst_height = viz.cat_room.col + 2*viz.uni_margin;
   // white rect to cover excess labels
   d3.select(viz.viz_svg)
     .append('rect')
@@ -48,7 +48,7 @@ module.exports = function Spillover(cgm) {
     .attr('class', 'top_right_white')
     .attr('transform', function(){
       var tmp_left = viz.clust.margin.left + viz.clust.dim.width;
-      var tmp_top = viz.norm_labels.width.col + viz.norm_labels.margin.top;
+      var tmp_top = viz.norm_labels.width.col + viz.norm_labels.margin.top - viz.uni_margin;
       return 'translate('+tmp_left+', '+ tmp_top +')';
     });
 
@@ -123,7 +123,6 @@ module.exports = function Spillover(cgm) {
     .append('g')
     .classed('col_dendro_icons_group', true);
 
-  console.log('main spillover')
   make_dendro_crop_buttons(cgm, 'col');
 
   var x_offset = viz.clust.margin.left + viz.clust.dim.width;
@@ -141,9 +140,6 @@ module.exports = function Spillover(cgm) {
     .classed('white_bars',true)
     .classed('dendro_corner_spillover',true);
 
-
   ini_cat_reorder(cgm);
-
-
 
 };

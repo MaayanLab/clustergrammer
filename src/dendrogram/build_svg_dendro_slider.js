@@ -6,9 +6,6 @@ module.exports = function build_svg_dendro_slider(cgm, inst_rc){
   var slider_length = 100;
 
   var drag = d3.behavior.drag()
-      // .origin(function(d) {
-      //   return {x: d[0], y: d[1]};
-      // })
       .on("drag", dragging)
       .on('dragend', function(){
         cgm.params.is_slider_drag = false;
@@ -20,65 +17,76 @@ module.exports = function build_svg_dendro_slider(cgm, inst_rc){
 
   position_svg_dendro_slider(cgm, inst_rc);
 
-    slider_group
-      .append("line")
-      .style('stroke-width', slider_length/7+'px')
-      .style('stroke', 'black')
-      .style('stroke-linecap', 'round')
-      .style('opacity', 0.0)
-      .attr("y1", 0)
-      .attr("y2", function(){
-        return slider_length-2;
-      })
-      .on('click', click_dendro_slider);
+  var rect_height = slider_length + 20;
+  var rect_width = 30;
+  slider_group
+    .append('rect')
+    .classed(inst_rc+'_slider_background', true)
+    .attr('height', rect_height+'px')
+    .attr('width', rect_width+'px')
+    .attr('fill', cgm.params.viz.background_color)
+    .attr('transform', function(){
+      var translate_string = 'translate(-10, -5)';
+      return translate_string;
+    })
+
+  slider_group
+    .append("line")
+    .style('stroke-width', slider_length/7+'px')
+    .style('stroke', 'black')
+    .style('stroke-linecap', 'round')
+    .style('opacity', 0.0)
+    .attr("y1", 0)
+    .attr("y2", function(){
+      return slider_length-2;
+    })
+    .on('click', click_dendro_slider);
+
+  var offset_triangle = -slider_length/40;
+  slider_group
+    .append('path')
+    .style('fill', 'black')
+    .attr('transform', 'translate('+offset_triangle+', 0)')
+    .attr('d', function() {
+
+      // up triangle
+      var start_x = 0 ;
+      var start_y = 0;
+
+      var mid_x = 0;
+      var mid_y = slider_length;
+
+      var final_x = slider_length/10;
+      var final_y = 0;
+
+      var output_string = 'M' + start_x + ',' + start_y + ', L' +
+      mid_x + ', ' + mid_y + ', L'
+      + final_x + ','+ final_y +' Z';
+
+      return output_string;
+    })
+    .style('opacity', 0.35)
+    .on('click', click_dendro_slider);
 
 
-
-    var offset_triangle = -slider_length/40;
-    slider_group
-      .append('path')
-      .style('fill', 'black')
-      .attr('transform', 'translate('+offset_triangle+', 0)')
-      .attr('d', function() {
-
-        // up triangle
-        var start_x = 0 ;
-        var start_y = -2;
-
-        var mid_x = 0;
-        var mid_y = slider_length;
-
-        var final_x = slider_length/10;
-        var final_y = -2;
-
-        var output_string = 'M' + start_x + ',' + start_y + ', L' +
-        mid_x + ', ' + mid_y + ', L'
-        + final_x + ','+ final_y +' Z';
-
-        return output_string;
-      })
-      .style('opacity', 0.35)
-      .on('click', click_dendro_slider);
-
-
-    var default_opacity = 0.35;
-    var high_opacity = 0.6;
-    slider_group
-      .append('circle')
-      .classed(inst_rc+'_group_circle', true)
-      .attr('r', slider_length * 0.08)
-      .attr('transform', function(){
-        return 'translate(0, '+slider_length/2+')';
-      })
-      .style('fill', 'blue')
-      .style('opacity', default_opacity)
-      .on('mouseover', function(){
-        d3.select(this).style('opacity', high_opacity);
-      })
-      .on('mouseout', function(){
-        d3.select(this).style('opacity', default_opacity);
-      })
-      .call(drag);
+  var default_opacity = 0.35;
+  var high_opacity = 0.6;
+  slider_group
+    .append('circle')
+    .classed(inst_rc+'_group_circle', true)
+    .attr('r', slider_length * 0.08)
+    .attr('transform', function(){
+      return 'translate(0, '+slider_length/2+')';
+    })
+    .style('fill', 'blue')
+    .style('opacity', default_opacity)
+    .on('mouseover', function(){
+      d3.select(this).style('opacity', high_opacity);
+    })
+    .on('mouseout', function(){
+      d3.select(this).style('opacity', default_opacity);
+    })
+    .call(drag);
 
   function dragging() {
 
