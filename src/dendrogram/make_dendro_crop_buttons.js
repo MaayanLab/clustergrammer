@@ -2,8 +2,7 @@ var calc_row_dendro_triangles = require('./calc_row_dendro_triangles');
 var calc_col_dendro_triangles = require('./calc_col_dendro_triangles');
 var d3_tip_custom = require('../tooltip/d3_tip_custom');
 var dendro_group_highlight = require('./dendro_group_highlight');
-var row_dendro_filter = require('./row_dendro_filter');
-var col_dendro_filter = require('./col_dendro_filter');
+var run_dendro_filter = require('./run_dendro_filter');
 
 module.exports = function make_dendro_crop_buttons(cgm, inst_rc, is_change_group = false){
 
@@ -20,6 +19,9 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc, is_change_group
   } else {
     dendro_info = calc_col_dendro_triangles(params);
   }
+
+  console.log(inst_rc)
+  console.log(dendro_info)
 
 
   // d3-tooltip
@@ -50,14 +52,7 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc, is_change_group
   var wait_before_tooltip = 500;
 
   d3.selectAll( params.viz.root_tips + '_'+ inst_rc +'_dendro_crop_tip').remove();
-
-  // if (is_change_group){
-  //   // run_transition = false;
-  // }
-
-  //
-  d3.selectAll(params.root+' .'+ inst_rc +'_dendro_crop_buttons')
-    .remove();
+  d3.selectAll(params.root+' .'+ inst_rc +'_dendro_crop_buttons').remove();
 
   var inst_x;
   var icons;
@@ -274,11 +269,7 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc, is_change_group
           .classed('ran_filter', false);
       }
 
-      if (inst_rc === 'row'){
-        row_dendro_filter(cgm, d);
-      } else {
-        col_dendro_filter(cgm, d, this);
-      }
+      run_dendro_filter(cgm, d, inst_rc);
 
     })
     .call(dendro_crop_tip);

@@ -2,7 +2,6 @@ var calc_col_dendro_triangles = require('./calc_col_dendro_triangles');
 var dendro_group_highlight = require('./dendro_group_highlight');
 var dendro_mouseover = require('./dendro_mouseover');
 var dendro_mouseout = require('./dendro_mouseout');
-var col_dendro_filter = require('./col_dendro_filter');
 
 module.exports = function make_col_dendro_triangles(cgm, is_change_group = false){
 
@@ -80,16 +79,12 @@ module.exports = function make_col_dendro_triangles(cgm, is_change_group = false
       dendro_mouseout(this);
     })
     .on('click', function(d){
-      if (d3.event.shiftKey === true){
-        col_dendro_filter(cgm, d, this);
-      } else {
 
-        $(params.root+' .dendro_info').modal('toggle');
-        var group_string = d.all_names.join(', ');
-        d3.select(params.root+' .dendro_info input')
-          .attr('value', group_string);
+      $(params.root+' .dendro_info').modal('toggle');
+      var group_string = d.all_names.join(', ');
+      d3.select(params.root+' .dendro_info input')
+        .attr('value', group_string);
 
-      }
     });
 
   var triangle_opacity;

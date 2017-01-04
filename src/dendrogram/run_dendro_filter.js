@@ -1,20 +1,20 @@
-module.exports = function col_dendro_filter(cgm, d, inst_selection){
+module.exports = function run_dendro_filter(cgm, d, inst_rc){
 
   var names = {};
-  if (cgm.params.dendro_filter.row === false){
+  if (cgm.params.dendro_filter.col === false){
 
-    /* filter cols using dendrogram */
-    if (cgm.params.dendro_filter.col === false &&
+    if (cgm.params.dendro_filter.row === false &&
         cgm.params.cat_filter.row === false &&
-        cgm.params.cat_filter.col === false){
+        cgm.params.cat_filter.col === false
+      ){
 
-      d3.select(cgm.params.root+' .col_slider_group')
+      d3.select(cgm.params.root+' .'+inst_rc+'_slider_group')
         .style('opacity', 0.35)
         .style('pointer-events','none');
 
-      names.col = d.all_names;
+      names[inst_rc] = d.all_names;
 
-      var tmp_names = cgm.params.network_data.col_nodes_names;
+      var tmp_names = cgm.params.network_data[inst_rc+'_nodes_names'];
 
       // keep a backup of the inst_view
       var inst_row_nodes = cgm.params.network_data.row_nodes;
@@ -22,7 +22,6 @@ module.exports = function col_dendro_filter(cgm, d, inst_selection){
 
       cgm.filter_viz_using_names(names);
 
-      // save backup of the inst_view
       cgm.params.inst_nodes.row_nodes = inst_row_nodes;
       cgm.params.inst_nodes.col_nodes = inst_col_nodes;
 
@@ -32,20 +31,20 @@ module.exports = function col_dendro_filter(cgm, d, inst_selection){
         .style('opacity',0)
         .remove();
 
-      // keep the names of all the cols
-      cgm.params.dendro_filter.col = tmp_names;
-
-      d3.select(inst_selection)
-        .style('opacity',1);
+      // keep the names of all the nodes
+      cgm.params.dendro_filter[inst_rc] = tmp_names;
 
     /* reset filter */
     } else {
 
-      names.col = cgm.params.dendro_filter.col;
+      names[inst_rc] = cgm.params.dendro_filter[inst_rc];
 
       cgm.filter_viz_using_names(names);
-      cgm.params.dendro_filter.col = false;
+      cgm.params.dendro_filter[inst_rc] = false;
 
     }
+
   }
+
+
 };
