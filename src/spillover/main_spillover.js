@@ -30,7 +30,7 @@ module.exports = function Spillover(cgm) {
     .attr('transform', 'translate(-1,' + viz.norm_labels.width.col +
     ')');
 
-  var rect_height = viz.clust.margin.top + viz.uni_margin;
+  var rect_height = viz.clust.margin.top + viz.uni_margin/5;
   // white rect to cover excess labels
   d3.select(viz.viz_svg)
     .append('rect')
@@ -52,9 +52,6 @@ module.exports = function Spillover(cgm) {
       var tmp_top = viz.norm_labels.width.col + viz.norm_labels.margin.top - viz.uni_margin;
       return 'translate('+tmp_left+', '+ tmp_top +')';
     });
-
-
-
 
   x_offset = viz.clust.margin.left + viz.clust.dim.width + viz.uni_margin;
   y_offset = viz.norm_labels.margin.top + viz.norm_labels.width.col

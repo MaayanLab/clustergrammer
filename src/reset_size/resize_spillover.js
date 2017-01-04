@@ -26,7 +26,7 @@ module.exports = function resize_spillover(viz, ini_svg_group, delay_info=false)
     .attr('transform', 'translate(-1,' + viz.norm_labels.width.col +')');
 
 
-  var rect_height = viz.clust.margin.top + viz.uni_margin;
+  var rect_height = viz.clust.margin.top + viz.uni_margin/5;
   svg_group
     .select(viz.root+' .top_left_white')
     .attr('width', viz.clust.margin.left)

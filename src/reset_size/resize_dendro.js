@@ -1,5 +1,7 @@
 module.exports = function resize_dendro(params, svg_group, delay_info=false){
 
+  console.log('resize dendros')
+
   // resize dendrogram
   ///////////////////
 
@@ -39,7 +41,7 @@ module.exports = function resize_dendro(params, svg_group, delay_info=false){
       .attr('transform', function(d) {
         var inst_index = _.indexOf(col_nodes_names, d.name);
         return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
-      });        
+      });
 
   } else {
 
@@ -61,7 +63,7 @@ module.exports = function resize_dendro(params, svg_group, delay_info=false){
       .attr('transform', function(d) {
         var inst_index = _.indexOf(col_nodes_names, d.name);
         return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
-      });        
+      });
 
   }
 
@@ -99,7 +101,7 @@ module.exports = function resize_dendro(params, svg_group, delay_info=false){
   d3.select(params.root+' .row_dendro_outer_container')
     .select('.row_dendro_spillover')
     .attr('width', spillover_width + 'px')
-    .attr('height', params.viz.svg_dim.height); 
+    .attr('height', params.viz.svg_dim.height);
 
   x_offset = params.viz.clust.margin.left;
   y_offset = params.viz.clust.margin.top + params.viz.clust.dim.height;
@@ -116,4 +118,4 @@ module.exports = function resize_dendro(params, svg_group, delay_info=false){
     .attr('height', params.viz.svg_dim.height)
     .attr('transform', 'translate(0,'+params.viz.dendro_room.col+')');
 
-}; 
+};

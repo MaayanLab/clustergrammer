@@ -6143,6 +6143,8 @@ var Clustergrammer =
 	  var delay_info = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
 
 
+	  console.log('resize dendros');
+
 	  // resize dendrogram
 	  ///////////////////
 
@@ -6356,7 +6358,7 @@ var Clustergrammer =
 
 	  svg_group.select(viz.root + ' .left_slant_triangle').attr('transform', 'translate(-1,' + viz.norm_labels.width.col + ')');
 
-	  var rect_height = viz.clust.margin.top + viz.uni_margin;
+	  var rect_height = viz.clust.margin.top + viz.uni_margin / 5;
 	  svg_group.select(viz.root + ' .top_left_white').attr('width', viz.clust.margin.left).attr('height', rect_height);
 
 	  var tmp_left = viz.clust.margin.left + viz.clust.dim.width + viz.uni_margin + viz.dendro_room.row;
@@ -13067,7 +13069,7 @@ var Clustergrammer =
 	  // shift left by 1 px to prevent cutting off labels
 	  .attr('transform', 'translate(-1,' + viz.norm_labels.width.col + ')');
 
-	  var rect_height = viz.clust.margin.top + viz.uni_margin;
+	  var rect_height = viz.clust.margin.top + viz.uni_margin / 5;
 	  // white rect to cover excess labels
 	  d3.select(viz.viz_svg).append('rect').attr('fill', viz.background_color) //!! prog_colors
 	  .attr('width', viz.clust.margin.left).attr('height', rect_height).attr('class', 'top_left_white');
