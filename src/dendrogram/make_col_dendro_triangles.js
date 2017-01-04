@@ -16,16 +16,10 @@ module.exports = function make_col_dendro_triangles(cgm, is_change_group = false
   var dendro_info = calc_col_dendro_triangles(params);
 
   if (d3.select(cgm.params.root+' .col_dendro_crop_buttons').empty() === false){
-    console.log('make_col_dendro_triangles')
     make_dendro_crop_buttons(cgm, 'col', )
   }
 
-  var inst_dendro_opacity;
-  if (dendro_info.length > 1){
-     inst_dendro_opacity = params.viz.dendro_opacity;
-  } else {
-     inst_dendro_opacity = 0.90;
-  }
+  var inst_dendro_opacity = params.viz.dendro_opacity;
 
   var run_transition;
   if (d3.selectAll(params.root+' .col_dendro_group').empty()){

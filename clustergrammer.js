@@ -3389,7 +3389,6 @@ var Clustergrammer =
 	  var dendro_info = calc_row_dendro_triangles(params);
 
 	  if (d3.select(cgm.params.root + ' .row_dendro_crop_buttons').empty() === false) {
-	    console.log('make_row_dendro_triangles');
 	    make_dendro_crop_buttons(cgm, 'row', is_change_group);
 	  }
 
@@ -3950,16 +3949,10 @@ var Clustergrammer =
 	  var dendro_info = calc_col_dendro_triangles(params);
 
 	  if (d3.select(cgm.params.root + ' .col_dendro_crop_buttons').empty() === false) {
-	    console.log('make_col_dendro_triangles');
 	    make_dendro_crop_buttons(cgm, 'col');
 	  }
 
-	  var inst_dendro_opacity;
-	  if (dendro_info.length > 1) {
-	    inst_dendro_opacity = params.viz.dendro_opacity;
-	  } else {
-	    inst_dendro_opacity = 0.90;
-	  }
+	  var inst_dendro_opacity = params.viz.dendro_opacity;
 
 	  var run_transition;
 	  if (d3.selectAll(params.root + ' .col_dendro_group').empty()) {

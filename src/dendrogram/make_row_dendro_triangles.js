@@ -18,7 +18,6 @@ module.exports = function make_row_dendro_triangles(cgm, is_change_group = false
   var dendro_info = calc_row_dendro_triangles(params);
 
   if (d3.select(cgm.params.root+' .row_dendro_crop_buttons').empty() === false){
-    console.log('make_row_dendro_triangles')
     make_dendro_crop_buttons(cgm, 'row', is_change_group);
   }
 
