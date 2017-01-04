@@ -1,7 +1,5 @@
 module.exports = function resize_dendro(params, svg_group, delay_info=false){
 
-  console.log('resize dendros')
-
   // resize dendrogram
   ///////////////////
 

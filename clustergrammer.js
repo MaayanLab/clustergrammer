@@ -3707,10 +3707,13 @@ var Clustergrammer =
 
 	  // information needed to make dendro
 	  var dendro_info;
+	  var other_rc;
 	  if (inst_rc === 'row') {
 	    dendro_info = calc_row_dendro_triangles(params);
+	    other_rc = 'col';
 	  } else {
 	    dendro_info = calc_col_dendro_triangles(params);
+	    other_rc = 'row';
 	  }
 
 	  // d3-tooltip
@@ -3905,9 +3908,21 @@ var Clustergrammer =
 
 	      // use class as 'global' variable
 	      d3.select(cgm.params.root + ' .' + inst_rc + '_dendro_icons_group').attr('transform', 'translate(0,0), scale(1,1)').classed('ran_filter', true);
+
+	      // do not display dendrogram slider if filtering has been run
+	      d3.select(cgm.params.root + ' .' + inst_rc + '_slider_group').style('display', 'none');
+
+	      // do not display other crop buttons since they are inactive
+	      d3.select(cgm.params.root + ' .' + other_rc + '_dendro_icons_container').style('display', 'none');
 	    } else {
 	      // use class as 'global' variable
 	      d3.select(cgm.params.root + ' .' + inst_rc + '_dendro_icons_group').classed('ran_filter', false);
+
+	      // display slider when cropping has not been done
+	      d3.select(cgm.params.root + ' .' + inst_rc + '_slider_group').style('display', 'block');
+
+	      // display other crop buttons when cropping has not been done
+	      d3.select(cgm.params.root + ' .' + other_rc + '_dendro_icons_container').style('display', 'block');
 	    }
 
 	    run_dendro_filter(cgm, d, inst_rc);
@@ -6142,8 +6157,6 @@ var Clustergrammer =
 	module.exports = function resize_dendro(params, svg_group) {
 	  var delay_info = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
 
-
-	  console.log('resize dendros');
 
 	  // resize dendrogram
 	  ///////////////////
