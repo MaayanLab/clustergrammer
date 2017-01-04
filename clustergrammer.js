@@ -4021,16 +4021,9 @@ var Clustergrammer =
 
 	      // display other crop buttons when cropping has not been done
 	      d3.select(cgm.params.root + ' .' + other_rc + '_dendro_icons_container').style('display', 'block');
-
-	      // run optional callback function
-	      if (params.undo_crop_callback != null) {
-	        params.undo_crop_callback();
-	      }
 	    }
 
 	    run_dendro_filter(cgm, d, inst_rc);
-
-	    // cgm.reset_cats();
 	  }).call(dendro_crop_tip);
 
 	  // ordering has been reversed
@@ -4083,6 +4076,11 @@ var Clustergrammer =
 	  } else {
 
 	    names[inst_rc] = cgm.params.dendro_filter[inst_rc];
+
+	    // run optional callback function
+	    if (cgm.params.undo_crop_callback != null) {
+	      cgm.params.undo_crop_callback(names);
+	    }
 
 	    cgm.filter_viz_using_names(names);
 	    cgm.params.dendro_filter[inst_rc] = false;

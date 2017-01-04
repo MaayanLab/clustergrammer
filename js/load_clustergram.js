@@ -48,9 +48,21 @@ function make_clust(inst_network){
 
 }
 
-function undo_crop_callback(){
+function undo_crop_callback(inst_names){
   console.log('undoing the crop and clearing enrichr results');
-  enr_obj.clear_enrichr_results()
+
+  if (enr_obj.gene_list !=null){
+
+    var num_sent_to_enr = enr_obj.gene_list.length;
+    var num_in_curr_view = inst_names.row.length;
+    console.log('num genes sent to Enrichr: ' + String(num_sent_to_enr))
+    console.log('num genes in current view: ' + String(num_in_curr_view))
+
+    if (num_in_curr_view > num_sent_to_enr){
+      enr_obj.clear_enrichr_results();
+    }
+
+  }
 }
 
 function test_tile_callback(tile_data){

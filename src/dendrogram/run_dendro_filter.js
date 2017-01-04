@@ -37,10 +37,17 @@ module.exports = function run_dendro_filter(cgm, d, inst_rc){
   /* reset filter */
   } else {
 
+
     names[inst_rc] = cgm.params.dendro_filter[inst_rc];
+
+    // run optional callback function
+    if (cgm.params.undo_crop_callback != null){
+      cgm.params.undo_crop_callback(names);
+    }
 
     cgm.filter_viz_using_names(names);
     cgm.params.dendro_filter[inst_rc] = false;
+
 
   }
 

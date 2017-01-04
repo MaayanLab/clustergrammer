@@ -305,6 +305,7 @@ function Enrichr_request(inst_cgm){
   function get_enr_with_list(gene_list, library, callback_function){
 
     enr_obj.library = library;
+    enr_obj.gene_list = gene_list;
 
     enr_obj.post_list(gene_list, function(){
 
@@ -578,6 +579,7 @@ function Enrichr_request(inst_cgm){
   enr_obj.cat_data = null;
   enr_obj.get_tries = 0;
   enr_obj.library = null;
+  enr_obj.gene_list = null;
 
   enr_obj.enrichr_icon = enrichr_icon;
   enr_obj.post_list = post_list;
