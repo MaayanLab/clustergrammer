@@ -13105,25 +13105,32 @@ var Clustergrammer =
 
 	  // draw triangles (shown as trapezoids)
 	  //////////////////////////////////////////
+	  var start_x;
+	  var start_y;
+	  var mid_x;
+	  var mid_y;
+	  var final_x;
+	  var final_y;
+
 	  // row triangles
 	  dendro_traps.attr('d', function (d) {
 
 	    if (inst_rc === 'row') {
 	      // row triangles
-	      var start_x = 0;
-	      var start_y = d.pos_top;
-	      var mid_x = 30;
-	      var mid_y = d.pos_mid;
-	      var final_x = 0;
-	      var final_y = d.pos_bot;
+	      start_x = 0;
+	      start_y = d.pos_top;
+	      mid_x = 30;
+	      mid_y = d.pos_mid;
+	      final_x = 0;
+	      final_y = d.pos_bot;
 	    } else {
 	      // column triangles
-	      var start_x = d.pos_top;
-	      var start_y = 0;
-	      var mid_x = d.pos_mid;
-	      var mid_y = 30;
-	      var final_x = d.pos_bot;
-	      var final_y = 0;
+	      start_x = d.pos_top;
+	      start_y = 0;
+	      mid_x = d.pos_mid;
+	      mid_y = 30;
+	      final_x = d.pos_bot;
+	      final_y = 0;
 	    }
 
 	    var output_string = 'M' + start_x + ',' + start_y + ', L' + mid_x + ', ' + mid_y + ', L' + final_x + ',' + final_y + ' Z';
@@ -13135,8 +13142,6 @@ var Clustergrammer =
 	    var inst_rc;
 	    if (params.sim_mat) {
 	      inst_rc = 'both';
-	    } else {
-	      inst_rc = inst_rc;
 	    }
 
 	    dendro_mouseover(cgm, this);

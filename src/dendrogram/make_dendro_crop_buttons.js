@@ -268,7 +268,7 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc){
           .classed('ran_filter', true);
 
         d3.select(cgm.params.root+' .'+other_rc+'_dendro_icons_group')
-          .attr('transform', 'translate(0,0), scale(1,1)')
+          .attr('transform', 'translate(0,0), scale(1,1)');
 
         // do not display dendrogram slider if filtering has been run
         d3.select(cgm.params.root+' .'+inst_rc+'_slider_group')
