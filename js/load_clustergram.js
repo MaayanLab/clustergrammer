@@ -22,6 +22,7 @@ function make_clust(inst_network){
         'col_tip_callback':test_col_callback,
         'tile_tip_callback':test_tile_callback,
         'dendro_callback':dendro_callback,
+        'undo_crop_callback':undo_crop_callback,
         'sidebar_width':150
       };
 
@@ -45,6 +46,11 @@ function make_clust(inst_network){
 
   });
 
+}
+
+function undo_crop_callback(){
+  console.log('undoing the crop and clearing enrichr results');
+  enr_obj.clear_enrichr_results()
 }
 
 function test_tile_callback(tile_data){

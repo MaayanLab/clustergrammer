@@ -300,6 +300,11 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc){
         // display other crop buttons when cropping has not been done
         d3.select(cgm.params.root+' .'+other_rc+'_dendro_icons_container')
           .style('display', 'block');
+
+        // run optional callback function
+        if (params.undo_crop_callback != null){
+          params.undo_crop_callback();
+        }
       }
 
       run_dendro_filter(cgm, d, inst_rc);

@@ -565,6 +565,7 @@ var Clustergrammer =
 	    row_tip_callback: null,
 	    col_tip_callback: null,
 	    tile_tip_callback: null,
+	    undo_crop_callback: null,
 	    dendro_callback: null,
 	    new_cat_data: null
 	  };
@@ -4020,6 +4021,11 @@ var Clustergrammer =
 
 	      // display other crop buttons when cropping has not been done
 	      d3.select(cgm.params.root + ' .' + other_rc + '_dendro_icons_container').style('display', 'block');
+
+	      // run optional callback function
+	      if (params.undo_crop_callback != null) {
+	        params.undo_crop_callback();
+	      }
 	    }
 
 	    run_dendro_filter(cgm, d, inst_rc);
