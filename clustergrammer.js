@@ -6019,6 +6019,16 @@ var Clustergrammer =
 	      return 'translate(' + inst_x + ',' + inst_y + ') ' + 'scale(1, ' + 1 / zoom_y + ')';
 	    });
 
+	    d3.select(params.root + ' .col_dendro_icons_group').attr('transform', 'translate(' + [0, 0 + center_y] + ')' + ' scale(' + zoom_x + ',' + zoom_y + ')' + 'translate(' + [pan_dx, pan_dy] + ')');
+
+	    // d3.select(params.root+' .col_dendro_icons_group')
+	    //   .selectAll('path')
+	    //   .attr('transform', function(d){
+	    //     var inst_x = params.viz.uni_margin;
+	    //     var inst_y = d.pos_mid;
+	    //     return 'translate('+ inst_x +',' + inst_y + ') ' + 'scale(1, '+ 1/zoom_y +')';
+	    //   });
+
 	    // column value bars
 	    ///////////////////////
 	    // reduce the height of the column value bars based on the zoom applied
