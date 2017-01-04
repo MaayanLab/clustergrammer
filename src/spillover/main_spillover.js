@@ -39,7 +39,7 @@ module.exports = function Spillover(cgm) {
     .attr('height', rect_height)
     .attr('class', 'top_left_white');
 
-  var inst_height = viz.cat_room.col + 2*viz.uni_margin;
+  var inst_height = viz.cat_room.col + 1.5*viz.uni_margin;
   // white rect to cover excess labels
   d3.select(viz.viz_svg)
     .append('rect')

@@ -177,7 +177,6 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc){
 
         }
 
-
         var output_string = 'M' + start_x + ',' + start_y + ', L' +
         mid_x + ', ' + mid_y + ', L'
         + final_x + ','+ final_y +' Z';
@@ -281,7 +280,11 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc){
       } else {
         // use class as 'global' variable
         d3.select(cgm.params.root+' .'+inst_rc+'_dendro_icons_group')
+          .attr('transform', 'translate(0,0), scale(1,1)')
           .classed('ran_filter', false);
+
+        d3.select(cgm.params.root+' .'+other_rc+'_dendro_icons_group')
+          .attr('transform', 'translate(0,0), scale(1,1)');
 
         if (params.viz.inst_order[other_rc] === 'clust'){
           // display slider when cropping has not been done

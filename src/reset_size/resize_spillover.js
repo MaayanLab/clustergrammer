@@ -137,7 +137,7 @@ module.exports = function resize_spillover(viz, ini_svg_group, delay_info=false)
     .attr('width', viz.svg_dim.width)
     .attr('height', 2 * viz.svg_dim.height);
 
-  var inst_height = viz.cat_room.col + 2*viz.uni_margin;
+  var inst_height = viz.cat_room.col + 1.5*viz.uni_margin;
   // white rect to cover excess labels
   d3.select(viz.viz_svg + ' .top_right_white')
     .attr('fill', viz.background_color)
@@ -145,7 +145,7 @@ module.exports = function resize_spillover(viz, ini_svg_group, delay_info=false)
     .attr('height', inst_height)
     .attr('transform', function(){
       var tmp_left = viz.clust.margin.left + viz.clust.dim.width;
-      var tmp_top = viz.norm_labels.width.col + viz.norm_labels.margin.top + 2;
+      var tmp_top = viz.norm_labels.width.col + viz.norm_labels.margin.top - viz.uni_margin;
       return 'translate('+tmp_left+', '+ tmp_top +')';
     });
 

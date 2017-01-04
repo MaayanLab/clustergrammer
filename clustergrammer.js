@@ -3775,7 +3775,9 @@ var Clustergrammer =
 	      d3.select(cgm.params.root + ' .' + other_rc + '_dendro_icons_container').style('display', 'none');
 	    } else {
 	      // use class as 'global' variable
-	      d3.select(cgm.params.root + ' .' + inst_rc + '_dendro_icons_group').classed('ran_filter', false);
+	      d3.select(cgm.params.root + ' .' + inst_rc + '_dendro_icons_group').attr('transform', 'translate(0,0), scale(1,1)').classed('ran_filter', false);
+
+	      d3.select(cgm.params.root + ' .' + other_rc + '_dendro_icons_group').attr('transform', 'translate(0,0), scale(1,1)');
 
 	      if (params.viz.inst_order[other_rc] === 'clust') {
 	        // display slider when cropping has not been done
@@ -6225,11 +6227,11 @@ var Clustergrammer =
 
 	  svg_group.select(viz.root + ' .bottom_spillover').attr('width', viz.svg_dim.width).attr('height', 2 * viz.svg_dim.height);
 
-	  var inst_height = viz.cat_room.col + 2 * viz.uni_margin;
+	  var inst_height = viz.cat_room.col + 1.5 * viz.uni_margin;
 	  // white rect to cover excess labels
 	  d3.select(viz.viz_svg + ' .top_right_white').attr('fill', viz.background_color).attr('width', 2 * viz.clust.dim.width).attr('height', inst_height).attr('transform', function () {
 	    var tmp_left = viz.clust.margin.left + viz.clust.dim.width;
-	    var tmp_top = viz.norm_labels.width.col + viz.norm_labels.margin.top + 2;
+	    var tmp_top = viz.norm_labels.width.col + viz.norm_labels.margin.top - viz.uni_margin;
 	    return 'translate(' + tmp_left + ', ' + tmp_top + ')';
 	  });
 		};
@@ -12851,7 +12853,7 @@ var Clustergrammer =
 	  d3.select(viz.viz_svg).append('rect').attr('fill', viz.background_color) //!! prog_colors
 	  .attr('width', viz.clust.margin.left).attr('height', rect_height).attr('class', 'top_left_white');
 
-	  var inst_height = viz.cat_room.col + 2 * viz.uni_margin;
+	  var inst_height = viz.cat_room.col + 1.5 * viz.uni_margin;
 	  // white rect to cover excess labels
 	  d3.select(viz.viz_svg).append('rect').attr('fill', viz.background_color).attr('width', 2 * viz.clust.dim.width).attr('height', inst_height).attr('class', 'top_right_white').attr('transform', function () {
 	    var tmp_left = viz.clust.margin.left + viz.clust.dim.width;
