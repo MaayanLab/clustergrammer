@@ -3754,7 +3754,7 @@ var Clustergrammer =
 	  var button_class = inst_rc + '_dendro_crop_buttons';
 	  if (d3.select('.' + inst_rc + '_dendro_icons_group').classed('ran_filter') === false) {
 
-	    // Inward pointing triangle
+	    // Crop Triangle
 	    //////////////////////////////
 	    icons = d3.select(params.root + ' .' + inst_rc + '_dendro_icons_group').selectAll('path').data(dendro_info, function (d) {
 	      return d.name;
@@ -3805,7 +3805,7 @@ var Clustergrammer =
 	    });
 	  } else {
 
-	    // Inward pointing triangle
+	    // Undo Triangle
 	    //////////////////////////////
 	    icons = d3.select(params.root + ' .' + inst_rc + '_dendro_icons_group').selectAll('path').data(dendro_info, function (d) {
 	      return d.name;
@@ -13171,39 +13171,43 @@ var Clustergrammer =
 
 	module.exports = function run_dendro_filter(cgm, d, inst_rc) {
 
+	  console.log('run dendro filter\n------------------');
+
 	  var names = {};
-	  if (cgm.params.dendro_filter.col === false) {
 
-	    if (cgm.params.dendro_filter.row === false && cgm.params.cat_filter.row === false && cgm.params.cat_filter.col === false) {
+	  if (cgm.params.dendro_filter.row === false && cgm.params.dendro_filter.col === false && cgm.params.cat_filter.row === false && cgm.params.cat_filter.col === false) {
 
-	      d3.select(cgm.params.root + ' .' + inst_rc + '_slider_group').style('opacity', 0.35).style('pointer-events', 'none');
+	    console.log('run filtering');
 
-	      names[inst_rc] = d.all_names;
+	    d3.select(cgm.params.root + ' .' + inst_rc + '_slider_group').style('opacity', 0.35).style('pointer-events', 'none');
 
-	      var tmp_names = cgm.params.network_data[inst_rc + '_nodes_names'];
+	    names[inst_rc] = d.all_names;
 
-	      // keep a backup of the inst_view
-	      var inst_row_nodes = cgm.params.network_data.row_nodes;
-	      var inst_col_nodes = cgm.params.network_data.col_nodes;
+	    var tmp_names = cgm.params.network_data[inst_rc + '_nodes_names'];
 
-	      cgm.filter_viz_using_names(names);
+	    // keep a backup of the inst_view
+	    var inst_row_nodes = cgm.params.network_data.row_nodes;
+	    var inst_col_nodes = cgm.params.network_data.col_nodes;
 
-	      cgm.params.inst_nodes.row_nodes = inst_row_nodes;
-	      cgm.params.inst_nodes.col_nodes = inst_col_nodes;
+	    cgm.filter_viz_using_names(names);
 
-	      d3.selectAll(cgm.params.root + ' .dendro_shadow').transition().duration(1000).style('opacity', 0).remove();
+	    cgm.params.inst_nodes.row_nodes = inst_row_nodes;
+	    cgm.params.inst_nodes.col_nodes = inst_col_nodes;
 
-	      // keep the names of all the nodes
-	      cgm.params.dendro_filter[inst_rc] = tmp_names;
+	    d3.selectAll(cgm.params.root + ' .dendro_shadow').transition().duration(1000).style('opacity', 0).remove();
 
-	      /* reset filter */
-	    } else {
+	    // keep the names of all the nodes
+	    cgm.params.dendro_filter[inst_rc] = tmp_names;
 
-	      names[inst_rc] = cgm.params.dendro_filter[inst_rc];
+	    /* reset filter */
+	  } else {
 
-	      cgm.filter_viz_using_names(names);
-	      cgm.params.dendro_filter[inst_rc] = false;
-	    }
+	    console.log('reset filtering');
+
+	    names[inst_rc] = cgm.params.dendro_filter[inst_rc];
+
+	    cgm.filter_viz_using_names(names);
+	    cgm.params.dendro_filter[inst_rc] = false;
 	  }
 		};
 

@@ -66,7 +66,7 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc, is_change_group
   var button_class = inst_rc + '_dendro_crop_buttons';
   if (d3.select('.'+inst_rc+'_dendro_icons_group').classed('ran_filter') === false){
 
-    // Inward pointing triangle
+    // Crop Triangle
     //////////////////////////////
     icons = d3.select(params.root+' .'+inst_rc+'_dendro_icons_group')
       .selectAll('path')
@@ -127,7 +127,7 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc, is_change_group
 
   } else {
 
-    // Inward pointing triangle
+    // Undo Triangle
     //////////////////////////////
     icons = d3.select(params.root+' .'+inst_rc+'_dendro_icons_group')
       .selectAll('path')
