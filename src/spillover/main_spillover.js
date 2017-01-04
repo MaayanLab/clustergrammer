@@ -53,20 +53,7 @@ module.exports = function Spillover(cgm) {
     });
 
 
-  var x_offset = viz.clust.margin.left + viz.clust.dim.width;
-  var y_offset = viz.clust.margin.top + viz.clust.dim.height;
-  var tmp_width = viz.cat_room.col + viz.clust.dim.width;
-  var tmp_height = viz.cat_room.row + viz.uni_margin;
-  d3.select(viz.viz_svg)
-    .append('rect')
-    .attr('fill', viz.background_color)
-    .attr('width',tmp_width)
-    .attr('height',tmp_height)
-    .attr('transform', function(){
-      return 'translate('+x_offset+','+y_offset+')';
-    })
-    .classed('white_bars',true)
-    .classed('dendro_corner_spillover',true);
+
 
   x_offset = viz.clust.margin.left + viz.clust.dim.width + viz.uni_margin;
   y_offset = viz.norm_labels.margin.top + viz.norm_labels.width.col
@@ -139,6 +126,24 @@ module.exports = function Spillover(cgm) {
   console.log('main spillover')
   make_dendro_crop_buttons(cgm, 'col');
 
+  var x_offset = viz.clust.margin.left + viz.clust.dim.width;
+  var y_offset = viz.clust.margin.top + viz.clust.dim.height;
+  var tmp_width = viz.cat_room.col + viz.clust.dim.width;
+  var tmp_height = viz.cat_room.row + 10*viz.uni_margin;
+  d3.select(viz.viz_svg)
+    .append('rect')
+    .attr('fill', viz.background_color)
+    .attr('width',tmp_width)
+    .attr('height',tmp_height)
+    .attr('transform', function(){
+      return 'translate('+x_offset+','+y_offset+')';
+    })
+    .classed('white_bars',true)
+    .classed('dendro_corner_spillover',true);
+
+
   ini_cat_reorder(cgm);
+
+
 
 };
