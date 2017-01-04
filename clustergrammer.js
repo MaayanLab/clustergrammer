@@ -3318,7 +3318,7 @@ var Clustergrammer =
 
 	'use strict';
 
-	var make_row_dendro_triangles = __webpack_require__(52);
+	var make_dendro_triangles = __webpack_require__(206);
 	var make_col_dendro_triangles = __webpack_require__(59);
 
 	module.exports = function toggle_dendro_view(cgm, inst_rc) {
@@ -3332,7 +3332,7 @@ var Clustergrammer =
 	    if (params.viz.inst_order.col === 'clust') {
 	      // the last true tells the viz that I'm chaning group size and not to
 	      // delay the change in dendro
-	      setTimeout(make_row_dendro_triangles, wait_time, cgm, 'row', true);
+	      setTimeout(make_dendro_triangles, wait_time, cgm, 'row', true);
 	    }
 	  }
 
@@ -3363,174 +3363,7 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 52 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var calc_row_dendro_triangles = __webpack_require__(53);
-	var calc_col_dendro_triangles = __webpack_require__(60);
-	var dendro_group_highlight = __webpack_require__(54);
-	var dendro_mouseover = __webpack_require__(56);
-	var dendro_mouseout = __webpack_require__(57);
-	var d3_tip_custom = __webpack_require__(46);
-	var make_dendro_crop_buttons = __webpack_require__(58);
-
-	module.exports = function make_row_dendro_triangles(cgm, inst_rc) {
-	  var is_change_group = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
-
-
-	  var params = cgm.params;
-
-	  var other_rc;
-	  if (inst_rc === 'row') {
-	    other_rc = 'col';
-	  } else {
-	    other_rc = 'row';
-	  }
-
-	  // orders are switched!
-	  if (params.viz.inst_order[other_rc] === 'clust') {
-	    d3.select(params.root + ' .' + inst_rc + '_slider_group').style('opacity', 1);
-	  }
-
-	  var dendro_info;
-
-	  if (inst_rc === 'row') {
-	    dendro_info = calc_row_dendro_triangles(params);
-	  } else {
-	    dendro_info = calc_col_dendro_triangles(params);
-	  }
-
-	  if (d3.select(cgm.params.root + ' .' + inst_rc + '_dendro_crop_buttons').empty() === false) {
-	    make_dendro_crop_buttons(cgm, inst_rc);
-	  }
-
-	  // constant dendrogram opacity
-	  var inst_dendro_opacity = params.viz.dendro_opacity;
-
-	  function still_hovering(inst_selection) {
-	    if (d3.select(inst_selection).classed('hovering')) {
-	      d3.selectAll(params.viz.root_tips + '_' + inst_rc + '_dendro_tip').style('opacity', 1).style('display', 'block');
-	    }
-	  }
-
-	  var wait_before_tooltip = 500;
-
-	  // remove any old dendro tooltips from this visualization
-	  d3.selectAll(cgm.params.viz.root_tips + '_' + inst_rc + '_dendro_tip').remove();
-
-	  // d3-tooltip
-	  var tmp_y_offset = 0;
-	  var tmp_x_offset = -5;
-	  var dendro_tip = d3_tip_custom().attr('class', function () {
-	    // add root element to class
-	    var root_tip_selector = params.viz.root_tips.replace('.', '');
-	    var class_string = root_tip_selector + ' d3-tip ' + root_tip_selector + '_' + inst_rc + '_dendro_tip';
-
-	    return class_string;
-	  }).direction('nw').offset([tmp_y_offset, tmp_x_offset]).style('display', 'none').style('opacity', 0).html(function () {
-	    var full_string = 'Click for cluster information <br>' + 'and additional options.';
-	    return full_string;
-	  });
-
-	  // run transition rules
-	  var run_transition;
-	  if (d3.selectAll(params.root + ' .' + inst_rc + '_dendro_group').empty()) {
-	    run_transition = false;
-	  } else {
-	    run_transition = true;
-	    d3.selectAll(params.root + ' .' + inst_rc + '_dendro_group').remove();
-	    d3.selectAll(params.root + ' .dendro_tip').remove();
-	  }
-
-	  if (is_change_group) {
-	    run_transition = false;
-	  }
-
-	  var dendro_traps = d3.select(params.root + ' .' + inst_rc + '_dendro_container').selectAll('path').data(dendro_info, function (d) {
-	    return d.name;
-	  }).enter().append('path').style('opacity', 0).attr('class', inst_rc + '_dendro_group').style('fill', 'black');
-
-	  // draw triangles (shown as trapezoids)
-	  //////////////////////////////////////////
-	  // row triangles
-	  dendro_traps.attr('d', function (d) {
-
-	    if (inst_rc === 'row') {
-	      // row triangles
-	      var start_x = 0;
-	      var start_y = d.pos_top;
-	      var mid_x = 30;
-	      var mid_y = d.pos_mid;
-	      var final_x = 0;
-	      var final_y = d.pos_bot;
-	    } else {
-	      // column triangles
-	      var start_x = d.pos_top;
-	      var start_y = 0;
-	      var mid_x = d.pos_mid;
-	      var mid_y = 30;
-	      var final_x = d.pos_bot;
-	      var final_y = 0;
-	    }
-
-	    var output_string = 'M' + start_x + ',' + start_y + ', L' + mid_x + ', ' + mid_y + ', L' + final_x + ',' + final_y + ' Z';
-	    return output_string;
-	  });
-
-	  dendro_traps.on('mouseover', function (d) {
-
-	    var inst_rc;
-	    if (params.sim_mat) {
-	      inst_rc = 'both';
-	    } else {
-	      inst_rc = inst_rc;
-	    }
-
-	    dendro_mouseover(cgm, this);
-	    dendro_group_highlight(params, this, d, inst_rc);
-	    dendro_tip.show(d);
-
-	    // set opacity to zero
-	    d3.selectAll(params.viz.root_tips + '_' + inst_rc + '_dendro_tip').style('opacity', 0).style('display', 'block');
-
-	    // check if still hovering
-	    setTimeout(still_hovering, wait_before_tooltip, this);
-	  }).on('mouseout', function () {
-	    if (params.viz.inst_order[other_rc] === 'clust') {
-	      d3.select(this).style('opacity', inst_dendro_opacity);
-	    }
-
-	    d3.selectAll(params.root + ' .dendro_shadow').remove();
-
-	    dendro_mouseout(this);
-	    dendro_tip.hide(this);
-	  }).on('click', function (d) {
-
-	    $(params.root + ' .dendro_info').modal('toggle');
-
-	    var group_string = d.all_names.join(', ');
-	    d3.select(params.root + ' .dendro_info input').attr('value', group_string);
-	  }).call(dendro_tip);
-
-	  var triangle_opacity;
-	  if (params.viz.inst_order[other_rc] === 'clust') {
-	    triangle_opacity = inst_dendro_opacity;
-	  } else {
-	    triangle_opacity = 0;
-	  }
-
-	  if (run_transition) {
-
-	    d3.select(params.root + ' .' + inst_rc + '_dendro_container').selectAll('path').transition().delay(1000).duration(1000).style('opacity', triangle_opacity);
-	  } else {
-
-	    d3.select(params.root + ' .' + inst_rc + '_dendro_container').selectAll('path').style('opacity', triangle_opacity);
-	  }
-		};
-
-/***/ },
+/* 52 */,
 /* 53 */
 /***/ function(module, exports) {
 
@@ -5149,8 +4982,7 @@ var Clustergrammer =
 	var resize_row_tiles = __webpack_require__(103);
 	var resize_label_bars = __webpack_require__(104);
 	var label_constrain_and_trim = __webpack_require__(88);
-	var make_row_dendro_triangles = __webpack_require__(52);
-	var make_col_dendro_triangles = __webpack_require__(59);
+	var make_dendro_triangles = __webpack_require__(206);
 	var toggle_dendro_view = __webpack_require__(51);
 	var show_visible_area = __webpack_require__(61);
 	var calc_viz_dimensions = __webpack_require__(24);
@@ -5266,8 +5098,8 @@ var Clustergrammer =
 
 	  var is_resize = true;
 	  if (params.viz.show_dendrogram) {
-	    make_row_dendro_triangles(cgm, 'row', is_resize);
-	    make_col_dendro_triangles(cgm, is_resize);
+	    make_dendro_triangles(cgm, 'row', is_resize);
+	    make_dendro_triangles(cgm, 'col', is_resize);
 	    resize_dendro(params, svg_group);
 
 	    toggle_dendro_view(cgm, 'row', 0);
@@ -7574,7 +7406,7 @@ var Clustergrammer =
 
 	'use strict';
 
-	var make_row_dendro_triangles = __webpack_require__(52);
+	var make_dendro_triangles = __webpack_require__(206);
 
 	module.exports = function make_row_dendro(cgm) {
 
@@ -7600,7 +7432,7 @@ var Clustergrammer =
 	    d3.select(params.root + ' .row_dendro_outer_container').select('.row_dendro_spillover').attr('width', spillover_width + 'px').attr('height', params.viz.svg_dim.height);
 	  }
 
-	  make_row_dendro_triangles(cgm, 'row', false);
+	  make_dendro_triangles(cgm, 'row', false);
 
 	  if (params.viz.inst_order.col != 'clust') {
 	    d3.selectAll(params.root + ' .row_dendro_group').remove();
@@ -7614,6 +7446,7 @@ var Clustergrammer =
 	'use strict';
 
 	var make_col_dendro_triangles = __webpack_require__(59);
+	var make_dendro_triangles = __webpack_require__(206);
 
 	module.exports = function make_col_dendro(cgm) {
 
@@ -7641,7 +7474,8 @@ var Clustergrammer =
 	    d3.select(params.root + ' .col_dendro_outer_container').select('.col_dendro_spillover').attr('width', params.viz.svg_dim.width).attr('height', spillover_height + 'px');
 	  }
 
-	  make_col_dendro_triangles(cgm, false);
+	  // make_col_dendro_triangles(cgm, false);
+	  make_dendro_triangles(cgm, 'col', false);
 
 	  if (params.viz.inst_order.row != 'clust') {
 	    d3.selectAll(params.root + ' .col_dendro_group').remove();
@@ -7771,7 +7605,7 @@ var Clustergrammer =
 	'use strict';
 
 	// var build_color_groups = require('./build_color_groups');
-	var make_row_dendro_triangles = __webpack_require__(52);
+	var make_dendro_triangles = __webpack_require__(206);
 	var make_col_dendro_triangles = __webpack_require__(59);
 
 	/* Changes the groupings (x- and y-axis color bars).
@@ -7789,7 +7623,7 @@ var Clustergrammer =
 	  var is_change_group = true;
 
 	  if (inst_rc === 'row') {
-	    make_row_dendro_triangles(cgm, 'row', is_change_group);
+	    make_dendro_triangles(cgm, 'row', is_change_group);
 	  }
 
 	  if (inst_rc === 'col') {
@@ -13281,6 +13115,175 @@ var Clustergrammer =
 
 	    cgm.filter_viz_using_names(names);
 	    cgm.params.dendro_filter[inst_rc] = false;
+	  }
+		};
+
+/***/ },
+/* 205 */,
+/* 206 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var calc_row_dendro_triangles = __webpack_require__(53);
+	var calc_col_dendro_triangles = __webpack_require__(60);
+	var dendro_group_highlight = __webpack_require__(54);
+	var dendro_mouseover = __webpack_require__(56);
+	var dendro_mouseout = __webpack_require__(57);
+	var d3_tip_custom = __webpack_require__(46);
+	var make_dendro_crop_buttons = __webpack_require__(58);
+
+	module.exports = function make_dendro_triangles(cgm, inst_rc) {
+	  var is_change_group = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
+
+
+	  var params = cgm.params;
+
+	  var other_rc;
+	  if (inst_rc === 'row') {
+	    other_rc = 'col';
+	  } else {
+	    other_rc = 'row';
+	  }
+
+	  // orders are switched!
+	  if (params.viz.inst_order[other_rc] === 'clust') {
+	    d3.select(params.root + ' .' + inst_rc + '_slider_group').style('opacity', 1);
+	  }
+
+	  var dendro_info;
+
+	  if (inst_rc === 'row') {
+	    dendro_info = calc_row_dendro_triangles(params);
+	  } else {
+	    dendro_info = calc_col_dendro_triangles(params);
+	  }
+
+	  if (d3.select(cgm.params.root + ' .' + inst_rc + '_dendro_crop_buttons').empty() === false) {
+	    make_dendro_crop_buttons(cgm, inst_rc);
+	  }
+
+	  // constant dendrogram opacity
+	  var inst_dendro_opacity = params.viz.dendro_opacity;
+
+	  function still_hovering(inst_selection) {
+	    if (d3.select(inst_selection).classed('hovering')) {
+	      d3.selectAll(params.viz.root_tips + '_' + inst_rc + '_dendro_tip').style('opacity', 1).style('display', 'block');
+	    }
+	  }
+
+	  var wait_before_tooltip = 500;
+
+	  // remove any old dendro tooltips from this visualization
+	  d3.selectAll(cgm.params.viz.root_tips + '_' + inst_rc + '_dendro_tip').remove();
+
+	  // d3-tooltip
+	  var tmp_y_offset = 0;
+	  var tmp_x_offset = -5;
+	  var dendro_tip = d3_tip_custom().attr('class', function () {
+	    // add root element to class
+	    var root_tip_selector = params.viz.root_tips.replace('.', '');
+	    var class_string = root_tip_selector + ' d3-tip ' + root_tip_selector + '_' + inst_rc + '_dendro_tip';
+
+	    return class_string;
+	  }).direction('nw').offset([tmp_y_offset, tmp_x_offset]).style('display', 'none').style('opacity', 0).html(function () {
+	    var full_string = 'Click for cluster information <br>' + 'and additional options.';
+	    return full_string;
+	  });
+
+	  // run transition rules
+	  var run_transition;
+	  if (d3.selectAll(params.root + ' .' + inst_rc + '_dendro_group').empty()) {
+	    run_transition = false;
+	  } else {
+	    run_transition = true;
+	    d3.selectAll(params.root + ' .' + inst_rc + '_dendro_group').remove();
+	    d3.selectAll(params.root + ' .dendro_tip').remove();
+	  }
+
+	  if (is_change_group) {
+	    run_transition = false;
+	  }
+
+	  var dendro_traps = d3.select(params.root + ' .' + inst_rc + '_dendro_container').selectAll('path').data(dendro_info, function (d) {
+	    return d.name;
+	  }).enter().append('path').style('opacity', 0).attr('class', inst_rc + '_dendro_group').style('fill', 'black');
+
+	  // draw triangles (shown as trapezoids)
+	  //////////////////////////////////////////
+	  // row triangles
+	  dendro_traps.attr('d', function (d) {
+
+	    if (inst_rc === 'row') {
+	      // row triangles
+	      var start_x = 0;
+	      var start_y = d.pos_top;
+	      var mid_x = 30;
+	      var mid_y = d.pos_mid;
+	      var final_x = 0;
+	      var final_y = d.pos_bot;
+	    } else {
+	      // column triangles
+	      var start_x = d.pos_top;
+	      var start_y = 0;
+	      var mid_x = d.pos_mid;
+	      var mid_y = 30;
+	      var final_x = d.pos_bot;
+	      var final_y = 0;
+	    }
+
+	    var output_string = 'M' + start_x + ',' + start_y + ', L' + mid_x + ', ' + mid_y + ', L' + final_x + ',' + final_y + ' Z';
+	    return output_string;
+	  });
+
+	  dendro_traps.on('mouseover', function (d) {
+
+	    var inst_rc;
+	    if (params.sim_mat) {
+	      inst_rc = 'both';
+	    } else {
+	      inst_rc = inst_rc;
+	    }
+
+	    dendro_mouseover(cgm, this);
+	    dendro_group_highlight(params, this, d, inst_rc);
+	    dendro_tip.show(d);
+
+	    // set opacity to zero
+	    d3.selectAll(params.viz.root_tips + '_' + inst_rc + '_dendro_tip').style('opacity', 0).style('display', 'block');
+
+	    // check if still hovering
+	    setTimeout(still_hovering, wait_before_tooltip, this);
+	  }).on('mouseout', function () {
+	    if (params.viz.inst_order[other_rc] === 'clust') {
+	      d3.select(this).style('opacity', inst_dendro_opacity);
+	    }
+
+	    d3.selectAll(params.root + ' .dendro_shadow').remove();
+
+	    dendro_mouseout(this);
+	    dendro_tip.hide(this);
+	  }).on('click', function (d) {
+
+	    $(params.root + ' .dendro_info').modal('toggle');
+
+	    var group_string = d.all_names.join(', ');
+	    d3.select(params.root + ' .dendro_info input').attr('value', group_string);
+	  }).call(dendro_tip);
+
+	  var triangle_opacity;
+	  if (params.viz.inst_order[other_rc] === 'clust') {
+	    triangle_opacity = inst_dendro_opacity;
+	  } else {
+	    triangle_opacity = 0;
+	  }
+
+	  if (run_transition) {
+
+	    d3.select(params.root + ' .' + inst_rc + '_dendro_container').selectAll('path').transition().delay(1000).duration(1000).style('opacity', triangle_opacity);
+	  } else {
+
+	    d3.select(params.root + ' .' + inst_rc + '_dendro_container').selectAll('path').style('opacity', triangle_opacity);
 	  }
 		};
 

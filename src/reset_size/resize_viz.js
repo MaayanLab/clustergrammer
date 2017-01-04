@@ -18,8 +18,7 @@ var recalc_params_for_resize = require('./recalc_params_for_resize');
 var resize_row_tiles = require('./resize_row_tiles');
 var resize_label_bars = require('./resize_label_bars');
 var label_constrain_and_trim = require('../labels/label_constrain_and_trim');
-var make_row_dendro_triangles = require('../dendrogram/make_row_dendro_triangles');
-var make_col_dendro_triangles = require('../dendrogram/make_col_dendro_triangles');
+var make_dendro_triangles = require('../dendrogram/make_dendro_triangles');
 var toggle_dendro_view = require('../dendrogram/toggle_dendro_view');
 var show_visible_area = require('../zoom/show_visible_area');
 var calc_viz_dimensions = require('../params/calc_viz_dimensions');
@@ -164,8 +163,8 @@ module.exports = function(cgm) {
 
   var is_resize = true;
   if (params.viz.show_dendrogram){
-    make_row_dendro_triangles(cgm, 'row', is_resize);
-    make_col_dendro_triangles(cgm, is_resize);
+    make_dendro_triangles(cgm, 'row', is_resize);
+    make_dendro_triangles(cgm, 'col', is_resize);
     resize_dendro(params, svg_group);
 
     toggle_dendro_view(cgm, 'row', 0);

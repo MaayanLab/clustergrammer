@@ -1,4 +1,4 @@
-var make_row_dendro_triangles = require('../dendrogram/make_row_dendro_triangles');
+var make_dendro_triangles = require('../dendrogram/make_dendro_triangles');
 var make_col_dendro_triangles = require('../dendrogram/make_col_dendro_triangles');
 
 module.exports = function toggle_dendro_view(cgm, inst_rc, wait_time = 1500){
@@ -10,7 +10,7 @@ module.exports = function toggle_dendro_view(cgm, inst_rc, wait_time = 1500){
     if (params.viz.inst_order.col === 'clust'){
       // the last true tells the viz that I'm chaning group size and not to
       // delay the change in dendro
-      setTimeout( make_row_dendro_triangles, wait_time, cgm, 'row', true);
+      setTimeout( make_dendro_triangles, wait_time, cgm, 'row', true);
     }
   }
 

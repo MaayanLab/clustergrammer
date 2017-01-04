@@ -1,4 +1,5 @@
 var make_col_dendro_triangles = require('./make_col_dendro_triangles');
+var make_dendro_triangles = require('./make_dendro_triangles');
 
 module.exports = function make_col_dendro(cgm) {
 
@@ -50,7 +51,8 @@ module.exports = function make_col_dendro(cgm) {
 
   }
 
-  make_col_dendro_triangles(cgm, false);
+  // make_col_dendro_triangles(cgm, false);
+  make_dendro_triangles(cgm, 'col', false);
 
   if (params.viz.inst_order.row != 'clust'){
     d3.selectAll(params.root+' .col_dendro_group').remove();

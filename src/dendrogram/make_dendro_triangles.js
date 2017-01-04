@@ -6,7 +6,7 @@ var dendro_mouseout = require('./dendro_mouseout');
 var d3_tip_custom = require('../tooltip/d3_tip_custom');
 var make_dendro_crop_buttons = require('./make_dendro_crop_buttons');
 
-module.exports = function make_row_dendro_triangles(cgm, inst_rc, is_change_group = false)
+module.exports = function make_dendro_triangles(cgm, inst_rc, is_change_group = false)
 {
 
   var params = cgm.params;
