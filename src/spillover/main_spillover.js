@@ -138,6 +138,22 @@ module.exports = function Spillover(cgm) {
     .classed('white_bars',true)
     .classed('dendro_corner_spillover',true);
 
+  // hide spillover left top of col dendrogram
+  x_offset = 0;
+  y_offset = viz.clust.margin.top + viz.clust.dim.height;
+  tmp_width = viz.clust.margin.left;
+  tmp_height = viz.clust.dim.height*10;
+  d3.select(viz.viz_svg)
+    .append('rect')
+    .attr('fill', viz.background_color)
+    .attr('width',tmp_width)
+    .attr('height',tmp_height)
+    .attr('transform', function(){
+      return 'translate('+x_offset+','+y_offset+')';
+    })
+    .classed('white_bars',true)
+    .classed('dendro_col_spillover',true);
+
   ini_cat_reorder(cgm);
 
 };

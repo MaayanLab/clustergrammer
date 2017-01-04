@@ -6239,6 +6239,10 @@ var Clustergrammer =
 	  d3.select(params.root + ' .col_dendro_outer_container').select('.col_dendro_spillover').attr('width', params.viz.svg_dim.width).attr('height', spillover_height + 'px');
 
 	  d3.select(params.root + ' .col_dendro_outer_container').select('.col_dendro_spillover_top').attr('width', params.viz.svg_dim.width).attr('height', params.viz.svg_dim.height).attr('transform', 'translate(0,' + params.viz.dendro_room.col + ')');
+
+	  x_offset = params.viz.clust.margin.left;
+	  y_offset = 0;
+	  d3.select(params.root + ' .col_dendro_icons_container').attr('transform', 'translate(' + x_offset + ',' + y_offset + ')');
 		};
 
 /***/ },
@@ -13135,6 +13139,15 @@ var Clustergrammer =
 	    return 'translate(' + x_offset + ',' + y_offset + ')';
 	  }).classed('white_bars', true).classed('dendro_corner_spillover', true);
 
+	  // hide spillover left top of col dendrogram
+	  x_offset = 0;
+	  y_offset = viz.clust.margin.top + viz.clust.dim.height;
+	  tmp_width = viz.clust.margin.left;
+	  tmp_height = viz.clust.dim.height * 10;
+	  d3.select(viz.viz_svg).append('rect').attr('fill', viz.background_color).attr('width', tmp_width).attr('height', tmp_height).attr('transform', function () {
+	    return 'translate(' + x_offset + ',' + y_offset + ')';
+	  }).classed('white_bars', true).classed('dendro_col_spillover', true);
+
 	  ini_cat_reorder(cgm);
 		};
 
@@ -13179,15 +13192,6 @@ var Clustergrammer =
 	  d3.select(viz.viz_svg).append('rect').attr('fill', viz.background_color).attr('width', tmp_width).attr('height', tmp_height).attr('transform', function () {
 	    return 'translate(' + x_offset + ',' + y_offset + ')';
 	  }).classed('white_bars', true).classed('dendro_row_spillover', true);
-
-	  // hide spillover left top of col dendrogram
-	  x_offset = 0;
-	  y_offset = viz.clust.margin.top + viz.clust.dim.height;
-	  tmp_width = viz.clust.margin.left;
-	  tmp_height = viz.clust.dim.height * 10;
-	  d3.select(viz.viz_svg).append('rect').attr('fill', viz.background_color).attr('width', tmp_width).attr('height', tmp_height).attr('transform', function () {
-	    return 'translate(' + x_offset + ',' + y_offset + ')';
-	  }).classed('white_bars', true).classed('dendro_col_spillover', true);
 		};
 
 /***/ },

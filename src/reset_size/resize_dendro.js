@@ -118,4 +118,9 @@ module.exports = function resize_dendro(params, svg_group, delay_info=false){
     .attr('height', params.viz.svg_dim.height)
     .attr('transform', 'translate(0,'+params.viz.dendro_room.col+')');
 
+  x_offset = params.viz.clust.margin.left;
+  y_offset = 0;
+  d3.select(params.root+' .col_dendro_icons_container')
+    .attr('transform', 'translate('+x_offset+','+y_offset+')');
+
 };
