@@ -565,6 +565,7 @@ module.exports =
 	    row_tip_callback: null,
 	    col_tip_callback: null,
 	    tile_tip_callback: null,
+	    undo_crop_callback: null,
 	    dendro_callback: null,
 	    new_cat_data: null
 	  };
@@ -4023,8 +4024,6 @@ module.exports =
 	    }
 
 	    run_dendro_filter(cgm, d, inst_rc);
-
-	    cgm.reset_cats();
 	  }).call(dendro_crop_tip);
 
 	  // ordering has been reversed
@@ -4077,6 +4076,11 @@ module.exports =
 	  } else {
 
 	    names[inst_rc] = cgm.params.dendro_filter[inst_rc];
+
+	    // run optional callback function
+	    if (cgm.params.undo_crop_callback != null) {
+	      cgm.params.undo_crop_callback(names);
+	    }
 
 	    cgm.filter_viz_using_names(names);
 	    cgm.params.dendro_filter[inst_rc] = false;
