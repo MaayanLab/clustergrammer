@@ -1,6 +1,7 @@
 var get_cat_title = require('../categories/get_cat_title');
 var ini_cat_reorder = require('../reorder/ini_cat_reorder');
 var make_row_cat_super_labels = require('../labels/make_row_cat_super_labels');
+var make_dendro_crop_buttons = require('../dendrogram/make_dendro_crop_buttons');
 
 module.exports = function Spillover(cgm) {
 
@@ -135,6 +136,8 @@ module.exports = function Spillover(cgm) {
     .attr('transform', 'translate(' + x_offset + ',' + y_offset + ')')
     .append('g')
     .classed('col_dendro_icons_group', true);
+
+  make_dendro_crop_buttons(cgm, 'col');
 
   ini_cat_reorder(cgm);
 

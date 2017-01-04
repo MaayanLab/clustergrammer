@@ -3744,12 +3744,14 @@ var Clustergrammer =
 	  //
 	  d3.selectAll(params.root + ' .' + inst_rc + '_dendro_crop_buttons').remove();
 
-	  var inst_x = params.viz.uni_margin;
+	  var inst_x;
 	  var icons;
 
 	  // need to improve to account for zooming
 	  var min_tri_height = 45;
 	  var scale_down_tri = 0.25;
+	  var tri_height = 10;
+	  var tri_width = 12;
 
 	  // make crop buttons or undo buttons
 	  var button_class = inst_rc + '_dendro_crop_buttons';
@@ -3760,21 +3762,19 @@ var Clustergrammer =
 	      return d.name;
 	    }).enter().append('path').classed(button_class, true).attr('d', function (d) {
 
-	      var tri_height = 10;
-
 	      var tmp_height = d.pos_bot - d.pos_top;
 	      if (tmp_height < min_tri_height) {
 	        tri_height = tmp_height * scale_down_tri;
 	      }
 
 	      // up triangle
-	      var start_x = 12;
+	      var start_x = tri_width;
 	      var start_y = -tri_height;
 
 	      var mid_x = 0;
 	      var mid_y = 0;
 
-	      var final_x = 12;
+	      var final_x = tri_width;
 	      var final_y = tri_height;
 
 	      var output_string = 'M' + start_x + ',' + start_y + ', L' + mid_x + ', ' + mid_y + ', L' + final_x + ',' + final_y + ' Z';
@@ -3796,8 +3796,6 @@ var Clustergrammer =
 	      return d.name;
 	    }).enter().append('path').classed(button_class, true).attr('d', function (d) {
 
-	      var tri_height = 10;
-
 	      var tmp_height = d.pos_bot - d.pos_top;
 	      if (tmp_height < min_tri_height) {
 	        tri_height = tmp_height * scale_down_tri;
@@ -3807,7 +3805,7 @@ var Clustergrammer =
 	      var start_x = 0;
 	      var start_y = -tri_height;
 
-	      var mid_x = 12;
+	      var mid_x = tri_width;
 	      var mid_y = 0;
 
 	      var final_x = 0;
@@ -3826,8 +3824,18 @@ var Clustergrammer =
 
 	  icons.style('cursor', 'pointer').style('opacity', button_opacity).attr('transform', function (d) {
 	    var inst_translate;
-	    // var inst_y = String(100 * i);
-	    var inst_y = d.pos_mid;
+
+	    var inst_x;
+	    var inst_y;
+
+	    if (inst_rc === 'row') {
+	      inst_x = params.viz.uni_margin;
+	      inst_y = d.pos_mid;
+	    } else {
+	      inst_x = d.pos_mid;
+	      inst_y = params.viz.uni_margin;
+	    }
+
 	    inst_translate = 'translate(' + inst_x + ',' + inst_y + ')';
 	    return inst_translate;
 	  }).on('mouseover', function (d) {
@@ -12982,6 +12990,7 @@ var Clustergrammer =
 	var get_cat_title = __webpack_require__(70);
 	var ini_cat_reorder = __webpack_require__(71);
 	var make_row_cat_super_labels = __webpack_require__(73);
+	var make_dendro_crop_buttons = __webpack_require__(58);
 
 	module.exports = function Spillover(cgm) {
 
@@ -13061,6 +13070,8 @@ var Clustergrammer =
 	  x_offset = viz.clust.margin.left;
 	  y_offset = 0;
 	  b_spill_container.append('g').classed('col_dendro_icons_container', true).attr('transform', 'translate(' + x_offset + ',' + y_offset + ')').append('g').classed('col_dendro_icons_group', true);
+
+	  make_dendro_crop_buttons(cgm, 'col');
 
 	  ini_cat_reorder(cgm);
 		};
