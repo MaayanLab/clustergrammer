@@ -3756,7 +3756,7 @@ var Clustergrammer =
 
 	  // make crop buttons or undo buttons
 	  var button_class = inst_rc + '_dendro_crop_buttons';
-	  if (d3.select('.' + inst_rc + '_dendro_icons_group').classed('ran_filter') === false) {
+	  if (d3.select(cgm.params.root + ' .' + inst_rc + '_dendro_icons_group').classed('ran_filter') === false) {
 
 	    // Crop Triangle
 	    //////////////////////////////
