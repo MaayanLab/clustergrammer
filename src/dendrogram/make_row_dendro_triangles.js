@@ -41,7 +41,7 @@ module.exports = function make_row_dendro_triangles(cgm, inst_rc, is_change_grou
 
   function still_hovering(inst_selection){
     if (d3.select(inst_selection).classed('hovering')){
-      d3.selectAll(params.viz.root_tips + '_row_dendro_tip')
+      d3.selectAll(params.viz.root_tips + '_'+ inst_rc +'_dendro_tip')
         .style('opacity', 1)
         .style('display', 'block');
     }
@@ -49,8 +49,8 @@ module.exports = function make_row_dendro_triangles(cgm, inst_rc, is_change_grou
 
   var wait_before_tooltip = 500;
 
-  // remove any old row dendro tooltips from this visualization
-  d3.selectAll(cgm.params.viz.root_tips+'_row_dendro_tip').remove();
+  // remove any old dendro tooltips from this visualization
+  d3.selectAll(cgm.params.viz.root_tips+'_'+ inst_rc +'_dendro_tip').remove();
 
   // d3-tooltip
   var tmp_y_offset = 0;
@@ -60,7 +60,7 @@ module.exports = function make_row_dendro_triangles(cgm, inst_rc, is_change_grou
       // add root element to class
       var root_tip_selector = params.viz.root_tips.replace('.','');
       var class_string = root_tip_selector + ' d3-tip ' +
-                         root_tip_selector +  '_row_dendro_tip';
+                         root_tip_selector +  '_' + inst_rc + '_dendro_tip';
 
       return class_string;
     })
@@ -76,11 +76,11 @@ module.exports = function make_row_dendro_triangles(cgm, inst_rc, is_change_grou
 
   // run transition rules
   var run_transition;
-  if (d3.selectAll(params.root+' .row_dendro_group').empty()){
+  if (d3.selectAll(params.root+' .' + inst_rc + '_dendro_group').empty()){
     run_transition = false;
   } else {
     run_transition = true;
-    d3.selectAll(params.root+' .row_dendro_group').remove();
+    d3.selectAll(params.root+' .'+ inst_rc +'_dendro_group').remove();
     d3.selectAll(params.root+' .dendro_tip').remove();
   }
 
@@ -88,7 +88,7 @@ module.exports = function make_row_dendro_triangles(cgm, inst_rc, is_change_grou
     run_transition = false;
   }
 
-  d3.select(params.root+' .row_dendro_container')
+  d3.select(params.root+' .'+ inst_rc +'_dendro_container')
     .selectAll('path')
     .data(dendro_info, function(d){return d.name;})
     .enter()
@@ -112,7 +112,7 @@ module.exports = function make_row_dendro_triangles(cgm, inst_rc, is_change_grou
 
       return output_string;
     })
-    .attr('class', 'row_dendro_group')
+    .attr('class', inst_rc +'_dendro_group')
 
     .style('fill','black')
     .on('mouseover', function(d){
@@ -121,7 +121,7 @@ module.exports = function make_row_dendro_triangles(cgm, inst_rc, is_change_grou
       if (params.sim_mat){
         inst_rc = 'both';
       } else {
-        inst_rc = 'row';
+        inst_rc = inst_rc;
       }
 
       dendro_mouseover(cgm, this);
@@ -131,7 +131,7 @@ module.exports = function make_row_dendro_triangles(cgm, inst_rc, is_change_grou
       dendro_tip.show(d);
 
       // set opacity to zero
-      d3.selectAll( params.viz.root_tips + '_row_dendro_tip')
+      d3.selectAll( params.viz.root_tips + '_'+ inst_rc +'_dendro_tip')
         .style('opacity', 0)
         .style('display', 'block');
 
@@ -172,14 +172,14 @@ module.exports = function make_row_dendro_triangles(cgm, inst_rc, is_change_grou
 
   if (run_transition){
 
-    d3.select(params.root+' .row_dendro_container')
+    d3.select(params.root+' .'+ inst_rc +'_dendro_container')
       .selectAll('path')
       .transition().delay(1000).duration(1000)
       .style('opacity', triangle_opacity);
 
   } else {
 
-    d3.select(params.root+' .row_dendro_container')
+    d3.select(params.root+' .'+ inst_rc +'_dendro_container')
       .selectAll('path')
       .style('opacity', triangle_opacity);
 
