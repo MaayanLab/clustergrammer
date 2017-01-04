@@ -30,12 +30,13 @@ module.exports = function Spillover(cgm) {
     .attr('transform', 'translate(-1,' + viz.norm_labels.width.col +
     ')');
 
+  var rect_height = viz.clust.margin.top + viz.uni_margin;
   // white rect to cover excess labels
   d3.select(viz.viz_svg)
     .append('rect')
     .attr('fill', viz.background_color) //!! prog_colors
     .attr('width', viz.clust.margin.left)
-    .attr('height', viz.clust.margin.top)
+    .attr('height', rect_height)
     .attr('class', 'top_left_white');
 
   var inst_height = viz.cat_room.col + 2*viz.uni_margin;

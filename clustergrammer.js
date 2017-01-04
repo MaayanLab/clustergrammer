@@ -6356,7 +6356,8 @@ var Clustergrammer =
 
 	  svg_group.select(viz.root + ' .left_slant_triangle').attr('transform', 'translate(-1,' + viz.norm_labels.width.col + ')');
 
-	  svg_group.select(viz.root + ' .top_left_white').attr('width', viz.clust.margin.left).attr('height', viz.clust.margin.top);
+	  var rect_height = viz.clust.margin.top + viz.uni_margin;
+	  svg_group.select(viz.root + ' .top_left_white').attr('width', viz.clust.margin.left).attr('height', rect_height);
 
 	  var tmp_left = viz.clust.margin.left + viz.clust.dim.width + viz.uni_margin + viz.dendro_room.row;
 	  var tmp_top = viz.norm_labels.margin.top + viz.norm_labels.width.col;
@@ -6438,7 +6439,7 @@ var Clustergrammer =
 
 	  svg_group.select(viz.root + ' .bottom_spillover').attr('width', viz.svg_dim.width).attr('height', 2 * viz.svg_dim.height);
 
-	  var inst_height = viz.cat_room.col + viz.uni_margin;
+	  var inst_height = viz.cat_room.col + 2 * viz.uni_margin;
 	  // white rect to cover excess labels
 	  d3.select(viz.viz_svg + ' .top_right_white').attr('fill', viz.background_color).attr('width', 2 * viz.clust.dim.width).attr('height', inst_height).attr('transform', function () {
 	    var tmp_left = viz.clust.margin.left + viz.clust.dim.width;
@@ -13066,9 +13067,10 @@ var Clustergrammer =
 	  // shift left by 1 px to prevent cutting off labels
 	  .attr('transform', 'translate(-1,' + viz.norm_labels.width.col + ')');
 
+	  var rect_height = viz.clust.margin.top + viz.uni_margin;
 	  // white rect to cover excess labels
 	  d3.select(viz.viz_svg).append('rect').attr('fill', viz.background_color) //!! prog_colors
-	  .attr('width', viz.clust.margin.left).attr('height', viz.clust.margin.top).attr('class', 'top_left_white');
+	  .attr('width', viz.clust.margin.left).attr('height', rect_height).attr('class', 'top_left_white');
 
 	  var inst_height = viz.cat_room.col + 2 * viz.uni_margin;
 	  // white rect to cover excess labels
