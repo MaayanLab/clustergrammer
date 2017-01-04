@@ -3904,7 +3904,7 @@ var Clustergrammer =
 	    if (cgm.params.dendro_filter.row === false && cgm.params.dendro_filter.col === false && cgm.params.cat_filter.row === false && cgm.params.cat_filter.col === false) {
 
 	      // use class as 'global' variable
-	      d3.select(cgm.params.root + ' .' + inst_rc + '_dendro_icons_group').classed('ran_filter', true);
+	      d3.select(cgm.params.root + ' .' + inst_rc + '_dendro_icons_group').attr('transform', 'translate(0,0), scale(1,1)').classed('ran_filter', true);
 	    } else {
 	      // use class as 'global' variable
 	      d3.select(cgm.params.root + ' .' + inst_rc + '_dendro_icons_group').classed('ran_filter', false);
