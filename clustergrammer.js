@@ -5336,6 +5336,10 @@ var Clustergrammer =
 	  d3.select(params.root + ' .row_dendro_container').attr('transform', 'translate(' + [params.viz.uni_margin / 2, zoom_info.trans_y] + ') ' + 'scale( 1,' + zoom_info.zoom_y + ')');
 
 	  // dendrogram icons
+
+	  // rows
+	  ///////////
+	  // transform icon group (contains all icons)
 	  d3.select(params.root + ' .row_dendro_icons_group').attr('transform', function () {
 	    var inst_y = zoom_info.trans_y;
 	    var inst_translate = 'translate(' + [0, inst_y] + ') ';
@@ -5344,10 +5348,29 @@ var Clustergrammer =
 	    return transform_string;
 	  });
 
+	  // transform icons (undo zoom on triangles)
 	  d3.select(params.root + ' .row_dendro_icons_group').selectAll('path').attr('transform', function (d) {
-	    var inst_x = 7;
+	    var inst_x = params.viz.uni_margin;
 	    var inst_y = d.pos_mid;
 	    return 'translate(' + inst_x + ',' + inst_y + ') ' + 'scale(1, ' + 1 / zoom_info.zoom_y + ')';
+	  });
+
+	  // cols
+	  ///////////
+	  // transform icon group (contains all icons)
+	  d3.select(params.root + ' .col_dendro_icons_group').attr('transform', function () {
+	    var inst_x = zoom_info.trans_x;
+	    var inst_translate = 'translate(' + [inst_x, 0] + ')';
+	    var inst_zoom = 'scale(' + zoom_info.zoom_x + ', 1)';
+	    var transform_string = inst_translate + inst_zoom;
+	    return transform_string;
+	  });
+
+	  // transform icons (undo zoom on triangles)
+	  d3.select(params.root + ' .col_dendro_icons_group').selectAll('path').attr('transform', function (d) {
+	    var inst_x = d.pos_mid;
+	    var inst_y = params.viz.uni_margin;
+	    return 'translate(' + inst_x + ',' + inst_y + ') ' + 'scale(' + 1 / zoom_info.zoom_x + ', 1)';
 	  });
 
 	  // transform col_class
@@ -5848,8 +5871,8 @@ var Clustergrammer =
 
 	module.exports = function two_translate_zoom(params, pan_dx, pan_dy, fin_zoom) {
 
-	  function show_crop_buttons() {
-	    d3.selectAll(params.root + ' .row_dendro_crop_buttons').transition().duration(search_duration).style('opacity', inst_button_opacity);
+	  function show_crop_buttons(inst_rc, inst_button_opacity) {
+	    d3.selectAll(params.root + ' .' + inst_rc + '_dendro_crop_buttons').transition().duration(search_duration).style('opacity', inst_button_opacity);
 	  }
 
 	  d3.selectAll(params.viz.root_tips).style('display', 'none');
@@ -5956,7 +5979,7 @@ var Clustergrammer =
 
 	    d3.selectAll(params.root + ' .row_dendro_crop_buttons').style('opacity', 0);
 
-	    setTimeout(show_crop_buttons, 700);
+	    setTimeout(show_crop_buttons, 700, 'row', inst_button_opacity);
 
 	    // transform col labels
 	    d3.select(params.root + ' .col_zoom_container').transition().duration(search_duration).attr('transform', ' scale(' + zoom_x + ',' + zoom_x + ')' + 'translate(' + [pan_dx, 0] + ')');
@@ -5991,7 +6014,7 @@ var Clustergrammer =
 	    d3.select(params.root + ' .row_dendro_icons_group').attr('transform', 'translate(' + [0, 0 + center_y] + ')' + ' scale(' + zoom_x + ',' + zoom_y + ')' + 'translate(' + [pan_dx, pan_dy] + ')');
 
 	    d3.select(params.root + ' .row_dendro_icons_group').selectAll('path').attr('transform', function (d) {
-	      var inst_x = 7;
+	      var inst_x = params.viz.uni_margin;
 	      var inst_y = d.pos_mid;
 	      return 'translate(' + inst_x + ',' + inst_y + ') ' + 'scale(1, ' + 1 / zoom_y + ')';
 	    });
@@ -13094,9 +13117,8 @@ var Clustergrammer =
 	    return 'translate(0,' + y_offset + ')';
 	  });
 
-	  b_spill_container.append('rect').attr('class', 'bottom_spillover')
-	  // .attr('fill', viz.background_color) //!! prog_colors
-	  .attr('fill', 'red').attr('width', viz.svg_dim.width).attr('height', 2 * viz.svg_dim.height);
+	  b_spill_container.append('rect').attr('class', 'bottom_spillover').attr('fill', viz.background_color) //!! prog_colors
+	  .attr('width', viz.svg_dim.width).attr('height', 2 * viz.svg_dim.height);
 
 	  x_offset = viz.clust.margin.left;
 	  y_offset = 0;

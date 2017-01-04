@@ -5,8 +5,8 @@ var ini_zoom_info = require('../zoom/ini_zoom_info');
 
 module.exports = function two_translate_zoom(params, pan_dx, pan_dy, fin_zoom) {
 
-  function show_crop_buttons(){
-    d3.selectAll(params.root+' .row_dendro_crop_buttons')
+  function show_crop_buttons(inst_rc, inst_button_opacity){
+    d3.selectAll(params.root+' .'+inst_rc+'_dendro_crop_buttons')
       .transition()
       .duration(search_duration)
       .style('opacity', inst_button_opacity);
@@ -138,7 +138,7 @@ module.exports = function two_translate_zoom(params, pan_dx, pan_dy, fin_zoom) {
       .style('opacity',0);
 
 
-    setTimeout(show_crop_buttons, 700);
+    setTimeout(show_crop_buttons, 700, 'row', inst_button_opacity);
 
     // transform col labels
     d3.select(params.root+' .col_zoom_container')
@@ -203,7 +203,7 @@ module.exports = function two_translate_zoom(params, pan_dx, pan_dy, fin_zoom) {
     d3.select(params.root+' .row_dendro_icons_group')
       .selectAll('path')
       .attr('transform', function(d){
-        var inst_x = 7;
+        var inst_x = params.viz.uni_margin;
         var inst_y = d.pos_mid;
         return 'translate('+ inst_x +',' + inst_y + ') ' + 'scale(1, '+ 1/zoom_y +')';
       });

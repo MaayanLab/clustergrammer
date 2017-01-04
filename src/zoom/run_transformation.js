@@ -36,22 +36,50 @@ module.exports = function run_transformation(params){
       'scale( 1,' + zoom_info.zoom_y + ')');
 
   // dendrogram icons
+
+  // rows
+  ///////////
+  // transform icon group (contains all icons)
   d3.select(params.root+' .row_dendro_icons_group')
     .attr('transform', function(){
       var inst_y = zoom_info.trans_y;
-      var inst_translate = 'translate(' + [0, inst_y] + ') ' ;
+      var inst_translate = 'translate(' + [0, inst_y] + ') ';
       var inst_zoom = 'scale(1, ' + zoom_info.zoom_y + ')';
       var transform_string = inst_translate + inst_zoom;
       return transform_string;
     });
 
+  // transform icons (undo zoom on triangles)
   d3.select(params.root+' .row_dendro_icons_group')
     .selectAll('path')
     .attr('transform', function(d){
-      var inst_x = 7;
+      var inst_x = params.viz.uni_margin;
       var inst_y = d.pos_mid;
       return 'translate('+ inst_x +',' + inst_y + ') ' + 'scale(1, '+ 1/zoom_info.zoom_y +')';
     });
+
+  // cols
+  ///////////
+  // transform icon group (contains all icons)
+  d3.select(params.root+' .col_dendro_icons_group')
+    .attr('transform', function(){
+      var inst_x = zoom_info.trans_x;
+      var inst_translate = 'translate('+ [inst_x, 0] + ')';
+      var inst_zoom = 'scale('+ zoom_info.zoom_x + ', 1)';
+      var transform_string = inst_translate + inst_zoom;
+      return transform_string
+    });
+
+  // transform icons (undo zoom on triangles)
+  d3.select(params.root+' .col_dendro_icons_group')
+    .selectAll('path')
+    .attr('transform', function(d){
+      var inst_x = d.pos_mid;
+      var inst_y = params.viz.uni_margin;
+      return 'translate('+ inst_x +',' + inst_y + ') ' + 'scale('+ 1/zoom_info.zoom_x +', 1)';
+    });
+
+
 
   // transform col_class
   d3.select(params.root+' .col_cat_container')

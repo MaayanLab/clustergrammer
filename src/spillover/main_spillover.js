@@ -123,8 +123,7 @@ module.exports = function Spillover(cgm) {
   b_spill_container
     .append('rect')
     .attr('class','bottom_spillover')
-    // .attr('fill', viz.background_color) //!! prog_colors
-    .attr('fill', 'red')
+    .attr('fill', viz.background_color) //!! prog_colors
     .attr('width', viz.svg_dim.width)
     .attr('height', 2 * viz.svg_dim.height);
 
