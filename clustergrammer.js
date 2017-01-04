@@ -5975,11 +5975,13 @@ var Clustergrammer =
 	    d3.select(params.root + ' .row_dendro_container').transition().duration(search_duration).attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' + zoom_x + ',' + zoom_y + ')' + 'translate(' + [params.viz.uni_margin / 2, pan_dy] + ')');
 
 	    // toggle crop buttons
-	    var inst_button_opacity = d3.select(params.root + ' .row_dendro_crop_buttons').style('opacity');
+	    var inst_button_opacity;
+	    _.each(['row', 'col'], function (inst_rc) {
 
-	    d3.selectAll(params.root + ' .row_dendro_crop_buttons').style('opacity', 0);
-
-	    setTimeout(show_crop_buttons, 700, 'row', inst_button_opacity);
+	      inst_button_opacity = d3.select(params.root + ' .' + inst_rc + '_dendro_crop_buttons').style('opacity');
+	      d3.selectAll(params.root + ' .' + inst_rc + '_dendro_crop_buttons').style('opacity', 0);
+	      setTimeout(show_crop_buttons, 700, inst_rc, inst_button_opacity);
+	    });
 
 	    // transform col labels
 	    d3.select(params.root + ' .col_zoom_container').transition().duration(search_duration).attr('transform', ' scale(' + zoom_x + ',' + zoom_x + ')' + 'translate(' + [pan_dx, 0] + ')');
@@ -6021,13 +6023,11 @@ var Clustergrammer =
 
 	    d3.select(params.root + ' .col_dendro_icons_group').attr('transform', 'translate(' + [0, 0 + center_y] + ')' + ' scale(' + zoom_x + ',' + zoom_y + ')' + 'translate(' + [pan_dx, pan_dy] + ')');
 
-	    // d3.select(params.root+' .col_dendro_icons_group')
-	    //   .selectAll('path')
-	    //   .attr('transform', function(d){
-	    //     var inst_x = params.viz.uni_margin;
-	    //     var inst_y = d.pos_mid;
-	    //     return 'translate('+ inst_x +',' + inst_y + ') ' + 'scale(1, '+ 1/zoom_y +')';
-	    //   });
+	    d3.select(params.root + ' .col_dendro_icons_group').selectAll('path').attr('transform', function (d) {
+	      var inst_x = d.pos_mid;
+	      var inst_y = params.viz.uni_margin;
+	      return 'translate(' + inst_x + ',' + inst_y + ') ' + 'scale(' + 1 / zoom_x + ',1)';
+	    });
 
 	    // column value bars
 	    ///////////////////////
@@ -6036,10 +6036,7 @@ var Clustergrammer =
 	    // col_label_obj.select('rect')
 	    if (utils.has(params.network_data.col_nodes[0], 'value')) {
 
-	      d3.selectAll(params.root + ' .col_bars')
-	      // .transition()
-	      // .duration(search_duration)
-	      .attr('width', function (d) {
+	      d3.selectAll(params.root + ' .col_bars').attr('width', function (d) {
 	        var inst_value = 0;
 	        if (d.value > 0) {
 	          inst_value = params.labels.bar_scale_col(d.value) / zoom_x;
