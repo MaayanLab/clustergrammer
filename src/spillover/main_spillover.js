@@ -137,6 +137,7 @@ module.exports = function Spillover(cgm) {
     .append('g')
     .classed('col_dendro_icons_group', true);
 
+  console.log('main spillover')
   make_dendro_crop_buttons(cgm, 'col');
 
   ini_cat_reorder(cgm);

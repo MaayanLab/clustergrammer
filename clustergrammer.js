@@ -3386,6 +3386,7 @@ var Clustergrammer =
 	  var dendro_info = calc_row_dendro_triangles(params);
 
 	  if (d3.select(cgm.params.root + ' .row_dendro_crop_buttons').empty() === false) {
+	    console.log('make_row_dendro_triangles');
 	    make_dendro_crop_buttons(cgm, 'row', is_change_group);
 	  }
 
@@ -3700,7 +3701,7 @@ var Clustergrammer =
 	  var is_change_group = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
 
 
-	  console.log('generalizing dendro crop buttons');
+	  console.log('generalizing dendro crop buttons: ' + inst_rc);
 
 	  var params = cgm.params;
 
@@ -3714,8 +3715,8 @@ var Clustergrammer =
 	    dendro_info = calc_col_dendro_triangles(params);
 	  }
 
-	  console.log(inst_rc);
-	  console.log(dendro_info);
+	  // console.log(inst_rc)
+	  // console.log(dendro_info)
 
 	  // d3-tooltip
 	  var tmp_y_offset = 0;
@@ -3931,6 +3932,7 @@ var Clustergrammer =
 	var dendro_group_highlight = __webpack_require__(54);
 	var dendro_mouseover = __webpack_require__(56);
 	var dendro_mouseout = __webpack_require__(57);
+	var make_dendro_crop_buttons = __webpack_require__(58);
 
 	module.exports = function make_col_dendro_triangles(cgm) {
 	  var is_change_group = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
@@ -3943,6 +3945,11 @@ var Clustergrammer =
 	  }
 
 	  var dendro_info = calc_col_dendro_triangles(params);
+
+	  if (d3.select(cgm.params.root + ' .col_dendro_crop_buttons').empty() === false) {
+	    console.log('make_col_dendro_triangles');
+	    make_dendro_crop_buttons(cgm, 'col');
+	  }
 
 	  var inst_dendro_opacity;
 	  if (dendro_info.length > 1) {
@@ -13095,6 +13102,7 @@ var Clustergrammer =
 	  y_offset = 0;
 	  b_spill_container.append('g').classed('col_dendro_icons_container', true).attr('transform', 'translate(' + x_offset + ',' + y_offset + ')').append('g').classed('col_dendro_icons_group', true);
 
+	  console.log('main spillover');
 	  make_dendro_crop_buttons(cgm, 'col');
 
 	  ini_cat_reorder(cgm);
@@ -13130,6 +13138,7 @@ var Clustergrammer =
 	  var y_offset = viz.clust.margin.top;
 	  r_spill_container.append('g').classed('row_dendro_icons_container', true).attr('transform', 'translate(' + x_offset + ',' + y_offset + ')').append('g').classed('row_dendro_icons_group', true);
 
+	  console.log('make_row_dendro_spillover');
 	  make_dendro_crop_buttons(cgm, 'row');
 
 	  // hide spillover from top of row dendrogram

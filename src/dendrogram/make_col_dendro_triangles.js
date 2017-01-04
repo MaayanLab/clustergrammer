@@ -2,6 +2,7 @@ var calc_col_dendro_triangles = require('./calc_col_dendro_triangles');
 var dendro_group_highlight = require('./dendro_group_highlight');
 var dendro_mouseover = require('./dendro_mouseover');
 var dendro_mouseout = require('./dendro_mouseout');
+var make_dendro_crop_buttons = require('./make_dendro_crop_buttons');
 
 module.exports = function make_col_dendro_triangles(cgm, is_change_group = false){
 
@@ -13,6 +14,11 @@ module.exports = function make_col_dendro_triangles(cgm, is_change_group = false
   }
 
   var dendro_info = calc_col_dendro_triangles(params);
+
+  if (d3.select(cgm.params.root+' .col_dendro_crop_buttons').empty() === false){
+    console.log('make_col_dendro_triangles')
+    make_dendro_crop_buttons(cgm, 'col', )
+  }
 
   var inst_dendro_opacity;
   if (dendro_info.length > 1){

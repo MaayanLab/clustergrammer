@@ -6,7 +6,7 @@ var run_dendro_filter = require('./run_dendro_filter');
 
 module.exports = function make_dendro_crop_buttons(cgm, inst_rc, is_change_group = false){
 
-  console.log('generalizing dendro crop buttons')
+  console.log('generalizing dendro crop buttons: ' + inst_rc)
 
   var params = cgm.params;
 
@@ -20,9 +20,8 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc, is_change_group
     dendro_info = calc_col_dendro_triangles(params);
   }
 
-  console.log(inst_rc)
-  console.log(dendro_info)
-
+  // console.log(inst_rc)
+  // console.log(dendro_info)
 
   // d3-tooltip
   var tmp_y_offset = 0;
