@@ -88,33 +88,49 @@ module.exports = function make_row_dendro_triangles(cgm, inst_rc, is_change_grou
     run_transition = false;
   }
 
-  d3.select(params.root+' .'+ inst_rc +'_dendro_container')
+  var dendro_traps = d3.select(params.root+' .'+ inst_rc +'_dendro_container')
     .selectAll('path')
     .data(dendro_info, function(d){return d.name;})
     .enter()
     .append('path')
     .style('opacity',0)
+    .attr('class', inst_rc +'_dendro_group')
+
+    .style('fill','black');
+
+  // draw triangles (shown as trapezoids)
+  //////////////////////////////////////////
+  // row triangles
+  dendro_traps
     .attr('d', function(d) {
 
-      // up triangle
-      var start_x = 0 ;
-      var start_y = d.pos_top;
+      if (inst_rc === 'row'){
+        // row triangles
+        var start_x = 0 ;
+        var start_y = d.pos_top;
+        var mid_x = 30;
+        var mid_y = d.pos_mid;
+        var final_x = 0;
+        var final_y = d.pos_bot;
+      } else {
+        // column triangles
+        var start_x = d.pos_top;
+        var start_y = 0 ;
+        var mid_x = d.pos_mid;
+        var mid_y = 30;
+        var final_x = d.pos_bot;
+        var final_y = 0;
+      }
 
-      var mid_x = 30;
-      var mid_y = d.pos_mid;
-
-      var final_x = 0;
-      var final_y = d.pos_bot;
 
       var output_string = 'M' + start_x + ',' + start_y + ', L' +
       mid_x + ', ' + mid_y + ', L'
       + final_x + ','+ final_y +' Z';
-
       return output_string;
-    })
-    .attr('class', inst_rc +'_dendro_group')
+    });
 
-    .style('fill','black')
+
+  dendro_traps
     .on('mouseover', function(d){
 
       var inst_rc;
@@ -125,9 +141,7 @@ module.exports = function make_row_dendro_triangles(cgm, inst_rc, is_change_grou
       }
 
       dendro_mouseover(cgm, this);
-
       dendro_group_highlight(params, this, d, inst_rc);
-
       dendro_tip.show(d);
 
       // set opacity to zero
