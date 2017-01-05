@@ -2,9 +2,10 @@ var genes_were_found = false;
 function check_setup_enrichr(inst_cgm){
 
   var all_rows = inst_cgm.params.network_data.row_nodes_names;
+  var max_num_genes = 20;
 
-  if (all_rows.length > 10){
-    all_rows = all_rows.slice(0,10);
+  if (all_rows.length > 20){
+    all_rows = all_rows.slice(0,20);
   }
 
   var wait_unit = 500;
@@ -618,8 +619,11 @@ function Enrichr_request(inst_cgm){
 
     d3.selectAll(inst_cgm.params.root+' .enrichr_bars').remove();
 
+    var bar_height = inst_cgm.params.viz.clust.margin.top - 35;
     var max_score = enr_obj.cat_data[0].combined_score;
-    var bar_scale = d3.scale.linear().domain([0, max_score]).range([0,100]);
+    var bar_scale = d3.scale.linear()
+                      .domain([0, max_score])
+                      .range([0, bar_height]);
 
     d3.select(inst_cgm.params.root+' .row_cat_label_bar_container')
       .selectAll()
