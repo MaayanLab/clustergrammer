@@ -279,6 +279,10 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc){
         d3.select(cgm.params.root+' .'+other_rc+'_dendro_icons_container')
           .style('display', 'none');
 
+        // do not display brush-crop button if performing dendro crop
+        d3.select(cgm.params.root+' .crop_button')
+          .style('opacity', 0.2);
+
       } else {
 
         // Undo Filtering
@@ -300,6 +304,10 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc){
         // display other crop buttons when cropping has not been done
         d3.select(cgm.params.root+' .'+other_rc+'_dendro_icons_container')
           .style('display', 'block');
+
+        // display brush-crop button if not performing dendro crop
+        d3.select(cgm.params.root+' .crop_button')
+          .style('opacity', 1);
 
       }
 
