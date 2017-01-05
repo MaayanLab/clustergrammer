@@ -34,7 +34,7 @@ function make_clust(make_sim_mats){
 
 }
 
-function crop_callback(inst_names){
+function crop_callback(){
   enr_obj.clear_enrichr_results();
 }
 

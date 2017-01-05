@@ -16,7 +16,7 @@ module.exports = function run_dendro_filter(cgm, d, inst_rc){
 
     // run optional callback function
     if (cgm.params.crop_callback != null){
-      cgm.params.crop_callback(names);
+      cgm.params.crop_callback();
     }
 
     var tmp_names = cgm.params.network_data[inst_rc+'_nodes_names'];
@@ -47,7 +47,7 @@ module.exports = function run_dendro_filter(cgm, d, inst_rc){
 
     // run optional callback function
     if (cgm.params.crop_callback != null){
-      cgm.params.crop_callback(names);
+      cgm.params.crop_callback();
     }
 
     cgm.filter_viz_using_names(names);

@@ -48,7 +48,7 @@ function make_clust(inst_network){
 
 }
 
-function crop_callback(inst_names){
+function crop_callback(){
   enr_obj.clear_enrichr_results();
 }
 

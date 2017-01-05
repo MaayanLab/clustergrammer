@@ -4063,7 +4063,7 @@ var Clustergrammer =
 
 	    // run optional callback function
 	    if (cgm.params.crop_callback != null) {
-	      cgm.params.crop_callback(names);
+	      cgm.params.crop_callback();
 	    }
 
 	    var tmp_names = cgm.params.network_data[inst_rc + '_nodes_names'];
@@ -4089,7 +4089,7 @@ var Clustergrammer =
 
 	    // run optional callback function
 	    if (cgm.params.crop_callback != null) {
-	      cgm.params.crop_callback(names);
+	      cgm.params.crop_callback();
 	    }
 
 	    cgm.filter_viz_using_names(names);
@@ -11013,6 +11013,11 @@ var Clustergrammer =
 
 	  function brushend() {
 
+	    // run optional callback function
+	    if (cgm.params.crop_callback != null) {
+	      cgm.params.crop_callback();
+	    }
+
 	    // do not display dendro crop buttons when cropping with brushing
 	    d3.select(cgm.params.root + ' .col_dendro_icons_container').style('display', 'none');
 	    d3.select(cgm.params.root + ' .row_dendro_icons_container').style('display', 'none');
@@ -12881,6 +12886,11 @@ var Clustergrammer =
 
 	      // press undo button
 	      if (is_undo) {
+
+	        // run optional callback function
+	        if (cgm.params.crop_callback != null) {
+	          cgm.params.crop_callback();
+	        }
 
 	        d3.select(params.root + ' .crop_button').style('color', '#337ab7').classed('fa-crop', true).classed('fa-undo', false);
 

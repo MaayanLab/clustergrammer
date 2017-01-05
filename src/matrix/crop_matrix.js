@@ -35,6 +35,11 @@ module.exports = function crop_matrix(){
 
   function brushend() {
 
+    // run optional callback function
+    if (cgm.params.crop_callback != null){
+      cgm.params.crop_callback();
+    }
+
     // do not display dendro crop buttons when cropping with brushing
     d3.select(cgm.params.root+' .col_dendro_icons_container')
       .style('display', 'none');

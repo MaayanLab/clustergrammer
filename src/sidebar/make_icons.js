@@ -142,6 +142,11 @@ module.exports = function make_icons(cgm, sidebar){
         // press undo button
         if (is_undo){
 
+          // run optional callback function
+          if (cgm.params.crop_callback != null){
+            cgm.params.crop_callback();
+          }
+
           d3.select(params.root+' .crop_button')
             .style('color', '#337ab7')
             .classed('fa-crop', true)
@@ -155,6 +160,7 @@ module.exports = function make_icons(cgm, sidebar){
             .style('display', 'block');
           d3.select(cgm.params.root+' .row_dendro_icons_container')
             .style('display', 'block');
+
 
         }
 
