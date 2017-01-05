@@ -1,6 +1,7 @@
 var utils = require('../Utils_clust');
 var draw_up_tile = require('../enter/draw_up_tile');
 var draw_dn_tile = require('../enter/draw_dn_tile');
+var fine_position_tile = require('../matrix/fine_position_tile');
 
 module.exports = function resize_row_tiles(params, svg_group){
 
@@ -17,9 +18,7 @@ module.exports = function resize_row_tiles(params, svg_group){
   svg_group.selectAll('.row')
     .selectAll('.tile')
     .attr('transform', function(d){
-      var x_pos = params.viz.x_scale(d.pos_x) + 0.5*params.viz.border_width;
-      var y_pos = 0.5*params.viz.border_width/params.viz.zoom_switch;
-      return 'translate('+x_pos+','+y_pos+')';
+      return fine_position_tile(params, d);
     })
     .attr('width', params.viz.rect_width)
     .attr('height', params.viz.rect_height);
@@ -31,9 +30,7 @@ module.exports = function resize_row_tiles(params, svg_group){
       return draw_up_tile(params);
     })
     .attr('transform', function(d) {
-      var x_pos = params.viz.x_scale(d.pos_x) + 0.5*params.viz.border_width;
-      var y_pos = 0.5*params.viz.border_width/params.viz.zoom_switch;
-      return 'translate(' + x_pos + ','+y_pos+')';
+      return fine_position_tile(params, d);
     });
 
   svg_group.selectAll('.row')
@@ -42,9 +39,7 @@ module.exports = function resize_row_tiles(params, svg_group){
       return draw_dn_tile(params);
     })
     .attr('transform', function(d) {
-      var x_pos = params.viz.x_scale(d.pos_x) + 0.5*params.viz.border_width;
-      var y_pos = 0.5*params.viz.border_width/params.viz.zoom_switch;
-      return 'translate(' + x_pos + ','+y_pos+')';
+      return fine_position_tile(params, d);
     });
 
 };

@@ -2,6 +2,7 @@ var utils = require('../Utils_clust');
 var toggle_dendro_view = require('../dendrogram/toggle_dendro_view');
 var show_visible_area = require('../zoom/show_visible_area');
 var ini_zoom_info = require('../zoom/ini_zoom_info');
+var fine_position_tile = require('../matrix/fine_position_tile');
 
 module.exports = function(cgm, inst_order, tmp_row_col) {
 
@@ -70,9 +71,7 @@ module.exports = function(cgm, inst_order, tmp_row_col) {
     t.selectAll('.row')
       .selectAll('.tile_circle')
       .attr('transform', function(d) {
-        var x_pos = params.viz.x_scale(d.pos_x) + 0.5*params.viz.border_width + params.viz.rect_width/4;
-        var y_pos = 0.5*params.viz.border_width/params.viz.zoom_switch + params.viz.rect_height/4;
-        return 'translate(' + x_pos + ' , '+y_pos+')';
+        return fine_position_tile(params, d);
       });
 
     t.selectAll('.tile_up')

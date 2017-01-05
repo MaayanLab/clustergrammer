@@ -4811,6 +4811,7 @@ var Clustergrammer =
 	var toggle_dendro_view = __webpack_require__(51);
 	var show_visible_area = __webpack_require__(61);
 	var ini_zoom_info = __webpack_require__(36);
+	var fine_position_tile = __webpack_require__(199);
 
 	module.exports = function (cgm, inst_order, tmp_row_col) {
 
@@ -4869,9 +4870,7 @@ var Clustergrammer =
 	    });
 
 	    t.selectAll('.row').selectAll('.tile_circle').attr('transform', function (d) {
-	      var x_pos = params.viz.x_scale(d.pos_x) + 0.5 * params.viz.border_width + params.viz.rect_width / 4;
-	      var y_pos = 0.5 * params.viz.border_width / params.viz.zoom_switch + params.viz.rect_height / 4;
-	      return 'translate(' + x_pos + ' , ' + y_pos + ')';
+	      return fine_position_tile(params, d);
 	    });
 
 	    t.selectAll('.tile_up').attr('transform', function (d) {
@@ -6982,6 +6981,7 @@ var Clustergrammer =
 	var utils = __webpack_require__(2);
 	var draw_up_tile = __webpack_require__(42);
 	var draw_dn_tile = __webpack_require__(43);
+	var fine_position_tile = __webpack_require__(199);
 
 	module.exports = function resize_row_tiles(params, svg_group) {
 
@@ -6995,26 +6995,20 @@ var Clustergrammer =
 
 	  // reset tiles
 	  svg_group.selectAll('.row').selectAll('.tile').attr('transform', function (d) {
-	    var x_pos = params.viz.x_scale(d.pos_x) + 0.5 * params.viz.border_width;
-	    var y_pos = 0.5 * params.viz.border_width / params.viz.zoom_switch;
-	    return 'translate(' + x_pos + ',' + y_pos + ')';
+	    return fine_position_tile(params, d);
 	  }).attr('width', params.viz.rect_width).attr('height', params.viz.rect_height);
 
 	  // reset tile_up
 	  svg_group.selectAll('.row').selectAll('.tile_up').attr('d', function () {
 	    return draw_up_tile(params);
 	  }).attr('transform', function (d) {
-	    var x_pos = params.viz.x_scale(d.pos_x) + 0.5 * params.viz.border_width;
-	    var y_pos = 0.5 * params.viz.border_width / params.viz.zoom_switch;
-	    return 'translate(' + x_pos + ',' + y_pos + ')';
+	    return fine_position_tile(params, d);
 	  });
 
 	  svg_group.selectAll('.row').selectAll('.tile_dn').attr('d', function () {
 	    return draw_dn_tile(params);
 	  }).attr('transform', function (d) {
-	    var x_pos = params.viz.x_scale(d.pos_x) + 0.5 * params.viz.border_width;
-	    var y_pos = 0.5 * params.viz.border_width / params.viz.zoom_switch;
-	    return 'translate(' + x_pos + ',' + y_pos + ')';
+	    return fine_position_tile(params, d);
 	  });
 		};
 
