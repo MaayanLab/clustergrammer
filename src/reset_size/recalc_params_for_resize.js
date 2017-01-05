@@ -9,7 +9,7 @@ module.exports = function recalc_params_for_resize(params){
   // Resetting some visualization parameters
   params = get_svg_dim(params);
   params.viz = calc_clust_width(params.viz);
-  params.viz = calc_clust_height(params.viz);  
+  params.viz = calc_clust_height(params.viz);
 
   if (params.sim_mat){
     if (params.viz.clust.dim.width <= params.viz.clust.dim.height){
@@ -18,16 +18,19 @@ module.exports = function recalc_params_for_resize(params){
       params.viz.clust.dim.width = params.viz.clust.dim.height;
     }
   }
-  
+
   params.viz = calc_zoom_switching(params.viz);
-  
+
   // redefine x_scale and y_scale rangeBands
   params.viz.x_scale.rangeBands([0, params.viz.clust.dim.width]);
   params.viz.y_scale.rangeBands([0, params.viz.clust.dim.height]);
 
   // precalc rect_width and height
-  params.viz.rect_width = params.viz.x_scale.rangeBand();
-  params.viz.rect_height = params.viz.y_scale.rangeBand();
+  // params.viz.rect_width = params.viz.x_scale.rangeBand();
+  // params.viz.rect_height = params.viz.y_scale.rangeBand();
+
+  params.viz.rect_width  = params.viz.x_scale.rangeBand() - params.viz.border_width;
+  params.viz.rect_height = params.viz.y_scale.rangeBand() - params.viz.border_width / params.viz.zoom_switch;
 
   // redefine zoom extent
   params.viz.real_zoom = params.viz.norm_labels.width.col / (params.viz.rect_width/2);

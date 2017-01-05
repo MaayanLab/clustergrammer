@@ -6963,8 +6963,11 @@ var Clustergrammer =
 	  params.viz.y_scale.rangeBands([0, params.viz.clust.dim.height]);
 
 	  // precalc rect_width and height
-	  params.viz.rect_width = params.viz.x_scale.rangeBand();
-	  params.viz.rect_height = params.viz.y_scale.rangeBand();
+	  // params.viz.rect_width = params.viz.x_scale.rangeBand();
+	  // params.viz.rect_height = params.viz.y_scale.rangeBand();
+
+	  params.viz.rect_width = params.viz.x_scale.rangeBand() - params.viz.border_width;
+	  params.viz.rect_height = params.viz.y_scale.rangeBand() - params.viz.border_width / params.viz.zoom_switch;
 
 	  // redefine zoom extent
 	  params.viz.real_zoom = params.viz.norm_labels.width.col / (params.viz.rect_width / 2);
