@@ -2194,8 +2194,8 @@ module.exports =
 	    }
 	  }
 
-	  // draw grid lines after drawing tiles
-	  draw_gridlines(params, row_nodes, col_nodes);
+	  // // draw grid lines after drawing tiles
+	  // draw_gridlines(params, row_nodes, col_nodes);
 
 	  // Matrix API
 	  return {
@@ -8722,7 +8722,7 @@ module.exports =
 	  make_rows(cgm, duration);
 	  make_cols(cgm, duration);
 
-	  enter_grid_lines(params, delays, duration);
+	  // enter_grid_lines(params, delays, duration);
 
 	  setTimeout(label_constrain_and_trim, 2000, params);
 		};

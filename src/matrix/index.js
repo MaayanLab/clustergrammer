@@ -116,8 +116,8 @@ module.exports = function(params, svg_elem) {
     }
   }
 
-  // draw grid lines after drawing tiles
-  draw_gridlines(params, row_nodes, col_nodes);
+  // // draw grid lines after drawing tiles
+  // draw_gridlines(params, row_nodes, col_nodes);
 
   // Matrix API
   return {

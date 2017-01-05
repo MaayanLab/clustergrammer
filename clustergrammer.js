@@ -2194,8 +2194,8 @@ var Clustergrammer =
 	    }
 	  }
 
-	  // draw grid lines after drawing tiles
-	  draw_gridlines(params, row_nodes, col_nodes);
+	  // // draw grid lines after drawing tiles
+	  // draw_gridlines(params, row_nodes, col_nodes);
 
 	  // Matrix API
 	  return {
@@ -5358,8 +5358,8 @@ var Clustergrammer =
 	  resize_super_labels(params, svg_group);
 	  resize_spillover(params.viz, svg_group);
 
-	  // specific to screen resize
-	  resize_grid_lines(params, svg_group);
+	  // // specific to screen resize
+	  // resize_grid_lines(params, svg_group);
 	  resize_borders(params, svg_group);
 
 	  // reset zoom and translate
@@ -8722,7 +8722,7 @@ var Clustergrammer =
 	  make_rows(cgm, duration);
 	  make_cols(cgm, duration);
 
-	  enter_grid_lines(params, delays, duration);
+	  // enter_grid_lines(params, delays, duration);
 
 	  setTimeout(label_constrain_and_trim, 2000, params);
 		};

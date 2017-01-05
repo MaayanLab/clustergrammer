@@ -117,7 +117,7 @@ module.exports = function(cgm, network_data, delays){
   make_rows(cgm, duration);
   make_cols(cgm, duration);
 
-  enter_grid_lines(params, delays, duration);
+  // enter_grid_lines(params, delays, duration);
 
   setTimeout(label_constrain_and_trim, 2000, params);
 
