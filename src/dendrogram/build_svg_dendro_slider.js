@@ -28,7 +28,8 @@ module.exports = function build_svg_dendro_slider(cgm, inst_rc){
     .attr('transform', function(){
       var translate_string = 'translate(-10, -5)';
       return translate_string;
-    });
+    })
+    .style('opacity', 0);
 
   slider_group
     .append("line")

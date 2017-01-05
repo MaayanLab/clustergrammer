@@ -30,6 +30,7 @@ module.exports = function position_svg_dendro_slider(cgm, inst_rc){
                            '), rotate(-90)';
       }
       return inst_translation;
-    });
+    })
+    .style('opacity', 1);
 
 };

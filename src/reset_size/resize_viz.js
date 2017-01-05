@@ -207,7 +207,12 @@ module.exports = function(cgm) {
 
   ini_cat_reorder(cgm);
 
-  position_svg_dendro_slider(cgm, 'row');
-  position_svg_dendro_slider(cgm, 'col');
+  d3.select(cgm.params.root+ ' .row_slider_group')
+    .style('opacity', 0);
+  d3.select(cgm.params.root+ ' .col_slider_group')
+    .style('opacity', 0);
+
+  setTimeout(position_svg_dendro_slider, 500, cgm, 'row');
+  setTimeout(position_svg_dendro_slider, 500, cgm, 'col');
 
 };
