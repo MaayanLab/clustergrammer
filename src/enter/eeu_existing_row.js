@@ -27,7 +27,7 @@ module.exports = function eeu_existing_row(params, ini_inp_row_data, delays, dur
   // Update
   ///////////////////////////
 
-  // update tiles in x direction 
+  // update tiles in x direction
   var update_row_tiles = cur_row_tiles
     .on('mouseover', function(...args) {
       mouseover_tile(params, this, tip, args);
@@ -46,7 +46,7 @@ module.exports = function eeu_existing_row(params, ini_inp_row_data, delays, dur
       .attr('transform', function(d) {
         if (_.contains(col_nodes_names, d.col_name)){
           var inst_col_index = _.indexOf(col_nodes_names, d.col_name);
-          var x_pos = params.viz.x_scale(inst_col_index) + 0.5*params.viz.border_width;
+          var x_pos = params.viz.x_scale(inst_col_index) + 0.5*params.viz.border_width.x;
           return 'translate(' + x_pos + ',0)';
         }
       });
@@ -57,7 +57,7 @@ module.exports = function eeu_existing_row(params, ini_inp_row_data, delays, dur
       .attr('transform', function(d) {
         if (_.contains(col_nodes_names, d.col_name)){
           var inst_col_index = _.indexOf(col_nodes_names, d.col_name);
-          var x_pos = params.viz.x_scale(inst_col_index) + 0.5*params.viz.border_width;
+          var x_pos = params.viz.x_scale(inst_col_index) + 0.5*params.viz.border_width.x;
           return 'translate(' + x_pos + ',0)';
         }
       });

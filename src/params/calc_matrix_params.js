@@ -28,8 +28,9 @@ module.exports = function calc_matrix_params(params){
 
   });
 
-
-  params.viz.border_width = params.viz.x_scale.rangeBand() / params.viz.border_fraction;
+  params.viz.border_width = {};
+  params.viz.border_width.x = params.viz.x_scale.rangeBand() / params.viz.border_fraction;
+  params.viz.border_width.y = params.viz.y_scale.rangeBand() / params.viz.border_fraction;
 
   return params;
 

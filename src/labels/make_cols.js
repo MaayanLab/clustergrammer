@@ -13,7 +13,7 @@ module.exports = function(cgm, text_delay) {
   var col_nodes_names = params.network_data.col_nodes_names;
 
   // offset click group column label
-  var x_offset_click = params.viz.x_scale.rangeBand() / 2 + params.viz.border_width;
+  var x_offset_click = params.viz.x_scale.rangeBand() / 2 + params.viz.border_width.x;
   // reduce width of rotated rects
   var reduce_rect_width = params.viz.x_scale.rangeBand() * 0.36;
 
@@ -118,7 +118,7 @@ module.exports = function(cgm, text_delay) {
     .attr('x', 0)
     // manually tuned
     .attr('y', params.viz.x_scale.rangeBand() * 0.64)
-    .attr('dx', params.viz.border_width)
+    .attr('dx', params.viz.border_width.x)
     .attr('text-anchor', 'start')
     .attr('full_name', function(d) {
       return d.name;
@@ -152,12 +152,12 @@ module.exports = function(cgm, text_delay) {
     .style('stroke-width', 0)
     .attr('d', function() {
       // x and y are flipped since its rotated
-      var origin_y = -params.viz.border_width;
+      var origin_y = -params.viz.border_width.y;
       var start_x = 0;
       var final_x = params.viz.x_scale.rangeBand() - reduce_rect_width;
       var start_y = -(params.viz.x_scale.rangeBand() - reduce_rect_width +
-      params.viz.border_width);
-      var final_y = -params.viz.border_width;
+      params.viz.border_width.y);
+      var final_y = -params.viz.border_width.y;
       var output_string = 'M ' + origin_y + ',0 L ' + start_y + ',' +
         start_x + ', L ' + final_y + ',' + final_x + ' Z';
       return output_string;

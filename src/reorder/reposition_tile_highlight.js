@@ -4,8 +4,8 @@ module.exports = function(params) {
   var rel_width_hlight = 6;
   // var opacity_hlight = 0.85;
 
-  var hlight_width = rel_width_hlight*params.viz.border_width;
-  var hlight_height = rel_width_hlight*params.viz.border_width/params.viz.zoom_switch;
+  var hlight_width = rel_width_hlight*params.viz.border_width.x;
+  var hlight_height = rel_width_hlight*params.viz.border_width.y/params.viz.zoom_switch;
   // reposition tile highlight
   ////////////////////////////////
 

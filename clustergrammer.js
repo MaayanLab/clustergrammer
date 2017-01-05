@@ -1686,7 +1686,9 @@ var Clustergrammer =
 	    }
 	  });
 
-	  params.viz.border_width = params.viz.x_scale.rangeBand() / params.viz.border_fraction;
+	  params.viz.border_width = {};
+	  params.viz.border_width.x = params.viz.x_scale.rangeBand() / params.viz.border_fraction;
+	  params.viz.border_width.y = params.viz.y_scale.rangeBand() / params.viz.border_fraction;
 
 	  return params;
 		};
@@ -1922,8 +1924,8 @@ var Clustergrammer =
 	  params.viz = calc_zoom_switching(params.viz);
 
 	  // rect width needs matrix and zoom parameters
-	  params.viz.rect_width = params.viz.x_scale.rangeBand() - params.viz.border_width;
-	  params.viz.rect_height = params.viz.y_scale.rangeBand() - params.viz.border_width / params.viz.zoom_switch;
+	  params.viz.rect_width = params.viz.x_scale.rangeBand() - params.viz.border_width.x;
+	  params.viz.rect_height = params.viz.y_scale.rangeBand() - params.viz.border_width.y / params.viz.zoom_switch;
 
 	  return params;
 	};
@@ -2237,9 +2239,9 @@ var Clustergrammer =
 	  }).append('line').attr('x1', 0).attr('x2', params.viz.clust.dim.width).style('stroke-width', function () {
 	    var inst_width;
 	    if (params.viz.zoom_switch > 1) {
-	      inst_width = params.viz.border_width / params.viz.zoom_switch;
+	      inst_width = params.viz.border_width.y / params.viz.zoom_switch;
 	    } else {
-	      inst_width = params.viz.border_width;
+	      inst_width = params.viz.border_width.y;
 	    }
 	    return inst_width + 'px';
 	  }).style('stroke', 'white');
@@ -2251,9 +2253,9 @@ var Clustergrammer =
 	  }).append('line').attr('x1', 0).attr('x2', -params.viz.clust.dim.height).style('stroke-width', function () {
 	    var inst_width;
 	    if (params.viz.zoom_switch_y > 1) {
-	      inst_width = params.viz.border_width / params.viz.zoom_switch_y;
+	      inst_width = params.viz.border_width.x / params.viz.zoom_switch_y;
 	    } else {
-	      inst_width = params.viz.border_width;
+	      inst_width = params.viz.border_width.x;
 	    }
 	    return inst_width + 'px';
 	  }).style('stroke', 'white');
@@ -2287,8 +2289,8 @@ var Clustergrammer =
 	      var rel_width_hlight = 6;
 	      var opacity_hlight = 0.85;
 
-	      var hlight_width = rel_width_hlight * params.viz.border_width;
-	      var hlight_height = rel_width_hlight * params.viz.border_width / params.viz.zoom_switch;
+	      var hlight_width = rel_width_hlight * params.viz.border_width.x;
+	      var hlight_height = rel_width_hlight * params.viz.border_width.y / params.viz.zoom_switch;
 
 	      // top highlight
 	      d3.select(clicked_rect.parentNode).append('rect').classed('click_hlight', true).classed('top_hlight', true).attr('width', params.viz.x_scale.rangeBand()).attr('height', hlight_height).attr('fill', params.matrix.hlight_color).attr('transform', function () {
@@ -2514,9 +2516,9 @@ var Clustergrammer =
 	module.exports = function draw_up_tile(params) {
 
 	  var start_x = 0;
-	  var final_x = params.viz.x_scale.rangeBand() - params.viz.border_width / params.viz.zoom_switch_y;
+	  var final_x = params.viz.x_scale.rangeBand() - params.viz.border_width.x / params.viz.zoom_switch_y;
 	  var start_y = 0;
-	  var final_y = params.viz.y_scale.rangeBand() - params.viz.border_width / params.viz.zoom_switch;
+	  var final_y = params.viz.y_scale.rangeBand() - params.viz.border_width.y / params.viz.zoom_switch;
 
 	  var output_string = 'M' + start_x + ',' + start_y + ', L' + start_x + ', ' + final_y + ', L' + final_x + ',0 Z';
 
@@ -2532,9 +2534,9 @@ var Clustergrammer =
 	module.exports = function draw_dn_tile(params) {
 
 	  var start_x = 0;
-	  var final_x = params.viz.x_scale.rangeBand() - params.viz.border_width / params.viz.zoom_switch_y;
-	  var start_y = params.viz.y_scale.rangeBand() - params.viz.border_width / params.viz.zoom_switch;
-	  var final_y = params.viz.y_scale.rangeBand() - params.viz.border_width / params.viz.zoom_switch;
+	  var final_x = params.viz.x_scale.rangeBand() - params.viz.border_width.x / params.viz.zoom_switch_y;
+	  var start_y = params.viz.y_scale.rangeBand() - params.viz.border_width.y / params.viz.zoom_switch;
+	  var final_y = params.viz.y_scale.rangeBand() - params.viz.border_width.y / params.viz.zoom_switch;
 
 	  var output_string = 'M' + start_x + ', ' + start_y + ' ,   L' + final_x + ', ' + final_y + ',  L' + final_x + ',0 Z';
 
@@ -3105,7 +3107,7 @@ var Clustergrammer =
 	    var rel_width_hlight = 6;
 	    var opacity_hlight = 0.85;
 	    // var hlight_width  = rel_width_hlight*params.viz.border_width;
-	    var hlight_height = rel_width_hlight * params.viz.border_width / params.viz.zoom_switch;
+	    var hlight_height = rel_width_hlight * params.viz.border_width.x / params.viz.zoom_switch;
 
 	    d3.selectAll(params.root + ' .click_hlight').remove();
 
@@ -3274,8 +3276,8 @@ var Clustergrammer =
 	  var rel_width_hlight = 6;
 	  // var opacity_hlight = 0.85;
 
-	  var hlight_width = rel_width_hlight * params.viz.border_width;
-	  var hlight_height = rel_width_hlight * params.viz.border_width / params.viz.zoom_switch;
+	  var hlight_width = rel_width_hlight * params.viz.border_width.x;
+	  var hlight_height = rel_width_hlight * params.viz.border_width.y / params.viz.zoom_switch;
 	  // reposition tile highlight
 	  ////////////////////////////////
 
@@ -4369,7 +4371,7 @@ var Clustergrammer =
 	  var col_nodes_names = params.network_data.col_nodes_names;
 
 	  // offset click group column label
-	  var x_offset_click = params.viz.x_scale.rangeBand() / 2 + params.viz.border_width;
+	  var x_offset_click = params.viz.x_scale.rangeBand() / 2 + params.viz.border_width.x;
 	  // reduce width of rotated rects
 	  var reduce_rect_width = params.viz.x_scale.rangeBand() * 0.36;
 
@@ -4436,7 +4438,7 @@ var Clustergrammer =
 	  // add column label
 	  col_label_group.append('text').attr('x', 0)
 	  // manually tuned
-	  .attr('y', params.viz.x_scale.rangeBand() * 0.64).attr('dx', params.viz.border_width).attr('text-anchor', 'start').attr('full_name', function (d) {
+	  .attr('y', params.viz.x_scale.rangeBand() * 0.64).attr('dx', params.viz.border_width.x).attr('text-anchor', 'start').attr('full_name', function (d) {
 	    return d.name;
 	  })
 	  // original font size
@@ -4463,11 +4465,11 @@ var Clustergrammer =
 	  // add triangle under rotated labels
 	  col_label_group.append('path').style('stroke-width', 0).attr('d', function () {
 	    // x and y are flipped since its rotated
-	    var origin_y = -params.viz.border_width;
+	    var origin_y = -params.viz.border_width.y;
 	    var start_x = 0;
 	    var final_x = params.viz.x_scale.rangeBand() - reduce_rect_width;
-	    var start_y = -(params.viz.x_scale.rangeBand() - reduce_rect_width + params.viz.border_width);
-	    var final_y = -params.viz.border_width;
+	    var start_y = -(params.viz.x_scale.rangeBand() - reduce_rect_width + params.viz.border_width.y);
+	    var final_y = -params.viz.border_width.y;
 	    var output_string = 'M ' + origin_y + ',0 L ' + start_y + ',' + start_x + ', L ' + final_y + ',' + final_x + ' Z';
 	    return output_string;
 	  }).attr('fill', '#eee').style('opacity', 0).transition().delay(text_delay).duration(text_delay).style('opacity', params.viz.triangle_opacity);
@@ -4521,7 +4523,7 @@ var Clustergrammer =
 
 	    var rel_width_hlight = 6;
 	    var opacity_hlight = 0.85;
-	    var hlight_width = rel_width_hlight * params.viz.border_width;
+	    var hlight_width = rel_width_hlight * params.viz.border_width.x;
 	    // var hlight_height = rel_width_hlight*params.viz.border_width/params.viz.zoom_switch;
 
 	    d3.selectAll(params.root + ' .click_hlight').remove();
@@ -6376,9 +6378,9 @@ var Clustergrammer =
 	  svg_group.selectAll('.horz_lines').select('line').attr('x2', params.viz.clust.dim.width).style('stroke-width', function () {
 	    var inst_width;
 	    if (params.viz.zoom_switch > 1) {
-	      inst_width = params.viz.border_width / params.viz.zoom_switch;
+	      inst_width = params.viz.border_width.y / params.viz.zoom_switch;
 	    } else {
-	      inst_width = params.viz.border_width;
+	      inst_width = params.viz.border_width.y;
 	    }
 	    return inst_width + 'px';
 	  });
@@ -6391,9 +6393,9 @@ var Clustergrammer =
 	  svg_group.selectAll('.vert_lines').select('line').attr('x2', -params.viz.clust.dim.height).style('stroke-width', function () {
 	    var inst_width;
 	    if (params.viz.zoom_switch_y > 1) {
-	      inst_width = params.viz.border_width / params.viz.zoom_switch_y;
+	      inst_width = params.viz.border_width.x / params.viz.zoom_switch_y;
 	    } else {
-	      inst_width = params.viz.border_width;
+	      inst_width = params.viz.border_width.x;
 	    }
 	    return inst_width + 'px';
 	  });
@@ -6664,8 +6666,8 @@ var Clustergrammer =
 
 	  var rel_width_hlight = 6;
 	  // var opacity_hlight = 0.85;
-	  var hlight_width = rel_width_hlight * params.viz.border_width;
-	  var hlight_height = rel_width_hlight * params.viz.border_width / params.viz.zoom_switch;
+	  var hlight_width = rel_width_hlight * params.viz.border_width.x;
+	  var hlight_height = rel_width_hlight * params.viz.border_width.y / params.viz.zoom_switch;
 
 	  // top highlight
 	  d3.select(params.root + ' .top_hlight').attr('width', params.viz.rect_width).attr('height', hlight_height).attr('transform', function () {
@@ -6804,7 +6806,7 @@ var Clustergrammer =
 	  }
 
 	  // offset click group column label
-	  var x_offset_click = params.viz.x_scale.rangeBand() / 2 + params.viz.border_width;
+	  var x_offset_click = params.viz.x_scale.rangeBand() / 2 + params.viz.border_width.x;
 
 	  svg_group.select(params.root + ' .col_container').attr('transform', 'translate(' + params.viz.clust.margin.left + ',' + params.viz.norm_labels.margin.top + ')');
 
@@ -6814,7 +6816,7 @@ var Clustergrammer =
 
 	  svg_group.selectAll('.col_label_group').attr('transform', 'translate(' + params.viz.x_scale.rangeBand() / 2 + ',' + x_offset_click + ') rotate(45)');
 
-	  svg_group.selectAll('.col_label_group').select('text').attr('y', params.viz.x_scale.rangeBand() * 0.60).attr('dx', 2 * params.viz.border_width);
+	  svg_group.selectAll('.col_label_group').select('text').attr('y', params.viz.x_scale.rangeBand() * 0.60).attr('dx', 2 * params.viz.border_width.x);
 		};
 
 /***/ },
@@ -6871,11 +6873,11 @@ var Clustergrammer =
 
 	  triangle_group.attr('d', function () {
 	    // x and y are flipped since its rotated
-	    var origin_y = -params.viz.border_width;
+	    var origin_y = -params.viz.border_width.x;
 	    var start_x = 0;
 	    var final_x = params.viz.x_scale.rangeBand() - reduce_rect_width;
-	    var start_y = -(params.viz.x_scale.rangeBand() - reduce_rect_width + params.viz.border_width);
-	    var final_y = -params.viz.border_width;
+	    var start_y = -(params.viz.x_scale.rangeBand() - reduce_rect_width + params.viz.border_width.x);
+	    var final_y = -params.viz.border_width.x;
 	    var output_string = 'M ' + origin_y + ',0 L ' + start_y + ',' + start_x + ', L ' + final_y + ',' + final_x + ' Z';
 	    return output_string;
 	  }).attr('fill', '#eee');
@@ -6957,14 +6959,15 @@ var Clustergrammer =
 	  // params.viz.rect_width = params.viz.x_scale.rangeBand();
 	  // params.viz.rect_height = params.viz.y_scale.rangeBand();
 
-	  params.viz.rect_width = params.viz.x_scale.rangeBand() - params.viz.border_width;
-	  params.viz.rect_height = params.viz.y_scale.rangeBand() - params.viz.border_width / params.viz.zoom_switch;
+	  params.viz.rect_width = params.viz.x_scale.rangeBand() - params.viz.border_width.x;
+	  params.viz.rect_height = params.viz.y_scale.rangeBand() - params.viz.border_width.y / params.viz.zoom_switch;
 
 	  // redefine zoom extent
 	  params.viz.real_zoom = params.viz.norm_labels.width.col / (params.viz.rect_width / 2);
 
 	  // redefine border width
-	  params.viz.border_width = params.viz.x_scale.rangeBand() / params.viz.border_fraction;
+	  params.viz.border_width.x = params.viz.x_scale.rangeBand() / params.viz.border_fraction;
+	  params.viz.border_width.y = params.viz.y_scale.rangeBand() / params.viz.border_fraction;
 
 	  // the default font sizes are set here
 	  params = calc_default_fs(params);
@@ -8779,7 +8782,8 @@ var Clustergrammer =
 	  params.zoom_behavior.scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch]);
 
 	  // redefine border width
-	  params.viz.border_width = params.viz.x_scale.rangeBand() / params.viz.border_fraction;
+	  params.viz.border_width.x = params.viz.x_scale.rangeBand() / params.viz.border_fraction;
+	  params.viz.border_width.y = params.viz.y_scale.rangeBand() / params.viz.border_fraction;
 
 	  params = calc_default_fs(params);
 
@@ -8927,7 +8931,7 @@ var Clustergrammer =
 	  // Update
 	  ///////////////////////////
 
-	  // update tiles in x direction 
+	  // update tiles in x direction
 	  var update_row_tiles = cur_row_tiles.on('mouseover', function () {
 	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
 	      args[_key] = arguments[_key];
@@ -8944,7 +8948,7 @@ var Clustergrammer =
 	    update_row_tiles.transition().delay(delays.update).duration(duration).attr('width', params.viz.rect_width).attr('height', params.viz.rect_height).attr('transform', function (d) {
 	      if (_.contains(col_nodes_names, d.col_name)) {
 	        var inst_col_index = _.indexOf(col_nodes_names, d.col_name);
-	        var x_pos = params.viz.x_scale(inst_col_index) + 0.5 * params.viz.border_width;
+	        var x_pos = params.viz.x_scale(inst_col_index) + 0.5 * params.viz.border_width.x;
 	        return 'translate(' + x_pos + ',0)';
 	      }
 	    });
@@ -8952,7 +8956,7 @@ var Clustergrammer =
 	    update_row_tiles.attr('width', params.viz.rect_width).attr('height', params.viz.rect_height).attr('transform', function (d) {
 	      if (_.contains(col_nodes_names, d.col_name)) {
 	        var inst_col_index = _.indexOf(col_nodes_names, d.col_name);
-	        var x_pos = params.viz.x_scale(inst_col_index) + 0.5 * params.viz.border_width;
+	        var x_pos = params.viz.x_scale(inst_col_index) + 0.5 * params.viz.border_width.x;
 	        return 'translate(' + x_pos + ',0)';
 	      }
 	    });
@@ -9236,9 +9240,9 @@ var Clustergrammer =
 	  }).append('line').attr('x1', 0).attr('x2', params.viz.clust.dim.width).style('stroke-width', function () {
 	    var inst_width;
 	    if (params.viz.zoom_switch > 1) {
-	      inst_width = params.viz.border_width / params.viz.zoom_switch;
+	      inst_width = params.viz.border_width.y / params.viz.zoom_switch;
 	    } else {
-	      inst_width = params.viz.border_width;
+	      inst_width = params.viz.border_width.y;
 	    }
 	    return inst_width + 'px';
 	  }).attr('opacity', 0).attr('stroke', 'white').transition().delay(delays.enter).duration(2 * duration).attr('opacity', 1);
@@ -9250,9 +9254,9 @@ var Clustergrammer =
 	  }).append('line').attr('x1', 0).attr('x2', -params.viz.clust.dim.height).style('stroke-width', function () {
 	    var inst_width;
 	    if (params.viz.zoom_switch_y > 1) {
-	      inst_width = params.viz.border_width / params.viz.zoom_switch_y;
+	      inst_width = params.viz.border_width.x / params.viz.zoom_switch_y;
 	    } else {
-	      inst_width = params.viz.border_width;
+	      inst_width = params.viz.border_width.x;
 	    }
 	    return inst_width + 'px';
 	  }).style('stroke', 'white').attr('opacity', 0).transition().delay(delays.enter).duration(2 * duration).attr('opacity', 1);
@@ -13212,8 +13216,8 @@ var Clustergrammer =
 	'use strict';
 
 	module.exports = function fine_position_tile(params, d) {
-	  var x_pos = params.viz.x_scale(d.pos_x) + 0.5 * params.viz.border_width;
-	  var y_pos = 0.5 * params.viz.border_width / params.viz.zoom_switch;
+	  var x_pos = params.viz.x_scale(d.pos_x) + 0.5 * params.viz.border_width.x;
+	  var y_pos = 0.5 * params.viz.border_width.y / params.viz.zoom_switch;
 	  return 'translate(' + x_pos + ',' + y_pos + ')';
 	};
 

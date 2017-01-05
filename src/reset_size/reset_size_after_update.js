@@ -56,7 +56,8 @@ module.exports = function(cgm, row_nodes, col_nodes, links, duration, delays) {
     .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch]);
 
   // redefine border width
-  params.viz.border_width = params.viz.x_scale.rangeBand() / params.viz.border_fraction;
+  params.viz.border_width.x = params.viz.x_scale.rangeBand() / params.viz.border_fraction;
+  params.viz.border_width.y = params.viz.y_scale.rangeBand() / params.viz.border_fraction;
 
   params = calc_default_fs(params);
 

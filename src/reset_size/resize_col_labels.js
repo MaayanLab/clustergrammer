@@ -41,7 +41,7 @@ module.exports = function(params, ini_svg_group, delay_info=false){
   }
 
   // offset click group column label
-  var x_offset_click = params.viz.x_scale.rangeBand() / 2 + params.viz.border_width;
+  var x_offset_click = params.viz.x_scale.rangeBand() / 2 + params.viz.border_width.x;
 
   svg_group
     .select(params.root+' .col_container')
@@ -68,7 +68,7 @@ module.exports = function(params, ini_svg_group, delay_info=false){
     .selectAll('.col_label_group')
     .select('text')
     .attr('y', params.viz.x_scale.rangeBand() * 0.60)
-    .attr('dx', 2 * params.viz.border_width);
+    .attr('dx', 2 * params.viz.border_width.x);
 
 
 };

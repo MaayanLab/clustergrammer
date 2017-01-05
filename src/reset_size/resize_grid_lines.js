@@ -16,9 +16,9 @@ module.exports = function resize_grid_lines(params, svg_group){
     .style('stroke-width', function(){
       var inst_width;
       if (params.viz.zoom_switch > 1){
-        inst_width = params.viz.border_width/params.viz.zoom_switch;
+        inst_width = params.viz.border_width.y/params.viz.zoom_switch;
       } else {
-        inst_width = params.viz.border_width;
+        inst_width = params.viz.border_width.y;
       }
       return inst_width+'px';
     });
@@ -35,9 +35,9 @@ module.exports = function resize_grid_lines(params, svg_group){
     .style('stroke-width', function(){
       var inst_width;
        if (params.viz.zoom_switch_y > 1){
-        inst_width = params.viz.border_width/ params.viz.zoom_switch_y;
+        inst_width = params.viz.border_width.x/ params.viz.zoom_switch_y;
        } else {
-        inst_width = params.viz.border_width;
+        inst_width = params.viz.border_width.x;
        }
        return inst_width + 'px';
     });
