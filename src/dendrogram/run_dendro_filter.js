@@ -14,10 +14,10 @@ module.exports = function run_dendro_filter(cgm, d, inst_rc){
 
     names[inst_rc] = d.all_names;
 
-    // run optional callback function
-    if (cgm.params.crop_callback != null){
-      cgm.params.crop_callback();
-    }
+    // // run optional callback function
+    // if (cgm.params.crop_callback != null){
+    //   cgm.params.crop_callback();
+    // }
 
     var tmp_names = cgm.params.network_data[inst_rc+'_nodes_names'];
 
@@ -45,10 +45,10 @@ module.exports = function run_dendro_filter(cgm, d, inst_rc){
 
     names[inst_rc] = cgm.params.dendro_filter[inst_rc];
 
-    // run optional callback function
-    if (cgm.params.crop_callback != null){
-      cgm.params.crop_callback();
-    }
+    // // run optional callback function
+    // if (cgm.params.crop_callback != null){
+    //   cgm.params.crop_callback();
+    // }
 
     cgm.filter_viz_using_names(names);
     cgm.params.dendro_filter[inst_rc] = false;

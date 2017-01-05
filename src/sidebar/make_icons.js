@@ -142,10 +142,10 @@ module.exports = function make_icons(cgm, sidebar){
         // press undo button
         if (is_undo){
 
-          // run optional callback function
-          if (cgm.params.crop_callback != null){
-            cgm.params.crop_callback();
-          }
+          // // run optional callback function
+          // if (cgm.params.crop_callback != null){
+          //   cgm.params.crop_callback();
+          // }
 
           d3.select(params.root+' .crop_button')
             .style('color', '#337ab7')
