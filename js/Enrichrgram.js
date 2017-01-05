@@ -32,6 +32,7 @@ function run_ini_enrichr(inst_cgm, inst_name){
       enr_obj.enrichr_icon();
 
       // set up Enrichr export in dendro modal
+      //////////////////////////////////////////
 
       // only display for rows
       var enrichr_section = d3.selectAll('.dendro_info')
@@ -190,7 +191,7 @@ function Enrichr_request(inst_cgm){
     enr_menu
       .append('text')
       .classed('enr_menu_clear', true)
-      .attr('transform', 'translate(350, 30)')
+      .attr('transform', 'translate(375, 30)')
       .attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif')
       .style('font-size','18px')
       .style('font-weight', 800)
@@ -227,7 +228,52 @@ function Enrichr_request(inst_cgm){
       'Reactome_2015',
       'MGI_Mammalian_Phenotype_Level_4'
       ];
-    var vertical_space = 35;
+
+    var vertical_space = 30;
+
+    enr_menu
+      .append('rect')
+      .classed('enr_menu_line', true)
+      .attr('height', '2px')
+      .attr('width', '460px')
+      .style('stroke-width', '3px')
+      .style('opacity', 0.3)
+      .style('fill','black')
+      .attr('transform', 'translate(20, 380)');
+
+    var enr_export_container = enr_menu
+      .append('g')
+      .classed('enr_export_container', true)
+      .attr('transform', 'translate(20, 410)');
+
+    enr_export_container
+      .append('text')
+      .style('font-size','16px')
+      .attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif')
+      .style('cursor', 'default')
+      .text('Export gene list to ');
+
+    enr_export_container
+      .append('text')
+      .style('font-size','16px')
+      .attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif')
+      .style('cursor', 'default')
+      .text('Enrichr')
+      .style('fill','#337ab7')
+      .attr('transform', 'translate(135, 0)')
+      .on('click', function(){
+
+        console.log('clicking ')
+
+        // get gene list and send to Enrichr
+        var gene_list = inst_cgm.params.network_data.row_nodes_names.join('\n');
+
+        var enrichr_info = {list: gene_list, description: 'clustergrammer group list' , popup: true};
+
+        // defined globally - will improve
+        enrich(enrichr_info);
+
+      })
 
     var lib_groups = lib_section
       .selectAll('g')
@@ -252,7 +298,7 @@ function Enrichr_request(inst_cgm){
     lib_groups
       .append('text')
       .attr('transform', 'translate(25,0)')
-      .style('font-size','18px')
+      .style('font-size','16px')
       .attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif')
       .style('cursor', 'default')
       .text(function(d){
