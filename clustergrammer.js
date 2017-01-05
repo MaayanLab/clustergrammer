@@ -7492,7 +7492,7 @@ var Clustergrammer =
 
 	var utils = __webpack_require__(2);
 
-	module.exports = function get_cat_nodes(params, inst_data, inst_selection, inst_rc) {
+	module.exports = function get_cat_names(params, inst_data, inst_selection, inst_rc) {
 
 	  // category index
 	  var inst_cat = d3.select(inst_selection).attr('cat');
