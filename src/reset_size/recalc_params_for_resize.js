@@ -29,15 +29,16 @@ module.exports = function recalc_params_for_resize(params){
   // params.viz.rect_width = params.viz.x_scale.rangeBand();
   // params.viz.rect_height = params.viz.y_scale.rangeBand();
 
+  // redefine border width
+  params.viz.border_width.x = params.viz.x_scale.rangeBand() / params.viz.border_fraction;
+  params.viz.border_width.y = params.viz.y_scale.rangeBand() / params.viz.border_fraction;
+
   params.viz.rect_width  = params.viz.x_scale.rangeBand() - params.viz.border_width.x;
-  params.viz.rect_height = params.viz.y_scale.rangeBand() - params.viz.border_width.y / params.viz.zoom_switch;
+  params.viz.rect_height = params.viz.y_scale.rangeBand() - params.viz.border_width.y;// / params.viz.zoom_switch;
 
   // redefine zoom extent
   params.viz.real_zoom = params.viz.norm_labels.width.col / (params.viz.rect_width/2);
 
-  // redefine border width
-  params.viz.border_width.x = params.viz.x_scale.rangeBand() / params.viz.border_fraction;
-  params.viz.border_width.y = params.viz.y_scale.rangeBand() / params.viz.border_fraction;
 
   // the default font sizes are set here
   params = calc_default_fs(params);

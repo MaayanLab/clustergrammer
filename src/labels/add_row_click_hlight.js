@@ -4,7 +4,7 @@ module.exports = function(params, clicked_row, id_clicked_row) {
     var rel_width_hlight = 6;
     var opacity_hlight = 0.85;
     // var hlight_width  = rel_width_hlight*params.viz.border_width;
-    var hlight_height = rel_width_hlight*params.viz.border_width.x/params.viz.zoom_switch;
+    var hlight_height = rel_width_hlight*params.viz.border_width.x; // /params.viz.zoom_switch;
 
     d3.selectAll(params.root+' .click_hlight')
       .remove();

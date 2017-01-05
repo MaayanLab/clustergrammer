@@ -1925,7 +1925,7 @@ var Clustergrammer =
 
 	  // rect width needs matrix and zoom parameters
 	  params.viz.rect_width = params.viz.x_scale.rangeBand() - params.viz.border_width.x;
-	  params.viz.rect_height = params.viz.y_scale.rangeBand() - params.viz.border_width.y / params.viz.zoom_switch;
+	  params.viz.rect_height = params.viz.y_scale.rangeBand() - params.viz.border_width.y; // / params.viz.zoom_switch;
 
 	  return params;
 	};
@@ -2237,12 +2237,12 @@ var Clustergrammer =
 	    var inst_index = _.indexOf(row_nodes_names, d.name);
 	    return 'translate(0,' + params.viz.y_scale(inst_index) + ') rotate(0)';
 	  }).append('line').attr('x1', 0).attr('x2', params.viz.clust.dim.width).style('stroke-width', function () {
-	    var inst_width;
-	    if (params.viz.zoom_switch > 1) {
-	      inst_width = params.viz.border_width.y / params.viz.zoom_switch;
-	    } else {
-	      inst_width = params.viz.border_width.y;
-	    }
+	    var inst_width = params.viz.border_width.y;
+	    // if (params.viz.zoom_switch > 1){
+	    //   inst_width = params.viz.border_width.y/params.viz.zoom_switch;
+	    // } else {
+	    //   inst_width = params.viz.border_width.y;
+	    // }
 	    return inst_width + 'px';
 	  }).style('stroke', 'white');
 
@@ -2251,12 +2251,12 @@ var Clustergrammer =
 	    var inst_index = _.indexOf(col_nodes_names, d.name);
 	    return 'translate(' + params.viz.x_scale(inst_index) + ') rotate(-90)';
 	  }).append('line').attr('x1', 0).attr('x2', -params.viz.clust.dim.height).style('stroke-width', function () {
-	    var inst_width;
-	    if (params.viz.zoom_switch_y > 1) {
-	      inst_width = params.viz.border_width.x / params.viz.zoom_switch_y;
-	    } else {
-	      inst_width = params.viz.border_width.x;
-	    }
+	    var inst_width = params.viz.border_width.x;
+	    // if (params.viz.zoom_switch_y > 1){
+	    //  inst_width = params.viz.border_width.x/ params.viz.zoom_switch_y;
+	    // } else {
+	    //  inst_width = params.viz.border_width.x;
+	    // }
 	    return inst_width + 'px';
 	  }).style('stroke', 'white');
 		};
@@ -2290,7 +2290,7 @@ var Clustergrammer =
 	      var opacity_hlight = 0.85;
 
 	      var hlight_width = rel_width_hlight * params.viz.border_width.x;
-	      var hlight_height = rel_width_hlight * params.viz.border_width.y / params.viz.zoom_switch;
+	      var hlight_height = rel_width_hlight * params.viz.border_width.y; ///params.viz.zoom_switch;
 
 	      // top highlight
 	      d3.select(clicked_rect.parentNode).append('rect').classed('click_hlight', true).classed('top_hlight', true).attr('width', params.viz.x_scale.rangeBand()).attr('height', hlight_height).attr('fill', params.matrix.hlight_color).attr('transform', function () {
@@ -2516,9 +2516,9 @@ var Clustergrammer =
 	module.exports = function draw_up_tile(params) {
 
 	  var start_x = 0;
-	  var final_x = params.viz.x_scale.rangeBand() - params.viz.border_width.x / params.viz.zoom_switch_y;
+	  var final_x = params.viz.x_scale.rangeBand() - params.viz.border_width.x; ///params.viz.zoom_switch_y;
 	  var start_y = 0;
-	  var final_y = params.viz.y_scale.rangeBand() - params.viz.border_width.y / params.viz.zoom_switch;
+	  var final_y = params.viz.y_scale.rangeBand() - params.viz.border_width.y; ///params.viz.zoom_switch;
 
 	  var output_string = 'M' + start_x + ',' + start_y + ', L' + start_x + ', ' + final_y + ', L' + final_x + ',0 Z';
 
@@ -2534,9 +2534,9 @@ var Clustergrammer =
 	module.exports = function draw_dn_tile(params) {
 
 	  var start_x = 0;
-	  var final_x = params.viz.x_scale.rangeBand() - params.viz.border_width.x / params.viz.zoom_switch_y;
-	  var start_y = params.viz.y_scale.rangeBand() - params.viz.border_width.y / params.viz.zoom_switch;
-	  var final_y = params.viz.y_scale.rangeBand() - params.viz.border_width.y / params.viz.zoom_switch;
+	  var final_x = params.viz.x_scale.rangeBand() - params.viz.border_width.x;
+	  var start_y = params.viz.y_scale.rangeBand() - params.viz.border_width.y;
+	  var final_y = params.viz.y_scale.rangeBand() - params.viz.border_width.y;
 
 	  var output_string = 'M' + start_x + ', ' + start_y + ' ,   L' + final_x + ', ' + final_y + ',  L' + final_x + ',0 Z';
 
@@ -3107,7 +3107,7 @@ var Clustergrammer =
 	    var rel_width_hlight = 6;
 	    var opacity_hlight = 0.85;
 	    // var hlight_width  = rel_width_hlight*params.viz.border_width;
-	    var hlight_height = rel_width_hlight * params.viz.border_width.x / params.viz.zoom_switch;
+	    var hlight_height = rel_width_hlight * params.viz.border_width.x; // /params.viz.zoom_switch;
 
 	    d3.selectAll(params.root + ' .click_hlight').remove();
 
@@ -3277,7 +3277,7 @@ var Clustergrammer =
 	  // var opacity_hlight = 0.85;
 
 	  var hlight_width = rel_width_hlight * params.viz.border_width.x;
-	  var hlight_height = rel_width_hlight * params.viz.border_width.y / params.viz.zoom_switch;
+	  var hlight_height = rel_width_hlight * params.viz.border_width.y; ///params.viz.zoom_switch;
 	  // reposition tile highlight
 	  ////////////////////////////////
 
@@ -6376,12 +6376,12 @@ var Clustergrammer =
 	  });
 
 	  svg_group.selectAll('.horz_lines').select('line').attr('x2', params.viz.clust.dim.width).style('stroke-width', function () {
-	    var inst_width;
-	    if (params.viz.zoom_switch > 1) {
-	      inst_width = params.viz.border_width.y / params.viz.zoom_switch;
-	    } else {
-	      inst_width = params.viz.border_width.y;
-	    }
+	    var inst_width = params.viz.border_width.y;
+	    // if (params.viz.zoom_switch > 1){
+	    //   inst_width = params.viz.border_width.y/params.viz.zoom_switch;
+	    // } else {
+	    //   inst_width = params.viz.border_width.y;
+	    // }
 	    return inst_width + 'px';
 	  });
 
@@ -6391,12 +6391,12 @@ var Clustergrammer =
 	  });
 
 	  svg_group.selectAll('.vert_lines').select('line').attr('x2', -params.viz.clust.dim.height).style('stroke-width', function () {
-	    var inst_width;
-	    if (params.viz.zoom_switch_y > 1) {
-	      inst_width = params.viz.border_width.x / params.viz.zoom_switch_y;
-	    } else {
-	      inst_width = params.viz.border_width.x;
-	    }
+	    var inst_width = params.viz.border_width.x;
+	    // if (params.viz.zoom_switch_y > 1){
+	    //  inst_width = params.viz.border_width.x/ params.viz.zoom_switch_y;
+	    // } else {
+	    //  inst_width = params.viz.border_width.x;
+	    // }
 	    return inst_width + 'px';
 	  });
 		};
@@ -6667,7 +6667,7 @@ var Clustergrammer =
 	  var rel_width_hlight = 6;
 	  // var opacity_hlight = 0.85;
 	  var hlight_width = rel_width_hlight * params.viz.border_width.x;
-	  var hlight_height = rel_width_hlight * params.viz.border_width.y / params.viz.zoom_switch;
+	  var hlight_height = rel_width_hlight * params.viz.border_width.y; ///params.viz.zoom_switch;
 
 	  // top highlight
 	  d3.select(params.root + ' .top_hlight').attr('width', params.viz.rect_width).attr('height', hlight_height).attr('transform', function () {
@@ -6959,15 +6959,15 @@ var Clustergrammer =
 	  // params.viz.rect_width = params.viz.x_scale.rangeBand();
 	  // params.viz.rect_height = params.viz.y_scale.rangeBand();
 
-	  params.viz.rect_width = params.viz.x_scale.rangeBand() - params.viz.border_width.x;
-	  params.viz.rect_height = params.viz.y_scale.rangeBand() - params.viz.border_width.y / params.viz.zoom_switch;
-
-	  // redefine zoom extent
-	  params.viz.real_zoom = params.viz.norm_labels.width.col / (params.viz.rect_width / 2);
-
 	  // redefine border width
 	  params.viz.border_width.x = params.viz.x_scale.rangeBand() / params.viz.border_fraction;
 	  params.viz.border_width.y = params.viz.y_scale.rangeBand() / params.viz.border_fraction;
+
+	  params.viz.rect_width = params.viz.x_scale.rangeBand() - params.viz.border_width.x;
+	  params.viz.rect_height = params.viz.y_scale.rangeBand() - params.viz.border_width.y; // / params.viz.zoom_switch;
+
+	  // redefine zoom extent
+	  params.viz.real_zoom = params.viz.norm_labels.width.col / (params.viz.rect_width / 2);
 
 	  // the default font sizes are set here
 	  params = calc_default_fs(params);
@@ -9238,12 +9238,12 @@ var Clustergrammer =
 	    var inst_index = _.indexOf(row_nodes_names, d.name);
 	    return 'translate(0,' + params.viz.y_scale(inst_index) + ') rotate(0)';
 	  }).append('line').attr('x1', 0).attr('x2', params.viz.clust.dim.width).style('stroke-width', function () {
-	    var inst_width;
-	    if (params.viz.zoom_switch > 1) {
-	      inst_width = params.viz.border_width.y / params.viz.zoom_switch;
-	    } else {
-	      inst_width = params.viz.border_width.y;
-	    }
+	    var inst_width = params.viz.border_width.y;
+	    // if (params.viz.zoom_switch > 1){
+	    //   inst_width = params.viz.border_width.y/params.viz.zoom_switch;
+	    // } else {
+	    //   inst_width = params.viz.border_width.y;
+	    // }
 	    return inst_width + 'px';
 	  }).attr('opacity', 0).attr('stroke', 'white').transition().delay(delays.enter).duration(2 * duration).attr('opacity', 1);
 
@@ -9252,12 +9252,12 @@ var Clustergrammer =
 	    var inst_index = _.indexOf(col_nodes_names, d.name);
 	    return 'translate(' + params.viz.x_scale(inst_index) + ') rotate(-90)';
 	  }).append('line').attr('x1', 0).attr('x2', -params.viz.clust.dim.height).style('stroke-width', function () {
-	    var inst_width;
-	    if (params.viz.zoom_switch_y > 1) {
-	      inst_width = params.viz.border_width.x / params.viz.zoom_switch_y;
-	    } else {
-	      inst_width = params.viz.border_width.x;
-	    }
+	    var inst_width = params.viz.border_width.x;
+	    // if (params.viz.zoom_switch_y > 1){
+	    //  inst_width = params.viz.border_width.x/ params.viz.zoom_switch_y;
+	    // } else {
+	    //  inst_width = params.viz.border_width.x;
+	    // }
 	    return inst_width + 'px';
 	  }).style('stroke', 'white').attr('opacity', 0).transition().delay(delays.enter).duration(2 * duration).attr('opacity', 1);
 		};
