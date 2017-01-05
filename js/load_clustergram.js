@@ -49,8 +49,9 @@ function make_clust(inst_network){
 }
 
 function matrix_update_callback(){
-  console.log('matrix_update_callback')
-  enr_obj.clear_enrichr_results();
+  if (genes_were_found){
+    enr_obj.clear_enrichr_results();
+  }
 }
 
 function test_tile_callback(tile_data){

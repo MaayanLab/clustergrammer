@@ -35,7 +35,9 @@ function make_clust(make_sim_mats){
 }
 
 function crop_callback(){
-  enr_obj.clear_enrichr_results();
+  if (genes_were_found){
+    enr_obj.clear_enrichr_results();
+  }
 }
 
 d3.select('.blockMsg').select('h1').text('Please wait...');
