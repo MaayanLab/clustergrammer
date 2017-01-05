@@ -105,7 +105,7 @@ function Enrichr_request(inst_cgm){
     //                           'using Enrichr to find biological information that is unique to your list.'
     var enrichr_description = 'Perform enrichment analysis, using Enrichr, to find biological <br>'+
                               'information specific to your set (or subset) of genes. <br><br>' +
-                              'Crop your matrix to select a subset of genes for analysis.'
+                              'Select a subset of genes for analysis by cropping the matrix.'
     // d3-tooltip
     var enr_tip = d3_tip_custom()
       .attr('class', function(){
@@ -136,21 +136,29 @@ function Enrichr_request(inst_cgm){
      })
      .on('mouseover', function(){
 
-      // display with zero opacity
-      d3.selectAll( cgm.params.viz.root_tips + '_enr_tip')
-        .style('opacity', 1)
-        .style('display', 'block');
+      var is_showing = d3.select(inst_cgm.params.root+' .enrichr_menu')
+                         .classed('showing');
 
-       enr_tip.show();
+      if (is_showing === false){
+        // show tooltip
+        d3.selectAll( cgm.params.viz.root_tips + '_enr_tip')
+          .style('opacity', 1)
+          .style('display', 'block');
+
+         enr_tip.show();
+      }
+
      })
      .on('mouseout', function(){
-      // display with zero opacity
+
+      // hide tooltip
       d3.selectAll( cgm.params.viz.root_tips + '_enr_tip')
         .style('opacity', 0)
         .style('display', 'block');
+
        enr_tip.hide();
      })
-     // .call(enr_tip);
+     .call(enr_tip);
 
     var enr_menu = d3.select(inst_cgm.params.root+' .viz_svg')
       .append('g')
@@ -306,6 +314,9 @@ function Enrichr_request(inst_cgm){
     var enr_menu = d3.select(inst_cgm.params.root+' .enrichr_menu');
 
     if (enr_menu.classed('showing') === false){
+
+      // show menu
+      ///////////////////////
       enr_menu
         .classed('showing', true)
         .style('display', 'block');
@@ -317,8 +328,15 @@ function Enrichr_request(inst_cgm){
 
       d3.selectAll('.row_cat_super').style('display','none');
 
+      // hide tooltip
+      d3.selectAll( cgm.params.viz.root_tips + '_enr_tip')
+        .style('opacity', 0)
+        .style('display', 'block');
+
     } else {
 
+      // hide menu
+      ///////////////////////
       setTimeout(function(){enr_menu.style('display', 'none');}, 1000)
 
       d3.select(inst_cgm.params.root+' .enrichr_menu')
