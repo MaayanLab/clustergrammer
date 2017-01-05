@@ -565,7 +565,7 @@ module.exports =
 	    row_tip_callback: null,
 	    col_tip_callback: null,
 	    tile_tip_callback: null,
-	    undo_crop_callback: null,
+	    crop_callback: null,
 	    dendro_callback: null,
 	    new_cat_data: null
 	  };
@@ -4051,7 +4051,7 @@ module.exports =
 
 	'use strict';
 
-	module.exports = function run_dendro_filter(cgm, d, inst_rc) {
+	lmodule.exports = function run_dendro_filter(cgm, d, inst_rc) {
 
 	  var names = {};
 
@@ -4060,6 +4060,11 @@ module.exports =
 	    d3.select(cgm.params.root + ' .' + inst_rc + '_slider_group').style('opacity', 0.35).style('pointer-events', 'none');
 
 	    names[inst_rc] = d.all_names;
+
+	    // run optional callback function
+	    if (cgm.params.crop_callback != null) {
+	      cgm.params.crop_callback(names);
+	    }
 
 	    var tmp_names = cgm.params.network_data[inst_rc + '_nodes_names'];
 
@@ -4083,8 +4088,8 @@ module.exports =
 	    names[inst_rc] = cgm.params.dendro_filter[inst_rc];
 
 	    // run optional callback function
-	    if (cgm.params.undo_crop_callback != null) {
-	      cgm.params.undo_crop_callback(names);
+	    if (cgm.params.crop_callback != null) {
+	      cgm.params.crop_callback(names);
 	    }
 
 	    cgm.filter_viz_using_names(names);

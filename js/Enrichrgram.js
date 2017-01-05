@@ -142,7 +142,7 @@ function Enrichr_request(inst_cgm){
 
       if (is_showing === false){
         // show tooltip
-        d3.selectAll( cgm.params.viz.root_tips + '_enr_tip')
+        d3.selectAll( inst_cgm.params.viz.root_tips + '_enr_tip')
           .style('opacity', 1)
           .style('display', 'block');
 
@@ -153,7 +153,7 @@ function Enrichr_request(inst_cgm){
      .on('mouseout', function(){
 
       // hide tooltip
-      d3.selectAll( cgm.params.viz.root_tips + '_enr_tip')
+      d3.selectAll( inst_cgm.params.viz.root_tips + '_enr_tip')
         .style('opacity', 0)
         .style('display', 'block');
 
@@ -373,7 +373,7 @@ function Enrichr_request(inst_cgm){
       d3.selectAll('.row_cat_super').style('display','none');
 
       // hide tooltip
-      d3.selectAll( cgm.params.viz.root_tips + '_enr_tip')
+      d3.selectAll( inst_cgm.params.viz.root_tips + '_enr_tip')
         .style('opacity', 0)
         .style('display', 'block');
 

@@ -14,6 +14,7 @@ function make_clust(make_sim_mats){
     args.root = '#container-id-1';
     args.network_data = network_data;
     args.row_tip_callback = hzome.gene_info;
+    args.crop_callback = crop_callback;
 
     cgm['clust'] = Clustergrammer(args);
     d3.select(cgm['clust'].params.root+' .wait_message').remove();
@@ -33,16 +34,9 @@ function make_clust(make_sim_mats){
 
 }
 
-// // make wait sign
-// $.blockUI({ css: {
-//     border: 'none',
-//     padding: '15px',
-//     backgroundColor: '#000',
-//     '-webkit-border-radius': '10px',
-//     '-moz-border-radius': '10px',
-//     opacity: .8,
-//     color: '#fff'
-// } });
+function crop_callback(inst_names){
+  enr_obj.clear_enrichr_results();
+}
 
 d3.select('.blockMsg').select('h1').text('Please wait...');
 

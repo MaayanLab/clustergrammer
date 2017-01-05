@@ -59,7 +59,7 @@ module.exports = function set_defaults(){
     row_tip_callback:null,
     col_tip_callback:null,
     tile_tip_callback:null,
-    undo_crop_callback:null,
+    crop_callback:null,
     dendro_callback:null,
     new_cat_data:null
   };
