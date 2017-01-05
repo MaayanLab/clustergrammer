@@ -119,10 +119,12 @@ module.exports = function make_icons(cgm, sidebar){
         cgm.crop_matrix();
 
         if (d3.select(this).classed('active_cropping') === false){
+
           // set active_cropping (button turns red)
           d3.select(this)
             .classed('active_cropping', true)
             .style('color', 'red');
+
         } else {
           // deactivate cropping (button turns blue)
           d3.select(this)
@@ -145,6 +147,12 @@ module.exports = function make_icons(cgm, sidebar){
 
         // cgm.filter_viz_using_names(cgm.params.crop_filter_nodes);
         cgm.filter_viz_using_nodes(cgm.params.crop_filter_nodes);
+
+        // show dendro crop buttons after brush-cropping has been undone
+        d3.select(cgm.params.root+' .col_dendro_icons_container')
+          .style('display', 'block');
+        d3.select(cgm.params.root+' .row_dendro_icons_container')
+          .style('display', 'block');
 
       }
 

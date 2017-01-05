@@ -11003,8 +11003,13 @@ module.exports =
 
 	  function brushend() {
 
-	    var brushing_extent = brush.extent();
+	    console.log('brushend');
 
+	    // do not display dendro crop buttons when cropping with brushing
+	    d3.select(cgm.params.root + ' .col_dendro_icons_container').style('display', 'none');
+	    d3.select(cgm.params.root + ' .row_dendro_icons_container').style('display', 'none');
+
+	    var brushing_extent = brush.extent();
 	    var brush_start = brushing_extent[0];
 	    var brush_end = brushing_extent[1];
 
@@ -12852,6 +12857,7 @@ module.exports =
 	      cgm.crop_matrix();
 
 	      if (d3.select(this).classed('active_cropping') === false) {
+
 	        // set active_cropping (button turns red)
 	        d3.select(this).classed('active_cropping', true).style('color', 'red');
 	      } else {
@@ -12869,6 +12875,10 @@ module.exports =
 
 	      // cgm.filter_viz_using_names(cgm.params.crop_filter_nodes);
 	      cgm.filter_viz_using_nodes(cgm.params.crop_filter_nodes);
+
+	      // show dendro crop buttons after brush-cropping has been undone
+	      d3.select(cgm.params.root + ' .col_dendro_icons_container').style('display', 'block');
+	      d3.select(cgm.params.root + ' .row_dendro_icons_container').style('display', 'block');
 	    }
 
 	    two_translate_zoom(params, 0, 0, 1);

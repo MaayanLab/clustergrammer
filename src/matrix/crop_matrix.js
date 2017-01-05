@@ -35,8 +35,15 @@ module.exports = function crop_matrix(){
 
   function brushend() {
 
-    var brushing_extent = brush.extent();
+    console.log('brushend')
 
+    // do not display dendro crop buttons when cropping with brushing
+    d3.select(cgm.params.root+' .col_dendro_icons_container')
+      .style('display', 'none');
+    d3.select(cgm.params.root+' .row_dendro_icons_container')
+      .style('display', 'none');
+
+    var brushing_extent = brush.extent();
     var brush_start = brushing_extent[0];
     var brush_end = brushing_extent[1];
 
