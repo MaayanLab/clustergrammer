@@ -56,7 +56,7 @@ function run_ini_enrichr(inst_cgm, inst_name){
           // replace all instances of commas with new line
           var gene_list = group_string.replace(/, /g, '\n');
 
-          var enrichr_info = {list: gene_list, description: 'clustergrammer group list' , popup: true};
+          var enrichr_info = {list: gene_list, description: 'Clustergrammer gene-cluster list' , popup: true};
 
           // defined globally - will improve
           enrich(enrichr_info);
@@ -263,12 +263,10 @@ function Enrichr_request(inst_cgm){
       .attr('transform', 'translate(135, 0)')
       .on('click', function(){
 
-        console.log('clicking ')
-
         // get gene list and send to Enrichr
         var gene_list = inst_cgm.params.network_data.row_nodes_names.join('\n');
 
-        var enrichr_info = {list: gene_list, description: 'clustergrammer group list' , popup: true};
+        var enrichr_info = {list: gene_list, description: 'Clustergrammer gene list' , popup: true};
 
         // defined globally - will improve
         enrich(enrichr_info);
