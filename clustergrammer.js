@@ -3489,7 +3489,6 @@ var Clustergrammer =
 
 	  dendro_traps.on('mouseover', function (d) {
 
-	    var inst_rc;
 	    if (params.sim_mat) {
 	      inst_rc = 'both';
 	    }

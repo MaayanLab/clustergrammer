@@ -74,7 +74,7 @@ module.exports =
 	__webpack_require__(179);
 	__webpack_require__(183);
 
-	/* clustergrammer v1.10.2
+	/* clustergrammer v1.10.1
 	 * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
 	 * (c) 2016
 	 */
@@ -3489,7 +3489,6 @@ module.exports =
 
 	  dendro_traps.on('mouseover', function (d) {
 
-	    var inst_rc;
 	    if (params.sim_mat) {
 	      inst_rc = 'both';
 	    }
