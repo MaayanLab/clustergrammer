@@ -1923,7 +1923,6 @@ var Clustergrammer =
 
 	  // rect width needs matrix and zoom parameters
 	  params.viz.rect_width = params.viz.x_scale.rangeBand() - params.viz.border_width;
-
 	  params.viz.rect_height = params.viz.y_scale.rangeBand() - params.viz.border_width / params.viz.zoom_switch;
 
 	  return params;
@@ -6973,7 +6972,7 @@ var Clustergrammer =
 	  params.viz.real_zoom = params.viz.norm_labels.width.col / (params.viz.rect_width / 2);
 
 	  // redefine border width
-	  params.viz.border_width = params.viz.rect_width / 55;
+	  params.viz.border_width = params.viz.x_scale.rangeBand() / params.viz.border_fraction;
 
 	  // the default font sizes are set here
 	  params = calc_default_fs(params);
@@ -8793,7 +8792,7 @@ var Clustergrammer =
 	  params.zoom_behavior.scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch]);
 
 	  // redefine border width
-	  params.viz.border_width = params.viz.x_scale.rangeBand() / 40;
+	  params.viz.border_width = params.viz.x_scale.rangeBand() / params.viz.border_fraction;
 
 	  params = calc_default_fs(params);
 

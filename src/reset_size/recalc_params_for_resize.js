@@ -36,7 +36,7 @@ module.exports = function recalc_params_for_resize(params){
   params.viz.real_zoom = params.viz.norm_labels.width.col / (params.viz.rect_width/2);
 
   // redefine border width
-  params.viz.border_width = params.viz.rect_width / 55;
+  params.viz.border_width = params.viz.x_scale.rangeBand() / params.viz.border_fraction;
 
   // the default font sizes are set here
   params = calc_default_fs(params);
