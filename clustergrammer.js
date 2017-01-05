@@ -9076,6 +9076,7 @@ var Clustergrammer =
 	var draw_dn_tile = __webpack_require__(43);
 	var mouseover_tile = __webpack_require__(44);
 	var mouseout_tile = __webpack_require__(45);
+	var fine_position_tile = __webpack_require__(199);
 
 	module.exports = function update_split_tiles(params, inp_row_data, row_selection, delays, duration, cur_row_tiles, tip) {
 
@@ -9104,17 +9105,13 @@ var Clustergrammer =
 	    update_tiles_up.transition().delay(delays.update).duration(duration).attr('d', function () {
 	      return draw_up_tile(params);
 	    }).attr('transform', function (d) {
-	      var x_pos = params.viz.x_scale(d.pos_x) + 0.5 * params.viz.border_width;
-	      var y_pos = 0.5 * params.viz.border_width / params.viz.zoom_switch;
-	      return 'translate(' + x_pos + ',' + y_pos + ')';
+	      return fine_position_tile(params, d);
 	    });
 	  } else {
 	    update_tiles_up.attr('d', function () {
 	      return draw_up_tile(params);
 	    }).attr('transform', function (d) {
-	      var x_pos = params.viz.x_scale(d.pos_x) + 0.5 * params.viz.border_width;
-	      var y_pos = 0.5 * params.viz.border_width / params.viz.zoom_switch;
-	      return 'translate(' + x_pos + ',' + y_pos + ')';
+	      return fine_position_tile(params, d);
 	    });
 	  }
 
@@ -9138,17 +9135,13 @@ var Clustergrammer =
 	    update_tiles_dn.transition().delay(delays.update).duration(duration).attr('d', function () {
 	      return draw_dn_tile(params);
 	    }).attr('transform', function (d) {
-	      var x_pos = params.viz.x_scale(d.pos_x) + 0.5 * params.viz.border_width;
-	      var y_pos = 0.5 * params.viz.border_width / params.viz.zoom_switch;
-	      return 'translate(' + x_pos + ',' + y_pos + ')';
+	      return fine_position_tile(params, d);
 	    });
 	  } else {
 	    update_tiles_dn.attr('d', function () {
 	      return draw_dn_tile(params);
 	    }).attr('transform', function (d) {
-	      var x_pos = params.viz.x_scale(d.pos_x) + 0.5 * params.viz.border_width;
-	      var y_pos = 0.5 * params.viz.border_width / params.viz.zoom_switch;
-	      return 'translate(' + x_pos + ',' + y_pos + ')';
+	      return fine_position_tile(params, d);
 	    });
 	  }
 
