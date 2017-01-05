@@ -101,6 +101,11 @@ function Enrichr_request(inst_cgm){
     var icon_size = 42;
     var d3_tip_custom = inst_cgm.d3_tip_custom();
 
+    // var enrichr_description = 'Perform enrichment analysis on your gene-list <br>'+
+    //                           'using Enrichr to find biological information that is unique to your list.'
+    var enrichr_description = 'Perform enrichment analysis, using Enrichr, to find biological <br>'+
+                              'information specific to your set (or subset) of genes. <br><br>' +
+                              'Crop your matrix to select a subset of genes for analysis.'
     // d3-tooltip
     var enr_tip = d3_tip_custom()
       .attr('class', function(){
@@ -109,9 +114,9 @@ function Enrichr_request(inst_cgm){
         return class_string;
       })
       .direction('se')
-      .offset([5,0])
+      .offset([-10,-5])
       .html(function(d){
-        return 'Perform enrichment analysis on your genes <br> using Enrichr.';
+        return enrichr_description;
       });
 
     var enr_logo = d3.select('.viz_svg').append("svg:image")
@@ -146,9 +151,6 @@ function Enrichr_request(inst_cgm){
        enr_tip.hide();
      })
      // .call(enr_tip);
-
-
-
 
     var enr_menu = d3.select(inst_cgm.params.root+' .viz_svg')
       .append('g')
