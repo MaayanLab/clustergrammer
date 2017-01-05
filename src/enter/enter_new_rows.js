@@ -1,6 +1,7 @@
 var enter_split_tiles = require('./enter_split_tiles');
 var mouseover_tile = require('../matrix/mouseover_tile');
 var mouseout_tile = require('../matrix/mouseout_tile');
+var fine_position_tile = require('../matrix/fine_position_tile');
 
 // make each row in the clustergram
 module.exports = function enter_new_rows(params, ini_inp_row_data, delays, duration, tip, row_selection) {
@@ -44,9 +45,7 @@ module.exports = function enter_new_rows(params, ini_inp_row_data, delays, durat
 
   tile
     .attr('transform', function(d) {
-      var x_pos = params.viz.x_scale(d.pos_x) + 0.5*params.viz.border_width;
-      var y_pos = 0.5*params.viz.border_width/params.viz.zoom_switch;
-      return 'translate(' + x_pos + ','+y_pos+')';
+      return fine_position_tile(params, d);
     });
 
   if (params.matrix.tile_type == 'updn'){

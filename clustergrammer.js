@@ -9018,6 +9018,7 @@ var Clustergrammer =
 
 	var mouseover_tile = __webpack_require__(44);
 	var mouseout_tile = __webpack_require__(45);
+	var fine_position_tile = __webpack_require__(199);
 
 	module.exports = function enter_existing_row(params, delays, duration, cur_row_tiles, tip) {
 
@@ -9031,9 +9032,7 @@ var Clustergrammer =
 	  }).on('mouseout', function mouseout() {
 	    mouseout_tile(params, this, tip);
 	  }).attr('fill-opacity', 0).attr('transform', function (d) {
-	    var x_pos = params.viz.x_scale(d.pos_x) + 0.5 * params.viz.border_width;
-	    var y_pos = 0.5 * params.viz.border_width / params.viz.zoom_switch;
-	    return 'translate(' + x_pos + ',' + y_pos + ')';
+	    return fine_position_tile(params, d);
 	  });
 
 	  if (delays.run_transition) {
@@ -9293,6 +9292,7 @@ var Clustergrammer =
 	var enter_split_tiles = __webpack_require__(146);
 	var mouseover_tile = __webpack_require__(44);
 	var mouseout_tile = __webpack_require__(45);
+	var fine_position_tile = __webpack_require__(199);
 
 	// make each row in the clustergram
 	module.exports = function enter_new_rows(params, ini_inp_row_data, delays, duration, tip, row_selection) {
@@ -9329,9 +9329,7 @@ var Clustergrammer =
 	  });
 
 	  tile.attr('transform', function (d) {
-	    var x_pos = params.viz.x_scale(d.pos_x) + 0.5 * params.viz.border_width;
-	    var y_pos = 0.5 * params.viz.border_width / params.viz.zoom_switch;
-	    return 'translate(' + x_pos + ',' + y_pos + ')';
+	    return fine_position_tile(params, d);
 	  });
 
 	  if (params.matrix.tile_type == 'updn') {
@@ -9347,6 +9345,7 @@ var Clustergrammer =
 
 	var draw_up_tile = __webpack_require__(42);
 	var draw_dn_tile = __webpack_require__(43);
+	var fine_position_tile = __webpack_require__(199);
 
 	module.exports = function enter_split_tiles(params, inp_row_data, row_selection, tip, delays, duration, tile) {
 
@@ -9361,9 +9360,7 @@ var Clustergrammer =
 	  }).enter().append('path').attr('class', 'tile_up').attr('d', function () {
 	    return draw_up_tile(params);
 	  }).attr('transform', function (d) {
-	    var x_pos = params.viz.x_scale(d.pos_x) + 0.5 * params.viz.border_width;
-	    var y_pos = 0.5 * params.viz.border_width / params.viz.zoom_switch;
-	    return 'translate(' + x_pos + ',' + y_pos + ')';
+	    return fine_position_tile(params, d);
 	  }).style('fill', function () {
 	    return params.matrix.tile_colors[0];
 	  }).on('mouseover', function (p) {
@@ -9399,9 +9396,7 @@ var Clustergrammer =
 	  }).enter().append('path').attr('class', 'tile_dn').attr('d', function () {
 	    return draw_dn_tile(params);
 	  }).attr('transform', function (d) {
-	    var x_pos = params.viz.x_scale(d.pos_x) + 0.5 * params.viz.border_width;
-	    var y_pos = 0.5 * params.viz.border_width / params.viz.zoom_switch;
-	    return 'translate(' + x_pos + ',' + y_pos + ')';
+	    return fine_position_tile(params, d);
 	  }).style('fill', function () {
 	    return params.matrix.tile_colors[1];
 	  }).on('mouseover', function (p) {

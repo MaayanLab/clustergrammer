@@ -1,5 +1,6 @@
 var draw_up_tile = require('./draw_up_tile');
 var draw_dn_tile = require('./draw_dn_tile');
+var fine_position_tile = require('../matrix/fine_position_tile');
 
 module.exports = function enter_split_tiles(params, inp_row_data, row_selection, tip, delays, duration, tile){
 
@@ -19,9 +20,7 @@ module.exports = function enter_split_tiles(params, inp_row_data, row_selection,
       return draw_up_tile(params);
     })
     .attr('transform', function(d) {
-      var x_pos = params.viz.x_scale(d.pos_x) + 0.5*params.viz.border_width;
-      var y_pos = 0.5*params.viz.border_width/params.viz.zoom_switch;
-      return 'translate(' + x_pos + ','+y_pos+')';
+      return fine_position_tile(params, d);
     })
     .style('fill', function() {
       return params.matrix.tile_colors[0];
@@ -71,9 +70,7 @@ module.exports = function enter_split_tiles(params, inp_row_data, row_selection,
       return draw_dn_tile(params);
     })
     .attr('transform', function(d) {
-      var x_pos = params.viz.x_scale(d.pos_x) + 0.5*params.viz.border_width;
-      var y_pos = 0.5*params.viz.border_width/params.viz.zoom_switch;
-      return 'translate(' + x_pos + ','+y_pos+')';
+      return fine_position_tile(params, d);
     })
     .style('fill', function() {
       return params.matrix.tile_colors[1];

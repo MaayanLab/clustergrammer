@@ -1,5 +1,6 @@
 var mouseover_tile = require('../matrix/mouseover_tile');
 var mouseout_tile = require('../matrix/mouseout_tile');
+var fine_position_tile = require('../matrix/fine_position_tile');
 
 module.exports = function enter_existing_row(params, delays, duration, cur_row_tiles, tip){
 
@@ -18,9 +19,7 @@ module.exports = function enter_existing_row(params, delays, duration, cur_row_t
     })
     .attr('fill-opacity',0)
     .attr('transform', function(d){
-      var x_pos = params.viz.x_scale(d.pos_x) + 0.5*params.viz.border_width;
-      var y_pos = 0.5*params.viz.border_width/params.viz.zoom_switch;
-      return 'translate('+x_pos+','+y_pos+')';
+      return fine_position_tile(params, d);
     });
 
 
