@@ -99,8 +99,22 @@ function Enrichr_request(inst_cgm){
     var low_opacity = 0.7;
     var high_opacity = 1.0;
     var icon_size = 42;
+    var d3_tip_custom = inst_cgm.d3_tip_custom();
 
-    d3.select('.viz_svg').append("svg:image")
+    // d3-tooltip
+    var enr_tip = d3_tip_custom()
+      .attr('class', function(){
+        var root_tip_selector = inst_cgm.params.viz.root_tips.replace('.','');
+        var class_string = root_tip_selector + '_enr_tip d3-tip';
+        return class_string;
+      })
+      .direction('se')
+      .offset([5,0])
+      .html(function(d){
+        return 'Perform enrichment analysis on your genes <br> using Enrichr.';
+      });
+
+    var enr_logo = d3.select('.viz_svg').append("svg:image")
      .attr('x', 50)
      .attr('y', 2)
      .attr('width', icon_size)
@@ -116,11 +130,25 @@ function Enrichr_request(inst_cgm){
        toggle_enrichr_menu();
      })
      .on('mouseover', function(){
-       d3.select(this).style('opacity', high_opacity);
+
+      // display with zero opacity
+      d3.selectAll( cgm.params.viz.root_tips + '_enr_tip')
+        .style('opacity', 1)
+        .style('display', 'block');
+
+       enr_tip.show();
      })
      .on('mouseout', function(){
-       d3.select(this).style('opacity', low_opacity);
-     });
+      // display with zero opacity
+      d3.selectAll( cgm.params.viz.root_tips + '_enr_tip')
+        .style('opacity', 0)
+        .style('display', 'block');
+       enr_tip.hide();
+     })
+     // .call(enr_tip);
+
+
+
 
     var enr_menu = d3.select(inst_cgm.params.root+' .viz_svg')
       .append('g')
