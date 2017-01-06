@@ -182,8 +182,8 @@ module.exports = function(cgm) {
   resize_super_labels(params, svg_group);
   resize_spillover(params.viz, svg_group);
 
-  // // specific to screen resize
-  // resize_grid_lines(params, svg_group);
+  // specific to screen resize
+  resize_grid_lines(params, svg_group);
   resize_borders(params, svg_group);
 
   // reset zoom and translate

@@ -2120,7 +2120,6 @@ var Clustergrammer =
 
 	  var matrix = [],
 	      row_nodes = network_data.row_nodes,
-	      col_nodes = network_data.col_nodes,
 	      clust_group;
 
 	  var row_nodes_names = utils.pluck(row_nodes, 'name');
@@ -5321,8 +5320,8 @@ var Clustergrammer =
 	  resize_super_labels(params, svg_group);
 	  resize_spillover(params.viz, svg_group);
 
-	  // // specific to screen resize
-	  // resize_grid_lines(params, svg_group);
+	  // specific to screen resize
+	  resize_grid_lines(params, svg_group);
 	  resize_borders(params, svg_group);
 
 	  // reset zoom and translate
@@ -6339,39 +6338,39 @@ var Clustergrammer =
 
 	module.exports = function resize_grid_lines(params, svg_group) {
 
-	  var col_nodes_names = params.network_data.col_nodes_names;
-	  var row_nodes_names = params.network_data.row_nodes_names;
+	  console.log('no resize_grid_lines');
 
-	  // reposition grid lines
-	  svg_group.selectAll('.horz_lines').attr('transform', function (d) {
-	    var inst_index = _.indexOf(row_nodes_names, d.name);
-	    return 'translate(0,' + params.viz.y_scale(inst_index) + ') rotate(0)';
-	  });
+	  // var col_nodes_names = params.network_data.col_nodes_names;
+	  // var row_nodes_names = params.network_data.row_nodes_names;
 
-	  svg_group.selectAll('.horz_lines').select('line').attr('x2', params.viz.clust.dim.width).style('stroke-width', function () {
-	    var inst_width = params.viz.border_width.y;
-	    // if (params.viz.zoom_switch > 1){
-	    //   inst_width = params.viz.border_width.y/params.viz.zoom_switch;
-	    // } else {
-	    //   inst_width = params.viz.border_width.y;
-	    // }
-	    return inst_width + 'px';
-	  });
+	  // // reposition grid lines
+	  // svg_group.selectAll('.horz_lines')
+	  //   .attr('transform', function(d) {
+	  //     var inst_index = _.indexOf(row_nodes_names, d.name);
+	  //     return 'translate(0,' + params.viz.y_scale(inst_index) + ') rotate(0)';
+	  //   });
 
-	  svg_group.selectAll('.vert_lines').attr('transform', function (d) {
-	    var inst_index = _.indexOf(col_nodes_names, d.name);
-	    return 'translate(' + params.viz.x_scale(inst_index) + ') rotate(-90)';
-	  });
+	  // svg_group.selectAll('.horz_lines')
+	  //   .select('line')
+	  //   .attr('x2',params.viz.clust.dim.width)
+	  //   .style('stroke-width', function(){
+	  //     var inst_width = params.viz.border_width.y;
+	  //     return inst_width+'px';
+	  //   });
 
-	  svg_group.selectAll('.vert_lines').select('line').attr('x2', -params.viz.clust.dim.height).style('stroke-width', function () {
-	    var inst_width = params.viz.border_width.x;
-	    // if (params.viz.zoom_switch_y > 1){
-	    //  inst_width = params.viz.border_width.x/ params.viz.zoom_switch_y;
-	    // } else {
-	    //  inst_width = params.viz.border_width.x;
-	    // }
-	    return inst_width + 'px';
-	  });
+	  // svg_group.selectAll('.vert_lines')
+	  //   .attr('transform', function(d) {
+	  //     var inst_index = _.indexOf(col_nodes_names, d.name);
+	  //     return 'translate(' + params.viz.x_scale(inst_index) + ') rotate(-90)';
+	  //   });
+
+	  // svg_group.selectAll('.vert_lines')
+	  //   .select('line')
+	  //   .attr('x2', -params.viz.clust.dim.height)
+	  //   .style('stroke-width', function(){
+	  //     var inst_width = params.viz.border_width.x;
+	  //      return inst_width + 'px';
+	  //   });
 		};
 
 /***/ },
@@ -13143,6 +13142,8 @@ var Clustergrammer =
 
 	module.exports = function draw_gridlines(params, delays, duration) {
 
+	  console.log('draw_gridlines');
+
 	  var row_nodes = params.network_data.row_nodes;
 	  var row_nodes_names = params.network_data.row_nodes_names;
 	  var col_nodes = params.network_data.col_nodes;
@@ -13152,24 +13153,38 @@ var Clustergrammer =
 	  ///////////////////////////
 
 	  // append horizontal lines
-	  d3.select(params.root + ' .clust_group').selectAll('.horz_lines').data(row_nodes, function (d) {
+	  var horz_lines = d3.select(params.root + ' .clust_group').selectAll('.horz_lines').data(row_nodes, function (d) {
 	    return d.name;
-	  }).enter().append('g').attr('class', 'horz_lines').attr('transform', function (d) {
+	  }).enter().append('g').attr('class', 'horz_lines');
+
+	  horz_lines.attr('transform', function (d) {
 	    var inst_index = _.indexOf(row_nodes_names, d.name);
-	    return 'translate(0,' + params.viz.y_scale(inst_index) + ') rotate(0)';
-	  }).append('line').attr('x1', 0).attr('x2', params.viz.clust.dim.width).style('stroke-width', function () {
+	    var inst_trans = params.viz.y_scale(inst_index) - params.viz.border_width.y / 2;
+	    return 'translate(  0,' + inst_trans + ') rotate(0)';
+	  });
+
+	  horz_lines.append('line').attr('x1', 0).attr('x2', params.viz.clust.dim.width).style('stroke-width', function () {
 	    var inst_width = params.viz.border_width.y;
 	    return inst_width + 'px';
-	  }).attr('opacity', 0).attr('stroke', 'white').transition().delay(delays.enter).duration(2 * duration).attr('opacity', 1);
+	  });
+
+	  horz_lines.attr('opacity', 0).attr('stroke', 'red').transition().delay(delays.enter).duration(2 * duration).attr('opacity', 1);
 
 	  // append vertical line groups
-	  d3.select(params.root + ' .clust_group').selectAll('.vert_lines').data(col_nodes).enter().append('g').attr('class', 'vert_lines').attr('transform', function (d) {
+	  var vert_lines = d3.select(params.root + ' .clust_group').selectAll('.vert_lines').data(col_nodes).enter().append('g').attr('class', 'vert_lines');
+
+	  vert_lines.attr('transform', function (d) {
 	    var inst_index = _.indexOf(col_nodes_names, d.name);
-	    return 'translate(' + params.viz.x_scale(inst_index) + ') rotate(-90)';
-	  }).append('line').attr('x1', 0).attr('x2', -params.viz.clust.dim.height).style('stroke-width', function () {
+	    var inst_trans = params.viz.x_scale(inst_index); // - params.viz.border_width.x/2;
+	    return 'translate(' + inst_trans + ') rotate(-90)';
+	  });
+
+	  vert_lines.append('line').attr('x1', 0).attr('x2', -params.viz.clust.dim.height).style('stroke-width', function () {
 	    var inst_width = params.viz.border_width.x;
 	    return inst_width + 'px';
-	  }).style('stroke', 'white').attr('opacity', 0).transition().delay(delays.enter).duration(2 * duration).attr('opacity', 1);
+	  });
+
+	  vert_lines.style('stroke', 'green').attr('opacity', 0).transition().delay(delays.enter).duration(2 * duration).attr('opacity', 1);
 		};
 
 /***/ }

@@ -9,7 +9,6 @@ module.exports = function(params, svg_elem) {
 
   var matrix = [],
   row_nodes = network_data.row_nodes,
-  col_nodes = network_data.col_nodes,
   clust_group;
 
   var row_nodes_names = utils.pluck(row_nodes, 'name');
