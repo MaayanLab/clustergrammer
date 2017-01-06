@@ -1,6 +1,11 @@
-module.exports = function grid_lines_viz(params){
+module.exports = function grid_lines_viz(params, duration=0){
 
-  console.log('grid_lines_viz')
+  console.log('duration ' + String(duration) )
+
+  var delay = 0;
+  if (duration > 0){
+    delay = 2000;
+  }
 
   var horz_lines = d3.selectAll(params.root+' .horz_lines');
   var vert_lines = d3.selectAll(params.root+' .vert_lines');
@@ -9,11 +14,16 @@ module.exports = function grid_lines_viz(params){
   var col_nodes_names = params.network_data.col_nodes_names;
 
   horz_lines
+    .style('opacity', 0)
     .attr('transform', function(d) {
       var inst_index = _.indexOf(row_nodes_names, d.name);
-      var inst_trans = params.viz.y_scale(inst_index)// - params.viz.border_width.y/5;
+      var inst_trans = params.viz.y_scale(inst_index);
       return 'translate(  0,' + inst_trans + ') rotate(0)';
     })
+    .transition()
+    .duration(duration)
+    .delay(delay)
+    .style('opacity', 1);
 
   horz_lines
     .append('line')
@@ -22,14 +32,19 @@ module.exports = function grid_lines_viz(params){
     .style('stroke-width', function(){
       var inst_width = params.viz.border_width.y;
       return inst_width+'px';
-    })
+    });
 
   vert_lines
+    .style('opacity', 0)
     .attr('transform', function(d) {
       var inst_index = _.indexOf(col_nodes_names, d.name);
-      var inst_trans = params.viz.x_scale(inst_index); // - params.viz.border_width.x/2;
+      var inst_trans = params.viz.x_scale(inst_index);
       return 'translate(' + inst_trans + ') rotate(-90)';
     })
+    .transition()
+    .duration(duration)
+    .delay(delay)
+    .style('opacity', 1);
 
   vert_lines
     .append('line')
@@ -38,6 +53,6 @@ module.exports = function grid_lines_viz(params){
     .style('stroke-width', function(){
       var inst_width = params.viz.border_width.x;
        return inst_width + 'px';
-    })
+    });
 
 };

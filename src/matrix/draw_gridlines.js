@@ -3,7 +3,7 @@ var toggle_grid_lines = require('./toggle_grid_lines');
 
 module.exports = function draw_gridlines(params, delays, duration){
 
-  console.log('draw_gridlines')
+  console.log('duration ' + String(duration) )
 
   var row_nodes = params.network_data.row_nodes;
   var col_nodes = params.network_data.col_nodes;
@@ -27,9 +27,8 @@ module.exports = function draw_gridlines(params, delays, duration){
     .append('g')
     .attr('class', 'vert_lines');
 
-  grid_lines_viz(params);
+  grid_lines_viz(params, duration);
 
-  var inst_display;
   horz_lines
     .select('line')
     .attr('opacity',0)

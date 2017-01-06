@@ -5198,6 +5198,8 @@ var Clustergrammer =
 
 	module.exports = function (cgm) {
 
+	  console.log('resize_viz');
+
 	  var params = cgm.params;
 
 	  var cont_dim = calc_viz_dimensions(params);
@@ -13162,7 +13164,7 @@ var Clustergrammer =
 
 	module.exports = function draw_gridlines(params, delays, duration) {
 
-	  console.log('draw_gridlines');
+	  console.log('duration ' + String(duration));
 
 	  var row_nodes = params.network_data.row_nodes;
 	  var col_nodes = params.network_data.col_nodes;
@@ -13178,9 +13180,8 @@ var Clustergrammer =
 	  // append vertical line groups
 	  var vert_lines = d3.select(params.root + ' .clust_group').selectAll('.vert_lines').data(col_nodes).enter().append('g').attr('class', 'vert_lines');
 
-	  grid_lines_viz(params);
+	  grid_lines_viz(params, duration);
 
-	  var inst_display;
 	  horz_lines.select('line').attr('opacity', 0).attr('stroke', 'white').attr('opacity', 1);
 
 	  vert_lines.select('line').style('stroke', 'white').attr('opacity', 0).transition().delay(delays.enter).duration(2 * duration).attr('opacity', 1);
@@ -13195,8 +13196,15 @@ var Clustergrammer =
 	'use strict';
 
 	module.exports = function grid_lines_viz(params) {
+	  var duration = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
 
-	  console.log('grid_lines_viz');
+
+	  console.log('duration ' + String(duration));
+
+	  var delay = 0;
+	  if (duration > 0) {
+	    delay = 2000;
+	  }
 
 	  var horz_lines = d3.selectAll(params.root + ' .horz_lines');
 	  var vert_lines = d3.selectAll(params.root + ' .vert_lines');
@@ -13204,22 +13212,22 @@ var Clustergrammer =
 	  var row_nodes_names = params.network_data.row_nodes_names;
 	  var col_nodes_names = params.network_data.col_nodes_names;
 
-	  horz_lines.attr('transform', function (d) {
+	  horz_lines.style('opacity', 0).attr('transform', function (d) {
 	    var inst_index = _.indexOf(row_nodes_names, d.name);
-	    var inst_trans = params.viz.y_scale(inst_index); // - params.viz.border_width.y/5;
+	    var inst_trans = params.viz.y_scale(inst_index);
 	    return 'translate(  0,' + inst_trans + ') rotate(0)';
-	  });
+	  }).transition().duration(duration).delay(delay).style('opacity', 1);
 
 	  horz_lines.append('line').attr('x1', 0).attr('x2', params.viz.clust.dim.width).style('stroke-width', function () {
 	    var inst_width = params.viz.border_width.y;
 	    return inst_width + 'px';
 	  });
 
-	  vert_lines.attr('transform', function (d) {
+	  vert_lines.style('opacity', 0).attr('transform', function (d) {
 	    var inst_index = _.indexOf(col_nodes_names, d.name);
-	    var inst_trans = params.viz.x_scale(inst_index); // - params.viz.border_width.x/2;
+	    var inst_trans = params.viz.x_scale(inst_index);
 	    return 'translate(' + inst_trans + ') rotate(-90)';
-	  });
+	  }).transition().duration(duration).delay(delay).style('opacity', 1);
 
 	  vert_lines.append('line').attr('x1', 0).attr('x2', -params.viz.clust.dim.height).style('stroke-width', function () {
 	    var inst_width = params.viz.border_width.x;
@@ -13234,20 +13242,17 @@ var Clustergrammer =
 	'use strict';
 
 	module.exports = function toggle_grid_lines(params) {
+
 	  if (params.zoom_info.zoom_x * params.viz.border_width.x > 1) {
 	    d3.selectAll(params.root + ' .vert_lines').select('line').style('display', 'block').style('opacity', 0).transition().style('opacity', 1);
-	    console.log('showing vert lines');
 	  } else {
 	    d3.selectAll(params.root + ' .vert_lines').select('line').style('display', 'none');
-	    console.log('hiding lines');
 	  }
 
 	  if (params.zoom_info.zoom_y * params.viz.border_width.y > 1) {
 	    d3.selectAll(params.root + ' .horz_lines').select('line').style('display', 'block').style('opacity', 0).transition().style('opacity', 1);
-	    console.log('showing  lines');
 	  } else {
 	    d3.selectAll(params.root + ' .horz_lines').select('line').style('display', 'none');
-	    console.log('hiding lines');
 	  }
 	};
 

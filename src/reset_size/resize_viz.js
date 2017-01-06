@@ -30,6 +30,8 @@ var grid_lines_viz = require('../matrix/grid_lines_viz');
 
 module.exports = function(cgm) {
 
+  console.log('resize_viz')
+
   var params = cgm.params;
 
   var cont_dim = calc_viz_dimensions(params);
