@@ -1,7 +1,5 @@
 module.exports = function grid_lines_viz(params, duration=0){
 
-  console.log('duration ' + String(duration) )
-
   var delay = 0;
   if (duration > 0){
     delay = 2000;

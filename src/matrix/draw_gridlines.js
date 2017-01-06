@@ -3,8 +3,6 @@ var toggle_grid_lines = require('./toggle_grid_lines');
 
 module.exports = function draw_gridlines(params, delays, duration){
 
-  console.log('duration ' + String(duration) )
-
   var row_nodes = params.network_data.row_nodes;
   var col_nodes = params.network_data.col_nodes;
 
