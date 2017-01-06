@@ -3,6 +3,7 @@ var enter_existing_row = require('./enter_existing_row');
 var update_split_tiles = require('../update/update_split_tiles');
 var mouseover_tile = require('../matrix/mouseover_tile');
 var mouseout_tile = require('../matrix/mouseout_tile');
+var fine_position_tile = require('../matrix/fine_position_tile');
 
 // TODO add tip back to arguments
 module.exports = function eeu_existing_row(params, ini_inp_row_data, delays, duration, row_selection, tip) {
@@ -45,9 +46,10 @@ module.exports = function eeu_existing_row(params, ini_inp_row_data, delays, dur
       .attr('height', params.viz.rect_height)
       .attr('transform', function(d) {
         if (_.contains(col_nodes_names, d.col_name)){
-          var inst_col_index = _.indexOf(col_nodes_names, d.col_name);
-          var x_pos = params.viz.x_scale(inst_col_index) + 0.5*params.viz.border_width.x;
-          return 'translate(' + x_pos + ',0)';
+          // var inst_col_index = _.indexOf(col_nodes_names, d.col_name);
+          // var x_pos = params.viz.x_scale(inst_col_index) + 0.5*params.viz.border_width.x;
+          // return 'translate(' + x_pos + ',0)';
+          return fine_position_tile(params, d);
         }
       });
   } else {
@@ -56,9 +58,10 @@ module.exports = function eeu_existing_row(params, ini_inp_row_data, delays, dur
       .attr('height', params.viz.rect_height)
       .attr('transform', function(d) {
         if (_.contains(col_nodes_names, d.col_name)){
-          var inst_col_index = _.indexOf(col_nodes_names, d.col_name);
-          var x_pos = params.viz.x_scale(inst_col_index) + 0.5*params.viz.border_width.x;
-          return 'translate(' + x_pos + ',0)';
+          // var inst_col_index = _.indexOf(col_nodes_names, d.col_name);
+          // var x_pos = params.viz.x_scale(inst_col_index) + 0.5*params.viz.border_width.x;
+          // return 'translate(' + x_pos + ',0)';
+          return fine_position_tile(params, d);
         }
       });
   }

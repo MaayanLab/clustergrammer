@@ -21,7 +21,7 @@ module.exports = function draw_gridlines(params, delays, duration){
   horz_lines
     .attr('transform', function(d) {
       var inst_index = _.indexOf(row_nodes_names, d.name);
-      var inst_trans = params.viz.y_scale(inst_index) - params.viz.border_width.y/2;
+      var inst_trans = params.viz.y_scale(inst_index)// - params.viz.border_width.y/5;
       return 'translate(  0,' + inst_trans + ') rotate(0)';
     })
 

@@ -8881,6 +8881,7 @@ var Clustergrammer =
 	var update_split_tiles = __webpack_require__(142);
 	var mouseover_tile = __webpack_require__(44);
 	var mouseout_tile = __webpack_require__(45);
+	var fine_position_tile = __webpack_require__(46);
 
 	// TODO add tip back to arguments
 	module.exports = function eeu_existing_row(params, ini_inp_row_data, delays, duration, row_selection, tip) {
@@ -8919,17 +8920,19 @@ var Clustergrammer =
 	  if (delays.run_transition) {
 	    update_row_tiles.transition().delay(delays.update).duration(duration).attr('width', params.viz.rect_width).attr('height', params.viz.rect_height).attr('transform', function (d) {
 	      if (_.contains(col_nodes_names, d.col_name)) {
-	        var inst_col_index = _.indexOf(col_nodes_names, d.col_name);
-	        var x_pos = params.viz.x_scale(inst_col_index) + 0.5 * params.viz.border_width.x;
-	        return 'translate(' + x_pos + ',0)';
+	        // var inst_col_index = _.indexOf(col_nodes_names, d.col_name);
+	        // var x_pos = params.viz.x_scale(inst_col_index) + 0.5*params.viz.border_width.x;
+	        // return 'translate(' + x_pos + ',0)';
+	        return fine_position_tile(params, d);
 	      }
 	    });
 	  } else {
 	    update_row_tiles.attr('width', params.viz.rect_width).attr('height', params.viz.rect_height).attr('transform', function (d) {
 	      if (_.contains(col_nodes_names, d.col_name)) {
-	        var inst_col_index = _.indexOf(col_nodes_names, d.col_name);
-	        var x_pos = params.viz.x_scale(inst_col_index) + 0.5 * params.viz.border_width.x;
-	        return 'translate(' + x_pos + ',0)';
+	        // var inst_col_index = _.indexOf(col_nodes_names, d.col_name);
+	        // var x_pos = params.viz.x_scale(inst_col_index) + 0.5*params.viz.border_width.x;
+	        // return 'translate(' + x_pos + ',0)';
+	        return fine_position_tile(params, d);
 	      }
 	    });
 	  }
@@ -13159,7 +13162,7 @@ var Clustergrammer =
 
 	  horz_lines.attr('transform', function (d) {
 	    var inst_index = _.indexOf(row_nodes_names, d.name);
-	    var inst_trans = params.viz.y_scale(inst_index) - params.viz.border_width.y / 2;
+	    var inst_trans = params.viz.y_scale(inst_index); // - params.viz.border_width.y/5;
 	    return 'translate(  0,' + inst_trans + ') rotate(0)';
 	  });
 
