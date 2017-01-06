@@ -26,16 +26,16 @@ module.exports = function draw_gridlines(params, delays, duration){
     .append('g')
     .attr('class', 'vert_lines');
 
-  grid_lines_viz  (params, horz_lines, vert_lines)
+  grid_lines_viz(params, horz_lines, vert_lines);
 
   horz_lines
     .attr('opacity',0)
-    .attr('stroke','red')
+    .attr('stroke','white')
     .transition().delay(delays.enter).duration(2*duration)
     .attr('opacity',1);
 
   vert_lines
-    .style('stroke', 'green')
+    .style('stroke', 'white')
     .attr('opacity',0)
     .transition().delay(delays.enter).duration(2*duration)
     .attr('opacity',1);

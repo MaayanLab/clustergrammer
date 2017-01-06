@@ -5195,6 +5195,7 @@ var Clustergrammer =
 	var ini_cat_reorder = __webpack_require__(72);
 	var position_svg_dendro_slider = __webpack_require__(107);
 	var ini_zoom_info = __webpack_require__(36);
+	var grid_lines_viz = __webpack_require__(201);
 
 	module.exports = function (cgm) {
 
@@ -5320,8 +5321,12 @@ var Clustergrammer =
 	  resize_super_labels(params, svg_group);
 	  resize_spillover(params.viz, svg_group);
 
-	  // specific to screen resize
-	  resize_grid_lines(params, svg_group);
+	  // resize_grid_lines(params, svg_group);
+
+	  var horz_lines = d3.selectAll(cgm.params.root + ' .horz_lines');
+	  var vert_lines = d3.selectAll(cgm.params.root + ' .vert_lines');
+	  grid_lines_viz(params, horz_lines, vert_lines);
+
 	  resize_borders(params, svg_group);
 
 	  // reset zoom and translate
@@ -5642,6 +5647,7 @@ var Clustergrammer =
 	      d3.selectAll(params.root + ' .row_label_group').select('text').style('display', 'block');
 	      d3.selectAll(params.root + ' .col_label_group').select('text').style('display', 'block');
 
+	      // if (cgm.params.zoom_info.zoom_x *
 	      d3.selectAll(params.root + ' .horz_lines').select('line').style('display', 'block');
 	      d3.selectAll(params.root + ' .vert_lines').select('line').style('display', 'block');
 
@@ -6350,7 +6356,7 @@ var Clustergrammer =
 	  });
 
 	  svg_group.selectAll('.horz_lines').select('line').attr('x2', params.viz.clust.dim.width).style('stroke-width', function () {
-	    var inst_width = params.viz.border_width.y;
+	    var inst_width = params.viz.border_width.y / 2;
 	    return inst_width + 'px';
 	  });
 
@@ -6360,7 +6366,7 @@ var Clustergrammer =
 	  });
 
 	  svg_group.selectAll('.vert_lines').select('line').attr('x2', -params.viz.clust.dim.height).style('stroke-width', function () {
-	    var inst_width = params.viz.border_width.x;
+	    var inst_width = params.viz.border_width.x / 2;
 	    return inst_width + 'px';
 	  });
 		};
@@ -13157,9 +13163,9 @@ var Clustergrammer =
 
 	  grid_lines_viz(params, horz_lines, vert_lines);
 
-	  horz_lines.attr('opacity', 0).attr('stroke', 'red').transition().delay(delays.enter).duration(2 * duration).attr('opacity', 1);
+	  horz_lines.attr('opacity', 0).attr('stroke', 'white').transition().delay(delays.enter).duration(2 * duration).attr('opacity', 1);
 
-	  vert_lines.style('stroke', 'green').attr('opacity', 0).transition().delay(delays.enter).duration(2 * duration).attr('opacity', 1);
+	  vert_lines.style('stroke', 'white').attr('opacity', 0).transition().delay(delays.enter).duration(2 * duration).attr('opacity', 1);
 		};
 
 /***/ },

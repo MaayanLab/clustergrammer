@@ -27,6 +27,7 @@ var make_row_cat_super_labels = require('../labels/make_row_cat_super_labels');
 var ini_cat_reorder = require('../reorder/ini_cat_reorder');
 var position_svg_dendro_slider = require('../dendrogram/position_svg_dendro_slider');
 var ini_zoom_info = require('../zoom/ini_zoom_info');
+var grid_lines_viz = require('../matrix/grid_lines_viz');
 
 module.exports = function(cgm) {
 
@@ -182,8 +183,12 @@ module.exports = function(cgm) {
   resize_super_labels(params, svg_group);
   resize_spillover(params.viz, svg_group);
 
-  // specific to screen resize
-  resize_grid_lines(params, svg_group);
+  // resize_grid_lines(params, svg_group);
+
+  var horz_lines = d3.selectAll(cgm.params.root+' .horz_lines');
+  var vert_lines = d3.selectAll(cgm.params.root+' .vert_lines');
+  grid_lines_viz(params, horz_lines, vert_lines);
+
   resize_borders(params, svg_group);
 
   // reset zoom and translate

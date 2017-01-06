@@ -129,6 +129,7 @@ module.exports = function run_transformation(params){
 
       d3.selectAll('.horz_lines').select('line').style('display','none');
       d3.selectAll('.vert_lines').select('line').style('display','none');
+
     } else {
 
       if (inst_num_visible > 40){

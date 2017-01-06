@@ -47,9 +47,9 @@ module.exports = function zooming_has_stopped(params){
       d3.selectAll(params.root+' .row_label_group').select('text').style('display','block');
       d3.selectAll(params.root+' .col_label_group').select('text').style('display','block');
 
-
-      d3.selectAll(params.root+' .horz_lines').select('line').style('display','block');
-      d3.selectAll(params.root+' .vert_lines').select('line').style('display','block');
+      // if (cgm.params.zoom_info.zoom_x *
+        d3.selectAll(params.root+' .horz_lines').select('line').style('display','block');
+        d3.selectAll(params.root+' .vert_lines').select('line').style('display','block');
 
 
       _.each(['row','col'], function(inst_rc){
