@@ -6340,37 +6340,29 @@ var Clustergrammer =
 
 	  console.log('no resize_grid_lines');
 
-	  // var col_nodes_names = params.network_data.col_nodes_names;
-	  // var row_nodes_names = params.network_data.row_nodes_names;
+	  var col_nodes_names = params.network_data.col_nodes_names;
+	  var row_nodes_names = params.network_data.row_nodes_names;
 
-	  // // reposition grid lines
-	  // svg_group.selectAll('.horz_lines')
-	  //   .attr('transform', function(d) {
-	  //     var inst_index = _.indexOf(row_nodes_names, d.name);
-	  //     return 'translate(0,' + params.viz.y_scale(inst_index) + ') rotate(0)';
-	  //   });
+	  // reposition grid lines
+	  svg_group.selectAll('.horz_lines').attr('transform', function (d) {
+	    var inst_index = _.indexOf(row_nodes_names, d.name);
+	    return 'translate(0,' + params.viz.y_scale(inst_index) + ') rotate(0)';
+	  });
 
-	  // svg_group.selectAll('.horz_lines')
-	  //   .select('line')
-	  //   .attr('x2',params.viz.clust.dim.width)
-	  //   .style('stroke-width', function(){
-	  //     var inst_width = params.viz.border_width.y;
-	  //     return inst_width+'px';
-	  //   });
+	  svg_group.selectAll('.horz_lines').select('line').attr('x2', params.viz.clust.dim.width).style('stroke-width', function () {
+	    var inst_width = params.viz.border_width.y;
+	    return inst_width + 'px';
+	  });
 
-	  // svg_group.selectAll('.vert_lines')
-	  //   .attr('transform', function(d) {
-	  //     var inst_index = _.indexOf(col_nodes_names, d.name);
-	  //     return 'translate(' + params.viz.x_scale(inst_index) + ') rotate(-90)';
-	  //   });
+	  svg_group.selectAll('.vert_lines').attr('transform', function (d) {
+	    var inst_index = _.indexOf(col_nodes_names, d.name);
+	    return 'translate(' + params.viz.x_scale(inst_index) + ') rotate(-90)';
+	  });
 
-	  // svg_group.selectAll('.vert_lines')
-	  //   .select('line')
-	  //   .attr('x2', -params.viz.clust.dim.height)
-	  //   .style('stroke-width', function(){
-	  //     var inst_width = params.viz.border_width.x;
-	  //      return inst_width + 'px';
-	  //   });
+	  svg_group.selectAll('.vert_lines').select('line').attr('x2', -params.viz.clust.dim.height).style('stroke-width', function () {
+	    var inst_width = params.viz.border_width.x;
+	    return inst_width + 'px';
+	  });
 		};
 
 /***/ },
@@ -13139,26 +13131,49 @@ var Clustergrammer =
 
 /***/ },
 /* 200 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
+
+	var grid_lines_viz = __webpack_require__(201);
 
 	module.exports = function draw_gridlines(params, delays, duration) {
 
 	  console.log('draw_gridlines');
 
 	  var row_nodes = params.network_data.row_nodes;
-	  var row_nodes_names = params.network_data.row_nodes_names;
 	  var col_nodes = params.network_data.col_nodes;
-	  var col_nodes_names = params.network_data.col_nodes_names;
 
 	  // Fade in new gridlines
 	  ///////////////////////////
 
-	  // append horizontal lines
+	  // append horizontal line groups
 	  var horz_lines = d3.select(params.root + ' .clust_group').selectAll('.horz_lines').data(row_nodes, function (d) {
 	    return d.name;
 	  }).enter().append('g').attr('class', 'horz_lines');
+
+	  // append vertical line groups
+	  var vert_lines = d3.select(params.root + ' .clust_group').selectAll('.vert_lines').data(col_nodes).enter().append('g').attr('class', 'vert_lines');
+
+	  grid_lines_viz(params, horz_lines, vert_lines);
+
+	  horz_lines.attr('opacity', 0).attr('stroke', 'red').transition().delay(delays.enter).duration(2 * duration).attr('opacity', 1);
+
+	  vert_lines.style('stroke', 'green').attr('opacity', 0).transition().delay(delays.enter).duration(2 * duration).attr('opacity', 1);
+		};
+
+/***/ },
+/* 201 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = function grid_lines_viz(params, horz_lines, vert_lines) {
+
+	  console.log('grid_lines_viz');
+
+	  var row_nodes_names = params.network_data.row_nodes_names;
+	  var col_nodes_names = params.network_data.col_nodes_names;
 
 	  horz_lines.attr('transform', function (d) {
 	    var inst_index = _.indexOf(row_nodes_names, d.name);
@@ -13171,11 +13186,6 @@ var Clustergrammer =
 	    return inst_width + 'px';
 	  });
 
-	  horz_lines.attr('opacity', 0).attr('stroke', 'red').transition().delay(delays.enter).duration(2 * duration).attr('opacity', 1);
-
-	  // append vertical line groups
-	  var vert_lines = d3.select(params.root + ' .clust_group').selectAll('.vert_lines').data(col_nodes).enter().append('g').attr('class', 'vert_lines');
-
 	  vert_lines.attr('transform', function (d) {
 	    var inst_index = _.indexOf(col_nodes_names, d.name);
 	    var inst_trans = params.viz.x_scale(inst_index); // - params.viz.border_width.x/2;
@@ -13186,8 +13196,6 @@ var Clustergrammer =
 	    var inst_width = params.viz.border_width.x;
 	    return inst_width + 'px';
 	  });
-
-	  vert_lines.style('stroke', 'green').attr('opacity', 0).transition().delay(delays.enter).duration(2 * duration).attr('opacity', 1);
 		};
 
 /***/ }
