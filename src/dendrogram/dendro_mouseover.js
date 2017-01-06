@@ -4,10 +4,16 @@ module.exports = function dendro_mouseover(cgm, inst_selection, inst_data, inst_
 
   var all_names = inst_data.all_names;
 
-  // find cats: cat-strings
-  //////////////////////////
-  // params.viz.cat_info
+  // run instantly on mouseover
+  d3.select(inst_selection)
+    .classed('hovering', true);
 
+  if (cgm.params.dendro_callback != null){
+    cgm.params.dendro_callback(inst_selection);
+  }
+
+  // Category-breakdown of dendrogram-clusters
+  /////////////////////////////////////////////
   /*
 
   1. find category-types that are string-type
@@ -18,7 +24,6 @@ module.exports = function dendro_mouseover(cgm, inst_selection, inst_data, inst_
 
   var inst_info = params.viz.cat_info[inst_rc];
   var cat_types_index = _.keys(inst_info);
-
 
   // var inst_node = params.network_data[inst_rc+'_nodes'][0];
 
@@ -35,14 +40,14 @@ module.exports = function dendro_mouseover(cgm, inst_selection, inst_data, inst_
   }
 
   // string-category
-  console.log(cat_types_names)
 
-  // run instantly on mouseover
-  d3.select(inst_selection)
-    .classed('hovering', true);
+  _.each(cat_types_names, function(inst_name){
 
-  if (cgm.params.dendro_callback != null){
-    cgm.params.dendro_callback(inst_selection);
-  }
+    console.log('inst_name: ' + inst_name);
+
+
+    console.log('\n\n')
+
+  });
 
 };

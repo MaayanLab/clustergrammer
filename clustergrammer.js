@@ -3732,8 +3732,6 @@ var Clustergrammer =
 
 	  function make_shade_bars() {
 
-	    console.log('make_shade_bars');
-
 	    if (inst_rc === 'row') {
 
 	      // row and col labling are reversed
@@ -3814,10 +3812,15 @@ var Clustergrammer =
 
 	  var all_names = inst_data.all_names;
 
-	  // find cats: cat-strings
-	  //////////////////////////
-	  // params.viz.cat_info
+	  // run instantly on mouseover
+	  d3.select(inst_selection).classed('hovering', true);
 
+	  if (cgm.params.dendro_callback != null) {
+	    cgm.params.dendro_callback(inst_selection);
+	  }
+
+	  // Category-breakdown of dendrogram-clusters
+	  /////////////////////////////////////////////
 	  /*
 	   1. find category-types that are string-type
 	  2. get category-names that are possible for each category-type
@@ -3841,14 +3844,13 @@ var Clustergrammer =
 	  }
 
 	  // string-category
-	  console.log(cat_types_names);
 
-	  // run instantly on mouseover
-	  d3.select(inst_selection).classed('hovering', true);
+	  _.each(cat_types_names, function (inst_name) {
 
-	  if (cgm.params.dendro_callback != null) {
-	    cgm.params.dendro_callback(inst_selection);
-	  }
+	    console.log('inst_name: ' + inst_name);
+
+	    console.log('\n\n');
+	  });
 		};
 
 /***/ },

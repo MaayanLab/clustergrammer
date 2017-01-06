@@ -25,8 +25,6 @@ module.exports = function dendro_group_highlight(params, inst_selection, inst_da
 
   function make_shade_bars(){
 
-    console.log('make_shade_bars')
-
     if (inst_rc === 'row'){
 
       // row and col labling are reversed
