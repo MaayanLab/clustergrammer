@@ -1223,9 +1223,6 @@ var Clustergrammer =
 	            } else {
 	              viz.cat_names[inst_rc][inst_cat] = inst_cat;
 	            }
-
-	            // ////////////////////////////
-	            // viz.cat_names[inst_rc][inst_cat] = inst_cat;
 	          } else {
 	            viz.cat_names[inst_rc][inst_cat] = inst_cat;
 	          }
@@ -1235,11 +1232,6 @@ var Clustergrammer =
 
 	        // check whether all the categories are of value type
 	        inst_info = check_if_value_cats(cat_states);
-
-	        // // !!! tmp disable value categories
-	        // ///////////////////////////////////
-	        // ///////////////////////////////////
-	        // inst_info.type = 'cat_strings';
 
 	        // pass info_info object
 	        viz.cat_info[inst_rc][inst_cat] = inst_info;
@@ -3554,7 +3546,7 @@ var Clustergrammer =
 	      inst_rc = 'both';
 	    }
 
-	    dendro_mouseover(cgm, this, d);
+	    dendro_mouseover(cgm, this, d, inst_rc);
 	    dendro_group_highlight(params, this, d, inst_rc);
 	    dendro_tip.show(d);
 
@@ -3740,6 +3732,8 @@ var Clustergrammer =
 
 	  function make_shade_bars() {
 
+	    console.log('make_shade_bars');
+
 	    if (inst_rc === 'row') {
 
 	      // row and col labling are reversed
@@ -3814,12 +3808,40 @@ var Clustergrammer =
 
 	'use strict';
 
-	module.exports = function dendro_mouseover(cgm, inst_selection, inst_data) {
+	module.exports = function dendro_mouseover(cgm, inst_selection, inst_data, inst_rc) {
 
-	  console.log(inst_data.all_names);
+	  var params = cgm.params;
+
+	  var all_names = inst_data.all_names;
 
 	  // find cats: cat-strings
 	  //////////////////////////
+	  // params.viz.cat_info
+
+	  /*
+	   1. find category-types that are string-type
+	  2. get category-names that are possible for each category-type
+	  3. count instances of each category name for each category-type
+	   */
+
+	  var inst_info = params.viz.cat_info[inst_rc];
+	  var cat_types_index = _.keys(inst_info);
+
+	  // var inst_node = params.network_data[inst_rc+'_nodes'][0];
+
+	  // get category names
+	  var cat_types_names = [];
+	  var inst_name;
+	  var inst_index;
+	  for (var i = 0; i < cat_types_index.length; i++) {
+	    inst_index = 'cat-' + String(i);
+
+	    inst_name = params.viz.cat_names[inst_rc][inst_index];
+	    cat_types_names.push(inst_name);
+	  }
+
+	  // string-category
+	  console.log(cat_types_names);
 
 	  // run instantly on mouseover
 	  d3.select(inst_selection).classed('hovering', true);
@@ -10395,13 +10417,6 @@ var Clustergrammer =
 
 	  // recalculate the visualization parameters using the updated network_data
 	  tmp_cgm.params = calc_viz_params(tmp_cgm.params, false);
-
-	  // // set up zoom (zoom is modified by room for categories)
-	  // tmp_cgm.params.zoom_behavior = d3.behavior.zoom()
-	  //   .scaleExtent([1, tmp_cgm.params.viz.real_zoom * tmp_cgm.params.viz.zoom_switch])
-	  //   .on('zoom', function(){
-	  //     zoomed(tmp_cgm);
-	  //   });
 
 	  make_row_cat(tmp_cgm, true);
 	  resize_viz(tmp_cgm);

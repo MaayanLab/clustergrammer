@@ -145,7 +145,7 @@ module.exports = function make_dendro_triangles(cgm, inst_rc, is_change_group = 
         inst_rc = 'both';
       }
 
-      dendro_mouseover(cgm, this, d);
+      dendro_mouseover(cgm, this, d, inst_rc);
       dendro_group_highlight(params, this, d, inst_rc);
       dendro_tip.show(d);
 

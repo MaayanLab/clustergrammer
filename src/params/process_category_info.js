@@ -74,9 +74,6 @@ module.exports = function process_category_info(params, viz, preserve_cats=true)
               viz.cat_names[inst_rc][inst_cat] = inst_cat;
             }
 
-            // ////////////////////////////
-            // viz.cat_names[inst_rc][inst_cat] = inst_cat;
-
           } else {
             viz.cat_names[inst_rc][inst_cat] = inst_cat;
           }
@@ -89,11 +86,6 @@ module.exports = function process_category_info(params, viz, preserve_cats=true)
 
         // check whether all the categories are of value type
         inst_info = check_if_value_cats(cat_states);
-
-        // // !!! tmp disable value categories
-        // ///////////////////////////////////
-        // ///////////////////////////////////
-        // inst_info.type = 'cat_strings';
 
         // pass info_info object
         viz.cat_info[inst_rc][inst_cat] = inst_info;
