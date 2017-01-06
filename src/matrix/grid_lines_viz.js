@@ -1,6 +1,9 @@
-module.exports = function grid_lines_viz(params, horz_lines, vert_lines){
+module.exports = function grid_lines_viz(params){
 
   console.log('grid_lines_viz')
+
+  var horz_lines = d3.selectAll(params.root+' .horz_lines');
+  var vert_lines = d3.selectAll(params.root+' .vert_lines');
 
   var row_nodes_names = params.network_data.row_nodes_names;
   var col_nodes_names = params.network_data.col_nodes_names;

@@ -3,7 +3,6 @@ var run_zoom = require('../zoom/run_zoom');
 var ini_doubleclick = require('../zoom/ini_doubleclick');
 var reset_zoom = require('../zoom/reset_zoom');
 var resize_dendro = require('./resize_dendro');
-var resize_grid_lines = require('./resize_grid_lines');
 var resize_super_labels = require('./resize_super_labels');
 var resize_spillover = require('./resize_spillover');
 var resize_borders = require('./resize_borders');
@@ -183,11 +182,8 @@ module.exports = function(cgm) {
   resize_super_labels(params, svg_group);
   resize_spillover(params.viz, svg_group);
 
-  // resize_grid_lines(params, svg_group);
 
-  var horz_lines = d3.selectAll(cgm.params.root+' .horz_lines');
-  var vert_lines = d3.selectAll(cgm.params.root+' .vert_lines');
-  grid_lines_viz(params, horz_lines, vert_lines);
+  grid_lines_viz(params);
 
   resize_borders(params, svg_group);
 

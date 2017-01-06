@@ -1,6 +1,7 @@
 var num_visible_labels = require('./num_visible_labels');
 var trim_text = require('./trim_text');
 var constrain_font_size = require('./constrain_font_size');
+var toggle_grid_lines = require('../matrix/toggle_grid_lines');
 
 module.exports = function zooming_has_stopped(params){
 
@@ -47,9 +48,17 @@ module.exports = function zooming_has_stopped(params){
       d3.selectAll(params.root+' .row_label_group').select('text').style('display','block');
       d3.selectAll(params.root+' .col_label_group').select('text').style('display','block');
 
-      // if (cgm.params.zoom_info.zoom_x *
-        d3.selectAll(params.root+' .horz_lines').select('line').style('display','block');
-        d3.selectAll(params.root+' .vert_lines').select('line').style('display','block');
+      // if (cgm.params.zoom_info.zoom_x * cgm.params.viz.border_width.x > 1){
+      //   d3.selectAll(params.root+' .vert_lines').select('line').style('display','block');
+      //   console.log('showing vert lines')
+      // }
+
+      // if (cgm.params.zoom_info.zoom_y * cgm.params.viz.border_width.y > 1){
+      //   d3.selectAll(params.root+' .horz_lines').select('line').style('display','block');
+      //   console.log('showing  lines')
+      // }
+
+      toggle_grid_lines(params);
 
 
       _.each(['row','col'], function(inst_rc){

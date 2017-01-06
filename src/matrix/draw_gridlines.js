@@ -1,4 +1,5 @@
 var grid_lines_viz = require('./grid_lines_viz');
+var toggle_grid_lines = require('./toggle_grid_lines');
 
 module.exports = function draw_gridlines(params, delays, duration){
 
@@ -26,18 +27,22 @@ module.exports = function draw_gridlines(params, delays, duration){
     .append('g')
     .attr('class', 'vert_lines');
 
-  grid_lines_viz(params, horz_lines, vert_lines);
+  grid_lines_viz(params);
 
+  var inst_display;
   horz_lines
+    .select('line')
     .attr('opacity',0)
     .attr('stroke','white')
-    .transition().delay(delays.enter).duration(2*duration)
-    .attr('opacity',1);
+    .attr('opacity', 1);
 
   vert_lines
+    .select('line')
     .style('stroke', 'white')
     .attr('opacity',0)
     .transition().delay(delays.enter).duration(2*duration)
-    .attr('opacity',1);
+    .attr('opacity', 1);
+
+  toggle_grid_lines(params);
 
 };

@@ -117,6 +117,9 @@ module.exports = function run_transformation(params){
 
     var inst_num_visible = num_visible_labels(params, inst_rc);
 
+    d3.selectAll('.horz_lines').select('line').style('display','none');
+    d3.selectAll('.vert_lines').select('line').style('display','none');
+
     if (inst_num_visible > 250){
 
       d3.selectAll(params.root+' .'+inst_rc+'_label_group')
@@ -127,8 +130,6 @@ module.exports = function run_transformation(params){
         .select('path')
         .style('display','none');
 
-      d3.selectAll('.horz_lines').select('line').style('display','none');
-      d3.selectAll('.vert_lines').select('line').style('display','none');
 
     } else {
 
