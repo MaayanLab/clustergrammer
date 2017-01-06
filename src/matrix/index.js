@@ -1,5 +1,5 @@
 var utils = require('../Utils_clust');
-var draw_gridlines = require('../draw_gridlines');
+var draw_gridlines = require('../matrix/draw_gridlines');
 var add_click_hlight = require('./add_click_hlight');
 var make_simple_rows = require('./make_simple_rows');
 var d3_tip_custom = require('../tooltip/d3_tip_custom');
@@ -116,8 +116,11 @@ module.exports = function(params, svg_elem) {
     }
   }
 
-  // // draw grid lines after drawing tiles
-  // draw_gridlines(params, row_nodes, col_nodes);
+  // draw grid lines after drawing tiles
+  var delays = {};
+  var duration = 0;
+  delays.enter = 0;
+  draw_gridlines(params, delays, duration);
 
   // Matrix API
   return {

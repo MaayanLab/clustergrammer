@@ -3,7 +3,7 @@ var make_rows = require('../labels/make_rows');
 var make_cols = require('../labels/make_cols');
 var eeu_existing_row = require('./eeu_existing_row');
 var exit_components = require('../exit/exit_components');
-var enter_grid_lines = require('../enter/enter_grid_lines');
+var draw_gridlines = require('../matrix/draw_gridlines');
 var enter_row_groups = require('../enter/enter_row_groups');
 var resize_containers = require('../reset_size/resize_containers');
 var label_constrain_and_trim = require('../labels/label_constrain_and_trim');
@@ -117,7 +117,7 @@ module.exports = function(cgm, network_data, delays){
   make_rows(cgm, duration);
   make_cols(cgm, duration);
 
-  // enter_grid_lines(params, delays, duration);
+  draw_gridlines(params, delays, duration);
 
   setTimeout(label_constrain_and_trim, 2000, params);
 

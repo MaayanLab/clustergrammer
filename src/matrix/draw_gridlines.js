@@ -1,8 +1,7 @@
-module.exports = function enter_grid_lines(params, delays, duration){
+module.exports = function draw_gridlines(params, delays, duration){
 
   var row_nodes = params.network_data.row_nodes;
   var row_nodes_names = params.network_data.row_nodes_names;
-
   var col_nodes = params.network_data.col_nodes;
   var col_nodes_names = params.network_data.col_nodes_names;
 
@@ -25,11 +24,6 @@ module.exports = function enter_grid_lines(params, delays, duration){
     .attr('x2',params.viz.clust.dim.width)
     .style('stroke-width', function(){
       var inst_width = params.viz.border_width.y;
-      // if (params.viz.zoom_switch > 1){
-      //   inst_width = params.viz.border_width.y/params.viz.zoom_switch;
-      // } else {
-      //   inst_width = params.viz.border_width.y;
-      // }
       return inst_width+'px';
     })
     .attr('opacity',0)
@@ -53,11 +47,6 @@ module.exports = function enter_grid_lines(params, delays, duration){
     .attr('x2', -params.viz.clust.dim.height)
     .style('stroke-width', function(){
       var inst_width = params.viz.border_width.x;
-       // if (params.viz.zoom_switch_y > 1){
-       //  inst_width = params.viz.border_width.x/ params.viz.zoom_switch_y;
-       // } else {
-       //  inst_width = params.viz.border_width.x;
-       // }
        return inst_width + 'px';
     })
     .style('stroke', 'white')
@@ -65,4 +54,4 @@ module.exports = function enter_grid_lines(params, delays, duration){
     .transition().delay(delays.enter).duration(2*duration)
     .attr('opacity',1);
 
-  };
+};
