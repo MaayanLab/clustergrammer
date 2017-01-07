@@ -3849,53 +3849,67 @@ var Clustergrammer =
 	  ///////////////////////////////////////////////
 
 	  var inst_cat_info = params.viz.cat_info[inst_rc];
-	  var cat_types_index = _.keys(inst_cat_info);
+
+	  // tmp list of all categories
+	  var tmp_types_index = _.keys(inst_cat_info);
+	  // this will hold the indexes of string-type categories
+	  var cat_types_index = [];
 
 	  // var inst_node = params.network_data[inst_rc+'_nodes'][0];
 
-	  // get category names
+	  // get category names (only include string-type categories)
 	  var cat_types_names = [];
 	  var type_name;
 	  var inst_index;
-	  for (var i = 0; i < cat_types_index.length; i++) {
-	    inst_index = 'cat-' + String(i);
+	  var cat_index;
+	  for (var i = 0; i < tmp_types_index.length; i++) {
 
-	    type_name = params.viz.cat_names[inst_rc][inst_index];
-	    cat_types_names.push(type_name);
+	    cat_index = 'cat-' + String(i);
+
+	    if (params.viz.cat_info[inst_rc][cat_index].type === 'cat_strings') {
+	      type_name = params.viz.cat_names[inst_rc][cat_index];
+	      cat_types_names.push(type_name);
+	      cat_types_index.push(cat_index);
+	    }
 	  }
 
-	  // 3: count instances of each category name for each category-type
-	  var cat_index;
-	  var cat_name;
 	  var run_count = {};
-	  var num_in_clust = clust_names.length;
-	  _.each(cat_types_index, function (cat_index) {
 
-	    inst_index = cat_index.split('-')[1];
-	    type_name = cat_types_names[inst_index];
+	  if (cat_types_names.length > 0) {
 
-	    run_count[type_name] = {};
+	    // 3: count instances of each category name for each category-type
+	    var cat_name;
+	    var num_in_clust = clust_names.length;
+	    _.each(cat_types_index, function (cat_index) {
 
-	    // loop throught nodes and keep running count of categories
-	    _.each(clust_nodes, function (tmp_node) {
+	      inst_index = cat_index.split('-')[1];
+	      type_name = cat_types_names[inst_index];
 
-	      cat_name = tmp_node[cat_index];
+	      run_count[type_name] = {};
 
-	      if (cat_name.indexOf(': ') >= 0) {
-	        cat_name = cat_name.split(': ')[1];
-	      }
+	      // loop throught nodes and keep running count of categories
+	      _.each(clust_nodes, function (tmp_node) {
 
-	      if (cat_name in run_count[type_name]) {
-	        run_count[type_name][cat_name] = run_count[type_name][cat_name] + 1 / num_in_clust;
-	      } else {
-	        run_count[type_name][cat_name] = 1 / num_in_clust;
-	      }
+	        cat_name = tmp_node[cat_index];
+
+	        if (cat_name.indexOf(': ') >= 0) {
+	          cat_name = cat_name.split(': ')[1];
+	        }
+
+	        if (cat_name in run_count[type_name]) {
+	          run_count[type_name][cat_name] = run_count[type_name][cat_name] + 1 / num_in_clust;
+	        } else {
+	          run_count[type_name][cat_name] = 1 / num_in_clust;
+	        }
+	      });
 	    });
-	  });
 
-	  // running count for category type
-	  console.log(run_count);
-	  console.log('\n\n');
+	    // running count for category type
+	    console.log(run_count);
+	    console.log('\n\n');
+	  } else {
+	    console.log('did not find any string-type categories');
+	  }
 		};
 
 /***/ },
