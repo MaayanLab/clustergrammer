@@ -3837,7 +3837,6 @@ var Clustergrammer =
 
 	  console.log(clust_names);
 
-	  console.log('here');
 	  var inst_name;
 	  _.each(all_nodes, function (inst_node) {
 
@@ -3871,13 +3870,24 @@ var Clustergrammer =
 	  }
 
 	  // 3: count instances of each category name for each category-type
+	  var inst_name;
+	  var cat_index;
+	  _.each(cat_types_index, function (cat_index) {
 
-	  _.each(cat_types_names, function (type_name) {
+	    inst_index = cat_index.split('-')[1];
+	    inst_name = cat_types_names[inst_index];
 
-	    console.log('type_name: ' + type_name);
+	    // loop throught nodes and keep running count of categories
+	    _.each(clust_nodes, function (tmp_node) {
 
-	    // // running count of categories
-	    // _.each()
+	      console.log(cat_index);
+	      console.log('----');
+	      console.log(tmp_node[cat_index]);
+
+	      // if (cat_name.indexOf(': ') >=0){
+	      //   cat_name = cat_name.split(': ')[1];
+	      // }
+	    });
 
 	    console.log('\n\n');
 	  });
