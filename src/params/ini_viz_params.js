@@ -48,7 +48,7 @@ module.exports = function ini_viz_params(params, preserve_cats=true){
   }
 
   // width is 1 over this value
-  viz.border_fraction = 55;
+  viz.border_fraction = 65;
   viz.uni_margin = 5;
 
   viz.super_labels = {};
