@@ -3905,19 +3905,26 @@ var Clustergrammer =
 	      });
 
 	      console.log(type_name);
-	      console.log(tmp_run_count[type_name]);
-	      console.log('\n');
 
-	      var sortable = [];
+	      sort_run_count[type_name] = [];
 	      var maxSpeed = tmp_run_count[type_name];
 	      for (var vehicle in maxSpeed) {
-	        sortable.push([vehicle, maxSpeed[vehicle]]);
-	      }sortable.sort(function (a, b) {
+	        sort_run_count[type_name].push([vehicle, maxSpeed[vehicle]]);
+	      }sort_run_count[type_name].sort(function (a, b) {
 	        return b[1] - a[1];
 	      });
 
 	      console.log('--------- sorted -------------');
-	      console.log(sortable);
+	      var tmp_fraction;
+	      var tmp_name;
+
+	      var tmp_arr = sort_run_count[type_name];
+
+	      for (var x = 0; x < tmp_arr.length; x++) {
+	        var tmp_data = tmp_arr[x];
+
+	        console.log(tmp_data);
+	      }
 	    });
 
 	    // running count for category type
