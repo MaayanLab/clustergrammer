@@ -60,7 +60,9 @@ module.exports = function calc_cluster_cat_breakdonw(params, inst_data, inst_rc)
   }
 
   var tmp_run_count = {};
-  var cat_breakdown = {};
+  var cat_breakdown = [];
+  var inst_breakdown = {};
+  var bar_data;
 
   if (cat_types_names.length > 0){
 
@@ -91,32 +93,27 @@ module.exports = function calc_cluster_cat_breakdonw(params, inst_data, inst_rc)
 
       });
 
-      // sort cat infor in cat_breakdown
-      cat_breakdown[type_name] = [];
+      inst_breakdown = {};
+      inst_breakdown['type_name'] = type_name;
+
+      // sort cat info in cat_breakdown
+      bar_data = [];
       var maxSpeed = tmp_run_count[type_name]
       for (var vehicle in maxSpeed)
-          cat_breakdown[type_name].push([vehicle, maxSpeed[vehicle]])
+          bar_data.push([vehicle, maxSpeed[vehicle]])
 
-      cat_breakdown[type_name].sort(function(a, b) {
+      bar_data.sort(function(a, b) {
           return b[1] - a[1]
       })
 
-      var tmp_arr = cat_breakdown[type_name];
-      var tmp_fraction;
-      var tmp_name;
+      inst_breakdown['bar_data'] = bar_data;
 
-      for (var x=0; x < tmp_arr.length; x++){
-        // data for individual bar
-        var tmp_data = tmp_arr[x]
-
-      }
+      cat_breakdown.push(inst_breakdown);
 
 
     });
 
 
-  } else {
-    console.log('did not find any string-type categories')
   }
 
   return cat_breakdown;
