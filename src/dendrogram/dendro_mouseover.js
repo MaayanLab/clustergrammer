@@ -30,8 +30,6 @@ module.exports = function dendro_mouseover(cgm, inst_selection, inst_data, inst_
 
   var all_nodes = cgm.params.network_data[inst_rc+'_nodes'];
 
-  console.log(clust_names)
-
   var inst_name;
   _.each(all_nodes, function(inst_node){
 
@@ -42,10 +40,6 @@ module.exports = function dendro_mouseover(cgm, inst_selection, inst_data, inst_
     }
 
   });
-
-  console.log('clust_nodes:')
-  console.log(clust_nodes)
-
 
   // 2: find category-types that are string-type
   ///////////////////////////////////////////////
@@ -68,28 +62,39 @@ module.exports = function dendro_mouseover(cgm, inst_selection, inst_data, inst_
   }
 
   // 3: count instances of each category name for each category-type
-  var inst_name;
   var cat_index;
+  var cat_name;
+  var run_count = {};
+  var num_in_clust = clust_names.length;
   _.each(cat_types_index, function(cat_index){
 
     inst_index = cat_index.split('-')[1];
-    inst_name = cat_types_names[inst_index];
+    type_name = cat_types_names[inst_index];
+
+    run_count[type_name] = {};
 
     // loop throught nodes and keep running count of categories
     _.each(clust_nodes, function (tmp_node){
 
-      console.log(cat_index)
-      console.log('----')
-      console.log(tmp_node[cat_index])
+      cat_name = tmp_node[cat_index];
 
-      // if (cat_name.indexOf(': ') >=0){
-      //   cat_name = cat_name.split(': ')[1];
-      // }
+      if (cat_name.indexOf(': ') >=0){
+        cat_name = cat_name.split(': ')[1];
+      }
+
+      if (cat_name in run_count[type_name]){
+        run_count[type_name][cat_name] = run_count[type_name][cat_name] + 1/num_in_clust;
+      } else {
+        run_count[type_name][cat_name] = 1/num_in_clust;
+      }
+
 
     });
 
-    console.log('\n\n')
-
   });
+
+  // running count for category type
+  console.log(run_count)
+  console.log('\n\n')
 
 };
