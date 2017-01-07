@@ -3873,7 +3873,8 @@ var Clustergrammer =
 	    }
 	  }
 
-	  var run_count = {};
+	  var tmp_run_count = {};
+	  var sort_run_count = {};
 
 	  if (cat_types_names.length > 0) {
 
@@ -3885,7 +3886,7 @@ var Clustergrammer =
 	      inst_index = cat_index.split('-')[1];
 	      type_name = cat_types_names[inst_index];
 
-	      run_count[type_name] = {};
+	      tmp_run_count[type_name] = {};
 
 	      // loop throught nodes and keep running count of categories
 	      _.each(clust_nodes, function (tmp_node) {
@@ -3896,16 +3897,31 @@ var Clustergrammer =
 	          cat_name = cat_name.split(': ')[1];
 	        }
 
-	        if (cat_name in run_count[type_name]) {
-	          run_count[type_name][cat_name] = run_count[type_name][cat_name] + 1 / num_in_clust;
+	        if (cat_name in tmp_run_count[type_name]) {
+	          tmp_run_count[type_name][cat_name] = tmp_run_count[type_name][cat_name] + 1 / num_in_clust;
 	        } else {
-	          run_count[type_name][cat_name] = 1 / num_in_clust;
+	          tmp_run_count[type_name][cat_name] = 1 / num_in_clust;
 	        }
 	      });
+
+	      console.log(type_name);
+	      console.log(tmp_run_count[type_name]);
+	      console.log('\n');
+
+	      var sortable = [];
+	      var maxSpeed = tmp_run_count[type_name];
+	      for (var vehicle in maxSpeed) {
+	        sortable.push([vehicle, maxSpeed[vehicle]]);
+	      }sortable.sort(function (a, b) {
+	        return b[1] - a[1];
+	      });
+
+	      console.log('--------- sorted -------------');
+	      console.log(sortable);
 	    });
 
 	    // running count for category type
-	    console.log(run_count);
+	    // console.log(tmp_run_count)
 	    console.log('\n\n');
 	  } else {
 	    console.log('did not find any string-type categories');
