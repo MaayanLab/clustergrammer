@@ -110,9 +110,7 @@ module.exports = function calc_cluster_cat_breakdonw(params, inst_data, inst_rc)
 
       cat_breakdown.push(inst_breakdown);
 
-
     });
-
 
   }
 
