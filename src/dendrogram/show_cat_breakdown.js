@@ -47,11 +47,16 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc){
 
     console.log('show cat breakdown')
 
-    dendro_tip
-      .append('div')
-      .classed('cat_breakdown', true)
-      .append('text')
-      .text('something ')
+    // dendro_tip
+    //   .append('div')
+    //   .classed('cat_breakdown', true)
+    //   .append('svg')
+    //   .style('height', '200px')
+    //   .style('width', '200px')
+    //   .append('rect')
+    //   .style('height', '40px')
+    //   .style('width', '40px')
+    //   .style('fill', 'white')
 
     var old_top = dendro_tip.style('top').split('.px')[0];
 
