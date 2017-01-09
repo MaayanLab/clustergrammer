@@ -5,7 +5,7 @@ var dendro_mouseover = require('./dendro_mouseover');
 var dendro_mouseout = require('./dendro_mouseout');
 var d3_tip_custom = require('../tooltip/d3_tip_custom');
 var make_dendro_crop_buttons = require('./make_dendro_crop_buttons');
-var calc_cluster_cat_breakdown = require('./calc_cluster_cat_breakdown');
+var show_cat_breakdown = require('./show_cat_breakdown');
 
 module.exports = function make_dendro_triangles(cgm, inst_rc, is_change_group = false)
 {
@@ -48,43 +48,7 @@ module.exports = function make_dendro_triangles(cgm, inst_rc, is_change_group = 
         .style('display', 'block');
     }
 
-    var cat_breakdown = calc_cluster_cat_breakdown(cgm.params, inst_data, inst_rc);
-
-    // loop through cat_breakdown data
-    var inst_breakdown;
-    var bar_data;
-    var tmp_fraction;
-    var tmp_name;
-    var tmp_color;
-    var num_in_clust;
-    for (var i = 0; i < cat_breakdown.length; i++){
-
-      inst_breakdown = cat_breakdown[i];
-
-      bar_data = inst_breakdown.bar_data;
-      num_in_clust = inst_breakdown.num_in_clust;
-
-      for (var x=0; x < bar_data.length; x++){
-
-        // data for individual bar
-        var tmp_data = bar_data[x];
-
-        var cat_index = tmp_data[0];
-        tmp_name = tmp_data[1];
-        tmp_fraction = tmp_data[2]/num_in_clust;
-        tmp_color = tmp_data[3];
-
-        // get num instances of cat
-        var tot_inst_cat = cgm.params.viz.cat_info[inst_rc][cat_index].cat_hist[tmp_name];
-
-        console.log(tmp_name + ' ' + String(tmp_fraction) + ' ' + String(tmp_color) + ' num_in_clust: ' + String(num_in_clust) + ' : '+ String(parseInt(tmp_fraction*num_in_clust, 10)) + ' total: ' + String(tot_inst_cat) + '  ' + tmp_data[4])
-
-      }
-
-      console.log('----------------\n')
-
-    }
-
+    show_cat_breakdown(params, inst_data, inst_rc);
   }
 
   var wait_before_tooltip = 500;

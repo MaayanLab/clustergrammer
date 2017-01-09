@@ -1,6 +1,6 @@
 var run_fisher_exact_clust = require('./run_fisher_exact_clust');
 
-module.exports = function calc_cluster_cat_breakdowm(params, inst_data, inst_rc){
+module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc){
   // Category-breakdown of dendrogram-clusters
   /////////////////////////////////////////////
   /*
