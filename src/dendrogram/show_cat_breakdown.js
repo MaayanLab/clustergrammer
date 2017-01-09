@@ -40,8 +40,15 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc){
 
   }
 
+  // get cat data
+  var cat_data = cat_breakdown[0];
+
   var dendro_tip_selector = params.viz.root_tips + '_' + inst_rc + '_dendro_tip';
   var dendro_tip = d3.select(dendro_tip_selector);
+  var bar_width = 150;
+  var bar_scale = d3.scale.linear()
+                    .domain([0, cat_data.num_in_clust])
+                    .range([0, bar_width]);
 
   if (d3.select(dendro_tip_selector + ' .cat_graph').empty()){
 
@@ -49,6 +56,8 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc){
 
     var height = 150;
     var width = 200;
+    var bar_offset = 20;
+    var bar_height = 15;
 
     var graph_container = dendro_tip
       .append('div')
@@ -57,10 +66,6 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc){
       .append('svg')
       .style('height', height+'px')
       .style('width', width+'px');
-      // .append('g')
-      // .classed('cat_group')
-      // .attr('transform', 'translate(10,10)');
-
 
     // make background
     graph_container
@@ -69,27 +74,47 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc){
       .style('height', height+'px')
       .style('width', width+'px')
       .style('fill', 'white')
-      .style('opacity', 0.975);
+      .style('opacity', 1);
 
-    var graph_group = graph_container
+    var cat_graph_group = graph_container
       .append('g')
-      .attr('transform', 'translate(10,10)')
+      .classed('cat_graph_group', true)
+      .attr('transform', 'translate(10,20)')
+
+
+    // make title
+    cat_graph_group
+      .append('text')
+      .classed('cat_graph_group', true)
+      .text(cat_data.type_name);
+
+    var cat_bar_group = cat_graph_group
+      .append('g')
+      .classed('cat_bar_group', true)
+      .attr('transform', 'translate(0, 10)')
 
     // make bars
-    graph_group
+    cat_bar_group
       .selectAll('rect')
-      .data([100,50,20])
+      .data(cat_data.bar_data)
       .enter()
       .append('rect')
-      .style('height', '5px')
+      .style('height', bar_height+'px')
       .style('width', function(d){
-        return d +'px';
+        var inst_width = bar_scale(d[2]);
+        return inst_width +'px';
       })
       .attr('transform', function(d, i){
-        var inst_y = i * 10;
+        var inst_y = i * bar_offset;
         return 'translate(0,'+ inst_y +')';
       })
-      .style('fill','red')
+      .style('fill', function(d){
+        // cat color is stored in the third element
+        return d[3];
+        // return 'red';
+      })
+      // .style('opacity', params.viz.cat_colors.opacity)
+      .style('opacity', 1)
 
     // // make bar graph for category type
     // var cat_data = cat_breakdown[0];
