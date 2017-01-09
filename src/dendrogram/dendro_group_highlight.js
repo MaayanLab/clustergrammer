@@ -59,6 +59,7 @@ module.exports = function dendro_group_highlight(params, inst_selection, inst_da
     var bar_data;
     var tmp_fraction;
     var tmp_name;
+    var tmp_color;
     for (var i = 0; i < cat_breakdown.length; i++){
 
       inst_breakdown = cat_breakdown[i];
@@ -72,8 +73,9 @@ module.exports = function dendro_group_highlight(params, inst_selection, inst_da
 
         tmp_name = bar_data[x][0];
         tmp_fraction = bar_data[x][1];
+        tmp_color = bar_data[x][2];
 
-        console.log(tmp_name + ' ' + String(tmp_fraction))
+        console.log(tmp_name + ' ' + String(tmp_fraction) + ' ' + String(tmp_color))
 
       }
 

@@ -64,6 +64,13 @@ module.exports = function calc_cluster_cat_breakdonw(params, inst_data, inst_rc)
   var inst_breakdown = {};
   var bar_data;
 
+  var no_title_given;
+  if (type_name === cat_index){
+    no_title_given = true;
+  } else {
+    no_title_given = false;
+  }
+
   if (cat_types_names.length > 0){
 
     // 3: count instances of each category name for each category-type
@@ -73,6 +80,16 @@ module.exports = function calc_cluster_cat_breakdonw(params, inst_data, inst_rc)
 
       inst_index = cat_index.split('-')[1];
       type_name = cat_types_names[inst_index];
+
+      if (no_title_given){
+        if (cat_index.indexOf('-') >=0){
+          var tmp_num = parseInt( cat_index.split('-')[1] ) + 1;
+          type_name = 'Category ' + String(tmp_num);
+        } else {
+          // backup behavior
+          type_name = 'Category';
+        }
+      }
 
       tmp_run_count[type_name] = {};
 
@@ -98,9 +115,21 @@ module.exports = function calc_cluster_cat_breakdonw(params, inst_data, inst_rc)
 
       // sort cat info in cat_breakdown
       bar_data = [];
-      var maxSpeed = tmp_run_count[type_name]
-      for (var vehicle in maxSpeed)
-          bar_data.push([vehicle, maxSpeed[vehicle]])
+      var bar_color
+      var cat_title_and_name;
+      var tmp_data = tmp_run_count[type_name]
+      for (var inst_cat in tmp_data){
+        // if no cat-title given
+        if (no_title_given){
+          cat_title_and_name = inst_cat;
+        } else {
+          cat_title_and_name = type_name + ': ' + inst_cat;
+        }
+
+        bar_color = params.viz.cat_colors[inst_rc][cat_index][cat_title_and_name];
+
+        bar_data.push([inst_cat, tmp_data[inst_cat], bar_color])
+      }
 
       bar_data.sort(function(a, b) {
           return b[1] - a[1]
