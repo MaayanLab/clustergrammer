@@ -4,6 +4,8 @@ var check_if_value_cats = require('./check_if_value_cats');
 
 module.exports = function process_category_info(params, viz, preserve_cats=true){
 
+  console.log('process_category_info')
+
   var super_string = ': ';
   var tmp_super;
   var inst_info;
@@ -50,7 +52,6 @@ module.exports = function process_category_info(params, viz, preserve_cats=true)
 
     });
 
-
     if (viz.show_categories[inst_rc]){
 
       if (predefine_colors === false){
@@ -60,39 +61,41 @@ module.exports = function process_category_info(params, viz, preserve_cats=true)
       viz.cat_info[inst_rc] = {};
       viz.cat_names[inst_rc] = {};
 
-      _.each( viz.all_cats[inst_rc], function(inst_cat){
+      _.each( viz.all_cats[inst_rc], function(cat_title){
+
+        console.log('cat_title: '+ cat_title)
 
         _.each(params.network_data[inst_rc+'_nodes'], function(inst_node){
 
           // look for title of category in category name
-          if (typeof inst_node[inst_cat] === 'string' ){
+          if (typeof inst_node[cat_title] === 'string' ){
 
-            if (inst_node[inst_cat].indexOf(super_string) > 0){
-              tmp_super = inst_node[inst_cat].split(super_string)[0];
-              viz.cat_names[inst_rc][inst_cat] = tmp_super;
+            if (inst_node[cat_title].indexOf(super_string) > 0){
+              tmp_super = inst_node[cat_title].split(super_string)[0];
+              viz.cat_names[inst_rc][cat_title] = tmp_super;
             } else {
-              viz.cat_names[inst_rc][inst_cat] = inst_cat;
+              viz.cat_names[inst_rc][cat_title] = cat_title;
             }
 
           } else {
-            viz.cat_names[inst_rc][inst_cat] = inst_cat;
+            viz.cat_names[inst_rc][cat_title] = cat_title;
           }
 
         });
 
         var cat_states = _.uniq(
-            utils.pluck(params.network_data[inst_rc+'_nodes'], inst_cat)
+            utils.pluck(params.network_data[inst_rc+'_nodes'], cat_title)
           ).sort();
 
         // check whether all the categories are of value type
         inst_info = check_if_value_cats(cat_states);
 
         // pass info_info object
-        viz.cat_info[inst_rc][inst_cat] = inst_info;
+        viz.cat_info[inst_rc][cat_title] = inst_info;
 
         if (predefine_colors === false){
 
-          viz.cat_colors[inst_rc][inst_cat] = {};
+          viz.cat_colors[inst_rc][cat_title] = {};
 
           _.each(cat_states, function(cat_tmp, i){
 
@@ -103,13 +106,13 @@ module.exports = function process_category_info(params, viz, preserve_cats=true)
               inst_color = 'red';
             }
 
-            viz.cat_colors[inst_rc][inst_cat][cat_tmp] = inst_color;
+            viz.cat_colors[inst_rc][cat_title][cat_tmp] = inst_color;
 
             // hack to get 'Not' categories to not be dark colored
             // also doing this for false
             if (typeof cat_tmp === 'string'){
               if (cat_tmp.indexOf('Not ') >= 0 || cat_tmp.indexOf(': false') > 0){
-                viz.cat_colors[inst_rc][inst_cat][cat_tmp] = '#eee';
+                viz.cat_colors[inst_rc][cat_title][cat_tmp] = '#eee';
               }
             }
 

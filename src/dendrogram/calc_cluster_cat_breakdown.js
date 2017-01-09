@@ -140,6 +140,7 @@ module.exports = function calc_cluster_cat_breakdowm(params, inst_data, inst_rc)
 
         inst_breakdown = {};
         inst_breakdown.type_name = type_name;
+        inst_breakdown.num_in_clust = num_in_clust;
 
         // sort cat info in cat_breakdown
         bar_data = [];

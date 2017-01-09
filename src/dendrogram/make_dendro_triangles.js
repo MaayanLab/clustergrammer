@@ -56,11 +56,13 @@ module.exports = function make_dendro_triangles(cgm, inst_rc, is_change_group = 
     var tmp_fraction;
     var tmp_name;
     var tmp_color;
+    var num_in_clust;
     for (var i = 0; i < cat_breakdown.length; i++){
 
       inst_breakdown = cat_breakdown[i];
 
       bar_data = inst_breakdown.bar_data;
+      num_in_clust = inst_breakdown.num_in_clust;
 
       for (var x=0; x < bar_data.length; x++){
 
@@ -71,7 +73,7 @@ module.exports = function make_dendro_triangles(cgm, inst_rc, is_change_group = 
         tmp_fraction = tmp_data[1];
         tmp_color = tmp_data[2];
 
-        console.log(tmp_name + ' ' + String(tmp_fraction) + ' ' + String(tmp_color))
+        console.log(tmp_name + ' ' + String(tmp_fraction) + ' ' + String(tmp_color) + ' num_in_clust: ' + String(num_in_clust) + ' : '+ String(tmp_fraction*num_in_clust))
 
       }
 
