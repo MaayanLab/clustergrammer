@@ -43,6 +43,9 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc){
   // get cat data
   var cat_data = cat_breakdown[0];
 
+  // only keep the top 5 categories
+  cat_data.bar_data = cat_data.bar_data.slice(0,5)
+
   var dendro_tip_selector = params.viz.root_tips + '_' + inst_rc + '_dendro_tip';
   var dendro_tip = d3.select(dendro_tip_selector);
   var bar_width = 150;
@@ -54,6 +57,7 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc){
 
     console.log('show cat breakdown')
 
+    var super_string = ': ';
     var height = 150;
     var width = 200;
     var bar_offset = 20;
@@ -88,33 +92,51 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc){
       .classed('cat_graph_group', true)
       .text(cat_data.type_name);
 
-    var cat_bar_group = cat_graph_group
+    var cat_bar_container = cat_graph_group
       .append('g')
-      .classed('cat_bar_group', true)
+      .classed('cat_bar_container', true)
       .attr('transform', 'translate(0, 10)')
 
-    // make bars
-    cat_bar_group
-      .selectAll('rect')
+    // make bar groups (hold bar and text)
+    var cat_bar_groups = cat_bar_container
+      .selectAll('g')
       .data(cat_data.bar_data)
       .enter()
+      .append('g')
+      .attr('transform', function(d, i){
+        var inst_y = i * bar_offset;
+        return 'translate(0,'+ inst_y +')';
+      });
+
+    // make bars
+    cat_bar_groups
       .append('rect')
       .style('height', bar_height+'px')
       .style('width', function(d){
         var inst_width = bar_scale(d[2]);
         return inst_width +'px';
       })
-      .attr('transform', function(d, i){
-        var inst_y = i * bar_offset;
-        return 'translate(0,'+ inst_y +')';
-      })
       .style('fill', function(d){
         // cat color is stored in the third element
         return d[3];
         // return 'red';
       })
-      // .style('opacity', params.viz.cat_colors.opacity)
-      .style('opacity', 1)
+      .style('opacity', params.viz.cat_colors.opacity)
+      // .style('opacity', 1);
+
+    // make bar-text
+    cat_bar_groups
+      .append('text')
+      .text(function(d){
+        var inst_text = d[1];
+        if (inst_text.indexOf(super_string) > 0){
+          inst_text = inst_text.split(super_string)[1];
+        }
+        return inst_text;
+      })
+      .attr('transform', function(d){
+        return 'translate(5, ' + 0.8 * bar_height + ')' ;
+      })
 
     // // make bar graph for category type
     // var cat_data = cat_breakdown[0];

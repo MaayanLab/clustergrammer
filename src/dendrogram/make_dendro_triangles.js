@@ -43,11 +43,12 @@ module.exports = function make_dendro_triangles(cgm, inst_rc, is_change_group = 
   function still_hovering(inst_selection, inst_data){
 
     if (d3.select(inst_selection).classed('hovering')){
+
       d3.selectAll(params.viz.root_tips + '_'+ inst_rc +'_dendro_tip')
         .style('opacity', 1)
         .style('display', 'block');
 
-      show_cat_breakdown(params, inst_data, inst_rc);
+      // show_cat_breakdown(params, inst_data, inst_rc);
     }
 
   }
