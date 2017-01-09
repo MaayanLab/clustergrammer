@@ -16275,6 +16275,25 @@ var Clustergrammer =
 
 	    console.log('----------------\n');
 	  }
+
+	  var dendro_tip_selector = params.viz.root_tips + '_' + inst_rc + '_dendro_tip';
+	  var dendro_tip = d3.select(dendro_tip_selector);
+
+	  if (d3.select(dendro_tip_selector + ' .cat_breakdown').empty()) {
+
+	    console.log('show cat breakdown');
+
+	    dendro_tip.append('div').classed('cat_breakdown', true).append('text').text('something ');
+
+	    var old_top = dendro_tip.style('top').split('.px')[0];
+
+	    dendro_tip.style('top', function () {
+	      var new_top = String(parseInt(old_top, 10) - 10) + 'px';
+	      console.log('new_top ' + String(new_top));
+
+	      return new_top;
+	    });
+	  }
 		};
 
 /***/ }
