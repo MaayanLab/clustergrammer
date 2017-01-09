@@ -16283,24 +16283,20 @@ var Clustergrammer =
 
 	    console.log('show cat breakdown');
 
-	    // dendro_tip
-	    //   .append('div')
-	    //   .classed('cat_breakdown', true)
-	    //   .append('svg')
-	    //   .style('height', '200px')
-	    //   .style('width', '200px')
-	    //   .append('rect')
-	    //   .style('height', '40px')
-	    //   .style('width', '40px')
-	    //   .style('fill', 'white')
+	    var height = 150;
+	    var width = 200;
+
+	    dendro_tip.append('div').style('margin-top', '5px').classed('cat_breakdown', true).append('svg').style('height', height + 'px').style('width', width + 'px').append('rect').style('height', height + 'px').style('width', width + 'px').style('fill', 'white').style('opacity', 0.95);
 
 	    var old_top = dendro_tip.style('top').split('.px')[0];
+	    var old_left = dendro_tip.style('left').split('.px')[0];
 
 	    dendro_tip.style('top', function () {
 	      var new_top = String(parseInt(old_top, 10) - 10) + 'px';
-	      console.log('new_top ' + String(new_top));
-
 	      return new_top;
+	    }).style('left', function () {
+	      var new_left = String(parseInt(old_left, 10) - 10) + 'px';
+	      return new_left;
 	    });
 	  }
 		};
