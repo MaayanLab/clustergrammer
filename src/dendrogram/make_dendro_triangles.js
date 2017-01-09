@@ -5,6 +5,7 @@ var dendro_mouseover = require('./dendro_mouseover');
 var dendro_mouseout = require('./dendro_mouseout');
 var d3_tip_custom = require('../tooltip/d3_tip_custom');
 var make_dendro_crop_buttons = require('./make_dendro_crop_buttons');
+var calc_cluster_cat_breakdown = require('./calc_cluster_cat_breakdown');
 
 module.exports = function make_dendro_triangles(cgm, inst_rc, is_change_group = false)
 {
@@ -39,13 +40,45 @@ module.exports = function make_dendro_triangles(cgm, inst_rc, is_change_group = 
   // constant dendrogram opacity
   var inst_dendro_opacity = params.viz.dendro_opacity;
 
-  function still_hovering(inst_selection){
+  function still_hovering(inst_selection, inst_data){
 
     if (d3.select(inst_selection).classed('hovering')){
       d3.selectAll(params.viz.root_tips + '_'+ inst_rc +'_dendro_tip')
         .style('opacity', 1)
         .style('display', 'block');
     }
+
+    var cat_breakdown = calc_cluster_cat_breakdown(cgm.params, inst_data, inst_rc);
+
+    // loop through cat_breakdown data
+    var inst_breakdown;
+    var bar_data;
+    var tmp_fraction;
+    var tmp_name;
+    var tmp_color;
+    for (var i = 0; i < cat_breakdown.length; i++){
+
+      inst_breakdown = cat_breakdown[i];
+
+      bar_data = inst_breakdown.bar_data;
+
+      for (var x=0; x < bar_data.length; x++){
+
+        // data for individual bar
+        var tmp_data = bar_data[x]
+
+        tmp_name = bar_data[x][0];
+        tmp_fraction = bar_data[x][1];
+        tmp_color = bar_data[x][2];
+
+        console.log(tmp_name + ' ' + String(tmp_fraction) + ' ' + String(tmp_color))
+
+      }
+
+      console.log('----------------\n')
+
+    }
+
   }
 
   var wait_before_tooltip = 500;
@@ -145,17 +178,17 @@ module.exports = function make_dendro_triangles(cgm, inst_rc, is_change_group = 
         inst_rc = 'both';
       }
 
-      dendro_mouseover(cgm, this, d, inst_rc);
-      dendro_group_highlight(params, this, d, inst_rc);
-      dendro_tip.show(d);
-
       // set opacity to zero
       d3.selectAll( params.viz.root_tips + '_'+ inst_rc +'_dendro_tip')
         .style('opacity', 0)
         .style('display', 'block');
 
+      dendro_mouseover(cgm, this, d, inst_rc);
+      dendro_group_highlight(params, this, d, inst_rc);
+      dendro_tip.show(d);
+
       // check if still hovering
-      setTimeout(still_hovering, wait_before_tooltip, this);
+      setTimeout(still_hovering, wait_before_tooltip, this, d);
 
     })
     .on('mouseout', function(){
