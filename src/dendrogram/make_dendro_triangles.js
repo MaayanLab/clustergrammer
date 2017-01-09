@@ -69,11 +69,15 @@ module.exports = function make_dendro_triangles(cgm, inst_rc, is_change_group = 
         // data for individual bar
         var tmp_data = bar_data[x]
 
-        tmp_name = tmp_data[0];
-        tmp_fraction = tmp_data[1];
-        tmp_color = tmp_data[2];
+        var cat_index = tmp_data[0];
+        tmp_name = tmp_data[1];
+        tmp_fraction = tmp_data[2]/num_in_clust;
+        tmp_color = tmp_data[3];
 
-        console.log(tmp_name + ' ' + String(tmp_fraction) + ' ' + String(tmp_color) + ' num_in_clust: ' + String(num_in_clust) + ' : '+ String(tmp_fraction*num_in_clust))
+        // get num instances of cat
+        var tot_inst_cat = cgm.params.viz.cat_info[inst_rc][cat_index].cat_hist[tmp_name];
+
+        console.log(tmp_name + ' ' + String(tmp_fraction) + ' ' + String(tmp_color) + ' num_in_clust: ' + String(num_in_clust) + ' : '+ String(parseInt(tmp_fraction*num_in_clust)) + ' total: ' + String(tot_inst_cat) + '  ' + tmp_data[4])
 
       }
 
