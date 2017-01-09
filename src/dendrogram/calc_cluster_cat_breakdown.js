@@ -1,4 +1,5 @@
-module.exports = function calc_cluster_cat_breakdonw(params, inst_data, inst_rc){
+// var fisher = require('fishertest');
+module.exports = function calc_cluster_cat_breakdowm(params, inst_data, inst_rc){
   // Category-breakdown of dendrogram-clusters
   /////////////////////////////////////////////
   /*
@@ -8,6 +9,41 @@ module.exports = function calc_cluster_cat_breakdonw(params, inst_data, inst_rc)
   3. count instances of each category name for each category-type
 
   */
+
+  // debugger;
+
+  // number of marbles
+  var big_n = 50;
+  // number of green marbles
+  var big_k = 5;
+  // number of green drawn
+  var k = 5;
+  // number drawn
+  var n = 10;
+
+  // contingency table
+  /////////////////////
+  // a = k
+  // b = big_k - k
+  // c = n - k
+  // d = big_n - n
+
+  // // number of marbles
+  // var big_n = 24;
+  // // number of green marbles
+  // var big_k = 10;
+  // // number of green drawn
+  // var k = 0;
+  // // number drawn
+  // var n = 12;
+
+  var a = k;
+  var b = big_k - k;
+  var c = n - k;
+  var d = big_n + k - n - big_k;
+  var ft = fisher(a, b, c, d);
+
+  console.log(ft.toString())
 
   // 1: get information for nodes in cluster
   ///////////////////////////////////////////
