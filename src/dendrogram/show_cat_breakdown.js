@@ -50,7 +50,7 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc){
     var height = 150;
     var width = 200;
 
-    var graph = dendro_tip
+    var graph_container = dendro_tip
       .append('div')
       .style('margin-top','5px')
       .classed('cat_graph', true)
@@ -63,7 +63,7 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc){
 
 
     // make background
-    graph
+    graph_container
       .append('rect')
       .classed('cat_background', true)
       .style('height', height+'px')
@@ -71,12 +71,32 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc){
       .style('fill', 'white')
       .style('opacity', 0.975);
 
-    // make bar graph for category type
-    var cat_data = cat_breakdown[0];
-    graph
-      .append('text')
-      .classed('new_text', true)
-      .text(cat_data.type_name);
+    var graph_group = graph_container
+      .append('g')
+      .attr('transform', 'translate(10,10)')
+
+    // make bars
+    graph_group
+      .selectAll('rect')
+      .data([100,50,20])
+      .enter()
+      .append('rect')
+      .style('height', '5px')
+      .style('width', function(d){
+        return d +'px';
+      })
+      .attr('transform', function(d, i){
+        var inst_y = i * 10;
+        return 'translate(0,'+ inst_y +')';
+      })
+      .style('fill','red')
+
+    // // make bar graph for category type
+    // var cat_data = cat_breakdown[0];
+    // graph_group
+    //   .append('text')
+    //   .classed('new_text', true)
+    //   .text(cat_data.type_name);
 
 
 
