@@ -4,8 +4,6 @@ var check_if_value_cats = require('./check_if_value_cats');
 
 module.exports = function process_category_info(params, viz, preserve_cats=true){
 
-  console.log('process_category_info')
-
   var super_string = ': ';
   var tmp_super;
   var inst_info;

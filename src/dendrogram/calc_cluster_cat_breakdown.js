@@ -145,7 +145,7 @@ module.exports = function calc_cluster_cat_breakdowm(params, inst_data, inst_rc)
           // var k = parseInt(inst_run_count[inst_cat] * n, 10);
           var k = inst_run_count[inst_cat];
           // big_k: total number of cat-nodes
-          var big_k = params.viz.cat_info[inst_rc][cat_index].cat_hist[cat_title_and_name]
+          var big_k = params.viz.cat_info[inst_rc][cat_index].cat_hist[cat_title_and_name];
 
           var ft = run_fisher_exact_clust(k, n, big_k, big_n);
 

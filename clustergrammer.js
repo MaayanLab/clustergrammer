@@ -1156,8 +1156,6 @@ var Clustergrammer =
 	  var preserve_cats = arguments.length <= 2 || arguments[2] === undefined ? true : arguments[2];
 
 
-	  console.log('process_category_info');
-
 	  var super_string = ': ';
 	  var tmp_super;
 	  var inst_info;
@@ -3506,7 +3504,7 @@ var Clustergrammer =
 	        // get num instances of cat
 	        var tot_inst_cat = cgm.params.viz.cat_info[inst_rc][cat_index].cat_hist[tmp_name];
 
-	        console.log(tmp_name + ' ' + String(tmp_fraction) + ' ' + String(tmp_color) + ' num_in_clust: ' + String(num_in_clust) + ' : ' + String(parseInt(tmp_fraction * num_in_clust)) + ' total: ' + String(tot_inst_cat) + '  ' + tmp_data[4]);
+	        console.log(tmp_name + ' ' + String(tmp_fraction) + ' ' + String(tmp_color) + ' num_in_clust: ' + String(num_in_clust) + ' : ' + String(parseInt(tmp_fraction * num_in_clust, 10)) + ' total: ' + String(tot_inst_cat) + '  ' + tmp_data[4]);
 	      }
 
 	      console.log('----------------\n');

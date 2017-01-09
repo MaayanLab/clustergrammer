@@ -67,7 +67,7 @@ module.exports = function make_dendro_triangles(cgm, inst_rc, is_change_group = 
       for (var x=0; x < bar_data.length; x++){
 
         // data for individual bar
-        var tmp_data = bar_data[x]
+        var tmp_data = bar_data[x];
 
         var cat_index = tmp_data[0];
         tmp_name = tmp_data[1];
@@ -77,7 +77,7 @@ module.exports = function make_dendro_triangles(cgm, inst_rc, is_change_group = 
         // get num instances of cat
         var tot_inst_cat = cgm.params.viz.cat_info[inst_rc][cat_index].cat_hist[tmp_name];
 
-        console.log(tmp_name + ' ' + String(tmp_fraction) + ' ' + String(tmp_color) + ' num_in_clust: ' + String(num_in_clust) + ' : '+ String(parseInt(tmp_fraction*num_in_clust)) + ' total: ' + String(tot_inst_cat) + '  ' + tmp_data[4])
+        console.log(tmp_name + ' ' + String(tmp_fraction) + ' ' + String(tmp_color) + ' num_in_clust: ' + String(num_in_clust) + ' : '+ String(parseInt(tmp_fraction*num_in_clust, 10)) + ' total: ' + String(tot_inst_cat) + '  ' + tmp_data[4])
 
       }
 
@@ -243,4 +243,4 @@ module.exports = function make_dendro_triangles(cgm, inst_rc, is_change_group = 
 
   }
 
-}
+};
