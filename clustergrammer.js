@@ -1214,8 +1214,6 @@ var Clustergrammer =
 
 	      _.each(viz.all_cats[inst_rc], function (cat_title) {
 
-	        console.log('cat_title: ' + cat_title);
-
 	        _.each(params.network_data[inst_rc + '_nodes'], function (inst_node) {
 
 	          // look for title of category in category name
@@ -1232,10 +1230,19 @@ var Clustergrammer =
 	          }
 	        });
 
-	        var cat_states = _.uniq(utils.pluck(params.network_data[inst_rc + '_nodes'], cat_title)).sort();
+	        var cat_instances = utils.pluck(params.network_data[inst_rc + '_nodes'], cat_title);
+	        var cat_states = _.uniq(cat_instances).sort();
 
 	        // check whether all the categories are of value type
 	        inst_info = check_if_value_cats(cat_states);
+
+	        // add histogram to inst_info
+	        if (inst_info.type === 'cat_strings') {
+	          var cat_hist = _.countBy(cat_instances);
+	          inst_info.cat_hist = cat_hist;
+	        } else {
+	          inst_info.cat_hist = null;
+	        }
 
 	        // pass info_info object
 	        viz.cat_info[inst_rc][cat_title] = inst_info;
@@ -1247,11 +1254,6 @@ var Clustergrammer =
 	          _.each(cat_states, function (cat_tmp, i) {
 
 	            inst_color = colors.get_random_color(i + num_colors);
-
-	            // if all categories are of value type
-	            if (inst_info.type == 'cat_values') {
-	              inst_color = 'red';
-	            }
 
 	            viz.cat_colors[inst_rc][cat_title][cat_tmp] = inst_color;
 
