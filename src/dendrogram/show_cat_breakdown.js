@@ -32,11 +32,11 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc){
       // get num instances of cat
       var tot_inst_cat = params.viz.cat_info[inst_rc][cat_index].cat_hist[tmp_name];
 
-      console.log(tmp_name + ' ' + String(tmp_fraction) + ' ' + String(tmp_color) + ' num_in_clust: ' + String(num_in_clust) + ' : '+ String(parseInt(tmp_fraction*num_in_clust, 10)) + ' total: ' + String(tot_inst_cat) + '  ' + String(tmp_pval))
+      // console.log(tmp_name + ' ' + String(tmp_fraction) + ' ' + String(tmp_color) + ' num_in_clust: ' + String(num_in_clust) + ' : '+ String(parseInt(tmp_fraction*num_in_clust, 10)) + ' total: ' + String(tot_inst_cat) + '  ' + String(tmp_pval))
 
     }
 
-    console.log('----------------\n')
+    // console.log('----------------\n')
 
   }
 
@@ -55,7 +55,7 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc){
 
   if (d3.select(dendro_tip_selector + ' .cat_graph').empty()){
 
-    console.log('show cat breakdown')
+    // console.log('show cat breakdown')
 
     var super_string = ': ';
     var height = 150;
@@ -136,16 +136,7 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc){
       })
       .attr('transform', function(d){
         return 'translate(5, ' + 0.8 * bar_height + ')' ;
-      })
-
-    // // make bar graph for category type
-    // var cat_data = cat_breakdown[0];
-    // graph_group
-    //   .append('text')
-    //   .classed('new_text', true)
-    //   .text(cat_data.type_name);
-
-
+      });
 
     var old_top = dendro_tip.style('top').split('.px')[0];
     var old_left = dendro_tip.style('left').split('.px')[0];

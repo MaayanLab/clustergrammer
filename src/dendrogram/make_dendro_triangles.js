@@ -1,8 +1,6 @@
 var calc_row_dendro_triangles = require('./calc_row_dendro_triangles');
 var calc_col_dendro_triangles = require('./calc_col_dendro_triangles');
 var dendro_group_highlight = require('./dendro_group_highlight');
-var dendro_mouseover = require('./dendro_mouseover');
-var dendro_mouseout = require('./dendro_mouseout');
 var d3_tip_custom = require('../tooltip/d3_tip_custom');
 var make_dendro_crop_buttons = require('./make_dendro_crop_buttons');
 var show_cat_breakdown = require('./show_cat_breakdown');
@@ -44,11 +42,11 @@ module.exports = function make_dendro_triangles(cgm, inst_rc, is_change_group = 
 
     if (d3.select(inst_selection).classed('hovering')){
 
-      d3.selectAll(params.viz.root_tips + '_'+ inst_rc +'_dendro_tip')
-        .style('opacity', 1)
-        .style('display', 'block');
+      show_cat_breakdown(params, inst_data, inst_rc);
 
-      // show_cat_breakdown(params, inst_data, inst_rc);
+      d3.selectAll(params.viz.root_tips + '_'+ inst_rc +'_dendro_tip')
+        .style('opacity', 1);
+
     }
 
   }
@@ -57,6 +55,16 @@ module.exports = function make_dendro_triangles(cgm, inst_rc, is_change_group = 
 
   // remove any old dendro tooltips from this visualization
   d3.selectAll(cgm.params.viz.root_tips+'_'+ inst_rc +'_dendro_tip').remove();
+
+  // run transition rules
+  var run_transition;
+  if (d3.selectAll(params.root+' .' + inst_rc + '_dendro_group').empty()){
+    run_transition = false;
+  } else {
+    run_transition = true;
+    d3.selectAll(params.root+' .'+ inst_rc +'_dendro_group').remove();
+    // d3.selectAll(params.root+' .dendro_tip').remove();
+  }
 
   // d3-tooltip
   var tmp_y_offset = 0;
@@ -80,15 +88,6 @@ module.exports = function make_dendro_triangles(cgm, inst_rc, is_change_group = 
       return full_string;
     });
 
-  // run transition rules
-  var run_transition;
-  if (d3.selectAll(params.root+' .' + inst_rc + '_dendro_group').empty()){
-    run_transition = false;
-  } else {
-    run_transition = true;
-    d3.selectAll(params.root+' .'+ inst_rc +'_dendro_group').remove();
-    d3.selectAll(params.root+' .dendro_tip').remove();
-  }
 
   if (is_change_group){
     run_transition = false;
@@ -150,15 +149,28 @@ module.exports = function make_dendro_triangles(cgm, inst_rc, is_change_group = 
         inst_rc = 'both';
       }
 
+      // run instantly on mouseover
+      d3.select(this)
+        .classed('hovering', true);
 
-      dendro_mouseover(cgm, this);
+      if (cgm.params.dendro_callback != null){
+        cgm.params.dendro_callback(this);
+      }
+
+      // display tip
+      // this is needed for it to show in the right place and the opacity
+      // will be toggled to delay the tooltip for the user
+      d3.select( params.viz.root_tips + '_' + inst_rc + '_dendro_tip' )
+        .style('display', 'block');
+
       dendro_group_highlight(params, this, d, inst_rc);
+
+      // show the tip (make sure it is displaying before it is shown)
       dendro_tip.show(d);
 
       // set opacity to zero
-      d3.selectAll( params.viz.root_tips + '_'+ inst_rc +'_dendro_tip')
-        .style('opacity', 0)
-        // .style('display', 'block');
+      d3.select( params.viz.root_tips + '_'+ inst_rc +'_dendro_tip')
+        .style('opacity', 0);
 
       // check if still hovering
       setTimeout(still_hovering, wait_before_tooltip, this, d);
@@ -173,7 +185,8 @@ module.exports = function make_dendro_triangles(cgm, inst_rc, is_change_group = 
       d3.selectAll(params.root+' .dendro_shadow')
         .remove();
 
-      dendro_mouseout(this);
+      d3.select(this)
+        .classed('hovering',false);
       dendro_tip.hide(this);
 
     })

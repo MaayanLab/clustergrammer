@@ -2723,6 +2723,7 @@ var Clustergrammer =
 	  //
 	  // Returns a tip
 	  tip.show = function () {
+
 	    var args = Array.prototype.slice.call(arguments);
 	    if (args[args.length - 1] instanceof SVGElement) {
 	      target = args.pop();
@@ -3430,8 +3431,6 @@ var Clustergrammer =
 	var calc_row_dendro_triangles = __webpack_require__(56);
 	var calc_col_dendro_triangles = __webpack_require__(57);
 	var dendro_group_highlight = __webpack_require__(58);
-	var dendro_mouseover = __webpack_require__(60);
-	var dendro_mouseout = __webpack_require__(61);
 	var d3_tip_custom = __webpack_require__(49);
 	var make_dendro_crop_buttons = __webpack_require__(62);
 	var show_cat_breakdown = __webpack_require__(206);
@@ -3473,9 +3472,9 @@ var Clustergrammer =
 
 	    if (d3.select(inst_selection).classed('hovering')) {
 
-	      d3.selectAll(params.viz.root_tips + '_' + inst_rc + '_dendro_tip').style('opacity', 1).style('display', 'block');
+	      show_cat_breakdown(params, inst_data, inst_rc);
 
-	      // show_cat_breakdown(params, inst_data, inst_rc);
+	      d3.selectAll(params.viz.root_tips + '_' + inst_rc + '_dendro_tip').style('opacity', 1);
 	    }
 	  }
 
@@ -3483,6 +3482,16 @@ var Clustergrammer =
 
 	  // remove any old dendro tooltips from this visualization
 	  d3.selectAll(cgm.params.viz.root_tips + '_' + inst_rc + '_dendro_tip').remove();
+
+	  // run transition rules
+	  var run_transition;
+	  if (d3.selectAll(params.root + ' .' + inst_rc + '_dendro_group').empty()) {
+	    run_transition = false;
+	  } else {
+	    run_transition = true;
+	    d3.selectAll(params.root + ' .' + inst_rc + '_dendro_group').remove();
+	    // d3.selectAll(params.root+' .dendro_tip').remove();
+	  }
 
 	  // d3-tooltip
 	  var tmp_y_offset = 0;
@@ -3497,16 +3506,6 @@ var Clustergrammer =
 	    var full_string = 'Click for cluster information <br>' + 'and additional options.';
 	    return full_string;
 	  });
-
-	  // run transition rules
-	  var run_transition;
-	  if (d3.selectAll(params.root + ' .' + inst_rc + '_dendro_group').empty()) {
-	    run_transition = false;
-	  } else {
-	    run_transition = true;
-	    d3.selectAll(params.root + ' .' + inst_rc + '_dendro_group').remove();
-	    d3.selectAll(params.root + ' .dendro_tip').remove();
-	  }
 
 	  if (is_change_group) {
 	    run_transition = false;
@@ -3556,13 +3555,25 @@ var Clustergrammer =
 	      inst_rc = 'both';
 	    }
 
-	    dendro_mouseover(cgm, this);
+	    // run instantly on mouseover
+	    d3.select(this).classed('hovering', true);
+
+	    if (cgm.params.dendro_callback != null) {
+	      cgm.params.dendro_callback(this);
+	    }
+
+	    // display tip
+	    // this is needed for it to show in the right place and the opacity
+	    // will be toggled to delay the tooltip for the user
+	    d3.select(params.viz.root_tips + '_' + inst_rc + '_dendro_tip').style('display', 'block');
+
 	    dendro_group_highlight(params, this, d, inst_rc);
+
+	    // show the tip (make sure it is displaying before it is shown)
 	    dendro_tip.show(d);
 
 	    // set opacity to zero
-	    d3.selectAll(params.viz.root_tips + '_' + inst_rc + '_dendro_tip').style('opacity', 0);
-	    // .style('display', 'block');
+	    d3.select(params.viz.root_tips + '_' + inst_rc + '_dendro_tip').style('opacity', 0);
 
 	    // check if still hovering
 	    setTimeout(still_hovering, wait_before_tooltip, this, d);
@@ -3573,7 +3584,7 @@ var Clustergrammer =
 
 	    d3.selectAll(params.root + ' .dendro_shadow').remove();
 
-	    dendro_mouseout(this);
+	    d3.select(this).classed('hovering', false);
 	    dendro_tip.hide(this);
 	  }).on('click', function (d) {
 
@@ -3813,32 +3824,8 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 60 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	module.exports = function dendro_mouseover(cgm, inst_selection) {
-
-	  // run instantly on mouseover
-	  d3.select(inst_selection).classed('hovering', true);
-
-	  if (cgm.params.dendro_callback != null) {
-	    cgm.params.dendro_callback(inst_selection);
-	  }
-		};
-
-/***/ },
-/* 61 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	module.exports = function dendro_mouseout(inst_selection) {
-	  d3.select(inst_selection).classed('hovering', false);
-		};
-
-/***/ },
+/* 60 */,
+/* 61 */,
 /* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -16272,10 +16259,10 @@ var Clustergrammer =
 	      // get num instances of cat
 	      var tot_inst_cat = params.viz.cat_info[inst_rc][cat_index].cat_hist[tmp_name];
 
-	      console.log(tmp_name + ' ' + String(tmp_fraction) + ' ' + String(tmp_color) + ' num_in_clust: ' + String(num_in_clust) + ' : ' + String(parseInt(tmp_fraction * num_in_clust, 10)) + ' total: ' + String(tot_inst_cat) + '  ' + String(tmp_pval));
+	      // console.log(tmp_name + ' ' + String(tmp_fraction) + ' ' + String(tmp_color) + ' num_in_clust: ' + String(num_in_clust) + ' : '+ String(parseInt(tmp_fraction*num_in_clust, 10)) + ' total: ' + String(tot_inst_cat) + '  ' + String(tmp_pval))
 	    }
 
-	    console.log('----------------\n');
+	    // console.log('----------------\n')
 	  }
 
 	  // get cat data
@@ -16291,7 +16278,7 @@ var Clustergrammer =
 
 	  if (d3.select(dendro_tip_selector + ' .cat_graph').empty()) {
 
-	    console.log('show cat breakdown');
+	    // console.log('show cat breakdown')
 
 	    var super_string = ': ';
 	    var height = 150;
@@ -16338,14 +16325,6 @@ var Clustergrammer =
 	    }).attr('transform', function (d) {
 	      return 'translate(5, ' + 0.8 * bar_height + ')';
 	    });
-
-	    // // make bar graph for category type
-	    // var cat_data = cat_breakdown[0];
-	    // graph_group
-	    //   .append('text')
-	    //   .classed('new_text', true)
-	    //   .text(cat_data.type_name);
-
 
 	    var old_top = dendro_tip.style('top').split('.px')[0];
 	    var old_left = dendro_tip.style('left').split('.px')[0];
