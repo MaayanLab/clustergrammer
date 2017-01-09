@@ -46,9 +46,10 @@ module.exports = function make_dendro_triangles(cgm, inst_rc, is_change_group = 
       d3.selectAll(params.viz.root_tips + '_'+ inst_rc +'_dendro_tip')
         .style('opacity', 1)
         .style('display', 'block');
+
+      show_cat_breakdown(params, inst_data, inst_rc);
     }
 
-    show_cat_breakdown(params, inst_data, inst_rc);
   }
 
   var wait_before_tooltip = 500;
