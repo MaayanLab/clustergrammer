@@ -42,7 +42,7 @@ module.exports = function calc_cluster_cat_breakdowm(params, inst_data, inst_rc)
 
   var cat_breakdown = [];
 
-  if (_.keys(params.viz.cat_info).length > 0){
+  if ( params.viz.cat_info[inst_rc] !== null ){
 
     var inst_cat_info = params.viz.cat_info[inst_rc];
 

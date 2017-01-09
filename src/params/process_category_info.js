@@ -52,6 +52,8 @@ module.exports = function process_category_info(params, viz, preserve_cats=true)
 
     });
 
+    viz.cat_info[inst_rc] = null;
+
     if (viz.show_categories[inst_rc]){
 
       if (predefine_colors === false){

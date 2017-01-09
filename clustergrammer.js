@@ -1203,6 +1203,8 @@ var Clustergrammer =
 	      }
 	    });
 
+	    viz.cat_info[inst_rc] = null;
+
 	    if (viz.show_categories[inst_rc]) {
 
 	      if (predefine_colors === false) {
@@ -4239,7 +4241,7 @@ var Clustergrammer =
 
 	  var cat_breakdown = [];
 
-	  if (_.keys(params.viz.cat_info).length > 0) {
+	  if (params.viz.cat_info[inst_rc] !== null) {
 
 	    var inst_cat_info = params.viz.cat_info[inst_rc];
 
