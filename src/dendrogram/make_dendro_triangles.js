@@ -67,9 +67,9 @@ module.exports = function make_dendro_triangles(cgm, inst_rc, is_change_group = 
         // data for individual bar
         var tmp_data = bar_data[x]
 
-        tmp_name = bar_data[x][0];
-        tmp_fraction = bar_data[x][1];
-        tmp_color = bar_data[x][2];
+        tmp_name = tmp_data[0];
+        tmp_fraction = tmp_data[1];
+        tmp_color = tmp_data[2];
 
         console.log(tmp_name + ' ' + String(tmp_fraction) + ' ' + String(tmp_color))
 
@@ -183,7 +183,7 @@ module.exports = function make_dendro_triangles(cgm, inst_rc, is_change_group = 
         .style('opacity', 0)
         .style('display', 'block');
 
-      dendro_mouseover(cgm, this, d, inst_rc);
+      dendro_mouseover(cgm, this);
       dendro_group_highlight(params, this, d, inst_rc);
       dendro_tip.show(d);
 
@@ -237,4 +237,4 @@ module.exports = function make_dendro_triangles(cgm, inst_rc, is_change_group = 
 
   }
 
-};
+}

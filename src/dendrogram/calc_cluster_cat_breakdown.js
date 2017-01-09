@@ -12,38 +12,26 @@ module.exports = function calc_cluster_cat_breakdowm(params, inst_data, inst_rc)
 
   // debugger;
 
-  // number of marbles
-  var big_n = 50;
-  // number of green marbles
-  var big_k = 5;
-  // number of green drawn
-  var k = 5;
-  // number drawn
-  var n = 10;
+  // // Fisher Exact Test
+  // ///////////////////////////
+  // // number nodes
+  // var big_n = 50;
+  // // number of cat-nodes
+  // var big_k = 5;
+  // // number of cat-nodes drawn in cluster
+  // var k = 4;
+  // // number drawn in cluster
+  // var n = 10;
 
-  // contingency table
-  /////////////////////
-  // a = k
-  // b = big_k - k
-  // c = n - k
-  // d = big_n - n
+  // // contingency table
+  // /////////////////////
+  // var a = k;
+  // var b = big_k - k;
+  // var c = n - k;
+  // var d = big_n + k - n - big_k;
 
-  // // number of marbles
-  // var big_n = 24;
-  // // number of green marbles
-  // var big_k = 10;
-  // // number of green drawn
-  // var k = 0;
-  // // number drawn
-  // var n = 12;
-
-  var a = k;
-  var b = big_k - k;
-  var c = n - k;
-  var d = big_n + k - n - big_k;
-  var ft = fisher(a, b, c, d);
-
-  console.log(ft.toString())
+  // var ft = fisher(a, b, c, d);
+  // console.log(ft.toPrecision())
 
   // 1: get information for nodes in cluster
   ///////////////////////////////////////////
@@ -92,7 +80,7 @@ module.exports = function calc_cluster_cat_breakdowm(params, inst_data, inst_rc)
       cat_index = 'cat-' + String(i);
 
       if (params.viz.cat_info[inst_rc][cat_index].type === 'cat_strings'){
-        type_name = params.viz.cat_names[inst_rc][cat_index]
+        type_name = params.viz.cat_names[inst_rc][cat_index];
         cat_types_names.push(type_name);
         cat_types_index.push(cat_index);
       }
@@ -102,6 +90,7 @@ module.exports = function calc_cluster_cat_breakdowm(params, inst_data, inst_rc)
     var tmp_run_count = {};
     var inst_breakdown = {};
     var bar_data;
+    var radix_param = 10;
 
     var no_title_given;
     if (type_name === cat_index){
@@ -122,7 +111,7 @@ module.exports = function calc_cluster_cat_breakdowm(params, inst_data, inst_rc)
 
         if (no_title_given){
           if (cat_index.indexOf('-') >=0){
-            var tmp_num = parseInt( cat_index.split('-')[1] ) + 1;
+            var tmp_num = parseInt( cat_index.split('-')[1], radix_param) + 1;
             type_name = 'Category ' + String(tmp_num);
           } else {
             // backup behavior
@@ -150,13 +139,13 @@ module.exports = function calc_cluster_cat_breakdowm(params, inst_data, inst_rc)
         });
 
         inst_breakdown = {};
-        inst_breakdown['type_name'] = type_name;
+        inst_breakdown.type_name = type_name;
 
         // sort cat info in cat_breakdown
         bar_data = [];
-        var bar_color
+        var bar_color;
         var cat_title_and_name;
-        var tmp_data = tmp_run_count[type_name]
+        var tmp_data = tmp_run_count[type_name];
         for (var inst_cat in tmp_data){
           // if no cat-title given
           if (no_title_given){
@@ -167,14 +156,14 @@ module.exports = function calc_cluster_cat_breakdowm(params, inst_data, inst_rc)
 
           bar_color = params.viz.cat_colors[inst_rc][cat_index][cat_title_and_name];
 
-          bar_data.push([inst_cat, tmp_data[inst_cat], bar_color])
+          bar_data.push([inst_cat, tmp_data[inst_cat], bar_color]);
         }
 
         bar_data.sort(function(a, b) {
-            return b[1] - a[1]
-        })
+            return b[1] - a[1];
+        });
 
-        inst_breakdown['bar_data'] = bar_data;
+        inst_breakdown.bar_data = bar_data;
 
         cat_breakdown.push(inst_breakdown);
 

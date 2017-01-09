@@ -1,7 +1,5 @@
 
-module.exports = function dendro_mouseover(cgm, inst_selection, inst_data, inst_rc){
-
-  var params = cgm.params;
+module.exports = function dendro_mouseover(cgm, inst_selection){
 
   // run instantly on mouseover
   d3.select(inst_selection)
