@@ -43,36 +43,64 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc){
   var dendro_tip_selector = params.viz.root_tips + '_' + inst_rc + '_dendro_tip';
   var dendro_tip = d3.select(dendro_tip_selector);
 
-  if (d3.select(dendro_tip_selector + ' .cat_breakdown').empty()){
+  if (d3.select(dendro_tip_selector + ' .cat_graph').empty()){
 
     console.log('show cat breakdown')
 
     var height = 150;
     var width = 200;
 
-    dendro_tip
+    var graph = dendro_tip
       .append('div')
       .style('margin-top','5px')
-      .classed('cat_breakdown', true)
+      .classed('cat_graph', true)
       .append('svg')
       .style('height', height+'px')
-      .style('width', width+'px')
+      .style('width', width+'px');
+      // .append('g')
+      // .classed('cat_group')
+      // .attr('transform', 'translate(10,10)');
+
+
+    // make background
+    graph
       .append('rect')
+      .classed('cat_background', true)
       .style('height', height+'px')
       .style('width', width+'px')
       .style('fill', 'white')
-      .style('opacity', 0.95)
+      .style('opacity', 0.975);
+
+    // make bar graph for category type
+    var cat_data = cat_breakdown[0];
+    graph
+      .append('text')
+      .classed('new_text', true)
+      .text(cat_data.type_name);
+
+
 
     var old_top = dendro_tip.style('top').split('.px')[0];
     var old_left = dendro_tip.style('left').split('.px')[0];
+    var shift_top;
+    var shift_left;
+
+    // shifting
+    if (inst_rc === 'row'){
+      shift_top = 160;
+      shift_left = 0;
+    } else {
+      shift_top = 160;
+      shift_left = 0;
+    }
 
     dendro_tip
       .style('top', function(){
-        var new_top = String(parseInt( old_top,10) - 10) + 'px';
+        var new_top = String(parseInt( old_top,10) - shift_top) + 'px';
         return new_top;
       })
       .style('left', function(){
-        var new_left = String(parseInt( old_left,10) - 10) + 'px';
+        var new_left = String(parseInt( old_left,10) - shift_left) + 'px';
         return new_left;
       })
 

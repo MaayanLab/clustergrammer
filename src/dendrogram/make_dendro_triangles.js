@@ -71,7 +71,7 @@ module.exports = function make_dendro_triangles(cgm, inst_rc, is_change_group = 
     })
     .direction('nw')
     .offset([tmp_y_offset, tmp_x_offset])
-    .style('display','none')
+    .style('display','block')
     .style('opacity', 0)
     .html(function(){
       var full_string = 'Click for cluster information <br>'+
@@ -149,14 +149,15 @@ module.exports = function make_dendro_triangles(cgm, inst_rc, is_change_group = 
         inst_rc = 'both';
       }
 
-      // set opacity to zero
-      d3.selectAll( params.viz.root_tips + '_'+ inst_rc +'_dendro_tip')
-        .style('opacity', 0)
-        .style('display', 'block');
 
       dendro_mouseover(cgm, this);
       dendro_group_highlight(params, this, d, inst_rc);
       dendro_tip.show(d);
+
+      // set opacity to zero
+      d3.selectAll( params.viz.root_tips + '_'+ inst_rc +'_dendro_tip')
+        .style('opacity', 0)
+        // .style('display', 'block');
 
       // check if still hovering
       setTimeout(still_hovering, wait_before_tooltip, this, d);
