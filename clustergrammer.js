@@ -3441,6 +3441,11 @@ var Clustergrammer =
 
 	  var params = cgm.params;
 
+	  // in case sim_mat
+	  if (inst_rc === 'both') {
+	    inst_rc = 'row';
+	  }
+
 	  var other_rc;
 	  if (inst_rc === 'row') {
 	    other_rc = 'col';
@@ -3560,9 +3565,9 @@ var Clustergrammer =
 
 	  dendro_traps.on('mouseover', function (d, i) {
 
-	    if (params.sim_mat) {
-	      inst_rc = 'both';
-	    }
+	    // if (params.sim_mat){
+	    //   inst_rc = 'both';
+	    // }
 
 	    // run instantly on mouseover
 	    d3.select(this).classed('hovering', true);
@@ -4180,6 +4185,11 @@ var Clustergrammer =
 	  2. find category-types that are string-type
 	  3. count instances of each category name for each category-type
 	   */
+
+	  // in case sim_mat
+	  if (inst_rc === 'both') {
+	    inst_rc = 'row';
+	  }
 
 	  // 1: get information for nodes in cluster
 	  ///////////////////////////////////////////
@@ -16246,6 +16256,13 @@ var Clustergrammer =
 	module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, dendro_info, selector) {
 	  var tooltip = arguments.length <= 5 || arguments[5] === undefined ? false : arguments[5];
 
+
+	  // in case sim_mat
+	  if (inst_rc === 'both') {
+	    inst_rc = 'row';
+	  }
+
+	  console.log(selector);
 
 	  var cat_breakdown = calc_cat_cluster_breakdown(params, inst_data, inst_rc);
 

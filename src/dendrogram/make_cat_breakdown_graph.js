@@ -2,6 +2,13 @@ var calc_cat_cluster_breakdown = require('./calc_cat_cluster_breakdown');
 
 module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, dendro_info, selector, tooltip=false){
 
+  // in case sim_mat
+  if (inst_rc === 'both'){
+    inst_rc = 'row';
+  }
+
+  console.log(selector)
+
   var cat_breakdown = calc_cat_cluster_breakdown(params, inst_data, inst_rc);
 
   // put cluster information in dendro_tip

@@ -11,6 +11,10 @@ module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc)
 
   */
 
+  // in case sim_mat
+  if (inst_rc === 'both'){
+    inst_rc = 'row';
+  }
 
   // 1: get information for nodes in cluster
   ///////////////////////////////////////////

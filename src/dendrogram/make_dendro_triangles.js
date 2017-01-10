@@ -10,6 +10,12 @@ module.exports = function make_dendro_triangles(cgm, inst_rc, is_change_group = 
 
   var params = cgm.params;
 
+
+  // in case sim_mat
+  if (inst_rc === 'both'){
+    inst_rc = 'row';
+  }
+
   var other_rc;
   if (inst_rc === 'row'){
     other_rc = 'col';
@@ -155,9 +161,9 @@ module.exports = function make_dendro_triangles(cgm, inst_rc, is_change_group = 
   dendro_traps
     .on('mouseover', function(d, i){
 
-      if (params.sim_mat){
-        inst_rc = 'both';
-      }
+      // if (params.sim_mat){
+      //   inst_rc = 'both';
+      // }
 
       // run instantly on mouseover
       d3.select(this)
