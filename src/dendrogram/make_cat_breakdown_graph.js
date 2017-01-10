@@ -2,8 +2,6 @@ var calc_cat_cluster_breakdown = require('./calc_cat_cluster_breakdown');
 
 module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, dendro_info, selector, tooltip=false){
 
-  console.log('make_cat_breakdown_graph');
-
   var cat_breakdown = calc_cat_cluster_breakdown(params, inst_data, inst_rc);
 
   // put cluster information in dendro_tip
@@ -35,10 +33,12 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
     svg_height = svg_height + title_height * (num_bars + 1);
   });
 
-  // Cluster Information Title
-  cluster_info_container
-    .append('text')
-    .text('Cluster Information');
+  // Cluster Information Title (for tooltip only not modal)
+  if (tooltip){
+    cluster_info_container
+      .append('text')
+      .text('Cluster Information');
+  }
 
   var main_dendro_svg = cluster_info_container
     .append('div')

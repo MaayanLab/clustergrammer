@@ -3433,7 +3433,7 @@ var Clustergrammer =
 	var dendro_group_highlight = __webpack_require__(58);
 	var d3_tip_custom = __webpack_require__(49);
 	var make_dendro_crop_buttons = __webpack_require__(60);
-	var show_cat_breakdown = __webpack_require__(62);
+	var make_cat_breakdown_graph = __webpack_require__(204);
 
 	module.exports = function make_dendro_triangles(cgm, inst_rc) {
 	  var is_change_group = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
@@ -3472,7 +3472,14 @@ var Clustergrammer =
 
 	    if (d3.select(inst_selection).classed('hovering')) {
 
-	      show_cat_breakdown(params, inst_data, inst_rc, dendro_info[i]);
+	      // define where graph should be built
+	      var inst_selector = params.viz.root_tips + '_' + inst_rc + '_dendro_tip';
+
+	      // prevent mouseover from making multiple graphs
+	      if (d3.select(inst_selector + ' .cat_graph').empty()) {
+
+	        make_cat_breakdown_graph(params, inst_rc, inst_data, dendro_info[i], inst_selector, true);
+	      }
 
 	      d3.selectAll(params.viz.root_tips + '_' + inst_rc + '_dendro_tip').style('opacity', 1);
 	    }
@@ -3588,12 +3595,19 @@ var Clustergrammer =
 
 	    d3.select(this).classed('hovering', false);
 	    dendro_tip.hide(this);
-	  }).on('click', function (d) {
+	  }).on('click', function (d, i) {
 
 	    $(params.root + ' .dendro_info').modal('toggle');
 
 	    var group_string = d.all_names.join(', ');
 	    d3.select(params.root + ' .dendro_info input').attr('value', group_string);
+
+	    var inst_selector = '.dendro_info';
+
+	    // remove old graphs
+	    d3.select('.dendro_info .cluster_info_container .cat_graph').remove();
+
+	    make_cat_breakdown_graph(params, inst_rc, d, dendro_info[i], inst_selector);
 	  }).call(dendro_tip);
 
 	  var triangle_opacity;
@@ -4150,24 +4164,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 62 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var make_cat_breakdown_graph = __webpack_require__(204);
-
-	module.exports = function show_cat_breakdown(params, inst_data, inst_rc, dendro_info) {
-
-	  var selector_dendro_tip = params.viz.root_tips + '_' + inst_rc + '_dendro_tip';
-
-	  if (d3.select(selector_dendro_tip + ' .cat_graph').empty()) {
-
-	    make_cat_breakdown_graph(params, inst_rc, inst_data, dendro_info, selector_dendro_tip, true);
-	  }
-		};
-
-/***/ },
+/* 62 */,
 /* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -16189,6 +16186,8 @@ var Clustergrammer =
 
 	  dendro_modal.header.append('h4').classed('modal-title', true).html('Cluster Information');
 
+	  dendro_modal.body.append('g').classed('cluster_info_container', true);
+
 	  dendro_modal.body.append('div').classed('dendro_text', true).append('input').classed('bootstrap_highlight', true).classed('current_names', true).style('width', '100%');
 		};
 
@@ -16248,8 +16247,6 @@ var Clustergrammer =
 	  var tooltip = arguments.length <= 5 || arguments[5] === undefined ? false : arguments[5];
 
 
-	  console.log('make_cat_breakdown_graph');
-
 	  var cat_breakdown = calc_cat_cluster_breakdown(params, inst_data, inst_rc);
 
 	  // put cluster information in dendro_tip
@@ -16281,8 +16278,10 @@ var Clustergrammer =
 	    svg_height = svg_height + title_height * (num_bars + 1);
 	  });
 
-	  // Cluster Information Title
-	  cluster_info_container.append('text').text('Cluster Information');
+	  // Cluster Information Title (for tooltip only not modal)
+	  if (tooltip) {
+	    cluster_info_container.append('text').text('Cluster Information');
+	  }
 
 	  var main_dendro_svg = cluster_info_container.append('div').style('margin-top', '5px').classed('cat_graph', true).append('svg').style('height', svg_height + 'px').style('width', width + 'px');
 

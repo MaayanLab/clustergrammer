@@ -44,6 +44,10 @@ module.exports = function ini_modals(params){
     .html('Cluster Information');
 
   dendro_modal.body
+    .append('g')
+    .classed('cluster_info_container', true);
+
+  dendro_modal.body
     .append('div')
     .classed('dendro_text', true)
     .append('input')

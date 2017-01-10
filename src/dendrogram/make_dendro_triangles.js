@@ -3,7 +3,7 @@ var calc_col_dendro_triangles = require('./calc_col_dendro_triangles');
 var dendro_group_highlight = require('./dendro_group_highlight');
 var d3_tip_custom = require('../tooltip/d3_tip_custom');
 var make_dendro_crop_buttons = require('./make_dendro_crop_buttons');
-var show_cat_breakdown = require('./show_cat_breakdown');
+var make_cat_breakdown_graph = require('./make_cat_breakdown_graph');
 
 module.exports = function make_dendro_triangles(cgm, inst_rc, is_change_group = false)
 {
@@ -42,7 +42,15 @@ module.exports = function make_dendro_triangles(cgm, inst_rc, is_change_group = 
 
     if (d3.select(inst_selection).classed('hovering')){
 
-      show_cat_breakdown(params, inst_data, inst_rc, dendro_info[i]);
+      // define where graph should be built
+      var inst_selector = params.viz.root_tips + '_' + inst_rc + '_dendro_tip';
+
+      // prevent mouseover from making multiple graphs
+      if (d3.select(inst_selector + ' .cat_graph').empty()){
+
+        make_cat_breakdown_graph(params, inst_rc, inst_data, dendro_info[i], inst_selector, true);
+
+      }
 
       d3.selectAll(params.viz.root_tips + '_'+ inst_rc +'_dendro_tip')
         .style('opacity', 1);
@@ -192,13 +200,21 @@ module.exports = function make_dendro_triangles(cgm, inst_rc, is_change_group = 
       dendro_tip.hide(this);
 
     })
-    .on('click', function(d){
+    .on('click', function(d, i){
 
       $(params.root+' .dendro_info').modal('toggle');
 
       var group_string = d.all_names.join(', ');
       d3.select(params.root+' .dendro_info input')
         .attr('value', group_string);
+
+        var inst_selector = '.dendro_info';
+
+        // remove old graphs
+        d3.select('.dendro_info .cluster_info_container .cat_graph')
+          .remove();
+
+        make_cat_breakdown_graph(params, inst_rc, d, dendro_info[i], inst_selector);
 
     })
     .call(dendro_tip);
