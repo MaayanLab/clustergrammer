@@ -4176,6 +4176,13 @@ var Clustergrammer =
 	  var bar_height = 20;
 	  var max_string_length = 15;
 	  var bar_width = 135;
+	  var title_height = 27;
+
+	  // calculate height needed for svg based don cat_breakdown data
+	  var svg_height = 20;
+	  _.each(cat_breakdown, function (tmp_break) {
+	    svg_height = svg_height + title_height * (tmp_break.bar_data.length + 1);
+	  });
 
 	  var selector_dendro_tip = params.viz.root_tips + '_' + inst_rc + '_dendro_tip';
 
@@ -4186,13 +4193,13 @@ var Clustergrammer =
 	    // Cluster Information Title
 	    cluster_info_container.append('text').text('Cluster Information');
 
-	    var main_dendro_svg = cluster_info_container.append('div').style('margin-top', '5px').classed('cat_graph', true).append('svg').style('height', height + 'px').style('width', width + 'px');
+	    var main_dendro_svg = cluster_info_container.append('div').style('margin-top', '5px').classed('cat_graph', true).append('svg').style('height', svg_height + 'px').style('width', width + 'px');
 
 	    // make background
-	    main_dendro_svg.append('rect').classed('cat_background', true).style('height', height + 'px').style('width', width + 'px').style('fill', 'white').style('opacity', 1);
+	    main_dendro_svg.append('rect').classed('cat_background', true).style('height', svg_height + 'px').style('width', width + 'px').style('fill', 'white').style('opacity', 1);
 
 	    // the total amout to shift down the next category
-	    var shift_down = 25;
+	    var shift_down = title_height;
 
 	    // limit to two category-types
 	    cat_breakdown = cat_breakdown.slice(0, 2);
@@ -4209,13 +4216,11 @@ var Clustergrammer =
 	      var cat_graph_group = main_dendro_svg.append('g').classed('cat_graph_group', true).attr('transform', function () {
 	        var inst_y = shift_down;
 	        var inst_translate = 'translate(10,' + inst_y + ')';
-	        console.log(inst_translate);
 	        return inst_translate;
 	      });
 
 	      // shift down based on number of bars
-	      shift_down = shift_down + 27 * (cat_data.bar_data.length + 1);
-	      console.log(shift_down);
+	      shift_down = shift_down + title_height * (cat_data.bar_data.length + 1);
 
 	      // make title
 	      cat_graph_group.append('text').classed('cat_graph_title', true).text(function () {
@@ -4300,10 +4305,10 @@ var Clustergrammer =
 	      var dendro_tip = d3.select(selector_dendro_tip);
 	      var old_top = dendro_tip.style('top').split('.px')[0];
 	      var old_left = dendro_tip.style('left').split('.px')[0];
-	      var shift_top;
-	      var shift_left;
+	      var shift_top = 0;
+	      var shift_left = 0;
 
-	      var graph_height = 160;
+	      var graph_height = svg_height;
 
 	      // shifting
 	      if (inst_rc === 'row') {
@@ -4321,9 +4326,11 @@ var Clustergrammer =
 
 	      dendro_tip.style('top', function () {
 	        var new_top = String(parseInt(old_top, 10) - shift_top) + 'px';
+	        console.log('new_top ' + new_top);
 	        return new_top;
 	      }).style('left', function () {
 	        var new_left = String(parseInt(old_left, 10) - shift_left) + 'px';
+	        console.log('new_left: ' + new_left);
 	        return new_left;
 	      });
 	    }
