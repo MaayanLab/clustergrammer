@@ -4320,16 +4320,22 @@ var Clustergrammer =
 
 	    // shifting
 	    if (inst_rc === 'row') {
-	      shift_top = svg_height;
+
+	      // rows
+	      //////////////
+	      shift_top = svg_height + 30;
 	      shift_left = 32;
 
 	      // prevent graph from being too high
 	      if (dendro_info.pos_top < svg_height) {
-	        shift_top = -svg_height;
+	        shift_top = -(svg_height + (dendro_info.pos_mid - dendro_info.pos_top) / 2);
 	      }
 	    } else {
+
+	      // columns
+	      //////////////
 	      shift_top = svg_height + 32;
-	      shift_left = 0;
+	      shift_left = 30;
 	    }
 
 	    dendro_tip.style('top', function () {
