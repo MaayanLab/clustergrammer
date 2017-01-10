@@ -11,62 +11,55 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc, dendro_
   var tmp_name;
   var tmp_color;
   var num_in_clust;
-
+  var super_string = ': ';
+  var paragraph_string = '<p>';
+  var height = 150;
+  var width = 225;
+  var bar_offset = 23;
+  var bar_height = 20;
+  var max_string_length = 15;
+  var bar_width = 135;
 
   var selector_dendro_tip = params.viz.root_tips + '_' + inst_rc + '_dendro_tip';
 
   if (d3.select(selector_dendro_tip + ' .cat_graph').empty()){
 
+    var cluster_info_container = d3.select(selector_dendro_tip + ' .cluster_info_container');
+
+    // Cluster Information Title
+    cluster_info_container
+      .append('text')
+      .text('Cluster Information');
+
+    var main_dendro_svg = cluster_info_container
+      .append('div')
+      .style('margin-top','5px')
+      .classed('cat_graph', true)
+      .append('svg')
+      .style('height', height+'px')
+      .style('width', width+'px');
+
+    // make background
+    main_dendro_svg
+      .append('rect')
+      .classed('cat_background', true)
+      .style('height', height+'px')
+      .style('width', width+'px')
+      .style('fill', 'white')
+      .style('opacity', 1);
+
     _.each(cat_breakdown, function(cat_data){
-
-
-      // // get cat data
-      // var cat_data = cat_breakdown[0];
 
       // only keep the top 5 categories
       cat_data.bar_data = cat_data.bar_data.slice(0,5)
 
-      var cluster_info_container = d3.select(selector_dendro_tip + ' .cluster_info_container');
-
-      var super_string = ': ';
-      var paragraph_string = '<p>';
-      var height = 150;
-      var width = 225;
-      var bar_offset = 23;
-      var bar_height = 20;
-      var max_string_length = 15;
-
-      var bar_width = 135;
-
       cluster_info_container
         .style('margin-bottom', '5px')
-
-      cluster_info_container
-        .append('text')
-        .text('Cluster Information')
-
-      var main_dendro_svg = cluster_info_container
-        .append('div')
-        .style('margin-top','5px')
-        .classed('cat_graph', true)
-        .append('svg')
-        .style('height', height+'px')
-        .style('width', width+'px');
-
-      // make background
-      main_dendro_svg
-        .append('rect')
-        .classed('cat_background', true)
-        .style('height', height+'px')
-        .style('width', width+'px')
-        .style('fill', 'white')
-        .style('opacity', 1);
 
       var cat_graph_group = main_dendro_svg
         .append('g')
         .classed('cat_graph_group', true)
         .attr('transform', 'translate(10,20)')
-
 
       // make title
       cat_graph_group
