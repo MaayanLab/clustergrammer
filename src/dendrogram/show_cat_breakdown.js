@@ -48,7 +48,11 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc, dendro_
       .style('fill', 'white')
       .style('opacity', 1);
 
-    _.each(cat_breakdown, function(cat_data){
+    // _.each(cat_breakdown, function(cat_data){
+
+    for (var cat_index = 0; cat_index < cat_breakdown.length; cat_index ++){
+
+      var cat_data = cat_breakdown[cat_index];
 
       // only keep the top 5 categories
       cat_data.bar_data = cat_data.bar_data.slice(0,5)
@@ -59,7 +63,11 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc, dendro_
       var cat_graph_group = main_dendro_svg
         .append('g')
         .classed('cat_graph_group', true)
-        .attr('transform', 'translate(10,20)')
+        .attr('transform', function(){
+          var inst_y = 20 + 75 * cat_index;
+          var inst_translate =  'translate(10,'+ inst_y +')'
+          return inst_translate;
+        })
 
       // make title
       cat_graph_group
@@ -206,7 +214,7 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc, dendro_
         }
 
       } else {
-        shift_top = graph_height + 22;
+        shift_top = 90;
         shift_left = 0;
       }
 
@@ -220,7 +228,7 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc, dendro_
           return new_left;
         });
 
-    });
+    }
 
   }
 

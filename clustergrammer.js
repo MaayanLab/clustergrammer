@@ -4191,14 +4191,22 @@ var Clustergrammer =
 	    // make background
 	    main_dendro_svg.append('rect').classed('cat_background', true).style('height', height + 'px').style('width', width + 'px').style('fill', 'white').style('opacity', 1);
 
-	    _.each(cat_breakdown, function (cat_data) {
+	    // _.each(cat_breakdown, function(cat_data){
+
+	    for (var cat_index = 0; cat_index < cat_breakdown.length; cat_index++) {
+
+	      var cat_data = cat_breakdown[cat_index];
 
 	      // only keep the top 5 categories
 	      cat_data.bar_data = cat_data.bar_data.slice(0, 5);
 
 	      cluster_info_container.style('margin-bottom', '5px');
 
-	      var cat_graph_group = main_dendro_svg.append('g').classed('cat_graph_group', true).attr('transform', 'translate(10,20)');
+	      var cat_graph_group = main_dendro_svg.append('g').classed('cat_graph_group', true).attr('transform', function () {
+	        var inst_y = 20 + 75 * cat_index;
+	        var inst_translate = 'translate(10,' + inst_y + ')';
+	        return inst_translate;
+	      });
 
 	      // make title
 	      cat_graph_group.append('text').classed('cat_graph_title', true).text(function () {
@@ -4298,7 +4306,7 @@ var Clustergrammer =
 	          shift_top = -graph_height;
 	        }
 	      } else {
-	        shift_top = graph_height + 22;
+	        shift_top = 90;
 	        shift_left = 0;
 	      }
 
@@ -4309,7 +4317,7 @@ var Clustergrammer =
 	        var new_left = String(parseInt(old_left, 10) - shift_left) + 'px';
 	        return new_left;
 	      });
-	    });
+	    }
 	  }
 		};
 
