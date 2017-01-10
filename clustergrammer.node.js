@@ -74,7 +74,7 @@ module.exports =
 	__webpack_require__(184);
 	__webpack_require__(188);
 
-	/* clustergrammer v1.11.0
+	/* clustergrammer v1.11.1
 	 * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
 	 * (c) 2017
 	 */
@@ -4258,15 +4258,18 @@ module.exports =
 	    cat_graph_group.append('text').classed('cat_graph_title', true).text(inst_title).style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').style('font-weight', 800);
 
 	    var pval_offset = 15;
-	    // make P-value title
-	    cat_graph_group.append('text').text('P-value').attr('transform', function () {
-	      var inst_x = bar_width + pval_offset;
-	      var inst_translate = 'translate(' + inst_x + ', 0)';
-	      return inst_translate;
-	    });
+	    // // make P-value title
+	    // cat_graph_group
+	    //   .append('text')
+	    //   .text('P-value')
+	    //   .attr('transform', function(){
+	    //     var inst_x = bar_width + pval_offset;
+	    //     var inst_translate = 'translate('+ inst_x +', 0)';
+	    //     return inst_translate;
+	    //   });
 
 	    var line_y = 4;
-	    cat_graph_group.append('line').attr('x1', 0).attr('x2', bar_width).attr('y1', line_y).attr('y2', line_y).style('stroke', 'black').style('stroke-width', 1).style('opacity', 0.35);
+	    cat_graph_group.append('line').attr('x1', 0).attr('x2', bar_width).attr('y1', line_y).attr('y2', line_y).style('stroke', '#000080').style('stroke-width', 1).style('opacity', 0.5);
 
 	    var cat_bar_container = cat_graph_group.append('g').classed('cat_bar_container', true).attr('transform', 'translate(0, 10)');
 
@@ -4306,22 +4309,29 @@ module.exports =
 	      return 'translate(5, ' + 0.75 * bar_height + ')';
 	    }).style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').style('font-weight', 400);
 
-	    // make bar labels
-	    cat_bar_groups.append('text').classed('pval_labels', true).text(function (d) {
-	      var inst_pval = d[4];
-	      // convert to scientific notation if necessary
-	      if (inst_pval < 0.1) {
-	        inst_pval = inst_pval.toExponential(2);
-	      } else {
-	        inst_pval = inst_pval.toFixed(2);
-	      }
-	      var inst_text = String(inst_pval);
-	      return inst_text;
-	    }).attr('transform', function () {
-	      var inst_x = bar_width + pval_offset + 2;
-	      var inst_y = 0.75 * bar_height;
-	      return 'translate(' + inst_x + ', ' + inst_y + ')';
-	    }).style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').style('font-weight', 400);
+	    // // make bar labels
+	    // cat_bar_groups
+	    //   .append('text')
+	    //   .classed('pval_labels', true)
+	    //   .text(function(d){
+	    //     var inst_pval = d[4];
+	    //     // convert to scientific notation if necessary
+	    //     if (inst_pval < 0.1){
+	    //       inst_pval = inst_pval.toExponential(2);
+	    //     } else {
+	    //       inst_pval = inst_pval.toFixed(2);
+	    //     }
+	    //     var inst_text =  String(inst_pval);
+	    //     return inst_text;
+	    //   })
+	    //   .attr('transform', function(){
+	    //     var inst_x = bar_width + pval_offset + 2;
+	    //     var inst_y = 0.75 * bar_height;
+	    //     return 'translate('+ inst_x +', ' + inst_y + ')' ;
+	    //   })
+	    //   .style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif')
+	    //   .style('font-weight', 400);
+
 	  });
 
 	  // reposition tooltip
@@ -4518,12 +4528,17 @@ module.exports =
 	          // big_k: total number of cat-nodes
 	          var big_k = params.viz.cat_info[inst_rc][cat_index].cat_hist[cat_title_and_name];
 
+	          console.log('k n');
+	          console.log(k);
+	          console.log(n);
+	          console.log(big_k);
+	          console.log(big_n);
+	          console.log('abcd');
+
 	          var ft = parseFloat(run_fisher_exact_clust(k, n, big_k, big_n));
 
-	          // console.log(k)
-	          // console.log(n)
-	          // console.log(big_k)
-	          // console.log(big_n)
+	          console.log(ft);
+	          console.log('\n');
 
 	          bar_color = params.viz.cat_colors[inst_rc][cat_index][cat_title_and_name];
 
@@ -4568,8 +4583,17 @@ module.exports =
 	  var c = n - k;
 	  var d = big_n + k - n - big_k;
 
+	  console.log(a);
+	  console.log(b);
+	  console.log(c);
+	  console.log(d);
+
 	  var ft = fisher(a, b, c, d);
 
+	  // debugger
+	  console.log('in fuction');
+	  console.log(ft.toPrecision());
+	  console.log(ft.toString());
 	  return ft.toPrecision();
 		};
 
