@@ -7179,8 +7179,8 @@ var Clustergrammer =
 	  var zoom_info = params.zoom_info;
 
 	  // get translation vector absolute values
-	  vis_area.min_x = Math.abs(zoom_info.trans_x) / zoom_info.zoom_x - 3 * params.viz.rect_width;
-	  vis_area.min_y = Math.abs(zoom_info.trans_y) / zoom_info.zoom_y - 3 * params.viz.rect_height;
+	  vis_area.min_x = Math.abs(zoom_info.trans_x) / zoom_info.zoom_x - 5 * params.viz.rect_width;
+	  vis_area.min_y = Math.abs(zoom_info.trans_y) / zoom_info.zoom_y - 5 * params.viz.rect_height;
 
 	  vis_area.max_x = Math.abs(zoom_info.trans_x) / zoom_info.zoom_x + params.viz.clust.dim.width / zoom_info.zoom_x;
 	  vis_area.max_y = Math.abs(zoom_info.trans_y) / zoom_info.zoom_y + params.viz.clust.dim.height / zoom_info.zoom_y;
@@ -9074,13 +9074,6 @@ var Clustergrammer =
 	  }
 
 	  d3.selectAll(params.viz.root_tips).style('display', 'none');
-
-	  // setTimeout(show_tooltips, 1000);
-
-	  // function show_tooltips(){
-	  //   d3.selectAll(params.viz.root_tips)
-	  //     .style('display', 'none');
-	  // }
 
 	  params.zoom_info = ini_zoom_info();
 
@@ -11494,6 +11487,20 @@ var Clustergrammer =
 
 	  // make new_network_data by filtering the original network data
 	  var new_network_data = make_network_using_view(cgm.config, cgm.params, requested_view);
+
+	  // reset crop button
+	  d3.select(cgm.params.root + ' .crop_button').style('color', '#337ab7').classed('fa-crop', true).classed('fa-undo', false).classed('active_cropping', false);
+
+	  // reset dendrogram filtering when updating with a new view
+	  // e.g. with the row filter sliders
+	  _.each(['row', 'col'], function (inst_rc) {
+
+	    // set class to reflect that no filtering was ran
+	    d3.select(cgm.params.root + ' .' + inst_rc + '_dendro_icons_group').classed('ran_filter', false);
+
+	    // display all crop buttons when cropping has not been done
+	    d3.select(cgm.params.root + ' .' + inst_rc + '_dendro_icons_container').style('display', 'block');
+	  });
 
 	  update_viz_with_network(cgm, new_network_data);
 		};
@@ -14037,11 +14044,6 @@ var Clustergrammer =
 
 	  function brushend() {
 
-	    // // run optional callback function
-	    // if (cgm.params.crop_callback != null){
-	    //   cgm.params.crop_callback();
-	    // }
-
 	    // do not display dendro crop buttons when cropping with brushing
 	    d3.select(cgm.params.root + ' .col_dendro_icons_container').style('display', 'none');
 	    d3.select(cgm.params.root + ' .row_dendro_icons_container').style('display', 'none');
@@ -15910,11 +15912,6 @@ var Clustergrammer =
 
 	      // press undo button
 	      if (is_undo) {
-
-	        // // run optional callback function
-	        // if (cgm.params.crop_callback != null){
-	        //   cgm.params.crop_callback();
-	        // }
 
 	        d3.select(params.root + ' .crop_button').style('color', '#337ab7').classed('fa-crop', true).classed('fa-undo', false);
 

@@ -16,13 +16,6 @@ module.exports = function two_translate_zoom(params, pan_dx, pan_dy, fin_zoom) {
   d3.selectAll(params.viz.root_tips)
     .style('display','none');
 
-  // setTimeout(show_tooltips, 1000);
-
-  // function show_tooltips(){
-  //   d3.selectAll(params.viz.root_tips)
-  //     .style('display', 'none');
-  // }
-
   params.zoom_info = ini_zoom_info();
 
   show_visible_area(params);

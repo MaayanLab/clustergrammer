@@ -6,8 +6,8 @@ module.exports = function show_visible_area(params){
   var zoom_info = params.zoom_info;
 
   // get translation vector absolute values
-  vis_area.min_x = Math.abs(zoom_info.trans_x)/zoom_info.zoom_x - 3*params.viz.rect_width;
-  vis_area.min_y = Math.abs(zoom_info.trans_y)/zoom_info.zoom_y - 3*params.viz.rect_height ;
+  vis_area.min_x = Math.abs(zoom_info.trans_x)/zoom_info.zoom_x - 5*params.viz.rect_width;
+  vis_area.min_y = Math.abs(zoom_info.trans_y)/zoom_info.zoom_y - 5*params.viz.rect_height ;
 
   vis_area.max_x = Math.abs(zoom_info.trans_x)/zoom_info.zoom_x +
                        params.viz.clust.dim.width/zoom_info.zoom_x ;

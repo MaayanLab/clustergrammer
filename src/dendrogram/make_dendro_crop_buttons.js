@@ -264,19 +264,19 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc){
         // Run Filtering
         ///////////////////
         // use class as 'global' variable
-        d3.select(cgm.params.root+' .'+inst_rc+'_dendro_icons_group')
+        d3.select(cgm.params.root+' .'+ inst_rc +'_dendro_icons_group')
           .attr('transform', 'translate(0,0), scale(1,1)')
           .classed('ran_filter', true);
 
-        d3.select(cgm.params.root+' .'+other_rc+'_dendro_icons_group')
+        d3.select(cgm.params.root+' .'+ other_rc +'_dendro_icons_group')
           .attr('transform', 'translate(0,0), scale(1,1)');
 
         // do not display dendrogram slider if filtering has been run
-        d3.select(cgm.params.root+' .'+inst_rc+'_slider_group')
+        d3.select(cgm.params.root+' .'+ inst_rc +'_slider_group')
           .style('display', 'none');
 
         // do not display other crop buttons since they are inactive
-        d3.select(cgm.params.root+' .'+other_rc+'_dendro_icons_container')
+        d3.select(cgm.params.root+' .'+ other_rc +'_dendro_icons_container')
           .style('display', 'none');
 
         // do not display brush-crop button if performing dendro crop
@@ -288,21 +288,21 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc){
         // Undo Filtering
         ///////////////////
         // use class as 'global' variable
-        d3.select(cgm.params.root+' .'+inst_rc+'_dendro_icons_group')
+        d3.select(cgm.params.root+' .'+ inst_rc +'_dendro_icons_group')
           .attr('transform', 'translate(0,0), scale(1,1)')
           .classed('ran_filter', false);
 
-        d3.select(cgm.params.root+' .'+other_rc+'_dendro_icons_group')
+        d3.select(cgm.params.root+' .'+ other_rc +'_dendro_icons_group')
           .attr('transform', 'translate(0,0), scale(1,1)');
 
         if (params.viz.inst_order[other_rc] === 'clust'){
           // display slider when cropping has not been done
-          d3.select(cgm.params.root+' .'+inst_rc+'_slider_group')
+          d3.select(cgm.params.root+' .'+ inst_rc +'_slider_group')
             .style('display', 'block');
           }
 
         // display other crop buttons when cropping has not been done
-        d3.select(cgm.params.root+' .'+other_rc+'_dendro_icons_container')
+        d3.select(cgm.params.root+' .'+ other_rc +'_dendro_icons_container')
           .style('display', 'block');
 
         // display brush-crop button if not performing dendro crop
