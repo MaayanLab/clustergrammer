@@ -11,34 +11,6 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc, dendro_
   var tmp_name;
   var tmp_color;
   var num_in_clust;
-  for (var i = 0; i < cat_breakdown.length; i++){
-
-    inst_breakdown = cat_breakdown[i];
-
-    bar_data = inst_breakdown.bar_data;
-    num_in_clust = inst_breakdown.num_in_clust;
-
-    for (var x=0; x < bar_data.length; x++){
-
-      // data for individual bar
-      var tmp_data = bar_data[x];
-
-      var cat_index = tmp_data[0];
-      tmp_name = tmp_data[1];
-      tmp_fraction = tmp_data[2]/num_in_clust;
-      tmp_color = tmp_data[3];
-      var tmp_pval = tmp_data[4];
-
-      // get num instances of cat
-      var tot_inst_cat = params.viz.cat_info[inst_rc][cat_index].cat_hist[tmp_name];
-
-      // console.log(tmp_name + ' ' + String(tmp_fraction) + ' ' + String(tmp_color) + ' num_in_clust: ' + String(num_in_clust) + ' : '+ String(parseInt(tmp_fraction*num_in_clust, 10)) + ' total: ' + String(tot_inst_cat) + '  ' + String(tmp_pval))
-
-    }
-
-    // console.log('----------------\n')
-
-  }
 
   // get cat data
   var cat_data = cat_breakdown[0];
@@ -51,8 +23,6 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc, dendro_
 
   if (d3.select(selector_dendro_tip + ' .cat_graph').empty()){
 
-    // console.log('show cat breakdown')
-
     var super_string = ': ';
     var paragraph_string = '<p>';
     var height = 150;
@@ -62,9 +32,6 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc, dendro_
     var max_string_length = 15;
 
     var bar_width = 135;
-    var bar_scale = d3.scale.linear()
-                      .domain([0, cat_data.num_in_clust])
-                      .range([0, bar_width]);
 
     cluster_info_container
       .style('margin-bottom', '5px')
@@ -73,7 +40,7 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc, dendro_
       .append('text')
       .text('Cluster Information')
 
-    var graph_container = cluster_info_container
+    var main_dendro_svg = cluster_info_container
       .append('div')
       .style('margin-top','5px')
       .classed('cat_graph', true)
@@ -82,7 +49,7 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc, dendro_
       .style('width', width+'px');
 
     // make background
-    graph_container
+    main_dendro_svg
       .append('rect')
       .classed('cat_background', true)
       .style('height', height+'px')
@@ -90,7 +57,7 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc, dendro_
       .style('fill', 'white')
       .style('opacity', 1);
 
-    var cat_graph_group = graph_container
+    var cat_graph_group = main_dendro_svg
       .append('g')
       .classed('cat_graph_group', true)
       .attr('transform', 'translate(10,20)')
@@ -149,6 +116,10 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc, dendro_
         return 'translate(0,'+ inst_y +')';
       });
 
+    var bar_scale = d3.scale.linear()
+                      .domain([0, cat_data.num_in_clust])
+                      .range([0, bar_width]);
+
     // make bars
     cat_bar_groups
       .append('rect')
@@ -197,30 +168,14 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc, dendro_
       .append('text')
       .classed('pval_labels', true)
       .text(function(d){
-        // debugger
         var inst_pval = d[4];
-
-        // convert to scientific notation
+        // convert to scientific notation if necessary
         if (inst_pval < 0.1){
           inst_pval = inst_pval.toExponential(2);
         } else {
           inst_pval = inst_pval.toFixed(2);
         }
-
         var inst_text =  String(inst_pval);
-        // num.toExponential(2);
-        // if (inst_text.indexOf(super_string) > 0){
-        //   inst_text = inst_text.split(super_string)[1];
-        // }
-        // if (inst_text.indexOf(paragraph_string) > 0){
-        //   // required for Enrichr category names (needs improvements)
-        //   inst_text = inst_text.split(paragraph_string)[0];
-        // }
-        // // ensure that bar name is not too long
-        // if (inst_text.length >= max_string_length){
-        //   inst_text = inst_text.slice(0,max_string_length) + '..';
-        // }
-
         return inst_text;
       })
       .attr('transform', function(d){
