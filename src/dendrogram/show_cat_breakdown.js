@@ -21,10 +21,19 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc, dendro_
   var bar_width = 135;
   var title_height = 27;
 
+  // limit on the number of category types shown
+  var max_cats = 3;
+  // limit the number of bars shown
+  var max_bars = 5;
+
   // calculate height needed for svg based don cat_breakdown data
   var svg_height = 20;
-  _.each(cat_breakdown, function(tmp_break){
-    svg_height = svg_height + title_height * (tmp_break.bar_data.length + 1);
+  _.each(cat_breakdown.slice(0,max_cats), function(tmp_break){
+    var num_bars = tmp_break.bar_data.length;
+    if (num_bars > max_bars){
+      num_bars = max_bars;
+    }
+    svg_height = svg_height + title_height * (num_bars + 1);
   });
 
 
@@ -59,15 +68,15 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc, dendro_
     // the total amout to shift down the next category
     var shift_down = title_height;
 
-    // limit to two category-types
-    cat_breakdown = cat_breakdown.slice(0,2);
+    // limit the category-types
+    cat_breakdown = cat_breakdown.slice(0, max_cats);
 
     for (var cat_index = 0; cat_index < cat_breakdown.length; cat_index ++){
 
       var cat_data = cat_breakdown[cat_index];
 
       // only keep the top 5 categories
-      cat_data.bar_data = cat_data.bar_data.slice(0,5);
+      cat_data.bar_data = cat_data.bar_data.slice(0, max_bars);
 
 
       cluster_info_container
@@ -209,44 +218,42 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc, dendro_
         .style('font-weight', 400);
 
 
-      // reposition tooltip
-      /////////////////////////////////////////////////
-      var dendro_tip = d3.select(selector_dendro_tip);
-      var old_top = dendro_tip.style('top').split('.px')[0];
-      var old_left = dendro_tip.style('left').split('.px')[0];
-      var shift_top = 0;
-      var shift_left = 0;
+    }
 
-      var graph_height = svg_height;
+    // reposition tooltip
+    /////////////////////////////////////////////////
+    var dendro_tip = d3.select(selector_dendro_tip);
+    var old_top = dendro_tip.style('top').split('.px')[0];
+    var old_left = dendro_tip.style('left').split('.px')[0];
+    var shift_top = 0;
+    var shift_left = 0;
 
-      // shifting
-      if (inst_rc === 'row'){
-        shift_top = graph_height;
-        shift_left = 32;
+    // shifting
+    if (inst_rc === 'row'){
+      shift_top = svg_height;
+      shift_left = 32;
 
-        // prevent graph from being too high
-        if (dendro_info.pos_top < graph_height){
-          shift_top = - (graph_height) ;
-        }
-
-      } else {
-        shift_top = 150;
-        shift_left = 0;
+      // prevent graph from being too high
+      if (dendro_info.pos_top < svg_height){
+        shift_top = - (svg_height) ;
       }
 
-      dendro_tip
-        .style('top', function(){
-          var new_top = String(parseInt( old_top,10) - shift_top) + 'px';
-          console.log('new_top ' + new_top)
-          return new_top;
-        })
-        .style('left', function(){
-          var new_left = String(parseInt( old_left,10) - shift_left) + 'px';
-          console.log('new_left: ' + new_left)
-          return new_left;
-        });
-
+    } else {
+      shift_top = svg_height + 32;
+      shift_left = 0;
     }
+
+    dendro_tip
+      .style('top', function(){
+        var new_top = String(parseInt( old_top,10) - shift_top) + 'px';
+        console.log('new_top ' + new_top)
+        return new_top;
+      })
+      .style('left', function(){
+        var new_left = String(parseInt( old_left,10) - shift_left) + 'px';
+        console.log('new_left: ' + new_left)
+        return new_left;
+      });
 
   }
 
