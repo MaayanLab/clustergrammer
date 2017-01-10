@@ -13,7 +13,7 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc, dendro_
   var num_in_clust;
   var super_string = ': ';
   var paragraph_string = '<p>';
-  var height = 150;
+  var height = 300;
   var width = 225;
   var bar_offset = 23;
   var bar_height = 20;
@@ -48,14 +48,19 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc, dendro_
       .style('fill', 'white')
       .style('opacity', 1);
 
-    // _.each(cat_breakdown, function(cat_data){
+    // the total amout to shift down the next category
+    var shift_down = 25;
+
+    // limit to two category-types
+    cat_breakdown = cat_breakdown.slice(0,2);
 
     for (var cat_index = 0; cat_index < cat_breakdown.length; cat_index ++){
 
       var cat_data = cat_breakdown[cat_index];
 
       // only keep the top 5 categories
-      cat_data.bar_data = cat_data.bar_data.slice(0,5)
+      cat_data.bar_data = cat_data.bar_data.slice(0,5);
+
 
       cluster_info_container
         .style('margin-bottom', '5px')
@@ -64,10 +69,15 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc, dendro_
         .append('g')
         .classed('cat_graph_group', true)
         .attr('transform', function(){
-          var inst_y = 20 + 75 * cat_index;
+          var inst_y = shift_down;
           var inst_translate =  'translate(10,'+ inst_y +')'
+          console.log(inst_translate)
           return inst_translate;
         })
+
+      // shift down based on number of bars
+      shift_down = shift_down + 27 * (cat_data.bar_data.length + 1);
+      console.log(shift_down)
 
       // make title
       cat_graph_group
@@ -214,7 +224,7 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc, dendro_
         }
 
       } else {
-        shift_top = 90;
+        shift_top = 150;
         shift_left = 0;
       }
 

@@ -4170,7 +4170,7 @@ var Clustergrammer =
 	  var num_in_clust;
 	  var super_string = ': ';
 	  var paragraph_string = '<p>';
-	  var height = 150;
+	  var height = 300;
 	  var width = 225;
 	  var bar_offset = 23;
 	  var bar_height = 20;
@@ -4191,7 +4191,11 @@ var Clustergrammer =
 	    // make background
 	    main_dendro_svg.append('rect').classed('cat_background', true).style('height', height + 'px').style('width', width + 'px').style('fill', 'white').style('opacity', 1);
 
-	    // _.each(cat_breakdown, function(cat_data){
+	    // the total amout to shift down the next category
+	    var shift_down = 25;
+
+	    // limit to two category-types
+	    cat_breakdown = cat_breakdown.slice(0, 2);
 
 	    for (var cat_index = 0; cat_index < cat_breakdown.length; cat_index++) {
 
@@ -4203,10 +4207,15 @@ var Clustergrammer =
 	      cluster_info_container.style('margin-bottom', '5px');
 
 	      var cat_graph_group = main_dendro_svg.append('g').classed('cat_graph_group', true).attr('transform', function () {
-	        var inst_y = 20 + 75 * cat_index;
+	        var inst_y = shift_down;
 	        var inst_translate = 'translate(10,' + inst_y + ')';
+	        console.log(inst_translate);
 	        return inst_translate;
 	      });
+
+	      // shift down based on number of bars
+	      shift_down = shift_down + 27 * (cat_data.bar_data.length + 1);
+	      console.log(shift_down);
 
 	      // make title
 	      cat_graph_group.append('text').classed('cat_graph_title', true).text(function () {
@@ -4306,7 +4315,7 @@ var Clustergrammer =
 	          shift_top = -graph_height;
 	        }
 	      } else {
-	        shift_top = 90;
+	        shift_top = 150;
 	        shift_left = 0;
 	      }
 
