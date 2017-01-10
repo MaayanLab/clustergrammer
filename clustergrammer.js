@@ -16282,7 +16282,7 @@ var Clustergrammer =
 
 	    var super_string = ': ';
 	    var paragraph_string = '<p>';
-	    var height = 125;
+	    var height = 150;
 	    var width = 225;
 	    var bar_offset = 23;
 	    var bar_height = 20;
@@ -16407,14 +16407,14 @@ var Clustergrammer =
 	    // shifting
 	    if (inst_rc === 'row') {
 	      shift_top = graph_height;
-	      shift_left = 0;
+	      shift_left = 32;
 
 	      // prevent graph from being too high
 	      if (dendro_info.pos_top < graph_height) {
 	        shift_top = -graph_height;
 	      }
 	    } else {
-	      shift_top = graph_height;
+	      shift_top = graph_height + 22;
 	      shift_left = 0;
 	    }
 
