@@ -14,13 +14,11 @@
         1.0, 
         1.0
       ], 
-      "name": "Gene: CDK4", 
+      "name": "CDK4", 
       "clust": 14, 
-      "cat_0_index": 0, 
       "rank": 30, 
-      "cat-0": "Gene Type: Interesting", 
-      "rankvar": 20, 
-      "ini": 38
+      "ini": 38, 
+      "rankvar": 20
     }, 
     {
       "group": [
@@ -36,13 +34,11 @@
         1.0, 
         1.0
       ], 
-      "name": "Gene: LMTK3", 
+      "name": "LMTK3", 
       "clust": 20, 
-      "cat_0_index": 17, 
       "rank": 28, 
-      "cat-0": "Gene Type: Not Interesting", 
-      "rankvar": 24, 
-      "ini": 37
+      "ini": 37, 
+      "rankvar": 24
     }, 
     {
       "group": [
@@ -58,13 +54,11 @@
         1.0, 
         1.0
       ], 
-      "name": "Gene: LRRK2", 
+      "name": "LRRK2", 
       "clust": 26, 
-      "cat_0_index": 18, 
       "rank": 9, 
-      "cat-0": "Gene Type: Not Interesting", 
-      "rankvar": 10, 
-      "ini": 36
+      "ini": 36, 
+      "rankvar": 10
     }, 
     {
       "group": [
@@ -80,13 +74,11 @@
         1.0, 
         1.0
       ], 
-      "name": "Gene: UHMK1", 
+      "name": "UHMK1", 
       "clust": 25, 
-      "cat_0_index": 19, 
       "rank": 26, 
-      "cat-0": "Gene Type: Not Interesting", 
-      "rankvar": 14, 
-      "ini": 35
+      "ini": 35, 
+      "rankvar": 14
     }, 
     {
       "group": [
@@ -102,13 +94,11 @@
         1.0, 
         1.0
       ], 
-      "name": "Gene: EGFR", 
+      "name": "EGFR", 
       "clust": 13, 
-      "cat_0_index": 1, 
       "rank": 33, 
-      "cat-0": "Gene Type: Interesting", 
-      "rankvar": 7, 
-      "ini": 34
+      "ini": 34, 
+      "rankvar": 7
     }, 
     {
       "group": [
@@ -124,13 +114,11 @@
         1.0, 
         1.0
       ], 
-      "name": "Gene: STK32A", 
+      "name": "STK32A", 
       "clust": 32, 
-      "cat_0_index": 2, 
       "rank": 36, 
-      "cat-0": "Gene Type: Interesting", 
-      "rankvar": 32, 
-      "ini": 33
+      "ini": 33, 
+      "rankvar": 32
     }, 
     {
       "group": [
@@ -146,13 +134,11 @@
         1.0, 
         1.0
       ], 
-      "name": "Gene: NRK", 
+      "name": "NRK", 
       "clust": 15, 
-      "cat_0_index": 3, 
       "rank": 35, 
-      "cat-0": "Gene Type: Interesting", 
-      "rankvar": 33, 
-      "ini": 32
+      "ini": 32, 
+      "rankvar": 33
     }, 
     {
       "group": [
@@ -168,13 +154,11 @@
         1.0, 
         1.0
       ], 
-      "name": "Gene: ERBB2", 
+      "name": "ERBB2", 
       "clust": 34, 
-      "cat_0_index": 20, 
       "rank": 24, 
-      "cat-0": "Gene Type: Not Interesting", 
-      "rankvar": 9, 
-      "ini": 31
+      "ini": 31, 
+      "rankvar": 9
     }, 
     {
       "group": [
@@ -190,13 +174,11 @@
         1.0, 
         1.0
       ], 
-      "name": "Gene: ERBB4", 
+      "name": "ERBB4", 
       "clust": 30, 
-      "cat_0_index": 21, 
       "rank": 6, 
-      "cat-0": "Gene Type: Not Interesting", 
-      "rankvar": 2, 
-      "ini": 30
+      "ini": 30, 
+      "rankvar": 2
     }, 
     {
       "group": [
@@ -212,13 +194,11 @@
         1.0, 
         1.0
       ], 
-      "name": "Gene: AAK1", 
+      "name": "AAK1", 
       "clust": 36, 
-      "cat_0_index": 22, 
       "rank": 18, 
-      "cat-0": "Gene Type: Not Interesting", 
-      "rankvar": 8, 
-      "ini": 29
+      "ini": 29, 
+      "rankvar": 8
     }, 
     {
       "group": [
@@ -234,13 +214,11 @@
         1.0, 
         1.0
       ], 
-      "name": "Gene: SRPK3", 
+      "name": "SRPK3", 
       "clust": 4, 
-      "cat_0_index": 23, 
       "rank": 8, 
-      "cat-0": "Gene Type: Not Interesting", 
-      "rankvar": 15, 
-      "ini": 28
+      "ini": 28, 
+      "rankvar": 15
     }, 
     {
       "group": [
@@ -256,13 +234,11 @@
         1.0, 
         1.0
       ], 
-      "name": "Gene: STK39", 
+      "name": "STK39", 
       "clust": 35, 
-      "cat_0_index": 4, 
       "rank": 7, 
-      "cat-0": "Gene Type: Interesting", 
-      "rankvar": 4, 
-      "ini": 27
+      "ini": 27, 
+      "rankvar": 4
     }, 
     {
       "group": [
@@ -278,13 +254,11 @@
         1.0, 
         1.0
       ], 
-      "name": "Gene: GRK4", 
+      "name": "GRK4", 
       "clust": 3, 
-      "cat_0_index": 24, 
       "rank": 1, 
-      "cat-0": "Gene Type: Not Interesting", 
-      "rankvar": 3, 
-      "ini": 26
+      "ini": 26, 
+      "rankvar": 3
     }, 
     {
       "group": [
@@ -300,13 +274,11 @@
         1.0, 
         1.0
       ], 
-      "name": "Gene: TBK1", 
+      "name": "TBK1", 
       "clust": 12, 
-      "cat_0_index": 25, 
       "rank": 34, 
-      "cat-0": "Gene Type: Not Interesting", 
-      "rankvar": 26, 
-      "ini": 25
+      "ini": 25, 
+      "rankvar": 26
     }, 
     {
       "group": [
@@ -322,13 +294,11 @@
         1.0, 
         1.0
       ], 
-      "name": "Gene: INSRR", 
+      "name": "INSRR", 
       "clust": 23, 
-      "cat_0_index": 26, 
       "rank": 13, 
-      "cat-0": "Gene Type: Not Interesting", 
-      "rankvar": 5, 
-      "ini": 24
+      "ini": 24, 
+      "rankvar": 5
     }, 
     {
       "group": [
@@ -344,13 +314,11 @@
         1.0, 
         1.0
       ], 
-      "name": "Gene: IRAK1", 
+      "name": "IRAK1", 
       "clust": 11, 
-      "cat_0_index": 5, 
       "rank": 20, 
-      "cat-0": "Gene Type: Interesting", 
-      "rankvar": 30, 
-      "ini": 23
+      "ini": 23, 
+      "rankvar": 30
     }, 
     {
       "group": [
@@ -366,13 +334,11 @@
         1.0, 
         1.0
       ], 
-      "name": "Gene: KDR", 
+      "name": "KDR", 
       "clust": 33, 
-      "cat_0_index": 27, 
       "rank": 19, 
-      "cat-0": "Gene Type: Not Interesting", 
-      "rankvar": 11, 
-      "ini": 22
+      "ini": 22, 
+      "rankvar": 11
     }, 
     {
       "group": [
@@ -388,13 +354,11 @@
         1.0, 
         1.0
       ], 
-      "name": "Gene: NPR1", 
+      "name": "NPR1", 
       "clust": 16, 
-      "cat_0_index": 6, 
       "rank": 27, 
-      "cat-0": "Gene Type: Interesting", 
-      "rankvar": 29, 
-      "ini": 21
+      "ini": 21, 
+      "rankvar": 29
     }, 
     {
       "group": [
@@ -410,13 +374,11 @@
         1.0, 
         1.0
       ], 
-      "name": "Gene: PAK3", 
+      "name": "PAK3", 
       "clust": 9, 
-      "cat_0_index": 28, 
       "rank": 11, 
-      "cat-0": "Gene Type: Not Interesting", 
-      "rankvar": 12, 
-      "ini": 20
+      "ini": 20, 
+      "rankvar": 12
     }, 
     {
       "group": [
@@ -432,13 +394,11 @@
         1.0, 
         1.0
       ], 
-      "name": "Gene: PDGFRA", 
+      "name": "PDGFRA", 
       "clust": 7, 
-      "cat_0_index": 7, 
       "rank": 2, 
-      "cat-0": "Gene Type: Interesting", 
-      "rankvar": 0, 
-      "ini": 19
+      "ini": 19, 
+      "rankvar": 0
     }, 
     {
       "group": [
@@ -454,13 +414,11 @@
         1.0, 
         1.0
       ], 
-      "name": "Gene: PDK4", 
+      "name": "PDK4", 
       "clust": 24, 
-      "cat_0_index": 29, 
       "rank": 22, 
-      "cat-0": "Gene Type: Not Interesting", 
-      "rankvar": 22, 
-      "ini": 18
+      "ini": 18, 
+      "rankvar": 22
     }, 
     {
       "group": [
@@ -476,13 +434,11 @@
         1.0, 
         1.0
       ], 
-      "name": "Gene: ULK4", 
+      "name": "ULK4", 
       "clust": 28, 
-      "cat_0_index": 8, 
       "rank": 16, 
-      "cat-0": "Gene Type: Interesting", 
-      "rankvar": 19, 
-      "ini": 17
+      "ini": 17, 
+      "rankvar": 19
     }, 
     {
       "group": [
@@ -498,13 +454,11 @@
         1.0, 
         1.0
       ], 
-      "name": "Gene: PRKCE", 
+      "name": "PRKCE", 
       "clust": 21, 
-      "cat_0_index": 30, 
       "rank": 14, 
-      "cat-0": "Gene Type: Not Interesting", 
-      "rankvar": 1, 
-      "ini": 16
+      "ini": 16, 
+      "rankvar": 1
     }, 
     {
       "group": [
@@ -520,13 +474,11 @@
         1.0, 
         1.0
       ], 
-      "name": "Gene: PRKG2", 
+      "name": "PRKG2", 
       "clust": 2, 
-      "cat_0_index": 31, 
       "rank": 25, 
-      "cat-0": "Gene Type: Not Interesting", 
-      "rankvar": 18, 
-      "ini": 15
+      "ini": 15, 
+      "rankvar": 18
     }, 
     {
       "group": [
@@ -542,13 +494,11 @@
         1.0, 
         1.0
       ], 
-      "name": "Gene: MAPK4", 
+      "name": "MAPK4", 
       "clust": 18, 
-      "cat_0_index": 9, 
       "rank": 10, 
-      "cat-0": "Gene Type: Interesting", 
-      "rankvar": 16, 
-      "ini": 14
+      "ini": 14, 
+      "rankvar": 16
     }, 
     {
       "group": [
@@ -564,13 +514,11 @@
         1.0, 
         1.0
       ], 
-      "name": "Gene: MAPK11", 
+      "name": "MAPK11", 
       "clust": 8, 
-      "cat_0_index": 10, 
       "rank": 17, 
-      "cat-0": "Gene Type: Interesting", 
-      "rankvar": 34, 
-      "ini": 13
+      "ini": 13, 
+      "rankvar": 34
     }, 
     {
       "group": [
@@ -586,13 +534,11 @@
         1.0, 
         1.0
       ], 
-      "name": "Gene: STK31", 
+      "name": "STK31", 
       "clust": 31, 
-      "cat_0_index": 11, 
       "rank": 37, 
-      "cat-0": "Gene Type: Interesting", 
-      "rankvar": 31, 
-      "ini": 12
+      "ini": 12, 
+      "rankvar": 31
     }, 
     {
       "group": [
@@ -608,13 +554,11 @@
         1.0, 
         1.0
       ], 
-      "name": "Gene: GRK1", 
+      "name": "GRK1", 
       "clust": 19, 
-      "cat_0_index": 32, 
       "rank": 15, 
-      "cat-0": "Gene Type: Not Interesting", 
-      "rankvar": 23, 
-      "ini": 11
+      "ini": 11, 
+      "rankvar": 23
     }, 
     {
       "group": [
@@ -630,13 +574,11 @@
         1.0, 
         1.0
       ], 
-      "name": "Gene: ROS1", 
+      "name": "ROS1", 
       "clust": 37, 
-      "cat_0_index": 12, 
       "rank": 31, 
-      "cat-0": "Gene Type: Interesting", 
-      "rankvar": 37, 
-      "ini": 10
+      "ini": 10, 
+      "rankvar": 37
     }, 
     {
       "group": [
@@ -652,13 +594,11 @@
         1.0, 
         1.0
       ], 
-      "name": "Gene: MAP2K4", 
+      "name": "MAP2K4", 
       "clust": 10, 
-      "cat_0_index": 13, 
       "rank": 23, 
-      "cat-0": "Gene Type: Interesting", 
-      "rankvar": 28, 
-      "ini": 9
+      "ini": 9, 
+      "rankvar": 28
     }, 
     {
       "group": [
@@ -674,13 +614,11 @@
         1.0, 
         1.0
       ], 
-      "name": "Gene: SRC", 
+      "name": "SRC", 
       "clust": 27, 
-      "cat_0_index": 14, 
       "rank": 21, 
-      "cat-0": "Gene Type: Interesting", 
-      "rankvar": 21, 
-      "ini": 8
+      "ini": 8, 
+      "rankvar": 21
     }, 
     {
       "group": [
@@ -696,13 +634,11 @@
         1.0, 
         1.0
       ], 
-      "name": "Gene: TGFBR1", 
+      "name": "TGFBR1", 
       "clust": 17, 
-      "cat_0_index": 15, 
       "rank": 12, 
-      "cat-0": "Gene Type: Interesting", 
-      "rankvar": 13, 
-      "ini": 7
+      "ini": 7, 
+      "rankvar": 13
     }, 
     {
       "group": [
@@ -718,13 +654,11 @@
         1.0, 
         1.0
       ], 
-      "name": "Gene: CAMK2B", 
+      "name": "CAMK2B", 
       "clust": 5, 
-      "cat_0_index": 33, 
       "rank": 3, 
-      "cat-0": "Gene Type: Not Interesting", 
-      "rankvar": 17, 
-      "ini": 6
+      "ini": 6, 
+      "rankvar": 17
     }, 
     {
       "group": [
@@ -740,13 +674,11 @@
         1.0, 
         1.0
       ], 
-      "name": "Gene: STK24", 
+      "name": "STK24", 
       "clust": 6, 
-      "cat_0_index": 16, 
       "rank": 0, 
-      "cat-0": "Gene Type: Interesting", 
-      "rankvar": 36, 
-      "ini": 5
+      "ini": 5, 
+      "rankvar": 36
     }, 
     {
       "group": [
@@ -762,13 +694,11 @@
         1.0, 
         1.0
       ], 
-      "name": "Gene: DCLK3", 
+      "name": "DCLK3", 
       "clust": 1, 
-      "cat_0_index": 34, 
       "rank": 5, 
-      "cat-0": "Gene Type: Not Interesting", 
-      "rankvar": 25, 
-      "ini": 4
+      "ini": 4, 
+      "rankvar": 25
     }, 
     {
       "group": [
@@ -784,13 +714,11 @@
         1.0, 
         1.0
       ], 
-      "name": "Gene: LATS1", 
+      "name": "LATS1", 
       "clust": 22, 
-      "cat_0_index": 35, 
       "rank": 29, 
-      "cat-0": "Gene Type: Not Interesting", 
-      "rankvar": 27, 
-      "ini": 3
+      "ini": 3, 
+      "rankvar": 27
     }, 
     {
       "group": [
@@ -806,13 +734,11 @@
         1.0, 
         1.0
       ], 
-      "name": "Gene: NEK9", 
+      "name": "NEK9", 
       "clust": 0, 
-      "cat_0_index": 36, 
       "rank": 4, 
-      "cat-0": "Gene Type: Not Interesting", 
-      "rankvar": 6, 
-      "ini": 2
+      "ini": 2, 
+      "rankvar": 6
     }, 
     {
       "group": [
@@ -828,13 +754,11 @@
         1.0, 
         1.0
       ], 
-      "name": "Gene: MYLK3", 
+      "name": "MYLK3", 
       "clust": 29, 
-      "cat_0_index": 37, 
       "rank": 32, 
-      "cat-0": "Gene Type: Not Interesting", 
-      "rankvar": 35, 
-      "ini": 1
+      "ini": 1, 
+      "rankvar": 35
     }
   ], 
   "col_nodes": [
@@ -852,14 +776,10 @@
         1.0, 
         1.0
       ], 
-      "name": "Cell Line: H1650", 
+      "name": "Col-1", 
       "clust": 12, 
-      "cat_1_index": 10, 
-      "cat_0_index": 24, 
       "rank": 6, 
-      "cat-1": "Gender: Male", 
       "ini": 29, 
-      "cat-0": "Category: two", 
       "rankvar": 4
     }, 
     {
@@ -876,14 +796,10 @@
         1.0, 
         1.0
       ], 
-      "name": "Cell Line: H23", 
+      "name": "Col-2", 
       "clust": 2, 
-      "cat_1_index": 11, 
-      "cat_0_index": 25, 
       "rank": 17, 
-      "cat-1": "Gender: Male", 
       "ini": 28, 
-      "cat-0": "Category: two", 
       "rankvar": 8
     }, 
     {
@@ -900,14 +816,10 @@
         1.0, 
         1.0
       ], 
-      "name": "Cell Line: CAL-12T", 
+      "name": "Col-3", 
       "clust": 4, 
-      "cat_1_index": 12, 
-      "cat_0_index": 26, 
       "rank": 10, 
-      "cat-1": "Gender: Male", 
       "ini": 27, 
-      "cat-0": "Category: two", 
       "rankvar": 19
     }, 
     {
@@ -924,14 +836,10 @@
         1.0, 
         1.0
       ], 
-      "name": "Cell Line: H358", 
+      "name": "Col-4", 
       "clust": 25, 
-      "cat_1_index": 13, 
-      "cat_0_index": 13, 
       "rank": 4, 
-      "cat-1": "Gender: Male", 
       "ini": 26, 
-      "cat-0": "Category: one", 
       "rankvar": 0
     }, 
     {
@@ -948,14 +856,10 @@
         1.0, 
         1.0
       ], 
-      "name": "Cell Line: H1975", 
+      "name": "Col-5", 
       "clust": 22, 
-      "cat_1_index": 0, 
-      "cat_0_index": 27, 
       "rank": 0, 
-      "cat-1": "Gender: Female", 
       "ini": 25, 
-      "cat-0": "Category: two", 
       "rankvar": 24
     }, 
     {
@@ -972,14 +876,10 @@
         1.0, 
         1.0
       ], 
-      "name": "Cell Line: HCC15", 
+      "name": "Col-6", 
       "clust": 1, 
-      "cat_1_index": 14, 
-      "cat_0_index": 28, 
       "rank": 24, 
-      "cat-1": "Gender: Male", 
       "ini": 24, 
-      "cat-0": "Category: two", 
       "rankvar": 20
     }, 
     {
@@ -996,14 +896,10 @@
         1.0, 
         1.0
       ], 
-      "name": "Cell Line: H1355", 
+      "name": "Col-7", 
       "clust": 5, 
-      "cat_1_index": 15, 
-      "cat_0_index": 19, 
       "rank": 9, 
-      "cat-1": "Gender: Male", 
       "ini": 23, 
-      "cat-0": "Category: three", 
       "rankvar": 6
     }, 
     {
@@ -1020,14 +916,10 @@
         1.0, 
         1.0
       ], 
-      "name": "Cell Line: HCC827", 
+      "name": "Col-8", 
       "clust": 23, 
-      "cat_1_index": 1, 
-      "cat_0_index": 14, 
       "rank": 28, 
-      "cat-1": "Gender: Female", 
       "ini": 22, 
-      "cat-0": "Category: one", 
       "rankvar": 25
     }, 
     {
@@ -1044,14 +936,10 @@
         1.0, 
         1.0
       ], 
-      "name": "Cell Line: H2405", 
+      "name": "Col-9", 
       "clust": 20, 
-      "cat_1_index": 16, 
-      "cat_0_index": 0, 
       "rank": 1, 
-      "cat-1": "Gender: Male", 
       "ini": 21, 
-      "cat-0": "Category: five", 
       "rankvar": 12
     }, 
     {
@@ -1068,14 +956,10 @@
         1.0, 
         1.0
       ], 
-      "name": "Cell Line: HCC78", 
+      "name": "Col-10", 
       "clust": 21, 
-      "cat_1_index": 17, 
-      "cat_0_index": 1, 
       "rank": 25, 
-      "cat-1": "Gender: Male", 
       "ini": 20, 
-      "cat-0": "Category: five", 
       "rankvar": 27
     }, 
     {
@@ -1092,14 +976,10 @@
         1.0, 
         1.0
       ], 
-      "name": "Cell Line: H1666", 
+      "name": "Col-11", 
       "clust": 7, 
-      "cat_1_index": 2, 
-      "cat_0_index": 6, 
       "rank": 18, 
-      "cat-1": "Gender: Female", 
       "ini": 19, 
-      "cat-0": "Category: four", 
       "rankvar": 15
     }, 
     {
@@ -1116,14 +996,10 @@
         1.0, 
         1.0
       ], 
-      "name": "Cell Line: H661", 
+      "name": "Col-12", 
       "clust": 16, 
-      "cat_1_index": 18, 
-      "cat_0_index": 2, 
       "rank": 3, 
-      "cat-1": "Gender: Male", 
       "ini": 18, 
-      "cat-0": "Category: five", 
       "rankvar": 26
     }, 
     {
@@ -1140,14 +1016,10 @@
         1.0, 
         1.0
       ], 
-      "name": "Cell Line: H838", 
+      "name": "Col-13", 
       "clust": 17, 
-      "cat_1_index": 19, 
-      "cat_0_index": 3, 
       "rank": 7, 
-      "cat-1": "Gender: Male", 
       "ini": 17, 
-      "cat-0": "Category: five", 
       "rankvar": 23
     }, 
     {
@@ -1164,14 +1036,10 @@
         1.0, 
         1.0
       ], 
-      "name": "Cell Line: H1703", 
+      "name": "Col-14", 
       "clust": 14, 
-      "cat_1_index": 20, 
-      "cat_0_index": 4, 
       "rank": 11, 
-      "cat-1": "Gender: Male", 
       "ini": 16, 
-      "cat-0": "Category: five", 
       "rankvar": 21
     }, 
     {
@@ -1188,14 +1056,10 @@
         1.0, 
         1.0
       ], 
-      "name": "Cell Line: CALU-3", 
+      "name": "Col-15", 
       "clust": 19, 
-      "cat_1_index": 21, 
-      "cat_0_index": 7, 
       "rank": 8, 
-      "cat-1": "Gender: Male", 
       "ini": 15, 
-      "cat-0": "Category: four", 
       "rankvar": 7
     }, 
     {
@@ -1212,14 +1076,10 @@
         1.0, 
         1.0
       ], 
-      "name": "Cell Line: H2342", 
+      "name": "Col-16", 
       "clust": 18, 
-      "cat_1_index": 3, 
-      "cat_0_index": 8, 
       "rank": 26, 
-      "cat-1": "Gender: Female", 
       "ini": 14, 
-      "cat-0": "Category: four", 
       "rankvar": 22
     }, 
     {
@@ -1236,14 +1096,10 @@
         1.0, 
         1.0
       ], 
-      "name": "Cell Line: H2228", 
+      "name": "Col-17", 
       "clust": 26, 
-      "cat_1_index": 4, 
-      "cat_0_index": 15, 
       "rank": 2, 
-      "cat-1": "Gender: Female", 
       "ini": 13, 
-      "cat-0": "Category: one", 
       "rankvar": 5
     }, 
     {
@@ -1260,14 +1116,10 @@
         1.0, 
         1.0
       ], 
-      "name": "Cell Line: H1299", 
+      "name": "Col-18", 
       "clust": 15, 
-      "cat_1_index": 22, 
-      "cat_0_index": 20, 
       "rank": 12, 
-      "cat-1": "Gender: Male", 
       "ini": 12, 
-      "cat-0": "Category: three", 
       "rankvar": 1
     }, 
     {
@@ -1284,14 +1136,10 @@
         1.0, 
         1.0
       ], 
-      "name": "Cell Line: H1792", 
+      "name": "Col-19", 
       "clust": 10, 
-      "cat_1_index": 23, 
-      "cat_0_index": 21, 
       "rank": 20, 
-      "cat-1": "Gender: Male", 
       "ini": 11, 
-      "cat-0": "Category: three", 
       "rankvar": 9
     }, 
     {
@@ -1308,14 +1156,10 @@
         1.0, 
         1.0
       ], 
-      "name": "Cell Line: H460", 
+      "name": "Col-20", 
       "clust": 11, 
-      "cat_1_index": 24, 
-      "cat_0_index": 22, 
       "rank": 5, 
-      "cat-1": "Gender: Male", 
       "ini": 10, 
-      "cat-0": "Category: three", 
       "rankvar": 11
     }, 
     {
@@ -1332,14 +1176,10 @@
         1.0, 
         1.0
       ], 
-      "name": "Cell Line: H2106", 
+      "name": "Col-21", 
       "clust": 0, 
-      "cat_1_index": 25, 
-      "cat_0_index": 9, 
       "rank": 22, 
-      "cat-1": "Gender: Male", 
       "ini": 9, 
-      "cat-0": "Category: four", 
       "rankvar": 28
     }, 
     {
@@ -1356,14 +1196,10 @@
         1.0, 
         1.0
       ], 
-      "name": "Cell Line: H441", 
+      "name": "Col-22", 
       "clust": 27, 
-      "cat_1_index": 26, 
-      "cat_0_index": 16, 
       "rank": 27, 
-      "cat-1": "Gender: Male", 
       "ini": 8, 
-      "cat-0": "Category: one", 
       "rankvar": 14
     }, 
     {
@@ -1380,14 +1216,10 @@
         1.0, 
         1.0
       ], 
-      "name": "Cell Line: H1944", 
+      "name": "Col-23", 
       "clust": 8, 
-      "cat_1_index": 5, 
-      "cat_0_index": 23, 
       "rank": 23, 
-      "cat-1": "Gender: Female", 
       "ini": 7, 
-      "cat-0": "Category: three", 
       "rankvar": 10
     }, 
     {
@@ -1404,14 +1236,10 @@
         1.0, 
         1.0
       ], 
-      "name": "Cell Line: H1437", 
+      "name": "Col-24", 
       "clust": 6, 
-      "cat_1_index": 27, 
-      "cat_0_index": 10, 
       "rank": 16, 
-      "cat-1": "Gender: Male", 
       "ini": 6, 
-      "cat-0": "Category: four", 
       "rankvar": 17
     }, 
     {
@@ -1428,14 +1256,10 @@
         1.0, 
         1.0
       ], 
-      "name": "Cell Line: H1734", 
+      "name": "Col-25", 
       "clust": 24, 
-      "cat_1_index": 6, 
-      "cat_0_index": 17, 
       "rank": 19, 
-      "cat-1": "Gender: Female", 
       "ini": 5, 
-      "cat-0": "Category: one", 
       "rankvar": 18
     }, 
     {
@@ -1452,14 +1276,10 @@
         1.0, 
         1.0
       ], 
-      "name": "Cell Line: LOU-NH91", 
+      "name": "Col-26", 
       "clust": 13, 
-      "cat_1_index": 7, 
-      "cat_0_index": 5, 
       "rank": 15, 
-      "cat-1": "Gender: Female", 
       "ini": 4, 
-      "cat-0": "Category: five", 
       "rankvar": 16
     }, 
     {
@@ -1476,14 +1296,10 @@
         1.0, 
         1.0
       ], 
-      "name": "Cell Line: HCC44", 
+      "name": "Col-27", 
       "clust": 3, 
-      "cat_1_index": 8, 
-      "cat_0_index": 11, 
       "rank": 14, 
-      "cat-1": "Gender: Female", 
       "ini": 3, 
-      "cat-0": "Category: four", 
       "rankvar": 2
     }, 
     {
@@ -1500,14 +1316,10 @@
         1.0, 
         1.0
       ], 
-      "name": "Cell Line: A549", 
+      "name": "Col-28", 
       "clust": 9, 
-      "cat_1_index": 28, 
-      "cat_0_index": 12, 
       "rank": 21, 
-      "cat-1": "Gender: Male", 
       "ini": 2, 
-      "cat-0": "Category: four", 
       "rankvar": 3
     }, 
     {
@@ -1524,14 +1336,10 @@
         1.0, 
         1.0
       ], 
-      "name": "Cell Line: H1781", 
+      "name": "Col-29", 
       "clust": 28, 
-      "cat_1_index": 9, 
-      "cat_0_index": 18, 
       "rank": 13, 
-      "cat-1": "Gender: Female", 
       "ini": 1, 
-      "cat-0": "Category: one", 
       "rankvar": 13
     }
   ], 
@@ -7067,13 +6875,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: CDK4", 
+            "name": "CDK4", 
             "clust": 14, 
-            "cat_0_index": 0, 
             "rank": 30, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 20, 
-            "ini": 38
+            "ini": 38, 
+            "rankvar": 20
           }, 
           {
             "group": [
@@ -7089,13 +6895,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: LMTK3", 
+            "name": "LMTK3", 
             "clust": 20, 
-            "cat_0_index": 17, 
             "rank": 28, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 24, 
-            "ini": 37
+            "ini": 37, 
+            "rankvar": 24
           }, 
           {
             "group": [
@@ -7111,13 +6915,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: LRRK2", 
+            "name": "LRRK2", 
             "clust": 26, 
-            "cat_0_index": 18, 
             "rank": 9, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 10, 
-            "ini": 36
+            "ini": 36, 
+            "rankvar": 10
           }, 
           {
             "group": [
@@ -7133,13 +6935,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: UHMK1", 
+            "name": "UHMK1", 
             "clust": 25, 
-            "cat_0_index": 19, 
             "rank": 26, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 14, 
-            "ini": 35
+            "ini": 35, 
+            "rankvar": 14
           }, 
           {
             "group": [
@@ -7155,13 +6955,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: EGFR", 
+            "name": "EGFR", 
             "clust": 13, 
-            "cat_0_index": 1, 
             "rank": 33, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 7, 
-            "ini": 34
+            "ini": 34, 
+            "rankvar": 7
           }, 
           {
             "group": [
@@ -7177,13 +6975,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: STK32A", 
+            "name": "STK32A", 
             "clust": 32, 
-            "cat_0_index": 2, 
             "rank": 36, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 32, 
-            "ini": 33
+            "ini": 33, 
+            "rankvar": 32
           }, 
           {
             "group": [
@@ -7199,13 +6995,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: NRK", 
+            "name": "NRK", 
             "clust": 15, 
-            "cat_0_index": 3, 
             "rank": 35, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 33, 
-            "ini": 32
+            "ini": 32, 
+            "rankvar": 33
           }, 
           {
             "group": [
@@ -7221,13 +7015,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: ERBB2", 
+            "name": "ERBB2", 
             "clust": 34, 
-            "cat_0_index": 20, 
             "rank": 24, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 9, 
-            "ini": 31
+            "ini": 31, 
+            "rankvar": 9
           }, 
           {
             "group": [
@@ -7243,13 +7035,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: ERBB4", 
+            "name": "ERBB4", 
             "clust": 30, 
-            "cat_0_index": 21, 
             "rank": 6, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 2, 
-            "ini": 30
+            "ini": 30, 
+            "rankvar": 2
           }, 
           {
             "group": [
@@ -7265,13 +7055,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: AAK1", 
+            "name": "AAK1", 
             "clust": 36, 
-            "cat_0_index": 22, 
             "rank": 18, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 8, 
-            "ini": 29
+            "ini": 29, 
+            "rankvar": 8
           }, 
           {
             "group": [
@@ -7287,13 +7075,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: SRPK3", 
+            "name": "SRPK3", 
             "clust": 4, 
-            "cat_0_index": 23, 
             "rank": 8, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 15, 
-            "ini": 28
+            "ini": 28, 
+            "rankvar": 15
           }, 
           {
             "group": [
@@ -7309,13 +7095,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: STK39", 
+            "name": "STK39", 
             "clust": 35, 
-            "cat_0_index": 4, 
             "rank": 7, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 4, 
-            "ini": 27
+            "ini": 27, 
+            "rankvar": 4
           }, 
           {
             "group": [
@@ -7331,13 +7115,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: GRK4", 
+            "name": "GRK4", 
             "clust": 3, 
-            "cat_0_index": 24, 
             "rank": 1, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 3, 
-            "ini": 26
+            "ini": 26, 
+            "rankvar": 3
           }, 
           {
             "group": [
@@ -7353,13 +7135,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: TBK1", 
+            "name": "TBK1", 
             "clust": 12, 
-            "cat_0_index": 25, 
             "rank": 34, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 26, 
-            "ini": 25
+            "ini": 25, 
+            "rankvar": 26
           }, 
           {
             "group": [
@@ -7375,13 +7155,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: INSRR", 
+            "name": "INSRR", 
             "clust": 23, 
-            "cat_0_index": 26, 
             "rank": 13, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 5, 
-            "ini": 24
+            "ini": 24, 
+            "rankvar": 5
           }, 
           {
             "group": [
@@ -7397,13 +7175,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: IRAK1", 
+            "name": "IRAK1", 
             "clust": 11, 
-            "cat_0_index": 5, 
             "rank": 20, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 30, 
-            "ini": 23
+            "ini": 23, 
+            "rankvar": 30
           }, 
           {
             "group": [
@@ -7419,13 +7195,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: KDR", 
+            "name": "KDR", 
             "clust": 33, 
-            "cat_0_index": 27, 
             "rank": 19, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 11, 
-            "ini": 22
+            "ini": 22, 
+            "rankvar": 11
           }, 
           {
             "group": [
@@ -7441,13 +7215,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: NPR1", 
+            "name": "NPR1", 
             "clust": 16, 
-            "cat_0_index": 6, 
             "rank": 27, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 29, 
-            "ini": 21
+            "ini": 21, 
+            "rankvar": 29
           }, 
           {
             "group": [
@@ -7463,13 +7235,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: PAK3", 
+            "name": "PAK3", 
             "clust": 9, 
-            "cat_0_index": 28, 
             "rank": 11, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 12, 
-            "ini": 20
+            "ini": 20, 
+            "rankvar": 12
           }, 
           {
             "group": [
@@ -7485,13 +7255,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: PDGFRA", 
+            "name": "PDGFRA", 
             "clust": 7, 
-            "cat_0_index": 7, 
             "rank": 2, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 0, 
-            "ini": 19
+            "ini": 19, 
+            "rankvar": 0
           }, 
           {
             "group": [
@@ -7507,13 +7275,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: PDK4", 
+            "name": "PDK4", 
             "clust": 24, 
-            "cat_0_index": 29, 
             "rank": 22, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 22, 
-            "ini": 18
+            "ini": 18, 
+            "rankvar": 22
           }, 
           {
             "group": [
@@ -7529,13 +7295,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: ULK4", 
+            "name": "ULK4", 
             "clust": 28, 
-            "cat_0_index": 8, 
             "rank": 16, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 19, 
-            "ini": 17
+            "ini": 17, 
+            "rankvar": 19
           }, 
           {
             "group": [
@@ -7551,13 +7315,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: PRKCE", 
+            "name": "PRKCE", 
             "clust": 21, 
-            "cat_0_index": 30, 
             "rank": 14, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 1, 
-            "ini": 16
+            "ini": 16, 
+            "rankvar": 1
           }, 
           {
             "group": [
@@ -7573,13 +7335,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: PRKG2", 
+            "name": "PRKG2", 
             "clust": 2, 
-            "cat_0_index": 31, 
             "rank": 25, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 18, 
-            "ini": 15
+            "ini": 15, 
+            "rankvar": 18
           }, 
           {
             "group": [
@@ -7595,13 +7355,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: MAPK4", 
+            "name": "MAPK4", 
             "clust": 18, 
-            "cat_0_index": 9, 
             "rank": 10, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 16, 
-            "ini": 14
+            "ini": 14, 
+            "rankvar": 16
           }, 
           {
             "group": [
@@ -7617,13 +7375,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: MAPK11", 
+            "name": "MAPK11", 
             "clust": 8, 
-            "cat_0_index": 10, 
             "rank": 17, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 34, 
-            "ini": 13
+            "ini": 13, 
+            "rankvar": 34
           }, 
           {
             "group": [
@@ -7639,13 +7395,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: STK31", 
+            "name": "STK31", 
             "clust": 31, 
-            "cat_0_index": 11, 
             "rank": 37, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 31, 
-            "ini": 12
+            "ini": 12, 
+            "rankvar": 31
           }, 
           {
             "group": [
@@ -7661,13 +7415,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: GRK1", 
+            "name": "GRK1", 
             "clust": 19, 
-            "cat_0_index": 32, 
             "rank": 15, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 23, 
-            "ini": 11
+            "ini": 11, 
+            "rankvar": 23
           }, 
           {
             "group": [
@@ -7683,13 +7435,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: ROS1", 
+            "name": "ROS1", 
             "clust": 37, 
-            "cat_0_index": 12, 
             "rank": 31, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 37, 
-            "ini": 10
+            "ini": 10, 
+            "rankvar": 37
           }, 
           {
             "group": [
@@ -7705,13 +7455,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: MAP2K4", 
+            "name": "MAP2K4", 
             "clust": 10, 
-            "cat_0_index": 13, 
             "rank": 23, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 28, 
-            "ini": 9
+            "ini": 9, 
+            "rankvar": 28
           }, 
           {
             "group": [
@@ -7727,13 +7475,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: SRC", 
+            "name": "SRC", 
             "clust": 27, 
-            "cat_0_index": 14, 
             "rank": 21, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 21, 
-            "ini": 8
+            "ini": 8, 
+            "rankvar": 21
           }, 
           {
             "group": [
@@ -7749,13 +7495,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: TGFBR1", 
+            "name": "TGFBR1", 
             "clust": 17, 
-            "cat_0_index": 15, 
             "rank": 12, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 13, 
-            "ini": 7
+            "ini": 7, 
+            "rankvar": 13
           }, 
           {
             "group": [
@@ -7771,13 +7515,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: CAMK2B", 
+            "name": "CAMK2B", 
             "clust": 5, 
-            "cat_0_index": 33, 
             "rank": 3, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 17, 
-            "ini": 6
+            "ini": 6, 
+            "rankvar": 17
           }, 
           {
             "group": [
@@ -7793,13 +7535,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: STK24", 
+            "name": "STK24", 
             "clust": 6, 
-            "cat_0_index": 16, 
             "rank": 0, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 36, 
-            "ini": 5
+            "ini": 5, 
+            "rankvar": 36
           }, 
           {
             "group": [
@@ -7815,13 +7555,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: DCLK3", 
+            "name": "DCLK3", 
             "clust": 1, 
-            "cat_0_index": 34, 
             "rank": 5, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 25, 
-            "ini": 4
+            "ini": 4, 
+            "rankvar": 25
           }, 
           {
             "group": [
@@ -7837,13 +7575,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: LATS1", 
+            "name": "LATS1", 
             "clust": 22, 
-            "cat_0_index": 35, 
             "rank": 29, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 27, 
-            "ini": 3
+            "ini": 3, 
+            "rankvar": 27
           }, 
           {
             "group": [
@@ -7859,13 +7595,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: NEK9", 
+            "name": "NEK9", 
             "clust": 0, 
-            "cat_0_index": 36, 
             "rank": 4, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 6, 
-            "ini": 2
+            "ini": 2, 
+            "rankvar": 6
           }, 
           {
             "group": [
@@ -7881,13 +7615,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: MYLK3", 
+            "name": "MYLK3", 
             "clust": 29, 
-            "cat_0_index": 37, 
             "rank": 32, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 35, 
-            "ini": 1
+            "ini": 1, 
+            "rankvar": 35
           }
         ], 
         "col_nodes": [
@@ -7905,14 +7637,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1650", 
+            "name": "Col-1", 
             "clust": 12, 
-            "cat_1_index": 10, 
-            "cat_0_index": 24, 
             "rank": 6, 
-            "cat-1": "Gender: Male", 
             "ini": 29, 
-            "cat-0": "Category: two", 
             "rankvar": 4
           }, 
           {
@@ -7929,14 +7657,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H23", 
+            "name": "Col-2", 
             "clust": 2, 
-            "cat_1_index": 11, 
-            "cat_0_index": 25, 
             "rank": 17, 
-            "cat-1": "Gender: Male", 
             "ini": 28, 
-            "cat-0": "Category: two", 
             "rankvar": 8
           }, 
           {
@@ -7953,14 +7677,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: CAL-12T", 
+            "name": "Col-3", 
             "clust": 4, 
-            "cat_1_index": 12, 
-            "cat_0_index": 26, 
             "rank": 10, 
-            "cat-1": "Gender: Male", 
             "ini": 27, 
-            "cat-0": "Category: two", 
             "rankvar": 19
           }, 
           {
@@ -7977,14 +7697,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H358", 
+            "name": "Col-4", 
             "clust": 25, 
-            "cat_1_index": 13, 
-            "cat_0_index": 13, 
             "rank": 4, 
-            "cat-1": "Gender: Male", 
             "ini": 26, 
-            "cat-0": "Category: one", 
             "rankvar": 0
           }, 
           {
@@ -8001,14 +7717,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1975", 
+            "name": "Col-5", 
             "clust": 22, 
-            "cat_1_index": 0, 
-            "cat_0_index": 27, 
             "rank": 0, 
-            "cat-1": "Gender: Female", 
             "ini": 25, 
-            "cat-0": "Category: two", 
             "rankvar": 24
           }, 
           {
@@ -8025,14 +7737,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: HCC15", 
+            "name": "Col-6", 
             "clust": 1, 
-            "cat_1_index": 14, 
-            "cat_0_index": 28, 
             "rank": 24, 
-            "cat-1": "Gender: Male", 
             "ini": 24, 
-            "cat-0": "Category: two", 
             "rankvar": 20
           }, 
           {
@@ -8049,14 +7757,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1355", 
+            "name": "Col-7", 
             "clust": 5, 
-            "cat_1_index": 15, 
-            "cat_0_index": 19, 
             "rank": 9, 
-            "cat-1": "Gender: Male", 
             "ini": 23, 
-            "cat-0": "Category: three", 
             "rankvar": 6
           }, 
           {
@@ -8073,14 +7777,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: HCC827", 
+            "name": "Col-8", 
             "clust": 23, 
-            "cat_1_index": 1, 
-            "cat_0_index": 14, 
             "rank": 28, 
-            "cat-1": "Gender: Female", 
             "ini": 22, 
-            "cat-0": "Category: one", 
             "rankvar": 25
           }, 
           {
@@ -8097,14 +7797,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H2405", 
+            "name": "Col-9", 
             "clust": 20, 
-            "cat_1_index": 16, 
-            "cat_0_index": 0, 
             "rank": 1, 
-            "cat-1": "Gender: Male", 
             "ini": 21, 
-            "cat-0": "Category: five", 
             "rankvar": 12
           }, 
           {
@@ -8121,14 +7817,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: HCC78", 
+            "name": "Col-10", 
             "clust": 21, 
-            "cat_1_index": 17, 
-            "cat_0_index": 1, 
             "rank": 25, 
-            "cat-1": "Gender: Male", 
             "ini": 20, 
-            "cat-0": "Category: five", 
             "rankvar": 27
           }, 
           {
@@ -8145,14 +7837,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1666", 
+            "name": "Col-11", 
             "clust": 7, 
-            "cat_1_index": 2, 
-            "cat_0_index": 6, 
             "rank": 18, 
-            "cat-1": "Gender: Female", 
             "ini": 19, 
-            "cat-0": "Category: four", 
             "rankvar": 15
           }, 
           {
@@ -8169,14 +7857,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H661", 
+            "name": "Col-12", 
             "clust": 16, 
-            "cat_1_index": 18, 
-            "cat_0_index": 2, 
             "rank": 3, 
-            "cat-1": "Gender: Male", 
             "ini": 18, 
-            "cat-0": "Category: five", 
             "rankvar": 26
           }, 
           {
@@ -8193,14 +7877,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H838", 
+            "name": "Col-13", 
             "clust": 17, 
-            "cat_1_index": 19, 
-            "cat_0_index": 3, 
             "rank": 7, 
-            "cat-1": "Gender: Male", 
             "ini": 17, 
-            "cat-0": "Category: five", 
             "rankvar": 23
           }, 
           {
@@ -8217,14 +7897,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1703", 
+            "name": "Col-14", 
             "clust": 14, 
-            "cat_1_index": 20, 
-            "cat_0_index": 4, 
             "rank": 11, 
-            "cat-1": "Gender: Male", 
             "ini": 16, 
-            "cat-0": "Category: five", 
             "rankvar": 21
           }, 
           {
@@ -8241,14 +7917,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: CALU-3", 
+            "name": "Col-15", 
             "clust": 19, 
-            "cat_1_index": 21, 
-            "cat_0_index": 7, 
             "rank": 8, 
-            "cat-1": "Gender: Male", 
             "ini": 15, 
-            "cat-0": "Category: four", 
             "rankvar": 7
           }, 
           {
@@ -8265,14 +7937,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H2342", 
+            "name": "Col-16", 
             "clust": 18, 
-            "cat_1_index": 3, 
-            "cat_0_index": 8, 
             "rank": 26, 
-            "cat-1": "Gender: Female", 
             "ini": 14, 
-            "cat-0": "Category: four", 
             "rankvar": 22
           }, 
           {
@@ -8289,14 +7957,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H2228", 
+            "name": "Col-17", 
             "clust": 26, 
-            "cat_1_index": 4, 
-            "cat_0_index": 15, 
             "rank": 2, 
-            "cat-1": "Gender: Female", 
             "ini": 13, 
-            "cat-0": "Category: one", 
             "rankvar": 5
           }, 
           {
@@ -8313,14 +7977,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1299", 
+            "name": "Col-18", 
             "clust": 15, 
-            "cat_1_index": 22, 
-            "cat_0_index": 20, 
             "rank": 12, 
-            "cat-1": "Gender: Male", 
             "ini": 12, 
-            "cat-0": "Category: three", 
             "rankvar": 1
           }, 
           {
@@ -8337,14 +7997,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1792", 
+            "name": "Col-19", 
             "clust": 10, 
-            "cat_1_index": 23, 
-            "cat_0_index": 21, 
             "rank": 20, 
-            "cat-1": "Gender: Male", 
             "ini": 11, 
-            "cat-0": "Category: three", 
             "rankvar": 9
           }, 
           {
@@ -8361,14 +8017,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H460", 
+            "name": "Col-20", 
             "clust": 11, 
-            "cat_1_index": 24, 
-            "cat_0_index": 22, 
             "rank": 5, 
-            "cat-1": "Gender: Male", 
             "ini": 10, 
-            "cat-0": "Category: three", 
             "rankvar": 11
           }, 
           {
@@ -8385,14 +8037,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H2106", 
+            "name": "Col-21", 
             "clust": 0, 
-            "cat_1_index": 25, 
-            "cat_0_index": 9, 
             "rank": 22, 
-            "cat-1": "Gender: Male", 
             "ini": 9, 
-            "cat-0": "Category: four", 
             "rankvar": 28
           }, 
           {
@@ -8409,14 +8057,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H441", 
+            "name": "Col-22", 
             "clust": 27, 
-            "cat_1_index": 26, 
-            "cat_0_index": 16, 
             "rank": 27, 
-            "cat-1": "Gender: Male", 
             "ini": 8, 
-            "cat-0": "Category: one", 
             "rankvar": 14
           }, 
           {
@@ -8433,14 +8077,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1944", 
+            "name": "Col-23", 
             "clust": 8, 
-            "cat_1_index": 5, 
-            "cat_0_index": 23, 
             "rank": 23, 
-            "cat-1": "Gender: Female", 
             "ini": 7, 
-            "cat-0": "Category: three", 
             "rankvar": 10
           }, 
           {
@@ -8457,14 +8097,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1437", 
+            "name": "Col-24", 
             "clust": 6, 
-            "cat_1_index": 27, 
-            "cat_0_index": 10, 
             "rank": 16, 
-            "cat-1": "Gender: Male", 
             "ini": 6, 
-            "cat-0": "Category: four", 
             "rankvar": 17
           }, 
           {
@@ -8481,14 +8117,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1734", 
+            "name": "Col-25", 
             "clust": 24, 
-            "cat_1_index": 6, 
-            "cat_0_index": 17, 
             "rank": 19, 
-            "cat-1": "Gender: Female", 
             "ini": 5, 
-            "cat-0": "Category: one", 
             "rankvar": 18
           }, 
           {
@@ -8505,14 +8137,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: LOU-NH91", 
+            "name": "Col-26", 
             "clust": 13, 
-            "cat_1_index": 7, 
-            "cat_0_index": 5, 
             "rank": 15, 
-            "cat-1": "Gender: Female", 
             "ini": 4, 
-            "cat-0": "Category: five", 
             "rankvar": 16
           }, 
           {
@@ -8529,14 +8157,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: HCC44", 
+            "name": "Col-27", 
             "clust": 3, 
-            "cat_1_index": 8, 
-            "cat_0_index": 11, 
             "rank": 14, 
-            "cat-1": "Gender: Female", 
             "ini": 3, 
-            "cat-0": "Category: four", 
             "rankvar": 2
           }, 
           {
@@ -8553,14 +8177,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: A549", 
+            "name": "Col-28", 
             "clust": 9, 
-            "cat_1_index": 28, 
-            "cat_0_index": 12, 
             "rank": 21, 
-            "cat-1": "Gender: Male", 
             "ini": 2, 
-            "cat-0": "Category: four", 
             "rankvar": 3
           }, 
           {
@@ -8577,14 +8197,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1781", 
+            "name": "Col-29", 
             "clust": 28, 
-            "cat_1_index": 9, 
-            "cat_0_index": 18, 
             "rank": 13, 
-            "cat-1": "Gender: Female", 
             "ini": 1, 
-            "cat-0": "Category: one", 
             "rankvar": 13
           }
         ]
@@ -8609,13 +8225,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: STK31", 
+            "name": "STK31", 
             "clust": 5, 
-            "cat_0_index": 0, 
             "rank": 19, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 14, 
-            "ini": 20
+            "ini": 20, 
+            "rankvar": 14
           }, 
           {
             "group": [
@@ -8631,13 +8245,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: STK24", 
+            "name": "STK24", 
             "clust": 18, 
-            "cat_0_index": 1, 
             "rank": 0, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 18, 
-            "ini": 19
+            "ini": 19, 
+            "rankvar": 18
           }, 
           {
             "group": [
@@ -8653,13 +8265,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: STK32A", 
+            "name": "STK32A", 
             "clust": 6, 
-            "cat_0_index": 2, 
             "rank": 18, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 15, 
-            "ini": 18
+            "ini": 18, 
+            "rankvar": 15
           }, 
           {
             "group": [
@@ -8675,13 +8285,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: NRK", 
+            "name": "NRK", 
             "clust": 9, 
-            "cat_0_index": 3, 
             "rank": 17, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 16, 
-            "ini": 17
+            "ini": 17, 
+            "rankvar": 16
           }, 
           {
             "group": [
@@ -8697,13 +8305,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: TBK1", 
+            "name": "TBK1", 
             "clust": 7, 
-            "cat_0_index": 10, 
             "rank": 16, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 10, 
-            "ini": 16
+            "ini": 16, 
+            "rankvar": 10
           }, 
           {
             "group": [
@@ -8719,13 +8325,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: EGFR", 
+            "name": "EGFR", 
             "clust": 8, 
-            "cat_0_index": 4, 
             "rank": 15, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 3, 
-            "ini": 15
+            "ini": 15, 
+            "rankvar": 3
           }, 
           {
             "group": [
@@ -8741,13 +8345,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: MYLK3", 
+            "name": "MYLK3", 
             "clust": 2, 
-            "cat_0_index": 11, 
             "rank": 14, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 17, 
-            "ini": 14
+            "ini": 14, 
+            "rankvar": 17
           }, 
           {
             "group": [
@@ -8763,13 +8365,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: ROS1", 
+            "name": "ROS1", 
             "clust": 11, 
-            "cat_0_index": 5, 
             "rank": 13, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 19, 
-            "ini": 13
+            "ini": 13, 
+            "rankvar": 19
           }, 
           {
             "group": [
@@ -8785,13 +8385,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: CDK4", 
+            "name": "CDK4", 
             "clust": 10, 
-            "cat_0_index": 6, 
             "rank": 12, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 8, 
-            "ini": 12
+            "ini": 12, 
+            "rankvar": 8
           }, 
           {
             "group": [
@@ -8807,13 +8405,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: LATS1", 
+            "name": "LATS1", 
             "clust": 3, 
-            "cat_0_index": 12, 
             "rank": 11, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 11, 
-            "ini": 11
+            "ini": 11, 
+            "rankvar": 11
           }, 
           {
             "group": [
@@ -8829,13 +8425,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: LMTK3", 
+            "name": "LMTK3", 
             "clust": 0, 
-            "cat_0_index": 13, 
             "rank": 10, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 9, 
-            "ini": 10
+            "ini": 10, 
+            "rankvar": 9
           }, 
           {
             "group": [
@@ -8851,13 +8445,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: NPR1", 
+            "name": "NPR1", 
             "clust": 1, 
-            "cat_0_index": 7, 
             "rank": 9, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 13, 
-            "ini": 9
+            "ini": 9, 
+            "rankvar": 13
           }, 
           {
             "group": [
@@ -8873,13 +8465,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: UHMK1", 
+            "name": "UHMK1", 
             "clust": 12, 
-            "cat_0_index": 14, 
             "rank": 8, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 5, 
-            "ini": 8
+            "ini": 8, 
+            "rankvar": 5
           }, 
           {
             "group": [
@@ -8895,13 +8485,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: PRKG2", 
+            "name": "PRKG2", 
             "clust": 15, 
-            "cat_0_index": 15, 
             "rank": 7, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 7, 
-            "ini": 7
+            "ini": 7, 
+            "rankvar": 7
           }, 
           {
             "group": [
@@ -8917,13 +8505,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: GRK4", 
+            "name": "GRK4", 
             "clust": 16, 
-            "cat_0_index": 16, 
             "rank": 1, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 1, 
-            "ini": 6
+            "ini": 6, 
+            "rankvar": 1
           }, 
           {
             "group": [
@@ -8939,13 +8525,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: PDGFRA", 
+            "name": "PDGFRA", 
             "clust": 19, 
-            "cat_0_index": 8, 
             "rank": 2, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 0, 
-            "ini": 5
+            "ini": 5, 
+            "rankvar": 0
           }, 
           {
             "group": [
@@ -8961,13 +8545,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: CAMK2B", 
+            "name": "CAMK2B", 
             "clust": 17, 
-            "cat_0_index": 17, 
             "rank": 3, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 6, 
-            "ini": 4
+            "ini": 4, 
+            "rankvar": 6
           }, 
           {
             "group": [
@@ -8983,13 +8565,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: ERBB2", 
+            "name": "ERBB2", 
             "clust": 13, 
-            "cat_0_index": 18, 
             "rank": 6, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 4, 
-            "ini": 3
+            "ini": 3, 
+            "rankvar": 4
           }, 
           {
             "group": [
@@ -9005,13 +8585,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: NEK9", 
+            "name": "NEK9", 
             "clust": 14, 
-            "cat_0_index": 19, 
             "rank": 4, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 2, 
-            "ini": 2
+            "ini": 2, 
+            "rankvar": 2
           }, 
           {
             "group": [
@@ -9027,13 +8605,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: MAP2K4", 
+            "name": "MAP2K4", 
             "clust": 4, 
-            "cat_0_index": 9, 
             "rank": 5, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 12, 
-            "ini": 1
+            "ini": 1, 
+            "rankvar": 12
           }
         ], 
         "col_nodes": [
@@ -9051,14 +8627,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1650", 
+            "name": "Col-1", 
             "clust": 14, 
-            "cat_1_index": 10, 
-            "cat_0_index": 24, 
             "rank": 7, 
-            "cat-1": "Gender: Male", 
             "ini": 29, 
-            "cat-0": "Category: two", 
             "rankvar": 3
           }, 
           {
@@ -9075,14 +8647,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H23", 
+            "name": "Col-2", 
             "clust": 7, 
-            "cat_1_index": 11, 
-            "cat_0_index": 25, 
             "rank": 14, 
-            "cat-1": "Gender: Male", 
             "ini": 28, 
-            "cat-0": "Category: two", 
             "rankvar": 12
           }, 
           {
@@ -9099,14 +8667,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: CAL-12T", 
+            "name": "Col-3", 
             "clust": 20, 
-            "cat_1_index": 12, 
-            "cat_0_index": 26, 
             "rank": 21, 
-            "cat-1": "Gender: Male", 
             "ini": 27, 
-            "cat-0": "Category: two", 
             "rankvar": 18
           }, 
           {
@@ -9123,14 +8687,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H358", 
+            "name": "Col-4", 
             "clust": 21, 
-            "cat_1_index": 13, 
-            "cat_0_index": 13, 
             "rank": 15, 
-            "cat-1": "Gender: Male", 
             "ini": 26, 
-            "cat-0": "Category: one", 
             "rankvar": 2
           }, 
           {
@@ -9147,14 +8707,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1975", 
+            "name": "Col-5", 
             "clust": 27, 
-            "cat_1_index": 0, 
-            "cat_0_index": 27, 
             "rank": 1, 
-            "cat-1": "Gender: Female", 
             "ini": 25, 
-            "cat-0": "Category: two", 
             "rankvar": 27
           }, 
           {
@@ -9171,14 +8727,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: HCC15", 
+            "name": "Col-6", 
             "clust": 8, 
-            "cat_1_index": 14, 
-            "cat_0_index": 28, 
             "rank": 5, 
-            "cat-1": "Gender: Male", 
             "ini": 24, 
-            "cat-0": "Category: two", 
             "rankvar": 8
           }, 
           {
@@ -9195,14 +8747,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1355", 
+            "name": "Col-7", 
             "clust": 10, 
-            "cat_1_index": 15, 
-            "cat_0_index": 19, 
             "rank": 16, 
-            "cat-1": "Gender: Male", 
             "ini": 23, 
-            "cat-0": "Category: three", 
             "rankvar": 9
           }, 
           {
@@ -9219,14 +8767,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: HCC827", 
+            "name": "Col-8", 
             "clust": 25, 
-            "cat_1_index": 1, 
-            "cat_0_index": 14, 
             "rank": 28, 
-            "cat-1": "Gender: Female", 
             "ini": 22, 
-            "cat-0": "Category: one", 
             "rankvar": 26
           }, 
           {
@@ -9243,14 +8787,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H2405", 
+            "name": "Col-9", 
             "clust": 18, 
-            "cat_1_index": 16, 
-            "cat_0_index": 0, 
             "rank": 4, 
-            "cat-1": "Gender: Male", 
             "ini": 21, 
-            "cat-0": "Category: five", 
             "rankvar": 20
           }, 
           {
@@ -9267,14 +8807,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: HCC78", 
+            "name": "Col-10", 
             "clust": 17, 
-            "cat_1_index": 17, 
-            "cat_0_index": 1, 
             "rank": 26, 
-            "cat-1": "Gender: Male", 
             "ini": 20, 
-            "cat-0": "Category: five", 
             "rankvar": 28
           }, 
           {
@@ -9291,14 +8827,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1666", 
+            "name": "Col-11", 
             "clust": 19, 
-            "cat_1_index": 2, 
-            "cat_0_index": 6, 
             "rank": 3, 
-            "cat-1": "Gender: Female", 
             "ini": 19, 
-            "cat-0": "Category: four", 
             "rankvar": 4
           }, 
           {
@@ -9315,14 +8847,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H661", 
+            "name": "Col-12", 
             "clust": 1, 
-            "cat_1_index": 18, 
-            "cat_0_index": 2, 
             "rank": 18, 
-            "cat-1": "Gender: Male", 
             "ini": 18, 
-            "cat-0": "Category: five", 
             "rankvar": 21
           }, 
           {
@@ -9339,14 +8867,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H838", 
+            "name": "Col-13", 
             "clust": 2, 
-            "cat_1_index": 19, 
-            "cat_0_index": 3, 
             "rank": 11, 
-            "cat-1": "Gender: Male", 
             "ini": 17, 
-            "cat-0": "Category: five", 
             "rankvar": 23
           }, 
           {
@@ -9363,14 +8887,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1703", 
+            "name": "Col-14", 
             "clust": 4, 
-            "cat_1_index": 20, 
-            "cat_0_index": 4, 
             "rank": 10, 
-            "cat-1": "Gender: Male", 
             "ini": 16, 
-            "cat-0": "Category: five", 
             "rankvar": 15
           }, 
           {
@@ -9387,14 +8907,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: CALU-3", 
+            "name": "Col-15", 
             "clust": 15, 
-            "cat_1_index": 21, 
-            "cat_0_index": 7, 
             "rank": 8, 
-            "cat-1": "Gender: Male", 
             "ini": 15, 
-            "cat-0": "Category: four", 
             "rankvar": 16
           }, 
           {
@@ -9411,14 +8927,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H2342", 
+            "name": "Col-16", 
             "clust": 3, 
-            "cat_1_index": 3, 
-            "cat_0_index": 8, 
             "rank": 27, 
-            "cat-1": "Gender: Female", 
             "ini": 14, 
-            "cat-0": "Category: four", 
             "rankvar": 24
           }, 
           {
@@ -9435,14 +8947,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H2228", 
+            "name": "Col-17", 
             "clust": 22, 
-            "cat_1_index": 4, 
-            "cat_0_index": 15, 
             "rank": 12, 
-            "cat-1": "Gender: Female", 
             "ini": 13, 
-            "cat-0": "Category: one", 
             "rankvar": 11
           }, 
           {
@@ -9459,14 +8967,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1299", 
+            "name": "Col-18", 
             "clust": 6, 
-            "cat_1_index": 22, 
-            "cat_0_index": 20, 
             "rank": 6, 
-            "cat-1": "Gender: Male", 
             "ini": 12, 
-            "cat-0": "Category: three", 
             "rankvar": 5
           }, 
           {
@@ -9483,14 +8987,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1792", 
+            "name": "Col-19", 
             "clust": 28, 
-            "cat_1_index": 23, 
-            "cat_0_index": 21, 
             "rank": 22, 
-            "cat-1": "Gender: Male", 
             "ini": 11, 
-            "cat-0": "Category: three", 
             "rankvar": 10
           }, 
           {
@@ -9507,14 +9007,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H460", 
+            "name": "Col-20", 
             "clust": 11, 
-            "cat_1_index": 24, 
-            "cat_0_index": 22, 
             "rank": 0, 
-            "cat-1": "Gender: Male", 
             "ini": 10, 
-            "cat-0": "Category: three", 
             "rankvar": 1
           }, 
           {
@@ -9531,14 +9027,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H2106", 
+            "name": "Col-21", 
             "clust": 0, 
-            "cat_1_index": 25, 
-            "cat_0_index": 9, 
             "rank": 20, 
-            "cat-1": "Gender: Male", 
             "ini": 9, 
-            "cat-0": "Category: four", 
             "rankvar": 25
           }, 
           {
@@ -9555,14 +9047,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H441", 
+            "name": "Col-22", 
             "clust": 23, 
-            "cat_1_index": 26, 
-            "cat_0_index": 16, 
             "rank": 24, 
-            "cat-1": "Gender: Male", 
             "ini": 8, 
-            "cat-0": "Category: one", 
             "rankvar": 13
           }, 
           {
@@ -9579,14 +9067,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1944", 
+            "name": "Col-23", 
             "clust": 12, 
-            "cat_1_index": 5, 
-            "cat_0_index": 23, 
             "rank": 19, 
-            "cat-1": "Gender: Female", 
             "ini": 7, 
-            "cat-0": "Category: three", 
             "rankvar": 7
           }, 
           {
@@ -9603,14 +9087,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1437", 
+            "name": "Col-24", 
             "clust": 9, 
-            "cat_1_index": 27, 
-            "cat_0_index": 10, 
             "rank": 17, 
-            "cat-1": "Gender: Male", 
             "ini": 6, 
-            "cat-0": "Category: four", 
             "rankvar": 22
           }, 
           {
@@ -9627,14 +9107,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1734", 
+            "name": "Col-25", 
             "clust": 26, 
-            "cat_1_index": 6, 
-            "cat_0_index": 17, 
             "rank": 25, 
-            "cat-1": "Gender: Female", 
             "ini": 5, 
-            "cat-0": "Category: one", 
             "rankvar": 19
           }, 
           {
@@ -9651,14 +9127,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: LOU-NH91", 
+            "name": "Col-26", 
             "clust": 16, 
-            "cat_1_index": 7, 
-            "cat_0_index": 5, 
             "rank": 2, 
-            "cat-1": "Gender: Female", 
             "ini": 4, 
-            "cat-0": "Category: five", 
             "rankvar": 14
           }, 
           {
@@ -9675,14 +9147,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: HCC44", 
+            "name": "Col-27", 
             "clust": 5, 
-            "cat_1_index": 8, 
-            "cat_0_index": 11, 
             "rank": 13, 
-            "cat-1": "Gender: Female", 
             "ini": 3, 
-            "cat-0": "Category: four", 
             "rankvar": 6
           }, 
           {
@@ -9699,14 +9167,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: A549", 
+            "name": "Col-28", 
             "clust": 13, 
-            "cat_1_index": 28, 
-            "cat_0_index": 12, 
             "rank": 9, 
-            "cat-1": "Gender: Male", 
             "ini": 2, 
-            "cat-0": "Category: four", 
             "rankvar": 0
           }, 
           {
@@ -9723,14 +9187,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1781", 
+            "name": "Col-29", 
             "clust": 24, 
-            "cat_1_index": 9, 
-            "cat_0_index": 18, 
             "rank": 23, 
-            "cat-1": "Gender: Female", 
             "ini": 1, 
-            "cat-0": "Category: one", 
             "rankvar": 17
           }
         ]
@@ -9755,13 +9215,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: STK31", 
+            "name": "STK31", 
             "clust": 4, 
-            "cat_0_index": 0, 
             "rank": 9, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 4, 
-            "ini": 10
+            "ini": 10, 
+            "rankvar": 4
           }, 
           {
             "group": [
@@ -9777,13 +9235,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: STK24", 
+            "name": "STK24", 
             "clust": 0, 
-            "cat_0_index": 1, 
             "rank": 0, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 8, 
-            "ini": 9
+            "ini": 9, 
+            "rankvar": 8
           }, 
           {
             "group": [
@@ -9799,13 +9255,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: STK32A", 
+            "name": "STK32A", 
             "clust": 5, 
-            "cat_0_index": 2, 
             "rank": 8, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 5, 
-            "ini": 8
+            "ini": 8, 
+            "rankvar": 5
           }, 
           {
             "group": [
@@ -9821,13 +9275,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: NRK", 
+            "name": "NRK", 
             "clust": 8, 
-            "cat_0_index": 3, 
             "rank": 7, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 6, 
-            "ini": 7
+            "ini": 7, 
+            "rankvar": 6
           }, 
           {
             "group": [
@@ -9843,13 +9295,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: TBK1", 
+            "name": "TBK1", 
             "clust": 6, 
-            "cat_0_index": 7, 
             "rank": 6, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 2, 
-            "ini": 6
+            "ini": 6, 
+            "rankvar": 2
           }, 
           {
             "group": [
@@ -9865,13 +9315,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: EGFR", 
+            "name": "EGFR", 
             "clust": 7, 
-            "cat_0_index": 4, 
             "rank": 5, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 0, 
-            "ini": 5
+            "ini": 5, 
+            "rankvar": 0
           }, 
           {
             "group": [
@@ -9887,13 +9335,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: MYLK3", 
+            "name": "MYLK3", 
             "clust": 3, 
-            "cat_0_index": 8, 
             "rank": 4, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 7, 
-            "ini": 4
+            "ini": 4, 
+            "rankvar": 7
           }, 
           {
             "group": [
@@ -9909,13 +9355,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: ROS1", 
+            "name": "ROS1", 
             "clust": 1, 
-            "cat_0_index": 5, 
             "rank": 3, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 9, 
-            "ini": 3
+            "ini": 3, 
+            "rankvar": 9
           }, 
           {
             "group": [
@@ -9931,13 +9375,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: CDK4", 
+            "name": "CDK4", 
             "clust": 9, 
-            "cat_0_index": 6, 
             "rank": 2, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 1, 
-            "ini": 2
+            "ini": 2, 
+            "rankvar": 1
           }, 
           {
             "group": [
@@ -9953,13 +9395,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: LATS1", 
+            "name": "LATS1", 
             "clust": 2, 
-            "cat_0_index": 9, 
             "rank": 1, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 3, 
-            "ini": 1
+            "ini": 1, 
+            "rankvar": 3
           }
         ], 
         "col_nodes": [
@@ -9977,14 +9417,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1650", 
+            "name": "Col-1", 
             "clust": 27, 
-            "cat_1_index": 10, 
-            "cat_0_index": 24, 
             "rank": 7, 
-            "cat-1": "Gender: Male", 
             "ini": 29, 
-            "cat-0": "Category: two", 
             "rankvar": 9
           }, 
           {
@@ -10001,14 +9437,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H23", 
+            "name": "Col-2", 
             "clust": 6, 
-            "cat_1_index": 11, 
-            "cat_0_index": 25, 
             "rank": 19, 
-            "cat-1": "Gender: Male", 
             "ini": 28, 
-            "cat-0": "Category: two", 
             "rankvar": 20
           }, 
           {
@@ -10025,14 +9457,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: CAL-12T", 
+            "name": "Col-3", 
             "clust": 0, 
-            "cat_1_index": 12, 
-            "cat_0_index": 26, 
             "rank": 6, 
-            "cat-1": "Gender: Male", 
             "ini": 27, 
-            "cat-0": "Category: two", 
             "rankvar": 4
           }, 
           {
@@ -10049,14 +9477,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H358", 
+            "name": "Col-4", 
             "clust": 25, 
-            "cat_1_index": 13, 
-            "cat_0_index": 13, 
             "rank": 11, 
-            "cat-1": "Gender: Male", 
             "ini": 26, 
-            "cat-0": "Category: one", 
             "rankvar": 0
           }, 
           {
@@ -10073,14 +9497,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1975", 
+            "name": "Col-5", 
             "clust": 12, 
-            "cat_1_index": 0, 
-            "cat_0_index": 27, 
             "rank": 0, 
-            "cat-1": "Gender: Female", 
             "ini": 25, 
-            "cat-0": "Category: two", 
             "rankvar": 27
           }, 
           {
@@ -10097,14 +9517,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: HCC15", 
+            "name": "Col-6", 
             "clust": 8, 
-            "cat_1_index": 14, 
-            "cat_0_index": 28, 
             "rank": 13, 
-            "cat-1": "Gender: Male", 
             "ini": 24, 
-            "cat-0": "Category: two", 
             "rankvar": 16
           }, 
           {
@@ -10121,14 +9537,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1355", 
+            "name": "Col-7", 
             "clust": 13, 
-            "cat_1_index": 15, 
-            "cat_0_index": 19, 
             "rank": 4, 
-            "cat-1": "Gender: Male", 
             "ini": 23, 
-            "cat-0": "Category: three", 
             "rankvar": 8
           }, 
           {
@@ -10145,14 +9557,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: HCC827", 
+            "name": "Col-8", 
             "clust": 28, 
-            "cat_1_index": 1, 
-            "cat_0_index": 14, 
             "rank": 28, 
-            "cat-1": "Gender: Female", 
             "ini": 22, 
-            "cat-0": "Category: one", 
             "rankvar": 26
           }, 
           {
@@ -10169,14 +9577,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H2405", 
+            "name": "Col-9", 
             "clust": 3, 
-            "cat_1_index": 16, 
-            "cat_0_index": 0, 
             "rank": 18, 
-            "cat-1": "Gender: Male", 
             "ini": 21, 
-            "cat-0": "Category: five", 
             "rankvar": 10
           }, 
           {
@@ -10193,14 +9597,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: HCC78", 
+            "name": "Col-10", 
             "clust": 4, 
-            "cat_1_index": 17, 
-            "cat_0_index": 1, 
             "rank": 27, 
-            "cat-1": "Gender: Male", 
             "ini": 20, 
-            "cat-0": "Category: five", 
             "rankvar": 28
           }, 
           {
@@ -10217,14 +9617,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1666", 
+            "name": "Col-11", 
             "clust": 1, 
-            "cat_1_index": 2, 
-            "cat_0_index": 6, 
             "rank": 5, 
-            "cat-1": "Gender: Female", 
             "ini": 19, 
-            "cat-0": "Category: four", 
             "rankvar": 7
           }, 
           {
@@ -10241,14 +9637,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H661", 
+            "name": "Col-12", 
             "clust": 19, 
-            "cat_1_index": 18, 
-            "cat_0_index": 2, 
             "rank": 22, 
-            "cat-1": "Gender: Male", 
             "ini": 18, 
-            "cat-0": "Category: five", 
             "rankvar": 23
           }, 
           {
@@ -10265,14 +9657,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H838", 
+            "name": "Col-13", 
             "clust": 20, 
-            "cat_1_index": 19, 
-            "cat_0_index": 3, 
             "rank": 20, 
-            "cat-1": "Gender: Male", 
             "ini": 17, 
-            "cat-0": "Category: five", 
             "rankvar": 24
           }, 
           {
@@ -10289,14 +9677,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1703", 
+            "name": "Col-14", 
             "clust": 9, 
-            "cat_1_index": 20, 
-            "cat_0_index": 4, 
             "rank": 12, 
-            "cat-1": "Gender: Male", 
             "ini": 16, 
-            "cat-0": "Category: five", 
             "rankvar": 13
           }, 
           {
@@ -10313,14 +9697,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: CALU-3", 
+            "name": "Col-15", 
             "clust": 17, 
-            "cat_1_index": 21, 
-            "cat_0_index": 7, 
             "rank": 9, 
-            "cat-1": "Gender: Male", 
             "ini": 15, 
-            "cat-0": "Category: four", 
             "rankvar": 5
           }, 
           {
@@ -10337,14 +9717,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H2342", 
+            "name": "Col-16", 
             "clust": 21, 
-            "cat_1_index": 3, 
-            "cat_0_index": 8, 
             "rank": 26, 
-            "cat-1": "Gender: Female", 
             "ini": 14, 
-            "cat-0": "Category: four", 
             "rankvar": 25
           }, 
           {
@@ -10361,14 +9737,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H2228", 
+            "name": "Col-17", 
             "clust": 23, 
-            "cat_1_index": 4, 
-            "cat_0_index": 15, 
             "rank": 21, 
-            "cat-1": "Gender: Female", 
             "ini": 13, 
-            "cat-0": "Category: one", 
             "rankvar": 19
           }, 
           {
@@ -10385,14 +9757,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1299", 
+            "name": "Col-18", 
             "clust": 7, 
-            "cat_1_index": 22, 
-            "cat_0_index": 20, 
             "rank": 8, 
-            "cat-1": "Gender: Male", 
             "ini": 12, 
-            "cat-0": "Category: three", 
             "rankvar": 12
           }, 
           {
@@ -10409,14 +9777,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1792", 
+            "name": "Col-19", 
             "clust": 14, 
-            "cat_1_index": 23, 
-            "cat_0_index": 21, 
             "rank": 15, 
-            "cat-1": "Gender: Male", 
             "ini": 11, 
-            "cat-0": "Category: three", 
             "rankvar": 17
           }, 
           {
@@ -10433,14 +9797,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H460", 
+            "name": "Col-20", 
             "clust": 10, 
-            "cat_1_index": 24, 
-            "cat_0_index": 22, 
             "rank": 2, 
-            "cat-1": "Gender: Male", 
             "ini": 10, 
-            "cat-0": "Category: three", 
             "rankvar": 3
           }, 
           {
@@ -10457,14 +9817,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H2106", 
+            "name": "Col-21", 
             "clust": 18, 
-            "cat_1_index": 25, 
-            "cat_0_index": 9, 
             "rank": 3, 
-            "cat-1": "Gender: Male", 
             "ini": 9, 
-            "cat-0": "Category: four", 
             "rankvar": 14
           }, 
           {
@@ -10481,14 +9837,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H441", 
+            "name": "Col-22", 
             "clust": 22, 
-            "cat_1_index": 26, 
-            "cat_0_index": 16, 
             "rank": 23, 
-            "cat-1": "Gender: Male", 
             "ini": 8, 
-            "cat-0": "Category: one", 
             "rankvar": 18
           }, 
           {
@@ -10505,14 +9857,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1944", 
+            "name": "Col-23", 
             "clust": 11, 
-            "cat_1_index": 5, 
-            "cat_0_index": 23, 
             "rank": 16, 
-            "cat-1": "Gender: Female", 
             "ini": 7, 
-            "cat-0": "Category: three", 
             "rankvar": 15
           }, 
           {
@@ -10529,14 +9877,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1437", 
+            "name": "Col-24", 
             "clust": 16, 
-            "cat_1_index": 27, 
-            "cat_0_index": 10, 
             "rank": 1, 
-            "cat-1": "Gender: Male", 
             "ini": 6, 
-            "cat-0": "Category: four", 
             "rankvar": 1
           }, 
           {
@@ -10553,14 +9897,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1734", 
+            "name": "Col-25", 
             "clust": 26, 
-            "cat_1_index": 6, 
-            "cat_0_index": 17, 
             "rank": 25, 
-            "cat-1": "Gender: Female", 
             "ini": 5, 
-            "cat-0": "Category: one", 
             "rankvar": 22
           }, 
           {
@@ -10577,14 +9917,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: LOU-NH91", 
+            "name": "Col-26", 
             "clust": 2, 
-            "cat_1_index": 7, 
-            "cat_0_index": 5, 
             "rank": 14, 
-            "cat-1": "Gender: Female", 
             "ini": 4, 
-            "cat-0": "Category: five", 
             "rankvar": 6
           }, 
           {
@@ -10601,14 +9937,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: HCC44", 
+            "name": "Col-27", 
             "clust": 5, 
-            "cat_1_index": 8, 
-            "cat_0_index": 11, 
             "rank": 17, 
-            "cat-1": "Gender: Female", 
             "ini": 3, 
-            "cat-0": "Category: four", 
             "rankvar": 11
           }, 
           {
@@ -10625,14 +9957,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: A549", 
+            "name": "Col-28", 
             "clust": 15, 
-            "cat_1_index": 28, 
-            "cat_0_index": 12, 
             "rank": 10, 
-            "cat-1": "Gender: Male", 
             "ini": 2, 
-            "cat-0": "Category: four", 
             "rankvar": 2
           }, 
           {
@@ -10649,14 +9977,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1781", 
+            "name": "Col-29", 
             "clust": 24, 
-            "cat_1_index": 9, 
-            "cat_0_index": 18, 
             "rank": 24, 
-            "cat-1": "Gender: Female", 
             "ini": 1, 
-            "cat-0": "Category: one", 
             "rankvar": 21
           }
         ]
@@ -10680,13 +10004,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: CDK4", 
+            "name": "CDK4", 
             "clust": 14, 
-            "cat_0_index": 0, 
             "rank": 30, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 20, 
-            "ini": 38
+            "ini": 38, 
+            "rankvar": 20
           }, 
           {
             "group": [
@@ -10702,13 +10024,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: LMTK3", 
+            "name": "LMTK3", 
             "clust": 20, 
-            "cat_0_index": 17, 
             "rank": 28, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 24, 
-            "ini": 37
+            "ini": 37, 
+            "rankvar": 24
           }, 
           {
             "group": [
@@ -10724,13 +10044,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: LRRK2", 
+            "name": "LRRK2", 
             "clust": 26, 
-            "cat_0_index": 18, 
             "rank": 9, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 10, 
-            "ini": 36
+            "ini": 36, 
+            "rankvar": 10
           }, 
           {
             "group": [
@@ -10746,13 +10064,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: UHMK1", 
+            "name": "UHMK1", 
             "clust": 25, 
-            "cat_0_index": 19, 
             "rank": 26, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 14, 
-            "ini": 35
+            "ini": 35, 
+            "rankvar": 14
           }, 
           {
             "group": [
@@ -10768,13 +10084,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: EGFR", 
+            "name": "EGFR", 
             "clust": 13, 
-            "cat_0_index": 1, 
             "rank": 33, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 7, 
-            "ini": 34
+            "ini": 34, 
+            "rankvar": 7
           }, 
           {
             "group": [
@@ -10790,13 +10104,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: STK32A", 
+            "name": "STK32A", 
             "clust": 32, 
-            "cat_0_index": 2, 
             "rank": 36, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 32, 
-            "ini": 33
+            "ini": 33, 
+            "rankvar": 32
           }, 
           {
             "group": [
@@ -10812,13 +10124,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: NRK", 
+            "name": "NRK", 
             "clust": 15, 
-            "cat_0_index": 3, 
             "rank": 35, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 33, 
-            "ini": 32
+            "ini": 32, 
+            "rankvar": 33
           }, 
           {
             "group": [
@@ -10834,13 +10144,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: ERBB2", 
+            "name": "ERBB2", 
             "clust": 34, 
-            "cat_0_index": 20, 
             "rank": 24, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 9, 
-            "ini": 31
+            "ini": 31, 
+            "rankvar": 9
           }, 
           {
             "group": [
@@ -10856,13 +10164,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: ERBB4", 
+            "name": "ERBB4", 
             "clust": 30, 
-            "cat_0_index": 21, 
             "rank": 6, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 2, 
-            "ini": 30
+            "ini": 30, 
+            "rankvar": 2
           }, 
           {
             "group": [
@@ -10878,13 +10184,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: AAK1", 
+            "name": "AAK1", 
             "clust": 36, 
-            "cat_0_index": 22, 
             "rank": 18, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 8, 
-            "ini": 29
+            "ini": 29, 
+            "rankvar": 8
           }, 
           {
             "group": [
@@ -10900,13 +10204,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: SRPK3", 
+            "name": "SRPK3", 
             "clust": 4, 
-            "cat_0_index": 23, 
             "rank": 8, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 15, 
-            "ini": 28
+            "ini": 28, 
+            "rankvar": 15
           }, 
           {
             "group": [
@@ -10922,13 +10224,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: STK39", 
+            "name": "STK39", 
             "clust": 35, 
-            "cat_0_index": 4, 
             "rank": 7, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 4, 
-            "ini": 27
+            "ini": 27, 
+            "rankvar": 4
           }, 
           {
             "group": [
@@ -10944,13 +10244,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: GRK4", 
+            "name": "GRK4", 
             "clust": 3, 
-            "cat_0_index": 24, 
             "rank": 1, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 3, 
-            "ini": 26
+            "ini": 26, 
+            "rankvar": 3
           }, 
           {
             "group": [
@@ -10966,13 +10264,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: TBK1", 
+            "name": "TBK1", 
             "clust": 12, 
-            "cat_0_index": 25, 
             "rank": 34, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 26, 
-            "ini": 25
+            "ini": 25, 
+            "rankvar": 26
           }, 
           {
             "group": [
@@ -10988,13 +10284,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: INSRR", 
+            "name": "INSRR", 
             "clust": 23, 
-            "cat_0_index": 26, 
             "rank": 13, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 5, 
-            "ini": 24
+            "ini": 24, 
+            "rankvar": 5
           }, 
           {
             "group": [
@@ -11010,13 +10304,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: IRAK1", 
+            "name": "IRAK1", 
             "clust": 11, 
-            "cat_0_index": 5, 
             "rank": 20, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 30, 
-            "ini": 23
+            "ini": 23, 
+            "rankvar": 30
           }, 
           {
             "group": [
@@ -11032,13 +10324,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: KDR", 
+            "name": "KDR", 
             "clust": 33, 
-            "cat_0_index": 27, 
             "rank": 19, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 11, 
-            "ini": 22
+            "ini": 22, 
+            "rankvar": 11
           }, 
           {
             "group": [
@@ -11054,13 +10344,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: NPR1", 
+            "name": "NPR1", 
             "clust": 16, 
-            "cat_0_index": 6, 
             "rank": 27, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 29, 
-            "ini": 21
+            "ini": 21, 
+            "rankvar": 29
           }, 
           {
             "group": [
@@ -11076,13 +10364,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: PAK3", 
+            "name": "PAK3", 
             "clust": 9, 
-            "cat_0_index": 28, 
             "rank": 11, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 12, 
-            "ini": 20
+            "ini": 20, 
+            "rankvar": 12
           }, 
           {
             "group": [
@@ -11098,13 +10384,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: PDGFRA", 
+            "name": "PDGFRA", 
             "clust": 7, 
-            "cat_0_index": 7, 
             "rank": 2, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 0, 
-            "ini": 19
+            "ini": 19, 
+            "rankvar": 0
           }, 
           {
             "group": [
@@ -11120,13 +10404,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: PDK4", 
+            "name": "PDK4", 
             "clust": 24, 
-            "cat_0_index": 29, 
             "rank": 22, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 22, 
-            "ini": 18
+            "ini": 18, 
+            "rankvar": 22
           }, 
           {
             "group": [
@@ -11142,13 +10424,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: ULK4", 
+            "name": "ULK4", 
             "clust": 28, 
-            "cat_0_index": 8, 
             "rank": 16, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 19, 
-            "ini": 17
+            "ini": 17, 
+            "rankvar": 19
           }, 
           {
             "group": [
@@ -11164,13 +10444,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: PRKCE", 
+            "name": "PRKCE", 
             "clust": 21, 
-            "cat_0_index": 30, 
             "rank": 14, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 1, 
-            "ini": 16
+            "ini": 16, 
+            "rankvar": 1
           }, 
           {
             "group": [
@@ -11186,13 +10464,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: PRKG2", 
+            "name": "PRKG2", 
             "clust": 2, 
-            "cat_0_index": 31, 
             "rank": 25, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 18, 
-            "ini": 15
+            "ini": 15, 
+            "rankvar": 18
           }, 
           {
             "group": [
@@ -11208,13 +10484,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: MAPK4", 
+            "name": "MAPK4", 
             "clust": 18, 
-            "cat_0_index": 9, 
             "rank": 10, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 16, 
-            "ini": 14
+            "ini": 14, 
+            "rankvar": 16
           }, 
           {
             "group": [
@@ -11230,13 +10504,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: MAPK11", 
+            "name": "MAPK11", 
             "clust": 8, 
-            "cat_0_index": 10, 
             "rank": 17, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 34, 
-            "ini": 13
+            "ini": 13, 
+            "rankvar": 34
           }, 
           {
             "group": [
@@ -11252,13 +10524,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: STK31", 
+            "name": "STK31", 
             "clust": 31, 
-            "cat_0_index": 11, 
             "rank": 37, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 31, 
-            "ini": 12
+            "ini": 12, 
+            "rankvar": 31
           }, 
           {
             "group": [
@@ -11274,13 +10544,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: GRK1", 
+            "name": "GRK1", 
             "clust": 19, 
-            "cat_0_index": 32, 
             "rank": 15, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 23, 
-            "ini": 11
+            "ini": 11, 
+            "rankvar": 23
           }, 
           {
             "group": [
@@ -11296,13 +10564,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: ROS1", 
+            "name": "ROS1", 
             "clust": 37, 
-            "cat_0_index": 12, 
             "rank": 31, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 37, 
-            "ini": 10
+            "ini": 10, 
+            "rankvar": 37
           }, 
           {
             "group": [
@@ -11318,13 +10584,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: MAP2K4", 
+            "name": "MAP2K4", 
             "clust": 10, 
-            "cat_0_index": 13, 
             "rank": 23, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 28, 
-            "ini": 9
+            "ini": 9, 
+            "rankvar": 28
           }, 
           {
             "group": [
@@ -11340,13 +10604,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: SRC", 
+            "name": "SRC", 
             "clust": 27, 
-            "cat_0_index": 14, 
             "rank": 21, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 21, 
-            "ini": 8
+            "ini": 8, 
+            "rankvar": 21
           }, 
           {
             "group": [
@@ -11362,13 +10624,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: TGFBR1", 
+            "name": "TGFBR1", 
             "clust": 17, 
-            "cat_0_index": 15, 
             "rank": 12, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 13, 
-            "ini": 7
+            "ini": 7, 
+            "rankvar": 13
           }, 
           {
             "group": [
@@ -11384,13 +10644,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: CAMK2B", 
+            "name": "CAMK2B", 
             "clust": 5, 
-            "cat_0_index": 33, 
             "rank": 3, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 17, 
-            "ini": 6
+            "ini": 6, 
+            "rankvar": 17
           }, 
           {
             "group": [
@@ -11406,13 +10664,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: STK24", 
+            "name": "STK24", 
             "clust": 6, 
-            "cat_0_index": 16, 
             "rank": 0, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 36, 
-            "ini": 5
+            "ini": 5, 
+            "rankvar": 36
           }, 
           {
             "group": [
@@ -11428,13 +10684,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: DCLK3", 
+            "name": "DCLK3", 
             "clust": 1, 
-            "cat_0_index": 34, 
             "rank": 5, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 25, 
-            "ini": 4
+            "ini": 4, 
+            "rankvar": 25
           }, 
           {
             "group": [
@@ -11450,13 +10704,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: LATS1", 
+            "name": "LATS1", 
             "clust": 22, 
-            "cat_0_index": 35, 
             "rank": 29, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 27, 
-            "ini": 3
+            "ini": 3, 
+            "rankvar": 27
           }, 
           {
             "group": [
@@ -11472,13 +10724,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: NEK9", 
+            "name": "NEK9", 
             "clust": 0, 
-            "cat_0_index": 36, 
             "rank": 4, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 6, 
-            "ini": 2
+            "ini": 2, 
+            "rankvar": 6
           }, 
           {
             "group": [
@@ -11494,13 +10744,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: MYLK3", 
+            "name": "MYLK3", 
             "clust": 29, 
-            "cat_0_index": 37, 
             "rank": 32, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 35, 
-            "ini": 1
+            "ini": 1, 
+            "rankvar": 35
           }
         ], 
         "col_nodes": [
@@ -11518,14 +10766,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1650", 
+            "name": "Col-1", 
             "clust": 12, 
-            "cat_1_index": 10, 
-            "cat_0_index": 24, 
             "rank": 6, 
-            "cat-1": "Gender: Male", 
             "ini": 29, 
-            "cat-0": "Category: two", 
             "rankvar": 4
           }, 
           {
@@ -11542,14 +10786,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H23", 
+            "name": "Col-2", 
             "clust": 2, 
-            "cat_1_index": 11, 
-            "cat_0_index": 25, 
             "rank": 17, 
-            "cat-1": "Gender: Male", 
             "ini": 28, 
-            "cat-0": "Category: two", 
             "rankvar": 8
           }, 
           {
@@ -11566,14 +10806,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: CAL-12T", 
+            "name": "Col-3", 
             "clust": 4, 
-            "cat_1_index": 12, 
-            "cat_0_index": 26, 
             "rank": 10, 
-            "cat-1": "Gender: Male", 
             "ini": 27, 
-            "cat-0": "Category: two", 
             "rankvar": 19
           }, 
           {
@@ -11590,14 +10826,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H358", 
+            "name": "Col-4", 
             "clust": 25, 
-            "cat_1_index": 13, 
-            "cat_0_index": 13, 
             "rank": 4, 
-            "cat-1": "Gender: Male", 
             "ini": 26, 
-            "cat-0": "Category: one", 
             "rankvar": 0
           }, 
           {
@@ -11614,14 +10846,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1975", 
+            "name": "Col-5", 
             "clust": 22, 
-            "cat_1_index": 0, 
-            "cat_0_index": 27, 
             "rank": 0, 
-            "cat-1": "Gender: Female", 
             "ini": 25, 
-            "cat-0": "Category: two", 
             "rankvar": 24
           }, 
           {
@@ -11638,14 +10866,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: HCC15", 
+            "name": "Col-6", 
             "clust": 1, 
-            "cat_1_index": 14, 
-            "cat_0_index": 28, 
             "rank": 24, 
-            "cat-1": "Gender: Male", 
             "ini": 24, 
-            "cat-0": "Category: two", 
             "rankvar": 20
           }, 
           {
@@ -11662,14 +10886,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1355", 
+            "name": "Col-7", 
             "clust": 5, 
-            "cat_1_index": 15, 
-            "cat_0_index": 19, 
             "rank": 9, 
-            "cat-1": "Gender: Male", 
             "ini": 23, 
-            "cat-0": "Category: three", 
             "rankvar": 6
           }, 
           {
@@ -11686,14 +10906,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: HCC827", 
+            "name": "Col-8", 
             "clust": 23, 
-            "cat_1_index": 1, 
-            "cat_0_index": 14, 
             "rank": 28, 
-            "cat-1": "Gender: Female", 
             "ini": 22, 
-            "cat-0": "Category: one", 
             "rankvar": 25
           }, 
           {
@@ -11710,14 +10926,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H2405", 
+            "name": "Col-9", 
             "clust": 20, 
-            "cat_1_index": 16, 
-            "cat_0_index": 0, 
             "rank": 1, 
-            "cat-1": "Gender: Male", 
             "ini": 21, 
-            "cat-0": "Category: five", 
             "rankvar": 12
           }, 
           {
@@ -11734,14 +10946,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: HCC78", 
+            "name": "Col-10", 
             "clust": 21, 
-            "cat_1_index": 17, 
-            "cat_0_index": 1, 
             "rank": 25, 
-            "cat-1": "Gender: Male", 
             "ini": 20, 
-            "cat-0": "Category: five", 
             "rankvar": 27
           }, 
           {
@@ -11758,14 +10966,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1666", 
+            "name": "Col-11", 
             "clust": 7, 
-            "cat_1_index": 2, 
-            "cat_0_index": 6, 
             "rank": 18, 
-            "cat-1": "Gender: Female", 
             "ini": 19, 
-            "cat-0": "Category: four", 
             "rankvar": 15
           }, 
           {
@@ -11782,14 +10986,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H661", 
+            "name": "Col-12", 
             "clust": 16, 
-            "cat_1_index": 18, 
-            "cat_0_index": 2, 
             "rank": 3, 
-            "cat-1": "Gender: Male", 
             "ini": 18, 
-            "cat-0": "Category: five", 
             "rankvar": 26
           }, 
           {
@@ -11806,14 +11006,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H838", 
+            "name": "Col-13", 
             "clust": 17, 
-            "cat_1_index": 19, 
-            "cat_0_index": 3, 
             "rank": 7, 
-            "cat-1": "Gender: Male", 
             "ini": 17, 
-            "cat-0": "Category: five", 
             "rankvar": 23
           }, 
           {
@@ -11830,14 +11026,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1703", 
+            "name": "Col-14", 
             "clust": 14, 
-            "cat_1_index": 20, 
-            "cat_0_index": 4, 
             "rank": 11, 
-            "cat-1": "Gender: Male", 
             "ini": 16, 
-            "cat-0": "Category: five", 
             "rankvar": 21
           }, 
           {
@@ -11854,14 +11046,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: CALU-3", 
+            "name": "Col-15", 
             "clust": 19, 
-            "cat_1_index": 21, 
-            "cat_0_index": 7, 
             "rank": 8, 
-            "cat-1": "Gender: Male", 
             "ini": 15, 
-            "cat-0": "Category: four", 
             "rankvar": 7
           }, 
           {
@@ -11878,14 +11066,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H2342", 
+            "name": "Col-16", 
             "clust": 18, 
-            "cat_1_index": 3, 
-            "cat_0_index": 8, 
             "rank": 26, 
-            "cat-1": "Gender: Female", 
             "ini": 14, 
-            "cat-0": "Category: four", 
             "rankvar": 22
           }, 
           {
@@ -11902,14 +11086,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H2228", 
+            "name": "Col-17", 
             "clust": 26, 
-            "cat_1_index": 4, 
-            "cat_0_index": 15, 
             "rank": 2, 
-            "cat-1": "Gender: Female", 
             "ini": 13, 
-            "cat-0": "Category: one", 
             "rankvar": 5
           }, 
           {
@@ -11926,14 +11106,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1299", 
+            "name": "Col-18", 
             "clust": 15, 
-            "cat_1_index": 22, 
-            "cat_0_index": 20, 
             "rank": 12, 
-            "cat-1": "Gender: Male", 
             "ini": 12, 
-            "cat-0": "Category: three", 
             "rankvar": 1
           }, 
           {
@@ -11950,14 +11126,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1792", 
+            "name": "Col-19", 
             "clust": 10, 
-            "cat_1_index": 23, 
-            "cat_0_index": 21, 
             "rank": 20, 
-            "cat-1": "Gender: Male", 
             "ini": 11, 
-            "cat-0": "Category: three", 
             "rankvar": 9
           }, 
           {
@@ -11974,14 +11146,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H460", 
+            "name": "Col-20", 
             "clust": 11, 
-            "cat_1_index": 24, 
-            "cat_0_index": 22, 
             "rank": 5, 
-            "cat-1": "Gender: Male", 
             "ini": 10, 
-            "cat-0": "Category: three", 
             "rankvar": 11
           }, 
           {
@@ -11998,14 +11166,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H2106", 
+            "name": "Col-21", 
             "clust": 0, 
-            "cat_1_index": 25, 
-            "cat_0_index": 9, 
             "rank": 22, 
-            "cat-1": "Gender: Male", 
             "ini": 9, 
-            "cat-0": "Category: four", 
             "rankvar": 28
           }, 
           {
@@ -12022,14 +11186,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H441", 
+            "name": "Col-22", 
             "clust": 27, 
-            "cat_1_index": 26, 
-            "cat_0_index": 16, 
             "rank": 27, 
-            "cat-1": "Gender: Male", 
             "ini": 8, 
-            "cat-0": "Category: one", 
             "rankvar": 14
           }, 
           {
@@ -12046,14 +11206,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1944", 
+            "name": "Col-23", 
             "clust": 8, 
-            "cat_1_index": 5, 
-            "cat_0_index": 23, 
             "rank": 23, 
-            "cat-1": "Gender: Female", 
             "ini": 7, 
-            "cat-0": "Category: three", 
             "rankvar": 10
           }, 
           {
@@ -12070,14 +11226,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1437", 
+            "name": "Col-24", 
             "clust": 6, 
-            "cat_1_index": 27, 
-            "cat_0_index": 10, 
             "rank": 16, 
-            "cat-1": "Gender: Male", 
             "ini": 6, 
-            "cat-0": "Category: four", 
             "rankvar": 17
           }, 
           {
@@ -12094,14 +11246,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1734", 
+            "name": "Col-25", 
             "clust": 24, 
-            "cat_1_index": 6, 
-            "cat_0_index": 17, 
             "rank": 19, 
-            "cat-1": "Gender: Female", 
             "ini": 5, 
-            "cat-0": "Category: one", 
             "rankvar": 18
           }, 
           {
@@ -12118,14 +11266,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: LOU-NH91", 
+            "name": "Col-26", 
             "clust": 13, 
-            "cat_1_index": 7, 
-            "cat_0_index": 5, 
             "rank": 15, 
-            "cat-1": "Gender: Female", 
             "ini": 4, 
-            "cat-0": "Category: five", 
             "rankvar": 16
           }, 
           {
@@ -12142,14 +11286,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: HCC44", 
+            "name": "Col-27", 
             "clust": 3, 
-            "cat_1_index": 8, 
-            "cat_0_index": 11, 
             "rank": 14, 
-            "cat-1": "Gender: Female", 
             "ini": 3, 
-            "cat-0": "Category: four", 
             "rankvar": 2
           }, 
           {
@@ -12166,14 +11306,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: A549", 
+            "name": "Col-28", 
             "clust": 9, 
-            "cat_1_index": 28, 
-            "cat_0_index": 12, 
             "rank": 21, 
-            "cat-1": "Gender: Male", 
             "ini": 2, 
-            "cat-0": "Category: four", 
             "rankvar": 3
           }, 
           {
@@ -12190,14 +11326,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1781", 
+            "name": "Col-29", 
             "clust": 28, 
-            "cat_1_index": 9, 
-            "cat_0_index": 18, 
             "rank": 13, 
-            "cat-1": "Gender: Female", 
             "ini": 1, 
-            "cat-0": "Category: one", 
             "rankvar": 13
           }
         ]
@@ -12222,13 +11354,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: ROS1", 
+            "name": "ROS1", 
             "clust": 17, 
-            "cat_0_index": 0, 
             "rank": 14, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 19, 
-            "ini": 20
+            "ini": 20, 
+            "rankvar": 19
           }, 
           {
             "group": [
@@ -12244,13 +11374,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: STK24", 
+            "name": "STK24", 
             "clust": 0, 
-            "cat_0_index": 1, 
             "rank": 0, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 18, 
-            "ini": 19
+            "ini": 19, 
+            "rankvar": 18
           }, 
           {
             "group": [
@@ -12266,13 +11394,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: MYLK3", 
+            "name": "MYLK3", 
             "clust": 2, 
-            "cat_0_index": 12, 
             "rank": 15, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 17, 
-            "ini": 18
+            "ini": 18, 
+            "rankvar": 17
           }, 
           {
             "group": [
@@ -12288,13 +11414,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: MAPK11", 
+            "name": "MAPK11", 
             "clust": 1, 
-            "cat_0_index": 2, 
             "rank": 4, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 16, 
-            "ini": 17
+            "ini": 17, 
+            "rankvar": 16
           }, 
           {
             "group": [
@@ -12310,13 +11434,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: NRK", 
+            "name": "NRK", 
             "clust": 8, 
-            "cat_0_index": 3, 
             "rank": 17, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 15, 
-            "ini": 16
+            "ini": 16, 
+            "rankvar": 15
           }, 
           {
             "group": [
@@ -12332,13 +11454,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: STK32A", 
+            "name": "STK32A", 
             "clust": 5, 
-            "cat_0_index": 4, 
             "rank": 18, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 14, 
-            "ini": 15
+            "ini": 15, 
+            "rankvar": 14
           }, 
           {
             "group": [
@@ -12354,13 +11474,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: STK31", 
+            "name": "STK31", 
             "clust": 6, 
-            "cat_0_index": 5, 
             "rank": 19, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 13, 
-            "ini": 14
+            "ini": 14, 
+            "rankvar": 13
           }, 
           {
             "group": [
@@ -12376,13 +11494,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: IRAK1", 
+            "name": "IRAK1", 
             "clust": 14, 
-            "cat_0_index": 6, 
             "rank": 5, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 12, 
-            "ini": 13
+            "ini": 13, 
+            "rankvar": 12
           }, 
           {
             "group": [
@@ -12398,13 +11514,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: NPR1", 
+            "name": "NPR1", 
             "clust": 18, 
-            "cat_0_index": 7, 
             "rank": 10, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 11, 
-            "ini": 12
+            "ini": 12, 
+            "rankvar": 11
           }, 
           {
             "group": [
@@ -12420,13 +11534,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: MAP2K4", 
+            "name": "MAP2K4", 
             "clust": 4, 
-            "cat_0_index": 8, 
             "rank": 8, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 10, 
-            "ini": 11
+            "ini": 11, 
+            "rankvar": 10
           }, 
           {
             "group": [
@@ -12442,13 +11554,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: LATS1", 
+            "name": "LATS1", 
             "clust": 12, 
-            "cat_0_index": 13, 
             "rank": 12, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 9, 
-            "ini": 10
+            "ini": 10, 
+            "rankvar": 9
           }, 
           {
             "group": [
@@ -12464,13 +11574,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: TBK1", 
+            "name": "TBK1", 
             "clust": 7, 
-            "cat_0_index": 14, 
             "rank": 16, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 8, 
-            "ini": 9
+            "ini": 9, 
+            "rankvar": 8
           }, 
           {
             "group": [
@@ -12486,13 +11594,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: DCLK3", 
+            "name": "DCLK3", 
             "clust": 10, 
-            "cat_0_index": 15, 
             "rank": 1, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 7, 
-            "ini": 8
+            "ini": 8, 
+            "rankvar": 7
           }, 
           {
             "group": [
@@ -12508,13 +11614,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: LMTK3", 
+            "name": "LMTK3", 
             "clust": 19, 
-            "cat_0_index": 16, 
             "rank": 11, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 6, 
-            "ini": 7
+            "ini": 7, 
+            "rankvar": 6
           }, 
           {
             "group": [
@@ -12530,13 +11634,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: GRK1", 
+            "name": "GRK1", 
             "clust": 15, 
-            "cat_0_index": 17, 
             "rank": 2, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 5, 
-            "ini": 6
+            "ini": 6, 
+            "rankvar": 5
           }, 
           {
             "group": [
@@ -12552,13 +11654,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: PDK4", 
+            "name": "PDK4", 
             "clust": 13, 
-            "cat_0_index": 18, 
             "rank": 7, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 4, 
-            "ini": 5
+            "ini": 5, 
+            "rankvar": 4
           }, 
           {
             "group": [
@@ -12574,13 +11674,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: SRC", 
+            "name": "SRC", 
             "clust": 16, 
-            "cat_0_index": 9, 
             "rank": 6, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 3, 
-            "ini": 4
+            "ini": 4, 
+            "rankvar": 3
           }, 
           {
             "group": [
@@ -12596,13 +11694,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: CDK4", 
+            "name": "CDK4", 
             "clust": 9, 
-            "cat_0_index": 10, 
             "rank": 13, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 2, 
-            "ini": 3
+            "ini": 3, 
+            "rankvar": 2
           }, 
           {
             "group": [
@@ -12618,13 +11714,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: ULK4", 
+            "name": "ULK4", 
             "clust": 3, 
-            "cat_0_index": 11, 
             "rank": 3, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 1, 
-            "ini": 2
+            "ini": 2, 
+            "rankvar": 1
           }, 
           {
             "group": [
@@ -12640,13 +11734,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: PRKG2", 
+            "name": "PRKG2", 
             "clust": 11, 
-            "cat_0_index": 19, 
             "rank": 9, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 0, 
-            "ini": 1
+            "ini": 1, 
+            "rankvar": 0
           }
         ], 
         "col_nodes": [
@@ -12664,14 +11756,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1650", 
+            "name": "Col-1", 
             "clust": 0, 
-            "cat_1_index": 10, 
-            "cat_0_index": 24, 
             "rank": 2, 
-            "cat-1": "Gender: Male", 
             "ini": 29, 
-            "cat-0": "Category: two", 
             "rankvar": 2
           }, 
           {
@@ -12688,14 +11776,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H23", 
+            "name": "Col-2", 
             "clust": 8, 
-            "cat_1_index": 11, 
-            "cat_0_index": 25, 
             "rank": 24, 
-            "cat-1": "Gender: Male", 
             "ini": 28, 
-            "cat-0": "Category: two", 
             "rankvar": 13
           }, 
           {
@@ -12712,14 +11796,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: CAL-12T", 
+            "name": "Col-3", 
             "clust": 17, 
-            "cat_1_index": 12, 
-            "cat_0_index": 26, 
             "rank": 10, 
-            "cat-1": "Gender: Male", 
             "ini": 27, 
-            "cat-0": "Category: two", 
             "rankvar": 15
           }, 
           {
@@ -12736,14 +11816,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H358", 
+            "name": "Col-4", 
             "clust": 18, 
-            "cat_1_index": 13, 
-            "cat_0_index": 13, 
             "rank": 8, 
-            "cat-1": "Gender: Male", 
             "ini": 26, 
-            "cat-0": "Category: one", 
             "rankvar": 3
           }, 
           {
@@ -12760,14 +11836,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1975", 
+            "name": "Col-5", 
             "clust": 23, 
-            "cat_1_index": 0, 
-            "cat_0_index": 27, 
             "rank": 0, 
-            "cat-1": "Gender: Female", 
             "ini": 25, 
-            "cat-0": "Category: two", 
             "rankvar": 26
           }, 
           {
@@ -12784,14 +11856,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: HCC15", 
+            "name": "Col-6", 
             "clust": 7, 
-            "cat_1_index": 14, 
-            "cat_0_index": 28, 
             "rank": 22, 
-            "cat-1": "Gender: Male", 
             "ini": 24, 
-            "cat-0": "Category: two", 
             "rankvar": 21
           }, 
           {
@@ -12808,14 +11876,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1355", 
+            "name": "Col-7", 
             "clust": 15, 
-            "cat_1_index": 15, 
-            "cat_0_index": 19, 
             "rank": 9, 
-            "cat-1": "Gender: Male", 
             "ini": 23, 
-            "cat-0": "Category: three", 
             "rankvar": 11
           }, 
           {
@@ -12832,14 +11896,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: HCC827", 
+            "name": "Col-8", 
             "clust": 24, 
-            "cat_1_index": 1, 
-            "cat_0_index": 14, 
             "rank": 28, 
-            "cat-1": "Gender: Female", 
             "ini": 22, 
-            "cat-0": "Category: one", 
             "rankvar": 25
           }, 
           {
@@ -12856,14 +11916,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H2405", 
+            "name": "Col-9", 
             "clust": 21, 
-            "cat_1_index": 16, 
-            "cat_0_index": 0, 
             "rank": 1, 
-            "cat-1": "Gender: Male", 
             "ini": 21, 
-            "cat-0": "Category: five", 
             "rankvar": 17
           }, 
           {
@@ -12880,14 +11936,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: HCC78", 
+            "name": "Col-10", 
             "clust": 22, 
-            "cat_1_index": 17, 
-            "cat_0_index": 1, 
             "rank": 26, 
-            "cat-1": "Gender: Male", 
             "ini": 20, 
-            "cat-0": "Category: five", 
             "rankvar": 28
           }, 
           {
@@ -12904,14 +11956,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1666", 
+            "name": "Col-11", 
             "clust": 19, 
-            "cat_1_index": 2, 
-            "cat_0_index": 6, 
             "rank": 6, 
-            "cat-1": "Gender: Female", 
             "ini": 19, 
-            "cat-0": "Category: four", 
             "rankvar": 8
           }, 
           {
@@ -12928,14 +11976,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H661", 
+            "name": "Col-12", 
             "clust": 4, 
-            "cat_1_index": 18, 
-            "cat_0_index": 2, 
             "rank": 7, 
-            "cat-1": "Gender: Male", 
             "ini": 18, 
-            "cat-0": "Category: five", 
             "rankvar": 27
           }, 
           {
@@ -12952,14 +11996,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H838", 
+            "name": "Col-13", 
             "clust": 5, 
-            "cat_1_index": 19, 
-            "cat_0_index": 3, 
             "rank": 20, 
-            "cat-1": "Gender: Male", 
             "ini": 17, 
-            "cat-0": "Category: five", 
             "rankvar": 23
           }, 
           {
@@ -12976,14 +12016,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1703", 
+            "name": "Col-14", 
             "clust": 2, 
-            "cat_1_index": 20, 
-            "cat_0_index": 4, 
             "rank": 17, 
-            "cat-1": "Gender: Male", 
             "ini": 16, 
-            "cat-0": "Category: five", 
             "rankvar": 19
           }, 
           {
@@ -13000,14 +12036,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: CALU-3", 
+            "name": "Col-15", 
             "clust": 20, 
-            "cat_1_index": 21, 
-            "cat_0_index": 7, 
             "rank": 3, 
-            "cat-1": "Gender: Male", 
             "ini": 15, 
-            "cat-0": "Category: four", 
             "rankvar": 1
           }, 
           {
@@ -13024,14 +12056,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H2342", 
+            "name": "Col-16", 
             "clust": 6, 
-            "cat_1_index": 3, 
-            "cat_0_index": 8, 
             "rank": 27, 
-            "cat-1": "Gender: Female", 
             "ini": 14, 
-            "cat-0": "Category: four", 
             "rankvar": 24
           }, 
           {
@@ -13048,14 +12076,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H2228", 
+            "name": "Col-17", 
             "clust": 26, 
-            "cat_1_index": 4, 
-            "cat_0_index": 15, 
             "rank": 4, 
-            "cat-1": "Gender: Female", 
             "ini": 13, 
-            "cat-0": "Category: one", 
             "rankvar": 9
           }, 
           {
@@ -13072,14 +12096,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1299", 
+            "name": "Col-18", 
             "clust": 3, 
-            "cat_1_index": 22, 
-            "cat_0_index": 20, 
             "rank": 13, 
-            "cat-1": "Gender: Male", 
             "ini": 12, 
-            "cat-0": "Category: three", 
             "rankvar": 4
           }, 
           {
@@ -13096,14 +12116,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1792", 
+            "name": "Col-19", 
             "clust": 11, 
-            "cat_1_index": 23, 
-            "cat_0_index": 21, 
             "rank": 12, 
-            "cat-1": "Gender: Male", 
             "ini": 11, 
-            "cat-0": "Category: three", 
             "rankvar": 14
           }, 
           {
@@ -13120,14 +12136,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H460", 
+            "name": "Col-20", 
             "clust": 12, 
-            "cat_1_index": 24, 
-            "cat_0_index": 22, 
             "rank": 5, 
-            "cat-1": "Gender: Male", 
             "ini": 10, 
-            "cat-0": "Category: three", 
             "rankvar": 7
           }, 
           {
@@ -13144,14 +12156,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H2106", 
+            "name": "Col-21", 
             "clust": 14, 
-            "cat_1_index": 25, 
-            "cat_0_index": 9, 
             "rank": 14, 
-            "cat-1": "Gender: Male", 
             "ini": 9, 
-            "cat-0": "Category: four", 
             "rankvar": 18
           }, 
           {
@@ -13168,14 +12176,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H441", 
+            "name": "Col-22", 
             "clust": 27, 
-            "cat_1_index": 26, 
-            "cat_0_index": 16, 
             "rank": 25, 
-            "cat-1": "Gender: Male", 
             "ini": 8, 
-            "cat-0": "Category: one", 
             "rankvar": 10
           }, 
           {
@@ -13192,14 +12196,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1944", 
+            "name": "Col-23", 
             "clust": 10, 
-            "cat_1_index": 5, 
-            "cat_0_index": 23, 
             "rank": 23, 
-            "cat-1": "Gender: Female", 
             "ini": 7, 
-            "cat-0": "Category: three", 
             "rankvar": 5
           }, 
           {
@@ -13216,14 +12216,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1437", 
+            "name": "Col-24", 
             "clust": 16, 
-            "cat_1_index": 27, 
-            "cat_0_index": 10, 
             "rank": 15, 
-            "cat-1": "Gender: Male", 
             "ini": 6, 
-            "cat-0": "Category: four", 
             "rankvar": 20
           }, 
           {
@@ -13240,14 +12236,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1734", 
+            "name": "Col-25", 
             "clust": 25, 
-            "cat_1_index": 6, 
-            "cat_0_index": 17, 
             "rank": 18, 
-            "cat-1": "Gender: Female", 
             "ini": 5, 
-            "cat-0": "Category: one", 
             "rankvar": 22
           }, 
           {
@@ -13264,14 +12256,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: LOU-NH91", 
+            "name": "Col-26", 
             "clust": 1, 
-            "cat_1_index": 7, 
-            "cat_0_index": 5, 
             "rank": 19, 
-            "cat-1": "Gender: Female", 
             "ini": 4, 
-            "cat-0": "Category: five", 
             "rankvar": 12
           }, 
           {
@@ -13288,14 +12276,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: HCC44", 
+            "name": "Col-27", 
             "clust": 9, 
-            "cat_1_index": 8, 
-            "cat_0_index": 11, 
             "rank": 11, 
-            "cat-1": "Gender: Female", 
             "ini": 3, 
-            "cat-0": "Category: four", 
             "rankvar": 0
           }, 
           {
@@ -13312,14 +12296,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: A549", 
+            "name": "Col-28", 
             "clust": 13, 
-            "cat_1_index": 28, 
-            "cat_0_index": 12, 
             "rank": 21, 
-            "cat-1": "Gender: Male", 
             "ini": 2, 
-            "cat-0": "Category: four", 
             "rankvar": 6
           }, 
           {
@@ -13336,14 +12316,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1781", 
+            "name": "Col-29", 
             "clust": 28, 
-            "cat_1_index": 9, 
-            "cat_0_index": 18, 
             "rank": 16, 
-            "cat-1": "Gender: Female", 
             "ini": 1, 
-            "cat-0": "Category: one", 
             "rankvar": 16
           }
         ]
@@ -13368,13 +12344,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: ROS1", 
+            "name": "ROS1", 
             "clust": 3, 
-            "cat_0_index": 0, 
             "rank": 5, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 9, 
-            "ini": 10
+            "ini": 10, 
+            "rankvar": 9
           }, 
           {
             "group": [
@@ -13390,13 +12364,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: STK24", 
+            "name": "STK24", 
             "clust": 0, 
-            "cat_0_index": 1, 
             "rank": 0, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 8, 
-            "ini": 9
+            "ini": 9, 
+            "rankvar": 8
           }, 
           {
             "group": [
@@ -13412,13 +12384,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: MYLK3", 
+            "name": "MYLK3", 
             "clust": 5, 
-            "cat_0_index": 9, 
             "rank": 6, 
-            "cat-0": "Gene Type: Not Interesting", 
-            "rankvar": 7, 
-            "ini": 8
+            "ini": 8, 
+            "rankvar": 7
           }, 
           {
             "group": [
@@ -13434,13 +12404,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: MAPK11", 
+            "name": "MAPK11", 
             "clust": 1, 
-            "cat_0_index": 2, 
             "rank": 1, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 6, 
-            "ini": 7
+            "ini": 7, 
+            "rankvar": 6
           }, 
           {
             "group": [
@@ -13456,13 +12424,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: NRK", 
+            "name": "NRK", 
             "clust": 7, 
-            "cat_0_index": 3, 
             "rank": 7, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 5, 
-            "ini": 6
+            "ini": 6, 
+            "rankvar": 5
           }, 
           {
             "group": [
@@ -13478,13 +12444,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: STK32A", 
+            "name": "STK32A", 
             "clust": 8, 
-            "cat_0_index": 4, 
             "rank": 8, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 4, 
-            "ini": 5
+            "ini": 5, 
+            "rankvar": 4
           }, 
           {
             "group": [
@@ -13500,13 +12464,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: STK31", 
+            "name": "STK31", 
             "clust": 9, 
-            "cat_0_index": 5, 
             "rank": 9, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 3, 
-            "ini": 4
+            "ini": 4, 
+            "rankvar": 3
           }, 
           {
             "group": [
@@ -13522,13 +12484,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: IRAK1", 
+            "name": "IRAK1", 
             "clust": 4, 
-            "cat_0_index": 6, 
             "rank": 2, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 2, 
-            "ini": 3
+            "ini": 3, 
+            "rankvar": 2
           }, 
           {
             "group": [
@@ -13544,13 +12504,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: NPR1", 
+            "name": "NPR1", 
             "clust": 2, 
-            "cat_0_index": 7, 
             "rank": 4, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 1, 
-            "ini": 2
+            "ini": 2, 
+            "rankvar": 1
           }, 
           {
             "group": [
@@ -13566,13 +12524,11 @@
               1.0, 
               1.0
             ], 
-            "name": "Gene: MAP2K4", 
+            "name": "MAP2K4", 
             "clust": 6, 
-            "cat_0_index": 8, 
             "rank": 3, 
-            "cat-0": "Gene Type: Interesting", 
-            "rankvar": 0, 
-            "ini": 1
+            "ini": 1, 
+            "rankvar": 0
           }
         ], 
         "col_nodes": [
@@ -13590,14 +12546,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1650", 
+            "name": "Col-1", 
             "clust": 0, 
-            "cat_1_index": 10, 
-            "cat_0_index": 24, 
             "rank": 17, 
-            "cat-1": "Gender: Male", 
             "ini": 29, 
-            "cat-0": "Category: two", 
             "rankvar": 9
           }, 
           {
@@ -13614,14 +12566,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H23", 
+            "name": "Col-2", 
             "clust": 10, 
-            "cat_1_index": 11, 
-            "cat_0_index": 25, 
             "rank": 9, 
-            "cat-1": "Gender: Male", 
             "ini": 28, 
-            "cat-0": "Category: two", 
             "rankvar": 5
           }, 
           {
@@ -13638,14 +12586,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: CAL-12T", 
+            "name": "Col-3", 
             "clust": 11, 
-            "cat_1_index": 12, 
-            "cat_0_index": 26, 
             "rank": 11, 
-            "cat-1": "Gender: Male", 
             "ini": 27, 
-            "cat-0": "Category: two", 
             "rankvar": 2
           }, 
           {
@@ -13662,14 +12606,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H358", 
+            "name": "Col-4", 
             "clust": 21, 
-            "cat_1_index": 13, 
-            "cat_0_index": 13, 
             "rank": 13, 
-            "cat-1": "Gender: Male", 
             "ini": 26, 
-            "cat-0": "Category: one", 
             "rankvar": 3
           }, 
           {
@@ -13686,14 +12626,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1975", 
+            "name": "Col-5", 
             "clust": 27, 
-            "cat_1_index": 0, 
-            "cat_0_index": 27, 
             "rank": 0, 
-            "cat-1": "Gender: Female", 
             "ini": 25, 
-            "cat-0": "Category: two", 
             "rankvar": 27
           }, 
           {
@@ -13710,14 +12646,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: HCC15", 
+            "name": "Col-6", 
             "clust": 28, 
-            "cat_1_index": 14, 
-            "cat_0_index": 28, 
             "rank": 1, 
-            "cat-1": "Gender: Male", 
             "ini": 24, 
-            "cat-0": "Category: two", 
             "rankvar": 1
           }, 
           {
@@ -13734,14 +12666,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1355", 
+            "name": "Col-7", 
             "clust": 7, 
-            "cat_1_index": 15, 
-            "cat_0_index": 19, 
             "rank": 8, 
-            "cat-1": "Gender: Male", 
             "ini": 23, 
-            "cat-0": "Category: three", 
             "rankvar": 17
           }, 
           {
@@ -13758,14 +12686,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: HCC827", 
+            "name": "Col-8", 
             "clust": 22, 
-            "cat_1_index": 1, 
-            "cat_0_index": 14, 
             "rank": 25, 
-            "cat-1": "Gender: Female", 
             "ini": 22, 
-            "cat-0": "Category: one", 
             "rankvar": 24
           }, 
           {
@@ -13782,14 +12706,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H2405", 
+            "name": "Col-9", 
             "clust": 13, 
-            "cat_1_index": 16, 
-            "cat_0_index": 0, 
             "rank": 3, 
-            "cat-1": "Gender: Male", 
             "ini": 21, 
-            "cat-0": "Category: five", 
             "rankvar": 19
           }, 
           {
@@ -13806,14 +12726,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: HCC78", 
+            "name": "Col-10", 
             "clust": 12, 
-            "cat_1_index": 17, 
-            "cat_0_index": 1, 
             "rank": 28, 
-            "cat-1": "Gender: Male", 
             "ini": 20, 
-            "cat-0": "Category: five", 
             "rankvar": 28
           }, 
           {
@@ -13830,14 +12746,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1666", 
+            "name": "Col-11", 
             "clust": 14, 
-            "cat_1_index": 2, 
-            "cat_0_index": 6, 
             "rank": 4, 
-            "cat-1": "Gender: Female", 
             "ini": 19, 
-            "cat-0": "Category: four", 
             "rankvar": 8
           }, 
           {
@@ -13854,14 +12766,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H661", 
+            "name": "Col-12", 
             "clust": 15, 
-            "cat_1_index": 18, 
-            "cat_0_index": 2, 
             "rank": 18, 
-            "cat-1": "Gender: Male", 
             "ini": 18, 
-            "cat-0": "Category: five", 
             "rankvar": 26
           }, 
           {
@@ -13878,14 +12786,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H838", 
+            "name": "Col-13", 
             "clust": 16, 
-            "cat_1_index": 19, 
-            "cat_0_index": 3, 
             "rank": 19, 
-            "cat-1": "Gender: Male", 
             "ini": 17, 
-            "cat-0": "Category: five", 
             "rankvar": 23
           }, 
           {
@@ -13902,14 +12806,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1703", 
+            "name": "Col-14", 
             "clust": 2, 
-            "cat_1_index": 20, 
-            "cat_0_index": 4, 
             "rank": 21, 
-            "cat-1": "Gender: Male", 
             "ini": 16, 
-            "cat-0": "Category: five", 
             "rankvar": 21
           }, 
           {
@@ -13926,14 +12826,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: CALU-3", 
+            "name": "Col-15", 
             "clust": 24, 
-            "cat_1_index": 21, 
-            "cat_0_index": 7, 
             "rank": 5, 
-            "cat-1": "Gender: Male", 
             "ini": 15, 
-            "cat-0": "Category: four", 
             "rankvar": 7
           }, 
           {
@@ -13950,14 +12846,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H2342", 
+            "name": "Col-16", 
             "clust": 17, 
-            "cat_1_index": 3, 
-            "cat_0_index": 8, 
             "rank": 27, 
-            "cat-1": "Gender: Female", 
             "ini": 14, 
-            "cat-0": "Category: four", 
             "rankvar": 25
           }, 
           {
@@ -13974,14 +12866,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H2228", 
+            "name": "Col-17", 
             "clust": 19, 
-            "cat_1_index": 4, 
-            "cat_0_index": 15, 
             "rank": 16, 
-            "cat-1": "Gender: Female", 
             "ini": 13, 
-            "cat-0": "Category: one", 
             "rankvar": 16
           }, 
           {
@@ -13998,14 +12886,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1299", 
+            "name": "Col-18", 
             "clust": 1, 
-            "cat_1_index": 22, 
-            "cat_0_index": 20, 
             "rank": 10, 
-            "cat-1": "Gender: Male", 
             "ini": 12, 
-            "cat-0": "Category: three", 
             "rankvar": 11
           }, 
           {
@@ -14022,14 +12906,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1792", 
+            "name": "Col-19", 
             "clust": 26, 
-            "cat_1_index": 23, 
-            "cat_0_index": 21, 
             "rank": 2, 
-            "cat-1": "Gender: Male", 
             "ini": 11, 
-            "cat-0": "Category: three", 
             "rankvar": 10
           }, 
           {
@@ -14046,14 +12926,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H460", 
+            "name": "Col-20", 
             "clust": 8, 
-            "cat_1_index": 24, 
-            "cat_0_index": 22, 
             "rank": 7, 
-            "cat-1": "Gender: Male", 
             "ini": 10, 
-            "cat-0": "Category: three", 
             "rankvar": 13
           }, 
           {
@@ -14070,14 +12946,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H2106", 
+            "name": "Col-21", 
             "clust": 25, 
-            "cat_1_index": 25, 
-            "cat_0_index": 9, 
             "rank": 6, 
-            "cat-1": "Gender: Male", 
             "ini": 9, 
-            "cat-0": "Category: four", 
             "rankvar": 12
           }, 
           {
@@ -14094,14 +12966,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H441", 
+            "name": "Col-22", 
             "clust": 18, 
-            "cat_1_index": 26, 
-            "cat_0_index": 16, 
             "rank": 26, 
-            "cat-1": "Gender: Male", 
             "ini": 8, 
-            "cat-0": "Category: one", 
             "rankvar": 15
           }, 
           {
@@ -14118,14 +12986,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1944", 
+            "name": "Col-23", 
             "clust": 5, 
-            "cat_1_index": 5, 
-            "cat_0_index": 23, 
             "rank": 14, 
-            "cat-1": "Gender: Female", 
             "ini": 7, 
-            "cat-0": "Category: three", 
             "rankvar": 4
           }, 
           {
@@ -14142,14 +13006,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1437", 
+            "name": "Col-24", 
             "clust": 9, 
-            "cat_1_index": 27, 
-            "cat_0_index": 10, 
             "rank": 20, 
-            "cat-1": "Gender: Male", 
             "ini": 6, 
-            "cat-0": "Category: four", 
             "rankvar": 22
           }, 
           {
@@ -14166,14 +13026,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1734", 
+            "name": "Col-25", 
             "clust": 23, 
-            "cat_1_index": 6, 
-            "cat_0_index": 17, 
             "rank": 23, 
-            "cat-1": "Gender: Female", 
             "ini": 5, 
-            "cat-0": "Category: one", 
             "rankvar": 20
           }, 
           {
@@ -14190,14 +13046,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: LOU-NH91", 
+            "name": "Col-26", 
             "clust": 3, 
-            "cat_1_index": 7, 
-            "cat_0_index": 5, 
             "rank": 22, 
-            "cat-1": "Gender: Female", 
             "ini": 4, 
-            "cat-0": "Category: five", 
             "rankvar": 14
           }, 
           {
@@ -14214,14 +13066,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: HCC44", 
+            "name": "Col-27", 
             "clust": 4, 
-            "cat_1_index": 8, 
-            "cat_0_index": 11, 
             "rank": 15, 
-            "cat-1": "Gender: Female", 
             "ini": 3, 
-            "cat-0": "Category: four", 
             "rankvar": 0
           }, 
           {
@@ -14238,14 +13086,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: A549", 
+            "name": "Col-28", 
             "clust": 6, 
-            "cat_1_index": 28, 
-            "cat_0_index": 12, 
             "rank": 12, 
-            "cat-1": "Gender: Male", 
             "ini": 2, 
-            "cat-0": "Category: four", 
             "rankvar": 6
           }, 
           {
@@ -14262,14 +13106,10 @@
               1.0, 
               1.0
             ], 
-            "name": "Cell Line: H1781", 
+            "name": "Col-29", 
             "clust": 20, 
-            "cat_1_index": 9, 
-            "cat_0_index": 18, 
             "rank": 24, 
-            "cat-1": "Gender: Female", 
             "ini": 1, 
-            "cat-0": "Category: one", 
             "rankvar": 18
           }
         ]

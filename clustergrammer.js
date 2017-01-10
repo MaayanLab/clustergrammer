@@ -3483,7 +3483,9 @@ var Clustergrammer =
 	      // prevent mouseover from making multiple graphs
 	      if (d3.select(inst_selector + ' .cat_graph').empty()) {
 
-	        make_cat_breakdown_graph(params, inst_rc, inst_data, dendro_info[i], inst_selector, true);
+	        if (params.viz.cat_info[inst_rc] !== null) {
+	          make_cat_breakdown_graph(params, inst_rc, inst_data, dendro_info[i], inst_selector, true);
+	        }
 	      }
 
 	      d3.selectAll(params.viz.root_tips + '_' + inst_rc + '_dendro_tip').style('opacity', 1);
@@ -3612,7 +3614,9 @@ var Clustergrammer =
 	    // remove old graphs
 	    d3.select('.dendro_info .cluster_info_container .cat_graph').remove();
 
-	    make_cat_breakdown_graph(params, inst_rc, d, dendro_info[i], inst_selector);
+	    if (params.viz.cat_info[inst_rc] !== null) {
+	      make_cat_breakdown_graph(params, inst_rc, d, dendro_info[i], inst_selector);
+	    }
 	  }).call(dendro_tip);
 
 	  var triangle_opacity;
@@ -16261,8 +16265,6 @@ var Clustergrammer =
 	  if (inst_rc === 'both') {
 	    inst_rc = 'row';
 	  }
-
-	  console.log(selector);
 
 	  var cat_breakdown = calc_cat_cluster_breakdown(params, inst_data, inst_rc);
 

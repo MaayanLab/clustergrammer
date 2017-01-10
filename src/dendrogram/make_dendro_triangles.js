@@ -54,7 +54,9 @@ module.exports = function make_dendro_triangles(cgm, inst_rc, is_change_group = 
       // prevent mouseover from making multiple graphs
       if (d3.select(inst_selector + ' .cat_graph').empty()){
 
+      if ( params.viz.cat_info[inst_rc] !== null ){
         make_cat_breakdown_graph(params, inst_rc, inst_data, dendro_info[i], inst_selector, true);
+      }
 
       }
 
@@ -220,7 +222,9 @@ module.exports = function make_dendro_triangles(cgm, inst_rc, is_change_group = 
         d3.select('.dendro_info .cluster_info_container .cat_graph')
           .remove();
 
-        make_cat_breakdown_graph(params, inst_rc, d, dendro_info[i], inst_selector);
+        if ( params.viz.cat_info[inst_rc] !== null ){
+          make_cat_breakdown_graph(params, inst_rc, d, dendro_info[i], inst_selector);
+        }
 
     })
     .call(dendro_tip);
