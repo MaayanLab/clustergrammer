@@ -1,6 +1,6 @@
 var calc_cat_cluster_breakdown = require('./calc_cat_cluster_breakdown');
 
-module.exports = function show_cat_breakdown(params, inst_data, inst_rc){
+module.exports = function show_cat_breakdown(params, inst_data, inst_rc, dendro_info){
 
   var cat_breakdown = calc_cat_cluster_breakdown(params, inst_data, inst_rc);
 
@@ -143,12 +143,20 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc){
     var shift_top;
     var shift_left;
 
+    var graph_height = 160;
+
     // shifting
     if (inst_rc === 'row'){
-      shift_top = 160;
+      shift_top = graph_height;
       shift_left = 0;
+
+      // prevent graph from being too high
+      if (dendro_info.pos_top < graph_height){
+        shift_top = - (graph_height) ;
+      }
+
     } else {
-      shift_top = 160;
+      shift_top = graph_height;
       shift_left = 0;
     }
 

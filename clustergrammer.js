@@ -3468,11 +3468,11 @@ var Clustergrammer =
 	  // constant dendrogram opacity
 	  var inst_dendro_opacity = params.viz.dendro_opacity;
 
-	  function still_hovering(inst_selection, inst_data) {
+	  function still_hovering(inst_selection, inst_data, i) {
 
 	    if (d3.select(inst_selection).classed('hovering')) {
 
-	      show_cat_breakdown(params, inst_data, inst_rc);
+	      show_cat_breakdown(params, inst_data, inst_rc, dendro_info[i]);
 
 	      d3.selectAll(params.viz.root_tips + '_' + inst_rc + '_dendro_tip').style('opacity', 1);
 	    }
@@ -3549,7 +3549,7 @@ var Clustergrammer =
 	    return output_string;
 	  });
 
-	  dendro_traps.on('mouseover', function (d) {
+	  dendro_traps.on('mouseover', function (d, i) {
 
 	    if (params.sim_mat) {
 	      inst_rc = 'both';
@@ -3576,7 +3576,7 @@ var Clustergrammer =
 	    d3.select(params.viz.root_tips + '_' + inst_rc + '_dendro_tip').style('opacity', 0);
 
 	    // check if still hovering
-	    setTimeout(still_hovering, wait_before_tooltip, this, d);
+	    setTimeout(still_hovering, wait_before_tooltip, this, d, i);
 	  }).on('mouseout', function () {
 	    if (params.viz.inst_order[other_rc] === 'clust') {
 	      d3.select(this).style('opacity', inst_dendro_opacity);
@@ -16227,7 +16227,7 @@ var Clustergrammer =
 
 	var calc_cat_cluster_breakdown = __webpack_require__(205);
 
-	module.exports = function show_cat_breakdown(params, inst_data, inst_rc) {
+	module.exports = function show_cat_breakdown(params, inst_data, inst_rc, dendro_info) {
 
 	  var cat_breakdown = calc_cat_cluster_breakdown(params, inst_data, inst_rc);
 
@@ -16331,12 +16331,19 @@ var Clustergrammer =
 	    var shift_top;
 	    var shift_left;
 
+	    var graph_height = 160;
+
 	    // shifting
 	    if (inst_rc === 'row') {
-	      shift_top = 160;
+	      shift_top = graph_height;
 	      shift_left = 0;
+
+	      // prevent graph from being too high
+	      if (dendro_info.pos_top < graph_height) {
+	        shift_top = -graph_height;
+	      }
 	    } else {
-	      shift_top = 160;
+	      shift_top = graph_height;
 	      shift_left = 0;
 	    }
 

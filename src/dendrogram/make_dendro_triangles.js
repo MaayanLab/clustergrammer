@@ -38,11 +38,11 @@ module.exports = function make_dendro_triangles(cgm, inst_rc, is_change_group = 
   // constant dendrogram opacity
   var inst_dendro_opacity = params.viz.dendro_opacity;
 
-  function still_hovering(inst_selection, inst_data){
+  function still_hovering(inst_selection, inst_data, i){
 
     if (d3.select(inst_selection).classed('hovering')){
 
-      show_cat_breakdown(params, inst_data, inst_rc);
+      show_cat_breakdown(params, inst_data, inst_rc, dendro_info[i]);
 
       d3.selectAll(params.viz.root_tips + '_'+ inst_rc +'_dendro_tip')
         .style('opacity', 1);
@@ -143,7 +143,7 @@ module.exports = function make_dendro_triangles(cgm, inst_rc, is_change_group = 
 
 
   dendro_traps
-    .on('mouseover', function(d){
+    .on('mouseover', function(d, i){
 
       if (params.sim_mat){
         inst_rc = 'both';
@@ -173,7 +173,7 @@ module.exports = function make_dendro_triangles(cgm, inst_rc, is_change_group = 
         .style('opacity', 0);
 
       // check if still hovering
-      setTimeout(still_hovering, wait_before_tooltip, this, d);
+      setTimeout(still_hovering, wait_before_tooltip, this, d, i);
 
     })
     .on('mouseout', function(){
