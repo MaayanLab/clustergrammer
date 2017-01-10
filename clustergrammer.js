@@ -4518,7 +4518,17 @@ var Clustergrammer =
 	          // big_k: total number of cat-nodes
 	          var big_k = params.viz.cat_info[inst_rc][cat_index].cat_hist[cat_title_and_name];
 
+	          console.log('k n');
+	          console.log(k);
+	          console.log(n);
+	          console.log(big_k);
+	          console.log(big_n);
+	          console.log('abcd');
+
 	          var ft = parseFloat(run_fisher_exact_clust(k, n, big_k, big_n));
+
+	          console.log(ft);
+	          console.log('\n');
 
 	          bar_color = params.viz.cat_colors[inst_rc][cat_index][cat_title_and_name];
 
@@ -4563,8 +4573,17 @@ var Clustergrammer =
 	  var c = n - k;
 	  var d = big_n + k - n - big_k;
 
+	  console.log(a);
+	  console.log(b);
+	  console.log(c);
+	  console.log(d);
+
 	  var ft = fisher(a, b, c, d);
 
+	  // debugger
+	  console.log('in fuction');
+	  console.log(ft.toPrecision());
+	  console.log(ft.toString());
 	  return ft.toPrecision();
 		};
 

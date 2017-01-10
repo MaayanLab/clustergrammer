@@ -4520,6 +4520,11 @@ module.exports =
 
 	          var ft = parseFloat(run_fisher_exact_clust(k, n, big_k, big_n));
 
+	          // console.log(k)
+	          // console.log(n)
+	          // console.log(big_k)
+	          // console.log(big_n)
+
 	          bar_color = params.viz.cat_colors[inst_rc][cat_index][cat_title_and_name];
 
 	          bar_data.push([cat_index, cat_title_and_name, inst_run_count[inst_cat], bar_color, ft]);
