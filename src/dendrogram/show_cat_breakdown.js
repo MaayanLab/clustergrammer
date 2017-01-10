@@ -48,10 +48,6 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc, dendro_
 
   var selector_dendro_tip = params.viz.root_tips + '_' + inst_rc + '_dendro_tip';
   var cluster_info_container = d3.select(selector_dendro_tip + ' .cluster_info_container');
-  var bar_width = 150;
-  var bar_scale = d3.scale.linear()
-                    .domain([0, cat_data.num_in_clust])
-                    .range([0, bar_width]);
 
   if (d3.select(selector_dendro_tip + ' .cat_graph').empty()){
 
@@ -59,17 +55,23 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc, dendro_
 
     var super_string = ': ';
     var paragraph_string = '<p>';
-    var height = 150;
-    var width = 200;
+    var height = 125;
+    var width = 225;
     var bar_offset = 23;
     var bar_height = 20;
+    var max_string_length = 17;
+
+    var bar_width = 150;
+    var bar_scale = d3.scale.linear()
+                      .domain([0, cat_data.num_in_clust])
+                      .range([0, bar_width]);
 
     cluster_info_container
       .style('margin-bottom', '5px')
 
     cluster_info_container
       .append('text')
-      .text('something')
+      .text('Cluster Information')
 
     var graph_container = cluster_info_container
       .append('div')
@@ -97,10 +99,38 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc, dendro_
     // make title
     cat_graph_group
       .append('text')
-      .classed('cat_graph_group', true)
-      .text(cat_data.type_name)
+      .classed('cat_graph_title', true)
+      .text(function(){
+        var inst_title = cat_data.type_name;
+        // ensure that title is not too long
+        if (inst_title.length >= max_string_length){
+          inst_title = inst_title.slice(0,max_string_length) + '..';
+        }
+        return inst_title;
+      })
       .style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif')
-      .style('font-weight', 800);
+      .style('font-weight',  800);
+
+    // make P-value title
+    cat_graph_group
+      .append('text')
+      .text('P-value')
+      .attr('transform', function(){
+        var inst_x = bar_width + 7;
+        var inst_translate = 'translate('+ inst_x +', 0)'
+        return inst_translate;
+      })
+
+    var line_y = 4;
+    cat_graph_group
+      .append('line')
+      .attr('x1', 0)
+      .attr('x2', bar_width)
+      .attr('y1', line_y)
+      .attr('y2', line_y)
+      .style('stroke', 'black')
+      .style('stroke-width', 1)
+      .style('opacity', 0.35);
 
     var cat_bar_container = cat_graph_group
       .append('g')
@@ -147,6 +177,10 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc, dendro_
         if (inst_text.indexOf(paragraph_string) > 0){
           // required for Enrichr category names (needs improvements)
           inst_text = inst_text.split(paragraph_string)[0];
+        }
+        // ensure that bar name is not too long
+        if (inst_text.length >= max_string_length){
+          inst_text = inst_text.slice(0,max_string_length) + '..';
         }
         return inst_text;
       })
