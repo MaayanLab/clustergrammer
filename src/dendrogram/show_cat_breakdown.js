@@ -61,7 +61,7 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc, dendro_
     var height = 150;
     var width = 200;
     var bar_offset = 20;
-    var bar_height = 15;
+    var bar_height = 17;
 
     var graph_container = dendro_tip
       .append('div')
@@ -90,7 +90,9 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc, dendro_
     cat_graph_group
       .append('text')
       .classed('cat_graph_group', true)
-      .text(cat_data.type_name);
+      .text(cat_data.type_name)
+      .style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif')
+      .style('font-weight', 400);
 
     var cat_bar_container = cat_graph_group
       .append('g')
@@ -122,6 +124,8 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc, dendro_
         // return 'red';
       })
       .style('opacity', params.viz.cat_colors.opacity)
+      .style('stroke', 'black')
+      .style('stroke-width', '0.5px')
       // .style('opacity', 1);
 
     // make bar-text
@@ -135,8 +139,10 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc, dendro_
         return inst_text;
       })
       .attr('transform', function(d){
-        return 'translate(5, ' + 0.8 * bar_height + ')' ;
-      });
+        return 'translate(5, ' + 0.75 * bar_height + ')' ;
+      })
+      .style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif')
+      .style('font-weight', 400);
 
     var old_top = dendro_tip.style('top').split('.px')[0];
     var old_left = dendro_tip.style('left').split('.px')[0];
