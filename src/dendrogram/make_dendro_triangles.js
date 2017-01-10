@@ -81,9 +81,11 @@ module.exports = function make_dendro_triangles(cgm, inst_rc, is_change_group = 
     .direction('nw')
     .offset([tmp_y_offset, tmp_x_offset])
     .style('display','block')
-    .style('opacity', 0)
+    .style('opacity', 0);
+
+  dendro_tip
     .html(function(){
-      var full_string = 'Click for cluster information <br>'+
+      var full_string = '<div class="cluster_info_container"></div>Click for cluster information <br>'+
                         'and additional options.';
       return full_string;
     });

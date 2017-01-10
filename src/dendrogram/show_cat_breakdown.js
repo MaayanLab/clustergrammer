@@ -46,24 +46,32 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc, dendro_
   // only keep the top 5 categories
   cat_data.bar_data = cat_data.bar_data.slice(0,5)
 
-  var dendro_tip_selector = params.viz.root_tips + '_' + inst_rc + '_dendro_tip';
-  var dendro_tip = d3.select(dendro_tip_selector);
+  var selector_dendro_tip = params.viz.root_tips + '_' + inst_rc + '_dendro_tip';
+  var cluster_info_container = d3.select(selector_dendro_tip + ' .cluster_info_container');
   var bar_width = 150;
   var bar_scale = d3.scale.linear()
                     .domain([0, cat_data.num_in_clust])
                     .range([0, bar_width]);
 
-  if (d3.select(dendro_tip_selector + ' .cat_graph').empty()){
+  if (d3.select(selector_dendro_tip + ' .cat_graph').empty()){
 
     // console.log('show cat breakdown')
 
     var super_string = ': ';
+    var paragraph_string = '<p>';
     var height = 150;
     var width = 200;
-    var bar_offset = 20;
-    var bar_height = 17;
+    var bar_offset = 23;
+    var bar_height = 20;
 
-    var graph_container = dendro_tip
+    cluster_info_container
+      .style('margin-bottom', '5px')
+
+    cluster_info_container
+      .append('text')
+      .text('something')
+
+    var graph_container = cluster_info_container
       .append('div')
       .style('margin-top','5px')
       .classed('cat_graph', true)
@@ -92,7 +100,7 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc, dendro_
       .classed('cat_graph_group', true)
       .text(cat_data.type_name)
       .style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif')
-      .style('font-weight', 400);
+      .style('font-weight', 800);
 
     var cat_bar_container = cat_graph_group
       .append('g')
@@ -136,6 +144,10 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc, dendro_
         if (inst_text.indexOf(super_string) > 0){
           inst_text = inst_text.split(super_string)[1];
         }
+        if (inst_text.indexOf(paragraph_string) > 0){
+          // required for Enrichr category names (needs improvements)
+          inst_text = inst_text.split(paragraph_string)[0];
+        }
         return inst_text;
       })
       .attr('transform', function(d){
@@ -144,6 +156,7 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc, dendro_
       .style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif')
       .style('font-weight', 400);
 
+    var dendro_tip = d3.select(selector_dendro_tip);
     var old_top = dendro_tip.style('top').split('.px')[0];
     var old_left = dendro_tip.style('left').split('.px')[0];
     var shift_top;

@@ -3502,8 +3502,10 @@ var Clustergrammer =
 	    var class_string = root_tip_selector + ' d3-tip ' + root_tip_selector + '_' + inst_rc + '_dendro_tip';
 
 	    return class_string;
-	  }).direction('nw').offset([tmp_y_offset, tmp_x_offset]).style('display', 'block').style('opacity', 0).html(function () {
-	    var full_string = 'Click for cluster information <br>' + 'and additional options.';
+	  }).direction('nw').offset([tmp_y_offset, tmp_x_offset]).style('display', 'block').style('opacity', 0);
+
+	  dendro_tip.html(function () {
+	    var full_string = '<div class="cluster_info_container"></div>Click for cluster information <br>' + 'and additional options.';
 	    return full_string;
 	  });
 
@@ -16271,22 +16273,27 @@ var Clustergrammer =
 	  // only keep the top 5 categories
 	  cat_data.bar_data = cat_data.bar_data.slice(0, 5);
 
-	  var dendro_tip_selector = params.viz.root_tips + '_' + inst_rc + '_dendro_tip';
-	  var dendro_tip = d3.select(dendro_tip_selector);
+	  var selector_dendro_tip = params.viz.root_tips + '_' + inst_rc + '_dendro_tip';
+	  var cluster_info_container = d3.select(selector_dendro_tip + ' .cluster_info_container');
 	  var bar_width = 150;
 	  var bar_scale = d3.scale.linear().domain([0, cat_data.num_in_clust]).range([0, bar_width]);
 
-	  if (d3.select(dendro_tip_selector + ' .cat_graph').empty()) {
+	  if (d3.select(selector_dendro_tip + ' .cat_graph').empty()) {
 
 	    // console.log('show cat breakdown')
 
 	    var super_string = ': ';
+	    var paragraph_string = '<p>';
 	    var height = 150;
 	    var width = 200;
-	    var bar_offset = 20;
-	    var bar_height = 17;
+	    var bar_offset = 23;
+	    var bar_height = 20;
 
-	    var graph_container = dendro_tip.append('div').style('margin-top', '5px').classed('cat_graph', true).append('svg').style('height', height + 'px').style('width', width + 'px');
+	    cluster_info_container.style('margin-bottom', '5px');
+
+	    cluster_info_container.append('text').text('something');
+
+	    var graph_container = cluster_info_container.append('div').style('margin-top', '5px').classed('cat_graph', true).append('svg').style('height', height + 'px').style('width', width + 'px');
 
 	    // make background
 	    graph_container.append('rect').classed('cat_background', true).style('height', height + 'px').style('width', width + 'px').style('fill', 'white').style('opacity', 1);
@@ -16294,7 +16301,7 @@ var Clustergrammer =
 	    var cat_graph_group = graph_container.append('g').classed('cat_graph_group', true).attr('transform', 'translate(10,20)');
 
 	    // make title
-	    cat_graph_group.append('text').classed('cat_graph_group', true).text(cat_data.type_name).style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').style('font-weight', 400);
+	    cat_graph_group.append('text').classed('cat_graph_group', true).text(cat_data.type_name).style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').style('font-weight', 800);
 
 	    var cat_bar_container = cat_graph_group.append('g').classed('cat_bar_container', true).attr('transform', 'translate(0, 10)');
 
@@ -16321,11 +16328,16 @@ var Clustergrammer =
 	      if (inst_text.indexOf(super_string) > 0) {
 	        inst_text = inst_text.split(super_string)[1];
 	      }
+	      if (inst_text.indexOf(paragraph_string) > 0) {
+	        // required for Enrichr category names (needs improvements)
+	        inst_text = inst_text.split(paragraph_string)[0];
+	      }
 	      return inst_text;
 	    }).attr('transform', function (d) {
 	      return 'translate(5, ' + 0.75 * bar_height + ')';
 	    }).style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').style('font-weight', 400);
 
+	    var dendro_tip = d3.select(selector_dendro_tip);
 	    var old_top = dendro_tip.style('top').split('.px')[0];
 	    var old_left = dendro_tip.style('left').split('.px')[0];
 	    var shift_top;
