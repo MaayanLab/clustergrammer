@@ -59,9 +59,9 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc, dendro_
     var width = 225;
     var bar_offset = 23;
     var bar_height = 20;
-    var max_string_length = 17;
+    var max_string_length = 15;
 
-    var bar_width = 150;
+    var bar_width = 135;
     var bar_scale = d3.scale.linear()
                       .domain([0, cat_data.num_in_clust])
                       .range([0, bar_width]);
@@ -111,12 +111,13 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc, dendro_
       .style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif')
       .style('font-weight',  800);
 
+    var pval_offset = 10;
     // make P-value title
     cat_graph_group
       .append('text')
       .text('P-value')
       .attr('transform', function(){
-        var inst_x = bar_width + 7;
+        var inst_x = bar_width + 10;
         var inst_translate = 'translate('+ inst_x +', 0)'
         return inst_translate;
       })
@@ -166,9 +167,10 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc, dendro_
       .style('stroke-width', '0.5px')
       // .style('opacity', 1);
 
-    // make bar-text
+    // make bar labels
     cat_bar_groups
       .append('text')
+      .classed('bar_labels', true)
       .text(function(d){
         var inst_text = d[1];
         if (inst_text.indexOf(super_string) > 0){
@@ -190,6 +192,48 @@ module.exports = function show_cat_breakdown(params, inst_data, inst_rc, dendro_
       .style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif')
       .style('font-weight', 400);
 
+    // make bar labels
+    cat_bar_groups
+      .append('text')
+      .classed('pval_labels', true)
+      .text(function(d){
+        // debugger
+        var inst_pval = d[4];
+
+        // convert to scientific notation
+        if (inst_pval < 0.1){
+          inst_pval = inst_pval.toExponential(2);
+        } else {
+          inst_pval = inst_pval.toFixed(2);
+        }
+
+        var inst_text =  String(inst_pval);
+        // num.toExponential(2);
+        // if (inst_text.indexOf(super_string) > 0){
+        //   inst_text = inst_text.split(super_string)[1];
+        // }
+        // if (inst_text.indexOf(paragraph_string) > 0){
+        //   // required for Enrichr category names (needs improvements)
+        //   inst_text = inst_text.split(paragraph_string)[0];
+        // }
+        // // ensure that bar name is not too long
+        // if (inst_text.length >= max_string_length){
+        //   inst_text = inst_text.slice(0,max_string_length) + '..';
+        // }
+
+        return inst_text;
+      })
+      .attr('transform', function(d){
+        var inst_x = bar_width + pval_offset + 2;;
+        var inst_y = 0.75 * bar_height;
+        return 'translate('+ inst_x +', ' + inst_y + ')' ;
+      })
+      .style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif')
+      .style('font-weight', 400);
+
+
+    // reposition tooltip
+    /////////////////////////////////////////////////
     var dendro_tip = d3.select(selector_dendro_tip);
     var old_top = dendro_tip.style('top').split('.px')[0];
     var old_left = dendro_tip.style('left').split('.px')[0];

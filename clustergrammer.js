@@ -16200,7 +16200,7 @@ var Clustergrammer =
 	          // big_k: total number of cat-nodes
 	          var big_k = params.viz.cat_info[inst_rc][cat_index].cat_hist[cat_title_and_name];
 
-	          var ft = run_fisher_exact_clust(k, n, big_k, big_n);
+	          var ft = parseFloat(run_fisher_exact_clust(k, n, big_k, big_n));
 
 	          bar_color = params.viz.cat_colors[inst_rc][cat_index][cat_title_and_name];
 
@@ -16286,9 +16286,9 @@ var Clustergrammer =
 	    var width = 225;
 	    var bar_offset = 23;
 	    var bar_height = 20;
-	    var max_string_length = 17;
+	    var max_string_length = 15;
 
-	    var bar_width = 150;
+	    var bar_width = 135;
 	    var bar_scale = d3.scale.linear().domain([0, cat_data.num_in_clust]).range([0, bar_width]);
 
 	    cluster_info_container.style('margin-bottom', '5px');
@@ -16312,9 +16312,10 @@ var Clustergrammer =
 	      return inst_title;
 	    }).style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').style('font-weight', 800);
 
+	    var pval_offset = 10;
 	    // make P-value title
 	    cat_graph_group.append('text').text('P-value').attr('transform', function () {
-	      var inst_x = bar_width + 7;
+	      var inst_x = bar_width + 10;
 	      var inst_translate = 'translate(' + inst_x + ', 0)';
 	      return inst_translate;
 	    });
@@ -16341,8 +16342,8 @@ var Clustergrammer =
 	    }).style('opacity', params.viz.cat_colors.opacity).style('stroke', 'black').style('stroke-width', '0.5px');
 	    // .style('opacity', 1);
 
-	    // make bar-text
-	    cat_bar_groups.append('text').text(function (d) {
+	    // make bar labels
+	    cat_bar_groups.append('text').classed('bar_labels', true).text(function (d) {
 	      var inst_text = d[1];
 	      if (inst_text.indexOf(super_string) > 0) {
 	        inst_text = inst_text.split(super_string)[1];
@@ -16360,6 +16361,41 @@ var Clustergrammer =
 	      return 'translate(5, ' + 0.75 * bar_height + ')';
 	    }).style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').style('font-weight', 400);
 
+	    // make bar labels
+	    cat_bar_groups.append('text').classed('pval_labels', true).text(function (d) {
+	      // debugger
+	      var inst_pval = d[4];
+
+	      // convert to scientific notation
+	      if (inst_pval < 0.1) {
+	        inst_pval = inst_pval.toExponential(2);
+	      } else {
+	        inst_pval = inst_pval.toFixed(2);
+	      }
+
+	      var inst_text = String(inst_pval);
+	      // num.toExponential(2);
+	      // if (inst_text.indexOf(super_string) > 0){
+	      //   inst_text = inst_text.split(super_string)[1];
+	      // }
+	      // if (inst_text.indexOf(paragraph_string) > 0){
+	      //   // required for Enrichr category names (needs improvements)
+	      //   inst_text = inst_text.split(paragraph_string)[0];
+	      // }
+	      // // ensure that bar name is not too long
+	      // if (inst_text.length >= max_string_length){
+	      //   inst_text = inst_text.slice(0,max_string_length) + '..';
+	      // }
+
+	      return inst_text;
+	    }).attr('transform', function (d) {
+	      var inst_x = bar_width + pval_offset + 2;;
+	      var inst_y = 0.75 * bar_height;
+	      return 'translate(' + inst_x + ', ' + inst_y + ')';
+	    }).style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').style('font-weight', 400);
+
+	    // reposition tooltip
+	    /////////////////////////////////////////////////
 	    var dendro_tip = d3.select(selector_dendro_tip);
 	    var old_top = dendro_tip.style('top').split('.px')[0];
 	    var old_left = dendro_tip.style('left').split('.px')[0];
