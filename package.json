@@ -1,6 +1,6 @@
 {
   "name": "clustergrammer",
-  "version": "v1.11.2",
+  "version": "v1.11.3",
   "description": "This is a clustergram implemented in D3.js. I started from the example http://bost.ocks.org/mike/miserables/ and added the following features",
   "main": "clustergrammer.node.js",
   "scripts": {
@@ -32,7 +32,6 @@
     "awesomplete": "1.1.1",
     "d3": "^3.5.15",
     "extend": "^3.0.0",
-    "fishertest": "^0.1.0",
     "jquery": "1.5.1",
     "lodash": "^4.3.0",
     "style-loader": "^0.13.1",

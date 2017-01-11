@@ -1,4 +1,4 @@
-var run_fisher_exact_clust = require('./run_fisher_exact_clust');
+// var run_fisher_exact_clust = require('./run_fisher_exact_clust');
 
 module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc){
   // Category-breakdown of dendrogram-clusters
@@ -151,11 +151,11 @@ module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc)
           // big_k: total number of cat-nodes
           var big_k = params.viz.cat_info[inst_rc][cat_index].cat_hist[cat_title_and_name];
 
-          var ft = parseFloat(run_fisher_exact_clust(k, n, big_k, big_n));
+          // var ft = parseFloat(run_fisher_exact_clust(k, n, big_k, big_n));
 
           bar_color = params.viz.cat_colors[inst_rc][cat_index][cat_title_and_name];
 
-          bar_data.push([ cat_index, cat_title_and_name, inst_run_count[inst_cat], bar_color, ft]);
+          bar_data.push([ cat_index, cat_title_and_name, inst_run_count[inst_cat], bar_color, k]);
         }
 
         bar_data.sort(function(a, b) {

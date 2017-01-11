@@ -101,16 +101,16 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
         .style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif')
         .style('font-weight',  800);
 
-      // var pval_offset = 15;
-      // // make P-value title
-      // cat_graph_group
-      //   .append('text')
-      //   .text('P-value')
-      //   .attr('transform', function(){
-      //     var inst_x = bar_width + pval_offset;
-      //     var inst_translate = 'translate('+ inst_x +', 0)';
-      //     return inst_translate;
-      //   });
+      var count_offset = 15;
+      // make P-value title
+      cat_graph_group
+        .append('text')
+        .text('Count')
+        .attr('transform', function(){
+          var inst_x = bar_width + count_offset;
+          var inst_translate = 'translate('+ inst_x +', 0)';
+          return inst_translate;
+        });
 
       var line_y = 4;
       cat_graph_group
@@ -184,28 +184,22 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
         .style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif')
         .style('font-weight', 400);
 
-      // // make bar labels
-      // cat_bar_groups
-      //   .append('text')
-      //   .classed('pval_labels', true)
-      //   .text(function(d){
-      //     var inst_pval = d[4];
-      //     // convert to scientific notation if necessary
-      //     if (inst_pval < 0.1){
-      //       inst_pval = inst_pval.toExponential(2);
-      //     } else {
-      //       inst_pval = inst_pval.toFixed(2);
-      //     }
-      //     var inst_text =  String(inst_pval);
-      //     return inst_text;
-      //   })
-      //   .attr('transform', function(){
-      //     var inst_x = bar_width + pval_offset + 2;
-      //     var inst_y = 0.75 * bar_height;
-      //     return 'translate('+ inst_x +', ' + inst_y + ')' ;
-      //   })
-      //   .style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif')
-      //   .style('font-weight', 400);
+      // make bar labels
+      var shift_count_num = 25;
+      cat_bar_groups
+        .append('text')
+        .classed('count_labels', true)
+        .text(function(d){
+          return String(d[4]);
+        })
+        .attr('transform', function(){
+          var inst_x = bar_width + count_offset + shift_count_num;
+          var inst_y = 0.75 * bar_height;
+          return 'translate('+ inst_x +', ' + inst_y + ')' ;
+        })
+        .style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif')
+        .style('font-weight', 400)
+        .style('text-anchor', 'end');
 
 
     });
