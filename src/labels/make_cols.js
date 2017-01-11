@@ -3,6 +3,7 @@ var add_col_click_hlight = require('./add_col_click_hlight');
 var col_reorder = require('../reorder/col_reorder');
 var row_reorder = require('../reorder/row_reorder');
 var make_col_tooltips = require('./make_col_tooltips');
+var col_viz_aid_triangle = require('./col_viz_aid_triangle');
 
 module.exports = function(cgm, text_delay) {
 
@@ -15,7 +16,6 @@ module.exports = function(cgm, text_delay) {
   // offset click group column label
   var x_offset_click = params.viz.x_scale.rangeBand() / 2 + params.viz.border_width.x;
   // reduce width of rotated rects
-  var reduce_rect_width = params.viz.x_scale.rangeBand() * 0.36;
 
 
   // make container to pre-position zoomable elements
@@ -134,33 +134,12 @@ module.exports = function(cgm, text_delay) {
 
   make_col_tooltips(params);
 
-  // this is interferring with text tooltip
-  //////////////////////////////////////////
-  // // append rectangle behind text
-  // col_label_group
-  //   .insert('rect')
-  //   .attr('class','.highlight_rect')
-  //   .attr('x', 0)
-  //   .attr('y', 0)
-  //   .attr('width', 10*params.viz.rect_height)
-  //   .attr('height', 0.67*params.viz.rect_width)
-  //   .style('opacity', 0);
-
   // add triangle under rotated labels
   col_label_group
     .append('path')
     .style('stroke-width', 0)
     .attr('d', function() {
-      // x and y are flipped since its rotated
-      var origin_y = -params.viz.border_width.y;
-      var start_x = 0;
-      var final_x = params.viz.x_scale.rangeBand() - reduce_rect_width;
-      var start_y = -(params.viz.x_scale.rangeBand() - reduce_rect_width +
-      params.viz.border_width.y);
-      var final_y = -params.viz.border_width.y;
-      var output_string = 'M ' + origin_y + ',0 L ' + start_y + ',' +
-        start_x + ', L ' + final_y + ',' + final_x + ' Z';
-      return output_string;
+      return col_viz_aid_triangle(params);
     })
     .attr('fill', '#eee')
     .style('opacity',0)

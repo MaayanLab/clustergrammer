@@ -25,10 +25,10 @@ module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc)
   var clust_nodes = [];
   var all_nodes = params.network_data[inst_rc+'_nodes'];
 
-  // n: number drawn in cluster
-  var n = clust_names.length;
-  // big_n: total number of nodes
-  var big_n = all_nodes.length;
+  // // n: number drawn in cluster
+  // var n = clust_names.length;
+  // // big_n: total number of nodes
+  // var big_n = all_nodes.length;
 
   var inst_name;
   _.each(all_nodes, function(inst_node){
@@ -148,8 +148,9 @@ module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc)
           // k: number of cat-nodes drawn in cluster
           // var k = parseInt(inst_run_count[inst_cat] * n, 10);
           var k = inst_run_count[inst_cat];
-          // big_k: total number of cat-nodes
-          var big_k = params.viz.cat_info[inst_rc][cat_index].cat_hist[cat_title_and_name];
+
+          // // big_k: total number of cat-nodes
+          // var big_k = params.viz.cat_info[inst_rc][cat_index].cat_hist[cat_title_and_name];
 
           // var ft = parseFloat(run_fisher_exact_clust(k, n, big_k, big_n));
 
