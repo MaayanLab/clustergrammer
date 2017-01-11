@@ -24,7 +24,7 @@ function make_clust(inst_network){
         'dendro_callback':dendro_callback,
         'matrix_update_callback':matrix_update_callback,
         'sidebar_width':150,
-        'ini_view':{'N_row_sum':10}
+        // 'ini_view':{'N_row_var':100}
       };
 
       resize_container(args);

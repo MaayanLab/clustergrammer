@@ -546,6 +546,8 @@ var Clustergrammer =
 	    },
 	    // initialize view, e.g. initialize with row filtering
 	    ini_view: null,
+	    // record of requested views
+	    requested_view: null,
 	    use_sidebar: true,
 	    title: null,
 	    about: null,
@@ -15651,15 +15653,14 @@ var Clustergrammer =
 	module.exports = function make_slider_filter(cgm, filter_type, div_filters) {
 
 	  var params = cgm.params;
-
-	  var requested_view = {};
+	  var inst_view = {};
 
 	  var possible_filters = _.keys(params.viz.possible_filters);
 
 	  _.each(possible_filters, function (tmp_filter) {
 	    if (tmp_filter != filter_type) {
 	      var default_state = get_filter_default_state(params.viz.filter_data, tmp_filter);
-	      requested_view[tmp_filter] = default_state;
+	      inst_view[tmp_filter] = default_state;
 	    }
 	  });
 
@@ -15671,7 +15672,7 @@ var Clustergrammer =
 
 	  var views = params.network_data.views;
 
-	  var available_views = get_subset_views(params, views, requested_view);
+	  var available_views = get_subset_views(params, views, inst_view);
 
 	  // sort available views by filter_type value
 	  available_views = available_views.sort(function (a, b) {
@@ -15680,21 +15681,31 @@ var Clustergrammer =
 
 	  var inst_max = available_views.length - 1;
 
-	  // $( params.root+' .slider_'+filter_type ).slider({
-	  //   value:0,
-	  //   min: 0,
-	  //   max: inst_max,
-	  //   step: 1,
-	  //   stop: function() {
-	  //     run_filter_slider(cgm, filter_type, available_views);
-	  //   }
-	  // });
+	  var ini_value = 0;
+	  // change the starting position of the slider if necessary
+	  if (params.requested_view !== null && filter_type in params.requested_view) {
+
+	    var inst_filter_value = params.requested_view[filter_type];
+
+	    if (inst_filter_value != 'all') {
+
+	      console.log('initialize slider with requested_view');
+	      console.log('----------------------------------------');
+	      console.log('filter_type: ' + filter_type);
+	      console.log(available_views);
+
+	      console.log(inst_filter_value);
+
+	      ini_value = available_views.map(function (e) {
+	        return e[filter_type];
+	      }).indexOf(inst_filter_value);
+	      console.log(ini_value);
+	    }
+	  }
 
 	  // Filter Slider
 	  //////////////////////////////////////////////////////////////////////
-	  var slide_filter_fun = d3.slider()
-	  // .snap(true)
-	  .value(0).min(0).max(inst_max).step(1).on('slide', function (evt, value) {
+	  var slide_filter_fun = d3.slider().value(ini_value).min(0).max(inst_max).step(1).on('slide', function (evt, value) {
 	    run_filter_slider_db(cgm, filter_type, available_views, value);
 	  }).on('slideend', function (evt, value) {
 	    run_filter_slider_db(cgm, filter_type, available_views, value);
@@ -15707,7 +15718,7 @@ var Clustergrammer =
 
 	  //////////////////////////////////////////////////////////////////////
 
-	  var run_filter_slider_db = _.debounce(run_filter_slider, 1500);
+	  var run_filter_slider_db = _.debounce(run_filter_slider, 800);
 		};
 
 /***/ },

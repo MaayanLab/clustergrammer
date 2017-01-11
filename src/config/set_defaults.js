@@ -40,6 +40,8 @@ module.exports = function set_defaults(){
     make_tile_tooltip: function(d) { return d.info; },
     // initialize view, e.g. initialize with row filtering
     ini_view: null,
+    // record of requested views
+    requested_view: null,
     use_sidebar: true,
     title:null,
     about:null,
