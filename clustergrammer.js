@@ -4257,7 +4257,7 @@ var Clustergrammer =
 	    // make title
 	    cat_graph_group.append('text').classed('cat_graph_title', true).text(inst_title).style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').style('font-weight', 800);
 
-	    var pval_offset = 15;
+	    // var pval_offset = 15;
 	    // // make P-value title
 	    // cat_graph_group
 	    //   .append('text')
@@ -4269,7 +4269,7 @@ var Clustergrammer =
 	    //   });
 
 	    var line_y = 4;
-	    cat_graph_group.append('line').attr('x1', 0).attr('x2', bar_width).attr('y1', line_y).attr('y2', line_y).style('stroke', '#000080').style('stroke-width', 1).style('opacity', 0.5);
+	    cat_graph_group.append('line').attr('x1', 0).attr('x2', bar_width).attr('y1', line_y).attr('y2', line_y).style('stroke', 'blue').style('stroke-width', 1).style('opacity', 1.0);
 
 	    var cat_bar_container = cat_graph_group.append('g').classed('cat_bar_container', true).attr('transform', 'translate(0, 10)');
 
@@ -4528,17 +4528,7 @@ var Clustergrammer =
 	          // big_k: total number of cat-nodes
 	          var big_k = params.viz.cat_info[inst_rc][cat_index].cat_hist[cat_title_and_name];
 
-	          console.log('k n');
-	          console.log(k);
-	          console.log(n);
-	          console.log(big_k);
-	          console.log(big_n);
-	          console.log('abcd');
-
 	          var ft = parseFloat(run_fisher_exact_clust(k, n, big_k, big_n));
-
-	          console.log(ft);
-	          console.log('\n');
 
 	          bar_color = params.viz.cat_colors[inst_rc][cat_index][cat_title_and_name];
 
@@ -4583,17 +4573,8 @@ var Clustergrammer =
 	  var c = n - k;
 	  var d = big_n + k - n - big_k;
 
-	  console.log(a);
-	  console.log(b);
-	  console.log(c);
-	  console.log(d);
-
 	  var ft = fisher(a, b, c, d);
 
-	  // debugger
-	  console.log('in fuction');
-	  console.log(ft.toPrecision());
-	  console.log(ft.toString());
 	  return ft.toPrecision();
 		};
 

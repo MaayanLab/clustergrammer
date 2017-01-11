@@ -151,17 +151,7 @@ module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc)
           // big_k: total number of cat-nodes
           var big_k = params.viz.cat_info[inst_rc][cat_index].cat_hist[cat_title_and_name];
 
-          console.log('k n')
-          console.log(k)
-          console.log(n)
-          console.log(big_k)
-          console.log(big_n)
-          console.log('abcd')
-
           var ft = parseFloat(run_fisher_exact_clust(k, n, big_k, big_n));
-
-          console.log(ft)
-          console.log('\n')
 
           bar_color = params.viz.cat_colors[inst_rc][cat_index][cat_title_and_name];
 

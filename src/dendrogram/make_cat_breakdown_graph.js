@@ -99,7 +99,7 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
       .style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif')
       .style('font-weight',  800);
 
-    var pval_offset = 15;
+    // var pval_offset = 15;
     // // make P-value title
     // cat_graph_group
     //   .append('text')
@@ -117,9 +117,9 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
       .attr('x2', bar_width)
       .attr('y1', line_y)
       .attr('y2', line_y)
-      .style('stroke', '#000080')
+      .style('stroke', 'blue')
       .style('stroke-width', 1)
-      .style('opacity', 0.5);
+      .style('opacity', 1.0);
 
     var cat_bar_container = cat_graph_group
       .append('g')
