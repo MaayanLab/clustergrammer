@@ -74,7 +74,7 @@ var Clustergrammer =
 	__webpack_require__(184);
 	__webpack_require__(188);
 
-	/* clustergrammer v1.11.1
+	/* clustergrammer v1.11.2
 	 * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
 	 * (c) 2017
 	 */
@@ -15689,17 +15689,13 @@ var Clustergrammer =
 
 	    if (inst_filter_value != 'all') {
 
-	      console.log('initialize slider with requested_view');
-	      console.log('----------------------------------------');
-	      console.log('filter_type: ' + filter_type);
-	      console.log(available_views);
-
-	      console.log(inst_filter_value);
-
-	      ini_value = available_views.map(function (e) {
+	      var found_value = available_views.map(function (e) {
 	        return e[filter_type];
 	      }).indexOf(inst_filter_value);
-	      console.log(ini_value);
+
+	      if (found_value > 0) {
+	        ini_value = found_value;
+	      }
 	    }
 	  }
 
