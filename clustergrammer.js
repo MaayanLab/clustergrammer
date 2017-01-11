@@ -669,6 +669,9 @@ var Clustergrammer =
 
 	    requested_view = make_requested_view(params, requested_view);
 	    params.network_data = make_network_using_view(config, params, requested_view);
+
+	    // save ini_view as requested_view
+	    params.requested_view = requested_view;
 	  }
 
 	  params = calc_viz_params(params);
@@ -12734,10 +12737,6 @@ var Clustergrammer =
 	  var entities = cgm.params.network_data.row_nodes_names;
 	  awesomplete.list = entities;
 
-	  // console.log('entities')
-	  // console.log(entities)
-	  // console.log('-------------------------')
-
 	  // submit genes button
 	  $(params.root + ' .gene_search_box').keyup(function (e) {
 	    if (e.keyCode === 13) {
@@ -12747,7 +12746,6 @@ var Clustergrammer =
 	  });
 
 	  $(params.root + ' .submit_gene_button').off().click(function () {
-	    // console.log('search button')
 	    var search_gene = $(params.root + ' .gene_search_box').val();
 	    run_row_search(cgm, search_gene, entities);
 	  });
@@ -12759,26 +12757,7 @@ var Clustergrammer =
 	    reorder_types = ['row', 'col'];
 	  }
 
-	  /* initialize dendro sliders */
 	  _.each(reorder_types, function (inst_rc) {
-
-	    var tmp_rc = inst_rc;
-	    if (tmp_rc === 'both') {
-	      tmp_rc = 'row';
-	    }
-	    if (params.show_dendrogram) {
-	      var inst_group = cgm.params.group_level[tmp_rc];
-	      var inst_group_value = inst_group / 10;
-
-	      if (d3.select(params.root + ' .slider_' + inst_rc).select('#handle-one').empty()) {
-
-	        var dendro_slider = d3.slider().snap(true).value(inst_group_value).min(0).max(1).step(0.1).on('slide', function (evt, value) {
-	          run_on_dendro_slide(evt, value, inst_rc);
-	        });
-
-	        d3.select(params.root + ' .slider_' + inst_rc).call(dendro_slider);
-	      }
-	    }
 
 	    // reorder buttons
 	    $(params.root + ' .toggle_' + inst_rc + '_order .btn').off().click(function (evt) {
@@ -12802,44 +12781,14 @@ var Clustergrammer =
 
 	  // Opacity Slider
 	  //////////////////////////////////////////////////////////////////////
-
 	  if (d3.select(cgm.params.root + ' .opacity_slider').select('#handle-one').empty()) {
 
-	    var slider_fun = d3.slider()
-	    // .axis(d3.svg.axis())
-	    .snap(true).value(1).min(0.1).max(1.9).step(0.1).on('slide', function (evt, value) {
+	    var slider_fun = d3.slider().snap(true).value(1).min(0.1).max(1.9).step(0.1).on('slide', function (evt, value) {
 	      run_on_opacity_slide(evt, value);
 	    });
 
 	    d3.select(cgm.params.root + ' .opacity_slider').call(slider_fun);
 	  }
-
-	  //////////////////////////////////////////////////////////////////////
-
-	  // $( params.root+' .opacity_slider' ).slider({
-	  //   // value:0.5,
-	  //   min: 0.1,
-	  //   max: 2.0,
-	  //   step: 0.1,
-	  //   slide: function( event, ui ) {
-
-	  //     $( "#amount" ).val( "$" + ui.value );
-	  //     var inst_index = 2 - ui.value;
-
-	  //     var scaled_max = params.matrix.abs_max_val * inst_index;
-
-	  //     params.matrix.opacity_scale.domain([0, scaled_max]);
-
-	  //     d3.selectAll(params.root+' .tile')
-	  //       .style('fill-opacity', function(d) {
-	  //         // calculate output opacity using the opacity scale
-	  //         var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
-	  //         return output_opacity;
-	  //       });
-
-
-	  //   }
-	  // });
 
 	  function run_on_dendro_slide(evt, value, inst_rc) {
 	    $("#amount").val("$" + value);
@@ -12913,12 +12862,6 @@ var Clustergrammer =
 
 	  /* only enable dendrogram sliders if there has been no dendro_filtering */
 
-	  // $(params.root+' .opacity_slider').slider('enable');
-	  // $(params.root+' .slider_N_row_sum').slider('enable');
-	  // $(params.root+' .slider_N_row_var').slider('enable');
-
-	  // do not reset group level when updating view
-
 	  // only enable reordering if params.dendro_filter.row === false
 	  if (params.dendro_filter.row === false) {
 
@@ -12943,12 +12886,7 @@ var Clustergrammer =
 	  d3.selectAll(params.root + ' .gene_search_button .btn').attr('disabled', null);
 
 	  params.viz.run_trans = false;
-
-	  // d3.selectAll(params.root+' .category_section')
-	  //   .on('click', category_key_click)
-	  //   .select('text')
-	  //   .style('opacity',1);
-	};
+		};
 
 /***/ },
 /* 156 */
@@ -16441,10 +16379,6 @@ var Clustergrammer =
 	  slider_container.append('div').classed('sidebar_text', true).classed('opacity_slider_text', true).style('margin-bottom', '3px').text('Opacity Slider');
 
 	  slider_container.append('div').classed('slider', true).classed('opacity_slider', true);
-
-	  // $( params.root+' .opacity_slider' ).slider({
-	  //   value:1.0
-	  // });
 		};
 
 /***/ }

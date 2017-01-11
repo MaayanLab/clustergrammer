@@ -2,12 +2,6 @@ module.exports = function enable_sidebar(params) {
 
   /* only enable dendrogram sliders if there has been no dendro_filtering */
 
-  // $(params.root+' .opacity_slider').slider('enable');
-  // $(params.root+' .slider_N_row_sum').slider('enable');
-  // $(params.root+' .slider_N_row_var').slider('enable');
-
-  // do not reset group level when updating view
-
   // only enable reordering if params.dendro_filter.row === false
   if (params.dendro_filter.row === false){
 
@@ -43,8 +37,4 @@ module.exports = function enable_sidebar(params) {
 
   params.viz.run_trans = false;
 
-  // d3.selectAll(params.root+' .category_section')
-  //   .on('click', category_key_click)
-  //   .select('text')
-  //   .style('opacity',1);
 };

@@ -23,7 +23,8 @@ function make_clust(inst_network){
         'tile_tip_callback':test_tile_callback,
         'dendro_callback':dendro_callback,
         'matrix_update_callback':matrix_update_callback,
-        'sidebar_width':150
+        'sidebar_width':150,
+        'ini_view':{'N_row_sum':10}
       };
 
       resize_container(args);

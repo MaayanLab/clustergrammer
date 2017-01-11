@@ -648,6 +648,8 @@ module.exports =
 
 	module.exports = function make_params(input_config) {
 
+	  console.log('********************');
+
 	  var config = $.extend(true, {}, input_config);
 	  var params = config;
 
@@ -669,6 +671,11 @@ module.exports =
 
 	    requested_view = make_requested_view(params, requested_view);
 	    params.network_data = make_network_using_view(config, params, requested_view);
+
+	    // save ini_view as requested_view
+	    params.viz.requested_view = requested_view;
+
+	    console.log(params.viz.requested_view);
 	  }
 
 	  params = calc_viz_params(params);
