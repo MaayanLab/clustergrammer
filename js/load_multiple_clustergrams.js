@@ -1,7 +1,7 @@
 var tmp_num;
 var cat_colors;
+// global cgm
 cgm = {};
-
 resize_container();
 
 var hzome = ini_hzome();
@@ -22,13 +22,8 @@ function make_clust(make_sim_mats){
 
     check_setup_enrichr(cgm['clust']);
 
-    // // Enrichr categories
-    // //////////////////////
-    // enr_obj = Enrichr_request(cgm['clust']);
-    // enr_obj.enrichr_icon();
-
-    make_sim_mats('col', cat_colors, unblock);
-    make_sim_mats('row', cat_colors, unblock);
+    make_sim_mats('col', cat_colors);
+    make_sim_mats('row', cat_colors);
 
   });
 
@@ -109,10 +104,7 @@ window.onscroll = function() {
 
 }
 
-
-
-
-function make_sim_mats(inst_rc, cat_colors, unblock){
+function make_sim_mats(inst_rc, cat_colors){
 
   clust_name = 'mult_view_sim_'+inst_rc+'.json';
   d3.json('json/'+clust_name, function(network_data){
@@ -134,29 +126,16 @@ function make_sim_mats(inst_rc, cat_colors, unblock){
     args.network_data = network_data;
     cgm[inst_rc] = Clustergrammer(args);
     d3.select(cgm[inst_rc].params.root+' .wait_message').remove();
-    unblock();
   });
 
-}
-
-function unblock(){
-  // $.unblockUI();
 }
 
 function resize_container(){
 
   var container_width = d3.select('#wrap').style('width').replace('px','');
-
   var container_width = Number(container_width) - 30;
 
   d3.selectAll('.clustergrammer_container')
     .style('width', container_width+'px');
 
-  // var container_height = 700;
-  // d3.selectAll('.sim_mat_container')
-  //   .style('height', container_height+'px');
-
 }
-
-
-

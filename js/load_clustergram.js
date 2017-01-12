@@ -36,14 +36,9 @@ function make_clust(inst_network){
 
       cgm = Clustergrammer(args);
 
-      d3.select(cgm.params.root + ' .wait_message').remove();
-
       check_setup_enrichr(cgm);
 
-      // // Enrichr categories
-      // //////////////////////
-      // enr_obj = Enrichr_request(cgm);
-      // enr_obj.enrichr_icon();
+      d3.select(cgm.params.root + ' .wait_message').remove();
 
   });
 
