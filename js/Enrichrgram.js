@@ -336,6 +336,8 @@ function Enrichr_request(inst_cgm){
 
   function clear_enrichr_results(){
 
+    console.log('clear_enrichr_results')
+
     d3.select(inst_cgm.params.root+ ' .enr_menu_clear')
       .style('display', 'none');
 
