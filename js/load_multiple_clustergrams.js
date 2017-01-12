@@ -6,11 +6,11 @@ resize_container();
 
 var hzome = ini_hzome();
 
+var args = {};
 function make_clust(make_sim_mats){
   var clust_name = 'mult_view.json'
 
   d3.json('json/'+clust_name, function(network_data){
-    var args = $.extend(true, {}, default_args);
     args.root = '#container-id-1';
     args.network_data = network_data;
     args.row_tip_callback = hzome.gene_info;
@@ -38,14 +38,6 @@ function crop_callback(){
 d3.select('.blockMsg').select('h1').text('Please wait...');
 
 var viz_size = {'width':1140, 'height':750};
-
-// define arguments object
-var default_args = {
-  'show_tile_tooltips':true,
-  // 'about':'Zoom, scroll, and click buttons to interact with the clustergram.',
-  'row_search_placeholder':'Gene'
-  // 'ini_view':{'N_row_sum':100}
-};
 
 $(document).ready(function(){
     $(this).scrollTop(0);
@@ -109,7 +101,6 @@ function make_sim_mats(inst_rc, cat_colors){
   clust_name = 'mult_view_sim_'+inst_rc+'.json';
   d3.json('json/'+clust_name, function(network_data){
 
-    var args = $.extend(true, {}, default_args);
     args.cat_colors = {};
     if (inst_rc === 'col'){
       tmp_num = 2;
