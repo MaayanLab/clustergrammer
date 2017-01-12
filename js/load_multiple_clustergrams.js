@@ -6,15 +6,19 @@ resize_container();
 
 var hzome = ini_hzome();
 
-var args = {};
+var default_args = {};
+  default_args.row_tip_callback = hzome.gene_info;
+  default_args.crop_callback = crop_callback;
+  default_args.dendro_callback = dendro_callback;
+
 function make_clust(make_sim_mats){
   var clust_name = 'mult_view.json'
 
   d3.json('json/'+clust_name, function(network_data){
+
+    var args = $.extend(true, {}, default_args);
     args.root = '#container-id-1';
     args.network_data = network_data;
-    args.row_tip_callback = hzome.gene_info;
-    args.crop_callback = crop_callback;
 
     cgm['clust'] = Clustergrammer(args);
     d3.select(cgm['clust'].params.root+' .wait_message').remove();
@@ -29,11 +33,6 @@ function make_clust(make_sim_mats){
 
 }
 
-function crop_callback(){
-  if (genes_were_found){
-    enr_obj.clear_enrichr_results();
-  }
-}
 
 d3.select('.blockMsg').select('h1').text('Please wait...');
 
@@ -101,6 +100,7 @@ function make_sim_mats(inst_rc, cat_colors){
   clust_name = 'mult_view_sim_'+inst_rc+'.json';
   d3.json('json/'+clust_name, function(network_data){
 
+    var args = $.extend(true, {}, default_args);
     args.cat_colors = {};
     if (inst_rc === 'col'){
       tmp_num = 2;
@@ -118,6 +118,37 @@ function make_sim_mats(inst_rc, cat_colors){
     cgm[inst_rc] = Clustergrammer(args);
     d3.select(cgm[inst_rc].params.root+' .wait_message').remove();
   });
+
+}
+
+function crop_callback(){
+  if (genes_were_found){
+    enr_obj.clear_enrichr_results();
+  }
+}
+
+function dendro_callback(inst_selection){
+
+  var clust_num = this.root.split('-')[2];
+
+  var inst_data = inst_selection.__data__;
+
+  // toggle enrichr export section
+  if (inst_data.inst_rc === 'row'){
+
+    if (clust_num !== '2'){
+      d3.selectAll('.enrichr_export_section')
+        .style('display', 'block');
+    } else {
+
+      d3.selectAll('.enrichr_export_section')
+        .style('display', 'none');
+    }
+
+  } else {
+    d3.selectAll('.enrichr_export_section')
+      .style('display', 'none');
+  }
 
 }
 
