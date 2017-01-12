@@ -74,7 +74,7 @@ module.exports =
 	__webpack_require__(181);
 	__webpack_require__(185);
 
-	/* clustergrammer v1.11.4
+	/* clustergrammer v1.11.5
 	 * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
 	 * (c) 2017
 	 */
@@ -2685,7 +2685,17 @@ module.exports =
 	'use strict';
 
 	module.exports = function fine_position_tile(params, d) {
-	  var x_pos = params.viz.x_scale(d.pos_x) + 0.5 * params.viz.border_width.x;
+
+	  var offset_x;
+
+	  // prevent rows not in x_scale domain from causing errors
+	  if (d.pos_x in params.viz.x_scale.domain()) {
+	    offset_x = params.viz.x_scale(d.pos_x);
+	  } else {
+	    offset_x = 0;
+	  }
+
+	  var x_pos = offset_x + 0.5 * params.viz.border_width.x;
 	  var y_pos = 0.5 * params.viz.border_width.y;
 	  return 'translate(' + x_pos + ',' + y_pos + ')';
 	};
@@ -4141,11 +4151,6 @@ module.exports =
 
 	    names[inst_rc] = d.all_names;
 
-	    // // run optional callback function
-	    // if (cgm.params.crop_callback != null){
-	    //   cgm.params.crop_callback();
-	    // }
-
 	    var tmp_names = cgm.params.network_data[inst_rc + '_nodes_names'];
 
 	    // keep a backup of the inst_view
@@ -4166,11 +4171,6 @@ module.exports =
 	  } else {
 
 	    names[inst_rc] = cgm.params.dendro_filter[inst_rc];
-
-	    // // run optional callback function
-	    // if (cgm.params.crop_callback != null){
-	    //   cgm.params.crop_callback();
-	    // }
 
 	    cgm.filter_viz_using_names(names);
 	    cgm.params.dendro_filter[inst_rc] = false;
@@ -5971,23 +5971,12 @@ module.exports =
 	    d3.selectAll('.horz_lines').select('line').style('display', 'none');
 	    d3.selectAll('.vert_lines').select('line').style('display', 'none');
 
-	    if (inst_num_visible > 250) {
+	    // previously 250
+	    if (inst_num_visible > 75) {
 
 	      d3.selectAll(params.root + ' .' + inst_rc + '_label_group').select('text').style('display', 'none');
 
 	      d3.selectAll(params.root + ' .' + inst_rc + '_cat_group').select('path').style('display', 'none');
-	    } else {
-
-	      if (inst_num_visible > 40) {
-
-	        var calc_show_char = d3.scale.linear().domain([1, 500]).range([3, 1]).clamp(true);
-
-	        var num_show_char = Math.floor(calc_show_char(inst_num_visible));
-
-	        d3.selectAll(params.root + ' .' + inst_rc + '_label_group').select('text').style('opacity', 0.5).text(function (d) {
-	          return d.name.substring(0, num_show_char) + '..';
-	        });
-	      }
 	    }
 	  });
 
@@ -9413,21 +9402,20 @@ module.exports =
 	  var col_nodes_names = params.network_data.col_nodes_names;
 
 	  if (delays.run_transition) {
+
 	    update_row_tiles.transition().delay(delays.update).duration(duration).attr('width', params.viz.rect_width).attr('height', params.viz.rect_height).attr('transform', function (d) {
 	      if (_.contains(col_nodes_names, d.col_name)) {
-	        // var inst_col_index = _.indexOf(col_nodes_names, d.col_name);
-	        // var x_pos = params.viz.x_scale(inst_col_index) + 0.5*params.viz.border_width.x;
-	        // return 'translate(' + x_pos + ',0)';
 	        return fine_position_tile(params, d);
+	      } else {
+	        return 'translate(0,0)';
 	      }
 	    });
 	  } else {
 	    update_row_tiles.attr('width', params.viz.rect_width).attr('height', params.viz.rect_height).attr('transform', function (d) {
 	      if (_.contains(col_nodes_names, d.col_name)) {
-	        // var inst_col_index = _.indexOf(col_nodes_names, d.col_name);
-	        // var x_pos = params.viz.x_scale(inst_col_index) + 0.5*params.viz.border_width.x;
-	        // return 'translate(' + x_pos + ',0)';
 	        return fine_position_tile(params, d);
+	      } else {
+	        return 'translate(0,0)';
 	      }
 	    });
 	  }

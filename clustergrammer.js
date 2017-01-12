@@ -74,7 +74,7 @@ var Clustergrammer =
 	__webpack_require__(181);
 	__webpack_require__(185);
 
-	/* clustergrammer v1.11.4
+	/* clustergrammer v1.11.5
 	 * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
 	 * (c) 2017
 	 */
@@ -2685,7 +2685,17 @@ var Clustergrammer =
 	'use strict';
 
 	module.exports = function fine_position_tile(params, d) {
-	  var x_pos = params.viz.x_scale(d.pos_x) + 0.5 * params.viz.border_width.x;
+
+	  var offset_x;
+
+	  // prevent rows not in x_scale domain from causing errors
+	  if (d.pos_x in params.viz.x_scale.domain()) {
+	    offset_x = params.viz.x_scale(d.pos_x);
+	  } else {
+	    offset_x = 0;
+	  }
+
+	  var x_pos = offset_x + 0.5 * params.viz.border_width.x;
 	  var y_pos = 0.5 * params.viz.border_width.y;
 	  return 'translate(' + x_pos + ',' + y_pos + ')';
 	};
@@ -9392,21 +9402,20 @@ var Clustergrammer =
 	  var col_nodes_names = params.network_data.col_nodes_names;
 
 	  if (delays.run_transition) {
+
 	    update_row_tiles.transition().delay(delays.update).duration(duration).attr('width', params.viz.rect_width).attr('height', params.viz.rect_height).attr('transform', function (d) {
 	      if (_.contains(col_nodes_names, d.col_name)) {
-	        // var inst_col_index = _.indexOf(col_nodes_names, d.col_name);
-	        // var x_pos = params.viz.x_scale(inst_col_index) + 0.5*params.viz.border_width.x;
-	        // return 'translate(' + x_pos + ',0)';
 	        return fine_position_tile(params, d);
+	      } else {
+	        return 'translate(0,0)';
 	      }
 	    });
 	  } else {
 	    update_row_tiles.attr('width', params.viz.rect_width).attr('height', params.viz.rect_height).attr('transform', function (d) {
 	      if (_.contains(col_nodes_names, d.col_name)) {
-	        // var inst_col_index = _.indexOf(col_nodes_names, d.col_name);
-	        // var x_pos = params.viz.x_scale(inst_col_index) + 0.5*params.viz.border_width.x;
-	        // return 'translate(' + x_pos + ',0)';
 	        return fine_position_tile(params, d);
+	      } else {
+	        return 'translate(0,0)';
 	      }
 	    });
 	  }

@@ -40,28 +40,28 @@ module.exports = function eeu_existing_row(params, ini_inp_row_data, delays, dur
   var col_nodes_names = params.network_data.col_nodes_names;
 
   if (delays.run_transition){
+
     update_row_tiles
       .transition().delay(delays.update).duration(duration)
       .attr('width', params.viz.rect_width)
       .attr('height', params.viz.rect_height)
       .attr('transform', function(d) {
         if (_.contains(col_nodes_names, d.col_name)){
-          // var inst_col_index = _.indexOf(col_nodes_names, d.col_name);
-          // var x_pos = params.viz.x_scale(inst_col_index) + 0.5*params.viz.border_width.x;
-          // return 'translate(' + x_pos + ',0)';
           return fine_position_tile(params, d);
+        } else {
+          return 'translate(0,0)';
         }
       });
+
   } else {
     update_row_tiles
       .attr('width', params.viz.rect_width)
       .attr('height', params.viz.rect_height)
       .attr('transform', function(d) {
         if (_.contains(col_nodes_names, d.col_name)){
-          // var inst_col_index = _.indexOf(col_nodes_names, d.col_name);
-          // var x_pos = params.viz.x_scale(inst_col_index) + 0.5*params.viz.border_width.x;
-          // return 'translate(' + x_pos + ',0)';
           return fine_position_tile(params, d);
+        } else {
+          return 'translate(0,0)';
         }
       });
   }
