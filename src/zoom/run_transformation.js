@@ -120,7 +120,8 @@ module.exports = function run_transformation(params){
     d3.selectAll('.horz_lines').select('line').style('display','none');
     d3.selectAll('.vert_lines').select('line').style('display','none');
 
-    if (inst_num_visible > 250){
+    // previously 250
+    if (inst_num_visible > 75){
 
       d3.selectAll(params.root+' .'+inst_rc+'_label_group')
         .select('text')
@@ -129,28 +130,6 @@ module.exports = function run_transformation(params){
       d3.selectAll(params.root+' .'+inst_rc+'_cat_group')
         .select('path')
         .style('display','none');
-
-
-    } else {
-
-      if (inst_num_visible > 40){
-
-        var calc_show_char = d3
-          .scale.linear()
-          .domain([1,500])
-          .range([3,1])
-          .clamp(true);
-
-        var num_show_char = Math.floor(calc_show_char(inst_num_visible));
-
-        d3.selectAll(params.root+' .'+inst_rc+'_label_group')
-          .select('text')
-          .style('opacity',0.5)
-          .text(function(d){
-            return d.name.substring(0,num_show_char)+'..';
-          });
-
-      }
 
     }
 
