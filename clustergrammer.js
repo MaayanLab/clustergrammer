@@ -1070,9 +1070,6 @@ var Clustergrammer =
 	  viz.bottom_space = 10;
 	  viz.run_trans = false;
 	  viz.duration = 1000;
-	  if (viz.show_dendrogram) {
-	    params.group_level = {};
-	  }
 
 	  viz.resize = params.resize;
 	  if (utils.has(params, 'size')) {
@@ -1111,7 +1108,10 @@ var Clustergrammer =
 
 	  viz = make_cat_params(params, viz, preserve_cats);
 
-	  if (_.has(params, 'group_level')) {
+	  if (_.has(params, 'group_level') == false) {
+	    if (viz.show_dendrogram) {
+	      params.group_level = {};
+	    }
 	    params.group_level.row = 5;
 	    params.group_level.col = 5;
 	  }
@@ -8846,7 +8846,7 @@ var Clustergrammer =
 	var disable_sidebar = __webpack_require__(136);
 	var update_viz_with_network = __webpack_require__(137);
 
-	module.exports = function update_network_with_view(cgm, requested_view) {
+	module.exports = function update_viz_with_view(cgm, requested_view) {
 
 	  disable_sidebar(cgm.params);
 
@@ -8992,6 +8992,8 @@ var Clustergrammer =
 	  //   .style('opacity',0);
 
 	  setTimeout(enable_sidebar, 2500, cgm.params);
+
+	  d3.selectAll(cgm.params.root + ' .dendro_shadow').remove();
 		};
 
 /***/ },

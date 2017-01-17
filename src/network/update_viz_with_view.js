@@ -2,7 +2,7 @@ var make_network_using_view = require('./make_network_using_view');
 var disable_sidebar = require('../sidebar/disable_sidebar');
 var update_viz_with_network = require('../update/update_viz_with_network');
 
-module.exports = function update_network_with_view(cgm, requested_view) {
+module.exports = function update_viz_with_view(cgm, requested_view) {
 
   disable_sidebar(cgm.params);
 

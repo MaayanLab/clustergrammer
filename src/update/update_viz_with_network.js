@@ -101,4 +101,7 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
 
   setTimeout(enable_sidebar, 2500, cgm.params);
 
+  d3.selectAll(cgm.params.root+' .dendro_shadow')
+    .remove();
+
 };

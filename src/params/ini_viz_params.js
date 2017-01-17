@@ -36,9 +36,6 @@ module.exports = function ini_viz_params(params, preserve_cats=true){
   viz.bottom_space = 10;
   viz.run_trans = false;
   viz.duration = 1000;
-  if (viz.show_dendrogram){
-    params.group_level = {};
-  }
 
   viz.resize = params.resize;
   if (utils.has(params, 'size')){
@@ -77,7 +74,10 @@ module.exports = function ini_viz_params(params, preserve_cats=true){
 
   viz = make_cat_params(params, viz, preserve_cats);
 
-  if (_.has(params, 'group_level')){
+  if (_.has(params, 'group_level') == false){
+    if (viz.show_dendrogram){
+      params.group_level = {};
+    }
     params.group_level.row = 5;
     params.group_level.col = 5;
   }
