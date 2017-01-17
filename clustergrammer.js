@@ -2456,9 +2456,9 @@ var Clustergrammer =
 	  //   .data(row_values, function(d){ return d.col_name; })
 	  //   .enter()
 	  //   .append('circle')
-	  //   .attr('cx', params.viz.rect_height/4)
-	  //   .attr('cy', params.viz.rect_height/4)
-	  //   .attr('r', params.viz.rect_height/4)
+	  //   .attr('cx', params.viz.rect_height/2)
+	  //   .attr('cy', params.viz.rect_height/2)
+	  //   .attr('r', params.viz.rect_height/3)
 	  //   .attr('class', 'tile_circle')
 	  //   // .attr('width', params.viz.rect_width/2)
 	  //   // .attr('height', params.viz.rect_height/2)
@@ -2467,12 +2467,12 @@ var Clustergrammer =
 	  //   //   // return d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
 	  //   //   return 'black';
 	  //   // })
-	  //   // .on('mouseover', function(...args) {
-	  //   //     mouseover_tile(params, this, tip, args);
-	  //   // })
-	  //   // .on('mouseout', function() {
-	  //   //   mouseout_tile(params, this, tip);
-	  //   // })
+	  //   .on('mouseover', function(...args) {
+	  //       mouseover_tile(params, this, tip, args);
+	  //   })
+	  //   .on('mouseout', function() {
+	  //     mouseout_tile(params, this, tip);
+	  //   })
 	  //   .style('fill-opacity', function(d) {
 	  //     // calculate output opacity using the opacity scale
 	  //     var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));
