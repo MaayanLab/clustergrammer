@@ -5150,9 +5150,7 @@ var Clustergrammer =
 	  }
 
 	  // row category super labels
-	  if (viz.show_categories.row) {
-	    make_row_cat_super_labels(cgm);
-	  }
+	  make_row_cat_super_labels(cgm);
 
 	  // white border bottom - prevent clustergram from hitting border
 	  if (viz.show_dendrogram) {
