@@ -5953,26 +5953,16 @@ var Clustergrammer =
 
 	  var zoom_info = params.zoom_info;
 
-	  // apply transformation and reset translate vector
-	  // translate clustergram
 	  d3.select(params.root + ' .clust_group').attr('transform', 'translate(' + [zoom_info.trans_x, zoom_info.trans_y] + ') scale(' + zoom_info.zoom_x + ',' + zoom_info.zoom_y + ')');
 
-	  // labels
-	  /////////////////////////////
 	  d3.select(params.root + ' .row_label_zoom_container').attr('transform', 'translate(' + [0, zoom_info.trans_y] + ') scale(' + zoom_info.zoom_y + ')');
 
-	  // move down col labels as zooming occurs, subtract trans_x - 20 almost works
 	  d3.select(params.root + ' .col_zoom_container').attr('transform', 'translate(' + [zoom_info.trans_x, 0] + ') scale(' + zoom_info.zoom_x + ')');
 
 	  d3.select(params.root + ' .row_cat_container').attr('transform', 'translate(' + [0, zoom_info.trans_y] + ') scale( 1,' + zoom_info.zoom_y + ')');
 
 	  d3.select(params.root + ' .row_dendro_container').attr('transform', 'translate(' + [params.viz.uni_margin / 2, zoom_info.trans_y] + ') ' + 'scale( 1,' + zoom_info.zoom_y + ')');
 
-	  // dendrogram icons
-
-	  // rows
-	  ///////////
-	  // transform icon group (contains all icons)
 	  d3.select(params.root + ' .row_dendro_icons_group').attr('transform', function () {
 	    var inst_y = zoom_info.trans_y;
 	    var inst_translate = 'translate(' + [0, inst_y] + ') ';
@@ -5981,9 +5971,6 @@ var Clustergrammer =
 	    return transform_string;
 	  });
 
-	  // cols
-	  ///////////
-	  // transform icon group (contains all icons)
 	  d3.select(params.root + ' .col_dendro_icons_group').attr('transform', function () {
 	    var inst_x = zoom_info.trans_x;
 	    var inst_translate = 'translate(' + [inst_x, 0] + ')';
@@ -5995,7 +5982,6 @@ var Clustergrammer =
 	  zoom_crop_triangles(params, zoom_info, 'row');
 	  zoom_crop_triangles(params, zoom_info, 'col');
 
-	  // transform col_class
 	  d3.select(params.root + ' .col_cat_container').attr('transform', 'translate(' + [zoom_info.trans_x, 0] + ') scale(' + zoom_info.zoom_x + ',1)');
 
 	  d3.select(params.root + ' .col_dendro_container').attr('transform', 'translate(' + [zoom_info.trans_x, params.viz.uni_margin / 2] + ') scale(' + zoom_info.zoom_x + ',1)');
@@ -6022,6 +6008,8 @@ var Clustergrammer =
 
 	  setTimeout(zooming_has_stopped, 1000, params);
 
+	  var max_element_show = 75;
+
 	  _.each(['row', 'col'], function (inst_rc) {
 
 	    var inst_num_visible = num_visible_labels(params, inst_rc);
@@ -6030,7 +6018,7 @@ var Clustergrammer =
 	    d3.selectAll('.vert_lines').select('line').style('display', 'none');
 
 	    // previously 250
-	    if (inst_num_visible > 75) {
+	    if (inst_num_visible > max_element_show) {
 
 	      d3.selectAll(params.root + ' .' + inst_rc + '_label_group').select('text').style('display', 'none');
 
