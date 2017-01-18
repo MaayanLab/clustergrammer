@@ -65,6 +65,7 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc){
   var scale_down_tri = 0.25;
   var tri_height;
   var tri_width;
+  var tri_dim;
 
   // make crop buttons or undo buttons
   var button_class = inst_rc + '_dendro_crop_buttons';
@@ -82,7 +83,7 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc){
 
         // redefine
         tri_height = 10;
-        tri_width = 12;
+        tri_width = 10;
 
         var tmp_height = d.pos_bot - d.pos_top;
 
@@ -101,6 +102,8 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc){
           final_x = tri_width;
           final_y = tri_height;
 
+          tri_dim = tri_height;
+
         // Column Dendrogram Crop Triangle
         } else {
 
@@ -116,10 +119,14 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc){
           final_x = tri_width;
           final_y = tri_height;
 
+          tri_dim = tri_width;
+
         }
 
         // save triangle height
-        d3.select(this)[0][0].__data__.tri_height = tri_height;
+        // d3.select(this)[0][0].__data__.tri_dim = tri_dim;
+        var data_key = '__data__';
+        d3.select(this)[0][0][data_key].tri_dim = tri_dim;
 
         var output_string = 'M' + start_x + ',' + start_y + ', L' +
         mid_x + ', ' + mid_y + ', L'
@@ -181,6 +188,10 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc){
           final_y = 0;
 
         }
+
+        // save triangle height
+        var data_key = '__data__';
+        d3.select(this)[0][0][data_key].tri_dim = tri_dim;
 
         var output_string = 'M' + start_x + ',' + start_y + ', L' +
         mid_x + ', ' + mid_y + ', L'
@@ -333,21 +344,11 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc){
     .call(dendro_crop_tip);
 
   // ordering has been reversed
-  var triangle_opacity;
-  if (params.viz.inst_order[other_rc] === 'clust'){
-    triangle_opacity = button_opacity;
-  } else {
-    triangle_opacity = 0;
-
+  if (params.viz.inst_order[other_rc] != 'clust'){
     // do not display if not in cluster order
     d3.select(params.root+' .'+inst_rc+'_dendro_icons_group')
       .selectAll('path')
       .style('display', 'none');
-
   }
-
-  // d3.select(params.root+' .'+inst_rc+'_dendro_icons_group')
-  //   .selectAll('path')
-  //   .style('opacity', triangle_opacity);
 
 };

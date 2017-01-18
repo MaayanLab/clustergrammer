@@ -55,18 +55,9 @@ module.exports = function run_transformation(params){
     .attr('transform', function(d){
       var inst_x = params.viz.uni_margin;
       var inst_y = d.pos_mid;
-
       var curr_zoom = zoom_info.zoom_y;
-      var inst_zoom;
-      var tri_height = d3.select(this).data()[0].tri_height;
-
-      if (tri_height * curr_zoom < 10){
-        inst_zoom = 1;
-      } else {
-        var max_zoom = 10/tri_height;
-        inst_zoom = curr_zoom/max_zoom;
-      }
-
+      var tri_dim = d3.select(this).data()[0].tri_dim;
+      var inst_zoom = constrain_zoom(curr_zoom, tri_dim);
       return 'translate('+ inst_x +',' + inst_y + ') ' + 'scale(1, '+ 1/inst_zoom +')';
     });
 
@@ -88,7 +79,10 @@ module.exports = function run_transformation(params){
     .attr('transform', function(d){
       var inst_x = d.pos_mid;
       var inst_y = params.viz.uni_margin;
-      return 'translate('+ inst_x +',' + inst_y + ') ' + 'scale('+ 1/zoom_info.zoom_x +', 1)';
+      var curr_zoom = zoom_info.zoom_x;
+      var tri_dim = d3.select(this).data()[0].tri_dim;
+      var inst_zoom = constrain_zoom(curr_zoom, tri_dim);
+      return 'translate('+ inst_x +',' + inst_y + ') ' + 'scale('+ 1/inst_zoom +', 1)';
     });
 
 
@@ -148,5 +142,18 @@ module.exports = function run_transformation(params){
   });
 
   show_visible_area(params, zoom_info);
+
+  function constrain_zoom(curr_zoom, tri_height){
+
+    var inst_zoom;
+    var default_tri_height = 10;
+    if (tri_height * curr_zoom < default_tri_height){
+      inst_zoom = 1;
+    } else {
+      var max_zoom = default_tri_height/tri_height;
+      inst_zoom = curr_zoom/max_zoom;
+    }
+    return inst_zoom;
+  }
 
 };
