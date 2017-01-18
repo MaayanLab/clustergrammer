@@ -2115,8 +2115,7 @@ var Clustergrammer =
 	var utils = __webpack_require__(2);
 	var draw_gridlines = __webpack_require__(39);
 	var add_click_hlight = __webpack_require__(42);
-	var make_simple_rows = __webpack_require__(43);
-	var d3_tip_custom = __webpack_require__(49);
+	var make_matrix_rows = __webpack_require__(202);
 
 	module.exports = function (params, svg_elem) {
 	  var network_data = params.network_data;
@@ -2130,38 +2129,7 @@ var Clustergrammer =
 	  // clustergram background rect
 	  clust_group.append('rect').classed('background', true).classed('grey_background', true).style('fill', '#eee').style('opacity', 0.25).attr('width', params.viz.clust.dim.width).attr('height', params.viz.clust.dim.height);
 
-	  // make rows in the matrix - add key names to rows in matrix
-	  /////////////////////////////////////////////////////////////
-	  // d3-tooltip - for tiles
-	  var tip = d3_tip_custom().attr('class', function () {
-	    var root_tip_selector = params.viz.root_tips.replace('.', '');
-	    var class_string = root_tip_selector + ' d3-tip tile_tip';
-	    return class_string;
-	  }).style('display', 'none').direction('nw').offset([0, 0]).html(function (d) {
-	    var inst_value = String(d.value.toFixed(3));
-	    var tooltip_string;
-
-	    if (params.keep_orig) {
-	      var orig_value = String(d.value_orig.toFixed(3));
-	      tooltip_string = '<p>' + d.row_name + ' and ' + d.col_name + '</p>' + '<p> normalized value: ' + inst_value + '</p>' + '<div> original value: ' + orig_value + '</div>';
-	    } else {
-	      tooltip_string = '<p>' + d.row_name + ' and ' + d.col_name + '</p>' + '<div> value: ' + inst_value + '</div>';
-	    }
-
-	    return tooltip_string;
-	  });
-
-	  d3.select(params.root + ' .clust_group').call(tip);
-	  var row_nodes = params.network_data.row_nodes;
-	  var row_nodes_names = utils.pluck(row_nodes, 'name');
-	  d3.select(params.root + ' .clust_group').selectAll('.row').data(params.matrix.matrix, function (d) {
-	    return d.name;
-	  }).enter().append('g').attr('class', 'row').attr('transform', function (d) {
-	    var tmp_index = _.indexOf(row_nodes_names, d.name);
-	    return 'translate(0,' + params.viz.y_scale(tmp_index) + ')';
-	  }).each(function (d) {
-	    make_simple_rows(params, d, tip, this);
-	  });
+	  make_matrix_rows(params);
 
 	  // add callback function to tile group - if one is supplied by the user
 	  if (typeof params.click_tile === 'function') {
@@ -13599,6 +13567,52 @@ var Clustergrammer =
 	  slider_container.append('div').classed('sidebar_text', true).classed('opacity_slider_text', true).style('margin-bottom', '3px').text('Opacity Slider');
 
 	  slider_container.append('div').classed('slider', true).classed('opacity_slider', true);
+		};
+
+/***/ },
+/* 202 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var utils = __webpack_require__(2);
+	var make_simple_rows = __webpack_require__(43);
+	var d3_tip_custom = __webpack_require__(49);
+
+	module.exports = function make_matrix_rows(params) {
+
+	  // make rows in the matrix - add key names to rows in matrix
+	  /////////////////////////////////////////////////////////////
+	  // d3-tooltip - for tiles
+	  var tip = d3_tip_custom().attr('class', function () {
+	    var root_tip_selector = params.viz.root_tips.replace('.', '');
+	    var class_string = root_tip_selector + ' d3-tip tile_tip';
+	    return class_string;
+	  }).style('display', 'none').direction('nw').offset([0, 0]).html(function (d) {
+	    var inst_value = String(d.value.toFixed(3));
+	    var tooltip_string;
+
+	    if (params.keep_orig) {
+	      var orig_value = String(d.value_orig.toFixed(3));
+	      tooltip_string = '<p>' + d.row_name + ' and ' + d.col_name + '</p>' + '<p> normalized value: ' + inst_value + '</p>' + '<div> original value: ' + orig_value + '</div>';
+	    } else {
+	      tooltip_string = '<p>' + d.row_name + ' and ' + d.col_name + '</p>' + '<div> value: ' + inst_value + '</div>';
+	    }
+
+	    return tooltip_string;
+	  });
+
+	  d3.select(params.root + ' .clust_group').call(tip);
+	  var row_nodes = params.network_data.row_nodes;
+	  var row_nodes_names = utils.pluck(row_nodes, 'name');
+	  d3.select(params.root + ' .clust_group').selectAll('.row').data(params.matrix.matrix, function (d) {
+	    return d.name;
+	  }).enter().append('g').attr('class', 'row').attr('transform', function (d) {
+	    var tmp_index = _.indexOf(row_nodes_names, d.name);
+	    return 'translate(0,' + params.viz.y_scale(tmp_index) + ')';
+	  }).each(function (d) {
+	    make_simple_rows(params, d, tip, this);
+	  });
 		};
 
 /***/ }
