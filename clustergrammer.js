@@ -64,6 +64,8 @@ var Clustergrammer =
 	var run_zoom = __webpack_require__(81);
 	var d3_tip_custom = __webpack_require__(49);
 
+	var make_matrix_rows = __webpack_require__(202);
+
 	// moved d3.slider to src
 	d3.slider = __webpack_require__(178);
 
@@ -153,6 +155,8 @@ var Clustergrammer =
 	  cgm.export_matrix = export_matrix;
 	  cgm.crop_matrix = crop_matrix;
 	  cgm.d3_tip_custom = expose_d3_tip_custom;
+
+	  cgm.make_matrix_rows = make_matrix_rows;
 
 	  return cgm;
 	}
@@ -1124,6 +1128,10 @@ var Clustergrammer =
 
 	  viz.possible_filters = filters.possible_filters;
 	  viz.filter_data = filters.filter_data;
+
+	  viz.viz_nodes = {};
+	  viz.viz_nodes.row = params.network_data.row_nodes_names;
+	  viz.viz_nodes.col = params.network_data.col_nodes_names;
 
 	  return viz;
 	};
@@ -4584,85 +4592,57 @@ var Clustergrammer =
 
 	'use strict';
 
-	var toggle_element_display = __webpack_require__(66);
+	var find_viz_nodes = __webpack_require__(203);
 
 	module.exports = function show_visible_area(params) {
 
-	  var vis_area = {};
+	  var viz_area = {};
 	  var zoom_info = params.zoom_info;
 
 	  // get translation vector absolute values
-	  vis_area.min_x = Math.abs(zoom_info.trans_x) / zoom_info.zoom_x - 5 * params.viz.rect_width;
-	  vis_area.min_y = Math.abs(zoom_info.trans_y) / zoom_info.zoom_y - 5 * params.viz.rect_height;
+	  viz_area.min_x = Math.abs(zoom_info.trans_x) / zoom_info.zoom_x - 5 * params.viz.rect_width;
+	  viz_area.min_y = Math.abs(zoom_info.trans_y) / zoom_info.zoom_y - 5 * params.viz.rect_height;
 
-	  vis_area.max_x = Math.abs(zoom_info.trans_x) / zoom_info.zoom_x + params.viz.clust.dim.width / zoom_info.zoom_x;
-	  vis_area.max_y = Math.abs(zoom_info.trans_y) / zoom_info.zoom_y + params.viz.clust.dim.height / zoom_info.zoom_y;
+	  viz_area.max_x = Math.abs(zoom_info.trans_x) / zoom_info.zoom_x + params.viz.clust.dim.width / zoom_info.zoom_x;
+	  viz_area.max_y = Math.abs(zoom_info.trans_y) / zoom_info.zoom_y + params.viz.clust.dim.height / zoom_info.zoom_y;
+
+	  // generate lists of visible rows/cols
+	  find_viz_nodes(params, viz_area);
 
 	  // toggle labels and rows
 	  ///////////////////////////////////////////////
-	  d3.selectAll(params.root + ' .row_label_group').each(function () {
-	    toggle_element_display(vis_area, this, 'row');
+	  d3.selectAll(params.root + ' .row_label_group').style('display', function (d) {
+	    return toggle_display(params, d, 'row', this);
 	  });
 
-	  d3.selectAll(params.root + ' .row').each(function () {
-	    toggle_element_display(vis_area, this, 'row');
+	  d3.selectAll(params.root + ' .row').style('display', function (d) {
+	    return toggle_display(params, d, 'row', this);
 	  });
 
 	  // toggle col labels
-	  d3.selectAll(params.root + ' .col_label_text').each(function () {
-	    toggle_element_display(vis_area, this, 'col');
+	  d3.selectAll(params.root + ' .col_label_text').style('display', function (d) {
+	    return toggle_display(params, d, 'col', this);
 	  });
 
-	  return vis_area;
-		};
+	  return viz_area;
 
-/***/ },
-/* 66 */
-/***/ function(module, exports) {
+	  function toggle_display(params, d, inst_rc, inst_selection) {
+	    var inst_display = 'none';
 
-	'use strict';
+	    if (_.contains(params.viz.viz_nodes[inst_rc], d.name)) {
+	      inst_display = 'block';
+	    } else {
 
-	module.exports = function toggle_element_display(vis_area, inst_selection, inst_rc) {
+	      // // severe toggle
+	      // d3.select(inst_selection).remove();
 
-	  var inst_trans = d3.select(inst_selection).attr('transform');
-
-	  if (inst_rc === 'row') {
-
-	    var y_trans = Number(inst_trans.split(',')[1].split(')')[0]);
-
-	    d3.select(inst_selection).style('display', function () {
-	      var inst_display;
-	      if (y_trans < vis_area.max_y && y_trans > vis_area.min_y) {
-	        inst_display = 'block';
-	      } else {
-	        inst_display = 'none';
-
-	        // // severe toggle
-	        // d3.select(this).remove();
-	      }
-	      return inst_display;
-	    });
-	  } else {
-
-	    var x_trans = Number(inst_trans.split('(')[1].split(',')[0].split(')')[0]);
-
-	    d3.select(inst_selection).style('display', function () {
-	      var inst_display;
-	      if (x_trans < vis_area.max_x && x_trans > vis_area.min_x) {
-	        inst_display = 'block';
-	      } else {
-	        inst_display = 'none';
-
-	        // // severe toggle
-	        // d3.select(this).remove();
-	      }
-
-	      return inst_display;
-	    });
+	    }
+	    return inst_display;
 	  }
 		};
 
 /***/ },
+/* 66 */,
 /* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -6097,6 +6077,7 @@ var Clustergrammer =
 	var trim_text = __webpack_require__(87);
 	var constrain_font_size = __webpack_require__(83);
 	var toggle_grid_lines = __webpack_require__(41);
+	// var make_matrix_rows = require('../matrix/make_matrix_rows');
 
 	module.exports = function zooming_has_stopped(params) {
 
@@ -6121,10 +6102,6 @@ var Clustergrammer =
 
 	      d3.selectAll(params.viz.root_tips).style('display', 'block');
 
-	      // // experimental tile display toggling
-	      // d3.selectAll(params.root+' .hide_tile')
-	      //   .style('display','block');
-
 	      d3.selectAll(params.root + ' .row_label_group').select('text').style('display', 'none');
 	      d3.selectAll(params.root + ' .row_label_group').select('text').style('display', 'block');
 
@@ -6132,16 +6109,6 @@ var Clustergrammer =
 
 	      d3.selectAll(params.root + ' .row_label_group').select('text').style('display', 'block');
 	      d3.selectAll(params.root + ' .col_label_group').select('text').style('display', 'block');
-
-	      // if (cgm.params.zoom_info.zoom_x * cgm.params.viz.border_width.x > 1){
-	      //   d3.selectAll(params.root+' .vert_lines').select('line').style('display','block');
-	      //   console.log('showing vert lines')
-	      // }
-
-	      // if (cgm.params.zoom_info.zoom_y * cgm.params.viz.border_width.y > 1){
-	      //   d3.selectAll(params.root+' .horz_lines').select('line').style('display','block');
-	      //   console.log('showing  lines')
-	      // }
 
 	      toggle_grid_lines(params);
 
@@ -6159,6 +6126,8 @@ var Clustergrammer =
 	      text_patch();
 
 	      constrain_font_size(params);
+
+	      // make_matrix_rows(params);
 	    }
 
 	    // this makes sure that the text is visible after zooming and trimming
@@ -13613,6 +13582,43 @@ var Clustergrammer =
 	  }).each(function (d) {
 	    make_simple_rows(params, d, tip, this);
 	  });
+		};
+
+/***/ },
+/* 203 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = function find_viz_nodes(params, viz_area) {
+
+	  var inst_rows = [];
+	  var inst_cols = [];
+
+	  // find visible rows
+	  d3.selectAll(params.root + ' .row_label_group').each(function (d) {
+	    var inst_trans = d3.select(this).attr('transform');
+
+	    var y_trans = Number(inst_trans.split(',')[1].split(')')[0]);
+
+	    if (y_trans < viz_area.max_y && y_trans > viz_area.min_y) {
+	      inst_rows.push(d.name);
+	    }
+	  });
+
+	  // find visible cols
+	  d3.selectAll(params.root + ' .col_label_text').each(function (d) {
+	    var inst_trans = d3.select(this).attr('transform');
+
+	    var x_trans = Number(inst_trans.split('(')[1].split(',')[0].split(')')[0]);
+
+	    if (x_trans < viz_area.max_x && x_trans > viz_area.min_x) {
+	      inst_cols.push(d.name);
+	    }
+	  });
+
+	  params.viz.viz_nodes.row = inst_rows;
+	  params.viz.viz_nodes.col = inst_cols;
 		};
 
 /***/ }

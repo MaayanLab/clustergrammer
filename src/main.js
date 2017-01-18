@@ -15,6 +15,9 @@ var crop_matrix = require('./matrix/crop_matrix');
 var run_zoom = require('./zoom/run_zoom');
 var d3_tip_custom = require('./tooltip/d3_tip_custom');
 
+
+var make_matrix_rows = require('./matrix/make_matrix_rows');
+
 // moved d3.slider to src
 d3.slider = require('./d3.slider');
 
@@ -106,6 +109,8 @@ function Clustergrammer(args) {
   cgm.export_matrix = export_matrix;
   cgm.crop_matrix = crop_matrix;
   cgm.d3_tip_custom = expose_d3_tip_custom;
+
+  cgm.make_matrix_rows = make_matrix_rows;
 
   return cgm;
 }

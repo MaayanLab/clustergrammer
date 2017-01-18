@@ -1,37 +1,54 @@
-var toggle_element_display = require('./toggle_element_display');
+var find_viz_nodes = require('../zoom/find_viz_nodes')
 
 module.exports = function show_visible_area(params){
 
-  var vis_area = {};
+  var viz_area = {};
   var zoom_info = params.zoom_info;
 
   // get translation vector absolute values
-  vis_area.min_x = Math.abs(zoom_info.trans_x)/zoom_info.zoom_x - 5*params.viz.rect_width;
-  vis_area.min_y = Math.abs(zoom_info.trans_y)/zoom_info.zoom_y - 5*params.viz.rect_height ;
+  viz_area.min_x = Math.abs(zoom_info.trans_x)/zoom_info.zoom_x - 5*params.viz.rect_width;
+  viz_area.min_y = Math.abs(zoom_info.trans_y)/zoom_info.zoom_y - 5*params.viz.rect_height ;
 
-  vis_area.max_x = Math.abs(zoom_info.trans_x)/zoom_info.zoom_x +
+  viz_area.max_x = Math.abs(zoom_info.trans_x)/zoom_info.zoom_x +
                        params.viz.clust.dim.width/zoom_info.zoom_x ;
-  vis_area.max_y = Math.abs(zoom_info.trans_y)/zoom_info.zoom_y +
+  viz_area.max_y = Math.abs(zoom_info.trans_y)/zoom_info.zoom_y +
                       params.viz.clust.dim.height/zoom_info.zoom_y ;
+
+  // generate lists of visible rows/cols
+  find_viz_nodes(params, viz_area);
 
   // toggle labels and rows
   ///////////////////////////////////////////////
   d3.selectAll(params.root+' .row_label_group')
-    .each(function(){
-      toggle_element_display(vis_area, this, 'row');
+    .style('display', function(d){
+      return toggle_display(params, d, 'row', this);
     });
 
   d3.selectAll(params.root+' .row')
-    .each(function(){
-      toggle_element_display(vis_area, this, 'row');
+    .style('display', function(d){
+      return toggle_display(params, d, 'row', this);
     });
 
   // toggle col labels
   d3.selectAll(params.root+' .col_label_text')
-    .each(function(){
-      toggle_element_display(vis_area, this, 'col');
+    .style('display', function(d){
+      return toggle_display(params, d, 'col', this);
     });
 
-  return vis_area;
+  return viz_area;
+
+  function toggle_display(params, d, inst_rc, inst_selection){
+    var inst_display = 'none';
+
+    if (_.contains(params.viz.viz_nodes[inst_rc], d.name)){
+      inst_display = 'block';
+    } else {
+
+      // // severe toggle
+      // d3.select(inst_selection).remove();
+
+    }
+    return inst_display;
+  }
 
 };
