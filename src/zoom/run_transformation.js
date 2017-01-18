@@ -55,7 +55,19 @@ module.exports = function run_transformation(params){
     .attr('transform', function(d){
       var inst_x = params.viz.uni_margin;
       var inst_y = d.pos_mid;
-      return 'translate('+ inst_x +',' + inst_y + ') ' + 'scale(1, '+ 1/zoom_info.zoom_y +')';
+
+      var curr_zoom = zoom_info.zoom_y;
+      var inst_zoom;
+      var tri_height = d3.select(this).data()[0].tri_height;
+
+      if (tri_height * curr_zoom < 10){
+        inst_zoom = 1;
+      } else {
+        var max_zoom = 10/tri_height;
+        inst_zoom = curr_zoom/max_zoom;
+      }
+
+      return 'translate('+ inst_x +',' + inst_y + ') ' + 'scale(1, '+ 1/inst_zoom +')';
     });
 
   // cols
