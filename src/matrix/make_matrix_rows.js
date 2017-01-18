@@ -2,7 +2,9 @@ var utils = require('../Utils_clust');
 var make_simple_rows = require('./make_simple_rows');
 var d3_tip_custom = require('../tooltip/d3_tip_custom');
 
-module.exports = function make_matrix_rows(params){
+module.exports = function make_matrix_rows(params, row_nodes){
+
+  var row_names = _.pluck(row_nodes, 'name');
 
   // make rows in the matrix - add key names to rows in matrix
   /////////////////////////////////////////////////////////////
@@ -33,16 +35,25 @@ module.exports = function make_matrix_rows(params){
       return tooltip_string;
     });
 
+
+  var matrix_subset = [];
+  _.each(params.matrix.matrix, function(inst_row){
+
+    if (_.contains(row_names, inst_row.name)){
+      matrix_subset.push(inst_row)
+    }
+
+  });
+
   d3.select(params.root+' .clust_group')
     .call(tip);
-  var row_nodes = params.network_data.row_nodes;
   var row_nodes_names = utils.pluck(row_nodes, 'name');
   d3.select(params.root+ ' .clust_group')
     .selectAll('.row')
-    .data(params.matrix.matrix, function(d){return d.name;})
+    .data(matrix_subset, function(d){return d.name;})
     .enter()
     .append('g')
-    .attr('class', 'row')
+    .classed('row', true)
     .attr('transform', function(d) {
       var tmp_index = _.indexOf(row_nodes_names, d.name);
       return 'translate(0,' + params.viz.y_scale(tmp_index) + ')';

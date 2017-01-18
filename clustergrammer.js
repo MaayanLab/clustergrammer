@@ -2137,7 +2137,7 @@ var Clustergrammer =
 	  // clustergram background rect
 	  clust_group.append('rect').classed('background', true).classed('grey_background', true).style('fill', '#eee').style('opacity', 0.25).attr('width', params.viz.clust.dim.width).attr('height', params.viz.clust.dim.height);
 
-	  make_matrix_rows(params);
+	  make_matrix_rows(params, params.network_data.row_nodes);
 
 	  // add callback function to tile group - if one is supplied by the user
 	  if (typeof params.click_tile === 'function') {
@@ -4603,8 +4603,8 @@ var Clustergrammer =
 	  viz_area.min_x = Math.abs(zoom_info.trans_x) / zoom_info.zoom_x - 5 * params.viz.rect_width;
 	  viz_area.min_y = Math.abs(zoom_info.trans_y) / zoom_info.zoom_y - 5 * params.viz.rect_height;
 
-	  viz_area.max_x = Math.abs(zoom_info.trans_x) / zoom_info.zoom_x + params.viz.clust.dim.width / zoom_info.zoom_x;
-	  viz_area.max_y = Math.abs(zoom_info.trans_y) / zoom_info.zoom_y + params.viz.clust.dim.height / zoom_info.zoom_y;
+	  viz_area.max_x = Math.abs(zoom_info.trans_x) / zoom_info.zoom_x + params.viz.clust.dim.width / zoom_info.zoom_x + params.viz.rect_width;
+	  viz_area.max_y = Math.abs(zoom_info.trans_y) / zoom_info.zoom_y + params.viz.clust.dim.height / zoom_info.zoom_y + params.viz.rect_height;
 
 	  // generate lists of visible rows/cols
 	  find_viz_nodes(params, viz_area);
@@ -4616,7 +4616,7 @@ var Clustergrammer =
 	  });
 
 	  d3.selectAll(params.root + ' .row').style('display', function (d) {
-	    return toggle_display(params, d, 'row', this);
+	    return toggle_display(params, d, 'row', this, true);
 	  });
 
 	  // toggle col labels
@@ -4624,21 +4624,24 @@ var Clustergrammer =
 	    return toggle_display(params, d, 'col', this);
 	  });
 
-	  return viz_area;
-
 	  function toggle_display(params, d, inst_rc, inst_selection) {
+	    var severe_toggle = arguments.length <= 4 || arguments[4] === undefined ? false : arguments[4];
+
 	    var inst_display = 'none';
 
 	    if (_.contains(params.viz.viz_nodes[inst_rc], d.name)) {
 	      inst_display = 'block';
 	    } else {
 
-	      // // severe toggle
-	      // d3.select(inst_selection).remove();
-
+	      if (severe_toggle) {
+	        // severe toggle
+	        d3.select(inst_selection).remove();
+	      }
 	    }
 	    return inst_display;
 	  }
+
+	  return viz_area;
 		};
 
 /***/ },
@@ -13548,7 +13551,9 @@ var Clustergrammer =
 	var make_simple_rows = __webpack_require__(43);
 	var d3_tip_custom = __webpack_require__(49);
 
-	module.exports = function make_matrix_rows(params) {
+	module.exports = function make_matrix_rows(params, row_nodes) {
+
+	  var row_names = _.pluck(row_nodes, 'name');
 
 	  // make rows in the matrix - add key names to rows in matrix
 	  /////////////////////////////////////////////////////////////
@@ -13571,12 +13576,19 @@ var Clustergrammer =
 	    return tooltip_string;
 	  });
 
+	  var matrix_subset = [];
+	  _.each(params.matrix.matrix, function (inst_row) {
+
+	    if (_.contains(row_names, inst_row.name)) {
+	      matrix_subset.push(inst_row);
+	    }
+	  });
+
 	  d3.select(params.root + ' .clust_group').call(tip);
-	  var row_nodes = params.network_data.row_nodes;
 	  var row_nodes_names = utils.pluck(row_nodes, 'name');
-	  d3.select(params.root + ' .clust_group').selectAll('.row').data(params.matrix.matrix, function (d) {
+	  d3.select(params.root + ' .clust_group').selectAll('.row').data(matrix_subset, function (d) {
 	    return d.name;
-	  }).enter().append('g').attr('class', 'row').attr('transform', function (d) {
+	  }).enter().append('g').classed('row', true).attr('transform', function (d) {
 	    var tmp_index = _.indexOf(row_nodes_names, d.name);
 	    return 'translate(0,' + params.viz.y_scale(tmp_index) + ')';
 	  }).each(function (d) {

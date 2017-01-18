@@ -10,9 +10,9 @@ module.exports = function show_visible_area(params){
   viz_area.min_y = Math.abs(zoom_info.trans_y)/zoom_info.zoom_y - 5*params.viz.rect_height ;
 
   viz_area.max_x = Math.abs(zoom_info.trans_x)/zoom_info.zoom_x +
-                       params.viz.clust.dim.width/zoom_info.zoom_x ;
+                       params.viz.clust.dim.width/zoom_info.zoom_x + params.viz.rect_width;
   viz_area.max_y = Math.abs(zoom_info.trans_y)/zoom_info.zoom_y +
-                      params.viz.clust.dim.height/zoom_info.zoom_y ;
+                      params.viz.clust.dim.height/zoom_info.zoom_y + params.viz.rect_height ;
 
   // generate lists of visible rows/cols
   find_viz_nodes(params, viz_area);
@@ -26,7 +26,7 @@ module.exports = function show_visible_area(params){
 
   d3.selectAll(params.root+' .row')
     .style('display', function(d){
-      return toggle_display(params, d, 'row', this);
+      return toggle_display(params, d, 'row', this, true);
     });
 
   // toggle col labels
@@ -35,20 +35,23 @@ module.exports = function show_visible_area(params){
       return toggle_display(params, d, 'col', this);
     });
 
-  return viz_area;
-
-  function toggle_display(params, d, inst_rc, inst_selection){
+  function toggle_display(params, d, inst_rc, inst_selection, severe_toggle=false){
     var inst_display = 'none';
 
     if (_.contains(params.viz.viz_nodes[inst_rc], d.name)){
       inst_display = 'block';
     } else {
 
-      // // severe toggle
-      // d3.select(inst_selection).remove();
+      if (severe_toggle){
+        // severe toggle
+        d3.select(inst_selection).remove();
+      }
 
     }
     return inst_display;
   }
+
+  return viz_area;
+
 
 };
