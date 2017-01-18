@@ -1,18 +1,21 @@
-var find_viz_nodes = require('../zoom/find_viz_nodes')
+var find_viz_nodes = require('../zoom/find_viz_nodes');
+var make_matrix_rows = require('../matrix/make_matrix_rows');
 
 module.exports = function show_visible_area(params){
 
   var viz_area = {};
   var zoom_info = params.zoom_info;
 
+  var buffer_size = 5;
+
   // get translation vector absolute values
-  viz_area.min_x = Math.abs(zoom_info.trans_x)/zoom_info.zoom_x - 5*params.viz.rect_width;
-  viz_area.min_y = Math.abs(zoom_info.trans_y)/zoom_info.zoom_y - 5*params.viz.rect_height ;
+  viz_area.min_x = Math.abs(zoom_info.trans_x)/zoom_info.zoom_x - buffer_size * params.viz.rect_width;
+  viz_area.min_y = Math.abs(zoom_info.trans_y)/zoom_info.zoom_y - buffer_size * params.viz.rect_height ;
 
   viz_area.max_x = Math.abs(zoom_info.trans_x)/zoom_info.zoom_x +
-                       params.viz.clust.dim.width/zoom_info.zoom_x + params.viz.rect_width;
+                       params.viz.clust.dim.width/zoom_info.zoom_x + buffer_size * params.viz.rect_width;
   viz_area.max_y = Math.abs(zoom_info.trans_y)/zoom_info.zoom_y +
-                      params.viz.clust.dim.height/zoom_info.zoom_y + params.viz.rect_height ;
+                      params.viz.clust.dim.height/zoom_info.zoom_y + buffer_size * params.viz.rect_height ;
 
   // generate lists of visible rows/cols
   find_viz_nodes(params, viz_area);
@@ -51,7 +54,28 @@ module.exports = function show_visible_area(params){
     return inst_display;
   }
 
-  return viz_area;
+  var missing_rows = _.difference(params.viz.viz_nodes.row, params.viz.viz_nodes.curr_row);
 
+  var start_adding_back = 1;
+
+  if (missing_rows.length > start_adding_back){
+
+    // get missing nodes
+    var missing_row_nodes = [];
+
+    _.each(params.network_data.row_nodes, function(inst_node){
+
+      if (_.contains(missing_rows, inst_node.name)){
+        missing_row_nodes.push(inst_node);
+      }
+
+
+    });
+
+    make_matrix_rows(params, missing_row_nodes);
+  }
+
+
+  return viz_area;
 
 };

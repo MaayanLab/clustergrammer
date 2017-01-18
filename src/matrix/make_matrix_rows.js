@@ -1,4 +1,3 @@
-var utils = require('../Utils_clust');
 var make_simple_rows = require('./make_simple_rows');
 var d3_tip_custom = require('../tooltip/d3_tip_custom');
 
@@ -40,14 +39,16 @@ module.exports = function make_matrix_rows(params, row_nodes){
   _.each(params.matrix.matrix, function(inst_row){
 
     if (_.contains(row_names, inst_row.name)){
-      matrix_subset.push(inst_row)
+      matrix_subset.push(inst_row);
     }
 
   });
 
   d3.select(params.root+' .clust_group')
     .call(tip);
-  var row_nodes_names = utils.pluck(row_nodes, 'name');
+
+  var row_nodes_names = params.network_data.row_nodes_names;
+
   d3.select(params.root+ ' .clust_group')
     .selectAll('.row')
     .data(matrix_subset, function(d){return d.name;})

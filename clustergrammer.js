@@ -1130,8 +1130,13 @@ var Clustergrammer =
 	  viz.filter_data = filters.filter_data;
 
 	  viz.viz_nodes = {};
+	  // nodes that should be visible based on visible area
 	  viz.viz_nodes.row = params.network_data.row_nodes_names;
 	  viz.viz_nodes.col = params.network_data.col_nodes_names;
+
+	  // nodes that are currently visible
+	  viz.viz_nodes.curr_row = params.network_data.row_nodes_names;
+	  viz.viz_nodes.curr_col = params.network_data.col_nodes_names;
 
 	  return viz;
 	};
@@ -4593,18 +4598,21 @@ var Clustergrammer =
 	'use strict';
 
 	var find_viz_nodes = __webpack_require__(203);
+	var make_matrix_rows = __webpack_require__(202);
 
 	module.exports = function show_visible_area(params) {
 
 	  var viz_area = {};
 	  var zoom_info = params.zoom_info;
 
-	  // get translation vector absolute values
-	  viz_area.min_x = Math.abs(zoom_info.trans_x) / zoom_info.zoom_x - 5 * params.viz.rect_width;
-	  viz_area.min_y = Math.abs(zoom_info.trans_y) / zoom_info.zoom_y - 5 * params.viz.rect_height;
+	  var buffer_size = 5;
 
-	  viz_area.max_x = Math.abs(zoom_info.trans_x) / zoom_info.zoom_x + params.viz.clust.dim.width / zoom_info.zoom_x + params.viz.rect_width;
-	  viz_area.max_y = Math.abs(zoom_info.trans_y) / zoom_info.zoom_y + params.viz.clust.dim.height / zoom_info.zoom_y + params.viz.rect_height;
+	  // get translation vector absolute values
+	  viz_area.min_x = Math.abs(zoom_info.trans_x) / zoom_info.zoom_x - buffer_size * params.viz.rect_width;
+	  viz_area.min_y = Math.abs(zoom_info.trans_y) / zoom_info.zoom_y - buffer_size * params.viz.rect_height;
+
+	  viz_area.max_x = Math.abs(zoom_info.trans_x) / zoom_info.zoom_x + params.viz.clust.dim.width / zoom_info.zoom_x + buffer_size * params.viz.rect_width;
+	  viz_area.max_y = Math.abs(zoom_info.trans_y) / zoom_info.zoom_y + params.viz.clust.dim.height / zoom_info.zoom_y + buffer_size * params.viz.rect_height;
 
 	  // generate lists of visible rows/cols
 	  find_viz_nodes(params, viz_area);
@@ -4639,6 +4647,25 @@ var Clustergrammer =
 	      }
 	    }
 	    return inst_display;
+	  }
+
+	  var missing_rows = _.difference(params.viz.viz_nodes.row, params.viz.viz_nodes.curr_row);
+
+	  var start_adding_back = 1;
+
+	  if (missing_rows.length > start_adding_back) {
+
+	    // get missing nodes
+	    var missing_row_nodes = [];
+
+	    _.each(params.network_data.row_nodes, function (inst_node) {
+
+	      if (_.contains(missing_rows, inst_node.name)) {
+	        missing_row_nodes.push(inst_node);
+	      }
+	    });
+
+	    make_matrix_rows(params, missing_row_nodes);
 	  }
 
 	  return viz_area;
@@ -13547,7 +13574,6 @@ var Clustergrammer =
 
 	'use strict';
 
-	var utils = __webpack_require__(2);
 	var make_simple_rows = __webpack_require__(43);
 	var d3_tip_custom = __webpack_require__(49);
 
@@ -13585,7 +13611,9 @@ var Clustergrammer =
 	  });
 
 	  d3.select(params.root + ' .clust_group').call(tip);
-	  var row_nodes_names = utils.pluck(row_nodes, 'name');
+
+	  var row_nodes_names = params.network_data.row_nodes_names;
+
 	  d3.select(params.root + ' .clust_group').selectAll('.row').data(matrix_subset, function (d) {
 	    return d.name;
 	  }).enter().append('g').classed('row', true).attr('transform', function (d) {
@@ -13607,6 +13635,9 @@ var Clustergrammer =
 	  var inst_rows = [];
 	  var inst_cols = [];
 
+	  var curr_rows = [];
+	  // var curr_cols = [];
+
 	  // find visible rows
 	  d3.selectAll(params.root + ' .row_label_group').each(function (d) {
 	    var inst_trans = d3.select(this).attr('transform');
@@ -13618,6 +13649,11 @@ var Clustergrammer =
 	    }
 	  });
 
+	  // find currently visible labels
+	  d3.selectAll(params.root + ' .row').each(function (d) {
+	    curr_rows.push(d.name);
+	  });
+
 	  // find visible cols
 	  d3.selectAll(params.root + ' .col_label_text').each(function (d) {
 	    var inst_trans = d3.select(this).attr('transform');
@@ -13627,10 +13663,20 @@ var Clustergrammer =
 	    if (x_trans < viz_area.max_x && x_trans > viz_area.min_x) {
 	      inst_cols.push(d.name);
 	    }
+
+	    // if (d3.select(this).style('display') === 'block'){
+	    //   curr_cols.push(d.name);
+	    // }
 	  });
 
+	  // nodes that should be visible
 	  params.viz.viz_nodes.row = inst_rows;
 	  params.viz.viz_nodes.col = inst_cols;
+
+	  // nodes that are visible
+	  params.viz.viz_nodes.curr_row = curr_rows;
+	  // params.viz.viz_nodes.curr_col = curr_cols
+
 		};
 
 /***/ }
