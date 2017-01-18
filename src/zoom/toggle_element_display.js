@@ -14,6 +14,10 @@ module.exports = function toggle_element_display(vis_area, inst_selection, inst_
           inst_display = 'block';
         } else {
           inst_display = 'none';
+
+          // // severe toggle
+          // d3.select(this).remove();
+
         }
         return inst_display;
       });
@@ -29,6 +33,10 @@ module.exports = function toggle_element_display(vis_area, inst_selection, inst_
           inst_display = 'block';
         } else {
           inst_display = 'none';
+
+          // // severe toggle
+          // d3.select(this).remove();
+
         }
 
         return inst_display;

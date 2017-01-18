@@ -7,11 +7,8 @@ var d3_tip_custom = require('../tooltip/d3_tip_custom');
 module.exports = function(params, svg_elem) {
   var network_data = params.network_data;
 
-  var matrix = [],
-  row_nodes = network_data.row_nodes,
-  clust_group;
-
-  var row_nodes_names = utils.pluck(row_nodes, 'name');
+  var matrix = [];
+  var clust_group;
 
   // append a group that will hold clust_group and position it once
   clust_group = svg_elem
@@ -24,6 +21,19 @@ module.exports = function(params, svg_elem) {
     .attr('class', 'clust_group')
     .classed('clust_group',true);
 
+
+  // clustergram background rect
+  clust_group
+    .append('rect')
+    .classed('background',true)
+    .classed('grey_background',true)
+    .style('fill', '#eee')
+    .style('opacity',0.25)
+    .attr('width', params.viz.clust.dim.width)
+    .attr('height', params.viz.clust.dim.height);
+
+  // make rows in the matrix - add key names to rows in matrix
+  /////////////////////////////////////////////////////////////
   // d3-tooltip - for tiles
   var tip = d3_tip_custom()
     .attr('class', function(){
@@ -53,19 +63,10 @@ module.exports = function(params, svg_elem) {
 
   d3.select(params.root+' .clust_group')
     .call(tip);
-
-  // clustergram background rect
-  clust_group
-    .append('rect')
-    .classed('background',true)
-    .classed('grey_background',true)
-    .style('fill', '#eee')
-    .style('opacity',0.25)
-    .attr('width', params.viz.clust.dim.width)
-    .attr('height', params.viz.clust.dim.height);
-
-  // make row matrix - add key names to rows in matrix
-  clust_group.selectAll('.row')
+  var row_nodes = params.network_data.row_nodes;
+  var row_nodes_names = utils.pluck(row_nodes, 'name');
+  d3.select(params.root+ ' .clust_group')
+    .selectAll('.row')
     .data(params.matrix.matrix, function(d){return d.name;})
     .enter()
     .append('g')
