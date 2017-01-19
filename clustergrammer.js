@@ -1710,7 +1710,7 @@ var Clustergrammer =
 
 	  params.viz.ds_y_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.height]);
 
-	  var ds_num = 10;
+	  var ds_num = 10 + 1;
 
 	  // use the same x domain
 	  inst_order = inst_order = params.viz.inst_order.row;
@@ -13760,6 +13760,23 @@ var Clustergrammer =
 
 	      ds_mat[ds_index].row_data = new_data;
 	    }
+	  });
+
+	  // average the values
+	  _.each(ds_mat, function (tmp_ds) {
+
+	    console.log(tmp_ds);
+
+	    var tmp_row_data = tmp_ds.row_data;
+	    var num_names = tmp_ds.all_names.length / 2;
+
+	    // console.log(tmp_ds.all_names)
+	    // console.log('num_names: ' + String(num_names))
+
+	    _.each(tmp_row_data, function (tmp_obj) {
+	      tmp_obj.value = tmp_obj.value / num_names;
+	      // inst_obj.value = inst_obj.value ;
+	    });
 	  });
 
 	  console.log(ds_mat);

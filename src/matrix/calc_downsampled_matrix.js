@@ -61,6 +61,23 @@ module.exports = function make_ds_matrix(params){
 
   })
 
+  // average the values
+  _.each(ds_mat, function(tmp_ds){
+
+    console.log(tmp_ds)
+
+    var tmp_row_data = tmp_ds.row_data;
+    var num_names = tmp_ds.all_names.length / 2;
+
+    // console.log(tmp_ds.all_names)
+    // console.log('num_names: ' + String(num_names))
+
+    _.each(tmp_row_data, function(tmp_obj){
+      tmp_obj.value = tmp_obj.value / num_names;
+      // inst_obj.value = inst_obj.value ;
+    })
+  })
+
   console.log(ds_mat)
 
   // all names were found

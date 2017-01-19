@@ -42,7 +42,7 @@ module.exports = function calc_matrix_params(params){
   params.viz.ds_y_scale = d3.scale.ordinal()
     .rangeBands([0, params.viz.clust.dim.height]);
 
-  var ds_num = 10;
+  var ds_num = 10 + 1;
 
   // use the same x domain
   inst_order = inst_order = params.viz.inst_order.row;
