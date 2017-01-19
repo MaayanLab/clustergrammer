@@ -39,7 +39,7 @@ module.exports = function make_simple_rows(params, inst_data, tip, row_selection
     .append('rect')
     .attr('class', 'tile row_tile')
     .attr('width', params.viz.rect_width)
-    .attr('height', params.viz.rect_height)
+    .attr('height', params.viz.ds_rect_height)
     .style('fill', function (d) {
       // switch the color based on up/dn value
       var inst_fill;
