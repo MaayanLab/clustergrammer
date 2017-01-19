@@ -15,6 +15,8 @@ module.exports = function(network_data) {
 
     matrix[row_index] = {};
     matrix[row_index].name = network_data.row_nodes[row_index].name;
+    matrix[row_index].row_index = row_index;
+
     matrix[row_index].row_data = d3.range(network_data.col_nodes.length).map(
       function (col_index) {
 

@@ -1862,6 +1862,8 @@ var Clustergrammer =
 
 	    matrix[row_index] = {};
 	    matrix[row_index].name = network_data.row_nodes[row_index].name;
+	    matrix[row_index].row_index = row_index;
+
 	    matrix[row_index].row_data = d3.range(network_data.col_nodes.length).map(function (col_index) {
 
 	      if (utils.has(network_data.links[0], 'value_up') || utils.has(network_data.links[0], 'value_dn')) {
@@ -2142,6 +2144,8 @@ var Clustergrammer =
 	  // clustergram background rect
 	  clust_group.append('rect').classed('background', true).classed('grey_background', true).style('fill', '#eee').style('opacity', 0.25).attr('width', params.viz.clust.dim.width).attr('height', params.viz.clust.dim.height);
 
+	  // pass in params and the rows (row_nodes) that need to be made
+	  // in this case all row nodes
 	  make_matrix_rows(params, params.network_data.row_nodes);
 
 	  // add callback function to tile group - if one is supplied by the user
@@ -9710,14 +9714,11 @@ var Clustergrammer =
 
 	module.exports = function enter_row_groups(params, delays, duration, tip) {
 
-	  var row_nodes_names = params.network_data.row_nodes_names;
-
 	  // enter new rows
 	  var new_row_groups = d3.select(params.root + ' .clust_group').selectAll('.row').data(params.matrix.matrix, function (d) {
 	    return d.name;
-	  }).enter().append('g').attr('class', 'row').attr('transform', function (d) {
-	    var tmp_index = _.indexOf(row_nodes_names, d.name);
-	    return 'translate(0,' + params.viz.y_scale(tmp_index) + ')';
+	  }).enter().append('g').classed('row', true).attr('transform', function (d) {
+	    return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
 	  });
 
 	  new_row_groups.each(function (d) {
@@ -13602,6 +13603,7 @@ var Clustergrammer =
 	    return tooltip_string;
 	  });
 
+	  // gather a subset of row data from the matrix
 	  var matrix_subset = [];
 	  _.each(params.matrix.matrix, function (inst_row) {
 
@@ -13612,13 +13614,10 @@ var Clustergrammer =
 
 	  d3.select(params.root + ' .clust_group').call(tip);
 
-	  var row_nodes_names = params.network_data.row_nodes_names;
-
 	  d3.select(params.root + ' .clust_group').selectAll('.row').data(matrix_subset, function (d) {
 	    return d.name;
 	  }).enter().append('g').classed('row', true).attr('transform', function (d) {
-	    var tmp_index = _.indexOf(row_nodes_names, d.name);
-	    return 'translate(0,' + params.viz.y_scale(tmp_index) + ')';
+	    return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
 	  }).each(function (d) {
 	    make_simple_rows(params, d, tip, this);
 	  });

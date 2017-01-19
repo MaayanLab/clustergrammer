@@ -35,6 +35,7 @@ module.exports = function make_matrix_rows(params, row_nodes){
     });
 
 
+  // gather a subset of row data from the matrix
   var matrix_subset = [];
   _.each(params.matrix.matrix, function(inst_row){
 
@@ -47,8 +48,6 @@ module.exports = function make_matrix_rows(params, row_nodes){
   d3.select(params.root+' .clust_group')
     .call(tip);
 
-  var row_nodes_names = params.network_data.row_nodes_names;
-
   d3.select(params.root+ ' .clust_group')
     .selectAll('.row')
     .data(matrix_subset, function(d){return d.name;})
@@ -56,8 +55,7 @@ module.exports = function make_matrix_rows(params, row_nodes){
     .append('g')
     .classed('row', true)
     .attr('transform', function(d) {
-      var tmp_index = _.indexOf(row_nodes_names, d.name);
-      return 'translate(0,' + params.viz.y_scale(tmp_index) + ')';
+      return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
     })
     .each(function(d){
       make_simple_rows(params, d, tip, this);

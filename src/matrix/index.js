@@ -31,6 +31,8 @@ module.exports = function(params, svg_elem) {
     .attr('width', params.viz.clust.dim.width)
     .attr('height', params.viz.clust.dim.height);
 
+  // pass in params and the rows (row_nodes) that need to be made
+  // in this case all row nodes
   make_matrix_rows(params, params.network_data.row_nodes);
 
   // add callback function to tile group - if one is supplied by the user
