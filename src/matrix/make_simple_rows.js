@@ -10,8 +10,6 @@ module.exports = function make_simple_rows(params, inst_data, tip, row_selection
 
   var inp_row_data = inst_data.row_data;
 
-  console.log(inp_row_data)
-
   var keep_orig;
   if (_.has(params.network_data.links[0], 'value_orig')) {
     keep_orig = true;

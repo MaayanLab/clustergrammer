@@ -4,8 +4,6 @@ module.exports = function make_ds_matrix(params){
 
   var mod_val = params.viz.clust.dim.height / ds_num;
 
-  console.log(mod_val)
-
   var mat = params.matrix.matrix;
 
   // var ds_mat = mat;
@@ -24,7 +22,6 @@ module.exports = function make_ds_matrix(params){
   }
 
   _.each(mat, function(inst_row){
-    // console.log(inst_row)
 
     var inst_y = params.viz.y_scale(inst_row.row_index);
 
@@ -64,13 +61,8 @@ module.exports = function make_ds_matrix(params){
   // average the values
   _.each(ds_mat, function(tmp_ds){
 
-    console.log(tmp_ds)
-
     var tmp_row_data = tmp_ds.row_data;
     var num_names = tmp_ds.all_names.length / 2;
-
-    // console.log(tmp_ds.all_names)
-    // console.log('num_names: ' + String(num_names))
 
     _.each(tmp_row_data, function(tmp_obj){
       tmp_obj.value = tmp_obj.value / num_names;
@@ -78,16 +70,12 @@ module.exports = function make_ds_matrix(params){
     })
   })
 
-  console.log(ds_mat)
-
   // all names were found
   var all_names = [];
 
   _.each(ds_mat, function(inst_row){
     all_names = all_names.concat(inst_row.all_names)
   })
-
-  console.log(all_names.length)
 
   return ds_mat;
 

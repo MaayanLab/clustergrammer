@@ -1710,14 +1710,14 @@ var Clustergrammer =
 
 	  params.viz.ds_y_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.height]);
 
-	  var ds_num = 10 + 1;
+	  var ds_num = 10;
 
 	  // use the same x domain
 	  inst_order = inst_order = params.viz.inst_order.row;
 	  params.viz.ds_x_scale.domain(params.matrix.orders[inst_order + '_row']);
 
 	  // this will be used to position the downsampled rows
-	  params.viz.ds_y_scale.domain(d3.range(ds_num));
+	  params.viz.ds_y_scale.domain(d3.range(ds_num + 1));
 
 	  // make downsampled matrix (row downsampling)
 	  params.matrix.ds_matrix = calc_downsampled_matrix(params);
@@ -2405,8 +2405,6 @@ var Clustergrammer =
 	module.exports = function make_simple_rows(params, inst_data, tip, row_selection) {
 
 	  var inp_row_data = inst_data.row_data;
-
-	  console.log(inp_row_data);
 
 	  var keep_orig;
 	  if (_.has(params.network_data.links[0], 'value_orig')) {
@@ -13708,8 +13706,6 @@ var Clustergrammer =
 
 	  var mod_val = params.viz.clust.dim.height / ds_num;
 
-	  console.log(mod_val);
-
 	  var mat = params.matrix.matrix;
 
 	  // var ds_mat = mat;
@@ -13728,7 +13724,6 @@ var Clustergrammer =
 	  }
 
 	  _.each(mat, function (inst_row) {
-	    // console.log(inst_row)
 
 	    var inst_y = params.viz.y_scale(inst_row.row_index);
 
@@ -13765,13 +13760,8 @@ var Clustergrammer =
 	  // average the values
 	  _.each(ds_mat, function (tmp_ds) {
 
-	    console.log(tmp_ds);
-
 	    var tmp_row_data = tmp_ds.row_data;
 	    var num_names = tmp_ds.all_names.length / 2;
-
-	    // console.log(tmp_ds.all_names)
-	    // console.log('num_names: ' + String(num_names))
 
 	    _.each(tmp_row_data, function (tmp_obj) {
 	      tmp_obj.value = tmp_obj.value / num_names;
@@ -13779,16 +13769,12 @@ var Clustergrammer =
 	    });
 	  });
 
-	  console.log(ds_mat);
-
 	  // all names were found
 	  var all_names = [];
 
 	  _.each(ds_mat, function (inst_row) {
 	    all_names = all_names.concat(inst_row.all_names);
 	  });
-
-	  console.log(all_names.length);
 
 	  return ds_mat;
 		};
