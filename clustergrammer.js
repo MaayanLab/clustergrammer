@@ -1710,7 +1710,7 @@ var Clustergrammer =
 
 	  params.viz.ds_y_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.height]);
 
-	  var ds_num = 10;
+	  var ds_num = 300;
 
 	  // use the same x domain
 	  inst_order = inst_order = params.viz.inst_order.row;
@@ -13702,7 +13702,7 @@ var Clustergrammer =
 
 	module.exports = function make_ds_matrix(params) {
 
-	  var ds_num = 10;
+	  var ds_num = 300;
 
 	  var mod_val = params.viz.clust.dim.height / ds_num;
 
