@@ -1,4 +1,3 @@
-
 /*
 Example files
 */
@@ -84,4 +83,19 @@ function resize_container(args){
   d3.select(args.root)
     .style('width', screen_width+'px')
     .style('height', screen_height+'px');
+}
+
+function something(){
+  mat = cgm.params.matrix.matrix;
+
+  tot_values = []
+
+  for (var i=0; i<mat[0].row_data.length; i++){
+    tot_values.push(mat[0].row_data[i].value + mat[1].row_data[i].value);
+  }
+
+  // console.log(tot_values)
+
+  return tot_values;
+
 }
