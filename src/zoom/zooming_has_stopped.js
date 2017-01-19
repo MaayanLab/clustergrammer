@@ -2,7 +2,6 @@ var num_visible_labels = require('./num_visible_labels');
 var trim_text = require('./trim_text');
 var constrain_font_size = require('./constrain_font_size');
 var toggle_grid_lines = require('../matrix/toggle_grid_lines');
-// var make_matrix_rows = require('../matrix/make_matrix_rows');
 
 module.exports = function zooming_has_stopped(params){
 
@@ -64,8 +63,6 @@ module.exports = function zooming_has_stopped(params){
       text_patch();
 
       constrain_font_size(params);
-
-      // make_matrix_rows(params);
 
     }
 

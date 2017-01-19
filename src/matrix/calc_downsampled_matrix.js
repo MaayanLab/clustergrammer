@@ -11,10 +11,16 @@ module.exports = function make_ds_matrix(params){
   // var ds_mat = mat;
 
   var ds_mat = [];
+  var inst_obj;
 
   // initialize array of objects
   for (var i=0; i < ds_num+1; i++){
-    ds_mat.push({});
+
+    inst_obj = {};
+    inst_obj.row_index = i;
+    inst_obj.name = String(i);
+
+    ds_mat.push(inst_obj);
   }
 
   _.each(mat, function(inst_row){
@@ -40,7 +46,7 @@ module.exports = function make_ds_matrix(params){
       for (var i=0; i < inst_row_data.length; i++){
         new_data.push(old_data[i] + inst_row_data[i].value);
       }
-      // reset row_data
+      // update  row_data
       ds_mat[ds_index].row_data = new_data;
     } else {
       var new_data = []

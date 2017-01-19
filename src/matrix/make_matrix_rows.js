@@ -1,9 +1,7 @@
 var make_simple_rows = require('./make_simple_rows');
 var d3_tip_custom = require('../tooltip/d3_tip_custom');
 
-module.exports = function make_matrix_rows(params, row_nodes){
-
-  var row_names = _.pluck(row_nodes, 'name');
+module.exports = function make_matrix_rows(params, current_matrix, row_names){
 
   // make rows in the matrix - add key names to rows in matrix
   /////////////////////////////////////////////////////////////
@@ -37,7 +35,7 @@ module.exports = function make_matrix_rows(params, row_nodes){
 
   // gather a subset of row data from the matrix
   var matrix_subset = [];
-  _.each(params.matrix.matrix, function(inst_row){
+  _.each(current_matrix, function(inst_row){
 
     if (_.contains(row_names, inst_row.name)){
       matrix_subset.push(inst_row);

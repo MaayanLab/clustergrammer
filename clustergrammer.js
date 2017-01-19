@@ -64,8 +64,6 @@ var Clustergrammer =
 	var run_zoom = __webpack_require__(81);
 	var d3_tip_custom = __webpack_require__(49);
 
-	var make_matrix_rows = __webpack_require__(202);
-
 	// moved d3.slider to src
 	d3.slider = __webpack_require__(178);
 
@@ -155,8 +153,6 @@ var Clustergrammer =
 	  cgm.export_matrix = export_matrix;
 	  cgm.crop_matrix = crop_matrix;
 	  cgm.d3_tip_custom = expose_d3_tip_custom;
-
-	  cgm.make_matrix_rows = make_matrix_rows;
 
 	  return cgm;
 	}
@@ -2170,7 +2166,7 @@ var Clustergrammer =
 
 	  // pass in params and the rows (row_nodes) that need to be made
 	  // in this case all row nodes
-	  make_matrix_rows(params, params.network_data.row_nodes);
+	  make_matrix_rows(params, params.matrix.matrix, params.network_data.row_nodes_names);
 
 	  // add callback function to tile group - if one is supplied by the user
 	  if (typeof params.click_tile === 'function') {
@@ -4682,18 +4678,7 @@ var Clustergrammer =
 	  var start_adding_back = 1;
 
 	  if (missing_rows.length > start_adding_back) {
-
-	    // get missing nodes
-	    var missing_row_nodes = [];
-
-	    _.each(params.network_data.row_nodes, function (inst_node) {
-
-	      if (_.contains(missing_rows, inst_node.name)) {
-	        missing_row_nodes.push(inst_node);
-	      }
-	    });
-
-	    make_matrix_rows(params, missing_row_nodes);
+	    make_matrix_rows(params, params.matrix.matrix, missing_rows);
 	  }
 
 	  return viz_area;
@@ -6135,7 +6120,6 @@ var Clustergrammer =
 	var trim_text = __webpack_require__(87);
 	var constrain_font_size = __webpack_require__(83);
 	var toggle_grid_lines = __webpack_require__(41);
-	// var make_matrix_rows = require('../matrix/make_matrix_rows');
 
 	module.exports = function zooming_has_stopped(params) {
 
@@ -6184,8 +6168,6 @@ var Clustergrammer =
 	      text_patch();
 
 	      constrain_font_size(params);
-
-	      // make_matrix_rows(params);
 	    }
 
 	    // this makes sure that the text is visible after zooming and trimming
@@ -13603,9 +13585,7 @@ var Clustergrammer =
 	var make_simple_rows = __webpack_require__(43);
 	var d3_tip_custom = __webpack_require__(49);
 
-	module.exports = function make_matrix_rows(params, row_nodes) {
-
-	  var row_names = _.pluck(row_nodes, 'name');
+	module.exports = function make_matrix_rows(params, current_matrix, row_names) {
 
 	  // make rows in the matrix - add key names to rows in matrix
 	  /////////////////////////////////////////////////////////////
@@ -13630,7 +13610,7 @@ var Clustergrammer =
 
 	  // gather a subset of row data from the matrix
 	  var matrix_subset = [];
-	  _.each(params.matrix.matrix, function (inst_row) {
+	  _.each(current_matrix, function (inst_row) {
 
 	    if (_.contains(row_names, inst_row.name)) {
 	      matrix_subset.push(inst_row);
@@ -13722,10 +13702,16 @@ var Clustergrammer =
 	  // var ds_mat = mat;
 
 	  var ds_mat = [];
+	  var inst_obj;
 
 	  // initialize array of objects
 	  for (var i = 0; i < ds_num + 1; i++) {
-	    ds_mat.push({});
+
+	    inst_obj = {};
+	    inst_obj.row_index = i;
+	    inst_obj.name = String(i);
+
+	    ds_mat.push(inst_obj);
 	  }
 
 	  _.each(mat, function (inst_row) {
@@ -13751,7 +13737,7 @@ var Clustergrammer =
 	      for (var i = 0; i < inst_row_data.length; i++) {
 	        new_data.push(old_data[i] + inst_row_data[i].value);
 	      }
-	      // reset row_data
+	      // update  row_data
 	      ds_mat[ds_index].row_data = new_data;
 	    } else {
 	      var new_data = [];

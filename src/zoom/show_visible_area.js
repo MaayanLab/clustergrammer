@@ -59,20 +59,7 @@ module.exports = function show_visible_area(params){
   var start_adding_back = 1;
 
   if (missing_rows.length > start_adding_back){
-
-    // get missing nodes
-    var missing_row_nodes = [];
-
-    _.each(params.network_data.row_nodes, function(inst_node){
-
-      if (_.contains(missing_rows, inst_node.name)){
-        missing_row_nodes.push(inst_node);
-      }
-
-
-    });
-
-    make_matrix_rows(params, missing_row_nodes);
+    make_matrix_rows(params, params.matrix.matrix, missing_rows);
   }
 
 
