@@ -1678,18 +1678,23 @@ var Clustergrammer =
 	'use strict';
 
 	var ini_matrix_params = __webpack_require__(31);
+	var calc_downsampled_matrix = __webpack_require__(204);
 
 	module.exports = function calc_matrix_params(params) {
 
 	  params.matrix = ini_matrix_params(params);
 
+	  // X and Y scales: set domains and ranges
+	  //////////////////////////////////////////////
 	  params.viz.x_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.width]);
 
 	  params.viz.y_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.height]);
 
+	  var inst_order;
+
 	  _.each(['row', 'col'], function (inst_rc) {
 
-	    var inst_order = params.viz.inst_order[inst_rc];
+	    inst_order = params.viz.inst_order[inst_rc];
 
 	    if (inst_order === 'custom') {
 	      inst_order = 'clust';
@@ -1701,6 +1706,25 @@ var Clustergrammer =
 	      params.viz.y_scale.domain(params.matrix.orders[inst_order + '_' + inst_rc]);
 	    }
 	  });
+
+	  // Downsampling
+	  //////////////////////
+	  // make downsampled scales
+	  params.viz.ds_x_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.width]);
+
+	  params.viz.ds_y_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.height]);
+
+	  var ds_num = 10;
+
+	  // use the same x domain
+	  inst_order = inst_order = params.viz.inst_order.row;
+	  params.viz.ds_x_scale.domain(params.matrix.orders[inst_order + '_row']);
+
+	  // this will be used to position the downsampled rows
+	  params.viz.ds_y_scale.domain(d3.range(ds_num));
+
+	  // make downsampled matrix (row downsampling)
+	  params.matrix.ds_matrix = calc_downsampled_matrix(params);
 
 	  params.viz.border_width = {};
 	  params.viz.border_width.x = params.viz.x_scale.rangeBand() / params.viz.border_fraction;
@@ -8964,8 +8988,9 @@ var Clustergrammer =
 	  tmp_config.ini_view = null;
 	  tmp_config.current_col_cat = cgm.params.current_col_cat;
 
-	  // always preserve category colors when updating
-	  tmp_config.cat_colors = cgm.params.viz.cat_colors;
+	  // // disabled, causing problems when cropping
+	  // // always preserve category colors when updating
+	  // tmp_config.cat_colors = cgm.params.viz.cat_colors;
 
 	  var new_params = make_params(tmp_config);
 	  var delays = define_enter_exit_delays(cgm.params, new_params);
@@ -13676,6 +13701,29 @@ var Clustergrammer =
 	  params.viz.viz_nodes.curr_row = curr_rows;
 	  // params.viz.viz_nodes.curr_col = curr_cols
 
+		};
+
+/***/ },
+/* 204 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	module.exports = function make_ds_matrix(params) {
+
+	  var mat = params.matrix.matrix;
+
+	  var ds_mat = mat;
+
+	  console.log(mat.length);
+
+	  // tot_values = []
+
+	  // for (var i=0; i<mat[0].row_data.length; i++){
+	  //   tot_values.push(mat[0].row_data[i].value + mat[1].row_data[i].value);
+	  // }
+
+	  return ds_mat;
 		};
 
 /***/ }
