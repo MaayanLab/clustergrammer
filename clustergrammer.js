@@ -2166,8 +2166,8 @@ var Clustergrammer =
 
 	  // pass in params and the rows (row_nodes) that need to be made
 	  // in this case all row nodes
-	  make_matrix_rows(params, params.matrix.matrix, params.network_data.row_nodes_names);
-	  // make_matrix_rows(params, params.matrix.ds_matrix, 'all', false);
+	  // make_matrix_rows(params, params.matrix.matrix, params.network_data.row_nodes_names);
+	  make_matrix_rows(params, params.matrix.ds_matrix, 'all', false);
 
 	  // add callback function to tile group - if one is supplied by the user
 	  if (typeof params.click_tile === 'function') {
@@ -2400,9 +2400,11 @@ var Clustergrammer =
 	var mouseout_tile = __webpack_require__(47);
 	var fine_position_tile = __webpack_require__(48);
 
-	module.exports = function make_simple_rows(params, ini_inp_row_data, tip, row_selection) {
+	module.exports = function make_simple_rows(params, inst_data, tip, row_selection) {
 
-	  var inp_row_data = ini_inp_row_data.row_data;
+	  var inp_row_data = inst_data.row_data;
+
+	  console.log(inp_row_data);
 
 	  var keep_orig;
 	  if (_.has(params.network_data.links[0], 'value_orig')) {
@@ -13632,7 +13634,7 @@ var Clustergrammer =
 	  d3.select(params.root + ' .clust_group').selectAll('.row').data(matrix_subset, function (d) {
 	    return d.name;
 	  }).enter().append('g').classed('row', true).attr('transform', function (d) {
-	    return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
+	    return 'translate(0,' + params.viz.ds_y_scale(d.row_index) + ')';
 	  }).each(function (d) {
 	    make_simple_rows(params, d, tip, this);
 	  });
@@ -13743,17 +13745,16 @@ var Clustergrammer =
 	    // gather row_data
 	    if (_.has(ds_mat[ds_index], 'row_data')) {
 
-	      // var old_data = ds_mat[ds_index].row_data;
-
 	      for (var i = 0; i < inst_row_data.length; i++) {
-
 	        ds_mat[ds_index].row_data[i].value = ds_mat[ds_index].row_data[i].value + inst_row_data[i].value;
 	      }
 	    } else {
 
+	      var new_data = [];
 	      for (var i = 0; i < inst_row_data.length; i++) {
-	        new_data[i] = {};
-	        new_data[i].value = inst_row_data[i].value;
+	        new_data[i] = inst_row_data[i];
+	        // new_data[i].value = inst_row_data[i].value;
+	        // new_data[i].pos_x = inst_row_data[i].pos_x;
 	      }
 
 	      ds_mat[ds_index].row_data = new_data;

@@ -42,19 +42,17 @@ module.exports = function make_ds_matrix(params){
     // gather row_data
     if (_.has(ds_mat[ds_index], 'row_data')){
 
-      // var old_data = ds_mat[ds_index].row_data;
-
       for (var i=0; i < inst_row_data.length; i++){
-
         ds_mat[ds_index].row_data[i].value = ds_mat[ds_index].row_data[i].value + inst_row_data[i].value;
       }
 
-
     } else {
 
+      var new_data = []
       for (var i=0; i < inst_row_data.length; i++){
-        new_data[i] = {};
-        new_data[i].value = inst_row_data[i].value;
+        new_data[i] = inst_row_data[i];
+        // new_data[i].value = inst_row_data[i].value;
+        // new_data[i].pos_x = inst_row_data[i].pos_x;
       }
 
       ds_mat[ds_index].row_data = new_data

@@ -58,7 +58,7 @@ module.exports = function make_matrix_rows(params, current_matrix, row_names='al
     .append('g')
     .classed('row', true)
     .attr('transform', function(d) {
-      return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
+      return 'translate(0,' + params.viz.ds_y_scale(d.row_index) + ')';
     })
     .each(function(d){
       make_simple_rows(params, d, tip, this);

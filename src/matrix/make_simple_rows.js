@@ -6,9 +6,11 @@ var mouseover_tile = require('./mouseover_tile');
 var mouseout_tile = require('./mouseout_tile');
 var fine_position_tile = require('./fine_position_tile');
 
-module.exports = function make_simple_rows(params, ini_inp_row_data, tip, row_selection) {
+module.exports = function make_simple_rows(params, inst_data, tip, row_selection) {
 
-  var inp_row_data = ini_inp_row_data.row_data;
+  var inp_row_data = inst_data.row_data;
+
+  console.log(inp_row_data)
 
   var keep_orig;
   if (_.has(params.network_data.links[0], 'value_orig')) {
