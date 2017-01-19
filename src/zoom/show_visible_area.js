@@ -62,7 +62,6 @@ module.exports = function show_visible_area(params){
     make_matrix_rows(params, params.matrix.matrix, missing_rows);
   }
 
-
   return viz_area;
 
 };

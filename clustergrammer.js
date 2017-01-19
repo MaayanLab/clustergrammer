@@ -2167,6 +2167,7 @@ var Clustergrammer =
 	  // pass in params and the rows (row_nodes) that need to be made
 	  // in this case all row nodes
 	  make_matrix_rows(params, params.matrix.matrix, params.network_data.row_nodes_names);
+	  // make_matrix_rows(params, params.matrix.ds_matrix, 'all', false);
 
 	  // add callback function to tile group - if one is supplied by the user
 	  if (typeof params.click_tile === 'function') {
@@ -13585,39 +13586,48 @@ var Clustergrammer =
 	var make_simple_rows = __webpack_require__(43);
 	var d3_tip_custom = __webpack_require__(49);
 
-	module.exports = function make_matrix_rows(params, current_matrix, row_names) {
+	module.exports = function make_matrix_rows(params, current_matrix) {
+	  var row_names = arguments.length <= 2 || arguments[2] === undefined ? 'all' : arguments[2];
+	  var make_tip = arguments.length <= 3 || arguments[3] === undefined ? true : arguments[3];
 
-	  // make rows in the matrix - add key names to rows in matrix
-	  /////////////////////////////////////////////////////////////
-	  // d3-tooltip - for tiles
-	  var tip = d3_tip_custom().attr('class', function () {
-	    var root_tip_selector = params.viz.root_tips.replace('.', '');
-	    var class_string = root_tip_selector + ' d3-tip tile_tip';
-	    return class_string;
-	  }).style('display', 'none').direction('nw').offset([0, 0]).html(function (d) {
-	    var inst_value = String(d.value.toFixed(3));
-	    var tooltip_string;
 
-	    if (params.keep_orig) {
-	      var orig_value = String(d.value_orig.toFixed(3));
-	      tooltip_string = '<p>' + d.row_name + ' and ' + d.col_name + '</p>' + '<p> normalized value: ' + inst_value + '</p>' + '<div> original value: ' + orig_value + '</div>';
-	    } else {
-	      tooltip_string = '<p>' + d.row_name + ' and ' + d.col_name + '</p>' + '<div> value: ' + inst_value + '</div>';
-	    }
+	  if (make_tip) {
 
-	    return tooltip_string;
-	  });
+	    // make rows in the matrix - add key names to rows in matrix
+	    /////////////////////////////////////////////////////////////
+	    // d3-tooltip - for tiles
+	    var tip = d3_tip_custom().attr('class', function () {
+	      var root_tip_selector = params.viz.root_tips.replace('.', '');
+	      var class_string = root_tip_selector + ' d3-tip tile_tip';
+	      return class_string;
+	    }).style('display', 'none').direction('nw').offset([0, 0]).html(function (d) {
+	      var inst_value = String(d.value.toFixed(3));
+	      var tooltip_string;
 
-	  // gather a subset of row data from the matrix
+	      if (params.keep_orig) {
+	        var orig_value = String(d.value_orig.toFixed(3));
+	        tooltip_string = '<p>' + d.row_name + ' and ' + d.col_name + '</p>' + '<p> normalized value: ' + inst_value + '</p>' + '<div> original value: ' + orig_value + '</div>';
+	      } else {
+	        tooltip_string = '<p>' + d.row_name + ' and ' + d.col_name + '</p>' + '<div> value: ' + inst_value + '</div>';
+	      }
+
+	      return tooltip_string;
+	    });
+
+	    d3.select(params.root + ' .clust_group').call(tip);
+	  }
+
+	  // gather a subset of row data from the matrix or use all rows
 	  var matrix_subset = [];
-	  _.each(current_matrix, function (inst_row) {
-
-	    if (_.contains(row_names, inst_row.name)) {
-	      matrix_subset.push(inst_row);
-	    }
-	  });
-
-	  d3.select(params.root + ' .clust_group').call(tip);
+	  if (row_names != 'all') {
+	    _.each(current_matrix, function (inst_row) {
+	      if (_.contains(row_names, inst_row.name)) {
+	        matrix_subset.push(inst_row);
+	      }
+	    });
+	  } else {
+	    matrix_subset = current_matrix;
+	  }
 
 	  d3.select(params.root + ' .clust_group').selectAll('.row').data(matrix_subset, function (d) {
 	    return d.name;
@@ -13732,27 +13742,23 @@ var Clustergrammer =
 
 	    // gather row_data
 	    if (_.has(ds_mat[ds_index], 'row_data')) {
-	      var old_data = ds_mat[ds_index].row_data;
-	      var new_data = [];
+
+	      // var old_data = ds_mat[ds_index].row_data;
+
 	      for (var i = 0; i < inst_row_data.length; i++) {
-	        new_data.push(old_data[i] + inst_row_data[i].value);
+
+	        ds_mat[ds_index].row_data[i].value = ds_mat[ds_index].row_data[i].value + inst_row_data[i].value;
 	      }
-	      // update  row_data
-	      ds_mat[ds_index].row_data = new_data;
 	    } else {
-	      var new_data = [];
+
 	      for (var i = 0; i < inst_row_data.length; i++) {
-	        new_data.push(inst_row_data[i].value);
+	        new_data[i] = {};
+	        new_data[i].value = inst_row_data[i].value;
 	      }
+
 	      ds_mat[ds_index].row_data = new_data;
 	    }
 	  });
-
-	  // tot_values = []
-
-	  // for (var i=0; i<mat[0].row_data.length; i++){
-	  //   tot_values.push(mat[0].row_data[i].value + mat[1].row_data[i].value);
-	  // }
 
 	  console.log(ds_mat);
 
