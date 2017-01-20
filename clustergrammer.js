@@ -1710,7 +1710,7 @@ var Clustergrammer =
 
 	  params.viz.ds_y_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.height]);
 
-	  var ds_num = 100;
+	  var ds_num = 300;
 
 	  // use the same x domain
 	  inst_order = inst_order = params.viz.inst_order.row;
@@ -1949,19 +1949,22 @@ var Clustergrammer =
 
 	module.exports = function make_ds_matrix(params) {
 
-	  var ds_num = 100;
+	  var ds_num = 300;
 
 	  var mod_val = params.viz.clust.dim.height / ds_num;
 
 	  var mat = params.matrix.matrix;
 
-	  // var ds_mat = mat;
-
 	  var ds_mat = [];
 	  var inst_obj;
 
+	  var len_ds_array = ds_num + 1;
+
+	  var i;
+	  var x;
+
 	  // initialize array of objects
-	  for (var i = 0; i < ds_num + 1; i++) {
+	  for (i = 0; i < len_ds_array; i++) {
 
 	    inst_obj = {};
 	    inst_obj.row_index = i;
@@ -1988,16 +1991,14 @@ var Clustergrammer =
 	    // gather row_data
 	    if (_.has(ds_mat[ds_index], 'row_data')) {
 
-	      for (var i = 0; i < inst_row_data.length; i++) {
-	        ds_mat[ds_index].row_data[i].value = ds_mat[ds_index].row_data[i].value + inst_row_data[i].value;
+	      for (x = 0; x < inst_row_data.length; x++) {
+	        ds_mat[ds_index].row_data[x].value = ds_mat[ds_index].row_data[x].value + inst_row_data[x].value;
 	      }
 	    } else {
 
 	      var new_data = [];
-	      for (var i = 0; i < inst_row_data.length; i++) {
-	        new_data[i] = inst_row_data[i];
-	        // new_data[i].value = inst_row_data[i].value;
-	        // new_data[i].pos_x = inst_row_data[i].pos_x;
+	      for (x = 0; x < inst_row_data.length; x++) {
+	        new_data[x] = inst_row_data[x];
 	      }
 
 	      ds_mat[ds_index].row_data = new_data;
@@ -2012,7 +2013,6 @@ var Clustergrammer =
 
 	    _.each(tmp_row_data, function (tmp_obj) {
 	      tmp_obj.value = tmp_obj.value / num_names;
-	      // inst_obj.value = inst_obj.value ;
 	    });
 	  });
 

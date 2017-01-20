@@ -1,18 +1,21 @@
 module.exports = function make_ds_matrix(params){
 
-  var ds_num = 100;
+  var ds_num = 300;
 
   var mod_val = params.viz.clust.dim.height / ds_num;
 
   var mat = params.matrix.matrix;
 
-  // var ds_mat = mat;
-
   var ds_mat = [];
   var inst_obj;
 
+  var len_ds_array = ds_num + 1;
+
+  var i;
+  var x;
+
   // initialize array of objects
-  for (var i=0; i < ds_num+1; i++){
+  for (i=0; i < len_ds_array; i++){
 
     inst_obj = {};
     inst_obj.row_index = i;
@@ -39,24 +42,22 @@ module.exports = function make_ds_matrix(params){
     // gather row_data
     if (_.has(ds_mat[ds_index], 'row_data')){
 
-      for (var i=0; i < inst_row_data.length; i++){
-        ds_mat[ds_index].row_data[i].value = ds_mat[ds_index].row_data[i].value + inst_row_data[i].value;
+      for (x=0; x < inst_row_data.length; x++){
+        ds_mat[ds_index].row_data[x].value = ds_mat[ds_index].row_data[x].value + inst_row_data[x].value;
       }
 
     } else {
 
-      var new_data = []
-      for (var i=0; i < inst_row_data.length; i++){
-        new_data[i] = inst_row_data[i];
-        // new_data[i].value = inst_row_data[i].value;
-        // new_data[i].pos_x = inst_row_data[i].pos_x;
+      var new_data = [];
+      for (x=0; x < inst_row_data.length; x++){
+        new_data[x] = inst_row_data[x];
       }
 
-      ds_mat[ds_index].row_data = new_data
+      ds_mat[ds_index].row_data = new_data;
 
     }
 
-  })
+  });
 
   // average the values
   _.each(ds_mat, function(tmp_ds){
@@ -66,16 +67,16 @@ module.exports = function make_ds_matrix(params){
 
     _.each(tmp_row_data, function(tmp_obj){
       tmp_obj.value = tmp_obj.value / num_names;
-      // inst_obj.value = inst_obj.value ;
-    })
-  })
+    });
+
+  });
 
   // all names were found
   var all_names = [];
 
   _.each(ds_mat, function(inst_row){
-    all_names = all_names.concat(inst_row.all_names)
-  })
+    all_names = all_names.concat(inst_row.all_names);
+  });
 
   return ds_mat;
 
