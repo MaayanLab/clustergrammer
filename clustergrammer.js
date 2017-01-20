@@ -1710,14 +1710,16 @@ var Clustergrammer =
 
 	  params.viz.ds_y_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.height]);
 
-	  var ds_num = 300;
+	  // var ds_num = 300;
+	  var ds_height = 3;
+	  params.viz.ds_num = Math.round(params.viz.clust.dim.height / ds_height);
 
 	  // use the same x domain
 	  inst_order = inst_order = params.viz.inst_order.row;
 	  params.viz.ds_x_scale.domain(params.matrix.orders[inst_order + '_row']);
 
 	  // this will be used to position the downsampled rows
-	  params.viz.ds_y_scale.domain(d3.range(ds_num + 1));
+	  params.viz.ds_y_scale.domain(d3.range(params.viz.ds_num + 1));
 
 	  // make downsampled matrix (row downsampling)
 	  params.matrix.ds_matrix = calc_downsampled_matrix(params);
@@ -1949,16 +1951,17 @@ var Clustergrammer =
 
 	module.exports = function make_ds_matrix(params) {
 
-	  var ds_num = 300;
+	  // var ds_height = 5;
+	  // var ds_num = params.viz.clust.dim.height/ds_height;
 
-	  var mod_val = params.viz.clust.dim.height / ds_num;
+	  var mod_val = params.viz.clust.dim.height / params.viz.ds_num;
 
 	  var mat = params.matrix.matrix;
 
 	  var ds_mat = [];
 	  var inst_obj;
 
-	  var len_ds_array = ds_num + 1;
+	  var len_ds_array = params.viz.ds_num + 1;
 
 	  var i;
 	  var x;

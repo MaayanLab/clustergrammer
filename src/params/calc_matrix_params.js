@@ -42,7 +42,9 @@ module.exports = function calc_matrix_params(params){
   params.viz.ds_y_scale = d3.scale.ordinal()
     .rangeBands([0, params.viz.clust.dim.height]);
 
-  var ds_num = 300;
+  // var ds_num = 300;
+  var ds_height = 3;
+  params.viz.ds_num = Math.round(params.viz.clust.dim.height/ds_height);
 
   // use the same x domain
   inst_order = inst_order = params.viz.inst_order.row;
@@ -51,7 +53,7 @@ module.exports = function calc_matrix_params(params){
 
   // this will be used to position the downsampled rows
   params.viz.ds_y_scale
-    .domain( d3.range(ds_num + 1) );
+    .domain( d3.range(params.viz.ds_num + 1) );
 
   // make downsampled matrix (row downsampling)
   params.matrix.ds_matrix = calc_downsampled_matrix(params);

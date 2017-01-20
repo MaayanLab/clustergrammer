@@ -1,15 +1,16 @@
 module.exports = function make_ds_matrix(params){
 
-  var ds_num = 300;
+  // var ds_height = 5;
+  // var ds_num = params.viz.clust.dim.height/ds_height;
 
-  var mod_val = params.viz.clust.dim.height / ds_num;
+  var mod_val = params.viz.clust.dim.height / params.viz.ds_num;
 
   var mat = params.matrix.matrix;
 
   var ds_mat = [];
   var inst_obj;
 
-  var len_ds_array = ds_num + 1;
+  var len_ds_array = params.viz.ds_num + 1;
 
   var i;
   var x;
