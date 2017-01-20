@@ -6,10 +6,12 @@ module.exports = function make_matrix_rows(params, current_matrix, row_names='al
   // defaults
   var y_scale = params.viz.y_scale;
   var make_tip = true;
+  var row_class = 'row';
 
   if (is_ds){
     y_scale = params.viz.ds_y_scale;
     make_tip = false;
+    row_class = 'ds_row'
   }
 
   if (make_tip){
@@ -60,12 +62,14 @@ module.exports = function make_matrix_rows(params, current_matrix, row_names='al
     matrix_subset = current_matrix;
   }
 
+
+
   d3.select(params.root+ ' .clust_group')
     .selectAll('.row')
     .data(matrix_subset, function(d){return d.name;})
     .enter()
     .append('g')
-    .classed('row', true)
+    .classed(row_class, true)
     .attr('transform', function(d) {
       return 'translate(0,' + y_scale(d.row_index) + ')';
     })

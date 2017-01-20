@@ -2494,10 +2494,12 @@ var Clustergrammer =
 	  // defaults
 	  var y_scale = params.viz.y_scale;
 	  var make_tip = true;
+	  var row_class = 'row';
 
 	  if (is_ds) {
 	    y_scale = params.viz.ds_y_scale;
 	    make_tip = false;
+	    row_class = 'ds_row';
 	  }
 
 	  if (make_tip) {
@@ -2540,7 +2542,7 @@ var Clustergrammer =
 
 	  d3.select(params.root + ' .clust_group').selectAll('.row').data(matrix_subset, function (d) {
 	    return d.name;
-	  }).enter().append('g').classed('row', true).attr('transform', function (d) {
+	  }).enter().append('g').classed(row_class, true).attr('transform', function (d) {
 	    return 'translate(0,' + y_scale(d.row_index) + ')';
 	  }).each(function (d) {
 	    make_simple_rows(params, d, tip, this, is_ds);
@@ -4801,6 +4803,8 @@ var Clustergrammer =
 
 	module.exports = function show_visible_area(params) {
 
+	  console.log('show_visible_area');
+
 	  var viz_area = {};
 	  var zoom_info = params.zoom_info;
 
@@ -4811,6 +4815,7 @@ var Clustergrammer =
 	  viz_area.min_y = Math.abs(zoom_info.trans_y) / zoom_info.zoom_y - buffer_size * params.viz.rect_height;
 
 	  viz_area.max_x = Math.abs(zoom_info.trans_x) / zoom_info.zoom_x + params.viz.clust.dim.width / zoom_info.zoom_x + buffer_size * params.viz.rect_width;
+
 	  viz_area.max_y = Math.abs(zoom_info.trans_y) / zoom_info.zoom_y + params.viz.clust.dim.height / zoom_info.zoom_y + buffer_size * params.viz.rect_height;
 
 	  // generate lists of visible rows/cols
@@ -4818,18 +4823,30 @@ var Clustergrammer =
 
 	  // toggle labels and rows
 	  ///////////////////////////////////////////////
+	  var severe_toggle = true;
+	  var normal_toggle = false;
 	  d3.selectAll(params.root + ' .row_label_group').style('display', function (d) {
-	    return toggle_display(params, d, 'row', this);
+	    return toggle_display(params, d, 'row', this, normal_toggle);
 	  });
 
 	  d3.selectAll(params.root + ' .row').style('display', function (d) {
-	    return toggle_display(params, d, 'row', this, true);
+	    return toggle_display(params, d, 'row', this, severe_toggle);
 	  });
 
 	  // toggle col labels
 	  d3.selectAll(params.root + ' .col_label_text').style('display', function (d) {
-	    return toggle_display(params, d, 'col', this);
+	    return toggle_display(params, d, 'col', this, normal_toggle);
 	  });
+
+	  var missing_rows = _.difference(params.viz.viz_nodes.row, params.viz.viz_nodes.curr_row);
+
+	  var start_adding_back = 1;
+
+	  if (missing_rows.length > start_adding_back) {
+	    var is_ds = true;
+	    // missing_rows = 'all';
+	    // make_matrix_rows(params, params.matrix.ds_matrix, missing_rows, true);
+	  }
 
 	  function toggle_display(params, d, inst_rc, inst_selection) {
 	    var severe_toggle = arguments.length <= 4 || arguments[4] === undefined ? false : arguments[4];
@@ -4846,14 +4863,6 @@ var Clustergrammer =
 	      }
 	    }
 	    return inst_display;
-	  }
-
-	  var missing_rows = _.difference(params.viz.viz_nodes.row, params.viz.viz_nodes.curr_row);
-
-	  var start_adding_back = 1;
-
-	  if (missing_rows.length > start_adding_back) {
-	    make_matrix_rows(params, params.matrix.matrix, missing_rows, false);
 	  }
 
 	  return viz_area;
