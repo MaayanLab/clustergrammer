@@ -6,7 +6,7 @@ var mouseover_tile = require('./mouseover_tile');
 var mouseout_tile = require('./mouseout_tile');
 var fine_position_tile = require('./fine_position_tile');
 
-module.exports = function make_simple_rows(params, inst_data, tip, row_selection) {
+module.exports = function make_simple_rows(params, inst_data, tip, row_selection, make_tip=True) {
 
   var inp_row_data = inst_data.row_data;
 
@@ -37,7 +37,7 @@ module.exports = function make_simple_rows(params, inst_data, tip, row_selection
     .append('rect')
     .attr('class', 'tile row_tile')
     .attr('width', params.viz.rect_width)
-    .attr('height', params.viz.ds_rect_height)
+    .attr('height', params.viz.rect_height)
     .style('fill', function (d) {
       // switch the color based on up/dn value
       var inst_fill;
@@ -48,14 +48,7 @@ module.exports = function make_simple_rows(params, inst_data, tip, row_selection
       }
       return inst_fill;
     })
-    .on('mouseover', function () {
-      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-        args[_key] = arguments[_key];
-      }
-      mouseover_tile(params, this, tip, args);
-    }).on('mouseout', function () {
-      mouseout_tile(params, this, tip);
-    }).style('fill-opacity', function (d) {
+    .style('fill-opacity', function (d) {
       // calculate output opacity using the opacity scale
       var inst_opacity;
       if (d.value_orig === 'NaN') {
@@ -65,9 +58,23 @@ module.exports = function make_simple_rows(params, inst_data, tip, row_selection
         inst_opacity = params.matrix.opacity_scale(Math.abs(d.value));
       }
       return inst_opacity;
-    }).attr('transform', function (d) {
+    })
+    .attr('transform', function (d) {
       return fine_position_tile(params, d);
     });
+
+  if (make_tip){
+    tile
+      .on('mouseover', function () {
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+          args[_key] = arguments[_key];
+        }
+        mouseover_tile(params, this, tip, args);
+      })
+      .on('mouseout', function () {
+        mouseout_tile(params, this, tip);
+      });
+  }
 
   // // tile circles
   // /////////////////////////////

@@ -2169,7 +2169,7 @@ var Clustergrammer =
 	  // pass in params and the rows (row_nodes) that need to be made
 	  // in this case all row nodes
 	  // make_matrix_rows(params, params.matrix.matrix, params.network_data.row_nodes_names);
-	  make_matrix_rows(params, params.matrix.ds_matrix, 'all', false);
+	  make_matrix_rows(params, params.matrix.matrix, 'all', false);
 
 	  // add callback function to tile group - if one is supplied by the user
 	  if (typeof params.click_tile === 'function') {
@@ -2403,6 +2403,8 @@ var Clustergrammer =
 	var fine_position_tile = __webpack_require__(48);
 
 	module.exports = function make_simple_rows(params, inst_data, tip, row_selection) {
+	  var make_tip = arguments.length <= 4 || arguments[4] === undefined ? True : arguments[4];
+
 
 	  var inp_row_data = inst_data.row_data;
 
@@ -2426,7 +2428,7 @@ var Clustergrammer =
 	  // generate tiles in the current row
 	  var tile = d3.select(row_selection).selectAll('rect').data(row_values, function (d) {
 	    return d.col_name;
-	  }).enter().append('rect').attr('class', 'tile row_tile').attr('width', params.viz.rect_width).attr('height', params.viz.ds_rect_height).style('fill', function (d) {
+	  }).enter().append('rect').attr('class', 'tile row_tile').attr('width', params.viz.rect_width).attr('height', params.viz.rect_height).style('fill', function (d) {
 	    // switch the color based on up/dn value
 	    var inst_fill;
 	    if (d.value_orig === 'NaN') {
@@ -2435,13 +2437,6 @@ var Clustergrammer =
 	      inst_fill = d.value > 0 ? params.matrix.tile_colors[0] : params.matrix.tile_colors[1];
 	    }
 	    return inst_fill;
-	  }).on('mouseover', function () {
-	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-	      args[_key] = arguments[_key];
-	    }
-	    mouseover_tile(params, this, tip, args);
-	  }).on('mouseout', function () {
-	    mouseout_tile(params, this, tip);
 	  }).style('fill-opacity', function (d) {
 	    // calculate output opacity using the opacity scale
 	    var inst_opacity;
@@ -2455,6 +2450,17 @@ var Clustergrammer =
 	  }).attr('transform', function (d) {
 	    return fine_position_tile(params, d);
 	  });
+
+	  if (make_tip) {
+	    tile.on('mouseover', function () {
+	      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	        args[_key] = arguments[_key];
+	      }
+	      mouseover_tile(params, this, tip, args);
+	    }).on('mouseout', function () {
+	      mouseout_tile(params, this, tip);
+	    });
+	  }
 
 	  // // tile circles
 	  // /////////////////////////////
@@ -4681,7 +4687,7 @@ var Clustergrammer =
 	  var start_adding_back = 1;
 
 	  if (missing_rows.length > start_adding_back) {
-	    make_matrix_rows(params, params.matrix.matrix, missing_rows);
+	    make_matrix_rows(params, params.matrix.matrix, missing_rows, false);
 	  }
 
 	  return viz_area;
@@ -13589,8 +13595,17 @@ var Clustergrammer =
 
 	module.exports = function make_matrix_rows(params, current_matrix) {
 	  var row_names = arguments.length <= 2 || arguments[2] === undefined ? 'all' : arguments[2];
-	  var make_tip = arguments.length <= 3 || arguments[3] === undefined ? true : arguments[3];
+	  var ds = arguments.length <= 3 || arguments[3] === undefined ? false : arguments[3];
 
+
+	  // defaults
+	  var y_scale = params.viz.y_scale;
+	  var make_tip = true;
+
+	  if (ds) {
+	    y_scale = params.viz.ds_y_scale;
+	    make_tip = false;
+	  }
 
 	  if (make_tip) {
 
@@ -13633,9 +13648,9 @@ var Clustergrammer =
 	  d3.select(params.root + ' .clust_group').selectAll('.row').data(matrix_subset, function (d) {
 	    return d.name;
 	  }).enter().append('g').classed('row', true).attr('transform', function (d) {
-	    return 'translate(0,' + params.viz.ds_y_scale(d.row_index) + ')';
+	    return 'translate(0,' + y_scale(d.row_index) + ')';
 	  }).each(function (d) {
-	    make_simple_rows(params, d, tip, this);
+	    make_simple_rows(params, d, tip, this, make_tip);
 	  });
 		};
 
