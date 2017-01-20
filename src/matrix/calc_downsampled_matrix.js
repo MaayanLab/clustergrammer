@@ -1,6 +1,6 @@
 module.exports = function make_ds_matrix(params){
 
-  var ds_num = 300;
+  var ds_num = 100;
 
   var mod_val = params.viz.clust.dim.height / ds_num;
 

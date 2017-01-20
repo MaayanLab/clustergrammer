@@ -1,13 +1,13 @@
 var make_simple_rows = require('./make_simple_rows');
 var d3_tip_custom = require('../tooltip/d3_tip_custom');
 
-module.exports = function make_matrix_rows(params, current_matrix, row_names='all', ds=false){
+module.exports = function make_matrix_rows(params, current_matrix, row_names='all', is_ds=false){
 
   // defaults
   var y_scale = params.viz.y_scale;
   var make_tip = true;
 
-  if (ds){
+  if (is_ds){
     y_scale = params.viz.ds_y_scale;
     make_tip = false;
   }
@@ -70,7 +70,7 @@ module.exports = function make_matrix_rows(params, current_matrix, row_names='al
       return 'translate(0,' + y_scale(d.row_index) + ')';
     })
     .each(function(d){
-      make_simple_rows(params, d, tip, this, make_tip);
+      make_simple_rows(params, d, tip, this, is_ds);
     });
 
 };
