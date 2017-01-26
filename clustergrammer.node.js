@@ -5947,9 +5947,7 @@ module.exports =
 	    var new_y = zoom_info.trans_y + params.viz.clust.margin.top;
 	    params.zoom_behavior.translate([new_x, new_y]);
 
-	    // run_transformation(params);
-
-	    console.log('here');
+	    run_transformation(params);
 	  }
 		};
 
@@ -6043,7 +6041,7 @@ module.exports =
 	    }
 	  });
 
-	  show_visible_area(params, zoom_info);
+	  // show_visible_area(params, zoom_info);
 		};
 
 /***/ },

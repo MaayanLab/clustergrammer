@@ -52,7 +52,6 @@ Thumbs.db
 # sftp configuration file
 sftp-config.json
 
-
 #TernJS
 .tern-port
 
