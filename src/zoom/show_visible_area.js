@@ -3,8 +3,6 @@ var make_matrix_rows = require('../matrix/make_matrix_rows');
 
 module.exports = function show_visible_area(params){
 
-  console.log('show_visible_area')
-
   var viz_area = {};
   var zoom_info = params.zoom_info;
 
@@ -49,12 +47,31 @@ module.exports = function show_visible_area(params){
 
   var missing_rows = _.difference(params.viz.viz_nodes.row, params.viz.viz_nodes.curr_row);
 
+
+  var missing_rows = _.difference(params.viz.viz_nodes.row, params.viz.viz_nodes.curr_row);
+
   var start_adding_back = 1;
 
+  var show_height = 5;
+
   if (missing_rows.length > start_adding_back){
-    var is_ds = true;
-    // missing_rows = 'all';
-    // make_matrix_rows(params, params.matrix.ds_matrix, missing_rows, true);
+
+    if (params.viz.rect_height * params.zoom_info.zoom_y > show_height){
+
+      // console.log('num missing rows: ' + String(missing_rows.length))
+
+      var is_ds = true;
+      make_matrix_rows(params, params.matrix.matrix, missing_rows, false);
+
+      d3.selectAll('.ds_row').style('display', 'none');
+    } else {
+      d3.selectAll('.ds_row').style('display', 'block');
+      d3.selectAll('.row').remove();
+    }
+
+    // var is_ds = true;
+    // make_matrix_rows(params, params.matrix.ds_matrix, 'all', is_ds);
+
   }
 
   function toggle_display(params, d, inst_rc, inst_selection, severe_toggle=false){
@@ -73,28 +90,5 @@ module.exports = function show_visible_area(params){
     return inst_display;
   }
 
-
-  var missing_rows = _.difference(params.viz.viz_nodes.row, params.viz.viz_nodes.curr_row);
-
-  var start_adding_back = 1;
-
-  if (missing_rows.length > start_adding_back){
-
-    if (params.viz.rect_height * params.zoom_info.zoom_y > 5){
-      var is_ds = true;
-      make_matrix_rows(params, params.matrix.matrix, missing_rows, false);
-
-      d3.selectAll('.ds_row').style('display', 'none');
-    } else {
-      d3.selectAll('.ds_row').style('display', 'block');
-      d3.selectAll('.row').remove();
-    }
-
-    // var is_ds = true;
-    // make_matrix_rows(params, params.matrix.ds_matrix, 'all', is_ds);
-
-  }
-
-  // return viz_area;
 
 };

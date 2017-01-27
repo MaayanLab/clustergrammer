@@ -43,7 +43,7 @@ module.exports = function calc_matrix_params(params){
     .rangeBands([0, params.viz.clust.dim.height]);
 
   // var ds_num = 300;
-  var ds_height = 3;
+  var ds_height = 4;
   params.viz.ds_num = Math.round(params.viz.clust.dim.height/ds_height);
 
   // use the same x domain

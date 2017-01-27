@@ -1,10 +1,6 @@
 module.exports = function make_ds_matrix(params){
 
-  // var ds_height = 5;
-  // var ds_num = params.viz.clust.dim.height/ds_height;
-
   var mod_val = params.viz.clust.dim.height / params.viz.ds_num;
-
   var mat = params.matrix.matrix;
 
   var ds_mat = [];
@@ -60,6 +56,9 @@ module.exports = function make_ds_matrix(params){
 
   });
 
+  // increase ds opacity
+  var opacity_factor = 1.25;
+
   // average the values
   _.each(ds_mat, function(tmp_ds){
 
@@ -67,7 +66,7 @@ module.exports = function make_ds_matrix(params){
     var num_names = tmp_ds.all_names.length * 1;
 
     _.each(tmp_row_data, function(tmp_obj){
-      tmp_obj.value = tmp_obj.value / num_names;
+      tmp_obj.value = (tmp_obj.value / num_names)*opacity_factor;
     });
 
   });
