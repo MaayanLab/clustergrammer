@@ -650,6 +650,8 @@ var Clustergrammer =
 
 	module.exports = function make_params(input_config) {
 
+	  console.log('make_params\n');
+
 	  var config = $.extend(true, {}, input_config);
 	  var params = config;
 
@@ -963,6 +965,8 @@ var Clustergrammer =
 	module.exports = function calc_viz_params(params) {
 	  var preserve_cats = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
 
+
+	  console.log('calc viz params');
 
 	  params.labels = ini_label_params(params);
 	  params.viz = ini_viz_params(params, preserve_cats);
@@ -1705,6 +1709,7 @@ var Clustergrammer =
 
 	  // Downsampling
 	  //////////////////////
+	  console.log('make downsampled matrix');
 	  // make downsampled scales
 	  params.viz.ds_x_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.width]);
 
@@ -10920,6 +10925,10 @@ var Clustergrammer =
 	var make_default_cat_data = __webpack_require__(171);
 
 	module.exports = function reset_cats() {
+	  var run_resize_viz = arguments.length <= 0 || arguments[0] === undefined ? true : arguments[0];
+
+
+	  console.log('-- reset cats  ');
 
 	  var tmp_cgm = this;
 
@@ -10932,15 +10941,19 @@ var Clustergrammer =
 	  // modify the current inst copy of nodes
 	  modify_row_node_cats(cat_data, tmp_cgm.params.inst_nodes.row_nodes);
 
-	  // recalculate the visualization parameters using the updated network_data
-	  tmp_cgm.params = calc_viz_params(tmp_cgm.params, false);
-
-	  make_row_cat(tmp_cgm, true);
-	  resize_viz(tmp_cgm);
-
 	  tmp_cgm.params.new_cat_data = cat_data;
-
 	  tmp_cgm.params.viz.cat_colors.col = col_cat_colors;
+
+	  if (run_resize_viz) {
+
+	    // resize visualizatino
+	    ////////////////////////////
+	    // recalculate the visualization parameters using the updated network_data
+	    tmp_cgm.params = calc_viz_params(tmp_cgm.params, false);
+
+	    make_row_cat(tmp_cgm, true);
+	    resize_viz(tmp_cgm);
+	  }
 		};
 
 /***/ },

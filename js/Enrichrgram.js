@@ -205,7 +205,8 @@ function Enrichr_request(inst_cgm){
         // reset enrichr menu
         toggle_enrichr_menu();
 
-        clear_enrichr_results();
+        // clear enrichr results and run resizing
+        clear_enrichr_results(true);
 
       })
 
@@ -332,7 +333,9 @@ function Enrichr_request(inst_cgm){
 
   }
 
-  function clear_enrichr_results(){
+  function clear_enrichr_results(run_resize_viz){
+
+    console.log('run_resize_viz: ' + String(run_resize_viz))
 
     d3.select(inst_cgm.params.root+ ' .enr_menu_clear')
       .style('display', 'none');
@@ -344,7 +347,7 @@ function Enrichr_request(inst_cgm){
       .style('fill','white');
 
     // clear categories
-    inst_cgm.reset_cats();
+    inst_cgm.reset_cats(run_resize_viz);
 
     // remove title and bars
     d3.select(inst_cgm.params.root+' .enr_title').remove();

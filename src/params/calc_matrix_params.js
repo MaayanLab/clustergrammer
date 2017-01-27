@@ -35,6 +35,7 @@ module.exports = function calc_matrix_params(params){
 
   // Downsampling
   //////////////////////
+  console.log('make downsampled matrix')
   // make downsampled scales
   params.viz.ds_x_scale = d3.scale.ordinal()
     .rangeBands([0, params.viz.clust.dim.width]);

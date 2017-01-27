@@ -45,7 +45,7 @@ function make_clust(inst_network){
 
 function matrix_update_callback(){
   if (genes_were_found){
-    enr_obj.clear_enrichr_results();
+    enr_obj.clear_enrichr_results(false);
   }
 }
 

@@ -4,7 +4,9 @@ var resize_viz = require('../reset_size/resize_viz');
 var modify_row_node_cats = require('./modify_row_node_cats');
 var make_default_cat_data = require('./make_default_cat_data');
 
-module.exports = function reset_cats(){
+module.exports = function reset_cats(run_resize_viz = true){
+
+  console.log('-- reset cats  ')
 
   var tmp_cgm = this;
 
@@ -17,14 +19,19 @@ module.exports = function reset_cats(){
   // modify the current inst copy of nodes
   modify_row_node_cats(cat_data, tmp_cgm.params.inst_nodes.row_nodes);
 
-  // recalculate the visualization parameters using the updated network_data
-  tmp_cgm.params = calc_viz_params(tmp_cgm.params, false);
-
-  make_row_cat(tmp_cgm, true);
-  resize_viz(tmp_cgm);
-
   tmp_cgm.params.new_cat_data = cat_data;
-
   tmp_cgm.params.viz.cat_colors.col = col_cat_colors;
+
+  if (run_resize_viz){
+
+    // resize visualizatino
+    ////////////////////////////
+    // recalculate the visualization parameters using the updated network_data
+    tmp_cgm.params = calc_viz_params(tmp_cgm.params, false);
+
+    make_row_cat(tmp_cgm, true);
+    resize_viz(tmp_cgm);
+
+  }
 
 };
