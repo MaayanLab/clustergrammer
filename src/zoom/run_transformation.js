@@ -105,6 +105,6 @@ module.exports = function run_transformation(params){
 
   });
 
-  // show_visible_area(params, zoom_info);
+  show_visible_area(params, zoom_info);
 
 };

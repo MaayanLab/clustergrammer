@@ -30,6 +30,9 @@ module.exports = function zoomed(cgm) {
 
     run_transformation(params);
 
+    console.log( 'adj rect height: ' + String(cgm.params.viz.rect_height
+      * cgm.params.zoom_info.zoom_y))
+
   }
 
 };

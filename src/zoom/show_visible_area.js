@@ -59,9 +59,14 @@ module.exports = function show_visible_area(params){
   var start_adding_back = 1;
 
   if (missing_rows.length > start_adding_back){
+
+
+    // var is_ds = true;
     // make_matrix_rows(params, params.matrix.matrix, missing_rows, false);
+
     var is_ds = true;
     make_matrix_rows(params, params.matrix.ds_matrix, 'all', is_ds);
+
   }
 
   return viz_area;

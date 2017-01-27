@@ -11,7 +11,11 @@ module.exports = function resize_row_tiles(params, svg_group){
   svg_group.selectAll('.row')
     .attr('transform', function(d){
       var tmp_index = _.indexOf(row_nodes_names, d.name);
-      return 'translate(0,'+params.viz.y_scale(tmp_index)+')';
+
+      var inst_y = params.viz.y_scale(tmp_index);
+      // var inst_y = params.viz.ds_y_scale(tmp_index);
+
+      return 'translate(0,'+inst_y+')';
     });
 
   // reset tiles

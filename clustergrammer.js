@@ -4853,7 +4853,10 @@ var Clustergrammer =
 	  var start_adding_back = 1;
 
 	  if (missing_rows.length > start_adding_back) {
+
+	    // var is_ds = true;
 	    // make_matrix_rows(params, params.matrix.matrix, missing_rows, false);
+
 	    var is_ds = true;
 	    make_matrix_rows(params, params.matrix.ds_matrix, 'all', is_ds);
 	  }
@@ -6160,6 +6163,8 @@ var Clustergrammer =
 	    params.zoom_behavior.translate([new_x, new_y]);
 
 	    run_transformation(params);
+
+	    console.log('adj rect height: ' + String(cgm.params.viz.rect_height * cgm.params.zoom_info.zoom_y));
 	  }
 		};
 
@@ -6253,7 +6258,7 @@ var Clustergrammer =
 	    }
 	  });
 
-	  // show_visible_area(params, zoom_info);
+	  show_visible_area(params, zoom_info);
 		};
 
 /***/ },
@@ -7693,7 +7698,11 @@ var Clustergrammer =
 
 	  svg_group.selectAll('.row').attr('transform', function (d) {
 	    var tmp_index = _.indexOf(row_nodes_names, d.name);
-	    return 'translate(0,' + params.viz.y_scale(tmp_index) + ')';
+
+	    var inst_y = params.viz.y_scale(tmp_index);
+	    // var inst_y = params.viz.ds_y_scale(tmp_index);
+
+	    return 'translate(0,' + inst_y + ')';
 	  });
 
 	  // reset tiles
