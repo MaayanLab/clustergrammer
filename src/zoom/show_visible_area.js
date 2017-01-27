@@ -73,6 +73,28 @@ module.exports = function show_visible_area(params){
     return inst_display;
   }
 
-  return viz_area;
+
+  var missing_rows = _.difference(params.viz.viz_nodes.row, params.viz.viz_nodes.curr_row);
+
+  var start_adding_back = 1;
+
+  if (missing_rows.length > start_adding_back){
+
+    if (params.viz.rect_height * params.zoom_info.zoom_y > 5){
+      var is_ds = true;
+      make_matrix_rows(params, params.matrix.matrix, missing_rows, false);
+
+      d3.selectAll('.ds_row').style('display', 'none');
+    } else {
+      d3.selectAll('.ds_row').style('display', 'block');
+      d3.selectAll('.row').remove();
+    }
+
+    // var is_ds = true;
+    // make_matrix_rows(params, params.matrix.ds_matrix, 'all', is_ds);
+
+  }
+
+  // return viz_area;
 
 };
