@@ -1707,6 +1707,18 @@ var Clustergrammer =
 	    }
 	  });
 
+	  // border width
+	  params.viz.border_width = {};
+	  params.viz.border_width.x = params.viz.x_scale.rangeBand() / params.viz.border_fraction;
+	  params.viz.border_width.y = params.viz.y_scale.rangeBand() / params.viz.border_fraction;
+
+	  // rect width needs matrix and zoom parameters
+	  params.viz.rect_width = params.viz.x_scale.rangeBand() - params.viz.border_width.x;
+
+	  // moved calculateion to calc_matrix_params
+	  params.viz.rect_height = params.viz.y_scale.rangeBand() - params.viz.border_width.y;
+
+	  //////////////////////
 	  // Downsampling
 	  //////////////////////
 	  console.log('make downsampled matrix');
@@ -1715,10 +1727,6 @@ var Clustergrammer =
 
 	  params.viz.ds_y_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.height]);
 
-	  params.viz.border_width = {};
-	  params.viz.border_width.x = params.viz.x_scale.rangeBand() / params.viz.border_fraction;
-	  params.viz.border_width.y = params.viz.y_scale.rangeBand() / params.viz.border_fraction;
-
 	  // the amount of zooming that is tolerated for the downsampled rows
 	  params.viz.ds_zt = 2;
 	  params.viz.ds_height = 3;
@@ -1726,7 +1734,7 @@ var Clustergrammer =
 
 	  // the number of downsampled matrices that need to be calculated
 	  // debugger
-	  params.viz.n_ds = params.viz.ds_height / (params.viz.rect_height * params.viz.ds_zt);
+	  params.viz.n_ds = Math.round(params.viz.ds_height / (params.viz.rect_height * params.viz.ds_zt));
 
 	  // use the same x domain
 	  inst_order = inst_order = params.viz.inst_order.row;
@@ -1734,6 +1742,8 @@ var Clustergrammer =
 
 	  // this will be used to position the downsampled rows
 	  params.viz.ds_y_scale.domain(d3.range(params.viz.ds_num + 1));
+
+	  params.viz.ds_rect_height = params.viz.ds_y_scale.rangeBand() - params.viz.border_width.y;
 
 	  // make downsampled matrix (row downsampling)
 	  params.matrix.ds_matrix = calc_downsampled_matrix(params);
@@ -2058,12 +2068,12 @@ var Clustergrammer =
 
 	  params.viz = calc_zoom_switching(params.viz);
 
-	  // rect width needs matrix and zoom parameters
-	  params.viz.rect_width = params.viz.x_scale.rangeBand() - params.viz.border_width.x;
+	  // // rect width needs matrix and zoom parameters
+	  // params.viz.rect_width  = params.viz.x_scale.rangeBand() - params.viz.border_width.x;
 
-	  // moved calculateion to calc_matrix_params
-	  params.viz.rect_height = params.viz.y_scale.rangeBand() - params.viz.border_width.y;
-	  params.viz.ds_rect_height = params.viz.ds_y_scale.rangeBand() - params.viz.border_width.y;
+	  // // moved calculateion to calc_matrix_params
+	  // params.viz.rect_height = params.viz.y_scale.rangeBand() - params.viz.border_width.y;
+	  // params.viz.ds_rect_height = params.viz.ds_y_scale.rangeBand() - params.viz.border_width.y;
 
 	  return params;
 	};
