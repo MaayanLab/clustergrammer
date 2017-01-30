@@ -51,38 +51,37 @@ module.exports = function calc_matrix_params(params){
   //////////////////////
   // Downsampling
   //////////////////////
-  console.log('make downsampled matrix')
-  // make downsampled scales
-  params.viz.ds_x_scale = d3.scale.ordinal()
-    .rangeBands([0, params.viz.clust.dim.width]);
+  console.log('setting up downsampling')
 
-  params.viz.ds_y_scale = d3.scale.ordinal()
-    .rangeBands([0, params.viz.clust.dim.height]);
-
-  // amount of zooming that is tolerated for the downsampled rows
-  params.viz.ds_zt = 2;
   // height of downsampled rectangles
   params.viz.ds_height = 3;
+  // amount of zooming that is tolerated for the downsampled rows
+  params.viz.ds_zt = 2;
+  // the number of downsampled matrices that need to be calculated
+  params.viz.num_ds_layers = Math.round(params.viz.ds_height / (params.viz.rect_height *
+    params.viz.ds_zt));
+
   // number of downsampled rows
   params.viz.num_ds_rows = Math.round(params.viz.clust.dim.height/
     params.viz.ds_height);
 
-  // the number of downsampled matrices that need to be calculated
-  // debugger
-  params.viz.num_ds_layers = Math.round(params.viz.ds_height / (params.viz.rect_height *
-    params.viz.ds_zt));
-
-  // use the same x domain
+  // x_scale
+  /////////////////////////
+  params.viz.ds_x_scale = d3.scale.ordinal()
+    .rangeBands([0, params.viz.clust.dim.width]);
   inst_order = inst_order = params.viz.inst_order.row;
   params.viz.ds_x_scale
     .domain( params.matrix.orders[inst_order + '_row' ] );
 
-  // this will be used to position the downsampled rows
+  // y_scale
+  /////////////////////////
+  params.viz.ds_y_scale = d3.scale.ordinal()
+    .rangeBands([0, params.viz.clust.dim.height]);
   params.viz.ds_y_scale
     .domain( d3.range(params.viz.num_ds_rows + 1) );
 
   params.viz.ds_rect_height = params.viz.ds_y_scale.rangeBand() -
-  params.viz.border_width.y;
+    params.viz.border_width.y;
 
   // make downsampled matrix (row downsampling)
   params.matrix.ds_matrix = calc_downsampled_matrix(params);
