@@ -2541,6 +2541,8 @@ var Clustergrammer =
 	  var ds_level = arguments.length <= 3 || arguments[3] === undefined ? -1 : arguments[3];
 
 
+	  console.log('-- make_matrix_rows -- ');
+
 	  // defaults
 	  var y_scale = params.viz.y_scale;
 	  var make_tip = true;
@@ -4899,8 +4901,6 @@ var Clustergrammer =
 
 	  var missing_rows = _.difference(params.viz.viz_nodes.row, params.viz.viz_nodes.curr_row);
 
-	  var missing_rows = _.difference(params.viz.viz_nodes.row, params.viz.viz_nodes.curr_row);
-
 	  var start_adding_back = 1;
 
 	  var show_height = 5;
@@ -4965,20 +4965,19 @@ var Clustergrammer =
 
 	  var inst_rows = [];
 	  var inst_cols = [];
-
 	  var curr_rows = [];
-	  // var curr_cols = [];
 
-	  // find visible rows
-	  d3.selectAll(params.root + ' .row_label_group').each(function (d) {
-	    var inst_trans = d3.select(this).attr('transform');
+	  // find rows that should be visible
+	  var inst_row_name;
+	  var y_trans;
+	  for (var i = 0; i < params.network_data.row_nodes_names.length; i++) {
 
-	    var y_trans = Number(inst_trans.split(',')[1].split(')')[0]);
+	    y_trans = params.viz.y_scale(i);
 
 	    if (y_trans < viz_area.max_y && y_trans > viz_area.min_y) {
-	      inst_rows.push(d.name);
+	      inst_rows.push(params.network_data.row_nodes_names[i]);
 	    }
-	  });
+	  }
 
 	  // find currently visible labels
 	  d3.selectAll(params.root + ' .row').each(function (d) {
@@ -4994,10 +4993,6 @@ var Clustergrammer =
 	    if (x_trans < viz_area.max_x && x_trans > viz_area.min_x) {
 	      inst_cols.push(d.name);
 	    }
-
-	    // if (d3.select(this).style('display') === 'block'){
-	    //   curr_cols.push(d.name);
-	    // }
 	  });
 
 	  // nodes that should be visible
@@ -5006,8 +5001,6 @@ var Clustergrammer =
 
 	  // nodes that are visible
 	  params.viz.viz_nodes.curr_row = curr_rows;
-	  // params.viz.viz_nodes.curr_col = curr_cols
-
 		};
 
 /***/ },

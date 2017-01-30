@@ -33,7 +33,6 @@ module.exports = function show_visible_area(params){
 
   params.viz.ds_level = inst_ds_level;
 
-
   // generate lists of visible rows/cols
   find_viz_nodes(params, viz_area);
 
@@ -56,9 +55,6 @@ module.exports = function show_visible_area(params){
     .style('display', function(d){
       return toggle_display(params, d, 'col', this, normal_toggle);
     });
-
-  var missing_rows = _.difference(params.viz.viz_nodes.row, params.viz.viz_nodes.curr_row);
-
 
   var missing_rows = _.difference(params.viz.viz_nodes.row, params.viz.viz_nodes.curr_row);
 
