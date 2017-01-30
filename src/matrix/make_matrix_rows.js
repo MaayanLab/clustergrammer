@@ -63,8 +63,6 @@ module.exports = function make_matrix_rows(params, current_matrix,
     matrix_subset = current_matrix;
   }
 
-
-
   d3.select(params.root+ ' .clust_group')
     .selectAll('.row')
     .data(matrix_subset, function(d){return d.name;})

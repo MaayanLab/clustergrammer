@@ -1721,41 +1721,56 @@ var Clustergrammer =
 	  //////////////////////
 	  // Downsampling
 	  //////////////////////
-	  console.log('setting up downsampling');
+
+	  // increase ds opacity, as more rows are compressed into a single downsampled
+	  // row, increase the opacity of the downsampled row. Max increase will be 2x
+	  // when 100 or more rows are compressed
+	  params.viz.ds_opacity_scale = d3.scale.linear().domain([1, 100]).range([1, 2]).clamp(true);
+
+	  var ds;
 
 	  // height of downsampled rectangles
-
-	  var ds = {};
-
-	  ds.height = 3;
+	  var inst_height = 3;
 	  // amount of zooming that is tolerated for the downsampled rows
-	  ds.zt = 2;
+	  var inst_zt = 2;
 	  // the number of downsampled matrices that need to be calculated
-	  ds.num_layers = Math.round(ds.height / (params.viz.rect_height * ds.zt));
+	  var num_layers = Math.round(inst_height / (params.viz.rect_height * inst_zt));
 
-	  // number of downsampled rows
-	  ds.num_rows = Math.round(params.viz.clust.dim.height / ds.height);
-
-	  // x_scale
-	  /////////////////////////
-	  ds.x_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.width]);
-	  inst_order = inst_order = params.viz.inst_order.row;
-	  ds.x_scale.domain(params.matrix.orders[inst_order + '_row']);
-
-	  // y_scale
-	  /////////////////////////
-	  ds.y_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.height]);
-	  ds.y_scale.domain(d3.range(ds.num_rows + 1));
-
-	  ds.rect_height = ds.y_scale.rangeBand() - params.viz.border_width.y;
-
+	  // array of downsampled parameters
 	  params.viz.ds = [];
-	  params.viz.ds.push(ds);
-
 	  // array of downsampled matrices at varying layers
 	  params.matrix.ds_matrix = [];
-	  var matrix = calc_downsampled_matrix(params);
-	  params.matrix.ds_matrix.push(matrix);
+	  for (var i = 0; i < num_layers; i++) {
+
+	    ds = {};
+
+	    ds.height = inst_height;
+	    ds.zt = inst_zt;
+	    ds.num_layers = num_layers;
+
+	    var scale_num_rows = i + 1;
+
+	    // number of downsampled rows
+	    ds.num_rows = Math.round(params.viz.clust.dim.height / ds.height) * scale_num_rows;
+
+	    // x_scale
+	    /////////////////////////
+	    ds.x_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.width]);
+	    inst_order = inst_order = params.viz.inst_order.row;
+	    ds.x_scale.domain(params.matrix.orders[inst_order + '_row']);
+
+	    // y_scale
+	    /////////////////////////
+	    ds.y_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.height]);
+	    ds.y_scale.domain(d3.range(ds.num_rows + 1));
+
+	    ds.rect_height = ds.y_scale.rangeBand() - params.viz.border_width.y;
+
+	    params.viz.ds.push(ds);
+
+	    var matrix = calc_downsampled_matrix(params, i);
+	    params.matrix.ds_matrix.push(matrix);
+	  }
 
 	  return params;
 		};
@@ -1978,9 +1993,15 @@ var Clustergrammer =
 
 	'use strict';
 
-	module.exports = function calc_downsampled_matrix(params) {
+	module.exports = function calc_downsampled_matrix(params, ds_layer) {
 
-	  var inst_num_rows = params.viz.ds[0].num_rows;
+	  var inst_num_rows = params.viz.ds[ds_layer].num_rows;
+
+	  var num_compressed_rows = params.network_data.row_nodes.length / inst_num_rows;
+
+	  // increase ds opacity, as more rows are compressed into a single downsampled
+	  // row, increase the opacity of the downsampled row.
+	  var opacity_factor = params.viz.ds_opacity_scale(num_compressed_rows);
 
 	  var mod_val = params.viz.clust.dim.height / inst_num_rows;
 	  var mat = params.matrix.matrix;
@@ -1999,6 +2020,7 @@ var Clustergrammer =
 	    inst_obj = {};
 	    inst_obj.row_index = i;
 	    inst_obj.name = String(i);
+	    inst_obj.all_names = [];
 
 	    ds_mat.push(inst_obj);
 	  }
@@ -2012,11 +2034,7 @@ var Clustergrammer =
 	    var inst_row_data = inst_row.row_data;
 
 	    // gather names
-	    if (_.has(ds_mat[ds_index], 'all_names')) {
-	      ds_mat[ds_index].all_names.push(inst_row.name);
-	    } else {
-	      ds_mat[ds_index].all_names = [inst_row.name];
-	    }
+	    ds_mat[ds_index].all_names.push(inst_row.name);
 
 	    // gather row_data
 	    if (_.has(ds_mat[ds_index], 'row_data')) {
@@ -2035,13 +2053,11 @@ var Clustergrammer =
 	    }
 	  });
 
-	  // increase ds opacity
-	  var opacity_factor = 1.25;
-
 	  // average the values
 	  _.each(ds_mat, function (tmp_ds) {
 
 	    var tmp_row_data = tmp_ds.row_data;
+
 	    var num_names = tmp_ds.all_names.length;
 
 	    _.each(tmp_row_data, function (tmp_obj) {

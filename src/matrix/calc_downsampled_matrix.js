@@ -1,6 +1,12 @@
-module.exports = function calc_downsampled_matrix(params){
+module.exports = function calc_downsampled_matrix(params, ds_layer){
 
-  var inst_num_rows = params.viz.ds[0].num_rows;
+  var inst_num_rows = params.viz.ds[ds_layer].num_rows;
+
+  var num_compressed_rows = params.network_data.row_nodes.length / inst_num_rows;
+
+  // increase ds opacity, as more rows are compressed into a single downsampled
+  // row, increase the opacity of the downsampled row.
+  var opacity_factor = params.viz.ds_opacity_scale(num_compressed_rows)
 
   var mod_val = params.viz.clust.dim.height / inst_num_rows;
   var mat = params.matrix.matrix;
@@ -19,6 +25,7 @@ module.exports = function calc_downsampled_matrix(params){
     inst_obj = {};
     inst_obj.row_index = i;
     inst_obj.name = String(i);
+    inst_obj.all_names = [];
 
     ds_mat.push(inst_obj);
   }
@@ -32,11 +39,7 @@ module.exports = function calc_downsampled_matrix(params){
     var inst_row_data = inst_row.row_data;
 
     // gather names
-    if (_.has(ds_mat[ds_index], 'all_names')){
-      ds_mat[ds_index].all_names.push(inst_row.name);
-    } else {
-      ds_mat[ds_index].all_names = [inst_row.name];
-    }
+    ds_mat[ds_index].all_names.push(inst_row.name);
 
     // gather row_data
     if (_.has(ds_mat[ds_index], 'row_data')){
@@ -58,13 +61,11 @@ module.exports = function calc_downsampled_matrix(params){
 
   });
 
-  // increase ds opacity
-  var opacity_factor = 1.25;
-
   // average the values
   _.each(ds_mat, function(tmp_ds){
 
     var tmp_row_data = tmp_ds.row_data;
+
     var num_names = tmp_ds.all_names.length;
 
     _.each(tmp_row_data, function(tmp_obj){
