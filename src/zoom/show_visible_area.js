@@ -67,6 +67,8 @@ module.exports = function show_visible_area(params){
     d3.selectAll('.row').remove();
   }
 
+  console.log('missing_rows: ' + String(missing_rows.length))
+
   if (missing_rows.length > start_adding_back){
 
     d3.selectAll(ds_row_class).style('display', 'block');
@@ -81,15 +83,19 @@ module.exports = function show_visible_area(params){
       inst_matrix = params.matrix.matrix;
     }
 
-    // d3.selectAll('.ds'+String(inst_ds_level)+'_row')
-    //   .each(function(d){
-    //     if (_.contains(params.viz.viz_nodes.row, d.name) === false){
+    d3.selectAll('.ds'+String(inst_ds_level)+'_row')
+      .each(function(d){
 
-    //       // d3.select(this).remove();
-    //       // console.log(d.name)
+        console.log(d.name)
 
-    //     }
-    //   });
+        if (_.contains(params.viz.viz_nodes.row, d.name) === false){
+
+          debugger;
+          // d3.select(this).remove();
+          console.log(d.name)
+
+        }
+      });
 
     // update rows if level changes or if level is -1
     if (inst_ds_level != old_ds_level || inst_ds_level === -1){

@@ -4914,6 +4914,8 @@ var Clustergrammer =
 	    d3.selectAll('.row').remove();
 	  }
 
+	  console.log('missing_rows: ' + String(missing_rows.length));
+
 	  if (missing_rows.length > start_adding_back) {
 
 	    d3.selectAll(ds_row_class).style('display', 'block');
@@ -4928,15 +4930,17 @@ var Clustergrammer =
 	      inst_matrix = params.matrix.matrix;
 	    }
 
-	    // d3.selectAll('.ds'+String(inst_ds_level)+'_row')
-	    //   .each(function(d){
-	    //     if (_.contains(params.viz.viz_nodes.row, d.name) === false){
+	    d3.selectAll('.ds' + String(inst_ds_level) + '_row').each(function (d) {
 
-	    //       // d3.select(this).remove();
-	    //       // console.log(d.name)
+	      console.log(d.name);
 
-	    //     }
-	    //   });
+	      if (_.contains(params.viz.viz_nodes.row, d.name) === false) {
+
+	        debugger;
+	        // d3.select(this).remove();
+	        console.log(d.name);
+	      }
+	    });
 
 	    // update rows if level changes or if level is -1
 	    if (inst_ds_level != old_ds_level || inst_ds_level === -1) {
@@ -4991,16 +4995,14 @@ var Clustergrammer =
 	  var row_class = '.row';
 
 	  // need to turn this on
-	  ///////////////////////////////
-	  // if (ds_level >=0){
-	  //   y_scale = params.viz.ds[ds_level].y_scale;
+	  /////////////////////////////
+	  if (ds_level >= 0) {
+	    y_scale = params.viz.ds[ds_level].y_scale;
 
-	  //   row_names = d3.range(params.matrix.ds_matrix[0].length);
-	  //   row_names.map(String);
+	    row_names = d3.range(params.matrix.ds_matrix[0].length).map(String);
 
-	  //   row_class = '.ds'+String(ds_level)+'_row';
-	  // }
-
+	    row_class = '.ds' + String(ds_level) + '_row';
+	  }
 
 	  for (var i = 0; i < row_names.length; i++) {
 
