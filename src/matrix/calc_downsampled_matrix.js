@@ -1,12 +1,12 @@
-module.exports = function make_ds_matrix(params){
+module.exports = function calc_downsampled_matrix(params){
 
-  var mod_val = params.viz.clust.dim.height / params.viz.ds_num;
+  var mod_val = params.viz.clust.dim.height / params.viz.num_ds_rows;
   var mat = params.matrix.matrix;
 
   var ds_mat = [];
   var inst_obj;
 
-  var len_ds_array = params.viz.ds_num + 1;
+  var len_ds_array = params.viz.num_ds_rows + 1;
 
   var i;
   var x;

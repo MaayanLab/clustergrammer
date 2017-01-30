@@ -1727,21 +1727,23 @@ var Clustergrammer =
 
 	  params.viz.ds_y_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.height]);
 
-	  // the amount of zooming that is tolerated for the downsampled rows
+	  // amount of zooming that is tolerated for the downsampled rows
 	  params.viz.ds_zt = 2;
+	  // height of downsampled rectangles
 	  params.viz.ds_height = 3;
-	  params.viz.ds_num = Math.round(params.viz.clust.dim.height / params.viz.ds_height);
+	  // number of downsampled rows
+	  params.viz.num_ds_rows = Math.round(params.viz.clust.dim.height / params.viz.ds_height);
 
 	  // the number of downsampled matrices that need to be calculated
 	  // debugger
-	  params.viz.n_ds = Math.round(params.viz.ds_height / (params.viz.rect_height * params.viz.ds_zt));
+	  params.viz.num_ds_layers = Math.round(params.viz.ds_height / (params.viz.rect_height * params.viz.ds_zt));
 
 	  // use the same x domain
 	  inst_order = inst_order = params.viz.inst_order.row;
 	  params.viz.ds_x_scale.domain(params.matrix.orders[inst_order + '_row']);
 
 	  // this will be used to position the downsampled rows
-	  params.viz.ds_y_scale.domain(d3.range(params.viz.ds_num + 1));
+	  params.viz.ds_y_scale.domain(d3.range(params.viz.num_ds_rows + 1));
 
 	  params.viz.ds_rect_height = params.viz.ds_y_scale.rangeBand() - params.viz.border_width.y;
 
@@ -1969,15 +1971,15 @@ var Clustergrammer =
 
 	'use strict';
 
-	module.exports = function make_ds_matrix(params) {
+	module.exports = function calc_downsampled_matrix(params) {
 
-	  var mod_val = params.viz.clust.dim.height / params.viz.ds_num;
+	  var mod_val = params.viz.clust.dim.height / params.viz.num_ds_rows;
 	  var mat = params.matrix.matrix;
 
 	  var ds_mat = [];
 	  var inst_obj;
 
-	  var len_ds_array = params.viz.ds_num + 1;
+	  var len_ds_array = params.viz.num_ds_rows + 1;
 
 	  var i;
 	  var x;
@@ -2067,13 +2069,6 @@ var Clustergrammer =
 	  params.viz.real_zoom = params.viz.norm_labels.width.col / half_col_height * max_zoom_limit;
 
 	  params.viz = calc_zoom_switching(params.viz);
-
-	  // // rect width needs matrix and zoom parameters
-	  // params.viz.rect_width  = params.viz.x_scale.rangeBand() - params.viz.border_width.x;
-
-	  // // moved calculateion to calc_matrix_params
-	  // params.viz.rect_height = params.viz.y_scale.rangeBand() - params.viz.border_width.y;
-	  // params.viz.ds_rect_height = params.viz.ds_y_scale.rangeBand() - params.viz.border_width.y;
 
 	  return params;
 	};

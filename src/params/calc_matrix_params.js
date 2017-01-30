@@ -59,15 +59,17 @@ module.exports = function calc_matrix_params(params){
   params.viz.ds_y_scale = d3.scale.ordinal()
     .rangeBands([0, params.viz.clust.dim.height]);
 
-  // the amount of zooming that is tolerated for the downsampled rows
+  // amount of zooming that is tolerated for the downsampled rows
   params.viz.ds_zt = 2;
+  // height of downsampled rectangles
   params.viz.ds_height = 3;
-  params.viz.ds_num = Math.round(params.viz.clust.dim.height/
+  // number of downsampled rows
+  params.viz.num_ds_rows = Math.round(params.viz.clust.dim.height/
     params.viz.ds_height);
 
   // the number of downsampled matrices that need to be calculated
   // debugger
-  params.viz.n_ds = Math.round(params.viz.ds_height / (params.viz.rect_height *
+  params.viz.num_ds_layers = Math.round(params.viz.ds_height / (params.viz.rect_height *
     params.viz.ds_zt));
 
   // use the same x domain
@@ -77,15 +79,13 @@ module.exports = function calc_matrix_params(params){
 
   // this will be used to position the downsampled rows
   params.viz.ds_y_scale
-    .domain( d3.range(params.viz.ds_num + 1) );
+    .domain( d3.range(params.viz.num_ds_rows + 1) );
 
   params.viz.ds_rect_height = params.viz.ds_y_scale.rangeBand() -
   params.viz.border_width.y;
 
   // make downsampled matrix (row downsampling)
   params.matrix.ds_matrix = calc_downsampled_matrix(params);
-
-
 
   return params;
 
