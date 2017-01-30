@@ -1725,29 +1725,32 @@ var Clustergrammer =
 
 	  // height of downsampled rectangles
 
-	  params.viz.ds = {};
+	  var ds = {};
 
-	  params.viz.ds.height = 3;
+	  ds.height = 3;
 	  // amount of zooming that is tolerated for the downsampled rows
-	  params.viz.ds.zt = 2;
+	  ds.zt = 2;
 	  // the number of downsampled matrices that need to be calculated
-	  params.viz.ds.num_layers = Math.round(params.viz.ds.height / (params.viz.rect_height * params.viz.ds.zt));
+	  ds.num_layers = Math.round(ds.height / (params.viz.rect_height * ds.zt));
 
 	  // number of downsampled rows
-	  params.viz.ds.num_rows = Math.round(params.viz.clust.dim.height / params.viz.ds.height);
+	  ds.num_rows = Math.round(params.viz.clust.dim.height / ds.height);
 
 	  // x_scale
 	  /////////////////////////
-	  params.viz.ds.x_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.width]);
+	  ds.x_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.width]);
 	  inst_order = inst_order = params.viz.inst_order.row;
-	  params.viz.ds.x_scale.domain(params.matrix.orders[inst_order + '_row']);
+	  ds.x_scale.domain(params.matrix.orders[inst_order + '_row']);
 
 	  // y_scale
 	  /////////////////////////
-	  params.viz.ds.y_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.height]);
-	  params.viz.ds.y_scale.domain(d3.range(params.viz.ds.num_rows + 1));
+	  ds.y_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.height]);
+	  ds.y_scale.domain(d3.range(ds.num_rows + 1));
 
-	  params.viz.ds.rect_height = params.viz.ds.y_scale.rangeBand() - params.viz.border_width.y;
+	  ds.rect_height = ds.y_scale.rangeBand() - params.viz.border_width.y;
+
+	  params.viz.ds = [];
+	  params.viz.ds.push(ds);
 
 	  // make downsampled matrix (row downsampling)
 	  params.matrix.ds_matrix = calc_downsampled_matrix(params);
@@ -1975,7 +1978,7 @@ var Clustergrammer =
 
 	module.exports = function calc_downsampled_matrix(params) {
 
-	  var inst_num_rows = params.viz.ds.num_rows;
+	  var inst_num_rows = params.viz.ds[0].num_rows;
 
 	  var mod_val = params.viz.clust.dim.height / inst_num_rows;
 	  var mat = params.matrix.matrix;
@@ -2516,7 +2519,7 @@ var Clustergrammer =
 	  var row_class = 'row';
 
 	  if (is_ds) {
-	    y_scale = params.viz.ds.y_scale;
+	    y_scale = params.viz.ds[0].y_scale;
 	    make_tip = false;
 	    row_class = 'ds_row';
 	  }
@@ -2592,7 +2595,7 @@ var Clustergrammer =
 	  var rect_height = params.viz.rect_height;
 	  if (is_ds) {
 	    make_tip = false;
-	    rect_height = params.viz.ds.rect_height;
+	    rect_height = params.viz.ds[0].rect_height;
 	  }
 
 	  var keep_orig;
@@ -7706,7 +7709,7 @@ var Clustergrammer =
 	  params.viz.rect_height = params.viz.y_scale.rangeBand() - params.viz.border_width.y;
 
 	  // for downsampling
-	  params.viz.ds.rect_height = params.viz.ds.y_scale.rangeBand() - params.viz.border_width.y;
+	  params.viz.ds[0].rect_height = params.viz.ds[0].y_scale.rangeBand() - params.viz.border_width.y;
 
 	  // redefine zoom extent
 	  params.viz.real_zoom = params.viz.norm_labels.width.col / (params.viz.rect_width / 2);
@@ -7737,7 +7740,7 @@ var Clustergrammer =
 	    var tmp_index = _.indexOf(row_nodes_names, d.name);
 
 	    var inst_y = params.viz.y_scale(tmp_index);
-	    // var inst_y = params.viz.ds.y_scale(tmp_index);
+	    // var inst_y = params.viz.ds[0].y_scale(tmp_index);
 
 	    return 'translate(0,' + inst_y + ')';
 	  });

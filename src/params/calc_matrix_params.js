@@ -55,36 +55,38 @@ module.exports = function calc_matrix_params(params){
 
   // height of downsampled rectangles
 
-  params.viz.ds = {};
+  var ds = {};
 
-  params.viz.ds.height = 3;
+  ds.height = 3;
   // amount of zooming that is tolerated for the downsampled rows
-  params.viz.ds.zt = 2;
+  ds.zt = 2;
   // the number of downsampled matrices that need to be calculated
-  params.viz.ds.num_layers = Math.round(params.viz.ds.height / (params.viz.rect_height *
-    params.viz.ds.zt));
+  ds.num_layers = Math.round(ds.height / (params.viz.rect_height * ds.zt));
 
   // number of downsampled rows
-  params.viz.ds.num_rows = Math.round(params.viz.clust.dim.height/
-    params.viz.ds.height);
+  ds.num_rows = Math.round(params.viz.clust.dim.height/
+    ds.height);
 
   // x_scale
   /////////////////////////
-  params.viz.ds.x_scale = d3.scale.ordinal()
+  ds.x_scale = d3.scale.ordinal()
     .rangeBands([0, params.viz.clust.dim.width]);
   inst_order = inst_order = params.viz.inst_order.row;
-  params.viz.ds.x_scale
+  ds.x_scale
     .domain( params.matrix.orders[inst_order + '_row' ] );
 
   // y_scale
   /////////////////////////
-  params.viz.ds.y_scale = d3.scale.ordinal()
+  ds.y_scale = d3.scale.ordinal()
     .rangeBands([0, params.viz.clust.dim.height]);
-  params.viz.ds.y_scale
-    .domain( d3.range(params.viz.ds.num_rows + 1) );
+  ds.y_scale
+    .domain( d3.range(ds.num_rows + 1) );
 
-  params.viz.ds.rect_height = params.viz.ds.y_scale.rangeBand() -
+  ds.rect_height = ds.y_scale.rangeBand() -
     params.viz.border_width.y;
+
+  params.viz.ds = []
+  params.viz.ds.push(ds);
 
   // make downsampled matrix (row downsampling)
   params.matrix.ds_matrix = calc_downsampled_matrix(params);

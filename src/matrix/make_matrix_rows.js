@@ -10,7 +10,7 @@ module.exports = function make_matrix_rows(params, current_matrix,
   var row_class = 'row';
 
   if (is_ds){
-    y_scale = params.viz.ds.y_scale;
+    y_scale = params.viz.ds[0].y_scale;
     make_tip = false;
     row_class = 'ds_row';
   }

@@ -13,7 +13,7 @@ module.exports = function resize_row_tiles(params, svg_group){
       var tmp_index = _.indexOf(row_nodes_names, d.name);
 
       var inst_y = params.viz.y_scale(tmp_index);
-      // var inst_y = params.viz.ds.y_scale(tmp_index);
+      // var inst_y = params.viz.ds[0].y_scale(tmp_index);
 
       return 'translate(0,'+inst_y+')';
     });
