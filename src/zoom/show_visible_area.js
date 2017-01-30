@@ -81,6 +81,15 @@ module.exports = function show_visible_area(params){
       inst_matrix = params.matrix.matrix;
     }
 
+    d3.selectAll('.ds'+String(inst_ds_level)+'_row')
+      .each(function(d){
+        if (_.contains(params.viz.viz_nodes.row, d.name) === false){
+          // d3.select(this).remove();
+
+          console.log(d.name)
+        }
+      });
+
     // update rows if level changes or if level is -1
     if (inst_ds_level != old_ds_level || inst_ds_level === -1){
 

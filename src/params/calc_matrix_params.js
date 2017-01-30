@@ -76,7 +76,6 @@ module.exports = function calc_matrix_params(params){
   // instantaneous ds_level (-1 means no downsampling)
   params.viz.ds_level = 0;
 
-
   // array of downsampled matrices at varying layers
   params.matrix.ds_matrix = [];
 
@@ -120,6 +119,10 @@ module.exports = function calc_matrix_params(params){
     params.matrix.ds_matrix.push(matrix);
 
   }
+
+  // reset row viz_nodes since downsampling
+  params.viz.viz_nodes.row = d3.range(params.matrix.ds_matrix[0].length).map(String);
+
 
   return params;
 

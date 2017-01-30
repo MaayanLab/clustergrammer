@@ -11,12 +11,15 @@ module.exports = function find_viz_nodes(params, viz_area){
   var y_scale = params.viz.y_scale;
   var ds_level = params.viz.ds_level;
   var row_names = params.network_data.row_nodes_names;
+  var row_class = '.row';
 
   if (ds_level >=0){
     y_scale = params.viz.ds[ds_level].y_scale;
 
     row_names = d3.range(params.matrix.ds_matrix[0].length);
     row_names.map(String);
+
+    row_class = '.ds'+String(ds_level)+'_row';
   }
 
 
@@ -32,7 +35,7 @@ module.exports = function find_viz_nodes(params, viz_area){
   }
 
   // find currently visible labels
-  d3.selectAll(params.root+' .row')
+  d3.selectAll(params.root+' '+row_class)
     .each(function(d){
       curr_rows.push(d.name);
     });

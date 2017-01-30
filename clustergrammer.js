@@ -1130,6 +1130,7 @@ var Clustergrammer =
 	  viz.filter_data = filters.filter_data;
 
 	  viz.viz_nodes = {};
+
 	  // nodes that should be visible based on visible area
 	  viz.viz_nodes.row = params.network_data.row_nodes_names;
 	  viz.viz_nodes.col = params.network_data.col_nodes_names;
@@ -1780,6 +1781,9 @@ var Clustergrammer =
 	    var matrix = calc_downsampled_matrix(params, i);
 	    params.matrix.ds_matrix.push(matrix);
 	  }
+
+	  // reset row viz_nodes since downsampling
+	  params.viz.viz_nodes.row = d3.range(params.matrix.ds_matrix[0].length).map(String);
 
 	  return params;
 		};
@@ -4924,6 +4928,14 @@ var Clustergrammer =
 	      inst_matrix = params.matrix.matrix;
 	    }
 
+	    d3.selectAll('.ds' + String(inst_ds_level) + '_row').each(function (d) {
+	      if (_.contains(params.viz.viz_nodes.row, d.name) === false) {
+	        // d3.select(this).remove();
+
+	        console.log(d.name);
+	      }
+	    });
+
 	    // update rows if level changes or if level is -1
 	    if (inst_ds_level != old_ds_level || inst_ds_level === -1) {
 
@@ -4974,12 +4986,15 @@ var Clustergrammer =
 	  var y_scale = params.viz.y_scale;
 	  var ds_level = params.viz.ds_level;
 	  var row_names = params.network_data.row_nodes_names;
+	  var row_class = '.row';
 
 	  if (ds_level >= 0) {
 	    y_scale = params.viz.ds[ds_level].y_scale;
 
 	    row_names = d3.range(params.matrix.ds_matrix[0].length);
 	    row_names.map(String);
+
+	    row_class = '.ds' + String(ds_level) + '_row';
 	  }
 
 	  for (var i = 0; i < row_names.length; i++) {
@@ -4993,7 +5008,7 @@ var Clustergrammer =
 	  }
 
 	  // find currently visible labels
-	  d3.selectAll(params.root + ' .row').each(function (d) {
+	  d3.selectAll(params.root + ' ' + row_class).each(function (d) {
 	    curr_rows.push(d.name);
 	  });
 

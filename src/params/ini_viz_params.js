@@ -92,6 +92,7 @@ module.exports = function ini_viz_params(params, preserve_cats=true){
   viz.filter_data = filters.filter_data;
 
   viz.viz_nodes = {};
+
   // nodes that should be visible based on visible area
   viz.viz_nodes.row = params.network_data.row_nodes_names;
   viz.viz_nodes.col = params.network_data.col_nodes_names;
