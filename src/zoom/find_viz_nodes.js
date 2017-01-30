@@ -13,14 +13,16 @@ module.exports = function find_viz_nodes(params, viz_area){
   var row_names = params.network_data.row_nodes_names;
   var row_class = '.row';
 
-  if (ds_level >=0){
-    y_scale = params.viz.ds[ds_level].y_scale;
+  // need to turn this on
+  ///////////////////////////////
+  // if (ds_level >=0){
+  //   y_scale = params.viz.ds[ds_level].y_scale;
 
-    row_names = d3.range(params.matrix.ds_matrix[0].length);
-    row_names.map(String);
+  //   row_names = d3.range(params.matrix.ds_matrix[0].length);
+  //   row_names.map(String);
 
-    row_class = '.ds'+String(ds_level)+'_row';
-  }
+  //   row_class = '.ds'+String(ds_level)+'_row';
+  // }
 
 
   for (var i=0; i < row_names.length; i++){

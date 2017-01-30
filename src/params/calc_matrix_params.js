@@ -123,7 +123,6 @@ module.exports = function calc_matrix_params(params){
   // reset row viz_nodes since downsampling
   params.viz.viz_nodes.row = d3.range(params.matrix.ds_matrix[0].length).map(String);
 
-
   return params;
 
 };
