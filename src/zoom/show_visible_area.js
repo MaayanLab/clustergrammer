@@ -53,6 +53,7 @@ module.exports = function show_visible_area(params){
   var start_adding_back = 1;
 
   var show_height = 5;
+  var ds_row_class = '.ds' + String(params.viz.ds_level) + '_row';
 
   if (missing_rows.length > start_adding_back){
 
@@ -62,11 +63,10 @@ module.exports = function show_visible_area(params){
       var ds_level = -1;
       make_matrix_rows(params, params.matrix.matrix, missing_rows, ds_level);
 
-      d3.selectAll('.ds_row').style('display', 'none');
-      // d3.selectAll('.ds_row').remove()
+      d3.selectAll(ds_row_class).style('display', 'none');
 
     } else {
-      d3.selectAll('.ds_row').style('display', 'block');
+      d3.selectAll(ds_row_class).style('display', 'block');
       d3.selectAll('.row').remove();
     }
 

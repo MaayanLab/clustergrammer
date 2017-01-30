@@ -68,7 +68,11 @@ module.exports = function calc_matrix_params(params){
   var num_layers = Math.round(inst_height / (params.viz.rect_height * inst_zt));
 
   // array of downsampled parameters
-  params.viz.ds = []
+  params.viz.ds = [];
+
+  // instantaneous ds_level (-1 means no downsampling)
+  params.viz.ds_level = 0;
+
   // array of downsampled matrices at varying layers
   params.matrix.ds_matrix = [];
 

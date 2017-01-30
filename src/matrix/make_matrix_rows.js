@@ -14,7 +14,7 @@ module.exports = function make_matrix_rows(params, current_matrix,
     console.log(ds_level)
     y_scale = params.viz.ds[ds_level].y_scale;
     make_tip = false;
-    row_class = 'ds_row';
+    row_class = 'ds' + String(ds_level) + '_row';
   }
 
 

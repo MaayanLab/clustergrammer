@@ -1738,6 +1738,10 @@ var Clustergrammer =
 
 	  // array of downsampled parameters
 	  params.viz.ds = [];
+
+	  // instantaneous ds_level (-1 means no downsampling)
+	  params.viz.ds_level = 0;
+
 	  // array of downsampled matrices at varying layers
 	  params.matrix.ds_matrix = [];
 
@@ -2299,6 +2303,8 @@ var Clustergrammer =
 	  // pass in params and the rows (row_nodes) that need to be made
 	  // in this case all row nodes
 	  // make_matrix_rows(params, params.matrix.matrix, params.network_data.row_nodes_names);
+
+	  // initialize at ds_level 0
 	  var ds_level = 0;
 	  make_matrix_rows(params, params.matrix.ds_matrix[0], 'all', ds_level);
 
@@ -2543,7 +2549,7 @@ var Clustergrammer =
 	    console.log(ds_level);
 	    y_scale = params.viz.ds[ds_level].y_scale;
 	    make_tip = false;
-	    row_class = 'ds_row';
+	    row_class = 'ds' + String(ds_level) + '_row';
 	  }
 
 	  if (make_tip) {
@@ -4887,6 +4893,7 @@ var Clustergrammer =
 	  var start_adding_back = 1;
 
 	  var show_height = 5;
+	  var ds_row_class = '.ds' + String(params.viz.ds_level) + '_row';
 
 	  if (missing_rows.length > start_adding_back) {
 
@@ -4896,10 +4903,9 @@ var Clustergrammer =
 	      var ds_level = -1;
 	      make_matrix_rows(params, params.matrix.matrix, missing_rows, ds_level);
 
-	      d3.selectAll('.ds_row').style('display', 'none');
-	      // d3.selectAll('.ds_row').remove()
+	      d3.selectAll(ds_row_class).style('display', 'none');
 	    } else {
-	      d3.selectAll('.ds_row').style('display', 'block');
+	      d3.selectAll(ds_row_class).style('display', 'block');
 	      d3.selectAll('.row').remove();
 	    }
 

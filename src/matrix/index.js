@@ -34,6 +34,8 @@ module.exports = function(params, svg_elem) {
   // pass in params and the rows (row_nodes) that need to be made
   // in this case all row nodes
   // make_matrix_rows(params, params.matrix.matrix, params.network_data.row_nodes_names);
+
+  // initialize at ds_level 0
   var ds_level = 0;
   make_matrix_rows(params, params.matrix.ds_matrix[0], 'all', ds_level);
 
