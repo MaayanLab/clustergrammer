@@ -1732,7 +1732,7 @@ var Clustergrammer =
 	  // height of downsampled rectangles
 	  var inst_height = 3;
 	  // amount of zooming that is tolerated for the downsampled rows
-	  var inst_zt = 2;
+	  var inst_zt = 2.5;
 	  params.viz.ds_zt = inst_zt;
 	  // the number of downsampled matrices that need to be calculated
 	  var num_layers = Math.round(inst_height / (params.viz.rect_height * inst_zt));
@@ -4877,9 +4877,6 @@ var Clustergrammer =
 
 	  params.viz.ds_level = inst_ds_level;
 
-	  // console.log('old_ds_level: ' + String(old_ds_level))
-	  // console.log('inst_ds_level: ' + String(inst_ds_level))
-
 	  // generate lists of visible rows/cols
 	  find_viz_nodes(params, viz_area);
 
@@ -4909,44 +4906,34 @@ var Clustergrammer =
 	  var show_height = 5;
 	  var ds_row_class = '.ds' + String(params.viz.ds_level) + '_row';
 
-	  console.log(missing_rows.length);
+	  if (inst_ds_level >= 0) {
+	    d3.selectAll('.row').remove();
+	  }
 
 	  if (missing_rows.length > start_adding_back) {
 
-	    if (params.viz.rect_height * params.zoom_info.zoom_y > show_height) {
+	    d3.selectAll(ds_row_class).style('display', 'block');
 
-	      // show actual data
-	      var ds_level = -1;
-	      make_matrix_rows(params, params.matrix.matrix, missing_rows, -1);
+	    // default state for downsampling
+	    var inst_rows = 'all';
+	    var inst_matrix = params.matrix.ds_matrix[inst_ds_level];
 
-	      // remove old downsampled rows
+	    // if (params.viz.rect_height * params.zoom_info.zoom_y > show_height){
+	    if (inst_ds_level < 0) {
+	      inst_rows = missing_rows;
+	      inst_matrix = params.matrix.matrix;
+	    }
+
+	    // update rows if level changes or if level is -1
+	    if (inst_ds_level != old_ds_level || inst_ds_level === -1) {
+
+	      console.log('ds_level: ' + String(old_ds_level) + ' : ' + String(inst_ds_level));
+
+	      // remove old level rows
 	      d3.selectAll('.ds' + String(old_ds_level) + '_row').remove();
 
-	      console.log('above zoom thresh');
-
-	      if (inst_ds_level > 0) {
-
-	        console.log('ds_level: ' + String(old_ds_level) + ' : ' + String(inst_ds_level));
-	        // remove old level rows
-	        d3.selectAll('.ds' + String(old_ds_level) + '_row').remove();
-
-	        // make new rows
-	        make_matrix_rows(params, params.matrix.ds_matrix[inst_ds_level], 'all', inst_ds_level);
-	      }
-	    } else {
-
-	      d3.selectAll(ds_row_class).style('display', 'block');
-	      d3.selectAll('.row').remove();
-
-	      if (inst_ds_level != old_ds_level) {
-
-	        console.log('ds_level: ' + String(old_ds_level) + ' : ' + String(inst_ds_level));
-	        // remove old level rows
-	        d3.selectAll('.ds' + String(old_ds_level) + '_row').remove();
-
-	        // make new rows
-	        make_matrix_rows(params, params.matrix.ds_matrix[inst_ds_level], 'all', inst_ds_level);
-	      }
+	      // make new rows
+	      make_matrix_rows(params, inst_matrix, inst_rows, inst_ds_level);
 	    }
 	  }
 
