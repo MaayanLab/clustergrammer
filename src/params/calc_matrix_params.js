@@ -43,9 +43,18 @@ module.exports = function calc_matrix_params(params){
   params.viz.ds_y_scale = d3.scale.ordinal()
     .rangeBands([0, params.viz.clust.dim.height]);
 
-  // var ds_num = 300;
-  var ds_height = 4;
-  params.viz.ds_num = Math.round(params.viz.clust.dim.height/ds_height);
+  params.viz.border_width = {};
+  params.viz.border_width.x = params.viz.x_scale.rangeBand() / params.viz.border_fraction;
+  params.viz.border_width.y = params.viz.y_scale.rangeBand() / params.viz.border_fraction;
+
+  // the amount of zooming that is tolerated for the downsampled rows
+  params.viz.ds_zt = 2;
+  params.viz.ds_height = 3;
+  params.viz.ds_num = Math.round(params.viz.clust.dim.height/params.viz.ds_height);
+
+  // the number of downsampled matrices that need to be calculated
+  // debugger
+  params.viz.n_ds = params.viz.ds_height / (params.viz.rect_height * params.viz.ds_zt);
 
   // use the same x domain
   inst_order = inst_order = params.viz.inst_order.row;
@@ -59,9 +68,8 @@ module.exports = function calc_matrix_params(params){
   // make downsampled matrix (row downsampling)
   params.matrix.ds_matrix = calc_downsampled_matrix(params);
 
-  params.viz.border_width = {};
-  params.viz.border_width.x = params.viz.x_scale.rangeBand() / params.viz.border_fraction;
-  params.viz.border_width.y = params.viz.y_scale.rangeBand() / params.viz.border_fraction;
+
+
 
   return params;
 

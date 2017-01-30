@@ -63,7 +63,7 @@ module.exports = function make_ds_matrix(params){
   _.each(ds_mat, function(tmp_ds){
 
     var tmp_row_data = tmp_ds.row_data;
-    var num_names = tmp_ds.all_names.length * 1;
+    var num_names = tmp_ds.all_names.length;
 
     _.each(tmp_row_data, function(tmp_obj){
       tmp_obj.value = (tmp_obj.value / num_names)*opacity_factor;

@@ -14,8 +14,9 @@ module.exports = function set_zoom_params(params){
 
   // rect width needs matrix and zoom parameters
   params.viz.rect_width  = params.viz.x_scale.rangeBand() - params.viz.border_width.x;
-  params.viz.rect_height = params.viz.y_scale.rangeBand() - params.viz.border_width.y;
 
+  // moved calculateion to calc_matrix_params
+  params.viz.rect_height = params.viz.y_scale.rangeBand() - params.viz.border_width.y;
   params.viz.ds_rect_height = params.viz.ds_y_scale.rangeBand() - params.viz.border_width.y;
 
   return params;
