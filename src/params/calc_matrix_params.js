@@ -88,8 +88,10 @@ module.exports = function calc_matrix_params(params){
   params.viz.ds = []
   params.viz.ds.push(ds);
 
-  // make downsampled matrix (row downsampling)
-  params.matrix.ds_matrix = calc_downsampled_matrix(params);
+  // array of downsampled matrices at varying layers
+  params.matrix.ds_matrix = [];
+  var matrix = calc_downsampled_matrix(params);
+  params.matrix.ds_matrix.push(matrix);
 
   return params;
 

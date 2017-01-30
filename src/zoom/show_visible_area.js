@@ -70,7 +70,7 @@ module.exports = function show_visible_area(params){
     }
 
     // var is_ds = true;
-    // make_matrix_rows(params, params.matrix.ds_matrix, 'all', is_ds);
+    // make_matrix_rows(params, params.matrix.ds_matrix[0], 'all', is_ds);
 
   }
 

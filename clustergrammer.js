@@ -1752,8 +1752,10 @@ var Clustergrammer =
 	  params.viz.ds = [];
 	  params.viz.ds.push(ds);
 
-	  // make downsampled matrix (row downsampling)
-	  params.matrix.ds_matrix = calc_downsampled_matrix(params);
+	  // array of downsampled matrices at varying layers
+	  params.matrix.ds_matrix = [];
+	  var matrix = calc_downsampled_matrix(params);
+	  params.matrix.ds_matrix.push(matrix);
 
 	  return params;
 		};
@@ -2280,7 +2282,7 @@ var Clustergrammer =
 	  // in this case all row nodes
 	  // make_matrix_rows(params, params.matrix.matrix, params.network_data.row_nodes_names);
 	  var is_ds = true;
-	  make_matrix_rows(params, params.matrix.ds_matrix, 'all', is_ds);
+	  make_matrix_rows(params, params.matrix.ds_matrix[0], 'all', is_ds);
 
 	  // add callback function to tile group - if one is supplied by the user
 	  if (typeof params.click_tile === 'function') {
@@ -4882,7 +4884,7 @@ var Clustergrammer =
 	    }
 
 	    // var is_ds = true;
-	    // make_matrix_rows(params, params.matrix.ds_matrix, 'all', is_ds);
+	    // make_matrix_rows(params, params.matrix.ds_matrix[0], 'all', is_ds);
 	  }
 
 	  function toggle_display(params, d, inst_rc, inst_selection) {
