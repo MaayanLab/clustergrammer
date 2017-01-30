@@ -6,15 +6,15 @@ var mouseover_tile = require('./mouseover_tile');
 var mouseout_tile = require('./mouseout_tile');
 var fine_position_tile = require('./fine_position_tile');
 
-module.exports = function make_simple_rows(params, inst_data, tip, row_selection, is_ds=false) {
+module.exports = function make_simple_rows(params, inst_data, tip, row_selection, ds_level = -1) {
 
   var inp_row_data = inst_data.row_data;
 
   var make_tip = true;
   var rect_height = params.viz.rect_height;
-  if (is_ds){
+  if (ds_level >= 0){
     make_tip = false;
-    rect_height = params.viz.ds[0].rect_height;
+    rect_height = params.viz.ds[ds_level].rect_height;
   }
 
   var keep_orig;

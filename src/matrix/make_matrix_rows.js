@@ -2,18 +2,21 @@ var make_simple_rows = require('./make_simple_rows');
 var d3_tip_custom = require('../tooltip/d3_tip_custom');
 
 module.exports = function make_matrix_rows(params, current_matrix,
-  row_names='all', is_ds=false){
+  row_names='all', ds_level=-1){
 
   // defaults
   var y_scale = params.viz.y_scale;
   var make_tip = true;
   var row_class = 'row';
 
-  if (is_ds){
-    y_scale = params.viz.ds[0].y_scale;
+  if (ds_level >= 0){
+
+    console.log(ds_level)
+    y_scale = params.viz.ds[ds_level].y_scale;
     make_tip = false;
     row_class = 'ds_row';
   }
+
 
   if (make_tip){
 
@@ -73,7 +76,7 @@ module.exports = function make_matrix_rows(params, current_matrix,
       return 'translate(0,' + y_scale(d.row_index) + ')';
     })
     .each(function(d){
-      make_simple_rows(params, d, tip, this, is_ds);
+      make_simple_rows(params, d, tip, this, ds_level);
     });
 
 };

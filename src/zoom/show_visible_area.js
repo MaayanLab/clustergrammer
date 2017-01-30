@@ -6,7 +6,7 @@ module.exports = function show_visible_area(params){
   var viz_area = {};
   var zoom_info = params.zoom_info;
 
-  var buffer_size = 5;
+  var buffer_size = 2;
 
   // get translation vector absolute values
   viz_area.min_x = Math.abs(zoom_info.trans_x)/zoom_info.zoom_x -
@@ -58,12 +58,13 @@ module.exports = function show_visible_area(params){
 
     if (params.viz.rect_height * params.zoom_info.zoom_y > show_height){
 
-      // console.log('num missing rows: ' + String(missing_rows.length))
-
-      var is_ds = true;
-      make_matrix_rows(params, params.matrix.matrix, missing_rows, false);
+      // do not downsample
+      var ds_level = -1;
+      make_matrix_rows(params, params.matrix.matrix, missing_rows, ds_level);
 
       d3.selectAll('.ds_row').style('display', 'none');
+      // d3.selectAll('.ds_row').remove()
+
     } else {
       d3.selectAll('.ds_row').style('display', 'block');
       d3.selectAll('.row').remove();

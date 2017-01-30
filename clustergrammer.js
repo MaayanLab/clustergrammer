@@ -1740,6 +1740,8 @@ var Clustergrammer =
 	  params.viz.ds = [];
 	  // array of downsampled matrices at varying layers
 	  params.matrix.ds_matrix = [];
+
+	  // calculate parameters for different layers
 	  for (var i = 0; i < num_layers; i++) {
 
 	    ds = {};
@@ -2297,8 +2299,8 @@ var Clustergrammer =
 	  // pass in params and the rows (row_nodes) that need to be made
 	  // in this case all row nodes
 	  // make_matrix_rows(params, params.matrix.matrix, params.network_data.row_nodes_names);
-	  var is_ds = true;
-	  make_matrix_rows(params, params.matrix.ds_matrix[0], 'all', is_ds);
+	  var ds_level = 0;
+	  make_matrix_rows(params, params.matrix.ds_matrix[0], 'all', ds_level);
 
 	  // add callback function to tile group - if one is supplied by the user
 	  if (typeof params.click_tile === 'function') {
@@ -2528,7 +2530,7 @@ var Clustergrammer =
 
 	module.exports = function make_matrix_rows(params, current_matrix) {
 	  var row_names = arguments.length <= 2 || arguments[2] === undefined ? 'all' : arguments[2];
-	  var is_ds = arguments.length <= 3 || arguments[3] === undefined ? false : arguments[3];
+	  var ds_level = arguments.length <= 3 || arguments[3] === undefined ? -1 : arguments[3];
 
 
 	  // defaults
@@ -2536,8 +2538,10 @@ var Clustergrammer =
 	  var make_tip = true;
 	  var row_class = 'row';
 
-	  if (is_ds) {
-	    y_scale = params.viz.ds[0].y_scale;
+	  if (ds_level >= 0) {
+
+	    console.log(ds_level);
+	    y_scale = params.viz.ds[ds_level].y_scale;
 	    make_tip = false;
 	    row_class = 'ds_row';
 	  }
@@ -2585,7 +2589,7 @@ var Clustergrammer =
 	  }).enter().append('g').classed(row_class, true).attr('transform', function (d) {
 	    return 'translate(0,' + y_scale(d.row_index) + ')';
 	  }).each(function (d) {
-	    make_simple_rows(params, d, tip, this, is_ds);
+	    make_simple_rows(params, d, tip, this, ds_level);
 	  });
 		};
 
@@ -2604,16 +2608,16 @@ var Clustergrammer =
 	var fine_position_tile = __webpack_require__(50);
 
 	module.exports = function make_simple_rows(params, inst_data, tip, row_selection) {
-	  var is_ds = arguments.length <= 4 || arguments[4] === undefined ? false : arguments[4];
+	  var ds_level = arguments.length <= 4 || arguments[4] === undefined ? -1 : arguments[4];
 
 
 	  var inp_row_data = inst_data.row_data;
 
 	  var make_tip = true;
 	  var rect_height = params.viz.rect_height;
-	  if (is_ds) {
+	  if (ds_level >= 0) {
 	    make_tip = false;
-	    rect_height = params.viz.ds[0].rect_height;
+	    rect_height = params.viz.ds[ds_level].rect_height;
 	  }
 
 	  var keep_orig;
@@ -4846,7 +4850,7 @@ var Clustergrammer =
 	  var viz_area = {};
 	  var zoom_info = params.zoom_info;
 
-	  var buffer_size = 5;
+	  var buffer_size = 2;
 
 	  // get translation vector absolute values
 	  viz_area.min_x = Math.abs(zoom_info.trans_x) / zoom_info.zoom_x - buffer_size * params.viz.rect_width;
@@ -4888,12 +4892,12 @@ var Clustergrammer =
 
 	    if (params.viz.rect_height * params.zoom_info.zoom_y > show_height) {
 
-	      // console.log('num missing rows: ' + String(missing_rows.length))
-
-	      var is_ds = true;
-	      make_matrix_rows(params, params.matrix.matrix, missing_rows, false);
+	      // do not downsample
+	      var ds_level = -1;
+	      make_matrix_rows(params, params.matrix.matrix, missing_rows, ds_level);
 
 	      d3.selectAll('.ds_row').style('display', 'none');
+	      // d3.selectAll('.ds_row').remove()
 	    } else {
 	      d3.selectAll('.ds_row').style('display', 'block');
 	      d3.selectAll('.row').remove();
