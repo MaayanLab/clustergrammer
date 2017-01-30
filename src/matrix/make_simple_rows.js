@@ -14,7 +14,7 @@ module.exports = function make_simple_rows(params, inst_data, tip, row_selection
   var rect_height = params.viz.rect_height;
   if (is_ds){
     make_tip = false;
-    rect_height = params.viz.ds_rect_height;
+    rect_height = params.viz.ds.rect_height;
   }
 
   var keep_orig;

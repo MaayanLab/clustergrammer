@@ -33,7 +33,7 @@ module.exports = function recalc_params_for_resize(params){
   params.viz.rect_height = params.viz.y_scale.rangeBand() - params.viz.border_width.y;
 
   // for downsampling
-  params.viz.ds_rect_height = params.viz.ds_y_scale.rangeBand() - params.viz.border_width.y;
+  params.viz.ds.rect_height = params.viz.ds.y_scale.rangeBand() - params.viz.border_width.y;
 
   // redefine zoom extent
   params.viz.real_zoom = params.viz.norm_labels.width.col / (params.viz.rect_width/2);
