@@ -10,8 +10,6 @@ module.exports = function make_matrix_rows(params, current_matrix,
   var row_class = 'row';
 
   if (ds_level >= 0){
-
-    console.log(ds_level)
     y_scale = params.viz.ds[ds_level].y_scale;
     make_tip = false;
     row_class = 'ds' + String(ds_level) + '_row';

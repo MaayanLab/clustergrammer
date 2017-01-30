@@ -1733,8 +1733,11 @@ var Clustergrammer =
 	  var inst_height = 3;
 	  // amount of zooming that is tolerated for the downsampled rows
 	  var inst_zt = 2;
+	  params.viz.ds_zt = inst_zt;
 	  // the number of downsampled matrices that need to be calculated
 	  var num_layers = Math.round(inst_height / (params.viz.rect_height * inst_zt));
+
+	  params.viz.ds_num_layers = num_layers;
 
 	  // array of downsampled parameters
 	  params.viz.ds = [];
@@ -2305,8 +2308,7 @@ var Clustergrammer =
 	  // make_matrix_rows(params, params.matrix.matrix, params.network_data.row_nodes_names);
 
 	  // initialize at ds_level 0
-	  var ds_level = 0;
-	  make_matrix_rows(params, params.matrix.ds_matrix[0], 'all', ds_level);
+	  make_matrix_rows(params, params.matrix.ds_matrix[0], 'all', params.viz.ds_level);
 
 	  // add callback function to tile group - if one is supplied by the user
 	  if (typeof params.click_tile === 'function') {
@@ -2545,8 +2547,6 @@ var Clustergrammer =
 	  var row_class = 'row';
 
 	  if (ds_level >= 0) {
-
-	    console.log(ds_level);
 	    y_scale = params.viz.ds[ds_level].y_scale;
 	    make_tip = false;
 	    row_class = 'ds' + String(ds_level) + '_row';
@@ -4866,6 +4866,20 @@ var Clustergrammer =
 
 	  viz_area.max_y = Math.abs(zoom_info.trans_y) / zoom_info.zoom_y + params.viz.clust.dim.height / zoom_info.zoom_y + buffer_size * params.viz.rect_height;
 
+	  // calc ds_level
+	  var inst_ds_level = Math.floor(zoom_info.zoom_y / params.viz.ds_zt);
+	  var old_ds_level = params.viz.ds_level;
+
+	  if (inst_ds_level > params.viz.ds_num_layers - 1) {
+	    // this turns off downsampling
+	    inst_ds_level = -1;
+	  }
+
+	  params.viz.ds_level = inst_ds_level;
+
+	  // console.log('old_ds_level: ' + String(old_ds_level))
+	  // console.log('inst_ds_level: ' + String(inst_ds_level))
+
 	  // generate lists of visible rows/cols
 	  find_viz_nodes(params, viz_area);
 
@@ -4895,22 +4909,45 @@ var Clustergrammer =
 	  var show_height = 5;
 	  var ds_row_class = '.ds' + String(params.viz.ds_level) + '_row';
 
+	  console.log(missing_rows.length);
+
 	  if (missing_rows.length > start_adding_back) {
 
 	    if (params.viz.rect_height * params.zoom_info.zoom_y > show_height) {
 
-	      // do not downsample
+	      // show actual data
 	      var ds_level = -1;
-	      make_matrix_rows(params, params.matrix.matrix, missing_rows, ds_level);
+	      make_matrix_rows(params, params.matrix.matrix, missing_rows, -1);
 
-	      d3.selectAll(ds_row_class).style('display', 'none');
+	      // remove old downsampled rows
+	      d3.selectAll('.ds' + String(old_ds_level) + '_row').remove();
+
+	      console.log('above zoom thresh');
+
+	      if (inst_ds_level > 0) {
+
+	        console.log('ds_level: ' + String(old_ds_level) + ' : ' + String(inst_ds_level));
+	        // remove old level rows
+	        d3.selectAll('.ds' + String(old_ds_level) + '_row').remove();
+
+	        // make new rows
+	        make_matrix_rows(params, params.matrix.ds_matrix[inst_ds_level], 'all', inst_ds_level);
+	      }
 	    } else {
+
 	      d3.selectAll(ds_row_class).style('display', 'block');
 	      d3.selectAll('.row').remove();
-	    }
 
-	    // var is_ds = true;
-	    // make_matrix_rows(params, params.matrix.ds_matrix[0], 'all', is_ds);
+	      if (inst_ds_level != old_ds_level) {
+
+	        console.log('ds_level: ' + String(old_ds_level) + ' : ' + String(inst_ds_level));
+	        // remove old level rows
+	        d3.selectAll('.ds' + String(old_ds_level) + '_row').remove();
+
+	        // make new rows
+	        make_matrix_rows(params, params.matrix.ds_matrix[inst_ds_level], 'all', inst_ds_level);
+	      }
+	    }
 	  }
 
 	  function toggle_display(params, d, inst_rc, inst_selection) {

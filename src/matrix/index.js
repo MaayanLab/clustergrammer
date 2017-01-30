@@ -36,8 +36,7 @@ module.exports = function(params, svg_elem) {
   // make_matrix_rows(params, params.matrix.matrix, params.network_data.row_nodes_names);
 
   // initialize at ds_level 0
-  var ds_level = 0;
-  make_matrix_rows(params, params.matrix.ds_matrix[0], 'all', ds_level);
+  make_matrix_rows(params, params.matrix.ds_matrix[0], 'all', params.viz.ds_level);
 
   // add callback function to tile group - if one is supplied by the user
   if (typeof params.click_tile === 'function') {
