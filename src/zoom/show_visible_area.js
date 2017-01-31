@@ -1,7 +1,7 @@
 var find_viz_nodes = require('../zoom/find_viz_nodes');
 var make_matrix_rows = require('../matrix/make_matrix_rows');
 
-module.exports = function show_visible_area(params){
+module.exports = function show_visible_area(params, zooming_stopped=false){
 
   var viz_area = {};
   var zoom_info = params.zoom_info;
@@ -22,22 +22,28 @@ module.exports = function show_visible_area(params){
                       params.viz.clust.dim.height/zoom_info.zoom_y +
                       buffer_size * params.viz.rect_height ;
 
-  // toggle the downsampling level (if necessary)
-  var inst_ds_level;
-  if (params.viz.ds === null){
-    // no downsampling
-    inst_ds_level = -1;
-  } else {
+  var inst_ds_level = 0;
 
-    // downsampling
-    inst_ds_level = Math.floor(zoom_info.zoom_y / params.viz.ds_zt) ;
-    var old_ds_level = params.viz.ds_level;
-
-    if (inst_ds_level > params.viz.ds_num_layers -1 ){
-      // this turns off downsampling
+  if (zooming_stopped === true){
+    console.log('HERE')
+    // /* run when zooming has stopped */
+    // toggle the downsampling level (if necessary)
+    var inst_ds_level;
+    if (params.viz.ds === null){
+      // no downsampling
       inst_ds_level = -1;
+    } else {
+
+      // downsampling
+      inst_ds_level = Math.floor(zoom_info.zoom_y / params.viz.ds_zt) ;
+      var old_ds_level = params.viz.ds_level;
+
+      if (inst_ds_level > params.viz.ds_num_layers -1 ){
+        // this turns off downsampling
+        inst_ds_level = -1;
+      }
+    }
   }
-}
 
   // console.log(inst_ds_level)
 
@@ -85,26 +91,30 @@ module.exports = function show_visible_area(params){
     inst_matrix = params.matrix.ds_matrix[inst_ds_level];
   }
 
-  d3.selectAll('.ds'+String(inst_ds_level)+'_row')
-    .each(function(d){
-      if (_.contains(params.viz.viz_nodes.row, d.name) === false){
-        d3.select(this).remove();
-      }
-    });
-
-
   d3.selectAll(ds_row_class).style('display', 'block');
 
-  // update rows if level changes or if level is -1
-  if (inst_ds_level != old_ds_level){
+  if (zooming_stopped === true){
 
-    console.log('ds_level: ' + String(old_ds_level) + ' : '  + String(inst_ds_level))
+    /* run when zooming has stopped */
+    d3.selectAll('.ds'+String(inst_ds_level)+'_row')
+      .each(function(d){
+        if (_.contains(params.viz.viz_nodes.row, d.name) === false){
+          d3.select(this).remove();
+        }
+      });
 
-    // all visible rows are missing at new downsampling level
-    missing_rows = params.viz.viz_nodes.row
+    // level change
+    if (inst_ds_level != old_ds_level){
 
-    // remove old level rows
-    d3.selectAll('.ds'+String(old_ds_level)+'_row').remove();
+      console.log('ds_level: ' + String(old_ds_level) + ' : '  + String(inst_ds_level))
+
+      // all visible rows are missing at new downsampling level
+      missing_rows = params.viz.viz_nodes.row
+
+      // remove old level rows
+      d3.selectAll('.ds'+String(old_ds_level)+'_row').remove();
+
+    }
 
   }
 

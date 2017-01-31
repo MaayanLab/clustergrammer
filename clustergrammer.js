@@ -1735,7 +1735,7 @@ var Clustergrammer =
 	    // height of downsampled rectangles
 	    var inst_height = 3;
 	    // amount of zooming that is tolerated for the downsampled rows
-	    var inst_zt = 3.5;
+	    var inst_zt = 10;
 	    params.viz.ds_zt = inst_zt;
 	    // the number of downsampled matrices that need to be calculated
 	    var num_layers = Math.round(inst_height / (params.viz.rect_height * inst_zt));
@@ -4572,6 +4572,8 @@ var Clustergrammer =
 	var make_matrix_rows = __webpack_require__(41);
 
 	module.exports = function show_visible_area(params) {
+	  var zooming_stopped = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+
 
 	  var viz_area = {};
 	  var zoom_info = params.zoom_info;
@@ -4586,20 +4588,26 @@ var Clustergrammer =
 
 	  viz_area.max_y = Math.abs(zoom_info.trans_y) / zoom_info.zoom_y + params.viz.clust.dim.height / zoom_info.zoom_y + buffer_size * params.viz.rect_height;
 
-	  // toggle the downsampling level (if necessary)
-	  var inst_ds_level;
-	  if (params.viz.ds === null) {
-	    // no downsampling
-	    inst_ds_level = -1;
-	  } else {
+	  var inst_ds_level = 0;
 
-	    // downsampling
-	    inst_ds_level = Math.floor(zoom_info.zoom_y / params.viz.ds_zt);
-	    var old_ds_level = params.viz.ds_level;
-
-	    if (inst_ds_level > params.viz.ds_num_layers - 1) {
-	      // this turns off downsampling
+	  if (zooming_stopped === true) {
+	    console.log('HERE');
+	    // /* run when zooming has stopped */
+	    // toggle the downsampling level (if necessary)
+	    var inst_ds_level;
+	    if (params.viz.ds === null) {
+	      // no downsampling
 	      inst_ds_level = -1;
+	    } else {
+
+	      // downsampling
+	      inst_ds_level = Math.floor(zoom_info.zoom_y / params.viz.ds_zt);
+	      var old_ds_level = params.viz.ds_level;
+
+	      if (inst_ds_level > params.viz.ds_num_layers - 1) {
+	        // this turns off downsampling
+	        inst_ds_level = -1;
+	      }
 	    }
 	  }
 
@@ -4646,24 +4654,28 @@ var Clustergrammer =
 	    inst_matrix = params.matrix.ds_matrix[inst_ds_level];
 	  }
 
-	  d3.selectAll('.ds' + String(inst_ds_level) + '_row').each(function (d) {
-	    if (_.contains(params.viz.viz_nodes.row, d.name) === false) {
-	      d3.select(this).remove();
-	    }
-	  });
-
 	  d3.selectAll(ds_row_class).style('display', 'block');
 
-	  // update rows if level changes or if level is -1
-	  if (inst_ds_level != old_ds_level) {
+	  if (zooming_stopped === true) {
 
-	    console.log('ds_level: ' + String(old_ds_level) + ' : ' + String(inst_ds_level));
+	    /* run when zooming has stopped */
+	    d3.selectAll('.ds' + String(inst_ds_level) + '_row').each(function (d) {
+	      if (_.contains(params.viz.viz_nodes.row, d.name) === false) {
+	        d3.select(this).remove();
+	      }
+	    });
 
-	    // all visible rows are missing at new downsampling level
-	    missing_rows = params.viz.viz_nodes.row;
+	    // level change
+	    if (inst_ds_level != old_ds_level) {
 
-	    // remove old level rows
-	    d3.selectAll('.ds' + String(old_ds_level) + '_row').remove();
+	      console.log('ds_level: ' + String(old_ds_level) + ' : ' + String(inst_ds_level));
+
+	      // all visible rows are missing at new downsampling level
+	      missing_rows = params.viz.viz_nodes.row;
+
+	      // remove old level rows
+	      d3.selectAll('.ds' + String(old_ds_level) + '_row').remove();
+	    }
 	  }
 
 	  // only make new matrix rows if there are missing rows
@@ -6056,6 +6068,9 @@ var Clustergrammer =
 	    return inst_zoom + 1;
 	  });
 
+	  // this function runs with a slight delay and tells the visualization that
+	  // this particular zoom event is over, reducing the total number of zoom
+	  // events that need to finish
 	  var not_zooming = function not_zooming() {
 
 	    d3.select(params.root + ' .viz_svg').attr('is_zoom', function () {
@@ -6086,7 +6101,7 @@ var Clustergrammer =
 	    }
 	  });
 
-	  show_visible_area(params, zoom_info);
+	  show_visible_area(params);
 		};
 
 /***/ },
@@ -6189,14 +6204,14 @@ var Clustergrammer =
 
 	  var inst_zoom = Number(d3.select(params.root + ' .viz_svg').attr('is_zoom'));
 
-	  _.each(['row', 'col'], function (inst_rc) {
-
-	    d3.selectAll(params.root + ' .' + inst_rc + '_label_group').select('text').style('opacity', 1);
-
-	    d3.selectAll(params.root + ' .' + inst_rc + '_cat_group').select('path').style('display', 'block');
-	  });
-
 	  if (inst_zoom === 0) {
+
+	    _.each(['row', 'col'], function (inst_rc) {
+
+	      d3.selectAll(params.root + ' .' + inst_rc + '_label_group').select('text').style('opacity', 1);
+
+	      d3.selectAll(params.root + ' .' + inst_rc + '_cat_group').select('path').style('display', 'block');
+	    });
 
 	    var check_stop = Number(d3.select(params.root + ' .viz_svg').attr('stopped_zoom'));
 
@@ -6239,7 +6254,6 @@ var Clustergrammer =
 	    // I'm running it twice in quick succession
 	    setTimeout(text_patch, 25);
 	    setTimeout(text_patch, 100);
-	    // setTimeout( text_patch, 2000 );
 	  }
 
 	  function text_patch() {

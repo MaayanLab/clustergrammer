@@ -67,6 +67,9 @@ module.exports = function run_transformation(params){
       return inst_zoom + 1;
     });
 
+  // this function runs with a slight delay and tells the visualization that
+  // this particular zoom event is over, reducing the total number of zoom
+  // events that need to finish
   var not_zooming = function(){
 
     d3.select(params.root+' .viz_svg')
@@ -105,6 +108,6 @@ module.exports = function run_transformation(params){
 
   });
 
-  show_visible_area(params, zoom_info);
+  show_visible_area(params);
 
 };
