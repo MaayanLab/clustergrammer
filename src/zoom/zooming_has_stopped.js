@@ -2,25 +2,13 @@ var num_visible_labels = require('./num_visible_labels');
 var trim_text = require('./trim_text');
 var constrain_font_size = require('./constrain_font_size');
 var toggle_grid_lines = require('../matrix/toggle_grid_lines');
+var show_visible_area = require('./show_visible_area');
 
 module.exports = function zooming_has_stopped(params){
 
   var inst_zoom = Number(d3.select(params.root+' .viz_svg').attr('is_zoom'));
 
   if (inst_zoom === 0){
-
-    _.each(['row','col'], function(inst_rc){
-
-      d3.selectAll(params.root+' .'+inst_rc+'_label_group' )
-        .select('text')
-        .style('opacity',1);
-
-      d3.selectAll(params.root+' .'+inst_rc+'_cat_group')
-        .select('path')
-        .style('display','block');
-
-    });
-
 
     var check_stop = Number(
         d3.select(params.root+' .viz_svg').attr('stopped_zoom')
@@ -31,6 +19,21 @@ module.exports = function zooming_has_stopped(params){
       /////////////////////////////////////////////////
       // zooming has stopped
       /////////////////////////////////////////////////
+
+      console.log('ZOOMING HAS ACTUALLY STOPPED')
+
+      _.each(['row','col'], function(inst_rc){
+
+        d3.selectAll(params.root+' .'+inst_rc+'_label_group' )
+          .select('text')
+          .style('opacity',1);
+
+        d3.selectAll(params.root+' .'+inst_rc+'_cat_group')
+          .select('path')
+          .style('display','block');
+      });
+
+      show_visible_area(params, true);
 
       d3.selectAll(params.viz.root_tips)
         .style('display','block');

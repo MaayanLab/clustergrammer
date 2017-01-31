@@ -1735,7 +1735,7 @@ var Clustergrammer =
 	    // height of downsampled rectangles
 	    var inst_height = 3;
 	    // amount of zooming that is tolerated for the downsampled rows
-	    var inst_zt = 10;
+	    var inst_zt = 3;
 	    params.viz.ds_zt = inst_zt;
 	    // the number of downsampled matrices that need to be calculated
 	    var num_layers = Math.round(inst_height / (params.viz.rect_height * inst_zt));
@@ -4575,6 +4575,8 @@ var Clustergrammer =
 	  var zooming_stopped = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
 
 
+	  console.log('show_visible_area stopped: ' + String(zooming_stopped));
+
 	  var viz_area = {};
 	  var zoom_info = params.zoom_info;
 
@@ -4588,32 +4590,50 @@ var Clustergrammer =
 
 	  viz_area.max_y = Math.abs(zoom_info.trans_y) / zoom_info.zoom_y + params.viz.clust.dim.height / zoom_info.zoom_y + buffer_size * params.viz.rect_height;
 
-	  var inst_ds_level = 0;
+	  // initialize with default ds_level
+	  var check_ds_level = params.viz.ds_level;
+	  var old_ds_level = params.viz.ds_level;
 
-	  if (zooming_stopped === true) {
-	    console.log('HERE');
-	    // /* run when zooming has stopped */
-	    // toggle the downsampling level (if necessary)
-	    var inst_ds_level;
-	    if (params.viz.ds === null) {
-	      // no downsampling
-	      inst_ds_level = -1;
-	    } else {
-
-	      // downsampling
-	      inst_ds_level = Math.floor(zoom_info.zoom_y / params.viz.ds_zt);
-	      var old_ds_level = params.viz.ds_level;
-
-	      if (inst_ds_level > params.viz.ds_num_layers - 1) {
-	        // this turns off downsampling
-	        inst_ds_level = -1;
-	      }
+	  // toggle the downsampling level (if necessary)
+	  if (params.viz.ds === null) {
+	    check_ds_level = -1;
+	  } else {
+	    check_ds_level = Math.floor(zoom_info.zoom_y / params.viz.ds_zt);
+	    if (check_ds_level > params.viz.ds_num_layers - 1) {
+	      check_ds_level = -1;
 	    }
 	  }
 
-	  // console.log(inst_ds_level)
+	  // over ride and force update of view if moving to more coarse view
+	  var over_ride = false;
 
-	  params.viz.ds_level = inst_ds_level;
+	  if (old_ds_level == -1) {
+	    // transitioning from real data to downsampled view
+	    if (check_ds_level >= 0) {
+	      over_ride = true;
+	    }
+	  } else {
+	    // transitioning to more coarse downsampling view
+	    if (check_ds_level < old_ds_level) {
+	      over_ride = true;
+	    }
+	  }
+
+	  // update level if zooming has stopped or if transitioning to more coarse view
+	  var new_ds_level;
+
+	  if (zooming_stopped === true || over_ride === true) {
+
+	    // update new_ds_level if necessary (if decreasing detail, zooming out)
+	    new_ds_level = check_ds_level;
+	    // set zooming_stopped to true in case of over_ride
+	    zooming_stopped = true;
+	  } else {
+	    // keep the old level (zooming is still occuring and not zooming out)
+	    new_ds_level = old_ds_level;
+	  }
+
+	  params.viz.ds_level = new_ds_level;
 
 	  // generate lists of visible rows/cols
 	  find_viz_nodes(params, viz_area);
@@ -4639,19 +4659,20 @@ var Clustergrammer =
 
 	  var ds_row_class = '.ds' + String(params.viz.ds_level) + '_row';
 
-	  if (inst_ds_level >= 0) {
+	  // if downsampling
+	  if (new_ds_level >= 0) {
 	    d3.selectAll('.row').remove();
 	  }
 
 	  // default state for downsampling
 	  var inst_matrix;
 
-	  if (inst_ds_level < 0) {
+	  if (new_ds_level < 0) {
 	    // set matrix to default matrix
 	    inst_matrix = params.matrix.matrix;
 	  } else {
 	    // set matrix to downsampled matrix
-	    inst_matrix = params.matrix.ds_matrix[inst_ds_level];
+	    inst_matrix = params.matrix.ds_matrix[new_ds_level];
 	  }
 
 	  d3.selectAll(ds_row_class).style('display', 'block');
@@ -4659,16 +4680,16 @@ var Clustergrammer =
 	  if (zooming_stopped === true) {
 
 	    /* run when zooming has stopped */
-	    d3.selectAll('.ds' + String(inst_ds_level) + '_row').each(function (d) {
+	    d3.selectAll('.ds' + String(new_ds_level) + '_row').each(function (d) {
 	      if (_.contains(params.viz.viz_nodes.row, d.name) === false) {
 	        d3.select(this).remove();
 	      }
 	    });
 
 	    // level change
-	    if (inst_ds_level != old_ds_level) {
+	    if (new_ds_level != old_ds_level) {
 
-	      console.log('ds_level: ' + String(old_ds_level) + ' : ' + String(inst_ds_level));
+	      console.log('ds_level: ' + String(old_ds_level) + ' : ' + String(new_ds_level));
 
 	      // all visible rows are missing at new downsampling level
 	      missing_rows = params.viz.viz_nodes.row;
@@ -4681,7 +4702,7 @@ var Clustergrammer =
 	  // only make new matrix rows if there are missing rows
 	  if (missing_rows.length > 1 || missing_rows === 'all') {
 	    // make new rows
-	    make_matrix_rows(params, inst_matrix, missing_rows, inst_ds_level);
+	    make_matrix_rows(params, inst_matrix, missing_rows, new_ds_level);
 	  }
 
 	  function toggle_display(params, d, inst_rc, inst_selection) {
@@ -6199,19 +6220,13 @@ var Clustergrammer =
 	var trim_text = __webpack_require__(86);
 	var constrain_font_size = __webpack_require__(82);
 	var toggle_grid_lines = __webpack_require__(39);
+	var show_visible_area = __webpack_require__(64);
 
 	module.exports = function zooming_has_stopped(params) {
 
 	  var inst_zoom = Number(d3.select(params.root + ' .viz_svg').attr('is_zoom'));
 
 	  if (inst_zoom === 0) {
-
-	    _.each(['row', 'col'], function (inst_rc) {
-
-	      d3.selectAll(params.root + ' .' + inst_rc + '_label_group').select('text').style('opacity', 1);
-
-	      d3.selectAll(params.root + ' .' + inst_rc + '_cat_group').select('path').style('display', 'block');
-	    });
 
 	    var check_stop = Number(d3.select(params.root + ' .viz_svg').attr('stopped_zoom'));
 
@@ -6220,6 +6235,17 @@ var Clustergrammer =
 	      /////////////////////////////////////////////////
 	      // zooming has stopped
 	      /////////////////////////////////////////////////
+
+	      console.log('ZOOMING HAS ACTUALLY STOPPED');
+
+	      _.each(['row', 'col'], function (inst_rc) {
+
+	        d3.selectAll(params.root + ' .' + inst_rc + '_label_group').select('text').style('opacity', 1);
+
+	        d3.selectAll(params.root + ' .' + inst_rc + '_cat_group').select('path').style('display', 'block');
+	      });
+
+	      show_visible_area(params, true);
 
 	      d3.selectAll(params.viz.root_tips).style('display', 'block');
 
