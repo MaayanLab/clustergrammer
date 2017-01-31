@@ -22,14 +22,24 @@ module.exports = function show_visible_area(params){
                       params.viz.clust.dim.height/zoom_info.zoom_y +
                       buffer_size * params.viz.rect_height ;
 
-  // calc ds_level
-  var inst_ds_level = Math.floor(zoom_info.zoom_y / params.viz.ds_zt) ;
-  var old_ds_level = params.viz.ds_level;
-
-  if (inst_ds_level > params.viz.ds_num_layers -1 ){
-    // this turns off downsampling
+  // toggle the downsampling level (if necessary)
+  var inst_ds_level;
+  if (params.viz.ds === null){
+    // no downsampling
     inst_ds_level = -1;
+  } else {
+
+    // downsampling
+    inst_ds_level = Math.floor(zoom_info.zoom_y / params.viz.ds_zt) ;
+    var old_ds_level = params.viz.ds_level;
+
+    if (inst_ds_level > params.viz.ds_num_layers -1 ){
+      // this turns off downsampling
+      inst_ds_level = -1;
   }
+}
+
+  // console.log(inst_ds_level)
 
   params.viz.ds_level = inst_ds_level;
 
@@ -65,10 +75,14 @@ module.exports = function show_visible_area(params){
   }
 
   // default state for downsampling
-  var inst_matrix = params.matrix.ds_matrix[inst_ds_level];
+  var inst_matrix;
 
   if (inst_ds_level < 0){
+    // set matrix to default matrix
     inst_matrix = params.matrix.matrix;
+  } else {
+    // set matrix to downsampled matrix
+    inst_matrix = params.matrix.ds_matrix[inst_ds_level];
   }
 
   d3.selectAll('.ds'+String(inst_ds_level)+'_row')
@@ -97,7 +111,6 @@ module.exports = function show_visible_area(params){
   // only make new matrix rows if there are missing rows
   if (missing_rows.length > 1 || missing_rows === 'all'){
     // make new rows
-    // console.log('make_matrix_rows')
     make_matrix_rows(params, inst_matrix, missing_rows, inst_ds_level);
   }
 

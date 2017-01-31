@@ -129,8 +129,8 @@ module.exports = function calc_matrix_params(params){
 
 
   } else {
-      // set ds to null if no downsampling is done
-      params.viz.ds = null;
+    // set ds to null if no downsampling is done
+    params.viz.ds = null;
     // instantaneous ds_level (-1 means no downsampling)
     params.viz.ds_level = -1;
   }
