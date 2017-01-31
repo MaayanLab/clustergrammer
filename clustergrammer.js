@@ -1735,7 +1735,7 @@ var Clustergrammer =
 	    // height of downsampled rectangles
 	    var inst_height = 3;
 	    // amount of zooming that is tolerated for the downsampled rows
-	    var inst_zt = 3;
+	    var inst_zt = 2;
 	    params.viz.ds_zt = inst_zt;
 	    // the number of downsampled matrices that need to be calculated
 	    var num_layers = Math.round(inst_height / (params.viz.rect_height * inst_zt));
@@ -4577,20 +4577,10 @@ var Clustergrammer =
 
 	  console.log('show_visible_area stopped: ' + String(zooming_stopped));
 
-	  var viz_area = {};
 	  var zoom_info = params.zoom_info;
 
-	  var buffer_size = 5;
-
-	  // get translation vector absolute values
-	  viz_area.min_x = Math.abs(zoom_info.trans_x) / zoom_info.zoom_x - (buffer_size + 1) * params.viz.rect_width;
-	  viz_area.min_y = Math.abs(zoom_info.trans_y) / zoom_info.zoom_y - (buffer_size + 1) * params.viz.rect_height;
-
-	  viz_area.max_x = Math.abs(zoom_info.trans_x) / zoom_info.zoom_x + params.viz.clust.dim.width / zoom_info.zoom_x + buffer_size * params.viz.rect_width;
-
-	  viz_area.max_y = Math.abs(zoom_info.trans_y) / zoom_info.zoom_y + params.viz.clust.dim.height / zoom_info.zoom_y + buffer_size * params.viz.rect_height;
-
-	  // initialize with default ds_level
+	  // update ds_level if necessary
+	  //////////////////////////////////////////////
 	  var check_ds_level = params.viz.ds_level;
 	  var old_ds_level = params.viz.ds_level;
 
@@ -4604,36 +4594,48 @@ var Clustergrammer =
 	    }
 	  }
 
-	  // over ride and force update of view if moving to more coarse view
-	  var over_ride = false;
+	  // check if override is necessary
+	  //////////////////////////////////////////////
+	  // force update of view if moving to more coarse view
+	  var override = false;
 
 	  if (old_ds_level == -1) {
 	    // transitioning from real data to downsampled view
 	    if (check_ds_level >= 0) {
-	      over_ride = true;
+	      override = true;
 	    }
 	  } else {
 	    // transitioning to more coarse downsampling view
 	    if (check_ds_level < old_ds_level) {
-	      over_ride = true;
+	      override = true;
 	    }
 	  }
 
 	  // update level if zooming has stopped or if transitioning to more coarse view
 	  var new_ds_level;
 
-	  if (zooming_stopped === true || over_ride === true) {
+	  if (zooming_stopped === true || override === true) {
 
 	    // update new_ds_level if necessary (if decreasing detail, zooming out)
 	    new_ds_level = check_ds_level;
-	    // set zooming_stopped to true in case of over_ride
+	    // set zooming_stopped to true in case of override
 	    zooming_stopped = true;
+
+	    params.viz.ds_level = new_ds_level;
 	  } else {
 	    // keep the old level (zooming is still occuring and not zooming out)
 	    new_ds_level = old_ds_level;
 	  }
 
-	  params.viz.ds_level = new_ds_level;
+	  var viz_area = {};
+	  var buffer_size = 5;
+	  // get translation vector absolute values
+	  viz_area.min_x = Math.abs(zoom_info.trans_x) / zoom_info.zoom_x - (buffer_size + 1) * params.viz.rect_width;
+	  viz_area.min_y = Math.abs(zoom_info.trans_y) / zoom_info.zoom_y - (buffer_size + 1) * params.viz.rect_height;
+
+	  viz_area.max_x = Math.abs(zoom_info.trans_x) / zoom_info.zoom_x + params.viz.clust.dim.width / zoom_info.zoom_x + buffer_size * params.viz.rect_width;
+
+	  viz_area.max_y = Math.abs(zoom_info.trans_y) / zoom_info.zoom_y + params.viz.clust.dim.height / zoom_info.zoom_y + buffer_size * params.viz.rect_height;
 
 	  // generate lists of visible rows/cols
 	  find_viz_nodes(params, viz_area);
