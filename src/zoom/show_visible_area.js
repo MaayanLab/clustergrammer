@@ -58,7 +58,6 @@ module.exports = function show_visible_area(params){
 
   var missing_rows = _.difference(params.viz.viz_nodes.row, params.viz.viz_nodes.curr_row);
 
-  var start_adding_back = 1;
 
   var show_height = 5;
   var ds_row_class = '.ds' + String(params.viz.ds_level) + '_row';
@@ -67,50 +66,43 @@ module.exports = function show_visible_area(params){
     d3.selectAll('.row').remove();
   }
 
-  console.log('missing_rows: ' + String(missing_rows.length))
+  // default state for downsampling
+  var inst_matrix = params.matrix.ds_matrix[inst_ds_level];
 
-  if (missing_rows.length > start_adding_back){
+  // if (params.viz.rect_height * params.zoom_info.zoom_y > show_height){
+  if (inst_ds_level < 0){
+    inst_matrix = params.matrix.matrix;
+  }
 
-    d3.selectAll(ds_row_class).style('display', 'block');
+  d3.selectAll('.ds'+String(inst_ds_level)+'_row')
+    .each(function(d){
+      if (_.contains(params.viz.viz_nodes.row, d.name) === false){
+        d3.select(this).remove();
+      }
+    });
 
-    // default state for downsampling
-    var inst_rows = 'all'
-    var inst_matrix = params.matrix.ds_matrix[inst_ds_level];
 
-    // if (params.viz.rect_height * params.zoom_info.zoom_y > show_height){
-    if (inst_ds_level < 0){
-      inst_rows = missing_rows;
-      inst_matrix = params.matrix.matrix;
-    }
+  d3.selectAll(ds_row_class).style('display', 'block');
 
-    d3.selectAll('.ds'+String(inst_ds_level)+'_row')
-      .each(function(d){
+  // update rows if level changes or if level is -1
+  if (inst_ds_level != old_ds_level || inst_ds_level === -1){
 
-        console.log(d.name)
+    console.log('ds_level: ' + String(old_ds_level) + ' : '  + String(inst_ds_level))
 
-        if (_.contains(params.viz.viz_nodes.row, d.name) === false){
+    // all visible rows are missing at new downsampling level
+    missing_rows = params.viz.viz_nodes.row
 
-          debugger;
-          // d3.select(this).remove();
-          console.log(d.name)
-
-        }
-      });
-
-    // update rows if level changes or if level is -1
-    if (inst_ds_level != old_ds_level || inst_ds_level === -1){
-
-      console.log('ds_level: ' + String(old_ds_level) + ' : '  + String(inst_ds_level))
-
-      // remove old level rows
-      d3.selectAll('.ds'+String(old_ds_level)+'_row').remove();
-
-      // make new rows
-      make_matrix_rows(params, inst_matrix, inst_rows, inst_ds_level);
-    }
+    // remove old level rows
+    d3.selectAll('.ds'+String(old_ds_level)+'_row').remove();
 
   }
 
+  // only make new matrix rows if there are missing rows
+  if (missing_rows.length > 0 || missing_rows === 'all'){
+    // make new rows
+    console.log('make_matrix_rows')
+    make_matrix_rows(params, inst_matrix, missing_rows, inst_ds_level);
+  }
 
 
   function toggle_display(params, d, inst_rc, inst_selection, severe_toggle=false){

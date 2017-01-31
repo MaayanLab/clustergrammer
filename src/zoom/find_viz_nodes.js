@@ -18,7 +18,7 @@ module.exports = function find_viz_nodes(params, viz_area){
   if (ds_level >=0){
     y_scale = params.viz.ds[ds_level].y_scale;
 
-    row_names = d3.range(params.matrix.ds_matrix[0].length).map(String);
+    row_names = d3.range(params.matrix.ds_matrix[ds_level].length).map(String);
 
     row_class = '.ds'+String(ds_level)+'_row';
   }
