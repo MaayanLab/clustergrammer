@@ -1,5 +1,5 @@
 var constrain_font_size = require('./constrain_font_size');
-var zooming_has_stopped = require('./zooming_has_stopped');
+var check_if_zooming_has_stopped = require('./check_if_zooming_has_stopped');
 var show_visible_area = require('./show_visible_area');
 var resize_label_val_bars = require('./resize_label_val_bars');
 var num_visible_labels = require('./num_visible_labels');
@@ -82,7 +82,7 @@ module.exports = function run_transformation(params){
 
   setTimeout(not_zooming, 100);
 
-  setTimeout(zooming_has_stopped, 1000, params);
+  setTimeout(check_if_zooming_has_stopped, 1000, params);
 
   var max_element_show = 75;
 
