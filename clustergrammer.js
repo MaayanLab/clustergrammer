@@ -4575,7 +4575,7 @@ var Clustergrammer =
 	  var zooming_stopped = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
 
 
-	  console.log('show_visible_area stopped: ' + String(zooming_stopped));
+	  // console.log('show_visible_area stopped: ' + String(zooming_stopped))
 
 	  var zoom_info = params.zoom_info;
 
@@ -4627,19 +4627,6 @@ var Clustergrammer =
 	    new_ds_level = old_ds_level;
 	  }
 
-	  var viz_area = {};
-	  var buffer_size = 5;
-	  // get translation vector absolute values
-	  viz_area.min_x = Math.abs(zoom_info.trans_x) / zoom_info.zoom_x - (buffer_size + 1) * params.viz.rect_width;
-	  viz_area.min_y = Math.abs(zoom_info.trans_y) / zoom_info.zoom_y - (buffer_size + 1) * params.viz.rect_height;
-
-	  viz_area.max_x = Math.abs(zoom_info.trans_x) / zoom_info.zoom_x + params.viz.clust.dim.width / zoom_info.zoom_x + buffer_size * params.viz.rect_width;
-
-	  viz_area.max_y = Math.abs(zoom_info.trans_y) / zoom_info.zoom_y + params.viz.clust.dim.height / zoom_info.zoom_y + buffer_size * params.viz.rect_height;
-
-	  // generate lists of visible rows/cols
-	  find_viz_nodes(params, viz_area);
-
 	  // toggle labels and rows
 	  ///////////////////////////////////////////////
 	  var severe_toggle = true;
@@ -4656,10 +4643,28 @@ var Clustergrammer =
 	  d3.selectAll(params.root + ' .col_label_text').style('display', function (d) {
 	    return toggle_display(params, d, 'col', this, normal_toggle);
 	  });
+	  ///////////////////////////////////////////////
+
+
+	  var viz_area = {};
+	  var buffer_size = 5;
+	  // get translation vector absolute values
+	  viz_area.min_x = Math.abs(zoom_info.trans_x) / zoom_info.zoom_x - (buffer_size + 1) * params.viz.rect_width;
+	  viz_area.min_y = Math.abs(zoom_info.trans_y) / zoom_info.zoom_y - (buffer_size + 1) * params.viz.rect_height;
+
+	  viz_area.max_x = Math.abs(zoom_info.trans_x) / zoom_info.zoom_x + params.viz.clust.dim.width / zoom_info.zoom_x + buffer_size * params.viz.rect_width;
+
+	  viz_area.max_y = Math.abs(zoom_info.trans_y) / zoom_info.zoom_y + params.viz.clust.dim.height / zoom_info.zoom_y + buffer_size * params.viz.rect_height;
+
+	  // generate lists of visible rows/cols
+	  find_viz_nodes(params, viz_area);
 
 	  var missing_rows = _.difference(params.viz.viz_nodes.row, params.viz.viz_nodes.curr_row);
 
-	  var ds_row_class = '.ds' + String(params.viz.ds_level) + '_row';
+	  if (params.viz.ds != null) {
+	    var ds_row_class = '.ds' + String(params.viz.ds_level) + '_row';
+	    d3.selectAll(ds_row_class).style('display', 'block');
+	  }
 
 	  // if downsampling
 	  if (new_ds_level >= 0) {
@@ -4677,8 +4682,6 @@ var Clustergrammer =
 	    inst_matrix = params.matrix.ds_matrix[new_ds_level];
 	  }
 
-	  d3.selectAll(ds_row_class).style('display', 'block');
-
 	  if (zooming_stopped === true) {
 
 	    /* run when zooming has stopped */
@@ -4691,7 +4694,7 @@ var Clustergrammer =
 	    // level change
 	    if (new_ds_level != old_ds_level) {
 
-	      console.log('ds_level: ' + String(old_ds_level) + ' : ' + String(new_ds_level));
+	      // console.log('ds_level: ' + String(old_ds_level) + ' : '  + String(new_ds_level))
 
 	      // all visible rows are missing at new downsampling level
 	      missing_rows = params.viz.viz_nodes.row;
@@ -6081,8 +6084,6 @@ var Clustergrammer =
 
 	  d3.select(params.root + ' .col_dendro_container').attr('transform', 'translate(' + [zoom_info.trans_x, params.viz.uni_margin / 2] + ') scale(' + zoom_info.zoom_x + ',1)');
 
-	  constrain_font_size(params);
-
 	  resize_label_val_bars(params, zoom_info);
 
 	  d3.select(params.root + ' .viz_svg').attr('is_zoom', function () {
@@ -6106,7 +6107,9 @@ var Clustergrammer =
 
 	  setTimeout(check_if_zooming_has_stopped, 1000, params);
 
-	  var max_element_show = 75;
+	  constrain_font_size(params);
+
+	  var max_element_show = 150;
 
 	  _.each(['row', 'col'], function (inst_rc) {
 
@@ -6144,50 +6147,54 @@ var Clustergrammer =
 
 	  // rows
 	  ////////////////////////////////////
-	  if (real_font_size.row > params.labels.max_allow_fs) {
+	  if (real_font_size.row > 5) {
 
-	    if (params.viz.zoom_switch_y) {
-	      inst_zoom = params.zoom_behavior.scale() / params.viz.zoom_switch_y;
+	    if (real_font_size.row > params.labels.max_allow_fs) {
+
+	      if (params.viz.zoom_switch_y) {
+	        inst_zoom = params.zoom_behavior.scale() / params.viz.zoom_switch_y;
+	      } else {
+	        inst_zoom = params.zoom_behavior.scale();
+	      }
+
+	      if (inst_zoom < 1) {
+	        inst_zoom = 1;
+	      }
+
+	      tmp_font_size = params.labels.max_allow_fs / inst_zoom;
+
+	      d3.selectAll(params.root + ' .row_label_group').select('text').style('font-size', tmp_font_size + 'px').attr('y', params.viz.rect_height * 0.5 + tmp_font_size * 0.35);
 	    } else {
-	      inst_zoom = params.zoom_behavior.scale();
+	      d3.selectAll(params.root + ' .row_label_group').select('text').style('font-size', params.labels.default_fs_row + 'px').attr('y', params.viz.rect_height * 0.5 + params.labels.default_fs_row * 0.35);
 	    }
-
-	    if (inst_zoom < 1) {
-	      inst_zoom = 1;
-	    }
-
-	    tmp_font_size = params.labels.max_allow_fs / inst_zoom;
-
-	    d3.selectAll(params.root + ' .row_label_group').select('text').style('font-size', tmp_font_size + 'px').attr('y', params.viz.rect_height * 0.5 + tmp_font_size * 0.35);
-	  } else {
-	    d3.selectAll(params.root + ' .row_label_group').select('text').style('font-size', params.labels.default_fs_row + 'px').attr('y', params.viz.rect_height * 0.5 + params.labels.default_fs_row * 0.35);
 	  }
 
-	  // columns 
+	  // columns
 	  //////////////////////////////////////
+	  if (real_font_size.col > 5) {
 
+	    if (real_font_size.col > params.labels.max_allow_fs) {
 
-	  if (real_font_size.col > params.labels.max_allow_fs) {
+	      if (params.viz.zoom_switch > 1) {
+	        inst_zoom = params.zoom_behavior.scale() / params.viz.zoom_switch;
+	      } else {
+	        inst_zoom = params.zoom_behavior.scale();
+	      }
 
-	    if (params.viz.zoom_switch > 1) {
-	      inst_zoom = params.zoom_behavior.scale() / params.viz.zoom_switch;
+	      if (inst_zoom < 1) {
+	        inst_zoom = 1;
+	      }
+
+	      tmp_font_size = params.labels.max_allow_fs / inst_zoom;
+
+	      if (tmp_font_size > 0.7 * params.viz.rect_width) {
+	        tmp_font_size = 0.7 * params.viz.rect_width;
+	      }
+
+	      d3.selectAll(params.root + ' .col_label_text').select('text').style('font-size', tmp_font_size + 'px');
 	    } else {
-	      inst_zoom = params.zoom_behavior.scale();
+	      d3.selectAll(params.root + ' .col_label_text').select('text').style('font-size', params.labels.default_fs_col + 'px');
 	    }
-
-	    if (inst_zoom < 1) {
-	      inst_zoom = 1;
-	    }
-
-	    tmp_font_size = params.labels.max_allow_fs / inst_zoom;
-
-	    if (tmp_font_size > 0.7 * params.viz.rect_width) {
-	      tmp_font_size = 0.7 * params.viz.rect_width;
-	    }
-
-	    d3.selectAll(params.root + ' .col_label_text').select('text').style('font-size', tmp_font_size + 'px');
-	  } else {
-	    d3.selectAll(params.root + ' .col_label_text').select('text').style('font-size', params.labels.default_fs_col + 'px');
 	  }
 		};
 
@@ -6725,7 +6732,7 @@ var Clustergrammer =
 
 	  // console.log('label_constrain_and_trim');
 
-	  // reset text in rows and columns 
+	  // reset text in rows and columns
 	  d3.selectAll(params.root + ' .row_label_group').select('text').text(function (d) {
 	    return utils.normal_name(d);
 	  });
@@ -13924,7 +13931,7 @@ var Clustergrammer =
 	  if (stop_attributes === true) {
 
 	    // wait and double check that zooming has stopped
-	    setTimeout(run_when_zoom_stopped, 500, params);
+	    setTimeout(run_when_zoom_stopped, 250, params);
 	  }
 		};
 

@@ -56,7 +56,6 @@ module.exports = function run_transformation(params){
   d3.select(params.root+' .col_dendro_container')
     .attr('transform', 'translate('+[zoom_info.trans_x, params.viz.uni_margin/2]+') scale(' +zoom_info.zoom_x+ ',1)');
 
-  constrain_font_size(params);
 
   resize_label_val_bars(params, zoom_info);
 
@@ -84,7 +83,9 @@ module.exports = function run_transformation(params){
 
   setTimeout(check_if_zooming_has_stopped, 1000, params);
 
-  var max_element_show = 75;
+  constrain_font_size(params);
+
+  var max_element_show = 150;
 
   _.each(['row','col'], function(inst_rc){
 

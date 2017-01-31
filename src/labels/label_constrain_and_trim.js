@@ -6,7 +6,7 @@ module.exports = function label_constrain_and_trim(params){
 
   // console.log('label_constrain_and_trim');
 
-  // reset text in rows and columns 
+  // reset text in rows and columns
   d3.selectAll(params.root+' .row_label_group')
     .select('text')
     .text(function(d){ return utils.normal_name(d); });

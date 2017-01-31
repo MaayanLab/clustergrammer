@@ -3,7 +3,7 @@ var make_matrix_rows = require('../matrix/make_matrix_rows');
 
 module.exports = function show_visible_area(params, zooming_stopped=false){
 
-  console.log('show_visible_area stopped: ' + String(zooming_stopped))
+  // console.log('show_visible_area stopped: ' + String(zooming_stopped))
 
   var zoom_info = params.zoom_info;
 
@@ -55,24 +55,6 @@ module.exports = function show_visible_area(params, zooming_stopped=false){
     new_ds_level = old_ds_level;
   }
 
-  var viz_area = {};
-  var buffer_size = 5;
-  // get translation vector absolute values
-  viz_area.min_x = Math.abs(zoom_info.trans_x)/zoom_info.zoom_x -
-                   (buffer_size + 1) * params.viz.rect_width;
-  viz_area.min_y = Math.abs(zoom_info.trans_y)/zoom_info.zoom_y -
-                   (buffer_size + 1) * params.viz.rect_height ;
-
-  viz_area.max_x = Math.abs(zoom_info.trans_x)/zoom_info.zoom_x +
-                   params.viz.clust.dim.width/zoom_info.zoom_x +
-                   buffer_size * params.viz.rect_width;
-
-  viz_area.max_y = Math.abs(zoom_info.trans_y)/zoom_info.zoom_y +
-                      params.viz.clust.dim.height/zoom_info.zoom_y +
-                      buffer_size * params.viz.rect_height ;
-
-  // generate lists of visible rows/cols
-  find_viz_nodes(params, viz_area);
 
   // toggle labels and rows
   ///////////////////////////////////////////////
@@ -93,10 +75,35 @@ module.exports = function show_visible_area(params, zooming_stopped=false){
     .style('display', function(d){
       return toggle_display(params, d, 'col', this, normal_toggle);
     });
+  ///////////////////////////////////////////////
+
+
+  var viz_area = {};
+  var buffer_size = 5;
+  // get translation vector absolute values
+  viz_area.min_x = Math.abs(zoom_info.trans_x)/zoom_info.zoom_x -
+                   (buffer_size + 1) * params.viz.rect_width;
+  viz_area.min_y = Math.abs(zoom_info.trans_y)/zoom_info.zoom_y -
+                   (buffer_size + 1) * params.viz.rect_height ;
+
+  viz_area.max_x = Math.abs(zoom_info.trans_x)/zoom_info.zoom_x +
+                   params.viz.clust.dim.width/zoom_info.zoom_x +
+                   buffer_size * params.viz.rect_width;
+
+  viz_area.max_y = Math.abs(zoom_info.trans_y)/zoom_info.zoom_y +
+                      params.viz.clust.dim.height/zoom_info.zoom_y +
+                      buffer_size * params.viz.rect_height ;
+
+  // generate lists of visible rows/cols
+  find_viz_nodes(params, viz_area);
+
 
   var missing_rows = _.difference(params.viz.viz_nodes.row, params.viz.viz_nodes.curr_row);
 
-  var ds_row_class = '.ds' + String(params.viz.ds_level) + '_row';
+  if (params.viz.ds != null){
+    var ds_row_class = '.ds' + String(params.viz.ds_level) + '_row';
+    d3.selectAll(ds_row_class).style('display', 'block');
+  }
 
   // if downsampling
   if (new_ds_level >= 0){
@@ -114,7 +121,6 @@ module.exports = function show_visible_area(params, zooming_stopped=false){
     inst_matrix = params.matrix.ds_matrix[new_ds_level];
   }
 
-  d3.selectAll(ds_row_class).style('display', 'block');
 
   if (zooming_stopped === true){
 
@@ -129,7 +135,7 @@ module.exports = function show_visible_area(params, zooming_stopped=false){
     // level change
     if (new_ds_level != old_ds_level){
 
-      console.log('ds_level: ' + String(old_ds_level) + ' : '  + String(new_ds_level))
+      // console.log('ds_level: ' + String(old_ds_level) + ' : '  + String(new_ds_level))
 
       // all visible rows are missing at new downsampling level
       missing_rows = params.viz.viz_nodes.row
