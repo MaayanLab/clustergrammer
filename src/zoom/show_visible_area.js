@@ -6,13 +6,13 @@ module.exports = function show_visible_area(params){
   var viz_area = {};
   var zoom_info = params.zoom_info;
 
-  var buffer_size = 2;
+  var buffer_size = 5;
 
   // get translation vector absolute values
   viz_area.min_x = Math.abs(zoom_info.trans_x)/zoom_info.zoom_x -
-                   buffer_size * params.viz.rect_width;
+                   (buffer_size + 1) * params.viz.rect_width;
   viz_area.min_y = Math.abs(zoom_info.trans_y)/zoom_info.zoom_y -
-                   buffer_size * params.viz.rect_height ;
+                   (buffer_size + 1) * params.viz.rect_height ;
 
   viz_area.max_x = Math.abs(zoom_info.trans_x)/zoom_info.zoom_x +
                    params.viz.clust.dim.width/zoom_info.zoom_x +
@@ -85,7 +85,7 @@ module.exports = function show_visible_area(params){
   d3.selectAll(ds_row_class).style('display', 'block');
 
   // update rows if level changes or if level is -1
-  if (inst_ds_level != old_ds_level || inst_ds_level === -1){
+  if (inst_ds_level != old_ds_level){
 
     console.log('ds_level: ' + String(old_ds_level) + ' : '  + String(inst_ds_level))
 
@@ -98,9 +98,9 @@ module.exports = function show_visible_area(params){
   }
 
   // only make new matrix rows if there are missing rows
-  if (missing_rows.length > 0 || missing_rows === 'all'){
+  if (missing_rows.length > 1 || missing_rows === 'all'){
     // make new rows
-    console.log('make_matrix_rows')
+    // console.log('make_matrix_rows')
     make_matrix_rows(params, inst_matrix, missing_rows, inst_ds_level);
   }
 

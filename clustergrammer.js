@@ -1733,7 +1733,7 @@ var Clustergrammer =
 	  // height of downsampled rectangles
 	  var inst_height = 3;
 	  // amount of zooming that is tolerated for the downsampled rows
-	  var inst_zt = 2.5;
+	  var inst_zt = 3.5;
 	  params.viz.ds_zt = inst_zt;
 	  // the number of downsampled matrices that need to be calculated
 	  var num_layers = Math.round(inst_height / (params.viz.rect_height * inst_zt));
@@ -2544,8 +2544,6 @@ var Clustergrammer =
 	  var row_names = arguments.length <= 2 || arguments[2] === undefined ? 'all' : arguments[2];
 	  var ds_level = arguments.length <= 3 || arguments[3] === undefined ? -1 : arguments[3];
 
-
-	  console.log('-- make_matrix_rows -- ');
 
 	  // defaults
 	  var y_scale = params.viz.y_scale;
@@ -4862,11 +4860,11 @@ var Clustergrammer =
 	  var viz_area = {};
 	  var zoom_info = params.zoom_info;
 
-	  var buffer_size = 2;
+	  var buffer_size = 5;
 
 	  // get translation vector absolute values
-	  viz_area.min_x = Math.abs(zoom_info.trans_x) / zoom_info.zoom_x - buffer_size * params.viz.rect_width;
-	  viz_area.min_y = Math.abs(zoom_info.trans_y) / zoom_info.zoom_y - buffer_size * params.viz.rect_height;
+	  viz_area.min_x = Math.abs(zoom_info.trans_x) / zoom_info.zoom_x - (buffer_size + 1) * params.viz.rect_width;
+	  viz_area.min_y = Math.abs(zoom_info.trans_y) / zoom_info.zoom_y - (buffer_size + 1) * params.viz.rect_height;
 
 	  viz_area.max_x = Math.abs(zoom_info.trans_x) / zoom_info.zoom_x + params.viz.clust.dim.width / zoom_info.zoom_x + buffer_size * params.viz.rect_width;
 
@@ -4929,7 +4927,7 @@ var Clustergrammer =
 	  d3.selectAll(ds_row_class).style('display', 'block');
 
 	  // update rows if level changes or if level is -1
-	  if (inst_ds_level != old_ds_level || inst_ds_level === -1) {
+	  if (inst_ds_level != old_ds_level) {
 
 	    console.log('ds_level: ' + String(old_ds_level) + ' : ' + String(inst_ds_level));
 
@@ -4941,9 +4939,9 @@ var Clustergrammer =
 	  }
 
 	  // only make new matrix rows if there are missing rows
-	  if (missing_rows.length > 0 || missing_rows === 'all') {
+	  if (missing_rows.length > 1 || missing_rows === 'all') {
 	    // make new rows
-	    console.log('make_matrix_rows');
+	    // console.log('make_matrix_rows')
 	    make_matrix_rows(params, inst_matrix, missing_rows, inst_ds_level);
 	  }
 
