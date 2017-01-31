@@ -1726,7 +1726,7 @@ var Clustergrammer =
 	  // increase ds opacity, as more rows are compressed into a single downsampled
 	  // row, increase the opacity of the downsampled row. Max increase will be 2x
 	  // when 100 or more rows are compressed
-	  params.viz.ds_opacity_scale = d3.scale.linear().domain([1, 100]).range([1, 2]).clamp(true);
+	  params.viz.ds_opacity_scale = d3.scale.linear().domain([1, 100]).range([1, 3]).clamp(true);
 
 	  var ds;
 
