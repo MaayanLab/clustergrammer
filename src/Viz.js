@@ -13,7 +13,7 @@ var make_col_dendro = require('./dendrogram/make_col_dendro');
 var make_svg_dendro_sliders = require('./dendrogram/make_svg_dendro_sliders');
 var make_row_dendro_spillover = require('./spillover/make_row_dendro_spillover');
 
-module.exports = function make_viz(cgm) {
+module.exports = function Viz(cgm) {
 
   var params = cgm.params;
 

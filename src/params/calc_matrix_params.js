@@ -52,76 +52,89 @@ module.exports = function calc_matrix_params(params){
   // Downsampling
   //////////////////////
 
-  // increase ds opacity, as more rows are compressed into a single downsampled
-  // row, increase the opacity of the downsampled row. Max increase will be 2x
-  // when 100 or more rows are compressed
-  params.viz.ds_opacity_scale = d3.scale.linear().domain([1,100]).range([1,3])
-    .clamp(true);
+  if (params.viz.rect_height < 1){
 
-  var ds;
+    // increase ds opacity, as more rows are compressed into a single downsampled
+    // row, increase the opacity of the downsampled row. Max increase will be 2x
+    // when 100 or more rows are compressed
+    params.viz.ds_opacity_scale = d3.scale.linear().domain([1,100]).range([1,3])
+      .clamp(true);
 
-  // height of downsampled rectangles
-  var inst_height = 3;
-  // amount of zooming that is tolerated for the downsampled rows
-  var inst_zt = 3.5;
-  params.viz.ds_zt = inst_zt;
-  // the number of downsampled matrices that need to be calculated
-  var num_layers = Math.round(inst_height / (params.viz.rect_height * inst_zt));
+    var ds;
 
-  params.viz.ds_num_layers = num_layers;
+    // height of downsampled rectangles
+    var inst_height = 3;
+    // amount of zooming that is tolerated for the downsampled rows
+    var inst_zt = 3.5;
+    params.viz.ds_zt = inst_zt;
+    // the number of downsampled matrices that need to be calculated
+    var num_layers = Math.round(inst_height / (params.viz.rect_height * inst_zt));
 
-  // array of downsampled parameters
-  params.viz.ds = [];
+    params.viz.ds_num_layers = num_layers;
 
-  // instantaneous ds_level (-1 means no downsampling)
-  params.viz.ds_level = 0;
-
-  // array of downsampled matrices at varying layers
-  params.matrix.ds_matrix = [];
-
-  // calculate parameters for different layers
-  for (var i=0; i < num_layers; i++){
-
-    ds = {};
-
-    ds.height = inst_height;
-    ds.zt = inst_zt;
-    ds.num_layers = num_layers
-
-    var scale_num_rows = i + 1;
-
-    // number of downsampled rows
-    ds.num_rows = Math.round(params.viz.clust.dim.height/
-      ds.height) * scale_num_rows;
-
-    // x_scale
-    /////////////////////////
-    ds.x_scale = d3.scale.ordinal()
-      .rangeBands([0, params.viz.clust.dim.width]);
-    inst_order = inst_order = params.viz.inst_order.row;
-    ds.x_scale
-      .domain( params.matrix.orders[inst_order + '_row' ] );
-
-    // y_scale
-    /////////////////////////
-    ds.y_scale = d3.scale.ordinal()
-      .rangeBands([0, params.viz.clust.dim.height]);
-    ds.y_scale
-      .domain( d3.range(ds.num_rows + 1) );
-
-    ds.rect_height = ds.y_scale.rangeBand() -
-      params.viz.border_width.y;
-
-    params.viz.ds.push(ds);
+    // array of downsampled parameters
+    params.viz.ds = [];
 
 
-    var matrix = calc_downsampled_matrix(params, i);
-    params.matrix.ds_matrix.push(matrix);
+    // array of downsampled matrices at varying layers
+    params.matrix.ds_matrix = [];
 
+    // calculate parameters for different layers
+    for (var i=0; i < num_layers; i++){
+
+      // instantaneous ds_level (-1 means no downsampling)
+      params.viz.ds_level = 0;
+
+      ds = {};
+
+      ds.height = inst_height;
+      ds.zt = inst_zt;
+      ds.num_layers = num_layers
+
+      var scale_num_rows = i + 1;
+
+      // number of downsampled rows
+      ds.num_rows = Math.round(params.viz.clust.dim.height/
+        ds.height) * scale_num_rows;
+
+      // x_scale
+      /////////////////////////
+      ds.x_scale = d3.scale.ordinal()
+        .rangeBands([0, params.viz.clust.dim.width]);
+
+      inst_order = params.viz.inst_order.row;
+
+      ds.x_scale
+        .domain( params.matrix.orders[inst_order + '_row' ] );
+
+      // y_scale
+      /////////////////////////
+      ds.y_scale = d3.scale.ordinal()
+        .rangeBands([0, params.viz.clust.dim.height]);
+      ds.y_scale
+        .domain( d3.range(ds.num_rows + 1) );
+
+      ds.rect_height = ds.y_scale.rangeBand() -
+        params.viz.border_width.y;
+
+      params.viz.ds.push(ds);
+
+      var matrix = calc_downsampled_matrix(params, i);
+      params.matrix.ds_matrix.push(matrix);
+
+    }
+
+    // reset row viz_nodes since downsampling
+    params.viz.viz_nodes.row = d3.range(params.matrix.ds_matrix[0].length).map(String);
+
+
+  } else {
+      // set ds to null if no downsampling is done
+      params.viz.ds = null;
+    // instantaneous ds_level (-1 means no downsampling)
+    params.viz.ds_level = -1;
   }
 
-  // reset row viz_nodes since downsampling
-  params.viz.viz_nodes.row = d3.range(params.matrix.ds_matrix[0].length).map(String);
 
   return params;
 

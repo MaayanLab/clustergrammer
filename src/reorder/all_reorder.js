@@ -4,29 +4,29 @@ var show_visible_area = require('../zoom/show_visible_area');
 var ini_zoom_info = require('../zoom/ini_zoom_info');
 var fine_position_tile = require('../matrix/fine_position_tile');
 
-module.exports = function(cgm, inst_order, tmp_row_col) {
+module.exports = function(cgm, inst_order, inst_rc) {
 
   var params = cgm.params;
 
   // row/col names are swapped, will improve later
-  var row_col;
-  if (tmp_row_col==='row'){
-    row_col = 'col';
-  } else if (tmp_row_col === 'col'){
-    row_col = 'row';
+  var other_rc;
+  if (inst_rc==='row'){
+    other_rc = 'col';
+  } else if (inst_rc === 'col'){
+    other_rc = 'row';
   }
 
   params.viz.run_trans = true;
 
   // save order state
-  if (row_col === 'row'){
+  if (other_rc === 'row'){
     params.viz.inst_order.row = inst_order;
-  } else if (row_col === 'col'){
+  } else if (other_rc === 'col'){
     params.viz.inst_order.col = inst_order;
   }
 
   if (params.viz.show_dendrogram){
-    toggle_dendro_view(cgm, tmp_row_col);
+    toggle_dendro_view(cgm, inst_rc);
   }
 
   var row_nodes_obj = params.network_data.row_nodes;
@@ -35,12 +35,17 @@ module.exports = function(cgm, inst_order, tmp_row_col) {
   var col_nodes_obj = params.network_data.col_nodes;
   var col_nodes_names = utils.pluck(col_nodes_obj, 'name');
 
-  if (row_col === 'row'){
+  if (other_rc === 'row'){
+
+
+    console.log('reordering cols')
 
     params.viz.x_scale
       .domain( params.matrix.orders[ params.viz.inst_order.row + '_row' ] );
 
-  } else if (row_col == 'col') {
+  } else if (other_rc == 'col') {
+
+    console.log('reordering rows')
 
     params.viz.y_scale
       .domain( params.matrix.orders[ params.viz.inst_order.col + '_col' ] );

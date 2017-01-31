@@ -58,8 +58,6 @@ module.exports = function show_visible_area(params){
 
   var missing_rows = _.difference(params.viz.viz_nodes.row, params.viz.viz_nodes.curr_row);
 
-
-  var show_height = 5;
   var ds_row_class = '.ds' + String(params.viz.ds_level) + '_row';
 
   if (inst_ds_level >= 0){
@@ -69,7 +67,6 @@ module.exports = function show_visible_area(params){
   // default state for downsampling
   var inst_matrix = params.matrix.ds_matrix[inst_ds_level];
 
-  // if (params.viz.rect_height * params.zoom_info.zoom_y > show_height){
   if (inst_ds_level < 0){
     inst_matrix = params.matrix.matrix;
   }
