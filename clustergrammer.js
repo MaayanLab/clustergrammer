@@ -6111,7 +6111,7 @@ var Clustergrammer =
 	  }
 
 	  setTimeout(not_zooming, 100);
-	  setTimeout(check_if_zooming_has_stopped, 1000, params);
+	  setTimeout(check_if_zooming_has_stopped, 300, params);
 		};
 
 /***/ },
@@ -13932,7 +13932,7 @@ var Clustergrammer =
 	  if (stop_attributes === true) {
 
 	    // wait and double check that zooming has stopped
-	    setTimeout(run_when_zoom_stopped, 250, params);
+	    setTimeout(run_when_zoom_stopped, 50, params);
 	  }
 		};
 
@@ -13959,7 +13959,7 @@ var Clustergrammer =
 	    /////////////////////////////////////////////////
 	    // zooming has stopped
 	    /////////////////////////////////////////////////
-	    // console.log('\nZOOMING HAS ACTUALLY STOPPED\n============================')
+	    console.log('\nZOOMING HAS ACTUALLY STOPPED\n============================');
 
 	    _.each(['row', 'col'], function (inst_rc) {
 

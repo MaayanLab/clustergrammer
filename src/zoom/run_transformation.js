@@ -94,6 +94,6 @@ module.exports = function run_transformation(params){
   }
 
   setTimeout(not_zooming, 100);
-  setTimeout(check_if_zooming_has_stopped, 1000, params);
+  setTimeout(check_if_zooming_has_stopped, 300, params);
 
 };

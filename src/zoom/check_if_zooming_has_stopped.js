@@ -8,7 +8,7 @@ module.exports = function check_if_zooming_has_stopped(params){
   if (stop_attributes === true){
 
     // wait and double check that zooming has stopped
-    setTimeout( run_when_zoom_stopped, 250, params);
+    setTimeout( run_when_zoom_stopped, 50, params);
 
   }
 
