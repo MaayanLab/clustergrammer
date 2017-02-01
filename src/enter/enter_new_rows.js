@@ -6,6 +6,8 @@ var fine_position_tile = require('../matrix/fine_position_tile');
 // make each row in the clustergram
 module.exports = function enter_new_rows(params, ini_inp_row_data, delays, duration, tip, row_selection) {
 
+  console.log('enter_new_rows')
+
   var inp_row_data = ini_inp_row_data.row_data;
 
   // remove zero values to make visualization faster

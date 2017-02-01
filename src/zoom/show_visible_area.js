@@ -3,7 +3,7 @@ var make_matrix_rows = require('../matrix/make_matrix_rows');
 
 module.exports = function show_visible_area(params, zooming_stopped=false){
 
-  // console.log('show_visible_area stopped: ' + String(zooming_stopped))
+  // console.log('show_visible_area stopped: ' + String(zooming_stopped));
 
   var zoom_info = params.zoom_info;
 

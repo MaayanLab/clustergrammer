@@ -2,6 +2,8 @@ var enter_new_rows = require('./enter_new_rows');
 
 module.exports = function enter_row_groups(params, delays, duration, tip){
 
+  console.log('enter_row_groups')
+
   // enter new rows
   var new_row_groups = d3.select(params.root+' .clust_group')
     .selectAll('.row')

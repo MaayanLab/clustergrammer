@@ -24,9 +24,11 @@ module.exports = function(cgm, row_nodes, col_nodes, links, duration, delays) {
 
   params.zoom_info = ini_zoom_info();
 
-  show_visible_area(params);
-  // quick fix for column filtering
-  setTimeout(show_visible_area, 2200, params, params.zoom_info);
+  // // not sure if this is necessary
+  // ////////////////////////////
+  // show_visible_area(params);
+  // // quick fix for column filtering
+  // setTimeout(show_visible_area, 2200, params);
 
   var row_nodes_names = params.network_data.row_nodes_names;
 

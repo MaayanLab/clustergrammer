@@ -4576,7 +4576,7 @@ var Clustergrammer =
 	  var zooming_stopped = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
 
 
-	  // console.log('show_visible_area stopped: ' + String(zooming_stopped))
+	  // console.log('show_visible_area stopped: ' + String(zooming_stopped));
 
 	  var zoom_info = params.zoom_info;
 
@@ -9270,9 +9270,11 @@ var Clustergrammer =
 
 	  params.zoom_info = ini_zoom_info();
 
-	  show_visible_area(params);
-	  // quick fix for column filtering
-	  setTimeout(show_visible_area, 2200, params, params.zoom_info);
+	  // // not sure if this is necessary
+	  // ////////////////////////////
+	  // show_visible_area(params);
+	  // // quick fix for column filtering
+	  // setTimeout(show_visible_area, 2200, params);
 
 	  var row_nodes_names = params.network_data.row_nodes_names;
 
@@ -9745,6 +9747,8 @@ var Clustergrammer =
 
 	module.exports = function enter_row_groups(params, delays, duration, tip) {
 
+	  console.log('enter_row_groups');
+
 	  // enter new rows
 	  var new_row_groups = d3.select(params.root + ' .clust_group').selectAll('.row').data(params.matrix.matrix, function (d) {
 	    return d.name;
@@ -9770,6 +9774,8 @@ var Clustergrammer =
 
 	// make each row in the clustergram
 	module.exports = function enter_new_rows(params, ini_inp_row_data, delays, duration, tip, row_selection) {
+
+	  console.log('enter_new_rows');
 
 	  var inp_row_data = ini_inp_row_data.row_data;
 
