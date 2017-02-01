@@ -12,8 +12,6 @@ var calc_default_fs = require('./calc_default_fs');
 
 module.exports = function calc_viz_params(params, preserve_cats=true){
 
-  console.log('calc viz params')
-
   params.labels = ini_label_params(params);
   params.viz    = ini_viz_params(params, preserve_cats);
 

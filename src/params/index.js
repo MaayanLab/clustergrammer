@@ -12,8 +12,6 @@ clustergram.
 
 module.exports = function make_params(input_config) {
 
-  console.log('make_params\n')
-
   var config = $.extend(true, {}, input_config);
   var params = config;
 

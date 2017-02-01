@@ -4,7 +4,6 @@ module.exports = function find_viz_nodes(params, viz_area){
   var curr_rows = [];
 
   // find rows that should be visible
-  var inst_row_name;
   var y_trans;
 
   // default y_scale (no downsampling)

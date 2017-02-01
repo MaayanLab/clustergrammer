@@ -89,7 +89,7 @@ module.exports = function calc_matrix_params(params){
 
       ds.height = inst_height;
       ds.zt = inst_zt;
-      ds.num_layers = num_layers
+      ds.num_layers = num_layers;
 
       var scale_num_rows = i + 1;
 

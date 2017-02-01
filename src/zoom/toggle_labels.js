@@ -26,21 +26,22 @@ module.exports = function toggle_labels(params){
       if (inst_num_visible > max_element_show){
 
         d3.select(params.root+' .'+inst_rc+'_label_container')
-          .style('display','none')
+          .style('display','none');
 
       } else {
 
         d3.select(params.root+' .'+inst_rc+'_label_container')
-          .style('display','block')
+          .style('display','block');
 
       }
 
     } else {
 
       d3.select(params.root+' .'+inst_rc+'_label_container')
-        .style('display','none')
+        .style('display','none');
 
     }
 
   });
-}
+
+};

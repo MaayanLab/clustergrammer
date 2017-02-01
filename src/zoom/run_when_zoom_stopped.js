@@ -15,7 +15,7 @@ module.exports = function run_when_zoom_stopped(params){
     /////////////////////////////////////////////////
     // zooming has stopped
     /////////////////////////////////////////////////
-    console.log('\nZOOMING HAS ACTUALLY STOPPED\n============================')
+    // console.log('\nZOOMING HAS ACTUALLY STOPPED\n============================')
 
     _.each(['row','col'], function(inst_rc){
 
@@ -89,4 +89,4 @@ module.exports = function run_when_zoom_stopped(params){
 
   }
 
-}
+};

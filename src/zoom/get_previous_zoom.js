@@ -1,8 +1,8 @@
 module.exports = function get_previous_zoom(params){
   var prev_zoom = {};
 
-  var inst_trans = d3.select(cgm.params.root+' .clust_group')
-    .attr('transform')
+  var inst_trans = d3.select(params.root+' .clust_group')
+    .attr('transform');
 
   if (inst_trans != null){
 
@@ -19,4 +19,4 @@ module.exports = function get_previous_zoom(params){
 
   return prev_zoom;
 
-}
+};

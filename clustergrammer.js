@@ -650,8 +650,6 @@ var Clustergrammer =
 
 	module.exports = function make_params(input_config) {
 
-	  console.log('make_params\n');
-
 	  var config = $.extend(true, {}, input_config);
 	  var params = config;
 
@@ -965,8 +963,6 @@ var Clustergrammer =
 	module.exports = function calc_viz_params(params) {
 	  var preserve_cats = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
 
-
-	  console.log('calc viz params');
 
 	  params.labels = ini_label_params(params);
 	  params.viz = ini_viz_params(params, preserve_cats);
@@ -2088,12 +2084,12 @@ var Clustergrammer =
 
 /***/ },
 /* 37 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
-	'use strict';
+	"use strict";
 
-	var grid_lines_viz = __webpack_require__(38);
-	var toggle_grid_lines = __webpack_require__(39);
+	// var grid_lines_viz = require('./grid_lines_viz');
+	// var toggle_grid_lines = require('./toggle_grid_lines');
 
 	module.exports = function draw_gridlines(params, delays, duration) {
 
@@ -2279,7 +2275,7 @@ var Clustergrammer =
 	  var ds_level = arguments.length <= 3 || arguments[3] === undefined ? -1 : arguments[3];
 
 
-	  // console.log('make_matrix_rows')
+	  console.log('make_matrix_rows');
 
 	  // defaults
 	  var y_scale = params.viz.y_scale;
@@ -4635,32 +4631,10 @@ var Clustergrammer =
 	  // toggle labels and rows
 	  ///////////////////////////////////////////////
 	  var severe_toggle = true;
-	  var normal_toggle = false;
-
-	  //////////////////////
-	  //////////////////////
-	  // no longer need to toggle individual labels
-	  //////////////////////
-	  //////////////////////
-	  // d3.selectAll(params.root+' .row_label_group')
-	  //   .style('display', function(d){
-	  //     return toggle_display(params, d, 'row', this, normal_toggle);
-	  //   });
 
 	  d3.selectAll(params.root + ' .row').style('display', function (d) {
 	    return toggle_display(params, d, 'row', this, severe_toggle);
 	  });
-
-	  //////////////////////
-	  //////////////////////
-	  // no longer need to toggle individual labels
-	  //////////////////////
-	  //////////////////////
-	  // // toggle col labels
-	  // d3.selectAll(params.root+' .col_label_text')
-	  //   .style('display', function(d){
-	  //     return toggle_display(params, d, 'col', this, normal_toggle);
-	  //   });
 
 	  ///////////////////////////////////////////////
 
@@ -4713,7 +4687,7 @@ var Clustergrammer =
 	    // level change
 	    if (new_ds_level != old_ds_level) {
 
-	      console.log('ds_level: ' + String(old_ds_level) + ' : ' + String(new_ds_level));
+	      // console.log('ds_level: ' + String(old_ds_level) + ' : '  + String(new_ds_level))
 
 	      // all visible rows are missing at new downsampling level
 	      missing_rows = params.viz.viz_nodes.row;
@@ -4726,11 +4700,11 @@ var Clustergrammer =
 	  // only make new matrix rows if there are missing rows
 	  if (missing_rows.length > 1 || missing_rows === 'all') {
 	    // make new rows
-	    if (missing_rows === 'all') {
-	      console.log('all rows were missing ');
-	    } else {
-	      console.log('num missing rows: ' + String(missing_rows.length));
-	    }
+	    // if (missing_rows === 'all'){
+	    //   console.log('all rows were missing ')
+	    // } else {
+	    //   console.log('num missing rows: ' + String(missing_rows.length))
+	    // }
 	    make_matrix_rows(params, inst_matrix, missing_rows, new_ds_level);
 	  }
 
@@ -4764,7 +4738,6 @@ var Clustergrammer =
 	  var curr_rows = [];
 
 	  // find rows that should be visible
-	  var inst_row_name;
 	  var y_trans;
 
 	  // default y_scale (no downsampling)
@@ -5482,12 +5455,8 @@ var Clustergrammer =
 
 	  if (other_rc === 'row') {
 
-	    console.log('reordering cols');
-
 	    params.viz.x_scale.domain(params.matrix.orders[params.viz.inst_order.row + '_row']);
 	  } else if (other_rc == 'col') {
-
-	    console.log('reordering rows');
 
 	    params.viz.y_scale.domain(params.matrix.orders[params.viz.inst_order.col + '_col']);
 	  }
@@ -6250,7 +6219,7 @@ var Clustergrammer =
 	  if (inst_rc === 'row') {
 
 	    // initialize at high number
-	    var num_visible = 10000;
+	    num_visible = 10000;
 
 	    // only count visible rows if no downsampling
 	    if (params.viz.ds_level === -1) {
@@ -10777,8 +10746,6 @@ var Clustergrammer =
 	  var run_resize_viz = arguments.length <= 0 || arguments[0] === undefined ? true : arguments[0];
 
 
-	  console.log('-- reset cats  ');
-
 	  var tmp_cgm = this;
 
 	  var cat_data = make_default_cat_data(tmp_cgm);
@@ -13982,7 +13949,7 @@ var Clustergrammer =
 	    /////////////////////////////////////////////////
 	    // zooming has stopped
 	    /////////////////////////////////////////////////
-	    console.log('\nZOOMING HAS ACTUALLY STOPPED\n============================');
+	    // console.log('\nZOOMING HAS ACTUALLY STOPPED\n============================')
 
 	    _.each(['row', 'col'], function (inst_rc) {
 
@@ -14072,7 +14039,7 @@ var Clustergrammer =
 	module.exports = function get_previous_zoom(params) {
 	  var prev_zoom = {};
 
-	  var inst_trans = d3.select(cgm.params.root + ' .clust_group').attr('transform');
+	  var inst_trans = d3.select(params.root + ' .clust_group').attr('transform');
 
 	  if (inst_trans != null) {
 
@@ -14129,7 +14096,7 @@ var Clustergrammer =
 	      d3.select(params.root + ' .' + inst_rc + '_label_container').style('display', 'none');
 	    }
 	  });
-	};
+		};
 
 /***/ }
 /******/ ]);

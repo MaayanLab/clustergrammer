@@ -6,7 +6,7 @@ module.exports = function calc_downsampled_matrix(params, ds_layer){
 
   // increase ds opacity, as more rows are compressed into a single downsampled
   // row, increase the opacity of the downsampled row.
-  var opacity_factor = params.viz.ds_opacity_scale(num_compressed_rows)
+  var opacity_factor = params.viz.ds_opacity_scale(num_compressed_rows);
 
   var mod_val = params.viz.clust.dim.height / inst_num_rows;
   var mat = params.matrix.matrix;

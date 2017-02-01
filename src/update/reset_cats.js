@@ -6,8 +6,6 @@ var make_default_cat_data = require('./make_default_cat_data');
 
 module.exports = function reset_cats(run_resize_viz = true){
 
-  console.log('-- reset cats  ')
-
   var tmp_cgm = this;
 
   var cat_data = make_default_cat_data(tmp_cgm);

@@ -59,33 +59,11 @@ module.exports = function show_visible_area(params, zooming_stopped=false){
   // toggle labels and rows
   ///////////////////////////////////////////////
   var severe_toggle = true;
-  var normal_toggle = false;
-
-  //////////////////////
-  //////////////////////
-  // no longer need to toggle individual labels
-  //////////////////////
-  //////////////////////
-  // d3.selectAll(params.root+' .row_label_group')
-  //   .style('display', function(d){
-  //     return toggle_display(params, d, 'row', this, normal_toggle);
-  //   });
 
   d3.selectAll(params.root+' .row')
     .style('display', function(d){
       return toggle_display(params, d, 'row', this, severe_toggle);
     });
-
-  //////////////////////
-  //////////////////////
-  // no longer need to toggle individual labels
-  //////////////////////
-  //////////////////////
-  // // toggle col labels
-  // d3.selectAll(params.root+' .col_label_text')
-  //   .style('display', function(d){
-  //     return toggle_display(params, d, 'col', this, normal_toggle);
-  //   });
 
   ///////////////////////////////////////////////
 
@@ -145,10 +123,10 @@ module.exports = function show_visible_area(params, zooming_stopped=false){
     // level change
     if (new_ds_level != old_ds_level){
 
-      console.log('ds_level: ' + String(old_ds_level) + ' : '  + String(new_ds_level))
+      // console.log('ds_level: ' + String(old_ds_level) + ' : '  + String(new_ds_level))
 
       // all visible rows are missing at new downsampling level
-      missing_rows = params.viz.viz_nodes.row
+      missing_rows = params.viz.viz_nodes.row;
 
       // remove old level rows
       d3.selectAll('.ds'+String(old_ds_level)+'_row').remove();
@@ -160,11 +138,11 @@ module.exports = function show_visible_area(params, zooming_stopped=false){
   // only make new matrix rows if there are missing rows
   if (missing_rows.length > 1 || missing_rows === 'all'){
     // make new rows
-    if (missing_rows === 'all'){
-      console.log('all rows were missing ')
-    } else {
-      console.log('num missing rows: ' + String(missing_rows.length))
-    }
+    // if (missing_rows === 'all'){
+    //   console.log('all rows were missing ')
+    // } else {
+    //   console.log('num missing rows: ' + String(missing_rows.length))
+    // }
     make_matrix_rows(params, inst_matrix, missing_rows, new_ds_level);
   }
 

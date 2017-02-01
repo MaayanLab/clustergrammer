@@ -37,15 +37,10 @@ module.exports = function(cgm, inst_order, inst_rc) {
 
   if (other_rc === 'row'){
 
-
-    console.log('reordering cols')
-
     params.viz.x_scale
       .domain( params.matrix.orders[ params.viz.inst_order.row + '_row' ] );
 
   } else if (other_rc == 'col') {
-
-    console.log('reordering rows')
 
     params.viz.y_scale
       .domain( params.matrix.orders[ params.viz.inst_order.col + '_col' ] );

@@ -6,7 +6,7 @@ module.exports = function num_visible_labels(params, inst_rc){
   if (inst_rc === 'row'){
 
     // initialize at high number
-    var num_visible = 10000;
+    num_visible = 10000;
 
     // only count visible rows if no downsampling
     if (params.viz.ds_level === -1){

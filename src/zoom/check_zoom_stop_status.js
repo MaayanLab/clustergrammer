@@ -11,4 +11,4 @@ module.exports = function check_zoom_stop_status(params){
     }
 
     return stop_attributes;
-}
+};
