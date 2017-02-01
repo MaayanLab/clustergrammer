@@ -51,8 +51,7 @@ module.exports = function make_col_cat(cgm) {
     .append('g')
     .attr('class', 'col_cat_group')
     .attr('transform', function(d) {
-      var inst_index = d.col_index;
-      return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
+      return 'translate(' + params.viz.x_scale(d.col_index) + ',0)';
     });
 
   d3.select(params.root+' .col_cat_container')

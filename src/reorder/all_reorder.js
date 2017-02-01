@@ -30,10 +30,7 @@ module.exports = function(cgm, inst_order, inst_rc) {
   }
 
   var row_nodes_obj = params.network_data.row_nodes;
-  var row_nodes_names = utils.pluck(row_nodes_obj, 'name');
-
   var col_nodes_obj = params.network_data.col_nodes;
-  var col_nodes_names = utils.pluck(col_nodes_obj, 'name');
 
   if (other_rc === 'row'){
 

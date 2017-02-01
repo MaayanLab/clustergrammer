@@ -3522,11 +3522,6 @@ var Clustergrammer =
 	  var row_nodes = params.network_data.row_nodes;
 	  var col_nodes = params.network_data.col_nodes;
 
-	  var row_nodes_names = utils.pluck(row_nodes, 'name');
-
-	  // // get inst col (term)
-	  // var inst_term = d3.select(col_selection).select('text').attr('full_name');
-
 	  // find the column number of col_selection term from col_nodes
 	  // gather column node names
 	  var tmp_arr = [];
@@ -3562,14 +3557,12 @@ var Clustergrammer =
 
 	    // reorder row_label_triangle groups
 	    d3.selectAll(params.root + ' .row_cat_group').attr('transform', function (d) {
-	      var inst_index = _.indexOf(row_nodes_names, d.name);
-	      return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
+	      return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
 	    });
 
 	    // Move Row Labels
 	    d3.select(params.root + ' .row_label_zoom_container').selectAll('.row_label_group').attr('transform', function (d) {
-	      var inst_index = _.indexOf(row_nodes_names, d.name);
-	      return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
+	      return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
 	    });
 	  } else {
 
@@ -3577,21 +3570,18 @@ var Clustergrammer =
 
 	    // reorder row_label_triangle groups
 	    d3.selectAll(params.root + ' .row_cat_group').transition().duration(2500).attr('transform', function (d) {
-	      var inst_index = _.indexOf(row_nodes_names, d.name);
-	      return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
+	      return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
 	    });
 
 	    // Move Row Labels
 	    d3.select(params.root + ' .row_label_zoom_container').selectAll('.row_label_group').transition().duration(2500).attr('transform', function (d) {
-	      var inst_index = _.indexOf(row_nodes_names, d.name);
-	      return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
+	      return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
 	    });
 	  }
 
 	  // reorder matrix rows
 	  t.selectAll('.row').attr('transform', function (d) {
-	    var inst_index = _.indexOf(row_nodes_names, d.name);
-	    return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
+	    return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
 	  });
 
 	  // highlight selected column
@@ -5174,8 +5164,6 @@ var Clustergrammer =
 	  var row_nodes = params.network_data.row_nodes;
 	  var col_nodes = params.network_data.col_nodes;
 
-	  var col_nodes_names = utils.pluck(col_nodes, 'name');
-
 	  // find the index of the row
 	  var tmp_arr = [];
 	  row_nodes.forEach(function (node) {
@@ -5213,14 +5201,12 @@ var Clustergrammer =
 
 	    // Move Col Labels
 	    d3.select(params.root + ' .col_zoom_container').selectAll('.col_label_text').attr('transform', function (d) {
-	      var inst_index = _.indexOf(col_nodes_names, d.name);
-	      return 'translate(' + params.viz.x_scale(inst_index) + ')rotate(-90)';
+	      return 'translate(' + params.viz.x_scale(d.col_index) + ')rotate(-90)';
 	    });
 
 	    // reorder col_class groups
 	    d3.selectAll(params.root + ' .col_cat_group').attr('transform', function (d) {
-	      var inst_index = _.indexOf(col_nodes_names, d.name);
-	      return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
+	      return 'translate(' + params.viz.x_scale(d.col_index) + ',0)';
 	    });
 	  } else {
 
@@ -5229,14 +5215,12 @@ var Clustergrammer =
 
 	    // Move Col Labels
 	    d3.select(params.root + ' .col_zoom_container').selectAll('.col_label_text').transition().duration(2500).attr('transform', function (d) {
-	      var inst_index = _.indexOf(col_nodes_names, d.name);
-	      return 'translate(' + params.viz.x_scale(inst_index) + ')rotate(-90)';
+	      return 'translate(' + params.viz.x_scale(d.col_index) + ')rotate(-90)';
 	    });
 
 	    // reorder col_class groups
 	    d3.selectAll(params.root + ' .col_cat_group').transition().duration(2500).attr('transform', function (d) {
-	      var inst_index = _.indexOf(col_nodes_names, d.name);
-	      return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
+	      return 'translate(' + params.viz.x_scale(d.col_index) + ',0)';
 	    });
 	  }
 
@@ -5635,10 +5619,7 @@ var Clustergrammer =
 	  }
 
 	  var row_nodes_obj = params.network_data.row_nodes;
-	  var row_nodes_names = utils.pluck(row_nodes_obj, 'name');
-
 	  var col_nodes_obj = params.network_data.col_nodes;
-	  var col_nodes_names = utils.pluck(col_nodes_obj, 'name');
 
 	  if (other_rc === 'row') {
 
@@ -8057,8 +8038,7 @@ var Clustergrammer =
 	  d3.select(params.root + ' .col_cat_container').selectAll('g').data(params.network_data.col_nodes, function (d) {
 	    return d.name;
 	  }).enter().append('g').attr('class', 'col_cat_group').attr('transform', function (d) {
-	    var inst_index = d.col_index;
-	    return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
+	    return 'translate(' + params.viz.x_scale(d.col_index) + ',0)';
 	  });
 
 	  d3.select(params.root + ' .col_cat_container').selectAll('.col_cat_group').call(cat_tip);
@@ -8456,8 +8436,7 @@ var Clustergrammer =
 	  var row_cat_group = d3.select(params.root + ' .row_cat_container').selectAll('g').data(params.network_data.row_nodes, function (d) {
 	    return d.name;
 	  }).enter().append('g').attr('class', 'row_cat_group').attr('transform', function (d) {
-	    var inst_index = d.row_index;
-	    return 'translate(0, ' + params.viz.y_scale(inst_index) + ')';
+	    return 'translate(0, ' + params.viz.y_scale(d.row_index) + ')';
 	  });
 
 	  d3.select(params.root + ' .row_cat_container').selectAll('.row_cat_group').call(cat_tip);

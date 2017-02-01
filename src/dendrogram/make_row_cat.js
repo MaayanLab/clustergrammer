@@ -67,8 +67,7 @@ module.exports = function make_row_cat(cgm, updating=false) {
     .append('g')
     .attr('class', 'row_cat_group')
     .attr('transform', function(d) {
-      var inst_index = d.row_index;
-      return 'translate(0, ' + params.viz.y_scale(inst_index) + ')';
+      return 'translate(0, ' + params.viz.y_scale(d.row_index) + ')';
     });
 
   d3.select(params.root+' .row_cat_container')

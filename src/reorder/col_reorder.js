@@ -22,11 +22,6 @@ module.exports = function col_reorder(cgm, col_selection, inst_term) {
   var row_nodes = params.network_data.row_nodes;
   var col_nodes = params.network_data.col_nodes;
 
-  var row_nodes_names = utils.pluck(row_nodes, 'name');
-
-  // // get inst col (term)
-  // var inst_term = d3.select(col_selection).select('text').attr('full_name');
-
   // find the column number of col_selection term from col_nodes
   // gather column node names
   var tmp_arr = [];
@@ -64,16 +59,14 @@ module.exports = function col_reorder(cgm, col_selection, inst_term) {
     // reorder row_label_triangle groups
     d3.selectAll(params.root+' .row_cat_group')
       .attr('transform', function(d) {
-        var inst_index = _.indexOf(row_nodes_names, d.name);
-        return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
+        return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
       });
 
     // Move Row Labels
     d3.select(params.root+' .row_label_zoom_container')
       .selectAll('.row_label_group')
       .attr('transform', function(d) {
-        var inst_index = _.indexOf(row_nodes_names, d.name);
-        return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
+        return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
       });
 
   } else {
@@ -85,8 +78,7 @@ module.exports = function col_reorder(cgm, col_selection, inst_term) {
     d3.selectAll(params.root+' .row_cat_group')
       .transition().duration(2500)
       .attr('transform', function(d) {
-        var inst_index = _.indexOf(row_nodes_names, d.name);
-        return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
+        return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
       });
 
     // Move Row Labels
@@ -94,16 +86,14 @@ module.exports = function col_reorder(cgm, col_selection, inst_term) {
       .selectAll('.row_label_group')
       .transition().duration(2500)
       .attr('transform', function(d) {
-        var inst_index = _.indexOf(row_nodes_names, d.name);
-        return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
+        return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
       });
   }
 
   // reorder matrix rows
   t.selectAll('.row')
     .attr('transform', function(d) {
-      var inst_index = _.indexOf(row_nodes_names, d.name);
-      return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
+      return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
     });
 
 
