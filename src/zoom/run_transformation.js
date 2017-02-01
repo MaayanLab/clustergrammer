@@ -12,7 +12,6 @@ module.exports = function run_transformation(params){
 
   var prev_zoom = get_previous_zoom(params);
 
-
   d3.select(params.root+' .clust_group')
     .attr('transform', 'translate(' + [zoom_info.trans_x, zoom_info.trans_y] + ') scale(' +
     zoom_info.zoom_x + ',' + zoom_info.zoom_y + ')');
@@ -83,20 +82,18 @@ module.exports = function run_transformation(params){
 
   };
 
-  setTimeout(not_zooming, 100);
-
-  setTimeout(check_if_zooming_has_stopped, 1000, params);
-
   constrain_font_size(params);
 
   toggle_labels(params);
 
   if (zoom_info.zoom_y > prev_zoom.zoom_y){
-    console.log('zooming in')
+    // console.log('zooming in')
   } else {
-    console.log('zooming out')
+    // console.log('zooming out')
     show_visible_area(params);
   }
 
+  setTimeout(not_zooming, 100);
+  setTimeout(check_if_zooming_has_stopped, 1000, params);
 
 };
