@@ -48,7 +48,7 @@ module.exports = function make_row_label_container(cgm, text_delay) {
   // make row labels in the container
   ///////////////////////////////////////
   if (params.viz.ds_level === -1){
-    make_row_labels(cgm, text_delay);
+    make_row_labels(cgm, 'all', text_delay);
   }
 
 };

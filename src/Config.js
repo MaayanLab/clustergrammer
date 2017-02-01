@@ -24,7 +24,10 @@ module.exports = function make_config(args) {
 
     var has_cats = check_nodes_for_categories(inst_nodes);
 
-    inst_nodes.forEach(function(d){
+    inst_nodes.forEach(function(d, i){
+
+      // add index to row_nodes and col_nodes
+      d[inst_rc+'_index'] = i;
 
       if (has_cats){
         config.super_labels = true;
@@ -37,6 +40,7 @@ module.exports = function make_config(args) {
     });
 
   });
+
 
 
   config.network_data.row_nodes_names = utils.pluck(config.network_data.row_nodes, 'name');

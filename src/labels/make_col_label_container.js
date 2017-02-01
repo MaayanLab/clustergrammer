@@ -11,7 +11,6 @@ module.exports = function make_col_label_container(cgm, text_delay = 0) {
   var col_container;
 
   var col_nodes = params.network_data.col_nodes;
-  var col_nodes_names = params.network_data.col_nodes_names;
 
   // offset click group column label
   var x_offset_click = params.viz.x_scale.rangeBand() / 2 + params.viz.border_width.x;
@@ -70,7 +69,7 @@ module.exports = function make_col_label_container(cgm, text_delay = 0) {
     .append('g')
     .attr('class', 'col_label_text')
     .attr('transform', function(d) {
-      var inst_index = _.indexOf(col_nodes_names, d.name);
+      var inst_index = d.col_index;
       return 'translate(' + params.viz.x_scale(inst_index) + ', 0) rotate(-90)';
     });
 

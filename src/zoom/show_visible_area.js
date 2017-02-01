@@ -147,7 +147,8 @@ module.exports = function show_visible_area(cgm, zooming_stopped=false){
   // only make new row_labels if there are missing rows and not downsampled
   if (new_ds_level === -1){
 
-    make_row_labels(cgm);
+    make_row_labels(cgm, missing_rows);
+
   } else {
     // remove row labels if necessary
     if (d3.select(params.root+' .row_label_group').empty() === false){

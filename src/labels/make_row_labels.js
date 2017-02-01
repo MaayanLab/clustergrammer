@@ -4,13 +4,14 @@ var row_reorder = require('../reorder/row_reorder');
 var col_reorder = require('../reorder/col_reorder');
 var make_row_tooltips = require('./make_row_tooltips');
 
-module.exports = function make_row_labels(cgm, text_delay = 0){
+module.exports = function make_row_labels(cgm, row_names='all', text_delay = 0){
 
   console.log('make_row_labels');
 
+
+
   var params = cgm.params;
   var row_nodes = params.network_data.row_nodes;
-  var row_nodes_names = params.network_data.row_nodes_names;
 
   // make row labels in row_label_zoom_container, bind row_nodes data
   var row_labels = d3.select(params.root+' .row_label_zoom_container')
@@ -22,7 +23,7 @@ module.exports = function make_row_labels(cgm, text_delay = 0){
 
   row_labels
     .attr('transform', function(d) {
-      var inst_index = _.indexOf(row_nodes_names, d.name);
+      var inst_index = d.row_index;
       return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
     });
 

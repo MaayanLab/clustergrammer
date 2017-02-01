@@ -191,7 +191,10 @@ var Clustergrammer =
 
 	    var has_cats = check_nodes_for_categories(inst_nodes);
 
-	    inst_nodes.forEach(function (d) {
+	    inst_nodes.forEach(function (d, i) {
+
+	      // add index to row_nodes and col_nodes
+	      d[inst_rc + '_index'] = i;
 
 	      if (has_cats) {
 	        config.super_labels = true;
@@ -3293,7 +3296,7 @@ var Clustergrammer =
 	  // make row labels in the container
 	  ///////////////////////////////////////
 	  if (params.viz.ds_level === -1) {
-	    make_row_labels(cgm, text_delay);
+	    make_row_labels(cgm, 'all', text_delay);
 	  }
 		};
 
@@ -3318,7 +3321,6 @@ var Clustergrammer =
 	  var col_container;
 
 	  var col_nodes = params.network_data.col_nodes;
-	  var col_nodes_names = params.network_data.col_nodes_names;
 
 	  // offset click group column label
 	  var x_offset_click = params.viz.x_scale.rangeBand() / 2 + params.viz.border_width.x;
@@ -3354,7 +3356,7 @@ var Clustergrammer =
 	  var col_label_obj = d3.select(params.root + ' .col_zoom_container').selectAll('.col_label_text').data(col_nodes, function (d) {
 	    return d.name;
 	  }).enter().append('g').attr('class', 'col_label_text').attr('transform', function (d) {
-	    var inst_index = _.indexOf(col_nodes_names, d.name);
+	    var inst_index = d.col_index;
 	    return 'translate(' + params.viz.x_scale(inst_index) + ', 0) rotate(-90)';
 	  });
 
@@ -5025,7 +5027,7 @@ var Clustergrammer =
 	  // only make new row_labels if there are missing rows and not downsampled
 	  if (new_ds_level === -1) {
 
-	    make_row_labels(cgm);
+	    make_row_labels(cgm, missing_rows);
 	  } else {
 	    // remove row labels if necessary
 	    if (d3.select(params.root + ' .row_label_group').empty() === false) {
@@ -14039,14 +14041,14 @@ var Clustergrammer =
 	var make_row_tooltips = __webpack_require__(71);
 
 	module.exports = function make_row_labels(cgm) {
-	  var text_delay = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
+	  var row_names = arguments.length <= 1 || arguments[1] === undefined ? 'all' : arguments[1];
+	  var text_delay = arguments.length <= 2 || arguments[2] === undefined ? 0 : arguments[2];
 
 
 	  console.log('make_row_labels');
 
 	  var params = cgm.params;
 	  var row_nodes = params.network_data.row_nodes;
-	  var row_nodes_names = params.network_data.row_nodes_names;
 
 	  // make row labels in row_label_zoom_container, bind row_nodes data
 	  var row_labels = d3.select(params.root + ' .row_label_zoom_container').selectAll('g').data(row_nodes, function (d) {
@@ -14054,7 +14056,7 @@ var Clustergrammer =
 	  }).enter().append('g').classed('row_label_group', true);
 
 	  row_labels.attr('transform', function (d) {
-	    var inst_index = _.indexOf(row_nodes_names, d.name);
+	    var inst_index = d.row_index;
 	    return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
 	  });
 
