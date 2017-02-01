@@ -8,13 +8,10 @@ module.exports = function grid_lines_viz(params, duration=0){
   var horz_lines = d3.selectAll(params.root+' .horz_lines');
   var vert_lines = d3.selectAll(params.root+' .vert_lines');
 
-  var row_nodes_names = params.network_data.row_nodes_names;
-  var col_nodes_names = params.network_data.col_nodes_names;
-
   horz_lines
     .style('opacity', 0)
     .attr('transform', function(d) {
-      var inst_index = _.indexOf(row_nodes_names, d.name);
+      var inst_index = d.row_index;
       var inst_trans = params.viz.y_scale(inst_index);
       return 'translate(  0,' + inst_trans + ') rotate(0)';
     })
@@ -35,7 +32,7 @@ module.exports = function grid_lines_viz(params, duration=0){
   vert_lines
     .style('opacity', 0)
     .attr('transform', function(d) {
-      var inst_index = _.indexOf(col_nodes_names, d.name);
+      var inst_index = d.col_index;
       var inst_trans = params.viz.x_scale(inst_index);
       return 'translate(' + inst_trans + ') rotate(-90)';
     })

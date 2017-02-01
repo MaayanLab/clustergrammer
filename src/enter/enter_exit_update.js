@@ -50,9 +50,6 @@ module.exports = function(cgm, network_data, delays){
   // TODO check if necessary
   resize_containers(params);
 
-  // get row and col names
-  var row_nodes_names = params.network_data.row_nodes_names;
-
   var duration = 1000;
 
   // make global so that names can be accessed
@@ -78,13 +75,13 @@ module.exports = function(cgm, network_data, delays){
     move_rows
       .transition().delay(delays.update).duration(duration)
       .attr('transform', function(d){
-        var tmp_index = _.indexOf(row_nodes_names, d.name);
+        var tmp_index = d.row_index;
         return 'translate(0,'+params.viz.y_scale(tmp_index)+')';
       });
   } else {
     move_rows
       .attr('transform', function(d){
-        var tmp_index = _.indexOf(row_nodes_names, d.name);
+        var tmp_index = d.row_index;
         return 'translate(0,'+params.viz.y_scale(tmp_index)+')';
       });
   }

@@ -8004,11 +8004,8 @@ var Clustergrammer =
 	  var horz_lines = d3.selectAll(params.root + ' .horz_lines');
 	  var vert_lines = d3.selectAll(params.root + ' .vert_lines');
 
-	  var row_nodes_names = params.network_data.row_nodes_names;
-	  var col_nodes_names = params.network_data.col_nodes_names;
-
 	  horz_lines.style('opacity', 0).attr('transform', function (d) {
-	    var inst_index = _.indexOf(row_nodes_names, d.name);
+	    var inst_index = d.row_index;
 	    var inst_trans = params.viz.y_scale(inst_index);
 	    return 'translate(  0,' + inst_trans + ') rotate(0)';
 	  }).transition().duration(duration).delay(delay).style('opacity', 1);
@@ -8019,7 +8016,7 @@ var Clustergrammer =
 	  });
 
 	  vert_lines.style('opacity', 0).attr('transform', function (d) {
-	    var inst_index = _.indexOf(col_nodes_names, d.name);
+	    var inst_index = d.col_index;
 	    var inst_trans = params.viz.x_scale(inst_index);
 	    return 'translate(' + inst_trans + ') rotate(-90)';
 	  }).transition().duration(duration).delay(delay).style('opacity', 1);
@@ -9595,9 +9592,6 @@ var Clustergrammer =
 	  // TODO check if necessary
 	  resize_containers(params);
 
-	  // get row and col names
-	  var row_nodes_names = params.network_data.row_nodes_names;
-
 	  var duration = 1000;
 
 	  // make global so that names can be accessed
@@ -9621,12 +9615,12 @@ var Clustergrammer =
 
 	  if (delays.run_transition) {
 	    move_rows.transition().delay(delays.update).duration(duration).attr('transform', function (d) {
-	      var tmp_index = _.indexOf(row_nodes_names, d.name);
+	      var tmp_index = d.row_index;
 	      return 'translate(0,' + params.viz.y_scale(tmp_index) + ')';
 	    });
 	  } else {
 	    move_rows.attr('transform', function (d) {
-	      var tmp_index = _.indexOf(row_nodes_names, d.name);
+	      var tmp_index = d.row_index;
 	      return 'translate(0,' + params.viz.y_scale(tmp_index) + ')';
 	    });
 	  }
