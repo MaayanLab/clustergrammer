@@ -5,7 +5,7 @@ var row_reorder = require('../reorder/row_reorder');
 var make_col_tooltips = require('./make_col_tooltips');
 var col_viz_aid_triangle = require('./col_viz_aid_triangle');
 
-module.exports = function(cgm, text_delay) {
+module.exports = function make_col_labels(cgm, text_delay) {
 
   var params = cgm.params;
   var col_container;

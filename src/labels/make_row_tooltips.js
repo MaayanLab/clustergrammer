@@ -1,6 +1,6 @@
 var d3_tip_custom = require('../tooltip/d3_tip_custom');
 
-module.exports = function make_tooltips(params){
+module.exports = function make_row_tooltips(params){
 
   if (params.labels.show_label_tooltips){
 

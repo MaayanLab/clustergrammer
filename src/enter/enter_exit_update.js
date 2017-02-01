@@ -1,6 +1,6 @@
 var reset_size_after_update = require('../reset_size/reset_size_after_update');
-var make_rows = require('../labels/make_rows');
-var make_cols = require('../labels/make_cols');
+var make_row_labels = require('../labels/make_row_labels');
+var make_col_labels = require('../labels/make_col_labels');
 var eeu_existing_row = require('./eeu_existing_row');
 var exit_components = require('../exit/exit_components');
 var draw_gridlines = require('../matrix/draw_gridlines');
@@ -114,8 +114,8 @@ module.exports = function(cgm, network_data, delays){
   enter_row_groups(params, delays, duration, tip);
 
   // update existing rows
-  make_rows(cgm, duration);
-  make_cols(cgm, duration);
+  make_row_labels(cgm, duration);
+  make_col_labels(cgm, duration);
 
   draw_gridlines(params, delays, duration);
 

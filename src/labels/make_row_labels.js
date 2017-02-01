@@ -4,7 +4,7 @@ var row_reorder = require('../reorder/row_reorder');
 var col_reorder = require('../reorder/col_reorder');
 var make_row_tooltips = require('./make_row_tooltips');
 
-module.exports = function make_rows(cgm, text_delay) {
+module.exports = function make_row_labels(cgm, text_delay) {
 
   var params = cgm.params;
 
@@ -51,19 +51,21 @@ module.exports = function make_rows(cgm, text_delay) {
       .attr('transform', 'translate(' + params.viz.norm_labels.width.row + ',0)');
   }
 
+  // make row labels in row_label_zoom_container, bind row_nodes data
   var row_labels = d3.select(params.root+' .row_label_zoom_container')
     .selectAll('g')
     .data(row_nodes, function(d){return d.name;})
     .enter()
     .append('g')
-    .classed('row_label_group', true)
+    .classed('row_label_group', true);
+
+  row_labels
     .attr('transform', function(d) {
       var inst_index = _.indexOf(row_nodes_names, d.name);
       return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
     });
 
-  d3.select(params.root+' .row_label_zoom_container')
-    .selectAll('.row_label_group')
+  row_labels
     .on('dblclick', function(d) {
 
         var data_attr = '__data__';
