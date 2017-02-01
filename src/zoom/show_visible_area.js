@@ -1,7 +1,7 @@
 var find_viz_nodes = require('../zoom/find_viz_nodes');
 var make_matrix_rows = require('../matrix/make_matrix_rows');
 
-// var make_row_labels = require('../labels/make_row_labels');
+var make_row_labels = require('../labels/make_row_labels');
 
 
 module.exports = function show_visible_area(cgm, zooming_stopped=false){
@@ -150,7 +150,7 @@ module.exports = function show_visible_area(cgm, zooming_stopped=false){
   if (new_ds_level === -1){
 
     // debugger
-    // make_row_labels(cgm);
+    make_row_labels(cgm);
   }
 
   function toggle_display(params, d, inst_rc, inst_selection, severe_toggle=false){
