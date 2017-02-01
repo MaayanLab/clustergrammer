@@ -251,12 +251,13 @@ module.exports = function two_translate_zoom(cgm, pan_dx, pan_dy, fin_zoom) {
 
     toggle_grid_lines(params);
 
-    function show_crop_buttons(inst_rc, inst_button_opacity){
-      d3.selectAll(params.root+' .'+inst_rc+'_dendro_crop_buttons')
-        .transition()
-        .duration(search_duration)
-        .style('opacity', inst_button_opacity);
-    }
-
   }
+
+  function show_crop_buttons(inst_rc, inst_button_opacity){
+    d3.selectAll(params.root+' .'+inst_rc+'_dendro_crop_buttons')
+      .transition()
+      .duration(search_duration)
+      .style('opacity', inst_button_opacity);
+  }
+
 };

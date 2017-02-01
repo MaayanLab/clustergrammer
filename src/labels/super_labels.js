@@ -1,6 +1,5 @@
 module.exports = function(params) {
 
-
   d3.select(params.viz.viz_svg)
     .append('rect')
     .attr('fill', params.viz.background_color)

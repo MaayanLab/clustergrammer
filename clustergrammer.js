@@ -2186,7 +2186,7 @@ var Clustergrammer =
 
 	var generate_matrix = __webpack_require__(39);
 	var make_row_label_container = __webpack_require__(50);
-	var make_col_label_container = __webpack_require__(70);
+	var make_col_label_container = __webpack_require__(51);
 	var generate_super_labels = __webpack_require__(74);
 	var spillover = __webpack_require__(75);
 	var initialize_resizing = __webpack_require__(80);
@@ -3263,7 +3263,7 @@ var Clustergrammer =
 
 	'use strict';
 
-	var make_row_labels = __webpack_require__(51);
+	var make_row_labels = __webpack_require__(209);
 
 	module.exports = function make_row_label_container(cgm, text_delay) {
 
@@ -3304,90 +3304,140 @@ var Clustergrammer =
 	'use strict';
 
 	var utils = __webpack_require__(2);
-	var add_row_click_hlight = __webpack_require__(52);
-	var row_reorder = __webpack_require__(53);
-	var col_reorder = __webpack_require__(68);
-	var make_row_tooltips = __webpack_require__(69);
+	var add_col_click_hlight = __webpack_require__(52);
+	var col_reorder = __webpack_require__(53);
+	var row_reorder = __webpack_require__(70);
+	var make_col_tooltips = __webpack_require__(72);
+	var col_viz_aid_triangle = __webpack_require__(73);
 
-	module.exports = function make_row_labels(cgm) {
+	module.exports = function make_col_label_container(cgm) {
 	  var text_delay = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
 
 
 	  var params = cgm.params;
-	  var row_nodes = params.network_data.row_nodes;
-	  var row_nodes_names = params.network_data.row_nodes_names;
+	  var col_container;
 
-	  // make row labels in row_label_zoom_container, bind row_nodes data
-	  var row_labels = d3.select(params.root + ' .row_label_zoom_container').selectAll('g').data(row_nodes, function (d) {
+	  var col_nodes = params.network_data.col_nodes;
+	  var col_nodes_names = params.network_data.col_nodes_names;
+
+	  // offset click group column label
+	  var x_offset_click = params.viz.x_scale.rangeBand() / 2 + params.viz.border_width.x;
+	  // reduce width of rotated rects
+
+
+	  // make container to pre-position zoomable elements
+	  if (d3.select(params.root + ' .col_container').empty()) {
+
+	    col_container = d3.select(params.viz.viz_svg).append('g').attr('class', 'col_container').attr('transform', 'translate(' + params.viz.clust.margin.left + ',' + params.viz.norm_labels.margin.top + ')');
+
+	    // white background rect for col labels
+	    col_container.append('rect').attr('fill', params.viz.background_color) //!! prog_colors
+	    .attr('width', 30 * params.viz.clust.dim.width + 'px').attr('height', params.viz.label_background.col).attr('class', 'white_bars');
+
+	    // col labels
+	    col_container.append('g').attr('class', 'col_label_outer_container')
+	    // position the outer col label group
+	    .attr('transform', 'translate(0,' + params.viz.norm_labels.width.col + ')').append('g').attr('class', 'col_zoom_container');
+	  } else {
+
+	    col_container = d3.select(params.root + ' .col_container').attr('transform', 'translate(' + params.viz.clust.margin.left + ',' + params.viz.norm_labels.margin.top + ')');
+
+	    // white background rect for col labels
+	    col_container.select('.white_bars').attr('fill', params.viz.background_color) //!! prog_colors
+	    .attr('width', 30 * params.viz.clust.dim.width + 'px').attr('height', params.viz.label_background.col);
+
+	    // col labels
+	    col_container.select(params.root + ' .col_label_outer_container');
+	  }
+
+	  // add main column label group
+	  var col_label_obj = d3.select(params.root + ' .col_zoom_container').selectAll('.col_label_text').data(col_nodes, function (d) {
 	    return d.name;
-	  }).enter().append('g').classed('row_label_group', true);
-
-	  row_labels.attr('transform', function (d) {
-	    var inst_index = _.indexOf(row_nodes_names, d.name);
-	    return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
+	  }).enter().append('g').attr('class', 'col_label_text').attr('transform', function (d) {
+	    var inst_index = _.indexOf(col_nodes_names, d.name);
+	    return 'translate(' + params.viz.x_scale(inst_index) + ', 0) rotate(-90)';
 	  });
 
-	  row_labels.on('dblclick', function (d) {
+	  // append group for individual column label
+	  var col_label_group = col_label_obj
+	  // append new group for rect and label (not white lines)
+	  .append('g').attr('class', 'col_label_group')
+	  // rotate column labels
+	  .attr('transform', 'translate(' + params.viz.x_scale.rangeBand() / 2 + ',' + x_offset_click + ') rotate(45)').on('mouseover', function () {
+	    d3.select(this).select('text').classed('active', true);
+	  }).on('mouseout', function () {
+	    d3.select(this).select('text').classed('active', false);
+	  });
+
+	  // append column value bars
+	  if (utils.has(params.network_data.col_nodes[0], 'value')) {
+
+	    col_label_group.append('rect').attr('class', 'col_bars').attr('width', function (d) {
+	      var inst_value = 0;
+	      if (d.value > 0) {
+	        inst_value = params.labels.bar_scale_col(d.value);
+	      }
+	      return inst_value;
+	    })
+	    // rotate labels - reduce width if rotating
+	    .attr('height', params.viz.x_scale.rangeBand() * 0.66).style('fill', function (d) {
+	      return d.value > 0 ? params.matrix.bar_colors[0] : params.matrix.bar_colors[1];
+	    }).attr('opacity', 0.6);
+	  }
+
+	  // add column label
+	  col_label_group.append('text').attr('x', 0)
+	  // manually tuned
+	  .attr('y', params.viz.x_scale.rangeBand() * 0.64).attr('dx', params.viz.border_width.x).attr('text-anchor', 'start').attr('full_name', function (d) {
+	    return d.name;
+	  })
+	  // original font size
+	  .style('font-size', params.labels.default_fs_col + 'px').style('cursor', 'default').text(function (d) {
+	    return utils.normal_name(d);
+	  })
+	  // .attr('pointer-events','none')
+	  .style('opacity', 0).transition().delay(text_delay).duration(text_delay).style('opacity', 1);
+
+	  make_col_tooltips(params);
+
+	  // add triangle under rotated labels
+	  col_label_group.append('path').style('stroke-width', 0).attr('d', function () {
+	    return col_viz_aid_triangle(params);
+	  }).attr('fill', '#eee').style('opacity', 0).transition().delay(text_delay).duration(text_delay).style('opacity', params.viz.triangle_opacity);
+
+	  // add col callback function
+	  d3.selectAll(params.root + ' .col_label_text').on('click', function (d) {
+
+	    if (typeof params.click_label == 'function') {
+	      params.click_label(d.name, 'col');
+	      add_col_click_hlight(params, this, d.ini);
+	    } else {
+
+	      if (params.tile_click_hlight) {
+	        add_col_click_hlight(params, this, d.ini);
+	      }
+	    }
+	  }).on('dblclick', function (d) {
 
 	    var data_attr = '__data__';
-	    var row_name = this[data_attr].name;
+	    var col_name = this[data_attr].name;
 
 	    if (params.sim_mat) {
-	      row_reorder(cgm, this, row_name);
+	      col_reorder(cgm, this, col_name);
 
-	      var col_selection = d3.selectAll(params.root + ' .col_label_text').filter(function (d) {
-	        return d.name == row_name;
+	      var row_selection = d3.selectAll(params.root + ' .row_label_group').filter(function (d) {
+	        return d.name == col_name;
 	      })[0][0];
 
-	      col_reorder(cgm, col_selection, row_name);
+	      row_reorder(cgm, row_selection, col_name);
 	    } else {
-	      row_reorder(cgm, this, row_name);
+	      col_reorder(cgm, this, col_name);
 	    }
+
 	    if (params.tile_click_hlight) {
-	      add_row_click_hlight(this, d.ini);
+	      add_col_click_hlight(params, this, d.ini);
 	    }
 	  });
-
-	  make_row_tooltips(params);
-
-	  // append rectangle behind text
-	  row_labels.insert('rect').style('opacity', 0);
-
-	  // append row label text
-	  row_labels.append('text').attr('y', params.viz.rect_height * 0.5 + params.labels.default_fs_row * 0.35).attr('text-anchor', 'end').style('font-size', params.labels.default_fs_row + 'px').text(function (d) {
-	    return utils.normal_name(d);
-	  }).attr('pointer-events', 'none').style('opacity', 0).style('cursor', 'default').transition().delay(text_delay).duration(text_delay).style('opacity', 1);
-
-	  // change the size of the highlighting rects
-	  row_labels.each(function () {
-	    var bbox = d3.select(this).select('text')[0][0].getBBox();
-	    d3.select(this).select('rect').attr('x', bbox.x).attr('y', 0).attr('width', bbox.width).attr('height', params.viz.y_scale.rangeBand()).style('fill', function () {
-	      var inst_hl = 'yellow';
-	      return inst_hl;
-	    }).style('opacity', function (d) {
-	      var inst_opacity = 0;
-	      // highlight target genes
-	      if (d.target === 1) {
-	        inst_opacity = 1;
-	      }
-	      return inst_opacity;
-	    });
-	  });
-
-	  if (utils.has(params.network_data.row_nodes[0], 'value')) {
-
-	    row_labels.append('rect').classed('row_bars', true).attr('width', function (d) {
-	      var inst_value = 0;
-	      inst_value = params.labels.bar_scale_row(Math.abs(d.value));
-	      return inst_value;
-	    }).attr('x', function (d) {
-	      var inst_value = 0;
-	      inst_value = -params.labels.bar_scale_row(Math.abs(d.value));
-	      return inst_value;
-	    }).attr('height', params.viz.y_scale.rangeBand()).attr('fill', function (d) {
-	      return d.value > 0 ? params.matrix.bar_colors[0] : params.matrix.bar_colors[1];
-	    }).attr('opacity', 0.4);
-	  }
 		};
 
 /***/ },
@@ -3396,32 +3446,45 @@ var Clustergrammer =
 
 	'use strict';
 
-	module.exports = function (params, clicked_row, id_clicked_row) {
-	  if (id_clicked_row != params.click_hlight_row) {
+	module.exports = function (params, clicked_col, id_clicked_col) {
+
+	  if (id_clicked_col != params.click_hlight_col) {
+
+	    params.click_hlight_col = id_clicked_col;
 
 	    var rel_width_hlight = 6;
 	    var opacity_hlight = 0.85;
-	    // var hlight_width  = rel_width_hlight*params.viz.border_width;
-	    var hlight_height = rel_width_hlight * params.viz.border_width.x; // /params.viz.zoom_switch;
+	    var hlight_width = rel_width_hlight * params.viz.border_width.x;
+	    // var hlight_height = rel_width_hlight*params.viz.border_width/params.viz.zoom_switch;
 
 	    d3.selectAll(params.root + ' .click_hlight').remove();
 
-	    // // highlight selected row
-	    // d3.selectAll(params.root+' .row_label_group')
+	    // // highlight selected column
+	    // ///////////////////////////////
+	    // // unhilight and unbold all columns (already unbolded earlier)
+	    // d3.selectAll('.col_label_text')
 	    //   .select('rect')
-	    // d3.select(this)
+	    //   .style('opacity', 0);
+	    // // highlight column name
+	    // d3.select(clicked_col)
 	    //   .select('rect')
 	    //   .style('opacity', 1);
 
-	    d3.select(clicked_row).append('rect').classed('click_hlight', true).classed('row_top_hlight', true).attr('width', params.viz.svg_dim.width).attr('height', hlight_height).attr('fill', params.matrix.hlight_color).attr('opacity', opacity_hlight);
+	    d3.select(clicked_col).append('rect').classed('click_hlight', true).classed('col_top_hlight', true).attr('width', params.viz.clust.dim.height).attr('height', hlight_width).attr('fill', params.matrix.hlight_color).attr('opacity', opacity_hlight).attr('transform', function () {
+	      var tmp_translate_y = 0;
+	      var tmp_translate_x = -(params.viz.clust.dim.height + params.viz.cat_room.col + params.viz.uni_margin);
+	      return 'translate(' + tmp_translate_x + ',' + tmp_translate_y + ')';
+	    });
 
-	    d3.select(clicked_row).append('rect').classed('click_hlight', true).classed('row_bottom_hlight', true).attr('width', params.viz.svg_dim.width).attr('height', hlight_height).attr('fill', params.matrix.hlight_color).attr('opacity', opacity_hlight).attr('transform', function () {
-	      var tmp_translate_y = params.viz.y_scale.rangeBand() - hlight_height;
-	      return 'translate(0,' + tmp_translate_y + ')';
+	    d3.select(clicked_col).append('rect').classed('click_hlight', true).classed('col_bottom_hlight', true).attr('width', params.viz.clust.dim.height).attr('height', hlight_width).attr('fill', params.matrix.hlight_color).attr('opacity', opacity_hlight).attr('transform', function () {
+	      // reverse x and y since rotated
+	      var tmp_translate_y = params.viz.x_scale.rangeBand() - hlight_width;
+	      var tmp_translate_x = -(params.viz.clust.dim.height + params.viz.cat_room.col + params.viz.uni_margin);
+	      return 'translate(' + tmp_translate_x + ',' + tmp_translate_y + ')';
 	    });
 	  } else {
 	    d3.selectAll(params.root + ' .click_hlight').remove();
-	    params.click_hlight_row = -666;
+	    params.click_hlight_col = -666;
 	  }
 		};
 
@@ -3437,18 +3500,16 @@ var Clustergrammer =
 	var show_visible_area = __webpack_require__(66);
 	var ini_zoom_info = __webpack_require__(37);
 
-	module.exports = function row_reorder(cgm, row_selection, inst_row) {
+	module.exports = function col_reorder(cgm, col_selection, inst_term) {
 
 	  var params = cgm.params;
-	  params.viz.inst_order.row = 'custom';
+
+	  params.viz.inst_order.col = 'custom';
 	  toggle_dendro_view(cgm, 'col');
 
-	  // d3.selectAll(params.root+' .col_dendro_group').style('opacity',0);
+	  // d3.selectAll(params.root+' .row_dendro_group').style('opacity',0);
 
-	  d3.selectAll(params.root + ' .toggle_col_order .btn').classed('active', false);
-
-	  // // get inst row (gene)
-	  // var inst_row = d3.select(row_selection).select('text').text();
+	  d3.selectAll(params.root + ' .toggle_row_order .btn').classed('active', false);
 
 	  params.viz.run_trans = true;
 
@@ -3456,99 +3517,92 @@ var Clustergrammer =
 	  var row_nodes = params.network_data.row_nodes;
 	  var col_nodes = params.network_data.col_nodes;
 
-	  var col_nodes_names = utils.pluck(col_nodes, 'name');
+	  var row_nodes_names = utils.pluck(row_nodes, 'name');
 
-	  // find the index of the row
+	  // // get inst col (term)
+	  // var inst_term = d3.select(col_selection).select('text').attr('full_name');
+
+	  // find the column number of col_selection term from col_nodes
+	  // gather column node names
 	  var tmp_arr = [];
-	  row_nodes.forEach(function (node) {
+	  col_nodes.forEach(function (node) {
 	    tmp_arr.push(node.name);
 	  });
 
 	  // find index
-	  inst_row = _.indexOf(tmp_arr, inst_row);
+	  var inst_col = _.indexOf(tmp_arr, inst_term);
 
 	  // gather the values of the input genes
 	  tmp_arr = [];
-	  col_nodes.forEach(function (node, index) {
-	    tmp_arr.push(mat[inst_row].row_data[index].value);
+	  row_nodes.forEach(function (node, index) {
+	    tmp_arr.push(mat[index].row_data[inst_col].value);
 	  });
 
-	  // sort the rows
+	  // sort the cols
 	  var tmp_sort = d3.range(tmp_arr.length).sort(function (a, b) {
 	    return tmp_arr[b] - tmp_arr[a];
 	  });
 
-	  // resort cols (cols are reorderd by double clicking a row)
-	  params.viz.x_scale.domain(tmp_sort);
+	  // resort rows (rows are reorderd by double clicking a col)
+	  params.viz.y_scale.domain(tmp_sort);
 
-	  // save to custom col order
-	  params.matrix.orders.custom_row = tmp_sort;
+	  // save to custom row order
+	  params.matrix.orders.custom_col = tmp_sort;
 
 	  var t;
 
-	  // reorder matrix
-	  ////////////////////
+	  // reorder
 	  if (params.network_data.links.length > params.matrix.def_large_matrix) {
-
-	    // define the t variable as the transition function
 	    t = d3.select(params.root + ' .clust_group');
 
-	    // Move Col Labels
-	    d3.select(params.root + ' .col_zoom_container').selectAll('.col_label_text').attr('transform', function (d) {
-	      var inst_index = _.indexOf(col_nodes_names, d.name);
-	      return 'translate(' + params.viz.x_scale(inst_index) + ')rotate(-90)';
+	    // reorder row_label_triangle groups
+	    d3.selectAll(params.root + ' .row_cat_group').attr('transform', function (d) {
+	      var inst_index = _.indexOf(row_nodes_names, d.name);
+	      return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
 	    });
 
-	    // reorder col_class groups
-	    d3.selectAll(params.root + ' .col_cat_group').attr('transform', function (d) {
-	      var inst_index = _.indexOf(col_nodes_names, d.name);
-	      return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
+	    // Move Row Labels
+	    d3.select(params.root + ' .row_label_zoom_container').selectAll('.row_label_group').attr('transform', function (d) {
+	      var inst_index = _.indexOf(row_nodes_names, d.name);
+	      return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
 	    });
 	  } else {
 
-	    // define the t variable as the transition function
 	    t = d3.select(params.root + ' .clust_group').transition().duration(2500);
 
-	    // Move Col Labels
-	    d3.select(params.root + ' .col_zoom_container').selectAll('.col_label_text').transition().duration(2500).attr('transform', function (d) {
-	      var inst_index = _.indexOf(col_nodes_names, d.name);
-	      return 'translate(' + params.viz.x_scale(inst_index) + ')rotate(-90)';
+	    // reorder row_label_triangle groups
+	    d3.selectAll(params.root + ' .row_cat_group').transition().duration(2500).attr('transform', function (d) {
+	      var inst_index = _.indexOf(row_nodes_names, d.name);
+	      return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
 	    });
 
-	    // reorder col_class groups
-	    d3.selectAll(params.root + ' .col_cat_group').transition().duration(2500).attr('transform', function (d) {
-	      var inst_index = _.indexOf(col_nodes_names, d.name);
-	      return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
+	    // Move Row Labels
+	    d3.select(params.root + ' .row_label_zoom_container').selectAll('.row_label_group').transition().duration(2500).attr('transform', function (d) {
+	      var inst_index = _.indexOf(row_nodes_names, d.name);
+	      return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
 	    });
 	  }
 
-	  // reorder matrix
-	  t.selectAll('.tile').attr('transform', function (d) {
-	    return 'translate(' + params.viz.x_scale(d.pos_x) + ',0)';
-	  });
-
-	  t.selectAll('.tile_up').attr('transform', function (d) {
-	    return 'translate(' + params.viz.x_scale(d.pos_x) + ',0)';
-	  });
-
-	  t.selectAll('.tile_dn').attr('transform', function (d) {
-	    return 'translate(' + params.viz.x_scale(d.pos_x) + ',0)';
+	  // reorder matrix rows
+	  t.selectAll('.row').attr('transform', function (d) {
+	    var inst_index = _.indexOf(row_nodes_names, d.name);
+	    return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
 	  });
 
 	  // highlight selected column
 	  ///////////////////////////////
 	  // unhilight and unbold all columns (already unbolded earlier)
-	  d3.selectAll(params.root + ' .row_label_group').select('rect').style('opacity', 0);
+	  d3.selectAll(params.root + ' .col_label_text').select('.highlight_rect').style('opacity', 0);
 	  // highlight column name
-	  d3.select(row_selection).select('rect').style('opacity', 1);
-
-	  reposition_tile_highlight(params);
+	  d3.select(col_selection).select('.highlight_rect').style('opacity', 1);
 
 	  // redefine x and y positions
 	  params.network_data.links.forEach(function (d) {
 	    d.x = params.viz.x_scale(d.target);
 	    d.y = params.viz.y_scale(d.source);
 	  });
+
+	  reposition_tile_highlight(params);
 
 	  params.zoom_info = ini_zoom_info();
 
@@ -4833,13 +4887,16 @@ var Clustergrammer =
 
 	var find_viz_nodes = __webpack_require__(67);
 	var make_matrix_rows = __webpack_require__(42);
-	var make_row_labels = __webpack_require__(51);
+
+	// var make_row_labels = require('../labels/make_row_labels');
+
 
 	module.exports = function show_visible_area(cgm) {
 	  var zooming_stopped = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
 
 
 	  // console.log('show_visible_area stopped: ' + String(zooming_stopped));
+	  // debugger;
 
 	  var params = cgm.params;
 
@@ -4969,7 +5026,9 @@ var Clustergrammer =
 
 	  // only make new row_labels if there are missing rows and not downsampled
 	  if (new_ds_level === -1) {
-	    // make_row_labels();
+
+	    // debugger
+	    // make_row_labels(cgm);
 	  }
 
 	  function toggle_display(params, d, inst_rc, inst_selection) {
@@ -5042,7 +5101,43 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 68 */
+/* 68 */,
+/* 69 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = function (params, clicked_row, id_clicked_row) {
+	  if (id_clicked_row != params.click_hlight_row) {
+
+	    var rel_width_hlight = 6;
+	    var opacity_hlight = 0.85;
+	    // var hlight_width  = rel_width_hlight*params.viz.border_width;
+	    var hlight_height = rel_width_hlight * params.viz.border_width.x; // /params.viz.zoom_switch;
+
+	    d3.selectAll(params.root + ' .click_hlight').remove();
+
+	    // // highlight selected row
+	    // d3.selectAll(params.root+' .row_label_group')
+	    //   .select('rect')
+	    // d3.select(this)
+	    //   .select('rect')
+	    //   .style('opacity', 1);
+
+	    d3.select(clicked_row).append('rect').classed('click_hlight', true).classed('row_top_hlight', true).attr('width', params.viz.svg_dim.width).attr('height', hlight_height).attr('fill', params.matrix.hlight_color).attr('opacity', opacity_hlight);
+
+	    d3.select(clicked_row).append('rect').classed('click_hlight', true).classed('row_bottom_hlight', true).attr('width', params.viz.svg_dim.width).attr('height', hlight_height).attr('fill', params.matrix.hlight_color).attr('opacity', opacity_hlight).attr('transform', function () {
+	      var tmp_translate_y = params.viz.y_scale.rangeBand() - hlight_height;
+	      return 'translate(0,' + tmp_translate_y + ')';
+	    });
+	  } else {
+	    d3.selectAll(params.root + ' .click_hlight').remove();
+	    params.click_hlight_row = -666;
+	  }
+		};
+
+/***/ },
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5053,16 +5148,18 @@ var Clustergrammer =
 	var show_visible_area = __webpack_require__(66);
 	var ini_zoom_info = __webpack_require__(37);
 
-	module.exports = function col_reorder(cgm, col_selection, inst_term) {
+	module.exports = function row_reorder(cgm, row_selection, inst_row) {
 
 	  var params = cgm.params;
-
-	  params.viz.inst_order.col = 'custom';
+	  params.viz.inst_order.row = 'custom';
 	  toggle_dendro_view(cgm, 'col');
 
-	  // d3.selectAll(params.root+' .row_dendro_group').style('opacity',0);
+	  // d3.selectAll(params.root+' .col_dendro_group').style('opacity',0);
 
-	  d3.selectAll(params.root + ' .toggle_row_order .btn').classed('active', false);
+	  d3.selectAll(params.root + ' .toggle_col_order .btn').classed('active', false);
+
+	  // // get inst row (gene)
+	  // var inst_row = d3.select(row_selection).select('text').text();
 
 	  params.viz.run_trans = true;
 
@@ -5070,92 +5167,99 @@ var Clustergrammer =
 	  var row_nodes = params.network_data.row_nodes;
 	  var col_nodes = params.network_data.col_nodes;
 
-	  var row_nodes_names = utils.pluck(row_nodes, 'name');
+	  var col_nodes_names = utils.pluck(col_nodes, 'name');
 
-	  // // get inst col (term)
-	  // var inst_term = d3.select(col_selection).select('text').attr('full_name');
-
-	  // find the column number of col_selection term from col_nodes
-	  // gather column node names
+	  // find the index of the row
 	  var tmp_arr = [];
-	  col_nodes.forEach(function (node) {
+	  row_nodes.forEach(function (node) {
 	    tmp_arr.push(node.name);
 	  });
 
 	  // find index
-	  var inst_col = _.indexOf(tmp_arr, inst_term);
+	  inst_row = _.indexOf(tmp_arr, inst_row);
 
 	  // gather the values of the input genes
 	  tmp_arr = [];
-	  row_nodes.forEach(function (node, index) {
-	    tmp_arr.push(mat[index].row_data[inst_col].value);
+	  col_nodes.forEach(function (node, index) {
+	    tmp_arr.push(mat[inst_row].row_data[index].value);
 	  });
 
-	  // sort the cols
+	  // sort the rows
 	  var tmp_sort = d3.range(tmp_arr.length).sort(function (a, b) {
 	    return tmp_arr[b] - tmp_arr[a];
 	  });
 
-	  // resort rows (rows are reorderd by double clicking a col)
-	  params.viz.y_scale.domain(tmp_sort);
+	  // resort cols (cols are reorderd by double clicking a row)
+	  params.viz.x_scale.domain(tmp_sort);
 
-	  // save to custom row order
-	  params.matrix.orders.custom_col = tmp_sort;
+	  // save to custom col order
+	  params.matrix.orders.custom_row = tmp_sort;
 
 	  var t;
 
-	  // reorder
+	  // reorder matrix
+	  ////////////////////
 	  if (params.network_data.links.length > params.matrix.def_large_matrix) {
+
+	    // define the t variable as the transition function
 	    t = d3.select(params.root + ' .clust_group');
 
-	    // reorder row_label_triangle groups
-	    d3.selectAll(params.root + ' .row_cat_group').attr('transform', function (d) {
-	      var inst_index = _.indexOf(row_nodes_names, d.name);
-	      return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
+	    // Move Col Labels
+	    d3.select(params.root + ' .col_zoom_container').selectAll('.col_label_text').attr('transform', function (d) {
+	      var inst_index = _.indexOf(col_nodes_names, d.name);
+	      return 'translate(' + params.viz.x_scale(inst_index) + ')rotate(-90)';
 	    });
 
-	    // Move Row Labels
-	    d3.select(params.root + ' .row_label_zoom_container').selectAll('.row_label_group').attr('transform', function (d) {
-	      var inst_index = _.indexOf(row_nodes_names, d.name);
-	      return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
+	    // reorder col_class groups
+	    d3.selectAll(params.root + ' .col_cat_group').attr('transform', function (d) {
+	      var inst_index = _.indexOf(col_nodes_names, d.name);
+	      return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
 	    });
 	  } else {
 
+	    // define the t variable as the transition function
 	    t = d3.select(params.root + ' .clust_group').transition().duration(2500);
 
-	    // reorder row_label_triangle groups
-	    d3.selectAll(params.root + ' .row_cat_group').transition().duration(2500).attr('transform', function (d) {
-	      var inst_index = _.indexOf(row_nodes_names, d.name);
-	      return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
+	    // Move Col Labels
+	    d3.select(params.root + ' .col_zoom_container').selectAll('.col_label_text').transition().duration(2500).attr('transform', function (d) {
+	      var inst_index = _.indexOf(col_nodes_names, d.name);
+	      return 'translate(' + params.viz.x_scale(inst_index) + ')rotate(-90)';
 	    });
 
-	    // Move Row Labels
-	    d3.select(params.root + ' .row_label_zoom_container').selectAll('.row_label_group').transition().duration(2500).attr('transform', function (d) {
-	      var inst_index = _.indexOf(row_nodes_names, d.name);
-	      return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
+	    // reorder col_class groups
+	    d3.selectAll(params.root + ' .col_cat_group').transition().duration(2500).attr('transform', function (d) {
+	      var inst_index = _.indexOf(col_nodes_names, d.name);
+	      return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
 	    });
 	  }
 
-	  // reorder matrix rows
-	  t.selectAll('.row').attr('transform', function (d) {
-	    var inst_index = _.indexOf(row_nodes_names, d.name);
-	    return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
+	  // reorder matrix
+	  t.selectAll('.tile').attr('transform', function (d) {
+	    return 'translate(' + params.viz.x_scale(d.pos_x) + ',0)';
+	  });
+
+	  t.selectAll('.tile_up').attr('transform', function (d) {
+	    return 'translate(' + params.viz.x_scale(d.pos_x) + ',0)';
+	  });
+
+	  t.selectAll('.tile_dn').attr('transform', function (d) {
+	    return 'translate(' + params.viz.x_scale(d.pos_x) + ',0)';
 	  });
 
 	  // highlight selected column
 	  ///////////////////////////////
 	  // unhilight and unbold all columns (already unbolded earlier)
-	  d3.selectAll(params.root + ' .col_label_text').select('.highlight_rect').style('opacity', 0);
+	  d3.selectAll(params.root + ' .row_label_group').select('rect').style('opacity', 0);
 	  // highlight column name
-	  d3.select(col_selection).select('.highlight_rect').style('opacity', 1);
+	  d3.select(row_selection).select('rect').style('opacity', 1);
+
+	  reposition_tile_highlight(params);
 
 	  // redefine x and y positions
 	  params.network_data.links.forEach(function (d) {
 	    d.x = params.viz.x_scale(d.target);
 	    d.y = params.viz.y_scale(d.source);
 	  });
-
-	  reposition_tile_highlight(params);
 
 	  params.zoom_info = ini_zoom_info();
 
@@ -5167,7 +5271,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 69 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5219,197 +5323,6 @@ var Clustergrammer =
 	    }).on('mouseout', function mouseout() {
 	      d3.select(this).select('text').classed('active', false);
 	    });
-	  }
-		};
-
-/***/ },
-/* 70 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var utils = __webpack_require__(2);
-	var add_col_click_hlight = __webpack_require__(71);
-	var col_reorder = __webpack_require__(68);
-	var row_reorder = __webpack_require__(53);
-	var make_col_tooltips = __webpack_require__(72);
-	var col_viz_aid_triangle = __webpack_require__(73);
-
-	module.exports = function make_col_label_container(cgm) {
-	  var text_delay = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
-
-
-	  var params = cgm.params;
-	  var col_container;
-
-	  var col_nodes = params.network_data.col_nodes;
-	  var col_nodes_names = params.network_data.col_nodes_names;
-
-	  // offset click group column label
-	  var x_offset_click = params.viz.x_scale.rangeBand() / 2 + params.viz.border_width.x;
-	  // reduce width of rotated rects
-
-
-	  // make container to pre-position zoomable elements
-	  if (d3.select(params.root + ' .col_container').empty()) {
-
-	    col_container = d3.select(params.viz.viz_svg).append('g').attr('class', 'col_container').attr('transform', 'translate(' + params.viz.clust.margin.left + ',' + params.viz.norm_labels.margin.top + ')');
-
-	    // white background rect for col labels
-	    col_container.append('rect').attr('fill', params.viz.background_color) //!! prog_colors
-	    .attr('width', 30 * params.viz.clust.dim.width + 'px').attr('height', params.viz.label_background.col).attr('class', 'white_bars');
-
-	    // col labels
-	    col_container.append('g').attr('class', 'col_label_outer_container')
-	    // position the outer col label group
-	    .attr('transform', 'translate(0,' + params.viz.norm_labels.width.col + ')').append('g').attr('class', 'col_zoom_container');
-	  } else {
-
-	    col_container = d3.select(params.root + ' .col_container').attr('transform', 'translate(' + params.viz.clust.margin.left + ',' + params.viz.norm_labels.margin.top + ')');
-
-	    // white background rect for col labels
-	    col_container.select('.white_bars').attr('fill', params.viz.background_color) //!! prog_colors
-	    .attr('width', 30 * params.viz.clust.dim.width + 'px').attr('height', params.viz.label_background.col);
-
-	    // col labels
-	    col_container.select(params.root + ' .col_label_outer_container');
-	  }
-
-	  // add main column label group
-	  var col_label_obj = d3.select(params.root + ' .col_zoom_container').selectAll('.col_label_text').data(col_nodes, function (d) {
-	    return d.name;
-	  }).enter().append('g').attr('class', 'col_label_text').attr('transform', function (d) {
-	    var inst_index = _.indexOf(col_nodes_names, d.name);
-	    return 'translate(' + params.viz.x_scale(inst_index) + ', 0) rotate(-90)';
-	  });
-
-	  // append group for individual column label
-	  var col_label_group = col_label_obj
-	  // append new group for rect and label (not white lines)
-	  .append('g').attr('class', 'col_label_group')
-	  // rotate column labels
-	  .attr('transform', 'translate(' + params.viz.x_scale.rangeBand() / 2 + ',' + x_offset_click + ') rotate(45)').on('mouseover', function () {
-	    d3.select(this).select('text').classed('active', true);
-	  }).on('mouseout', function () {
-	    d3.select(this).select('text').classed('active', false);
-	  });
-
-	  // append column value bars
-	  if (utils.has(params.network_data.col_nodes[0], 'value')) {
-
-	    col_label_group.append('rect').attr('class', 'col_bars').attr('width', function (d) {
-	      var inst_value = 0;
-	      if (d.value > 0) {
-	        inst_value = params.labels.bar_scale_col(d.value);
-	      }
-	      return inst_value;
-	    })
-	    // rotate labels - reduce width if rotating
-	    .attr('height', params.viz.x_scale.rangeBand() * 0.66).style('fill', function (d) {
-	      return d.value > 0 ? params.matrix.bar_colors[0] : params.matrix.bar_colors[1];
-	    }).attr('opacity', 0.6);
-	  }
-
-	  // add column label
-	  col_label_group.append('text').attr('x', 0)
-	  // manually tuned
-	  .attr('y', params.viz.x_scale.rangeBand() * 0.64).attr('dx', params.viz.border_width.x).attr('text-anchor', 'start').attr('full_name', function (d) {
-	    return d.name;
-	  })
-	  // original font size
-	  .style('font-size', params.labels.default_fs_col + 'px').style('cursor', 'default').text(function (d) {
-	    return utils.normal_name(d);
-	  })
-	  // .attr('pointer-events','none')
-	  .style('opacity', 0).transition().delay(text_delay).duration(text_delay).style('opacity', 1);
-
-	  make_col_tooltips(params);
-
-	  // add triangle under rotated labels
-	  col_label_group.append('path').style('stroke-width', 0).attr('d', function () {
-	    return col_viz_aid_triangle(params);
-	  }).attr('fill', '#eee').style('opacity', 0).transition().delay(text_delay).duration(text_delay).style('opacity', params.viz.triangle_opacity);
-
-	  // add col callback function
-	  d3.selectAll(params.root + ' .col_label_text').on('click', function (d) {
-
-	    if (typeof params.click_label == 'function') {
-	      params.click_label(d.name, 'col');
-	      add_col_click_hlight(params, this, d.ini);
-	    } else {
-
-	      if (params.tile_click_hlight) {
-	        add_col_click_hlight(params, this, d.ini);
-	      }
-	    }
-	  }).on('dblclick', function (d) {
-
-	    var data_attr = '__data__';
-	    var col_name = this[data_attr].name;
-
-	    if (params.sim_mat) {
-	      col_reorder(cgm, this, col_name);
-
-	      var row_selection = d3.selectAll(params.root + ' .row_label_group').filter(function (d) {
-	        return d.name == col_name;
-	      })[0][0];
-
-	      row_reorder(cgm, row_selection, col_name);
-	    } else {
-	      col_reorder(cgm, this, col_name);
-	    }
-
-	    if (params.tile_click_hlight) {
-	      add_col_click_hlight(params, this, d.ini);
-	    }
-	  });
-		};
-
-/***/ },
-/* 71 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	module.exports = function (params, clicked_col, id_clicked_col) {
-
-	  if (id_clicked_col != params.click_hlight_col) {
-
-	    params.click_hlight_col = id_clicked_col;
-
-	    var rel_width_hlight = 6;
-	    var opacity_hlight = 0.85;
-	    var hlight_width = rel_width_hlight * params.viz.border_width.x;
-	    // var hlight_height = rel_width_hlight*params.viz.border_width/params.viz.zoom_switch;
-
-	    d3.selectAll(params.root + ' .click_hlight').remove();
-
-	    // // highlight selected column
-	    // ///////////////////////////////
-	    // // unhilight and unbold all columns (already unbolded earlier)
-	    // d3.selectAll('.col_label_text')
-	    //   .select('rect')
-	    //   .style('opacity', 0);
-	    // // highlight column name
-	    // d3.select(clicked_col)
-	    //   .select('rect')
-	    //   .style('opacity', 1);
-
-	    d3.select(clicked_col).append('rect').classed('click_hlight', true).classed('col_top_hlight', true).attr('width', params.viz.clust.dim.height).attr('height', hlight_width).attr('fill', params.matrix.hlight_color).attr('opacity', opacity_hlight).attr('transform', function () {
-	      var tmp_translate_y = 0;
-	      var tmp_translate_x = -(params.viz.clust.dim.height + params.viz.cat_room.col + params.viz.uni_margin);
-	      return 'translate(' + tmp_translate_x + ',' + tmp_translate_y + ')';
-	    });
-
-	    d3.select(clicked_col).append('rect').classed('click_hlight', true).classed('col_bottom_hlight', true).attr('width', params.viz.clust.dim.height).attr('height', hlight_width).attr('fill', params.matrix.hlight_color).attr('opacity', opacity_hlight).attr('transform', function () {
-	      // reverse x and y since rotated
-	      var tmp_translate_y = params.viz.x_scale.rangeBand() - hlight_width;
-	      var tmp_translate_x = -(params.viz.clust.dim.height + params.viz.cat_room.col + params.viz.uni_margin);
-	      return 'translate(' + tmp_translate_x + ',' + tmp_translate_y + ')';
-	    });
-	  } else {
-	    d3.selectAll(params.root + ' .click_hlight').remove();
-	    params.click_hlight_col = -666;
 	  }
 		};
 
@@ -6984,200 +6897,181 @@ var Clustergrammer =
 
 	  // do not allow while transitioning, e.g. reordering
 	  if (!params.viz.run_trans) {
-	    var half_height;
-	    var y_pan_room;
-	    var shift_top_viz;
-	    var shift_up_viz;
-	    var zoom_y;
+
+	    // define the commonly used variable half_height
+	    var half_height = params.viz.clust.dim.height / 2;
+
+	    // y pan room, the pan room has to be less than half_height since
+	    // zooming in on a gene that is near the top of the clustergram also causes
+	    // panning out of the visible region
+	    var y_pan_room = half_height / params.viz.zoom_switch;
+
+	    // prevent visualization from panning down too much
+	    // when zooming into genes near the top of the clustergram
+	    if (pan_dy >= half_height - y_pan_room) {
+
+	      // explanation of panning rules
+	      /////////////////////////////////
+	      // prevent the clustergram from panning down too much
+	      // if the amount of panning is equal to the half_height then it needs to be reduced
+	      // effectively, the the visualization needs to be moved up (negative) by some factor
+	      // of the half-width-of-the-visualization.
+	      //
+	      // If there was no zooming involved, then the
+	      // visualization would be centered first, then panned to center the top term
+	      // this would require a
+	      // correction to re-center it. However, because of the zooming the offset is
+	      // reduced by the zoom factor (this is because the panning is occurring on something
+	      // that will be zoomed into - this is why the pan_dy value is not scaled in the two
+	      // translate transformations, but it has to be scaled afterwards to set the translate
+	      // vector)
+	      // pan_dy = half_height - (half_height)/params.viz.zoom_switch
+
+	      // if pan_dy is greater than the pan room, then panning has to be restricted
+	      // start by shifting back up (negative) by half_height/params.viz.zoom_switch then shift back down
+	      // by the difference between half_height and pan_dy (so that the top of the clustergram is
+	      // visible)
+	      var shift_top_viz = half_height - pan_dy;
+	      var shift_up_viz = -half_height / params.viz.zoom_switch + shift_top_viz;
+
+	      // reduce pan_dy so that the visualization does not get panned to far down
+	      pan_dy = pan_dy + shift_up_viz;
+	    }
+
+	    // prevent visualization from panning up too much
+	    // when zooming into genes at the bottom of the clustergram
+	    if (pan_dy < -(half_height - y_pan_room)) {
+
+	      shift_top_viz = half_height + pan_dy;
+
+	      shift_up_viz = half_height / params.viz.zoom_switch - shift_top_viz; //- move_up_one_row;
+
+	      // reduce pan_dy so that the visualization does not get panned to far down
+	      pan_dy = pan_dy + shift_up_viz;
+	    }
+
+	    // will improve this !!
+	    var zoom_y = fin_zoom;
 	    var zoom_x;
-	    var search_duration;
-	    var center_y;
+	    if (fin_zoom <= params.viz.zoom_switch) {
+	      zoom_x = 1;
+	    } else {
+	      zoom_x = fin_zoom / params.viz.zoom_switch;
+	    }
+
+	    // search duration - the duration of zooming and panning
+	    var search_duration = 700;
+
+	    // center_y
+	    var center_y = -(zoom_y - 1) * half_height;
+
+	    // transform clust group
+	    ////////////////////////////
+	    d3.select(params.root + ' .clust_group').transition().duration(search_duration)
+	    // first apply the margin transformation
+	    // then zoom, then apply the final transformation
+	    .attr('transform', 'translate(' + [0, 0 + center_y] + ')' + ' scale(' + zoom_x + ',' + zoom_y + ')' + 'translate(' + [pan_dx, pan_dy] + ')');
+
+	    // transform row labels
+	    d3.select(params.root + ' .row_label_zoom_container').transition().duration(search_duration).attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' + zoom_y + ',' + zoom_y + ')' + 'translate(' + [0, pan_dy] + ')');
+
+	    // transform row_cat_container
+	    // use the offset saved in params, only zoom in the y direction
+	    d3.select(params.root + ' .row_cat_container').transition().duration(search_duration).attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' + 1 + ',' + zoom_y + ')' + 'translate(' + [0, pan_dy] + ')');
+
+	    d3.select(params.root + ' .row_dendro_container').transition().duration(search_duration).attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' + zoom_x + ',' + zoom_y + ')' + 'translate(' + [params.viz.uni_margin / 2, pan_dy] + ')');
+
+	    // toggle crop buttons
 	    var inst_button_opacity;
-	    var net_y_offset;
-	    var net_x_offset;
+	    _.each(['row', 'col'], function (inst_rc) {
 
-	    (function () {
-	      var show_crop_buttons = function show_crop_buttons(inst_rc, inst_button_opacity) {
-	        d3.selectAll(params.root + ' .' + inst_rc + '_dendro_crop_buttons').transition().duration(search_duration).style('opacity', inst_button_opacity);
-	      };
+	      inst_button_opacity = d3.select(params.root + ' .' + inst_rc + '_dendro_crop_buttons').style('opacity');
+	      d3.selectAll(params.root + ' .' + inst_rc + '_dendro_crop_buttons').style('opacity', 0);
+	      setTimeout(show_crop_buttons, 700, inst_rc, inst_button_opacity);
+	    });
 
-	      // define the commonly used variable half_height
-	      half_height = params.viz.clust.dim.height / 2;
+	    // transform col labels
+	    d3.select(params.root + ' .col_zoom_container').transition().duration(search_duration).attr('transform', ' scale(' + zoom_x + ',' + zoom_x + ')' + 'translate(' + [pan_dx, 0] + ')');
 
-	      // y pan room, the pan room has to be less than half_height since
-	      // zooming in on a gene that is near the top of the clustergram also causes
-	      // panning out of the visible region
+	    // transform col_class
+	    d3.select(params.root + ' .col_cat_container').transition().duration(search_duration).attr('transform', ' scale(' + zoom_x + ',' + 1 + ')' + 'translate(' + [pan_dx, 0] + ')');
 
-	      y_pan_room = half_height / params.viz.zoom_switch;
+	    d3.select(params.root + ' .col_dendro_container').transition().duration(search_duration).attr('transform', ' scale(' + zoom_x + ',' + 1 + ')' + 'translate(' + [pan_dx, params.viz.uni_margin / 2] + ')');
 
-	      // prevent visualization from panning down too much
-	      // when zooming into genes near the top of the clustergram
+	    // set y translate: center_y is positive, positive moves the visualization down
+	    // the translate vector has the initial margin, the first y centering, and pan_dy
+	    // times the scaling zoom_y
+	    var net_y_offset = params.viz.clust.margin.top + center_y + pan_dy * zoom_y;
+	    var net_x_offset = params.viz.clust.margin.left + pan_dx;
 
-	      if (pan_dy >= half_height - y_pan_room) {
+	    // reset the zoom and translate
+	    params.zoom_behavior.scale(zoom_y).translate([net_x_offset, net_y_offset]);
 
-	        // explanation of panning rules
-	        /////////////////////////////////
-	        // prevent the clustergram from panning down too much
-	        // if the amount of panning is equal to the half_height then it needs to be reduced
-	        // effectively, the the visualization needs to be moved up (negative) by some factor
-	        // of the half-width-of-the-visualization.
-	        //
-	        // If there was no zooming involved, then the
-	        // visualization would be centered first, then panned to center the top term
-	        // this would require a
-	        // correction to re-center it. However, because of the zooming the offset is
-	        // reduced by the zoom factor (this is because the panning is occurring on something
-	        // that will be zoomed into - this is why the pan_dy value is not scaled in the two
-	        // translate transformations, but it has to be scaled afterwards to set the translate
-	        // vector)
-	        // pan_dy = half_height - (half_height)/params.viz.zoom_switch
+	    label_constrain_and_trim(params);
 
-	        // if pan_dy is greater than the pan room, then panning has to be restricted
-	        // start by shifting back up (negative) by half_height/params.viz.zoom_switch then shift back down
-	        // by the difference between half_height and pan_dy (so that the top of the clustergram is
-	        // visible)
-	        shift_top_viz = half_height - pan_dy;
-	        shift_up_viz = -half_height / params.viz.zoom_switch + shift_top_viz;
+	    // re-size of the highlighting rects
+	    /////////////////////////////////////////
+	    d3.select(params.root + ' .row_label_zoom_container').each(function () {
+	      // get the bounding box of the row label text
+	      var bbox = d3.select(this).select('text')[0][0].getBBox();
 
-	        // reduce pan_dy so that the visualization does not get panned to far down
+	      // use the bounding box to set the size of the rect
+	      d3.select(this).select('rect').attr('x', bbox.x * 0.5).attr('y', 0).attr('width', bbox.width * 0.5).attr('height', params.viz.y_scale.rangeBand()).style('fill', 'yellow');
+	    });
 
-	        pan_dy = pan_dy + shift_up_viz;
-	      }
+	    // reset crop button zooming
+	    d3.select(params.root + ' .row_dendro_icons_group').attr('transform', 'translate(' + [0, 0 + center_y] + ')' + ' scale(' + zoom_x + ',' + zoom_y + ')' + 'translate(' + [pan_dx, pan_dy] + ')');
 
-	      // prevent visualization from panning up too much
-	      // when zooming into genes at the bottom of the clustergram
-	      if (pan_dy < -(half_height - y_pan_room)) {
+	    d3.select(params.root + ' .row_dendro_icons_group').selectAll('path').attr('transform', function (d) {
+	      var inst_x = params.viz.uni_margin;
+	      var inst_y = d.pos_mid;
+	      return 'translate(' + inst_x + ',' + inst_y + ') ' + 'scale(1, ' + 1 / zoom_y + ')';
+	    });
 
-	        shift_top_viz = half_height + pan_dy;
+	    d3.select(params.root + ' .col_dendro_icons_group').attr('transform', 'translate(' + [0, 0 + center_y] + ')' + ' scale(' + zoom_x + ',' + zoom_y + ')' + 'translate(' + [pan_dx, pan_dy] + ')');
 
-	        shift_up_viz = half_height / params.viz.zoom_switch - shift_top_viz; //- move_up_one_row;
+	    d3.select(params.root + ' .col_dendro_icons_group').selectAll('path').attr('transform', function (d) {
+	      var inst_x = d.pos_mid;
+	      var inst_y = params.viz.uni_margin;
+	      return 'translate(' + inst_x + ',' + inst_y + ') ' + 'scale(' + 1 / zoom_x + ',1)';
+	    });
 
-	        // reduce pan_dy so that the visualization does not get panned to far down
-	        pan_dy = pan_dy + shift_up_viz;
-	      }
+	    // column value bars
+	    ///////////////////////
+	    // reduce the height of the column value bars based on the zoom applied
+	    // recalculate the height and divide by the zooming scale
+	    // col_label_obj.select('rect')
+	    if (utils.has(params.network_data.col_nodes[0], 'value')) {
 
-	      // will improve this !!
-	      zoom_y = fin_zoom;
-
-	      if (fin_zoom <= params.viz.zoom_switch) {
-	        zoom_x = 1;
-	      } else {
-	        zoom_x = fin_zoom / params.viz.zoom_switch;
-	      }
-
-	      // search duration - the duration of zooming and panning
-	      search_duration = 700;
-
-	      // center_y
-
-	      center_y = -(zoom_y - 1) * half_height;
-
-	      // transform clust group
-	      ////////////////////////////
-
-	      d3.select(params.root + ' .clust_group').transition().duration(search_duration)
-	      // first apply the margin transformation
-	      // then zoom, then apply the final transformation
-	      .attr('transform', 'translate(' + [0, 0 + center_y] + ')' + ' scale(' + zoom_x + ',' + zoom_y + ')' + 'translate(' + [pan_dx, pan_dy] + ')');
-
-	      // transform row labels
-	      d3.select(params.root + ' .row_label_zoom_container').transition().duration(search_duration).attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' + zoom_y + ',' + zoom_y + ')' + 'translate(' + [0, pan_dy] + ')');
-
-	      // transform row_cat_container
-	      // use the offset saved in params, only zoom in the y direction
-	      d3.select(params.root + ' .row_cat_container').transition().duration(search_duration).attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' + 1 + ',' + zoom_y + ')' + 'translate(' + [0, pan_dy] + ')');
-
-	      d3.select(params.root + ' .row_dendro_container').transition().duration(search_duration).attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' + zoom_x + ',' + zoom_y + ')' + 'translate(' + [params.viz.uni_margin / 2, pan_dy] + ')');
-
-	      // toggle crop buttons
-
-	      _.each(['row', 'col'], function (inst_rc) {
-
-	        inst_button_opacity = d3.select(params.root + ' .' + inst_rc + '_dendro_crop_buttons').style('opacity');
-	        d3.selectAll(params.root + ' .' + inst_rc + '_dendro_crop_buttons').style('opacity', 0);
-	        setTimeout(show_crop_buttons, 700, inst_rc, inst_button_opacity);
+	      d3.selectAll(params.root + ' .col_bars').attr('width', function (d) {
+	        var inst_value = 0;
+	        if (d.value > 0) {
+	          inst_value = params.labels.bar_scale_col(d.value) / zoom_x;
+	        }
+	        return inst_value;
 	      });
+	    }
 
-	      // transform col labels
-	      d3.select(params.root + ' .col_zoom_container').transition().duration(search_duration).attr('transform', ' scale(' + zoom_x + ',' + zoom_x + ')' + 'translate(' + [pan_dx, 0] + ')');
+	    if (utils.has(params.network_data.row_nodes[0], 'value')) {
 
-	      // transform col_class
-	      d3.select(params.root + ' .col_cat_container').transition().duration(search_duration).attr('transform', ' scale(' + zoom_x + ',' + 1 + ')' + 'translate(' + [pan_dx, 0] + ')');
-
-	      d3.select(params.root + ' .col_dendro_container').transition().duration(search_duration).attr('transform', ' scale(' + zoom_x + ',' + 1 + ')' + 'translate(' + [pan_dx, params.viz.uni_margin / 2] + ')');
-
-	      // set y translate: center_y is positive, positive moves the visualization down
-	      // the translate vector has the initial margin, the first y centering, and pan_dy
-	      // times the scaling zoom_y
-	      net_y_offset = params.viz.clust.margin.top + center_y + pan_dy * zoom_y;
-	      net_x_offset = params.viz.clust.margin.left + pan_dx;
-
-	      // reset the zoom and translate
-
-	      params.zoom_behavior.scale(zoom_y).translate([net_x_offset, net_y_offset]);
-
-	      label_constrain_and_trim(params);
-
-	      // re-size of the highlighting rects
-	      /////////////////////////////////////////
-	      d3.select(params.root + ' .row_label_zoom_container').each(function () {
-	        // get the bounding box of the row label text
-	        var bbox = d3.select(this).select('text')[0][0].getBBox();
-
-	        // use the bounding box to set the size of the rect
-	        d3.select(this).select('rect').attr('x', bbox.x * 0.5).attr('y', 0).attr('width', bbox.width * 0.5).attr('height', params.viz.y_scale.rangeBand()).style('fill', 'yellow');
+	      d3.selectAll(params.root + ' .row_bars').transition().duration(search_duration).attr('width', function (d) {
+	        var inst_value = 0;
+	        inst_value = params.labels.bar_scale_row(Math.abs(d.value)) / zoom_y;
+	        return inst_value;
+	      }).attr('x', function (d) {
+	        var inst_value = 0;
+	        inst_value = -params.labels.bar_scale_row(Math.abs(d.value)) / zoom_y;
+	        return inst_value;
 	      });
+	    }
 
-	      // reset crop button zooming
-	      d3.select(params.root + ' .row_dendro_icons_group').attr('transform', 'translate(' + [0, 0 + center_y] + ')' + ' scale(' + zoom_x + ',' + zoom_y + ')' + 'translate(' + [pan_dx, pan_dy] + ')');
-
-	      d3.select(params.root + ' .row_dendro_icons_group').selectAll('path').attr('transform', function (d) {
-	        var inst_x = params.viz.uni_margin;
-	        var inst_y = d.pos_mid;
-	        return 'translate(' + inst_x + ',' + inst_y + ') ' + 'scale(1, ' + 1 / zoom_y + ')';
-	      });
-
-	      d3.select(params.root + ' .col_dendro_icons_group').attr('transform', 'translate(' + [0, 0 + center_y] + ')' + ' scale(' + zoom_x + ',' + zoom_y + ')' + 'translate(' + [pan_dx, pan_dy] + ')');
-
-	      d3.select(params.root + ' .col_dendro_icons_group').selectAll('path').attr('transform', function (d) {
-	        var inst_x = d.pos_mid;
-	        var inst_y = params.viz.uni_margin;
-	        return 'translate(' + inst_x + ',' + inst_y + ') ' + 'scale(' + 1 / zoom_x + ',1)';
-	      });
-
-	      // column value bars
-	      ///////////////////////
-	      // reduce the height of the column value bars based on the zoom applied
-	      // recalculate the height and divide by the zooming scale
-	      // col_label_obj.select('rect')
-	      if (utils.has(params.network_data.col_nodes[0], 'value')) {
-
-	        d3.selectAll(params.root + ' .col_bars').attr('width', function (d) {
-	          var inst_value = 0;
-	          if (d.value > 0) {
-	            inst_value = params.labels.bar_scale_col(d.value) / zoom_x;
-	          }
-	          return inst_value;
-	        });
-	      }
-
-	      if (utils.has(params.network_data.row_nodes[0], 'value')) {
-
-	        d3.selectAll(params.root + ' .row_bars').transition().duration(search_duration).attr('width', function (d) {
-	          var inst_value = 0;
-	          inst_value = params.labels.bar_scale_row(Math.abs(d.value)) / zoom_y;
-	          return inst_value;
-	        }).attr('x', function (d) {
-	          var inst_value = 0;
-	          inst_value = -params.labels.bar_scale_row(Math.abs(d.value)) / zoom_y;
-	          return inst_value;
-	        });
-	      }
-
-	      toggle_grid_lines(params);
-	    })();
+	    toggle_grid_lines(params);
 	  }
-	};
+
+	  function show_crop_buttons(inst_rc, inst_button_opacity) {
+	    d3.selectAll(params.root + ' .' + inst_rc + '_dendro_crop_buttons').transition().duration(search_duration).style('opacity', inst_button_opacity);
+	  }
+		};
 
 /***/ },
 /* 99 */
@@ -9653,7 +9547,7 @@ var Clustergrammer =
 
 	var reset_size_after_update = __webpack_require__(148);
 	var make_row_label_container = __webpack_require__(50);
-	var make_col_label_container = __webpack_require__(70);
+	var make_col_label_container = __webpack_require__(51);
 	var eeu_existing_row = __webpack_require__(149);
 	var exit_components = __webpack_require__(153);
 	var draw_gridlines = __webpack_require__(40);
@@ -14127,6 +14021,99 @@ var Clustergrammer =
 	  slider_container.append('div').classed('sidebar_text', true).classed('opacity_slider_text', true).style('margin-bottom', '3px').text('Opacity Slider');
 
 	  slider_container.append('div').classed('slider', true).classed('opacity_slider', true);
+		};
+
+/***/ },
+/* 209 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var utils = __webpack_require__(2);
+	var add_row_click_hlight = __webpack_require__(69);
+	var row_reorder = __webpack_require__(70);
+	var col_reorder = __webpack_require__(53);
+	var make_row_tooltips = __webpack_require__(71);
+
+	module.exports = function make_row_labels(cgm) {
+	  var text_delay = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
+
+
+	  var params = cgm.params;
+	  var row_nodes = params.network_data.row_nodes;
+	  var row_nodes_names = params.network_data.row_nodes_names;
+
+	  // make row labels in row_label_zoom_container, bind row_nodes data
+	  var row_labels = d3.select(params.root + ' .row_label_zoom_container').selectAll('g').data(row_nodes, function (d) {
+	    return d.name;
+	  }).enter().append('g').classed('row_label_group', true);
+
+	  row_labels.attr('transform', function (d) {
+	    var inst_index = _.indexOf(row_nodes_names, d.name);
+	    return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
+	  });
+
+	  row_labels.on('dblclick', function (d) {
+
+	    var data_attr = '__data__';
+	    var row_name = this[data_attr].name;
+
+	    if (params.sim_mat) {
+	      row_reorder(cgm, this, row_name);
+
+	      var col_selection = d3.selectAll(params.root + ' .col_label_text').filter(function (d) {
+	        return d.name == row_name;
+	      })[0][0];
+
+	      col_reorder(cgm, col_selection, row_name);
+	    } else {
+	      row_reorder(cgm, this, row_name);
+	    }
+	    if (params.tile_click_hlight) {
+	      add_row_click_hlight(this, d.ini);
+	    }
+	  });
+
+	  make_row_tooltips(params);
+
+	  // append rectangle behind text
+	  row_labels.insert('rect').style('opacity', 0);
+
+	  // append row label text
+	  row_labels.append('text').attr('y', params.viz.rect_height * 0.5 + params.labels.default_fs_row * 0.35).attr('text-anchor', 'end').style('font-size', params.labels.default_fs_row + 'px').text(function (d) {
+	    return utils.normal_name(d);
+	  }).attr('pointer-events', 'none').style('opacity', 0).style('cursor', 'default').transition().delay(text_delay).duration(text_delay).style('opacity', 1);
+
+	  // change the size of the highlighting rects
+	  row_labels.each(function () {
+	    var bbox = d3.select(this).select('text')[0][0].getBBox();
+	    d3.select(this).select('rect').attr('x', bbox.x).attr('y', 0).attr('width', bbox.width).attr('height', params.viz.y_scale.rangeBand()).style('fill', function () {
+	      var inst_hl = 'yellow';
+	      return inst_hl;
+	    }).style('opacity', function (d) {
+	      var inst_opacity = 0;
+	      // highlight target genes
+	      if (d.target === 1) {
+	        inst_opacity = 1;
+	      }
+	      return inst_opacity;
+	    });
+	  });
+
+	  if (utils.has(params.network_data.row_nodes[0], 'value')) {
+
+	    row_labels.append('rect').classed('row_bars', true).attr('width', function (d) {
+	      var inst_value = 0;
+	      inst_value = params.labels.bar_scale_row(Math.abs(d.value));
+	      return inst_value;
+	    }).attr('x', function (d) {
+	      var inst_value = 0;
+	      inst_value = -params.labels.bar_scale_row(Math.abs(d.value));
+	      return inst_value;
+	    }).attr('height', params.viz.y_scale.rangeBand()).attr('fill', function (d) {
+	      return d.value > 0 ? params.matrix.bar_colors[0] : params.matrix.bar_colors[1];
+	    }).attr('opacity', 0.4);
+	  }
 		};
 
 /***/ }
