@@ -38,8 +38,7 @@ module.exports = function Viz(cgm) {
 
   generate_matrix(params, svg_group);
 
-  var delay_text = 0;
-  make_row_label_container(cgm, delay_text);
+  make_row_label_container(cgm);
 
   if (params.viz.show_dendrogram){
     make_row_dendro(cgm);
@@ -48,7 +47,7 @@ module.exports = function Viz(cgm) {
 
   make_row_dendro_spillover(cgm);
 
-  make_col_label_container(cgm, delay_text);
+  make_col_label_container(cgm);
 
   _.each(['row','col'], function(inst_rc){
 
