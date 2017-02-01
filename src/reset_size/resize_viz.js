@@ -76,7 +76,7 @@ module.exports = function(cgm) {
   }
 
   // prevent normal double click zoom etc
-  ini_doubleclick(params);
+  ini_doubleclick(cgm);
 
   svg_group
     .attr('width', params.viz.svg_dim.width)
@@ -200,7 +200,7 @@ module.exports = function(cgm) {
       params.viz.clust.margin.left + ',' +
       params.viz.clust.margin.top + ')');
 
-  show_visible_area(params);
+  show_visible_area(cgm);
 
   make_row_cat_super_labels(cgm);
 

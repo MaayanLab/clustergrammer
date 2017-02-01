@@ -6,7 +6,9 @@ var zoom_crop_triangles = require('./zoom_crop_triangles');
 var get_previous_zoom = require('./get_previous_zoom');
 var toggle_labels = require('./toggle_labels');
 
-module.exports = function run_transformation(params){
+module.exports = function run_transformation(cgm){
+
+  var params = cgm.params;
 
   var zoom_info = params.zoom_info;
 
@@ -90,10 +92,10 @@ module.exports = function run_transformation(params){
     // console.log('zooming in')
   } else {
     // console.log('zooming out')
-    show_visible_area(params);
+    show_visible_area(cgm);
   }
 
   setTimeout(not_zooming, 100);
-  setTimeout(check_if_zooming_has_stopped, 300, params);
+  setTimeout(check_if_zooming_has_stopped, 300, cgm);
 
 };

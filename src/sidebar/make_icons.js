@@ -159,7 +159,7 @@ module.exports = function make_icons(cgm, sidebar){
 
         }
 
-        two_translate_zoom(params, 0, 0, 1);
+        two_translate_zoom(cgm, 0, 0, 1);
       }
 
     })

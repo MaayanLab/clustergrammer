@@ -49,30 +49,30 @@ var Clustergrammer =
 
 	var make_config = __webpack_require__(1);
 	var make_params = __webpack_require__(9);
-	var make_viz = __webpack_require__(35);
-	var resize_viz = __webpack_require__(79);
-	var play_demo = __webpack_require__(123);
-	var ini_demo = __webpack_require__(162);
-	var filter_viz_using_nodes = __webpack_require__(165);
-	var filter_viz_using_names = __webpack_require__(166);
-	var update_cats = __webpack_require__(167);
-	var reset_cats = __webpack_require__(168);
-	var two_translate_zoom = __webpack_require__(91);
-	var external_update_view = __webpack_require__(170);
-	var export_matrix = __webpack_require__(173);
-	var crop_matrix = __webpack_require__(175);
-	var run_zoom = __webpack_require__(80);
-	var d3_tip_custom = __webpack_require__(48);
+	var make_viz = __webpack_require__(38);
+	var resize_viz = __webpack_require__(81);
+	var play_demo = __webpack_require__(131);
+	var ini_demo = __webpack_require__(170);
+	var filter_viz_using_nodes = __webpack_require__(173);
+	var filter_viz_using_names = __webpack_require__(174);
+	var update_cats = __webpack_require__(175);
+	var reset_cats = __webpack_require__(176);
+	var two_translate_zoom = __webpack_require__(98);
+	var external_update_view = __webpack_require__(178);
+	var export_matrix = __webpack_require__(181);
+	var crop_matrix = __webpack_require__(183);
+	var run_zoom = __webpack_require__(82);
+	var d3_tip_custom = __webpack_require__(49);
 
 	// moved d3.slider to src
-	d3.slider = __webpack_require__(177);
+	d3.slider = __webpack_require__(185);
 
 	/* eslint-disable */
 
-	var awesomplete = __webpack_require__(179);
+	var awesomplete = __webpack_require__(187);
 	// getting css from src
-	__webpack_require__(181);
-	__webpack_require__(185);
+	__webpack_require__(189);
+	__webpack_require__(193);
 
 	/* clustergrammer v1.11.6
 	 * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
@@ -104,7 +104,7 @@ var Clustergrammer =
 	  cgm.params.zoom_behavior.translate([cgm.params.viz.clust.margin.left, cgm.params.viz.clust.margin.top]);
 
 	  if (cgm.params.use_sidebar) {
-	    var make_sidebar = __webpack_require__(187);
+	    var make_sidebar = __webpack_require__(195);
 	    make_sidebar(cgm);
 	  }
 
@@ -132,7 +132,7 @@ var Clustergrammer =
 	  }
 
 	  function zoom_api(pan_dx, pan_dy, fin_zoom) {
-	    two_translate_zoom(this.params, pan_dx, pan_dy, fin_zoom);
+	    two_translate_zoom(this, pan_dx, pan_dy, fin_zoom);
 	  }
 
 	  function expose_d3_tip_custom() {
@@ -641,7 +641,7 @@ var Clustergrammer =
 	var make_requested_view = __webpack_require__(14);
 	var get_available_filters = __webpack_require__(4);
 	var calc_viz_params = __webpack_require__(15);
-	var ini_zoom_info = __webpack_require__(34);
+	var ini_zoom_info = __webpack_require__(37);
 
 	/*
 	Params: calculates the size of all the visualization elements in the
@@ -957,8 +957,8 @@ var Clustergrammer =
 	var calc_clust_height = __webpack_require__(28);
 	var calc_val_max = __webpack_require__(29);
 	var calc_matrix_params = __webpack_require__(30);
-	var set_zoom_params = __webpack_require__(31);
-	var calc_default_fs = __webpack_require__(33);
+	var set_zoom_params = __webpack_require__(34);
+	var calc_default_fs = __webpack_require__(36);
 
 	module.exports = function calc_viz_params(params) {
 	  var preserve_cats = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
@@ -1674,8 +1674,8 @@ var Clustergrammer =
 
 	'use strict';
 
-	var ini_matrix_params = __webpack_require__(201);
-	var calc_downsampled_matrix = __webpack_require__(203);
+	var ini_matrix_params = __webpack_require__(31);
+	var calc_downsampled_matrix = __webpack_require__(33);
 
 	module.exports = function calc_matrix_params(params) {
 
@@ -1800,7 +1800,307 @@ var Clustergrammer =
 
 	'use strict';
 
-	var calc_zoom_switching = __webpack_require__(32);
+	var utils = __webpack_require__(2);
+	var initialize_matrix = __webpack_require__(32);
+
+	module.exports = function ini_matrix_params(params) {
+
+	  var matrix = {};
+
+	  var network_data = params.network_data;
+
+	  matrix.tile_colors = params.tile_colors;
+	  matrix.bar_colors = params.bar_colors;
+	  matrix.outline_colors = params.outline_colors;
+	  matrix.hlight_color = params.highlight_color;
+	  matrix.tile_title = params.tile_title;
+	  matrix.show_tile_tooltips = params.show_tile_tooltips;
+	  matrix.make_tile_tooltip = params.make_tile_tooltip;
+
+	  // initialized clicked tile and rows
+	  matrix.click_hlight_x = -666;
+	  matrix.click_hlight_y = -666;
+	  matrix.click_hlight_row = -666;
+	  matrix.click_hlight_col = -666;
+
+	  // definition of a large matrix (num links) determines if transition is run
+	  matrix.def_large_matrix = 10000;
+	  matrix.opacity_function = params.opacity_scale;
+
+	  matrix.orders = {};
+
+	  _.each(['row', 'col'], function (inst_rc) {
+
+	    // row ordering is based on col info and vice versa
+	    var other_rc;
+	    if (inst_rc === 'row') {
+	      other_rc = 'col';
+	    } else {
+	      other_rc = 'row';
+	    }
+
+	    // the nodes are defined using other_rc
+	    var inst_nodes = network_data[other_rc + '_nodes'];
+	    var num_nodes = inst_nodes.length;
+
+	    var nodes_names = utils.pluck(inst_nodes, 'name');
+	    var tmp = nodes_names.sort();
+
+	    var alpha_index = _.map(tmp, function (d) {
+	      return network_data[other_rc + '_nodes_names'].indexOf(d);
+	    });
+
+	    matrix.orders['alpha_' + inst_rc] = alpha_index;
+
+	    var possible_orders = ['clust', 'rank'];
+
+	    if (_.has(inst_nodes[0], 'rankvar')) {
+	      possible_orders.push('rankvar');
+	    }
+
+	    if (params.viz.all_cats[other_rc].length > 0) {
+	      _.each(params.viz.all_cats[other_rc], function (inst_cat) {
+	        // the index of the category has replaced - with _
+	        inst_cat = inst_cat.replace('-', '_');
+	        possible_orders.push(inst_cat + '_index');
+	      });
+	    }
+
+	    _.each(possible_orders, function (inst_order) {
+
+	      var tmp_order_index = d3.range(num_nodes).sort(function (a, b) {
+	        return inst_nodes[b][inst_order] - inst_nodes[a][inst_order];
+	      });
+
+	      matrix.orders[inst_order + '_' + inst_rc] = tmp_order_index;
+	    });
+	  });
+
+	  if (utils.has(network_data, 'all_links')) {
+	    matrix.max_link = _.max(network_data.all_links, function (d) {
+	      return Math.abs(d.value);
+	    }).value;
+	  } else {
+	    matrix.max_link = _.max(network_data.links, function (d) {
+	      return Math.abs(d.value);
+	    }).value;
+	  }
+
+	  matrix.abs_max_val = Math.abs(matrix.max_link) * params.clamp_opacity;
+
+	  if (params.input_domain === 0) {
+	    if (matrix.opacity_function === 'linear') {
+	      matrix.opacity_scale = d3.scale.linear().domain([0, matrix.abs_max_val]).clamp(true).range([0.0, 1.0]);
+	    } else if (matrix.opacity_function === 'log') {
+	      matrix.opacity_scale = d3.scale.log().domain([0.001, matrix.abs_max_val]).clamp(true).range([0.0, 1.0]);
+	    }
+	  } else {
+	    if (matrix.opacity_function === 'linear') {
+	      matrix.opacity_scale = d3.scale.linear().domain([0, params.input_domain]).clamp(true).range([0.0, 1.0]);
+	    } else if (matrix.opacity_function === 'log') {
+	      matrix.opacity_scale = d3.scale.log().domain([0.001, params.input_domain]).clamp(true).range([0.0, 1.0]);
+	    }
+	  }
+
+	  var has_val_up = utils.has(network_data.links[0], 'value_up');
+	  var has_val_dn = utils.has(network_data.links[0], 'value_dn');
+
+	  if (has_val_up || has_val_dn) {
+	    matrix.tile_type = 'updn';
+	  } else {
+	    matrix.tile_type = 'simple';
+	  }
+
+	  if (utils.has(network_data.links[0], 'highlight')) {
+	    matrix.highlight = 1;
+	  } else {
+	    matrix.highlight = 0;
+	  }
+
+	  matrix.matrix = initialize_matrix(network_data);
+
+	  matrix.wait_tooltip = 0;
+
+	  return matrix;
+	};
+
+/***/ },
+/* 32 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var utils = __webpack_require__(2);
+
+	module.exports = function (network_data) {
+	  var matrix = [];
+	  var ini_object;
+
+	  var keep_orig;
+	  if (utils.has(network_data.links[0], 'value_orig')) {
+	    keep_orig = true;
+	  } else {
+	    keep_orig = false;
+	  }
+
+	  network_data.row_nodes.forEach(function (tmp, row_index) {
+
+	    matrix[row_index] = {};
+	    matrix[row_index].name = network_data.row_nodes[row_index].name;
+	    matrix[row_index].row_index = row_index;
+
+	    matrix[row_index].row_data = d3.range(network_data.col_nodes.length).map(function (col_index) {
+
+	      if (utils.has(network_data.links[0], 'value_up') || utils.has(network_data.links[0], 'value_dn')) {
+
+	        ini_object = {
+	          pos_x: col_index,
+	          pos_y: row_index,
+	          value: 0,
+	          value_up: 0,
+	          value_dn: 0,
+	          highlight: 0
+	        };
+	      } else {
+
+	        ini_object = {
+	          pos_x: col_index,
+	          pos_y: row_index,
+	          value: 0,
+	          highlight: 0
+	        };
+	      }
+
+	      if (keep_orig) {
+	        ini_object.value_orig = 0;
+	      }
+
+	      return ini_object;
+	    });
+	  });
+
+	  network_data.links.forEach(function (link) {
+
+	    // transfer additional link information is necessary
+	    matrix[link.source].row_data[link.target].value = link.value;
+	    matrix[link.source].row_data[link.target].row_name = link.row_name;
+	    matrix[link.source].row_data[link.target].col_name = link.col_name;
+
+	    if (utils.has(link, 'value_up') || utils.has(link, 'value_dn')) {
+	      matrix[link.source].row_data[link.target].value_up = link.value_up;
+	      matrix[link.source].row_data[link.target].value_dn = link.value_dn;
+	    }
+
+	    if (keep_orig) {
+	      matrix[link.source].row_data[link.target].value_orig = link.value_orig;
+	    }
+
+	    if (link.highlight) {
+	      matrix[link.source].row_data[link.target].highlight = link.highlight;
+	    }
+	    if (link.info) {
+	      matrix[link.source].row_data[link.target].info = link.info;
+	    }
+	  });
+
+	  return matrix;
+	};
+
+/***/ },
+/* 33 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = function calc_downsampled_matrix(params, ds_layer) {
+
+	  var inst_num_rows = params.viz.ds[ds_layer].num_rows;
+
+	  var num_compressed_rows = params.network_data.row_nodes.length / inst_num_rows;
+
+	  // increase ds opacity, as more rows are compressed into a single downsampled
+	  // row, increase the opacity of the downsampled row.
+	  var opacity_factor = params.viz.ds_opacity_scale(num_compressed_rows);
+
+	  var mod_val = params.viz.clust.dim.height / inst_num_rows;
+	  var mat = params.matrix.matrix;
+
+	  var ds_mat = [];
+	  var inst_obj;
+
+	  var len_ds_array = inst_num_rows + 1;
+
+	  var i;
+	  var x;
+
+	  // initialize array of objects
+	  for (i = 0; i < len_ds_array; i++) {
+
+	    inst_obj = {};
+	    inst_obj.row_index = i;
+	    inst_obj.name = String(i);
+	    inst_obj.all_names = [];
+
+	    ds_mat.push(inst_obj);
+	  }
+
+	  _.each(mat, function (inst_row) {
+
+	    var inst_y = params.viz.y_scale(inst_row.row_index);
+
+	    var ds_index = Math.round(inst_y / mod_val);
+
+	    var inst_row_data = inst_row.row_data;
+
+	    // gather names
+	    ds_mat[ds_index].all_names.push(inst_row.name);
+
+	    // gather row_data
+	    if (_.has(ds_mat[ds_index], 'row_data')) {
+
+	      for (x = 0; x < inst_row_data.length; x++) {
+	        ds_mat[ds_index].row_data[x].value = ds_mat[ds_index].row_data[x].value + inst_row_data[x].value;
+	      }
+	    } else {
+
+	      var new_data = [];
+	      for (x = 0; x < inst_row_data.length; x++) {
+	        new_data[x] = inst_row_data[x];
+	      }
+
+	      ds_mat[ds_index].row_data = new_data;
+	    }
+	  });
+
+	  // average the values
+	  _.each(ds_mat, function (tmp_ds) {
+
+	    var tmp_row_data = tmp_ds.row_data;
+
+	    var num_names = tmp_ds.all_names.length;
+
+	    _.each(tmp_row_data, function (tmp_obj) {
+	      tmp_obj.value = tmp_obj.value / num_names * opacity_factor;
+	    });
+	  });
+
+	  // all names were found
+	  var all_names = [];
+
+	  _.each(ds_mat, function (inst_row) {
+	    all_names = all_names.concat(inst_row.all_names);
+	  });
+
+	  return ds_mat;
+		};
+
+/***/ },
+/* 34 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var calc_zoom_switching = __webpack_require__(35);
 
 	module.exports = function set_zoom_params(params) {
 
@@ -1818,7 +2118,7 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 32 */
+/* 35 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1840,7 +2140,7 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 33 */
+/* 36 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1862,7 +2162,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 34 */
+/* 37 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1879,25 +2179,25 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 35 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var generate_matrix = __webpack_require__(36);
-	var make_row_label_container = __webpack_require__(212);
-	var make_col_label_container = __webpack_require__(211);
-	var generate_super_labels = __webpack_require__(72);
-	var spillover = __webpack_require__(73);
-	var initialize_resizing = __webpack_require__(78);
-	var ini_doubleclick = __webpack_require__(90);
-	var make_col_cat = __webpack_require__(110);
-	var make_row_cat = __webpack_require__(116);
-	var trim_text = __webpack_require__(86);
-	var make_row_dendro = __webpack_require__(117);
-	var make_col_dendro = __webpack_require__(118);
-	var make_svg_dendro_sliders = __webpack_require__(119);
-	var make_row_dendro_spillover = __webpack_require__(122);
+	var generate_matrix = __webpack_require__(39);
+	var make_row_label_container = __webpack_require__(50);
+	var make_col_label_container = __webpack_require__(70);
+	var generate_super_labels = __webpack_require__(74);
+	var spillover = __webpack_require__(75);
+	var initialize_resizing = __webpack_require__(80);
+	var ini_doubleclick = __webpack_require__(97);
+	var make_col_cat = __webpack_require__(118);
+	var make_row_cat = __webpack_require__(124);
+	var trim_text = __webpack_require__(88);
+	var make_row_dendro = __webpack_require__(125);
+	var make_col_dendro = __webpack_require__(126);
+	var make_svg_dendro_sliders = __webpack_require__(127);
+	var make_row_dendro_spillover = __webpack_require__(130);
 
 	module.exports = function Viz(cgm) {
 
@@ -1922,17 +2222,20 @@ var Clustergrammer =
 
 	  make_col_label_container(cgm);
 
-	  _.each(['row', 'col'], function (inst_rc) {
+	  // initial trim text
+	  if (params.viz.ds_level === -1) {
+	    _.each(['row', 'col'], function (inst_rc) {
 
-	    var inst_fs = Number(d3.select('.' + inst_rc + '_label_group').select('text').style('font-size').replace('px', ''));
+	      var inst_fs = Number(d3.select('.' + inst_rc + '_label_group').select('text').style('font-size').replace('px', ''));
 
-	    var min_trim_fs = 8;
-	    if (inst_fs > min_trim_fs) {
-	      d3.selectAll(params.root + ' .' + inst_rc + '_label_group').each(function () {
-	        trim_text(params, this, inst_rc);
-	      });
-	    }
-	  });
+	      var min_trim_fs = 8;
+	      if (inst_fs > min_trim_fs) {
+	        d3.selectAll(params.root + ' .' + inst_rc + '_label_group').each(function () {
+	          trim_text(params, this, inst_rc);
+	        });
+	      }
+	    });
+	  }
 
 	  // make category colorbars
 	  make_row_cat(cgm);
@@ -1980,7 +2283,7 @@ var Clustergrammer =
 
 	  initialize_resizing(cgm);
 
-	  ini_doubleclick(params);
+	  ini_doubleclick(cgm);
 
 	  if (params.viz.do_zoom) {
 	    d3.select(params.viz.zoom_element).call(params.zoom_behavior);
@@ -1990,15 +2293,15 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 36 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var utils = __webpack_require__(2);
-	var draw_gridlines = __webpack_require__(37);
-	var add_click_hlight = __webpack_require__(40);
-	var make_matrix_rows = __webpack_require__(41);
+	var draw_gridlines = __webpack_require__(40);
+	var add_click_hlight = __webpack_require__(41);
+	var make_matrix_rows = __webpack_require__(42);
 
 	module.exports = function (params, svg_elem) {
 	  var network_data = params.network_data;
@@ -2082,7 +2385,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 37 */
+/* 40 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -2134,72 +2437,7 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 38 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	module.exports = function grid_lines_viz(params) {
-	  var duration = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
-
-
-	  var delay = 0;
-	  if (duration > 0) {
-	    delay = 2000;
-	  }
-
-	  var horz_lines = d3.selectAll(params.root + ' .horz_lines');
-	  var vert_lines = d3.selectAll(params.root + ' .vert_lines');
-
-	  var row_nodes_names = params.network_data.row_nodes_names;
-	  var col_nodes_names = params.network_data.col_nodes_names;
-
-	  horz_lines.style('opacity', 0).attr('transform', function (d) {
-	    var inst_index = _.indexOf(row_nodes_names, d.name);
-	    var inst_trans = params.viz.y_scale(inst_index);
-	    return 'translate(  0,' + inst_trans + ') rotate(0)';
-	  }).transition().duration(duration).delay(delay).style('opacity', 1);
-
-	  horz_lines.append('line').attr('x1', 0).attr('x2', params.viz.clust.dim.width).style('stroke-width', function () {
-	    var inst_width = params.viz.border_width.y;
-	    return inst_width + 'px';
-	  });
-
-	  vert_lines.style('opacity', 0).attr('transform', function (d) {
-	    var inst_index = _.indexOf(col_nodes_names, d.name);
-	    var inst_trans = params.viz.x_scale(inst_index);
-	    return 'translate(' + inst_trans + ') rotate(-90)';
-	  }).transition().duration(duration).delay(delay).style('opacity', 1);
-
-	  vert_lines.append('line').attr('x1', 0).attr('x2', -params.viz.clust.dim.height).style('stroke-width', function () {
-	    var inst_width = params.viz.border_width.x;
-	    return inst_width + 'px';
-	  });
-		};
-
-/***/ },
-/* 39 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	module.exports = function toggle_grid_lines(params) {
-
-	  if (params.zoom_info.zoom_x * params.viz.border_width.x > 1) {
-	    d3.selectAll(params.root + ' .vert_lines').select('line').style('display', 'block').style('opacity', 0).transition().style('opacity', 1);
-	  } else {
-	    d3.selectAll(params.root + ' .vert_lines').select('line').style('display', 'none');
-	  }
-
-	  if (params.zoom_info.zoom_y * params.viz.border_width.y > 1) {
-	    d3.selectAll(params.root + ' .horz_lines').select('line').style('display', 'block').style('opacity', 0).transition().style('opacity', 1);
-	  } else {
-	    d3.selectAll(params.root + ' .horz_lines').select('line').style('display', 'none');
-	  }
-	};
-
-/***/ },
-/* 40 */
+/* 41 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -2261,14 +2499,15 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 41 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_simple_rows = __webpack_require__(42);
-	var d3_tip_custom = __webpack_require__(48);
+	var make_simple_rows = __webpack_require__(43);
+	var d3_tip_custom = __webpack_require__(49);
 
+	// current matrix can change with downsampling
 	module.exports = function make_matrix_rows(params, current_matrix) {
 	  var row_names = arguments.length <= 2 || arguments[2] === undefined ? 'all' : arguments[2];
 	  var ds_level = arguments.length <= 3 || arguments[3] === undefined ? -1 : arguments[3];
@@ -2335,18 +2574,18 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 42 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	/* eslint-disable */
 
-	var draw_up_tile = __webpack_require__(43);
-	var draw_dn_tile = __webpack_require__(44);
-	var mouseover_tile = __webpack_require__(45);
-	var mouseout_tile = __webpack_require__(46);
-	var fine_position_tile = __webpack_require__(47);
+	var draw_up_tile = __webpack_require__(44);
+	var draw_dn_tile = __webpack_require__(45);
+	var mouseover_tile = __webpack_require__(46);
+	var mouseout_tile = __webpack_require__(47);
+	var fine_position_tile = __webpack_require__(48);
 
 	module.exports = function make_simple_rows(params, inst_data, tip, row_selection) {
 	  var ds_level = arguments.length <= 4 || arguments[4] === undefined ? -1 : arguments[4];
@@ -2532,7 +2771,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 43 */
+/* 44 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -2550,7 +2789,7 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 44 */
+/* 45 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -2568,7 +2807,7 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 45 */
+/* 46 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -2625,7 +2864,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 46 */
+/* 47 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -2645,7 +2884,7 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 47 */
+/* 48 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -2667,7 +2906,7 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 48 */
+/* 49 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -3019,8 +3258,140 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 49 */,
 /* 50 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var make_row_labels = __webpack_require__(51);
+
+	module.exports = function make_row_label_container(cgm, text_delay) {
+
+	  var params = cgm.params;
+
+	  var row_container;
+
+	  // row container holds all row text and row visualizations (triangles rects)
+	  ////////////////////////////////////////////////////////////////////////////
+	  if (d3.select(params.viz.viz_svg + ' .row_container').empty()) {
+	    row_container = d3.select(params.viz.viz_svg).append('g').classed('row_container', true).attr('transform', 'translate(' + params.viz.norm_labels.margin.left + ',' + params.viz.clust.margin.top + ')');
+	  } else {
+	    row_container = d3.select(params.viz.viz_svg).select('.row_container').attr('transform', 'translate(' + params.viz.norm_labels.margin.left + ',' + params.viz.clust.margin.top + ')');
+	  }
+
+	  if (d3.select(params.root + ' .row_white_background').empty()) {
+	    row_container.append('rect').classed('row_white_background', true).classed('white_bars', true).attr('fill', params.viz.background_color).attr('width', params.viz.label_background.row).attr('height', 30 * params.viz.clust.dim.height + 'px');
+	  }
+
+	  // add container to hold text row labels if not already there
+	  if (d3.select(params.root + ' .row_label_container').empty()) {
+	    row_container.append('g').classed('row_label_container', true).attr('transform', 'translate(' + params.viz.norm_labels.width.row + ',0)').append('g').classed('row_label_zoom_container', true);
+	  } else {
+	    row_container.select(params.root + ' .row_label_container').attr('transform', 'translate(' + params.viz.norm_labels.width.row + ',0)');
+	  }
+
+	  // make row labels in the container
+	  ///////////////////////////////////////
+	  if (params.viz.ds_level === -1) {
+	    make_row_labels(cgm, text_delay);
+	  }
+		};
+
+/***/ },
+/* 51 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var utils = __webpack_require__(2);
+	var add_row_click_hlight = __webpack_require__(52);
+	var row_reorder = __webpack_require__(53);
+	var col_reorder = __webpack_require__(68);
+	var make_row_tooltips = __webpack_require__(69);
+
+	module.exports = function make_row_labels(cgm) {
+	  var text_delay = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
+
+
+	  var params = cgm.params;
+	  var row_nodes = params.network_data.row_nodes;
+	  var row_nodes_names = params.network_data.row_nodes_names;
+
+	  // make row labels in row_label_zoom_container, bind row_nodes data
+	  var row_labels = d3.select(params.root + ' .row_label_zoom_container').selectAll('g').data(row_nodes, function (d) {
+	    return d.name;
+	  }).enter().append('g').classed('row_label_group', true);
+
+	  row_labels.attr('transform', function (d) {
+	    var inst_index = _.indexOf(row_nodes_names, d.name);
+	    return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
+	  });
+
+	  row_labels.on('dblclick', function (d) {
+
+	    var data_attr = '__data__';
+	    var row_name = this[data_attr].name;
+
+	    if (params.sim_mat) {
+	      row_reorder(cgm, this, row_name);
+
+	      var col_selection = d3.selectAll(params.root + ' .col_label_text').filter(function (d) {
+	        return d.name == row_name;
+	      })[0][0];
+
+	      col_reorder(cgm, col_selection, row_name);
+	    } else {
+	      row_reorder(cgm, this, row_name);
+	    }
+	    if (params.tile_click_hlight) {
+	      add_row_click_hlight(this, d.ini);
+	    }
+	  });
+
+	  make_row_tooltips(params);
+
+	  // append rectangle behind text
+	  row_labels.insert('rect').style('opacity', 0);
+
+	  // append row label text
+	  row_labels.append('text').attr('y', params.viz.rect_height * 0.5 + params.labels.default_fs_row * 0.35).attr('text-anchor', 'end').style('font-size', params.labels.default_fs_row + 'px').text(function (d) {
+	    return utils.normal_name(d);
+	  }).attr('pointer-events', 'none').style('opacity', 0).style('cursor', 'default').transition().delay(text_delay).duration(text_delay).style('opacity', 1);
+
+	  // change the size of the highlighting rects
+	  row_labels.each(function () {
+	    var bbox = d3.select(this).select('text')[0][0].getBBox();
+	    d3.select(this).select('rect').attr('x', bbox.x).attr('y', 0).attr('width', bbox.width).attr('height', params.viz.y_scale.rangeBand()).style('fill', function () {
+	      var inst_hl = 'yellow';
+	      return inst_hl;
+	    }).style('opacity', function (d) {
+	      var inst_opacity = 0;
+	      // highlight target genes
+	      if (d.target === 1) {
+	        inst_opacity = 1;
+	      }
+	      return inst_opacity;
+	    });
+	  });
+
+	  if (utils.has(params.network_data.row_nodes[0], 'value')) {
+
+	    row_labels.append('rect').classed('row_bars', true).attr('width', function (d) {
+	      var inst_value = 0;
+	      inst_value = params.labels.bar_scale_row(Math.abs(d.value));
+	      return inst_value;
+	    }).attr('x', function (d) {
+	      var inst_value = 0;
+	      inst_value = -params.labels.bar_scale_row(Math.abs(d.value));
+	      return inst_value;
+	    }).attr('height', params.viz.y_scale.rangeBand()).attr('fill', function (d) {
+	      return d.value > 0 ? params.matrix.bar_colors[0] : params.matrix.bar_colors[1];
+	    }).attr('opacity', 0.4);
+	  }
+		};
+
+/***/ },
+/* 52 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -3055,16 +3426,16 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 51 */
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var utils = __webpack_require__(2);
-	var reposition_tile_highlight = __webpack_require__(52);
-	var toggle_dendro_view = __webpack_require__(53);
-	var show_visible_area = __webpack_require__(64);
-	var ini_zoom_info = __webpack_require__(34);
+	var reposition_tile_highlight = __webpack_require__(54);
+	var toggle_dendro_view = __webpack_require__(55);
+	var show_visible_area = __webpack_require__(66);
+	var ini_zoom_info = __webpack_require__(37);
 
 	module.exports = function row_reorder(cgm, row_selection, inst_row) {
 
@@ -3181,7 +3552,7 @@ var Clustergrammer =
 
 	  params.zoom_info = ini_zoom_info();
 
-	  show_visible_area(params);
+	  show_visible_area(cgm);
 
 	  setTimeout(function () {
 	    params.viz.run_trans = false;
@@ -3189,7 +3560,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 52 */
+/* 54 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -3232,12 +3603,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 53 */
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_dendro_triangles = __webpack_require__(54);
+	var make_dendro_triangles = __webpack_require__(56);
 
 	module.exports = function toggle_dendro_view(cgm, inst_rc) {
 	  var wait_time = arguments.length <= 2 || arguments[2] === undefined ? 1500 : arguments[2];
@@ -3281,17 +3652,17 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 54 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var calc_row_dendro_triangles = __webpack_require__(55);
-	var calc_col_dendro_triangles = __webpack_require__(56);
-	var dendro_group_highlight = __webpack_require__(57);
-	var d3_tip_custom = __webpack_require__(48);
-	var make_dendro_crop_buttons = __webpack_require__(59);
-	var make_cat_breakdown_graph = __webpack_require__(62);
+	var calc_row_dendro_triangles = __webpack_require__(57);
+	var calc_col_dendro_triangles = __webpack_require__(58);
+	var dendro_group_highlight = __webpack_require__(59);
+	var d3_tip_custom = __webpack_require__(49);
+	var make_dendro_crop_buttons = __webpack_require__(61);
+	var make_cat_breakdown_graph = __webpack_require__(64);
 
 	module.exports = function make_dendro_triangles(cgm, inst_rc) {
 	  var is_change_group = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
@@ -3494,7 +3865,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 55 */
+/* 57 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -3552,7 +3923,7 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 56 */
+/* 58 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -3608,12 +3979,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 57 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var dendro_shade_bars = __webpack_require__(58);
+	var dendro_shade_bars = __webpack_require__(60);
 
 	module.exports = function dendro_group_highlight(params, inst_selection, inst_data, inst_rc) {
 
@@ -3663,7 +4034,7 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 58 */
+/* 60 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -3707,17 +4078,17 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 59 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var calc_row_dendro_triangles = __webpack_require__(55);
-	var calc_col_dendro_triangles = __webpack_require__(56);
-	var d3_tip_custom = __webpack_require__(48);
-	var dendro_group_highlight = __webpack_require__(57);
-	var run_dendro_filter = __webpack_require__(60);
-	var zoom_crop_triangles = __webpack_require__(61);
+	var calc_row_dendro_triangles = __webpack_require__(57);
+	var calc_col_dendro_triangles = __webpack_require__(58);
+	var d3_tip_custom = __webpack_require__(49);
+	var dendro_group_highlight = __webpack_require__(59);
+	var run_dendro_filter = __webpack_require__(62);
+	var zoom_crop_triangles = __webpack_require__(63);
 
 	module.exports = function make_dendro_crop_buttons(cgm, inst_rc) {
 
@@ -4004,7 +4375,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 60 */
+/* 62 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -4046,7 +4417,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 61 */
+/* 63 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -4091,12 +4462,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 62 */
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var calc_cat_cluster_breakdown = __webpack_require__(63);
+	var calc_cat_cluster_breakdown = __webpack_require__(65);
 
 	module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, dendro_info, selector) {
 	  var tooltip = arguments.length <= 5 || arguments[5] === undefined ? false : arguments[5];
@@ -4279,7 +4650,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 63 */
+/* 65 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -4455,19 +4826,22 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 64 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var find_viz_nodes = __webpack_require__(65);
-	var make_matrix_rows = __webpack_require__(41);
+	var find_viz_nodes = __webpack_require__(67);
+	var make_matrix_rows = __webpack_require__(42);
+	var make_row_labels = __webpack_require__(51);
 
-	module.exports = function show_visible_area(params) {
+	module.exports = function show_visible_area(cgm) {
 	  var zooming_stopped = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
 
 
 	  // console.log('show_visible_area stopped: ' + String(zooming_stopped));
+
+	  var params = cgm.params;
 
 	  var zoom_info = params.zoom_info;
 
@@ -4588,15 +4962,14 @@ var Clustergrammer =
 	    }
 	  }
 
-	  // only make new matrix rows if there are missing rows
+	  // only make new matrix_rows if there are missing rows
 	  if (missing_rows.length > 1 || missing_rows === 'all') {
-	    // make new rows
-	    // if (missing_rows === 'all'){
-	    //   console.log('all rows were missing ')
-	    // } else {
-	    //   console.log('num missing rows: ' + String(missing_rows.length))
-	    // }
 	    make_matrix_rows(params, inst_matrix, missing_rows, new_ds_level);
+	  }
+
+	  // only make new row_labels if there are missing rows and not downsampled
+	  if (new_ds_level === -1) {
+	    // make_row_labels();
 	  }
 
 	  function toggle_display(params, d, inst_rc, inst_selection) {
@@ -4618,7 +4991,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 65 */
+/* 67 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -4669,16 +5042,16 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 66 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var utils = __webpack_require__(2);
-	var reposition_tile_highlight = __webpack_require__(52);
-	var toggle_dendro_view = __webpack_require__(53);
-	var show_visible_area = __webpack_require__(64);
-	var ini_zoom_info = __webpack_require__(34);
+	var reposition_tile_highlight = __webpack_require__(54);
+	var toggle_dendro_view = __webpack_require__(55);
+	var show_visible_area = __webpack_require__(66);
+	var ini_zoom_info = __webpack_require__(37);
 
 	module.exports = function col_reorder(cgm, col_selection, inst_term) {
 
@@ -4786,7 +5159,7 @@ var Clustergrammer =
 
 	  params.zoom_info = ini_zoom_info();
 
-	  show_visible_area(params);
+	  show_visible_area(cgm);
 
 	  setTimeout(function () {
 	    params.viz.run_trans = false;
@@ -4794,12 +5167,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 67 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var d3_tip_custom = __webpack_require__(48);
+	var d3_tip_custom = __webpack_require__(49);
 
 	module.exports = function make_row_tooltips(params) {
 
@@ -4850,8 +5223,150 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 68 */,
-/* 69 */
+/* 70 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var utils = __webpack_require__(2);
+	var add_col_click_hlight = __webpack_require__(71);
+	var col_reorder = __webpack_require__(68);
+	var row_reorder = __webpack_require__(53);
+	var make_col_tooltips = __webpack_require__(72);
+	var col_viz_aid_triangle = __webpack_require__(73);
+
+	module.exports = function make_col_label_container(cgm) {
+	  var text_delay = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
+
+
+	  var params = cgm.params;
+	  var col_container;
+
+	  var col_nodes = params.network_data.col_nodes;
+	  var col_nodes_names = params.network_data.col_nodes_names;
+
+	  // offset click group column label
+	  var x_offset_click = params.viz.x_scale.rangeBand() / 2 + params.viz.border_width.x;
+	  // reduce width of rotated rects
+
+
+	  // make container to pre-position zoomable elements
+	  if (d3.select(params.root + ' .col_container').empty()) {
+
+	    col_container = d3.select(params.viz.viz_svg).append('g').attr('class', 'col_container').attr('transform', 'translate(' + params.viz.clust.margin.left + ',' + params.viz.norm_labels.margin.top + ')');
+
+	    // white background rect for col labels
+	    col_container.append('rect').attr('fill', params.viz.background_color) //!! prog_colors
+	    .attr('width', 30 * params.viz.clust.dim.width + 'px').attr('height', params.viz.label_background.col).attr('class', 'white_bars');
+
+	    // col labels
+	    col_container.append('g').attr('class', 'col_label_outer_container')
+	    // position the outer col label group
+	    .attr('transform', 'translate(0,' + params.viz.norm_labels.width.col + ')').append('g').attr('class', 'col_zoom_container');
+	  } else {
+
+	    col_container = d3.select(params.root + ' .col_container').attr('transform', 'translate(' + params.viz.clust.margin.left + ',' + params.viz.norm_labels.margin.top + ')');
+
+	    // white background rect for col labels
+	    col_container.select('.white_bars').attr('fill', params.viz.background_color) //!! prog_colors
+	    .attr('width', 30 * params.viz.clust.dim.width + 'px').attr('height', params.viz.label_background.col);
+
+	    // col labels
+	    col_container.select(params.root + ' .col_label_outer_container');
+	  }
+
+	  // add main column label group
+	  var col_label_obj = d3.select(params.root + ' .col_zoom_container').selectAll('.col_label_text').data(col_nodes, function (d) {
+	    return d.name;
+	  }).enter().append('g').attr('class', 'col_label_text').attr('transform', function (d) {
+	    var inst_index = _.indexOf(col_nodes_names, d.name);
+	    return 'translate(' + params.viz.x_scale(inst_index) + ', 0) rotate(-90)';
+	  });
+
+	  // append group for individual column label
+	  var col_label_group = col_label_obj
+	  // append new group for rect and label (not white lines)
+	  .append('g').attr('class', 'col_label_group')
+	  // rotate column labels
+	  .attr('transform', 'translate(' + params.viz.x_scale.rangeBand() / 2 + ',' + x_offset_click + ') rotate(45)').on('mouseover', function () {
+	    d3.select(this).select('text').classed('active', true);
+	  }).on('mouseout', function () {
+	    d3.select(this).select('text').classed('active', false);
+	  });
+
+	  // append column value bars
+	  if (utils.has(params.network_data.col_nodes[0], 'value')) {
+
+	    col_label_group.append('rect').attr('class', 'col_bars').attr('width', function (d) {
+	      var inst_value = 0;
+	      if (d.value > 0) {
+	        inst_value = params.labels.bar_scale_col(d.value);
+	      }
+	      return inst_value;
+	    })
+	    // rotate labels - reduce width if rotating
+	    .attr('height', params.viz.x_scale.rangeBand() * 0.66).style('fill', function (d) {
+	      return d.value > 0 ? params.matrix.bar_colors[0] : params.matrix.bar_colors[1];
+	    }).attr('opacity', 0.6);
+	  }
+
+	  // add column label
+	  col_label_group.append('text').attr('x', 0)
+	  // manually tuned
+	  .attr('y', params.viz.x_scale.rangeBand() * 0.64).attr('dx', params.viz.border_width.x).attr('text-anchor', 'start').attr('full_name', function (d) {
+	    return d.name;
+	  })
+	  // original font size
+	  .style('font-size', params.labels.default_fs_col + 'px').style('cursor', 'default').text(function (d) {
+	    return utils.normal_name(d);
+	  })
+	  // .attr('pointer-events','none')
+	  .style('opacity', 0).transition().delay(text_delay).duration(text_delay).style('opacity', 1);
+
+	  make_col_tooltips(params);
+
+	  // add triangle under rotated labels
+	  col_label_group.append('path').style('stroke-width', 0).attr('d', function () {
+	    return col_viz_aid_triangle(params);
+	  }).attr('fill', '#eee').style('opacity', 0).transition().delay(text_delay).duration(text_delay).style('opacity', params.viz.triangle_opacity);
+
+	  // add col callback function
+	  d3.selectAll(params.root + ' .col_label_text').on('click', function (d) {
+
+	    if (typeof params.click_label == 'function') {
+	      params.click_label(d.name, 'col');
+	      add_col_click_hlight(params, this, d.ini);
+	    } else {
+
+	      if (params.tile_click_hlight) {
+	        add_col_click_hlight(params, this, d.ini);
+	      }
+	    }
+	  }).on('dblclick', function (d) {
+
+	    var data_attr = '__data__';
+	    var col_name = this[data_attr].name;
+
+	    if (params.sim_mat) {
+	      col_reorder(cgm, this, col_name);
+
+	      var row_selection = d3.selectAll(params.root + ' .row_label_group').filter(function (d) {
+	        return d.name == col_name;
+	      })[0][0];
+
+	      row_reorder(cgm, row_selection, col_name);
+	    } else {
+	      col_reorder(cgm, this, col_name);
+	    }
+
+	    if (params.tile_click_hlight) {
+	      add_col_click_hlight(params, this, d.ini);
+	    }
+	  });
+		};
+
+/***/ },
+/* 71 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -4899,12 +5414,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 70 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var d3_tip_custom = __webpack_require__(48);
+	var d3_tip_custom = __webpack_require__(49);
 
 	module.exports = function make_col_tooltips(params) {
 
@@ -4939,7 +5454,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 71 */
+/* 73 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -4958,7 +5473,7 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 72 */
+/* 74 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -5002,15 +5517,15 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 73 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var get_cat_title = __webpack_require__(74);
-	var ini_cat_reorder = __webpack_require__(75);
-	var make_row_cat_super_labels = __webpack_require__(77);
-	var make_dendro_crop_buttons = __webpack_require__(59);
+	var get_cat_title = __webpack_require__(76);
+	var ini_cat_reorder = __webpack_require__(77);
+	var make_row_cat_super_labels = __webpack_require__(79);
+	var make_dendro_crop_buttons = __webpack_require__(61);
 
 	module.exports = function Spillover(cgm) {
 
@@ -5104,7 +5619,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 74 */
+/* 76 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -5126,12 +5641,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 75 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var all_reorder = __webpack_require__(76);
+	var all_reorder = __webpack_require__(78);
 
 	module.exports = function ini_cat_reorder(cgm) {
 	  /* eslint-disable */
@@ -5162,16 +5677,16 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 76 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var utils = __webpack_require__(2);
-	var toggle_dendro_view = __webpack_require__(53);
-	var show_visible_area = __webpack_require__(64);
-	var ini_zoom_info = __webpack_require__(34);
-	var fine_position_tile = __webpack_require__(47);
+	var toggle_dendro_view = __webpack_require__(55);
+	var show_visible_area = __webpack_require__(66);
+	var ini_zoom_info = __webpack_require__(37);
+	var fine_position_tile = __webpack_require__(48);
 
 	module.exports = function (cgm, inst_order, inst_rc) {
 
@@ -5318,7 +5833,7 @@ var Clustergrammer =
 
 	  params.zoom_info = ini_zoom_info();
 
-	  show_visible_area(params);
+	  show_visible_area(cgm);
 
 	  setTimeout(function () {
 	    params.viz.run_trans = false;
@@ -5326,13 +5841,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 77 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var get_cat_title = __webpack_require__(74);
-	var d3_tip_custom = __webpack_require__(48);
+	var get_cat_title = __webpack_require__(76);
+	var d3_tip_custom = __webpack_require__(49);
 
 	module.exports = function make_row_cat_super_labels(cgm) {
 
@@ -5452,12 +5967,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 78 */
+/* 80 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var resize_viz = __webpack_require__(79);
+	var resize_viz = __webpack_require__(81);
 
 	module.exports = function (cgm) {
 
@@ -5550,40 +6065,40 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 79 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var utils = __webpack_require__(2);
-	var run_zoom = __webpack_require__(80);
-	var ini_doubleclick = __webpack_require__(90);
-	var reset_zoom = __webpack_require__(93);
-	var resize_dendro = __webpack_require__(94);
-	var resize_super_labels = __webpack_require__(95);
-	var resize_spillover = __webpack_require__(96);
-	var resize_borders = __webpack_require__(97);
-	var resize_row_labels = __webpack_require__(98);
-	var resize_highlights = __webpack_require__(99);
-	var resize_row_viz = __webpack_require__(100);
-	var resize_col_labels = __webpack_require__(101);
-	var resize_col_text = __webpack_require__(102);
-	var resize_col_triangle = __webpack_require__(103);
-	var resize_col_hlight = __webpack_require__(104);
-	var recalc_params_for_resize = __webpack_require__(105);
-	var resize_row_tiles = __webpack_require__(106);
-	var resize_label_bars = __webpack_require__(107);
-	var label_constrain_and_trim = __webpack_require__(92);
-	var make_dendro_triangles = __webpack_require__(54);
-	var toggle_dendro_view = __webpack_require__(53);
-	var show_visible_area = __webpack_require__(64);
+	var run_zoom = __webpack_require__(82);
+	var ini_doubleclick = __webpack_require__(97);
+	var reset_zoom = __webpack_require__(100);
+	var resize_dendro = __webpack_require__(101);
+	var resize_super_labels = __webpack_require__(102);
+	var resize_spillover = __webpack_require__(103);
+	var resize_borders = __webpack_require__(104);
+	var resize_row_labels = __webpack_require__(105);
+	var resize_highlights = __webpack_require__(106);
+	var resize_row_viz = __webpack_require__(107);
+	var resize_col_labels = __webpack_require__(108);
+	var resize_col_text = __webpack_require__(109);
+	var resize_col_triangle = __webpack_require__(110);
+	var resize_col_hlight = __webpack_require__(111);
+	var recalc_params_for_resize = __webpack_require__(112);
+	var resize_row_tiles = __webpack_require__(113);
+	var resize_label_bars = __webpack_require__(114);
+	var label_constrain_and_trim = __webpack_require__(99);
+	var make_dendro_triangles = __webpack_require__(56);
+	var toggle_dendro_view = __webpack_require__(55);
+	var show_visible_area = __webpack_require__(66);
 	var calc_viz_dimensions = __webpack_require__(24);
-	var position_play_button = __webpack_require__(108);
-	var make_row_cat_super_labels = __webpack_require__(77);
-	var ini_cat_reorder = __webpack_require__(75);
-	var position_svg_dendro_slider = __webpack_require__(109);
-	var ini_zoom_info = __webpack_require__(34);
-	var grid_lines_viz = __webpack_require__(38);
+	var position_play_button = __webpack_require__(115);
+	var make_row_cat_super_labels = __webpack_require__(79);
+	var ini_cat_reorder = __webpack_require__(77);
+	var position_svg_dendro_slider = __webpack_require__(116);
+	var ini_zoom_info = __webpack_require__(37);
+	var grid_lines_viz = __webpack_require__(117);
 
 	module.exports = function (cgm) {
 
@@ -5628,7 +6143,7 @@ var Clustergrammer =
 	  }
 
 	  // prevent normal double click zoom etc
-	  ini_doubleclick(params);
+	  ini_doubleclick(cgm);
 
 	  svg_group.attr('width', params.viz.svg_dim.width).attr('height', params.viz.svg_dim.height);
 
@@ -5721,7 +6236,7 @@ var Clustergrammer =
 	  // reposition matrix
 	  d3.select(params.root + ' .clust_container').attr('transform', 'translate(' + params.viz.clust.margin.left + ',' + params.viz.clust.margin.top + ')');
 
-	  show_visible_area(params);
+	  show_visible_area(cgm);
 
 	  make_row_cat_super_labels(cgm);
 
@@ -5737,14 +6252,14 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 80 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var run_transformation = __webpack_require__(81);
-	var zoom_rules_y = __webpack_require__(88);
-	var zoom_rules_x = __webpack_require__(89);
+	var run_transformation = __webpack_require__(83);
+	var zoom_rules_y = __webpack_require__(95);
+	var zoom_rules_x = __webpack_require__(96);
 
 	module.exports = function zoomed(cgm) {
 
@@ -5771,28 +6286,27 @@ var Clustergrammer =
 	    var new_y = zoom_info.trans_y + params.viz.clust.margin.top;
 	    params.zoom_behavior.translate([new_x, new_y]);
 
-	    run_transformation(params);
-
-	    // console.log( 'adj rect height: ' + String(cgm.params.viz.rect_height
-	    //   * cgm.params.zoom_info.zoom_y))
+	    run_transformation(cgm);
 	  }
 		};
 
 /***/ },
-/* 81 */
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var constrain_font_size = __webpack_require__(82);
-	var check_if_zooming_has_stopped = __webpack_require__(204);
-	var show_visible_area = __webpack_require__(64);
-	var resize_label_val_bars = __webpack_require__(87);
-	var zoom_crop_triangles = __webpack_require__(61);
-	var get_previous_zoom = __webpack_require__(207);
-	var toggle_labels = __webpack_require__(208);
+	var constrain_font_size = __webpack_require__(84);
+	var check_if_zooming_has_stopped = __webpack_require__(86);
+	var show_visible_area = __webpack_require__(66);
+	var resize_label_val_bars = __webpack_require__(93);
+	var zoom_crop_triangles = __webpack_require__(63);
+	var get_previous_zoom = __webpack_require__(94);
+	var toggle_labels = __webpack_require__(92);
 
-	module.exports = function run_transformation(params) {
+	module.exports = function run_transformation(cgm) {
+
+	  var params = cgm.params;
 
 	  var zoom_info = params.zoom_info;
 
@@ -5858,20 +6372,20 @@ var Clustergrammer =
 	    // console.log('zooming in')
 	  } else {
 	    // console.log('zooming out')
-	    show_visible_area(params);
+	    show_visible_area(cgm);
 	  }
 
 	  setTimeout(not_zooming, 100);
-	  setTimeout(check_if_zooming_has_stopped, 300, params);
+	  setTimeout(check_if_zooming_has_stopped, 300, cgm);
 		};
 
 /***/ },
-/* 82 */
+/* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var calc_real_font_size = __webpack_require__(83);
+	var calc_real_font_size = __webpack_require__(85);
 
 	module.exports = function constrain_font_size(params) {
 
@@ -5935,7 +6449,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 83 */
+/* 85 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -5956,38 +6470,115 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 84 */,
-/* 85 */
-/***/ function(module, exports) {
+/* 86 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	module.exports = function num_visible_labels(params, inst_rc) {
+	var run_when_zoom_stopped = __webpack_require__(87);
+	var check_zoom_stop_status = __webpack_require__(91);
 
-	  // counting the number of visible labels, probably not necessary
+	module.exports = function check_if_zooming_has_stopped(cgm) {
 
-	  var num_visible;
-	  if (inst_rc === 'row') {
+	  var params = cgm.params;
 
-	    // initialize at high number
-	    num_visible = 10000;
+	  var stop_attributes = check_zoom_stop_status(params);
 
-	    // only count visible rows if no downsampling
-	    if (params.viz.ds_level === -1) {
-	      num_visible = d3.selectAll(params.root + ' .row')[0].length;
-	    }
-	  } else if (inst_rc === 'col') {
+	  if (stop_attributes === true) {
 
-	    num_visible = d3.selectAll(params.root + ' .' + inst_rc + '_label_text').filter(function () {
-	      return d3.select(this).style('display') != 'none';
-	    })[0].length;
+	    // wait and double check that zooming has stopped
+	    setTimeout(run_when_zoom_stopped, 50, cgm);
 	  }
-
-	  return num_visible;
-	};
+		};
 
 /***/ },
-/* 86 */
+/* 87 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var constrain_font_size = __webpack_require__(84);
+	var trim_text = __webpack_require__(88);
+	var num_visible_labels = __webpack_require__(89);
+	var toggle_grid_lines = __webpack_require__(90);
+	var show_visible_area = __webpack_require__(66);
+	var check_zoom_stop_status = __webpack_require__(91);
+	var toggle_labels = __webpack_require__(92);
+
+	module.exports = function run_when_zoom_stopped(cgm) {
+
+	  var params = cgm.params;
+
+	  var stop_attributes = check_zoom_stop_status(params);
+
+	  if (stop_attributes === true) {
+
+	    /////////////////////////////////////////////////
+	    // zooming has stopped
+	    /////////////////////////////////////////////////
+	    console.log('\nZOOMING HAS ACTUALLY STOPPED\n============================');
+
+	    _.each(['row', 'col'], function (inst_rc) {
+
+	      d3.selectAll(params.root + ' .' + inst_rc + '_label_group').select('text').style('opacity', 1);
+
+	      d3.selectAll(params.root + ' .' + inst_rc + '_cat_group').select('path').style('display', 'block');
+	    });
+
+	    show_visible_area(cgm, true);
+
+	    d3.selectAll(params.viz.root_tips).style('display', 'block');
+
+	    d3.selectAll(params.root + ' .row_label_group').select('text').style('display', 'none');
+	    d3.selectAll(params.root + ' .row_label_group').select('text').style('display', 'block');
+
+	    d3.select(params.root + ' .viz_svg').attr('stopped_zoom', 0);
+
+	    d3.selectAll(params.root + ' .row_label_group').select('text').style('display', 'block');
+	    d3.selectAll(params.root + ' .col_label_group').select('text').style('display', 'block');
+
+	    toggle_grid_lines(params);
+
+	    _.each(['row', 'col'], function (inst_rc) {
+
+	      var inst_num_visible = num_visible_labels(params, inst_rc);
+
+	      if (inst_num_visible < 125) {
+	        d3.selectAll(params.root + ' .' + inst_rc + '_label_group').each(function () {
+	          trim_text(params, this, inst_rc);
+	        });
+	      }
+	    });
+
+	    toggle_labels(params);
+
+	    text_patch();
+
+	    constrain_font_size(params);
+
+	    // this makes sure that the text is visible after zooming and trimming
+	    // there is buggy behavior in chrome when zooming into large matrices
+	    // I'm running it twice in quick succession
+	    setTimeout(text_patch, 25);
+	    setTimeout(text_patch, 100);
+	  }
+
+	  function text_patch() {
+
+	    _.each(['row', 'col'], function (inst_rc) {
+
+	      d3.selectAll(params.root + ' .' + inst_rc + '_label_group').filter(function () {
+	        return d3.select(this).style('display') != 'none';
+	      }).select('text').style('font-size', function () {
+	        var inst_fs = Number(d3.select(this).style('font-size').replace('px', ''));
+	        return inst_fs;
+	      });
+	    });
+	  }
+		};
+
+/***/ },
+/* 88 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -6099,7 +6690,123 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 87 */
+/* 89 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = function num_visible_labels(params, inst_rc) {
+
+	  // counting the number of visible labels, probably not necessary
+
+	  var num_visible;
+	  if (inst_rc === 'row') {
+
+	    // initialize at high number
+	    num_visible = 10000;
+
+	    // only count visible rows if no downsampling
+	    if (params.viz.ds_level === -1) {
+	      num_visible = d3.selectAll(params.root + ' .row')[0].length;
+	    }
+	  } else if (inst_rc === 'col') {
+
+	    num_visible = d3.selectAll(params.root + ' .' + inst_rc + '_label_text').filter(function () {
+	      return d3.select(this).style('display') != 'none';
+	    })[0].length;
+	  }
+
+	  return num_visible;
+	};
+
+/***/ },
+/* 90 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = function toggle_grid_lines(params) {
+
+	  if (params.zoom_info.zoom_x * params.viz.border_width.x > 1) {
+	    d3.selectAll(params.root + ' .vert_lines').select('line').style('display', 'block').style('opacity', 0).transition().style('opacity', 1);
+	  } else {
+	    d3.selectAll(params.root + ' .vert_lines').select('line').style('display', 'none');
+	  }
+
+	  if (params.zoom_info.zoom_y * params.viz.border_width.y > 1) {
+	    d3.selectAll(params.root + ' .horz_lines').select('line').style('display', 'block').style('opacity', 0).transition().style('opacity', 1);
+	  } else {
+	    d3.selectAll(params.root + ' .horz_lines').select('line').style('display', 'none');
+	  }
+	};
+
+/***/ },
+/* 91 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = function check_zoom_stop_status(params) {
+
+	  // debugger;
+	  var inst_zoom = Number(d3.select(params.root + ' .viz_svg').attr('is_zoom'));
+
+	  var check_stop = Number(d3.select(params.root + ' .viz_svg').attr('stopped_zoom'));
+
+	  var stop_attributes = false;
+	  if (inst_zoom === 0 && check_stop != 0) {
+	    stop_attributes = true;
+	  }
+
+	  return stop_attributes;
+	};
+
+/***/ },
+/* 92 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var calc_real_font_size = __webpack_require__(85);
+	var num_visible_labels = __webpack_require__(89);
+
+	module.exports = function toggle_labels(params) {
+
+	  // console.log('toggle_labels')
+
+	  var max_element_show = 300;
+	  var min_font_size = 2;
+	  var real_font_size = calc_real_font_size(params);
+
+	  // toggle row/col label visibility
+	  /////////////////////////////////////
+	  _.each(['row', 'col'], function (inst_rc) {
+
+	    // only toggle labels if font size is large enough
+	    if (real_font_size[inst_rc] > min_font_size) {
+
+	      var inst_num_visible = num_visible_labels(params, inst_rc);
+
+	      // // need to improve vert line toggling
+	      // d3.selectAll('.horz_lines').select('line').style('display','none');
+	      // d3.selectAll('.vert_lines').select('line').style('display','none');
+
+	      if (inst_num_visible > max_element_show) {
+
+	        d3.select(params.root + ' .' + inst_rc + '_label_container').style('display', 'none');
+	      } else {
+
+	        d3.select(params.root + ' .' + inst_rc + '_label_container').style('display', 'block');
+	      }
+	    } else {
+
+	      d3.select(params.root + ' .' + inst_rc + '_label_container').style('display', 'none');
+	    }
+	  });
+		};
+
+/***/ },
+/* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6135,7 +6842,37 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 88 */
+/* 94 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = function get_previous_zoom(params) {
+	  var prev_zoom = {};
+
+	  var inst_trans = d3.select(params.root + ' .clust_group').attr('transform');
+
+	  if (inst_trans != null) {
+
+	    // prevent from crashing if no scaling was done
+	    if (inst_trans.indexOf('scale') > 0) {
+	      prev_zoom.zoom_x = parseFloat(inst_trans.split('scale')[1].replace('(', '').replace(')', '').split(',')[0]);
+
+	      prev_zoom.zoom_y = parseFloat(inst_trans.split('scale')[1].replace('(', '').replace(')', '').split(',')[1]);
+	    } else {
+	      prev_zoom.zoom_x = 1;
+	      prev_zoom.zoom_y = 1;
+	    }
+	  } else {
+	    prev_zoom.zoom_x = 1;
+	    prev_zoom.zoom_y = 1;
+	  }
+
+	  return prev_zoom;
+		};
+
+/***/ },
+/* 95 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -6170,7 +6907,7 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 89 */
+/* 96 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -6205,272 +6942,252 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 90 */
+/* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var two_translate_zoom = __webpack_require__(91);
+	var two_translate_zoom = __webpack_require__(98);
 
-	module.exports = function (params) {
+	module.exports = function ini_doubleclick(cgm) {
+
+	  var params = cgm.params;
 	  // disable double-click zoom
 	  d3.selectAll(params.viz.zoom_element).on('dblclick.zoom', null);
 
 	  d3.select(params.viz.zoom_element).on('dblclick', function () {
-	    two_translate_zoom(params, 0, 0, 1);
+	    two_translate_zoom(cgm, 0, 0, 1);
 	  });
 	};
 
 /***/ },
-/* 91 */
+/* 98 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var utils = __webpack_require__(2);
-	var label_constrain_and_trim = __webpack_require__(92);
-	var show_visible_area = __webpack_require__(64);
-	var ini_zoom_info = __webpack_require__(34);
-	var toggle_grid_lines = __webpack_require__(39);
+	var label_constrain_and_trim = __webpack_require__(99);
+	var show_visible_area = __webpack_require__(66);
+	var ini_zoom_info = __webpack_require__(37);
+	var toggle_grid_lines = __webpack_require__(90);
 
-	module.exports = function two_translate_zoom(params, pan_dx, pan_dy, fin_zoom) {
+	module.exports = function two_translate_zoom(cgm, pan_dx, pan_dy, fin_zoom) {
 
-	  function show_crop_buttons(inst_rc, inst_button_opacity) {
-	    d3.selectAll(params.root + ' .' + inst_rc + '_dendro_crop_buttons').transition().duration(search_duration).style('opacity', inst_button_opacity);
-	  }
+	  var params = cgm.params;
 
 	  d3.selectAll(params.viz.root_tips).style('display', 'none');
 
 	  params.zoom_info = ini_zoom_info();
 
-	  show_visible_area(params);
+	  show_visible_area(cgm);
 
 	  // do not allow while transitioning, e.g. reordering
 	  if (!params.viz.run_trans) {
-
-	    // define the commonly used variable half_height
-	    var half_height = params.viz.clust.dim.height / 2;
-
-	    // y pan room, the pan room has to be less than half_height since
-	    // zooming in on a gene that is near the top of the clustergram also causes
-	    // panning out of the visible region
-	    var y_pan_room = half_height / params.viz.zoom_switch;
-
-	    // prevent visualization from panning down too much
-	    // when zooming into genes near the top of the clustergram
-	    if (pan_dy >= half_height - y_pan_room) {
-
-	      // explanation of panning rules
-	      /////////////////////////////////
-	      // prevent the clustergram from panning down too much
-	      // if the amount of panning is equal to the half_height then it needs to be reduced
-	      // effectively, the the visualization needs to be moved up (negative) by some factor
-	      // of the half-width-of-the-visualization.
-	      //
-	      // If there was no zooming involved, then the
-	      // visualization would be centered first, then panned to center the top term
-	      // this would require a
-	      // correction to re-center it. However, because of the zooming the offset is
-	      // reduced by the zoom factor (this is because the panning is occurring on something
-	      // that will be zoomed into - this is why the pan_dy value is not scaled in the two
-	      // translate transformations, but it has to be scaled afterwards to set the translate
-	      // vector)
-	      // pan_dy = half_height - (half_height)/params.viz.zoom_switch
-
-	      // if pan_dy is greater than the pan room, then panning has to be restricted
-	      // start by shifting back up (negative) by half_height/params.viz.zoom_switch then shift back down
-	      // by the difference between half_height and pan_dy (so that the top of the clustergram is
-	      // visible)
-	      var shift_top_viz = half_height - pan_dy;
-	      var shift_up_viz = -half_height / params.viz.zoom_switch + shift_top_viz;
-
-	      // reduce pan_dy so that the visualization does not get panned to far down
-	      pan_dy = pan_dy + shift_up_viz;
-	    }
-
-	    // prevent visualization from panning up too much
-	    // when zooming into genes at the bottom of the clustergram
-	    if (pan_dy < -(half_height - y_pan_room)) {
-
-	      shift_top_viz = half_height + pan_dy;
-
-	      shift_up_viz = half_height / params.viz.zoom_switch - shift_top_viz; //- move_up_one_row;
-
-	      // reduce pan_dy so that the visualization does not get panned to far down
-	      pan_dy = pan_dy + shift_up_viz;
-	    }
-
-	    // will improve this !!
-	    var zoom_y = fin_zoom;
+	    var half_height;
+	    var y_pan_room;
+	    var shift_top_viz;
+	    var shift_up_viz;
+	    var zoom_y;
 	    var zoom_x;
-	    if (fin_zoom <= params.viz.zoom_switch) {
-	      zoom_x = 1;
-	    } else {
-	      zoom_x = fin_zoom / params.viz.zoom_switch;
-	    }
-
-	    // search duration - the duration of zooming and panning
-	    var search_duration = 700;
-
-	    // center_y
-	    var center_y = -(zoom_y - 1) * half_height;
-
-	    // transform clust group
-	    ////////////////////////////
-	    d3.select(params.root + ' .clust_group').transition().duration(search_duration)
-	    // first apply the margin transformation
-	    // then zoom, then apply the final transformation
-	    .attr('transform', 'translate(' + [0, 0 + center_y] + ')' + ' scale(' + zoom_x + ',' + zoom_y + ')' + 'translate(' + [pan_dx, pan_dy] + ')');
-
-	    // transform row labels
-	    d3.select(params.root + ' .row_label_zoom_container').transition().duration(search_duration).attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' + zoom_y + ',' + zoom_y + ')' + 'translate(' + [0, pan_dy] + ')');
-
-	    // transform row_cat_container
-	    // use the offset saved in params, only zoom in the y direction
-	    d3.select(params.root + ' .row_cat_container').transition().duration(search_duration).attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' + 1 + ',' + zoom_y + ')' + 'translate(' + [0, pan_dy] + ')');
-
-	    d3.select(params.root + ' .row_dendro_container').transition().duration(search_duration).attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' + zoom_x + ',' + zoom_y + ')' + 'translate(' + [params.viz.uni_margin / 2, pan_dy] + ')');
-
-	    // toggle crop buttons
+	    var search_duration;
+	    var center_y;
 	    var inst_button_opacity;
-	    _.each(['row', 'col'], function (inst_rc) {
+	    var net_y_offset;
+	    var net_x_offset;
 
-	      inst_button_opacity = d3.select(params.root + ' .' + inst_rc + '_dendro_crop_buttons').style('opacity');
-	      d3.selectAll(params.root + ' .' + inst_rc + '_dendro_crop_buttons').style('opacity', 0);
-	      setTimeout(show_crop_buttons, 700, inst_rc, inst_button_opacity);
-	    });
+	    (function () {
+	      var show_crop_buttons = function show_crop_buttons(inst_rc, inst_button_opacity) {
+	        d3.selectAll(params.root + ' .' + inst_rc + '_dendro_crop_buttons').transition().duration(search_duration).style('opacity', inst_button_opacity);
+	      };
 
-	    // transform col labels
-	    d3.select(params.root + ' .col_zoom_container').transition().duration(search_duration).attr('transform', ' scale(' + zoom_x + ',' + zoom_x + ')' + 'translate(' + [pan_dx, 0] + ')');
+	      // define the commonly used variable half_height
+	      half_height = params.viz.clust.dim.height / 2;
 
-	    // transform col_class
-	    d3.select(params.root + ' .col_cat_container').transition().duration(search_duration).attr('transform', ' scale(' + zoom_x + ',' + 1 + ')' + 'translate(' + [pan_dx, 0] + ')');
+	      // y pan room, the pan room has to be less than half_height since
+	      // zooming in on a gene that is near the top of the clustergram also causes
+	      // panning out of the visible region
 
-	    d3.select(params.root + ' .col_dendro_container').transition().duration(search_duration).attr('transform', ' scale(' + zoom_x + ',' + 1 + ')' + 'translate(' + [pan_dx, params.viz.uni_margin / 2] + ')');
+	      y_pan_room = half_height / params.viz.zoom_switch;
 
-	    // set y translate: center_y is positive, positive moves the visualization down
-	    // the translate vector has the initial margin, the first y centering, and pan_dy
-	    // times the scaling zoom_y
-	    var net_y_offset = params.viz.clust.margin.top + center_y + pan_dy * zoom_y;
-	    var net_x_offset = params.viz.clust.margin.left + pan_dx;
+	      // prevent visualization from panning down too much
+	      // when zooming into genes near the top of the clustergram
 
-	    // reset the zoom and translate
-	    params.zoom_behavior.scale(zoom_y).translate([net_x_offset, net_y_offset]);
+	      if (pan_dy >= half_height - y_pan_room) {
 
-	    label_constrain_and_trim(params);
+	        // explanation of panning rules
+	        /////////////////////////////////
+	        // prevent the clustergram from panning down too much
+	        // if the amount of panning is equal to the half_height then it needs to be reduced
+	        // effectively, the the visualization needs to be moved up (negative) by some factor
+	        // of the half-width-of-the-visualization.
+	        //
+	        // If there was no zooming involved, then the
+	        // visualization would be centered first, then panned to center the top term
+	        // this would require a
+	        // correction to re-center it. However, because of the zooming the offset is
+	        // reduced by the zoom factor (this is because the panning is occurring on something
+	        // that will be zoomed into - this is why the pan_dy value is not scaled in the two
+	        // translate transformations, but it has to be scaled afterwards to set the translate
+	        // vector)
+	        // pan_dy = half_height - (half_height)/params.viz.zoom_switch
 
-	    // re-size of the highlighting rects
-	    /////////////////////////////////////////
-	    d3.select(params.root + ' .row_label_zoom_container').each(function () {
-	      // get the bounding box of the row label text
-	      var bbox = d3.select(this).select('text')[0][0].getBBox();
+	        // if pan_dy is greater than the pan room, then panning has to be restricted
+	        // start by shifting back up (negative) by half_height/params.viz.zoom_switch then shift back down
+	        // by the difference between half_height and pan_dy (so that the top of the clustergram is
+	        // visible)
+	        shift_top_viz = half_height - pan_dy;
+	        shift_up_viz = -half_height / params.viz.zoom_switch + shift_top_viz;
 
-	      // use the bounding box to set the size of the rect
-	      d3.select(this).select('rect').attr('x', bbox.x * 0.5).attr('y', 0).attr('width', bbox.width * 0.5).attr('height', params.viz.y_scale.rangeBand()).style('fill', 'yellow');
-	    });
+	        // reduce pan_dy so that the visualization does not get panned to far down
 
-	    // reset crop button zooming
-	    d3.select(params.root + ' .row_dendro_icons_group').attr('transform', 'translate(' + [0, 0 + center_y] + ')' + ' scale(' + zoom_x + ',' + zoom_y + ')' + 'translate(' + [pan_dx, pan_dy] + ')');
+	        pan_dy = pan_dy + shift_up_viz;
+	      }
 
-	    d3.select(params.root + ' .row_dendro_icons_group').selectAll('path').attr('transform', function (d) {
-	      var inst_x = params.viz.uni_margin;
-	      var inst_y = d.pos_mid;
-	      return 'translate(' + inst_x + ',' + inst_y + ') ' + 'scale(1, ' + 1 / zoom_y + ')';
-	    });
+	      // prevent visualization from panning up too much
+	      // when zooming into genes at the bottom of the clustergram
+	      if (pan_dy < -(half_height - y_pan_room)) {
 
-	    d3.select(params.root + ' .col_dendro_icons_group').attr('transform', 'translate(' + [0, 0 + center_y] + ')' + ' scale(' + zoom_x + ',' + zoom_y + ')' + 'translate(' + [pan_dx, pan_dy] + ')');
+	        shift_top_viz = half_height + pan_dy;
 
-	    d3.select(params.root + ' .col_dendro_icons_group').selectAll('path').attr('transform', function (d) {
-	      var inst_x = d.pos_mid;
-	      var inst_y = params.viz.uni_margin;
-	      return 'translate(' + inst_x + ',' + inst_y + ') ' + 'scale(' + 1 / zoom_x + ',1)';
-	    });
+	        shift_up_viz = half_height / params.viz.zoom_switch - shift_top_viz; //- move_up_one_row;
 
-	    // column value bars
-	    ///////////////////////
-	    // reduce the height of the column value bars based on the zoom applied
-	    // recalculate the height and divide by the zooming scale
-	    // col_label_obj.select('rect')
-	    if (utils.has(params.network_data.col_nodes[0], 'value')) {
+	        // reduce pan_dy so that the visualization does not get panned to far down
+	        pan_dy = pan_dy + shift_up_viz;
+	      }
 
-	      d3.selectAll(params.root + ' .col_bars').attr('width', function (d) {
-	        var inst_value = 0;
-	        if (d.value > 0) {
-	          inst_value = params.labels.bar_scale_col(d.value) / zoom_x;
-	        }
-	        return inst_value;
+	      // will improve this !!
+	      zoom_y = fin_zoom;
+
+	      if (fin_zoom <= params.viz.zoom_switch) {
+	        zoom_x = 1;
+	      } else {
+	        zoom_x = fin_zoom / params.viz.zoom_switch;
+	      }
+
+	      // search duration - the duration of zooming and panning
+	      search_duration = 700;
+
+	      // center_y
+
+	      center_y = -(zoom_y - 1) * half_height;
+
+	      // transform clust group
+	      ////////////////////////////
+
+	      d3.select(params.root + ' .clust_group').transition().duration(search_duration)
+	      // first apply the margin transformation
+	      // then zoom, then apply the final transformation
+	      .attr('transform', 'translate(' + [0, 0 + center_y] + ')' + ' scale(' + zoom_x + ',' + zoom_y + ')' + 'translate(' + [pan_dx, pan_dy] + ')');
+
+	      // transform row labels
+	      d3.select(params.root + ' .row_label_zoom_container').transition().duration(search_duration).attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' + zoom_y + ',' + zoom_y + ')' + 'translate(' + [0, pan_dy] + ')');
+
+	      // transform row_cat_container
+	      // use the offset saved in params, only zoom in the y direction
+	      d3.select(params.root + ' .row_cat_container').transition().duration(search_duration).attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' + 1 + ',' + zoom_y + ')' + 'translate(' + [0, pan_dy] + ')');
+
+	      d3.select(params.root + ' .row_dendro_container').transition().duration(search_duration).attr('transform', 'translate(' + [0, center_y] + ')' + ' scale(' + zoom_x + ',' + zoom_y + ')' + 'translate(' + [params.viz.uni_margin / 2, pan_dy] + ')');
+
+	      // toggle crop buttons
+
+	      _.each(['row', 'col'], function (inst_rc) {
+
+	        inst_button_opacity = d3.select(params.root + ' .' + inst_rc + '_dendro_crop_buttons').style('opacity');
+	        d3.selectAll(params.root + ' .' + inst_rc + '_dendro_crop_buttons').style('opacity', 0);
+	        setTimeout(show_crop_buttons, 700, inst_rc, inst_button_opacity);
 	      });
-	    }
 
-	    if (utils.has(params.network_data.row_nodes[0], 'value')) {
+	      // transform col labels
+	      d3.select(params.root + ' .col_zoom_container').transition().duration(search_duration).attr('transform', ' scale(' + zoom_x + ',' + zoom_x + ')' + 'translate(' + [pan_dx, 0] + ')');
 
-	      d3.selectAll(params.root + ' .row_bars').transition().duration(search_duration).attr('width', function (d) {
-	        var inst_value = 0;
-	        inst_value = params.labels.bar_scale_row(Math.abs(d.value)) / zoom_y;
-	        return inst_value;
-	      }).attr('x', function (d) {
-	        var inst_value = 0;
-	        inst_value = -params.labels.bar_scale_row(Math.abs(d.value)) / zoom_y;
-	        return inst_value;
+	      // transform col_class
+	      d3.select(params.root + ' .col_cat_container').transition().duration(search_duration).attr('transform', ' scale(' + zoom_x + ',' + 1 + ')' + 'translate(' + [pan_dx, 0] + ')');
+
+	      d3.select(params.root + ' .col_dendro_container').transition().duration(search_duration).attr('transform', ' scale(' + zoom_x + ',' + 1 + ')' + 'translate(' + [pan_dx, params.viz.uni_margin / 2] + ')');
+
+	      // set y translate: center_y is positive, positive moves the visualization down
+	      // the translate vector has the initial margin, the first y centering, and pan_dy
+	      // times the scaling zoom_y
+	      net_y_offset = params.viz.clust.margin.top + center_y + pan_dy * zoom_y;
+	      net_x_offset = params.viz.clust.margin.left + pan_dx;
+
+	      // reset the zoom and translate
+
+	      params.zoom_behavior.scale(zoom_y).translate([net_x_offset, net_y_offset]);
+
+	      label_constrain_and_trim(params);
+
+	      // re-size of the highlighting rects
+	      /////////////////////////////////////////
+	      d3.select(params.root + ' .row_label_zoom_container').each(function () {
+	        // get the bounding box of the row label text
+	        var bbox = d3.select(this).select('text')[0][0].getBBox();
+
+	        // use the bounding box to set the size of the rect
+	        d3.select(this).select('rect').attr('x', bbox.x * 0.5).attr('y', 0).attr('width', bbox.width * 0.5).attr('height', params.viz.y_scale.rangeBand()).style('fill', 'yellow');
 	      });
-	    }
 
-	    // console.log('two_translate_zoom')
-	    // console.log(params.zoom_info)
+	      // reset crop button zooming
+	      d3.select(params.root + ' .row_dendro_icons_group').attr('transform', 'translate(' + [0, 0 + center_y] + ')' + ' scale(' + zoom_x + ',' + zoom_y + ')' + 'translate(' + [pan_dx, pan_dy] + ')');
 
+	      d3.select(params.root + ' .row_dendro_icons_group').selectAll('path').attr('transform', function (d) {
+	        var inst_x = params.viz.uni_margin;
+	        var inst_y = d.pos_mid;
+	        return 'translate(' + inst_x + ',' + inst_y + ') ' + 'scale(1, ' + 1 / zoom_y + ')';
+	      });
 
-	    // var inst_display;
-	    // d3.selectAll(params.root+' .horz_lines')
-	    //   .select('line')
-	    //   .attr('display',function(){
-	    //     if (params.zoom_info.zoom_y * params.viz.border_width.y > 1){
-	    //       inst_display = 'block';
-	    //     } else {
-	    //       inst_display = 'none';
-	    //     }
-	    //     console.log(inst_display)
-	    //     return inst_display;
-	    //   })
-	    //   .attr('opacity', 1);
+	      d3.select(params.root + ' .col_dendro_icons_group').attr('transform', 'translate(' + [0, 0 + center_y] + ')' + ' scale(' + zoom_x + ',' + zoom_y + ')' + 'translate(' + [pan_dx, pan_dy] + ')');
 
-	    // d3.selectAll(params.root+' .vert_lines')
-	    //   .select('line')
-	    //   .attr('display',function(){
-	    //     if (params.zoom_info.zoom_x * params.viz.border_width.x > 1){
-	    //       inst_display = 'block';
-	    //     } else {
-	    //       inst_display = 'none';
-	    //     }
-	    //     console.log(inst_display)
-	    //     return inst_display;
-	    //   })
-	    //   .attr('opacity', 1);
+	      d3.select(params.root + ' .col_dendro_icons_group').selectAll('path').attr('transform', function (d) {
+	        var inst_x = d.pos_mid;
+	        var inst_y = params.viz.uni_margin;
+	        return 'translate(' + inst_x + ',' + inst_y + ') ' + 'scale(' + 1 / zoom_x + ',1)';
+	      });
 
-	    // console.log('HERE!!!')
+	      // column value bars
+	      ///////////////////////
+	      // reduce the height of the column value bars based on the zoom applied
+	      // recalculate the height and divide by the zooming scale
+	      // col_label_obj.select('rect')
+	      if (utils.has(params.network_data.col_nodes[0], 'value')) {
 
-	    //   if (cgm.params.zoom_info.zoom_x * cgm.params.viz.border_width.x  1){
-	    //     d3.selectAll(params.root+' .vert_lines').select('line').style('display','none');
-	    //     console.log('showing vert lines')
-	    //   }
+	        d3.selectAll(params.root + ' .col_bars').attr('width', function (d) {
+	          var inst_value = 0;
+	          if (d.value > 0) {
+	            inst_value = params.labels.bar_scale_col(d.value) / zoom_x;
+	          }
+	          return inst_value;
+	        });
+	      }
 
-	    //   if (cgm.params.zoom_info.zoom_y * cgm.params.viz.border_width.y < 1){
-	    //     d3.selectAll(params.root+' .horz_lines').select('line').style('display','none');
-	    //     console.log('showing  lines')
-	    //   }
+	      if (utils.has(params.network_data.row_nodes[0], 'value')) {
 
-	    toggle_grid_lines(params);
+	        d3.selectAll(params.root + ' .row_bars').transition().duration(search_duration).attr('width', function (d) {
+	          var inst_value = 0;
+	          inst_value = params.labels.bar_scale_row(Math.abs(d.value)) / zoom_y;
+	          return inst_value;
+	        }).attr('x', function (d) {
+	          var inst_value = 0;
+	          inst_value = -params.labels.bar_scale_row(Math.abs(d.value)) / zoom_y;
+	          return inst_value;
+	        });
+	      }
+
+	      toggle_grid_lines(params);
+	    })();
 	  }
 	};
 
 /***/ },
-/* 92 */
+/* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var utils = __webpack_require__(2);
-	var trim_text = __webpack_require__(86);
-	var constrain_font_size = __webpack_require__(82);
+	var trim_text = __webpack_require__(88);
+	var constrain_font_size = __webpack_require__(84);
 
 	module.exports = function label_constrain_and_trim(params) {
 
@@ -6497,7 +7214,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 93 */
+/* 100 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -6541,7 +7258,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 94 */
+/* 101 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -6651,7 +7368,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 95 */
+/* 102 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -6695,7 +7412,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 96 */
+/* 103 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -6817,7 +7534,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 97 */
+/* 104 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -6847,7 +7564,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 98 */
+/* 105 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -6903,7 +7620,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 99 */
+/* 106 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -6968,7 +7685,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 100 */
+/* 107 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7012,7 +7729,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 101 */
+/* 108 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7069,7 +7786,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 102 */
+/* 109 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7087,12 +7804,12 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 103 */
+/* 110 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var col_viz_aid_triangle = __webpack_require__(71);
+	var col_viz_aid_triangle = __webpack_require__(73);
 
 	module.exports = function resize_col_triangle(params, ini_svg_group) {
 	  var delay_info = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
@@ -7126,7 +7843,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 104 */
+/* 111 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7165,7 +7882,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 105 */
+/* 112 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7173,8 +7890,8 @@ var Clustergrammer =
 	var get_svg_dim = __webpack_require__(25);
 	var calc_clust_height = __webpack_require__(28);
 	var calc_clust_width = __webpack_require__(27);
-	var calc_default_fs = __webpack_require__(33);
-	var calc_zoom_switching = __webpack_require__(32);
+	var calc_default_fs = __webpack_require__(36);
+	var calc_zoom_switching = __webpack_require__(35);
 
 	module.exports = function recalc_params_for_resize(params) {
 
@@ -7221,15 +7938,15 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 106 */
+/* 113 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var utils = __webpack_require__(2);
-	var draw_up_tile = __webpack_require__(43);
-	var draw_dn_tile = __webpack_require__(44);
-	var fine_position_tile = __webpack_require__(47);
+	var draw_up_tile = __webpack_require__(44);
+	var draw_dn_tile = __webpack_require__(45);
+	var fine_position_tile = __webpack_require__(48);
 
 	module.exports = function resize_row_tiles(params, svg_group) {
 
@@ -7265,7 +7982,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 107 */
+/* 114 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7301,7 +8018,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 108 */
+/* 115 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7321,7 +8038,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 109 */
+/* 116 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7368,17 +8085,61 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 110 */
+/* 117 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = function grid_lines_viz(params) {
+	  var duration = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
+
+
+	  var delay = 0;
+	  if (duration > 0) {
+	    delay = 2000;
+	  }
+
+	  var horz_lines = d3.selectAll(params.root + ' .horz_lines');
+	  var vert_lines = d3.selectAll(params.root + ' .vert_lines');
+
+	  var row_nodes_names = params.network_data.row_nodes_names;
+	  var col_nodes_names = params.network_data.col_nodes_names;
+
+	  horz_lines.style('opacity', 0).attr('transform', function (d) {
+	    var inst_index = _.indexOf(row_nodes_names, d.name);
+	    var inst_trans = params.viz.y_scale(inst_index);
+	    return 'translate(  0,' + inst_trans + ') rotate(0)';
+	  }).transition().duration(duration).delay(delay).style('opacity', 1);
+
+	  horz_lines.append('line').attr('x1', 0).attr('x2', params.viz.clust.dim.width).style('stroke-width', function () {
+	    var inst_width = params.viz.border_width.y;
+	    return inst_width + 'px';
+	  });
+
+	  vert_lines.style('opacity', 0).attr('transform', function (d) {
+	    var inst_index = _.indexOf(col_nodes_names, d.name);
+	    var inst_trans = params.viz.x_scale(inst_index);
+	    return 'translate(' + inst_trans + ') rotate(-90)';
+	  }).transition().duration(duration).delay(delay).style('opacity', 1);
+
+	  vert_lines.append('line').attr('x1', 0).attr('x2', -params.viz.clust.dim.height).style('stroke-width', function () {
+	    var inst_width = params.viz.border_width.x;
+	    return inst_width + 'px';
+	  });
+		};
+
+/***/ },
+/* 118 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var cat_tooltip_text = __webpack_require__(111);
-	var d3_tip_custom = __webpack_require__(48);
-	var reset_cat_opacity = __webpack_require__(112);
-	var ini_cat_opacity = __webpack_require__(113);
-	var click_filter_cats = __webpack_require__(114);
-	var get_cat_names = __webpack_require__(115);
+	var cat_tooltip_text = __webpack_require__(119);
+	var d3_tip_custom = __webpack_require__(49);
+	var reset_cat_opacity = __webpack_require__(120);
+	var ini_cat_opacity = __webpack_require__(121);
+	var click_filter_cats = __webpack_require__(122);
+	var get_cat_names = __webpack_require__(123);
 
 	module.exports = function make_col_cat(cgm) {
 
@@ -7472,12 +8233,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 111 */
+/* 119 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var get_cat_title = __webpack_require__(74);
+	var get_cat_title = __webpack_require__(76);
 
 	module.exports = function cat_tooltip_text(params, inst_data, inst_selection, inst_rc) {
 
@@ -7558,7 +8319,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 112 */
+/* 120 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7581,7 +8342,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 113 */
+/* 121 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7646,12 +8407,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 114 */
+/* 122 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var get_cat_names = __webpack_require__(115);
+	var get_cat_names = __webpack_require__(123);
 
 	module.exports = function click_filter_cats(cgm, inst_data, inst_selection, inst_rc) {
 
@@ -7734,7 +8495,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 115 */
+/* 123 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7758,17 +8519,17 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 116 */
+/* 124 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var cat_tooltip_text = __webpack_require__(111);
-	var d3_tip_custom = __webpack_require__(48);
-	var reset_cat_opacity = __webpack_require__(112);
-	var ini_cat_opacity = __webpack_require__(113);
-	var click_filter_cats = __webpack_require__(114);
-	var get_cat_names = __webpack_require__(115);
+	var cat_tooltip_text = __webpack_require__(119);
+	var d3_tip_custom = __webpack_require__(49);
+	var reset_cat_opacity = __webpack_require__(120);
+	var ini_cat_opacity = __webpack_require__(121);
+	var click_filter_cats = __webpack_require__(122);
+	var get_cat_names = __webpack_require__(123);
 
 	module.exports = function make_row_cat(cgm) {
 	  var updating = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
@@ -7892,12 +8653,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 117 */
+/* 125 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_dendro_triangles = __webpack_require__(54);
+	var make_dendro_triangles = __webpack_require__(56);
 
 	module.exports = function make_row_dendro(cgm) {
 
@@ -7931,12 +8692,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 118 */
+/* 126 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_dendro_triangles = __webpack_require__(54);
+	var make_dendro_triangles = __webpack_require__(56);
 
 	module.exports = function make_col_dendro(cgm) {
 
@@ -7972,12 +8733,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 119 */
+/* 127 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var build_svg_dendro_slider = __webpack_require__(120);
+	var build_svg_dendro_slider = __webpack_require__(128);
 
 	module.exports = function make_svg_dendro_sliders(cgm) {
 
@@ -7986,13 +8747,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 120 */
+/* 128 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var change_groups = __webpack_require__(121);
-	var position_svg_dendro_slider = __webpack_require__(109);
+	var change_groups = __webpack_require__(129);
+	var position_svg_dendro_slider = __webpack_require__(116);
 
 	module.exports = function build_svg_dendro_slider(cgm, inst_rc) {
 
@@ -8088,13 +8849,13 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 121 */
+/* 129 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	// var build_color_groups = require('./build_color_groups');
-	var make_dendro_triangles = __webpack_require__(54);
+	var make_dendro_triangles = __webpack_require__(56);
 
 	/* Changes the groupings (x- and y-axis color bars).
 	 */
@@ -8114,12 +8875,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 122 */
+/* 130 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_dendro_crop_buttons = __webpack_require__(59);
+	var make_dendro_crop_buttons = __webpack_require__(61);
 
 	module.exports = function make_row_dendro_spillover(cgm) {
 
@@ -8157,27 +8918,27 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 123 */
+/* 131 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	/* eslint-disable */
 
-	var run_segment = __webpack_require__(124);
-	var play_intro = __webpack_require__(125);
-	var play_zoom = __webpack_require__(127);
-	var play_reset_zoom = __webpack_require__(128);
-	var play_reorder_row = __webpack_require__(130);
-	var play_reorder_buttons = __webpack_require__(131);
-	var play_search = __webpack_require__(133);
-	var play_filter = __webpack_require__(134);
-	var quick_cluster = __webpack_require__(156);
-	var play_groups = __webpack_require__(157);
-	var play_categories = __webpack_require__(158);
-	var play_conclusion = __webpack_require__(159);
-	var toggle_play_button = __webpack_require__(160);
-	var play_menu_button = __webpack_require__(161);
+	var run_segment = __webpack_require__(132);
+	var play_intro = __webpack_require__(133);
+	var play_zoom = __webpack_require__(135);
+	var play_reset_zoom = __webpack_require__(136);
+	var play_reorder_row = __webpack_require__(138);
+	var play_reorder_buttons = __webpack_require__(139);
+	var play_search = __webpack_require__(141);
+	var play_filter = __webpack_require__(142);
+	var quick_cluster = __webpack_require__(164);
+	var play_groups = __webpack_require__(165);
+	var play_categories = __webpack_require__(166);
+	var play_conclusion = __webpack_require__(167);
+	var toggle_play_button = __webpack_require__(168);
+	var play_menu_button = __webpack_require__(169);
 
 	module.exports = function play_demo() {
 
@@ -8186,12 +8947,12 @@ var Clustergrammer =
 
 	  if (d3.select(params.root + ' .running_demo').empty()) {
 
-	    // prevent more than one demo from running at once 
+	    // prevent more than one demo from running at once
 	    d3.select(params.root + ' .play_button').classed('running_demo', true);
 
 	    toggle_play_button(params, false);
 
-	    // prevent user interaction while playing 
+	    // prevent user interaction while playing
 	    $.blockUI({ css: {
 	        border: 'none',
 	        padding: '15px',
@@ -8205,7 +8966,7 @@ var Clustergrammer =
 
 	    d3.selectAll('.blockUI').style('opacity', 0);
 
-	    // intro text 
+	    // intro text
 	    var inst_time = 750;
 
 	    if (cgm.params.viz.is_expand === false) {
@@ -8213,15 +8974,15 @@ var Clustergrammer =
 	      inst_time = inst_time - 1500;
 	    }
 
-	    // clustergram interaction 
+	    // clustergram interaction
 	    ///////////////////////////////////
 	    inst_time = run_segment(params, inst_time, play_intro);
 	    inst_time = run_segment(params, inst_time, play_zoom);
-	    inst_time = run_segment(params, inst_time, play_reset_zoom);
+	    inst_time = run_segment(cgm, inst_time, play_reset_zoom);
 	    inst_time = run_segment(params, inst_time, play_categories);
 	    inst_time = run_segment(params, inst_time, play_reorder_row);
 
-	    // sidebar interaction 
+	    // sidebar interaction
 	    ///////////////////////////////////
 	    inst_time = run_segment(params, inst_time, play_menu_button);
 	    inst_time = run_segment(params, inst_time, play_groups);
@@ -8229,7 +8990,7 @@ var Clustergrammer =
 	    inst_time = run_segment(params, inst_time, play_search);
 	    inst_time = run_segment(cgm, inst_time, play_filter);
 
-	    // conclusion 
+	    // conclusion
 	    ///////////////////////////////////
 	    inst_time = run_segment(params, inst_time, quick_cluster);
 	    inst_time = run_segment(params, inst_time, play_conclusion);
@@ -8237,7 +8998,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 124 */
+/* 132 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8260,12 +9021,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 125 */
+/* 133 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var demo_text = __webpack_require__(126);
+	var demo_text = __webpack_require__(134);
 
 	module.exports = function play_intro() {
 
@@ -8290,7 +9051,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 126 */
+/* 134 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8324,21 +9085,23 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 127 */
+/* 135 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var demo_text = __webpack_require__(126);
-	var two_translate_zoom = __webpack_require__(91);
+	var demo_text = __webpack_require__(134);
+	var two_translate_zoom = __webpack_require__(98);
 
 	module.exports = function play_zoom() {
 
-	  function run(params) {
+	  function run(cgm) {
+
+	    var params = cgm.params;
 	    var text = 'Zoom and pan by\nscrolling and dragging';
 	    demo_text(params, text, 4000);
 
-	    setTimeout(two_translate_zoom, 1500, params, 0, 0, 4);
+	    setTimeout(two_translate_zoom, 1500, cgm, 0, 0, 4);
 	  }
 
 	  function get_duration() {
@@ -8352,24 +9115,26 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 128 */
+/* 136 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var demo_text = __webpack_require__(126);
-	var two_translate_zoom = __webpack_require__(91);
-	var sim_click = __webpack_require__(129);
+	var demo_text = __webpack_require__(134);
+	var two_translate_zoom = __webpack_require__(98);
+	var sim_click = __webpack_require__(137);
 
 	module.exports = function play_reset_zoom() {
 
-	  function run(params) {
+	  function run(cgm) {
+
+	    var params = cgm.params;
 
 	    var text = 'Reset zoom by double-clicking\n';
 	    demo_text(params, text, 4000);
 
 	    setTimeout(sim_click, 2000, params, 'double', 300, 300);
-	    setTimeout(two_translate_zoom, 2400, params, 0, 0, 1);
+	    setTimeout(two_translate_zoom, 2400, cgm, 0, 0, 1);
 	  }
 
 	  function get_duration() {
@@ -8383,7 +9148,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 129 */
+/* 137 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8402,13 +9167,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 130 */
+/* 138 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var demo_text = __webpack_require__(126);
-	var sim_click = __webpack_require__(129);
+	var demo_text = __webpack_require__(134);
+	var sim_click = __webpack_require__(137);
 
 	module.exports = function play_reorder_row() {
 	  /* eslint-disable */
@@ -8470,13 +9235,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 131 */
+/* 139 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var demo_text = __webpack_require__(126);
-	var highlight_sidebar_element = __webpack_require__(132);
+	var demo_text = __webpack_require__(134);
+	var highlight_sidebar_element = __webpack_require__(140);
 
 	module.exports = function play_reorder_buttons() {
 	  /* eslint-disable */
@@ -8512,7 +9277,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 132 */
+/* 140 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8529,26 +9294,27 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 133 */
+/* 141 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var demo_text = __webpack_require__(126);
-	var highlight_sidebar_element = __webpack_require__(132);
-	var two_translate_zoom = __webpack_require__(91);
+	var demo_text = __webpack_require__(134);
+	var highlight_sidebar_element = __webpack_require__(140);
+	var two_translate_zoom = __webpack_require__(98);
 
 	module.exports = function play_search() {
 
-	  function run(params) {
+	  function run(cgm) {
 
+	    var params = cgm.params;
 	    var text = 'Search for rows using\nthe search box';
 	    demo_text(params, text, 5000);
 
 	    var ini_delay = 2500;
 	    setTimeout(highlight_sidebar_element, ini_delay, params, 'gene_search_container');
 
-	    // manually mimic typing and autocomplete 
+	    // manually mimic typing and autocomplete
 	    setTimeout(type_out_search, ini_delay + 1000, params, 'E');
 	    setTimeout(type_out_search, ini_delay + 1500, params, 'EG');
 	    setTimeout(type_out_search, ini_delay + 2000, params, 'EGF');
@@ -8556,7 +9322,7 @@ var Clustergrammer =
 
 	    setTimeout(run_search, 5500, params);
 
-	    setTimeout(two_translate_zoom, 7500, params, 0, 0, 1);
+	    setTimeout(two_translate_zoom, 7500, cgm, 0, 0, 1);
 	  }
 
 	  function get_duration() {
@@ -8580,14 +9346,14 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 134 */
+/* 142 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var demo_text = __webpack_require__(126);
-	var highlight_sidebar_element = __webpack_require__(132);
-	var update_viz_with_view = __webpack_require__(135);
+	var demo_text = __webpack_require__(134);
+	var highlight_sidebar_element = __webpack_require__(140);
+	var update_viz_with_view = __webpack_require__(143);
 
 	module.exports = function play_filter() {
 
@@ -8646,14 +9412,14 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 135 */
+/* 143 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var make_network_using_view = __webpack_require__(10);
-	var disable_sidebar = __webpack_require__(136);
-	var update_viz_with_network = __webpack_require__(137);
+	var disable_sidebar = __webpack_require__(144);
+	var update_viz_with_network = __webpack_require__(145);
 
 	module.exports = function update_viz_with_view(cgm, requested_view) {
 
@@ -8680,7 +9446,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 136 */
+/* 144 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8697,26 +9463,26 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 137 */
+/* 145 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var make_params = __webpack_require__(9);
-	var define_enter_exit_delays = __webpack_require__(138);
-	var enter_exit_update = __webpack_require__(139);
-	var initialize_resizing = __webpack_require__(78);
-	var make_col_cat = __webpack_require__(110);
-	var make_row_cat = __webpack_require__(116);
-	var make_row_dendro = __webpack_require__(117);
-	var make_col_dendro = __webpack_require__(118);
-	var ini_sidebar = __webpack_require__(150);
-	var enable_sidebar = __webpack_require__(152);
-	var ini_doubleclick = __webpack_require__(90);
-	var update_reorder_buttons = __webpack_require__(153);
-	var make_row_cat_super_labels = __webpack_require__(77);
-	var modify_row_node_cats = __webpack_require__(154);
-	var run_zoom = __webpack_require__(80);
+	var define_enter_exit_delays = __webpack_require__(146);
+	var enter_exit_update = __webpack_require__(147);
+	var initialize_resizing = __webpack_require__(80);
+	var make_col_cat = __webpack_require__(118);
+	var make_row_cat = __webpack_require__(124);
+	var make_row_dendro = __webpack_require__(125);
+	var make_col_dendro = __webpack_require__(126);
+	var ini_sidebar = __webpack_require__(158);
+	var enable_sidebar = __webpack_require__(160);
+	var ini_doubleclick = __webpack_require__(97);
+	var update_reorder_buttons = __webpack_require__(161);
+	var make_row_cat_super_labels = __webpack_require__(79);
+	var modify_row_node_cats = __webpack_require__(162);
+	var run_zoom = __webpack_require__(82);
 
 	module.exports = function update_viz_with_network(cgm, new_network_data) {
 
@@ -8792,7 +9558,7 @@ var Clustergrammer =
 
 	  d3.select(cgm.params.viz.viz_svg).call(cgm.params.zoom_behavior);
 
-	  ini_doubleclick(cgm.params);
+	  ini_doubleclick(cgm);
 
 	  ini_sidebar(cgm);
 
@@ -8807,7 +9573,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 138 */
+/* 146 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8880,21 +9646,21 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 139 */
+/* 147 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var reset_size_after_update = __webpack_require__(140);
-	var make_row_label_container = __webpack_require__(212);
-	var make_col_label_container = __webpack_require__(211);
-	var eeu_existing_row = __webpack_require__(141);
-	var exit_components = __webpack_require__(145);
-	var draw_gridlines = __webpack_require__(37);
-	var enter_row_groups = __webpack_require__(146);
-	var resize_containers = __webpack_require__(149);
-	var label_constrain_and_trim = __webpack_require__(92);
-	var d3_tip_custom = __webpack_require__(48);
+	var reset_size_after_update = __webpack_require__(148);
+	var make_row_label_container = __webpack_require__(50);
+	var make_col_label_container = __webpack_require__(70);
+	var eeu_existing_row = __webpack_require__(149);
+	var exit_components = __webpack_require__(153);
+	var draw_gridlines = __webpack_require__(40);
+	var enter_row_groups = __webpack_require__(154);
+	var resize_containers = __webpack_require__(157);
+	var label_constrain_and_trim = __webpack_require__(99);
+	var d3_tip_custom = __webpack_require__(49);
 
 	module.exports = function (cgm, network_data, delays) {
 
@@ -8994,7 +9760,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 140 */
+/* 148 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9003,21 +9769,21 @@ var Clustergrammer =
 	var calc_clust_height = __webpack_require__(28);
 	var get_svg_dim = __webpack_require__(25);
 	var calc_clust_width = __webpack_require__(27);
-	var reset_zoom = __webpack_require__(93);
-	var resize_dendro = __webpack_require__(94);
-	var resize_super_labels = __webpack_require__(95);
-	var resize_spillover = __webpack_require__(96);
-	var resize_row_labels = __webpack_require__(98);
-	var resize_row_viz = __webpack_require__(100);
-	var resize_col_labels = __webpack_require__(101);
-	var resize_col_text = __webpack_require__(102);
-	var resize_col_triangle = __webpack_require__(103);
-	var resize_col_hlight = __webpack_require__(104);
-	var resize_label_bars = __webpack_require__(107);
-	var calc_default_fs = __webpack_require__(33);
-	var calc_zoom_switching = __webpack_require__(32);
+	var reset_zoom = __webpack_require__(100);
+	var resize_dendro = __webpack_require__(101);
+	var resize_super_labels = __webpack_require__(102);
+	var resize_spillover = __webpack_require__(103);
+	var resize_row_labels = __webpack_require__(105);
+	var resize_row_viz = __webpack_require__(107);
+	var resize_col_labels = __webpack_require__(108);
+	var resize_col_text = __webpack_require__(109);
+	var resize_col_triangle = __webpack_require__(110);
+	var resize_col_hlight = __webpack_require__(111);
+	var resize_label_bars = __webpack_require__(114);
+	var calc_default_fs = __webpack_require__(36);
+	var calc_zoom_switching = __webpack_require__(35);
 	// var show_visible_area = require('../zoom/show_visible_area');
-	var ini_zoom_info = __webpack_require__(34);
+	var ini_zoom_info = __webpack_require__(37);
 
 	module.exports = function (cgm, row_nodes, col_nodes, links, duration, delays) {
 
@@ -9029,7 +9795,7 @@ var Clustergrammer =
 	  // ////////////////////////////
 	  // show_visible_area(params);
 	  // // quick fix for column filtering
-	  // setTimeout(show_visible_area, 2200, params);
+	  // setTimeout(show_visible_area, 2200, cgm);
 
 	  var row_nodes_names = params.network_data.row_nodes_names;
 
@@ -9175,17 +9941,17 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 141 */
+/* 149 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var exit_existing_row = __webpack_require__(142);
-	var enter_existing_row = __webpack_require__(143);
-	var update_split_tiles = __webpack_require__(144);
-	var mouseover_tile = __webpack_require__(45);
-	var mouseout_tile = __webpack_require__(46);
-	var fine_position_tile = __webpack_require__(47);
+	var exit_existing_row = __webpack_require__(150);
+	var enter_existing_row = __webpack_require__(151);
+	var update_split_tiles = __webpack_require__(152);
+	var mouseover_tile = __webpack_require__(46);
+	var mouseout_tile = __webpack_require__(47);
+	var fine_position_tile = __webpack_require__(48);
 
 	// TODO add tip back to arguments
 	module.exports = function eeu_existing_row(params, ini_inp_row_data, delays, duration, row_selection, tip) {
@@ -9248,7 +10014,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 142 */
+/* 150 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9293,14 +10059,14 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 143 */
+/* 151 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var mouseover_tile = __webpack_require__(45);
-	var mouseout_tile = __webpack_require__(46);
-	var fine_position_tile = __webpack_require__(47);
+	var mouseover_tile = __webpack_require__(46);
+	var mouseout_tile = __webpack_require__(47);
+	var fine_position_tile = __webpack_require__(48);
 
 	module.exports = function enter_existing_row(params, delays, duration, cur_row_tiles, tip) {
 
@@ -9342,16 +10108,16 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 144 */
+/* 152 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var draw_up_tile = __webpack_require__(43);
-	var draw_dn_tile = __webpack_require__(44);
-	var mouseover_tile = __webpack_require__(45);
-	var mouseout_tile = __webpack_require__(46);
-	var fine_position_tile = __webpack_require__(47);
+	var draw_up_tile = __webpack_require__(44);
+	var draw_dn_tile = __webpack_require__(45);
+	var mouseover_tile = __webpack_require__(46);
+	var mouseout_tile = __webpack_require__(47);
+	var fine_position_tile = __webpack_require__(48);
 
 	module.exports = function update_split_tiles(params, inp_row_data, row_selection, delays, duration, cur_row_tiles, tip) {
 
@@ -9429,7 +10195,7 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 145 */
+/* 153 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9493,16 +10259,14 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 146 */
+/* 154 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var enter_new_rows = __webpack_require__(147);
+	var enter_new_rows = __webpack_require__(155);
 
 	module.exports = function enter_row_groups(params, delays, duration, tip) {
-
-	  console.log('enter_row_groups');
 
 	  // enter new rows
 	  var new_row_groups = d3.select(params.root + ' .clust_group').selectAll('.row').data(params.matrix.matrix, function (d) {
@@ -9517,20 +10281,18 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 147 */
+/* 155 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var enter_split_tiles = __webpack_require__(148);
-	var mouseover_tile = __webpack_require__(45);
-	var mouseout_tile = __webpack_require__(46);
-	var fine_position_tile = __webpack_require__(47);
+	var enter_split_tiles = __webpack_require__(156);
+	var mouseover_tile = __webpack_require__(46);
+	var mouseout_tile = __webpack_require__(47);
+	var fine_position_tile = __webpack_require__(48);
 
 	// make each row in the clustergram
 	module.exports = function enter_new_rows(params, ini_inp_row_data, delays, duration, tip, row_selection) {
-
-	  console.log('enter_new_rows');
 
 	  var inp_row_data = ini_inp_row_data.row_data;
 
@@ -9573,14 +10335,14 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 148 */
+/* 156 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var draw_up_tile = __webpack_require__(43);
-	var draw_dn_tile = __webpack_require__(44);
-	var fine_position_tile = __webpack_require__(47);
+	var draw_up_tile = __webpack_require__(44);
+	var draw_dn_tile = __webpack_require__(45);
+	var fine_position_tile = __webpack_require__(48);
 
 	module.exports = function enter_split_tiles(params, inp_row_data, row_selection, tip, delays, duration, tile) {
 
@@ -9670,7 +10432,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 149 */
+/* 157 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9691,17 +10453,17 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 150 */
+/* 158 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	/* eslint-disable */
 
-	var change_groups = __webpack_require__(121);
-	var all_reorder = __webpack_require__(76);
-	var ini_cat_reorder = __webpack_require__(75);
-	var run_row_search = __webpack_require__(151);
+	var change_groups = __webpack_require__(129);
+	var all_reorder = __webpack_require__(78);
+	var ini_cat_reorder = __webpack_require__(77);
+	var run_row_search = __webpack_require__(159);
 
 	module.exports = function ini_sidebar(cgm) {
 
@@ -9794,12 +10556,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 151 */
+/* 159 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var two_translate_zoom = __webpack_require__(91);
+	var two_translate_zoom = __webpack_require__(98);
 
 	module.exports = function run_row_search(cgm, search_term, entities) {
 
@@ -9815,7 +10577,7 @@ var Clustergrammer =
 	    var inst_y_pos = cgm.params.viz.y_scale(idx);
 	    var pan_dy = cgm.params.viz.clust.dim.height / 2 - inst_y_pos;
 
-	    two_translate_zoom(cgm.params, 0, pan_dy, cgm.params.viz.zoom_switch);
+	    two_translate_zoom(cgm, 0, pan_dy, cgm.params.viz.zoom_switch);
 
 	    // set y zoom to zoom_switch
 	    cgm.params.zoom_info.zoom_y = cgm.params.viz.zoom_switch;
@@ -9828,7 +10590,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 152 */
+/* 160 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9864,7 +10626,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 153 */
+/* 161 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9886,12 +10648,12 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 154 */
+/* 162 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var remove_node_cats = __webpack_require__(155);
+	var remove_node_cats = __webpack_require__(163);
 	var utils = __webpack_require__(2);
 
 	module.exports = function modify_row_node_cats(cat_data, inst_nodes) {
@@ -9963,7 +10725,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 155 */
+/* 163 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9985,12 +10747,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 156 */
+/* 164 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var sim_click = __webpack_require__(129);
+	var sim_click = __webpack_require__(137);
 
 	module.exports = function quick_cluster() {
 	  /* eslint-disable */
@@ -10045,14 +10807,14 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 157 */
+/* 165 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var demo_text = __webpack_require__(126);
-	var highlight_sidebar_element = __webpack_require__(132);
-	var change_groups = __webpack_require__(121);
+	var demo_text = __webpack_require__(134);
+	var highlight_sidebar_element = __webpack_require__(140);
+	var change_groups = __webpack_require__(129);
 
 	module.exports = function play_groups() {
 	  /* eslint-disable */
@@ -10088,13 +10850,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 158 */
+/* 166 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var demo_text = __webpack_require__(126);
-	var sim_click = __webpack_require__(129);
+	var demo_text = __webpack_require__(134);
+	var sim_click = __webpack_require__(137);
 
 	module.exports = function play_category() {
 	  /* eslint-disable */
@@ -10142,13 +10904,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 159 */
+/* 167 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var demo_text = __webpack_require__(126);
-	var toggle_play_button = __webpack_require__(160);
+	var demo_text = __webpack_require__(134);
+	var toggle_play_button = __webpack_require__(168);
 
 	module.exports = function play_conclusion() {
 
@@ -10183,7 +10945,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 160 */
+/* 168 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -10200,13 +10962,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 161 */
+/* 169 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var demo_text = __webpack_require__(126);
-	var sim_click = __webpack_require__(129);
+	var demo_text = __webpack_require__(134);
+	var sim_click = __webpack_require__(137);
 
 	module.exports = function play_menu_button() {
 	  /* eslint-disable */
@@ -10281,13 +11043,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 162 */
+/* 170 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_play_button = __webpack_require__(163);
-	var make_demo_text_containers = __webpack_require__(164);
+	var make_play_button = __webpack_require__(171);
+	var make_demo_text_containers = __webpack_require__(172);
 
 	module.exports = function ini_demo() {
 
@@ -10301,12 +11063,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 163 */
+/* 171 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var position_play_button = __webpack_require__(108);
+	var position_play_button = __webpack_require__(115);
 
 	module.exports = function make_play_button(cgm) {
 
@@ -10345,7 +11107,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 164 */
+/* 172 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -10386,13 +11148,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 165 */
+/* 173 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var filter_network_using_new_nodes = __webpack_require__(11);
-	var update_viz_with_network = __webpack_require__(137);
+	var update_viz_with_network = __webpack_require__(145);
 
 	module.exports = function filter_viz_using_nodes(new_nodes) {
 
@@ -10401,13 +11163,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 166 */
+/* 174 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var filter_network_using_new_nodes = __webpack_require__(11);
-	var update_viz_with_network = __webpack_require__(137);
+	var update_viz_with_network = __webpack_require__(145);
 
 	module.exports = function filter_viz_using_names(names) {
 	  var external_cgm = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
@@ -10454,15 +11216,15 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 167 */
+/* 175 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_row_cat = __webpack_require__(116);
+	var make_row_cat = __webpack_require__(124);
 	var calc_viz_params = __webpack_require__(15);
-	var resize_viz = __webpack_require__(79);
-	var modify_row_node_cats = __webpack_require__(154);
+	var resize_viz = __webpack_require__(81);
+	var modify_row_node_cats = __webpack_require__(162);
 
 	module.exports = function update_cats(cgm, cat_data) {
 
@@ -10492,16 +11254,16 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 168 */
+/* 176 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_row_cat = __webpack_require__(116);
+	var make_row_cat = __webpack_require__(124);
 	var calc_viz_params = __webpack_require__(15);
-	var resize_viz = __webpack_require__(79);
-	var modify_row_node_cats = __webpack_require__(154);
-	var make_default_cat_data = __webpack_require__(169);
+	var resize_viz = __webpack_require__(81);
+	var modify_row_node_cats = __webpack_require__(162);
+	var make_default_cat_data = __webpack_require__(177);
 
 	module.exports = function reset_cats() {
 	  var run_resize_viz = arguments.length <= 0 || arguments[0] === undefined ? true : arguments[0];
@@ -10534,7 +11296,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 169 */
+/* 177 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -10650,13 +11412,13 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 170 */
+/* 178 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var update_viz_with_view = __webpack_require__(135);
-	var reset_other_filter_sliders = __webpack_require__(171);
+	var update_viz_with_view = __webpack_require__(143);
+	var reset_other_filter_sliders = __webpack_require__(179);
 
 	module.exports = function external_update_view(filter_type, inst_state) {
 
@@ -10673,12 +11435,12 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 171 */
+/* 179 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_filter_title = __webpack_require__(172);
+	var make_filter_title = __webpack_require__(180);
 
 	module.exports = function reset_other_filter_sliders(cgm, filter_type, inst_state) {
 
@@ -10727,7 +11489,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 172 */
+/* 180 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10787,12 +11549,12 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 173 */
+/* 181 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var file_saver = __webpack_require__(174);
+	var file_saver = __webpack_require__(182);
 
 	module.exports = function export_matrix() {
 
@@ -10914,7 +11676,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 174 */
+/* 182 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -11131,12 +11893,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 175 */
+/* 183 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var deactivate_cropping = __webpack_require__(176);
+	var deactivate_cropping = __webpack_require__(184);
 
 	module.exports = function crop_matrix() {
 
@@ -11245,7 +12007,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 176 */
+/* 184 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -11258,7 +12020,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 177 */
+/* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -11274,7 +12036,7 @@ var Clustergrammer =
 	(function (root, factory) {
 	  if (true) {
 	    // AMD. Register as an anonymous module.
-	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(178)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(186)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	  } else if ((typeof exports === 'undefined' ? 'undefined' : _typeof(exports)) === 'object') {
 	    if (process.browser) {
 	      // Browserify. Import css too using cssify.
@@ -11660,13 +12422,13 @@ var Clustergrammer =
 	});
 
 /***/ },
-/* 178 */
+/* 186 */
 /***/ function(module, exports) {
 
 	module.exports = d3;
 
 /***/ },
-/* 179 */
+/* 187 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {"use strict";
@@ -12106,10 +12868,10 @@ var Clustergrammer =
 
 		return _;
 		})();
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(180)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(188)(module)))
 
 /***/ },
-/* 180 */
+/* 188 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -12126,16 +12888,16 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 181 */
+/* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(182);
+	var content = __webpack_require__(190);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(184)(content, {});
+	var update = __webpack_require__(192)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -12152,10 +12914,10 @@ var Clustergrammer =
 	}
 
 /***/ },
-/* 182 */
+/* 190 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(183)();
+	exports = module.exports = __webpack_require__(191)();
 	// imports
 
 
@@ -12166,7 +12928,7 @@ var Clustergrammer =
 
 
 /***/ },
-/* 183 */
+/* 191 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -12221,7 +12983,7 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 184 */
+/* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -12473,16 +13235,16 @@ var Clustergrammer =
 
 
 /***/ },
-/* 185 */
+/* 193 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(186);
+	var content = __webpack_require__(194);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(184)(content, {});
+	var update = __webpack_require__(192)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -12499,10 +13261,10 @@ var Clustergrammer =
 	}
 
 /***/ },
-/* 186 */
+/* 194 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(183)();
+	exports = module.exports = __webpack_require__(191)();
 	// imports
 
 
@@ -12513,19 +13275,19 @@ var Clustergrammer =
 
 
 /***/ },
-/* 187 */
+/* 195 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var ini_sidebar = __webpack_require__(150);
-	var set_up_filters = __webpack_require__(188);
-	var set_up_search = __webpack_require__(193);
-	var set_up_reorder = __webpack_require__(194);
-	var set_sidebar_ini_view = __webpack_require__(195);
-	var make_icons = __webpack_require__(196);
-	var make_modals = __webpack_require__(198);
-	var set_up_opacity_slider = __webpack_require__(200);
+	var ini_sidebar = __webpack_require__(158);
+	var set_up_filters = __webpack_require__(196);
+	var set_up_search = __webpack_require__(201);
+	var set_up_reorder = __webpack_require__(202);
+	var set_sidebar_ini_view = __webpack_require__(203);
+	var make_icons = __webpack_require__(204);
+	var make_modals = __webpack_require__(206);
+	var set_up_opacity_slider = __webpack_require__(208);
 
 	/* Represents sidebar with controls.
 	 */
@@ -12595,13 +13357,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 188 */
+/* 196 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_slider_filter = __webpack_require__(189);
-	var make_button_filter = __webpack_require__(192);
+	var make_slider_filter = __webpack_require__(197);
+	var make_button_filter = __webpack_require__(200);
 
 	module.exports = function set_up_filters(cgm, filter_type) {
 
@@ -12617,17 +13379,17 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 189 */
+/* 197 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_filter_title = __webpack_require__(172);
-	var run_filter_slider = __webpack_require__(190);
+	var make_filter_title = __webpack_require__(180);
+	var run_filter_slider = __webpack_require__(198);
 	var get_filter_default_state = __webpack_require__(5);
 	var get_subset_views = __webpack_require__(12);
 
-	d3.slider = __webpack_require__(177);
+	d3.slider = __webpack_require__(185);
 
 	module.exports = function make_slider_filter(cgm, filter_type, div_filters) {
 
@@ -12697,14 +13459,14 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 190 */
+/* 198 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var update_viz_with_view = __webpack_require__(135);
-	var reset_other_filter_sliders = __webpack_require__(171);
-	var get_current_orders = __webpack_require__(191);
+	var update_viz_with_view = __webpack_require__(143);
+	var reset_other_filter_sliders = __webpack_require__(179);
+	var get_current_orders = __webpack_require__(199);
 	var make_requested_view = __webpack_require__(14);
 
 	module.exports = function run_filter_slider(cgm, filter_type, available_views, inst_index) {
@@ -12733,7 +13495,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 191 */
+/* 199 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -12764,7 +13526,7 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 192 */
+/* 200 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12817,7 +13579,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 193 */
+/* 201 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -12834,7 +13596,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 194 */
+/* 202 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -12927,12 +13689,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 195 */
+/* 203 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_filter_title = __webpack_require__(172);
+	var make_filter_title = __webpack_require__(180);
 
 	module.exports = function set_sidebar_ini_view(params) {
 
@@ -12967,15 +13729,15 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 196 */
+/* 204 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var save_svg_png = __webpack_require__(197);
-	var file_saver = __webpack_require__(174);
-	var two_translate_zoom = __webpack_require__(91);
-	var deactivate_cropping = __webpack_require__(176);
+	var save_svg_png = __webpack_require__(205);
+	var file_saver = __webpack_require__(182);
+	var two_translate_zoom = __webpack_require__(98);
+	var deactivate_cropping = __webpack_require__(184);
 
 	module.exports = function make_icons(cgm, sidebar) {
 
@@ -13048,7 +13810,7 @@ var Clustergrammer =
 	        d3.select(cgm.params.root + ' .row_dendro_icons_container').style('display', 'block');
 	      }
 
-	      two_translate_zoom(params, 0, 0, 1);
+	      two_translate_zoom(cgm, 0, 0, 1);
 	    }
 	  }).classed('sidebar_tooltip', true).append('span').classed('sidebar_tooltip_text', true).html('Crop matrix').style('left', '-400%');
 
@@ -13083,7 +13845,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 197 */
+/* 205 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -13289,12 +14051,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 198 */
+/* 206 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_modal_skeleton = __webpack_require__(199);
+	var make_modal_skeleton = __webpack_require__(207);
 
 	module.exports = function ini_modals(params) {
 
@@ -13328,7 +14090,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 199 */
+/* 207 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -13353,7 +14115,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 200 */
+/* 208 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -13365,773 +14127,6 @@ var Clustergrammer =
 	  slider_container.append('div').classed('sidebar_text', true).classed('opacity_slider_text', true).style('margin-bottom', '3px').text('Opacity Slider');
 
 	  slider_container.append('div').classed('slider', true).classed('opacity_slider', true);
-		};
-
-/***/ },
-/* 201 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var utils = __webpack_require__(2);
-	var initialize_matrix = __webpack_require__(202);
-
-	module.exports = function ini_matrix_params(params) {
-
-	  var matrix = {};
-
-	  var network_data = params.network_data;
-
-	  matrix.tile_colors = params.tile_colors;
-	  matrix.bar_colors = params.bar_colors;
-	  matrix.outline_colors = params.outline_colors;
-	  matrix.hlight_color = params.highlight_color;
-	  matrix.tile_title = params.tile_title;
-	  matrix.show_tile_tooltips = params.show_tile_tooltips;
-	  matrix.make_tile_tooltip = params.make_tile_tooltip;
-
-	  // initialized clicked tile and rows
-	  matrix.click_hlight_x = -666;
-	  matrix.click_hlight_y = -666;
-	  matrix.click_hlight_row = -666;
-	  matrix.click_hlight_col = -666;
-
-	  // definition of a large matrix (num links) determines if transition is run
-	  matrix.def_large_matrix = 10000;
-	  matrix.opacity_function = params.opacity_scale;
-
-	  matrix.orders = {};
-
-	  _.each(['row', 'col'], function (inst_rc) {
-
-	    // row ordering is based on col info and vice versa
-	    var other_rc;
-	    if (inst_rc === 'row') {
-	      other_rc = 'col';
-	    } else {
-	      other_rc = 'row';
-	    }
-
-	    // the nodes are defined using other_rc
-	    var inst_nodes = network_data[other_rc + '_nodes'];
-	    var num_nodes = inst_nodes.length;
-
-	    var nodes_names = utils.pluck(inst_nodes, 'name');
-	    var tmp = nodes_names.sort();
-
-	    var alpha_index = _.map(tmp, function (d) {
-	      return network_data[other_rc + '_nodes_names'].indexOf(d);
-	    });
-
-	    matrix.orders['alpha_' + inst_rc] = alpha_index;
-
-	    var possible_orders = ['clust', 'rank'];
-
-	    if (_.has(inst_nodes[0], 'rankvar')) {
-	      possible_orders.push('rankvar');
-	    }
-
-	    if (params.viz.all_cats[other_rc].length > 0) {
-	      _.each(params.viz.all_cats[other_rc], function (inst_cat) {
-	        // the index of the category has replaced - with _
-	        inst_cat = inst_cat.replace('-', '_');
-	        possible_orders.push(inst_cat + '_index');
-	      });
-	    }
-
-	    _.each(possible_orders, function (inst_order) {
-
-	      var tmp_order_index = d3.range(num_nodes).sort(function (a, b) {
-	        return inst_nodes[b][inst_order] - inst_nodes[a][inst_order];
-	      });
-
-	      matrix.orders[inst_order + '_' + inst_rc] = tmp_order_index;
-	    });
-	  });
-
-	  if (utils.has(network_data, 'all_links')) {
-	    matrix.max_link = _.max(network_data.all_links, function (d) {
-	      return Math.abs(d.value);
-	    }).value;
-	  } else {
-	    matrix.max_link = _.max(network_data.links, function (d) {
-	      return Math.abs(d.value);
-	    }).value;
-	  }
-
-	  matrix.abs_max_val = Math.abs(matrix.max_link) * params.clamp_opacity;
-
-	  if (params.input_domain === 0) {
-	    if (matrix.opacity_function === 'linear') {
-	      matrix.opacity_scale = d3.scale.linear().domain([0, matrix.abs_max_val]).clamp(true).range([0.0, 1.0]);
-	    } else if (matrix.opacity_function === 'log') {
-	      matrix.opacity_scale = d3.scale.log().domain([0.001, matrix.abs_max_val]).clamp(true).range([0.0, 1.0]);
-	    }
-	  } else {
-	    if (matrix.opacity_function === 'linear') {
-	      matrix.opacity_scale = d3.scale.linear().domain([0, params.input_domain]).clamp(true).range([0.0, 1.0]);
-	    } else if (matrix.opacity_function === 'log') {
-	      matrix.opacity_scale = d3.scale.log().domain([0.001, params.input_domain]).clamp(true).range([0.0, 1.0]);
-	    }
-	  }
-
-	  var has_val_up = utils.has(network_data.links[0], 'value_up');
-	  var has_val_dn = utils.has(network_data.links[0], 'value_dn');
-
-	  if (has_val_up || has_val_dn) {
-	    matrix.tile_type = 'updn';
-	  } else {
-	    matrix.tile_type = 'simple';
-	  }
-
-	  if (utils.has(network_data.links[0], 'highlight')) {
-	    matrix.highlight = 1;
-	  } else {
-	    matrix.highlight = 0;
-	  }
-
-	  matrix.matrix = initialize_matrix(network_data);
-
-	  matrix.wait_tooltip = 0;
-
-	  return matrix;
-	};
-
-/***/ },
-/* 202 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var utils = __webpack_require__(2);
-
-	module.exports = function (network_data) {
-	  var matrix = [];
-	  var ini_object;
-
-	  var keep_orig;
-	  if (utils.has(network_data.links[0], 'value_orig')) {
-	    keep_orig = true;
-	  } else {
-	    keep_orig = false;
-	  }
-
-	  network_data.row_nodes.forEach(function (tmp, row_index) {
-
-	    matrix[row_index] = {};
-	    matrix[row_index].name = network_data.row_nodes[row_index].name;
-	    matrix[row_index].row_index = row_index;
-
-	    matrix[row_index].row_data = d3.range(network_data.col_nodes.length).map(function (col_index) {
-
-	      if (utils.has(network_data.links[0], 'value_up') || utils.has(network_data.links[0], 'value_dn')) {
-
-	        ini_object = {
-	          pos_x: col_index,
-	          pos_y: row_index,
-	          value: 0,
-	          value_up: 0,
-	          value_dn: 0,
-	          highlight: 0
-	        };
-	      } else {
-
-	        ini_object = {
-	          pos_x: col_index,
-	          pos_y: row_index,
-	          value: 0,
-	          highlight: 0
-	        };
-	      }
-
-	      if (keep_orig) {
-	        ini_object.value_orig = 0;
-	      }
-
-	      return ini_object;
-	    });
-	  });
-
-	  network_data.links.forEach(function (link) {
-
-	    // transfer additional link information is necessary
-	    matrix[link.source].row_data[link.target].value = link.value;
-	    matrix[link.source].row_data[link.target].row_name = link.row_name;
-	    matrix[link.source].row_data[link.target].col_name = link.col_name;
-
-	    if (utils.has(link, 'value_up') || utils.has(link, 'value_dn')) {
-	      matrix[link.source].row_data[link.target].value_up = link.value_up;
-	      matrix[link.source].row_data[link.target].value_dn = link.value_dn;
-	    }
-
-	    if (keep_orig) {
-	      matrix[link.source].row_data[link.target].value_orig = link.value_orig;
-	    }
-
-	    if (link.highlight) {
-	      matrix[link.source].row_data[link.target].highlight = link.highlight;
-	    }
-	    if (link.info) {
-	      matrix[link.source].row_data[link.target].info = link.info;
-	    }
-	  });
-
-	  return matrix;
-	};
-
-/***/ },
-/* 203 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	module.exports = function calc_downsampled_matrix(params, ds_layer) {
-
-	  var inst_num_rows = params.viz.ds[ds_layer].num_rows;
-
-	  var num_compressed_rows = params.network_data.row_nodes.length / inst_num_rows;
-
-	  // increase ds opacity, as more rows are compressed into a single downsampled
-	  // row, increase the opacity of the downsampled row.
-	  var opacity_factor = params.viz.ds_opacity_scale(num_compressed_rows);
-
-	  var mod_val = params.viz.clust.dim.height / inst_num_rows;
-	  var mat = params.matrix.matrix;
-
-	  var ds_mat = [];
-	  var inst_obj;
-
-	  var len_ds_array = inst_num_rows + 1;
-
-	  var i;
-	  var x;
-
-	  // initialize array of objects
-	  for (i = 0; i < len_ds_array; i++) {
-
-	    inst_obj = {};
-	    inst_obj.row_index = i;
-	    inst_obj.name = String(i);
-	    inst_obj.all_names = [];
-
-	    ds_mat.push(inst_obj);
-	  }
-
-	  _.each(mat, function (inst_row) {
-
-	    var inst_y = params.viz.y_scale(inst_row.row_index);
-
-	    var ds_index = Math.round(inst_y / mod_val);
-
-	    var inst_row_data = inst_row.row_data;
-
-	    // gather names
-	    ds_mat[ds_index].all_names.push(inst_row.name);
-
-	    // gather row_data
-	    if (_.has(ds_mat[ds_index], 'row_data')) {
-
-	      for (x = 0; x < inst_row_data.length; x++) {
-	        ds_mat[ds_index].row_data[x].value = ds_mat[ds_index].row_data[x].value + inst_row_data[x].value;
-	      }
-	    } else {
-
-	      var new_data = [];
-	      for (x = 0; x < inst_row_data.length; x++) {
-	        new_data[x] = inst_row_data[x];
-	      }
-
-	      ds_mat[ds_index].row_data = new_data;
-	    }
-	  });
-
-	  // average the values
-	  _.each(ds_mat, function (tmp_ds) {
-
-	    var tmp_row_data = tmp_ds.row_data;
-
-	    var num_names = tmp_ds.all_names.length;
-
-	    _.each(tmp_row_data, function (tmp_obj) {
-	      tmp_obj.value = tmp_obj.value / num_names * opacity_factor;
-	    });
-	  });
-
-	  // all names were found
-	  var all_names = [];
-
-	  _.each(ds_mat, function (inst_row) {
-	    all_names = all_names.concat(inst_row.all_names);
-	  });
-
-	  return ds_mat;
-		};
-
-/***/ },
-/* 204 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var run_when_zoom_stopped = __webpack_require__(205);
-	var check_zoom_stop_status = __webpack_require__(206);
-
-	module.exports = function check_if_zooming_has_stopped(params) {
-
-	  var stop_attributes = check_zoom_stop_status(params);
-
-	  if (stop_attributes === true) {
-
-	    // wait and double check that zooming has stopped
-	    setTimeout(run_when_zoom_stopped, 50, params);
-	  }
-		};
-
-/***/ },
-/* 205 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var constrain_font_size = __webpack_require__(82);
-	var trim_text = __webpack_require__(86);
-	var num_visible_labels = __webpack_require__(85);
-	var toggle_grid_lines = __webpack_require__(39);
-	var show_visible_area = __webpack_require__(64);
-	var check_zoom_stop_status = __webpack_require__(206);
-	var toggle_labels = __webpack_require__(208);
-
-	module.exports = function run_when_zoom_stopped(params) {
-
-	  var stop_attributes = check_zoom_stop_status(params);
-
-	  if (stop_attributes === true) {
-
-	    /////////////////////////////////////////////////
-	    // zooming has stopped
-	    /////////////////////////////////////////////////
-	    console.log('\nZOOMING HAS ACTUALLY STOPPED\n============================');
-
-	    _.each(['row', 'col'], function (inst_rc) {
-
-	      d3.selectAll(params.root + ' .' + inst_rc + '_label_group').select('text').style('opacity', 1);
-
-	      d3.selectAll(params.root + ' .' + inst_rc + '_cat_group').select('path').style('display', 'block');
-	    });
-
-	    show_visible_area(params, true);
-
-	    d3.selectAll(params.viz.root_tips).style('display', 'block');
-
-	    d3.selectAll(params.root + ' .row_label_group').select('text').style('display', 'none');
-	    d3.selectAll(params.root + ' .row_label_group').select('text').style('display', 'block');
-
-	    d3.select(params.root + ' .viz_svg').attr('stopped_zoom', 0);
-
-	    d3.selectAll(params.root + ' .row_label_group').select('text').style('display', 'block');
-	    d3.selectAll(params.root + ' .col_label_group').select('text').style('display', 'block');
-
-	    toggle_grid_lines(params);
-
-	    _.each(['row', 'col'], function (inst_rc) {
-
-	      var inst_num_visible = num_visible_labels(params, inst_rc);
-
-	      if (inst_num_visible < 125) {
-	        d3.selectAll(params.root + ' .' + inst_rc + '_label_group').each(function () {
-	          trim_text(params, this, inst_rc);
-	        });
-	      }
-	    });
-
-	    toggle_labels(params);
-
-	    text_patch();
-
-	    constrain_font_size(params);
-
-	    // this makes sure that the text is visible after zooming and trimming
-	    // there is buggy behavior in chrome when zooming into large matrices
-	    // I'm running it twice in quick succession
-	    setTimeout(text_patch, 25);
-	    setTimeout(text_patch, 100);
-	  }
-
-	  function text_patch() {
-
-	    _.each(['row', 'col'], function (inst_rc) {
-
-	      d3.selectAll(params.root + ' .' + inst_rc + '_label_group').filter(function () {
-	        return d3.select(this).style('display') != 'none';
-	      }).select('text').style('font-size', function () {
-	        var inst_fs = Number(d3.select(this).style('font-size').replace('px', ''));
-	        return inst_fs;
-	      });
-	    });
-	  }
-		};
-
-/***/ },
-/* 206 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	module.exports = function check_zoom_stop_status(params) {
-
-	    var inst_zoom = Number(d3.select(params.root + ' .viz_svg').attr('is_zoom'));
-
-	    var check_stop = Number(d3.select(params.root + ' .viz_svg').attr('stopped_zoom'));
-
-	    var stop_attributes = false;
-	    if (inst_zoom === 0 && check_stop != 0) {
-	        stop_attributes = true;
-	    }
-
-	    return stop_attributes;
-	};
-
-/***/ },
-/* 207 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	module.exports = function get_previous_zoom(params) {
-	  var prev_zoom = {};
-
-	  var inst_trans = d3.select(params.root + ' .clust_group').attr('transform');
-
-	  if (inst_trans != null) {
-
-	    prev_zoom.zoom_x = parseFloat(inst_trans.split('scale')[1].replace('(', '').replace(')', '').split(',')[0]);
-
-	    prev_zoom.zoom_y = parseFloat(inst_trans.split('scale')[1].replace('(', '').replace(')', '').split(',')[1]);
-	  } else {
-	    prev_zoom.zoom_x = 1;
-	    prev_zoom.zoom_y = 1;
-	  }
-
-	  return prev_zoom;
-		};
-
-/***/ },
-/* 208 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var calc_real_font_size = __webpack_require__(83);
-	var num_visible_labels = __webpack_require__(85);
-
-	module.exports = function toggle_labels(params) {
-
-	  // console.log('toggle_labels')
-
-	  var max_element_show = 300;
-	  var min_font_size = 2;
-	  var real_font_size = calc_real_font_size(params);
-
-	  // toggle row/col label visibility
-	  /////////////////////////////////////
-	  _.each(['row', 'col'], function (inst_rc) {
-
-	    // only toggle labels if font size is large enough
-	    if (real_font_size[inst_rc] > min_font_size) {
-
-	      var inst_num_visible = num_visible_labels(params, inst_rc);
-
-	      // // need to improve vert line toggling
-	      // d3.selectAll('.horz_lines').select('line').style('display','none');
-	      // d3.selectAll('.vert_lines').select('line').style('display','none');
-
-	      if (inst_num_visible > max_element_show) {
-
-	        d3.select(params.root + ' .' + inst_rc + '_label_container').style('display', 'none');
-	      } else {
-
-	        d3.select(params.root + ' .' + inst_rc + '_label_container').style('display', 'block');
-	      }
-	    } else {
-
-	      d3.select(params.root + ' .' + inst_rc + '_label_container').style('display', 'none');
-	    }
-	  });
-		};
-
-/***/ },
-/* 209 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var utils = __webpack_require__(2);
-	var add_row_click_hlight = __webpack_require__(50);
-	var row_reorder = __webpack_require__(51);
-	var col_reorder = __webpack_require__(66);
-	var make_row_tooltips = __webpack_require__(67);
-
-	module.exports = function make_row_labels(cgm) {
-	  var text_delay = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
-
-
-	  var params = cgm.params;
-	  var row_nodes = params.network_data.row_nodes;
-	  var row_nodes_names = params.network_data.row_nodes_names;
-
-	  // make row labels in row_label_zoom_container, bind row_nodes data
-	  var row_labels = d3.select(params.root + ' .row_label_zoom_container').selectAll('g').data(row_nodes, function (d) {
-	    return d.name;
-	  }).enter().append('g').classed('row_label_group', true);
-
-	  row_labels.attr('transform', function (d) {
-	    var inst_index = _.indexOf(row_nodes_names, d.name);
-	    return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
-	  });
-
-	  row_labels.on('dblclick', function (d) {
-
-	    var data_attr = '__data__';
-	    var row_name = this[data_attr].name;
-
-	    if (params.sim_mat) {
-	      row_reorder(cgm, this, row_name);
-
-	      var col_selection = d3.selectAll(params.root + ' .col_label_text').filter(function (d) {
-	        return d.name == row_name;
-	      })[0][0];
-
-	      col_reorder(cgm, col_selection, row_name);
-	    } else {
-	      row_reorder(cgm, this, row_name);
-	    }
-	    if (params.tile_click_hlight) {
-	      add_row_click_hlight(this, d.ini);
-	    }
-	  });
-
-	  make_row_tooltips(params);
-
-	  // append rectangle behind text
-	  row_labels.insert('rect').style('opacity', 0);
-
-	  // append row label text
-	  row_labels.append('text').attr('y', params.viz.rect_height * 0.5 + params.labels.default_fs_row * 0.35).attr('text-anchor', 'end').style('font-size', params.labels.default_fs_row + 'px').text(function (d) {
-	    return utils.normal_name(d);
-	  }).attr('pointer-events', 'none').style('opacity', 0).style('cursor', 'default').transition().delay(text_delay).duration(text_delay).style('opacity', 1);
-
-	  // change the size of the highlighting rects
-	  row_labels.each(function () {
-	    var bbox = d3.select(this).select('text')[0][0].getBBox();
-	    d3.select(this).select('rect').attr('x', bbox.x).attr('y', 0).attr('width', bbox.width).attr('height', params.viz.y_scale.rangeBand()).style('fill', function () {
-	      var inst_hl = 'yellow';
-	      return inst_hl;
-	    }).style('opacity', function (d) {
-	      var inst_opacity = 0;
-	      // highlight target genes
-	      if (d.target === 1) {
-	        inst_opacity = 1;
-	      }
-	      return inst_opacity;
-	    });
-	  });
-
-	  if (utils.has(params.network_data.row_nodes[0], 'value')) {
-
-	    row_labels.append('rect').classed('row_bars', true).attr('width', function (d) {
-	      var inst_value = 0;
-	      inst_value = params.labels.bar_scale_row(Math.abs(d.value));
-	      return inst_value;
-	    }).attr('x', function (d) {
-	      var inst_value = 0;
-	      inst_value = -params.labels.bar_scale_row(Math.abs(d.value));
-	      return inst_value;
-	    }).attr('height', params.viz.y_scale.rangeBand()).attr('fill', function (d) {
-	      return d.value > 0 ? params.matrix.bar_colors[0] : params.matrix.bar_colors[1];
-	    }).attr('opacity', 0.4);
-	  }
-		};
-
-/***/ },
-/* 210 */,
-/* 211 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var utils = __webpack_require__(2);
-	var add_col_click_hlight = __webpack_require__(69);
-	var col_reorder = __webpack_require__(66);
-	var row_reorder = __webpack_require__(51);
-	var make_col_tooltips = __webpack_require__(70);
-	var col_viz_aid_triangle = __webpack_require__(71);
-
-	module.exports = function make_col_label_container(cgm) {
-	  var text_delay = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
-
-
-	  var params = cgm.params;
-	  var col_container;
-
-	  var col_nodes = params.network_data.col_nodes;
-	  var col_nodes_names = params.network_data.col_nodes_names;
-
-	  // offset click group column label
-	  var x_offset_click = params.viz.x_scale.rangeBand() / 2 + params.viz.border_width.x;
-	  // reduce width of rotated rects
-
-
-	  // make container to pre-position zoomable elements
-	  if (d3.select(params.root + ' .col_container').empty()) {
-
-	    col_container = d3.select(params.viz.viz_svg).append('g').attr('class', 'col_container').attr('transform', 'translate(' + params.viz.clust.margin.left + ',' + params.viz.norm_labels.margin.top + ')');
-
-	    // white background rect for col labels
-	    col_container.append('rect').attr('fill', params.viz.background_color) //!! prog_colors
-	    .attr('width', 30 * params.viz.clust.dim.width + 'px').attr('height', params.viz.label_background.col).attr('class', 'white_bars');
-
-	    // col labels
-	    col_container.append('g').attr('class', 'col_label_outer_container')
-	    // position the outer col label group
-	    .attr('transform', 'translate(0,' + params.viz.norm_labels.width.col + ')').append('g').attr('class', 'col_zoom_container');
-	  } else {
-
-	    col_container = d3.select(params.root + ' .col_container').attr('transform', 'translate(' + params.viz.clust.margin.left + ',' + params.viz.norm_labels.margin.top + ')');
-
-	    // white background rect for col labels
-	    col_container.select('.white_bars').attr('fill', params.viz.background_color) //!! prog_colors
-	    .attr('width', 30 * params.viz.clust.dim.width + 'px').attr('height', params.viz.label_background.col);
-
-	    // col labels
-	    col_container.select(params.root + ' .col_label_outer_container');
-	  }
-
-	  // add main column label group
-	  var col_label_obj = d3.select(params.root + ' .col_zoom_container').selectAll('.col_label_text').data(col_nodes, function (d) {
-	    return d.name;
-	  }).enter().append('g').attr('class', 'col_label_text').attr('transform', function (d) {
-	    var inst_index = _.indexOf(col_nodes_names, d.name);
-	    return 'translate(' + params.viz.x_scale(inst_index) + ', 0) rotate(-90)';
-	  });
-
-	  // append group for individual column label
-	  var col_label_group = col_label_obj
-	  // append new group for rect and label (not white lines)
-	  .append('g').attr('class', 'col_label_group')
-	  // rotate column labels
-	  .attr('transform', 'translate(' + params.viz.x_scale.rangeBand() / 2 + ',' + x_offset_click + ') rotate(45)').on('mouseover', function () {
-	    d3.select(this).select('text').classed('active', true);
-	  }).on('mouseout', function () {
-	    d3.select(this).select('text').classed('active', false);
-	  });
-
-	  // append column value bars
-	  if (utils.has(params.network_data.col_nodes[0], 'value')) {
-
-	    col_label_group.append('rect').attr('class', 'col_bars').attr('width', function (d) {
-	      var inst_value = 0;
-	      if (d.value > 0) {
-	        inst_value = params.labels.bar_scale_col(d.value);
-	      }
-	      return inst_value;
-	    })
-	    // rotate labels - reduce width if rotating
-	    .attr('height', params.viz.x_scale.rangeBand() * 0.66).style('fill', function (d) {
-	      return d.value > 0 ? params.matrix.bar_colors[0] : params.matrix.bar_colors[1];
-	    }).attr('opacity', 0.6);
-	  }
-
-	  // add column label
-	  col_label_group.append('text').attr('x', 0)
-	  // manually tuned
-	  .attr('y', params.viz.x_scale.rangeBand() * 0.64).attr('dx', params.viz.border_width.x).attr('text-anchor', 'start').attr('full_name', function (d) {
-	    return d.name;
-	  })
-	  // original font size
-	  .style('font-size', params.labels.default_fs_col + 'px').style('cursor', 'default').text(function (d) {
-	    return utils.normal_name(d);
-	  })
-	  // .attr('pointer-events','none')
-	  .style('opacity', 0).transition().delay(text_delay).duration(text_delay).style('opacity', 1);
-
-	  make_col_tooltips(params);
-
-	  // add triangle under rotated labels
-	  col_label_group.append('path').style('stroke-width', 0).attr('d', function () {
-	    return col_viz_aid_triangle(params);
-	  }).attr('fill', '#eee').style('opacity', 0).transition().delay(text_delay).duration(text_delay).style('opacity', params.viz.triangle_opacity);
-
-	  // add col callback function
-	  d3.selectAll(params.root + ' .col_label_text').on('click', function (d) {
-
-	    if (typeof params.click_label == 'function') {
-	      params.click_label(d.name, 'col');
-	      add_col_click_hlight(params, this, d.ini);
-	    } else {
-
-	      if (params.tile_click_hlight) {
-	        add_col_click_hlight(params, this, d.ini);
-	      }
-	    }
-	  }).on('dblclick', function (d) {
-
-	    var data_attr = '__data__';
-	    var col_name = this[data_attr].name;
-
-	    if (params.sim_mat) {
-	      col_reorder(cgm, this, col_name);
-
-	      var row_selection = d3.selectAll(params.root + ' .row_label_group').filter(function (d) {
-	        return d.name == col_name;
-	      })[0][0];
-
-	      row_reorder(cgm, row_selection, col_name);
-	    } else {
-	      col_reorder(cgm, this, col_name);
-	    }
-
-	    if (params.tile_click_hlight) {
-	      add_col_click_hlight(params, this, d.ini);
-	    }
-	  });
-		};
-
-/***/ },
-/* 212 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var make_row_labels = __webpack_require__(209);
-
-	module.exports = function make_row_label_container(cgm, text_delay) {
-
-	  var params = cgm.params;
-
-	  var row_container;
-
-	  // row container holds all row text and row visualizations (triangles rects)
-	  ////////////////////////////////////////////////////////////////////////////
-	  if (d3.select(params.viz.viz_svg + ' .row_container').empty()) {
-	    row_container = d3.select(params.viz.viz_svg).append('g').classed('row_container', true).attr('transform', 'translate(' + params.viz.norm_labels.margin.left + ',' + params.viz.clust.margin.top + ')');
-	  } else {
-	    row_container = d3.select(params.viz.viz_svg).select('.row_container').attr('transform', 'translate(' + params.viz.norm_labels.margin.left + ',' + params.viz.clust.margin.top + ')');
-	  }
-
-	  if (d3.select(params.root + ' .row_white_background').empty()) {
-	    row_container.append('rect').classed('row_white_background', true).classed('white_bars', true).attr('fill', params.viz.background_color).attr('width', params.viz.label_background.row).attr('height', 30 * params.viz.clust.dim.height + 'px');
-	  }
-
-	  // add container to hold text row labels if not already there
-	  if (d3.select(params.root + ' .row_label_container').empty()) {
-	    row_container.append('g').classed('row_label_container', true).attr('transform', 'translate(' + params.viz.norm_labels.width.row + ',0)').append('g').classed('row_label_zoom_container', true);
-	  } else {
-	    row_container.select(params.root + ' .row_label_container').attr('transform', 'translate(' + params.viz.norm_labels.width.row + ',0)');
-	  }
-
-	  // make row labels in the container
-	  ///////////////////////////////////////
-	  make_row_labels(cgm, text_delay);
 		};
 
 /***/ }

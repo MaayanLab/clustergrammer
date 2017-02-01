@@ -6,7 +6,9 @@ var show_visible_area = require('./show_visible_area');
 var check_zoom_stop_status = require('./check_zoom_stop_status');
 var toggle_labels = require('./toggle_labels');
 
-module.exports = function run_when_zoom_stopped(params){
+module.exports = function run_when_zoom_stopped(cgm){
+
+  var params = cgm.params;
 
   var stop_attributes = check_zoom_stop_status(params);
 
@@ -28,7 +30,7 @@ module.exports = function run_when_zoom_stopped(params){
         .style('display','block');
     });
 
-    show_visible_area(params, true);
+    show_visible_area(cgm, true);
 
     d3.selectAll(params.viz.root_tips)
       .style('display','block');

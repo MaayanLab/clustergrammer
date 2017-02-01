@@ -91,7 +91,7 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
 
   d3.select(cgm.params.viz.viz_svg).call(cgm.params.zoom_behavior);
 
-  ini_doubleclick(cgm.params);
+  ini_doubleclick(cgm);
 
   ini_sidebar(cgm);
 

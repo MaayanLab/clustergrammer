@@ -85,7 +85,7 @@ function Clustergrammer(args) {
   }
 
   function zoom_api(pan_dx, pan_dy, fin_zoom){
-    two_translate_zoom(this.params, pan_dx, pan_dy, fin_zoom);
+    two_translate_zoom(this, pan_dx, pan_dy, fin_zoom);
   }
 
   function expose_d3_tip_custom(){

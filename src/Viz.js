@@ -49,21 +49,24 @@ module.exports = function Viz(cgm) {
 
   make_col_label_container(cgm);
 
-  _.each(['row','col'], function(inst_rc){
+  // initial trim text
+  if (params.viz.ds_level === -1){
+    _.each(['row','col'], function(inst_rc){
 
-    var inst_fs = Number(d3.select('.'+inst_rc+'_label_group')
-      .select('text')
-      .style('font-size').replace('px',''));
+      var inst_fs = Number(d3.select('.'+inst_rc+'_label_group')
+        .select('text')
+        .style('font-size').replace('px',''));
 
-    var min_trim_fs = 8;
-    if (inst_fs > min_trim_fs){
-      d3.selectAll(params.root+' .'+inst_rc+'_label_group' )
-        .each(function() {
-          trim_text(params, this, inst_rc);
-        });
-    }
+      var min_trim_fs = 8;
+      if (inst_fs > min_trim_fs){
+        d3.selectAll(params.root+' .'+inst_rc+'_label_group' )
+          .each(function() {
+            trim_text(params, this, inst_rc);
+          });
+      }
 
-  });
+    });
+  }
 
 
   // make category colorbars
@@ -140,7 +143,7 @@ module.exports = function Viz(cgm) {
 
   initialize_resizing(cgm);
 
-  ini_doubleclick(params);
+  ini_doubleclick(cgm);
 
   if (params.viz.do_zoom) {
     d3.select(params.viz.zoom_element)

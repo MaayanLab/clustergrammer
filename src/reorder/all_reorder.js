@@ -184,7 +184,7 @@ module.exports = function(cgm, inst_order, inst_rc) {
 
   params.zoom_info = ini_zoom_info();
 
-  show_visible_area(params);
+  show_visible_area(cgm);
 
   setTimeout(function(){
     params.viz.run_trans = false;

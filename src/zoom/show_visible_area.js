@@ -1,9 +1,12 @@
 var find_viz_nodes = require('../zoom/find_viz_nodes');
 var make_matrix_rows = require('../matrix/make_matrix_rows');
+var make_row_labels = require('../labels/make_row_labels');
 
-module.exports = function show_visible_area(params, zooming_stopped=false){
+module.exports = function show_visible_area(cgm, zooming_stopped=false){
 
   // console.log('show_visible_area stopped: ' + String(zooming_stopped));
+
+  var params = cgm.params;
 
   var zoom_info = params.zoom_info;
 
@@ -135,17 +138,15 @@ module.exports = function show_visible_area(params, zooming_stopped=false){
 
   }
 
-  // only make new matrix rows if there are missing rows
-  if (missing_rows.length > 1 || missing_rows === 'all'){
-    // make new rows
-    // if (missing_rows === 'all'){
-    //   console.log('all rows were missing ')
-    // } else {
-    //   console.log('num missing rows: ' + String(missing_rows.length))
-    // }
+  // only make new matrix_rows if there are missing rows
+  if (missing_rows.length >   1 || missing_rows === 'all'){
     make_matrix_rows(params, inst_matrix, missing_rows, new_ds_level);
   }
 
+  // only make new row_labels if there are missing rows and not downsampled
+  if (new_ds_level === -1){
+    // make_row_labels();
+  }
 
   function toggle_display(params, d, inst_rc, inst_selection, severe_toggle=false){
     var inst_display = 'none';

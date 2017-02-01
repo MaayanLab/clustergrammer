@@ -15,7 +15,7 @@ module.exports = function run_row_search(cgm, search_term, entities){
     var inst_y_pos = cgm.params.viz.y_scale(idx);
     var pan_dy = cgm.params.viz.clust.dim.height / 2 - inst_y_pos;
 
-    two_translate_zoom(cgm.params, 0, pan_dy, cgm.params.viz.zoom_switch);
+    two_translate_zoom(cgm, 0, pan_dy, cgm.params.viz.zoom_switch);
 
     // set y zoom to zoom_switch
     cgm.params.zoom_info.zoom_y = cgm.params.viz.zoom_switch;

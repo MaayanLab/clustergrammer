@@ -138,7 +138,7 @@ module.exports = function row_reorder(cgm, row_selection, inst_row) {
 
   params.zoom_info = ini_zoom_info();
 
-  show_visible_area(params);
+  show_visible_area(cgm);
 
   setTimeout(function(){
     params.viz.run_trans = false;

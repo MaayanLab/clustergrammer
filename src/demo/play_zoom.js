@@ -3,11 +3,13 @@ var two_translate_zoom = require('../zoom/two_translate_zoom');
 
 module.exports = function play_zoom(){
 
-  function run(params){
+  function run(cgm){
+
+    var params = cgm.params;
     var text = 'Zoom and pan by\nscrolling and dragging';
     demo_text(params, text, 4000);
-    
-    setTimeout(two_translate_zoom, 1500, params, 0, 0, 4);
+
+    setTimeout(two_translate_zoom, 1500, cgm, 0, 0, 4);
 
   }
 

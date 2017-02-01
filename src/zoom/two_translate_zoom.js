@@ -4,21 +4,16 @@ var show_visible_area = require('./show_visible_area');
 var ini_zoom_info = require('../zoom/ini_zoom_info');
 var toggle_grid_lines = require('../matrix/toggle_grid_lines');
 
-module.exports = function two_translate_zoom(params, pan_dx, pan_dy, fin_zoom) {
+module.exports = function two_translate_zoom(cgm, pan_dx, pan_dy, fin_zoom) {
 
-  function show_crop_buttons(inst_rc, inst_button_opacity){
-    d3.selectAll(params.root+' .'+inst_rc+'_dendro_crop_buttons')
-      .transition()
-      .duration(search_duration)
-      .style('opacity', inst_button_opacity);
-  }
+  var params = cgm.params;
 
   d3.selectAll(params.viz.root_tips)
     .style('display','none');
 
   params.zoom_info = ini_zoom_info();
 
-  show_visible_area(params);
+  show_visible_area(cgm);
 
   // do not allow while transitioning, e.g. reordering
   if (!params.viz.run_trans) {
@@ -254,50 +249,14 @@ module.exports = function two_translate_zoom(params, pan_dx, pan_dy, fin_zoom) {
 
     }
 
-    // console.log('two_translate_zoom')
-    // console.log(params.zoom_info)
-
-
-    // var inst_display;
-    // d3.selectAll(params.root+' .horz_lines')
-    //   .select('line')
-    //   .attr('display',function(){
-    //     if (params.zoom_info.zoom_y * params.viz.border_width.y > 1){
-    //       inst_display = 'block';
-    //     } else {
-    //       inst_display = 'none';
-    //     }
-    //     console.log(inst_display)
-    //     return inst_display;
-    //   })
-    //   .attr('opacity', 1);
-
-    // d3.selectAll(params.root+' .vert_lines')
-    //   .select('line')
-    //   .attr('display',function(){
-    //     if (params.zoom_info.zoom_x * params.viz.border_width.x > 1){
-    //       inst_display = 'block';
-    //     } else {
-    //       inst_display = 'none';
-    //     }
-    //     console.log(inst_display)
-    //     return inst_display;
-    //   })
-    //   .attr('opacity', 1);
-
-    // console.log('HERE!!!')
-
-    //   if (cgm.params.zoom_info.zoom_x * cgm.params.viz.border_width.x  1){
-    //     d3.selectAll(params.root+' .vert_lines').select('line').style('display','none');
-    //     console.log('showing vert lines')
-    //   }
-
-    //   if (cgm.params.zoom_info.zoom_y * cgm.params.viz.border_width.y < 1){
-    //     d3.selectAll(params.root+' .horz_lines').select('line').style('display','none');
-    //     console.log('showing  lines')
-    //   }
-
     toggle_grid_lines(params);
+
+    function show_crop_buttons(inst_rc, inst_button_opacity){
+      d3.selectAll(params.root+' .'+inst_rc+'_dendro_crop_buttons')
+        .transition()
+        .duration(search_duration)
+        .style('opacity', inst_button_opacity);
+    }
 
   }
 };

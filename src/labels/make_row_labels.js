@@ -4,7 +4,7 @@ var row_reorder = require('../reorder/row_reorder');
 var col_reorder = require('../reorder/col_reorder');
 var make_row_tooltips = require('./make_row_tooltips');
 
-module.exports = function make_row_labels(cgm, text_delay=0){
+module.exports = function make_row_labels(cgm, text_delay = 0){
 
   var params = cgm.params;
   var row_nodes = params.network_data.row_nodes;

@@ -28,7 +28,7 @@ module.exports = function(cgm, row_nodes, col_nodes, links, duration, delays) {
   // ////////////////////////////
   // show_visible_area(params);
   // // quick fix for column filtering
-  // setTimeout(show_visible_area, 2200, params);
+  // setTimeout(show_visible_area, 2200, cgm);
 
   var row_nodes_names = params.network_data.row_nodes_names;
 
