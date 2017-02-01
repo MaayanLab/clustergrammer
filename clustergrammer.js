@@ -14009,6 +14009,7 @@ var Clustergrammer =
 
 
 	  console.log('make_row_labels');
+	  console.log(row_names);
 
 	  var params = cgm.params;
 	  var row_nodes = params.network_data.row_nodes;
