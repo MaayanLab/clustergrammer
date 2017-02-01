@@ -1,10 +1,12 @@
 var utils = require('../Utils_clust');
 var reposition_tile_highlight = require('./reposition_tile_highlight');
 var toggle_dendro_view = require('../dendrogram/toggle_dendro_view');
-var show_visible_area = require('../zoom/show_visible_area');
+// var show_visible_area = require('../zoom/show_visible_area');
 var ini_zoom_info = require('../zoom/ini_zoom_info');
 
 module.exports = function row_reorder(cgm, row_selection, inst_row) {
+
+  console.log('row_reorder')
 
   var params = cgm.params;
   params.viz.inst_order.row = 'custom';
@@ -138,7 +140,8 @@ module.exports = function row_reorder(cgm, row_selection, inst_row) {
 
   params.zoom_info = ini_zoom_info();
 
-  show_visible_area(cgm);
+  // tmp disable may not need - getting circular calling
+  // show_visible_area(cgm);
 
   setTimeout(function(){
     params.viz.run_trans = false;
