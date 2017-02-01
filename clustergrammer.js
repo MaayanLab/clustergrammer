@@ -2261,6 +2261,8 @@ var Clustergrammer =
 	  var ds_level = arguments.length <= 3 || arguments[3] === undefined ? -1 : arguments[3];
 
 
+	  console.log('make_matrix_rows');
+
 	  // defaults
 	  var y_scale = params.viz.y_scale;
 	  var make_tip = true;
@@ -4603,6 +4605,9 @@ var Clustergrammer =
 	    // transitioning from real data to downsampled view
 	    if (check_ds_level >= 0) {
 	      override = true;
+
+	      // // force to transition to most downsampled view
+	      // check_ds_level = 0;
 	    }
 	  } else {
 	    // transitioning to more coarse downsampling view
@@ -4694,7 +4699,7 @@ var Clustergrammer =
 	    // level change
 	    if (new_ds_level != old_ds_level) {
 
-	      // console.log('ds_level: ' + String(old_ds_level) + ' : '  + String(new_ds_level))
+	      console.log('ds_level: ' + String(old_ds_level) + ' : ' + String(new_ds_level));
 
 	      // all visible rows are missing at new downsampling level
 	      missing_rows = params.viz.viz_nodes.row;
@@ -4707,6 +4712,11 @@ var Clustergrammer =
 	  // only make new matrix rows if there are missing rows
 	  if (missing_rows.length > 1 || missing_rows === 'all') {
 	    // make new rows
+	    if (missing_rows === 'all') {
+	      console.log('all rows were missing ');
+	    } else {
+	      console.log('num missing rows: ' + String(missing_rows.length));
+	    }
 	    make_matrix_rows(params, inst_matrix, missing_rows, new_ds_level);
 	  }
 
@@ -6046,10 +6056,13 @@ var Clustergrammer =
 	var resize_label_val_bars = __webpack_require__(87);
 	var num_visible_labels = __webpack_require__(85);
 	var zoom_crop_triangles = __webpack_require__(61);
+	var get_previous_zoom = __webpack_require__(207);
 
 	module.exports = function run_transformation(params) {
 
 	  var zoom_info = params.zoom_info;
+
+	  var prev_zoom = get_previous_zoom(params);
 
 	  d3.select(params.root + ' .clust_group').attr('transform', 'translate(' + [zoom_info.trans_x, zoom_info.trans_y] + ') scale(' + zoom_info.zoom_x + ',' + zoom_info.zoom_y + ')');
 
@@ -6111,6 +6124,8 @@ var Clustergrammer =
 
 	  var max_element_show = 150;
 
+	  // toggle row/col label visibility
+	  /////////////////////////////////////
 	  _.each(['row', 'col'], function (inst_rc) {
 
 	    var inst_num_visible = num_visible_labels(params, inst_rc);
@@ -6118,7 +6133,6 @@ var Clustergrammer =
 	    d3.selectAll('.horz_lines').select('line').style('display', 'none');
 	    d3.selectAll('.vert_lines').select('line').style('display', 'none');
 
-	    // previously 250
 	    if (inst_num_visible > max_element_show) {
 
 	      d3.selectAll(params.root + ' .' + inst_rc + '_label_group').select('text').style('display', 'none');
@@ -6127,7 +6141,12 @@ var Clustergrammer =
 	    }
 	  });
 
-	  show_visible_area(params);
+	  if (zoom_info.zoom_y > prev_zoom.zoom_y) {
+	    console.log('zooming in');
+	  } else {
+	    console.log('zooming out');
+	    show_visible_area(params);
+	  }
 		};
 
 /***/ },
@@ -6227,6 +6246,8 @@ var Clustergrammer =
 	'use strict';
 
 	module.exports = function num_visible_labels(params, inst_rc) {
+
+	  // counting the number of visible labels, probably not necessary
 
 	  var group_name;
 	  if (inst_rc === 'row') {
@@ -14035,6 +14056,30 @@ var Clustergrammer =
 
 	    return stop_attributes;
 	};
+
+/***/ },
+/* 207 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = function get_previous_zoom(params) {
+	  var prev_zoom = {};
+
+	  var inst_trans = d3.select(cgm.params.root + ' .clust_group').attr('transform');
+
+	  if (inst_trans != null) {
+
+	    prev_zoom.zoom_x = parseFloat(inst_trans.split('scale')[1].replace('(', '').replace(')', '').split(',')[0]);
+
+	    prev_zoom.zoom_y = parseFloat(inst_trans.split('scale')[1].replace('(', '').replace(')', '').split(',')[1]);
+	  } else {
+	    prev_zoom.zoom_x = 1;
+	    prev_zoom.zoom_y = 1;
+	  }
+
+	  return prev_zoom;
+		};
 
 /***/ }
 /******/ ]);

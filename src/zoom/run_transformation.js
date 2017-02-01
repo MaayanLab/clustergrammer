@@ -4,10 +4,14 @@ var show_visible_area = require('./show_visible_area');
 var resize_label_val_bars = require('./resize_label_val_bars');
 var num_visible_labels = require('./num_visible_labels');
 var zoom_crop_triangles = require('./zoom_crop_triangles');
+var get_previous_zoom = require('./get_previous_zoom');
 
 module.exports = function run_transformation(params){
 
   var zoom_info = params.zoom_info;
+
+  var prev_zoom = get_previous_zoom(params);
+
 
   d3.select(params.root+' .clust_group')
     .attr('transform', 'translate(' + [zoom_info.trans_x, zoom_info.trans_y] + ') scale(' +
@@ -87,6 +91,8 @@ module.exports = function run_transformation(params){
 
   var max_element_show = 150;
 
+  // toggle row/col label visibility
+  /////////////////////////////////////
   _.each(['row','col'], function(inst_rc){
 
     var inst_num_visible = num_visible_labels(params, inst_rc);
@@ -94,7 +100,6 @@ module.exports = function run_transformation(params){
     d3.selectAll('.horz_lines').select('line').style('display','none');
     d3.selectAll('.vert_lines').select('line').style('display','none');
 
-    // previously 250
     if (inst_num_visible > max_element_show){
 
       d3.selectAll(params.root+' .'+inst_rc+'_label_group')
@@ -109,6 +114,12 @@ module.exports = function run_transformation(params){
 
   });
 
-  show_visible_area(params);
+  if (zoom_info.zoom_y > prev_zoom.zoom_y){
+    console.log('zooming in')
+  } else {
+    console.log('zooming out')
+    show_visible_area(params);
+  }
+
 
 };

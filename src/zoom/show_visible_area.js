@@ -31,6 +31,10 @@ module.exports = function show_visible_area(params, zooming_stopped=false){
     // transitioning from real data to downsampled view
     if (check_ds_level >= 0){
       override = true;
+
+      // // force to transition to most downsampled view
+      // check_ds_level = 0;
+
     }
   } else {
     // transitioning to more coarse downsampling view
@@ -135,7 +139,7 @@ module.exports = function show_visible_area(params, zooming_stopped=false){
     // level change
     if (new_ds_level != old_ds_level){
 
-      // console.log('ds_level: ' + String(old_ds_level) + ' : '  + String(new_ds_level))
+      console.log('ds_level: ' + String(old_ds_level) + ' : '  + String(new_ds_level))
 
       // all visible rows are missing at new downsampling level
       missing_rows = params.viz.viz_nodes.row
@@ -150,6 +154,11 @@ module.exports = function show_visible_area(params, zooming_stopped=false){
   // only make new matrix rows if there are missing rows
   if (missing_rows.length > 1 || missing_rows === 'all'){
     // make new rows
+    if (missing_rows === 'all'){
+      console.log('all rows were missing ')
+    } else {
+      console.log('num missing rows: ' + String(missing_rows.length))
+    }
     make_matrix_rows(params, inst_matrix, missing_rows, new_ds_level);
   }
 
