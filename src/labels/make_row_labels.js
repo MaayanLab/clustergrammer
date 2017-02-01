@@ -6,11 +6,21 @@ var make_row_tooltips = require('./make_row_tooltips');
 
 module.exports = function make_row_labels(cgm, row_names='all', text_delay = 0){
 
-  console.log('make_row_labels');
-  console.log(row_names);
+  console.log('make_row_labels')
+  console.log(row_names)
 
   var params = cgm.params;
-  var row_nodes = params.network_data.row_nodes;
+  var row_nodes = [];
+
+  if (row_names === 'all'){
+    row_nodes = params.network_data.row_nodes;
+  } else {
+    _.each(params.network_data.row_nodes, function(inst_row){
+      if (_.contains(row_names, inst_row.name)){
+        row_nodes.push(inst_row);
+      }
+    })
+  }
 
   // make row labels in row_label_zoom_container, bind row_nodes data
   var row_labels = d3.select(params.root+' .row_label_zoom_container')

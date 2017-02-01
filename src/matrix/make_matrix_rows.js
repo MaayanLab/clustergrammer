@@ -57,14 +57,14 @@ module.exports = function make_matrix_rows(params, current_matrix,
 
   // gather a subset of row data from the matrix or use all rows
   var matrix_subset = [];
-  if (row_names != 'all'){
+  if (row_names === 'all'){
+    matrix_subset = current_matrix;
+  } else {
     _.each(current_matrix, function(inst_row){
       if (_.contains(row_names, inst_row.name)){
         matrix_subset.push(inst_row);
       }
     });
-  } else {
-    matrix_subset = current_matrix;
   }
 
   d3.select(params.root+ ' .clust_group')

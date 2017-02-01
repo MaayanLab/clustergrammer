@@ -142,15 +142,15 @@ module.exports = function show_visible_area(cgm, zooming_stopped=false){
   // only make new matrix_rows if there are missing rows
   if (missing_rows.length >   1 || missing_rows === 'all'){
     make_matrix_rows(params, inst_matrix, missing_rows, new_ds_level);
+
+    // only make new row_labels if there are missing rows and not downsampled
+    if (new_ds_level === -1){
+      make_row_labels(cgm, missing_rows);
+    }
   }
 
-  // only make new row_labels if there are missing rows and not downsampled
-  if (new_ds_level === -1){
-
-    make_row_labels(cgm, missing_rows);
-
-  } else {
-    // remove row labels if necessary
+  // remove row labels if necessary
+  if (new_ds_level >= 0) {
     if (d3.select(params.root+' .row_label_group').empty() === false){
       d3.selectAll(params.root+' .row_label_group').remove();
     }

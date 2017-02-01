@@ -2560,14 +2560,14 @@ var Clustergrammer =
 
 	  // gather a subset of row data from the matrix or use all rows
 	  var matrix_subset = [];
-	  if (row_names != 'all') {
+	  if (row_names === 'all') {
+	    matrix_subset = current_matrix;
+	  } else {
 	    _.each(current_matrix, function (inst_row) {
 	      if (_.contains(row_names, inst_row.name)) {
 	        matrix_subset.push(inst_row);
 	      }
 	    });
-	  } else {
-	    matrix_subset = current_matrix;
 	  }
 
 	  d3.select(params.root + ' .clust_group').selectAll('.row').data(matrix_subset, function (d) {
@@ -5015,14 +5015,15 @@ var Clustergrammer =
 	  // only make new matrix_rows if there are missing rows
 	  if (missing_rows.length > 1 || missing_rows === 'all') {
 	    make_matrix_rows(params, inst_matrix, missing_rows, new_ds_level);
+
+	    // only make new row_labels if there are missing rows and not downsampled
+	    if (new_ds_level === -1) {
+	      make_row_labels(cgm, missing_rows);
+	    }
 	  }
 
-	  // only make new row_labels if there are missing rows and not downsampled
-	  if (new_ds_level === -1) {
-
-	    make_row_labels(cgm, missing_rows);
-	  } else {
-	    // remove row labels if necessary
+	  // remove row labels if necessary
+	  if (new_ds_level >= 0) {
 	    if (d3.select(params.root + ' .row_label_group').empty() === false) {
 	      d3.selectAll(params.root + ' .row_label_group').remove();
 	    }
@@ -14012,7 +14013,17 @@ var Clustergrammer =
 	  console.log(row_names);
 
 	  var params = cgm.params;
-	  var row_nodes = params.network_data.row_nodes;
+	  var row_nodes = [];
+
+	  if (row_names === 'all') {
+	    row_nodes = params.network_data.row_nodes;
+	  } else {
+	    _.each(params.network_data.row_nodes, function (inst_row) {
+	      if (_.contains(row_names, inst_row.name)) {
+	        row_nodes.push(inst_row);
+	      }
+	    });
+	  }
 
 	  // make row labels in row_label_zoom_container, bind row_nodes data
 	  var row_labels = d3.select(params.root + ' .row_label_zoom_container').selectAll('g').data(row_nodes, function (d) {
