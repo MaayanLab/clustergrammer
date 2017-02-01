@@ -4633,18 +4633,32 @@ var Clustergrammer =
 	  ///////////////////////////////////////////////
 	  var severe_toggle = true;
 	  var normal_toggle = false;
-	  d3.selectAll(params.root + ' .row_label_group').style('display', function (d) {
-	    return toggle_display(params, d, 'row', this, normal_toggle);
-	  });
+
+	  //////////////////////
+	  //////////////////////
+	  // no longer need to toggle individual labels
+	  //////////////////////
+	  //////////////////////
+	  // d3.selectAll(params.root+' .row_label_group')
+	  //   .style('display', function(d){
+	  //     return toggle_display(params, d, 'row', this, normal_toggle);
+	  //   });
 
 	  d3.selectAll(params.root + ' .row').style('display', function (d) {
 	    return toggle_display(params, d, 'row', this, severe_toggle);
 	  });
 
-	  // toggle col labels
-	  d3.selectAll(params.root + ' .col_label_text').style('display', function (d) {
-	    return toggle_display(params, d, 'col', this, normal_toggle);
-	  });
+	  //////////////////////
+	  //////////////////////
+	  // no longer need to toggle individual labels
+	  //////////////////////
+	  //////////////////////
+	  // // toggle col labels
+	  // d3.selectAll(params.root+' .col_label_text')
+	  //   .style('display', function(d){
+	  //     return toggle_display(params, d, 'col', this, normal_toggle);
+	  //   });
+
 	  ///////////////////////////////////////////////
 
 
@@ -6229,16 +6243,22 @@ var Clustergrammer =
 
 	  // counting the number of visible labels, probably not necessary
 
-	  var group_name;
+	  var num_visible;
 	  if (inst_rc === 'row') {
-	    group_name = 'group';
-	  } else if (inst_rc === 'col') {
-	    group_name = 'text';
-	  }
 
-	  var num_visible = d3.selectAll(params.root + ' .' + inst_rc + '_label_' + group_name).filter(function () {
-	    return d3.select(this).style('display') != 'none';
-	  })[0].length;
+	    // initialize at high number
+	    var num_visible = 10000;
+
+	    // only count visible rows if no downsampling
+	    if (params.viz.ds_level === -1) {
+	      num_visible = d3.selectAll(params.root + ' .row')[0].length;
+	    }
+	  } else if (inst_rc === 'col') {
+
+	    num_visible = d3.selectAll(params.root + ' .' + inst_rc + '_label_text').filter(function () {
+	      return d3.select(this).style('display') != 'none';
+	    })[0].length;
+	  }
 
 	  return num_visible;
 	};
@@ -14077,8 +14097,8 @@ var Clustergrammer =
 
 	  // console.log('toggle_labels')
 
-	  var max_element_show = 150;
-	  var min_font_size = 3;
+	  var max_element_show = 300;
+	  var min_font_size = 2;
 	  var real_font_size = calc_real_font_size(params);
 
 	  // toggle row/col label visibility
@@ -14095,31 +14115,29 @@ var Clustergrammer =
 	      var inst_num_visible = num_visible_labels(params, inst_rc);
 
 	      // need to improve vert line toggling
-	      // d3.selectAll('.horz_lines').select('line').style('display','none');
-	      // d3.selectAll('.vert_lines').select('line').style('display','none');
+	      d3.selectAll('.horz_lines').select('line').style('display', 'none');
+	      d3.selectAll('.vert_lines').select('line').style('display', 'none');
 
 	      if (inst_num_visible > max_element_show) {
-
-	        // console.log('not showing labels: too many labels')
 
 	        // d3.selectAll(params.root+' .'+inst_rc+'_label_group')
 	        //   // .select('text')
 	        //   .style('display','none');
 
-	        d3.select(params.root + '.' + inst_rc + '_label_container').style('display', 'none');
+	        d3.select(params.root + ' .' + inst_rc + '_label_container').style('display', 'none');
 
 	        // d3.selectAll(params.root+' .'+inst_rc+'_cat_group')
 	        //   .select('path')
 	        //   .style('display','none');
 	      } else {
 
-	        // console.log('showing labels: not too many labels')
+	        console.log(inst_rc + ' showing labels: not too many labels');
 
 	        // d3.selectAll(params.root+' .'+inst_rc+'_label_group')
 	        //   // .select('text')
 	        //   .style('display','block');
 
-	        d3.select(params.root + '.' + inst_rc + '_label_container').style('display', 'block');
+	        d3.select(params.root + ' .' + inst_rc + '_label_container').style('display', 'block');
 
 	        // d3.selectAll(params.root+' .'+inst_rc+'_cat_group')
 	        //   .select('path')
@@ -14127,12 +14145,14 @@ var Clustergrammer =
 	      }
 	    } else {
 
+	      console.log(inst_rc + ' not showing labels: font too small');
+
 	      // // do not display labels if font size is too small
 	      // d3.selectAll(params.root+' .'+inst_rc+'_label_group')
 	      //   .select('text')
 	      //   .style('display','none');
 
-	      d3.select(params.root + '.' + inst_rc + '_label_container').style('display', 'none');
+	      d3.select(params.root + ' .' + inst_rc + '_label_container').style('display', 'none');
 
 	      // d3.selectAll(params.root+' .'+inst_rc+'_cat_group')
 	      //   .select('path')

@@ -60,21 +60,33 @@ module.exports = function show_visible_area(params, zooming_stopped=false){
   ///////////////////////////////////////////////
   var severe_toggle = true;
   var normal_toggle = false;
-  d3.selectAll(params.root+' .row_label_group')
-    .style('display', function(d){
-      return toggle_display(params, d, 'row', this, normal_toggle);
-    });
+
+  //////////////////////
+  //////////////////////
+  // no longer need to toggle individual labels
+  //////////////////////
+  //////////////////////
+  // d3.selectAll(params.root+' .row_label_group')
+  //   .style('display', function(d){
+  //     return toggle_display(params, d, 'row', this, normal_toggle);
+  //   });
 
   d3.selectAll(params.root+' .row')
     .style('display', function(d){
       return toggle_display(params, d, 'row', this, severe_toggle);
     });
 
-  // toggle col labels
-  d3.selectAll(params.root+' .col_label_text')
-    .style('display', function(d){
-      return toggle_display(params, d, 'col', this, normal_toggle);
-    });
+  //////////////////////
+  //////////////////////
+  // no longer need to toggle individual labels
+  //////////////////////
+  //////////////////////
+  // // toggle col labels
+  // d3.selectAll(params.root+' .col_label_text')
+  //   .style('display', function(d){
+  //     return toggle_display(params, d, 'col', this, normal_toggle);
+  //   });
+
   ///////////////////////////////////////////////
 
 
