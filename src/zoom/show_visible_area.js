@@ -116,15 +116,27 @@ module.exports = function show_visible_area(cgm, zooming_stopped=false){
     inst_matrix = params.matrix.ds_matrix[new_ds_level];
   }
 
+  // remove rows and labels that are not visible and change ds_level
+  /* run when zooming has stopped */
   if (zooming_stopped === true){
 
-    /* run when zooming has stopped */
-    d3.selectAll('.ds'+String(new_ds_level)+'_row')
+
+    // remove not visible matrix rows
+    d3.selectAll(params.root+' .ds'+String(new_ds_level)+'_row')
       .each(function(d){
         if (_.contains(params.viz.viz_nodes.row, d.name) === false){
           d3.select(this).remove();
         }
       });
+
+    // remove not visible row labels
+    d3.selectAll(params.root+' .row_label_group')
+      .each(function(d){
+        if (_.contains(params.viz.viz_nodes.row, d.name) === false){
+          console.log('removing')
+          d3.select(this).remove();
+        }
+      })
 
     // level change
     if (new_ds_level != old_ds_level){
