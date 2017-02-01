@@ -17,7 +17,7 @@ module.exports = function make_rows(cgm, text_delay) {
   if ( d3.select(params.viz.viz_svg + ' .row_container').empty() ){
     row_container = d3.select(params.viz.viz_svg)
       .append('g')
-      .attr('class','row_container')
+      .classed('row_container', true)
       .attr('transform', 'translate(' + params.viz.norm_labels.margin.left + ',' +
       params.viz.clust.margin.top + ')');
   } else {
@@ -37,28 +37,26 @@ module.exports = function make_rows(cgm, text_delay) {
       .attr('height', 30*params.viz.clust.dim.height + 'px');
   }
 
+  // add container to hold text row labels if not already there
   if ( d3.select(params.root +' .row_label_container').empty() ){
-    // container to hold text row labels
     row_container
       .append('g')
-      .attr('class','row_label_container')
+      .classed('row_label_container', true)
       .attr('transform', 'translate(' + params.viz.norm_labels.width.row + ',0)')
       .append('g')
-      .attr('class', 'row_label_zoom_container');
+      .classed('row_label_zoom_container', true);
   } else {
-    // container to hold text row labels
     row_container
       .select(params.root+' .row_label_container')
       .attr('transform', 'translate(' + params.viz.norm_labels.width.row + ',0)');
   }
-
 
   var row_labels = d3.select(params.root+' .row_label_zoom_container')
     .selectAll('g')
     .data(row_nodes, function(d){return d.name;})
     .enter()
     .append('g')
-    .attr('class', 'row_label_group')
+    .classed('row_label_group', true)
     .attr('transform', function(d) {
       var inst_index = _.indexOf(row_nodes_names, d.name);
       return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
@@ -135,13 +133,11 @@ module.exports = function make_rows(cgm, text_delay) {
         });
     });
 
-
-
   if (utils.has(params.network_data.row_nodes[0], 'value')) {
 
     row_labels
       .append('rect')
-      .attr('class', 'row_bars')
+      .classed('row_bars', true)
       .attr('width', function(d) {
         var inst_value = 0;
         inst_value = params.labels.bar_scale_row( Math.abs(d.value) );
@@ -159,19 +155,5 @@ module.exports = function make_rows(cgm, text_delay) {
       .attr('opacity', 0.4);
 
   }
-
-  // // add row callback function
-  // d3.selectAll(params.root+' .row_label_group')
-  //   .on('click',function(d){
-  //     if (typeof params.click_label == 'function'){
-  //       params.click_label(d.name, 'row');
-  //       add_row_click_hlight(params, this, d.ini);
-  //     } else {
-  //       if (params.tile_click_hlight){
-  //         add_row_click_hlight(params, this, d.ini);
-  //       }
-  //     }
-
-  //   });
 
 };

@@ -3046,7 +3046,7 @@ var Clustergrammer =
 
 	  // row container holds all row text and row visualizations (triangles rects)
 	  if (d3.select(params.viz.viz_svg + ' .row_container').empty()) {
-	    row_container = d3.select(params.viz.viz_svg).append('g').attr('class', 'row_container').attr('transform', 'translate(' + params.viz.norm_labels.margin.left + ',' + params.viz.clust.margin.top + ')');
+	    row_container = d3.select(params.viz.viz_svg).append('g').classed('row_container', true).attr('transform', 'translate(' + params.viz.norm_labels.margin.left + ',' + params.viz.clust.margin.top + ')');
 	  } else {
 	    row_container = d3.select(params.viz.viz_svg).select('.row_container').attr('transform', 'translate(' + params.viz.norm_labels.margin.left + ',' + params.viz.clust.margin.top + ')');
 	  }
@@ -3055,17 +3055,16 @@ var Clustergrammer =
 	    row_container.append('rect').classed('row_white_background', true).classed('white_bars', true).attr('fill', params.viz.background_color).attr('width', params.viz.label_background.row).attr('height', 30 * params.viz.clust.dim.height + 'px');
 	  }
 
+	  // add container to hold text row labels if not already there
 	  if (d3.select(params.root + ' .row_label_container').empty()) {
-	    // container to hold text row labels
-	    row_container.append('g').attr('class', 'row_label_container').attr('transform', 'translate(' + params.viz.norm_labels.width.row + ',0)').append('g').attr('class', 'row_label_zoom_container');
+	    row_container.append('g').classed('row_label_container', true).attr('transform', 'translate(' + params.viz.norm_labels.width.row + ',0)').append('g').classed('row_label_zoom_container', true);
 	  } else {
-	    // container to hold text row labels
 	    row_container.select(params.root + ' .row_label_container').attr('transform', 'translate(' + params.viz.norm_labels.width.row + ',0)');
 	  }
 
 	  var row_labels = d3.select(params.root + ' .row_label_zoom_container').selectAll('g').data(row_nodes, function (d) {
 	    return d.name;
-	  }).enter().append('g').attr('class', 'row_label_group').attr('transform', function (d) {
+	  }).enter().append('g').classed('row_label_group', true).attr('transform', function (d) {
 	    var inst_index = _.indexOf(row_nodes_names, d.name);
 	    return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
 	  });
@@ -3119,7 +3118,7 @@ var Clustergrammer =
 
 	  if (utils.has(params.network_data.row_nodes[0], 'value')) {
 
-	    row_labels.append('rect').attr('class', 'row_bars').attr('width', function (d) {
+	    row_labels.append('rect').classed('row_bars', true).attr('width', function (d) {
 	      var inst_value = 0;
 	      inst_value = params.labels.bar_scale_row(Math.abs(d.value));
 	      return inst_value;
@@ -3131,20 +3130,6 @@ var Clustergrammer =
 	      return d.value > 0 ? params.matrix.bar_colors[0] : params.matrix.bar_colors[1];
 	    }).attr('opacity', 0.4);
 	  }
-
-	  // // add row callback function
-	  // d3.selectAll(params.root+' .row_label_group')
-	  //   .on('click',function(d){
-	  //     if (typeof params.click_label == 'function'){
-	  //       params.click_label(d.name, 'row');
-	  //       add_row_click_hlight(params, this, d.ini);
-	  //     } else {
-	  //       if (params.tile_click_hlight){
-	  //         add_row_click_hlight(params, this, d.ini);
-	  //       }
-	  //     }
-
-	  //   });
 		};
 
 /***/ },
