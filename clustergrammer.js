@@ -5006,7 +5006,6 @@ var Clustergrammer =
 	    // remove not visible row labels
 	    d3.selectAll(params.root + ' .row_label_group').each(function (d) {
 	      if (_.contains(params.viz.viz_nodes.row, d.name) === false) {
-	        console.log('removing');
 	        d3.select(this).remove();
 	      }
 	    });
@@ -14019,8 +14018,8 @@ var Clustergrammer =
 	  var text_delay = arguments.length <= 2 || arguments[2] === undefined ? 0 : arguments[2];
 
 
-	  console.log('make_row_labels');
-	  console.log(row_names);
+	  // console.log('make_row_labels')
+	  // console.log(row_names)
 
 	  var params = cgm.params;
 	  var row_nodes = [];

@@ -133,7 +133,6 @@ module.exports = function show_visible_area(cgm, zooming_stopped=false){
     d3.selectAll(params.root+' .row_label_group')
       .each(function(d){
         if (_.contains(params.viz.viz_nodes.row, d.name) === false){
-          console.log('removing')
           d3.select(this).remove();
         }
       })

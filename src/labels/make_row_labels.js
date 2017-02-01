@@ -6,8 +6,8 @@ var make_row_tooltips = require('./make_row_tooltips');
 
 module.exports = function make_row_labels(cgm, row_names='all', text_delay = 0){
 
-  console.log('make_row_labels')
-  console.log(row_names)
+  // console.log('make_row_labels')
+  // console.log(row_names)
 
   var params = cgm.params;
   var row_nodes = [];
