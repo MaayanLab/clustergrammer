@@ -15,7 +15,7 @@ var resize_col_hlight = require('./resize_col_hlight');
 var resize_label_bars = require('./resize_label_bars');
 var calc_default_fs = require('../params/calc_default_fs');
 var calc_zoom_switching = require('../zoom/calc_zoom_switching');
-var show_visible_area = require('../zoom/show_visible_area');
+// var show_visible_area = require('../zoom/show_visible_area');
 var ini_zoom_info = require('../zoom/ini_zoom_info');
 
 module.exports = function(cgm, row_nodes, col_nodes, links, duration, delays) {

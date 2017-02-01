@@ -33,7 +33,11 @@ module.exports = function recalc_params_for_resize(params){
   params.viz.rect_height = params.viz.y_scale.rangeBand() - params.viz.border_width.y;
 
   // for downsampling
-  params.viz.ds[0].rect_height = params.viz.ds[0].y_scale.rangeBand() - params.viz.border_width.y;
+  if (params.viz.ds != null){
+    for (var i; i < params.viz.ds.length; i++){
+      params.viz.ds[i].rect_height = params.viz.ds[i].y_scale.rangeBand() - params.viz.border_width.y;
+    }
+  }
 
   // redefine zoom extent
   params.viz.real_zoom = params.viz.norm_labels.width.col / (params.viz.rect_width/2);
