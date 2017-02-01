@@ -30,8 +30,8 @@ module.exports = function toggle_labels(params){
 
       } else {
 
-        // d3.select(params.root+' .'+inst_rc+'_label_container')
-        //   .style('display','block')
+        d3.select(params.root+' .'+inst_rc+'_label_container')
+          .style('display','block')
 
       }
 
