@@ -13949,6 +13949,7 @@ var Clustergrammer =
 	var toggle_grid_lines = __webpack_require__(39);
 	var show_visible_area = __webpack_require__(64);
 	var check_zoom_stop_status = __webpack_require__(206);
+	var toggle_labels = __webpack_require__(208);
 
 	module.exports = function run_when_zoom_stopped(params) {
 
@@ -13992,6 +13993,8 @@ var Clustergrammer =
 	        });
 	      }
 	    });
+
+	    toggle_labels(params);
 
 	    text_patch();
 
@@ -14073,6 +14076,8 @@ var Clustergrammer =
 
 	module.exports = function toggle_labels(params) {
 
+	  console.log('toggle_labels');
+
 	  var max_element_show = 150;
 	  var min_font_size = 3;
 
@@ -14084,6 +14089,8 @@ var Clustergrammer =
 	    // only toggle labels if font size is large enough
 	    if (real_font_size[inst_rc] > min_font_size) {
 
+	      // console.log('font-size large enough')
+
 	      var inst_num_visible = num_visible_labels(params, inst_rc);
 
 	      d3.selectAll('.horz_lines').select('line').style('display', 'none');
@@ -14091,11 +14098,26 @@ var Clustergrammer =
 
 	      if (inst_num_visible > max_element_show) {
 
-	        d3.selectAll(params.root + ' .' + inst_rc + '_label_group').select('text').style('display', 'none');
+	        // console.log('not showing labels: too many labels')
+
+	        d3.selectAll(params.root + ' .' + inst_rc + '_label_group')
+	        // .select('text')
+	        .style('display', 'none');
 
 	        d3.selectAll(params.root + ' .' + inst_rc + '_cat_group').select('path').style('display', 'none');
+	      } else {
+
+	        // console.log('showing labels: not too many labels')
+
+	        d3.selectAll(params.root + ' .' + inst_rc + '_label_group')
+	        // .select('text')
+	        .style('display', 'block');
+
+	        d3.selectAll(params.root + ' .' + inst_rc + '_cat_group').select('path').style('display', 'block');
 	      }
 	    } else {
+
+	      // console.log('font size too small')
 
 	      // do not display labels if font size is too small
 	      d3.selectAll(params.root + ' .' + inst_rc + '_label_group').select('text').style('display', 'none');

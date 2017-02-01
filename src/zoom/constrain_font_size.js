@@ -8,7 +8,6 @@ module.exports = function constrain_font_size(params) {
 
   var real_font_size = calc_real_font_size(params);
 
-
   // rows
   ////////////////////////////////////
   if (real_font_size.row > min_font_size){

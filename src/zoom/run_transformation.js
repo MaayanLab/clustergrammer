@@ -89,7 +89,6 @@ module.exports = function run_transformation(params){
 
   constrain_font_size(params);
 
-
   toggle_labels(params);
 
   if (zoom_info.zoom_y > prev_zoom.zoom_y){
