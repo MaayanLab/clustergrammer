@@ -6,8 +6,6 @@ var ini_zoom_info = require('../zoom/ini_zoom_info');
 
 module.exports = function row_reorder(cgm, row_selection, inst_row) {
 
-  console.log('row_reorder')
-
   var params = cgm.params;
   params.viz.inst_order.row = 'custom';
   toggle_dendro_view(cgm, 'col');

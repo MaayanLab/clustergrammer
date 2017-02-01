@@ -6,6 +6,8 @@ var make_row_tooltips = require('./make_row_tooltips');
 
 module.exports = function make_row_labels(cgm, text_delay = 0){
 
+  console.log('make_row_labels');
+
   var params = cgm.params;
   var row_nodes = params.network_data.row_nodes;
   var row_nodes_names = params.network_data.row_nodes_names;
@@ -26,8 +28,6 @@ module.exports = function make_row_labels(cgm, text_delay = 0){
 
   row_labels
     .on('dblclick', function(d) {
-
-      console.log('double clicking')
 
       var data_attr = '__data__';
       var row_name = this[data_attr].name;

@@ -6,8 +6,6 @@ var ini_zoom_info = require('../zoom/ini_zoom_info');
 
 module.exports = function col_reorder(cgm, col_selection, inst_term) {
 
-  console.log('col_reorder')
-
   var params = cgm.params;
 
   params.viz.inst_order.col = 'custom';

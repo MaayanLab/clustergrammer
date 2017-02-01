@@ -129,8 +129,6 @@ module.exports = function show_visible_area(cgm, zooming_stopped=false){
     // level change
     if (new_ds_level != old_ds_level){
 
-      // console.log('ds_level: ' + String(old_ds_level) + ' : '  + String(new_ds_level))
-
       // all visible rows are missing at new downsampling level
       missing_rows = params.viz.viz_nodes.row;
 
@@ -149,8 +147,12 @@ module.exports = function show_visible_area(cgm, zooming_stopped=false){
   // only make new row_labels if there are missing rows and not downsampled
   if (new_ds_level === -1){
 
-    // debugger
     make_row_labels(cgm);
+  } else {
+    // remove row labels if necessary
+    if (d3.select(params.root+' .row_label_group').empty() === false){
+      d3.selectAll(params.root+' .row_label_group').remove();
+    }
   }
 
   function toggle_display(params, d, inst_rc, inst_selection, severe_toggle=false){

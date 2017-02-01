@@ -3502,8 +3502,6 @@ var Clustergrammer =
 
 	module.exports = function col_reorder(cgm, col_selection, inst_term) {
 
-	  console.log('col_reorder');
-
 	  var params = cgm.params;
 
 	  params.viz.inst_order.col = 'custom';
@@ -5011,8 +5009,6 @@ var Clustergrammer =
 	    // level change
 	    if (new_ds_level != old_ds_level) {
 
-	      // console.log('ds_level: ' + String(old_ds_level) + ' : '  + String(new_ds_level))
-
 	      // all visible rows are missing at new downsampling level
 	      missing_rows = params.viz.viz_nodes.row;
 
@@ -5029,8 +5025,12 @@ var Clustergrammer =
 	  // only make new row_labels if there are missing rows and not downsampled
 	  if (new_ds_level === -1) {
 
-	    // debugger
 	    make_row_labels(cgm);
+	  } else {
+	    // remove row labels if necessary
+	    if (d3.select(params.root + ' .row_label_group').empty() === false) {
+	      d3.selectAll(params.root + ' .row_label_group').remove();
+	    }
 	  }
 
 	  function toggle_display(params, d, inst_rc, inst_selection) {
@@ -5151,8 +5151,6 @@ var Clustergrammer =
 	var ini_zoom_info = __webpack_require__(37);
 
 	module.exports = function row_reorder(cgm, row_selection, inst_row) {
-
-	  console.log('row_reorder');
 
 	  var params = cgm.params;
 	  params.viz.inst_order.row = 'custom';
@@ -14044,6 +14042,8 @@ var Clustergrammer =
 	  var text_delay = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
 
 
+	  console.log('make_row_labels');
+
 	  var params = cgm.params;
 	  var row_nodes = params.network_data.row_nodes;
 	  var row_nodes_names = params.network_data.row_nodes_names;
@@ -14059,8 +14059,6 @@ var Clustergrammer =
 	  });
 
 	  row_labels.on('dblclick', function (d) {
-
-	    console.log('double clicking');
 
 	    var data_attr = '__data__';
 	    var row_name = this[data_attr].name;
