@@ -8073,7 +8073,7 @@ var Clustergrammer =
 	  d3.select(params.root + ' .col_cat_container').selectAll('g').data(params.network_data.col_nodes, function (d) {
 	    return d.name;
 	  }).enter().append('g').attr('class', 'col_cat_group').attr('transform', function (d) {
-	    var inst_index = _.indexOf(params.network_data.col_nodes_names, d.name);
+	    var inst_index = d.col_index;
 	    return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
 	  });
 
@@ -8472,7 +8472,7 @@ var Clustergrammer =
 	  var row_cat_group = d3.select(params.root + ' .row_cat_container').selectAll('g').data(params.network_data.row_nodes, function (d) {
 	    return d.name;
 	  }).enter().append('g').attr('class', 'row_cat_group').attr('transform', function (d) {
-	    var inst_index = _.indexOf(params.network_data.row_nodes_names, d.name);
+	    var inst_index = d.row_index;
 	    return 'translate(0, ' + params.viz.y_scale(inst_index) + ')';
 	  });
 
