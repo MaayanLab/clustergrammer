@@ -4,13 +4,14 @@ module.exports = function constrain_font_size(params) {
 
   var tmp_font_size = params.labels.default_fs_row ;
   var inst_zoom;
+  var min_font_size = 3;
 
   var real_font_size = calc_real_font_size(params);
 
 
   // rows
   ////////////////////////////////////
-  if (real_font_size.row > 5){
+  if (real_font_size.row > min_font_size){
 
     if (real_font_size.row > params.labels.max_allow_fs){
 
@@ -43,7 +44,7 @@ module.exports = function constrain_font_size(params) {
 
     // columns
     //////////////////////////////////////
-    if (real_font_size.col > 5){
+    if (real_font_size.col > min_font_size){
 
 
       if (real_font_size.col > params.labels.max_allow_fs){

@@ -31,10 +31,6 @@ module.exports = function show_visible_area(params, zooming_stopped=false){
     // transitioning from real data to downsampled view
     if (check_ds_level >= 0){
       override = true;
-
-      // // force to transition to most downsampled view
-      // check_ds_level = 0;
-
     }
   } else {
     // transitioning to more coarse downsampling view
@@ -101,7 +97,6 @@ module.exports = function show_visible_area(params, zooming_stopped=false){
   // generate lists of visible rows/cols
   find_viz_nodes(params, viz_area);
 
-
   var missing_rows = _.difference(params.viz.viz_nodes.row, params.viz.viz_nodes.curr_row);
 
   if (params.viz.ds != null){
@@ -124,7 +119,6 @@ module.exports = function show_visible_area(params, zooming_stopped=false){
     // set matrix to downsampled matrix
     inst_matrix = params.matrix.ds_matrix[new_ds_level];
   }
-
 
   if (zooming_stopped === true){
 

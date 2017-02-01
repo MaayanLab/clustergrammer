@@ -4605,9 +4605,6 @@ var Clustergrammer =
 	    // transitioning from real data to downsampled view
 	    if (check_ds_level >= 0) {
 	      override = true;
-
-	      // // force to transition to most downsampled view
-	      // check_ds_level = 0;
 	    }
 	  } else {
 	    // transitioning to more coarse downsampling view
@@ -6054,9 +6051,9 @@ var Clustergrammer =
 	var check_if_zooming_has_stopped = __webpack_require__(204);
 	var show_visible_area = __webpack_require__(64);
 	var resize_label_val_bars = __webpack_require__(87);
-	var num_visible_labels = __webpack_require__(85);
 	var zoom_crop_triangles = __webpack_require__(61);
 	var get_previous_zoom = __webpack_require__(207);
+	var toggle_labels = __webpack_require__(208);
 
 	module.exports = function run_transformation(params) {
 
@@ -6122,24 +6119,7 @@ var Clustergrammer =
 
 	  constrain_font_size(params);
 
-	  var max_element_show = 150;
-
-	  // toggle row/col label visibility
-	  /////////////////////////////////////
-	  _.each(['row', 'col'], function (inst_rc) {
-
-	    var inst_num_visible = num_visible_labels(params, inst_rc);
-
-	    d3.selectAll('.horz_lines').select('line').style('display', 'none');
-	    d3.selectAll('.vert_lines').select('line').style('display', 'none');
-
-	    if (inst_num_visible > max_element_show) {
-
-	      d3.selectAll(params.root + ' .' + inst_rc + '_label_group').select('text').style('display', 'none');
-
-	      d3.selectAll(params.root + ' .' + inst_rc + '_cat_group').select('path').style('display', 'none');
-	    }
-	  });
+	  toggle_labels(params);
 
 	  if (zoom_info.zoom_y > prev_zoom.zoom_y) {
 	    console.log('zooming in');
@@ -6161,12 +6141,13 @@ var Clustergrammer =
 
 	  var tmp_font_size = params.labels.default_fs_row;
 	  var inst_zoom;
+	  var min_font_size = 3;
 
 	  var real_font_size = calc_real_font_size(params);
 
 	  // rows
 	  ////////////////////////////////////
-	  if (real_font_size.row > 5) {
+	  if (real_font_size.row > min_font_size) {
 
 	    if (real_font_size.row > params.labels.max_allow_fs) {
 
@@ -6190,7 +6171,7 @@ var Clustergrammer =
 
 	  // columns
 	  //////////////////////////////////////
-	  if (real_font_size.col > 5) {
+	  if (real_font_size.col > min_font_size) {
 
 	    if (real_font_size.col > params.labels.max_allow_fs) {
 
@@ -14080,6 +14061,49 @@ var Clustergrammer =
 
 	  return prev_zoom;
 		};
+
+/***/ },
+/* 208 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var calc_real_font_size = __webpack_require__(83);
+	var num_visible_labels = __webpack_require__(85);
+
+	module.exports = function toggle_labels(params) {
+
+	  var max_element_show = 150;
+	  var min_font_size = 3;
+
+	  // toggle row/col label visibility
+	  /////////////////////////////////////
+	  var real_font_size = calc_real_font_size(params);
+	  _.each(['row', 'col'], function (inst_rc) {
+
+	    // only toggle labels if font size is large enough
+	    if (real_font_size[inst_rc] > min_font_size) {
+
+	      var inst_num_visible = num_visible_labels(params, inst_rc);
+
+	      d3.selectAll('.horz_lines').select('line').style('display', 'none');
+	      d3.selectAll('.vert_lines').select('line').style('display', 'none');
+
+	      if (inst_num_visible > max_element_show) {
+
+	        d3.selectAll(params.root + ' .' + inst_rc + '_label_group').select('text').style('display', 'none');
+
+	        d3.selectAll(params.root + ' .' + inst_rc + '_cat_group').select('path').style('display', 'none');
+	      }
+	    } else {
+
+	      // do not display labels if font size is too small
+	      d3.selectAll(params.root + ' .' + inst_rc + '_label_group').select('text').style('display', 'none');
+
+	      d3.selectAll(params.root + ' .' + inst_rc + '_cat_group').select('path').style('display', 'none');
+	    }
+	  });
+	};
 
 /***/ }
 /******/ ]);

@@ -2,9 +2,9 @@ var constrain_font_size = require('./constrain_font_size');
 var check_if_zooming_has_stopped = require('./check_if_zooming_has_stopped');
 var show_visible_area = require('./show_visible_area');
 var resize_label_val_bars = require('./resize_label_val_bars');
-var num_visible_labels = require('./num_visible_labels');
 var zoom_crop_triangles = require('./zoom_crop_triangles');
 var get_previous_zoom = require('./get_previous_zoom');
+var toggle_labels = require('./toggle_labels');
 
 module.exports = function run_transformation(params){
 
@@ -89,30 +89,8 @@ module.exports = function run_transformation(params){
 
   constrain_font_size(params);
 
-  var max_element_show = 150;
 
-  // toggle row/col label visibility
-  /////////////////////////////////////
-  _.each(['row','col'], function(inst_rc){
-
-    var inst_num_visible = num_visible_labels(params, inst_rc);
-
-    d3.selectAll('.horz_lines').select('line').style('display','none');
-    d3.selectAll('.vert_lines').select('line').style('display','none');
-
-    if (inst_num_visible > max_element_show){
-
-      d3.selectAll(params.root+' .'+inst_rc+'_label_group')
-        .select('text')
-        .style('display','none');
-
-      d3.selectAll(params.root+' .'+inst_rc+'_cat_group')
-        .select('path')
-        .style('display','none');
-
-    }
-
-  });
+  toggle_labels(params);
 
   if (zoom_info.zoom_y > prev_zoom.zoom_y){
     console.log('zooming in')
