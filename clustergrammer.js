@@ -5657,8 +5657,7 @@ var Clustergrammer =
 	    t = d3.select(params.root + ' .clust_group').transition().duration(2500);
 
 	    t.selectAll('.row').attr('transform', function (d) {
-	      var tmp_index = _.indexOf(row_nodes_names, d.name);
-	      return 'translate(0,' + params.viz.y_scale(tmp_index) + ')';
+	      return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
 	    });
 
 	    t.selectAll('.row').selectAll('.tile').attr('transform', function (d) {
@@ -5679,26 +5678,22 @@ var Clustergrammer =
 
 	    // Move Row Labels
 	    d3.select(params.root + ' .row_label_zoom_container').selectAll('.row_label_group').transition().duration(2500).attr('transform', function (d) {
-	      var inst_index = _.indexOf(row_nodes_names, d.name);
-	      return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
+	      return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
 	    });
 
 	    // t.selectAll('.column')
 	    d3.select(params.root + ' .col_zoom_container').selectAll('.col_label_text').transition().duration(2500).attr('transform', function (d) {
-	      var inst_index = _.indexOf(col_nodes_names, d.name);
-	      return 'translate(' + params.viz.x_scale(inst_index) + ') rotate(-90)';
+	      return 'translate(' + params.viz.x_scale(d.col_index) + ') rotate(-90)';
 	    });
 
 	    // reorder row_label_triangle groups
 	    d3.selectAll(params.root + ' .row_cat_group').transition().duration(2500).attr('transform', function (d) {
-	      var inst_index = _.indexOf(row_nodes_names, d.name);
-	      return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
+	      return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
 	    });
 
 	    // reorder col_class groups
 	    d3.selectAll(params.root + ' .col_cat_group').transition().duration(2500).attr('transform', function (d) {
-	      var inst_index = _.indexOf(col_nodes_names, d.name);
-	      return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
+	      return 'translate(' + params.viz.x_scale(d.col_index) + ',0)';
 	    });
 	  } else {
 
@@ -5707,8 +5702,7 @@ var Clustergrammer =
 
 	    // reorder matrix
 	    t.selectAll('.row').attr('transform', function (d) {
-	      var tmp_index = _.indexOf(row_nodes_names, d.name);
-	      return 'translate(0,' + params.viz.y_scale(tmp_index) + ')';
+	      return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
 	    }).selectAll('.tile').attr('transform', function (d) {
 	      return 'translate(' + params.viz.x_scale(d.pos_x) + ' , 0)';
 	    });
@@ -5723,26 +5717,22 @@ var Clustergrammer =
 
 	    // Move Row Labels
 	    d3.select(params.root + ' .row_label_zoom_container').selectAll('.row_label_group').attr('transform', function (d) {
-	      var inst_index = _.indexOf(row_nodes_names, d.name);
-	      return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
+	      return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
 	    });
 
 	    // t.selectAll('.column')
 	    d3.select(params.root + ' .col_zoom_container').selectAll('.col_label_text').attr('transform', function (d) {
-	      var inst_index = _.indexOf(col_nodes_names, d.name);
-	      return 'translate(' + params.viz.x_scale(inst_index) + ') rotate(-90)';
+	      return 'translate(' + params.viz.x_scale(d.col_index) + ') rotate(-90)';
 	    });
 
 	    // reorder row_label_triangle groups
 	    d3.selectAll(params.root + ' .row_cat_group').attr('transform', function (d) {
-	      var inst_index = _.indexOf(row_nodes_names, d.name);
-	      return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
+	      return 'translate(0,' + params.viz.y_scale(d.col_index) + ')';
 	    });
 
 	    // reorder col_class groups
 	    d3.selectAll(params.root + ' .col_cat_group').attr('transform', function (d) {
-	      var inst_index = _.indexOf(col_nodes_names, d.name);
-	      return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
+	      return 'translate(' + params.viz.x_scale(d.col_index) + ',0)';
 	    });
 	  }
 
@@ -7722,9 +7712,6 @@ var Clustergrammer =
 
 	  var delays = {};
 	  var duration = params.viz.duration;
-
-	  // var row_nodes = params.network_data.row_nodes;
-	  // var row_nodes_names = params.network_data.row_nodes_names;
 
 	  if (delay_info === false) {
 	    delays.run_transition = false;
