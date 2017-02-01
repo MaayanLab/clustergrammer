@@ -41,8 +41,6 @@ module.exports = function make_config(args) {
 
   });
 
-
-
   config.network_data.row_nodes_names = utils.pluck(config.network_data.row_nodes, 'name');
   config.network_data.col_nodes_names = utils.pluck(config.network_data.col_nodes, 'name');
 
@@ -74,7 +72,10 @@ module.exports = function make_config(args) {
 
         var has_cats = check_nodes_for_categories(inst_nodes[inst_rc+'_nodes']);
 
-        inst_nodes[inst_rc+'_nodes'].forEach(function(d){
+        inst_nodes[inst_rc+'_nodes'].forEach(function(d, i){
+
+          // add index to row_nodes and col_nodes
+          d[inst_rc+'_index'] = i;
 
           if (has_cats){
             d.name = d.name.split(super_string)[1];

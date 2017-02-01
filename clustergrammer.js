@@ -237,7 +237,10 @@ var Clustergrammer =
 
 	        var has_cats = check_nodes_for_categories(inst_nodes[inst_rc + '_nodes']);
 
-	        inst_nodes[inst_rc + '_nodes'].forEach(function (d) {
+	        inst_nodes[inst_rc + '_nodes'].forEach(function (d, i) {
+
+	          // add index to row_nodes and col_nodes
+	          d[inst_rc + '_index'] = i;
 
 	          if (has_cats) {
 	            d.name = d.name.split(super_string)[1];
