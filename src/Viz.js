@@ -1,6 +1,6 @@
 var generate_matrix = require('./matrix');
-var make_row_labels = require('./labels/make_row_labels');
-var make_col_labels = require('./labels/make_col_labels');
+var make_row_label_container = require('./labels/make_row_label_container');
+var make_col_label_container = require('./labels/make_col_label_container');
 var generate_super_labels = require('./labels/super_labels');
 var spillover = require('./spillover/main_spillover');
 var initialize_resizing = require('./initialize_resizing');
@@ -39,7 +39,7 @@ module.exports = function Viz(cgm) {
   generate_matrix(params, svg_group);
 
   var delay_text = 0;
-  make_row_labels(cgm, delay_text);
+  make_row_label_container(cgm, delay_text);
 
   if (params.viz.show_dendrogram){
     make_row_dendro(cgm);
@@ -48,7 +48,7 @@ module.exports = function Viz(cgm) {
 
   make_row_dendro_spillover(cgm);
 
-  make_col_labels(cgm, delay_text);
+  make_col_label_container(cgm, delay_text);
 
   _.each(['row','col'], function(inst_rc){
 

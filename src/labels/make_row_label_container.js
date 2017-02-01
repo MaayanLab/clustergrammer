@@ -4,7 +4,7 @@ var row_reorder = require('../reorder/row_reorder');
 var col_reorder = require('../reorder/col_reorder');
 var make_row_tooltips = require('./make_row_tooltips');
 
-module.exports = function make_row_labels(cgm, text_delay) {
+module.exports = function make_row_label_container(cgm, text_delay) {
 
   var params = cgm.params;
 
@@ -14,6 +14,7 @@ module.exports = function make_row_labels(cgm, text_delay) {
   var row_container;
 
   // row container holds all row text and row visualizations (triangles rects)
+  ////////////////////////////////////////////////////////////////////////////
   if ( d3.select(params.viz.viz_svg + ' .row_container').empty() ){
     row_container = d3.select(params.viz.viz_svg)
       .append('g')
