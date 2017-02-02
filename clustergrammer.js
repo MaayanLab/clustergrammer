@@ -1730,7 +1730,7 @@ var Clustergrammer =
 	    // increase ds opacity, as more rows are compressed into a single downsampled
 	    // row, increase the opacity of the downsampled row. Max increase will be 2x
 	    // when 100 or more rows are compressed
-	    params.viz.ds_opacity_scale = d3.scale.linear().domain([1, 100]).range([1, 3]).clamp(true);
+	    params.viz.ds_opacity_scale = d3.scale.linear().domain([1, 100]).range([1, 4]).clamp(true);
 
 	    var ds;
 
@@ -4893,13 +4893,13 @@ var Clustergrammer =
 
 	'use strict';
 
-	var find_viz_nodes = __webpack_require__(67);
+	var find_viz_rows = __webpack_require__(210);
 	var make_matrix_rows = __webpack_require__(42);
-
 	var make_row_labels = __webpack_require__(209);
 
 	module.exports = function show_visible_area(cgm) {
 	  var zooming_stopped = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+	  var zooming_out = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
 
 
 	  // console.log('show_visible_area stopped: ' + String(zooming_stopped));
@@ -4937,13 +4937,12 @@ var Clustergrammer =
 	    // transitioning to more coarse downsampling view (from real data)
 	    if (check_ds_level >= 0) {
 	      override = true;
-	      // check_ds_level == 0;
+	      check_ds_level = 0;
 	    }
 	  } else {
 	    // transitioning to more coarse downsampling view
 	    if (check_ds_level < old_ds_level) {
 	      override = true;
-	      // check_ds_level == 0;
 	    }
 	  }
 
@@ -4954,6 +4953,7 @@ var Clustergrammer =
 
 	    // update new_ds_level if necessary (if decreasing detail, zooming out)
 	    new_ds_level = check_ds_level;
+
 	    // set zooming_stopped to true in case of override
 	    zooming_stopped = true;
 
@@ -4962,18 +4962,6 @@ var Clustergrammer =
 	    // keep the old level (zooming is still occuring and not zooming out)
 	    new_ds_level = old_ds_level;
 	  }
-
-	  // // toggle labels and rows
-	  // ///////////////////////////////////////////////
-	  // var severe_toggle = true;
-
-	  // d3.selectAll(params.root+' .row')
-	  //   .style('display', function(d){
-	  //     return toggle_display(params, d, 'row', this, severe_toggle);
-	  //   });
-
-	  // ///////////////////////////////////////////////
-
 
 	  var viz_area = {};
 	  var buffer_size = 5;
@@ -4986,7 +4974,7 @@ var Clustergrammer =
 	  viz_area.max_y = Math.abs(zoom_info.trans_y) / zoom_info.zoom_y + params.viz.clust.dim.height / zoom_info.zoom_y + buffer_size * params.viz.rect_height;
 
 	  // generate lists of visible rows/cols
-	  find_viz_nodes(params, viz_area);
+	  find_viz_rows(params, viz_area);
 
 	  var missing_rows = _.difference(params.viz.viz_nodes.row, params.viz.viz_nodes.curr_row);
 
@@ -5042,7 +5030,7 @@ var Clustergrammer =
 	    // level change
 	    if (new_ds_level != old_ds_level) {
 
-	      // console.log('old: ' + String(old_ds_level) + ' new: '+ String(new_ds_level));
+	      console.log('old: ' + String(old_ds_level) + ' new: ' + String(new_ds_level));
 
 	      // all visible rows are missing at new downsampling level
 	      missing_rows = params.viz.viz_nodes.row;
@@ -5052,88 +5040,44 @@ var Clustergrammer =
 	    }
 	  }
 
-	  console.log('missing_rows: ' + String(missing_rows.length));
-
 	  // only make new matrix_rows if there are missing rows
-	  if (missing_rows.length > 1 || missing_rows === 'all') {
-	    make_matrix_rows(params, inst_matrix, missing_rows, new_ds_level);
+	  if (missing_rows.length >= 1 || missing_rows === 'all') {
 
-	    // only make new row_labels if there are missing rows and not downsampled
-	    if (new_ds_level === -1) {
-	      make_row_labels(cgm, missing_rows);
-	    }
+	    make_matrix_rows(params, inst_matrix, missing_rows, new_ds_level);
 	  }
 
-	  function toggle_display(params, d, inst_rc, inst_selection) {
-	    var severe_toggle = arguments.length <= 4 || arguments[4] === undefined ? false : arguments[4];
+	  // only make new row_labels if there are missing row_labels, downsampled, and
+	  // not zooming out or zooming has stopped
+	  if (new_ds_level === -1) {
 
-	    var inst_display = 'none';
+	    if (zooming_out === false || zooming_stopped) {
 
-	    if (_.contains(params.viz.viz_nodes[inst_rc], d.name)) {
-	      inst_display = 'block';
-	    } else {
+	      // check if labels need to be made
+	      ///////////////////////////////////
+	      // get the names visible row_labels
+	      var visible_row_labels = [];
+	      d3.selectAll(params.root + ' .row_label_group').each(function (d) {
+	        visible_row_labels.push(d.name);
+	      });
 
-	      if (severe_toggle) {
-	        // severe toggle
-	        d3.select(inst_selection).remove();
+	      // find missing labels
+	      var missing_row_labels = _.difference(params.viz.viz_nodes.row, visible_row_labels);
+
+	      // make labels
+	      //////////////////////////////////
+	      // only make row labels if there are any missing
+	      var addback_thresh = 1;
+	      if (missing_row_labels.length > addback_thresh) {
+	        make_row_labels(cgm, missing_row_labels);
 	      }
 	    }
-	    return inst_display;
 	  }
+
+	  // }
 		};
 
 /***/ },
-/* 67 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	module.exports = function find_viz_nodes(params, viz_area) {
-
-	  var should_be_rows = [];
-	  var curr_rows = [];
-
-	  // find rows that should be visible
-	  var y_trans;
-
-	  // default y_scale (no downsampling)
-	  var y_scale = params.viz.y_scale;
-	  var ds_level = params.viz.ds_level;
-	  var row_names = params.network_data.row_nodes_names;
-	  var row_class = '.row';
-
-	  // need to turn this on
-	  /////////////////////////////
-	  if (ds_level >= 0) {
-	    y_scale = params.viz.ds[ds_level].y_scale;
-
-	    row_names = d3.range(params.matrix.ds_matrix[ds_level].length).map(String);
-
-	    row_class = '.ds' + String(ds_level) + '_row';
-	  }
-
-	  for (var i = 0; i < row_names.length; i++) {
-
-	    // y_scale (works for downsampled data or non-downsampled data)
-	    y_trans = y_scale(i);
-
-	    if (y_trans < viz_area.max_y && y_trans > viz_area.min_y) {
-	      should_be_rows.push(row_names[i]);
-	    }
-	  }
-
-	  // find currently visible labels
-	  d3.selectAll(params.root + ' ' + row_class).each(function (d) {
-	    curr_rows.push(d.name);
-	  });
-
-	  // nodes that should be visible
-	  params.viz.viz_nodes.row = should_be_rows;
-	  // nodes that are visible
-	  params.viz.viz_nodes.curr_row = curr_rows;
-		};
-
-/***/ },
+/* 67 */,
 /* 68 */,
 /* 69 */
 /***/ function(module, exports) {
@@ -5624,7 +5568,7 @@ var Clustergrammer =
 	'use strict';
 
 	var toggle_dendro_view = __webpack_require__(55);
-	var show_visible_area = __webpack_require__(66);
+	// var show_visible_area = require('../zoom/show_visible_area');
 	var ini_zoom_info = __webpack_require__(37);
 	var fine_position_tile = __webpack_require__(48);
 
@@ -5760,7 +5704,7 @@ var Clustergrammer =
 
 	  params.zoom_info = ini_zoom_info();
 
-	  show_visible_area(cgm);
+	  // show_visible_area(cgm);
 
 	  setTimeout(function () {
 	    params.viz.run_trans = false;
@@ -6292,11 +6236,16 @@ var Clustergrammer =
 
 	  constrain_font_size(params);
 
-	  if (zoom_info.zoom_y > prev_zoom.zoom_y) {
-	    // console.log('zooming in')
-	  } else {
-	    // console.log('zooming out')
-	    show_visible_area(cgm);
+	  if (zoom_info.zoom_y <= prev_zoom.zoom_y) {
+
+	    var zooming_out = false;
+	    if (zoom_info.zoom_y < prev_zoom.zoom_y) {
+	      zooming_out = true;
+	    }
+
+	    // zooming has not stopped and zooming out is true
+	    var zooming_stopped = false;
+	    show_visible_area(cgm, zooming_stopped, zooming_out);
 	  }
 
 	  setTimeout(not_zooming, 50);
@@ -6439,7 +6388,8 @@ var Clustergrammer =
 	    /////////////////////////////////////////////////
 	    // zooming has stopped
 	    /////////////////////////////////////////////////
-	    console.log('\nZOOMING HAS ACTUALLY STOPPED\n============================');
+	    // console.log('\nZOOMING HAS ACTUALLY STOPPED\n============================');
+	    // console.log(params.zoom_info.zoom_y)
 
 	    _.each(['row', 'col'], function (inst_rc) {
 
@@ -14082,6 +14032,57 @@ var Clustergrammer =
 	      return d.value > 0 ? params.matrix.bar_colors[0] : params.matrix.bar_colors[1];
 	    }).attr('opacity', 0.4);
 	  }
+		};
+
+/***/ },
+/* 210 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = function find_viz_rows(params, viz_area) {
+
+	  var should_be_rows = [];
+	  var curr_rows = [];
+
+	  // find rows that should be visible
+	  var y_trans;
+
+	  // default y_scale (no downsampling)
+	  var y_scale = params.viz.y_scale;
+	  var ds_level = params.viz.ds_level;
+	  var row_names = params.network_data.row_nodes_names;
+	  var row_class = '.row';
+
+	  // need to turn this on
+	  /////////////////////////////
+	  if (ds_level >= 0) {
+	    y_scale = params.viz.ds[ds_level].y_scale;
+
+	    row_names = d3.range(params.matrix.ds_matrix[ds_level].length).map(String);
+
+	    row_class = '.ds' + String(ds_level) + '_row';
+	  }
+
+	  for (var i = 0; i < row_names.length; i++) {
+
+	    // y_scale (works for downsampled data or non-downsampled data)
+	    y_trans = y_scale(i);
+
+	    if (y_trans < viz_area.max_y && y_trans > viz_area.min_y) {
+	      should_be_rows.push(row_names[i]);
+	    }
+	  }
+
+	  // find currently visible rows
+	  d3.selectAll(params.root + ' ' + row_class).each(function (d) {
+	    curr_rows.push(d.name);
+	  });
+
+	  // nodes that should be visible
+	  params.viz.viz_nodes.row = should_be_rows;
+	  // nodes that are visible
+	  params.viz.viz_nodes.curr_row = curr_rows;
 		};
 
 /***/ }

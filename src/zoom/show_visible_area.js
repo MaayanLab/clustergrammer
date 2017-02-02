@@ -1,10 +1,8 @@
-var find_viz_nodes = require('../zoom/find_viz_nodes');
+var find_viz_rows = require('../zoom/find_viz_rows');
 var make_matrix_rows = require('../matrix/make_matrix_rows');
-
 var make_row_labels = require('../labels/make_row_labels');
 
-
-module.exports = function show_visible_area(cgm, zooming_stopped=false){
+module.exports = function show_visible_area(cgm, zooming_stopped=false, zooming_out=false){
 
   // console.log('show_visible_area stopped: ' + String(zooming_stopped));
   // debugger;
@@ -41,13 +39,12 @@ module.exports = function show_visible_area(cgm, zooming_stopped=false){
     // transitioning to more coarse downsampling view (from real data)
     if (check_ds_level >= 0){
       override = true;
-      // check_ds_level == 0;
+      check_ds_level = 0;
     }
   } else {
     // transitioning to more coarse downsampling view
     if (check_ds_level < old_ds_level){
       override = true;
-      // check_ds_level == 0;
     }
   }
 
@@ -58,6 +55,7 @@ module.exports = function show_visible_area(cgm, zooming_stopped=false){
 
     // update new_ds_level if necessary (if decreasing detail, zooming out)
     new_ds_level = check_ds_level;
+
     // set zooming_stopped to true in case of override
     zooming_stopped = true;
 
@@ -66,19 +64,6 @@ module.exports = function show_visible_area(cgm, zooming_stopped=false){
     // keep the old level (zooming is still occuring and not zooming out)
     new_ds_level = old_ds_level;
   }
-
-
-  // // toggle labels and rows
-  // ///////////////////////////////////////////////
-  // var severe_toggle = true;
-
-  // d3.selectAll(params.root+' .row')
-  //   .style('display', function(d){
-  //     return toggle_display(params, d, 'row', this, severe_toggle);
-  //   });
-
-  // ///////////////////////////////////////////////
-
 
   var viz_area = {};
   var buffer_size = 5;
@@ -97,7 +82,7 @@ module.exports = function show_visible_area(cgm, zooming_stopped=false){
                       buffer_size * params.viz.rect_height ;
 
   // generate lists of visible rows/cols
-  find_viz_nodes(params, viz_area);
+  find_viz_rows(params, viz_area);
 
   var missing_rows = _.difference(params.viz.viz_nodes.row, params.viz.viz_nodes.curr_row);
 
@@ -156,7 +141,7 @@ module.exports = function show_visible_area(cgm, zooming_stopped=false){
     // level change
     if (new_ds_level != old_ds_level){
 
-      // console.log('old: ' + String(old_ds_level) + ' new: '+ String(new_ds_level));
+      console.log('old: ' + String(old_ds_level) + ' new: '+ String(new_ds_level));
 
       // all visible rows are missing at new downsampling level
       missing_rows = params.viz.viz_nodes.row;
@@ -168,33 +153,42 @@ module.exports = function show_visible_area(cgm, zooming_stopped=false){
 
   }
 
-  console.log('missing_rows: ' + String(missing_rows.length));
-
   // only make new matrix_rows if there are missing rows
-  if (missing_rows.length >   1 || missing_rows === 'all'){
-    make_matrix_rows(params, inst_matrix, missing_rows, new_ds_level);
+  if (missing_rows.length >= 1 || missing_rows === 'all'){
 
-    // only make new row_labels if there are missing rows and not downsampled
-    if (new_ds_level === -1){
-      make_row_labels(cgm, missing_rows);
-    }
+      make_matrix_rows(params, inst_matrix, missing_rows, new_ds_level);
+
   }
 
-  function toggle_display(params, d, inst_rc, inst_selection, severe_toggle=false){
-    var inst_display = 'none';
+  // only make new row_labels if there are missing row_labels, downsampled, and
+  // not zooming out or zooming has stopped
+  if (new_ds_level === -1){
 
-    if (_.contains(params.viz.viz_nodes[inst_rc], d.name)){
-      inst_display = 'block';
-    } else {
+    if (zooming_out === false || zooming_stopped){
 
-      if (severe_toggle){
-        // severe toggle
-        d3.select(inst_selection).remove();
+      // check if labels need to be made
+      ///////////////////////////////////
+      // get the names visible row_labels
+      var visible_row_labels = [];
+      d3.selectAll(params.root+' .row_label_group')
+        .each(function(d){
+          visible_row_labels.push(d.name);
+        });
+
+      // find missing labels
+      var missing_row_labels = _.difference(params.viz.viz_nodes.row, visible_row_labels);
+
+      // make labels
+      //////////////////////////////////
+      // only make row labels if there are any missing
+      var addback_thresh= 1;
+      if (missing_row_labels.length > addback_thresh){
+        make_row_labels(cgm, missing_row_labels);
       }
-
     }
-    return inst_display;
+
   }
 
+  // }
 
 };

@@ -16,7 +16,8 @@ module.exports = function run_when_zoom_stopped(cgm){
     /////////////////////////////////////////////////
     // zooming has stopped
     /////////////////////////////////////////////////
-    console.log('\nZOOMING HAS ACTUALLY STOPPED\n============================');
+    // console.log('\nZOOMING HAS ACTUALLY STOPPED\n============================');
+    // console.log(params.zoom_info.zoom_y)
 
     _.each(['row','col'], function(inst_rc){
 

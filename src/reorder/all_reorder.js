@@ -1,5 +1,5 @@
 var toggle_dendro_view = require('../dendrogram/toggle_dendro_view');
-var show_visible_area = require('../zoom/show_visible_area');
+// var show_visible_area = require('../zoom/show_visible_area');
 var ini_zoom_info = require('../zoom/ini_zoom_info');
 var fine_position_tile = require('../matrix/fine_position_tile');
 
@@ -170,7 +170,7 @@ module.exports = function(cgm, inst_order, inst_rc) {
 
   params.zoom_info = ini_zoom_info();
 
-  show_visible_area(cgm);
+  // show_visible_area(cgm);
 
   setTimeout(function(){
     params.viz.run_trans = false;

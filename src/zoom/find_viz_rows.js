@@ -1,4 +1,4 @@
-module.exports = function find_viz_nodes(params, viz_area){
+module.exports = function find_viz_rows(params, viz_area){
 
   var should_be_rows = [];
   var curr_rows = [];
@@ -34,7 +34,7 @@ module.exports = function find_viz_nodes(params, viz_area){
 
   }
 
-  // find currently visible labels
+  // find currently visible rows
   d3.selectAll(params.root+' '+row_class)
     .each(function(d){
       curr_rows.push(d.name);

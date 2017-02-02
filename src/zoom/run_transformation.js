@@ -85,11 +85,16 @@ module.exports = function run_transformation(cgm){
 
   constrain_font_size(params);
 
-  if (zoom_info.zoom_y > prev_zoom.zoom_y){
-    // console.log('zooming in')
-  } else {
-    // console.log('zooming out')
-    show_visible_area(cgm);
+  if (zoom_info.zoom_y <= prev_zoom.zoom_y){
+
+    var zooming_out = false;
+    if (zoom_info.zoom_y < prev_zoom.zoom_y){
+      zooming_out = true;
+    }
+
+    // zooming has not stopped and zooming out is true
+    var zooming_stopped = false;
+    show_visible_area(cgm, zooming_stopped, zooming_out);
   }
 
   setTimeout(not_zooming, 50);
