@@ -11,7 +11,7 @@ module.exports = function col_reorder(cgm, col_selection, inst_term) {
   var params = cgm.params;
   var prev_zoom = get_previous_zoom(params);
 
-  if (prev_zoom.zoom_y === 1 || prev_zoom.zoom_x ===1){
+  if (prev_zoom.zoom_y === 1 && prev_zoom.zoom_x ===1){
 
     params.viz.inst_order.col = 'custom';
 
@@ -107,9 +107,6 @@ module.exports = function col_reorder(cgm, col_selection, inst_term) {
 
     params.zoom_info = ini_zoom_info();
 
-    // tmp disable may not need - getting circular calling
-    // show_visible_area(cgm);
-
     setTimeout(function(){
       params.viz.run_trans = false;
     }, 2500);
@@ -124,7 +121,7 @@ module.exports = function col_reorder(cgm, col_selection, inst_term) {
       var zooming_out = true;
       var make_all_rows = true;
 
-      // show_visible_arae is also run with two_translate_zoom, but at that point
+      // show_visible_area is also run with two_translate_zoom, but at that point
       // the parameters were not updated and two_translate_zoom if only run
       // if needed to reset zoom
       show_visible_area(cgm, zooming_stopped, zooming_out, make_all_rows);

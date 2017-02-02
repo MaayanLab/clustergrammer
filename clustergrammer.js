@@ -3440,7 +3440,7 @@ var Clustergrammer =
 	  var params = cgm.params;
 	  var prev_zoom = get_previous_zoom(params);
 
-	  if (prev_zoom.zoom_y === 1 || prev_zoom.zoom_x === 1) {
+	  if (prev_zoom.zoom_y === 1 && prev_zoom.zoom_x === 1) {
 
 	    params.viz.inst_order.col = 'custom';
 
@@ -3525,9 +3525,6 @@ var Clustergrammer =
 
 	    params.zoom_info = ini_zoom_info();
 
-	    // tmp disable may not need - getting circular calling
-	    // show_visible_area(cgm);
-
 	    setTimeout(function () {
 	      params.viz.run_trans = false;
 	    }, 2500);
@@ -3542,7 +3539,7 @@ var Clustergrammer =
 	      var zooming_out = true;
 	      var make_all_rows = true;
 
-	      // show_visible_arae is also run with two_translate_zoom, but at that point
+	      // show_visible_area is also run with two_translate_zoom, but at that point
 	      // the parameters were not updated and two_translate_zoom if only run
 	      // if needed to reset zoom
 	      show_visible_area(cgm, zooming_stopped, zooming_out, make_all_rows);
@@ -5064,6 +5061,7 @@ var Clustergrammer =
 	// var show_visible_area = require('../zoom/show_visible_area');
 	var ini_zoom_info = __webpack_require__(37);
 	var get_previous_zoom = __webpack_require__(94);
+	var calc_downsampled_levels = __webpack_require__(212);
 
 	module.exports = function row_reorder(cgm, row_selection, inst_row) {
 
@@ -5072,7 +5070,7 @@ var Clustergrammer =
 	  var params = cgm.params;
 	  var prev_zoom = get_previous_zoom(params);
 
-	  if (prev_zoom.zoom_y === 1 || prev_zoom.zoom_x === 1) {
+	  if (prev_zoom.zoom_y === 1 && prev_zoom.zoom_x === 1) {
 
 	    params.viz.inst_order.row = 'custom';
 	    toggle_dendro_view(cgm, 'col');
@@ -5145,7 +5143,7 @@ var Clustergrammer =
 	      });
 	    }
 
-	    // highlight selected column
+	    // highlight selected row
 	    ///////////////////////////////
 	    // unhilight and unbold all columns (already unbolded earlier)
 	    d3.selectAll(params.root + ' .row_label_group').select('rect').style('opacity', 0);
@@ -5162,12 +5160,25 @@ var Clustergrammer =
 
 	    params.zoom_info = ini_zoom_info();
 
-	    // // tmp disable may not need - getting circular calling
-	    // show_visible_area(cgm);
-
 	    setTimeout(function () {
 	      params.viz.run_trans = false;
 	    }, 2500);
+
+	    // calculate downsmapling if necessary
+	    if (params.viz.ds_num_levels > 0 && params.viz.ds_level >= 0) {
+
+	      console.log('downsampled');
+
+	      calc_downsampled_levels(params);
+	      var zooming_stopped = true;
+	      var zooming_out = true;
+	      var make_all_rows = true;
+
+	      // show_visible_area is also run with two_translate_zoom, but at that point
+	      // the parameters were not updated and two_translate_zoom if only run
+	      // if needed to reset zoom
+	      show_visible_area(cgm, zooming_stopped, zooming_out, make_all_rows);
+	    }
 	  }
 		};
 
@@ -5606,7 +5617,7 @@ var Clustergrammer =
 	    var zooming_out = true;
 	    var make_all_rows = true;
 
-	    // show_visible_arae is also run with two_translate_zoom, but at that point
+	    // show_visible_area is also run with two_translate_zoom, but at that point
 	    // the parameters were not updated and two_translate_zoom if only run
 	    // if needed to reset zoom
 	    show_visible_area(cgm, zooming_stopped, zooming_out, make_all_rows);
