@@ -4,7 +4,6 @@ var show_visible_area = require('./show_visible_area');
 var resize_label_val_bars = require('./resize_label_val_bars');
 var zoom_crop_triangles = require('./zoom_crop_triangles');
 var get_previous_zoom = require('./get_previous_zoom');
-var toggle_labels = require('./toggle_labels');
 
 module.exports = function run_transformation(cgm){
 
@@ -85,8 +84,6 @@ module.exports = function run_transformation(cgm){
   };
 
   constrain_font_size(params);
-
-  // toggle_labels(params);
 
   if (zoom_info.zoom_y > prev_zoom.zoom_y){
     // console.log('zooming in')

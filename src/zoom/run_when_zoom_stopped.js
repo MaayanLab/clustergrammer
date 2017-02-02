@@ -4,7 +4,6 @@ var num_visible_labels = require('./num_visible_labels');
 var toggle_grid_lines = require('../matrix/toggle_grid_lines');
 var show_visible_area = require('./show_visible_area');
 var check_zoom_stop_status = require('./check_zoom_stop_status');
-var toggle_labels = require('./toggle_labels');
 
 module.exports = function run_when_zoom_stopped(cgm){
 
@@ -58,8 +57,6 @@ module.exports = function run_when_zoom_stopped(cgm){
       }
 
     });
-
-    // toggle_labels(params);
 
     text_patch();
 

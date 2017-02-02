@@ -6229,7 +6229,6 @@ var Clustergrammer =
 	var resize_label_val_bars = __webpack_require__(93);
 	var zoom_crop_triangles = __webpack_require__(63);
 	var get_previous_zoom = __webpack_require__(94);
-	var toggle_labels = __webpack_require__(92);
 
 	module.exports = function run_transformation(cgm) {
 
@@ -6292,8 +6291,6 @@ var Clustergrammer =
 	  };
 
 	  constrain_font_size(params);
-
-	  // toggle_labels(params);
 
 	  if (zoom_info.zoom_y > prev_zoom.zoom_y) {
 	    // console.log('zooming in')
@@ -6430,7 +6427,6 @@ var Clustergrammer =
 	var toggle_grid_lines = __webpack_require__(90);
 	var show_visible_area = __webpack_require__(66);
 	var check_zoom_stop_status = __webpack_require__(91);
-	var toggle_labels = __webpack_require__(92);
 
 	module.exports = function run_when_zoom_stopped(cgm) {
 
@@ -6476,8 +6472,6 @@ var Clustergrammer =
 	        });
 	      }
 	    });
-
-	    // toggle_labels(params);
 
 	    text_patch();
 
@@ -6688,50 +6682,7 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 92 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var calc_real_font_size = __webpack_require__(85);
-	var num_visible_labels = __webpack_require__(89);
-
-	module.exports = function toggle_labels(params) {
-
-	  // console.log('toggle_labels')
-
-	  var max_element_show = 300;
-	  var min_font_size = 2;
-	  var real_font_size = calc_real_font_size(params);
-
-	  // toggle row/col label visibility
-	  /////////////////////////////////////
-	  _.each(['row', 'col'], function (inst_rc) {
-
-	    // only toggle labels if font size is large enough
-	    if (real_font_size[inst_rc] > min_font_size) {
-
-	      var inst_num_visible = num_visible_labels(params, inst_rc);
-
-	      // // need to improve vert line toggling
-	      // d3.selectAll('.horz_lines').select('line').style('display','none');
-	      // d3.selectAll('.vert_lines').select('line').style('display','none');
-
-	      if (inst_num_visible > max_element_show) {
-
-	        d3.select(params.root + ' .' + inst_rc + '_label_container').style('display', 'none');
-	      } else {
-
-	        d3.select(params.root + ' .' + inst_rc + '_label_container').style('display', 'block');
-	      }
-	    } else {
-
-	      d3.select(params.root + ' .' + inst_rc + '_label_container').style('display', 'none');
-	    }
-	  });
-		};
-
-/***/ },
+/* 92 */,
 /* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
