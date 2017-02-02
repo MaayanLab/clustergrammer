@@ -30,20 +30,15 @@ module.exports = function(cgm, inst_order, inst_rc) {
   }
 
   if (other_rc === 'row'){
-
     params.viz.x_scale
       .domain( params.matrix.orders[ params.viz.inst_order.row + '_row' ] );
-
   } else if (other_rc == 'col') {
-
     params.viz.y_scale
       .domain( params.matrix.orders[ params.viz.inst_order.col + '_col' ] );
-
   }
 
-  var t;
-
   // only animate transition if there are a small number of tiles
+  var t;
   if (d3.selectAll(params.root+' .tile')[0].length < params.matrix.def_large_matrix){
     t = d3.select(params.root+' .viz_svg')
       .transition().duration(2500);
@@ -51,24 +46,28 @@ module.exports = function(cgm, inst_order, inst_rc) {
     t = d3.select(params.root+' .viz_svg');
   }
 
-  t.selectAll('.row')
-    .attr('transform', function(d) {
-      return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
-      })
-    .selectAll('.tile')
-    .attr('transform', function(d) {
-      return 'translate(' + params.viz.x_scale(d.pos_x) + ' , 0)';
-    });
+  // only update matrix if not downsampled (otherwise rows are updated)
+  if (params.viz.ds_layer === -1){
 
-  t.selectAll('.tile_up')
-    .attr('transform', function(d) {
-      return 'translate(' + params.viz.x_scale(d.pos_x) + ' , 0)';
-    });
+    t.selectAll('.row')
+      .attr('transform', function(d) {
+        return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
+        })
+      .selectAll('.tile')
+      .attr('transform', function(d) {
+        return 'translate(' + params.viz.x_scale(d.pos_x) + ' , 0)';
+      });
 
-  t.selectAll('.tile_dn')
-    .attr('transform', function(d) {
-      return 'translate(' + params.viz.x_scale(d.pos_x) + ' , 0)';
-    });
+    t.selectAll('.tile_up')
+      .attr('transform', function(d) {
+        return 'translate(' + params.viz.x_scale(d.pos_x) + ' , 0)';
+      });
+
+    t.selectAll('.tile_dn')
+      .attr('transform', function(d) {
+        return 'translate(' + params.viz.x_scale(d.pos_x) + ' , 0)';
+      });
+  }
 
   // Move Row Labels
   t.select('.row_label_zoom_container')
@@ -95,7 +94,6 @@ module.exports = function(cgm, inst_order, inst_rc) {
     .attr('transform', function(d) {
       return 'translate(' + params.viz.x_scale(d.col_index) + ',0)';
     });
-
 
   // redefine x and y positions
   params.network_data.links.forEach(function(d){

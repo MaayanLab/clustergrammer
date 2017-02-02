@@ -1992,14 +1992,10 @@ var Clustergrammer =
 	    // gather row_data
 	    if (_.has(ds_mat[ds_index], 'row_data')) {
 
-	      // console.log('has row data')
-
 	      for (x = 0; x < inst_row_data.length; x++) {
 	        ds_mat[ds_index].row_data[x].value = ds_mat[ds_index].row_data[x].value + inst_row_data[x].value;
 	      }
 	    } else {
-
-	      // console.log('no row data')
 
 	      var new_data = [];
 	      for (x = 0; x < inst_row_data.length; x++) {
@@ -4973,8 +4969,6 @@ var Clustergrammer =
 
 	  // only make new matrix_rows if there are missing rows
 	  if (missing_rows.length >= 1 || missing_rows === 'all') {
-
-	    // console.log('make_matrix_rows')
 	    make_matrix_rows(params, inst_matrix, missing_rows, new_ds_level);
 	  }
 
@@ -5166,7 +5160,7 @@ var Clustergrammer =
 
 	  params.zoom_info = ini_zoom_info();
 
-	  // tmp disable may not need - getting circular calling
+	  // // tmp disable may not need - getting circular calling
 	  // show_visible_area(cgm);
 
 	  setTimeout(function () {
@@ -5531,35 +5525,36 @@ var Clustergrammer =
 	  }
 
 	  if (other_rc === 'row') {
-
 	    params.viz.x_scale.domain(params.matrix.orders[params.viz.inst_order.row + '_row']);
 	  } else if (other_rc == 'col') {
-
 	    params.viz.y_scale.domain(params.matrix.orders[params.viz.inst_order.col + '_col']);
 	  }
 
-	  var t;
-
 	  // only animate transition if there are a small number of tiles
+	  var t;
 	  if (d3.selectAll(params.root + ' .tile')[0].length < params.matrix.def_large_matrix) {
 	    t = d3.select(params.root + ' .viz_svg').transition().duration(2500);
 	  } else {
 	    t = d3.select(params.root + ' .viz_svg');
 	  }
 
-	  t.selectAll('.row').attr('transform', function (d) {
-	    return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
-	  }).selectAll('.tile').attr('transform', function (d) {
-	    return 'translate(' + params.viz.x_scale(d.pos_x) + ' , 0)';
-	  });
+	  // only update matrix if not downsampled (otherwise rows are updated)
+	  if (params.viz.ds_layer === -1) {
 
-	  t.selectAll('.tile_up').attr('transform', function (d) {
-	    return 'translate(' + params.viz.x_scale(d.pos_x) + ' , 0)';
-	  });
+	    t.selectAll('.row').attr('transform', function (d) {
+	      return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
+	    }).selectAll('.tile').attr('transform', function (d) {
+	      return 'translate(' + params.viz.x_scale(d.pos_x) + ' , 0)';
+	    });
 
-	  t.selectAll('.tile_dn').attr('transform', function (d) {
-	    return 'translate(' + params.viz.x_scale(d.pos_x) + ' , 0)';
-	  });
+	    t.selectAll('.tile_up').attr('transform', function (d) {
+	      return 'translate(' + params.viz.x_scale(d.pos_x) + ' , 0)';
+	    });
+
+	    t.selectAll('.tile_dn').attr('transform', function (d) {
+	      return 'translate(' + params.viz.x_scale(d.pos_x) + ' , 0)';
+	    });
+	  }
 
 	  // Move Row Labels
 	  t.select('.row_label_zoom_container').selectAll('.row_label_group').attr('transform', function (d) {
@@ -13987,8 +13982,8 @@ var Clustergrammer =
 
 	module.exports = function calc_downsampled_layers(params) {
 
-	  console.log('---- before ---------');
-	  console.log(params.matrix.matrix[0].row_data[0].value);
+	  // console.log('---- before ---------')
+	  // console.log(params.matrix.matrix[0].row_data[0].value)
 
 	  if (params.viz.rect_height < 1) {
 
@@ -14079,8 +14074,8 @@ var Clustergrammer =
 	    params.viz.ds_num_layers = 0;
 	  }
 
-	  console.log('---- after ---------');
-	  console.log(params.matrix.matrix[0].row_data[0].value);
+	  // console.log('---- after ---------')
+	  // console.log(params.matrix.matrix[0].row_data[0].value)
 		};
 
 /***/ }

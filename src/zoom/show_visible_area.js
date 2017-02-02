@@ -168,10 +168,7 @@ module.exports = function show_visible_area(cgm, zooming_stopped=false,
 
   // only make new matrix_rows if there are missing rows
   if (missing_rows.length >= 1 || missing_rows === 'all'){
-
-    // console.log('make_matrix_rows')
     make_matrix_rows(params, inst_matrix, missing_rows, new_ds_level);
-
   }
 
   // only make new row_labels if there are missing row_labels, downsampled, and

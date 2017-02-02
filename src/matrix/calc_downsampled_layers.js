@@ -2,8 +2,8 @@ var calc_downsampled_matrix = require('../matrix/calc_downsampled_matrix');
 
 module.exports = function calc_downsampled_layers(params){
 
-  console.log('---- before ---------')
-  console.log(params.matrix.matrix[0].row_data[0].value)
+  // console.log('---- before ---------')
+  // console.log(params.matrix.matrix[0].row_data[0].value)
 
   if (params.viz.rect_height < 1){
 
@@ -105,7 +105,7 @@ module.exports = function calc_downsampled_layers(params){
     params.viz.ds_num_layers = 0;
   }
 
-  console.log('---- after ---------')
-  console.log(params.matrix.matrix[0].row_data[0].value)
+  // console.log('---- after ---------')
+  // console.log(params.matrix.matrix[0].row_data[0].value)
 
 };

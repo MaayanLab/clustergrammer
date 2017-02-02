@@ -132,7 +132,7 @@ module.exports = function row_reorder(cgm, row_selection, inst_row) {
 
   params.zoom_info = ini_zoom_info();
 
-  // tmp disable may not need - getting circular calling
+  // // tmp disable may not need - getting circular calling
   // show_visible_area(cgm);
 
   setTimeout(function(){
