@@ -3,15 +3,24 @@ var reposition_tile_highlight = require('./reposition_tile_highlight');
 var toggle_dendro_view = require('../dendrogram/toggle_dendro_view');
 // var show_visible_area = require('../zoom/show_visible_area');
 var ini_zoom_info = require('../zoom/ini_zoom_info');
+var get_previous_zoom = require('../zoom/get_previous_zoom');
+var two_translate_zoom = require('../zoom/two_translate_zoom');
 
 module.exports = function col_reorder(cgm, col_selection, inst_term) {
 
   var params = cgm.params;
 
-  params.viz.inst_order.col = 'custom';
-  toggle_dendro_view(cgm, 'col');
+  var prev_zoom = get_previous_zoom(params);
+  var delay_reorder = 0;
+  if (prev_zoom.zoom_y != 1 || prev_zoom.zoom_x !=1){
+    // reset zoom before reordering
+    two_translate_zoom(cgm, 0, 0, 1);
+    delay_reorder = 1200;
+  }
 
-  // d3.selectAll(params.root+' .row_dendro_group').style('opacity',0);
+  params.viz.inst_order.col = 'custom';
+
+  toggle_dendro_view(cgm, 'col');
 
   d3.selectAll(params.root+' .toggle_row_order .btn')
     .classed('active',false);
@@ -57,7 +66,7 @@ module.exports = function col_reorder(cgm, col_selection, inst_term) {
     t = d3.select(params.root+' .viz_svg');
   } else {
     t = d3.select(params.root+' .viz_svg')
-      .transition().duration(2500);
+      .transition().duration(2500).delay(delay_reorder);
   }
 
   // reorder row_label_triangle groups

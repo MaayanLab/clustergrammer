@@ -3432,15 +3432,24 @@ var Clustergrammer =
 	var toggle_dendro_view = __webpack_require__(55);
 	// var show_visible_area = require('../zoom/show_visible_area');
 	var ini_zoom_info = __webpack_require__(37);
+	var get_previous_zoom = __webpack_require__(94);
+	var two_translate_zoom = __webpack_require__(98);
 
 	module.exports = function col_reorder(cgm, col_selection, inst_term) {
 
 	  var params = cgm.params;
 
-	  params.viz.inst_order.col = 'custom';
-	  toggle_dendro_view(cgm, 'col');
+	  var prev_zoom = get_previous_zoom(params);
+	  var delay_reorder = 0;
+	  if (prev_zoom.zoom_y != 1 || prev_zoom.zoom_x != 1) {
+	    // reset zoom before reordering
+	    two_translate_zoom(cgm, 0, 0, 1);
+	    delay_reorder = 1200;
+	  }
 
-	  // d3.selectAll(params.root+' .row_dendro_group').style('opacity',0);
+	  params.viz.inst_order.col = 'custom';
+
+	  toggle_dendro_view(cgm, 'col');
 
 	  d3.selectAll(params.root + ' .toggle_row_order .btn').classed('active', false);
 
@@ -3483,7 +3492,7 @@ var Clustergrammer =
 	  if (params.network_data.links.length > params.matrix.def_large_matrix) {
 	    t = d3.select(params.root + ' .viz_svg');
 	  } else {
-	    t = d3.select(params.root + ' .viz_svg').transition().duration(2500);
+	    t = d3.select(params.root + ' .viz_svg').transition().duration(2500).delay(delay_reorder);
 	  }
 
 	  // reorder row_label_triangle groups
@@ -13816,7 +13825,6 @@ var Clustergrammer =
 	var utils = __webpack_require__(2);
 	var add_row_click_hlight = __webpack_require__(69);
 	var row_reorder = __webpack_require__(70);
-	var col_reorder = __webpack_require__(53);
 	var make_row_tooltips = __webpack_require__(71);
 
 	module.exports = function make_row_labels(cgm) {
@@ -13862,7 +13870,9 @@ var Clustergrammer =
 	        return d.name == row_name;
 	      })[0][0];
 
-	      col_reorder(cgm, col_selection, row_name);
+	      // this is causing buggyness may reenable
+	      // col_reorder -> two_translate_zoom -> show_visible_area -> make_row_labels -> col_reorder
+	      // col_reorder(cgm, col_selection, row_name);
 	    } else {
 	      row_reorder(cgm, this, row_name);
 	    }

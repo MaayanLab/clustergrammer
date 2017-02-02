@@ -1,7 +1,6 @@
 var utils = require('../Utils_clust');
 var add_row_click_hlight = require('./add_row_click_hlight');
 var row_reorder = require('../reorder/row_reorder');
-var col_reorder = require('../reorder/col_reorder');
 var make_row_tooltips = require('./make_row_tooltips');
 
 module.exports = function make_row_labels(cgm, row_names='all', text_delay = 0){
@@ -50,7 +49,9 @@ module.exports = function make_row_labels(cgm, row_names='all', text_delay = 0){
             return d.name == row_name;}
             )[0][0];
 
-        col_reorder(cgm, col_selection, row_name);
+        // this is causing buggyness may reenable
+        // col_reorder -> two_translate_zoom -> show_visible_area -> make_row_labels -> col_reorder
+        // col_reorder(cgm, col_selection, row_name);
       } else {
         row_reorder(cgm, this, row_name);
       }
