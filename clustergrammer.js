@@ -5548,12 +5548,12 @@ var Clustergrammer =
 	    });
 
 	    // Move Row Labels
-	    d3.select(params.root + ' .row_label_zoom_container').selectAll('.row_label_group').transition().duration(2500).attr('transform', function (d) {
+	    t.select('.row_label_zoom_container').selectAll('.row_label_group').attr('transform', function (d) {
 	      return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
 	    });
 
-	    // t.selectAll('.column')
-	    d3.select(params.root + ' .col_zoom_container').selectAll('.col_label_text').transition().duration(2500).attr('transform', function (d) {
+	    // Move Col Labels
+	    t.select('.col_zoom_container').selectAll('.col_label_text').attr('transform', function (d) {
 	      return 'translate(' + params.viz.x_scale(d.col_index) + ') rotate(-90)';
 	    });
 
