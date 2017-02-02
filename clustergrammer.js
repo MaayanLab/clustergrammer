@@ -3430,14 +3430,14 @@ var Clustergrammer =
 	// var utils = require('../Utils_clust');
 	var reposition_tile_highlight = __webpack_require__(54);
 	var toggle_dendro_view = __webpack_require__(55);
-	// var show_visible_area = require('../zoom/show_visible_area');
+	var show_visible_area = __webpack_require__(66);
 	var ini_zoom_info = __webpack_require__(37);
 	var get_previous_zoom = __webpack_require__(94);
+	var calc_downsampled_levels = __webpack_require__(212);
 
 	module.exports = function col_reorder(cgm, col_selection, inst_term) {
 
 	  var params = cgm.params;
-
 	  var prev_zoom = get_previous_zoom(params);
 
 	  if (prev_zoom.zoom_y === 1 || prev_zoom.zoom_x === 1) {
@@ -3531,6 +3531,22 @@ var Clustergrammer =
 	    setTimeout(function () {
 	      params.viz.run_trans = false;
 	    }, 2500);
+
+	    // calculate downsmapling if necessary
+	    if (params.viz.ds_num_levels > 0 && params.viz.ds_level >= 0) {
+
+	      console.log('downsampled');
+
+	      calc_downsampled_levels(params);
+	      var zooming_stopped = true;
+	      var zooming_out = true;
+	      var make_all_rows = true;
+
+	      // show_visible_arae is also run with two_translate_zoom, but at that point
+	      // the parameters were not updated and two_translate_zoom if only run
+	      // if needed to reset zoom
+	      show_visible_area(cgm, zooming_stopped, zooming_out, make_all_rows);
+	    }
 	  }
 		};
 

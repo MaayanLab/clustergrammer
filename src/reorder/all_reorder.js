@@ -126,6 +126,7 @@ module.exports = function(cgm, inst_order, inst_rc) {
     // the parameters were not updated and two_translate_zoom if only run
     // if needed to reset zoom
     show_visible_area(cgm, zooming_stopped, zooming_out, make_all_rows);
+
   }
 
   setTimeout(function(){
