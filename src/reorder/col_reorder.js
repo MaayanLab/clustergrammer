@@ -18,7 +18,7 @@ module.exports = function col_reorder(cgm, col_selection, inst_term) {
 
   params.viz.run_trans = true;
 
-  var mat       = params.matrix.matrix;
+  var mat       = $.extend(true, {}, params.matrix.matrix);
   var row_nodes = params.network_data.row_nodes;
   var col_nodes = params.network_data.col_nodes;
 
@@ -55,47 +55,29 @@ module.exports = function col_reorder(cgm, col_selection, inst_term) {
   // reorder
   if (params.network_data.links.length > params.matrix.def_large_matrix){
     t = d3.select(params.root+' .clust_group');
-
-    // reorder row_label_triangle groups
-    d3.selectAll(params.root+' .row_cat_group')
-      .attr('transform', function(d) {
-        return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
-      });
-
-    // Move Row Labels
-    d3.select(params.root+' .row_label_zoom_container')
-      .selectAll('.row_label_group')
-      .attr('transform', function(d) {
-        return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
-      });
-
   } else {
-
     t = d3.select(params.root+' .clust_group')
       .transition().duration(2500);
-
-    // reorder row_label_triangle groups
-    d3.selectAll(params.root+' .row_cat_group')
-      .transition().duration(2500)
-      .attr('transform', function(d) {
-        return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
-      });
-
-    // Move Row Labels
-    d3.select(params.root+' .row_label_zoom_container')
-      .selectAll('.row_label_group')
-      .transition().duration(2500)
-      .attr('transform', function(d) {
-        return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
-      });
   }
+
+  // reorder row_label_triangle groups
+  t.selectAll('.row_cat_group')
+    .attr('transform', function(d) {
+      return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
+    });
+
+  // Move Row Labels
+  t.select('.row_label_zoom_container')
+    .selectAll('.row_label_group')
+    .attr('transform', function(d) {
+      return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
+    });
 
   // reorder matrix rows
   t.selectAll('.row')
     .attr('transform', function(d) {
       return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
     });
-
 
   // highlight selected column
   ///////////////////////////////

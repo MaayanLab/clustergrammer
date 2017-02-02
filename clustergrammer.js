@@ -3446,7 +3446,7 @@ var Clustergrammer =
 
 	  params.viz.run_trans = true;
 
-	  var mat = params.matrix.matrix;
+	  var mat = $.extend(true, {}, params.matrix.matrix);
 	  var row_nodes = params.network_data.row_nodes;
 	  var col_nodes = params.network_data.col_nodes;
 
@@ -3482,30 +3482,19 @@ var Clustergrammer =
 	  // reorder
 	  if (params.network_data.links.length > params.matrix.def_large_matrix) {
 	    t = d3.select(params.root + ' .clust_group');
-
-	    // reorder row_label_triangle groups
-	    d3.selectAll(params.root + ' .row_cat_group').attr('transform', function (d) {
-	      return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
-	    });
-
-	    // Move Row Labels
-	    d3.select(params.root + ' .row_label_zoom_container').selectAll('.row_label_group').attr('transform', function (d) {
-	      return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
-	    });
 	  } else {
-
 	    t = d3.select(params.root + ' .clust_group').transition().duration(2500);
-
-	    // reorder row_label_triangle groups
-	    d3.selectAll(params.root + ' .row_cat_group').transition().duration(2500).attr('transform', function (d) {
-	      return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
-	    });
-
-	    // Move Row Labels
-	    d3.select(params.root + ' .row_label_zoom_container').selectAll('.row_label_group').transition().duration(2500).attr('transform', function (d) {
-	      return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
-	    });
 	  }
+
+	  // reorder row_label_triangle groups
+	  t.selectAll('.row_cat_group').attr('transform', function (d) {
+	    return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
+	  });
+
+	  // Move Row Labels
+	  t.select('.row_label_zoom_container').selectAll('.row_label_group').attr('transform', function (d) {
+	    return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
+	  });
 
 	  // reorder matrix rows
 	  t.selectAll('.row').attr('transform', function (d) {
@@ -5063,7 +5052,7 @@ var Clustergrammer =
 
 	  params.viz.run_trans = true;
 
-	  var mat = params.matrix.matrix;
+	  var mat = $.extend(true, {}, params.matrix.matrix);
 	  var row_nodes = params.network_data.row_nodes;
 	  var col_nodes = params.network_data.col_nodes;
 
@@ -5093,39 +5082,24 @@ var Clustergrammer =
 	  // save to custom col order
 	  params.matrix.orders.custom_row = tmp_sort;
 
-	  var t;
-
 	  // reorder matrix
 	  ////////////////////
+	  var t;
 	  if (params.network_data.links.length > params.matrix.def_large_matrix) {
-
-	    // define the t variable as the transition function
 	    t = d3.select(params.root + ' .viz_svg');
-
-	    // Move Col Labels
-	    d3.select(params.root + ' .col_zoom_container').selectAll('.col_label_text').attr('transform', function (d) {
-	      return 'translate(' + params.viz.x_scale(d.col_index) + ')rotate(-90)';
-	    });
-
-	    // reorder col_class groups
-	    d3.selectAll(params.root + ' .col_cat_group').attr('transform', function (d) {
-	      return 'translate(' + params.viz.x_scale(d.col_index) + ',0)';
-	    });
 	  } else {
-
-	    // define the t variable as the transition function
 	    t = d3.select(params.root + ' .viz_svg').transition().duration(2500);
-
-	    // Move Col Labels
-	    d3.select(params.root + ' .col_zoom_container').selectAll('.col_label_text').transition().duration(2500).attr('transform', function (d) {
-	      return 'translate(' + params.viz.x_scale(d.col_index) + ')rotate(-90)';
-	    });
-
-	    // reorder col_class groups
-	    d3.selectAll(params.root + ' .col_cat_group').transition().duration(2500).attr('transform', function (d) {
-	      return 'translate(' + params.viz.x_scale(d.col_index) + ',0)';
-	    });
 	  }
+
+	  // Move Col Labels
+	  t.select('.col_zoom_container').selectAll('.col_label_text').attr('transform', function (d) {
+	    return 'translate(' + params.viz.x_scale(d.col_index) + ')rotate(-90)';
+	  });
+
+	  // reorder col_class groups
+	  t.selectAll('.col_cat_group').attr('transform', function (d) {
+	    return 'translate(' + params.viz.x_scale(d.col_index) + ',0)';
+	  });
 
 	  // reorder matrix
 	  t.selectAll('.tile').attr('transform', function (d) {
