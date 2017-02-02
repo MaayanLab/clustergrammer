@@ -4815,13 +4815,12 @@ var Clustergrammer =
 	module.exports = function show_visible_area(cgm) {
 	  var zooming_stopped = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
 	  var zooming_out = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
+	  var make_all_rows = arguments.length <= 3 || arguments[3] === undefined ? false : arguments[3];
 
 
-	  // console.log('show_visible_area stopped: ' + String(zooming_stopped));
-	  // debugger;
+	  console.log('show_visible_area stopped: ' + String(zooming_stopped));
 
 	  var params = cgm.params;
-
 	  var zoom_info = params.zoom_info;
 
 	  // update ds_level if necessary
@@ -4843,33 +4842,32 @@ var Clustergrammer =
 	    }
 	  }
 
-	  // check if override is necessary
+	  // check if override_ds is necessary
 	  //////////////////////////////////////////////
 	  // force update of view if moving to more coarse view
-	  var override = false;
+	  var override_ds = false;
 
 	  if (old_ds_level == -1) {
 	    // transitioning to more coarse downsampling view (from real data)
 	    if (check_ds_level >= 0) {
-	      override = true;
-	      // check_ds_level = 0;
+	      override_ds = true;
 	    }
 	  } else {
 	    // transitioning to more coarse downsampling view
 	    if (check_ds_level < old_ds_level) {
-	      override = true;
+	      override_ds = true;
 	    }
 	  }
 
 	  // update level if zooming has stopped or if transitioning to more coarse view
 	  var new_ds_level;
 
-	  if (zooming_stopped === true || override === true) {
+	  if (zooming_stopped === true || override_ds === true) {
 
 	    // update new_ds_level if necessary (if decreasing detail, zooming out)
 	    new_ds_level = check_ds_level;
 
-	    // set zooming_stopped to true in case of override
+	    // set zooming_stopped to true in case of override_ds
 	    zooming_stopped = true;
 
 	    params.viz.ds_level = new_ds_level;
@@ -4891,7 +4889,16 @@ var Clustergrammer =
 	  // generate lists of visible rows/cols
 	  find_viz_rows(params, viz_area);
 
-	  var missing_rows = _.difference(params.viz.viz_nodes.row, params.viz.viz_nodes.curr_row);
+	  var missing_rows;
+	  if (make_all_rows === false) {
+	    missing_rows = _.difference(params.viz.viz_nodes.row, params.viz.viz_nodes.curr_row);
+	  } else {
+	    // make all rows (reordering)
+	    missing_rows = 'all';
+
+	    // remove downsampled rows
+	    d3.selectAll(params.root + ' .ds' + String(new_ds_level) + '_row').remove();
+	  }
 
 	  if (params.viz.ds != null) {
 	    var ds_row_class = '.ds' + String(params.viz.ds_level) + '_row';
@@ -4920,6 +4927,7 @@ var Clustergrammer =
 
 	    // remove not visible matrix rows
 	    if (new_ds_level >= 0) {
+
 	      // remove downsampled rows
 	      d3.selectAll(params.root + ' .ds' + String(new_ds_level) + '_row').each(function (d) {
 	        if (_.contains(params.viz.viz_nodes.row, d.name) === false) {
@@ -4955,9 +4963,13 @@ var Clustergrammer =
 	    }
 	  }
 
+	  console.log('missing_rows: ' + String(missing_rows));
+	  console.log(missing_rows);
+
 	  // only make new matrix_rows if there are missing rows
 	  if (missing_rows.length >= 1 || missing_rows === 'all') {
 
+	    console.log('make_matrix_rows');
 	    make_matrix_rows(params, inst_matrix, missing_rows, new_ds_level);
 	  }
 
@@ -5483,9 +5495,10 @@ var Clustergrammer =
 	'use strict';
 
 	var toggle_dendro_view = __webpack_require__(55);
-	// var show_visible_area = require('../zoom/show_visible_area');
+	var show_visible_area = __webpack_require__(66);
 	var ini_zoom_info = __webpack_require__(37);
 	var fine_position_tile = __webpack_require__(48);
+	var calc_downsampled_layers = __webpack_require__(211);
 
 	module.exports = function (cgm, inst_order, inst_rc) {
 
@@ -5573,7 +5586,14 @@ var Clustergrammer =
 
 	  params.zoom_info = ini_zoom_info();
 
-	  // show_visible_area(cgm);
+	  // calculate downsmapling if necessary
+	  if (params.viz.ds_num_layers > 0) {
+	    calc_downsampled_layers(params);
+	    var zooming_stopped = true;
+	    var zooming_out = true;
+	    var make_all_rows = true;
+	    show_visible_area(cgm, zooming_stopped, zooming_out, make_all_rows);
+	  }
 
 	  setTimeout(function () {
 	    params.viz.run_trans = false;
@@ -13964,6 +13984,8 @@ var Clustergrammer =
 
 	module.exports = function calc_downsampled_layers(params) {
 
+	  console.log('calculating downsampling layers');
+
 	  if (params.viz.rect_height < 1) {
 
 	    // increase ds opacity, as more rows are compressed into a single downsampled
@@ -14046,6 +14068,7 @@ var Clustergrammer =
 	    params.viz.ds = null;
 	    // instantaneous ds_level (-1 means no downsampling)
 	    params.viz.ds_level = -1;
+	    params.viz.ds_num_layers = 0;
 	  }
 		};
 

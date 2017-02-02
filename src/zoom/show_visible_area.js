@@ -2,13 +2,12 @@ var find_viz_rows = require('../zoom/find_viz_rows');
 var make_matrix_rows = require('../matrix/make_matrix_rows');
 var make_row_labels = require('../labels/make_row_labels');
 
-module.exports = function show_visible_area(cgm, zooming_stopped=false, zooming_out=false){
+module.exports = function show_visible_area(cgm, zooming_stopped=false,
+  zooming_out=false, make_all_rows=false){
 
-  // console.log('show_visible_area stopped: ' + String(zooming_stopped));
-  // debugger;
+  console.log('show_visible_area stopped: ' + String(zooming_stopped));
 
   var params = cgm.params;
-
   var zoom_info = params.zoom_info;
 
   // update ds_level if necessary
@@ -30,33 +29,32 @@ module.exports = function show_visible_area(cgm, zooming_stopped=false, zooming_
     }
   }
 
-  // check if override is necessary
+  // check if override_ds is necessary
   //////////////////////////////////////////////
   // force update of view if moving to more coarse view
-  var override = false;
+  var override_ds = false;
 
   if (old_ds_level == -1 ){
     // transitioning to more coarse downsampling view (from real data)
     if (check_ds_level >= 0){
-      override = true;
-      // check_ds_level = 0;
+      override_ds = true;
     }
   } else {
     // transitioning to more coarse downsampling view
     if (check_ds_level < old_ds_level){
-      override = true;
+      override_ds = true;
     }
   }
 
   // update level if zooming has stopped or if transitioning to more coarse view
   var new_ds_level;
 
-  if (zooming_stopped === true || override === true){
+  if (zooming_stopped === true || override_ds === true){
 
     // update new_ds_level if necessary (if decreasing detail, zooming out)
     new_ds_level = check_ds_level;
 
-    // set zooming_stopped to true in case of override
+    // set zooming_stopped to true in case of override_ds
     zooming_stopped = true;
 
     params.viz.ds_level = new_ds_level;
@@ -84,7 +82,17 @@ module.exports = function show_visible_area(cgm, zooming_stopped=false, zooming_
   // generate lists of visible rows/cols
   find_viz_rows(params, viz_area);
 
-  var missing_rows = _.difference(params.viz.viz_nodes.row, params.viz.viz_nodes.curr_row);
+  var missing_rows
+  if (make_all_rows === false){
+    missing_rows = _.difference(params.viz.viz_nodes.row, params.viz.viz_nodes.curr_row);
+  } else {
+    // make all rows (reordering)
+    missing_rows = 'all';
+
+    // remove downsampled rows
+    d3.selectAll(params.root+' .ds'+String(new_ds_level)+'_row')
+      .remove();
+  }
 
   if (params.viz.ds != null){
     var ds_row_class = '.ds' + String(params.viz.ds_level) + '_row';
@@ -113,6 +121,7 @@ module.exports = function show_visible_area(cgm, zooming_stopped=false, zooming_
 
     // remove not visible matrix rows
     if (new_ds_level >= 0){
+
       // remove downsampled rows
       d3.selectAll(params.root+' .ds'+String(new_ds_level)+'_row')
         .each(function(d){
@@ -120,6 +129,7 @@ module.exports = function show_visible_area(cgm, zooming_stopped=false, zooming_
             d3.select(this).remove();
           }
         });
+
     } else {
       // remove real data rows
       d3.selectAll(params.root+' .row')
@@ -153,10 +163,14 @@ module.exports = function show_visible_area(cgm, zooming_stopped=false, zooming_
 
   }
 
+  console.log('missing_rows: ' + String(missing_rows))
+  console.log(missing_rows)
+
   // only make new matrix_rows if there are missing rows
   if (missing_rows.length >= 1 || missing_rows === 'all'){
 
-      make_matrix_rows(params, inst_matrix, missing_rows, new_ds_level);
+    console.log('make_matrix_rows')
+    make_matrix_rows(params, inst_matrix, missing_rows, new_ds_level);
 
   }
 

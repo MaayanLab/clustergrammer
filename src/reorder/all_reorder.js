@@ -1,7 +1,8 @@
 var toggle_dendro_view = require('../dendrogram/toggle_dendro_view');
-// var show_visible_area = require('../zoom/show_visible_area');
+var show_visible_area = require('../zoom/show_visible_area');
 var ini_zoom_info = require('../zoom/ini_zoom_info');
 var fine_position_tile = require('../matrix/fine_position_tile');
+var calc_downsampled_layers = require('../matrix/calc_downsampled_layers');
 
 module.exports = function(cgm, inst_order, inst_rc) {
 
@@ -106,11 +107,17 @@ module.exports = function(cgm, inst_order, inst_rc) {
 
   params.zoom_info = ini_zoom_info();
 
-  // show_visible_area(cgm);
+  // calculate downsmapling if necessary
+  if (params.viz.ds_num_layers > 0){
+    calc_downsampled_layers(params);
+    var zooming_stopped = true;
+    var zooming_out = true;
+    var make_all_rows = true;
+    show_visible_area(cgm, zooming_stopped, zooming_out, make_all_rows);
+  }
 
   setTimeout(function(){
     params.viz.run_trans = false;
   }, 2500);
-
 
 };

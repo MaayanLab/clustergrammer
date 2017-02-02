@@ -2,6 +2,8 @@ var calc_downsampled_matrix = require('../matrix/calc_downsampled_matrix');
 
 module.exports = function calc_downsampled_layers(params){
 
+  console.log('calculating downsampling layers')
+
   if (params.viz.rect_height < 1){
 
     // increase ds opacity, as more rows are compressed into a single downsampled
@@ -93,6 +95,7 @@ module.exports = function calc_downsampled_layers(params){
     params.viz.ds = null;
     // instantaneous ds_level (-1 means no downsampling)
     params.viz.ds_level = -1;
+    params.viz.ds_num_layers = 0;
   }
 
 };
