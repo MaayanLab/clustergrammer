@@ -13995,7 +13995,8 @@ var Clustergrammer =
 	    // increase ds opacity, as more rows are compressed into a single downsampled
 	    // row, increase the opacity of the downsampled row. Max increase will be 2x
 	    // when 100 or more rows are compressed
-	    params.viz.ds_opacity_scale = d3.scale.linear().domain([1, 100]).range([1, 4]).clamp(true);
+	    var max_opacity_scale = 2;
+	    params.viz.ds_opacity_scale = d3.scale.linear().domain([1, 100]).range([1, max_opacity_scale]).clamp(true);
 
 	    var ds;
 
@@ -14024,7 +14025,7 @@ var Clustergrammer =
 	    var inst_order = params.viz.inst_order.row;
 
 	    // cloning
-	    var mat = $.extend({}, params.matrix.matrix);
+	    var mat = $.extend(true, {}, params.matrix.matrix);
 
 	    // calculate parameters for different layers
 	    for (var i = 0; i < num_layers; i++) {
