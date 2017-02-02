@@ -1940,11 +1940,13 @@ var Clustergrammer =
 
 /***/ },
 /* 33 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	module.exports = function calc_downsampled_matrix(params, ds_layer) {
+	var utils = __webpack_require__(2);
+
+	module.exports = function calc_downsampled_matrix(params, mat, ds_layer) {
 
 	  var inst_num_rows = params.viz.ds[ds_layer].num_rows;
 
@@ -1955,7 +1957,6 @@ var Clustergrammer =
 	  var opacity_factor = params.viz.ds_opacity_scale(num_compressed_rows);
 
 	  var mod_val = params.viz.clust.dim.height / inst_num_rows;
-	  var mat = params.matrix.matrix;
 
 	  var ds_mat = [];
 	  var inst_obj;
@@ -1991,10 +1992,14 @@ var Clustergrammer =
 	    // gather row_data
 	    if (_.has(ds_mat[ds_index], 'row_data')) {
 
+	      // console.log('has row data')
+
 	      for (x = 0; x < inst_row_data.length; x++) {
 	        ds_mat[ds_index].row_data[x].value = ds_mat[ds_index].row_data[x].value + inst_row_data[x].value;
 	      }
 	    } else {
+
+	      // console.log('no row data')
 
 	      var new_data = [];
 	      for (x = 0; x < inst_row_data.length; x++) {
@@ -4818,7 +4823,7 @@ var Clustergrammer =
 	  var make_all_rows = arguments.length <= 3 || arguments[3] === undefined ? false : arguments[3];
 
 
-	  console.log('show_visible_area stopped: ' + String(zooming_stopped));
+	  // console.log('show_visible_area stopped: ' + String(zooming_stopped));
 
 	  var params = cgm.params;
 	  var zoom_info = params.zoom_info;
@@ -4963,13 +4968,13 @@ var Clustergrammer =
 	    }
 	  }
 
-	  console.log('missing_rows: ' + String(missing_rows));
-	  console.log(missing_rows);
+	  // console.log('missing_rows: ' + String(missing_rows))
+	  // console.log(missing_rows)
 
 	  // only make new matrix_rows if there are missing rows
 	  if (missing_rows.length >= 1 || missing_rows === 'all') {
 
-	    console.log('make_matrix_rows');
+	    // console.log('make_matrix_rows')
 	    make_matrix_rows(params, inst_matrix, missing_rows, new_ds_level);
 	  }
 
@@ -5503,8 +5508,6 @@ var Clustergrammer =
 	module.exports = function (cgm, inst_order, inst_rc) {
 
 	  var params = cgm.params;
-
-	  console.log('all_reorder');
 
 	  // row/col names are swapped, will improve later
 	  var other_rc;
@@ -13984,7 +13987,8 @@ var Clustergrammer =
 
 	module.exports = function calc_downsampled_layers(params) {
 
-	  console.log('calculating downsampling layers');
+	  console.log('---- before ---------');
+	  console.log(params.matrix.matrix[0].row_data[0].value);
 
 	  if (params.viz.rect_height < 1) {
 
@@ -14018,6 +14022,9 @@ var Clustergrammer =
 	    params.matrix.ds_matrix = [];
 
 	    var inst_order = params.viz.inst_order.row;
+
+	    // cloning
+	    var mat = $.extend({}, params.matrix.matrix);
 
 	    // calculate parameters for different layers
 	    for (var i = 0; i < num_layers; i++) {
@@ -14057,7 +14064,7 @@ var Clustergrammer =
 
 	      params.viz.ds.push(ds);
 
-	      var matrix = calc_downsampled_matrix(params, i);
+	      var matrix = calc_downsampled_matrix(params, mat, i);
 	      params.matrix.ds_matrix.push(matrix);
 	    }
 
@@ -14070,6 +14077,9 @@ var Clustergrammer =
 	    params.viz.ds_level = -1;
 	    params.viz.ds_num_layers = 0;
 	  }
+
+	  console.log('---- after ---------');
+	  console.log(params.matrix.matrix[0].row_data[0].value);
 		};
 
 /***/ }

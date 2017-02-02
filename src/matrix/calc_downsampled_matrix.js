@@ -1,4 +1,6 @@
-module.exports = function calc_downsampled_matrix(params, ds_layer){
+var utils = require('../Utils_clust');
+
+module.exports = function calc_downsampled_matrix(params, mat, ds_layer){
 
   var inst_num_rows = params.viz.ds[ds_layer].num_rows;
 
@@ -9,7 +11,6 @@ module.exports = function calc_downsampled_matrix(params, ds_layer){
   var opacity_factor = params.viz.ds_opacity_scale(num_compressed_rows);
 
   var mod_val = params.viz.clust.dim.height / inst_num_rows;
-  var mat = params.matrix.matrix;
 
   var ds_mat = [];
   var inst_obj;
@@ -45,11 +46,15 @@ module.exports = function calc_downsampled_matrix(params, ds_layer){
     // gather row_data
     if (_.has(ds_mat[ds_index], 'row_data')){
 
+      // console.log('has row data')
+
       for (x=0; x < inst_row_data.length; x++){
         ds_mat[ds_index].row_data[x].value = ds_mat[ds_index].row_data[x].value + inst_row_data[x].value;
       }
 
     } else {
+
+      // console.log('no row data')
 
       var new_data = [];
       for (x=0; x < inst_row_data.length; x++){

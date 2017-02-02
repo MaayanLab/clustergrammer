@@ -8,8 +8,6 @@ module.exports = function(cgm, inst_order, inst_rc) {
 
   var params = cgm.params;
 
-  console.log('all_reorder')
-
   // row/col names are swapped, will improve later
   var other_rc;
   if (inst_rc==='row'){

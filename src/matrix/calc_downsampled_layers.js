@@ -2,7 +2,8 @@ var calc_downsampled_matrix = require('../matrix/calc_downsampled_matrix');
 
 module.exports = function calc_downsampled_layers(params){
 
-  console.log('calculating downsampling layers')
+  console.log('---- before ---------')
+  console.log(params.matrix.matrix[0].row_data[0].value)
 
   if (params.viz.rect_height < 1){
 
@@ -37,6 +38,9 @@ module.exports = function calc_downsampled_layers(params){
     params.matrix.ds_matrix = [];
 
     var inst_order = params.viz.inst_order.row;
+
+    // cloning
+    var mat = $.extend({}, params.matrix.matrix);
 
     // calculate parameters for different layers
     for (var i=0; i < num_layers; i++){
@@ -83,7 +87,7 @@ module.exports = function calc_downsampled_layers(params){
 
       params.viz.ds.push(ds);
 
-      var matrix = calc_downsampled_matrix(params, i);
+      var matrix = calc_downsampled_matrix(params, mat, i);
       params.matrix.ds_matrix.push(matrix);
 
     }
@@ -97,5 +101,8 @@ module.exports = function calc_downsampled_layers(params){
     params.viz.ds_level = -1;
     params.viz.ds_num_layers = 0;
   }
+
+  console.log('---- after ---------')
+  console.log(params.matrix.matrix[0].row_data[0].value)
 
 };

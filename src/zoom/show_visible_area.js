@@ -5,7 +5,7 @@ var make_row_labels = require('../labels/make_row_labels');
 module.exports = function show_visible_area(cgm, zooming_stopped=false,
   zooming_out=false, make_all_rows=false){
 
-  console.log('show_visible_area stopped: ' + String(zooming_stopped));
+  // console.log('show_visible_area stopped: ' + String(zooming_stopped));
 
   var params = cgm.params;
   var zoom_info = params.zoom_info;
@@ -163,13 +163,13 @@ module.exports = function show_visible_area(cgm, zooming_stopped=false,
 
   }
 
-  console.log('missing_rows: ' + String(missing_rows))
-  console.log(missing_rows)
+  // console.log('missing_rows: ' + String(missing_rows))
+  // console.log(missing_rows)
 
   // only make new matrix_rows if there are missing rows
   if (missing_rows.length >= 1 || missing_rows === 'all'){
 
-    console.log('make_matrix_rows')
+    // console.log('make_matrix_rows')
     make_matrix_rows(params, inst_matrix, missing_rows, new_ds_level);
 
   }
