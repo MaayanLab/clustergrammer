@@ -5508,7 +5508,7 @@ var Clustergrammer =
 	  var prev_zoom = get_previous_zoom(params);
 
 	  var delay_reorder = 0;
-	  if (prev_zoom.zoom_y != 1 && prev_zoom.zoom_x != 1) {
+	  if (prev_zoom.zoom_y != 1 || prev_zoom.zoom_x != 1) {
 	    // reset zoom before reordering
 	    two_translate_zoom(cgm, 0, 0, 1);
 	    delay_reorder = 1200;
