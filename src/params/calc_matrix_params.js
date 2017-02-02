@@ -63,7 +63,7 @@ module.exports = function calc_matrix_params(params){
     var ds;
 
     // height of downsampled rectangles
-    var inst_height = 4;
+    var inst_height = 3;
 
     // amount of zooming that is tolerated for the downsampled rows
     var inst_zt = 2;
@@ -81,7 +81,6 @@ module.exports = function calc_matrix_params(params){
     // array of downsampled parameters
     params.viz.ds = [];
 
-
     // array of downsampled matrices at varying layers
     params.matrix.ds_matrix = [];
 
@@ -94,14 +93,21 @@ module.exports = function calc_matrix_params(params){
       ds = {};
 
       ds.height = inst_height;
-      ds.zt = inst_zt;
       ds.num_layers = num_layers;
 
-      var scale_num_rows = i + 1;
+      var inst_zoom_tolerance = Math.pow(inst_zt, i);
+
+      ds.zt = inst_zoom_tolerance;
+
+      // the number of downsampled rows is given by the height of the clustergram
+      // divided by the adjusted height of the downsampled rect.
+      // the adjusted height is the height divided by the zooming tolerance of
+      // the downsampled layer
 
       // number of downsampled rows
-      ds.num_rows = Math.round(params.viz.clust.dim.height/
-        ds.height) * scale_num_rows;
+      ds.num_rows = Math.round(
+          params.viz.clust.dim.height / ( ds.height / inst_zoom_tolerance )
+        );
 
       // x_scale
       /////////////////////////
