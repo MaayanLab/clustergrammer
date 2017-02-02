@@ -1721,10 +1721,6 @@ var Clustergrammer =
 	  // moved calculateion to calc_matrix_params
 	  params.viz.rect_height = params.viz.y_scale.rangeBand() - params.viz.border_width.y;
 
-	  //////////////////////
-	  // Downsampling
-	  //////////////////////
-
 	  calc_downsampled_layers(params);
 
 	  return params;
@@ -5495,6 +5491,8 @@ var Clustergrammer =
 
 	  var params = cgm.params;
 
+	  console.log('all_reorder');
+
 	  // row/col names are swapped, will improve later
 	  var other_rc;
 	  if (inst_rc === 'row') {
@@ -5516,9 +5514,6 @@ var Clustergrammer =
 	    toggle_dendro_view(cgm, inst_rc);
 	  }
 
-	  // var row_nodes_obj = params.network_data.row_nodes;
-	  // var col_nodes_obj = params.network_data.col_nodes;
-
 	  if (other_rc === 'row') {
 
 	    params.viz.x_scale.domain(params.matrix.orders[params.viz.inst_order.row + '_row']);
@@ -5533,18 +5528,15 @@ var Clustergrammer =
 	  if (d3.selectAll(params.root + ' .tile')[0].length < params.matrix.def_large_matrix) {
 
 	    // define the t variable as the transition function
-	    t = d3.select(params.root + ' .clust_group').transition().duration(2500);
+	    // t = d3.select(params.root+' .clust_group')
+	    //   .transition().duration(2500);
+
+	    t = d3.select(params.root + ' .viz_svg').transition().duration(2500);
 
 	    t.selectAll('.row').attr('transform', function (d) {
 	      return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
-	    });
-
-	    t.selectAll('.row').selectAll('.tile').attr('transform', function (d) {
+	    }).selectAll('.tile').attr('transform', function (d) {
 	      return 'translate(' + params.viz.x_scale(d.pos_x) + ' , 0)';
-	    });
-
-	    t.selectAll('.row').selectAll('.tile_circle').attr('transform', function (d) {
-	      return fine_position_tile(params, d);
 	    });
 
 	    t.selectAll('.tile_up').attr('transform', function (d) {

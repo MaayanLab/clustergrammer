@@ -35,7 +35,7 @@ function make_clust(inst_network){
 
       cgm = Clustergrammer(args);
 
-      check_setup_enrichr(cgm);
+      // check_setup_enrichr(cgm);
 
       d3.select(cgm.params.root + ' .wait_message').remove();
 

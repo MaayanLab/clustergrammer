@@ -48,10 +48,6 @@ module.exports = function calc_matrix_params(params){
   params.viz.rect_height = params.viz.y_scale.rangeBand() -
     params.viz.border_width.y;
 
-  //////////////////////
-  // Downsampling
-  //////////////////////
-
   calc_downsampled_layers(params);
 
   return params;
