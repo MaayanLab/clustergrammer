@@ -32,6 +32,7 @@ module.exports = function calc_downsampled_matrix(params, ds_layer){
 
   _.each(mat, function(inst_row){
 
+    // row ordering information is contained in y_scale
     var inst_y = params.viz.y_scale(inst_row.row_index);
 
     var ds_index = Math.round(inst_y/mod_val);
