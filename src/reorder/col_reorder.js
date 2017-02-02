@@ -54,9 +54,9 @@ module.exports = function col_reorder(cgm, col_selection, inst_term) {
 
   // reorder
   if (params.network_data.links.length > params.matrix.def_large_matrix){
-    t = d3.select(params.root+' .clust_group');
+    t = d3.select(params.root+' .viz_svg');
   } else {
-    t = d3.select(params.root+' .clust_group')
+    t = d3.select(params.root+' .viz_svg')
       .transition().duration(2500);
   }
 
@@ -73,11 +73,14 @@ module.exports = function col_reorder(cgm, col_selection, inst_term) {
       return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
     });
 
-  // reorder matrix rows
-  t.selectAll('.row')
-    .attr('transform', function(d) {
-      return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
-    });
+  // only update matri if not downsampled
+  if (params.viz.ds_level === -1){
+    // reorder matrix rows
+    t.selectAll('.row')
+      .attr('transform', function(d) {
+        return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
+      });
+  }
 
   // highlight selected column
   ///////////////////////////////

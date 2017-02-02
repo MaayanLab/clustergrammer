@@ -69,21 +69,23 @@ module.exports = function row_reorder(cgm, row_selection, inst_row) {
       return 'translate(' + params.viz.x_scale(d.col_index) + ',0)';
     });
 
-  // reorder matrix
-  t.selectAll('.tile')
-    .attr('transform', function(d) {
-      return 'translate(' + params.viz.x_scale(d.pos_x) + ',0)';
-    });
+  // reorder tiles in matrix (do not change row order)
+  if (params.viz.ds_level === -1){
+    t.selectAll('.tile')
+      .attr('transform', function(d) {
+        return 'translate(' + params.viz.x_scale(d.pos_x) + ',0)';
+      });
 
-  t.selectAll('.tile_up')
-    .attr('transform', function(d) {
-      return 'translate(' + params.viz.x_scale(d.pos_x) + ',0)';
-    });
+    t.selectAll('.tile_up')
+      .attr('transform', function(d) {
+        return 'translate(' + params.viz.x_scale(d.pos_x) + ',0)';
+      });
 
-  t.selectAll('.tile_dn')
-    .attr('transform', function(d) {
-      return 'translate(' + params.viz.x_scale(d.pos_x) + ',0)';
-    });
+    t.selectAll('.tile_dn')
+      .attr('transform', function(d) {
+        return 'translate(' + params.viz.x_scale(d.pos_x) + ',0)';
+      });
+  }
 
 
   // highlight selected column

@@ -3481,9 +3481,9 @@ var Clustergrammer =
 
 	  // reorder
 	  if (params.network_data.links.length > params.matrix.def_large_matrix) {
-	    t = d3.select(params.root + ' .clust_group');
+	    t = d3.select(params.root + ' .viz_svg');
 	  } else {
-	    t = d3.select(params.root + ' .clust_group').transition().duration(2500);
+	    t = d3.select(params.root + ' .viz_svg').transition().duration(2500);
 	  }
 
 	  // reorder row_label_triangle groups
@@ -3496,10 +3496,13 @@ var Clustergrammer =
 	    return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
 	  });
 
-	  // reorder matrix rows
-	  t.selectAll('.row').attr('transform', function (d) {
-	    return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
-	  });
+	  // only update matri if not downsampled
+	  if (params.viz.ds_level === -1) {
+	    // reorder matrix rows
+	    t.selectAll('.row').attr('transform', function (d) {
+	      return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
+	    });
+	  }
 
 	  // highlight selected column
 	  ///////////////////////////////
@@ -5101,18 +5104,20 @@ var Clustergrammer =
 	    return 'translate(' + params.viz.x_scale(d.col_index) + ',0)';
 	  });
 
-	  // reorder matrix
-	  t.selectAll('.tile').attr('transform', function (d) {
-	    return 'translate(' + params.viz.x_scale(d.pos_x) + ',0)';
-	  });
+	  // reorder tiles in matrix (do not change row order)
+	  if (params.viz.ds_level === -1) {
+	    t.selectAll('.tile').attr('transform', function (d) {
+	      return 'translate(' + params.viz.x_scale(d.pos_x) + ',0)';
+	    });
 
-	  t.selectAll('.tile_up').attr('transform', function (d) {
-	    return 'translate(' + params.viz.x_scale(d.pos_x) + ',0)';
-	  });
+	    t.selectAll('.tile_up').attr('transform', function (d) {
+	      return 'translate(' + params.viz.x_scale(d.pos_x) + ',0)';
+	    });
 
-	  t.selectAll('.tile_dn').attr('transform', function (d) {
-	    return 'translate(' + params.viz.x_scale(d.pos_x) + ',0)';
-	  });
+	    t.selectAll('.tile_dn').attr('transform', function (d) {
+	      return 'translate(' + params.viz.x_scale(d.pos_x) + ',0)';
+	    });
+	  }
 
 	  // highlight selected column
 	  ///////////////////////////////
