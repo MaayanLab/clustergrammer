@@ -3,10 +3,14 @@ var show_visible_area = require('../zoom/show_visible_area');
 var ini_zoom_info = require('../zoom/ini_zoom_info');
 var fine_position_tile = require('../matrix/fine_position_tile');
 var calc_downsampled_layers = require('../matrix/calc_downsampled_layers');
+var two_translate_zoom = require('../zoom/two_translate_zoom');
 
 module.exports = function(cgm, inst_order, inst_rc) {
 
   var params = cgm.params;
+
+  // reset zoom before reordering
+  two_translate_zoom(cgm, 0, 0, 1);
 
   // row/col names are swapped, will improve later
   var other_rc;
@@ -104,7 +108,8 @@ module.exports = function(cgm, inst_order, inst_rc) {
   params.zoom_info = ini_zoom_info();
 
   // calculate downsmapling if necessary
-  if (params.viz.ds_num_layers > 0){
+  if (params.viz.ds_num_layers > 0 && params.viz.ds_level >=0){
+
     calc_downsampled_layers(params);
     var zooming_stopped = true;
     var zooming_out = true;

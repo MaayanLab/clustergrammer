@@ -4819,7 +4819,7 @@ var Clustergrammer =
 	  var make_all_rows = arguments.length <= 3 || arguments[3] === undefined ? false : arguments[3];
 
 
-	  // console.log('show_visible_area stopped: ' + String(zooming_stopped));
+	  console.log('show_visible_area stopped: ' + String(zooming_stopped));
 
 	  var params = cgm.params;
 	  var zoom_info = params.zoom_info;
@@ -5498,10 +5498,14 @@ var Clustergrammer =
 	var ini_zoom_info = __webpack_require__(37);
 	var fine_position_tile = __webpack_require__(48);
 	var calc_downsampled_layers = __webpack_require__(211);
+	var two_translate_zoom = __webpack_require__(98);
 
 	module.exports = function (cgm, inst_order, inst_rc) {
 
 	  var params = cgm.params;
+
+	  // reset zoom before reordering
+	  two_translate_zoom(cgm, 0, 0, 1);
 
 	  // row/col names are swapped, will improve later
 	  var other_rc;
@@ -5585,7 +5589,8 @@ var Clustergrammer =
 	  params.zoom_info = ini_zoom_info();
 
 	  // calculate downsmapling if necessary
-	  if (params.viz.ds_num_layers > 0) {
+	  if (params.viz.ds_num_layers > 0 && params.viz.ds_level >= 0) {
+
 	    calc_downsampled_layers(params);
 	    var zooming_stopped = true;
 	    var zooming_out = true;
@@ -6812,13 +6817,15 @@ var Clustergrammer =
 
 	    // re-size of the highlighting rects
 	    /////////////////////////////////////////
-	    d3.select(params.root + ' .row_label_zoom_container').each(function () {
-	      // get the bounding box of the row label text
-	      var bbox = d3.select(this).select('text')[0][0].getBBox();
+	    if (d3.select(params.root + ' .row_label_zoom_container text').empty() === false) {
+	      d3.select(params.root + ' .row_label_zoom_container').each(function () {
+	        // get the bounding box of the row label text
+	        var bbox = d3.select(this).select('text')[0][0].getBBox();
 
-	      // use the bounding box to set the size of the rect
-	      d3.select(this).select('rect').attr('x', bbox.x * 0.5).attr('y', 0).attr('width', bbox.width * 0.5).attr('height', params.viz.y_scale.rangeBand()).style('fill', 'yellow');
-	    });
+	        // use the bounding box to set the size of the rect
+	        d3.select(this).select('rect').attr('x', bbox.x * 0.5).attr('y', 0).attr('width', bbox.width * 0.5).attr('height', params.viz.y_scale.rangeBand()).style('fill', 'yellow');
+	      });
+	    }
 
 	    // reset crop button zooming
 	    d3.select(params.root + ' .row_dendro_icons_group').attr('transform', 'translate(' + [0, 0 + center_y] + ')' + ' scale(' + zoom_x + ',' + zoom_y + ')' + 'translate(' + [pan_dx, pan_dy] + ')');

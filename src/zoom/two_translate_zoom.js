@@ -167,22 +167,24 @@ module.exports = function two_translate_zoom(cgm, pan_dx, pan_dy, fin_zoom) {
 
     // re-size of the highlighting rects
     /////////////////////////////////////////
-    d3.select(params.root+' .row_label_zoom_container')
-      .each(function() {
-        // get the bounding box of the row label text
-        var bbox = d3.select(this)
-          .select('text')[0][0]
-          .getBBox();
+    if (d3.select(params.root+' .row_label_zoom_container text').empty() === false){
+      d3.select(params.root+' .row_label_zoom_container')
+        .each(function() {
+          // get the bounding box of the row label text
+          var bbox = d3.select(this)
+            .select('text')[0][0]
+            .getBBox();
 
-        // use the bounding box to set the size of the rect
-        d3.select(this)
-          .select('rect')
-          .attr('x', bbox.x * 0.5)
-          .attr('y', 0)
-          .attr('width', bbox.width * 0.5)
-          .attr('height', params.viz.y_scale.rangeBand())
-          .style('fill', 'yellow');
-      });
+          // use the bounding box to set the size of the rect
+          d3.select(this)
+            .select('rect')
+            .attr('x', bbox.x * 0.5)
+            .attr('y', 0)
+            .attr('width', bbox.width * 0.5)
+            .attr('height', params.viz.y_scale.rangeBand())
+            .style('fill', 'yellow');
+        });
+    }
 
     // reset crop button zooming
     d3.select(params.root+' .row_dendro_icons_group')
