@@ -1,4 +1,4 @@
-var utils = require('../Utils_clust');
+// var utils = require('../Utils_clust');
 var reposition_tile_highlight = require('./reposition_tile_highlight');
 var toggle_dendro_view = require('../dendrogram/toggle_dendro_view');
 // var show_visible_area = require('../zoom/show_visible_area');

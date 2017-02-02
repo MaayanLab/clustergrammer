@@ -19,8 +19,6 @@ module.exports = function run_when_zoom_stopped(cgm){
     /////////////////////////////////////////////////
     console.log('\nZOOMING HAS ACTUALLY STOPPED\n============================');
 
-    console.log(params.zoom_info.zoom_y)
-
     _.each(['row','col'], function(inst_rc){
 
       d3.selectAll(params.root+' .'+inst_rc+'_label_group' )

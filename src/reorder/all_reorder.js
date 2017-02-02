@@ -1,4 +1,3 @@
-var utils = require('../Utils_clust');
 var toggle_dendro_view = require('../dendrogram/toggle_dendro_view');
 var show_visible_area = require('../zoom/show_visible_area');
 var ini_zoom_info = require('../zoom/ini_zoom_info');
@@ -29,8 +28,8 @@ module.exports = function(cgm, inst_order, inst_rc) {
     toggle_dendro_view(cgm, inst_rc);
   }
 
-  var row_nodes_obj = params.network_data.row_nodes;
-  var col_nodes_obj = params.network_data.col_nodes;
+  // var row_nodes_obj = params.network_data.row_nodes;
+  // var col_nodes_obj = params.network_data.col_nodes;
 
   if (other_rc === 'row'){
 

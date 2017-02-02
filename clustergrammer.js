@@ -2531,7 +2531,7 @@ var Clustergrammer =
 	  var ds_level = arguments.length <= 3 || arguments[3] === undefined ? -1 : arguments[3];
 
 
-	  console.log('make_matrix_rows');
+	  // console.log('make_matrix_rows');
 
 	  // defaults
 	  var y_scale = params.viz.y_scale;
@@ -3511,7 +3511,7 @@ var Clustergrammer =
 
 	'use strict';
 
-	var utils = __webpack_require__(2);
+	// var utils = require('../Utils_clust');
 	var reposition_tile_highlight = __webpack_require__(54);
 	var toggle_dendro_view = __webpack_require__(55);
 	// var show_visible_area = require('../zoom/show_visible_area');
@@ -5031,7 +5031,7 @@ var Clustergrammer =
 	    // level change
 	    if (new_ds_level != old_ds_level) {
 
-	      console.log('old: ' + String(old_ds_level) + ' new: ' + String(new_ds_level));
+	      // console.log('old: ' + String(old_ds_level) + ' new: '+ String(new_ds_level));
 
 	      // all visible rows are missing at new downsampling level
 	      missing_rows = params.viz.viz_nodes.row;
@@ -5169,7 +5169,7 @@ var Clustergrammer =
 
 	'use strict';
 
-	var utils = __webpack_require__(2);
+	// var utils = require('../Utils_clust');
 	var reposition_tile_highlight = __webpack_require__(54);
 	var toggle_dendro_view = __webpack_require__(55);
 	// var show_visible_area = require('../zoom/show_visible_area');
@@ -5617,7 +5617,6 @@ var Clustergrammer =
 
 	'use strict';
 
-	var utils = __webpack_require__(2);
 	var toggle_dendro_view = __webpack_require__(55);
 	var show_visible_area = __webpack_require__(66);
 	var ini_zoom_info = __webpack_require__(37);
@@ -5648,8 +5647,8 @@ var Clustergrammer =
 	    toggle_dendro_view(cgm, inst_rc);
 	  }
 
-	  var row_nodes_obj = params.network_data.row_nodes;
-	  var col_nodes_obj = params.network_data.col_nodes;
+	  // var row_nodes_obj = params.network_data.row_nodes;
+	  // var col_nodes_obj = params.network_data.col_nodes;
 
 	  if (other_rc === 'row') {
 
@@ -6439,8 +6438,6 @@ var Clustergrammer =
 	    // zooming has stopped
 	    /////////////////////////////////////////////////
 	    console.log('\nZOOMING HAS ACTUALLY STOPPED\n============================');
-
-	    console.log(params.zoom_info.zoom_y);
 
 	    _.each(['row', 'col'], function (inst_rc) {
 

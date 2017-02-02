@@ -19,7 +19,7 @@ module.exports = function make_row_labels(cgm, row_names='all', text_delay = 0){
       if (_.contains(row_names, inst_row.name)){
         row_nodes.push(inst_row);
       }
-    })
+    });
   }
 
   // make row labels in row_label_zoom_container, bind row_nodes data

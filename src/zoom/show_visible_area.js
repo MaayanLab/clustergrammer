@@ -141,12 +141,12 @@ module.exports = function show_visible_area(cgm, zooming_stopped=false){
         if (_.contains(params.viz.viz_nodes.row, d.name) === false){
           d3.select(this).remove();
         }
-      })
+      });
 
     // level change
     if (new_ds_level != old_ds_level){
 
-      console.log('old: ' + String(old_ds_level) + ' new: '+ String(new_ds_level))
+      // console.log('old: ' + String(old_ds_level) + ' new: '+ String(new_ds_level));
 
       // all visible rows are missing at new downsampling level
       missing_rows = params.viz.viz_nodes.row;
