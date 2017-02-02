@@ -121,6 +121,10 @@ module.exports = function(cgm, inst_order, inst_rc) {
     var zooming_stopped = true;
     var zooming_out = true;
     var make_all_rows = true;
+
+    // show_visible_arae is also run with two_translate_zoom, but at that point
+    // the parameters were not updated and two_translate_zoom if only run
+    // if needed to reset zoom
     show_visible_area(cgm, zooming_stopped, zooming_out, make_all_rows);
   }
 

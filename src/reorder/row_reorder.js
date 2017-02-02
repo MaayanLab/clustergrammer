@@ -6,17 +6,14 @@ var ini_zoom_info = require('../zoom/ini_zoom_info');
 
 module.exports = function row_reorder(cgm, row_selection, inst_row) {
 
+  console.log('row_reorder')
+
   var params = cgm.params;
   params.viz.inst_order.row = 'custom';
   toggle_dendro_view(cgm, 'col');
 
-  // d3.selectAll(params.root+' .col_dendro_group').style('opacity',0);
-
   d3.selectAll(params.root+' .toggle_col_order .btn')
     .classed('active',false);
-
-  // // get inst row (gene)
-  // var inst_row = d3.select(row_selection).select('text').text();
 
   params.viz.run_trans = true;
 
@@ -57,7 +54,7 @@ module.exports = function row_reorder(cgm, row_selection, inst_row) {
   if (params.network_data.links.length > params.matrix.def_large_matrix){
 
     // define the t variable as the transition function
-    t = d3.select(params.root + ' .clust_group');
+    t = d3.select(params.root + ' .viz_svg');
 
     // Move Col Labels
     d3.select(params.root+' .col_zoom_container')
@@ -75,7 +72,7 @@ module.exports = function row_reorder(cgm, row_selection, inst_row) {
   } else {
 
     // define the t variable as the transition function
-    t = d3.select(params.root + ' .clust_group').transition().duration(2500);
+    t = d3.select(params.root + ' .viz_svg').transition().duration(2500);
 
     // Move Col Labels
     d3.select(params.root+' .col_zoom_container')

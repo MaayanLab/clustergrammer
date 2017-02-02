@@ -5053,16 +5053,13 @@ var Clustergrammer =
 
 	module.exports = function row_reorder(cgm, row_selection, inst_row) {
 
+	  console.log('row_reorder');
+
 	  var params = cgm.params;
 	  params.viz.inst_order.row = 'custom';
 	  toggle_dendro_view(cgm, 'col');
 
-	  // d3.selectAll(params.root+' .col_dendro_group').style('opacity',0);
-
 	  d3.selectAll(params.root + ' .toggle_col_order .btn').classed('active', false);
-
-	  // // get inst row (gene)
-	  // var inst_row = d3.select(row_selection).select('text').text();
 
 	  params.viz.run_trans = true;
 
@@ -5103,7 +5100,7 @@ var Clustergrammer =
 	  if (params.network_data.links.length > params.matrix.def_large_matrix) {
 
 	    // define the t variable as the transition function
-	    t = d3.select(params.root + ' .clust_group');
+	    t = d3.select(params.root + ' .viz_svg');
 
 	    // Move Col Labels
 	    d3.select(params.root + ' .col_zoom_container').selectAll('.col_label_text').attr('transform', function (d) {
@@ -5117,7 +5114,7 @@ var Clustergrammer =
 	  } else {
 
 	    // define the t variable as the transition function
-	    t = d3.select(params.root + ' .clust_group').transition().duration(2500);
+	    t = d3.select(params.root + ' .viz_svg').transition().duration(2500);
 
 	    // Move Col Labels
 	    d3.select(params.root + ' .col_zoom_container').selectAll('.col_label_text').transition().duration(2500).attr('transform', function (d) {
@@ -5602,6 +5599,10 @@ var Clustergrammer =
 	    var zooming_stopped = true;
 	    var zooming_out = true;
 	    var make_all_rows = true;
+
+	    // show_visible_arae is also run with two_translate_zoom, but at that point
+	    // the parameters were not updated and two_translate_zoom if only run
+	    // if needed to reset zoom
 	    show_visible_area(cgm, zooming_stopped, zooming_out, make_all_rows);
 	  }
 
