@@ -68,16 +68,16 @@ module.exports = function show_visible_area(cgm, zooming_stopped=false){
   }
 
 
-  // toggle labels and rows
-  ///////////////////////////////////////////////
-  var severe_toggle = true;
+  // // toggle labels and rows
+  // ///////////////////////////////////////////////
+  // var severe_toggle = true;
 
-  d3.selectAll(params.root+' .row')
-    .style('display', function(d){
-      return toggle_display(params, d, 'row', this, severe_toggle);
-    });
+  // d3.selectAll(params.root+' .row')
+  //   .style('display', function(d){
+  //     return toggle_display(params, d, 'row', this, severe_toggle);
+  //   });
 
-  ///////////////////////////////////////////////
+  // ///////////////////////////////////////////////
 
 
   var viz_area = {};
@@ -126,14 +126,24 @@ module.exports = function show_visible_area(cgm, zooming_stopped=false){
   /* run when zooming has stopped */
   if (zooming_stopped === true){
 
-
     // remove not visible matrix rows
-    d3.selectAll(params.root+' .ds'+String(new_ds_level)+'_row')
-      .each(function(d){
-        if (_.contains(params.viz.viz_nodes.row, d.name) === false){
-          d3.select(this).remove();
-        }
-      });
+    if (new_ds_level >= 0){
+      // remove downsampled rows
+      d3.selectAll(params.root+' .ds'+String(new_ds_level)+'_row')
+        .each(function(d){
+          if (_.contains(params.viz.viz_nodes.row, d.name) === false){
+            d3.select(this).remove();
+          }
+        });
+    } else {
+      // remove real data rows
+      d3.selectAll(params.root+' .row')
+        .each(function(d){
+          if (_.contains(params.viz.viz_nodes.row, d.name) === false){
+            d3.select(this).remove();
+          }
+        });
+    }
 
     // remove not visible row labels
     d3.selectAll(params.root+' .row_label_group')
@@ -158,6 +168,8 @@ module.exports = function show_visible_area(cgm, zooming_stopped=false){
 
   }
 
+  console.log('missing_rows: ' + String(missing_rows.length));
+
   // only make new matrix_rows if there are missing rows
   if (missing_rows.length >   1 || missing_rows === 'all'){
     make_matrix_rows(params, inst_matrix, missing_rows, new_ds_level);
@@ -165,13 +177,6 @@ module.exports = function show_visible_area(cgm, zooming_stopped=false){
     // only make new row_labels if there are missing rows and not downsampled
     if (new_ds_level === -1){
       make_row_labels(cgm, missing_rows);
-    }
-  }
-
-  // remove row labels if necessary
-  if (new_ds_level >= 0) {
-    if (d3.select(params.root+' .row_label_group').empty() === false){
-      d3.selectAll(params.root+' .row_label_group').remove();
     }
   }
 

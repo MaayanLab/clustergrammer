@@ -86,7 +86,7 @@ module.exports = function run_transformation(cgm){
 
   constrain_font_size(params);
 
-  toggle_labels(params);
+  // toggle_labels(params);
 
   if (zoom_info.zoom_y > prev_zoom.zoom_y){
     // console.log('zooming in')

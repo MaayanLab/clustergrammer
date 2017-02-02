@@ -59,7 +59,7 @@ module.exports = function run_when_zoom_stopped(cgm){
 
     });
 
-    toggle_labels(params);
+    // toggle_labels(params);
 
     text_patch();
 
