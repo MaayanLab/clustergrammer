@@ -1,8 +1,8 @@
 var utils = require('../Utils_clust');
 
-module.exports = function calc_downsampled_matrix(params, mat, ds_layer){
+module.exports = function calc_downsampled_matrix(params, mat, ds_level){
 
-  var inst_num_rows = params.viz.ds[ds_layer].num_rows;
+  var inst_num_rows = params.viz.ds[ds_level].num_rows;
 
   var num_compressed_rows = params.network_data.row_nodes.length / inst_num_rows;
 

@@ -24,7 +24,7 @@ module.exports = function show_visible_area(cgm, zooming_stopped=false,
 
     check_ds_level = Math.floor( Math.log(zoom_info.zoom_y)/Math.log(params.viz.ds_zt) ) ;
 
-    if (check_ds_level > params.viz.ds_num_layers -1 ){
+    if (check_ds_level > params.viz.ds_num_levels -1 ){
       check_ds_level = -1;
     }
   }

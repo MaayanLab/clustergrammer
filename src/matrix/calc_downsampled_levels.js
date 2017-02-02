@@ -1,6 +1,6 @@
 var calc_downsampled_matrix = require('../matrix/calc_downsampled_matrix');
 
-module.exports = function calc_downsampled_layers(params){
+module.exports = function calc_downsampled_levels(params){
 
   // console.log('---- before ---------')
   // console.log(params.matrix.matrix[0].row_data[0].value)
@@ -26,18 +26,18 @@ module.exports = function calc_downsampled_layers(params){
     params.viz.ds_zt = inst_zt;
 
     // the number of downsampled matrices that need to be calculated
-    // var num_layers = Math.round(inst_height / (params.viz.rect_height * inst_zt));
+    // var num_levels = Math.round(inst_height / (params.viz.rect_height * inst_zt));
 
     var total_zoom = inst_height / params.viz.rect_height;
 
-    var num_layers = Math.floor( Math.log(total_zoom)/Math.log(inst_zt) ) ;
+    var num_levels = Math.floor( Math.log(total_zoom)/Math.log(inst_zt) ) ;
 
-    params.viz.ds_num_layers = num_layers;
+    params.viz.ds_num_levels = num_levels;
 
     // array of downsampled parameters
     params.viz.ds = [];
 
-    // array of downsampled matrices at varying layers
+    // array of downsampled matrices at varying levels
     params.matrix.ds_matrix = [];
 
     var inst_order = params.viz.inst_order.row;
@@ -45,8 +45,8 @@ module.exports = function calc_downsampled_layers(params){
     // cloning
     var mat = $.extend(true, {}, params.matrix.matrix);
 
-    // calculate parameters for different layers
-    for (var i=0; i < num_layers; i++){
+    // calculate parameters for different levels
+    for (var i=0; i < num_levels; i++){
 
       // instantaneous ds_level (-1 means no downsampling)
       params.viz.ds_level = 0;
@@ -54,7 +54,7 @@ module.exports = function calc_downsampled_layers(params){
       ds = {};
 
       ds.height = inst_height;
-      ds.num_layers = num_layers;
+      ds.num_levels = num_levels;
 
       var inst_zoom_tolerance = Math.pow(inst_zt, i);
 
@@ -102,7 +102,7 @@ module.exports = function calc_downsampled_layers(params){
     params.viz.ds = null;
     // instantaneous ds_level (-1 means no downsampling)
     params.viz.ds_level = -1;
-    params.viz.ds_num_layers = 0;
+    params.viz.ds_num_levels = 0;
   }
 
   // console.log('---- after ---------')

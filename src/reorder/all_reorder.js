@@ -2,15 +2,22 @@ var toggle_dendro_view = require('../dendrogram/toggle_dendro_view');
 var show_visible_area = require('../zoom/show_visible_area');
 var ini_zoom_info = require('../zoom/ini_zoom_info');
 var fine_position_tile = require('../matrix/fine_position_tile');
-var calc_downsampled_layers = require('../matrix/calc_downsampled_layers');
+var calc_downsampled_levels = require('../matrix/calc_downsampled_levels');
 var two_translate_zoom = require('../zoom/two_translate_zoom');
+var get_previous_zoom = require('../zoom/get_previous_zoom');
 
 module.exports = function(cgm, inst_order, inst_rc) {
 
   var params = cgm.params;
 
-  // reset zoom before reordering
-  two_translate_zoom(cgm, 0, 0, 1);
+  var prev_zoom = get_previous_zoom(params);
+
+  var delay_reorder = 0;
+  if (prev_zoom.zoom_y != 1 && prev_zoom.zoom_x !=1){
+    // reset zoom before reordering
+    two_translate_zoom(cgm, 0, 0, 1);
+    delay_reorder = 1200;
+  }
 
   // row/col names are swapped, will improve later
   var other_rc;
@@ -45,13 +52,13 @@ module.exports = function(cgm, inst_order, inst_rc) {
   var t;
   if (d3.selectAll(params.root+' .tile')[0].length < params.matrix.def_large_matrix){
     t = d3.select(params.root+' .viz_svg')
-      .transition().duration(2500);
+      .transition().duration(2500).delay(delay_reorder);
   } else {
     t = d3.select(params.root+' .viz_svg');
   }
 
   // only update matrix if not downsampled (otherwise rows are updated)
-  if (params.viz.ds_layer === -1){
+  if (params.viz.ds_level === -1){
 
     t.selectAll('.row')
       .attr('transform', function(d) {
@@ -108,9 +115,9 @@ module.exports = function(cgm, inst_order, inst_rc) {
   params.zoom_info = ini_zoom_info();
 
   // calculate downsmapling if necessary
-  if (params.viz.ds_num_layers > 0 && params.viz.ds_level >=0){
+  if (params.viz.ds_num_levels > 0 && params.viz.ds_level >=0){
 
-    calc_downsampled_layers(params);
+    calc_downsampled_levels(params);
     var zooming_stopped = true;
     var zooming_out = true;
     var make_all_rows = true;

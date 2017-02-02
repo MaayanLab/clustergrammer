@@ -1681,7 +1681,7 @@ var Clustergrammer =
 	'use strict';
 
 	var ini_matrix_params = __webpack_require__(31);
-	var calc_downsampled_layers = __webpack_require__(211);
+	var calc_downsampled_levels = __webpack_require__(212);
 
 	module.exports = function calc_matrix_params(params) {
 
@@ -1721,7 +1721,7 @@ var Clustergrammer =
 	  // moved calculateion to calc_matrix_params
 	  params.viz.rect_height = params.viz.y_scale.rangeBand() - params.viz.border_width.y;
 
-	  calc_downsampled_layers(params);
+	  calc_downsampled_levels(params);
 
 	  return params;
 		};
@@ -1946,9 +1946,9 @@ var Clustergrammer =
 
 	var utils = __webpack_require__(2);
 
-	module.exports = function calc_downsampled_matrix(params, mat, ds_layer) {
+	module.exports = function calc_downsampled_matrix(params, mat, ds_level) {
 
-	  var inst_num_rows = params.viz.ds[ds_layer].num_rows;
+	  var inst_num_rows = params.viz.ds[ds_level].num_rows;
 
 	  var num_compressed_rows = params.network_data.row_nodes.length / inst_num_rows;
 
@@ -4838,7 +4838,7 @@ var Clustergrammer =
 
 	    check_ds_level = Math.floor(Math.log(zoom_info.zoom_y) / Math.log(params.viz.ds_zt));
 
-	    if (check_ds_level > params.viz.ds_num_layers - 1) {
+	    if (check_ds_level > params.viz.ds_num_levels - 1) {
 	      check_ds_level = -1;
 	    }
 	  }
@@ -5497,15 +5497,22 @@ var Clustergrammer =
 	var show_visible_area = __webpack_require__(66);
 	var ini_zoom_info = __webpack_require__(37);
 	var fine_position_tile = __webpack_require__(48);
-	var calc_downsampled_layers = __webpack_require__(211);
+	var calc_downsampled_levels = __webpack_require__(212);
 	var two_translate_zoom = __webpack_require__(98);
+	var get_previous_zoom = __webpack_require__(94);
 
 	module.exports = function (cgm, inst_order, inst_rc) {
 
 	  var params = cgm.params;
 
-	  // reset zoom before reordering
-	  two_translate_zoom(cgm, 0, 0, 1);
+	  var prev_zoom = get_previous_zoom(params);
+
+	  var delay_reorder = 0;
+	  if (prev_zoom.zoom_y != 1 && prev_zoom.zoom_x != 1) {
+	    // reset zoom before reordering
+	    two_translate_zoom(cgm, 0, 0, 1);
+	    delay_reorder = 1200;
+	  }
 
 	  // row/col names are swapped, will improve later
 	  var other_rc;
@@ -5537,13 +5544,13 @@ var Clustergrammer =
 	  // only animate transition if there are a small number of tiles
 	  var t;
 	  if (d3.selectAll(params.root + ' .tile')[0].length < params.matrix.def_large_matrix) {
-	    t = d3.select(params.root + ' .viz_svg').transition().duration(2500);
+	    t = d3.select(params.root + ' .viz_svg').transition().duration(2500).delay(delay_reorder);
 	  } else {
 	    t = d3.select(params.root + ' .viz_svg');
 	  }
 
 	  // only update matrix if not downsampled (otherwise rows are updated)
-	  if (params.viz.ds_layer === -1) {
+	  if (params.viz.ds_level === -1) {
 
 	    t.selectAll('.row').attr('transform', function (d) {
 	      return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
@@ -5589,9 +5596,9 @@ var Clustergrammer =
 	  params.zoom_info = ini_zoom_info();
 
 	  // calculate downsmapling if necessary
-	  if (params.viz.ds_num_layers > 0 && params.viz.ds_level >= 0) {
+	  if (params.viz.ds_num_levels > 0 && params.viz.ds_level >= 0) {
 
-	    calc_downsampled_layers(params);
+	    calc_downsampled_levels(params);
 	    var zooming_stopped = true;
 	    var zooming_out = true;
 	    var make_all_rows = true;
@@ -13980,14 +13987,15 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 211 */
+/* 211 */,
+/* 212 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var calc_downsampled_matrix = __webpack_require__(33);
 
-	module.exports = function calc_downsampled_layers(params) {
+	module.exports = function calc_downsampled_levels(params) {
 
 	  // console.log('---- before ---------')
 	  // console.log(params.matrix.matrix[0].row_data[0].value)
@@ -14010,18 +14018,18 @@ var Clustergrammer =
 	    params.viz.ds_zt = inst_zt;
 
 	    // the number of downsampled matrices that need to be calculated
-	    // var num_layers = Math.round(inst_height / (params.viz.rect_height * inst_zt));
+	    // var num_levels = Math.round(inst_height / (params.viz.rect_height * inst_zt));
 
 	    var total_zoom = inst_height / params.viz.rect_height;
 
-	    var num_layers = Math.floor(Math.log(total_zoom) / Math.log(inst_zt));
+	    var num_levels = Math.floor(Math.log(total_zoom) / Math.log(inst_zt));
 
-	    params.viz.ds_num_layers = num_layers;
+	    params.viz.ds_num_levels = num_levels;
 
 	    // array of downsampled parameters
 	    params.viz.ds = [];
 
-	    // array of downsampled matrices at varying layers
+	    // array of downsampled matrices at varying levels
 	    params.matrix.ds_matrix = [];
 
 	    var inst_order = params.viz.inst_order.row;
@@ -14029,8 +14037,8 @@ var Clustergrammer =
 	    // cloning
 	    var mat = $.extend(true, {}, params.matrix.matrix);
 
-	    // calculate parameters for different layers
-	    for (var i = 0; i < num_layers; i++) {
+	    // calculate parameters for different levels
+	    for (var i = 0; i < num_levels; i++) {
 
 	      // instantaneous ds_level (-1 means no downsampling)
 	      params.viz.ds_level = 0;
@@ -14038,7 +14046,7 @@ var Clustergrammer =
 	      ds = {};
 
 	      ds.height = inst_height;
-	      ds.num_layers = num_layers;
+	      ds.num_levels = num_levels;
 
 	      var inst_zoom_tolerance = Math.pow(inst_zt, i);
 
@@ -14078,7 +14086,7 @@ var Clustergrammer =
 	    params.viz.ds = null;
 	    // instantaneous ds_level (-1 means no downsampling)
 	    params.viz.ds_level = -1;
-	    params.viz.ds_num_layers = 0;
+	    params.viz.ds_num_levels = 0;
 	  }
 
 	  // console.log('---- after ---------')

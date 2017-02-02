@@ -1,5 +1,5 @@
 var ini_matrix_params = require('./ini_matrix_params');
-var calc_downsampled_layers = require('../matrix/calc_downsampled_layers');
+var calc_downsampled_levels = require('../matrix/calc_downsampled_levels');
 
 module.exports = function calc_matrix_params(params){
 
@@ -48,7 +48,7 @@ module.exports = function calc_matrix_params(params){
   params.viz.rect_height = params.viz.y_scale.rangeBand() -
     params.viz.border_width.y;
 
-  calc_downsampled_layers(params);
+  calc_downsampled_levels(params);
 
   return params;
 
