@@ -95,7 +95,7 @@ module.exports = function run_transformation(cgm){
     show_visible_area(cgm);
   }
 
-  setTimeout(not_zooming, 100);
-  setTimeout(check_if_zooming_has_stopped, 300, cgm);
+  setTimeout(not_zooming, 50);
+  setTimeout(check_if_zooming_has_stopped, 100, cgm);
 
 };

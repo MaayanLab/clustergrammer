@@ -22,7 +22,11 @@ module.exports = function show_visible_area(cgm, zooming_stopped=false){
   if (params.viz.ds === null){
     check_ds_level = -1;
   } else {
-    check_ds_level = Math.floor(zoom_info.zoom_y / params.viz.ds_zt) ;
+
+    // check_ds_level = Math.floor(zoom_info.zoom_y / params.viz.ds_zt) ;
+
+    check_ds_level = Math.floor( Math.log(zoom_info.zoom_y)/Math.log(params.viz.ds_zt) ) ;
+
     if (check_ds_level > params.viz.ds_num_layers -1 ){
       check_ds_level = -1;
     }
@@ -34,14 +38,16 @@ module.exports = function show_visible_area(cgm, zooming_stopped=false){
   var override = false;
 
   if (old_ds_level == -1 ){
-    // transitioning from real data to downsampled view
+    // transitioning to more coarse downsampling view (from real data)
     if (check_ds_level >= 0){
       override = true;
+      // check_ds_level == 0;
     }
   } else {
     // transitioning to more coarse downsampling view
     if (check_ds_level < old_ds_level){
       override = true;
+      // check_ds_level == 0;
     }
   }
 
@@ -139,6 +145,8 @@ module.exports = function show_visible_area(cgm, zooming_stopped=false){
 
     // level change
     if (new_ds_level != old_ds_level){
+
+      console.log('old: ' + String(old_ds_level) + ' new: '+ String(new_ds_level))
 
       // all visible rows are missing at new downsampling level
       missing_rows = params.viz.viz_nodes.row;

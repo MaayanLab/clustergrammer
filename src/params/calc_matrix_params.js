@@ -63,12 +63,18 @@ module.exports = function calc_matrix_params(params){
     var ds;
 
     // height of downsampled rectangles
-    var inst_height = 3;
+    var inst_height = 4;
+
     // amount of zooming that is tolerated for the downsampled rows
-    var inst_zt = 3;
+    var inst_zt = 2;
     params.viz.ds_zt = inst_zt;
+
     // the number of downsampled matrices that need to be calculated
-    var num_layers = Math.round(inst_height / (params.viz.rect_height * inst_zt));
+    // var num_layers = Math.round(inst_height / (params.viz.rect_height * inst_zt));
+
+    var total_zoom = inst_height / params.viz.rect_height;
+
+    var num_layers = Math.floor( Math.log(total_zoom)/Math.log(inst_zt) ) ;
 
     params.viz.ds_num_layers = num_layers;
 

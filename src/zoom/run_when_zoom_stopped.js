@@ -19,6 +19,8 @@ module.exports = function run_when_zoom_stopped(cgm){
     /////////////////////////////////////////////////
     console.log('\nZOOMING HAS ACTUALLY STOPPED\n============================');
 
+    console.log(params.zoom_info.zoom_y)
+
     _.each(['row','col'], function(inst_rc){
 
       d3.selectAll(params.root+' .'+inst_rc+'_label_group' )
@@ -68,7 +70,6 @@ module.exports = function run_when_zoom_stopped(cgm){
     // this makes sure that the text is visible after zooming and trimming
     // there is buggy behavior in chrome when zooming into large matrices
     // I'm running it twice in quick succession
-    setTimeout( text_patch, 25 );
     setTimeout( text_patch, 100 );
 
   }

@@ -1735,12 +1735,18 @@ var Clustergrammer =
 	    var ds;
 
 	    // height of downsampled rectangles
-	    var inst_height = 3;
+	    var inst_height = 4;
+
 	    // amount of zooming that is tolerated for the downsampled rows
-	    var inst_zt = 3;
+	    var inst_zt = 2;
 	    params.viz.ds_zt = inst_zt;
+
 	    // the number of downsampled matrices that need to be calculated
-	    var num_layers = Math.round(inst_height / (params.viz.rect_height * inst_zt));
+	    // var num_layers = Math.round(inst_height / (params.viz.rect_height * inst_zt));
+
+	    var total_zoom = inst_height / params.viz.rect_height;
+
+	    var num_layers = Math.floor(Math.log(total_zoom) / Math.log(inst_zt));
 
 	    params.viz.ds_num_layers = num_layers;
 
@@ -4906,7 +4912,11 @@ var Clustergrammer =
 	  if (params.viz.ds === null) {
 	    check_ds_level = -1;
 	  } else {
-	    check_ds_level = Math.floor(zoom_info.zoom_y / params.viz.ds_zt);
+
+	    // check_ds_level = Math.floor(zoom_info.zoom_y / params.viz.ds_zt) ;
+
+	    check_ds_level = Math.floor(Math.log(zoom_info.zoom_y) / Math.log(params.viz.ds_zt));
+
 	    if (check_ds_level > params.viz.ds_num_layers - 1) {
 	      check_ds_level = -1;
 	    }
@@ -4918,14 +4928,16 @@ var Clustergrammer =
 	  var override = false;
 
 	  if (old_ds_level == -1) {
-	    // transitioning from real data to downsampled view
+	    // transitioning to more coarse downsampling view (from real data)
 	    if (check_ds_level >= 0) {
 	      override = true;
+	      // check_ds_level == 0;
 	    }
 	  } else {
 	    // transitioning to more coarse downsampling view
 	    if (check_ds_level < old_ds_level) {
 	      override = true;
+	      // check_ds_level == 0;
 	    }
 	  }
 
@@ -5012,6 +5024,8 @@ var Clustergrammer =
 
 	    // level change
 	    if (new_ds_level != old_ds_level) {
+
+	      console.log('old: ' + String(old_ds_level) + ' new: ' + String(new_ds_level));
 
 	      // all visible rows are missing at new downsampling level
 	      missing_rows = params.viz.viz_nodes.row;
@@ -6277,8 +6291,8 @@ var Clustergrammer =
 	    show_visible_area(cgm);
 	  }
 
-	  setTimeout(not_zooming, 100);
-	  setTimeout(check_if_zooming_has_stopped, 300, cgm);
+	  setTimeout(not_zooming, 50);
+	  setTimeout(check_if_zooming_has_stopped, 100, cgm);
 		};
 
 /***/ },
@@ -6420,6 +6434,8 @@ var Clustergrammer =
 	    /////////////////////////////////////////////////
 	    console.log('\nZOOMING HAS ACTUALLY STOPPED\n============================');
 
+	    console.log(params.zoom_info.zoom_y);
+
 	    _.each(['row', 'col'], function (inst_rc) {
 
 	      d3.selectAll(params.root + ' .' + inst_rc + '_label_group').select('text').style('opacity', 1);
@@ -6461,7 +6477,6 @@ var Clustergrammer =
 	    // this makes sure that the text is visible after zooming and trimming
 	    // there is buggy behavior in chrome when zooming into large matrices
 	    // I'm running it twice in quick succession
-	    setTimeout(text_patch, 25);
 	    setTimeout(text_patch, 100);
 	  }
 
