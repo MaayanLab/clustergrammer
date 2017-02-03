@@ -9,7 +9,9 @@ var resize_containers = require('../reset_size/resize_containers');
 var label_constrain_and_trim = require('../labels/label_constrain_and_trim');
 var d3_tip_custom = require('../tooltip/d3_tip_custom');
 
-module.exports = function(cgm, network_data, delays){
+module.exports = function enter_exit_update(cgm, delays){
+
+  var network_data = cgm.params.network_data;
 
   var params = cgm.params;
 
@@ -104,7 +106,7 @@ module.exports = function(cgm, network_data, delays){
   exit_components(params, delays, duration);
 
   // resize clust components using appropriate delays
-  reset_size_after_update(cgm, row_nodes, col_nodes, links, duration, delays);
+  reset_size_after_update(cgm, duration, delays);
 
   // enter new elements
   //////////////////////////

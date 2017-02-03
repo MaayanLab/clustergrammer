@@ -9536,7 +9536,8 @@ var Clustergrammer =
 	  // only run enter-exit-updates if there is no downsampling
 
 	  if (cgm.params.viz.ds_num_levels === 0) {
-	    enter_exit_update(cgm, new_network_data, delays);
+	    // enter_exit_update(cgm, new_network_data, delays);
+	    enter_exit_update(cgm, delays);
 	  } else {
 	    // remove row labels, remove non-downsampled rows, and add downsampled rows
 	    d3.selectAll(cgm.params.root + ' .row_cat_group').remove();
@@ -9699,7 +9700,9 @@ var Clustergrammer =
 	var label_constrain_and_trim = __webpack_require__(82);
 	var d3_tip_custom = __webpack_require__(50);
 
-	module.exports = function (cgm, network_data, delays) {
+	module.exports = function enter_exit_update(cgm, delays) {
+
+	  var network_data = cgm.params.network_data;
 
 	  var params = cgm.params;
 
@@ -9778,7 +9781,7 @@ var Clustergrammer =
 	  exit_components(params, delays, duration);
 
 	  // resize clust components using appropriate delays
-	  reset_size_after_update(cgm, row_nodes, col_nodes, links, duration, delays);
+	  reset_size_after_update(cgm, duration, delays);
 
 	  // enter new elements
 	  //////////////////////////
@@ -9819,9 +9822,13 @@ var Clustergrammer =
 	// var show_visible_area = require('../zoom/show_visible_area');
 	var ini_zoom_info = __webpack_require__(38);
 
-	module.exports = function (cgm, row_nodes, col_nodes, links, duration, delays) {
+	module.exports = function (cgm, duration, delays) {
 
 	  var params = cgm.params;
+
+	  var row_nodes = cgm.params.network_data.row_nodes;
+	  var col_nodes = cgm.params.network_data.col_nodes;
+	  var links = cgm.params.network_data.links;
 
 	  params.zoom_info = ini_zoom_info();
 

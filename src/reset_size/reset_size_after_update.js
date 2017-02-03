@@ -18,9 +18,13 @@ var calc_zoom_switching = require('../zoom/calc_zoom_switching');
 // var show_visible_area = require('../zoom/show_visible_area');
 var ini_zoom_info = require('../zoom/ini_zoom_info');
 
-module.exports = function(cgm, row_nodes, col_nodes, links, duration, delays) {
+module.exports = function(cgm, duration, delays) {
 
   var params = cgm.params;
+
+  var row_nodes = cgm.params.network_data.row_nodes;
+  var col_nodes = cgm.params.network_data.col_nodes;
+  var links = cgm.params.network_data.links;
 
   params.zoom_info = ini_zoom_info();
 

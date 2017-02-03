@@ -90,7 +90,8 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
   // only run enter-exit-updates if there is no downsampling
 
   if (cgm.params.viz.ds_num_levels === 0){
-    enter_exit_update(cgm, new_network_data, delays);
+    // enter_exit_update(cgm, new_network_data, delays);
+    enter_exit_update(cgm, delays);
   } else {
     // remove row labels, remove non-downsampled rows, and add downsampled rows
     d3.selectAll(cgm.params.root+' .row_cat_group')
