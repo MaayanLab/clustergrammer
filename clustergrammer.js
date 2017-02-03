@@ -7887,7 +7887,9 @@ var Clustergrammer =
 	  d3.select(params.root + ' .col_cat_container').selectAll('g').data(params.network_data.col_nodes, function (d) {
 	    return d.name;
 	  }).enter().append('g').attr('class', 'col_cat_group').attr('transform', function (d) {
-	    return 'translate(' + params.viz.x_scale(d.col_index) + ',0)';
+	    var inst_index = _.indexOf(params.network_data.col_nodes_names, d.name);
+	    // return 'translate(' + params.viz.x_scale(d.col_index) + ',0)';
+	    return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
 	  });
 
 	  d3.select(params.root + ' .col_cat_container').selectAll('.col_cat_group').call(cat_tip);
@@ -9237,11 +9239,14 @@ var Clustergrammer =
 	  tmp_config.ini_view = null;
 	  tmp_config.current_col_cat = cgm.params.current_col_cat;
 
-	  // // disabled, causing problems when cropping
-	  // // always preserve category colors when updating
-	  // tmp_config.cat_colors = cgm.params.viz.cat_colors;
+	  // disabled, causing problems when cropping
+	  // always preserve category colors when updating
+	  tmp_config.cat_colors = cgm.params.viz.cat_colors;
 
 	  var new_params = make_params(tmp_config);
+
+	  // this function is sensitive to further updates, so run here
+	  var delays = define_enter_exit_delays(cgm.params, new_params);
 
 	  // pass the newly calcluated params back to the cgm object
 	  cgm.params = new_params;
@@ -9262,8 +9267,9 @@ var Clustergrammer =
 	  cgm.params.crop_filter_nodes = inst_crop_fitler;
 
 	  console.log('num ds levles after update: ' + String(cgm.params.viz.ds_num_levels));
+
 	  // only run enter-exit-updates if there is no downsampling
-	  var delays = define_enter_exit_delays(cgm.params, new_params);
+
 	  if (cgm.params.viz.ds_num_levels === 0) {
 	    enter_exit_update(cgm, new_network_data, delays);
 	  } else {

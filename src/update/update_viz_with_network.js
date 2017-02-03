@@ -55,11 +55,14 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
   tmp_config.ini_view = null;
   tmp_config.current_col_cat = cgm.params.current_col_cat;
 
-  // // disabled, causing problems when cropping
-  // // always preserve category colors when updating
-  // tmp_config.cat_colors = cgm.params.viz.cat_colors;
+  // disabled, causing problems when cropping
+  // always preserve category colors when updating
+  tmp_config.cat_colors = cgm.params.viz.cat_colors;
 
   var new_params = make_params(tmp_config);
+
+  // this function is sensitive to further updates, so run here
+  var delays = define_enter_exit_delays(cgm.params, new_params);
 
   // pass the newly calcluated params back to the cgm object
   cgm.params = new_params;
@@ -82,8 +85,9 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
   cgm.params.crop_filter_nodes = inst_crop_fitler;
 
   console.log('num ds levles after update: '+ String(cgm.params.viz.ds_num_levels))
+
   // only run enter-exit-updates if there is no downsampling
-  var delays = define_enter_exit_delays(cgm.params, new_params);
+
   if (cgm.params.viz.ds_num_levels === 0){
     enter_exit_update(cgm, new_network_data, delays);
   } else {
