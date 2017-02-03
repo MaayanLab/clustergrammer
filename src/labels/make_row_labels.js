@@ -29,9 +29,11 @@ module.exports = function make_row_labels(cgm, row_names='all', text_delay = 0){
     .append('g')
     .classed('row_label_group', true);
 
+  var row_nodes_names = params.network_data.row_nodes_names;
   row_labels
     .attr('transform', function(d) {
-      var inst_index = d.row_index;
+         // var inst_index = d.row_index;
+         var inst_index = _.indexOf(row_nodes_names, d.name);
       return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
     });
 

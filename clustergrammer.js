@@ -9197,6 +9197,7 @@ var Clustergrammer =
 	var make_row_cat_super_labels = __webpack_require__(79);
 	var modify_row_node_cats = __webpack_require__(162);
 	var run_zoom = __webpack_require__(82);
+	var show_visible_area = __webpack_require__(66);
 
 	module.exports = function update_viz_with_network(cgm, new_network_data) {
 
@@ -9265,9 +9266,23 @@ var Clustergrammer =
 	  var delays = define_enter_exit_delays(cgm.params, new_params);
 	  if (cgm.params.viz.ds_num_levels === 0) {
 	    enter_exit_update(cgm, new_network_data, delays);
-	  } else {}
-	  // remove row labels, remove non-downsampled rows, and add downsampled rows
+	  } else {
+	    // remove row labels, remove non-downsampled rows, and add downsampled rows
+	    d3.selectAll(cgm.params.root + ' .row_cat_group').remove();
+	    d3.selectAll(cgm.params.root + ' .row_label_group').remove();
+	    d3.selectAll(cgm.params.root + ' .row').remove();
 
+	    // no need to re-calculate the downsampled layers
+	    // calc_downsampled_levels(params);
+	    var zooming_stopped = true;
+	    var zooming_out = true;
+	    var make_all_rows = true;
+
+	    // show_visible_area is also run with two_translate_zoom, but at that point
+	    // the parameters were not updated and two_translate_zoom if only run
+	    // if needed to reset zoom
+	    show_visible_area(cgm, zooming_stopped, zooming_out, make_all_rows);
+	  }
 
 	  // reduce opacity during update
 	  d3.select(cgm.params.viz.viz_svg).style('opacity', 0.70);
@@ -13890,8 +13905,10 @@ var Clustergrammer =
 	    return d.name;
 	  }).enter().append('g').classed('row_label_group', true);
 
+	  var row_nodes_names = params.network_data.row_nodes_names;
 	  row_labels.attr('transform', function (d) {
-	    var inst_index = d.row_index;
+	    // var inst_index = d.row_index;
+	    var inst_index = _.indexOf(row_nodes_names, d.name);
 	    return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
 	  });
 

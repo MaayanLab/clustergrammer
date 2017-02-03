@@ -13,6 +13,7 @@ var update_reorder_buttons = require('../reorder/update_reorder_buttons');
 var make_row_cat_super_labels = require('../labels/make_row_cat_super_labels');
 var modify_row_node_cats = require('./modify_row_node_cats');
 var run_zoom = require('../zoom/run_zoom');
+var show_visible_area = require('../zoom/show_visible_area');
 
 module.exports = function update_viz_with_network(cgm, new_network_data){
 
@@ -87,6 +88,24 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
     enter_exit_update(cgm, new_network_data, delays);
   } else {
     // remove row labels, remove non-downsampled rows, and add downsampled rows
+    d3.selectAll(cgm.params.root+' .row_cat_group')
+      .remove();
+    d3.selectAll(cgm.params.root+' .row_label_group')
+      .remove();
+    d3.selectAll(cgm.params.root+' .row')
+      .remove();
+
+    // no need to re-calculate the downsampled layers
+    // calc_downsampled_levels(params);
+    var zooming_stopped = true;
+    var zooming_out = true;
+    var make_all_rows = true;
+
+    // show_visible_area is also run with two_translate_zoom, but at that point
+    // the parameters were not updated and two_translate_zoom if only run
+    // if needed to reset zoom
+    show_visible_area(cgm, zooming_stopped, zooming_out, make_all_rows);
+
   }
 
   // reduce opacity during update
