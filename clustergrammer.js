@@ -9200,6 +9200,7 @@ var Clustergrammer =
 	var modify_row_node_cats = __webpack_require__(162);
 	var run_zoom = __webpack_require__(82);
 	var show_visible_area = __webpack_require__(66);
+	var make_col_label_container = __webpack_require__(51);
 
 	module.exports = function update_viz_with_network(cgm, new_network_data) {
 
@@ -9288,6 +9289,27 @@ var Clustergrammer =
 	    // the parameters were not updated and two_translate_zoom if only run
 	    // if needed to reset zoom
 	    show_visible_area(cgm, zooming_stopped, zooming_out, make_all_rows);
+
+	    make_col_label_container(cgm);
+
+	    var col_nodes = cgm.params.network_data.col_nodes;
+
+	    // remove column labels
+	    d3.selectAll(cgm.params.root + ' .col_label_group').data(col_nodes, function (d) {
+	      return d.name;
+	    }).exit().style('opacity', 0).remove();
+
+	    d3.selectAll(cgm.params.root + ' .col_label_text').data(col_nodes, function (d) {
+	      return d.name;
+	    }).exit().style('opacity', 0).remove();
+
+	    d3.selectAll(cgm.params.root + ' .col_cat_group').data(col_nodes, function (d) {
+	      return d.name;
+	    }).exit().style('opacity', 0).remove();
+
+	    d3.selectAll(cgm.params.root + ' .col_dendro_group').data(col_nodes, function (d) {
+	      return d.name;
+	    }).exit().style('opacity', 0).remove();
 	  }
 
 	  // reduce opacity during update

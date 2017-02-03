@@ -14,6 +14,7 @@ var make_row_cat_super_labels = require('../labels/make_row_cat_super_labels');
 var modify_row_node_cats = require('./modify_row_node_cats');
 var run_zoom = require('../zoom/run_zoom');
 var show_visible_area = require('../zoom/show_visible_area');
+var make_col_label_container = require('../labels/make_col_label_container');
 
 module.exports = function update_viz_with_network(cgm, new_network_data){
 
@@ -110,6 +111,34 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
     // if needed to reset zoom
     show_visible_area(cgm, zooming_stopped, zooming_out, make_all_rows);
 
+    make_col_label_container(cgm);
+
+    var col_nodes = cgm.params.network_data.col_nodes;
+
+    // remove column labels
+    d3.selectAll(cgm.params.root+' .col_label_group')
+      .data(col_nodes, function(d){return d.name;})
+      .exit()
+      .style('opacity',0)
+      .remove();
+
+    d3.selectAll(cgm.params.root+' .col_label_text')
+      .data(col_nodes, function(d){return d.name;})
+      .exit()
+      .style('opacity',0)
+      .remove();
+
+    d3.selectAll(cgm.params.root+' .col_cat_group')
+      .data(col_nodes, function(d){return d.name;})
+      .exit()
+      .style('opacity',0)
+      .remove();
+
+    d3.selectAll(cgm.params.root+' .col_dendro_group')
+      .data(col_nodes, function(d){return d.name;})
+      .exit()
+      .style('opacity',0)
+      .remove();
   }
 
   // reduce opacity during update
