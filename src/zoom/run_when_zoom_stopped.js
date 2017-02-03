@@ -45,19 +45,20 @@ module.exports = function run_when_zoom_stopped(cgm){
 
     toggle_grid_lines(params);
 
+    // probably do not need
+    ///////////////////////////
+    // _.each(['row','col'], function(inst_rc){
 
-    _.each(['row','col'], function(inst_rc){
+    //   var inst_num_visible = num_visible_labels(params, inst_rc);
 
-      var inst_num_visible = num_visible_labels(params, inst_rc);
+    //   if (inst_num_visible < 125){
+    //     d3.selectAll(params.root+' .'+inst_rc+'_label_group' )
+    //       .each(function() {
+    //         trim_text(params, this, inst_rc);
+    //       });
+    //   }
 
-      if (inst_num_visible < 125){
-        d3.selectAll(params.root+' .'+inst_rc+'_label_group' )
-          .each(function() {
-            trim_text(params, this, inst_rc);
-          });
-      }
-
-    });
+    // });
 
     text_patch();
 

@@ -4829,7 +4829,7 @@ var Clustergrammer =
 	  var make_all_rows = arguments.length <= 3 || arguments[3] === undefined ? false : arguments[3];
 
 
-	  console.log('show_visible_area stopped: ' + String(zooming_stopped));
+	  // console.log('show_visible_area stopped: ' + String(zooming_stopped));
 
 	  var params = cgm.params;
 	  var zoom_info = params.zoom_info;
@@ -6085,11 +6085,12 @@ var Clustergrammer =
 	'use strict';
 
 	var constrain_font_size = __webpack_require__(84);
-	var check_if_zooming_has_stopped = __webpack_require__(86);
 	var show_visible_area = __webpack_require__(66);
 	var resize_label_val_bars = __webpack_require__(93);
 	var zoom_crop_triangles = __webpack_require__(63);
 	var get_previous_zoom = __webpack_require__(94);
+	var run_when_zoom_stopped = __webpack_require__(87);
+	var check_zoom_stop_status = __webpack_require__(91);
 
 	module.exports = function run_transformation(cgm) {
 
@@ -6167,6 +6168,17 @@ var Clustergrammer =
 
 	  setTimeout(not_zooming, 50);
 	  setTimeout(check_if_zooming_has_stopped, 100, cgm);
+
+	  function check_if_zooming_has_stopped(cgm) {
+	    var params = cgm.params;
+
+	    var stop_attributes = check_zoom_stop_status(params);
+
+	    if (stop_attributes === true) {
+	      // wait and double check that zooming has stopped
+	      setTimeout(run_when_zoom_stopped, 50, cgm);
+	    }
+	  }
 		};
 
 /***/ },
@@ -6260,28 +6272,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 86 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var run_when_zoom_stopped = __webpack_require__(87);
-	var check_zoom_stop_status = __webpack_require__(91);
-
-	module.exports = function check_if_zooming_has_stopped(cgm) {
-
-	  var params = cgm.params;
-
-	  var stop_attributes = check_zoom_stop_status(params);
-
-	  if (stop_attributes === true) {
-
-	    // wait and double check that zooming has stopped
-	    setTimeout(run_when_zoom_stopped, 50, cgm);
-	  }
-		};
-
-/***/ },
+/* 86 */,
 /* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -6329,16 +6320,20 @@ var Clustergrammer =
 
 	    toggle_grid_lines(params);
 
-	    _.each(['row', 'col'], function (inst_rc) {
+	    // probably do not need
+	    ///////////////////////////
+	    // _.each(['row','col'], function(inst_rc){
 
-	      var inst_num_visible = num_visible_labels(params, inst_rc);
+	    //   var inst_num_visible = num_visible_labels(params, inst_rc);
 
-	      if (inst_num_visible < 125) {
-	        d3.selectAll(params.root + ' .' + inst_rc + '_label_group').each(function () {
-	          trim_text(params, this, inst_rc);
-	        });
-	      }
-	    });
+	    //   if (inst_num_visible < 125){
+	    //     d3.selectAll(params.root+' .'+inst_rc+'_label_group' )
+	    //       .each(function() {
+	    //         trim_text(params, this, inst_rc);
+	    //       });
+	    //   }
+
+	    // });
 
 	    text_patch();
 

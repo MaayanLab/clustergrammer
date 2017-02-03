@@ -1,9 +1,10 @@
 var constrain_font_size = require('./constrain_font_size');
-var check_if_zooming_has_stopped = require('./check_if_zooming_has_stopped');
 var show_visible_area = require('./show_visible_area');
 var resize_label_val_bars = require('./resize_label_val_bars');
 var zoom_crop_triangles = require('./zoom_crop_triangles');
 var get_previous_zoom = require('./get_previous_zoom');
+var run_when_zoom_stopped = require('./run_when_zoom_stopped');
+var check_zoom_stop_status = require('./check_zoom_stop_status');
 
 module.exports = function run_transformation(cgm){
 
@@ -99,5 +100,16 @@ module.exports = function run_transformation(cgm){
 
   setTimeout(not_zooming, 50);
   setTimeout(check_if_zooming_has_stopped, 100, cgm);
+
+  function check_if_zooming_has_stopped(cgm){
+    var params = cgm.params;
+
+    var stop_attributes = check_zoom_stop_status(params);
+
+    if (stop_attributes === true){
+      // wait and double check that zooming has stopped
+      setTimeout( run_when_zoom_stopped, 50, cgm);
+    }
+  }
 
 };
