@@ -4372,6 +4372,9 @@ var Clustergrammer =
 	    // give user visual cue
 	    d3.select(this).style('opacity', 0.9).transition().duration(1000).style('opacity', 0);
 
+	    // remove dendro shadows when clicked
+	    d3.selectAll(params.root + ' .dendro_shadow').remove();
+
 	    /* filter using dendrogram */
 	    if (cgm.params.dendro_filter.row === false && cgm.params.dendro_filter.col === false && cgm.params.cat_filter.row === false && cgm.params.cat_filter.col === false) {
 

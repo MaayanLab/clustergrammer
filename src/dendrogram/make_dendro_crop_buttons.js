@@ -271,6 +271,10 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc){
         .duration(1000)
         .style('opacity', 0);
 
+      // remove dendro shadows when clicked
+      d3.selectAll(params.root+' .dendro_shadow')
+        .remove();
+
       /* filter using dendrogram */
       if (cgm.params.dendro_filter.row === false &&
           cgm.params.dendro_filter.col === false &&
