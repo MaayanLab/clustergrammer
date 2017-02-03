@@ -46,16 +46,5 @@ module.exports = function(old_params, params) {
     delays.enter = 0;
   }
 
-  // reduce opacity during update
-  d3.select(params.viz.viz_svg)
-    .style('opacity',0.70);
-
-  function finish_update(){
-    d3.select(params.viz.viz_svg)
-      .transition().duration(250)
-      .style('opacity',1.0);
-  }
-  setTimeout(finish_update, delays.enter);
-
   return delays;
 };

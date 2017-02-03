@@ -9200,6 +9200,13 @@ var Clustergrammer =
 
 	module.exports = function update_viz_with_network(cgm, new_network_data) {
 
+	  console.log('update_viz_with_network');
+
+	  console.log(cgm.params.viz.ds_level);
+
+	  // remove downsampled rows always
+	  d3.selectAll(cgm.params.root + ' .ds' + String(cgm.params.viz.ds_level) + '_row').remove();
+
 	  // run optional callback function
 	  if (cgm.params.matrix_update_callback != null) {
 	    cgm.params.matrix_update_callback();
@@ -9234,7 +9241,6 @@ var Clustergrammer =
 	  // tmp_config.cat_colors = cgm.params.viz.cat_colors;
 
 	  var new_params = make_params(tmp_config);
-	  var delays = define_enter_exit_delays(cgm.params, new_params);
 
 	  // pass the newly calcluated params back to the cgm object
 	  cgm.params = new_params;
@@ -9254,7 +9260,17 @@ var Clustergrammer =
 	  // have persistent crop_filter_nodes while updating
 	  cgm.params.crop_filter_nodes = inst_crop_fitler;
 
-	  enter_exit_update(cgm, new_network_data, delays);
+	  console.log('num ds levles after update: ' + String(cgm.params.viz.ds_num_levels));
+	  // only run enter-exit-updates if there is no downsampling
+	  var delays = define_enter_exit_delays(cgm.params, new_params);
+	  if (cgm.params.viz.ds_num_levels === 0) {
+	    enter_exit_update(cgm, new_network_data, delays);
+	  } else {}
+	  // remove row labels, remove non-downsampled rows, and add downsampled rows
+
+
+	  // reduce opacity during update
+	  d3.select(cgm.params.viz.viz_svg).style('opacity', 0.70);
 
 	  make_row_cat(cgm);
 	  make_row_cat_super_labels(cgm);
@@ -9284,13 +9300,18 @@ var Clustergrammer =
 	  setTimeout(enable_sidebar, 2500, cgm.params);
 
 	  d3.selectAll(cgm.params.root + ' .dendro_shadow').remove();
+
+	  function finish_update() {
+	    d3.select(cgm.params.viz.viz_svg).transition().duration(250).style('opacity', 1.0);
+	  }
+	  setTimeout(finish_update, delays.enter);
 		};
 
 /***/ },
 /* 146 */
 /***/ function(module, exports) {
 
-	'use strict';
+	"use strict";
 
 	module.exports = function (old_params, params) {
 
@@ -9347,14 +9368,6 @@ var Clustergrammer =
 	    delays.update = 0;
 	    delays.enter = 0;
 	  }
-
-	  // reduce opacity during update
-	  d3.select(params.viz.viz_svg).style('opacity', 0.70);
-
-	  function finish_update() {
-	    d3.select(params.viz.viz_svg).transition().duration(250).style('opacity', 1.0);
-	  }
-	  setTimeout(finish_update, delays.enter);
 
 	  return delays;
 	};
