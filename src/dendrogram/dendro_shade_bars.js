@@ -15,8 +15,6 @@ module.exports = function dendro_shade_bars(params, inst_selection, inst_rc, ins
       .style('height', inst_data.pos_top+'px')
       .style('fill','black')
       .classed('dendro_shadow',true)
-      // .style('opacity', 0)
-      // .transition()
       .style('opacity', inst_opacity);
 
     bot_height = params.viz.clust.dim.height - inst_data.pos_bot;
@@ -28,8 +26,6 @@ module.exports = function dendro_shade_bars(params, inst_selection, inst_rc, ins
       .attr('transform','translate(0,'+inst_data.pos_bot+')')
       .style('fill','black')
       .classed('dendro_shadow',true)
-      // .style('opacity', 0)
-      // .transition()
       .style('opacity', inst_opacity);
 
   } else if (inst_rc === 'col'){
@@ -41,8 +37,6 @@ module.exports = function dendro_shade_bars(params, inst_selection, inst_rc, ins
       .style('height', params.viz.clust.dim.height+'px')
       .style('fill','black')
       .classed('dendro_shadow',true)
-      // .style('opacity', 0)
-      // .transition()
       .style('opacity', inst_opacity);
 
     // bottom shade
@@ -54,8 +48,6 @@ module.exports = function dendro_shade_bars(params, inst_selection, inst_rc, ins
       .attr('transform','translate('+inst_data.pos_bot+',0)')
       .style('fill','black')
       .classed('dendro_shadow',true)
-      // .style('opacity', 0)
-      // .transition()
       .style('opacity',inst_opacity);
 
   }

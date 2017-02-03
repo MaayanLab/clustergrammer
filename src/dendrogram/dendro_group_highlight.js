@@ -2,9 +2,13 @@ var dendro_shade_bars = require('./dendro_shade_bars');
 
 module.exports = function dendro_group_highlight(params, inst_selection, inst_data, inst_rc){
 
-  var wait_before_make_shade = 500;
-
-  setTimeout(still_hovering, wait_before_make_shade);
+  // only make shadows if there is more than one crop button
+  if (d3.selectAll(params.root+' .'+ inst_rc +'_dendro_crop_buttons')[0].length > 1){
+    setTimeout(still_hovering, 500);
+  } else {
+    d3.selectAll(params.root+' .dendro_shadow')
+      .remove();
+  }
 
   function still_hovering(){
 
@@ -17,14 +21,14 @@ module.exports = function dendro_group_highlight(params, inst_selection, inst_da
         d3.select(inst_selection)
           .style('opacity', 0.7);
 
-        make_shade_bars();
+        make_shadow_bars();
 
       }
 
     }
   }
 
-  function make_shade_bars(){
+  function make_shadow_bars(){
 
     if (inst_rc === 'row'){
 
