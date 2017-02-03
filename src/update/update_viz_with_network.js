@@ -139,6 +139,9 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
       .exit()
       .style('opacity',0)
       .remove();
+
+    // // seeing if this fixes resizing issue
+    // reset_size_after_update(cgm)
   }
 
   // reduce opacity during update
