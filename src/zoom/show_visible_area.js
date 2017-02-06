@@ -1,6 +1,7 @@
 var find_viz_rows = require('../zoom/find_viz_rows');
 var make_matrix_rows = require('../matrix/make_matrix_rows');
 var make_row_labels = require('../labels/make_row_labels');
+var make_row_visual_aid_triangles = require('../labels/make_row_visual_aid_triangles');
 
 module.exports = function show_visible_area(cgm, zooming_stopped=false,
   zooming_out=false, make_all_rows=false){
@@ -110,9 +111,22 @@ module.exports = function show_visible_area(cgm, zooming_stopped=false,
   if (new_ds_level < 0){
     // set matrix to default matrix
     inst_matrix = params.matrix.matrix;
+
+    // make row visual-aid triangles
+    make_row_visual_aid_triangles(params);
+
   } else {
     // set matrix to downsampled matrix
     inst_matrix = params.matrix.ds_matrix[new_ds_level];
+
+    d3.selectAll(params.root+' .row_cat_group path')
+      .remove();
+  }
+
+  // also remove row visual aid triangles if zooming out
+  if (zooming_out === true){
+    d3.selectAll(params.root+' .row_cat_group path')
+      .remove();
   }
 
   // remove rows and labels that are not visible and change ds_level
