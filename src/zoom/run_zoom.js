@@ -17,8 +17,8 @@ module.exports = function zoomed(cgm) {
     .style('display','none');
 
   // transfer zoom_info to params
-  params.zoom_info = zoom_rules_y(params.viz, zoom_info);
-  params.zoom_info = zoom_rules_x(params.viz, zoom_info);
+  params.zoom_info = zoom_rules_y(params, zoom_info);
+  params.zoom_info = zoom_rules_x(params, zoom_info);
 
   // do not run transformation if moving slider
   if (params.is_slider_drag === false && params.is_cropping === false){

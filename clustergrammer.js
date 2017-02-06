@@ -6836,8 +6836,8 @@ var Clustergrammer =
 	  d3.selectAll(params.viz.root_tips).style('display', 'none');
 
 	  // transfer zoom_info to params
-	  params.zoom_info = zoom_rules_y(params.viz, zoom_info);
-	  params.zoom_info = zoom_rules_x(params.viz, zoom_info);
+	  params.zoom_info = zoom_rules_y(params, zoom_info);
+	  params.zoom_info = zoom_rules_x(params, zoom_info);
 
 	  // do not run transformation if moving slider
 	  if (params.is_slider_drag === false && params.is_cropping === false) {
@@ -7105,8 +7105,9 @@ var Clustergrammer =
 
 	"use strict";
 
-	module.exports = function zoom_rules_y(viz, zoom_info) {
+	module.exports = function zoom_rules_y(params, zoom_info) {
 
+	  var viz = params.viz;
 	  // zoom in the x direction before zooming in the y direction
 	  if (viz.zoom_switch_y > 1) {
 	    if (zoom_info.zoom_y < viz.zoom_switch_y) {
@@ -7140,7 +7141,9 @@ var Clustergrammer =
 
 	"use strict";
 
-	module.exports = function zoom_rules_x(viz, zoom_info) {
+	module.exports = function zoom_rules_x(params, zoom_info) {
+
+	  var viz = params.viz;
 
 	  // zoom in the y direction before zooming in the x direction
 	  if (viz.zoom_switch > 1) {

@@ -1,4 +1,6 @@
-module.exports = function zoom_rules_x(viz, zoom_info){
+module.exports = function zoom_rules_x(params, zoom_info){
+
+  var viz = params.viz;
 
   // zoom in the y direction before zooming in the x direction
   if (viz.zoom_switch > 1){
