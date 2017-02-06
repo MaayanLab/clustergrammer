@@ -2569,7 +2569,7 @@ var Clustergrammer =
 	    // d3-tooltip - for tiles
 	    var tip = d3_tip_custom().attr('class', function () {
 	      var root_tip_selector = params.viz.root_tips.replace('.', '');
-	      var class_string = root_tip_selector + ' d3-tip tile_tip';
+	      var class_string = root_tip_selector + ' d3-tip ' + root_tip_selector + '_tile_tip';
 	      return class_string;
 	    }).style('display', 'none').direction('nw').offset([0, 0]).html(function (d) {
 	      var inst_value = String(d.value.toFixed(3));
@@ -4913,10 +4913,11 @@ var Clustergrammer =
 
 	  if (params.labels.show_label_tooltips) {
 
+	    var root_tip_selector = params.viz.root_tips.replace('.', '');
+
 	    // d3-tooltip
 	    var row_tip = d3_tip_custom().attr('class', function () {
-	      var root_tip_selector = params.viz.root_tips.replace('.', '');
-	      var class_string = root_tip_selector + ' d3-tip row_tip';
+	      var class_string = root_tip_selector + ' d3-tip ' + root_tip_selector + '_row_tip';
 	      return class_string;
 	    }).direction('e').offset([0, 10]).style('display', 'none').html(function (d) {
 	      var inst_name = d.name.replace(/_/g, ' ').split('#')[0];
@@ -4927,21 +4928,20 @@ var Clustergrammer =
 
 	    d3.select(params.root + ' .row_label_zoom_container').selectAll('g').on('mouseover', function (d) {
 
-	      // do not include params.root selector since tooltips are not in root
-	      d3.select(' .row_tip').classed(d.name, true);
+	      d3.select(params.viz.root_tips + '_row_tip').classed(d.name, true);
 
-	      d3.selectAll('.row_tip').style('display', 'block');
+	      d3.selectAll(params.viz.root_tips + '_row_tip').style('display', 'block');
 
 	      d3.select(this).select('text').classed('active', true);
 
 	      row_tip.show(d);
 
 	      if (params.row_tip_callback != null) {
-	        params.row_tip_callback(d);
+	        params.row_tip_callback(params.viz.root_tips, d);
 	      }
 	    }).on('mouseout', function mouseout(d) {
 
-	      d3.selectAll('.row_tip').style('display', 'none').classed(d.name, false);
+	      d3.selectAll(params.viz.root_tips + '_row_tip').style('display', 'none').classed(d.name, false);
 
 	      d3.select(this).select('text').classed('active', false);
 
@@ -5379,7 +5379,11 @@ var Clustergrammer =
 
 	  // if downsampling
 	  if (new_ds_level >= 0) {
+	    // remove old rows
 	    d3.selectAll('.row').remove();
+	    // remove tile tooltips and row tooltips
+	    d3.selectAll(params.viz.root_tips + '_tile_tip').remove();
+	    d3.selectAll(params.viz.root_tips + '_row_tip').remove();
 	  }
 
 	  // default state for downsampling

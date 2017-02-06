@@ -4,11 +4,13 @@ module.exports = function make_row_tooltips(params){
 
   if (params.labels.show_label_tooltips){
 
+    var root_tip_selector = params.viz.root_tips.replace('.','');
+
     // d3-tooltip
     var row_tip = d3_tip_custom()
       .attr('class', function(){
-        var root_tip_selector = params.viz.root_tips.replace('.','');
-        var class_string = root_tip_selector + ' d3-tip row_tip';
+        var class_string = root_tip_selector + ' d3-tip '+
+                           root_tip_selector + '_row_tip';
         return class_string;
       })
       .direction('e')
@@ -27,11 +29,10 @@ module.exports = function make_row_tooltips(params){
       .selectAll('g')
       .on('mouseover', function(d) {
 
-        // do not include params.root selector since tooltips are not in root
-        d3.select(' .row_tip')
+        d3.select(params.viz.root_tips+'_row_tip')
           .classed(d.name, true);
 
-        d3.selectAll('.row_tip')
+        d3.selectAll(params.viz.root_tips+'_row_tip')
           .style('display', 'block');
 
         d3.select(this)
@@ -41,13 +42,13 @@ module.exports = function make_row_tooltips(params){
         row_tip.show(d);
 
         if (params.row_tip_callback != null){
-          params.row_tip_callback(d);
+          params.row_tip_callback(params.viz.root_tips, d);
         }
 
       })
       .on('mouseout', function mouseout(d) {
 
-        d3.selectAll('.row_tip')
+        d3.selectAll(params.viz.root_tips+'_row_tip')
           .style('display', 'none')
           .classed(d.name, false);
 

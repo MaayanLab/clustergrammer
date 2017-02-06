@@ -102,7 +102,12 @@ module.exports = function show_visible_area(cgm, zooming_stopped=false,
 
   // if downsampling
   if (new_ds_level >= 0){
+    // remove old rows
     d3.selectAll('.row').remove();
+    // remove tile tooltips and row tooltips
+    d3.selectAll(params.viz.root_tips + '_tile_tip').remove();
+    d3.selectAll(params.viz.root_tips + '_row_tip').remove();
+
   }
 
   // default state for downsampling
