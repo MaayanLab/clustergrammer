@@ -16,10 +16,11 @@ module.exports = function make_matrix_rows(params, current_matrix,
     row_class = 'ds' + String(ds_level) + '_row';
   }
 
-  // remove old tooltips
-  d3.selectAll(params.viz.root_tips + '_tile_tip').remove();
 
   if (make_tip){
+
+    // do not remove tile_tip here
+    /////////////////////////////////
 
     // make rows in the matrix - add key names to rows in matrix
     /////////////////////////////////////////////////////////////
@@ -51,9 +52,11 @@ module.exports = function make_matrix_rows(params, current_matrix,
         return tooltip_string;
       });
 
-    d3.select(params.root+' .clust_group')
-      .call(tip);
+    // d3.select(params.root+' .clust_group')
+    //   .call(tip);
 
+  } else {
+    tip = null;
   }
 
   // gather a subset of row data from the matrix or use all rows
@@ -80,5 +83,10 @@ module.exports = function make_matrix_rows(params, current_matrix,
     .each(function(d){
       make_simple_rows(params, d, tip, this, ds_level);
     });
+
+  if (params.viz.ds_level === -1 && tip != null){
+    d3.selectAll(params.root+' .row')
+      .call(tip);
+  }
 
 };

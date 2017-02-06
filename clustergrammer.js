@@ -2562,10 +2562,10 @@ var Clustergrammer =
 	    row_class = 'ds' + String(ds_level) + '_row';
 	  }
 
-	  // remove old tooltips
-	  d3.selectAll(params.viz.root_tips + '_tile_tip').remove();
-
 	  if (make_tip) {
+
+	    // do not remove tile_tip here
+	    /////////////////////////////////
 
 	    // make rows in the matrix - add key names to rows in matrix
 	    /////////////////////////////////////////////////////////////
@@ -2588,7 +2588,10 @@ var Clustergrammer =
 	      return tooltip_string;
 	    });
 
-	    d3.select(params.root + ' .clust_group').call(tip);
+	    // d3.select(params.root+' .clust_group')
+	    //   .call(tip);
+	  } else {
+	    tip = null;
 	  }
 
 	  // gather a subset of row data from the matrix or use all rows
@@ -2610,6 +2613,10 @@ var Clustergrammer =
 	  }).each(function (d) {
 	    make_simple_rows(params, d, tip, this, ds_level);
 	  });
+
+	  if (params.viz.ds_level === -1 && tip != null) {
+	    d3.selectAll(params.root + ' .row').call(tip);
+	  }
 		};
 
 /***/ },
@@ -2854,7 +2861,6 @@ var Clustergrammer =
 	module.exports = function mouseover_tile(params, inst_selection, tip, inst_arguments) {
 
 	  var inst_data = inst_arguments[0];
-
 	  var args = [].slice.call(inst_arguments);
 	  var timeout;
 	  var delay = 1000;
@@ -2886,7 +2892,7 @@ var Clustergrammer =
 
 	      if (inst_zoom === 0) {
 
-	        if (params.matrix.show_tile_tooltips) {
+	        if (params.matrix.show_tile_tooltips && tip !== null) {
 
 	          d3.selectAll(params.viz.root_tips + '_tile_tip').style('display', 'block');
 
@@ -2919,7 +2925,9 @@ var Clustergrammer =
 	    d3.selectAll(params.root + ' .' + inst_rc + '_label_group text').style('font-weight', 'normal');
 	  });
 
-	  tip.hide();
+	  if (tip != null) {
+	    tip.hide();
+	  }
 	};
 
 /***/ },

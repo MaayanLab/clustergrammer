@@ -13,5 +13,7 @@ module.exports = function mouseout_tile(params, inst_selection, tip){
 
   });
 
-  tip.hide();
+  if (tip != null){
+    tip.hide();
+  }
 };

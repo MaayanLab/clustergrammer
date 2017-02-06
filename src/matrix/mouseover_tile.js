@@ -1,7 +1,6 @@
 module.exports = function mouseover_tile(params, inst_selection, tip, inst_arguments){
 
   var inst_data = inst_arguments[0];
-
   var args = [].slice.call(inst_arguments);
   var timeout;
   var delay = 1000;
@@ -36,7 +35,7 @@ module.exports = function mouseover_tile(params, inst_selection, tip, inst_argum
 
       if (inst_zoom === 0){
 
-        if (params.matrix.show_tile_tooltips){
+        if (params.matrix.show_tile_tooltips && tip !== null){
 
           d3.selectAll(params.viz.root_tips + '_tile_tip')
             .style('display','block');
