@@ -118,7 +118,7 @@ module.exports = function make_icons(cgm, sidebar){
           cgm.params.crop_filter_nodes.row_nodes = cgm.params.network_data.row_nodes;
           cgm.params.crop_filter_nodes.col_nodes = cgm.params.network_data.col_nodes;
 
-          cgm.crop_matrix();
+          cgm.brush_crop_matrix();
 
           if (d3.select(this).classed('active_cropping') === false){
 

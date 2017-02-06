@@ -11,7 +11,7 @@ var reset_cats = require('./update/reset_cats');
 var two_translate_zoom = require('./zoom/two_translate_zoom');
 var external_update_view = require('./update/external_update_view');
 var export_matrix = require('./matrix/export_matrix');
-var crop_matrix = require('./matrix/crop_matrix');
+var brush_crop_matrix = require('./matrix/brush_crop_matrix');
 var run_zoom = require('./zoom/run_zoom');
 var d3_tip_custom = require('./tooltip/d3_tip_custom');
 
@@ -104,7 +104,7 @@ function Clustergrammer(args) {
   cgm.reset_cats = reset_cats;
   cgm.zoom = zoom_api;
   cgm.export_matrix = export_matrix;
-  cgm.crop_matrix = crop_matrix;
+  cgm.brush_crop_matrix = brush_crop_matrix;
   cgm.d3_tip_custom = expose_d3_tip_custom;
 
   return cgm;

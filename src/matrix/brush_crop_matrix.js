@@ -1,6 +1,6 @@
 var deactivate_cropping = require('./deactivate_cropping');
 
-module.exports = function crop_matrix(){
+module.exports = function brush_crop_matrix(){
 
   // transform brush-extent based on zoom/translate
   // get rows/cols from brush-extent
