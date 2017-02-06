@@ -5290,7 +5290,7 @@ var Clustergrammer =
 	  var make_all_rows = arguments.length <= 3 || arguments[3] === undefined ? false : arguments[3];
 
 
-	  // console.log('show_visible_area stopped: ' + String(zooming_stopped));
+	  console.log('show_visible_area stopped: ' + String(zooming_stopped));
 
 	  var params = cgm.params;
 	  var zoom_info = params.zoom_info;
@@ -7915,23 +7915,38 @@ var Clustergrammer =
 	    return 'translate(0,' + inst_y + ')';
 	  });
 
-	  // reset tiles
-	  svg_group.selectAll('.row').selectAll('.tile').attr('transform', function (d) {
-	    return fine_position_tile(params, d);
-	  }).attr('width', params.viz.rect_width).attr('height', params.viz.rect_height);
+	  if (params.viz.ds_level === -1) {
 
-	  // reset tile_up
-	  svg_group.selectAll('.row').selectAll('.tile_up').attr('d', function () {
-	    return draw_up_tile(params);
-	  }).attr('transform', function (d) {
-	    return fine_position_tile(params, d);
-	  });
+	    // reset tiles
+	    svg_group.selectAll('.row').selectAll('.tile').attr('transform', function (d) {
+	      return fine_position_tile(params, d);
+	    }).attr('width', params.viz.rect_width).attr('height', params.viz.rect_height);
 
-	  svg_group.selectAll('.row').selectAll('.tile_dn').attr('d', function () {
-	    return draw_dn_tile(params);
-	  }).attr('transform', function (d) {
-	    return fine_position_tile(params, d);
-	  });
+	    // reset tile_up
+	    svg_group.selectAll('.row').selectAll('.tile_up').attr('d', function () {
+	      return draw_up_tile(params);
+	    }).attr('transform', function (d) {
+	      return fine_position_tile(params, d);
+	    });
+
+	    svg_group.selectAll('.row').selectAll('.tile_dn').attr('d', function () {
+	      return draw_dn_tile(params);
+	    }).attr('transform', function (d) {
+	      return fine_position_tile(params, d);
+	    });
+	  } else {
+
+	    console.log('resize ds-rows');
+
+	    var ds_level = params.viz.ds_level;
+	    var row_class = '.ds' + String(ds_level) + '_row';
+	    var ds_rect_height = params.viz.ds[ds_level].rect_height;
+
+	    // reset ds-tiles
+	    svg_group.selectAll(row_class).selectAll('.tile').attr('transform', function (d) {
+	      return fine_position_tile(params, d);
+	    }).attr('width', params.viz.rect_width).attr('height', ds_rect_height);
+	  }
 		};
 
 /***/ },
