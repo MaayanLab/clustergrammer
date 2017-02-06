@@ -1951,6 +1951,9 @@ var Clustergrammer =
 	  // console.log('---- before ---------')
 	  // console.log(params.matrix.matrix[0].row_data[0].value)
 
+	  // height of downsampled rectangles
+	  var ds_height = 3;
+
 	  if (params.viz.rect_height < 1) {
 
 	    // increase ds opacity, as more rows are compressed into a single downsampled
@@ -1961,17 +1964,14 @@ var Clustergrammer =
 
 	    var ds;
 
-	    // height of downsampled rectangles
-	    var inst_height = 3;
-
 	    // amount of zooming that is tolerated for the downsampled rows
 	    var inst_zt = 2;
 	    params.viz.ds_zt = inst_zt;
 
 	    // the number of downsampled matrices that need to be calculated
-	    // var num_levels = Math.round(inst_height / (params.viz.rect_height * inst_zt));
+	    // var num_levels = Math.round(ds_height / (params.viz.rect_height * inst_zt));
 
-	    var total_zoom = inst_height / params.viz.rect_height;
+	    var total_zoom = ds_height / params.viz.rect_height;
 
 	    var num_levels = Math.floor(Math.log(total_zoom) / Math.log(inst_zt));
 
@@ -1996,7 +1996,7 @@ var Clustergrammer =
 
 	      ds = {};
 
-	      ds.height = inst_height;
+	      ds.height = ds_height;
 	      ds.num_levels = num_levels;
 
 	      var inst_zoom_tolerance = Math.pow(inst_zt, i);
@@ -9475,8 +9475,7 @@ var Clustergrammer =
 	var make_row_cat_super_labels = __webpack_require__(87);
 	var modify_row_node_cats = __webpack_require__(161);
 	var run_zoom = __webpack_require__(90);
-	var show_visible_area = __webpack_require__(72);
-	var make_col_label_container = __webpack_require__(69);
+	var ds_enter_exit_update = __webpack_require__(209);
 
 	module.exports = function update_viz_with_network(cgm, new_network_data) {
 
@@ -9546,50 +9545,11 @@ var Clustergrammer =
 	  console.log('num ds levles after update: ' + String(cgm.params.viz.ds_num_levels));
 
 	  // only run enter-exit-updates if there is no downsampling
-
 	  if (cgm.params.viz.ds_num_levels === 0) {
 	    // enter_exit_update(cgm, new_network_data, delays);
 	    enter_exit_update(cgm, delays);
 	  } else {
-	    // remove row labels, remove non-downsampled rows, and add downsampled rows
-	    d3.selectAll(cgm.params.root + ' .row_cat_group').remove();
-	    d3.selectAll(cgm.params.root + ' .row_label_group').remove();
-	    d3.selectAll(cgm.params.root + ' .row').remove();
-
-	    // no need to re-calculate the downsampled layers
-	    // calc_downsampled_levels(params);
-	    var zooming_stopped = true;
-	    var zooming_out = true;
-	    var make_all_rows = true;
-
-	    // show_visible_area is also run with two_translate_zoom, but at that point
-	    // the parameters were not updated and two_translate_zoom if only run
-	    // if needed to reset zoom
-	    show_visible_area(cgm, zooming_stopped, zooming_out, make_all_rows);
-
-	    make_col_label_container(cgm);
-
-	    var col_nodes = cgm.params.network_data.col_nodes;
-
-	    // remove column labels
-	    d3.selectAll(cgm.params.root + ' .col_label_group').data(col_nodes, function (d) {
-	      return d.name;
-	    }).exit().style('opacity', 0).remove();
-
-	    d3.selectAll(cgm.params.root + ' .col_label_text').data(col_nodes, function (d) {
-	      return d.name;
-	    }).exit().style('opacity', 0).remove();
-
-	    d3.selectAll(cgm.params.root + ' .col_cat_group').data(col_nodes, function (d) {
-	      return d.name;
-	    }).exit().style('opacity', 0).remove();
-
-	    d3.selectAll(cgm.params.root + ' .col_dendro_group').data(col_nodes, function (d) {
-	      return d.name;
-	    }).exit().style('opacity', 0).remove();
-
-	    // // seeing if this fixes resizing issue
-	    // reset_size_after_update(cgm)
+	    ds_enter_exit_update(cgm);
 	  }
 
 	  // reduce opacity during update
@@ -14192,16 +14152,80 @@ var Clustergrammer =
 
 	module.exports = function make_row_visual_aid_triangles(params) {
 
-	  d3.selectAll(params.root + ' .row_cat_group').append('path').attr('d', function () {
-	    var origin_x = params.viz.cat_room.symbol_width - 1;
-	    var origin_y = 0;
-	    var mid_x = 1;
-	    var mid_y = params.viz.y_scale.rangeBand() / 2;
-	    var final_x = params.viz.cat_room.symbol_width - 1;
-	    var final_y = params.viz.y_scale.rangeBand();
-	    var output_string = 'M ' + origin_x + ',' + origin_y + ' L ' + mid_x + ',' + mid_y + ', L ' + final_x + ',' + final_y + ' Z';
-	    return output_string;
-	  }).attr('fill', '#eee').style('opacity', params.viz.triangle_opacity);
+	  if (d3.select(params.root + ' .row_cat_group path').empty() === true) {
+	    d3.selectAll(params.root + ' .row_cat_group').append('path').attr('d', function () {
+	      var origin_x = params.viz.cat_room.symbol_width - 1;
+	      var origin_y = 0;
+	      var mid_x = 1;
+	      var mid_y = params.viz.y_scale.rangeBand() / 2;
+	      var final_x = params.viz.cat_room.symbol_width - 1;
+	      var final_y = params.viz.y_scale.rangeBand();
+	      var output_string = 'M ' + origin_x + ',' + origin_y + ' L ' + mid_x + ',' + mid_y + ', L ' + final_x + ',' + final_y + ' Z';
+	      return output_string;
+	    }).attr('fill', '#eee').style('opacity', params.viz.triangle_opacity);
+	  }
+		};
+
+/***/ },
+/* 209 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var reset_size_after_update = __webpack_require__(147);
+	var make_col_label_container = __webpack_require__(69);
+	var show_visible_area = __webpack_require__(72);
+
+	module.exports = function ds_enter_exit_update(cgm) {
+
+	  console.log('======== ds_enter_exit_update ===============');
+
+	  // remove row labels, remove non-downsampled rows, and add downsampled rows
+	  d3.selectAll(cgm.params.root + ' .row_cat_group').remove();
+	  d3.selectAll(cgm.params.root + ' .row_label_group').remove();
+	  d3.selectAll(cgm.params.root + ' .row').remove();
+
+	  // no need to re-calculate the downsampled layers
+	  // calc_downsampled_levels(params);
+	  var zooming_stopped = true;
+	  var zooming_out = true;
+	  var make_all_rows = true;
+
+	  // show_visible_area is also run with two_translate_zoom, but at that point
+	  // the parameters were not updated and two_translate_zoom if only run
+	  // if needed to reset zoom
+	  show_visible_area(cgm, zooming_stopped, zooming_out, make_all_rows);
+
+	  make_col_label_container(cgm);
+
+	  var col_nodes = cgm.params.network_data.col_nodes;
+
+	  // remove column labels
+	  d3.selectAll(cgm.params.root + ' .col_label_group').data(col_nodes, function (d) {
+	    return d.name;
+	  }).exit().style('opacity', 0).remove();
+
+	  d3.selectAll(cgm.params.root + ' .col_label_text').data(col_nodes, function (d) {
+	    return d.name;
+	  }).exit().style('opacity', 0).remove();
+
+	  d3.selectAll(cgm.params.root + ' .col_cat_group').data(col_nodes, function (d) {
+	    return d.name;
+	  }).exit().style('opacity', 0).remove();
+
+	  d3.selectAll(cgm.params.root + ' .col_dendro_group').data(col_nodes, function (d) {
+	    return d.name;
+	  }).exit().style('opacity', 0).remove();
+
+	  var delays = {};
+	  delays.enter = 0;
+	  delays.update = 0;
+	  delays.run_transition = false;
+
+	  var duration = 0;
+
+	  // seeing if this fixes resizing issue
+	  reset_size_after_update(cgm, duration, delays);
 		};
 
 /***/ }

@@ -5,6 +5,9 @@ module.exports = function calc_downsampled_levels(params){
   // console.log('---- before ---------')
   // console.log(params.matrix.matrix[0].row_data[0].value)
 
+  // height of downsampled rectangles
+  var ds_height = 3;
+
   if (params.viz.rect_height < 1){
 
     // increase ds opacity, as more rows are compressed into a single downsampled
@@ -18,17 +21,14 @@ module.exports = function calc_downsampled_levels(params){
 
     var ds;
 
-    // height of downsampled rectangles
-    var inst_height = 3;
-
     // amount of zooming that is tolerated for the downsampled rows
     var inst_zt = 2;
     params.viz.ds_zt = inst_zt;
 
     // the number of downsampled matrices that need to be calculated
-    // var num_levels = Math.round(inst_height / (params.viz.rect_height * inst_zt));
+    // var num_levels = Math.round(ds_height / (params.viz.rect_height * inst_zt));
 
-    var total_zoom = inst_height / params.viz.rect_height;
+    var total_zoom = ds_height / params.viz.rect_height;
 
     var num_levels = Math.floor( Math.log(total_zoom)/Math.log(inst_zt) ) ;
 
@@ -53,7 +53,7 @@ module.exports = function calc_downsampled_levels(params){
 
       ds = {};
 
-      ds.height = inst_height;
+      ds.height = ds_height;
       ds.num_levels = num_levels;
 
       var inst_zoom_tolerance = Math.pow(inst_zt, i);
@@ -97,6 +97,7 @@ module.exports = function calc_downsampled_levels(params){
 
     // reset row viz_nodes since downsampling
     params.viz.viz_nodes.row = d3.range(params.matrix.ds_matrix[0].length).map(String);
+
   } else {
     // set ds to null if no downsampling is done
     params.viz.ds = null;

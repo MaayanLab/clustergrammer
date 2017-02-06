@@ -13,8 +13,7 @@ var update_reorder_buttons = require('../reorder/update_reorder_buttons');
 var make_row_cat_super_labels = require('../labels/make_row_cat_super_labels');
 var modify_row_node_cats = require('./modify_row_node_cats');
 var run_zoom = require('../zoom/run_zoom');
-var show_visible_area = require('../zoom/show_visible_area');
-var make_col_label_container = require('../labels/make_col_label_container');
+var ds_enter_exit_update = require('../enter/ds_enter_exit_update');
 
 module.exports = function update_viz_with_network(cgm, new_network_data){
 
@@ -88,61 +87,11 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
   console.log('num ds levles after update: '+ String(cgm.params.viz.ds_num_levels))
 
   // only run enter-exit-updates if there is no downsampling
-
   if (cgm.params.viz.ds_num_levels === 0){
     // enter_exit_update(cgm, new_network_data, delays);
     enter_exit_update(cgm, delays);
   } else {
-    // remove row labels, remove non-downsampled rows, and add downsampled rows
-    d3.selectAll(cgm.params.root+' .row_cat_group')
-      .remove();
-    d3.selectAll(cgm.params.root+' .row_label_group')
-      .remove();
-    d3.selectAll(cgm.params.root+' .row')
-      .remove();
-
-    // no need to re-calculate the downsampled layers
-    // calc_downsampled_levels(params);
-    var zooming_stopped = true;
-    var zooming_out = true;
-    var make_all_rows = true;
-
-    // show_visible_area is also run with two_translate_zoom, but at that point
-    // the parameters were not updated and two_translate_zoom if only run
-    // if needed to reset zoom
-    show_visible_area(cgm, zooming_stopped, zooming_out, make_all_rows);
-
-    make_col_label_container(cgm);
-
-    var col_nodes = cgm.params.network_data.col_nodes;
-
-    // remove column labels
-    d3.selectAll(cgm.params.root+' .col_label_group')
-      .data(col_nodes, function(d){return d.name;})
-      .exit()
-      .style('opacity',0)
-      .remove();
-
-    d3.selectAll(cgm.params.root+' .col_label_text')
-      .data(col_nodes, function(d){return d.name;})
-      .exit()
-      .style('opacity',0)
-      .remove();
-
-    d3.selectAll(cgm.params.root+' .col_cat_group')
-      .data(col_nodes, function(d){return d.name;})
-      .exit()
-      .style('opacity',0)
-      .remove();
-
-    d3.selectAll(cgm.params.root+' .col_dendro_group')
-      .data(col_nodes, function(d){return d.name;})
-      .exit()
-      .style('opacity',0)
-      .remove();
-
-    // // seeing if this fixes resizing issue
-    // reset_size_after_update(cgm)
+    ds_enter_exit_update(cgm);
   }
 
   // reduce opacity during update
