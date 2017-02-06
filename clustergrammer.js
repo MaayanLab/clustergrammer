@@ -9419,8 +9419,6 @@ var Clustergrammer =
 
 	module.exports = function update_viz_with_view(cgm, requested_view) {
 
-	  console.log('update_viz_with_view');
-
 	  disable_sidebar(cgm.params);
 
 	  // make new_network_data by filtering the original network data
@@ -9592,8 +9590,6 @@ var Clustergrammer =
 	  function finish_update() {
 	    d3.select(cgm.params.viz.viz_svg).transition().duration(250).style('opacity', 1.0);
 
-	    console.log('************* finished updating');
-
 	    setTimeout(finish_update_class, 1000);
 	  }
 
@@ -9689,8 +9685,6 @@ var Clustergrammer =
 	module.exports = function enter_exit_update(cgm, network_data, delays) {
 
 	  var params = cgm.params;
-
-	  console.log(delays);
 
 	  // remove old tooltips
 	  d3.selectAll(params.viz.root_tips).remove();
@@ -13357,10 +13351,8 @@ var Clustergrammer =
 	  // Filter Slider
 	  //////////////////////////////////////////////////////////////////////
 	  var slide_filter_fun = d3.slider().value(ini_value).min(0).max(inst_max).step(1).on('slide', function (evt, value) {
-	    console.log('------- slide');
 	    run_filter_slider_db(cgm, filter_type, available_views, value);
 	  }).on('slideend', function (evt, value) {
-	    console.log('------- slideend');
 	    run_filter_slider_db(cgm, filter_type, available_views, value);
 	  });
 

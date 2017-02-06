@@ -13,8 +13,6 @@ module.exports = function enter_exit_update(cgm, network_data, delays){
 
   var params = cgm.params;
 
-  console.log(delays)
-
   // remove old tooltips
   d3.selectAll(params.viz.root_tips)
     .remove();

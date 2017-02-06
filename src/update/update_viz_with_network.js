@@ -136,8 +136,6 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
       .transition().duration(250)
       .style('opacity',1.0);
 
-    console.log('************* finished updating')
-
     setTimeout( finish_update_class, 1000 );
 
   }

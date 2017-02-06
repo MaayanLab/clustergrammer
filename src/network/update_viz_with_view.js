@@ -4,8 +4,6 @@ var update_viz_with_network = require('../update/update_viz_with_network');
 
 module.exports = function update_viz_with_view(cgm, requested_view) {
 
-  console.log('update_viz_with_view')
-
   disable_sidebar(cgm.params);
 
   // make new_network_data by filtering the original network data
