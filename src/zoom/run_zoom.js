@@ -24,8 +24,8 @@ module.exports = function zoomed(cgm) {
   if (params.is_slider_drag === false && params.is_cropping === false){
 
     // reset translate vector - add back margins to trans_x and trans_y
-    var new_x = zoom_info.trans_x + params.viz.clust.margin.left;
-    var new_y = zoom_info.trans_y + params.viz.clust.margin.top;
+    var new_x = params.zoom_info.trans_x + params.viz.clust.margin.left;
+    var new_y = params.zoom_info.trans_y + params.viz.clust.margin.top;
     params.zoom_behavior.translate([new_x, new_y]);
 
     run_transformation(cgm);
