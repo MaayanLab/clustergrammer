@@ -9419,6 +9419,8 @@ var Clustergrammer =
 
 	module.exports = function update_viz_with_view(cgm, requested_view) {
 
+	  console.log('update_viz_with_view');
+
 	  disable_sidebar(cgm.params);
 
 	  // make new_network_data by filtering the original network data
@@ -9479,8 +9481,8 @@ var Clustergrammer =
 
 	module.exports = function update_viz_with_network(cgm, new_network_data) {
 
-	  // console.log('update_viz_with_network')
-	  // console.log(cgm.params.viz.ds_level)
+	  // set runnning_update class, prevents multiple update from running at once
+	  d3.select(cgm.params.viz.viz_svg).classed('running_update', true);
 
 	  // remove downsampled rows always
 	  d3.selectAll(cgm.params.root + ' .ds' + String(cgm.params.viz.ds_level) + '_row').remove();
@@ -9549,7 +9551,7 @@ var Clustergrammer =
 
 	  // only run enter-exit-updates if there is no downsampling
 	  if (cgm.params.viz.ds_num_levels === 0) {
-	    // enter_exit_update(cgm, new_network_data, delays);
+	    // new_network_data is necessary
 	    enter_exit_update(cgm, new_network_data, delays);
 	  } else {
 	    ds_enter_exit_update(cgm);
@@ -9589,8 +9591,17 @@ var Clustergrammer =
 
 	  function finish_update() {
 	    d3.select(cgm.params.viz.viz_svg).transition().duration(250).style('opacity', 1.0);
+
+	    console.log('************* finished updating');
+
+	    setTimeout(finish_update_class, 1000);
 	  }
+
 	  setTimeout(finish_update, delays.enter);
+
+	  function finish_update_class() {
+	    d3.select(cgm.params.viz.viz_svg).classed('running_update', false);
+	  }
 		};
 
 /***/ },
@@ -9677,9 +9688,9 @@ var Clustergrammer =
 
 	module.exports = function enter_exit_update(cgm, network_data, delays) {
 
-	  // var network_data = cgm.params.network_data;
-
 	  var params = cgm.params;
+
+	  console.log(delays);
 
 	  // remove old tooltips
 	  d3.selectAll(params.viz.root_tips).remove();
@@ -10288,7 +10299,6 @@ var Clustergrammer =
 	  var new_row_groups = d3.select(params.root + ' .clust_group').selectAll('.row').data(params.matrix.matrix, function (d) {
 	    return d.name;
 	  }).enter().append('g').classed('row', true).attr('transform', function (d) {
-	    console.log(d.name);
 	    return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
 	  });
 
@@ -13347,8 +13357,10 @@ var Clustergrammer =
 	  // Filter Slider
 	  //////////////////////////////////////////////////////////////////////
 	  var slide_filter_fun = d3.slider().value(ini_value).min(0).max(inst_max).step(1).on('slide', function (evt, value) {
+	    console.log('------- slide');
 	    run_filter_slider_db(cgm, filter_type, available_views, value);
 	  }).on('slideend', function (evt, value) {
+	    console.log('------- slideend');
 	    run_filter_slider_db(cgm, filter_type, available_views, value);
 	  });
 
@@ -13375,27 +13387,31 @@ var Clustergrammer =
 
 	module.exports = function run_filter_slider(cgm, filter_type, available_views, inst_index) {
 
-	  var params = cgm.params;
+	  // only update if not running update
+	  if (d3.select(cgm.params.viz.viz_svg).classed('running_update') === false) {
 
-	  // get value
-	  var inst_state = available_views[inst_index][filter_type];
+	    var params = cgm.params;
 
-	  reset_other_filter_sliders(cgm, filter_type, inst_state);
+	    // get value
+	    var inst_state = available_views[inst_index][filter_type];
 
-	  params = get_current_orders(params);
+	    reset_other_filter_sliders(cgm, filter_type, inst_state);
 
-	  var requested_view = {};
-	  requested_view[filter_type] = inst_state;
+	    params = get_current_orders(params);
 
-	  requested_view = make_requested_view(params, requested_view);
+	    var requested_view = {};
+	    requested_view[filter_type] = inst_state;
 
-	  if (_.has(available_views[0], 'enr_score_type')) {
-	    var enr_state = d3.select(params.root + ' .toggle_enr_score_type').attr('current_state');
+	    requested_view = make_requested_view(params, requested_view);
 
-	    requested_view.enr_score_type = enr_state;
+	    if (_.has(available_views[0], 'enr_score_type')) {
+	      var enr_state = d3.select(params.root + ' .toggle_enr_score_type').attr('current_state');
+
+	      requested_view.enr_score_type = enr_state;
+	    }
+
+	    update_viz_with_view(cgm, requested_view);
 	  }
-
-	  update_viz_with_view(cgm, requested_view);
 		};
 
 /***/ },

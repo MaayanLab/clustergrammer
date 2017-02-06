@@ -11,9 +11,9 @@ var d3_tip_custom = require('../tooltip/d3_tip_custom');
 
 module.exports = function enter_exit_update(cgm, network_data, delays){
 
-  // var network_data = cgm.params.network_data;
-
   var params = cgm.params;
+
+  console.log(delays)
 
   // remove old tooltips
   d3.selectAll(params.viz.root_tips)

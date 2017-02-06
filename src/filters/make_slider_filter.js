@@ -74,9 +74,11 @@ module.exports = function make_slider_filter(cgm, filter_type, div_filters){
                            .max(inst_max)
                            .step(1)
                            .on('slide', function(evt, value){
+                              console.log('------- slide')
                               run_filter_slider_db(cgm, filter_type, available_views, value);
                            })
                            .on('slideend', function(evt, value){
+                              console.log('------- slideend')
                               run_filter_slider_db(cgm, filter_type, available_views, value);
                            });
 

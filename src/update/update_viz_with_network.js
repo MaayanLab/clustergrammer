@@ -18,8 +18,8 @@ var make_cat_params = require('../params/make_cat_params');
 
 module.exports = function update_viz_with_network(cgm, new_network_data){
 
-  // console.log('update_viz_with_network')
-  // console.log(cgm.params.viz.ds_level)
+  // set runnning_update class, prevents multiple update from running at once
+  d3.select(cgm.params.viz.viz_svg).classed('running_update', true);
 
   // remove downsampled rows always
   d3.selectAll(cgm.params.root+' .ds'+String(cgm.params.viz.ds_level)+'_row')
@@ -91,7 +91,7 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
 
   // only run enter-exit-updates if there is no downsampling
   if (cgm.params.viz.ds_num_levels === 0){
-    // enter_exit_update(cgm, new_network_data, delays);
+    // new_network_data is necessary
     enter_exit_update(cgm, new_network_data, delays);
   } else {
     ds_enter_exit_update(cgm);
@@ -135,7 +135,18 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
     d3.select(cgm.params.viz.viz_svg)
       .transition().duration(250)
       .style('opacity',1.0);
+
+    console.log('************* finished updating')
+
+    setTimeout( finish_update_class, 1000 );
+
   }
+
   setTimeout(finish_update, delays.enter);
+
+  function finish_update_class(){
+    d3.select(cgm.params.viz.viz_svg)
+      .classed('running_update', false);
+  }
 
 };
