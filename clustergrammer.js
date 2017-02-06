@@ -9479,7 +9479,7 @@ var Clustergrammer =
 
 	module.exports = function update_viz_with_network(cgm, new_network_data) {
 
-	  console.log('update_viz_with_network');
+	  // console.log('update_viz_with_network')
 	  // console.log(cgm.params.viz.ds_level)
 
 	  // remove downsampled rows always
@@ -9550,7 +9550,7 @@ var Clustergrammer =
 	  // only run enter-exit-updates if there is no downsampling
 	  if (cgm.params.viz.ds_num_levels === 0) {
 	    // enter_exit_update(cgm, new_network_data, delays);
-	    enter_exit_update(cgm, delays);
+	    enter_exit_update(cgm, new_network_data, delays);
 	  } else {
 	    ds_enter_exit_update(cgm);
 	  }
@@ -9675,9 +9675,9 @@ var Clustergrammer =
 	var label_constrain_and_trim = __webpack_require__(82);
 	var d3_tip_custom = __webpack_require__(50);
 
-	module.exports = function enter_exit_update(cgm, delays) {
+	module.exports = function enter_exit_update(cgm, network_data, delays) {
 
-	  var network_data = cgm.params.network_data;
+	  // var network_data = cgm.params.network_data;
 
 	  var params = cgm.params;
 
@@ -10288,6 +10288,7 @@ var Clustergrammer =
 	  var new_row_groups = d3.select(params.root + ' .clust_group').selectAll('.row').data(params.matrix.matrix, function (d) {
 	    return d.name;
 	  }).enter().append('g').classed('row', true).attr('transform', function (d) {
+	    console.log(d.name);
 	    return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
 	  });
 

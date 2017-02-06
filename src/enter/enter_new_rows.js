@@ -36,7 +36,8 @@ module.exports = function enter_new_rows(params, ini_inp_row_data, delays, durat
 
   tile
     .style('fill-opacity',0)
-    .transition().delay(delays.enter).duration(duration)
+    .transition().delay(delays.enter)
+    .duration(duration)
     .style('fill-opacity', function(d) {
       // calculate output opacity using the opacity scale
       var output_opacity = params.matrix.opacity_scale(Math.abs(d.value));

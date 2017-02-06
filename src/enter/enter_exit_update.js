@@ -9,9 +9,9 @@ var resize_containers = require('../reset_size/resize_containers');
 var label_constrain_and_trim = require('../labels/label_constrain_and_trim');
 var d3_tip_custom = require('../tooltip/d3_tip_custom');
 
-module.exports = function enter_exit_update(cgm, delays){
+module.exports = function enter_exit_update(cgm, network_data, delays){
 
-  var network_data = cgm.params.network_data;
+  // var network_data = cgm.params.network_data;
 
   var params = cgm.params;
 

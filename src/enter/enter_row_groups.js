@@ -10,6 +10,7 @@ module.exports = function enter_row_groups(params, delays, duration, tip){
     .append('g')
     .classed('row', true)
     .attr('transform', function(d) {
+      console.log(d.name)
       return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
     })  ;
 

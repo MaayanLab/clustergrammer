@@ -18,7 +18,7 @@ var make_cat_params = require('../params/make_cat_params');
 
 module.exports = function update_viz_with_network(cgm, new_network_data){
 
-  console.log('update_viz_with_network')
+  // console.log('update_viz_with_network')
   // console.log(cgm.params.viz.ds_level)
 
   // remove downsampled rows always
@@ -92,7 +92,7 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
   // only run enter-exit-updates if there is no downsampling
   if (cgm.params.viz.ds_num_levels === 0){
     // enter_exit_update(cgm, new_network_data, delays);
-    enter_exit_update(cgm, delays);
+    enter_exit_update(cgm, new_network_data, delays);
   } else {
     ds_enter_exit_update(cgm);
   }
