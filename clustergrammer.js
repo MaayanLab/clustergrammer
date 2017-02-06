@@ -9441,6 +9441,7 @@ var Clustergrammer =
 	var modify_row_node_cats = __webpack_require__(161);
 	var run_zoom = __webpack_require__(90);
 	var ds_enter_exit_update = __webpack_require__(209);
+	var make_cat_params = __webpack_require__(18);
 
 	module.exports = function update_viz_with_network(cgm, new_network_data) {
 
@@ -9467,6 +9468,10 @@ var Clustergrammer =
 	  if (cgm.params.new_cat_data != null) {
 	    modify_row_node_cats(cgm.params.new_cat_data, new_network_data.row_nodes);
 	    new_cat_data = cgm.params.new_cat_data;
+	    cgm.params.new_cat_data = new_cat_data;
+	    // do not preserve the updated (row) cats
+	    var preserve_cats = false;
+	    cgm.params.viz = make_cat_params(cgm.params, cgm.params.viz, preserve_cats);
 	  }
 
 	  tmp_config.network_data = new_network_data;
@@ -9496,9 +9501,9 @@ var Clustergrammer =
 	    run_zoom(cgm);
 	  });
 
-	  if (new_cat_data != null) {
-	    cgm.params.new_cat_data = new_cat_data;
-	  }
+	  // // clear out old category data
+	  // if (new_cat_data != null){
+	  // }
 
 	  // have persistent group levels while updating
 	  cgm.params.group_level = inst_group_level;

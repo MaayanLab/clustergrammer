@@ -335,7 +335,7 @@ function Enrichr_request(inst_cgm){
 
   function clear_enrichr_results(run_resize_viz){
 
-    console.log('run_resize_viz: ' + String(run_resize_viz))
+    // console.log('run_resize_viz: ' + String(run_resize_viz));
 
     d3.select(inst_cgm.params.root+ ' .enr_menu_clear')
       .style('display', 'none');

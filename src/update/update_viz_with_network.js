@@ -14,6 +14,7 @@ var make_row_cat_super_labels = require('../labels/make_row_cat_super_labels');
 var modify_row_node_cats = require('./modify_row_node_cats');
 var run_zoom = require('../zoom/run_zoom');
 var ds_enter_exit_update = require('../enter/ds_enter_exit_update');
+var make_cat_params = require('../params/make_cat_params');
 
 module.exports = function update_viz_with_network(cgm, new_network_data){
 
@@ -41,6 +42,10 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
   if (cgm.params.new_cat_data != null){
     modify_row_node_cats(cgm.params.new_cat_data, new_network_data.row_nodes);
     new_cat_data = cgm.params.new_cat_data;
+    cgm.params.new_cat_data = new_cat_data;
+    // do not preserve the updated (row) cats
+    var preserve_cats = false;
+    cgm.params.viz = make_cat_params(cgm.params, cgm.params.viz, preserve_cats)
   }
 
 
@@ -73,9 +78,9 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
       run_zoom(cgm);
     });
 
-  if (new_cat_data != null){
-    cgm.params.new_cat_data = new_cat_data;
-  }
+  // // clear out old category data
+  // if (new_cat_data != null){
+  // }
 
   // have persistent group levels while updating
   cgm.params.group_level = inst_group_level;
