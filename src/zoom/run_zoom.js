@@ -10,6 +10,7 @@ module.exports = function zoomed(cgm) {
   zoom_info.zoom_x = d3.event.scale;
   zoom_info.zoom_y = d3.event.scale;
 
+  // subtract away the margin to easily calculate pan_room etc.
   zoom_info.trans_x = params.zoom_behavior.translate()[0] - params.viz.clust.margin.left;
   zoom_info.trans_y = params.zoom_behavior.translate()[1] - params.viz.clust.margin.top;
 
@@ -26,8 +27,9 @@ module.exports = function zoomed(cgm) {
     // reset translate vector - add back margins to trans_x and trans_y
     var new_x = params.zoom_info.trans_x + params.viz.clust.margin.left;
     var new_y = params.zoom_info.trans_y + params.viz.clust.margin.top;
-    params.zoom_behavior.translate([new_x, new_y]);
 
+    params.zoom_behavior.translate([new_x, new_y]);
+    cgm.params = params;
     run_transformation(cgm);
 
   }

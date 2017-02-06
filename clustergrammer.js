@@ -6830,6 +6830,7 @@ var Clustergrammer =
 	  zoom_info.zoom_x = d3.event.scale;
 	  zoom_info.zoom_y = d3.event.scale;
 
+	  // subtract away the margin to easily calculate pan_room etc.
 	  zoom_info.trans_x = params.zoom_behavior.translate()[0] - params.viz.clust.margin.left;
 	  zoom_info.trans_y = params.zoom_behavior.translate()[1] - params.viz.clust.margin.top;
 
@@ -6845,8 +6846,9 @@ var Clustergrammer =
 	    // reset translate vector - add back margins to trans_x and trans_y
 	    var new_x = params.zoom_info.trans_x + params.viz.clust.margin.left;
 	    var new_y = params.zoom_info.trans_y + params.viz.clust.margin.top;
-	    params.zoom_behavior.translate([new_x, new_y]);
 
+	    params.zoom_behavior.translate([new_x, new_y]);
+	    cgm.params = params;
 	    run_transformation(cgm);
 	  }
 		};
@@ -7145,30 +7147,22 @@ var Clustergrammer =
 
 	  var viz = params.viz;
 
-	  // var old_trans = params.zoom_behavior.translate();
-	  // console.log('old_trans_x ' + String(old_trans[0]))
-
 	  // zoom in the y direction before zooming in the x direction
 	  if (viz.zoom_switch > 1) {
 
 	    if (zoom_info.zoom_x < viz.zoom_switch) {
-	      zoom_info.trans_x = 0;
+	      zoom_info.trans_x = -params.viz.clust.margin.left;
 	      zoom_info.zoom_x = 1;
-
-	      // // keep resettting x trans
-	      // params.zoom_behavior.translate([0, old_trans[1]]);
 	    } else {
+	      // zoom_info.trans_x = - params.viz.clust.margin.left;
 	      zoom_info.zoom_x = zoom_info.zoom_x / viz.zoom_switch;
-
-	      // // keep resettting x trans
-	      // params.zoom_behavior.translate([0, old_trans[1]]);
 	    }
 	  }
 
 	  // calculate panning room available in the x direction
 	  zoom_info.pan_room_x = (zoom_info.zoom_x - 1) * viz.clust.dim.width;
 
-	  // console.log( 'pan_room_x: ' +  String(zoom_info.pan_room_x) + ' trans_x: ' + String(zoom_info.trans_x))
+	  // console.log( 'pan_room_x: ' +  String(zoom_info.pan_room_x) + ' trans_x: ' + String(-zoom_info.trans_x))
 
 	  // no positive panning or panning more than pan_room
 	  if (zoom_info.trans_x > 0) {
