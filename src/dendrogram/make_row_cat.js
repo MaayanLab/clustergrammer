@@ -45,11 +45,16 @@ module.exports = function make_row_cat(cgm, updating=false) {
       });
   }
 
+  // remove old col_cat_tips
+  d3.selectAll(params.viz.root_tips + '_row_cat_tip')
+    .remove();
+
   // d3-tooltip
   var cat_tip = d3_tip_custom()
     .attr('class',function(){
       var root_tip_selector = params.viz.root_tips.replace('.','');
-      var class_string = root_tip_selector + ' d3-tip row_cat_tip';
+      var class_string = root_tip_selector + ' d3-tip '+
+                         root_tip_selector + '_row_cat_tip';
       return class_string;
     })
     .direction('e')
@@ -67,7 +72,8 @@ module.exports = function make_row_cat(cgm, updating=false) {
     .append('g')
     .attr('class', 'row_cat_group')
     .attr('transform', function(d) {
-      return 'translate(0, ' + params.viz.y_scale(d.row_index) + ')';
+      var inst_index = _.indexOf(params.network_data.row_nodes_names, d.name);
+      return 'translate(0, ' + params.viz.y_scale(inst_index) + ')';
     });
 
   d3.select(params.root+' .row_cat_container')

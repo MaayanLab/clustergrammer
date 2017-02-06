@@ -29,11 +29,16 @@ module.exports = function make_col_cat(cgm) {
       });
   }
 
+  // remove old col_cat_tips
+  d3.selectAll(params.viz.root_tips + '_col_cat_tip')
+    .remove();
+
   // d3-tooltip
   var cat_tip = d3_tip_custom()
     .attr('class', function(){
       var root_tip_selector = params.viz.root_tips.replace('.','');
-      var class_string = root_tip_selector + ' d3-tip col_cat_tip';
+      var class_string = root_tip_selector + ' d3-tip '+
+                         root_tip_selector + '_col_cat_tip';
       return class_string;
     })
     .direction('s')

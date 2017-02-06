@@ -6,7 +6,7 @@ var make_row_visual_aid_triangles = require('../labels/make_row_visual_aid_trian
 module.exports = function show_visible_area(cgm, zooming_stopped=false,
   zooming_out=false, make_all_rows=false){
 
-  console.log('show_visible_area stopped: ' + String(zooming_stopped));
+  // console.log('show_visible_area stopped: ' + String(zooming_stopped));
 
   var params = cgm.params;
   var zoom_info = params.zoom_info;
