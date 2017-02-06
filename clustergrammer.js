@@ -2562,6 +2562,9 @@ var Clustergrammer =
 	    row_class = 'ds' + String(ds_level) + '_row';
 	  }
 
+	  // remove old tooltips
+	  d3.selectAll(params.viz.root_tips + '_tile_tip').remove();
+
 	  if (make_tip) {
 
 	    // make rows in the matrix - add key names to rows in matrix
@@ -2885,7 +2888,7 @@ var Clustergrammer =
 
 	        if (params.matrix.show_tile_tooltips) {
 
-	          d3.selectAll('.tile_tip').style('display', 'block');
+	          d3.selectAll(params.viz.root_tips + '_tile_tip').style('display', 'block');
 
 	          tip.show.apply(inst_selection, args);
 
@@ -2909,7 +2912,7 @@ var Clustergrammer =
 
 	  d3.select(inst_selection).classed('hovering', false);
 
-	  d3.selectAll('.tile_tip').style('display', 'none');
+	  d3.selectAll(params.viz.root_tips + '_tile_tip').style('display', 'none');
 
 	  _.each(['row', 'col'], function (inst_rc) {
 
@@ -4912,6 +4915,9 @@ var Clustergrammer =
 	module.exports = function make_row_tooltips(params) {
 
 	  if (params.labels.show_label_tooltips) {
+
+	    // remove old tooltips
+	    d3.selectAll(params.viz.root_tips + '_row_tip').remove();
 
 	    var root_tip_selector = params.viz.root_tips.replace('.', '');
 
@@ -9673,7 +9679,7 @@ var Clustergrammer =
 	  // d3-tooltip - for tiles
 	  var tip = d3_tip_custom().attr('class', function () {
 	    var root_tip_selector = params.viz.root_tips.replace('.', '');
-	    var class_string = root_tip_selector + ' d3-tip tile_tip';
+	    var class_string = root_tip_selector + ' d3-tip ' + root_tip_selector + '_tile_tip';
 	    return class_string;
 	  }).direction('nw').offset([0, 0]).style('display', 'none').html(function (d) {
 	    var inst_value = String(d.value.toFixed(3));

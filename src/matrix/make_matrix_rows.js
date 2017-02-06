@@ -16,6 +16,8 @@ module.exports = function make_matrix_rows(params, current_matrix,
     row_class = 'ds' + String(ds_level) + '_row';
   }
 
+  // remove old tooltips
+  d3.selectAll(params.viz.root_tips + '_tile_tip').remove();
 
   if (make_tip){
 

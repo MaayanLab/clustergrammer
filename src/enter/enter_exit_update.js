@@ -23,7 +23,8 @@ module.exports = function enter_exit_update(cgm, delays){
   var tip = d3_tip_custom()
     .attr('class', function(){
       var root_tip_selector = params.viz.root_tips.replace('.','');
-      var class_string = root_tip_selector + ' d3-tip tile_tip';
+      var class_string = root_tip_selector + ' d3-tip '+
+                         root_tip_selector + '_tile_tip';
       return class_string;
     })
     .direction('nw')

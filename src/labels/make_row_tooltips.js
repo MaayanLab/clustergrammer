@@ -4,6 +4,9 @@ module.exports = function make_row_tooltips(params){
 
   if (params.labels.show_label_tooltips){
 
+    // remove old tooltips
+    d3.selectAll(params.viz.root_tips + '_row_tip').remove();
+
     var root_tip_selector = params.viz.root_tips.replace('.','');
 
     // d3-tooltip

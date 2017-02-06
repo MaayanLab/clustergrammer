@@ -3,7 +3,7 @@ module.exports = function mouseout_tile(params, inst_selection, tip){
   d3.select(inst_selection)
     .classed('hovering',false);
 
-  d3.selectAll('.tile_tip')
+  d3.selectAll(params.viz.root_tips + '_tile_tip')
     .style('display','none');
 
   _.each(['row','col'], function(inst_rc){
