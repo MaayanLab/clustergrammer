@@ -2046,11 +2046,9 @@ var Clustergrammer =
 
 /***/ },
 /* 34 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
 	'use strict';
-
-	var utils = __webpack_require__(2);
 
 	module.exports = function calc_downsampled_matrix(params, mat, ds_level) {
 
@@ -3386,19 +3384,24 @@ var Clustergrammer =
 	    var data_attr = '__data__';
 	    var row_name = this[data_attr].name;
 
-	    if (params.sim_mat) {
-	      row_reorder(cgm, this, row_name);
+	    // if (params.sim_mat){
+	    //   row_reorder(cgm, this, row_name);
 
-	      var col_selection = d3.selectAll(params.root + ' .col_label_text').filter(function (d) {
-	        return d.name == row_name;
-	      })[0][0];
+	    //   d3.selectAll(params.root+' .col_label_text')
+	    //     .filter(function(d){
+	    //       return d.name == row_name;}
+	    //       )[0][0];
 
-	      // this is causing buggyness may reenable
-	      // col_reorder -> two_translate_zoom -> show_visible_area -> make_row_labels -> col_reorder
-	      // col_reorder(cgm, col_selection, row_name);
-	    } else {
-	      row_reorder(cgm, this, row_name);
-	    }
+	    //   // this is causing buggyness may reenable
+	    //   // col_reorder -> two_translate_zoom -> show_visible_area -> make_row_labels -> col_reorder
+	    //   // col_reorder(cgm, col_selection, row_name);
+
+	    // } else {
+	    //   row_reorder(cgm, this, row_name);
+	    // }
+
+	    row_reorder(cgm, this, row_name);
+
 	    if (params.tile_click_hlight) {
 	      add_row_click_hlight(this, d.ini);
 	    }
@@ -3489,17 +3492,13 @@ var Clustergrammer =
 
 	'use strict';
 
-	// var utils = require('../Utils_clust');
 	var reposition_tile_highlight = __webpack_require__(55);
 	var toggle_dendro_view = __webpack_require__(56);
-	// var show_visible_area = require('../zoom/show_visible_area');
 	var ini_zoom_info = __webpack_require__(38);
 	var get_previous_zoom = __webpack_require__(67);
 	var calc_downsampled_levels = __webpack_require__(33);
 
 	module.exports = function row_reorder(cgm, row_selection, inst_row) {
-
-	  console.log('row_reorder');
 
 	  var params = cgm.params;
 	  var prev_zoom = get_previous_zoom(params);
@@ -3601,17 +3600,15 @@ var Clustergrammer =
 	    // calculate downsmapling if necessary
 	    if (params.viz.ds_num_levels > 0 && params.viz.ds_level >= 0) {
 
-	      console.log('downsampled');
-
 	      calc_downsampled_levels(params);
-	      var zooming_stopped = true;
-	      var zooming_out = true;
-	      var make_all_rows = true;
 
-	      // show_visible_area is also run with two_translate_zoom, but at that point
-	      // the parameters were not updated and two_translate_zoom if only run
-	      // if needed to reset zoom
-	      show_visible_area(cgm, zooming_stopped, zooming_out, make_all_rows);
+	      // var zooming_stopped = true;
+	      // var zooming_out = true;
+	      // var make_all_rows = true;
+	      // // show_visible_area is also run with two_translate_zoom, but at that point
+	      // // the parameters were not updated and two_translate_zoom if only run
+	      // // if needed to reset zoom
+	      // show_visible_area(cgm, zooming_stopped, zooming_out, make_all_rows);
 	    }
 	  }
 		};
@@ -5161,7 +5158,7 @@ var Clustergrammer =
 	// var utils = require('../Utils_clust');
 	var reposition_tile_highlight = __webpack_require__(55);
 	var toggle_dendro_view = __webpack_require__(56);
-	var show_visible_area = __webpack_require__(72);
+	// var show_visible_area = require('../zoom/show_visible_area');
 	var ini_zoom_info = __webpack_require__(38);
 	var get_previous_zoom = __webpack_require__(67);
 	var calc_downsampled_levels = __webpack_require__(33);
@@ -5263,17 +5260,15 @@ var Clustergrammer =
 	    // calculate downsmapling if necessary
 	    if (params.viz.ds_num_levels > 0 && params.viz.ds_level >= 0) {
 
-	      console.log('downsampled');
-
 	      calc_downsampled_levels(params);
-	      var zooming_stopped = true;
-	      var zooming_out = true;
-	      var make_all_rows = true;
 
-	      // show_visible_area is also run with two_translate_zoom, but at that point
-	      // the parameters were not updated and two_translate_zoom if only run
-	      // if needed to reset zoom
-	      show_visible_area(cgm, zooming_stopped, zooming_out, make_all_rows);
+	      // var zooming_stopped = true;
+	      // var zooming_out = true;
+	      // var make_all_rows = true;
+	      // // show_visible_area is also run with two_translate_zoom, but at that point
+	      // // the parameters were not updated and two_translate_zoom if only run
+	      // // if needed to reset zoom
+	      // show_visible_area(cgm, zooming_stopped, zooming_out, make_all_rows);
 	    }
 	  }
 		};
@@ -5811,7 +5806,6 @@ var Clustergrammer =
 	var toggle_dendro_view = __webpack_require__(56);
 	var show_visible_area = __webpack_require__(72);
 	var ini_zoom_info = __webpack_require__(38);
-	var fine_position_tile = __webpack_require__(49);
 	var calc_downsampled_levels = __webpack_require__(33);
 	var two_translate_zoom = __webpack_require__(81);
 	var get_previous_zoom = __webpack_require__(67);
@@ -6984,8 +6978,8 @@ var Clustergrammer =
 	'use strict';
 
 	var constrain_font_size = __webpack_require__(84);
-	var trim_text = __webpack_require__(83);
-	var num_visible_labels = __webpack_require__(94);
+	// var trim_text = require('./trim_text');
+	// var num_visible_labels = require('./num_visible_labels');
 	var toggle_grid_lines = __webpack_require__(86);
 	var show_visible_area = __webpack_require__(72);
 	var check_zoom_stop_status = __webpack_require__(95);
@@ -7029,7 +7023,7 @@ var Clustergrammer =
 	    ///////////////////////////
 	    // _.each(['row','col'], function(inst_rc){
 
-	    //   var inst_num_visible = num_visible_labels(params, inst_rc);
+	    //   var inst_num_visible_labels(params, inst_rc);
 
 	    //   if (inst_num_visible < 125){
 	    //     d3.selectAll(params.root+' .'+inst_rc+'_label_group' )
@@ -7065,36 +7059,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 94 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	module.exports = function num_visible_labels(params, inst_rc) {
-
-	  // counting the number of visible labels, probably not necessary
-
-	  var num_visible;
-	  if (inst_rc === 'row') {
-
-	    // initialize at high number
-	    num_visible = 10000;
-
-	    // only count visible rows if no downsampling
-	    if (params.viz.ds_level === -1) {
-	      num_visible = d3.selectAll(params.root + ' .row')[0].length;
-	    }
-	  } else if (inst_rc === 'col') {
-
-	    num_visible = d3.selectAll(params.root + ' .' + inst_rc + '_label_text').filter(function () {
-	      return d3.select(this).style('display') != 'none';
-	    })[0].length;
-	  }
-
-	  return num_visible;
-	};
-
-/***/ },
+/* 94 */,
 /* 95 */
 /***/ function(module, exports) {
 
@@ -8553,7 +8518,7 @@ var Clustergrammer =
 	  });
 
 	  // groups that hold classification triangle and colorbar rect
-	  var row_cat_group = d3.select(params.root + ' .row_cat_container').selectAll('g').data(params.network_data.row_nodes, function (d) {
+	  d3.select(params.root + ' .row_cat_container').selectAll('g').data(params.network_data.row_nodes, function (d) {
 	    return d.name;
 	  }).enter().append('g').attr('class', 'row_cat_group').attr('transform', function (d) {
 	    return 'translate(0, ' + params.viz.y_scale(d.row_index) + ')';
@@ -9479,9 +9444,8 @@ var Clustergrammer =
 
 	module.exports = function update_viz_with_network(cgm, new_network_data) {
 
-	  console.log('update_viz_with_network');
-
-	  console.log(cgm.params.viz.ds_level);
+	  // console.log('update_viz_with_network')
+	  // console.log(cgm.params.viz.ds_level)
 
 	  // remove downsampled rows always
 	  d3.selectAll(cgm.params.root + ' .ds' + String(cgm.params.viz.ds_level) + '_row').remove();
@@ -9542,7 +9506,7 @@ var Clustergrammer =
 	  // have persistent crop_filter_nodes while updating
 	  cgm.params.crop_filter_nodes = inst_crop_fitler;
 
-	  console.log('num ds levles after update: ' + String(cgm.params.viz.ds_num_levels));
+	  // console.log('num ds levles after update: '+ String(cgm.params.viz.ds_num_levels))
 
 	  // only run enter-exit-updates if there is no downsampling
 	  if (cgm.params.viz.ds_num_levels === 0) {
@@ -9796,13 +9760,11 @@ var Clustergrammer =
 
 	module.exports = function (cgm, duration, delays) {
 
-	  console.log(delays);
-
 	  var params = cgm.params;
 
 	  var row_nodes = cgm.params.network_data.row_nodes;
-	  var col_nodes = cgm.params.network_data.col_nodes;
-	  var links = cgm.params.network_data.links;
+	  // var col_nodes = cgm.params.network_data.col_nodes;
+	  // var links = cgm.params.network_data.links;
 
 	  params.zoom_info = ini_zoom_info();
 
@@ -14178,7 +14140,7 @@ var Clustergrammer =
 
 	module.exports = function ds_enter_exit_update(cgm) {
 
-	  console.log('======== ds_enter_exit_update ===============');
+	  // console.log('======== ds_enter_exit_update ===============');
 
 	  // remove row labels, remove non-downsampled rows, and add downsampled rows
 	  d3.selectAll(cgm.params.root + ' .row_cat_group').remove();

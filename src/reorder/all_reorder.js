@@ -1,7 +1,6 @@
 var toggle_dendro_view = require('../dendrogram/toggle_dendro_view');
 var show_visible_area = require('../zoom/show_visible_area');
 var ini_zoom_info = require('../zoom/ini_zoom_info');
-var fine_position_tile = require('../matrix/fine_position_tile');
 var calc_downsampled_levels = require('../matrix/calc_downsampled_levels');
 var two_translate_zoom = require('../zoom/two_translate_zoom');
 var get_previous_zoom = require('../zoom/get_previous_zoom');

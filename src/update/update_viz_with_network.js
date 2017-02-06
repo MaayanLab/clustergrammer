@@ -17,9 +17,8 @@ var ds_enter_exit_update = require('../enter/ds_enter_exit_update');
 
 module.exports = function update_viz_with_network(cgm, new_network_data){
 
-  console.log('update_viz_with_network')
-
-  console.log(cgm.params.viz.ds_level)
+  // console.log('update_viz_with_network')
+  // console.log(cgm.params.viz.ds_level)
 
   // remove downsampled rows always
   d3.selectAll(cgm.params.root+' .ds'+String(cgm.params.viz.ds_level)+'_row')
@@ -84,7 +83,7 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
   // have persistent crop_filter_nodes while updating
   cgm.params.crop_filter_nodes = inst_crop_fitler;
 
-  console.log('num ds levles after update: '+ String(cgm.params.viz.ds_num_levels))
+  // console.log('num ds levles after update: '+ String(cgm.params.viz.ds_num_levels))
 
   // only run enter-exit-updates if there is no downsampling
   if (cgm.params.viz.ds_num_levels === 0){

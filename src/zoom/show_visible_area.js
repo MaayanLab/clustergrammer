@@ -83,7 +83,7 @@ module.exports = function show_visible_area(cgm, zooming_stopped=false,
   // generate lists of visible rows/cols
   find_viz_rows(params, viz_area);
 
-  var missing_rows
+  var missing_rows;
   if (make_all_rows === false){
     missing_rows = _.difference(params.viz.viz_nodes.row, params.viz.viz_nodes.curr_row);
   } else {

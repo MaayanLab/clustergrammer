@@ -20,13 +20,11 @@ var ini_zoom_info = require('../zoom/ini_zoom_info');
 
 module.exports = function(cgm, duration, delays) {
 
-  console.log(delays)
-
   var params = cgm.params;
 
   var row_nodes = cgm.params.network_data.row_nodes;
-  var col_nodes = cgm.params.network_data.col_nodes;
-  var links = cgm.params.network_data.links;
+  // var col_nodes = cgm.params.network_data.col_nodes;
+  // var links = cgm.params.network_data.links;
 
   params.zoom_info = ini_zoom_info();
 

@@ -1,7 +1,7 @@
 // var utils = require('../Utils_clust');
 var reposition_tile_highlight = require('./reposition_tile_highlight');
 var toggle_dendro_view = require('../dendrogram/toggle_dendro_view');
-var show_visible_area = require('../zoom/show_visible_area');
+// var show_visible_area = require('../zoom/show_visible_area');
 var ini_zoom_info = require('../zoom/ini_zoom_info');
 var get_previous_zoom = require('../zoom/get_previous_zoom');
 var calc_downsampled_levels = require('../matrix/calc_downsampled_levels');
@@ -114,17 +114,15 @@ module.exports = function col_reorder(cgm, col_selection, inst_term) {
     // calculate downsmapling if necessary
     if (params.viz.ds_num_levels > 0 && params.viz.ds_level >=0){
 
-      console.log('downsampled')
-
       calc_downsampled_levels(params);
-      var zooming_stopped = true;
-      var zooming_out = true;
-      var make_all_rows = true;
 
-      // show_visible_area is also run with two_translate_zoom, but at that point
-      // the parameters were not updated and two_translate_zoom if only run
-      // if needed to reset zoom
-      show_visible_area(cgm, zooming_stopped, zooming_out, make_all_rows);
+      // var zooming_stopped = true;
+      // var zooming_out = true;
+      // var make_all_rows = true;
+      // // show_visible_area is also run with two_translate_zoom, but at that point
+      // // the parameters were not updated and two_translate_zoom if only run
+      // // if needed to reset zoom
+      // show_visible_area(cgm, zooming_stopped, zooming_out, make_all_rows);
 
     }
 

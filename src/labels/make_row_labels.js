@@ -43,20 +43,24 @@ module.exports = function make_row_labels(cgm, row_names='all', text_delay = 0){
       var data_attr = '__data__';
       var row_name = this[data_attr].name;
 
-      if (params.sim_mat){
-        row_reorder(cgm, this, row_name);
+      // if (params.sim_mat){
+      //   row_reorder(cgm, this, row_name);
 
-        var col_selection = d3.selectAll(params.root+' .col_label_text')
-          .filter(function(d){
-            return d.name == row_name;}
-            )[0][0];
+      //   d3.selectAll(params.root+' .col_label_text')
+      //     .filter(function(d){
+      //       return d.name == row_name;}
+      //       )[0][0];
 
-        // this is causing buggyness may reenable
-        // col_reorder -> two_translate_zoom -> show_visible_area -> make_row_labels -> col_reorder
-        // col_reorder(cgm, col_selection, row_name);
-      } else {
-        row_reorder(cgm, this, row_name);
-      }
+      //   // this is causing buggyness may reenable
+      //   // col_reorder -> two_translate_zoom -> show_visible_area -> make_row_labels -> col_reorder
+      //   // col_reorder(cgm, col_selection, row_name);
+
+      // } else {
+      //   row_reorder(cgm, this, row_name);
+      // }
+
+      row_reorder(cgm, this, row_name);
+
       if (params.tile_click_hlight){
         add_row_click_hlight(this,d.ini);
       }

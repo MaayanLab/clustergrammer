@@ -4,7 +4,7 @@ var show_visible_area = require('../zoom/show_visible_area');
 
 module.exports = function ds_enter_exit_update(cgm){
 
-  console.log('======== ds_enter_exit_update ===============')
+  // console.log('======== ds_enter_exit_update ===============');
 
   // remove row labels, remove non-downsampled rows, and add downsampled rows
   d3.selectAll(cgm.params.root+' .row_cat_group')

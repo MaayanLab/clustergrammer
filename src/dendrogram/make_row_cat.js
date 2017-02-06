@@ -60,7 +60,7 @@ module.exports = function make_row_cat(cgm, updating=false) {
     });
 
   // groups that hold classification triangle and colorbar rect
-  var row_cat_group = d3.select(params.root+' .row_cat_container')
+  d3.select(params.root+' .row_cat_container')
     .selectAll('g')
     .data(params.network_data.row_nodes, function(d){return d.name;})
     .enter()
