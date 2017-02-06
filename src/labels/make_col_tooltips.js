@@ -34,7 +34,7 @@ module.exports = function make_col_tooltips(params){
       .selectAll('.col_label_group')
       .on('mouseover', function(d){
 
-        d3.selectAll('.col_tip')
+        d3.selectAll(params.viz.root_tips+'_col_tip')
           .style('display', 'block');
 
         col_tip.show(d);
@@ -45,7 +45,7 @@ module.exports = function make_col_tooltips(params){
       .on('mouseout', function(){
          col_tip.hide(this);
 
-        d3.selectAll('.col_tip')
+        d3.selectAll(params.viz.root_tips+'_col_tip')
           .style('display', 'none');
 
       });

@@ -18,7 +18,7 @@ var make_cat_params = require('../params/make_cat_params');
 
 module.exports = function update_viz_with_network(cgm, new_network_data){
 
-  // console.log('update_viz_with_network')
+  console.log('update_viz_with_network')
   // console.log(cgm.params.viz.ds_level)
 
   // remove downsampled rows always
@@ -129,8 +129,7 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
 
   setTimeout(enable_sidebar, 2500, cgm.params);
 
-  d3.selectAll(cgm.params.root+' .dendro_shadow')
-    .remove();
+  setTimeout(d3.selectAll(cgm.params.root+' .dendro_shadow').remove(), 500);
 
   function finish_update(){
     d3.select(cgm.params.viz.viz_svg)

@@ -5579,7 +5579,7 @@ var Clustergrammer =
 
 	    d3.select(params.root + ' .col_zoom_container').selectAll('.col_label_group').on('mouseover', function (d) {
 
-	      d3.selectAll('.col_tip').style('display', 'block');
+	      d3.selectAll(params.viz.root_tips + '_col_tip').style('display', 'block');
 
 	      col_tip.show(d);
 	      if (params.col_tip_callback != null) {
@@ -5588,7 +5588,7 @@ var Clustergrammer =
 	    }).on('mouseout', function () {
 	      col_tip.hide(this);
 
-	      d3.selectAll('.col_tip').style('display', 'none');
+	      d3.selectAll(params.viz.root_tips + '_col_tip').style('display', 'none');
 	    });
 	  }
 		};
@@ -9479,7 +9479,7 @@ var Clustergrammer =
 
 	module.exports = function update_viz_with_network(cgm, new_network_data) {
 
-	  // console.log('update_viz_with_network')
+	  console.log('update_viz_with_network');
 	  // console.log(cgm.params.viz.ds_level)
 
 	  // remove downsampled rows always
@@ -9585,7 +9585,7 @@ var Clustergrammer =
 
 	  setTimeout(enable_sidebar, 2500, cgm.params);
 
-	  d3.selectAll(cgm.params.root + ' .dendro_shadow').remove();
+	  setTimeout(d3.selectAll(cgm.params.root + ' .dendro_shadow').remove(), 500);
 
 	  function finish_update() {
 	    d3.select(cgm.params.viz.viz_svg).transition().duration(250).style('opacity', 1.0);
