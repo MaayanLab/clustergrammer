@@ -5163,8 +5163,6 @@ var Clustergrammer =
 
 	module.exports = function col_reorder(cgm, col_selection, inst_term) {
 
-	  console.log('col_reorder');
-
 	  var params = cgm.params;
 	  var prev_zoom = get_previous_zoom(params);
 
@@ -7942,8 +7940,6 @@ var Clustergrammer =
 	      return fine_position_tile(params, d);
 	    });
 	  } else {
-
-	    console.log('resize ds-rows');
 
 	    var ds_level = params.viz.ds_level;
 	    var row_class = '.ds' + String(ds_level) + '_row';

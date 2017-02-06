@@ -8,8 +8,6 @@ var calc_downsampled_levels = require('../matrix/calc_downsampled_levels');
 
 module.exports = function col_reorder(cgm, col_selection, inst_term) {
 
-  console.log('col_reorder')
-
   var params = cgm.params;
   var prev_zoom = get_previous_zoom(params);
 

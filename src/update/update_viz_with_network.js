@@ -45,9 +45,8 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
     cgm.params.new_cat_data = new_cat_data;
     // do not preserve the updated (row) cats
     var preserve_cats = false;
-    cgm.params.viz = make_cat_params(cgm.params, cgm.params.viz, preserve_cats)
+    cgm.params.viz = make_cat_params(cgm.params, cgm.params.viz, preserve_cats);
   }
-
 
   tmp_config.network_data = new_network_data;
   tmp_config.inst_order = cgm.params.viz.inst_order;

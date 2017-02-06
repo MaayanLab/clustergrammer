@@ -5,9 +5,6 @@ function ini_hzome(root_id){
 
   function get_mouseover(root_tip, gene_symbol){
 
-    console.log('get_mouseover: gene_symbol')
-    console.log(gene_symbol)
-
     // not sure if this is necessary
     if ( d3.select(root_tip + '_row_tip').classed(gene_symbol) ){
      get_request(root_tip, gene_symbol);
@@ -22,11 +19,6 @@ function ini_hzome(root_id){
     var base_url = 'https://amp.pharm.mssm.edu/Harmonizome/api/1.0/gene/';
     var url = base_url + gene_symbol;
 
-    console.log('gene_symbol')
-    console.log(gene_symbol)
-    console.log('url')
-    console.log(url)
-
     $.get(url, function(data) {
 
       data = JSON.parse(data);
@@ -35,8 +27,6 @@ function ini_hzome(root_id){
       gene_data[gene_symbol] = {}
       gene_data[gene_symbol].name = data.name;
       gene_data[gene_symbol].description = data.description;
-
-      console.log(gene_data)
 
       set_tooltip(data, root_tip, gene_symbol);
 
@@ -49,8 +39,6 @@ function ini_hzome(root_id){
 
     if (data.name != undefined){
 
-      console.log(data.description)
-
       d3.selectAll(root_tip + '_row_tip')
         .html(function(){
             var sym_name = gene_symbol + ': ' + data.name;
@@ -62,17 +50,15 @@ function ini_hzome(root_id){
   }
 
 
-  function gene_info(root_tips, gene_info){
+  function gene_info(root_tip, gene_info){
 
     var gene_symbol = gene_info.name;
-
-    console.log(gene_symbol)
 
     if (_.has(gene_data, gene_symbol)){
       var inst_data = gene_data[gene_symbol];
       set_tooltip(inst_data, root_tip, gene_symbol);
     } else{
-      setTimeout(get_mouseover, 250, root_tips, gene_symbol);
+      setTimeout(get_mouseover, 250, root_tip, gene_symbol);
     }
 
   }

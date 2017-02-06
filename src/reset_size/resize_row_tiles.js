@@ -49,8 +49,6 @@ module.exports = function resize_row_tiles(params, svg_group){
       });
     } else {
 
-      console.log('resize ds-rows')
-
       var ds_level = params.viz.ds_level;
       var row_class = '.ds'+ String(ds_level) + '_row';
       var ds_rect_height = params.viz.ds[ds_level].rect_height;
