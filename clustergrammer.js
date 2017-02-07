@@ -6978,8 +6978,6 @@ var Clustergrammer =
 	  function check_if_zooming_has_stopped(cgm) {
 	    var params = cgm.params;
 
-	    console.log(cgm.params.root);
-
 	    var stop_attributes = check_zoom_stop_status(params);
 
 	    if (stop_attributes === true) {
