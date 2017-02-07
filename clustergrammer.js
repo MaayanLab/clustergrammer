@@ -1517,7 +1517,7 @@ var Clustergrammer =
 	  // var screen_width = window.innerWidth;
 	  // var screen_height = window.innerHeight;
 
-	  // // resize container, then resize visualization within container 
+	  // // resize container, then resize visualization within container
 	  // d3.select(params.root)
 	  //   .style('width', screen_width+'px')
 	  //   .style('height', screen_height+'px');
@@ -1957,7 +1957,17 @@ var Clustergrammer =
 	  // height of downsampled rectangles
 	  var ds_height = 3;
 
-	  if (params.viz.rect_height < 1) {
+	  var min_rect_height = 2;
+
+	  var total_zoom = ds_height / params.viz.rect_height;
+
+	  // amount of zooming that is tolerated for the downsampled rows
+	  var inst_zt = 2;
+	  params.viz.ds_zt = inst_zt;
+
+	  var num_levels = Math.floor(Math.log(total_zoom) / Math.log(inst_zt));
+
+	  if (params.viz.rect_height < min_rect_height && num_levels > 0) {
 
 	    // increase ds opacity, as more rows are compressed into a single downsampled
 	    // row, increase the opacity of the downsampled row. Max increase will be 2x
@@ -1966,17 +1976,6 @@ var Clustergrammer =
 	    params.viz.ds_opacity_scale = d3.scale.linear().domain([1, 100]).range([1, max_opacity_scale]).clamp(true);
 
 	    var ds;
-
-	    // amount of zooming that is tolerated for the downsampled rows
-	    var inst_zt = 2;
-	    params.viz.ds_zt = inst_zt;
-
-	    // the number of downsampled matrices that need to be calculated
-	    // var num_levels = Math.round(ds_height / (params.viz.rect_height * inst_zt));
-
-	    var total_zoom = ds_height / params.viz.rect_height;
-
-	    var num_levels = Math.floor(Math.log(total_zoom) / Math.log(inst_zt));
 
 	    params.viz.ds_num_levels = num_levels;
 
@@ -5334,8 +5333,6 @@ var Clustergrammer =
 	    check_ds_level = -1;
 	  } else {
 
-	    // check_ds_level = Math.floor(zoom_info.zoom_y / params.viz.ds_zt) ;
-
 	    check_ds_level = Math.floor(Math.log(zoom_info.zoom_y) / Math.log(params.viz.ds_zt));
 
 	    if (check_ds_level > params.viz.ds_num_levels - 1) {
@@ -5409,7 +5406,7 @@ var Clustergrammer =
 	  // if downsampling
 	  if (new_ds_level >= 0) {
 	    // remove old rows
-	    d3.selectAll('.row').remove();
+	    d3.selectAll(params.root + ' .row').remove();
 	    // remove tile tooltips and row tooltips
 	    d3.selectAll(params.viz.root_tips + '_tile_tip').remove();
 	    d3.selectAll(params.viz.root_tips + '_row_tip').remove();
@@ -5474,7 +5471,7 @@ var Clustergrammer =
 	      missing_rows = params.viz.viz_nodes.row;
 
 	      // remove old level rows
-	      d3.selectAll('.ds' + String(old_ds_level) + '_row').remove();
+	      d3.selectAll(params.root + ' .ds' + String(old_ds_level) + '_row').remove();
 	    }
 	  }
 
@@ -5512,8 +5509,6 @@ var Clustergrammer =
 	      }
 	    }
 	  }
-
-	  // }
 		};
 
 /***/ },
@@ -6884,6 +6879,7 @@ var Clustergrammer =
 
 	    params.zoom_behavior.translate([new_x, new_y]);
 	    cgm.params = params;
+
 	    run_transformation(cgm);
 	  }
 		};
@@ -6981,6 +6977,8 @@ var Clustergrammer =
 
 	  function check_if_zooming_has_stopped(cgm) {
 	    var params = cgm.params;
+
+	    console.log(cgm.params.root);
 
 	    var stop_attributes = check_zoom_stop_status(params);
 
@@ -7126,7 +7124,6 @@ var Clustergrammer =
 
 	module.exports = function check_zoom_stop_status(params) {
 
-	  // debugger;
 	  var inst_zoom = Number(d3.select(params.root + ' .viz_svg').attr('is_zoom'));
 
 	  var check_stop = Number(d3.select(params.root + ' .viz_svg').attr('stopped_zoom'));
@@ -7952,6 +7949,19 @@ var Clustergrammer =
 	    }
 	  }
 
+	  // recalc downsampled y_scale if necessary
+	  if (params.viz.ds_num_levels > 0) {
+	    _.each(params.viz.ds, function (inst_ds) {
+
+	      // y_scale
+	      /////////////////////////
+	      inst_ds.y_scale = d3.scale.ordinal().rangeBands([0, params.viz.clust.dim.height]);
+	      inst_ds.y_scale.domain(d3.range(inst_ds.num_rows + 1));
+
+	      inst_ds.rect_height = inst_ds.y_scale.rangeBand() - params.viz.border_width.y;
+	    });
+	  }
+
 	  // redefine zoom extent
 	  params.viz.real_zoom = params.viz.norm_labels.width.col / (params.viz.rect_width / 2);
 
@@ -7967,39 +7977,39 @@ var Clustergrammer =
 
 	'use strict';
 
-	var utils = __webpack_require__(2);
 	var draw_up_tile = __webpack_require__(45);
 	var draw_dn_tile = __webpack_require__(46);
 	var fine_position_tile = __webpack_require__(49);
 
 	module.exports = function resize_row_tiles(params, svg_group) {
 
-	  var row_nodes = params.network_data.row_nodes;
-	  var row_nodes_names = utils.pluck(row_nodes, 'name');
-
-	  svg_group.selectAll('.row').attr('transform', function (d) {
-	    var tmp_index = _.indexOf(row_nodes_names, d.name);
-
-	    var inst_y = params.viz.y_scale(tmp_index);
-	    // var inst_y = params.viz.ds[0].y_scale(tmp_index);
-
-	    return 'translate(0,' + inst_y + ')';
-	  });
+	  var row_nodes_names = params.network_data.row_nodes_names;
 
 	  if (params.viz.ds_level === -1) {
 
-	    // reset tiles
+	    // no downsampling
+	    ///////////////////////
+
+	    // resize rows
+	    svg_group.selectAll('.row').attr('transform', function (d) {
+	      var tmp_index = _.indexOf(row_nodes_names, d.name);
+	      var inst_y = params.viz.y_scale(tmp_index);
+	      return 'translate(0,' + inst_y + ')';
+	    });
+
+	    // resize tiles
 	    svg_group.selectAll('.row').selectAll('.tile').attr('transform', function (d) {
 	      return fine_position_tile(params, d);
 	    }).attr('width', params.viz.rect_width).attr('height', params.viz.rect_height);
 
-	    // reset tile_up
+	    // resize tile_up
 	    svg_group.selectAll('.row').selectAll('.tile_up').attr('d', function () {
 	      return draw_up_tile(params);
 	    }).attr('transform', function (d) {
 	      return fine_position_tile(params, d);
 	    });
 
+	    // resize tile_dn
 	    svg_group.selectAll('.row').selectAll('.tile_dn').attr('d', function () {
 	      return draw_dn_tile(params);
 	    }).attr('transform', function (d) {
@@ -8007,9 +8017,17 @@ var Clustergrammer =
 	    });
 	  } else {
 
+	    // downsampling
+	    /////////////////////////
+
 	    var ds_level = params.viz.ds_level;
 	    var row_class = '.ds' + String(ds_level) + '_row';
 	    var ds_rect_height = params.viz.ds[ds_level].rect_height;
+
+	    svg_group.selectAll(row_class).attr('transform', function (d) {
+	      var inst_y = params.viz.ds[ds_level].y_scale(d.row_index);
+	      return 'translate(0,' + inst_y + ')';
+	    });
 
 	    // reset ds-tiles
 	    svg_group.selectAll(row_class).selectAll('.tile').attr('transform', function (d) {

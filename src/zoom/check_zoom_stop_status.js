@@ -1,6 +1,5 @@
 module.exports = function check_zoom_stop_status(params){
 
-  // debugger;
   var inst_zoom = Number(d3.select(params.root+' .viz_svg').attr('is_zoom'));
 
   var check_stop = Number(d3.select(params.root+' .viz_svg')

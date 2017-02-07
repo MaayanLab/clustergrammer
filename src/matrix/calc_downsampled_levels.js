@@ -8,7 +8,17 @@ module.exports = function calc_downsampled_levels(params){
   // height of downsampled rectangles
   var ds_height = 3;
 
-  if (params.viz.rect_height < 1){
+  var min_rect_height = 2;
+
+  var total_zoom = ds_height / params.viz.rect_height;
+
+  // amount of zooming that is tolerated for the downsampled rows
+  var inst_zt = 2;
+  params.viz.ds_zt = inst_zt;
+
+  var num_levels = Math.floor( Math.log(total_zoom)/Math.log(inst_zt) ) ;
+
+  if (params.viz.rect_height < min_rect_height && num_levels > 0){
 
     // increase ds opacity, as more rows are compressed into a single downsampled
     // row, increase the opacity of the downsampled row. Max increase will be 2x
@@ -20,17 +30,6 @@ module.exports = function calc_downsampled_levels(params){
       .clamp(true);
 
     var ds;
-
-    // amount of zooming that is tolerated for the downsampled rows
-    var inst_zt = 2;
-    params.viz.ds_zt = inst_zt;
-
-    // the number of downsampled matrices that need to be calculated
-    // var num_levels = Math.round(ds_height / (params.viz.rect_height * inst_zt));
-
-    var total_zoom = ds_height / params.viz.rect_height;
-
-    var num_levels = Math.floor( Math.log(total_zoom)/Math.log(inst_zt) ) ;
 
     params.viz.ds_num_levels = num_levels;
 

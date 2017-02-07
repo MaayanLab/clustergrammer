@@ -6,6 +6,7 @@ var calc_zoom_switching = require('../zoom/calc_zoom_switching');
 
 module.exports = function recalc_params_for_resize(params){
 
+
   // Resetting some visualization parameters
   params = get_svg_dim(params);
   params.viz = calc_clust_width(params.viz);
@@ -37,6 +38,23 @@ module.exports = function recalc_params_for_resize(params){
     for (var i; i < params.viz.ds.length; i++){
       params.viz.ds[i].rect_height = params.viz.ds[i].y_scale.rangeBand() - params.viz.border_width.y;
     }
+  }
+
+  // recalc downsampled y_scale if necessary
+  if (params.viz.ds_num_levels > 0){
+    _.each(params.viz.ds, function(inst_ds){
+
+      // y_scale
+      /////////////////////////
+      inst_ds.y_scale = d3.scale.ordinal()
+        .rangeBands([0, params.viz.clust.dim.height]);
+      inst_ds.y_scale
+        .domain( d3.range(inst_ds.num_rows + 1) );
+
+      inst_ds.rect_height = inst_ds.y_scale.rangeBand() -
+        params.viz.border_width.y;
+
+    });
   }
 
   // redefine zoom extent

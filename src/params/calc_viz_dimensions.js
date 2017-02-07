@@ -6,7 +6,7 @@ module.exports = function calc_viz_dimensions(params){
   // var screen_width = window.innerWidth;
   // var screen_height = window.innerHeight;
 
-  // // resize container, then resize visualization within container 
+  // // resize container, then resize visualization within container
   // d3.select(params.root)
   //   .style('width', screen_width+'px')
   //   .style('height', screen_height+'px');

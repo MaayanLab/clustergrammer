@@ -21,8 +21,6 @@ module.exports = function show_visible_area(cgm, zooming_stopped=false,
     check_ds_level = -1;
   } else {
 
-    // check_ds_level = Math.floor(zoom_info.zoom_y / params.viz.ds_zt) ;
-
     check_ds_level = Math.floor( Math.log(zoom_info.zoom_y)/Math.log(params.viz.ds_zt) ) ;
 
     if (check_ds_level > params.viz.ds_num_levels -1 ){
@@ -103,7 +101,7 @@ module.exports = function show_visible_area(cgm, zooming_stopped=false,
   // if downsampling
   if (new_ds_level >= 0){
     // remove old rows
-    d3.selectAll('.row').remove();
+    d3.selectAll(params.root+' .row').remove();
     // remove tile tooltips and row tooltips
     d3.selectAll(params.viz.root_tips + '_tile_tip').remove();
     d3.selectAll(params.viz.root_tips + '_row_tip').remove();
@@ -176,7 +174,7 @@ module.exports = function show_visible_area(cgm, zooming_stopped=false,
       missing_rows = params.viz.viz_nodes.row;
 
       // remove old level rows
-      d3.selectAll('.ds'+String(old_ds_level)+'_row').remove();
+      d3.selectAll(params.root+' .ds'+String(old_ds_level)+'_row').remove();
 
     }
 
@@ -218,7 +216,5 @@ module.exports = function show_visible_area(cgm, zooming_stopped=false,
     }
 
   }
-
-  // }
 
 };

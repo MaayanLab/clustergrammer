@@ -41,6 +41,7 @@ module.exports = function zoomed(cgm) {
 
     params.zoom_behavior.translate([new_x, new_y]);
     cgm.params = params;
+
     run_transformation(cgm);
 
   }
