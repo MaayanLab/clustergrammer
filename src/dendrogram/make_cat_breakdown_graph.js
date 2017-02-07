@@ -28,7 +28,7 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
     // limit on the number of category types shown
     var max_cats = 3;
     // limit the number of bars shown
-    var max_bars = 5;
+    var max_bars = 20;
 
     // calculate height needed for svg based don cat_breakdown data
     var svg_height = 20;
@@ -140,7 +140,11 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
         });
 
       var bar_scale = d3.scale.linear()
-                        .domain([0, cat_data.num_in_clust])
+                        // bar length is max when all nodes in cluster are of
+                        // a single cat
+                        // .domain([0, cat_data.num_in_clust])
+                        // bar length is max based on the max number in one cat
+                        .domain([0, cat_data.bar_data[0][2]])
                         .range([0, bar_width]);
 
       // make bars

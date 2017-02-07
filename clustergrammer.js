@@ -4563,7 +4563,7 @@ var Clustergrammer =
 	    // limit on the number of category types shown
 	    var max_cats = 3;
 	    // limit the number of bars shown
-	    var max_bars = 5;
+	    var max_bars = 20;
 
 	    // calculate height needed for svg based don cat_breakdown data
 	    var svg_height = 20;
@@ -4631,7 +4631,12 @@ var Clustergrammer =
 	        return 'translate(0,' + inst_y + ')';
 	      });
 
-	      var bar_scale = d3.scale.linear().domain([0, cat_data.num_in_clust]).range([0, bar_width]);
+	      var bar_scale = d3.scale.linear()
+	      // bar length is max when all nodes in cluster are of
+	      // a single cat
+	      // .domain([0, cat_data.num_in_clust])
+	      // bar length is max based on the max number in one cat
+	      .domain([0, cat_data.bar_data[0][2]]).range([0, bar_width]);
 
 	      // make bars
 	      cat_bar_groups.append('rect').style('height', bar_height + 'px').style('width', function (d) {
@@ -5889,11 +5894,15 @@ var Clustergrammer =
 	    t = d3.select(params.root + ' .viz_svg');
 	  }
 
+	  var row_nodes_names = params.network_data.row_nodes_names;
+	  var col_nodes_names = params.network_data.col_nodes_names;
+
 	  // only update matrix if not downsampled (otherwise rows are updated)
 	  if (params.viz.ds_level === -1) {
 
 	    t.selectAll('.row').attr('transform', function (d) {
-	      return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
+	      var inst_index = _.indexOf(row_nodes_names, d.name);
+	      return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
 	    }).selectAll('.tile').attr('transform', function (d) {
 	      return 'translate(' + params.viz.x_scale(d.pos_x) + ' , 0)';
 	    });
@@ -5909,22 +5918,26 @@ var Clustergrammer =
 
 	  // Move Row Labels
 	  t.select('.row_label_zoom_container').selectAll('.row_label_group').attr('transform', function (d) {
-	    return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
+	    var inst_index = _.indexOf(row_nodes_names, d.name);
+	    return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
 	  });
 
 	  // Move Col Labels
 	  t.select('.col_zoom_container').selectAll('.col_label_text').attr('transform', function (d) {
-	    return 'translate(' + params.viz.x_scale(d.col_index) + ') rotate(-90)';
+	    var inst_index = _.indexOf(col_nodes_names, d.name);
+	    return 'translate(' + params.viz.x_scale(inst_index) + ') rotate(-90)';
 	  });
 
 	  // reorder row categories
 	  t.selectAll('.row_cat_group').attr('transform', function (d) {
-	    return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
+	    var inst_index = _.indexOf(row_nodes_names, d.name);
+	    return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
 	  });
 
 	  // reorder col_class groups
 	  t.selectAll('.col_cat_group').attr('transform', function (d) {
-	    return 'translate(' + params.viz.x_scale(d.col_index) + ',0)';
+	    var inst_index = _.indexOf(col_nodes_names, d.name);
+	    return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
 	  });
 
 	  // redefine x and y positions
