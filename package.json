@@ -32,7 +32,7 @@
     "awesomplete": "1.1.1",
     "d3": "^3.5.15",
     "extend": "^3.0.0",
-    "jquery": "1.5.1",
+    "jquery": "1.11.0",
     "lodash": "^4.3.0",
     "save-svg-as-png": "^1.1.0",
     "style-loader": "^0.13.1",
