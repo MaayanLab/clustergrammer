@@ -1141,6 +1141,9 @@ var Clustergrammer =
 	  viz.viz_nodes.curr_row = params.network_data.row_nodes_names;
 	  viz.viz_nodes.curr_col = params.network_data.col_nodes_names;
 
+	  // correct panning in x direction
+	  viz.x_offset = 0;
+
 	  return viz;
 	};
 
@@ -6836,15 +6839,15 @@ var Clustergrammer =
 
 	  d3.selectAll(params.viz.root_tips).style('display', 'none');
 
-	  // // cgm.params.viz.x_offset = 0;
-	  // if (zoom_info.zoom_y < params.viz.zoom_switch){
-	  //   console.log('below')
-	  //   cgm.params.viz.x_offset = zoom_info.trans_x;
-	  // } else {
-	  //   console.log('above')
-	  //   console.log(cgm.params.viz.x_offset)
-	  //   zoom_info.trans_x = zoom_info.trans_x - cgm.params.viz.x_offset;
-	  // }
+	  // there will be negative trans_x that is not allowed while zooming in the
+	  // y direction only. Switch this to positive and add it to the trans_x when
+	  // x-zooming is allowed (will be reset when zooming has stopped)
+	  if (zoom_info.zoom_y < params.viz.zoom_switch) {
+	    // console.log('below')
+	    cgm.params.viz.x_offset = -(zoom_info.trans_x + 100);
+	  }
+
+	  // console.log('x_offset: ' + String(cgm.params.viz.x_offset))
 
 	  // transfer zoom_info to params
 	  params.zoom_info = zoom_rules_y(params, zoom_info);
@@ -7050,6 +7053,9 @@ var Clustergrammer =
 
 	    toggle_grid_lines(params);
 
+	    // reset x_offset
+	    cgm.params.viz.x_offset = 0;
+
 	    // probably do not need
 	    ///////////////////////////
 	    // _.each(['row','col'], function(inst_rc){
@@ -7161,11 +7167,18 @@ var Clustergrammer =
 	  if (viz.zoom_switch > 1) {
 
 	    if (zoom_info.zoom_x < viz.zoom_switch) {
-	      zoom_info.trans_x = -params.viz.clust.margin.left;
+
+	      // remove this
+	      // zoom_info.trans_x = - params.viz.clust.margin.left;
+
 	      zoom_info.zoom_x = 1;
 	    } else {
-	      // zoom_info.trans_x = - params.viz.clust.margin.left;
 	      zoom_info.zoom_x = zoom_info.zoom_x / viz.zoom_switch;
+
+	      // console.log('********* zoom_x: ' + String(zoom_info.zoom_x))
+
+	      // zoom_info.trans_x = zoom_info.trans_x + params.viz.x_offset;
+	      // zoom_info.trans_x = zoom_info.trans_x * (params.zoom_info.zoom_x/params.zoom_info.zoom_y);
 	    }
 	  }
 
@@ -7180,7 +7193,7 @@ var Clustergrammer =
 	    // console.log('no positive panning\n\n')
 	  } else if (zoom_info.trans_x <= -zoom_info.pan_room_x) {
 	    zoom_info.trans_x = -zoom_info.pan_room_x;
-	    // console.log('restrict pan room\n\n')
+	    // console.log('******* restrict pan room\n\n')
 	  }
 
 	  return zoom_info;

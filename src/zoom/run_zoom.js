@@ -18,15 +18,15 @@ module.exports = function zoomed(cgm) {
     .style('display','none');
 
 
-  // // cgm.params.viz.x_offset = 0;
-  // if (zoom_info.zoom_y < params.viz.zoom_switch){
-  //   console.log('below')
-  //   cgm.params.viz.x_offset = zoom_info.trans_x;
-  // } else {
-  //   console.log('above')
-  //   console.log(cgm.params.viz.x_offset)
-  //   zoom_info.trans_x = zoom_info.trans_x - cgm.params.viz.x_offset;
-  // }
+  // there will be negative trans_x that is not allowed while zooming in the
+  // y direction only. Switch this to positive and add it to the trans_x when
+  // x-zooming is allowed (will be reset when zooming has stopped)
+  if (zoom_info.zoom_y < params.viz.zoom_switch){
+    // console.log('below')
+    cgm.params.viz.x_offset = - (zoom_info.trans_x + 100);
+  }
+
+  // console.log('x_offset: ' + String(cgm.params.viz.x_offset))
 
   // transfer zoom_info to params
   params.zoom_info = zoom_rules_y(params, zoom_info);

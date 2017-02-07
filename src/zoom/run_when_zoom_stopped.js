@@ -45,6 +45,9 @@ module.exports = function run_when_zoom_stopped(cgm){
 
     toggle_grid_lines(params);
 
+    // reset x_offset
+    cgm.params.viz.x_offset = 0;
+
     // probably do not need
     ///////////////////////////
     // _.each(['row','col'], function(inst_rc){

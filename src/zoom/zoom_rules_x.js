@@ -6,11 +6,18 @@ module.exports = function zoom_rules_x(params, zoom_info){
   if (viz.zoom_switch > 1){
 
     if (zoom_info.zoom_x < viz.zoom_switch) {
-      zoom_info.trans_x = - params.viz.clust.margin.left;
+
+      // remove this
+      // zoom_info.trans_x = - params.viz.clust.margin.left;
+
       zoom_info.zoom_x = 1;
     } else {
-      // zoom_info.trans_x = - params.viz.clust.margin.left;
       zoom_info.zoom_x = zoom_info.zoom_x / viz.zoom_switch;
+
+      // console.log('********* zoom_x: ' + String(zoom_info.zoom_x))
+
+      // zoom_info.trans_x = zoom_info.trans_x + params.viz.x_offset;
+      // zoom_info.trans_x = zoom_info.trans_x * (params.zoom_info.zoom_x/params.zoom_info.zoom_y);
     }
   }
 
@@ -26,7 +33,7 @@ module.exports = function zoom_rules_x(params, zoom_info){
   }
   else if (zoom_info.trans_x <= -zoom_info.pan_room_x) {
     zoom_info.trans_x = -zoom_info.pan_room_x;
-    // console.log('restrict pan room\n\n')
+    // console.log('******* restrict pan room\n\n')
   }
 
 

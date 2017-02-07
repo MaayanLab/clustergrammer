@@ -101,5 +101,8 @@ module.exports = function ini_viz_params(params, preserve_cats=true){
   viz.viz_nodes.curr_row = params.network_data.row_nodes_names;
   viz.viz_nodes.curr_col = params.network_data.col_nodes_names;
 
+  // correct panning in x direction
+  viz.x_offset = 0;
+
   return viz;
 };
