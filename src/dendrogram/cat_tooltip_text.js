@@ -2,10 +2,10 @@ var get_cat_title = require('../categories/get_cat_title');
 
 module.exports = function cat_tooltip_text(params, inst_data, inst_selection, inst_rc){
 
-  d3.selectAll('.col_cat_tip')
+  d3.selectAll(params.viz.root_tips+'_col_cat_tip')
     .style('display', 'block');
 
-  d3.selectAll('.row_cat_tip')
+  d3.selectAll(params.viz.root_tips+'_row_cat_tip')
     .style('display', 'block');
 
   // category index
