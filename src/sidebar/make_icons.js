@@ -1,12 +1,12 @@
-var save_svg_png = require('../screenshot/save_svg_png');
 var file_saver = require('../screenshot/file_saver');
 var two_translate_zoom = require('../zoom/two_translate_zoom');
 var deactivate_cropping = require('../matrix/deactivate_cropping');
+var save_svg_png = require('save-svg-as-png')
 
 module.exports = function make_icons(cgm, sidebar){
 
   var params = cgm.params;
-  var saveSvgAsPng = save_svg_png();
+  // var saveSvgAsPng = save_svg_png();
   var saveAs = file_saver();
 
   var row = sidebar
@@ -207,7 +207,8 @@ module.exports = function make_icons(cgm, sidebar){
       .html('Download PNG')
       .on('click',function(){
         d3.select(params.root+' .expand_button').style('opacity',0);
-        saveSvgAsPng(document.getElementById(svg_id), "clustergrammer.png");
+        // saveSvgAsPng(document.getElementById(svg_id), "clustergrammer.png");
+        save_svg_png.saveSvgAsPng(document.getElementById(svg_id), "clustergrammer.png");
         d3.select(params.root+' .expand_button').style('opacity',0.4);
       });
 

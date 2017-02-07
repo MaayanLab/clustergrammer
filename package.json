@@ -34,6 +34,7 @@
     "extend": "^3.0.0",
     "jquery": "1.5.1",
     "lodash": "^4.3.0",
+    "save-svg-as-png": "^1.1.0",
     "style-loader": "^0.13.1",
     "underscore": "1.8.3"
   }
