@@ -9587,10 +9587,6 @@ var Clustergrammer =
 	    run_zoom(cgm);
 	  });
 
-	  // // clear out old category data
-	  // if (new_cat_data != null){
-	  // }
-
 	  // have persistent group levels while updating
 	  cgm.params.group_level = inst_group_level;
 
@@ -9762,7 +9758,7 @@ var Clustergrammer =
 
 	  d3.select(params.root + ' .clust_group').call(tip);
 
-	  // TODO check if necessary
+	  // necessary for repositioning clust, col and col-cat containers
 	  resize_containers(params);
 
 	  var duration = 1000;
@@ -9854,7 +9850,17 @@ var Clustergrammer =
 	// var show_visible_area = require('../zoom/show_visible_area');
 	var ini_zoom_info = __webpack_require__(38);
 
-	module.exports = function (cgm, duration, delays) {
+	module.exports = function reset_size_after_update(cgm) {
+	  var duration = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
+	  var delays = arguments.length <= 2 || arguments[2] === undefined ? null : arguments[2];
+
+
+	  if (delays === null) {
+	    delays = {};
+	    delays.enter = 0;
+	    delays.update = 0;
+	    delays.run_transition = false;
+	  }
 
 	  var params = cgm.params;
 
@@ -14124,6 +14130,7 @@ var Clustergrammer =
 	var reset_size_after_update = __webpack_require__(147);
 	var make_col_label_container = __webpack_require__(69);
 	var show_visible_area = __webpack_require__(72);
+	var resize_containers = __webpack_require__(156);
 
 	module.exports = function ds_enter_exit_update(cgm) {
 
@@ -14166,14 +14173,15 @@ var Clustergrammer =
 	    return d.name;
 	  }).exit().style('opacity', 0).remove();
 
+	  // necessary for repositioning clust, col and col-cat containers
+	  resize_containers(cgm.params);
+
+	  // seeing if this fixes resizing issue
 	  var delays = {};
 	  delays.enter = 0;
 	  delays.update = 0;
 	  delays.run_transition = false;
-
 	  var duration = 0;
-
-	  // seeing if this fixes resizing issue
 	  reset_size_after_update(cgm, duration, delays);
 		};
 

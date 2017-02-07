@@ -48,7 +48,7 @@ module.exports = function enter_exit_update(cgm, network_data, delays){
   d3.select(params.root+' .clust_group')
     .call(tip);
 
-  // TODO check if necessary
+  // necessary for repositioning clust, col and col-cat containers
   resize_containers(params);
 
   var duration = 1000;

@@ -1,6 +1,7 @@
 var reset_size_after_update = require('../reset_size/reset_size_after_update');
 var make_col_label_container = require('../labels/make_col_label_container');
 var show_visible_area = require('../zoom/show_visible_area');
+var resize_containers = require('../reset_size/resize_containers');
 
 module.exports = function ds_enter_exit_update(cgm){
 
@@ -54,14 +55,15 @@ module.exports = function ds_enter_exit_update(cgm){
     .style('opacity',0)
     .remove();
 
+  // necessary for repositioning clust, col and col-cat containers
+  resize_containers(cgm.params);
+
+  // seeing if this fixes resizing issue
   var delays = {};
   delays.enter = 0;
   delays.update = 0;
   delays.run_transition = false;
-
   var duration = 0;
-
-  // seeing if this fixes resizing issue
   reset_size_after_update(cgm, duration, delays);
 
 };

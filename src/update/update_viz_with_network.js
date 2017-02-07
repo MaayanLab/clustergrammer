@@ -77,10 +77,6 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
       run_zoom(cgm);
     });
 
-  // // clear out old category data
-  // if (new_cat_data != null){
-  // }
-
   // have persistent group levels while updating
   cgm.params.group_level = inst_group_level;
 
@@ -100,7 +96,6 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
   // reduce opacity during update
   d3.select(cgm.params.viz.viz_svg)
     .style('opacity',0.70);
-
 
   make_row_cat(cgm);
   make_row_cat_super_labels(cgm);

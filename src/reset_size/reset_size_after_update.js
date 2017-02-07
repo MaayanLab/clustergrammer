@@ -18,7 +18,14 @@ var calc_zoom_switching = require('../zoom/calc_zoom_switching');
 // var show_visible_area = require('../zoom/show_visible_area');
 var ini_zoom_info = require('../zoom/ini_zoom_info');
 
-module.exports = function(cgm, duration, delays) {
+module.exports = function reset_size_after_update(cgm, duration=0, delays=null) {
+
+  if (delays === null){
+    delays = {};
+    delays.enter = 0;
+    delays.update = 0;
+    delays.run_transition = false;
+  }
 
   var params = cgm.params;
 
