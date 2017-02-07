@@ -43,8 +43,10 @@ module.exports = function d3_tip_custom(){
     var i = 0;
     var coords;
 
+    // add z-index to make sure tooltips appear on top
     nodel.html(content)
-      .style({opacity: 1, 'pointer-events': 'all'});
+      .style({opacity: 1, 'pointer-events': 'all'})
+      .style('z-index', 99);
 
     while(i--) {
       nodel.classed(directions[i], false);
