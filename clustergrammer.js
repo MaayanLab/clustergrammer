@@ -3563,14 +3563,18 @@ var Clustergrammer =
 	      t = d3.select(params.root + ' .viz_svg').transition().duration(2500);
 	    }
 
+	    var col_nodes_names = params.network_data.col_nodes_names;
+
 	    // Move Col Labels
 	    t.select('.col_zoom_container').selectAll('.col_label_text').attr('transform', function (d) {
-	      return 'translate(' + params.viz.x_scale(d.col_index) + ')rotate(-90)';
+	      var inst_index = _.indexOf(col_nodes_names, d.name);
+	      return 'translate(' + params.viz.x_scale(inst_index) + ')rotate(-90)';
 	    });
 
 	    // reorder col_class groups
 	    t.selectAll('.col_cat_group').attr('transform', function (d) {
-	      return 'translate(' + params.viz.x_scale(d.col_index) + ',0)';
+	      var inst_index = _.indexOf(col_nodes_names, d.name);
+	      return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
 	    });
 
 	    // reorder tiles in matrix (do not change row order)
@@ -5226,6 +5230,8 @@ var Clustergrammer =
 
 	    var t;
 
+	    var row_nodes_names = params.network_data.row_nodes_names;
+
 	    // reorder
 	    if (params.network_data.links.length > params.matrix.def_large_matrix) {
 	      t = d3.select(params.root + ' .viz_svg');
@@ -5235,19 +5241,22 @@ var Clustergrammer =
 
 	    // reorder row_label_triangle groups
 	    t.selectAll('.row_cat_group').attr('transform', function (d) {
-	      return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
+	      var inst_index = _.indexOf(row_nodes_names, d.name);
+	      return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
 	    });
 
 	    // Move Row Labels
 	    t.select('.row_label_zoom_container').selectAll('.row_label_group').attr('transform', function (d) {
-	      return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
+	      var inst_index = _.indexOf(row_nodes_names, d.name);
+	      return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
 	    });
 
 	    // only update matri if not downsampled
 	    if (params.viz.ds_level === -1) {
 	      // reorder matrix rows
 	      t.selectAll('.row').attr('transform', function (d) {
-	        return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
+	        var inst_index = _.indexOf(row_nodes_names, d.name);
+	        return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
 	      });
 	    }
 

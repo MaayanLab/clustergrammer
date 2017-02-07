@@ -58,17 +58,21 @@ module.exports = function row_reorder(cgm, row_selection, inst_row) {
         t = d3.select(params.root + ' .viz_svg').transition().duration(2500);
       }
 
+      var col_nodes_names = params.network_data.col_nodes_names;
+
       // Move Col Labels
       t.select('.col_zoom_container')
         .selectAll('.col_label_text')
         .attr('transform', function(d) {
-          return 'translate(' + params.viz.x_scale(d.col_index) + ')rotate(-90)';
+          var inst_index = _.indexOf(col_nodes_names, d.name);
+          return 'translate(' + params.viz.x_scale(inst_index) + ')rotate(-90)';
         });
 
       // reorder col_class groups
       t.selectAll('.col_cat_group')
         .attr('transform', function(d) {
-          return 'translate(' + params.viz.x_scale(d.col_index) + ',0)';
+          var inst_index = _.indexOf(col_nodes_names, d.name);
+          return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
         });
 
       // reorder tiles in matrix (do not change row order)

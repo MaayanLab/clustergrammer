@@ -56,6 +56,8 @@ module.exports = function col_reorder(cgm, col_selection, inst_term) {
 
     var t;
 
+    var row_nodes_names = params.network_data.row_nodes_names;
+
     // reorder
     if (params.network_data.links.length > params.matrix.def_large_matrix){
       t = d3.select(params.root+' .viz_svg');
@@ -67,14 +69,16 @@ module.exports = function col_reorder(cgm, col_selection, inst_term) {
     // reorder row_label_triangle groups
     t.selectAll('.row_cat_group')
       .attr('transform', function(d) {
-        return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
+        var inst_index = _.indexOf(row_nodes_names, d.name);
+        return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
       });
 
     // Move Row Labels
     t.select('.row_label_zoom_container')
       .selectAll('.row_label_group')
       .attr('transform', function(d) {
-        return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
+        var inst_index = _.indexOf(row_nodes_names, d.name);
+        return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
       });
 
     // only update matri if not downsampled
@@ -82,7 +86,8 @@ module.exports = function col_reorder(cgm, col_selection, inst_term) {
       // reorder matrix rows
       t.selectAll('.row')
         .attr('transform', function(d) {
-          return 'translate(0,' + params.viz.y_scale(d.row_index) + ')';
+          var inst_index = _.indexOf(row_nodes_names, d.name);
+          return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
         });
     }
 
