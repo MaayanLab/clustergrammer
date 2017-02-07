@@ -2,7 +2,6 @@ var deactivate_cropping = require('./deactivate_cropping');
 
 module.exports = function brush_crop_matrix(){
 
-  // transform brush-extent based on zoom/translate
   // get rows/cols from brush-extent
   // works for differnt brushing directions (e.g. start end sites)
 
@@ -90,22 +89,31 @@ module.exports = function brush_crop_matrix(){
     found_nodes.row = [];
     found_nodes.col = [];
 
-    d3.selectAll(params.root+' .row_label_group')
-      .each(function(inst_row){
+    // d3.selectAll(params.root+' .row_label_group')
+    //   .each(function(inst_row){
 
-        // there is already bound data on the rows
-        var inst_trans = d3.select(this)
-          .attr('transform');
+    //     // there is already bound data on the rows
+    //     var inst_trans = d3.select(this)
+    //       .attr('transform');
 
-        var y_trans = Number(inst_trans.split(',')[1].split(')')[0]);
+    //     var y_trans = Number(inst_trans.split(',')[1].split(')')[0]);
+
+    //     if (y_trans > y_start && y_trans < y_end){
+
+    //       found_nodes.row.push(inst_row.name);
+
+    //     }
+
+    //   });
+
+    _.each(params.matrix.matrix, function(row_data){
+      var y_trans = params.viz.y_scale(row_data.row_index);
 
         if (y_trans > y_start && y_trans < y_end){
-
-          found_nodes.row.push(inst_row.name);
-
+          found_nodes.row.push(row_data.name);
         }
 
-      });
+    });
 
     d3.selectAll(params.root+' .col_label_text')
       .each(function(inst_col){
