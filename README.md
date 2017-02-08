@@ -17,11 +17,6 @@ The project began as an extension of this example http://bost.ocks.org/mike/mise
 - row filtering and searching
 - row/column categories
 
-Clustergrammer can be used as:
-* [clustergrammer.js](#clustergrammer-javascript-library) and [clustergrammer.py](#clustergrammer-python-library) libraries by web-developers
-* IPython/Jupyter notebook [widget](https://github.com/MaayanLab/clustergrammer-widget)
-* Web-app [http://amp.pharm.mssm.edu/clustergrammer/](http://amp.pharm.mssm.edu/clustergrammer/)
-
 Clustergrammer is designed to be a reusable chart and has been integrated into several [Ma'ayan lab](http://icahn.mssm.edu/research/labs/maayan-laboratory) web tools including:
 - [Clustergrammer (web application)](http://amp.pharm.mssm.edu/clustergrammer/)
 - [Enrichr](http://amp.pharm.mssm.edu/Enrichr/)
@@ -31,6 +26,11 @@ Clustergrammer is designed to be a reusable chart and has been integrated into s
 - [Harmoniozome](http://amp.pharm.mssm.edu/Harmonizome/)
 
 # Using Clustergrammer
+Clustergrammer can be used as:
+* **Libraries**: [clustergrammer.js](#clustergrammer-javascript-library) and [clustergrammer.py](#clustergrammer-python-library) libraries by developers
+* **Notebook Widget**: Jupyter/IPython notebook [interactive-widget](http://nbviewer.jupyter.org/github/MaayanLab/clustergrammer-widget/blob/master/Running_clustergrammer_widget.ipynb) ([GitHub repo](https://github.com/MaayanLab/clustergrammer-widget))
+* **Web-app**: [http://amp.pharm.mssm.edu/clustergrammer/](http://amp.pharm.mssm.edu/clustergrammer/)
+
 Clustergrammer consists of two parts: 1) the front-end JavaScript library [clustergrammer.js](#clustergrammer-javascript-library) used the make the interactive visualization, and 2) the 'back-end' [clustergrammer.py](#clustergrammer-python-library) used to cluster your data and make the [JSON](https://github.com/MaayanLab/clustergrammer-json) for the front-end visualization.
 
 You can install [clustergrammer.js](#clustergrammer-javascript-library) by downloading the [latest release](https://github.com/MaayanLab/clustergrammer/releases/latest) or with npm `npm install clustergrammer`. You also install [clustergrammer.py](#clustergrammer-python-library) by downloading the [latest release](https://github.com/MaayanLab/clustergrammer-py/releases/latest) or with pip `pip install clustergrammer`.
