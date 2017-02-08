@@ -1,7 +1,10 @@
-# clustergrammer
+<!-- # clustergrammer -->
+<!-- # ![clustergrammer_logo](img/clustergrammer_logo.png | width=100) -->
 
-[![NPM](https://img.shields.io/npm/v/clustergrammer.svg)](https://www.npmjs.com/package/clustergrammer)
-[![NPM](https://img.shields.io/npm/l/clustergrammer.svg)](https://github.com/MaayanLab/clustergrammer/blob/master/LICENSES/LICENSE)
+<img src='img/clustergrammer_logo.png' alt="Clustergramer" width="300px" >
+
+<!-- [![NPM](https://img.shields.io/npm/v/clustergrammer.svg)](https://www.npmjs.com/package/clustergrammer) -->
+<!-- [![NPM](https://img.shields.io/npm/l/clustergrammer.svg)](https://github.com/MaayanLab/clustergrammer/blob/master/LICENSES/LICENSE) -->
 
 Clustergrammer is an interactive web-based tool for visualizing high-dimensional data as heatmaps. The front-end JavaScript library, [clustergrammer.js](#clustergrammer-javascript-library) is built using D3.js and 'back-end' calculations are done using the Python library [clustergrammer.py](#clustergrammer-python-library). Click the screenshot below to view an interaceive tutorial:
 
