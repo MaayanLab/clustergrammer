@@ -39,8 +39,7 @@ module.exports = function sidebar(cgm) {
 
   sidebar
     .append('div')
-    .style('padding-left', '10px')
-    .style('padding-right', '10px')
+    .style('padding-right', '2px')
     .classed('about_section',true);
 
   if (params.sidebar.about != null){

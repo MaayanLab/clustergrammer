@@ -13503,7 +13503,7 @@ var Clustergrammer =
 	    .style('margin-left', '20px').style('margin-top', '5px').style('margin-bottom', '0px').text(params.sidebar.title);
 	  }
 
-	  sidebar.append('div').style('padding-left', '10px').style('padding-right', '10px').classed('about_section', true);
+	  sidebar.append('div').style('padding-right', '2px').classed('about_section', true);
 
 	  if (params.sidebar.about != null) {
 
