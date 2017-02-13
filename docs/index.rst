@@ -28,11 +28,11 @@ The web application is the easiest way for a user to generate an interactive and
 
 Use Cases
 ---------
-Clustergrammer can be used to explore and analyze a diverse datasets. The following use cases, made with Jupyter notebooks, demonstrate a few use cases:
+Clustergrammer can be used to explore and analyze a diverse datasets:
 
-- Cancer Cell Line Encyclopedia Gene Expression Data
-- Iris Flower Dataset
-- MNIST Handwritten Digit Dataset
+- `Cancer Cell Line Encyclopedia Gene Expression Data`_
+- `Iris flower dataset`_
+- `MNIST Handwritten Digit Dataset`_
 
 Clustergrammer can easily be integrated into other web applications and is being utilized to visualize data for the following Ma'ayan lab web applications:
 
@@ -71,3 +71,6 @@ Indices and tables
 .. _`L1000CDS2`: http://amp.pharm.mssm.edu/l1000cds2/
 .. _`GEO2Enrichr`: http://amp.pharm.mssm.edu/g2e/
 .. _`Harmonizome`: http://amp.pharm.mssm.edu/Harmonizome/
+.. _`Iris flower dataset`: http://nbviewer.jupyter.org/github/MaayanLab/iris_clustergrammer_visualization/blob/master/Iris%20Dataset.ipynb
+.. _`MNIST Handwritten Digit Dataset`: https://maayanlab.github.io/MNIST_heatmaps/
+.. _`Cancer Cell Line Encyclopedia Gene Expression Data`: http://amp.pharm.mssm.edu/clustergrammer/CCLE/
