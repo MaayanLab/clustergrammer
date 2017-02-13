@@ -20,7 +20,7 @@ or the source code can be obtained from the `GitHub repo`_.
 
 Workflow Example
 ================
-This workflow shows how to cluster a matrix of data and generate a visualization JSON from a matrix file:
+This workflow shows how to cluster a matrix of data and generate a visualization JSON (for use by Clustergrammer.js) from a matrix file:
 ::
   # make network object
   from clustergrammer import Network

@@ -33,8 +33,6 @@ This workflow shows how to make a visualization using a JSON produced by Cluster
 
 The id of the container where the visualizaton will be made is passed as ``root`` (this root container must be made by the user). The visualization JSON contains the information necessary to make the visualization and is passed as ``network_data``. See the Clustergrammer.js API for additional arguments that can be passed to Clustergrammer.js.
 
-.. _clustergrammer_js_api
-
 Example Pages
 =============
 The `Clustergrammer.js repo`_ contains several example pages demonstrating how to make a webpage with a Clustergramemr heatmap. The page `index.html`_ and corresponding script `load_clustergram.js`_ show how to make a full-screen resizable visualization.
@@ -56,4 +54,4 @@ The JSON format required for Clustergrammer.js is described here:
 .. _`index.html`: https://github.com/MaayanLab/clustergrammer/blob/master/index.html
 .. _`load_clustergram.js`: https://github.com/MaayanLab/clustergrammer/blob/master/js/load_clustergram.js
 .. _`multiple_clust.html`: https://github.com/MaayanLab/clustergrammer/blob/master/multiple_clustergrams.html
-.. `load_multiple_clustergrams.js`: https://github.com/MaayanLab/clustergrammer/blob/master/js/load_multiple_clustergrams.js
+.. _`load_multiple_clustergrams.js`: https://github.com/MaayanLab/clustergrammer/blob/master/js/load_multiple_clustergrams.js
