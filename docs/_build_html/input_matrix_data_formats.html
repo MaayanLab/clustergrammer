@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Input Matrix Data Formats &mdash; Clustergrammer 1.0.0 documentation</title>
+    <title>Input Matrix Format &mdash; Clustergrammer 1.0.0 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="top" title="Clustergrammer 1.0.0 documentation" href="index.html" />
-    <link rel="prev" title="Jupyter Widget" href="jupyter_widget.html" /> 
+    <link rel="prev" title="Developing with Clustergrammer" href="developing_with_clustergrammer.html" /> 
   </head>
   <body role="document">
     <div class="related" role="navigation" aria-label="related navigation">
@@ -35,7 +35,7 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="jupyter_widget.html" title="Jupyter Widget"
+          <a href="developing_with_clustergrammer.html" title="Developing with Clustergrammer"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Clustergrammer 1.0.0 documentation</a> &raquo;</li> 
       </ul>
@@ -46,9 +46,33 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="input-matrix-data-formats">
-<h1>Input Matrix Data Formats<a class="headerlink" href="#input-matrix-data-formats" title="Permalink to this headline">¶</a></h1>
-<p>Clustergrammer takes several matrix formats as input data</p>
+  <div class="section" id="input-matrix-format">
+<h1>Input Matrix Format<a class="headerlink" href="#input-matrix-format" title="Permalink to this headline">¶</a></h1>
+<p>Clustergrammer.py takes as input:</p>
+<ol class="arabic simple">
+<li>a tab-separated matrix file with unique row and column names as input</li>
+<li>a Pandas DataFrame</li>
+</ol>
+<div class="section" id="simple-matrix-format">
+<h2>Simple Matrix Format<a class="headerlink" href="#simple-matrix-format" title="Permalink to this headline">¶</a></h2>
+<p>The simplest file format is shown here:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>      <span class="n">Col</span><span class="o">-</span><span class="n">A</span>   <span class="n">Col</span><span class="o">-</span><span class="n">B</span>   <span class="n">Col</span><span class="o">-</span><span class="n">C</span>
+<span class="n">Row</span><span class="o">-</span><span class="n">A</span> <span class="mf">0.0</span>     <span class="o">-</span><span class="mf">0.1</span>    <span class="mf">1.0</span>
+<span class="n">Row</span><span class="o">-</span><span class="n">B</span> <span class="mf">3.0</span>     <span class="mf">0.0</span>     <span class="mf">8.0</span>
+<span class="n">Row</span><span class="o">-</span><span class="n">C</span> <span class="mf">0.2</span>     <span class="mf">0.1</span>     <span class="mf">2.5</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="simple-matrix-category-format">
+<h2>Simple Matrix-Category Format<a class="headerlink" href="#simple-matrix-category-format" title="Permalink to this headline">¶</a></h2>
+<p>Row and column categories can also be included in the matrix in the following way:</p>
+<a class="reference internal image-reference" href="_images/cat_tsv.png"><img alt="_images/cat_tsv.png" src="_images/cat_tsv.png" style="width: 700px;" /></a>
+<p>This screenshot of an Excel spreadsheet shows a single row category being added as an additional column of strings (e.g. <code class="docutils literal"><span class="pre">Type:</span> <span class="pre">Interesting</span></code>) and a single column category being added as an additional row of strings (e.g. <code class="docutils literal"><span class="pre">Gender:</span> <span class="pre">Male</span></code>). Up to 15 categories can be added in a similar manner. Titles for row or column names or categories can be added by prefixing each string with <code class="docutils literal"><span class="pre">Title:</span> <span class="pre">`</span></code> (note that a space after the colon). For example the title of the column names is <code class="docutils literal"><span class="pre">Cell</span> <span class="pre">Line</span></code> and the title of the row categories is <code class="docutils literal"><span class="pre">Gender</span></code>.</p>
+<p>These categories will be shown as a title above row/column names or a name adjacent to row/column categories.</p>
+</div>
+<div class="section" id="tuple-matrix-category-format">
+<h2>Tuple Matrix-Category Format<a class="headerlink" href="#tuple-matrix-category-format" title="Permalink to this headline">¶</a></h2>
+</div>
 </div>
 
 
@@ -57,9 +81,19 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Input Matrix Format</a><ul>
+<li><a class="reference internal" href="#simple-matrix-format">Simple Matrix Format</a></li>
+<li><a class="reference internal" href="#simple-matrix-category-format">Simple Matrix-Category Format</a></li>
+<li><a class="reference internal" href="#tuple-matrix-category-format">Tuple Matrix-Category Format</a></li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
-  <p class="topless"><a href="jupyter_widget.html"
-                        title="previous chapter">Jupyter Widget</a></p>
+  <p class="topless"><a href="developing_with_clustergrammer.html"
+                        title="previous chapter">Developing with Clustergrammer</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -88,7 +122,7 @@
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="jupyter_widget.html" title="Jupyter Widget"
+          <a href="developing_with_clustergrammer.html" title="Developing with Clustergrammer"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Clustergrammer 1.0.0 documentation</a> &raquo;</li> 
       </ul>

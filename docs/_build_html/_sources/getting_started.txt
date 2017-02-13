@@ -18,9 +18,9 @@ Getting Started Clustergrammer-Widget
 Here is a link to a notebook with an example interactive widget hosted on nbviewer:
 `Interactive Widget <http://nbviewer.jupyter.org/github/MaayanLab/clustergrammer-widget/blob/master/Running_clustergrammer_widget.ipynb>`_
 
-
-Interactivity
-=============
+.. _visualization_interactivity:
+Visualization Interactivity
+===========================
 Clustergrammer is built to enable users to intuitively explore/analyze high-dimensional datasets and has many interactive features:
 
 - zooming/panning
@@ -33,13 +33,16 @@ Clustergrammer is built to enable users to intuitively explore/analyze high-dime
 
 Getting Started Web Development
 ================================
-Clustergrammer consists of two parts:
+Clustergrammer can be used to generate a interactive visualizations for your web application. Clustergrammer consists of two parts:
 
-#. front-end JavaScript library Clustergrammer.js makes the interactive visualization
-#. back-end Clustergrammer.py clusters a matrix of data and makes the JSON for the front-end
+#. the front-end Clustergrammer.js JavaScript library makes the interactive visualization
+#. the back-end Clustergrammer.py Python library clusters a matrix of data and makes the JSON for the front-end
 
 These libraries can be installed npm, ``npm install Clustergrammer``, and pip, ``pip install clustergrammer``, respectively.
 
 
-The easiest way to visualize a matrix of your own data on a webpage is to follow the example :ref:`python_workflow_example`.
+The easiest way to generate a visualize of your own data on a webpage is to:
+
+#. follow the :ref:`python_workflow_example` to cluster your matrix and generate the front-end JSON
+#. then use the :ref:`example_pages` workflow to visualize your calculated JSON
 

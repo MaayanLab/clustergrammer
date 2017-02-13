@@ -24,6 +24,7 @@ Python Workflow Example
 =======================
 This workflow shows how to cluster a matrix of data and generate a visualization JSON (for use by Clustergrammer.js) from a matrix file:
 ::
+
   # make network object
   from clustergrammer import Network
   net = Network()
@@ -43,5 +44,5 @@ Clustergrammer.py API
 =====================
 Clustergrammer.py generates a Network object, which is used to load a matrix (e.g. from a Pandas DataFrame), normalize/filter the matrix, cluster the matrix, and finally generate the visualization JSON for the front-end Clustergrammer.js.
 
-.. _`GitHub repo`: github.com/MaayanLab/clustergrammer-py
+.. _`GitHub repo`: http://github.com/MaayanLab/clustergrammer-py
 .. _`package index`: https://pypi.python.org/pypi?:action=display&name=clustergrammer
