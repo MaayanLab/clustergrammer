@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Web Application &mdash; Clustergrammer 1.0.0 documentation</title>
+    <title>Clustergrammer.py &mdash; Clustergrammer 1.0.0 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -24,9 +24,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="Clustergrammer 1.0.0 documentation" href="index.html" />
-    <link rel="next" title="Jupyter Widget" href="jupyter_widget.html" />
-    <link rel="prev" title="Getting Started" href="getting_started.html" /> 
+    <link rel="top" title="Clustergrammer 1.0.0 documentation" href="index.html" /> 
   </head>
   <body role="document">
     <div class="related" role="navigation" aria-label="related navigation">
@@ -35,12 +33,6 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="jupyter_widget.html" title="Jupyter Widget"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="getting_started.html" title="Getting Started"
-             accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Clustergrammer 1.0.0 documentation</a> &raquo;</li> 
       </ul>
     </div>  
@@ -50,11 +42,20 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="web-application">
-<h1>Web Application<a class="headerlink" href="#web-application" title="Permalink to this headline">¶</a></h1>
-<p>The Clustergrammer web application enables users to easily generate interactive and shareable heatmap visualizations.</p>
-<div class="section" id="uploading-data">
-<h2>Uploading Data<a class="headerlink" href="#uploading-data" title="Permalink to this headline">¶</a></h2>
+  <div class="section" id="clustergrammer-py">
+<h1>Clustergrammer.py<a class="headerlink" href="#clustergrammer-py" title="Permalink to this headline">¶</a></h1>
+<p>Clustergrammer.py is the back-end calculation library that is used to hierarchically cluster the data and generate the JSON for the front-end Clustergrammer.js visualization library.</p>
+<div class="section" id="dependencies">
+<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Numpy</li>
+<li>Pandas</li>
+<li>SciPy</li>
+</ul>
+</div>
+<div class="section" id="clustergrammer-py-api">
+<h2>Clustergrammer.py API<a class="headerlink" href="#clustergrammer-py-api" title="Permalink to this headline">¶</a></h2>
+<p>Clustergrammer.py generates a Network object, which is used to load a matrix (e.g. from a Pandas DataFrame), normalize/filter the matrix, cluster the matrix, and finally generate the visualization JSON for the front-end Clustergrammer.js.</p>
 </div>
 </div>
 
@@ -66,22 +67,17 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Web Application</a><ul>
-<li><a class="reference internal" href="#uploading-data">Uploading Data</a></li>
+<li><a class="reference internal" href="#">Clustergrammer.py</a><ul>
+<li><a class="reference internal" href="#dependencies">Dependencies</a></li>
+<li><a class="reference internal" href="#clustergrammer-py-api">Clustergrammer.py API</a></li>
 </ul>
 </li>
 </ul>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="getting_started.html"
-                        title="previous chapter">Getting Started</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="jupyter_widget.html"
-                        title="next chapter">Jupyter Widget</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/web_app.txt"
+      <li><a href="_sources/clustergrammer_py.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -105,12 +101,6 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
-        <li class="right" >
-          <a href="jupyter_widget.html" title="Jupyter Widget"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="getting_started.html" title="Getting Started"
-             >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Clustergrammer 1.0.0 documentation</a> &raquo;</li> 
       </ul>
     </div>

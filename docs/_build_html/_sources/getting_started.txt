@@ -7,14 +7,32 @@ Clustergrammer is an interactive web-based tool for visualizing high-dimensional
 
 .. _getting_started_web_app:
 
-Web Application
-===============
+Getting Started Clustergrammer-Web
+==================================
 Instructions for using the web application...
 
 .. _getting_started_widget:
 
-Jupyter Notebook Interactive Widget
-===================================
-
+Getting Started Clustergrammer-Widget
+=====================================
 Here is a link to a notebook with an example interactive widget hosted on nbviewer:
 `Interactive Widget <http://nbviewer.jupyter.org/github/MaayanLab/clustergrammer-widget/blob/master/Running_clustergrammer_widget.ipynb>`_
+
+
+Interactivity
+=============
+Clustergrammer is built to enable users to intuitively explore/analyze high-dimensional datasets and has many interactive features:
+
+- zooming/panning
+- row/column reordering (e.g. reorder based on sum)
+- interactive dendrogram
+- dimensionality reduction (e.g. filter rows based on variance)
+- interactive row/column categories
+
+
+.. _getting_started_web_development:
+
+Getting Started Web Development
+================================
+Clustergrammer visualizations can easily be embedded into your own web application.
+

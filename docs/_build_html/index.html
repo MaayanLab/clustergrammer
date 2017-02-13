@@ -48,7 +48,7 @@
             
   <div class="section" id="welcome-to-clustergrammer-s-documentation">
 <h1>Welcome to Clustergrammer&#8217;s Documentation!<a class="headerlink" href="#welcome-to-clustergrammer-s-documentation" title="Permalink to this headline">¶</a></h1>
-<p>Clustergrammer is an web-based visualization tool that enables users to easily generate highly interactive and shareable heatmap visualizations of high-dimensional data. The front-end is built using D3.js and back-end calculations are done using Python.The easiest way to use Clustergrammer is to upload a file with your matrix of data to the <a class="reference external" href="http://amp.pharm.mssm.edu/clustergrammer/">Clustergrammer web application</a>. Please read the <a class="reference internal" href="getting_started.html"><span class="doc">Getting Started</span></a> guide for more information.</p>
+<p>Clustergrammer is an web-based visualization tool that enables users to easily generate highly interactive and shareable/embeddable heatmap visualizations of high-dimensional data. The front-end is built using D3.js and back-end calculations are done using Python.The easiest way to use Clustergrammer is to upload a file with your matrix of data to the <a class="reference external" href="http://amp.pharm.mssm.edu/clustergrammer/">Clustergrammer web application</a>. Please read the <a class="reference internal" href="getting_started.html"><span class="doc">Getting Started</span></a> guide for more information.</p>
 <div class="section" id="interactive-demo">
 <h2>Interactive Demo<a class="headerlink" href="#interactive-demo" title="Permalink to this headline">¶</a></h2>
 <p>Press play or interact with the demo below:</p>
@@ -66,12 +66,32 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="getting_started.html#introduction">Introduction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="getting_started.html#web-application">Web Application</a></li>
-<li class="toctree-l2"><a class="reference internal" href="getting_started.html#jupyter-notebook-interactive-widget">Jupyter Notebook Interactive Widget</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#getting-started-clustergrammer-web">Getting Started Clustergrammer-Web</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#getting-started-clustergrammer-widget">Getting Started Clustergrammer-Widget</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#interactivity">Interactivity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#getting-started-web-development">Getting Started Web Development</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="web_app.html">Web Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="web_app.html">Web Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="web_app.html#uploading-data">Uploading Data</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="jupyter_widget.html">Jupyter Widget</a></li>
+<li class="toctree-l1"><a class="reference internal" href="clustergrammer_js.html">Clustergrammer.js</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="clustergrammer_js.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="clustergrammer_js.html#clustergrammer-js-api">Clustergrammer.js API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="clustergrammer_js.html#clustergrammer-js-json-format">Clustergrammer.js JSON Format</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="developing_with_clustergrammer.html">Developing with Clustergrammer</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="developing_with_clustergrammer.html#building-a-simple-clustergrammer-webpage">Building a simple Clustergrammer Webpage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developing_with_clustergrammer.html#clustergrammer-js-source-code">Clustergrammer.js Source Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developing_with_clustergrammer.html#clustergrammer-py-source-code">Clustergrammer.py Source Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developing_with_clustergrammer.html#clustergrammer-widget-source-code">Clustergrammer-Widget Source Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developing_with_clustergrammer.html#clustergrammer-web-source-code">Clustergrammer-Web Source Code</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="input_matrix_data_formats.html">Input Matrix Data Formats</a></li>
 </ul>
 </div>
 </div>
@@ -80,7 +100,6 @@
 <h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
 <li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
-<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
 <li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
 </ul>
 </div>
