@@ -18,8 +18,10 @@ Clustergrammer.py can be installed using pip (`package index`_) with the followi
 
 or the source code can be obtained from the `GitHub repo`_.
 
-Workflow Example
-================
+.. _python_workflow_example:
+
+Python Workflow Example
+=======================
 This workflow shows how to cluster a matrix of data and generate a visualization JSON (for use by Clustergrammer.js) from a matrix file:
 ::
   # make network object
@@ -35,7 +37,7 @@ This workflow shows how to cluster a matrix of data and generate a visualization
   # write visualization JSON to file
   net.write_json_to_file('viz', 'mult_view.json')
 
-The file mult_view.json will be loaded by the front-end and used to build the interactive visualization.
+The file ``mult_view.json`` will be loaded by the front-end and used to build the interactive visualization.
 
 Clustergrammer.py API
 =====================

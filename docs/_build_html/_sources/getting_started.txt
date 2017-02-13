@@ -29,10 +29,17 @@ Clustergrammer is built to enable users to intuitively explore/analyze high-dime
 - dimensionality reduction (e.g. filter rows based on variance)
 - interactive row/column categories
 
-
 .. _getting_started_web_development:
 
 Getting Started Web Development
 ================================
-Clustergrammer visualizations can easily be embedded into your own web application.
+Clustergrammer consists of two parts:
+
+#. front-end JavaScript library Clustergrammer.js makes the interactive visualization
+#. back-end Clustergrammer.py clusters a matrix of data and makes the JSON for the front-end
+
+These libraries can be installed npm, ``npm install Clustergrammer``, and pip, ``pip install clustergrammer``, respectively.
+
+
+The easiest way to visualize a matrix of your own data on a webpage is to follow the example :ref:`python_workflow_example`.
 

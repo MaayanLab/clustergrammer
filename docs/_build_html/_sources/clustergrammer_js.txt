@@ -18,8 +18,10 @@ Clustergrammer.js can be installed using node package manager (`npm package`_) w
 
 or the source code can be obtained from the `Clustergrammer.js repo`_.
 
-Workflow Example
-================
+.. _javascript_workflow_example:
+
+JavaScript Workflow Example
+============================
 This workflow shows how to make a visualization using a JSON produced by Clustergrammer.py
 ::
 
@@ -42,7 +44,6 @@ The page `multiple_clust.html`_ and corresponding script `load_multiple_clusterg
 Clustergrammer.js API
 =====================
 Clustergrammer.js' API allows users to pass options to the front-end visualization, such as optional callback functions.
-
 
 
 Clustergrammer.js JSON Format
