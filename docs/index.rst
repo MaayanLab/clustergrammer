@@ -1,7 +1,7 @@
 .. sphinx-autobuild . _build_html
 Welcome to Clustergrammer's Documentation!
 ==========================================
-Clustergrammer is an web-based visualization tool that enables users to easily generate highly interactive and shareable/embeddable heatmap visualizations of high-dimensional data. The front-end is built using D3.js and back-end calculations are done using Python.The easiest ways to use Clustergrammer are to:
+Clustergrammer is an web-based visualization tool that enables users to easily generate highly interactive and shareable/embeddable heatmap visualizations of high-dimensional data. The front-end is built using D3.js and back-end calculations are done using Python. The easiest ways to use Clustergrammer are to:
 
 - upload a file with your data to the `Clustergrammer web application`_,
 - or visualize your data within a Jupyter notebook using Clustergrammer-Widget.
@@ -36,11 +36,11 @@ Clustergrammer can be used to explore and analyze a diverse datasets. The follow
 
 Clustergrammer can easily be integrated into other web applications and is being utilized to visualize data for the following Ma'ayan lab web applications:
 
-- Enrichr
-- GEN3VA
-- L1000CDS2
-- GEO2Enrichr
-- Harmonizome
+- `Enrichr`_
+- `GEN3VA`_
+- `L1000CDS2`_
+- `GEO2Enrichr`_
+- `Harmonizome`_
 
 Contents:
 ---------
@@ -66,3 +66,8 @@ Indices and tables
 
 
 .. _`Clustergrammer web application`: http://amp.pharm.mssm.edu/clustergrammer/
+.. _`Enrichr`: http://amp.pharm.mssm.edu/Enrichr/
+.. _`GEN3VA`: http://amp.pharm.mssm.edu/gen3va/
+.. _`L1000CDS2`: http://amp.pharm.mssm.edu/l1000cds2/
+.. _`GEO2Enrichr`: http://amp.pharm.mssm.edu/g2e/
+.. _`Harmonizome`: http://amp.pharm.mssm.edu/Harmonizome/
