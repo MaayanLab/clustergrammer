@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="top" title="Clustergrammer 1.0.0 documentation" href="index.html" />
-    <link rel="next" title="Developing with Clustergrammer" href="developing_with_clustergrammer.html" />
+    <link rel="next" title="Clustergrammer.py" href="clustergrammer_py.html" />
     <link rel="prev" title="Jupyter Widget" href="jupyter_widget.html" /> 
   </head>
   <body role="document">
@@ -36,7 +36,7 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="developing_with_clustergrammer.html" title="Developing with Clustergrammer"
+          <a href="clustergrammer_py.html" title="Clustergrammer.py"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="jupyter_widget.html" title="Jupyter Widget"
@@ -52,7 +52,7 @@
             
   <div class="section" id="clustergrammer-js">
 <h1>Clustergrammer.js<a class="headerlink" href="#clustergrammer-js" title="Permalink to this headline">¶</a></h1>
-<p>Clustergrammer.js is the front-end visualization library that is built using D3.js.</p>
+<p>The front-end library Clustergrammer.js builds the interactive heatmap visualization in SVG using the visualization library D3.js. Clustergrammer is built using Webpack Module Developer.</p>
 <div class="section" id="dependencies">
 <h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
@@ -60,6 +60,33 @@
 <li>JQuery</li>
 <li>Underscore</li>
 </ul>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>Clustergrammer.js can be installed using node package manager (<a class="reference external" href="https://www.npmjs.com/package/clustergrammer">npm package</a>) with the following:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">npm</span> <span class="n">install</span> <span class="n">clustergrammer</span>
+</pre></div>
+</div>
+<p>or the source code can be obtained from the <a class="reference external" href="https://github.com/MaayanLab/clustergrammer">Clustergrammer.js repo</a>.</p>
+</div>
+<div class="section" id="workflow-example">
+<h2>Workflow Example<a class="headerlink" href="#workflow-example" title="Permalink to this headline">¶</a></h2>
+<p>This workflow shows how to make a visualization using a JSON produced by Clustergrammer.py</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">//</span> <span class="n">load</span> <span class="n">visualization</span> <span class="n">JSON</span> <span class="n">to</span> <span class="n">network_data</span>
+<span class="n">var</span> <span class="n">args</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s1">&#39;root&#39;</span><span class="p">:</span> <span class="s1">&#39;#id_of_container&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;network_data&#39;</span><span class="p">:</span> <span class="s1">&#39;network_data&#39;</span>
+<span class="p">}</span>
+
+<span class="n">var</span> <span class="n">cgm</span> <span class="o">=</span> <span class="n">Clustergrammer</span><span class="p">(</span><span class="n">args</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The id of the container where the visualizaton will be made is passed as <code class="docutils literal"><span class="pre">root</span></code> (this root container must be made by the user). The visualization JSON contains the information necessary to make the visualization and is passed as <code class="docutils literal"><span class="pre">network_data</span></code>. See the Clustergrammer.js API for additional arguments that can be passed to Clustergrammer.js.</p>
+</div>
+<div class="section" id="example-pages">
+<h2>Example Pages<a class="headerlink" href="#example-pages" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference external" href="https://github.com/MaayanLab/clustergrammer">Clustergrammer.js repo</a> contains several example pages demonstrating how to make a webpage with a Clustergramemr heatmap. The page <a class="reference external" href="https://github.com/MaayanLab/clustergrammer/blob/master/index.html">index.html</a> and corresponding script <a class="reference external" href="https://github.com/MaayanLab/clustergrammer/blob/master/js/load_clustergram.js">load_clustergram.js</a> give an example of how to make a full-screen resizable visualization.</p>
+<p>The page</p>
 </div>
 <div class="section" id="clustergrammer-js-api">
 <h2>Clustergrammer.js API<a class="headerlink" href="#clustergrammer-js-api" title="Permalink to this headline">¶</a></h2>
@@ -81,6 +108,9 @@
   <ul>
 <li><a class="reference internal" href="#">Clustergrammer.js</a><ul>
 <li><a class="reference internal" href="#dependencies">Dependencies</a></li>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#workflow-example">Workflow Example</a></li>
+<li><a class="reference internal" href="#example-pages">Example Pages</a></li>
 <li><a class="reference internal" href="#clustergrammer-js-api">Clustergrammer.js API</a></li>
 <li><a class="reference internal" href="#clustergrammer-js-json-format">Clustergrammer.js JSON Format</a></li>
 </ul>
@@ -91,8 +121,8 @@
   <p class="topless"><a href="jupyter_widget.html"
                         title="previous chapter">Jupyter Widget</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="developing_with_clustergrammer.html"
-                        title="next chapter">Developing with Clustergrammer</a></p>
+  <p class="topless"><a href="clustergrammer_py.html"
+                        title="next chapter">Clustergrammer.py</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -121,7 +151,7 @@
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="developing_with_clustergrammer.html" title="Developing with Clustergrammer"
+          <a href="clustergrammer_py.html" title="Clustergrammer.py"
              >next</a> |</li>
         <li class="right" >
           <a href="jupyter_widget.html" title="Jupyter Widget"

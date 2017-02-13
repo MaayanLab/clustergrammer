@@ -1,6 +1,6 @@
 .. sphinx-autobuild . _build_html
 Welcome to Clustergrammer's Documentation!
-==========================================
+------------------------------------------
 Clustergrammer is an web-based visualization tool that enables users to easily generate highly interactive and shareable/embeddable heatmap visualizations of high-dimensional data. The front-end is built using D3.js and back-end calculations are done using Python. The easiest ways to use Clustergrammer are to:
 
 - upload a file with your data to the `Clustergrammer web application`_,
@@ -9,7 +9,7 @@ Clustergrammer is an web-based visualization tool that enables users to easily g
 Please read the :doc:`getting_started` guide for more information.
 
 Interactive Demo
-----------------
+================
 Press play or interact with the demo below:
 
 .. raw:: html
@@ -17,7 +17,7 @@ Press play or interact with the demo below:
          <iframe id='iframe_preview' src="http://amp.pharm.mssm.edu/clustergrammer/demo/" frameBorder="0" style='height: 495px; width:730px; margin-bottom:15px;'></iframe>
 
 About Clustergrammer
----------------------
+====================
 Clustergrammer is a web-based visualization tool for visualizing high-dimensional data (e.g. a matrix of data) using hierarchically clustered heatmaps. Clustergrammer's front-end (Clustergrammer.js) is built using D3.js and its back-end (Clustergrammer.py) is built using Python (e.g. SciPy). The Clustergrammer project is modular and can be used in several ways:
 
 #. :ref:`Web application <getting_started_web_app>`
@@ -27,7 +27,7 @@ Clustergrammer is a web-based visualization tool for visualizing high-dimensiona
 The web application is the easiest way for a user to generate an interactive and shareable visualization. For more technical users, the Jupyter widget enables visualizations to be built within Jupyter notebook workflows and shared through Jupyter's Nbviewer. Finally, web developers can use Clustergrammer's libraries or Clustergrammer-Web's API to dynamically generate visualizations for their own web appliications.
 
 Use Cases
----------
+=========
 Clustergrammer can be used to explore and analyze a diverse datasets:
 
 - `Cancer Cell Line Encyclopedia Gene Expression Data`_
@@ -43,7 +43,7 @@ Clustergrammer can easily be integrated into other web applications and is being
 - `Harmonizome`_
 
 Contents:
----------
+=========
 
 .. toctree::
    :maxdepth: 2
