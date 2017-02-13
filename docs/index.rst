@@ -4,6 +4,8 @@ Welcome to Clustergrammer's documentation!
 
 Clustergrammer is an interactive web-based tool for visualizing high-dimensional data as hierarchically clustered heatmaps. The front-end is built using D3.js and back-end calculations are done using Python.
 
+The easiest way to use Clustergrammer is to upload a file with your matrix of data to the `Clustergrammer web application`_. Please read the :doc:`getting_started` guide for more information.
+
 Interactive Demo
 ----------------
 Press play or interact with the demo below:
@@ -16,9 +18,9 @@ Using Clustergrammer
 ---------------------
 Clustergrammer can be used in three ways:
 
-#. Web application
-#. Jupyter Notebook Interactive Widget
-#. JavaScript and Python Libraries
+#. :ref:`Web application <getting_started_web_app>`
+#. Jupyter Notebook :ref:`Interactive Widget <getting_started_widget>`
+#. `JavaScript <https://github.com/MaayanLab/clustergrammer>`_ and `Python <https://github.com/MaayanLab/clustergrammer-py>`_ Libraries
 
 Contents:
 
@@ -35,3 +37,5 @@ Indices and tables
 * :ref:`modindex`
 * :ref:`search`
 
+
+.. _`Clustergrammer web application`: http://amp.pharm.mssm.edu/clustergrammer/
