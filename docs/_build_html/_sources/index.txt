@@ -1,7 +1,3 @@
-... autobuild with
-...   sphinx-autobuild . _build_html
-... run in the docs directoryß
-
 Welcome to Clustergrammer's documentation!
 ==========================================
 
