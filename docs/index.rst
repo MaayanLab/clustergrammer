@@ -14,7 +14,7 @@ Press play or interact with the demo below:
 
 .. raw:: html
 
-         <iframe id='iframe_preview' src="http://amp.pharm.mssm.edu/clustergrammer/demo/" frameBorder="0" style='height: 495px; width:730px;'></iframe>
+         <iframe id='iframe_preview' src="http://amp.pharm.mssm.edu/clustergrammer/demo/" frameBorder="0" style='height: 495px; width:730px; margin-bottom:15px;'></iframe>
 
 About Clustergrammer
 ---------------------
