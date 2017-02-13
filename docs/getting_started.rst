@@ -18,9 +18,8 @@ Getting Started Clustergrammer-Widget
 Here is a link to a notebook with an example interactive widget hosted on nbviewer:
 `Interactive Widget <http://nbviewer.jupyter.org/github/MaayanLab/clustergrammer-widget/blob/master/Running_clustergrammer_widget.ipynb>`_
 
-.. _visualization_interactivity:
-Visualization Interactivity
-===========================
+Interacting with Clustergrammer
+===============================
 Clustergrammer is built to enable users to intuitively explore/analyze high-dimensional datasets and has many interactive features:
 
 - zooming/panning

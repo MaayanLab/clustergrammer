@@ -1,4 +1,5 @@
 .. sphinx-autobuild . _build_html
+
 Welcome to Clustergrammer's Documentation!
 ------------------------------------------
 Clustergrammer is an web-based visualization tool that enables users to easily generate highly interactive and shareable/embeddable heatmap visualizations of high-dimensional data. The front-end is built using D3.js and back-end calculations are done using Python. The easiest ways to use Clustergrammer are to:
@@ -51,10 +52,12 @@ Contents:
    getting_started
    web_app
    jupyter_widget
+   viz_interaction
    clustergrammer_js
    clustergrammer_py
    developing_with_clustergrammer
    input_matrix_data_formats
+   license
 
 
 Indices and tables
@@ -62,7 +65,6 @@ Indices and tables
 
 * :ref:`genindex`
 * :ref:`search`
-.. * :ref:`modindex`
 
 
 .. _`Clustergrammer web application`: http://amp.pharm.mssm.edu/clustergrammer/
