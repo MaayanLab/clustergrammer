@@ -10,7 +10,7 @@ Press play or interact with the demo below:
 
 .. raw:: html
 
-         <iframe id='iframe_preview' src="http://amp.pharm.mssm.edu/clustergrammer/demo/" frameBorder="0" style='height: 530px; width:920px;'></iframe>
+         <iframe id='iframe_preview' src="http://amp.pharm.mssm.edu/clustergrammer/demo/" frameBorder="0" style='height: 495px; width:730px;'></iframe>
 
 Using Clustergrammer
 ---------------------
