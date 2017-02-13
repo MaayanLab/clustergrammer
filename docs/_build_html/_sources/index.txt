@@ -52,10 +52,12 @@ Contents:
    getting_started
    web_app
    jupyter_widget
+   viz_interaction
    clustergrammer_js
    clustergrammer_py
    developing_with_clustergrammer
    input_matrix_data_formats
+   license
 
 
 Indices and tables
