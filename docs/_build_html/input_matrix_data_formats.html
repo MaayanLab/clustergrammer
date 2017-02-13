@@ -48,11 +48,12 @@
             
   <div class="section" id="input-matrix-format">
 <h1>Input Matrix Format<a class="headerlink" href="#input-matrix-format" title="Permalink to this headline">¶</a></h1>
-<p>Clustergrammer.py takes as input:</p>
-<ol class="arabic simple">
+<p>Clustergrammer.py takes as input either:</p>
+<ul class="simple">
 <li>a tab-separated matrix file with unique row and column names as input</li>
 <li>a Pandas DataFrame</li>
-</ol>
+</ul>
+<p>The tab-separated matrix file can take several formats shown below, which can include row/column categories and name/category titles. Titles will be shown as a title above row/column names or a name adjacent to row/column categories.</p>
 <div class="section" id="simple-matrix-format">
 <h2>Simple Matrix Format<a class="headerlink" href="#simple-matrix-format" title="Permalink to this headline">¶</a></h2>
 <p>The simplest file format is shown here:</p>
@@ -67,11 +68,50 @@
 <h2>Simple Matrix-Category Format<a class="headerlink" href="#simple-matrix-category-format" title="Permalink to this headline">¶</a></h2>
 <p>Row and column categories can also be included in the matrix in the following way:</p>
 <a class="reference internal image-reference" href="_images/cat_tsv.png"><img alt="_images/cat_tsv.png" src="_images/cat_tsv.png" style="width: 700px;" /></a>
-<p>This screenshot of an Excel spreadsheet shows a single row category being added as an additional column of strings (e.g. <code class="docutils literal"><span class="pre">Type:</span> <span class="pre">Interesting</span></code>) and a single column category being added as an additional row of strings (e.g. <code class="docutils literal"><span class="pre">Gender:</span> <span class="pre">Male</span></code>). Up to 15 categories can be added in a similar manner. Titles for row or column names or categories can be added by prefixing each string with <code class="docutils literal"><span class="pre">Title:</span> <span class="pre">`</span></code> (note that a space after the colon). For example the title of the column names is <code class="docutils literal"><span class="pre">Cell</span> <span class="pre">Line</span></code> and the title of the row categories is <code class="docutils literal"><span class="pre">Gender</span></code>.</p>
-<p>These categories will be shown as a title above row/column names or a name adjacent to row/column categories.</p>
+<p>This screenshot of an Excel spreadsheet shows a single row category being added as an additional column of strings (e.g. <code class="docutils literal"><span class="pre">Type:</span> <span class="pre">Interesting</span></code>) and a single column category being added as an additional row of strings (e.g. <code class="docutils literal"><span class="pre">Gender:</span> <span class="pre">Male</span></code>). Up to 15 categories can be added in a similar manner. Titles for row or column names or categories can be added by prefixing each string with <code class="docutils literal"><span class="pre">'Title:</span> <span class="pre">'</span></code> (note that a space after the colon). For example the title of the column names is <code class="docutils literal"><span class="pre">Cell</span> <span class="pre">Line</span></code> and the title of the row categories is <code class="docutils literal"><span class="pre">Gender</span></code>.</p>
 </div>
 <div class="section" id="tuple-matrix-category-format">
 <h2>Tuple Matrix-Category Format<a class="headerlink" href="#tuple-matrix-category-format" title="Permalink to this headline">¶</a></h2>
+<p>Row/column names and categories can also be encoded as Python tuples as shown below:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>        <span class="p">(</span><span class="s1">&#39;Cell Line: A549&#39;</span><span class="p">,</span> <span class="s1">&#39;Gender: Male&#39;</span><span class="p">)</span>     <span class="p">(</span><span class="s1">&#39;Cell Line: H1299&#39;</span><span class="p">,</span> <span class="s1">&#39;Gender: Female&#39;</span><span class="p">)</span>  <span class="p">(</span><span class="s1">&#39;Cell Line: H661&#39;</span><span class="p">,</span> <span class="s1">&#39;Gender: Female&#39;</span><span class="p">)</span>
+<span class="p">(</span><span class="s1">&#39;Gene: EGFR&#39;</span><span class="p">,</span><span class="s1">&#39;Type: Interesting&#39;</span><span class="p">)</span>      <span class="o">-</span><span class="mf">3.234</span>  <span class="mf">5.03</span>    <span class="mf">0.001</span>
+<span class="p">(</span><span class="s1">&#39;Gene: TP53&#39;</span><span class="p">,</span><span class="s1">&#39;Type: Not Interesting&#39;</span><span class="p">)</span>  <span class="mf">8.3</span>     <span class="mf">4.098</span>   <span class="o">-</span><span class="mf">12.2</span>
+<span class="p">(</span><span class="s1">&#39;Gene: IRAK&#39;</span><span class="p">,</span><span class="s1">&#39;Type: Not Interesting&#39;</span><span class="p">)</span>  <span class="mf">7.23</span>    <span class="mf">3.01</span>    <span class="mf">0.88</span>
+</pre></div>
+</div>
+<p>This format is easier to work with in Python and can be imported/exported easily into Pandas DataFrames. Note that &#8216;titles&#8217; have been added to row/column names and categories as discussed above.</p>
+</div>
+<div class="section" id="matrix-file-examples">
+<h2>Matrix File Examples<a class="headerlink" href="#matrix-file-examples" title="Permalink to this headline">¶</a></h2>
+<p>Several example tab-separated matrix files can be found in <a class="reference external" href="https://github.com/MaayanLab/clustergrammer/tree/master/txt">example matrix files</a>.</p>
+</div>
+<div class="section" id="loading-and-exporting-into-clustergrammer-py">
+<h2>Loading and Exporting into Clustergrammer.py<a class="headerlink" href="#loading-and-exporting-into-clustergrammer-py" title="Permalink to this headline">¶</a></h2>
+<p>Clustergrammer.py can load a matrix directly from a file or from a Pandas DataFrame as well as export to a file or Pandas DataFrame:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># initialize Network object</span>
+<span class="kn">from</span> <span class="nn">clustergrammer</span> <span class="k">import</span> <span class="n">Network</span>
+<span class="n">net</span> <span class="o">=</span> <span class="n">Network</span><span class="p">()</span>
+
+<span class="c1"># load matrix</span>
+<span class="c1">##############</span>
+
+<span class="c1"># load data from file</span>
+<span class="n">net</span><span class="o">.</span><span class="n">load_file</span><span class="p">(</span><span class="s1">&#39;your_matrix.txt&#39;</span><span class="p">)</span>
+
+<span class="c1"># load data from Pandas DataFrame, saved as variable df</span>
+<span class="n">net</span><span class="o">.</span><span class="n">load_df</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># export matrix</span>
+<span class="c1">################</span>
+
+<span class="c1"># export to tsv</span>
+<span class="n">net</span><span class="o">.</span><span class="n">export_matrix_to_tsv</span><span class="p">(</span><span class="s1">&#39;filename.txt&#39;</span><span class="p">)</span>
+
+<span class="c1"># export Pandas DataFrame</span>
+<span class="n">df_export</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">export_df</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>For more information about Clustergrammer.py and its API see <a class="reference internal" href="clustergrammer_py.html#clustergrammer-py"><span class="std std-ref">Clustergrammer.py</span></a>.</p>
 </div>
 </div>
 
@@ -87,6 +127,8 @@
 <li><a class="reference internal" href="#simple-matrix-format">Simple Matrix Format</a></li>
 <li><a class="reference internal" href="#simple-matrix-category-format">Simple Matrix-Category Format</a></li>
 <li><a class="reference internal" href="#tuple-matrix-category-format">Tuple Matrix-Category Format</a></li>
+<li><a class="reference internal" href="#matrix-file-examples">Matrix File Examples</a></li>
+<li><a class="reference internal" href="#loading-and-exporting-into-clustergrammer-py">Loading and Exporting into Clustergrammer.py</a></li>
 </ul>
 </li>
 </ul>

@@ -1,3 +1,5 @@
+.. _clustergrammer_py:
+
 Clustergrammer.py
 -----------------
 Clustergrammer.py is the back-end calculation library that is used to hierarchically cluster the data and generate the JSON for the front-end Clustergrammer.js visualization library.
@@ -39,6 +41,7 @@ This workflow shows how to cluster a matrix of data and generate a visualization
   net.write_json_to_file('viz', 'mult_view.json')
 
 The file ``mult_view.json`` will be loaded by the front-end and used to build the interactive visualization.
+
 
 Clustergrammer.py API
 =====================
