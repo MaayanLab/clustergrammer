@@ -37,9 +37,9 @@ The id of the container where the visualizaton will be made is passed as ``root`
 
 Example Pages
 =============
-The `Clustergrammer.js repo`_ contains several example pages demonstrating how to make a webpage with a Clustergramemr heatmap. The page `index.html`_ and corresponding script `load_clustergram.js`_ give an example of how to make a full-screen resizable visualization.
+The `Clustergrammer.js repo`_ contains several example pages demonstrating how to make a webpage with a Clustergramemr heatmap. The page `index.html`_ and corresponding script `load_clustergram.js`_ show how to make a full-screen resizable visualization.
 
-The page
+The page `multiple_clust.html`_ and corresponding script `load_multiple_clustergrams.js`_ show how to visualize multiple clustergrams on one page. Note that each heatmap requires its own container.
 
 Clustergrammer.js API
 =====================
@@ -55,3 +55,5 @@ The JSON format required for Clustergrammer.js is described here:
 .. _`npm package`: https://www.npmjs.com/package/clustergrammer
 .. _`index.html`: https://github.com/MaayanLab/clustergrammer/blob/master/index.html
 .. _`load_clustergram.js`: https://github.com/MaayanLab/clustergrammer/blob/master/js/load_clustergram.js
+.. _`multiple_clust.html`: https://github.com/MaayanLab/clustergrammer/blob/master/multiple_clustergrams.html
+.. `load_multiple_clustergrams.js`: https://github.com/MaayanLab/clustergrammer/blob/master/js/load_multiple_clustergrams.js
