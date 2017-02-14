@@ -1,2 +1,4 @@
 License
 -------
+
+MIT License
