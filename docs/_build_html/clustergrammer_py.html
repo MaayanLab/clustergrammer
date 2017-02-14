@@ -24,9 +24,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="Clustergrammer 1.0.0 documentation" href="index.html" />
-    <link rel="next" title="Developing with Clustergrammer" href="developing_with_clustergrammer.html" />
-    <link rel="prev" title="Clustergrammer.js" href="clustergrammer_js.html" /> 
+    <link rel="top" title="Clustergrammer 1.0.0 documentation" href="index.html" /> 
   </head>
   <body role="document">
     <div class="related" role="navigation" aria-label="related navigation">
@@ -35,12 +33,6 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="developing_with_clustergrammer.html" title="Developing with Clustergrammer"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="clustergrammer_js.html" title="Clustergrammer.js"
-             accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Clustergrammer 1.0.0 documentation</a> &raquo;</li> 
       </ul>
     </div>  
@@ -61,33 +53,6 @@
 <li>SciPy</li>
 </ul>
 </div>
-<div class="section" id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
-<p>Clustergrammer.py can be installed using pip:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">clustergrammer</span>
-</pre></div>
-</div>
-<p>or the source code can be obtained from the <a class="reference external" href="github.com/MaayanLab/clustergrammer-py">GitHub repo</a>.</p>
-</div>
-<div class="section" id="workflow-example">
-<h2>Workflow Example<a class="headerlink" href="#workflow-example" title="Permalink to this headline">¶</a></h2>
-<p>This workflow shows how to cluster a matrix of data and generate a visualization JSON from a matrix file:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># make network object</span>
-<span class="kn">from</span> <span class="nn">clustergrammer</span> <span class="k">import</span> <span class="n">Network</span>
-<span class="n">net</span> <span class="o">=</span> <span class="n">Network</span><span class="p">()</span>
-
-<span class="c1"># load matrix file</span>
-<span class="n">net</span><span class="o">.</span><span class="n">load_file</span><span class="p">(</span><span class="s1">&#39;your_matrix.txt&#39;</span><span class="p">)</span>
-
-<span class="c1"># calculate clustering using default parameters</span>
-<span class="n">net</span><span class="o">.</span><span class="n">make_clust</span><span class="p">()</span>
-
-<span class="c1"># write visualization JSON to file</span>
-<span class="n">net</span><span class="o">.</span><span class="n">write_json_to_file</span><span class="p">(</span><span class="s1">&#39;viz&#39;</span><span class="p">,</span> <span class="s1">&#39;mult_view.json&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>The file mult_view.json will be loaded by the front-end and used to build the interactive visualization.</p>
-</div>
 <div class="section" id="clustergrammer-py-api">
 <h2>Clustergrammer.py API<a class="headerlink" href="#clustergrammer-py-api" title="Permalink to this headline">¶</a></h2>
 <p>Clustergrammer.py generates a Network object, which is used to load a matrix (e.g. from a Pandas DataFrame), normalize/filter the matrix, cluster the matrix, and finally generate the visualization JSON for the front-end Clustergrammer.js.</p>
@@ -104,19 +69,11 @@
   <ul>
 <li><a class="reference internal" href="#">Clustergrammer.py</a><ul>
 <li><a class="reference internal" href="#dependencies">Dependencies</a></li>
-<li><a class="reference internal" href="#installation">Installation</a></li>
-<li><a class="reference internal" href="#workflow-example">Workflow Example</a></li>
 <li><a class="reference internal" href="#clustergrammer-py-api">Clustergrammer.py API</a></li>
 </ul>
 </li>
 </ul>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="clustergrammer_js.html"
-                        title="previous chapter">Clustergrammer.js</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="developing_with_clustergrammer.html"
-                        title="next chapter">Developing with Clustergrammer</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -144,12 +101,6 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
-        <li class="right" >
-          <a href="developing_with_clustergrammer.html" title="Developing with Clustergrammer"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="clustergrammer_js.html" title="Clustergrammer.js"
-             >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">Clustergrammer 1.0.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
