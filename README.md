@@ -77,7 +77,7 @@ d3.select(window).on('resize', function(){
 # Example Webpages
 The page [index.html](index.html) (and the corresponding script [load_clustergram.js](js/load_clustergram.js)) demonstrates how to make a full-screen resizable clustergrammer visualization.
 
-The page [multiple_clust.html](multiple_clust.html) (and corresponding script [load_multiple_clustergrams.js](js/load_multiple_clustergrams.js)) demonstrates how to visualize multiple clustergrams on one page. Note that each visualization requires its own container.
+The page [multiple_clustergrams.html](multiple_clustergrams.html) (and corresponding script [load_multiple_clustergrams.js](js/load_multiple_clustergrams.js)) demonstrates how to visualize multiple clustergrams on one page. Note that each visualization requires its own container.
 
 # Clustergrammer Python Library
 The Clustergrammer python library [clutergrammer.py](https://github.com/MaayanLab/clustergrammer-py), takes a tab-separated matrix file as input (see format [here](#input-matrix-format)), calculates clustering, and generates the visualization json (see format [here](https://github.com/MaayanLab/clustergrammer-json)) for clustergrammer.js. The library can be installed using [pip](https://pypi.python.org/pypi/clustergrammer/) and is compatable with Python 2.7 and 3.5:
