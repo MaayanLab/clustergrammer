@@ -8,7 +8,7 @@
     
     <title>Getting Started &mdash; Clustergrammer 1.0.0 documentation</title>
     
-    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
@@ -23,13 +23,13 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="top" title="Clustergrammer 1.0.0 documentation" href="index.html" />
     <link rel="next" title="Web Application" href="web_app.html" />
     <link rel="prev" title="Welcome to Clustergrammer’s Documentation!" href="index.html" /> 
   </head>
-  <body>
-    <div class="related">
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -41,14 +41,14 @@
         <li class="right" >
           <a href="index.html" title="Welcome to Clustergrammer’s Documentation!"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">Clustergrammer 1.0.0 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">Clustergrammer 1.0.0 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="getting-started">
 <h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
@@ -65,8 +65,8 @@
 <p>Here is a link to a notebook with an example interactive widget hosted on nbviewer:
 <a class="reference external" href="http://nbviewer.jupyter.org/github/MaayanLab/clustergrammer-widget/blob/master/Running_clustergrammer_widget.ipynb">Interactive Widget</a></p>
 </div>
-<div class="section" id="id1">
-<h2>Visualization Interactivity<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="interactivity">
+<h2>Interactivity<a class="headerlink" href="#interactivity" title="Permalink to this headline">¶</a></h2>
 <p>Clustergrammer is built to enable users to intuitively explore/analyze high-dimensional datasets and has many interactive features:</p>
 <ul class="simple">
 <li>zooming/panning</li>
@@ -77,18 +77,8 @@
 </ul>
 </div>
 <div class="section" id="getting-started-web-development">
-<span id="id2"></span><h2>Getting Started Web Development<a class="headerlink" href="#getting-started-web-development" title="Permalink to this headline">¶</a></h2>
-<p>Clustergrammer can be used to generate a interactive visualizations for your web application. Clustergrammer consists of two parts:</p>
-<ol class="arabic simple">
-<li>the front-end Clustergrammer.js JavaScript library makes the interactive visualization</li>
-<li>the back-end Clustergrammer.py Python library clusters a matrix of data and makes the JSON for the front-end</li>
-</ol>
-<p>These libraries can be installed npm, <tt class="docutils literal"><span class="pre">npm</span> <span class="pre">install</span> <span class="pre">Clustergrammer</span></tt>, and pip, <tt class="docutils literal"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">clustergrammer</span></tt>, respectively.</p>
-<p>The easiest way to generate a visualize of your own data on a webpage is to:</p>
-<ol class="arabic simple">
-<li>follow the <a class="reference internal" href="clustergrammer_py.html#python-workflow-example"><em>Python Workflow Example</em></a> to cluster your matrix and generate the front-end JSON</li>
-<li>then use the <a class="reference internal" href="clustergrammer_js.html#example-pages"><em>Example Pages</em></a> workflow to visualize your calculated JSON</li>
-</ol>
+<span id="id1"></span><h2>Getting Started Web Development<a class="headerlink" href="#getting-started-web-development" title="Permalink to this headline">¶</a></h2>
+<p>Clustergrammer visualizations can easily be embedded into your own web application.</p>
 </div>
 </div>
 
@@ -96,7 +86,7 @@
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
@@ -104,7 +94,7 @@
 <li><a class="reference internal" href="#introduction">Introduction</a></li>
 <li><a class="reference internal" href="#getting-started-clustergrammer-web">Getting Started Clustergrammer-Web</a></li>
 <li><a class="reference internal" href="#getting-started-clustergrammer-widget">Getting Started Clustergrammer-Widget</a></li>
-<li><a class="reference internal" href="#id1">Visualization Interactivity</a></li>
+<li><a class="reference internal" href="#interactivity">Interactivity</a></li>
 <li><a class="reference internal" href="#getting-started-web-development">Getting Started Web Development</a></li>
 </ul>
 </li>
@@ -116,12 +106,14 @@
   <h4>Next topic</h4>
   <p class="topless"><a href="web_app.html"
                         title="next chapter">Web Application</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/getting_started.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/getting_started.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
       <input type="text" name="q" />
@@ -129,16 +121,13 @@
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -150,12 +139,12 @@
         <li class="right" >
           <a href="index.html" title="Welcome to Clustergrammer’s Documentation!"
              >previous</a> |</li>
-        <li><a href="index.html">Clustergrammer 1.0.0 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">Clustergrammer 1.0.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer">
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2017, Nicolas Fernandez.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.1.
     </div>
   </body>
 </html>
