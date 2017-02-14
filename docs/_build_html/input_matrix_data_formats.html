@@ -1,0 +1,188 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Input Matrix Format &mdash; Clustergrammer 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="Clustergrammer 1.0.0 documentation" href="index.html" />
+    <link rel="next" title="License" href="license.html" />
+    <link rel="prev" title="Developing with Clustergrammer" href="developing_with_clustergrammer.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="license.html" title="License"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="developing_with_clustergrammer.html" title="Developing with Clustergrammer"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Clustergrammer 1.0.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="input-matrix-format">
+<h1>Input Matrix Format<a class="headerlink" href="#input-matrix-format" title="Permalink to this headline">¶</a></h1>
+<p>Clustergrammer.py takes as input either:</p>
+<ul class="simple">
+<li>a tab-separated matrix file with unique row and column names as input</li>
+<li>a Pandas DataFrame</li>
+</ul>
+<p>The tab-separated matrix file can take several formats shown below, which can include row/column categories and name/category titles. Titles will be shown as a title above row/column names or a name adjacent to row/column categories.</p>
+<div class="section" id="simple-matrix-format">
+<h2>Simple Matrix Format<a class="headerlink" href="#simple-matrix-format" title="Permalink to this headline">¶</a></h2>
+<p>The simplest file format is shown here:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>      Col-A   Col-B   Col-C
+Row-A 0.0     -0.1    1.0
+Row-B 3.0     0.0     8.0
+Row-C 0.2     0.1     2.5
+</pre></div>
+</div>
+</div>
+<div class="section" id="simple-matrix-category-format">
+<h2>Simple Matrix-Category Format<a class="headerlink" href="#simple-matrix-category-format" title="Permalink to this headline">¶</a></h2>
+<p>Row and column categories can also be included in the matrix in the following way:</p>
+<a class="reference internal image-reference" href="_images/cat_tsv.png"><img alt="_images/cat_tsv.png" src="_images/cat_tsv.png" style="width: 700px;" /></a>
+<p>This screenshot of an Excel spreadsheet shows a single row category being added as an additional column of strings (e.g. <tt class="docutils literal"><span class="pre">Type:</span> <span class="pre">Interesting</span></tt>) and a single column category being added as an additional row of strings (e.g. <tt class="docutils literal"><span class="pre">Gender:</span> <span class="pre">Male</span></tt>). Up to 15 categories can be added in a similar manner. Titles for row or column names or categories can be added by prefixing each string with <tt class="docutils literal"><span class="pre">'Title:</span> <span class="pre">'</span></tt> (note that a space after the colon). For example the title of the column names is <tt class="docutils literal"><span class="pre">Cell</span> <span class="pre">Line</span></tt> and the title of the row categories is <tt class="docutils literal"><span class="pre">Gender</span></tt>.</p>
+</div>
+<div class="section" id="tuple-matrix-category-format">
+<h2>Tuple Matrix-Category Format<a class="headerlink" href="#tuple-matrix-category-format" title="Permalink to this headline">¶</a></h2>
+<p>Row/column names and categories can also be encoded as Python tuples as shown below:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>        (&#39;Cell Line: A549&#39;, &#39;Gender: Male&#39;)     (&#39;Cell Line: H1299&#39;, &#39;Gender: Female&#39;)  (&#39;Cell Line: H661&#39;, &#39;Gender: Female&#39;)
+(&#39;Gene: EGFR&#39;,&#39;Type: Interesting&#39;)      -3.234  5.03    0.001
+(&#39;Gene: TP53&#39;,&#39;Type: Not Interesting&#39;)  8.3     4.098   -12.2
+(&#39;Gene: IRAK&#39;,&#39;Type: Not Interesting&#39;)  7.23    3.01    0.88
+</pre></div>
+</div>
+<p>This format is easier to work with in Python and can be imported/exported easily into Pandas DataFrames. Note that &#8216;titles&#8217; have been added to row/column names and categories as discussed above.</p>
+</div>
+<div class="section" id="matrix-file-examples">
+<h2>Matrix File Examples<a class="headerlink" href="#matrix-file-examples" title="Permalink to this headline">¶</a></h2>
+<p>Several example tab-separated matrix files can be found in <a class="reference external" href="https://github.com/MaayanLab/clustergrammer/tree/master/txt">example matrix files</a>.</p>
+</div>
+<div class="section" id="loading-and-exporting-into-clustergrammer-py">
+<h2>Loading and Exporting into Clustergrammer.py<a class="headerlink" href="#loading-and-exporting-into-clustergrammer-py" title="Permalink to this headline">¶</a></h2>
+<p>Clustergrammer.py can load a matrix directly from a file or from a Pandas DataFrame as well as export to a file or Pandas DataFrame:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># initialize Network object</span>
+<span class="kn">from</span> <span class="nn">clustergrammer</span> <span class="kn">import</span> <span class="n">Network</span>
+<span class="n">net</span> <span class="o">=</span> <span class="n">Network</span><span class="p">()</span>
+
+<span class="c1"># load matrix</span>
+<span class="c1">##############</span>
+
+<span class="c1"># load data from file</span>
+<span class="n">net</span><span class="o">.</span><span class="n">load_file</span><span class="p">(</span><span class="s1">&#39;your_matrix.txt&#39;</span><span class="p">)</span>
+
+<span class="c1"># load data from Pandas DataFrame, saved as variable df</span>
+<span class="n">net</span><span class="o">.</span><span class="n">load_df</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># export matrix</span>
+<span class="c1">################</span>
+
+<span class="c1"># export to tsv</span>
+<span class="n">net</span><span class="o">.</span><span class="n">export_matrix_to_tsv</span><span class="p">(</span><span class="s1">&#39;filename.txt&#39;</span><span class="p">)</span>
+
+<span class="c1"># export Pandas DataFrame</span>
+<span class="n">df_export</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">export_df</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>For more information about Clustergrammer.py and its API see <a class="reference internal" href="clustergrammer_py.html#clustergrammer-py"><em>Clustergrammer.py</em></a>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Input Matrix Format</a><ul>
+<li><a class="reference internal" href="#simple-matrix-format">Simple Matrix Format</a></li>
+<li><a class="reference internal" href="#simple-matrix-category-format">Simple Matrix-Category Format</a></li>
+<li><a class="reference internal" href="#tuple-matrix-category-format">Tuple Matrix-Category Format</a></li>
+<li><a class="reference internal" href="#matrix-file-examples">Matrix File Examples</a></li>
+<li><a class="reference internal" href="#loading-and-exporting-into-clustergrammer-py">Loading and Exporting into Clustergrammer.py</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="developing_with_clustergrammer.html"
+                        title="previous chapter">Developing with Clustergrammer</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="license.html"
+                        title="next chapter">License</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/input_matrix_data_formats.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="license.html" title="License"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="developing_with_clustergrammer.html" title="Developing with Clustergrammer"
+             >previous</a> |</li>
+        <li><a href="index.html">Clustergrammer 1.0.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2017, Nicolas Fernandez.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>
