@@ -1,3 +1,0 @@
-Jupyter Widget
---------------
-Clustergrammer can be used within Jupyter notebooks as an interactive HTML widget.
