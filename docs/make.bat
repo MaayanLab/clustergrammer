@@ -27,7 +27,6 @@ if "%1" == "help" (
 	echo.  qthelp     to make HTML files and a qthelp project
 	echo.  devhelp    to make HTML files and a Devhelp project
 	echo.  epub       to make an epub
-	echo.  epub3      to make an epub3
 	echo.  latex      to make LaTeX files, you can set PAPER=a4 or PAPER=letter
 	echo.  text       to make text files
 	echo.  man        to make manual pages
@@ -38,8 +37,6 @@ if "%1" == "help" (
 	echo.  pseudoxml  to make pseudoxml-XML files for display purposes
 	echo.  linkcheck  to check all external links for integrity
 	echo.  doctest    to run all doctests embedded in the documentation if enabled
-	echo.  coverage   to run coverage check of the documentation if enabled
-	echo.  dummy      to check syntax errors of document sources
 	goto end
 )
 
@@ -50,14 +47,6 @@ if "%1" == "clean" (
 )
 
 
-REM Check if sphinx-build is available and fallback to Python version if any
-%SPHINXBUILD% 1>NUL 2>NUL
-if errorlevel 9009 goto sphinx_python
-goto sphinx_ok
-
-:sphinx_python
-
-set SPHINXBUILD=python -m sphinx.__init__
 %SPHINXBUILD% 2> nul
 if errorlevel 9009 (
 	echo.
@@ -70,9 +59,6 @@ if errorlevel 9009 (
 	echo.http://sphinx-doc.org/
 	exit /b 1
 )
-
-:sphinx_ok
-
 
 if "%1" == "html" (
 	%SPHINXBUILD% -b html %ALLSPHINXOPTS% %BUILDDIR%/html
@@ -151,14 +137,6 @@ if "%1" == "epub" (
 	goto end
 )
 
-if "%1" == "epub3" (
-	%SPHINXBUILD% -b epub3 %ALLSPHINXOPTS% %BUILDDIR%/epub3
-	if errorlevel 1 exit /b 1
-	echo.
-	echo.Build finished. The epub3 file is in %BUILDDIR%/epub3.
-	goto end
-)
-
 if "%1" == "latex" (
 	%SPHINXBUILD% -b latex %ALLSPHINXOPTS% %BUILDDIR%/latex
 	if errorlevel 1 exit /b 1
@@ -171,7 +149,7 @@ if "%1" == "latexpdf" (
 	%SPHINXBUILD% -b latex %ALLSPHINXOPTS% %BUILDDIR%/latex
 	cd %BUILDDIR%/latex
 	make all-pdf
-	cd %~dp0
+	cd %BUILDDIR%/..
 	echo.
 	echo.Build finished; the PDF files are in %BUILDDIR%/latex.
 	goto end
@@ -181,7 +159,7 @@ if "%1" == "latexpdfja" (
 	%SPHINXBUILD% -b latex %ALLSPHINXOPTS% %BUILDDIR%/latex
 	cd %BUILDDIR%/latex
 	make all-pdf-ja
-	cd %~dp0
+	cd %BUILDDIR%/..
 	echo.
 	echo.Build finished; the PDF files are in %BUILDDIR%/latex.
 	goto end
@@ -245,15 +223,6 @@ results in %BUILDDIR%/doctest/output.txt.
 	goto end
 )
 
-if "%1" == "coverage" (
-	%SPHINXBUILD% -b coverage %ALLSPHINXOPTS% %BUILDDIR%/coverage
-	if errorlevel 1 exit /b 1
-	echo.
-	echo.Testing of coverage in the sources finished, look at the ^
-results in %BUILDDIR%/coverage/python.txt.
-	goto end
-)
-
 if "%1" == "xml" (
 	%SPHINXBUILD% -b xml %ALLSPHINXOPTS% %BUILDDIR%/xml
 	if errorlevel 1 exit /b 1
@@ -267,14 +236,6 @@ if "%1" == "pseudoxml" (
 	if errorlevel 1 exit /b 1
 	echo.
 	echo.Build finished. The pseudo-XML files are in %BUILDDIR%/pseudoxml.
-	goto end
-)
-
-if "%1" == "dummy" (
-	%SPHINXBUILD% -b dummy %ALLSPHINXOPTS% %BUILDDIR%/dummy
-	if errorlevel 1 exit /b 1
-	echo.
-	echo.Build finished. Dummy builder generates no files.
 	goto end
 )
 
