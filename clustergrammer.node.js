@@ -80,6 +80,8 @@ module.exports =
 	 */
 	function Clustergrammer(args) {
 
+	  console.log('here');
+
 	  /* Main program
 	   * ----------------------------------------------------------------------- */
 	  // consume and validate user input
@@ -5319,6 +5321,8 @@ module.exports =
 	  var make_all_rows = arguments.length <= 3 || arguments[3] === undefined ? false : arguments[3];
 
 
+	  console.log('show_visible_area');
+
 	  // console.log('show_visible_area stopped: ' + String(zooming_stopped));
 
 	  var params = cgm.params;
@@ -5374,6 +5378,10 @@ module.exports =
 	    // keep the old level (zooming is still occuring and not zooming out)
 	    new_ds_level = old_ds_level;
 	  }
+
+	  console.log('NEW_DS_LEVEL: ' + String(new_ds_level));
+	  console.log('OLD_DS_LEVEL: ' + String(old_ds_level));
+	  console.log('here');
 
 	  var viz_area = {};
 	  var buffer_size = 5;
@@ -6578,7 +6586,7 @@ module.exports =
 
 	var resize_viz = __webpack_require__(90);
 
-	module.exports = function (cgm) {
+	module.exports = function initialize_resizing(cgm) {
 
 	  var params = cgm.params;
 
@@ -6704,7 +6712,9 @@ module.exports =
 	var ini_zoom_info = __webpack_require__(38);
 	var grid_lines_viz = __webpack_require__(116);
 
-	module.exports = function (cgm) {
+	module.exports = function resize_viz(cgm) {
+
+	  console.log('resize viz');
 
 	  var params = cgm.params;
 
@@ -6840,7 +6850,8 @@ module.exports =
 	  // reposition matrix
 	  d3.select(params.root + ' .clust_container').attr('transform', 'translate(' + params.viz.clust.margin.left + ',' + params.viz.clust.margin.top + ')');
 
-	  show_visible_area(cgm);
+	  // removed, this was causing bugs
+	  // show_visible_area(cgm);
 
 	  make_row_cat_super_labels(cgm);
 

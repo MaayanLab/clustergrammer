@@ -80,6 +80,8 @@ var Clustergrammer =
 	 */
 	function Clustergrammer(args) {
 
+	  console.log('here');
+
 	  /* Main program
 	   * ----------------------------------------------------------------------- */
 	  // consume and validate user input
@@ -6578,7 +6580,7 @@ var Clustergrammer =
 
 	var resize_viz = __webpack_require__(90);
 
-	module.exports = function (cgm) {
+	module.exports = function initialize_resizing(cgm) {
 
 	  var params = cgm.params;
 
@@ -6695,7 +6697,7 @@ var Clustergrammer =
 	var label_constrain_and_trim = __webpack_require__(83);
 	var make_dendro_triangles = __webpack_require__(57);
 	var toggle_dendro_view = __webpack_require__(56);
-	var show_visible_area = __webpack_require__(72);
+	// var show_visible_area = require('../zoom/show_visible_area');
 	var calc_viz_dimensions = __webpack_require__(24);
 	var position_play_button = __webpack_require__(114);
 	var make_row_cat_super_labels = __webpack_require__(88);
@@ -6704,7 +6706,7 @@ var Clustergrammer =
 	var ini_zoom_info = __webpack_require__(38);
 	var grid_lines_viz = __webpack_require__(116);
 
-	module.exports = function (cgm) {
+	module.exports = function resize_viz(cgm) {
 
 	  var params = cgm.params;
 
@@ -6840,7 +6842,8 @@ var Clustergrammer =
 	  // reposition matrix
 	  d3.select(params.root + ' .clust_container').attr('transform', 'translate(' + params.viz.clust.margin.left + ',' + params.viz.clust.margin.top + ')');
 
-	  show_visible_area(cgm);
+	  // removed, this was causing bugs
+	  // show_visible_area(cgm);
 
 	  make_row_cat_super_labels(cgm);
 
