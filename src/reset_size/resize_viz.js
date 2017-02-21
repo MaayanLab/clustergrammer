@@ -19,7 +19,7 @@ var resize_label_bars = require('./resize_label_bars');
 var label_constrain_and_trim = require('../labels/label_constrain_and_trim');
 var make_dendro_triangles = require('../dendrogram/make_dendro_triangles');
 var toggle_dendro_view = require('../dendrogram/toggle_dendro_view');
-// var show_visible_area = require('../zoom/show_visible_area');
+var show_visible_area = require('../zoom/show_visible_area');
 var calc_viz_dimensions = require('../params/calc_viz_dimensions');
 var position_play_button = require('../demo/position_play_button');
 var make_row_cat_super_labels = require('../labels/make_row_cat_super_labels');
@@ -201,7 +201,7 @@ module.exports = function resize_viz(cgm) {
       params.viz.clust.margin.top + ')');
 
   // removed, this was causing bugs
-  // show_visible_area(cgm);
+  show_visible_area(cgm);
 
   make_row_cat_super_labels(cgm);
 

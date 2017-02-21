@@ -45,7 +45,7 @@ function make_clust(inst_network){
 
 function matrix_update_callback(){
 
-  if (genes_were_found){
+  if (genes_were_found[this.root]){
     enr_obj[this.root].clear_enrichr_results(false);
   }
 }
@@ -64,6 +64,8 @@ function dendro_callback(inst_selection){
 
   var inst_rc;
   var inst_data = inst_selection.__data__;
+
+  console.log(this)
 
   // toggle enrichr export section
   if (inst_data.inst_rc === 'row'){

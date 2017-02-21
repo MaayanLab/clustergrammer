@@ -32,8 +32,7 @@ module.exports = [
               }
           ]
       }
-  }
-  ,
+  },
   {
       entry: './src/main.js',
       // devtool: DEBUG ? 'cheap-module-eval-source-map' : false,
