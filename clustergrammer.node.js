@@ -74,7 +74,7 @@ module.exports =
 	__webpack_require__(189);
 	__webpack_require__(193);
 
-	/* clustergrammer v1.12.2
+	/* clustergrammer v1.12.3
 	 * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
 	 * (c) 2017
 	 */
@@ -5321,8 +5321,6 @@ module.exports =
 	  var make_all_rows = arguments.length <= 3 || arguments[3] === undefined ? false : arguments[3];
 
 
-	  console.log('show_visible_area');
-
 	  // console.log('show_visible_area stopped: ' + String(zooming_stopped));
 
 	  var params = cgm.params;
@@ -5378,10 +5376,6 @@ module.exports =
 	    // keep the old level (zooming is still occuring and not zooming out)
 	    new_ds_level = old_ds_level;
 	  }
-
-	  console.log('NEW_DS_LEVEL: ' + String(new_ds_level));
-	  console.log('OLD_DS_LEVEL: ' + String(old_ds_level));
-	  console.log('here');
 
 	  var viz_area = {};
 	  var buffer_size = 5;
@@ -6703,7 +6697,7 @@ module.exports =
 	var label_constrain_and_trim = __webpack_require__(83);
 	var make_dendro_triangles = __webpack_require__(57);
 	var toggle_dendro_view = __webpack_require__(56);
-	var show_visible_area = __webpack_require__(72);
+	// var show_visible_area = require('../zoom/show_visible_area');
 	var calc_viz_dimensions = __webpack_require__(24);
 	var position_play_button = __webpack_require__(114);
 	var make_row_cat_super_labels = __webpack_require__(88);
@@ -6713,8 +6707,6 @@ module.exports =
 	var grid_lines_viz = __webpack_require__(116);
 
 	module.exports = function resize_viz(cgm) {
-
-	  console.log('resize viz');
 
 	  var params = cgm.params;
 
