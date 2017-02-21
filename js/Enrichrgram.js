@@ -1,5 +1,9 @@
 var genes_were_found = false;
+enr_obj = {};
+
 function check_setup_enrichr(inst_cgm){
+
+  console.log('check_setup_enrichr')
 
   var all_rows = inst_cgm.params.network_data.row_nodes_names;
   var max_num_genes = 20;
@@ -10,10 +14,10 @@ function check_setup_enrichr(inst_cgm){
 
   var wait_unit = 500;
   var wait_time = 0;
+
   // check each gene using Harmonizome
   _.each(all_rows, function(inst_name){
 
-    // check_gene_request(inst_cgm, inst_name, run_ini_enrichr);
     setTimeout(check_gene_request, wait_time, inst_cgm, inst_name, run_ini_enrichr);
 
     wait_time = wait_time + wait_unit;
@@ -24,13 +28,19 @@ function check_setup_enrichr(inst_cgm){
 
 function run_ini_enrichr(inst_cgm, inst_name){
 
+  console.log('run_ini_enrichr')
+
+  var inst_root = inst_cgm.params.root;
+
   if (genes_were_found){
 
     if (d3.select('.enrichr_logo').empty()){
 
       // set up Enrichr category import
-      enr_obj = Enrichr_request(inst_cgm);
-      enr_obj.enrichr_icon();
+      enr_obj[inst_root] = Enrichrgram(inst_cgm);
+      enr_obj[inst_root].enrichr_icon();
+
+      console.log(inst_root)
 
       // set up Enrichr export in dendro modal
       //////////////////////////////////////////
@@ -92,7 +102,7 @@ function check_gene_request(inst_cgm, gene_symbol, check_enrichr_callback){
 
 }
 
-function Enrichr_request(inst_cgm){
+function Enrichrgram(inst_cgm){
 
   function enrichr_icon(){
 
