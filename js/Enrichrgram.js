@@ -34,19 +34,20 @@ function run_ini_enrichr(inst_cgm, inst_name){
 
   if (genes_were_found){
 
-    if (d3.select('.enrichr_logo').empty()){
+    if (d3.select(inst_root + ' .enrichr_logo').empty()){
 
       // set up Enrichr category import
       enr_obj[inst_root] = Enrichrgram(inst_cgm);
       enr_obj[inst_root].enrichr_icon();
 
+      console.log('inst_root')
       console.log(inst_root)
 
       // set up Enrichr export in dendro modal
       //////////////////////////////////////////
 
       // only display for rows
-      var enrichr_section = d3.selectAll('.dendro_info')
+      var enrichr_section = d3.selectAll(inst_root + ' .dendro_info')
         .select('.modal-body')
         .append('div')
         .classed('enrichr_export_section', true)
@@ -62,7 +63,7 @@ function run_ini_enrichr(inst_cgm, inst_name){
         .html('Enrichr')
         .on('click', function(){
 
-          var group_string = d3.select('.dendro_text input').attr('value');
+          var group_string = d3.select(inst_root + ' .dendro_text input').attr('value');
 
           // replace all instances of commas with new line
           var gene_list = group_string.replace(/, /g, '\n');
@@ -104,6 +105,8 @@ function check_gene_request(inst_cgm, gene_symbol, check_enrichr_callback){
 
 function Enrichrgram(inst_cgm){
 
+  var inst_root = inst_cgm.params.root;
+
   function enrichr_icon(){
 
     var low_opacity = 0.7;
@@ -129,7 +132,7 @@ function Enrichrgram(inst_cgm){
         return enrichr_description;
       });
 
-    var enr_logo = d3.select('.viz_svg').append("svg:image")
+    var enr_logo = d3.select(inst_root+' .viz_svg').append("svg:image")
      .attr('x', 50)
      .attr('y', 2)
      .attr('width', icon_size)
