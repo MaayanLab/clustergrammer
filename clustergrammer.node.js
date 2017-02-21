@@ -80,8 +80,6 @@ module.exports =
 	 */
 	function Clustergrammer(args) {
 
-	  console.log('here');
-
 	  /* Main program
 	   * ----------------------------------------------------------------------- */
 	  // consume and validate user input
@@ -598,7 +596,7 @@ module.exports =
 
 	  if (num_rows == num_cols) {
 
-	    // the sort here was causing errors
+	    // the sort here was causing errors 
 	    var rows = config.network_data.row_nodes_names;
 	    var cols = config.network_data.col_nodes_names;
 	    sim_mat = true;
@@ -803,17 +801,17 @@ module.exports =
 
 	  var request_filters = _.keys(requested_view);
 
-	  // find a view that matches all of the requested view/filter-attributes
+	  // find a view that matches all of the requested view/filter-attributes 
 	  _.each(request_filters, function (inst_filter) {
 
 	    inst_value = requested_view[inst_filter];
 
-	    // if the value is a number, then convert it to an integer
+	    // if the value is a number, then convert it to an integer 
 	    if (/[^a-z_]/i.test(inst_value)) {
 	      inst_value = parseInt(inst_value, 10);
 	    }
 
-	    // only run filtering if any of the views has the filter
+	    // only run filtering if any of the views has the filter 
 	    found_filter = false;
 	    _.each(views, function (tmp_view) {
 	      if (utils.has(tmp_view, inst_filter)) {
@@ -828,19 +826,19 @@ module.exports =
 	    }
 	  });
 
-	  // remove duplicate complete default states
+	  // remove duplicate complete default states 
 	  var export_views = [];
 	  var found_default = false;
 	  var check_default;
 	  var inst_default_state;
 
-	  // check if each view is a default state: all filters are at default
-	  // there can only be one of these
+	  // check if each view is a default state: all filters are at default 
+	  // there can only be one of these 
 	  _.each(views, function (inst_view) {
 
 	    check_default = true;
 
-	    // check each filter in a view to see if it is in the default state
+	    // check each filter in a view to see if it is in the default state 
 	    _.each(_.keys(params.viz.possible_filters), function (inst_filter) {
 
 	      inst_default_state = get_filter_default_state(params.viz.filter_data, inst_filter);
@@ -927,13 +925,13 @@ module.exports =
 
 	module.exports = function make_view_request(params, requested_view) {
 
-	  // this will add all necessary information to a view request
-	  // it will grab necessary view information from the sliders
+	  // this will add all necessary information to a view request 
+	  // it will grab necessary view information from the sliders 
 
-	  // only one component will be changed at a time
+	  // only one component will be changed at a time 
 	  var changed_component = _.keys(requested_view)[0];
 
-	  // add additional filter information from othe possible filters
+	  // add additional filter information from othe possible filters 
 	  _.each(_.keys(params.viz.possible_filters), function (inst_filter) {
 
 	    if (inst_filter != changed_component) {
@@ -1323,12 +1321,12 @@ module.exports =
 
 	all_colors = ["#393b79", "#aec7e8", "#ff7f0e", "#ffbb78", "#98df8a", "#bcbd22", "#404040", "#ff9896", "#c5b0d5", "#8c564b", "#1f77b4", "#5254a3", "#FFDB58", "#c49c94", "#e377c2", "#7f7f7f", "#2ca02c", "#9467bd", "#dbdb8d", "#17becf", "#637939", "#6b6ecf", "#9c9ede", "#d62728", "#8ca252", "#8c6d31", "#bd9e39", "#e7cb94", "#843c39", "#ad494a", "#d6616b", "#7b4173", "#a55194", "#ce6dbd", "#de9ed6"];
 
-	// too light colors
+	// too light colors 
 	// "#e7969c",
-	// "#c7c7c7",
-	// "#f7b6d2",
-	// "#cedb9c",
-	// "#9edae5",
+	// "#c7c7c7", 
+	// "#f7b6d2", 
+	// "#cedb9c", 
+	// "#9edae5", 
 
 	function get_default_color() {
 	  return '#EEE';
@@ -1607,25 +1605,25 @@ module.exports =
 	  viz.clust = {};
 	  viz.clust.margin = {};
 
-	  // margin on left/top of the clustergram/matrix
+	  // margin on left/top of the clustergram/matrix 
 	  // 1) norm_label margin and width
-	  // 2) cat_room and uni_margin
+	  // 2) cat_room and uni_margin 
 	  viz.clust.margin.left = viz.norm_labels.margin.left + viz.norm_labels.width.row + viz.cat_room.row + viz.uni_margin;
 
 	  viz.clust.margin.top = viz.norm_labels.margin.top + viz.norm_labels.width.col + viz.cat_room.col + viz.uni_margin;
 
 	  // the clustergram/matrix width is the svg width minus:
-	  // the margin of the clustergram on the left
-	  // the room for the spillover on the right
-	  // ** the dendro will fit in the spillover room on the right
+	  // the margin of the clustergram on the left 
+	  // the room for the spillover on the right 
+	  // ** the dendro will fit in the spillover room on the right 
 	  var ini_clust_width = viz.svg_dim.width - viz.clust.margin.left - viz.spillover_col_slant;
 
-	  // make tmp scale to calc height of triangle col labels
+	  // make tmp scale to calc height of triangle col labels 
 	  var tmp_x_scale = d3.scale.ordinal().rangeBands([0, ini_clust_width]).domain(_.range(viz.num_col_nodes));
 
 	  var triangle_height = tmp_x_scale.rangeBand() / 2;
 
-	  // prevent the visualization from being unnecessarily wide
+	  // prevent the visualization from being unnecessarily wide 
 	  if (triangle_height > viz.norm_labels.width.col) {
 	    var reduce_width = viz.norm_labels.width.col / triangle_height;
 	    ini_clust_width = ini_clust_width * reduce_width;
@@ -1645,10 +1643,10 @@ module.exports =
 
 	module.exports = function calc_clust_height(viz) {
 
-	  // the clustergram/matrix height is the svg width minus:
-	  // the margin of the clustergram on the top
-	  // the dendrogram
-	  // the bottom_space
+	  // the clustergram/matrix height is the svg width minus: 
+	  // the margin of the clustergram on the top 
+	  // the dendrogram 
+	  // the bottom_space 
 	  var ini_clust_height = viz.svg_dim.height - viz.clust.margin.top - viz.dendro_room.col - viz.bottom_space;
 
 	  viz.clust.dim.height = ini_clust_height;
@@ -6232,7 +6230,7 @@ module.exports =
 	module.exports = function (params, inst_selection, inst_rc) {
 	  if (d3.select(inst_selection).style('display') != 'none') {
 
-	    // trim text that is longer than the container
+	    // trim text that is longer than the container 
 	    var inst_zoom;
 	    var inst_width;
 	    var trimmed_text;
@@ -6316,7 +6314,7 @@ module.exports =
 	    keep_num_char = current_num_char + 2;
 	    trimmed_text = original_text.substring(0, keep_num_char) + '..';
 
-	    // if '..' was added to original text
+	    // if '..' was added to original text 
 	    if (trimmed_text.length > original_text.length) {
 	      trimmed_text = original_text;
 	    }
@@ -9159,7 +9157,7 @@ module.exports =
 
 	    var inst_text_num = i + 1;
 
-	    // make text box
+	    // make text box 
 	    //////////////////
 	    var inst_text_obj = d3.select(params.root + ' .demo_group').select('#text_' + inst_text_num).text(split_text[i]);
 	    var bbox = inst_text_obj[0][0].getBBox();
@@ -11112,7 +11110,7 @@ module.exports =
 
 	  function reset_demo(params) {
 
-	    // prevent more than one demo from running at once
+	    // prevent more than one demo from running at once 
 	    d3.select(params.root + ' .play_button').classed('running_demo', false);
 
 	    toggle_play_button(params, true);
@@ -11173,7 +11171,7 @@ module.exports =
 	    // var x_trans = params.viz.norm_labels.width.row * 0.9;
 
 	    // var row_trans = group_trans.split(',')[1].replace(')','');
-	    // var y_trans = String(Number(row_trans) + Number(container_trans) +
+	    // var y_trans = String(Number(row_trans) + Number(container_trans) + 
 	    //   params.viz.rect_height/2);
 
 	    var x_trans = Number(d3.select(params.root + ' .expand_button').attr('x').replace('px', ''));
@@ -11284,7 +11282,7 @@ module.exports =
 	      d3.select(this).select('path').style('fill', 'black').style('opacity', 0.5);
 	      d3.select(this).select('circle').style('opacity', 0.5);
 	    }).on('click', function () {
-	      // running from anonymous function to keep this defined correctly
+	      // running from anonymous function to keep this defined correctly 
 	      cgm.play_demo();
 	    });
 	  }
@@ -11304,7 +11302,7 @@ module.exports =
 	    var clust_x = Number(clust_transform.split('(')[1].split(',')[0]);
 	    var clust_y = Number(clust_transform.split(',')[1].replace(')', ''));
 
-	    // demo text container
+	    // demo text container 
 	    var demo_group = d3.select(params.root + ' .viz_svg').append('g').classed('demo_group', true).attr('transform', function () {
 	      var pos_x = clust_x + 20;
 	      var pos_y = clust_y + 40;
@@ -11721,7 +11719,7 @@ module.exports =
 	    filter_title.text = 'Top ' + title.node + ' ' + title.measure + ': ';
 	  }
 
-	  // Enrichr specific rules
+	  // Enrichr specific rules 
 	  if (_.keys(params.viz.possible_filters).indexOf('enr_score_type') > -1) {
 	    if (type.node === 'col') {
 	      filter_title.text = 'Top Enriched Terms: ';
@@ -11870,7 +11868,7 @@ module.exports =
 	  /* FileSaver.js
 	   * A saveAs() FileSaver implementation.
 	   * 2013-01-23
-	   *
+	   * 
 	   * By Eli Grey, http://eligrey.com
 	   * License: X11/MIT
 	   *   See LICENSE.md
@@ -13701,7 +13699,7 @@ module.exports =
 
 	module.exports = function get_current_orders(params) {
 
-	  // get current orders
+	  // get current orders 
 	  var other_rc;
 	  _.each(['row', 'col'], function (inst_rc) {
 
@@ -13716,7 +13714,7 @@ module.exports =
 	      params.viz.inst_order[inst_rc] = d3.select(params.root + ' .toggle_' + other_rc + '_order').select('.active').attr('name');
 	    } else {
 
-	      // default to cluster ordering
+	      // default to cluster ordering 
 	      params.viz.inst_order[inst_rc] = 'clust';
 	    }
 	  });

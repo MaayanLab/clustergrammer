@@ -80,8 +80,6 @@ var Clustergrammer =
 	 */
 	function Clustergrammer(args) {
 
-	  console.log('here');
-
 	  /* Main program
 	   * ----------------------------------------------------------------------- */
 	  // consume and validate user input
