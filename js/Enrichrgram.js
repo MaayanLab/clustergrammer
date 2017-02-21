@@ -83,17 +83,22 @@ function check_gene_request(inst_cgm, gene_symbol, check_enrichr_callback){
 
   if (genes_were_found[inst_cgm.params.root] === false){
 
-    $.get(url, function(data) {
+    // make sure value is non-numeric
+    if (isNaN(gene_symbol)){
 
-      data = JSON.parse(data);
+      $.get(url, function(data) {
 
-      if (data.name != undefined){
-        genes_were_found[inst_cgm.params.root] = true;
-      }
+        data = JSON.parse(data);
 
-      check_enrichr_callback(inst_cgm, gene_symbol);
+        if (data.name != undefined){
+          genes_were_found[inst_cgm.params.root] = true;
+        }
 
-    });
+        check_enrichr_callback(inst_cgm, gene_symbol);
+
+      });
+
+    }
   }
 
 }
