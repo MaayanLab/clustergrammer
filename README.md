@@ -15,7 +15,7 @@ Clustergrammer's interacive features include:
 - [Row and Column Reordering](http://clustergrammer.readthedocs.io/interacting_with_viz.html#row-col-reordering)
 - [Interactive Dendrogram](http://clustergrammer.readthedocs.io/interacting_with_viz.html#interactive-dendrogram)
 - [Interactive Dimensionality Reduction](http://clustergrammer.readthedocs.io/interacting_with_viz.html#interactive-dim-reduction)
-- [Interactive Categories](http://clustergrammer.readthedocs.io/interacting_with_viz.<html id="interactive-categories"></html>)
+- [Interactive Categories](http://clustergrammer.readthedocs.io/interacting_with_viz.html#interactive-categories)
 - [Cropping](http://clustergrammer.readthedocs.io/interacting_with_viz.html#crop)
 - [Row Searching](http://clustergrammer.readthedocs.io/interacting_with_viz.html#search)
 
