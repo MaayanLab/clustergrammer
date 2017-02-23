@@ -84,7 +84,7 @@
     "title": "Conclusion",
     "text": [
       "Clustergrammer enables intuitive exploration of high-dimensional biological data and allows users to gain insights through integration of prior biological knowledge (e.g. enrichment analysis).",
-      "Please see the  <a href='https://clustergrammer.readthedocs.io/'>documents</a> for more information."
+      "Please see the  <a href='https://clustergrammer.readthedocs.io/'>documentation</a> for more information."
 
     ],
     "run_function": "run_conclusions"
