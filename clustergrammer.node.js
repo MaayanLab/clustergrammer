@@ -74,7 +74,7 @@ module.exports =
 	__webpack_require__(189);
 	__webpack_require__(193);
 
-	/* clustergrammer v1.12.4
+	/* clustergrammer v1.12.5
 	 * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
 	 * (c) 2017
 	 */
