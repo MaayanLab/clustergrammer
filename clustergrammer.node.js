@@ -6841,7 +6841,9 @@ module.exports =
 	  d3.select(params.root + ' .clust_container').attr('transform', 'translate(' + params.viz.clust.margin.left + ',' + params.viz.clust.margin.top + ')');
 
 	  // removed, this was causing bugs
-	  show_visible_area(cgm);
+	  if (cgm.params.viz.ds_level === -1) {
+	    show_visible_area(cgm);
+	  }
 
 	  make_row_cat_super_labels(cgm);
 

@@ -201,7 +201,9 @@ module.exports = function resize_viz(cgm) {
       params.viz.clust.margin.top + ')');
 
   // removed, this was causing bugs
-  show_visible_area(cgm);
+  if (cgm.params.viz.ds_level === -1){
+    show_visible_area(cgm);
+  }
 
   make_row_cat_super_labels(cgm);
 
