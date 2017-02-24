@@ -1,6 +1,6 @@
 var constrain_font_size = require('./constrain_font_size');
-// var trim_text = require('./trim_text');
-// var num_visible_labels = require('./num_visible_labels');
+var trim_text = require('./trim_text');
+var num_visible_labels = require('./num_visible_labels');
 var toggle_grid_lines = require('../matrix/toggle_grid_lines');
 var show_visible_area = require('./show_visible_area');
 var check_zoom_stop_status = require('./check_zoom_stop_status');
@@ -13,9 +13,9 @@ module.exports = function run_when_zoom_stopped(cgm){
 
   if (stop_attributes === true){
 
-    /////////////////////////////////////////////////
-    // zooming has stopped
-    /////////////////////////////////////////////////
+    // ///////////////////////////////////////////////
+    // // zooming has stopped
+    // ///////////////////////////////////////////////
     // console.log('\nZOOMING HAS ACTUALLY STOPPED\n============================');
     // console.log(params.zoom_info.zoom_y)
 
@@ -48,20 +48,21 @@ module.exports = function run_when_zoom_stopped(cgm){
     // reset x_offset
     cgm.params.viz.x_offset = 0;
 
+    var max_labels_to_trim = 150;
     // probably do not need
-    ///////////////////////////
-    // _.each(['row','col'], function(inst_rc){
+    /////////////////////////
+    _.each(['row','col'], function(inst_rc){
 
-    //   var inst_num_visible_labels(params, inst_rc);
+      var inst_num_visible = num_visible_labels(params, inst_rc);
 
-    //   if (inst_num_visible < 125){
-    //     d3.selectAll(params.root+' .'+inst_rc+'_label_group' )
-    //       .each(function() {
-    //         trim_text(params, this, inst_rc);
-    //       });
-    //   }
+      if (inst_num_visible < max_labels_to_trim){
+        d3.selectAll(params.root+' .'+inst_rc+'_label_group' )
+          .each(function() {
+            trim_text(params, this, inst_rc);
+          });
+      }
 
-    // });
+    });
 
     text_patch();
 
