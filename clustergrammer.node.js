@@ -51,30 +51,30 @@ module.exports =
 	var make_params = __webpack_require__(9);
 	var make_viz = __webpack_require__(39);
 	var resize_viz = __webpack_require__(90);
-	var play_demo = __webpack_require__(130);
-	var ini_demo = __webpack_require__(170);
-	var filter_viz_using_nodes = __webpack_require__(173);
-	var filter_viz_using_names = __webpack_require__(174);
-	var update_cats = __webpack_require__(175);
-	var reset_cats = __webpack_require__(176);
+	var play_demo = __webpack_require__(131);
+	var ini_demo = __webpack_require__(171);
+	var filter_viz_using_nodes = __webpack_require__(174);
+	var filter_viz_using_names = __webpack_require__(175);
+	var update_cats = __webpack_require__(176);
+	var reset_cats = __webpack_require__(177);
 	var two_translate_zoom = __webpack_require__(82);
-	var external_update_view = __webpack_require__(178);
-	var export_matrix = __webpack_require__(181);
-	var brush_crop_matrix = __webpack_require__(183);
+	var external_update_view = __webpack_require__(179);
+	var export_matrix = __webpack_require__(182);
+	var brush_crop_matrix = __webpack_require__(184);
 	var run_zoom = __webpack_require__(91);
 	var d3_tip_custom = __webpack_require__(50);
 
 	// moved d3.slider to src
-	d3.slider = __webpack_require__(185);
+	d3.slider = __webpack_require__(186);
 
 	/* eslint-disable */
 
-	var awesomplete = __webpack_require__(187);
+	var awesomplete = __webpack_require__(188);
 	// getting css from src
-	__webpack_require__(189);
-	__webpack_require__(193);
+	__webpack_require__(190);
+	__webpack_require__(194);
 
-	/* clustergrammer v1.12.6
+	/* clustergrammer v1.12.7
 	 * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
 	 * (c) 2017
 	 */
@@ -104,7 +104,7 @@ module.exports =
 	  cgm.params.zoom_behavior.translate([cgm.params.viz.clust.margin.left, cgm.params.viz.clust.margin.top]);
 
 	  if (cgm.params.use_sidebar) {
-	    var make_sidebar = __webpack_require__(195);
+	    var make_sidebar = __webpack_require__(196);
 	    make_sidebar(cgm);
 	  }
 
@@ -2230,14 +2230,14 @@ module.exports =
 	var generate_super_labels = __webpack_require__(77);
 	var spillover = __webpack_require__(78);
 	var initialize_resizing = __webpack_require__(89);
-	var ini_doubleclick = __webpack_require__(98);
-	var make_col_cat = __webpack_require__(117);
-	var make_row_cat = __webpack_require__(123);
+	var ini_doubleclick = __webpack_require__(99);
+	var make_col_cat = __webpack_require__(118);
+	var make_row_cat = __webpack_require__(124);
 	var trim_text = __webpack_require__(84);
-	var make_row_dendro = __webpack_require__(124);
-	var make_col_dendro = __webpack_require__(125);
-	var make_svg_dendro_sliders = __webpack_require__(126);
-	var make_row_dendro_spillover = __webpack_require__(129);
+	var make_row_dendro = __webpack_require__(125);
+	var make_col_dendro = __webpack_require__(126);
+	var make_svg_dendro_sliders = __webpack_require__(127);
+	var make_row_dendro_spillover = __webpack_require__(130);
 
 	module.exports = function Viz(cgm) {
 
@@ -5699,7 +5699,7 @@ module.exports =
 
 	var get_cat_title = __webpack_require__(79);
 	var ini_cat_reorder = __webpack_require__(80);
-	var make_row_cat_super_labels = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../labels/make_row_cat_super_labels\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	var make_row_cat_super_labels = __webpack_require__(88);
 	var make_dendro_crop_buttons = __webpack_require__(62);
 
 	module.exports = function Spillover(cgm) {
@@ -6445,7 +6445,132 @@ module.exports =
 	};
 
 /***/ },
-/* 88 */,
+/* 88 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var get_cat_title = __webpack_require__(79);
+	var d3_tip_custom = __webpack_require__(50);
+
+	module.exports = function make_row_cat_super_labels(cgm) {
+
+	  var params = cgm.params;
+
+	  var viz = params.viz;
+	  var extra_x_room = 2.75;
+
+	  if (d3.select(params.root + ' .row_cat_label_container').empty()) {
+
+	    d3.select(cgm.params.viz.viz_svg).append('g').classed('row_cat_label_container', true);
+
+	    // append background section for optional value-bars (e.g. enrichment pvals)
+	    d3.select(cgm.params.viz.viz_svg + ' .row_cat_label_container').append('g').classed('row_cat_label_bar_container', true);
+	  }
+
+	  var x_offset = viz.clust.margin.left + viz.clust.dim.width + viz.uni_margin;
+	  var y_offset = viz.norm_labels.margin.top + viz.norm_labels.width.col + 2.5 * viz.uni_margin;
+	  var cat_text_size = 1.15 * viz.cat_room.symbol_width;
+	  var cat_super_opacity = 0.65;
+	  var extra_y_room = 1.25;
+
+	  d3.select(params.root + ' .row_cat_label_container').attr('transform', function () {
+	    x_offset = viz.norm_labels.margin.left + viz.norm_labels.width.row + viz.cat_room.symbol_width + extra_x_room * viz.uni_margin;
+	    y_offset = viz.clust.margin.top - viz.uni_margin;
+	    return 'translate(' + x_offset + ',' + y_offset + ') rotate(-90)';
+	  });
+
+	  // clear old categories
+	  d3.selectAll(params.root + ' .row_cat_label_container text').remove();
+	  d3.selectAll(params.root + ' .row_cat_selection_bar').remove();
+	  // d3.selectAll(params.root+' .row_cat_label_bar_container rect').remove();
+
+	  // remove any old row_cat_super tooltips from this visualization
+	  d3.selectAll(cgm.params.viz.root_tips + '_row_cat_super').remove();
+
+	  // d3-tooltip
+	  var tmp_y_offset = 50; // viz.clust.margin.top - viz.uni_margin;
+	  var tmp_x_offset = -75;
+	  var cat_tip = d3_tip_custom().attr('class', function () {
+	    var root_tip_selector = params.viz.root_tips.replace('.', '');
+	    var class_string = root_tip_selector + ' d3-tip ' + root_tip_selector + '_row_cat_super';
+	    return class_string;
+	  }).direction('south_custom').offset([tmp_y_offset, tmp_x_offset]).style('display', 'none').style('opacity', 0).html(function (d) {
+
+	    var full_string;
+
+	    var tmp_string = params.network_data.row_nodes[0][d];
+
+	    if (tmp_string.indexOf('<p>') > -1) {
+
+	      var start_string = tmp_string.split(': ')[0];
+	      var end_string = tmp_string.split('<p>')[1];
+
+	      full_string = start_string + '<p>' + end_string;
+	    } else {
+
+	      full_string = get_cat_title(viz, d, 'row');
+	    }
+
+	    return full_string;
+	  });
+
+	  var unit_length = extra_y_room * viz.cat_room.symbol_width;
+	  var bar_width = unit_length * 0.9;
+
+	  // do not show row label categories if you are viewing a similarity matrix
+	  if (viz.sim_mat === false) {
+
+	    d3.select(params.root + ' .row_cat_label_container').selectAll().data(viz.all_cats.row).enter().append('text').style('width', '100px').style('height', bar_width + 'px').classed('row_cat_super', true).style('font-size', cat_text_size + 'px').style('opacity', cat_super_opacity).style('cursor', 'default').attr('transform', function (d) {
+	      var inst_y = extra_y_room * viz.cat_room.symbol_width * parseInt(d.split('-')[1], 10);
+	      return 'translate(0,' + inst_y + ')';
+	    }).text(function (d) {
+	      return get_cat_title(viz, d, 'row');
+	    });
+
+	    // // optional bar behind name
+	    // ///////////////////////////////
+	    // d3.select('.row_cat_label_bar_container')
+	    //   .selectAll()
+	    //   .data(viz.all_cats.row)
+	    //   .enter()
+	    //   .append('rect')
+	    //   .style('height', bar_width +'px')
+	    //   .style('fill', 'green')
+	    //   .style('width','60px')
+	    //   .style('opacity', 0)
+	    //   .attr('transform', function(d){
+	    //     var inst_y = unit_length * (parseInt( d.split('-')[1], 10 ) -0.75 );
+	    //     return 'translate(0,'+inst_y+')';
+	    //   })
+
+	    // selection bar
+	    ///////////////////////////////
+	    d3.select(params.root + ' .row_cat_label_container').selectAll().data(viz.all_cats.row).enter().append('rect').classed('row_cat_super', true).classed('row_cat_selection_bar', true).style('height', bar_width + 'px').style('fill', 'green').style('width', '120px').style('opacity', 0).attr('transform', function (d) {
+	      var inst_y = unit_length * (parseInt(d.split('-')[1], 10) - 0.75);
+	      return 'translate(0,' + inst_y + ')';
+	    }).on('mouseover', function (d) {
+
+	      d3.selectAll(params.viz.root_tips + '_row_cat_super').style('display', 'block').style('opacity', 1);
+
+	      cat_tip.show(d);
+	    }).on('mouseout', function () {
+	      cat_tip.hide(this);
+	      // might not need
+	      d3.selectAll('.d3-tip').style('display', 'none');
+
+	      d3.selectAll(params.viz.root_tips + '_row_cat_super').style('display', 'none').style('opacity', 0);
+	    });
+	  }
+
+	  // row category super-label mouseover
+	  //////////////////////////////////////
+	  if (d3.select(params.root + ' .row_cat_selection_bar').empty() === false) {
+	    d3.selectAll(params.root + ' .row_cat_selection_bar').call(cat_tip);
+	  }
+		};
+
+/***/ },
 /* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -6551,33 +6676,33 @@ module.exports =
 
 	var utils = __webpack_require__(2);
 	var run_zoom = __webpack_require__(91);
-	var ini_doubleclick = __webpack_require__(98);
-	var reset_zoom = __webpack_require__(99);
-	var resize_dendro = __webpack_require__(100);
-	var resize_super_labels = __webpack_require__(101);
-	var resize_spillover = __webpack_require__(102);
-	var resize_borders = __webpack_require__(103);
-	var resize_row_labels = __webpack_require__(104);
-	var resize_highlights = __webpack_require__(105);
-	var resize_row_viz = __webpack_require__(106);
-	var resize_col_labels = __webpack_require__(107);
-	var resize_col_text = __webpack_require__(108);
-	var resize_col_triangle = __webpack_require__(109);
-	var resize_col_hlight = __webpack_require__(110);
-	var recalc_params_for_resize = __webpack_require__(111);
-	var resize_row_tiles = __webpack_require__(112);
-	var resize_label_bars = __webpack_require__(113);
+	var ini_doubleclick = __webpack_require__(99);
+	var reset_zoom = __webpack_require__(100);
+	var resize_dendro = __webpack_require__(101);
+	var resize_super_labels = __webpack_require__(102);
+	var resize_spillover = __webpack_require__(103);
+	var resize_borders = __webpack_require__(104);
+	var resize_row_labels = __webpack_require__(105);
+	var resize_highlights = __webpack_require__(106);
+	var resize_row_viz = __webpack_require__(107);
+	var resize_col_labels = __webpack_require__(108);
+	var resize_col_text = __webpack_require__(109);
+	var resize_col_triangle = __webpack_require__(110);
+	var resize_col_hlight = __webpack_require__(111);
+	var recalc_params_for_resize = __webpack_require__(112);
+	var resize_row_tiles = __webpack_require__(113);
+	var resize_label_bars = __webpack_require__(114);
 	var label_constrain_and_trim = __webpack_require__(83);
 	var make_dendro_triangles = __webpack_require__(57);
 	var toggle_dendro_view = __webpack_require__(56);
 	var show_visible_area = __webpack_require__(72);
 	var calc_viz_dimensions = __webpack_require__(24);
-	var position_play_button = __webpack_require__(114);
-	var make_row_cat_super_labels = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../labels/make_row_cat_super_labels\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	var position_play_button = __webpack_require__(115);
+	var make_row_cat_super_labels = __webpack_require__(88);
 	var ini_cat_reorder = __webpack_require__(80);
-	var position_svg_dendro_slider = __webpack_require__(115);
+	var position_svg_dendro_slider = __webpack_require__(116);
 	var ini_zoom_info = __webpack_require__(38);
-	var grid_lines_viz = __webpack_require__(116);
+	var grid_lines_viz = __webpack_require__(117);
 
 	module.exports = function resize_viz(cgm) {
 
@@ -6740,8 +6865,8 @@ module.exports =
 	'use strict';
 
 	var run_transformation = __webpack_require__(92);
-	var zoom_rules_y = __webpack_require__(96);
-	var zoom_rules_x = __webpack_require__(97);
+	var zoom_rules_y = __webpack_require__(97);
+	var zoom_rules_x = __webpack_require__(98);
 
 	module.exports = function zoomed(cgm) {
 
@@ -6797,7 +6922,7 @@ module.exports =
 	var zoom_crop_triangles = __webpack_require__(64);
 	var get_previous_zoom = __webpack_require__(67);
 	var run_when_zoom_stopped = __webpack_require__(94);
-	var check_zoom_stop_status = __webpack_require__(95);
+	var check_zoom_stop_status = __webpack_require__(96);
 
 	module.exports = function run_transformation(cgm) {
 
@@ -6932,10 +7057,10 @@ module.exports =
 
 	var constrain_font_size = __webpack_require__(85);
 	var trim_text = __webpack_require__(84);
-	var num_visible_labels = __webpack_require__(209);
+	var num_visible_labels = __webpack_require__(95);
 	var toggle_grid_lines = __webpack_require__(87);
 	var show_visible_area = __webpack_require__(72);
-	var check_zoom_stop_status = __webpack_require__(95);
+	var check_zoom_stop_status = __webpack_require__(96);
 
 	module.exports = function run_when_zoom_stopped(cgm) {
 
@@ -7019,6 +7144,36 @@ module.exports =
 
 	'use strict';
 
+	module.exports = function num_visible_labels(params, inst_rc) {
+
+	  // counting the number of visible labels, probably not necessary
+
+	  var num_visible;
+	  if (inst_rc === 'row') {
+
+	    // initialize at high number
+	    num_visible = 10000;
+
+	    // only count visible rows if no downsampling
+	    if (params.viz.ds_level === -1) {
+	      num_visible = d3.selectAll(params.root + ' .row')[0].length;
+	    }
+	  } else if (inst_rc === 'col') {
+
+	    num_visible = d3.selectAll(params.root + ' .' + inst_rc + '_label_text').filter(function () {
+	      return d3.select(this).style('display') != 'none';
+	    })[0].length;
+	  }
+
+	  return num_visible;
+	};
+
+/***/ },
+/* 96 */
+/***/ function(module, exports) {
+
+	'use strict';
+
 	module.exports = function check_zoom_stop_status(params) {
 
 	  var inst_zoom = Number(d3.select(params.root + ' .viz_svg').attr('is_zoom'));
@@ -7034,7 +7189,7 @@ module.exports =
 	};
 
 /***/ },
-/* 96 */
+/* 97 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -7070,7 +7225,7 @@ module.exports =
 	};
 
 /***/ },
-/* 97 */
+/* 98 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -7116,7 +7271,7 @@ module.exports =
 	};
 
 /***/ },
-/* 98 */
+/* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7135,7 +7290,7 @@ module.exports =
 	};
 
 /***/ },
-/* 99 */
+/* 100 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7179,7 +7334,7 @@ module.exports =
 		};
 
 /***/ },
-/* 100 */
+/* 101 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7289,7 +7444,7 @@ module.exports =
 		};
 
 /***/ },
-/* 101 */
+/* 102 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7333,7 +7488,7 @@ module.exports =
 		};
 
 /***/ },
-/* 102 */
+/* 103 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7455,7 +7610,7 @@ module.exports =
 		};
 
 /***/ },
-/* 103 */
+/* 104 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7485,7 +7640,7 @@ module.exports =
 		};
 
 /***/ },
-/* 104 */
+/* 105 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7541,7 +7696,7 @@ module.exports =
 		};
 
 /***/ },
-/* 105 */
+/* 106 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7606,7 +7761,7 @@ module.exports =
 		};
 
 /***/ },
-/* 106 */
+/* 107 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7650,7 +7805,7 @@ module.exports =
 		};
 
 /***/ },
-/* 107 */
+/* 108 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7707,7 +7862,7 @@ module.exports =
 		};
 
 /***/ },
-/* 108 */
+/* 109 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7725,7 +7880,7 @@ module.exports =
 	};
 
 /***/ },
-/* 109 */
+/* 110 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7761,7 +7916,7 @@ module.exports =
 		};
 
 /***/ },
-/* 110 */
+/* 111 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7800,7 +7955,7 @@ module.exports =
 		};
 
 /***/ },
-/* 111 */
+/* 112 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7869,7 +8024,7 @@ module.exports =
 	};
 
 /***/ },
-/* 112 */
+/* 113 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7934,7 +8089,7 @@ module.exports =
 		};
 
 /***/ },
-/* 113 */
+/* 114 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7970,7 +8125,7 @@ module.exports =
 		};
 
 /***/ },
-/* 114 */
+/* 115 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7990,7 +8145,7 @@ module.exports =
 		};
 
 /***/ },
-/* 115 */
+/* 116 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8037,7 +8192,7 @@ module.exports =
 		};
 
 /***/ },
-/* 116 */
+/* 117 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8078,17 +8233,17 @@ module.exports =
 		};
 
 /***/ },
-/* 117 */
+/* 118 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var cat_tooltip_text = __webpack_require__(118);
+	var cat_tooltip_text = __webpack_require__(119);
 	var d3_tip_custom = __webpack_require__(50);
-	var reset_cat_opacity = __webpack_require__(119);
-	var ini_cat_opacity = __webpack_require__(120);
-	var click_filter_cats = __webpack_require__(121);
-	var get_cat_names = __webpack_require__(122);
+	var reset_cat_opacity = __webpack_require__(120);
+	var ini_cat_opacity = __webpack_require__(121);
+	var click_filter_cats = __webpack_require__(122);
+	var get_cat_names = __webpack_require__(123);
 
 	module.exports = function make_col_cat(cgm) {
 
@@ -8186,7 +8341,7 @@ module.exports =
 		};
 
 /***/ },
-/* 118 */
+/* 119 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8272,7 +8427,7 @@ module.exports =
 		};
 
 /***/ },
-/* 119 */
+/* 120 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8295,7 +8450,7 @@ module.exports =
 		};
 
 /***/ },
-/* 120 */
+/* 121 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8360,12 +8515,12 @@ module.exports =
 		};
 
 /***/ },
-/* 121 */
+/* 122 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var get_cat_names = __webpack_require__(122);
+	var get_cat_names = __webpack_require__(123);
 
 	module.exports = function click_filter_cats(cgm, inst_data, inst_selection, inst_rc) {
 
@@ -8448,7 +8603,7 @@ module.exports =
 		};
 
 /***/ },
-/* 122 */
+/* 123 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8472,17 +8627,17 @@ module.exports =
 	};
 
 /***/ },
-/* 123 */
+/* 124 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var cat_tooltip_text = __webpack_require__(118);
+	var cat_tooltip_text = __webpack_require__(119);
 	var d3_tip_custom = __webpack_require__(50);
-	var reset_cat_opacity = __webpack_require__(119);
-	var ini_cat_opacity = __webpack_require__(120);
-	var click_filter_cats = __webpack_require__(121);
-	var get_cat_names = __webpack_require__(122);
+	var reset_cat_opacity = __webpack_require__(120);
+	var ini_cat_opacity = __webpack_require__(121);
+	var click_filter_cats = __webpack_require__(122);
+	var get_cat_names = __webpack_require__(123);
 
 	module.exports = function make_row_cat(cgm) {
 	  var updating = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
@@ -8616,7 +8771,7 @@ module.exports =
 		};
 
 /***/ },
-/* 124 */
+/* 125 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8655,7 +8810,7 @@ module.exports =
 		};
 
 /***/ },
-/* 125 */
+/* 126 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8696,12 +8851,12 @@ module.exports =
 		};
 
 /***/ },
-/* 126 */
+/* 127 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var build_svg_dendro_slider = __webpack_require__(127);
+	var build_svg_dendro_slider = __webpack_require__(128);
 
 	module.exports = function make_svg_dendro_sliders(cgm) {
 
@@ -8710,13 +8865,13 @@ module.exports =
 		};
 
 /***/ },
-/* 127 */
+/* 128 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var change_groups = __webpack_require__(128);
-	var position_svg_dendro_slider = __webpack_require__(115);
+	var change_groups = __webpack_require__(129);
+	var position_svg_dendro_slider = __webpack_require__(116);
 
 	module.exports = function build_svg_dendro_slider(cgm, inst_rc) {
 
@@ -8812,7 +8967,7 @@ module.exports =
 	};
 
 /***/ },
-/* 128 */
+/* 129 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8838,7 +8993,7 @@ module.exports =
 		};
 
 /***/ },
-/* 129 */
+/* 130 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8881,27 +9036,27 @@ module.exports =
 		};
 
 /***/ },
-/* 130 */
+/* 131 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	/* eslint-disable */
 
-	var run_segment = __webpack_require__(131);
-	var play_intro = __webpack_require__(132);
-	var play_zoom = __webpack_require__(134);
-	var play_reset_zoom = __webpack_require__(135);
-	var play_reorder_row = __webpack_require__(137);
-	var play_reorder_buttons = __webpack_require__(138);
-	var play_search = __webpack_require__(140);
-	var play_filter = __webpack_require__(141);
-	var quick_cluster = __webpack_require__(164);
-	var play_groups = __webpack_require__(165);
-	var play_categories = __webpack_require__(166);
-	var play_conclusion = __webpack_require__(167);
-	var toggle_play_button = __webpack_require__(168);
-	var play_menu_button = __webpack_require__(169);
+	var run_segment = __webpack_require__(132);
+	var play_intro = __webpack_require__(133);
+	var play_zoom = __webpack_require__(135);
+	var play_reset_zoom = __webpack_require__(136);
+	var play_reorder_row = __webpack_require__(138);
+	var play_reorder_buttons = __webpack_require__(139);
+	var play_search = __webpack_require__(141);
+	var play_filter = __webpack_require__(142);
+	var quick_cluster = __webpack_require__(165);
+	var play_groups = __webpack_require__(166);
+	var play_categories = __webpack_require__(167);
+	var play_conclusion = __webpack_require__(168);
+	var toggle_play_button = __webpack_require__(169);
+	var play_menu_button = __webpack_require__(170);
 
 	module.exports = function play_demo() {
 
@@ -8961,7 +9116,7 @@ module.exports =
 		};
 
 /***/ },
-/* 131 */
+/* 132 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8984,12 +9139,12 @@ module.exports =
 		};
 
 /***/ },
-/* 132 */
+/* 133 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var demo_text = __webpack_require__(133);
+	var demo_text = __webpack_require__(134);
 
 	module.exports = function play_intro() {
 
@@ -9014,7 +9169,7 @@ module.exports =
 		};
 
 /***/ },
-/* 133 */
+/* 134 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9048,12 +9203,12 @@ module.exports =
 		};
 
 /***/ },
-/* 134 */
+/* 135 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var demo_text = __webpack_require__(133);
+	var demo_text = __webpack_require__(134);
 	var two_translate_zoom = __webpack_require__(82);
 
 	module.exports = function play_zoom() {
@@ -9078,14 +9233,14 @@ module.exports =
 		};
 
 /***/ },
-/* 135 */
+/* 136 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var demo_text = __webpack_require__(133);
+	var demo_text = __webpack_require__(134);
 	var two_translate_zoom = __webpack_require__(82);
-	var sim_click = __webpack_require__(136);
+	var sim_click = __webpack_require__(137);
 
 	module.exports = function play_reset_zoom() {
 
@@ -9111,7 +9266,7 @@ module.exports =
 		};
 
 /***/ },
-/* 136 */
+/* 137 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9130,13 +9285,13 @@ module.exports =
 		};
 
 /***/ },
-/* 137 */
+/* 138 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var demo_text = __webpack_require__(133);
-	var sim_click = __webpack_require__(136);
+	var demo_text = __webpack_require__(134);
+	var sim_click = __webpack_require__(137);
 
 	module.exports = function play_reorder_row() {
 	  /* eslint-disable */
@@ -9198,13 +9353,13 @@ module.exports =
 		};
 
 /***/ },
-/* 138 */
+/* 139 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var demo_text = __webpack_require__(133);
-	var highlight_sidebar_element = __webpack_require__(139);
+	var demo_text = __webpack_require__(134);
+	var highlight_sidebar_element = __webpack_require__(140);
 
 	module.exports = function play_reorder_buttons() {
 	  /* eslint-disable */
@@ -9240,7 +9395,7 @@ module.exports =
 		};
 
 /***/ },
-/* 139 */
+/* 140 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9257,13 +9412,13 @@ module.exports =
 		};
 
 /***/ },
-/* 140 */
+/* 141 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var demo_text = __webpack_require__(133);
-	var highlight_sidebar_element = __webpack_require__(139);
+	var demo_text = __webpack_require__(134);
+	var highlight_sidebar_element = __webpack_require__(140);
 	var two_translate_zoom = __webpack_require__(82);
 
 	module.exports = function play_search() {
@@ -9309,14 +9464,14 @@ module.exports =
 		};
 
 /***/ },
-/* 141 */
+/* 142 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var demo_text = __webpack_require__(133);
-	var highlight_sidebar_element = __webpack_require__(139);
-	var update_viz_with_view = __webpack_require__(142);
+	var demo_text = __webpack_require__(134);
+	var highlight_sidebar_element = __webpack_require__(140);
+	var update_viz_with_view = __webpack_require__(143);
 
 	module.exports = function play_filter() {
 
@@ -9375,14 +9530,14 @@ module.exports =
 		};
 
 /***/ },
-/* 142 */
+/* 143 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var make_network_using_view = __webpack_require__(10);
-	var disable_sidebar = __webpack_require__(143);
-	var update_viz_with_network = __webpack_require__(144);
+	var disable_sidebar = __webpack_require__(144);
+	var update_viz_with_network = __webpack_require__(145);
 
 	module.exports = function update_viz_with_view(cgm, requested_view) {
 
@@ -9409,7 +9564,7 @@ module.exports =
 		};
 
 /***/ },
-/* 143 */
+/* 144 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9421,27 +9576,27 @@ module.exports =
 		};
 
 /***/ },
-/* 144 */
+/* 145 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var make_params = __webpack_require__(9);
-	var define_enter_exit_delays = __webpack_require__(145);
-	var enter_exit_update = __webpack_require__(146);
+	var define_enter_exit_delays = __webpack_require__(146);
+	var enter_exit_update = __webpack_require__(147);
 	var initialize_resizing = __webpack_require__(89);
-	var make_col_cat = __webpack_require__(117);
-	var make_row_cat = __webpack_require__(123);
-	var make_row_dendro = __webpack_require__(124);
-	var make_col_dendro = __webpack_require__(125);
-	var ini_sidebar = __webpack_require__(157);
-	var enable_sidebar = __webpack_require__(159);
-	var ini_doubleclick = __webpack_require__(98);
-	var update_reorder_buttons = __webpack_require__(160);
-	var make_row_cat_super_labels = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../labels/make_row_cat_super_labels\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-	var modify_row_node_cats = __webpack_require__(161);
+	var make_col_cat = __webpack_require__(118);
+	var make_row_cat = __webpack_require__(124);
+	var make_row_dendro = __webpack_require__(125);
+	var make_col_dendro = __webpack_require__(126);
+	var ini_sidebar = __webpack_require__(158);
+	var enable_sidebar = __webpack_require__(160);
+	var ini_doubleclick = __webpack_require__(99);
+	var update_reorder_buttons = __webpack_require__(161);
+	var make_row_cat_super_labels = __webpack_require__(88);
+	var modify_row_node_cats = __webpack_require__(162);
 	var run_zoom = __webpack_require__(91);
-	var ds_enter_exit_update = __webpack_require__(163);
+	var ds_enter_exit_update = __webpack_require__(164);
 	var make_cat_params = __webpack_require__(18);
 
 	module.exports = function update_viz_with_network(cgm, new_network_data) {
@@ -9564,7 +9719,7 @@ module.exports =
 		};
 
 /***/ },
-/* 145 */
+/* 146 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -9629,19 +9784,19 @@ module.exports =
 	};
 
 /***/ },
-/* 146 */
+/* 147 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var reset_size_after_update = __webpack_require__(147);
+	var reset_size_after_update = __webpack_require__(148);
 	var make_row_label_container = __webpack_require__(51);
 	var make_col_label_container = __webpack_require__(69);
-	var eeu_existing_row = __webpack_require__(148);
-	var exit_components = __webpack_require__(152);
+	var eeu_existing_row = __webpack_require__(149);
+	var exit_components = __webpack_require__(153);
 	var draw_gridlines = __webpack_require__(41);
-	var enter_row_groups = __webpack_require__(153);
-	var resize_containers = __webpack_require__(156);
+	var enter_row_groups = __webpack_require__(154);
+	var resize_containers = __webpack_require__(157);
 	var label_constrain_and_trim = __webpack_require__(83);
 	var d3_tip_custom = __webpack_require__(50);
 
@@ -9740,7 +9895,7 @@ module.exports =
 		};
 
 /***/ },
-/* 147 */
+/* 148 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9749,17 +9904,17 @@ module.exports =
 	var calc_clust_height = __webpack_require__(28);
 	var get_svg_dim = __webpack_require__(25);
 	var calc_clust_width = __webpack_require__(27);
-	var reset_zoom = __webpack_require__(99);
-	var resize_dendro = __webpack_require__(100);
-	var resize_super_labels = __webpack_require__(101);
-	var resize_spillover = __webpack_require__(102);
-	var resize_row_labels = __webpack_require__(104);
-	var resize_row_viz = __webpack_require__(106);
-	var resize_col_labels = __webpack_require__(107);
-	var resize_col_text = __webpack_require__(108);
-	var resize_col_triangle = __webpack_require__(109);
-	var resize_col_hlight = __webpack_require__(110);
-	var resize_label_bars = __webpack_require__(113);
+	var reset_zoom = __webpack_require__(100);
+	var resize_dendro = __webpack_require__(101);
+	var resize_super_labels = __webpack_require__(102);
+	var resize_spillover = __webpack_require__(103);
+	var resize_row_labels = __webpack_require__(105);
+	var resize_row_viz = __webpack_require__(107);
+	var resize_col_labels = __webpack_require__(108);
+	var resize_col_text = __webpack_require__(109);
+	var resize_col_triangle = __webpack_require__(110);
+	var resize_col_hlight = __webpack_require__(111);
+	var resize_label_bars = __webpack_require__(114);
 	var calc_default_fs = __webpack_require__(37);
 	var calc_zoom_switching = __webpack_require__(36);
 	// var show_visible_area = require('../zoom/show_visible_area');
@@ -9935,14 +10090,14 @@ module.exports =
 		};
 
 /***/ },
-/* 148 */
+/* 149 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var exit_existing_row = __webpack_require__(149);
-	var enter_existing_row = __webpack_require__(150);
-	var update_split_tiles = __webpack_require__(151);
+	var exit_existing_row = __webpack_require__(150);
+	var enter_existing_row = __webpack_require__(151);
+	var update_split_tiles = __webpack_require__(152);
 	var mouseover_tile = __webpack_require__(47);
 	var mouseout_tile = __webpack_require__(48);
 	var fine_position_tile = __webpack_require__(49);
@@ -10008,7 +10163,7 @@ module.exports =
 		};
 
 /***/ },
-/* 149 */
+/* 150 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -10053,7 +10208,7 @@ module.exports =
 		};
 
 /***/ },
-/* 150 */
+/* 151 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10102,7 +10257,7 @@ module.exports =
 	};
 
 /***/ },
-/* 151 */
+/* 152 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10189,7 +10344,7 @@ module.exports =
 	};
 
 /***/ },
-/* 152 */
+/* 153 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -10253,12 +10408,12 @@ module.exports =
 		};
 
 /***/ },
-/* 153 */
+/* 154 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var enter_new_rows = __webpack_require__(154);
+	var enter_new_rows = __webpack_require__(155);
 
 	module.exports = function enter_row_groups(params, delays, duration, tip) {
 
@@ -10275,12 +10430,12 @@ module.exports =
 		};
 
 /***/ },
-/* 154 */
+/* 155 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var enter_split_tiles = __webpack_require__(155);
+	var enter_split_tiles = __webpack_require__(156);
 	var mouseover_tile = __webpack_require__(47);
 	var mouseout_tile = __webpack_require__(48);
 	var fine_position_tile = __webpack_require__(49);
@@ -10329,7 +10484,7 @@ module.exports =
 		};
 
 /***/ },
-/* 155 */
+/* 156 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10426,7 +10581,7 @@ module.exports =
 		};
 
 /***/ },
-/* 156 */
+/* 157 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -10447,17 +10602,17 @@ module.exports =
 		};
 
 /***/ },
-/* 157 */
+/* 158 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	/* eslint-disable */
 
-	var change_groups = __webpack_require__(128);
+	var change_groups = __webpack_require__(129);
 	var all_reorder = __webpack_require__(81);
 	var ini_cat_reorder = __webpack_require__(80);
-	var run_row_search = __webpack_require__(158);
+	var run_row_search = __webpack_require__(159);
 
 	module.exports = function ini_sidebar(cgm) {
 
@@ -10550,7 +10705,7 @@ module.exports =
 		};
 
 /***/ },
-/* 158 */
+/* 159 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -10584,7 +10739,7 @@ module.exports =
 		};
 
 /***/ },
-/* 159 */
+/* 160 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -10620,7 +10775,7 @@ module.exports =
 		};
 
 /***/ },
-/* 160 */
+/* 161 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -10642,12 +10797,12 @@ module.exports =
 	};
 
 /***/ },
-/* 161 */
+/* 162 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var remove_node_cats = __webpack_require__(162);
+	var remove_node_cats = __webpack_require__(163);
 	var utils = __webpack_require__(2);
 
 	module.exports = function modify_row_node_cats(cat_data, inst_nodes) {
@@ -10719,7 +10874,7 @@ module.exports =
 		};
 
 /***/ },
-/* 162 */
+/* 163 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -10741,15 +10896,15 @@ module.exports =
 		};
 
 /***/ },
-/* 163 */
+/* 164 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var reset_size_after_update = __webpack_require__(147);
+	var reset_size_after_update = __webpack_require__(148);
 	var make_col_label_container = __webpack_require__(69);
 	var show_visible_area = __webpack_require__(72);
-	var resize_containers = __webpack_require__(156);
+	var resize_containers = __webpack_require__(157);
 
 	module.exports = function ds_enter_exit_update(cgm) {
 
@@ -10805,12 +10960,12 @@ module.exports =
 		};
 
 /***/ },
-/* 164 */
+/* 165 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var sim_click = __webpack_require__(136);
+	var sim_click = __webpack_require__(137);
 
 	module.exports = function quick_cluster() {
 	  /* eslint-disable */
@@ -10865,14 +11020,14 @@ module.exports =
 		};
 
 /***/ },
-/* 165 */
+/* 166 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var demo_text = __webpack_require__(133);
-	var highlight_sidebar_element = __webpack_require__(139);
-	var change_groups = __webpack_require__(128);
+	var demo_text = __webpack_require__(134);
+	var highlight_sidebar_element = __webpack_require__(140);
+	var change_groups = __webpack_require__(129);
 
 	module.exports = function play_groups() {
 	  /* eslint-disable */
@@ -10908,13 +11063,13 @@ module.exports =
 		};
 
 /***/ },
-/* 166 */
+/* 167 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var demo_text = __webpack_require__(133);
-	var sim_click = __webpack_require__(136);
+	var demo_text = __webpack_require__(134);
+	var sim_click = __webpack_require__(137);
 
 	module.exports = function play_category() {
 	  /* eslint-disable */
@@ -10962,13 +11117,13 @@ module.exports =
 		};
 
 /***/ },
-/* 167 */
+/* 168 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var demo_text = __webpack_require__(133);
-	var toggle_play_button = __webpack_require__(168);
+	var demo_text = __webpack_require__(134);
+	var toggle_play_button = __webpack_require__(169);
 
 	module.exports = function play_conclusion() {
 
@@ -11003,7 +11158,7 @@ module.exports =
 		};
 
 /***/ },
-/* 168 */
+/* 169 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -11020,13 +11175,13 @@ module.exports =
 		};
 
 /***/ },
-/* 169 */
+/* 170 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var demo_text = __webpack_require__(133);
-	var sim_click = __webpack_require__(136);
+	var demo_text = __webpack_require__(134);
+	var sim_click = __webpack_require__(137);
 
 	module.exports = function play_menu_button() {
 	  /* eslint-disable */
@@ -11101,13 +11256,13 @@ module.exports =
 		};
 
 /***/ },
-/* 170 */
+/* 171 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_play_button = __webpack_require__(171);
-	var make_demo_text_containers = __webpack_require__(172);
+	var make_play_button = __webpack_require__(172);
+	var make_demo_text_containers = __webpack_require__(173);
 
 	module.exports = function ini_demo() {
 
@@ -11121,12 +11276,12 @@ module.exports =
 		};
 
 /***/ },
-/* 171 */
+/* 172 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var position_play_button = __webpack_require__(114);
+	var position_play_button = __webpack_require__(115);
 
 	module.exports = function make_play_button(cgm) {
 
@@ -11165,7 +11320,7 @@ module.exports =
 		};
 
 /***/ },
-/* 172 */
+/* 173 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -11206,13 +11361,13 @@ module.exports =
 		};
 
 /***/ },
-/* 173 */
+/* 174 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var filter_network_using_new_nodes = __webpack_require__(11);
-	var update_viz_with_network = __webpack_require__(144);
+	var update_viz_with_network = __webpack_require__(145);
 
 	module.exports = function filter_viz_using_nodes(new_nodes) {
 
@@ -11221,13 +11376,13 @@ module.exports =
 		};
 
 /***/ },
-/* 174 */
+/* 175 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var filter_network_using_new_nodes = __webpack_require__(11);
-	var update_viz_with_network = __webpack_require__(144);
+	var update_viz_with_network = __webpack_require__(145);
 
 	module.exports = function filter_viz_using_names(names) {
 	  var external_cgm = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
@@ -11274,15 +11429,15 @@ module.exports =
 		};
 
 /***/ },
-/* 175 */
+/* 176 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_row_cat = __webpack_require__(123);
+	var make_row_cat = __webpack_require__(124);
 	var calc_viz_params = __webpack_require__(15);
 	var resize_viz = __webpack_require__(90);
-	var modify_row_node_cats = __webpack_require__(161);
+	var modify_row_node_cats = __webpack_require__(162);
 
 	module.exports = function update_cats(cgm, cat_data) {
 
@@ -11312,16 +11467,16 @@ module.exports =
 		};
 
 /***/ },
-/* 176 */
+/* 177 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_row_cat = __webpack_require__(123);
+	var make_row_cat = __webpack_require__(124);
 	var calc_viz_params = __webpack_require__(15);
 	var resize_viz = __webpack_require__(90);
-	var modify_row_node_cats = __webpack_require__(161);
-	var make_default_cat_data = __webpack_require__(177);
+	var modify_row_node_cats = __webpack_require__(162);
+	var make_default_cat_data = __webpack_require__(178);
 
 	module.exports = function reset_cats() {
 	  var run_resize_viz = arguments.length <= 0 || arguments[0] === undefined ? true : arguments[0];
@@ -11354,7 +11509,7 @@ module.exports =
 		};
 
 /***/ },
-/* 177 */
+/* 178 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -11470,13 +11625,13 @@ module.exports =
 	};
 
 /***/ },
-/* 178 */
+/* 179 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var update_viz_with_view = __webpack_require__(142);
-	var reset_other_filter_sliders = __webpack_require__(179);
+	var update_viz_with_view = __webpack_require__(143);
+	var reset_other_filter_sliders = __webpack_require__(180);
 
 	module.exports = function external_update_view(filter_type, inst_state) {
 
@@ -11493,12 +11648,12 @@ module.exports =
 	};
 
 /***/ },
-/* 179 */
+/* 180 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_filter_title = __webpack_require__(180);
+	var make_filter_title = __webpack_require__(181);
 
 	module.exports = function reset_other_filter_sliders(cgm, filter_type, inst_state) {
 
@@ -11547,7 +11702,7 @@ module.exports =
 		};
 
 /***/ },
-/* 180 */
+/* 181 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -11607,12 +11762,12 @@ module.exports =
 	};
 
 /***/ },
-/* 181 */
+/* 182 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var file_saver = __webpack_require__(182);
+	var file_saver = __webpack_require__(183);
 
 	module.exports = function export_matrix() {
 
@@ -11734,7 +11889,7 @@ module.exports =
 		};
 
 /***/ },
-/* 182 */
+/* 183 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -11951,12 +12106,12 @@ module.exports =
 		};
 
 /***/ },
-/* 183 */
+/* 184 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var deactivate_cropping = __webpack_require__(184);
+	var deactivate_cropping = __webpack_require__(185);
 
 	module.exports = function brush_crop_matrix() {
 
@@ -12076,7 +12231,7 @@ module.exports =
 		};
 
 /***/ },
-/* 184 */
+/* 185 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -12089,7 +12244,7 @@ module.exports =
 		};
 
 /***/ },
-/* 185 */
+/* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -12105,7 +12260,7 @@ module.exports =
 	(function (root, factory) {
 	  if (true) {
 	    // AMD. Register as an anonymous module.
-	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(186)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(187)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	  } else if ((typeof exports === 'undefined' ? 'undefined' : _typeof(exports)) === 'object') {
 	    if (process.browser) {
 	      // Browserify. Import css too using cssify.
@@ -12491,13 +12646,13 @@ module.exports =
 	});
 
 /***/ },
-/* 186 */
+/* 187 */
 /***/ function(module, exports) {
 
 	module.exports = require("d3");
 
 /***/ },
-/* 187 */
+/* 188 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {"use strict";
@@ -12937,10 +13092,10 @@ module.exports =
 
 		return _;
 		})();
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(188)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(189)(module)))
 
 /***/ },
-/* 188 */
+/* 189 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -12957,16 +13112,16 @@ module.exports =
 		};
 
 /***/ },
-/* 189 */
+/* 190 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(190);
+	var content = __webpack_require__(191);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(192)(content, {});
+	var update = __webpack_require__(193)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -12983,10 +13138,10 @@ module.exports =
 	}
 
 /***/ },
-/* 190 */
+/* 191 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(191)();
+	exports = module.exports = __webpack_require__(192)();
 	// imports
 
 
@@ -12997,7 +13152,7 @@ module.exports =
 
 
 /***/ },
-/* 191 */
+/* 192 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -13052,7 +13207,7 @@ module.exports =
 	};
 
 /***/ },
-/* 192 */
+/* 193 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -13304,16 +13459,16 @@ module.exports =
 
 
 /***/ },
-/* 193 */
+/* 194 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(194);
+	var content = __webpack_require__(195);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(192)(content, {});
+	var update = __webpack_require__(193)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -13330,10 +13485,10 @@ module.exports =
 	}
 
 /***/ },
-/* 194 */
+/* 195 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(191)();
+	exports = module.exports = __webpack_require__(192)();
 	// imports
 
 
@@ -13344,19 +13499,19 @@ module.exports =
 
 
 /***/ },
-/* 195 */
+/* 196 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var ini_sidebar = __webpack_require__(157);
-	var set_up_filters = __webpack_require__(196);
-	var set_up_search = __webpack_require__(201);
-	var set_up_reorder = __webpack_require__(202);
-	var set_sidebar_ini_view = __webpack_require__(203);
-	var make_icons = __webpack_require__(204);
-	var make_modals = __webpack_require__(206);
-	var set_up_opacity_slider = __webpack_require__(208);
+	var ini_sidebar = __webpack_require__(158);
+	var set_up_filters = __webpack_require__(197);
+	var set_up_search = __webpack_require__(202);
+	var set_up_reorder = __webpack_require__(203);
+	var set_sidebar_ini_view = __webpack_require__(204);
+	var make_icons = __webpack_require__(205);
+	var make_modals = __webpack_require__(207);
+	var set_up_opacity_slider = __webpack_require__(209);
 
 	/* Represents sidebar with controls.
 	 */
@@ -13426,13 +13581,13 @@ module.exports =
 		};
 
 /***/ },
-/* 196 */
+/* 197 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_slider_filter = __webpack_require__(197);
-	var make_button_filter = __webpack_require__(200);
+	var make_slider_filter = __webpack_require__(198);
+	var make_button_filter = __webpack_require__(201);
 
 	module.exports = function set_up_filters(cgm, filter_type) {
 
@@ -13448,17 +13603,17 @@ module.exports =
 		};
 
 /***/ },
-/* 197 */
+/* 198 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_filter_title = __webpack_require__(180);
-	var run_filter_slider = __webpack_require__(198);
+	var make_filter_title = __webpack_require__(181);
+	var run_filter_slider = __webpack_require__(199);
 	var get_filter_default_state = __webpack_require__(5);
 	var get_subset_views = __webpack_require__(12);
 
-	d3.slider = __webpack_require__(185);
+	d3.slider = __webpack_require__(186);
 
 	module.exports = function make_slider_filter(cgm, filter_type, div_filters) {
 
@@ -13528,14 +13683,14 @@ module.exports =
 		};
 
 /***/ },
-/* 198 */
+/* 199 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var update_viz_with_view = __webpack_require__(142);
-	var reset_other_filter_sliders = __webpack_require__(179);
-	var get_current_orders = __webpack_require__(199);
+	var update_viz_with_view = __webpack_require__(143);
+	var reset_other_filter_sliders = __webpack_require__(180);
+	var get_current_orders = __webpack_require__(200);
 	var make_requested_view = __webpack_require__(14);
 
 	module.exports = function run_filter_slider(cgm, filter_type, available_views, inst_index) {
@@ -13568,7 +13723,7 @@ module.exports =
 		};
 
 /***/ },
-/* 199 */
+/* 200 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -13599,7 +13754,7 @@ module.exports =
 	};
 
 /***/ },
-/* 200 */
+/* 201 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -13652,7 +13807,7 @@ module.exports =
 		};
 
 /***/ },
-/* 201 */
+/* 202 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -13669,7 +13824,7 @@ module.exports =
 		};
 
 /***/ },
-/* 202 */
+/* 203 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -13762,12 +13917,12 @@ module.exports =
 		};
 
 /***/ },
-/* 203 */
+/* 204 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_filter_title = __webpack_require__(180);
+	var make_filter_title = __webpack_require__(181);
 
 	module.exports = function set_sidebar_ini_view(params) {
 
@@ -13802,15 +13957,15 @@ module.exports =
 		};
 
 /***/ },
-/* 204 */
+/* 205 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var file_saver = __webpack_require__(182);
+	var file_saver = __webpack_require__(183);
 	var two_translate_zoom = __webpack_require__(82);
-	var deactivate_cropping = __webpack_require__(184);
-	var save_svg_png = __webpack_require__(205);
+	var deactivate_cropping = __webpack_require__(185);
+	var save_svg_png = __webpack_require__(206);
 
 	module.exports = function make_icons(cgm, sidebar) {
 
@@ -13919,7 +14074,7 @@ module.exports =
 		};
 
 /***/ },
-/* 205 */
+/* 206 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -14376,12 +14531,12 @@ module.exports =
 		})();
 
 /***/ },
-/* 206 */
+/* 207 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_modal_skeleton = __webpack_require__(207);
+	var make_modal_skeleton = __webpack_require__(208);
 
 	module.exports = function ini_modals(params) {
 
@@ -14415,7 +14570,7 @@ module.exports =
 		};
 
 /***/ },
-/* 207 */
+/* 208 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -14440,7 +14595,7 @@ module.exports =
 		};
 
 /***/ },
-/* 208 */
+/* 209 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -14453,36 +14608,6 @@ module.exports =
 
 	  slider_container.append('div').classed('slider', true).classed('opacity_slider', true);
 		};
-
-/***/ },
-/* 209 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	module.exports = function num_visible_labels(params, inst_rc) {
-
-	  // counting the number of visible labels, probably not necessary
-
-	  var num_visible;
-	  if (inst_rc === 'row') {
-
-	    // initialize at high number
-	    num_visible = 10000;
-
-	    // only count visible rows if no downsampling
-	    if (params.viz.ds_level === -1) {
-	      num_visible = d3.selectAll(params.root + ' .row')[0].length;
-	    }
-	  } else if (inst_rc === 'col') {
-
-	    num_visible = d3.selectAll(params.root + ' .' + inst_rc + '_label_text').filter(function () {
-	      return d3.select(this).style('display') != 'none';
-	    })[0].length;
-	  }
-
-	  return num_visible;
-	};
 
 /***/ }
 /******/ ]);
