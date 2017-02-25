@@ -97,19 +97,20 @@ window.onscroll = function() {
 
 function make_sim_mats(inst_rc, cat_colors){
 
-  clust_name = 'mult_view_sim_'+inst_rc+'.json';
+  // clust_name = 'mult_view_sim_'+inst_rc+'.json';
+  clust_name = 'mult_view.json'
   d3.json('json/'+clust_name, function(network_data){
 
     var args = $.extend(true, {}, default_args);
-    args.cat_colors = {};
+    // args.cat_colors = {};
     if (inst_rc === 'col'){
       tmp_num = 2;
-      args.cat_colors.row = cat_colors.col;
-      args.cat_colors.col = cat_colors.col;
+      // args.cat_colors.row = cat_colors.col;
+      // args.cat_colors.col = cat_colors.col;
     } else if (inst_rc === 'row'){
       tmp_num = 3;
-      args.cat_colors.row = cat_colors.row;
-      args.cat_colors.col = cat_colors.row;
+      // args.cat_colors.row = cat_colors.row;
+      // args.cat_colors.col = cat_colors.row;
     }
 
     args.root = '#container-id-'+tmp_num;

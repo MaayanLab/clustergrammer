@@ -8,7 +8,7 @@ module.exports = function make_row_cat_super_labels(cgm){
   var viz = params.viz;
   var extra_x_room = 2.75;
 
-  if (d3.select('.row_cat_label_container').empty()){
+  if (d3.select(params.root + ' .row_cat_label_container').empty()){
 
     d3.select(cgm.params.viz.viz_svg)
       .append('g')

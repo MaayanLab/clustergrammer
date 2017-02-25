@@ -600,7 +600,7 @@ function Enrichrgram(inst_cgm){
       .classed('enr_title', true)
       .attr('transform', function(){
 
-        var trans = d3.select('.row_cat_label_container')
+        var trans = d3.select(inst_cgm.params.root+' .row_cat_label_container')
                       .attr('transform').split('(')[1].split(')')[0];
         x_offset = Number(trans.split(',')[0]) - 10;
 
