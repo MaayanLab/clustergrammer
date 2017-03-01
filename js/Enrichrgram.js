@@ -76,7 +76,14 @@ function run_ini_enrichr(inst_cgm, inst_name){
 
 }
 
-function check_gene_request(inst_cgm, gene_symbol, check_enrichr_callback){
+function check_gene_request(inst_cgm, gene_symbol, run_ini_enrichr){
+
+  if (gene_symbol.indexOf(' ') > 0){
+    gene_symbol = gene_symbol.split(' ')[0];
+  } else if (gene_symbol.indexOf('_') > 0){
+    gene_symbol = gene_symbol.split('_')[0];
+  }
+
 
   var base_url = 'https://amp.pharm.mssm.edu/Harmonizome/api/1.0/gene/';
   var url = base_url + gene_symbol;
@@ -94,7 +101,7 @@ function check_gene_request(inst_cgm, gene_symbol, check_enrichr_callback){
           genes_were_found[inst_cgm.params.root] = true;
         }
 
-        check_enrichr_callback(inst_cgm, gene_symbol);
+        run_ini_enrichr(inst_cgm, gene_symbol);
 
       });
 
