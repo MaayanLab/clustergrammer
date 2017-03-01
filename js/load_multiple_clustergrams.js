@@ -25,10 +25,11 @@ function make_clust(make_sim_mats){
     d3.select(cgm['clust'].params.root+' .wait_message').remove();
     cat_colors = cgm['clust'].params.viz.cat_colors;
 
+    check_setup_enrichr(cgm['clust']);
+
     make_sim_mats('col', cat_colors);
     make_sim_mats('row', cat_colors);
 
-    check_setup_enrichr(cgm['clust']);
   });
 
 }
@@ -97,29 +98,25 @@ window.onscroll = function() {
 
 function make_sim_mats(inst_rc, cat_colors){
 
-  // clust_name = 'mult_view_sim_'+inst_rc+'.json';
-  clust_name = 'mult_view.json'
+  clust_name = 'mult_view_sim_'+inst_rc+'.json';
   d3.json('json/'+clust_name, function(network_data){
 
     var args = $.extend(true, {}, default_args);
-    // args.cat_colors = {};
+    args.cat_colors = {};
     if (inst_rc === 'col'){
       tmp_num = 2;
-      // args.cat_colors.row = cat_colors.col;
-      // args.cat_colors.col = cat_colors.col;
+      args.cat_colors.row = cat_colors.col;
+      args.cat_colors.col = cat_colors.col;
     } else if (inst_rc === 'row'){
       tmp_num = 3;
-      // args.cat_colors.row = cat_colors.row;
-      // args.cat_colors.col = cat_colors.row;
+      args.cat_colors.row = cat_colors.row;
+      args.cat_colors.col = cat_colors.row;
     }
 
     args.root = '#container-id-'+tmp_num;
 
     args.network_data = network_data;
     cgm[inst_rc] = Clustergrammer(args);
-
-    check_setup_enrichr(cgm[inst_rc]);
-
     d3.select(cgm[inst_rc].params.root+' .wait_message').remove();
   });
 
@@ -128,7 +125,7 @@ function make_sim_mats(inst_rc, cat_colors){
 function matrix_update_callback(){
   console.log('matrix_update_callback')
   if (genes_were_found){
-    enr_obj[this.root].clear_enrichr_results();
+    enr_obj.clear_enrichr_results();
   }
 }
 
