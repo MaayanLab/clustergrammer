@@ -10,11 +10,19 @@ function ini_hzome(root_id){
      get_request(root_tip, gene_symbol);
     }
 
-   // get_request(root_tip, gene_symbol);
-
   }
 
-  function get_request(root_tip, gene_symbol){
+  function get_request(root_tip, ini_gene_symbol){
+
+    var gene_symbol;
+    if (ini_gene_symbol.indexOf(' ') > 0){
+      gene_symbol = ini_gene_symbol.split(' ')[0];
+    } else if (ini_gene_symbol.indexOf('_') > 0){
+      gene_symbol = ini_gene_symbol.split('_')[0];
+    }
+    else {
+      gene_symbol = ini_gene_symbol;
+    }
 
     var base_url = 'https://amp.pharm.mssm.edu/Harmonizome/api/1.0/gene/';
     var url = base_url + gene_symbol;
@@ -28,7 +36,7 @@ function ini_hzome(root_id){
       gene_data[gene_symbol].name = data.name;
       gene_data[gene_symbol].description = data.description;
 
-      set_tooltip(data, root_tip, gene_symbol);
+      set_tooltip(data, root_tip, ini_gene_symbol);
 
       return data;
 
