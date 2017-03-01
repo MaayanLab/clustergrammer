@@ -74,7 +74,7 @@ var Clustergrammer =
 	__webpack_require__(190);
 	__webpack_require__(194);
 
-	/* clustergrammer v1.12.7
+	/* clustergrammer v1.12.8
 	 * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
 	 * (c) 2017
 	 */
@@ -10806,6 +10806,8 @@ var Clustergrammer =
 	var utils = __webpack_require__(2);
 
 	module.exports = function modify_row_node_cats(cat_data, inst_nodes) {
+	  var strip_names = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
+
 
 	  var cat_type_num = 0;
 	  var inst_index = 0;
@@ -10823,7 +10825,20 @@ var Clustergrammer =
 	  _.each(inst_nodes, function (inst_node) {
 
 	    inst_name = inst_node.name;
-	    inst_name = inst_name.toUpperCase();
+
+	    // not sure if this is needed
+	    // inst_name = inst_name.toUpperCase();
+
+	    if (strip_names === true) {
+	      // only consider first part of inst_name
+	      ////////////////////////////////////////////
+	      // may improve this
+	      if (inst_name.indexOf(' ')) {
+	        inst_name = inst_name.split(' ')[0];
+	      } else if (inst_name.indexOf('_')) {
+	        inst_name = inst_name.split('_')[0];
+	      }
+	    }
 
 	    cat_type_num = 0;
 
@@ -11444,9 +11459,9 @@ var Clustergrammer =
 	  // do not change column category info
 	  var col_cat_colors = cgm.params.viz.cat_colors.col;
 
-	  modify_row_node_cats(cat_data, cgm.params.network_data.row_nodes);
+	  modify_row_node_cats(cat_data, cgm.params.network_data.row_nodes, true);
 	  // modify the current inst copy of nodes
-	  modify_row_node_cats(cat_data, cgm.params.inst_nodes.row_nodes);
+	  modify_row_node_cats(cat_data, cgm.params.inst_nodes.row_nodes, true);
 
 	  // recalculate the visualization parameters using the updated network_data
 	  cgm.params = calc_viz_params(cgm.params, false);

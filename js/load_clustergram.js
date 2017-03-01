@@ -65,8 +65,6 @@ function dendro_callback(inst_selection){
   var inst_rc;
   var inst_data = inst_selection.__data__;
 
-  console.log(this)
-
   // toggle enrichr export section
   if (inst_data.inst_rc === 'row'){
     d3.select('.enrichr_export_section')

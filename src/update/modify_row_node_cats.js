@@ -1,7 +1,7 @@
 var remove_node_cats = require('./remove_node_cats');
 var utils = require('../Utils_clust');
 
-module.exports = function modify_row_node_cats(cat_data, inst_nodes){
+module.exports = function modify_row_node_cats(cat_data, inst_nodes, strip_names=false){
 
   var cat_type_num = 0;
   var inst_index = 0;
@@ -19,7 +19,20 @@ module.exports = function modify_row_node_cats(cat_data, inst_nodes){
   _.each(inst_nodes, function(inst_node){
 
     inst_name = inst_node.name;
-    inst_name = inst_name.toUpperCase();
+
+    // not sure if this is needed
+    // inst_name = inst_name.toUpperCase();
+
+    if (strip_names === true){
+      // only consider first part of inst_name
+      ////////////////////////////////////////////
+      // may improve this
+      if (inst_name.indexOf(' ')){
+        inst_name = inst_name.split(' ')[0];
+      } else if (inst_name.indexOf('_')){
+        inst_name = inst_name.split('_')[0];
+      }
+    }
 
     cat_type_num = 0;
 
@@ -30,6 +43,7 @@ module.exports = function modify_row_node_cats(cat_data, inst_nodes){
 
       inst_cat_title = inst_cat_data.cat_title;
       inst_cats = inst_cat_data.cats;
+
 
       // initialize with no category
       inst_category = 'false';

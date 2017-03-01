@@ -63,6 +63,14 @@ function run_ini_enrichr(inst_cgm, inst_name){
           // replace all instances of commas with new line
           var gene_list = group_string.replace(/, /g, '\n');
 
+          ///////////////
+          ///////////////
+          ///////////////
+          // clean list
+          ///////////////
+          ///////////////
+          ///////////////
+
           var enrichr_info = {list: gene_list, description: 'Clustergrammer gene-cluster list' , popup: true};
 
           // defined globally - will improve
@@ -414,7 +422,18 @@ function Enrichrgram(inst_cgm){
 
   }
 
-  function get_enr_with_list(gene_list, library, callback_function){
+  function get_enr_with_list(ini_gene_list, library, callback_function){
+
+    // clean gene list
+    var gene_list = []
+    _.each(ini_gene_list, function(gene_symbol){
+      if (gene_symbol.indexOf(' ') > 0){
+        gene_symbol = gene_symbol.split(' ')[0];
+      } else if (gene_symbol.indexOf('_') > 0){
+        gene_symbol = gene_symbol.split('_')[0];
+      }
+      gene_list.push(gene_symbol)
+    })
 
     enr_obj.library = library;
     enr_obj.gene_list = gene_list;
