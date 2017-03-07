@@ -1,4 +1,4 @@
-var make_params = require('../params/');
+var make_params = require('../params/make_params');
 var define_enter_exit_delays = require('../network/define_enter_exit_delays');
 var enter_exit_update = require('../enter/enter_exit_update');
 var initialize_resizing = require('../initialize_resizing');
