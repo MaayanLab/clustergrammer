@@ -107,7 +107,6 @@ module.exports = function make_config(args) {
 
     var links = [];
     var mat = config.network_data.mat;
-    var inst_row = mat[0];
     var inst_link = {};
 
     // console.log('found mat')
@@ -115,7 +114,7 @@ module.exports = function make_config(args) {
       for (var j=0; j < mat[0].length; j++){
         // console.log(mat[i][j])
 
-        inst_link = {}
+        inst_link = {};
         inst_link.source = i;
         inst_link.target = j;
         inst_link.value = mat[i][j];
@@ -127,7 +126,6 @@ module.exports = function make_config(args) {
     config.network_data.links = links;
 
   }
-  // debugger;
 
   // add names and instantaneous positions to links
   config.network_data.links.forEach(function(d){

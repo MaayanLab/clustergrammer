@@ -74,7 +74,7 @@ module.exports =
 	__webpack_require__(190);
 	__webpack_require__(194);
 
-	/* clustergrammer v1.12.8
+	/* clustergrammer v1.13.0
 	 * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
 	 * (c) 2017
 	 */
@@ -254,6 +254,39 @@ module.exports =
 
 	  var col_nodes = config.network_data.col_nodes;
 	  var row_nodes = config.network_data.row_nodes;
+
+	  // console.log( config.network_data.links[0] )
+	  // console.log( config.network_data.links[1] )
+	  // console.log( config.network_data.links[2] )
+
+	  // console.log(_.has(config.network_data,'mat'));
+
+	  ///////////////////////////
+	  // convert 'mat' to links
+	  ///////////////////////////
+
+	  if (_.has(config.network_data, 'mat')) {
+
+	    var links = [];
+	    var mat = config.network_data.mat;
+	    var inst_link = {};
+
+	    // console.log('found mat')
+	    for (var i = 0; i < mat.length; i++) {
+	      for (var j = 0; j < mat[0].length; j++) {
+	        // console.log(mat[i][j])
+
+	        inst_link = {};
+	        inst_link.source = i;
+	        inst_link.target = j;
+	        inst_link.value = mat[i][j];
+	        links.push(inst_link);
+	      }
+	    }
+
+	    // save to network_data
+	    config.network_data.links = links;
+	  }
 
 	  // add names and instantaneous positions to links
 	  config.network_data.links.forEach(function (d) {
@@ -2239,7 +2272,7 @@ module.exports =
 	var make_svg_dendro_sliders = __webpack_require__(127);
 	var make_row_dendro_spillover = __webpack_require__(130);
 
-	module.exports = function Viz(cgm) {
+	module.exports = function make_viz(cgm) {
 
 	  var params = cgm.params;
 

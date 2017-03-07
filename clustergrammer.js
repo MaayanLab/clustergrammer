@@ -47,9 +47,9 @@ var Clustergrammer =
 
 	'use strict';
 
-	var make_config = __webpack_require__(211);
+	var make_config = __webpack_require__(1);
 	var make_params = __webpack_require__(9);
-	var make_viz = __webpack_require__(210);
+	var make_viz = __webpack_require__(39);
 	var resize_viz = __webpack_require__(90);
 	var play_demo = __webpack_require__(131);
 	var ini_demo = __webpack_require__(171);
@@ -74,7 +74,7 @@ var Clustergrammer =
 	__webpack_require__(190);
 	__webpack_require__(194);
 
-	/* clustergrammer v1.12.8
+	/* clustergrammer v1.13.0
 	 * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
 	 * (c) 2017
 	 */
@@ -160,7 +160,195 @@ var Clustergrammer =
 	module.exports = Clustergrammer;
 
 /***/ },
-/* 1 */,
+/* 1 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var utils = __webpack_require__(2);
+	var transpose_network = __webpack_require__(3);
+	var get_available_filters = __webpack_require__(4);
+	var get_filter_default_state = __webpack_require__(5);
+	var set_defaults = __webpack_require__(6);
+	var check_sim_mat = __webpack_require__(7);
+	var check_nodes_for_categories = __webpack_require__(8);
+
+	module.exports = function make_config(args) {
+
+	  var defaults = set_defaults();
+
+	  // Mixin defaults with user-defined arguments.
+	  var config = utils.extend(defaults, args);
+
+	  config.network_data = args.network_data;
+
+	  var super_string = ': ';
+
+	  // replace undersores with space in row/col names
+	  _.each(['row', 'col'], function (inst_rc) {
+
+	    var inst_nodes = config.network_data[inst_rc + '_nodes'];
+
+	    var has_cats = check_nodes_for_categories(inst_nodes);
+
+	    inst_nodes.forEach(function (d, i) {
+
+	      // add index to row_nodes and col_nodes
+	      d[inst_rc + '_index'] = i;
+
+	      if (has_cats) {
+	        config.super_labels = true;
+	        config.super[inst_rc] = d.name.split(super_string)[0];
+	        d.name = d.name.split(super_string)[1];
+	      }
+
+	      d.name = d.name.replace(/_/g, ' ');
+	    });
+	  });
+
+	  config.network_data.row_nodes_names = utils.pluck(config.network_data.row_nodes, 'name');
+	  config.network_data.col_nodes_names = utils.pluck(config.network_data.col_nodes, 'name');
+
+	  config.sim_mat = check_sim_mat(config);
+
+	  var filters = get_available_filters(config.network_data.views);
+
+	  var default_states = {};
+	  _.each(_.keys(filters.possible_filters), function (inst_filter) {
+	    var tmp_state = get_filter_default_state(filters.filter_data, inst_filter);
+
+	    default_states[inst_filter] = tmp_state;
+	  });
+
+	  // process view
+	  if (_.has(config.network_data, 'views')) {
+	    config.network_data.views.forEach(function (inst_view) {
+
+	      _.each(_.keys(filters.possible_filters), function (inst_filter) {
+	        if (!_.has(inst_view, inst_filter)) {
+	          inst_view[inst_filter] = default_states[inst_filter];
+	        }
+	      });
+
+	      var inst_nodes = inst_view.nodes;
+
+	      // proc row/col nodes names in views
+	      _.each(['row', 'col'], function (inst_rc) {
+
+	        var has_cats = check_nodes_for_categories(inst_nodes[inst_rc + '_nodes']);
+
+	        inst_nodes[inst_rc + '_nodes'].forEach(function (d, i) {
+
+	          // add index to row_nodes and col_nodes
+	          d[inst_rc + '_index'] = i;
+
+	          if (has_cats) {
+	            d.name = d.name.split(super_string)[1];
+	          }
+
+	          d.name = d.name.replace(/_/g, ' ');
+	        });
+	      });
+	    });
+	  }
+
+	  var col_nodes = config.network_data.col_nodes;
+	  var row_nodes = config.network_data.row_nodes;
+
+	  // console.log( config.network_data.links[0] )
+	  // console.log( config.network_data.links[1] )
+	  // console.log( config.network_data.links[2] )
+
+	  // console.log(_.has(config.network_data,'mat'));
+
+	  ///////////////////////////
+	  // convert 'mat' to links
+	  ///////////////////////////
+
+	  if (_.has(config.network_data, 'mat')) {
+
+	    var links = [];
+	    var mat = config.network_data.mat;
+	    var inst_link = {};
+
+	    // console.log('found mat')
+	    for (var i = 0; i < mat.length; i++) {
+	      for (var j = 0; j < mat[0].length; j++) {
+	        // console.log(mat[i][j])
+
+	        inst_link = {};
+	        inst_link.source = i;
+	        inst_link.target = j;
+	        inst_link.value = mat[i][j];
+	        links.push(inst_link);
+	      }
+	    }
+
+	    // save to network_data
+	    config.network_data.links = links;
+	  }
+
+	  // add names and instantaneous positions to links
+	  config.network_data.links.forEach(function (d) {
+	    d.name = row_nodes[d.source].name + '_' + col_nodes[d.target].name;
+	    d.row_name = row_nodes[d.source].name;
+	    d.col_name = col_nodes[d.target].name;
+	  });
+
+	  // transpose network if necessary
+	  if (config.transpose) {
+	    config.network_data = transpose_network(config.network_data);
+	    var tmp_col_label = args.col_label;
+	    var tmp_row_label = args.row_label;
+	    args.row_label = tmp_col_label;
+	    args.col_label = tmp_row_label;
+	  }
+
+	  // super-row/col labels
+	  if (!utils.is_undefined(args.row_label) && !utils.is_undefined(args.col_label)) {
+	    config.super_labels = true;
+	    config.super = {};
+	    config.super.row = args.row_label;
+	    config.super.col = args.col_label;
+	  }
+
+	  // initialize cluster ordering - both rows and columns
+	  config.inst_order = {};
+	  if (!utils.is_undefined(args.order) && utils.is_supported_order(args.order)) {
+	    config.inst_order.row = args.order;
+	    config.inst_order.col = args.order;
+	  } else {
+	    config.inst_order.row = 'clust';
+	    config.inst_order.col = 'clust';
+	  }
+
+	  // set row or column order directly -- note that row/col are swapped
+	  // !! need to swap row/col orderings
+	  if (!utils.is_undefined(args.row_order) && utils.is_supported_order(args.row_order)) {
+	    // !! row and col orderings are swapped, need to fix
+	    config.inst_order.col = args.row_order;
+	  }
+
+	  if (!utils.is_undefined(args.col_order) && utils.is_supported_order(args.col_order)) {
+	    // !! row and col orderings are swapped, need to fix
+	    config.inst_order.row = args.col_order;
+	  }
+
+	  var row_has_group = utils.has(config.network_data.row_nodes[0], 'group');
+	  var col_has_group = utils.has(config.network_data.col_nodes[0], 'group');
+
+	  config.show_dendrogram = row_has_group || col_has_group;
+
+	  if (utils.has(config.network_data.links[0], 'value_orig')) {
+	    config.keep_orig = true;
+	  } else {
+	    config.keep_orig = false;
+	  }
+
+	  return config;
+	};
+
+/***/ },
 /* 2 */
 /***/ function(module, exports) {
 
@@ -2064,7 +2252,120 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 39 */,
+/* 39 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var generate_matrix = __webpack_require__(40);
+	var make_row_label_container = __webpack_require__(51);
+	var make_col_label_container = __webpack_require__(69);
+	var generate_super_labels = __webpack_require__(77);
+	var spillover = __webpack_require__(78);
+	var initialize_resizing = __webpack_require__(89);
+	var ini_doubleclick = __webpack_require__(99);
+	var make_col_cat = __webpack_require__(118);
+	var make_row_cat = __webpack_require__(124);
+	var trim_text = __webpack_require__(84);
+	var make_row_dendro = __webpack_require__(125);
+	var make_col_dendro = __webpack_require__(126);
+	var make_svg_dendro_sliders = __webpack_require__(127);
+	var make_row_dendro_spillover = __webpack_require__(130);
+
+	module.exports = function make_viz(cgm) {
+
+	  var params = cgm.params;
+
+	  d3.select(params.viz.viz_wrapper + ' svg').remove();
+
+	  var svg_group = d3.select(params.viz.viz_wrapper).append('svg').attr('class', 'viz_svg').attr('id', 'svg_' + params.root.replace('#', '')).attr('width', params.viz.svg_dim.width).attr('height', params.viz.svg_dim.height).attr('is_zoom', 0).attr('stopped_zoom', 1);
+
+	  svg_group.append('rect').attr('class', 'super_background').style('width', params.viz.svg_dim.width).style('height', params.viz.svg_dim.height).style('fill', 'white');
+
+	  generate_matrix(params, svg_group);
+
+	  make_row_label_container(cgm);
+
+	  if (params.viz.show_dendrogram) {
+	    make_row_dendro(cgm);
+	    make_col_dendro(cgm);
+	  }
+
+	  make_row_dendro_spillover(cgm);
+
+	  make_col_label_container(cgm);
+
+	  // initial trim text
+	  if (params.viz.ds_level === -1) {
+	    _.each(['row', 'col'], function (inst_rc) {
+
+	      var inst_fs = Number(d3.select('.' + inst_rc + '_label_group').select('text').style('font-size').replace('px', ''));
+
+	      var min_trim_fs = 8;
+	      if (inst_fs > min_trim_fs) {
+	        d3.selectAll(params.root + ' .' + inst_rc + '_label_group').each(function () {
+	          trim_text(params, this, inst_rc);
+	        });
+	      }
+	    });
+	  }
+
+	  // make category colorbars
+	  make_row_cat(cgm);
+	  if (params.viz.show_categories.col) {
+	    make_col_cat(cgm);
+	  }
+
+	  spillover(cgm);
+
+	  if (params.labels.super_labels) {
+	    generate_super_labels(params);
+	  }
+
+	  // sliders should go above super labels
+	  make_svg_dendro_sliders(cgm);
+
+	  function border_colors() {
+	    var inst_color = params.viz.super_border_color;
+	    if (params.viz.is_expand) {
+	      inst_color = 'white';
+	    }
+	    return inst_color;
+	  }
+
+	  // left border
+	  d3.select(params.viz.viz_svg).append('rect').classed('left_border', true).classed('borders', true).attr('fill', border_colors).attr('width', params.viz.grey_border_width).attr('height', params.viz.svg_dim.height).attr('transform', 'translate(0,0)');
+
+	  // right border
+	  d3.select(params.viz.viz_svg).append('rect').classed('right_border', true).classed('borders', true).attr('fill', border_colors).attr('width', params.viz.grey_border_width).attr('height', params.viz.svg_dim.height).attr('transform', function () {
+	    var inst_offset = params.viz.svg_dim.width - params.viz.grey_border_width;
+	    return 'translate(' + inst_offset + ',0)';
+	  });
+
+	  // top border
+	  d3.select(params.viz.viz_svg).append('rect').classed('top_border', true).classed('borders', true).attr('fill', border_colors).attr('width', params.viz.svg_dim.width).attr('height', params.viz.grey_border_width).attr('transform', function () {
+	    var inst_offset = 0;
+	    return 'translate(' + inst_offset + ',0)';
+	  });
+
+	  // bottom border
+	  d3.select(params.viz.viz_svg).append('rect').classed('bottom_border', true).classed('borders', true).attr('fill', border_colors).attr('width', params.viz.svg_dim.width).attr('height', params.viz.grey_border_width).attr('transform', function () {
+	    var inst_offset = params.viz.svg_dim.height - params.viz.grey_border_width;
+	    return 'translate(0,' + inst_offset + ')';
+	  });
+
+	  initialize_resizing(cgm);
+
+	  ini_doubleclick(cgm);
+
+	  if (params.viz.do_zoom) {
+	    d3.select(params.viz.zoom_element).call(params.zoom_behavior);
+	  }
+
+	  d3.select(params.viz.zoom_element).on('dblclick.zoom', null);
+		};
+
+/***/ },
 /* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -14355,311 +14656,6 @@ var Clustergrammer =
 
 	  slider_container.append('div').classed('slider', true).classed('opacity_slider', true);
 		};
-
-/***/ },
-/* 210 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var generate_matrix = __webpack_require__(40);
-	var make_row_label_container = __webpack_require__(51);
-	var make_col_label_container = __webpack_require__(69);
-	var generate_super_labels = __webpack_require__(77);
-	var spillover = __webpack_require__(78);
-	var initialize_resizing = __webpack_require__(89);
-	var ini_doubleclick = __webpack_require__(99);
-	var make_col_cat = __webpack_require__(118);
-	var make_row_cat = __webpack_require__(124);
-	var trim_text = __webpack_require__(84);
-	var make_row_dendro = __webpack_require__(125);
-	var make_col_dendro = __webpack_require__(126);
-	var make_svg_dendro_sliders = __webpack_require__(127);
-	var make_row_dendro_spillover = __webpack_require__(130);
-
-	module.exports = function make_viz(cgm) {
-
-	  var params = cgm.params;
-
-	  d3.select(params.viz.viz_wrapper + ' svg').remove();
-
-	  var svg_group = d3.select(params.viz.viz_wrapper).append('svg').attr('class', 'viz_svg').attr('id', 'svg_' + params.root.replace('#', '')).attr('width', params.viz.svg_dim.width).attr('height', params.viz.svg_dim.height).attr('is_zoom', 0).attr('stopped_zoom', 1);
-
-	  svg_group.append('rect').attr('class', 'super_background').style('width', params.viz.svg_dim.width).style('height', params.viz.svg_dim.height).style('fill', 'white');
-
-	  generate_matrix(params, svg_group);
-
-	  make_row_label_container(cgm);
-
-	  if (params.viz.show_dendrogram) {
-	    make_row_dendro(cgm);
-	    make_col_dendro(cgm);
-	  }
-
-	  make_row_dendro_spillover(cgm);
-
-	  make_col_label_container(cgm);
-
-	  // initial trim text
-	  if (params.viz.ds_level === -1) {
-	    _.each(['row', 'col'], function (inst_rc) {
-
-	      var inst_fs = Number(d3.select('.' + inst_rc + '_label_group').select('text').style('font-size').replace('px', ''));
-
-	      var min_trim_fs = 8;
-	      if (inst_fs > min_trim_fs) {
-	        d3.selectAll(params.root + ' .' + inst_rc + '_label_group').each(function () {
-	          trim_text(params, this, inst_rc);
-	        });
-	      }
-	    });
-	  }
-
-	  // make category colorbars
-	  make_row_cat(cgm);
-	  if (params.viz.show_categories.col) {
-	    make_col_cat(cgm);
-	  }
-
-	  spillover(cgm);
-
-	  if (params.labels.super_labels) {
-	    generate_super_labels(params);
-	  }
-
-	  // sliders should go above super labels
-	  make_svg_dendro_sliders(cgm);
-
-	  function border_colors() {
-	    var inst_color = params.viz.super_border_color;
-	    if (params.viz.is_expand) {
-	      inst_color = 'white';
-	    }
-	    return inst_color;
-	  }
-
-	  // left border
-	  d3.select(params.viz.viz_svg).append('rect').classed('left_border', true).classed('borders', true).attr('fill', border_colors).attr('width', params.viz.grey_border_width).attr('height', params.viz.svg_dim.height).attr('transform', 'translate(0,0)');
-
-	  // right border
-	  d3.select(params.viz.viz_svg).append('rect').classed('right_border', true).classed('borders', true).attr('fill', border_colors).attr('width', params.viz.grey_border_width).attr('height', params.viz.svg_dim.height).attr('transform', function () {
-	    var inst_offset = params.viz.svg_dim.width - params.viz.grey_border_width;
-	    return 'translate(' + inst_offset + ',0)';
-	  });
-
-	  // top border
-	  d3.select(params.viz.viz_svg).append('rect').classed('top_border', true).classed('borders', true).attr('fill', border_colors).attr('width', params.viz.svg_dim.width).attr('height', params.viz.grey_border_width).attr('transform', function () {
-	    var inst_offset = 0;
-	    return 'translate(' + inst_offset + ',0)';
-	  });
-
-	  // bottom border
-	  d3.select(params.viz.viz_svg).append('rect').classed('bottom_border', true).classed('borders', true).attr('fill', border_colors).attr('width', params.viz.svg_dim.width).attr('height', params.viz.grey_border_width).attr('transform', function () {
-	    var inst_offset = params.viz.svg_dim.height - params.viz.grey_border_width;
-	    return 'translate(0,' + inst_offset + ')';
-	  });
-
-	  initialize_resizing(cgm);
-
-	  ini_doubleclick(cgm);
-
-	  if (params.viz.do_zoom) {
-	    d3.select(params.viz.zoom_element).call(params.zoom_behavior);
-	  }
-
-	  d3.select(params.viz.zoom_element).on('dblclick.zoom', null);
-		};
-
-/***/ },
-/* 211 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var utils = __webpack_require__(2);
-	var transpose_network = __webpack_require__(3);
-	var get_available_filters = __webpack_require__(4);
-	var get_filter_default_state = __webpack_require__(5);
-	var set_defaults = __webpack_require__(6);
-	var check_sim_mat = __webpack_require__(7);
-	var check_nodes_for_categories = __webpack_require__(8);
-
-	module.exports = function make_config(args) {
-
-	  var defaults = set_defaults();
-
-	  // Mixin defaults with user-defined arguments.
-	  var config = utils.extend(defaults, args);
-
-	  config.network_data = args.network_data;
-
-	  var super_string = ': ';
-
-	  // replace undersores with space in row/col names
-	  _.each(['row', 'col'], function (inst_rc) {
-
-	    var inst_nodes = config.network_data[inst_rc + '_nodes'];
-
-	    var has_cats = check_nodes_for_categories(inst_nodes);
-
-	    inst_nodes.forEach(function (d, i) {
-
-	      // add index to row_nodes and col_nodes
-	      d[inst_rc + '_index'] = i;
-
-	      if (has_cats) {
-	        config.super_labels = true;
-	        config.super[inst_rc] = d.name.split(super_string)[0];
-	        d.name = d.name.split(super_string)[1];
-	      }
-
-	      d.name = d.name.replace(/_/g, ' ');
-	    });
-	  });
-
-	  config.network_data.row_nodes_names = utils.pluck(config.network_data.row_nodes, 'name');
-	  config.network_data.col_nodes_names = utils.pluck(config.network_data.col_nodes, 'name');
-
-	  config.sim_mat = check_sim_mat(config);
-
-	  var filters = get_available_filters(config.network_data.views);
-
-	  var default_states = {};
-	  _.each(_.keys(filters.possible_filters), function (inst_filter) {
-	    var tmp_state = get_filter_default_state(filters.filter_data, inst_filter);
-
-	    default_states[inst_filter] = tmp_state;
-	  });
-
-	  // process view
-	  if (_.has(config.network_data, 'views')) {
-	    config.network_data.views.forEach(function (inst_view) {
-
-	      _.each(_.keys(filters.possible_filters), function (inst_filter) {
-	        if (!_.has(inst_view, inst_filter)) {
-	          inst_view[inst_filter] = default_states[inst_filter];
-	        }
-	      });
-
-	      var inst_nodes = inst_view.nodes;
-
-	      // proc row/col nodes names in views
-	      _.each(['row', 'col'], function (inst_rc) {
-
-	        var has_cats = check_nodes_for_categories(inst_nodes[inst_rc + '_nodes']);
-
-	        inst_nodes[inst_rc + '_nodes'].forEach(function (d, i) {
-
-	          // add index to row_nodes and col_nodes
-	          d[inst_rc + '_index'] = i;
-
-	          if (has_cats) {
-	            d.name = d.name.split(super_string)[1];
-	          }
-
-	          d.name = d.name.replace(/_/g, ' ');
-	        });
-	      });
-	    });
-	  }
-
-	  var col_nodes = config.network_data.col_nodes;
-	  var row_nodes = config.network_data.row_nodes;
-
-	  // console.log( config.network_data.links[0] )
-	  // console.log( config.network_data.links[1] )
-	  // console.log( config.network_data.links[2] )
-
-	  // console.log(_.has(config.network_data,'mat'));
-
-	  ///////////////////////////
-	  // convert 'mat' to links
-	  ///////////////////////////
-
-	  if (_.has(config.network_data, 'mat')) {
-
-	    var links = [];
-	    var mat = config.network_data.mat;
-	    var inst_row = mat[0];
-	    var inst_link = {};
-
-	    // console.log('found mat')
-	    for (var i = 0; i < mat.length; i++) {
-	      for (var j = 0; j < mat[0].length; j++) {
-	        // console.log(mat[i][j])
-
-	        inst_link = {};
-	        inst_link.source = i;
-	        inst_link.target = j;
-	        inst_link.value = mat[i][j];
-	        links.push(inst_link);
-	      }
-	    }
-
-	    // save to network_data
-	    config.network_data.links = links;
-	  }
-	  // debugger;
-
-	  // add names and instantaneous positions to links
-	  config.network_data.links.forEach(function (d) {
-	    d.name = row_nodes[d.source].name + '_' + col_nodes[d.target].name;
-	    d.row_name = row_nodes[d.source].name;
-	    d.col_name = col_nodes[d.target].name;
-	  });
-
-	  // transpose network if necessary
-	  if (config.transpose) {
-	    config.network_data = transpose_network(config.network_data);
-	    var tmp_col_label = args.col_label;
-	    var tmp_row_label = args.row_label;
-	    args.row_label = tmp_col_label;
-	    args.col_label = tmp_row_label;
-	  }
-
-	  // super-row/col labels
-	  if (!utils.is_undefined(args.row_label) && !utils.is_undefined(args.col_label)) {
-	    config.super_labels = true;
-	    config.super = {};
-	    config.super.row = args.row_label;
-	    config.super.col = args.col_label;
-	  }
-
-	  // initialize cluster ordering - both rows and columns
-	  config.inst_order = {};
-	  if (!utils.is_undefined(args.order) && utils.is_supported_order(args.order)) {
-	    config.inst_order.row = args.order;
-	    config.inst_order.col = args.order;
-	  } else {
-	    config.inst_order.row = 'clust';
-	    config.inst_order.col = 'clust';
-	  }
-
-	  // set row or column order directly -- note that row/col are swapped
-	  // !! need to swap row/col orderings
-	  if (!utils.is_undefined(args.row_order) && utils.is_supported_order(args.row_order)) {
-	    // !! row and col orderings are swapped, need to fix
-	    config.inst_order.col = args.row_order;
-	  }
-
-	  if (!utils.is_undefined(args.col_order) && utils.is_supported_order(args.col_order)) {
-	    // !! row and col orderings are swapped, need to fix
-	    config.inst_order.row = args.col_order;
-	  }
-
-	  var row_has_group = utils.has(config.network_data.row_nodes[0], 'group');
-	  var col_has_group = utils.has(config.network_data.col_nodes[0], 'group');
-
-	  config.show_dendrogram = row_has_group || col_has_group;
-
-	  if (utils.has(config.network_data.links[0], 'value_orig')) {
-	    config.keep_orig = true;
-	  } else {
-	    config.keep_orig = false;
-	  }
-
-	  return config;
-	};
 
 /***/ }
 /******/ ]);
