@@ -63,6 +63,7 @@ module.exports =
 	var brush_crop_matrix = __webpack_require__(184);
 	var run_zoom = __webpack_require__(91);
 	var d3_tip_custom = __webpack_require__(50);
+	var all_reorder = __webpack_require__(81);
 
 	// moved d3.slider to src
 	d3.slider = __webpack_require__(186);
@@ -140,6 +141,16 @@ module.exports =
 	    return d3_tip_custom;
 	  }
 
+	  function api_reorder(inst_rc, inst_order) {
+	    if (inst_order === 'sum') {
+	      inst_order = 'rank';
+	    }
+	    if (inst_order === 'var') {
+	      inst_order = 'rankvar';
+	    }
+	    all_reorder(this, inst_order, inst_rc);
+	  }
+
 	  // add more API endpoints
 	  cgm.update_view = external_update_view;
 	  cgm.resize_viz = external_resize;
@@ -153,6 +164,7 @@ module.exports =
 	  cgm.export_matrix = export_matrix;
 	  cgm.brush_crop_matrix = brush_crop_matrix;
 	  cgm.d3_tip_custom = expose_d3_tip_custom;
+	  cgm.reorder = api_reorder;
 
 	  return cgm;
 	}

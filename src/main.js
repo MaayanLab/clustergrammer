@@ -14,6 +14,7 @@ var export_matrix = require('./matrix/export_matrix');
 var brush_crop_matrix = require('./matrix/brush_crop_matrix');
 var run_zoom = require('./zoom/run_zoom');
 var d3_tip_custom = require('./tooltip/d3_tip_custom');
+var all_reorder = require('./reorder/all_reorder');
 
 // moved d3.slider to src
 d3.slider = require('./d3.slider');
@@ -93,6 +94,16 @@ function Clustergrammer(args) {
     return d3_tip_custom
   }
 
+  function api_reorder(inst_rc, inst_order){
+    if (inst_order === 'sum'){
+      inst_order = 'rank';
+    }
+    if (inst_order === 'var'){
+      inst_order = 'rankvar';
+    }
+    all_reorder(this, inst_order, inst_rc)
+  }
+
   // add more API endpoints
   cgm.update_view = external_update_view;
   cgm.resize_viz = external_resize;
@@ -106,6 +117,7 @@ function Clustergrammer(args) {
   cgm.export_matrix = export_matrix;
   cgm.brush_crop_matrix = brush_crop_matrix;
   cgm.d3_tip_custom = expose_d3_tip_custom;
+  cgm.reorder = api_reorder;
 
   return cgm;
 }
