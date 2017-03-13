@@ -102,9 +102,12 @@ module.exports = function process_category_info(params, viz, preserve_cats=true)
 
           viz.cat_colors[inst_rc][cat_title] = {};
 
-          _.each(cat_states, function(cat_tmp, i){
+          _.each(cat_states, function(cat_tmp, inst_index){
 
-            inst_color = colors.get_random_color(i+num_colors);
+            inst_color = colors.get_random_color(inst_index + num_colors);
+
+            // console.log('num_colors: ' + String(num_colors))
+            // console.log('*** inst_index: ' + String(inst_index))
 
             viz.cat_colors[inst_rc][cat_title][cat_tmp] = inst_color;
 
@@ -123,6 +126,10 @@ module.exports = function process_category_info(params, viz, preserve_cats=true)
 
       });
 
+    }
+
+    if (_.has(params.network_data, 'cat_colors')){
+      viz.cat_colors[inst_rc] = params.network_data.cat_colors[inst_rc];
     }
 
     if (params.sim_mat){
