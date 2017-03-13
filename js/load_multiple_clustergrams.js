@@ -103,6 +103,8 @@ function make_sim_mats(inst_rc, cat_colors){
 
     var args = $.extend(true, {}, default_args);
     args.cat_colors = {};
+
+    // do not need to transfer cat colors if predefined in viz_json
     if (inst_rc === 'col'){
       tmp_num = 2;
       args.cat_colors.row = cat_colors.col;
