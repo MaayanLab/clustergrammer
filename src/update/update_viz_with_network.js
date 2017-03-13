@@ -54,7 +54,7 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
 
   update_reorder_buttons(tmp_config, cgm.params);
 
-  tmp_config.ini_expand = false;
+  // tmp_config.ini_expand = false;
   tmp_config.ini_view = null;
   tmp_config.current_col_cat = cgm.params.current_col_cat;
 
