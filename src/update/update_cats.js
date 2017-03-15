@@ -13,11 +13,7 @@ module.exports = function update_cats(cgm, cat_data){
   modify_row_node_cats(cat_data, cgm.params.inst_nodes.row_nodes, true);
 
   // recalculate the visualization parameters using the updated network_data
-  // console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^')
-  // console.log('calc_viz_params: start')
   cgm.params = calc_viz_params(cgm.params, false);
-  // console.log('calc_viz_params: end')
-  // console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^')
 
   // // set up zoom
   // cgm.params.zoom_behavior = d3.behavior.zoom()
@@ -26,10 +22,7 @@ module.exports = function update_cats(cgm, cat_data){
   //     zoomed(cgm);
   //   });
 
-  // console.log('make_row_cat')
   make_row_cat(cgm, true);
-
-  // console.log('resize_viz')
   resize_viz(cgm);
 
   cgm.params.new_cat_data = cat_data;

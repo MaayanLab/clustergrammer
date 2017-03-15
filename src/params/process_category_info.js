@@ -22,8 +22,6 @@ module.exports = function process_category_info(params, viz, predefined_cat_colo
 
   // var predefine_colors = false;
 
-  // console.log('process_category_info, viz.cat_colors: ' + String(viz.cat_colors))
-
   viz.cat_colors = {};
   viz.cat_colors.value_opacity = ini_val_opacity;
 
@@ -100,9 +98,6 @@ module.exports = function process_category_info(params, viz, predefined_cat_colo
 
             inst_color = colors.get_random_color(inst_index + num_colors);
 
-            // console.log('num_colors: ' + String(num_colors.ca)
-            // console.log('*** inst_index: ' + String(inst_index))
-
             viz.cat_colors[inst_rc][cat_title][cat_tmp] = inst_color;
 
             // hack to get 'Not' categories to not be dark colored
@@ -122,12 +117,7 @@ module.exports = function process_category_info(params, viz, predefined_cat_colo
 
     }
 
-    // console.log('**********************')
-
-    // console.log(_.keys(params.network_data))
-    // console.log('predefined_cat_colors: ' + String(predefined_cat_colors))
     if (_.has(params.network_data, 'cat_colors') && predefined_cat_colors === true){
-      // console.log('Defining the category colors using pre-defined colors')
       viz.cat_colors[inst_rc] = params.network_data.cat_colors[inst_rc];
     }
 

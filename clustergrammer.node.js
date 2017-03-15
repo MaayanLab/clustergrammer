@@ -75,7 +75,7 @@ module.exports =
 	__webpack_require__(190);
 	__webpack_require__(194);
 
-	/* clustergrammer v1.15.1
+	/* clustergrammer v1.15.2
 	 * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
 	 * (c) 2017
 	 */
@@ -827,6 +827,11 @@ module.exports =
 	  // add back all views
 	  new_network_data.views = config.network_data.views;
 
+	  // add cat_colors if necessary
+	  if (_.has(config.network_data, 'cat_colors')) {
+	    new_network_data.cat_colors = config.network_data.cat_colors;
+	  }
+
 	  return new_network_data;
 	};
 
@@ -1241,13 +1246,10 @@ module.exports =
 	  ini_val_opacity.row = null;
 	  ini_val_opacity.col = null;
 
-	  var predefine_colors = false;
-	  if (viz.cat_colors === null) {
-	    viz.cat_colors = {};
-	    viz.cat_colors.value_opacity = ini_val_opacity;
-	  } else {
-	    predefine_colors = true;
-	  }
+	  // var predefine_colors = false;
+
+	  viz.cat_colors = {};
+	  viz.cat_colors.value_opacity = ini_val_opacity;
 
 	  var num_colors = 0;
 	  _.each(['row', 'col'], function (inst_rc) {
@@ -1269,9 +1271,9 @@ module.exports =
 
 	    if (viz.show_categories[inst_rc]) {
 
-	      if (predefine_colors === false) {
-	        viz.cat_colors[inst_rc] = {};
-	      }
+	      // if (predefine_colors === false){
+	      viz.cat_colors[inst_rc] = {};
+	      // }
 
 	      viz.cat_info[inst_rc] = {};
 	      viz.cat_names[inst_rc] = {};
@@ -1311,37 +1313,32 @@ module.exports =
 	        // pass info_info object
 	        viz.cat_info[inst_rc][cat_title] = inst_info;
 
-	        if (predefine_colors === false) {
+	        // if (predefine_colors === false){
 
-	          viz.cat_colors[inst_rc][cat_title] = {};
+	        viz.cat_colors[inst_rc][cat_title] = {};
 
-	          _.each(cat_states, function (cat_tmp, inst_index) {
+	        _.each(cat_states, function (cat_tmp, inst_index) {
 
-	            inst_color = colors.get_random_color(inst_index + num_colors);
+	          inst_color = colors.get_random_color(inst_index + num_colors);
 
-	            // console.log('num_colors: ' + String(num_colors.ca)
-	            // console.log('*** inst_index: ' + String(inst_index))
+	          viz.cat_colors[inst_rc][cat_title][cat_tmp] = inst_color;
 
-	            viz.cat_colors[inst_rc][cat_title][cat_tmp] = inst_color;
-
-	            // hack to get 'Not' categories to not be dark colored
-	            // also doing this for false
-	            if (typeof cat_tmp === 'string') {
-	              if (cat_tmp.indexOf('Not ') >= 0 || cat_tmp.indexOf(': false') > 0) {
-	                viz.cat_colors[inst_rc][cat_title][cat_tmp] = '#eee';
-	              }
+	          // hack to get 'Not' categories to not be dark colored
+	          // also doing this for false
+	          if (typeof cat_tmp === 'string') {
+	            if (cat_tmp.indexOf('Not ') >= 0 || cat_tmp.indexOf(': false') > 0) {
+	              viz.cat_colors[inst_rc][cat_title][cat_tmp] = '#eee';
 	            }
+	          }
 
-	            num_colors = num_colors + 1;
-	          });
-	        }
+	          num_colors = num_colors + 1;
+	        });
+
+	        // }
 	      });
 	    }
 
-	    console.log(_.keys(params.network_data));
-	    console.log('predefined_cat_colors: ' + String(predefined_cat_colors));
 	    if (_.has(params.network_data, 'cat_colors') && predefined_cat_colors === true) {
-	      console.log('Defining the category colors using pre-defined colors');
 	      viz.cat_colors[inst_rc] = params.network_data.cat_colors[inst_rc];
 	    }
 
@@ -9712,8 +9709,6 @@ module.exports =
 
 	  // have persistent crop_filter_nodes while updating
 	  cgm.params.crop_filter_nodes = inst_crop_fitler;
-
-	  // console.log('num ds levles after update: '+ String(cgm.params.viz.ds_num_levels))
 
 	  // only run enter-exit-updates if there is no downsampling
 	  if (cgm.params.viz.ds_num_levels === 0) {

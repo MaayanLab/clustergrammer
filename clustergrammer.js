@@ -75,7 +75,7 @@ var Clustergrammer =
 	__webpack_require__(190);
 	__webpack_require__(194);
 
-	/* clustergrammer v1.15.1
+	/* clustergrammer v1.15.2
 	 * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
 	 * (c) 2017
 	 */
@@ -1162,8 +1162,6 @@ var Clustergrammer =
 
 	  viz.cat_colors = params.cat_colors;
 
-	  // console.log('ini_viz_params, predefined_cat_colors: ' + String(predefined_cat_colors))
-
 	  viz = make_cat_params(params, viz, predefined_cat_colors);
 
 	  if (_.has(params, 'group_level') == false) {
@@ -1250,8 +1248,6 @@ var Clustergrammer =
 
 	  // var predefine_colors = false;
 
-	  // console.log('process_category_info, viz.cat_colors: ' + String(viz.cat_colors))
-
 	  viz.cat_colors = {};
 	  viz.cat_colors.value_opacity = ini_val_opacity;
 
@@ -1325,9 +1321,6 @@ var Clustergrammer =
 
 	          inst_color = colors.get_random_color(inst_index + num_colors);
 
-	          // console.log('num_colors: ' + String(num_colors.ca)
-	          // console.log('*** inst_index: ' + String(inst_index))
-
 	          viz.cat_colors[inst_rc][cat_title][cat_tmp] = inst_color;
 
 	          // hack to get 'Not' categories to not be dark colored
@@ -1345,12 +1338,7 @@ var Clustergrammer =
 	      });
 	    }
 
-	    // console.log('**********************')
-
-	    // console.log(_.keys(params.network_data))
-	    // console.log('predefined_cat_colors: ' + String(predefined_cat_colors))
 	    if (_.has(params.network_data, 'cat_colors') && predefined_cat_colors === true) {
-	      // console.log('Defining the category colors using pre-defined colors')
 	      viz.cat_colors[inst_rc] = params.network_data.cat_colors[inst_rc];
 	    }
 
@@ -9722,8 +9710,6 @@ var Clustergrammer =
 	  // have persistent crop_filter_nodes while updating
 	  cgm.params.crop_filter_nodes = inst_crop_fitler;
 
-	  // console.log('num ds levles after update: '+ String(cgm.params.viz.ds_num_levels))
-
 	  // only run enter-exit-updates if there is no downsampling
 	  if (cgm.params.viz.ds_num_levels === 0) {
 	    // new_network_data is necessary
@@ -11523,11 +11509,7 @@ var Clustergrammer =
 	  modify_row_node_cats(cat_data, cgm.params.inst_nodes.row_nodes, true);
 
 	  // recalculate the visualization parameters using the updated network_data
-	  // console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^')
-	  // console.log('calc_viz_params: start')
 	  cgm.params = calc_viz_params(cgm.params, false);
-	  // console.log('calc_viz_params: end')
-	  // console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^')
 
 	  // // set up zoom
 	  // cgm.params.zoom_behavior = d3.behavior.zoom()
@@ -11536,10 +11518,7 @@ var Clustergrammer =
 	  //     zoomed(cgm);
 	  //   });
 
-	  // console.log('make_row_cat')
 	  make_row_cat(cgm, true);
-
-	  // console.log('resize_viz')
 	  resize_viz(cgm);
 
 	  cgm.params.new_cat_data = cat_data;

@@ -83,8 +83,6 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
   // have persistent crop_filter_nodes while updating
   cgm.params.crop_filter_nodes = inst_crop_fitler;
 
-  // console.log('num ds levles after update: '+ String(cgm.params.viz.ds_num_levels))
-
   // only run enter-exit-updates if there is no downsampling
   if (cgm.params.viz.ds_num_levels === 0){
     // new_network_data is necessary

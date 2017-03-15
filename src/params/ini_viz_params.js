@@ -72,8 +72,6 @@ module.exports = function ini_viz_params(params, predefined_cat_colors=true){
 
   viz.cat_colors = params.cat_colors;
 
-  // console.log('ini_viz_params, predefined_cat_colors: ' + String(predefined_cat_colors))
-
   viz = make_cat_params(params, viz, predefined_cat_colors);
 
   if (_.has(params, 'group_level') == false){
