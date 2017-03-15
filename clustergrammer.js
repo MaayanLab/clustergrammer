@@ -704,6 +704,8 @@ var Clustergrammer =
 	  var config = $.extend(true, {}, input_config);
 	  var params = config;
 
+	  // debugger
+
 	  // keep a copy of inst_view
 	  params.inst_nodes = {};
 	  params.inst_nodes.row_nodes = params.network_data.row_nodes;
@@ -1276,15 +1278,18 @@ var Clustergrammer =
 	      viz.cat_info[inst_rc] = {};
 	      viz.cat_names[inst_rc] = {};
 
+	      // console.log('***************************')
+	      // console.log(viz.all_cats[inst_rc])
+	      // console.log('***************************')
+
 	      _.each(viz.all_cats[inst_rc], function (cat_title) {
 
-	        console.log(inst_rc + ': ' + cat_title);
-
-	        // _.each(params.network_data[inst_rc+'_nodes'], function(inst_node){
+	        // console.log( inst_rc + ': ' + cat_title)
 
 	        var inst_node = params.network_data[inst_rc + '_nodes'][0];
 
-	        console.log(cat_title);
+	        // console.log('defining cat_names')
+	        // console.log(cat_title)
 	        // console.log(inst_node[cat_title])
 
 	        // look for title of category in category name
@@ -1300,7 +1305,8 @@ var Clustergrammer =
 	          viz.cat_names[inst_rc][cat_title] = cat_title;
 	        }
 
-	        // });
+	        // console.log(viz.cat_names[inst_rc][cat_title])
+	        // console.log('-----------\n')
 
 	        var cat_instances = utils.pluck(params.network_data[inst_rc + '_nodes'], cat_title);
 	        var cat_states = _.uniq(cat_instances).sort();
@@ -6575,9 +6581,6 @@ var Clustergrammer =
 	      return 'translate(0,' + inst_y + ')';
 	    }).text(function (d) {
 
-	      console.log(d);
-	      console.log(get_cat_title(viz, d, 'row'));
-
 	      return get_cat_title(viz, d, 'row');
 	    });
 
@@ -9661,9 +9664,12 @@ var Clustergrammer =
 	  d3.selectAll(cgm.params.root + ' .ds' + String(cgm.params.viz.ds_level) + '_row').remove();
 
 	  // run optional callback function
+	  console.log('before and after matrix_update_callback');
+	  console.log(new_network_data.row_nodes[0]['cat-0']);
 	  if (cgm.params.matrix_update_callback != null) {
 	    cgm.params.matrix_update_callback();
 	  }
+	  console.log(new_network_data.row_nodes[0]['cat-0']);
 
 	  var inst_group_level = cgm.params.group_level;
 	  var inst_crop_fitler = cgm.params.crop_filter_nodes;

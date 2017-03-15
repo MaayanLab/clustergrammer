@@ -50,32 +50,36 @@ module.exports = function process_category_info(params, viz, predefined_cat_colo
       viz.cat_info[inst_rc] = {};
       viz.cat_names[inst_rc] = {};
 
+      // console.log('***************************')
+      // console.log(viz.all_cats[inst_rc])
+      // console.log('***************************')
+
       _.each( viz.all_cats[inst_rc], function(cat_title){
 
-        console.log( inst_rc + ': ' + cat_title)
+        // console.log( inst_rc + ': ' + cat_title)
 
-        // _.each(params.network_data[inst_rc+'_nodes'], function(inst_node){
+        var inst_node = params.network_data[inst_rc+'_nodes'][0];
 
-          var inst_node = params.network_data[inst_rc+'_nodes'][0];
+        // console.log('defining cat_names')
+        // console.log(cat_title)
+        // console.log(inst_node[cat_title])
 
-          console.log(cat_title)
-          // console.log(inst_node[cat_title])
+        // look for title of category in category name
+        if (typeof inst_node[cat_title] === 'string' ){
 
-          // look for title of category in category name
-          if (typeof inst_node[cat_title] === 'string' ){
-
-            if (inst_node[cat_title].indexOf(super_string) > 0){
-              tmp_super = inst_node[cat_title].split(super_string)[0];
-              viz.cat_names[inst_rc][cat_title] = tmp_super;
-            } else {
-              viz.cat_names[inst_rc][cat_title] = cat_title;
-            }
-
+          if (inst_node[cat_title].indexOf(super_string) > 0){
+            tmp_super = inst_node[cat_title].split(super_string)[0];
+            viz.cat_names[inst_rc][cat_title] = tmp_super;
           } else {
             viz.cat_names[inst_rc][cat_title] = cat_title;
           }
 
-        // });
+        } else {
+          viz.cat_names[inst_rc][cat_title] = cat_title;
+        }
+
+        // console.log(viz.cat_names[inst_rc][cat_title])
+        // console.log('-----------\n')
 
         var cat_instances = utils.pluck(params.network_data[inst_rc+'_nodes'], cat_title);
         var cat_states = _.uniq( cat_instances ).sort();
