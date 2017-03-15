@@ -60,9 +60,10 @@ module.exports = function process_category_info(params, viz, predefined_cat_colo
 
         var inst_node = params.network_data[inst_rc+'_nodes'][0];
 
-        // console.log('defining cat_names')
-        // console.log(cat_title)
-        // console.log(inst_node[cat_title])
+        console.log('defining cat_names')
+        console.log(cat_title)
+        console.log(inst_node[cat_title])
+        console.log('****************************')
 
         // look for title of category in category name
         if (typeof inst_node[cat_title] === 'string' ){

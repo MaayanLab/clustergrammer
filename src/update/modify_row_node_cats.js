@@ -3,6 +3,8 @@ var utils = require('../Utils_clust');
 
 module.exports = function modify_row_node_cats(cat_data, inst_nodes, strip_names=false){
 
+  console.log('MODIFY ROW NODE CATS')
+
   var cat_type_num = 0;
   var inst_index = 0;
   var inst_cat_title;
@@ -68,6 +70,7 @@ module.exports = function modify_row_node_cats(cat_data, inst_nodes, strip_names
       });
 
 
+      console.log('HERE')
       if (utils.has(inst_cat_data, 'pval')){
 
         var inst_pval = inst_cat_data.pval.toExponential();
@@ -75,7 +78,14 @@ module.exports = function modify_row_node_cats(cat_data, inst_nodes, strip_names
 
       } else {
 
-        inst_full_cat = inst_cat_title + ': ' + inst_category ;
+
+        console.log('inst_full_cat: ' + String(inst_full_cat))
+
+        if (inst_cat_title.indexOf('cat-') === -1){
+          inst_full_cat = inst_cat_title + ': ' + inst_category ;
+        } else {
+          inst_full_cat = inst_category;
+        }
 
       }
 

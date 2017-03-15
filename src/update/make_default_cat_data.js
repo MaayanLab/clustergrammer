@@ -15,8 +15,8 @@ module.exports = function make_default_cat_data(cgm){
   var found_cat_name;
   var cat_name;
 
-  console.log('make_default_cat_data')
-  console.log(cgm.params.viz.cat_names.row)
+  // console.log('make_default_cat_data')
+  // console.log(cgm.params.viz.cat_names.row)
 
   // get current list of cateories
   var check_node = row_nodes[0];
@@ -41,7 +41,7 @@ module.exports = function make_default_cat_data(cgm){
 
   });
 
-  console.log('current_cats: '+ String(current_cats))
+  // console.log('current_cats: '+ String(current_cats))
 
   // initialize cat_data (keep original order)
   var found_title;
@@ -49,13 +49,13 @@ module.exports = function make_default_cat_data(cgm){
 
     found_title = false;
 
-    console.log('loop through cat_names')
+    // console.log('loop through cat_names')
 
     if (current_cats.indexOf(inst_title) >= 0){
       found_title = true;
     }
 
-    console.log('found_title ' + String(found_title))
+    // console.log('found_title ' + String(found_title))
 
     // only track cats that are found in the incoming nodes
     if (found_title){
@@ -67,8 +67,8 @@ module.exports = function make_default_cat_data(cgm){
 
   })
 
-  console.log('cat_data')
-  console.log(cat_data)
+  // console.log('cat_data')
+  // console.log(cat_data)
 
   _.each(row_nodes, function(inst_node){
 
@@ -86,7 +86,7 @@ module.exports = function make_default_cat_data(cgm){
         var cat_string = inst_node[inst_prop];
         var cat_row_name = inst_node.name;
 
-        console.log('cat_string: '+String(cat_string))
+        // console.log('cat_string: '+String(cat_string))
         // found actual title
         if (cat_string.indexOf(title_sep) > -1){
           cat_title = cat_string.split(title_sep)[0];
@@ -96,10 +96,10 @@ module.exports = function make_default_cat_data(cgm){
           cat_title = inst_prop;
           cat_name = cat_string;
         }
-        console.log('cat_name '+cat_name)
-        console.log('cat_title ' + cat_title)
-        console.log('--------')
 
+        // console.log('cat_name '+cat_name)
+        // console.log('cat_title ' + cat_title)
+        // console.log('--------')
 
         // cat_data is empty
         if (cat_data.length === 0){
@@ -113,7 +113,8 @@ module.exports = function make_default_cat_data(cgm){
           found_cat_title = false;
           _.each(cat_data, function(inst_cat_type){
 
-            console.log('inst_cat_data title ' + inst_cat_type.cat_title)
+            // console.log('inst_cat_data title ' + inst_cat_type.cat_title)
+
             // check each cat_type object for a matching title
             if (cat_title === inst_cat_type.cat_title){
               found_cat_title = true;
@@ -149,7 +150,7 @@ module.exports = function make_default_cat_data(cgm){
           // did not find category type, initialize category type object
           if (found_cat_title === false){
 
-            console.log('did not find cat_title: ' + String(cat_title))
+            // console.log('did not find cat_title: ' + String(cat_title))
             // add_new_cat_type(cat_title, cat_name, cat_row_name);
 
           }

@@ -7,6 +7,8 @@ var get_cat_names = require('../categories/get_cat_names');
 
 module.exports = function make_row_cat(cgm, updating=false) {
 
+  console.log('make_row_cat')
+
   var params = cgm.params;
 
   // make or reuse outer container
@@ -67,7 +69,12 @@ module.exports = function make_row_cat(cgm, updating=false) {
   // groups that hold classification triangle and colorbar rect
   d3.select(params.root+' .row_cat_container')
     .selectAll('g')
-    .data(params.network_data.row_nodes, function(d){return d.name;})
+    .data(params.network_data.row_nodes, function(d){
+      console.log('-------------')
+      console.log(d['cat-0'])
+      console.log('-------------')
+      return d.name;
+    })
     .enter()
     .append('g')
     .attr('class', 'row_cat_group')
@@ -132,7 +139,16 @@ module.exports = function make_row_cat(cgm, updating=false) {
             .attr('height', params.viz.y_scale.rangeBand())
             .style('fill', function(d) {
               var cat_name = d[inst_cat];
+
+              // if (cat_name.indexOf(': ') >= 0){
+              //   cat_name = cat_name.split(': ')[1];
+              // }
+
+              console.log(cat_name)
+
               var inst_color = params.viz.cat_colors.row[inst_cat][cat_name];
+
+              // console.log('inst_color: ' + String(inst_color));
               return inst_color;
             })
             .attr('x', function() {
