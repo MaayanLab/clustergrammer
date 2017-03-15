@@ -2,7 +2,7 @@ var utils = require('../Utils_clust');
 var colors = require('../Colors');
 var check_if_value_cats = require('./check_if_value_cats');
 
-module.exports = function process_category_info(params, viz, preserve_cats=true){
+module.exports = function process_category_info(params, viz, predefined_cat_colors=true){
 
   var super_string = ': ';
   var tmp_super;
@@ -24,13 +24,8 @@ module.exports = function process_category_info(params, viz, preserve_cats=true)
   if (viz.cat_colors === null){
     viz.cat_colors = {};
     viz.cat_colors.value_opacity = ini_val_opacity;
-    predefine_colors = false;
   } else {
     predefine_colors = true;
-  }
-
-  if (preserve_cats === false){
-    predefine_colors = false;
   }
 
   var num_colors = 0;
@@ -106,7 +101,7 @@ module.exports = function process_category_info(params, viz, preserve_cats=true)
 
             inst_color = colors.get_random_color(inst_index + num_colors);
 
-            // console.log('num_colors: ' + String(num_colors))
+            // console.log('num_colors: ' + String(num_colors.ca)
             // console.log('*** inst_index: ' + String(inst_index))
 
             viz.cat_colors[inst_rc][cat_title][cat_tmp] = inst_color;
@@ -128,7 +123,10 @@ module.exports = function process_category_info(params, viz, preserve_cats=true)
 
     }
 
-    if (_.has(params.network_data, 'cat_colors')){
+    // console.log(_.keys(params.network_data))
+    // console.log('predefined_cat_colors: ' + String(predefined_cat_colors))
+    if (_.has(params.network_data, 'cat_colors') && predefined_cat_colors === true){
+      // console.log('Defining the category colors using pre-defined colors')
       viz.cat_colors[inst_rc] = params.network_data.cat_colors[inst_rc];
     }
 

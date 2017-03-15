@@ -2,7 +2,7 @@ var utils = require('../Utils_clust');
 var get_available_filters = require('./get_available_filters');
 var make_cat_params = require('./make_cat_params');
 
-module.exports = function ini_viz_params(params, preserve_cats=true){
+module.exports = function ini_viz_params(params, predefined_cat_colors=true){
 
   var viz = {};
 
@@ -72,7 +72,7 @@ module.exports = function ini_viz_params(params, preserve_cats=true){
 
   viz.cat_colors = params.cat_colors;
 
-  viz = make_cat_params(params, viz, preserve_cats);
+  viz = make_cat_params(params, viz, predefined_cat_colors);
 
   if (_.has(params, 'group_level') == false){
     if (viz.show_dendrogram){

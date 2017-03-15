@@ -75,7 +75,7 @@ var Clustergrammer =
 	__webpack_require__(190);
 	__webpack_require__(194);
 
-	/* clustergrammer v1.15.0
+	/* clustergrammer v1.15.1
 	 * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
 	 * (c) 2017
 	 */
@@ -1086,7 +1086,7 @@ var Clustergrammer =
 	var make_cat_params = __webpack_require__(18);
 
 	module.exports = function ini_viz_params(params) {
-	  var preserve_cats = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
+	  var predefined_cat_colors = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
 
 
 	  var viz = {};
@@ -1157,7 +1157,7 @@ var Clustergrammer =
 
 	  viz.cat_colors = params.cat_colors;
 
-	  viz = make_cat_params(params, viz, preserve_cats);
+	  viz = make_cat_params(params, viz, predefined_cat_colors);
 
 	  if (_.has(params, 'group_level') == false) {
 	    if (viz.show_dendrogram) {
@@ -1222,7 +1222,7 @@ var Clustergrammer =
 	var check_if_value_cats = __webpack_require__(21);
 
 	module.exports = function process_category_info(params, viz) {
-	  var preserve_cats = arguments.length <= 2 || arguments[2] === undefined ? true : arguments[2];
+	  var predefined_cat_colors = arguments.length <= 2 || arguments[2] === undefined ? true : arguments[2];
 
 
 	  var super_string = ': ';
@@ -1245,13 +1245,8 @@ var Clustergrammer =
 	  if (viz.cat_colors === null) {
 	    viz.cat_colors = {};
 	    viz.cat_colors.value_opacity = ini_val_opacity;
-	    predefine_colors = false;
 	  } else {
 	    predefine_colors = true;
-	  }
-
-	  if (preserve_cats === false) {
-	    predefine_colors = false;
 	  }
 
 	  var num_colors = 0;
@@ -1324,7 +1319,7 @@ var Clustergrammer =
 
 	            inst_color = colors.get_random_color(inst_index + num_colors);
 
-	            // console.log('num_colors: ' + String(num_colors))
+	            // console.log('num_colors: ' + String(num_colors.ca)
 	            // console.log('*** inst_index: ' + String(inst_index))
 
 	            viz.cat_colors[inst_rc][cat_title][cat_tmp] = inst_color;
@@ -1343,7 +1338,10 @@ var Clustergrammer =
 	      });
 	    }
 
-	    if (_.has(params.network_data, 'cat_colors')) {
+	    // console.log(_.keys(params.network_data))
+	    // console.log('predefined_cat_colors: ' + String(predefined_cat_colors))
+	    if (_.has(params.network_data, 'cat_colors') && predefined_cat_colors === true) {
+	      // console.log('Defining the category colors using pre-defined colors')
 	      viz.cat_colors[inst_rc] = params.network_data.cat_colors[inst_rc];
 	    }
 
@@ -9678,8 +9676,8 @@ var Clustergrammer =
 	    new_cat_data = cgm.params.new_cat_data;
 	    cgm.params.new_cat_data = new_cat_data;
 	    // do not preserve the updated (row) cats
-	    var preserve_cats = false;
-	    cgm.params.viz = make_cat_params(cgm.params, cgm.params.viz, preserve_cats);
+	    var predefined_cat_colors = false;
+	    cgm.params.viz = make_cat_params(cgm.params, cgm.params.viz, predefined_cat_colors);
 	  }
 
 	  tmp_config.network_data = new_network_data;
