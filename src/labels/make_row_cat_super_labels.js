@@ -103,6 +103,10 @@ module.exports = function make_row_cat_super_labels(cgm){
         return 'translate(0,'+inst_y+')';
       })
       .text(function(d){
+
+        console.log(d)
+        console.log(get_cat_title(viz, d, 'row'))
+
         return get_cat_title(viz, d, 'row');
       });
 

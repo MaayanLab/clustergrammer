@@ -1246,8 +1246,6 @@ var Clustergrammer =
 	  ini_val_opacity.row = null;
 	  ini_val_opacity.col = null;
 
-	  // var predefine_colors = false;
-
 	  viz.cat_colors = {};
 	  viz.cat_colors.value_opacity = ini_val_opacity;
 
@@ -1259,9 +1257,12 @@ var Clustergrammer =
 	    viz.all_cats[inst_rc] = [];
 	    var tmp_keys = _.keys(params.network_data[inst_rc + '_nodes'][0]);
 
-	    _.each(tmp_keys, function (d) {
+	    // console.log(tmp_keys)
 
+	    tmp_keys = tmp_keys.sort();
+	    _.each(tmp_keys, function (d) {
 	      if (d.indexOf('cat-') >= 0) {
+	        // console.log(d)
 	        viz.show_categories[inst_rc] = true;
 	        viz.all_cats[inst_rc].push(d);
 	      }
@@ -1271,30 +1272,35 @@ var Clustergrammer =
 
 	    if (viz.show_categories[inst_rc]) {
 
-	      // if (predefine_colors === false){
 	      viz.cat_colors[inst_rc] = {};
-	      // }
-
 	      viz.cat_info[inst_rc] = {};
 	      viz.cat_names[inst_rc] = {};
 
 	      _.each(viz.all_cats[inst_rc], function (cat_title) {
 
-	        _.each(params.network_data[inst_rc + '_nodes'], function (inst_node) {
+	        console.log(inst_rc + ': ' + cat_title);
 
-	          // look for title of category in category name
-	          if (typeof inst_node[cat_title] === 'string') {
+	        // _.each(params.network_data[inst_rc+'_nodes'], function(inst_node){
 
-	            if (inst_node[cat_title].indexOf(super_string) > 0) {
-	              tmp_super = inst_node[cat_title].split(super_string)[0];
-	              viz.cat_names[inst_rc][cat_title] = tmp_super;
-	            } else {
-	              viz.cat_names[inst_rc][cat_title] = cat_title;
-	            }
+	        var inst_node = params.network_data[inst_rc + '_nodes'][0];
+
+	        console.log(cat_title);
+	        // console.log(inst_node[cat_title])
+
+	        // look for title of category in category name
+	        if (typeof inst_node[cat_title] === 'string') {
+
+	          if (inst_node[cat_title].indexOf(super_string) > 0) {
+	            tmp_super = inst_node[cat_title].split(super_string)[0];
+	            viz.cat_names[inst_rc][cat_title] = tmp_super;
 	          } else {
 	            viz.cat_names[inst_rc][cat_title] = cat_title;
 	          }
-	        });
+	        } else {
+	          viz.cat_names[inst_rc][cat_title] = cat_title;
+	        }
+
+	        // });
 
 	        var cat_instances = utils.pluck(params.network_data[inst_rc + '_nodes'], cat_title);
 	        var cat_states = _.uniq(cat_instances).sort();
@@ -1312,8 +1318,6 @@ var Clustergrammer =
 
 	        // pass info_info object
 	        viz.cat_info[inst_rc][cat_title] = inst_info;
-
-	        // if (predefine_colors === false){
 
 	        viz.cat_colors[inst_rc][cat_title] = {};
 
@@ -1333,8 +1337,6 @@ var Clustergrammer =
 
 	          num_colors = num_colors + 1;
 	        });
-
-	        // }
 	      });
 	    }
 
@@ -6572,6 +6574,10 @@ var Clustergrammer =
 	      var inst_y = extra_y_room * viz.cat_room.symbol_width * parseInt(d.split('-')[1], 10);
 	      return 'translate(0,' + inst_y + ')';
 	    }).text(function (d) {
+
+	      console.log(d);
+	      console.log(get_cat_title(viz, d, 'row'));
+
 	      return get_cat_title(viz, d, 'row');
 	    });
 

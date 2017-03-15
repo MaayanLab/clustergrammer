@@ -20,8 +20,6 @@ module.exports = function process_category_info(params, viz, predefined_cat_colo
   ini_val_opacity.row = null;
   ini_val_opacity.col = null;
 
-  // var predefine_colors = false;
-
   viz.cat_colors = {};
   viz.cat_colors.value_opacity = ini_val_opacity;
 
@@ -33,29 +31,35 @@ module.exports = function process_category_info(params, viz, predefined_cat_colo
     viz.all_cats[inst_rc] = [];
     var tmp_keys = _.keys(params.network_data[inst_rc+'_nodes'][0]);
 
-    _.each( tmp_keys, function(d){
+    // console.log(tmp_keys)
 
+    tmp_keys = tmp_keys.sort();
+    _.each( tmp_keys, function(d){
       if (d.indexOf('cat-') >= 0){
+        // console.log(d)
         viz.show_categories[inst_rc] = true;
         viz.all_cats[inst_rc].push(d);
       }
-
     });
 
     viz.cat_info[inst_rc] = null;
 
     if (viz.show_categories[inst_rc]){
 
-      // if (predefine_colors === false){
-        viz.cat_colors[inst_rc] = {};
-      // }
-
+      viz.cat_colors[inst_rc] = {};
       viz.cat_info[inst_rc] = {};
       viz.cat_names[inst_rc] = {};
 
       _.each( viz.all_cats[inst_rc], function(cat_title){
 
-        _.each(params.network_data[inst_rc+'_nodes'], function(inst_node){
+        console.log( inst_rc + ': ' + cat_title)
+
+        // _.each(params.network_data[inst_rc+'_nodes'], function(inst_node){
+
+          var inst_node = params.network_data[inst_rc+'_nodes'][0];
+
+          console.log(cat_title)
+          // console.log(inst_node[cat_title])
 
           // look for title of category in category name
           if (typeof inst_node[cat_title] === 'string' ){
@@ -71,7 +75,7 @@ module.exports = function process_category_info(params, viz, predefined_cat_colo
             viz.cat_names[inst_rc][cat_title] = cat_title;
           }
 
-        });
+        // });
 
         var cat_instances = utils.pluck(params.network_data[inst_rc+'_nodes'], cat_title);
         var cat_states = _.uniq( cat_instances ).sort();
@@ -90,28 +94,24 @@ module.exports = function process_category_info(params, viz, predefined_cat_colo
         // pass info_info object
         viz.cat_info[inst_rc][cat_title] = inst_info;
 
-        // if (predefine_colors === false){
+        viz.cat_colors[inst_rc][cat_title] = {};
 
-          viz.cat_colors[inst_rc][cat_title] = {};
+        _.each(cat_states, function(cat_tmp, inst_index){
 
-          _.each(cat_states, function(cat_tmp, inst_index){
+          inst_color = colors.get_random_color(inst_index + num_colors);
 
-            inst_color = colors.get_random_color(inst_index + num_colors);
+          viz.cat_colors[inst_rc][cat_title][cat_tmp] = inst_color;
 
-            viz.cat_colors[inst_rc][cat_title][cat_tmp] = inst_color;
-
-            // hack to get 'Not' categories to not be dark colored
-            // also doing this for false
-            if (typeof cat_tmp === 'string'){
-              if (cat_tmp.indexOf('Not ') >= 0 || cat_tmp.indexOf(': false') > 0){
-                viz.cat_colors[inst_rc][cat_title][cat_tmp] = '#eee';
-              }
+          // hack to get 'Not' categories to not be dark colored
+          // also doing this for false
+          if (typeof cat_tmp === 'string'){
+            if (cat_tmp.indexOf('Not ') >= 0 || cat_tmp.indexOf(': false') > 0){
+              viz.cat_colors[inst_rc][cat_title][cat_tmp] = '#eee';
             }
+          }
 
-            num_colors = num_colors + 1;
-          });
-
-        // }
+          num_colors = num_colors + 1;
+        });
 
       });
 
