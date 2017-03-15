@@ -44,7 +44,6 @@ module.exports = function modify_row_node_cats(cat_data, inst_nodes, strip_names
       inst_cat_title = inst_cat_data.cat_title;
       inst_cats = inst_cat_data.cats;
 
-
       // initialize with no category
       inst_category = 'false';
       inst_index = -1;

@@ -1338,10 +1338,10 @@ module.exports =
 	      });
 	    }
 
-	    // console.log(_.keys(params.network_data))
-	    // console.log('predefined_cat_colors: ' + String(predefined_cat_colors))
+	    console.log(_.keys(params.network_data));
+	    console.log('predefined_cat_colors: ' + String(predefined_cat_colors));
 	    if (_.has(params.network_data, 'cat_colors') && predefined_cat_colors === true) {
-	      // console.log('Defining the category colors using pre-defined colors')
+	      console.log('Defining the category colors using pre-defined colors');
 	      viz.cat_colors[inst_rc] = params.network_data.cat_colors[inst_rc];
 	    }
 

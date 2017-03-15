@@ -20,13 +20,12 @@ module.exports = function process_category_info(params, viz, predefined_cat_colo
   ini_val_opacity.row = null;
   ini_val_opacity.col = null;
 
-  var predefine_colors = false;
-  if (viz.cat_colors === null){
-    viz.cat_colors = {};
-    viz.cat_colors.value_opacity = ini_val_opacity;
-  } else {
-    predefine_colors = true;
-  }
+  // var predefine_colors = false;
+
+  // console.log('process_category_info, viz.cat_colors: ' + String(viz.cat_colors))
+
+  viz.cat_colors = {};
+  viz.cat_colors.value_opacity = ini_val_opacity;
 
   var num_colors = 0;
   _.each(['row','col'], function(inst_rc){
@@ -49,9 +48,9 @@ module.exports = function process_category_info(params, viz, predefined_cat_colo
 
     if (viz.show_categories[inst_rc]){
 
-      if (predefine_colors === false){
+      // if (predefine_colors === false){
         viz.cat_colors[inst_rc] = {};
-      }
+      // }
 
       viz.cat_info[inst_rc] = {};
       viz.cat_names[inst_rc] = {};
@@ -93,7 +92,7 @@ module.exports = function process_category_info(params, viz, predefined_cat_colo
         // pass info_info object
         viz.cat_info[inst_rc][cat_title] = inst_info;
 
-        if (predefine_colors === false){
+        // if (predefine_colors === false){
 
           viz.cat_colors[inst_rc][cat_title] = {};
 
@@ -117,11 +116,13 @@ module.exports = function process_category_info(params, viz, predefined_cat_colo
             num_colors = num_colors + 1;
           });
 
-        }
+        // }
 
       });
 
     }
+
+    // console.log('**********************')
 
     // console.log(_.keys(params.network_data))
     // console.log('predefined_cat_colors: ' + String(predefined_cat_colors))
