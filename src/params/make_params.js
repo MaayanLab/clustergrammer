@@ -15,8 +15,6 @@ module.exports = function make_params(input_config) {
   var config = $.extend(true, {}, input_config);
   var params = config;
 
-  // debugger
-
   // keep a copy of inst_view
   params.inst_nodes = {};
   params.inst_nodes.row_nodes = params.network_data.row_nodes;

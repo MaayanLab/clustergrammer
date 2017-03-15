@@ -704,8 +704,6 @@ var Clustergrammer =
 	  var config = $.extend(true, {}, input_config);
 	  var params = config;
 
-	  // debugger
-
 	  // keep a copy of inst_view
 	  params.inst_nodes = {};
 	  params.inst_nodes.row_nodes = params.network_data.row_nodes;
@@ -11554,29 +11552,29 @@ var Clustergrammer =
 	  var run_resize_viz = arguments.length <= 0 || arguments[0] === undefined ? true : arguments[0];
 
 
-	  var tmp_cgm = this;
+	  var cgm = this;
 
-	  var cat_data = make_default_cat_data(tmp_cgm);
+	  var cat_data = make_default_cat_data(cgm);
 
 	  // do not change column category info
-	  var col_cat_colors = tmp_cgm.params.viz.cat_colors.col;
+	  var col_cat_colors = cgm.params.viz.cat_colors.col;
 
-	  modify_row_node_cats(cat_data, tmp_cgm.params.network_data.row_nodes);
+	  modify_row_node_cats(cat_data, cgm.params.network_data.row_nodes);
 	  // modify the current inst copy of nodes
-	  modify_row_node_cats(cat_data, tmp_cgm.params.inst_nodes.row_nodes);
+	  modify_row_node_cats(cat_data, cgm.params.inst_nodes.row_nodes);
 
-	  tmp_cgm.params.new_cat_data = cat_data;
-	  tmp_cgm.params.viz.cat_colors.col = col_cat_colors;
+	  cgm.params.new_cat_data = cat_data;
+	  cgm.params.viz.cat_colors.col = col_cat_colors;
 
 	  if (run_resize_viz) {
 
 	    // resize visualizatino
 	    ////////////////////////////
 	    // recalculate the visualization parameters using the updated network_data
-	    tmp_cgm.params = calc_viz_params(tmp_cgm.params, false);
+	    cgm.params = calc_viz_params(cgm.params, false);
 
-	    make_row_cat(tmp_cgm, true);
-	    resize_viz(tmp_cgm);
+	    make_row_cat(cgm, true);
+	    resize_viz(cgm);
 	  }
 		};
 
@@ -11603,6 +11601,59 @@ var Clustergrammer =
 	  var found_cat_name;
 	  var cat_name;
 
+	  console.log('make_default_cat_data');
+	  console.log(cgm.params.viz.cat_names.row);
+
+	  // get current list of cateories
+	  var check_node = row_nodes[0];
+	  var node_keys = _.keys(check_node);
+	  var current_cats = [];
+	  var tmp_cat;
+	  var tmp_title;
+	  _.each(node_keys, function (inst_key) {
+	    if (inst_key.indexOf('cat-') >= 0) {
+	      tmp_cat = check_node[inst_key];
+
+	      // use given title
+	      if (tmp_cat.indexOf(title_sep) >= 0) {
+	        tmp_title = tmp_cat.split(title_sep)[0];
+	      } else {
+	        tmp_title = inst_key;
+	        // tmp_title = 'Category-'+String(parseInt(tmp_title.split('-')[1]) + 1);
+	      }
+
+	      current_cats.push(tmp_title);
+	    }
+	  });
+
+	  console.log('current_cats: ' + String(current_cats));
+
+	  // initialize cat_data (keep original order)
+	  var found_title;
+	  _.each(cgm.params.viz.cat_names.row, function (inst_title) {
+
+	    found_title = false;
+
+	    console.log('loop through cat_names');
+
+	    if (current_cats.indexOf(inst_title) >= 0) {
+	      found_title = true;
+	    }
+
+	    console.log('found_title ' + String(found_title));
+
+	    // only track cats that are found in the incoming nodes
+	    if (found_title) {
+	      var inst_data = {};
+	      inst_data.cat_title = inst_title;
+	      inst_data.cats = [];
+	      cat_data.push(inst_data);
+	    }
+	  });
+
+	  console.log('cat_data');
+	  console.log(cat_data);
+
 	  _.each(row_nodes, function (inst_node) {
 
 	    var all_props = _.keys(inst_node);
@@ -11619,10 +11670,19 @@ var Clustergrammer =
 	        var cat_string = inst_node[inst_prop];
 	        var cat_row_name = inst_node.name;
 
+	        console.log('cat_string: ' + String(cat_string));
+	        // found actual title
 	        if (cat_string.indexOf(title_sep) > -1) {
 	          cat_title = cat_string.split(title_sep)[0];
 	          cat_name = cat_string.split(title_sep)[1];
+	        } else {
+	          // cat_title = 'Category-'+String(parseInt(inst_prop.split('-')[1]) + 1)
+	          cat_title = inst_prop;
+	          cat_name = cat_string;
 	        }
+	        console.log('cat_name ' + cat_name);
+	        console.log('cat_title ' + cat_title);
+	        console.log('--------');
 
 	        // cat_data is empty
 	        if (cat_data.length === 0) {
@@ -11636,6 +11696,7 @@ var Clustergrammer =
 	          found_cat_title = false;
 	          _.each(cat_data, function (inst_cat_type) {
 
+	            console.log('inst_cat_data title ' + inst_cat_type.cat_title);
 	            // check each cat_type object for a matching title
 	            if (cat_title === inst_cat_type.cat_title) {
 	              found_cat_title = true;
@@ -11668,7 +11729,8 @@ var Clustergrammer =
 	          // did not find category type, initialize category type object
 	          if (found_cat_title === false) {
 
-	            add_new_cat_type(cat_title, cat_name, cat_row_name);
+	            console.log('did not find cat_title: ' + String(cat_title));
+	            // add_new_cat_type(cat_title, cat_name, cat_row_name);
 	          }
 	        }
 	      }
