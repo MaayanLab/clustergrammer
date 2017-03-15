@@ -47,7 +47,7 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
     new_cat_data = cgm.params.new_cat_data;
     cgm.params.new_cat_data = new_cat_data;
     // do not preserve the updated (row) cats
-    var predefined_cat_colors = false;
+    var predefined_cat_colors = true;
     cgm.params.viz = make_cat_params(cgm.params, cgm.params.viz, predefined_cat_colors);
   }
 

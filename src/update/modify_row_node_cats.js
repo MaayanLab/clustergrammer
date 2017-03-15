@@ -70,16 +70,12 @@ module.exports = function modify_row_node_cats(cat_data, inst_nodes, strip_names
       });
 
 
-      console.log('HERE')
       if (utils.has(inst_cat_data, 'pval')){
 
         var inst_pval = inst_cat_data.pval.toExponential();
         inst_full_cat = inst_cat_title + ': ' + inst_category + '<p> Pval ' + String(inst_pval) + '</p>';
 
       } else {
-
-
-        console.log('inst_full_cat: ' + String(inst_full_cat))
 
         if (inst_cat_title.indexOf('cat-') === -1){
           inst_full_cat = inst_cat_title + ': ' + inst_category ;
@@ -88,6 +84,7 @@ module.exports = function modify_row_node_cats(cat_data, inst_nodes, strip_names
         }
 
       }
+      // console.log('inst_full_cat: ' + String(inst_full_cat))
 
       inst_node['cat-'+String(cat_type_num)] = inst_full_cat;
       inst_node['cat_'+String(cat_type_num)+'_index'] = inst_index;

@@ -7,7 +7,7 @@ var get_cat_names = require('../categories/get_cat_names');
 
 module.exports = function make_row_cat(cgm, updating=false) {
 
-  console.log('make_row_cat')
+  // console.log('make_row_cat')
 
   var params = cgm.params;
 
@@ -70,9 +70,9 @@ module.exports = function make_row_cat(cgm, updating=false) {
   d3.select(params.root+' .row_cat_container')
     .selectAll('g')
     .data(params.network_data.row_nodes, function(d){
-      console.log('-------------')
-      console.log(d['cat-0'])
-      console.log('-------------')
+      // console.log('-------------')
+      // console.log(d['cat-0'])
+      // console.log('-------------')
       return d.name;
     })
     .enter()
@@ -144,7 +144,7 @@ module.exports = function make_row_cat(cgm, updating=false) {
               //   cat_name = cat_name.split(': ')[1];
               // }
 
-              console.log(cat_name)
+              // console.log(cat_name)
 
               var inst_color = params.viz.cat_colors.row[inst_cat][cat_name];
 

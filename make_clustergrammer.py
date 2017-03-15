@@ -27,8 +27,8 @@ net.load_file('txt/rc_two_cats.txt')
 # net.swap_nan_for_zero()
 # net.set_cat_color('col', 1, 'Category: one', 'blue')
 
-# net.make_clust()
-# net.dendro_cats('row', 5)
+net.make_clust()
+net.dendro_cats('row', 5)
 
 net.make_clust(dist_type='cos',views=['N_row_sum', 'N_row_var'] , dendro=True,
                sim_mat=True, filter_sim=0.1, calc_cat_pval=False)

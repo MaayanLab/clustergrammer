@@ -4,6 +4,13 @@ var check_if_value_cats = require('./check_if_value_cats');
 
 module.exports = function process_category_info(params, viz, predefined_cat_colors=true){
 
+  console.log(predefined_cat_colors)
+
+  console.log('manually setting here: breaks enrichrgram')
+  predefined_cat_colors = true;
+
+  console.log('predefined_cat_colors ' + String(predefined_cat_colors))
+
   var super_string = ': ';
   var tmp_super;
   var inst_info;
@@ -60,10 +67,10 @@ module.exports = function process_category_info(params, viz, predefined_cat_colo
 
         var inst_node = params.network_data[inst_rc+'_nodes'][0];
 
-        console.log('defining cat_names')
-        console.log(cat_title)
-        console.log(inst_node[cat_title])
-        console.log('****************************')
+        // console.log('defining cat_names')
+        // console.log(cat_title)
+        // console.log(inst_node[cat_title])
+        // console.log('****************************')
 
         // look for title of category in category name
         if (typeof inst_node[cat_title] === 'string' ){
@@ -123,6 +130,7 @@ module.exports = function process_category_info(params, viz, predefined_cat_colo
     }
 
     if (_.has(params.network_data, 'cat_colors') && predefined_cat_colors === true){
+      console.log('use predefined_cat_colors')
       viz.cat_colors[inst_rc] = params.network_data.cat_colors[inst_rc];
     }
 
