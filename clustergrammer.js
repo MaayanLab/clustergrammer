@@ -4122,7 +4122,9 @@ var Clustergrammer =
 
 	        d3.select(inst_selection).style('opacity', 0.7);
 
-	        make_shadow_bars();
+	        if (d3.select(cgm.params.viz.viz_svg).classed('running_update') === false) {
+	          make_shadow_bars();
+	        }
 	      }
 	    }
 	  }
@@ -9766,7 +9768,16 @@ var Clustergrammer =
 
 	  setTimeout(enable_sidebar, 2500, cgm.params);
 
-	  setTimeout(d3.selectAll(cgm.params.root + ' .dendro_shadow').remove(), 500);
+	  // remove all dendro shadows
+	  setTimeout(remove_shadows, 50);
+	  setTimeout(remove_shadows, 100);
+	  setTimeout(remove_shadows, 500);
+	  setTimeout(remove_shadows, 1000);
+	  setTimeout(remove_shadows, 1500);
+
+	  function remove_shadows() {
+	    d3.selectAll(' .dendro_shadow').remove();
+	  }
 
 	  function finish_update() {
 	    d3.select(cgm.params.viz.viz_svg).transition().duration(250).style('opacity', 1.0);
