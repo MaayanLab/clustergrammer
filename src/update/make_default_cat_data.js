@@ -26,7 +26,7 @@ module.exports = function make_default_cat_data(cgm){
   var tmp_title;
   _.each(node_keys, function(inst_key){
     if (inst_key.indexOf('cat-') >= 0){
-      tmp_cat = check_node[inst_key]
+      tmp_cat = check_node[inst_key];
 
       // use given title
       if (tmp_cat.indexOf(title_sep) >=0){
@@ -36,7 +36,7 @@ module.exports = function make_default_cat_data(cgm){
         // tmp_title = 'Category-'+String(parseInt(tmp_title.split('-')[1]) + 1);
       }
 
-      current_cats.push(tmp_title)
+      current_cats.push(tmp_title);
     }
 
   });
@@ -65,7 +65,7 @@ module.exports = function make_default_cat_data(cgm){
       cat_data.push(inst_data);
     }
 
-  })
+  });
 
   // console.log('cat_data')
   // console.log(cat_data)

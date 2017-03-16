@@ -21,7 +21,7 @@ module.exports = function dendro_group_highlight(params, inst_selection, inst_da
         d3.select(inst_selection)
           .style('opacity', 0.7);
 
-        if (d3.select(cgm.params.viz.viz_svg).classed('running_update') === false){
+        if (d3.select(params.viz.viz_svg).classed('running_update') === false){
           make_shadow_bars();
         }
 

@@ -3,7 +3,7 @@ var utils = require('../Utils_clust');
 
 module.exports = function modify_row_node_cats(cat_data, inst_nodes, strip_names=false){
 
-  console.log('MODIFY ROW NODE CATS')
+  // console.log('MODIFY ROW NODE CATS')
 
   var cat_type_num = 0;
   var inst_index = 0;

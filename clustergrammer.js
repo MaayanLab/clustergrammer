@@ -1209,13 +1209,18 @@ var Clustergrammer =
 	var check_if_value_cats = __webpack_require__(21);
 
 	module.exports = function make_cat_params(params, viz) {
-	  var preserve_cats = arguments.length <= 2 || arguments[2] === undefined ? true : arguments[2];
+	  var predefined_cat_colors = arguments.length <= 2 || arguments[2] === undefined ? true : arguments[2];
 
 
 	  console.log('manually setting here: breaks enrichrgram');
-	  var predefined_cat_colors = true;
 
-	  console.log(predefined_cat_colors);
+	  // var predefined_cat_colors = true;
+	  // var predefined_cat_colors = true;
+
+	  // debugger;
+
+	  // console.log(predefined_cat_colors)
+
 
 	  console.log('predefined_cat_colors ' + String(predefined_cat_colors));
 
@@ -4122,7 +4127,7 @@ var Clustergrammer =
 
 	        d3.select(inst_selection).style('opacity', 0.7);
 
-	        if (d3.select(cgm.params.viz.viz_svg).classed('running_update') === false) {
+	        if (d3.select(params.viz.viz_svg).classed('running_update') === false) {
 	          make_shadow_bars();
 	        }
 	      }
@@ -9672,12 +9677,12 @@ var Clustergrammer =
 	  d3.selectAll(cgm.params.root + ' .ds' + String(cgm.params.viz.ds_level) + '_row').remove();
 
 	  // run optional callback function
-	  console.log('before and after matrix_update_callback');
-	  console.log(new_network_data.row_nodes[0]['cat-0']);
+	  // console.log('before and after matrix_update_callback')
+	  // console.log(new_network_data.row_nodes[0]['cat-0'])
 	  if (cgm.params.matrix_update_callback != null) {
 	    cgm.params.matrix_update_callback();
 	  }
-	  console.log(new_network_data.row_nodes[0]['cat-0']);
+	  // console.log(new_network_data.row_nodes[0]['cat-0'])
 
 	  var inst_group_level = cgm.params.group_level;
 	  var inst_crop_fitler = cgm.params.crop_filter_nodes;
@@ -10883,7 +10888,7 @@ var Clustergrammer =
 	  var strip_names = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
 
 
-	  console.log('MODIFY ROW NODE CATS');
+	  // console.log('MODIFY ROW NODE CATS')
 
 	  var cat_type_num = 0;
 	  var inst_index = 0;

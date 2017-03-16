@@ -3,12 +3,16 @@ var utils = require('../Utils_clust');
 var colors = require('../Colors');
 var check_if_value_cats = require('./check_if_value_cats');
 
-module.exports = function make_cat_params(params, viz, preserve_cats=true){
+module.exports = function make_cat_params(params, viz, predefined_cat_colors=true){
 
   console.log('manually setting here: breaks enrichrgram')
-  var predefined_cat_colors = true;
 
-  console.log(predefined_cat_colors)
+  // var predefined_cat_colors = true;
+  // var predefined_cat_colors = true;
+
+  // debugger;
+
+  // console.log(predefined_cat_colors)
 
 
   console.log('predefined_cat_colors ' + String(predefined_cat_colors))

@@ -26,12 +26,12 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
     .remove();
 
   // run optional callback function
-  console.log('before and after matrix_update_callback')
-  console.log(new_network_data.row_nodes[0]['cat-0'])
+  // console.log('before and after matrix_update_callback')
+  // console.log(new_network_data.row_nodes[0]['cat-0'])
   if (cgm.params.matrix_update_callback != null){
     cgm.params.matrix_update_callback();
   }
-  console.log(new_network_data.row_nodes[0]['cat-0'])
+  // console.log(new_network_data.row_nodes[0]['cat-0'])
 
   var inst_group_level = cgm.params.group_level;
   var inst_crop_fitler = cgm.params.crop_filter_nodes;
