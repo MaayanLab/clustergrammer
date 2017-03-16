@@ -1,4 +1,4 @@
-module.exports = function make_default_cat_data(cgm){
+module.exports = function generate_cat_data(cgm){
 
   // only row category resetting is supported currently
 
@@ -15,7 +15,7 @@ module.exports = function make_default_cat_data(cgm){
   var found_cat_name;
   var cat_name;
 
-  // console.log('make_default_cat_data')
+  // console.log('generate_cat_data')
   // console.log(cgm.params.viz.cat_names.row)
 
   // get current list of cateories

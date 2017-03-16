@@ -2,7 +2,7 @@ var make_row_cat = require('../dendrogram/make_row_cat');
 var calc_viz_params = require('../params/calc_viz_params');
 var resize_viz = require('../reset_size/resize_viz');
 var modify_row_node_cats = require('./modify_row_node_cats');
-var make_default_cat_data = require('./make_default_cat_data');
+var generate_cat_data = require('./generate_cat_data');
 
 module.exports = function reset_cats(run_resize_viz = true){
 
@@ -10,7 +10,7 @@ module.exports = function reset_cats(run_resize_viz = true){
 
   var cgm = this;
 
-  var cat_data = make_default_cat_data(cgm);
+  var cat_data = generate_cat_data(cgm);
 
   // do not change column category info
   var col_cat_colors = cgm.params.viz.cat_colors.col;
