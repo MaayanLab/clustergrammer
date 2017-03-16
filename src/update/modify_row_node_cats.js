@@ -3,7 +3,9 @@ var utils = require('../Utils_clust');
 
 module.exports = function modify_row_node_cats(cat_data, inst_nodes, strip_names=false){
 
-  // console.log('MODIFY ROW NODE CATS')
+  console.log('MODIFY ROW NODE CATS')
+  console.log('CAT_DATA')
+  console.log(cat_data)
 
   var cat_type_num = 0;
   var inst_index = 0;
@@ -51,6 +53,7 @@ module.exports = function modify_row_node_cats(cat_data, inst_nodes, strip_names
       inst_index = -1;
 
       inst_cat_num = 0;
+
       // loop through each category in the category-type
       _.each(inst_cats, function(inst_cat){
 
@@ -84,7 +87,6 @@ module.exports = function modify_row_node_cats(cat_data, inst_nodes, strip_names
         }
 
       }
-      // console.log('inst_full_cat: ' + String(inst_full_cat))
 
       inst_node['cat-'+String(cat_type_num)] = inst_full_cat;
       inst_node['cat_'+String(cat_type_num)+'_index'] = inst_index;

@@ -63,7 +63,7 @@ module.exports = function set_defaults(){
     tile_tip_callback:null,
     matrix_update_callback:null,
     dendro_callback:null,
-    new_cat_data:null
+    new_row_cats:null
   };
 
   return defaults;

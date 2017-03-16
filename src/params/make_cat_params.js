@@ -37,6 +37,11 @@ module.exports = function make_cat_params(params, viz, predefined_cat_colors=tru
     // console.log(tmp_keys)
 
     tmp_keys = tmp_keys.sort();
+
+    console.log('-------------------------------')
+    console.log('tmp_keys')
+    console.log(tmp_keys)
+    console.log('-------------------------------')
     _.each( tmp_keys, function(d){
       if (d.indexOf('cat-') >= 0){
         // console.log(d)
@@ -134,7 +139,6 @@ module.exports = function make_cat_params(params, viz, predefined_cat_colors=tru
 
     if (params.sim_mat){
       // sending row color info to columns since row color info can be updated
-      // using the update_cats endpoint
       viz.cat_colors.col = viz.cat_colors.row;
     }
 

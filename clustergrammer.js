@@ -620,7 +620,7 @@ var Clustergrammer =
 	    tile_tip_callback: null,
 	    matrix_update_callback: null,
 	    dendro_callback: null,
-	    new_cat_data: null
+	    new_row_cats: null
 	  };
 
 	  return defaults;
@@ -1239,6 +1239,11 @@ var Clustergrammer =
 	    // console.log(tmp_keys)
 
 	    tmp_keys = tmp_keys.sort();
+
+	    console.log('-------------------------------');
+	    console.log('tmp_keys');
+	    console.log(tmp_keys);
+	    console.log('-------------------------------');
 	    _.each(tmp_keys, function (d) {
 	      if (d.indexOf('cat-') >= 0) {
 	        // console.log(d)
@@ -1333,7 +1338,6 @@ var Clustergrammer =
 
 	    if (params.sim_mat) {
 	      // sending row color info to columns since row color info can be updated
-	      // using the update_cats endpoint
 	      viz.cat_colors.col = viz.cat_colors.row;
 	    }
 	  });
@@ -9680,13 +9684,13 @@ var Clustergrammer =
 	  // make tmp config to make new params
 	  var tmp_config = jQuery.extend(true, {}, cgm.config);
 
-	  var new_cat_data = null;
+	  var new_row_cats = null;
 
 	  // bring in 'new' category data
-	  if (cgm.params.new_cat_data != null) {
-	    modify_row_node_cats(cgm.params.new_cat_data, new_network_data.row_nodes);
-	    new_cat_data = cgm.params.new_cat_data;
-	    cgm.params.new_cat_data = new_cat_data;
+	  if (cgm.params.new_row_cats != null) {
+	    modify_row_node_cats(cgm.params.new_row_cats, new_network_data.row_nodes);
+	    new_row_cats = cgm.params.new_row_cats;
+	    cgm.params.new_row_cats = new_row_cats;
 	    // do not preserve the updated (row) cats
 	    var predefined_cat_colors = true;
 	    cgm.params.viz = make_cat_params(cgm.params, cgm.params.viz, predefined_cat_colors);
@@ -10878,7 +10882,9 @@ var Clustergrammer =
 	  var strip_names = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
 
 
-	  // console.log('MODIFY ROW NODE CATS')
+	  console.log('MODIFY ROW NODE CATS');
+	  console.log('CAT_DATA');
+	  console.log(cat_data);
 
 	  var cat_type_num = 0;
 	  var inst_index = 0;
@@ -10926,6 +10932,7 @@ var Clustergrammer =
 	      inst_index = -1;
 
 	      inst_cat_num = 0;
+
 	      // loop through each category in the category-type
 	      _.each(inst_cats, function (inst_cat) {
 
@@ -10954,7 +10961,6 @@ var Clustergrammer =
 	          inst_full_cat = inst_category;
 	        }
 	      }
-	      // console.log('inst_full_cat: ' + String(inst_full_cat))
 
 	      inst_node['cat-' + String(cat_type_num)] = inst_full_cat;
 	      inst_node['cat_' + String(cat_type_num) + '_index'] = inst_index;
@@ -11532,6 +11538,9 @@ var Clustergrammer =
 
 	module.exports = function update_cats(cgm, cat_data) {
 
+	  // Only accessible from the cgm API, cat_data is provided by externally
+	  ///////////////////////////////////////////////////////////////////////////
+
 	  // do not change column category info
 	  var col_cat_colors = cgm.params.viz.cat_colors.col;
 
@@ -11552,7 +11561,7 @@ var Clustergrammer =
 	  make_row_cat(cgm, true);
 	  resize_viz(cgm);
 
-	  cgm.params.new_cat_data = cat_data;
+	  cgm.params.new_row_cats = cat_data;
 
 	  cgm.params.viz.cat_colors.col = col_cat_colors;
 		};
@@ -11586,7 +11595,7 @@ var Clustergrammer =
 	  // modify the current inst copy of nodes
 	  modify_row_node_cats(cat_data, cgm.params.inst_nodes.row_nodes);
 
-	  cgm.params.new_cat_data = cat_data;
+	  cgm.params.new_row_cats = cat_data;
 	  cgm.params.viz.cat_colors.col = col_cat_colors;
 
 	  if (run_resize_viz) {

@@ -19,7 +19,7 @@ module.exports = function reset_cats(run_resize_viz = true){
   // modify the current inst copy of nodes
   modify_row_node_cats(cat_data, cgm.params.inst_nodes.row_nodes);
 
-  cgm.params.new_cat_data = cat_data;
+  cgm.params.new_row_cats = cat_data;
   cgm.params.viz.cat_colors.col = col_cat_colors;
 
   if (run_resize_viz){

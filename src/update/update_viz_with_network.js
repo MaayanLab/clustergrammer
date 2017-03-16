@@ -41,13 +41,13 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
   // make tmp config to make new params
   var tmp_config = jQuery.extend(true, {}, cgm.config);
 
-  var new_cat_data = null;
+  var new_row_cats = null;
 
   // bring in 'new' category data
-  if (cgm.params.new_cat_data != null){
-    modify_row_node_cats(cgm.params.new_cat_data, new_network_data.row_nodes);
-    new_cat_data = cgm.params.new_cat_data;
-    cgm.params.new_cat_data = new_cat_data;
+  if (cgm.params.new_row_cats != null){
+    modify_row_node_cats(cgm.params.new_row_cats, new_network_data.row_nodes);
+    new_row_cats = cgm.params.new_row_cats;
+    cgm.params.new_row_cats = new_row_cats;
     // do not preserve the updated (row) cats
     var predefined_cat_colors = true;
     cgm.params.viz = make_cat_params(cgm.params, cgm.params.viz, predefined_cat_colors);
