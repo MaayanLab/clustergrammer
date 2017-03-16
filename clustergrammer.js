@@ -1005,7 +1005,6 @@ var Clustergrammer =
 	'use strict';
 
 	var ini_label_params = __webpack_require__(16);
-	var ini_viz_params = __webpack_require__(17);
 	var set_viz_wrapper_size = __webpack_require__(23);
 	var get_svg_dim = __webpack_require__(25);
 	var calc_label_params = __webpack_require__(26);
@@ -1015,13 +1014,16 @@ var Clustergrammer =
 	var calc_matrix_params = __webpack_require__(30);
 	var set_zoom_params = __webpack_require__(35);
 	var calc_default_fs = __webpack_require__(37);
+	var utils = __webpack_require__(2);
+	var get_available_filters = __webpack_require__(4);
+	var make_cat_params = __webpack_require__(18);
 
 	module.exports = function calc_viz_params(params) {
-	  var preserve_cats = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
+	  var predefined_cat_colors = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
 
 
 	  params.labels = ini_label_params(params);
-	  params.viz = ini_viz_params(params, preserve_cats);
+	  params.viz = ini_viz_params(params, predefined_cat_colors);
 
 	  set_viz_wrapper_size(params);
 
@@ -1042,6 +1044,115 @@ var Clustergrammer =
 	  params = calc_matrix_params(params);
 	  params = set_zoom_params(params);
 	  params = calc_default_fs(params);
+
+	  function ini_viz_params(params) {
+	    var predefined_cat_colors = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
+
+
+	    var viz = {};
+
+	    viz.root = params.root;
+
+	    viz.root_tips = params.root.replace('#', '.') + '_' + 'd3-tip';
+
+	    viz.viz_wrapper = params.root + ' .viz_wrapper';
+	    viz.do_zoom = params.do_zoom;
+	    viz.background_color = params.background_color;
+	    viz.super_border_color = params.super_border_color;
+	    viz.outer_margins = params.outer_margins;
+	    viz.is_expand = params.ini_expand;
+	    viz.grey_border_width = params.grey_border_width;
+	    viz.show_dendrogram = params.show_dendrogram;
+	    viz.tile_click_hlight = params.tile_click_hlight;
+	    viz.inst_order = params.inst_order;
+	    viz.expand_button = params.expand_button;
+	    viz.sim_mat = params.sim_mat;
+	    viz.dendro_filter = params.dendro_filter;
+	    viz.cat_filter = params.cat_filter;
+	    viz.cat_value_colors = params.cat_value_colors;
+
+	    viz.viz_svg = viz.viz_wrapper + ' .viz_svg';
+
+	    viz.zoom_element = viz.viz_wrapper + ' .viz_svg';
+
+	    viz.uni_duration = 1000;
+	    // extra space below the clustergram (was 5)
+	    // will increase this to accomidate dendro slider
+	    viz.bottom_space = 10;
+	    viz.run_trans = false;
+	    viz.duration = 1000;
+
+	    viz.resize = params.resize;
+	    if (utils.has(params, 'size')) {
+	      viz.fixed_size = params.size;
+	    } else {
+	      viz.fixed_size = false;
+	    }
+
+	    // width is 1 over this value
+	    viz.border_fraction = 65;
+	    viz.uni_margin = 5;
+
+	    viz.super_labels = {};
+	    viz.super_labels.margin = {};
+	    viz.super_labels.dim = {};
+	    viz.super_labels.margin.left = viz.grey_border_width;
+	    viz.super_labels.margin.top = viz.grey_border_width;
+	    viz.super_labels.dim.width = 0;
+	    if (params.labels.super_labels) {
+	      viz.super_labels.dim.width = 15 * params.labels.super_label_scale;
+	    }
+
+	    viz.triangle_opacity = 0.6;
+
+	    viz.norm_labels = {};
+	    viz.norm_labels.width = {};
+
+	    viz.dendro_room = {};
+	    if (viz.show_dendrogram) {
+	      viz.dendro_room.symbol_width = 10;
+	    } else {
+	      viz.dendro_room.symbol_width = 0;
+	    }
+
+	    viz.cat_colors = params.cat_colors;
+
+	    console.log('ini_viz_params -> make_cat_params');
+	    console.log('predefined_cat_colors outside function ' + String(predefined_cat_colors));
+	    viz = make_cat_params(params, viz, predefined_cat_colors);
+
+	    if (_.has(params, 'group_level') == false) {
+	      if (viz.show_dendrogram) {
+	        params.group_level = {};
+	      }
+	      params.group_level.row = 5;
+	      params.group_level.col = 5;
+	    }
+
+	    viz.dendro_opacity = 0.35;
+
+	    viz.spillover_col_slant = viz.norm_labels.width.col;
+
+	    var filters = get_available_filters(params.network_data.views);
+
+	    viz.possible_filters = filters.possible_filters;
+	    viz.filter_data = filters.filter_data;
+
+	    viz.viz_nodes = {};
+
+	    // nodes that should be visible based on visible area
+	    viz.viz_nodes.row = params.network_data.row_nodes_names;
+	    viz.viz_nodes.col = params.network_data.col_nodes_names;
+
+	    // nodes that are currently visible
+	    viz.viz_nodes.curr_row = params.network_data.row_nodes_names;
+	    viz.viz_nodes.curr_col = params.network_data.col_nodes_names;
+
+	    // correct panning in x direction
+	    viz.x_offset = 0;
+
+	    return viz;
+	  };
 
 	  return params;
 	};
@@ -1081,123 +1192,7 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 17 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var utils = __webpack_require__(2);
-	var get_available_filters = __webpack_require__(4);
-	var make_cat_params = __webpack_require__(18);
-
-	module.exports = function ini_viz_params(params) {
-	  var predefined_cat_colors = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
-
-
-	  var viz = {};
-
-	  viz.root = params.root;
-
-	  viz.root_tips = params.root.replace('#', '.') + '_' + 'd3-tip';
-
-	  viz.viz_wrapper = params.root + ' .viz_wrapper';
-	  viz.do_zoom = params.do_zoom;
-	  viz.background_color = params.background_color;
-	  viz.super_border_color = params.super_border_color;
-	  viz.outer_margins = params.outer_margins;
-	  viz.is_expand = params.ini_expand;
-	  viz.grey_border_width = params.grey_border_width;
-	  viz.show_dendrogram = params.show_dendrogram;
-	  viz.tile_click_hlight = params.tile_click_hlight;
-	  viz.inst_order = params.inst_order;
-	  viz.expand_button = params.expand_button;
-	  viz.sim_mat = params.sim_mat;
-	  viz.dendro_filter = params.dendro_filter;
-	  viz.cat_filter = params.cat_filter;
-	  viz.cat_value_colors = params.cat_value_colors;
-
-	  viz.viz_svg = viz.viz_wrapper + ' .viz_svg';
-
-	  viz.zoom_element = viz.viz_wrapper + ' .viz_svg';
-
-	  viz.uni_duration = 1000;
-	  // extra space below the clustergram (was 5)
-	  // will increase this to accomidate dendro slider
-	  viz.bottom_space = 10;
-	  viz.run_trans = false;
-	  viz.duration = 1000;
-
-	  viz.resize = params.resize;
-	  if (utils.has(params, 'size')) {
-	    viz.fixed_size = params.size;
-	  } else {
-	    viz.fixed_size = false;
-	  }
-
-	  // width is 1 over this value
-	  viz.border_fraction = 65;
-	  viz.uni_margin = 5;
-
-	  viz.super_labels = {};
-	  viz.super_labels.margin = {};
-	  viz.super_labels.dim = {};
-	  viz.super_labels.margin.left = viz.grey_border_width;
-	  viz.super_labels.margin.top = viz.grey_border_width;
-	  viz.super_labels.dim.width = 0;
-	  if (params.labels.super_labels) {
-	    viz.super_labels.dim.width = 15 * params.labels.super_label_scale;
-	  }
-
-	  viz.triangle_opacity = 0.6;
-
-	  viz.norm_labels = {};
-	  viz.norm_labels.width = {};
-
-	  viz.dendro_room = {};
-	  if (viz.show_dendrogram) {
-	    viz.dendro_room.symbol_width = 10;
-	  } else {
-	    viz.dendro_room.symbol_width = 0;
-	  }
-
-	  viz.cat_colors = params.cat_colors;
-
-	  viz = make_cat_params(params, viz, predefined_cat_colors);
-
-	  if (_.has(params, 'group_level') == false) {
-	    if (viz.show_dendrogram) {
-	      params.group_level = {};
-	    }
-	    params.group_level.row = 5;
-	    params.group_level.col = 5;
-	  }
-
-	  viz.dendro_opacity = 0.35;
-
-	  viz.spillover_col_slant = viz.norm_labels.width.col;
-
-	  var filters = get_available_filters(params.network_data.views);
-
-	  viz.possible_filters = filters.possible_filters;
-	  viz.filter_data = filters.filter_data;
-
-	  viz.viz_nodes = {};
-
-	  // nodes that should be visible based on visible area
-	  viz.viz_nodes.row = params.network_data.row_nodes_names;
-	  viz.viz_nodes.col = params.network_data.col_nodes_names;
-
-	  // nodes that are currently visible
-	  viz.viz_nodes.curr_row = params.network_data.row_nodes_names;
-	  viz.viz_nodes.curr_col = params.network_data.col_nodes_names;
-
-	  // correct panning in x direction
-	  viz.x_offset = 0;
-
-	  return viz;
-	};
-
-/***/ },
+/* 17 */,
 /* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -1210,16 +1205,6 @@ var Clustergrammer =
 
 	module.exports = function make_cat_params(params, viz) {
 	  var predefined_cat_colors = arguments.length <= 2 || arguments[2] === undefined ? true : arguments[2];
-
-
-	  console.log('manually setting here: breaks enrichrgram');
-
-	  // var predefined_cat_colors = true;
-	  // var predefined_cat_colors = true;
-
-	  // debugger;
-
-	  // console.log(predefined_cat_colors)
 
 
 	  console.log('predefined_cat_colors ' + String(predefined_cat_colors));
@@ -1340,8 +1325,10 @@ var Clustergrammer =
 	    }
 
 	    if (_.has(params.network_data, 'cat_colors') && predefined_cat_colors === true) {
-	      console.log('use predefined_cat_colors');
+	      console.log('-- use predefined_cat_colors for ' + inst_rc + 's');
 	      viz.cat_colors[inst_rc] = params.network_data.cat_colors[inst_rc];
+	    } else {
+	      console.log('-- did not use predefined_cat_colors for ' + inst_rc + 's');
 	    }
 
 	    if (params.sim_mat) {
@@ -1350,6 +1337,7 @@ var Clustergrammer =
 	      viz.cat_colors.col = viz.cat_colors.row;
 	    }
 	  });
+	  console.log('--------------------------\n\n');
 
 	  viz.cat_colors = viz.cat_colors;
 
@@ -9670,6 +9658,8 @@ var Clustergrammer =
 
 	module.exports = function update_viz_with_network(cgm, new_network_data) {
 
+	  console.log('UPDATE VIZ WITH NETWORK');
+
 	  // set runnning_update class, prevents multiple update from running at once
 	  d3.select(cgm.params.viz.viz_svg).classed('running_update', true);
 
@@ -11583,6 +11573,8 @@ var Clustergrammer =
 	  var run_resize_viz = arguments.length <= 0 || arguments[0] === undefined ? true : arguments[0];
 
 
+	  console.log('RESET CATS');
+
 	  var cgm = this;
 
 	  var cat_data = make_default_cat_data(cgm);
@@ -11602,7 +11594,8 @@ var Clustergrammer =
 	    // resize visualizatino
 	    ////////////////////////////
 	    // recalculate the visualization parameters using the updated network_data
-	    cgm.params = calc_viz_params(cgm.params, false);
+	    var predefine_cat_colors = true;
+	    cgm.params = calc_viz_params(cgm.params, predefine_cat_colors);
 
 	    make_row_cat(cgm, true);
 	    resize_viz(cgm);

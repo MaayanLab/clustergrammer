@@ -6,6 +6,8 @@ var make_default_cat_data = require('./make_default_cat_data');
 
 module.exports = function reset_cats(run_resize_viz = true){
 
+  console.log('RESET CATS')
+
   var cgm = this;
 
   var cat_data = make_default_cat_data(cgm);
@@ -25,7 +27,8 @@ module.exports = function reset_cats(run_resize_viz = true){
     // resize visualizatino
     ////////////////////////////
     // recalculate the visualization parameters using the updated network_data
-    cgm.params = calc_viz_params(cgm.params, false);
+    var predefine_cat_colors = true;
+    cgm.params = calc_viz_params(cgm.params, predefine_cat_colors);
 
     make_row_cat(cgm, true);
     resize_viz(cgm);

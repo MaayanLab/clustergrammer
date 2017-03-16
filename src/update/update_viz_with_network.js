@@ -18,6 +18,8 @@ var make_cat_params = require('../params/make_cat_params');
 
 module.exports = function update_viz_with_network(cgm, new_network_data){
 
+  console.log('UPDATE VIZ WITH NETWORK')
+
   // set runnning_update class, prevents multiple update from running at once
   d3.select(cgm.params.viz.viz_svg).classed('running_update', true);
 
