@@ -1117,8 +1117,9 @@ var Clustergrammer =
 
 	    viz.cat_colors = params.cat_colors;
 
-	    console.log('ini_viz_params -> make_cat_params');
-	    console.log('predefined_cat_colors outside function ' + String(predefined_cat_colors));
+	    // console.log('ini_viz_params -> make_cat_params')
+	    // console.log('predefined_cat_colors outside function ' + String(predefined_cat_colors))
+
 	    viz = make_cat_params(params, viz, predefined_cat_colors);
 
 	    if (_.has(params, 'group_level') == false) {
@@ -1152,7 +1153,7 @@ var Clustergrammer =
 	    viz.x_offset = 0;
 
 	    return viz;
-	  };
+	  }
 
 	  return params;
 	};
@@ -1207,7 +1208,7 @@ var Clustergrammer =
 	  var predefined_cat_colors = arguments.length <= 2 || arguments[2] === undefined ? true : arguments[2];
 
 
-	  console.log('predefined_cat_colors ' + String(predefined_cat_colors));
+	  // console.log('predefined_cat_colors ' + String(predefined_cat_colors))
 
 	  var super_string = ': ';
 	  var tmp_super;
@@ -1331,10 +1332,10 @@ var Clustergrammer =
 	    }
 
 	    if (_.has(params.network_data, 'cat_colors') && predefined_cat_colors === true) {
-	      console.log('-- use predefined_cat_colors for ' + inst_rc + 's');
+	      // console.log('-- use predefined_cat_colors for ' + inst_rc + 's')
 	      viz.cat_colors[inst_rc] = params.network_data.cat_colors[inst_rc];
 	    } else {
-	      console.log('-- did not use predefined_cat_colors for ' + inst_rc + 's');
+	      // console.log('-- did not use predefined_cat_colors for '+inst_rc+'s')
 	    }
 
 	    if (params.sim_mat) {
@@ -1342,7 +1343,7 @@ var Clustergrammer =
 	      viz.cat_colors.col = viz.cat_colors.row;
 	    }
 	  });
-	  console.log('--------------------------\n\n');
+	  // console.log('--------------------------\n\n');
 
 	  viz.cat_colors = viz.cat_colors;
 
@@ -9663,7 +9664,7 @@ var Clustergrammer =
 
 	module.exports = function update_viz_with_network(cgm, new_network_data) {
 
-	  console.log('UPDATE VIZ WITH NETWORK');
+	  // console.log('UPDATE VIZ WITH NETWORK')
 
 	  // set runnning_update class, prevents multiple update from running at once
 	  d3.select(cgm.params.viz.viz_svg).classed('running_update', true);
@@ -9776,7 +9777,7 @@ var Clustergrammer =
 	  setTimeout(remove_shadows, 1500);
 
 	  function remove_shadows() {
-	    d3.selectAll(' .dendro_shadow').remove();
+	    d3.selectAll('.dendro_shadow').remove();
 	  }
 
 	  function finish_update() {
@@ -10883,9 +10884,9 @@ var Clustergrammer =
 	  var strip_names = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
 
 
-	  console.log('MODIFY ROW NODE CATS');
-	  console.log('CAT_DATA');
-	  console.log(cat_data);
+	  // console.log('MODIFY ROW NODE CATS')
+	  // console.log('CAT_DATA')
+	  // console.log(cat_data)
 
 	  var cat_type_num = 0;
 	  var inst_index = 0;
@@ -11583,7 +11584,7 @@ var Clustergrammer =
 	  var run_resize_viz = arguments.length <= 0 || arguments[0] === undefined ? true : arguments[0];
 
 
-	  console.log('RESET CATS');
+	  // console.log('RESET CATS')
 
 	  var cgm = this;
 
@@ -14638,7 +14639,7 @@ var Clustergrammer =
 	      // generate titles from cat info
 	      tmp_cat = check_node[inst_prop];
 
-	      cat_index = parseInt(inst_prop.split('cat-')[1]);
+	      cat_index = parseInt(inst_prop.split('cat-')[1], 10);
 
 	      // use given title
 	      if (tmp_cat.indexOf(title_sep) >= 0) {
@@ -14653,8 +14654,8 @@ var Clustergrammer =
 	    }
 	  });
 
-	  console.log('current_cats');
-	  console.log(current_cats);
+	  // console.log('current_cats')
+	  // console.log(current_cats)
 
 	  // initialize cat_data with categories in the correct order
 	  var all_index = _.keys(current_cats).sort();
@@ -14691,9 +14692,9 @@ var Clustergrammer =
 
 	  // });
 
-	  console.log('cat_data after cross checking with current cats');
-	  console.log(cat_data);
-	  console.log('-------------------------\n');
+	  // console.log('cat_data after cross checking with current cats')
+	  // console.log(cat_data)
+	  // console.log('-------------------------\n')
 
 	  _.each(row_nodes, function (inst_node) {
 
@@ -14705,7 +14706,7 @@ var Clustergrammer =
 
 	        cat_name = inst_node[inst_prop];
 
-	        cat_index = parseInt(inst_prop.split('cat-')[1]);
+	        cat_index = parseInt(inst_prop.split('cat-')[1], 10);
 
 	        // default title and name
 	        var cat_title = inst_prop;
@@ -14724,10 +14725,10 @@ var Clustergrammer =
 	          cat_name = cat_string;
 	        }
 
-	        console.log('cat_index -> ' + String(cat_index));
-	        console.log('cat_name ' + cat_name);
-	        console.log('cat_title ' + cat_title);
-	        console.log('--------');
+	        // console.log('cat_index -> ' + String(cat_index))
+	        // console.log('cat_name '+cat_name)
+	        // console.log('cat_title ' + cat_title)
+	        // console.log('--------')
 
 	        // cat_data is empty
 	        if (cat_data.length === 0) {
@@ -14802,8 +14803,8 @@ var Clustergrammer =
 	    cat_data.push(cat_type);
 	  }
 
-	  console.log('RETURNING CAT DATA');
-	  console.log(cat_data);
+	  // console.log('RETURNING CAT DATA')
+	  // console.log(cat_data)
 
 	  return cat_data;
 	};

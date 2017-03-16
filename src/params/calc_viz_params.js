@@ -108,8 +108,9 @@ module.exports = function calc_viz_params(params, predefined_cat_colors=true){
 
     viz.cat_colors = params.cat_colors;
 
-    console.log('ini_viz_params -> make_cat_params')
-    console.log('predefined_cat_colors outside function ' + String(predefined_cat_colors))
+    // console.log('ini_viz_params -> make_cat_params')
+    // console.log('predefined_cat_colors outside function ' + String(predefined_cat_colors))
+
     viz = make_cat_params(params, viz, predefined_cat_colors);
 
     if (_.has(params, 'group_level') == false){
@@ -143,7 +144,7 @@ module.exports = function calc_viz_params(params, predefined_cat_colors=true){
     viz.x_offset = 0;
 
     return viz;
-  };
+  }
 
   return params;
 };

@@ -6,7 +6,7 @@ var generate_cat_data = require('./generate_cat_data');
 
 module.exports = function reset_cats(run_resize_viz = true){
 
-  console.log('RESET CATS')
+  // console.log('RESET CATS')
 
   var cgm = this;
 

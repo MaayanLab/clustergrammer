@@ -32,7 +32,7 @@ module.exports = function generate_cat_data(cgm){
       // generate titles from cat info
       tmp_cat = check_node[inst_prop];
 
-      cat_index = parseInt(inst_prop.split('cat-')[1]);
+      cat_index = parseInt(inst_prop.split('cat-')[1], 10);
 
       // use given title
       if (tmp_cat.indexOf(title_sep) >=0){
@@ -48,12 +48,11 @@ module.exports = function generate_cat_data(cgm){
 
   });
 
-  console.log('current_cats')
-  console.log(current_cats)
-
+  // console.log('current_cats')
+  // console.log(current_cats)
 
   // initialize cat_data with categories in the correct order
-  var all_index = _.keys(current_cats).sort()
+  var all_index = _.keys(current_cats).sort();
 
   var inst_data;
   _.each(all_index, function(inst_index){
@@ -62,7 +61,7 @@ module.exports = function generate_cat_data(cgm){
     inst_data.cat_title = current_cats[inst_index];
     inst_data.cats = [];
 
-    cat_data.push(inst_data)
+    cat_data.push(inst_data);
   });
 
   // // initialize cat_data (keep original order)
@@ -87,9 +86,9 @@ module.exports = function generate_cat_data(cgm){
 
   // });
 
-  console.log('cat_data after cross checking with current cats')
-  console.log(cat_data)
-  console.log('-------------------------\n')
+  // console.log('cat_data after cross checking with current cats')
+  // console.log(cat_data)
+  // console.log('-------------------------\n')
 
   _.each(row_nodes, function(inst_node){
 
@@ -101,7 +100,7 @@ module.exports = function generate_cat_data(cgm){
 
         cat_name = inst_node[inst_prop];
 
-        cat_index = parseInt(inst_prop.split('cat-')[1]);
+        cat_index = parseInt(inst_prop.split('cat-')[1], 10);
 
         // default title and name
         var cat_title = inst_prop;
@@ -120,10 +119,10 @@ module.exports = function generate_cat_data(cgm){
           cat_name = cat_string;
         }
 
-        console.log('cat_index -> ' + String(cat_index))
-        console.log('cat_name '+cat_name)
-        console.log('cat_title ' + cat_title)
-        console.log('--------')
+        // console.log('cat_index -> ' + String(cat_index))
+        // console.log('cat_name '+cat_name)
+        // console.log('cat_title ' + cat_title)
+        // console.log('--------')
 
         // cat_data is empty
         if (cat_data.length === 0){
@@ -208,8 +207,8 @@ module.exports = function generate_cat_data(cgm){
 
   }
 
-  console.log('RETURNING CAT DATA')
-  console.log(cat_data)
+  // console.log('RETURNING CAT DATA')
+  // console.log(cat_data)
 
   return cat_data;
 };
