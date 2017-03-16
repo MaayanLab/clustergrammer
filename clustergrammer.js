@@ -1240,10 +1240,11 @@ var Clustergrammer =
 
 	    tmp_keys = tmp_keys.sort();
 
-	    console.log('-------------------------------');
-	    console.log('tmp_keys');
-	    console.log(tmp_keys);
-	    console.log('-------------------------------');
+	    // console.log('-------------------------------')
+	    // console.log('tmp_keys')
+	    // console.log(tmp_keys)
+	    // console.log('-------------------------------')
+
 	    _.each(tmp_keys, function (d) {
 	      if (d.indexOf('cat-') >= 0) {
 	        // console.log(d)
@@ -14626,52 +14627,73 @@ var Clustergrammer =
 	  // get current list of cateories
 	  var check_node = row_nodes[0];
 	  var node_keys = _.keys(check_node);
-	  var current_cats = [];
+	  var current_cats = {};
 	  var tmp_cat;
 	  var tmp_title;
-	  _.each(node_keys, function (inst_key) {
-	    if (inst_key.indexOf('cat-') >= 0) {
-	      tmp_cat = check_node[inst_key];
+	  var cat_index;
+	  _.each(node_keys, function (inst_prop) {
+
+	    if (inst_prop.indexOf('cat-') >= 0) {
+
+	      // generate titles from cat info
+	      tmp_cat = check_node[inst_prop];
+
+	      cat_index = parseInt(inst_prop.split('cat-')[1]);
 
 	      // use given title
 	      if (tmp_cat.indexOf(title_sep) >= 0) {
 	        tmp_title = tmp_cat.split(title_sep)[0];
 	      } else {
-	        tmp_title = inst_key;
-	        // tmp_title = 'Category-'+String(parseInt(tmp_title.split('-')[1]) + 1);
+	        tmp_title = inst_prop;
 	      }
 
-	      current_cats.push(tmp_title);
+	      // current_cats.push(tmp_title);
+
+	      current_cats[cat_index] = tmp_title;
 	    }
 	  });
 
-	  // console.log('current_cats: '+ String(current_cats))
+	  console.log('current_cats');
+	  console.log(current_cats);
 
-	  // initialize cat_data (keep original order)
-	  var found_title;
-	  _.each(cgm.params.viz.cat_names.row, function (inst_title) {
+	  // initialize cat_data with categories in the correct order
+	  var all_index = _.keys(current_cats).sort();
 
-	    found_title = false;
+	  var inst_data;
+	  _.each(all_index, function (inst_index) {
 
-	    // console.log('loop through cat_names')
+	    inst_data = {};
+	    inst_data.cat_title = current_cats[inst_index];
+	    inst_data.cats = [];
 
-	    if (current_cats.indexOf(inst_title) >= 0) {
-	      found_title = true;
-	    }
-
-	    // console.log('found_title ' + String(found_title))
-
-	    // only track cats that are found in the incoming nodes
-	    if (found_title) {
-	      var inst_data = {};
-	      inst_data.cat_title = inst_title;
-	      inst_data.cats = [];
-	      cat_data.push(inst_data);
-	    }
+	    cat_data.push(inst_data);
 	  });
 
-	  // console.log('cat_data')
-	  // console.log(cat_data)
+	  // // initialize cat_data (keep original order)
+	  // var found_title;
+	  // _.each(cgm.params.viz.cat_names.row, function(inst_title){
+
+	  //   found_title = false;
+
+	  //   console.log('inst_title -> ' + String(inst_title))
+
+	  //   if (current_cats.indexOf(inst_title) >= 0){
+	  //     found_title = true;
+	  //   }
+
+	  //   // only track cats that are found in the incoming nodes
+	  //   if (found_title){
+	  //     var inst_data = {};
+	  //     inst_data.cat_title = inst_title;
+	  //     inst_data.cats = [];
+	  //     cat_data.push(inst_data);
+	  //   }
+
+	  // });
+
+	  console.log('cat_data after cross checking with current cats');
+	  console.log(cat_data);
+	  console.log('-------------------------\n');
 
 	  _.each(row_nodes, function (inst_node) {
 
@@ -14682,6 +14704,8 @@ var Clustergrammer =
 	      if (inst_prop.indexOf('cat-') > -1) {
 
 	        cat_name = inst_node[inst_prop];
+
+	        cat_index = parseInt(inst_prop.split('cat-')[1]);
 
 	        // default title and name
 	        var cat_title = inst_prop;
@@ -14700,9 +14724,10 @@ var Clustergrammer =
 	          cat_name = cat_string;
 	        }
 
-	        // console.log('cat_name '+cat_name)
-	        // console.log('cat_title ' + cat_title)
-	        // console.log('--------')
+	        console.log('cat_index -> ' + String(cat_index));
+	        console.log('cat_name ' + cat_name);
+	        console.log('cat_title ' + cat_title);
+	        console.log('--------');
 
 	        // cat_data is empty
 	        if (cat_data.length === 0) {
@@ -14776,6 +14801,9 @@ var Clustergrammer =
 
 	    cat_data.push(cat_type);
 	  }
+
+	  console.log('RETURNING CAT DATA');
+	  console.log(cat_data);
 
 	  return cat_data;
 	};
