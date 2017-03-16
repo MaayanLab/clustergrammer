@@ -1203,37 +1203,19 @@ var Clustergrammer =
 
 	'use strict';
 
-	var process_category_info = __webpack_require__(19);
 	var calc_cat_params = __webpack_require__(22);
+	var utils = __webpack_require__(2);
+	var colors = __webpack_require__(20);
+	var check_if_value_cats = __webpack_require__(21);
 
 	module.exports = function make_cat_params(params, viz) {
 	  var preserve_cats = arguments.length <= 2 || arguments[2] === undefined ? true : arguments[2];
 
 
-	  viz = process_category_info(params, viz, preserve_cats);
-	  viz = calc_cat_params(params, viz);
-
-	  return viz;
-		};
-
-/***/ },
-/* 19 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var utils = __webpack_require__(2);
-	var colors = __webpack_require__(20);
-	var check_if_value_cats = __webpack_require__(21);
-
-	module.exports = function process_category_info(params, viz) {
-	  var predefined_cat_colors = arguments.length <= 2 || arguments[2] === undefined ? true : arguments[2];
-
+	  console.log('manually setting here: breaks enrichrgram');
+	  var predefined_cat_colors = true;
 
 	  console.log(predefined_cat_colors);
-
-	  console.log('manually setting here: breaks enrichrgram');
-	  predefined_cat_colors = true;
 
 	  console.log('predefined_cat_colors ' + String(predefined_cat_colors));
 
@@ -1369,10 +1351,13 @@ var Clustergrammer =
 	  viz.cat_colors.opacity = 0.6;
 	  viz.cat_colors.active_opacity = 0.9;
 
+	  viz = calc_cat_params(params, viz);
+
 	  return viz;
-	};
+		};
 
 /***/ },
+/* 19 */,
 /* 20 */
 /***/ function(module, exports) {
 
