@@ -620,6 +620,7 @@ var Clustergrammer =
 	    tile_tip_callback: null,
 	    matrix_update_callback: null,
 	    dendro_callback: null,
+	    dendro_click_callback: null,
 	    new_row_cats: null,
 	    make_modals: true
 	  };
@@ -3960,6 +3961,10 @@ var Clustergrammer =
 
 	    if (params.viz.cat_info[inst_rc] !== null) {
 	      make_cat_breakdown_graph(params, inst_rc, d, dendro_info[i], inst_selector);
+	    }
+
+	    if (cgm.params.dendro_click_callback != null) {
+	      cgm.params.dendro_click_callback(this);
 	    }
 	  }).call(dendro_tip);
 

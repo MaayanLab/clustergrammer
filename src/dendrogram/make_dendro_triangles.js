@@ -216,15 +216,19 @@ module.exports = function make_dendro_triangles(cgm, inst_rc, is_change_group = 
       d3.select(params.root+' .dendro_info input')
         .attr('value', group_string);
 
-        var inst_selector = '.dendro_info';
+      var inst_selector = '.dendro_info';
 
-        // remove old graphs
-        d3.select('.dendro_info .cluster_info_container .cat_graph')
-          .remove();
+      // remove old graphs
+      d3.select('.dendro_info .cluster_info_container .cat_graph')
+        .remove();
 
-        if ( params.viz.cat_info[inst_rc] !== null ){
-          make_cat_breakdown_graph(params, inst_rc, d, dendro_info[i], inst_selector);
-        }
+      if ( params.viz.cat_info[inst_rc] !== null ){
+        make_cat_breakdown_graph(params, inst_rc, d, dendro_info[i], inst_selector);
+      }
+
+      if (cgm.params.dendro_click_callback != null){
+        cgm.params.dendro_click_callback(this);
+      }
 
     })
     .call(dendro_tip);
