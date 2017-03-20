@@ -620,7 +620,8 @@ var Clustergrammer =
 	    tile_tip_callback: null,
 	    matrix_update_callback: null,
 	    dendro_callback: null,
-	    new_row_cats: null
+	    new_row_cats: null,
+	    make_modals: true
 	  };
 
 	  return defaults;
@@ -13741,7 +13742,10 @@ var Clustergrammer =
 
 	  sidebar.append('div').classed('icons_section', true).style('text-align', 'center');
 
-	  make_modals(params);
+	  if (cgm.params.make_modals) {
+	    make_modals(params);
+	  }
+
 	  if (params.sidebar.icons) {
 	    make_icons(cgm, sidebar);
 	  }
