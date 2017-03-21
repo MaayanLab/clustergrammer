@@ -199,7 +199,7 @@ function Enrichrgram(inst_cgm){
       .append('rect')
       .classed('enr_menu_background', true)
       .style('width', 500)
-      .style('height', 425)
+      .style('height', 440)
       .style('opacity', 0.95)
       .style('fill', 'white')
       .style('stroke', '#A3A3A3')
@@ -245,7 +245,9 @@ function Enrichrgram(inst_cgm){
       .style('height', 330)
       .classed('enr_lib_section','true');
 
-    var possible_libraries = ['ChEA_2015','KEA_2015',
+    var possible_libraries = [
+      'ChEA_2016',
+      'KEA_2015',
       'ENCODE_TF_ChIP-seq_2015',
       'ENCODE_Histone_Modifications_2015',
       'Disease_Perturbations_from_GEO_up',
@@ -253,7 +255,8 @@ function Enrichrgram(inst_cgm){
       'GO_Molecular_Function_2015',
       'GO_Biological_Process_2015',
       'GO_Cellular_Component_2015',
-      'Reactome_2015',
+      'Reactome_2016',
+      'KEGG_2016',
       'MGI_Mammalian_Phenotype_Level_4'
       ];
 
@@ -267,12 +270,12 @@ function Enrichrgram(inst_cgm){
       .style('stroke-width', '3px')
       .style('opacity', 0.3)
       .style('fill','black')
-      .attr('transform', 'translate(20, 380)');
+      .attr('transform', 'translate(20, 405)');
 
     var enr_export_container = enr_menu
       .append('g')
       .classed('enr_export_container', true)
-      .attr('transform', 'translate(20, 410)');
+      .attr('transform', 'translate(20, 425)');
 
     enr_export_container
       .append('text')
