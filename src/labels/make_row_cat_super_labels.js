@@ -83,84 +83,65 @@ module.exports = function make_row_cat_super_labels(cgm){
   var unit_length = extra_y_room * viz.cat_room.symbol_width;
   var bar_width = unit_length * 0.9;
 
-  // do not show row label categories if you are viewing a similarity matrix
-  if (viz.sim_mat === false){
+  // show row label categories even if viewing a simmilarity matrix
 
-    d3.select(params.root+' .row_cat_label_container')
-      .selectAll()
-      .data(viz.all_cats.row)
-      .enter()
-      .append('text')
-      .style('width', '100px')
-      .style('height', bar_width+ 'px')
-      .classed('row_cat_super',true)
-      .style('font-size', cat_text_size+'px')
-      .style('opacity', cat_super_opacity)
-      .style('cursor','default')
-      .attr('transform', function(d){
-        var inst_y = extra_y_room*viz.cat_room.symbol_width
-          * parseInt( d.split('-')[1], 10 );
-        return 'translate(0,'+inst_y+')';
-      })
-      .text(function(d){
+  d3.select(params.root+' .row_cat_label_container')
+    .selectAll()
+    .data(viz.all_cats.row)
+    .enter()
+    .append('text')
+    .style('width', '100px')
+    .style('height', bar_width+ 'px')
+    .classed('row_cat_super',true)
+    .style('font-size', cat_text_size+'px')
+    .style('opacity', cat_super_opacity)
+    .style('cursor','default')
+    .attr('transform', function(d){
+      var inst_y = extra_y_room*viz.cat_room.symbol_width
+        * parseInt( d.split('-')[1], 10 );
+      return 'translate(0,'+inst_y+')';
+    })
+    .text(function(d){
 
-        return get_cat_title(viz, d, 'row');
-      });
+      return get_cat_title(viz, d, 'row');
+    });
 
-    // // optional bar behind name
-    // ///////////////////////////////
-    // d3.select('.row_cat_label_bar_container')
-    //   .selectAll()
-    //   .data(viz.all_cats.row)
-    //   .enter()
-    //   .append('rect')
-    //   .style('height', bar_width +'px')
-    //   .style('fill', 'green')
-    //   .style('width','60px')
-    //   .style('opacity', 0)
-    //   .attr('transform', function(d){
-    //     var inst_y = unit_length * (parseInt( d.split('-')[1], 10 ) -0.75 );
-    //     return 'translate(0,'+inst_y+')';
-    //   })
+  // selection bar
+  ///////////////////////////////
+  d3.select(params.root+' .row_cat_label_container')
+    .selectAll()
+    .data(viz.all_cats.row)
+    .enter()
+    .append('rect')
+    .classed('row_cat_super',true)
+    .classed('row_cat_selection_bar', true)
+    .style('height', bar_width +'px')
+    .style('fill', 'green')
+    .style('width','120px')
+    .style('opacity', 0)
+    .attr('transform', function(d){
+      var inst_y = unit_length * (parseInt( d.split('-')[1], 10 ) -0.75 );
+      return 'translate(0,'+inst_y+')';
+    })
+    .on('mouseover', function(d){
 
-    // selection bar
-    ///////////////////////////////
-    d3.select(params.root+' .row_cat_label_container')
-      .selectAll()
-      .data(viz.all_cats.row)
-      .enter()
-      .append('rect')
-      .classed('row_cat_super',true)
-      .classed('row_cat_selection_bar', true)
-      .style('height', bar_width +'px')
-      .style('fill', 'green')
-      .style('width','120px')
-      .style('opacity', 0)
-      .attr('transform', function(d){
-        var inst_y = unit_length * (parseInt( d.split('-')[1], 10 ) -0.75 );
-        return 'translate(0,'+inst_y+')';
-      })
-      .on('mouseover', function(d){
+      d3.selectAll(params.viz.root_tips+'_row_cat_super')
+        .style('display', 'block')
+        .style('opacity', 1);
 
-        d3.selectAll(params.viz.root_tips+'_row_cat_super')
-          .style('display', 'block')
-          .style('opacity', 1);
+      cat_tip.show(d);
+    })
+    .on('mouseout', function(){
+      cat_tip.hide(this);
+      // might not need
+      d3.selectAll('.d3-tip')
+        .style('display', 'none');
 
-        cat_tip.show(d);
-      })
-      .on('mouseout', function(){
-        cat_tip.hide(this);
-        // might not need
-        d3.selectAll('.d3-tip')
-          .style('display', 'none');
+      d3.selectAll(params.viz.root_tips+'_row_cat_super')
+        .style('display', 'none')
+        .style('opacity', 0);
 
-        d3.selectAll(params.viz.root_tips+'_row_cat_super')
-          .style('display', 'none')
-          .style('opacity', 0);
-
-      });
-
-  }
+    });
 
   // row category super-label mouseover
   //////////////////////////////////////
