@@ -19,16 +19,18 @@ module.exports = function filter_viz_using_names(names, external_cgm = false){
 
   _.each(['row', 'col'], function(inst_rc){
 
-    // I'm requiring view 0
-    // var orig_nodes = params.network_data.views[0].nodes[inst_rc+'_nodes'];
     var orig_nodes = params.inst_nodes[inst_rc+'_nodes'];
 
     if (_.has(names, inst_rc)){
 
-      var inst_names = names[inst_rc];
-      found_nodes = $.grep(orig_nodes, function(d){
-        return $.inArray(d.name, inst_names) > -1 ;
-      });
+      if (names[inst_rc].length > 0){
+        var inst_names = names[inst_rc];
+        found_nodes = $.grep(orig_nodes, function(d){
+          return $.inArray(d.name, inst_names) > -1 ;
+        });
+      } else {
+        found_nodes = orig_nodes;
+      }
 
     } else {
       found_nodes = orig_nodes;
