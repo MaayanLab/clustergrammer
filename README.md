@@ -43,4 +43,6 @@ Pleae see Clustergramer's [documentation](http://clustergrammer.readthedocs.io/)
 - [Developing Clustergrammer](https://clustergrammer.readthedocs.io/developing_with_clustergrammer.html)
 
 ## Licensing
-Clustergrammer was developed by Nicolas Fernandez in the [Ma'ayan lab](http://labs.icahn.mssm.edu/maayanlab/) at the [Icahn School of Medicine at Mount Sinai](http://icahn.mssm.edu/). Clustergrammer's license and third-party licenses are in the LICENSES directory and more information can be found at [Clustergrammer License](https://clustergrammer.readthedocs.io/license.html).
+Clustergrammer was developed by the [Ma'ayan lab](http://labs.icahn.mssm.edu/maayanlab/) at the [Icahn School of Medicine at Mount Sinai](http://icahn.mssm.edu/) for the [BD2K-LINCS DCIC](http://lincs-dcic.org/#/) and the [KMC-IDG](http://commonfund.nih.gov/idg/overview). Clustergrammer's license and third-party licenses are in the LICENSES directory and more information can be found at [Clustergrammer License](https://clustergrammer.readthedocs.io/license.html).
+
+Please [contact us](http://clustergrammer.readthedocs.io/#funding-and-contact) for support, comments, Licensing questions, and suggestions.
