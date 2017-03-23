@@ -3,16 +3,16 @@ module.exports = function zoom_rules_x(params, zoom_info){
   var viz = params.viz;
 
   // zoom in the y direction before zooming in the x direction
-  if (viz.zoom_switch > 1){
+  if (viz.zoom_ratio.x > 1){
 
-    if (zoom_info.zoom_x < viz.zoom_switch) {
+    if (zoom_info.zoom_x < viz.zoom_ratio.x) {
 
       // remove this
       // zoom_info.trans_x = - params.viz.clust.margin.left;
 
       zoom_info.zoom_x = 1;
     } else {
-      zoom_info.zoom_x = zoom_info.zoom_x / viz.zoom_switch;
+      zoom_info.zoom_x = zoom_info.zoom_x / viz.zoom_ratio.x;
 
       // console.log('********* zoom_x: ' + String(zoom_info.zoom_x))
 

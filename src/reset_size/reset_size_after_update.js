@@ -30,8 +30,6 @@ module.exports = function reset_size_after_update(cgm, duration=0, delays=null) 
   var params = cgm.params;
 
   var row_nodes = cgm.params.network_data.row_nodes;
-  // var col_nodes = cgm.params.network_data.col_nodes;
-  // var links = cgm.params.network_data.links;
 
   params.zoom_info = ini_zoom_info();
 
@@ -57,6 +55,7 @@ module.exports = function reset_size_after_update(cgm, duration=0, delays=null) 
       params.viz.clust.dim.width = params.viz.clust.dim.height;
     }
   }
+
   params.viz = calc_zoom_switching(params.viz);
 
   // redefine x_scale and y_scale rangeBands
@@ -66,7 +65,7 @@ module.exports = function reset_size_after_update(cgm, duration=0, delays=null) 
   // redefine zoom extent
   params.viz.real_zoom = params.viz.norm_labels.width.col / (params.viz.x_scale.rangeBand()/2);
   params.zoom_behavior
-    .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch]);
+    .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_ratio.x]);
 
   // redefine border width
   params.viz.border_width.x = params.viz.x_scale.rangeBand() / params.viz.border_fraction;

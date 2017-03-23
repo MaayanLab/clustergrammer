@@ -79,6 +79,8 @@ var Clustergrammer =
 	 */
 	function Clustergrammer(args) {
 
+	  console.log('ZOOM SWITCH');
+
 	  /* Main program
 	   * ----------------------------------------------------------------------- */
 	  // consume and validate user input
@@ -96,7 +98,7 @@ var Clustergrammer =
 	  cgm.config = config;
 
 	  // set up zoom
-	  cgm.params.zoom_behavior = d3.behavior.zoom().scaleExtent([1, cgm.params.viz.real_zoom * cgm.params.viz.zoom_switch]).on('zoom', function () {
+	  cgm.params.zoom_behavior = d3.behavior.zoom().scaleExtent([1, cgm.params.viz.real_zoom * cgm.params.viz.zoom_ratio.x]).on('zoom', function () {
 	    run_zoom(cgm);
 	  });
 
@@ -1816,14 +1818,14 @@ var Clustergrammer =
 
 	  var width_by_col = viz.clust.dim.width / viz.num_col_nodes;
 	  var height_by_row = viz.clust.dim.height / viz.num_row_nodes;
-	  viz.zoom_switch = width_by_col / height_by_row;
 
 	  viz.zoom_ratio = {};
+	  viz.zoom_ratio.x = width_by_col / height_by_row;
 	  viz.zoom_ratio.y = 1;
 
-	  if (viz.zoom_switch < 1) {
-	    viz.zoom_ratio.y = 1 / viz.zoom_switch;
-	    viz.zoom_switch = 1;
+	  if (viz.zoom_ratio.x < 1) {
+	    viz.zoom_ratio.y = 1 / viz.zoom_ratio.x;
+	    viz.zoom_ratio.x = 1;
 	  }
 
 	  return viz;
@@ -5024,7 +5026,6 @@ var Clustergrammer =
 	    var rel_width_hlight = 6;
 	    var opacity_hlight = 0.85;
 	    var hlight_width = rel_width_hlight * params.viz.border_width.x;
-	    // var hlight_height = rel_width_hlight*params.viz.border_width/params.viz.zoom_switch;
 
 	    d3.selectAll(params.root + ' .click_hlight').remove();
 
@@ -6103,8 +6104,8 @@ var Clustergrammer =
 	      }
 	      // num_trims = params.labels.row_max_char;
 	    } else {
-	      if (params.viz.zoom_switch > 1) {
-	        inst_zoom = params.zoom_behavior.scale() / params.viz.zoom_switch;
+	      if (params.viz.zoom_ratio.x > 1) {
+	        inst_zoom = params.zoom_behavior.scale() / params.viz.zoom_ratio.x;
 	      } else {
 	        inst_zoom = params.zoom_behavior.scale();
 	      }
@@ -6230,8 +6231,8 @@ var Clustergrammer =
 
 	    if (real_font_size.col > params.labels.max_allow_fs) {
 
-	      if (params.viz.zoom_switch > 1) {
-	        inst_zoom = params.zoom_behavior.scale() / params.viz.zoom_switch;
+	      if (params.viz.zoom_ratio.x > 1) {
+	        inst_zoom = params.zoom_behavior.scale() / params.viz.zoom_ratio.x;
 	      } else {
 	        inst_zoom = params.zoom_behavior.scale();
 	      }
@@ -6261,7 +6262,7 @@ var Clustergrammer =
 
 	  var real_font_size = {};
 	  // zoom_switch behavior has to change with zoom_ratio.y
-	  if (params.viz.zoom_switch > 1) {
+	  if (params.viz.zoom_ratio.x > 1) {
 	    real_font_size.row = params.labels.default_fs_row * params.zoom_behavior.scale();
 	    real_font_size.col = params.labels.default_fs_col * params.zoom_behavior.scale();
 	  } else {
@@ -6561,7 +6562,7 @@ var Clustergrammer =
 	  // disable zoom while transitioning
 	  svg_group.on('.zoom', null);
 
-	  params.zoom_behavior.scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch]).on('zoom', function () {
+	  params.zoom_behavior.scaleExtent([1, params.viz.real_zoom * params.viz.zoom_ratio.x]).on('zoom', function () {
 	    run_zoom(cgm);
 	  });
 
@@ -6703,16 +6704,6 @@ var Clustergrammer =
 	  zoom_info.trans_y = params.zoom_behavior.translate()[1] - params.viz.clust.margin.top;
 
 	  d3.selectAll(params.viz.root_tips).style('display', 'none');
-
-	  // // there will be negative trans_x that is not allowed while zooming in the
-	  // // y direction only. Switch this to positive and add it to the trans_x when
-	  // // x-zooming is allowed (will be reset when zooming has stopped)
-	  // if (zoom_info.zoom_y < params.viz.zoom_switch){
-	  //   // console.log('below')
-	  //   cgm.params.viz.x_offset = -(zoom_info.trans_x + 100);
-	  // }
-
-	  // console.log('x_offset: ' + String(cgm.params.viz.x_offset))
 
 	  // transfer zoom_info to params
 	  params.zoom_info = zoom_rules_y(params, zoom_info);
@@ -7043,16 +7034,16 @@ var Clustergrammer =
 	  var viz = params.viz;
 
 	  // zoom in the y direction before zooming in the x direction
-	  if (viz.zoom_switch > 1) {
+	  if (viz.zoom_ratio.x > 1) {
 
-	    if (zoom_info.zoom_x < viz.zoom_switch) {
+	    if (zoom_info.zoom_x < viz.zoom_ratio.x) {
 
 	      // remove this
 	      // zoom_info.trans_x = - params.viz.clust.margin.left;
 
 	      zoom_info.zoom_x = 1;
 	    } else {
-	      zoom_info.zoom_x = zoom_info.zoom_x / viz.zoom_switch;
+	      zoom_info.zoom_x = zoom_info.zoom_x / viz.zoom_ratio.x;
 
 	      // console.log('********* zoom_x: ' + String(zoom_info.zoom_x))
 
@@ -9363,7 +9354,7 @@ var Clustergrammer =
 	  cgm.params = new_params;
 
 	  // set up zoom
-	  cgm.params.zoom_behavior = d3.behavior.zoom().scaleExtent([1, cgm.params.viz.real_zoom * cgm.params.viz.zoom_switch]).on('zoom', function () {
+	  cgm.params.zoom_behavior = d3.behavior.zoom().scaleExtent([1, cgm.params.viz.real_zoom * cgm.params.viz.zoom_ratio.x]).on('zoom', function () {
 	    run_zoom(cgm);
 	  });
 
@@ -9643,8 +9634,6 @@ var Clustergrammer =
 	  var params = cgm.params;
 
 	  var row_nodes = cgm.params.network_data.row_nodes;
-	  // var col_nodes = cgm.params.network_data.col_nodes;
-	  // var links = cgm.params.network_data.links;
 
 	  params.zoom_info = ini_zoom_info();
 
@@ -9670,6 +9659,7 @@ var Clustergrammer =
 	      params.viz.clust.dim.width = params.viz.clust.dim.height;
 	    }
 	  }
+
 	  params.viz = calc_zoom_switching(params.viz);
 
 	  // redefine x_scale and y_scale rangeBands
@@ -9678,7 +9668,7 @@ var Clustergrammer =
 
 	  // redefine zoom extent
 	  params.viz.real_zoom = params.viz.norm_labels.width.col / (params.viz.x_scale.rangeBand() / 2);
-	  params.zoom_behavior.scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch]);
+	  params.zoom_behavior.scaleExtent([1, params.viz.real_zoom * params.viz.zoom_ratio.x]);
 
 	  // redefine border width
 	  params.viz.border_width.x = params.viz.x_scale.rangeBand() / params.viz.border_fraction;
@@ -10395,7 +10385,7 @@ var Clustergrammer =
 	    var inst_y_pos = cgm.params.viz.y_scale(idx);
 	    var pan_dy = cgm.params.viz.clust.dim.height / 2 - inst_y_pos;
 
-	    var inst_zoom = cgm.params.viz.zoom_switch;
+	    var inst_zoom = cgm.params.viz.zoom_ratio.x;
 
 	    // working on improving zoom behavior
 	    ///////////////////////////////////////////////////
@@ -11138,13 +11128,6 @@ var Clustergrammer =
 
 	  // recalculate the visualization parameters using the updated network_data
 	  cgm.params = calc_viz_params(cgm.params, false);
-
-	  // // set up zoom
-	  // cgm.params.zoom_behavior = d3.behavior.zoom()
-	  //   .scaleExtent([1, cgm.params.viz.real_zoom * cgm.params.viz.zoom_switch])
-	  //   .on('zoom', function(){
-	  //     zoomed(cgm);
-	  //   });
 
 	  make_row_cat(cgm, true);
 	  resize_viz(cgm);

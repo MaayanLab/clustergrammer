@@ -32,6 +32,8 @@ require('!style!css!awesomplete/awesomplete.css');
  */
 function Clustergrammer(args) {
 
+  console.log('ZOOM SWITCH')
+
   /* Main program
    * ----------------------------------------------------------------------- */
   // consume and validate user input
@@ -50,7 +52,7 @@ function Clustergrammer(args) {
 
   // set up zoom
   cgm.params.zoom_behavior = d3.behavior.zoom()
-    .scaleExtent([1, cgm.params.viz.real_zoom * cgm.params.viz.zoom_switch])
+    .scaleExtent([1, cgm.params.viz.real_zoom * cgm.params.viz.zoom_ratio.x])
     .on('zoom', function(){
       run_zoom(cgm);
     });

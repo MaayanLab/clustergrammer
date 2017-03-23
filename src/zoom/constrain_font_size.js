@@ -48,8 +48,8 @@ module.exports = function constrain_font_size(params) {
 
       if (real_font_size.col > params.labels.max_allow_fs){
 
-        if (params.viz.zoom_switch > 1){
-          inst_zoom = params.zoom_behavior.scale()/params.viz.zoom_switch ;
+        if (params.viz.zoom_ratio.x > 1){
+          inst_zoom = params.zoom_behavior.scale()/params.viz.zoom_ratio.x ;
         } else {
           inst_zoom = params.zoom_behavior.scale();
         }

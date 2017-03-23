@@ -22,8 +22,8 @@ module.exports = function(params, inst_selection, inst_rc) {
       }
       // num_trims = params.labels.row_max_char;
     } else {
-      if (params.viz.zoom_switch > 1){
-        inst_zoom = params.zoom_behavior.scale()/params.viz.zoom_switch;
+      if (params.viz.zoom_ratio.x > 1){
+        inst_zoom = params.zoom_behavior.scale()/params.viz.zoom_ratio.x;
       } else {
         inst_zoom = params.zoom_behavior.scale();
       }

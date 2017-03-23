@@ -77,7 +77,7 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
 
   // set up zoom
   cgm.params.zoom_behavior = d3.behavior.zoom()
-    .scaleExtent([1, cgm.params.viz.real_zoom * cgm.params.viz.zoom_switch])
+    .scaleExtent([1, cgm.params.viz.real_zoom * cgm.params.viz.zoom_ratio.x])
     .on('zoom', function(){
       run_zoom(cgm);
     });
