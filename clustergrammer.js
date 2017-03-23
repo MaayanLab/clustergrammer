@@ -5850,6 +5850,8 @@ var Clustergrammer =
 
 	module.exports = function two_translate_zoom(cgm, pan_dx, pan_dy, fin_zoom) {
 
+	  console.log('pan_dy: ' + String(pan_dy));
+
 	  var params = cgm.params;
 
 	  d3.selectAll(params.viz.root_tips).style('display', 'none');
@@ -5867,35 +5869,38 @@ var Clustergrammer =
 	    // y pan room, the pan room has to be less than half_height since
 	    // zooming in on a gene that is near the top of the clustergram also causes
 	    // panning out of the visible region
-	    var y_pan_room = half_height / params.viz.zoom_switch;
+	    var y_pan_room = half_height / fin_zoom;
 
 	    // prevent visualization from panning down too much
 	    // when zooming into genes near the top of the clustergram
 	    if (pan_dy >= half_height - y_pan_room) {
 
+	      console.log(' prevent visualization from panning down too much');
+
 	      // explanation of panning rules
 	      /////////////////////////////////
-	      // prevent the clustergram from panning down too much
-	      // if the amount of panning is equal to the half_height then it needs to be reduced
-	      // effectively, the the visualization needs to be moved up (negative) by some factor
-	      // of the half-width-of-the-visualization.
-	      //
-	      // If there was no zooming involved, then the
-	      // visualization would be centered first, then panned to center the top term
-	      // this would require a
-	      // correction to re-center it. However, because of the zooming the offset is
-	      // reduced by the zoom factor (this is because the panning is occurring on something
-	      // that will be zoomed into - this is why the pan_dy value is not scaled in the two
-	      // translate transformations, but it has to be scaled afterwards to set the translate
-	      // vector)
-	      // pan_dy = half_height - (half_height)/params.viz.zoom_switch
+	      /*
+	        prevent the clustergram from panning down too much
+	        if the amount of panning is equal to the half_height then it needs to be reduced
+	        effectively, the the visualization needs to be moved up (negative) by some factor
+	        of the half-width-of-the-visualization.
+	         If there was no zooming involved, then the
+	        visualization would be centered first, then panned to center the top term
+	        this would require a
+	        correction to re-center it. However, because of the zooming the offset is
+	        reduced by the zoom factor (this is because the panning is occurring on something
+	        that will be zoomed into - this is why the pan_dy value is not scaled in the two
+	        translate transformations, but it has to be scaled afterwards to set the translate
+	        vector)
+	        pan_dy = half_height - (half_height)/fin_zoom
+	         if pan_dy is greater than the pan room, then panning has to be restricted
+	        start by shifting back up (negative) by half_height/fin_zoom then shift back down
+	        by the difference between half_height and pan_dy (so that the top of the clustergram is
+	        visible)
+	      */
 
-	      // if pan_dy is greater than the pan room, then panning has to be restricted
-	      // start by shifting back up (negative) by half_height/params.viz.zoom_switch then shift back down
-	      // by the difference between half_height and pan_dy (so that the top of the clustergram is
-	      // visible)
 	      var shift_top_viz = half_height - pan_dy;
-	      var shift_up_viz = -half_height / params.viz.zoom_switch + shift_top_viz;
+	      var shift_up_viz = -half_height / fin_zoom + shift_top_viz;
 
 	      // reduce pan_dy so that the visualization does not get panned to far down
 	      pan_dy = pan_dy + shift_up_viz;
@@ -5907,7 +5912,7 @@ var Clustergrammer =
 
 	      shift_top_viz = half_height + pan_dy;
 
-	      shift_up_viz = half_height / params.viz.zoom_switch - shift_top_viz; //- move_up_one_row;
+	      shift_up_viz = half_height / fin_zoom - shift_top_viz; //- move_up_one_row;
 
 	      // reduce pan_dy so that the visualization does not get panned to far down
 	      pan_dy = pan_dy + shift_up_viz;
@@ -5916,10 +5921,10 @@ var Clustergrammer =
 	    // will improve this !!
 	    var zoom_y = fin_zoom;
 	    var zoom_x;
-	    if (fin_zoom <= params.viz.zoom_switch) {
+	    if (fin_zoom <= fin_zoom) {
 	      zoom_x = 1;
 	    } else {
-	      zoom_x = fin_zoom / params.viz.zoom_switch;
+	      zoom_x = fin_zoom / fin_zoom;
 	    }
 
 	    // search duration - the duration of zooming and panning
@@ -10390,10 +10395,18 @@ var Clustergrammer =
 	    var inst_y_pos = cgm.params.viz.y_scale(idx);
 	    var pan_dy = cgm.params.viz.clust.dim.height / 2 - inst_y_pos;
 
-	    two_translate_zoom(cgm, 0, pan_dy, cgm.params.viz.zoom_switch);
+	    var inst_zoom = cgm.params.viz.zoom_switch;
+
+	    // increase zoom
+	    inst_zoom = 2 * inst_zoom;
+
+	    // // move visualization down less
+	    // pan_dy = pan_dy - 5;
+
+	    two_translate_zoom(cgm, 0, pan_dy, inst_zoom);
 
 	    // set y zoom to zoom_switch
-	    cgm.params.zoom_info.zoom_y = cgm.params.viz.zoom_switch;
+	    cgm.params.zoom_info.zoom_y = inst_zoom;
 
 	    // highlight
 	    d3.selectAll(cgm.params.root + ' .row_label_group').filter(function (d) {
