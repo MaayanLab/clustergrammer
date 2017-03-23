@@ -14,6 +14,9 @@ module.exports = function ini_sidebar(cgm){
   var entities = cgm.params.network_data.row_nodes_names;
   awesomplete.list = entities;
 
+  // position awesomplete list elements above other elements in the page
+  d3.selectAll('.awesomplete ul').style('z-index',99);
+
   // submit genes button
   $(params.root+' .gene_search_box').keyup(function(e) {
     if (e.keyCode === 13) {

@@ -137,3 +137,7 @@ body{
 .sidebar_tooltip:hover .sidebar_tooltip_text {
     visibility: visible;
 }
+
+div.awesomplete > ul {
+  z-index: 99;
+}
