@@ -1818,10 +1818,11 @@ var Clustergrammer =
 	  var height_by_row = viz.clust.dim.height / viz.num_row_nodes;
 	  viz.zoom_switch = width_by_col / height_by_row;
 
-	  viz.zoom_switch_y = 1;
+	  viz.zoom_ratio = {};
+	  viz.zoom_ratio.y = 1;
 
 	  if (viz.zoom_switch < 1) {
-	    viz.zoom_switch_y = 1 / viz.zoom_switch;
+	    viz.zoom_ratio.y = 1 / viz.zoom_switch;
 	    viz.zoom_switch = 1;
 	  }
 
@@ -2462,7 +2463,7 @@ var Clustergrammer =
 	      var opacity_hlight = 0.85;
 
 	      var hlight_width = rel_width_hlight * params.viz.border_width.x;
-	      var hlight_height = rel_width_hlight * params.viz.border_width.y; ///params.viz.zoom_switch;
+	      var hlight_height = rel_width_hlight * params.viz.border_width.y;
 
 	      // top highlight
 	      d3.select(clicked_rect.parentNode).append('rect').classed('click_hlight', true).classed('top_hlight', true).attr('width', params.viz.x_scale.rangeBand()).attr('height', hlight_height).attr('fill', params.matrix.hlight_color).attr('transform', function () {
@@ -2765,9 +2766,9 @@ var Clustergrammer =
 	module.exports = function draw_up_tile(params) {
 
 	  var start_x = 0;
-	  var final_x = params.viz.x_scale.rangeBand() - params.viz.border_width.x; ///params.viz.zoom_switch_y;
+	  var final_x = params.viz.x_scale.rangeBand() - params.viz.border_width.x;
 	  var start_y = 0;
-	  var final_y = params.viz.y_scale.rangeBand() - params.viz.border_width.y; ///params.viz.zoom_switch;
+	  var final_y = params.viz.y_scale.rangeBand() - params.viz.border_width.y;
 
 	  var output_string = 'M' + start_x + ',' + start_y + ', L' + start_x + ', ' + final_y + ', L' + final_x + ',0 Z';
 
@@ -3393,8 +3394,7 @@ var Clustergrammer =
 
 	    var rel_width_hlight = 6;
 	    var opacity_hlight = 0.85;
-	    // var hlight_width  = rel_width_hlight*params.viz.border_width;
-	    var hlight_height = rel_width_hlight * params.viz.border_width.x; // /params.viz.zoom_switch;
+	    var hlight_height = rel_width_hlight * params.viz.border_width.x;
 
 	    d3.selectAll(params.root + ' .click_hlight').remove();
 
@@ -3557,10 +3557,10 @@ var Clustergrammer =
 	  // var opacity_hlight = 0.85;
 
 	  var hlight_width = rel_width_hlight * params.viz.border_width.x;
-	  var hlight_height = rel_width_hlight * params.viz.border_width.y; ///params.viz.zoom_switch;
+	  var hlight_height = rel_width_hlight * params.viz.border_width.y;
+
 	  // reposition tile highlight
 	  ////////////////////////////////
-
 	  // top highlight
 	  d3.select(params.root + ' .top_hlight').attr('width', params.viz.x_scale.rangeBand()).attr('height', hlight_height).transition().duration(2500).attr('transform', function () {
 	    return 'translate(' + params.viz.x_scale(params.matrix.click_hlight_x) + ',0)';
@@ -6083,7 +6083,7 @@ var Clustergrammer =
 	module.exports = function (params, inst_selection, inst_rc) {
 	  if (d3.select(inst_selection).style('display') != 'none') {
 
-	    // trim text that is longer than the container 
+	    // trim text that is longer than the container
 	    var inst_zoom;
 	    var inst_width;
 	    var trimmed_text;
@@ -6096,8 +6096,8 @@ var Clustergrammer =
 	    var max_width = params.viz.norm_labels.width[inst_rc];
 
 	    if (inst_rc === 'row') {
-	      if (params.viz.zoom_switch_y) {
-	        inst_zoom = params.zoom_behavior.scale() / params.viz.zoom_switch_y;
+	      if (params.viz.zoom_ratio.y) {
+	        inst_zoom = params.zoom_behavior.scale() / params.viz.zoom_ratio.y;
 	      } else {
 	        inst_zoom = params.zoom_behavior.scale();
 	      }
@@ -6167,7 +6167,7 @@ var Clustergrammer =
 	    keep_num_char = current_num_char + 2;
 	    trimmed_text = original_text.substring(0, keep_num_char) + '..';
 
-	    // if '..' was added to original text 
+	    // if '..' was added to original text
 	    if (trimmed_text.length > original_text.length) {
 	      trimmed_text = original_text;
 	    }
@@ -6206,8 +6206,8 @@ var Clustergrammer =
 
 	    if (real_font_size.row > params.labels.max_allow_fs) {
 
-	      if (params.viz.zoom_switch_y) {
-	        inst_zoom = params.zoom_behavior.scale() / params.viz.zoom_switch_y;
+	      if (params.viz.zoom_ratio.y) {
+	        inst_zoom = params.zoom_behavior.scale() / params.viz.zoom_ratio.y;
 	      } else {
 	        inst_zoom = params.zoom_behavior.scale();
 	      }
@@ -6260,12 +6260,12 @@ var Clustergrammer =
 	module.exports = function calc_real_font_size(params) {
 
 	  var real_font_size = {};
-	  // zoom_switch behavior has to change with zoom_switch_y
+	  // zoom_switch behavior has to change with zoom_ratio.y
 	  if (params.viz.zoom_switch > 1) {
 	    real_font_size.row = params.labels.default_fs_row * params.zoom_behavior.scale();
-	    real_font_size.col = params.labels.default_fs_col * params.zoom_behavior.scale(); ///params.viz.zoom_switch;
+	    real_font_size.col = params.labels.default_fs_col * params.zoom_behavior.scale();
 	  } else {
-	    real_font_size.row = params.labels.default_fs_row * params.zoom_behavior.scale() / params.viz.zoom_switch_y;
+	    real_font_size.row = params.labels.default_fs_row * params.zoom_behavior.scale() / params.viz.zoom_ratio.y;
 	    real_font_size.col = params.labels.default_fs_col * params.zoom_behavior.scale();
 	  }
 
@@ -7008,12 +7008,12 @@ var Clustergrammer =
 
 	  var viz = params.viz;
 	  // zoom in the x direction before zooming in the y direction
-	  if (viz.zoom_switch_y > 1) {
-	    if (zoom_info.zoom_y < viz.zoom_switch_y) {
+	  if (viz.zoom_ratio.y > 1) {
+	    if (zoom_info.zoom_y < viz.zoom_ratio.y) {
 	      zoom_info.trans_y = 0;
 	      zoom_info.zoom_y = 1;
 	    } else {
-	      zoom_info.zoom_y = zoom_info.zoom_y / viz.zoom_switch_y;
+	      zoom_info.zoom_y = zoom_info.zoom_y / viz.zoom_ratio.y;
 	    }
 	  }
 
@@ -7493,7 +7493,7 @@ var Clustergrammer =
 	  var rel_width_hlight = 6;
 	  // var opacity_hlight = 0.85;
 	  var hlight_width = rel_width_hlight * params.viz.border_width.x;
-	  var hlight_height = rel_width_hlight * params.viz.border_width.y; ///params.viz.zoom_switch;
+	  var hlight_height = rel_width_hlight * params.viz.border_width.y;
 
 	  // top highlight
 	  d3.select(params.root + ' .top_hlight').attr('width', params.viz.rect_width).attr('height', hlight_height).attr('transform', function () {
@@ -10397,8 +10397,12 @@ var Clustergrammer =
 
 	    var inst_zoom = cgm.params.viz.zoom_switch;
 
-	    // increase zoom
-	    inst_zoom = 2 * inst_zoom;
+	    // working on improving zoom behavior
+	    ///////////////////////////////////////////////////
+	    ///////////////////////////////////////////////////
+
+	    // // increase zoom
+	    // inst_zoom = 3 * inst_zoom;
 
 	    // // move visualization down less
 	    // pan_dy = pan_dy - 5;

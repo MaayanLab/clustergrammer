@@ -17,8 +17,12 @@ module.exports = function run_row_search(cgm, search_term, entities){
 
     var inst_zoom = cgm.params.viz.zoom_switch;
 
-    // increase zoom
-    inst_zoom = 2 * inst_zoom;
+    // working on improving zoom behavior
+    ///////////////////////////////////////////////////
+    ///////////////////////////////////////////////////
+
+    // // increase zoom
+    // inst_zoom = 3 * inst_zoom;
 
     // // move visualization down less
     // pan_dy = pan_dy - 5;

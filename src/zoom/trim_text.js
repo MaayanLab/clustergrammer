@@ -2,7 +2,7 @@
 module.exports = function(params, inst_selection, inst_rc) {
   if (d3.select(inst_selection).style('display') != 'none'){
 
-    // trim text that is longer than the container 
+    // trim text that is longer than the container
     var inst_zoom;
     var inst_width;
     var trimmed_text;
@@ -15,8 +15,8 @@ module.exports = function(params, inst_selection, inst_rc) {
     var max_width = params.viz.norm_labels.width[inst_rc];
 
     if (inst_rc === 'row'){
-      if (params.viz.zoom_switch_y){
-        inst_zoom = params.zoom_behavior.scale()/params.viz.zoom_switch_y;
+      if (params.viz.zoom_ratio.y){
+        inst_zoom = params.zoom_behavior.scale()/params.viz.zoom_ratio.y;
       } else {
         inst_zoom = params.zoom_behavior.scale();
       }
@@ -63,7 +63,7 @@ module.exports = function(params, inst_selection, inst_rc) {
         }
       }
 
-    } 
+    }
 
     else if (inst_width < max_width * 0.75 ) {
 
@@ -101,12 +101,12 @@ module.exports = function(params, inst_selection, inst_rc) {
     } else {
       current_num_char = inst_text.length;
     }
-    
+
     original_text = d.name;
     keep_num_char = current_num_char +2;
     trimmed_text = original_text.substring(0,keep_num_char)+'..';
 
-    // if '..' was added to original text 
+    // if '..' was added to original text
     if (trimmed_text.length > original_text.length){
       trimmed_text = original_text;
     }
@@ -122,6 +122,6 @@ module.exports = function(params, inst_selection, inst_rc) {
     }
 
     return inst_width;
-  }    
+  }
 
 };
