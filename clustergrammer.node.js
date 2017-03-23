@@ -4451,6 +4451,8 @@ module.exports =
 	      d3.select(cgm.params.root + ' .crop_button').style('opacity', 0.2);
 	    } else {
 
+	      console.log('undo filtering');
+
 	      // Undo Filtering
 	      ///////////////////
 	      // use class as 'global' variable

@@ -22,6 +22,7 @@ module.exports = function run_dendro_filter(cgm, d, inst_rc){
 
     cgm.filter_viz_using_names(names);
 
+    // overwrite with backup of original nodes
     cgm.params.inst_nodes.row_nodes = inst_row_nodes;
     cgm.params.inst_nodes.col_nodes = inst_col_nodes;
 

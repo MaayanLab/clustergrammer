@@ -31,7 +31,7 @@ module.exports = function click_filter_cats(cgm, inst_data, inst_selection, inst
       // run filtering using found names
       cgm.filter_viz_using_names(filter_names);
 
-      // save backup of the inst_view
+      // overwrite with backup of original nodes
       cgm.params.inst_nodes.row_nodes = inst_row_nodes;
       cgm.params.inst_nodes.col_nodes = inst_col_nodes;
 
