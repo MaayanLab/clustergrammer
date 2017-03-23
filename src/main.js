@@ -52,7 +52,7 @@ function Clustergrammer(args) {
 
   // set up zoom
   cgm.params.zoom_behavior = d3.behavior.zoom()
-    .scaleExtent([1, cgm.params.viz.real_zoom * cgm.params.viz.zoom_ratio.x])
+    .scaleExtent([1, cgm.params.viz.square_zoom * cgm.params.viz.zoom_ratio.x])
     .on('zoom', function(){
       run_zoom(cgm);
     });

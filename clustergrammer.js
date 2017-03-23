@@ -98,7 +98,7 @@ var Clustergrammer =
 	  cgm.config = config;
 
 	  // set up zoom
-	  cgm.params.zoom_behavior = d3.behavior.zoom().scaleExtent([1, cgm.params.viz.real_zoom * cgm.params.viz.zoom_ratio.x]).on('zoom', function () {
+	  cgm.params.zoom_behavior = d3.behavior.zoom().scaleExtent([1, cgm.params.viz.square_zoom * cgm.params.viz.zoom_ratio.x]).on('zoom', function () {
 	    run_zoom(cgm);
 	  });
 
@@ -1803,7 +1803,7 @@ var Clustergrammer =
 
 	  var max_zoom_limit = 0.75;
 	  var half_col_height = params.viz.x_scale.rangeBand() / 2;
-	  params.viz.real_zoom = params.viz.norm_labels.width.col / half_col_height * max_zoom_limit;
+	  params.viz.square_zoom = params.viz.norm_labels.width.col / half_col_height * max_zoom_limit;
 
 	  params.viz = calc_zoom_switching(params.viz);
 
@@ -6562,7 +6562,7 @@ var Clustergrammer =
 	  // disable zoom while transitioning
 	  svg_group.on('.zoom', null);
 
-	  params.zoom_behavior.scaleExtent([1, params.viz.real_zoom * params.viz.zoom_ratio.x]).on('zoom', function () {
+	  params.zoom_behavior.scaleExtent([1, params.viz.square_zoom * params.viz.zoom_ratio.x]).on('zoom', function () {
 	    run_zoom(cgm);
 	  });
 
@@ -7770,7 +7770,7 @@ var Clustergrammer =
 	  }
 
 	  // redefine zoom extent
-	  params.viz.real_zoom = params.viz.norm_labels.width.col / (params.viz.rect_width / 2);
+	  params.viz.square_zoom = params.viz.norm_labels.width.col / (params.viz.rect_width / 2);
 
 	  // the default font sizes are set here
 	  params = calc_default_fs(params);
@@ -9354,7 +9354,7 @@ var Clustergrammer =
 	  cgm.params = new_params;
 
 	  // set up zoom
-	  cgm.params.zoom_behavior = d3.behavior.zoom().scaleExtent([1, cgm.params.viz.real_zoom * cgm.params.viz.zoom_ratio.x]).on('zoom', function () {
+	  cgm.params.zoom_behavior = d3.behavior.zoom().scaleExtent([1, cgm.params.viz.square_zoom * cgm.params.viz.zoom_ratio.x]).on('zoom', function () {
 	    run_zoom(cgm);
 	  });
 
@@ -9667,8 +9667,8 @@ var Clustergrammer =
 	  params.viz.y_scale.rangeBands([0, params.viz.clust.dim.height]);
 
 	  // redefine zoom extent
-	  params.viz.real_zoom = params.viz.norm_labels.width.col / (params.viz.x_scale.rangeBand() / 2);
-	  params.zoom_behavior.scaleExtent([1, params.viz.real_zoom * params.viz.zoom_ratio.x]);
+	  params.viz.square_zoom = params.viz.norm_labels.width.col / (params.viz.x_scale.rangeBand() / 2);
+	  params.zoom_behavior.scaleExtent([1, params.viz.square_zoom * params.viz.zoom_ratio.x]);
 
 	  // redefine border width
 	  params.viz.border_width.x = params.viz.x_scale.rangeBand() / params.viz.border_fraction;

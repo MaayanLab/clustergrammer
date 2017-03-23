@@ -65,7 +65,7 @@ module.exports = function resize_viz(cgm) {
   svg_group.on('.zoom', null);
 
   params.zoom_behavior
-    .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_ratio.x])
+    .scaleExtent([1, params.viz.square_zoom * params.viz.zoom_ratio.x])
     .on('zoom', function(){
       run_zoom(cgm);
     });

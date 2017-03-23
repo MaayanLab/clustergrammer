@@ -58,7 +58,7 @@ module.exports = function recalc_params_for_resize(params){
   }
 
   // redefine zoom extent
-  params.viz.real_zoom = params.viz.norm_labels.width.col / (params.viz.rect_width/2);
+  params.viz.square_zoom = params.viz.norm_labels.width.col / (params.viz.rect_width/2);
 
   // the default font sizes are set here
   params = calc_default_fs(params);

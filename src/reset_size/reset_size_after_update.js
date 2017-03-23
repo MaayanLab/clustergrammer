@@ -63,9 +63,9 @@ module.exports = function reset_size_after_update(cgm, duration=0, delays=null) 
   params.viz.y_scale.rangeBands([0, params.viz.clust.dim.height]);
 
   // redefine zoom extent
-  params.viz.real_zoom = params.viz.norm_labels.width.col / (params.viz.x_scale.rangeBand()/2);
+  params.viz.square_zoom = params.viz.norm_labels.width.col / (params.viz.x_scale.rangeBand()/2);
   params.zoom_behavior
-    .scaleExtent([1, params.viz.real_zoom * params.viz.zoom_ratio.x]);
+    .scaleExtent([1, params.viz.square_zoom * params.viz.zoom_ratio.x]);
 
   // redefine border width
   params.viz.border_width.x = params.viz.x_scale.rangeBand() / params.viz.border_fraction;
