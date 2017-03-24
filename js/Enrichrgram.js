@@ -258,8 +258,8 @@ function Enrichrgram(inst_cgm){
       'Reactome_2016',
       'KEGG_2016',
       'MGI_Mammalian_Phenotype_Level_4',
+      'LINCS_L1000_Chem_Pert_up',
       'LINCS_L1000_Chem_Pert_down',
-      'LINCS_L1000_Chem_Pert_up'
       ];
 
     var vertical_space = 30;
