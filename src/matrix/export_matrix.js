@@ -1,4 +1,5 @@
 var file_saver = require('../screenshot/file_saver');
+var make_full_name = require('./make_full_name');
 
 module.exports = function export_matrix(){
 
@@ -33,20 +34,13 @@ module.exports = function export_matrix(){
   var col_nodes = params.network_data.col_nodes;
   var cat_name;
 
-  // // original column entry
-  // _.each(order_indexes['col'], function(inst_index){
-  //   var inst_col = col_nodes[inst_index];
-  //   var col_name = make_full_name(inst_col, 'col');
-  //   matrix_string = matrix_string + col_name + '\t';
-  // });
-
   // alternate column entry
   for (var c_i=0; c_i<order_indexes.col.length; c_i++){
 
     var inst_index = order_indexes.col[c_i];
 
     var inst_col = col_nodes[inst_index];
-    var col_name = make_full_name(inst_col, 'col');
+    var col_name = make_full_name(params, inst_col, 'col');
 
     if (c_i < order_indexes.col.length-1){
       matrix_string = matrix_string + col_name + '\t';
@@ -68,14 +62,9 @@ module.exports = function export_matrix(){
     var inst_row = row_nodes[inst_index];
 
     // var row_name = inst_row.name;
-    var row_name = make_full_name(inst_row, 'row');
+    var row_name = make_full_name(params, inst_row, 'row');
 
     matrix_string = matrix_string + row_name + '\t';
-
-    // // original data entry
-    // _.each(order_indexes['col'], function(col_index){
-    //   matrix_string = matrix_string + String(row_data[col_index].value) + '\t';
-    // })
 
     // alternate data entry
     for (var r_i=0; r_i<order_indexes.col.length; r_i++){
@@ -95,30 +84,6 @@ module.exports = function export_matrix(){
 
   });
 
-  function make_full_name(inst_node, inst_rc){
-
-    var inst_name = inst_node.name;
-
-    var num_cats = params.viz.all_cats[inst_rc].length;
-
-    // make tuple if necessary
-    if (num_cats>0){
-
-      inst_name = "('" + inst_name + "'";
-
-      for (var cat_index= 0; cat_index < num_cats; cat_index++) {
-        cat_name = 'cat-'+ String(cat_index);
-
-        // inst_name =  inst_name + ", " + inst_node[cat_name];
-        inst_name =  inst_name + ", '" + inst_node[cat_name] + "'";
-      }
-
-    }
-
-    inst_name = inst_name + ')';
-
-    return inst_name;
-  }
 
   var blob = new Blob([matrix_string], {type: 'text/plain;charset=utf-8'});
   saveAs(blob, 'clustergrammer.txt');

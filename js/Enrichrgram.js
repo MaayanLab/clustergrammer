@@ -218,7 +218,7 @@ function Enrichrgram(inst_cgm){
     enr_menu
       .append('text')
       .classed('enr_menu_clear', true)
-      .attr('transform', 'translate(375, 30)')
+      .attr('transform', 'translate(345, 30)')
       .attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif')
       .style('font-size','18px')
       .style('font-weight', 800)
