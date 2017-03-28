@@ -205,11 +205,12 @@ module.exports = function two_translate_zoom(cgm, pan_dx, pan_dy, fin_zoom) {
       });
 
 
-    d3.select(params.root+' .col_dendro_icons_group')
-      .attr('transform', 'translate(' + [0, 0 + center_y] + ')' +
-      ' scale(' + zoom_x + ',' + zoom_y + ')' + 'translate(' + [pan_dx,
-        pan_dy
-      ] + ')');
+    // // no need to move col dendro crop button container
+    // d3.select(params.root+' .col_dendro_icons_group')
+    //   .attr('transform', 'translate(' + [0, 0 + center_y] + ')' +
+    //   ' scale(' + zoom_x + ',' + zoom_y + ')' + 'translate(' + [pan_dx,
+    //     pan_dy
+    //   ] + ')');
 
     d3.select(params.root+' .col_dendro_icons_group')
       .selectAll('path')

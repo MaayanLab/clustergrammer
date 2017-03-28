@@ -57,7 +57,7 @@ var Clustergrammer =
 	var reset_cats = __webpack_require__(175);
 	var two_translate_zoom = __webpack_require__(80);
 	var external_update_view = __webpack_require__(177);
-	var save_matrix = __webpack_require__(209);
+	var save_matrix = __webpack_require__(180);
 	var brush_crop_matrix = __webpack_require__(184);
 	var run_zoom = __webpack_require__(89);
 	var d3_tip_custom = __webpack_require__(48);
@@ -6000,7 +6000,12 @@ var Clustergrammer =
 	      return 'translate(' + inst_x + ',' + inst_y + ') ' + 'scale(1, ' + 1 / zoom_y + ')';
 	    });
 
-	    d3.select(params.root + ' .col_dendro_icons_group').attr('transform', 'translate(' + [0, 0 + center_y] + ')' + ' scale(' + zoom_x + ',' + zoom_y + ')' + 'translate(' + [pan_dx, pan_dy] + ')');
+	    // // no need to move col dendro crop button container
+	    // d3.select(params.root+' .col_dendro_icons_group')
+	    //   .attr('transform', 'translate(' + [0, 0 + center_y] + ')' +
+	    //   ' scale(' + zoom_x + ',' + zoom_y + ')' + 'translate(' + [pan_dx,
+	    //     pan_dy
+	    //   ] + ')');
 
 	    d3.select(params.root + ' .col_dendro_icons_group').selectAll('path').attr('transform', function (d) {
 	      var inst_x = d.pos_mid;
@@ -11519,7 +11524,25 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 180 */,
+/* 180 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var file_saver = __webpack_require__(181);
+	var make_matrix_string = __webpack_require__(182);
+
+	module.exports = function save_matrix() {
+
+	  var saveAs = file_saver();
+
+	  var params = this.params;
+
+	  var matrix_string = make_matrix_string(params);
+
+	  var blob = new Blob([matrix_string], { type: 'text/plain;charset=utf-8' });
+	  saveAs(blob, 'clustergrammer.txt');
+		};
+
+/***/ },
 /* 181 */
 /***/ function(module, exports) {
 
@@ -14291,25 +14314,6 @@ var Clustergrammer =
 	  slider_container.append('div').classed('sidebar_text', true).classed('opacity_slider_text', true).style('margin-bottom', '3px').text('Opacity Slider');
 
 	  slider_container.append('div').classed('slider', true).classed('opacity_slider', true);
-		};
-
-/***/ },
-/* 209 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var file_saver = __webpack_require__(181);
-	var make_matrix_string = __webpack_require__(182);
-
-	module.exports = function save_matrix() {
-
-	  var saveAs = file_saver();
-
-	  var params = this.params;
-
-	  var matrix_string = make_matrix_string(params);
-
-	  var blob = new Blob([matrix_string], { type: 'text/plain;charset=utf-8' });
-	  saveAs(blob, 'clustergrammer.txt');
 		};
 
 /***/ }
