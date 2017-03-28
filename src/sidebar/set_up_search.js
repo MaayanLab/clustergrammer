@@ -15,7 +15,8 @@ module.exports = function set_up_search(sidebar, params ){
     .classed('sidebar_text', true)
     .attr('type','text')
     .attr('placeholder', params.sidebar.row_search.placeholder)
-    .style('height', params.sidebar.row_search.box.height+'px');
+    .style('height', params.sidebar.row_search.box.height+'px')
+    .style('margin-top', '10px');
 
   search_container
     .append('div')
