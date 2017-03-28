@@ -2521,6 +2521,8 @@ var Clustergrammer =
 
 	  if (ds_level >= 0) {
 	    y_scale = params.viz.ds[ds_level].y_scale;
+
+	    // do not show tip when rows are downsampled
 	    make_tip = false;
 	    row_class = 'ds' + String(ds_level) + '_row';
 	  }
@@ -2550,9 +2552,6 @@ var Clustergrammer =
 
 	      return tooltip_string;
 	    });
-
-	    // d3.select(params.root+' .clust_group')
-	    //   .call(tip);
 	  } else {
 	    tip = null;
 	  }
@@ -2601,7 +2600,7 @@ var Clustergrammer =
 	  var make_tip = true;
 	  var rect_height = params.viz.rect_height;
 	  if (ds_level >= 0) {
-	    make_tip = false;
+	    // make_tip = false;
 	    rect_height = params.viz.ds[ds_level].rect_height;
 	  }
 
@@ -2817,6 +2816,7 @@ var Clustergrammer =
 	    d3.selectAll(params.root + ' .' + inst_rc + '_label_group text').style('font-weight', function (d) {
 	      var font_weight;
 	      var inst_found = inst_data[inst_rc + '_name'].replace(/_/g, ' ') === d.name;
+
 	      if (inst_found) {
 	        font_weight = 'bold';
 	      } else {
@@ -2831,6 +2831,7 @@ var Clustergrammer =
 	  timeout = setTimeout(check_if_hovering, delay, inst_selection);
 
 	  function check_if_hovering() {
+
 	    if (d3.select(inst_selection).classed('hovering')) {
 
 	      var inst_zoom = Number(d3.select(params.root + ' .viz_svg').attr('is_zoom'));

@@ -64,13 +64,8 @@ function run_ini_enrichr(inst_cgm, inst_name){
           var gene_list = group_string.replace(/, /g, '\n');
 
           ///////////////
-          ///////////////
-          ///////////////
           // clean list
           ///////////////
-          ///////////////
-          ///////////////
-
           var enrichr_info = {list: gene_list, description: 'Clustergrammer gene-cluster list' , popup: true};
 
           // defined globally - will improve

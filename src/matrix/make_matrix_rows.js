@@ -12,6 +12,8 @@ module.exports = function make_matrix_rows(params, current_matrix,
 
   if (ds_level >= 0){
     y_scale = params.viz.ds[ds_level].y_scale;
+
+    // do not show tip when rows are downsampled
     make_tip = false;
     row_class = 'ds' + String(ds_level) + '_row';
   }
@@ -51,9 +53,6 @@ module.exports = function make_matrix_rows(params, current_matrix,
 
         return tooltip_string;
       });
-
-    // d3.select(params.root+' .clust_group')
-    //   .call(tip);
 
   } else {
     tip = null;
