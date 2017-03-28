@@ -10,11 +10,12 @@ var update_cats = require('./update/update_cats');
 var reset_cats = require('./update/reset_cats');
 var two_translate_zoom = require('./zoom/two_translate_zoom');
 var external_update_view = require('./update/external_update_view');
-var export_matrix = require('./matrix/export_matrix');
+var save_matrix = require('./matrix/save_matrix');
 var brush_crop_matrix = require('./matrix/brush_crop_matrix');
 var run_zoom = require('./zoom/run_zoom');
 var d3_tip_custom = require('./tooltip/d3_tip_custom');
 var all_reorder = require('./reorder/all_reorder');
+var make_matrix_string = require('./matrix/make_matrix_string');
 
 // moved d3.slider to src
 d3.slider = require('./d3.slider');
@@ -106,6 +107,10 @@ function Clustergrammer(args) {
     all_reorder(this, inst_order, inst_rc)
   }
 
+  function export_matrix_string(){
+    return make_matrix_string(this.params);
+  }
+
   // add more API endpoints
   cgm.update_view = external_update_view;
   cgm.resize_viz = external_resize;
@@ -116,10 +121,11 @@ function Clustergrammer(args) {
   cgm.update_cats = run_update_cats;
   cgm.reset_cats = reset_cats;
   cgm.zoom = zoom_api;
-  cgm.export_matrix = export_matrix;
+  cgm.save_matrix = save_matrix;
   cgm.brush_crop_matrix = brush_crop_matrix;
   cgm.d3_tip_custom = expose_d3_tip_custom;
   cgm.reorder = api_reorder;
+  cgm.export_matrix_string = export_matrix_string;
 
   return cgm;
 }

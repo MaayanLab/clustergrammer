@@ -1,11 +1,7 @@
-var file_saver = require('../screenshot/file_saver');
 var make_full_name = require('./make_full_name');
 
-module.exports = function export_matrix(){
+module.exports = function make_matrix_string(params){
 
-  var saveAs = file_saver();
-
-  var params = this.params;
   var inst_matrix = params.matrix;
 
   // get order indexes
@@ -32,7 +28,6 @@ module.exports = function export_matrix(){
   var matrix_string = '\t';
   var row_nodes = params.network_data.row_nodes;
   var col_nodes = params.network_data.col_nodes;
-  var cat_name;
 
   // alternate column entry
   for (var c_i=0; c_i<order_indexes.col.length; c_i++){
@@ -84,8 +79,6 @@ module.exports = function export_matrix(){
 
   });
 
-
-  var blob = new Blob([matrix_string], {type: 'text/plain;charset=utf-8'});
-  saveAs(blob, 'clustergrammer.txt');
+  return matrix_string;
 
 };

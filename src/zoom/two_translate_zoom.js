@@ -6,7 +6,7 @@ var toggle_grid_lines = require('../matrix/toggle_grid_lines');
 
 module.exports = function two_translate_zoom(cgm, pan_dx, pan_dy, fin_zoom) {
 
-  console.log('pan_dy: ' + String(pan_dy))
+  // console.log('pan_dy: ' + String(pan_dy))
 
   var params = cgm.params;
 
@@ -32,7 +32,7 @@ module.exports = function two_translate_zoom(cgm, pan_dx, pan_dy, fin_zoom) {
     // when zooming into genes near the top of the clustergram
     if (pan_dy >= half_height - y_pan_room) {
 
-      console.log(' prevent visualization from panning down too much')
+      // console.log(' prevent visualization from panning down too much')
 
       // explanation of panning rules
       /////////////////////////////////
@@ -82,12 +82,7 @@ module.exports = function two_translate_zoom(cgm, pan_dx, pan_dy, fin_zoom) {
 
     // will improve this !!
     var zoom_y = fin_zoom;
-    var zoom_x;
-    if (fin_zoom <= fin_zoom){
-      zoom_x = 1;
-    } else {
-      zoom_x = fin_zoom/fin_zoom;
-    }
+    var zoom_x = 1;
 
     // search duration - the duration of zooming and panning
     var search_duration = 700;

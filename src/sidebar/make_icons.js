@@ -77,7 +77,7 @@ module.exports = function make_icons(cgm, sidebar){
     .style('font-size','25px')
     .on('click', function() {
 
-      cgm.export_matrix();
+      cgm.save_matrix();
 
     })
     .classed('sidebar_tooltip', true)

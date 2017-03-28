@@ -57,21 +57,22 @@ var Clustergrammer =
 	var reset_cats = __webpack_require__(175);
 	var two_translate_zoom = __webpack_require__(80);
 	var external_update_view = __webpack_require__(177);
-	var export_matrix = __webpack_require__(180);
-	var brush_crop_matrix = __webpack_require__(183);
+	var save_matrix = __webpack_require__(209);
+	var brush_crop_matrix = __webpack_require__(184);
 	var run_zoom = __webpack_require__(89);
 	var d3_tip_custom = __webpack_require__(48);
 	var all_reorder = __webpack_require__(79);
+	var make_matrix_string = __webpack_require__(182);
 
 	// moved d3.slider to src
-	d3.slider = __webpack_require__(185);
+	d3.slider = __webpack_require__(186);
 
 	/* eslint-disable */
 
-	var awesomplete = __webpack_require__(187);
+	var awesomplete = __webpack_require__(188);
 	// getting css from src
-	__webpack_require__(188);
-	__webpack_require__(192);
+	__webpack_require__(189);
+	__webpack_require__(193);
 
 	/* clustergrammer v1.15.7
 	 * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
@@ -105,7 +106,7 @@ var Clustergrammer =
 	  cgm.params.zoom_behavior.translate([cgm.params.viz.clust.margin.left, cgm.params.viz.clust.margin.top]);
 
 	  if (cgm.params.use_sidebar) {
-	    var make_sidebar = __webpack_require__(194);
+	    var make_sidebar = __webpack_require__(195);
 	    make_sidebar(cgm);
 	  }
 
@@ -151,6 +152,10 @@ var Clustergrammer =
 	    all_reorder(this, inst_order, inst_rc);
 	  }
 
+	  function export_matrix_string() {
+	    return make_matrix_string(this.params);
+	  }
+
 	  // add more API endpoints
 	  cgm.update_view = external_update_view;
 	  cgm.resize_viz = external_resize;
@@ -161,10 +166,11 @@ var Clustergrammer =
 	  cgm.update_cats = run_update_cats;
 	  cgm.reset_cats = reset_cats;
 	  cgm.zoom = zoom_api;
-	  cgm.export_matrix = export_matrix;
+	  cgm.save_matrix = save_matrix;
 	  cgm.brush_crop_matrix = brush_crop_matrix;
 	  cgm.d3_tip_custom = expose_d3_tip_custom;
 	  cgm.reorder = api_reorder;
+	  cgm.export_matrix_string = export_matrix_string;
 
 	  return cgm;
 	}
@@ -5851,7 +5857,7 @@ var Clustergrammer =
 
 	module.exports = function two_translate_zoom(cgm, pan_dx, pan_dy, fin_zoom) {
 
-	  console.log('pan_dy: ' + String(pan_dy));
+	  // console.log('pan_dy: ' + String(pan_dy))
 
 	  var params = cgm.params;
 
@@ -5876,7 +5882,7 @@ var Clustergrammer =
 	    // when zooming into genes near the top of the clustergram
 	    if (pan_dy >= half_height - y_pan_room) {
 
-	      console.log(' prevent visualization from panning down too much');
+	      // console.log(' prevent visualization from panning down too much')
 
 	      // explanation of panning rules
 	      /////////////////////////////////
@@ -5921,12 +5927,7 @@ var Clustergrammer =
 
 	    // will improve this !!
 	    var zoom_y = fin_zoom;
-	    var zoom_x;
-	    if (fin_zoom <= fin_zoom) {
-	      zoom_x = 1;
-	    } else {
-	      zoom_x = fin_zoom / fin_zoom;
-	    }
+	    var zoom_x = 1;
 
 	    // search duration - the duration of zooming and panning
 	    var search_duration = 700;
@@ -11518,96 +11519,7 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 180 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var file_saver = __webpack_require__(181);
-	var make_full_name = __webpack_require__(182);
-
-	module.exports = function export_matrix() {
-
-	  var saveAs = file_saver();
-
-	  var params = this.params;
-	  var inst_matrix = params.matrix;
-
-	  // get order indexes
-	  var order_indexes = {};
-	  var inst_name;
-	  _.each(['row', 'col'], function (tmp_rc) {
-
-	    var inst_rc;
-	    // row/col names are reversed in saved orders
-	    if (tmp_rc === 'row') {
-	      inst_rc = 'col';
-	    } else {
-	      inst_rc = 'row';
-	    }
-
-	    // use tmp_rc
-	    inst_name = params.inst_order[tmp_rc];
-
-	    // use tmp_rc
-	    order_indexes[inst_rc] = inst_matrix.orders[inst_name + '_' + tmp_rc];
-	  });
-
-	  var matrix_string = '\t';
-	  var row_nodes = params.network_data.row_nodes;
-	  var col_nodes = params.network_data.col_nodes;
-	  var cat_name;
-
-	  // alternate column entry
-	  for (var c_i = 0; c_i < order_indexes.col.length; c_i++) {
-
-	    var inst_index = order_indexes.col[c_i];
-
-	    var inst_col = col_nodes[inst_index];
-	    var col_name = make_full_name(params, inst_col, 'col');
-
-	    if (c_i < order_indexes.col.length - 1) {
-	      matrix_string = matrix_string + col_name + '\t';
-	    } else {
-	      matrix_string = matrix_string + col_name;
-	    }
-	  }
-
-	  var row_data;
-	  matrix_string = matrix_string + '\n';
-
-	  _.each(order_indexes.row, function (inst_index) {
-
-	    // row names
-	    row_data = inst_matrix.matrix[inst_index].row_data;
-
-	    // var row_name = inst_matrix.matrix[inst_index].name;
-	    var inst_row = row_nodes[inst_index];
-
-	    // var row_name = inst_row.name;
-	    var row_name = make_full_name(params, inst_row, 'row');
-
-	    matrix_string = matrix_string + row_name + '\t';
-
-	    // alternate data entry
-	    for (var r_i = 0; r_i < order_indexes.col.length; r_i++) {
-
-	      // get the order
-	      var col_index = order_indexes.col[r_i];
-
-	      if (r_i < order_indexes.col.length - 1) {
-	        matrix_string = matrix_string + String(row_data[col_index].value) + '\t';
-	      } else {
-	        matrix_string = matrix_string + String(row_data[col_index].value);
-	      }
-	    }
-
-	    matrix_string = matrix_string + '\n';
-	  });
-
-	  var blob = new Blob([matrix_string], { type: 'text/plain;charset=utf-8' });
-	  saveAs(blob, 'clustergrammer.txt');
-		};
-
-/***/ },
+/* 180 */,
 /* 181 */
 /***/ function(module, exports) {
 
@@ -11824,12 +11736,96 @@ var Clustergrammer =
 
 /***/ },
 /* 182 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var make_full_name = __webpack_require__(183);
+
+	module.exports = function make_matrix_string(params) {
+
+	  var inst_matrix = params.matrix;
+
+	  // get order indexes
+	  var order_indexes = {};
+	  var inst_name;
+	  _.each(['row', 'col'], function (tmp_rc) {
+
+	    var inst_rc;
+	    // row/col names are reversed in saved orders
+	    if (tmp_rc === 'row') {
+	      inst_rc = 'col';
+	    } else {
+	      inst_rc = 'row';
+	    }
+
+	    // use tmp_rc
+	    inst_name = params.inst_order[tmp_rc];
+
+	    // use tmp_rc
+	    order_indexes[inst_rc] = inst_matrix.orders[inst_name + '_' + tmp_rc];
+	  });
+
+	  var matrix_string = '\t';
+	  var row_nodes = params.network_data.row_nodes;
+	  var col_nodes = params.network_data.col_nodes;
+
+	  // alternate column entry
+	  for (var c_i = 0; c_i < order_indexes.col.length; c_i++) {
+
+	    var inst_index = order_indexes.col[c_i];
+
+	    var inst_col = col_nodes[inst_index];
+	    var col_name = make_full_name(params, inst_col, 'col');
+
+	    if (c_i < order_indexes.col.length - 1) {
+	      matrix_string = matrix_string + col_name + '\t';
+	    } else {
+	      matrix_string = matrix_string + col_name;
+	    }
+	  }
+
+	  var row_data;
+	  matrix_string = matrix_string + '\n';
+
+	  _.each(order_indexes.row, function (inst_index) {
+
+	    // row names
+	    row_data = inst_matrix.matrix[inst_index].row_data;
+
+	    // var row_name = inst_matrix.matrix[inst_index].name;
+	    var inst_row = row_nodes[inst_index];
+
+	    // var row_name = inst_row.name;
+	    var row_name = make_full_name(params, inst_row, 'row');
+
+	    matrix_string = matrix_string + row_name + '\t';
+
+	    // alternate data entry
+	    for (var r_i = 0; r_i < order_indexes.col.length; r_i++) {
+
+	      // get the order
+	      var col_index = order_indexes.col[r_i];
+
+	      if (r_i < order_indexes.col.length - 1) {
+	        matrix_string = matrix_string + String(row_data[col_index].value) + '\t';
+	      } else {
+	        matrix_string = matrix_string + String(row_data[col_index].value);
+	      }
+	    }
+
+	    matrix_string = matrix_string + '\n';
+	  });
+
+	  return matrix_string;
+		};
+
+/***/ },
+/* 183 */
 /***/ function(module, exports) {
 
 	module.exports = function make_full_name(params, inst_node, inst_rc) {
 
+	  var cat_name;
 	  var inst_name = inst_node.name;
-
 	  var num_cats = params.viz.all_cats[inst_rc].length;
 
 	  // make tuple if necessary
@@ -11851,10 +11847,10 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 183 */
+/* 184 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var deactivate_cropping = __webpack_require__(184);
+	var deactivate_cropping = __webpack_require__(185);
 
 	module.exports = function brush_crop_matrix() {
 
@@ -11974,7 +11970,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 184 */
+/* 185 */
 /***/ function(module, exports) {
 
 	module.exports = function deactivate_cropping(cgm) {
@@ -11985,7 +11981,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 185 */
+/* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
@@ -11997,7 +11993,7 @@ var Clustergrammer =
 	(function (root, factory) {
 	  if (true) {
 	    // AMD. Register as an anonymous module.
-	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(186)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(187)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	  } else if (typeof exports === 'object') {
 	    if (process.browser) {
 	      // Browserify. Import css too using cssify.
@@ -12383,13 +12379,13 @@ var Clustergrammer =
 	});
 
 /***/ },
-/* 186 */
+/* 187 */
 /***/ function(module, exports) {
 
 	module.exports = d3;
 
 /***/ },
-/* 187 */
+/* 188 */
 /***/ function(module, exports) {
 
 	/**
@@ -12827,16 +12823,16 @@ var Clustergrammer =
 		})();
 
 /***/ },
-/* 188 */
+/* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(189);
+	var content = __webpack_require__(190);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(191)(content, {});
+	var update = __webpack_require__(192)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -12853,10 +12849,10 @@ var Clustergrammer =
 	}
 
 /***/ },
-/* 189 */
+/* 190 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(190)();
+	exports = module.exports = __webpack_require__(191)();
 	// imports
 
 
@@ -12867,7 +12863,7 @@ var Clustergrammer =
 
 
 /***/ },
-/* 190 */
+/* 191 */
 /***/ function(module, exports) {
 
 	/*
@@ -12920,7 +12916,7 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 191 */
+/* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -13172,16 +13168,16 @@ var Clustergrammer =
 
 
 /***/ },
-/* 192 */
+/* 193 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(193);
+	var content = __webpack_require__(194);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(191)(content, {});
+	var update = __webpack_require__(192)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -13198,10 +13194,10 @@ var Clustergrammer =
 	}
 
 /***/ },
-/* 193 */
+/* 194 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(190)();
+	exports = module.exports = __webpack_require__(191)();
 	// imports
 
 
@@ -13212,17 +13208,17 @@ var Clustergrammer =
 
 
 /***/ },
-/* 194 */
+/* 195 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var ini_sidebar = __webpack_require__(156);
-	var set_up_filters = __webpack_require__(195);
-	var set_up_search = __webpack_require__(200);
-	var set_up_reorder = __webpack_require__(201);
-	var set_sidebar_ini_view = __webpack_require__(202);
-	var make_icons = __webpack_require__(203);
-	var make_modals = __webpack_require__(205);
-	var set_up_opacity_slider = __webpack_require__(207);
+	var set_up_filters = __webpack_require__(196);
+	var set_up_search = __webpack_require__(201);
+	var set_up_reorder = __webpack_require__(202);
+	var set_sidebar_ini_view = __webpack_require__(203);
+	var make_icons = __webpack_require__(204);
+	var make_modals = __webpack_require__(206);
+	var set_up_opacity_slider = __webpack_require__(208);
 
 	/* Represents sidebar with controls.
 	 */
@@ -13295,11 +13291,11 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 195 */
+/* 196 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var make_slider_filter = __webpack_require__(196);
-	var make_button_filter = __webpack_require__(199);
+	var make_slider_filter = __webpack_require__(197);
+	var make_button_filter = __webpack_require__(200);
 
 	module.exports = function set_up_filters(cgm, filter_type) {
 
@@ -13315,15 +13311,15 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 196 */
+/* 197 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var make_filter_title = __webpack_require__(179);
-	var run_filter_slider = __webpack_require__(197);
+	var run_filter_slider = __webpack_require__(198);
 	var get_filter_default_state = __webpack_require__(5);
 	var get_subset_views = __webpack_require__(12);
 
-	d3.slider = __webpack_require__(185);
+	d3.slider = __webpack_require__(186);
 
 	module.exports = function make_slider_filter(cgm, filter_type, div_filters) {
 
@@ -13393,12 +13389,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 197 */
+/* 198 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var update_viz_with_view = __webpack_require__(141);
 	var reset_other_filter_sliders = __webpack_require__(178);
-	var get_current_orders = __webpack_require__(198);
+	var get_current_orders = __webpack_require__(199);
 	var make_requested_view = __webpack_require__(14);
 
 	module.exports = function run_filter_slider(cgm, filter_type, available_views, inst_index) {
@@ -13431,7 +13427,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 198 */
+/* 199 */
 /***/ function(module, exports) {
 
 	module.exports = function get_current_orders(params) {
@@ -13460,7 +13456,7 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 199 */
+/* 200 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// var update_network = require('../network/update_network');
@@ -13511,7 +13507,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 200 */
+/* 201 */
 /***/ function(module, exports) {
 
 	module.exports = function set_up_search(sidebar, params) {
@@ -13526,7 +13522,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 201 */
+/* 202 */
 /***/ function(module, exports) {
 
 	// var get_cat_title = require('../categories/get_cat_title');
@@ -13617,7 +13613,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 202 */
+/* 203 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var make_filter_title = __webpack_require__(179);
@@ -13655,13 +13651,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 203 */
+/* 204 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var file_saver = __webpack_require__(181);
 	var two_translate_zoom = __webpack_require__(80);
-	var deactivate_cropping = __webpack_require__(184);
-	var save_svg_png = __webpack_require__(204);
+	var deactivate_cropping = __webpack_require__(185);
+	var save_svg_png = __webpack_require__(205);
 
 	module.exports = function make_icons(cgm, sidebar) {
 
@@ -13687,7 +13683,7 @@ var Clustergrammer =
 
 	  row.append('div').classed('clust_icon', true).style('float', 'left').style('width', width_pct).style('padding-left', padding_left).style('padding-right', padding_right).append('i').classed('fa', true).classed('fa fa-cloud-download', true).classed('icon_buttons', true).style('font-size', '25px').on('click', function () {
 
-	    cgm.export_matrix();
+	    cgm.save_matrix();
 	  }).classed('sidebar_tooltip', true).append('span').classed('sidebar_tooltip_text', true).html('Download matrix').style('left', '-200%');
 
 	  row.append('div').classed('clust_icon', true).style('float', 'left').style('width', width_pct).style('padding-left', padding_left).style('padding-right', '-5px').append('i').classed('fa', true).classed('fa-crop', true).classed('crop_button', true).classed('icon_buttons', true).style('font-size', '25px').on('click', function () {
@@ -13770,7 +13766,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 204 */
+/* 205 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;(function () {
@@ -14225,10 +14221,10 @@ var Clustergrammer =
 		})();
 
 /***/ },
-/* 205 */
+/* 206 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var make_modal_skeleton = __webpack_require__(206);
+	var make_modal_skeleton = __webpack_require__(207);
 
 	module.exports = function ini_modals(params) {
 
@@ -14262,7 +14258,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 206 */
+/* 207 */
 /***/ function(module, exports) {
 
 	module.exports = function make_modal_skeleton(params, modal_class) {
@@ -14285,7 +14281,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 207 */
+/* 208 */
 /***/ function(module, exports) {
 
 	module.exports = function set_up_opacity_slider(sidebar) {
@@ -14295,6 +14291,25 @@ var Clustergrammer =
 	  slider_container.append('div').classed('sidebar_text', true).classed('opacity_slider_text', true).style('margin-bottom', '3px').text('Opacity Slider');
 
 	  slider_container.append('div').classed('slider', true).classed('opacity_slider', true);
+		};
+
+/***/ },
+/* 209 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var file_saver = __webpack_require__(181);
+	var make_matrix_string = __webpack_require__(182);
+
+	module.exports = function save_matrix() {
+
+	  var saveAs = file_saver();
+
+	  var params = this.params;
+
+	  var matrix_string = make_matrix_string(params);
+
+	  var blob = new Blob([matrix_string], { type: 'text/plain;charset=utf-8' });
+	  saveAs(blob, 'clustergrammer.txt');
 		};
 
 /***/ }
