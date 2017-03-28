@@ -408,7 +408,7 @@ function Enrichrgram(inst_cgm){
       // hide tooltip
       d3.selectAll( inst_cgm.params.viz.root_tips + '_enr_tip')
         .style('opacity', 0)
-        .style('display', 'block');
+        .style('display', 'none');
 
     } else {
 

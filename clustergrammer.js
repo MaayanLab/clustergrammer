@@ -2971,6 +2971,10 @@ var Clustergrammer =
 	  //
 	  // Returns a tip
 	  tip.hide = function () {
+
+	    // hide all d3-tip tooltips
+	    d3.selectAll('.d3-tip').style('display', 'none');
+
 	    var nodel = d3.select(node);
 	    nodel.style({ opacity: 0, 'pointer-events': 'none' });
 	    return tip;
@@ -3730,7 +3734,7 @@ var Clustergrammer =
 	    var class_string = root_tip_selector + ' d3-tip ' + root_tip_selector + '_' + inst_rc + '_dendro_tip';
 
 	    return class_string;
-	  }).direction('nw').offset([tmp_y_offset, tmp_x_offset]).style('display', 'block').style('opacity', 0);
+	  }).direction('nw').offset([tmp_y_offset, tmp_x_offset]).style('display', 'none').style('opacity', 0);
 
 	  dendro_tip.html(function () {
 	    var full_string = '<div class="cluster_info_container"></div>Click for cluster information <br>' + 'and additional options.';
@@ -4087,7 +4091,7 @@ var Clustergrammer =
 	    var class_string = root_tip_selector + ' d3-tip ' + root_tip_selector + '_' + inst_rc + '_dendro_crop_tip';
 
 	    return class_string;
-	  }).direction('nw').offset([tmp_y_offset, tmp_x_offset]);
+	  }).direction('nw').style('display', 'none').offset([tmp_y_offset, tmp_x_offset]);
 
 	  var wait_before_tooltip = 500;
 

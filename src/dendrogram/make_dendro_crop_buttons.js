@@ -34,6 +34,7 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc){
       return class_string;
     })
     .direction('nw')
+    .style('display', 'none')
     .offset([tmp_y_offset, tmp_x_offset]);
 
   var wait_before_tooltip = 500;
