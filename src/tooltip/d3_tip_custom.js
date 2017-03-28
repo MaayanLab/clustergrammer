@@ -76,9 +76,9 @@ module.exports = function d3_tip_custom(){
   // Returns a tip
   tip.hide = function() {
 
-    // hide all d3-tip tooltips
-    d3.selectAll('.d3-tip')
-      .style('display', 'none');
+    // // hide all d3-tip tooltips
+    // d3.selectAll('.d3-tip')
+    //   .style('display', 'none');
 
     var nodel = d3.select(node);
     nodel.style({opacity: 0, 'pointer-events': 'none'});

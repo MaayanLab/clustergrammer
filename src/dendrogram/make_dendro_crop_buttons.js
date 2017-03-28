@@ -23,7 +23,7 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc){
   }
 
   // d3-tooltip
-  var tmp_y_offset = 0;
+  var tmp_y_offset = 5;
   var tmp_x_offset = -5;
   var dendro_crop_tip = d3_tip_custom()
     .attr('class',function(){
@@ -285,6 +285,7 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc){
 
         // Run Filtering
         ///////////////////
+
         // use class as 'global' variable
         d3.select(cgm.params.root+' .'+ inst_rc +'_dendro_icons_group')
           .attr('transform', 'translate(0,0), scale(1,1)')

@@ -27,13 +27,11 @@ var awesomplete = require('awesomplete');
 require('!style!css!./d3.slider/d3.slider.css');
 require('!style!css!awesomplete/awesomplete.css');
 
-/* clustergrammer v1.15.9
+/* clustergrammer v1.15.10
  * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
  * (c) 2017
  */
 function Clustergrammer(args) {
-
-  console.log('ZOOM SWITCH')
 
   /* Main program
    * ----------------------------------------------------------------------- */

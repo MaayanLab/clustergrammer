@@ -76,13 +76,11 @@ module.exports =
 	__webpack_require__(190);
 	__webpack_require__(194);
 
-	/* clustergrammer v1.15.9
+	/* clustergrammer v1.15.10
 	 * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
 	 * (c) 2017
 	 */
 	function Clustergrammer(args) {
-
-	  console.log('ZOOM SWITCH');
 
 	  /* Main program
 	   * ----------------------------------------------------------------------- */
@@ -3091,8 +3089,9 @@ module.exports =
 	  // Returns a tip
 	  tip.hide = function () {
 
-	    // hide all d3-tip tooltips
-	    d3.selectAll('.d3-tip').style('display', 'none');
+	    // // hide all d3-tip tooltips
+	    // d3.selectAll('.d3-tip')
+	    //   .style('display', 'none');
 
 	    var nodel = d3.select(node);
 	    nodel.style({ opacity: 0, 'pointer-events': 'none' });
@@ -4234,7 +4233,7 @@ module.exports =
 	  }
 
 	  // d3-tooltip
-	  var tmp_y_offset = 0;
+	  var tmp_y_offset = 5;
 	  var tmp_x_offset = -5;
 	  var dendro_crop_tip = d3_tip_custom().attr('class', function () {
 	    var root_tip_selector = params.viz.root_tips.replace('.', '');
@@ -4449,6 +4448,7 @@ module.exports =
 
 	      // Run Filtering
 	      ///////////////////
+
 	      // use class as 'global' variable
 	      d3.select(cgm.params.root + ' .' + inst_rc + '_dendro_icons_group').attr('transform', 'translate(0,0), scale(1,1)').classed('ran_filter', true);
 
