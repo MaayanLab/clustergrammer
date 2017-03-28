@@ -59,27 +59,30 @@ module.exports =
 	var reset_cats = __webpack_require__(175);
 	var two_translate_zoom = __webpack_require__(80);
 	var external_update_view = __webpack_require__(177);
-	var export_matrix = __webpack_require__(180);
-	var brush_crop_matrix = __webpack_require__(182);
+	var save_matrix = __webpack_require__(180);
+	var brush_crop_matrix = __webpack_require__(184);
 	var run_zoom = __webpack_require__(89);
 	var d3_tip_custom = __webpack_require__(48);
 	var all_reorder = __webpack_require__(79);
+	var make_matrix_string = __webpack_require__(182);
 
 	// moved d3.slider to src
-	d3.slider = __webpack_require__(184);
+	d3.slider = __webpack_require__(186);
 
 	/* eslint-disable */
 
-	var awesomplete = __webpack_require__(186);
+	var awesomplete = __webpack_require__(188);
 	// getting css from src
-	__webpack_require__(188);
-	__webpack_require__(192);
+	__webpack_require__(190);
+	__webpack_require__(194);
 
-	/* clustergrammer v1.15.7
+	/* clustergrammer v1.15.8
 	 * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
 	 * (c) 2017
 	 */
 	function Clustergrammer(args) {
+
+	  console.log('ZOOM SWITCH');
 
 	  /* Main program
 	   * ----------------------------------------------------------------------- */
@@ -98,14 +101,14 @@ module.exports =
 	  cgm.config = config;
 
 	  // set up zoom
-	  cgm.params.zoom_behavior = d3.behavior.zoom().scaleExtent([1, cgm.params.viz.real_zoom * cgm.params.viz.zoom_switch]).on('zoom', function () {
+	  cgm.params.zoom_behavior = d3.behavior.zoom().scaleExtent([1, cgm.params.viz.square_zoom * cgm.params.viz.zoom_ratio.x]).on('zoom', function () {
 	    run_zoom(cgm);
 	  });
 
 	  cgm.params.zoom_behavior.translate([cgm.params.viz.clust.margin.left, cgm.params.viz.clust.margin.top]);
 
 	  if (cgm.params.use_sidebar) {
-	    var make_sidebar = __webpack_require__(194);
+	    var make_sidebar = __webpack_require__(196);
 	    make_sidebar(cgm);
 	  }
 
@@ -151,6 +154,10 @@ module.exports =
 	    all_reorder(this, inst_order, inst_rc);
 	  }
 
+	  function export_matrix_string() {
+	    return make_matrix_string(this.params);
+	  }
+
 	  // add more API endpoints
 	  cgm.update_view = external_update_view;
 	  cgm.resize_viz = external_resize;
@@ -161,10 +168,11 @@ module.exports =
 	  cgm.update_cats = run_update_cats;
 	  cgm.reset_cats = reset_cats;
 	  cgm.zoom = zoom_api;
-	  cgm.export_matrix = export_matrix;
+	  cgm.save_matrix = save_matrix;
 	  cgm.brush_crop_matrix = brush_crop_matrix;
 	  cgm.d3_tip_custom = expose_d3_tip_custom;
 	  cgm.reorder = api_reorder;
+	  cgm.export_matrix_string = export_matrix_string;
 
 	  return cgm;
 	}
@@ -1866,7 +1874,7 @@ module.exports =
 
 	  var max_zoom_limit = 0.75;
 	  var half_col_height = params.viz.x_scale.rangeBand() / 2;
-	  params.viz.real_zoom = params.viz.norm_labels.width.col / half_col_height * max_zoom_limit;
+	  params.viz.square_zoom = params.viz.norm_labels.width.col / half_col_height * max_zoom_limit;
 
 	  params.viz = calc_zoom_switching(params.viz);
 
@@ -1883,13 +1891,14 @@ module.exports =
 
 	  var width_by_col = viz.clust.dim.width / viz.num_col_nodes;
 	  var height_by_row = viz.clust.dim.height / viz.num_row_nodes;
-	  viz.zoom_switch = width_by_col / height_by_row;
 
-	  viz.zoom_switch_y = 1;
+	  viz.zoom_ratio = {};
+	  viz.zoom_ratio.x = width_by_col / height_by_row;
+	  viz.zoom_ratio.y = 1;
 
-	  if (viz.zoom_switch < 1) {
-	    viz.zoom_switch_y = 1 / viz.zoom_switch;
-	    viz.zoom_switch = 1;
+	  if (viz.zoom_ratio.x < 1) {
+	    viz.zoom_ratio.y = 1 / viz.zoom_ratio.x;
+	    viz.zoom_ratio.x = 1;
 	  }
 
 	  return viz;
@@ -2551,7 +2560,7 @@ module.exports =
 	      var opacity_hlight = 0.85;
 
 	      var hlight_width = rel_width_hlight * params.viz.border_width.x;
-	      var hlight_height = rel_width_hlight * params.viz.border_width.y; ///params.viz.zoom_switch;
+	      var hlight_height = rel_width_hlight * params.viz.border_width.y;
 
 	      // top highlight
 	      d3.select(clicked_rect.parentNode).append('rect').classed('click_hlight', true).classed('top_hlight', true).attr('width', params.viz.x_scale.rangeBand()).attr('height', hlight_height).attr('fill', params.matrix.hlight_color).attr('transform', function () {
@@ -2873,9 +2882,9 @@ module.exports =
 	module.exports = function draw_up_tile(params) {
 
 	  var start_x = 0;
-	  var final_x = params.viz.x_scale.rangeBand() - params.viz.border_width.x; ///params.viz.zoom_switch_y;
+	  var final_x = params.viz.x_scale.rangeBand() - params.viz.border_width.x;
 	  var start_y = 0;
-	  var final_y = params.viz.y_scale.rangeBand() - params.viz.border_width.y; ///params.viz.zoom_switch;
+	  var final_y = params.viz.y_scale.rangeBand() - params.viz.border_width.y;
 
 	  var output_string = 'M' + start_x + ',' + start_y + ', L' + start_x + ', ' + final_y + ', L' + final_x + ',0 Z';
 
@@ -3080,6 +3089,10 @@ module.exports =
 	  //
 	  // Returns a tip
 	  tip.hide = function () {
+
+	    // hide all d3-tip tooltips
+	    d3.selectAll('.d3-tip').style('display', 'none');
+
 	    var nodel = d3.select(node);
 	    nodel.style({ opacity: 0, 'pointer-events': 'none' });
 	    return tip;
@@ -3520,8 +3533,7 @@ module.exports =
 
 	    var rel_width_hlight = 6;
 	    var opacity_hlight = 0.85;
-	    // var hlight_width  = rel_width_hlight*params.viz.border_width;
-	    var hlight_height = rel_width_hlight * params.viz.border_width.x; // /params.viz.zoom_switch;
+	    var hlight_height = rel_width_hlight * params.viz.border_width.x;
 
 	    d3.selectAll(params.root + ' .click_hlight').remove();
 
@@ -3688,10 +3700,10 @@ module.exports =
 	  // var opacity_hlight = 0.85;
 
 	  var hlight_width = rel_width_hlight * params.viz.border_width.x;
-	  var hlight_height = rel_width_hlight * params.viz.border_width.y; ///params.viz.zoom_switch;
+	  var hlight_height = rel_width_hlight * params.viz.border_width.y;
+
 	  // reposition tile highlight
 	  ////////////////////////////////
-
 	  // top highlight
 	  d3.select(params.root + ' .top_hlight').attr('width', params.viz.x_scale.rangeBand()).attr('height', hlight_height).transition().duration(2500).attr('transform', function () {
 	    return 'translate(' + params.viz.x_scale(params.matrix.click_hlight_x) + ',0)';
@@ -3861,7 +3873,7 @@ module.exports =
 	    var class_string = root_tip_selector + ' d3-tip ' + root_tip_selector + '_' + inst_rc + '_dendro_tip';
 
 	    return class_string;
-	  }).direction('nw').offset([tmp_y_offset, tmp_x_offset]).style('display', 'block').style('opacity', 0);
+	  }).direction('nw').offset([tmp_y_offset, tmp_x_offset]).style('display', 'none').style('opacity', 0);
 
 	  dendro_tip.html(function () {
 	    var full_string = '<div class="cluster_info_container"></div>Click for cluster information <br>' + 'and additional options.';
@@ -4228,7 +4240,7 @@ module.exports =
 	    var class_string = root_tip_selector + ' d3-tip ' + root_tip_selector + '_' + inst_rc + '_dendro_crop_tip';
 
 	    return class_string;
-	  }).direction('nw').offset([tmp_y_offset, tmp_x_offset]);
+	  }).direction('nw').style('display', 'none').offset([tmp_y_offset, tmp_x_offset]);
 
 	  var wait_before_tooltip = 500;
 
@@ -5193,7 +5205,6 @@ module.exports =
 	    var rel_width_hlight = 6;
 	    var opacity_hlight = 0.85;
 	    var hlight_width = rel_width_hlight * params.viz.border_width.x;
-	    // var hlight_height = rel_width_hlight*params.viz.border_width/params.viz.zoom_switch;
 
 	    d3.selectAll(params.root + ' .click_hlight').remove();
 
@@ -6047,6 +6058,8 @@ module.exports =
 
 	module.exports = function two_translate_zoom(cgm, pan_dx, pan_dy, fin_zoom) {
 
+	  // console.log('pan_dy: ' + String(pan_dy))
+
 	  var params = cgm.params;
 
 	  d3.selectAll(params.viz.root_tips).style('display', 'none');
@@ -6064,35 +6077,38 @@ module.exports =
 	    // y pan room, the pan room has to be less than half_height since
 	    // zooming in on a gene that is near the top of the clustergram also causes
 	    // panning out of the visible region
-	    var y_pan_room = half_height / params.viz.zoom_switch;
+	    var y_pan_room = half_height / fin_zoom;
 
 	    // prevent visualization from panning down too much
 	    // when zooming into genes near the top of the clustergram
 	    if (pan_dy >= half_height - y_pan_room) {
 
+	      // console.log(' prevent visualization from panning down too much')
+
 	      // explanation of panning rules
 	      /////////////////////////////////
-	      // prevent the clustergram from panning down too much
-	      // if the amount of panning is equal to the half_height then it needs to be reduced
-	      // effectively, the the visualization needs to be moved up (negative) by some factor
-	      // of the half-width-of-the-visualization.
-	      //
-	      // If there was no zooming involved, then the
-	      // visualization would be centered first, then panned to center the top term
-	      // this would require a
-	      // correction to re-center it. However, because of the zooming the offset is
-	      // reduced by the zoom factor (this is because the panning is occurring on something
-	      // that will be zoomed into - this is why the pan_dy value is not scaled in the two
-	      // translate transformations, but it has to be scaled afterwards to set the translate
-	      // vector)
-	      // pan_dy = half_height - (half_height)/params.viz.zoom_switch
+	      /*
+	        prevent the clustergram from panning down too much
+	        if the amount of panning is equal to the half_height then it needs to be reduced
+	        effectively, the the visualization needs to be moved up (negative) by some factor
+	        of the half-width-of-the-visualization.
+	         If there was no zooming involved, then the
+	        visualization would be centered first, then panned to center the top term
+	        this would require a
+	        correction to re-center it. However, because of the zooming the offset is
+	        reduced by the zoom factor (this is because the panning is occurring on something
+	        that will be zoomed into - this is why the pan_dy value is not scaled in the two
+	        translate transformations, but it has to be scaled afterwards to set the translate
+	        vector)
+	        pan_dy = half_height - (half_height)/fin_zoom
+	         if pan_dy is greater than the pan room, then panning has to be restricted
+	        start by shifting back up (negative) by half_height/fin_zoom then shift back down
+	        by the difference between half_height and pan_dy (so that the top of the clustergram is
+	        visible)
+	      */
 
-	      // if pan_dy is greater than the pan room, then panning has to be restricted
-	      // start by shifting back up (negative) by half_height/params.viz.zoom_switch then shift back down
-	      // by the difference between half_height and pan_dy (so that the top of the clustergram is
-	      // visible)
 	      var shift_top_viz = half_height - pan_dy;
-	      var shift_up_viz = -half_height / params.viz.zoom_switch + shift_top_viz;
+	      var shift_up_viz = -half_height / fin_zoom + shift_top_viz;
 
 	      // reduce pan_dy so that the visualization does not get panned to far down
 	      pan_dy = pan_dy + shift_up_viz;
@@ -6104,7 +6120,7 @@ module.exports =
 
 	      shift_top_viz = half_height + pan_dy;
 
-	      shift_up_viz = half_height / params.viz.zoom_switch - shift_top_viz; //- move_up_one_row;
+	      shift_up_viz = half_height / fin_zoom - shift_top_viz; //- move_up_one_row;
 
 	      // reduce pan_dy so that the visualization does not get panned to far down
 	      pan_dy = pan_dy + shift_up_viz;
@@ -6112,12 +6128,7 @@ module.exports =
 
 	    // will improve this !!
 	    var zoom_y = fin_zoom;
-	    var zoom_x;
-	    if (fin_zoom <= params.viz.zoom_switch) {
-	      zoom_x = 1;
-	    } else {
-	      zoom_x = fin_zoom / params.viz.zoom_switch;
-	    }
+	    var zoom_x = 1;
 
 	    // search duration - the duration of zooming and panning
 	    var search_duration = 700;
@@ -6190,7 +6201,12 @@ module.exports =
 	      return 'translate(' + inst_x + ',' + inst_y + ') ' + 'scale(1, ' + 1 / zoom_y + ')';
 	    });
 
-	    d3.select(params.root + ' .col_dendro_icons_group').attr('transform', 'translate(' + [0, 0 + center_y] + ')' + ' scale(' + zoom_x + ',' + zoom_y + ')' + 'translate(' + [pan_dx, pan_dy] + ')');
+	    // // no need to move col dendro crop button container
+	    // d3.select(params.root+' .col_dendro_icons_group')
+	    //   .attr('transform', 'translate(' + [0, 0 + center_y] + ')' +
+	    //   ' scale(' + zoom_x + ',' + zoom_y + ')' + 'translate(' + [pan_dx,
+	    //     pan_dy
+	    //   ] + ')');
 
 	    d3.select(params.root + ' .col_dendro_icons_group').selectAll('path').attr('transform', function (d) {
 	      var inst_x = d.pos_mid;
@@ -6278,7 +6294,7 @@ module.exports =
 	module.exports = function (params, inst_selection, inst_rc) {
 	  if (d3.select(inst_selection).style('display') != 'none') {
 
-	    // trim text that is longer than the container 
+	    // trim text that is longer than the container
 	    var inst_zoom;
 	    var inst_width;
 	    var trimmed_text;
@@ -6291,15 +6307,15 @@ module.exports =
 	    var max_width = params.viz.norm_labels.width[inst_rc];
 
 	    if (inst_rc === 'row') {
-	      if (params.viz.zoom_switch_y) {
-	        inst_zoom = params.zoom_behavior.scale() / params.viz.zoom_switch_y;
+	      if (params.viz.zoom_ratio.y) {
+	        inst_zoom = params.zoom_behavior.scale() / params.viz.zoom_ratio.y;
 	      } else {
 	        inst_zoom = params.zoom_behavior.scale();
 	      }
 	      // num_trims = params.labels.row_max_char;
 	    } else {
-	      if (params.viz.zoom_switch > 1) {
-	        inst_zoom = params.zoom_behavior.scale() / params.viz.zoom_switch;
+	      if (params.viz.zoom_ratio.x > 1) {
+	        inst_zoom = params.zoom_behavior.scale() / params.viz.zoom_ratio.x;
 	      } else {
 	        inst_zoom = params.zoom_behavior.scale();
 	      }
@@ -6362,7 +6378,7 @@ module.exports =
 	    keep_num_char = current_num_char + 2;
 	    trimmed_text = original_text.substring(0, keep_num_char) + '..';
 
-	    // if '..' was added to original text 
+	    // if '..' was added to original text
 	    if (trimmed_text.length > original_text.length) {
 	      trimmed_text = original_text;
 	    }
@@ -6403,8 +6419,8 @@ module.exports =
 
 	    if (real_font_size.row > params.labels.max_allow_fs) {
 
-	      if (params.viz.zoom_switch_y) {
-	        inst_zoom = params.zoom_behavior.scale() / params.viz.zoom_switch_y;
+	      if (params.viz.zoom_ratio.y) {
+	        inst_zoom = params.zoom_behavior.scale() / params.viz.zoom_ratio.y;
 	      } else {
 	        inst_zoom = params.zoom_behavior.scale();
 	      }
@@ -6427,8 +6443,8 @@ module.exports =
 
 	    if (real_font_size.col > params.labels.max_allow_fs) {
 
-	      if (params.viz.zoom_switch > 1) {
-	        inst_zoom = params.zoom_behavior.scale() / params.viz.zoom_switch;
+	      if (params.viz.zoom_ratio.x > 1) {
+	        inst_zoom = params.zoom_behavior.scale() / params.viz.zoom_ratio.x;
 	      } else {
 	        inst_zoom = params.zoom_behavior.scale();
 	      }
@@ -6459,12 +6475,12 @@ module.exports =
 	module.exports = function calc_real_font_size(params) {
 
 	  var real_font_size = {};
-	  // zoom_switch behavior has to change with zoom_switch_y
-	  if (params.viz.zoom_switch > 1) {
+	  // zoom_switch behavior has to change with zoom_ratio.y
+	  if (params.viz.zoom_ratio.x > 1) {
 	    real_font_size.row = params.labels.default_fs_row * params.zoom_behavior.scale();
-	    real_font_size.col = params.labels.default_fs_col * params.zoom_behavior.scale(); ///params.viz.zoom_switch;
+	    real_font_size.col = params.labels.default_fs_col * params.zoom_behavior.scale();
 	  } else {
-	    real_font_size.row = params.labels.default_fs_row * params.zoom_behavior.scale() / params.viz.zoom_switch_y;
+	    real_font_size.row = params.labels.default_fs_row * params.zoom_behavior.scale() / params.viz.zoom_ratio.y;
 	    real_font_size.col = params.labels.default_fs_col * params.zoom_behavior.scale();
 	  }
 
@@ -6768,7 +6784,7 @@ module.exports =
 	  // disable zoom while transitioning
 	  svg_group.on('.zoom', null);
 
-	  params.zoom_behavior.scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch]).on('zoom', function () {
+	  params.zoom_behavior.scaleExtent([1, params.viz.square_zoom * params.viz.zoom_ratio.x]).on('zoom', function () {
 	    run_zoom(cgm);
 	  });
 
@@ -6912,16 +6928,6 @@ module.exports =
 	  zoom_info.trans_y = params.zoom_behavior.translate()[1] - params.viz.clust.margin.top;
 
 	  d3.selectAll(params.viz.root_tips).style('display', 'none');
-
-	  // // there will be negative trans_x that is not allowed while zooming in the
-	  // // y direction only. Switch this to positive and add it to the trans_x when
-	  // // x-zooming is allowed (will be reset when zooming has stopped)
-	  // if (zoom_info.zoom_y < params.viz.zoom_switch){
-	  //   // console.log('below')
-	  //   cgm.params.viz.x_offset = -(zoom_info.trans_x + 100);
-	  // }
-
-	  // console.log('x_offset: ' + String(cgm.params.viz.x_offset))
 
 	  // transfer zoom_info to params
 	  params.zoom_info = zoom_rules_y(params, zoom_info);
@@ -7229,12 +7235,12 @@ module.exports =
 
 	  var viz = params.viz;
 	  // zoom in the x direction before zooming in the y direction
-	  if (viz.zoom_switch_y > 1) {
-	    if (zoom_info.zoom_y < viz.zoom_switch_y) {
+	  if (viz.zoom_ratio.y > 1) {
+	    if (zoom_info.zoom_y < viz.zoom_ratio.y) {
 	      zoom_info.trans_y = 0;
 	      zoom_info.zoom_y = 1;
 	    } else {
-	      zoom_info.zoom_y = zoom_info.zoom_y / viz.zoom_switch_y;
+	      zoom_info.zoom_y = zoom_info.zoom_y / viz.zoom_ratio.y;
 	    }
 	  }
 
@@ -7266,16 +7272,16 @@ module.exports =
 	  var viz = params.viz;
 
 	  // zoom in the y direction before zooming in the x direction
-	  if (viz.zoom_switch > 1) {
+	  if (viz.zoom_ratio.x > 1) {
 
-	    if (zoom_info.zoom_x < viz.zoom_switch) {
+	    if (zoom_info.zoom_x < viz.zoom_ratio.x) {
 
 	      // remove this
 	      // zoom_info.trans_x = - params.viz.clust.margin.left;
 
 	      zoom_info.zoom_x = 1;
 	    } else {
-	      zoom_info.zoom_x = zoom_info.zoom_x / viz.zoom_switch;
+	      zoom_info.zoom_x = zoom_info.zoom_x / viz.zoom_ratio.x;
 
 	      // console.log('********* zoom_x: ' + String(zoom_info.zoom_x))
 
@@ -7740,7 +7746,7 @@ module.exports =
 	  var rel_width_hlight = 6;
 	  // var opacity_hlight = 0.85;
 	  var hlight_width = rel_width_hlight * params.viz.border_width.x;
-	  var hlight_height = rel_width_hlight * params.viz.border_width.y; ///params.viz.zoom_switch;
+	  var hlight_height = rel_width_hlight * params.viz.border_width.y;
 
 	  // top highlight
 	  d3.select(params.root + ' .top_hlight').attr('width', params.viz.rect_width).attr('height', hlight_height).attr('transform', function () {
@@ -8046,7 +8052,7 @@ module.exports =
 	  }
 
 	  // redefine zoom extent
-	  params.viz.real_zoom = params.viz.norm_labels.width.col / (params.viz.rect_width / 2);
+	  params.viz.square_zoom = params.viz.norm_labels.width.col / (params.viz.rect_width / 2);
 
 	  // the default font sizes are set here
 	  params = calc_default_fs(params);
@@ -9703,7 +9709,7 @@ module.exports =
 	  cgm.params = new_params;
 
 	  // set up zoom
-	  cgm.params.zoom_behavior = d3.behavior.zoom().scaleExtent([1, cgm.params.viz.real_zoom * cgm.params.viz.zoom_switch]).on('zoom', function () {
+	  cgm.params.zoom_behavior = d3.behavior.zoom().scaleExtent([1, cgm.params.viz.square_zoom * cgm.params.viz.zoom_ratio.x]).on('zoom', function () {
 	    run_zoom(cgm);
 	  });
 
@@ -9992,8 +9998,6 @@ module.exports =
 	  var params = cgm.params;
 
 	  var row_nodes = cgm.params.network_data.row_nodes;
-	  // var col_nodes = cgm.params.network_data.col_nodes;
-	  // var links = cgm.params.network_data.links;
 
 	  params.zoom_info = ini_zoom_info();
 
@@ -10019,6 +10023,7 @@ module.exports =
 	      params.viz.clust.dim.width = params.viz.clust.dim.height;
 	    }
 	  }
+
 	  params.viz = calc_zoom_switching(params.viz);
 
 	  // redefine x_scale and y_scale rangeBands
@@ -10026,8 +10031,8 @@ module.exports =
 	  params.viz.y_scale.rangeBands([0, params.viz.clust.dim.height]);
 
 	  // redefine zoom extent
-	  params.viz.real_zoom = params.viz.norm_labels.width.col / (params.viz.x_scale.rangeBand() / 2);
-	  params.zoom_behavior.scaleExtent([1, params.viz.real_zoom * params.viz.zoom_switch]);
+	  params.viz.square_zoom = params.viz.norm_labels.width.col / (params.viz.x_scale.rangeBand() / 2);
+	  params.zoom_behavior.scaleExtent([1, params.viz.square_zoom * params.viz.zoom_ratio.x]);
 
 	  // redefine border width
 	  params.viz.border_width.x = params.viz.x_scale.rangeBand() / params.viz.border_fraction;
@@ -10786,10 +10791,22 @@ module.exports =
 	    var inst_y_pos = cgm.params.viz.y_scale(idx);
 	    var pan_dy = cgm.params.viz.clust.dim.height / 2 - inst_y_pos;
 
-	    two_translate_zoom(cgm, 0, pan_dy, cgm.params.viz.zoom_switch);
+	    var inst_zoom = cgm.params.viz.zoom_ratio.x;
+
+	    // working on improving zoom behavior
+	    ///////////////////////////////////////////////////
+	    ///////////////////////////////////////////////////
+
+	    // // increase zoom
+	    // inst_zoom = 3 * inst_zoom;
+
+	    // // move visualization down less
+	    // pan_dy = pan_dy - 5;
+
+	    two_translate_zoom(cgm, 0, pan_dy, inst_zoom);
 
 	    // set y zoom to zoom_switch
-	    cgm.params.zoom_info.zoom_y = cgm.params.viz.zoom_switch;
+	    cgm.params.zoom_info.zoom_y = inst_zoom;
 
 	    // highlight
 	    d3.selectAll(cgm.params.root + ' .row_label_group').filter(function (d) {
@@ -11556,13 +11573,6 @@ module.exports =
 	  // recalculate the visualization parameters using the updated network_data
 	  cgm.params = calc_viz_params(cgm.params, false);
 
-	  // // set up zoom
-	  // cgm.params.zoom_behavior = d3.behavior.zoom()
-	  //   .scaleExtent([1, cgm.params.viz.real_zoom * cgm.params.viz.zoom_switch])
-	  //   .on('zoom', function(){
-	  //     zoomed(cgm);
-	  //   });
-
 	  make_row_cat(cgm, true);
 	  resize_viz(cgm);
 
@@ -11970,121 +11980,15 @@ module.exports =
 	'use strict';
 
 	var file_saver = __webpack_require__(181);
+	var make_matrix_string = __webpack_require__(182);
 
-	module.exports = function export_matrix() {
+	module.exports = function save_matrix() {
 
 	  var saveAs = file_saver();
 
 	  var params = this.params;
-	  var inst_matrix = params.matrix;
 
-	  // get order indexes
-	  var order_indexes = {};
-	  var inst_name;
-	  _.each(['row', 'col'], function (tmp_rc) {
-
-	    var inst_rc;
-	    // row/col names are reversed in saved orders
-	    if (tmp_rc === 'row') {
-	      inst_rc = 'col';
-	    } else {
-	      inst_rc = 'row';
-	    }
-
-	    // use tmp_rc
-	    inst_name = params.inst_order[tmp_rc];
-
-	    // use tmp_rc
-	    order_indexes[inst_rc] = inst_matrix.orders[inst_name + '_' + tmp_rc];
-	  });
-
-	  var matrix_string = '\t';
-	  var row_nodes = params.network_data.row_nodes;
-	  var col_nodes = params.network_data.col_nodes;
-	  var cat_name;
-
-	  // // original column entry
-	  // _.each(order_indexes['col'], function(inst_index){
-	  //   var inst_col = col_nodes[inst_index];
-	  //   var col_name = make_full_name(inst_col, 'col');
-	  //   matrix_string = matrix_string + col_name + '\t';
-	  // });
-
-	  // alternate column entry
-	  for (var c_i = 0; c_i < order_indexes.col.length; c_i++) {
-
-	    var inst_index = order_indexes.col[c_i];
-
-	    var inst_col = col_nodes[inst_index];
-	    var col_name = make_full_name(inst_col, 'col');
-
-	    if (c_i < order_indexes.col.length - 1) {
-	      matrix_string = matrix_string + col_name + '\t';
-	    } else {
-	      matrix_string = matrix_string + col_name;
-	    }
-	  }
-
-	  var row_data;
-	  matrix_string = matrix_string + '\n';
-
-	  _.each(order_indexes.row, function (inst_index) {
-
-	    // row names
-	    row_data = inst_matrix.matrix[inst_index].row_data;
-
-	    // var row_name = inst_matrix.matrix[inst_index].name;
-	    var inst_row = row_nodes[inst_index];
-
-	    // var row_name = inst_row.name;
-	    var row_name = make_full_name(inst_row, 'row');
-
-	    matrix_string = matrix_string + row_name + '\t';
-
-	    // // original data entry
-	    // _.each(order_indexes['col'], function(col_index){
-	    //   matrix_string = matrix_string + String(row_data[col_index].value) + '\t';
-	    // })
-
-	    // alternate data entry
-	    for (var r_i = 0; r_i < order_indexes.col.length; r_i++) {
-
-	      // get the order
-	      var col_index = order_indexes.col[r_i];
-
-	      if (r_i < order_indexes.col.length - 1) {
-	        matrix_string = matrix_string + String(row_data[col_index].value) + '\t';
-	      } else {
-	        matrix_string = matrix_string + String(row_data[col_index].value);
-	      }
-	    }
-
-	    matrix_string = matrix_string + '\n';
-	  });
-
-	  function make_full_name(inst_node, inst_rc) {
-
-	    var inst_name = inst_node.name;
-
-	    var num_cats = params.viz.all_cats[inst_rc].length;
-
-	    // make tuple if necessary
-	    if (num_cats > 0) {
-
-	      inst_name = "('" + inst_name + "'";
-
-	      for (var cat_index = 0; cat_index < num_cats; cat_index++) {
-	        cat_name = 'cat-' + String(cat_index);
-
-	        // inst_name =  inst_name + ", " + inst_node[cat_name];
-	        inst_name = inst_name + ", '" + inst_node[cat_name] + "'";
-	      }
-	    }
-
-	    inst_name = inst_name + ')';
-
-	    return inst_name;
-	  }
+	  var matrix_string = make_matrix_string(params);
 
 	  var blob = new Blob([matrix_string], { type: 'text/plain;charset=utf-8' });
 	  saveAs(blob, 'clustergrammer.txt');
@@ -12313,7 +12217,123 @@ module.exports =
 
 	'use strict';
 
-	var deactivate_cropping = __webpack_require__(183);
+	var make_full_name = __webpack_require__(183);
+
+	module.exports = function make_matrix_string(params) {
+
+	  var inst_matrix = params.matrix;
+
+	  // get order indexes
+	  var order_indexes = {};
+	  var inst_name;
+	  _.each(['row', 'col'], function (tmp_rc) {
+
+	    var inst_rc;
+	    // row/col names are reversed in saved orders
+	    if (tmp_rc === 'row') {
+	      inst_rc = 'col';
+	    } else {
+	      inst_rc = 'row';
+	    }
+
+	    // use tmp_rc
+	    inst_name = params.inst_order[tmp_rc];
+
+	    // use tmp_rc
+	    order_indexes[inst_rc] = inst_matrix.orders[inst_name + '_' + tmp_rc];
+	  });
+
+	  var matrix_string = '\t';
+	  var row_nodes = params.network_data.row_nodes;
+	  var col_nodes = params.network_data.col_nodes;
+
+	  // alternate column entry
+	  for (var c_i = 0; c_i < order_indexes.col.length; c_i++) {
+
+	    var inst_index = order_indexes.col[c_i];
+
+	    var inst_col = col_nodes[inst_index];
+	    var col_name = make_full_name(params, inst_col, 'col');
+
+	    if (c_i < order_indexes.col.length - 1) {
+	      matrix_string = matrix_string + col_name + '\t';
+	    } else {
+	      matrix_string = matrix_string + col_name;
+	    }
+	  }
+
+	  var row_data;
+	  matrix_string = matrix_string + '\n';
+
+	  _.each(order_indexes.row, function (inst_index) {
+
+	    // row names
+	    row_data = inst_matrix.matrix[inst_index].row_data;
+
+	    // var row_name = inst_matrix.matrix[inst_index].name;
+	    var inst_row = row_nodes[inst_index];
+
+	    // var row_name = inst_row.name;
+	    var row_name = make_full_name(params, inst_row, 'row');
+
+	    matrix_string = matrix_string + row_name + '\t';
+
+	    // alternate data entry
+	    for (var r_i = 0; r_i < order_indexes.col.length; r_i++) {
+
+	      // get the order
+	      var col_index = order_indexes.col[r_i];
+
+	      if (r_i < order_indexes.col.length - 1) {
+	        matrix_string = matrix_string + String(row_data[col_index].value) + '\t';
+	      } else {
+	        matrix_string = matrix_string + String(row_data[col_index].value);
+	      }
+	    }
+
+	    matrix_string = matrix_string + '\n';
+	  });
+
+	  return matrix_string;
+		};
+
+/***/ },
+/* 183 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	module.exports = function make_full_name(params, inst_node, inst_rc) {
+
+	  var cat_name;
+	  var inst_name = inst_node.name;
+	  var num_cats = params.viz.all_cats[inst_rc].length;
+
+	  // make tuple if necessary
+	  if (num_cats > 0) {
+
+	    inst_name = "('" + inst_name + "'";
+
+	    for (var cat_index = 0; cat_index < num_cats; cat_index++) {
+	      cat_name = 'cat-' + String(cat_index);
+
+	      // inst_name =  inst_name + ", " + inst_node[cat_name];
+	      inst_name = inst_name + ", '" + inst_node[cat_name] + "'";
+	    }
+
+	    inst_name = inst_name + ')';
+	  }
+
+	  return inst_name;
+	};
+
+/***/ },
+/* 184 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var deactivate_cropping = __webpack_require__(185);
 
 	module.exports = function brush_crop_matrix() {
 
@@ -12433,7 +12453,7 @@ module.exports =
 		};
 
 /***/ },
-/* 183 */
+/* 185 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -12446,7 +12466,7 @@ module.exports =
 		};
 
 /***/ },
-/* 184 */
+/* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -12462,7 +12482,7 @@ module.exports =
 	(function (root, factory) {
 	  if (true) {
 	    // AMD. Register as an anonymous module.
-	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(185)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(187)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	  } else if ((typeof exports === 'undefined' ? 'undefined' : _typeof(exports)) === 'object') {
 	    if (process.browser) {
 	      // Browserify. Import css too using cssify.
@@ -12848,13 +12868,13 @@ module.exports =
 	});
 
 /***/ },
-/* 185 */
+/* 187 */
 /***/ function(module, exports) {
 
 	module.exports = require("d3");
 
 /***/ },
-/* 186 */
+/* 188 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {"use strict";
@@ -13294,10 +13314,10 @@ module.exports =
 
 		return _;
 		})();
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(187)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(189)(module)))
 
 /***/ },
-/* 187 */
+/* 189 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -13314,16 +13334,16 @@ module.exports =
 		};
 
 /***/ },
-/* 188 */
+/* 190 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(189);
+	var content = __webpack_require__(191);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(191)(content, {});
+	var update = __webpack_require__(193)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -13340,10 +13360,10 @@ module.exports =
 	}
 
 /***/ },
-/* 189 */
+/* 191 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(190)();
+	exports = module.exports = __webpack_require__(192)();
 	// imports
 
 
@@ -13354,7 +13374,7 @@ module.exports =
 
 
 /***/ },
-/* 190 */
+/* 192 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -13409,7 +13429,7 @@ module.exports =
 	};
 
 /***/ },
-/* 191 */
+/* 193 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -13661,16 +13681,16 @@ module.exports =
 
 
 /***/ },
-/* 192 */
+/* 194 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(193);
+	var content = __webpack_require__(195);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(191)(content, {});
+	var update = __webpack_require__(193)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -13687,10 +13707,10 @@ module.exports =
 	}
 
 /***/ },
-/* 193 */
+/* 195 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(190)();
+	exports = module.exports = __webpack_require__(192)();
 	// imports
 
 
@@ -13701,19 +13721,19 @@ module.exports =
 
 
 /***/ },
-/* 194 */
+/* 196 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var ini_sidebar = __webpack_require__(156);
-	var set_up_filters = __webpack_require__(195);
-	var set_up_search = __webpack_require__(200);
-	var set_up_reorder = __webpack_require__(201);
-	var set_sidebar_ini_view = __webpack_require__(202);
-	var make_icons = __webpack_require__(203);
-	var make_modals = __webpack_require__(205);
-	var set_up_opacity_slider = __webpack_require__(207);
+	var set_up_filters = __webpack_require__(197);
+	var set_up_search = __webpack_require__(202);
+	var set_up_reorder = __webpack_require__(203);
+	var set_sidebar_ini_view = __webpack_require__(204);
+	var make_icons = __webpack_require__(205);
+	var make_modals = __webpack_require__(207);
+	var set_up_opacity_slider = __webpack_require__(209);
 
 	/* Represents sidebar with controls.
 	 */
@@ -13786,13 +13806,13 @@ module.exports =
 		};
 
 /***/ },
-/* 195 */
+/* 197 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_slider_filter = __webpack_require__(196);
-	var make_button_filter = __webpack_require__(199);
+	var make_slider_filter = __webpack_require__(198);
+	var make_button_filter = __webpack_require__(201);
 
 	module.exports = function set_up_filters(cgm, filter_type) {
 
@@ -13808,17 +13828,17 @@ module.exports =
 		};
 
 /***/ },
-/* 196 */
+/* 198 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var make_filter_title = __webpack_require__(179);
-	var run_filter_slider = __webpack_require__(197);
+	var run_filter_slider = __webpack_require__(199);
 	var get_filter_default_state = __webpack_require__(5);
 	var get_subset_views = __webpack_require__(12);
 
-	d3.slider = __webpack_require__(184);
+	d3.slider = __webpack_require__(186);
 
 	module.exports = function make_slider_filter(cgm, filter_type, div_filters) {
 
@@ -13888,14 +13908,14 @@ module.exports =
 		};
 
 /***/ },
-/* 197 */
+/* 199 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var update_viz_with_view = __webpack_require__(141);
 	var reset_other_filter_sliders = __webpack_require__(178);
-	var get_current_orders = __webpack_require__(198);
+	var get_current_orders = __webpack_require__(200);
 	var make_requested_view = __webpack_require__(14);
 
 	module.exports = function run_filter_slider(cgm, filter_type, available_views, inst_index) {
@@ -13928,7 +13948,7 @@ module.exports =
 		};
 
 /***/ },
-/* 198 */
+/* 200 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -13959,7 +13979,7 @@ module.exports =
 	};
 
 /***/ },
-/* 199 */
+/* 201 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -14012,7 +14032,7 @@ module.exports =
 		};
 
 /***/ },
-/* 200 */
+/* 202 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -14029,7 +14049,7 @@ module.exports =
 		};
 
 /***/ },
-/* 201 */
+/* 203 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -14122,7 +14142,7 @@ module.exports =
 		};
 
 /***/ },
-/* 202 */
+/* 204 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -14162,15 +14182,15 @@ module.exports =
 		};
 
 /***/ },
-/* 203 */
+/* 205 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var file_saver = __webpack_require__(181);
 	var two_translate_zoom = __webpack_require__(80);
-	var deactivate_cropping = __webpack_require__(183);
-	var save_svg_png = __webpack_require__(204);
+	var deactivate_cropping = __webpack_require__(185);
+	var save_svg_png = __webpack_require__(206);
 
 	module.exports = function make_icons(cgm, sidebar) {
 
@@ -14196,7 +14216,7 @@ module.exports =
 
 	  row.append('div').classed('clust_icon', true).style('float', 'left').style('width', width_pct).style('padding-left', padding_left).style('padding-right', padding_right).append('i').classed('fa', true).classed('fa fa-cloud-download', true).classed('icon_buttons', true).style('font-size', '25px').on('click', function () {
 
-	    cgm.export_matrix();
+	    cgm.save_matrix();
 	  }).classed('sidebar_tooltip', true).append('span').classed('sidebar_tooltip_text', true).html('Download matrix').style('left', '-200%');
 
 	  row.append('div').classed('clust_icon', true).style('float', 'left').style('width', width_pct).style('padding-left', padding_left).style('padding-right', '-5px').append('i').classed('fa', true).classed('fa-crop', true).classed('crop_button', true).classed('icon_buttons', true).style('font-size', '25px').on('click', function () {
@@ -14279,7 +14299,7 @@ module.exports =
 		};
 
 /***/ },
-/* 204 */
+/* 206 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -14736,12 +14756,12 @@ module.exports =
 		})();
 
 /***/ },
-/* 205 */
+/* 207 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var make_modal_skeleton = __webpack_require__(206);
+	var make_modal_skeleton = __webpack_require__(208);
 
 	module.exports = function ini_modals(params) {
 
@@ -14775,7 +14795,7 @@ module.exports =
 		};
 
 /***/ },
-/* 206 */
+/* 208 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -14800,7 +14820,7 @@ module.exports =
 		};
 
 /***/ },
-/* 207 */
+/* 209 */
 /***/ function(module, exports) {
 
 	'use strict';

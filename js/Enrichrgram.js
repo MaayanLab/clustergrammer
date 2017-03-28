@@ -142,6 +142,7 @@ function Enrichrgram(inst_cgm){
         return class_string;
       })
       .direction('se')
+      .style('display', 'none')
       .offset([-10,-5])
       .html(function(d){
         return enrichr_description;
