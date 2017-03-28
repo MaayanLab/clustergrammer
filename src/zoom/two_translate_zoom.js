@@ -204,20 +204,27 @@ module.exports = function two_translate_zoom(cgm, pan_dx, pan_dy, fin_zoom) {
         return 'translate('+ inst_x +',' + inst_y + ') ' + 'scale(1, '+ 1/zoom_y +')';
       });
 
+    // console.log('zooming x and y')
+    // console.log(zoom_x)
+    // console.log(zoom_y)
 
-    // // no need to move col dendro crop button container
-    // d3.select(params.root+' .col_dendro_icons_group')
-    //   .attr('transform', 'translate(' + [0, 0 + center_y] + ')' +
-    //   ' scale(' + zoom_x + ',' + zoom_y + ')' + 'translate(' + [pan_dx,
-    //     pan_dy
-    //   ] + ')');
+    // need to improve behavior
+    d3.select(params.root+' .col_dendro_icons_group')
+      .attr('transform', function(){
+        var inst_trans =
+                         // 'translate(' + [0, 0 + center_y] + ')' +
+                         ' scale(' + zoom_x + ',' + zoom_y + ')';
+                         // + 'translate(' + [pan_dx, pan_dy ] + ')';
+        return inst_trans;
+      });
 
     d3.select(params.root+' .col_dendro_icons_group')
       .selectAll('path')
       .attr('transform', function(d){
         var inst_x = d.pos_mid;
         var inst_y = params.viz.uni_margin;
-        return 'translate('+ inst_x +',' + inst_y + ') ' + 'scale('+1/zoom_x+',1)';
+        // return 'translate('+ inst_x +',' + inst_y + ') ' + 'scale('+1/zoom_x+',1)';
+        return 'translate('+ inst_x +',' + inst_y + ') ' + 'scale(1,1)';
       });
 
     // column value bars

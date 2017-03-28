@@ -76,7 +76,7 @@ module.exports =
 	__webpack_require__(190);
 	__webpack_require__(194);
 
-	/* clustergrammer v1.15.8
+	/* clustergrammer v1.15.9
 	 * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
 	 * (c) 2017
 	 */
@@ -2615,6 +2615,8 @@ module.exports =
 
 	  if (ds_level >= 0) {
 	    y_scale = params.viz.ds[ds_level].y_scale;
+
+	    // do not show tip when rows are downsampled
 	    make_tip = false;
 	    row_class = 'ds' + String(ds_level) + '_row';
 	  }
@@ -2644,9 +2646,6 @@ module.exports =
 
 	      return tooltip_string;
 	    });
-
-	    // d3.select(params.root+' .clust_group')
-	    //   .call(tip);
 	  } else {
 	    tip = null;
 	  }
@@ -2699,7 +2698,7 @@ module.exports =
 	  var make_tip = true;
 	  var rect_height = params.viz.rect_height;
 	  if (ds_level >= 0) {
-	    make_tip = false;
+	    // make_tip = false;
 	    rect_height = params.viz.ds[ds_level].rect_height;
 	  }
 
@@ -2929,6 +2928,7 @@ module.exports =
 	    d3.selectAll(params.root + ' .' + inst_rc + '_label_group text').style('font-weight', function (d) {
 	      var font_weight;
 	      var inst_found = inst_data[inst_rc + '_name'].replace(/_/g, ' ') === d.name;
+
 	      if (inst_found) {
 	        font_weight = 'bold';
 	      } else {
@@ -2943,6 +2943,7 @@ module.exports =
 	  timeout = setTimeout(check_if_hovering, delay, inst_selection);
 
 	  function check_if_hovering() {
+
 	    if (d3.select(inst_selection).classed('hovering')) {
 
 	      var inst_zoom = Number(d3.select(params.root + ' .viz_svg').attr('is_zoom'));
@@ -6201,17 +6202,24 @@ module.exports =
 	      return 'translate(' + inst_x + ',' + inst_y + ') ' + 'scale(1, ' + 1 / zoom_y + ')';
 	    });
 
-	    // // no need to move col dendro crop button container
-	    // d3.select(params.root+' .col_dendro_icons_group')
-	    //   .attr('transform', 'translate(' + [0, 0 + center_y] + ')' +
-	    //   ' scale(' + zoom_x + ',' + zoom_y + ')' + 'translate(' + [pan_dx,
-	    //     pan_dy
-	    //   ] + ')');
+	    // console.log('zooming x and y')
+	    // console.log(zoom_x)
+	    // console.log(zoom_y)
+
+	    // need to improve behavior
+	    d3.select(params.root + ' .col_dendro_icons_group').attr('transform', function () {
+	      var inst_trans =
+	      // 'translate(' + [0, 0 + center_y] + ')' +
+	      ' scale(' + zoom_x + ',' + zoom_y + ')';
+	      // + 'translate(' + [pan_dx, pan_dy ] + ')';
+	      return inst_trans;
+	    });
 
 	    d3.select(params.root + ' .col_dendro_icons_group').selectAll('path').attr('transform', function (d) {
 	      var inst_x = d.pos_mid;
 	      var inst_y = params.viz.uni_margin;
-	      return 'translate(' + inst_x + ',' + inst_y + ') ' + 'scale(' + 1 / zoom_x + ',1)';
+	      // return 'translate('+ inst_x +',' + inst_y + ') ' + 'scale('+1/zoom_x+',1)';
+	      return 'translate(' + inst_x + ',' + inst_y + ') ' + 'scale(1,1)';
 	    });
 
 	    // column value bars
