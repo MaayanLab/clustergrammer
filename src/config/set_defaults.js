@@ -66,6 +66,7 @@ module.exports = function set_defaults(){
     dendro_click_callback:null,
     new_row_cats:null,
     make_modals:true,
+    show_viz_border:false,
   };
 
   return defaults;
