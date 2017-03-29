@@ -74,7 +74,7 @@ var Clustergrammer =
 	__webpack_require__(189);
 	__webpack_require__(193);
 
-	/* clustergrammer v1.15.12
+	/* clustergrammer v1.15.13
 	 * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
 	 * (c) 2017
 	 */
@@ -666,7 +666,6 @@ var Clustergrammer =
 	  var super_string = ': ';
 	  var has_cat = true;
 
-	  console.log(nodes);
 	  _.each(nodes, function (inst_node) {
 	    var inst_name = String(inst_node.name);
 	    if (inst_name.indexOf(super_string) < 0) {
