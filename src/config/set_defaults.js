@@ -62,6 +62,7 @@ module.exports = function set_defaults(){
     col_tip_callback:null,
     tile_tip_callback:null,
     matrix_update_callback:null,
+    cat_update_callback: null,
     dendro_callback:null,
     dendro_click_callback:null,
     new_row_cats:null,

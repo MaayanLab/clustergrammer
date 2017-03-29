@@ -74,7 +74,7 @@ var Clustergrammer =
 	__webpack_require__(189);
 	__webpack_require__(193);
 
-	/* clustergrammer v1.15.11
+	/* clustergrammer v1.15.12
 	 * Nick Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
 	 * (c) 2017
 	 */
@@ -610,6 +610,7 @@ var Clustergrammer =
 	    col_tip_callback: null,
 	    tile_tip_callback: null,
 	    matrix_update_callback: null,
+	    cat_update_callback: null,
 	    dendro_callback: null,
 	    dendro_click_callback: null,
 	    new_row_cats: null,
@@ -11137,6 +11138,10 @@ var Clustergrammer =
 
 	  // Only accessible from the cgm API, cat_data is provided by externally
 	  ///////////////////////////////////////////////////////////////////////////
+
+	  if (cgm.params.cat_update_callback != null) {
+	    cgm.params.cat_update_callback(this);
+	  }
 
 	  // do not change column category info
 	  var col_cat_colors = cgm.params.viz.cat_colors.col;

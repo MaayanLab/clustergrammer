@@ -8,6 +8,10 @@ module.exports = function update_cats(cgm, cat_data){
   // Only accessible from the cgm API, cat_data is provided by externally
   ///////////////////////////////////////////////////////////////////////////
 
+  if (cgm.params.cat_update_callback != null){
+    cgm.params.cat_update_callback(this);
+  }
+
   // do not change column category info
   var col_cat_colors = cgm.params.viz.cat_colors.col;
 

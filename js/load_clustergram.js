@@ -22,6 +22,7 @@ function make_clust(inst_network){
         'tile_tip_callback':test_tile_callback,
         'dendro_callback':dendro_callback,
         'matrix_update_callback':matrix_update_callback,
+        'cat_update_callback': cat_update_callback,
         'sidebar_width':150,
         // 'ini_view':{'N_row_var':20}
         // 'ini_expand':true
@@ -49,6 +50,10 @@ function matrix_update_callback(){
   if (genes_were_found[this.root]){
     enr_obj[this.root].clear_enrichr_results(false);
   }
+}
+
+function cat_update_callback(){
+  console.log('callback to run after cats are updated');
 }
 
 function test_tile_callback(tile_data){
