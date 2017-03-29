@@ -12331,11 +12331,14 @@ module.exports =
 	    for (var cat_index = 0; cat_index < num_cats; cat_index++) {
 	      cat_name = 'cat-' + String(cat_index);
 
-	      // inst_name =  inst_name + ", " + inst_node[cat_name];
-	      inst_name = inst_name + ", '" + inst_node[cat_name] + "'";
+	      inst_name = inst_name + ", '" + String(inst_node[cat_name]) + "'";
 	    }
 
 	    inst_name = inst_name + ')';
+	  } else {
+
+	    // always make names strings
+	    inst_name = String(inst_name);
 	  }
 
 	  return inst_name;

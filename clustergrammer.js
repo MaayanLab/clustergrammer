@@ -216,6 +216,8 @@ var Clustergrammer =
 	        d.name = d.name.split(super_string)[1];
 	      }
 
+	      d.name = String(d.name);
+
 	      d.name = d.name.replace(/_/g, ' ');
 	    });
 	  });
@@ -260,6 +262,7 @@ var Clustergrammer =
 	            d.name = d.name.split(super_string)[1];
 	          }
 
+	          d.name = String(d.name);
 	          d.name = d.name.replace(/_/g, ' ');
 	        });
 	      });
@@ -663,8 +666,10 @@ var Clustergrammer =
 	  var super_string = ': ';
 	  var has_cat = true;
 
+	  console.log(nodes);
 	  _.each(nodes, function (inst_node) {
-	    if (inst_node.name.indexOf(super_string) < 0) {
+	    var inst_name = String(inst_node.name);
+	    if (inst_name.indexOf(super_string) < 0) {
 	      has_cat = false;
 	    }
 	  });
@@ -11877,11 +11882,14 @@ var Clustergrammer =
 	    for (var cat_index = 0; cat_index < num_cats; cat_index++) {
 	      cat_name = 'cat-' + String(cat_index);
 
-	      // inst_name =  inst_name + ", " + inst_node[cat_name];
-	      inst_name = inst_name + ", '" + inst_node[cat_name] + "'";
+	      inst_name = inst_name + ", '" + String(inst_node[cat_name]) + "'";
 	    }
 
 	    inst_name = inst_name + ')';
+	  } else {
+
+	    // always make names strings
+	    inst_name = String(inst_name);
 	  }
 
 	  return inst_name;

@@ -35,6 +35,8 @@ module.exports = function make_config(args) {
         d.name = d.name.split(super_string)[1];
       }
 
+      d.name = String(d.name);
+
       d.name = d.name.replace(/_/g, ' ');
 
     });
@@ -81,6 +83,7 @@ module.exports = function make_config(args) {
             d.name = d.name.split(super_string)[1];
           }
 
+          d.name = String(d.name);
           d.name = d.name.replace(/_/g, ' ');
 
         });
