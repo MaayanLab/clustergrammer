@@ -3,34 +3,56 @@ enr_obj = {};
 
 function check_setup_enrichr(inst_cgm){
 
-  genes_were_found[inst_cgm.params.root] = false;
+  var has_enrichrgram = _.has(inst_cgm.params.network_data, 'enrichrgram');
 
-  var all_rows = inst_cgm.params.network_data.row_nodes_names;
-  var max_num_genes = 20;
-
-  if (all_rows.length > 20){
-    all_rows = all_rows.slice(0,20);
+  var make_enrichrgram = false;
+  if (has_enrichrgram){
+    make_enrichrgram = inst_cgm.params.network_data.enrichrgram;
   }
 
-  var wait_unit = 500;
-  var wait_time = 0;
+  // Toggle Enrichrgram function
+  if (has_enrichrgram === false){
 
-  // check each gene using Harmonizome
-  _.each(all_rows, function(inst_name){
+    // check with Hzome whether rows are genes
+    ////////////////////////////////////////////
+    genes_were_found[inst_cgm.params.root] = false;
 
-    setTimeout(check_gene_request, wait_time, inst_cgm, inst_name, run_ini_enrichr);
+    var all_rows = inst_cgm.params.network_data.row_nodes_names;
+    var max_num_genes = 20;
 
-    wait_time = wait_time + wait_unit;
+    if (all_rows.length > 20){
+      all_rows = all_rows.slice(0,20);
+    }
 
-  });
+    var wait_unit = 500;
+    var wait_time = 0;
+
+    _.each(all_rows, function(inst_name){
+      setTimeout(check_gene_request, wait_time, inst_cgm, inst_name, run_ini_enrichr);
+      wait_time = wait_time + wait_unit;
+    });
+
+  } else if (make_enrichrgram) {
+
+    // make enrichrgram without checking with Hzome
+    /////////////////////////////////////////////////
+    run_ini_enrichr(inst_cgm);
+  }
 
 }
 
-function run_ini_enrichr(inst_cgm, inst_name){
+function run_ini_enrichr(inst_cgm){
 
   var inst_root = inst_cgm.params.root;
 
-  if (genes_were_found[inst_root]){
+  var has_enrichrgram = _.has(inst_cgm.params.network_data, 'enrichrgram');
+
+  var make_enrichrgram = false;
+  if (has_enrichrgram){
+    make_enrichrgram = inst_cgm.params.network_data.enrichrgram;
+  }
+
+  if (genes_were_found[inst_root] || make_enrichrgram){
 
     if (d3.select(inst_root + ' .enrichr_logo').empty()){
 
