@@ -37,6 +37,9 @@ function check_setup_enrichr(inst_cgm){
     // make enrichrgram without checking with Hzome
     /////////////////////////////////////////////////
     run_ini_enrichr(inst_cgm);
+
+    genes_were_found[inst_cgm.params.root] = true;
+
   }
 
 }
