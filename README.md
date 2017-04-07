@@ -18,6 +18,7 @@ Clustergrammer's interacive features include:
 - [Interactive Categories](http://clustergrammer.readthedocs.io/interacting_with_viz.html#interactive-categories)
 - [Cropping](http://clustergrammer.readthedocs.io/interacting_with_viz.html#crop)
 - [Row Searching](http://clustergrammer.readthedocs.io/interacting_with_viz.html#search)
+- [Biology-Specific Features](http://clustergrammer.readthedocs.io/biology_specific_features.html)
 
 Clustergrammer can be used in three main ways (this repo contains the source code for [Clustergrammer-JS](http://clustergrammer.readthedocs.io/clustergrammer_js.html#clustergrammer-js)):
 
@@ -38,11 +39,11 @@ Pleae see Clustergramer's [documentation](http://clustergrammer.readthedocs.io/)
 - [Matrix Formats and Input/Output](http://clustergrammer.readthedocs.io/matrix_format_io.html)
 - Core libraries: [Clustergrammer-JS](http://clustergrammer.readthedocs.io/clustergrammer_js.html) and [Clustergrammer-PY](http://clustergrammer.readthedocs.io/clustergrammer_py.html)
 - [App Integration Examples](http://clustergrammer.readthedocs.io/app_integration.html)
-- [Biology-Specific Features](https://clustergrammer.readthedocs.io/biology_specific_features.html)
 - [Case Studies and Examples](https://clustergrammer.readthedocs.io/case_studies.html)
+- [Biology-Specific Features](https://clustergrammer.readthedocs.io/biology_specific_features.html)
 - [Developing Clustergrammer](https://clustergrammer.readthedocs.io/developing_with_clustergrammer.html)
 
 ## Licensing
 Clustergrammer was developed by the [Ma'ayan lab](http://labs.icahn.mssm.edu/maayanlab/) at the [Icahn School of Medicine at Mount Sinai](http://icahn.mssm.edu/) for the [BD2K-LINCS DCIC](http://lincs-dcic.org/#/) and the [KMC-IDG](http://commonfund.nih.gov/idg/overview). Clustergrammer's license and third-party licenses are in the LICENSES directory and more information can be found at [Clustergrammer License](https://clustergrammer.readthedocs.io/license.html).
 
-Please [contact us](http://clustergrammer.readthedocs.io/#funding-and-contact) for support, comments, Licensing questions, and suggestions.
+Please [contact us](http://clustergrammer.readthedocs.io/#funding-and-contact) for support, licensing questions, comments, and suggestions.
