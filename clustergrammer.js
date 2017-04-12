@@ -74,7 +74,7 @@ var Clustergrammer =
 	__webpack_require__(189);
 	__webpack_require__(193);
 
-	/* clustergrammer v1.15.15
+	/* clustergrammer v1.16.0
 	 * Nicolas Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
 	 * (c) 2017
 	 */
@@ -5534,7 +5534,7 @@ var Clustergrammer =
 
 	module.exports = function (params) {
 
-	  d3.select(params.viz.viz_svg).append('rect').attr('fill', params.viz.background_color).attr('height', params.viz.super_labels.dim.width + 'px').attr('width', '3000px').classed('super_col_bkg', true).classed('white_bars', true).attr('transform', 'translate(0,' + params.viz.super_labels.margin.top + ')');
+	  d3.select(params.viz.viz_svg).append('rect').attr('fill', params.viz.background_color).attr('height', params.viz.super_labels.dim.width + 'px').attr('width', '3000px').classed('super_col_bkg', true).classed('white_bars', true).attr('transform', 'translate(' + params.viz.clust.margin.left + ',' + params.viz.super_labels.margin.top + ')');
 
 	  d3.select(params.viz.viz_svg).append('text').attr('class', 'super_col').text(params.labels.super.col).attr('text-anchor', 'center').attr('transform', function () {
 
@@ -6424,7 +6424,25 @@ var Clustergrammer =
 
 	  if (_.has(params.network_data, 'row_cat_bars')) {
 
+	    // Enrichrgram title
+	    /////////////////////
+	    d3.select(params.root + ' .enr_title').remove();
+
+	    var enr_title = d3.select(params.root + ' .viz_svg').append('g').classed('enr_title', true).attr('transform', function () {
+	      var trans = d3.select(params.root + ' .row_cat_label_container').attr('transform').split('(')[1].split(')')[0];
+	      var x_offset = Number(trans.split(',')[0]) - 10;
+
+	      return 'translate(' + String(x_offset) + ', 0)';
+	    });
+
+	    enr_title.append('rect').attr('width', params.viz.cat_room.row).attr('height', 25).attr('fill', 'white');
+
+	    var library_string = params.network_data.enrichrgram_lib.substring(0, 40);
+
+	    enr_title.append('text').attr('transform', 'translate(0, 17)').text(library_string.replace(/_/g, ' ')).style('font-size', '15px').attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif');
+
 	    // Enrichr bars
+	    ////////////////////
 	    d3.selectAll(params.root + ' .enrichr_bars').remove();
 
 	    var bar_height = params.viz.clust.margin.top - 35;
@@ -7298,7 +7316,7 @@ var Clustergrammer =
 	    svg_group = ini_svg_group;
 	  }
 
-	  svg_group.select('.super_col_bkg').attr('height', params.viz.super_labels.dim.width + 'px').attr('transform', 'translate(0,' + params.viz.grey_border_width + ')');
+	  svg_group.select('.super_col_bkg').attr('height', params.viz.super_labels.dim.width + 'px').attr('transform', 'translate(' + params.viz.clust.margin.left + ',' + params.viz.grey_border_width + ')');
 
 	  // super col title
 	  svg_group.select('.super_col').attr('transform', function () {

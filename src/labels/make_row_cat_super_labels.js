@@ -152,7 +152,39 @@ module.exports = function make_row_cat_super_labels(cgm){
 
   if (_.has(params.network_data, 'row_cat_bars')){
 
+    // Enrichrgram title
+    /////////////////////
+    d3.select(params.root+' .enr_title').remove();
+
+    var enr_title = d3.select(params.root+' .viz_svg')
+      .append('g')
+      .classed('enr_title', true)
+      .attr('transform', function(){
+        var trans = d3.select(params.root+' .row_cat_label_container')
+                      .attr('transform').split('(')[1].split(')')[0];
+        var x_offset = Number(trans.split(',')[0]) - 10;
+
+        return 'translate(' + String(x_offset) + ', 0)';
+      });
+
+    enr_title
+      .append('rect')
+      .attr('width', params.viz.cat_room.row)
+      .attr('height', 25)
+      .attr('fill', 'white');
+
+    var library_string = params.network_data.enrichrgram_lib.substring(0,40);
+
+    enr_title
+      .append('text')
+      .attr('transform', 'translate(0, 17)')
+      .text(library_string.replace(/_/g, ' '))
+      .style('font-size', '15px')
+      .attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif');
+
+
     // Enrichr bars
+    ////////////////////
     d3.selectAll(params.root+' .enrichr_bars').remove();
 
     var bar_height = params.viz.clust.margin.top - 35;

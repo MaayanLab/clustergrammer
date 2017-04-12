@@ -19,7 +19,7 @@
 
   svg_group.select('.super_col_bkg')
     .attr('height', params.viz.super_labels.dim.width + 'px')
-    .attr('transform', 'translate(0,' + params.viz.grey_border_width + ')');
+    .attr('transform', 'translate('+params.viz.clust.margin.left+',' + params.viz.grey_border_width + ')');
 
   // super col title
   svg_group.select('.super_col')
@@ -42,4 +42,4 @@
       return 'translate(' + inst_x + ',' + inst_y + ')';
     });
 
-}; 
+};

@@ -7,7 +7,7 @@ module.exports = function(params) {
     .attr('width', '3000px')
     .classed('super_col_bkg',true)
     .classed('white_bars',true)
-    .attr('transform', 'translate(0,' + params.viz.super_labels.margin.top + ')');
+    .attr('transform', 'translate('+params.viz.clust.margin.left+',' + params.viz.super_labels.margin.top + ')');
 
   d3.select(params.viz.viz_svg)
     .append('text')
