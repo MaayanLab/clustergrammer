@@ -19,6 +19,8 @@ net.load_file('txt/rc_two_cats.txt')
 # net.load_file('txt/tuple_cats.txt')
 # net.load_file('txt/example_tsv.txt')
 
+net.enrichrgram('KEA_2015')
+
 # optional filtering and normalization
 ##########################################
 # net.filter_sum('row', threshold=20)

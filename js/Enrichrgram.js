@@ -645,6 +645,8 @@ function Enrichrgram(inst_cgm){
 
     inst_cgm.update_cats(enr_obj.cat_data);
 
+    // Enrichrgram title
+    ////////////////////
     d3.select(inst_cgm.params.root+' .enr_title').remove();
 
     var enr_title = d3.select(inst_cgm.params.root+' .viz_svg')
