@@ -682,7 +682,6 @@ function Enrichrgram(inst_cgm){
 
     // Enrichr bars
     ///////////////////////////////
-
     d3.selectAll(inst_cgm.params.root+' .enrichr_bars').remove();
 
     var bar_height = inst_cgm.params.viz.clust.margin.top - 35;
@@ -700,7 +699,6 @@ function Enrichrgram(inst_cgm){
       .style('height', bar_width +'px')
       .style('fill', 'red')
       .style('width', function(d){
-
         var enr_index = d.split('-')[1];
         var inst_comb_score = enr_obj.cat_data[enr_index].combined_score;
         var bar_lenth = bar_scale(inst_comb_score);
@@ -711,7 +709,7 @@ function Enrichrgram(inst_cgm){
       .attr('transform', function(d){
         var inst_y = unit_length * (parseInt( d.split('-')[1], 10 ) -0.75 );
         return 'translate(0,'+inst_y+')';
-      })
+      });
 
   }
 
