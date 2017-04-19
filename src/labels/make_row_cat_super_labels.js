@@ -209,7 +209,7 @@ module.exports = function make_row_cat_super_labels(cgm){
       .attr('transform', function(d, i){
         var inst_y = unit_length * (i - 0.75);
         return 'translate(0, ' + inst_y + ')';
-      })
+      });
 
   }
 

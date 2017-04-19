@@ -216,10 +216,10 @@ module.exports = function make_dendro_triangles(cgm, inst_rc, is_change_group = 
       d3.select(params.root+' .dendro_info input')
         .attr('value', group_string);
 
-      var inst_selector = '.dendro_info';
+      var inst_selector = params.root + ' .dendro_info';
 
-      // remove old graphs
-      d3.select('.dendro_info .cluster_info_container .cat_graph')
+      // remove old graphs (modals are not within params.root)
+      d3.selectAll('.dendro_info .cluster_info_container .cat_graph')
         .remove();
 
       if ( params.viz.cat_info[inst_rc] !== null ){

@@ -2,6 +2,11 @@ var calc_cat_cluster_breakdown = require('./calc_cat_cluster_breakdown');
 
 module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, dendro_info, selector, tooltip=false){
 
+  /*
+  This function is used to make the category breakdown graphs for tooltips on
+  dendrogram mousover and on dendrogram click modal popup.
+  */
+
   // in case sim_mat
   if (inst_rc === 'both'){
     inst_rc = 'row';
@@ -13,7 +18,7 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
 
     // put cluster information in dendro_tip
     ///////////////////////////////////////////
-    var cluster_info_container = d3.select(selector + ' .cluster_info_container');
+    var cluster_info_container = d3.select( selector + ' .cluster_info_container');
 
     // loop through cat_breakdown data
     var super_string = ': ';
@@ -223,12 +228,14 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
 
         // rows
         //////////////
-        shift_top = svg_height + 30;
+        // shift_top = svg_height + 30;
+        shift_top = 0;
         shift_left = 32;
 
         // prevent graph from being too high
         if (dendro_info.pos_top < svg_height){
-          shift_top = -(svg_height + (dendro_info.pos_mid - dendro_info.pos_top)/2) ;
+          // do not shift position of category breakdown graph
+          // shift_top = -(svg_height + (dendro_info.pos_mid - dendro_info.pos_top)/2) ;
         }
 
       } else {
