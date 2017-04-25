@@ -1,4 +1,4 @@
-function enrich(options) { // http://amp.pharm.mssm.edu/Enrichr/#help
+function send_to_Enrichr(options) { // http://amp.pharm.mssm.edu/Enrichr/#help
     var defaultOptions = {
     description: "",
     popup: false
