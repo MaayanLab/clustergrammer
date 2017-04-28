@@ -126,9 +126,10 @@ function make_sim_mats(inst_rc, cat_colors){
 
 function matrix_update_callback(){
   console.log('matrix_update_callback')
-  if (genes_were_found){
-    enr_obj.clear_enrichr_results();
-  }
+  if (_.has(enr_obj, this.root))
+    if (genes_were_found){
+      enr_obj[this.root].clear_enrichr_results();
+    }
 }
 
 function dendro_callback(inst_selection){
