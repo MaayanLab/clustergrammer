@@ -6664,10 +6664,10 @@ module.exports =
 	    var max_score = params.network_data.row_cat_bars[0];
 	    var bar_scale = d3.scale.linear().domain([0, max_score]).range([0, bar_height]);
 
-	    d3.select(params.root + ' .row_cat_label_bar_container').selectAll().data(params.network_data.row_cat_bars).enter().append('rect').classed('enrichr_bars', true).style('height', bar_width + 'px').style('fill', 'red').style('width', function (d) {
+	    d3.select(params.root + ' .row_cat_label_bar_container').selectAll().data(params.network_data.row_cat_bars).enter().append('rect').classed('enrichr_bars', true).attr('height', bar_width + 'px').attr('fill', 'red').attr('width', function (d) {
 	      var bar_length = bar_scale(d);
 	      return bar_length + 'px';
-	    }).style('opacity', 0.4).attr('transform', function (d, i) {
+	    }).attr('opacity', 0.4).attr('transform', function (d, i) {
 	      var inst_y = unit_length * (i - 0.75);
 	      return 'translate(0, ' + inst_y + ')';
 	    });

@@ -199,13 +199,13 @@ module.exports = function make_row_cat_super_labels(cgm){
       .enter()
       .append('rect')
       .classed('enrichr_bars', true)
-      .style('height', bar_width + 'px')
-      .style('fill', 'red')
-      .style('width', function(d){
+      .attr('height', bar_width + 'px')
+      .attr('fill', 'red')
+      .attr('width', function(d){
         var bar_length = bar_scale(d);
         return bar_length + 'px';
       })
-      .style('opacity', 0.4)
+      .attr('opacity', 0.4)
       .attr('transform', function(d, i){
         var inst_y = unit_length * (i - 0.75);
         return 'translate(0, ' + inst_y + ')';
