@@ -4473,17 +4473,17 @@ var Clustergrammer =
 	    // loop through cat_breakdown data
 	    var super_string = ': ';
 	    var paragraph_string = '<p>';
-	    var width = 225;
+	    var width = 300;
 	    var bar_offset = 23;
 	    var bar_height = 20;
-	    var max_string_length = 15;
-	    var bar_width = 135;
+	    var max_string_length = 30;
+	    var bar_width = 205;
 	    var title_height = 27;
 
 	    // limit on the number of category types shown
 	    var max_cats = 3;
 	    // limit the number of bars shown
-	    var max_bars = 20;
+	    var max_bars = 25;
 
 	    // calculate height needed for svg based don cat_breakdown data
 	    var svg_height = 20;
@@ -4503,7 +4503,7 @@ var Clustergrammer =
 	    var main_dendro_svg = cluster_info_container.append('div').style('margin-top', '5px').classed('cat_graph', true).append('svg').style('height', svg_height + 'px').style('width', width + 'px');
 
 	    // make background
-	    main_dendro_svg.append('rect').classed('cat_background', true).style('height', svg_height + 'px').style('width', width + 'px').style('fill', 'white').style('opacity', 1);
+	    main_dendro_svg.append('rect').classed('cat_background', true).attr('height', svg_height + 'px').attr('width', width + 'px').attr('fill', 'white').attr('opacity', 1);
 
 	    // the total amout to shift down the next category
 	    var shift_down = title_height;
@@ -4541,7 +4541,7 @@ var Clustergrammer =
 	      });
 
 	      var line_y = 4;
-	      cat_graph_group.append('line').attr('x1', 0).attr('x2', bar_width).attr('y1', line_y).attr('y2', line_y).style('stroke', 'blue').style('stroke-width', 1).style('opacity', 1.0);
+	      cat_graph_group.append('line').attr('x1', 0).attr('x2', bar_width).attr('y1', line_y).attr('y2', line_y).attr('stroke', 'blue').attr('stroke-width', 1).attr('opacity', 1.0);
 
 	      var cat_bar_container = cat_graph_group.append('g').classed('cat_bar_container', true).attr('transform', 'translate(0, 10)');
 
@@ -4559,13 +4559,13 @@ var Clustergrammer =
 	      .domain([0, cat_data.bar_data[0][2]]).range([0, bar_width]);
 
 	      // make bars
-	      cat_bar_groups.append('rect').style('height', bar_height + 'px').style('width', function (d) {
+	      cat_bar_groups.append('rect').attr('height', bar_height + 'px').attr('width', function (d) {
 	        var inst_width = bar_scale(d[2]);
 	        return inst_width + 'px';
-	      }).style('fill', function (d) {
+	      }).attr('fill', function (d) {
 	        // cat color is stored in the third element
 	        return d[3];
-	      }).style('opacity', params.viz.cat_colors.opacity).style('stroke', 'grey').style('stroke-width', '0.5px');
+	      }).attr('opacity', params.viz.cat_colors.opacity).attr('stroke', 'grey').attr('stroke-width', '0.5px');
 
 	      // make bar labels
 	      cat_bar_groups.append('text').classed('bar_labels', true).text(function (d) {
@@ -4584,7 +4584,7 @@ var Clustergrammer =
 	        return inst_text;
 	      }).attr('transform', function () {
 	        return 'translate(5, ' + 0.75 * bar_height + ')';
-	      }).style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').style('font-weight', 400);
+	      }).attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('font-weight', 400);
 
 	      // make bar labels
 	      var shift_count_num = 25;
@@ -4594,7 +4594,7 @@ var Clustergrammer =
 	        var inst_x = bar_width + count_offset + shift_count_num;
 	        var inst_y = 0.75 * bar_height;
 	        return 'translate(' + inst_x + ', ' + inst_y + ')';
-	      }).style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').style('font-weight', 400).style('text-anchor', 'end');
+	      }).attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('font-weight', 400).attr('text-anchor', 'end');
 	    });
 
 	    // reposition tooltip
@@ -4614,7 +4614,8 @@ var Clustergrammer =
 	        //////////////
 	        // shift_top = svg_height + 30;
 	        shift_top = 0;
-	        shift_left = 32;
+	        // 32
+	        shift_left = 106;
 
 	        // prevent graph from being too high
 	        if (dendro_info.pos_top < svg_height) {
