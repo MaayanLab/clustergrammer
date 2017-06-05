@@ -20,6 +20,7 @@ module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc)
   // array of nodes in the cluster
   var clust_nodes = [];
   var all_nodes = params.network_data[inst_rc+'_nodes'];
+  var num_in_clust_index = null;
 
   var inst_name;
   _.each(all_nodes, function(inst_node){
@@ -31,6 +32,8 @@ module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc)
     }
 
   });
+
+  console.log(clust_nodes);
 
   // 2: find category-types that are string-type
   ///////////////////////////////////////////////
@@ -59,6 +62,13 @@ module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc)
         type_name = params.viz.cat_names[inst_rc][cat_index];
         cat_types_names.push(type_name);
         cat_types_index.push(cat_index);
+      } else {
+
+        // save number in clust category index if found
+        if (params.viz.cat_names[inst_rc][cat_index] === 'number in clust'){
+          num_in_clust_index = cat_index;
+        }
+
       }
 
     }
@@ -98,7 +108,7 @@ module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc)
 
         tmp_run_count[type_name] = {};
 
-        // loop throught nodes and keep running count of categories
+        // loop through the nodes and keep a running count of categories
         _.each(clust_nodes, function (tmp_node){
 
           cat_name = tmp_node[cat_index];
@@ -108,12 +118,20 @@ module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc)
           }
 
           if (cat_name in tmp_run_count[type_name]){
-            // tmp_run_count[type_name][cat_name] = tmp_run_count[type_name][cat_name] + 1;
             tmp_run_count[type_name][cat_name]['num_nodes'] = tmp_run_count[type_name][cat_name]['num_nodes'] + 1;
+
+            if (num_in_clust_index != null){
+              tmp_run_count[type_name][cat_name]['num_nodes_ds'] = tmp_run_count[type_name][cat_name]['num_nodes_ds'] + parseInt(tmp_node[num_in_clust_index].split(': ')[1]);
+            }
+
           } else {
+
             tmp_run_count[type_name][cat_name] = {};
-            // tmp_run_count[type_name][cat_name] = 1;
             tmp_run_count[type_name][cat_name]['num_nodes'] = 1;
+            if (num_in_clust_index != null){
+              tmp_run_count[type_name][cat_name]['num_nodes_ds'] =  + parseInt(tmp_node[num_in_clust_index].split(': ')[1]);
+            }
+
           }
 
         });
@@ -128,9 +146,6 @@ module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc)
         var cat_title_and_name;
         var inst_run_count = tmp_run_count[type_name];
 
-        console.log(tmp_run_count)
-        console.log(inst_run_count)
-
         for (var inst_cat in inst_run_count){
 
           // if no cat-title given
@@ -141,16 +156,19 @@ module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc)
           }
 
           // num_nodes: number of cat-nodes drawn in cluster
-          // var num_nodes = inst_run_count[inst_cat];
           var num_nodes = inst_run_count[inst_cat]['num_nodes'];
 
           // working on tracking the 'real' number of nodes, which is only different
           // if downsampling has been done
-          var real_num_nodes = 2*num_nodes;
+          if (_.has(inst_run_count[inst_cat], 'num_nodes_ds')){
+            var num_nodes_ds = inst_run_count[inst_cat]['num_nodes_ds'];
+          } else {
+            num_nodes_ds = null;
+          }
 
           bar_color = params.viz.cat_colors[inst_rc][cat_index][cat_title_and_name];
 
-          bar_data.push([ cat_index, cat_title_and_name, inst_run_count[inst_cat], bar_color, num_nodes, real_num_nodes]);
+          bar_data.push([ cat_index, cat_title_and_name, inst_run_count[inst_cat], bar_color, num_nodes, num_nodes_ds]);
         }
 
         bar_data.sort(function(a, b) {

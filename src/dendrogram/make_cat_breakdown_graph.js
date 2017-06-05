@@ -30,7 +30,21 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
     var bar_width = 205;
     var title_height = 27;
     var shift_tooltip_left = 107;
+
+    // these are the indexes where the number-of-nodes and the number of downsampled
+    // nodes are stored
     var num_nodes_index = 4;
+    var num_nodes_ds_index = 5;
+    var offset_ds_count = 150;
+
+    console.log(cat_breakdown[0])
+
+    var is_downsampled = false;
+    if (cat_breakdown[0].bar_data[0][num_nodes_ds_index] != null){
+      width = width + offset_ds_count;
+      shift_tooltip_left = shift_tooltip_left + offset_ds_count;
+      is_downsampled = true;
+    }
 
     // limit on the number of category types shown
     var max_cats = 3;
@@ -79,7 +93,12 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
 
     _.each(cat_breakdown, function(cat_data){
 
-      console.log(cat_data)
+      var max_bar_value = cat_data.bar_data[0][num_nodes_index];
+
+      // offset the count column based on how large the counts are
+      var digit_offset_scale = d3.scale.linear()
+                                 .domain([0,100000]).range([30, 40]);
+
 
       // only keep the top max_bars categories
       cat_data.bar_data = cat_data.bar_data.slice(0, max_bars);
@@ -109,8 +128,10 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
         .style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif')
         .style('font-weight',  800);
 
-      var count_offset = 15;
-      // make P-value title
+
+      var count_offset = digit_offset_scale(max_bar_value);;
+
+      // Count Title
       cat_graph_group
         .append('text')
         .text('Count')
@@ -119,6 +140,18 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
           var inst_translate = 'translate('+ inst_x +', 0)';
           return inst_translate;
         });
+
+      // Count Downsampled Title
+      if (is_downsampled){
+        cat_graph_group
+          .append('text')
+          .text('Cluster-Count')
+          .attr('transform', function(){
+            var inst_x = bar_width + 4*count_offset;
+            var inst_translate = 'translate('+ inst_x +', 0)';
+            return inst_translate;
+          });
+      }
 
       var line_y = 4;
       cat_graph_group
@@ -147,13 +180,14 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
           return 'translate(0,'+ inst_y +')';
         });
 
+
       var bar_scale = d3.scale.linear()
                         // bar length is max when all nodes in cluster are of
                         // a single cat
                         // .domain([0, cat_data.num_in_clust])
                         // bar length is max based on the max number in one cat
                         // .domain([0, cat_data.bar_data[0][2]['num_nodes']])
-                        .domain([0, cat_data.bar_data[0][num_nodes_index]])
+                        .domain([0, max_bar_value])
                         .range([0, bar_width]);
 
       // make bars
@@ -195,15 +229,17 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
           return 'translate(5, ' + 0.75 * bar_height + ')' ;
         })
         .attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif')
-        .attr('font-weight', 400);
+        .attr('font-weight', 400)
+        .attr('text-anchor', 'right');
 
       // make bar labels
-      var shift_count_num = 25;
+      var shift_count_num = 35;
+
       cat_bar_groups
         .append('text')
         .classed('count_labels', true)
         .text(function(d){
-          return String(d[num_nodes_index]);
+          return String(d[num_nodes_index].toLocaleString());
         })
         .attr('transform', function(){
           var inst_x = bar_width + count_offset + shift_count_num;

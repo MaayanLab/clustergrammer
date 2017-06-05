@@ -35,7 +35,7 @@ module.exports = function check_if_value_cats(cat_states){
       }
 
       // checking whether inst_cat is 'not a number'
-      if ( isNaN(inst_cat) == true ){
+      if ( isNaN(inst_cat) === true ){
         cat_types = 'cat_strings';
       } else {
         inst_cat = parseFloat(inst_cat);
@@ -57,7 +57,6 @@ module.exports = function check_if_value_cats(cat_states){
 
     cat_scale = d3.scale.linear().domain([0, max_abs_val]).range([0,1]);
   }
-
 
   var inst_info = {};
   inst_info.type = cat_types;

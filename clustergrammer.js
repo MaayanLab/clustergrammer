@@ -2152,7 +2152,7 @@ var Clustergrammer =
 	      }
 
 	      // checking whether inst_cat is 'not a number'
-	      if (isNaN(inst_cat) == true) {
+	      if (isNaN(inst_cat) === true) {
 	        cat_types = 'cat_strings';
 	      } else {
 	        inst_cat = parseFloat(inst_cat);
@@ -4480,7 +4480,21 @@ var Clustergrammer =
 	    var bar_width = 205;
 	    var title_height = 27;
 	    var shift_tooltip_left = 107;
+
+	    // these are the indexes where the number-of-nodes and the number of downsampled
+	    // nodes are stored
 	    var num_nodes_index = 4;
+	    var num_nodes_ds_index = 5;
+	    var offset_ds_count = 150;
+
+	    console.log(cat_breakdown[0]);
+
+	    var is_downsampled = false;
+	    if (cat_breakdown[0].bar_data[0][num_nodes_ds_index] != null) {
+	      width = width + offset_ds_count;
+	      shift_tooltip_left = shift_tooltip_left + offset_ds_count;
+	      is_downsampled = true;
+	    }
 
 	    // limit on the number of category types shown
 	    var max_cats = 3;
@@ -4515,7 +4529,10 @@ var Clustergrammer =
 
 	    _.each(cat_breakdown, function (cat_data) {
 
-	      console.log(cat_data);
+	      var max_bar_value = cat_data.bar_data[0][num_nodes_index];
+
+	      // offset the count column based on how large the counts are
+	      var digit_offset_scale = d3.scale.linear().domain([0, 100000]).range([30, 40]);
 
 	      // only keep the top max_bars categories
 	      cat_data.bar_data = cat_data.bar_data.slice(0, max_bars);
@@ -4536,13 +4553,23 @@ var Clustergrammer =
 	      // make title
 	      cat_graph_group.append('text').classed('cat_graph_title', true).text(inst_title).style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').style('font-weight', 800);
 
-	      var count_offset = 15;
-	      // make P-value title
+	      var count_offset = digit_offset_scale(max_bar_value);;
+
+	      // Count Title
 	      cat_graph_group.append('text').text('Count').attr('transform', function () {
 	        var inst_x = bar_width + count_offset;
 	        var inst_translate = 'translate(' + inst_x + ', 0)';
 	        return inst_translate;
 	      });
+
+	      // Count Downsampled Title
+	      if (is_downsampled) {
+	        cat_graph_group.append('text').text('Cluster-Count').attr('transform', function () {
+	          var inst_x = bar_width + 4 * count_offset;
+	          var inst_translate = 'translate(' + inst_x + ', 0)';
+	          return inst_translate;
+	        });
+	      }
 
 	      var line_y = 4;
 	      cat_graph_group.append('line').attr('x1', 0).attr('x2', bar_width).attr('y1', line_y).attr('y2', line_y).attr('stroke', 'blue').attr('stroke-width', 1).attr('opacity', 1.0);
@@ -4561,7 +4588,7 @@ var Clustergrammer =
 	      // .domain([0, cat_data.num_in_clust])
 	      // bar length is max based on the max number in one cat
 	      // .domain([0, cat_data.bar_data[0][2]['num_nodes']])
-	      .domain([0, cat_data.bar_data[0][num_nodes_index]]).range([0, bar_width]);
+	      .domain([0, max_bar_value]).range([0, bar_width]);
 
 	      // make bars
 	      cat_bar_groups.append('rect').attr('height', bar_height + 'px').attr('width', function (d) {
@@ -4589,12 +4616,13 @@ var Clustergrammer =
 	        return inst_text;
 	      }).attr('transform', function () {
 	        return 'translate(5, ' + 0.75 * bar_height + ')';
-	      }).attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('font-weight', 400);
+	      }).attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('font-weight', 400).attr('text-anchor', 'right');
 
 	      // make bar labels
-	      var shift_count_num = 25;
+	      var shift_count_num = 35;
+
 	      cat_bar_groups.append('text').classed('count_labels', true).text(function (d) {
-	        return String(d[num_nodes_index]);
+	        return String(d[num_nodes_index].toLocaleString());
 	      }).attr('transform', function () {
 	        var inst_x = bar_width + count_offset + shift_count_num;
 	        var inst_y = 0.75 * bar_height;
@@ -4672,6 +4700,7 @@ var Clustergrammer =
 	  // array of nodes in the cluster
 	  var clust_nodes = [];
 	  var all_nodes = params.network_data[inst_rc + '_nodes'];
+	  var num_in_clust_index = null;
 
 	  var inst_name;
 	  _.each(all_nodes, function (inst_node) {
@@ -4682,6 +4711,8 @@ var Clustergrammer =
 	      clust_nodes.push(inst_node);
 	    }
 	  });
+
+	  console.log(clust_nodes);
 
 	  // 2: find category-types that are string-type
 	  ///////////////////////////////////////////////
@@ -4710,6 +4741,12 @@ var Clustergrammer =
 	        type_name = params.viz.cat_names[inst_rc][cat_index];
 	        cat_types_names.push(type_name);
 	        cat_types_index.push(cat_index);
+	      } else {
+
+	        // save number in clust category index if found
+	        if (params.viz.cat_names[inst_rc][cat_index] === 'number in clust') {
+	          num_in_clust_index = cat_index;
+	        }
 	      }
 	    }
 
@@ -4748,7 +4785,7 @@ var Clustergrammer =
 
 	        tmp_run_count[type_name] = {};
 
-	        // loop throught nodes and keep running count of categories
+	        // loop through the nodes and keep a running count of categories
 	        _.each(clust_nodes, function (tmp_node) {
 
 	          cat_name = tmp_node[cat_index];
@@ -4758,12 +4795,18 @@ var Clustergrammer =
 	          }
 
 	          if (cat_name in tmp_run_count[type_name]) {
-	            // tmp_run_count[type_name][cat_name] = tmp_run_count[type_name][cat_name] + 1;
 	            tmp_run_count[type_name][cat_name]['num_nodes'] = tmp_run_count[type_name][cat_name]['num_nodes'] + 1;
+
+	            if (num_in_clust_index != null) {
+	              tmp_run_count[type_name][cat_name]['num_nodes_ds'] = tmp_run_count[type_name][cat_name]['num_nodes_ds'] + parseInt(tmp_node[num_in_clust_index].split(': ')[1]);
+	            }
 	          } else {
+
 	            tmp_run_count[type_name][cat_name] = {};
-	            // tmp_run_count[type_name][cat_name] = 1;
 	            tmp_run_count[type_name][cat_name]['num_nodes'] = 1;
+	            if (num_in_clust_index != null) {
+	              tmp_run_count[type_name][cat_name]['num_nodes_ds'] = +parseInt(tmp_node[num_in_clust_index].split(': ')[1]);
+	            }
 	          }
 	        });
 
@@ -4777,9 +4820,6 @@ var Clustergrammer =
 	        var cat_title_and_name;
 	        var inst_run_count = tmp_run_count[type_name];
 
-	        console.log(tmp_run_count);
-	        console.log(inst_run_count);
-
 	        for (var inst_cat in inst_run_count) {
 
 	          // if no cat-title given
@@ -4790,16 +4830,19 @@ var Clustergrammer =
 	          }
 
 	          // num_nodes: number of cat-nodes drawn in cluster
-	          // var num_nodes = inst_run_count[inst_cat];
 	          var num_nodes = inst_run_count[inst_cat]['num_nodes'];
 
 	          // working on tracking the 'real' number of nodes, which is only different
 	          // if downsampling has been done
-	          var real_num_nodes = 2 * num_nodes;
+	          if (_.has(inst_run_count[inst_cat], 'num_nodes_ds')) {
+	            var num_nodes_ds = inst_run_count[inst_cat]['num_nodes_ds'];
+	          } else {
+	            num_nodes_ds = null;
+	          }
 
 	          bar_color = params.viz.cat_colors[inst_rc][cat_index][cat_title_and_name];
 
-	          bar_data.push([cat_index, cat_title_and_name, inst_run_count[inst_cat], bar_color, num_nodes, real_num_nodes]);
+	          bar_data.push([cat_index, cat_title_and_name, inst_run_count[inst_cat], bar_color, num_nodes, num_nodes_ds]);
 	        }
 
 	        bar_data.sort(function (a, b) {
