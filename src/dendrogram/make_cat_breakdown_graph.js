@@ -44,8 +44,6 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
       is_downsampled = true;
     }
 
-    console.log('is_downsampled: ' + is_downsampled)
-
 
     // the index that will be used to generate the bars (will be different if
     // downsampled)
@@ -53,9 +51,6 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
     if (is_downsampled){
       bars_index = num_nodes_ds_index;
     }
-
-    console.log(cat_breakdown[0])
-
 
     // limit on the number of category types shown
     var max_cats = 3;
@@ -140,7 +135,7 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
         .style('font-weight',  800);
 
 
-      var count_offset = digit_offset_scale(max_bar_value);;
+      var count_offset = digit_offset_scale(max_bar_value);
 
       // Count Title
       cat_graph_group
