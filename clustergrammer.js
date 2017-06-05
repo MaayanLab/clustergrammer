@@ -4479,6 +4479,8 @@ var Clustergrammer =
 	    var max_string_length = 30;
 	    var bar_width = 205;
 	    var title_height = 27;
+	    var shift_tooltip_left = 107;
+	    var num_nodes_index = 4;
 
 	    // limit on the number of category types shown
 	    var max_cats = 3;
@@ -4513,7 +4515,9 @@ var Clustergrammer =
 
 	    _.each(cat_breakdown, function (cat_data) {
 
-	      // only keep the top 5 categories
+	      console.log(cat_data);
+
+	      // only keep the top max_bars categories
 	      cat_data.bar_data = cat_data.bar_data.slice(0, max_bars);
 
 	      cluster_info_container.style('margin-bottom', '5px');
@@ -4556,11 +4560,12 @@ var Clustergrammer =
 	      // a single cat
 	      // .domain([0, cat_data.num_in_clust])
 	      // bar length is max based on the max number in one cat
-	      .domain([0, cat_data.bar_data[0][2]]).range([0, bar_width]);
+	      // .domain([0, cat_data.bar_data[0][2]['num_nodes']])
+	      .domain([0, cat_data.bar_data[0][num_nodes_index]]).range([0, bar_width]);
 
 	      // make bars
 	      cat_bar_groups.append('rect').attr('height', bar_height + 'px').attr('width', function (d) {
-	        var inst_width = bar_scale(d[2]);
+	        var inst_width = bar_scale(d[num_nodes_index]);
 	        return inst_width + 'px';
 	      }).attr('fill', function (d) {
 	        // cat color is stored in the third element
@@ -4589,7 +4594,7 @@ var Clustergrammer =
 	      // make bar labels
 	      var shift_count_num = 25;
 	      cat_bar_groups.append('text').classed('count_labels', true).text(function (d) {
-	        return String(d[4]);
+	        return String(d[num_nodes_index]);
 	      }).attr('transform', function () {
 	        var inst_x = bar_width + count_offset + shift_count_num;
 	        var inst_y = 0.75 * bar_height;
@@ -4615,7 +4620,7 @@ var Clustergrammer =
 	        // shift_top = svg_height + 30;
 	        shift_top = 0;
 	        // 32
-	        shift_left = 106;
+	        shift_left = shift_tooltip_left;
 
 	        // prevent graph from being too high
 	        if (dendro_info.pos_top < svg_height) {
@@ -4645,16 +4650,14 @@ var Clustergrammer =
 /* 64 */
 /***/ function(module, exports) {
 
-	// var run_fisher_exact_clust = require('./run_fisher_exact_clust');
-
 	module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc) {
 	  // Category-breakdown of dendrogram-clusters
 	  /////////////////////////////////////////////
 	  /*
-	   1. get information for nodes in cluster
+	  1. get information for nodes in cluster
 	  2. find category-types that are string-type
 	  3. count instances of each category name for each category-type
-	   */
+	  */
 
 	  // in case sim_mat
 	  if (inst_rc === 'both') {
@@ -4669,11 +4672,6 @@ var Clustergrammer =
 	  // array of nodes in the cluster
 	  var clust_nodes = [];
 	  var all_nodes = params.network_data[inst_rc + '_nodes'];
-
-	  // // n: number drawn in cluster
-	  // var n = clust_names.length;
-	  // // big_n: total number of nodes
-	  // var big_n = all_nodes.length;
 
 	  var inst_name;
 	  _.each(all_nodes, function (inst_node) {
@@ -4699,8 +4697,6 @@ var Clustergrammer =
 	    // this will hold the indexes of string-type categories
 	    var cat_types_index = [];
 
-	    // var inst_node = params.network_data[inst_rc+'_nodes'][0];
-
 	    // get category names (only include string-type categories)
 	    var cat_types_names = [];
 	    var type_name;
@@ -4720,7 +4716,7 @@ var Clustergrammer =
 	    var tmp_run_count = {};
 	    var inst_breakdown = {};
 	    var bar_data;
-	    var fraction_index = 2;
+	    var fraction_index = 4;
 	    var radix_param = 10;
 
 	    var no_title_given;
@@ -4762,9 +4758,12 @@ var Clustergrammer =
 	          }
 
 	          if (cat_name in tmp_run_count[type_name]) {
-	            tmp_run_count[type_name][cat_name] = tmp_run_count[type_name][cat_name] + 1; // /num_in_clust;
+	            // tmp_run_count[type_name][cat_name] = tmp_run_count[type_name][cat_name] + 1;
+	            tmp_run_count[type_name][cat_name]['num_nodes'] = tmp_run_count[type_name][cat_name]['num_nodes'] + 1;
 	          } else {
-	            tmp_run_count[type_name][cat_name] = 1; // /num_in_clust;
+	            tmp_run_count[type_name][cat_name] = {};
+	            // tmp_run_count[type_name][cat_name] = 1;
+	            tmp_run_count[type_name][cat_name]['num_nodes'] = 1;
 	          }
 	        });
 
@@ -4778,6 +4777,9 @@ var Clustergrammer =
 	        var cat_title_and_name;
 	        var inst_run_count = tmp_run_count[type_name];
 
+	        console.log(tmp_run_count);
+	        console.log(inst_run_count);
+
 	        for (var inst_cat in inst_run_count) {
 
 	          // if no cat-title given
@@ -4787,18 +4789,17 @@ var Clustergrammer =
 	            cat_title_and_name = type_name + ': ' + inst_cat;
 	          }
 
-	          // k: number of cat-nodes drawn in cluster
-	          // var k = parseInt(inst_run_count[inst_cat] * n, 10);
-	          var k = inst_run_count[inst_cat];
+	          // num_nodes: number of cat-nodes drawn in cluster
+	          // var num_nodes = inst_run_count[inst_cat];
+	          var num_nodes = inst_run_count[inst_cat]['num_nodes'];
 
-	          // // big_k: total number of cat-nodes
-	          // var big_k = params.viz.cat_info[inst_rc][cat_index].cat_hist[cat_title_and_name];
-
-	          // var ft = parseFloat(run_fisher_exact_clust(k, n, big_k, big_n));
+	          // working on tracking the 'real' number of nodes, which is only different
+	          // if downsampling has been done
+	          var real_num_nodes = 2 * num_nodes;
 
 	          bar_color = params.viz.cat_colors[inst_rc][cat_index][cat_title_and_name];
 
-	          bar_data.push([cat_index, cat_title_and_name, inst_run_count[inst_cat], bar_color, k]);
+	          bar_data.push([cat_index, cat_title_and_name, inst_run_count[inst_cat], bar_color, num_nodes, real_num_nodes]);
 	        }
 
 	        bar_data.sort(function (a, b) {

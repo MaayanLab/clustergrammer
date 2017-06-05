@@ -29,6 +29,8 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
     var max_string_length = 30;
     var bar_width = 205;
     var title_height = 27;
+    var shift_tooltip_left = 107;
+    var num_nodes_index = 4;
 
     // limit on the number of category types shown
     var max_cats = 3;
@@ -77,8 +79,9 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
 
     _.each(cat_breakdown, function(cat_data){
 
+      console.log(cat_data)
 
-      // only keep the top 5 categories
+      // only keep the top max_bars categories
       cat_data.bar_data = cat_data.bar_data.slice(0, max_bars);
 
       cluster_info_container
@@ -95,7 +98,7 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
       var inst_title = cat_data.type_name;
       // ensure that title is not too long
       if (inst_title.length >= max_string_length){
-        inst_title = inst_title.slice(0,max_string_length) + '..';
+        inst_title = inst_title.slice(0, max_string_length) + '..';
       }
 
       // make title
@@ -149,7 +152,8 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
                         // a single cat
                         // .domain([0, cat_data.num_in_clust])
                         // bar length is max based on the max number in one cat
-                        .domain([0, cat_data.bar_data[0][2]])
+                        // .domain([0, cat_data.bar_data[0][2]['num_nodes']])
+                        .domain([0, cat_data.bar_data[0][num_nodes_index]])
                         .range([0, bar_width]);
 
       // make bars
@@ -157,7 +161,7 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
         .append('rect')
         .attr('height', bar_height+'px')
         .attr('width', function(d){
-          var inst_width = bar_scale(d[2]);
+          var inst_width = bar_scale(d[num_nodes_index]);
           return inst_width +'px';
         })
         .attr('fill', function(d){
@@ -199,7 +203,7 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
         .append('text')
         .classed('count_labels', true)
         .text(function(d){
-          return String(d[4]);
+          return String(d[num_nodes_index]);
         })
         .attr('transform', function(){
           var inst_x = bar_width + count_offset + shift_count_num;
@@ -231,7 +235,7 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
         // shift_top = svg_height + 30;
         shift_top = 0;
         // 32
-        shift_left = 106;
+        shift_left = shift_tooltip_left;
 
         // prevent graph from being too high
         if (dendro_info.pos_top < svg_height){

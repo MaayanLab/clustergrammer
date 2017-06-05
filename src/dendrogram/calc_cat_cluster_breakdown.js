@@ -1,14 +1,10 @@
-// var run_fisher_exact_clust = require('./run_fisher_exact_clust');
-
 module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc){
   // Category-breakdown of dendrogram-clusters
   /////////////////////////////////////////////
   /*
-
   1. get information for nodes in cluster
   2. find category-types that are string-type
   3. count instances of each category name for each category-type
-
   */
 
   // in case sim_mat
@@ -24,11 +20,6 @@ module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc)
   // array of nodes in the cluster
   var clust_nodes = [];
   var all_nodes = params.network_data[inst_rc+'_nodes'];
-
-  // // n: number drawn in cluster
-  // var n = clust_names.length;
-  // // big_n: total number of nodes
-  // var big_n = all_nodes.length;
 
   var inst_name;
   _.each(all_nodes, function(inst_node){
@@ -55,8 +46,6 @@ module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc)
     // this will hold the indexes of string-type categories
     var cat_types_index = [];
 
-    // var inst_node = params.network_data[inst_rc+'_nodes'][0];
-
     // get category names (only include string-type categories)
     var cat_types_names = [];
     var type_name;
@@ -77,7 +66,7 @@ module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc)
     var tmp_run_count = {};
     var inst_breakdown = {};
     var bar_data;
-    var fraction_index = 2;
+    var fraction_index = 4;
     var radix_param = 10;
 
     var no_title_given;
@@ -119,9 +108,12 @@ module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc)
           }
 
           if (cat_name in tmp_run_count[type_name]){
-            tmp_run_count[type_name][cat_name] = tmp_run_count[type_name][cat_name] + 1; // /num_in_clust;
+            // tmp_run_count[type_name][cat_name] = tmp_run_count[type_name][cat_name] + 1;
+            tmp_run_count[type_name][cat_name]['num_nodes'] = tmp_run_count[type_name][cat_name]['num_nodes'] + 1;
           } else {
-            tmp_run_count[type_name][cat_name] = 1; // /num_in_clust;
+            tmp_run_count[type_name][cat_name] = {};
+            // tmp_run_count[type_name][cat_name] = 1;
+            tmp_run_count[type_name][cat_name]['num_nodes'] = 1;
           }
 
         });
@@ -136,6 +128,9 @@ module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc)
         var cat_title_and_name;
         var inst_run_count = tmp_run_count[type_name];
 
+        console.log(tmp_run_count)
+        console.log(inst_run_count)
+
         for (var inst_cat in inst_run_count){
 
           // if no cat-title given
@@ -145,18 +140,17 @@ module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc)
             cat_title_and_name = type_name + ': ' + inst_cat;
           }
 
-          // k: number of cat-nodes drawn in cluster
-          // var k = parseInt(inst_run_count[inst_cat] * n, 10);
-          var k = inst_run_count[inst_cat];
+          // num_nodes: number of cat-nodes drawn in cluster
+          // var num_nodes = inst_run_count[inst_cat];
+          var num_nodes = inst_run_count[inst_cat]['num_nodes'];
 
-          // // big_k: total number of cat-nodes
-          // var big_k = params.viz.cat_info[inst_rc][cat_index].cat_hist[cat_title_and_name];
-
-          // var ft = parseFloat(run_fisher_exact_clust(k, n, big_k, big_n));
+          // working on tracking the 'real' number of nodes, which is only different
+          // if downsampling has been done
+          var real_num_nodes = 2*num_nodes;
 
           bar_color = params.viz.cat_colors[inst_rc][cat_index][cat_title_and_name];
 
-          bar_data.push([ cat_index, cat_title_and_name, inst_run_count[inst_cat], bar_color, k]);
+          bar_data.push([ cat_index, cat_title_and_name, inst_run_count[inst_cat], bar_color, num_nodes, real_num_nodes]);
         }
 
         bar_data.sort(function(a, b) {
