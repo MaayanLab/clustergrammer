@@ -76,7 +76,7 @@ module.exports =
 	__webpack_require__(190);
 	__webpack_require__(194);
 
-	/* clustergrammer v1.17.0
+	/* clustergrammer v1.17.1
 	 * Nicolas Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
 	 * (c) 2017
 	 */
@@ -4630,7 +4630,7 @@ module.exports =
 	    // loop through cat_breakdown data
 	    var super_string = ': ';
 	    var paragraph_string = '<p>';
-	    var width = 300;
+	    var width = 335;
 	    var bar_offset = 23;
 	    var bar_height = 20;
 	    var max_string_length = 30;
@@ -4642,20 +4642,28 @@ module.exports =
 	    // nodes are stored
 	    var num_nodes_index = 4;
 	    var num_nodes_ds_index = 5;
-	    var offset_ds_count = 140;
+	    var offset_ds_count = 150;
 
 	    var is_downsampled = false;
 	    if (cat_breakdown[0].bar_data[0][num_nodes_ds_index] != null) {
-	      width = width + offset_ds_count;
-	      shift_tooltip_left = shift_tooltip_left + offset_ds_count;
+	      width = width + 100;
+	      shift_tooltip_left = shift_tooltip_left + offset_ds_count - 15;
 	      is_downsampled = true;
 	    }
 
 	    // the index that will be used to generate the bars (will be different if
 	    // downsampled)
+	    var cluster_total = dendro_info.all_names.length;
 	    var bars_index = num_nodes_index;
 	    if (is_downsampled) {
 	      bars_index = num_nodes_ds_index;
+
+	      // calculate the total number of nodes in downsampled case
+	      var inst_bar_data = cat_breakdown[0].bar_data;
+	      cluster_total = 0;
+	      _.each(inst_bar_data, function (tmp_data) {
+	        cluster_total = cluster_total + tmp_data[num_nodes_ds_index];
+	      });
 	    }
 
 	    // limit on the number of category types shown
@@ -4694,7 +4702,7 @@ module.exports =
 	      var max_bar_value = cat_data.bar_data[0][bars_index];
 
 	      // offset the count column based on how large the counts are
-	      var digit_offset_scale = d3.scale.linear().domain([0, 100000]).range([30, 40]);
+	      var digit_offset_scale = d3.scale.linear().domain([0, 100000]).range([20, 30]);
 
 	      // only keep the top max_bars categories
 	      cat_data.bar_data = cat_data.bar_data.slice(0, max_bars);
@@ -4715,6 +4723,7 @@ module.exports =
 	      // make title
 	      cat_graph_group.append('text').classed('cat_graph_title', true).text(inst_title).style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').style('font-weight', 800);
 
+	      // shift the position of the numbers based on the size of the number
 	      var count_offset = digit_offset_scale(max_bar_value);
 
 	      // Count Title
@@ -4724,10 +4733,17 @@ module.exports =
 	        return inst_translate;
 	      });
 
+	      // Percentage Title
+	      cat_graph_group.append('text').text('Pct').attr('transform', function () {
+	        var inst_x = bar_width + count_offset + 75;
+	        var inst_translate = 'translate(' + inst_x + ', 0)';
+	        return inst_translate;
+	      });
+
 	      // Count Downsampled Title
 	      if (is_downsampled) {
-	        cat_graph_group.append('text').text('Cluster-Count').attr('transform', function () {
-	          var inst_x = bar_width + 110;
+	        cat_graph_group.append('text').text('Clusters').attr('transform', function () {
+	          var inst_x = bar_width + offset_ds_count;
 	          var inst_translate = 'translate(' + inst_x + ', 0)';
 	          return inst_translate;
 	        });
@@ -4744,13 +4760,9 @@ module.exports =
 	        return 'translate(0,' + inst_y + ')';
 	      });
 
-	      var bar_scale = d3.scale.linear()
 	      // bar length is max when all nodes in cluster are of
 	      // a single cat
-	      // .domain([0, cat_data.num_in_clust])
-	      // bar length is max based on the max number in one cat
-	      // .domain([0, cat_data.bar_data[0][2]['num_nodes']])
-	      .domain([0, max_bar_value]).range([0, bar_width]);
+	      var bar_scale = d3.scale.linear().domain([0, max_bar_value]).range([0, bar_width]);
 
 	      // make bars
 	      cat_bar_groups.append('rect').attr('height', bar_height + 'px').attr('width', function (d) {
@@ -4780,13 +4792,28 @@ module.exports =
 	        return 'translate(5, ' + 0.75 * bar_height + ')';
 	      }).attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('font-weight', 400).attr('text-anchor', 'right');
 
-	      // make bar labels
+	      // Count/Pct Rows
+	      /////////////////////////////
 	      var shift_count_num = 35;
 
 	      cat_bar_groups.append('text').classed('count_labels', true).text(function (d) {
-	        return String(d[bars_index].toLocaleString());
+	        var inst_count = d[bars_index];
+	        inst_count = inst_count.toLocaleString();
+	        return String(inst_count);
 	      }).attr('transform', function () {
 	        var inst_x = bar_width + count_offset + shift_count_num;
+	        var inst_y = 0.75 * bar_height;
+	        return 'translate(' + inst_x + ', ' + inst_y + ')';
+	      }).attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('font-weight', 400).attr('text-anchor', 'end');
+
+	      cat_bar_groups.append('text').classed('count_labels', true).text(function (d) {
+	        // calculate the percentage relative to the current cluster
+	        var inst_count = d[bars_index] / cluster_total * 100;
+	        inst_count = Math.round(inst_count * 10) / 10;
+	        inst_count = inst_count.toLocaleString();
+	        return String(inst_count);
+	      }).attr('transform', function () {
+	        var inst_x = bar_width + count_offset + shift_count_num + 60;
 	        var inst_y = 0.75 * bar_height;
 	        return 'translate(' + inst_x + ', ' + inst_y + ')';
 	      }).attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('font-weight', 400).attr('text-anchor', 'end');
@@ -4818,16 +4845,14 @@ module.exports =
 
 	        // rows
 	        //////////////
-	        // shift_top = svg_height + 30;
 	        shift_top = 0;
-	        // 32
 	        shift_left = shift_tooltip_left;
 
-	        // prevent graph from being too high
-	        if (dendro_info.pos_top < svg_height) {
-	          // do not shift position of category breakdown graph
-	          // shift_top = -(svg_height + (dendro_info.pos_mid - dendro_info.pos_top)/2) ;
-	        }
+	        // // prevent graph from being too high
+	        // if (dendro_info.pos_top < svg_height){
+	        //   // do not shift position of category breakdown graph
+	        //   // shift_top = -(svg_height + (dendro_info.pos_mid - dendro_info.pos_top)/2) ;
+	        // }
 	      } else {
 
 	        // columns
