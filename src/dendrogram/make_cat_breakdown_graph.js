@@ -23,11 +23,11 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
     // loop through cat_breakdown data
     var super_string = ': ';
     var paragraph_string = '<p>';
-    var width = 300;
+    var width = 350;
     var bar_offset = 23;
     var bar_height = 20;
     var max_string_length = 30;
-    var bar_width = 205;
+    var bar_width = 180;
     var title_height = 27;
     var shift_tooltip_left = 107;
 
@@ -35,7 +35,7 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
     // nodes are stored
     var num_nodes_index = 4;
     var num_nodes_ds_index = 5;
-    var offset_ds_count = 140;
+    var offset_ds_count = 200;
 
     var is_downsampled = false;
     if (cat_breakdown[0].bar_data[0][num_nodes_ds_index] != null){
@@ -43,7 +43,6 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
       shift_tooltip_left = shift_tooltip_left + offset_ds_count;
       is_downsampled = true;
     }
-
 
     // the index that will be used to generate the bars (will be different if
     // downsampled)
@@ -103,8 +102,7 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
 
       // offset the count column based on how large the counts are
       var digit_offset_scale = d3.scale.linear()
-                                 .domain([0,100000]).range([30, 40]);
-
+                                 .domain([0,100000]).range([20, 30]);
 
       // only keep the top max_bars categories
       cat_data.bar_data = cat_data.bar_data.slice(0, max_bars);
@@ -134,7 +132,7 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
         .style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif')
         .style('font-weight',  800);
 
-
+      // shift the position of the numbers based on the size of the number
       var count_offset = digit_offset_scale(max_bar_value);
 
       // Count Title
@@ -151,9 +149,9 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
       if (is_downsampled){
         cat_graph_group
           .append('text')
-          .text('Cluster-Count')
+          .text('Num-Clusters')
           .attr('transform', function(){
-            var inst_x = bar_width + 110;
+            var inst_x = bar_width + offset_ds_count - 25;
             var inst_translate = 'translate('+ inst_x +', 0)';
             return inst_translate;
           });
@@ -186,13 +184,9 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
           return 'translate(0,'+ inst_y +')';
         });
 
-
+      // bar length is max when all nodes in cluster are of
+      // a single cat
       var bar_scale = d3.scale.linear()
-                        // bar length is max when all nodes in cluster are of
-                        // a single cat
-                        // .domain([0, cat_data.num_in_clust])
-                        // bar length is max based on the max number in one cat
-                        // .domain([0, cat_data.bar_data[0][2]['num_nodes']])
                         .domain([0, max_bar_value])
                         .range([0, bar_width]);
 
@@ -238,14 +232,17 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
         .attr('font-weight', 400)
         .attr('text-anchor', 'right');
 
-      // make bar labels
+      // Count/Pct Rows
+      /////////////////////////////
       var shift_count_num = 35;
 
       cat_bar_groups
         .append('text')
         .classed('count_labels', true)
         .text(function(d){
-          return String(d[bars_index].toLocaleString());
+          var inst_count = d[bars_index];
+          inst_count = inst_count.toLocaleString()
+          return String(inst_count);
         })
         .attr('transform', function(){
           var inst_x = bar_width + count_offset + shift_count_num;
@@ -274,8 +271,6 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
           .attr('text-anchor', 'end');
       }
 
-
-
     });
 
     // reposition tooltip
@@ -293,16 +288,14 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
 
         // rows
         //////////////
-        // shift_top = svg_height + 30;
         shift_top = 0;
-        // 32
         shift_left = shift_tooltip_left;
 
-        // prevent graph from being too high
-        if (dendro_info.pos_top < svg_height){
-          // do not shift position of category breakdown graph
-          // shift_top = -(svg_height + (dendro_info.pos_mid - dendro_info.pos_top)/2) ;
-        }
+        // // prevent graph from being too high
+        // if (dendro_info.pos_top < svg_height){
+        //   // do not shift position of category breakdown graph
+        //   // shift_top = -(svg_height + (dendro_info.pos_mid - dendro_info.pos_top)/2) ;
+        // }
 
       } else {
 

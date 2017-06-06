@@ -4473,11 +4473,11 @@ var Clustergrammer =
 	    // loop through cat_breakdown data
 	    var super_string = ': ';
 	    var paragraph_string = '<p>';
-	    var width = 300;
+	    var width = 350;
 	    var bar_offset = 23;
 	    var bar_height = 20;
 	    var max_string_length = 30;
-	    var bar_width = 205;
+	    var bar_width = 180;
 	    var title_height = 27;
 	    var shift_tooltip_left = 107;
 
@@ -4485,7 +4485,7 @@ var Clustergrammer =
 	    // nodes are stored
 	    var num_nodes_index = 4;
 	    var num_nodes_ds_index = 5;
-	    var offset_ds_count = 140;
+	    var offset_ds_count = 200;
 
 	    var is_downsampled = false;
 	    if (cat_breakdown[0].bar_data[0][num_nodes_ds_index] != null) {
@@ -4537,7 +4537,7 @@ var Clustergrammer =
 	      var max_bar_value = cat_data.bar_data[0][bars_index];
 
 	      // offset the count column based on how large the counts are
-	      var digit_offset_scale = d3.scale.linear().domain([0, 100000]).range([30, 40]);
+	      var digit_offset_scale = d3.scale.linear().domain([0, 100000]).range([20, 30]);
 
 	      // only keep the top max_bars categories
 	      cat_data.bar_data = cat_data.bar_data.slice(0, max_bars);
@@ -4558,6 +4558,7 @@ var Clustergrammer =
 	      // make title
 	      cat_graph_group.append('text').classed('cat_graph_title', true).text(inst_title).style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').style('font-weight', 800);
 
+	      // shift the position of the numbers based on the size of the number
 	      var count_offset = digit_offset_scale(max_bar_value);
 
 	      // Count Title
@@ -4569,8 +4570,8 @@ var Clustergrammer =
 
 	      // Count Downsampled Title
 	      if (is_downsampled) {
-	        cat_graph_group.append('text').text('Cluster-Count').attr('transform', function () {
-	          var inst_x = bar_width + 110;
+	        cat_graph_group.append('text').text('Num-Clusters').attr('transform', function () {
+	          var inst_x = bar_width + offset_ds_count - 25;
 	          var inst_translate = 'translate(' + inst_x + ', 0)';
 	          return inst_translate;
 	        });
@@ -4587,13 +4588,9 @@ var Clustergrammer =
 	        return 'translate(0,' + inst_y + ')';
 	      });
 
-	      var bar_scale = d3.scale.linear()
 	      // bar length is max when all nodes in cluster are of
 	      // a single cat
-	      // .domain([0, cat_data.num_in_clust])
-	      // bar length is max based on the max number in one cat
-	      // .domain([0, cat_data.bar_data[0][2]['num_nodes']])
-	      .domain([0, max_bar_value]).range([0, bar_width]);
+	      var bar_scale = d3.scale.linear().domain([0, max_bar_value]).range([0, bar_width]);
 
 	      // make bars
 	      cat_bar_groups.append('rect').attr('height', bar_height + 'px').attr('width', function (d) {
@@ -4623,11 +4620,14 @@ var Clustergrammer =
 	        return 'translate(5, ' + 0.75 * bar_height + ')';
 	      }).attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('font-weight', 400).attr('text-anchor', 'right');
 
-	      // make bar labels
+	      // Count/Pct Rows
+	      /////////////////////////////
 	      var shift_count_num = 35;
 
 	      cat_bar_groups.append('text').classed('count_labels', true).text(function (d) {
-	        return String(d[bars_index].toLocaleString());
+	        var inst_count = d[bars_index];
+	        inst_count = inst_count.toLocaleString();
+	        return String(inst_count);
 	      }).attr('transform', function () {
 	        var inst_x = bar_width + count_offset + shift_count_num;
 	        var inst_y = 0.75 * bar_height;
@@ -4661,16 +4661,14 @@ var Clustergrammer =
 
 	        // rows
 	        //////////////
-	        // shift_top = svg_height + 30;
 	        shift_top = 0;
-	        // 32
 	        shift_left = shift_tooltip_left;
 
-	        // prevent graph from being too high
-	        if (dendro_info.pos_top < svg_height) {
-	          // do not shift position of category breakdown graph
-	          // shift_top = -(svg_height + (dendro_info.pos_mid - dendro_info.pos_top)/2) ;
-	        }
+	        // // prevent graph from being too high
+	        // if (dendro_info.pos_top < svg_height){
+	        //   // do not shift position of category breakdown graph
+	        //   // shift_top = -(svg_height + (dendro_info.pos_mid - dendro_info.pos_top)/2) ;
+	        // }
 	      } else {
 
 	        // columns

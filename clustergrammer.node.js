@@ -4634,7 +4634,7 @@ module.exports =
 	    var bar_offset = 23;
 	    var bar_height = 20;
 	    var max_string_length = 30;
-	    var bar_width = 205;
+	    var bar_width = 180;
 	    var title_height = 27;
 	    var shift_tooltip_left = 107;
 
