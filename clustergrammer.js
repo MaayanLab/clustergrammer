@@ -74,7 +74,7 @@ var Clustergrammer =
 	__webpack_require__(189);
 	__webpack_require__(193);
 
-	/* clustergrammer v1.17.1
+	/* clustergrammer v1.17.2
 	 * Nicolas Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
 	 * (c) 2017
 	 */
@@ -4479,7 +4479,7 @@ var Clustergrammer =
 	    var max_string_length = 30;
 	    var bar_width = 180;
 	    var title_height = 27;
-	    var shift_tooltip_left = 107;
+	    var shift_tooltip_left = 142;
 
 	    // these are the indexes where the number-of-nodes and the number of downsampled
 	    // nodes are stored
@@ -4490,7 +4490,7 @@ var Clustergrammer =
 	    var is_downsampled = false;
 	    if (cat_breakdown[0].bar_data[0][num_nodes_ds_index] != null) {
 	      width = width + 100;
-	      shift_tooltip_left = shift_tooltip_left + offset_ds_count - 15;
+	      shift_tooltip_left = shift_tooltip_left + offset_ds_count - 47;
 	      is_downsampled = true;
 	    }
 

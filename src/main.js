@@ -27,7 +27,7 @@ var awesomplete = require('awesomplete');
 require('!style!css!./d3.slider/d3.slider.css');
 require('!style!css!awesomplete/awesomplete.css');
 
-/* clustergrammer v1.17.1
+/* clustergrammer v1.17.2
  * Nicolas Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
  * (c) 2017
  */
