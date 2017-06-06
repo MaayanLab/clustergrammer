@@ -4473,7 +4473,7 @@ var Clustergrammer =
 	    // loop through cat_breakdown data
 	    var super_string = ': ';
 	    var paragraph_string = '<p>';
-	    var width = 275;
+	    var width = 335;
 	    var bar_offset = 23;
 	    var bar_height = 20;
 	    var max_string_length = 30;
@@ -4489,16 +4489,24 @@ var Clustergrammer =
 
 	    var is_downsampled = false;
 	    if (cat_breakdown[0].bar_data[0][num_nodes_ds_index] != null) {
-	      width = width + offset_ds_count;
+	      width = width + 150;
 	      shift_tooltip_left = shift_tooltip_left + offset_ds_count;
 	      is_downsampled = true;
 	    }
 
 	    // the index that will be used to generate the bars (will be different if
 	    // downsampled)
+	    var cluster_total = dendro_info.all_names.length;
 	    var bars_index = num_nodes_index;
 	    if (is_downsampled) {
 	      bars_index = num_nodes_ds_index;
+
+	      // calculate the total number of nodes in downsampled case
+	      var inst_bar_data = cat_breakdown[0].bar_data;
+	      cluster_total = 0;
+	      _.each(inst_bar_data, function (tmp_data) {
+	        cluster_total = cluster_total + tmp_data[num_nodes_ds_index];
+	      });
 	    }
 
 	    // limit on the number of category types shown
@@ -4569,8 +4577,8 @@ var Clustergrammer =
 	      });
 
 	      // Percentage Title
-	      cat_graph_group.append('text').text('Percentage').attr('transform', function () {
-	        var inst_x = bar_width + count_offset + 60;
+	      cat_graph_group.append('text').text('Pct').attr('transform', function () {
+	        var inst_x = bar_width + count_offset + 75;
 	        var inst_translate = 'translate(' + inst_x + ', 0)';
 	        return inst_translate;
 	      });
@@ -4643,7 +4651,8 @@ var Clustergrammer =
 
 	      cat_bar_groups.append('text').classed('count_labels', true).text(function (d) {
 	        // calculate the percentage relative to the current cluster
-	        var inst_count = d[bars_index] / dendro_info.all_names.length;
+	        var inst_count = d[bars_index] / cluster_total * 100;
+	        inst_count = Math.round(inst_count * 10) / 10;
 	        inst_count = inst_count.toLocaleString();
 	        return String(inst_count);
 	      }).attr('transform', function () {
