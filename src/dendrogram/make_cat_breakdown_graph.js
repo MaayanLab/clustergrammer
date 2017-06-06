@@ -35,12 +35,12 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
     // nodes are stored
     var num_nodes_index = 4;
     var num_nodes_ds_index = 5;
-    var offset_ds_count = 200;
+    var offset_ds_count = 150;
 
     var is_downsampled = false;
     if (cat_breakdown[0].bar_data[0][num_nodes_ds_index] != null){
-      width = width + 150;
-      shift_tooltip_left = shift_tooltip_left + offset_ds_count;
+      width = width + 100;
+      shift_tooltip_left = shift_tooltip_left + offset_ds_count - 15;
       is_downsampled = true;
     }
 
@@ -167,9 +167,9 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
       if (is_downsampled){
         cat_graph_group
           .append('text')
-          .text('Num-Clusters')
+          .text('Clusters')
           .attr('transform', function(){
-            var inst_x = bar_width + offset_ds_count - 25;
+            var inst_x = bar_width + offset_ds_count ;
             var inst_translate = 'translate('+ inst_x +', 0)';
             return inst_translate;
           });
