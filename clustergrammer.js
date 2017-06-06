@@ -4473,7 +4473,7 @@ var Clustergrammer =
 	    // loop through cat_breakdown data
 	    var super_string = ': ';
 	    var paragraph_string = '<p>';
-	    var width = 350;
+	    var width = 275;
 	    var bar_offset = 23;
 	    var bar_height = 20;
 	    var max_string_length = 30;
@@ -4568,6 +4568,13 @@ var Clustergrammer =
 	        return inst_translate;
 	      });
 
+	      // Percentage Title
+	      cat_graph_group.append('text').text('Percentage').attr('transform', function () {
+	        var inst_x = bar_width + count_offset + 60;
+	        var inst_translate = 'translate(' + inst_x + ', 0)';
+	        return inst_translate;
+	      });
+
 	      // Count Downsampled Title
 	      if (is_downsampled) {
 	        cat_graph_group.append('text').text('Num-Clusters').attr('transform', function () {
@@ -4630,6 +4637,17 @@ var Clustergrammer =
 	        return String(inst_count);
 	      }).attr('transform', function () {
 	        var inst_x = bar_width + count_offset + shift_count_num;
+	        var inst_y = 0.75 * bar_height;
+	        return 'translate(' + inst_x + ', ' + inst_y + ')';
+	      }).attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('font-weight', 400).attr('text-anchor', 'end');
+
+	      cat_bar_groups.append('text').classed('count_labels', true).text(function (d) {
+	        // calculate the percentage relative to the current cluster
+	        var inst_count = d[bars_index] / dendro_info.all_names.length;
+	        inst_count = inst_count.toLocaleString();
+	        return String(inst_count);
+	      }).attr('transform', function () {
+	        var inst_x = bar_width + count_offset + shift_count_num + 60;
 	        var inst_y = 0.75 * bar_height;
 	        return 'translate(' + inst_x + ', ' + inst_y + ')';
 	      }).attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('font-weight', 400).attr('text-anchor', 'end');
