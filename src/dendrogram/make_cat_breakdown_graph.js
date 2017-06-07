@@ -278,7 +278,7 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
           // calculate the percentage relative to the current cluster
           var inst_count = d[bars_index] / cluster_total * 100;
           inst_count = Math.round(inst_count * 10)/10;
-          inst_count = inst_count.toLocaleString()
+          inst_count = inst_count.toLocaleString();
           return String(inst_count);
         })
         .attr('transform', function(){
