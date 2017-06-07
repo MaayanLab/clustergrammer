@@ -16,17 +16,28 @@ module.exports = function make_colorbar(cgm){
   var colorbar_width = params.sidebar.width - 20;
   var colorbar_height = 15;
   var low_left_margin = 10  ;
-  var low_top_margin = 40;
+  var top_margin = 33;
   var high_left_margin = colorbar_width + 10;
-  var high_top_margin = 40;
   var bar_margin_left = 10;
   var bar_margin_top = 3;
+
+  var network_data = params.network_data;
+
+  var max_link = _.max(network_data.links, function (d) {
+    return d.value;
+  }).value;
+
+  var min_link = _.min(network_data.links, function (d) {
+    return d.value;
+  }).value;
+
+  console.log(min_link)
+  console.log(max_link)
 
   var main_svg = d3.select(params.root+' .sidebar_wrapper')
     .append('svg')
     .attr('height', svg_height + 'px')
     .attr('width', svg_height + 'px');
-
 
   //Append a defs (for definition) element to your SVG
   var defs = main_svg.append("defs");
@@ -73,7 +84,7 @@ module.exports = function make_colorbar(cgm){
     .style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif')
     .style('font-weight',  300)
     .style('font-size', 15)
-    .attr('transform', 'translate('+low_left_margin+','+low_top_margin+')')
+    .attr('transform', 'translate('+low_left_margin+','+top_margin+')')
     .attr('text-anchor', 'start');
 
   main_svg
@@ -82,6 +93,6 @@ module.exports = function make_colorbar(cgm){
     .style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif')
     .style('font-weight',  300)
     .style('font-size', 15)
-    .attr('transform', 'translate('+high_left_margin+','+high_top_margin+')')
+    .attr('transform', 'translate('+high_left_margin+','+top_margin+')')
     .attr('text-anchor', 'end');
 }
