@@ -76,7 +76,7 @@ module.exports =
 	__webpack_require__(190);
 	__webpack_require__(194);
 
-	/* clustergrammer v1.18.0
+	/* clustergrammer v1.18.1
 	 * Nicolas Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
 	 * (c) 2017
 	 */
@@ -15005,7 +15005,7 @@ module.exports =
 	  d3.select(params.root + ' .sidebar_wrapper').append('div').classed('sidebar_text', true).style('padding-left', '10px').style('padding-top', '5px').text('Matrix Values');
 
 	  var colorbar_width = params.sidebar.width - 20;
-	  var colorbar_height = 15;
+	  var colorbar_height = 13;
 	  var svg_height = 3 * colorbar_height;
 	  var svg_width = 1.2 * colorbar_width;
 	  var low_left_margin = 10;
@@ -15076,6 +15076,7 @@ module.exports =
 	  ///////////////
 
 	  var max_abs_val = Math.abs(Math.round(params.matrix.max_link * 10) / 10);
+	  var font_size = 13;
 
 	  main_svg.append('text').text(function () {
 	    var inst_string;
@@ -15085,17 +15086,17 @@ module.exports =
 	      inst_string = '-' + max_abs_val.toLocaleString();
 	    }
 	    return inst_string;
-	  }).style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').style('font-weight', 300).style('font-size', 15).attr('transform', 'translate(' + low_left_margin + ',' + top_margin + ')').attr('text-anchor', 'start');
+	  }).style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').style('font-weight', 300).style('font-size', font_size).attr('transform', 'translate(' + low_left_margin + ',' + top_margin + ')').attr('text-anchor', 'start');
 
 	  main_svg.append('text').text(max_abs_val.toLocaleString()).text(function () {
 	    var inst_string;
 	    if (special_case === 'all_negative') {
 	      inst_string = 0;
 	    } else {
-	      inst_string = '-' + max_abs_val.toLocaleString();
+	      inst_string = max_abs_val.toLocaleString();
 	    }
 	    return inst_string;
-	  }).style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').style('font-weight', 300).style('font-size', 15).attr('transform', 'translate(' + high_left_margin + ',' + top_margin + ')').attr('text-anchor', 'end');
+	  }).style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').style('font-weight', 300).style('font-size', font_size).attr('transform', 'translate(' + high_left_margin + ',' + top_margin + ')').attr('text-anchor', 'end');
 		};
 
 /***/ }
