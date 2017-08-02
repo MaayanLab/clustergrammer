@@ -11,44 +11,44 @@ module.exports = function dendro_shade_bars(params, inst_selection, inst_rc, ins
     // top shade
     d3.select(params.root+' .clust_group')
       .append('rect')
-      .style('width', params.viz.clust.dim.width+'px')
-      .style('height', inst_data.pos_top+'px')
-      .style('fill','black')
+      .attr('width', params.viz.clust.dim.width+'px')
+      .attr('height', inst_data.pos_top+'px')
+      .attr('fill','black')
       .classed('dendro_shadow',true)
-      .style('opacity', inst_opacity);
+      .attr('opacity', inst_opacity);
 
     bot_height = params.viz.clust.dim.height - inst_data.pos_bot;
     // bottom shade
     d3.select(params.root+' .clust_group')
       .append('rect')
-      .style('width', params.viz.clust.dim.width+'px')
-      .style('height', bot_height+'px')
+      .attr('width', params.viz.clust.dim.width+'px')
+      .attr('height', bot_height+'px')
       .attr('transform','translate(0,'+inst_data.pos_bot+')')
-      .style('fill','black')
+      .attr('fill','black')
       .classed('dendro_shadow',true)
-      .style('opacity', inst_opacity);
+      .attr('opacity', inst_opacity);
 
   } else if (inst_rc === 'col'){
 
     // top shade
     d3.select(params.root+' .clust_group')
       .append('rect')
-      .style('width', inst_data.pos_top+'px')
-      .style('height', params.viz.clust.dim.height+'px')
-      .style('fill','black')
+      .attr('width', inst_data.pos_top+'px')
+      .attr('height', params.viz.clust.dim.height+'px')
+      .attr('fill','black')
       .classed('dendro_shadow',true)
-      .style('opacity', inst_opacity);
+      .attr('opacity', inst_opacity);
 
     // bottom shade
     bot_height = params.viz.clust.dim.width - inst_data.pos_bot;
     d3.select(params.root+' .clust_group')
       .append('rect')
-      .style('width', bot_height+'px')
-      .style('height', params.viz.clust.dim.height+'px')
+      .attr('width', bot_height+'px')
+      .attr('height', params.viz.clust.dim.height+'px')
       .attr('transform','translate('+inst_data.pos_bot+',0)')
-      .style('fill','black')
+      .attr('fill','black')
       .classed('dendro_shadow',true)
-      .style('opacity',inst_opacity);
+      .attr('opacity',inst_opacity);
 
   }
 
