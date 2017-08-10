@@ -26,6 +26,25 @@ module.exports = function binom_test(){
     return p;
   }
 
-  console.log(binom_dist(1, 2, 0.5));
+  function my_binom_test_2(actual_k, n, p){
+    var cp = 0;
+    var k;
+    for (var inst_k=actual_k; inst_k < n+1; inst_k++ ){
+      k = inst_k;
+      dp = binom_dist(k, n, p);
+      cp = cp + dp;
+    }
+
+    return cp;
+
+  }
+
+  var n = 25;
+  var p = 0.1;
+  var actual_k = 20;
+  cp = my_binom_test_2(actual_k, n, p)
+  console.log(cp)
+
+  // console.log(binom_dist(1, 2, 0.5));
 
 };
