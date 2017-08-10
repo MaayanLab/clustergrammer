@@ -64,7 +64,7 @@ var Clustergrammer =
 	var all_reorder = __webpack_require__(79);
 	var make_matrix_string = __webpack_require__(182);
 	// var fisher = require('./dendrogram/run_fisher_exact_clust');
-	var binom_test = __webpack_require__(768);
+	var binom_test = __webpack_require__(186);
 
 	var actual_k = 10;
 	var n = 150;
@@ -72,14 +72,14 @@ var Clustergrammer =
 	binom_test(actual_k, n, p);
 
 	// moved d3.slider to src
-	d3.slider = __webpack_require__(190);
+	d3.slider = __webpack_require__(224);
 
 	/* eslint-disable */
 
-	var awesomplete = __webpack_require__(192);
+	var awesomplete = __webpack_require__(226);
 	// getting css from src
-	__webpack_require__(193);
-	__webpack_require__(197);
+	__webpack_require__(227);
+	__webpack_require__(231);
 
 	/* clustergrammer v1.18.2
 	 * Nicolas Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
@@ -111,7 +111,7 @@ var Clustergrammer =
 	  cgm.params.zoom_behavior.translate([cgm.params.viz.clust.margin.left, cgm.params.viz.clust.margin.top]);
 
 	  if (cgm.params.use_sidebar) {
-	    var make_sidebar = __webpack_require__(199);
+	    var make_sidebar = __webpack_require__(233);
 	    make_sidebar(cgm);
 	  }
 
@@ -12170,2446 +12170,73 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 186 */,
-/* 187 */,
-/* 188 */,
-/* 189 */,
-/* 190 */
+/* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
-	    D3.js Slider
-	    Inspired by jQuery UI Slider
-	    Copyright (c) 2013, Bjorn Sandvik - http://blog.thematicmapping.org
-	    BSD license: http://opensource.org/licenses/BSD-3-Clause
-	*/
-	(function (root, factory) {
-	  if (true) {
-	    // AMD. Register as an anonymous module.
-	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(191)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	  } else if (typeof exports === 'object') {
-	    if (process.browser) {
-	      // Browserify. Import css too using cssify.
-	      require('./d3.slider.css');
-	    }
-	    // Node. Does not work with strict CommonJS, but
-	    // only CommonJS-like environments that support module.exports,
-	    // like Node.
-	    module.exports = factory(require('d3'));
-	  } else {
-	    // Browser globals (root is window)
-	    root.d3.slider = factory(root.d3);
-	  }
-	})(this, function (d3) {
-	  return function module() {
-	    "use strict";
-
-	    // Public variables width default settings
-
-	    var min = 0,
-	        max = 100,
-	        step = 0.01,
-	        animate = false,
-	        orientation = "horizontal",
-	        axis = false,
-	        margin = 50,
-	        value,
-	        active = 1,
-	        snap = false,
-	        scale;
-
-	    // Private variables
-	    var axisScale,
-	        dispatch = d3.dispatch("slide", "slideend"),
-	        formatPercent = d3.format(".2%"),
-	        tickFormat = d3.format(".0"),
-	        handle1,
-	        handle2 = null,
-	        divRange,
-	        sliderLength;
-
-	    function slider(selection) {
-	      selection.each(function () {
-
-	        // Create scale if not defined by user
-	        if (!scale) {
-	          scale = d3.scale.linear().domain([min, max]);
-	        }
-
-	        // Start value
-	        value = value || scale.domain()[0];
-
-	        // DIV container
-	        var div = d3.select(this).classed("d3-slider d3-slider-" + orientation, true);
-
-	        var drag = d3.behavior.drag();
-	        drag.on('dragend', function () {
-	          dispatch.slideend(d3.event, value);
-	        });
-
-	        // Slider handle
-	        //if range slider, create two
-	        // var divRange;
-
-	        if (toType(value) == "array" && value.length == 2) {
-	          handle1 = div.append("a").classed("d3-slider-handle", true).attr("xlink:href", "#").attr('id', "handle-one").on("click", stopPropagation).call(drag);
-	          handle2 = div.append("a").classed("d3-slider-handle", true).attr('id', "handle-two").attr("xlink:href", "#").on("click", stopPropagation).call(drag);
-	        } else {
-	          handle1 = div.append("a").classed("d3-slider-handle", true).attr("xlink:href", "#").attr('id', "handle-one").on("click", stopPropagation).call(drag);
-	        }
-
-	        // Horizontal slider
-	        if (orientation === "horizontal") {
-
-	          div.on("click", onClickHorizontal);
-
-	          if (toType(value) == "array" && value.length == 2) {
-	            divRange = d3.select(this).append('div').classed("d3-slider-range", true);
-
-	            handle1.style("left", formatPercent(scale(value[0])));
-	            divRange.style("left", formatPercent(scale(value[0])));
-	            drag.on("drag", onDragHorizontal);
-
-	            var width = 100 - parseFloat(formatPercent(scale(value[1])));
-	            handle2.style("left", formatPercent(scale(value[1])));
-	            divRange.style("right", width + "%");
-	            drag.on("drag", onDragHorizontal);
-	          } else {
-	            handle1.style("left", formatPercent(scale(value)));
-	            drag.on("drag", onDragHorizontal);
-	          }
-
-	          sliderLength = parseInt(div.style("width"), 10);
-	        } else {
-	          // Vertical
-
-	          div.on("click", onClickVertical);
-	          drag.on("drag", onDragVertical);
-	          if (toType(value) == "array" && value.length == 2) {
-	            divRange = d3.select(this).append('div').classed("d3-slider-range-vertical", true);
-
-	            handle1.style("bottom", formatPercent(scale(value[0])));
-	            divRange.style("bottom", formatPercent(scale(value[0])));
-	            drag.on("drag", onDragVertical);
-
-	            var top = 100 - parseFloat(formatPercent(scale(value[1])));
-	            handle2.style("bottom", formatPercent(scale(value[1])));
-	            divRange.style("top", top + "%");
-	            drag.on("drag", onDragVertical);
-	          } else {
-	            handle1.style("bottom", formatPercent(scale(value)));
-	            drag.on("drag", onDragVertical);
-	          }
-
-	          sliderLength = parseInt(div.style("height"), 10);
-	        }
-
-	        if (axis) {
-	          createAxis(div);
-	        }
-
-	        function createAxis(dom) {
-
-	          // Create axis if not defined by user
-	          if (typeof axis === "boolean") {
-
-	            axis = d3.svg.axis().ticks(Math.round(sliderLength / 100)).tickFormat(tickFormat).orient(orientation === "horizontal" ? "bottom" : "right");
-	          }
-
-	          // Copy slider scale to move from percentages to pixels
-	          axisScale = scale.ticks ? scale.copy().range([0, sliderLength]) : scale.copy().rangePoints([0, sliderLength], 0.5);
-	          axis.scale(axisScale);
-
-	          // Create SVG axis container
-	          var svg = dom.append("svg").classed("d3-slider-axis d3-slider-axis-" + axis.orient(), true).on("click", stopPropagation);
-
-	          var g = svg.append("g");
-
-	          // Horizontal axis
-	          if (orientation === "horizontal") {
-
-	            svg.style("margin-left", -margin + "px");
-
-	            svg.attr({
-	              width: sliderLength + margin * 2,
-	              height: margin
-	            });
-
-	            if (axis.orient() === "top") {
-	              svg.style("top", -margin + "px");
-	              g.attr("transform", "translate(" + margin + "," + margin + ")");
-	            } else {
-	              // bottom
-	              g.attr("transform", "translate(" + margin + ",0)");
-	            }
-	          } else {
-	            // Vertical
-
-	            svg.style("top", -margin + "px");
-
-	            svg.attr({
-	              width: margin,
-	              height: sliderLength + margin * 2
-	            });
-
-	            if (axis.orient() === "left") {
-	              svg.style("left", -margin + "px");
-	              g.attr("transform", "translate(" + margin + "," + margin + ")");
-	            } else {
-	              // right
-	              g.attr("transform", "translate(" + 0 + "," + margin + ")");
-	            }
-	          }
-
-	          g.call(axis);
-	        }
-
-	        function onClickHorizontal() {
-	          if (toType(value) != "array") {
-	            var pos = Math.max(0, Math.min(sliderLength, d3.event.offsetX || d3.event.layerX));
-	            moveHandle(scale.invert ? stepValue(scale.invert(pos / sliderLength)) : nearestTick(pos / sliderLength));
-	          }
-	        }
-
-	        function onClickVertical() {
-	          if (toType(value) != "array") {
-	            var pos = sliderLength - Math.max(0, Math.min(sliderLength, d3.event.offsetY || d3.event.layerY));
-	            moveHandle(scale.invert ? stepValue(scale.invert(pos / sliderLength)) : nearestTick(pos / sliderLength));
-	          }
-	        }
-
-	        function onDragHorizontal() {
-	          if (d3.event.sourceEvent.target.id === "handle-one") {
-	            active = 1;
-	          } else if (d3.event.sourceEvent.target.id == "handle-two") {
-	            active = 2;
-	          }
-	          var pos = Math.max(0, Math.min(sliderLength, d3.event.x));
-	          moveHandle(scale.invert ? stepValue(scale.invert(pos / sliderLength)) : nearestTick(pos / sliderLength));
-	        }
-
-	        function onDragVertical() {
-	          if (d3.event.sourceEvent.target.id === "handle-one") {
-	            active = 1;
-	          } else if (d3.event.sourceEvent.target.id == "handle-two") {
-	            active = 2;
-	          }
-	          var pos = sliderLength - Math.max(0, Math.min(sliderLength, d3.event.y));
-	          moveHandle(scale.invert ? stepValue(scale.invert(pos / sliderLength)) : nearestTick(pos / sliderLength));
-	        }
-
-	        function stopPropagation() {
-	          d3.event.stopPropagation();
-	        }
-	      });
-	    }
-
-	    // Move slider handle on click/drag
-	    function moveHandle(newValue) {
-	      var currentValue = toType(value) == "array" && value.length == 2 ? value[active - 1] : value,
-	          oldPos = formatPercent(scale(stepValue(currentValue))),
-	          newPos = formatPercent(scale(stepValue(newValue))),
-	          position = orientation === "horizontal" ? "left" : "bottom";
-	      if (oldPos !== newPos) {
-
-	        if (toType(value) == "array" && value.length == 2) {
-	          value[active - 1] = newValue;
-	          if (d3.event) {
-	            dispatch.slide(d3.event, value);
-	          };
-	        } else {
-	          if (d3.event) {
-	            dispatch.slide(d3.event.sourceEvent || d3.event, value = newValue);
-	          };
-	        }
-
-	        if (value[0] >= value[1]) return;
-	        if (active === 1) {
-	          if (toType(value) == "array" && value.length == 2) {
-	            position === "left" ? divRange.style("left", newPos) : divRange.style("bottom", newPos);
-	          }
-
-	          if (animate) {
-	            handle1.transition().styleTween(position, function () {
-	              return d3.interpolate(oldPos, newPos);
-	            }).duration(typeof animate === "number" ? animate : 250);
-	          } else {
-	            handle1.style(position, newPos);
-	          }
-	        } else {
-
-	          var width = 100 - parseFloat(newPos);
-	          var top = 100 - parseFloat(newPos);
-
-	          position === "left" ? divRange.style("right", width + "%") : divRange.style("top", top + "%");
-
-	          if (animate) {
-	            handle2.transition().styleTween(position, function () {
-	              return d3.interpolate(oldPos, newPos);
-	            }).duration(typeof animate === "number" ? animate : 250);
-	          } else {
-	            handle2.style(position, newPos);
-	          }
-	        }
-	      }
-	    }
-
-	    // Calculate nearest step value
-	    function stepValue(val) {
-
-	      if (val === scale.domain()[0] || val === scale.domain()[1]) {
-	        return val;
-	      }
-
-	      var alignValue = val;
-	      if (snap) {
-	        alignValue = nearestTick(scale(val));
-	      } else {
-	        var valModStep = (val - scale.domain()[0]) % step;
-	        alignValue = val - valModStep;
-
-	        if (Math.abs(valModStep) * 2 >= step) {
-	          alignValue += valModStep > 0 ? step : -step;
-	        }
-	      };
-
-	      return alignValue;
-	    }
-
-	    // Find the nearest tick
-	    function nearestTick(pos) {
-	      var ticks = scale.ticks ? scale.ticks() : scale.domain();
-	      var dist = ticks.map(function (d) {
-	        return pos - scale(d);
-	      });
-	      var i = -1,
-	          index = 0,
-	          r = scale.ticks ? scale.range()[1] : scale.rangeExtent()[1];
-	      do {
-	        i++;
-	        if (Math.abs(dist[i]) < r) {
-	          r = Math.abs(dist[i]);
-	          index = i;
-	        };
-	      } while (dist[i] > 0 && i < dist.length - 1);
-
-	      return ticks[index];
-	    };
-
-	    // Return the type of an object
-	    function toType(v) {
-	      return {}.toString.call(v).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
-	    };
-
-	    // Getter/setter functions
-	    slider.min = function (_) {
-	      if (!arguments.length) return min;
-	      min = _;
-	      return slider;
-	    };
-
-	    slider.max = function (_) {
-	      if (!arguments.length) return max;
-	      max = _;
-	      return slider;
-	    };
-
-	    slider.step = function (_) {
-	      if (!arguments.length) return step;
-	      step = _;
-	      return slider;
-	    };
-
-	    slider.animate = function (_) {
-	      if (!arguments.length) return animate;
-	      animate = _;
-	      return slider;
-	    };
-
-	    slider.orientation = function (_) {
-	      if (!arguments.length) return orientation;
-	      orientation = _;
-	      return slider;
-	    };
-
-	    slider.axis = function (_) {
-	      if (!arguments.length) return axis;
-	      axis = _;
-	      return slider;
-	    };
-
-	    slider.margin = function (_) {
-	      if (!arguments.length) return margin;
-	      margin = _;
-	      return slider;
-	    };
-
-	    slider.value = function (_) {
-	      if (!arguments.length) return value;
-	      if (value) {
-	        moveHandle(stepValue(_));
-	      };
-	      value = _;
-	      return slider;
-	    };
-
-	    slider.snap = function (_) {
-	      if (!arguments.length) return snap;
-	      snap = _;
-	      return slider;
-	    };
-
-	    slider.scale = function (_) {
-	      if (!arguments.length) return scale;
-	      scale = _;
-	      return slider;
-	    };
-
-	    d3.rebind(slider, dispatch, "on");
-
-	    return slider;
-	  };
+	
+	// Load the math.js core
+	// Create a new, empty math.js instance
+	// It will only contain methods `import` and `config`
+	// math.import(require('mathjs/lib/type/fraction'));
+	var core = __webpack_require__(187);
+	var math = core.create();
+	math.import(__webpack_require__(198));
+	math.import(__webpack_require__(203));
+	math.config({
+	  number: 'BigNumber', // Default type of number:
+	  // 'number' (default), 'BigNumber', or 'Fraction'
+	  precision: 64 // Number of significant digits for BigNumbers
 	});
 
-/***/ },
-/* 191 */
-/***/ function(module, exports) {
+	module.exports = function binom_test(actual_k, n, p) {
 
-	module.exports = d3;
+	  console.log('running binom_test!!!!!');
 
-/***/ },
-/* 192 */
-/***/ function(module, exports) {
+	  var fact = math.factorial;
 
-	/**
-	 * Simple, lightweight, usable local autocomplete library for modern browsers
-	 * Because there weren’t enough autocomplete scripts in the world? Because I’m completely insane and have NIH syndrome? Probably both. :P
-	 * @author Lea Verou http://leaverou.github.io/awesomplete
-	 * MIT license
-	 */
+	  function binom_dist(k, n, p) {
+	    var bin_coeff = fact(n) / (fact(k) * fact(n - k));
+	    p = bin_coeff * (Math.pow(p, k) * Math.pow(1 - p, n - k));
+	    return p;
+	  }
 
-	(function () {
+	  function my_binom_test_2(actual_k, n, p) {
+	    var cp = 0;
+	    var k;
+	    for (var inst_k = actual_k; inst_k < n + 1; inst_k++) {
+	      k = inst_k;
+	      dp = binom_dist(k, n, p);
+	      cp = cp + dp;
+	    }
 
-		var _ = function (input, o) {
-			var me = this;
+	    return cp;
+	  }
 
-			// Setup
+	  // var n = 150;
+	  // var p = 0.5;
+	  // var actual_k = 10;
+	  cp = my_binom_test_2(actual_k, n, p);
+	  console.log(cp);
 
-			this.input = $(input);
-			this.input.setAttribute("autocomplete", "off");
-			this.input.setAttribute("aria-autocomplete", "list");
-
-			o = o || {};
-
-			configure(this, {
-				minChars: 2,
-				maxItems: 10,
-				autoFirst: false,
-				data: _.DATA,
-				filter: _.FILTER_CONTAINS,
-				sort: _.SORT_BYLENGTH,
-				item: _.ITEM,
-				replace: _.REPLACE
-			}, o);
-
-			this.index = -1;
-
-			// Create necessary elements
-
-			this.container = $.create("div", {
-				className: "awesomplete",
-				around: input
-			});
-
-			this.ul = $.create("ul", {
-				hidden: "hidden",
-				inside: this.container
-			});
-
-			this.status = $.create("span", {
-				className: "visually-hidden",
-				role: "status",
-				"aria-live": "assertive",
-				"aria-relevant": "additions",
-				inside: this.container
-			});
-
-			// Bind events
-
-			$.bind(this.input, {
-				"input": this.evaluate.bind(this),
-				"blur": this.close.bind(this, { reason: "blur" }),
-				"keydown": function (evt) {
-					var c = evt.keyCode;
-
-					// If the dropdown `ul` is in view, then act on keydown for the following keys:
-					// Enter / Esc / Up / Down
-					if (me.opened) {
-						if (c === 13 && me.selected) {
-							// Enter
-							evt.preventDefault();
-							me.select();
-						} else if (c === 27) {
-							// Esc
-							me.close({ reason: "esc" });
-						} else if (c === 38 || c === 40) {
-							// Down/Up arrow
-							evt.preventDefault();
-							me[c === 38 ? "previous" : "next"]();
-						}
-					}
-				}
-			});
-
-			$.bind(this.input.form, { "submit": this.close.bind(this, { reason: "submit" }) });
-
-			$.bind(this.ul, { "mousedown": function (evt) {
-					var li = evt.target;
-
-					if (li !== this) {
-
-						while (li && !/li/i.test(li.nodeName)) {
-							li = li.parentNode;
-						}
-
-						if (li && evt.button === 0) {
-							// Only select on left click
-							evt.preventDefault();
-							me.select(li, evt.target);
-						}
-					}
-				} });
-
-			if (this.input.hasAttribute("list")) {
-				this.list = "#" + this.input.getAttribute("list");
-				this.input.removeAttribute("list");
-			} else {
-				this.list = this.input.getAttribute("data-list") || o.list || [];
-			}
-
-			_.all.push(this);
+	  // console.log(binom_dist(1, 2, 0.5));
 		};
-
-		_.prototype = {
-			set list(list) {
-				if (Array.isArray(list)) {
-					this._list = list;
-				} else if (typeof list === "string" && list.indexOf(",") > -1) {
-					this._list = list.split(/\s*,\s*/);
-				} else {
-					// Element or CSS selector
-					list = $(list);
-
-					if (list && list.children) {
-						var items = [];
-						slice.apply(list.children).forEach(function (el) {
-							if (!el.disabled) {
-								var text = el.textContent.trim();
-								var value = el.value || text;
-								var label = el.label || text;
-								if (value !== "") {
-									items.push({ label: label, value: value });
-								}
-							}
-						});
-						this._list = items;
-					}
-				}
-
-				if (document.activeElement === this.input) {
-					this.evaluate();
-				}
-			},
-
-			get selected() {
-				return this.index > -1;
-			},
-
-			get opened() {
-				return !this.ul.hasAttribute("hidden");
-			},
-
-			close: function (o) {
-				if (!this.opened) {
-					return;
-				}
-
-				this.ul.setAttribute("hidden", "");
-				this.index = -1;
-
-				$.fire(this.input, "awesomplete-close", o || {});
-			},
-
-			open: function () {
-				this.ul.removeAttribute("hidden");
-
-				if (this.autoFirst && this.index === -1) {
-					this.goto(0);
-				}
-
-				$.fire(this.input, "awesomplete-open");
-			},
-
-			next: function () {
-				var count = this.ul.children.length;
-
-				this.goto(this.index < count - 1 ? this.index + 1 : -1);
-			},
-
-			previous: function () {
-				var count = this.ul.children.length;
-
-				this.goto(this.selected ? this.index - 1 : count - 1);
-			},
-
-			// Should not be used, highlights specific item without any checks!
-			goto: function (i) {
-				var lis = this.ul.children;
-
-				if (this.selected) {
-					lis[this.index].setAttribute("aria-selected", "false");
-				}
-
-				this.index = i;
-
-				if (i > -1 && lis.length > 0) {
-					lis[i].setAttribute("aria-selected", "true");
-					this.status.textContent = lis[i].textContent;
-
-					$.fire(this.input, "awesomplete-highlight", {
-						text: this.suggestions[this.index]
-					});
-				}
-			},
-
-			select: function (selected, origin) {
-				if (selected) {
-					this.index = $.siblingIndex(selected);
-				} else {
-					selected = this.ul.children[this.index];
-				}
-
-				if (selected) {
-					var suggestion = this.suggestions[this.index];
-
-					var allowed = $.fire(this.input, "awesomplete-select", {
-						text: suggestion,
-						origin: origin || selected
-					});
-
-					if (allowed) {
-						this.replace(suggestion);
-						this.close({ reason: "select" });
-						$.fire(this.input, "awesomplete-selectcomplete", {
-							text: suggestion
-						});
-					}
-				}
-			},
-
-			evaluate: function () {
-				var me = this;
-				var value = this.input.value;
-
-				if (value.length >= this.minChars && this._list.length > 0) {
-					this.index = -1;
-					// Populate list with options that match
-					this.ul.innerHTML = "";
-
-					this.suggestions = this._list.map(function (item) {
-						return new Suggestion(me.data(item, value));
-					}).filter(function (item) {
-						return me.filter(item, value);
-					}).sort(this.sort).slice(0, this.maxItems);
-
-					this.suggestions.forEach(function (text) {
-						me.ul.appendChild(me.item(text, value));
-					});
-
-					if (this.ul.children.length === 0) {
-						this.close({ reason: "nomatches" });
-					} else {
-						this.open();
-					}
-				} else {
-					this.close({ reason: "nomatches" });
-				}
-			}
-		};
-
-		// Static methods/properties
-
-		_.all = [];
-
-		_.FILTER_CONTAINS = function (text, input) {
-			return RegExp($.regExpEscape(input.trim()), "i").test(text);
-		};
-
-		_.FILTER_STARTSWITH = function (text, input) {
-			return RegExp("^" + $.regExpEscape(input.trim()), "i").test(text);
-		};
-
-		_.SORT_BYLENGTH = function (a, b) {
-			if (a.length !== b.length) {
-				return a.length - b.length;
-			}
-
-			return a < b ? -1 : 1;
-		};
-
-		_.ITEM = function (text, input) {
-			var html = input === '' ? text : text.replace(RegExp($.regExpEscape(input.trim()), "gi"), "<mark>$&</mark>");
-			return $.create("li", {
-				innerHTML: html,
-				"aria-selected": "false"
-			});
-		};
-
-		_.REPLACE = function (text) {
-			this.input.value = text.value;
-		};
-
-		_.DATA = function (item /*, input*/) {
-			return item;
-		};
-
-		// Private functions
-
-		function Suggestion(data) {
-			var o = Array.isArray(data) ? { label: data[0], value: data[1] } : typeof data === "object" && "label" in data && "value" in data ? data : { label: data, value: data };
-
-			this.label = o.label || o.value;
-			this.value = o.value;
-		}
-		Object.defineProperty(Suggestion.prototype = Object.create(String.prototype), "length", {
-			get: function () {
-				return this.label.length;
-			}
-		});
-		Suggestion.prototype.toString = Suggestion.prototype.valueOf = function () {
-			return "" + this.label;
-		};
-
-		function configure(instance, properties, o) {
-			for (var i in properties) {
-				var initial = properties[i],
-				    attrValue = instance.input.getAttribute("data-" + i.toLowerCase());
-
-				if (typeof initial === "number") {
-					instance[i] = parseInt(attrValue);
-				} else if (initial === false) {
-					// Boolean options must be false by default anyway
-					instance[i] = attrValue !== null;
-				} else if (initial instanceof Function) {
-					instance[i] = null;
-				} else {
-					instance[i] = attrValue;
-				}
-
-				if (!instance[i] && instance[i] !== 0) {
-					instance[i] = i in o ? o[i] : initial;
-				}
-			}
-		}
-
-		// Helpers
-
-		var slice = Array.prototype.slice;
-
-		function $(expr, con) {
-			return typeof expr === "string" ? (con || document).querySelector(expr) : expr || null;
-		}
-
-		function $$(expr, con) {
-			return slice.call((con || document).querySelectorAll(expr));
-		}
-
-		$.create = function (tag, o) {
-			var element = document.createElement(tag);
-
-			for (var i in o) {
-				var val = o[i];
-
-				if (i === "inside") {
-					$(val).appendChild(element);
-				} else if (i === "around") {
-					var ref = $(val);
-					ref.parentNode.insertBefore(element, ref);
-					element.appendChild(ref);
-				} else if (i in element) {
-					element[i] = val;
-				} else {
-					element.setAttribute(i, val);
-				}
-			}
-
-			return element;
-		};
-
-		$.bind = function (element, o) {
-			if (element) {
-				for (var event in o) {
-					var callback = o[event];
-
-					event.split(/\s+/).forEach(function (event) {
-						element.addEventListener(event, callback);
-					});
-				}
-			}
-		};
-
-		$.fire = function (target, type, properties) {
-			var evt = document.createEvent("HTMLEvents");
-
-			evt.initEvent(type, true, true);
-
-			for (var j in properties) {
-				evt[j] = properties[j];
-			}
-
-			return target.dispatchEvent(evt);
-		};
-
-		$.regExpEscape = function (s) {
-			return s.replace(/[-\\^$*+?.()|[\]{}]/g, "\\$&");
-		};
-
-		$.siblingIndex = function (el) {
-			/* eslint-disable no-cond-assign */
-			for (var i = 0; el = el.previousElementSibling; i++);
-			return i;
-		};
-
-		// Initialization
-
-		function init() {
-			$$("input.awesomplete").forEach(function (input) {
-				new _(input);
-			});
-		}
-
-		// Are we in a browser? Check for Document constructor
-		if (typeof Document !== "undefined") {
-			// DOM already loaded?
-			if (document.readyState !== "loading") {
-				init();
-			} else {
-				// Wait for it
-				document.addEventListener("DOMContentLoaded", init);
-			}
-		}
-
-		_.$ = $;
-		_.$$ = $$;
-
-		// Make sure to export Awesomplete on self when in a browser
-		if (typeof self !== "undefined") {
-			self.Awesomplete = _;
-		}
-
-		// Expose Awesomplete as a CJS module
-		if (typeof module === "object" && module.exports) {
-			module.exports = _;
-		}
-
-		return _;
-		})();
 
 /***/ },
-/* 193 */
+/* 187 */
 /***/ function(module, exports, __webpack_require__) {
 
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(194);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(196)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./d3.slider.css", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./d3.slider.css");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
+	module.exports = __webpack_require__(188);
 
 /***/ },
-/* 194 */
+/* 188 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(195)();
-	// imports
-
-
-	// module
-	exports.push([module.id, ".d3-slider {\n    position: relative;\n    font-family: Verdana,Arial,sans-serif;\n    font-size: 1.1em;\n    border: 1px solid #aaaaaa;\n    z-index: 2;\n}\n\n.d3-slider-horizontal {\n    height: .8em;\n}  \n\n.d3-slider-range {\n  background:#2980b9;\n  left:0px;\n  right:0px;\n  height: 0.8em;\n  position: absolute;\n}\n\n.d3-slider-range-vertical {\n  background:#2980b9;\n  left:0px;\n  right:0px;\n  position: absolute;\n  top:0;\n}\n\n.d3-slider-vertical {\n    width: .8em;\n    height: 100px;\n}      \n\n.d3-slider-handle {\n    position: absolute;\n    width: 1.2em;\n    height: 1.2em;\n    border: 1px solid #d3d3d3;\n    border-radius: 4px;\n    background: #eee;\n    background: linear-gradient(to bottom, #eee 0%, #ddd 100%);\n    z-index: 3;\n}\n\n.d3-slider-handle:hover {\n    border: 1px solid #999999;\n}\n\n.d3-slider-horizontal .d3-slider-handle {\n    top: -.3em;\n    margin-left: -.6em;\n}\n\n.d3-slider-axis {\n    position: relative;\n    z-index: 1;    \n}\n\n.d3-slider-axis-bottom {\n    top: .8em;\n}\n\n.d3-slider-axis-right {\n    left: .8em;\n}\n\n.d3-slider-axis path {\n    stroke-width: 0;\n    fill: none;\n}\n\n.d3-slider-axis line {\n    fill: none;\n    stroke: #aaa;\n    shape-rendering: crispEdges;\n}\n\n.d3-slider-axis text {\n    font-size: 11px;\n}\n\n.d3-slider-vertical .d3-slider-handle {\n    left: -.25em;\n    margin-left: 0;\n    margin-bottom: -.6em;      \n}", ""]);
-
-	// exports
-
-
-/***/ },
-/* 195 */
-/***/ function(module, exports) {
-
-	/*
-		MIT License http://www.opensource.org/licenses/mit-license.php
-		Author Tobias Koppers @sokra
-	*/
-	// css base code, injected by the css-loader
-	module.exports = function () {
-		var list = [];
-
-		// return the list of modules as css string
-		list.toString = function toString() {
-			var result = [];
-			for (var i = 0; i < this.length; i++) {
-				var item = this[i];
-				if (item[2]) {
-					result.push("@media " + item[2] + "{" + item[1] + "}");
-				} else {
-					result.push(item[1]);
-				}
-			}
-			return result.join("");
-		};
-
-		// import a list of modules into the list
-		list.i = function (modules, mediaQuery) {
-			if (typeof modules === "string") modules = [[null, modules, ""]];
-			var alreadyImportedModules = {};
-			for (var i = 0; i < this.length; i++) {
-				var id = this[i][0];
-				if (typeof id === "number") alreadyImportedModules[id] = true;
-			}
-			for (i = 0; i < modules.length; i++) {
-				var item = modules[i];
-				// skip already imported module
-				// this implementation is not 100% perfect for weird media query combinations
-				//  when a module is imported multiple times with different media queries.
-				//  I hope this will never occur (Hey this way we have smaller bundles)
-				if (typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-					if (mediaQuery && !item[2]) {
-						item[2] = mediaQuery;
-					} else if (mediaQuery) {
-						item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-					}
-					list.push(item);
-				}
-			}
-		};
-		return list;
-	};
-
-/***/ },
-/* 196 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/*
-		MIT License http://www.opensource.org/licenses/mit-license.php
-		Author Tobias Koppers @sokra
-	*/
-	var stylesInDom = {},
-		memoize = function(fn) {
-			var memo;
-			return function () {
-				if (typeof memo === "undefined") memo = fn.apply(this, arguments);
-				return memo;
-			};
-		},
-		isOldIE = memoize(function() {
-			return /msie [6-9]\b/.test(window.navigator.userAgent.toLowerCase());
-		}),
-		getHeadElement = memoize(function () {
-			return document.head || document.getElementsByTagName("head")[0];
-		}),
-		singletonElement = null,
-		singletonCounter = 0,
-		styleElementsInsertedAtTop = [];
-
-	module.exports = function(list, options) {
-		if(false) {
-			if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
-		}
-
-		options = options || {};
-		// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-		// tags it will allow on a page
-		if (typeof options.singleton === "undefined") options.singleton = isOldIE();
-
-		// By default, add <style> tags to the bottom of <head>.
-		if (typeof options.insertAt === "undefined") options.insertAt = "bottom";
-
-		var styles = listToStyles(list);
-		addStylesToDom(styles, options);
-
-		return function update(newList) {
-			var mayRemove = [];
-			for(var i = 0; i < styles.length; i++) {
-				var item = styles[i];
-				var domStyle = stylesInDom[item.id];
-				domStyle.refs--;
-				mayRemove.push(domStyle);
-			}
-			if(newList) {
-				var newStyles = listToStyles(newList);
-				addStylesToDom(newStyles, options);
-			}
-			for(var i = 0; i < mayRemove.length; i++) {
-				var domStyle = mayRemove[i];
-				if(domStyle.refs === 0) {
-					for(var j = 0; j < domStyle.parts.length; j++)
-						domStyle.parts[j]();
-					delete stylesInDom[domStyle.id];
-				}
-			}
-		};
-	}
-
-	function addStylesToDom(styles, options) {
-		for(var i = 0; i < styles.length; i++) {
-			var item = styles[i];
-			var domStyle = stylesInDom[item.id];
-			if(domStyle) {
-				domStyle.refs++;
-				for(var j = 0; j < domStyle.parts.length; j++) {
-					domStyle.parts[j](item.parts[j]);
-				}
-				for(; j < item.parts.length; j++) {
-					domStyle.parts.push(addStyle(item.parts[j], options));
-				}
-			} else {
-				var parts = [];
-				for(var j = 0; j < item.parts.length; j++) {
-					parts.push(addStyle(item.parts[j], options));
-				}
-				stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
-			}
-		}
-	}
-
-	function listToStyles(list) {
-		var styles = [];
-		var newStyles = {};
-		for(var i = 0; i < list.length; i++) {
-			var item = list[i];
-			var id = item[0];
-			var css = item[1];
-			var media = item[2];
-			var sourceMap = item[3];
-			var part = {css: css, media: media, sourceMap: sourceMap};
-			if(!newStyles[id])
-				styles.push(newStyles[id] = {id: id, parts: [part]});
-			else
-				newStyles[id].parts.push(part);
-		}
-		return styles;
-	}
-
-	function insertStyleElement(options, styleElement) {
-		var head = getHeadElement();
-		var lastStyleElementInsertedAtTop = styleElementsInsertedAtTop[styleElementsInsertedAtTop.length - 1];
-		if (options.insertAt === "top") {
-			if(!lastStyleElementInsertedAtTop) {
-				head.insertBefore(styleElement, head.firstChild);
-			} else if(lastStyleElementInsertedAtTop.nextSibling) {
-				head.insertBefore(styleElement, lastStyleElementInsertedAtTop.nextSibling);
-			} else {
-				head.appendChild(styleElement);
-			}
-			styleElementsInsertedAtTop.push(styleElement);
-		} else if (options.insertAt === "bottom") {
-			head.appendChild(styleElement);
-		} else {
-			throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
-		}
-	}
-
-	function removeStyleElement(styleElement) {
-		styleElement.parentNode.removeChild(styleElement);
-		var idx = styleElementsInsertedAtTop.indexOf(styleElement);
-		if(idx >= 0) {
-			styleElementsInsertedAtTop.splice(idx, 1);
-		}
-	}
-
-	function createStyleElement(options) {
-		var styleElement = document.createElement("style");
-		styleElement.type = "text/css";
-		insertStyleElement(options, styleElement);
-		return styleElement;
-	}
-
-	function createLinkElement(options) {
-		var linkElement = document.createElement("link");
-		linkElement.rel = "stylesheet";
-		insertStyleElement(options, linkElement);
-		return linkElement;
-	}
-
-	function addStyle(obj, options) {
-		var styleElement, update, remove;
-
-		if (options.singleton) {
-			var styleIndex = singletonCounter++;
-			styleElement = singletonElement || (singletonElement = createStyleElement(options));
-			update = applyToSingletonTag.bind(null, styleElement, styleIndex, false);
-			remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true);
-		} else if(obj.sourceMap &&
-			typeof URL === "function" &&
-			typeof URL.createObjectURL === "function" &&
-			typeof URL.revokeObjectURL === "function" &&
-			typeof Blob === "function" &&
-			typeof btoa === "function") {
-			styleElement = createLinkElement(options);
-			update = updateLink.bind(null, styleElement);
-			remove = function() {
-				removeStyleElement(styleElement);
-				if(styleElement.href)
-					URL.revokeObjectURL(styleElement.href);
-			};
-		} else {
-			styleElement = createStyleElement(options);
-			update = applyToTag.bind(null, styleElement);
-			remove = function() {
-				removeStyleElement(styleElement);
-			};
-		}
-
-		update(obj);
-
-		return function updateStyle(newObj) {
-			if(newObj) {
-				if(newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap)
-					return;
-				update(obj = newObj);
-			} else {
-				remove();
-			}
-		};
-	}
-
-	var replaceText = (function () {
-		var textStore = [];
-
-		return function (index, replacement) {
-			textStore[index] = replacement;
-			return textStore.filter(Boolean).join('\n');
-		};
-	})();
-
-	function applyToSingletonTag(styleElement, index, remove, obj) {
-		var css = remove ? "" : obj.css;
-
-		if (styleElement.styleSheet) {
-			styleElement.styleSheet.cssText = replaceText(index, css);
-		} else {
-			var cssNode = document.createTextNode(css);
-			var childNodes = styleElement.childNodes;
-			if (childNodes[index]) styleElement.removeChild(childNodes[index]);
-			if (childNodes.length) {
-				styleElement.insertBefore(cssNode, childNodes[index]);
-			} else {
-				styleElement.appendChild(cssNode);
-			}
-		}
-	}
-
-	function applyToTag(styleElement, obj) {
-		var css = obj.css;
-		var media = obj.media;
-
-		if(media) {
-			styleElement.setAttribute("media", media)
-		}
-
-		if(styleElement.styleSheet) {
-			styleElement.styleSheet.cssText = css;
-		} else {
-			while(styleElement.firstChild) {
-				styleElement.removeChild(styleElement.firstChild);
-			}
-			styleElement.appendChild(document.createTextNode(css));
-		}
-	}
-
-	function updateLink(linkElement, obj) {
-		var css = obj.css;
-		var sourceMap = obj.sourceMap;
-
-		if(sourceMap) {
-			// http://stackoverflow.com/a/26603875
-			css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
-		}
-
-		var blob = new Blob([css], { type: "text/css" });
-
-		var oldSrc = linkElement.href;
-
-		linkElement.href = URL.createObjectURL(blob);
-
-		if(oldSrc)
-			URL.revokeObjectURL(oldSrc);
-	}
-
-
-/***/ },
-/* 197 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(198);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(196)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../css-loader/index.js!./awesomplete.css", function() {
-				var newContent = require("!!./../css-loader/index.js!./awesomplete.css");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 198 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(195)();
-	// imports
-
-
-	// module
-	exports.push([module.id, "[hidden] { display: none; }\n\n.visually-hidden {\n\tposition: absolute;\n\tclip: rect(0, 0, 0, 0);\n}\n\ndiv.awesomplete {\n\tdisplay: inline-block;\n\tposition: relative;\n}\n\ndiv.awesomplete > input {\n\tdisplay: block;\n}\n\ndiv.awesomplete > ul {\n\tposition: absolute;\n\tleft: 0;\n\tz-index: 1;\n\tmin-width: 100%;\n\tbox-sizing: border-box;\n\tlist-style: none;\n\tpadding: 0;\n\tborder-radius: .3em;\n\tmargin: .2em 0 0;\n\tbackground: hsla(0,0%,100%,.9);\n\tbackground: linear-gradient(to bottom right, white, hsla(0,0%,100%,.8));\n\tborder: 1px solid rgba(0,0,0,.3);\n\tbox-shadow: .05em .2em .6em rgba(0,0,0,.2);\n\ttext-shadow: none;\n}\n\ndiv.awesomplete > ul[hidden],\ndiv.awesomplete > ul:empty {\n\tdisplay: none;\n}\n\n@supports (transform: scale(0)) {\n\tdiv.awesomplete > ul {\n\t\ttransition: .3s cubic-bezier(.4,.2,.5,1.4);\n\t\ttransform-origin: 1.43em -.43em;\n\t}\n\t\n\tdiv.awesomplete > ul[hidden],\n\tdiv.awesomplete > ul:empty {\n\t\topacity: 0;\n\t\ttransform: scale(0);\n\t\tdisplay: block;\n\t\ttransition-timing-function: ease;\n\t}\n}\n\n\t/* Pointer */\n\tdiv.awesomplete > ul:before {\n\t\tcontent: \"\";\n\t\tposition: absolute;\n\t\ttop: -.43em;\n\t\tleft: 1em;\n\t\twidth: 0; height: 0;\n\t\tpadding: .4em;\n\t\tbackground: white;\n\t\tborder: inherit;\n\t\tborder-right: 0;\n\t\tborder-bottom: 0;\n\t\t-webkit-transform: rotate(45deg);\n\t\ttransform: rotate(45deg);\n\t}\n\n\tdiv.awesomplete > ul > li {\n\t\tposition: relative;\n\t\tpadding: .2em .5em;\n\t\tcursor: pointer;\n\t}\n\t\n\tdiv.awesomplete > ul > li:hover {\n\t\tbackground: hsl(200, 40%, 80%);\n\t\tcolor: black;\n\t}\n\t\n\tdiv.awesomplete > ul > li[aria-selected=\"true\"] {\n\t\tbackground: hsl(205, 40%, 40%);\n\t\tcolor: white;\n\t}\n\t\n\t\tdiv.awesomplete mark {\n\t\t\tbackground: hsl(65, 100%, 50%);\n\t\t}\n\t\t\n\t\tdiv.awesomplete li:hover mark {\n\t\t\tbackground: hsl(68, 100%, 41%);\n\t\t}\n\t\t\n\t\tdiv.awesomplete li[aria-selected=\"true\"] mark {\n\t\t\tbackground: hsl(86, 100%, 21%);\n\t\t\tcolor: inherit;\n\t\t}", ""]);
-
-	// exports
-
-
-/***/ },
-/* 199 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var ini_sidebar = __webpack_require__(156);
-	var set_up_filters = __webpack_require__(200);
-	var set_up_search = __webpack_require__(205);
-	var set_up_reorder = __webpack_require__(206);
-	var set_sidebar_ini_view = __webpack_require__(207);
-	var make_icons = __webpack_require__(208);
-	var make_modals = __webpack_require__(210);
-	var set_up_opacity_slider = __webpack_require__(212);
-	var make_colorbar = __webpack_require__(213);
-
-	/* Represents sidebar with controls.
-	 */
-	module.exports = function sidebar(cgm) {
-
-	  var params = cgm.params;
-
-	  var sidebar = d3.select(params.root + ' .sidebar_wrapper');
-
-	  // console.log('is_expand ',params.viz.is_expand)
-
-	  if (params.viz.is_expand) {
-	    sidebar.style('display', 'none');
-	  }
-
-	  sidebar.append('div').classed('title_section', true);
-
-	  if (params.sidebar.title != null) {
-	    sidebar.select('.title_section').append('h4')
-	    // .style('margin-left', params.sidebar.title_margin_left+'px')
-	    .style('margin-left', '20px').style('margin-top', '5px').style('margin-bottom', '0px').text(params.sidebar.title);
-	  }
-
-	  sidebar.append('div').style('padding-right', '2px').classed('about_section', true);
-
-	  if (params.sidebar.about != null) {
-
-	    sidebar.select('.about_section').append('h5').classed('sidebar_text', true).style('margin-left', '7px').style('margin-top', '5px').style('margin-bottom', '2px').style('text-align', 'justify').html(params.sidebar.about);
-	  }
-
-	  sidebar.append('div').classed('icons_section', true).style('text-align', 'center');
-
-	  if (cgm.params.make_modals) {
-	    make_modals(params);
-	  }
-
-	  if (params.sidebar.icons) {
-	    make_icons(cgm, sidebar);
-	  }
-
-	  set_up_reorder(params, sidebar);
-
-	  set_up_search(sidebar, params);
-
-	  set_up_opacity_slider(sidebar);
-
-	  var possible_filter_names = _.keys(params.viz.possible_filters);
-
-	  if (possible_filter_names.indexOf('enr_score_type') > -1) {
-	    possible_filter_names.sort(function (a, b) {
-	      return a.toLowerCase().localeCompare(b.toLowerCase());
-	    });
-	  }
-
-	  cgm.slider_functions = {};
-
-	  _.each(possible_filter_names, function (inst_filter) {
-	    set_up_filters(cgm, inst_filter);
-	  });
-
-	  ini_sidebar(cgm);
-
-	  // when initializing the visualization using a view
-	  if (params.ini_view !== null) {
-
-	    set_sidebar_ini_view(params);
-
-	    params.ini_view = null;
-	  }
-
-	  make_colorbar(cgm);
-		};
-
-/***/ },
-/* 200 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var make_slider_filter = __webpack_require__(201);
-	var make_button_filter = __webpack_require__(204);
-
-	module.exports = function set_up_filters(cgm, filter_type) {
-
-	  var params = cgm.params;
-
-	  var div_filters = d3.select(params.root + ' .sidebar_wrapper').append('div').classed('div_filters', true).style('padding-left', '10px').style('padding-right', '10px');
-
-	  if (params.viz.possible_filters[filter_type] == 'numerical') {
-	    make_slider_filter(cgm, filter_type, div_filters);
-	  } else if (params.viz.possible_filters[filter_type] == 'categorical') {
-	    make_button_filter(cgm, filter_type, div_filters);
-	  }
-		};
-
-/***/ },
-/* 201 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var make_filter_title = __webpack_require__(179);
-	var run_filter_slider = __webpack_require__(202);
-	var get_filter_default_state = __webpack_require__(5);
-	var get_subset_views = __webpack_require__(12);
-
-	d3.slider = __webpack_require__(190);
-
-	module.exports = function make_slider_filter(cgm, filter_type, div_filters) {
-
-	  var params = cgm.params;
-	  var inst_view = {};
-
-	  var possible_filters = _.keys(params.viz.possible_filters);
-
-	  _.each(possible_filters, function (tmp_filter) {
-	    if (tmp_filter != filter_type) {
-	      var default_state = get_filter_default_state(params.viz.filter_data, tmp_filter);
-	      inst_view[tmp_filter] = default_state;
-	    }
-	  });
-
-	  var filter_title = make_filter_title(params, filter_type);
-
-	  div_filters.append('div').classed('title_' + filter_type, true).classed('sidebar_text', true).classed('slider_description', true).style('margin-top', '5px').style('margin-bottom', '3px').text(filter_title.text + filter_title.state + filter_title.suffix);
-
-	  div_filters.append('div').classed('slider_' + filter_type, true).classed('slider', true).attr('current_state', filter_title.state);
-
-	  var views = params.network_data.views;
-
-	  var available_views = get_subset_views(params, views, inst_view);
-
-	  // sort available views by filter_type value
-	  available_views = available_views.sort(function (a, b) {
-	    return b[filter_type] - a[filter_type];
-	  });
-
-	  var inst_max = available_views.length - 1;
-
-	  var ini_value = 0;
-	  // change the starting position of the slider if necessary
-	  if (params.requested_view !== null && filter_type in params.requested_view) {
-
-	    var inst_filter_value = params.requested_view[filter_type];
-
-	    if (inst_filter_value != 'all') {
-
-	      var found_value = available_views.map(function (e) {
-	        return e[filter_type];
-	      }).indexOf(inst_filter_value);
-
-	      if (found_value > 0) {
-	        ini_value = found_value;
-	      }
-	    }
-	  }
-
-	  // Filter Slider
-	  //////////////////////////////////////////////////////////////////////
-	  var slide_filter_fun = d3.slider().value(ini_value).min(0).max(inst_max).step(1).on('slide', function (evt, value) {
-	    run_filter_slider_db(cgm, filter_type, available_views, value);
-	  }).on('slideend', function (evt, value) {
-	    run_filter_slider_db(cgm, filter_type, available_views, value);
-	  });
-
-	  // save slider function in order to reset value later
-	  cgm.slider_functions[filter_type] = slide_filter_fun;
-
-	  d3.select(cgm.params.root + ' .slider_' + filter_type).call(slide_filter_fun);
-
-	  //////////////////////////////////////////////////////////////////////
-
-	  var run_filter_slider_db = _.debounce(run_filter_slider, 800);
-		};
-
-/***/ },
-/* 202 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var update_viz_with_view = __webpack_require__(141);
-	var reset_other_filter_sliders = __webpack_require__(178);
-	var get_current_orders = __webpack_require__(203);
-	var make_requested_view = __webpack_require__(14);
-
-	module.exports = function run_filter_slider(cgm, filter_type, available_views, inst_index) {
-
-	  // only update if not running update
-	  if (d3.select(cgm.params.viz.viz_svg).classed('running_update') === false) {
-
-	    var params = cgm.params;
-
-	    // get value
-	    var inst_state = available_views[inst_index][filter_type];
-
-	    reset_other_filter_sliders(cgm, filter_type, inst_state);
-
-	    params = get_current_orders(params);
-
-	    var requested_view = {};
-	    requested_view[filter_type] = inst_state;
-
-	    requested_view = make_requested_view(params, requested_view);
-
-	    if (_.has(available_views[0], 'enr_score_type')) {
-	      var enr_state = d3.select(params.root + ' .toggle_enr_score_type').attr('current_state');
-
-	      requested_view.enr_score_type = enr_state;
-	    }
-
-	    update_viz_with_view(cgm, requested_view);
-	  }
-		};
-
-/***/ },
-/* 203 */
-/***/ function(module, exports) {
-
-	module.exports = function get_current_orders(params) {
-
-	  // get current orders 
-	  var other_rc;
-	  _.each(['row', 'col'], function (inst_rc) {
-
-	    if (inst_rc === 'row') {
-	      other_rc = 'col';
-	    } else {
-	      other_rc = 'row';
-	    }
-
-	    if (d3.select(params.root + ' .toggle_' + other_rc + '_order .active').empty() === false) {
-
-	      params.viz.inst_order[inst_rc] = d3.select(params.root + ' .toggle_' + other_rc + '_order').select('.active').attr('name');
-	    } else {
-
-	      // default to cluster ordering 
-	      params.viz.inst_order[inst_rc] = 'clust';
-	    }
-	  });
-
-	  return params;
-	};
-
-/***/ },
-/* 204 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// var update_network = require('../network/update_network');
-	var make_requested_view = __webpack_require__(14);
-
-	module.exports = function make_button_filter(config, params, filter_type, div_filters) {
-
-	  /*
-	  Enrichr specific code
-	  */
-
-	  var buttons = div_filters.append('div').classed('categorical_filter', true).classed('toggle_' + filter_type, true).classed('btn-group-vertical', true).style('width', '100%').style('margin-top', '10px').attr('current_state', 'combined_score');
-
-	  var filter_options = params.viz.filter_data[filter_type];
-
-	  var button_dict = {
-	    'combined_score': 'Combined Score',
-	    'pval': 'P-Value',
-	    'zscore': 'Z-score'
-	  };
-
-	  buttons.selectAll('button').data(filter_options).enter().append('button').attr('type', 'button').classed('btn', true).classed('btn-primary', true).classed('.filter_button', true).classed('active', function (d) {
-	    var is_active = false;
-	    if (d == 'combined_score') {
-	      is_active = true;
-	    }
-	    return is_active;
-	  }).attr('name', function (d) {
-	    return d;
-	  }).html(function (d) {
-	    return button_dict[d];
-	  });
-
-	  $(params.root + ' .categorical_filter .btn').off().click(function () {
-
-	    d3.selectAll(params.root + ' .categorical_filter .btn').classed('active', false);
-
-	    d3.select(this).classed('active', true);
-
-	    var inst_state = d3.select(this).attr('name');
-
-	    var requested_view = { 'enr_score_type': inst_state };
-
-	    make_requested_view(params, requested_view);
-
-	    d3.select(params.root + ' .toggle_enr_score_type').attr('current_state', inst_state);
-	  });
-		};
-
-/***/ },
-/* 205 */
-/***/ function(module, exports) {
-
-	module.exports = function set_up_search(sidebar, params) {
-
-	  var search_container = sidebar.append('div')
-	  // .classed('row',true)
-	  .classed('gene_search_container', true).style('padding-left', '10px').style('padding-right', '10px').style('margin-top', '10px');
-
-	  search_container.append('input').classed('form-control', true).classed('gene_search_box', true).classed('sidebar_text', true).attr('type', 'text').attr('placeholder', params.sidebar.row_search.placeholder).style('height', params.sidebar.row_search.box.height + 'px').style('margin-top', '10px');
-
-	  search_container.append('div').classed('gene_search_button', true).style('margin-top', '5px').attr('data-toggle', 'buttons').append('button').classed('sidebar_text', true).html('Search').attr('type', 'button').classed('btn', true).classed('btn-primary', true).classed('submit_gene_button', true).style('width', '100%').style('font-size', '14px');
-		};
-
-/***/ },
-/* 206 */
-/***/ function(module, exports) {
-
-	// var get_cat_title = require('../categories/get_cat_title');
-
-	module.exports = function set_up_reorder(params, sidebar) {
-
-	  var button_dict;
-	  var tmp_orders;
-	  var rc_dict = { 'row': 'Row', 'col': 'Column', 'both': '' };
-	  var is_active;
-	  var inst_reorder;
-	  // var all_cats;
-	  // var inst_order_label;
-
-	  var reorder_section = sidebar.append('div').style('padding-left', '10px').style('padding-right', '10px').classed('reorder_section', true);
-
-	  var reorder_types;
-	  if (params.sim_mat) {
-	    reorder_types = ['both'];
-	  } else {
-	    reorder_types = ['row', 'col'];
-	  }
-
-	  _.each(reorder_types, function (inst_rc) {
-
-	    button_dict = {
-	      'clust': 'Cluster',
-	      'rank': 'Rank by Sum',
-	      'rankvar': 'Rank by Variance',
-	      'ini': 'Initial Order',
-	      'alpha': 'Alphabetically'
-	    };
-
-	    var other_rc;
-	    if (inst_rc === 'row') {
-	      other_rc = 'col';
-	    } else {
-	      other_rc = 'row';
-	    }
-
-	    tmp_orders = Object.keys(params.matrix.orders);
-
-	    var possible_orders = [];
-
-	    _.each(tmp_orders, function (inst_name) {
-
-	      if (inst_name.indexOf(other_rc) > -1) {
-	        inst_name = inst_name.replace('_row', '').replace('_col', '');
-
-	        if (inst_name.indexOf('cat_') < 0) {
-	          possible_orders.push(inst_name);
-	        }
-	      }
-	    });
-
-	    // specific to Enrichr
-	    if (_.keys(params.viz.filter_data).indexOf('enr_score_type') > -1) {
-	      possible_orders = ['clust', 'rank'];
-	    }
-
-	    possible_orders = _.uniq(possible_orders);
-
-	    possible_orders = possible_orders.sort();
-
-	    var reorder_text;
-	    if (inst_rc != 'both') {
-	      reorder_text = ' Order';
-	    } else {
-	      reorder_text = 'Reorder Matrix';
-	    }
-
-	    reorder_section.append('div').classed('sidebar_button_text', true).style('clear', 'both').style('margin-top', '10px').html(rc_dict[inst_rc] + reorder_text);
-
-	    inst_reorder = reorder_section.append('div').classed('btn-group-vertical', true).style('width', '100%').classed('toggle_' + inst_rc + '_order', true).attr('role', 'group');
-
-	    inst_reorder.selectAll('.button').data(possible_orders).enter().append('button').attr('type', 'button').classed('btn', true).classed('btn-primary', true).classed('sidebar_button_text', true).classed('active', function (d) {
-	      is_active = false;
-	      if (d == params.viz.inst_order[other_rc]) {
-	        is_active = true;
-	      }
-	      return is_active;
-	    }).attr('name', function (d) {
-	      return d;
-	    }).html(function (d) {
-	      return button_dict[d];
-	    });
-	  });
-		};
-
-/***/ },
-/* 207 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var make_filter_title = __webpack_require__(179);
-
-	module.exports = function set_sidebar_ini_view(params) {
-
-	  _.each(_.keys(params.ini_view), function (inst_filter) {
-
-	    // initialize filter slider using ini_view
-	    var inst_value = params.ini_view[inst_filter];
-
-	    var filter_type = params.viz.possible_filters[inst_filter];
-
-	    if (filter_type === 'numerical') {
-
-	      if (inst_value != 'all') {
-	        inst_value = parseInt(inst_value, 10);
-	      }
-
-	      if (params.viz.filter_data[inst_filter].indexOf(inst_value) <= -1) {
-	        inst_value = 'all';
-	      }
-
-	      var filter_title = make_filter_title(params, inst_filter);
-
-	      d3.select(params.root + ' .title_' + inst_filter).text(filter_title.text + inst_value + filter_title.suffix);
-
-	      d3.select(params.root + ' .slider_' + inst_filter).attr('current_state', inst_value);
-	    } else {
-
-	      // set up button initialization
-
-	    }
-	  });
-		};
-
-/***/ },
-/* 208 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var file_saver = __webpack_require__(181);
-	var two_translate_zoom = __webpack_require__(80);
-	var deactivate_cropping = __webpack_require__(185);
-	var save_svg_png = __webpack_require__(209);
-
-	module.exports = function make_icons(cgm, sidebar) {
-
-	  var params = cgm.params;
-	  // var saveSvgAsPng = save_svg_png();
-	  var saveAs = file_saver();
-
-	  var row = sidebar.select('.icons_section').style('margin-top', '7px').style('margin-left', '5%');
-
-	  var width_pct = '22%';
-	  var padding_left = '0px';
-	  var padding_right = '0px';
-
-	  row.append('div').classed('clust_icon', true).style('float', 'left').style('width', width_pct).style('padding-left', padding_left).style('padding-right', padding_right).append('i').classed('fa', true).classed('fa-share-alt', true).classed('icon_buttons', true).style('font-size', '25px').on('click', function () {
-	    $(params.root + ' .share_info').modal('toggle');
-	    $('.share_url').val(window.location.href);
-	  }).classed('sidebar_tooltip', true).append('span').classed('sidebar_tooltip_text', true).html('Share').style('left', '0%');
-
-	  row.append('div').classed('clust_icon', true).style('float', 'left').style('width', width_pct).style('padding-left', padding_left).style('padding-right', padding_right).append('i').classed('fa', true).classed('fa-camera', true).classed('icon_buttons', true).style('font-size', '25px').on('click', function () {
-
-	    $(params.root + ' .picture_info').modal('toggle');
-	  }).classed('sidebar_tooltip', true).append('span').classed('sidebar_tooltip_text', true).html('Take snapshot').style('left', '-100%');
-
-	  row.append('div').classed('clust_icon', true).style('float', 'left').style('width', width_pct).style('padding-left', padding_left).style('padding-right', padding_right).append('i').classed('fa', true).classed('fa fa-cloud-download', true).classed('icon_buttons', true).style('font-size', '25px').on('click', function () {
-
-	    cgm.save_matrix();
-	  }).classed('sidebar_tooltip', true).append('span').classed('sidebar_tooltip_text', true).html('Download matrix').style('left', '-200%');
-
-	  row.append('div').classed('clust_icon', true).style('float', 'left').style('width', width_pct).style('padding-left', padding_left).style('padding-right', '-5px').append('i').classed('fa', true).classed('fa-crop', true).classed('crop_button', true).classed('icon_buttons', true).style('font-size', '25px').on('click', function () {
-
-	    // do nothing if dendro filtering has been done
-	    if (cgm.params.dendro_filter.row === false && cgm.params.dendro_filter.col === false) {
-
-	      var is_crop = d3.select(this).classed('fa-crop');
-
-	      var is_undo = d3.select(this).classed('fa-undo');
-
-	      // press crop button (can be active/incative)
-	      if (is_crop) {
-
-	        // keep list of names to return to state
-	        cgm.params.crop_filter_nodes = {};
-	        cgm.params.crop_filter_nodes.row_nodes = cgm.params.network_data.row_nodes;
-	        cgm.params.crop_filter_nodes.col_nodes = cgm.params.network_data.col_nodes;
-
-	        cgm.brush_crop_matrix();
-
-	        if (d3.select(this).classed('active_cropping') === false) {
-
-	          // set active_cropping (button turns red)
-	          d3.select(this).classed('active_cropping', true).style('color', 'red');
-	        } else {
-	          // deactivate cropping (button turns blue)
-	          d3.select(this).classed('active_cropping', false).style('color', '#337ab7');
-
-	          deactivate_cropping(cgm);
-	        }
-	      }
-
-	      // press undo button
-	      if (is_undo) {
-
-	        d3.select(params.root + ' .crop_button').style('color', '#337ab7').classed('fa-crop', true).classed('fa-undo', false);
-
-	        // cgm.filter_viz_using_names(cgm.params.crop_filter_nodes);
-	        cgm.filter_viz_using_nodes(cgm.params.crop_filter_nodes);
-
-	        // show dendro crop buttons after brush-cropping has been undone
-	        d3.select(cgm.params.root + ' .col_dendro_icons_container').style('display', 'block');
-	        d3.select(cgm.params.root + ' .row_dendro_icons_container').style('display', 'block');
-	      }
-
-	      two_translate_zoom(cgm, 0, 0, 1);
-	    }
-	  }).classed('sidebar_tooltip', true).append('span').classed('sidebar_tooltip_text', true).html('Crop matrix').style('left', '-400%');
-
-	  // save svg: example from: http://bl.ocks.org/pgiraud/8955139#profile.json
-	  ////////////////////////////////////////////////////////////////////////////
-	  function save_clust_svg() {
-
-	    d3.select(params.root + ' .expand_button').style('opacity', 0);
-
-	    var html = d3.select(params.root + " svg").attr("title", "test2").attr("version", 1.1).attr("xmlns", "http://www.w3.org/2000/svg").node().parentNode.innerHTML;
-
-	    var blob = new Blob([html], { type: "image/svg+xml" });
-
-	    saveAs(blob, "clustergrammer.svg");
-
-	    d3.select(params.root + ' .expand_button').style('opacity', 0.4);
-	  }
-
-	  d3.select(params.root + ' .download_buttons').append('p').append('a').html('Download SVG').on('click', function () {
-	    save_clust_svg();
-	  });
-
-	  var svg_id = 'svg_' + params.root.replace('#', '');
-
-	  // save as PNG
-	  /////////////////////////////////////////
-	  d3.select(params.root + ' .download_buttons').append('p').append('a').html('Download PNG').on('click', function () {
-	    d3.select(params.root + ' .expand_button').style('opacity', 0);
-	    // saveSvgAsPng(document.getElementById(svg_id), "clustergrammer.png");
-	    save_svg_png.saveSvgAsPng(document.getElementById(svg_id), "clustergrammer.png");
-	    d3.select(params.root + ' .expand_button').style('opacity', 0.4);
-	  });
-		};
-
-/***/ },
-/* 209 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_RESULT__;(function () {
-	  var out$ = typeof exports != 'undefined' && exports || "function" != 'undefined' && {} || this;
-
-	  var doctype = '<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [<!ENTITY nbsp "&#160;">]>';
-
-	  function isElement(obj) {
-	    return obj instanceof HTMLElement || obj instanceof SVGElement;
-	  }
-
-	  function requireDomNode(el) {
-	    if (!isElement(el)) {
-	      throw new Error('an HTMLElement or SVGElement is required; got ' + el);
-	    }
-	  }
-
-	  function isExternal(url) {
-	    return url && url.lastIndexOf('http', 0) == 0 && url.lastIndexOf(window.location.host) == -1;
-	  }
-
-	  function inlineImages(el, callback) {
-	    requireDomNode(el);
-
-	    var images = el.querySelectorAll('image'),
-	        left = images.length,
-	        checkDone = function () {
-	      if (left === 0) {
-	        callback();
-	      }
-	    };
-
-	    checkDone();
-	    for (var i = 0; i < images.length; i++) {
-	      (function (image) {
-	        var href = image.getAttributeNS("http://www.w3.org/1999/xlink", "href");
-	        if (href) {
-	          if (isExternal(href.value)) {
-	            console.warn("Cannot render embedded images linking to external hosts: " + href.value);
-	            return;
-	          }
-	        }
-	        var canvas = document.createElement('canvas');
-	        var ctx = canvas.getContext('2d');
-	        var img = new Image();
-	        img.crossOrigin = "anonymous";
-	        href = href || image.getAttribute('href');
-	        if (href) {
-	          img.src = href;
-	          img.onload = function () {
-	            canvas.width = img.width;
-	            canvas.height = img.height;
-	            ctx.drawImage(img, 0, 0);
-	            image.setAttributeNS("http://www.w3.org/1999/xlink", "href", canvas.toDataURL('image/png'));
-	            left--;
-	            checkDone();
-	          };
-	          img.onerror = function () {
-	            console.log("Could not load " + href);
-	            left--;
-	            checkDone();
-	          };
-	        } else {
-	          left--;
-	          checkDone();
-	        }
-	      })(images[i]);
-	    }
-	  }
-
-	  function styles(el, options, cssLoadedCallback) {
-	    var selectorRemap = options.selectorRemap;
-	    var modifyStyle = options.modifyStyle;
-	    var css = "";
-	    // each font that has extranl link is saved into queue, and processed
-	    // asynchronously
-	    var fontsQueue = [];
-	    var sheets = document.styleSheets;
-	    for (var i = 0; i < sheets.length; i++) {
-	      try {
-	        var rules = sheets[i].cssRules;
-	      } catch (e) {
-	        console.warn("Stylesheet could not be loaded: " + sheets[i].href);
-	        continue;
-	      }
-
-	      if (rules != null) {
-	        for (var j = 0, match; j < rules.length; j++, match = null) {
-	          var rule = rules[j];
-	          if (typeof rule.style != "undefined") {
-	            var selectorText;
-
-	            try {
-	              selectorText = rule.selectorText;
-	            } catch (err) {
-	              console.warn('The following CSS rule has an invalid selector: "' + rule + '"', err);
-	            }
-
-	            try {
-	              if (selectorText) {
-	                match = el.querySelector(selectorText);
-	              }
-	            } catch (err) {
-	              console.warn('Invalid CSS selector "' + selectorText + '"', err);
-	            }
-
-	            if (match) {
-	              var selector = selectorRemap ? selectorRemap(rule.selectorText) : rule.selectorText;
-	              var cssText = modifyStyle ? modifyStyle(rule.style.cssText) : rule.style.cssText;
-	              css += selector + " { " + cssText + " }\n";
-	            } else if (rule.cssText.match(/^@font-face/)) {
-	              // below we are trying to find matches to external link. E.g.
-	              // @font-face {
-	              //   // ...
-	              //   src: local('Abel'), url(https://fonts.gstatic.com/s/abel/v6/UzN-iejR1VoXU2Oc-7LsbvesZW2xOQ-xsNqO47m55DA.woff2);
-	              // }
-	              //
-	              // This regex will save extrnal link into first capture group
-	              var fontUrlRegexp = /url\(["']?(.+?)["']?\)/;
-	              // TODO: This needs to be changed to support multiple url declarations per font.
-	              var fontUrlMatch = rule.cssText.match(fontUrlRegexp);
-
-	              var externalFontUrl = fontUrlMatch && fontUrlMatch[1] || '';
-	              var fontUrlIsDataURI = externalFontUrl.match(/^data:/);
-	              if (fontUrlIsDataURI) {
-	                // We should ignore data uri - they are already embedded
-	                externalFontUrl = '';
-	              }
-
-	              if (externalFontUrl) {
-	                // okay, we are lucky. We can fetch this font later
-	                fontsQueue.push({
-	                  text: rule.cssText,
-	                  // Pass url regex, so that once font is downladed, we can run `replace()` on it
-	                  fontUrlRegexp: fontUrlRegexp,
-	                  format: getFontMimeTypeFromUrl(externalFontUrl),
-	                  url: externalFontUrl
-	                });
-	              } else {
-	                // otherwise, use previous logic
-	                css += rule.cssText + '\n';
-	              }
-	            }
-	          }
-	        }
-	      }
-	    }
-
-	    // Now all css is processed, it's time to handle scheduled fonts
-	    processFontQueue(fontsQueue);
-
-	    function getFontMimeTypeFromUrl(fontUrl) {
-	      var supportedFormats = {
-	        'woff2': 'font/woff2',
-	        'woff': 'font/woff',
-	        'otf': 'application/x-font-opentype',
-	        'ttf': 'application/x-font-ttf',
-	        'eot': 'application/vnd.ms-fontobject',
-	        'sfnt': 'application/font-sfnt',
-	        'svg': 'image/svg+xml'
-	      };
-	      var extensions = Object.keys(supportedFormats);
-	      for (var i = 0; i < extensions.length; ++i) {
-	        var extension = extensions[i];
-	        // TODO: This is not bullet proof, it needs to handle edge cases...
-	        if (fontUrl.indexOf('.' + extension) > 0) {
-	          return supportedFormats[extension];
-	        }
-	      }
-
-	      // If you see this error message, you probably need to update code above.
-	      console.error('Unknown font format for ' + fontUrl + '; Fonts may not be working correctly');
-	      return 'application/octet-stream';
-	    }
-
-	    function processFontQueue(queue) {
-	      if (queue.length > 0) {
-	        // load fonts one by one until we have anything in the queue:
-	        var font = queue.pop();
-	        processNext(font);
-	      } else {
-	        // no more fonts to load.
-	        cssLoadedCallback(css);
-	      }
-
-	      function processNext(font) {
-	        // TODO: This could benefit from caching.
-	        var oReq = new XMLHttpRequest();
-	        oReq.addEventListener('load', fontLoaded);
-	        oReq.addEventListener('error', transferFailed);
-	        oReq.addEventListener('abort', transferFailed);
-	        oReq.open('GET', font.url);
-	        oReq.responseType = 'arraybuffer';
-	        oReq.send();
-
-	        function fontLoaded() {
-	          // TODO: it may be also worth to wait until fonts are fully loaded before
-	          // attempting to rasterize them. (e.g. use https://developer.mozilla.org/en-US/docs/Web/API/FontFaceSet )
-	          var fontBits = oReq.response;
-	          var fontInBase64 = arrayBufferToBase64(fontBits);
-	          updateFontStyle(font, fontInBase64);
-	        }
-
-	        function transferFailed(e) {
-	          console.warn('Failed to load font from: ' + font.url);
-	          console.warn(e);
-	          css += font.text + '\n';
-	          processFontQueue();
-	        }
-
-	        function updateFontStyle(font, fontInBase64) {
-	          var dataUrl = 'url("data:' + font.format + ';base64,' + fontInBase64 + '")';
-	          css += font.text.replace(font.fontUrlRegexp, dataUrl) + '\n';
-
-	          // schedule next font download on next tick.
-	          setTimeout(function () {
-	            processFontQueue(queue);
-	          }, 0);
-	        }
-	      }
-	    }
-
-	    function arrayBufferToBase64(buffer) {
-	      var binary = '';
-	      var bytes = new Uint8Array(buffer);
-	      var len = bytes.byteLength;
-
-	      for (var i = 0; i < len; i++) {
-	        binary += String.fromCharCode(bytes[i]);
-	      }
-
-	      return window.btoa(binary);
-	    }
-	  }
-
-	  function getDimension(el, clone, dim) {
-	    var v = el.viewBox && el.viewBox.baseVal && el.viewBox.baseVal[dim] || clone.getAttribute(dim) !== null && !clone.getAttribute(dim).match(/%$/) && parseInt(clone.getAttribute(dim)) || el.getBoundingClientRect()[dim] || parseInt(clone.style[dim]) || parseInt(window.getComputedStyle(el).getPropertyValue(dim));
-	    return typeof v === 'undefined' || v === null || isNaN(parseFloat(v)) ? 0 : v;
-	  }
-
-	  function reEncode(data) {
-	    data = encodeURIComponent(data);
-	    data = data.replace(/%([0-9A-F]{2})/g, function (match, p1) {
-	      var c = String.fromCharCode('0x' + p1);
-	      return c === '%' ? '%25' : c;
-	    });
-	    return decodeURIComponent(data);
-	  }
-
-	  out$.prepareSvg = function (el, options, cb) {
-	    requireDomNode(el);
-
-	    options = options || {};
-	    options.scale = options.scale || 1;
-	    options.responsive = options.responsive || false;
-	    var xmlns = "http://www.w3.org/2000/xmlns/";
-
-	    inlineImages(el, function () {
-	      var outer = document.createElement("div");
-	      var clone = el.cloneNode(true);
-	      var width, height;
-	      if (el.tagName == 'svg') {
-	        width = options.width || getDimension(el, clone, 'width');
-	        height = options.height || getDimension(el, clone, 'height');
-	      } else if (el.getBBox) {
-	        var box = el.getBBox();
-	        width = box.x + box.width;
-	        height = box.y + box.height;
-	        clone.setAttribute('transform', clone.getAttribute('transform').replace(/translate\(.*?\)/, ''));
-
-	        var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-	        svg.appendChild(clone);
-	        clone = svg;
-	      } else {
-	        console.error('Attempted to render non-SVG element', el);
-	        return;
-	      }
-
-	      clone.setAttribute("version", "1.1");
-	      if (!clone.getAttribute('xmlns')) {
-	        clone.setAttributeNS(xmlns, "xmlns", "http://www.w3.org/2000/svg");
-	      }
-	      if (!clone.getAttribute('xmlns:xlink')) {
-	        clone.setAttributeNS(xmlns, "xmlns:xlink", "http://www.w3.org/1999/xlink");
-	      }
-
-	      if (options.responsive) {
-	        clone.removeAttribute('width');
-	        clone.removeAttribute('height');
-	        clone.setAttribute('preserveAspectRatio', 'xMinYMin meet');
-	      } else {
-	        clone.setAttribute("width", width * options.scale);
-	        clone.setAttribute("height", height * options.scale);
-	      }
-
-	      clone.setAttribute("viewBox", [options.left || 0, options.top || 0, width, height].join(" "));
-
-	      var fos = clone.querySelectorAll('foreignObject > *');
-	      for (var i = 0; i < fos.length; i++) {
-	        if (!fos[i].getAttribute('xmlns')) {
-	          fos[i].setAttributeNS(xmlns, "xmlns", "http://www.w3.org/1999/xhtml");
-	        }
-	      }
-
-	      outer.appendChild(clone);
-
-	      // In case of custom fonts we need to fetch font first, and then inline
-	      // its url into data-uri format (encode as base64). That's why style
-	      // processing is done asynchonously. Once all inlining is finshed
-	      // cssLoadedCallback() is called.
-	      styles(el, options, cssLoadedCallback);
-
-	      function cssLoadedCallback(css) {
-	        // here all fonts are inlined, so that we can render them properly.
-	        var s = document.createElement('style');
-	        s.setAttribute('type', 'text/css');
-	        s.innerHTML = "<![CDATA[\n" + css + "\n]]>";
-	        var defs = document.createElement('defs');
-	        defs.appendChild(s);
-	        clone.insertBefore(defs, clone.firstChild);
-
-	        if (cb) {
-	          var outHtml = outer.innerHTML;
-	          outHtml = outHtml.replace(/NS\d+:href/gi, 'xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href');
-	          cb(outHtml, width, height);
-	        }
-	      }
-	    });
-	  };
-
-	  out$.svgAsDataUri = function (el, options, cb) {
-	    out$.prepareSvg(el, options, function (svg) {
-	      var uri = 'data:image/svg+xml;base64,' + window.btoa(reEncode(doctype + svg));
-	      if (cb) {
-	        cb(uri);
-	      }
-	    });
-	  };
-
-	  out$.svgAsPngUri = function (el, options, cb) {
-	    requireDomNode(el);
-
-	    options = options || {};
-	    options.encoderType = options.encoderType || 'image/png';
-	    options.encoderOptions = options.encoderOptions || 0.8;
-
-	    var convertToPng = function (src, w, h) {
-	      var canvas = document.createElement('canvas');
-	      var context = canvas.getContext('2d');
-	      canvas.width = w;
-	      canvas.height = h;
-
-	      if (options.canvg) {
-	        options.canvg(canvas, src);
-	      } else {
-	        context.drawImage(src, 0, 0);
-	      }
-
-	      if (options.backgroundColor) {
-	        context.globalCompositeOperation = 'destination-over';
-	        context.fillStyle = options.backgroundColor;
-	        context.fillRect(0, 0, canvas.width, canvas.height);
-	      }
-
-	      var png;
-	      try {
-	        png = canvas.toDataURL(options.encoderType, options.encoderOptions);
-	      } catch (e) {
-	        if (typeof SecurityError !== 'undefined' && e instanceof SecurityError || e.name == "SecurityError") {
-	          console.error("Rendered SVG images cannot be downloaded in this browser.");
-	          return;
-	        } else {
-	          throw e;
-	        }
-	      }
-	      cb(png);
-	    };
-
-	    if (options.canvg) {
-	      out$.prepareSvg(el, options, convertToPng);
-	    } else {
-	      out$.svgAsDataUri(el, options, function (uri) {
-	        var image = new Image();
-
-	        image.onload = function () {
-	          convertToPng(image, image.width, image.height);
-	        };
-
-	        image.onerror = function () {
-	          console.error('There was an error loading the data URI as an image on the following SVG\n', window.atob(uri.slice(26)), '\n', "Open the following link to see browser's diagnosis\n", uri);
-	        };
-
-	        image.src = uri;
-	      });
-	    }
-	  };
-
-	  out$.download = function (name, uri) {
-	    if (navigator.msSaveOrOpenBlob) {
-	      navigator.msSaveOrOpenBlob(uriToBlob(uri), name);
-	    } else {
-	      var saveLink = document.createElement('a');
-	      var downloadSupported = 'download' in saveLink;
-	      if (downloadSupported) {
-	        saveLink.download = name;
-	        saveLink.href = uri;
-	        saveLink.style.display = 'none';
-	        document.body.appendChild(saveLink);
-	        saveLink.click();
-	        document.body.removeChild(saveLink);
-	      } else {
-	        window.open(uri, '_temp', 'menubar=no,toolbar=no,status=no');
-	      }
-	    }
-	  };
-
-	  function uriToBlob(uri) {
-	    var byteString = window.atob(uri.split(',')[1]);
-	    var mimeString = uri.split(',')[0].split(':')[1].split(';')[0];
-	    var buffer = new ArrayBuffer(byteString.length);
-	    var intArray = new Uint8Array(buffer);
-	    for (var i = 0; i < byteString.length; i++) {
-	      intArray[i] = byteString.charCodeAt(i);
-	    }
-	    return new Blob([buffer], { type: mimeString });
-	  }
-
-	  out$.saveSvg = function (el, name, options) {
-	    requireDomNode(el);
-
-	    options = options || {};
-	    out$.svgAsDataUri(el, options, function (uri) {
-	      out$.download(name, uri);
-	    });
-	  };
-
-	  out$.saveSvgAsPng = function (el, name, options) {
-	    requireDomNode(el);
-
-	    options = options || {};
-	    out$.svgAsPngUri(el, options, function (uri) {
-	      out$.download(name, uri);
-	    });
-	  };
-
-	  // if define is defined create as an AMD module
-	  if (true) {
-	    !(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
-	      return out$;
-	    }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	  }
-		})();
-
-/***/ },
-/* 210 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var make_modal_skeleton = __webpack_require__(211);
-
-	module.exports = function ini_modals(params) {
-
-	  // share modal
-	  ///////////////////////////////////////
-	  var share_modal = make_modal_skeleton(params, 'share_info');
-
-	  share_modal.header.append('a').attr('target', '_blank').attr('href', '/clustergrammer/');
-
-	  share_modal.header.append('h4').classed('modal-title', true).html('Share the visualization using the current URL:');
-
-	  share_modal.body.append('input').classed('bootstrap_highlight', true).classed('share_url', true);
-
-	  // picture modal
-	  ///////////////////////////////////////
-	  var screenshot_modal = make_modal_skeleton(params, 'picture_info');
-
-	  screenshot_modal.header.append('h4').classed('modal-title', true).html('Save a snapshot of the visualization');
-
-	  screenshot_modal.body.append('div').classed('download_buttons', true);
-
-	  // dendro modal
-	  ///////////////////////////////////////
-	  var dendro_modal = make_modal_skeleton(params, 'dendro_info');
-
-	  dendro_modal.header.append('h4').classed('modal-title', true).html('Cluster Information');
-
-	  dendro_modal.body.append('g').classed('cluster_info_container', true);
-
-	  dendro_modal.body.append('div').classed('dendro_text', true).append('input').classed('bootstrap_highlight', true).classed('current_names', true).style('width', '100%');
-		};
-
-/***/ },
-/* 211 */
-/***/ function(module, exports) {
-
-	module.exports = function make_modal_skeleton(params, modal_class) {
-
-	  var modal_skeleton = {};
-
-	  var modal = d3.select(params.root).append('div').classed('modal', true).classed('fade', true).classed(modal_class, true).attr('role', 'dialog');
-
-	  var modal_dialog = modal.append('div').classed('modal-dialog', true);
-
-	  var modal_content = modal_dialog.append('div').classed('modal-content', true);
-
-	  modal_skeleton.header = modal_content.append('div').classed('modal-header', true);
-
-	  modal_skeleton.header.append('button').attr('type', 'button').classed('close', true).attr('data-dismiss', 'modal').html('&times;');
-
-	  modal_skeleton.body = modal_content.append('div').classed('modal-body', true);
-
-	  return modal_skeleton;
-		};
-
-/***/ },
-/* 212 */
-/***/ function(module, exports) {
-
-	module.exports = function set_up_opacity_slider(sidebar) {
-
-	  var slider_container = sidebar.append('div').classed('opacity_slider_container', true).style('margin-top', '5px').style('padding-left', '10px').style('padding-right', '10px');
-
-	  slider_container.append('div').classed('sidebar_text', true).classed('opacity_slider_text', true).style('margin-bottom', '3px').text('Opacity Slider');
-
-	  slider_container.append('div').classed('slider', true).classed('opacity_slider', true);
-		};
-
-/***/ },
-/* 213 */
-/***/ function(module, exports) {
-
-	module.exports = function make_colorbar(cgm) {
-
-	  var params = cgm.params;
-
-	  d3.select(params.root + ' .sidebar_wrapper').append('div').classed('sidebar_text', true).style('padding-left', '10px').style('padding-top', '5px').text('Matrix Values');
-
-	  var colorbar_width = params.sidebar.width - 20;
-	  var colorbar_height = 13;
-	  var svg_height = 3 * colorbar_height;
-	  var svg_width = 1.2 * colorbar_width;
-	  var low_left_margin = 10;
-	  var top_margin = 33;
-	  var high_left_margin = colorbar_width + 10;
-	  var bar_margin_left = 10;
-	  var bar_margin_top = 3;
-
-	  var network_data = params.network_data;
-
-	  var max_link = _.max(network_data.links, function (d) {
-	    return d.value;
-	  }).value;
-
-	  var min_link = _.min(network_data.links, function (d) {
-	    return d.value;
-	  }).value;
-
-	  var main_svg = d3.select(params.root + ' .sidebar_wrapper').append('svg').attr('height', svg_height + 'px').attr('width', svg_width + 'px');
-
-	  //Append a defs (for definition) element to your SVG
-	  var defs = main_svg.append("defs");
-
-	  //Append a linearGradient element to the defs and give it a unique id
-	  var linearGradient = defs.append("linearGradient").attr("id", "linear-gradient");
-
-	  var special_case = 'none';
-
-	  // no negative numbers
-	  if (min_link >= 0) {
-
-	    //Set the color for the start (0%)
-	    linearGradient.append("stop").attr("offset", "0%").attr("stop-color", "white");
-
-	    //Set the color for the end (100%)
-	    linearGradient.append("stop").attr("offset", "100%").attr("stop-color", "red");
-
-	    special_case = 'all_postiive';
-
-	    // no positive numbers
-	  } else if (max_link <= 0) {
-
-	    //Set the color for the start (0%)
-	    linearGradient.append("stop").attr("offset", "0%").attr("stop-color", "blue");
-
-	    //Set the color for the end (100%)
-	    linearGradient.append("stop").attr("offset", "100%").attr("stop-color", "white");
-
-	    special_case = 'all_negative';
-	  }
-
-	  // both postive and negative numbers
-	  else {
-	      //Set the color for the start (0%)
-	      linearGradient.append("stop").attr("offset", "0%").attr("stop-color", "blue");
-
-	      //Set the color for the end (100%)
-	      linearGradient.append("stop").attr("offset", "50%").attr("stop-color", "white");
-
-	      //Set the color for the end (100%)
-	      linearGradient.append("stop").attr("offset", "100%").attr("stop-color", "red");
-	    }
-
-	  // make colorbar
-	  main_svg.append('rect').classed('background', true).attr('height', colorbar_height + 'px').attr('width', colorbar_width + 'px').attr('fill', 'url(#linear-gradient)').attr('transform', 'translate(' + bar_margin_left + ', ' + bar_margin_top + ')').attr('stroke', 'grey').attr('stroke-width', '0.25px');
-
-	  // make title
-	  ///////////////
-
-	  var max_abs_val = Math.abs(Math.round(params.matrix.max_link * 10) / 10);
-	  var font_size = 13;
-
-	  main_svg.append('text').text(function () {
-	    var inst_string;
-	    if (special_case === 'all_postiive') {
-	      inst_string = 0;
-	    } else {
-	      inst_string = '-' + max_abs_val.toLocaleString();
-	    }
-	    return inst_string;
-	  }).style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').style('font-weight', 300).style('font-size', font_size).attr('transform', 'translate(' + low_left_margin + ',' + top_margin + ')').attr('text-anchor', 'start');
-
-	  main_svg.append('text').text(max_abs_val.toLocaleString()).text(function () {
-	    var inst_string;
-	    if (special_case === 'all_negative') {
-	      inst_string = 0;
-	    } else {
-	      inst_string = max_abs_val.toLocaleString();
-	    }
-	    return inst_string;
-	  }).style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').style('font-weight', 300).style('font-size', font_size).attr('transform', 'translate(' + high_left_margin + ',' + top_margin + ')').attr('text-anchor', 'end');
-		};
-
-/***/ },
-/* 214 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__(215);
-
-/***/ },
-/* 215 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var isFactory = __webpack_require__(216).isFactory;
-	var typedFactory = __webpack_require__(217);
-	var emitter = __webpack_require__(220);
-
-	var importFactory = __webpack_require__(222);
-	var configFactory = __webpack_require__(224);
+	var isFactory = __webpack_require__(189).isFactory;
+	var typedFactory = __webpack_require__(190);
+	var emitter = __webpack_require__(193);
+
+	var importFactory = __webpack_require__(195);
+	var configFactory = __webpack_require__(197);
 
 	/**
 	 * Math.js core. Creates a new, empty math.js instance
@@ -14735,7 +12362,7 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 216 */
+/* 189 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -14998,11 +12625,11 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 217 */
+/* 190 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var typedFunction = __webpack_require__(218);
-	var digits = __webpack_require__(219).digits;
+	var typedFunction = __webpack_require__(191);
+	var digits = __webpack_require__(192).digits;
 
 	// returns a new instance of typed-function
 	var createTyped = function () {
@@ -15261,7 +12888,7 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 218 */
+/* 191 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -16612,7 +14239,7 @@ var Clustergrammer =
 	});
 
 /***/ },
-/* 219 */
+/* 192 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -17103,10 +14730,10 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 220 */
+/* 193 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Emitter = __webpack_require__(221);
+	var Emitter = __webpack_require__(194);
 
 	/**
 	 * Extend given object with emitter functions `on`, `off`, `once`, `emit`
@@ -17127,7 +14754,7 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 221 */
+/* 194 */
 /***/ function(module, exports) {
 
 	function E() {
@@ -17195,15 +14822,15 @@ var Clustergrammer =
 		module.exports = E;
 
 /***/ },
-/* 222 */
+/* 195 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var lazy = __webpack_require__(216).lazy;
-	var isFactory = __webpack_require__(216).isFactory;
-	var traverse = __webpack_require__(216).traverse;
-	var ArgumentsError = __webpack_require__(223);
+	var lazy = __webpack_require__(189).lazy;
+	var isFactory = __webpack_require__(189).isFactory;
+	var traverse = __webpack_require__(189).traverse;
+	var ArgumentsError = __webpack_require__(196);
 
 	function factory(type, config, load, typed, math) {
 	  /**
@@ -17487,7 +15114,7 @@ var Clustergrammer =
 	exports.lazy = true;
 
 /***/ },
-/* 223 */
+/* 196 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -17525,12 +15152,12 @@ var Clustergrammer =
 	module.exports = ArgumentsError;
 
 /***/ },
-/* 224 */
+/* 197 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var object = __webpack_require__(216);
+	var object = __webpack_require__(189);
 
 	function factory(type, config, load, typed, math) {
 	  var MATRIX = ['Matrix', 'Array']; // valid values for option matrix
@@ -17650,22 +15277,21 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ },
-/* 225 */,
-/* 226 */
+/* 198 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = [
 	// type
-	__webpack_require__(227),
+	__webpack_require__(199),
 
 	// construction function
-	__webpack_require__(229)];
+	__webpack_require__(201)];
 
 /***/ },
-/* 227 */
+/* 199 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Decimal = __webpack_require__(228); // make sure to pick the es5 version
+	var Decimal = __webpack_require__(200); // make sure to pick the es5 version
 
 	function factory(type, config, load, typed, math) {
 	  var BigNumber = Decimal.clone({ precision: config.precision });
@@ -17715,7 +15341,7 @@ var Clustergrammer =
 	exports.math = true; // request access to the math namespace
 
 /***/ },
-/* 228 */
+/* 200 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*! decimal.js v7.2.3 https://github.com/MikeMcl/decimal.js/LICENCE */;(function(globalScope){'use strict';/*
@@ -19343,12 +16969,12 @@ var Clustergrammer =
 		}else{if(!globalScope){globalScope=typeof self!='undefined'&&self&&self.self==self?self:Function('return this')();}noConflict=globalScope.Decimal;Decimal.noConflict=function(){globalScope.Decimal=noConflict;return Decimal;};globalScope.Decimal=Decimal;}})(this);
 
 /***/ },
-/* 229 */
+/* 201 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var deepMap = __webpack_require__(230);
+	var deepMap = __webpack_require__(202);
 
 	function factory(type, config, load, typed) {
 	  /**
@@ -19416,7 +17042,7 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ },
-/* 230 */
+/* 202 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -19446,2117 +17072,276 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 231 */,
-/* 232 */,
-/* 233 */,
-/* 234 */
+/* 203 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var formatNumber = __webpack_require__(219).format;
-	var formatBigNumber = __webpack_require__(235).format;
+	var deepMap = __webpack_require__(202);
 
-	/**
-	 * Test whether value is a string
-	 * @param {*} value
-	 * @return {boolean} isString
-	 */
-	exports.isString = function (value) {
-	  return typeof value === 'string';
-	};
+	function factory(type, config, load, typed) {
+	  var gamma = load(__webpack_require__(204));
+	  var latex = __webpack_require__(212);
 
-	/**
-	 * Check if a text ends with a certain string.
-	 * @param {string} text
-	 * @param {string} search
-	 */
-	exports.endsWith = function (text, search) {
-	  var start = text.length - search.length;
-	  var end = text.length;
-	  return text.substring(start, end) === search;
-	};
+	  /**
+	   * Compute the factorial of a value
+	   *
+	   * Factorial only supports an integer value as argument.
+	   * For matrices, the function is evaluated element wise.
+	   *
+	   * Syntax:
+	   *
+	   *    math.factorial(n)
+	   *
+	   * Examples:
+	   *
+	   *    math.factorial(5);    // returns 120
+	   *    math.factorial(3);    // returns 6
+	   *
+	   * See also:
+	   *
+	   *    combinations, gamma, permutations
+	   *
+	   * @param {number | BigNumber | Array | Matrix} n   An integer number
+	   * @return {number | BigNumber | Array | Matrix}    The factorial of `n`
+	   */
+	  var factorial = typed('factorial', {
+	    'number': function (n) {
+	      if (n < 0) {
+	        throw new Error('Value must be non-negative');
+	      }
 
-	/**
-	 * Format a value of any type into a string.
-	 *
-	 * Usage:
-	 *     math.format(value)
-	 *     math.format(value, precision)
-	 *
-	 * When value is a function:
-	 *
-	 * - When the function has a property `syntax`, it returns this
-	 *   syntax description.
-	 * - In other cases, a string `'function'` is returned.
-	 *
-	 * When `value` is an Object:
-	 *
-	 * - When the object contains a property `format` being a function, this
-	 *   function is invoked as `value.format(options)` and the result is returned.
-	 * - When the object has its own `toString` method, this method is invoked
-	 *   and the result is returned.
-	 * - In other cases the function will loop over all object properties and
-	 *   return JSON object notation like '{"a": 2, "b": 3}'.
-	 *
-	 * Example usage:
-	 *     math.format(2/7);                // '0.2857142857142857'
-	 *     math.format(math.pi, 3);         // '3.14'
-	 *     math.format(new Complex(2, 3));  // '2 + 3i'
-	 *     math.format('hello');            // '"hello"'
-	 *
-	 * @param {*} value             Value to be stringified
-	 * @param {Object | number | Function} [options]  Formatting options. See
-	 *                                                lib/utils/number:format for a
-	 *                                                description of the available
-	 *                                                options.
-	 * @return {string} str
-	 */
-	exports.format = function (value, options) {
-	  if (typeof value === 'number') {
-	    return formatNumber(value, options);
-	  }
+	      return gamma(n + 1);
+	    },
 
-	  if (value && value.isBigNumber === true) {
-	    return formatBigNumber(value, options);
-	  }
+	    'BigNumber': function (n) {
+	      if (n.isNegative()) {
+	        throw new Error('Value must be non-negative');
+	      }
 
-	  if (value && value.isFraction === true) {
-	    if (!options || options.fraction !== 'decimal') {
-	      // output as ratio, like '1/3'
-	      return value.s * value.n + '/' + value.d;
-	    } else {
-	      // output as decimal, like '0.(3)'
-	      return value.toString();
+	      return gamma(n.plus(1));
+	    },
+
+	    'Array | Matrix': function (n) {
+	      return deepMap(n, factorial);
 	    }
-	  }
+	  });
 
-	  if (Array.isArray(value)) {
-	    return formatArray(value, options);
-	  }
+	  factorial.toTex = {
+	    1: '\\left(${args[0]}\\right)' + latex.operators['factorial']
+	  };
 
-	  if (exports.isString(value)) {
-	    return '"' + value + '"';
-	  }
+	  return factorial;
+	}
 
-	  if (typeof value === 'function') {
-	    return value.syntax ? String(value.syntax) : 'function';
-	  }
+	exports.name = 'factorial';
+	exports.factory = factory;
 
-	  if (value && typeof value === 'object') {
-	    if (typeof value.format === 'function') {
-	      return value.format(options);
-	    } else if (value && value.toString() !== {}.toString()) {
-	      // this object has a non-native toString method, use that one
-	      return value.toString();
-	    } else {
-	      var entries = [];
+/***/ },
+/* 204 */
+/***/ function(module, exports, __webpack_require__) {
 
-	      for (var key in value) {
-	        if (value.hasOwnProperty(key)) {
-	          entries.push('"' + key + '": ' + exports.format(value[key], options));
+	'use strict';
+
+	var deepMap = __webpack_require__(202);
+	var isInteger = __webpack_require__(192).isInteger;
+
+	function factory(type, config, load, typed) {
+	  var multiply = load(__webpack_require__(205));
+	  var pow = load(__webpack_require__(220));
+
+	  /**
+	   * Compute the gamma function of a value using Lanczos approximation for
+	   * small values, and an extended Stirling approximation for large values.
+	   *
+	   * For matrices, the function is evaluated element wise.
+	   *
+	   * Syntax:
+	   *
+	   *    math.gamma(n)
+	   *
+	   * Examples:
+	   *
+	   *    math.gamma(5);       // returns 24
+	   *    math.gamma(-0.5);    // returns -3.5449077018110335
+	   *    math.gamma(math.i);  // returns -0.15494982830180973 - 0.49801566811835596i
+	   *
+	   * See also:
+	   *
+	   *    combinations, factorial, permutations
+	   *
+	   * @param {number | Array | Matrix} n   A real or complex number
+	   * @return {number | Array | Matrix}    The gamma of `n`
+	   */
+	  var gamma = typed('gamma', {
+	    'number': function (n) {
+	      var t, x;
+
+	      if (isInteger(n)) {
+	        if (n <= 0) {
+	          return isFinite(n) ? Infinity : NaN;
 	        }
-	      }
 
-	      return '{' + entries.join(', ') + '}';
-	    }
-	  }
-
-	  return String(value);
-	};
-
-	/**
-	 * Stringify a value into a string enclosed in double quotes.
-	 * Unescaped double quotes and backslashes inside the value are escaped.
-	 * @param {*} value
-	 * @return {string}
-	 */
-	exports.stringify = function (value) {
-	  var text = String(value);
-	  var escaped = '';
-	  var i = 0;
-	  while (i < text.length) {
-	    var c = text.charAt(i);
-
-	    if (c === '\\') {
-	      escaped += c;
-	      i++;
-
-	      c = text.charAt(i);
-	      if (c === '' || '"\\/bfnrtu'.indexOf(c) === -1) {
-	        escaped += '\\'; // no valid escape character -> escape it
-	      }
-	      escaped += c;
-	    } else if (c === '"') {
-	      escaped += '\\"';
-	    } else {
-	      escaped += c;
-	    }
-	    i++;
-	  }
-
-	  return '"' + escaped + '"';
-	};
-
-	/**
-	 * Escape special HTML characters
-	 * @param {*} value
-	 * @return {string}
-	 */
-	exports.escape = function (value) {
-	  var text = String(value);
-	  text = text.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-
-	  return text;
-	};
-
-	/**
-	 * Recursively format an n-dimensional matrix
-	 * Example output: "[[1, 2], [3, 4]]"
-	 * @param {Array} array
-	 * @param {Object | number | Function} [options]  Formatting options. See
-	 *                                                lib/utils/number:format for a
-	 *                                                description of the available
-	 *                                                options.
-	 * @returns {string} str
-	 */
-	function formatArray(array, options) {
-	  if (Array.isArray(array)) {
-	    var str = '[';
-	    var len = array.length;
-	    for (var i = 0; i < len; i++) {
-	      if (i != 0) {
-	        str += ', ';
-	      }
-	      str += formatArray(array[i], options);
-	    }
-	    str += ']';
-	    return str;
-	  } else {
-	    return exports.format(array, options);
-	  }
-	}
-
-/***/ },
-/* 235 */
-/***/ function(module, exports) {
-
-	/**
-	 * Convert a BigNumber to a formatted string representation.
-	 *
-	 * Syntax:
-	 *
-	 *    format(value)
-	 *    format(value, options)
-	 *    format(value, precision)
-	 *    format(value, fn)
-	 *
-	 * Where:
-	 *
-	 *    {number} value   The value to be formatted
-	 *    {Object} options An object with formatting options. Available options:
-	 *                     {string} notation
-	 *                         Number notation. Choose from:
-	 *                         'fixed'          Always use regular number notation.
-	 *                                          For example '123.40' and '14000000'
-	 *                         'exponential'    Always use exponential notation.
-	 *                                          For example '1.234e+2' and '1.4e+7'
-	 *                         'auto' (default) Regular number notation for numbers
-	 *                                          having an absolute value between
-	 *                                          `lower` and `upper` bounds, and uses
-	 *                                          exponential notation elsewhere.
-	 *                                          Lower bound is included, upper bound
-	 *                                          is excluded.
-	 *                                          For example '123.4' and '1.4e7'.
-	 *                     {number} precision   A number between 0 and 16 to round
-	 *                                          the digits of the number.
-	 *                                          In case of notations 'exponential' and
-	 *                                          'auto', `precision` defines the total
-	 *                                          number of significant digits returned
-	 *                                          and is undefined by default.
-	 *                                          In case of notation 'fixed',
-	 *                                          `precision` defines the number of
-	 *                                          significant digits after the decimal
-	 *                                          point, and is 0 by default.
-	 *                     {Object} exponential An object containing two parameters,
-	 *                                          {number} lower and {number} upper,
-	 *                                          used by notation 'auto' to determine
-	 *                                          when to return exponential notation.
-	 *                                          Default values are `lower=1e-3` and
-	 *                                          `upper=1e5`.
-	 *                                          Only applicable for notation `auto`.
-	 *    {Function} fn    A custom formatting function. Can be used to override the
-	 *                     built-in notations. Function `fn` is called with `value` as
-	 *                     parameter and must return a string. Is useful for example to
-	 *                     format all values inside a matrix in a particular way.
-	 *
-	 * Examples:
-	 *
-	 *    format(6.4);                                        // '6.4'
-	 *    format(1240000);                                    // '1.24e6'
-	 *    format(1/3);                                        // '0.3333333333333333'
-	 *    format(1/3, 3);                                     // '0.333'
-	 *    format(21385, 2);                                   // '21000'
-	 *    format(12.071, {notation: 'fixed'});                // '12'
-	 *    format(2.3,    {notation: 'fixed', precision: 2});  // '2.30'
-	 *    format(52.8,   {notation: 'exponential'});          // '5.28e+1'
-	 *
-	 * @param {BigNumber} value
-	 * @param {Object | Function | number} [options]
-	 * @return {string} str The formatted value
-	 */
-	exports.format = function (value, options) {
-	  if (typeof options === 'function') {
-	    // handle format(value, fn)
-	    return options(value);
-	  }
-
-	  // handle special cases
-	  if (!value.isFinite()) {
-	    return value.isNaN() ? 'NaN' : value.gt(0) ? 'Infinity' : '-Infinity';
-	  }
-
-	  // default values for options
-	  var notation = 'auto';
-	  var precision = undefined;
-
-	  if (options !== undefined) {
-	    // determine notation from options
-	    if (options.notation) {
-	      notation = options.notation;
-	    }
-
-	    // determine precision from options
-	    if (typeof options === 'number') {
-	      precision = options;
-	    } else if (options.precision) {
-	      precision = options.precision;
-	    }
-	  }
-
-	  // handle the various notations
-	  switch (notation) {
-	    case 'fixed':
-	      return exports.toFixed(value, precision);
-
-	    case 'exponential':
-	      return exports.toExponential(value, precision);
-
-	    case 'auto':
-	      // determine lower and upper bound for exponential notation.
-	      // TODO: implement support for upper and lower to be BigNumbers themselves
-	      var lower = 1e-3;
-	      var upper = 1e5;
-	      if (options && options.exponential) {
-	        if (options.exponential.lower !== undefined) {
-	          lower = options.exponential.lower;
+	        if (n > 171) {
+	          return Infinity; // Will overflow
 	        }
-	        if (options.exponential.upper !== undefined) {
-	          upper = options.exponential.upper;
+
+	        var value = n - 2;
+	        var res = n - 1;
+	        while (value > 1) {
+	          res *= value;
+	          value--;
 	        }
+
+	        if (res == 0) {
+	          res = 1; // 0! is per definition 1
+	        }
+
+	        return res;
 	      }
 
-	      // adjust the configuration of the BigNumber constructor (yeah, this is quite tricky...)
-	      var oldConfig = {
-	        toExpNeg: value.constructor.toExpNeg,
-	        toExpPos: value.constructor.toExpPos
-	      };
-
-	      value.constructor.config({
-	        toExpNeg: Math.round(Math.log(lower) / Math.LN10),
-	        toExpPos: Math.round(Math.log(upper) / Math.LN10)
-	      });
-
-	      // handle special case zero
-	      if (value.isZero()) return '0';
-
-	      // determine whether or not to output exponential notation
-	      var str;
-	      var abs = value.abs();
-	      if (abs.gte(lower) && abs.lt(upper)) {
-	        // normal number notation
-	        str = value.toSignificantDigits(precision).toFixed();
-	      } else {
-	        // exponential notation
-	        str = exports.toExponential(value, precision);
+	      if (n < 0.5) {
+	        return Math.PI / (Math.sin(Math.PI * n) * gamma(1 - n));
 	      }
 
-	      // remove trailing zeros after the decimal point
-	      return str.replace(/((\.\d*?)(0+))($|e)/, function () {
-	        var digits = arguments[2];
-	        var e = arguments[4];
-	        return digits !== '.' ? digits + e : e;
-	      });
-
-	    default:
-	      throw new Error('Unknown notation "' + notation + '". ' + 'Choose "auto", "exponential", or "fixed".');
-	  }
-	};
-
-	/**
-	 * Format a number in exponential notation. Like '1.23e+5', '2.3e+0', '3.500e-3'
-	 * @param {BigNumber} value
-	 * @param {number} [precision]  Number of digits in formatted output.
-	 *                              If not provided, the maximum available digits
-	 *                              is used.
-	 * @returns {string} str
-	 */
-	exports.toExponential = function (value, precision) {
-	  if (precision !== undefined) {
-	    return value.toExponential(precision - 1); // Note the offset of one
-	  } else {
-	    return value.toExponential();
-	  }
-	};
-
-	/**
-	 * Format a number with fixed notation.
-	 * @param {BigNumber} value
-	 * @param {number} [precision=0]        Optional number of decimals after the
-	 *                                      decimal point. Zero by default.
-	 */
-	exports.toFixed = function (value, precision) {
-	  return value.toFixed(precision || 0);
-	  // Note: the (precision || 0) is needed as the toFixed of BigNumber has an
-	  // undefined default precision instead of 0.
-	};
-
-/***/ },
-/* 236 */,
-/* 237 */,
-/* 238 */,
-/* 239 */,
-/* 240 */,
-/* 241 */,
-/* 242 */,
-/* 243 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	exports.symbols = {
-	  // GREEK LETTERS
-	  Alpha: 'A', alpha: '\\alpha',
-	  Beta: 'B', beta: '\\beta',
-	  Gamma: '\\Gamma', gamma: '\\gamma',
-	  Delta: '\\Delta', delta: '\\delta',
-	  Epsilon: 'E', epsilon: '\\epsilon', varepsilon: '\\varepsilon',
-	  Zeta: 'Z', zeta: '\\zeta',
-	  Eta: 'H', eta: '\\eta',
-	  Theta: '\\Theta', theta: '\\theta', vartheta: '\\vartheta',
-	  Iota: 'I', iota: '\\iota',
-	  Kappa: 'K', kappa: '\\kappa', varkappa: '\\varkappa',
-	  Lambda: '\\Lambda', lambda: '\\lambda',
-	  Mu: 'M', mu: '\\mu',
-	  Nu: 'N', nu: '\\nu',
-	  Xi: '\\Xi', xi: '\\xi',
-	  Omicron: 'O', omicron: 'o',
-	  Pi: '\\Pi', pi: '\\pi', varpi: '\\varpi',
-	  Rho: 'P', rho: '\\rho', varrho: '\\varrho',
-	  Sigma: '\\Sigma', sigma: '\\sigma', varsigma: '\\varsigma',
-	  Tau: 'T', tau: '\\tau',
-	  Upsilon: '\\Upsilon', upsilon: '\\upsilon',
-	  Phi: '\\Phi', phi: '\\phi', varphi: '\\varphi',
-	  Chi: 'X', chi: '\\chi',
-	  Psi: '\\Psi', psi: '\\psi',
-	  Omega: '\\Omega', omega: '\\omega',
-	  //logic
-	  'true': '\\mathrm{True}',
-	  'false': '\\mathrm{False}',
-	  //other
-	  i: 'i', //TODO use \i ??
-	  inf: '\\infty',
-	  Inf: '\\infty',
-	  infinity: '\\infty',
-	  Infinity: '\\infty',
-	  oo: '\\infty',
-	  lim: '\\lim',
-	  'undefined': '\\mathbf{?}'
-	};
-
-	exports.operators = {
-	  'transpose': '^\\top',
-	  'factorial': '!',
-	  'pow': '^',
-	  'dotPow': '.^\\wedge', //TODO find ideal solution
-	  'unaryPlus': '+',
-	  'unaryMinus': '-',
-	  'bitNot': '~', //TODO find ideal solution
-	  'not': '\\neg',
-	  'multiply': '\\cdot',
-	  'divide': '\\frac', //TODO how to handle that properly?
-	  'dotMultiply': '.\\cdot', //TODO find ideal solution
-	  'dotDivide': '.:', //TODO find ideal solution
-	  'mod': '\\mod',
-	  'add': '+',
-	  'subtract': '-',
-	  'to': '\\rightarrow',
-	  'leftShift': '<<',
-	  'rightArithShift': '>>',
-	  'rightLogShift': '>>>',
-	  'equal': '=',
-	  'unequal': '\\neq',
-	  'smaller': '<',
-	  'larger': '>',
-	  'smallerEq': '\\leq',
-	  'largerEq': '\\geq',
-	  'bitAnd': '\\&',
-	  'bitXor': '\\underline{|}',
-	  'bitOr': '|',
-	  'and': '\\wedge',
-	  'xor': '\\veebar',
-	  'or': '\\vee'
-	};
-
-	exports.defaultTemplate = '\\mathrm{${name}}\\left(${args}\\right)';
-
-	var units = {
-	  deg: '^\\circ'
-	};
-
-	//@param {string} name
-	//@param {boolean} isUnit
-	exports.toSymbol = function (name, isUnit) {
-	  isUnit = typeof isUnit === 'undefined' ? false : isUnit;
-	  if (isUnit) {
-	    if (units.hasOwnProperty(name)) {
-	      return units[name];
-	    }
-	    return '\\mathrm{' + name + '}';
-	  }
-
-	  if (exports.symbols.hasOwnProperty(name)) {
-	    return exports.symbols[name];
-	  } else if (name.indexOf('_') !== -1) {
-	    //symbol with index (eg. alpha_1)
-	    var index = name.indexOf('_');
-	    return exports.toSymbol(name.substring(0, index)) + '_{' + exports.toSymbol(name.substring(index + 1)) + '}';
-	  }
-	  return name;
-	};
-
-/***/ },
-/* 244 */,
-/* 245 */,
-/* 246 */,
-/* 247 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var deepMap = __webpack_require__(230);
-
-	function factory(type, config, load, typed) {
-	  /**
-	   * Create a fraction convert a value to a fraction.
-	   *
-	   * Syntax:
-	   *     math.fraction(numerator, denominator)
-	   *     math.fraction({n: numerator, d: denominator})
-	   *     math.fraction(matrix: Array | Matrix)         Turn all matrix entries
-	   *                                                   into fractions
-	   *
-	   * Examples:
-	   *
-	   *     math.fraction(1, 3);
-	   *     math.fraction('2/3');
-	   *     math.fraction({n: 2, d: 3});
-	   *     math.fraction([0.2, 0.25, 1.25]);
-	   *
-	   * See also:
-	   *
-	   *    bignumber, number, string, unit
-	   *
-	   * @param {number | string | Fraction | BigNumber | Array | Matrix} [args]
-	   *            Arguments specifying the numerator and denominator of
-	   *            the fraction
-	   * @return {Fraction | Array | Matrix} Returns a fraction
-	   */
-	  var fraction = typed('fraction', {
-	    'number': function (x) {
-	      if (!isFinite(x) || isNaN(x)) {
-	        throw new Error(x + ' cannot be represented as a fraction');
+	      if (n >= 171.35) {
+	        return Infinity; // will overflow
 	      }
 
-	      return new type.Fraction(x);
-	    },
-
-	    'string': function (x) {
-	      return new type.Fraction(x);
-	    },
-
-	    'number, number': function (numerator, denominator) {
-	      return new type.Fraction(numerator, denominator);
-	    },
-
-	    'BigNumber': function (x) {
-	      return new type.Fraction(x.toString());
-	    },
-
-	    'Fraction': function (x) {
-	      return x; // fractions are immutable
-	    },
-
-	    'Object': function (x) {
-	      return new type.Fraction(x);
-	    },
-
-	    'Array | Matrix': function (x) {
-	      return deepMap(x, fraction);
-	    }
-	  });
-
-	  return fraction;
-	}
-
-	exports.name = 'fraction';
-	exports.factory = factory;
-
-/***/ },
-/* 248 */,
-/* 249 */,
-/* 250 */,
-/* 251 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var number = __webpack_require__(219);
-	var string = __webpack_require__(234);
-	var object = __webpack_require__(216);
-	var types = __webpack_require__(252);
-
-	var DimensionError = __webpack_require__(253);
-	var IndexError = __webpack_require__(254);
-
-	/**
-	 * Calculate the size of a multi dimensional array.
-	 * This function checks the size of the first entry, it does not validate
-	 * whether all dimensions match. (use function `validate` for that)
-	 * @param {Array} x
-	 * @Return {Number[]} size
-	 */
-	exports.size = function (x) {
-	  var s = [];
-
-	  while (Array.isArray(x)) {
-	    s.push(x.length);
-	    x = x[0];
-	  }
-
-	  return s;
-	};
-
-	/**
-	 * Recursively validate whether each element in a multi dimensional array
-	 * has a size corresponding to the provided size array.
-	 * @param {Array} array    Array to be validated
-	 * @param {number[]} size  Array with the size of each dimension
-	 * @param {number} dim   Current dimension
-	 * @throws DimensionError
-	 * @private
-	 */
-	function _validate(array, size, dim) {
-	  var i;
-	  var len = array.length;
-
-	  if (len != size[dim]) {
-	    throw new DimensionError(len, size[dim]);
-	  }
-
-	  if (dim < size.length - 1) {
-	    // recursively validate each child array
-	    var dimNext = dim + 1;
-	    for (i = 0; i < len; i++) {
-	      var child = array[i];
-	      if (!Array.isArray(child)) {
-	        throw new DimensionError(size.length - 1, size.length, '<');
+	      if (n > 85.0) {
+	        // Extended Stirling Approx
+	        var twoN = n * n;
+	        var threeN = twoN * n;
+	        var fourN = threeN * n;
+	        var fiveN = fourN * n;
+	        return Math.sqrt(2 * Math.PI / n) * Math.pow(n / Math.E, n) * (1 + 1 / (12 * n) + 1 / (288 * twoN) - 139 / (51840 * threeN) - 571 / (2488320 * fourN) + 163879 / (209018880 * fiveN) + 5246819 / (75246796800 * fiveN * n));
 	      }
-	      _validate(array[i], size, dimNext);
-	    }
-	  } else {
-	    // last dimension. none of the childs may be an array
-	    for (i = 0; i < len; i++) {
-	      if (Array.isArray(array[i])) {
-	        throw new DimensionError(size.length + 1, size.length, '>');
+
+	      --n;
+	      x = p[0];
+	      for (var i = 1; i < p.length; ++i) {
+	        x += p[i] / (n + i);
 	      }
-	    }
-	  }
-	}
 
-	/**
-	 * Validate whether each element in a multi dimensional array has
-	 * a size corresponding to the provided size array.
-	 * @param {Array} array    Array to be validated
-	 * @param {number[]} size  Array with the size of each dimension
-	 * @throws DimensionError
-	 */
-	exports.validate = function (array, size) {
-	  var isScalar = size.length == 0;
-	  if (isScalar) {
-	    // scalar
-	    if (Array.isArray(array)) {
-	      throw new DimensionError(array.length, 0);
-	    }
-	  } else {
-	    // array
-	    _validate(array, size, 0);
-	  }
-	};
+	      t = n + g + 0.5;
+	      return Math.sqrt(2 * Math.PI) * Math.pow(t, n + 0.5) * Math.exp(-t) * x;
+	    },
 
-	/**
-	 * Test whether index is an integer number with index >= 0 and index < length
-	 * when length is provided
-	 * @param {number} index    Zero-based index
-	 * @param {number} [length] Length of the array
-	 */
-	exports.validateIndex = function (index, length) {
-	  if (!number.isNumber(index) || !number.isInteger(index)) {
-	    throw new TypeError('Index must be an integer (value: ' + index + ')');
-	  }
-	  if (index < 0 || typeof length === 'number' && index >= length) {
-	    throw new IndexError(index, length);
-	  }
-	};
+	    'Complex': function (n) {
+	      var t, x;
 
-	// a constant used to specify an undefined defaultValue
-	exports.UNINITIALIZED = {};
-
-	/**
-	 * Resize a multi dimensional array. The resized array is returned.
-	 * @param {Array} array         Array to be resized
-	 * @param {Array.<number>} size Array with the size of each dimension
-	 * @param {*} [defaultValue=0]  Value to be filled in in new entries,
-	 *                              zero by default. To leave new entries undefined,
-	 *                              specify array.UNINITIALIZED as defaultValue
-	 * @return {Array} array         The resized array
-	 */
-	exports.resize = function (array, size, defaultValue) {
-	  // TODO: add support for scalars, having size=[] ?
-
-	  // check the type of the arguments
-	  if (!Array.isArray(array) || !Array.isArray(size)) {
-	    throw new TypeError('Array expected');
-	  }
-	  if (size.length === 0) {
-	    throw new Error('Resizing to scalar is not supported');
-	  }
-
-	  // check whether size contains positive integers
-	  size.forEach(function (value) {
-	    if (!number.isNumber(value) || !number.isInteger(value) || value < 0) {
-	      throw new TypeError('Invalid size, must contain positive integers ' + '(size: ' + string.format(size) + ')');
-	    }
-	  });
-
-	  // recursively resize the array
-	  var _defaultValue = defaultValue !== undefined ? defaultValue : 0;
-	  _resize(array, size, 0, _defaultValue);
-
-	  return array;
-	};
-
-	/**
-	 * Recursively resize a multi dimensional array
-	 * @param {Array} array         Array to be resized
-	 * @param {number[]} size       Array with the size of each dimension
-	 * @param {number} dim          Current dimension
-	 * @param {*} [defaultValue]    Value to be filled in in new entries,
-	 *                              undefined by default.
-	 * @private
-	 */
-	function _resize(array, size, dim, defaultValue) {
-	  var i;
-	  var elem;
-	  var oldLen = array.length;
-	  var newLen = size[dim];
-	  var minLen = Math.min(oldLen, newLen);
-
-	  // apply new length
-	  array.length = newLen;
-
-	  if (dim < size.length - 1) {
-	    // non-last dimension
-	    var dimNext = dim + 1;
-
-	    // resize existing child arrays
-	    for (i = 0; i < minLen; i++) {
-	      // resize child array
-	      elem = array[i];
-	      if (!Array.isArray(elem)) {
-	        elem = [elem]; // add a dimension
-	        array[i] = elem;
+	      if (n.im == 0) {
+	        return gamma(n.re);
 	      }
-	      _resize(elem, size, dimNext, defaultValue);
-	    }
 
-	    // create new child arrays
-	    for (i = minLen; i < newLen; i++) {
-	      // get child array
-	      elem = [];
-	      array[i] = elem;
-
-	      // resize new child array
-	      _resize(elem, size, dimNext, defaultValue);
-	    }
-	  } else {
-	    // last dimension
-
-	    // remove dimensions of existing values
-	    for (i = 0; i < minLen; i++) {
-	      while (Array.isArray(array[i])) {
-	        array[i] = array[i][0];
-	      }
-	    }
-
-	    if (defaultValue !== exports.UNINITIALIZED) {
-	      // fill new elements with the default value
-	      for (i = minLen; i < newLen; i++) {
-	        array[i] = defaultValue;
-	      }
-	    }
-	  }
-	}
-
-	/**
-	 * Re-shape a multi dimensional array to fit the specified dimensions
-	 * @param {Array} array           Array to be reshaped
-	 * @param {Array.<number>} sizes  List of sizes for each dimension
-	 * @returns {Array}               Array whose data has been formatted to fit the
-	 *                                specified dimensions
-	 *
-	 * @throws {DimensionError}       If the product of the new dimension sizes does
-	 *                                not equal that of the old ones
-	 */
-	exports.reshape = function (array, sizes) {
-	  var flatArray = exports.flatten(array);
-	  var newArray;
-
-	  var product = function (arr) {
-	    return arr.reduce(function (prev, curr) {
-	      return prev * curr;
-	    });
-	  };
-
-	  if (!Array.isArray(array) || !Array.isArray(sizes)) {
-	    throw new TypeError('Array expected');
-	  }
-
-	  if (sizes.length === 0) {
-	    throw new DimensionError(0, product(exports.size(array)), '!=');
-	  }
-
-	  try {
-	    newArray = _reshape(flatArray, sizes);
-	  } catch (e) {
-	    if (e instanceof DimensionError) {
-	      throw new DimensionError(product(sizes), product(exports.size(array)), '!=');
-	    }
-	    throw e;
-	  }
-
-	  if (flatArray.length > 0) {
-	    throw new DimensionError(product(sizes), product(exports.size(array)), '!=');
-	  }
-
-	  return newArray;
-	};
-
-	/**
-	 * Recursively re-shape a multi dimensional array to fit the specified dimensions
-	 * @param {Array} array           Array to be reshaped
-	 * @param {Array.<number>} sizes  List of sizes for each dimension
-	 * @returns {Array}               Array whose data has been formatted to fit the
-	 *                                specified dimensions
-	 *
-	 * @throws {DimensionError}       If the product of the new dimension sizes does
-	 *                                not equal that of the old ones
-	 */
-	function _reshape(array, sizes) {
-	  var accumulator = [];
-	  var i;
-
-	  if (sizes.length === 0) {
-	    if (array.length === 0) {
-	      throw new DimensionError(null, null, '!=');
-	    }
-	    return array.shift();
-	  }
-	  for (i = 0; i < sizes[0]; i += 1) {
-	    accumulator.push(_reshape(array, sizes.slice(1)));
-	  }
-	  return accumulator;
-	}
-
-	/**
-	 * Squeeze a multi dimensional array
-	 * @param {Array} array
-	 * @param {Array} [size]
-	 * @returns {Array} returns the array itself
-	 */
-	exports.squeeze = function (array, size) {
-	  var s = size || exports.size(array);
-
-	  // squeeze outer dimensions
-	  while (Array.isArray(array) && array.length === 1) {
-	    array = array[0];
-	    s.shift();
-	  }
-
-	  // find the first dimension to be squeezed
-	  var dims = s.length;
-	  while (s[dims - 1] === 1) {
-	    dims--;
-	  }
-
-	  // squeeze inner dimensions
-	  if (dims < s.length) {
-	    array = _squeeze(array, dims, 0);
-	    s.length = dims;
-	  }
-
-	  return array;
-	};
-
-	/**
-	 * Recursively squeeze a multi dimensional array
-	 * @param {Array} array
-	 * @param {number} dims Required number of dimensions
-	 * @param {number} dim  Current dimension
-	 * @returns {Array | *} Returns the squeezed array
-	 * @private
-	 */
-	function _squeeze(array, dims, dim) {
-	  var i, ii;
-
-	  if (dim < dims) {
-	    var next = dim + 1;
-	    for (i = 0, ii = array.length; i < ii; i++) {
-	      array[i] = _squeeze(array[i], dims, next);
-	    }
-	  } else {
-	    while (Array.isArray(array)) {
-	      array = array[0];
-	    }
-	  }
-
-	  return array;
-	}
-
-	/**
-	 * Unsqueeze a multi dimensional array: add dimensions when missing
-	 * 
-	 * Paramter `size` will be mutated to match the new, unqueezed matrix size.
-	 * 
-	 * @param {Array} array
-	 * @param {number} dims     Desired number of dimensions of the array
-	 * @param {number} [outer]  Number of outer dimensions to be added
-	 * @param {Array} [size]    Current size of array.
-	 * @returns {Array} returns the array itself
-	 * @private
-	 */
-	exports.unsqueeze = function (array, dims, outer, size) {
-	  var s = size || exports.size(array);
-
-	  // unsqueeze outer dimensions
-	  if (outer) {
-	    for (var i = 0; i < outer; i++) {
-	      array = [array];
-	      s.unshift(1);
-	    }
-	  }
-
-	  // unsqueeze inner dimensions
-	  array = _unsqueeze(array, dims, 0);
-	  while (s.length < dims) {
-	    s.push(1);
-	  }
-
-	  return array;
-	};
-
-	/**
-	 * Recursively unsqueeze a multi dimensional array
-	 * @param {Array} array
-	 * @param {number} dims Required number of dimensions
-	 * @param {number} dim  Current dimension
-	 * @returns {Array | *} Returns the squeezed array
-	 * @private
-	 */
-	function _unsqueeze(array, dims, dim) {
-	  var i, ii;
-
-	  if (Array.isArray(array)) {
-	    var next = dim + 1;
-	    for (i = 0, ii = array.length; i < ii; i++) {
-	      array[i] = _unsqueeze(array[i], dims, next);
-	    }
-	  } else {
-	    for (var d = dim; d < dims; d++) {
-	      array = [array];
-	    }
-	  }
-
-	  return array;
-	}
-	/**
-	 * Flatten a multi dimensional array, put all elements in a one dimensional
-	 * array
-	 * @param {Array} array   A multi dimensional array
-	 * @return {Array}        The flattened array (1 dimensional)
-	 */
-	exports.flatten = function (array) {
-	  if (!Array.isArray(array)) {
-	    //if not an array, return as is
-	    return array;
-	  }
-	  var flat = [];
-
-	  array.forEach(function callback(value) {
-	    if (Array.isArray(value)) {
-	      value.forEach(callback); //traverse through sub-arrays recursively
-	    } else {
-	      flat.push(value);
-	    }
-	  });
-
-	  return flat;
-	};
-
-	/**
-	 * A safe map
-	 * @param {Array} array
-	 * @param {function} callback
-	 */
-	exports.map = function (array, callback) {
-	  return Array.prototype.map.call(array, callback);
-	};
-
-	/**
-	 * A safe forEach
-	 * @param {Array} array
-	 * @param {function} callback
-	 */
-	exports.forEach = function (array, callback) {
-	  Array.prototype.forEach.call(array, callback);
-	};
-
-	/**
-	 * A safe filter
-	 * @param {Array} array
-	 * @param {function} callback
-	 */
-	exports.filter = function (array, callback) {
-	  if (exports.size(array).length !== 1) {
-	    throw new Error('Only one dimensional matrices supported');
-	  }
-
-	  return Array.prototype.filter.call(array, callback);
-	};
-
-	/**
-	 * Filter values in a callback given a regular expression
-	 * @param {Array} array
-	 * @param {RegExp} regexp
-	 * @return {Array} Returns the filtered array
-	 * @private
-	 */
-	exports.filterRegExp = function (array, regexp) {
-	  if (exports.size(array).length !== 1) {
-	    throw new Error('Only one dimensional matrices supported');
-	  }
-
-	  return Array.prototype.filter.call(array, function (entry) {
-	    return regexp.test(entry);
-	  });
-	};
-
-	/**
-	 * A safe join
-	 * @param {Array} array
-	 * @param {string} separator
-	 */
-	exports.join = function (array, separator) {
-	  return Array.prototype.join.call(array, separator);
-	};
-
-	/**
-	 * Assign a numeric identifier to every element of a sorted array
-	 * @param {Array}	a  An array
-	 * @return {Array}	An array of objects containing the original value and its identifier
-	 */
-	exports.identify = function (a) {
-	  if (!Array.isArray(a)) {
-	    throw new TypeError('Array input expected');
-	  }
-
-	  if (a.length === 0) {
-	    return a;
-	  }
-
-	  var b = [];
-	  var count = 0;
-	  b[0] = { value: a[0], identifier: 0 };
-	  for (var i = 1; i < a.length; i++) {
-	    if (a[i] === a[i - 1]) {
-	      count++;
-	    } else {
-	      count = 0;
-	    }
-	    b.push({ value: a[i], identifier: count });
-	  }
-	  return b;
-	};
-
-	/**
-	 * Remove the numeric identifier from the elements
-	 * @param	a  An array
-	 * @return	An array of values without identifiers
-	 */
-	exports.generalize = function (a) {
-	  if (!Array.isArray(a)) {
-	    throw new TypeError('Array input expected');
-	  }
-
-	  if (a.length === 0) {
-	    return a;
-	  }
-
-	  var b = [];
-	  for (var i = 0; i < a.length; i++) {
-	    b.push(a[i].value);
-	  }
-	  return b;
-	};
-
-	/**
-	 * Test whether an object is an array
-	 * @param {*} value
-	 * @return {boolean} isArray
-	 */
-		exports.isArray = Array.isArray;
-
-/***/ },
-/* 252 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	/**
-	 * Determine the type of a variable
-	 *
-	 *     type(x)
-	 *
-	 * The following types are recognized:
-	 *
-	 *     'undefined'
-	 *     'null'
-	 *     'boolean'
-	 *     'number'
-	 *     'string'
-	 *     'Array'
-	 *     'Function'
-	 *     'Date'
-	 *     'RegExp'
-	 *     'Object'
-	 *
-	 * @param {*} x
-	 * @return {string} Returns the name of the type. Primitive types are lower case,
-	 *                  non-primitive types are upper-camel-case.
-	 *                  For example 'number', 'string', 'Array', 'Date'.
-	 */
-
-	exports.type = function (x) {
-	  var type = typeof x;
-
-	  if (type === 'object') {
-	    if (x === null) return 'null';
-	    if (Array.isArray(x)) return 'Array';
-	    if (x instanceof Date) return 'Date';
-	    if (x instanceof RegExp) return 'RegExp';
-	    if (x instanceof Boolean) return 'boolean';
-	    if (x instanceof Number) return 'number';
-	    if (x instanceof String) return 'string';
-
-	    return 'Object';
-	  }
-
-	  if (type === 'function') return 'Function';
-
-	  return type;
-	};
-
-/***/ },
-/* 253 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	/**
-	 * Create a range error with the message:
-	 *     'Dimension mismatch (<actual size> != <expected size>)'
-	 * @param {number | number[]} actual        The actual size
-	 * @param {number | number[]} expected      The expected size
-	 * @param {string} [relation='!=']          Optional relation between actual
-	 *                                          and expected size: '!=', '<', etc.
-	 * @extends RangeError
-	 */
-
-	function DimensionError(actual, expected, relation) {
-	  if (!(this instanceof DimensionError)) {
-	    throw new SyntaxError('Constructor must be called with the new operator');
-	  }
-
-	  this.actual = actual;
-	  this.expected = expected;
-	  this.relation = relation;
-
-	  this.message = 'Dimension mismatch (' + (Array.isArray(actual) ? '[' + actual.join(', ') + ']' : actual) + ' ' + (this.relation || '!=') + ' ' + (Array.isArray(expected) ? '[' + expected.join(', ') + ']' : expected) + ')';
-
-	  this.stack = new Error().stack;
-	}
-
-	DimensionError.prototype = new RangeError();
-	DimensionError.prototype.constructor = RangeError;
-	DimensionError.prototype.name = 'DimensionError';
-	DimensionError.prototype.isDimensionError = true;
-
-	module.exports = DimensionError;
-
-/***/ },
-/* 254 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	/**
-	 * Create a range error with the message:
-	 *     'Index out of range (index < min)'
-	 *     'Index out of range (index < max)'
-	 *
-	 * @param {number} index     The actual index
-	 * @param {number} [min=0]   Minimum index (included)
-	 * @param {number} [max]     Maximum index (excluded)
-	 * @extends RangeError
-	 */
-
-	function IndexError(index, min, max) {
-	  if (!(this instanceof IndexError)) {
-	    throw new SyntaxError('Constructor must be called with the new operator');
-	  }
-
-	  this.index = index;
-	  if (arguments.length < 3) {
-	    this.min = 0;
-	    this.max = min;
-	  } else {
-	    this.min = min;
-	    this.max = max;
-	  }
-
-	  if (this.min !== undefined && this.index < this.min) {
-	    this.message = 'Index out of range (' + this.index + ' < ' + this.min + ')';
-	  } else if (this.max !== undefined && this.index >= this.max) {
-	    this.message = 'Index out of range (' + this.index + ' > ' + (this.max - 1) + ')';
-	  } else {
-	    this.message = 'Index out of range (' + this.index + ')';
-	  }
-
-	  this.stack = new Error().stack;
-	}
-
-	IndexError.prototype = new RangeError();
-	IndexError.prototype.constructor = RangeError;
-	IndexError.prototype.name = 'IndexError';
-	IndexError.prototype.isIndexError = true;
-
-	module.exports = IndexError;
-
-/***/ },
-/* 255 */,
-/* 256 */,
-/* 257 */,
-/* 258 */,
-/* 259 */,
-/* 260 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var nearlyEqual = __webpack_require__(219).nearlyEqual;
-	var bigNearlyEqual = __webpack_require__(261);
-
-	function factory(type, config, load, typed) {
-
-	  /**
-	   * Test whether two values are equal.
-	   *
-	   * @param  {number | BigNumber | Fraction | boolean | Complex | Unit} x   First value to compare
-	   * @param  {number | BigNumber | Fraction | boolean | Complex} y          Second value to compare
-	   * @return {boolean}                                                  Returns true when the compared values are equal, else returns false
-	   * @private
-	   */
-	  var equalScalar = typed('equalScalar', {
-
-	    'boolean, boolean': function (x, y) {
-	      return x === y;
-	    },
-
-	    'number, number': function (x, y) {
-	      return x === y || nearlyEqual(x, y, config.epsilon);
-	    },
-
-	    'BigNumber, BigNumber': function (x, y) {
-	      return x.eq(y) || bigNearlyEqual(x, y, config.epsilon);
-	    },
-
-	    'Fraction, Fraction': function (x, y) {
-	      return x.equals(y);
-	    },
-
-	    'Complex, Complex': function (x, y) {
-	      return x.equals(y);
-	    },
-
-	    'Unit, Unit': function (x, y) {
-	      if (!x.equalBase(y)) {
-	        throw new Error('Cannot compare units with different base');
-	      }
-	      return equalScalar(x.value, y.value);
-	    },
-
-	    'string, string': function (x, y) {
-	      return x === y;
-	    }
-	  });
-
-	  return equalScalar;
-	}
-
-	exports.factory = factory;
-
-/***/ },
-/* 261 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	/**
-	 * Compares two BigNumbers.
-	 * @param {BigNumber} x       First value to compare
-	 * @param {BigNumber} y       Second value to compare
-	 * @param {number} [epsilon]  The maximum relative difference between x and y
-	 *                            If epsilon is undefined or null, the function will
-	 *                            test whether x and y are exactly equal.
-	 * @return {boolean} whether the two numbers are nearly equal
-	 */
-
-	module.exports = function nearlyEqual(x, y, epsilon) {
-	  // if epsilon is null or undefined, test whether x and y are exactly equal
-	  if (epsilon == null) {
-	    return x.eq(y);
-	  }
-
-	  // use "==" operator, handles infinities
-	  if (x.eq(y)) {
-	    return true;
-	  }
-
-	  // NaN
-	  if (x.isNaN() || y.isNaN()) {
-	    return false;
-	  }
-
-	  // at this point x and y should be finite
-	  if (x.isFinite() && y.isFinite()) {
-	    // check numbers are very close, needed when comparing numbers near zero
-	    var diff = x.minus(y).abs();
-	    if (diff.isZero()) {
-	      return true;
-	    } else {
-	      // use relative error
-	      var max = x.constructor.max(x.abs(), y.abs());
-	      return diff.lte(max.times(epsilon));
-	    }
-	  }
-
-	  // Infinite and Number or negative Infinite and positive Infinite cases
-	  return false;
-	};
-
-/***/ },
-/* 262 */,
-/* 263 */,
-/* 264 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	function factory(type, config, load, typed) {
-	  /**
-	   * Create a Matrix. The function creates a new `math.type.Matrix` object from
-	   * an `Array`. A Matrix has utility functions to manipulate the data in the
-	   * matrix, like getting the size and getting or setting values in the matrix.
-	   * Supported storage formats are 'dense' and 'sparse'.
-	   *
-	   * Syntax:
-	   *
-	   *    math.matrix()                         // creates an empty matrix using default storage format (dense).
-	   *    math.matrix(data)                     // creates a matrix with initial data using default storage format (dense).
-	   *    math.matrix('dense')                  // creates an empty matrix using the given storage format.
-	   *    math.matrix(data, 'dense')            // creates a matrix with initial data using the given storage format.
-	   *    math.matrix(data, 'sparse')           // creates a sparse matrix with initial data.
-	   *    math.matrix(data, 'sparse', 'number') // creates a sparse matrix with initial data, number data type.
-	   *
-	   * Examples:
-	   *
-	   *    var m = math.matrix([[1, 2], [3, 4]]);
-	   *    m.size();                        // Array [2, 2]
-	   *    m.resize([3, 2], 5);
-	   *    m.valueOf();                     // Array [[1, 2], [3, 4], [5, 5]]
-	   *    m.get([1, 0])                    // number 3
-	   *
-	   * See also:
-	   *
-	   *    bignumber, boolean, complex, index, number, string, unit, sparse
-	   *
-	   * @param {Array | Matrix} [data]    A multi dimensional array
-	   * @param {string} [format]          The Matrix storage format
-	   *
-	   * @return {Matrix} The created matrix
-	   */
-	  var matrix = typed('matrix', {
-	    '': function () {
-	      return _create([]);
-	    },
-
-	    'string': function (format) {
-	      return _create([], format);
-	    },
-
-	    'string, string': function (format, datatype) {
-	      return _create([], format, datatype);
-	    },
-
-	    'Array': function (data) {
-	      return _create(data);
-	    },
-
-	    'Matrix': function (data) {
-	      return _create(data, data.storage());
-	    },
-
-	    'Array | Matrix, string': _create,
-
-	    'Array | Matrix, string, string': _create
-	  });
-
-	  matrix.toTex = {
-	    0: '\\begin{bmatrix}\\end{bmatrix}',
-	    1: '\\left(${args[0]}\\right)',
-	    2: '\\left(${args[0]}\\right)'
-	  };
-
-	  return matrix;
-
-	  /**
-	   * Create a new Matrix with given storage format
-	   * @param {Array} data
-	   * @param {string} [format]
-	   * @param {string} [datatype]
-	   * @returns {Matrix} Returns a new Matrix
-	   * @private
-	   */
-	  function _create(data, format, datatype) {
-	    // get storage format constructor
-	    var M = type.Matrix.storage(format || 'default');
-
-	    // create instance
-	    return new M(data, datatype);
-	  }
-	}
-
-	exports.name = 'matrix';
-	exports.factory = factory;
-
-/***/ },
-/* 265 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	function factory(type, config, load, typed) {
-
-	  /**
-	   * Add two scalar values, `x + y`.
-	   * This function is meant for internal use: it is used by the public function
-	   * `add`
-	   *
-	   * This function does not support collections (Array or Matrix), and does
-	   * not validate the number of of inputs.
-	   *
-	   * @param  {number | BigNumber | Fraction | Complex | Unit} x   First value to add
-	   * @param  {number | BigNumber | Fraction | Complex} y          Second value to add
-	   * @return {number | BigNumber | Fraction | Complex | Unit}                      Sum of `x` and `y`
-	   * @private
-	   */
-	  var add = typed('add', {
-
-	    'number, number': function (x, y) {
-	      return x + y;
-	    },
-
-	    'Complex, Complex': function (x, y) {
-	      return x.add(y);
-	    },
-
-	    'BigNumber, BigNumber': function (x, y) {
-	      return x.plus(y);
-	    },
-
-	    'Fraction, Fraction': function (x, y) {
-	      return x.add(y);
-	    },
-
-	    'Unit, Unit': function (x, y) {
-	      if (x.value == null) throw new Error('Parameter x contains a unit with undefined value');
-	      if (y.value == null) throw new Error('Parameter y contains a unit with undefined value');
-	      if (!x.equalBase(y)) throw new Error('Units do not match');
-
-	      var res = x.clone();
-	      res.value = add(res.value, y.value);
-	      res.fixPrefix = false;
-	      return res;
-	    }
-	  });
-
-	  return add;
-	}
-
-	exports.factory = factory;
-
-/***/ },
-/* 266 */,
-/* 267 */,
-/* 268 */,
-/* 269 */,
-/* 270 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var clone = __webpack_require__(216).clone;
-
-	function factory(type, config, load, typed) {
-
-	  var DenseMatrix = type.DenseMatrix;
-
-	  /**
-	   * Iterates over DenseMatrix items and invokes the callback function f(Aij..z, b). 
-	   * Callback function invoked MxN times.
-	   *
-	   * C(i,j,...z) = f(Aij..z, b)
-	   *
-	   * @param {Matrix}   a                 The DenseMatrix instance (A)
-	   * @param {Scalar}   b                 The Scalar value
-	   * @param {Function} callback          The f(Aij..z,b) operation to invoke
-	   * @param {boolean}  inverse           A true value indicates callback should be invoked f(b,Aij..z)
-	   *
-	   * @return {Matrix}                    DenseMatrix (C)
-	   *
-	   * https://github.com/josdejong/mathjs/pull/346#issuecomment-97659042
-	   */
-	  var algorithm14 = function (a, b, callback, inverse) {
-	    // a arrays
-	    var adata = a._data;
-	    var asize = a._size;
-	    var adt = a._datatype;
-
-	    // datatype
-	    var dt;
-	    // callback signature to use
-	    var cf = callback;
-
-	    // process data types
-	    if (typeof adt === 'string') {
-	      // datatype
-	      dt = adt;
-	      // convert b to the same datatype
-	      b = typed.convert(b, dt);
-	      // callback
-	      cf = typed.find(callback, [dt, dt]);
-	    }
-
-	    // populate cdata, iterate through dimensions
-	    var cdata = asize.length > 0 ? _iterate(cf, 0, asize, asize[0], adata, b, inverse) : [];
-
-	    // c matrix
-	    return new DenseMatrix({
-	      data: cdata,
-	      size: clone(asize),
-	      datatype: dt
-	    });
-	  };
-
-	  // recursive function
-	  var _iterate = function (f, level, s, n, av, bv, inverse) {
-	    // initialize array for this level
-	    var cv = [];
-	    // check we reach the last level
-	    if (level === s.length - 1) {
-	      // loop arrays in last level
-	      for (var i = 0; i < n; i++) {
-	        // invoke callback and store value
-	        cv[i] = inverse ? f(bv, av[i]) : f(av[i], bv);
-	      }
-	    } else {
-	      // iterate current level
-	      for (var j = 0; j < n; j++) {
-	        // iterate next level
-	        cv[j] = _iterate(f, level + 1, s, s[level + 1], av[j], bv, inverse);
-	      }
-	    }
-	    return cv;
-	  };
-
-	  return algorithm14;
-	}
-
-	exports.name = 'algorithm14';
-	exports.factory = factory;
-
-/***/ },
-/* 271 */,
-/* 272 */,
-/* 273 */,
-/* 274 */,
-/* 275 */,
-/* 276 */,
-/* 277 */,
-/* 278 */,
-/* 279 */,
-/* 280 */,
-/* 281 */,
-/* 282 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var deepMap = __webpack_require__(230);
-
-	function factory(type, config, load, typed) {
-	  /**
-	   * Create a number or convert a string, boolean, or unit to a number.
-	   * When value is a matrix, all elements will be converted to number.
-	   *
-	   * Syntax:
-	   *
-	   *    math.number(value)
-	   *    math.number(unit, valuelessUnit)
-	   *
-	   * Examples:
-	   *
-	   *    math.number(2);                         // returns number 2
-	   *    math.number('7.2');                     // returns number 7.2
-	   *    math.number(true);                      // returns number 1
-	   *    math.number([true, false, true, true]); // returns [1, 0, 1, 1]
-	   *    math.number(math.unit('52cm'), 'm');    // returns 0.52
-	   *
-	   * See also:
-	   *
-	   *    bignumber, boolean, complex, index, matrix, string, unit
-	   *
-	   * @param {string | number | BigNumber | Fraction | boolean | Array | Matrix | Unit | null} [value]  Value to be converted
-	   * @param {Unit | string} [valuelessUnit] A valueless unit, used to convert a unit to a number
-	   * @return {number | Array | Matrix} The created number
-	   */
-	  var number = typed('number', {
-	    '': function () {
-	      return 0;
-	    },
-
-	    'number': function (x) {
-	      return x;
-	    },
-
-	    'string': function (x) {
-	      var num = Number(x);
-	      if (isNaN(num)) {
-	        throw new SyntaxError('String "' + x + '" is no valid number');
-	      }
-	      return num;
-	    },
-
-	    'BigNumber': function (x) {
-	      return x.toNumber();
-	    },
-
-	    'Fraction': function (x) {
-	      return x.valueOf();
-	    },
-
-	    'Unit': function (x) {
-	      throw new Error('Second argument with valueless unit expected');
-	    },
-
-	    'Unit, string | Unit': function (unit, valuelessUnit) {
-	      return unit.toNumber(valuelessUnit);
-	    },
-
-	    'Array | Matrix': function (x) {
-	      return deepMap(x, number);
-	    }
-	  });
-
-	  number.toTex = {
-	    0: '0',
-	    1: '\\left(${args[0]}\\right)',
-	    2: '\\left(\\left(${args[0]}\\right)${args[1]}\\right)'
-	  };
-
-	  return number;
-	}
-
-	exports.name = 'number';
-	exports.factory = factory;
-
-/***/ },
-/* 283 */,
-/* 284 */,
-/* 285 */,
-/* 286 */,
-/* 287 */,
-/* 288 */,
-/* 289 */,
-/* 290 */,
-/* 291 */,
-/* 292 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	function factory(type, config, load, typed) {
-
-	  /**
-	   * Multiply two scalar values, `x * y`.
-	   * This function is meant for internal use: it is used by the public function
-	   * `multiply`
-	   *
-	   * This function does not support collections (Array or Matrix), and does
-	   * not validate the number of of inputs.
-	   *
-	   * @param  {number | BigNumber | Fraction | Complex | Unit} x   First value to multiply
-	   * @param  {number | BigNumber | Fraction | Complex} y          Second value to multiply
-	   * @return {number | BigNumber | Fraction | Complex | Unit}                      Multiplication of `x` and `y`
-	   * @private
-	   */
-	  var multiplyScalar = typed('multiplyScalar', {
-
-	    'number, number': function (x, y) {
-	      return x * y;
-	    },
-
-	    'Complex, Complex': function (x, y) {
-	      return x.mul(y);
-	    },
-
-	    'BigNumber, BigNumber': function (x, y) {
-	      return x.times(y);
-	    },
-
-	    'Fraction, Fraction': function (x, y) {
-	      return x.mul(y);
-	    },
-
-	    'number | Fraction | BigNumber | Complex, Unit': function (x, y) {
-	      var res = y.clone();
-	      res.value = res.value === null ? res._normalize(x) : multiplyScalar(res.value, x);
-	      return res;
-	    },
-
-	    'Unit, number | Fraction | BigNumber | Complex': function (x, y) {
-	      var res = x.clone();
-	      res.value = res.value === null ? res._normalize(y) : multiplyScalar(res.value, y);
-	      return res;
-	    },
-
-	    'Unit, Unit': function (x, y) {
-	      return x.multiply(y);
-	    }
-
-	  });
-
-	  return multiplyScalar;
-	}
-
-	exports.factory = factory;
-
-/***/ },
-/* 293 */,
-/* 294 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var isInteger = __webpack_require__(219).isInteger;
-	var size = __webpack_require__(251).size;
-
-	function factory(type, config, load, typed) {
-	  var latex = __webpack_require__(243);
-	  var eye = load(__webpack_require__(295));
-	  var multiply = load(__webpack_require__(296));
-	  var matrix = load(__webpack_require__(264));
-	  var fraction = load(__webpack_require__(247));
-	  var number = load(__webpack_require__(282));
-
-	  /**
-	   * Calculates the power of x to y, `x ^ y`.
-	   * Matrix exponentiation is supported for square matrices `x`, and positive
-	   * integer exponents `y`.
-	   *
-	   * For cubic roots of negative numbers, the function returns the principal
-	   * root by default. In order to let the function return the real root,
-	   * math.js can be configured with `math.config({predictable: true})`.
-	   * To retrieve all cubic roots of a value, use `math.cbrt(x, true)`.
-	   *
-	   * Syntax:
-	   *
-	   *    math.pow(x, y)
-	   *
-	   * Examples:
-	   *
-	   *    math.pow(2, 3);               // returns number 8
-	   *
-	   *    var a = math.complex(2, 3);
-	   *    math.pow(a, 2)                // returns Complex -5 + 12i
-	   *
-	   *    var b = [[1, 2], [4, 3]];
-	   *    math.pow(b, 2);               // returns Array [[9, 8], [16, 17]]
-	   *
-	   * See also:
-	   *
-	   *    multiply, sqrt, cbrt, nthRoot
-	   *
-	   * @param  {number | BigNumber | Complex | Array | Matrix} x  The base
-	   * @param  {number | BigNumber | Complex} y                   The exponent
-	   * @return {number | BigNumber | Complex | Array | Matrix} The value of `x` to the power `y`
-	   */
-	  var pow = typed('pow', {
-	    'number, number': _pow,
-
-	    'Complex, Complex': function (x, y) {
-	      return x.pow(y);
-	    },
-
-	    'BigNumber, BigNumber': function (x, y) {
-	      if (y.isInteger() || x >= 0 || config.predictable) {
-	        return x.pow(y);
-	      } else {
-	        return new type.Complex(x.toNumber(), 0).pow(y.toNumber(), 0);
-	      }
-	    },
-
-	    'Fraction, Fraction': function (x, y) {
-	      if (y.d !== 1) {
-	        if (config.predictable) {
-	          throw new Error('Function pow does not support non-integer exponents for fractions.');
+	      n = new type.Complex(n.re - 1, n.im);
+	      x = new type.Complex(p[0], 0);
+	      for (var i = 1; i < p.length; ++i) {
+	        var real = n.re + i; // x += p[i]/(n+i)
+	        var den = real * real + n.im * n.im;
+	        if (den != 0) {
+	          x.re += p[i] * real / den;
+	          x.im += -(p[i] * n.im) / den;
 	        } else {
-	          return _pow(x.valueOf(), y.valueOf());
+	          x.re = p[i] < 0 ? -Infinity : Infinity;
 	        }
+	      }
+
+	      t = new type.Complex(n.re + g + 0.5, n.im);
+	      var twoPiSqrt = Math.sqrt(2 * Math.PI);
+
+	      n.re += 0.5;
+	      var result = pow(t, n);
+	      if (result.im == 0) {
+	        // sqrt(2*PI)*result
+	        result.re *= twoPiSqrt;
+	      } else if (result.re == 0) {
+	        result.im *= twoPiSqrt;
 	      } else {
-	        return x.pow(y);
+	        result.re *= twoPiSqrt;
+	        result.im *= twoPiSqrt;
 	      }
+
+	      var r = Math.exp(-t.re); // exp(-t)
+	      t.re = r * Math.cos(-t.im);
+	      t.im = r * Math.sin(-t.im);
+
+	      return multiply(multiply(result, t), x);
 	    },
 
-	    'Array, number': _powArray,
+	    'BigNumber': function (n) {
+	      if (n.isInteger()) {
+	        return n.isNegative() || n.isZero() ? new type.BigNumber(Infinity) : bigFactorial(n.minus(1));
+	      }
 
-	    'Array, BigNumber': function (x, y) {
-	      return _powArray(x, y.toNumber());
+	      if (!n.isFinite()) {
+	        return new type.BigNumber(n.isNegative() ? NaN : Infinity);
+	      }
+
+	      throw new Error('Integer BigNumber expected');
 	    },
 
-	    'Matrix, number': _powMatrix,
-
-	    'Matrix, BigNumber': function (x, y) {
-	      return _powMatrix(x, y.toNumber());
-	    },
-
-	    'Unit, number': function (x, y) {
-	      return x.pow(y);
+	    'Array | Matrix': function (n) {
+	      return deepMap(n, gamma);
 	    }
-
 	  });
 
 	  /**
-	   * Calculates the power of x to y, x^y, for two numbers.
-	   * @param {number} x
-	   * @param {number} y
-	   * @return {number | Complex} res
-	   * @private
+	   * Calculate factorial for a BigNumber
+	   * @param {BigNumber} n
+	   * @returns {BigNumber} Returns the factorial of n
 	   */
-	  function _pow(x, y) {
-
-	    // Alternatively could define a 'realmode' config option or something, but
-	    // 'predictable' will work for now
-	    if (config.predictable && !isInteger(y) && x < 0) {
-	      // Check to see if y can be represented as a fraction
-	      try {
-	        var yFrac = fraction(y);
-	        var yNum = number(yFrac);
-	        if (y === yNum || Math.abs((y - yNum) / y) < 1e-14) {
-	          if (yFrac.d % 2 === 1) {
-	            return (yFrac.n % 2 === 0 ? 1 : -1) * Math.pow(-x, y);
-	          }
-	        }
-	      } catch (ex) {}
-	      // fraction() throws an error if y is Infinity, etc.
-
-
-	      // Unable to express y as a fraction, so continue on
+	  function bigFactorial(n) {
+	    if (n.isZero()) {
+	      return new type.BigNumber(1); // 0! is per definition 1
 	    }
 
-	    // x^Infinity === 0 if -1 < x < 1
-	    // A real number 0 is returned instead of complex(0)
-	    if (x * x < 1 && y === Infinity || x * x > 1 && y === -Infinity) {
-	      return 0;
+	    var precision = config.precision + (Math.log(n.toNumber()) | 0);
+	    var Big = type.BigNumber.clone({ precision: precision });
+
+	    var res = new Big(n);
+	    var value = n.toNumber() - 1; // number
+	    while (value > 1) {
+	      res = res.times(value);
+	      value--;
 	    }
 
-	    // **for predictable mode** x^Infinity === NaN if x < -1
-	    // N.B. this behavour is different from `Math.pow` which gives
-	    // (-2)^Infinity === Infinity
-	    if (config.predictable && (x < -1 && y === Infinity || x > -1 && x < 0 && y === -Infinity)) {
-	      return NaN;
-	    }
-
-	    if (isInteger(y) || x >= 0 || config.predictable) {
-	      return Math.pow(x, y);
-	    } else {
-	      return new type.Complex(x, 0).pow(y, 0);
-	    }
+	    return new type.BigNumber(res.toPrecision(type.BigNumber.precision));
 	  }
 
-	  /**
-	   * Calculate the power of a 2d array
-	   * @param {Array} x     must be a 2 dimensional, square matrix
-	   * @param {number} y    a positive, integer value
-	   * @returns {Array}
-	   * @private
-	   */
-	  function _powArray(x, y) {
-	    if (!isInteger(y) || y < 0) {
-	      throw new TypeError('For A^b, b must be a positive integer (value is ' + y + ')');
-	    }
-	    // verify that A is a 2 dimensional square matrix
-	    var s = size(x);
-	    if (s.length != 2) {
-	      throw new Error('For A^b, A must be 2 dimensional (A has ' + s.length + ' dimensions)');
-	    }
-	    if (s[0] != s[1]) {
-	      throw new Error('For A^b, A must be square (size is ' + s[0] + 'x' + s[1] + ')');
-	    }
+	  gamma.toTex = { 1: '\\Gamma\\left(${args[0]}\\right)' };
 
-	    var res = eye(s[0]).valueOf();
-	    var px = x;
-	    while (y >= 1) {
-	      if ((y & 1) == 1) {
-	        res = multiply(px, res);
-	      }
-	      y >>= 1;
-	      px = multiply(px, px);
-	    }
-	    return res;
-	  }
-
-	  /**
-	   * Calculate the power of a 2d matrix
-	   * @param {Matrix} x     must be a 2 dimensional, square matrix
-	   * @param {number} y    a positive, integer value
-	   * @returns {Matrix}
-	   * @private
-	   */
-	  function _powMatrix(x, y) {
-	    return matrix(_powArray(x.valueOf(), y));
-	  }
-
-	  pow.toTex = {
-	    2: '\\left(${args[0]}\\right)' + latex.operators['pow'] + '{${args[1]}}'
-	  };
-
-	  return pow;
+	  return gamma;
 	}
 
-	exports.name = 'pow';
+	// TODO: comment on the variables g and p
+
+	var g = 4.7421875;
+
+	var p = [0.99999999999999709182, 57.156235665862923517, -59.597960355475491248, 14.136097974741747174, -0.49191381609762019978, 0.33994649984811888699e-4, 0.46523628927048575665e-4, -0.98374475304879564677e-4, 0.15808870322491248884e-3, -0.21026444172410488319e-3, 0.21743961811521264320e-3, -0.16431810653676389022e-3, 0.84418223983852743293e-4, -0.26190838401581408670e-4, 0.36899182659531622704e-5];
+
+	exports.name = 'gamma';
 	exports.factory = factory;
 
 /***/ },
-/* 295 */
+/* 205 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var array = __webpack_require__(251);
-	var isInteger = __webpack_require__(219).isInteger;
+	var extend = __webpack_require__(189).extend;
+	var array = __webpack_require__(206);
 
 	function factory(type, config, load, typed) {
+	  var latex = __webpack_require__(212);
 
-	  var matrix = load(__webpack_require__(264));
+	  var matrix = load(__webpack_require__(213));
+	  var addScalar = load(__webpack_require__(214));
+	  var multiplyScalar = load(__webpack_require__(215));
+	  var equalScalar = load(__webpack_require__(216));
 
-	  /**
-	   * Create a 2-dimensional identity matrix with size m x n or n x n.
-	   * The matrix has ones on the diagonal and zeros elsewhere.
-	   *
-	   * Syntax:
-	   *
-	   *    math.eye(n)
-	   *    math.eye(n, format)
-	   *    math.eye(m, n)
-	   *    math.eye(m, n, format)
-	   *    math.eye([m, n])
-	   *    math.eye([m, n], format)
-	   *
-	   * Examples:
-	   *
-	   *    math.eye(3);                    // returns [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
-	   *    math.eye(3, 2);                 // returns [[1, 0], [0, 1], [0, 0]]
-	   *
-	   *    var A = [[1, 2, 3], [4, 5, 6]];
-	   *    math.eye(math.size(A));         // returns [[1, 0, 0], [0, 1, 0]]
-	   *
-	   * See also:
-	   *
-	   *    diag, ones, zeros, size, range
-	   *
-	   * @param {...number | Matrix | Array} size   The size for the matrix
-	   * @param {string} [format]                   The Matrix storage format
-	   *
-	   * @return {Matrix | Array | number} A matrix with ones on the diagonal.
-	   */
-	  var eye = typed('eye', {
-	    '': function () {
-	      return config.matrix === 'Matrix' ? matrix([]) : [];
-	    },
-
-	    'string': function (format) {
-	      return matrix(format);
-	    },
-
-	    'number | BigNumber': function (rows) {
-	      return _eye(rows, rows, config.matrix === 'Matrix' ? 'default' : undefined);
-	    },
-
-	    'number | BigNumber, string': function (rows, format) {
-	      return _eye(rows, rows, format);
-	    },
-
-	    'number | BigNumber, number | BigNumber': function (rows, cols) {
-	      return _eye(rows, cols, config.matrix === 'Matrix' ? 'default' : undefined);
-	    },
-
-	    'number | BigNumber, number | BigNumber, string': function (rows, cols, format) {
-	      return _eye(rows, cols, format);
-	    },
-
-	    'Array': function (size) {
-	      return _eyeVector(size);
-	    },
-
-	    'Array, string': function (size, format) {
-	      return _eyeVector(size, format);
-	    },
-
-	    'Matrix': function (size) {
-	      return _eyeVector(size.valueOf(), size.storage());
-	    },
-
-	    'Matrix, string': function (size, format) {
-	      return _eyeVector(size.valueOf(), format);
-	    }
-	  });
-
-	  eye.toTex = undefined; // use default template
-
-	  return eye;
-
-	  function _eyeVector(size, format) {
-	    switch (size.length) {
-	      case 0:
-	        return format ? matrix(format) : [];
-	      case 1:
-	        return _eye(size[0], size[0], format);
-	      case 2:
-	        return _eye(size[0], size[1], format);
-	      default:
-	        throw new Error('Vector containing two values expected');
-	    }
-	  }
-
-	  /**
-	   * Create an identity matrix
-	   * @param {number | BigNumber} rows
-	   * @param {number | BigNumber} cols
-	   * @param {string} [format]
-	   * @returns {Matrix}
-	   * @private
-	   */
-	  function _eye(rows, cols, format) {
-	    // BigNumber constructor with the right precision
-	    var Big = rows && rows.isBigNumber === true ? type.BigNumber : cols && cols.isBigNumber === true ? type.BigNumber : null;
-
-	    if (rows && rows.isBigNumber === true) rows = rows.toNumber();
-	    if (cols && cols.isBigNumber === true) cols = cols.toNumber();
-
-	    if (!isInteger(rows) || rows < 1) {
-	      throw new Error('Parameters in function eye must be positive integers');
-	    }
-	    if (!isInteger(cols) || cols < 1) {
-	      throw new Error('Parameters in function eye must be positive integers');
-	    }
-
-	    var one = Big ? new type.BigNumber(1) : 1;
-	    var defaultValue = Big ? new Big(0) : 0;
-	    var size = [rows, cols];
-
-	    // check we need to return a matrix
-	    if (format) {
-	      // get matrix storage constructor
-	      var F = type.Matrix.storage(format);
-	      // create diagonal matrix (use optimized implementation for storage format)
-	      return F.diagonal(size, one, 0, defaultValue);
-	    }
-
-	    // create and resize array
-	    var res = array.resize([], size, defaultValue);
-	    // fill in ones on the diagonal
-	    var minimum = rows < cols ? rows : cols;
-	    // fill diagonal
-	    for (var d = 0; d < minimum; d++) {
-	      res[d][d] = one;
-	    }
-	    return res;
-	  }
-	}
-
-	exports.name = 'eye';
-	exports.factory = factory;
-
-/***/ },
-/* 296 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var extend = __webpack_require__(216).extend;
-	var array = __webpack_require__(251);
-
-	function factory(type, config, load, typed) {
-	  var latex = __webpack_require__(243);
-
-	  var matrix = load(__webpack_require__(264));
-	  var addScalar = load(__webpack_require__(265));
-	  var multiplyScalar = load(__webpack_require__(292));
-	  var equalScalar = load(__webpack_require__(260));
-
-	  var algorithm11 = load(__webpack_require__(297));
-	  var algorithm14 = load(__webpack_require__(270));
+	  var algorithm11 = load(__webpack_require__(218));
+	  var algorithm14 = load(__webpack_require__(219));
 
 	  var DenseMatrix = type.DenseMatrix;
 	  var SparseMatrix = type.SparseMatrix;
@@ -22505,14 +18290,1469 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ },
-/* 297 */
+/* 206 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var number = __webpack_require__(192);
+	var string = __webpack_require__(207);
+	var object = __webpack_require__(189);
+	var types = __webpack_require__(209);
+
+	var DimensionError = __webpack_require__(210);
+	var IndexError = __webpack_require__(211);
+
+	/**
+	 * Calculate the size of a multi dimensional array.
+	 * This function checks the size of the first entry, it does not validate
+	 * whether all dimensions match. (use function `validate` for that)
+	 * @param {Array} x
+	 * @Return {Number[]} size
+	 */
+	exports.size = function (x) {
+	  var s = [];
+
+	  while (Array.isArray(x)) {
+	    s.push(x.length);
+	    x = x[0];
+	  }
+
+	  return s;
+	};
+
+	/**
+	 * Recursively validate whether each element in a multi dimensional array
+	 * has a size corresponding to the provided size array.
+	 * @param {Array} array    Array to be validated
+	 * @param {number[]} size  Array with the size of each dimension
+	 * @param {number} dim   Current dimension
+	 * @throws DimensionError
+	 * @private
+	 */
+	function _validate(array, size, dim) {
+	  var i;
+	  var len = array.length;
+
+	  if (len != size[dim]) {
+	    throw new DimensionError(len, size[dim]);
+	  }
+
+	  if (dim < size.length - 1) {
+	    // recursively validate each child array
+	    var dimNext = dim + 1;
+	    for (i = 0; i < len; i++) {
+	      var child = array[i];
+	      if (!Array.isArray(child)) {
+	        throw new DimensionError(size.length - 1, size.length, '<');
+	      }
+	      _validate(array[i], size, dimNext);
+	    }
+	  } else {
+	    // last dimension. none of the childs may be an array
+	    for (i = 0; i < len; i++) {
+	      if (Array.isArray(array[i])) {
+	        throw new DimensionError(size.length + 1, size.length, '>');
+	      }
+	    }
+	  }
+	}
+
+	/**
+	 * Validate whether each element in a multi dimensional array has
+	 * a size corresponding to the provided size array.
+	 * @param {Array} array    Array to be validated
+	 * @param {number[]} size  Array with the size of each dimension
+	 * @throws DimensionError
+	 */
+	exports.validate = function (array, size) {
+	  var isScalar = size.length == 0;
+	  if (isScalar) {
+	    // scalar
+	    if (Array.isArray(array)) {
+	      throw new DimensionError(array.length, 0);
+	    }
+	  } else {
+	    // array
+	    _validate(array, size, 0);
+	  }
+	};
+
+	/**
+	 * Test whether index is an integer number with index >= 0 and index < length
+	 * when length is provided
+	 * @param {number} index    Zero-based index
+	 * @param {number} [length] Length of the array
+	 */
+	exports.validateIndex = function (index, length) {
+	  if (!number.isNumber(index) || !number.isInteger(index)) {
+	    throw new TypeError('Index must be an integer (value: ' + index + ')');
+	  }
+	  if (index < 0 || typeof length === 'number' && index >= length) {
+	    throw new IndexError(index, length);
+	  }
+	};
+
+	// a constant used to specify an undefined defaultValue
+	exports.UNINITIALIZED = {};
+
+	/**
+	 * Resize a multi dimensional array. The resized array is returned.
+	 * @param {Array} array         Array to be resized
+	 * @param {Array.<number>} size Array with the size of each dimension
+	 * @param {*} [defaultValue=0]  Value to be filled in in new entries,
+	 *                              zero by default. To leave new entries undefined,
+	 *                              specify array.UNINITIALIZED as defaultValue
+	 * @return {Array} array         The resized array
+	 */
+	exports.resize = function (array, size, defaultValue) {
+	  // TODO: add support for scalars, having size=[] ?
+
+	  // check the type of the arguments
+	  if (!Array.isArray(array) || !Array.isArray(size)) {
+	    throw new TypeError('Array expected');
+	  }
+	  if (size.length === 0) {
+	    throw new Error('Resizing to scalar is not supported');
+	  }
+
+	  // check whether size contains positive integers
+	  size.forEach(function (value) {
+	    if (!number.isNumber(value) || !number.isInteger(value) || value < 0) {
+	      throw new TypeError('Invalid size, must contain positive integers ' + '(size: ' + string.format(size) + ')');
+	    }
+	  });
+
+	  // recursively resize the array
+	  var _defaultValue = defaultValue !== undefined ? defaultValue : 0;
+	  _resize(array, size, 0, _defaultValue);
+
+	  return array;
+	};
+
+	/**
+	 * Recursively resize a multi dimensional array
+	 * @param {Array} array         Array to be resized
+	 * @param {number[]} size       Array with the size of each dimension
+	 * @param {number} dim          Current dimension
+	 * @param {*} [defaultValue]    Value to be filled in in new entries,
+	 *                              undefined by default.
+	 * @private
+	 */
+	function _resize(array, size, dim, defaultValue) {
+	  var i;
+	  var elem;
+	  var oldLen = array.length;
+	  var newLen = size[dim];
+	  var minLen = Math.min(oldLen, newLen);
+
+	  // apply new length
+	  array.length = newLen;
+
+	  if (dim < size.length - 1) {
+	    // non-last dimension
+	    var dimNext = dim + 1;
+
+	    // resize existing child arrays
+	    for (i = 0; i < minLen; i++) {
+	      // resize child array
+	      elem = array[i];
+	      if (!Array.isArray(elem)) {
+	        elem = [elem]; // add a dimension
+	        array[i] = elem;
+	      }
+	      _resize(elem, size, dimNext, defaultValue);
+	    }
+
+	    // create new child arrays
+	    for (i = minLen; i < newLen; i++) {
+	      // get child array
+	      elem = [];
+	      array[i] = elem;
+
+	      // resize new child array
+	      _resize(elem, size, dimNext, defaultValue);
+	    }
+	  } else {
+	    // last dimension
+
+	    // remove dimensions of existing values
+	    for (i = 0; i < minLen; i++) {
+	      while (Array.isArray(array[i])) {
+	        array[i] = array[i][0];
+	      }
+	    }
+
+	    if (defaultValue !== exports.UNINITIALIZED) {
+	      // fill new elements with the default value
+	      for (i = minLen; i < newLen; i++) {
+	        array[i] = defaultValue;
+	      }
+	    }
+	  }
+	}
+
+	/**
+	 * Re-shape a multi dimensional array to fit the specified dimensions
+	 * @param {Array} array           Array to be reshaped
+	 * @param {Array.<number>} sizes  List of sizes for each dimension
+	 * @returns {Array}               Array whose data has been formatted to fit the
+	 *                                specified dimensions
+	 *
+	 * @throws {DimensionError}       If the product of the new dimension sizes does
+	 *                                not equal that of the old ones
+	 */
+	exports.reshape = function (array, sizes) {
+	  var flatArray = exports.flatten(array);
+	  var newArray;
+
+	  var product = function (arr) {
+	    return arr.reduce(function (prev, curr) {
+	      return prev * curr;
+	    });
+	  };
+
+	  if (!Array.isArray(array) || !Array.isArray(sizes)) {
+	    throw new TypeError('Array expected');
+	  }
+
+	  if (sizes.length === 0) {
+	    throw new DimensionError(0, product(exports.size(array)), '!=');
+	  }
+
+	  try {
+	    newArray = _reshape(flatArray, sizes);
+	  } catch (e) {
+	    if (e instanceof DimensionError) {
+	      throw new DimensionError(product(sizes), product(exports.size(array)), '!=');
+	    }
+	    throw e;
+	  }
+
+	  if (flatArray.length > 0) {
+	    throw new DimensionError(product(sizes), product(exports.size(array)), '!=');
+	  }
+
+	  return newArray;
+	};
+
+	/**
+	 * Recursively re-shape a multi dimensional array to fit the specified dimensions
+	 * @param {Array} array           Array to be reshaped
+	 * @param {Array.<number>} sizes  List of sizes for each dimension
+	 * @returns {Array}               Array whose data has been formatted to fit the
+	 *                                specified dimensions
+	 *
+	 * @throws {DimensionError}       If the product of the new dimension sizes does
+	 *                                not equal that of the old ones
+	 */
+	function _reshape(array, sizes) {
+	  var accumulator = [];
+	  var i;
+
+	  if (sizes.length === 0) {
+	    if (array.length === 0) {
+	      throw new DimensionError(null, null, '!=');
+	    }
+	    return array.shift();
+	  }
+	  for (i = 0; i < sizes[0]; i += 1) {
+	    accumulator.push(_reshape(array, sizes.slice(1)));
+	  }
+	  return accumulator;
+	}
+
+	/**
+	 * Squeeze a multi dimensional array
+	 * @param {Array} array
+	 * @param {Array} [size]
+	 * @returns {Array} returns the array itself
+	 */
+	exports.squeeze = function (array, size) {
+	  var s = size || exports.size(array);
+
+	  // squeeze outer dimensions
+	  while (Array.isArray(array) && array.length === 1) {
+	    array = array[0];
+	    s.shift();
+	  }
+
+	  // find the first dimension to be squeezed
+	  var dims = s.length;
+	  while (s[dims - 1] === 1) {
+	    dims--;
+	  }
+
+	  // squeeze inner dimensions
+	  if (dims < s.length) {
+	    array = _squeeze(array, dims, 0);
+	    s.length = dims;
+	  }
+
+	  return array;
+	};
+
+	/**
+	 * Recursively squeeze a multi dimensional array
+	 * @param {Array} array
+	 * @param {number} dims Required number of dimensions
+	 * @param {number} dim  Current dimension
+	 * @returns {Array | *} Returns the squeezed array
+	 * @private
+	 */
+	function _squeeze(array, dims, dim) {
+	  var i, ii;
+
+	  if (dim < dims) {
+	    var next = dim + 1;
+	    for (i = 0, ii = array.length; i < ii; i++) {
+	      array[i] = _squeeze(array[i], dims, next);
+	    }
+	  } else {
+	    while (Array.isArray(array)) {
+	      array = array[0];
+	    }
+	  }
+
+	  return array;
+	}
+
+	/**
+	 * Unsqueeze a multi dimensional array: add dimensions when missing
+	 * 
+	 * Paramter `size` will be mutated to match the new, unqueezed matrix size.
+	 * 
+	 * @param {Array} array
+	 * @param {number} dims     Desired number of dimensions of the array
+	 * @param {number} [outer]  Number of outer dimensions to be added
+	 * @param {Array} [size]    Current size of array.
+	 * @returns {Array} returns the array itself
+	 * @private
+	 */
+	exports.unsqueeze = function (array, dims, outer, size) {
+	  var s = size || exports.size(array);
+
+	  // unsqueeze outer dimensions
+	  if (outer) {
+	    for (var i = 0; i < outer; i++) {
+	      array = [array];
+	      s.unshift(1);
+	    }
+	  }
+
+	  // unsqueeze inner dimensions
+	  array = _unsqueeze(array, dims, 0);
+	  while (s.length < dims) {
+	    s.push(1);
+	  }
+
+	  return array;
+	};
+
+	/**
+	 * Recursively unsqueeze a multi dimensional array
+	 * @param {Array} array
+	 * @param {number} dims Required number of dimensions
+	 * @param {number} dim  Current dimension
+	 * @returns {Array | *} Returns the squeezed array
+	 * @private
+	 */
+	function _unsqueeze(array, dims, dim) {
+	  var i, ii;
+
+	  if (Array.isArray(array)) {
+	    var next = dim + 1;
+	    for (i = 0, ii = array.length; i < ii; i++) {
+	      array[i] = _unsqueeze(array[i], dims, next);
+	    }
+	  } else {
+	    for (var d = dim; d < dims; d++) {
+	      array = [array];
+	    }
+	  }
+
+	  return array;
+	}
+	/**
+	 * Flatten a multi dimensional array, put all elements in a one dimensional
+	 * array
+	 * @param {Array} array   A multi dimensional array
+	 * @return {Array}        The flattened array (1 dimensional)
+	 */
+	exports.flatten = function (array) {
+	  if (!Array.isArray(array)) {
+	    //if not an array, return as is
+	    return array;
+	  }
+	  var flat = [];
+
+	  array.forEach(function callback(value) {
+	    if (Array.isArray(value)) {
+	      value.forEach(callback); //traverse through sub-arrays recursively
+	    } else {
+	      flat.push(value);
+	    }
+	  });
+
+	  return flat;
+	};
+
+	/**
+	 * A safe map
+	 * @param {Array} array
+	 * @param {function} callback
+	 */
+	exports.map = function (array, callback) {
+	  return Array.prototype.map.call(array, callback);
+	};
+
+	/**
+	 * A safe forEach
+	 * @param {Array} array
+	 * @param {function} callback
+	 */
+	exports.forEach = function (array, callback) {
+	  Array.prototype.forEach.call(array, callback);
+	};
+
+	/**
+	 * A safe filter
+	 * @param {Array} array
+	 * @param {function} callback
+	 */
+	exports.filter = function (array, callback) {
+	  if (exports.size(array).length !== 1) {
+	    throw new Error('Only one dimensional matrices supported');
+	  }
+
+	  return Array.prototype.filter.call(array, callback);
+	};
+
+	/**
+	 * Filter values in a callback given a regular expression
+	 * @param {Array} array
+	 * @param {RegExp} regexp
+	 * @return {Array} Returns the filtered array
+	 * @private
+	 */
+	exports.filterRegExp = function (array, regexp) {
+	  if (exports.size(array).length !== 1) {
+	    throw new Error('Only one dimensional matrices supported');
+	  }
+
+	  return Array.prototype.filter.call(array, function (entry) {
+	    return regexp.test(entry);
+	  });
+	};
+
+	/**
+	 * A safe join
+	 * @param {Array} array
+	 * @param {string} separator
+	 */
+	exports.join = function (array, separator) {
+	  return Array.prototype.join.call(array, separator);
+	};
+
+	/**
+	 * Assign a numeric identifier to every element of a sorted array
+	 * @param {Array}	a  An array
+	 * @return {Array}	An array of objects containing the original value and its identifier
+	 */
+	exports.identify = function (a) {
+	  if (!Array.isArray(a)) {
+	    throw new TypeError('Array input expected');
+	  }
+
+	  if (a.length === 0) {
+	    return a;
+	  }
+
+	  var b = [];
+	  var count = 0;
+	  b[0] = { value: a[0], identifier: 0 };
+	  for (var i = 1; i < a.length; i++) {
+	    if (a[i] === a[i - 1]) {
+	      count++;
+	    } else {
+	      count = 0;
+	    }
+	    b.push({ value: a[i], identifier: count });
+	  }
+	  return b;
+	};
+
+	/**
+	 * Remove the numeric identifier from the elements
+	 * @param	a  An array
+	 * @return	An array of values without identifiers
+	 */
+	exports.generalize = function (a) {
+	  if (!Array.isArray(a)) {
+	    throw new TypeError('Array input expected');
+	  }
+
+	  if (a.length === 0) {
+	    return a;
+	  }
+
+	  var b = [];
+	  for (var i = 0; i < a.length; i++) {
+	    b.push(a[i].value);
+	  }
+	  return b;
+	};
+
+	/**
+	 * Test whether an object is an array
+	 * @param {*} value
+	 * @return {boolean} isArray
+	 */
+		exports.isArray = Array.isArray;
+
+/***/ },
+/* 207 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var formatNumber = __webpack_require__(192).format;
+	var formatBigNumber = __webpack_require__(208).format;
+
+	/**
+	 * Test whether value is a string
+	 * @param {*} value
+	 * @return {boolean} isString
+	 */
+	exports.isString = function (value) {
+	  return typeof value === 'string';
+	};
+
+	/**
+	 * Check if a text ends with a certain string.
+	 * @param {string} text
+	 * @param {string} search
+	 */
+	exports.endsWith = function (text, search) {
+	  var start = text.length - search.length;
+	  var end = text.length;
+	  return text.substring(start, end) === search;
+	};
+
+	/**
+	 * Format a value of any type into a string.
+	 *
+	 * Usage:
+	 *     math.format(value)
+	 *     math.format(value, precision)
+	 *
+	 * When value is a function:
+	 *
+	 * - When the function has a property `syntax`, it returns this
+	 *   syntax description.
+	 * - In other cases, a string `'function'` is returned.
+	 *
+	 * When `value` is an Object:
+	 *
+	 * - When the object contains a property `format` being a function, this
+	 *   function is invoked as `value.format(options)` and the result is returned.
+	 * - When the object has its own `toString` method, this method is invoked
+	 *   and the result is returned.
+	 * - In other cases the function will loop over all object properties and
+	 *   return JSON object notation like '{"a": 2, "b": 3}'.
+	 *
+	 * Example usage:
+	 *     math.format(2/7);                // '0.2857142857142857'
+	 *     math.format(math.pi, 3);         // '3.14'
+	 *     math.format(new Complex(2, 3));  // '2 + 3i'
+	 *     math.format('hello');            // '"hello"'
+	 *
+	 * @param {*} value             Value to be stringified
+	 * @param {Object | number | Function} [options]  Formatting options. See
+	 *                                                lib/utils/number:format for a
+	 *                                                description of the available
+	 *                                                options.
+	 * @return {string} str
+	 */
+	exports.format = function (value, options) {
+	  if (typeof value === 'number') {
+	    return formatNumber(value, options);
+	  }
+
+	  if (value && value.isBigNumber === true) {
+	    return formatBigNumber(value, options);
+	  }
+
+	  if (value && value.isFraction === true) {
+	    if (!options || options.fraction !== 'decimal') {
+	      // output as ratio, like '1/3'
+	      return value.s * value.n + '/' + value.d;
+	    } else {
+	      // output as decimal, like '0.(3)'
+	      return value.toString();
+	    }
+	  }
+
+	  if (Array.isArray(value)) {
+	    return formatArray(value, options);
+	  }
+
+	  if (exports.isString(value)) {
+	    return '"' + value + '"';
+	  }
+
+	  if (typeof value === 'function') {
+	    return value.syntax ? String(value.syntax) : 'function';
+	  }
+
+	  if (value && typeof value === 'object') {
+	    if (typeof value.format === 'function') {
+	      return value.format(options);
+	    } else if (value && value.toString() !== {}.toString()) {
+	      // this object has a non-native toString method, use that one
+	      return value.toString();
+	    } else {
+	      var entries = [];
+
+	      for (var key in value) {
+	        if (value.hasOwnProperty(key)) {
+	          entries.push('"' + key + '": ' + exports.format(value[key], options));
+	        }
+	      }
+
+	      return '{' + entries.join(', ') + '}';
+	    }
+	  }
+
+	  return String(value);
+	};
+
+	/**
+	 * Stringify a value into a string enclosed in double quotes.
+	 * Unescaped double quotes and backslashes inside the value are escaped.
+	 * @param {*} value
+	 * @return {string}
+	 */
+	exports.stringify = function (value) {
+	  var text = String(value);
+	  var escaped = '';
+	  var i = 0;
+	  while (i < text.length) {
+	    var c = text.charAt(i);
+
+	    if (c === '\\') {
+	      escaped += c;
+	      i++;
+
+	      c = text.charAt(i);
+	      if (c === '' || '"\\/bfnrtu'.indexOf(c) === -1) {
+	        escaped += '\\'; // no valid escape character -> escape it
+	      }
+	      escaped += c;
+	    } else if (c === '"') {
+	      escaped += '\\"';
+	    } else {
+	      escaped += c;
+	    }
+	    i++;
+	  }
+
+	  return '"' + escaped + '"';
+	};
+
+	/**
+	 * Escape special HTML characters
+	 * @param {*} value
+	 * @return {string}
+	 */
+	exports.escape = function (value) {
+	  var text = String(value);
+	  text = text.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+	  return text;
+	};
+
+	/**
+	 * Recursively format an n-dimensional matrix
+	 * Example output: "[[1, 2], [3, 4]]"
+	 * @param {Array} array
+	 * @param {Object | number | Function} [options]  Formatting options. See
+	 *                                                lib/utils/number:format for a
+	 *                                                description of the available
+	 *                                                options.
+	 * @returns {string} str
+	 */
+	function formatArray(array, options) {
+	  if (Array.isArray(array)) {
+	    var str = '[';
+	    var len = array.length;
+	    for (var i = 0; i < len; i++) {
+	      if (i != 0) {
+	        str += ', ';
+	      }
+	      str += formatArray(array[i], options);
+	    }
+	    str += ']';
+	    return str;
+	  } else {
+	    return exports.format(array, options);
+	  }
+	}
+
+/***/ },
+/* 208 */
+/***/ function(module, exports) {
+
+	/**
+	 * Convert a BigNumber to a formatted string representation.
+	 *
+	 * Syntax:
+	 *
+	 *    format(value)
+	 *    format(value, options)
+	 *    format(value, precision)
+	 *    format(value, fn)
+	 *
+	 * Where:
+	 *
+	 *    {number} value   The value to be formatted
+	 *    {Object} options An object with formatting options. Available options:
+	 *                     {string} notation
+	 *                         Number notation. Choose from:
+	 *                         'fixed'          Always use regular number notation.
+	 *                                          For example '123.40' and '14000000'
+	 *                         'exponential'    Always use exponential notation.
+	 *                                          For example '1.234e+2' and '1.4e+7'
+	 *                         'auto' (default) Regular number notation for numbers
+	 *                                          having an absolute value between
+	 *                                          `lower` and `upper` bounds, and uses
+	 *                                          exponential notation elsewhere.
+	 *                                          Lower bound is included, upper bound
+	 *                                          is excluded.
+	 *                                          For example '123.4' and '1.4e7'.
+	 *                     {number} precision   A number between 0 and 16 to round
+	 *                                          the digits of the number.
+	 *                                          In case of notations 'exponential' and
+	 *                                          'auto', `precision` defines the total
+	 *                                          number of significant digits returned
+	 *                                          and is undefined by default.
+	 *                                          In case of notation 'fixed',
+	 *                                          `precision` defines the number of
+	 *                                          significant digits after the decimal
+	 *                                          point, and is 0 by default.
+	 *                     {Object} exponential An object containing two parameters,
+	 *                                          {number} lower and {number} upper,
+	 *                                          used by notation 'auto' to determine
+	 *                                          when to return exponential notation.
+	 *                                          Default values are `lower=1e-3` and
+	 *                                          `upper=1e5`.
+	 *                                          Only applicable for notation `auto`.
+	 *    {Function} fn    A custom formatting function. Can be used to override the
+	 *                     built-in notations. Function `fn` is called with `value` as
+	 *                     parameter and must return a string. Is useful for example to
+	 *                     format all values inside a matrix in a particular way.
+	 *
+	 * Examples:
+	 *
+	 *    format(6.4);                                        // '6.4'
+	 *    format(1240000);                                    // '1.24e6'
+	 *    format(1/3);                                        // '0.3333333333333333'
+	 *    format(1/3, 3);                                     // '0.333'
+	 *    format(21385, 2);                                   // '21000'
+	 *    format(12.071, {notation: 'fixed'});                // '12'
+	 *    format(2.3,    {notation: 'fixed', precision: 2});  // '2.30'
+	 *    format(52.8,   {notation: 'exponential'});          // '5.28e+1'
+	 *
+	 * @param {BigNumber} value
+	 * @param {Object | Function | number} [options]
+	 * @return {string} str The formatted value
+	 */
+	exports.format = function (value, options) {
+	  if (typeof options === 'function') {
+	    // handle format(value, fn)
+	    return options(value);
+	  }
+
+	  // handle special cases
+	  if (!value.isFinite()) {
+	    return value.isNaN() ? 'NaN' : value.gt(0) ? 'Infinity' : '-Infinity';
+	  }
+
+	  // default values for options
+	  var notation = 'auto';
+	  var precision = undefined;
+
+	  if (options !== undefined) {
+	    // determine notation from options
+	    if (options.notation) {
+	      notation = options.notation;
+	    }
+
+	    // determine precision from options
+	    if (typeof options === 'number') {
+	      precision = options;
+	    } else if (options.precision) {
+	      precision = options.precision;
+	    }
+	  }
+
+	  // handle the various notations
+	  switch (notation) {
+	    case 'fixed':
+	      return exports.toFixed(value, precision);
+
+	    case 'exponential':
+	      return exports.toExponential(value, precision);
+
+	    case 'auto':
+	      // determine lower and upper bound for exponential notation.
+	      // TODO: implement support for upper and lower to be BigNumbers themselves
+	      var lower = 1e-3;
+	      var upper = 1e5;
+	      if (options && options.exponential) {
+	        if (options.exponential.lower !== undefined) {
+	          lower = options.exponential.lower;
+	        }
+	        if (options.exponential.upper !== undefined) {
+	          upper = options.exponential.upper;
+	        }
+	      }
+
+	      // adjust the configuration of the BigNumber constructor (yeah, this is quite tricky...)
+	      var oldConfig = {
+	        toExpNeg: value.constructor.toExpNeg,
+	        toExpPos: value.constructor.toExpPos
+	      };
+
+	      value.constructor.config({
+	        toExpNeg: Math.round(Math.log(lower) / Math.LN10),
+	        toExpPos: Math.round(Math.log(upper) / Math.LN10)
+	      });
+
+	      // handle special case zero
+	      if (value.isZero()) return '0';
+
+	      // determine whether or not to output exponential notation
+	      var str;
+	      var abs = value.abs();
+	      if (abs.gte(lower) && abs.lt(upper)) {
+	        // normal number notation
+	        str = value.toSignificantDigits(precision).toFixed();
+	      } else {
+	        // exponential notation
+	        str = exports.toExponential(value, precision);
+	      }
+
+	      // remove trailing zeros after the decimal point
+	      return str.replace(/((\.\d*?)(0+))($|e)/, function () {
+	        var digits = arguments[2];
+	        var e = arguments[4];
+	        return digits !== '.' ? digits + e : e;
+	      });
+
+	    default:
+	      throw new Error('Unknown notation "' + notation + '". ' + 'Choose "auto", "exponential", or "fixed".');
+	  }
+	};
+
+	/**
+	 * Format a number in exponential notation. Like '1.23e+5', '2.3e+0', '3.500e-3'
+	 * @param {BigNumber} value
+	 * @param {number} [precision]  Number of digits in formatted output.
+	 *                              If not provided, the maximum available digits
+	 *                              is used.
+	 * @returns {string} str
+	 */
+	exports.toExponential = function (value, precision) {
+	  if (precision !== undefined) {
+	    return value.toExponential(precision - 1); // Note the offset of one
+	  } else {
+	    return value.toExponential();
+	  }
+	};
+
+	/**
+	 * Format a number with fixed notation.
+	 * @param {BigNumber} value
+	 * @param {number} [precision=0]        Optional number of decimals after the
+	 *                                      decimal point. Zero by default.
+	 */
+	exports.toFixed = function (value, precision) {
+	  return value.toFixed(precision || 0);
+	  // Note: the (precision || 0) is needed as the toFixed of BigNumber has an
+	  // undefined default precision instead of 0.
+	};
+
+/***/ },
+/* 209 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	/**
+	 * Determine the type of a variable
+	 *
+	 *     type(x)
+	 *
+	 * The following types are recognized:
+	 *
+	 *     'undefined'
+	 *     'null'
+	 *     'boolean'
+	 *     'number'
+	 *     'string'
+	 *     'Array'
+	 *     'Function'
+	 *     'Date'
+	 *     'RegExp'
+	 *     'Object'
+	 *
+	 * @param {*} x
+	 * @return {string} Returns the name of the type. Primitive types are lower case,
+	 *                  non-primitive types are upper-camel-case.
+	 *                  For example 'number', 'string', 'Array', 'Date'.
+	 */
+
+	exports.type = function (x) {
+	  var type = typeof x;
+
+	  if (type === 'object') {
+	    if (x === null) return 'null';
+	    if (Array.isArray(x)) return 'Array';
+	    if (x instanceof Date) return 'Date';
+	    if (x instanceof RegExp) return 'RegExp';
+	    if (x instanceof Boolean) return 'boolean';
+	    if (x instanceof Number) return 'number';
+	    if (x instanceof String) return 'string';
+
+	    return 'Object';
+	  }
+
+	  if (type === 'function') return 'Function';
+
+	  return type;
+	};
+
+/***/ },
+/* 210 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	/**
+	 * Create a range error with the message:
+	 *     'Dimension mismatch (<actual size> != <expected size>)'
+	 * @param {number | number[]} actual        The actual size
+	 * @param {number | number[]} expected      The expected size
+	 * @param {string} [relation='!=']          Optional relation between actual
+	 *                                          and expected size: '!=', '<', etc.
+	 * @extends RangeError
+	 */
+
+	function DimensionError(actual, expected, relation) {
+	  if (!(this instanceof DimensionError)) {
+	    throw new SyntaxError('Constructor must be called with the new operator');
+	  }
+
+	  this.actual = actual;
+	  this.expected = expected;
+	  this.relation = relation;
+
+	  this.message = 'Dimension mismatch (' + (Array.isArray(actual) ? '[' + actual.join(', ') + ']' : actual) + ' ' + (this.relation || '!=') + ' ' + (Array.isArray(expected) ? '[' + expected.join(', ') + ']' : expected) + ')';
+
+	  this.stack = new Error().stack;
+	}
+
+	DimensionError.prototype = new RangeError();
+	DimensionError.prototype.constructor = RangeError;
+	DimensionError.prototype.name = 'DimensionError';
+	DimensionError.prototype.isDimensionError = true;
+
+	module.exports = DimensionError;
+
+/***/ },
+/* 211 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	/**
+	 * Create a range error with the message:
+	 *     'Index out of range (index < min)'
+	 *     'Index out of range (index < max)'
+	 *
+	 * @param {number} index     The actual index
+	 * @param {number} [min=0]   Minimum index (included)
+	 * @param {number} [max]     Maximum index (excluded)
+	 * @extends RangeError
+	 */
+
+	function IndexError(index, min, max) {
+	  if (!(this instanceof IndexError)) {
+	    throw new SyntaxError('Constructor must be called with the new operator');
+	  }
+
+	  this.index = index;
+	  if (arguments.length < 3) {
+	    this.min = 0;
+	    this.max = min;
+	  } else {
+	    this.min = min;
+	    this.max = max;
+	  }
+
+	  if (this.min !== undefined && this.index < this.min) {
+	    this.message = 'Index out of range (' + this.index + ' < ' + this.min + ')';
+	  } else if (this.max !== undefined && this.index >= this.max) {
+	    this.message = 'Index out of range (' + this.index + ' > ' + (this.max - 1) + ')';
+	  } else {
+	    this.message = 'Index out of range (' + this.index + ')';
+	  }
+
+	  this.stack = new Error().stack;
+	}
+
+	IndexError.prototype = new RangeError();
+	IndexError.prototype.constructor = RangeError;
+	IndexError.prototype.name = 'IndexError';
+	IndexError.prototype.isIndexError = true;
+
+	module.exports = IndexError;
+
+/***/ },
+/* 212 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	exports.symbols = {
+	  // GREEK LETTERS
+	  Alpha: 'A', alpha: '\\alpha',
+	  Beta: 'B', beta: '\\beta',
+	  Gamma: '\\Gamma', gamma: '\\gamma',
+	  Delta: '\\Delta', delta: '\\delta',
+	  Epsilon: 'E', epsilon: '\\epsilon', varepsilon: '\\varepsilon',
+	  Zeta: 'Z', zeta: '\\zeta',
+	  Eta: 'H', eta: '\\eta',
+	  Theta: '\\Theta', theta: '\\theta', vartheta: '\\vartheta',
+	  Iota: 'I', iota: '\\iota',
+	  Kappa: 'K', kappa: '\\kappa', varkappa: '\\varkappa',
+	  Lambda: '\\Lambda', lambda: '\\lambda',
+	  Mu: 'M', mu: '\\mu',
+	  Nu: 'N', nu: '\\nu',
+	  Xi: '\\Xi', xi: '\\xi',
+	  Omicron: 'O', omicron: 'o',
+	  Pi: '\\Pi', pi: '\\pi', varpi: '\\varpi',
+	  Rho: 'P', rho: '\\rho', varrho: '\\varrho',
+	  Sigma: '\\Sigma', sigma: '\\sigma', varsigma: '\\varsigma',
+	  Tau: 'T', tau: '\\tau',
+	  Upsilon: '\\Upsilon', upsilon: '\\upsilon',
+	  Phi: '\\Phi', phi: '\\phi', varphi: '\\varphi',
+	  Chi: 'X', chi: '\\chi',
+	  Psi: '\\Psi', psi: '\\psi',
+	  Omega: '\\Omega', omega: '\\omega',
+	  //logic
+	  'true': '\\mathrm{True}',
+	  'false': '\\mathrm{False}',
+	  //other
+	  i: 'i', //TODO use \i ??
+	  inf: '\\infty',
+	  Inf: '\\infty',
+	  infinity: '\\infty',
+	  Infinity: '\\infty',
+	  oo: '\\infty',
+	  lim: '\\lim',
+	  'undefined': '\\mathbf{?}'
+	};
+
+	exports.operators = {
+	  'transpose': '^\\top',
+	  'factorial': '!',
+	  'pow': '^',
+	  'dotPow': '.^\\wedge', //TODO find ideal solution
+	  'unaryPlus': '+',
+	  'unaryMinus': '-',
+	  'bitNot': '~', //TODO find ideal solution
+	  'not': '\\neg',
+	  'multiply': '\\cdot',
+	  'divide': '\\frac', //TODO how to handle that properly?
+	  'dotMultiply': '.\\cdot', //TODO find ideal solution
+	  'dotDivide': '.:', //TODO find ideal solution
+	  'mod': '\\mod',
+	  'add': '+',
+	  'subtract': '-',
+	  'to': '\\rightarrow',
+	  'leftShift': '<<',
+	  'rightArithShift': '>>',
+	  'rightLogShift': '>>>',
+	  'equal': '=',
+	  'unequal': '\\neq',
+	  'smaller': '<',
+	  'larger': '>',
+	  'smallerEq': '\\leq',
+	  'largerEq': '\\geq',
+	  'bitAnd': '\\&',
+	  'bitXor': '\\underline{|}',
+	  'bitOr': '|',
+	  'and': '\\wedge',
+	  'xor': '\\veebar',
+	  'or': '\\vee'
+	};
+
+	exports.defaultTemplate = '\\mathrm{${name}}\\left(${args}\\right)';
+
+	var units = {
+	  deg: '^\\circ'
+	};
+
+	//@param {string} name
+	//@param {boolean} isUnit
+	exports.toSymbol = function (name, isUnit) {
+	  isUnit = typeof isUnit === 'undefined' ? false : isUnit;
+	  if (isUnit) {
+	    if (units.hasOwnProperty(name)) {
+	      return units[name];
+	    }
+	    return '\\mathrm{' + name + '}';
+	  }
+
+	  if (exports.symbols.hasOwnProperty(name)) {
+	    return exports.symbols[name];
+	  } else if (name.indexOf('_') !== -1) {
+	    //symbol with index (eg. alpha_1)
+	    var index = name.indexOf('_');
+	    return exports.toSymbol(name.substring(0, index)) + '_{' + exports.toSymbol(name.substring(index + 1)) + '}';
+	  }
+	  return name;
+	};
+
+/***/ },
+/* 213 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	function factory(type, config, load, typed) {
+	  /**
+	   * Create a Matrix. The function creates a new `math.type.Matrix` object from
+	   * an `Array`. A Matrix has utility functions to manipulate the data in the
+	   * matrix, like getting the size and getting or setting values in the matrix.
+	   * Supported storage formats are 'dense' and 'sparse'.
+	   *
+	   * Syntax:
+	   *
+	   *    math.matrix()                         // creates an empty matrix using default storage format (dense).
+	   *    math.matrix(data)                     // creates a matrix with initial data using default storage format (dense).
+	   *    math.matrix('dense')                  // creates an empty matrix using the given storage format.
+	   *    math.matrix(data, 'dense')            // creates a matrix with initial data using the given storage format.
+	   *    math.matrix(data, 'sparse')           // creates a sparse matrix with initial data.
+	   *    math.matrix(data, 'sparse', 'number') // creates a sparse matrix with initial data, number data type.
+	   *
+	   * Examples:
+	   *
+	   *    var m = math.matrix([[1, 2], [3, 4]]);
+	   *    m.size();                        // Array [2, 2]
+	   *    m.resize([3, 2], 5);
+	   *    m.valueOf();                     // Array [[1, 2], [3, 4], [5, 5]]
+	   *    m.get([1, 0])                    // number 3
+	   *
+	   * See also:
+	   *
+	   *    bignumber, boolean, complex, index, number, string, unit, sparse
+	   *
+	   * @param {Array | Matrix} [data]    A multi dimensional array
+	   * @param {string} [format]          The Matrix storage format
+	   *
+	   * @return {Matrix} The created matrix
+	   */
+	  var matrix = typed('matrix', {
+	    '': function () {
+	      return _create([]);
+	    },
+
+	    'string': function (format) {
+	      return _create([], format);
+	    },
+
+	    'string, string': function (format, datatype) {
+	      return _create([], format, datatype);
+	    },
+
+	    'Array': function (data) {
+	      return _create(data);
+	    },
+
+	    'Matrix': function (data) {
+	      return _create(data, data.storage());
+	    },
+
+	    'Array | Matrix, string': _create,
+
+	    'Array | Matrix, string, string': _create
+	  });
+
+	  matrix.toTex = {
+	    0: '\\begin{bmatrix}\\end{bmatrix}',
+	    1: '\\left(${args[0]}\\right)',
+	    2: '\\left(${args[0]}\\right)'
+	  };
+
+	  return matrix;
+
+	  /**
+	   * Create a new Matrix with given storage format
+	   * @param {Array} data
+	   * @param {string} [format]
+	   * @param {string} [datatype]
+	   * @returns {Matrix} Returns a new Matrix
+	   * @private
+	   */
+	  function _create(data, format, datatype) {
+	    // get storage format constructor
+	    var M = type.Matrix.storage(format || 'default');
+
+	    // create instance
+	    return new M(data, datatype);
+	  }
+	}
+
+	exports.name = 'matrix';
+	exports.factory = factory;
+
+/***/ },
+/* 214 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	function factory(type, config, load, typed) {
+
+	  /**
+	   * Add two scalar values, `x + y`.
+	   * This function is meant for internal use: it is used by the public function
+	   * `add`
+	   *
+	   * This function does not support collections (Array or Matrix), and does
+	   * not validate the number of of inputs.
+	   *
+	   * @param  {number | BigNumber | Fraction | Complex | Unit} x   First value to add
+	   * @param  {number | BigNumber | Fraction | Complex} y          Second value to add
+	   * @return {number | BigNumber | Fraction | Complex | Unit}                      Sum of `x` and `y`
+	   * @private
+	   */
+	  var add = typed('add', {
+
+	    'number, number': function (x, y) {
+	      return x + y;
+	    },
+
+	    'Complex, Complex': function (x, y) {
+	      return x.add(y);
+	    },
+
+	    'BigNumber, BigNumber': function (x, y) {
+	      return x.plus(y);
+	    },
+
+	    'Fraction, Fraction': function (x, y) {
+	      return x.add(y);
+	    },
+
+	    'Unit, Unit': function (x, y) {
+	      if (x.value == null) throw new Error('Parameter x contains a unit with undefined value');
+	      if (y.value == null) throw new Error('Parameter y contains a unit with undefined value');
+	      if (!x.equalBase(y)) throw new Error('Units do not match');
+
+	      var res = x.clone();
+	      res.value = add(res.value, y.value);
+	      res.fixPrefix = false;
+	      return res;
+	    }
+	  });
+
+	  return add;
+	}
+
+	exports.factory = factory;
+
+/***/ },
+/* 215 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	function factory(type, config, load, typed) {
+
+	  /**
+	   * Multiply two scalar values, `x * y`.
+	   * This function is meant for internal use: it is used by the public function
+	   * `multiply`
+	   *
+	   * This function does not support collections (Array or Matrix), and does
+	   * not validate the number of of inputs.
+	   *
+	   * @param  {number | BigNumber | Fraction | Complex | Unit} x   First value to multiply
+	   * @param  {number | BigNumber | Fraction | Complex} y          Second value to multiply
+	   * @return {number | BigNumber | Fraction | Complex | Unit}                      Multiplication of `x` and `y`
+	   * @private
+	   */
+	  var multiplyScalar = typed('multiplyScalar', {
+
+	    'number, number': function (x, y) {
+	      return x * y;
+	    },
+
+	    'Complex, Complex': function (x, y) {
+	      return x.mul(y);
+	    },
+
+	    'BigNumber, BigNumber': function (x, y) {
+	      return x.times(y);
+	    },
+
+	    'Fraction, Fraction': function (x, y) {
+	      return x.mul(y);
+	    },
+
+	    'number | Fraction | BigNumber | Complex, Unit': function (x, y) {
+	      var res = y.clone();
+	      res.value = res.value === null ? res._normalize(x) : multiplyScalar(res.value, x);
+	      return res;
+	    },
+
+	    'Unit, number | Fraction | BigNumber | Complex': function (x, y) {
+	      var res = x.clone();
+	      res.value = res.value === null ? res._normalize(y) : multiplyScalar(res.value, y);
+	      return res;
+	    },
+
+	    'Unit, Unit': function (x, y) {
+	      return x.multiply(y);
+	    }
+
+	  });
+
+	  return multiplyScalar;
+	}
+
+	exports.factory = factory;
+
+/***/ },
+/* 216 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var nearlyEqual = __webpack_require__(192).nearlyEqual;
+	var bigNearlyEqual = __webpack_require__(217);
+
+	function factory(type, config, load, typed) {
+
+	  /**
+	   * Test whether two values are equal.
+	   *
+	   * @param  {number | BigNumber | Fraction | boolean | Complex | Unit} x   First value to compare
+	   * @param  {number | BigNumber | Fraction | boolean | Complex} y          Second value to compare
+	   * @return {boolean}                                                  Returns true when the compared values are equal, else returns false
+	   * @private
+	   */
+	  var equalScalar = typed('equalScalar', {
+
+	    'boolean, boolean': function (x, y) {
+	      return x === y;
+	    },
+
+	    'number, number': function (x, y) {
+	      return x === y || nearlyEqual(x, y, config.epsilon);
+	    },
+
+	    'BigNumber, BigNumber': function (x, y) {
+	      return x.eq(y) || bigNearlyEqual(x, y, config.epsilon);
+	    },
+
+	    'Fraction, Fraction': function (x, y) {
+	      return x.equals(y);
+	    },
+
+	    'Complex, Complex': function (x, y) {
+	      return x.equals(y);
+	    },
+
+	    'Unit, Unit': function (x, y) {
+	      if (!x.equalBase(y)) {
+	        throw new Error('Cannot compare units with different base');
+	      }
+	      return equalScalar(x.value, y.value);
+	    },
+
+	    'string, string': function (x, y) {
+	      return x === y;
+	    }
+	  });
+
+	  return equalScalar;
+	}
+
+	exports.factory = factory;
+
+/***/ },
+/* 217 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	/**
+	 * Compares two BigNumbers.
+	 * @param {BigNumber} x       First value to compare
+	 * @param {BigNumber} y       Second value to compare
+	 * @param {number} [epsilon]  The maximum relative difference between x and y
+	 *                            If epsilon is undefined or null, the function will
+	 *                            test whether x and y are exactly equal.
+	 * @return {boolean} whether the two numbers are nearly equal
+	 */
+
+	module.exports = function nearlyEqual(x, y, epsilon) {
+	  // if epsilon is null or undefined, test whether x and y are exactly equal
+	  if (epsilon == null) {
+	    return x.eq(y);
+	  }
+
+	  // use "==" operator, handles infinities
+	  if (x.eq(y)) {
+	    return true;
+	  }
+
+	  // NaN
+	  if (x.isNaN() || y.isNaN()) {
+	    return false;
+	  }
+
+	  // at this point x and y should be finite
+	  if (x.isFinite() && y.isFinite()) {
+	    // check numbers are very close, needed when comparing numbers near zero
+	    var diff = x.minus(y).abs();
+	    if (diff.isZero()) {
+	      return true;
+	    } else {
+	      // use relative error
+	      var max = x.constructor.max(x.abs(), y.abs());
+	      return diff.lte(max.times(epsilon));
+	    }
+	  }
+
+	  // Infinite and Number or negative Infinite and positive Infinite cases
+	  return false;
+	};
+
+/***/ },
+/* 218 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	function factory(type, config, load, typed) {
 
-	  var equalScalar = load(__webpack_require__(260));
+	  var equalScalar = load(__webpack_require__(216));
 
 	  var SparseMatrix = type.SparseMatrix;
 
@@ -22618,775 +19858,3014 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ },
-/* 298 */,
-/* 299 */,
-/* 300 */,
-/* 301 */,
-/* 302 */,
-/* 303 */,
-/* 304 */,
-/* 305 */,
-/* 306 */,
-/* 307 */,
-/* 308 */,
-/* 309 */,
-/* 310 */,
-/* 311 */,
-/* 312 */,
-/* 313 */,
-/* 314 */,
-/* 315 */,
-/* 316 */
+/* 219 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var deepMap = __webpack_require__(230);
+	var clone = __webpack_require__(189).clone;
 
 	function factory(type, config, load, typed) {
-	  var gamma = load(__webpack_require__(317));
-	  var latex = __webpack_require__(243);
+
+	  var DenseMatrix = type.DenseMatrix;
 
 	  /**
-	   * Compute the factorial of a value
+	   * Iterates over DenseMatrix items and invokes the callback function f(Aij..z, b). 
+	   * Callback function invoked MxN times.
 	   *
-	   * Factorial only supports an integer value as argument.
-	   * For matrices, the function is evaluated element wise.
+	   * C(i,j,...z) = f(Aij..z, b)
 	   *
-	   * Syntax:
+	   * @param {Matrix}   a                 The DenseMatrix instance (A)
+	   * @param {Scalar}   b                 The Scalar value
+	   * @param {Function} callback          The f(Aij..z,b) operation to invoke
+	   * @param {boolean}  inverse           A true value indicates callback should be invoked f(b,Aij..z)
 	   *
-	   *    math.factorial(n)
+	   * @return {Matrix}                    DenseMatrix (C)
 	   *
-	   * Examples:
-	   *
-	   *    math.factorial(5);    // returns 120
-	   *    math.factorial(3);    // returns 6
-	   *
-	   * See also:
-	   *
-	   *    combinations, gamma, permutations
-	   *
-	   * @param {number | BigNumber | Array | Matrix} n   An integer number
-	   * @return {number | BigNumber | Array | Matrix}    The factorial of `n`
+	   * https://github.com/josdejong/mathjs/pull/346#issuecomment-97659042
 	   */
-	  var factorial = typed('factorial', {
-	    'number': function (n) {
-	      if (n < 0) {
-	        throw new Error('Value must be non-negative');
-	      }
+	  var algorithm14 = function (a, b, callback, inverse) {
+	    // a arrays
+	    var adata = a._data;
+	    var asize = a._size;
+	    var adt = a._datatype;
 
-	      return gamma(n + 1);
-	    },
+	    // datatype
+	    var dt;
+	    // callback signature to use
+	    var cf = callback;
 
-	    'BigNumber': function (n) {
-	      if (n.isNegative()) {
-	        throw new Error('Value must be non-negative');
-	      }
-
-	      return gamma(n.plus(1));
-	    },
-
-	    'Array | Matrix': function (n) {
-	      return deepMap(n, factorial);
+	    // process data types
+	    if (typeof adt === 'string') {
+	      // datatype
+	      dt = adt;
+	      // convert b to the same datatype
+	      b = typed.convert(b, dt);
+	      // callback
+	      cf = typed.find(callback, [dt, dt]);
 	    }
-	  });
 
-	  factorial.toTex = {
-	    1: '\\left(${args[0]}\\right)' + latex.operators['factorial']
+	    // populate cdata, iterate through dimensions
+	    var cdata = asize.length > 0 ? _iterate(cf, 0, asize, asize[0], adata, b, inverse) : [];
+
+	    // c matrix
+	    return new DenseMatrix({
+	      data: cdata,
+	      size: clone(asize),
+	      datatype: dt
+	    });
 	  };
 
-	  return factorial;
+	  // recursive function
+	  var _iterate = function (f, level, s, n, av, bv, inverse) {
+	    // initialize array for this level
+	    var cv = [];
+	    // check we reach the last level
+	    if (level === s.length - 1) {
+	      // loop arrays in last level
+	      for (var i = 0; i < n; i++) {
+	        // invoke callback and store value
+	        cv[i] = inverse ? f(bv, av[i]) : f(av[i], bv);
+	      }
+	    } else {
+	      // iterate current level
+	      for (var j = 0; j < n; j++) {
+	        // iterate next level
+	        cv[j] = _iterate(f, level + 1, s, s[level + 1], av[j], bv, inverse);
+	      }
+	    }
+	    return cv;
+	  };
+
+	  return algorithm14;
 	}
 
-	exports.name = 'factorial';
+	exports.name = 'algorithm14';
 	exports.factory = factory;
 
 /***/ },
-/* 317 */
+/* 220 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var deepMap = __webpack_require__(230);
-	var isInteger = __webpack_require__(219).isInteger;
+	var isInteger = __webpack_require__(192).isInteger;
+	var size = __webpack_require__(206).size;
 
 	function factory(type, config, load, typed) {
-	  var multiply = load(__webpack_require__(296));
-	  var pow = load(__webpack_require__(294));
+	  var latex = __webpack_require__(212);
+	  var eye = load(__webpack_require__(221));
+	  var multiply = load(__webpack_require__(205));
+	  var matrix = load(__webpack_require__(213));
+	  var fraction = load(__webpack_require__(222));
+	  var number = load(__webpack_require__(223));
 
 	  /**
-	   * Compute the gamma function of a value using Lanczos approximation for
-	   * small values, and an extended Stirling approximation for large values.
+	   * Calculates the power of x to y, `x ^ y`.
+	   * Matrix exponentiation is supported for square matrices `x`, and positive
+	   * integer exponents `y`.
 	   *
-	   * For matrices, the function is evaluated element wise.
+	   * For cubic roots of negative numbers, the function returns the principal
+	   * root by default. In order to let the function return the real root,
+	   * math.js can be configured with `math.config({predictable: true})`.
+	   * To retrieve all cubic roots of a value, use `math.cbrt(x, true)`.
 	   *
 	   * Syntax:
 	   *
-	   *    math.gamma(n)
+	   *    math.pow(x, y)
 	   *
 	   * Examples:
 	   *
-	   *    math.gamma(5);       // returns 24
-	   *    math.gamma(-0.5);    // returns -3.5449077018110335
-	   *    math.gamma(math.i);  // returns -0.15494982830180973 - 0.49801566811835596i
+	   *    math.pow(2, 3);               // returns number 8
+	   *
+	   *    var a = math.complex(2, 3);
+	   *    math.pow(a, 2)                // returns Complex -5 + 12i
+	   *
+	   *    var b = [[1, 2], [4, 3]];
+	   *    math.pow(b, 2);               // returns Array [[9, 8], [16, 17]]
 	   *
 	   * See also:
 	   *
-	   *    combinations, factorial, permutations
+	   *    multiply, sqrt, cbrt, nthRoot
 	   *
-	   * @param {number | Array | Matrix} n   A real or complex number
-	   * @return {number | Array | Matrix}    The gamma of `n`
+	   * @param  {number | BigNumber | Complex | Array | Matrix} x  The base
+	   * @param  {number | BigNumber | Complex} y                   The exponent
+	   * @return {number | BigNumber | Complex | Array | Matrix} The value of `x` to the power `y`
 	   */
-	  var gamma = typed('gamma', {
-	    'number': function (n) {
-	      var t, x;
+	  var pow = typed('pow', {
+	    'number, number': _pow,
 
-	      if (isInteger(n)) {
-	        if (n <= 0) {
-	          return isFinite(n) ? Infinity : NaN;
-	        }
-
-	        if (n > 171) {
-	          return Infinity; // Will overflow
-	        }
-
-	        var value = n - 2;
-	        var res = n - 1;
-	        while (value > 1) {
-	          res *= value;
-	          value--;
-	        }
-
-	        if (res == 0) {
-	          res = 1; // 0! is per definition 1
-	        }
-
-	        return res;
-	      }
-
-	      if (n < 0.5) {
-	        return Math.PI / (Math.sin(Math.PI * n) * gamma(1 - n));
-	      }
-
-	      if (n >= 171.35) {
-	        return Infinity; // will overflow
-	      }
-
-	      if (n > 85.0) {
-	        // Extended Stirling Approx
-	        var twoN = n * n;
-	        var threeN = twoN * n;
-	        var fourN = threeN * n;
-	        var fiveN = fourN * n;
-	        return Math.sqrt(2 * Math.PI / n) * Math.pow(n / Math.E, n) * (1 + 1 / (12 * n) + 1 / (288 * twoN) - 139 / (51840 * threeN) - 571 / (2488320 * fourN) + 163879 / (209018880 * fiveN) + 5246819 / (75246796800 * fiveN * n));
-	      }
-
-	      --n;
-	      x = p[0];
-	      for (var i = 1; i < p.length; ++i) {
-	        x += p[i] / (n + i);
-	      }
-
-	      t = n + g + 0.5;
-	      return Math.sqrt(2 * Math.PI) * Math.pow(t, n + 0.5) * Math.exp(-t) * x;
+	    'Complex, Complex': function (x, y) {
+	      return x.pow(y);
 	    },
 
-	    'Complex': function (n) {
-	      var t, x;
-
-	      if (n.im == 0) {
-	        return gamma(n.re);
-	      }
-
-	      n = new type.Complex(n.re - 1, n.im);
-	      x = new type.Complex(p[0], 0);
-	      for (var i = 1; i < p.length; ++i) {
-	        var real = n.re + i; // x += p[i]/(n+i)
-	        var den = real * real + n.im * n.im;
-	        if (den != 0) {
-	          x.re += p[i] * real / den;
-	          x.im += -(p[i] * n.im) / den;
-	        } else {
-	          x.re = p[i] < 0 ? -Infinity : Infinity;
-	        }
-	      }
-
-	      t = new type.Complex(n.re + g + 0.5, n.im);
-	      var twoPiSqrt = Math.sqrt(2 * Math.PI);
-
-	      n.re += 0.5;
-	      var result = pow(t, n);
-	      if (result.im == 0) {
-	        // sqrt(2*PI)*result
-	        result.re *= twoPiSqrt;
-	      } else if (result.re == 0) {
-	        result.im *= twoPiSqrt;
+	    'BigNumber, BigNumber': function (x, y) {
+	      if (y.isInteger() || x >= 0 || config.predictable) {
+	        return x.pow(y);
 	      } else {
-	        result.re *= twoPiSqrt;
-	        result.im *= twoPiSqrt;
+	        return new type.Complex(x.toNumber(), 0).pow(y.toNumber(), 0);
 	      }
-
-	      var r = Math.exp(-t.re); // exp(-t)
-	      t.re = r * Math.cos(-t.im);
-	      t.im = r * Math.sin(-t.im);
-
-	      return multiply(multiply(result, t), x);
 	    },
 
-	    'BigNumber': function (n) {
-	      if (n.isInteger()) {
-	        return n.isNegative() || n.isZero() ? new type.BigNumber(Infinity) : bigFactorial(n.minus(1));
+	    'Fraction, Fraction': function (x, y) {
+	      if (y.d !== 1) {
+	        if (config.predictable) {
+	          throw new Error('Function pow does not support non-integer exponents for fractions.');
+	        } else {
+	          return _pow(x.valueOf(), y.valueOf());
+	        }
+	      } else {
+	        return x.pow(y);
 	      }
-
-	      if (!n.isFinite()) {
-	        return new type.BigNumber(n.isNegative() ? NaN : Infinity);
-	      }
-
-	      throw new Error('Integer BigNumber expected');
 	    },
 
-	    'Array | Matrix': function (n) {
-	      return deepMap(n, gamma);
+	    'Array, number': _powArray,
+
+	    'Array, BigNumber': function (x, y) {
+	      return _powArray(x, y.toNumber());
+	    },
+
+	    'Matrix, number': _powMatrix,
+
+	    'Matrix, BigNumber': function (x, y) {
+	      return _powMatrix(x, y.toNumber());
+	    },
+
+	    'Unit, number': function (x, y) {
+	      return x.pow(y);
 	    }
+
 	  });
 
 	  /**
-	   * Calculate factorial for a BigNumber
-	   * @param {BigNumber} n
-	   * @returns {BigNumber} Returns the factorial of n
+	   * Calculates the power of x to y, x^y, for two numbers.
+	   * @param {number} x
+	   * @param {number} y
+	   * @return {number | Complex} res
+	   * @private
 	   */
-	  function bigFactorial(n) {
-	    if (n.isZero()) {
-	      return new type.BigNumber(1); // 0! is per definition 1
+	  function _pow(x, y) {
+
+	    // Alternatively could define a 'realmode' config option or something, but
+	    // 'predictable' will work for now
+	    if (config.predictable && !isInteger(y) && x < 0) {
+	      // Check to see if y can be represented as a fraction
+	      try {
+	        var yFrac = fraction(y);
+	        var yNum = number(yFrac);
+	        if (y === yNum || Math.abs((y - yNum) / y) < 1e-14) {
+	          if (yFrac.d % 2 === 1) {
+	            return (yFrac.n % 2 === 0 ? 1 : -1) * Math.pow(-x, y);
+	          }
+	        }
+	      } catch (ex) {}
+	      // fraction() throws an error if y is Infinity, etc.
+
+
+	      // Unable to express y as a fraction, so continue on
 	    }
 
-	    var precision = config.precision + (Math.log(n.toNumber()) | 0);
-	    var Big = type.BigNumber.clone({ precision: precision });
-
-	    var res = new Big(n);
-	    var value = n.toNumber() - 1; // number
-	    while (value > 1) {
-	      res = res.times(value);
-	      value--;
+	    // x^Infinity === 0 if -1 < x < 1
+	    // A real number 0 is returned instead of complex(0)
+	    if (x * x < 1 && y === Infinity || x * x > 1 && y === -Infinity) {
+	      return 0;
 	    }
 
-	    return new type.BigNumber(res.toPrecision(type.BigNumber.precision));
+	    // **for predictable mode** x^Infinity === NaN if x < -1
+	    // N.B. this behavour is different from `Math.pow` which gives
+	    // (-2)^Infinity === Infinity
+	    if (config.predictable && (x < -1 && y === Infinity || x > -1 && x < 0 && y === -Infinity)) {
+	      return NaN;
+	    }
+
+	    if (isInteger(y) || x >= 0 || config.predictable) {
+	      return Math.pow(x, y);
+	    } else {
+	      return new type.Complex(x, 0).pow(y, 0);
+	    }
 	  }
 
-	  gamma.toTex = { 1: '\\Gamma\\left(${args[0]}\\right)' };
+	  /**
+	   * Calculate the power of a 2d array
+	   * @param {Array} x     must be a 2 dimensional, square matrix
+	   * @param {number} y    a positive, integer value
+	   * @returns {Array}
+	   * @private
+	   */
+	  function _powArray(x, y) {
+	    if (!isInteger(y) || y < 0) {
+	      throw new TypeError('For A^b, b must be a positive integer (value is ' + y + ')');
+	    }
+	    // verify that A is a 2 dimensional square matrix
+	    var s = size(x);
+	    if (s.length != 2) {
+	      throw new Error('For A^b, A must be 2 dimensional (A has ' + s.length + ' dimensions)');
+	    }
+	    if (s[0] != s[1]) {
+	      throw new Error('For A^b, A must be square (size is ' + s[0] + 'x' + s[1] + ')');
+	    }
 
-	  return gamma;
+	    var res = eye(s[0]).valueOf();
+	    var px = x;
+	    while (y >= 1) {
+	      if ((y & 1) == 1) {
+	        res = multiply(px, res);
+	      }
+	      y >>= 1;
+	      px = multiply(px, px);
+	    }
+	    return res;
+	  }
+
+	  /**
+	   * Calculate the power of a 2d matrix
+	   * @param {Matrix} x     must be a 2 dimensional, square matrix
+	   * @param {number} y    a positive, integer value
+	   * @returns {Matrix}
+	   * @private
+	   */
+	  function _powMatrix(x, y) {
+	    return matrix(_powArray(x.valueOf(), y));
+	  }
+
+	  pow.toTex = {
+	    2: '\\left(${args[0]}\\right)' + latex.operators['pow'] + '{${args[1]}}'
+	  };
+
+	  return pow;
 	}
 
-	// TODO: comment on the variables g and p
-
-	var g = 4.7421875;
-
-	var p = [0.99999999999999709182, 57.156235665862923517, -59.597960355475491248, 14.136097974741747174, -0.49191381609762019978, 0.33994649984811888699e-4, 0.46523628927048575665e-4, -0.98374475304879564677e-4, 0.15808870322491248884e-3, -0.21026444172410488319e-3, 0.21743961811521264320e-3, -0.16431810653676389022e-3, 0.84418223983852743293e-4, -0.26190838401581408670e-4, 0.36899182659531622704e-5];
-
-	exports.name = 'gamma';
+	exports.name = 'pow';
 	exports.factory = factory;
 
 /***/ },
-/* 318 */,
-/* 319 */,
-/* 320 */,
-/* 321 */,
-/* 322 */,
-/* 323 */,
-/* 324 */,
-/* 325 */,
-/* 326 */,
-/* 327 */,
-/* 328 */,
-/* 329 */,
-/* 330 */,
-/* 331 */,
-/* 332 */,
-/* 333 */,
-/* 334 */,
-/* 335 */,
-/* 336 */,
-/* 337 */,
-/* 338 */,
-/* 339 */,
-/* 340 */,
-/* 341 */,
-/* 342 */,
-/* 343 */,
-/* 344 */,
-/* 345 */,
-/* 346 */,
-/* 347 */,
-/* 348 */,
-/* 349 */,
-/* 350 */,
-/* 351 */,
-/* 352 */,
-/* 353 */,
-/* 354 */,
-/* 355 */,
-/* 356 */,
-/* 357 */,
-/* 358 */,
-/* 359 */,
-/* 360 */,
-/* 361 */,
-/* 362 */,
-/* 363 */,
-/* 364 */,
-/* 365 */,
-/* 366 */,
-/* 367 */,
-/* 368 */,
-/* 369 */,
-/* 370 */,
-/* 371 */,
-/* 372 */,
-/* 373 */,
-/* 374 */,
-/* 375 */,
-/* 376 */,
-/* 377 */,
-/* 378 */,
-/* 379 */,
-/* 380 */,
-/* 381 */,
-/* 382 */,
-/* 383 */,
-/* 384 */,
-/* 385 */,
-/* 386 */,
-/* 387 */,
-/* 388 */,
-/* 389 */,
-/* 390 */,
-/* 391 */,
-/* 392 */,
-/* 393 */,
-/* 394 */,
-/* 395 */,
-/* 396 */,
-/* 397 */,
-/* 398 */,
-/* 399 */,
-/* 400 */,
-/* 401 */,
-/* 402 */,
-/* 403 */,
-/* 404 */,
-/* 405 */,
-/* 406 */,
-/* 407 */,
-/* 408 */,
-/* 409 */,
-/* 410 */,
-/* 411 */,
-/* 412 */,
-/* 413 */,
-/* 414 */,
-/* 415 */,
-/* 416 */,
-/* 417 */,
-/* 418 */,
-/* 419 */,
-/* 420 */,
-/* 421 */,
-/* 422 */,
-/* 423 */,
-/* 424 */,
-/* 425 */,
-/* 426 */,
-/* 427 */,
-/* 428 */,
-/* 429 */,
-/* 430 */,
-/* 431 */,
-/* 432 */,
-/* 433 */,
-/* 434 */,
-/* 435 */,
-/* 436 */,
-/* 437 */,
-/* 438 */,
-/* 439 */,
-/* 440 */,
-/* 441 */,
-/* 442 */,
-/* 443 */,
-/* 444 */,
-/* 445 */,
-/* 446 */,
-/* 447 */,
-/* 448 */,
-/* 449 */,
-/* 450 */,
-/* 451 */,
-/* 452 */,
-/* 453 */,
-/* 454 */,
-/* 455 */,
-/* 456 */,
-/* 457 */,
-/* 458 */,
-/* 459 */,
-/* 460 */,
-/* 461 */,
-/* 462 */,
-/* 463 */,
-/* 464 */,
-/* 465 */,
-/* 466 */,
-/* 467 */,
-/* 468 */,
-/* 469 */,
-/* 470 */,
-/* 471 */,
-/* 472 */,
-/* 473 */,
-/* 474 */,
-/* 475 */,
-/* 476 */,
-/* 477 */,
-/* 478 */,
-/* 479 */,
-/* 480 */,
-/* 481 */,
-/* 482 */,
-/* 483 */,
-/* 484 */,
-/* 485 */,
-/* 486 */,
-/* 487 */,
-/* 488 */,
-/* 489 */,
-/* 490 */,
-/* 491 */,
-/* 492 */,
-/* 493 */,
-/* 494 */,
-/* 495 */,
-/* 496 */,
-/* 497 */,
-/* 498 */,
-/* 499 */,
-/* 500 */,
-/* 501 */,
-/* 502 */,
-/* 503 */,
-/* 504 */,
-/* 505 */,
-/* 506 */,
-/* 507 */,
-/* 508 */,
-/* 509 */,
-/* 510 */,
-/* 511 */,
-/* 512 */,
-/* 513 */,
-/* 514 */,
-/* 515 */,
-/* 516 */,
-/* 517 */,
-/* 518 */,
-/* 519 */,
-/* 520 */,
-/* 521 */,
-/* 522 */,
-/* 523 */,
-/* 524 */,
-/* 525 */,
-/* 526 */,
-/* 527 */,
-/* 528 */,
-/* 529 */,
-/* 530 */,
-/* 531 */,
-/* 532 */,
-/* 533 */,
-/* 534 */,
-/* 535 */,
-/* 536 */,
-/* 537 */,
-/* 538 */,
-/* 539 */,
-/* 540 */,
-/* 541 */,
-/* 542 */,
-/* 543 */,
-/* 544 */,
-/* 545 */,
-/* 546 */,
-/* 547 */,
-/* 548 */,
-/* 549 */,
-/* 550 */,
-/* 551 */,
-/* 552 */,
-/* 553 */,
-/* 554 */,
-/* 555 */,
-/* 556 */,
-/* 557 */,
-/* 558 */,
-/* 559 */,
-/* 560 */,
-/* 561 */,
-/* 562 */,
-/* 563 */,
-/* 564 */,
-/* 565 */,
-/* 566 */,
-/* 567 */,
-/* 568 */,
-/* 569 */,
-/* 570 */,
-/* 571 */,
-/* 572 */,
-/* 573 */,
-/* 574 */,
-/* 575 */,
-/* 576 */,
-/* 577 */,
-/* 578 */,
-/* 579 */,
-/* 580 */,
-/* 581 */,
-/* 582 */,
-/* 583 */,
-/* 584 */,
-/* 585 */,
-/* 586 */,
-/* 587 */,
-/* 588 */,
-/* 589 */,
-/* 590 */,
-/* 591 */,
-/* 592 */,
-/* 593 */,
-/* 594 */,
-/* 595 */,
-/* 596 */,
-/* 597 */,
-/* 598 */,
-/* 599 */,
-/* 600 */,
-/* 601 */,
-/* 602 */,
-/* 603 */,
-/* 604 */,
-/* 605 */,
-/* 606 */,
-/* 607 */,
-/* 608 */,
-/* 609 */,
-/* 610 */,
-/* 611 */,
-/* 612 */,
-/* 613 */,
-/* 614 */,
-/* 615 */,
-/* 616 */,
-/* 617 */,
-/* 618 */,
-/* 619 */,
-/* 620 */,
-/* 621 */,
-/* 622 */,
-/* 623 */,
-/* 624 */,
-/* 625 */,
-/* 626 */,
-/* 627 */,
-/* 628 */,
-/* 629 */,
-/* 630 */,
-/* 631 */,
-/* 632 */,
-/* 633 */,
-/* 634 */,
-/* 635 */,
-/* 636 */,
-/* 637 */,
-/* 638 */,
-/* 639 */,
-/* 640 */,
-/* 641 */,
-/* 642 */,
-/* 643 */,
-/* 644 */,
-/* 645 */,
-/* 646 */,
-/* 647 */,
-/* 648 */,
-/* 649 */,
-/* 650 */,
-/* 651 */,
-/* 652 */,
-/* 653 */,
-/* 654 */,
-/* 655 */,
-/* 656 */,
-/* 657 */,
-/* 658 */,
-/* 659 */,
-/* 660 */,
-/* 661 */,
-/* 662 */,
-/* 663 */,
-/* 664 */,
-/* 665 */,
-/* 666 */,
-/* 667 */,
-/* 668 */,
-/* 669 */,
-/* 670 */,
-/* 671 */,
-/* 672 */,
-/* 673 */,
-/* 674 */,
-/* 675 */,
-/* 676 */,
-/* 677 */,
-/* 678 */,
-/* 679 */,
-/* 680 */,
-/* 681 */,
-/* 682 */,
-/* 683 */,
-/* 684 */,
-/* 685 */,
-/* 686 */,
-/* 687 */,
-/* 688 */,
-/* 689 */,
-/* 690 */,
-/* 691 */,
-/* 692 */,
-/* 693 */,
-/* 694 */,
-/* 695 */,
-/* 696 */,
-/* 697 */,
-/* 698 */,
-/* 699 */,
-/* 700 */,
-/* 701 */,
-/* 702 */,
-/* 703 */,
-/* 704 */,
-/* 705 */,
-/* 706 */,
-/* 707 */,
-/* 708 */,
-/* 709 */,
-/* 710 */,
-/* 711 */,
-/* 712 */,
-/* 713 */,
-/* 714 */,
-/* 715 */,
-/* 716 */,
-/* 717 */,
-/* 718 */,
-/* 719 */,
-/* 720 */,
-/* 721 */,
-/* 722 */,
-/* 723 */,
-/* 724 */,
-/* 725 */,
-/* 726 */,
-/* 727 */,
-/* 728 */,
-/* 729 */,
-/* 730 */,
-/* 731 */,
-/* 732 */,
-/* 733 */,
-/* 734 */,
-/* 735 */,
-/* 736 */,
-/* 737 */,
-/* 738 */,
-/* 739 */,
-/* 740 */,
-/* 741 */,
-/* 742 */,
-/* 743 */,
-/* 744 */,
-/* 745 */,
-/* 746 */,
-/* 747 */,
-/* 748 */,
-/* 749 */,
-/* 750 */,
-/* 751 */,
-/* 752 */,
-/* 753 */,
-/* 754 */,
-/* 755 */,
-/* 756 */,
-/* 757 */,
-/* 758 */,
-/* 759 */,
-/* 760 */,
-/* 761 */,
-/* 762 */,
-/* 763 */,
-/* 764 */,
-/* 765 */,
-/* 766 */,
-/* 767 */,
-/* 768 */
+/* 221 */
 /***/ function(module, exports, __webpack_require__) {
 
-	
-	// Load the math.js core
-	// Create a new, empty math.js instance
-	// It will only contain methods `import` and `config`
-	// math.import(require('mathjs/lib/type/fraction'));
-	var core = __webpack_require__(214);
-	var math = core.create();
-	math.import(__webpack_require__(226));
-	math.import(__webpack_require__(316));
-	math.config({
-	  number: 'BigNumber', // Default type of number:
-	  // 'number' (default), 'BigNumber', or 'Fraction'
-	  precision: 64 // Number of significant digits for BigNumbers
-	});
+	'use strict';
 
-	module.exports = function binom_test(actual_k, n, p) {
+	var array = __webpack_require__(206);
+	var isInteger = __webpack_require__(192).isInteger;
 
-	  console.log('running binom_test!!!!!');
+	function factory(type, config, load, typed) {
 
-	  var fact = math.factorial;
+	  var matrix = load(__webpack_require__(213));
 
-	  function binom_dist(k, n, p) {
-	    var bin_coeff = fact(n) / (fact(k) * fact(n - k));
-	    p = bin_coeff * (Math.pow(p, k) * Math.pow(1 - p, n - k));
-	    return p;
+	  /**
+	   * Create a 2-dimensional identity matrix with size m x n or n x n.
+	   * The matrix has ones on the diagonal and zeros elsewhere.
+	   *
+	   * Syntax:
+	   *
+	   *    math.eye(n)
+	   *    math.eye(n, format)
+	   *    math.eye(m, n)
+	   *    math.eye(m, n, format)
+	   *    math.eye([m, n])
+	   *    math.eye([m, n], format)
+	   *
+	   * Examples:
+	   *
+	   *    math.eye(3);                    // returns [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+	   *    math.eye(3, 2);                 // returns [[1, 0], [0, 1], [0, 0]]
+	   *
+	   *    var A = [[1, 2, 3], [4, 5, 6]];
+	   *    math.eye(math.size(A));         // returns [[1, 0, 0], [0, 1, 0]]
+	   *
+	   * See also:
+	   *
+	   *    diag, ones, zeros, size, range
+	   *
+	   * @param {...number | Matrix | Array} size   The size for the matrix
+	   * @param {string} [format]                   The Matrix storage format
+	   *
+	   * @return {Matrix | Array | number} A matrix with ones on the diagonal.
+	   */
+	  var eye = typed('eye', {
+	    '': function () {
+	      return config.matrix === 'Matrix' ? matrix([]) : [];
+	    },
+
+	    'string': function (format) {
+	      return matrix(format);
+	    },
+
+	    'number | BigNumber': function (rows) {
+	      return _eye(rows, rows, config.matrix === 'Matrix' ? 'default' : undefined);
+	    },
+
+	    'number | BigNumber, string': function (rows, format) {
+	      return _eye(rows, rows, format);
+	    },
+
+	    'number | BigNumber, number | BigNumber': function (rows, cols) {
+	      return _eye(rows, cols, config.matrix === 'Matrix' ? 'default' : undefined);
+	    },
+
+	    'number | BigNumber, number | BigNumber, string': function (rows, cols, format) {
+	      return _eye(rows, cols, format);
+	    },
+
+	    'Array': function (size) {
+	      return _eyeVector(size);
+	    },
+
+	    'Array, string': function (size, format) {
+	      return _eyeVector(size, format);
+	    },
+
+	    'Matrix': function (size) {
+	      return _eyeVector(size.valueOf(), size.storage());
+	    },
+
+	    'Matrix, string': function (size, format) {
+	      return _eyeVector(size.valueOf(), format);
+	    }
+	  });
+
+	  eye.toTex = undefined; // use default template
+
+	  return eye;
+
+	  function _eyeVector(size, format) {
+	    switch (size.length) {
+	      case 0:
+	        return format ? matrix(format) : [];
+	      case 1:
+	        return _eye(size[0], size[0], format);
+	      case 2:
+	        return _eye(size[0], size[1], format);
+	      default:
+	        throw new Error('Vector containing two values expected');
+	    }
 	  }
 
-	  function my_binom_test_2(actual_k, n, p) {
-	    var cp = 0;
-	    var k;
-	    for (var inst_k = actual_k; inst_k < n + 1; inst_k++) {
-	      k = inst_k;
-	      dp = binom_dist(k, n, p);
-	      cp = cp + dp;
+	  /**
+	   * Create an identity matrix
+	   * @param {number | BigNumber} rows
+	   * @param {number | BigNumber} cols
+	   * @param {string} [format]
+	   * @returns {Matrix}
+	   * @private
+	   */
+	  function _eye(rows, cols, format) {
+	    // BigNumber constructor with the right precision
+	    var Big = rows && rows.isBigNumber === true ? type.BigNumber : cols && cols.isBigNumber === true ? type.BigNumber : null;
+
+	    if (rows && rows.isBigNumber === true) rows = rows.toNumber();
+	    if (cols && cols.isBigNumber === true) cols = cols.toNumber();
+
+	    if (!isInteger(rows) || rows < 1) {
+	      throw new Error('Parameters in function eye must be positive integers');
+	    }
+	    if (!isInteger(cols) || cols < 1) {
+	      throw new Error('Parameters in function eye must be positive integers');
 	    }
 
-	    return cp;
+	    var one = Big ? new type.BigNumber(1) : 1;
+	    var defaultValue = Big ? new Big(0) : 0;
+	    var size = [rows, cols];
+
+	    // check we need to return a matrix
+	    if (format) {
+	      // get matrix storage constructor
+	      var F = type.Matrix.storage(format);
+	      // create diagonal matrix (use optimized implementation for storage format)
+	      return F.diagonal(size, one, 0, defaultValue);
+	    }
+
+	    // create and resize array
+	    var res = array.resize([], size, defaultValue);
+	    // fill in ones on the diagonal
+	    var minimum = rows < cols ? rows : cols;
+	    // fill diagonal
+	    for (var d = 0; d < minimum; d++) {
+	      res[d][d] = one;
+	    }
+	    return res;
+	  }
+	}
+
+	exports.name = 'eye';
+	exports.factory = factory;
+
+/***/ },
+/* 222 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var deepMap = __webpack_require__(202);
+
+	function factory(type, config, load, typed) {
+	  /**
+	   * Create a fraction convert a value to a fraction.
+	   *
+	   * Syntax:
+	   *     math.fraction(numerator, denominator)
+	   *     math.fraction({n: numerator, d: denominator})
+	   *     math.fraction(matrix: Array | Matrix)         Turn all matrix entries
+	   *                                                   into fractions
+	   *
+	   * Examples:
+	   *
+	   *     math.fraction(1, 3);
+	   *     math.fraction('2/3');
+	   *     math.fraction({n: 2, d: 3});
+	   *     math.fraction([0.2, 0.25, 1.25]);
+	   *
+	   * See also:
+	   *
+	   *    bignumber, number, string, unit
+	   *
+	   * @param {number | string | Fraction | BigNumber | Array | Matrix} [args]
+	   *            Arguments specifying the numerator and denominator of
+	   *            the fraction
+	   * @return {Fraction | Array | Matrix} Returns a fraction
+	   */
+	  var fraction = typed('fraction', {
+	    'number': function (x) {
+	      if (!isFinite(x) || isNaN(x)) {
+	        throw new Error(x + ' cannot be represented as a fraction');
+	      }
+
+	      return new type.Fraction(x);
+	    },
+
+	    'string': function (x) {
+	      return new type.Fraction(x);
+	    },
+
+	    'number, number': function (numerator, denominator) {
+	      return new type.Fraction(numerator, denominator);
+	    },
+
+	    'BigNumber': function (x) {
+	      return new type.Fraction(x.toString());
+	    },
+
+	    'Fraction': function (x) {
+	      return x; // fractions are immutable
+	    },
+
+	    'Object': function (x) {
+	      return new type.Fraction(x);
+	    },
+
+	    'Array | Matrix': function (x) {
+	      return deepMap(x, fraction);
+	    }
+	  });
+
+	  return fraction;
+	}
+
+	exports.name = 'fraction';
+	exports.factory = factory;
+
+/***/ },
+/* 223 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var deepMap = __webpack_require__(202);
+
+	function factory(type, config, load, typed) {
+	  /**
+	   * Create a number or convert a string, boolean, or unit to a number.
+	   * When value is a matrix, all elements will be converted to number.
+	   *
+	   * Syntax:
+	   *
+	   *    math.number(value)
+	   *    math.number(unit, valuelessUnit)
+	   *
+	   * Examples:
+	   *
+	   *    math.number(2);                         // returns number 2
+	   *    math.number('7.2');                     // returns number 7.2
+	   *    math.number(true);                      // returns number 1
+	   *    math.number([true, false, true, true]); // returns [1, 0, 1, 1]
+	   *    math.number(math.unit('52cm'), 'm');    // returns 0.52
+	   *
+	   * See also:
+	   *
+	   *    bignumber, boolean, complex, index, matrix, string, unit
+	   *
+	   * @param {string | number | BigNumber | Fraction | boolean | Array | Matrix | Unit | null} [value]  Value to be converted
+	   * @param {Unit | string} [valuelessUnit] A valueless unit, used to convert a unit to a number
+	   * @return {number | Array | Matrix} The created number
+	   */
+	  var number = typed('number', {
+	    '': function () {
+	      return 0;
+	    },
+
+	    'number': function (x) {
+	      return x;
+	    },
+
+	    'string': function (x) {
+	      var num = Number(x);
+	      if (isNaN(num)) {
+	        throw new SyntaxError('String "' + x + '" is no valid number');
+	      }
+	      return num;
+	    },
+
+	    'BigNumber': function (x) {
+	      return x.toNumber();
+	    },
+
+	    'Fraction': function (x) {
+	      return x.valueOf();
+	    },
+
+	    'Unit': function (x) {
+	      throw new Error('Second argument with valueless unit expected');
+	    },
+
+	    'Unit, string | Unit': function (unit, valuelessUnit) {
+	      return unit.toNumber(valuelessUnit);
+	    },
+
+	    'Array | Matrix': function (x) {
+	      return deepMap(x, number);
+	    }
+	  });
+
+	  number.toTex = {
+	    0: '0',
+	    1: '\\left(${args[0]}\\right)',
+	    2: '\\left(\\left(${args[0]}\\right)${args[1]}\\right)'
+	  };
+
+	  return number;
+	}
+
+	exports.name = 'number';
+	exports.factory = factory;
+
+/***/ },
+/* 224 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
+	    D3.js Slider
+	    Inspired by jQuery UI Slider
+	    Copyright (c) 2013, Bjorn Sandvik - http://blog.thematicmapping.org
+	    BSD license: http://opensource.org/licenses/BSD-3-Clause
+	*/
+	(function (root, factory) {
+	  if (true) {
+	    // AMD. Register as an anonymous module.
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(225)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	  } else if (typeof exports === 'object') {
+	    if (process.browser) {
+	      // Browserify. Import css too using cssify.
+	      require('./d3.slider.css');
+	    }
+	    // Node. Does not work with strict CommonJS, but
+	    // only CommonJS-like environments that support module.exports,
+	    // like Node.
+	    module.exports = factory(require('d3'));
+	  } else {
+	    // Browser globals (root is window)
+	    root.d3.slider = factory(root.d3);
+	  }
+	})(this, function (d3) {
+	  return function module() {
+	    "use strict";
+
+	    // Public variables width default settings
+
+	    var min = 0,
+	        max = 100,
+	        step = 0.01,
+	        animate = false,
+	        orientation = "horizontal",
+	        axis = false,
+	        margin = 50,
+	        value,
+	        active = 1,
+	        snap = false,
+	        scale;
+
+	    // Private variables
+	    var axisScale,
+	        dispatch = d3.dispatch("slide", "slideend"),
+	        formatPercent = d3.format(".2%"),
+	        tickFormat = d3.format(".0"),
+	        handle1,
+	        handle2 = null,
+	        divRange,
+	        sliderLength;
+
+	    function slider(selection) {
+	      selection.each(function () {
+
+	        // Create scale if not defined by user
+	        if (!scale) {
+	          scale = d3.scale.linear().domain([min, max]);
+	        }
+
+	        // Start value
+	        value = value || scale.domain()[0];
+
+	        // DIV container
+	        var div = d3.select(this).classed("d3-slider d3-slider-" + orientation, true);
+
+	        var drag = d3.behavior.drag();
+	        drag.on('dragend', function () {
+	          dispatch.slideend(d3.event, value);
+	        });
+
+	        // Slider handle
+	        //if range slider, create two
+	        // var divRange;
+
+	        if (toType(value) == "array" && value.length == 2) {
+	          handle1 = div.append("a").classed("d3-slider-handle", true).attr("xlink:href", "#").attr('id', "handle-one").on("click", stopPropagation).call(drag);
+	          handle2 = div.append("a").classed("d3-slider-handle", true).attr('id', "handle-two").attr("xlink:href", "#").on("click", stopPropagation).call(drag);
+	        } else {
+	          handle1 = div.append("a").classed("d3-slider-handle", true).attr("xlink:href", "#").attr('id', "handle-one").on("click", stopPropagation).call(drag);
+	        }
+
+	        // Horizontal slider
+	        if (orientation === "horizontal") {
+
+	          div.on("click", onClickHorizontal);
+
+	          if (toType(value) == "array" && value.length == 2) {
+	            divRange = d3.select(this).append('div').classed("d3-slider-range", true);
+
+	            handle1.style("left", formatPercent(scale(value[0])));
+	            divRange.style("left", formatPercent(scale(value[0])));
+	            drag.on("drag", onDragHorizontal);
+
+	            var width = 100 - parseFloat(formatPercent(scale(value[1])));
+	            handle2.style("left", formatPercent(scale(value[1])));
+	            divRange.style("right", width + "%");
+	            drag.on("drag", onDragHorizontal);
+	          } else {
+	            handle1.style("left", formatPercent(scale(value)));
+	            drag.on("drag", onDragHorizontal);
+	          }
+
+	          sliderLength = parseInt(div.style("width"), 10);
+	        } else {
+	          // Vertical
+
+	          div.on("click", onClickVertical);
+	          drag.on("drag", onDragVertical);
+	          if (toType(value) == "array" && value.length == 2) {
+	            divRange = d3.select(this).append('div').classed("d3-slider-range-vertical", true);
+
+	            handle1.style("bottom", formatPercent(scale(value[0])));
+	            divRange.style("bottom", formatPercent(scale(value[0])));
+	            drag.on("drag", onDragVertical);
+
+	            var top = 100 - parseFloat(formatPercent(scale(value[1])));
+	            handle2.style("bottom", formatPercent(scale(value[1])));
+	            divRange.style("top", top + "%");
+	            drag.on("drag", onDragVertical);
+	          } else {
+	            handle1.style("bottom", formatPercent(scale(value)));
+	            drag.on("drag", onDragVertical);
+	          }
+
+	          sliderLength = parseInt(div.style("height"), 10);
+	        }
+
+	        if (axis) {
+	          createAxis(div);
+	        }
+
+	        function createAxis(dom) {
+
+	          // Create axis if not defined by user
+	          if (typeof axis === "boolean") {
+
+	            axis = d3.svg.axis().ticks(Math.round(sliderLength / 100)).tickFormat(tickFormat).orient(orientation === "horizontal" ? "bottom" : "right");
+	          }
+
+	          // Copy slider scale to move from percentages to pixels
+	          axisScale = scale.ticks ? scale.copy().range([0, sliderLength]) : scale.copy().rangePoints([0, sliderLength], 0.5);
+	          axis.scale(axisScale);
+
+	          // Create SVG axis container
+	          var svg = dom.append("svg").classed("d3-slider-axis d3-slider-axis-" + axis.orient(), true).on("click", stopPropagation);
+
+	          var g = svg.append("g");
+
+	          // Horizontal axis
+	          if (orientation === "horizontal") {
+
+	            svg.style("margin-left", -margin + "px");
+
+	            svg.attr({
+	              width: sliderLength + margin * 2,
+	              height: margin
+	            });
+
+	            if (axis.orient() === "top") {
+	              svg.style("top", -margin + "px");
+	              g.attr("transform", "translate(" + margin + "," + margin + ")");
+	            } else {
+	              // bottom
+	              g.attr("transform", "translate(" + margin + ",0)");
+	            }
+	          } else {
+	            // Vertical
+
+	            svg.style("top", -margin + "px");
+
+	            svg.attr({
+	              width: margin,
+	              height: sliderLength + margin * 2
+	            });
+
+	            if (axis.orient() === "left") {
+	              svg.style("left", -margin + "px");
+	              g.attr("transform", "translate(" + margin + "," + margin + ")");
+	            } else {
+	              // right
+	              g.attr("transform", "translate(" + 0 + "," + margin + ")");
+	            }
+	          }
+
+	          g.call(axis);
+	        }
+
+	        function onClickHorizontal() {
+	          if (toType(value) != "array") {
+	            var pos = Math.max(0, Math.min(sliderLength, d3.event.offsetX || d3.event.layerX));
+	            moveHandle(scale.invert ? stepValue(scale.invert(pos / sliderLength)) : nearestTick(pos / sliderLength));
+	          }
+	        }
+
+	        function onClickVertical() {
+	          if (toType(value) != "array") {
+	            var pos = sliderLength - Math.max(0, Math.min(sliderLength, d3.event.offsetY || d3.event.layerY));
+	            moveHandle(scale.invert ? stepValue(scale.invert(pos / sliderLength)) : nearestTick(pos / sliderLength));
+	          }
+	        }
+
+	        function onDragHorizontal() {
+	          if (d3.event.sourceEvent.target.id === "handle-one") {
+	            active = 1;
+	          } else if (d3.event.sourceEvent.target.id == "handle-two") {
+	            active = 2;
+	          }
+	          var pos = Math.max(0, Math.min(sliderLength, d3.event.x));
+	          moveHandle(scale.invert ? stepValue(scale.invert(pos / sliderLength)) : nearestTick(pos / sliderLength));
+	        }
+
+	        function onDragVertical() {
+	          if (d3.event.sourceEvent.target.id === "handle-one") {
+	            active = 1;
+	          } else if (d3.event.sourceEvent.target.id == "handle-two") {
+	            active = 2;
+	          }
+	          var pos = sliderLength - Math.max(0, Math.min(sliderLength, d3.event.y));
+	          moveHandle(scale.invert ? stepValue(scale.invert(pos / sliderLength)) : nearestTick(pos / sliderLength));
+	        }
+
+	        function stopPropagation() {
+	          d3.event.stopPropagation();
+	        }
+	      });
+	    }
+
+	    // Move slider handle on click/drag
+	    function moveHandle(newValue) {
+	      var currentValue = toType(value) == "array" && value.length == 2 ? value[active - 1] : value,
+	          oldPos = formatPercent(scale(stepValue(currentValue))),
+	          newPos = formatPercent(scale(stepValue(newValue))),
+	          position = orientation === "horizontal" ? "left" : "bottom";
+	      if (oldPos !== newPos) {
+
+	        if (toType(value) == "array" && value.length == 2) {
+	          value[active - 1] = newValue;
+	          if (d3.event) {
+	            dispatch.slide(d3.event, value);
+	          };
+	        } else {
+	          if (d3.event) {
+	            dispatch.slide(d3.event.sourceEvent || d3.event, value = newValue);
+	          };
+	        }
+
+	        if (value[0] >= value[1]) return;
+	        if (active === 1) {
+	          if (toType(value) == "array" && value.length == 2) {
+	            position === "left" ? divRange.style("left", newPos) : divRange.style("bottom", newPos);
+	          }
+
+	          if (animate) {
+	            handle1.transition().styleTween(position, function () {
+	              return d3.interpolate(oldPos, newPos);
+	            }).duration(typeof animate === "number" ? animate : 250);
+	          } else {
+	            handle1.style(position, newPos);
+	          }
+	        } else {
+
+	          var width = 100 - parseFloat(newPos);
+	          var top = 100 - parseFloat(newPos);
+
+	          position === "left" ? divRange.style("right", width + "%") : divRange.style("top", top + "%");
+
+	          if (animate) {
+	            handle2.transition().styleTween(position, function () {
+	              return d3.interpolate(oldPos, newPos);
+	            }).duration(typeof animate === "number" ? animate : 250);
+	          } else {
+	            handle2.style(position, newPos);
+	          }
+	        }
+	      }
+	    }
+
+	    // Calculate nearest step value
+	    function stepValue(val) {
+
+	      if (val === scale.domain()[0] || val === scale.domain()[1]) {
+	        return val;
+	      }
+
+	      var alignValue = val;
+	      if (snap) {
+	        alignValue = nearestTick(scale(val));
+	      } else {
+	        var valModStep = (val - scale.domain()[0]) % step;
+	        alignValue = val - valModStep;
+
+	        if (Math.abs(valModStep) * 2 >= step) {
+	          alignValue += valModStep > 0 ? step : -step;
+	        }
+	      };
+
+	      return alignValue;
+	    }
+
+	    // Find the nearest tick
+	    function nearestTick(pos) {
+	      var ticks = scale.ticks ? scale.ticks() : scale.domain();
+	      var dist = ticks.map(function (d) {
+	        return pos - scale(d);
+	      });
+	      var i = -1,
+	          index = 0,
+	          r = scale.ticks ? scale.range()[1] : scale.rangeExtent()[1];
+	      do {
+	        i++;
+	        if (Math.abs(dist[i]) < r) {
+	          r = Math.abs(dist[i]);
+	          index = i;
+	        };
+	      } while (dist[i] > 0 && i < dist.length - 1);
+
+	      return ticks[index];
+	    };
+
+	    // Return the type of an object
+	    function toType(v) {
+	      return {}.toString.call(v).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
+	    };
+
+	    // Getter/setter functions
+	    slider.min = function (_) {
+	      if (!arguments.length) return min;
+	      min = _;
+	      return slider;
+	    };
+
+	    slider.max = function (_) {
+	      if (!arguments.length) return max;
+	      max = _;
+	      return slider;
+	    };
+
+	    slider.step = function (_) {
+	      if (!arguments.length) return step;
+	      step = _;
+	      return slider;
+	    };
+
+	    slider.animate = function (_) {
+	      if (!arguments.length) return animate;
+	      animate = _;
+	      return slider;
+	    };
+
+	    slider.orientation = function (_) {
+	      if (!arguments.length) return orientation;
+	      orientation = _;
+	      return slider;
+	    };
+
+	    slider.axis = function (_) {
+	      if (!arguments.length) return axis;
+	      axis = _;
+	      return slider;
+	    };
+
+	    slider.margin = function (_) {
+	      if (!arguments.length) return margin;
+	      margin = _;
+	      return slider;
+	    };
+
+	    slider.value = function (_) {
+	      if (!arguments.length) return value;
+	      if (value) {
+	        moveHandle(stepValue(_));
+	      };
+	      value = _;
+	      return slider;
+	    };
+
+	    slider.snap = function (_) {
+	      if (!arguments.length) return snap;
+	      snap = _;
+	      return slider;
+	    };
+
+	    slider.scale = function (_) {
+	      if (!arguments.length) return scale;
+	      scale = _;
+	      return slider;
+	    };
+
+	    d3.rebind(slider, dispatch, "on");
+
+	    return slider;
+	  };
+	});
+
+/***/ },
+/* 225 */
+/***/ function(module, exports) {
+
+	module.exports = d3;
+
+/***/ },
+/* 226 */
+/***/ function(module, exports) {
+
+	/**
+	 * Simple, lightweight, usable local autocomplete library for modern browsers
+	 * Because there weren’t enough autocomplete scripts in the world? Because I’m completely insane and have NIH syndrome? Probably both. :P
+	 * @author Lea Verou http://leaverou.github.io/awesomplete
+	 * MIT license
+	 */
+
+	(function () {
+
+		var _ = function (input, o) {
+			var me = this;
+
+			// Setup
+
+			this.input = $(input);
+			this.input.setAttribute("autocomplete", "off");
+			this.input.setAttribute("aria-autocomplete", "list");
+
+			o = o || {};
+
+			configure(this, {
+				minChars: 2,
+				maxItems: 10,
+				autoFirst: false,
+				data: _.DATA,
+				filter: _.FILTER_CONTAINS,
+				sort: _.SORT_BYLENGTH,
+				item: _.ITEM,
+				replace: _.REPLACE
+			}, o);
+
+			this.index = -1;
+
+			// Create necessary elements
+
+			this.container = $.create("div", {
+				className: "awesomplete",
+				around: input
+			});
+
+			this.ul = $.create("ul", {
+				hidden: "hidden",
+				inside: this.container
+			});
+
+			this.status = $.create("span", {
+				className: "visually-hidden",
+				role: "status",
+				"aria-live": "assertive",
+				"aria-relevant": "additions",
+				inside: this.container
+			});
+
+			// Bind events
+
+			$.bind(this.input, {
+				"input": this.evaluate.bind(this),
+				"blur": this.close.bind(this, { reason: "blur" }),
+				"keydown": function (evt) {
+					var c = evt.keyCode;
+
+					// If the dropdown `ul` is in view, then act on keydown for the following keys:
+					// Enter / Esc / Up / Down
+					if (me.opened) {
+						if (c === 13 && me.selected) {
+							// Enter
+							evt.preventDefault();
+							me.select();
+						} else if (c === 27) {
+							// Esc
+							me.close({ reason: "esc" });
+						} else if (c === 38 || c === 40) {
+							// Down/Up arrow
+							evt.preventDefault();
+							me[c === 38 ? "previous" : "next"]();
+						}
+					}
+				}
+			});
+
+			$.bind(this.input.form, { "submit": this.close.bind(this, { reason: "submit" }) });
+
+			$.bind(this.ul, { "mousedown": function (evt) {
+					var li = evt.target;
+
+					if (li !== this) {
+
+						while (li && !/li/i.test(li.nodeName)) {
+							li = li.parentNode;
+						}
+
+						if (li && evt.button === 0) {
+							// Only select on left click
+							evt.preventDefault();
+							me.select(li, evt.target);
+						}
+					}
+				} });
+
+			if (this.input.hasAttribute("list")) {
+				this.list = "#" + this.input.getAttribute("list");
+				this.input.removeAttribute("list");
+			} else {
+				this.list = this.input.getAttribute("data-list") || o.list || [];
+			}
+
+			_.all.push(this);
+		};
+
+		_.prototype = {
+			set list(list) {
+				if (Array.isArray(list)) {
+					this._list = list;
+				} else if (typeof list === "string" && list.indexOf(",") > -1) {
+					this._list = list.split(/\s*,\s*/);
+				} else {
+					// Element or CSS selector
+					list = $(list);
+
+					if (list && list.children) {
+						var items = [];
+						slice.apply(list.children).forEach(function (el) {
+							if (!el.disabled) {
+								var text = el.textContent.trim();
+								var value = el.value || text;
+								var label = el.label || text;
+								if (value !== "") {
+									items.push({ label: label, value: value });
+								}
+							}
+						});
+						this._list = items;
+					}
+				}
+
+				if (document.activeElement === this.input) {
+					this.evaluate();
+				}
+			},
+
+			get selected() {
+				return this.index > -1;
+			},
+
+			get opened() {
+				return !this.ul.hasAttribute("hidden");
+			},
+
+			close: function (o) {
+				if (!this.opened) {
+					return;
+				}
+
+				this.ul.setAttribute("hidden", "");
+				this.index = -1;
+
+				$.fire(this.input, "awesomplete-close", o || {});
+			},
+
+			open: function () {
+				this.ul.removeAttribute("hidden");
+
+				if (this.autoFirst && this.index === -1) {
+					this.goto(0);
+				}
+
+				$.fire(this.input, "awesomplete-open");
+			},
+
+			next: function () {
+				var count = this.ul.children.length;
+
+				this.goto(this.index < count - 1 ? this.index + 1 : -1);
+			},
+
+			previous: function () {
+				var count = this.ul.children.length;
+
+				this.goto(this.selected ? this.index - 1 : count - 1);
+			},
+
+			// Should not be used, highlights specific item without any checks!
+			goto: function (i) {
+				var lis = this.ul.children;
+
+				if (this.selected) {
+					lis[this.index].setAttribute("aria-selected", "false");
+				}
+
+				this.index = i;
+
+				if (i > -1 && lis.length > 0) {
+					lis[i].setAttribute("aria-selected", "true");
+					this.status.textContent = lis[i].textContent;
+
+					$.fire(this.input, "awesomplete-highlight", {
+						text: this.suggestions[this.index]
+					});
+				}
+			},
+
+			select: function (selected, origin) {
+				if (selected) {
+					this.index = $.siblingIndex(selected);
+				} else {
+					selected = this.ul.children[this.index];
+				}
+
+				if (selected) {
+					var suggestion = this.suggestions[this.index];
+
+					var allowed = $.fire(this.input, "awesomplete-select", {
+						text: suggestion,
+						origin: origin || selected
+					});
+
+					if (allowed) {
+						this.replace(suggestion);
+						this.close({ reason: "select" });
+						$.fire(this.input, "awesomplete-selectcomplete", {
+							text: suggestion
+						});
+					}
+				}
+			},
+
+			evaluate: function () {
+				var me = this;
+				var value = this.input.value;
+
+				if (value.length >= this.minChars && this._list.length > 0) {
+					this.index = -1;
+					// Populate list with options that match
+					this.ul.innerHTML = "";
+
+					this.suggestions = this._list.map(function (item) {
+						return new Suggestion(me.data(item, value));
+					}).filter(function (item) {
+						return me.filter(item, value);
+					}).sort(this.sort).slice(0, this.maxItems);
+
+					this.suggestions.forEach(function (text) {
+						me.ul.appendChild(me.item(text, value));
+					});
+
+					if (this.ul.children.length === 0) {
+						this.close({ reason: "nomatches" });
+					} else {
+						this.open();
+					}
+				} else {
+					this.close({ reason: "nomatches" });
+				}
+			}
+		};
+
+		// Static methods/properties
+
+		_.all = [];
+
+		_.FILTER_CONTAINS = function (text, input) {
+			return RegExp($.regExpEscape(input.trim()), "i").test(text);
+		};
+
+		_.FILTER_STARTSWITH = function (text, input) {
+			return RegExp("^" + $.regExpEscape(input.trim()), "i").test(text);
+		};
+
+		_.SORT_BYLENGTH = function (a, b) {
+			if (a.length !== b.length) {
+				return a.length - b.length;
+			}
+
+			return a < b ? -1 : 1;
+		};
+
+		_.ITEM = function (text, input) {
+			var html = input === '' ? text : text.replace(RegExp($.regExpEscape(input.trim()), "gi"), "<mark>$&</mark>");
+			return $.create("li", {
+				innerHTML: html,
+				"aria-selected": "false"
+			});
+		};
+
+		_.REPLACE = function (text) {
+			this.input.value = text.value;
+		};
+
+		_.DATA = function (item /*, input*/) {
+			return item;
+		};
+
+		// Private functions
+
+		function Suggestion(data) {
+			var o = Array.isArray(data) ? { label: data[0], value: data[1] } : typeof data === "object" && "label" in data && "value" in data ? data : { label: data, value: data };
+
+			this.label = o.label || o.value;
+			this.value = o.value;
+		}
+		Object.defineProperty(Suggestion.prototype = Object.create(String.prototype), "length", {
+			get: function () {
+				return this.label.length;
+			}
+		});
+		Suggestion.prototype.toString = Suggestion.prototype.valueOf = function () {
+			return "" + this.label;
+		};
+
+		function configure(instance, properties, o) {
+			for (var i in properties) {
+				var initial = properties[i],
+				    attrValue = instance.input.getAttribute("data-" + i.toLowerCase());
+
+				if (typeof initial === "number") {
+					instance[i] = parseInt(attrValue);
+				} else if (initial === false) {
+					// Boolean options must be false by default anyway
+					instance[i] = attrValue !== null;
+				} else if (initial instanceof Function) {
+					instance[i] = null;
+				} else {
+					instance[i] = attrValue;
+				}
+
+				if (!instance[i] && instance[i] !== 0) {
+					instance[i] = i in o ? o[i] : initial;
+				}
+			}
+		}
+
+		// Helpers
+
+		var slice = Array.prototype.slice;
+
+		function $(expr, con) {
+			return typeof expr === "string" ? (con || document).querySelector(expr) : expr || null;
+		}
+
+		function $$(expr, con) {
+			return slice.call((con || document).querySelectorAll(expr));
+		}
+
+		$.create = function (tag, o) {
+			var element = document.createElement(tag);
+
+			for (var i in o) {
+				var val = o[i];
+
+				if (i === "inside") {
+					$(val).appendChild(element);
+				} else if (i === "around") {
+					var ref = $(val);
+					ref.parentNode.insertBefore(element, ref);
+					element.appendChild(ref);
+				} else if (i in element) {
+					element[i] = val;
+				} else {
+					element.setAttribute(i, val);
+				}
+			}
+
+			return element;
+		};
+
+		$.bind = function (element, o) {
+			if (element) {
+				for (var event in o) {
+					var callback = o[event];
+
+					event.split(/\s+/).forEach(function (event) {
+						element.addEventListener(event, callback);
+					});
+				}
+			}
+		};
+
+		$.fire = function (target, type, properties) {
+			var evt = document.createEvent("HTMLEvents");
+
+			evt.initEvent(type, true, true);
+
+			for (var j in properties) {
+				evt[j] = properties[j];
+			}
+
+			return target.dispatchEvent(evt);
+		};
+
+		$.regExpEscape = function (s) {
+			return s.replace(/[-\\^$*+?.()|[\]{}]/g, "\\$&");
+		};
+
+		$.siblingIndex = function (el) {
+			/* eslint-disable no-cond-assign */
+			for (var i = 0; el = el.previousElementSibling; i++);
+			return i;
+		};
+
+		// Initialization
+
+		function init() {
+			$$("input.awesomplete").forEach(function (input) {
+				new _(input);
+			});
+		}
+
+		// Are we in a browser? Check for Document constructor
+		if (typeof Document !== "undefined") {
+			// DOM already loaded?
+			if (document.readyState !== "loading") {
+				init();
+			} else {
+				// Wait for it
+				document.addEventListener("DOMContentLoaded", init);
+			}
+		}
+
+		_.$ = $;
+		_.$$ = $$;
+
+		// Make sure to export Awesomplete on self when in a browser
+		if (typeof self !== "undefined") {
+			self.Awesomplete = _;
+		}
+
+		// Expose Awesomplete as a CJS module
+		if (typeof module === "object" && module.exports) {
+			module.exports = _;
+		}
+
+		return _;
+		})();
+
+/***/ },
+/* 227 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(228);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(230)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../node_modules/css-loader/index.js!./d3.slider.css", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js!./d3.slider.css");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 228 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(229)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ".d3-slider {\n    position: relative;\n    font-family: Verdana,Arial,sans-serif;\n    font-size: 1.1em;\n    border: 1px solid #aaaaaa;\n    z-index: 2;\n}\n\n.d3-slider-horizontal {\n    height: .8em;\n}  \n\n.d3-slider-range {\n  background:#2980b9;\n  left:0px;\n  right:0px;\n  height: 0.8em;\n  position: absolute;\n}\n\n.d3-slider-range-vertical {\n  background:#2980b9;\n  left:0px;\n  right:0px;\n  position: absolute;\n  top:0;\n}\n\n.d3-slider-vertical {\n    width: .8em;\n    height: 100px;\n}      \n\n.d3-slider-handle {\n    position: absolute;\n    width: 1.2em;\n    height: 1.2em;\n    border: 1px solid #d3d3d3;\n    border-radius: 4px;\n    background: #eee;\n    background: linear-gradient(to bottom, #eee 0%, #ddd 100%);\n    z-index: 3;\n}\n\n.d3-slider-handle:hover {\n    border: 1px solid #999999;\n}\n\n.d3-slider-horizontal .d3-slider-handle {\n    top: -.3em;\n    margin-left: -.6em;\n}\n\n.d3-slider-axis {\n    position: relative;\n    z-index: 1;    \n}\n\n.d3-slider-axis-bottom {\n    top: .8em;\n}\n\n.d3-slider-axis-right {\n    left: .8em;\n}\n\n.d3-slider-axis path {\n    stroke-width: 0;\n    fill: none;\n}\n\n.d3-slider-axis line {\n    fill: none;\n    stroke: #aaa;\n    shape-rendering: crispEdges;\n}\n\n.d3-slider-axis text {\n    font-size: 11px;\n}\n\n.d3-slider-vertical .d3-slider-handle {\n    left: -.25em;\n    margin-left: 0;\n    margin-bottom: -.6em;      \n}", ""]);
+
+	// exports
+
+
+/***/ },
+/* 229 */
+/***/ function(module, exports) {
+
+	/*
+		MIT License http://www.opensource.org/licenses/mit-license.php
+		Author Tobias Koppers @sokra
+	*/
+	// css base code, injected by the css-loader
+	module.exports = function () {
+		var list = [];
+
+		// return the list of modules as css string
+		list.toString = function toString() {
+			var result = [];
+			for (var i = 0; i < this.length; i++) {
+				var item = this[i];
+				if (item[2]) {
+					result.push("@media " + item[2] + "{" + item[1] + "}");
+				} else {
+					result.push(item[1]);
+				}
+			}
+			return result.join("");
+		};
+
+		// import a list of modules into the list
+		list.i = function (modules, mediaQuery) {
+			if (typeof modules === "string") modules = [[null, modules, ""]];
+			var alreadyImportedModules = {};
+			for (var i = 0; i < this.length; i++) {
+				var id = this[i][0];
+				if (typeof id === "number") alreadyImportedModules[id] = true;
+			}
+			for (i = 0; i < modules.length; i++) {
+				var item = modules[i];
+				// skip already imported module
+				// this implementation is not 100% perfect for weird media query combinations
+				//  when a module is imported multiple times with different media queries.
+				//  I hope this will never occur (Hey this way we have smaller bundles)
+				if (typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+					if (mediaQuery && !item[2]) {
+						item[2] = mediaQuery;
+					} else if (mediaQuery) {
+						item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+					}
+					list.push(item);
+				}
+			}
+		};
+		return list;
+	};
+
+/***/ },
+/* 230 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*
+		MIT License http://www.opensource.org/licenses/mit-license.php
+		Author Tobias Koppers @sokra
+	*/
+	var stylesInDom = {},
+		memoize = function(fn) {
+			var memo;
+			return function () {
+				if (typeof memo === "undefined") memo = fn.apply(this, arguments);
+				return memo;
+			};
+		},
+		isOldIE = memoize(function() {
+			return /msie [6-9]\b/.test(window.navigator.userAgent.toLowerCase());
+		}),
+		getHeadElement = memoize(function () {
+			return document.head || document.getElementsByTagName("head")[0];
+		}),
+		singletonElement = null,
+		singletonCounter = 0,
+		styleElementsInsertedAtTop = [];
+
+	module.exports = function(list, options) {
+		if(false) {
+			if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
+		}
+
+		options = options || {};
+		// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+		// tags it will allow on a page
+		if (typeof options.singleton === "undefined") options.singleton = isOldIE();
+
+		// By default, add <style> tags to the bottom of <head>.
+		if (typeof options.insertAt === "undefined") options.insertAt = "bottom";
+
+		var styles = listToStyles(list);
+		addStylesToDom(styles, options);
+
+		return function update(newList) {
+			var mayRemove = [];
+			for(var i = 0; i < styles.length; i++) {
+				var item = styles[i];
+				var domStyle = stylesInDom[item.id];
+				domStyle.refs--;
+				mayRemove.push(domStyle);
+			}
+			if(newList) {
+				var newStyles = listToStyles(newList);
+				addStylesToDom(newStyles, options);
+			}
+			for(var i = 0; i < mayRemove.length; i++) {
+				var domStyle = mayRemove[i];
+				if(domStyle.refs === 0) {
+					for(var j = 0; j < domStyle.parts.length; j++)
+						domStyle.parts[j]();
+					delete stylesInDom[domStyle.id];
+				}
+			}
+		};
+	}
+
+	function addStylesToDom(styles, options) {
+		for(var i = 0; i < styles.length; i++) {
+			var item = styles[i];
+			var domStyle = stylesInDom[item.id];
+			if(domStyle) {
+				domStyle.refs++;
+				for(var j = 0; j < domStyle.parts.length; j++) {
+					domStyle.parts[j](item.parts[j]);
+				}
+				for(; j < item.parts.length; j++) {
+					domStyle.parts.push(addStyle(item.parts[j], options));
+				}
+			} else {
+				var parts = [];
+				for(var j = 0; j < item.parts.length; j++) {
+					parts.push(addStyle(item.parts[j], options));
+				}
+				stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
+			}
+		}
+	}
+
+	function listToStyles(list) {
+		var styles = [];
+		var newStyles = {};
+		for(var i = 0; i < list.length; i++) {
+			var item = list[i];
+			var id = item[0];
+			var css = item[1];
+			var media = item[2];
+			var sourceMap = item[3];
+			var part = {css: css, media: media, sourceMap: sourceMap};
+			if(!newStyles[id])
+				styles.push(newStyles[id] = {id: id, parts: [part]});
+			else
+				newStyles[id].parts.push(part);
+		}
+		return styles;
+	}
+
+	function insertStyleElement(options, styleElement) {
+		var head = getHeadElement();
+		var lastStyleElementInsertedAtTop = styleElementsInsertedAtTop[styleElementsInsertedAtTop.length - 1];
+		if (options.insertAt === "top") {
+			if(!lastStyleElementInsertedAtTop) {
+				head.insertBefore(styleElement, head.firstChild);
+			} else if(lastStyleElementInsertedAtTop.nextSibling) {
+				head.insertBefore(styleElement, lastStyleElementInsertedAtTop.nextSibling);
+			} else {
+				head.appendChild(styleElement);
+			}
+			styleElementsInsertedAtTop.push(styleElement);
+		} else if (options.insertAt === "bottom") {
+			head.appendChild(styleElement);
+		} else {
+			throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
+		}
+	}
+
+	function removeStyleElement(styleElement) {
+		styleElement.parentNode.removeChild(styleElement);
+		var idx = styleElementsInsertedAtTop.indexOf(styleElement);
+		if(idx >= 0) {
+			styleElementsInsertedAtTop.splice(idx, 1);
+		}
+	}
+
+	function createStyleElement(options) {
+		var styleElement = document.createElement("style");
+		styleElement.type = "text/css";
+		insertStyleElement(options, styleElement);
+		return styleElement;
+	}
+
+	function createLinkElement(options) {
+		var linkElement = document.createElement("link");
+		linkElement.rel = "stylesheet";
+		insertStyleElement(options, linkElement);
+		return linkElement;
+	}
+
+	function addStyle(obj, options) {
+		var styleElement, update, remove;
+
+		if (options.singleton) {
+			var styleIndex = singletonCounter++;
+			styleElement = singletonElement || (singletonElement = createStyleElement(options));
+			update = applyToSingletonTag.bind(null, styleElement, styleIndex, false);
+			remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true);
+		} else if(obj.sourceMap &&
+			typeof URL === "function" &&
+			typeof URL.createObjectURL === "function" &&
+			typeof URL.revokeObjectURL === "function" &&
+			typeof Blob === "function" &&
+			typeof btoa === "function") {
+			styleElement = createLinkElement(options);
+			update = updateLink.bind(null, styleElement);
+			remove = function() {
+				removeStyleElement(styleElement);
+				if(styleElement.href)
+					URL.revokeObjectURL(styleElement.href);
+			};
+		} else {
+			styleElement = createStyleElement(options);
+			update = applyToTag.bind(null, styleElement);
+			remove = function() {
+				removeStyleElement(styleElement);
+			};
+		}
+
+		update(obj);
+
+		return function updateStyle(newObj) {
+			if(newObj) {
+				if(newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap)
+					return;
+				update(obj = newObj);
+			} else {
+				remove();
+			}
+		};
+	}
+
+	var replaceText = (function () {
+		var textStore = [];
+
+		return function (index, replacement) {
+			textStore[index] = replacement;
+			return textStore.filter(Boolean).join('\n');
+		};
+	})();
+
+	function applyToSingletonTag(styleElement, index, remove, obj) {
+		var css = remove ? "" : obj.css;
+
+		if (styleElement.styleSheet) {
+			styleElement.styleSheet.cssText = replaceText(index, css);
+		} else {
+			var cssNode = document.createTextNode(css);
+			var childNodes = styleElement.childNodes;
+			if (childNodes[index]) styleElement.removeChild(childNodes[index]);
+			if (childNodes.length) {
+				styleElement.insertBefore(cssNode, childNodes[index]);
+			} else {
+				styleElement.appendChild(cssNode);
+			}
+		}
+	}
+
+	function applyToTag(styleElement, obj) {
+		var css = obj.css;
+		var media = obj.media;
+
+		if(media) {
+			styleElement.setAttribute("media", media)
+		}
+
+		if(styleElement.styleSheet) {
+			styleElement.styleSheet.cssText = css;
+		} else {
+			while(styleElement.firstChild) {
+				styleElement.removeChild(styleElement.firstChild);
+			}
+			styleElement.appendChild(document.createTextNode(css));
+		}
+	}
+
+	function updateLink(linkElement, obj) {
+		var css = obj.css;
+		var sourceMap = obj.sourceMap;
+
+		if(sourceMap) {
+			// http://stackoverflow.com/a/26603875
+			css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
+		}
+
+		var blob = new Blob([css], { type: "text/css" });
+
+		var oldSrc = linkElement.href;
+
+		linkElement.href = URL.createObjectURL(blob);
+
+		if(oldSrc)
+			URL.revokeObjectURL(oldSrc);
+	}
+
+
+/***/ },
+/* 231 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(232);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(230)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../css-loader/index.js!./awesomplete.css", function() {
+				var newContent = require("!!./../css-loader/index.js!./awesomplete.css");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 232 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(229)();
+	// imports
+
+
+	// module
+	exports.push([module.id, "[hidden] { display: none; }\n\n.visually-hidden {\n\tposition: absolute;\n\tclip: rect(0, 0, 0, 0);\n}\n\ndiv.awesomplete {\n\tdisplay: inline-block;\n\tposition: relative;\n}\n\ndiv.awesomplete > input {\n\tdisplay: block;\n}\n\ndiv.awesomplete > ul {\n\tposition: absolute;\n\tleft: 0;\n\tz-index: 1;\n\tmin-width: 100%;\n\tbox-sizing: border-box;\n\tlist-style: none;\n\tpadding: 0;\n\tborder-radius: .3em;\n\tmargin: .2em 0 0;\n\tbackground: hsla(0,0%,100%,.9);\n\tbackground: linear-gradient(to bottom right, white, hsla(0,0%,100%,.8));\n\tborder: 1px solid rgba(0,0,0,.3);\n\tbox-shadow: .05em .2em .6em rgba(0,0,0,.2);\n\ttext-shadow: none;\n}\n\ndiv.awesomplete > ul[hidden],\ndiv.awesomplete > ul:empty {\n\tdisplay: none;\n}\n\n@supports (transform: scale(0)) {\n\tdiv.awesomplete > ul {\n\t\ttransition: .3s cubic-bezier(.4,.2,.5,1.4);\n\t\ttransform-origin: 1.43em -.43em;\n\t}\n\t\n\tdiv.awesomplete > ul[hidden],\n\tdiv.awesomplete > ul:empty {\n\t\topacity: 0;\n\t\ttransform: scale(0);\n\t\tdisplay: block;\n\t\ttransition-timing-function: ease;\n\t}\n}\n\n\t/* Pointer */\n\tdiv.awesomplete > ul:before {\n\t\tcontent: \"\";\n\t\tposition: absolute;\n\t\ttop: -.43em;\n\t\tleft: 1em;\n\t\twidth: 0; height: 0;\n\t\tpadding: .4em;\n\t\tbackground: white;\n\t\tborder: inherit;\n\t\tborder-right: 0;\n\t\tborder-bottom: 0;\n\t\t-webkit-transform: rotate(45deg);\n\t\ttransform: rotate(45deg);\n\t}\n\n\tdiv.awesomplete > ul > li {\n\t\tposition: relative;\n\t\tpadding: .2em .5em;\n\t\tcursor: pointer;\n\t}\n\t\n\tdiv.awesomplete > ul > li:hover {\n\t\tbackground: hsl(200, 40%, 80%);\n\t\tcolor: black;\n\t}\n\t\n\tdiv.awesomplete > ul > li[aria-selected=\"true\"] {\n\t\tbackground: hsl(205, 40%, 40%);\n\t\tcolor: white;\n\t}\n\t\n\t\tdiv.awesomplete mark {\n\t\t\tbackground: hsl(65, 100%, 50%);\n\t\t}\n\t\t\n\t\tdiv.awesomplete li:hover mark {\n\t\t\tbackground: hsl(68, 100%, 41%);\n\t\t}\n\t\t\n\t\tdiv.awesomplete li[aria-selected=\"true\"] mark {\n\t\t\tbackground: hsl(86, 100%, 21%);\n\t\t\tcolor: inherit;\n\t\t}", ""]);
+
+	// exports
+
+
+/***/ },
+/* 233 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var ini_sidebar = __webpack_require__(156);
+	var set_up_filters = __webpack_require__(234);
+	var set_up_search = __webpack_require__(239);
+	var set_up_reorder = __webpack_require__(240);
+	var set_sidebar_ini_view = __webpack_require__(241);
+	var make_icons = __webpack_require__(242);
+	var make_modals = __webpack_require__(244);
+	var set_up_opacity_slider = __webpack_require__(246);
+	var make_colorbar = __webpack_require__(247);
+
+	/* Represents sidebar with controls.
+	 */
+	module.exports = function sidebar(cgm) {
+
+	  var params = cgm.params;
+
+	  var sidebar = d3.select(params.root + ' .sidebar_wrapper');
+
+	  // console.log('is_expand ',params.viz.is_expand)
+
+	  if (params.viz.is_expand) {
+	    sidebar.style('display', 'none');
 	  }
 
-	  // var n = 150;
-	  // var p = 0.5;
-	  // var actual_k = 10;
-	  cp = my_binom_test_2(actual_k, n, p);
-	  console.log(cp);
+	  sidebar.append('div').classed('title_section', true);
 
-	  // console.log(binom_dist(1, 2, 0.5));
+	  if (params.sidebar.title != null) {
+	    sidebar.select('.title_section').append('h4')
+	    // .style('margin-left', params.sidebar.title_margin_left+'px')
+	    .style('margin-left', '20px').style('margin-top', '5px').style('margin-bottom', '0px').text(params.sidebar.title);
+	  }
+
+	  sidebar.append('div').style('padding-right', '2px').classed('about_section', true);
+
+	  if (params.sidebar.about != null) {
+
+	    sidebar.select('.about_section').append('h5').classed('sidebar_text', true).style('margin-left', '7px').style('margin-top', '5px').style('margin-bottom', '2px').style('text-align', 'justify').html(params.sidebar.about);
+	  }
+
+	  sidebar.append('div').classed('icons_section', true).style('text-align', 'center');
+
+	  if (cgm.params.make_modals) {
+	    make_modals(params);
+	  }
+
+	  if (params.sidebar.icons) {
+	    make_icons(cgm, sidebar);
+	  }
+
+	  set_up_reorder(params, sidebar);
+
+	  set_up_search(sidebar, params);
+
+	  set_up_opacity_slider(sidebar);
+
+	  var possible_filter_names = _.keys(params.viz.possible_filters);
+
+	  if (possible_filter_names.indexOf('enr_score_type') > -1) {
+	    possible_filter_names.sort(function (a, b) {
+	      return a.toLowerCase().localeCompare(b.toLowerCase());
+	    });
+	  }
+
+	  cgm.slider_functions = {};
+
+	  _.each(possible_filter_names, function (inst_filter) {
+	    set_up_filters(cgm, inst_filter);
+	  });
+
+	  ini_sidebar(cgm);
+
+	  // when initializing the visualization using a view
+	  if (params.ini_view !== null) {
+
+	    set_sidebar_ini_view(params);
+
+	    params.ini_view = null;
+	  }
+
+	  make_colorbar(cgm);
+		};
+
+/***/ },
+/* 234 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var make_slider_filter = __webpack_require__(235);
+	var make_button_filter = __webpack_require__(238);
+
+	module.exports = function set_up_filters(cgm, filter_type) {
+
+	  var params = cgm.params;
+
+	  var div_filters = d3.select(params.root + ' .sidebar_wrapper').append('div').classed('div_filters', true).style('padding-left', '10px').style('padding-right', '10px');
+
+	  if (params.viz.possible_filters[filter_type] == 'numerical') {
+	    make_slider_filter(cgm, filter_type, div_filters);
+	  } else if (params.viz.possible_filters[filter_type] == 'categorical') {
+	    make_button_filter(cgm, filter_type, div_filters);
+	  }
+		};
+
+/***/ },
+/* 235 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var make_filter_title = __webpack_require__(179);
+	var run_filter_slider = __webpack_require__(236);
+	var get_filter_default_state = __webpack_require__(5);
+	var get_subset_views = __webpack_require__(12);
+
+	d3.slider = __webpack_require__(224);
+
+	module.exports = function make_slider_filter(cgm, filter_type, div_filters) {
+
+	  var params = cgm.params;
+	  var inst_view = {};
+
+	  var possible_filters = _.keys(params.viz.possible_filters);
+
+	  _.each(possible_filters, function (tmp_filter) {
+	    if (tmp_filter != filter_type) {
+	      var default_state = get_filter_default_state(params.viz.filter_data, tmp_filter);
+	      inst_view[tmp_filter] = default_state;
+	    }
+	  });
+
+	  var filter_title = make_filter_title(params, filter_type);
+
+	  div_filters.append('div').classed('title_' + filter_type, true).classed('sidebar_text', true).classed('slider_description', true).style('margin-top', '5px').style('margin-bottom', '3px').text(filter_title.text + filter_title.state + filter_title.suffix);
+
+	  div_filters.append('div').classed('slider_' + filter_type, true).classed('slider', true).attr('current_state', filter_title.state);
+
+	  var views = params.network_data.views;
+
+	  var available_views = get_subset_views(params, views, inst_view);
+
+	  // sort available views by filter_type value
+	  available_views = available_views.sort(function (a, b) {
+	    return b[filter_type] - a[filter_type];
+	  });
+
+	  var inst_max = available_views.length - 1;
+
+	  var ini_value = 0;
+	  // change the starting position of the slider if necessary
+	  if (params.requested_view !== null && filter_type in params.requested_view) {
+
+	    var inst_filter_value = params.requested_view[filter_type];
+
+	    if (inst_filter_value != 'all') {
+
+	      var found_value = available_views.map(function (e) {
+	        return e[filter_type];
+	      }).indexOf(inst_filter_value);
+
+	      if (found_value > 0) {
+	        ini_value = found_value;
+	      }
+	    }
+	  }
+
+	  // Filter Slider
+	  //////////////////////////////////////////////////////////////////////
+	  var slide_filter_fun = d3.slider().value(ini_value).min(0).max(inst_max).step(1).on('slide', function (evt, value) {
+	    run_filter_slider_db(cgm, filter_type, available_views, value);
+	  }).on('slideend', function (evt, value) {
+	    run_filter_slider_db(cgm, filter_type, available_views, value);
+	  });
+
+	  // save slider function in order to reset value later
+	  cgm.slider_functions[filter_type] = slide_filter_fun;
+
+	  d3.select(cgm.params.root + ' .slider_' + filter_type).call(slide_filter_fun);
+
+	  //////////////////////////////////////////////////////////////////////
+
+	  var run_filter_slider_db = _.debounce(run_filter_slider, 800);
+		};
+
+/***/ },
+/* 236 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var update_viz_with_view = __webpack_require__(141);
+	var reset_other_filter_sliders = __webpack_require__(178);
+	var get_current_orders = __webpack_require__(237);
+	var make_requested_view = __webpack_require__(14);
+
+	module.exports = function run_filter_slider(cgm, filter_type, available_views, inst_index) {
+
+	  // only update if not running update
+	  if (d3.select(cgm.params.viz.viz_svg).classed('running_update') === false) {
+
+	    var params = cgm.params;
+
+	    // get value
+	    var inst_state = available_views[inst_index][filter_type];
+
+	    reset_other_filter_sliders(cgm, filter_type, inst_state);
+
+	    params = get_current_orders(params);
+
+	    var requested_view = {};
+	    requested_view[filter_type] = inst_state;
+
+	    requested_view = make_requested_view(params, requested_view);
+
+	    if (_.has(available_views[0], 'enr_score_type')) {
+	      var enr_state = d3.select(params.root + ' .toggle_enr_score_type').attr('current_state');
+
+	      requested_view.enr_score_type = enr_state;
+	    }
+
+	    update_viz_with_view(cgm, requested_view);
+	  }
+		};
+
+/***/ },
+/* 237 */
+/***/ function(module, exports) {
+
+	module.exports = function get_current_orders(params) {
+
+	  // get current orders 
+	  var other_rc;
+	  _.each(['row', 'col'], function (inst_rc) {
+
+	    if (inst_rc === 'row') {
+	      other_rc = 'col';
+	    } else {
+	      other_rc = 'row';
+	    }
+
+	    if (d3.select(params.root + ' .toggle_' + other_rc + '_order .active').empty() === false) {
+
+	      params.viz.inst_order[inst_rc] = d3.select(params.root + ' .toggle_' + other_rc + '_order').select('.active').attr('name');
+	    } else {
+
+	      // default to cluster ordering 
+	      params.viz.inst_order[inst_rc] = 'clust';
+	    }
+	  });
+
+	  return params;
+	};
+
+/***/ },
+/* 238 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// var update_network = require('../network/update_network');
+	var make_requested_view = __webpack_require__(14);
+
+	module.exports = function make_button_filter(config, params, filter_type, div_filters) {
+
+	  /*
+	  Enrichr specific code
+	  */
+
+	  var buttons = div_filters.append('div').classed('categorical_filter', true).classed('toggle_' + filter_type, true).classed('btn-group-vertical', true).style('width', '100%').style('margin-top', '10px').attr('current_state', 'combined_score');
+
+	  var filter_options = params.viz.filter_data[filter_type];
+
+	  var button_dict = {
+	    'combined_score': 'Combined Score',
+	    'pval': 'P-Value',
+	    'zscore': 'Z-score'
+	  };
+
+	  buttons.selectAll('button').data(filter_options).enter().append('button').attr('type', 'button').classed('btn', true).classed('btn-primary', true).classed('.filter_button', true).classed('active', function (d) {
+	    var is_active = false;
+	    if (d == 'combined_score') {
+	      is_active = true;
+	    }
+	    return is_active;
+	  }).attr('name', function (d) {
+	    return d;
+	  }).html(function (d) {
+	    return button_dict[d];
+	  });
+
+	  $(params.root + ' .categorical_filter .btn').off().click(function () {
+
+	    d3.selectAll(params.root + ' .categorical_filter .btn').classed('active', false);
+
+	    d3.select(this).classed('active', true);
+
+	    var inst_state = d3.select(this).attr('name');
+
+	    var requested_view = { 'enr_score_type': inst_state };
+
+	    make_requested_view(params, requested_view);
+
+	    d3.select(params.root + ' .toggle_enr_score_type').attr('current_state', inst_state);
+	  });
+		};
+
+/***/ },
+/* 239 */
+/***/ function(module, exports) {
+
+	module.exports = function set_up_search(sidebar, params) {
+
+	  var search_container = sidebar.append('div')
+	  // .classed('row',true)
+	  .classed('gene_search_container', true).style('padding-left', '10px').style('padding-right', '10px').style('margin-top', '10px');
+
+	  search_container.append('input').classed('form-control', true).classed('gene_search_box', true).classed('sidebar_text', true).attr('type', 'text').attr('placeholder', params.sidebar.row_search.placeholder).style('height', params.sidebar.row_search.box.height + 'px').style('margin-top', '10px');
+
+	  search_container.append('div').classed('gene_search_button', true).style('margin-top', '5px').attr('data-toggle', 'buttons').append('button').classed('sidebar_text', true).html('Search').attr('type', 'button').classed('btn', true).classed('btn-primary', true).classed('submit_gene_button', true).style('width', '100%').style('font-size', '14px');
+		};
+
+/***/ },
+/* 240 */
+/***/ function(module, exports) {
+
+	// var get_cat_title = require('../categories/get_cat_title');
+
+	module.exports = function set_up_reorder(params, sidebar) {
+
+	  var button_dict;
+	  var tmp_orders;
+	  var rc_dict = { 'row': 'Row', 'col': 'Column', 'both': '' };
+	  var is_active;
+	  var inst_reorder;
+	  // var all_cats;
+	  // var inst_order_label;
+
+	  var reorder_section = sidebar.append('div').style('padding-left', '10px').style('padding-right', '10px').classed('reorder_section', true);
+
+	  var reorder_types;
+	  if (params.sim_mat) {
+	    reorder_types = ['both'];
+	  } else {
+	    reorder_types = ['row', 'col'];
+	  }
+
+	  _.each(reorder_types, function (inst_rc) {
+
+	    button_dict = {
+	      'clust': 'Cluster',
+	      'rank': 'Rank by Sum',
+	      'rankvar': 'Rank by Variance',
+	      'ini': 'Initial Order',
+	      'alpha': 'Alphabetically'
+	    };
+
+	    var other_rc;
+	    if (inst_rc === 'row') {
+	      other_rc = 'col';
+	    } else {
+	      other_rc = 'row';
+	    }
+
+	    tmp_orders = Object.keys(params.matrix.orders);
+
+	    var possible_orders = [];
+
+	    _.each(tmp_orders, function (inst_name) {
+
+	      if (inst_name.indexOf(other_rc) > -1) {
+	        inst_name = inst_name.replace('_row', '').replace('_col', '');
+
+	        if (inst_name.indexOf('cat_') < 0) {
+	          possible_orders.push(inst_name);
+	        }
+	      }
+	    });
+
+	    // specific to Enrichr
+	    if (_.keys(params.viz.filter_data).indexOf('enr_score_type') > -1) {
+	      possible_orders = ['clust', 'rank'];
+	    }
+
+	    possible_orders = _.uniq(possible_orders);
+
+	    possible_orders = possible_orders.sort();
+
+	    var reorder_text;
+	    if (inst_rc != 'both') {
+	      reorder_text = ' Order';
+	    } else {
+	      reorder_text = 'Reorder Matrix';
+	    }
+
+	    reorder_section.append('div').classed('sidebar_button_text', true).style('clear', 'both').style('margin-top', '10px').html(rc_dict[inst_rc] + reorder_text);
+
+	    inst_reorder = reorder_section.append('div').classed('btn-group-vertical', true).style('width', '100%').classed('toggle_' + inst_rc + '_order', true).attr('role', 'group');
+
+	    inst_reorder.selectAll('.button').data(possible_orders).enter().append('button').attr('type', 'button').classed('btn', true).classed('btn-primary', true).classed('sidebar_button_text', true).classed('active', function (d) {
+	      is_active = false;
+	      if (d == params.viz.inst_order[other_rc]) {
+	        is_active = true;
+	      }
+	      return is_active;
+	    }).attr('name', function (d) {
+	      return d;
+	    }).html(function (d) {
+	      return button_dict[d];
+	    });
+	  });
+		};
+
+/***/ },
+/* 241 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var make_filter_title = __webpack_require__(179);
+
+	module.exports = function set_sidebar_ini_view(params) {
+
+	  _.each(_.keys(params.ini_view), function (inst_filter) {
+
+	    // initialize filter slider using ini_view
+	    var inst_value = params.ini_view[inst_filter];
+
+	    var filter_type = params.viz.possible_filters[inst_filter];
+
+	    if (filter_type === 'numerical') {
+
+	      if (inst_value != 'all') {
+	        inst_value = parseInt(inst_value, 10);
+	      }
+
+	      if (params.viz.filter_data[inst_filter].indexOf(inst_value) <= -1) {
+	        inst_value = 'all';
+	      }
+
+	      var filter_title = make_filter_title(params, inst_filter);
+
+	      d3.select(params.root + ' .title_' + inst_filter).text(filter_title.text + inst_value + filter_title.suffix);
+
+	      d3.select(params.root + ' .slider_' + inst_filter).attr('current_state', inst_value);
+	    } else {
+
+	      // set up button initialization
+
+	    }
+	  });
+		};
+
+/***/ },
+/* 242 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var file_saver = __webpack_require__(181);
+	var two_translate_zoom = __webpack_require__(80);
+	var deactivate_cropping = __webpack_require__(185);
+	var save_svg_png = __webpack_require__(243);
+
+	module.exports = function make_icons(cgm, sidebar) {
+
+	  var params = cgm.params;
+	  // var saveSvgAsPng = save_svg_png();
+	  var saveAs = file_saver();
+
+	  var row = sidebar.select('.icons_section').style('margin-top', '7px').style('margin-left', '5%');
+
+	  var width_pct = '22%';
+	  var padding_left = '0px';
+	  var padding_right = '0px';
+
+	  row.append('div').classed('clust_icon', true).style('float', 'left').style('width', width_pct).style('padding-left', padding_left).style('padding-right', padding_right).append('i').classed('fa', true).classed('fa-share-alt', true).classed('icon_buttons', true).style('font-size', '25px').on('click', function () {
+	    $(params.root + ' .share_info').modal('toggle');
+	    $('.share_url').val(window.location.href);
+	  }).classed('sidebar_tooltip', true).append('span').classed('sidebar_tooltip_text', true).html('Share').style('left', '0%');
+
+	  row.append('div').classed('clust_icon', true).style('float', 'left').style('width', width_pct).style('padding-left', padding_left).style('padding-right', padding_right).append('i').classed('fa', true).classed('fa-camera', true).classed('icon_buttons', true).style('font-size', '25px').on('click', function () {
+
+	    $(params.root + ' .picture_info').modal('toggle');
+	  }).classed('sidebar_tooltip', true).append('span').classed('sidebar_tooltip_text', true).html('Take snapshot').style('left', '-100%');
+
+	  row.append('div').classed('clust_icon', true).style('float', 'left').style('width', width_pct).style('padding-left', padding_left).style('padding-right', padding_right).append('i').classed('fa', true).classed('fa fa-cloud-download', true).classed('icon_buttons', true).style('font-size', '25px').on('click', function () {
+
+	    cgm.save_matrix();
+	  }).classed('sidebar_tooltip', true).append('span').classed('sidebar_tooltip_text', true).html('Download matrix').style('left', '-200%');
+
+	  row.append('div').classed('clust_icon', true).style('float', 'left').style('width', width_pct).style('padding-left', padding_left).style('padding-right', '-5px').append('i').classed('fa', true).classed('fa-crop', true).classed('crop_button', true).classed('icon_buttons', true).style('font-size', '25px').on('click', function () {
+
+	    // do nothing if dendro filtering has been done
+	    if (cgm.params.dendro_filter.row === false && cgm.params.dendro_filter.col === false) {
+
+	      var is_crop = d3.select(this).classed('fa-crop');
+
+	      var is_undo = d3.select(this).classed('fa-undo');
+
+	      // press crop button (can be active/incative)
+	      if (is_crop) {
+
+	        // keep list of names to return to state
+	        cgm.params.crop_filter_nodes = {};
+	        cgm.params.crop_filter_nodes.row_nodes = cgm.params.network_data.row_nodes;
+	        cgm.params.crop_filter_nodes.col_nodes = cgm.params.network_data.col_nodes;
+
+	        cgm.brush_crop_matrix();
+
+	        if (d3.select(this).classed('active_cropping') === false) {
+
+	          // set active_cropping (button turns red)
+	          d3.select(this).classed('active_cropping', true).style('color', 'red');
+	        } else {
+	          // deactivate cropping (button turns blue)
+	          d3.select(this).classed('active_cropping', false).style('color', '#337ab7');
+
+	          deactivate_cropping(cgm);
+	        }
+	      }
+
+	      // press undo button
+	      if (is_undo) {
+
+	        d3.select(params.root + ' .crop_button').style('color', '#337ab7').classed('fa-crop', true).classed('fa-undo', false);
+
+	        // cgm.filter_viz_using_names(cgm.params.crop_filter_nodes);
+	        cgm.filter_viz_using_nodes(cgm.params.crop_filter_nodes);
+
+	        // show dendro crop buttons after brush-cropping has been undone
+	        d3.select(cgm.params.root + ' .col_dendro_icons_container').style('display', 'block');
+	        d3.select(cgm.params.root + ' .row_dendro_icons_container').style('display', 'block');
+	      }
+
+	      two_translate_zoom(cgm, 0, 0, 1);
+	    }
+	  }).classed('sidebar_tooltip', true).append('span').classed('sidebar_tooltip_text', true).html('Crop matrix').style('left', '-400%');
+
+	  // save svg: example from: http://bl.ocks.org/pgiraud/8955139#profile.json
+	  ////////////////////////////////////////////////////////////////////////////
+	  function save_clust_svg() {
+
+	    d3.select(params.root + ' .expand_button').style('opacity', 0);
+
+	    var html = d3.select(params.root + " svg").attr("title", "test2").attr("version", 1.1).attr("xmlns", "http://www.w3.org/2000/svg").node().parentNode.innerHTML;
+
+	    var blob = new Blob([html], { type: "image/svg+xml" });
+
+	    saveAs(blob, "clustergrammer.svg");
+
+	    d3.select(params.root + ' .expand_button').style('opacity', 0.4);
+	  }
+
+	  d3.select(params.root + ' .download_buttons').append('p').append('a').html('Download SVG').on('click', function () {
+	    save_clust_svg();
+	  });
+
+	  var svg_id = 'svg_' + params.root.replace('#', '');
+
+	  // save as PNG
+	  /////////////////////////////////////////
+	  d3.select(params.root + ' .download_buttons').append('p').append('a').html('Download PNG').on('click', function () {
+	    d3.select(params.root + ' .expand_button').style('opacity', 0);
+	    // saveSvgAsPng(document.getElementById(svg_id), "clustergrammer.png");
+	    save_svg_png.saveSvgAsPng(document.getElementById(svg_id), "clustergrammer.png");
+	    d3.select(params.root + ' .expand_button').style('opacity', 0.4);
+	  });
+		};
+
+/***/ },
+/* 243 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_RESULT__;(function () {
+	  var out$ = typeof exports != 'undefined' && exports || "function" != 'undefined' && {} || this;
+
+	  var doctype = '<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [<!ENTITY nbsp "&#160;">]>';
+
+	  function isElement(obj) {
+	    return obj instanceof HTMLElement || obj instanceof SVGElement;
+	  }
+
+	  function requireDomNode(el) {
+	    if (!isElement(el)) {
+	      throw new Error('an HTMLElement or SVGElement is required; got ' + el);
+	    }
+	  }
+
+	  function isExternal(url) {
+	    return url && url.lastIndexOf('http', 0) == 0 && url.lastIndexOf(window.location.host) == -1;
+	  }
+
+	  function inlineImages(el, callback) {
+	    requireDomNode(el);
+
+	    var images = el.querySelectorAll('image'),
+	        left = images.length,
+	        checkDone = function () {
+	      if (left === 0) {
+	        callback();
+	      }
+	    };
+
+	    checkDone();
+	    for (var i = 0; i < images.length; i++) {
+	      (function (image) {
+	        var href = image.getAttributeNS("http://www.w3.org/1999/xlink", "href");
+	        if (href) {
+	          if (isExternal(href.value)) {
+	            console.warn("Cannot render embedded images linking to external hosts: " + href.value);
+	            return;
+	          }
+	        }
+	        var canvas = document.createElement('canvas');
+	        var ctx = canvas.getContext('2d');
+	        var img = new Image();
+	        img.crossOrigin = "anonymous";
+	        href = href || image.getAttribute('href');
+	        if (href) {
+	          img.src = href;
+	          img.onload = function () {
+	            canvas.width = img.width;
+	            canvas.height = img.height;
+	            ctx.drawImage(img, 0, 0);
+	            image.setAttributeNS("http://www.w3.org/1999/xlink", "href", canvas.toDataURL('image/png'));
+	            left--;
+	            checkDone();
+	          };
+	          img.onerror = function () {
+	            console.log("Could not load " + href);
+	            left--;
+	            checkDone();
+	          };
+	        } else {
+	          left--;
+	          checkDone();
+	        }
+	      })(images[i]);
+	    }
+	  }
+
+	  function styles(el, options, cssLoadedCallback) {
+	    var selectorRemap = options.selectorRemap;
+	    var modifyStyle = options.modifyStyle;
+	    var css = "";
+	    // each font that has extranl link is saved into queue, and processed
+	    // asynchronously
+	    var fontsQueue = [];
+	    var sheets = document.styleSheets;
+	    for (var i = 0; i < sheets.length; i++) {
+	      try {
+	        var rules = sheets[i].cssRules;
+	      } catch (e) {
+	        console.warn("Stylesheet could not be loaded: " + sheets[i].href);
+	        continue;
+	      }
+
+	      if (rules != null) {
+	        for (var j = 0, match; j < rules.length; j++, match = null) {
+	          var rule = rules[j];
+	          if (typeof rule.style != "undefined") {
+	            var selectorText;
+
+	            try {
+	              selectorText = rule.selectorText;
+	            } catch (err) {
+	              console.warn('The following CSS rule has an invalid selector: "' + rule + '"', err);
+	            }
+
+	            try {
+	              if (selectorText) {
+	                match = el.querySelector(selectorText);
+	              }
+	            } catch (err) {
+	              console.warn('Invalid CSS selector "' + selectorText + '"', err);
+	            }
+
+	            if (match) {
+	              var selector = selectorRemap ? selectorRemap(rule.selectorText) : rule.selectorText;
+	              var cssText = modifyStyle ? modifyStyle(rule.style.cssText) : rule.style.cssText;
+	              css += selector + " { " + cssText + " }\n";
+	            } else if (rule.cssText.match(/^@font-face/)) {
+	              // below we are trying to find matches to external link. E.g.
+	              // @font-face {
+	              //   // ...
+	              //   src: local('Abel'), url(https://fonts.gstatic.com/s/abel/v6/UzN-iejR1VoXU2Oc-7LsbvesZW2xOQ-xsNqO47m55DA.woff2);
+	              // }
+	              //
+	              // This regex will save extrnal link into first capture group
+	              var fontUrlRegexp = /url\(["']?(.+?)["']?\)/;
+	              // TODO: This needs to be changed to support multiple url declarations per font.
+	              var fontUrlMatch = rule.cssText.match(fontUrlRegexp);
+
+	              var externalFontUrl = fontUrlMatch && fontUrlMatch[1] || '';
+	              var fontUrlIsDataURI = externalFontUrl.match(/^data:/);
+	              if (fontUrlIsDataURI) {
+	                // We should ignore data uri - they are already embedded
+	                externalFontUrl = '';
+	              }
+
+	              if (externalFontUrl) {
+	                // okay, we are lucky. We can fetch this font later
+	                fontsQueue.push({
+	                  text: rule.cssText,
+	                  // Pass url regex, so that once font is downladed, we can run `replace()` on it
+	                  fontUrlRegexp: fontUrlRegexp,
+	                  format: getFontMimeTypeFromUrl(externalFontUrl),
+	                  url: externalFontUrl
+	                });
+	              } else {
+	                // otherwise, use previous logic
+	                css += rule.cssText + '\n';
+	              }
+	            }
+	          }
+	        }
+	      }
+	    }
+
+	    // Now all css is processed, it's time to handle scheduled fonts
+	    processFontQueue(fontsQueue);
+
+	    function getFontMimeTypeFromUrl(fontUrl) {
+	      var supportedFormats = {
+	        'woff2': 'font/woff2',
+	        'woff': 'font/woff',
+	        'otf': 'application/x-font-opentype',
+	        'ttf': 'application/x-font-ttf',
+	        'eot': 'application/vnd.ms-fontobject',
+	        'sfnt': 'application/font-sfnt',
+	        'svg': 'image/svg+xml'
+	      };
+	      var extensions = Object.keys(supportedFormats);
+	      for (var i = 0; i < extensions.length; ++i) {
+	        var extension = extensions[i];
+	        // TODO: This is not bullet proof, it needs to handle edge cases...
+	        if (fontUrl.indexOf('.' + extension) > 0) {
+	          return supportedFormats[extension];
+	        }
+	      }
+
+	      // If you see this error message, you probably need to update code above.
+	      console.error('Unknown font format for ' + fontUrl + '; Fonts may not be working correctly');
+	      return 'application/octet-stream';
+	    }
+
+	    function processFontQueue(queue) {
+	      if (queue.length > 0) {
+	        // load fonts one by one until we have anything in the queue:
+	        var font = queue.pop();
+	        processNext(font);
+	      } else {
+	        // no more fonts to load.
+	        cssLoadedCallback(css);
+	      }
+
+	      function processNext(font) {
+	        // TODO: This could benefit from caching.
+	        var oReq = new XMLHttpRequest();
+	        oReq.addEventListener('load', fontLoaded);
+	        oReq.addEventListener('error', transferFailed);
+	        oReq.addEventListener('abort', transferFailed);
+	        oReq.open('GET', font.url);
+	        oReq.responseType = 'arraybuffer';
+	        oReq.send();
+
+	        function fontLoaded() {
+	          // TODO: it may be also worth to wait until fonts are fully loaded before
+	          // attempting to rasterize them. (e.g. use https://developer.mozilla.org/en-US/docs/Web/API/FontFaceSet )
+	          var fontBits = oReq.response;
+	          var fontInBase64 = arrayBufferToBase64(fontBits);
+	          updateFontStyle(font, fontInBase64);
+	        }
+
+	        function transferFailed(e) {
+	          console.warn('Failed to load font from: ' + font.url);
+	          console.warn(e);
+	          css += font.text + '\n';
+	          processFontQueue();
+	        }
+
+	        function updateFontStyle(font, fontInBase64) {
+	          var dataUrl = 'url("data:' + font.format + ';base64,' + fontInBase64 + '")';
+	          css += font.text.replace(font.fontUrlRegexp, dataUrl) + '\n';
+
+	          // schedule next font download on next tick.
+	          setTimeout(function () {
+	            processFontQueue(queue);
+	          }, 0);
+	        }
+	      }
+	    }
+
+	    function arrayBufferToBase64(buffer) {
+	      var binary = '';
+	      var bytes = new Uint8Array(buffer);
+	      var len = bytes.byteLength;
+
+	      for (var i = 0; i < len; i++) {
+	        binary += String.fromCharCode(bytes[i]);
+	      }
+
+	      return window.btoa(binary);
+	    }
+	  }
+
+	  function getDimension(el, clone, dim) {
+	    var v = el.viewBox && el.viewBox.baseVal && el.viewBox.baseVal[dim] || clone.getAttribute(dim) !== null && !clone.getAttribute(dim).match(/%$/) && parseInt(clone.getAttribute(dim)) || el.getBoundingClientRect()[dim] || parseInt(clone.style[dim]) || parseInt(window.getComputedStyle(el).getPropertyValue(dim));
+	    return typeof v === 'undefined' || v === null || isNaN(parseFloat(v)) ? 0 : v;
+	  }
+
+	  function reEncode(data) {
+	    data = encodeURIComponent(data);
+	    data = data.replace(/%([0-9A-F]{2})/g, function (match, p1) {
+	      var c = String.fromCharCode('0x' + p1);
+	      return c === '%' ? '%25' : c;
+	    });
+	    return decodeURIComponent(data);
+	  }
+
+	  out$.prepareSvg = function (el, options, cb) {
+	    requireDomNode(el);
+
+	    options = options || {};
+	    options.scale = options.scale || 1;
+	    options.responsive = options.responsive || false;
+	    var xmlns = "http://www.w3.org/2000/xmlns/";
+
+	    inlineImages(el, function () {
+	      var outer = document.createElement("div");
+	      var clone = el.cloneNode(true);
+	      var width, height;
+	      if (el.tagName == 'svg') {
+	        width = options.width || getDimension(el, clone, 'width');
+	        height = options.height || getDimension(el, clone, 'height');
+	      } else if (el.getBBox) {
+	        var box = el.getBBox();
+	        width = box.x + box.width;
+	        height = box.y + box.height;
+	        clone.setAttribute('transform', clone.getAttribute('transform').replace(/translate\(.*?\)/, ''));
+
+	        var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+	        svg.appendChild(clone);
+	        clone = svg;
+	      } else {
+	        console.error('Attempted to render non-SVG element', el);
+	        return;
+	      }
+
+	      clone.setAttribute("version", "1.1");
+	      if (!clone.getAttribute('xmlns')) {
+	        clone.setAttributeNS(xmlns, "xmlns", "http://www.w3.org/2000/svg");
+	      }
+	      if (!clone.getAttribute('xmlns:xlink')) {
+	        clone.setAttributeNS(xmlns, "xmlns:xlink", "http://www.w3.org/1999/xlink");
+	      }
+
+	      if (options.responsive) {
+	        clone.removeAttribute('width');
+	        clone.removeAttribute('height');
+	        clone.setAttribute('preserveAspectRatio', 'xMinYMin meet');
+	      } else {
+	        clone.setAttribute("width", width * options.scale);
+	        clone.setAttribute("height", height * options.scale);
+	      }
+
+	      clone.setAttribute("viewBox", [options.left || 0, options.top || 0, width, height].join(" "));
+
+	      var fos = clone.querySelectorAll('foreignObject > *');
+	      for (var i = 0; i < fos.length; i++) {
+	        if (!fos[i].getAttribute('xmlns')) {
+	          fos[i].setAttributeNS(xmlns, "xmlns", "http://www.w3.org/1999/xhtml");
+	        }
+	      }
+
+	      outer.appendChild(clone);
+
+	      // In case of custom fonts we need to fetch font first, and then inline
+	      // its url into data-uri format (encode as base64). That's why style
+	      // processing is done asynchonously. Once all inlining is finshed
+	      // cssLoadedCallback() is called.
+	      styles(el, options, cssLoadedCallback);
+
+	      function cssLoadedCallback(css) {
+	        // here all fonts are inlined, so that we can render them properly.
+	        var s = document.createElement('style');
+	        s.setAttribute('type', 'text/css');
+	        s.innerHTML = "<![CDATA[\n" + css + "\n]]>";
+	        var defs = document.createElement('defs');
+	        defs.appendChild(s);
+	        clone.insertBefore(defs, clone.firstChild);
+
+	        if (cb) {
+	          var outHtml = outer.innerHTML;
+	          outHtml = outHtml.replace(/NS\d+:href/gi, 'xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href');
+	          cb(outHtml, width, height);
+	        }
+	      }
+	    });
+	  };
+
+	  out$.svgAsDataUri = function (el, options, cb) {
+	    out$.prepareSvg(el, options, function (svg) {
+	      var uri = 'data:image/svg+xml;base64,' + window.btoa(reEncode(doctype + svg));
+	      if (cb) {
+	        cb(uri);
+	      }
+	    });
+	  };
+
+	  out$.svgAsPngUri = function (el, options, cb) {
+	    requireDomNode(el);
+
+	    options = options || {};
+	    options.encoderType = options.encoderType || 'image/png';
+	    options.encoderOptions = options.encoderOptions || 0.8;
+
+	    var convertToPng = function (src, w, h) {
+	      var canvas = document.createElement('canvas');
+	      var context = canvas.getContext('2d');
+	      canvas.width = w;
+	      canvas.height = h;
+
+	      if (options.canvg) {
+	        options.canvg(canvas, src);
+	      } else {
+	        context.drawImage(src, 0, 0);
+	      }
+
+	      if (options.backgroundColor) {
+	        context.globalCompositeOperation = 'destination-over';
+	        context.fillStyle = options.backgroundColor;
+	        context.fillRect(0, 0, canvas.width, canvas.height);
+	      }
+
+	      var png;
+	      try {
+	        png = canvas.toDataURL(options.encoderType, options.encoderOptions);
+	      } catch (e) {
+	        if (typeof SecurityError !== 'undefined' && e instanceof SecurityError || e.name == "SecurityError") {
+	          console.error("Rendered SVG images cannot be downloaded in this browser.");
+	          return;
+	        } else {
+	          throw e;
+	        }
+	      }
+	      cb(png);
+	    };
+
+	    if (options.canvg) {
+	      out$.prepareSvg(el, options, convertToPng);
+	    } else {
+	      out$.svgAsDataUri(el, options, function (uri) {
+	        var image = new Image();
+
+	        image.onload = function () {
+	          convertToPng(image, image.width, image.height);
+	        };
+
+	        image.onerror = function () {
+	          console.error('There was an error loading the data URI as an image on the following SVG\n', window.atob(uri.slice(26)), '\n', "Open the following link to see browser's diagnosis\n", uri);
+	        };
+
+	        image.src = uri;
+	      });
+	    }
+	  };
+
+	  out$.download = function (name, uri) {
+	    if (navigator.msSaveOrOpenBlob) {
+	      navigator.msSaveOrOpenBlob(uriToBlob(uri), name);
+	    } else {
+	      var saveLink = document.createElement('a');
+	      var downloadSupported = 'download' in saveLink;
+	      if (downloadSupported) {
+	        saveLink.download = name;
+	        saveLink.href = uri;
+	        saveLink.style.display = 'none';
+	        document.body.appendChild(saveLink);
+	        saveLink.click();
+	        document.body.removeChild(saveLink);
+	      } else {
+	        window.open(uri, '_temp', 'menubar=no,toolbar=no,status=no');
+	      }
+	    }
+	  };
+
+	  function uriToBlob(uri) {
+	    var byteString = window.atob(uri.split(',')[1]);
+	    var mimeString = uri.split(',')[0].split(':')[1].split(';')[0];
+	    var buffer = new ArrayBuffer(byteString.length);
+	    var intArray = new Uint8Array(buffer);
+	    for (var i = 0; i < byteString.length; i++) {
+	      intArray[i] = byteString.charCodeAt(i);
+	    }
+	    return new Blob([buffer], { type: mimeString });
+	  }
+
+	  out$.saveSvg = function (el, name, options) {
+	    requireDomNode(el);
+
+	    options = options || {};
+	    out$.svgAsDataUri(el, options, function (uri) {
+	      out$.download(name, uri);
+	    });
+	  };
+
+	  out$.saveSvgAsPng = function (el, name, options) {
+	    requireDomNode(el);
+
+	    options = options || {};
+	    out$.svgAsPngUri(el, options, function (uri) {
+	      out$.download(name, uri);
+	    });
+	  };
+
+	  // if define is defined create as an AMD module
+	  if (true) {
+	    !(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
+	      return out$;
+	    }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	  }
+		})();
+
+/***/ },
+/* 244 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var make_modal_skeleton = __webpack_require__(245);
+
+	module.exports = function ini_modals(params) {
+
+	  // share modal
+	  ///////////////////////////////////////
+	  var share_modal = make_modal_skeleton(params, 'share_info');
+
+	  share_modal.header.append('a').attr('target', '_blank').attr('href', '/clustergrammer/');
+
+	  share_modal.header.append('h4').classed('modal-title', true).html('Share the visualization using the current URL:');
+
+	  share_modal.body.append('input').classed('bootstrap_highlight', true).classed('share_url', true);
+
+	  // picture modal
+	  ///////////////////////////////////////
+	  var screenshot_modal = make_modal_skeleton(params, 'picture_info');
+
+	  screenshot_modal.header.append('h4').classed('modal-title', true).html('Save a snapshot of the visualization');
+
+	  screenshot_modal.body.append('div').classed('download_buttons', true);
+
+	  // dendro modal
+	  ///////////////////////////////////////
+	  var dendro_modal = make_modal_skeleton(params, 'dendro_info');
+
+	  dendro_modal.header.append('h4').classed('modal-title', true).html('Cluster Information');
+
+	  dendro_modal.body.append('g').classed('cluster_info_container', true);
+
+	  dendro_modal.body.append('div').classed('dendro_text', true).append('input').classed('bootstrap_highlight', true).classed('current_names', true).style('width', '100%');
+		};
+
+/***/ },
+/* 245 */
+/***/ function(module, exports) {
+
+	module.exports = function make_modal_skeleton(params, modal_class) {
+
+	  var modal_skeleton = {};
+
+	  var modal = d3.select(params.root).append('div').classed('modal', true).classed('fade', true).classed(modal_class, true).attr('role', 'dialog');
+
+	  var modal_dialog = modal.append('div').classed('modal-dialog', true);
+
+	  var modal_content = modal_dialog.append('div').classed('modal-content', true);
+
+	  modal_skeleton.header = modal_content.append('div').classed('modal-header', true);
+
+	  modal_skeleton.header.append('button').attr('type', 'button').classed('close', true).attr('data-dismiss', 'modal').html('&times;');
+
+	  modal_skeleton.body = modal_content.append('div').classed('modal-body', true);
+
+	  return modal_skeleton;
+		};
+
+/***/ },
+/* 246 */
+/***/ function(module, exports) {
+
+	module.exports = function set_up_opacity_slider(sidebar) {
+
+	  var slider_container = sidebar.append('div').classed('opacity_slider_container', true).style('margin-top', '5px').style('padding-left', '10px').style('padding-right', '10px');
+
+	  slider_container.append('div').classed('sidebar_text', true).classed('opacity_slider_text', true).style('margin-bottom', '3px').text('Opacity Slider');
+
+	  slider_container.append('div').classed('slider', true).classed('opacity_slider', true);
+		};
+
+/***/ },
+/* 247 */
+/***/ function(module, exports) {
+
+	module.exports = function make_colorbar(cgm) {
+
+	  var params = cgm.params;
+
+	  d3.select(params.root + ' .sidebar_wrapper').append('div').classed('sidebar_text', true).style('padding-left', '10px').style('padding-top', '5px').text('Matrix Values');
+
+	  var colorbar_width = params.sidebar.width - 20;
+	  var colorbar_height = 13;
+	  var svg_height = 3 * colorbar_height;
+	  var svg_width = 1.2 * colorbar_width;
+	  var low_left_margin = 10;
+	  var top_margin = 33;
+	  var high_left_margin = colorbar_width + 10;
+	  var bar_margin_left = 10;
+	  var bar_margin_top = 3;
+
+	  var network_data = params.network_data;
+
+	  var max_link = _.max(network_data.links, function (d) {
+	    return d.value;
+	  }).value;
+
+	  var min_link = _.min(network_data.links, function (d) {
+	    return d.value;
+	  }).value;
+
+	  var main_svg = d3.select(params.root + ' .sidebar_wrapper').append('svg').attr('height', svg_height + 'px').attr('width', svg_width + 'px');
+
+	  //Append a defs (for definition) element to your SVG
+	  var defs = main_svg.append("defs");
+
+	  //Append a linearGradient element to the defs and give it a unique id
+	  var linearGradient = defs.append("linearGradient").attr("id", "linear-gradient");
+
+	  var special_case = 'none';
+
+	  // no negative numbers
+	  if (min_link >= 0) {
+
+	    //Set the color for the start (0%)
+	    linearGradient.append("stop").attr("offset", "0%").attr("stop-color", "white");
+
+	    //Set the color for the end (100%)
+	    linearGradient.append("stop").attr("offset", "100%").attr("stop-color", "red");
+
+	    special_case = 'all_postiive';
+
+	    // no positive numbers
+	  } else if (max_link <= 0) {
+
+	    //Set the color for the start (0%)
+	    linearGradient.append("stop").attr("offset", "0%").attr("stop-color", "blue");
+
+	    //Set the color for the end (100%)
+	    linearGradient.append("stop").attr("offset", "100%").attr("stop-color", "white");
+
+	    special_case = 'all_negative';
+	  }
+
+	  // both postive and negative numbers
+	  else {
+	      //Set the color for the start (0%)
+	      linearGradient.append("stop").attr("offset", "0%").attr("stop-color", "blue");
+
+	      //Set the color for the end (100%)
+	      linearGradient.append("stop").attr("offset", "50%").attr("stop-color", "white");
+
+	      //Set the color for the end (100%)
+	      linearGradient.append("stop").attr("offset", "100%").attr("stop-color", "red");
+	    }
+
+	  // make colorbar
+	  main_svg.append('rect').classed('background', true).attr('height', colorbar_height + 'px').attr('width', colorbar_width + 'px').attr('fill', 'url(#linear-gradient)').attr('transform', 'translate(' + bar_margin_left + ', ' + bar_margin_top + ')').attr('stroke', 'grey').attr('stroke-width', '0.25px');
+
+	  // make title
+	  ///////////////
+
+	  var max_abs_val = Math.abs(Math.round(params.matrix.max_link * 10) / 10);
+	  var font_size = 13;
+
+	  main_svg.append('text').text(function () {
+	    var inst_string;
+	    if (special_case === 'all_postiive') {
+	      inst_string = 0;
+	    } else {
+	      inst_string = '-' + max_abs_val.toLocaleString();
+	    }
+	    return inst_string;
+	  }).style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').style('font-weight', 300).style('font-size', font_size).attr('transform', 'translate(' + low_left_margin + ',' + top_margin + ')').attr('text-anchor', 'start');
+
+	  main_svg.append('text').text(max_abs_val.toLocaleString()).text(function () {
+	    var inst_string;
+	    if (special_case === 'all_negative') {
+	      inst_string = 0;
+	    } else {
+	      inst_string = max_abs_val.toLocaleString();
+	    }
+	    return inst_string;
+	  }).style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').style('font-weight', 300).style('font-size', font_size).attr('transform', 'translate(' + high_left_margin + ',' + top_margin + ')').attr('text-anchor', 'end');
 		};
 
 /***/ }

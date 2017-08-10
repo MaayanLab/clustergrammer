@@ -36,6 +36,7 @@
     "lodash": "^4.3.0",
     "save-svg-as-png": "^1.1.0",
     "style-loader": "^0.13.1",
-    "underscore": "1.8.3"
+    "underscore": "1.8.3",
+    "mathjs": "3.16.0"
   }
 }
