@@ -20,5 +20,4 @@ module.exports = function run_fisher_exact_clust(k, n, big_k, big_n){
 
   return ft.toPrecision();
 
-
 };
