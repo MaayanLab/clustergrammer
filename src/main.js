@@ -17,23 +17,12 @@ var d3_tip_custom = require('./tooltip/d3_tip_custom');
 var all_reorder = require('./reorder/all_reorder');
 var make_matrix_string = require('./matrix/make_matrix_string');
 // var fisher = require('./dendrogram/run_fisher_exact_clust');
-// var math = require('mathjs')
+var binom_test = require('./dendrogram/binom_test');
 
-// console.log(mathjs)
+binom_test();
 
-// Load the math.js core
-var core = require('mathjs/core');
-// Create a new, empty math.js instance
-// It will only contain methods `import` and `config`
-var math = core.create();
-// math.import(require('mathjs/lib/type/fraction'));
-math.import(require('mathjs/lib/type/bignumber'));
-math.import(require('mathjs/lib/function/probability/factorial'));
-math.config({
-  number: 'BigNumber', // Default type of number:
-                       // 'number' (default), 'BigNumber', or 'Fraction'
-  precision: 200        // Number of significant digits for BigNumbers
-});
+
+
 
 // moved d3.slider to src
 d3.slider = require('./d3.slider');
@@ -142,8 +131,6 @@ function Clustergrammer(args) {
   cgm.d3_tip_custom = expose_d3_tip_custom;
   cgm.reorder = api_reorder;
   cgm.export_matrix_string = export_matrix_string;
-
-  cgm.math = math;
 
   return cgm;
 }
