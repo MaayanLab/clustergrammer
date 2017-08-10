@@ -19,9 +19,11 @@ var make_matrix_string = require('./matrix/make_matrix_string');
 // var fisher = require('./dendrogram/run_fisher_exact_clust');
 var binom_test = require('./dendrogram/binom_test');
 
-binom_test();
 
-
+var actual_k = 10;
+var n = 150;
+var p = 0.02;
+binom_test(actual_k, n, p);
 
 
 // moved d3.slider to src

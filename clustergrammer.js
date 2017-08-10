@@ -66,7 +66,10 @@ var Clustergrammer =
 	// var fisher = require('./dendrogram/run_fisher_exact_clust');
 	var binom_test = __webpack_require__(768);
 
-	binom_test();
+	var actual_k = 10;
+	var n = 150;
+	var p = 0.02;
+	binom_test(actual_k, n, p);
 
 	// moved d3.slider to src
 	d3.slider = __webpack_require__(190);
@@ -23338,23 +23341,22 @@ var Clustergrammer =
 /* 768 */
 /***/ function(module, exports, __webpack_require__) {
 
-	// var math = require('mathjs')
-
+	
 	// Load the math.js core
-	var core = __webpack_require__(214);
 	// Create a new, empty math.js instance
 	// It will only contain methods `import` and `config`
-	var math = core.create();
 	// math.import(require('mathjs/lib/type/fraction'));
+	var core = __webpack_require__(214);
+	var math = core.create();
 	math.import(__webpack_require__(226));
 	math.import(__webpack_require__(316));
 	math.config({
 	  number: 'BigNumber', // Default type of number:
 	  // 'number' (default), 'BigNumber', or 'Fraction'
-	  precision: 200 // Number of significant digits for BigNumbers
+	  precision: 64 // Number of significant digits for BigNumbers
 	});
 
-	module.exports = function binom_test() {
+	module.exports = function binom_test(actual_k, n, p) {
 
 	  console.log('running binom_test!!!!!');
 
@@ -23378,9 +23380,9 @@ var Clustergrammer =
 	    return cp;
 	  }
 
-	  var n = 25;
-	  var p = 0.1;
-	  var actual_k = 20;
+	  // var n = 150;
+	  // var p = 0.5;
+	  // var actual_k = 10;
 	  cp = my_binom_test_2(actual_k, n, p);
 	  console.log(cp);
 

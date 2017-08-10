@@ -1,20 +1,19 @@
-// var math = require('mathjs')
 
 // Load the math.js core
-var core = require('mathjs/core');
 // Create a new, empty math.js instance
 // It will only contain methods `import` and `config`
-var math = core.create();
 // math.import(require('mathjs/lib/type/fraction'));
+var core = require('mathjs/core');
+var math = core.create();
 math.import(require('mathjs/lib/type/bignumber'));
 math.import(require('mathjs/lib/function/probability/factorial'));
 math.config({
   number: 'BigNumber', // Default type of number:
                        // 'number' (default), 'BigNumber', or 'Fraction'
-  precision: 200        // Number of significant digits for BigNumbers
+  precision: 64        // Number of significant digits for BigNumbers
 });
 
-module.exports = function binom_test(){
+module.exports = function binom_test(actual_k, n, p){
 
   console.log('running binom_test!!!!!');
 
@@ -39,9 +38,9 @@ module.exports = function binom_test(){
 
   }
 
-  var n = 25;
-  var p = 0.1;
-  var actual_k = 20;
+  // var n = 150;
+  // var p = 0.5;
+  // var actual_k = 10;
   cp = my_binom_test_2(actual_k, n, p)
   console.log(cp)
 
