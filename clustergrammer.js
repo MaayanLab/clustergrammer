@@ -4581,7 +4581,7 @@ var Clustergrammer =
 
 	      // Percentage Title
 	      cat_graph_group.append('text').text('P-val').attr('transform', function () {
-	        var inst_x = bar_width + count_offset + 113;
+	        var inst_x = bar_width + count_offset + 115;
 	        var inst_translate = 'translate(' + inst_x + ', 0)';
 	        return inst_translate;
 	      });
@@ -4683,7 +4683,7 @@ var Clustergrammer =
 	        // inst_count = inst_count.toLocaleString();
 	        return inst_count;
 	      }).attr('transform', function () {
-	        var inst_x = bar_width + count_offset + shift_count_num + 110;
+	        var inst_x = bar_width + count_offset + shift_count_num + 112;
 	        var inst_y = 0.75 * bar_height;
 	        return 'translate(' + inst_x + ', ' + inst_y + ')';
 	      }).attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('font-weight', 400).attr('text-anchor', 'end');
