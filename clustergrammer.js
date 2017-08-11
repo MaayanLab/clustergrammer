@@ -12188,8 +12188,6 @@ var Clustergrammer =
 
 	module.exports = function binom_test(actual_k, n, p) {
 
-	  console.log(_.keys(p_dict));
-
 	  var fact = math.factorial;
 
 	  function binom_dist(k, n, p) {
@@ -12210,10 +12208,49 @@ var Clustergrammer =
 	    return cp;
 	  }
 
+	  // look up p-value from z-score using table
+	  function binom_prop_table(actual_k, n, p) {
+
+	    // expected average number of successes
+	    var mu = n * p;
+
+	    // standard deviation
+	    var sigma = Math.sqrt(n * p * (1 - p));
+
+	    // how many standard deviations is the actual_k away
+	    // from the expected value
+	    var z = (actual_k - mu) / sigma;
+
+	    var z_vals = p_dict.z;
+	    var p_vals = p_dict.p;
+
+	    var found_index = -1;
+	    var found = false;
+
+	    for (var index = 0; index < z_vals.length; index++) {
+	      var inst_z = z_vals[index];
+
+	      // increasing inst_z until z is less than inst_z
+	      if (z < inst_z && found === false) {
+	        found_index = index;
+	        found = true;
+	      }
+	    }
+
+	    // give it the smallest p-val if the z-score was larger than
+	    // any in the table
+	    if (found_index === -1) {
+	      found_index = z_vals.length - 1;
+	    }
+	    pval = p_vals[found_index];
+
+	    return pval;
+	  }
+
 	  // calculate pval
 	  pval = my_binom_test_2(actual_k, n, p);
 	  if (isNaN(pval)) {
-	    pval = 'need to use approx';
+	    pval = binom_prop_table(actual_k, n, p);
 	  }
 
 	  return pval;
