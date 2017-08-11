@@ -16,15 +16,6 @@ var run_zoom = require('./zoom/run_zoom');
 var d3_tip_custom = require('./tooltip/d3_tip_custom');
 var all_reorder = require('./reorder/all_reorder');
 var make_matrix_string = require('./matrix/make_matrix_string');
-// var fisher = require('./dendrogram/run_fisher_exact_clust');
-var binom_test = require('./dendrogram/binom_test');
-
-
-// var actual_k = 10;
-// var n = 150;
-// var p = 0.02;
-// binom_test(actual_k, n, p);
-
 
 // moved d3.slider to src
 d3.slider = require('./d3.slider');
@@ -36,7 +27,7 @@ var awesomplete = require('awesomplete');
 require('!style!css!./d3.slider/d3.slider.css');
 require('!style!css!awesomplete/awesomplete.css');
 
-/* clustergrammer v1.18.2
+/* clustergrammer v1.19.0
  * Nicolas Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
  * (c) 2017
  */
@@ -133,7 +124,6 @@ function Clustergrammer(args) {
   cgm.d3_tip_custom = expose_d3_tip_custom;
   cgm.reorder = api_reorder;
   cgm.export_matrix_string = export_matrix_string;
-  cgm.binom_test = binom_test;
 
   return cgm;
 }
