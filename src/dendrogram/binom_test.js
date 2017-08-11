@@ -3,6 +3,7 @@
 // Create a new, empty math.js instance
 // It will only contain methods `import` and `config`
 // math.import(require('mathjs/lib/type/fraction'));
+var p_dict = require('./binom_prop_pval_lookup');
 var core = require('mathjs/core');
 var math = core.create();
 
@@ -10,6 +11,8 @@ math.import(require('mathjs/lib/function/probability/factorial'));
 
 
 module.exports = function binom_test(actual_k, n, p){
+
+  console.log(_.keys(p_dict))
 
   var fact = math.factorial;
 
