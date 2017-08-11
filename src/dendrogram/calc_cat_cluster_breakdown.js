@@ -96,6 +96,13 @@ module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc)
       // 3: count instances of each category name for each category-type
       var cat_name;
       var num_in_clust = clust_names.length;
+
+      console.log(num_in_clust)
+
+      // use the cat_hist to get the number of instances of this category in
+      // all rows/cols
+      // params
+
       _.each(cat_types_index, function(cat_index){
 
         inst_index = cat_index.split('-')[1];
@@ -141,6 +148,8 @@ module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc)
 
         });
 
+        console.log(tmp_run_count)
+
         inst_breakdown = {};
         inst_breakdown.type_name = type_name;
         inst_breakdown.num_in_clust = num_in_clust;
@@ -153,6 +162,13 @@ module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc)
 
         for (var inst_cat in inst_run_count){
 
+          console.log('------------------')
+          console.log(inst_cat)
+
+          var tot_num_cat = params.viz.cat_info[inst_rc][cat_index].cat_hist[cat_name];
+          console.log('tot_num_cat', tot_num_cat)
+
+
           // if no cat-title given
           if (no_title_given){
             cat_title_and_name = inst_cat;
@@ -162,6 +178,8 @@ module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc)
 
           // num_nodes: number of cat-nodes drawn in cluster
           var num_nodes = inst_run_count[inst_cat].num_nodes;
+
+          console.log('num_nodes: ' , num_nodes)
 
           // working on tracking the 'real' number of nodes, which is only different
           // if downsampling has been done

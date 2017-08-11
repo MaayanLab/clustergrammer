@@ -1966,15 +1966,30 @@ var Clustergrammer =
 	        // console.log(viz.cat_names[inst_rc][cat_title])
 	        // console.log('-----------\n')
 
-	        var cat_instances = utils.pluck(params.network_data[inst_rc + '_nodes'], cat_title);
-	        var cat_states = _.uniq(cat_instances).sort();
+	        var cat_instances_titles = utils.pluck(params.network_data[inst_rc + '_nodes'], cat_title);
+	        var cat_instances = [];
+
+	        _.each(cat_instances_titles, function (inst_cat) {
+
+	          if (inst_cat.indexOf(': ') > 0) {
+	            new_cat = inst_cat.split(': ')[1];
+	          } else {
+	            new_cat = inst_cat;
+	          }
+
+	          cat_instances.push(new_cat);
+	        });
+
+	        var cat_states = _.uniq(cat_instances_titles).sort();
 
 	        // check whether all the categories are of value type
 	        inst_info = check_if_value_cats(cat_states);
 
 	        // add histogram to inst_info
 	        if (inst_info.type === 'cat_strings') {
+	          // remove titles from categories in hist
 	          var cat_hist = _.countBy(cat_instances);
+	          console.log(cat_instances);
 	          inst_info.cat_hist = cat_hist;
 	        } else {
 	          inst_info.cat_hist = null;
@@ -4823,6 +4838,13 @@ var Clustergrammer =
 	      // 3: count instances of each category name for each category-type
 	      var cat_name;
 	      var num_in_clust = clust_names.length;
+
+	      console.log(num_in_clust);
+
+	      // use the cat_hist to get the number of instances of this category in
+	      // all rows/cols
+	      // params
+
 	      _.each(cat_types_index, function (cat_index) {
 
 	        inst_index = cat_index.split('-')[1];
@@ -4865,6 +4887,8 @@ var Clustergrammer =
 	          }
 	        });
 
+	        console.log(tmp_run_count);
+
 	        inst_breakdown = {};
 	        inst_breakdown.type_name = type_name;
 	        inst_breakdown.num_in_clust = num_in_clust;
@@ -4877,6 +4901,12 @@ var Clustergrammer =
 
 	        for (var inst_cat in inst_run_count) {
 
+	          console.log('------------------');
+	          console.log(inst_cat);
+
+	          var tot_num_cat = params.viz.cat_info[inst_rc][cat_index].cat_hist[cat_name];
+	          console.log('tot_num_cat', tot_num_cat);
+
 	          // if no cat-title given
 	          if (no_title_given) {
 	            cat_title_and_name = inst_cat;
@@ -4886,6 +4916,8 @@ var Clustergrammer =
 
 	          // num_nodes: number of cat-nodes drawn in cluster
 	          var num_nodes = inst_run_count[inst_cat].num_nodes;
+
+	          console.log('num_nodes: ', num_nodes);
 
 	          // working on tracking the 'real' number of nodes, which is only different
 	          // if downsampling has been done

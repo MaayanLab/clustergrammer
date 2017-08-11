@@ -91,15 +91,30 @@ module.exports = function make_cat_params(params, viz, predefined_cat_colors=tru
         // console.log(viz.cat_names[inst_rc][cat_title])
         // console.log('-----------\n')
 
-        var cat_instances = utils.pluck(params.network_data[inst_rc+'_nodes'], cat_title);
-        var cat_states = _.uniq( cat_instances ).sort();
+        var cat_instances_titles = utils.pluck(params.network_data[inst_rc+'_nodes'], cat_title);
+        var cat_instances = [];
+
+        _.each(cat_instances_titles, function(inst_cat){
+
+          if (inst_cat.indexOf(': ') >0){
+            new_cat = inst_cat.split(': ')[1];
+          } else {
+            new_cat = inst_cat
+          }
+
+          cat_instances.push(new_cat);
+        })
+
+        var cat_states = _.uniq( cat_instances_titles ).sort();
 
         // check whether all the categories are of value type
         inst_info = check_if_value_cats(cat_states);
 
         // add histogram to inst_info
         if (inst_info.type === 'cat_strings'){
+          // remove titles from categories in hist
           var cat_hist = _.countBy(cat_instances);
+          console.log(cat_instances)
           inst_info.cat_hist = cat_hist;
         } else {
           inst_info.cat_hist = null;
