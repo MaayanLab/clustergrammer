@@ -5,8 +5,6 @@ var check_if_value_cats = require('./check_if_value_cats');
 
 module.exports = function make_cat_params(params, viz, predefined_cat_colors=true){
 
-  // console.log('predefined_cat_colors ' + String(predefined_cat_colors))
-
   var super_string = ': ';
   var tmp_super;
   var inst_info;
@@ -34,18 +32,10 @@ module.exports = function make_cat_params(params, viz, predefined_cat_colors=tru
     viz.all_cats[inst_rc] = [];
     var tmp_keys = _.keys(params.network_data[inst_rc+'_nodes'][0]);
 
-    // console.log(tmp_keys)
-
     tmp_keys = tmp_keys.sort();
-
-    // console.log('-------------------------------')
-    // console.log('tmp_keys')
-    // console.log(tmp_keys)
-    // console.log('-------------------------------')
 
     _.each( tmp_keys, function(d){
       if (d.indexOf('cat-') >= 0){
-        // console.log(d)
         viz.show_categories[inst_rc] = true;
         viz.all_cats[inst_rc].push(d);
       }
@@ -59,20 +49,9 @@ module.exports = function make_cat_params(params, viz, predefined_cat_colors=tru
       viz.cat_info[inst_rc] = {};
       viz.cat_names[inst_rc] = {};
 
-      // console.log('***************************')
-      // console.log(viz.all_cats[inst_rc])
-      // console.log('***************************')
-
       _.each( viz.all_cats[inst_rc], function(cat_title){
 
-        // console.log( inst_rc + ': ' + cat_title)
-
         var inst_node = params.network_data[inst_rc+'_nodes'][0];
-
-        // console.log('defining cat_names')
-        // console.log(cat_title)
-        // console.log(inst_node[cat_title])
-        // console.log('****************************')
 
         // look for title of category in category name
         if (typeof inst_node[cat_title] === 'string' ){
@@ -87,9 +66,6 @@ module.exports = function make_cat_params(params, viz, predefined_cat_colors=tru
         } else {
           viz.cat_names[inst_rc][cat_title] = cat_title;
         }
-
-        // console.log(viz.cat_names[inst_rc][cat_title])
-        // console.log('-----------\n')
 
         var cat_instances_titles = utils.pluck(params.network_data[inst_rc+'_nodes'], cat_title);
         var cat_instances = [];
@@ -114,7 +90,6 @@ module.exports = function make_cat_params(params, viz, predefined_cat_colors=tru
         if (inst_info.type === 'cat_strings'){
           // remove titles from categories in hist
           var cat_hist = _.countBy(cat_instances);
-          console.log(cat_instances)
           inst_info.cat_hist = cat_hist;
         } else {
           inst_info.cat_hist = null;
@@ -147,10 +122,8 @@ module.exports = function make_cat_params(params, viz, predefined_cat_colors=tru
     }
 
     if (_.has(params.network_data, 'cat_colors') && predefined_cat_colors === true){
-      // console.log('-- use predefined_cat_colors for ' + inst_rc + 's')
       viz.cat_colors[inst_rc] = params.network_data.cat_colors[inst_rc];
     } else {
-      // console.log('-- did not use predefined_cat_colors for '+inst_rc+'s')
     }
 
     if (params.sim_mat){
@@ -159,7 +132,6 @@ module.exports = function make_cat_params(params, viz, predefined_cat_colors=tru
     }
 
   });
-  // console.log('--------------------------\n\n');
 
   viz.cat_colors = viz.cat_colors;
 

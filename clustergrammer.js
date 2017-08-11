@@ -1881,8 +1881,6 @@ var Clustergrammer =
 
 	module.exports = function make_cat_params(params, viz, predefined_cat_colors = true) {
 
-	  // console.log('predefined_cat_colors ' + String(predefined_cat_colors))
-
 	  var super_string = ': ';
 	  var tmp_super;
 	  var inst_info;
@@ -1910,18 +1908,10 @@ var Clustergrammer =
 	    viz.all_cats[inst_rc] = [];
 	    var tmp_keys = _.keys(params.network_data[inst_rc + '_nodes'][0]);
 
-	    // console.log(tmp_keys)
-
 	    tmp_keys = tmp_keys.sort();
-
-	    // console.log('-------------------------------')
-	    // console.log('tmp_keys')
-	    // console.log(tmp_keys)
-	    // console.log('-------------------------------')
 
 	    _.each(tmp_keys, function (d) {
 	      if (d.indexOf('cat-') >= 0) {
-	        // console.log(d)
 	        viz.show_categories[inst_rc] = true;
 	        viz.all_cats[inst_rc].push(d);
 	      }
@@ -1935,20 +1925,9 @@ var Clustergrammer =
 	      viz.cat_info[inst_rc] = {};
 	      viz.cat_names[inst_rc] = {};
 
-	      // console.log('***************************')
-	      // console.log(viz.all_cats[inst_rc])
-	      // console.log('***************************')
-
 	      _.each(viz.all_cats[inst_rc], function (cat_title) {
 
-	        // console.log( inst_rc + ': ' + cat_title)
-
 	        var inst_node = params.network_data[inst_rc + '_nodes'][0];
-
-	        // console.log('defining cat_names')
-	        // console.log(cat_title)
-	        // console.log(inst_node[cat_title])
-	        // console.log('****************************')
 
 	        // look for title of category in category name
 	        if (typeof inst_node[cat_title] === 'string') {
@@ -1962,9 +1941,6 @@ var Clustergrammer =
 	        } else {
 	          viz.cat_names[inst_rc][cat_title] = cat_title;
 	        }
-
-	        // console.log(viz.cat_names[inst_rc][cat_title])
-	        // console.log('-----------\n')
 
 	        var cat_instances_titles = utils.pluck(params.network_data[inst_rc + '_nodes'], cat_title);
 	        var cat_instances = [];
@@ -1989,7 +1965,6 @@ var Clustergrammer =
 	        if (inst_info.type === 'cat_strings') {
 	          // remove titles from categories in hist
 	          var cat_hist = _.countBy(cat_instances);
-	          console.log(cat_instances);
 	          inst_info.cat_hist = cat_hist;
 	        } else {
 	          inst_info.cat_hist = null;
@@ -2020,18 +1995,14 @@ var Clustergrammer =
 	    }
 
 	    if (_.has(params.network_data, 'cat_colors') && predefined_cat_colors === true) {
-	      // console.log('-- use predefined_cat_colors for ' + inst_rc + 's')
 	      viz.cat_colors[inst_rc] = params.network_data.cat_colors[inst_rc];
-	    } else {
-	      // console.log('-- did not use predefined_cat_colors for '+inst_rc+'s')
-	    }
+	    } else {}
 
 	    if (params.sim_mat) {
 	      // sending row color info to columns since row color info can be updated
 	      viz.cat_colors.col = viz.cat_colors.row;
 	    }
 	  });
-	  // console.log('--------------------------\n\n');
 
 	  viz.cat_colors = viz.cat_colors;
 
@@ -4497,7 +4468,7 @@ var Clustergrammer =
 	    // loop through cat_breakdown data
 	    var super_string = ': ';
 	    var paragraph_string = '<p>';
-	    var width = 335;
+	    var width = 350;
 	    var bar_offset = 23;
 	    var bar_height = 20;
 	    var max_string_length = 30;
@@ -4538,7 +4509,7 @@ var Clustergrammer =
 	    // limit the number of bars shown
 	    var max_bars = 25;
 
-	    // calculate height needed for svg based don cat_breakdown data
+	    // calculate height needed for svg based on cat_breakdown data
 	    var svg_height = 20;
 	    _.each(cat_breakdown.slice(0, max_cats), function (tmp_break) {
 	      var num_bars = tmp_break.bar_data.length;
@@ -4602,7 +4573,7 @@ var Clustergrammer =
 
 	      // Percentage Title
 	      cat_graph_group.append('text').text('Pct').attr('transform', function () {
-	        var inst_x = bar_width + count_offset + 75;
+	        var inst_x = bar_width + count_offset + 60;
 	        var inst_translate = 'translate(' + inst_x + ', 0)';
 	        return inst_translate;
 	      });
@@ -4680,7 +4651,19 @@ var Clustergrammer =
 	        inst_count = inst_count.toLocaleString();
 	        return String(inst_count);
 	      }).attr('transform', function () {
-	        var inst_x = bar_width + count_offset + shift_count_num + 60;
+	        var inst_x = bar_width + count_offset + shift_count_num + 47;
+	        var inst_y = 0.75 * bar_height;
+	        return 'translate(' + inst_x + ', ' + inst_y + ')';
+	      }).attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('font-weight', 400).attr('text-anchor', 'end');
+
+	      cat_bar_groups.append('text').classed('count_labels', true).text(function (d) {
+	        // calculate the percentage relative to the current cluster
+	        var inst_count = d[bars_index] / cluster_total * 100;
+	        inst_count = Math.round(inst_count * 10) / 10;
+	        inst_count = inst_count.toLocaleString();
+	        return String(inst_count);
+	      }).attr('transform', function () {
+	        var inst_x = bar_width + count_offset + shift_count_num + 90;
 	        var inst_y = 0.75 * bar_height;
 	        return 'translate(' + inst_x + ', ' + inst_y + ')';
 	      }).attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('font-weight', 400).attr('text-anchor', 'end');
@@ -4841,8 +4824,6 @@ var Clustergrammer =
 	      var cat_name;
 	      var num_in_clust = clust_names.length;
 
-	      console.log(num_in_clust);
-
 	      // use the cat_hist to get the number of instances of this category in
 	      // all rows/cols
 	      // params
@@ -4889,8 +4870,6 @@ var Clustergrammer =
 	          }
 	        });
 
-	        console.log(tmp_run_count);
-
 	        inst_breakdown = {};
 	        inst_breakdown.type_name = type_name;
 	        inst_breakdown.num_in_clust = num_in_clust;
@@ -4917,18 +4896,8 @@ var Clustergrammer =
 	          // num_nodes: number of cat-nodes drawn in cluster
 	          var num_nodes = inst_run_count[inst_cat].num_nodes;
 
-	          console.log('------------------');
-	          console.log(inst_cat);
-	          console.log('total_nodes', total_nodes);
-	          console.log('tot_num_cat', tot_num_cat);
-	          console.log('expect_prob', expect_prob);
-	          console.log('num_nodes: ', num_nodes);
-	          console.log('num_in_clust', num_in_clust);
 	          var actual_k = num_nodes;
-
 	          var pval = binom_test(actual_k, num_in_clust, expect_prob);
-	          console.log('pval', pval);
-	          console.log('------------------');
 
 	          // working on tracking the 'real' number of nodes, which is only different
 	          // if downsampling has been done
@@ -4940,7 +4909,7 @@ var Clustergrammer =
 
 	          bar_color = params.viz.cat_colors[inst_rc][cat_index][cat_title_and_name];
 
-	          bar_data.push([cat_index, cat_title_and_name, inst_run_count[inst_cat], bar_color, num_nodes, num_nodes_ds]);
+	          bar_data.push([cat_index, cat_title_and_name, inst_run_count[inst_cat], bar_color, num_nodes, num_nodes_ds, pval]);
 	        }
 
 	        bar_data.sort(function (a, b) {

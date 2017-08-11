@@ -99,8 +99,6 @@ module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc)
       var cat_name;
       var num_in_clust = clust_names.length;
 
-      console.log(num_in_clust)
-
       // use the cat_hist to get the number of instances of this category in
       // all rows/cols
       // params
@@ -150,8 +148,6 @@ module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc)
 
         });
 
-        console.log(tmp_run_count)
-
         inst_breakdown = {};
         inst_breakdown.type_name = type_name;
         inst_breakdown.num_in_clust = num_in_clust;
@@ -178,18 +174,8 @@ module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc)
           // num_nodes: number of cat-nodes drawn in cluster
           var num_nodes = inst_run_count[inst_cat].num_nodes;
 
-          console.log('------------------')
-          console.log(inst_cat)
-          console.log('total_nodes', total_nodes)
-          console.log('tot_num_cat', tot_num_cat)
-          console.log('expect_prob', expect_prob)
-          console.log('num_nodes: ', num_nodes)
-          console.log('num_in_clust', num_in_clust)
           var actual_k  = num_nodes;
-
           var pval = binom_test(actual_k, num_in_clust, expect_prob)
-          console.log('pval', pval)
-          console.log('------------------')
 
           // working on tracking the 'real' number of nodes, which is only different
           // if downsampling has been done
@@ -201,7 +187,7 @@ module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc)
 
           bar_color = params.viz.cat_colors[inst_rc][cat_index][cat_title_and_name];
 
-          bar_data.push([ cat_index, cat_title_and_name, inst_run_count[inst_cat], bar_color, num_nodes, num_nodes_ds]);
+          bar_data.push([ cat_index, cat_title_and_name, inst_run_count[inst_cat], bar_color, num_nodes, num_nodes_ds, pval]);
         }
 
         bar_data.sort(function(a, b) {

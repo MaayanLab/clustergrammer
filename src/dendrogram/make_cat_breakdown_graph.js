@@ -23,7 +23,7 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
     // loop through cat_breakdown data
     var super_string = ': ';
     var paragraph_string = '<p>';
-    var width = 335;
+    var width = 350;
     var bar_offset = 23;
     var bar_height = 20;
     var max_string_length = 30;
@@ -64,7 +64,7 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
     // limit the number of bars shown
     var max_bars = 25;
 
-    // calculate height needed for svg based don cat_breakdown data
+    // calculate height needed for svg based on cat_breakdown data
     var svg_height = 20;
     _.each(cat_breakdown.slice(0,max_cats), function(tmp_break){
       var num_bars = tmp_break.bar_data.length;
@@ -158,7 +158,7 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
         .append('text')
         .text('Pct')
         .attr('transform', function(){
-          var inst_x = bar_width + count_offset + 75;
+          var inst_x = bar_width + count_offset + 60;
           var inst_translate = 'translate('+ inst_x +', 0)';
           return inst_translate;
         });
@@ -282,7 +282,26 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
           return String(inst_count);
         })
         .attr('transform', function(){
-          var inst_x = bar_width + count_offset + shift_count_num + 60;
+          var inst_x = bar_width + count_offset + shift_count_num + 47;
+          var inst_y = 0.75 * bar_height;
+          return 'translate('+ inst_x +', ' + inst_y + ')' ;
+        })
+        .attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif')
+        .attr('font-weight', 400)
+        .attr('text-anchor', 'end');
+
+      cat_bar_groups
+        .append('text')
+        .classed('count_labels', true)
+        .text(function(d){
+          // calculate the percentage relative to the current cluster
+          var inst_count = d[bars_index] / cluster_total * 100;
+          inst_count = Math.round(inst_count * 10)/10;
+          inst_count = inst_count.toLocaleString();
+          return String(inst_count);
+        })
+        .attr('transform', function(){
+          var inst_x = bar_width + count_offset + shift_count_num + 90;
           var inst_y = 0.75 * bar_height;
           return 'translate('+ inst_x +', ' + inst_y + ')' ;
         })
