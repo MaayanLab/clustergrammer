@@ -4741,7 +4741,9 @@ var Clustergrammer =
 
 /***/ },
 /* 64 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
+
+	var binom_test = __webpack_require__(186);
 
 	module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc) {
 	  // Category-breakdown of dendrogram-clusters
@@ -4901,11 +4903,9 @@ var Clustergrammer =
 
 	        for (var inst_cat in inst_run_count) {
 
-	          console.log('------------------');
-	          console.log(inst_cat);
-
-	          var tot_num_cat = params.viz.cat_info[inst_rc][cat_index].cat_hist[cat_name];
-	          console.log('tot_num_cat', tot_num_cat);
+	          var tot_num_cat = params.viz.cat_info[inst_rc][cat_index].cat_hist[inst_cat];
+	          var total_nodes = params.network_data[inst_rc + '_nodes'].length;
+	          var expect_prob = tot_num_cat / total_nodes;
 
 	          // if no cat-title given
 	          if (no_title_given) {
@@ -4917,7 +4917,18 @@ var Clustergrammer =
 	          // num_nodes: number of cat-nodes drawn in cluster
 	          var num_nodes = inst_run_count[inst_cat].num_nodes;
 
+	          console.log('------------------');
+	          console.log(inst_cat);
+	          console.log('total_nodes', total_nodes);
+	          console.log('tot_num_cat', tot_num_cat);
+	          console.log('expect_prob', expect_prob);
 	          console.log('num_nodes: ', num_nodes);
+	          console.log('num_in_clust', num_in_clust);
+	          var actual_k = num_nodes;
+
+	          var pval = binom_test(actual_k, num_in_clust, expect_prob);
+	          console.log('pval', pval);
+	          console.log('------------------');
 
 	          // working on tracking the 'real' number of nodes, which is only different
 	          // if downsampling has been done
