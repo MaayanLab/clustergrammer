@@ -4468,19 +4468,20 @@ var Clustergrammer =
 	    // loop through cat_breakdown data
 	    var super_string = ': ';
 	    var paragraph_string = '<p>';
-	    var width = 350;
+	    var width = 370;
 	    var bar_offset = 23;
 	    var bar_height = 20;
 	    var max_string_length = 30;
 	    var bar_width = 180;
 	    var title_height = 27;
-	    var shift_tooltip_left = 142;
+	    var shift_tooltip_left = 177;
 
 	    // these are the indexes where the number-of-nodes and the number of downsampled
 	    // nodes are stored
 	    var num_nodes_index = 4;
 	    var num_nodes_ds_index = 5;
 	    var offset_ds_count = 150;
+	    var binom_pval_index = 6;
 
 	    var is_downsampled = false;
 	    if (cat_breakdown[0].bar_data[0][num_nodes_ds_index] != null) {
@@ -4578,6 +4579,13 @@ var Clustergrammer =
 	        return inst_translate;
 	      });
 
+	      // Percentage Title
+	      cat_graph_group.append('text').text('P-val').attr('transform', function () {
+	        var inst_x = bar_width + count_offset + 113;
+	        var inst_translate = 'translate(' + inst_x + ', 0)';
+	        return inst_translate;
+	      });
+
 	      // Count Downsampled Title
 	      if (is_downsampled) {
 	        cat_graph_group.append('text').text('Clusters').attr('transform', function () {
@@ -4656,14 +4664,26 @@ var Clustergrammer =
 	        return 'translate(' + inst_x + ', ' + inst_y + ')';
 	      }).attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('font-weight', 400).attr('text-anchor', 'end');
 
+	      // Binomial Test Pvals
 	      cat_bar_groups.append('text').classed('count_labels', true).text(function (d) {
 	        // calculate the percentage relative to the current cluster
-	        var inst_count = d[bars_index] / cluster_total * 100;
-	        inst_count = Math.round(inst_count * 10) / 10;
-	        inst_count = inst_count.toLocaleString();
-	        return String(inst_count);
+	        var inst_count = d[binom_pval_index];
+
+	        if (inst_count < 0.1) {
+	          inst_count = parseFloat(inst_count.toPrecision(3));
+	          inst_count = inst_count.toExponential();
+	        } else {
+	          inst_count = parseFloat(inst_count.toPrecision(2));
+	        }
+
+	        // inst_count = Math.round(inst_count * 1000)/1000;
+	        // console.log(inst_count)
+	        // console.log(inst_count.toPrecision(3))
+
+	        // inst_count = inst_count.toLocaleString();
+	        return inst_count;
 	      }).attr('transform', function () {
-	        var inst_x = bar_width + count_offset + shift_count_num + 90;
+	        var inst_x = bar_width + count_offset + shift_count_num + 110;
 	        var inst_y = 0.75 * bar_height;
 	        return 'translate(' + inst_x + ', ' + inst_y + ')';
 	      }).attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('font-weight', 400).attr('text-anchor', 'end');
