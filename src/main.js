@@ -20,10 +20,10 @@ var make_matrix_string = require('./matrix/make_matrix_string');
 var binom_test = require('./dendrogram/binom_test');
 
 
-var actual_k = 10;
-var n = 150;
-var p = 0.02;
-binom_test(actual_k, n, p);
+// var actual_k = 10;
+// var n = 150;
+// var p = 0.02;
+// binom_test(actual_k, n, p);
 
 
 // moved d3.slider to src
@@ -133,6 +133,7 @@ function Clustergrammer(args) {
   cgm.d3_tip_custom = expose_d3_tip_custom;
   cgm.reorder = api_reorder;
   cgm.export_matrix_string = export_matrix_string;
+  cgm.binom_test = binom_test;
 
   return cgm;
 }

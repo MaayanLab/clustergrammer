@@ -5,17 +5,11 @@
 // math.import(require('mathjs/lib/type/fraction'));
 var core = require('mathjs/core');
 var math = core.create();
-math.import(require('mathjs/lib/type/bignumber'));
+
 math.import(require('mathjs/lib/function/probability/factorial'));
-math.config({
-  number: 'BigNumber', // Default type of number:
-                       // 'number' (default), 'BigNumber', or 'Fraction'
-  precision: 64        // Number of significant digits for BigNumbers
-});
+
 
 module.exports = function binom_test(actual_k, n, p){
-
-  console.log('running binom_test!!!!!');
 
   var fact = math.factorial;
 
@@ -38,12 +32,12 @@ module.exports = function binom_test(actual_k, n, p){
 
   }
 
-  // var n = 150;
-  // var p = 0.5;
-  // var actual_k = 10;
-  cp = my_binom_test_2(actual_k, n, p)
-  console.log(cp)
+  // calculate pval
+  pval = my_binom_test_2(actual_k, n, p);
+  if ( isNaN(pval) ){
+    pval = 'need to use approx';
+  }
 
-  // console.log(binom_dist(1, 2, 0.5));
+  return pval;
 
 };
