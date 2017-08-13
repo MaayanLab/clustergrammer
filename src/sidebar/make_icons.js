@@ -175,7 +175,7 @@ module.exports = function make_icons(cgm, sidebar){
 
       d3.select(params.root+' .expand_button').style('opacity',0);
 
-      var html = d3.select(params.root+" svg")
+      var html = d3.select(params.root+" .viz_svg")
             .attr("title", "test2")
             .attr("version", 1.1)
             .attr("xmlns", "http://www.w3.org/2000/svg")

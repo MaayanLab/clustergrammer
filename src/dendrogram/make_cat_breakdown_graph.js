@@ -26,7 +26,7 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
     var width = 370;
     var bar_offset = 23;
     var bar_height = 20;
-    var max_string_length = 30;
+    var max_string_length = 25;
     var bar_width = 180;
     var title_height = 27;
     var shift_tooltip_left = 177;
@@ -132,6 +132,8 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
       if (inst_title.length >= max_string_length){
         inst_title = inst_title.slice(0, max_string_length) + '..';
       }
+
+      console.log(inst_title)
 
       // make title
       cat_graph_group

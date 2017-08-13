@@ -72,6 +72,7 @@ module.exports = function make_cat_params(params, viz, predefined_cat_colors=tru
 
         _.each(cat_instances_titles, function(inst_cat){
 
+          var new_cat;
           if (inst_cat.indexOf(': ') >0){
             new_cat = inst_cat.split(': ')[1];
           } else {
