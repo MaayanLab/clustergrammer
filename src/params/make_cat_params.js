@@ -124,7 +124,6 @@ module.exports = function make_cat_params(params, viz, predefined_cat_colors=tru
 
     if (_.has(params.network_data, 'cat_colors') && predefined_cat_colors === true){
       viz.cat_colors[inst_rc] = params.network_data.cat_colors[inst_rc];
-    } else {
     }
 
     if (params.sim_mat){

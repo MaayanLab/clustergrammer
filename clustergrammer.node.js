@@ -76,7 +76,7 @@ module.exports =
 	__webpack_require__(226);
 	__webpack_require__(230);
 
-	/* clustergrammer v1.19.1
+	/* clustergrammer v1.19.2
 	 * Nicolas Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
 	 * (c) 2017
 	 */
@@ -2061,7 +2061,7 @@ module.exports =
 
 	    if (_.has(params.network_data, 'cat_colors') && predefined_cat_colors === true) {
 	      viz.cat_colors[inst_rc] = params.network_data.cat_colors[inst_rc];
-	    } else {}
+	    }
 
 	    if (params.sim_mat) {
 	      // sending row color info to columns since row color info can be updated
@@ -4708,8 +4708,6 @@ module.exports =
 	        inst_title = inst_title.slice(0, max_string_length) + '..';
 	      }
 
-	      console.log(inst_title);
-
 	      // make title
 	      cat_graph_group.append('text').classed('cat_graph_title', true).text(inst_title).style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').style('font-weight', 800);
 
@@ -4826,10 +4824,6 @@ module.exports =
 	        } else {
 	          inst_count = parseFloat(inst_count.toPrecision(2));
 	        }
-
-	        // inst_count = Math.round(inst_count * 1000)/1000;
-	        // console.log(inst_count)
-	        // console.log(inst_count.toPrecision(3))
 
 	        // inst_count = inst_count.toLocaleString();
 	        return inst_count;
@@ -5118,6 +5112,7 @@ module.exports =
 	module.exports = function binom_test(actual_k, n, p) {
 
 	  var fact = math.factorial;
+	  var pval;
 
 	  function binom_dist(k, n, p) {
 	    var bin_coeff = fact(n) / (fact(k) * fact(n - k));
@@ -5128,6 +5123,7 @@ module.exports =
 	  function my_binom_test_2(actual_k, n, p) {
 	    var cp = 0;
 	    var k;
+	    var dp;
 	    for (var inst_k = actual_k; inst_k < n + 1; inst_k++) {
 	      k = inst_k;
 	      dp = binom_dist(k, n, p);

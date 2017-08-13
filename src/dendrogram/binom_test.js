@@ -13,6 +13,7 @@ math.import(require('mathjs/lib/function/probability/factorial'));
 module.exports = function binom_test(actual_k, n, p){
 
   var fact = math.factorial;
+  var pval;
 
   function binom_dist(k, n, p){
     var bin_coeff = (fact(n))/( fact(k) * fact(n-k) );
@@ -23,6 +24,7 @@ module.exports = function binom_test(actual_k, n, p){
   function my_binom_test_2(actual_k, n, p){
     var cp = 0;
     var k;
+    var dp;
     for (var inst_k=actual_k; inst_k < n+1; inst_k++ ){
       k = inst_k;
       dp = binom_dist(k, n, p);

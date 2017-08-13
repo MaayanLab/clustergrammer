@@ -133,8 +133,6 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
         inst_title = inst_title.slice(0, max_string_length) + '..';
       }
 
-      console.log(inst_title)
-
       // make title
       cat_graph_group
         .append('text')
@@ -317,10 +315,6 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
           } else {
             inst_count = parseFloat(inst_count.toPrecision(2))
           }
-
-          // inst_count = Math.round(inst_count * 1000)/1000;
-          // console.log(inst_count)
-          // console.log(inst_count.toPrecision(3))
 
           // inst_count = inst_count.toLocaleString();
           return inst_count;
