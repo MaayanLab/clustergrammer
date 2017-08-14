@@ -16,6 +16,7 @@ var run_zoom = require('./zoom/run_zoom');
 var d3_tip_custom = require('./tooltip/d3_tip_custom');
 var all_reorder = require('./reorder/all_reorder');
 var make_matrix_string = require('./matrix/make_matrix_string');
+var recluster = require('./recluster/recluster');
 
 // moved d3.slider to src
 d3.slider = require('./d3.slider');
@@ -124,6 +125,7 @@ function Clustergrammer(args) {
   cgm.d3_tip_custom = expose_d3_tip_custom;
   cgm.reorder = api_reorder;
   cgm.export_matrix_string = export_matrix_string;
+  cgm.recluster = recluster;
 
   return cgm;
 }
