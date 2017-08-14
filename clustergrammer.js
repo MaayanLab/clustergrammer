@@ -63,17 +63,17 @@ var Clustergrammer =
 	var d3_tip_custom = __webpack_require__(48);
 	var all_reorder = __webpack_require__(114);
 	var make_matrix_string = __webpack_require__(217);
-	var recluster = __webpack_require__(245);
+	var recluster = __webpack_require__(221);
 
 	// moved d3.slider to src
-	d3.slider = __webpack_require__(221);
+	d3.slider = __webpack_require__(226);
 
 	/* eslint-disable */
 
-	var awesomplete = __webpack_require__(223);
+	var awesomplete = __webpack_require__(228);
 	// getting css from src
-	__webpack_require__(224);
-	__webpack_require__(228);
+	__webpack_require__(229);
+	__webpack_require__(233);
 
 	/* clustergrammer v1.19.2
 	 * Nicolas Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
@@ -105,7 +105,7 @@ var Clustergrammer =
 	  cgm.params.zoom_behavior.translate([cgm.params.viz.clust.margin.left, cgm.params.viz.clust.margin.top]);
 
 	  if (cgm.params.use_sidebar) {
-	    var make_sidebar = __webpack_require__(230);
+	    var make_sidebar = __webpack_require__(235);
 	    make_sidebar(cgm);
 	  }
 
@@ -18755,6 +18755,396 @@ var Clustergrammer =
 /* 221 */
 /***/ function(module, exports, __webpack_require__) {
 
+	var clusterfck = __webpack_require__(222);
+
+	module.exports = function recluster() {
+
+	  var colors = [[20, 20, 80], [22, 22, 90], [250, 255, 253], [100, 54, 255]];
+
+	  var clusters = clusterfck.hcluster(colors);
+
+	  console.log(clusters);
+
+	  // debugger;
+	  _.each(['left', 'right'], function (limb) {
+	    console.log(limb);
+	  });
+		};
+
+/***/ },
+/* 222 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	module.exports = {
+	   hcluster: __webpack_require__(223),
+	   Kmeans: __webpack_require__(225),
+	   kmeans: __webpack_require__(225).kmeans
+		};
+
+/***/ },
+/* 223 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var distances = __webpack_require__(224);
+
+	var HierarchicalClustering = function HierarchicalClustering(distance, linkage, threshold) {
+
+	   this.distance = distance || "euclidean";
+	   this.linkage = linkage || "average";
+	   this.threshold = threshold == undefined ? Infinity : threshold;
+
+	   if (typeof this.distance == "string") {
+	      this.distance = distances[this.distance];
+	   }
+	};
+
+	HierarchicalClustering.prototype = {
+	   tree: function tree(items, snapshotPeriod, snapshotCb) {
+	      this.tree = [];
+	      this.dists = []; // distances between each pair of clusters
+	      this.mins = []; // closest cluster for each cluster
+	      this.index = []; // keep a hash of all clusters by key
+
+	      console.log('looping through items\n-----------------------');
+	      for (var i = 0; i < items.length; i++) {
+	         console.log(items[i]);
+	         var cluster = {
+	            value: items[i],
+	            key: i,
+	            index: i,
+	            size: 1
+	         };
+	         this.tree[i] = cluster;
+	         this.index[i] = cluster;
+	         this.dists[i] = [];
+	         this.mins[i] = 0;
+	      }
+
+	      for (var i = 0; i < this.tree.length; i++) {
+	         for (var j = 0; j <= i; j++) {
+	            var dist = i == j ? Infinity : this.distance(this.tree[i].value, this.tree[j].value);
+	            this.dists[i][j] = dist;
+	            this.dists[j][i] = dist;
+
+	            if (dist < this.dists[i][this.mins[i]]) {
+	               this.mins[i] = j;
+	            }
+	         }
+	      }
+
+	      var merged = this.mergeClosest();
+	      var i = 0;
+	      while (merged) {
+	         if (snapshotCb && i++ % snapshotPeriod == 0) {
+	            snapshotCb(this.tree);
+	         }
+	         merged = this.mergeClosest();
+	      }
+
+	      // do not remove index or key
+	      ///////////////////////////////
+	      // this.tree.forEach(function(cluster) {
+	      //   // clean up metadata used for clustering
+	      //   delete cluster.key;
+	      //   delete cluster.index;
+	      // });
+
+	      console.log(this.tree);
+
+	      return this.tree;
+	   },
+
+	   mergeClosest: function mergeClosest() {
+	      // find two closest clusters from cached mins
+	      var minKey = 0,
+	          min = Infinity;
+	      for (var i = 0; i < this.tree.length; i++) {
+	         var key = this.tree[i].key,
+	             dist = this.dists[key][this.mins[key]];
+	         if (dist < min) {
+	            minKey = key;
+	            min = dist;
+	         }
+	      }
+	      if (min >= this.threshold) {
+	         return false;
+	      }
+
+	      var c1 = this.index[minKey],
+	          c2 = this.index[this.mins[minKey]];
+
+	      // merge two closest clusters
+	      var merged = {
+	         dist: min,
+	         left: c1,
+	         right: c2,
+	         key: c1.key,
+	         size: c1.size + c2.size
+	      };
+
+	      this.tree[c1.index] = merged;
+	      this.tree.splice(c2.index, 1);
+	      this.index[c1.key] = merged;
+
+	      // update distances with new merged cluster
+	      for (var i = 0; i < this.tree.length; i++) {
+	         var ci = this.tree[i];
+	         var dist;
+	         if (c1.key == ci.key) {
+	            dist = Infinity;
+	         } else if (this.linkage == "single") {
+	            dist = this.dists[c1.key][ci.key];
+	            if (this.dists[c1.key][ci.key] > this.dists[c2.key][ci.key]) {
+	               dist = this.dists[c2.key][ci.key];
+	            }
+	         } else if (this.linkage == "complete") {
+	            dist = this.dists[c1.key][ci.key];
+	            if (this.dists[c1.key][ci.key] < this.dists[c2.key][ci.key]) {
+	               dist = this.dists[c2.key][ci.key];
+	            }
+	         } else if (this.linkage == "average") {
+	            dist = (this.dists[c1.key][ci.key] * c1.size + this.dists[c2.key][ci.key] * c2.size) / (c1.size + c2.size);
+	         } else {
+	            dist = this.distance(ci.value, c1.value);
+	         }
+
+	         this.dists[c1.key][ci.key] = this.dists[ci.key][c1.key] = dist;
+	      }
+
+	      // update cached mins
+	      for (var i = 0; i < this.tree.length; i++) {
+	         var key1 = this.tree[i].key;
+	         if (this.mins[key1] == c1.key || this.mins[key1] == c2.key) {
+	            var min = key1;
+	            for (var j = 0; j < this.tree.length; j++) {
+	               var key2 = this.tree[j].key;
+	               if (this.dists[key1][key2] < this.dists[key1][min]) {
+	                  min = key2;
+	               }
+	            }
+	            this.mins[key1] = min;
+	         }
+	         this.tree[i].index = i;
+	      }
+
+	      // // clean up metadata used for clustering
+	      // delete c1.key; delete c2.key;
+	      // delete c1.index; delete c2.index;
+
+
+	      return true;
+	   },
+	   clusters: function clusters(num) {
+	      //  Return all nodes if num is invalid
+	      if (num > this.tree.size || num < 1) num = this.tree.size;
+
+	      var result = [],
+	          subtrees = [this.tree];
+
+	      //  Get a list of root nodes for num different clusters
+	      while (num > 1) {
+	         var furthest = _findNextFurthest(subtrees);
+	         subtrees.splice(subtrees.indexOf(furthest), 1);
+	         subtrees.push(furthest.left, furthest.right);
+	         num--;
+	      }
+
+	      //  Transform the subtrees node list into a list of the subtrees leaf values
+	      subtrees.forEach(function (tree) {
+	         result.push(_getValues(tree));
+	      });
+
+	      //  Split the next furthest distance root node
+	      function _findNextFurthest(subtrees) {
+	         var max = -1,
+	             furthest;
+	         subtrees.forEach(function (tree) {
+	            if (tree.dist > max) {
+	               max = tree.dist;
+	               furthest = tree;
+	            }
+	         });
+	         return furthest;
+	      }
+
+	      //  Traverse the tree and yield a list of the leaf node values
+	      function _getValues(tree) {
+	         if (tree.size === 1) return [tree.value];
+	         return _getValues(tree.left).concat(_getValues(tree.right));
+	      }
+
+	      return result;
+	   }
+	};
+
+	var hcluster = function hcluster(items, distance, linkage, threshold, snapshot, snapshotCallback) {
+	   var hc = new HierarchicalClustering(distance, linkage, threshold);
+	   var tree = hc.tree(items, snapshot, snapshotCallback);
+
+	   return {
+	      hc: hc,
+	      tree: threshold === undefined ? tree[0] : tree,
+	      clusters: hc.clusters
+	   };
+	};
+
+	module.exports = hcluster;
+
+/***/ },
+/* 224 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	module.exports = {
+	   euclidean: function euclidean(v1, v2) {
+	      var total = 0;
+	      for (var i = 0; i < v1.length; i++) {
+	         total += Math.pow(v2[i] - v1[i], 2);
+	      }
+	      return Math.sqrt(total);
+	   },
+	   manhattan: function manhattan(v1, v2) {
+	      var total = 0;
+	      for (var i = 0; i < v1.length; i++) {
+	         total += Math.abs(v2[i] - v1[i]);
+	      }
+	      return total;
+	   },
+	   max: function max(v1, v2) {
+	      var max = 0;
+	      for (var i = 0; i < v1.length; i++) {
+	         max = Math.max(max, Math.abs(v2[i] - v1[i]));
+	      }
+	      return max;
+	   }
+		};
+
+/***/ },
+/* 225 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var distances = __webpack_require__(224);
+
+	function KMeans(centroids) {
+	   this.centroids = centroids || [];
+	}
+
+	KMeans.prototype.randomCentroids = function (points, k) {
+	   var centroids = points.slice(0); // copy
+	   centroids.sort(function () {
+	      return Math.round(Math.random()) - 0.5;
+	   });
+	   return centroids.slice(0, k);
+	};
+
+	KMeans.prototype.classify = function (point, distance) {
+	   var min = Infinity,
+	       index = 0;
+
+	   distance = distance || "euclidean";
+	   if (typeof distance == "string") {
+	      distance = distances[distance];
+	   }
+
+	   for (var i = 0; i < this.centroids.length; i++) {
+	      var dist = distance(point, this.centroids[i]);
+	      if (dist < min) {
+	         min = dist;
+	         index = i;
+	      }
+	   }
+
+	   return index;
+	};
+
+	KMeans.prototype.cluster = function (points, k, distance, snapshotPeriod, snapshotCb) {
+	   k = k || Math.max(2, Math.ceil(Math.sqrt(points.length / 2)));
+
+	   distance = distance || "euclidean";
+	   if (typeof distance == "string") {
+	      distance = distances[distance];
+	   }
+
+	   this.centroids = this.randomCentroids(points, k);
+
+	   var assignment = new Array(points.length);
+	   var clusters = new Array(k);
+
+	   var iterations = 0;
+	   var movement = true;
+	   while (movement) {
+	      // update point-to-centroid assignments
+	      for (var i = 0; i < points.length; i++) {
+	         assignment[i] = this.classify(points[i], distance);
+	      }
+
+	      // update location of each centroid
+	      movement = false;
+	      for (var j = 0; j < k; j++) {
+	         var assigned = [];
+	         for (var i = 0; i < assignment.length; i++) {
+	            if (assignment[i] == j) {
+	               assigned.push(points[i]);
+	            }
+	         }
+
+	         if (!assigned.length) {
+	            continue;
+	         }
+
+	         var centroid = this.centroids[j];
+	         var newCentroid = new Array(centroid.length);
+
+	         for (var g = 0; g < centroid.length; g++) {
+	            var sum = 0;
+	            for (var i = 0; i < assigned.length; i++) {
+	               sum += assigned[i][g];
+	            }
+	            newCentroid[g] = sum / assigned.length;
+
+	            if (newCentroid[g] != centroid[g]) {
+	               movement = true;
+	            }
+	         }
+
+	         this.centroids[j] = newCentroid;
+	         clusters[j] = assigned;
+	      }
+
+	      if (snapshotCb && iterations++ % snapshotPeriod == 0) {
+	         snapshotCb(clusters);
+	      }
+	   }
+
+	   return clusters;
+	};
+
+	KMeans.prototype.toJSON = function () {
+	   return JSON.stringify(this.centroids);
+	};
+
+	KMeans.prototype.fromJSON = function (json) {
+	   this.centroids = JSON.parse(json);
+	   return this;
+	};
+
+	module.exports = KMeans;
+
+	module.exports.kmeans = function (vectors, k) {
+	   return new KMeans().cluster(vectors, k);
+	};
+
+/***/ },
+/* 226 */
+/***/ function(module, exports, __webpack_require__) {
+
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
 	    D3.js Slider
 	    Inspired by jQuery UI Slider
@@ -18764,7 +19154,7 @@ var Clustergrammer =
 	(function (root, factory) {
 	  if (true) {
 	    // AMD. Register as an anonymous module.
-	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(222)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(227)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	  } else if (typeof exports === 'object') {
 	    if (process.browser) {
 	      // Browserify. Import css too using cssify.
@@ -19150,13 +19540,13 @@ var Clustergrammer =
 	});
 
 /***/ },
-/* 222 */
+/* 227 */
 /***/ function(module, exports) {
 
 	module.exports = d3;
 
 /***/ },
-/* 223 */
+/* 228 */
 /***/ function(module, exports) {
 
 	/**
@@ -19594,16 +19984,16 @@ var Clustergrammer =
 		})();
 
 /***/ },
-/* 224 */
+/* 229 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(225);
+	var content = __webpack_require__(230);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(227)(content, {});
+	var update = __webpack_require__(232)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -19620,10 +20010,10 @@ var Clustergrammer =
 	}
 
 /***/ },
-/* 225 */
+/* 230 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(226)();
+	exports = module.exports = __webpack_require__(231)();
 	// imports
 
 
@@ -19634,7 +20024,7 @@ var Clustergrammer =
 
 
 /***/ },
-/* 226 */
+/* 231 */
 /***/ function(module, exports) {
 
 	/*
@@ -19687,7 +20077,7 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 227 */
+/* 232 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -19939,16 +20329,16 @@ var Clustergrammer =
 
 
 /***/ },
-/* 228 */
+/* 233 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(229);
+	var content = __webpack_require__(234);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(227)(content, {});
+	var update = __webpack_require__(232)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -19965,10 +20355,10 @@ var Clustergrammer =
 	}
 
 /***/ },
-/* 229 */
+/* 234 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(226)();
+	exports = module.exports = __webpack_require__(231)();
 	// imports
 
 
@@ -19979,18 +20369,18 @@ var Clustergrammer =
 
 
 /***/ },
-/* 230 */
+/* 235 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var ini_sidebar = __webpack_require__(191);
-	var set_up_filters = __webpack_require__(231);
-	var set_up_search = __webpack_require__(236);
-	var set_up_reorder = __webpack_require__(237);
-	var set_sidebar_ini_view = __webpack_require__(238);
-	var make_icons = __webpack_require__(239);
-	var make_modals = __webpack_require__(241);
-	var set_up_opacity_slider = __webpack_require__(243);
-	var make_colorbar = __webpack_require__(244);
+	var set_up_filters = __webpack_require__(236);
+	var set_up_search = __webpack_require__(241);
+	var set_up_reorder = __webpack_require__(242);
+	var set_sidebar_ini_view = __webpack_require__(243);
+	var make_icons = __webpack_require__(244);
+	var make_modals = __webpack_require__(246);
+	var set_up_opacity_slider = __webpack_require__(248);
+	var make_colorbar = __webpack_require__(249);
 
 	/* Represents sidebar with controls.
 	 */
@@ -20065,11 +20455,11 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 231 */
+/* 236 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var make_slider_filter = __webpack_require__(232);
-	var make_button_filter = __webpack_require__(235);
+	var make_slider_filter = __webpack_require__(237);
+	var make_button_filter = __webpack_require__(240);
 
 	module.exports = function set_up_filters(cgm, filter_type) {
 
@@ -20085,15 +20475,15 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 232 */
+/* 237 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var make_filter_title = __webpack_require__(214);
-	var run_filter_slider = __webpack_require__(233);
+	var run_filter_slider = __webpack_require__(238);
 	var get_filter_default_state = __webpack_require__(5);
 	var get_subset_views = __webpack_require__(12);
 
-	d3.slider = __webpack_require__(221);
+	d3.slider = __webpack_require__(226);
 
 	module.exports = function make_slider_filter(cgm, filter_type, div_filters) {
 
@@ -20163,12 +20553,12 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 233 */
+/* 238 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var update_viz_with_view = __webpack_require__(176);
 	var reset_other_filter_sliders = __webpack_require__(213);
-	var get_current_orders = __webpack_require__(234);
+	var get_current_orders = __webpack_require__(239);
 	var make_requested_view = __webpack_require__(14);
 
 	module.exports = function run_filter_slider(cgm, filter_type, available_views, inst_index) {
@@ -20201,7 +20591,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 234 */
+/* 239 */
 /***/ function(module, exports) {
 
 	module.exports = function get_current_orders(params) {
@@ -20230,7 +20620,7 @@ var Clustergrammer =
 	};
 
 /***/ },
-/* 235 */
+/* 240 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// var update_network = require('../network/update_network');
@@ -20281,7 +20671,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 236 */
+/* 241 */
 /***/ function(module, exports) {
 
 	module.exports = function set_up_search(sidebar, params) {
@@ -20296,7 +20686,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 237 */
+/* 242 */
 /***/ function(module, exports) {
 
 	// var get_cat_title = require('../categories/get_cat_title');
@@ -20387,7 +20777,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 238 */
+/* 243 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var make_filter_title = __webpack_require__(214);
@@ -20425,13 +20815,13 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 239 */
+/* 244 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var file_saver = __webpack_require__(216);
 	var two_translate_zoom = __webpack_require__(115);
 	var deactivate_cropping = __webpack_require__(220);
-	var save_svg_png = __webpack_require__(240);
+	var save_svg_png = __webpack_require__(245);
 
 	module.exports = function make_icons(cgm, sidebar) {
 
@@ -20540,7 +20930,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 240 */
+/* 245 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;(function () {
@@ -20995,10 +21385,10 @@ var Clustergrammer =
 		})();
 
 /***/ },
-/* 241 */
+/* 246 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var make_modal_skeleton = __webpack_require__(242);
+	var make_modal_skeleton = __webpack_require__(247);
 
 	module.exports = function ini_modals(params) {
 
@@ -21032,7 +21422,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 242 */
+/* 247 */
 /***/ function(module, exports) {
 
 	module.exports = function make_modal_skeleton(params, modal_class) {
@@ -21055,7 +21445,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 243 */
+/* 248 */
 /***/ function(module, exports) {
 
 	module.exports = function set_up_opacity_slider(sidebar) {
@@ -21068,7 +21458,7 @@ var Clustergrammer =
 		};
 
 /***/ },
-/* 244 */
+/* 249 */
 /***/ function(module, exports) {
 
 	module.exports = function make_colorbar(cgm) {
@@ -21171,14 +21561,6 @@ var Clustergrammer =
 	    return inst_string;
 	  }).style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').style('font-weight', 300).style('font-size', font_size).attr('transform', 'translate(' + high_left_margin + ',' + top_margin + ')').attr('text-anchor', 'end');
 		};
-
-/***/ },
-/* 245 */
-/***/ function(module, exports) {
-
-	module.exports = function recluster() {
-	  console.log('reclustering');
-	};
 
 /***/ }
 /******/ ]);
