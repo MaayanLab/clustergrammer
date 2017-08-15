@@ -18778,12 +18778,7 @@ var Clustergrammer =
 
 	  var transpose = math.transpose;
 
-	  // var mat = [
-	  //  [20, 20, 80],
-	  //  [22, 22, 90],
-	  //  [250, 255, 253],
-	  //  [100, 54, 255]
-	  // ];
+	  var mat = [[20, 20, 80], [22, 22, 90], [250, 255, 253], [100, 54, 255]];
 
 	  // var mat = this.params.network_data.mat;
 
@@ -18820,23 +18815,25 @@ var Clustergrammer =
 	    return cos_dist;
 	  }
 
-	  // var clusters = clusterfck.hcluster(mat, euclidean_distance);
-	  var clusters = clusterfck.hcluster(mat, cosine_distance);
+	  var clusters = clusterfck.hcluster(mat, euclidean_distance);
+	  // var clusters = clusterfck.hcluster(mat, cosine_distance);
 
 	  var inst_order = 0;
 	  var order_array = [];
 	  var order_list = [];
 	  var inst_leaf;
 	  var inst_key;
+	  var inst_dist;
 
-	  function get_limb_key(limb, side, inst_level) {
+	  function get_leaf_key(limb, side, inst_level, inst_dist) {
 
 	    // if there are more branches then there is a distance
 	    if (_.has(limb, 'dist')) {
 
+	      inst_dist = limb.dist;
 	      inst_level = inst_level + 1;
 	      _.each(['left', 'right'], function (side2) {
-	        get_limb_key(limb[side2], side2, inst_level);
+	        get_leaf_key(limb[side2], side2, inst_level, inst_dist);
 	      });
 	    } else {
 
@@ -18851,6 +18848,7 @@ var Clustergrammer =
 	      inst_leaf.level = inst_level;
 	      inst_leaf.order = inst_order;
 	      inst_leaf.key = inst_key;
+	      inst_leaf.dist = inst_dist;
 
 	      order_array.push(inst_leaf);
 	      order_list.push(inst_key);
@@ -18862,16 +18860,17 @@ var Clustergrammer =
 
 	  // start hierarchy
 	  var tree = clusters.tree;
+	  console.log(clusters);
 	  var start_level = 1;
+	  var start_distance = tree.dist;
 	  _.each(['left', 'right'], function (side) {
-	    get_limb_key(tree[side], side, start_level);
+	    get_leaf_key(tree[side], side, start_level, start_distance);
 	  });
 
 	  // generate ordered names
 	  var inst_name;
 	  var ordered_names = [];
 	  _.each(order_list, function (index) {
-	    console.log(index);
 	    inst_name = names[index];
 	    ordered_names.push(inst_name);
 	  });
