@@ -61,43 +61,54 @@ function cosine_distance(vecA, vecB) {
   // var clusters = clusterfck.hcluster(mat, cosine_distance);
 
   var inst_order = 0;
+  var inst_group = 1;
   var order_array = [];
   var order_list = [];
   var inst_leaf;
   var inst_key;
   var inst_dist;
 
-  function get_leaf_key(limb, side, inst_level, inst_dist){
+  function get_leaf_key(limb, side, inst_level, inst_dist, lock_group=false){
 
     // if there are more branches then there is a distance
     if ( _.has(limb, 'dist')){
 
       inst_dist = limb.dist;
       inst_level = inst_level + 1;
+
+      // lock group
+      if (inst_dist < 50){
+        lock_group = true;
+      }
+
       _.each(['left', 'right'], function(side2){
-        get_leaf_key(limb[side2], side2, inst_level, inst_dist);
+        get_leaf_key(limb[side2], side2, inst_level, inst_dist, lock_group);
       })
 
     } else {
 
       inst_key = limb.key;
 
-      // console.log('terminal leaf key:' + String(inst_key) +
-      //  '\tlevel: '+ String(inst_level)+
-      //  '\torder: ' + String(inst_order) +
-      //  '\n==================\n\n' );
-
       inst_leaf = {};
       inst_leaf.level = inst_level;
       inst_leaf.order = inst_order;
+      inst_leaf.group = inst_group;
       inst_leaf.key = inst_key;
       inst_leaf.dist = inst_dist;
+
 
       order_array.push(inst_leaf);
       order_list.push(inst_key)
 
       // increment order when terminal node is found
-      inst_order = inst_order + 1
+      inst_order = inst_order + 1;
+
+      // increment group when group is not locked
+      if (lock_group === false){
+        inst_group = inst_group + 1;
+      }
+
+      console.log('inst_group', inst_group)
 
     }
   }
