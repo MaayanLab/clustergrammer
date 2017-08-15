@@ -76,11 +76,11 @@ module.exports = function make_cat_params(params, viz, predefined_cat_colors=tru
           if (inst_cat.indexOf(': ') >0){
             new_cat = inst_cat.split(': ')[1];
           } else {
-            new_cat = inst_cat
+            new_cat = inst_cat;
           }
 
           cat_instances.push(new_cat);
-        })
+        });
 
         var cat_states = _.uniq( cat_instances_titles ).sort();
 

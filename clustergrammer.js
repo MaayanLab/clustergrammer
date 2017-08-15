@@ -18764,26 +18764,26 @@ var Clustergrammer =
 	  var clusters = clusterfck.hcluster(colors);
 
 	  console.log('************');
-	  // console.log(clusters.tree)
+	  console.log(clusters.tree);
 
-	  function get_limb_id(limb) {
-	    _.each(['left', 'right'], function (side) {
+	  function get_limb_index(limb, side) {
 
-	      if (_.has(limb, 'left')) {
-	        _.each(['left', 'right'], function (side2) {
-	          get_limb_id(limb[side2]);
-	        });
-	      } else {
-	        // console.log('terminal leaf')
-	        // console.log(limb.value)
-	      }
-	    });
+	    console.log('get-index', side);
+
+	    // check if more branches
+	    if (_.has(limb, 'left')) {
+	      _.each(['left', 'right'], function (side2) {
+	        get_limb_index(limb[side2], side2);
+	      });
+	    } else {
+	      console.log('terminal leaf', limb.index);
+	    }
 	  }
 
-	  // debugger;
 	  var tree = clusters.tree;
-	  _.each(['right'], function (side) {
-	    get_limb_id(tree);
+	  _.each(['left', 'right'], function (side) {
+	    console.log(side);
+	    get_limb_index(tree[side], side);
 	  });
 
 	  // var branch = {};

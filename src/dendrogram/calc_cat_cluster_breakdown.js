@@ -175,7 +175,7 @@ module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc)
           var num_nodes = inst_run_count[inst_cat].num_nodes;
 
           var actual_k  = num_nodes;
-          var pval = binom_test(actual_k, num_in_clust, expect_prob)
+          var pval = binom_test(actual_k, num_in_clust, expect_prob);
 
           // working on tracking the 'real' number of nodes, which is only different
           // if downsampling has been done
