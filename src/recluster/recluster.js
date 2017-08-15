@@ -89,6 +89,11 @@ function cosine_distance(vecA, vecB) {
 
       inst_key = limb.key;
 
+      // increment group when group is not locked
+      if (lock_group === false){
+        inst_group = inst_group + 1;
+      }
+
       inst_leaf = {};
       inst_leaf.level = inst_level;
       inst_leaf.order = inst_order;
@@ -103,10 +108,6 @@ function cosine_distance(vecA, vecB) {
       // increment order when terminal node is found
       inst_order = inst_order + 1;
 
-      // increment group when group is not locked
-      if (lock_group === false){
-        inst_group = inst_group + 1;
-      }
 
       console.log('inst_group', inst_group)
 
