@@ -14,14 +14,17 @@ module.exports = function recluster(){
   console.log('************')
   console.log(clusters.tree)
 
-  function get_limb_index(limb, side){
+  function get_limb_key(limb, side){
 
     console.log('get-index', side);
 
-    // check if more branches
-    if ( _.has(limb, 'left')){
+    // if there are more branches then there is a distance
+    if ( _.has(limb, 'dist')){
+      console.log('-- branch --')
+      console.log('distance', limb.dist)
       _.each(['left', 'right'], function(side2){
-        get_limb_index(limb[side2], side2);
+        console.log('side2',side2)
+        get_limb_key(limb[side2], side2);
       })
     } else {
       console.log('terminal leaf', limb.index);
@@ -32,7 +35,7 @@ module.exports = function recluster(){
   var tree = clusters.tree;
   _.each(['left','right'], function(side){
     console.log(side)
-    get_limb_index(tree[side], side)
+    get_limb_key(tree[side], side)
   })
 
   // var branch = {};
