@@ -68,18 +68,21 @@ function cosine_distance(vecA, vecB) {
   var inst_key;
   var inst_dist;
 
+  var cutoff_dist = 5;
+
   function get_leaf_key(limb, side, inst_level, inst_dist, lock_group=false){
+
+    // lock group (lock if distance is under resolvable distance) above cutoff
+    if (inst_dist < cutoff_dist){
+      console.log('locking group')
+      lock_group = true;
+    }
 
     // if there are more branches then there is a distance
     if ( _.has(limb, 'dist')){
 
       inst_dist = limb.dist;
       inst_level = inst_level + 1;
-
-      // lock group
-      if (inst_dist < 50){
-        lock_group = true;
-      }
 
       _.each(['left', 'right'], function(side2){
         get_leaf_key(limb[side2], side2, inst_level, inst_dist, lock_group);
@@ -91,8 +94,18 @@ function cosine_distance(vecA, vecB) {
 
       // increment group when group is not locked
       if (lock_group === false){
+        console.log('incrementing group')
         inst_group = inst_group + 1;
       }
+
+      // correct for incrementing too early
+      // if first node distance is above cutoff (resolvable) do not increment
+      if (inst_group > inst_order + 1){
+        console.log('HERE')
+        inst_group = 1;
+      }
+
+      console.log('inst_group (after increment)', inst_group)
 
       inst_leaf = {};
       inst_leaf.level = inst_level;
@@ -101,15 +114,12 @@ function cosine_distance(vecA, vecB) {
       inst_leaf.key = inst_key;
       inst_leaf.dist = inst_dist;
 
-
       order_array.push(inst_leaf);
       order_list.push(inst_key)
 
       // increment order when terminal node is found
       inst_order = inst_order + 1;
 
-
-      console.log('inst_group', inst_group)
 
     }
   }

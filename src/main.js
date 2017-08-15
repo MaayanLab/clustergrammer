@@ -116,7 +116,7 @@ function Clustergrammer(args) {
     var names = this.params.network_data.row_nodes_names;
     var order_info = recluster(mat, names)
 
-    console.log(order_info)
+    console.log(order_info.info)
 
 
   }
