@@ -10,7 +10,7 @@ module.exports = function recluster(mat, names){
   Rows are clustered. Run transpose before if necessary
   */
 
-  var transpose = math.transpose;
+  // var transpose = math.transpose;
 
   var mat = [
    [20, 20, 80],
@@ -33,29 +33,27 @@ module.exports = function recluster(mat, names){
    }
 
 
-function vec_dot_product(vecA, vecB) {
-  var product = 0;
-  for (var i = 0; i < vecA.length; i++) {
-    product += vecA[i] * vecB[i];
+  function vec_dot_product(vecA, vecB) {
+    var product = 0;
+    for (var i = 0; i < vecA.length; i++) {
+      product += vecA[i] * vecB[i];
+    }
+    return product;
   }
-  return product;
-}
 
-function vec_magnitude(vec) {
-  var sum = 0;
-  for (var i = 0; i < vec.length; i++) {
-    sum += vec[i] * vec[i];
+  function vec_magnitude(vec) {
+    var sum = 0;
+    for (var i = 0; i < vec.length; i++) {
+      sum += vec[i] * vec[i];
+    }
+    return Math.sqrt(sum);
   }
-  return Math.sqrt(sum);
-}
 
-function cosine_distance(vecA, vecB) {
-  var cos_sim = vec_dot_product(vecA, vecB) / (vec_magnitude(vecA) * vec_magnitude(vecB));
-  var cos_dist = 1 - cos_sim
-  return cos_dist;
-}
-
-
+  function cosine_distance(vecA, vecB) {
+    var cos_sim = vec_dot_product(vecA, vecB) / (vec_magnitude(vecA) * vec_magnitude(vecB));
+    var cos_dist = 1 - cos_sim
+    return cos_dist;
+  }
 
   var clusters = clusterfck.hcluster(mat, euclidean_distance);
   // var clusters = clusterfck.hcluster(mat, cosine_distance);
@@ -68,13 +66,28 @@ function cosine_distance(vecA, vecB) {
   var inst_key;
   var inst_dist;
 
-  var cutoff_dist = 5;
+  // start hierarchy
+  var tree = clusters.tree;
+  var start_level = 1;
+  var start_distance = tree.dist;
+
+  // var cutoff_fractions = [];
+  var cutoff_vals = []
+  for (var i = 0; i <= 10; i++) {
+    // cutoff_fractions.push(i/10)
+    cutoff_vals.push(start_distance * i/10);
+  }
+
+  var cutoff_dist = 12;
+
+  _.each(['left','right'], function(side){
+    get_leaf_key(tree[side], side, start_level, start_distance)
+  })
 
   function get_leaf_key(limb, side, inst_level, inst_dist, lock_group=false){
 
     // lock group (lock if distance is under resolvable distance) above cutoff
     if (inst_dist < cutoff_dist){
-      console.log('locking group')
       lock_group = true;
     }
 
@@ -94,18 +107,14 @@ function cosine_distance(vecA, vecB) {
 
       // increment group when group is not locked
       if (lock_group === false){
-        console.log('incrementing group')
         inst_group = inst_group + 1;
       }
 
       // correct for incrementing too early
       // if first node distance is above cutoff (resolvable) do not increment
       if (inst_group > inst_order + 1){
-        console.log('HERE')
         inst_group = 1;
       }
-
-      console.log('inst_group (after increment)', inst_group)
 
       inst_leaf = {};
       inst_leaf.level = inst_level;
@@ -120,19 +129,8 @@ function cosine_distance(vecA, vecB) {
       // increment order when terminal node is found
       inst_order = inst_order + 1;
 
-
     }
   }
-
-
-  // start hierarchy
-  var tree = clusters.tree;
-  console.log(clusters)
-  var start_level = 1;
-  var start_distance = tree.dist;
-  _.each(['left','right'], function(side){
-    get_leaf_key(tree[side], side, start_level, start_distance)
-  })
 
   // generate ordered names
   var inst_name;
