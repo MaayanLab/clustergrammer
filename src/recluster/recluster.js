@@ -1,15 +1,27 @@
 var clusterfck = require('cornhundred-clusterfck');
+var core = require('mathjs/core');
+var math = core.create();
+
+math.import(require('mathjs/lib/function/matrix/transpose'))
+math.import(require('mathjs/lib/type/matrix'))
 
 module.exports = function recluster(){
 
- var colors = [
-   [20, 20, 80],
-   [22, 22, 90],
-   [250, 255, 253],
-   [100, 54, 255]
-  ];
+  var transpose = math.transpose;
 
-  var clusters = clusterfck.hcluster(colors);
+  // var mat = [
+  //  [20, 20, 80],
+  //  [22, 22, 90],
+  //  [250, 255, 253],
+  //  [100, 54, 255]
+  // ];
+
+  var mat = this.params.network_data.mat;
+
+  console.log('try transposing')
+  mat = transpose(mat);
+
+  var clusters = clusterfck.hcluster(mat);
   var inst_order = 0;
   var order_array = [];
   var inst_leaf;

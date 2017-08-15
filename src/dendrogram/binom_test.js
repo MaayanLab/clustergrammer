@@ -9,7 +9,6 @@ var math = core.create();
 
 math.import(require('mathjs/lib/function/probability/factorial'));
 
-
 module.exports = function binom_test(actual_k, n, p){
 
   var fact = math.factorial;

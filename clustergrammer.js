@@ -18756,12 +18756,29 @@ var Clustergrammer =
 /***/ (function(module, exports, __webpack_require__) {
 
 	var clusterfck = __webpack_require__(222);
+	var core = __webpack_require__(67);
+	var math = core.create();
+
+	math.import(__webpack_require__(250));
+	math.import(__webpack_require__(313));
 
 	module.exports = function recluster() {
 
-	  var colors = [[20, 20, 80], [22, 22, 90], [250, 255, 253], [100, 54, 255]];
+	  var transpose = math.transpose;
 
-	  var clusters = clusterfck.hcluster(colors);
+	  // var mat = [
+	  //  [20, 20, 80],
+	  //  [22, 22, 90],
+	  //  [250, 255, 253],
+	  //  [100, 54, 255]
+	  // ];
+
+	  var mat = this.params.network_data.mat;
+
+	  console.log('try transposing');
+	  mat = transpose(mat);
+
+	  var clusters = clusterfck.hcluster(mat);
 	  var inst_order = 0;
 	  var order_array = [];
 	  var inst_leaf;
@@ -21608,6 +21625,5865 @@ var Clustergrammer =
 	    return inst_string;
 	  }).style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').style('font-weight', 300).style('font-size', font_size).attr('transform', 'translate(' + high_left_margin + ',' + top_margin + ')').attr('text-anchor', 'end');
 		};
+
+/***/ }),
+/* 250 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var clone = __webpack_require__(69).clone;
+	var format = __webpack_require__(83).format;
+
+	function factory(type, config, load, typed) {
+	  var latex = __webpack_require__(88);
+
+	  var matrix = load(__webpack_require__(89));
+
+	  var DenseMatrix = type.DenseMatrix,
+	      SparseMatrix = type.SparseMatrix;
+
+	  /**
+	   * Transpose a matrix. All values of the matrix are reflected over its
+	   * main diagonal. Only applicable to two dimensional matrices containing
+	   * a vector (i.e. having size `[1,n]` or `[n,1]`). One dimensional
+	   * vectors and scalars return the input unchanged.
+	   *
+	   * Syntax:
+	   *
+	   *     math.transpose(x)
+	   *
+	   * Examples:
+	   *
+	   *     var A = [[1, 2, 3], [4, 5, 6]];
+	   *     math.transpose(A);               // returns [[1, 4], [2, 5], [3, 6]]
+	   *
+	   * See also:
+	   *
+	   *     diag, inv, subset, squeeze
+	   *
+	   * @param {Array | Matrix} x  Matrix to be transposed
+	   * @return {Array | Matrix}   The transposed matrix
+	   */
+	  var transpose = typed('transpose', {
+
+	    'Array': function (x) {
+	      // use dense matrix implementation
+	      return transpose(matrix(x)).valueOf();
+	    },
+
+	    'Matrix': function (x) {
+	      // matrix size
+	      var size = x.size();
+
+	      // result
+	      var c;
+
+	      // process dimensions
+	      switch (size.length) {
+	        case 1:
+	          // vector
+	          c = x.clone();
+	          break;
+
+	        case 2:
+	          // rows and columns
+	          var rows = size[0];
+	          var columns = size[1];
+
+	          // check columns
+	          if (columns === 0) {
+	            // throw exception
+	            throw new RangeError('Cannot transpose a 2D matrix with no columns (size: ' + format(size) + ')');
+	          }
+
+	          // process storage format
+	          switch (x.storage()) {
+	            case 'dense':
+	              c = _denseTranspose(x, rows, columns);
+	              break;
+	            case 'sparse':
+	              c = _sparseTranspose(x, rows, columns);
+	              break;
+	          }
+	          break;
+
+	        default:
+	          // multi dimensional
+	          throw new RangeError('Matrix must be a vector or two dimensional (size: ' + format(this._size) + ')');
+	      }
+	      return c;
+	    },
+
+	    // scalars
+	    'any': function (x) {
+	      return clone(x);
+	    }
+	  });
+
+	  var _denseTranspose = function (m, rows, columns) {
+	    // matrix array
+	    var data = m._data;
+	    // transposed matrix data
+	    var transposed = [];
+	    var transposedRow;
+	    // loop columns
+	    for (var j = 0; j < columns; j++) {
+	      // initialize row
+	      transposedRow = transposed[j] = [];
+	      // loop rows
+	      for (var i = 0; i < rows; i++) {
+	        // set data
+	        transposedRow[i] = clone(data[i][j]);
+	      }
+	    }
+	    // return matrix
+	    return new DenseMatrix({
+	      data: transposed,
+	      size: [columns, rows],
+	      datatype: m._datatype
+	    });
+	  };
+
+	  var _sparseTranspose = function (m, rows, columns) {
+	    // matrix arrays
+	    var values = m._values;
+	    var index = m._index;
+	    var ptr = m._ptr;
+	    // result matrices
+	    var cvalues = values ? [] : undefined;
+	    var cindex = [];
+	    var cptr = [];
+	    // row counts
+	    var w = [];
+	    for (var x = 0; x < rows; x++) w[x] = 0;
+	    // vars
+	    var p, l, j;
+	    // loop values in matrix
+	    for (p = 0, l = index.length; p < l; p++) {
+	      // number of values in row
+	      w[index[p]]++;
+	    }
+	    // cumulative sum
+	    var sum = 0;
+	    // initialize cptr with the cummulative sum of row counts
+	    for (var i = 0; i < rows; i++) {
+	      // update cptr
+	      cptr.push(sum);
+	      // update sum
+	      sum += w[i];
+	      // update w
+	      w[i] = cptr[i];
+	    }
+	    // update cptr
+	    cptr.push(sum);
+	    // loop columns
+	    for (j = 0; j < columns; j++) {
+	      // values & index in column
+	      for (var k0 = ptr[j], k1 = ptr[j + 1], k = k0; k < k1; k++) {
+	        // C values & index
+	        var q = w[index[k]]++;
+	        // C[j, i] = A[i, j]
+	        cindex[q] = j;
+	        // check we need to process values (pattern matrix)
+	        if (values) cvalues[q] = clone(values[k]);
+	      }
+	    }
+	    // return matrix
+	    return new SparseMatrix({
+	      values: cvalues,
+	      index: cindex,
+	      ptr: cptr,
+	      size: [columns, rows],
+	      datatype: m._datatype
+	    });
+	  };
+
+	  transpose.toTex = { 1: '\\left(${args[0]}\\right)' + latex.operators['transpose'] };
+
+	  return transpose;
+	}
+
+	exports.name = 'transpose';
+	exports.factory = factory;
+
+/***/ }),
+/* 251 */,
+/* 252 */,
+/* 253 */,
+/* 254 */,
+/* 255 */,
+/* 256 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var DimensionError = __webpack_require__(86);
+
+	function factory(type, config, load, typed) {
+
+	  var DenseMatrix = type.DenseMatrix;
+
+	  /**
+	   * Iterates over SparseMatrix nonzero items and invokes the callback function f(Dij, Sij). 
+	   * Callback function invoked NNZ times (number of nonzero items in SparseMatrix).
+	   *
+	   *
+	   *          ┌  f(Dij, Sij)  ; S(i,j) !== 0
+	   * C(i,j) = ┤
+	   *          └  Dij          ; otherwise
+	   *
+	   *
+	   * @param {Matrix}   denseMatrix       The DenseMatrix instance (D)
+	   * @param {Matrix}   sparseMatrix      The SparseMatrix instance (S)
+	   * @param {Function} callback          The f(Dij,Sij) operation to invoke, where Dij = DenseMatrix(i,j) and Sij = SparseMatrix(i,j)
+	   * @param {boolean}  inverse           A true value indicates callback should be invoked f(Sij,Dij)
+	   *
+	   * @return {Matrix}                    DenseMatrix (C)
+	   *
+	   * see https://github.com/josdejong/mathjs/pull/346#issuecomment-97477571
+	   */
+	  var algorithm01 = function (denseMatrix, sparseMatrix, callback, inverse) {
+	    // dense matrix arrays
+	    var adata = denseMatrix._data;
+	    var asize = denseMatrix._size;
+	    var adt = denseMatrix._datatype;
+	    // sparse matrix arrays
+	    var bvalues = sparseMatrix._values;
+	    var bindex = sparseMatrix._index;
+	    var bptr = sparseMatrix._ptr;
+	    var bsize = sparseMatrix._size;
+	    var bdt = sparseMatrix._datatype;
+
+	    // validate dimensions
+	    if (asize.length !== bsize.length) throw new DimensionError(asize.length, bsize.length);
+
+	    // check rows & columns
+	    if (asize[0] !== bsize[0] || asize[1] !== bsize[1]) throw new RangeError('Dimension mismatch. Matrix A (' + asize + ') must match Matrix B (' + bsize + ')');
+
+	    // sparse matrix cannot be a Pattern matrix
+	    if (!bvalues) throw new Error('Cannot perform operation on Dense Matrix and Pattern Sparse Matrix');
+
+	    // rows & columns
+	    var rows = asize[0];
+	    var columns = asize[1];
+
+	    // process data types
+	    var dt = typeof adt === 'string' && adt === bdt ? adt : undefined;
+	    // callback function
+	    var cf = dt ? typed.find(callback, [dt, dt]) : callback;
+
+	    // vars
+	    var i, j;
+
+	    // result (DenseMatrix)
+	    var cdata = [];
+	    // initialize c
+	    for (i = 0; i < rows; i++) cdata[i] = [];
+
+	    // workspace
+	    var x = [];
+	    // marks indicating we have a value in x for a given column
+	    var w = [];
+
+	    // loop columns in b
+	    for (j = 0; j < columns; j++) {
+	      // column mark
+	      var mark = j + 1;
+	      // values in column j
+	      for (var k0 = bptr[j], k1 = bptr[j + 1], k = k0; k < k1; k++) {
+	        // row
+	        i = bindex[k];
+	        // update workspace
+	        x[i] = inverse ? cf(bvalues[k], adata[i][j]) : cf(adata[i][j], bvalues[k]);
+	        // mark i as updated
+	        w[i] = mark;
+	      }
+	      // loop rows
+	      for (i = 0; i < rows; i++) {
+	        // check row is in workspace
+	        if (w[i] === mark) {
+	          // c[i][j] was already calculated
+	          cdata[i][j] = x[i];
+	        } else {
+	          // item does not exist in S
+	          cdata[i][j] = adata[i][j];
+	        }
+	      }
+	    }
+
+	    // return dense matrix
+	    return new DenseMatrix({
+	      data: cdata,
+	      size: [rows, columns],
+	      datatype: dt
+	    });
+	  };
+
+	  return algorithm01;
+	}
+
+	exports.name = 'algorithm01';
+	exports.factory = factory;
+
+/***/ }),
+/* 257 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var DimensionError = __webpack_require__(86);
+
+	function factory(type, config, load, typed) {
+
+	  var DenseMatrix = type.DenseMatrix;
+
+	  /**
+	   * Iterates over SparseMatrix items and invokes the callback function f(Dij, Sij).
+	   * Callback function invoked M*N times.
+	   *
+	   *
+	   *          ┌  f(Dij, Sij)  ; S(i,j) !== 0
+	   * C(i,j) = ┤
+	   *          └  f(Dij, 0)    ; otherwise
+	   *
+	   *
+	   * @param {Matrix}   denseMatrix       The DenseMatrix instance (D)
+	   * @param {Matrix}   sparseMatrix      The SparseMatrix instance (C)
+	   * @param {Function} callback          The f(Dij,Sij) operation to invoke, where Dij = DenseMatrix(i,j) and Sij = SparseMatrix(i,j)
+	   * @param {boolean}  inverse           A true value indicates callback should be invoked f(Sij,Dij)
+	   *
+	   * @return {Matrix}                    DenseMatrix (C)
+	   *
+	   * see https://github.com/josdejong/mathjs/pull/346#issuecomment-97477571
+	   */
+	  var algorithm03 = function (denseMatrix, sparseMatrix, callback, inverse) {
+	    // dense matrix arrays
+	    var adata = denseMatrix._data;
+	    var asize = denseMatrix._size;
+	    var adt = denseMatrix._datatype;
+	    // sparse matrix arrays
+	    var bvalues = sparseMatrix._values;
+	    var bindex = sparseMatrix._index;
+	    var bptr = sparseMatrix._ptr;
+	    var bsize = sparseMatrix._size;
+	    var bdt = sparseMatrix._datatype;
+
+	    // validate dimensions
+	    if (asize.length !== bsize.length) throw new DimensionError(asize.length, bsize.length);
+
+	    // check rows & columns
+	    if (asize[0] !== bsize[0] || asize[1] !== bsize[1]) throw new RangeError('Dimension mismatch. Matrix A (' + asize + ') must match Matrix B (' + bsize + ')');
+
+	    // sparse matrix cannot be a Pattern matrix
+	    if (!bvalues) throw new Error('Cannot perform operation on Dense Matrix and Pattern Sparse Matrix');
+
+	    // rows & columns
+	    var rows = asize[0];
+	    var columns = asize[1];
+
+	    // datatype
+	    var dt;
+	    // zero value
+	    var zero = 0;
+	    // callback signature to use
+	    var cf = callback;
+
+	    // process data types
+	    if (typeof adt === 'string' && adt === bdt) {
+	      // datatype
+	      dt = adt;
+	      // convert 0 to the same datatype
+	      zero = typed.convert(0, dt);
+	      // callback
+	      cf = typed.find(callback, [dt, dt]);
+	    }
+
+	    // result (DenseMatrix)
+	    var cdata = [];
+
+	    // initialize dense matrix
+	    for (var z = 0; z < rows; z++) {
+	      // initialize row
+	      cdata[z] = [];
+	    }
+
+	    // workspace
+	    var x = [];
+	    // marks indicating we have a value in x for a given column
+	    var w = [];
+
+	    // loop columns in b
+	    for (var j = 0; j < columns; j++) {
+	      // column mark
+	      var mark = j + 1;
+	      // values in column j
+	      for (var k0 = bptr[j], k1 = bptr[j + 1], k = k0; k < k1; k++) {
+	        // row
+	        var i = bindex[k];
+	        // update workspace
+	        x[i] = inverse ? cf(bvalues[k], adata[i][j]) : cf(adata[i][j], bvalues[k]);
+	        w[i] = mark;
+	      }
+	      // process workspace
+	      for (var y = 0; y < rows; y++) {
+	        // check we have a calculated value for current row
+	        if (w[y] === mark) {
+	          // use calculated value
+	          cdata[y][j] = x[y];
+	        } else {
+	          // calculate value
+	          cdata[y][j] = inverse ? cf(zero, adata[y][j]) : cf(adata[y][j], zero);
+	        }
+	      }
+	    }
+
+	    // return dense matrix
+	    return new DenseMatrix({
+	      data: cdata,
+	      size: [rows, columns],
+	      datatype: dt
+	    });
+	  };
+
+	  return algorithm03;
+	}
+
+	exports.name = 'algorithm03';
+	exports.factory = factory;
+
+/***/ }),
+/* 258 */,
+/* 259 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	function factory(type, config, load, typed) {
+
+	  var DenseMatrix = type.DenseMatrix;
+
+	  /**
+	   * Iterates over SparseMatrix S nonzero items and invokes the callback function f(Sij, b). 
+	   * Callback function invoked NZ times (number of nonzero items in S).
+	   *
+	   *
+	   *          ┌  f(Sij, b)  ; S(i,j) !== 0
+	   * C(i,j) = ┤  
+	   *          └  b          ; otherwise
+	   *
+	   *
+	   * @param {Matrix}   s                 The SparseMatrix instance (S)
+	   * @param {Scalar}   b                 The Scalar value
+	   * @param {Function} callback          The f(Aij,b) operation to invoke
+	   * @param {boolean}  inverse           A true value indicates callback should be invoked f(b,Sij)
+	   *
+	   * @return {Matrix}                    DenseMatrix (C)
+	   *
+	   * https://github.com/josdejong/mathjs/pull/346#issuecomment-97626813
+	   */
+	  var algorithm10 = function (s, b, callback, inverse) {
+	    // sparse matrix arrays
+	    var avalues = s._values;
+	    var aindex = s._index;
+	    var aptr = s._ptr;
+	    var asize = s._size;
+	    var adt = s._datatype;
+
+	    // sparse matrix cannot be a Pattern matrix
+	    if (!avalues) throw new Error('Cannot perform operation on Pattern Sparse Matrix and Scalar value');
+
+	    // rows & columns
+	    var rows = asize[0];
+	    var columns = asize[1];
+
+	    // datatype
+	    var dt;
+	    // callback signature to use
+	    var cf = callback;
+
+	    // process data types
+	    if (typeof adt === 'string') {
+	      // datatype
+	      dt = adt;
+	      // convert b to the same datatype
+	      b = typed.convert(b, dt);
+	      // callback
+	      cf = typed.find(callback, [dt, dt]);
+	    }
+
+	    // result arrays
+	    var cdata = [];
+	    // matrix
+	    var c = new DenseMatrix({
+	      data: cdata,
+	      size: [rows, columns],
+	      datatype: dt
+	    });
+
+	    // workspaces
+	    var x = [];
+	    // marks indicating we have a value in x for a given column
+	    var w = [];
+
+	    // loop columns
+	    for (var j = 0; j < columns; j++) {
+	      // columns mark
+	      var mark = j + 1;
+	      // values in j
+	      for (var k0 = aptr[j], k1 = aptr[j + 1], k = k0; k < k1; k++) {
+	        // row
+	        var r = aindex[k];
+	        // update workspace
+	        x[r] = avalues[k];
+	        w[r] = mark;
+	      }
+	      // loop rows
+	      for (var i = 0; i < rows; i++) {
+	        // initialize C on first column
+	        if (j === 0) {
+	          // create row array
+	          cdata[i] = [];
+	        }
+	        // check sparse matrix has a value @ i,j
+	        if (w[i] === mark) {
+	          // invoke callback, update C
+	          cdata[i][j] = inverse ? cf(b, x[i]) : cf(x[i], b);
+	        } else {
+	          // dense matrix value @ i, j
+	          cdata[i][j] = b;
+	        }
+	      }
+	    }
+
+	    // return sparse matrix
+	    return c;
+	  };
+
+	  return algorithm10;
+	}
+
+	exports.name = 'algorithm10';
+	exports.factory = factory;
+
+/***/ }),
+/* 260 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var util = __webpack_require__(261);
+	var DimensionError = __webpack_require__(86);
+
+	var string = util.string,
+	    isString = string.isString;
+
+	function factory(type, config, load, typed) {
+
+	  var DenseMatrix = type.DenseMatrix;
+
+	  /**
+	   * Iterates over DenseMatrix items and invokes the callback function f(Aij..z, Bij..z). 
+	   * Callback function invoked MxN times.
+	   *
+	   * C(i,j,...z) = f(Aij..z, Bij..z)
+	   *
+	   * @param {Matrix}   a                 The DenseMatrix instance (A)
+	   * @param {Matrix}   b                 The DenseMatrix instance (B)
+	   * @param {Function} callback          The f(Aij..z,Bij..z) operation to invoke
+	   *
+	   * @return {Matrix}                    DenseMatrix (C)
+	   *
+	   * https://github.com/josdejong/mathjs/pull/346#issuecomment-97658658
+	   */
+	  var algorithm13 = function (a, b, callback) {
+	    // a arrays
+	    var adata = a._data;
+	    var asize = a._size;
+	    var adt = a._datatype;
+	    // b arrays
+	    var bdata = b._data;
+	    var bsize = b._size;
+	    var bdt = b._datatype;
+	    // c arrays
+	    var csize = [];
+
+	    // validate dimensions
+	    if (asize.length !== bsize.length) throw new DimensionError(asize.length, bsize.length);
+
+	    // validate each one of the dimension sizes
+	    for (var s = 0; s < asize.length; s++) {
+	      // must match
+	      if (asize[s] !== bsize[s]) throw new RangeError('Dimension mismatch. Matrix A (' + asize + ') must match Matrix B (' + bsize + ')');
+	      // update dimension in c
+	      csize[s] = asize[s];
+	    }
+
+	    // datatype
+	    var dt;
+	    // callback signature to use
+	    var cf = callback;
+
+	    // process data types
+	    if (typeof adt === 'string' && adt === bdt) {
+	      // datatype
+	      dt = adt;
+	      // convert b to the same datatype
+	      b = typed.convert(b, dt);
+	      // callback
+	      cf = typed.find(callback, [dt, dt]);
+	    }
+
+	    // populate cdata, iterate through dimensions
+	    var cdata = csize.length > 0 ? _iterate(cf, 0, csize, csize[0], adata, bdata) : [];
+
+	    // c matrix
+	    return new DenseMatrix({
+	      data: cdata,
+	      size: csize,
+	      datatype: dt
+	    });
+	  };
+
+	  // recursive function
+	  var _iterate = function (f, level, s, n, av, bv) {
+	    // initialize array for this level
+	    var cv = [];
+	    // check we reach the last level
+	    if (level === s.length - 1) {
+	      // loop arrays in last level
+	      for (var i = 0; i < n; i++) {
+	        // invoke callback and store value
+	        cv[i] = f(av[i], bv[i]);
+	      }
+	    } else {
+	      // iterate current level
+	      for (var j = 0; j < n; j++) {
+	        // iterate next level
+	        cv[j] = _iterate(f, level + 1, s, s[level + 1], av[j], bv[j]);
+	      }
+	    }
+	    return cv;
+	  };
+
+	  return algorithm13;
+	}
+
+	exports.name = 'algorithm13';
+	exports.factory = factory;
+
+/***/ }),
+/* 261 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	exports.array = __webpack_require__(82);
+	exports['boolean'] = __webpack_require__(262);
+	exports['function'] = __webpack_require__(263);
+	exports.number = __webpack_require__(72);
+	exports.object = __webpack_require__(69);
+	exports.string = __webpack_require__(83);
+	exports.types = __webpack_require__(85);
+	exports.emitter = __webpack_require__(73);
+
+/***/ }),
+/* 262 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	/**
+	 * Test whether value is a boolean
+	 * @param {*} value
+	 * @return {boolean} isBoolean
+	 */
+
+	exports.isBoolean = function (value) {
+	  return typeof value == 'boolean';
+	};
+
+/***/ }),
+/* 263 */
+/***/ (function(module, exports) {
+
+	// function utils
+
+	/*
+	 * Memoize a given function by caching the computed result.
+	 * The cache of a memoized function can be cleared by deleting the `cache`
+	 * property of the function.
+	 *
+	 * @param {function} fn                     The function to be memoized.
+	 *                                          Must be a pure function.
+	 * @param {function(args: Array)} [hasher]  A custom hash builder.
+	 *                                          Is JSON.stringify by default.
+	 * @return {function}                       Returns the memoized function
+	 */
+	exports.memoize = function (fn, hasher) {
+	  return function memoize() {
+	    if (typeof memoize.cache !== 'object') {
+	      memoize.cache = {};
+	    }
+
+	    var args = [];
+	    for (var i = 0; i < arguments.length; i++) {
+	      args[i] = arguments[i];
+	    }
+
+	    var hash = hasher ? hasher(args) : JSON.stringify(args);
+	    if (!(hash in memoize.cache)) {
+	      return memoize.cache[hash] = fn.apply(fn, args);
+	    }
+	    return memoize.cache[hash];
+	  };
+	};
+
+	/**
+	 * Find the maximum number of arguments expected by a typed function.
+	 * @param {function} fn   A typed function
+	 * @return {number} Returns the maximum number of expected arguments.
+	 *                  Returns -1 when no signatures where found on the function.
+	 */
+	exports.maxArgumentCount = function (fn) {
+	  return Object.keys(fn.signatures || {}).reduce(function (args, signature) {
+	    var count = (signature.match(/,/g) || []).length + 1;
+	    return Math.max(args, count);
+	  }, -1);
+	};
+
+	/**
+	 * Call a typed function with the
+	 * @param {function} fn   A function or typed function
+	 * @return {number} Returns the maximum number of expected arguments.
+	 *                  Returns -1 when no signatures where found on the function.
+	 */
+	exports.callWithRightArgumentCount = function (fn, args, argCount) {
+	  return Object.keys(fn.signatures || {}).reduce(function (args, signature) {
+	    var count = (signature.match(/,/g) || []).length + 1;
+	    return Math.max(args, count);
+	  }, -1);
+	};
+
+/***/ }),
+/* 264 */,
+/* 265 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var extend = __webpack_require__(69).extend;
+
+	function factory(type, config, load, typed) {
+
+	  var matrix = load(__webpack_require__(89));
+	  var addScalar = load(__webpack_require__(90));
+	  var latex = __webpack_require__(88);
+
+	  var algorithm01 = load(__webpack_require__(256));
+	  var algorithm04 = load(__webpack_require__(266));
+	  var algorithm10 = load(__webpack_require__(259));
+	  var algorithm13 = load(__webpack_require__(260));
+	  var algorithm14 = load(__webpack_require__(95));
+
+	  /**
+	   * Add two or more values, `x + y`.
+	   * For matrices, the function is evaluated element wise.
+	   *
+	   * Syntax:
+	   *
+	   *    math.add(x, y)
+	   *    math.add(x, y, z, ...)
+	   *
+	   * Examples:
+	   *
+	   *    math.add(2, 3);               // returns number 5
+	   *    math.add(2, 3, 4);            // returns number 9
+	   *
+	   *    var a = math.complex(2, 3);
+	   *    var b = math.complex(-4, 1);
+	   *    math.add(a, b);               // returns Complex -2 + 4i
+	   *
+	   *    math.add([1, 2, 3], 4);       // returns Array [5, 6, 7]
+	   *
+	   *    var c = math.unit('5 cm');
+	   *    var d = math.unit('2.1 mm');
+	   *    math.add(c, d);               // returns Unit 52.1 mm
+	   *
+	   *    math.add("2.3", "4");         // returns number 6.3
+	   *
+	   * See also:
+	   *
+	   *    subtract, sum
+	   *
+	   * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} x First value to add
+	   * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} y Second value to add
+	   * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} Sum of `x` and `y`
+	   */
+	  var add = typed('add', extend({
+	    // we extend the signatures of addScalar with signatures dealing with matrices
+
+	    'Matrix, Matrix': function (x, y) {
+	      // result
+	      var c;
+
+	      // process matrix storage
+	      switch (x.storage()) {
+	        case 'sparse':
+	          switch (y.storage()) {
+	            case 'sparse':
+	              // sparse + sparse
+	              c = algorithm04(x, y, addScalar);
+	              break;
+	            default:
+	              // sparse + dense
+	              c = algorithm01(y, x, addScalar, true);
+	              break;
+	          }
+	          break;
+	        default:
+	          switch (y.storage()) {
+	            case 'sparse':
+	              // dense + sparse
+	              c = algorithm01(x, y, addScalar, false);
+	              break;
+	            default:
+	              // dense + dense
+	              c = algorithm13(x, y, addScalar);
+	              break;
+	          }
+	          break;
+	      }
+	      return c;
+	    },
+
+	    'Array, Array': function (x, y) {
+	      // use matrix implementation
+	      return add(matrix(x), matrix(y)).valueOf();
+	    },
+
+	    'Array, Matrix': function (x, y) {
+	      // use matrix implementation
+	      return add(matrix(x), y);
+	    },
+
+	    'Matrix, Array': function (x, y) {
+	      // use matrix implementation
+	      return add(x, matrix(y));
+	    },
+
+	    'Matrix, any': function (x, y) {
+	      // result
+	      var c;
+	      // check storage format
+	      switch (x.storage()) {
+	        case 'sparse':
+	          c = algorithm10(x, y, addScalar, false);
+	          break;
+	        default:
+	          c = algorithm14(x, y, addScalar, false);
+	          break;
+	      }
+	      return c;
+	    },
+
+	    'any, Matrix': function (x, y) {
+	      // result
+	      var c;
+	      // check storage format
+	      switch (y.storage()) {
+	        case 'sparse':
+	          c = algorithm10(y, x, addScalar, true);
+	          break;
+	        default:
+	          c = algorithm14(y, x, addScalar, true);
+	          break;
+	      }
+	      return c;
+	    },
+
+	    'Array, any': function (x, y) {
+	      // use matrix implementation
+	      return algorithm14(matrix(x), y, addScalar, false).valueOf();
+	    },
+
+	    'any, Array': function (x, y) {
+	      // use matrix implementation
+	      return algorithm14(matrix(y), x, addScalar, true).valueOf();
+	    },
+
+	    'any, any': addScalar,
+
+	    'any, any, ...any': function (x, y, rest) {
+	      var result = add(x, y);
+
+	      for (var i = 0; i < rest.length; i++) {
+	        result = add(result, rest[i]);
+	      }
+
+	      return result;
+	    }
+	  }, addScalar.signatures));
+
+	  add.toTex = {
+	    2: '\\left(${args[0]}' + latex.operators['add'] + '${args[1]}\\right)'
+	  };
+
+	  return add;
+	}
+
+	exports.name = 'add';
+	exports.factory = factory;
+
+/***/ }),
+/* 266 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var DimensionError = __webpack_require__(86);
+
+	function factory(type, config, load, typed) {
+
+	  var equalScalar = load(__webpack_require__(92));
+
+	  var SparseMatrix = type.SparseMatrix;
+
+	  /**
+	   * Iterates over SparseMatrix A and SparseMatrix B nonzero items and invokes the callback function f(Aij, Bij). 
+	   * Callback function invoked MAX(NNZA, NNZB) times
+	   *
+	   *
+	   *          ┌  f(Aij, Bij)  ; A(i,j) !== 0 && B(i,j) !== 0
+	   * C(i,j) = ┤  A(i,j)       ; A(i,j) !== 0
+	   *          └  B(i,j)       ; B(i,j) !== 0
+	   *
+	   *
+	   * @param {Matrix}   a                 The SparseMatrix instance (A)
+	   * @param {Matrix}   b                 The SparseMatrix instance (B)
+	   * @param {Function} callback          The f(Aij,Bij) operation to invoke
+	   *
+	   * @return {Matrix}                    SparseMatrix (C)
+	   *
+	   * see https://github.com/josdejong/mathjs/pull/346#issuecomment-97620294
+	   */
+	  var algorithm04 = function (a, b, callback) {
+	    // sparse matrix arrays
+	    var avalues = a._values;
+	    var aindex = a._index;
+	    var aptr = a._ptr;
+	    var asize = a._size;
+	    var adt = a._datatype;
+	    // sparse matrix arrays
+	    var bvalues = b._values;
+	    var bindex = b._index;
+	    var bptr = b._ptr;
+	    var bsize = b._size;
+	    var bdt = b._datatype;
+
+	    // validate dimensions
+	    if (asize.length !== bsize.length) throw new DimensionError(asize.length, bsize.length);
+
+	    // check rows & columns
+	    if (asize[0] !== bsize[0] || asize[1] !== bsize[1]) throw new RangeError('Dimension mismatch. Matrix A (' + asize + ') must match Matrix B (' + bsize + ')');
+
+	    // rows & columns
+	    var rows = asize[0];
+	    var columns = asize[1];
+
+	    // datatype
+	    var dt;
+	    // equal signature to use
+	    var eq = equalScalar;
+	    // zero value
+	    var zero = 0;
+	    // callback signature to use
+	    var cf = callback;
+
+	    // process data types
+	    if (typeof adt === 'string' && adt === bdt) {
+	      // datatype
+	      dt = adt;
+	      // find signature that matches (dt, dt)
+	      eq = typed.find(equalScalar, [dt, dt]);
+	      // convert 0 to the same datatype
+	      zero = typed.convert(0, dt);
+	      // callback
+	      cf = typed.find(callback, [dt, dt]);
+	    }
+
+	    // result arrays
+	    var cvalues = avalues && bvalues ? [] : undefined;
+	    var cindex = [];
+	    var cptr = [];
+	    // matrix
+	    var c = new SparseMatrix({
+	      values: cvalues,
+	      index: cindex,
+	      ptr: cptr,
+	      size: [rows, columns],
+	      datatype: dt
+	    });
+
+	    // workspace
+	    var xa = avalues && bvalues ? [] : undefined;
+	    var xb = avalues && bvalues ? [] : undefined;
+	    // marks indicating we have a value in x for a given column
+	    var wa = [];
+	    var wb = [];
+
+	    // vars 
+	    var i, j, k, k0, k1;
+
+	    // loop columns
+	    for (j = 0; j < columns; j++) {
+	      // update cptr
+	      cptr[j] = cindex.length;
+	      // columns mark
+	      var mark = j + 1;
+	      // loop A(:,j)
+	      for (k0 = aptr[j], k1 = aptr[j + 1], k = k0; k < k1; k++) {
+	        // row
+	        i = aindex[k];
+	        // update c
+	        cindex.push(i);
+	        // update workspace
+	        wa[i] = mark;
+	        // check we need to process values
+	        if (xa) xa[i] = avalues[k];
+	      }
+	      // loop B(:,j)
+	      for (k0 = bptr[j], k1 = bptr[j + 1], k = k0; k < k1; k++) {
+	        // row
+	        i = bindex[k];
+	        // check row exists in A
+	        if (wa[i] === mark) {
+	          // update record in xa @ i
+	          if (xa) {
+	            // invoke callback
+	            var v = cf(xa[i], bvalues[k]);
+	            // check for zero
+	            if (!eq(v, zero)) {
+	              // update workspace
+	              xa[i] = v;
+	            } else {
+	              // remove mark (index will be removed later)
+	              wa[i] = null;
+	            }
+	          }
+	        } else {
+	          // update c
+	          cindex.push(i);
+	          // update workspace
+	          wb[i] = mark;
+	          // check we need to process values
+	          if (xb) xb[i] = bvalues[k];
+	        }
+	      }
+	      // check we need to process values (non pattern matrix)
+	      if (xa && xb) {
+	        // initialize first index in j
+	        k = cptr[j];
+	        // loop index in j
+	        while (k < cindex.length) {
+	          // row
+	          i = cindex[k];
+	          // check workspace has value @ i
+	          if (wa[i] === mark) {
+	            // push value (Aij != 0 || (Aij != 0 && Bij != 0))
+	            cvalues[k] = xa[i];
+	            // increment pointer
+	            k++;
+	          } else if (wb[i] === mark) {
+	            // push value (bij != 0)
+	            cvalues[k] = xb[i];
+	            // increment pointer
+	            k++;
+	          } else {
+	            // remove index @ k
+	            cindex.splice(k, 1);
+	          }
+	        }
+	      }
+	    }
+	    // update cptr
+	    cptr[columns] = cindex.length;
+
+	    // return sparse matrix
+	    return c;
+	  };
+
+	  return algorithm04;
+	}
+
+	exports.name = 'algorithm04';
+	exports.factory = factory;
+
+/***/ }),
+/* 267 */,
+/* 268 */,
+/* 269 */,
+/* 270 */,
+/* 271 */,
+/* 272 */,
+/* 273 */,
+/* 274 */,
+/* 275 */,
+/* 276 */,
+/* 277 */,
+/* 278 */,
+/* 279 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	function factory(type, config, load, typed) {
+
+	  var DenseMatrix = type.DenseMatrix;
+
+	  /**
+	   * Iterates over SparseMatrix S nonzero items and invokes the callback function f(Sij, b). 
+	   * Callback function invoked MxN times.
+	   *
+	   *
+	   *          ┌  f(Sij, b)  ; S(i,j) !== 0
+	   * C(i,j) = ┤  
+	   *          └  f(0, b)    ; otherwise
+	   *
+	   *
+	   * @param {Matrix}   s                 The SparseMatrix instance (S)
+	   * @param {Scalar}   b                 The Scalar value
+	   * @param {Function} callback          The f(Aij,b) operation to invoke
+	   * @param {boolean}  inverse           A true value indicates callback should be invoked f(b,Sij)
+	   *
+	   * @return {Matrix}                    DenseMatrix (C)
+	   *
+	   * https://github.com/josdejong/mathjs/pull/346#issuecomment-97626813
+	   */
+	  var algorithm12 = function (s, b, callback, inverse) {
+	    // sparse matrix arrays
+	    var avalues = s._values;
+	    var aindex = s._index;
+	    var aptr = s._ptr;
+	    var asize = s._size;
+	    var adt = s._datatype;
+
+	    // sparse matrix cannot be a Pattern matrix
+	    if (!avalues) throw new Error('Cannot perform operation on Pattern Sparse Matrix and Scalar value');
+
+	    // rows & columns
+	    var rows = asize[0];
+	    var columns = asize[1];
+
+	    // datatype
+	    var dt;
+	    // callback signature to use
+	    var cf = callback;
+
+	    // process data types
+	    if (typeof adt === 'string') {
+	      // datatype
+	      dt = adt;
+	      // convert b to the same datatype
+	      b = typed.convert(b, dt);
+	      // callback
+	      cf = typed.find(callback, [dt, dt]);
+	    }
+
+	    // result arrays
+	    var cdata = [];
+	    // matrix
+	    var c = new DenseMatrix({
+	      data: cdata,
+	      size: [rows, columns],
+	      datatype: dt
+	    });
+
+	    // workspaces
+	    var x = [];
+	    // marks indicating we have a value in x for a given column
+	    var w = [];
+
+	    // loop columns
+	    for (var j = 0; j < columns; j++) {
+	      // columns mark
+	      var mark = j + 1;
+	      // values in j
+	      for (var k0 = aptr[j], k1 = aptr[j + 1], k = k0; k < k1; k++) {
+	        // row
+	        var r = aindex[k];
+	        // update workspace
+	        x[r] = avalues[k];
+	        w[r] = mark;
+	      }
+	      // loop rows
+	      for (var i = 0; i < rows; i++) {
+	        // initialize C on first column
+	        if (j === 0) {
+	          // create row array
+	          cdata[i] = [];
+	        }
+	        // check sparse matrix has a value @ i,j
+	        if (w[i] === mark) {
+	          // invoke callback, update C
+	          cdata[i][j] = inverse ? cf(b, x[i]) : cf(x[i], b);
+	        } else {
+	          // dense matrix value @ i, j
+	          cdata[i][j] = inverse ? cf(b, 0) : cf(0, b);
+	        }
+	      }
+	    }
+
+	    // return sparse matrix
+	    return c;
+	  };
+
+	  return algorithm12;
+	}
+
+	exports.name = 'algorithm12';
+	exports.factory = factory;
+
+/***/ }),
+/* 280 */,
+/* 281 */,
+/* 282 */,
+/* 283 */,
+/* 284 */,
+/* 285 */,
+/* 286 */,
+/* 287 */,
+/* 288 */,
+/* 289 */,
+/* 290 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var hasOwnProperty = __webpack_require__(69).hasOwnProperty;
+
+	/**
+	 * Get a property of a plain object
+	 * Throws an error in case the object is not a plain object or the
+	 * property is not defined on the object itself
+	 * @param {Object} object
+	 * @param {string} prop
+	 * @return {*} Returns the property value when safe
+	 */
+	function getSafeProperty(object, prop) {
+	  // only allow getting safe properties of a plain object
+	  if (isPlainObject(object) && isSafeProperty(object, prop)) {
+	    return object[prop];
+	  }
+
+	  if (typeof object[prop] === 'function' && isSafeMethod(object, prop)) {
+	    throw new Error('Cannot access method "' + prop + '" as a property');
+	  }
+
+	  throw new Error('No access to property "' + prop + '"');
+	}
+
+	/**
+	 * Set a property on a plain object.
+	 * Throws an error in case the object is not a plain object or the
+	 * property would override an inherited property like .constructor or .toString
+	 * @param {Object} object
+	 * @param {string} prop
+	 * @param {*} value
+	 * @return {*} Returns the value
+	 */
+	// TODO: merge this function into access.js?
+	function setSafeProperty(object, prop, value) {
+	  // only allow setting safe properties of a plain object
+	  if (isPlainObject(object) && isSafeProperty(object, prop)) {
+	    return object[prop] = value;
+	  }
+
+	  throw new Error('No access to property "' + prop + '"');
+	}
+
+	/**
+	 * Test whether a property is safe to use for an object.
+	 * For example .toString and .constructor are not safe
+	 * @param {string} prop
+	 * @return {boolean} Returns true when safe
+	 */
+	function isSafeProperty(object, prop) {
+	  if (!object || typeof object !== 'object') {
+	    return false;
+	  }
+	  // SAFE: whitelisted
+	  // e.g length
+	  if (hasOwnProperty(safeNativeProperties, prop)) {
+	    return true;
+	  }
+	  // UNSAFE: inherited from Object prototype
+	  // e.g constructor
+	  if (prop in Object.prototype) {
+	    // 'in' is used instead of hasOwnProperty for nodejs v0.10
+	    // which is inconsistent on root prototypes. It is safe
+	    // here because Object.prototype is a root object
+	    return false;
+	  }
+	  // UNSAFE: inherited from Function prototype
+	  // e.g call, apply
+	  if (prop in Function.prototype) {
+	    // 'in' is used instead of hasOwnProperty for nodejs v0.10
+	    // which is inconsistent on root prototypes. It is safe
+	    // here because Function.prototype is a root object
+	    return false;
+	  }
+	  return true;
+	}
+
+	/**
+	 * Validate whether a method is safe.
+	 * Throws an error when that's not the case.
+	 * @param {Object} object
+	 * @param {string} method
+	 */
+	// TODO: merge this function into assign.js?
+	function validateSafeMethod(object, method) {
+	  if (!isSafeMethod(object, method)) {
+	    throw new Error('No access to method "' + method + '"');
+	  }
+	}
+
+	/**
+	 * Check whether a method is safe.
+	 * Throws an error when that's not the case (for example for `constructor`).
+	 * @param {Object} object
+	 * @param {string} method
+	 * @return {boolean} Returns true when safe, false otherwise
+	 */
+	function isSafeMethod(object, method) {
+	  if (!object || typeof object[method] !== 'function') {
+	    return false;
+	  }
+	  // UNSAFE: ghosted
+	  // e.g overridden toString
+	  // Note that IE10 doesn't support __proto__ and we can't do this check there.
+	  if (hasOwnProperty(object, method) && object.__proto__ && method in object.__proto__) {
+	    return false;
+	  }
+	  // SAFE: whitelisted
+	  // e.g toString
+	  if (hasOwnProperty(safeNativeMethods, method)) {
+	    return true;
+	  }
+	  // UNSAFE: inherited from Object prototype
+	  // e.g constructor
+	  if (method in Object.prototype) {
+	    // 'in' is used instead of hasOwnProperty for nodejs v0.10
+	    // which is inconsistent on root prototypes. It is safe
+	    // here because Object.prototype is a root object
+	    return false;
+	  }
+	  // UNSAFE: inherited from Function prototype
+	  // e.g call, apply
+	  if (method in Function.prototype) {
+	    // 'in' is used instead of hasOwnProperty for nodejs v0.10
+	    // which is inconsistent on root prototypes. It is safe
+	    // here because Function.prototype is a root object
+	    return false;
+	  }
+	  return true;
+	}
+
+	function isPlainObject(object) {
+	  return typeof object === 'object' && object && object.constructor === Object;
+	}
+
+	var safeNativeProperties = {
+	  length: true
+	};
+
+	var safeNativeMethods = {
+	  toString: true,
+	  valueOf: true,
+	  toLocaleString: true
+	};
+
+	exports.getSafeProperty = getSafeProperty;
+	exports.setSafeProperty = setSafeProperty;
+	exports.isSafeProperty = isSafeProperty;
+	exports.validateSafeMethod = validateSafeMethod;
+	exports.isSafeMethod = isSafeMethod;
+	exports.isPlainObject = isPlainObject;
+
+/***/ }),
+/* 291 */,
+/* 292 */,
+/* 293 */,
+/* 294 */,
+/* 295 */,
+/* 296 */,
+/* 297 */,
+/* 298 */,
+/* 299 */,
+/* 300 */,
+/* 301 */,
+/* 302 */,
+/* 303 */,
+/* 304 */,
+/* 305 */,
+/* 306 */,
+/* 307 */,
+/* 308 */,
+/* 309 */,
+/* 310 */,
+/* 311 */,
+/* 312 */,
+/* 313 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	module.exports = [
+	// types
+	__webpack_require__(314), __webpack_require__(315), __webpack_require__(316), __webpack_require__(317), __webpack_require__(318), __webpack_require__(322), __webpack_require__(323), __webpack_require__(324),
+
+	// construction functions
+	__webpack_require__(325), __webpack_require__(89), __webpack_require__(326)];
+
+/***/ }),
+/* 314 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var util = __webpack_require__(261);
+
+	var string = util.string;
+
+	var isString = string.isString;
+
+	function factory(type, config, load, typed) {
+	  /**
+	   * @constructor Matrix
+	   *
+	   * A Matrix is a wrapper around an Array. A matrix can hold a multi dimensional
+	   * array. A matrix can be constructed as:
+	   *     var matrix = math.matrix(data)
+	   *
+	   * Matrix contains the functions to resize, get and set values, get the size,
+	   * clone the matrix and to convert the matrix to a vector, array, or scalar.
+	   * Furthermore, one can iterate over the matrix using map and forEach.
+	   * The internal Array of the Matrix can be accessed using the function valueOf.
+	   *
+	   * Example usage:
+	   *     var matrix = math.matrix([[1, 2], [3, 4]]);
+	   *     matix.size();              // [2, 2]
+	   *     matrix.resize([3, 2], 5);
+	   *     matrix.valueOf();          // [[1, 2], [3, 4], [5, 5]]
+	   *     matrix.subset([1,2])       // 3 (indexes are zero-based)
+	   *
+	   */
+	  function Matrix() {
+	    if (!(this instanceof Matrix)) {
+	      throw new SyntaxError('Constructor must be called with the new operator');
+	    }
+	  }
+
+	  /**
+	   * Attach type information
+	   */
+	  Matrix.prototype.type = 'Matrix';
+	  Matrix.prototype.isMatrix = true;
+
+	  /**
+	   * Get the Matrix storage constructor for the given format.
+	   *
+	   * @param {string} format       The Matrix storage format.
+	   *
+	   * @return {Function}           The Matrix storage constructor.
+	   */
+	  Matrix.storage = function (format) {
+	    // check storage format is a string
+	    if (!isString(format)) {
+	      throw new TypeError('format must be a string value');
+	    }
+
+	    // get storage format constructor
+	    var constructor = Matrix._storage[format];
+	    if (!constructor) {
+	      throw new SyntaxError('Unsupported matrix storage format: ' + format);
+	    }
+
+	    // return storage constructor
+	    return constructor;
+	  };
+
+	  // a map with all constructors for all storage types
+	  Matrix._storage = {};
+
+	  /**
+	   * Get the storage format used by the matrix.
+	   *
+	   * Usage:
+	   *     var format = matrix.storage()                   // retrieve storage format
+	   *
+	   * @return {string}           The storage format.
+	   */
+	  Matrix.prototype.storage = function () {
+	    // must be implemented by each of the Matrix implementations
+	    throw new Error('Cannot invoke storage on a Matrix interface');
+	  };
+
+	  /**
+	   * Get the datatype of the data stored in the matrix.
+	   *
+	   * Usage:
+	   *     var format = matrix.datatype()                   // retrieve matrix datatype
+	   *
+	   * @return {string}           The datatype.
+	   */
+	  Matrix.prototype.datatype = function () {
+	    // must be implemented by each of the Matrix implementations
+	    throw new Error('Cannot invoke datatype on a Matrix interface');
+	  };
+
+	  /**
+	   * Create a new Matrix With the type of the current matrix instance
+	   * @param {Array | Object} data
+	   * @param {string} [datatype]
+	   */
+	  Matrix.prototype.create = function (data, datatype) {
+	    throw new Error('Cannot invoke create on a Matrix interface');
+	  };
+
+	  /**
+	   * Get a subset of the matrix, or replace a subset of the matrix.
+	   *
+	   * Usage:
+	   *     var subset = matrix.subset(index)               // retrieve subset
+	   *     var value = matrix.subset(index, replacement)   // replace subset
+	   *
+	   * @param {Index} index
+	   * @param {Array | Matrix | *} [replacement]
+	   * @param {*} [defaultValue=0]      Default value, filled in on new entries when
+	   *                                  the matrix is resized. If not provided,
+	   *                                  new matrix elements will be filled with zeros.
+	   */
+	  Matrix.prototype.subset = function (index, replacement, defaultValue) {
+	    // must be implemented by each of the Matrix implementations
+	    throw new Error('Cannot invoke subset on a Matrix interface');
+	  };
+
+	  /**
+	   * Get a single element from the matrix.
+	   * @param {number[]} index   Zero-based index
+	   * @return {*} value
+	   */
+	  Matrix.prototype.get = function (index) {
+	    // must be implemented by each of the Matrix implementations
+	    throw new Error('Cannot invoke get on a Matrix interface');
+	  };
+
+	  /**
+	   * Replace a single element in the matrix.
+	   * @param {number[]} index   Zero-based index
+	   * @param {*} value
+	   * @param {*} [defaultValue]        Default value, filled in on new entries when
+	   *                                  the matrix is resized. If not provided,
+	   *                                  new matrix elements will be left undefined.
+	   * @return {Matrix} self
+	   */
+	  Matrix.prototype.set = function (index, value, defaultValue) {
+	    // must be implemented by each of the Matrix implementations
+	    throw new Error('Cannot invoke set on a Matrix interface');
+	  };
+
+	  /**
+	   * Resize the matrix to the given size. Returns a copy of the matrix when 
+	   * `copy=true`, otherwise return the matrix itself (resize in place).
+	   *
+	   * @param {number[]} size           The new size the matrix should have.
+	   * @param {*} [defaultValue=0]      Default value, filled in on new entries.
+	   *                                  If not provided, the matrix elements will
+	   *                                  be filled with zeros.
+	   * @param {boolean} [copy]          Return a resized copy of the matrix
+	   *
+	   * @return {Matrix}                 The resized matrix
+	   */
+	  Matrix.prototype.resize = function (size, defaultValue) {
+	    // must be implemented by each of the Matrix implementations
+	    throw new Error('Cannot invoke resize on a Matrix interface');
+	  };
+
+	  /**
+	   * Reshape the matrix to the given size. Returns a copy of the matrix when
+	   * `copy=true`, otherwise return the matrix itself (reshape in place).
+	   *
+	   * @param {number[]} size           The new size the matrix should have.
+	   * @param {boolean} [copy]          Return a reshaped copy of the matrix
+	   *
+	   * @return {Matrix}                 The reshaped matrix
+	   */
+	  Matrix.prototype.reshape = function (size, defaultValue) {
+	    // must be implemented by each of the Matrix implementations
+	    throw new Error('Cannot invoke reshape on a Matrix interface');
+	  };
+
+	  /**
+	   * Create a clone of the matrix
+	   * @return {Matrix} clone
+	   */
+	  Matrix.prototype.clone = function () {
+	    // must be implemented by each of the Matrix implementations
+	    throw new Error('Cannot invoke clone on a Matrix interface');
+	  };
+
+	  /**
+	   * Retrieve the size of the matrix.
+	   * @returns {number[]} size
+	   */
+	  Matrix.prototype.size = function () {
+	    // must be implemented by each of the Matrix implementations
+	    throw new Error('Cannot invoke size on a Matrix interface');
+	  };
+
+	  /**
+	   * Create a new matrix with the results of the callback function executed on
+	   * each entry of the matrix.
+	   * @param {Function} callback   The callback function is invoked with three
+	   *                              parameters: the value of the element, the index
+	   *                              of the element, and the Matrix being traversed.
+	   * @param {boolean} [skipZeros] Invoke callback function for non-zero values only.
+	   *
+	   * @return {Matrix} matrix
+	   */
+	  Matrix.prototype.map = function (callback, skipZeros) {
+	    // must be implemented by each of the Matrix implementations
+	    throw new Error('Cannot invoke map on a Matrix interface');
+	  };
+
+	  /**
+	   * Execute a callback function on each entry of the matrix.
+	   * @param {Function} callback   The callback function is invoked with three
+	   *                              parameters: the value of the element, the index
+	   *                              of the element, and the Matrix being traversed.
+	   */
+	  Matrix.prototype.forEach = function (callback) {
+	    // must be implemented by each of the Matrix implementations
+	    throw new Error('Cannot invoke forEach on a Matrix interface');
+	  };
+
+	  /**
+	   * Create an Array with a copy of the data of the Matrix
+	   * @returns {Array} array
+	   */
+	  Matrix.prototype.toArray = function () {
+	    // must be implemented by each of the Matrix implementations
+	    throw new Error('Cannot invoke toArray on a Matrix interface');
+	  };
+
+	  /**
+	   * Get the primitive value of the Matrix: a multidimensional array
+	   * @returns {Array} array
+	   */
+	  Matrix.prototype.valueOf = function () {
+	    // must be implemented by each of the Matrix implementations
+	    throw new Error('Cannot invoke valueOf on a Matrix interface');
+	  };
+
+	  /**
+	   * Get a string representation of the matrix, with optional formatting options.
+	   * @param {Object | number | Function} [options]  Formatting options. See
+	   *                                                lib/utils/number:format for a
+	   *                                                description of the available
+	   *                                                options.
+	   * @returns {string} str
+	   */
+	  Matrix.prototype.format = function (options) {
+	    // must be implemented by each of the Matrix implementations
+	    throw new Error('Cannot invoke format on a Matrix interface');
+	  };
+
+	  /**
+	   * Get a string representation of the matrix
+	   * @returns {string} str
+	   */
+	  Matrix.prototype.toString = function () {
+	    // must be implemented by each of the Matrix implementations
+	    throw new Error('Cannot invoke toString on a Matrix interface');
+	  };
+
+	  // exports
+	  return Matrix;
+	}
+
+	exports.name = 'Matrix';
+	exports.path = 'type';
+	exports.factory = factory;
+
+/***/ }),
+/* 315 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var util = __webpack_require__(261);
+	var DimensionError = __webpack_require__(86);
+	var getSafeProperty = __webpack_require__(290).getSafeProperty;
+	var setSafeProperty = __webpack_require__(290).setSafeProperty;
+
+	var string = util.string;
+	var array = util.array;
+	var object = util.object;
+	var number = util.number;
+
+	var isArray = Array.isArray;
+	var isNumber = number.isNumber;
+	var isInteger = number.isInteger;
+	var isString = string.isString;
+
+	var validateIndex = array.validateIndex;
+
+	function factory(type, config, load, typed) {
+	  var Matrix = load(__webpack_require__(314)); // force loading Matrix (do not use via type.Matrix)
+
+	  /**
+	   * Dense Matrix implementation. A regular, dense matrix, supporting multi-dimensional matrices. This is the default matrix type.
+	   * @class DenseMatrix
+	   */
+	  function DenseMatrix(data, datatype) {
+	    if (!(this instanceof DenseMatrix)) throw new SyntaxError('Constructor must be called with the new operator');
+	    if (datatype && !isString(datatype)) throw new Error('Invalid datatype: ' + datatype);
+
+	    if (data && data.isMatrix === true) {
+	      // check data is a DenseMatrix
+	      if (data.type === 'DenseMatrix') {
+	        // clone data & size
+	        this._data = object.clone(data._data);
+	        this._size = object.clone(data._size);
+	        this._datatype = datatype || data._datatype;
+	      } else {
+	        // build data from existing matrix
+	        this._data = data.toArray();
+	        this._size = data.size();
+	        this._datatype = datatype || data._datatype;
+	      }
+	    } else if (data && isArray(data.data) && isArray(data.size)) {
+	      // initialize fields from JSON representation
+	      this._data = data.data;
+	      this._size = data.size;
+	      this._datatype = datatype || data.datatype;
+	    } else if (isArray(data)) {
+	      // replace nested Matrices with Arrays
+	      this._data = preprocess(data);
+	      // get the dimensions of the array
+	      this._size = array.size(this._data);
+	      // verify the dimensions of the array, TODO: compute size while processing array
+	      array.validate(this._data, this._size);
+	      // data type unknown
+	      this._datatype = datatype;
+	    } else if (data) {
+	      // unsupported type
+	      throw new TypeError('Unsupported type of data (' + util.types.type(data) + ')');
+	    } else {
+	      // nothing provided
+	      this._data = [];
+	      this._size = [0];
+	      this._datatype = datatype;
+	    }
+	  }
+
+	  DenseMatrix.prototype = new Matrix();
+
+	  /**
+	   * Attach type information
+	   */
+	  DenseMatrix.prototype.type = 'DenseMatrix';
+	  DenseMatrix.prototype.isDenseMatrix = true;
+
+	  /**
+	   * Get the storage format used by the matrix.
+	   *
+	   * Usage:
+	   *     var format = matrix.storage()                   // retrieve storage format
+	   *
+	   * @memberof DenseMatrix
+	   * @return {string}           The storage format.
+	   */
+	  DenseMatrix.prototype.storage = function () {
+	    return 'dense';
+	  };
+
+	  /**
+	   * Get the datatype of the data stored in the matrix.
+	   *
+	   * Usage:
+	   *     var format = matrix.datatype()                   // retrieve matrix datatype
+	   *
+	   * @memberof DenseMatrix
+	   * @return {string}           The datatype.
+	   */
+	  DenseMatrix.prototype.datatype = function () {
+	    return this._datatype;
+	  };
+
+	  /**
+	   * Create a new DenseMatrix
+	   * @memberof DenseMatrix
+	   * @param {Array} data
+	   * @param {string} [datatype]
+	   */
+	  DenseMatrix.prototype.create = function (data, datatype) {
+	    return new DenseMatrix(data, datatype);
+	  };
+
+	  /**
+	   * Get a subset of the matrix, or replace a subset of the matrix.
+	   *
+	   * Usage:
+	   *     var subset = matrix.subset(index)               // retrieve subset
+	   *     var value = matrix.subset(index, replacement)   // replace subset
+	   *
+	   * @memberof DenseMatrix
+	   * @param {Index} index
+	   * @param {Array | DenseMatrix | *} [replacement]
+	   * @param {*} [defaultValue=0]      Default value, filled in on new entries when
+	   *                                  the matrix is resized. If not provided,
+	   *                                  new matrix elements will be filled with zeros.
+	   */
+	  DenseMatrix.prototype.subset = function (index, replacement, defaultValue) {
+	    switch (arguments.length) {
+	      case 1:
+	        return _get(this, index);
+
+	      // intentional fall through
+	      case 2:
+	      case 3:
+	        return _set(this, index, replacement, defaultValue);
+
+	      default:
+	        throw new SyntaxError('Wrong number of arguments');
+	    }
+	  };
+
+	  /**
+	   * Get a single element from the matrix.
+	   * @memberof DenseMatrix
+	   * @param {number[]} index   Zero-based index
+	   * @return {*} value
+	   */
+	  DenseMatrix.prototype.get = function (index) {
+	    if (!isArray(index)) throw new TypeError('Array expected');
+	    if (index.length != this._size.length) throw new DimensionError(index.length, this._size.length);
+
+	    // check index
+	    for (var x = 0; x < index.length; x++) validateIndex(index[x], this._size[x]);
+
+	    var data = this._data;
+	    for (var i = 0, ii = index.length; i < ii; i++) {
+	      var index_i = index[i];
+	      validateIndex(index_i, data.length);
+	      data = data[index_i];
+	    }
+
+	    return data;
+	  };
+
+	  /**
+	   * Replace a single element in the matrix.
+	   * @memberof DenseMatrix
+	   * @param {number[]} index   Zero-based index
+	   * @param {*} value
+	   * @param {*} [defaultValue]        Default value, filled in on new entries when
+	   *                                  the matrix is resized. If not provided,
+	   *                                  new matrix elements will be left undefined.
+	   * @return {DenseMatrix} self
+	   */
+	  DenseMatrix.prototype.set = function (index, value, defaultValue) {
+	    if (!isArray(index)) throw new TypeError('Array expected');
+	    if (index.length < this._size.length) throw new DimensionError(index.length, this._size.length, '<');
+
+	    var i, ii, index_i;
+
+	    // enlarge matrix when needed
+	    var size = index.map(function (i) {
+	      return i + 1;
+	    });
+	    _fit(this, size, defaultValue);
+
+	    // traverse over the dimensions
+	    var data = this._data;
+	    for (i = 0, ii = index.length - 1; i < ii; i++) {
+	      index_i = index[i];
+	      validateIndex(index_i, data.length);
+	      data = data[index_i];
+	    }
+
+	    // set new value
+	    index_i = index[index.length - 1];
+	    validateIndex(index_i, data.length);
+	    data[index_i] = value;
+
+	    return this;
+	  };
+
+	  /**
+	   * Get a submatrix of this matrix
+	   * @memberof DenseMatrix
+	   * @param {DenseMatrix} matrix
+	   * @param {Index} index   Zero-based index
+	   * @private
+	   */
+	  function _get(matrix, index) {
+	    if (!index || index.isIndex !== true) {
+	      throw new TypeError('Invalid index');
+	    }
+
+	    var isScalar = index.isScalar();
+	    if (isScalar) {
+	      // return a scalar
+	      return matrix.get(index.min());
+	    } else {
+	      // validate dimensions
+	      var size = index.size();
+	      if (size.length != matrix._size.length) {
+	        throw new DimensionError(size.length, matrix._size.length);
+	      }
+
+	      // validate if any of the ranges in the index is out of range
+	      var min = index.min();
+	      var max = index.max();
+	      for (var i = 0, ii = matrix._size.length; i < ii; i++) {
+	        validateIndex(min[i], matrix._size[i]);
+	        validateIndex(max[i], matrix._size[i]);
+	      }
+
+	      // retrieve submatrix
+	      // TODO: more efficient when creating an empty matrix and setting _data and _size manually
+	      return new DenseMatrix(_getSubmatrix(matrix._data, index, size.length, 0), matrix._datatype);
+	    }
+	  }
+
+	  /**
+	   * Recursively get a submatrix of a multi dimensional matrix.
+	   * Index is not checked for correct number or length of dimensions.
+	   * @memberof DenseMatrix
+	   * @param {Array} data
+	   * @param {Index} index
+	   * @param {number} dims   Total number of dimensions
+	   * @param {number} dim    Current dimension
+	   * @return {Array} submatrix
+	   * @private
+	   */
+	  function _getSubmatrix(data, index, dims, dim) {
+	    var last = dim === dims - 1;
+	    var range = index.dimension(dim);
+
+	    if (last) {
+	      return range.map(function (i) {
+	        validateIndex(i, data.length);
+	        return data[i];
+	      }).valueOf();
+	    } else {
+	      return range.map(function (i) {
+	        validateIndex(i, data.length);
+	        var child = data[i];
+	        return _getSubmatrix(child, index, dims, dim + 1);
+	      }).valueOf();
+	    }
+	  }
+
+	  /**
+	   * Replace a submatrix in this matrix
+	   * Indexes are zero-based.
+	   * @memberof DenseMatrix
+	   * @param {DenseMatrix} matrix
+	   * @param {Index} index
+	   * @param {DenseMatrix | Array | *} submatrix
+	   * @param {*} defaultValue          Default value, filled in on new entries when
+	   *                                  the matrix is resized.
+	   * @return {DenseMatrix} matrix
+	   * @private
+	   */
+	  function _set(matrix, index, submatrix, defaultValue) {
+	    if (!index || index.isIndex !== true) {
+	      throw new TypeError('Invalid index');
+	    }
+
+	    // get index size and check whether the index contains a single value
+	    var iSize = index.size(),
+	        isScalar = index.isScalar();
+
+	    // calculate the size of the submatrix, and convert it into an Array if needed
+	    var sSize;
+	    if (submatrix && submatrix.isMatrix === true) {
+	      sSize = submatrix.size();
+	      submatrix = submatrix.valueOf();
+	    } else {
+	      sSize = array.size(submatrix);
+	    }
+
+	    if (isScalar) {
+	      // set a scalar
+
+	      // check whether submatrix is a scalar
+	      if (sSize.length !== 0) {
+	        throw new TypeError('Scalar expected');
+	      }
+
+	      matrix.set(index.min(), submatrix, defaultValue);
+	    } else {
+	      // set a submatrix
+
+	      // validate dimensions
+	      if (iSize.length < matrix._size.length) {
+	        throw new DimensionError(iSize.length, matrix._size.length, '<');
+	      }
+
+	      if (sSize.length < iSize.length) {
+	        // calculate number of missing outer dimensions
+	        var i = 0;
+	        var outer = 0;
+	        while (iSize[i] === 1 && sSize[i] === 1) {
+	          i++;
+	        }
+	        while (iSize[i] === 1) {
+	          outer++;
+	          i++;
+	        }
+
+	        // unsqueeze both outer and inner dimensions
+	        submatrix = array.unsqueeze(submatrix, iSize.length, outer, sSize);
+	      }
+
+	      // check whether the size of the submatrix matches the index size
+	      if (!object.deepEqual(iSize, sSize)) {
+	        throw new DimensionError(iSize, sSize, '>');
+	      }
+
+	      // enlarge matrix when needed
+	      var size = index.max().map(function (i) {
+	        return i + 1;
+	      });
+	      _fit(matrix, size, defaultValue);
+
+	      // insert the sub matrix
+	      var dims = iSize.length,
+	          dim = 0;
+	      _setSubmatrix(matrix._data, index, submatrix, dims, dim);
+	    }
+
+	    return matrix;
+	  }
+
+	  /**
+	   * Replace a submatrix of a multi dimensional matrix.
+	   * @memberof DenseMatrix
+	   * @param {Array} data
+	   * @param {Index} index
+	   * @param {Array} submatrix
+	   * @param {number} dims   Total number of dimensions
+	   * @param {number} dim
+	   * @private
+	   */
+	  function _setSubmatrix(data, index, submatrix, dims, dim) {
+	    var last = dim === dims - 1,
+	        range = index.dimension(dim);
+
+	    if (last) {
+	      range.forEach(function (dataIndex, subIndex) {
+	        validateIndex(dataIndex);
+	        data[dataIndex] = submatrix[subIndex[0]];
+	      });
+	    } else {
+	      range.forEach(function (dataIndex, subIndex) {
+	        validateIndex(dataIndex);
+	        _setSubmatrix(data[dataIndex], index, submatrix[subIndex[0]], dims, dim + 1);
+	      });
+	    }
+	  }
+
+	  /**
+	   * Resize the matrix to the given size. Returns a copy of the matrix when
+	   * `copy=true`, otherwise return the matrix itself (resize in place).
+	   *
+	   * @memberof DenseMatrix
+	   * @param {number[]} size           The new size the matrix should have.
+	   * @param {*} [defaultValue=0]      Default value, filled in on new entries.
+	   *                                  If not provided, the matrix elements will
+	   *                                  be filled with zeros.
+	   * @param {boolean} [copy]          Return a resized copy of the matrix
+	   *
+	   * @return {Matrix}                 The resized matrix
+	   */
+	  DenseMatrix.prototype.resize = function (size, defaultValue, copy) {
+	    // validate arguments
+	    if (!isArray(size)) throw new TypeError('Array expected');
+
+	    // matrix to resize
+	    var m = copy ? this.clone() : this;
+	    // resize matrix
+	    return _resize(m, size, defaultValue);
+	  };
+
+	  var _resize = function (matrix, size, defaultValue) {
+	    // check size
+	    if (size.length === 0) {
+	      // first value in matrix
+	      var v = matrix._data;
+	      // go deep
+	      while (isArray(v)) {
+	        v = v[0];
+	      }
+	      return v;
+	    }
+	    // resize matrix
+	    matrix._size = size.slice(0); // copy the array
+	    matrix._data = array.resize(matrix._data, matrix._size, defaultValue);
+	    // return matrix
+	    return matrix;
+	  };
+
+	  /**
+	   * Reshape the matrix to the given size. Returns a copy of the matrix when
+	   * `copy=true`, otherwise return the matrix itself (reshape in place).
+	   *
+	   * NOTE: This might be better suited to copy by default, instead of modifying
+	   *       in place. For now, it operates in place to remain consistent with
+	   *       resize().
+	   *
+	   * @memberof DenseMatrix
+	   * @param {number[]} size           The new size the matrix should have.
+	   * @param {boolean} [copy]          Return a reshaped copy of the matrix
+	   *
+	   * @return {Matrix}                 The reshaped matrix
+	   */
+	  DenseMatrix.prototype.reshape = function (size, copy) {
+	    var m = copy ? this.clone() : this;
+
+	    m._data = array.reshape(m._data, size);
+	    m._size = size.slice(0);
+	    return m;
+	  };
+
+	  /**
+	   * Enlarge the matrix when it is smaller than given size.
+	   * If the matrix is larger or equal sized, nothing is done.
+	   * @memberof DenseMatrix
+	   * @param {DenseMatrix} matrix           The matrix to be resized
+	   * @param {number[]} size
+	   * @param {*} defaultValue          Default value, filled in on new entries.
+	   * @private
+	   */
+	  function _fit(matrix, size, defaultValue) {
+	    var newSize = matrix._size.slice(0),
+	        // copy the array
+	    changed = false;
+
+	    // add dimensions when needed
+	    while (newSize.length < size.length) {
+	      newSize.push(0);
+	      changed = true;
+	    }
+
+	    // enlarge size when needed
+	    for (var i = 0, ii = size.length; i < ii; i++) {
+	      if (size[i] > newSize[i]) {
+	        newSize[i] = size[i];
+	        changed = true;
+	      }
+	    }
+
+	    if (changed) {
+	      // resize only when size is changed
+	      _resize(matrix, newSize, defaultValue);
+	    }
+	  }
+
+	  /**
+	   * Create a clone of the matrix
+	   * @memberof DenseMatrix
+	   * @return {DenseMatrix} clone
+	   */
+	  DenseMatrix.prototype.clone = function () {
+	    var m = new DenseMatrix({
+	      data: object.clone(this._data),
+	      size: object.clone(this._size),
+	      datatype: this._datatype
+	    });
+	    return m;
+	  };
+
+	  /**
+	   * Retrieve the size of the matrix.
+	   * @memberof DenseMatrix
+	   * @returns {number[]} size
+	   */
+	  DenseMatrix.prototype.size = function () {
+	    return this._size.slice(0); // return a clone of _size
+	  };
+
+	  /**
+	   * Create a new matrix with the results of the callback function executed on
+	   * each entry of the matrix.
+	   * @memberof DenseMatrix
+	   * @param {Function} callback   The callback function is invoked with three
+	   *                              parameters: the value of the element, the index
+	   *                              of the element, and the Matrix being traversed.
+	   *
+	   * @return {DenseMatrix} matrix
+	   */
+	  DenseMatrix.prototype.map = function (callback) {
+	    // matrix instance
+	    var me = this;
+	    var recurse = function (value, index) {
+	      if (isArray(value)) {
+	        return value.map(function (child, i) {
+	          return recurse(child, index.concat(i));
+	        });
+	      } else {
+	        return callback(value, index, me);
+	      }
+	    };
+	    // return dense format
+	    return new DenseMatrix({
+	      data: recurse(this._data, []),
+	      size: object.clone(this._size),
+	      datatype: this._datatype
+	    });
+	  };
+
+	  /**
+	   * Execute a callback function on each entry of the matrix.
+	   * @memberof DenseMatrix
+	   * @param {Function} callback   The callback function is invoked with three
+	   *                              parameters: the value of the element, the index
+	   *                              of the element, and the Matrix being traversed.
+	   */
+	  DenseMatrix.prototype.forEach = function (callback) {
+	    // matrix instance
+	    var me = this;
+	    var recurse = function (value, index) {
+	      if (isArray(value)) {
+	        value.forEach(function (child, i) {
+	          recurse(child, index.concat(i));
+	        });
+	      } else {
+	        callback(value, index, me);
+	      }
+	    };
+	    recurse(this._data, []);
+	  };
+
+	  /**
+	   * Create an Array with a copy of the data of the DenseMatrix
+	   * @memberof DenseMatrix
+	   * @returns {Array} array
+	   */
+	  DenseMatrix.prototype.toArray = function () {
+	    return object.clone(this._data);
+	  };
+
+	  /**
+	   * Get the primitive value of the DenseMatrix: a multidimensional array
+	   * @memberof DenseMatrix
+	   * @returns {Array} array
+	   */
+	  DenseMatrix.prototype.valueOf = function () {
+	    return this._data;
+	  };
+
+	  /**
+	   * Get a string representation of the matrix, with optional formatting options.
+	   * @memberof DenseMatrix
+	   * @param {Object | number | Function} [options]  Formatting options. See
+	   *                                                lib/utils/number:format for a
+	   *                                                description of the available
+	   *                                                options.
+	   * @returns {string} str
+	   */
+	  DenseMatrix.prototype.format = function (options) {
+	    return string.format(this._data, options);
+	  };
+
+	  /**
+	   * Get a string representation of the matrix
+	   * @memberof DenseMatrix
+	   * @returns {string} str
+	   */
+	  DenseMatrix.prototype.toString = function () {
+	    return string.format(this._data);
+	  };
+
+	  /**
+	   * Get a JSON representation of the matrix
+	   * @memberof DenseMatrix
+	   * @returns {Object}
+	   */
+	  DenseMatrix.prototype.toJSON = function () {
+	    return {
+	      mathjs: 'DenseMatrix',
+	      data: this._data,
+	      size: this._size,
+	      datatype: this._datatype
+	    };
+	  };
+
+	  /**
+	   * Get the kth Matrix diagonal.
+	   *
+	   * @memberof DenseMatrix
+	   * @param {number | BigNumber} [k=0]     The kth diagonal where the vector will retrieved.
+	   *
+	   * @returns {Array}                      The array vector with the diagonal values.
+	   */
+	  DenseMatrix.prototype.diagonal = function (k) {
+	    // validate k if any
+	    if (k) {
+	      // convert BigNumber to a number
+	      if (k.isBigNumber === true) k = k.toNumber();
+	      // is must be an integer
+	      if (!isNumber(k) || !isInteger(k)) {
+	        throw new TypeError('The parameter k must be an integer number');
+	      }
+	    } else {
+	      // default value
+	      k = 0;
+	    }
+
+	    var kSuper = k > 0 ? k : 0;
+	    var kSub = k < 0 ? -k : 0;
+
+	    // rows & columns
+	    var rows = this._size[0];
+	    var columns = this._size[1];
+
+	    // number diagonal values
+	    var n = Math.min(rows - kSub, columns - kSuper);
+
+	    // x is a matrix get diagonal from matrix
+	    var data = [];
+
+	    // loop rows
+	    for (var i = 0; i < n; i++) {
+	      data[i] = this._data[i + kSub][i + kSuper];
+	    }
+
+	    // create DenseMatrix
+	    return new DenseMatrix({
+	      data: data,
+	      size: [n],
+	      datatype: this._datatype
+	    });
+	  };
+
+	  /**
+	   * Create a diagonal matrix.
+	   *
+	   * @memberof DenseMatrix
+	   * @param {Array} size                   The matrix size.
+	   * @param {number | Array} value          The values for the diagonal.
+	   * @param {number | BigNumber} [k=0]     The kth diagonal where the vector will be filled in.
+	   * @param {number} [defaultValue]        The default value for non-diagonal
+	   *
+	   * @returns {DenseMatrix}
+	   */
+	  DenseMatrix.diagonal = function (size, value, k, defaultValue, datatype) {
+	    if (!isArray(size)) throw new TypeError('Array expected, size parameter');
+	    if (size.length !== 2) throw new Error('Only two dimensions matrix are supported');
+
+	    // map size & validate
+	    size = size.map(function (s) {
+	      // check it is a big number
+	      if (s && s.isBigNumber === true) {
+	        // convert it
+	        s = s.toNumber();
+	      }
+	      // validate arguments
+	      if (!isNumber(s) || !isInteger(s) || s < 1) {
+	        throw new Error('Size values must be positive integers');
+	      }
+	      return s;
+	    });
+
+	    // validate k if any
+	    if (k) {
+	      // convert BigNumber to a number
+	      if (k && k.isBigNumber === true) k = k.toNumber();
+	      // is must be an integer
+	      if (!isNumber(k) || !isInteger(k)) {
+	        throw new TypeError('The parameter k must be an integer number');
+	      }
+	    } else {
+	      // default value
+	      k = 0;
+	    }
+
+	    if (defaultValue && isString(datatype)) {
+	      // convert defaultValue to the same datatype
+	      defaultValue = typed.convert(defaultValue, datatype);
+	    }
+
+	    var kSuper = k > 0 ? k : 0;
+	    var kSub = k < 0 ? -k : 0;
+
+	    // rows and columns
+	    var rows = size[0];
+	    var columns = size[1];
+
+	    // number of non-zero items
+	    var n = Math.min(rows - kSub, columns - kSuper);
+
+	    // value extraction function
+	    var _value;
+
+	    // check value
+	    if (isArray(value)) {
+	      // validate array
+	      if (value.length !== n) {
+	        // number of values in array must be n
+	        throw new Error('Invalid value array length');
+	      }
+	      // define function
+	      _value = function (i) {
+	        // return value @ i
+	        return value[i];
+	      };
+	    } else if (value && value.isMatrix === true) {
+	      // matrix size
+	      var ms = value.size();
+	      // validate matrix
+	      if (ms.length !== 1 || ms[0] !== n) {
+	        // number of values in array must be n
+	        throw new Error('Invalid matrix length');
+	      }
+	      // define function
+	      _value = function (i) {
+	        // return value @ i
+	        return value.get([i]);
+	      };
+	    } else {
+	      // define function
+	      _value = function () {
+	        // return value
+	        return value;
+	      };
+	    }
+
+	    // discover default value if needed
+	    if (!defaultValue) {
+	      // check first value in array
+	      defaultValue = _value(0) && _value(0).isBigNumber === true ? new type.BigNumber(0) : 0;
+	    }
+
+	    // empty array
+	    var data = [];
+
+	    // check we need to resize array
+	    if (size.length > 0) {
+	      // resize array
+	      data = array.resize(data, size, defaultValue);
+	      // fill diagonal
+	      for (var d = 0; d < n; d++) {
+	        data[d + kSub][d + kSuper] = _value(d);
+	      }
+	    }
+
+	    // create DenseMatrix
+	    return new DenseMatrix({
+	      data: data,
+	      size: [rows, columns]
+	    });
+	  };
+
+	  /**
+	   * Generate a matrix from a JSON object
+	   * @memberof DenseMatrix
+	   * @param {Object} json  An object structured like
+	   *                       `{"mathjs": "DenseMatrix", data: [], size: []}`,
+	   *                       where mathjs is optional
+	   * @returns {DenseMatrix}
+	   */
+	  DenseMatrix.fromJSON = function (json) {
+	    return new DenseMatrix(json);
+	  };
+
+	  /**
+	   * Swap rows i and j in Matrix.
+	   *
+	   * @memberof DenseMatrix
+	   * @param {number} i       Matrix row index 1
+	   * @param {number} j       Matrix row index 2
+	   *
+	   * @return {Matrix}        The matrix reference
+	   */
+	  DenseMatrix.prototype.swapRows = function (i, j) {
+	    // check index
+	    if (!isNumber(i) || !isInteger(i) || !isNumber(j) || !isInteger(j)) {
+	      throw new Error('Row index must be positive integers');
+	    }
+	    // check dimensions
+	    if (this._size.length !== 2) {
+	      throw new Error('Only two dimensional matrix is supported');
+	    }
+	    // validate index
+	    validateIndex(i, this._size[0]);
+	    validateIndex(j, this._size[0]);
+
+	    // swap rows
+	    DenseMatrix._swapRows(i, j, this._data);
+	    // return current instance
+	    return this;
+	  };
+
+	  /**
+	   * Swap rows i and j in Dense Matrix data structure.
+	   *
+	   * @param {number} i       Matrix row index 1
+	   * @param {number} j       Matrix row index 2
+	   */
+	  DenseMatrix._swapRows = function (i, j, data) {
+	    // swap values i <-> j
+	    var vi = data[i];
+	    data[i] = data[j];
+	    data[j] = vi;
+	  };
+
+	  /**
+	   * Preprocess data, which can be an Array or DenseMatrix with nested Arrays and
+	   * Matrices. Replaces all nested Matrices with Arrays
+	   * @memberof DenseMatrix
+	   * @param {Array} data
+	   * @return {Array} data
+	   */
+	  function preprocess(data) {
+	    for (var i = 0, ii = data.length; i < ii; i++) {
+	      var elem = data[i];
+	      if (isArray(elem)) {
+	        data[i] = preprocess(elem);
+	      } else if (elem && elem.isMatrix === true) {
+	        data[i] = preprocess(elem.valueOf());
+	      }
+	    }
+
+	    return data;
+	  }
+
+	  // register this type in the base class Matrix
+	  type.Matrix._storage.dense = DenseMatrix;
+	  type.Matrix._storage['default'] = DenseMatrix;
+
+	  // exports
+	  return DenseMatrix;
+	}
+
+	exports.name = 'DenseMatrix';
+	exports.path = 'type';
+	exports.factory = factory;
+	exports.lazy = false; // no lazy loading, as we alter type.Matrix._storage
+
+/***/ }),
+/* 316 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var util = __webpack_require__(261);
+	var DimensionError = __webpack_require__(86);
+
+	var array = util.array;
+	var object = util.object;
+	var string = util.string;
+	var number = util.number;
+
+	var isArray = Array.isArray;
+	var isNumber = number.isNumber;
+	var isInteger = number.isInteger;
+	var isString = string.isString;
+
+	var validateIndex = array.validateIndex;
+
+	function factory(type, config, load, typed) {
+	  var Matrix = load(__webpack_require__(314)); // force loading Matrix (do not use via type.Matrix)
+	  var equalScalar = load(__webpack_require__(92));
+
+	  /**
+	   * Sparse Matrix implementation. This type implements a Compressed Column Storage format
+	   * for sparse matrices.
+	   * @class SparseMatrix
+	   */
+	  function SparseMatrix(data, datatype) {
+	    if (!(this instanceof SparseMatrix)) throw new SyntaxError('Constructor must be called with the new operator');
+	    if (datatype && !isString(datatype)) throw new Error('Invalid datatype: ' + datatype);
+
+	    if (data && data.isMatrix === true) {
+	      // create from matrix
+	      _createFromMatrix(this, data, datatype);
+	    } else if (data && isArray(data.index) && isArray(data.ptr) && isArray(data.size)) {
+	      // initialize fields
+	      this._values = data.values;
+	      this._index = data.index;
+	      this._ptr = data.ptr;
+	      this._size = data.size;
+	      this._datatype = datatype || data.datatype;
+	    } else if (isArray(data)) {
+	      // create from array
+	      _createFromArray(this, data, datatype);
+	    } else if (data) {
+	      // unsupported type
+	      throw new TypeError('Unsupported type of data (' + util.types.type(data) + ')');
+	    } else {
+	      // nothing provided
+	      this._values = [];
+	      this._index = [];
+	      this._ptr = [0];
+	      this._size = [0, 0];
+	      this._datatype = datatype;
+	    }
+	  }
+
+	  var _createFromMatrix = function (matrix, source, datatype) {
+	    // check matrix type
+	    if (source.type === 'SparseMatrix') {
+	      // clone arrays
+	      matrix._values = source._values ? object.clone(source._values) : undefined;
+	      matrix._index = object.clone(source._index);
+	      matrix._ptr = object.clone(source._ptr);
+	      matrix._size = object.clone(source._size);
+	      matrix._datatype = datatype || source._datatype;
+	    } else {
+	      // build from matrix data
+	      _createFromArray(matrix, source.valueOf(), datatype || source._datatype);
+	    }
+	  };
+
+	  var _createFromArray = function (matrix, data, datatype) {
+	    // initialize fields
+	    matrix._values = [];
+	    matrix._index = [];
+	    matrix._ptr = [];
+	    matrix._datatype = datatype;
+	    // discover rows & columns, do not use math.size() to avoid looping array twice
+	    var rows = data.length;
+	    var columns = 0;
+
+	    // equal signature to use
+	    var eq = equalScalar;
+	    // zero value
+	    var zero = 0;
+
+	    if (isString(datatype)) {
+	      // find signature that matches (datatype, datatype)
+	      eq = typed.find(equalScalar, [datatype, datatype]) || equalScalar;
+	      // convert 0 to the same datatype
+	      zero = typed.convert(0, datatype);
+	    }
+
+	    // check we have rows (empty array)
+	    if (rows > 0) {
+	      // column index
+	      var j = 0;
+	      do {
+	        // store pointer to values index
+	        matrix._ptr.push(matrix._index.length);
+	        // loop rows
+	        for (var i = 0; i < rows; i++) {
+	          // current row
+	          var row = data[i];
+	          // check row is an array
+	          if (isArray(row)) {
+	            // update columns if needed (only on first column)
+	            if (j === 0 && columns < row.length) columns = row.length;
+	            // check row has column
+	            if (j < row.length) {
+	              // value
+	              var v = row[j];
+	              // check value != 0
+	              if (!eq(v, zero)) {
+	                // store value
+	                matrix._values.push(v);
+	                // index
+	                matrix._index.push(i);
+	              }
+	            }
+	          } else {
+	            // update columns if needed (only on first column)
+	            if (j === 0 && columns < 1) columns = 1;
+	            // check value != 0 (row is a scalar)
+	            if (!eq(row, zero)) {
+	              // store value
+	              matrix._values.push(row);
+	              // index
+	              matrix._index.push(i);
+	            }
+	          }
+	        }
+	        // increment index
+	        j++;
+	      } while (j < columns);
+	    }
+	    // store number of values in ptr
+	    matrix._ptr.push(matrix._index.length);
+	    // size
+	    matrix._size = [rows, columns];
+	  };
+
+	  SparseMatrix.prototype = new Matrix();
+
+	  /**
+	   * Attach type information
+	   */
+	  SparseMatrix.prototype.type = 'SparseMatrix';
+	  SparseMatrix.prototype.isSparseMatrix = true;
+
+	  /**
+	   * Get the storage format used by the matrix.
+	   *
+	   * Usage:
+	   *     var format = matrix.storage()                   // retrieve storage format
+	   *
+	   * @memberof SparseMatrix
+	   * @return {string}           The storage format.
+	   */
+	  SparseMatrix.prototype.storage = function () {
+	    return 'sparse';
+	  };
+
+	  /**
+	   * Get the datatype of the data stored in the matrix.
+	   *
+	   * Usage:
+	   *     var format = matrix.datatype()                   // retrieve matrix datatype
+	   *
+	   * @memberof SparseMatrix
+	   * @return {string}           The datatype.
+	   */
+	  SparseMatrix.prototype.datatype = function () {
+	    return this._datatype;
+	  };
+
+	  /**
+	   * Create a new SparseMatrix
+	   * @memberof SparseMatrix
+	   * @param {Array} data
+	   * @param {string} [datatype]
+	   */
+	  SparseMatrix.prototype.create = function (data, datatype) {
+	    return new SparseMatrix(data, datatype);
+	  };
+
+	  /**
+	   * Get the matrix density.
+	   *
+	   * Usage:
+	   *     var density = matrix.density()                   // retrieve matrix density
+	   *
+	   * @memberof SparseMatrix
+	   * @return {number}           The matrix density.
+	   */
+	  SparseMatrix.prototype.density = function () {
+	    // rows & columns
+	    var rows = this._size[0];
+	    var columns = this._size[1];
+	    // calculate density
+	    return rows !== 0 && columns !== 0 ? this._index.length / (rows * columns) : 0;
+	  };
+
+	  /**
+	   * Get a subset of the matrix, or replace a subset of the matrix.
+	   *
+	   * Usage:
+	   *     var subset = matrix.subset(index)               // retrieve subset
+	   *     var value = matrix.subset(index, replacement)   // replace subset
+	   *
+	   * @memberof SparseMatrix
+	   * @param {Index} index
+	   * @param {Array | Maytrix | *} [replacement]
+	   * @param {*} [defaultValue=0]      Default value, filled in on new entries when
+	   *                                  the matrix is resized. If not provided,
+	   *                                  new matrix elements will be filled with zeros.
+	   */
+	  SparseMatrix.prototype.subset = function (index, replacement, defaultValue) {
+	    // check it is a pattern matrix
+	    if (!this._values) throw new Error('Cannot invoke subset on a Pattern only matrix');
+
+	    // check arguments
+	    switch (arguments.length) {
+	      case 1:
+	        return _getsubset(this, index);
+
+	      // intentional fall through
+	      case 2:
+	      case 3:
+	        return _setsubset(this, index, replacement, defaultValue);
+
+	      default:
+	        throw new SyntaxError('Wrong number of arguments');
+	    }
+	  };
+
+	  var _getsubset = function (matrix, idx) {
+	    // check idx
+	    if (!idx || idx.isIndex !== true) {
+	      throw new TypeError('Invalid index');
+	    }
+
+	    var isScalar = idx.isScalar();
+	    if (isScalar) {
+	      // return a scalar
+	      return matrix.get(idx.min());
+	    }
+	    // validate dimensions
+	    var size = idx.size();
+	    if (size.length != matrix._size.length) {
+	      throw new DimensionError(size.length, matrix._size.length);
+	    }
+
+	    // vars
+	    var i, ii, k, kk;
+
+	    // validate if any of the ranges in the index is out of range
+	    var min = idx.min();
+	    var max = idx.max();
+	    for (i = 0, ii = matrix._size.length; i < ii; i++) {
+	      validateIndex(min[i], matrix._size[i]);
+	      validateIndex(max[i], matrix._size[i]);
+	    }
+
+	    // matrix arrays
+	    var mvalues = matrix._values;
+	    var mindex = matrix._index;
+	    var mptr = matrix._ptr;
+
+	    // rows & columns dimensions for result matrix
+	    var rows = idx.dimension(0);
+	    var columns = idx.dimension(1);
+
+	    // workspace & permutation vector
+	    var w = [];
+	    var pv = [];
+
+	    // loop rows in resulting matrix
+	    rows.forEach(function (i, r) {
+	      // update permutation vector
+	      pv[i] = r[0];
+	      // mark i in workspace
+	      w[i] = true;
+	    });
+
+	    // result matrix arrays
+	    var values = mvalues ? [] : undefined;
+	    var index = [];
+	    var ptr = [];
+
+	    // loop columns in result matrix
+	    columns.forEach(function (j) {
+	      // update ptr
+	      ptr.push(index.length);
+	      // loop values in column j
+	      for (k = mptr[j], kk = mptr[j + 1]; k < kk; k++) {
+	        // row
+	        i = mindex[k];
+	        // check row is in result matrix
+	        if (w[i] === true) {
+	          // push index
+	          index.push(pv[i]);
+	          // check we need to process values
+	          if (values) values.push(mvalues[k]);
+	        }
+	      }
+	    });
+	    // update ptr
+	    ptr.push(index.length);
+
+	    // return matrix
+	    return new SparseMatrix({
+	      values: values,
+	      index: index,
+	      ptr: ptr,
+	      size: size,
+	      datatype: matrix._datatype
+	    });
+	  };
+
+	  var _setsubset = function (matrix, index, submatrix, defaultValue) {
+	    // check index
+	    if (!index || index.isIndex !== true) {
+	      throw new TypeError('Invalid index');
+	    }
+
+	    // get index size and check whether the index contains a single value
+	    var iSize = index.size(),
+	        isScalar = index.isScalar();
+
+	    // calculate the size of the submatrix, and convert it into an Array if needed
+	    var sSize;
+	    if (submatrix && submatrix.isMatrix === true) {
+	      // submatrix size
+	      sSize = submatrix.size();
+	      // use array representation
+	      submatrix = submatrix.toArray();
+	    } else {
+	      // get submatrix size (array, scalar)
+	      sSize = array.size(submatrix);
+	    }
+
+	    // check index is a scalar
+	    if (isScalar) {
+	      // verify submatrix is a scalar
+	      if (sSize.length !== 0) {
+	        throw new TypeError('Scalar expected');
+	      }
+	      // set value
+	      matrix.set(index.min(), submatrix, defaultValue);
+	    } else {
+	      // validate dimensions, index size must be one or two dimensions
+	      if (iSize.length !== 1 && iSize.length !== 2) {
+	        throw new DimensionError(iSize.length, matrix._size.length, '<');
+	      }
+
+	      // check submatrix and index have the same dimensions
+	      if (sSize.length < iSize.length) {
+	        // calculate number of missing outer dimensions
+	        var i = 0;
+	        var outer = 0;
+	        while (iSize[i] === 1 && sSize[i] === 1) {
+	          i++;
+	        }
+	        while (iSize[i] === 1) {
+	          outer++;
+	          i++;
+	        }
+	        // unsqueeze both outer and inner dimensions
+	        submatrix = array.unsqueeze(submatrix, iSize.length, outer, sSize);
+	      }
+
+	      // check whether the size of the submatrix matches the index size
+	      if (!object.deepEqual(iSize, sSize)) {
+	        throw new DimensionError(iSize, sSize, '>');
+	      }
+
+	      // offsets
+	      var x0 = index.min()[0];
+	      var y0 = index.min()[1];
+
+	      // submatrix rows and columns
+	      var m = sSize[0];
+	      var n = sSize[1];
+
+	      // loop submatrix
+	      for (var x = 0; x < m; x++) {
+	        // loop columns
+	        for (var y = 0; y < n; y++) {
+	          // value at i, j
+	          var v = submatrix[x][y];
+	          // invoke set (zero value will remove entry from matrix)
+	          matrix.set([x + x0, y + y0], v, defaultValue);
+	        }
+	      }
+	    }
+	    return matrix;
+	  };
+
+	  /**
+	   * Get a single element from the matrix.
+	   * @memberof SparseMatrix
+	   * @param {number[]} index   Zero-based index
+	   * @return {*} value
+	   */
+	  SparseMatrix.prototype.get = function (index) {
+	    if (!isArray(index)) throw new TypeError('Array expected');
+	    if (index.length != this._size.length) throw new DimensionError(index.length, this._size.length);
+
+	    // check it is a pattern matrix
+	    if (!this._values) throw new Error('Cannot invoke get on a Pattern only matrix');
+
+	    // row and column
+	    var i = index[0];
+	    var j = index[1];
+
+	    // check i, j are valid
+	    validateIndex(i, this._size[0]);
+	    validateIndex(j, this._size[1]);
+
+	    // find value index
+	    var k = _getValueIndex(i, this._ptr[j], this._ptr[j + 1], this._index);
+	    // check k is prior to next column k and it is in the correct row
+	    if (k < this._ptr[j + 1] && this._index[k] === i) return this._values[k];
+
+	    return 0;
+	  };
+
+	  /**
+	   * Replace a single element in the matrix.
+	   * @memberof SparseMatrix
+	   * @param {number[]} index   Zero-based index
+	   * @param {*} value
+	   * @param {*} [defaultValue]        Default value, filled in on new entries when
+	   *                                  the matrix is resized. If not provided,
+	   *                                  new matrix elements will be set to zero.
+	   * @return {SparseMatrix} self
+	   */
+	  SparseMatrix.prototype.set = function (index, v, defaultValue) {
+	    if (!isArray(index)) throw new TypeError('Array expected');
+	    if (index.length != this._size.length) throw new DimensionError(index.length, this._size.length);
+
+	    // check it is a pattern matrix
+	    if (!this._values) throw new Error('Cannot invoke set on a Pattern only matrix');
+
+	    // row and column
+	    var i = index[0];
+	    var j = index[1];
+
+	    // rows & columns
+	    var rows = this._size[0];
+	    var columns = this._size[1];
+
+	    // equal signature to use
+	    var eq = equalScalar;
+	    // zero value
+	    var zero = 0;
+
+	    if (isString(this._datatype)) {
+	      // find signature that matches (datatype, datatype)
+	      eq = typed.find(equalScalar, [this._datatype, this._datatype]) || equalScalar;
+	      // convert 0 to the same datatype
+	      zero = typed.convert(0, this._datatype);
+	    }
+
+	    // check we need to resize matrix
+	    if (i > rows - 1 || j > columns - 1) {
+	      // resize matrix
+	      _resize(this, Math.max(i + 1, rows), Math.max(j + 1, columns), defaultValue);
+	      // update rows & columns
+	      rows = this._size[0];
+	      columns = this._size[1];
+	    }
+
+	    // check i, j are valid
+	    validateIndex(i, rows);
+	    validateIndex(j, columns);
+
+	    // find value index
+	    var k = _getValueIndex(i, this._ptr[j], this._ptr[j + 1], this._index);
+	    // check k is prior to next column k and it is in the correct row
+	    if (k < this._ptr[j + 1] && this._index[k] === i) {
+	      // check value != 0
+	      if (!eq(v, zero)) {
+	        // update value
+	        this._values[k] = v;
+	      } else {
+	        // remove value from matrix
+	        _remove(k, j, this._values, this._index, this._ptr);
+	      }
+	    } else {
+	      // insert value @ (i, j)
+	      _insert(k, i, j, v, this._values, this._index, this._ptr);
+	    }
+
+	    return this;
+	  };
+
+	  var _getValueIndex = function (i, top, bottom, index) {
+	    // check row is on the bottom side
+	    if (bottom - top === 0) return bottom;
+	    // loop rows [top, bottom[
+	    for (var r = top; r < bottom; r++) {
+	      // check we found value index
+	      if (index[r] === i) return r;
+	    }
+	    // we did not find row
+	    return top;
+	  };
+
+	  var _remove = function (k, j, values, index, ptr) {
+	    // remove value @ k
+	    values.splice(k, 1);
+	    index.splice(k, 1);
+	    // update pointers
+	    for (var x = j + 1; x < ptr.length; x++) ptr[x]--;
+	  };
+
+	  var _insert = function (k, i, j, v, values, index, ptr) {
+	    // insert value
+	    values.splice(k, 0, v);
+	    // update row for k
+	    index.splice(k, 0, i);
+	    // update column pointers
+	    for (var x = j + 1; x < ptr.length; x++) ptr[x]++;
+	  };
+
+	  /**
+	   * Resize the matrix to the given size. Returns a copy of the matrix when 
+	   * `copy=true`, otherwise return the matrix itself (resize in place).
+	   *
+	   * @memberof SparseMatrix
+	   * @param {number[]} size           The new size the matrix should have.
+	   * @param {*} [defaultValue=0]      Default value, filled in on new entries.
+	   *                                  If not provided, the matrix elements will
+	   *                                  be filled with zeros.
+	   * @param {boolean} [copy]          Return a resized copy of the matrix
+	   *
+	   * @return {Matrix}                 The resized matrix
+	   */
+	  SparseMatrix.prototype.resize = function (size, defaultValue, copy) {
+	    // validate arguments
+	    if (!isArray(size)) throw new TypeError('Array expected');
+	    if (size.length !== 2) throw new Error('Only two dimensions matrix are supported');
+
+	    // check sizes
+	    size.forEach(function (value) {
+	      if (!number.isNumber(value) || !number.isInteger(value) || value < 0) {
+	        throw new TypeError('Invalid size, must contain positive integers ' + '(size: ' + string.format(size) + ')');
+	      }
+	    });
+
+	    // matrix to resize
+	    var m = copy ? this.clone() : this;
+	    // resize matrix
+	    return _resize(m, size[0], size[1], defaultValue);
+	  };
+
+	  var _resize = function (matrix, rows, columns, defaultValue) {
+	    // value to insert at the time of growing matrix
+	    var value = defaultValue || 0;
+
+	    // equal signature to use
+	    var eq = equalScalar;
+	    // zero value
+	    var zero = 0;
+
+	    if (isString(matrix._datatype)) {
+	      // find signature that matches (datatype, datatype)
+	      eq = typed.find(equalScalar, [matrix._datatype, matrix._datatype]) || equalScalar;
+	      // convert 0 to the same datatype
+	      zero = typed.convert(0, matrix._datatype);
+	      // convert value to the same datatype
+	      value = typed.convert(value, matrix._datatype);
+	    }
+
+	    // should we insert the value?
+	    var ins = !eq(value, zero);
+
+	    // old columns and rows
+	    var r = matrix._size[0];
+	    var c = matrix._size[1];
+
+	    var i, j, k;
+
+	    // check we need to increase columns
+	    if (columns > c) {
+	      // loop new columns
+	      for (j = c; j < columns; j++) {
+	        // update matrix._ptr for current column
+	        matrix._ptr[j] = matrix._values.length;
+	        // check we need to insert matrix._values
+	        if (ins) {
+	          // loop rows
+	          for (i = 0; i < r; i++) {
+	            // add new matrix._values
+	            matrix._values.push(value);
+	            // update matrix._index
+	            matrix._index.push(i);
+	          }
+	        }
+	      }
+	      // store number of matrix._values in matrix._ptr
+	      matrix._ptr[columns] = matrix._values.length;
+	    } else if (columns < c) {
+	      // truncate matrix._ptr
+	      matrix._ptr.splice(columns + 1, c - columns);
+	      // truncate matrix._values and matrix._index
+	      matrix._values.splice(matrix._ptr[columns], matrix._values.length);
+	      matrix._index.splice(matrix._ptr[columns], matrix._index.length);
+	    }
+	    // update columns
+	    c = columns;
+
+	    // check we need to increase rows
+	    if (rows > r) {
+	      // check we have to insert values
+	      if (ins) {
+	        // inserts
+	        var n = 0;
+	        // loop columns
+	        for (j = 0; j < c; j++) {
+	          // update matrix._ptr for current column
+	          matrix._ptr[j] = matrix._ptr[j] + n;
+	          // where to insert matrix._values
+	          k = matrix._ptr[j + 1] + n;
+	          // pointer
+	          var p = 0;
+	          // loop new rows, initialize pointer
+	          for (i = r; i < rows; i++, p++) {
+	            // add value
+	            matrix._values.splice(k + p, 0, value);
+	            // update matrix._index
+	            matrix._index.splice(k + p, 0, i);
+	            // increment inserts
+	            n++;
+	          }
+	        }
+	        // store number of matrix._values in matrix._ptr
+	        matrix._ptr[c] = matrix._values.length;
+	      }
+	    } else if (rows < r) {
+	      // deletes
+	      var d = 0;
+	      // loop columns
+	      for (j = 0; j < c; j++) {
+	        // update matrix._ptr for current column
+	        matrix._ptr[j] = matrix._ptr[j] - d;
+	        // where matrix._values start for next column
+	        var k0 = matrix._ptr[j];
+	        var k1 = matrix._ptr[j + 1] - d;
+	        // loop matrix._index
+	        for (k = k0; k < k1; k++) {
+	          // row
+	          i = matrix._index[k];
+	          // check we need to delete value and matrix._index
+	          if (i > rows - 1) {
+	            // remove value
+	            matrix._values.splice(k, 1);
+	            // remove item from matrix._index
+	            matrix._index.splice(k, 1);
+	            // increase deletes
+	            d++;
+	          }
+	        }
+	      }
+	      // update matrix._ptr for current column
+	      matrix._ptr[j] = matrix._values.length;
+	    }
+	    // update matrix._size
+	    matrix._size[0] = rows;
+	    matrix._size[1] = columns;
+	    // return matrix
+	    return matrix;
+	  };
+
+	  /**
+	   * Reshape the matrix to the given size. Returns a copy of the matrix when
+	   * `copy=true`, otherwise return the matrix itself (reshape in place).
+	   *
+	   * NOTE: This might be better suited to copy by default, instead of modifying
+	   *       in place. For now, it operates in place to remain consistent with
+	   *       resize().
+	   *
+	   * @memberof SparseMatrix
+	   * @param {number[]} size           The new size the matrix should have.
+	   * @param {boolean} [copy]          Return a reshaped copy of the matrix
+	   *
+	   * @return {Matrix}                 The reshaped matrix
+	   */
+	  SparseMatrix.prototype.reshape = function (size, copy) {
+
+	    // validate arguments
+	    if (!isArray(size)) throw new TypeError('Array expected');
+	    if (size.length !== 2) throw new Error('Sparse matrices can only be reshaped in two dimensions');
+
+	    // check sizes
+	    size.forEach(function (value) {
+	      if (!number.isNumber(value) || !number.isInteger(value) || value < 0) {
+	        throw new TypeError('Invalid size, must contain positive integers ' + '(size: ' + string.format(size) + ')');
+	      }
+	    });
+
+	    // m * n must not change
+	    if (this._size[0] * this._size[1] !== size[0] * size[1]) {
+	      throw new Error('Reshaping sparse matrix will result in the wrong number of elements');
+	    }
+
+	    // matrix to reshape
+	    var m = copy ? this.clone() : this;
+
+	    // return unchanged if the same shape
+	    if (this._size[0] === size[0] && this._size[1] === size[1]) {
+	      return m;
+	    }
+
+	    // Convert to COO format (generate a column index)
+	    var colIndex = [];
+	    for (var i = 0; i < m._ptr.length; i++) {
+	      for (var j = 0; j < m._ptr[i + 1] - m._ptr[i]; j++) {
+	        colIndex.push(i);
+	      }
+	    }
+
+	    // Clone the values array
+	    var values = m._values.slice();
+
+	    // Clone the row index array
+	    var rowIndex = m._index.slice();
+
+	    // Transform the (row, column) indices
+	    for (var i = 0; i < m._index.length; i++) {
+	      var r1 = rowIndex[i];
+	      var c1 = colIndex[i];
+	      var flat = r1 * m._size[1] + c1;
+	      colIndex[i] = flat % size[1];
+	      rowIndex[i] = Math.floor(flat / size[1]);
+	    }
+
+	    // Now reshaping is supposed to preserve the row-major order, BUT these sparse matrices are stored
+	    // in column-major order, so we have to reorder the value array now. One option is to use a multisort,
+	    // sorting several arrays based on some other array.
+
+	    // OR, we could easily just:
+
+	    // 1. Remove all values from the matrix
+	    m._values.length = 0;
+	    m._index.length = 0;
+	    m._ptr.length = size[1] + 1;
+	    m._size = size.slice();
+	    for (var i = 0; i < m._ptr.length; i++) {
+	      m._ptr[i] = 0;
+	    }
+
+	    // 2. Re-insert all elements in the proper order (simplified code from SparseMatrix.prototype.set)
+	    // This step is probably the most time-consuming
+	    for (var h = 0; h < values.length; h++) {
+	      var i = rowIndex[h];
+	      var j = colIndex[h];
+	      var v = values[h];
+	      var k = _getValueIndex(i, m._ptr[j], m._ptr[j + 1], m._index);
+	      _insert(k, i, j, v, m._values, m._index, m._ptr);
+	    }
+
+	    // The value indices are inserted out of order, but apparently that's... still OK?
+
+	    return m;
+	  };
+
+	  /**
+	   * Create a clone of the matrix
+	   * @memberof SparseMatrix
+	   * @return {SparseMatrix} clone
+	   */
+	  SparseMatrix.prototype.clone = function () {
+	    var m = new SparseMatrix({
+	      values: this._values ? object.clone(this._values) : undefined,
+	      index: object.clone(this._index),
+	      ptr: object.clone(this._ptr),
+	      size: object.clone(this._size),
+	      datatype: this._datatype
+	    });
+	    return m;
+	  };
+
+	  /**
+	   * Retrieve the size of the matrix.
+	   * @memberof SparseMatrix
+	   * @returns {number[]} size
+	   */
+	  SparseMatrix.prototype.size = function () {
+	    return this._size.slice(0); // copy the Array
+	  };
+
+	  /**
+	   * Create a new matrix with the results of the callback function executed on
+	   * each entry of the matrix.
+	   * @memberof SparseMatrix
+	   * @param {Function} callback   The callback function is invoked with three
+	   *                              parameters: the value of the element, the index
+	   *                              of the element, and the Matrix being traversed.
+	   * @param {boolean} [skipZeros] Invoke callback function for non-zero values only.
+	   *
+	   * @return {SparseMatrix} matrix
+	   */
+	  SparseMatrix.prototype.map = function (callback, skipZeros) {
+	    // check it is a pattern matrix
+	    if (!this._values) throw new Error('Cannot invoke map on a Pattern only matrix');
+	    // matrix instance
+	    var me = this;
+	    // rows and columns
+	    var rows = this._size[0];
+	    var columns = this._size[1];
+	    // invoke callback
+	    var invoke = function (v, i, j) {
+	      // invoke callback
+	      return callback(v, [i, j], me);
+	    };
+	    // invoke _map
+	    return _map(this, 0, rows - 1, 0, columns - 1, invoke, skipZeros);
+	  };
+
+	  /**
+	   * Create a new matrix with the results of the callback function executed on the interval
+	   * [minRow..maxRow, minColumn..maxColumn].
+	   */
+	  var _map = function (matrix, minRow, maxRow, minColumn, maxColumn, callback, skipZeros) {
+	    // result arrays
+	    var values = [];
+	    var index = [];
+	    var ptr = [];
+
+	    // equal signature to use
+	    var eq = equalScalar;
+	    // zero value
+	    var zero = 0;
+
+	    if (isString(matrix._datatype)) {
+	      // find signature that matches (datatype, datatype)
+	      eq = typed.find(equalScalar, [matrix._datatype, matrix._datatype]) || equalScalar;
+	      // convert 0 to the same datatype
+	      zero = typed.convert(0, matrix._datatype);
+	    }
+
+	    // invoke callback
+	    var invoke = function (v, x, y) {
+	      // invoke callback
+	      v = callback(v, x, y);
+	      // check value != 0
+	      if (!eq(v, zero)) {
+	        // store value
+	        values.push(v);
+	        // index
+	        index.push(x);
+	      }
+	    };
+	    // loop columns
+	    for (var j = minColumn; j <= maxColumn; j++) {
+	      // store pointer to values index
+	      ptr.push(values.length);
+	      // k0 <= k < k1 where k0 = _ptr[j] && k1 = _ptr[j+1]
+	      var k0 = matrix._ptr[j];
+	      var k1 = matrix._ptr[j + 1];
+	      // row pointer
+	      var p = minRow;
+	      // loop k within [k0, k1[
+	      for (var k = k0; k < k1; k++) {
+	        // row index
+	        var i = matrix._index[k];
+	        // check i is in range
+	        if (i >= minRow && i <= maxRow) {
+	          // zero values
+	          if (!skipZeros) {
+	            for (var x = p; x < i; x++) invoke(0, x - minRow, j - minColumn);
+	          }
+	          // value @ k
+	          invoke(matrix._values[k], i - minRow, j - minColumn);
+	        }
+	        // update pointer
+	        p = i + 1;
+	      }
+	      // zero values
+	      if (!skipZeros) {
+	        for (var y = p; y <= maxRow; y++) invoke(0, y - minRow, j - minColumn);
+	      }
+	    }
+	    // store number of values in ptr
+	    ptr.push(values.length);
+	    // return sparse matrix
+	    return new SparseMatrix({
+	      values: values,
+	      index: index,
+	      ptr: ptr,
+	      size: [maxRow - minRow + 1, maxColumn - minColumn + 1]
+	    });
+	  };
+
+	  /**
+	   * Execute a callback function on each entry of the matrix.
+	   * @memberof SparseMatrix
+	   * @param {Function} callback   The callback function is invoked with three
+	   *                              parameters: the value of the element, the index
+	   *                              of the element, and the Matrix being traversed.
+	   * @param {boolean} [skipZeros] Invoke callback function for non-zero values only.
+	   */
+	  SparseMatrix.prototype.forEach = function (callback, skipZeros) {
+	    // check it is a pattern matrix
+	    if (!this._values) throw new Error('Cannot invoke forEach on a Pattern only matrix');
+	    // matrix instance
+	    var me = this;
+	    // rows and columns
+	    var rows = this._size[0];
+	    var columns = this._size[1];
+	    // loop columns
+	    for (var j = 0; j < columns; j++) {
+	      // k0 <= k < k1 where k0 = _ptr[j] && k1 = _ptr[j+1]
+	      var k0 = this._ptr[j];
+	      var k1 = this._ptr[j + 1];
+	      // column pointer
+	      var p = 0;
+	      // loop k within [k0, k1[
+	      for (var k = k0; k < k1; k++) {
+	        // row index
+	        var i = this._index[k];
+	        // check we need to process zeros
+	        if (!skipZeros) {
+	          // zero values
+	          for (var x = p; x < i; x++) callback(0, [x, j], me);
+	        }
+	        // value @ k
+	        callback(this._values[k], [i, j], me);
+	        // update pointer
+	        p = i + 1;
+	      }
+	      // check we need to process zeros
+	      if (!skipZeros) {
+	        // zero values
+	        for (var y = p; y < rows; y++) callback(0, [y, j], me);
+	      }
+	    }
+	  };
+
+	  /**
+	   * Create an Array with a copy of the data of the SparseMatrix
+	   * @memberof SparseMatrix
+	   * @returns {Array} array
+	   */
+	  SparseMatrix.prototype.toArray = function () {
+	    return _toArray(this._values, this._index, this._ptr, this._size, true);
+	  };
+
+	  /**
+	   * Get the primitive value of the SparseMatrix: a two dimensions array
+	   * @memberof SparseMatrix
+	   * @returns {Array} array
+	   */
+	  SparseMatrix.prototype.valueOf = function () {
+	    return _toArray(this._values, this._index, this._ptr, this._size, false);
+	  };
+
+	  var _toArray = function (values, index, ptr, size, copy) {
+	    // rows and columns
+	    var rows = size[0];
+	    var columns = size[1];
+	    // result
+	    var a = [];
+	    // vars
+	    var i, j;
+	    // initialize array
+	    for (i = 0; i < rows; i++) {
+	      a[i] = [];
+	      for (j = 0; j < columns; j++) a[i][j] = 0;
+	    }
+
+	    // loop columns
+	    for (j = 0; j < columns; j++) {
+	      // k0 <= k < k1 where k0 = _ptr[j] && k1 = _ptr[j+1]
+	      var k0 = ptr[j];
+	      var k1 = ptr[j + 1];
+	      // loop k within [k0, k1[
+	      for (var k = k0; k < k1; k++) {
+	        // row index
+	        i = index[k];
+	        // set value (use one for pattern matrix)
+	        a[i][j] = values ? copy ? object.clone(values[k]) : values[k] : 1;
+	      }
+	    }
+	    return a;
+	  };
+
+	  /**
+	   * Get a string representation of the matrix, with optional formatting options.
+	   * @memberof SparseMatrix
+	   * @param {Object | number | Function} [options]  Formatting options. See
+	   *                                                lib/utils/number:format for a
+	   *                                                description of the available
+	   *                                                options.
+	   * @returns {string} str
+	   */
+	  SparseMatrix.prototype.format = function (options) {
+	    // rows and columns
+	    var rows = this._size[0];
+	    var columns = this._size[1];
+	    // density
+	    var density = this.density();
+	    // rows & columns
+	    var str = 'Sparse Matrix [' + string.format(rows, options) + ' x ' + string.format(columns, options) + '] density: ' + string.format(density, options) + '\n';
+	    // loop columns
+	    for (var j = 0; j < columns; j++) {
+	      // k0 <= k < k1 where k0 = _ptr[j] && k1 = _ptr[j+1]
+	      var k0 = this._ptr[j];
+	      var k1 = this._ptr[j + 1];
+	      // loop k within [k0, k1[
+	      for (var k = k0; k < k1; k++) {
+	        // row index
+	        var i = this._index[k];
+	        // append value
+	        str += '\n    (' + string.format(i, options) + ', ' + string.format(j, options) + ') ==> ' + (this._values ? string.format(this._values[k], options) : 'X');
+	      }
+	    }
+	    return str;
+	  };
+
+	  /**
+	   * Get a string representation of the matrix
+	   * @memberof SparseMatrix
+	   * @returns {string} str
+	   */
+	  SparseMatrix.prototype.toString = function () {
+	    return string.format(this.toArray());
+	  };
+
+	  /**
+	   * Get a JSON representation of the matrix
+	   * @memberof SparseMatrix
+	   * @returns {Object}
+	   */
+	  SparseMatrix.prototype.toJSON = function () {
+	    return {
+	      mathjs: 'SparseMatrix',
+	      values: this._values,
+	      index: this._index,
+	      ptr: this._ptr,
+	      size: this._size,
+	      datatype: this._datatype
+	    };
+	  };
+
+	  /**
+	   * Get the kth Matrix diagonal.
+	   *
+	   * @memberof SparseMatrix
+	   * @param {number | BigNumber} [k=0]     The kth diagonal where the vector will retrieved.
+	   *
+	   * @returns {Matrix}                     The matrix vector with the diagonal values.
+	   */
+	  SparseMatrix.prototype.diagonal = function (k) {
+	    // validate k if any
+	    if (k) {
+	      // convert BigNumber to a number
+	      if (k.isBigNumber === true) k = k.toNumber();
+	      // is must be an integer
+	      if (!isNumber(k) || !isInteger(k)) {
+	        throw new TypeError('The parameter k must be an integer number');
+	      }
+	    } else {
+	      // default value
+	      k = 0;
+	    }
+
+	    var kSuper = k > 0 ? k : 0;
+	    var kSub = k < 0 ? -k : 0;
+
+	    // rows & columns
+	    var rows = this._size[0];
+	    var columns = this._size[1];
+
+	    // number diagonal values
+	    var n = Math.min(rows - kSub, columns - kSuper);
+
+	    // diagonal arrays
+	    var values = [];
+	    var index = [];
+	    var ptr = [];
+	    // initial ptr value
+	    ptr[0] = 0;
+	    // loop columns
+	    for (var j = kSuper; j < columns && values.length < n; j++) {
+	      // k0 <= k < k1 where k0 = _ptr[j] && k1 = _ptr[j+1]
+	      var k0 = this._ptr[j];
+	      var k1 = this._ptr[j + 1];
+	      // loop x within [k0, k1[
+	      for (var x = k0; x < k1; x++) {
+	        // row index
+	        var i = this._index[x];
+	        // check row
+	        if (i === j - kSuper + kSub) {
+	          // value on this column
+	          values.push(this._values[x]);
+	          // store row
+	          index[values.length - 1] = i - kSub;
+	          // exit loop
+	          break;
+	        }
+	      }
+	    }
+	    // close ptr
+	    ptr.push(values.length);
+	    // return matrix
+	    return new SparseMatrix({
+	      values: values,
+	      index: index,
+	      ptr: ptr,
+	      size: [n, 1]
+	    });
+	  };
+
+	  /**
+	   * Generate a matrix from a JSON object
+	   * @memberof SparseMatrix
+	   * @param {Object} json  An object structured like
+	   *                       `{"mathjs": "SparseMatrix", "values": [], "index": [], "ptr": [], "size": []}`,
+	   *                       where mathjs is optional
+	   * @returns {SparseMatrix}
+	   */
+	  SparseMatrix.fromJSON = function (json) {
+	    return new SparseMatrix(json);
+	  };
+
+	  /**
+	   * Create a diagonal matrix.
+	   *
+	   * @memberof SparseMatrix
+	   * @param {Array} size                       The matrix size.
+	   * @param {number | Array | Matrix } value   The values for the diagonal.
+	   * @param {number | BigNumber} [k=0]         The kth diagonal where the vector will be filled in.
+	   * @param {string} [datatype]                The Matrix datatype, values must be of this datatype.
+	   *
+	   * @returns {SparseMatrix}
+	   */
+	  SparseMatrix.diagonal = function (size, value, k, defaultValue, datatype) {
+	    if (!isArray(size)) throw new TypeError('Array expected, size parameter');
+	    if (size.length !== 2) throw new Error('Only two dimensions matrix are supported');
+
+	    // map size & validate
+	    size = size.map(function (s) {
+	      // check it is a big number
+	      if (s && s.isBigNumber === true) {
+	        // convert it
+	        s = s.toNumber();
+	      }
+	      // validate arguments
+	      if (!isNumber(s) || !isInteger(s) || s < 1) {
+	        throw new Error('Size values must be positive integers');
+	      }
+	      return s;
+	    });
+
+	    // validate k if any
+	    if (k) {
+	      // convert BigNumber to a number
+	      if (k.isBigNumber === true) k = k.toNumber();
+	      // is must be an integer
+	      if (!isNumber(k) || !isInteger(k)) {
+	        throw new TypeError('The parameter k must be an integer number');
+	      }
+	    } else {
+	      // default value
+	      k = 0;
+	    }
+
+	    // equal signature to use
+	    var eq = equalScalar;
+	    // zero value
+	    var zero = 0;
+
+	    if (isString(datatype)) {
+	      // find signature that matches (datatype, datatype)
+	      eq = typed.find(equalScalar, [datatype, datatype]) || equalScalar;
+	      // convert 0 to the same datatype
+	      zero = typed.convert(0, datatype);
+	    }
+
+	    var kSuper = k > 0 ? k : 0;
+	    var kSub = k < 0 ? -k : 0;
+
+	    // rows and columns
+	    var rows = size[0];
+	    var columns = size[1];
+
+	    // number of non-zero items
+	    var n = Math.min(rows - kSub, columns - kSuper);
+
+	    // value extraction function
+	    var _value;
+
+	    // check value
+	    if (isArray(value)) {
+	      // validate array
+	      if (value.length !== n) {
+	        // number of values in array must be n
+	        throw new Error('Invalid value array length');
+	      }
+	      // define function
+	      _value = function (i) {
+	        // return value @ i
+	        return value[i];
+	      };
+	    } else if (value && value.isMatrix === true) {
+	      // matrix size
+	      var ms = value.size();
+	      // validate matrix
+	      if (ms.length !== 1 || ms[0] !== n) {
+	        // number of values in array must be n
+	        throw new Error('Invalid matrix length');
+	      }
+	      // define function
+	      _value = function (i) {
+	        // return value @ i
+	        return value.get([i]);
+	      };
+	    } else {
+	      // define function
+	      _value = function () {
+	        // return value
+	        return value;
+	      };
+	    }
+
+	    // create arrays
+	    var values = [];
+	    var index = [];
+	    var ptr = [];
+
+	    // loop items
+	    for (var j = 0; j < columns; j++) {
+	      // number of rows with value
+	      ptr.push(values.length);
+	      // diagonal index
+	      var i = j - kSuper;
+	      // check we need to set diagonal value
+	      if (i >= 0 && i < n) {
+	        // get value @ i
+	        var v = _value(i);
+	        // check for zero
+	        if (!eq(v, zero)) {
+	          // column
+	          index.push(i + kSub);
+	          // add value
+	          values.push(v);
+	        }
+	      }
+	    }
+	    // last value should be number of values
+	    ptr.push(values.length);
+	    // create SparseMatrix
+	    return new SparseMatrix({
+	      values: values,
+	      index: index,
+	      ptr: ptr,
+	      size: [rows, columns]
+	    });
+	  };
+
+	  /**
+	   * Swap rows i and j in Matrix.
+	   *
+	   * @memberof SparseMatrix
+	   * @param {number} i       Matrix row index 1
+	   * @param {number} j       Matrix row index 2
+	   *
+	   * @return {Matrix}        The matrix reference
+	   */
+	  SparseMatrix.prototype.swapRows = function (i, j) {
+	    // check index
+	    if (!isNumber(i) || !isInteger(i) || !isNumber(j) || !isInteger(j)) {
+	      throw new Error('Row index must be positive integers');
+	    }
+	    // check dimensions
+	    if (this._size.length !== 2) {
+	      throw new Error('Only two dimensional matrix is supported');
+	    }
+	    // validate index
+	    validateIndex(i, this._size[0]);
+	    validateIndex(j, this._size[0]);
+
+	    // swap rows
+	    SparseMatrix._swapRows(i, j, this._size[1], this._values, this._index, this._ptr);
+	    // return current instance
+	    return this;
+	  };
+
+	  /**
+	   * Loop rows with data in column j.
+	   *
+	   * @param {number} j            Column
+	   * @param {Array} values        Matrix values
+	   * @param {Array} index         Matrix row indeces
+	   * @param {Array} ptr           Matrix column pointers
+	   * @param {Function} callback   Callback function invoked for every row in column j
+	   */
+	  SparseMatrix._forEachRow = function (j, values, index, ptr, callback) {
+	    // indeces for column j
+	    var k0 = ptr[j];
+	    var k1 = ptr[j + 1];
+	    // loop
+	    for (var k = k0; k < k1; k++) {
+	      // invoke callback
+	      callback(index[k], values[k]);
+	    }
+	  };
+
+	  /**
+	   * Swap rows x and y in Sparse Matrix data structures.
+	   *
+	   * @param {number} x         Matrix row index 1
+	   * @param {number} y         Matrix row index 2
+	   * @param {number} columns   Number of columns in matrix
+	   * @param {Array} values     Matrix values
+	   * @param {Array} index      Matrix row indeces
+	   * @param {Array} ptr        Matrix column pointers
+	   */
+	  SparseMatrix._swapRows = function (x, y, columns, values, index, ptr) {
+	    // loop columns
+	    for (var j = 0; j < columns; j++) {
+	      // k0 <= k < k1 where k0 = _ptr[j] && k1 = _ptr[j+1]
+	      var k0 = ptr[j];
+	      var k1 = ptr[j + 1];
+	      // find value index @ x
+	      var kx = _getValueIndex(x, k0, k1, index);
+	      // find value index @ x
+	      var ky = _getValueIndex(y, k0, k1, index);
+	      // check both rows exist in matrix
+	      if (kx < k1 && ky < k1 && index[kx] === x && index[ky] === y) {
+	        // swap values (check for pattern matrix)
+	        if (values) {
+	          var v = values[kx];
+	          values[kx] = values[ky];
+	          values[ky] = v;
+	        }
+	        // next column
+	        continue;
+	      }
+	      // check x row exist & no y row
+	      if (kx < k1 && index[kx] === x && (ky >= k1 || index[ky] !== y)) {
+	        // value @ x (check for pattern matrix)
+	        var vx = values ? values[kx] : undefined;
+	        // insert value @ y
+	        index.splice(ky, 0, y);
+	        if (values) values.splice(ky, 0, vx);
+	        // remove value @ x (adjust array index if needed)
+	        index.splice(ky <= kx ? kx + 1 : kx, 1);
+	        if (values) values.splice(ky <= kx ? kx + 1 : kx, 1);
+	        // next column
+	        continue;
+	      }
+	      // check y row exist & no x row
+	      if (ky < k1 && index[ky] === y && (kx >= k1 || index[kx] !== x)) {
+	        // value @ y (check for pattern matrix)
+	        var vy = values ? values[ky] : undefined;
+	        // insert value @ x
+	        index.splice(kx, 0, x);
+	        if (values) values.splice(kx, 0, vy);
+	        // remove value @ y (adjust array index if needed)
+	        index.splice(kx <= ky ? ky + 1 : ky, 1);
+	        if (values) values.splice(kx <= ky ? ky + 1 : ky, 1);
+	      }
+	    }
+	  };
+
+	  // register this type in the base class Matrix
+	  type.Matrix._storage.sparse = SparseMatrix;
+
+	  return SparseMatrix;
+	}
+
+	exports.name = 'SparseMatrix';
+	exports.path = 'type';
+	exports.factory = factory;
+	exports.lazy = false; // no lazy loading, as we alter type.Matrix._storage
+
+/***/ }),
+/* 317 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	function factory(type, config, load) {
+
+	  var add = load(__webpack_require__(265));
+	  var equalScalar = load(__webpack_require__(92));
+
+	  /**
+	   * An ordered Sparse Accumulator is a representation for a sparse vector that includes a dense array 
+	   * of the vector elements and an ordered list of non-zero elements.
+	   */
+	  function Spa() {
+	    if (!(this instanceof Spa)) throw new SyntaxError('Constructor must be called with the new operator');
+
+	    // allocate vector, TODO use typed arrays
+	    this._values = [];
+	    this._heap = new type.FibonacciHeap();
+	  }
+
+	  /**
+	   * Attach type information
+	   */
+	  Spa.prototype.type = 'Spa';
+	  Spa.prototype.isSpa = true;
+
+	  /**
+	   * Set the value for index i.
+	   *
+	   * @param {number} i                       The index
+	   * @param {number | BigNumber | Complex}   The value at index i
+	   */
+	  Spa.prototype.set = function (i, v) {
+	    // check we have a value @ i
+	    if (!this._values[i]) {
+	      // insert in heap
+	      var node = this._heap.insert(i, v);
+	      // set the value @ i
+	      this._values[i] = node;
+	    } else {
+	      // update the value @ i
+	      this._values[i].value = v;
+	    }
+	  };
+
+	  Spa.prototype.get = function (i) {
+	    var node = this._values[i];
+	    if (node) return node.value;
+	    return 0;
+	  };
+
+	  Spa.prototype.accumulate = function (i, v) {
+	    // node @ i
+	    var node = this._values[i];
+	    if (!node) {
+	      // insert in heap
+	      node = this._heap.insert(i, v);
+	      // initialize value
+	      this._values[i] = node;
+	    } else {
+	      // accumulate value
+	      node.value = add(node.value, v);
+	    }
+	  };
+
+	  Spa.prototype.forEach = function (from, to, callback) {
+	    // references
+	    var heap = this._heap;
+	    var values = this._values;
+	    // nodes
+	    var nodes = [];
+	    // node with minimum key, save it
+	    var node = heap.extractMinimum();
+	    if (node) nodes.push(node);
+	    // extract nodes from heap (ordered)
+	    while (node && node.key <= to) {
+	      // check it is in range
+	      if (node.key >= from) {
+	        // check value is not zero
+	        if (!equalScalar(node.value, 0)) {
+	          // invoke callback
+	          callback(node.key, node.value, this);
+	        }
+	      }
+	      // extract next node, save it
+	      node = heap.extractMinimum();
+	      if (node) nodes.push(node);
+	    }
+	    // reinsert all nodes in heap
+	    for (var i = 0; i < nodes.length; i++) {
+	      // current node
+	      var n = nodes[i];
+	      // insert node in heap
+	      node = heap.insert(n.key, n.value);
+	      // update values
+	      values[node.key] = node;
+	    }
+	  };
+
+	  Spa.prototype.swap = function (i, j) {
+	    // node @ i and j
+	    var nodei = this._values[i];
+	    var nodej = this._values[j];
+	    // check we need to insert indeces
+	    if (!nodei && nodej) {
+	      // insert in heap
+	      nodei = this._heap.insert(i, nodej.value);
+	      // remove from heap
+	      this._heap.remove(nodej);
+	      // set values
+	      this._values[i] = nodei;
+	      this._values[j] = undefined;
+	    } else if (nodei && !nodej) {
+	      // insert in heap
+	      nodej = this._heap.insert(j, nodei.value);
+	      // remove from heap
+	      this._heap.remove(nodei);
+	      // set values
+	      this._values[j] = nodej;
+	      this._values[i] = undefined;
+	    } else if (nodei && nodej) {
+	      // swap values
+	      var v = nodei.value;
+	      nodei.value = nodej.value;
+	      nodej.value = v;
+	    }
+	  };
+
+	  return Spa;
+	}
+
+	exports.name = 'Spa';
+	exports.path = 'type';
+	exports.factory = factory;
+
+/***/ }),
+/* 318 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	function factory(type, config, load, typed) {
+
+	  var smaller = load(__webpack_require__(319));
+	  var larger = load(__webpack_require__(321));
+
+	  var oneOverLogPhi = 1.0 / Math.log((1.0 + Math.sqrt(5.0)) / 2.0);
+
+	  /**
+	   * Fibonacci Heap implementation, used interally for Matrix math.
+	   * @class FibonacciHeap
+	   * @constructor FibonacciHeap
+	   */
+	  function FibonacciHeap() {
+	    if (!(this instanceof FibonacciHeap)) throw new SyntaxError('Constructor must be called with the new operator');
+
+	    // initialize fields
+	    this._minimum = null;
+	    this._size = 0;
+	  }
+
+	  /**
+	   * Attach type information
+	   */
+	  FibonacciHeap.prototype.type = 'FibonacciHeap';
+	  FibonacciHeap.prototype.isFibonacciHeap = true;
+
+	  /**
+	   * Inserts a new data element into the heap. No heap consolidation is
+	   * performed at this time, the new node is simply inserted into the root
+	   * list of this heap. Running time: O(1) actual.
+	   * @memberof FibonacciHeap
+	   */
+	  FibonacciHeap.prototype.insert = function (key, value) {
+	    // create node
+	    var node = {
+	      key: key,
+	      value: value,
+	      degree: 0
+	    };
+	    // check we have a node in the minimum
+	    if (this._minimum) {
+	      // minimum node
+	      var minimum = this._minimum;
+	      // update left & right of node
+	      node.left = minimum;
+	      node.right = minimum.right;
+	      minimum.right = node;
+	      node.right.left = node;
+	      // update minimum node in heap if needed
+	      if (smaller(key, minimum.key)) {
+	        // node has a smaller key, use it as minimum
+	        this._minimum = node;
+	      }
+	    } else {
+	      // set left & right
+	      node.left = node;
+	      node.right = node;
+	      // this is the first node
+	      this._minimum = node;
+	    }
+	    // increment number of nodes in heap
+	    this._size++;
+	    // return node
+	    return node;
+	  };
+
+	  /**
+	   * Returns the number of nodes in heap. Running time: O(1) actual.
+	   * @memberof FibonacciHeap
+	   */
+	  FibonacciHeap.prototype.size = function () {
+	    return this._size;
+	  };
+
+	  /**
+	   * Removes all elements from this heap.
+	   * @memberof FibonacciHeap
+	   */
+	  FibonacciHeap.prototype.clear = function () {
+	    this._minimum = null;
+	    this._size = 0;
+	  };
+
+	  /**
+	   * Returns true if the heap is empty, otherwise false.
+	   * @memberof FibonacciHeap
+	   */
+	  FibonacciHeap.prototype.isEmpty = function () {
+	    return !!this._minimum;
+	  };
+
+	  /**
+	   * Extracts the node with minimum key from heap. Amortized running 
+	   * time: O(log n).
+	   * @memberof FibonacciHeap
+	   */
+	  FibonacciHeap.prototype.extractMinimum = function () {
+	    // node to remove
+	    var node = this._minimum;
+	    // check we have a minimum
+	    if (node === null) return node;
+	    // current minimum
+	    var minimum = this._minimum;
+	    // get number of children
+	    var numberOfChildren = node.degree;
+	    // pointer to the first child
+	    var x = node.child;
+	    // for each child of node do...
+	    while (numberOfChildren > 0) {
+	      // store node in right side
+	      var tempRight = x.right;
+	      // remove x from child list
+	      x.left.right = x.right;
+	      x.right.left = x.left;
+	      // add x to root list of heap
+	      x.left = minimum;
+	      x.right = minimum.right;
+	      minimum.right = x;
+	      x.right.left = x;
+	      // set Parent[x] to null
+	      x.parent = null;
+	      x = tempRight;
+	      numberOfChildren--;
+	    }
+	    // remove node from root list of heap
+	    node.left.right = node.right;
+	    node.right.left = node.left;
+	    // update minimum
+	    if (node == node.right) {
+	      // empty
+	      minimum = null;
+	    } else {
+	      // update minimum
+	      minimum = node.right;
+	      // we need to update the pointer to the root with minimum key
+	      minimum = _findMinimumNode(minimum, this._size);
+	    }
+	    // decrement size of heap
+	    this._size--;
+	    // update minimum
+	    this._minimum = minimum;
+	    // return node
+	    return node;
+	  };
+
+	  /**
+	   * Removes a node from the heap given the reference to the node. The trees
+	   * in the heap will be consolidated, if necessary. This operation may fail
+	   * to remove the correct element if there are nodes with key value -Infinity.
+	   * Running time: O(log n) amortized.
+	   * @memberof FibonacciHeap
+	   */
+	  FibonacciHeap.prototype.remove = function (node) {
+	    // decrease key value
+	    this._minimum = _decreaseKey(this._minimum, node, -1);
+	    // remove the smallest
+	    this.extractMinimum();
+	  };
+
+	  /**
+	   * Decreases the key value for a heap node, given the new value to take on.
+	   * The structure of the heap may be changed and will not be consolidated. 
+	   * Running time: O(1) amortized.
+	   * @memberof FibonacciHeap
+	   */
+	  var _decreaseKey = function (minimum, node, key) {
+	    // set node key
+	    node.key = key;
+	    // get parent node
+	    var parent = node.parent;
+	    if (parent && smaller(node.key, parent.key)) {
+	      // remove node from parent
+	      _cut(minimum, node, parent);
+	      // remove all nodes from parent to the root parent
+	      _cascadingCut(minimum, parent);
+	    }
+	    // update minimum node if needed
+	    if (smaller(node.key, minimum.key)) minimum = node;
+	    // return minimum
+	    return minimum;
+	  };
+
+	  /**
+	   * The reverse of the link operation: removes node from the child list of parent.
+	   * This method assumes that min is non-null. Running time: O(1).
+	   * @memberof FibonacciHeap
+	   */
+	  var _cut = function (minimum, node, parent) {
+	    // remove node from parent children and decrement Degree[parent]
+	    node.left.right = node.right;
+	    node.right.left = node.left;
+	    parent.degree--;
+	    // reset y.child if necessary
+	    if (parent.child == node) parent.child = node.right;
+	    // remove child if degree is 0
+	    if (parent.degree === 0) parent.child = null;
+	    // add node to root list of heap
+	    node.left = minimum;
+	    node.right = minimum.right;
+	    minimum.right = node;
+	    node.right.left = node;
+	    // set parent[node] to null
+	    node.parent = null;
+	    // set mark[node] to false
+	    node.mark = false;
+	  };
+
+	  /**
+	   * Performs a cascading cut operation. This cuts node from its parent and then
+	   * does the same for its parent, and so on up the tree.
+	   * Running time: O(log n); O(1) excluding the recursion.
+	   * @memberof FibonacciHeap
+	   */
+	  var _cascadingCut = function (minimum, node) {
+	    // store parent node
+	    var parent = node.parent;
+	    // if there's a parent...
+	    if (!parent) return;
+	    // if node is unmarked, set it marked
+	    if (!node.mark) {
+	      node.mark = true;
+	    } else {
+	      // it's marked, cut it from parent
+	      _cut(minimum, node, parent);
+	      // cut its parent as well
+	      _cascadingCut(parent);
+	    }
+	  };
+
+	  /**
+	   * Make the first node a child of the second one. Running time: O(1) actual.
+	   * @memberof FibonacciHeap
+	   */
+	  var _linkNodes = function (node, parent) {
+	    // remove node from root list of heap
+	    node.left.right = node.right;
+	    node.right.left = node.left;
+	    // make node a Child of parent
+	    node.parent = parent;
+	    if (!parent.child) {
+	      parent.child = node;
+	      node.right = node;
+	      node.left = node;
+	    } else {
+	      node.left = parent.child;
+	      node.right = parent.child.right;
+	      parent.child.right = node;
+	      node.right.left = node;
+	    }
+	    // increase degree[parent]
+	    parent.degree++;
+	    // set mark[node] false
+	    node.mark = false;
+	  };
+
+	  var _findMinimumNode = function (minimum, size) {
+	    // to find trees of the same degree efficiently we use an array of length O(log n) in which we keep a pointer to one root of each degree
+	    var arraySize = Math.floor(Math.log(size) * oneOverLogPhi) + 1;
+	    // create list with initial capacity
+	    var array = new Array(arraySize);
+	    // find the number of root nodes.
+	    var numRoots = 0;
+	    var x = minimum;
+	    if (x) {
+	      numRoots++;
+	      x = x.right;
+	      while (x !== minimum) {
+	        numRoots++;
+	        x = x.right;
+	      }
+	    }
+	    // vars
+	    var y;
+	    // For each node in root list do...
+	    while (numRoots > 0) {
+	      // access this node's degree..
+	      var d = x.degree;
+	      // get next node
+	      var next = x.right;
+	      // check if there is a node already in array with the same degree
+	      while (true) {
+	        // get node with the same degree is any
+	        y = array[d];
+	        if (!y) break;
+	        // make one node with the same degree a child of the other, do this based on the key value.
+	        if (larger(x.key, y.key)) {
+	          var temp = y;
+	          y = x;
+	          x = temp;
+	        }
+	        // make y a child of x
+	        _linkNodes(y, x);
+	        // we have handled this degree, go to next one.
+	        array[d] = null;
+	        d++;
+	      }
+	      // save this node for later when we might encounter another of the same degree.
+	      array[d] = x;
+	      // move forward through list.
+	      x = next;
+	      numRoots--;
+	    }
+	    // Set min to null (effectively losing the root list) and reconstruct the root list from the array entries in array[].
+	    minimum = null;
+	    // loop nodes in array
+	    for (var i = 0; i < arraySize; i++) {
+	      // get current node
+	      y = array[i];
+	      if (!y) continue;
+	      // check if we have a linked list
+	      if (minimum) {
+	        // First remove node from root list.
+	        y.left.right = y.right;
+	        y.right.left = y.left;
+	        // now add to root list, again.
+	        y.left = minimum;
+	        y.right = minimum.right;
+	        minimum.right = y;
+	        y.right.left = y;
+	        // check if this is a new min.
+	        if (smaller(y.key, minimum.key)) minimum = y;
+	      } else minimum = y;
+	    }
+	    return minimum;
+	  };
+
+	  return FibonacciHeap;
+	}
+
+	exports.name = 'FibonacciHeap';
+	exports.path = 'type';
+	exports.factory = factory;
+
+/***/ }),
+/* 319 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var nearlyEqual = __webpack_require__(72).nearlyEqual;
+	var bigNearlyEqual = __webpack_require__(93);
+
+	function factory(type, config, load, typed) {
+
+	  var matrix = load(__webpack_require__(89));
+
+	  var algorithm03 = load(__webpack_require__(257));
+	  var algorithm07 = load(__webpack_require__(320));
+	  var algorithm12 = load(__webpack_require__(279));
+	  var algorithm13 = load(__webpack_require__(260));
+	  var algorithm14 = load(__webpack_require__(95));
+
+	  var latex = __webpack_require__(88);
+
+	  /**
+	   * Test whether value x is smaller than y.
+	   *
+	   * The function returns true when x is smaller than y and the relative
+	   * difference between x and y is smaller than the configured epsilon. The
+	   * function cannot be used to compare values smaller than approximately 2.22e-16.
+	   *
+	   * For matrices, the function is evaluated element wise.
+	   *
+	   * Syntax:
+	   *
+	   *    math.smaller(x, y)
+	   *
+	   * Examples:
+	   *
+	   *    math.smaller(2, 3);            // returns true
+	   *    math.smaller(5, 2 * 2);        // returns false
+	   *
+	   *    var a = math.unit('5 cm');
+	   *    var b = math.unit('2 inch');
+	   *    math.smaller(a, b);            // returns true
+	   *
+	   * See also:
+	   *
+	   *    equal, unequal, smallerEq, smaller, smallerEq, compare
+	   *
+	   * @param  {number | BigNumber | Fraction | boolean | Unit | string | Array | Matrix} x First value to compare
+	   * @param  {number | BigNumber | Fraction | boolean | Unit | string | Array | Matrix} y Second value to compare
+	   * @return {boolean | Array | Matrix} Returns true when the x is smaller than y, else returns false
+	   */
+	  var smaller = typed('smaller', {
+
+	    'boolean, boolean': function (x, y) {
+	      return x < y;
+	    },
+
+	    'number, number': function (x, y) {
+	      return x < y && !nearlyEqual(x, y, config.epsilon);
+	    },
+
+	    'BigNumber, BigNumber': function (x, y) {
+	      return x.lt(y) && !bigNearlyEqual(x, y, config.epsilon);
+	    },
+
+	    'Fraction, Fraction': function (x, y) {
+	      return x.compare(y) === -1;
+	    },
+
+	    'Complex, Complex': function (x, y) {
+	      throw new TypeError('No ordering relation is defined for complex numbers');
+	    },
+
+	    'Unit, Unit': function (x, y) {
+	      if (!x.equalBase(y)) {
+	        throw new Error('Cannot compare units with different base');
+	      }
+	      return smaller(x.value, y.value);
+	    },
+
+	    'string, string': function (x, y) {
+	      return x < y;
+	    },
+
+	    'Matrix, Matrix': function (x, y) {
+	      // result
+	      var c;
+
+	      // process matrix storage
+	      switch (x.storage()) {
+	        case 'sparse':
+	          switch (y.storage()) {
+	            case 'sparse':
+	              // sparse + sparse
+	              c = algorithm07(x, y, smaller);
+	              break;
+	            default:
+	              // sparse + dense
+	              c = algorithm03(y, x, smaller, true);
+	              break;
+	          }
+	          break;
+	        default:
+	          switch (y.storage()) {
+	            case 'sparse':
+	              // dense + sparse
+	              c = algorithm03(x, y, smaller, false);
+	              break;
+	            default:
+	              // dense + dense
+	              c = algorithm13(x, y, smaller);
+	              break;
+	          }
+	          break;
+	      }
+	      return c;
+	    },
+
+	    'Array, Array': function (x, y) {
+	      // use matrix implementation
+	      return smaller(matrix(x), matrix(y)).valueOf();
+	    },
+
+	    'Array, Matrix': function (x, y) {
+	      // use matrix implementation
+	      return smaller(matrix(x), y);
+	    },
+
+	    'Matrix, Array': function (x, y) {
+	      // use matrix implementation
+	      return smaller(x, matrix(y));
+	    },
+
+	    'Matrix, any': function (x, y) {
+	      // result
+	      var c;
+	      // check storage format
+	      switch (x.storage()) {
+	        case 'sparse':
+	          c = algorithm12(x, y, smaller, false);
+	          break;
+	        default:
+	          c = algorithm14(x, y, smaller, false);
+	          break;
+	      }
+	      return c;
+	    },
+
+	    'any, Matrix': function (x, y) {
+	      // result
+	      var c;
+	      // check storage format
+	      switch (y.storage()) {
+	        case 'sparse':
+	          c = algorithm12(y, x, smaller, true);
+	          break;
+	        default:
+	          c = algorithm14(y, x, smaller, true);
+	          break;
+	      }
+	      return c;
+	    },
+
+	    'Array, any': function (x, y) {
+	      // use matrix implementation
+	      return algorithm14(matrix(x), y, smaller, false).valueOf();
+	    },
+
+	    'any, Array': function (x, y) {
+	      // use matrix implementation
+	      return algorithm14(matrix(y), x, smaller, true).valueOf();
+	    }
+	  });
+
+	  smaller.toTex = {
+	    2: '\\left(${args[0]}' + latex.operators['smaller'] + '${args[1]}\\right)'
+	  };
+
+	  return smaller;
+	}
+
+	exports.name = 'smaller';
+	exports.factory = factory;
+
+/***/ }),
+/* 320 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var DimensionError = __webpack_require__(86);
+
+	function factory(type, config, load, typed) {
+
+	  var DenseMatrix = type.DenseMatrix;
+
+	  /**
+	   * Iterates over SparseMatrix A and SparseMatrix B items (zero and nonzero) and invokes the callback function f(Aij, Bij). 
+	   * Callback function invoked MxN times.
+	   *
+	   * C(i,j) = f(Aij, Bij)
+	   *
+	   * @param {Matrix}   a                 The SparseMatrix instance (A)
+	   * @param {Matrix}   b                 The SparseMatrix instance (B)
+	   * @param {Function} callback          The f(Aij,Bij) operation to invoke
+	   *
+	   * @return {Matrix}                    DenseMatrix (C)
+	   *
+	   * see https://github.com/josdejong/mathjs/pull/346#issuecomment-97620294
+	   */
+	  var algorithm07 = function (a, b, callback) {
+	    // sparse matrix arrays
+	    var asize = a._size;
+	    var adt = a._datatype;
+	    // sparse matrix arrays
+	    var bsize = b._size;
+	    var bdt = b._datatype;
+
+	    // validate dimensions
+	    if (asize.length !== bsize.length) throw new DimensionError(asize.length, bsize.length);
+
+	    // check rows & columns
+	    if (asize[0] !== bsize[0] || asize[1] !== bsize[1]) throw new RangeError('Dimension mismatch. Matrix A (' + asize + ') must match Matrix B (' + bsize + ')');
+
+	    // rows & columns
+	    var rows = asize[0];
+	    var columns = asize[1];
+
+	    // datatype
+	    var dt;
+	    // zero value
+	    var zero = 0;
+	    // callback signature to use
+	    var cf = callback;
+
+	    // process data types
+	    if (typeof adt === 'string' && adt === bdt) {
+	      // datatype
+	      dt = adt;
+	      // convert 0 to the same datatype
+	      zero = typed.convert(0, dt);
+	      // callback
+	      cf = typed.find(callback, [dt, dt]);
+	    }
+
+	    // vars
+	    var i, j;
+
+	    // result arrays
+	    var cdata = [];
+	    // initialize c
+	    for (i = 0; i < rows; i++) cdata[i] = [];
+
+	    // matrix
+	    var c = new DenseMatrix({
+	      data: cdata,
+	      size: [rows, columns],
+	      datatype: dt
+	    });
+
+	    // workspaces
+	    var xa = [];
+	    var xb = [];
+	    // marks indicating we have a value in x for a given column
+	    var wa = [];
+	    var wb = [];
+
+	    // loop columns
+	    for (j = 0; j < columns; j++) {
+	      // columns mark
+	      var mark = j + 1;
+	      // scatter the values of A(:,j) into workspace
+	      _scatter(a, j, wa, xa, mark);
+	      // scatter the values of B(:,j) into workspace
+	      _scatter(b, j, wb, xb, mark);
+	      // loop rows
+	      for (i = 0; i < rows; i++) {
+	        // matrix values @ i,j
+	        var va = wa[i] === mark ? xa[i] : zero;
+	        var vb = wb[i] === mark ? xb[i] : zero;
+	        // invoke callback
+	        cdata[i][j] = cf(va, vb);
+	      }
+	    }
+
+	    // return sparse matrix
+	    return c;
+	  };
+
+	  var _scatter = function (m, j, w, x, mark) {
+	    // a arrays
+	    var values = m._values;
+	    var index = m._index;
+	    var ptr = m._ptr;
+	    // loop values in column j
+	    for (var k = ptr[j], k1 = ptr[j + 1]; k < k1; k++) {
+	      // row
+	      var i = index[k];
+	      // update workspace
+	      w[i] = mark;
+	      x[i] = values[k];
+	    }
+	  };
+
+	  return algorithm07;
+	}
+
+	exports.name = 'algorithm07';
+	exports.factory = factory;
+
+/***/ }),
+/* 321 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var nearlyEqual = __webpack_require__(72).nearlyEqual;
+	var bigNearlyEqual = __webpack_require__(93);
+
+	function factory(type, config, load, typed) {
+
+	  var matrix = load(__webpack_require__(89));
+
+	  var algorithm03 = load(__webpack_require__(257));
+	  var algorithm07 = load(__webpack_require__(320));
+	  var algorithm12 = load(__webpack_require__(279));
+	  var algorithm13 = load(__webpack_require__(260));
+	  var algorithm14 = load(__webpack_require__(95));
+
+	  var latex = __webpack_require__(88);
+
+	  /**
+	   * Test whether value x is larger than y.
+	   *
+	   * The function returns true when x is larger than y and the relative
+	   * difference between x and y is larger than the configured epsilon. The
+	   * function cannot be used to compare values smaller than approximately 2.22e-16.
+	   *
+	   * For matrices, the function is evaluated element wise.
+	   *
+	   * Syntax:
+	   *
+	   *    math.larger(x, y)
+	   *
+	   * Examples:
+	   *
+	   *    math.larger(2, 3);             // returns false
+	   *    math.larger(5, 2 + 2);         // returns true
+	   *
+	   *    var a = math.unit('5 cm');
+	   *    var b = math.unit('2 inch');
+	   *    math.larger(a, b);             // returns false
+	   *
+	   * See also:
+	   *
+	   *    equal, unequal, smaller, smallerEq, largerEq, compare
+	   *
+	   * @param  {number | BigNumber | Fraction | boolean | Unit | string | Array | Matrix} x First value to compare
+	   * @param  {number | BigNumber | Fraction | boolean | Unit | string | Array | Matrix} y Second value to compare
+	   * @return {boolean | Array | Matrix} Returns true when the x is larger than y, else returns false
+	   */
+	  var larger = typed('larger', {
+
+	    'boolean, boolean': function (x, y) {
+	      return x > y;
+	    },
+
+	    'number, number': function (x, y) {
+	      return x > y && !nearlyEqual(x, y, config.epsilon);
+	    },
+
+	    'BigNumber, BigNumber': function (x, y) {
+	      return x.gt(y) && !bigNearlyEqual(x, y, config.epsilon);
+	    },
+
+	    'Fraction, Fraction': function (x, y) {
+	      return x.compare(y) === 1;
+	    },
+
+	    'Complex, Complex': function () {
+	      throw new TypeError('No ordering relation is defined for complex numbers');
+	    },
+
+	    'Unit, Unit': function (x, y) {
+	      if (!x.equalBase(y)) {
+	        throw new Error('Cannot compare units with different base');
+	      }
+	      return larger(x.value, y.value);
+	    },
+
+	    'string, string': function (x, y) {
+	      return x > y;
+	    },
+
+	    'Matrix, Matrix': function (x, y) {
+	      // result
+	      var c;
+
+	      // process matrix storage
+	      switch (x.storage()) {
+	        case 'sparse':
+	          switch (y.storage()) {
+	            case 'sparse':
+	              // sparse + sparse
+	              c = algorithm07(x, y, larger);
+	              break;
+	            default:
+	              // sparse + dense
+	              c = algorithm03(y, x, larger, true);
+	              break;
+	          }
+	          break;
+	        default:
+	          switch (y.storage()) {
+	            case 'sparse':
+	              // dense + sparse
+	              c = algorithm03(x, y, larger, false);
+	              break;
+	            default:
+	              // dense + dense
+	              c = algorithm13(x, y, larger);
+	              break;
+	          }
+	          break;
+	      }
+	      return c;
+	    },
+
+	    'Array, Array': function (x, y) {
+	      // use matrix implementation
+	      return larger(matrix(x), matrix(y)).valueOf();
+	    },
+
+	    'Array, Matrix': function (x, y) {
+	      // use matrix implementation
+	      return larger(matrix(x), y);
+	    },
+
+	    'Matrix, Array': function (x, y) {
+	      // use matrix implementation
+	      return larger(x, matrix(y));
+	    },
+
+	    'Matrix, any': function (x, y) {
+	      // result
+	      var c;
+	      // check storage format
+	      switch (x.storage()) {
+	        case 'sparse':
+	          c = algorithm12(x, y, larger, false);
+	          break;
+	        default:
+	          c = algorithm14(x, y, larger, false);
+	          break;
+	      }
+	      return c;
+	    },
+
+	    'any, Matrix': function (x, y) {
+	      // result
+	      var c;
+	      // check storage format
+	      switch (y.storage()) {
+	        case 'sparse':
+	          c = algorithm12(y, x, larger, true);
+	          break;
+	        default:
+	          c = algorithm14(y, x, larger, true);
+	          break;
+	      }
+	      return c;
+	    },
+
+	    'Array, any': function (x, y) {
+	      // use matrix implementation
+	      return algorithm14(matrix(x), y, larger, false).valueOf();
+	    },
+
+	    'any, Array': function (x, y) {
+	      // use matrix implementation
+	      return algorithm14(matrix(y), x, larger, true).valueOf();
+	    }
+	  });
+
+	  larger.toTex = {
+	    2: '\\left(${args[0]}' + latex.operators['larger'] + '${args[1]}\\right)'
+	  };
+
+	  return larger;
+	}
+
+	exports.name = 'larger';
+	exports.factory = factory;
+
+/***/ }),
+/* 322 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var util = __webpack_require__(261);
+
+	var string = util.string;
+	var object = util.object;
+
+	var isArray = Array.isArray;
+	var isString = string.isString;
+
+	function factory(type, config, load) {
+
+	  var DenseMatrix = load(__webpack_require__(315));
+
+	  var smaller = load(__webpack_require__(319));
+
+	  function ImmutableDenseMatrix(data, datatype) {
+	    if (!(this instanceof ImmutableDenseMatrix)) throw new SyntaxError('Constructor must be called with the new operator');
+	    if (datatype && !isString(datatype)) throw new Error('Invalid datatype: ' + datatype);
+
+	    if (data && data.isMatrix === true || isArray(data)) {
+	      // use DenseMatrix implementation
+	      var matrix = new DenseMatrix(data, datatype);
+	      // internal structures
+	      this._data = matrix._data;
+	      this._size = matrix._size;
+	      this._datatype = matrix._datatype;
+	      this._min = null;
+	      this._max = null;
+	    } else if (data && isArray(data.data) && isArray(data.size)) {
+	      // initialize fields from JSON representation
+	      this._data = data.data;
+	      this._size = data.size;
+	      this._datatype = data.datatype;
+	      this._min = typeof data.min !== 'undefined' ? data.min : null;
+	      this._max = typeof data.max !== 'undefined' ? data.max : null;
+	    } else if (data) {
+	      // unsupported type
+	      throw new TypeError('Unsupported type of data (' + util.types.type(data) + ')');
+	    } else {
+	      // nothing provided
+	      this._data = [];
+	      this._size = [0];
+	      this._datatype = datatype;
+	      this._min = null;
+	      this._max = null;
+	    }
+	  }
+
+	  ImmutableDenseMatrix.prototype = new DenseMatrix();
+
+	  /**
+	   * Attach type information
+	   */
+	  ImmutableDenseMatrix.prototype.type = 'ImmutableDenseMatrix';
+	  ImmutableDenseMatrix.prototype.isImmutableDenseMatrix = true;
+
+	  /**
+	   * Get a subset of the matrix, or replace a subset of the matrix.
+	   *
+	   * Usage:
+	   *     var subset = matrix.subset(index)               // retrieve subset
+	   *     var value = matrix.subset(index, replacement)   // replace subset
+	   *
+	   * @param {Index} index
+	   * @param {Array | ImmutableDenseMatrix | *} [replacement]
+	   * @param {*} [defaultValue=0]      Default value, filled in on new entries when
+	   *                                  the matrix is resized. If not provided,
+	   *                                  new matrix elements will be filled with zeros.
+	   */
+	  ImmutableDenseMatrix.prototype.subset = function (index) {
+	    switch (arguments.length) {
+	      case 1:
+	        // use base implementation
+	        var m = DenseMatrix.prototype.subset.call(this, index);
+	        // check result is a matrix
+	        if (m.isMatrix) {
+	          // return immutable matrix
+	          return new ImmutableDenseMatrix({
+	            data: m._data,
+	            size: m._size,
+	            datatype: m._datatype
+	          });
+	        }
+	        return m;
+
+	      // intentional fall through
+	      case 2:
+	      case 3:
+	        throw new Error('Cannot invoke set subset on an Immutable Matrix instance');
+
+	      default:
+	        throw new SyntaxError('Wrong number of arguments');
+	    }
+	  };
+
+	  /**
+	   * Replace a single element in the matrix.
+	   * @param {Number[]} index   Zero-based index
+	   * @param {*} value
+	   * @param {*} [defaultValue]        Default value, filled in on new entries when
+	   *                                  the matrix is resized. If not provided,
+	   *                                  new matrix elements will be left undefined.
+	   * @return {ImmutableDenseMatrix} self
+	   */
+	  ImmutableDenseMatrix.prototype.set = function () {
+	    throw new Error('Cannot invoke set on an Immutable Matrix instance');
+	  };
+
+	  /**
+	   * Resize the matrix to the given size. Returns a copy of the matrix when
+	   * `copy=true`, otherwise return the matrix itself (resize in place).
+	   *
+	   * @param {Number[]} size           The new size the matrix should have.
+	   * @param {*} [defaultValue=0]      Default value, filled in on new entries.
+	   *                                  If not provided, the matrix elements will
+	   *                                  be filled with zeros.
+	   * @param {boolean} [copy]          Return a resized copy of the matrix
+	   *
+	   * @return {Matrix}                 The resized matrix
+	   */
+	  ImmutableDenseMatrix.prototype.resize = function () {
+	    throw new Error('Cannot invoke resize on an Immutable Matrix instance');
+	  };
+
+	  /**
+	   * Disallows reshaping in favor of immutability.
+	   *
+	   * @throws {Error} Operation not allowed
+	   */
+	  ImmutableDenseMatrix.prototype.reshape = function () {
+	    throw new Error('Cannot invoke reshape on an Immutable Matrix instance');
+	  };
+
+	  /**
+	   * Create a clone of the matrix
+	   * @return {ImmutableDenseMatrix} clone
+	   */
+	  ImmutableDenseMatrix.prototype.clone = function () {
+	    var m = new ImmutableDenseMatrix({
+	      data: object.clone(this._data),
+	      size: object.clone(this._size),
+	      datatype: this._datatype
+	    });
+	    return m;
+	  };
+
+	  /**
+	   * Get a JSON representation of the matrix
+	   * @returns {Object}
+	   */
+	  ImmutableDenseMatrix.prototype.toJSON = function () {
+	    return {
+	      mathjs: 'ImmutableDenseMatrix',
+	      data: this._data,
+	      size: this._size,
+	      datatype: this._datatype
+	    };
+	  };
+
+	  /**
+	   * Generate a matrix from a JSON object
+	   * @param {Object} json  An object structured like
+	   *                       `{"mathjs": "ImmutableDenseMatrix", data: [], size: []}`,
+	   *                       where mathjs is optional
+	   * @returns {ImmutableDenseMatrix}
+	   */
+	  ImmutableDenseMatrix.fromJSON = function (json) {
+	    return new ImmutableDenseMatrix(json);
+	  };
+
+	  /**
+	   * Swap rows i and j in Matrix.
+	   *
+	   * @param {Number} i       Matrix row index 1
+	   * @param {Number} j       Matrix row index 2
+	   *
+	   * @return {Matrix}        The matrix reference
+	   */
+	  ImmutableDenseMatrix.prototype.swapRows = function () {
+	    throw new Error('Cannot invoke swapRows on an Immutable Matrix instance');
+	  };
+
+	  /**
+	   * Calculate the minimum value in the set
+	   * @return {Number | undefined} min
+	   */
+	  ImmutableDenseMatrix.prototype.min = function () {
+	    // check min has been calculated before
+	    if (this._min === null) {
+	      // minimum
+	      var m = null;
+	      // compute min
+	      this.forEach(function (v) {
+	        if (m === null || smaller(v, m)) m = v;
+	      });
+	      this._min = m !== null ? m : undefined;
+	    }
+	    return this._min;
+	  };
+
+	  /**
+	   * Calculate the maximum value in the set
+	   * @return {Number | undefined} max
+	   */
+	  ImmutableDenseMatrix.prototype.max = function () {
+	    // check max has been calculated before
+	    if (this._max === null) {
+	      // maximum
+	      var m = null;
+	      // compute max
+	      this.forEach(function (v) {
+	        if (m === null || smaller(m, v)) m = v;
+	      });
+	      this._max = m !== null ? m : undefined;
+	    }
+	    return this._max;
+	  };
+
+	  // exports
+	  return ImmutableDenseMatrix;
+	}
+
+	exports.name = 'ImmutableDenseMatrix';
+	exports.path = 'type';
+	exports.factory = factory;
+
+/***/ }),
+/* 323 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var clone = __webpack_require__(69).clone;
+	var isInteger = __webpack_require__(72).isInteger;
+
+	function factory(type) {
+
+	  /**
+	   * Create an index. An Index can store ranges and sets for multiple dimensions.
+	   * Matrix.get, Matrix.set, and math.subset accept an Index as input.
+	   *
+	   * Usage:
+	   *     var index = new Index(range1, range2, matrix1, array1, ...);
+	   *
+	   * Where each parameter can be any of:
+	   *     A number
+	   *     A string (containing a name of an object property)
+	   *     An instance of Range
+	   *     An Array with the Set values
+	   *     A Matrix with the Set values
+	   *
+	   * The parameters start, end, and step must be integer numbers.
+	   *
+	   * @class Index
+	   * @Constructor Index
+	   * @param {...*} ranges
+	   */
+	  function Index(ranges) {
+	    if (!(this instanceof Index)) {
+	      throw new SyntaxError('Constructor must be called with the new operator');
+	    }
+
+	    this._dimensions = [];
+	    this._isScalar = true;
+
+	    for (var i = 0, ii = arguments.length; i < ii; i++) {
+	      var arg = arguments[i];
+
+	      if (arg && arg.isRange === true) {
+	        this._dimensions.push(arg);
+	        this._isScalar = false;
+	      } else if (arg && (Array.isArray(arg) || arg.isMatrix === true)) {
+	        // create matrix
+	        var m = _createImmutableMatrix(arg.valueOf());
+	        this._dimensions.push(m);
+	        // size
+	        var size = m.size();
+	        // scalar
+	        if (size.length !== 1 || size[0] !== 1) {
+	          this._isScalar = false;
+	        }
+	      } else if (typeof arg === 'number') {
+	        this._dimensions.push(_createImmutableMatrix([arg]));
+	      } else if (typeof arg === 'string') {
+	        // object property (arguments.count should be 1)
+	        this._dimensions.push(arg);
+	      }
+	      // TODO: implement support for wildcard '*'
+	      else {
+	          throw new TypeError('Dimension must be an Array, Matrix, number, string, or Range');
+	        }
+	    }
+	  }
+
+	  /**
+	   * Attach type information
+	   */
+	  Index.prototype.type = 'Index';
+	  Index.prototype.isIndex = true;
+
+	  function _createImmutableMatrix(arg) {
+	    // loop array elements
+	    for (var i = 0, l = arg.length; i < l; i++) {
+	      if (typeof arg[i] !== 'number' || !isInteger(arg[i])) {
+	        throw new TypeError('Index parameters must be positive integer numbers');
+	      }
+	    }
+	    // create matrix
+	    return new type.ImmutableDenseMatrix(arg);
+	  }
+
+	  /**
+	   * Create a clone of the index
+	   * @memberof Index
+	   * @return {Index} clone
+	   */
+	  Index.prototype.clone = function () {
+	    var index = new Index();
+	    index._dimensions = clone(this._dimensions);
+	    index._isScalar = this._isScalar;
+	    return index;
+	  };
+
+	  /**
+	   * Create an index from an array with ranges/numbers
+	   * @memberof Index
+	   * @param {Array.<Array | number>} ranges
+	   * @return {Index} index
+	   * @private
+	   */
+	  Index.create = function (ranges) {
+	    var index = new Index();
+	    Index.apply(index, ranges);
+	    return index;
+	  };
+
+	  /**
+	   * Retrieve the size of the index, the number of elements for each dimension.
+	   * @memberof Index
+	   * @returns {number[]} size
+	   */
+	  Index.prototype.size = function () {
+	    var size = [];
+
+	    for (var i = 0, ii = this._dimensions.length; i < ii; i++) {
+	      var d = this._dimensions[i];
+	      size[i] = typeof d === 'string' ? 1 : d.size()[0];
+	    }
+
+	    return size;
+	  };
+
+	  /**
+	   * Get the maximum value for each of the indexes ranges.
+	   * @memberof Index
+	   * @returns {number[]} max
+	   */
+	  Index.prototype.max = function () {
+	    var values = [];
+
+	    for (var i = 0, ii = this._dimensions.length; i < ii; i++) {
+	      var range = this._dimensions[i];
+	      values[i] = typeof range === 'string' ? range : range.max();
+	    }
+
+	    return values;
+	  };
+
+	  /**
+	   * Get the minimum value for each of the indexes ranges.
+	   * @memberof Index
+	   * @returns {number[]} min
+	   */
+	  Index.prototype.min = function () {
+	    var values = [];
+
+	    for (var i = 0, ii = this._dimensions.length; i < ii; i++) {
+	      var range = this._dimensions[i];
+	      values[i] = typeof range === 'string' ? range : range.min();
+	    }
+
+	    return values;
+	  };
+
+	  /**
+	   * Loop over each of the ranges of the index
+	   * @memberof Index
+	   * @param {Function} callback   Called for each range with a Range as first
+	   *                              argument, the dimension as second, and the
+	   *                              index object as third.
+	   */
+	  Index.prototype.forEach = function (callback) {
+	    for (var i = 0, ii = this._dimensions.length; i < ii; i++) {
+	      callback(this._dimensions[i], i, this);
+	    }
+	  };
+
+	  /**
+	   * Retrieve the dimension for the given index
+	   * @memberof Index
+	   * @param {Number} dim                  Number of the dimension
+	   * @returns {Range | null} range
+	   */
+	  Index.prototype.dimension = function (dim) {
+	    return this._dimensions[dim] || null;
+	  };
+
+	  /**
+	   * Test whether this index contains an object property
+	   * @returns {boolean} Returns true if the index is an object property
+	   */
+	  Index.prototype.isObjectProperty = function () {
+	    return this._dimensions.length === 1 && typeof this._dimensions[0] === 'string';
+	  };
+
+	  /**
+	   * Returns the object property name when the Index holds a single object property,
+	   * else returns null
+	   * @returns {string | null}
+	   */
+	  Index.prototype.getObjectProperty = function () {
+	    return this.isObjectProperty() ? this._dimensions[0] : null;
+	  };
+
+	  /**
+	   * Test whether this index contains only a single value.
+	   *
+	   * This is the case when the index is created with only scalar values as ranges,
+	   * not for ranges resolving into a single value.
+	   * @memberof Index
+	   * @return {boolean} isScalar
+	   */
+	  Index.prototype.isScalar = function () {
+	    return this._isScalar;
+	  };
+
+	  /**
+	   * Expand the Index into an array.
+	   * For example new Index([0,3], [2,7]) returns [[0,1,2], [2,3,4,5,6]]
+	   * @memberof Index
+	   * @returns {Array} array
+	   */
+	  Index.prototype.toArray = function () {
+	    var array = [];
+	    for (var i = 0, ii = this._dimensions.length; i < ii; i++) {
+	      var dimension = this._dimensions[i];
+	      array.push(typeof dimension === 'string' ? dimension : dimension.toArray());
+	    }
+	    return array;
+	  };
+
+	  /**
+	   * Get the primitive value of the Index, a two dimensional array.
+	   * Equivalent to Index.toArray().
+	   * @memberof Index
+	   * @returns {Array} array
+	   */
+	  Index.prototype.valueOf = Index.prototype.toArray;
+
+	  /**
+	   * Get the string representation of the index, for example '[2:6]' or '[0:2:10, 4:7, [1,2,3]]'
+	   * @memberof Index
+	   * @returns {String} str
+	   */
+	  Index.prototype.toString = function () {
+	    var strings = [];
+
+	    for (var i = 0, ii = this._dimensions.length; i < ii; i++) {
+	      var dimension = this._dimensions[i];
+	      if (typeof dimension === 'string') {
+	        strings.push(JSON.stringify(dimension));
+	      } else {
+	        strings.push(dimension.toString());
+	      }
+	    }
+
+	    return '[' + strings.join(', ') + ']';
+	  };
+
+	  /**
+	   * Get a JSON representation of the Index
+	   * @memberof Index
+	   * @returns {Object} Returns a JSON object structured as:
+	   *                   `{"mathjs": "Index", "ranges": [{"mathjs": "Range", start: 0, end: 10, step:1}, ...]}`
+	   */
+	  Index.prototype.toJSON = function () {
+	    return {
+	      mathjs: 'Index',
+	      dimensions: this._dimensions
+	    };
+	  };
+
+	  /**
+	   * Instantiate an Index from a JSON object
+	   * @memberof Index
+	   * @param {Object} json A JSON object structured as:
+	   *                     `{"mathjs": "Index", "dimensions": [{"mathjs": "Range", start: 0, end: 10, step:1}, ...]}`
+	   * @return {Index}
+	   */
+	  Index.fromJSON = function (json) {
+	    return Index.create(json.dimensions);
+	  };
+
+	  return Index;
+	}
+
+	exports.name = 'Index';
+	exports.path = 'type';
+	exports.factory = factory;
+
+/***/ }),
+/* 324 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var number = __webpack_require__(72);
+
+	function factory(type, config, load, typed) {
+	  /**
+	   * Create a range. A range has a start, step, and end, and contains functions
+	   * to iterate over the range.
+	   *
+	   * A range can be constructed as:
+	   *     var range = new Range(start, end);
+	   *     var range = new Range(start, end, step);
+	   *
+	   * To get the result of the range:
+	   *     range.forEach(function (x) {
+	   *         console.log(x);
+	   *     });
+	   *     range.map(function (x) {
+	   *         return math.sin(x);
+	   *     });
+	   *     range.toArray();
+	   *
+	   * Example usage:
+	   *     var c = new Range(2, 6);         // 2:1:5
+	   *     c.toArray();                     // [2, 3, 4, 5]
+	   *     var d = new Range(2, -3, -1);    // 2:-1:-2
+	   *     d.toArray();                     // [2, 1, 0, -1, -2]
+	   *
+	   * @class Range
+	   * @constructor Range
+	   * @param {number} start  included lower bound
+	   * @param {number} end    excluded upper bound
+	   * @param {number} [step] step size, default value is 1
+	   */
+	  function Range(start, end, step) {
+	    if (!(this instanceof Range)) {
+	      throw new SyntaxError('Constructor must be called with the new operator');
+	    }
+
+	    if (start != null) {
+	      if (start.isBigNumber === true) start = start.toNumber();else if (typeof start !== 'number') throw new TypeError('Parameter start must be a number');
+	    }
+	    if (end != null) {
+	      if (end.isBigNumber === true) end = end.toNumber();else if (typeof end !== 'number') throw new TypeError('Parameter end must be a number');
+	    }
+	    if (step != null) {
+	      if (step.isBigNumber === true) step = step.toNumber();else if (typeof step !== 'number') throw new TypeError('Parameter step must be a number');
+	    }
+
+	    this.start = start != null ? parseFloat(start) : 0;
+	    this.end = end != null ? parseFloat(end) : 0;
+	    this.step = step != null ? parseFloat(step) : 1;
+	  }
+
+	  /**
+	   * Attach type information
+	   */
+	  Range.prototype.type = 'Range';
+	  Range.prototype.isRange = true;
+
+	  /**
+	   * Parse a string into a range,
+	   * The string contains the start, optional step, and end, separated by a colon.
+	   * If the string does not contain a valid range, null is returned.
+	   * For example str='0:2:11'.
+	   * @memberof Range
+	   * @param {string} str
+	   * @return {Range | null} range
+	   */
+	  Range.parse = function (str) {
+	    if (typeof str !== 'string') {
+	      return null;
+	    }
+
+	    var args = str.split(':');
+	    var nums = args.map(function (arg) {
+	      return parseFloat(arg);
+	    });
+
+	    var invalid = nums.some(function (num) {
+	      return isNaN(num);
+	    });
+	    if (invalid) {
+	      return null;
+	    }
+
+	    switch (nums.length) {
+	      case 2:
+	        return new Range(nums[0], nums[1]);
+	      case 3:
+	        return new Range(nums[0], nums[2], nums[1]);
+	      default:
+	        return null;
+	    }
+	  };
+
+	  /**
+	   * Create a clone of the range
+	   * @return {Range} clone
+	   */
+	  Range.prototype.clone = function () {
+	    return new Range(this.start, this.end, this.step);
+	  };
+
+	  /**
+	   * Retrieve the size of the range.
+	   * Returns an array containing one number, the number of elements in the range.
+	   * @memberof Range
+	   * @returns {number[]} size
+	   */
+	  Range.prototype.size = function () {
+	    var len = 0,
+	        start = this.start,
+	        step = this.step,
+	        end = this.end,
+	        diff = end - start;
+
+	    if (number.sign(step) == number.sign(diff)) {
+	      len = Math.ceil(diff / step);
+	    } else if (diff == 0) {
+	      len = 0;
+	    }
+
+	    if (isNaN(len)) {
+	      len = 0;
+	    }
+	    return [len];
+	  };
+
+	  /**
+	   * Calculate the minimum value in the range
+	   * @memberof Range
+	   * @return {number | undefined} min
+	   */
+	  Range.prototype.min = function () {
+	    var size = this.size()[0];
+
+	    if (size > 0) {
+	      if (this.step > 0) {
+	        // positive step
+	        return this.start;
+	      } else {
+	        // negative step
+	        return this.start + (size - 1) * this.step;
+	      }
+	    } else {
+	      return undefined;
+	    }
+	  };
+
+	  /**
+	   * Calculate the maximum value in the range
+	   * @memberof Range
+	   * @return {number | undefined} max
+	   */
+	  Range.prototype.max = function () {
+	    var size = this.size()[0];
+
+	    if (size > 0) {
+	      if (this.step > 0) {
+	        // positive step
+	        return this.start + (size - 1) * this.step;
+	      } else {
+	        // negative step
+	        return this.start;
+	      }
+	    } else {
+	      return undefined;
+	    }
+	  };
+
+	  /**
+	   * Execute a callback function for each value in the range.
+	   * @memberof Range
+	   * @param {function} callback   The callback method is invoked with three
+	   *                              parameters: the value of the element, the index
+	   *                              of the element, and the Range being traversed.
+	   */
+	  Range.prototype.forEach = function (callback) {
+	    var x = this.start;
+	    var step = this.step;
+	    var end = this.end;
+	    var i = 0;
+
+	    if (step > 0) {
+	      while (x < end) {
+	        callback(x, [i], this);
+	        x += step;
+	        i++;
+	      }
+	    } else if (step < 0) {
+	      while (x > end) {
+	        callback(x, [i], this);
+	        x += step;
+	        i++;
+	      }
+	    }
+	  };
+
+	  /**
+	   * Execute a callback function for each value in the Range, and return the
+	   * results as an array
+	   * @memberof Range
+	   * @param {function} callback   The callback method is invoked with three
+	   *                              parameters: the value of the element, the index
+	   *                              of the element, and the Matrix being traversed.
+	   * @returns {Array} array
+	   */
+	  Range.prototype.map = function (callback) {
+	    var array = [];
+	    this.forEach(function (value, index, obj) {
+	      array[index[0]] = callback(value, index, obj);
+	    });
+	    return array;
+	  };
+
+	  /**
+	   * Create an Array with a copy of the Ranges data
+	   * @memberof Range
+	   * @returns {Array} array
+	   */
+	  Range.prototype.toArray = function () {
+	    var array = [];
+	    this.forEach(function (value, index) {
+	      array[index[0]] = value;
+	    });
+	    return array;
+	  };
+
+	  /**
+	   * Get the primitive value of the Range, a one dimensional array
+	   * @memberof Range
+	   * @returns {Array} array
+	   */
+	  Range.prototype.valueOf = function () {
+	    // TODO: implement a caching mechanism for range.valueOf()
+	    return this.toArray();
+	  };
+
+	  /**
+	   * Get a string representation of the range, with optional formatting options.
+	   * Output is formatted as 'start:step:end', for example '2:6' or '0:0.2:11'
+	   * @memberof Range
+	   * @param {Object | number | function} [options]  Formatting options. See
+	   *                                                lib/utils/number:format for a
+	   *                                                description of the available
+	   *                                                options.
+	   * @returns {string} str
+	   */
+	  Range.prototype.format = function (options) {
+	    var str = number.format(this.start, options);
+
+	    if (this.step != 1) {
+	      str += ':' + number.format(this.step, options);
+	    }
+	    str += ':' + number.format(this.end, options);
+	    return str;
+	  };
+
+	  /**
+	   * Get a string representation of the range.
+	   * @memberof Range
+	   * @returns {string}
+	   */
+	  Range.prototype.toString = function () {
+	    return this.format();
+	  };
+
+	  /**
+	   * Get a JSON representation of the range
+	   * @memberof Range
+	   * @returns {Object} Returns a JSON object structured as:
+	   *                   `{"mathjs": "Range", "start": 2, "end": 4, "step": 1}`
+	   */
+	  Range.prototype.toJSON = function () {
+	    return {
+	      mathjs: 'Range',
+	      start: this.start,
+	      end: this.end,
+	      step: this.step
+	    };
+	  };
+
+	  /**
+	   * Instantiate a Range from a JSON object
+	   * @memberof Range
+	   * @param {Object} json A JSON object structured as:
+	   *                      `{"mathjs": "Range", "start": 2, "end": 4, "step": 1}`
+	   * @return {Range}
+	   */
+	  Range.fromJSON = function (json) {
+	    return new Range(json.start, json.end, json.step);
+	  };
+
+	  return Range;
+	}
+
+	exports.name = 'Range';
+	exports.path = 'type';
+	exports.factory = factory;
+
+/***/ }),
+/* 325 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	function factory(type, config, load, typed) {
+	  /**
+	   * Create an index. An Index can store ranges having start, step, and end
+	   * for multiple dimensions.
+	   * Matrix.get, Matrix.set, and math.subset accept an Index as input.
+	   *
+	   * Syntax:
+	   *
+	   *     math.index(range1, range2, ...)
+	   *
+	   * Where each range can be any of:
+	   *
+	   * - A number
+	   * - A string for getting/setting an object property
+	   * - An instance of `Range`
+	   * - A one-dimensional Array or a Matrix with numbers
+	   *
+	   * Indexes must be zero-based, integer numbers.
+	   *
+	   * Examples:
+	   *
+	   *    var math = math.js
+	   *
+	   *    var b = [1, 2, 3, 4, 5];
+	   *    math.subset(b, math.index([1, 2, 3]));     // returns [2, 3, 4]
+	   *
+	   *    var a = math.matrix([[1, 2], [3, 4]]);
+	   *    a.subset(math.index(0, 1));             // returns 2
+	   *
+	   * See also:
+	   *
+	   *    bignumber, boolean, complex, matrix, number, string, unit
+	   *
+	   * @param {...*} ranges   Zero or more ranges or numbers.
+	   * @return {Index}        Returns the created index
+	   */
+	  return typed('index', {
+	    '...number | string | BigNumber | Range | Array | Matrix': function (args) {
+	      var ranges = args.map(function (arg) {
+	        if (arg && arg.isBigNumber === true) {
+	          return arg.toNumber(); // convert BigNumber to Number
+	        } else if (arg && (Array.isArray(arg) || arg.isMatrix === true)) {
+	          return arg.map(function (elem) {
+	            // convert BigNumber to Number
+	            return elem && elem.isBigNumber === true ? elem.toNumber() : elem;
+	          });
+	        } else {
+	          return arg;
+	        }
+	      });
+
+	      var res = new type.Index();
+	      type.Index.apply(res, ranges);
+	      return res;
+	    }
+	  });
+	}
+
+	exports.name = 'index';
+	exports.factory = factory;
+
+/***/ }),
+/* 326 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	function factory(type, config, load, typed) {
+
+	  var SparseMatrix = type.SparseMatrix;
+
+	  /**
+	   * Create a Sparse Matrix. The function creates a new `math.type.Matrix` object from
+	   * an `Array`. A Matrix has utility functions to manipulate the data in the
+	   * matrix, like getting the size and getting or setting values in the matrix.
+	   *
+	   * Syntax:
+	   *
+	   *    math.sparse()               // creates an empty sparse matrix.
+	   *    math.sparse(data)           // creates a sparse matrix with initial data.
+	   *    math.sparse(data, 'number') // creates a sparse matrix with initial data, number datatype.
+	   *
+	   * Examples:
+	   *
+	   *    var m = math.sparse([[1, 2], [3, 4]]);
+	   *    m.size();                        // Array [2, 2]
+	   *    m.resize([3, 2], 5);
+	   *    m.valueOf();                     // Array [[1, 2], [3, 4], [5, 5]]
+	   *    m.get([1, 0])                    // number 3
+	   *
+	   * See also:
+	   *
+	   *    bignumber, boolean, complex, index, number, string, unit, matrix
+	   *
+	   * @param {Array | Matrix} [data]    A two dimensional array
+	   *
+	   * @return {Matrix} The created matrix
+	   */
+	  var sparse = typed('sparse', {
+	    '': function () {
+	      return new SparseMatrix([]);
+	    },
+
+	    'string': function (datatype) {
+	      return new SparseMatrix([], datatype);
+	    },
+
+	    'Array | Matrix': function (data) {
+	      return new SparseMatrix(data);
+	    },
+
+	    'Array | Matrix, string': function (data, datatype) {
+	      return new SparseMatrix(data, datatype);
+	    }
+	  });
+
+	  sparse.toTex = {
+	    0: '\\begin{bsparse}\\end{bsparse}',
+	    1: '\\left(${args[0]}\\right)'
+	  };
+
+	  return sparse;
+	}
+
+	exports.name = 'sparse';
+	exports.factory = factory;
 
 /***/ })
 /******/ ]);
