@@ -10,45 +10,50 @@ module.exports = function recluster(){
   ];
 
   var clusters = clusterfck.hcluster(colors);
+  var inst_order = 0;
+  var order_array = [];
+  var inst_leaf;
 
-  console.log('************')
-  console.log(clusters.tree)
-
-  function get_limb_key(limb, side, level){
-
-    console.log('inst_side: ' + String(side))
-    console.log('inst_level : ' + String(inst_level) + '\n\n')
+  function get_limb_key(limb, side, inst_level){
 
     // if there are more branches then there is a distance
     if ( _.has(limb, 'dist')){
-      console.log('-- branch --')
-      console.log('distance', limb.dist)
+
+      inst_level = inst_level + 1;
       _.each(['left', 'right'], function(side2){
-        console.log('side2',side2)
-        inst_level = inst_level + 1;
         get_limb_key(limb[side2], side2, inst_level);
       })
+
     } else {
-      console.log('terminal leaf key:' + String(limb.key) + '\n==================\n\n' );
+
+
+      console.log('terminal leaf key:' + String(limb.key) +
+       '\tlevel: '+ String(inst_level)+
+       '\torder: ' + String(inst_order) +
+       '\n==================\n\n' );
+
+      inst_leaf = {};
+      inst_leaf.level = inst_level;
+      inst_leaf.order = inst_order;
+      inst_leaf.key = limb.key;
+
+      order_array.push(inst_leaf);
+
+      // increment order when terminal node is found
+      inst_order = inst_order + 1
+
     }
   }
 
 
+
+  // start hierarchy
   var tree = clusters.tree;
-  console.log('--main branch--')
-  console.log(tree.dist)
-  var inst_level = 0;
+  var start_level = 1;
   _.each(['left','right'], function(side){
-    console.log('\n\nFirst Branch: ' + String(side) + '--------------\n\n')
-    get_limb_key(tree[side], side, inst_level)
+    get_limb_key(tree[side], side, start_level)
   })
 
-  // var branch = {};
-  // for (i = 1; i <= tree.size; i++){
-  //   branch.l = tree['left'];;
-  //   branch.r = tree['right'];
-
-  //   console.log(branch)
-  // }
+  console.log(order_array)
 
 };
