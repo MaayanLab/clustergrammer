@@ -155,6 +155,15 @@ var Clustergrammer =
 	    return make_matrix_string(this.params);
 	  }
 
+	  function run_recluster() {
+
+	    var mat = this.params.network_data.mat;
+	    var names = this.params.network_data.row_nodes_names;
+	    var order_info = recluster(mat, names);
+
+	    console.log(order_info);
+	  }
+
 	  // add more API endpoints
 	  cgm.update_view = external_update_view;
 	  cgm.resize_viz = external_resize;
@@ -170,7 +179,7 @@ var Clustergrammer =
 	  cgm.d3_tip_custom = expose_d3_tip_custom;
 	  cgm.reorder = api_reorder;
 	  cgm.export_matrix_string = export_matrix_string;
-	  cgm.recluster = recluster;
+	  cgm.run_recluster = run_recluster;
 
 	  return cgm;
 	}
@@ -18762,7 +18771,10 @@ var Clustergrammer =
 	math.import(__webpack_require__(250));
 	math.import(__webpack_require__(313));
 
-	module.exports = function recluster() {
+	module.exports = function recluster(mat, names) {
+	  /*
+	  Rows are clustered. Run transpose before if necessary
+	  */
 
 	  var transpose = math.transpose;
 
@@ -18773,15 +18785,49 @@ var Clustergrammer =
 	  //  [100, 54, 255]
 	  // ];
 
-	  var mat = this.params.network_data.mat;
+	  // var mat = this.params.network_data.mat;
 
-	  console.log('try transposing');
-	  mat = transpose(mat);
+	  // console.log('try transposing')
+	  // mat = transpose(mat);
 
-	  var clusters = clusterfck.hcluster(mat);
+	  function euclidean_distance(v1, v2) {
+	    var total = 0;
+	    for (var i = 0; i < v1.length; i++) {
+	      total += Math.pow(v2[i] - v1[i], 2);
+	    }
+	    return Math.sqrt(total);
+	  }
+
+	  function vec_dot_product(vecA, vecB) {
+	    var product = 0;
+	    for (var i = 0; i < vecA.length; i++) {
+	      product += vecA[i] * vecB[i];
+	    }
+	    return product;
+	  }
+
+	  function vec_magnitude(vec) {
+	    var sum = 0;
+	    for (var i = 0; i < vec.length; i++) {
+	      sum += vec[i] * vec[i];
+	    }
+	    return Math.sqrt(sum);
+	  }
+
+	  function cosine_distance(vecA, vecB) {
+	    var cos_sim = vec_dot_product(vecA, vecB) / (vec_magnitude(vecA) * vec_magnitude(vecB));
+	    var cos_dist = 1 - cos_sim;
+	    return cos_dist;
+	  }
+
+	  // var clusters = clusterfck.hcluster(mat, euclidean_distance);
+	  var clusters = clusterfck.hcluster(mat, cosine_distance);
+
 	  var inst_order = 0;
 	  var order_array = [];
+	  var order_list = [];
 	  var inst_leaf;
+	  var inst_key;
 
 	  function get_limb_key(limb, side, inst_level) {
 
@@ -18794,14 +18840,20 @@ var Clustergrammer =
 	      });
 	    } else {
 
-	      console.log('terminal leaf key:' + String(limb.key) + '\tlevel: ' + String(inst_level) + '\torder: ' + String(inst_order) + '\n==================\n\n');
+	      inst_key = limb.key;
+
+	      // console.log('terminal leaf key:' + String(inst_key) +
+	      //  '\tlevel: '+ String(inst_level)+
+	      //  '\torder: ' + String(inst_order) +
+	      //  '\n==================\n\n' );
 
 	      inst_leaf = {};
 	      inst_leaf.level = inst_level;
 	      inst_leaf.order = inst_order;
-	      inst_leaf.key = limb.key;
+	      inst_leaf.key = inst_key;
 
 	      order_array.push(inst_leaf);
+	      order_list.push(inst_key);
 
 	      // increment order when terminal node is found
 	      inst_order = inst_order + 1;
@@ -18815,7 +18867,21 @@ var Clustergrammer =
 	    get_limb_key(tree[side], side, start_level);
 	  });
 
-	  console.log(order_array);
+	  // generate ordered names
+	  var inst_name;
+	  var ordered_names = [];
+	  _.each(order_list, function (index) {
+	    console.log(index);
+	    inst_name = names[index];
+	    ordered_names.push(inst_name);
+	  });
+
+	  var order_info = {};
+	  order_info.info = order_array;
+	  order_info.order = order_list;
+	  order_info.ordered_names = ordered_names;
+
+	  return order_info;
 		};
 
 /***/ }),

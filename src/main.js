@@ -110,6 +110,17 @@ function Clustergrammer(args) {
     return make_matrix_string(this.params);
   }
 
+  function run_recluster(){
+
+    var mat = this.params.network_data.mat;
+    var names = this.params.network_data.row_nodes_names;
+    var order_info = recluster(mat, names)
+
+    console.log(order_info)
+
+
+  }
+
   // add more API endpoints
   cgm.update_view = external_update_view;
   cgm.resize_viz = external_resize;
@@ -125,7 +136,7 @@ function Clustergrammer(args) {
   cgm.d3_tip_custom = expose_d3_tip_custom;
   cgm.reorder = api_reorder;
   cgm.export_matrix_string = export_matrix_string;
-  cgm.recluster = recluster;
+  cgm.run_recluster = run_recluster;
 
   return cgm;
 }
