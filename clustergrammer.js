@@ -18766,9 +18766,10 @@ var Clustergrammer =
 	  console.log('************');
 	  console.log(clusters.tree);
 
-	  function get_limb_key(limb, side) {
+	  function get_limb_key(limb, side, level) {
 
-	    console.log('get-index', side);
+	    console.log('inst_side: ' + String(side));
+	    console.log('inst_level : ' + String(inst_level) + '\n\n');
 
 	    // if there are more branches then there is a distance
 	    if (_.has(limb, 'dist')) {
@@ -18776,17 +18777,21 @@ var Clustergrammer =
 	      console.log('distance', limb.dist);
 	      _.each(['left', 'right'], function (side2) {
 	        console.log('side2', side2);
-	        get_limb_key(limb[side2], side2);
+	        inst_level = inst_level + 1;
+	        get_limb_key(limb[side2], side2, inst_level);
 	      });
 	    } else {
-	      console.log('terminal leaf', limb.index);
+	      console.log('terminal leaf key:' + String(limb.key) + '\n==================\n\n');
 	    }
 	  }
 
 	  var tree = clusters.tree;
+	  console.log('--main branch--');
+	  console.log(tree.dist);
+	  var inst_level = 0;
 	  _.each(['left', 'right'], function (side) {
-	    console.log(side);
-	    get_limb_key(tree[side], side);
+	    console.log('\n\nFirst Branch: ' + String(side) + '--------------\n\n');
+	    get_limb_key(tree[side], side, inst_level);
 	  });
 
 	  // var branch = {};
