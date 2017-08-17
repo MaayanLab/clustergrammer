@@ -18770,6 +18770,7 @@ var Clustergrammer =
 	var clusterfck = __webpack_require__(222);
 	var core = __webpack_require__(67);
 	var math = core.create();
+	var dist_fun = __webpack_require__(276);
 
 	math.import(__webpack_require__(226));
 	math.import(__webpack_require__(227));
@@ -18781,44 +18782,19 @@ var Clustergrammer =
 
 	  // var transpose = math.transpose;
 
+	  console.log(dist_fun);
+
+	  // make cutoff_dist an array
+	  var cutoff_dist = 50;
+
 	  mat = [[20, 20, 80], [22, 22, 90], [250, 255, 253], [100, 54, 255]];
 
 	  // var mat = this.params.network_data.mat;
-
 	  // mat = transpose(mat);
 
-	  function euclidean_distance(v1, v2) {
-	    var total = 0;
-	    for (var i = 0; i < v1.length; i++) {
-	      total += Math.pow(v2[i] - v1[i], 2);
-	    }
-	    return Math.sqrt(total);
-	  }
 
-	  function vec_dot_product(vecA, vecB) {
-	    var product = 0;
-	    for (var i = 0; i < vecA.length; i++) {
-	      product += vecA[i] * vecB[i];
-	    }
-	    return product;
-	  }
-
-	  function vec_magnitude(vec) {
-	    var sum = 0;
-	    for (var i = 0; i < vec.length; i++) {
-	      sum += vec[i] * vec[i];
-	    }
-	    return Math.sqrt(sum);
-	  }
-
-	  function cosine_distance(vecA, vecB) {
-	    var cos_sim = vec_dot_product(vecA, vecB) / (vec_magnitude(vecA) * vec_magnitude(vecB));
-	    var cos_dist = 1 - cos_sim;
-	    return cos_dist;
-	  }
-
-	  var clusters = clusterfck.hcluster(mat, euclidean_distance);
-	  // var clusters = clusterfck.hcluster(mat, cosine_distance);
+	  var clusters = clusterfck.hcluster(mat, dist_fun.euclidean);
+	  // var clusters = clusterfck.hcluster(mat, dist_fun['cosine']);
 
 	  var inst_order = 0;
 	  var inst_group = 1;
@@ -18826,12 +18802,13 @@ var Clustergrammer =
 	  var order_list = [];
 	  var inst_leaf;
 	  var inst_key;
-	  var inst_dist;
 
 	  // start hierarchy
 	  var tree = clusters.tree;
 	  var start_level = 1;
 	  var start_distance = tree.dist;
+
+	  console.log('tree height', start_distance);
 
 	  // var cutoff_fractions = [];
 	  var cutoff_vals = [];
@@ -18840,9 +18817,6 @@ var Clustergrammer =
 	    cutoff_vals.push(start_distance * i / 10);
 	    ini_locks.push(false);
 	  }
-
-	  // make cutoff_dist an array
-	  var cutoff_dist = 10;
 
 	  _.each(['left', 'right'], function (side) {
 
@@ -27529,6 +27503,44 @@ var Clustergrammer =
 	    }
 	    return inst_string;
 	  }).style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').style('font-weight', 300).style('font-size', font_size).attr('transform', 'translate(' + high_left_margin + ',' + top_margin + ')').attr('text-anchor', 'end');
+		};
+
+/***/ }),
+/* 276 */
+/***/ (function(module, exports) {
+
+	module.exports = {
+
+	  'euclidean': function (v1, v2) {
+	    var total = 0;
+	    for (var i = 0; i < v1.length; i++) {
+	      total = total + Math.pow(v2[i] - v1[i], 2);
+	    }
+	    return Math.sqrt(total);
+	  },
+	  'cosine': function (vecA, vecB) {
+
+	    function vec_dot_product(vecA, vecB) {
+	      var product = 0;
+	      for (var i = 0; i < vecA.length; i++) {
+	        product = product + vecA[i] * vecB[i];
+	      }
+	      return product;
+	    }
+
+	    function vec_magnitude(vec) {
+	      var sum = 0;
+	      for (var i = 0; i < vec.length; i++) {
+	        sum = sum + vec[i] * vec[i];
+	      }
+	      return Math.sqrt(sum);
+	    }
+
+	    var cos_sim = vec_dot_product(vecA, vecB) / (vec_magnitude(vecA) * vec_magnitude(vecB));
+	    var cos_dist = 1 - cos_sim;
+
+	    return cos_dist;
+	  }
 		};
 
 /***/ })

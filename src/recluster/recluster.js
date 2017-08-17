@@ -1,9 +1,10 @@
 var clusterfck = require('cornhundred-clusterfck');
 var core = require('mathjs/core');
 var math = core.create();
+var dist_fun = require('./distance_functions');
 
-math.import(require('mathjs/lib/function/matrix/transpose'))
-math.import(require('mathjs/lib/type/matrix'))
+math.import(require('mathjs/lib/function/matrix/transpose'));
+math.import(require('mathjs/lib/type/matrix'));
 
 module.exports = function recluster(mat, names){
   /*
@@ -11,6 +12,11 @@ module.exports = function recluster(mat, names){
   */
 
   // var transpose = math.transpose;
+
+  console.log(dist_fun);
+
+  // make cutoff_dist an array
+  var cutoff_dist = 50;
 
   mat = [
    [20, 20, 80],
@@ -20,42 +26,11 @@ module.exports = function recluster(mat, names){
   ];
 
   // var mat = this.params.network_data.mat;
-
   // mat = transpose(mat);
 
-  function euclidean_distance(v1, v2) {
-      var total = 0;
-      for (var i = 0; i < v1.length; i++) {
-         total += Math.pow(v2[i] - v1[i], 2);
-      }
-      return Math.sqrt(total);
-   }
 
-
-  function vec_dot_product(vecA, vecB) {
-    var product = 0;
-    for (var i = 0; i < vecA.length; i++) {
-      product += vecA[i] * vecB[i];
-    }
-    return product;
-  }
-
-  function vec_magnitude(vec) {
-    var sum = 0;
-    for (var i = 0; i < vec.length; i++) {
-      sum += vec[i] * vec[i];
-    }
-    return Math.sqrt(sum);
-  }
-
-  function cosine_distance(vecA, vecB) {
-    var cos_sim = vec_dot_product(vecA, vecB) / (vec_magnitude(vecA) * vec_magnitude(vecB));
-    var cos_dist = 1 - cos_sim
-    return cos_dist;
-  }
-
-  var clusters = clusterfck.hcluster(mat, euclidean_distance);
-  // var clusters = clusterfck.hcluster(mat, cosine_distance);
+  var clusters = clusterfck.hcluster(mat, dist_fun.euclidean);
+  // var clusters = clusterfck.hcluster(mat, dist_fun['cosine']);
 
   var inst_order = 0;
   var inst_group = 1;
@@ -63,12 +38,13 @@ module.exports = function recluster(mat, names){
   var order_list = [];
   var inst_leaf;
   var inst_key;
-  var inst_dist;
 
   // start hierarchy
   var tree = clusters.tree;
   var start_level = 1;
   var start_distance = tree.dist;
+
+  console.log('tree height', start_distance);
 
   // var cutoff_fractions = [];
   var cutoff_vals = [];
@@ -78,14 +54,11 @@ module.exports = function recluster(mat, names){
     ini_locks.push(false);
   }
 
-  // make cutoff_dist an array
-  var cutoff_dist = 10;
-
   _.each(['left','right'], function(side){
 
     get_leaves(tree[side], side, start_level, start_distance, false, [false]);
 
-  })
+  });
 
   function get_leaves(limb, side, inst_level, inst_dist, lock_group, lock_group_2){
 
@@ -107,7 +80,7 @@ module.exports = function recluster(mat, names){
 
       _.each(['left', 'right'], function(side2){
         get_leaves(limb[side2], side2, inst_level, inst_dist, lock_group, lock_group_2);
-      })
+      });
 
     } else {
 
@@ -132,7 +105,7 @@ module.exports = function recluster(mat, names){
       inst_leaf.dist = inst_dist;
 
       order_array.push(inst_leaf);
-      order_list.push(inst_key)
+      order_list.push(inst_key);
 
       // increment order when terminal node is found
       inst_order = inst_order + 1;
@@ -146,11 +119,11 @@ module.exports = function recluster(mat, names){
   _.each(order_list, function(index){
     inst_name = names[index];
     ordered_names.push(inst_name);
-  })
+  });
 
   var order_info = {};
   order_info.info = order_array;
-  order_info.order = order_list
+  order_info.order = order_list;
   order_info.ordered_names = ordered_names;
 
   return order_info;
