@@ -21,7 +21,7 @@ module.exports = function recluster(mat, names){
   //  [100, 54, 255]
   // ];
 
-  manual_cutoff = 0.8592
+  manual_cutoff = 1.00
 
   // var mat = this.params.network_data.mat;
   // mat = transpose(mat);
@@ -46,7 +46,7 @@ module.exports = function recluster(mat, names){
 
   })
 
-  console.log('max_val', max_val)
+  console.log('manual_cutoff', manual_cutoff)
 
 
   var inst_order = 0;
