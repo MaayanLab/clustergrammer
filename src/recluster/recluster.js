@@ -24,8 +24,28 @@ module.exports = function recluster(mat, names){
   // var mat = this.params.network_data.mat;
   // mat = transpose(mat);
 
-  var clusters = clusterfck.hcluster(mat, dist_fun.euclidean);
-  // var clusters = clusterfck.hcluster(mat, dist_fun['cosine']);
+  // var clusters = clusterfck.hcluster(mat, dist_fun.euclidean);
+  var clusters = clusterfck.hcluster(mat, dist_fun['cosine']);
+
+  dm = clusters.hc.dists
+
+  console.log('------- max -------')
+  max_val = 0;
+  _.each(dm, function(row){
+    // console.log(row)
+    new_row = []
+    _.each(row, function(inst_val){
+      if (isFinite(inst_val)){
+        if (inst_val > max_val){
+          max_val = inst_val;
+        }
+      }
+    })
+
+  })
+
+  console.log('max_val', max_val)
+
 
   var inst_order = 0;
   var group = [];
@@ -39,7 +59,9 @@ module.exports = function recluster(mat, names){
   var ini_level = 1;
   var ini_distance = tree.dist;
 
-  // console.log('tree height', ini_distance);
+
+
+  console.log('tree height', ini_distance);
 
   // var cutoff_fractions = [];
   var cutoff_vals = [];

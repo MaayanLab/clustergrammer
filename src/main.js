@@ -130,12 +130,13 @@ function Clustergrammer(args) {
       inst_order = order_info.info[index]
 
       // console.log(inst_row.name, inst_order.name)
-      console.log(inst_row.name, inst_order.name)
-      console.log('\n\n')
+      // console.log(inst_row.name, inst_order.name)
+      // console.log('\n\n')
 
       inst_row.clust = inst_order.order;
+      // inst_row.group = inst_order.group;
 
-      console.log(inst_row.clust)
+      // console.log(inst_row.clust)
 
       // pass clust property to config view N_row_sum: 'all' [hacky]
     }

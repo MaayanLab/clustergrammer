@@ -175,12 +175,13 @@ var Clustergrammer =
 	      inst_order = order_info.info[index];
 
 	      // console.log(inst_row.name, inst_order.name)
-	      console.log(inst_row.name, inst_order.name);
-	      console.log('\n\n');
+	      // console.log(inst_row.name, inst_order.name)
+	      // console.log('\n\n')
 
 	      inst_row.clust = inst_order.order;
+	      // inst_row.group = inst_order.group;
 
-	      console.log(inst_row.clust);
+	      // console.log(inst_row.clust)
 
 	      // pass clust property to config view N_row_sum: 'all' [hacky]
 	    }
@@ -18817,8 +18818,26 @@ var Clustergrammer =
 	  // var mat = this.params.network_data.mat;
 	  // mat = transpose(mat);
 
-	  var clusters = clusterfck.hcluster(mat, dist_fun.euclidean);
-	  // var clusters = clusterfck.hcluster(mat, dist_fun['cosine']);
+	  // var clusters = clusterfck.hcluster(mat, dist_fun.euclidean);
+	  var clusters = clusterfck.hcluster(mat, dist_fun['cosine']);
+
+	  dm = clusters.hc.dists;
+
+	  console.log('------- max -------');
+	  max_val = 0;
+	  _.each(dm, function (row) {
+	    // console.log(row)
+	    new_row = [];
+	    _.each(row, function (inst_val) {
+	      if (isFinite(inst_val)) {
+	        if (inst_val > max_val) {
+	          max_val = inst_val;
+	        }
+	      }
+	    });
+	  });
+
+	  console.log('max_val', max_val);
 
 	  var inst_order = 0;
 	  var group = [];
@@ -18832,7 +18851,7 @@ var Clustergrammer =
 	  var ini_level = 1;
 	  var ini_distance = tree.dist;
 
-	  // console.log('tree height', ini_distance);
+	  console.log('tree height', ini_distance);
 
 	  // var cutoff_fractions = [];
 	  var cutoff_vals = [];
