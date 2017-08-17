@@ -116,10 +116,22 @@ function Clustergrammer(args) {
     var names = this.params.network_data.row_nodes_names;
     var order_info = recluster(mat, names)
 
-    console.log('--- groups ')
-    _.each(order_info.info, function(inst_info){
-      console.log(inst_info.groups);
-    })
+    // _.each(order_info.info, function(inst_info){
+    //   console.log(inst_info.groups);
+    // })
+
+    // overwrite ordering with new ordering
+    var rows = this.params.network_data.row_nodes;
+
+    for (var index=0; index <=rows.length; index++){
+      inst_row = rows[index]
+      inst_order = order_info.info[index]
+      console.log(inst_row.name, inst_order.name)
+
+      console.log('\n\n')
+    }
+
+    return order_info;
 
   }
 

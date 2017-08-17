@@ -14,12 +14,12 @@ module.exports = function recluster(mat, names){
   // var transpose = math.transpose;
 
 
-  mat = [
-   [20, 20, 80],
-   [22, 22, 90],
-   [250, 255, 253],
-   [100, 54, 255]
-  ];
+  // mat = [
+  //  [20, 20, 80],
+  //  [22, 22, 90],
+  //  [250, 255, 253],
+  //  [100, 54, 255]
+  // ];
 
   // var mat = this.params.network_data.mat;
   // mat = transpose(mat);
@@ -29,7 +29,7 @@ module.exports = function recluster(mat, names){
   // var clusters = clusterfck.hcluster(mat, dist_fun['cosine']);
 
   var inst_order = 0;
-  var groups = [];
+  var group = [];
   var order_array = [];
   var order_list = [];
   var inst_leaf;
@@ -40,7 +40,7 @@ module.exports = function recluster(mat, names){
   var ini_level = 1;
   var ini_distance = tree.dist;
 
-  console.log('tree height', ini_distance);
+  // console.log('tree height', ini_distance);
 
   // var cutoff_fractions = [];
   var cutoff_vals = [];
@@ -49,13 +49,13 @@ module.exports = function recluster(mat, names){
   for (var i = 0; i <= 10; i++) {
     cutoff_vals.push(ini_distance * i/10);
     ini_locks.push(false);
-    groups.push(1);
+    group.push(1);
     cutoff_indexes.push(i);
   }
 
 
-  console.log('cutoff values\n-----------------');
-  console.log(cutoff_vals);
+  // console.log('cutoff values\n-----------------');
+  // console.log(cutoff_vals);
 
   _.each(['left','right'], function(side){
 
@@ -94,12 +94,12 @@ module.exports = function recluster(mat, names){
 
         // increment group when group is not locked
         if (locks[index] === false){
-          groups[index] = groups[index] + 1;
+          group[index] = group[index] + 1;
         }
         // correct for incrementing too early
         // if first node distance is above cutoff (resolvable) do not increment
-        if (groups[index] > inst_order + 1){
-          groups[index] = 1;
+        if (group[index] > inst_order + 1){
+          group[index] = 1;
         }
 
       });
@@ -108,11 +108,13 @@ module.exports = function recluster(mat, names){
       inst_leaf.level = inst_level;
       inst_leaf.order = inst_order;
 
-      // need to make copy of groups not reference
-      inst_leaf.groups = $.extend(true, [], groups);
+      // need to make copy of group not reference
+      inst_leaf.group = $.extend(true, [], group);
 
       inst_leaf.key = inst_key;
       inst_leaf.dist = inst_dist;
+
+      inst_leaf.name = names[inst_key];
 
       order_array.push(inst_leaf);
       order_list.push(inst_key);
@@ -122,6 +124,11 @@ module.exports = function recluster(mat, names){
 
     }
   }
+
+  // sort on key value
+  order_array.sort(function(a,b){
+    return a.key - b.key;
+  })
 
   // generate ordered names
   var inst_name;

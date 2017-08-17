@@ -161,10 +161,22 @@ var Clustergrammer =
 	    var names = this.params.network_data.row_nodes_names;
 	    var order_info = recluster(mat, names);
 
-	    console.log('--- groups ');
-	    _.each(order_info.info, function (inst_info) {
-	      console.log(inst_info.groups);
-	    });
+	    // _.each(order_info.info, function(inst_info){
+	    //   console.log(inst_info.groups);
+	    // })
+
+	    // overwrite ordering with new ordering
+	    var rows = this.params.network_data.row_nodes;
+
+	    for (var index = 0; index <= rows.length; index++) {
+	      inst_row = rows[index];
+	      inst_order = order_info.info[index];
+	      console.log(inst_row.name, inst_order.name);
+
+	      console.log('\n\n');
+	    }
+
+	    return order_info;
 	  }
 
 	  // add more API endpoints
@@ -18783,7 +18795,12 @@ var Clustergrammer =
 	  // var transpose = math.transpose;
 
 
-	  mat = [[20, 20, 80], [22, 22, 90], [250, 255, 253], [100, 54, 255]];
+	  // mat = [
+	  //  [20, 20, 80],
+	  //  [22, 22, 90],
+	  //  [250, 255, 253],
+	  //  [100, 54, 255]
+	  // ];
 
 	  // var mat = this.params.network_data.mat;
 	  // mat = transpose(mat);
@@ -18793,7 +18810,7 @@ var Clustergrammer =
 	  // var clusters = clusterfck.hcluster(mat, dist_fun['cosine']);
 
 	  var inst_order = 0;
-	  var groups = [];
+	  var group = [];
 	  var order_array = [];
 	  var order_list = [];
 	  var inst_leaf;
@@ -18804,7 +18821,7 @@ var Clustergrammer =
 	  var ini_level = 1;
 	  var ini_distance = tree.dist;
 
-	  console.log('tree height', ini_distance);
+	  // console.log('tree height', ini_distance);
 
 	  // var cutoff_fractions = [];
 	  var cutoff_vals = [];
@@ -18813,12 +18830,12 @@ var Clustergrammer =
 	  for (var i = 0; i <= 10; i++) {
 	    cutoff_vals.push(ini_distance * i / 10);
 	    ini_locks.push(false);
-	    groups.push(1);
+	    group.push(1);
 	    cutoff_indexes.push(i);
 	  }
 
-	  console.log('cutoff values\n-----------------');
-	  console.log(cutoff_vals);
+	  // console.log('cutoff values\n-----------------');
+	  // console.log(cutoff_vals);
 
 	  _.each(['left', 'right'], function (side) {
 
@@ -18855,12 +18872,12 @@ var Clustergrammer =
 
 	        // increment group when group is not locked
 	        if (locks[index] === false) {
-	          groups[index] = groups[index] + 1;
+	          group[index] = group[index] + 1;
 	        }
 	        // correct for incrementing too early
 	        // if first node distance is above cutoff (resolvable) do not increment
-	        if (groups[index] > inst_order + 1) {
-	          groups[index] = 1;
+	        if (group[index] > inst_order + 1) {
+	          group[index] = 1;
 	        }
 	      });
 
@@ -18868,11 +18885,13 @@ var Clustergrammer =
 	      inst_leaf.level = inst_level;
 	      inst_leaf.order = inst_order;
 
-	      // need to make copy of groups not reference
-	      inst_leaf.groups = $.extend(true, [], groups);
+	      // need to make copy of group not reference
+	      inst_leaf.group = $.extend(true, [], group);
 
 	      inst_leaf.key = inst_key;
 	      inst_leaf.dist = inst_dist;
+
+	      inst_leaf.name = names[inst_key];
 
 	      order_array.push(inst_leaf);
 	      order_list.push(inst_key);
@@ -18881,6 +18900,11 @@ var Clustergrammer =
 	      inst_order = inst_order + 1;
 	    }
 	  }
+
+	  // sort on key value
+	  order_array.sort(function (a, b) {
+	    return a.key - b.key;
+	  });
 
 	  // generate ordered names
 	  var inst_name;
