@@ -31,7 +31,7 @@ module.exports = function recluster(mat, names){
   // var clusters = clusterfck.hcluster(mat, dist_fun['cosine']);
 
   var inst_order = 0;
-  var inst_group = [1];
+  var groups = [];
   var order_array = [];
   var order_list = [];
   var inst_leaf;
@@ -47,12 +47,17 @@ module.exports = function recluster(mat, names){
   // var cutoff_fractions = [];
   var cutoff_vals = [];
   var ini_locks = [];
+  var cutoff_indexes = []
   for (var i = 0; i <= 10; i++) {
     cutoff_vals.push(ini_distance * i/10);
     ini_locks.push(false);
+    groups.push(1);
+    cutoff_indexes.push(i);
   }
 
-  cutoff_vals[0] = 350;
+
+  console.log('cutoff values\n-----------------')
+  console.log(cutoff_vals)
 
   _.each(['left','right'], function(side){
 
@@ -65,11 +70,13 @@ module.exports = function recluster(mat, names){
     // set lock state
     // lock if distance is under resolvable distance
 
-    if (inst_dist < cutoff_vals[0]){
-      locks[0] = true;
-    } else {
-      locks[0] = false;
-    }
+    _.each(cutoff_indexes, function(index){
+      if (inst_dist <= cutoff_vals[index]){
+        locks[index] = true;
+      } else {
+        locks[index] = false;
+      }
+    });
 
     // if there are more branches then there is a distance
     if ( _.has(limb, 'dist')){
@@ -85,24 +92,26 @@ module.exports = function recluster(mat, names){
 
       inst_key = limb.key;
 
-      // increment group when group is not locked
-      if (locks[0] === false){
-        inst_group[0] = inst_group[0] + 1;
-      }
-      // correct for incrementing too early
-      // if first node distance is above cutoff (resolvable) do not increment
-      if (inst_group[0] > inst_order + 1){
-        inst_group[0] = 1;
-      }
+      _.each(cutoff_indexes, function(index){
 
-      // console.log(inst_group)
+        // increment group when group is not locked
+        if (locks[index] === false){
+          groups[index] = groups[index] + 1;
+        }
+        // correct for incrementing too early
+        // if first node distance is above cutoff (resolvable) do not increment
+        if (groups[index] > inst_order + 1){
+          groups[index] = 1;
+        }
+
+      })
 
       inst_leaf = {};
       inst_leaf.level = inst_level;
       inst_leaf.order = inst_order;
 
-      // need to make copy of inst_group not reference
-      inst_leaf.groups = $.extend(true, [], inst_group);
+      // need to make copy of groups not reference
+      inst_leaf.groups = $.extend(true, [], groups);
 
       inst_leaf.key = inst_key;
       inst_leaf.dist = inst_dist;
