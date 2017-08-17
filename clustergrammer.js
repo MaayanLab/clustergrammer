@@ -162,29 +162,29 @@ var Clustergrammer =
 	    var names = this.params.network_data.row_nodes_names;
 	    var order_info = recluster(mat, names);
 
-	    // _.each(order_info.info, function(inst_info){
-	    //   console.log(inst_info.groups);
-	    // })
+	    _.each(order_info.info, function (inst_info) {
+	      console.log(inst_info.group[0]);
+	    });
 
 	    // overwrite ordering with new ordering
 	    // var rows = this.config.network_data.row_nodes;
 	    var rows = this.config.network_data.views[0].nodes['row_nodes'];
 
-	    for (var index = 0; index < rows.length; index++) {
-	      inst_row = rows[index];
-	      inst_order = order_info.info[index];
+	    // for (var index=0; index <rows.length; index++){
+	    //   inst_row = rows[index]
+	    //   inst_order = order_info.info[index]
 
-	      // console.log(inst_row.name, inst_order.name)
-	      // console.log(inst_row.name, inst_order.name)
-	      // console.log('\n\n')
+	    //   // console.log(inst_row.name, inst_order.name)
+	    //   // console.log(inst_row.name, inst_order.name)
+	    //   // console.log('\n\n')
 
-	      inst_row.clust = inst_order.order;
-	      // inst_row.group = inst_order.group;
+	    //   inst_row.clust = inst_order.order;
+	    //   inst_row.group = inst_order.group;
 
-	      // console.log(inst_row.clust)
+	    //   // console.log(inst_row.clust)
 
-	      // pass clust property to config view N_row_sum: 'all' [hacky]
-	    }
+	    //   // pass clust property to config view N_row_sum: 'all' [hacky]
+	    // }
 
 	    return order_info;
 	  }
@@ -18815,6 +18815,8 @@ var Clustergrammer =
 	  //  [100, 54, 255]
 	  // ];
 
+	  manual_cutoff = 0.8;
+
 	  // var mat = this.params.network_data.mat;
 	  // mat = transpose(mat);
 
@@ -18858,7 +18860,8 @@ var Clustergrammer =
 	  var ini_locks = [];
 	  var cutoff_indexes = [];
 	  for (var i = 0; i <= 10; i++) {
-	    cutoff_vals.push(ini_distance * i / 10);
+	    // cutoff_vals.push(ini_distance * i/10);
+	    cutoff_vals.push(manual_cutoff);
 	    ini_locks.push(false);
 	    group.push(1);
 	    cutoff_indexes.push(i);
@@ -18931,10 +18934,10 @@ var Clustergrammer =
 	    }
 	  }
 
-	  // sort on key value
-	  order_array.sort(function (a, b) {
-	    return a.key - b.key;
-	  });
+	  // // sort on key value
+	  // order_array.sort(function(a,b){
+	  //   return a.key - b.key;
+	  // });
 
 	  // generate ordered names
 	  var inst_name;

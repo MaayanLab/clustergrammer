@@ -117,29 +117,32 @@ function Clustergrammer(args) {
     var names = this.params.network_data.row_nodes_names;
     var order_info = recluster(mat, names)
 
-    // _.each(order_info.info, function(inst_info){
-    //   console.log(inst_info.groups);
-    // })
+    _.each(order_info.info, function(inst_info){
+      console.log(inst_info.group[0]);
+    })
 
     // overwrite ordering with new ordering
     // var rows = this.config.network_data.row_nodes;
     var rows = this.config.network_data.views[0].nodes['row_nodes']
 
-    for (var index=0; index <rows.length; index++){
-      inst_row = rows[index]
-      inst_order = order_info.info[index]
 
-      // console.log(inst_row.name, inst_order.name)
-      // console.log(inst_row.name, inst_order.name)
-      // console.log('\n\n')
 
-      inst_row.clust = inst_order.order;
-      // inst_row.group = inst_order.group;
 
-      // console.log(inst_row.clust)
+    // for (var index=0; index <rows.length; index++){
+    //   inst_row = rows[index]
+    //   inst_order = order_info.info[index]
 
-      // pass clust property to config view N_row_sum: 'all' [hacky]
-    }
+    //   // console.log(inst_row.name, inst_order.name)
+    //   // console.log(inst_row.name, inst_order.name)
+    //   // console.log('\n\n')
+
+    //   inst_row.clust = inst_order.order;
+    //   inst_row.group = inst_order.group;
+
+    //   // console.log(inst_row.clust)
+
+    //   // pass clust property to config view N_row_sum: 'all' [hacky]
+    // }
 
     return order_info;
 

@@ -21,6 +21,8 @@ module.exports = function recluster(mat, names){
   //  [100, 54, 255]
   // ];
 
+  manual_cutoff = 0.8
+
   // var mat = this.params.network_data.mat;
   // mat = transpose(mat);
 
@@ -68,7 +70,8 @@ module.exports = function recluster(mat, names){
   var ini_locks = [];
   var cutoff_indexes = [];
   for (var i = 0; i <= 10; i++) {
-    cutoff_vals.push(ini_distance * i/10);
+    // cutoff_vals.push(ini_distance * i/10);
+    cutoff_vals.push(manual_cutoff);
     ini_locks.push(false);
     group.push(1);
     cutoff_indexes.push(i);
@@ -146,10 +149,10 @@ module.exports = function recluster(mat, names){
     }
   }
 
-  // sort on key value
-  order_array.sort(function(a,b){
-    return a.key - b.key;
-  });
+  // // sort on key value
+  // order_array.sort(function(a,b){
+  //   return a.key - b.key;
+  // });
 
   // generate ordered names
   var inst_name;
