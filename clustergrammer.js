@@ -157,6 +157,7 @@ var Clustergrammer =
 
 	  function run_recluster() {
 
+	    // debugger;
 	    var mat = this.params.network_data.mat;
 	    var names = this.params.network_data.row_nodes_names;
 	    var order_info = recluster(mat, names);
@@ -166,7 +167,8 @@ var Clustergrammer =
 	    // })
 
 	    // overwrite ordering with new ordering
-	    var rows = this.params.network_data.row_nodes;
+	    // var rows = this.config.network_data.row_nodes;
+	    var rows = this.config.network_data.views[0].nodes['row_nodes'];
 
 	    for (var index = 0; index < rows.length; index++) {
 	      inst_row = rows[index];
@@ -18814,7 +18816,6 @@ var Clustergrammer =
 
 	  // var mat = this.params.network_data.mat;
 	  // mat = transpose(mat);
-
 
 	  var clusters = clusterfck.hcluster(mat, dist_fun.euclidean);
 	  // var clusters = clusterfck.hcluster(mat, dist_fun['cosine']);
