@@ -18815,7 +18815,7 @@ var Clustergrammer =
 	  //  [100, 54, 255]
 	  // ];
 
-	  manual_cutoff = 0.8;
+	  manual_cutoff = 0.8592;
 
 	  // var mat = this.params.network_data.mat;
 	  // mat = transpose(mat);
@@ -18852,6 +18852,8 @@ var Clustergrammer =
 	  var tree = clusters.tree;
 	  var ini_level = 1;
 	  var ini_distance = tree.dist;
+
+	  console.log(tree);
 
 	  console.log('tree height', ini_distance);
 
