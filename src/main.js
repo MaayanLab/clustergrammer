@@ -123,12 +123,19 @@ function Clustergrammer(args) {
     // overwrite ordering with new ordering
     var rows = this.params.network_data.row_nodes;
 
-    for (var index=0; index <=rows.length; index++){
+    for (var index=0; index <rows.length; index++){
       inst_row = rows[index]
       inst_order = order_info.info[index]
-      console.log(inst_row.name, inst_order.name)
 
+      // console.log(inst_row.name, inst_order.name)
+      console.log(inst_row.name, inst_order.name)
       console.log('\n\n')
+
+      inst_row.clust = inst_order.order;
+
+      console.log(inst_row.clust)
+
+      // pass clust property
     }
 
     return order_info;
