@@ -116,6 +116,7 @@ function Clustergrammer(args) {
     var names = this.params.network_data.row_nodes_names;
     var order_info = recluster(mat, names)
 
+    console.log('--- groups ')
     _.each(order_info.info, function(inst_info){
       console.log(inst_info.group)
     })

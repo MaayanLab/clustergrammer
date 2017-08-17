@@ -161,6 +161,7 @@ var Clustergrammer =
 	    var names = this.params.network_data.row_nodes_names;
 	    var order_info = recluster(mat, names);
 
+	    console.log('--- groups ');
 	    _.each(order_info.info, function (inst_info) {
 	      console.log(inst_info.group);
 	    });
@@ -18835,29 +18836,40 @@ var Clustergrammer =
 
 	  // var cutoff_fractions = [];
 	  var cutoff_vals = [];
-	  var ini_lock_groups = [];
+	  var ini_locks = [];
 	  for (var i = 0; i <= 10; i++) {
 	    cutoff_vals.push(start_distance * i / 10);
-	    ini_lock_groups.push(false);
+	    ini_locks.push(false);
 	  }
-
-	  // console.log(cutoff_vals)
-	  // console.log(ini_lock_groups)
 
 	  // make cutoff_dist an array
 	  var cutoff_dist = 350;
+
 	  console.log('cutoff_dist', cutoff_dist);
 
 	  _.each(['left', 'right'], function (side) {
-	    get_leaf_key(tree[side], side, start_level, start_distance);
+
+	    console.log('>>> side: ', side);
+	    get_leaves(tree[side], side, start_level, start_distance, false, [false]);
 	  });
 
-	  function get_leaf_key(limb, side, inst_level, inst_dist, lock_group = false) {
+	  function get_leaves(limb, side, inst_level, inst_dist, lock_group, lock_group_2) {
 
-	    // lock group (lock if distance is under resolvable distance) above cutoff
+	    // set lock state (lock if distance is under resolvable distance) above cutoff
 	    if (inst_dist < cutoff_dist) {
 	      lock_group = true;
+	      lock_group_2[0] = true;
+	    } else {
+	      lock_group = false;
+	      lock_group_2[0] = false;
 	    }
+
+	    console.log('*********************');
+	    console.log('side', side);
+	    console.log(inst_dist);
+	    console.log(lock_group);
+	    console.log(lock_group_2);
+	    console.log('********************\n\n\n');
 
 	    // if there are more branches then there is a distance
 	    if (_.has(limb, 'dist')) {
@@ -18866,14 +18878,19 @@ var Clustergrammer =
 	      inst_level = inst_level + 1;
 
 	      _.each(['left', 'right'], function (side2) {
-	        get_leaf_key(limb[side2], side2, inst_level, inst_dist, lock_group);
+	        get_leaves(limb[side2], side2, inst_level, inst_dist, lock_group, lock_group_2);
 	      });
 	    } else {
 
 	      inst_key = limb.key;
 
+	      console.log('------ Leaf -------');
+	      console.log(lock_group);
+	      console.log(lock_group_2);
+	      console.log('--------------------\n\n\n');
+
 	      // increment group when group is not locked
-	      if (lock_group === false) {
+	      if (lock_group_2[0] === false) {
 	        inst_group = inst_group + 1;
 	      }
 
