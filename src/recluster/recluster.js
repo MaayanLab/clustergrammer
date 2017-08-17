@@ -41,34 +41,32 @@ module.exports = function recluster(mat, names){
 
   // start hierarchy
   var tree = clusters.tree;
-  var start_level = 1;
-  var start_distance = tree.dist;
+  var ini_level = 1;
+  var ini_distance = tree.dist;
 
-  console.log('tree height', start_distance);
+  console.log('tree height', ini_distance);
 
   // var cutoff_fractions = [];
   var cutoff_vals = [];
   var ini_locks = [];
   for (var i = 0; i <= 10; i++) {
-    cutoff_vals.push(start_distance * i/10);
+    cutoff_vals.push(ini_distance * i/10);
     ini_locks.push(false);
   }
 
   _.each(['left','right'], function(side){
 
-    get_leaves(tree[side], side, start_level, start_distance, false, [false]);
+    get_leaves(tree[side], side, ini_level, ini_distance, ini_locks);
 
   });
 
-  function get_leaves(limb, side, inst_level, inst_dist, lock_group, lock_group_2){
+  function get_leaves(limb, side, inst_level, inst_dist, locks){
 
     // set lock state (lock if distance is under resolvable distance) above cutoff
     if (inst_dist < cutoff_dist){
-      lock_group = true;
-      lock_group_2[0] = true;
+      locks[0] = true;
     } else {
-      lock_group = false;
-      lock_group_2[0] = false;
+      locks[0] = false;
     }
 
 
@@ -79,7 +77,7 @@ module.exports = function recluster(mat, names){
       inst_level = inst_level + 1;
 
       _.each(['left', 'right'], function(side2){
-        get_leaves(limb[side2], side2, inst_level, inst_dist, lock_group, lock_group_2);
+        get_leaves(limb[side2], side2, inst_level, inst_dist,  locks);
       });
 
     } else {
@@ -87,7 +85,7 @@ module.exports = function recluster(mat, names){
       inst_key = limb.key;
 
       // increment group when group is not locked
-      if (lock_group_2[0] === false){
+      if (locks[0] === false){
         inst_group = inst_group + 1;
       }
 
