@@ -13,6 +13,23 @@ module.exports = function recluster(mat, names){
 
   // var transpose = math.transpose;
 
+  //////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////
+  /*
+  The incrementing issue has something to do with encountering a leaf
+  that has a parent branch that is above the cutoff. Otherwise there is no
+  incrementing going on.
+  */
+  //////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////
+
 
   // mat = [
   //  [20, 20, 80],
@@ -61,7 +78,7 @@ module.exports = function recluster(mat, names){
 
   console.log('tree height', ini_distance);
 
-  manual_cutoff = 0.07;
+  manual_cutoff = 0.8592;
   max_level = 3;
   console.log('manual_cutoff', manual_cutoff)
 
@@ -78,8 +95,6 @@ module.exports = function recluster(mat, names){
   }
 
 
-
-
   _.each(['left','right'], function(side){
 
     get_leaves(tree[side], side, ini_level, ini_distance, ini_locks);
@@ -88,23 +103,18 @@ module.exports = function recluster(mat, names){
 
   function get_leaves(limb, side, inst_level, inst_dist, locks){
 
-    // if (locks[0] === false){
-    //   console.log('before checking')
-    //   console.log(locks)
-    // }
-
-    ////////////////////////////////////////////////////////////////
-    if (inst_level <= max_level ){
-      console.log( '\n\n numberslevel: ' + String(inst_level) + ': ' + String(inst_dist))
+    if (locks[0] === false && inst_level <= max_level){
+      console.log('false before checking\n*********************************************')
+      console.log('dist: ' + String(inst_dist))
+      console.log(locks)
     }
 
-    ////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////
-    // always overwriting lock, need to have persistent lock
-    ////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////
+    // ////////////////////////////////////////////////////////////////
+    // if (inst_level <= max_level ){
+    //   console.log( '\n\n numberslevel: ' + String(inst_level) + ': ' + String(inst_dist))
+    // }
+
+
     // lock if distance is under resolvable distance
     _.each(cutoff_indexes, function(index){
       if (inst_dist <= cutoff_vals[index]){
