@@ -92,6 +92,10 @@ module.exports = function recluster(mat, names){
     // set lock state
     // lock if distance is under resolvable distance
 
+    if (inst_level <=3 ){
+      console.log( 'level: ' + String(inst_level) + ': ' + String(inst_dist))
+    }
+
     _.each(cutoff_indexes, function(index){
       if (inst_dist <= cutoff_vals[index]){
         locks[index] = true;
