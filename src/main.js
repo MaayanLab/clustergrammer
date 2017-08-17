@@ -118,7 +118,7 @@ function Clustergrammer(args) {
 
     console.log('--- groups ')
     _.each(order_info.info, function(inst_info){
-      console.log(inst_info.groups)
+      console.log(inst_info.groups);
     })
 
   }

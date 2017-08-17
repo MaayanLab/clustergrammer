@@ -18782,7 +18782,6 @@ var Clustergrammer =
 
 	  // var transpose = math.transpose;
 
-	  console.log(dist_fun);
 
 	  mat = [[20, 20, 80], [22, 22, 90], [250, 255, 253], [100, 54, 255]];
 
@@ -18874,8 +18873,6 @@ var Clustergrammer =
 
 	      inst_leaf.key = inst_key;
 	      inst_leaf.dist = inst_dist;
-
-	      console.log(inst_leaf.groups);
 
 	      order_array.push(inst_leaf);
 	      order_list.push(inst_key);

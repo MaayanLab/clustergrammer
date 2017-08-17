@@ -13,8 +13,6 @@ module.exports = function recluster(mat, names){
 
   // var transpose = math.transpose;
 
-  console.log(dist_fun);
-
 
   mat = [
    [20, 20, 80],
@@ -47,7 +45,7 @@ module.exports = function recluster(mat, names){
   // var cutoff_fractions = [];
   var cutoff_vals = [];
   var ini_locks = [];
-  var cutoff_indexes = []
+  var cutoff_indexes = [];
   for (var i = 0; i <= 10; i++) {
     cutoff_vals.push(ini_distance * i/10);
     ini_locks.push(false);
@@ -56,8 +54,8 @@ module.exports = function recluster(mat, names){
   }
 
 
-  console.log('cutoff values\n-----------------')
-  console.log(cutoff_vals)
+  console.log('cutoff values\n-----------------');
+  console.log(cutoff_vals);
 
   _.each(['left','right'], function(side){
 
@@ -104,7 +102,7 @@ module.exports = function recluster(mat, names){
           groups[index] = 1;
         }
 
-      })
+      });
 
       inst_leaf = {};
       inst_leaf.level = inst_level;
@@ -115,8 +113,6 @@ module.exports = function recluster(mat, names){
 
       inst_leaf.key = inst_key;
       inst_leaf.dist = inst_dist;
-
-      console.log(inst_leaf.groups)
 
       order_array.push(inst_leaf);
       order_list.push(inst_key);
