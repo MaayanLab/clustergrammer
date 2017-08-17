@@ -21,8 +21,6 @@ module.exports = function recluster(mat, names){
   //  [100, 54, 255]
   // ];
 
-  manual_cutoff = 1.00
-
   // var mat = this.params.network_data.mat;
   // mat = transpose(mat);
 
@@ -46,8 +44,6 @@ module.exports = function recluster(mat, names){
 
   })
 
-  console.log('manual_cutoff', manual_cutoff)
-
 
   var inst_order = 0;
   var group = [];
@@ -65,6 +61,10 @@ module.exports = function recluster(mat, names){
 
   console.log('tree height', ini_distance);
 
+  manual_cutoff = 0.07;
+  max_level = 3;
+  console.log('manual_cutoff', manual_cutoff)
+
   // var cutoff_fractions = [];
   var cutoff_vals = [];
   var ini_locks = [];
@@ -78,8 +78,7 @@ module.exports = function recluster(mat, names){
   }
 
 
-  // console.log('cutoff values\n-----------------');
-  // console.log(cutoff_vals);
+
 
   _.each(['left','right'], function(side){
 
@@ -89,20 +88,43 @@ module.exports = function recluster(mat, names){
 
   function get_leaves(limb, side, inst_level, inst_dist, locks){
 
-    // set lock state
-    // lock if distance is under resolvable distance
+    // if (locks[0] === false){
+    //   console.log('before checking')
+    //   console.log(locks)
+    // }
 
-    if (inst_level <=3 ){
-      console.log( 'level: ' + String(inst_level) + ': ' + String(inst_dist))
+    ////////////////////////////////////////////////////////////////
+    if (inst_level <= max_level ){
+      console.log( '\n\n numberslevel: ' + String(inst_level) + ': ' + String(inst_dist))
     }
 
+    ////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////
+    // always overwriting lock, need to have persistent lock
+    ////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////
+    // lock if distance is under resolvable distance
     _.each(cutoff_indexes, function(index){
       if (inst_dist <= cutoff_vals[index]){
         locks[index] = true;
       } else {
+        ////////////////////////////////////////////////
+        // being above cutoff unlocks group numbers
+        // so that they can increase
+        ////////////////////////////////////////////////
+        if (index==0 && inst_level <= max_level){
+          console.log('unlocking: above cutoff')
+        }
         locks[index] = false;
       }
     });
+
+    if (locks[0] === false){
+      console.log('after checking')
+      console.log(locks)
+    }
 
     // if there are more branches then there is a distance
     if ( _.has(limb, 'dist')){
@@ -120,9 +142,21 @@ module.exports = function recluster(mat, names){
 
       _.each(cutoff_indexes, function(index){
 
-        // increment group when group is not locked
+        // // increment group when group is not locked
+        // if (index==0 && inst_level <= max_level){
+        //   console.log('check lock: ' + String(locks[index]));
+        // }
+
+        if (locks[0] === false){
+          console.log('********************************* at leaf ')
+          console.log(locks)
+        }
+
         if (locks[index] === false){
           group[index] = group[index] + 1;
+          if (index==0 && inst_level <= max_level){
+            console.log('=> incrementing group\n\n')
+          }
         }
         // correct for incrementing too early
         // if first node distance is above cutoff (resolvable) do not increment
