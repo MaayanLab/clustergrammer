@@ -66,14 +66,14 @@ var Clustergrammer =
 	var recluster = __webpack_require__(221);
 
 	// moved d3.slider to src
-	d3.slider = __webpack_require__(226);
+	d3.slider = __webpack_require__(252);
 
 	/* eslint-disable */
 
-	var awesomplete = __webpack_require__(228);
+	var awesomplete = __webpack_require__(254);
 	// getting css from src
-	__webpack_require__(229);
-	__webpack_require__(233);
+	__webpack_require__(255);
+	__webpack_require__(259);
 
 	/* clustergrammer v1.19.2
 	 * Nicolas Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
@@ -105,7 +105,7 @@ var Clustergrammer =
 	  cgm.params.zoom_behavior.translate([cgm.params.viz.clust.margin.left, cgm.params.viz.clust.margin.top]);
 
 	  if (cgm.params.use_sidebar) {
-	    var make_sidebar = __webpack_require__(235);
+	    var make_sidebar = __webpack_require__(261);
 	    make_sidebar(cgm);
 	  }
 
@@ -161,7 +161,9 @@ var Clustergrammer =
 	    var names = this.params.network_data.row_nodes_names;
 	    var order_info = recluster(mat, names);
 
-	    console.log(order_info.info);
+	    _.each(order_info.info, function (inst_info) {
+	      console.log(inst_info.group);
+	    });
 	  }
 
 	  // add more API endpoints
@@ -18768,8 +18770,8 @@ var Clustergrammer =
 	var core = __webpack_require__(67);
 	var math = core.create();
 
-	math.import(__webpack_require__(250));
-	math.import(__webpack_require__(313));
+	math.import(__webpack_require__(226));
+	math.import(__webpack_require__(227));
 
 	module.exports = function recluster(mat, names) {
 	  /*
@@ -18778,7 +18780,7 @@ var Clustergrammer =
 
 	  // var transpose = math.transpose;
 
-	  var mat = [[20, 20, 80], [22, 22, 90], [250, 255, 253], [100, 54, 255]];
+	  mat = [[20, 20, 80], [22, 22, 90], [250, 255, 253], [100, 54, 255]];
 
 	  // var mat = this.params.network_data.mat;
 
@@ -18833,12 +18835,18 @@ var Clustergrammer =
 
 	  // var cutoff_fractions = [];
 	  var cutoff_vals = [];
+	  var ini_lock_groups = [];
 	  for (var i = 0; i <= 10; i++) {
-	    // cutoff_fractions.push(i/10)
 	    cutoff_vals.push(start_distance * i / 10);
+	    ini_lock_groups.push(false);
 	  }
 
-	  var cutoff_dist = 12;
+	  // console.log(cutoff_vals)
+	  // console.log(ini_lock_groups)
+
+	  // make cutoff_dist an array
+	  var cutoff_dist = 350;
+	  console.log('cutoff_dist', cutoff_dist);
 
 	  _.each(['left', 'right'], function (side) {
 	    get_leaf_key(tree[side], side, start_level, start_distance);
@@ -19277,2447 +19285,6 @@ var Clustergrammer =
 /* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
-	    D3.js Slider
-	    Inspired by jQuery UI Slider
-	    Copyright (c) 2013, Bjorn Sandvik - http://blog.thematicmapping.org
-	    BSD license: http://opensource.org/licenses/BSD-3-Clause
-	*/
-	(function (root, factory) {
-	  if (true) {
-	    // AMD. Register as an anonymous module.
-	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(227)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	  } else if (typeof exports === 'object') {
-	    if (process.browser) {
-	      // Browserify. Import css too using cssify.
-	      require('./d3.slider.css');
-	    }
-	    // Node. Does not work with strict CommonJS, but
-	    // only CommonJS-like environments that support module.exports,
-	    // like Node.
-	    module.exports = factory(require('d3'));
-	  } else {
-	    // Browser globals (root is window)
-	    root.d3.slider = factory(root.d3);
-	  }
-	})(this, function (d3) {
-	  return function module() {
-	    "use strict";
-
-	    // Public variables width default settings
-
-	    var min = 0,
-	        max = 100,
-	        step = 0.01,
-	        animate = false,
-	        orientation = "horizontal",
-	        axis = false,
-	        margin = 50,
-	        value,
-	        active = 1,
-	        snap = false,
-	        scale;
-
-	    // Private variables
-	    var axisScale,
-	        dispatch = d3.dispatch("slide", "slideend"),
-	        formatPercent = d3.format(".2%"),
-	        tickFormat = d3.format(".0"),
-	        handle1,
-	        handle2 = null,
-	        divRange,
-	        sliderLength;
-
-	    function slider(selection) {
-	      selection.each(function () {
-
-	        // Create scale if not defined by user
-	        if (!scale) {
-	          scale = d3.scale.linear().domain([min, max]);
-	        }
-
-	        // Start value
-	        value = value || scale.domain()[0];
-
-	        // DIV container
-	        var div = d3.select(this).classed("d3-slider d3-slider-" + orientation, true);
-
-	        var drag = d3.behavior.drag();
-	        drag.on('dragend', function () {
-	          dispatch.slideend(d3.event, value);
-	        });
-
-	        // Slider handle
-	        //if range slider, create two
-	        // var divRange;
-
-	        if (toType(value) == "array" && value.length == 2) {
-	          handle1 = div.append("a").classed("d3-slider-handle", true).attr("xlink:href", "#").attr('id', "handle-one").on("click", stopPropagation).call(drag);
-	          handle2 = div.append("a").classed("d3-slider-handle", true).attr('id', "handle-two").attr("xlink:href", "#").on("click", stopPropagation).call(drag);
-	        } else {
-	          handle1 = div.append("a").classed("d3-slider-handle", true).attr("xlink:href", "#").attr('id', "handle-one").on("click", stopPropagation).call(drag);
-	        }
-
-	        // Horizontal slider
-	        if (orientation === "horizontal") {
-
-	          div.on("click", onClickHorizontal);
-
-	          if (toType(value) == "array" && value.length == 2) {
-	            divRange = d3.select(this).append('div').classed("d3-slider-range", true);
-
-	            handle1.style("left", formatPercent(scale(value[0])));
-	            divRange.style("left", formatPercent(scale(value[0])));
-	            drag.on("drag", onDragHorizontal);
-
-	            var width = 100 - parseFloat(formatPercent(scale(value[1])));
-	            handle2.style("left", formatPercent(scale(value[1])));
-	            divRange.style("right", width + "%");
-	            drag.on("drag", onDragHorizontal);
-	          } else {
-	            handle1.style("left", formatPercent(scale(value)));
-	            drag.on("drag", onDragHorizontal);
-	          }
-
-	          sliderLength = parseInt(div.style("width"), 10);
-	        } else {
-	          // Vertical
-
-	          div.on("click", onClickVertical);
-	          drag.on("drag", onDragVertical);
-	          if (toType(value) == "array" && value.length == 2) {
-	            divRange = d3.select(this).append('div').classed("d3-slider-range-vertical", true);
-
-	            handle1.style("bottom", formatPercent(scale(value[0])));
-	            divRange.style("bottom", formatPercent(scale(value[0])));
-	            drag.on("drag", onDragVertical);
-
-	            var top = 100 - parseFloat(formatPercent(scale(value[1])));
-	            handle2.style("bottom", formatPercent(scale(value[1])));
-	            divRange.style("top", top + "%");
-	            drag.on("drag", onDragVertical);
-	          } else {
-	            handle1.style("bottom", formatPercent(scale(value)));
-	            drag.on("drag", onDragVertical);
-	          }
-
-	          sliderLength = parseInt(div.style("height"), 10);
-	        }
-
-	        if (axis) {
-	          createAxis(div);
-	        }
-
-	        function createAxis(dom) {
-
-	          // Create axis if not defined by user
-	          if (typeof axis === "boolean") {
-
-	            axis = d3.svg.axis().ticks(Math.round(sliderLength / 100)).tickFormat(tickFormat).orient(orientation === "horizontal" ? "bottom" : "right");
-	          }
-
-	          // Copy slider scale to move from percentages to pixels
-	          axisScale = scale.ticks ? scale.copy().range([0, sliderLength]) : scale.copy().rangePoints([0, sliderLength], 0.5);
-	          axis.scale(axisScale);
-
-	          // Create SVG axis container
-	          var svg = dom.append("svg").classed("d3-slider-axis d3-slider-axis-" + axis.orient(), true).on("click", stopPropagation);
-
-	          var g = svg.append("g");
-
-	          // Horizontal axis
-	          if (orientation === "horizontal") {
-
-	            svg.style("margin-left", -margin + "px");
-
-	            svg.attr({
-	              width: sliderLength + margin * 2,
-	              height: margin
-	            });
-
-	            if (axis.orient() === "top") {
-	              svg.style("top", -margin + "px");
-	              g.attr("transform", "translate(" + margin + "," + margin + ")");
-	            } else {
-	              // bottom
-	              g.attr("transform", "translate(" + margin + ",0)");
-	            }
-	          } else {
-	            // Vertical
-
-	            svg.style("top", -margin + "px");
-
-	            svg.attr({
-	              width: margin,
-	              height: sliderLength + margin * 2
-	            });
-
-	            if (axis.orient() === "left") {
-	              svg.style("left", -margin + "px");
-	              g.attr("transform", "translate(" + margin + "," + margin + ")");
-	            } else {
-	              // right
-	              g.attr("transform", "translate(" + 0 + "," + margin + ")");
-	            }
-	          }
-
-	          g.call(axis);
-	        }
-
-	        function onClickHorizontal() {
-	          if (toType(value) != "array") {
-	            var pos = Math.max(0, Math.min(sliderLength, d3.event.offsetX || d3.event.layerX));
-	            moveHandle(scale.invert ? stepValue(scale.invert(pos / sliderLength)) : nearestTick(pos / sliderLength));
-	          }
-	        }
-
-	        function onClickVertical() {
-	          if (toType(value) != "array") {
-	            var pos = sliderLength - Math.max(0, Math.min(sliderLength, d3.event.offsetY || d3.event.layerY));
-	            moveHandle(scale.invert ? stepValue(scale.invert(pos / sliderLength)) : nearestTick(pos / sliderLength));
-	          }
-	        }
-
-	        function onDragHorizontal() {
-	          if (d3.event.sourceEvent.target.id === "handle-one") {
-	            active = 1;
-	          } else if (d3.event.sourceEvent.target.id == "handle-two") {
-	            active = 2;
-	          }
-	          var pos = Math.max(0, Math.min(sliderLength, d3.event.x));
-	          moveHandle(scale.invert ? stepValue(scale.invert(pos / sliderLength)) : nearestTick(pos / sliderLength));
-	        }
-
-	        function onDragVertical() {
-	          if (d3.event.sourceEvent.target.id === "handle-one") {
-	            active = 1;
-	          } else if (d3.event.sourceEvent.target.id == "handle-two") {
-	            active = 2;
-	          }
-	          var pos = sliderLength - Math.max(0, Math.min(sliderLength, d3.event.y));
-	          moveHandle(scale.invert ? stepValue(scale.invert(pos / sliderLength)) : nearestTick(pos / sliderLength));
-	        }
-
-	        function stopPropagation() {
-	          d3.event.stopPropagation();
-	        }
-	      });
-	    }
-
-	    // Move slider handle on click/drag
-	    function moveHandle(newValue) {
-	      var currentValue = toType(value) == "array" && value.length == 2 ? value[active - 1] : value,
-	          oldPos = formatPercent(scale(stepValue(currentValue))),
-	          newPos = formatPercent(scale(stepValue(newValue))),
-	          position = orientation === "horizontal" ? "left" : "bottom";
-	      if (oldPos !== newPos) {
-
-	        if (toType(value) == "array" && value.length == 2) {
-	          value[active - 1] = newValue;
-	          if (d3.event) {
-	            dispatch.slide(d3.event, value);
-	          };
-	        } else {
-	          if (d3.event) {
-	            dispatch.slide(d3.event.sourceEvent || d3.event, value = newValue);
-	          };
-	        }
-
-	        if (value[0] >= value[1]) return;
-	        if (active === 1) {
-	          if (toType(value) == "array" && value.length == 2) {
-	            position === "left" ? divRange.style("left", newPos) : divRange.style("bottom", newPos);
-	          }
-
-	          if (animate) {
-	            handle1.transition().styleTween(position, function () {
-	              return d3.interpolate(oldPos, newPos);
-	            }).duration(typeof animate === "number" ? animate : 250);
-	          } else {
-	            handle1.style(position, newPos);
-	          }
-	        } else {
-
-	          var width = 100 - parseFloat(newPos);
-	          var top = 100 - parseFloat(newPos);
-
-	          position === "left" ? divRange.style("right", width + "%") : divRange.style("top", top + "%");
-
-	          if (animate) {
-	            handle2.transition().styleTween(position, function () {
-	              return d3.interpolate(oldPos, newPos);
-	            }).duration(typeof animate === "number" ? animate : 250);
-	          } else {
-	            handle2.style(position, newPos);
-	          }
-	        }
-	      }
-	    }
-
-	    // Calculate nearest step value
-	    function stepValue(val) {
-
-	      if (val === scale.domain()[0] || val === scale.domain()[1]) {
-	        return val;
-	      }
-
-	      var alignValue = val;
-	      if (snap) {
-	        alignValue = nearestTick(scale(val));
-	      } else {
-	        var valModStep = (val - scale.domain()[0]) % step;
-	        alignValue = val - valModStep;
-
-	        if (Math.abs(valModStep) * 2 >= step) {
-	          alignValue += valModStep > 0 ? step : -step;
-	        }
-	      };
-
-	      return alignValue;
-	    }
-
-	    // Find the nearest tick
-	    function nearestTick(pos) {
-	      var ticks = scale.ticks ? scale.ticks() : scale.domain();
-	      var dist = ticks.map(function (d) {
-	        return pos - scale(d);
-	      });
-	      var i = -1,
-	          index = 0,
-	          r = scale.ticks ? scale.range()[1] : scale.rangeExtent()[1];
-	      do {
-	        i++;
-	        if (Math.abs(dist[i]) < r) {
-	          r = Math.abs(dist[i]);
-	          index = i;
-	        };
-	      } while (dist[i] > 0 && i < dist.length - 1);
-
-	      return ticks[index];
-	    };
-
-	    // Return the type of an object
-	    function toType(v) {
-	      return {}.toString.call(v).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
-	    };
-
-	    // Getter/setter functions
-	    slider.min = function (_) {
-	      if (!arguments.length) return min;
-	      min = _;
-	      return slider;
-	    };
-
-	    slider.max = function (_) {
-	      if (!arguments.length) return max;
-	      max = _;
-	      return slider;
-	    };
-
-	    slider.step = function (_) {
-	      if (!arguments.length) return step;
-	      step = _;
-	      return slider;
-	    };
-
-	    slider.animate = function (_) {
-	      if (!arguments.length) return animate;
-	      animate = _;
-	      return slider;
-	    };
-
-	    slider.orientation = function (_) {
-	      if (!arguments.length) return orientation;
-	      orientation = _;
-	      return slider;
-	    };
-
-	    slider.axis = function (_) {
-	      if (!arguments.length) return axis;
-	      axis = _;
-	      return slider;
-	    };
-
-	    slider.margin = function (_) {
-	      if (!arguments.length) return margin;
-	      margin = _;
-	      return slider;
-	    };
-
-	    slider.value = function (_) {
-	      if (!arguments.length) return value;
-	      if (value) {
-	        moveHandle(stepValue(_));
-	      };
-	      value = _;
-	      return slider;
-	    };
-
-	    slider.snap = function (_) {
-	      if (!arguments.length) return snap;
-	      snap = _;
-	      return slider;
-	    };
-
-	    slider.scale = function (_) {
-	      if (!arguments.length) return scale;
-	      scale = _;
-	      return slider;
-	    };
-
-	    d3.rebind(slider, dispatch, "on");
-
-	    return slider;
-	  };
-	});
-
-/***/ }),
-/* 227 */
-/***/ (function(module, exports) {
-
-	module.exports = d3;
-
-/***/ }),
-/* 228 */
-/***/ (function(module, exports) {
-
-	/**
-	 * Simple, lightweight, usable local autocomplete library for modern browsers
-	 * Because there weren’t enough autocomplete scripts in the world? Because I’m completely insane and have NIH syndrome? Probably both. :P
-	 * @author Lea Verou http://leaverou.github.io/awesomplete
-	 * MIT license
-	 */
-
-	(function () {
-
-		var _ = function (input, o) {
-			var me = this;
-
-			// Setup
-
-			this.input = $(input);
-			this.input.setAttribute("autocomplete", "off");
-			this.input.setAttribute("aria-autocomplete", "list");
-
-			o = o || {};
-
-			configure(this, {
-				minChars: 2,
-				maxItems: 10,
-				autoFirst: false,
-				data: _.DATA,
-				filter: _.FILTER_CONTAINS,
-				sort: _.SORT_BYLENGTH,
-				item: _.ITEM,
-				replace: _.REPLACE
-			}, o);
-
-			this.index = -1;
-
-			// Create necessary elements
-
-			this.container = $.create("div", {
-				className: "awesomplete",
-				around: input
-			});
-
-			this.ul = $.create("ul", {
-				hidden: "hidden",
-				inside: this.container
-			});
-
-			this.status = $.create("span", {
-				className: "visually-hidden",
-				role: "status",
-				"aria-live": "assertive",
-				"aria-relevant": "additions",
-				inside: this.container
-			});
-
-			// Bind events
-
-			$.bind(this.input, {
-				"input": this.evaluate.bind(this),
-				"blur": this.close.bind(this, { reason: "blur" }),
-				"keydown": function (evt) {
-					var c = evt.keyCode;
-
-					// If the dropdown `ul` is in view, then act on keydown for the following keys:
-					// Enter / Esc / Up / Down
-					if (me.opened) {
-						if (c === 13 && me.selected) {
-							// Enter
-							evt.preventDefault();
-							me.select();
-						} else if (c === 27) {
-							// Esc
-							me.close({ reason: "esc" });
-						} else if (c === 38 || c === 40) {
-							// Down/Up arrow
-							evt.preventDefault();
-							me[c === 38 ? "previous" : "next"]();
-						}
-					}
-				}
-			});
-
-			$.bind(this.input.form, { "submit": this.close.bind(this, { reason: "submit" }) });
-
-			$.bind(this.ul, { "mousedown": function (evt) {
-					var li = evt.target;
-
-					if (li !== this) {
-
-						while (li && !/li/i.test(li.nodeName)) {
-							li = li.parentNode;
-						}
-
-						if (li && evt.button === 0) {
-							// Only select on left click
-							evt.preventDefault();
-							me.select(li, evt.target);
-						}
-					}
-				} });
-
-			if (this.input.hasAttribute("list")) {
-				this.list = "#" + this.input.getAttribute("list");
-				this.input.removeAttribute("list");
-			} else {
-				this.list = this.input.getAttribute("data-list") || o.list || [];
-			}
-
-			_.all.push(this);
-		};
-
-		_.prototype = {
-			set list(list) {
-				if (Array.isArray(list)) {
-					this._list = list;
-				} else if (typeof list === "string" && list.indexOf(",") > -1) {
-					this._list = list.split(/\s*,\s*/);
-				} else {
-					// Element or CSS selector
-					list = $(list);
-
-					if (list && list.children) {
-						var items = [];
-						slice.apply(list.children).forEach(function (el) {
-							if (!el.disabled) {
-								var text = el.textContent.trim();
-								var value = el.value || text;
-								var label = el.label || text;
-								if (value !== "") {
-									items.push({ label: label, value: value });
-								}
-							}
-						});
-						this._list = items;
-					}
-				}
-
-				if (document.activeElement === this.input) {
-					this.evaluate();
-				}
-			},
-
-			get selected() {
-				return this.index > -1;
-			},
-
-			get opened() {
-				return !this.ul.hasAttribute("hidden");
-			},
-
-			close: function (o) {
-				if (!this.opened) {
-					return;
-				}
-
-				this.ul.setAttribute("hidden", "");
-				this.index = -1;
-
-				$.fire(this.input, "awesomplete-close", o || {});
-			},
-
-			open: function () {
-				this.ul.removeAttribute("hidden");
-
-				if (this.autoFirst && this.index === -1) {
-					this.goto(0);
-				}
-
-				$.fire(this.input, "awesomplete-open");
-			},
-
-			next: function () {
-				var count = this.ul.children.length;
-
-				this.goto(this.index < count - 1 ? this.index + 1 : -1);
-			},
-
-			previous: function () {
-				var count = this.ul.children.length;
-
-				this.goto(this.selected ? this.index - 1 : count - 1);
-			},
-
-			// Should not be used, highlights specific item without any checks!
-			goto: function (i) {
-				var lis = this.ul.children;
-
-				if (this.selected) {
-					lis[this.index].setAttribute("aria-selected", "false");
-				}
-
-				this.index = i;
-
-				if (i > -1 && lis.length > 0) {
-					lis[i].setAttribute("aria-selected", "true");
-					this.status.textContent = lis[i].textContent;
-
-					$.fire(this.input, "awesomplete-highlight", {
-						text: this.suggestions[this.index]
-					});
-				}
-			},
-
-			select: function (selected, origin) {
-				if (selected) {
-					this.index = $.siblingIndex(selected);
-				} else {
-					selected = this.ul.children[this.index];
-				}
-
-				if (selected) {
-					var suggestion = this.suggestions[this.index];
-
-					var allowed = $.fire(this.input, "awesomplete-select", {
-						text: suggestion,
-						origin: origin || selected
-					});
-
-					if (allowed) {
-						this.replace(suggestion);
-						this.close({ reason: "select" });
-						$.fire(this.input, "awesomplete-selectcomplete", {
-							text: suggestion
-						});
-					}
-				}
-			},
-
-			evaluate: function () {
-				var me = this;
-				var value = this.input.value;
-
-				if (value.length >= this.minChars && this._list.length > 0) {
-					this.index = -1;
-					// Populate list with options that match
-					this.ul.innerHTML = "";
-
-					this.suggestions = this._list.map(function (item) {
-						return new Suggestion(me.data(item, value));
-					}).filter(function (item) {
-						return me.filter(item, value);
-					}).sort(this.sort).slice(0, this.maxItems);
-
-					this.suggestions.forEach(function (text) {
-						me.ul.appendChild(me.item(text, value));
-					});
-
-					if (this.ul.children.length === 0) {
-						this.close({ reason: "nomatches" });
-					} else {
-						this.open();
-					}
-				} else {
-					this.close({ reason: "nomatches" });
-				}
-			}
-		};
-
-		// Static methods/properties
-
-		_.all = [];
-
-		_.FILTER_CONTAINS = function (text, input) {
-			return RegExp($.regExpEscape(input.trim()), "i").test(text);
-		};
-
-		_.FILTER_STARTSWITH = function (text, input) {
-			return RegExp("^" + $.regExpEscape(input.trim()), "i").test(text);
-		};
-
-		_.SORT_BYLENGTH = function (a, b) {
-			if (a.length !== b.length) {
-				return a.length - b.length;
-			}
-
-			return a < b ? -1 : 1;
-		};
-
-		_.ITEM = function (text, input) {
-			var html = input === '' ? text : text.replace(RegExp($.regExpEscape(input.trim()), "gi"), "<mark>$&</mark>");
-			return $.create("li", {
-				innerHTML: html,
-				"aria-selected": "false"
-			});
-		};
-
-		_.REPLACE = function (text) {
-			this.input.value = text.value;
-		};
-
-		_.DATA = function (item /*, input*/) {
-			return item;
-		};
-
-		// Private functions
-
-		function Suggestion(data) {
-			var o = Array.isArray(data) ? { label: data[0], value: data[1] } : typeof data === "object" && "label" in data && "value" in data ? data : { label: data, value: data };
-
-			this.label = o.label || o.value;
-			this.value = o.value;
-		}
-		Object.defineProperty(Suggestion.prototype = Object.create(String.prototype), "length", {
-			get: function () {
-				return this.label.length;
-			}
-		});
-		Suggestion.prototype.toString = Suggestion.prototype.valueOf = function () {
-			return "" + this.label;
-		};
-
-		function configure(instance, properties, o) {
-			for (var i in properties) {
-				var initial = properties[i],
-				    attrValue = instance.input.getAttribute("data-" + i.toLowerCase());
-
-				if (typeof initial === "number") {
-					instance[i] = parseInt(attrValue);
-				} else if (initial === false) {
-					// Boolean options must be false by default anyway
-					instance[i] = attrValue !== null;
-				} else if (initial instanceof Function) {
-					instance[i] = null;
-				} else {
-					instance[i] = attrValue;
-				}
-
-				if (!instance[i] && instance[i] !== 0) {
-					instance[i] = i in o ? o[i] : initial;
-				}
-			}
-		}
-
-		// Helpers
-
-		var slice = Array.prototype.slice;
-
-		function $(expr, con) {
-			return typeof expr === "string" ? (con || document).querySelector(expr) : expr || null;
-		}
-
-		function $$(expr, con) {
-			return slice.call((con || document).querySelectorAll(expr));
-		}
-
-		$.create = function (tag, o) {
-			var element = document.createElement(tag);
-
-			for (var i in o) {
-				var val = o[i];
-
-				if (i === "inside") {
-					$(val).appendChild(element);
-				} else if (i === "around") {
-					var ref = $(val);
-					ref.parentNode.insertBefore(element, ref);
-					element.appendChild(ref);
-				} else if (i in element) {
-					element[i] = val;
-				} else {
-					element.setAttribute(i, val);
-				}
-			}
-
-			return element;
-		};
-
-		$.bind = function (element, o) {
-			if (element) {
-				for (var event in o) {
-					var callback = o[event];
-
-					event.split(/\s+/).forEach(function (event) {
-						element.addEventListener(event, callback);
-					});
-				}
-			}
-		};
-
-		$.fire = function (target, type, properties) {
-			var evt = document.createEvent("HTMLEvents");
-
-			evt.initEvent(type, true, true);
-
-			for (var j in properties) {
-				evt[j] = properties[j];
-			}
-
-			return target.dispatchEvent(evt);
-		};
-
-		$.regExpEscape = function (s) {
-			return s.replace(/[-\\^$*+?.()|[\]{}]/g, "\\$&");
-		};
-
-		$.siblingIndex = function (el) {
-			/* eslint-disable no-cond-assign */
-			for (var i = 0; el = el.previousElementSibling; i++);
-			return i;
-		};
-
-		// Initialization
-
-		function init() {
-			$$("input.awesomplete").forEach(function (input) {
-				new _(input);
-			});
-		}
-
-		// Are we in a browser? Check for Document constructor
-		if (typeof Document !== "undefined") {
-			// DOM already loaded?
-			if (document.readyState !== "loading") {
-				init();
-			} else {
-				// Wait for it
-				document.addEventListener("DOMContentLoaded", init);
-			}
-		}
-
-		_.$ = $;
-		_.$$ = $$;
-
-		// Make sure to export Awesomplete on self when in a browser
-		if (typeof self !== "undefined") {
-			self.Awesomplete = _;
-		}
-
-		// Expose Awesomplete as a CJS module
-		if (typeof module === "object" && module.exports) {
-			module.exports = _;
-		}
-
-		return _;
-		})();
-
-/***/ }),
-/* 229 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(230);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(232)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!../../node_modules/css-loader/index.js!./d3.slider.css", function() {
-				var newContent = require("!!../../node_modules/css-loader/index.js!./d3.slider.css");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ }),
-/* 230 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(231)();
-	// imports
-
-
-	// module
-	exports.push([module.id, ".d3-slider {\n    position: relative;\n    font-family: Verdana,Arial,sans-serif;\n    font-size: 1.1em;\n    border: 1px solid #aaaaaa;\n    z-index: 2;\n}\n\n.d3-slider-horizontal {\n    height: .8em;\n}  \n\n.d3-slider-range {\n  background:#2980b9;\n  left:0px;\n  right:0px;\n  height: 0.8em;\n  position: absolute;\n}\n\n.d3-slider-range-vertical {\n  background:#2980b9;\n  left:0px;\n  right:0px;\n  position: absolute;\n  top:0;\n}\n\n.d3-slider-vertical {\n    width: .8em;\n    height: 100px;\n}      \n\n.d3-slider-handle {\n    position: absolute;\n    width: 1.2em;\n    height: 1.2em;\n    border: 1px solid #d3d3d3;\n    border-radius: 4px;\n    background: #eee;\n    background: linear-gradient(to bottom, #eee 0%, #ddd 100%);\n    z-index: 3;\n}\n\n.d3-slider-handle:hover {\n    border: 1px solid #999999;\n}\n\n.d3-slider-horizontal .d3-slider-handle {\n    top: -.3em;\n    margin-left: -.6em;\n}\n\n.d3-slider-axis {\n    position: relative;\n    z-index: 1;    \n}\n\n.d3-slider-axis-bottom {\n    top: .8em;\n}\n\n.d3-slider-axis-right {\n    left: .8em;\n}\n\n.d3-slider-axis path {\n    stroke-width: 0;\n    fill: none;\n}\n\n.d3-slider-axis line {\n    fill: none;\n    stroke: #aaa;\n    shape-rendering: crispEdges;\n}\n\n.d3-slider-axis text {\n    font-size: 11px;\n}\n\n.d3-slider-vertical .d3-slider-handle {\n    left: -.25em;\n    margin-left: 0;\n    margin-bottom: -.6em;      \n}", ""]);
-
-	// exports
-
-
-/***/ }),
-/* 231 */
-/***/ (function(module, exports) {
-
-	/*
-		MIT License http://www.opensource.org/licenses/mit-license.php
-		Author Tobias Koppers @sokra
-	*/
-	// css base code, injected by the css-loader
-	module.exports = function () {
-		var list = [];
-
-		// return the list of modules as css string
-		list.toString = function toString() {
-			var result = [];
-			for (var i = 0; i < this.length; i++) {
-				var item = this[i];
-				if (item[2]) {
-					result.push("@media " + item[2] + "{" + item[1] + "}");
-				} else {
-					result.push(item[1]);
-				}
-			}
-			return result.join("");
-		};
-
-		// import a list of modules into the list
-		list.i = function (modules, mediaQuery) {
-			if (typeof modules === "string") modules = [[null, modules, ""]];
-			var alreadyImportedModules = {};
-			for (var i = 0; i < this.length; i++) {
-				var id = this[i][0];
-				if (typeof id === "number") alreadyImportedModules[id] = true;
-			}
-			for (i = 0; i < modules.length; i++) {
-				var item = modules[i];
-				// skip already imported module
-				// this implementation is not 100% perfect for weird media query combinations
-				//  when a module is imported multiple times with different media queries.
-				//  I hope this will never occur (Hey this way we have smaller bundles)
-				if (typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-					if (mediaQuery && !item[2]) {
-						item[2] = mediaQuery;
-					} else if (mediaQuery) {
-						item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-					}
-					list.push(item);
-				}
-			}
-		};
-		return list;
-	};
-
-/***/ }),
-/* 232 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	/*
-		MIT License http://www.opensource.org/licenses/mit-license.php
-		Author Tobias Koppers @sokra
-	*/
-	var stylesInDom = {},
-		memoize = function(fn) {
-			var memo;
-			return function () {
-				if (typeof memo === "undefined") memo = fn.apply(this, arguments);
-				return memo;
-			};
-		},
-		isOldIE = memoize(function() {
-			return /msie [6-9]\b/.test(self.navigator.userAgent.toLowerCase());
-		}),
-		getHeadElement = memoize(function () {
-			return document.head || document.getElementsByTagName("head")[0];
-		}),
-		singletonElement = null,
-		singletonCounter = 0,
-		styleElementsInsertedAtTop = [];
-
-	module.exports = function(list, options) {
-		if(false) {
-			if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
-		}
-
-		options = options || {};
-		// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-		// tags it will allow on a page
-		if (typeof options.singleton === "undefined") options.singleton = isOldIE();
-
-		// By default, add <style> tags to the bottom of <head>.
-		if (typeof options.insertAt === "undefined") options.insertAt = "bottom";
-
-		var styles = listToStyles(list);
-		addStylesToDom(styles, options);
-
-		return function update(newList) {
-			var mayRemove = [];
-			for(var i = 0; i < styles.length; i++) {
-				var item = styles[i];
-				var domStyle = stylesInDom[item.id];
-				domStyle.refs--;
-				mayRemove.push(domStyle);
-			}
-			if(newList) {
-				var newStyles = listToStyles(newList);
-				addStylesToDom(newStyles, options);
-			}
-			for(var i = 0; i < mayRemove.length; i++) {
-				var domStyle = mayRemove[i];
-				if(domStyle.refs === 0) {
-					for(var j = 0; j < domStyle.parts.length; j++)
-						domStyle.parts[j]();
-					delete stylesInDom[domStyle.id];
-				}
-			}
-		};
-	}
-
-	function addStylesToDom(styles, options) {
-		for(var i = 0; i < styles.length; i++) {
-			var item = styles[i];
-			var domStyle = stylesInDom[item.id];
-			if(domStyle) {
-				domStyle.refs++;
-				for(var j = 0; j < domStyle.parts.length; j++) {
-					domStyle.parts[j](item.parts[j]);
-				}
-				for(; j < item.parts.length; j++) {
-					domStyle.parts.push(addStyle(item.parts[j], options));
-				}
-			} else {
-				var parts = [];
-				for(var j = 0; j < item.parts.length; j++) {
-					parts.push(addStyle(item.parts[j], options));
-				}
-				stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
-			}
-		}
-	}
-
-	function listToStyles(list) {
-		var styles = [];
-		var newStyles = {};
-		for(var i = 0; i < list.length; i++) {
-			var item = list[i];
-			var id = item[0];
-			var css = item[1];
-			var media = item[2];
-			var sourceMap = item[3];
-			var part = {css: css, media: media, sourceMap: sourceMap};
-			if(!newStyles[id])
-				styles.push(newStyles[id] = {id: id, parts: [part]});
-			else
-				newStyles[id].parts.push(part);
-		}
-		return styles;
-	}
-
-	function insertStyleElement(options, styleElement) {
-		var head = getHeadElement();
-		var lastStyleElementInsertedAtTop = styleElementsInsertedAtTop[styleElementsInsertedAtTop.length - 1];
-		if (options.insertAt === "top") {
-			if(!lastStyleElementInsertedAtTop) {
-				head.insertBefore(styleElement, head.firstChild);
-			} else if(lastStyleElementInsertedAtTop.nextSibling) {
-				head.insertBefore(styleElement, lastStyleElementInsertedAtTop.nextSibling);
-			} else {
-				head.appendChild(styleElement);
-			}
-			styleElementsInsertedAtTop.push(styleElement);
-		} else if (options.insertAt === "bottom") {
-			head.appendChild(styleElement);
-		} else {
-			throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
-		}
-	}
-
-	function removeStyleElement(styleElement) {
-		styleElement.parentNode.removeChild(styleElement);
-		var idx = styleElementsInsertedAtTop.indexOf(styleElement);
-		if(idx >= 0) {
-			styleElementsInsertedAtTop.splice(idx, 1);
-		}
-	}
-
-	function createStyleElement(options) {
-		var styleElement = document.createElement("style");
-		styleElement.type = "text/css";
-		insertStyleElement(options, styleElement);
-		return styleElement;
-	}
-
-	function createLinkElement(options) {
-		var linkElement = document.createElement("link");
-		linkElement.rel = "stylesheet";
-		insertStyleElement(options, linkElement);
-		return linkElement;
-	}
-
-	function addStyle(obj, options) {
-		var styleElement, update, remove;
-
-		if (options.singleton) {
-			var styleIndex = singletonCounter++;
-			styleElement = singletonElement || (singletonElement = createStyleElement(options));
-			update = applyToSingletonTag.bind(null, styleElement, styleIndex, false);
-			remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true);
-		} else if(obj.sourceMap &&
-			typeof URL === "function" &&
-			typeof URL.createObjectURL === "function" &&
-			typeof URL.revokeObjectURL === "function" &&
-			typeof Blob === "function" &&
-			typeof btoa === "function") {
-			styleElement = createLinkElement(options);
-			update = updateLink.bind(null, styleElement);
-			remove = function() {
-				removeStyleElement(styleElement);
-				if(styleElement.href)
-					URL.revokeObjectURL(styleElement.href);
-			};
-		} else {
-			styleElement = createStyleElement(options);
-			update = applyToTag.bind(null, styleElement);
-			remove = function() {
-				removeStyleElement(styleElement);
-			};
-		}
-
-		update(obj);
-
-		return function updateStyle(newObj) {
-			if(newObj) {
-				if(newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap)
-					return;
-				update(obj = newObj);
-			} else {
-				remove();
-			}
-		};
-	}
-
-	var replaceText = (function () {
-		var textStore = [];
-
-		return function (index, replacement) {
-			textStore[index] = replacement;
-			return textStore.filter(Boolean).join('\n');
-		};
-	})();
-
-	function applyToSingletonTag(styleElement, index, remove, obj) {
-		var css = remove ? "" : obj.css;
-
-		if (styleElement.styleSheet) {
-			styleElement.styleSheet.cssText = replaceText(index, css);
-		} else {
-			var cssNode = document.createTextNode(css);
-			var childNodes = styleElement.childNodes;
-			if (childNodes[index]) styleElement.removeChild(childNodes[index]);
-			if (childNodes.length) {
-				styleElement.insertBefore(cssNode, childNodes[index]);
-			} else {
-				styleElement.appendChild(cssNode);
-			}
-		}
-	}
-
-	function applyToTag(styleElement, obj) {
-		var css = obj.css;
-		var media = obj.media;
-
-		if(media) {
-			styleElement.setAttribute("media", media)
-		}
-
-		if(styleElement.styleSheet) {
-			styleElement.styleSheet.cssText = css;
-		} else {
-			while(styleElement.firstChild) {
-				styleElement.removeChild(styleElement.firstChild);
-			}
-			styleElement.appendChild(document.createTextNode(css));
-		}
-	}
-
-	function updateLink(linkElement, obj) {
-		var css = obj.css;
-		var sourceMap = obj.sourceMap;
-
-		if(sourceMap) {
-			// http://stackoverflow.com/a/26603875
-			css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
-		}
-
-		var blob = new Blob([css], { type: "text/css" });
-
-		var oldSrc = linkElement.href;
-
-		linkElement.href = URL.createObjectURL(blob);
-
-		if(oldSrc)
-			URL.revokeObjectURL(oldSrc);
-	}
-
-
-/***/ }),
-/* 233 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(234);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(232)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!../css-loader/index.js!./awesomplete.css", function() {
-				var newContent = require("!!../css-loader/index.js!./awesomplete.css");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ }),
-/* 234 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(231)();
-	// imports
-
-
-	// module
-	exports.push([module.id, "[hidden] { display: none; }\n\n.visually-hidden {\n\tposition: absolute;\n\tclip: rect(0, 0, 0, 0);\n}\n\ndiv.awesomplete {\n\tdisplay: inline-block;\n\tposition: relative;\n}\n\ndiv.awesomplete > input {\n\tdisplay: block;\n}\n\ndiv.awesomplete > ul {\n\tposition: absolute;\n\tleft: 0;\n\tz-index: 1;\n\tmin-width: 100%;\n\tbox-sizing: border-box;\n\tlist-style: none;\n\tpadding: 0;\n\tborder-radius: .3em;\n\tmargin: .2em 0 0;\n\tbackground: hsla(0,0%,100%,.9);\n\tbackground: linear-gradient(to bottom right, white, hsla(0,0%,100%,.8));\n\tborder: 1px solid rgba(0,0,0,.3);\n\tbox-shadow: .05em .2em .6em rgba(0,0,0,.2);\n\ttext-shadow: none;\n}\n\ndiv.awesomplete > ul[hidden],\ndiv.awesomplete > ul:empty {\n\tdisplay: none;\n}\n\n@supports (transform: scale(0)) {\n\tdiv.awesomplete > ul {\n\t\ttransition: .3s cubic-bezier(.4,.2,.5,1.4);\n\t\ttransform-origin: 1.43em -.43em;\n\t}\n\t\n\tdiv.awesomplete > ul[hidden],\n\tdiv.awesomplete > ul:empty {\n\t\topacity: 0;\n\t\ttransform: scale(0);\n\t\tdisplay: block;\n\t\ttransition-timing-function: ease;\n\t}\n}\n\n\t/* Pointer */\n\tdiv.awesomplete > ul:before {\n\t\tcontent: \"\";\n\t\tposition: absolute;\n\t\ttop: -.43em;\n\t\tleft: 1em;\n\t\twidth: 0; height: 0;\n\t\tpadding: .4em;\n\t\tbackground: white;\n\t\tborder: inherit;\n\t\tborder-right: 0;\n\t\tborder-bottom: 0;\n\t\t-webkit-transform: rotate(45deg);\n\t\ttransform: rotate(45deg);\n\t}\n\n\tdiv.awesomplete > ul > li {\n\t\tposition: relative;\n\t\tpadding: .2em .5em;\n\t\tcursor: pointer;\n\t}\n\t\n\tdiv.awesomplete > ul > li:hover {\n\t\tbackground: hsl(200, 40%, 80%);\n\t\tcolor: black;\n\t}\n\t\n\tdiv.awesomplete > ul > li[aria-selected=\"true\"] {\n\t\tbackground: hsl(205, 40%, 40%);\n\t\tcolor: white;\n\t}\n\t\n\t\tdiv.awesomplete mark {\n\t\t\tbackground: hsl(65, 100%, 50%);\n\t\t}\n\t\t\n\t\tdiv.awesomplete li:hover mark {\n\t\t\tbackground: hsl(68, 100%, 41%);\n\t\t}\n\t\t\n\t\tdiv.awesomplete li[aria-selected=\"true\"] mark {\n\t\t\tbackground: hsl(86, 100%, 21%);\n\t\t\tcolor: inherit;\n\t\t}", ""]);
-
-	// exports
-
-
-/***/ }),
-/* 235 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var ini_sidebar = __webpack_require__(191);
-	var set_up_filters = __webpack_require__(236);
-	var set_up_search = __webpack_require__(241);
-	var set_up_reorder = __webpack_require__(242);
-	var set_sidebar_ini_view = __webpack_require__(243);
-	var make_icons = __webpack_require__(244);
-	var make_modals = __webpack_require__(246);
-	var set_up_opacity_slider = __webpack_require__(248);
-	var make_colorbar = __webpack_require__(249);
-
-	/* Represents sidebar with controls.
-	 */
-	module.exports = function sidebar(cgm) {
-
-	  var params = cgm.params;
-
-	  var sidebar = d3.select(params.root + ' .sidebar_wrapper');
-
-	  // console.log('is_expand ',params.viz.is_expand)
-
-	  if (params.viz.is_expand) {
-	    sidebar.style('display', 'none');
-	  }
-
-	  sidebar.append('div').classed('title_section', true);
-
-	  if (params.sidebar.title != null) {
-	    sidebar.select('.title_section').append('h4')
-	    // .style('margin-left', params.sidebar.title_margin_left+'px')
-	    .style('margin-left', '20px').style('margin-top', '5px').style('margin-bottom', '0px').text(params.sidebar.title);
-	  }
-
-	  sidebar.append('div').style('padding-right', '2px').classed('about_section', true);
-
-	  if (params.sidebar.about != null) {
-
-	    sidebar.select('.about_section').append('h5').classed('sidebar_text', true).style('margin-left', '7px').style('margin-top', '5px').style('margin-bottom', '2px').style('text-align', 'justify').html(params.sidebar.about);
-	  }
-
-	  sidebar.append('div').classed('icons_section', true).style('text-align', 'center');
-
-	  if (cgm.params.make_modals) {
-	    make_modals(params);
-	  }
-
-	  if (params.sidebar.icons) {
-	    make_icons(cgm, sidebar);
-	  }
-
-	  set_up_reorder(params, sidebar);
-
-	  set_up_search(sidebar, params);
-
-	  set_up_opacity_slider(sidebar);
-
-	  var possible_filter_names = _.keys(params.viz.possible_filters);
-
-	  if (possible_filter_names.indexOf('enr_score_type') > -1) {
-	    possible_filter_names.sort(function (a, b) {
-	      return a.toLowerCase().localeCompare(b.toLowerCase());
-	    });
-	  }
-
-	  cgm.slider_functions = {};
-
-	  _.each(possible_filter_names, function (inst_filter) {
-	    set_up_filters(cgm, inst_filter);
-	  });
-
-	  ini_sidebar(cgm);
-
-	  // when initializing the visualization using a view
-	  if (params.ini_view !== null) {
-
-	    set_sidebar_ini_view(params);
-
-	    params.ini_view = null;
-	  }
-
-	  make_colorbar(cgm);
-		};
-
-/***/ }),
-/* 236 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var make_slider_filter = __webpack_require__(237);
-	var make_button_filter = __webpack_require__(240);
-
-	module.exports = function set_up_filters(cgm, filter_type) {
-
-	  var params = cgm.params;
-
-	  var div_filters = d3.select(params.root + ' .sidebar_wrapper').append('div').classed('div_filters', true).style('padding-left', '10px').style('padding-right', '10px');
-
-	  if (params.viz.possible_filters[filter_type] == 'numerical') {
-	    make_slider_filter(cgm, filter_type, div_filters);
-	  } else if (params.viz.possible_filters[filter_type] == 'categorical') {
-	    make_button_filter(cgm, filter_type, div_filters);
-	  }
-		};
-
-/***/ }),
-/* 237 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var make_filter_title = __webpack_require__(214);
-	var run_filter_slider = __webpack_require__(238);
-	var get_filter_default_state = __webpack_require__(5);
-	var get_subset_views = __webpack_require__(12);
-
-	d3.slider = __webpack_require__(226);
-
-	module.exports = function make_slider_filter(cgm, filter_type, div_filters) {
-
-	  var params = cgm.params;
-	  var inst_view = {};
-
-	  var possible_filters = _.keys(params.viz.possible_filters);
-
-	  _.each(possible_filters, function (tmp_filter) {
-	    if (tmp_filter != filter_type) {
-	      var default_state = get_filter_default_state(params.viz.filter_data, tmp_filter);
-	      inst_view[tmp_filter] = default_state;
-	    }
-	  });
-
-	  var filter_title = make_filter_title(params, filter_type);
-
-	  div_filters.append('div').classed('title_' + filter_type, true).classed('sidebar_text', true).classed('slider_description', true).style('margin-top', '5px').style('margin-bottom', '3px').text(filter_title.text + filter_title.state + filter_title.suffix);
-
-	  div_filters.append('div').classed('slider_' + filter_type, true).classed('slider', true).attr('current_state', filter_title.state);
-
-	  var views = params.network_data.views;
-
-	  var available_views = get_subset_views(params, views, inst_view);
-
-	  // sort available views by filter_type value
-	  available_views = available_views.sort(function (a, b) {
-	    return b[filter_type] - a[filter_type];
-	  });
-
-	  var inst_max = available_views.length - 1;
-
-	  var ini_value = 0;
-	  // change the starting position of the slider if necessary
-	  if (params.requested_view !== null && filter_type in params.requested_view) {
-
-	    var inst_filter_value = params.requested_view[filter_type];
-
-	    if (inst_filter_value != 'all') {
-
-	      var found_value = available_views.map(function (e) {
-	        return e[filter_type];
-	      }).indexOf(inst_filter_value);
-
-	      if (found_value > 0) {
-	        ini_value = found_value;
-	      }
-	    }
-	  }
-
-	  // Filter Slider
-	  //////////////////////////////////////////////////////////////////////
-	  var slide_filter_fun = d3.slider().value(ini_value).min(0).max(inst_max).step(1).on('slide', function (evt, value) {
-	    run_filter_slider_db(cgm, filter_type, available_views, value);
-	  }).on('slideend', function (evt, value) {
-	    run_filter_slider_db(cgm, filter_type, available_views, value);
-	  });
-
-	  // save slider function in order to reset value later
-	  cgm.slider_functions[filter_type] = slide_filter_fun;
-
-	  d3.select(cgm.params.root + ' .slider_' + filter_type).call(slide_filter_fun);
-
-	  //////////////////////////////////////////////////////////////////////
-
-	  var run_filter_slider_db = _.debounce(run_filter_slider, 800);
-		};
-
-/***/ }),
-/* 238 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var update_viz_with_view = __webpack_require__(176);
-	var reset_other_filter_sliders = __webpack_require__(213);
-	var get_current_orders = __webpack_require__(239);
-	var make_requested_view = __webpack_require__(14);
-
-	module.exports = function run_filter_slider(cgm, filter_type, available_views, inst_index) {
-
-	  // only update if not running update
-	  if (d3.select(cgm.params.viz.viz_svg).classed('running_update') === false) {
-
-	    var params = cgm.params;
-
-	    // get value
-	    var inst_state = available_views[inst_index][filter_type];
-
-	    reset_other_filter_sliders(cgm, filter_type, inst_state);
-
-	    params = get_current_orders(params);
-
-	    var requested_view = {};
-	    requested_view[filter_type] = inst_state;
-
-	    requested_view = make_requested_view(params, requested_view);
-
-	    if (_.has(available_views[0], 'enr_score_type')) {
-	      var enr_state = d3.select(params.root + ' .toggle_enr_score_type').attr('current_state');
-
-	      requested_view.enr_score_type = enr_state;
-	    }
-
-	    update_viz_with_view(cgm, requested_view);
-	  }
-		};
-
-/***/ }),
-/* 239 */
-/***/ (function(module, exports) {
-
-	module.exports = function get_current_orders(params) {
-
-	  // get current orders 
-	  var other_rc;
-	  _.each(['row', 'col'], function (inst_rc) {
-
-	    if (inst_rc === 'row') {
-	      other_rc = 'col';
-	    } else {
-	      other_rc = 'row';
-	    }
-
-	    if (d3.select(params.root + ' .toggle_' + other_rc + '_order .active').empty() === false) {
-
-	      params.viz.inst_order[inst_rc] = d3.select(params.root + ' .toggle_' + other_rc + '_order').select('.active').attr('name');
-	    } else {
-
-	      // default to cluster ordering 
-	      params.viz.inst_order[inst_rc] = 'clust';
-	    }
-	  });
-
-	  return params;
-	};
-
-/***/ }),
-/* 240 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	// var update_network = require('../network/update_network');
-	var make_requested_view = __webpack_require__(14);
-
-	module.exports = function make_button_filter(config, params, filter_type, div_filters) {
-
-	  /*
-	  Enrichr specific code
-	  */
-
-	  var buttons = div_filters.append('div').classed('categorical_filter', true).classed('toggle_' + filter_type, true).classed('btn-group-vertical', true).style('width', '100%').style('margin-top', '10px').attr('current_state', 'combined_score');
-
-	  var filter_options = params.viz.filter_data[filter_type];
-
-	  var button_dict = {
-	    'combined_score': 'Combined Score',
-	    'pval': 'P-Value',
-	    'zscore': 'Z-score'
-	  };
-
-	  buttons.selectAll('button').data(filter_options).enter().append('button').attr('type', 'button').classed('btn', true).classed('btn-primary', true).classed('.filter_button', true).classed('active', function (d) {
-	    var is_active = false;
-	    if (d == 'combined_score') {
-	      is_active = true;
-	    }
-	    return is_active;
-	  }).attr('name', function (d) {
-	    return d;
-	  }).html(function (d) {
-	    return button_dict[d];
-	  });
-
-	  $(params.root + ' .categorical_filter .btn').off().click(function () {
-
-	    d3.selectAll(params.root + ' .categorical_filter .btn').classed('active', false);
-
-	    d3.select(this).classed('active', true);
-
-	    var inst_state = d3.select(this).attr('name');
-
-	    var requested_view = { 'enr_score_type': inst_state };
-
-	    make_requested_view(params, requested_view);
-
-	    d3.select(params.root + ' .toggle_enr_score_type').attr('current_state', inst_state);
-	  });
-		};
-
-/***/ }),
-/* 241 */
-/***/ (function(module, exports) {
-
-	module.exports = function set_up_search(sidebar, params) {
-
-	  var search_container = sidebar.append('div')
-	  // .classed('row',true)
-	  .classed('gene_search_container', true).style('padding-left', '10px').style('padding-right', '10px').style('margin-top', '10px');
-
-	  search_container.append('input').classed('form-control', true).classed('gene_search_box', true).classed('sidebar_text', true).attr('type', 'text').attr('placeholder', params.sidebar.row_search.placeholder).style('height', params.sidebar.row_search.box.height + 'px').style('margin-top', '10px');
-
-	  search_container.append('div').classed('gene_search_button', true).style('margin-top', '5px').attr('data-toggle', 'buttons').append('button').classed('sidebar_text', true).html('Search').attr('type', 'button').classed('btn', true).classed('btn-primary', true).classed('submit_gene_button', true).style('width', '100%').style('font-size', '14px');
-		};
-
-/***/ }),
-/* 242 */
-/***/ (function(module, exports) {
-
-	// var get_cat_title = require('../categories/get_cat_title');
-
-	module.exports = function set_up_reorder(params, sidebar) {
-
-	  var button_dict;
-	  var tmp_orders;
-	  var rc_dict = { 'row': 'Row', 'col': 'Column', 'both': '' };
-	  var is_active;
-	  var inst_reorder;
-	  // var all_cats;
-	  // var inst_order_label;
-
-	  var reorder_section = sidebar.append('div').style('padding-left', '10px').style('padding-right', '10px').classed('reorder_section', true);
-
-	  var reorder_types;
-	  if (params.sim_mat) {
-	    reorder_types = ['both'];
-	  } else {
-	    reorder_types = ['row', 'col'];
-	  }
-
-	  _.each(reorder_types, function (inst_rc) {
-
-	    button_dict = {
-	      'clust': 'Cluster',
-	      'rank': 'Rank by Sum',
-	      'rankvar': 'Rank by Variance',
-	      'ini': 'Initial Order',
-	      'alpha': 'Alphabetically'
-	    };
-
-	    var other_rc;
-	    if (inst_rc === 'row') {
-	      other_rc = 'col';
-	    } else {
-	      other_rc = 'row';
-	    }
-
-	    tmp_orders = Object.keys(params.matrix.orders);
-
-	    var possible_orders = [];
-
-	    _.each(tmp_orders, function (inst_name) {
-
-	      if (inst_name.indexOf(other_rc) > -1) {
-	        inst_name = inst_name.replace('_row', '').replace('_col', '');
-
-	        if (inst_name.indexOf('cat_') < 0) {
-	          possible_orders.push(inst_name);
-	        }
-	      }
-	    });
-
-	    // specific to Enrichr
-	    if (_.keys(params.viz.filter_data).indexOf('enr_score_type') > -1) {
-	      possible_orders = ['clust', 'rank'];
-	    }
-
-	    possible_orders = _.uniq(possible_orders);
-
-	    possible_orders = possible_orders.sort();
-
-	    var reorder_text;
-	    if (inst_rc != 'both') {
-	      reorder_text = ' Order';
-	    } else {
-	      reorder_text = 'Reorder Matrix';
-	    }
-
-	    reorder_section.append('div').classed('sidebar_button_text', true).style('clear', 'both').style('margin-top', '10px').html(rc_dict[inst_rc] + reorder_text);
-
-	    inst_reorder = reorder_section.append('div').classed('btn-group-vertical', true).style('width', '100%').classed('toggle_' + inst_rc + '_order', true).attr('role', 'group');
-
-	    inst_reorder.selectAll('.button').data(possible_orders).enter().append('button').attr('type', 'button').classed('btn', true).classed('btn-primary', true).classed('sidebar_button_text', true).classed('active', function (d) {
-	      is_active = false;
-	      if (d == params.viz.inst_order[other_rc]) {
-	        is_active = true;
-	      }
-	      return is_active;
-	    }).attr('name', function (d) {
-	      return d;
-	    }).html(function (d) {
-	      return button_dict[d];
-	    });
-	  });
-		};
-
-/***/ }),
-/* 243 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var make_filter_title = __webpack_require__(214);
-
-	module.exports = function set_sidebar_ini_view(params) {
-
-	  _.each(_.keys(params.ini_view), function (inst_filter) {
-
-	    // initialize filter slider using ini_view
-	    var inst_value = params.ini_view[inst_filter];
-
-	    var filter_type = params.viz.possible_filters[inst_filter];
-
-	    if (filter_type === 'numerical') {
-
-	      if (inst_value != 'all') {
-	        inst_value = parseInt(inst_value, 10);
-	      }
-
-	      if (params.viz.filter_data[inst_filter].indexOf(inst_value) <= -1) {
-	        inst_value = 'all';
-	      }
-
-	      var filter_title = make_filter_title(params, inst_filter);
-
-	      d3.select(params.root + ' .title_' + inst_filter).text(filter_title.text + inst_value + filter_title.suffix);
-
-	      d3.select(params.root + ' .slider_' + inst_filter).attr('current_state', inst_value);
-	    } else {
-
-	      // set up button initialization
-
-	    }
-	  });
-		};
-
-/***/ }),
-/* 244 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var file_saver = __webpack_require__(216);
-	var two_translate_zoom = __webpack_require__(115);
-	var deactivate_cropping = __webpack_require__(220);
-	var save_svg_png = __webpack_require__(245);
-
-	module.exports = function make_icons(cgm, sidebar) {
-
-	  var params = cgm.params;
-	  // var saveSvgAsPng = save_svg_png();
-	  var saveAs = file_saver();
-
-	  var row = sidebar.select('.icons_section').style('margin-top', '7px').style('margin-left', '5%');
-
-	  var width_pct = '22%';
-	  var padding_left = '0px';
-	  var padding_right = '0px';
-
-	  row.append('div').classed('clust_icon', true).style('float', 'left').style('width', width_pct).style('padding-left', padding_left).style('padding-right', padding_right).append('i').classed('fa', true).classed('fa-share-alt', true).classed('icon_buttons', true).style('font-size', '25px').on('click', function () {
-	    $(params.root + ' .share_info').modal('toggle');
-	    $('.share_url').val(window.location.href);
-	  }).classed('sidebar_tooltip', true).append('span').classed('sidebar_tooltip_text', true).html('Share').style('left', '0%');
-
-	  row.append('div').classed('clust_icon', true).style('float', 'left').style('width', width_pct).style('padding-left', padding_left).style('padding-right', padding_right).append('i').classed('fa', true).classed('fa-camera', true).classed('icon_buttons', true).style('font-size', '25px').on('click', function () {
-
-	    $(params.root + ' .picture_info').modal('toggle');
-	  }).classed('sidebar_tooltip', true).append('span').classed('sidebar_tooltip_text', true).html('Take snapshot').style('left', '-100%');
-
-	  row.append('div').classed('clust_icon', true).style('float', 'left').style('width', width_pct).style('padding-left', padding_left).style('padding-right', padding_right).append('i').classed('fa', true).classed('fa fa-cloud-download', true).classed('icon_buttons', true).style('font-size', '25px').on('click', function () {
-
-	    cgm.save_matrix();
-	  }).classed('sidebar_tooltip', true).append('span').classed('sidebar_tooltip_text', true).html('Download matrix').style('left', '-200%');
-
-	  row.append('div').classed('clust_icon', true).style('float', 'left').style('width', width_pct).style('padding-left', padding_left).style('padding-right', '-5px').append('i').classed('fa', true).classed('fa-crop', true).classed('crop_button', true).classed('icon_buttons', true).style('font-size', '25px').on('click', function () {
-
-	    // do nothing if dendro filtering has been done
-	    if (cgm.params.dendro_filter.row === false && cgm.params.dendro_filter.col === false) {
-
-	      var is_crop = d3.select(this).classed('fa-crop');
-
-	      var is_undo = d3.select(this).classed('fa-undo');
-
-	      // press crop button (can be active/incative)
-	      if (is_crop) {
-
-	        // keep list of names to return to state
-	        cgm.params.crop_filter_nodes = {};
-	        cgm.params.crop_filter_nodes.row_nodes = cgm.params.network_data.row_nodes;
-	        cgm.params.crop_filter_nodes.col_nodes = cgm.params.network_data.col_nodes;
-
-	        cgm.brush_crop_matrix();
-
-	        if (d3.select(this).classed('active_cropping') === false) {
-
-	          // set active_cropping (button turns red)
-	          d3.select(this).classed('active_cropping', true).style('color', 'red');
-	        } else {
-	          // deactivate cropping (button turns blue)
-	          d3.select(this).classed('active_cropping', false).style('color', '#337ab7');
-
-	          deactivate_cropping(cgm);
-	        }
-	      }
-
-	      // press undo button
-	      if (is_undo) {
-
-	        d3.select(params.root + ' .crop_button').style('color', '#337ab7').classed('fa-crop', true).classed('fa-undo', false);
-
-	        // cgm.filter_viz_using_names(cgm.params.crop_filter_nodes);
-	        cgm.filter_viz_using_nodes(cgm.params.crop_filter_nodes);
-
-	        // show dendro crop buttons after brush-cropping has been undone
-	        d3.select(cgm.params.root + ' .col_dendro_icons_container').style('display', 'block');
-	        d3.select(cgm.params.root + ' .row_dendro_icons_container').style('display', 'block');
-	      }
-
-	      two_translate_zoom(cgm, 0, 0, 1);
-	    }
-	  }).classed('sidebar_tooltip', true).append('span').classed('sidebar_tooltip_text', true).html('Crop matrix').style('left', '-400%');
-
-	  // save svg: example from: http://bl.ocks.org/pgiraud/8955139#profile.json
-	  ////////////////////////////////////////////////////////////////////////////
-	  function save_clust_svg() {
-
-	    d3.select(params.root + ' .expand_button').style('opacity', 0);
-
-	    var html = d3.select(params.root + " .viz_svg").attr("title", "test2").attr("version", 1.1).attr("xmlns", "http://www.w3.org/2000/svg").node().parentNode.innerHTML;
-
-	    var blob = new Blob([html], { type: "image/svg+xml" });
-
-	    saveAs(blob, "clustergrammer.svg");
-
-	    d3.select(params.root + ' .expand_button').style('opacity', 0.4);
-	  }
-
-	  d3.select(params.root + ' .download_buttons').append('p').append('a').html('Download SVG').on('click', function () {
-	    save_clust_svg();
-	  });
-
-	  var svg_id = 'svg_' + params.root.replace('#', '');
-
-	  // save as PNG
-	  /////////////////////////////////////////
-	  d3.select(params.root + ' .download_buttons').append('p').append('a').html('Download PNG').on('click', function () {
-	    d3.select(params.root + ' .expand_button').style('opacity', 0);
-	    // saveSvgAsPng(document.getElementById(svg_id), "clustergrammer.png");
-	    save_svg_png.saveSvgAsPng(document.getElementById(svg_id), "clustergrammer.png");
-	    d3.select(params.root + ' .expand_button').style('opacity', 0.4);
-	  });
-		};
-
-/***/ }),
-/* 245 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_RESULT__;(function () {
-	  var out$ = typeof exports != 'undefined' && exports || "function" != 'undefined' && {} || this;
-
-	  var doctype = '<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [<!ENTITY nbsp "&#160;">]>';
-
-	  function isElement(obj) {
-	    return obj instanceof HTMLElement || obj instanceof SVGElement;
-	  }
-
-	  function requireDomNode(el) {
-	    if (!isElement(el)) {
-	      throw new Error('an HTMLElement or SVGElement is required; got ' + el);
-	    }
-	  }
-
-	  function isExternal(url) {
-	    return url && url.lastIndexOf('http', 0) == 0 && url.lastIndexOf(window.location.host) == -1;
-	  }
-
-	  function inlineImages(el, callback) {
-	    requireDomNode(el);
-
-	    var images = el.querySelectorAll('image'),
-	        left = images.length,
-	        checkDone = function () {
-	      if (left === 0) {
-	        callback();
-	      }
-	    };
-
-	    checkDone();
-	    for (var i = 0; i < images.length; i++) {
-	      (function (image) {
-	        var href = image.getAttributeNS("http://www.w3.org/1999/xlink", "href");
-	        if (href) {
-	          if (isExternal(href.value)) {
-	            console.warn("Cannot render embedded images linking to external hosts: " + href.value);
-	            return;
-	          }
-	        }
-	        var canvas = document.createElement('canvas');
-	        var ctx = canvas.getContext('2d');
-	        var img = new Image();
-	        img.crossOrigin = "anonymous";
-	        href = href || image.getAttribute('href');
-	        if (href) {
-	          img.src = href;
-	          img.onload = function () {
-	            canvas.width = img.width;
-	            canvas.height = img.height;
-	            ctx.drawImage(img, 0, 0);
-	            image.setAttributeNS("http://www.w3.org/1999/xlink", "href", canvas.toDataURL('image/png'));
-	            left--;
-	            checkDone();
-	          };
-	          img.onerror = function () {
-	            console.log("Could not load " + href);
-	            left--;
-	            checkDone();
-	          };
-	        } else {
-	          left--;
-	          checkDone();
-	        }
-	      })(images[i]);
-	    }
-	  }
-
-	  function styles(el, options, cssLoadedCallback) {
-	    var selectorRemap = options.selectorRemap;
-	    var modifyStyle = options.modifyStyle;
-	    var css = "";
-	    // each font that has extranl link is saved into queue, and processed
-	    // asynchronously
-	    var fontsQueue = [];
-	    var sheets = document.styleSheets;
-	    for (var i = 0; i < sheets.length; i++) {
-	      try {
-	        var rules = sheets[i].cssRules;
-	      } catch (e) {
-	        console.warn("Stylesheet could not be loaded: " + sheets[i].href);
-	        continue;
-	      }
-
-	      if (rules != null) {
-	        for (var j = 0, match; j < rules.length; j++, match = null) {
-	          var rule = rules[j];
-	          if (typeof rule.style != "undefined") {
-	            var selectorText;
-
-	            try {
-	              selectorText = rule.selectorText;
-	            } catch (err) {
-	              console.warn('The following CSS rule has an invalid selector: "' + rule + '"', err);
-	            }
-
-	            try {
-	              if (selectorText) {
-	                match = el.querySelector(selectorText) || el.parentNode.querySelector(selectorText);
-	              }
-	            } catch (err) {
-	              console.warn('Invalid CSS selector "' + selectorText + '"', err);
-	            }
-
-	            if (match) {
-	              var selector = selectorRemap ? selectorRemap(rule.selectorText) : rule.selectorText;
-	              var cssText = modifyStyle ? modifyStyle(rule.style.cssText) : rule.style.cssText;
-	              css += selector + " { " + cssText + " }\n";
-	            } else if (rule.cssText.match(/^@font-face/)) {
-	              // below we are trying to find matches to external link. E.g.
-	              // @font-face {
-	              //   // ...
-	              //   src: local('Abel'), url(https://fonts.gstatic.com/s/abel/v6/UzN-iejR1VoXU2Oc-7LsbvesZW2xOQ-xsNqO47m55DA.woff2);
-	              // }
-	              //
-	              // This regex will save extrnal link into first capture group
-	              var fontUrlRegexp = /url\(["']?(.+?)["']?\)/;
-	              // TODO: This needs to be changed to support multiple url declarations per font.
-	              var fontUrlMatch = rule.cssText.match(fontUrlRegexp);
-
-	              var externalFontUrl = fontUrlMatch && fontUrlMatch[1] || '';
-	              var fontUrlIsDataURI = externalFontUrl.match(/^data:/);
-	              if (fontUrlIsDataURI) {
-	                // We should ignore data uri - they are already embedded
-	                externalFontUrl = '';
-	              }
-
-	              if (externalFontUrl) {
-	                // okay, we are lucky. We can fetch this font later
-
-	                //handle url if relative
-	                if (externalFontUrl.startsWith('../')) {
-	                  externalFontUrl = sheets[i].href + '/../' + externalFontUrl;
-	                } else if (externalFontUrl.startsWith('./')) {
-	                  externalFontUrl = sheets[i].href + '/.' + externalFontUrl;
-	                }
-
-	                fontsQueue.push({
-	                  text: rule.cssText,
-	                  // Pass url regex, so that once font is downladed, we can run `replace()` on it
-	                  fontUrlRegexp: fontUrlRegexp,
-	                  format: getFontMimeTypeFromUrl(externalFontUrl),
-	                  url: externalFontUrl
-	                });
-	              } else {
-	                // otherwise, use previous logic
-	                css += rule.cssText + '\n';
-	              }
-	            }
-	          }
-	        }
-	      }
-	    }
-
-	    // Now all css is processed, it's time to handle scheduled fonts
-	    processFontQueue(fontsQueue);
-
-	    function getFontMimeTypeFromUrl(fontUrl) {
-	      var supportedFormats = {
-	        'woff2': 'font/woff2',
-	        'woff': 'font/woff',
-	        'otf': 'application/x-font-opentype',
-	        'ttf': 'application/x-font-ttf',
-	        'eot': 'application/vnd.ms-fontobject',
-	        'sfnt': 'application/font-sfnt',
-	        'svg': 'image/svg+xml'
-	      };
-	      var extensions = Object.keys(supportedFormats);
-	      for (var i = 0; i < extensions.length; ++i) {
-	        var extension = extensions[i];
-	        // TODO: This is not bullet proof, it needs to handle edge cases...
-	        if (fontUrl.indexOf('.' + extension) > 0) {
-	          return supportedFormats[extension];
-	        }
-	      }
-
-	      // If you see this error message, you probably need to update code above.
-	      console.error('Unknown font format for ' + fontUrl + '; Fonts may not be working correctly');
-	      return 'application/octet-stream';
-	    }
-
-	    function processFontQueue(queue) {
-	      if (queue.length > 0) {
-	        // load fonts one by one until we have anything in the queue:
-	        var font = queue.pop();
-	        processNext(font);
-	      } else {
-	        // no more fonts to load.
-	        cssLoadedCallback(css);
-	      }
-
-	      function processNext(font) {
-	        // TODO: This could benefit from caching.
-	        var oReq = new XMLHttpRequest();
-	        oReq.addEventListener('load', fontLoaded);
-	        oReq.addEventListener('error', transferFailed);
-	        oReq.addEventListener('abort', transferFailed);
-	        oReq.open('GET', font.url);
-	        oReq.responseType = 'arraybuffer';
-	        oReq.send();
-
-	        function fontLoaded() {
-	          // TODO: it may be also worth to wait until fonts are fully loaded before
-	          // attempting to rasterize them. (e.g. use https://developer.mozilla.org/en-US/docs/Web/API/FontFaceSet )
-	          var fontBits = oReq.response;
-	          var fontInBase64 = arrayBufferToBase64(fontBits);
-	          updateFontStyle(font, fontInBase64);
-	        }
-
-	        function transferFailed(e) {
-	          console.warn('Failed to load font from: ' + font.url);
-	          console.warn(e);
-	          css += font.text + '\n';
-	          processFontQueue();
-	        }
-
-	        function updateFontStyle(font, fontInBase64) {
-	          var dataUrl = 'url("data:' + font.format + ';base64,' + fontInBase64 + '")';
-	          css += font.text.replace(font.fontUrlRegexp, dataUrl) + '\n';
-
-	          // schedule next font download on next tick.
-	          setTimeout(function () {
-	            processFontQueue(queue);
-	          }, 0);
-	        }
-	      }
-	    }
-
-	    function arrayBufferToBase64(buffer) {
-	      var binary = '';
-	      var bytes = new Uint8Array(buffer);
-	      var len = bytes.byteLength;
-
-	      for (var i = 0; i < len; i++) {
-	        binary += String.fromCharCode(bytes[i]);
-	      }
-
-	      return window.btoa(binary);
-	    }
-	  }
-
-	  function getDimension(el, clone, dim) {
-	    var v = el.viewBox && el.viewBox.baseVal && el.viewBox.baseVal[dim] || clone.getAttribute(dim) !== null && !clone.getAttribute(dim).match(/%$/) && parseInt(clone.getAttribute(dim)) || el.getBoundingClientRect()[dim] || parseInt(clone.style[dim]) || parseInt(window.getComputedStyle(el).getPropertyValue(dim));
-	    return typeof v === 'undefined' || v === null || isNaN(parseFloat(v)) ? 0 : v;
-	  }
-
-	  function reEncode(data) {
-	    data = encodeURIComponent(data);
-	    data = data.replace(/%([0-9A-F]{2})/g, function (match, p1) {
-	      var c = String.fromCharCode('0x' + p1);
-	      return c === '%' ? '%25' : c;
-	    });
-	    return decodeURIComponent(data);
-	  }
-
-	  out$.prepareSvg = function (el, options, cb) {
-	    requireDomNode(el);
-
-	    options = options || {};
-	    options.scale = options.scale || 1;
-	    options.responsive = options.responsive || false;
-	    var xmlns = "http://www.w3.org/2000/xmlns/";
-
-	    inlineImages(el, function () {
-	      var outer = document.createElement("div");
-	      var clone = el.cloneNode(true);
-	      var width, height;
-	      if (el.tagName == 'svg') {
-	        width = options.width || getDimension(el, clone, 'width');
-	        height = options.height || getDimension(el, clone, 'height');
-	      } else if (el.getBBox) {
-	        var box = el.getBBox();
-	        width = box.x + box.width;
-	        height = box.y + box.height;
-	        clone.setAttribute('transform', clone.getAttribute('transform').replace(/translate\(.*?\)/, ''));
-
-	        var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-	        svg.appendChild(clone);
-	        clone = svg;
-	      } else {
-	        console.error('Attempted to render non-SVG element', el);
-	        return;
-	      }
-
-	      clone.setAttribute("version", "1.1");
-	      if (!clone.getAttribute('xmlns')) {
-	        clone.setAttributeNS(xmlns, "xmlns", "http://www.w3.org/2000/svg");
-	      }
-	      if (!clone.getAttribute('xmlns:xlink')) {
-	        clone.setAttributeNS(xmlns, "xmlns:xlink", "http://www.w3.org/1999/xlink");
-	      }
-
-	      if (options.responsive) {
-	        clone.removeAttribute('width');
-	        clone.removeAttribute('height');
-	        clone.setAttribute('preserveAspectRatio', 'xMinYMin meet');
-	      } else {
-	        clone.setAttribute("width", width * options.scale);
-	        clone.setAttribute("height", height * options.scale);
-	      }
-
-	      clone.setAttribute("viewBox", [options.left || 0, options.top || 0, width, height].join(" "));
-
-	      var fos = clone.querySelectorAll('foreignObject > *');
-	      for (var i = 0; i < fos.length; i++) {
-	        if (!fos[i].getAttribute('xmlns')) {
-	          fos[i].setAttributeNS(xmlns, "xmlns", "http://www.w3.org/1999/xhtml");
-	        }
-	      }
-
-	      outer.appendChild(clone);
-
-	      // In case of custom fonts we need to fetch font first, and then inline
-	      // its url into data-uri format (encode as base64). That's why style
-	      // processing is done asynchonously. Once all inlining is finshed
-	      // cssLoadedCallback() is called.
-	      styles(el, options, cssLoadedCallback);
-
-	      function cssLoadedCallback(css) {
-	        // here all fonts are inlined, so that we can render them properly.
-	        var s = document.createElement('style');
-	        s.setAttribute('type', 'text/css');
-	        s.innerHTML = "<![CDATA[\n" + css + "\n]]>";
-	        var defs = document.createElement('defs');
-	        defs.appendChild(s);
-	        clone.insertBefore(defs, clone.firstChild);
-
-	        if (cb) {
-	          var outHtml = outer.innerHTML;
-	          outHtml = outHtml.replace(/NS\d+:href/gi, 'xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href');
-	          cb(outHtml, width, height);
-	        }
-	      }
-	    });
-	  };
-
-	  out$.svgAsDataUri = function (el, options, cb) {
-	    out$.prepareSvg(el, options, function (svg) {
-	      var uri = 'data:image/svg+xml;base64,' + window.btoa(reEncode(doctype + svg));
-	      if (cb) {
-	        cb(uri);
-	      }
-	    });
-	  };
-
-	  out$.svgAsPngUri = function (el, options, cb) {
-	    requireDomNode(el);
-
-	    options = options || {};
-	    options.encoderType = options.encoderType || 'image/png';
-	    options.encoderOptions = options.encoderOptions || 0.8;
-
-	    var convertToPng = function (src, w, h) {
-	      var canvas = document.createElement('canvas');
-	      var context = canvas.getContext('2d');
-	      canvas.width = w;
-	      canvas.height = h;
-
-	      if (options.canvg) {
-	        options.canvg(canvas, src);
-	      } else {
-	        context.drawImage(src, 0, 0);
-	      }
-
-	      if (options.backgroundColor) {
-	        context.globalCompositeOperation = 'destination-over';
-	        context.fillStyle = options.backgroundColor;
-	        context.fillRect(0, 0, canvas.width, canvas.height);
-	      }
-
-	      var png;
-	      try {
-	        png = canvas.toDataURL(options.encoderType, options.encoderOptions);
-	      } catch (e) {
-	        if (typeof SecurityError !== 'undefined' && e instanceof SecurityError || e.name == "SecurityError") {
-	          console.error("Rendered SVG images cannot be downloaded in this browser.");
-	          return;
-	        } else {
-	          throw e;
-	        }
-	      }
-	      cb(png);
-	    };
-
-	    if (options.canvg) {
-	      out$.prepareSvg(el, options, convertToPng);
-	    } else {
-	      out$.svgAsDataUri(el, options, function (uri) {
-	        var image = new Image();
-
-	        image.onload = function () {
-	          convertToPng(image, image.width, image.height);
-	        };
-
-	        image.onerror = function () {
-	          console.error('There was an error loading the data URI as an image on the following SVG\n', window.atob(uri.slice(26)), '\n', "Open the following link to see browser's diagnosis\n", uri);
-	        };
-
-	        image.src = uri;
-	      });
-	    }
-	  };
-
-	  out$.download = function (name, uri) {
-	    if (navigator.msSaveOrOpenBlob) {
-	      navigator.msSaveOrOpenBlob(uriToBlob(uri), name);
-	    } else {
-	      var saveLink = document.createElement('a');
-	      var downloadSupported = 'download' in saveLink;
-	      if (downloadSupported) {
-	        saveLink.download = name;
-	        saveLink.style.display = 'none';
-	        document.body.appendChild(saveLink);
-	        try {
-	          var blob = uriToBlob(uri);
-	          var url = URL.createObjectURL(blob);
-	          saveLink.href = url;
-	          saveLink.onclick = function () {
-	            requestAnimationFrame(function () {
-	              URL.revokeObjectURL(url);
-	            });
-	          };
-	        } catch (e) {
-	          console.warn('This browser does not support object URLs. Falling back to string URL.');
-	          saveLink.href = uri;
-	        }
-	        saveLink.click();
-	        document.body.removeChild(saveLink);
-	      } else {
-	        window.open(uri, '_temp', 'menubar=no,toolbar=no,status=no');
-	      }
-	    }
-	  };
-
-	  function uriToBlob(uri) {
-	    var byteString = window.atob(uri.split(',')[1]);
-	    var mimeString = uri.split(',')[0].split(':')[1].split(';')[0];
-	    var buffer = new ArrayBuffer(byteString.length);
-	    var intArray = new Uint8Array(buffer);
-	    for (var i = 0; i < byteString.length; i++) {
-	      intArray[i] = byteString.charCodeAt(i);
-	    }
-	    return new Blob([buffer], { type: mimeString });
-	  }
-
-	  out$.saveSvg = function (el, name, options) {
-	    requireDomNode(el);
-
-	    options = options || {};
-	    out$.svgAsDataUri(el, options, function (uri) {
-	      out$.download(name, uri);
-	    });
-	  };
-
-	  out$.saveSvgAsPng = function (el, name, options) {
-	    requireDomNode(el);
-
-	    options = options || {};
-	    out$.svgAsPngUri(el, options, function (uri) {
-	      out$.download(name, uri);
-	    });
-	  };
-
-	  // if define is defined create as an AMD module
-	  if (true) {
-	    !(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
-	      return out$;
-	    }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	  }
-		})();
-
-/***/ }),
-/* 246 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var make_modal_skeleton = __webpack_require__(247);
-
-	module.exports = function ini_modals(params) {
-
-	  // share modal
-	  ///////////////////////////////////////
-	  var share_modal = make_modal_skeleton(params, 'share_info');
-
-	  share_modal.header.append('a').attr('target', '_blank').attr('href', '/clustergrammer/');
-
-	  share_modal.header.append('h4').classed('modal-title', true).html('Share the visualization using the current URL:');
-
-	  share_modal.body.append('input').classed('bootstrap_highlight', true).classed('share_url', true);
-
-	  // picture modal
-	  ///////////////////////////////////////
-	  var screenshot_modal = make_modal_skeleton(params, 'picture_info');
-
-	  screenshot_modal.header.append('h4').classed('modal-title', true).html('Save a snapshot of the visualization');
-
-	  screenshot_modal.body.append('div').classed('download_buttons', true);
-
-	  // dendro modal
-	  ///////////////////////////////////////
-	  var dendro_modal = make_modal_skeleton(params, 'dendro_info');
-
-	  dendro_modal.header.append('h4').classed('modal-title', true).html('Cluster Information');
-
-	  dendro_modal.body.append('g').classed('cluster_info_container', true);
-
-	  dendro_modal.body.append('div').classed('dendro_text', true).append('input').classed('bootstrap_highlight', true).classed('current_names', true).style('width', '100%');
-		};
-
-/***/ }),
-/* 247 */
-/***/ (function(module, exports) {
-
-	module.exports = function make_modal_skeleton(params, modal_class) {
-
-	  var modal_skeleton = {};
-
-	  var modal = d3.select(params.root).append('div').classed('modal', true).classed('fade', true).classed(modal_class, true).attr('role', 'dialog');
-
-	  var modal_dialog = modal.append('div').classed('modal-dialog', true);
-
-	  var modal_content = modal_dialog.append('div').classed('modal-content', true);
-
-	  modal_skeleton.header = modal_content.append('div').classed('modal-header', true);
-
-	  modal_skeleton.header.append('button').attr('type', 'button').classed('close', true).attr('data-dismiss', 'modal').html('&times;');
-
-	  modal_skeleton.body = modal_content.append('div').classed('modal-body', true);
-
-	  return modal_skeleton;
-		};
-
-/***/ }),
-/* 248 */
-/***/ (function(module, exports) {
-
-	module.exports = function set_up_opacity_slider(sidebar) {
-
-	  var slider_container = sidebar.append('div').classed('opacity_slider_container', true).style('margin-top', '5px').style('padding-left', '10px').style('padding-right', '10px');
-
-	  slider_container.append('div').classed('sidebar_text', true).classed('opacity_slider_text', true).style('margin-bottom', '3px').text('Opacity Slider');
-
-	  slider_container.append('div').classed('slider', true).classed('opacity_slider', true);
-		};
-
-/***/ }),
-/* 249 */
-/***/ (function(module, exports) {
-
-	module.exports = function make_colorbar(cgm) {
-
-	  var params = cgm.params;
-
-	  d3.select(params.root + ' .sidebar_wrapper').append('div').classed('sidebar_text', true).style('padding-left', '10px').style('padding-top', '5px').text('Matrix Values');
-
-	  var colorbar_width = params.sidebar.width - 20;
-	  var colorbar_height = 13;
-	  var svg_height = 3 * colorbar_height;
-	  var svg_width = 1.2 * colorbar_width;
-	  var low_left_margin = 10;
-	  var top_margin = 33;
-	  var high_left_margin = colorbar_width + 10;
-	  var bar_margin_left = 10;
-	  var bar_margin_top = 3;
-
-	  var network_data = params.network_data;
-
-	  var max_link = _.max(network_data.links, function (d) {
-	    return d.value;
-	  }).value;
-
-	  var min_link = _.min(network_data.links, function (d) {
-	    return d.value;
-	  }).value;
-
-	  var main_svg = d3.select(params.root + ' .sidebar_wrapper').append('svg').attr('height', svg_height + 'px').attr('width', svg_width + 'px');
-
-	  //Append a defs (for definition) element to your SVG
-	  var defs = main_svg.append("defs");
-
-	  //Append a linearGradient element to the defs and give it a unique id
-	  var linearGradient = defs.append("linearGradient").attr("id", "linear-gradient");
-
-	  var special_case = 'none';
-
-	  // no negative numbers
-	  if (min_link >= 0) {
-
-	    //Set the color for the start (0%)
-	    linearGradient.append("stop").attr("offset", "0%").attr("stop-color", "white");
-
-	    //Set the color for the end (100%)
-	    linearGradient.append("stop").attr("offset", "100%").attr("stop-color", "red");
-
-	    special_case = 'all_postiive';
-
-	    // no positive numbers
-	  } else if (max_link <= 0) {
-
-	    //Set the color for the start (0%)
-	    linearGradient.append("stop").attr("offset", "0%").attr("stop-color", "blue");
-
-	    //Set the color for the end (100%)
-	    linearGradient.append("stop").attr("offset", "100%").attr("stop-color", "white");
-
-	    special_case = 'all_negative';
-	  }
-
-	  // both postive and negative numbers
-	  else {
-	      //Set the color for the start (0%)
-	      linearGradient.append("stop").attr("offset", "0%").attr("stop-color", "blue");
-
-	      //Set the color for the end (100%)
-	      linearGradient.append("stop").attr("offset", "50%").attr("stop-color", "white");
-
-	      //Set the color for the end (100%)
-	      linearGradient.append("stop").attr("offset", "100%").attr("stop-color", "red");
-	    }
-
-	  // make colorbar
-	  main_svg.append('rect').classed('background', true).attr('height', colorbar_height + 'px').attr('width', colorbar_width + 'px').attr('fill', 'url(#linear-gradient)').attr('transform', 'translate(' + bar_margin_left + ', ' + bar_margin_top + ')').attr('stroke', 'grey').attr('stroke-width', '0.25px');
-
-	  // make title
-	  ///////////////
-
-	  var max_abs_val = Math.abs(Math.round(params.matrix.max_link * 10) / 10);
-	  var font_size = 13;
-
-	  main_svg.append('text').text(function () {
-	    var inst_string;
-	    if (special_case === 'all_postiive') {
-	      inst_string = 0;
-	    } else {
-	      inst_string = '-' + max_abs_val.toLocaleString();
-	    }
-	    return inst_string;
-	  }).style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').style('font-weight', 300).style('font-size', font_size).attr('transform', 'translate(' + low_left_margin + ',' + top_margin + ')').attr('text-anchor', 'start');
-
-	  main_svg.append('text').text(max_abs_val.toLocaleString()).text(function () {
-	    var inst_string;
-	    if (special_case === 'all_negative') {
-	      inst_string = 0;
-	    } else {
-	      inst_string = max_abs_val.toLocaleString();
-	    }
-	    return inst_string;
-	  }).style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').style('font-weight', 300).style('font-size', font_size).attr('transform', 'translate(' + high_left_margin + ',' + top_margin + ')').attr('text-anchor', 'end');
-		};
-
-/***/ }),
-/* 250 */
-/***/ (function(module, exports, __webpack_require__) {
-
 	'use strict';
 
 	var clone = __webpack_require__(69).clone;
@@ -21896,1249 +19463,23 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 251 */,
-/* 252 */,
-/* 253 */,
-/* 254 */,
-/* 255 */,
-/* 256 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var DimensionError = __webpack_require__(86);
-
-	function factory(type, config, load, typed) {
-
-	  var DenseMatrix = type.DenseMatrix;
-
-	  /**
-	   * Iterates over SparseMatrix nonzero items and invokes the callback function f(Dij, Sij). 
-	   * Callback function invoked NNZ times (number of nonzero items in SparseMatrix).
-	   *
-	   *
-	   *          ┌  f(Dij, Sij)  ; S(i,j) !== 0
-	   * C(i,j) = ┤
-	   *          └  Dij          ; otherwise
-	   *
-	   *
-	   * @param {Matrix}   denseMatrix       The DenseMatrix instance (D)
-	   * @param {Matrix}   sparseMatrix      The SparseMatrix instance (S)
-	   * @param {Function} callback          The f(Dij,Sij) operation to invoke, where Dij = DenseMatrix(i,j) and Sij = SparseMatrix(i,j)
-	   * @param {boolean}  inverse           A true value indicates callback should be invoked f(Sij,Dij)
-	   *
-	   * @return {Matrix}                    DenseMatrix (C)
-	   *
-	   * see https://github.com/josdejong/mathjs/pull/346#issuecomment-97477571
-	   */
-	  var algorithm01 = function (denseMatrix, sparseMatrix, callback, inverse) {
-	    // dense matrix arrays
-	    var adata = denseMatrix._data;
-	    var asize = denseMatrix._size;
-	    var adt = denseMatrix._datatype;
-	    // sparse matrix arrays
-	    var bvalues = sparseMatrix._values;
-	    var bindex = sparseMatrix._index;
-	    var bptr = sparseMatrix._ptr;
-	    var bsize = sparseMatrix._size;
-	    var bdt = sparseMatrix._datatype;
-
-	    // validate dimensions
-	    if (asize.length !== bsize.length) throw new DimensionError(asize.length, bsize.length);
-
-	    // check rows & columns
-	    if (asize[0] !== bsize[0] || asize[1] !== bsize[1]) throw new RangeError('Dimension mismatch. Matrix A (' + asize + ') must match Matrix B (' + bsize + ')');
-
-	    // sparse matrix cannot be a Pattern matrix
-	    if (!bvalues) throw new Error('Cannot perform operation on Dense Matrix and Pattern Sparse Matrix');
-
-	    // rows & columns
-	    var rows = asize[0];
-	    var columns = asize[1];
-
-	    // process data types
-	    var dt = typeof adt === 'string' && adt === bdt ? adt : undefined;
-	    // callback function
-	    var cf = dt ? typed.find(callback, [dt, dt]) : callback;
-
-	    // vars
-	    var i, j;
-
-	    // result (DenseMatrix)
-	    var cdata = [];
-	    // initialize c
-	    for (i = 0; i < rows; i++) cdata[i] = [];
-
-	    // workspace
-	    var x = [];
-	    // marks indicating we have a value in x for a given column
-	    var w = [];
-
-	    // loop columns in b
-	    for (j = 0; j < columns; j++) {
-	      // column mark
-	      var mark = j + 1;
-	      // values in column j
-	      for (var k0 = bptr[j], k1 = bptr[j + 1], k = k0; k < k1; k++) {
-	        // row
-	        i = bindex[k];
-	        // update workspace
-	        x[i] = inverse ? cf(bvalues[k], adata[i][j]) : cf(adata[i][j], bvalues[k]);
-	        // mark i as updated
-	        w[i] = mark;
-	      }
-	      // loop rows
-	      for (i = 0; i < rows; i++) {
-	        // check row is in workspace
-	        if (w[i] === mark) {
-	          // c[i][j] was already calculated
-	          cdata[i][j] = x[i];
-	        } else {
-	          // item does not exist in S
-	          cdata[i][j] = adata[i][j];
-	        }
-	      }
-	    }
-
-	    // return dense matrix
-	    return new DenseMatrix({
-	      data: cdata,
-	      size: [rows, columns],
-	      datatype: dt
-	    });
-	  };
-
-	  return algorithm01;
-	}
-
-	exports.name = 'algorithm01';
-	exports.factory = factory;
-
-/***/ }),
-/* 257 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var DimensionError = __webpack_require__(86);
-
-	function factory(type, config, load, typed) {
-
-	  var DenseMatrix = type.DenseMatrix;
-
-	  /**
-	   * Iterates over SparseMatrix items and invokes the callback function f(Dij, Sij).
-	   * Callback function invoked M*N times.
-	   *
-	   *
-	   *          ┌  f(Dij, Sij)  ; S(i,j) !== 0
-	   * C(i,j) = ┤
-	   *          └  f(Dij, 0)    ; otherwise
-	   *
-	   *
-	   * @param {Matrix}   denseMatrix       The DenseMatrix instance (D)
-	   * @param {Matrix}   sparseMatrix      The SparseMatrix instance (C)
-	   * @param {Function} callback          The f(Dij,Sij) operation to invoke, where Dij = DenseMatrix(i,j) and Sij = SparseMatrix(i,j)
-	   * @param {boolean}  inverse           A true value indicates callback should be invoked f(Sij,Dij)
-	   *
-	   * @return {Matrix}                    DenseMatrix (C)
-	   *
-	   * see https://github.com/josdejong/mathjs/pull/346#issuecomment-97477571
-	   */
-	  var algorithm03 = function (denseMatrix, sparseMatrix, callback, inverse) {
-	    // dense matrix arrays
-	    var adata = denseMatrix._data;
-	    var asize = denseMatrix._size;
-	    var adt = denseMatrix._datatype;
-	    // sparse matrix arrays
-	    var bvalues = sparseMatrix._values;
-	    var bindex = sparseMatrix._index;
-	    var bptr = sparseMatrix._ptr;
-	    var bsize = sparseMatrix._size;
-	    var bdt = sparseMatrix._datatype;
-
-	    // validate dimensions
-	    if (asize.length !== bsize.length) throw new DimensionError(asize.length, bsize.length);
-
-	    // check rows & columns
-	    if (asize[0] !== bsize[0] || asize[1] !== bsize[1]) throw new RangeError('Dimension mismatch. Matrix A (' + asize + ') must match Matrix B (' + bsize + ')');
-
-	    // sparse matrix cannot be a Pattern matrix
-	    if (!bvalues) throw new Error('Cannot perform operation on Dense Matrix and Pattern Sparse Matrix');
-
-	    // rows & columns
-	    var rows = asize[0];
-	    var columns = asize[1];
-
-	    // datatype
-	    var dt;
-	    // zero value
-	    var zero = 0;
-	    // callback signature to use
-	    var cf = callback;
-
-	    // process data types
-	    if (typeof adt === 'string' && adt === bdt) {
-	      // datatype
-	      dt = adt;
-	      // convert 0 to the same datatype
-	      zero = typed.convert(0, dt);
-	      // callback
-	      cf = typed.find(callback, [dt, dt]);
-	    }
-
-	    // result (DenseMatrix)
-	    var cdata = [];
-
-	    // initialize dense matrix
-	    for (var z = 0; z < rows; z++) {
-	      // initialize row
-	      cdata[z] = [];
-	    }
-
-	    // workspace
-	    var x = [];
-	    // marks indicating we have a value in x for a given column
-	    var w = [];
-
-	    // loop columns in b
-	    for (var j = 0; j < columns; j++) {
-	      // column mark
-	      var mark = j + 1;
-	      // values in column j
-	      for (var k0 = bptr[j], k1 = bptr[j + 1], k = k0; k < k1; k++) {
-	        // row
-	        var i = bindex[k];
-	        // update workspace
-	        x[i] = inverse ? cf(bvalues[k], adata[i][j]) : cf(adata[i][j], bvalues[k]);
-	        w[i] = mark;
-	      }
-	      // process workspace
-	      for (var y = 0; y < rows; y++) {
-	        // check we have a calculated value for current row
-	        if (w[y] === mark) {
-	          // use calculated value
-	          cdata[y][j] = x[y];
-	        } else {
-	          // calculate value
-	          cdata[y][j] = inverse ? cf(zero, adata[y][j]) : cf(adata[y][j], zero);
-	        }
-	      }
-	    }
-
-	    // return dense matrix
-	    return new DenseMatrix({
-	      data: cdata,
-	      size: [rows, columns],
-	      datatype: dt
-	    });
-	  };
-
-	  return algorithm03;
-	}
-
-	exports.name = 'algorithm03';
-	exports.factory = factory;
-
-/***/ }),
-/* 258 */,
-/* 259 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	function factory(type, config, load, typed) {
-
-	  var DenseMatrix = type.DenseMatrix;
-
-	  /**
-	   * Iterates over SparseMatrix S nonzero items and invokes the callback function f(Sij, b). 
-	   * Callback function invoked NZ times (number of nonzero items in S).
-	   *
-	   *
-	   *          ┌  f(Sij, b)  ; S(i,j) !== 0
-	   * C(i,j) = ┤  
-	   *          └  b          ; otherwise
-	   *
-	   *
-	   * @param {Matrix}   s                 The SparseMatrix instance (S)
-	   * @param {Scalar}   b                 The Scalar value
-	   * @param {Function} callback          The f(Aij,b) operation to invoke
-	   * @param {boolean}  inverse           A true value indicates callback should be invoked f(b,Sij)
-	   *
-	   * @return {Matrix}                    DenseMatrix (C)
-	   *
-	   * https://github.com/josdejong/mathjs/pull/346#issuecomment-97626813
-	   */
-	  var algorithm10 = function (s, b, callback, inverse) {
-	    // sparse matrix arrays
-	    var avalues = s._values;
-	    var aindex = s._index;
-	    var aptr = s._ptr;
-	    var asize = s._size;
-	    var adt = s._datatype;
-
-	    // sparse matrix cannot be a Pattern matrix
-	    if (!avalues) throw new Error('Cannot perform operation on Pattern Sparse Matrix and Scalar value');
-
-	    // rows & columns
-	    var rows = asize[0];
-	    var columns = asize[1];
-
-	    // datatype
-	    var dt;
-	    // callback signature to use
-	    var cf = callback;
-
-	    // process data types
-	    if (typeof adt === 'string') {
-	      // datatype
-	      dt = adt;
-	      // convert b to the same datatype
-	      b = typed.convert(b, dt);
-	      // callback
-	      cf = typed.find(callback, [dt, dt]);
-	    }
-
-	    // result arrays
-	    var cdata = [];
-	    // matrix
-	    var c = new DenseMatrix({
-	      data: cdata,
-	      size: [rows, columns],
-	      datatype: dt
-	    });
-
-	    // workspaces
-	    var x = [];
-	    // marks indicating we have a value in x for a given column
-	    var w = [];
-
-	    // loop columns
-	    for (var j = 0; j < columns; j++) {
-	      // columns mark
-	      var mark = j + 1;
-	      // values in j
-	      for (var k0 = aptr[j], k1 = aptr[j + 1], k = k0; k < k1; k++) {
-	        // row
-	        var r = aindex[k];
-	        // update workspace
-	        x[r] = avalues[k];
-	        w[r] = mark;
-	      }
-	      // loop rows
-	      for (var i = 0; i < rows; i++) {
-	        // initialize C on first column
-	        if (j === 0) {
-	          // create row array
-	          cdata[i] = [];
-	        }
-	        // check sparse matrix has a value @ i,j
-	        if (w[i] === mark) {
-	          // invoke callback, update C
-	          cdata[i][j] = inverse ? cf(b, x[i]) : cf(x[i], b);
-	        } else {
-	          // dense matrix value @ i, j
-	          cdata[i][j] = b;
-	        }
-	      }
-	    }
-
-	    // return sparse matrix
-	    return c;
-	  };
-
-	  return algorithm10;
-	}
-
-	exports.name = 'algorithm10';
-	exports.factory = factory;
-
-/***/ }),
-/* 260 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var util = __webpack_require__(261);
-	var DimensionError = __webpack_require__(86);
-
-	var string = util.string,
-	    isString = string.isString;
-
-	function factory(type, config, load, typed) {
-
-	  var DenseMatrix = type.DenseMatrix;
-
-	  /**
-	   * Iterates over DenseMatrix items and invokes the callback function f(Aij..z, Bij..z). 
-	   * Callback function invoked MxN times.
-	   *
-	   * C(i,j,...z) = f(Aij..z, Bij..z)
-	   *
-	   * @param {Matrix}   a                 The DenseMatrix instance (A)
-	   * @param {Matrix}   b                 The DenseMatrix instance (B)
-	   * @param {Function} callback          The f(Aij..z,Bij..z) operation to invoke
-	   *
-	   * @return {Matrix}                    DenseMatrix (C)
-	   *
-	   * https://github.com/josdejong/mathjs/pull/346#issuecomment-97658658
-	   */
-	  var algorithm13 = function (a, b, callback) {
-	    // a arrays
-	    var adata = a._data;
-	    var asize = a._size;
-	    var adt = a._datatype;
-	    // b arrays
-	    var bdata = b._data;
-	    var bsize = b._size;
-	    var bdt = b._datatype;
-	    // c arrays
-	    var csize = [];
-
-	    // validate dimensions
-	    if (asize.length !== bsize.length) throw new DimensionError(asize.length, bsize.length);
-
-	    // validate each one of the dimension sizes
-	    for (var s = 0; s < asize.length; s++) {
-	      // must match
-	      if (asize[s] !== bsize[s]) throw new RangeError('Dimension mismatch. Matrix A (' + asize + ') must match Matrix B (' + bsize + ')');
-	      // update dimension in c
-	      csize[s] = asize[s];
-	    }
-
-	    // datatype
-	    var dt;
-	    // callback signature to use
-	    var cf = callback;
-
-	    // process data types
-	    if (typeof adt === 'string' && adt === bdt) {
-	      // datatype
-	      dt = adt;
-	      // convert b to the same datatype
-	      b = typed.convert(b, dt);
-	      // callback
-	      cf = typed.find(callback, [dt, dt]);
-	    }
-
-	    // populate cdata, iterate through dimensions
-	    var cdata = csize.length > 0 ? _iterate(cf, 0, csize, csize[0], adata, bdata) : [];
-
-	    // c matrix
-	    return new DenseMatrix({
-	      data: cdata,
-	      size: csize,
-	      datatype: dt
-	    });
-	  };
-
-	  // recursive function
-	  var _iterate = function (f, level, s, n, av, bv) {
-	    // initialize array for this level
-	    var cv = [];
-	    // check we reach the last level
-	    if (level === s.length - 1) {
-	      // loop arrays in last level
-	      for (var i = 0; i < n; i++) {
-	        // invoke callback and store value
-	        cv[i] = f(av[i], bv[i]);
-	      }
-	    } else {
-	      // iterate current level
-	      for (var j = 0; j < n; j++) {
-	        // iterate next level
-	        cv[j] = _iterate(f, level + 1, s, s[level + 1], av[j], bv[j]);
-	      }
-	    }
-	    return cv;
-	  };
-
-	  return algorithm13;
-	}
-
-	exports.name = 'algorithm13';
-	exports.factory = factory;
-
-/***/ }),
-/* 261 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	exports.array = __webpack_require__(82);
-	exports['boolean'] = __webpack_require__(262);
-	exports['function'] = __webpack_require__(263);
-	exports.number = __webpack_require__(72);
-	exports.object = __webpack_require__(69);
-	exports.string = __webpack_require__(83);
-	exports.types = __webpack_require__(85);
-	exports.emitter = __webpack_require__(73);
-
-/***/ }),
-/* 262 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	/**
-	 * Test whether value is a boolean
-	 * @param {*} value
-	 * @return {boolean} isBoolean
-	 */
-
-	exports.isBoolean = function (value) {
-	  return typeof value == 'boolean';
-	};
-
-/***/ }),
-/* 263 */
-/***/ (function(module, exports) {
-
-	// function utils
-
-	/*
-	 * Memoize a given function by caching the computed result.
-	 * The cache of a memoized function can be cleared by deleting the `cache`
-	 * property of the function.
-	 *
-	 * @param {function} fn                     The function to be memoized.
-	 *                                          Must be a pure function.
-	 * @param {function(args: Array)} [hasher]  A custom hash builder.
-	 *                                          Is JSON.stringify by default.
-	 * @return {function}                       Returns the memoized function
-	 */
-	exports.memoize = function (fn, hasher) {
-	  return function memoize() {
-	    if (typeof memoize.cache !== 'object') {
-	      memoize.cache = {};
-	    }
-
-	    var args = [];
-	    for (var i = 0; i < arguments.length; i++) {
-	      args[i] = arguments[i];
-	    }
-
-	    var hash = hasher ? hasher(args) : JSON.stringify(args);
-	    if (!(hash in memoize.cache)) {
-	      return memoize.cache[hash] = fn.apply(fn, args);
-	    }
-	    return memoize.cache[hash];
-	  };
-	};
-
-	/**
-	 * Find the maximum number of arguments expected by a typed function.
-	 * @param {function} fn   A typed function
-	 * @return {number} Returns the maximum number of expected arguments.
-	 *                  Returns -1 when no signatures where found on the function.
-	 */
-	exports.maxArgumentCount = function (fn) {
-	  return Object.keys(fn.signatures || {}).reduce(function (args, signature) {
-	    var count = (signature.match(/,/g) || []).length + 1;
-	    return Math.max(args, count);
-	  }, -1);
-	};
-
-	/**
-	 * Call a typed function with the
-	 * @param {function} fn   A function or typed function
-	 * @return {number} Returns the maximum number of expected arguments.
-	 *                  Returns -1 when no signatures where found on the function.
-	 */
-	exports.callWithRightArgumentCount = function (fn, args, argCount) {
-	  return Object.keys(fn.signatures || {}).reduce(function (args, signature) {
-	    var count = (signature.match(/,/g) || []).length + 1;
-	    return Math.max(args, count);
-	  }, -1);
-	};
-
-/***/ }),
-/* 264 */,
-/* 265 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var extend = __webpack_require__(69).extend;
-
-	function factory(type, config, load, typed) {
-
-	  var matrix = load(__webpack_require__(89));
-	  var addScalar = load(__webpack_require__(90));
-	  var latex = __webpack_require__(88);
-
-	  var algorithm01 = load(__webpack_require__(256));
-	  var algorithm04 = load(__webpack_require__(266));
-	  var algorithm10 = load(__webpack_require__(259));
-	  var algorithm13 = load(__webpack_require__(260));
-	  var algorithm14 = load(__webpack_require__(95));
-
-	  /**
-	   * Add two or more values, `x + y`.
-	   * For matrices, the function is evaluated element wise.
-	   *
-	   * Syntax:
-	   *
-	   *    math.add(x, y)
-	   *    math.add(x, y, z, ...)
-	   *
-	   * Examples:
-	   *
-	   *    math.add(2, 3);               // returns number 5
-	   *    math.add(2, 3, 4);            // returns number 9
-	   *
-	   *    var a = math.complex(2, 3);
-	   *    var b = math.complex(-4, 1);
-	   *    math.add(a, b);               // returns Complex -2 + 4i
-	   *
-	   *    math.add([1, 2, 3], 4);       // returns Array [5, 6, 7]
-	   *
-	   *    var c = math.unit('5 cm');
-	   *    var d = math.unit('2.1 mm');
-	   *    math.add(c, d);               // returns Unit 52.1 mm
-	   *
-	   *    math.add("2.3", "4");         // returns number 6.3
-	   *
-	   * See also:
-	   *
-	   *    subtract, sum
-	   *
-	   * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} x First value to add
-	   * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} y Second value to add
-	   * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} Sum of `x` and `y`
-	   */
-	  var add = typed('add', extend({
-	    // we extend the signatures of addScalar with signatures dealing with matrices
-
-	    'Matrix, Matrix': function (x, y) {
-	      // result
-	      var c;
-
-	      // process matrix storage
-	      switch (x.storage()) {
-	        case 'sparse':
-	          switch (y.storage()) {
-	            case 'sparse':
-	              // sparse + sparse
-	              c = algorithm04(x, y, addScalar);
-	              break;
-	            default:
-	              // sparse + dense
-	              c = algorithm01(y, x, addScalar, true);
-	              break;
-	          }
-	          break;
-	        default:
-	          switch (y.storage()) {
-	            case 'sparse':
-	              // dense + sparse
-	              c = algorithm01(x, y, addScalar, false);
-	              break;
-	            default:
-	              // dense + dense
-	              c = algorithm13(x, y, addScalar);
-	              break;
-	          }
-	          break;
-	      }
-	      return c;
-	    },
-
-	    'Array, Array': function (x, y) {
-	      // use matrix implementation
-	      return add(matrix(x), matrix(y)).valueOf();
-	    },
-
-	    'Array, Matrix': function (x, y) {
-	      // use matrix implementation
-	      return add(matrix(x), y);
-	    },
-
-	    'Matrix, Array': function (x, y) {
-	      // use matrix implementation
-	      return add(x, matrix(y));
-	    },
-
-	    'Matrix, any': function (x, y) {
-	      // result
-	      var c;
-	      // check storage format
-	      switch (x.storage()) {
-	        case 'sparse':
-	          c = algorithm10(x, y, addScalar, false);
-	          break;
-	        default:
-	          c = algorithm14(x, y, addScalar, false);
-	          break;
-	      }
-	      return c;
-	    },
-
-	    'any, Matrix': function (x, y) {
-	      // result
-	      var c;
-	      // check storage format
-	      switch (y.storage()) {
-	        case 'sparse':
-	          c = algorithm10(y, x, addScalar, true);
-	          break;
-	        default:
-	          c = algorithm14(y, x, addScalar, true);
-	          break;
-	      }
-	      return c;
-	    },
-
-	    'Array, any': function (x, y) {
-	      // use matrix implementation
-	      return algorithm14(matrix(x), y, addScalar, false).valueOf();
-	    },
-
-	    'any, Array': function (x, y) {
-	      // use matrix implementation
-	      return algorithm14(matrix(y), x, addScalar, true).valueOf();
-	    },
-
-	    'any, any': addScalar,
-
-	    'any, any, ...any': function (x, y, rest) {
-	      var result = add(x, y);
-
-	      for (var i = 0; i < rest.length; i++) {
-	        result = add(result, rest[i]);
-	      }
-
-	      return result;
-	    }
-	  }, addScalar.signatures));
-
-	  add.toTex = {
-	    2: '\\left(${args[0]}' + latex.operators['add'] + '${args[1]}\\right)'
-	  };
-
-	  return add;
-	}
-
-	exports.name = 'add';
-	exports.factory = factory;
-
-/***/ }),
-/* 266 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var DimensionError = __webpack_require__(86);
-
-	function factory(type, config, load, typed) {
-
-	  var equalScalar = load(__webpack_require__(92));
-
-	  var SparseMatrix = type.SparseMatrix;
-
-	  /**
-	   * Iterates over SparseMatrix A and SparseMatrix B nonzero items and invokes the callback function f(Aij, Bij). 
-	   * Callback function invoked MAX(NNZA, NNZB) times
-	   *
-	   *
-	   *          ┌  f(Aij, Bij)  ; A(i,j) !== 0 && B(i,j) !== 0
-	   * C(i,j) = ┤  A(i,j)       ; A(i,j) !== 0
-	   *          └  B(i,j)       ; B(i,j) !== 0
-	   *
-	   *
-	   * @param {Matrix}   a                 The SparseMatrix instance (A)
-	   * @param {Matrix}   b                 The SparseMatrix instance (B)
-	   * @param {Function} callback          The f(Aij,Bij) operation to invoke
-	   *
-	   * @return {Matrix}                    SparseMatrix (C)
-	   *
-	   * see https://github.com/josdejong/mathjs/pull/346#issuecomment-97620294
-	   */
-	  var algorithm04 = function (a, b, callback) {
-	    // sparse matrix arrays
-	    var avalues = a._values;
-	    var aindex = a._index;
-	    var aptr = a._ptr;
-	    var asize = a._size;
-	    var adt = a._datatype;
-	    // sparse matrix arrays
-	    var bvalues = b._values;
-	    var bindex = b._index;
-	    var bptr = b._ptr;
-	    var bsize = b._size;
-	    var bdt = b._datatype;
-
-	    // validate dimensions
-	    if (asize.length !== bsize.length) throw new DimensionError(asize.length, bsize.length);
-
-	    // check rows & columns
-	    if (asize[0] !== bsize[0] || asize[1] !== bsize[1]) throw new RangeError('Dimension mismatch. Matrix A (' + asize + ') must match Matrix B (' + bsize + ')');
-
-	    // rows & columns
-	    var rows = asize[0];
-	    var columns = asize[1];
-
-	    // datatype
-	    var dt;
-	    // equal signature to use
-	    var eq = equalScalar;
-	    // zero value
-	    var zero = 0;
-	    // callback signature to use
-	    var cf = callback;
-
-	    // process data types
-	    if (typeof adt === 'string' && adt === bdt) {
-	      // datatype
-	      dt = adt;
-	      // find signature that matches (dt, dt)
-	      eq = typed.find(equalScalar, [dt, dt]);
-	      // convert 0 to the same datatype
-	      zero = typed.convert(0, dt);
-	      // callback
-	      cf = typed.find(callback, [dt, dt]);
-	    }
-
-	    // result arrays
-	    var cvalues = avalues && bvalues ? [] : undefined;
-	    var cindex = [];
-	    var cptr = [];
-	    // matrix
-	    var c = new SparseMatrix({
-	      values: cvalues,
-	      index: cindex,
-	      ptr: cptr,
-	      size: [rows, columns],
-	      datatype: dt
-	    });
-
-	    // workspace
-	    var xa = avalues && bvalues ? [] : undefined;
-	    var xb = avalues && bvalues ? [] : undefined;
-	    // marks indicating we have a value in x for a given column
-	    var wa = [];
-	    var wb = [];
-
-	    // vars 
-	    var i, j, k, k0, k1;
-
-	    // loop columns
-	    for (j = 0; j < columns; j++) {
-	      // update cptr
-	      cptr[j] = cindex.length;
-	      // columns mark
-	      var mark = j + 1;
-	      // loop A(:,j)
-	      for (k0 = aptr[j], k1 = aptr[j + 1], k = k0; k < k1; k++) {
-	        // row
-	        i = aindex[k];
-	        // update c
-	        cindex.push(i);
-	        // update workspace
-	        wa[i] = mark;
-	        // check we need to process values
-	        if (xa) xa[i] = avalues[k];
-	      }
-	      // loop B(:,j)
-	      for (k0 = bptr[j], k1 = bptr[j + 1], k = k0; k < k1; k++) {
-	        // row
-	        i = bindex[k];
-	        // check row exists in A
-	        if (wa[i] === mark) {
-	          // update record in xa @ i
-	          if (xa) {
-	            // invoke callback
-	            var v = cf(xa[i], bvalues[k]);
-	            // check for zero
-	            if (!eq(v, zero)) {
-	              // update workspace
-	              xa[i] = v;
-	            } else {
-	              // remove mark (index will be removed later)
-	              wa[i] = null;
-	            }
-	          }
-	        } else {
-	          // update c
-	          cindex.push(i);
-	          // update workspace
-	          wb[i] = mark;
-	          // check we need to process values
-	          if (xb) xb[i] = bvalues[k];
-	        }
-	      }
-	      // check we need to process values (non pattern matrix)
-	      if (xa && xb) {
-	        // initialize first index in j
-	        k = cptr[j];
-	        // loop index in j
-	        while (k < cindex.length) {
-	          // row
-	          i = cindex[k];
-	          // check workspace has value @ i
-	          if (wa[i] === mark) {
-	            // push value (Aij != 0 || (Aij != 0 && Bij != 0))
-	            cvalues[k] = xa[i];
-	            // increment pointer
-	            k++;
-	          } else if (wb[i] === mark) {
-	            // push value (bij != 0)
-	            cvalues[k] = xb[i];
-	            // increment pointer
-	            k++;
-	          } else {
-	            // remove index @ k
-	            cindex.splice(k, 1);
-	          }
-	        }
-	      }
-	    }
-	    // update cptr
-	    cptr[columns] = cindex.length;
-
-	    // return sparse matrix
-	    return c;
-	  };
-
-	  return algorithm04;
-	}
-
-	exports.name = 'algorithm04';
-	exports.factory = factory;
-
-/***/ }),
-/* 267 */,
-/* 268 */,
-/* 269 */,
-/* 270 */,
-/* 271 */,
-/* 272 */,
-/* 273 */,
-/* 274 */,
-/* 275 */,
-/* 276 */,
-/* 277 */,
-/* 278 */,
-/* 279 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	function factory(type, config, load, typed) {
-
-	  var DenseMatrix = type.DenseMatrix;
-
-	  /**
-	   * Iterates over SparseMatrix S nonzero items and invokes the callback function f(Sij, b). 
-	   * Callback function invoked MxN times.
-	   *
-	   *
-	   *          ┌  f(Sij, b)  ; S(i,j) !== 0
-	   * C(i,j) = ┤  
-	   *          └  f(0, b)    ; otherwise
-	   *
-	   *
-	   * @param {Matrix}   s                 The SparseMatrix instance (S)
-	   * @param {Scalar}   b                 The Scalar value
-	   * @param {Function} callback          The f(Aij,b) operation to invoke
-	   * @param {boolean}  inverse           A true value indicates callback should be invoked f(b,Sij)
-	   *
-	   * @return {Matrix}                    DenseMatrix (C)
-	   *
-	   * https://github.com/josdejong/mathjs/pull/346#issuecomment-97626813
-	   */
-	  var algorithm12 = function (s, b, callback, inverse) {
-	    // sparse matrix arrays
-	    var avalues = s._values;
-	    var aindex = s._index;
-	    var aptr = s._ptr;
-	    var asize = s._size;
-	    var adt = s._datatype;
-
-	    // sparse matrix cannot be a Pattern matrix
-	    if (!avalues) throw new Error('Cannot perform operation on Pattern Sparse Matrix and Scalar value');
-
-	    // rows & columns
-	    var rows = asize[0];
-	    var columns = asize[1];
-
-	    // datatype
-	    var dt;
-	    // callback signature to use
-	    var cf = callback;
-
-	    // process data types
-	    if (typeof adt === 'string') {
-	      // datatype
-	      dt = adt;
-	      // convert b to the same datatype
-	      b = typed.convert(b, dt);
-	      // callback
-	      cf = typed.find(callback, [dt, dt]);
-	    }
-
-	    // result arrays
-	    var cdata = [];
-	    // matrix
-	    var c = new DenseMatrix({
-	      data: cdata,
-	      size: [rows, columns],
-	      datatype: dt
-	    });
-
-	    // workspaces
-	    var x = [];
-	    // marks indicating we have a value in x for a given column
-	    var w = [];
-
-	    // loop columns
-	    for (var j = 0; j < columns; j++) {
-	      // columns mark
-	      var mark = j + 1;
-	      // values in j
-	      for (var k0 = aptr[j], k1 = aptr[j + 1], k = k0; k < k1; k++) {
-	        // row
-	        var r = aindex[k];
-	        // update workspace
-	        x[r] = avalues[k];
-	        w[r] = mark;
-	      }
-	      // loop rows
-	      for (var i = 0; i < rows; i++) {
-	        // initialize C on first column
-	        if (j === 0) {
-	          // create row array
-	          cdata[i] = [];
-	        }
-	        // check sparse matrix has a value @ i,j
-	        if (w[i] === mark) {
-	          // invoke callback, update C
-	          cdata[i][j] = inverse ? cf(b, x[i]) : cf(x[i], b);
-	        } else {
-	          // dense matrix value @ i, j
-	          cdata[i][j] = inverse ? cf(b, 0) : cf(0, b);
-	        }
-	      }
-	    }
-
-	    // return sparse matrix
-	    return c;
-	  };
-
-	  return algorithm12;
-	}
-
-	exports.name = 'algorithm12';
-	exports.factory = factory;
-
-/***/ }),
-/* 280 */,
-/* 281 */,
-/* 282 */,
-/* 283 */,
-/* 284 */,
-/* 285 */,
-/* 286 */,
-/* 287 */,
-/* 288 */,
-/* 289 */,
-/* 290 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var hasOwnProperty = __webpack_require__(69).hasOwnProperty;
-
-	/**
-	 * Get a property of a plain object
-	 * Throws an error in case the object is not a plain object or the
-	 * property is not defined on the object itself
-	 * @param {Object} object
-	 * @param {string} prop
-	 * @return {*} Returns the property value when safe
-	 */
-	function getSafeProperty(object, prop) {
-	  // only allow getting safe properties of a plain object
-	  if (isPlainObject(object) && isSafeProperty(object, prop)) {
-	    return object[prop];
-	  }
-
-	  if (typeof object[prop] === 'function' && isSafeMethod(object, prop)) {
-	    throw new Error('Cannot access method "' + prop + '" as a property');
-	  }
-
-	  throw new Error('No access to property "' + prop + '"');
-	}
-
-	/**
-	 * Set a property on a plain object.
-	 * Throws an error in case the object is not a plain object or the
-	 * property would override an inherited property like .constructor or .toString
-	 * @param {Object} object
-	 * @param {string} prop
-	 * @param {*} value
-	 * @return {*} Returns the value
-	 */
-	// TODO: merge this function into access.js?
-	function setSafeProperty(object, prop, value) {
-	  // only allow setting safe properties of a plain object
-	  if (isPlainObject(object) && isSafeProperty(object, prop)) {
-	    return object[prop] = value;
-	  }
-
-	  throw new Error('No access to property "' + prop + '"');
-	}
-
-	/**
-	 * Test whether a property is safe to use for an object.
-	 * For example .toString and .constructor are not safe
-	 * @param {string} prop
-	 * @return {boolean} Returns true when safe
-	 */
-	function isSafeProperty(object, prop) {
-	  if (!object || typeof object !== 'object') {
-	    return false;
-	  }
-	  // SAFE: whitelisted
-	  // e.g length
-	  if (hasOwnProperty(safeNativeProperties, prop)) {
-	    return true;
-	  }
-	  // UNSAFE: inherited from Object prototype
-	  // e.g constructor
-	  if (prop in Object.prototype) {
-	    // 'in' is used instead of hasOwnProperty for nodejs v0.10
-	    // which is inconsistent on root prototypes. It is safe
-	    // here because Object.prototype is a root object
-	    return false;
-	  }
-	  // UNSAFE: inherited from Function prototype
-	  // e.g call, apply
-	  if (prop in Function.prototype) {
-	    // 'in' is used instead of hasOwnProperty for nodejs v0.10
-	    // which is inconsistent on root prototypes. It is safe
-	    // here because Function.prototype is a root object
-	    return false;
-	  }
-	  return true;
-	}
-
-	/**
-	 * Validate whether a method is safe.
-	 * Throws an error when that's not the case.
-	 * @param {Object} object
-	 * @param {string} method
-	 */
-	// TODO: merge this function into assign.js?
-	function validateSafeMethod(object, method) {
-	  if (!isSafeMethod(object, method)) {
-	    throw new Error('No access to method "' + method + '"');
-	  }
-	}
-
-	/**
-	 * Check whether a method is safe.
-	 * Throws an error when that's not the case (for example for `constructor`).
-	 * @param {Object} object
-	 * @param {string} method
-	 * @return {boolean} Returns true when safe, false otherwise
-	 */
-	function isSafeMethod(object, method) {
-	  if (!object || typeof object[method] !== 'function') {
-	    return false;
-	  }
-	  // UNSAFE: ghosted
-	  // e.g overridden toString
-	  // Note that IE10 doesn't support __proto__ and we can't do this check there.
-	  if (hasOwnProperty(object, method) && object.__proto__ && method in object.__proto__) {
-	    return false;
-	  }
-	  // SAFE: whitelisted
-	  // e.g toString
-	  if (hasOwnProperty(safeNativeMethods, method)) {
-	    return true;
-	  }
-	  // UNSAFE: inherited from Object prototype
-	  // e.g constructor
-	  if (method in Object.prototype) {
-	    // 'in' is used instead of hasOwnProperty for nodejs v0.10
-	    // which is inconsistent on root prototypes. It is safe
-	    // here because Object.prototype is a root object
-	    return false;
-	  }
-	  // UNSAFE: inherited from Function prototype
-	  // e.g call, apply
-	  if (method in Function.prototype) {
-	    // 'in' is used instead of hasOwnProperty for nodejs v0.10
-	    // which is inconsistent on root prototypes. It is safe
-	    // here because Function.prototype is a root object
-	    return false;
-	  }
-	  return true;
-	}
-
-	function isPlainObject(object) {
-	  return typeof object === 'object' && object && object.constructor === Object;
-	}
-
-	var safeNativeProperties = {
-	  length: true
-	};
-
-	var safeNativeMethods = {
-	  toString: true,
-	  valueOf: true,
-	  toLocaleString: true
-	};
-
-	exports.getSafeProperty = getSafeProperty;
-	exports.setSafeProperty = setSafeProperty;
-	exports.isSafeProperty = isSafeProperty;
-	exports.validateSafeMethod = validateSafeMethod;
-	exports.isSafeMethod = isSafeMethod;
-	exports.isPlainObject = isPlainObject;
-
-/***/ }),
-/* 291 */,
-/* 292 */,
-/* 293 */,
-/* 294 */,
-/* 295 */,
-/* 296 */,
-/* 297 */,
-/* 298 */,
-/* 299 */,
-/* 300 */,
-/* 301 */,
-/* 302 */,
-/* 303 */,
-/* 304 */,
-/* 305 */,
-/* 306 */,
-/* 307 */,
-/* 308 */,
-/* 309 */,
-/* 310 */,
-/* 311 */,
-/* 312 */,
-/* 313 */
+/* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	module.exports = [
 	// types
-	__webpack_require__(314), __webpack_require__(315), __webpack_require__(316), __webpack_require__(317), __webpack_require__(318), __webpack_require__(322), __webpack_require__(323), __webpack_require__(324),
+	__webpack_require__(228), __webpack_require__(232), __webpack_require__(234), __webpack_require__(235), __webpack_require__(241), __webpack_require__(247), __webpack_require__(248), __webpack_require__(249),
 
 	// construction functions
-	__webpack_require__(325), __webpack_require__(89), __webpack_require__(326)];
+	__webpack_require__(250), __webpack_require__(89), __webpack_require__(251)];
 
 /***/ }),
-/* 314 */
+/* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var util = __webpack_require__(261);
+	var util = __webpack_require__(229);
 
 	var string = util.string;
 
@@ -23404,15 +19745,108 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 315 */
+/* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var util = __webpack_require__(261);
+	exports.array = __webpack_require__(82);
+	exports['boolean'] = __webpack_require__(230);
+	exports['function'] = __webpack_require__(231);
+	exports.number = __webpack_require__(72);
+	exports.object = __webpack_require__(69);
+	exports.string = __webpack_require__(83);
+	exports.types = __webpack_require__(85);
+	exports.emitter = __webpack_require__(73);
+
+/***/ }),
+/* 230 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	/**
+	 * Test whether value is a boolean
+	 * @param {*} value
+	 * @return {boolean} isBoolean
+	 */
+
+	exports.isBoolean = function (value) {
+	  return typeof value == 'boolean';
+	};
+
+/***/ }),
+/* 231 */
+/***/ (function(module, exports) {
+
+	// function utils
+
+	/*
+	 * Memoize a given function by caching the computed result.
+	 * The cache of a memoized function can be cleared by deleting the `cache`
+	 * property of the function.
+	 *
+	 * @param {function} fn                     The function to be memoized.
+	 *                                          Must be a pure function.
+	 * @param {function(args: Array)} [hasher]  A custom hash builder.
+	 *                                          Is JSON.stringify by default.
+	 * @return {function}                       Returns the memoized function
+	 */
+	exports.memoize = function (fn, hasher) {
+	  return function memoize() {
+	    if (typeof memoize.cache !== 'object') {
+	      memoize.cache = {};
+	    }
+
+	    var args = [];
+	    for (var i = 0; i < arguments.length; i++) {
+	      args[i] = arguments[i];
+	    }
+
+	    var hash = hasher ? hasher(args) : JSON.stringify(args);
+	    if (!(hash in memoize.cache)) {
+	      return memoize.cache[hash] = fn.apply(fn, args);
+	    }
+	    return memoize.cache[hash];
+	  };
+	};
+
+	/**
+	 * Find the maximum number of arguments expected by a typed function.
+	 * @param {function} fn   A typed function
+	 * @return {number} Returns the maximum number of expected arguments.
+	 *                  Returns -1 when no signatures where found on the function.
+	 */
+	exports.maxArgumentCount = function (fn) {
+	  return Object.keys(fn.signatures || {}).reduce(function (args, signature) {
+	    var count = (signature.match(/,/g) || []).length + 1;
+	    return Math.max(args, count);
+	  }, -1);
+	};
+
+	/**
+	 * Call a typed function with the
+	 * @param {function} fn   A function or typed function
+	 * @return {number} Returns the maximum number of expected arguments.
+	 *                  Returns -1 when no signatures where found on the function.
+	 */
+	exports.callWithRightArgumentCount = function (fn, args, argCount) {
+	  return Object.keys(fn.signatures || {}).reduce(function (args, signature) {
+	    var count = (signature.match(/,/g) || []).length + 1;
+	    return Math.max(args, count);
+	  }, -1);
+	};
+
+/***/ }),
+/* 232 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var util = __webpack_require__(229);
 	var DimensionError = __webpack_require__(86);
-	var getSafeProperty = __webpack_require__(290).getSafeProperty;
-	var setSafeProperty = __webpack_require__(290).setSafeProperty;
+	var getSafeProperty = __webpack_require__(233).getSafeProperty;
+	var setSafeProperty = __webpack_require__(233).setSafeProperty;
 
 	var string = util.string;
 	var array = util.array;
@@ -23427,7 +19861,7 @@ var Clustergrammer =
 	var validateIndex = array.validateIndex;
 
 	function factory(type, config, load, typed) {
-	  var Matrix = load(__webpack_require__(314)); // force loading Matrix (do not use via type.Matrix)
+	  var Matrix = load(__webpack_require__(228)); // force loading Matrix (do not use via type.Matrix)
 
 	  /**
 	   * Dense Matrix implementation. A regular, dense matrix, supporting multi-dimensional matrices. This is the default matrix type.
@@ -24265,12 +20699,169 @@ var Clustergrammer =
 	exports.lazy = false; // no lazy loading, as we alter type.Matrix._storage
 
 /***/ }),
-/* 316 */
+/* 233 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var util = __webpack_require__(261);
+	var hasOwnProperty = __webpack_require__(69).hasOwnProperty;
+
+	/**
+	 * Get a property of a plain object
+	 * Throws an error in case the object is not a plain object or the
+	 * property is not defined on the object itself
+	 * @param {Object} object
+	 * @param {string} prop
+	 * @return {*} Returns the property value when safe
+	 */
+	function getSafeProperty(object, prop) {
+	  // only allow getting safe properties of a plain object
+	  if (isPlainObject(object) && isSafeProperty(object, prop)) {
+	    return object[prop];
+	  }
+
+	  if (typeof object[prop] === 'function' && isSafeMethod(object, prop)) {
+	    throw new Error('Cannot access method "' + prop + '" as a property');
+	  }
+
+	  throw new Error('No access to property "' + prop + '"');
+	}
+
+	/**
+	 * Set a property on a plain object.
+	 * Throws an error in case the object is not a plain object or the
+	 * property would override an inherited property like .constructor or .toString
+	 * @param {Object} object
+	 * @param {string} prop
+	 * @param {*} value
+	 * @return {*} Returns the value
+	 */
+	// TODO: merge this function into access.js?
+	function setSafeProperty(object, prop, value) {
+	  // only allow setting safe properties of a plain object
+	  if (isPlainObject(object) && isSafeProperty(object, prop)) {
+	    return object[prop] = value;
+	  }
+
+	  throw new Error('No access to property "' + prop + '"');
+	}
+
+	/**
+	 * Test whether a property is safe to use for an object.
+	 * For example .toString and .constructor are not safe
+	 * @param {string} prop
+	 * @return {boolean} Returns true when safe
+	 */
+	function isSafeProperty(object, prop) {
+	  if (!object || typeof object !== 'object') {
+	    return false;
+	  }
+	  // SAFE: whitelisted
+	  // e.g length
+	  if (hasOwnProperty(safeNativeProperties, prop)) {
+	    return true;
+	  }
+	  // UNSAFE: inherited from Object prototype
+	  // e.g constructor
+	  if (prop in Object.prototype) {
+	    // 'in' is used instead of hasOwnProperty for nodejs v0.10
+	    // which is inconsistent on root prototypes. It is safe
+	    // here because Object.prototype is a root object
+	    return false;
+	  }
+	  // UNSAFE: inherited from Function prototype
+	  // e.g call, apply
+	  if (prop in Function.prototype) {
+	    // 'in' is used instead of hasOwnProperty for nodejs v0.10
+	    // which is inconsistent on root prototypes. It is safe
+	    // here because Function.prototype is a root object
+	    return false;
+	  }
+	  return true;
+	}
+
+	/**
+	 * Validate whether a method is safe.
+	 * Throws an error when that's not the case.
+	 * @param {Object} object
+	 * @param {string} method
+	 */
+	// TODO: merge this function into assign.js?
+	function validateSafeMethod(object, method) {
+	  if (!isSafeMethod(object, method)) {
+	    throw new Error('No access to method "' + method + '"');
+	  }
+	}
+
+	/**
+	 * Check whether a method is safe.
+	 * Throws an error when that's not the case (for example for `constructor`).
+	 * @param {Object} object
+	 * @param {string} method
+	 * @return {boolean} Returns true when safe, false otherwise
+	 */
+	function isSafeMethod(object, method) {
+	  if (!object || typeof object[method] !== 'function') {
+	    return false;
+	  }
+	  // UNSAFE: ghosted
+	  // e.g overridden toString
+	  // Note that IE10 doesn't support __proto__ and we can't do this check there.
+	  if (hasOwnProperty(object, method) && object.__proto__ && method in object.__proto__) {
+	    return false;
+	  }
+	  // SAFE: whitelisted
+	  // e.g toString
+	  if (hasOwnProperty(safeNativeMethods, method)) {
+	    return true;
+	  }
+	  // UNSAFE: inherited from Object prototype
+	  // e.g constructor
+	  if (method in Object.prototype) {
+	    // 'in' is used instead of hasOwnProperty for nodejs v0.10
+	    // which is inconsistent on root prototypes. It is safe
+	    // here because Object.prototype is a root object
+	    return false;
+	  }
+	  // UNSAFE: inherited from Function prototype
+	  // e.g call, apply
+	  if (method in Function.prototype) {
+	    // 'in' is used instead of hasOwnProperty for nodejs v0.10
+	    // which is inconsistent on root prototypes. It is safe
+	    // here because Function.prototype is a root object
+	    return false;
+	  }
+	  return true;
+	}
+
+	function isPlainObject(object) {
+	  return typeof object === 'object' && object && object.constructor === Object;
+	}
+
+	var safeNativeProperties = {
+	  length: true
+	};
+
+	var safeNativeMethods = {
+	  toString: true,
+	  valueOf: true,
+	  toLocaleString: true
+	};
+
+	exports.getSafeProperty = getSafeProperty;
+	exports.setSafeProperty = setSafeProperty;
+	exports.isSafeProperty = isSafeProperty;
+	exports.validateSafeMethod = validateSafeMethod;
+	exports.isSafeMethod = isSafeMethod;
+	exports.isPlainObject = isPlainObject;
+
+/***/ }),
+/* 234 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var util = __webpack_require__(229);
 	var DimensionError = __webpack_require__(86);
 
 	var array = util.array;
@@ -24286,7 +20877,7 @@ var Clustergrammer =
 	var validateIndex = array.validateIndex;
 
 	function factory(type, config, load, typed) {
-	  var Matrix = load(__webpack_require__(314)); // force loading Matrix (do not use via type.Matrix)
+	  var Matrix = load(__webpack_require__(228)); // force loading Matrix (do not use via type.Matrix)
 	  var equalScalar = load(__webpack_require__(92));
 
 	  /**
@@ -25650,14 +22241,14 @@ var Clustergrammer =
 	exports.lazy = false; // no lazy loading, as we alter type.Matrix._storage
 
 /***/ }),
-/* 317 */
+/* 235 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	function factory(type, config, load) {
 
-	  var add = load(__webpack_require__(265));
+	  var add = load(__webpack_require__(236));
 	  var equalScalar = load(__webpack_require__(92));
 
 	  /**
@@ -25788,15 +22379,701 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 318 */
+/* 236 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var extend = __webpack_require__(69).extend;
+
+	function factory(type, config, load, typed) {
+
+	  var matrix = load(__webpack_require__(89));
+	  var addScalar = load(__webpack_require__(90));
+	  var latex = __webpack_require__(88);
+
+	  var algorithm01 = load(__webpack_require__(237));
+	  var algorithm04 = load(__webpack_require__(238));
+	  var algorithm10 = load(__webpack_require__(239));
+	  var algorithm13 = load(__webpack_require__(240));
+	  var algorithm14 = load(__webpack_require__(95));
+
+	  /**
+	   * Add two or more values, `x + y`.
+	   * For matrices, the function is evaluated element wise.
+	   *
+	   * Syntax:
+	   *
+	   *    math.add(x, y)
+	   *    math.add(x, y, z, ...)
+	   *
+	   * Examples:
+	   *
+	   *    math.add(2, 3);               // returns number 5
+	   *    math.add(2, 3, 4);            // returns number 9
+	   *
+	   *    var a = math.complex(2, 3);
+	   *    var b = math.complex(-4, 1);
+	   *    math.add(a, b);               // returns Complex -2 + 4i
+	   *
+	   *    math.add([1, 2, 3], 4);       // returns Array [5, 6, 7]
+	   *
+	   *    var c = math.unit('5 cm');
+	   *    var d = math.unit('2.1 mm');
+	   *    math.add(c, d);               // returns Unit 52.1 mm
+	   *
+	   *    math.add("2.3", "4");         // returns number 6.3
+	   *
+	   * See also:
+	   *
+	   *    subtract, sum
+	   *
+	   * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} x First value to add
+	   * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} y Second value to add
+	   * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} Sum of `x` and `y`
+	   */
+	  var add = typed('add', extend({
+	    // we extend the signatures of addScalar with signatures dealing with matrices
+
+	    'Matrix, Matrix': function (x, y) {
+	      // result
+	      var c;
+
+	      // process matrix storage
+	      switch (x.storage()) {
+	        case 'sparse':
+	          switch (y.storage()) {
+	            case 'sparse':
+	              // sparse + sparse
+	              c = algorithm04(x, y, addScalar);
+	              break;
+	            default:
+	              // sparse + dense
+	              c = algorithm01(y, x, addScalar, true);
+	              break;
+	          }
+	          break;
+	        default:
+	          switch (y.storage()) {
+	            case 'sparse':
+	              // dense + sparse
+	              c = algorithm01(x, y, addScalar, false);
+	              break;
+	            default:
+	              // dense + dense
+	              c = algorithm13(x, y, addScalar);
+	              break;
+	          }
+	          break;
+	      }
+	      return c;
+	    },
+
+	    'Array, Array': function (x, y) {
+	      // use matrix implementation
+	      return add(matrix(x), matrix(y)).valueOf();
+	    },
+
+	    'Array, Matrix': function (x, y) {
+	      // use matrix implementation
+	      return add(matrix(x), y);
+	    },
+
+	    'Matrix, Array': function (x, y) {
+	      // use matrix implementation
+	      return add(x, matrix(y));
+	    },
+
+	    'Matrix, any': function (x, y) {
+	      // result
+	      var c;
+	      // check storage format
+	      switch (x.storage()) {
+	        case 'sparse':
+	          c = algorithm10(x, y, addScalar, false);
+	          break;
+	        default:
+	          c = algorithm14(x, y, addScalar, false);
+	          break;
+	      }
+	      return c;
+	    },
+
+	    'any, Matrix': function (x, y) {
+	      // result
+	      var c;
+	      // check storage format
+	      switch (y.storage()) {
+	        case 'sparse':
+	          c = algorithm10(y, x, addScalar, true);
+	          break;
+	        default:
+	          c = algorithm14(y, x, addScalar, true);
+	          break;
+	      }
+	      return c;
+	    },
+
+	    'Array, any': function (x, y) {
+	      // use matrix implementation
+	      return algorithm14(matrix(x), y, addScalar, false).valueOf();
+	    },
+
+	    'any, Array': function (x, y) {
+	      // use matrix implementation
+	      return algorithm14(matrix(y), x, addScalar, true).valueOf();
+	    },
+
+	    'any, any': addScalar,
+
+	    'any, any, ...any': function (x, y, rest) {
+	      var result = add(x, y);
+
+	      for (var i = 0; i < rest.length; i++) {
+	        result = add(result, rest[i]);
+	      }
+
+	      return result;
+	    }
+	  }, addScalar.signatures));
+
+	  add.toTex = {
+	    2: '\\left(${args[0]}' + latex.operators['add'] + '${args[1]}\\right)'
+	  };
+
+	  return add;
+	}
+
+	exports.name = 'add';
+	exports.factory = factory;
+
+/***/ }),
+/* 237 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var DimensionError = __webpack_require__(86);
+
+	function factory(type, config, load, typed) {
+
+	  var DenseMatrix = type.DenseMatrix;
+
+	  /**
+	   * Iterates over SparseMatrix nonzero items and invokes the callback function f(Dij, Sij). 
+	   * Callback function invoked NNZ times (number of nonzero items in SparseMatrix).
+	   *
+	   *
+	   *          ┌  f(Dij, Sij)  ; S(i,j) !== 0
+	   * C(i,j) = ┤
+	   *          └  Dij          ; otherwise
+	   *
+	   *
+	   * @param {Matrix}   denseMatrix       The DenseMatrix instance (D)
+	   * @param {Matrix}   sparseMatrix      The SparseMatrix instance (S)
+	   * @param {Function} callback          The f(Dij,Sij) operation to invoke, where Dij = DenseMatrix(i,j) and Sij = SparseMatrix(i,j)
+	   * @param {boolean}  inverse           A true value indicates callback should be invoked f(Sij,Dij)
+	   *
+	   * @return {Matrix}                    DenseMatrix (C)
+	   *
+	   * see https://github.com/josdejong/mathjs/pull/346#issuecomment-97477571
+	   */
+	  var algorithm01 = function (denseMatrix, sparseMatrix, callback, inverse) {
+	    // dense matrix arrays
+	    var adata = denseMatrix._data;
+	    var asize = denseMatrix._size;
+	    var adt = denseMatrix._datatype;
+	    // sparse matrix arrays
+	    var bvalues = sparseMatrix._values;
+	    var bindex = sparseMatrix._index;
+	    var bptr = sparseMatrix._ptr;
+	    var bsize = sparseMatrix._size;
+	    var bdt = sparseMatrix._datatype;
+
+	    // validate dimensions
+	    if (asize.length !== bsize.length) throw new DimensionError(asize.length, bsize.length);
+
+	    // check rows & columns
+	    if (asize[0] !== bsize[0] || asize[1] !== bsize[1]) throw new RangeError('Dimension mismatch. Matrix A (' + asize + ') must match Matrix B (' + bsize + ')');
+
+	    // sparse matrix cannot be a Pattern matrix
+	    if (!bvalues) throw new Error('Cannot perform operation on Dense Matrix and Pattern Sparse Matrix');
+
+	    // rows & columns
+	    var rows = asize[0];
+	    var columns = asize[1];
+
+	    // process data types
+	    var dt = typeof adt === 'string' && adt === bdt ? adt : undefined;
+	    // callback function
+	    var cf = dt ? typed.find(callback, [dt, dt]) : callback;
+
+	    // vars
+	    var i, j;
+
+	    // result (DenseMatrix)
+	    var cdata = [];
+	    // initialize c
+	    for (i = 0; i < rows; i++) cdata[i] = [];
+
+	    // workspace
+	    var x = [];
+	    // marks indicating we have a value in x for a given column
+	    var w = [];
+
+	    // loop columns in b
+	    for (j = 0; j < columns; j++) {
+	      // column mark
+	      var mark = j + 1;
+	      // values in column j
+	      for (var k0 = bptr[j], k1 = bptr[j + 1], k = k0; k < k1; k++) {
+	        // row
+	        i = bindex[k];
+	        // update workspace
+	        x[i] = inverse ? cf(bvalues[k], adata[i][j]) : cf(adata[i][j], bvalues[k]);
+	        // mark i as updated
+	        w[i] = mark;
+	      }
+	      // loop rows
+	      for (i = 0; i < rows; i++) {
+	        // check row is in workspace
+	        if (w[i] === mark) {
+	          // c[i][j] was already calculated
+	          cdata[i][j] = x[i];
+	        } else {
+	          // item does not exist in S
+	          cdata[i][j] = adata[i][j];
+	        }
+	      }
+	    }
+
+	    // return dense matrix
+	    return new DenseMatrix({
+	      data: cdata,
+	      size: [rows, columns],
+	      datatype: dt
+	    });
+	  };
+
+	  return algorithm01;
+	}
+
+	exports.name = 'algorithm01';
+	exports.factory = factory;
+
+/***/ }),
+/* 238 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var DimensionError = __webpack_require__(86);
+
+	function factory(type, config, load, typed) {
+
+	  var equalScalar = load(__webpack_require__(92));
+
+	  var SparseMatrix = type.SparseMatrix;
+
+	  /**
+	   * Iterates over SparseMatrix A and SparseMatrix B nonzero items and invokes the callback function f(Aij, Bij). 
+	   * Callback function invoked MAX(NNZA, NNZB) times
+	   *
+	   *
+	   *          ┌  f(Aij, Bij)  ; A(i,j) !== 0 && B(i,j) !== 0
+	   * C(i,j) = ┤  A(i,j)       ; A(i,j) !== 0
+	   *          └  B(i,j)       ; B(i,j) !== 0
+	   *
+	   *
+	   * @param {Matrix}   a                 The SparseMatrix instance (A)
+	   * @param {Matrix}   b                 The SparseMatrix instance (B)
+	   * @param {Function} callback          The f(Aij,Bij) operation to invoke
+	   *
+	   * @return {Matrix}                    SparseMatrix (C)
+	   *
+	   * see https://github.com/josdejong/mathjs/pull/346#issuecomment-97620294
+	   */
+	  var algorithm04 = function (a, b, callback) {
+	    // sparse matrix arrays
+	    var avalues = a._values;
+	    var aindex = a._index;
+	    var aptr = a._ptr;
+	    var asize = a._size;
+	    var adt = a._datatype;
+	    // sparse matrix arrays
+	    var bvalues = b._values;
+	    var bindex = b._index;
+	    var bptr = b._ptr;
+	    var bsize = b._size;
+	    var bdt = b._datatype;
+
+	    // validate dimensions
+	    if (asize.length !== bsize.length) throw new DimensionError(asize.length, bsize.length);
+
+	    // check rows & columns
+	    if (asize[0] !== bsize[0] || asize[1] !== bsize[1]) throw new RangeError('Dimension mismatch. Matrix A (' + asize + ') must match Matrix B (' + bsize + ')');
+
+	    // rows & columns
+	    var rows = asize[0];
+	    var columns = asize[1];
+
+	    // datatype
+	    var dt;
+	    // equal signature to use
+	    var eq = equalScalar;
+	    // zero value
+	    var zero = 0;
+	    // callback signature to use
+	    var cf = callback;
+
+	    // process data types
+	    if (typeof adt === 'string' && adt === bdt) {
+	      // datatype
+	      dt = adt;
+	      // find signature that matches (dt, dt)
+	      eq = typed.find(equalScalar, [dt, dt]);
+	      // convert 0 to the same datatype
+	      zero = typed.convert(0, dt);
+	      // callback
+	      cf = typed.find(callback, [dt, dt]);
+	    }
+
+	    // result arrays
+	    var cvalues = avalues && bvalues ? [] : undefined;
+	    var cindex = [];
+	    var cptr = [];
+	    // matrix
+	    var c = new SparseMatrix({
+	      values: cvalues,
+	      index: cindex,
+	      ptr: cptr,
+	      size: [rows, columns],
+	      datatype: dt
+	    });
+
+	    // workspace
+	    var xa = avalues && bvalues ? [] : undefined;
+	    var xb = avalues && bvalues ? [] : undefined;
+	    // marks indicating we have a value in x for a given column
+	    var wa = [];
+	    var wb = [];
+
+	    // vars 
+	    var i, j, k, k0, k1;
+
+	    // loop columns
+	    for (j = 0; j < columns; j++) {
+	      // update cptr
+	      cptr[j] = cindex.length;
+	      // columns mark
+	      var mark = j + 1;
+	      // loop A(:,j)
+	      for (k0 = aptr[j], k1 = aptr[j + 1], k = k0; k < k1; k++) {
+	        // row
+	        i = aindex[k];
+	        // update c
+	        cindex.push(i);
+	        // update workspace
+	        wa[i] = mark;
+	        // check we need to process values
+	        if (xa) xa[i] = avalues[k];
+	      }
+	      // loop B(:,j)
+	      for (k0 = bptr[j], k1 = bptr[j + 1], k = k0; k < k1; k++) {
+	        // row
+	        i = bindex[k];
+	        // check row exists in A
+	        if (wa[i] === mark) {
+	          // update record in xa @ i
+	          if (xa) {
+	            // invoke callback
+	            var v = cf(xa[i], bvalues[k]);
+	            // check for zero
+	            if (!eq(v, zero)) {
+	              // update workspace
+	              xa[i] = v;
+	            } else {
+	              // remove mark (index will be removed later)
+	              wa[i] = null;
+	            }
+	          }
+	        } else {
+	          // update c
+	          cindex.push(i);
+	          // update workspace
+	          wb[i] = mark;
+	          // check we need to process values
+	          if (xb) xb[i] = bvalues[k];
+	        }
+	      }
+	      // check we need to process values (non pattern matrix)
+	      if (xa && xb) {
+	        // initialize first index in j
+	        k = cptr[j];
+	        // loop index in j
+	        while (k < cindex.length) {
+	          // row
+	          i = cindex[k];
+	          // check workspace has value @ i
+	          if (wa[i] === mark) {
+	            // push value (Aij != 0 || (Aij != 0 && Bij != 0))
+	            cvalues[k] = xa[i];
+	            // increment pointer
+	            k++;
+	          } else if (wb[i] === mark) {
+	            // push value (bij != 0)
+	            cvalues[k] = xb[i];
+	            // increment pointer
+	            k++;
+	          } else {
+	            // remove index @ k
+	            cindex.splice(k, 1);
+	          }
+	        }
+	      }
+	    }
+	    // update cptr
+	    cptr[columns] = cindex.length;
+
+	    // return sparse matrix
+	    return c;
+	  };
+
+	  return algorithm04;
+	}
+
+	exports.name = 'algorithm04';
+	exports.factory = factory;
+
+/***/ }),
+/* 239 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	function factory(type, config, load, typed) {
+
+	  var DenseMatrix = type.DenseMatrix;
+
+	  /**
+	   * Iterates over SparseMatrix S nonzero items and invokes the callback function f(Sij, b). 
+	   * Callback function invoked NZ times (number of nonzero items in S).
+	   *
+	   *
+	   *          ┌  f(Sij, b)  ; S(i,j) !== 0
+	   * C(i,j) = ┤  
+	   *          └  b          ; otherwise
+	   *
+	   *
+	   * @param {Matrix}   s                 The SparseMatrix instance (S)
+	   * @param {Scalar}   b                 The Scalar value
+	   * @param {Function} callback          The f(Aij,b) operation to invoke
+	   * @param {boolean}  inverse           A true value indicates callback should be invoked f(b,Sij)
+	   *
+	   * @return {Matrix}                    DenseMatrix (C)
+	   *
+	   * https://github.com/josdejong/mathjs/pull/346#issuecomment-97626813
+	   */
+	  var algorithm10 = function (s, b, callback, inverse) {
+	    // sparse matrix arrays
+	    var avalues = s._values;
+	    var aindex = s._index;
+	    var aptr = s._ptr;
+	    var asize = s._size;
+	    var adt = s._datatype;
+
+	    // sparse matrix cannot be a Pattern matrix
+	    if (!avalues) throw new Error('Cannot perform operation on Pattern Sparse Matrix and Scalar value');
+
+	    // rows & columns
+	    var rows = asize[0];
+	    var columns = asize[1];
+
+	    // datatype
+	    var dt;
+	    // callback signature to use
+	    var cf = callback;
+
+	    // process data types
+	    if (typeof adt === 'string') {
+	      // datatype
+	      dt = adt;
+	      // convert b to the same datatype
+	      b = typed.convert(b, dt);
+	      // callback
+	      cf = typed.find(callback, [dt, dt]);
+	    }
+
+	    // result arrays
+	    var cdata = [];
+	    // matrix
+	    var c = new DenseMatrix({
+	      data: cdata,
+	      size: [rows, columns],
+	      datatype: dt
+	    });
+
+	    // workspaces
+	    var x = [];
+	    // marks indicating we have a value in x for a given column
+	    var w = [];
+
+	    // loop columns
+	    for (var j = 0; j < columns; j++) {
+	      // columns mark
+	      var mark = j + 1;
+	      // values in j
+	      for (var k0 = aptr[j], k1 = aptr[j + 1], k = k0; k < k1; k++) {
+	        // row
+	        var r = aindex[k];
+	        // update workspace
+	        x[r] = avalues[k];
+	        w[r] = mark;
+	      }
+	      // loop rows
+	      for (var i = 0; i < rows; i++) {
+	        // initialize C on first column
+	        if (j === 0) {
+	          // create row array
+	          cdata[i] = [];
+	        }
+	        // check sparse matrix has a value @ i,j
+	        if (w[i] === mark) {
+	          // invoke callback, update C
+	          cdata[i][j] = inverse ? cf(b, x[i]) : cf(x[i], b);
+	        } else {
+	          // dense matrix value @ i, j
+	          cdata[i][j] = b;
+	        }
+	      }
+	    }
+
+	    // return sparse matrix
+	    return c;
+	  };
+
+	  return algorithm10;
+	}
+
+	exports.name = 'algorithm10';
+	exports.factory = factory;
+
+/***/ }),
+/* 240 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var util = __webpack_require__(229);
+	var DimensionError = __webpack_require__(86);
+
+	var string = util.string,
+	    isString = string.isString;
+
+	function factory(type, config, load, typed) {
+
+	  var DenseMatrix = type.DenseMatrix;
+
+	  /**
+	   * Iterates over DenseMatrix items and invokes the callback function f(Aij..z, Bij..z). 
+	   * Callback function invoked MxN times.
+	   *
+	   * C(i,j,...z) = f(Aij..z, Bij..z)
+	   *
+	   * @param {Matrix}   a                 The DenseMatrix instance (A)
+	   * @param {Matrix}   b                 The DenseMatrix instance (B)
+	   * @param {Function} callback          The f(Aij..z,Bij..z) operation to invoke
+	   *
+	   * @return {Matrix}                    DenseMatrix (C)
+	   *
+	   * https://github.com/josdejong/mathjs/pull/346#issuecomment-97658658
+	   */
+	  var algorithm13 = function (a, b, callback) {
+	    // a arrays
+	    var adata = a._data;
+	    var asize = a._size;
+	    var adt = a._datatype;
+	    // b arrays
+	    var bdata = b._data;
+	    var bsize = b._size;
+	    var bdt = b._datatype;
+	    // c arrays
+	    var csize = [];
+
+	    // validate dimensions
+	    if (asize.length !== bsize.length) throw new DimensionError(asize.length, bsize.length);
+
+	    // validate each one of the dimension sizes
+	    for (var s = 0; s < asize.length; s++) {
+	      // must match
+	      if (asize[s] !== bsize[s]) throw new RangeError('Dimension mismatch. Matrix A (' + asize + ') must match Matrix B (' + bsize + ')');
+	      // update dimension in c
+	      csize[s] = asize[s];
+	    }
+
+	    // datatype
+	    var dt;
+	    // callback signature to use
+	    var cf = callback;
+
+	    // process data types
+	    if (typeof adt === 'string' && adt === bdt) {
+	      // datatype
+	      dt = adt;
+	      // convert b to the same datatype
+	      b = typed.convert(b, dt);
+	      // callback
+	      cf = typed.find(callback, [dt, dt]);
+	    }
+
+	    // populate cdata, iterate through dimensions
+	    var cdata = csize.length > 0 ? _iterate(cf, 0, csize, csize[0], adata, bdata) : [];
+
+	    // c matrix
+	    return new DenseMatrix({
+	      data: cdata,
+	      size: csize,
+	      datatype: dt
+	    });
+	  };
+
+	  // recursive function
+	  var _iterate = function (f, level, s, n, av, bv) {
+	    // initialize array for this level
+	    var cv = [];
+	    // check we reach the last level
+	    if (level === s.length - 1) {
+	      // loop arrays in last level
+	      for (var i = 0; i < n; i++) {
+	        // invoke callback and store value
+	        cv[i] = f(av[i], bv[i]);
+	      }
+	    } else {
+	      // iterate current level
+	      for (var j = 0; j < n; j++) {
+	        // iterate next level
+	        cv[j] = _iterate(f, level + 1, s, s[level + 1], av[j], bv[j]);
+	      }
+	    }
+	    return cv;
+	  };
+
+	  return algorithm13;
+	}
+
+	exports.name = 'algorithm13';
+	exports.factory = factory;
+
+/***/ }),
+/* 241 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	function factory(type, config, load, typed) {
 
-	  var smaller = load(__webpack_require__(319));
-	  var larger = load(__webpack_require__(321));
+	  var smaller = load(__webpack_require__(242));
+	  var larger = load(__webpack_require__(246));
 
 	  var oneOverLogPhi = 1.0 / Math.log((1.0 + Math.sqrt(5.0)) / 2.0);
 
@@ -26127,7 +23404,7 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 319 */
+/* 242 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26139,10 +23416,10 @@ var Clustergrammer =
 
 	  var matrix = load(__webpack_require__(89));
 
-	  var algorithm03 = load(__webpack_require__(257));
-	  var algorithm07 = load(__webpack_require__(320));
-	  var algorithm12 = load(__webpack_require__(279));
-	  var algorithm13 = load(__webpack_require__(260));
+	  var algorithm03 = load(__webpack_require__(243));
+	  var algorithm07 = load(__webpack_require__(244));
+	  var algorithm12 = load(__webpack_require__(245));
+	  var algorithm13 = load(__webpack_require__(240));
 	  var algorithm14 = load(__webpack_require__(95));
 
 	  var latex = __webpack_require__(88);
@@ -26311,7 +23588,133 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 320 */
+/* 243 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var DimensionError = __webpack_require__(86);
+
+	function factory(type, config, load, typed) {
+
+	  var DenseMatrix = type.DenseMatrix;
+
+	  /**
+	   * Iterates over SparseMatrix items and invokes the callback function f(Dij, Sij).
+	   * Callback function invoked M*N times.
+	   *
+	   *
+	   *          ┌  f(Dij, Sij)  ; S(i,j) !== 0
+	   * C(i,j) = ┤
+	   *          └  f(Dij, 0)    ; otherwise
+	   *
+	   *
+	   * @param {Matrix}   denseMatrix       The DenseMatrix instance (D)
+	   * @param {Matrix}   sparseMatrix      The SparseMatrix instance (C)
+	   * @param {Function} callback          The f(Dij,Sij) operation to invoke, where Dij = DenseMatrix(i,j) and Sij = SparseMatrix(i,j)
+	   * @param {boolean}  inverse           A true value indicates callback should be invoked f(Sij,Dij)
+	   *
+	   * @return {Matrix}                    DenseMatrix (C)
+	   *
+	   * see https://github.com/josdejong/mathjs/pull/346#issuecomment-97477571
+	   */
+	  var algorithm03 = function (denseMatrix, sparseMatrix, callback, inverse) {
+	    // dense matrix arrays
+	    var adata = denseMatrix._data;
+	    var asize = denseMatrix._size;
+	    var adt = denseMatrix._datatype;
+	    // sparse matrix arrays
+	    var bvalues = sparseMatrix._values;
+	    var bindex = sparseMatrix._index;
+	    var bptr = sparseMatrix._ptr;
+	    var bsize = sparseMatrix._size;
+	    var bdt = sparseMatrix._datatype;
+
+	    // validate dimensions
+	    if (asize.length !== bsize.length) throw new DimensionError(asize.length, bsize.length);
+
+	    // check rows & columns
+	    if (asize[0] !== bsize[0] || asize[1] !== bsize[1]) throw new RangeError('Dimension mismatch. Matrix A (' + asize + ') must match Matrix B (' + bsize + ')');
+
+	    // sparse matrix cannot be a Pattern matrix
+	    if (!bvalues) throw new Error('Cannot perform operation on Dense Matrix and Pattern Sparse Matrix');
+
+	    // rows & columns
+	    var rows = asize[0];
+	    var columns = asize[1];
+
+	    // datatype
+	    var dt;
+	    // zero value
+	    var zero = 0;
+	    // callback signature to use
+	    var cf = callback;
+
+	    // process data types
+	    if (typeof adt === 'string' && adt === bdt) {
+	      // datatype
+	      dt = adt;
+	      // convert 0 to the same datatype
+	      zero = typed.convert(0, dt);
+	      // callback
+	      cf = typed.find(callback, [dt, dt]);
+	    }
+
+	    // result (DenseMatrix)
+	    var cdata = [];
+
+	    // initialize dense matrix
+	    for (var z = 0; z < rows; z++) {
+	      // initialize row
+	      cdata[z] = [];
+	    }
+
+	    // workspace
+	    var x = [];
+	    // marks indicating we have a value in x for a given column
+	    var w = [];
+
+	    // loop columns in b
+	    for (var j = 0; j < columns; j++) {
+	      // column mark
+	      var mark = j + 1;
+	      // values in column j
+	      for (var k0 = bptr[j], k1 = bptr[j + 1], k = k0; k < k1; k++) {
+	        // row
+	        var i = bindex[k];
+	        // update workspace
+	        x[i] = inverse ? cf(bvalues[k], adata[i][j]) : cf(adata[i][j], bvalues[k]);
+	        w[i] = mark;
+	      }
+	      // process workspace
+	      for (var y = 0; y < rows; y++) {
+	        // check we have a calculated value for current row
+	        if (w[y] === mark) {
+	          // use calculated value
+	          cdata[y][j] = x[y];
+	        } else {
+	          // calculate value
+	          cdata[y][j] = inverse ? cf(zero, adata[y][j]) : cf(adata[y][j], zero);
+	        }
+	      }
+	    }
+
+	    // return dense matrix
+	    return new DenseMatrix({
+	      data: cdata,
+	      size: [rows, columns],
+	      datatype: dt
+	    });
+	  };
+
+	  return algorithm03;
+	}
+
+	exports.name = 'algorithm03';
+	exports.factory = factory;
+
+/***/ }),
+/* 244 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26437,7 +23840,120 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 321 */
+/* 245 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	function factory(type, config, load, typed) {
+
+	  var DenseMatrix = type.DenseMatrix;
+
+	  /**
+	   * Iterates over SparseMatrix S nonzero items and invokes the callback function f(Sij, b). 
+	   * Callback function invoked MxN times.
+	   *
+	   *
+	   *          ┌  f(Sij, b)  ; S(i,j) !== 0
+	   * C(i,j) = ┤  
+	   *          └  f(0, b)    ; otherwise
+	   *
+	   *
+	   * @param {Matrix}   s                 The SparseMatrix instance (S)
+	   * @param {Scalar}   b                 The Scalar value
+	   * @param {Function} callback          The f(Aij,b) operation to invoke
+	   * @param {boolean}  inverse           A true value indicates callback should be invoked f(b,Sij)
+	   *
+	   * @return {Matrix}                    DenseMatrix (C)
+	   *
+	   * https://github.com/josdejong/mathjs/pull/346#issuecomment-97626813
+	   */
+	  var algorithm12 = function (s, b, callback, inverse) {
+	    // sparse matrix arrays
+	    var avalues = s._values;
+	    var aindex = s._index;
+	    var aptr = s._ptr;
+	    var asize = s._size;
+	    var adt = s._datatype;
+
+	    // sparse matrix cannot be a Pattern matrix
+	    if (!avalues) throw new Error('Cannot perform operation on Pattern Sparse Matrix and Scalar value');
+
+	    // rows & columns
+	    var rows = asize[0];
+	    var columns = asize[1];
+
+	    // datatype
+	    var dt;
+	    // callback signature to use
+	    var cf = callback;
+
+	    // process data types
+	    if (typeof adt === 'string') {
+	      // datatype
+	      dt = adt;
+	      // convert b to the same datatype
+	      b = typed.convert(b, dt);
+	      // callback
+	      cf = typed.find(callback, [dt, dt]);
+	    }
+
+	    // result arrays
+	    var cdata = [];
+	    // matrix
+	    var c = new DenseMatrix({
+	      data: cdata,
+	      size: [rows, columns],
+	      datatype: dt
+	    });
+
+	    // workspaces
+	    var x = [];
+	    // marks indicating we have a value in x for a given column
+	    var w = [];
+
+	    // loop columns
+	    for (var j = 0; j < columns; j++) {
+	      // columns mark
+	      var mark = j + 1;
+	      // values in j
+	      for (var k0 = aptr[j], k1 = aptr[j + 1], k = k0; k < k1; k++) {
+	        // row
+	        var r = aindex[k];
+	        // update workspace
+	        x[r] = avalues[k];
+	        w[r] = mark;
+	      }
+	      // loop rows
+	      for (var i = 0; i < rows; i++) {
+	        // initialize C on first column
+	        if (j === 0) {
+	          // create row array
+	          cdata[i] = [];
+	        }
+	        // check sparse matrix has a value @ i,j
+	        if (w[i] === mark) {
+	          // invoke callback, update C
+	          cdata[i][j] = inverse ? cf(b, x[i]) : cf(x[i], b);
+	        } else {
+	          // dense matrix value @ i, j
+	          cdata[i][j] = inverse ? cf(b, 0) : cf(0, b);
+	        }
+	      }
+	    }
+
+	    // return sparse matrix
+	    return c;
+	  };
+
+	  return algorithm12;
+	}
+
+	exports.name = 'algorithm12';
+	exports.factory = factory;
+
+/***/ }),
+/* 246 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26449,10 +23965,10 @@ var Clustergrammer =
 
 	  var matrix = load(__webpack_require__(89));
 
-	  var algorithm03 = load(__webpack_require__(257));
-	  var algorithm07 = load(__webpack_require__(320));
-	  var algorithm12 = load(__webpack_require__(279));
-	  var algorithm13 = load(__webpack_require__(260));
+	  var algorithm03 = load(__webpack_require__(243));
+	  var algorithm07 = load(__webpack_require__(244));
+	  var algorithm12 = load(__webpack_require__(245));
+	  var algorithm13 = load(__webpack_require__(240));
 	  var algorithm14 = load(__webpack_require__(95));
 
 	  var latex = __webpack_require__(88);
@@ -26621,12 +24137,12 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 322 */
+/* 247 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var util = __webpack_require__(261);
+	var util = __webpack_require__(229);
 
 	var string = util.string;
 	var object = util.object;
@@ -26636,9 +24152,9 @@ var Clustergrammer =
 
 	function factory(type, config, load) {
 
-	  var DenseMatrix = load(__webpack_require__(315));
+	  var DenseMatrix = load(__webpack_require__(232));
 
-	  var smaller = load(__webpack_require__(319));
+	  var smaller = load(__webpack_require__(242));
 
 	  function ImmutableDenseMatrix(data, datatype) {
 	    if (!(this instanceof ImmutableDenseMatrix)) throw new SyntaxError('Constructor must be called with the new operator');
@@ -26852,7 +24368,7 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 323 */
+/* 248 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27136,7 +24652,7 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 324 */
+/* 249 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27441,7 +24957,7 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 325 */
+/* 250 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -27508,7 +25024,7 @@ var Clustergrammer =
 	exports.factory = factory;
 
 /***/ }),
-/* 326 */
+/* 251 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -27572,6 +25088,2447 @@ var Clustergrammer =
 
 	exports.name = 'sparse';
 	exports.factory = factory;
+
+/***/ }),
+/* 252 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
+	    D3.js Slider
+	    Inspired by jQuery UI Slider
+	    Copyright (c) 2013, Bjorn Sandvik - http://blog.thematicmapping.org
+	    BSD license: http://opensource.org/licenses/BSD-3-Clause
+	*/
+	(function (root, factory) {
+	  if (true) {
+	    // AMD. Register as an anonymous module.
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(253)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	  } else if (typeof exports === 'object') {
+	    if (process.browser) {
+	      // Browserify. Import css too using cssify.
+	      require('./d3.slider.css');
+	    }
+	    // Node. Does not work with strict CommonJS, but
+	    // only CommonJS-like environments that support module.exports,
+	    // like Node.
+	    module.exports = factory(require('d3'));
+	  } else {
+	    // Browser globals (root is window)
+	    root.d3.slider = factory(root.d3);
+	  }
+	})(this, function (d3) {
+	  return function module() {
+	    "use strict";
+
+	    // Public variables width default settings
+
+	    var min = 0,
+	        max = 100,
+	        step = 0.01,
+	        animate = false,
+	        orientation = "horizontal",
+	        axis = false,
+	        margin = 50,
+	        value,
+	        active = 1,
+	        snap = false,
+	        scale;
+
+	    // Private variables
+	    var axisScale,
+	        dispatch = d3.dispatch("slide", "slideend"),
+	        formatPercent = d3.format(".2%"),
+	        tickFormat = d3.format(".0"),
+	        handle1,
+	        handle2 = null,
+	        divRange,
+	        sliderLength;
+
+	    function slider(selection) {
+	      selection.each(function () {
+
+	        // Create scale if not defined by user
+	        if (!scale) {
+	          scale = d3.scale.linear().domain([min, max]);
+	        }
+
+	        // Start value
+	        value = value || scale.domain()[0];
+
+	        // DIV container
+	        var div = d3.select(this).classed("d3-slider d3-slider-" + orientation, true);
+
+	        var drag = d3.behavior.drag();
+	        drag.on('dragend', function () {
+	          dispatch.slideend(d3.event, value);
+	        });
+
+	        // Slider handle
+	        //if range slider, create two
+	        // var divRange;
+
+	        if (toType(value) == "array" && value.length == 2) {
+	          handle1 = div.append("a").classed("d3-slider-handle", true).attr("xlink:href", "#").attr('id', "handle-one").on("click", stopPropagation).call(drag);
+	          handle2 = div.append("a").classed("d3-slider-handle", true).attr('id', "handle-two").attr("xlink:href", "#").on("click", stopPropagation).call(drag);
+	        } else {
+	          handle1 = div.append("a").classed("d3-slider-handle", true).attr("xlink:href", "#").attr('id', "handle-one").on("click", stopPropagation).call(drag);
+	        }
+
+	        // Horizontal slider
+	        if (orientation === "horizontal") {
+
+	          div.on("click", onClickHorizontal);
+
+	          if (toType(value) == "array" && value.length == 2) {
+	            divRange = d3.select(this).append('div').classed("d3-slider-range", true);
+
+	            handle1.style("left", formatPercent(scale(value[0])));
+	            divRange.style("left", formatPercent(scale(value[0])));
+	            drag.on("drag", onDragHorizontal);
+
+	            var width = 100 - parseFloat(formatPercent(scale(value[1])));
+	            handle2.style("left", formatPercent(scale(value[1])));
+	            divRange.style("right", width + "%");
+	            drag.on("drag", onDragHorizontal);
+	          } else {
+	            handle1.style("left", formatPercent(scale(value)));
+	            drag.on("drag", onDragHorizontal);
+	          }
+
+	          sliderLength = parseInt(div.style("width"), 10);
+	        } else {
+	          // Vertical
+
+	          div.on("click", onClickVertical);
+	          drag.on("drag", onDragVertical);
+	          if (toType(value) == "array" && value.length == 2) {
+	            divRange = d3.select(this).append('div').classed("d3-slider-range-vertical", true);
+
+	            handle1.style("bottom", formatPercent(scale(value[0])));
+	            divRange.style("bottom", formatPercent(scale(value[0])));
+	            drag.on("drag", onDragVertical);
+
+	            var top = 100 - parseFloat(formatPercent(scale(value[1])));
+	            handle2.style("bottom", formatPercent(scale(value[1])));
+	            divRange.style("top", top + "%");
+	            drag.on("drag", onDragVertical);
+	          } else {
+	            handle1.style("bottom", formatPercent(scale(value)));
+	            drag.on("drag", onDragVertical);
+	          }
+
+	          sliderLength = parseInt(div.style("height"), 10);
+	        }
+
+	        if (axis) {
+	          createAxis(div);
+	        }
+
+	        function createAxis(dom) {
+
+	          // Create axis if not defined by user
+	          if (typeof axis === "boolean") {
+
+	            axis = d3.svg.axis().ticks(Math.round(sliderLength / 100)).tickFormat(tickFormat).orient(orientation === "horizontal" ? "bottom" : "right");
+	          }
+
+	          // Copy slider scale to move from percentages to pixels
+	          axisScale = scale.ticks ? scale.copy().range([0, sliderLength]) : scale.copy().rangePoints([0, sliderLength], 0.5);
+	          axis.scale(axisScale);
+
+	          // Create SVG axis container
+	          var svg = dom.append("svg").classed("d3-slider-axis d3-slider-axis-" + axis.orient(), true).on("click", stopPropagation);
+
+	          var g = svg.append("g");
+
+	          // Horizontal axis
+	          if (orientation === "horizontal") {
+
+	            svg.style("margin-left", -margin + "px");
+
+	            svg.attr({
+	              width: sliderLength + margin * 2,
+	              height: margin
+	            });
+
+	            if (axis.orient() === "top") {
+	              svg.style("top", -margin + "px");
+	              g.attr("transform", "translate(" + margin + "," + margin + ")");
+	            } else {
+	              // bottom
+	              g.attr("transform", "translate(" + margin + ",0)");
+	            }
+	          } else {
+	            // Vertical
+
+	            svg.style("top", -margin + "px");
+
+	            svg.attr({
+	              width: margin,
+	              height: sliderLength + margin * 2
+	            });
+
+	            if (axis.orient() === "left") {
+	              svg.style("left", -margin + "px");
+	              g.attr("transform", "translate(" + margin + "," + margin + ")");
+	            } else {
+	              // right
+	              g.attr("transform", "translate(" + 0 + "," + margin + ")");
+	            }
+	          }
+
+	          g.call(axis);
+	        }
+
+	        function onClickHorizontal() {
+	          if (toType(value) != "array") {
+	            var pos = Math.max(0, Math.min(sliderLength, d3.event.offsetX || d3.event.layerX));
+	            moveHandle(scale.invert ? stepValue(scale.invert(pos / sliderLength)) : nearestTick(pos / sliderLength));
+	          }
+	        }
+
+	        function onClickVertical() {
+	          if (toType(value) != "array") {
+	            var pos = sliderLength - Math.max(0, Math.min(sliderLength, d3.event.offsetY || d3.event.layerY));
+	            moveHandle(scale.invert ? stepValue(scale.invert(pos / sliderLength)) : nearestTick(pos / sliderLength));
+	          }
+	        }
+
+	        function onDragHorizontal() {
+	          if (d3.event.sourceEvent.target.id === "handle-one") {
+	            active = 1;
+	          } else if (d3.event.sourceEvent.target.id == "handle-two") {
+	            active = 2;
+	          }
+	          var pos = Math.max(0, Math.min(sliderLength, d3.event.x));
+	          moveHandle(scale.invert ? stepValue(scale.invert(pos / sliderLength)) : nearestTick(pos / sliderLength));
+	        }
+
+	        function onDragVertical() {
+	          if (d3.event.sourceEvent.target.id === "handle-one") {
+	            active = 1;
+	          } else if (d3.event.sourceEvent.target.id == "handle-two") {
+	            active = 2;
+	          }
+	          var pos = sliderLength - Math.max(0, Math.min(sliderLength, d3.event.y));
+	          moveHandle(scale.invert ? stepValue(scale.invert(pos / sliderLength)) : nearestTick(pos / sliderLength));
+	        }
+
+	        function stopPropagation() {
+	          d3.event.stopPropagation();
+	        }
+	      });
+	    }
+
+	    // Move slider handle on click/drag
+	    function moveHandle(newValue) {
+	      var currentValue = toType(value) == "array" && value.length == 2 ? value[active - 1] : value,
+	          oldPos = formatPercent(scale(stepValue(currentValue))),
+	          newPos = formatPercent(scale(stepValue(newValue))),
+	          position = orientation === "horizontal" ? "left" : "bottom";
+	      if (oldPos !== newPos) {
+
+	        if (toType(value) == "array" && value.length == 2) {
+	          value[active - 1] = newValue;
+	          if (d3.event) {
+	            dispatch.slide(d3.event, value);
+	          };
+	        } else {
+	          if (d3.event) {
+	            dispatch.slide(d3.event.sourceEvent || d3.event, value = newValue);
+	          };
+	        }
+
+	        if (value[0] >= value[1]) return;
+	        if (active === 1) {
+	          if (toType(value) == "array" && value.length == 2) {
+	            position === "left" ? divRange.style("left", newPos) : divRange.style("bottom", newPos);
+	          }
+
+	          if (animate) {
+	            handle1.transition().styleTween(position, function () {
+	              return d3.interpolate(oldPos, newPos);
+	            }).duration(typeof animate === "number" ? animate : 250);
+	          } else {
+	            handle1.style(position, newPos);
+	          }
+	        } else {
+
+	          var width = 100 - parseFloat(newPos);
+	          var top = 100 - parseFloat(newPos);
+
+	          position === "left" ? divRange.style("right", width + "%") : divRange.style("top", top + "%");
+
+	          if (animate) {
+	            handle2.transition().styleTween(position, function () {
+	              return d3.interpolate(oldPos, newPos);
+	            }).duration(typeof animate === "number" ? animate : 250);
+	          } else {
+	            handle2.style(position, newPos);
+	          }
+	        }
+	      }
+	    }
+
+	    // Calculate nearest step value
+	    function stepValue(val) {
+
+	      if (val === scale.domain()[0] || val === scale.domain()[1]) {
+	        return val;
+	      }
+
+	      var alignValue = val;
+	      if (snap) {
+	        alignValue = nearestTick(scale(val));
+	      } else {
+	        var valModStep = (val - scale.domain()[0]) % step;
+	        alignValue = val - valModStep;
+
+	        if (Math.abs(valModStep) * 2 >= step) {
+	          alignValue += valModStep > 0 ? step : -step;
+	        }
+	      };
+
+	      return alignValue;
+	    }
+
+	    // Find the nearest tick
+	    function nearestTick(pos) {
+	      var ticks = scale.ticks ? scale.ticks() : scale.domain();
+	      var dist = ticks.map(function (d) {
+	        return pos - scale(d);
+	      });
+	      var i = -1,
+	          index = 0,
+	          r = scale.ticks ? scale.range()[1] : scale.rangeExtent()[1];
+	      do {
+	        i++;
+	        if (Math.abs(dist[i]) < r) {
+	          r = Math.abs(dist[i]);
+	          index = i;
+	        };
+	      } while (dist[i] > 0 && i < dist.length - 1);
+
+	      return ticks[index];
+	    };
+
+	    // Return the type of an object
+	    function toType(v) {
+	      return {}.toString.call(v).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
+	    };
+
+	    // Getter/setter functions
+	    slider.min = function (_) {
+	      if (!arguments.length) return min;
+	      min = _;
+	      return slider;
+	    };
+
+	    slider.max = function (_) {
+	      if (!arguments.length) return max;
+	      max = _;
+	      return slider;
+	    };
+
+	    slider.step = function (_) {
+	      if (!arguments.length) return step;
+	      step = _;
+	      return slider;
+	    };
+
+	    slider.animate = function (_) {
+	      if (!arguments.length) return animate;
+	      animate = _;
+	      return slider;
+	    };
+
+	    slider.orientation = function (_) {
+	      if (!arguments.length) return orientation;
+	      orientation = _;
+	      return slider;
+	    };
+
+	    slider.axis = function (_) {
+	      if (!arguments.length) return axis;
+	      axis = _;
+	      return slider;
+	    };
+
+	    slider.margin = function (_) {
+	      if (!arguments.length) return margin;
+	      margin = _;
+	      return slider;
+	    };
+
+	    slider.value = function (_) {
+	      if (!arguments.length) return value;
+	      if (value) {
+	        moveHandle(stepValue(_));
+	      };
+	      value = _;
+	      return slider;
+	    };
+
+	    slider.snap = function (_) {
+	      if (!arguments.length) return snap;
+	      snap = _;
+	      return slider;
+	    };
+
+	    slider.scale = function (_) {
+	      if (!arguments.length) return scale;
+	      scale = _;
+	      return slider;
+	    };
+
+	    d3.rebind(slider, dispatch, "on");
+
+	    return slider;
+	  };
+	});
+
+/***/ }),
+/* 253 */
+/***/ (function(module, exports) {
+
+	module.exports = d3;
+
+/***/ }),
+/* 254 */
+/***/ (function(module, exports) {
+
+	/**
+	 * Simple, lightweight, usable local autocomplete library for modern browsers
+	 * Because there weren’t enough autocomplete scripts in the world? Because I’m completely insane and have NIH syndrome? Probably both. :P
+	 * @author Lea Verou http://leaverou.github.io/awesomplete
+	 * MIT license
+	 */
+
+	(function () {
+
+		var _ = function (input, o) {
+			var me = this;
+
+			// Setup
+
+			this.input = $(input);
+			this.input.setAttribute("autocomplete", "off");
+			this.input.setAttribute("aria-autocomplete", "list");
+
+			o = o || {};
+
+			configure(this, {
+				minChars: 2,
+				maxItems: 10,
+				autoFirst: false,
+				data: _.DATA,
+				filter: _.FILTER_CONTAINS,
+				sort: _.SORT_BYLENGTH,
+				item: _.ITEM,
+				replace: _.REPLACE
+			}, o);
+
+			this.index = -1;
+
+			// Create necessary elements
+
+			this.container = $.create("div", {
+				className: "awesomplete",
+				around: input
+			});
+
+			this.ul = $.create("ul", {
+				hidden: "hidden",
+				inside: this.container
+			});
+
+			this.status = $.create("span", {
+				className: "visually-hidden",
+				role: "status",
+				"aria-live": "assertive",
+				"aria-relevant": "additions",
+				inside: this.container
+			});
+
+			// Bind events
+
+			$.bind(this.input, {
+				"input": this.evaluate.bind(this),
+				"blur": this.close.bind(this, { reason: "blur" }),
+				"keydown": function (evt) {
+					var c = evt.keyCode;
+
+					// If the dropdown `ul` is in view, then act on keydown for the following keys:
+					// Enter / Esc / Up / Down
+					if (me.opened) {
+						if (c === 13 && me.selected) {
+							// Enter
+							evt.preventDefault();
+							me.select();
+						} else if (c === 27) {
+							// Esc
+							me.close({ reason: "esc" });
+						} else if (c === 38 || c === 40) {
+							// Down/Up arrow
+							evt.preventDefault();
+							me[c === 38 ? "previous" : "next"]();
+						}
+					}
+				}
+			});
+
+			$.bind(this.input.form, { "submit": this.close.bind(this, { reason: "submit" }) });
+
+			$.bind(this.ul, { "mousedown": function (evt) {
+					var li = evt.target;
+
+					if (li !== this) {
+
+						while (li && !/li/i.test(li.nodeName)) {
+							li = li.parentNode;
+						}
+
+						if (li && evt.button === 0) {
+							// Only select on left click
+							evt.preventDefault();
+							me.select(li, evt.target);
+						}
+					}
+				} });
+
+			if (this.input.hasAttribute("list")) {
+				this.list = "#" + this.input.getAttribute("list");
+				this.input.removeAttribute("list");
+			} else {
+				this.list = this.input.getAttribute("data-list") || o.list || [];
+			}
+
+			_.all.push(this);
+		};
+
+		_.prototype = {
+			set list(list) {
+				if (Array.isArray(list)) {
+					this._list = list;
+				} else if (typeof list === "string" && list.indexOf(",") > -1) {
+					this._list = list.split(/\s*,\s*/);
+				} else {
+					// Element or CSS selector
+					list = $(list);
+
+					if (list && list.children) {
+						var items = [];
+						slice.apply(list.children).forEach(function (el) {
+							if (!el.disabled) {
+								var text = el.textContent.trim();
+								var value = el.value || text;
+								var label = el.label || text;
+								if (value !== "") {
+									items.push({ label: label, value: value });
+								}
+							}
+						});
+						this._list = items;
+					}
+				}
+
+				if (document.activeElement === this.input) {
+					this.evaluate();
+				}
+			},
+
+			get selected() {
+				return this.index > -1;
+			},
+
+			get opened() {
+				return !this.ul.hasAttribute("hidden");
+			},
+
+			close: function (o) {
+				if (!this.opened) {
+					return;
+				}
+
+				this.ul.setAttribute("hidden", "");
+				this.index = -1;
+
+				$.fire(this.input, "awesomplete-close", o || {});
+			},
+
+			open: function () {
+				this.ul.removeAttribute("hidden");
+
+				if (this.autoFirst && this.index === -1) {
+					this.goto(0);
+				}
+
+				$.fire(this.input, "awesomplete-open");
+			},
+
+			next: function () {
+				var count = this.ul.children.length;
+
+				this.goto(this.index < count - 1 ? this.index + 1 : -1);
+			},
+
+			previous: function () {
+				var count = this.ul.children.length;
+
+				this.goto(this.selected ? this.index - 1 : count - 1);
+			},
+
+			// Should not be used, highlights specific item without any checks!
+			goto: function (i) {
+				var lis = this.ul.children;
+
+				if (this.selected) {
+					lis[this.index].setAttribute("aria-selected", "false");
+				}
+
+				this.index = i;
+
+				if (i > -1 && lis.length > 0) {
+					lis[i].setAttribute("aria-selected", "true");
+					this.status.textContent = lis[i].textContent;
+
+					$.fire(this.input, "awesomplete-highlight", {
+						text: this.suggestions[this.index]
+					});
+				}
+			},
+
+			select: function (selected, origin) {
+				if (selected) {
+					this.index = $.siblingIndex(selected);
+				} else {
+					selected = this.ul.children[this.index];
+				}
+
+				if (selected) {
+					var suggestion = this.suggestions[this.index];
+
+					var allowed = $.fire(this.input, "awesomplete-select", {
+						text: suggestion,
+						origin: origin || selected
+					});
+
+					if (allowed) {
+						this.replace(suggestion);
+						this.close({ reason: "select" });
+						$.fire(this.input, "awesomplete-selectcomplete", {
+							text: suggestion
+						});
+					}
+				}
+			},
+
+			evaluate: function () {
+				var me = this;
+				var value = this.input.value;
+
+				if (value.length >= this.minChars && this._list.length > 0) {
+					this.index = -1;
+					// Populate list with options that match
+					this.ul.innerHTML = "";
+
+					this.suggestions = this._list.map(function (item) {
+						return new Suggestion(me.data(item, value));
+					}).filter(function (item) {
+						return me.filter(item, value);
+					}).sort(this.sort).slice(0, this.maxItems);
+
+					this.suggestions.forEach(function (text) {
+						me.ul.appendChild(me.item(text, value));
+					});
+
+					if (this.ul.children.length === 0) {
+						this.close({ reason: "nomatches" });
+					} else {
+						this.open();
+					}
+				} else {
+					this.close({ reason: "nomatches" });
+				}
+			}
+		};
+
+		// Static methods/properties
+
+		_.all = [];
+
+		_.FILTER_CONTAINS = function (text, input) {
+			return RegExp($.regExpEscape(input.trim()), "i").test(text);
+		};
+
+		_.FILTER_STARTSWITH = function (text, input) {
+			return RegExp("^" + $.regExpEscape(input.trim()), "i").test(text);
+		};
+
+		_.SORT_BYLENGTH = function (a, b) {
+			if (a.length !== b.length) {
+				return a.length - b.length;
+			}
+
+			return a < b ? -1 : 1;
+		};
+
+		_.ITEM = function (text, input) {
+			var html = input === '' ? text : text.replace(RegExp($.regExpEscape(input.trim()), "gi"), "<mark>$&</mark>");
+			return $.create("li", {
+				innerHTML: html,
+				"aria-selected": "false"
+			});
+		};
+
+		_.REPLACE = function (text) {
+			this.input.value = text.value;
+		};
+
+		_.DATA = function (item /*, input*/) {
+			return item;
+		};
+
+		// Private functions
+
+		function Suggestion(data) {
+			var o = Array.isArray(data) ? { label: data[0], value: data[1] } : typeof data === "object" && "label" in data && "value" in data ? data : { label: data, value: data };
+
+			this.label = o.label || o.value;
+			this.value = o.value;
+		}
+		Object.defineProperty(Suggestion.prototype = Object.create(String.prototype), "length", {
+			get: function () {
+				return this.label.length;
+			}
+		});
+		Suggestion.prototype.toString = Suggestion.prototype.valueOf = function () {
+			return "" + this.label;
+		};
+
+		function configure(instance, properties, o) {
+			for (var i in properties) {
+				var initial = properties[i],
+				    attrValue = instance.input.getAttribute("data-" + i.toLowerCase());
+
+				if (typeof initial === "number") {
+					instance[i] = parseInt(attrValue);
+				} else if (initial === false) {
+					// Boolean options must be false by default anyway
+					instance[i] = attrValue !== null;
+				} else if (initial instanceof Function) {
+					instance[i] = null;
+				} else {
+					instance[i] = attrValue;
+				}
+
+				if (!instance[i] && instance[i] !== 0) {
+					instance[i] = i in o ? o[i] : initial;
+				}
+			}
+		}
+
+		// Helpers
+
+		var slice = Array.prototype.slice;
+
+		function $(expr, con) {
+			return typeof expr === "string" ? (con || document).querySelector(expr) : expr || null;
+		}
+
+		function $$(expr, con) {
+			return slice.call((con || document).querySelectorAll(expr));
+		}
+
+		$.create = function (tag, o) {
+			var element = document.createElement(tag);
+
+			for (var i in o) {
+				var val = o[i];
+
+				if (i === "inside") {
+					$(val).appendChild(element);
+				} else if (i === "around") {
+					var ref = $(val);
+					ref.parentNode.insertBefore(element, ref);
+					element.appendChild(ref);
+				} else if (i in element) {
+					element[i] = val;
+				} else {
+					element.setAttribute(i, val);
+				}
+			}
+
+			return element;
+		};
+
+		$.bind = function (element, o) {
+			if (element) {
+				for (var event in o) {
+					var callback = o[event];
+
+					event.split(/\s+/).forEach(function (event) {
+						element.addEventListener(event, callback);
+					});
+				}
+			}
+		};
+
+		$.fire = function (target, type, properties) {
+			var evt = document.createEvent("HTMLEvents");
+
+			evt.initEvent(type, true, true);
+
+			for (var j in properties) {
+				evt[j] = properties[j];
+			}
+
+			return target.dispatchEvent(evt);
+		};
+
+		$.regExpEscape = function (s) {
+			return s.replace(/[-\\^$*+?.()|[\]{}]/g, "\\$&");
+		};
+
+		$.siblingIndex = function (el) {
+			/* eslint-disable no-cond-assign */
+			for (var i = 0; el = el.previousElementSibling; i++);
+			return i;
+		};
+
+		// Initialization
+
+		function init() {
+			$$("input.awesomplete").forEach(function (input) {
+				new _(input);
+			});
+		}
+
+		// Are we in a browser? Check for Document constructor
+		if (typeof Document !== "undefined") {
+			// DOM already loaded?
+			if (document.readyState !== "loading") {
+				init();
+			} else {
+				// Wait for it
+				document.addEventListener("DOMContentLoaded", init);
+			}
+		}
+
+		_.$ = $;
+		_.$$ = $$;
+
+		// Make sure to export Awesomplete on self when in a browser
+		if (typeof self !== "undefined") {
+			self.Awesomplete = _;
+		}
+
+		// Expose Awesomplete as a CJS module
+		if (typeof module === "object" && module.exports) {
+			module.exports = _;
+		}
+
+		return _;
+		})();
+
+/***/ }),
+/* 255 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(256);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(258)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!../../node_modules/css-loader/index.js!./d3.slider.css", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!./d3.slider.css");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ }),
+/* 256 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(257)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ".d3-slider {\n    position: relative;\n    font-family: Verdana,Arial,sans-serif;\n    font-size: 1.1em;\n    border: 1px solid #aaaaaa;\n    z-index: 2;\n}\n\n.d3-slider-horizontal {\n    height: .8em;\n}  \n\n.d3-slider-range {\n  background:#2980b9;\n  left:0px;\n  right:0px;\n  height: 0.8em;\n  position: absolute;\n}\n\n.d3-slider-range-vertical {\n  background:#2980b9;\n  left:0px;\n  right:0px;\n  position: absolute;\n  top:0;\n}\n\n.d3-slider-vertical {\n    width: .8em;\n    height: 100px;\n}      \n\n.d3-slider-handle {\n    position: absolute;\n    width: 1.2em;\n    height: 1.2em;\n    border: 1px solid #d3d3d3;\n    border-radius: 4px;\n    background: #eee;\n    background: linear-gradient(to bottom, #eee 0%, #ddd 100%);\n    z-index: 3;\n}\n\n.d3-slider-handle:hover {\n    border: 1px solid #999999;\n}\n\n.d3-slider-horizontal .d3-slider-handle {\n    top: -.3em;\n    margin-left: -.6em;\n}\n\n.d3-slider-axis {\n    position: relative;\n    z-index: 1;    \n}\n\n.d3-slider-axis-bottom {\n    top: .8em;\n}\n\n.d3-slider-axis-right {\n    left: .8em;\n}\n\n.d3-slider-axis path {\n    stroke-width: 0;\n    fill: none;\n}\n\n.d3-slider-axis line {\n    fill: none;\n    stroke: #aaa;\n    shape-rendering: crispEdges;\n}\n\n.d3-slider-axis text {\n    font-size: 11px;\n}\n\n.d3-slider-vertical .d3-slider-handle {\n    left: -.25em;\n    margin-left: 0;\n    margin-bottom: -.6em;      \n}", ""]);
+
+	// exports
+
+
+/***/ }),
+/* 257 */
+/***/ (function(module, exports) {
+
+	/*
+		MIT License http://www.opensource.org/licenses/mit-license.php
+		Author Tobias Koppers @sokra
+	*/
+	// css base code, injected by the css-loader
+	module.exports = function () {
+		var list = [];
+
+		// return the list of modules as css string
+		list.toString = function toString() {
+			var result = [];
+			for (var i = 0; i < this.length; i++) {
+				var item = this[i];
+				if (item[2]) {
+					result.push("@media " + item[2] + "{" + item[1] + "}");
+				} else {
+					result.push(item[1]);
+				}
+			}
+			return result.join("");
+		};
+
+		// import a list of modules into the list
+		list.i = function (modules, mediaQuery) {
+			if (typeof modules === "string") modules = [[null, modules, ""]];
+			var alreadyImportedModules = {};
+			for (var i = 0; i < this.length; i++) {
+				var id = this[i][0];
+				if (typeof id === "number") alreadyImportedModules[id] = true;
+			}
+			for (i = 0; i < modules.length; i++) {
+				var item = modules[i];
+				// skip already imported module
+				// this implementation is not 100% perfect for weird media query combinations
+				//  when a module is imported multiple times with different media queries.
+				//  I hope this will never occur (Hey this way we have smaller bundles)
+				if (typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+					if (mediaQuery && !item[2]) {
+						item[2] = mediaQuery;
+					} else if (mediaQuery) {
+						item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+					}
+					list.push(item);
+				}
+			}
+		};
+		return list;
+	};
+
+/***/ }),
+/* 258 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/*
+		MIT License http://www.opensource.org/licenses/mit-license.php
+		Author Tobias Koppers @sokra
+	*/
+	var stylesInDom = {},
+		memoize = function(fn) {
+			var memo;
+			return function () {
+				if (typeof memo === "undefined") memo = fn.apply(this, arguments);
+				return memo;
+			};
+		},
+		isOldIE = memoize(function() {
+			return /msie [6-9]\b/.test(self.navigator.userAgent.toLowerCase());
+		}),
+		getHeadElement = memoize(function () {
+			return document.head || document.getElementsByTagName("head")[0];
+		}),
+		singletonElement = null,
+		singletonCounter = 0,
+		styleElementsInsertedAtTop = [];
+
+	module.exports = function(list, options) {
+		if(false) {
+			if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
+		}
+
+		options = options || {};
+		// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+		// tags it will allow on a page
+		if (typeof options.singleton === "undefined") options.singleton = isOldIE();
+
+		// By default, add <style> tags to the bottom of <head>.
+		if (typeof options.insertAt === "undefined") options.insertAt = "bottom";
+
+		var styles = listToStyles(list);
+		addStylesToDom(styles, options);
+
+		return function update(newList) {
+			var mayRemove = [];
+			for(var i = 0; i < styles.length; i++) {
+				var item = styles[i];
+				var domStyle = stylesInDom[item.id];
+				domStyle.refs--;
+				mayRemove.push(domStyle);
+			}
+			if(newList) {
+				var newStyles = listToStyles(newList);
+				addStylesToDom(newStyles, options);
+			}
+			for(var i = 0; i < mayRemove.length; i++) {
+				var domStyle = mayRemove[i];
+				if(domStyle.refs === 0) {
+					for(var j = 0; j < domStyle.parts.length; j++)
+						domStyle.parts[j]();
+					delete stylesInDom[domStyle.id];
+				}
+			}
+		};
+	}
+
+	function addStylesToDom(styles, options) {
+		for(var i = 0; i < styles.length; i++) {
+			var item = styles[i];
+			var domStyle = stylesInDom[item.id];
+			if(domStyle) {
+				domStyle.refs++;
+				for(var j = 0; j < domStyle.parts.length; j++) {
+					domStyle.parts[j](item.parts[j]);
+				}
+				for(; j < item.parts.length; j++) {
+					domStyle.parts.push(addStyle(item.parts[j], options));
+				}
+			} else {
+				var parts = [];
+				for(var j = 0; j < item.parts.length; j++) {
+					parts.push(addStyle(item.parts[j], options));
+				}
+				stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
+			}
+		}
+	}
+
+	function listToStyles(list) {
+		var styles = [];
+		var newStyles = {};
+		for(var i = 0; i < list.length; i++) {
+			var item = list[i];
+			var id = item[0];
+			var css = item[1];
+			var media = item[2];
+			var sourceMap = item[3];
+			var part = {css: css, media: media, sourceMap: sourceMap};
+			if(!newStyles[id])
+				styles.push(newStyles[id] = {id: id, parts: [part]});
+			else
+				newStyles[id].parts.push(part);
+		}
+		return styles;
+	}
+
+	function insertStyleElement(options, styleElement) {
+		var head = getHeadElement();
+		var lastStyleElementInsertedAtTop = styleElementsInsertedAtTop[styleElementsInsertedAtTop.length - 1];
+		if (options.insertAt === "top") {
+			if(!lastStyleElementInsertedAtTop) {
+				head.insertBefore(styleElement, head.firstChild);
+			} else if(lastStyleElementInsertedAtTop.nextSibling) {
+				head.insertBefore(styleElement, lastStyleElementInsertedAtTop.nextSibling);
+			} else {
+				head.appendChild(styleElement);
+			}
+			styleElementsInsertedAtTop.push(styleElement);
+		} else if (options.insertAt === "bottom") {
+			head.appendChild(styleElement);
+		} else {
+			throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
+		}
+	}
+
+	function removeStyleElement(styleElement) {
+		styleElement.parentNode.removeChild(styleElement);
+		var idx = styleElementsInsertedAtTop.indexOf(styleElement);
+		if(idx >= 0) {
+			styleElementsInsertedAtTop.splice(idx, 1);
+		}
+	}
+
+	function createStyleElement(options) {
+		var styleElement = document.createElement("style");
+		styleElement.type = "text/css";
+		insertStyleElement(options, styleElement);
+		return styleElement;
+	}
+
+	function createLinkElement(options) {
+		var linkElement = document.createElement("link");
+		linkElement.rel = "stylesheet";
+		insertStyleElement(options, linkElement);
+		return linkElement;
+	}
+
+	function addStyle(obj, options) {
+		var styleElement, update, remove;
+
+		if (options.singleton) {
+			var styleIndex = singletonCounter++;
+			styleElement = singletonElement || (singletonElement = createStyleElement(options));
+			update = applyToSingletonTag.bind(null, styleElement, styleIndex, false);
+			remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true);
+		} else if(obj.sourceMap &&
+			typeof URL === "function" &&
+			typeof URL.createObjectURL === "function" &&
+			typeof URL.revokeObjectURL === "function" &&
+			typeof Blob === "function" &&
+			typeof btoa === "function") {
+			styleElement = createLinkElement(options);
+			update = updateLink.bind(null, styleElement);
+			remove = function() {
+				removeStyleElement(styleElement);
+				if(styleElement.href)
+					URL.revokeObjectURL(styleElement.href);
+			};
+		} else {
+			styleElement = createStyleElement(options);
+			update = applyToTag.bind(null, styleElement);
+			remove = function() {
+				removeStyleElement(styleElement);
+			};
+		}
+
+		update(obj);
+
+		return function updateStyle(newObj) {
+			if(newObj) {
+				if(newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap)
+					return;
+				update(obj = newObj);
+			} else {
+				remove();
+			}
+		};
+	}
+
+	var replaceText = (function () {
+		var textStore = [];
+
+		return function (index, replacement) {
+			textStore[index] = replacement;
+			return textStore.filter(Boolean).join('\n');
+		};
+	})();
+
+	function applyToSingletonTag(styleElement, index, remove, obj) {
+		var css = remove ? "" : obj.css;
+
+		if (styleElement.styleSheet) {
+			styleElement.styleSheet.cssText = replaceText(index, css);
+		} else {
+			var cssNode = document.createTextNode(css);
+			var childNodes = styleElement.childNodes;
+			if (childNodes[index]) styleElement.removeChild(childNodes[index]);
+			if (childNodes.length) {
+				styleElement.insertBefore(cssNode, childNodes[index]);
+			} else {
+				styleElement.appendChild(cssNode);
+			}
+		}
+	}
+
+	function applyToTag(styleElement, obj) {
+		var css = obj.css;
+		var media = obj.media;
+
+		if(media) {
+			styleElement.setAttribute("media", media)
+		}
+
+		if(styleElement.styleSheet) {
+			styleElement.styleSheet.cssText = css;
+		} else {
+			while(styleElement.firstChild) {
+				styleElement.removeChild(styleElement.firstChild);
+			}
+			styleElement.appendChild(document.createTextNode(css));
+		}
+	}
+
+	function updateLink(linkElement, obj) {
+		var css = obj.css;
+		var sourceMap = obj.sourceMap;
+
+		if(sourceMap) {
+			// http://stackoverflow.com/a/26603875
+			css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
+		}
+
+		var blob = new Blob([css], { type: "text/css" });
+
+		var oldSrc = linkElement.href;
+
+		linkElement.href = URL.createObjectURL(blob);
+
+		if(oldSrc)
+			URL.revokeObjectURL(oldSrc);
+	}
+
+
+/***/ }),
+/* 259 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(260);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(258)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!../css-loader/index.js!./awesomplete.css", function() {
+				var newContent = require("!!../css-loader/index.js!./awesomplete.css");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ }),
+/* 260 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(257)();
+	// imports
+
+
+	// module
+	exports.push([module.id, "[hidden] { display: none; }\n\n.visually-hidden {\n\tposition: absolute;\n\tclip: rect(0, 0, 0, 0);\n}\n\ndiv.awesomplete {\n\tdisplay: inline-block;\n\tposition: relative;\n}\n\ndiv.awesomplete > input {\n\tdisplay: block;\n}\n\ndiv.awesomplete > ul {\n\tposition: absolute;\n\tleft: 0;\n\tz-index: 1;\n\tmin-width: 100%;\n\tbox-sizing: border-box;\n\tlist-style: none;\n\tpadding: 0;\n\tborder-radius: .3em;\n\tmargin: .2em 0 0;\n\tbackground: hsla(0,0%,100%,.9);\n\tbackground: linear-gradient(to bottom right, white, hsla(0,0%,100%,.8));\n\tborder: 1px solid rgba(0,0,0,.3);\n\tbox-shadow: .05em .2em .6em rgba(0,0,0,.2);\n\ttext-shadow: none;\n}\n\ndiv.awesomplete > ul[hidden],\ndiv.awesomplete > ul:empty {\n\tdisplay: none;\n}\n\n@supports (transform: scale(0)) {\n\tdiv.awesomplete > ul {\n\t\ttransition: .3s cubic-bezier(.4,.2,.5,1.4);\n\t\ttransform-origin: 1.43em -.43em;\n\t}\n\t\n\tdiv.awesomplete > ul[hidden],\n\tdiv.awesomplete > ul:empty {\n\t\topacity: 0;\n\t\ttransform: scale(0);\n\t\tdisplay: block;\n\t\ttransition-timing-function: ease;\n\t}\n}\n\n\t/* Pointer */\n\tdiv.awesomplete > ul:before {\n\t\tcontent: \"\";\n\t\tposition: absolute;\n\t\ttop: -.43em;\n\t\tleft: 1em;\n\t\twidth: 0; height: 0;\n\t\tpadding: .4em;\n\t\tbackground: white;\n\t\tborder: inherit;\n\t\tborder-right: 0;\n\t\tborder-bottom: 0;\n\t\t-webkit-transform: rotate(45deg);\n\t\ttransform: rotate(45deg);\n\t}\n\n\tdiv.awesomplete > ul > li {\n\t\tposition: relative;\n\t\tpadding: .2em .5em;\n\t\tcursor: pointer;\n\t}\n\t\n\tdiv.awesomplete > ul > li:hover {\n\t\tbackground: hsl(200, 40%, 80%);\n\t\tcolor: black;\n\t}\n\t\n\tdiv.awesomplete > ul > li[aria-selected=\"true\"] {\n\t\tbackground: hsl(205, 40%, 40%);\n\t\tcolor: white;\n\t}\n\t\n\t\tdiv.awesomplete mark {\n\t\t\tbackground: hsl(65, 100%, 50%);\n\t\t}\n\t\t\n\t\tdiv.awesomplete li:hover mark {\n\t\t\tbackground: hsl(68, 100%, 41%);\n\t\t}\n\t\t\n\t\tdiv.awesomplete li[aria-selected=\"true\"] mark {\n\t\t\tbackground: hsl(86, 100%, 21%);\n\t\t\tcolor: inherit;\n\t\t}", ""]);
+
+	// exports
+
+
+/***/ }),
+/* 261 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var ini_sidebar = __webpack_require__(191);
+	var set_up_filters = __webpack_require__(262);
+	var set_up_search = __webpack_require__(267);
+	var set_up_reorder = __webpack_require__(268);
+	var set_sidebar_ini_view = __webpack_require__(269);
+	var make_icons = __webpack_require__(270);
+	var make_modals = __webpack_require__(272);
+	var set_up_opacity_slider = __webpack_require__(274);
+	var make_colorbar = __webpack_require__(275);
+
+	/* Represents sidebar with controls.
+	 */
+	module.exports = function sidebar(cgm) {
+
+	  var params = cgm.params;
+
+	  var sidebar = d3.select(params.root + ' .sidebar_wrapper');
+
+	  // console.log('is_expand ',params.viz.is_expand)
+
+	  if (params.viz.is_expand) {
+	    sidebar.style('display', 'none');
+	  }
+
+	  sidebar.append('div').classed('title_section', true);
+
+	  if (params.sidebar.title != null) {
+	    sidebar.select('.title_section').append('h4')
+	    // .style('margin-left', params.sidebar.title_margin_left+'px')
+	    .style('margin-left', '20px').style('margin-top', '5px').style('margin-bottom', '0px').text(params.sidebar.title);
+	  }
+
+	  sidebar.append('div').style('padding-right', '2px').classed('about_section', true);
+
+	  if (params.sidebar.about != null) {
+
+	    sidebar.select('.about_section').append('h5').classed('sidebar_text', true).style('margin-left', '7px').style('margin-top', '5px').style('margin-bottom', '2px').style('text-align', 'justify').html(params.sidebar.about);
+	  }
+
+	  sidebar.append('div').classed('icons_section', true).style('text-align', 'center');
+
+	  if (cgm.params.make_modals) {
+	    make_modals(params);
+	  }
+
+	  if (params.sidebar.icons) {
+	    make_icons(cgm, sidebar);
+	  }
+
+	  set_up_reorder(params, sidebar);
+
+	  set_up_search(sidebar, params);
+
+	  set_up_opacity_slider(sidebar);
+
+	  var possible_filter_names = _.keys(params.viz.possible_filters);
+
+	  if (possible_filter_names.indexOf('enr_score_type') > -1) {
+	    possible_filter_names.sort(function (a, b) {
+	      return a.toLowerCase().localeCompare(b.toLowerCase());
+	    });
+	  }
+
+	  cgm.slider_functions = {};
+
+	  _.each(possible_filter_names, function (inst_filter) {
+	    set_up_filters(cgm, inst_filter);
+	  });
+
+	  ini_sidebar(cgm);
+
+	  // when initializing the visualization using a view
+	  if (params.ini_view !== null) {
+
+	    set_sidebar_ini_view(params);
+
+	    params.ini_view = null;
+	  }
+
+	  make_colorbar(cgm);
+		};
+
+/***/ }),
+/* 262 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var make_slider_filter = __webpack_require__(263);
+	var make_button_filter = __webpack_require__(266);
+
+	module.exports = function set_up_filters(cgm, filter_type) {
+
+	  var params = cgm.params;
+
+	  var div_filters = d3.select(params.root + ' .sidebar_wrapper').append('div').classed('div_filters', true).style('padding-left', '10px').style('padding-right', '10px');
+
+	  if (params.viz.possible_filters[filter_type] == 'numerical') {
+	    make_slider_filter(cgm, filter_type, div_filters);
+	  } else if (params.viz.possible_filters[filter_type] == 'categorical') {
+	    make_button_filter(cgm, filter_type, div_filters);
+	  }
+		};
+
+/***/ }),
+/* 263 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var make_filter_title = __webpack_require__(214);
+	var run_filter_slider = __webpack_require__(264);
+	var get_filter_default_state = __webpack_require__(5);
+	var get_subset_views = __webpack_require__(12);
+
+	d3.slider = __webpack_require__(252);
+
+	module.exports = function make_slider_filter(cgm, filter_type, div_filters) {
+
+	  var params = cgm.params;
+	  var inst_view = {};
+
+	  var possible_filters = _.keys(params.viz.possible_filters);
+
+	  _.each(possible_filters, function (tmp_filter) {
+	    if (tmp_filter != filter_type) {
+	      var default_state = get_filter_default_state(params.viz.filter_data, tmp_filter);
+	      inst_view[tmp_filter] = default_state;
+	    }
+	  });
+
+	  var filter_title = make_filter_title(params, filter_type);
+
+	  div_filters.append('div').classed('title_' + filter_type, true).classed('sidebar_text', true).classed('slider_description', true).style('margin-top', '5px').style('margin-bottom', '3px').text(filter_title.text + filter_title.state + filter_title.suffix);
+
+	  div_filters.append('div').classed('slider_' + filter_type, true).classed('slider', true).attr('current_state', filter_title.state);
+
+	  var views = params.network_data.views;
+
+	  var available_views = get_subset_views(params, views, inst_view);
+
+	  // sort available views by filter_type value
+	  available_views = available_views.sort(function (a, b) {
+	    return b[filter_type] - a[filter_type];
+	  });
+
+	  var inst_max = available_views.length - 1;
+
+	  var ini_value = 0;
+	  // change the starting position of the slider if necessary
+	  if (params.requested_view !== null && filter_type in params.requested_view) {
+
+	    var inst_filter_value = params.requested_view[filter_type];
+
+	    if (inst_filter_value != 'all') {
+
+	      var found_value = available_views.map(function (e) {
+	        return e[filter_type];
+	      }).indexOf(inst_filter_value);
+
+	      if (found_value > 0) {
+	        ini_value = found_value;
+	      }
+	    }
+	  }
+
+	  // Filter Slider
+	  //////////////////////////////////////////////////////////////////////
+	  var slide_filter_fun = d3.slider().value(ini_value).min(0).max(inst_max).step(1).on('slide', function (evt, value) {
+	    run_filter_slider_db(cgm, filter_type, available_views, value);
+	  }).on('slideend', function (evt, value) {
+	    run_filter_slider_db(cgm, filter_type, available_views, value);
+	  });
+
+	  // save slider function in order to reset value later
+	  cgm.slider_functions[filter_type] = slide_filter_fun;
+
+	  d3.select(cgm.params.root + ' .slider_' + filter_type).call(slide_filter_fun);
+
+	  //////////////////////////////////////////////////////////////////////
+
+	  var run_filter_slider_db = _.debounce(run_filter_slider, 800);
+		};
+
+/***/ }),
+/* 264 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var update_viz_with_view = __webpack_require__(176);
+	var reset_other_filter_sliders = __webpack_require__(213);
+	var get_current_orders = __webpack_require__(265);
+	var make_requested_view = __webpack_require__(14);
+
+	module.exports = function run_filter_slider(cgm, filter_type, available_views, inst_index) {
+
+	  // only update if not running update
+	  if (d3.select(cgm.params.viz.viz_svg).classed('running_update') === false) {
+
+	    var params = cgm.params;
+
+	    // get value
+	    var inst_state = available_views[inst_index][filter_type];
+
+	    reset_other_filter_sliders(cgm, filter_type, inst_state);
+
+	    params = get_current_orders(params);
+
+	    var requested_view = {};
+	    requested_view[filter_type] = inst_state;
+
+	    requested_view = make_requested_view(params, requested_view);
+
+	    if (_.has(available_views[0], 'enr_score_type')) {
+	      var enr_state = d3.select(params.root + ' .toggle_enr_score_type').attr('current_state');
+
+	      requested_view.enr_score_type = enr_state;
+	    }
+
+	    update_viz_with_view(cgm, requested_view);
+	  }
+		};
+
+/***/ }),
+/* 265 */
+/***/ (function(module, exports) {
+
+	module.exports = function get_current_orders(params) {
+
+	  // get current orders 
+	  var other_rc;
+	  _.each(['row', 'col'], function (inst_rc) {
+
+	    if (inst_rc === 'row') {
+	      other_rc = 'col';
+	    } else {
+	      other_rc = 'row';
+	    }
+
+	    if (d3.select(params.root + ' .toggle_' + other_rc + '_order .active').empty() === false) {
+
+	      params.viz.inst_order[inst_rc] = d3.select(params.root + ' .toggle_' + other_rc + '_order').select('.active').attr('name');
+	    } else {
+
+	      // default to cluster ordering 
+	      params.viz.inst_order[inst_rc] = 'clust';
+	    }
+	  });
+
+	  return params;
+	};
+
+/***/ }),
+/* 266 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	// var update_network = require('../network/update_network');
+	var make_requested_view = __webpack_require__(14);
+
+	module.exports = function make_button_filter(config, params, filter_type, div_filters) {
+
+	  /*
+	  Enrichr specific code
+	  */
+
+	  var buttons = div_filters.append('div').classed('categorical_filter', true).classed('toggle_' + filter_type, true).classed('btn-group-vertical', true).style('width', '100%').style('margin-top', '10px').attr('current_state', 'combined_score');
+
+	  var filter_options = params.viz.filter_data[filter_type];
+
+	  var button_dict = {
+	    'combined_score': 'Combined Score',
+	    'pval': 'P-Value',
+	    'zscore': 'Z-score'
+	  };
+
+	  buttons.selectAll('button').data(filter_options).enter().append('button').attr('type', 'button').classed('btn', true).classed('btn-primary', true).classed('.filter_button', true).classed('active', function (d) {
+	    var is_active = false;
+	    if (d == 'combined_score') {
+	      is_active = true;
+	    }
+	    return is_active;
+	  }).attr('name', function (d) {
+	    return d;
+	  }).html(function (d) {
+	    return button_dict[d];
+	  });
+
+	  $(params.root + ' .categorical_filter .btn').off().click(function () {
+
+	    d3.selectAll(params.root + ' .categorical_filter .btn').classed('active', false);
+
+	    d3.select(this).classed('active', true);
+
+	    var inst_state = d3.select(this).attr('name');
+
+	    var requested_view = { 'enr_score_type': inst_state };
+
+	    make_requested_view(params, requested_view);
+
+	    d3.select(params.root + ' .toggle_enr_score_type').attr('current_state', inst_state);
+	  });
+		};
+
+/***/ }),
+/* 267 */
+/***/ (function(module, exports) {
+
+	module.exports = function set_up_search(sidebar, params) {
+
+	  var search_container = sidebar.append('div')
+	  // .classed('row',true)
+	  .classed('gene_search_container', true).style('padding-left', '10px').style('padding-right', '10px').style('margin-top', '10px');
+
+	  search_container.append('input').classed('form-control', true).classed('gene_search_box', true).classed('sidebar_text', true).attr('type', 'text').attr('placeholder', params.sidebar.row_search.placeholder).style('height', params.sidebar.row_search.box.height + 'px').style('margin-top', '10px');
+
+	  search_container.append('div').classed('gene_search_button', true).style('margin-top', '5px').attr('data-toggle', 'buttons').append('button').classed('sidebar_text', true).html('Search').attr('type', 'button').classed('btn', true).classed('btn-primary', true).classed('submit_gene_button', true).style('width', '100%').style('font-size', '14px');
+		};
+
+/***/ }),
+/* 268 */
+/***/ (function(module, exports) {
+
+	// var get_cat_title = require('../categories/get_cat_title');
+
+	module.exports = function set_up_reorder(params, sidebar) {
+
+	  var button_dict;
+	  var tmp_orders;
+	  var rc_dict = { 'row': 'Row', 'col': 'Column', 'both': '' };
+	  var is_active;
+	  var inst_reorder;
+	  // var all_cats;
+	  // var inst_order_label;
+
+	  var reorder_section = sidebar.append('div').style('padding-left', '10px').style('padding-right', '10px').classed('reorder_section', true);
+
+	  var reorder_types;
+	  if (params.sim_mat) {
+	    reorder_types = ['both'];
+	  } else {
+	    reorder_types = ['row', 'col'];
+	  }
+
+	  _.each(reorder_types, function (inst_rc) {
+
+	    button_dict = {
+	      'clust': 'Cluster',
+	      'rank': 'Rank by Sum',
+	      'rankvar': 'Rank by Variance',
+	      'ini': 'Initial Order',
+	      'alpha': 'Alphabetically'
+	    };
+
+	    var other_rc;
+	    if (inst_rc === 'row') {
+	      other_rc = 'col';
+	    } else {
+	      other_rc = 'row';
+	    }
+
+	    tmp_orders = Object.keys(params.matrix.orders);
+
+	    var possible_orders = [];
+
+	    _.each(tmp_orders, function (inst_name) {
+
+	      if (inst_name.indexOf(other_rc) > -1) {
+	        inst_name = inst_name.replace('_row', '').replace('_col', '');
+
+	        if (inst_name.indexOf('cat_') < 0) {
+	          possible_orders.push(inst_name);
+	        }
+	      }
+	    });
+
+	    // specific to Enrichr
+	    if (_.keys(params.viz.filter_data).indexOf('enr_score_type') > -1) {
+	      possible_orders = ['clust', 'rank'];
+	    }
+
+	    possible_orders = _.uniq(possible_orders);
+
+	    possible_orders = possible_orders.sort();
+
+	    var reorder_text;
+	    if (inst_rc != 'both') {
+	      reorder_text = ' Order';
+	    } else {
+	      reorder_text = 'Reorder Matrix';
+	    }
+
+	    reorder_section.append('div').classed('sidebar_button_text', true).style('clear', 'both').style('margin-top', '10px').html(rc_dict[inst_rc] + reorder_text);
+
+	    inst_reorder = reorder_section.append('div').classed('btn-group-vertical', true).style('width', '100%').classed('toggle_' + inst_rc + '_order', true).attr('role', 'group');
+
+	    inst_reorder.selectAll('.button').data(possible_orders).enter().append('button').attr('type', 'button').classed('btn', true).classed('btn-primary', true).classed('sidebar_button_text', true).classed('active', function (d) {
+	      is_active = false;
+	      if (d == params.viz.inst_order[other_rc]) {
+	        is_active = true;
+	      }
+	      return is_active;
+	    }).attr('name', function (d) {
+	      return d;
+	    }).html(function (d) {
+	      return button_dict[d];
+	    });
+	  });
+		};
+
+/***/ }),
+/* 269 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var make_filter_title = __webpack_require__(214);
+
+	module.exports = function set_sidebar_ini_view(params) {
+
+	  _.each(_.keys(params.ini_view), function (inst_filter) {
+
+	    // initialize filter slider using ini_view
+	    var inst_value = params.ini_view[inst_filter];
+
+	    var filter_type = params.viz.possible_filters[inst_filter];
+
+	    if (filter_type === 'numerical') {
+
+	      if (inst_value != 'all') {
+	        inst_value = parseInt(inst_value, 10);
+	      }
+
+	      if (params.viz.filter_data[inst_filter].indexOf(inst_value) <= -1) {
+	        inst_value = 'all';
+	      }
+
+	      var filter_title = make_filter_title(params, inst_filter);
+
+	      d3.select(params.root + ' .title_' + inst_filter).text(filter_title.text + inst_value + filter_title.suffix);
+
+	      d3.select(params.root + ' .slider_' + inst_filter).attr('current_state', inst_value);
+	    } else {
+
+	      // set up button initialization
+
+	    }
+	  });
+		};
+
+/***/ }),
+/* 270 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var file_saver = __webpack_require__(216);
+	var two_translate_zoom = __webpack_require__(115);
+	var deactivate_cropping = __webpack_require__(220);
+	var save_svg_png = __webpack_require__(271);
+
+	module.exports = function make_icons(cgm, sidebar) {
+
+	  var params = cgm.params;
+	  // var saveSvgAsPng = save_svg_png();
+	  var saveAs = file_saver();
+
+	  var row = sidebar.select('.icons_section').style('margin-top', '7px').style('margin-left', '5%');
+
+	  var width_pct = '22%';
+	  var padding_left = '0px';
+	  var padding_right = '0px';
+
+	  row.append('div').classed('clust_icon', true).style('float', 'left').style('width', width_pct).style('padding-left', padding_left).style('padding-right', padding_right).append('i').classed('fa', true).classed('fa-share-alt', true).classed('icon_buttons', true).style('font-size', '25px').on('click', function () {
+	    $(params.root + ' .share_info').modal('toggle');
+	    $('.share_url').val(window.location.href);
+	  }).classed('sidebar_tooltip', true).append('span').classed('sidebar_tooltip_text', true).html('Share').style('left', '0%');
+
+	  row.append('div').classed('clust_icon', true).style('float', 'left').style('width', width_pct).style('padding-left', padding_left).style('padding-right', padding_right).append('i').classed('fa', true).classed('fa-camera', true).classed('icon_buttons', true).style('font-size', '25px').on('click', function () {
+
+	    $(params.root + ' .picture_info').modal('toggle');
+	  }).classed('sidebar_tooltip', true).append('span').classed('sidebar_tooltip_text', true).html('Take snapshot').style('left', '-100%');
+
+	  row.append('div').classed('clust_icon', true).style('float', 'left').style('width', width_pct).style('padding-left', padding_left).style('padding-right', padding_right).append('i').classed('fa', true).classed('fa fa-cloud-download', true).classed('icon_buttons', true).style('font-size', '25px').on('click', function () {
+
+	    cgm.save_matrix();
+	  }).classed('sidebar_tooltip', true).append('span').classed('sidebar_tooltip_text', true).html('Download matrix').style('left', '-200%');
+
+	  row.append('div').classed('clust_icon', true).style('float', 'left').style('width', width_pct).style('padding-left', padding_left).style('padding-right', '-5px').append('i').classed('fa', true).classed('fa-crop', true).classed('crop_button', true).classed('icon_buttons', true).style('font-size', '25px').on('click', function () {
+
+	    // do nothing if dendro filtering has been done
+	    if (cgm.params.dendro_filter.row === false && cgm.params.dendro_filter.col === false) {
+
+	      var is_crop = d3.select(this).classed('fa-crop');
+
+	      var is_undo = d3.select(this).classed('fa-undo');
+
+	      // press crop button (can be active/incative)
+	      if (is_crop) {
+
+	        // keep list of names to return to state
+	        cgm.params.crop_filter_nodes = {};
+	        cgm.params.crop_filter_nodes.row_nodes = cgm.params.network_data.row_nodes;
+	        cgm.params.crop_filter_nodes.col_nodes = cgm.params.network_data.col_nodes;
+
+	        cgm.brush_crop_matrix();
+
+	        if (d3.select(this).classed('active_cropping') === false) {
+
+	          // set active_cropping (button turns red)
+	          d3.select(this).classed('active_cropping', true).style('color', 'red');
+	        } else {
+	          // deactivate cropping (button turns blue)
+	          d3.select(this).classed('active_cropping', false).style('color', '#337ab7');
+
+	          deactivate_cropping(cgm);
+	        }
+	      }
+
+	      // press undo button
+	      if (is_undo) {
+
+	        d3.select(params.root + ' .crop_button').style('color', '#337ab7').classed('fa-crop', true).classed('fa-undo', false);
+
+	        // cgm.filter_viz_using_names(cgm.params.crop_filter_nodes);
+	        cgm.filter_viz_using_nodes(cgm.params.crop_filter_nodes);
+
+	        // show dendro crop buttons after brush-cropping has been undone
+	        d3.select(cgm.params.root + ' .col_dendro_icons_container').style('display', 'block');
+	        d3.select(cgm.params.root + ' .row_dendro_icons_container').style('display', 'block');
+	      }
+
+	      two_translate_zoom(cgm, 0, 0, 1);
+	    }
+	  }).classed('sidebar_tooltip', true).append('span').classed('sidebar_tooltip_text', true).html('Crop matrix').style('left', '-400%');
+
+	  // save svg: example from: http://bl.ocks.org/pgiraud/8955139#profile.json
+	  ////////////////////////////////////////////////////////////////////////////
+	  function save_clust_svg() {
+
+	    d3.select(params.root + ' .expand_button').style('opacity', 0);
+
+	    var html = d3.select(params.root + " .viz_svg").attr("title", "test2").attr("version", 1.1).attr("xmlns", "http://www.w3.org/2000/svg").node().parentNode.innerHTML;
+
+	    var blob = new Blob([html], { type: "image/svg+xml" });
+
+	    saveAs(blob, "clustergrammer.svg");
+
+	    d3.select(params.root + ' .expand_button').style('opacity', 0.4);
+	  }
+
+	  d3.select(params.root + ' .download_buttons').append('p').append('a').html('Download SVG').on('click', function () {
+	    save_clust_svg();
+	  });
+
+	  var svg_id = 'svg_' + params.root.replace('#', '');
+
+	  // save as PNG
+	  /////////////////////////////////////////
+	  d3.select(params.root + ' .download_buttons').append('p').append('a').html('Download PNG').on('click', function () {
+	    d3.select(params.root + ' .expand_button').style('opacity', 0);
+	    // saveSvgAsPng(document.getElementById(svg_id), "clustergrammer.png");
+	    save_svg_png.saveSvgAsPng(document.getElementById(svg_id), "clustergrammer.png");
+	    d3.select(params.root + ' .expand_button').style('opacity', 0.4);
+	  });
+		};
+
+/***/ }),
+/* 271 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_RESULT__;(function () {
+	  var out$ = typeof exports != 'undefined' && exports || "function" != 'undefined' && {} || this;
+
+	  var doctype = '<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [<!ENTITY nbsp "&#160;">]>';
+
+	  function isElement(obj) {
+	    return obj instanceof HTMLElement || obj instanceof SVGElement;
+	  }
+
+	  function requireDomNode(el) {
+	    if (!isElement(el)) {
+	      throw new Error('an HTMLElement or SVGElement is required; got ' + el);
+	    }
+	  }
+
+	  function isExternal(url) {
+	    return url && url.lastIndexOf('http', 0) == 0 && url.lastIndexOf(window.location.host) == -1;
+	  }
+
+	  function inlineImages(el, callback) {
+	    requireDomNode(el);
+
+	    var images = el.querySelectorAll('image'),
+	        left = images.length,
+	        checkDone = function () {
+	      if (left === 0) {
+	        callback();
+	      }
+	    };
+
+	    checkDone();
+	    for (var i = 0; i < images.length; i++) {
+	      (function (image) {
+	        var href = image.getAttributeNS("http://www.w3.org/1999/xlink", "href");
+	        if (href) {
+	          if (isExternal(href.value)) {
+	            console.warn("Cannot render embedded images linking to external hosts: " + href.value);
+	            return;
+	          }
+	        }
+	        var canvas = document.createElement('canvas');
+	        var ctx = canvas.getContext('2d');
+	        var img = new Image();
+	        img.crossOrigin = "anonymous";
+	        href = href || image.getAttribute('href');
+	        if (href) {
+	          img.src = href;
+	          img.onload = function () {
+	            canvas.width = img.width;
+	            canvas.height = img.height;
+	            ctx.drawImage(img, 0, 0);
+	            image.setAttributeNS("http://www.w3.org/1999/xlink", "href", canvas.toDataURL('image/png'));
+	            left--;
+	            checkDone();
+	          };
+	          img.onerror = function () {
+	            console.log("Could not load " + href);
+	            left--;
+	            checkDone();
+	          };
+	        } else {
+	          left--;
+	          checkDone();
+	        }
+	      })(images[i]);
+	    }
+	  }
+
+	  function styles(el, options, cssLoadedCallback) {
+	    var selectorRemap = options.selectorRemap;
+	    var modifyStyle = options.modifyStyle;
+	    var css = "";
+	    // each font that has extranl link is saved into queue, and processed
+	    // asynchronously
+	    var fontsQueue = [];
+	    var sheets = document.styleSheets;
+	    for (var i = 0; i < sheets.length; i++) {
+	      try {
+	        var rules = sheets[i].cssRules;
+	      } catch (e) {
+	        console.warn("Stylesheet could not be loaded: " + sheets[i].href);
+	        continue;
+	      }
+
+	      if (rules != null) {
+	        for (var j = 0, match; j < rules.length; j++, match = null) {
+	          var rule = rules[j];
+	          if (typeof rule.style != "undefined") {
+	            var selectorText;
+
+	            try {
+	              selectorText = rule.selectorText;
+	            } catch (err) {
+	              console.warn('The following CSS rule has an invalid selector: "' + rule + '"', err);
+	            }
+
+	            try {
+	              if (selectorText) {
+	                match = el.querySelector(selectorText) || el.parentNode.querySelector(selectorText);
+	              }
+	            } catch (err) {
+	              console.warn('Invalid CSS selector "' + selectorText + '"', err);
+	            }
+
+	            if (match) {
+	              var selector = selectorRemap ? selectorRemap(rule.selectorText) : rule.selectorText;
+	              var cssText = modifyStyle ? modifyStyle(rule.style.cssText) : rule.style.cssText;
+	              css += selector + " { " + cssText + " }\n";
+	            } else if (rule.cssText.match(/^@font-face/)) {
+	              // below we are trying to find matches to external link. E.g.
+	              // @font-face {
+	              //   // ...
+	              //   src: local('Abel'), url(https://fonts.gstatic.com/s/abel/v6/UzN-iejR1VoXU2Oc-7LsbvesZW2xOQ-xsNqO47m55DA.woff2);
+	              // }
+	              //
+	              // This regex will save extrnal link into first capture group
+	              var fontUrlRegexp = /url\(["']?(.+?)["']?\)/;
+	              // TODO: This needs to be changed to support multiple url declarations per font.
+	              var fontUrlMatch = rule.cssText.match(fontUrlRegexp);
+
+	              var externalFontUrl = fontUrlMatch && fontUrlMatch[1] || '';
+	              var fontUrlIsDataURI = externalFontUrl.match(/^data:/);
+	              if (fontUrlIsDataURI) {
+	                // We should ignore data uri - they are already embedded
+	                externalFontUrl = '';
+	              }
+
+	              if (externalFontUrl) {
+	                // okay, we are lucky. We can fetch this font later
+
+	                //handle url if relative
+	                if (externalFontUrl.startsWith('../')) {
+	                  externalFontUrl = sheets[i].href + '/../' + externalFontUrl;
+	                } else if (externalFontUrl.startsWith('./')) {
+	                  externalFontUrl = sheets[i].href + '/.' + externalFontUrl;
+	                }
+
+	                fontsQueue.push({
+	                  text: rule.cssText,
+	                  // Pass url regex, so that once font is downladed, we can run `replace()` on it
+	                  fontUrlRegexp: fontUrlRegexp,
+	                  format: getFontMimeTypeFromUrl(externalFontUrl),
+	                  url: externalFontUrl
+	                });
+	              } else {
+	                // otherwise, use previous logic
+	                css += rule.cssText + '\n';
+	              }
+	            }
+	          }
+	        }
+	      }
+	    }
+
+	    // Now all css is processed, it's time to handle scheduled fonts
+	    processFontQueue(fontsQueue);
+
+	    function getFontMimeTypeFromUrl(fontUrl) {
+	      var supportedFormats = {
+	        'woff2': 'font/woff2',
+	        'woff': 'font/woff',
+	        'otf': 'application/x-font-opentype',
+	        'ttf': 'application/x-font-ttf',
+	        'eot': 'application/vnd.ms-fontobject',
+	        'sfnt': 'application/font-sfnt',
+	        'svg': 'image/svg+xml'
+	      };
+	      var extensions = Object.keys(supportedFormats);
+	      for (var i = 0; i < extensions.length; ++i) {
+	        var extension = extensions[i];
+	        // TODO: This is not bullet proof, it needs to handle edge cases...
+	        if (fontUrl.indexOf('.' + extension) > 0) {
+	          return supportedFormats[extension];
+	        }
+	      }
+
+	      // If you see this error message, you probably need to update code above.
+	      console.error('Unknown font format for ' + fontUrl + '; Fonts may not be working correctly');
+	      return 'application/octet-stream';
+	    }
+
+	    function processFontQueue(queue) {
+	      if (queue.length > 0) {
+	        // load fonts one by one until we have anything in the queue:
+	        var font = queue.pop();
+	        processNext(font);
+	      } else {
+	        // no more fonts to load.
+	        cssLoadedCallback(css);
+	      }
+
+	      function processNext(font) {
+	        // TODO: This could benefit from caching.
+	        var oReq = new XMLHttpRequest();
+	        oReq.addEventListener('load', fontLoaded);
+	        oReq.addEventListener('error', transferFailed);
+	        oReq.addEventListener('abort', transferFailed);
+	        oReq.open('GET', font.url);
+	        oReq.responseType = 'arraybuffer';
+	        oReq.send();
+
+	        function fontLoaded() {
+	          // TODO: it may be also worth to wait until fonts are fully loaded before
+	          // attempting to rasterize them. (e.g. use https://developer.mozilla.org/en-US/docs/Web/API/FontFaceSet )
+	          var fontBits = oReq.response;
+	          var fontInBase64 = arrayBufferToBase64(fontBits);
+	          updateFontStyle(font, fontInBase64);
+	        }
+
+	        function transferFailed(e) {
+	          console.warn('Failed to load font from: ' + font.url);
+	          console.warn(e);
+	          css += font.text + '\n';
+	          processFontQueue();
+	        }
+
+	        function updateFontStyle(font, fontInBase64) {
+	          var dataUrl = 'url("data:' + font.format + ';base64,' + fontInBase64 + '")';
+	          css += font.text.replace(font.fontUrlRegexp, dataUrl) + '\n';
+
+	          // schedule next font download on next tick.
+	          setTimeout(function () {
+	            processFontQueue(queue);
+	          }, 0);
+	        }
+	      }
+	    }
+
+	    function arrayBufferToBase64(buffer) {
+	      var binary = '';
+	      var bytes = new Uint8Array(buffer);
+	      var len = bytes.byteLength;
+
+	      for (var i = 0; i < len; i++) {
+	        binary += String.fromCharCode(bytes[i]);
+	      }
+
+	      return window.btoa(binary);
+	    }
+	  }
+
+	  function getDimension(el, clone, dim) {
+	    var v = el.viewBox && el.viewBox.baseVal && el.viewBox.baseVal[dim] || clone.getAttribute(dim) !== null && !clone.getAttribute(dim).match(/%$/) && parseInt(clone.getAttribute(dim)) || el.getBoundingClientRect()[dim] || parseInt(clone.style[dim]) || parseInt(window.getComputedStyle(el).getPropertyValue(dim));
+	    return typeof v === 'undefined' || v === null || isNaN(parseFloat(v)) ? 0 : v;
+	  }
+
+	  function reEncode(data) {
+	    data = encodeURIComponent(data);
+	    data = data.replace(/%([0-9A-F]{2})/g, function (match, p1) {
+	      var c = String.fromCharCode('0x' + p1);
+	      return c === '%' ? '%25' : c;
+	    });
+	    return decodeURIComponent(data);
+	  }
+
+	  out$.prepareSvg = function (el, options, cb) {
+	    requireDomNode(el);
+
+	    options = options || {};
+	    options.scale = options.scale || 1;
+	    options.responsive = options.responsive || false;
+	    var xmlns = "http://www.w3.org/2000/xmlns/";
+
+	    inlineImages(el, function () {
+	      var outer = document.createElement("div");
+	      var clone = el.cloneNode(true);
+	      var width, height;
+	      if (el.tagName == 'svg') {
+	        width = options.width || getDimension(el, clone, 'width');
+	        height = options.height || getDimension(el, clone, 'height');
+	      } else if (el.getBBox) {
+	        var box = el.getBBox();
+	        width = box.x + box.width;
+	        height = box.y + box.height;
+	        clone.setAttribute('transform', clone.getAttribute('transform').replace(/translate\(.*?\)/, ''));
+
+	        var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+	        svg.appendChild(clone);
+	        clone = svg;
+	      } else {
+	        console.error('Attempted to render non-SVG element', el);
+	        return;
+	      }
+
+	      clone.setAttribute("version", "1.1");
+	      if (!clone.getAttribute('xmlns')) {
+	        clone.setAttributeNS(xmlns, "xmlns", "http://www.w3.org/2000/svg");
+	      }
+	      if (!clone.getAttribute('xmlns:xlink')) {
+	        clone.setAttributeNS(xmlns, "xmlns:xlink", "http://www.w3.org/1999/xlink");
+	      }
+
+	      if (options.responsive) {
+	        clone.removeAttribute('width');
+	        clone.removeAttribute('height');
+	        clone.setAttribute('preserveAspectRatio', 'xMinYMin meet');
+	      } else {
+	        clone.setAttribute("width", width * options.scale);
+	        clone.setAttribute("height", height * options.scale);
+	      }
+
+	      clone.setAttribute("viewBox", [options.left || 0, options.top || 0, width, height].join(" "));
+
+	      var fos = clone.querySelectorAll('foreignObject > *');
+	      for (var i = 0; i < fos.length; i++) {
+	        if (!fos[i].getAttribute('xmlns')) {
+	          fos[i].setAttributeNS(xmlns, "xmlns", "http://www.w3.org/1999/xhtml");
+	        }
+	      }
+
+	      outer.appendChild(clone);
+
+	      // In case of custom fonts we need to fetch font first, and then inline
+	      // its url into data-uri format (encode as base64). That's why style
+	      // processing is done asynchonously. Once all inlining is finshed
+	      // cssLoadedCallback() is called.
+	      styles(el, options, cssLoadedCallback);
+
+	      function cssLoadedCallback(css) {
+	        // here all fonts are inlined, so that we can render them properly.
+	        var s = document.createElement('style');
+	        s.setAttribute('type', 'text/css');
+	        s.innerHTML = "<![CDATA[\n" + css + "\n]]>";
+	        var defs = document.createElement('defs');
+	        defs.appendChild(s);
+	        clone.insertBefore(defs, clone.firstChild);
+
+	        if (cb) {
+	          var outHtml = outer.innerHTML;
+	          outHtml = outHtml.replace(/NS\d+:href/gi, 'xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href');
+	          cb(outHtml, width, height);
+	        }
+	      }
+	    });
+	  };
+
+	  out$.svgAsDataUri = function (el, options, cb) {
+	    out$.prepareSvg(el, options, function (svg) {
+	      var uri = 'data:image/svg+xml;base64,' + window.btoa(reEncode(doctype + svg));
+	      if (cb) {
+	        cb(uri);
+	      }
+	    });
+	  };
+
+	  out$.svgAsPngUri = function (el, options, cb) {
+	    requireDomNode(el);
+
+	    options = options || {};
+	    options.encoderType = options.encoderType || 'image/png';
+	    options.encoderOptions = options.encoderOptions || 0.8;
+
+	    var convertToPng = function (src, w, h) {
+	      var canvas = document.createElement('canvas');
+	      var context = canvas.getContext('2d');
+	      canvas.width = w;
+	      canvas.height = h;
+
+	      if (options.canvg) {
+	        options.canvg(canvas, src);
+	      } else {
+	        context.drawImage(src, 0, 0);
+	      }
+
+	      if (options.backgroundColor) {
+	        context.globalCompositeOperation = 'destination-over';
+	        context.fillStyle = options.backgroundColor;
+	        context.fillRect(0, 0, canvas.width, canvas.height);
+	      }
+
+	      var png;
+	      try {
+	        png = canvas.toDataURL(options.encoderType, options.encoderOptions);
+	      } catch (e) {
+	        if (typeof SecurityError !== 'undefined' && e instanceof SecurityError || e.name == "SecurityError") {
+	          console.error("Rendered SVG images cannot be downloaded in this browser.");
+	          return;
+	        } else {
+	          throw e;
+	        }
+	      }
+	      cb(png);
+	    };
+
+	    if (options.canvg) {
+	      out$.prepareSvg(el, options, convertToPng);
+	    } else {
+	      out$.svgAsDataUri(el, options, function (uri) {
+	        var image = new Image();
+
+	        image.onload = function () {
+	          convertToPng(image, image.width, image.height);
+	        };
+
+	        image.onerror = function () {
+	          console.error('There was an error loading the data URI as an image on the following SVG\n', window.atob(uri.slice(26)), '\n', "Open the following link to see browser's diagnosis\n", uri);
+	        };
+
+	        image.src = uri;
+	      });
+	    }
+	  };
+
+	  out$.download = function (name, uri) {
+	    if (navigator.msSaveOrOpenBlob) {
+	      navigator.msSaveOrOpenBlob(uriToBlob(uri), name);
+	    } else {
+	      var saveLink = document.createElement('a');
+	      var downloadSupported = 'download' in saveLink;
+	      if (downloadSupported) {
+	        saveLink.download = name;
+	        saveLink.style.display = 'none';
+	        document.body.appendChild(saveLink);
+	        try {
+	          var blob = uriToBlob(uri);
+	          var url = URL.createObjectURL(blob);
+	          saveLink.href = url;
+	          saveLink.onclick = function () {
+	            requestAnimationFrame(function () {
+	              URL.revokeObjectURL(url);
+	            });
+	          };
+	        } catch (e) {
+	          console.warn('This browser does not support object URLs. Falling back to string URL.');
+	          saveLink.href = uri;
+	        }
+	        saveLink.click();
+	        document.body.removeChild(saveLink);
+	      } else {
+	        window.open(uri, '_temp', 'menubar=no,toolbar=no,status=no');
+	      }
+	    }
+	  };
+
+	  function uriToBlob(uri) {
+	    var byteString = window.atob(uri.split(',')[1]);
+	    var mimeString = uri.split(',')[0].split(':')[1].split(';')[0];
+	    var buffer = new ArrayBuffer(byteString.length);
+	    var intArray = new Uint8Array(buffer);
+	    for (var i = 0; i < byteString.length; i++) {
+	      intArray[i] = byteString.charCodeAt(i);
+	    }
+	    return new Blob([buffer], { type: mimeString });
+	  }
+
+	  out$.saveSvg = function (el, name, options) {
+	    requireDomNode(el);
+
+	    options = options || {};
+	    out$.svgAsDataUri(el, options, function (uri) {
+	      out$.download(name, uri);
+	    });
+	  };
+
+	  out$.saveSvgAsPng = function (el, name, options) {
+	    requireDomNode(el);
+
+	    options = options || {};
+	    out$.svgAsPngUri(el, options, function (uri) {
+	      out$.download(name, uri);
+	    });
+	  };
+
+	  // if define is defined create as an AMD module
+	  if (true) {
+	    !(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
+	      return out$;
+	    }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	  }
+		})();
+
+/***/ }),
+/* 272 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var make_modal_skeleton = __webpack_require__(273);
+
+	module.exports = function ini_modals(params) {
+
+	  // share modal
+	  ///////////////////////////////////////
+	  var share_modal = make_modal_skeleton(params, 'share_info');
+
+	  share_modal.header.append('a').attr('target', '_blank').attr('href', '/clustergrammer/');
+
+	  share_modal.header.append('h4').classed('modal-title', true).html('Share the visualization using the current URL:');
+
+	  share_modal.body.append('input').classed('bootstrap_highlight', true).classed('share_url', true);
+
+	  // picture modal
+	  ///////////////////////////////////////
+	  var screenshot_modal = make_modal_skeleton(params, 'picture_info');
+
+	  screenshot_modal.header.append('h4').classed('modal-title', true).html('Save a snapshot of the visualization');
+
+	  screenshot_modal.body.append('div').classed('download_buttons', true);
+
+	  // dendro modal
+	  ///////////////////////////////////////
+	  var dendro_modal = make_modal_skeleton(params, 'dendro_info');
+
+	  dendro_modal.header.append('h4').classed('modal-title', true).html('Cluster Information');
+
+	  dendro_modal.body.append('g').classed('cluster_info_container', true);
+
+	  dendro_modal.body.append('div').classed('dendro_text', true).append('input').classed('bootstrap_highlight', true).classed('current_names', true).style('width', '100%');
+		};
+
+/***/ }),
+/* 273 */
+/***/ (function(module, exports) {
+
+	module.exports = function make_modal_skeleton(params, modal_class) {
+
+	  var modal_skeleton = {};
+
+	  var modal = d3.select(params.root).append('div').classed('modal', true).classed('fade', true).classed(modal_class, true).attr('role', 'dialog');
+
+	  var modal_dialog = modal.append('div').classed('modal-dialog', true);
+
+	  var modal_content = modal_dialog.append('div').classed('modal-content', true);
+
+	  modal_skeleton.header = modal_content.append('div').classed('modal-header', true);
+
+	  modal_skeleton.header.append('button').attr('type', 'button').classed('close', true).attr('data-dismiss', 'modal').html('&times;');
+
+	  modal_skeleton.body = modal_content.append('div').classed('modal-body', true);
+
+	  return modal_skeleton;
+		};
+
+/***/ }),
+/* 274 */
+/***/ (function(module, exports) {
+
+	module.exports = function set_up_opacity_slider(sidebar) {
+
+	  var slider_container = sidebar.append('div').classed('opacity_slider_container', true).style('margin-top', '5px').style('padding-left', '10px').style('padding-right', '10px');
+
+	  slider_container.append('div').classed('sidebar_text', true).classed('opacity_slider_text', true).style('margin-bottom', '3px').text('Opacity Slider');
+
+	  slider_container.append('div').classed('slider', true).classed('opacity_slider', true);
+		};
+
+/***/ }),
+/* 275 */
+/***/ (function(module, exports) {
+
+	module.exports = function make_colorbar(cgm) {
+
+	  var params = cgm.params;
+
+	  d3.select(params.root + ' .sidebar_wrapper').append('div').classed('sidebar_text', true).style('padding-left', '10px').style('padding-top', '5px').text('Matrix Values');
+
+	  var colorbar_width = params.sidebar.width - 20;
+	  var colorbar_height = 13;
+	  var svg_height = 3 * colorbar_height;
+	  var svg_width = 1.2 * colorbar_width;
+	  var low_left_margin = 10;
+	  var top_margin = 33;
+	  var high_left_margin = colorbar_width + 10;
+	  var bar_margin_left = 10;
+	  var bar_margin_top = 3;
+
+	  var network_data = params.network_data;
+
+	  var max_link = _.max(network_data.links, function (d) {
+	    return d.value;
+	  }).value;
+
+	  var min_link = _.min(network_data.links, function (d) {
+	    return d.value;
+	  }).value;
+
+	  var main_svg = d3.select(params.root + ' .sidebar_wrapper').append('svg').attr('height', svg_height + 'px').attr('width', svg_width + 'px');
+
+	  //Append a defs (for definition) element to your SVG
+	  var defs = main_svg.append("defs");
+
+	  //Append a linearGradient element to the defs and give it a unique id
+	  var linearGradient = defs.append("linearGradient").attr("id", "linear-gradient");
+
+	  var special_case = 'none';
+
+	  // no negative numbers
+	  if (min_link >= 0) {
+
+	    //Set the color for the start (0%)
+	    linearGradient.append("stop").attr("offset", "0%").attr("stop-color", "white");
+
+	    //Set the color for the end (100%)
+	    linearGradient.append("stop").attr("offset", "100%").attr("stop-color", "red");
+
+	    special_case = 'all_postiive';
+
+	    // no positive numbers
+	  } else if (max_link <= 0) {
+
+	    //Set the color for the start (0%)
+	    linearGradient.append("stop").attr("offset", "0%").attr("stop-color", "blue");
+
+	    //Set the color for the end (100%)
+	    linearGradient.append("stop").attr("offset", "100%").attr("stop-color", "white");
+
+	    special_case = 'all_negative';
+	  }
+
+	  // both postive and negative numbers
+	  else {
+	      //Set the color for the start (0%)
+	      linearGradient.append("stop").attr("offset", "0%").attr("stop-color", "blue");
+
+	      //Set the color for the end (100%)
+	      linearGradient.append("stop").attr("offset", "50%").attr("stop-color", "white");
+
+	      //Set the color for the end (100%)
+	      linearGradient.append("stop").attr("offset", "100%").attr("stop-color", "red");
+	    }
+
+	  // make colorbar
+	  main_svg.append('rect').classed('background', true).attr('height', colorbar_height + 'px').attr('width', colorbar_width + 'px').attr('fill', 'url(#linear-gradient)').attr('transform', 'translate(' + bar_margin_left + ', ' + bar_margin_top + ')').attr('stroke', 'grey').attr('stroke-width', '0.25px');
+
+	  // make title
+	  ///////////////
+
+	  var max_abs_val = Math.abs(Math.round(params.matrix.max_link * 10) / 10);
+	  var font_size = 13;
+
+	  main_svg.append('text').text(function () {
+	    var inst_string;
+	    if (special_case === 'all_postiive') {
+	      inst_string = 0;
+	    } else {
+	      inst_string = '-' + max_abs_val.toLocaleString();
+	    }
+	    return inst_string;
+	  }).style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').style('font-weight', 300).style('font-size', font_size).attr('transform', 'translate(' + low_left_margin + ',' + top_margin + ')').attr('text-anchor', 'start');
+
+	  main_svg.append('text').text(max_abs_val.toLocaleString()).text(function () {
+	    var inst_string;
+	    if (special_case === 'all_negative') {
+	      inst_string = 0;
+	    } else {
+	      inst_string = max_abs_val.toLocaleString();
+	    }
+	    return inst_string;
+	  }).style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').style('font-weight', 300).style('font-size', font_size).attr('transform', 'translate(' + high_left_margin + ',' + top_margin + ')').attr('text-anchor', 'end');
+		};
 
 /***/ })
 /******/ ]);

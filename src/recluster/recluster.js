@@ -12,7 +12,7 @@ module.exports = function recluster(mat, names){
 
   // var transpose = math.transpose;
 
-  var mat = [
+  mat = [
    [20, 20, 80],
    [22, 22, 90],
    [250, 255, 253],
@@ -72,13 +72,19 @@ module.exports = function recluster(mat, names){
   var start_distance = tree.dist;
 
   // var cutoff_fractions = [];
-  var cutoff_vals = []
+  var cutoff_vals = [];
+  var ini_lock_groups = [];
   for (var i = 0; i <= 10; i++) {
-    // cutoff_fractions.push(i/10)
     cutoff_vals.push(start_distance * i/10);
+    ini_lock_groups.push(false);
   }
 
-  var cutoff_dist = 12;
+  // console.log(cutoff_vals)
+  // console.log(ini_lock_groups)
+
+  // make cutoff_dist an array
+  var cutoff_dist = 350;
+  console.log('cutoff_dist', cutoff_dist)
 
   _.each(['left','right'], function(side){
     get_leaf_key(tree[side], side, start_level, start_distance)

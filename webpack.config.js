@@ -2,6 +2,7 @@
 
 var DEBUG = process.argv.indexOf('-p') === -1;
 var webpack = require('webpack')
+var BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 
 module.exports = [
   {
@@ -31,7 +32,16 @@ module.exports = [
                 }
               }
           ]
-      }
+      },
+    plugins: [
+      new BrowserSyncPlugin({
+        // browse to http://localhost:3000/ during development,
+        // ./public directory is being served
+        host: 'localhost',
+        port: 3000,
+        server: { baseDir: [''] }
+      })
+    ],
   },
   // {
   //     entry: './src/main.js',
