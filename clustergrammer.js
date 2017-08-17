@@ -18785,7 +18785,6 @@ var Clustergrammer =
 
 	  // var mat = this.params.network_data.mat;
 
-	  // console.log('try transposing')
 	  // mat = transpose(mat);
 
 	  function euclidean_distance(v1, v2) {
@@ -18843,13 +18842,10 @@ var Clustergrammer =
 	  }
 
 	  // make cutoff_dist an array
-	  var cutoff_dist = 350;
-
-	  console.log('cutoff_dist', cutoff_dist);
+	  var cutoff_dist = 10;
 
 	  _.each(['left', 'right'], function (side) {
 
-	    console.log('>>> side: ', side);
 	    get_leaves(tree[side], side, start_level, start_distance, false, [false]);
 	  });
 
@@ -18864,13 +18860,6 @@ var Clustergrammer =
 	      lock_group_2[0] = false;
 	    }
 
-	    console.log('*********************');
-	    console.log('side', side);
-	    console.log(inst_dist);
-	    console.log(lock_group);
-	    console.log(lock_group_2);
-	    console.log('********************\n\n\n');
-
 	    // if there are more branches then there is a distance
 	    if (_.has(limb, 'dist')) {
 
@@ -18883,11 +18872,6 @@ var Clustergrammer =
 	    } else {
 
 	      inst_key = limb.key;
-
-	      console.log('------ Leaf -------');
-	      console.log(lock_group);
-	      console.log(lock_group_2);
-	      console.log('--------------------\n\n\n');
 
 	      // increment group when group is not locked
 	      if (lock_group_2[0] === false) {
