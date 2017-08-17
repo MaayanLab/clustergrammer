@@ -135,7 +135,7 @@ function Clustergrammer(args) {
 
       console.log(inst_row.clust)
 
-      // pass clust property
+      // pass clust property to config view N_row_sum: 'all' [hacky]
     }
 
     return order_info;

@@ -128,7 +128,7 @@ module.exports = function recluster(mat, names){
   // sort on key value
   order_array.sort(function(a,b){
     return a.key - b.key;
-  })
+  });
 
   // generate ordered names
   var inst_name;
