@@ -163,7 +163,7 @@ var Clustergrammer =
 
 	    console.log('--- groups ');
 	    _.each(order_info.info, function (inst_info) {
-	      console.log(inst_info.group);
+	      console.log(inst_info.groups);
 	    });
 	  }
 
@@ -18784,9 +18784,6 @@ var Clustergrammer =
 
 	  console.log(dist_fun);
 
-	  // make cutoff_dist an array
-	  var cutoff_dist = 50;
-
 	  mat = [[20, 20, 80], [22, 22, 90], [250, 255, 253], [100, 54, 255]];
 
 	  // var mat = this.params.network_data.mat;
@@ -18797,7 +18794,7 @@ var Clustergrammer =
 	  // var clusters = clusterfck.hcluster(mat, dist_fun['cosine']);
 
 	  var inst_order = 0;
-	  var inst_group = 1;
+	  var inst_group = [1];
 	  var order_array = [];
 	  var order_list = [];
 	  var inst_leaf;
@@ -18818,6 +18815,8 @@ var Clustergrammer =
 	    ini_locks.push(false);
 	  }
 
+	  cutoff_vals[0] = 350;
+
 	  _.each(['left', 'right'], function (side) {
 
 	    get_leaves(tree[side], side, ini_level, ini_distance, ini_locks);
@@ -18825,8 +18824,10 @@ var Clustergrammer =
 
 	  function get_leaves(limb, side, inst_level, inst_dist, locks) {
 
-	    // set lock state (lock if distance is under resolvable distance) above cutoff
-	    if (inst_dist < cutoff_dist) {
+	    // set lock state
+	    // lock if distance is under resolvable distance
+
+	    if (inst_dist < cutoff_vals[0]) {
 	      locks[0] = true;
 	    } else {
 	      locks[0] = false;
@@ -18847,21 +18848,27 @@ var Clustergrammer =
 
 	      // increment group when group is not locked
 	      if (locks[0] === false) {
-	        inst_group = inst_group + 1;
+	        inst_group[0] = inst_group[0] + 1;
 	      }
-
 	      // correct for incrementing too early
 	      // if first node distance is above cutoff (resolvable) do not increment
-	      if (inst_group > inst_order + 1) {
-	        inst_group = 1;
+	      if (inst_group[0] > inst_order + 1) {
+	        inst_group[0] = 1;
 	      }
+
+	      // console.log(inst_group)
 
 	      inst_leaf = {};
 	      inst_leaf.level = inst_level;
 	      inst_leaf.order = inst_order;
-	      inst_leaf.group = inst_group;
+
+	      // need to make copy of inst_group not reference
+	      inst_leaf.groups = $.extend(true, [], inst_group);
+
 	      inst_leaf.key = inst_key;
 	      inst_leaf.dist = inst_dist;
+
+	      console.log(inst_leaf.groups);
 
 	      order_array.push(inst_leaf);
 	      order_list.push(inst_key);
