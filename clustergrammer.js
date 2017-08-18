@@ -18870,7 +18870,12 @@ var Clustergrammer =
 
 	  console.log('tree height', ini_distance);
 
-	  manual_cutoff = 0.8592;
+	  // manual_cutoff = 1.1; // one group
+	  // manual_cutoff = 1.07794; // one group
+	  // manual_cutoff = 1.07793; // three groups
+	  // manual_cutoff = 1.04; // four groups
+	  manual_cutoff = 1.03; // five groups
+
 	  max_level = 3;
 	  console.log('manual_cutoff', manual_cutoff);
 
@@ -18882,11 +18887,9 @@ var Clustergrammer =
 	    // cutoff_vals.push(ini_distance * i/10);
 	    cutoff_vals.push(manual_cutoff);
 	    threshold_status.push('above');
-	    group.push(1);
+	    group.push(0);
 	    cutoff_indexes.push(i);
 	  }
-
-	  console.log(threshold_status);
 
 	  _.each(['left', 'right'], function (side) {
 
@@ -18910,23 +18913,19 @@ var Clustergrammer =
 	    // lock if distance is under resolvable distance
 	    _.each(cutoff_indexes, function (index) {
 	      if (inst_dist <= cutoff_vals[index]) {
-	        // locks[index] = true;
-	      } else {
-	        ////////////////////////////////////////////////
-	        // being above cutoff unlocks group numbers
-	        // so that they can increase
-	        ////////////////////////////////////////////////
-	        if (index == 0 && inst_level <= max_level) {
-	          console.log('unlocking: above cutoff');
+
+	        // increment group if going from above to below threshold
+	        if (threshold_status[index] === 'above') {
+	          group[index] = group[index] + 1;
 	        }
-	        // locks[index] = false;
+
+	        // locks[index] = true;
+	        threshold_status[index] = 'below';
+	      } else {
+
+	        threshold_status[index] = 'above';
 	      }
 	    });
-
-	    // if (locks[0] === false){
-	    //   console.log('after checking')
-	    //   console.log(locks)
-	    // }
 
 	    // if there are more branches then there is a distance
 	    if (_.has(limb, 'dist')) {
