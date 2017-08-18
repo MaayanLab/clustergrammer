@@ -18874,10 +18874,13 @@ var Clustergrammer =
 	  // manual_cutoff = 1.07794; // one group
 	  // manual_cutoff = 1.07793; // three groups
 	  // manual_cutoff = 1.04; // four groups
-	  manual_cutoff = 1.03; // five groups
+	  // manual_cutoff = 1.03; // five groups
+	  manual_cutoff = 0.7; // 37 groups
+	  // manual_cutoff = 0.07; // 37 groups
+	  // manual_cutoff = 0.01; // 38 groups
 
 	  max_level = 3;
-	  console.log('manual_cutoff', manual_cutoff);
+	  // console.log('manual_cutoff', manual_cutoff)
 
 	  // var cutoff_fractions = [];
 	  var cutoff_vals = [];
@@ -18940,7 +18943,12 @@ var Clustergrammer =
 
 	      inst_key = limb.key;
 
+	      // increment group if leaf is above threshold
 	      _.each(cutoff_indexes, function (index) {
+
+	        if (threshold_status[index] === 'above') {
+	          group[index] = group[index] + 1;
+	        }
 
 	        // // increment group when group is not locked
 	        // if (index==0 && inst_level <= max_level){
@@ -18963,7 +18971,6 @@ var Clustergrammer =
 	        // if (group[index] > inst_order + 1){
 	        //   group[index] = 1;
 	        // }
-
 	      });
 
 	      inst_leaf = {};
@@ -18971,6 +18978,7 @@ var Clustergrammer =
 	      inst_leaf.order = inst_order;
 
 	      // need to make copy of group not reference
+	      // inst_leaf.group = group;
 	      inst_leaf.group = $.extend(true, [], group);
 
 	      inst_leaf.key = inst_key;
