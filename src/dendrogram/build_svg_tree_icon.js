@@ -6,7 +6,6 @@ module.exports = function build_svg_tree_icon(cgm, inst_rc){
 
   var slider_length = 40;
 
-
   var slider_group = d3.select(cgm.params.root +' .viz_svg')
       .append('g')
       .classed( inst_rc + '_tree_group', true);
@@ -36,8 +35,7 @@ module.exports = function build_svg_tree_icon(cgm, inst_rc){
     .attr("y1", 0)
     .attr("y2", function(){
       return slider_length-2;
-    })
-    .on('click', click_dendro_slider);
+    });
 
   var offset_triangle = 0; // -slider_length/40;
   var tree_width = 20;
@@ -65,40 +63,41 @@ module.exports = function build_svg_tree_icon(cgm, inst_rc){
       return output_string;
     })
     .style('opacity', 0.35)
-    .on('click', click_dendro_slider);
+    .on('mouseover', function(){
+      d3.selectAll(cgm.params.root + ' .tree_leaf_circle').style('opacity', high_opacity);
+    })
+    .on('mouseout', function(){
+      d3.selectAll(cgm.params.root + ' .tree_leaf_circle').style('opacity', default_opacity);
+    });
 
 
   var default_opacity = 0.35;
   var high_opacity = 0.6;
   var circle_radius = 15;
+  var small_leaf_offset = 13;
   slider_group
+    .selectAll()
+    .data([
+      [-3,small_leaf_offset,10],
+      [tree_width/2,0, 17],
+      [23,small_leaf_offset,10]])
+    .enter()
     .append('circle')
-    .classed(inst_rc+'_group_circle', true)
-    .attr('r', circle_radius)
-    .attr('transform', function(){
-      return 'translate('+tree_width/2+', '+0+')';
+    .classed('tree_leaf_circle', true)
+    .attr('r', function(d){
+      return d[2];
+    })
+    .attr('transform', function(d){
+      return 'translate('+d[0]+', '+d[1]+')';
     })
     .style('fill', 'blue')
     .style('opacity', default_opacity)
     .on('mouseover', function(){
-      d3.select(this).style('opacity', high_opacity);
+      d3.selectAll(cgm.params.root + ' .tree_leaf_circle').style('opacity', high_opacity);
     })
     .on('mouseout', function(){
-      d3.select(this).style('opacity', default_opacity);
+      d3.selectAll(cgm.params.root + ' .tree_leaf_circle').style('opacity', default_opacity);
     });
 
 
-  function click_dendro_slider(){
-
-    var clicked_line_position = d3.mouse(this);
-
-    var rel_pos = d3.round(clicked_line_position[1], -1);
-
-    d3.select(cgm.params.root+ ' .'+inst_rc+'_group_circle')
-      .attr('transform', 'translate(0, '+ rel_pos + ')');
-
-    var slider_value = 10 - rel_pos/10;
-
-
-  }
 };
