@@ -18876,28 +18876,30 @@ var Clustergrammer =
 
 	  // var cutoff_fractions = [];
 	  var cutoff_vals = [];
-	  var ini_locks = [];
 	  var cutoff_indexes = [];
+	  var threshold_status = [];
 	  for (var i = 0; i <= 10; i++) {
 	    // cutoff_vals.push(ini_distance * i/10);
 	    cutoff_vals.push(manual_cutoff);
-	    ini_locks.push(false);
+	    threshold_status.push('above');
 	    group.push(1);
 	    cutoff_indexes.push(i);
 	  }
 
+	  console.log(threshold_status);
+
 	  _.each(['left', 'right'], function (side) {
 
-	    get_leaves(tree[side], side, ini_level, ini_distance, ini_locks);
+	    get_leaves(tree[side], side, ini_level, ini_distance, threshold_status);
 	  });
 
-	  function get_leaves(limb, side, inst_level, inst_dist, locks) {
+	  function get_leaves(limb, side, inst_level, inst_dist, threshold_status) {
 
-	    if (locks[0] === false && inst_level <= max_level) {
-	      console.log('false before checking\n*********************************************');
-	      console.log('dist: ' + String(inst_dist));
-	      console.log(locks);
-	    }
+	    // if (th[0] === false && inst_level <= max_level){
+	    //   console.log('false before checking\n*********************************************')
+	    //   console.log('dist: ' + String(inst_dist))
+	    //   console.log(locks)
+	    // }
 
 	    // ////////////////////////////////////////////////////////////////
 	    // if (inst_level <= max_level ){
@@ -18908,7 +18910,7 @@ var Clustergrammer =
 	    // lock if distance is under resolvable distance
 	    _.each(cutoff_indexes, function (index) {
 	      if (inst_dist <= cutoff_vals[index]) {
-	        locks[index] = true;
+	        // locks[index] = true;
 	      } else {
 	        ////////////////////////////////////////////////
 	        // being above cutoff unlocks group numbers
@@ -18917,14 +18919,14 @@ var Clustergrammer =
 	        if (index == 0 && inst_level <= max_level) {
 	          console.log('unlocking: above cutoff');
 	        }
-	        locks[index] = false;
+	        // locks[index] = false;
 	      }
 	    });
 
-	    if (locks[0] === false) {
-	      console.log('after checking');
-	      console.log(locks);
-	    }
+	    // if (locks[0] === false){
+	    //   console.log('after checking')
+	    //   console.log(locks)
+	    // }
 
 	    // if there are more branches then there is a distance
 	    if (_.has(limb, 'dist')) {
@@ -18933,7 +18935,7 @@ var Clustergrammer =
 	      inst_level = inst_level + 1;
 
 	      _.each(['left', 'right'], function (side2) {
-	        get_leaves(limb[side2], side2, inst_level, inst_dist, locks);
+	        get_leaves(limb[side2], side2, inst_level, inst_dist, threshold_status);
 	      });
 	    } else {
 
@@ -18946,22 +18948,23 @@ var Clustergrammer =
 	        //   console.log('check lock: ' + String(locks[index]));
 	        // }
 
-	        if (locks[0] === false) {
-	          console.log('********************************* at leaf ');
-	          console.log(locks);
-	        }
+	        // if (locks[0] === false){
+	        //   console.log('********************************* at leaf ')
+	        //   console.log(locks)
+	        // }
 
-	        if (locks[index] === false) {
-	          group[index] = group[index] + 1;
-	          if (index == 0 && inst_level <= max_level) {
-	            console.log('=> incrementing group\n\n');
-	          }
-	        }
+	        // if (locks[index] === false){
+	        //   group[index] = group[index] + 1;
+	        //   if (index==0 && inst_level <= max_level){
+	        //     console.log('=> incrementing group\n\n')
+	        //   }
+	        // }
 	        // correct for incrementing too early
 	        // if first node distance is above cutoff (resolvable) do not increment
-	        if (group[index] > inst_order + 1) {
-	          group[index] = 1;
-	        }
+	        // if (group[index] > inst_order + 1){
+	        //   group[index] = 1;
+	        // }
+
 	      });
 
 	      inst_leaf = {};
