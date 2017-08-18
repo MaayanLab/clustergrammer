@@ -6,9 +6,6 @@ module.exports = function update_viz_with_view(cgm, requested_view) {
 
   disable_sidebar(cgm.params);
 
-  console.log('requested_view')
-  console.log(requested_view)
-
   // make new_network_data by filtering the original network data
   var new_network_data = make_network_using_view(cgm.config, cgm.params,
     requested_view);

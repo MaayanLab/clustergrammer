@@ -162,9 +162,9 @@ var Clustergrammer =
 	    var names = this.params.network_data.row_nodes_names;
 	    var order_info = recluster(mat, names);
 
-	    _.each(order_info.info, function (inst_info) {
-	      console.log(inst_info.group);
-	    });
+	    // _.each(order_info.info, function(inst_info){
+	    //   console.log(inst_info.group);
+	    // })
 
 	    // overwrite ordering with new ordering
 	    // var rows = this.config.network_data.row_nodes;
@@ -174,14 +174,8 @@ var Clustergrammer =
 	      inst_row = rows[index];
 	      inst_order = order_info.info[index];
 
-	      // console.log(inst_row.name, inst_order.name)
-	      // console.log(inst_row.name, inst_order.name)
-	      // console.log('\n\n')
-
 	      inst_row.clust = inst_order.order;
 	      inst_row.group = inst_order.group;
-
-	      // console.log(inst_row.clust)
 
 	      // pass clust property to config view N_row_sum: 'all' [hacky]
 	    }
@@ -16024,9 +16018,6 @@ var Clustergrammer =
 
 	  disable_sidebar(cgm.params);
 
-	  console.log('requested_view');
-	  console.log(requested_view);
-
 	  // make new_network_data by filtering the original network data
 	  var new_network_data = make_network_using_view(cgm.config, cgm.params, requested_view);
 
@@ -18807,44 +18798,17 @@ var Clustergrammer =
 
 	  // var transpose = math.transpose;
 
-	  //////////////////////////////////////////////////////////////
-	  //////////////////////////////////////////////////////////////
-	  //////////////////////////////////////////////////////////////
-	  //////////////////////////////////////////////////////////////
-	  //////////////////////////////////////////////////////////////
-	  /*
-	  The incrementing issue has something to do with encountering a leaf
-	  that has a parent branch that is above the cutoff. Otherwise there is no
-	  incrementing going on.
-	  */
-	  //////////////////////////////////////////////////////////////
-	  //////////////////////////////////////////////////////////////
-	  //////////////////////////////////////////////////////////////
-	  //////////////////////////////////////////////////////////////
-	  //////////////////////////////////////////////////////////////
-	  //////////////////////////////////////////////////////////////
-
-
-	  // mat = [
-	  //  [20, 20, 80],
-	  //  [22, 22, 90],
-	  //  [250, 255, 253],
-	  //  [100, 54, 255]
-	  // ];
-
 	  // var mat = this.params.network_data.mat;
 	  // mat = transpose(mat);
 
-	  // var clusters = clusterfck.hcluster(mat, dist_fun.euclidean);
-	  var clusters = clusterfck.hcluster(mat, dist_fun['cosine']);
+	  var dist_type = 'cosine';
+	  // var dist_type = 'euclidean';
+	  var clusters = clusterfck.hcluster(mat, dist_fun[dist_type]);
 
-	  dm = clusters.hc.dists;
+	  var dm = clusters.hc.dists;
 
-	  console.log('------- max -------');
-	  max_distance_in_dm = 0;
+	  var max_distance_in_dm = 0;
 	  _.each(dm, function (row) {
-	    // console.log(row)
-	    new_row = [];
 	    _.each(row, function (inst_val) {
 	      if (isFinite(inst_val)) {
 	        if (inst_val > max_distance_in_dm) {
@@ -18853,8 +18817,6 @@ var Clustergrammer =
 	      }
 	    });
 	  });
-
-	  console.log(max_distance_in_dm);
 
 	  var inst_order = 0;
 	  var group = [];
@@ -18866,23 +18828,7 @@ var Clustergrammer =
 	  // start hierarchy
 	  var tree = clusters.tree;
 	  var ini_level = 1;
-	  var ini_distance = tree.dist;
-
-	  console.log(tree);
-
-	  console.log('tree height', ini_distance);
-
-	  // manual_cutoff = 1.1; // one group
-	  // manual_cutoff = 1.07794; // one group
-	  // manual_cutoff = 1.07793; // three groups
-	  // manual_cutoff = 1.04; // four groups
-	  // manual_cutoff = 1.03; // five groups
-	  // manual_cutoff = 0.7; // 37 groups
-	  // manual_cutoff = 0.07; // 37 groups
-	  // manual_cutoff = 0.01; // 38 groups
-
-	  max_level = 3;
-	  // console.log('manual_cutoff', manual_cutoff)
+	  var tree_height = tree.dist;
 
 	  // var cutoff_fractions = [];
 	  var cutoff_vals = [];
@@ -18898,22 +18844,10 @@ var Clustergrammer =
 
 	  _.each(['left', 'right'], function (side) {
 
-	    get_leaves(tree[side], side, ini_level, tree.dist, threshold_status);
+	    get_leaves(tree[side], side, ini_level, tree_height, threshold_status);
 	  });
 
 	  function get_leaves(limb, side, inst_level, inst_dist, threshold_status) {
-
-	    // if (th[0] === false && inst_level <= max_level){
-	    //   console.log('false before checking\n*********************************************')
-	    //   console.log('dist: ' + String(inst_dist))
-	    //   console.log(locks)
-	    // }
-
-	    // ////////////////////////////////////////////////////////////////
-	    // if (inst_level <= max_level ){
-	    //   console.log( '\n\n numberslevel: ' + String(inst_level) + ': ' + String(inst_dist))
-	    // }
-
 
 	    // lock if distance is under resolvable distance
 	    _.each(cutoff_indexes, function (index) {
@@ -18951,28 +18885,6 @@ var Clustergrammer =
 	        if (threshold_status[index] === 'above') {
 	          group[index] = group[index] + 1;
 	        }
-
-	        // // increment group when group is not locked
-	        // if (index==0 && inst_level <= max_level){
-	        //   console.log('check lock: ' + String(locks[index]));
-	        // }
-
-	        // if (locks[0] === false){
-	        //   console.log('********************************* at leaf ')
-	        //   console.log(locks)
-	        // }
-
-	        // if (locks[index] === false){
-	        //   group[index] = group[index] + 1;
-	        //   if (index==0 && inst_level <= max_level){
-	        //     console.log('=> incrementing group\n\n')
-	        //   }
-	        // }
-	        // correct for incrementing too early
-	        // if first node distance is above cutoff (resolvable) do not increment
-	        // if (group[index] > inst_order + 1){
-	        //   group[index] = 1;
-	        // }
 	      });
 
 	      inst_leaf = {};
