@@ -118,7 +118,7 @@ function Clustergrammer(args) {
     var order_info = recluster(mat, names)
 
     _.each(order_info.info, function(inst_info){
-      console.log(inst_info.group[0]);
+      console.log(inst_info.group);
     })
 
     // overwrite ordering with new ordering
@@ -128,21 +128,22 @@ function Clustergrammer(args) {
 
 
 
-    // for (var index=0; index <rows.length; index++){
-    //   inst_row = rows[index]
-    //   inst_order = order_info.info[index]
+    for (var index=0; index <rows.length; index++){
+      inst_row = rows[index]
+      inst_order = order_info.info[index]
 
-    //   // console.log(inst_row.name, inst_order.name)
-    //   // console.log(inst_row.name, inst_order.name)
-    //   // console.log('\n\n')
+      // console.log(inst_row.name, inst_order.name)
+      // console.log(inst_row.name, inst_order.name)
+      // console.log('\n\n')
 
-    //   inst_row.clust = inst_order.order;
-    //   inst_row.group = inst_order.group;
+      inst_row.clust = inst_order.order;
+      inst_row.group = inst_order.group;
 
-    //   // console.log(inst_row.clust)
+      // console.log(inst_row.clust)
 
-    //   // pass clust property to config view N_row_sum: 'all' [hacky]
-    // }
+      // pass clust property to config view N_row_sum: 'all' [hacky]
+
+    }
 
     return order_info;
 

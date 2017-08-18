@@ -47,19 +47,21 @@ module.exports = function recluster(mat, names){
   dm = clusters.hc.dists
 
   console.log('------- max -------')
-  max_val = 0;
+  max_distance_in_dm = 0;
   _.each(dm, function(row){
     // console.log(row)
     new_row = []
     _.each(row, function(inst_val){
       if (isFinite(inst_val)){
-        if (inst_val > max_val){
-          max_val = inst_val;
+        if (inst_val > max_distance_in_dm){
+          max_distance_in_dm = inst_val;
         }
       }
     })
 
   })
+
+  console.log(max_distance_in_dm)
 
 
   var inst_order = 0;
@@ -83,7 +85,7 @@ module.exports = function recluster(mat, names){
   // manual_cutoff = 1.07793; // three groups
   // manual_cutoff = 1.04; // four groups
   // manual_cutoff = 1.03; // five groups
-  manual_cutoff = 0.7; // 37 groups
+  // manual_cutoff = 0.7; // 37 groups
   // manual_cutoff = 0.07; // 37 groups
   // manual_cutoff = 0.01; // 38 groups
 
@@ -95,8 +97,8 @@ module.exports = function recluster(mat, names){
   var cutoff_indexes = [];
   var threshold_status = [];
   for (var i = 0; i <= 10; i++) {
-    // cutoff_vals.push(ini_distance * i/10);
-    cutoff_vals.push(manual_cutoff);
+    cutoff_vals.push(max_distance_in_dm * i/10);
+    // cutoff_vals.push(manual_cutoff);
     threshold_status.push('above');
     group.push(0);
     cutoff_indexes.push(i);
@@ -105,7 +107,7 @@ module.exports = function recluster(mat, names){
 
   _.each(['left','right'], function(side){
 
-    get_leaves(tree[side], side, ini_level, ini_distance, threshold_status);
+    get_leaves(tree[side], side, ini_level, tree.dist, threshold_status);
 
   });
 
@@ -209,10 +211,10 @@ module.exports = function recluster(mat, names){
     }
   }
 
-  // // sort on key value
-  // order_array.sort(function(a,b){
-  //   return a.key - b.key;
-  // });
+  // sort on key value
+  order_array.sort(function(a,b){
+    return a.key - b.key;
+  });
 
   // generate ordered names
   var inst_name;
