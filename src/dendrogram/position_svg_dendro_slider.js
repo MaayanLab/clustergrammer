@@ -46,7 +46,8 @@ module.exports = function position_svg_dendro_slider(cgm, inst_rc){
   d3.select(cgm.params.root + ' .' + inst_rc + '_tree_group')
     .attr('transform', function() {
       var inst_translation;
-      tmp_top = tmp_top + 100;
+      tmp_top = tmp_top + 125;
+      tmp_left = tmp_left -5;
       inst_translation = 'translate(' + tmp_left + ',' + tmp_top + ')';
 
       return inst_translation;
