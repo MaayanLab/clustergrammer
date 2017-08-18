@@ -9,9 +9,14 @@ module.exports = function build_svg_tree_icon(cgm, inst_rc){
   var slider_group = d3.select(cgm.params.root +' .viz_svg')
       .append('g')
       .classed( inst_rc + '_tree_group', true)
+      .append('g')
+      .classed('dendro_tree_container', true)
       .on('click', function(){
         console.log('clicking tree')
       });
+
+  d3.select(cgm.params.root + ' .dendro_tree_container')
+    .attr('transform', 'scale(1.2)')
 
   position_svg_dendro_slider(cgm, inst_rc);
 

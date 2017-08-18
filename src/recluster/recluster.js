@@ -16,8 +16,8 @@ module.exports = function recluster(mat, names){
   // var mat = this.params.network_data.mat;
   // mat = transpose(mat);
 
-  var dist_type = 'cosine';
-  // var dist_type = 'euclidean';
+  // var dist_type = 'cosine';
+  var dist_type = 'euclidean';
   var clusters = clusterfck.hcluster(mat, dist_fun[dist_type]);
 
   var dm = clusters.hc.dists;

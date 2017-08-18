@@ -14715,7 +14715,7 @@ var Clustergrammer =
 	  // reposition tree icon
 	  d3.select(cgm.params.root + ' .' + inst_rc + '_tree_group').attr('transform', function () {
 	    var inst_translation;
-	    tmp_top = tmp_top + 125;
+	    tmp_top = tmp_top + 127;
 	    tmp_left = tmp_left - 2;
 	    inst_translation = 'translate(' + tmp_left + ',' + tmp_top + ')';
 
@@ -18814,8 +18814,8 @@ var Clustergrammer =
 	  // var mat = this.params.network_data.mat;
 	  // mat = transpose(mat);
 
-	  var dist_type = 'cosine';
-	  // var dist_type = 'euclidean';
+	  // var dist_type = 'cosine';
+	  var dist_type = 'euclidean';
 	  var clusters = clusterfck.hcluster(mat, dist_fun[dist_type]);
 
 	  var dm = clusters.hc.dists;
@@ -27608,9 +27608,11 @@ var Clustergrammer =
 
 	  var slider_length = 40;
 
-	  var slider_group = d3.select(cgm.params.root + ' .viz_svg').append('g').classed(inst_rc + '_tree_group', true).on('click', function () {
+	  var slider_group = d3.select(cgm.params.root + ' .viz_svg').append('g').classed(inst_rc + '_tree_group', true).append('g').classed('dendro_tree_container', true).on('click', function () {
 	    console.log('clicking tree');
 	  });
+
+	  d3.select(cgm.params.root + ' .dendro_tree_container').attr('transform', 'scale(1.2)');
 
 	  position_svg_dendro_slider(cgm, inst_rc);
 
