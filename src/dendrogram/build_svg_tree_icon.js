@@ -40,6 +40,7 @@ module.exports = function build_svg_tree_icon(cgm, inst_rc){
   var offset_triangle = 0; // -slider_length/40;
   var tree_width = 20;
 
+  // main branch
   slider_group
     .append('path')
     .style('fill', 'black')
@@ -70,17 +71,49 @@ module.exports = function build_svg_tree_icon(cgm, inst_rc){
       d3.selectAll(cgm.params.root + ' .tree_leaf_circle').style('opacity', default_opacity);
     });
 
+  // left branch
+  var branch_height = 30;
+  slider_group
+    .append('path')
+    .style('fill', 'black')
+    .attr('transform', 'translate('+offset_triangle+', 0)')
+    .attr('d', function() {
+
+      // up triangle
+      var start_x = 3.4;
+      var start_y = 27;
+
+      var mid_x = -5;//left_x + slider_length/10;
+      var mid_y = branch_height/2.5;
+
+      var final_x = 5.05;//left_x + slider_length/5;
+      var final_y = branch_height/1.5;
+
+      var output_string = 'M' + start_x + ',' + start_y + ', L' +
+      mid_x + ', ' + mid_y + ', L'
+      + final_x + ','+ final_y +' Z';
+
+      return output_string;
+    })
+    .style('opacity', 0.35)
+    .on('mouseover', function(){
+      d3.selectAll(cgm.params.root + ' .tree_leaf_circle').style('opacity', high_opacity);
+    })
+    .on('mouseout', function(){
+      d3.selectAll(cgm.params.root + ' .tree_leaf_circle').style('opacity', default_opacity);
+    });
 
   var default_opacity = 0.35;
   var high_opacity = 0.6;
   var circle_radius = 15;
   var small_leaf_offset = 13;
+  var small_leaf_radius = 9;
   slider_group
     .selectAll()
     .data([
-      [-3,small_leaf_offset,10],
+      [-3,small_leaf_offset,small_leaf_radius],
       [tree_width/2,0, 17],
-      [23,small_leaf_offset,10]])
+      [23,small_leaf_offset,small_leaf_radius]])
     .enter()
     .append('circle')
     .classed('tree_leaf_circle', true)
