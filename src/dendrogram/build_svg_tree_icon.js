@@ -16,7 +16,7 @@ module.exports = function build_svg_tree_icon(cgm, inst_rc){
       });
 
   d3.select(cgm.params.root + ' .dendro_tree_container')
-    .attr('transform', 'scale(1.2)')
+    .attr('transform', 'scale(0.9)')
 
   position_svg_dendro_slider(cgm, inst_rc);
 
