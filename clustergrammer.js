@@ -27500,28 +27500,44 @@ var Clustergrammer =
 
 	  var slider_length = 40;
 	  var params = cgm.params;
+	  var default_opacity = 0.35;
+	  var high_opacity = 0.6;
 
 	  // d3-tooltip
 	  var tree_menu_tip = d3_tip_custom().attr('class', function () {
 	    var root_tip_selector = params.viz.root_tips.replace('.', '');
 	    var class_string = root_tip_selector + '_tree_menu_tip d3-tip';
 	    return class_string;
-	  }).direction('se').style('display', 'none').offset([-10, -5]).html(function (d) {
-	    return 'something';
+	  }).direction('sw').style('display', 'none').offset([-10, -5]).html(function (d) {
+	    return 'Clustering Menu';
 	  });
 
-	  var tree_icon_outer_group = d3.select(params.root + ' .viz_svg').append('g').classed(inst_rc + '_tree_group', true);
+	  var tree_icon_outer_group = d3.select(params.root + ' .viz_svg').append('g').classed(inst_rc + '_tree_group', true).on('mouseover', function () {
 
-	  var tree_icon_group = tree_icon_outer_group.append('g').classed('dendro_tree_container', true).on('mouseover', function () {
-	    console.log('mouseover');
-	    tree_menu_tip.show();
-	    // show tooltip
-	    d3.selectAll(params.viz.root_tips + '_tree_menu_tip').style('opacity', 1).style('display', 'block');
+	    // only if no menu is showing
+	    if (d3.select(params.root + ' .tree_menu').empty()) {
+
+	      d3.selectAll(params.viz.root_tips + '_tree_menu_tip').style('opacity', 1).style('display', 'block');
+	      tree_menu_tip.show();
+	    }
+
+	    d3.selectAll(params.root + ' .tree_leaf_circle').style('opacity', high_opacity);
 	  }).on('mouseout', function () {
 	    tree_menu_tip.hide();
-	  }).on('click', function () {
+	    d3.selectAll(params.root + ' .tree_leaf_circle').style('opacity', default_opacity);
+	  }).call(tree_menu_tip);
+
+	  // .on('mouseover', function(){
+	  //   d3.selectAll(params.root + ' .tree_leaf_circle').style('opacity', high_opacity);
+	  // })
+	  // .on('mouseout', function(){
+	  //   d3.selectAll(params.root + ' .tree_leaf_circle').style('opacity', default_opacity);
+	  // });
+
+	  var tree_icon_group = tree_icon_outer_group.append('g').classed('dendro_tree_container', true).on('click', function () {
 
 	    if (d3.select(params.root + ' .tree_menu').empty()) {
+
 	      var tree_menu = d3.select(params.root + ' .viz_svg').append('g').attr('transform', function () {
 	        var shift = {};
 	        shift.x = params.viz.clust.margin.left / 2;
@@ -27538,10 +27554,12 @@ var Clustergrammer =
 	      }).attr('fill', 'white').attr('opacity', 0.95).attr('stroke', '#A3A3A3').attr('stroke-width', '3px');
 
 	      tree_menu.append('text').classed('tree_menu_title', true).attr('transform', 'translate(20,30)').attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('font-size', '18px').attr('font-weight', 800).attr('cursor', 'default').text('Clustering Menu');
+
+	      tree_menu_tip.hide();
 	    } else {
 	      d3.select(params.root + ' .tree_menu').remove();
 	    }
-	  }).call(tree_menu_tip);
+	  });
 
 	  d3.select(params.root + ' .dendro_tree_container').attr('transform', 'scale(0.9)');
 
@@ -27549,14 +27567,29 @@ var Clustergrammer =
 
 	  var rect_height = slider_length + 20;
 	  var rect_width = 30;
-	  tree_icon_group.append('rect').classed(inst_rc + '_slider_background', true).attr('height', rect_height + 'px').attr('width', rect_width + 'px').attr('fill', params.viz.background_color).attr('transform', function () {
-	    var translate_string = 'translate(-10, -5)';
-	    return translate_string;
-	  }).style('opacity', 0);
 
-	  tree_icon_group.append("line").style('stroke-width', slider_length / 7 + 'px').style('stroke', 'black').style('stroke-linecap', 'round').style('opacity', 0.0).attr("y1", 0).attr("y2", function () {
-	    return slider_length - 2;
-	  });
+	  // tree_icon_group
+	  //   .append('rect')
+	  //   .classed(inst_rc+'_slider_background', true)
+	  //   .attr('height', rect_height+'px')
+	  //   .attr('width', rect_width+'px')
+	  //   .attr('fill', params.viz.background_color)
+	  //   .attr('transform', function(){
+	  //     var translate_string = 'translate(-10, -5)';
+	  //     return translate_string;
+	  //   })
+	  //   .style('opacity', 0);
+
+	  // tree_icon_group
+	  //   .append("line")
+	  //   .style('stroke-width', slider_length/7+'px')
+	  //   .style('stroke', 'black')
+	  //   .style('stroke-linecap', 'round')
+	  //   .style('opacity', 0.0)
+	  //   .attr("y1", 0)
+	  //   .attr("y2", function(){
+	  //     return slider_length-2;
+	  //   });
 
 	  var offset_triangle = 0; // -slider_length/40;
 	  var tree_width = 20;
@@ -27577,11 +27610,13 @@ var Clustergrammer =
 	    var output_string = 'M' + start_x + ',' + start_y + ', L' + mid_x + ', ' + mid_y + ', L' + final_x + ',' + final_y + ' Z';
 
 	    return output_string;
-	  }).style('opacity', 0.35).on('mouseover', function () {
-	    d3.selectAll(params.root + ' .tree_leaf_circle').style('opacity', high_opacity);
-	  }).on('mouseout', function () {
-	    d3.selectAll(params.root + ' .tree_leaf_circle').style('opacity', default_opacity);
-	  });
+	  }).style('opacity', 0.35);
+	  // .on('mouseover', function(){
+	  //   d3.selectAll(params.root + ' .tree_leaf_circle').style('opacity', high_opacity);
+	  // })
+	  // .on('mouseout', function(){
+	  //   d3.selectAll(params.root + ' .tree_leaf_circle').style('opacity', default_opacity);
+	  // });
 
 	  // left branch
 	  var branch_height = 30;
@@ -27600,11 +27635,14 @@ var Clustergrammer =
 	    var output_string = 'M' + start_x + ',' + start_y + ', L' + mid_x + ', ' + mid_y + ', L' + final_x + ',' + final_y + ' Z';
 
 	    return output_string;
-	  }).style('opacity', 0.35).on('mouseover', function () {
-	    d3.selectAll(params.root + ' .tree_leaf_circle').style('opacity', high_opacity);
-	  }).on('mouseout', function () {
-	    d3.selectAll(params.root + ' .tree_leaf_circle').style('opacity', default_opacity);
-	  });
+	  }).style('opacity', 0.35);
+	  // .on('mouseover', function(){
+	  //   d3.selectAll(params.root + ' .tree_leaf_circle').style('opacity', high_opacity);
+	  // })
+	  // .on('mouseout', function(){
+	  //   d3.selectAll(params.root + ' .tree_leaf_circle').style('opacity', default_opacity);
+	  // });
+
 
 	  // right branch
 	  tree_icon_group.append('path').style('fill', 'black').attr('transform', 'translate(' + offset_triangle + ', 0)').attr('d', function () {
@@ -27622,14 +27660,14 @@ var Clustergrammer =
 	    var output_string = 'M' + start_x + ',' + start_y + ', L' + mid_x + ', ' + mid_y + ', L' + final_x + ',' + final_y + ' Z';
 
 	    return output_string;
-	  }).style('opacity', 0.35).on('mouseover', function () {
-	    d3.selectAll(params.root + ' .tree_leaf_circle').style('opacity', high_opacity);
-	  }).on('mouseout', function () {
-	    d3.selectAll(params.root + ' .tree_leaf_circle').style('opacity', default_opacity);
-	  });
+	  }).style('opacity', 0.35);
+	  // .on('mouseover', function(){
+	  //   d3.selectAll(params.root + ' .tree_leaf_circle').style('opacity', high_opacity);
+	  // })
+	  // .on('mouseout', function(){
+	  //   d3.selectAll(params.root + ' .tree_leaf_circle').style('opacity', default_opacity);
+	  // });
 
-	  var default_opacity = 0.35;
-	  var high_opacity = 0.6;
 	  var small_leaf_offset = 13;
 	  var small_leaf_radius = 9.5;
 
@@ -27637,11 +27675,17 @@ var Clustergrammer =
 	    return d[2];
 	  }).attr('transform', function (d) {
 	    return 'translate(' + d[0] + ', ' + d[1] + ')';
-	  }).style('fill', 'blue').style('opacity', default_opacity).on('mouseover', function () {
-	    d3.selectAll(params.root + ' .tree_leaf_circle').style('opacity', high_opacity);
-	  }).on('mouseout', function () {
-	    d3.selectAll(params.root + ' .tree_leaf_circle').style('opacity', default_opacity);
-	  });
+	  }).style('fill', 'blue').style('opacity', default_opacity);
+	  // .on('mouseover', function(){
+	  //   d3.selectAll(params.root + ' .tree_leaf_circle').style('opacity', high_opacity);
+	  // })
+	  // .on('mouseout', function(){
+	  //   d3.selectAll(params.root + ' .tree_leaf_circle').style('opacity', default_opacity);
+	  // });
+
+	  tree_icon_group.append('rect').attr('width', 50).attr('height', 62).attr('transform', function (d) {
+	    return 'translate(' + -15 + ', ' + -19 + ')';
+	  }).attr('opacity', 0.0);
 		};
 
 /***/ })
