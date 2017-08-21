@@ -27536,19 +27536,26 @@ var Clustergrammer =
 	        return 'translate(' + shift.x + ', ' + shift.y + ')';
 	      }).classed('tree_menu', true);
 
+	      tree_menu.attr('opacity', 0.0).transition().attr('opacity', 1.0);
+
 	      tree_menu.append('rect').classed('tree_menu_background', true).attr('width', function () {
 	        var inst_width = params.viz.clust.dim.width + params.viz.clust.margin.left / 1.5;
 	        return inst_width;
 	      }).attr('height', function () {
 	        var inst_height = 500;
 	        return inst_height;
-	      }).attr('fill', 'white').attr('opacity', 0.95).attr('stroke', '#A3A3A3').attr('stroke-width', '3px');
+	      }).attr('fill', 'white').attr('stroke', '#A3A3A3').attr('stroke-width', '3px').attr('opacity', 0.95);
 
 	      tree_menu.append('text').classed('tree_menu_title', true).attr('transform', 'translate(20,30)').attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('font-size', '18px').attr('font-weight', 800).attr('cursor', 'default').text('Clustering Menu');
 
 	      tree_menu_tip.hide();
 	    } else {
-	      d3.select(params.root + ' .tree_menu').remove();
+
+	      d3.select(params.root + ' .tree_menu').transition(700).attr('opacity', 0);
+
+	      setTimeout(function () {
+	        d3.select(params.root + ' .tree_menu').remove();
+	      }, 700);
 	    }
 	  });
 
@@ -27621,7 +27628,7 @@ var Clustergrammer =
 	    return d[2];
 	  }).attr('transform', function (d) {
 	    return 'translate(' + d[0] + ', ' + d[1] + ')';
-	  }).style('fill', 'blue').style('opacity', default_opacity);
+	  }).attr('fill', 'blue').attr('opacity', default_opacity).attr('');
 
 	  tree_icon_group.append('rect').attr('width', 50).attr('height', 62).attr('transform', function () {
 	    return 'translate(' + -15 + ', ' + -19 + ')';

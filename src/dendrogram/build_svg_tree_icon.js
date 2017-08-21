@@ -67,6 +67,11 @@ var tree_icon_group =  tree_icon_outer_group
             .classed('tree_menu', true);
 
           tree_menu
+            .attr('opacity', 0.0)
+            .transition()
+            .attr('opacity', 1.0);
+
+          tree_menu
             .append('rect')
             .classed('tree_menu_background', true)
             .attr('width', function(){
@@ -78,9 +83,9 @@ var tree_icon_group =  tree_icon_outer_group
               return inst_height;
             })
             .attr('fill', 'white')
-            .attr('opacity', 0.95)
             .attr('stroke', '#A3A3A3')
-            .attr('stroke-width', '3px');
+            .attr('stroke-width', '3px')
+            .attr('opacity', 0.95);
 
           tree_menu
             .append('text')
@@ -95,7 +100,16 @@ var tree_icon_group =  tree_icon_outer_group
           tree_menu_tip.hide();
 
         } else {
-          d3.select(params.root+' .tree_menu').remove();
+
+          d3.select(params.root+' .tree_menu')
+            .transition(700)
+            .attr('opacity', 0);
+
+          setTimeout(function(){
+            d3.select(params.root+' .tree_menu')
+              .remove();
+          }, 700);
+
         }
       });
 
@@ -201,8 +215,9 @@ var tree_icon_group =  tree_icon_outer_group
     .attr('transform', function(d){
       return 'translate('+d[0]+', '+d[1]+')';
     })
-    .style('fill', 'blue')
-    .style('opacity', default_opacity);
+    .attr('fill', 'blue')
+    .attr('opacity', default_opacity)
+    .attr('');
 
   tree_icon_group
     .append('rect')
