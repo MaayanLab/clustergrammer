@@ -5,15 +5,41 @@ module.exports = function build_svg_tree_icon(cgm, inst_rc){
   inst_rc = 'row';
 
   var slider_length = 40;
+  var clicks = 0;
 
   var slider_group = d3.select(cgm.params.root +' .viz_svg')
       .append('g')
       .classed( inst_rc + '_tree_group', true)
       .append('g')
-      .classed('dendro_tree_container', true)
-      .on('click', function(){
-        // console.log('clicking tree')
+      .classed('dendro_tree_container', true);
+
+  // distinguish double from single clicks
+  /////////////////////////////////////////
+  jQuery.fn.single_double_click = function(single_click_callback, double_click_callback, timeout) {
+      return this.each(function() {
+          var clicks = 0,
+              self = this;
+          jQuery(this).click(function(event) {
+              clicks++;
+              if (clicks == 1) {
+                  setTimeout(function() {
+                      if (clicks == 1) {
+                          single_click_callback.call(self, event);
+                      } else {
+                          double_click_callback.call(self, event);
+                      }
+                      clicks = 0;
+                  }, timeout || 300);
+              }
+          });
       });
+  }
+
+  $(cgm.params.root + ' .viz_svg').single_double_click(function() {
+      console.log('single click')
+  }, function() {
+      console.log('double click')
+  });
 
   d3.select(cgm.params.root + ' .dendro_tree_container')
     .attr('transform', 'scale(0.9)');
