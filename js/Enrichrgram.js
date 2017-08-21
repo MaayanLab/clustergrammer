@@ -219,12 +219,12 @@ function Enrichrgram(inst_cgm){
     enr_menu
       .append('rect')
       .classed('enr_menu_background', true)
-      .style('width', 475)
-      .style('height', 500)
-      .style('opacity', 0.95)
-      .style('fill', 'white')
-      .style('stroke', '#A3A3A3')
-      .style('stroke-width', '3px');
+      .attr('width', 475)
+      .attr('height', 500)
+      .attr('opacity', 0.95)
+      .attr('fill', 'white')
+      .attr('stroke', '#A3A3A3')
+      .attr('stroke-width', '3px');
 
     enr_menu
       .append('text')

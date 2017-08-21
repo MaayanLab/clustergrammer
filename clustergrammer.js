@@ -27508,18 +27508,18 @@ var Clustergrammer =
 	    if (d3.select(params.root + ' .tree_menu').empty()) {
 	      var tree_menu = d3.select(params.root + ' .viz_svg').append('g').attr('transform', function () {
 	        var shift = {};
-	        shift.x = params.viz.clust.margin.left + offset;
-	        shift.y = params.viz.clust.margin.top + offset;
+	        shift.x = params.viz.clust.margin.left / 2;
+	        shift.y = params.viz.clust.margin.top / 2;
 	        return 'translate(' + shift.x + ', ' + shift.y + ')';
 	      }).classed('tree_menu', true);
 
 	      tree_menu.append('rect').classed('tree_menu_background', true).attr('width', function () {
-	        var inst_width = params.viz.clust.dim.width - 2 * offset;
+	        var inst_width = params.viz.clust.dim.width + params.viz.clust.margin.left / 1.5;
 	        return inst_width;
 	      }).attr('height', function () {
 	        var inst_height = 500;
 	        return inst_height;
-	      }).attr('fill', 'white').attr('opacity', 0.95);
+	      }).attr('fill', 'white').attr('opacity', 0.95).attr('stroke', '#A3A3A3').attr('stroke-width', '3px');
 	    } else {
 	      d3.select(params.root + ' .tree_menu').remove();
 	    }
