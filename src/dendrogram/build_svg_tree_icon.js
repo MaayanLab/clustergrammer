@@ -1,5 +1,6 @@
 var position_svg_dendro_slider = require('./position_svg_dendro_slider');
 var d3_tip_custom = require('../tooltip/d3_tip_custom');
+var make_tree_menu = require('./make_tree_menu');
 
 module.exports = function build_svg_tree_icon(cgm, inst_rc){
 
@@ -49,69 +50,30 @@ module.exports = function build_svg_tree_icon(cgm, inst_rc){
       })
       .call(tree_menu_tip);
 
-var tree_icon_group =  tree_icon_outer_group
-      .append('g')
-      .classed('dendro_tree_container', true)
-      .on('click', function(){
+  var tree_icon_group =  tree_icon_outer_group
+    .append('g')
+    .classed('dendro_tree_container', true)
+    .on('click', function(){
 
-        if (d3.select(params.root+' .tree_menu').empty()){
+      if (d3.select(params.root+' .tree_menu').empty()){
 
-          var tree_menu = d3.select(params.root+' .viz_svg')
-            .append('g')
-            .attr('transform', function(){
-              var shift = {};
-              shift.x = params.viz.clust.margin.left/2;
-              shift.y = params.viz.clust.margin.top/2;
-              return 'translate(' + shift.x + ', ' + shift.y + ')';
-            })
-            .classed('tree_menu', true);
+        make_tree_menu(cgm);
 
-          tree_menu
-            .attr('opacity', 0.0)
-            .transition()
-            .attr('opacity', 1.0);
+        tree_menu_tip.hide();
 
-          tree_menu
-            .append('rect')
-            .classed('tree_menu_background', true)
-            .attr('width', function(){
-              var inst_width = params.viz.clust.dim.width + params.viz.clust.margin.left/1.5;
-              return inst_width;
-            })
-            .attr('height', function(){
-              var inst_height = 500;
-              return inst_height;
-            })
-            .attr('fill', 'white')
-            .attr('stroke', '#A3A3A3')
-            .attr('stroke-width', '3px')
-            .attr('opacity', 0.95);
+      } else {
 
-          tree_menu
-            .append('text')
-            .classed('tree_menu_title', true)
-            .attr('transform', 'translate(20,30)')
-            .attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif')
-            .attr('font-size','18px')
-            .attr('font-weight', 800)
-            .attr('cursor', 'default')
-            .text('Clustering Menu');
+        d3.select(params.root+' .tree_menu')
+          .transition(700)
+          .attr('opacity', 0);
 
-          tree_menu_tip.hide();
-
-        } else {
-
+        setTimeout(function(){
           d3.select(params.root+' .tree_menu')
-            .transition(700)
-            .attr('opacity', 0);
+            .remove();
+        }, 700);
 
-          setTimeout(function(){
-            d3.select(params.root+' .tree_menu')
-              .remove();
-          }, 700);
-
-        }
-      });
+      }
+    });
 
   d3.select(params.root + ' .dendro_tree_container')
     .attr('transform', 'scale(0.9)');

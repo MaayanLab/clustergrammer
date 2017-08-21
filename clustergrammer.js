@@ -27491,6 +27491,7 @@ var Clustergrammer =
 
 	var position_svg_dendro_slider = __webpack_require__(149);
 	var d3_tip_custom = __webpack_require__(48);
+	var make_tree_menu = __webpack_require__(278);
 
 	module.exports = function build_svg_tree_icon(cgm, inst_rc) {
 
@@ -27529,24 +27530,7 @@ var Clustergrammer =
 
 	    if (d3.select(params.root + ' .tree_menu').empty()) {
 
-	      var tree_menu = d3.select(params.root + ' .viz_svg').append('g').attr('transform', function () {
-	        var shift = {};
-	        shift.x = params.viz.clust.margin.left / 2;
-	        shift.y = params.viz.clust.margin.top / 2;
-	        return 'translate(' + shift.x + ', ' + shift.y + ')';
-	      }).classed('tree_menu', true);
-
-	      tree_menu.attr('opacity', 0.0).transition().attr('opacity', 1.0);
-
-	      tree_menu.append('rect').classed('tree_menu_background', true).attr('width', function () {
-	        var inst_width = params.viz.clust.dim.width + params.viz.clust.margin.left / 1.5;
-	        return inst_width;
-	      }).attr('height', function () {
-	        var inst_height = 500;
-	        return inst_height;
-	      }).attr('fill', 'white').attr('stroke', '#A3A3A3').attr('stroke-width', '3px').attr('opacity', 0.95);
-
-	      tree_menu.append('text').classed('tree_menu_title', true).attr('transform', 'translate(20,30)').attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('font-size', '18px').attr('font-weight', 800).attr('cursor', 'default').text('Clustering Menu');
+	      make_tree_menu(cgm);
 
 	      tree_menu_tip.hide();
 	    } else {
@@ -27634,6 +27618,57 @@ var Clustergrammer =
 	    return 'translate(' + -15 + ', ' + -19 + ')';
 	  }).attr('opacity', 0.0);
 		};
+
+/***/ }),
+/* 278 */
+/***/ (function(module, exports) {
+
+	module.exports = function make_tree_menu(cgm) {
+	  var params = cgm.params;
+
+	  // make tree menu (state is in cgm, remade each time)
+	  /////////////////////////////////////////////////////
+	  var tree_menu = d3.select(params.root + ' .viz_svg').append('g').attr('transform', function () {
+	    var shift = {};
+	    shift.x = params.viz.clust.margin.left / 2;
+	    shift.y = params.viz.clust.margin.top / 2;
+	    return 'translate(' + shift.x + ', ' + shift.y + ')';
+	  }).classed('tree_menu', true);
+
+	  tree_menu.attr('opacity', 0.0).transition().attr('opacity', 1.0);
+
+	  tree_menu.append('rect').classed('tree_menu_background', true).attr('width', function () {
+	    var inst_width = params.viz.clust.dim.width + params.viz.clust.margin.left / 1.5;
+	    return inst_width;
+	  }).attr('height', function () {
+	    var inst_height = 500;
+	    return inst_height;
+	  }).attr('fill', 'white').attr('stroke', '#A3A3A3').attr('stroke-width', '3px').attr('opacity', 0.95);
+
+	  // tree_menu
+	  tree_menu.append('text').classed('tree_menu_title', true).attr('transform', 'translate(20,30)').attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('font-size', '18px').attr('font-weight', 800).attr('cursor', 'default').text('Clustering Menu');
+
+	  // menu options
+	  var possible_distances = ['Cosine', 'Euclidean', 'Correlation', 'Jaccard'];
+
+	  var vertical_space = 30;
+
+	  var distance_section = tree_menu.append('g').attr('transform', 'translate(20,60)').classed('distance_section', true);
+
+	  var distance_groups = distance_section.selectAll('g').data(possible_distances).enter().append('g').attr('transform', function (d, i) {
+	    var vert = i * vertical_space;
+	    var transform_string = 'translate(0,' + vert + ')';
+	    return transform_string;
+	  });
+
+	  distance_groups.append('circle').attr('cx', 10).attr('cy', -6).attr('r', 7).style('stroke', '#A3A3A3').style('stroke-width', '2px').style('fill', 'white');
+
+	  distance_groups.append('text').attr('transform', 'translate(25,0)').style('font-size', '16px').attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').style('cursor', 'default').text(function (d) {
+	    return d.replace(/_/g, ' ');
+	  });
+
+	  ///////////////////////////////////////////////////////
+	};
 
 /***/ })
 /******/ ]);
