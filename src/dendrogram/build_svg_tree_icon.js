@@ -20,7 +20,7 @@ module.exports = function build_svg_tree_icon(cgm, inst_rc){
     .direction('sw')
     .style('display', 'none')
     .offset([-10,-5])
-    .html(function(d){
+    .html(function(){
       return 'Clustering Menu';
     });
 
@@ -47,15 +47,7 @@ module.exports = function build_svg_tree_icon(cgm, inst_rc){
         d3.selectAll(params.root + ' .tree_leaf_circle')
         .style('opacity', default_opacity);
       })
-      .call(tree_menu_tip)
-
-
-    // .on('mouseover', function(){
-    //   d3.selectAll(params.root + ' .tree_leaf_circle').style('opacity', high_opacity);
-    // })
-    // .on('mouseout', function(){
-    //   d3.selectAll(params.root + ' .tree_leaf_circle').style('opacity', default_opacity);
-    // });
+      .call(tree_menu_tip);
 
 var tree_icon_group =  tree_icon_outer_group
       .append('g')
@@ -112,33 +104,7 @@ var tree_icon_group =  tree_icon_outer_group
 
   position_svg_dendro_slider(cgm, inst_rc);
 
-  var rect_height = slider_length + 20;
-  var rect_width = 30;
-
-  // tree_icon_group
-  //   .append('rect')
-  //   .classed(inst_rc+'_slider_background', true)
-  //   .attr('height', rect_height+'px')
-  //   .attr('width', rect_width+'px')
-  //   .attr('fill', params.viz.background_color)
-  //   .attr('transform', function(){
-  //     var translate_string = 'translate(-10, -5)';
-  //     return translate_string;
-  //   })
-  //   .style('opacity', 0);
-
-  // tree_icon_group
-  //   .append("line")
-  //   .style('stroke-width', slider_length/7+'px')
-  //   .style('stroke', 'black')
-  //   .style('stroke-linecap', 'round')
-  //   .style('opacity', 0.0)
-  //   .attr("y1", 0)
-  //   .attr("y2", function(){
-  //     return slider_length-2;
-  //   });
-
-  var offset_triangle = 0; // -slider_length/40;
+  var offset_triangle = 0;
   var tree_width = 20;
 
   // main branch
@@ -164,13 +130,7 @@ var tree_icon_group =  tree_icon_outer_group
 
       return output_string;
     })
-    .style('opacity', 0.35)
-    // .on('mouseover', function(){
-    //   d3.selectAll(params.root + ' .tree_leaf_circle').style('opacity', high_opacity);
-    // })
-    // .on('mouseout', function(){
-    //   d3.selectAll(params.root + ' .tree_leaf_circle').style('opacity', default_opacity);
-    // });
+    .style('opacity', 0.35);
 
   // left branch
   var branch_height = 30;
@@ -196,14 +156,7 @@ var tree_icon_group =  tree_icon_outer_group
 
       return output_string;
     })
-    .style('opacity', 0.35)
-    // .on('mouseover', function(){
-    //   d3.selectAll(params.root + ' .tree_leaf_circle').style('opacity', high_opacity);
-    // })
-    // .on('mouseout', function(){
-    //   d3.selectAll(params.root + ' .tree_leaf_circle').style('opacity', default_opacity);
-    // });
-
+    .style('opacity', 0.35);
 
   // right branch
   tree_icon_group
@@ -228,13 +181,7 @@ var tree_icon_group =  tree_icon_outer_group
 
       return output_string;
     })
-    .style('opacity', 0.35)
-    // .on('mouseover', function(){
-    //   d3.selectAll(params.root + ' .tree_leaf_circle').style('opacity', high_opacity);
-    // })
-    // .on('mouseout', function(){
-    //   d3.selectAll(params.root + ' .tree_leaf_circle').style('opacity', default_opacity);
-    // });
+    .style('opacity', 0.35);
 
   var small_leaf_offset = 13;
   var small_leaf_radius = 9.5;
@@ -255,23 +202,15 @@ var tree_icon_group =  tree_icon_outer_group
       return 'translate('+d[0]+', '+d[1]+')';
     })
     .style('fill', 'blue')
-    .style('opacity', default_opacity)
-    // .on('mouseover', function(){
-    //   d3.selectAll(params.root + ' .tree_leaf_circle').style('opacity', high_opacity);
-    // })
-    // .on('mouseout', function(){
-    //   d3.selectAll(params.root + ' .tree_leaf_circle').style('opacity', default_opacity);
-    // });
+    .style('opacity', default_opacity);
 
   tree_icon_group
     .append('rect')
     .attr('width', 50)
     .attr('height', 62)
-    .attr('transform', function(d){
+    .attr('transform', function(){
       return 'translate('+ -15 +', '+ -19 +')';
     })
-    .attr('opacity', 0.0)
-
-
+    .attr('opacity', 0.0);
 
 };

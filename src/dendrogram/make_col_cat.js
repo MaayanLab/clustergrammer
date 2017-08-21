@@ -90,8 +90,6 @@ module.exports = function make_col_cat(cgm) {
             })
             .on('click', function(d){
 
-              console.log('clicking on category bar')
-
               if (d3.select(this).classed('cat_strings')){
 
                 var found_names = get_cat_names(params, d, this, 'col');

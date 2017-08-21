@@ -14839,8 +14839,6 @@ var Clustergrammer =
 	          return 'translate(0,' + inst_shift + ')';
 	        }).on('click', function (d) {
 
-	          console.log('clicking on category bar');
-
 	          if (d3.select(this).classed('cat_strings')) {
 
 	            var found_names = get_cat_names(params, d, this, 'col');
@@ -27508,7 +27506,7 @@ var Clustergrammer =
 	    var root_tip_selector = params.viz.root_tips.replace('.', '');
 	    var class_string = root_tip_selector + '_tree_menu_tip d3-tip';
 	    return class_string;
-	  }).direction('sw').style('display', 'none').offset([-10, -5]).html(function (d) {
+	  }).direction('sw').style('display', 'none').offset([-10, -5]).html(function () {
 	    return 'Clustering Menu';
 	  });
 
@@ -27526,13 +27524,6 @@ var Clustergrammer =
 	    tree_menu_tip.hide();
 	    d3.selectAll(params.root + ' .tree_leaf_circle').style('opacity', default_opacity);
 	  }).call(tree_menu_tip);
-
-	  // .on('mouseover', function(){
-	  //   d3.selectAll(params.root + ' .tree_leaf_circle').style('opacity', high_opacity);
-	  // })
-	  // .on('mouseout', function(){
-	  //   d3.selectAll(params.root + ' .tree_leaf_circle').style('opacity', default_opacity);
-	  // });
 
 	  var tree_icon_group = tree_icon_outer_group.append('g').classed('dendro_tree_container', true).on('click', function () {
 
@@ -27565,33 +27556,7 @@ var Clustergrammer =
 
 	  position_svg_dendro_slider(cgm, inst_rc);
 
-	  var rect_height = slider_length + 20;
-	  var rect_width = 30;
-
-	  // tree_icon_group
-	  //   .append('rect')
-	  //   .classed(inst_rc+'_slider_background', true)
-	  //   .attr('height', rect_height+'px')
-	  //   .attr('width', rect_width+'px')
-	  //   .attr('fill', params.viz.background_color)
-	  //   .attr('transform', function(){
-	  //     var translate_string = 'translate(-10, -5)';
-	  //     return translate_string;
-	  //   })
-	  //   .style('opacity', 0);
-
-	  // tree_icon_group
-	  //   .append("line")
-	  //   .style('stroke-width', slider_length/7+'px')
-	  //   .style('stroke', 'black')
-	  //   .style('stroke-linecap', 'round')
-	  //   .style('opacity', 0.0)
-	  //   .attr("y1", 0)
-	  //   .attr("y2", function(){
-	  //     return slider_length-2;
-	  //   });
-
-	  var offset_triangle = 0; // -slider_length/40;
+	  var offset_triangle = 0;
 	  var tree_width = 20;
 
 	  // main branch
@@ -27611,12 +27576,6 @@ var Clustergrammer =
 
 	    return output_string;
 	  }).style('opacity', 0.35);
-	  // .on('mouseover', function(){
-	  //   d3.selectAll(params.root + ' .tree_leaf_circle').style('opacity', high_opacity);
-	  // })
-	  // .on('mouseout', function(){
-	  //   d3.selectAll(params.root + ' .tree_leaf_circle').style('opacity', default_opacity);
-	  // });
 
 	  // left branch
 	  var branch_height = 30;
@@ -27636,13 +27595,6 @@ var Clustergrammer =
 
 	    return output_string;
 	  }).style('opacity', 0.35);
-	  // .on('mouseover', function(){
-	  //   d3.selectAll(params.root + ' .tree_leaf_circle').style('opacity', high_opacity);
-	  // })
-	  // .on('mouseout', function(){
-	  //   d3.selectAll(params.root + ' .tree_leaf_circle').style('opacity', default_opacity);
-	  // });
-
 
 	  // right branch
 	  tree_icon_group.append('path').style('fill', 'black').attr('transform', 'translate(' + offset_triangle + ', 0)').attr('d', function () {
@@ -27661,12 +27613,6 @@ var Clustergrammer =
 
 	    return output_string;
 	  }).style('opacity', 0.35);
-	  // .on('mouseover', function(){
-	  //   d3.selectAll(params.root + ' .tree_leaf_circle').style('opacity', high_opacity);
-	  // })
-	  // .on('mouseout', function(){
-	  //   d3.selectAll(params.root + ' .tree_leaf_circle').style('opacity', default_opacity);
-	  // });
 
 	  var small_leaf_offset = 13;
 	  var small_leaf_radius = 9.5;
@@ -27676,14 +27622,8 @@ var Clustergrammer =
 	  }).attr('transform', function (d) {
 	    return 'translate(' + d[0] + ', ' + d[1] + ')';
 	  }).style('fill', 'blue').style('opacity', default_opacity);
-	  // .on('mouseover', function(){
-	  //   d3.selectAll(params.root + ' .tree_leaf_circle').style('opacity', high_opacity);
-	  // })
-	  // .on('mouseout', function(){
-	  //   d3.selectAll(params.root + ' .tree_leaf_circle').style('opacity', default_opacity);
-	  // });
 
-	  tree_icon_group.append('rect').attr('width', 50).attr('height', 62).attr('transform', function (d) {
+	  tree_icon_group.append('rect').attr('width', 50).attr('height', 62).attr('transform', function () {
 	    return 'translate(' + -15 + ', ' + -19 + ')';
 	  }).attr('opacity', 0.0);
 		};
