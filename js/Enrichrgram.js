@@ -230,9 +230,9 @@ function Enrichrgram(inst_cgm){
       .append('text')
       .attr('transform', 'translate(20,30)')
       .attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif')
-      .style('font-size','18px')
-      .style('font-weight', 800)
-      .style('cursor', 'default')
+      .attr('font-size','18px')
+      .attr('font-weight', 800)
+      .attr('cursor', 'default')
       .text('Choose Enrichr Library');
 
     // clear results button

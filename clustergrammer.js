@@ -27492,18 +27492,34 @@ var Clustergrammer =
 /***/ (function(module, exports, __webpack_require__) {
 
 	var position_svg_dendro_slider = __webpack_require__(149);
+	var d3_tip_custom = __webpack_require__(48);
 
 	module.exports = function build_svg_tree_icon(cgm, inst_rc) {
 
 	  inst_rc = 'row';
 
 	  var slider_length = 40;
-	  var clicks = 0;
-
 	  var params = cgm.params;
-	  var offset = 7;
 
-	  var tree_icon_group = d3.select(params.root + ' .viz_svg').append('g').classed(inst_rc + '_tree_group', true).append('g').classed('dendro_tree_container', true).on('click', function () {
+	  // d3-tooltip
+	  var tree_menu_tip = d3_tip_custom().attr('class', function () {
+	    var root_tip_selector = params.viz.root_tips.replace('.', '');
+	    var class_string = root_tip_selector + '_tree_menu_tip d3-tip';
+	    return class_string;
+	  }).direction('se').style('display', 'none').offset([-10, -5]).html(function (d) {
+	    return 'something';
+	  });
+
+	  var tree_icon_outer_group = d3.select(params.root + ' .viz_svg').append('g').classed(inst_rc + '_tree_group', true);
+
+	  var tree_icon_group = tree_icon_outer_group.append('g').classed('dendro_tree_container', true).on('mouseover', function () {
+	    console.log('mouseover');
+	    tree_menu_tip.show();
+	    // show tooltip
+	    d3.selectAll(params.viz.root_tips + '_tree_menu_tip').style('opacity', 1).style('display', 'block');
+	  }).on('mouseout', function () {
+	    tree_menu_tip.hide();
+	  }).on('click', function () {
 
 	    if (d3.select(params.root + ' .tree_menu').empty()) {
 	      var tree_menu = d3.select(params.root + ' .viz_svg').append('g').attr('transform', function () {
@@ -27520,38 +27536,12 @@ var Clustergrammer =
 	        var inst_height = 500;
 	        return inst_height;
 	      }).attr('fill', 'white').attr('opacity', 0.95).attr('stroke', '#A3A3A3').attr('stroke-width', '3px');
+
+	      tree_menu.append('text').classed('tree_menu_title', true).attr('transform', 'translate(20,30)').attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('font-size', '18px').attr('font-weight', 800).attr('cursor', 'default').text('Clustering Menu');
 	    } else {
 	      d3.select(params.root + ' .tree_menu').remove();
 	    }
-	  });
-
-	  // // distinguish double from single clicks
-	  // /////////////////////////////////////////
-	  // jQuery.fn.single_double_click = function(single_click_callback, double_click_callback, timeout) {
-	  //     return this.each(function() {
-	  //         var clicks = 0,
-	  //             self = this;
-	  //         jQuery(this).click(function(event) {
-	  //             clicks++;
-	  //             if (clicks == 1) {
-	  //                 setTimeout(function() {
-	  //                     if (clicks == 1) {
-	  //                         single_click_callback.call(self, event);
-	  //                     } else {
-	  //                         double_click_callback.call(self, event);
-	  //                     }
-	  //                     clicks = 0;
-	  //                 }, timeout || 300);
-	  //             }
-	  //         });
-	  //     });
-	  // }
-
-	  // $(params.root + ' .viz_svg').single_double_click(function() {
-	  //     console.log('single click')
-	  // }, function() {
-	  //     console.log('double click')
-	  // });
+	  }).call(tree_menu_tip);
 
 	  d3.select(params.root + ' .dendro_tree_container').attr('transform', 'scale(0.9)');
 
