@@ -12,11 +12,11 @@ module.exports = function build_svg_tree_icon(cgm, inst_rc){
       .append('g')
       .classed('dendro_tree_container', true)
       .on('click', function(){
-        console.log('clicking tree')
+        // console.log('clicking tree')
       });
 
   d3.select(cgm.params.root + ' .dendro_tree_container')
-    .attr('transform', 'scale(0.9)')
+    .attr('transform', 'scale(0.9)');
 
   position_svg_dendro_slider(cgm, inst_rc);
 
@@ -113,8 +113,6 @@ module.exports = function build_svg_tree_icon(cgm, inst_rc){
 
 
   // right branch
-  var branch_height = 30;
-  var right_branch_offset = 15;
   slider_group
     .append('path')
     .style('fill', 'black')
@@ -147,7 +145,6 @@ module.exports = function build_svg_tree_icon(cgm, inst_rc){
 
   var default_opacity = 0.35;
   var high_opacity = 0.6;
-  var circle_radius = 15;
   var small_leaf_offset = 13;
   var small_leaf_radius = 9.5;
   slider_group

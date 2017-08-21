@@ -2,7 +2,7 @@ var cat_tooltip_text = require('./cat_tooltip_text');
 var d3_tip_custom = require('../tooltip/d3_tip_custom');
 var reset_cat_opacity = require('./reset_cat_opacity');
 var ini_cat_opacity = require('./ini_cat_opacity');
-var click_filter_cats = require('./click_filter_cats');
+// var click_filter_cats = require('./click_filter_cats');
 var get_cat_names = require('../categories/get_cat_names');
 
 module.exports = function make_col_cat(cgm) {
@@ -90,20 +90,16 @@ module.exports = function make_col_cat(cgm) {
             })
             .on('click', function(d){
 
+              console.log('clicking on category bar')
+
               if (d3.select(this).classed('cat_strings')){
 
-                if (d3.event.shiftKey === true){
-                  click_filter_cats_db(cgm, d, this, 'col');
-                } else {
+                var found_names = get_cat_names(params, d, this, 'col');
 
-                  var found_names = get_cat_names(params, d, this, 'col');
-
-                  $(params.root+' .dendro_info').modal('toggle');
-                  var group_string = found_names.join(', ');
-                  d3.select(params.root+' .dendro_info input')
-                    .attr('value', group_string);
-
-                }
+                $(params.root+' .dendro_info').modal('toggle');
+                var group_string = found_names.join(', ');
+                d3.select(params.root+' .dendro_info input')
+                  .attr('value', group_string);
 
               }
 
@@ -139,7 +135,5 @@ module.exports = function make_col_cat(cgm) {
       });
 
   });
-
-  var click_filter_cats_db = _.debounce(click_filter_cats, 1500);
 
 };
