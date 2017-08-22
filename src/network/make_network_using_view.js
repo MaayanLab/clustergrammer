@@ -32,8 +32,5 @@ module.exports = function make_network_using_view(config, params, requested_view
     new_network_data = config.network_data;
   }
 
-  console.log('**************************')
-  console.log(new_network_data.mat)
-
   return new_network_data;
 };

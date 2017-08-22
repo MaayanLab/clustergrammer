@@ -16,10 +16,8 @@ module.exports = function filter_network_using_new_nodes(config, new_nodes) {
   var row_names = utils.pluck(new_nodes.row_nodes, 'name');
   var col_names = utils.pluck(new_nodes.col_nodes, 'name');
 
-  console.log('update mat with new view\n---------------------------\n-----------------------')
   var new_mat = math.matrix(math.zeros([new_nodes.row_nodes.length, new_nodes.col_nodes.length]));
   new_mat = new_mat.toArray();
-  console.log(new_mat)
 
   var new_links = _.filter(links, function(inst_link){
 

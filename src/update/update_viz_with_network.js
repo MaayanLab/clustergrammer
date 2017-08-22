@@ -18,13 +18,6 @@ var make_cat_params = require('../params/make_cat_params');
 
 module.exports = function update_viz_with_network(cgm, new_network_data){
 
-  console.log('##########################')
-  console.log('##########################')
-  console.log('##########################')
-  console.log(new_network_data.mat)
-
-  // console.log('UPDATE VIZ WITH NETWORK')
-
   // set runnning_update class, prevents multiple update from running at once
   d3.select(cgm.params.viz.viz_svg).classed('running_update', true);
 
@@ -33,12 +26,9 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
     .remove();
 
   // run optional callback function
-  // console.log('before and after matrix_update_callback')
-  // console.log(new_network_data.row_nodes[0]['cat-0'])
   if (cgm.params.matrix_update_callback != null){
     cgm.params.matrix_update_callback();
   }
-  // console.log(new_network_data.row_nodes[0]['cat-0'])
 
   var inst_group_level = cgm.params.group_level;
   var inst_crop_fitler = cgm.params.crop_filter_nodes;

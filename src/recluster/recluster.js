@@ -24,7 +24,6 @@ module.exports = function recluster(cgm){
 
   _.each(['row', 'col'], function(inst_rc){
 
-    console.log(inst_rc)
     var mat;
     var transpose = math.transpose;
     var names;
@@ -44,9 +43,6 @@ module.exports = function recluster(cgm){
       name_nodes = 'col_nodes';
     }
 
-    console.log('recluster mat')
-    console.log(mat)
-
     // var dist_type = 'cosine';
     var dist_type = 'euclidean';
     var clusters = clusterfck.hcluster(mat, dist_fun[dist_type]);
@@ -60,11 +56,8 @@ module.exports = function recluster(cgm){
 
     for (var index=0; index < rc_nodes.length; index++){
 
-      console.log('index', index)
       inst_node = rc_nodes[index];
       inst_order = order_info.info[index];
-
-      console.log(inst_order)
 
       inst_node.clust = inst_order.order;
       inst_node.group = inst_order.group;
