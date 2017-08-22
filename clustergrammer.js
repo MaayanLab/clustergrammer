@@ -787,6 +787,9 @@ var Clustergrammer =
 
 	  var links = config.network_data.links;
 
+	  // make new mat from links
+	  var new_mat = config.network_data.mat;
+
 	  // get new names of rows and cols
 	  var row_names = utils.pluck(new_nodes.row_nodes, 'name');
 	  var col_names = utils.pluck(new_nodes.col_nodes, 'name');
@@ -808,16 +811,22 @@ var Clustergrammer =
 
 	  // set up new_network_data
 	  var new_network_data = {};
+
 	  // rows
 	  new_network_data.row_nodes = new_nodes.row_nodes;
 	  new_network_data.row_nodes_names = row_names;
+
 	  // cols
 	  new_network_data.col_nodes = new_nodes.col_nodes;
 	  new_network_data.col_nodes_names = col_names;
-	  // links
-	  new_network_data.links = new_links;
+
 	  // save all links
+	  new_network_data.links = new_links;
 	  new_network_data.all_links = links;
+
+	  // mat
+	  new_network_data.mat = new_mat;
+
 	  // add back all views
 	  new_network_data.views = config.network_data.views;
 
@@ -22626,6 +22635,8 @@ var Clustergrammer =
 	    cgm.params.viz = make_cat_params(cgm.params, cgm.params.viz, predefined_cat_colors);
 	  }
 
+	  console.log(tmp_config.mat);
+
 	  tmp_config.network_data = new_network_data;
 	  tmp_config.inst_order = cgm.params.viz.inst_order;
 	  tmp_config.input_domain = cgm.params.matrix.opacity_scale.domain()[1];
@@ -27731,8 +27742,6 @@ var Clustergrammer =
 
 	  // add something to control slider position
 	  /////////////////////////////////////////////
-
-	  // var cgm = this;
 
 	  var requested_view = {};
 	  requested_view[filter_type] = inst_state;

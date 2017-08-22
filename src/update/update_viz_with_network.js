@@ -53,6 +53,8 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
     cgm.params.viz = make_cat_params(cgm.params, cgm.params.viz, predefined_cat_colors);
   }
 
+  console.log(tmp_config.mat)
+
   tmp_config.network_data = new_network_data;
   tmp_config.inst_order = cgm.params.viz.inst_order;
   tmp_config.input_domain = cgm.params.matrix.opacity_scale.domain()[1];

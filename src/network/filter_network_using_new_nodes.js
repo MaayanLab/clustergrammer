@@ -4,6 +4,9 @@ module.exports = function filter_network_using_new_nodes(config, new_nodes) {
 
   var links = config.network_data.links;
 
+  // make new mat from links
+  var new_mat = config.network_data.mat;
+
   // get new names of rows and cols
   var row_names = utils.pluck(new_nodes.row_nodes, 'name');
   var col_names = utils.pluck(new_nodes.col_nodes, 'name');
@@ -25,16 +28,22 @@ module.exports = function filter_network_using_new_nodes(config, new_nodes) {
 
   // set up new_network_data
   var new_network_data = {};
+
   // rows
   new_network_data.row_nodes = new_nodes.row_nodes;
   new_network_data.row_nodes_names = row_names;
+
   // cols
   new_network_data.col_nodes = new_nodes.col_nodes;
   new_network_data.col_nodes_names = col_names;
-  // links
-  new_network_data.links = new_links;
+
   // save all links
+  new_network_data.links = new_links;
   new_network_data.all_links = links;
+
+  // mat
+  new_network_data.mat = new_mat;
+
   // add back all views
   new_network_data.views = config.network_data.views;
 
