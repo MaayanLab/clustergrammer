@@ -2,6 +2,7 @@ var clusterfck = require('cornhundred-clusterfck');
 var core = require('mathjs/core');
 var math = core.create();
 var dist_fun = require('./distance_functions');
+var get_max_distance_in_dm = require('./get_max_distance_in_dm');
 
 math.import(require('mathjs/lib/function/matrix/transpose'));
 math.import(require('mathjs/lib/type/matrix'));
@@ -19,21 +20,10 @@ module.exports = function recluster(mat, names){
   // var dist_type = 'cosine';
   var dist_type = 'euclidean';
   var clusters = clusterfck.hcluster(mat, dist_fun[dist_type]);
+  var max_distance_in_dm = get_max_distance_in_dm(clusters.hc.dists);
 
-  var dm = clusters.hc.dists;
-
-  var max_distance_in_dm = 0;
-  _.each(dm, function(row){
-    _.each(row, function(inst_val){
-      if (isFinite(inst_val)){
-        if (inst_val > max_distance_in_dm){
-          max_distance_in_dm = inst_val;
-        }
-      }
-    });
-
-  });
-
+  // get order information from clusterfck tree
+  ///////////////////////////////////////////////
   var inst_order = 0;
   var group = [];
   var order_array = [];

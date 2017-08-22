@@ -1,7 +1,7 @@
 module.exports = function make_tree_menu(cgm){
   var params = cgm.params;
 
-  var menu_width = 525;
+  var menu_width = 475;
 
   // make tree menu (state is in cgm, remade each time)
   /////////////////////////////////////////////////////
@@ -52,6 +52,14 @@ module.exports = function make_tree_menu(cgm){
   var vertical_space = 30;
   var menu_y_offset = 110;
   var distance_line_offset = 80;
+
+  tree_menu
+    .append('text')
+    .attr('transform', 'translate(25, 70)')
+    .attr('font-size', '18px')
+    .attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif')
+    .style('cursor', 'default')
+    .text('Distance Metric')
 
   tree_menu
     .append('rect')

@@ -162,10 +162,6 @@ var Clustergrammer =
 	    var names = this.params.network_data.row_nodes_names;
 	    var order_info = recluster(mat, names);
 
-	    // _.each(order_info.info, function(inst_info){
-	    //   console.log(inst_info.group);
-	    // })
-
 	    var new_view = {};
 	    new_view.N_row_sum = 'null';
 	    new_view.N_row_var = 'null';
@@ -18691,6 +18687,7 @@ var Clustergrammer =
 	var core = __webpack_require__(67);
 	var math = core.create();
 	var dist_fun = __webpack_require__(276);
+	var get_max_distance_in_dm = __webpack_require__(279);
 
 	math.import(__webpack_require__(226));
 	math.import(__webpack_require__(227));
@@ -18708,20 +18705,10 @@ var Clustergrammer =
 	  // var dist_type = 'cosine';
 	  var dist_type = 'euclidean';
 	  var clusters = clusterfck.hcluster(mat, dist_fun[dist_type]);
+	  var max_distance_in_dm = get_max_distance_in_dm(clusters.hc.dists);
 
-	  var dm = clusters.hc.dists;
-
-	  var max_distance_in_dm = 0;
-	  _.each(dm, function (row) {
-	    _.each(row, function (inst_val) {
-	      if (isFinite(inst_val)) {
-	        if (inst_val > max_distance_in_dm) {
-	          max_distance_in_dm = inst_val;
-	        }
-	      }
-	    });
-	  });
-
+	  // get order information from clusterfck tree
+	  ///////////////////////////////////////////////
 	  var inst_order = 0;
 	  var group = [];
 	  var order_array = [];
@@ -27628,7 +27615,7 @@ var Clustergrammer =
 	module.exports = function make_tree_menu(cgm) {
 	  var params = cgm.params;
 
-	  var menu_width = 525;
+	  var menu_width = 475;
 
 	  // make tree menu (state is in cgm, remade each time)
 	  /////////////////////////////////////////////////////
@@ -27658,6 +27645,8 @@ var Clustergrammer =
 	  var menu_y_offset = 110;
 	  var distance_line_offset = 80;
 
+	  tree_menu.append('text').attr('transform', 'translate(25, 70)').attr('font-size', '18px').attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').style('cursor', 'default').text('Distance Metric');
+
 	  tree_menu.append('rect').classed('tree_menu_line', true).attr('height', '2px').attr('width', '435px').attr('stroke-width', '3px').attr('opacity', 0.3).attr('fill', 'black').attr('transform', 'translate(20,' + distance_line_offset + ')');
 
 	  var distance_section = tree_menu.append('g').attr('transform', 'translate(20,' + menu_y_offset + ')').classed('distance_section', true);
@@ -27676,6 +27665,27 @@ var Clustergrammer =
 
 	  ///////////////////////////////////////////////////////
 	};
+
+/***/ }),
+/* 279 */
+/***/ (function(module, exports) {
+
+	module.exports = function get_max_tree_distance(dm) {
+
+	  var max_distance_in_dm = 0;
+
+	  _.each(dm, function (row) {
+	    _.each(row, function (inst_val) {
+	      if (isFinite(inst_val)) {
+	        if (inst_val > max_distance_in_dm) {
+	          max_distance_in_dm = inst_val;
+	        }
+	      }
+	    });
+	  });
+
+	  return max_distance_in_dm;
+		};
 
 /***/ })
 /******/ ]);
