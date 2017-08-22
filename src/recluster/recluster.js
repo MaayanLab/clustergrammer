@@ -8,30 +8,33 @@ math.import(require('mathjs/lib/function/matrix/transpose'));
 math.import(require('mathjs/lib/type/matrix'));
 
 module.exports = function recluster(cgm){
-  /*
-  Rows are clustered. Run transpose before if necessary
-  */
 
   var inst_rc = 'row';
   var mat;
   var transpose = math.transpose;
+  var names;
+  var name_nodes;
 
   if (inst_rc === 'row'){
     mat = $.extend(true, [], cgm.params.network_data.mat);
+
+    names = cgm.params.network_data.row_nodes_names;
+    name_nodes = 'row_nodes';
+
   } else if (inst_rc === 'col'){
     mat = $.extend(true, [], cgm.params.network_data.mat);
     mat = transpose(mat);
+
+    names = cgm.params.network_data.col_nodes_names;
+    name_nodes = 'col_nodes';
   }
 
   // var dist_type = 'cosine';
   var dist_type = 'euclidean';
   var clusters = clusterfck.hcluster(mat, dist_fun[dist_type]);
 
-  var names = cgm.params.network_data.row_nodes_names;
-
   var order_info = get_order_and_groups_clusterfck_tree(clusters, names);
-
-  var inst_row;
+  var inst_node;
   var inst_order;
 
   var new_view = {};
@@ -41,16 +44,14 @@ module.exports = function recluster(cgm){
   new_view.nodes = $.extend(true, [], cgm.config.network_data.views[0].nodes);
 
   // overwrite ordering with new ordering
-  var name_nodes = 'row_nodes';
-  var rows = new_view.nodes[name_nodes];
+  var nodes = new_view.nodes[name_nodes];
 
-  for (var index=0; index < rows.length; index++){
-    inst_row = rows[index];
+  for (var index=0; index < nodes.length; index++){
+    inst_node = nodes[index];
     inst_order = order_info.info[index];
 
-    // pass clust property to config view N_row_sum: 'all' [hacky]
-    inst_row.clust = inst_order.order;
-    inst_row.group = inst_order.group;
+    inst_node.clust = inst_order.order;
+    inst_node.group = inst_order.group;
 
   }
 
