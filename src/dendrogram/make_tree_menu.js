@@ -49,12 +49,23 @@ module.exports = function make_tree_menu(cgm){
 
   // menu options
   var possible_distances = ['Cosine', 'Euclidean', 'Correlation', 'Jaccard'];
-
   var vertical_space = 30;
+  var menu_y_offset = 110;
+  var distance_line_offset = 80;
+
+  tree_menu
+    .append('rect')
+    .classed('tree_menu_line', true)
+    .attr('height', '2px')
+    .attr('width','435px')
+    .attr('stroke-width', '3px')
+    .attr('opacity', 0.3)
+    .attr('fill', 'black')
+    .attr('transform', 'translate(20,' + distance_line_offset + ')')
 
   var distance_section = tree_menu
     .append('g')
-    .attr('transform', 'translate(20,60)')
+    .attr('transform', 'translate(20,'+menu_y_offset+')')
     .classed('distance_section', true);
 
   var distance_groups = distance_section
