@@ -2,13 +2,13 @@ var get_max_distance_in_dm = require('./get_max_distance_in_dm');
 
 module.exports = function get_order_and_groups_clusterfck_tree(clusters, names){
 
-  console.log('**** checking in get_order ***********************')
-  console.log(clusters.hc.dists[0][5])
-  console.log(clusters.hc.dists[0])
+  // console.log('**** checking in get_order ***********************')
+  // console.log(clusters.hc.dists[0][5])
+  // console.log(clusters.hc.dists[0])
 
-  console.log('**** checking dists_backup get_order ***********************')
-  console.log(clusters.hc.dists_backup[0][5])
-  console.log(clusters.hc.dists_backup[0])
+  // console.log('**** checking dists_backup get_order ***********************')
+  // console.log(clusters.hc.dists_backup[0][5])
+  // console.log(clusters.hc.dists_backup[0])
 
 
   var max_distance_in_dm = get_max_distance_in_dm(clusters.hc.dists_backup);
@@ -28,8 +28,6 @@ module.exports = function get_order_and_groups_clusterfck_tree(clusters, names){
   var ini_level = 1;
   var tree_height = tree.dist;
 
-  console.log(max_distance_in_dm)
-
   // var cutoff_fractions = [];
   var cutoff_vals = [];
   var cutoff_indexes = [];
@@ -41,7 +39,6 @@ module.exports = function get_order_and_groups_clusterfck_tree(clusters, names){
     group.push(0);
     cutoff_indexes.push(i);
   }
-  // console.log(cutoff_vals)
 
   _.each(['left','right'], function(side){
 

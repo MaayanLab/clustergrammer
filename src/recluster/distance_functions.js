@@ -15,9 +15,9 @@ function vec_magnitude(vec) {
 }
 
 function vec_diff_value(vec, val){
-  var vec_sub = []
+  var vec_sub = [];
   for (var i = 0; i < vec.length; i++){
-    vec_sub.push( vec[i] - val )
+    vec_sub.push( vec[i] - val );
   }
   return vec_sub;
 }
