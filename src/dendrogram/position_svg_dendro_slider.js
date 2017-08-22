@@ -12,13 +12,14 @@ module.exports = function position_svg_dendro_slider(cgm, inst_rc){
     var max_room = viz.svg_dim.width - 3 * viz.uni_margin;
 
     // position close to row dendrogram trapezoids
-    tmp_left = viz.clust.margin.left + viz.clust.dim.width + 5*viz.dendro_room.row;
+    tmp_left = viz.clust.margin.left + viz.clust.dim.width + 5.25  * viz.dendro_room.row;
 
     if (tmp_left > max_room){
       tmp_left = max_room;
     }
 
-    tmp_top =  viz.clust.margin.top + 3 * viz.uni_margin;
+    tmp_top =  viz.clust.margin.top + 3 * viz.uni_margin + 90 ;
+
   } else {
 
     // column dendrogram
@@ -29,10 +30,24 @@ module.exports = function position_svg_dendro_slider(cgm, inst_rc){
 
   }
 
+  // reposition tree icon
+  d3.select(cgm.params.root + ' .' + inst_rc + '_tree_group')
+    .attr('transform', function() {
+      var inst_translation;
+      tmp_top = tmp_top - 75;
+      tmp_left = tmp_left;
+      inst_translation = 'translate(' + tmp_left + ',' + tmp_top + ')';
+
+      return inst_translation;
+    })
+    .style('opacity', 1);
+
   d3.select(cgm.params.root + ' .' + inst_rc + '_slider_group')
     .attr('transform', function() {
       var inst_translation;
       if (inst_rc === 'row'){
+        tmp_left = tmp_left + 0.6 * viz.dendro_room.row;
+        tmp_top = tmp_top + 65;
         inst_translation = 'translate(' + tmp_left + ',' + tmp_top + ')';
       } else {
         inst_translation = 'translate(' + tmp_left + ',' + tmp_top +
@@ -42,16 +57,5 @@ module.exports = function position_svg_dendro_slider(cgm, inst_rc){
     })
     .style('opacity', 1);
 
-  // reposition tree icon
-  d3.select(cgm.params.root + ' .' + inst_rc + '_tree_group')
-    .attr('transform', function() {
-      var inst_translation;
-      tmp_top = tmp_top + 127;
-      tmp_left = tmp_left -2;
-      inst_translation = 'translate(' + tmp_left + ',' + tmp_top + ')';
-
-      return inst_translation;
-    })
-    .style('opacity', 1);
 
 };
