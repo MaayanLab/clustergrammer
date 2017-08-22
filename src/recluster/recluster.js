@@ -7,18 +7,21 @@ var get_order_and_groups_clusterfck_tree = require('./get_order_and_groups_clust
 math.import(require('mathjs/lib/function/matrix/transpose'));
 math.import(require('mathjs/lib/type/matrix'));
 
-module.exports = function recluster(cgm, mat, names){
+module.exports = function recluster(cgm){
   /*
   Rows are clustered. Run transpose before if necessary
   */
 
-  // var transpose = math.transpose;
+  var inst_rc = 'row';
+  var mat;
+  var transpose = math.transpose;
 
-  // var mat = this.params.network_data.mat;
-  // mat = transpose(mat);
-
-
-  var mat = cgm.params.network_data.mat;
+  if (inst_rc === 'row'){
+    mat = $.extend(true, [], cgm.params.network_data.mat);
+  } else if (inst_rc === 'col'){
+    mat = $.extend(true, [], cgm.params.network_data.mat);
+    mat = transpose(mat);
+  }
 
   // var dist_type = 'cosine';
   var dist_type = 'euclidean';
@@ -28,6 +31,9 @@ module.exports = function recluster(cgm, mat, names){
 
   var order_info = get_order_and_groups_clusterfck_tree(clusters, names);
 
+  var inst_row;
+  var inst_order;
+
   var new_view = {};
   new_view.N_row_sum = 'null';
   new_view.N_row_var = 'null';
@@ -35,12 +41,12 @@ module.exports = function recluster(cgm, mat, names){
   new_view.nodes = $.extend(true, [], cgm.config.network_data.views[0].nodes);
 
   // overwrite ordering with new ordering
-  // var rows = this.config.network_data.views[0].nodes['row_nodes']
-  var rows = new_view.nodes['row_nodes']
+  var name_nodes = 'row_nodes';
+  var rows = new_view.nodes[name_nodes];
 
   for (var index=0; index < rows.length; index++){
-    inst_row = rows[index]
-    inst_order = order_info.info[index]
+    inst_row = rows[index];
+    inst_order = order_info.info[index];
 
     // pass clust property to config view N_row_sum: 'all' [hacky]
     inst_row.clust = inst_order.order;

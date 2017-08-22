@@ -61,7 +61,7 @@ module.exports = function make_tree_menu(cgm){
     .attr('font-size', '18px')
     .attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif')
     .style('cursor', 'default')
-    .text('Distance Metric')
+    .text('Distance Metric');
 
   tree_menu
     .append('rect')
@@ -71,7 +71,7 @@ module.exports = function make_tree_menu(cgm){
     .attr('stroke-width', '3px')
     .attr('opacity', 0.3)
     .attr('fill', 'black')
-    .attr('transform', 'translate(20,' + distance_line_offset + ')')
+    .attr('transform', 'translate(20,' + distance_line_offset + ')');
 
   var distance_section = tree_menu
     .append('g')
@@ -91,8 +91,6 @@ module.exports = function make_tree_menu(cgm){
     .on('click', function(d){
       if (d === 'Euclidean'){
 
-        console.log('reclustering using Euclidean distance')
-
         // toggle tree menu
         d3.select(params.root+' .tree_menu')
           .transition(700)
@@ -104,7 +102,7 @@ module.exports = function make_tree_menu(cgm){
 
         recluster(cgm);
       }
-    })
+    });
 
   distance_groups
     .append('circle')
@@ -113,7 +111,7 @@ module.exports = function make_tree_menu(cgm){
     .attr('r', 7)
     .style('stroke', '#A3A3A3')
     .style('stroke-width', '2px')
-    .style('fill','white')
+    .style('fill','white');
 
   distance_groups
     .append('text')

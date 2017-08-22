@@ -63,7 +63,6 @@ var Clustergrammer =
 	var d3_tip_custom = __webpack_require__(48);
 	var all_reorder = __webpack_require__(114);
 	var make_matrix_string = __webpack_require__(253);
-	var recluster = __webpack_require__(165);
 
 	// moved d3.slider to src
 	d3.slider = __webpack_require__(257);
@@ -155,12 +154,6 @@ var Clustergrammer =
 	    return make_matrix_string(this.params);
 	  }
 
-	  function run_recluster() {
-
-	    // debugger;
-	    recluster(this);
-	  }
-
 	  // add more API endpoints
 	  cgm.update_view = external_update_view;
 	  cgm.resize_viz = external_resize;
@@ -176,7 +169,6 @@ var Clustergrammer =
 	  cgm.d3_tip_custom = expose_d3_tip_custom;
 	  cgm.reorder = api_reorder;
 	  cgm.export_matrix_string = export_matrix_string;
-	  cgm.run_recluster = run_recluster;
 
 	  return cgm;
 	}
@@ -14684,7 +14676,6 @@ var Clustergrammer =
 	  d3.select(cgm.params.root + ' .' + inst_rc + '_tree_group').attr('transform', function () {
 	    var inst_translation;
 	    tmp_top = tmp_top - 75;
-	    tmp_left = tmp_left;
 	    inst_translation = 'translate(' + tmp_left + ',' + tmp_top + ')';
 
 	    return inst_translation;
@@ -15575,8 +15566,6 @@ var Clustergrammer =
 	  }).on('click', function (d) {
 	    if (d === 'Euclidean') {
 
-	      console.log('reclustering using Euclidean distance');
-
 	      // toggle tree menu
 	      d3.select(params.root + ' .tree_menu').transition(700).attr('opacity', 0);
 	      setTimeout(function () {
@@ -15609,18 +15598,21 @@ var Clustergrammer =
 	math.import(__webpack_require__(173));
 	math.import(__webpack_require__(174));
 
-	module.exports = function recluster(cgm, mat, names) {
+	module.exports = function recluster(cgm) {
 	  /*
 	  Rows are clustered. Run transpose before if necessary
 	  */
 
-	  // var transpose = math.transpose;
+	  var inst_rc = 'row';
+	  var mat;
+	  var transpose = math.transpose;
 
-	  // var mat = this.params.network_data.mat;
-	  // mat = transpose(mat);
-
-
-	  var mat = cgm.params.network_data.mat;
+	  if (inst_rc === 'row') {
+	    mat = $.extend(true, [], cgm.params.network_data.mat);
+	  } else if (inst_rc === 'col') {
+	    mat = $.extend(true, [], cgm.params.network_data.mat);
+	    mat = transpose(mat);
+	  }
 
 	  // var dist_type = 'cosine';
 	  var dist_type = 'euclidean';
@@ -15630,6 +15622,9 @@ var Clustergrammer =
 
 	  var order_info = get_order_and_groups_clusterfck_tree(clusters, names);
 
+	  var inst_row;
+	  var inst_order;
+
 	  var new_view = {};
 	  new_view.N_row_sum = 'null';
 	  new_view.N_row_var = 'null';
@@ -15637,8 +15632,8 @@ var Clustergrammer =
 	  new_view.nodes = $.extend(true, [], cgm.config.network_data.views[0].nodes);
 
 	  // overwrite ordering with new ordering
-	  // var rows = this.config.network_data.views[0].nodes['row_nodes']
-	  var rows = new_view.nodes['row_nodes'];
+	  var name_nodes = 'row_nodes';
+	  var rows = new_view.nodes[name_nodes];
 
 	  for (var index = 0; index < rows.length; index++) {
 	    inst_row = rows[index];

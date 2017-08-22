@@ -35,7 +35,6 @@ module.exports = function position_svg_dendro_slider(cgm, inst_rc){
     .attr('transform', function() {
       var inst_translation;
       tmp_top = tmp_top - 75;
-      tmp_left = tmp_left;
       inst_translation = 'translate(' + tmp_left + ',' + tmp_top + ')';
 
       return inst_translation;
