@@ -14,12 +14,24 @@ function vec_magnitude(vec) {
   return Math.sqrt(sum);
 }
 
-function vec_sub_value(vec, val){
+function vec_diff_value(vec, val){
   var vec_sub = []
   for (var i = 0; i < vec.length; i++){
     vec_sub.push( vec[i] - val )
   }
   return vec_sub;
+}
+
+function vec_mean(vec){
+  var sum = 0;
+  var mean;
+  for (var i = 0; i < vec.length; i++){
+    sum = sum + vec[i];
+  }
+
+  mean = sum / vec.length;
+
+  return mean;
 }
 
 module.exports = {
@@ -38,5 +50,20 @@ module.exports = {
       var cos_dist = 1 - cos_sim;
 
     return cos_dist;
+  },
+  'correlation': function(vecA, vecB){
+
+    console.log('correlation')
+
+    var vecA_mean = vec_mean(vecA);
+    var vecB_mean = vec_mean(vecB);
+
+    var vecA_diff_mean = vec_diff_value(vecA, vecA_mean);
+    var vecB_diff_mean = vec_diff_value(vecB, vecB_mean);
+
+    var cor_sim = vec_dot_product(vecA_diff_mean, vecB_diff_mean) / ( vec_magnitude(vecA_diff_mean) * vec_magnitude(vecB_diff_mean) );
+    var cor_diff = 1 - cor_sim;
+
+    return cor_diff;
   }
 };
