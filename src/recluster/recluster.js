@@ -43,6 +43,7 @@ module.exports = function recluster(cgm, new_distance_metric){
       name_nodes = 'col_nodes';
     }
 
+
     var clusters = clusterfck.hcluster(mat, dist_fun[new_distance_metric]);
 
     var order_info = get_order_and_groups_clusterfck_tree(clusters, names);
