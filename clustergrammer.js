@@ -1450,6 +1450,9 @@ var Clustergrammer =
 	  matrix.show_tile_tooltips = params.show_tile_tooltips;
 	  matrix.make_tile_tooltip = params.make_tile_tooltip;
 
+	  matrix.distance_metric = 'cosine';
+	  matrix.linkage_type = 'average';
+
 	  // initialized clicked tile and rows
 	  matrix.click_hlight_x = -666;
 	  matrix.click_hlight_y = -666;
@@ -15575,7 +15578,7 @@ var Clustergrammer =
 	  tree_menu.append('text').classed('tree_menu_title', true).attr('transform', 'translate(20,30)').attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('font-size', '18px').attr('font-weight', 800).attr('cursor', 'default').text('Clustering Menu');
 
 	  // menu options
-	  var possible_distances = ['Cosine', 'Euclidean', 'Correlation', 'Jaccard'];
+	  var possible_distances = ['cosine', 'euclidean', 'correlation', 'jaccard'];
 	  var vertical_space = 30;
 	  var menu_y_offset = 110;
 	  var distance_line_offset = 80;
@@ -15591,23 +15594,41 @@ var Clustergrammer =
 	    var transform_string = 'translate(0,' + vert + ')';
 	    return transform_string;
 	  }).on('click', function (d) {
-	    if (d === 'Euclidean') {
 
+	    if (d === 'euclidean') {
 	      // toggle tree menu
 	      d3.select(params.root + ' .tree_menu').transition(700).attr('opacity', 0);
 	      setTimeout(function () {
 	        d3.select(params.root + ' .tree_menu').remove();
 	      }, 700);
 
+	      // update distance metric
+	      cgm.params.matrix.distance_metric = d;
+
+	      console.log(cgm.params.matrix.distance_metric);
+
 	      recluster(cgm);
+
+	      console.log(cgm.params.matrix.distance_metric);
 	    }
 	  });
 
-	  distance_groups.append('circle').attr('cx', 10).attr('cy', -6).attr('r', 7).style('stroke', '#A3A3A3').style('stroke-width', '2px').style('fill', 'white');
+	  distance_groups.append('circle').attr('cx', 10).attr('cy', -6).attr('r', 7).style('stroke', '#A3A3A3').style('stroke-width', '2px').style('fill', function (d) {
+	    var inst_color = 'white';
+	    if (d === cgm.params.matrix.distance_metric) {
+	      inst_color = 'red';
+	    }
+
+	    return inst_color;
+	  });
 
 	  distance_groups.append('text').attr('transform', 'translate(25,0)').style('font-size', '16px').attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').style('cursor', 'default').text(function (d) {
-	    return d.replace(/_/g, ' ');
+	    return capitalizeFirstLetter(d);
 	  });
+
+	  function capitalizeFirstLetter(string) {
+	    return string.charAt(0).toUpperCase() + string.slice(1);
+	  }
 
 	  ///////////////////////////////////////////////////////
 	};
@@ -22630,6 +22651,7 @@ var Clustergrammer =
 	    cgm.params.matrix_update_callback();
 	  }
 
+	  var inst_distance_metric = cgm.params.matrix.distance_metric;
 	  var inst_group_level = cgm.params.group_level;
 	  var inst_crop_fitler = cgm.params.crop_filter_nodes;
 
@@ -22674,6 +22696,10 @@ var Clustergrammer =
 	  cgm.params.zoom_behavior = d3.behavior.zoom().scaleExtent([1, cgm.params.viz.square_zoom * cgm.params.viz.zoom_ratio.x]).on('zoom', function () {
 	    run_zoom(cgm);
 	  });
+
+	  // Persistent Parameters
+	  /////////////////////////
+	  cgm.params.matrix.distance_metric = inst_distance_metric;
 
 	  // have persistent group levels while updating
 	  cgm.params.group_level = inst_group_level;

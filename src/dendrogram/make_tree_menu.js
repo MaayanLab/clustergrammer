@@ -50,7 +50,7 @@ module.exports = function make_tree_menu(cgm){
     .text('Clustering Menu');
 
   // menu options
-  var possible_distances = ['Cosine', 'Euclidean', 'Correlation', 'Jaccard'];
+  var possible_distances = ['cosine', 'euclidean', 'correlation', 'jaccard'];
   var vertical_space = 30;
   var menu_y_offset = 110;
   var distance_line_offset = 80;
@@ -89,8 +89,8 @@ module.exports = function make_tree_menu(cgm){
       return transform_string;
     })
     .on('click', function(d){
-      if (d === 'Euclidean'){
 
+      if (d === 'euclidean'){
         // toggle tree menu
         d3.select(params.root+' .tree_menu')
           .transition(700)
@@ -100,7 +100,15 @@ module.exports = function make_tree_menu(cgm){
             .remove();
         }, 700);
 
+        // update distance metric
+        cgm.params.matrix.distance_metric = d;
+
+        console.log(cgm.params.matrix.distance_metric)
+
         recluster(cgm);
+
+        console.log(cgm.params.matrix.distance_metric)
+
       }
     });
 
@@ -111,7 +119,14 @@ module.exports = function make_tree_menu(cgm){
     .attr('r', 7)
     .style('stroke', '#A3A3A3')
     .style('stroke-width', '2px')
-    .style('fill','white');
+    .style('fill',function(d){
+      var inst_color = 'white';
+      if (d === cgm.params.matrix.distance_metric){
+        inst_color = 'red';
+      }
+
+      return inst_color;
+    });
 
   distance_groups
     .append('text')
@@ -120,9 +135,13 @@ module.exports = function make_tree_menu(cgm){
     .attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif')
     .style('cursor', 'default')
     .text(function(d){
-      return d.replace(/_/g, ' ');
+      return capitalizeFirstLetter(d);
     });
 
+
+  function capitalizeFirstLetter(string) {
+      return string.charAt(0).toUpperCase() + string.slice(1);
+  }
 
   ///////////////////////////////////////////////////////
 };

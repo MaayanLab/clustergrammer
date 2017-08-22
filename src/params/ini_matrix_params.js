@@ -15,6 +15,9 @@ module.exports = function ini_matrix_params(params){
   matrix.show_tile_tooltips = params.show_tile_tooltips;
   matrix.make_tile_tooltip = params.make_tile_tooltip;
 
+  matrix.distance_metric = 'cosine';
+  matrix.linkage_type = 'average';
+
   // initialized clicked tile and rows
   matrix.click_hlight_x = -666;
   matrix.click_hlight_y = -666;
