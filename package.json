@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "awesomplete": "1.1.1",
-    "cornhundred-clusterfck": "^0.7.4",
+    "cornhundred-clusterfck": "^0.7.5",
     "d3": "^3.5.15",
     "extend": "^3.0.0",
     "jquery": "1.11.0",

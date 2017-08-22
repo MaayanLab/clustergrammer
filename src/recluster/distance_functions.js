@@ -53,8 +53,6 @@ module.exports = {
   },
   'correlation': function(vecA, vecB){
 
-    console.log('correlation')
-
     var vecA_mean = vec_mean(vecA);
     var vecB_mean = vec_mean(vecB);
 
