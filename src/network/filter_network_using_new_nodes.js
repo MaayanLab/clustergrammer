@@ -6,20 +6,20 @@ math.import(require('mathjs/lib/function/matrix/zeros'));
 
 module.exports = function filter_network_using_new_nodes(config, new_nodes) {
 
-  mat = math.matrix(math.zeros([10,3]));
-  mat = mat.toArray();
-  console.log(mat)
 
   var links = config.network_data.links;
 
-  // make new mat from links
-  var new_mat = config.network_data.mat;
+  // // make new mat from links
+  // var new_mat = config.network_data.mat;
 
   // get new names of rows and cols
   var row_names = utils.pluck(new_nodes.row_nodes, 'name');
   var col_names = utils.pluck(new_nodes.col_nodes, 'name');
 
-  console.log('update mat with new view\n---------------------------')
+  console.log('update mat with new view\n---------------------------\n-----------------------')
+  var new_mat = math.matrix(math.zeros([new_nodes.row_nodes.length, new_nodes.col_nodes.length]));
+  new_mat = new_mat.toArray();
+  console.log(new_mat)
 
   var new_links = _.filter(links, function(inst_link){
 
@@ -35,6 +35,8 @@ module.exports = function filter_network_using_new_nodes(config, new_nodes) {
       // redefine source and target
       inst_link.source = row_index;
       inst_link.target = col_index;
+
+      new_mat[row_index][col_index] = inst_link.value;
 
       return inst_link;
     }

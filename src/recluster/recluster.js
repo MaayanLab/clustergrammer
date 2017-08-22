@@ -14,10 +14,17 @@ module.exports = function recluster(cgm){
   new_view.N_row_sum = 'null';
   new_view.N_row_var = 'null';
   new_view.dist = 'euclidean';
-  new_view.nodes = $.extend(true, [], cgm.config.network_data.views[0].nodes);
+
+  // // constructing new nodes from old view (does not work when filtering)
+  // new_view.nodes = $.extend(true, [], cgm.params.network_data.views[0].nodes);
+
+  new_view.nodes = {};
+  new_view.nodes.row_nodes = $.extend(true, [], cgm.params.network_data.row_nodes);
+  new_view.nodes.col_nodes = $.extend(true, [], cgm.params.network_data.col_nodes);
 
   _.each(['row', 'col'], function(inst_rc){
 
+    console.log(inst_rc)
     var mat;
     var transpose = math.transpose;
     var names;
@@ -37,6 +44,7 @@ module.exports = function recluster(cgm){
       name_nodes = 'col_nodes';
     }
 
+    console.log('recluster mat')
     console.log(mat)
 
     // var dist_type = 'cosine';
@@ -47,13 +55,16 @@ module.exports = function recluster(cgm){
     var inst_node;
     var inst_order;
 
-
     // row or column nodes
     var rc_nodes = new_view.nodes[name_nodes];
 
     for (var index=0; index < rc_nodes.length; index++){
+
+      console.log('index', index)
       inst_node = rc_nodes[index];
       inst_order = order_info.info[index];
+
+      console.log(inst_order)
 
       inst_node.clust = inst_order.order;
       inst_node.group = inst_order.group;

@@ -18,6 +18,11 @@ var make_cat_params = require('../params/make_cat_params');
 
 module.exports = function update_viz_with_network(cgm, new_network_data){
 
+  console.log('##########################')
+  console.log('##########################')
+  console.log('##########################')
+  console.log(new_network_data.mat)
+
   // console.log('UPDATE VIZ WITH NETWORK')
 
   // set runnning_update class, prevents multiple update from running at once
@@ -52,8 +57,6 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
     var predefined_cat_colors = true;
     cgm.params.viz = make_cat_params(cgm.params, cgm.params.viz, predefined_cat_colors);
   }
-
-  console.log(tmp_config.mat)
 
   tmp_config.network_data = new_network_data;
   tmp_config.inst_order = cgm.params.viz.inst_order;

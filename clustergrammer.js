@@ -774,6 +774,9 @@ var Clustergrammer =
 	    new_network_data = config.network_data;
 	  }
 
+	  console.log('**************************');
+	  console.log(new_network_data.mat);
+
 	  return new_network_data;
 	};
 
@@ -789,20 +792,19 @@ var Clustergrammer =
 
 	module.exports = function filter_network_using_new_nodes(config, new_nodes) {
 
-	  mat = math.matrix(math.zeros([10, 3]));
-	  mat = mat.toArray();
-	  console.log(mat);
-
 	  var links = config.network_data.links;
 
-	  // make new mat from links
-	  var new_mat = config.network_data.mat;
+	  // // make new mat from links
+	  // var new_mat = config.network_data.mat;
 
 	  // get new names of rows and cols
 	  var row_names = utils.pluck(new_nodes.row_nodes, 'name');
 	  var col_names = utils.pluck(new_nodes.col_nodes, 'name');
 
-	  console.log('update mat with new view\n---------------------------');
+	  console.log('update mat with new view\n---------------------------\n-----------------------');
+	  var new_mat = math.matrix(math.zeros([new_nodes.row_nodes.length, new_nodes.col_nodes.length]));
+	  new_mat = new_mat.toArray();
+	  console.log(new_mat);
 
 	  var new_links = _.filter(links, function (inst_link) {
 
@@ -818,6 +820,8 @@ var Clustergrammer =
 	      // redefine source and target
 	      inst_link.source = row_index;
 	      inst_link.target = col_index;
+
+	      new_mat[row_index][col_index] = inst_link.value;
 
 	      return inst_link;
 	    }
@@ -15633,10 +15637,17 @@ var Clustergrammer =
 	  new_view.N_row_sum = 'null';
 	  new_view.N_row_var = 'null';
 	  new_view.dist = 'euclidean';
-	  new_view.nodes = $.extend(true, [], cgm.config.network_data.views[0].nodes);
+
+	  // // constructing new nodes from old view (does not work when filtering)
+	  // new_view.nodes = $.extend(true, [], cgm.params.network_data.views[0].nodes);
+
+	  new_view.nodes = {};
+	  new_view.nodes.row_nodes = $.extend(true, [], cgm.params.network_data.row_nodes);
+	  new_view.nodes.col_nodes = $.extend(true, [], cgm.params.network_data.col_nodes);
 
 	  _.each(['row', 'col'], function (inst_rc) {
 
+	    console.log(inst_rc);
 	    var mat;
 	    var transpose = math.transpose;
 	    var names;
@@ -15655,6 +15666,7 @@ var Clustergrammer =
 	      name_nodes = 'col_nodes';
 	    }
 
+	    console.log('recluster mat');
 	    console.log(mat);
 
 	    // var dist_type = 'cosine';
@@ -15669,8 +15681,12 @@ var Clustergrammer =
 	    var rc_nodes = new_view.nodes[name_nodes];
 
 	    for (var index = 0; index < rc_nodes.length; index++) {
+
+	      console.log('index', index);
 	      inst_node = rc_nodes[index];
 	      inst_order = order_info.info[index];
+
+	      console.log(inst_order);
 
 	      inst_node.clust = inst_order.order;
 	      inst_node.group = inst_order.group;
@@ -22615,6 +22631,11 @@ var Clustergrammer =
 
 	module.exports = function update_viz_with_network(cgm, new_network_data) {
 
+	  console.log('##########################');
+	  console.log('##########################');
+	  console.log('##########################');
+	  console.log(new_network_data.mat);
+
 	  // console.log('UPDATE VIZ WITH NETWORK')
 
 	  // set runnning_update class, prevents multiple update from running at once
@@ -22648,8 +22669,6 @@ var Clustergrammer =
 	    var predefined_cat_colors = true;
 	    cgm.params.viz = make_cat_params(cgm.params, cgm.params.viz, predefined_cat_colors);
 	  }
-
-	  console.log(tmp_config.mat);
 
 	  tmp_config.network_data = new_network_data;
 	  tmp_config.inst_order = cgm.params.viz.inst_order;
@@ -24409,6 +24428,9 @@ var Clustergrammer =
 	  var inst_col_nodes = cgm.params.network_data.col_nodes;
 
 	  var new_network_data = filter_network_using_new_nodes(cgm.config, new_nodes);
+
+	  console.log('FILTER VIZ USING NAMES');
+	  console.log(new_network_data.mat);
 
 	  // takes entire cgm object
 	  // last argument tells it to not preserve categoty colors

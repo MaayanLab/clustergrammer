@@ -50,6 +50,9 @@ module.exports = function filter_viz_using_names(names, external_cgm = false){
 
   var new_network_data = filter_network_using_new_nodes(cgm.config, new_nodes);
 
+  console.log('FILTER VIZ USING NAMES')
+  console.log(new_network_data.mat)
+
   // takes entire cgm object
   // last argument tells it to not preserve categoty colors
   update_viz_with_network(cgm, new_network_data);
