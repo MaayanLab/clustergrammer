@@ -9,7 +9,7 @@ var filter_viz_using_names = require('./network/filter_viz_using_names');
 var update_cats = require('./update/update_cats');
 var reset_cats = require('./update/reset_cats');
 var two_translate_zoom = require('./zoom/two_translate_zoom');
-var external_update_view = require('./update/external_update_view');
+var update_view = require('./update/update_view');
 var save_matrix = require('./matrix/save_matrix');
 var brush_crop_matrix = require('./matrix/brush_crop_matrix');
 var run_zoom = require('./zoom/run_zoom');
@@ -109,9 +109,13 @@ function Clustergrammer(args) {
     return make_matrix_string(this.params);
   }
 
+  function external_update_view(filter_type, inst_state){
+    update_view(this, filter_type, inst_state)
+  }
+
 
   // add more API endpoints
-  cgm.update_view = external_update_view;
+  cgm.update_view = update_view;
   cgm.resize_viz = external_resize;
   cgm.play_demo = play_demo;
   cgm.ini_demo = ini_demo;
@@ -125,6 +129,7 @@ function Clustergrammer(args) {
   cgm.d3_tip_custom = expose_d3_tip_custom;
   cgm.reorder = api_reorder;
   cgm.export_matrix_string = export_matrix_string;
+  cgm.update_view = external_update_view;
 
   return cgm;
 }

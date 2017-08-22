@@ -3,6 +3,7 @@ var core = require('mathjs/core');
 var math = core.create();
 var dist_fun = require('./distance_functions');
 var get_order_and_groups_clusterfck_tree = require('./get_order_and_groups_clusterfck_tree');
+var update_view = require('../update/update_view');
 
 math.import(require('mathjs/lib/function/matrix/transpose'));
 math.import(require('mathjs/lib/type/matrix'));
@@ -36,6 +37,8 @@ module.exports = function recluster(cgm){
       name_nodes = 'col_nodes';
     }
 
+    console.log(mat)
+
     // var dist_type = 'cosine';
     var dist_type = 'euclidean';
     var clusters = clusterfck.hcluster(mat, dist_fun[dist_type]);
@@ -56,11 +59,10 @@ module.exports = function recluster(cgm){
       inst_node.group = inst_order.group;
     }
 
-
   });
 
   // add new view to views
   cgm.config.network_data.views.push(new_view);
-  cgm.update_view('dist', 'euclidean');
+  update_view(cgm, 'dist', 'euclidean');
 
 };
