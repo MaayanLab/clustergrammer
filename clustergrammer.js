@@ -4662,7 +4662,7 @@ var Clustergrammer =
 	        // calculate the percentage relative to the current cluster
 	        var inst_count = d[binom_pval_index];
 
-	        if (inst_count < 0.1) {
+	        if (inst_count < 0.001) {
 	          inst_count = parseFloat(inst_count.toPrecision(3));
 	          inst_count = inst_count.toExponential();
 	        } else {
