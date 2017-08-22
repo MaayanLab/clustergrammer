@@ -15540,19 +15540,21 @@ var Clustergrammer =
 	module.exports = function make_tree_menu(cgm) {
 	  var params = cgm.params;
 
+	  var menu_width = 525;
+
 	  // make tree menu (state is in cgm, remade each time)
 	  /////////////////////////////////////////////////////
 	  var tree_menu = d3.select(params.root + ' .viz_svg').append('g').attr('transform', function () {
 	    var shift = {};
-	    shift.x = params.viz.clust.margin.left / 2;
-	    shift.y = params.viz.clust.margin.top / 2;
+	    shift.x = params.viz.clust.dim.width + params.viz.clust.margin.left - menu_width + 25;
+	    shift.y = params.viz.clust.margin.top;
 	    return 'translate(' + shift.x + ', ' + shift.y + ')';
 	  }).classed('tree_menu', true);
 
 	  tree_menu.attr('opacity', 0.0).transition().attr('opacity', 1.0);
 
 	  tree_menu.append('rect').classed('tree_menu_background', true).attr('width', function () {
-	    var inst_width = params.viz.clust.dim.width + params.viz.clust.margin.left / 1.5;
+	    var inst_width = menu_width;
 	    return inst_width;
 	  }).attr('height', function () {
 	    var inst_height = 500;
