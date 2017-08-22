@@ -1,6 +1,7 @@
+var recluster = require('../recluster/recluster');
 module.exports = function make_tree_menu(cgm){
-  var params = cgm.params;
 
+  var params = cgm.params;
   var menu_width = 475;
 
   // make tree menu (state is in cgm, remade each time)
@@ -85,7 +86,14 @@ module.exports = function make_tree_menu(cgm){
       var vert = i * vertical_space;
       var transform_string = 'translate(0,'+ vert + ')';
       return transform_string;
-    });
+    })
+    .on('click', function(d){
+      if (d === 'Euclidean'){
+
+        console.log('reclustering using Euclidean distance')
+        recluster(cgm);
+      }
+    })
 
   distance_groups
     .append('circle')

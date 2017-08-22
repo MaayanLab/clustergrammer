@@ -113,37 +113,9 @@ function Clustergrammer(args) {
   function run_recluster(){
 
     // debugger;
-    var mat = this.params.network_data.mat;
-    var names = this.params.network_data.row_nodes_names;
-    var order_info = recluster(mat, names)
-
-    var new_view = {};
-    new_view.N_row_sum = 'null';
-    new_view.N_row_var = 'null';
-    new_view.dist = 'euclidean';
-    new_view.nodes = $.extend(true, [], this.config.network_data.views[0].nodes);
+    recluster(this);
 
 
-    console.log(new_view)
-
-    // overwrite ordering with new ordering
-    // var rows = this.config.network_data.views[0].nodes['row_nodes']
-    var rows = new_view.nodes['row_nodes']
-
-    for (var index=0; index < rows.length; index++){
-      inst_row = rows[index]
-      inst_order = order_info.info[index]
-
-      // pass clust property to config view N_row_sum: 'all' [hacky]
-      inst_row.clust = inst_order.order;
-      inst_row.group = inst_order.group;
-
-    }
-
-    // add new view to views
-    this.config.network_data.views.push(new_view);
-
-    // return order_info;
 
   }
 

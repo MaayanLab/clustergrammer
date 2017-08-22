@@ -158,35 +158,7 @@ var Clustergrammer =
 	  function run_recluster() {
 
 	    // debugger;
-	    var mat = this.params.network_data.mat;
-	    var names = this.params.network_data.row_nodes_names;
-	    var order_info = recluster(mat, names);
-
-	    var new_view = {};
-	    new_view.N_row_sum = 'null';
-	    new_view.N_row_var = 'null';
-	    new_view.dist = 'euclidean';
-	    new_view.nodes = $.extend(true, [], this.config.network_data.views[0].nodes);
-
-	    console.log(new_view);
-
-	    // overwrite ordering with new ordering
-	    // var rows = this.config.network_data.views[0].nodes['row_nodes']
-	    var rows = new_view.nodes['row_nodes'];
-
-	    for (var index = 0; index < rows.length; index++) {
-	      inst_row = rows[index];
-	      inst_order = order_info.info[index];
-
-	      // pass clust property to config view N_row_sum: 'all' [hacky]
-	      inst_row.clust = inst_order.order;
-	      inst_row.group = inst_order.group;
-	    }
-
-	    // add new view to views
-	    this.config.network_data.views.push(new_view);
-
-	    // return order_info;
+	    recluster(this);
 	  }
 
 	  // add more API endpoints
@@ -18692,7 +18664,7 @@ var Clustergrammer =
 	math.import(__webpack_require__(226));
 	math.import(__webpack_require__(227));
 
-	module.exports = function recluster(mat, names) {
+	module.exports = function recluster(cgm, mat, names) {
 	  /*
 	  Rows are clustered. Run transpose before if necessary
 	  */
@@ -18702,13 +18674,40 @@ var Clustergrammer =
 	  // var mat = this.params.network_data.mat;
 	  // mat = transpose(mat);
 
+
+	  var mat = cgm.params.network_data.mat;
+
 	  // var dist_type = 'cosine';
 	  var dist_type = 'euclidean';
 	  var clusters = clusterfck.hcluster(mat, dist_fun[dist_type]);
 
+	  var names = cgm.params.network_data.row_nodes_names;
+
 	  var order_info = get_order_and_groups_clusterfck_tree(clusters, names);
 
-	  return order_info;
+	  var new_view = {};
+	  new_view.N_row_sum = 'null';
+	  new_view.N_row_var = 'null';
+	  new_view.dist = 'euclidean';
+	  new_view.nodes = $.extend(true, [], cgm.config.network_data.views[0].nodes);
+
+	  // overwrite ordering with new ordering
+	  // var rows = this.config.network_data.views[0].nodes['row_nodes']
+	  var rows = new_view.nodes['row_nodes'];
+
+	  for (var index = 0; index < rows.length; index++) {
+	    inst_row = rows[index];
+	    inst_order = order_info.info[index];
+
+	    // pass clust property to config view N_row_sum: 'all' [hacky]
+	    inst_row.clust = inst_order.order;
+	    inst_row.group = inst_order.group;
+	  }
+
+	  // add new view to views
+	  cgm.config.network_data.views.push(new_view);
+
+	  cgm.update_view('dist', 'euclidean');
 		};
 
 /***/ }),
@@ -27371,7 +27370,7 @@ var Clustergrammer =
 
 	var position_svg_dendro_slider = __webpack_require__(149);
 	var d3_tip_custom = __webpack_require__(48);
-	var make_tree_menu = __webpack_require__(278);
+	var toggle_tree_menu = __webpack_require__(281);
 
 	module.exports = function build_svg_tree_icon(cgm, inst_rc) {
 
@@ -27397,6 +27396,7 @@ var Clustergrammer =
 	    if (d3.select(params.root + ' .tree_menu').empty()) {
 
 	      d3.selectAll(params.viz.root_tips + '_tree_menu_tip').style('opacity', 1).style('display', 'block');
+
 	      tree_menu_tip.show();
 	    }
 
@@ -27410,16 +27410,12 @@ var Clustergrammer =
 
 	    if (d3.select(params.root + ' .tree_menu').empty()) {
 
-	      make_tree_menu(cgm);
+	      toggle_tree_menu(cgm, 'open');
 
 	      tree_menu_tip.hide();
 	    } else {
 
-	      d3.select(params.root + ' .tree_menu').transition(700).attr('opacity', 0);
-
-	      setTimeout(function () {
-	        d3.select(params.root + ' .tree_menu').remove();
-	      }, 700);
+	      toggle_tree_menu(cgm, 'close');
 	    }
 	  });
 
@@ -27501,11 +27497,12 @@ var Clustergrammer =
 
 /***/ }),
 /* 278 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
+	var recluster = __webpack_require__(221);
 	module.exports = function make_tree_menu(cgm) {
-	  var params = cgm.params;
 
+	  var params = cgm.params;
 	  var menu_width = 475;
 
 	  // make tree menu (state is in cgm, remade each time)
@@ -27546,6 +27543,12 @@ var Clustergrammer =
 	    var vert = i * vertical_space;
 	    var transform_string = 'translate(0,' + vert + ')';
 	    return transform_string;
+	  }).on('click', function (d) {
+	    if (d === 'Euclidean') {
+
+	      console.log('reclustering using Euclidean distance');
+	      recluster(cgm);
+	    }
 	  });
 
 	  distance_groups.append('circle').attr('cx', 10).attr('cy', -6).attr('r', 7).style('stroke', '#A3A3A3').style('stroke-width', '2px').style('fill', 'white');
@@ -27699,6 +27702,30 @@ var Clustergrammer =
 	  order_info.ordered_names = ordered_names;
 
 	  return order_info;
+		};
+
+/***/ }),
+/* 281 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var make_tree_menu = __webpack_require__(278);
+
+	module.exports = function toggle_tree_menu(cgm, toggle) {
+
+	  var params = cgm.params;
+
+	  if (toggle === 'open') {
+
+	    // console.log('open')
+	    make_tree_menu(cgm);
+	  } else if (toggle === 'close') {
+
+	    d3.select(params.root + ' .tree_menu').transition(700).attr('opacity', 0);
+
+	    setTimeout(function () {
+	      d3.select(params.root + ' .tree_menu').remove();
+	    }, 700);
+	  }
 		};
 
 /***/ })
