@@ -42,11 +42,12 @@ module.exports = function position_svg_dendro_slider(cgm, inst_rc){
     })
     .style('opacity', 1);
 
+  // reposiiton slider
   d3.select(cgm.params.root + ' .' + inst_rc + '_slider_group')
     .attr('transform', function() {
       var inst_translation;
       if (inst_rc === 'row'){
-        tmp_left = tmp_left + 0.6 * viz.dendro_room.row;
+        tmp_left = tmp_left + 0.8 * viz.dendro_room.row;
         tmp_top = tmp_top + 65;
         inst_translation = 'translate(' + tmp_left + ',' + tmp_top + ')';
       } else {
