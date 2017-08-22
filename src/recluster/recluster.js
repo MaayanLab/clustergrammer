@@ -8,12 +8,12 @@ var update_view = require('../update/update_view');
 math.import(require('mathjs/lib/function/matrix/transpose'));
 math.import(require('mathjs/lib/type/matrix'));
 
-module.exports = function recluster(cgm){
+module.exports = function recluster(cgm, new_distance_metric){
 
   var new_view = {};
   new_view.N_row_sum = 'null';
   new_view.N_row_var = 'null';
-  new_view.dist = 'euclidean';
+  new_view.dist = new_distance_metric;
 
   // // constructing new nodes from old view (does not work when filtering)
   // new_view.nodes = $.extend(true, [], cgm.params.network_data.views[0].nodes);
@@ -43,9 +43,7 @@ module.exports = function recluster(cgm){
       name_nodes = 'col_nodes';
     }
 
-    // var dist_type = 'cosine';
-    var dist_type = 'euclidean';
-    var clusters = clusterfck.hcluster(mat, dist_fun[dist_type]);
+    var clusters = clusterfck.hcluster(mat, dist_fun[new_distance_metric]);
 
     var order_info = get_order_and_groups_clusterfck_tree(clusters, names);
     var inst_node;
@@ -67,6 +65,6 @@ module.exports = function recluster(cgm){
 
   // add new view to views
   cgm.config.network_data.views.push(new_view);
-  update_view(cgm, 'dist', 'euclidean');
+  update_view(cgm, 'dist', new_distance_metric);
 
 };

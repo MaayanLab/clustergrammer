@@ -15595,22 +15595,18 @@ var Clustergrammer =
 	    return transform_string;
 	  }).on('click', function (d) {
 
-	    if (d === 'euclidean') {
-	      // toggle tree menu
-	      d3.select(params.root + ' .tree_menu').transition(700).attr('opacity', 0);
-	      setTimeout(function () {
-	        d3.select(params.root + ' .tree_menu').remove();
-	      }, 700);
+	    // if (d === 'euclidean'){
+	    // toggle tree menu
+	    d3.select(params.root + ' .tree_menu').transition(700).attr('opacity', 0);
+	    setTimeout(function () {
+	      d3.select(params.root + ' .tree_menu').remove();
+	    }, 700);
 
-	      // update distance metric
-	      cgm.params.matrix.distance_metric = d;
+	    // update distance metric
+	    cgm.params.matrix.distance_metric = d;
 
-	      console.log(cgm.params.matrix.distance_metric);
-
-	      recluster(cgm);
-
-	      console.log(cgm.params.matrix.distance_metric);
-	    }
+	    recluster(cgm, d);
+	    // }
 	  });
 
 	  distance_groups.append('circle').attr('cx', 10).attr('cy', -6).attr('r', 7).style('stroke', '#A3A3A3').style('stroke-width', '2px').style('fill', function (d) {
@@ -15647,12 +15643,12 @@ var Clustergrammer =
 	math.import(__webpack_require__(173));
 	math.import(__webpack_require__(174));
 
-	module.exports = function recluster(cgm) {
+	module.exports = function recluster(cgm, new_distance_metric) {
 
 	  var new_view = {};
 	  new_view.N_row_sum = 'null';
 	  new_view.N_row_var = 'null';
-	  new_view.dist = 'euclidean';
+	  new_view.dist = new_distance_metric;
 
 	  // // constructing new nodes from old view (does not work when filtering)
 	  // new_view.nodes = $.extend(true, [], cgm.params.network_data.views[0].nodes);
@@ -15681,9 +15677,7 @@ var Clustergrammer =
 	      name_nodes = 'col_nodes';
 	    }
 
-	    // var dist_type = 'cosine';
-	    var dist_type = 'euclidean';
-	    var clusters = clusterfck.hcluster(mat, dist_fun[dist_type]);
+	    var clusters = clusterfck.hcluster(mat, dist_fun[new_distance_metric]);
 
 	    var order_info = get_order_and_groups_clusterfck_tree(clusters, names);
 	    var inst_node;
@@ -15704,7 +15698,7 @@ var Clustergrammer =
 
 	  // add new view to views
 	  cgm.config.network_data.views.push(new_view);
-	  update_view(cgm, 'dist', 'euclidean');
+	  update_view(cgm, 'dist', new_distance_metric);
 		};
 
 /***/ }),

@@ -90,7 +90,7 @@ module.exports = function make_tree_menu(cgm){
     })
     .on('click', function(d){
 
-      if (d === 'euclidean'){
+      // if (d === 'euclidean'){
         // toggle tree menu
         d3.select(params.root+' .tree_menu')
           .transition(700)
@@ -103,13 +103,9 @@ module.exports = function make_tree_menu(cgm){
         // update distance metric
         cgm.params.matrix.distance_metric = d;
 
-        console.log(cgm.params.matrix.distance_metric)
+        recluster(cgm, d);
+      // }
 
-        recluster(cgm);
-
-        console.log(cgm.params.matrix.distance_metric)
-
-      }
     });
 
   distance_groups
