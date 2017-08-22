@@ -1,6 +1,14 @@
 var utils = require('../Utils_clust');
+var core = require('mathjs/core');
+var math = core.create();
+math.import(require('mathjs/lib/type/matrix'));
+math.import(require('mathjs/lib/function/matrix/zeros'));
 
 module.exports = function filter_network_using_new_nodes(config, new_nodes) {
+
+  mat = math.matrix(math.zeros([10,3]));
+  mat = mat.toArray();
+  console.log(mat)
 
   var links = config.network_data.links;
 
@@ -11,18 +19,24 @@ module.exports = function filter_network_using_new_nodes(config, new_nodes) {
   var row_names = utils.pluck(new_nodes.row_nodes, 'name');
   var col_names = utils.pluck(new_nodes.col_nodes, 'name');
 
-  var new_links = _.filter(links, function(d){
-    var inst_row = d.name.split('_')[0];
-    var inst_col = d.name.split('_')[1];
+  console.log('update mat with new view\n---------------------------')
+
+  var new_links = _.filter(links, function(inst_link){
+
+    var inst_row = inst_link.name.split('_')[0];
+    var inst_col = inst_link.name.split('_')[1];
 
     var row_index = _.indexOf(row_names, inst_row);
     var col_index = _.indexOf(col_names, inst_col);
 
+    // only keep links that have not been filtered out
     if ( row_index >-1 & col_index >-1 ){
+
       // redefine source and target
-      d.source = row_index;
-      d.target = col_index;
-      return d;
+      inst_link.source = row_index;
+      inst_link.target = col_index;
+
+      return inst_link;
     }
   });
 

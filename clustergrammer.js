@@ -782,8 +782,16 @@ var Clustergrammer =
 /***/ (function(module, exports, __webpack_require__) {
 
 	var utils = __webpack_require__(2);
+	var core = __webpack_require__(67);
+	var math = core.create();
+	math.import(__webpack_require__(174));
+	math.import(__webpack_require__(282));
 
 	module.exports = function filter_network_using_new_nodes(config, new_nodes) {
+
+	  mat = math.matrix(math.zeros([10, 3]));
+	  mat = mat.toArray();
+	  console.log(mat);
 
 	  var links = config.network_data.links;
 
@@ -794,18 +802,24 @@ var Clustergrammer =
 	  var row_names = utils.pluck(new_nodes.row_nodes, 'name');
 	  var col_names = utils.pluck(new_nodes.col_nodes, 'name');
 
-	  var new_links = _.filter(links, function (d) {
-	    var inst_row = d.name.split('_')[0];
-	    var inst_col = d.name.split('_')[1];
+	  console.log('update mat with new view\n---------------------------');
+
+	  var new_links = _.filter(links, function (inst_link) {
+
+	    var inst_row = inst_link.name.split('_')[0];
+	    var inst_col = inst_link.name.split('_')[1];
 
 	    var row_index = _.indexOf(row_names, inst_row);
 	    var col_index = _.indexOf(col_names, inst_col);
 
+	    // only keep links that have not been filtered out
 	    if (row_index > -1 & col_index > -1) {
+
 	      // redefine source and target
-	      d.source = row_index;
-	      d.target = col_index;
-	      return d;
+	      inst_link.source = row_index;
+	      inst_link.target = col_index;
+
+	      return inst_link;
 	    }
 	  });
 
@@ -27749,6 +27763,140 @@ var Clustergrammer =
 
 	  reset_other_filter_sliders(cgm, filter_type, inst_state);
 	};
+
+/***/ }),
+/* 282 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var isInteger = __webpack_require__(72).isInteger;
+	var resize = __webpack_require__(82).resize;
+
+	function factory(type, config, load, typed) {
+	  var matrix = load(__webpack_require__(89));
+
+	  /**
+	   * Create a matrix filled with zeros. The created matrix can have one or
+	   * multiple dimensions.
+	   *
+	   * Syntax:
+	   *
+	   *    math.zeros(m)
+	   *    math.zeros(m, format)
+	   *    math.zeros(m, n)
+	   *    math.zeros(m, n, format)
+	   *    math.zeros([m, n])
+	   *    math.zeros([m, n], format)
+	   *
+	   * Examples:
+	   *
+	   *    math.zeros(3);                  // returns [0, 0, 0]
+	   *    math.zeros(3, 2);               // returns [[0, 0], [0, 0], [0, 0]]
+	   *    math.zeros(3, 'dense');         // returns [0, 0, 0]
+	   *
+	   *    var A = [[1, 2, 3], [4, 5, 6]];
+	   *    math.zeros(math.size(A));       // returns [[0, 0, 0], [0, 0, 0]]
+	   *
+	   * See also:
+	   *
+	   *    ones, eye, size, range
+	   *
+	   * @param {...number | Array} size    The size of each dimension of the matrix
+	   * @param {string} [format]           The Matrix storage format
+	   *
+	   * @return {Array | Matrix}           A matrix filled with zeros
+	   */
+	  var zeros = typed('zeros', {
+	    '': function () {
+	      return config.matrix === 'Array' ? _zeros([]) : _zeros([], 'default');
+	    },
+
+	    // math.zeros(m, n, p, ..., format)
+	    // TODO: more accurate signature '...number | BigNumber, string' as soon as typed-function supports this
+	    '...number | BigNumber | string': function (size) {
+	      var last = size[size.length - 1];
+	      if (typeof last === 'string') {
+	        var format = size.pop();
+	        return _zeros(size, format);
+	      } else if (config.matrix === 'Array') {
+	        return _zeros(size);
+	      } else {
+	        return _zeros(size, 'default');
+	      }
+	    },
+
+	    'Array': _zeros,
+
+	    'Matrix': function (size) {
+	      var format = size.storage();
+	      return _zeros(size.valueOf(), format);
+	    },
+
+	    'Array | Matrix, string': function (size, format) {
+	      return _zeros(size.valueOf(), format);
+	    }
+	  });
+
+	  zeros.toTex = undefined; // use default template
+
+	  return zeros;
+
+	  /**
+	   * Create an Array or Matrix with zeros
+	   * @param {Array} size
+	   * @param {string} [format='default']
+	   * @return {Array | Matrix}
+	   * @private
+	   */
+	  function _zeros(size, format) {
+	    var hasBigNumbers = _normalize(size);
+	    var defaultValue = hasBigNumbers ? new type.BigNumber(0) : 0;
+	    _validate(size);
+
+	    if (format) {
+	      // return a matrix
+	      var m = matrix(format);
+	      if (size.length > 0) {
+	        return m.resize(size, defaultValue);
+	      }
+	      return m;
+	    } else {
+	      // return an Array
+	      var arr = [];
+	      if (size.length > 0) {
+	        return resize(arr, size, defaultValue);
+	      }
+	      return arr;
+	    }
+	  }
+
+	  // replace BigNumbers with numbers, returns true if size contained BigNumbers
+	  function _normalize(size) {
+	    var hasBigNumbers = false;
+	    size.forEach(function (value, index, arr) {
+	      if (value && value.isBigNumber === true) {
+	        hasBigNumbers = true;
+	        arr[index] = value.toNumber();
+	      }
+	    });
+	    return hasBigNumbers;
+	  }
+
+	  // validate arguments
+	  function _validate(size) {
+	    size.forEach(function (value) {
+	      if (typeof value !== 'number' || !isInteger(value) || value < 0) {
+	        throw new Error('Parameters in function zeros must be positive integers');
+	      }
+	    });
+	  }
+	}
+
+	// TODO: zeros contains almost the same code as ones. Reuse this?
+
+	exports.name = 'zeros';
+	exports.factory = factory;
 
 /***/ })
 /******/ ]);
