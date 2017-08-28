@@ -632,7 +632,9 @@ var Clustergrammer =
 
 /***/ }),
 /* 7 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+	var underscore = __webpack_require__(66);
 
 	module.exports = function check_sim_mat(config) {
 
@@ -643,12 +645,12 @@ var Clustergrammer =
 
 	  if (num_rows == num_cols) {
 
-	    // the sort here was causing errors 
+	    // the sort here was causing errors
 	    var rows = config.network_data.row_nodes_names;
 	    var cols = config.network_data.col_nodes_names;
 	    sim_mat = true;
 
-	    _.each(rows, function (inst_row) {
+	    underscore.each(rows, function (inst_row) {
 	      var inst_index = rows.indexOf(inst_row);
 	      if (inst_row !== cols[inst_index]) {
 	        sim_mat = false;
@@ -665,14 +667,16 @@ var Clustergrammer =
 
 /***/ }),
 /* 8 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+	var underscore = __webpack_require__(66);
 
 	module.exports = function check_nodes_for_categories(nodes) {
 
 	  var super_string = ': ';
 	  var has_cat = true;
 
-	  _.each(nodes, function (inst_node) {
+	  underscore.each(nodes, function (inst_node) {
 	    var inst_name = String(inst_node.name);
 	    if (inst_name.indexOf(super_string) < 0) {
 	      has_cat = false;
