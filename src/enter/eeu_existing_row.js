@@ -4,6 +4,7 @@ var update_split_tiles = require('../update/update_split_tiles');
 var mouseover_tile = require('../matrix/mouseover_tile');
 var mouseout_tile = require('../matrix/mouseout_tile');
 var fine_position_tile = require('../matrix/fine_position_tile');
+var underscore = require('underscore');
 
 // TODO add tip back to arguments
 module.exports = function eeu_existing_row(params, ini_inp_row_data, delays, duration, row_selection, tip) {
@@ -46,7 +47,8 @@ module.exports = function eeu_existing_row(params, ini_inp_row_data, delays, dur
       .attr('width', params.viz.rect_width)
       .attr('height', params.viz.rect_height)
       .attr('transform', function(d) {
-        if (_.contains(col_nodes_names, d.col_name)){
+        // if (_.contains(col_nodes_names, d.col_name)){
+        if (underscore.contains(col_nodes_names, d.col_name)){
           return fine_position_tile(params, d);
         } else {
           return 'translate(0,0)';
@@ -58,7 +60,7 @@ module.exports = function eeu_existing_row(params, ini_inp_row_data, delays, dur
       .attr('width', params.viz.rect_width)
       .attr('height', params.viz.rect_height)
       .attr('transform', function(d) {
-        if (_.contains(col_nodes_names, d.col_name)){
+        if (underscore.contains(col_nodes_names, d.col_name)){
           return fine_position_tile(params, d);
         } else {
           return 'translate(0,0)';

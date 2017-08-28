@@ -1,5 +1,6 @@
 var make_simple_rows = require('./make_simple_rows');
 var d3_tip_custom = require('../tooltip/d3_tip_custom');
+var underscore = require('underscore');
 
 // current matrix can change with downsampling
 module.exports = function make_matrix_rows(params, current_matrix,
@@ -64,7 +65,7 @@ module.exports = function make_matrix_rows(params, current_matrix,
     matrix_subset = current_matrix;
   } else {
     _.each(current_matrix, function(inst_row){
-      if (_.contains(row_names, inst_row.name)){
+      if (underscore.contains(row_names, inst_row.name)){
         matrix_subset.push(inst_row);
       }
     });

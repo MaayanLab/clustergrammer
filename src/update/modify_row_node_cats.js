@@ -1,5 +1,6 @@
 var remove_node_cats = require('./remove_node_cats');
 var utils = require('../Utils_clust');
+var underscore = require('underscore');
 
 module.exports = function modify_row_node_cats(cat_data, inst_nodes, strip_names=false){
 
@@ -61,7 +62,8 @@ module.exports = function modify_row_node_cats(cat_data, inst_nodes, strip_names
         inst_members = inst_cat.members;
 
         // add category if node is a member
-        if ( _.contains(inst_members, inst_name) ){
+        // if ( _.contains(inst_members, inst_name) ){
+        if ( underscore.contains(inst_members, inst_name) ){
 
           inst_category = inst_cat_name;
           inst_index = inst_cat_num;
