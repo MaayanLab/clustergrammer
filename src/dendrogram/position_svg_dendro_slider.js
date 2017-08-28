@@ -18,7 +18,8 @@ module.exports = function position_svg_dendro_slider(cgm, inst_rc){
       tmp_left = max_room;
     }
 
-    tmp_top =  viz.clust.margin.top + 3 * viz.uni_margin - 50; // + 90 ;
+    // tmp_top =  viz.clust.margin.top + 3 * viz.uni_margin - 50;
+    tmp_top =  viz.clust.margin.top + 3 * viz.uni_margin + 90;
 
   } else {
 
