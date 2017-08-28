@@ -1,4 +1,5 @@
 var utils = require('../Utils_clust');
+var underscore = require('underscore');
 
 module.exports = function get_cat_names(params, inst_data, inst_selection, inst_rc){
 
@@ -7,7 +8,7 @@ module.exports = function get_cat_names(params, inst_data, inst_selection, inst_
   var cat_name = inst_data[inst_cat];
   var tmp_nodes = params.network_data[inst_rc+'_nodes'];
 
-  var found_nodes = _.filter(tmp_nodes, function(d){
+  var found_nodes = underscore.filter(tmp_nodes, function(d){
     return d[inst_cat] == cat_name;
   });
 

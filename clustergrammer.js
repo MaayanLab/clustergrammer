@@ -191,6 +191,7 @@ var Clustergrammer =
 	var set_defaults = __webpack_require__(6);
 	var check_sim_mat = __webpack_require__(7);
 	var check_nodes_for_categories = __webpack_require__(8);
+	var underscore = __webpack_require__(66);
 
 	module.exports = function make_config(args) {
 
@@ -204,7 +205,7 @@ var Clustergrammer =
 	  var super_string = ': ';
 
 	  // replace undersores with space in row/col names
-	  _.each(['row', 'col'], function (inst_rc) {
+	  underscore.each(['row', 'col'], function (inst_rc) {
 
 	    var inst_nodes = config.network_data[inst_rc + '_nodes'];
 
@@ -235,7 +236,7 @@ var Clustergrammer =
 	  var filters = get_available_filters(config.network_data.views);
 
 	  var default_states = {};
-	  _.each(_.keys(filters.possible_filters), function (inst_filter) {
+	  underscore.each(underscore.keys(filters.possible_filters), function (inst_filter) {
 	    var tmp_state = get_filter_default_state(filters.filter_data, inst_filter);
 
 	    default_states[inst_filter] = tmp_state;
@@ -245,7 +246,7 @@ var Clustergrammer =
 	  if (_.has(config.network_data, 'views')) {
 	    config.network_data.views.forEach(function (inst_view) {
 
-	      _.each(_.keys(filters.possible_filters), function (inst_filter) {
+	      underscore.each(underscore.keys(filters.possible_filters), function (inst_filter) {
 	        if (!_.has(inst_view, inst_filter)) {
 	          inst_view[inst_filter] = default_states[inst_filter];
 	        }
@@ -254,7 +255,7 @@ var Clustergrammer =
 	      var inst_nodes = inst_view.nodes;
 
 	      // proc row/col nodes names in views
-	      _.each(['row', 'col'], function (inst_rc) {
+	      underscore.each(['row', 'col'], function (inst_rc) {
 
 	        var has_cats = check_nodes_for_categories(inst_nodes[inst_rc + '_nodes']);
 
@@ -22374,6 +22375,7 @@ var Clustergrammer =
 /***/ (function(module, exports, __webpack_require__) {
 
 	var utils = __webpack_require__(2);
+	var underscore = __webpack_require__(66);
 
 	module.exports = function get_cat_names(params, inst_data, inst_selection, inst_rc) {
 
@@ -22382,7 +22384,7 @@ var Clustergrammer =
 	  var cat_name = inst_data[inst_cat];
 	  var tmp_nodes = params.network_data[inst_rc + '_nodes'];
 
-	  var found_nodes = _.filter(tmp_nodes, function (d) {
+	  var found_nodes = underscore.filter(tmp_nodes, function (d) {
 	    return d[inst_cat] == cat_name;
 	  });
 

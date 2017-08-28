@@ -5,6 +5,7 @@ var get_filter_default_state = require('./filters/get_filter_default_state');
 var set_defaults = require('./config/set_defaults');
 var check_sim_mat = require('./config/check_sim_mat');
 var check_nodes_for_categories = require('./config/check_nodes_for_categories');
+var underscore = require('underscore');
 
 module.exports = function make_config(args) {
 
@@ -18,7 +19,7 @@ module.exports = function make_config(args) {
   var super_string = ': ';
 
   // replace undersores with space in row/col names
-  _.each(['row', 'col'], function(inst_rc){
+  underscore.each(['row', 'col'], function(inst_rc){
 
     var inst_nodes = config.network_data[inst_rc+'_nodes'];
 
@@ -51,7 +52,7 @@ module.exports = function make_config(args) {
   var filters = get_available_filters(config.network_data.views);
 
   var default_states = {};
-  _.each( _.keys(filters.possible_filters), function(inst_filter){
+  underscore.each( underscore.keys(filters.possible_filters), function(inst_filter){
     var tmp_state = get_filter_default_state(filters.filter_data, inst_filter);
 
     default_states[inst_filter] = tmp_state;
@@ -61,7 +62,7 @@ module.exports = function make_config(args) {
   if (_.has(config.network_data, 'views')){
     config.network_data.views.forEach(function(inst_view){
 
-      _.each( _.keys(filters.possible_filters), function(inst_filter){
+      underscore.each( underscore.keys(filters.possible_filters), function(inst_filter){
         if ( !_.has(inst_view, inst_filter) ){
           inst_view[inst_filter] = default_states[inst_filter];
         }
@@ -70,7 +71,7 @@ module.exports = function make_config(args) {
       var inst_nodes = inst_view.nodes;
 
       // proc row/col nodes names in views
-      _.each(['row','col'], function(inst_rc){
+      underscore.each(['row','col'], function(inst_rc){
 
         var has_cats = check_nodes_for_categories(inst_nodes[inst_rc+'_nodes']);
 
