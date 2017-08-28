@@ -12,6 +12,7 @@ var make_row_dendro = require('./dendrogram/make_row_dendro');
 var make_col_dendro = require('./dendrogram/make_col_dendro');
 var make_svg_dendro_sliders = require('./dendrogram/make_svg_dendro_sliders');
 var make_row_dendro_spillover = require('./spillover/make_row_dendro_spillover');
+var underscore = require('underscore');
 
 module.exports = function make_viz(cgm) {
 
@@ -51,7 +52,7 @@ module.exports = function make_viz(cgm) {
 
   // initial trim text
   if (params.viz.ds_level === -1){
-    _.each(['row','col'], function(inst_rc){
+    underscore.each(['row','col'], function(inst_rc){
 
       var inst_fs = Number(d3.select('.'+inst_rc+'_label_group')
         .select('text')

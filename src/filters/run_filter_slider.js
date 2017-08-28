@@ -2,6 +2,7 @@ var update_viz_with_view = require('../network/update_viz_with_view');
 var reset_other_filter_sliders = require('./reset_other_filter_sliders');
 var get_current_orders = require('./get_current_orders');
 var make_requested_view = require('./make_requested_view');
+var underscore = require('underscore');
 
 module.exports = function run_filter_slider(cgm, filter_type, available_views, inst_index){
 
@@ -22,7 +23,7 @@ module.exports = function run_filter_slider(cgm, filter_type, available_views, i
 
     requested_view = make_requested_view(params, requested_view);
 
-    if ( _.has(available_views[0],'enr_score_type') ){
+    if ( underscore.has(available_views[0],'enr_score_type') ){
       var enr_state = d3.select(params.root+' .toggle_enr_score_type')
         .attr('current_state');
 

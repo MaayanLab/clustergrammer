@@ -1,4 +1,5 @@
 var deactivate_cropping = require('./deactivate_cropping');
+var underscore = require('underscore');
 
 module.exports = function brush_crop_matrix(){
 
@@ -106,7 +107,7 @@ module.exports = function brush_crop_matrix(){
 
     //   });
 
-    _.each(params.matrix.matrix, function(row_data){
+    underscore.each(params.matrix.matrix, function(row_data){
       var y_trans = params.viz.y_scale(row_data.row_index);
 
         if (y_trans > y_start && y_trans < y_end){

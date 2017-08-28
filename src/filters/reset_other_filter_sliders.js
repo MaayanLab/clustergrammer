@@ -1,4 +1,5 @@
 var make_filter_title = require('./make_filter_title');
+var underscore = require('underscore');
 
 module.exports = function reset_other_filter_sliders(cgm, filter_type, inst_state){
 
@@ -9,7 +10,7 @@ module.exports = function reset_other_filter_sliders(cgm, filter_type, inst_stat
   d3.select(params.root+' .slider_'+filter_type)
     .attr('current_state', inst_state);
 
-  _.each( _.keys(params.viz.possible_filters), function(reset_filter){
+  underscore.each( underscore.keys(params.viz.possible_filters), function(reset_filter){
 
     if ( filter_type.indexOf('row') > -1 ){
       inst_rc = 'row';

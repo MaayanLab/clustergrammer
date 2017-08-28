@@ -1,13 +1,15 @@
+var underscore = require('underscore');
+
 module.exports = function make_view_request(params, requested_view){
 
-  // this will add all necessary information to a view request 
-  // it will grab necessary view information from the sliders 
+  // this will add all necessary information to a view request
+  // it will grab necessary view information from the sliders
 
-  // only one component will be changed at a time 
-  var changed_component = _.keys(requested_view)[0];
+  // only one component will be changed at a time
+  var changed_component = underscore.keys(requested_view)[0];
 
-  // add additional filter information from othe possible filters 
-  _.each( _.keys(params.viz.possible_filters), function(inst_filter){
+  // add additional filter information from othe possible filters
+  underscore.each( underscore.keys(params.viz.possible_filters), function(inst_filter){
 
     if (inst_filter != changed_component){
 

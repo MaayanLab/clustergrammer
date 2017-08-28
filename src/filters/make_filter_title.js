@@ -1,4 +1,5 @@
 var get_filter_default_state = require('./get_filter_default_state');
+var underscore = require('underscore');
 
 module.exports = function make_filter_title(params, filter_type){
 
@@ -35,14 +36,14 @@ module.exports = function make_filter_title(params, filter_type){
 
   if (type.measure === 'sum'){
     filter_title.text = 'Top '+ title.node + ' ' + title.measure+': ';
-  } 
+  }
 
   if (type.measure === 'var'){
     filter_title.text = 'Top '+ title.node + ' ' + title.measure+': ';
   }
 
-  // Enrichr specific rules 
-  if ( _.keys(params.viz.possible_filters).indexOf('enr_score_type') > -1 ){
+  // Enrichr specific rules
+  if ( underscore.keys(params.viz.possible_filters).indexOf('enr_score_type') > -1 ){
     if (type.node === 'col'){
       filter_title.text = 'Top Enriched Terms: ';
       filter_title.suffix = '';

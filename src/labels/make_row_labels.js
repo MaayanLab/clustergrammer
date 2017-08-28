@@ -15,7 +15,7 @@ module.exports = function make_row_labels(cgm, row_names='all', text_delay = 0){
   if (row_names === 'all'){
     row_nodes = params.network_data.row_nodes;
   } else {
-    _.each(params.network_data.row_nodes, function(inst_row){
+    underscore.each(params.network_data.row_nodes, function(inst_row){
       // if (_.contains(row_names, inst_row.name)){
       if (underscore.contains(row_names, inst_row.name)){
         row_nodes.push(inst_row);
@@ -35,7 +35,7 @@ module.exports = function make_row_labels(cgm, row_names='all', text_delay = 0){
   row_labels
     .attr('transform', function(d) {
          // var inst_index = d.row_index;
-         var inst_index = _.indexOf(row_nodes_names, d.name);
+         var inst_index = underscore.indexOf(row_nodes_names, d.name);
       return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
     });
 

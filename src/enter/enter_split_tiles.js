@@ -1,11 +1,12 @@
 var draw_up_tile = require('./draw_up_tile');
 var draw_dn_tile = require('./draw_dn_tile');
 var fine_position_tile = require('../matrix/fine_position_tile');
+var underscore = require('underscore');
 
 module.exports = function enter_split_tiles(params, inp_row_data, row_selection, tip, delays, duration, tile){
 
   // value split
-  var row_split_data = _.filter(inp_row_data, function(num){
+  var row_split_data = underscore.filter(inp_row_data, function(num){
     return num.value_up != 0 || num.value_dn !=0 ;
   });
 

@@ -2,6 +2,7 @@ var enter_split_tiles = require('./enter_split_tiles');
 var mouseover_tile = require('../matrix/mouseover_tile');
 var mouseout_tile = require('../matrix/mouseout_tile');
 var fine_position_tile = require('../matrix/fine_position_tile');
+var underscore = require('underscore');
 
 // make each row in the clustergram
 module.exports = function enter_new_rows(params, ini_inp_row_data, delays, duration, tip, row_selection) {
@@ -9,7 +10,7 @@ module.exports = function enter_new_rows(params, ini_inp_row_data, delays, durat
   var inp_row_data = ini_inp_row_data.row_data;
 
   // remove zero values to make visualization faster
-  var row_data = _.filter(inp_row_data, function(num) {
+  var row_data = underscore.filter(inp_row_data, function(num) {
     return num.value !== 0;
   });
 

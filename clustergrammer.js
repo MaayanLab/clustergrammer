@@ -11157,53 +11157,54 @@ var Clustergrammer =
 
 	var utils = __webpack_require__(2);
 	var get_filter_default_state = __webpack_require__(5);
+	var underscore = __webpack_require__(66);
 
 	module.exports = function get_subset_views(params, views, requested_view) {
 
 	  var inst_value;
 	  var found_filter;
 
-	  var request_filters = _.keys(requested_view);
+	  var request_filters = underscore.keys(requested_view);
 
-	  // find a view that matches all of the requested view/filter-attributes 
-	  _.each(request_filters, function (inst_filter) {
+	  // find a view that matches all of the requested view/filter-attributes
+	  underscore.each(request_filters, function (inst_filter) {
 
 	    inst_value = requested_view[inst_filter];
 
-	    // if the value is a number, then convert it to an integer 
+	    // if the value is a number, then convert it to an integer
 	    if (/[^a-z_]/i.test(inst_value)) {
 	      inst_value = parseInt(inst_value, 10);
 	    }
 
-	    // only run filtering if any of the views has the filter 
+	    // only run filtering if any of the views has the filter
 	    found_filter = false;
-	    _.each(views, function (tmp_view) {
+	    underscore.each(views, function (tmp_view) {
 	      if (utils.has(tmp_view, inst_filter)) {
 	        found_filter = true;
 	      }
 	    });
 
 	    if (found_filter) {
-	      views = _.filter(views, function (d) {
+	      views = underscore.filter(views, function (d) {
 	        return d[inst_filter] == inst_value;
 	      });
 	    }
 	  });
 
-	  // remove duplicate complete default states 
+	  // remove duplicate complete default states
 	  var export_views = [];
 	  var found_default = false;
 	  var check_default;
 	  var inst_default_state;
 
-	  // check if each view is a default state: all filters are at default 
-	  // there can only be one of these 
-	  _.each(views, function (inst_view) {
+	  // check if each view is a default state: all filters are at default
+	  // there can only be one of these
+	  underscore.each(views, function (inst_view) {
 
 	    check_default = true;
 
-	    // check each filter in a view to see if it is in the default state 
-	    _.each(_.keys(params.viz.possible_filters), function (inst_filter) {
+	    // check each filter in a view to see if it is in the default state
+	    underscore.each(underscore.keys(params.viz.possible_filters), function (inst_filter) {
 
 	      inst_default_state = get_filter_default_state(params.viz.filter_data, inst_filter);
 
@@ -11281,18 +11282,20 @@ var Clustergrammer =
 
 /***/ }),
 /* 63 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+	var underscore = __webpack_require__(66);
 
 	module.exports = function make_view_request(params, requested_view) {
 
-	  // this will add all necessary information to a view request 
-	  // it will grab necessary view information from the sliders 
+	  // this will add all necessary information to a view request
+	  // it will grab necessary view information from the sliders
 
-	  // only one component will be changed at a time 
-	  var changed_component = _.keys(requested_view)[0];
+	  // only one component will be changed at a time
+	  var changed_component = underscore.keys(requested_view)[0];
 
-	  // add additional filter information from othe possible filters 
-	  _.each(_.keys(params.viz.possible_filters), function (inst_filter) {
+	  // add additional filter information from othe possible filters
+	  underscore.each(underscore.keys(params.viz.possible_filters), function (inst_filter) {
 
 	    if (inst_filter != changed_component) {
 
@@ -13618,7 +13621,9 @@ var Clustergrammer =
 
 /***/ }),
 /* 78 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+	var underscore = __webpack_require__(66);
 
 	module.exports = function calc_downsampled_matrix(params, mat, ds_level) {
 
@@ -13651,7 +13656,7 @@ var Clustergrammer =
 	    ds_mat.push(inst_obj);
 	  }
 
-	  _.each(mat, function (inst_row) {
+	  underscore.each(mat, function (inst_row) {
 
 	    // row ordering information is contained in y_scale
 	    var inst_y = params.viz.y_scale(inst_row.row_index);
@@ -13681,13 +13686,13 @@ var Clustergrammer =
 	  });
 
 	  // average the values
-	  _.each(ds_mat, function (tmp_ds) {
+	  underscore.each(ds_mat, function (tmp_ds) {
 
 	    var tmp_row_data = tmp_ds.row_data;
 
 	    var num_names = tmp_ds.all_names.length;
 
-	    _.each(tmp_row_data, function (tmp_obj) {
+	    underscore.each(tmp_row_data, function (tmp_obj) {
 	      tmp_obj.value = tmp_obj.value / num_names * opacity_factor;
 	    });
 	  });
@@ -13695,7 +13700,7 @@ var Clustergrammer =
 	  // all names were found
 	  var all_names = [];
 
-	  _.each(ds_mat, function (inst_row) {
+	  underscore.each(ds_mat, function (inst_row) {
 	    all_names = all_names.concat(inst_row.all_names);
 	  });
 
@@ -14106,6 +14111,7 @@ var Clustergrammer =
 	var make_col_dendro = __webpack_require__(185);
 	var make_svg_dendro_sliders = __webpack_require__(186);
 	var make_row_dendro_spillover = __webpack_require__(226);
+	var underscore = __webpack_require__(66);
 
 	module.exports = function make_viz(cgm) {
 
@@ -14132,7 +14138,7 @@ var Clustergrammer =
 
 	  // initial trim text
 	  if (params.viz.ds_level === -1) {
-	    _.each(['row', 'col'], function (inst_rc) {
+	    underscore.each(['row', 'col'], function (inst_rc) {
 
 	      var inst_fs = Number(d3.select('.' + inst_rc + '_label_group').select('text').style('font-size').replace('px', ''));
 
@@ -15207,7 +15213,7 @@ var Clustergrammer =
 	  if (row_names === 'all') {
 	    row_nodes = params.network_data.row_nodes;
 	  } else {
-	    _.each(params.network_data.row_nodes, function (inst_row) {
+	    underscore.each(params.network_data.row_nodes, function (inst_row) {
 	      // if (_.contains(row_names, inst_row.name)){
 	      if (underscore.contains(row_names, inst_row.name)) {
 	        row_nodes.push(inst_row);
@@ -15223,7 +15229,7 @@ var Clustergrammer =
 	  var row_nodes_names = params.network_data.row_nodes_names;
 	  row_labels.attr('transform', function (d) {
 	    // var inst_index = d.row_index;
-	    var inst_index = _.indexOf(row_nodes_names, d.name);
+	    var inst_index = underscore.indexOf(row_nodes_names, d.name);
 	    return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
 	  });
 
@@ -24302,7 +24308,9 @@ var Clustergrammer =
 
 /***/ }),
 /* 208 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+	var underscore = __webpack_require__(66);
 
 	module.exports = function exit_existing_row(params, delays, cur_row_tiles, inp_row_data, row_selection) {
 
@@ -24315,7 +24323,7 @@ var Clustergrammer =
 	  if (params.matrix.tile_type == 'updn') {
 
 	    // value split
-	    var row_split_data = _.filter(inp_row_data, function (num) {
+	    var row_split_data = underscore.filter(inp_row_data, function (num) {
 	      return num.value_up != 0 || num.value_dn != 0;
 	    });
 
@@ -24553,6 +24561,7 @@ var Clustergrammer =
 	var mouseover_tile = __webpack_require__(95);
 	var mouseout_tile = __webpack_require__(96);
 	var fine_position_tile = __webpack_require__(97);
+	var underscore = __webpack_require__(66);
 
 	// make each row in the clustergram
 	module.exports = function enter_new_rows(params, ini_inp_row_data, delays, duration, tip, row_selection) {
@@ -24560,7 +24569,7 @@ var Clustergrammer =
 	  var inp_row_data = ini_inp_row_data.row_data;
 
 	  // remove zero values to make visualization faster
-	  var row_data = _.filter(inp_row_data, function (num) {
+	  var row_data = underscore.filter(inp_row_data, function (num) {
 	    return num.value !== 0;
 	  });
 
@@ -24600,11 +24609,12 @@ var Clustergrammer =
 	var draw_up_tile = __webpack_require__(93);
 	var draw_dn_tile = __webpack_require__(94);
 	var fine_position_tile = __webpack_require__(97);
+	var underscore = __webpack_require__(66);
 
 	module.exports = function enter_split_tiles(params, inp_row_data, row_selection, tip, delays, duration, tile) {
 
 	  // value split
-	  var row_split_data = _.filter(inp_row_data, function (num) {
+	  var row_split_data = underscore.filter(inp_row_data, function (num) {
 	    return num.value_up != 0 || num.value_dn != 0;
 	  });
 
@@ -25095,6 +25105,7 @@ var Clustergrammer =
 /***/ (function(module, exports, __webpack_require__) {
 
 	var make_filter_title = __webpack_require__(224);
+	var underscore = __webpack_require__(66);
 
 	module.exports = function reset_other_filter_sliders(cgm, filter_type, inst_state) {
 
@@ -25104,7 +25115,7 @@ var Clustergrammer =
 
 	  d3.select(params.root + ' .slider_' + filter_type).attr('current_state', inst_state);
 
-	  _.each(_.keys(params.viz.possible_filters), function (reset_filter) {
+	  underscore.each(underscore.keys(params.viz.possible_filters), function (reset_filter) {
 
 	    if (filter_type.indexOf('row') > -1) {
 	      inst_rc = 'row';
@@ -25147,6 +25158,7 @@ var Clustergrammer =
 /***/ (function(module, exports, __webpack_require__) {
 
 	var get_filter_default_state = __webpack_require__(5);
+	var underscore = __webpack_require__(66);
 
 	module.exports = function make_filter_title(params, filter_type) {
 
@@ -25189,8 +25201,8 @@ var Clustergrammer =
 	    filter_title.text = 'Top ' + title.node + ' ' + title.measure + ': ';
 	  }
 
-	  // Enrichr specific rules 
-	  if (_.keys(params.viz.possible_filters).indexOf('enr_score_type') > -1) {
+	  // Enrichr specific rules
+	  if (underscore.keys(params.viz.possible_filters).indexOf('enr_score_type') > -1) {
 	    if (type.node === 'col') {
 	      filter_title.text = 'Top Enriched Terms: ';
 	      filter_title.suffix = '';
@@ -26993,6 +27005,7 @@ var Clustergrammer =
 /***/ (function(module, exports, __webpack_require__) {
 
 	var deactivate_cropping = __webpack_require__(258);
+	var underscore = __webpack_require__(66);
 
 	module.exports = function brush_crop_matrix() {
 
@@ -27084,7 +27097,7 @@ var Clustergrammer =
 
 	    //   });
 
-	    _.each(params.matrix.matrix, function (row_data) {
+	    underscore.each(params.matrix.matrix, function (row_data) {
 	      var y_trans = params.viz.y_scale(row_data.row_index);
 
 	      if (y_trans > y_start && y_trans < y_end) {
@@ -28463,17 +28476,17 @@ var Clustergrammer =
 	var run_filter_slider = __webpack_require__(271);
 	var get_filter_default_state = __webpack_require__(5);
 	var get_subset_views = __webpack_require__(61);
-
 	d3.slider = __webpack_require__(259);
+	var underscore = __webpack_require__(66);
 
 	module.exports = function make_slider_filter(cgm, filter_type, div_filters) {
 
 	  var params = cgm.params;
 	  var inst_view = {};
 
-	  var possible_filters = _.keys(params.viz.possible_filters);
+	  var possible_filters = underscore.keys(params.viz.possible_filters);
 
-	  _.each(possible_filters, function (tmp_filter) {
+	  underscore.each(possible_filters, function (tmp_filter) {
 	    if (tmp_filter != filter_type) {
 	      var default_state = get_filter_default_state(params.viz.filter_data, tmp_filter);
 	      inst_view[tmp_filter] = default_state;
@@ -28530,7 +28543,7 @@ var Clustergrammer =
 
 	  //////////////////////////////////////////////////////////////////////
 
-	  var run_filter_slider_db = _.debounce(run_filter_slider, 800);
+	  var run_filter_slider_db = underscore.debounce(run_filter_slider, 800);
 		};
 
 /***/ }),
@@ -28541,6 +28554,7 @@ var Clustergrammer =
 	var reset_other_filter_sliders = __webpack_require__(223);
 	var get_current_orders = __webpack_require__(272);
 	var make_requested_view = __webpack_require__(63);
+	var underscore = __webpack_require__(66);
 
 	module.exports = function run_filter_slider(cgm, filter_type, available_views, inst_index) {
 
@@ -28561,7 +28575,7 @@ var Clustergrammer =
 
 	    requested_view = make_requested_view(params, requested_view);
 
-	    if (_.has(available_views[0], 'enr_score_type')) {
+	    if (underscore.has(available_views[0], 'enr_score_type')) {
 	      var enr_state = d3.select(params.root + ' .toggle_enr_score_type').attr('current_state');
 
 	      requested_view.enr_score_type = enr_state;
@@ -28573,13 +28587,15 @@ var Clustergrammer =
 
 /***/ }),
 /* 272 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+	var underscore = __webpack_require__(66);
 
 	module.exports = function get_current_orders(params) {
 
-	  // get current orders 
+	  // get current orders
 	  var other_rc;
-	  _.each(['row', 'col'], function (inst_rc) {
+	  underscore.each(['row', 'col'], function (inst_rc) {
 
 	    if (inst_rc === 'row') {
 	      other_rc = 'col';
@@ -28592,7 +28608,7 @@ var Clustergrammer =
 	      params.viz.inst_order[inst_rc] = d3.select(params.root + ' .toggle_' + other_rc + '_order').select('.active').attr('name');
 	    } else {
 
-	      // default to cluster ordering 
+	      // default to cluster ordering
 	      params.viz.inst_order[inst_rc] = 'clust';
 	    }
 	  });

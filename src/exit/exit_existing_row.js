@@ -1,3 +1,5 @@
+var underscore = require('underscore');
+
 module.exports = function exit_existing_row(params, delays, cur_row_tiles, inp_row_data, row_selection){
 
   if (delays.run_transition){
@@ -16,7 +18,7 @@ module.exports = function exit_existing_row(params, delays, cur_row_tiles, inp_r
   if (params.matrix.tile_type == 'updn'){
 
     // value split
-    var row_split_data = _.filter(inp_row_data, function(num){
+    var row_split_data = underscore.filter(inp_row_data, function(num){
       return num.value_up != 0 || num.value_dn !=0 ;
     });
 

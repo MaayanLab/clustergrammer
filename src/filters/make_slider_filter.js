@@ -2,17 +2,17 @@ var make_filter_title = require('./make_filter_title');
 var run_filter_slider = require('./run_filter_slider');
 var get_filter_default_state = require('./get_filter_default_state');
 var get_subset_views = require('./get_subset_views');
-
 d3.slider = require('../d3.slider');
+var underscore = require('underscore');
 
 module.exports = function make_slider_filter(cgm, filter_type, div_filters){
 
   var params = cgm.params;
   var inst_view = {};
 
-  var possible_filters = _.keys(params.viz.possible_filters);
+  var possible_filters = underscore.keys(params.viz.possible_filters);
 
-  _.each(possible_filters, function(tmp_filter){
+  underscore.each(possible_filters, function(tmp_filter){
     if (tmp_filter != filter_type){
       var default_state = get_filter_default_state(params.viz.filter_data, tmp_filter);
       inst_view[tmp_filter] = default_state;
@@ -90,6 +90,6 @@ module.exports = function make_slider_filter(cgm, filter_type, div_filters){
 
   //////////////////////////////////////////////////////////////////////
 
-  var run_filter_slider_db = _.debounce(run_filter_slider, 800);
+  var run_filter_slider_db = underscore.debounce(run_filter_slider, 800);
 
 };
