@@ -1,3 +1,4 @@
+var underscore = require('underscore');
 
 /* Utility functions
  * ----------------------------------------------------------------------- */
@@ -27,13 +28,13 @@ module.exports = {
     var self = this;
     // Double check that we have lodash or underscore available
     if (window._) {
-      // Underscore provides a _.pluck function. Use that.
-      if (typeof _.pluck === 'function') {
-        return _.pluck(arr, key);
-      } else if (typeof _.map === 'function') {
+      // Underscore provides a pluck function. Use that.
+      if (typeof underscore.pluck === 'function') {
+        return underscore.pluck(arr, key);
+      } else if (typeof underscore.map === 'function') {
         // Lodash does not have a pluck function.
-        // Use _.map with the property function defined above.
-        return _.map(arr, self.property(key));
+        // Use underscore.map with the property function defined above.
+        return underscore.map(arr, self.property(key));
       }
     } else if (arr.map && typeof arr.map === 'function') {
       // If lodash or underscore not available, check to see if the native arr.map is available.

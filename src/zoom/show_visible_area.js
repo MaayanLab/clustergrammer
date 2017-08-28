@@ -84,7 +84,7 @@ module.exports = function show_visible_area(cgm, zooming_stopped=false,
 
   var missing_rows;
   if (make_all_rows === false){
-    missing_rows = _.difference(params.viz.viz_nodes.row, params.viz.viz_nodes.curr_row);
+    missing_rows = underscore.difference(params.viz.viz_nodes.row, params.viz.viz_nodes.curr_row);
   } else {
     // make all rows (reordering)
     missing_rows = 'all';
@@ -205,7 +205,7 @@ module.exports = function show_visible_area(cgm, zooming_stopped=false,
         });
 
       // find missing labels
-      var missing_row_labels = _.difference(params.viz.viz_nodes.row, visible_row_labels);
+      var missing_row_labels = underscore.difference(params.viz.viz_nodes.row, visible_row_labels);
 
       // make labels
       //////////////////////////////////

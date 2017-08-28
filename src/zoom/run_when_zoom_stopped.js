@@ -4,6 +4,7 @@ var num_visible_labels = require('./num_visible_labels');
 var toggle_grid_lines = require('../matrix/toggle_grid_lines');
 var show_visible_area = require('./show_visible_area');
 var check_zoom_stop_status = require('./check_zoom_stop_status');
+var underscore = require('underscore');
 
 module.exports = function run_when_zoom_stopped(cgm){
 
@@ -19,7 +20,7 @@ module.exports = function run_when_zoom_stopped(cgm){
     // console.log('\nZOOMING HAS ACTUALLY STOPPED\n============================');
     // console.log(params.zoom_info.zoom_y)
 
-    _.each(['row','col'], function(inst_rc){
+    underscore.each(['row','col'], function(inst_rc){
 
       d3.selectAll(params.root+' .'+inst_rc+'_label_group' )
         .select('text')
@@ -51,7 +52,7 @@ module.exports = function run_when_zoom_stopped(cgm){
     var max_labels_to_trim = 150;
     // probably do not need
     /////////////////////////
-    _.each(['row','col'], function(inst_rc){
+    underscore.each(['row','col'], function(inst_rc){
 
       var inst_num_visible = num_visible_labels(params, inst_rc);
 
@@ -77,7 +78,7 @@ module.exports = function run_when_zoom_stopped(cgm){
 
   function text_patch(){
 
-    _.each(['row','col'], function(inst_rc){
+    underscore.each(['row','col'], function(inst_rc){
 
       d3.selectAll(params.root+' .'+inst_rc+'_label_group')
         .filter(function(){

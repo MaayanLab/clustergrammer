@@ -1,3 +1,5 @@
+var underscore = require('underscore');
+
 module.exports = function generate_cat_data(cgm){
 
   // only row category resetting is supported currently
@@ -20,12 +22,12 @@ module.exports = function generate_cat_data(cgm){
 
   // get current list of cateories
   var check_node = row_nodes[0];
-  var node_keys = _.keys(check_node);
+  var node_keys = underscore.keys(check_node);
   var current_cats = {};
   var tmp_cat;
   var tmp_title;
   var cat_index;
-  _.each(node_keys, function(inst_prop){
+  underscore.each(node_keys, function(inst_prop){
 
     if (inst_prop.indexOf('cat-') >= 0){
 
@@ -52,10 +54,10 @@ module.exports = function generate_cat_data(cgm){
   // console.log(current_cats)
 
   // initialize cat_data with categories in the correct order
-  var all_index = _.keys(current_cats).sort();
+  var all_index = underscore.keys(current_cats).sort();
 
   var inst_data;
-  _.each(all_index, function(inst_index){
+  underscore.each(all_index, function(inst_index){
 
     inst_data = {};
     inst_data.cat_title = current_cats[inst_index];
@@ -66,7 +68,7 @@ module.exports = function generate_cat_data(cgm){
 
   // // initialize cat_data (keep original order)
   // var found_title;
-  // _.each(cgm.params.viz.cat_names.row, function(inst_title){
+  // underscore.each(cgm.params.viz.cat_names.row, function(inst_title){
 
   //   found_title = false;
 
@@ -90,11 +92,11 @@ module.exports = function generate_cat_data(cgm){
   // console.log(cat_data)
   // console.log('-------------------------\n')
 
-  _.each(row_nodes, function(inst_node){
+  underscore.each(row_nodes, function(inst_node){
 
-    var all_props = _.keys(inst_node);
+    var all_props = underscore.keys(inst_node);
 
-    _.each(all_props, function(inst_prop){
+    underscore.each(all_props, function(inst_prop){
 
       if (inst_prop.indexOf('cat-') > -1){
 
@@ -134,7 +136,7 @@ module.exports = function generate_cat_data(cgm){
 
           // look for cat_title in cat_data
           found_cat_title = false;
-          _.each(cat_data, function(inst_cat_type){
+          underscore.each(cat_data, function(inst_cat_type){
 
             // console.log('inst_cat_data title ' + inst_cat_type.cat_title)
 
@@ -144,7 +146,7 @@ module.exports = function generate_cat_data(cgm){
 
               // check if cat_name is in cats
               found_cat_name = false;
-              _.each(inst_cat_type.cats, function(inst_cat_obj){
+              underscore.each(inst_cat_type.cats, function(inst_cat_obj){
 
                 // found category name, add cat_row_name to members
                 if (cat_name === inst_cat_obj.cat_name){

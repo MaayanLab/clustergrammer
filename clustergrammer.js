@@ -373,9 +373,10 @@ var Clustergrammer =
 
 /***/ }),
 /* 2 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-	
+	var underscore = __webpack_require__(66);
+
 	/* Utility functions
 	 * ----------------------------------------------------------------------- */
 	module.exports = {
@@ -404,13 +405,13 @@ var Clustergrammer =
 	    var self = this;
 	    // Double check that we have lodash or underscore available
 	    if (window._) {
-	      // Underscore provides a _.pluck function. Use that.
-	      if (typeof _.pluck === 'function') {
-	        return _.pluck(arr, key);
-	      } else if (typeof _.map === 'function') {
+	      // Underscore provides a pluck function. Use that.
+	      if (typeof underscore.pluck === 'function') {
+	        return underscore.pluck(arr, key);
+	      } else if (typeof underscore.map === 'function') {
 	        // Lodash does not have a pluck function.
-	        // Use _.map with the property function defined above.
-	        return _.map(arr, self.property(key));
+	        // Use underscore.map with the property function defined above.
+	        return underscore.map(arr, self.property(key));
 	      }
 	    } else if (arr.map && typeof arr.map === 'function') {
 	      // If lodash or underscore not available, check to see if the native arr.map is available.
@@ -19371,7 +19372,7 @@ var Clustergrammer =
 
 	  var missing_rows;
 	  if (make_all_rows === false) {
-	    missing_rows = _.difference(params.viz.viz_nodes.row, params.viz.viz_nodes.curr_row);
+	    missing_rows = underscore.difference(params.viz.viz_nodes.row, params.viz.viz_nodes.curr_row);
 	  } else {
 	    // make all rows (reordering)
 	    missing_rows = 'all';
@@ -19480,7 +19481,7 @@ var Clustergrammer =
 	      });
 
 	      // find missing labels
-	      var missing_row_labels = _.difference(params.viz.viz_nodes.row, visible_row_labels);
+	      var missing_row_labels = underscore.difference(params.viz.viz_nodes.row, visible_row_labels);
 
 	      // make labels
 	      //////////////////////////////////
@@ -19954,6 +19955,7 @@ var Clustergrammer =
 	var show_visible_area = __webpack_require__(132);
 	var ini_zoom_info = __webpack_require__(86);
 	var toggle_grid_lines = __webpack_require__(147);
+	var underscore = __webpack_require__(66);
 
 	module.exports = function two_translate_zoom(cgm, pan_dx, pan_dy, fin_zoom) {
 
@@ -20053,7 +20055,7 @@ var Clustergrammer =
 
 	    // toggle crop buttons
 	    var inst_button_opacity;
-	    _.each(['row', 'col'], function (inst_rc) {
+	    underscore.each(['row', 'col'], function (inst_rc) {
 
 	      inst_button_opacity = d3.select(params.root + ' .' + inst_rc + '_dendro_crop_buttons').style('opacity');
 	      d3.selectAll(params.root + ' .' + inst_rc + '_dendro_crop_buttons').style('opacity', 0);
@@ -21018,6 +21020,7 @@ var Clustergrammer =
 	var toggle_grid_lines = __webpack_require__(147);
 	var show_visible_area = __webpack_require__(132);
 	var check_zoom_stop_status = __webpack_require__(156);
+	var underscore = __webpack_require__(66);
 
 	module.exports = function run_when_zoom_stopped(cgm) {
 
@@ -21033,7 +21036,7 @@ var Clustergrammer =
 	    // console.log('\nZOOMING HAS ACTUALLY STOPPED\n============================');
 	    // console.log(params.zoom_info.zoom_y)
 
-	    _.each(['row', 'col'], function (inst_rc) {
+	    underscore.each(['row', 'col'], function (inst_rc) {
 
 	      d3.selectAll(params.root + ' .' + inst_rc + '_label_group').select('text').style('opacity', 1);
 
@@ -21060,7 +21063,7 @@ var Clustergrammer =
 	    var max_labels_to_trim = 150;
 	    // probably do not need
 	    /////////////////////////
-	    _.each(['row', 'col'], function (inst_rc) {
+	    underscore.each(['row', 'col'], function (inst_rc) {
 
 	      var inst_num_visible = num_visible_labels(params, inst_rc);
 
@@ -21083,7 +21086,7 @@ var Clustergrammer =
 
 	  function text_patch() {
 
-	    _.each(['row', 'col'], function (inst_rc) {
+	    underscore.each(['row', 'col'], function (inst_rc) {
 
 	      d3.selectAll(params.root + ' .' + inst_rc + '_label_group').filter(function () {
 	        return d3.select(this).style('display') != 'none';
@@ -24436,11 +24439,12 @@ var Clustergrammer =
 	var mouseover_tile = __webpack_require__(95);
 	var mouseout_tile = __webpack_require__(96);
 	var fine_position_tile = __webpack_require__(97);
+	var underscore = __webpack_require__(66);
 
 	module.exports = function update_split_tiles(params, inp_row_data, row_selection, delays, duration, cur_row_tiles, tip) {
 
 	  // value split
-	  var row_split_data = _.filter(inp_row_data, function (num) {
+	  var row_split_data = underscore.filter(inp_row_data, function (num) {
 	    return num.value_up != 0 || num.value_dn != 0;
 	  });
 
@@ -24983,7 +24987,7 @@ var Clustergrammer =
 
 	  // loop through row nodes
 	  //////////////////////////
-	  _.each(inst_nodes, function (inst_node) {
+	  underscore.each(inst_nodes, function (inst_node) {
 
 	    inst_name = inst_node.name;
 
@@ -25006,7 +25010,7 @@ var Clustergrammer =
 	    remove_node_cats(inst_node);
 
 	    // loop through each category type
-	    _.each(cat_data, function (inst_cat_data) {
+	    underscore.each(cat_data, function (inst_cat_data) {
 
 	      inst_cat_title = inst_cat_data.cat_title;
 	      inst_cats = inst_cat_data.cats;
@@ -25018,13 +25022,12 @@ var Clustergrammer =
 	      inst_cat_num = 0;
 
 	      // loop through each category in the category-type
-	      _.each(inst_cats, function (inst_cat) {
+	      underscore.each(inst_cats, function (inst_cat) {
 
 	        inst_cat_name = inst_cat.cat_name;
 	        inst_members = inst_cat.members;
 
 	        // add category if node is a member
-	        // if ( _.contains(inst_members, inst_name) ){
 	        if (underscore.contains(inst_members, inst_name)) {
 
 	          inst_category = inst_cat_name;
@@ -25057,13 +25060,15 @@ var Clustergrammer =
 
 /***/ }),
 /* 221 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+	var underscore = __webpack_require__(66);
 
 	module.exports = function remove_node_cats(inst_node) {
 
-	  var all_props = _.keys(inst_node);
+	  var all_props = underscore.keys(inst_node);
 
-	  _.each(all_props, function (inst_prop) {
+	  underscore.each(all_props, function (inst_prop) {
 
 	    if (inst_prop.indexOf('cat-') > -1) {
 	      delete inst_node[inst_prop];
@@ -26483,7 +26488,9 @@ var Clustergrammer =
 
 /***/ }),
 /* 252 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+	var underscore = __webpack_require__(66);
 
 	module.exports = function generate_cat_data(cgm) {
 
@@ -26507,12 +26514,12 @@ var Clustergrammer =
 
 	  // get current list of cateories
 	  var check_node = row_nodes[0];
-	  var node_keys = _.keys(check_node);
+	  var node_keys = underscore.keys(check_node);
 	  var current_cats = {};
 	  var tmp_cat;
 	  var tmp_title;
 	  var cat_index;
-	  _.each(node_keys, function (inst_prop) {
+	  underscore.each(node_keys, function (inst_prop) {
 
 	    if (inst_prop.indexOf('cat-') >= 0) {
 
@@ -26538,10 +26545,10 @@ var Clustergrammer =
 	  // console.log(current_cats)
 
 	  // initialize cat_data with categories in the correct order
-	  var all_index = _.keys(current_cats).sort();
+	  var all_index = underscore.keys(current_cats).sort();
 
 	  var inst_data;
-	  _.each(all_index, function (inst_index) {
+	  underscore.each(all_index, function (inst_index) {
 
 	    inst_data = {};
 	    inst_data.cat_title = current_cats[inst_index];
@@ -26552,7 +26559,7 @@ var Clustergrammer =
 
 	  // // initialize cat_data (keep original order)
 	  // var found_title;
-	  // _.each(cgm.params.viz.cat_names.row, function(inst_title){
+	  // underscore.each(cgm.params.viz.cat_names.row, function(inst_title){
 
 	  //   found_title = false;
 
@@ -26576,11 +26583,11 @@ var Clustergrammer =
 	  // console.log(cat_data)
 	  // console.log('-------------------------\n')
 
-	  _.each(row_nodes, function (inst_node) {
+	  underscore.each(row_nodes, function (inst_node) {
 
-	    var all_props = _.keys(inst_node);
+	    var all_props = underscore.keys(inst_node);
 
-	    _.each(all_props, function (inst_prop) {
+	    underscore.each(all_props, function (inst_prop) {
 
 	      if (inst_prop.indexOf('cat-') > -1) {
 
@@ -26620,7 +26627,7 @@ var Clustergrammer =
 
 	          // look for cat_title in cat_data
 	          found_cat_title = false;
-	          _.each(cat_data, function (inst_cat_type) {
+	          underscore.each(cat_data, function (inst_cat_type) {
 
 	            // console.log('inst_cat_data title ' + inst_cat_type.cat_title)
 
@@ -26630,7 +26637,7 @@ var Clustergrammer =
 
 	              // check if cat_name is in cats
 	              found_cat_name = false;
-	              _.each(inst_cat_type.cats, function (inst_cat_obj) {
+	              underscore.each(inst_cat_type.cats, function (inst_cat_obj) {
 
 	                // found category name, add cat_row_name to members
 	                if (cat_name === inst_cat_obj.cat_name) {

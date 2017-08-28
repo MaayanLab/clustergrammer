@@ -3,6 +3,7 @@ var label_constrain_and_trim = require('../labels/label_constrain_and_trim');
 var show_visible_area = require('./show_visible_area');
 var ini_zoom_info = require('../zoom/ini_zoom_info');
 var toggle_grid_lines = require('../matrix/toggle_grid_lines');
+var underscore = require('underscore');
 
 module.exports = function two_translate_zoom(cgm, pan_dx, pan_dy, fin_zoom) {
 
@@ -124,7 +125,7 @@ module.exports = function two_translate_zoom(cgm, pan_dx, pan_dy, fin_zoom) {
 
     // toggle crop buttons
     var inst_button_opacity;
-    _.each(['row','col'], function(inst_rc){
+    underscore.each(['row','col'], function(inst_rc){
 
       inst_button_opacity = d3.select(params.root+' .'+inst_rc+'_dendro_crop_buttons')
                                   .style('opacity');

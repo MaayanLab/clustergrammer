@@ -21,7 +21,7 @@ module.exports = function modify_row_node_cats(cat_data, inst_nodes, strip_names
 
   // loop through row nodes
   //////////////////////////
-  _.each(inst_nodes, function(inst_node){
+  underscore.each(inst_nodes, function(inst_node){
 
     inst_name = inst_node.name;
 
@@ -44,7 +44,7 @@ module.exports = function modify_row_node_cats(cat_data, inst_nodes, strip_names
     remove_node_cats(inst_node);
 
     // loop through each category type
-    _.each(cat_data, function(inst_cat_data){
+    underscore.each(cat_data, function(inst_cat_data){
 
       inst_cat_title = inst_cat_data.cat_title;
       inst_cats = inst_cat_data.cats;
@@ -56,13 +56,12 @@ module.exports = function modify_row_node_cats(cat_data, inst_nodes, strip_names
       inst_cat_num = 0;
 
       // loop through each category in the category-type
-      _.each(inst_cats, function(inst_cat){
+      underscore.each(inst_cats, function(inst_cat){
 
         inst_cat_name = inst_cat.cat_name;
         inst_members = inst_cat.members;
 
         // add category if node is a member
-        // if ( _.contains(inst_members, inst_name) ){
         if ( underscore.contains(inst_members, inst_name) ){
 
           inst_category = inst_cat_name;
