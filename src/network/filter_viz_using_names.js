@@ -1,5 +1,6 @@
 var filter_network_using_new_nodes = require('./filter_network_using_new_nodes');
 var update_viz_with_network = require('../update/update_viz_with_network');
+var underscore = require('underscore');
 
 module.exports = function filter_viz_using_names(names, external_cgm = false){
 
@@ -17,7 +18,7 @@ module.exports = function filter_viz_using_names(names, external_cgm = false){
   var new_nodes = {};
   var found_nodes;
 
-  _.each(['row', 'col'], function(inst_rc){
+  underscore.each(['row', 'col'], function(inst_rc){
 
     var orig_nodes = params.inst_nodes[inst_rc+'_nodes'];
 

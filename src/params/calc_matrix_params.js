@@ -1,5 +1,6 @@
 var ini_matrix_params = require('./ini_matrix_params');
 var calc_downsampled_levels = require('../matrix/calc_downsampled_levels');
+var underscore = require('underscore');
 
 module.exports = function calc_matrix_params(params){
 
@@ -15,7 +16,7 @@ module.exports = function calc_matrix_params(params){
 
   var inst_order;
 
-  _.each(['row','col'], function(inst_rc){
+  underscore.each(['row','col'], function(inst_rc){
 
     inst_order = params.viz.inst_order[inst_rc];
 

@@ -64,7 +64,7 @@ module.exports = function make_matrix_rows(params, current_matrix,
   if (row_names === 'all'){
     matrix_subset = current_matrix;
   } else {
-    _.each(current_matrix, function(inst_row){
+    underscore.each(current_matrix, function(inst_row){
       if (underscore.contains(row_names, inst_row.name)){
         matrix_subset.push(inst_row);
       }

@@ -1,6 +1,7 @@
 var make_network_using_view = require('./make_network_using_view');
 var disable_sidebar = require('../sidebar/disable_sidebar');
 var update_viz_with_network = require('../update/update_viz_with_network');
+var underscore = require('underscore');
 
 module.exports = function update_viz_with_view(cgm, requested_view) {
 
@@ -19,7 +20,7 @@ module.exports = function update_viz_with_view(cgm, requested_view) {
 
   // reset dendrogram filtering when updating with a new view
   // e.g. with the row filter sliders
-  _.each(['row', 'col'], function(inst_rc){
+  underscore.each(['row', 'col'], function(inst_rc){
 
     // set class to reflect that no filtering was ran
     d3.select(cgm.params.root+' .'+inst_rc+'_dendro_icons_group')

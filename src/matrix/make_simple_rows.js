@@ -5,6 +5,7 @@ var draw_dn_tile = require('../enter/draw_dn_tile');
 var mouseover_tile = require('./mouseover_tile');
 var mouseout_tile = require('./mouseout_tile');
 var fine_position_tile = require('./fine_position_tile');
+var underscore = require('underscore');
 
 module.exports = function make_simple_rows(params, inst_data, tip, row_selection, ds_level = -1) {
 
@@ -27,7 +28,7 @@ module.exports = function make_simple_rows(params, inst_data, tip, row_selection
   var row_values;
   if (keep_orig === false){
     // value: remove zero values to make visualization faster
-    row_values = _.filter(inp_row_data, function(num) {
+    row_values = underscore.filter(inp_row_data, function(num) {
       return num.value !== 0;
     });
   } else {
@@ -73,8 +74,8 @@ module.exports = function make_simple_rows(params, inst_data, tip, row_selection
   if (make_tip){
     tile
       .on('mouseover', function () {
-        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-          args[_key] = arguments[_key];
+        for (var inst_len = arguments.length, args = Array(inst_len), inst_key = 0; inst_key < inst_len; inst_key++) {
+          args[inst_key] = arguments[inst_key];
         }
         mouseover_tile(params, this, tip, args);
       })
@@ -128,7 +129,7 @@ module.exports = function make_simple_rows(params, inst_data, tip, row_selection
   if (params.matrix.tile_type == 'updn'){
 
     // value split
-    var row_split_data = _.filter(inp_row_data, function(num){
+    var row_split_data = underscore.filter(inp_row_data, function(num){
       return num.value_up != 0 || num.value_dn !=0 ;
     });
 

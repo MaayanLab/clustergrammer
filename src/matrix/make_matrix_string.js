@@ -1,4 +1,5 @@
 var make_full_name = require('./make_full_name');
+var underscore = require('underscore');
 
 module.exports = function make_matrix_string(params){
 
@@ -7,7 +8,7 @@ module.exports = function make_matrix_string(params){
   // get order indexes
   var order_indexes = {};
   var inst_name;
-  _.each(['row', 'col'], function(tmp_rc){
+  underscore.each(['row', 'col'], function(tmp_rc){
 
     var inst_rc;
     // row/col names are reversed in saved orders
@@ -48,7 +49,7 @@ module.exports = function make_matrix_string(params){
   var row_data;
   matrix_string = matrix_string + '\n';
 
-  _.each(order_indexes.row, function(inst_index){
+  underscore.each(order_indexes.row, function(inst_index){
 
     // row names
     row_data = inst_matrix.matrix[inst_index].row_data;

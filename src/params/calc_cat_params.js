@@ -1,3 +1,5 @@
+var underscore = require('underscore');
+
 module.exports = function calc_cat_params(params, viz){
 
   var separtion_room;
@@ -11,7 +13,7 @@ module.exports = function calc_cat_params(params, viz){
   viz.cat_room.symbol_width = 12;
   viz.cat_room.separation = 3;
 
-  _.each(['row','col'], function(inst_rc){
+  underscore.each(['row','col'], function(inst_rc){
 
     viz.norm_labels.width[inst_rc] = label_scale(params.labels[inst_rc+'_max_char'])
       * params[inst_rc+'_label_scale'];

@@ -1,3 +1,5 @@
+var underscore = require('underscore');
+
 module.exports = function mouseover_tile(params, inst_selection, tip, inst_arguments){
 
   var inst_data = inst_arguments[0];
@@ -8,7 +10,7 @@ module.exports = function mouseover_tile(params, inst_selection, tip, inst_argum
   d3.select(inst_selection)
     .classed('hovering', true);
 
-  _.each(['row','col'], function(inst_rc){
+  underscore.each(['row','col'], function(inst_rc){
 
     d3.selectAll(params.root+' .'+inst_rc+'_label_group text')
       .style('font-weight', function(d) {

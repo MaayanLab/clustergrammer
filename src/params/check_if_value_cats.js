@@ -30,7 +30,7 @@ module.exports = function check_if_value_cats(cat_states){
     // the default state is that all are now values, check each one
     cat_types = 'cat_values';
 
-    _.each(cat_states, function(inst_cat){
+    underscore.each(cat_states, function(inst_cat){
 
       if (has_title){
         inst_cat = inst_cat.split(super_string)[1];

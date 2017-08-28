@@ -1,12 +1,14 @@
+var underscore = require('underscore');
+
 module.exports = function get_available_filters(views){
 
   var possible_filters = {};
   var filter_data = {};
 
-  _.each(views, function(inst_view){
-    var inst_keys = _.keys(inst_view);
+  underscore.each(views, function(inst_view){
+    var inst_keys = underscore.keys(inst_view);
 
-    _.each(inst_keys, function(inst_key){
+    underscore.each(inst_keys, function(inst_key){
 
       if (inst_key != 'nodes'){
 
@@ -16,7 +18,7 @@ module.exports = function get_available_filters(views){
 
         filter_data[inst_key].push(inst_view[inst_key]);
 
-        filter_data[inst_key] = _.uniq( filter_data[inst_key] );
+        filter_data[inst_key] = underscore.uniq( filter_data[inst_key] );
 
       }
 
@@ -24,15 +26,15 @@ module.exports = function get_available_filters(views){
 
   });
 
-  var tmp_filters = _.keys(filter_data);
-  
-  _.each( tmp_filters, function(inst_filter){
-     
+  var tmp_filters = underscore.keys(filter_data);
+
+  underscore.each( tmp_filters, function(inst_filter){
+
     var options = filter_data[inst_filter];
-    var num_options = options.length; 
+    var num_options = options.length;
 
     var filter_type = 'categorical';
-    _.each(options, function(inst_option){
+    underscore.each(options, function(inst_option){
       if (typeof inst_option === 'number'){
         filter_type = 'numerical';
       }
@@ -49,5 +51,5 @@ module.exports = function get_available_filters(views){
   filters.filter_data = filter_data;
 
   return filters;
-  
+
 };

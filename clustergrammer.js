@@ -483,17 +483,19 @@ var Clustergrammer =
 
 /***/ }),
 /* 4 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+	var underscore = __webpack_require__(66);
 
 	module.exports = function get_available_filters(views) {
 
 	  var possible_filters = {};
 	  var filter_data = {};
 
-	  _.each(views, function (inst_view) {
-	    var inst_keys = _.keys(inst_view);
+	  underscore.each(views, function (inst_view) {
+	    var inst_keys = underscore.keys(inst_view);
 
-	    _.each(inst_keys, function (inst_key) {
+	    underscore.each(inst_keys, function (inst_key) {
 
 	      if (inst_key != 'nodes') {
 
@@ -503,20 +505,20 @@ var Clustergrammer =
 
 	        filter_data[inst_key].push(inst_view[inst_key]);
 
-	        filter_data[inst_key] = _.uniq(filter_data[inst_key]);
+	        filter_data[inst_key] = underscore.uniq(filter_data[inst_key]);
 	      }
 	    });
 	  });
 
-	  var tmp_filters = _.keys(filter_data);
+	  var tmp_filters = underscore.keys(filter_data);
 
-	  _.each(tmp_filters, function (inst_filter) {
+	  underscore.each(tmp_filters, function (inst_filter) {
 
 	    var options = filter_data[inst_filter];
 	    var num_options = options.length;
 
 	    var filter_type = 'categorical';
-	    _.each(options, function (inst_option) {
+	    underscore.each(options, function (inst_option) {
 	      if (typeof inst_option === 'number') {
 	        filter_type = 'numerical';
 	      }
@@ -788,6 +790,7 @@ var Clustergrammer =
 
 	var utils = __webpack_require__(2);
 	var core = __webpack_require__(12);
+	var underscore = __webpack_require__(66);
 	var math = core.create();
 	math.import(__webpack_require__(23));
 	math.import(__webpack_require__(60));
@@ -806,13 +809,13 @@ var Clustergrammer =
 	  var new_mat = math.matrix(math.zeros([new_nodes.row_nodes.length, new_nodes.col_nodes.length]));
 	  new_mat = new_mat.toArray();
 
-	  var new_links = _.filter(links, function (inst_link) {
+	  var new_links = underscore.filter(links, function (inst_link) {
 
 	    var inst_row = inst_link.name.split('_')[0];
 	    var inst_col = inst_link.name.split('_')[1];
 
-	    var row_index = _.indexOf(row_names, inst_row);
-	    var col_index = _.indexOf(col_names, inst_col);
+	    var row_index = underscore.indexOf(row_names, inst_row);
+	    var col_index = underscore.indexOf(col_names, inst_col);
 
 	    // only keep links that have not been filtered out
 	    if (row_index > -1 & col_index > -1) {
@@ -13260,6 +13263,7 @@ var Clustergrammer =
 
 	var ini_matrix_params = __webpack_require__(75);
 	var calc_downsampled_levels = __webpack_require__(77);
+	var underscore = __webpack_require__(66);
 
 	module.exports = function calc_matrix_params(params) {
 
@@ -13273,7 +13277,7 @@ var Clustergrammer =
 
 	  var inst_order;
 
-	  _.each(['row', 'col'], function (inst_rc) {
+	  underscore.each(['row', 'col'], function (inst_rc) {
 
 	    inst_order = params.viz.inst_order[inst_rc];
 
@@ -13916,7 +13920,9 @@ var Clustergrammer =
 
 /***/ }),
 /* 83 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+	var underscore = __webpack_require__(66);
 
 	module.exports = function calc_cat_params(params, viz) {
 
@@ -13929,7 +13935,7 @@ var Clustergrammer =
 	  viz.cat_room.symbol_width = 12;
 	  viz.cat_room.separation = 3;
 
-	  _.each(['row', 'col'], function (inst_rc) {
+	  underscore.each(['row', 'col'], function (inst_rc) {
 
 	    viz.norm_labels.width[inst_rc] = label_scale(params.labels[inst_rc + '_max_char']) * params[inst_rc + '_label_scale'];
 
@@ -14042,7 +14048,7 @@ var Clustergrammer =
 	    // the default state is that all are now values, check each one
 	    cat_types = 'cat_values';
 
-	    _.each(cat_states, function (inst_cat) {
+	    underscore.each(cat_states, function (inst_cat) {
 
 	      if (has_title) {
 	        inst_cat = inst_cat.split(super_string)[1];
@@ -14465,7 +14471,7 @@ var Clustergrammer =
 	  if (row_names === 'all') {
 	    matrix_subset = current_matrix;
 	  } else {
-	    _.each(current_matrix, function (inst_row) {
+	    underscore.each(current_matrix, function (inst_row) {
 	      if (underscore.contains(row_names, inst_row.name)) {
 	        matrix_subset.push(inst_row);
 	      }
@@ -14496,6 +14502,7 @@ var Clustergrammer =
 	var mouseover_tile = __webpack_require__(95);
 	var mouseout_tile = __webpack_require__(96);
 	var fine_position_tile = __webpack_require__(97);
+	var underscore = __webpack_require__(66);
 
 	module.exports = function make_simple_rows(params, inst_data, tip, row_selection, ds_level = -1) {
 
@@ -14518,7 +14525,7 @@ var Clustergrammer =
 	  var row_values;
 	  if (keep_orig === false) {
 	    // value: remove zero values to make visualization faster
-	    row_values = _.filter(inp_row_data, function (num) {
+	    row_values = underscore.filter(inp_row_data, function (num) {
 	      return num.value !== 0;
 	    });
 	  } else {
@@ -14553,8 +14560,8 @@ var Clustergrammer =
 
 	  if (make_tip) {
 	    tile.on('mouseover', function () {
-	      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-	        args[_key] = arguments[_key];
+	      for (var inst_len = arguments.length, args = Array(inst_len), inst_key = 0; inst_key < inst_len; inst_key++) {
+	        args[inst_key] = arguments[inst_key];
 	      }
 	      mouseover_tile(params, this, tip, args);
 	    }).on('mouseout', function () {
@@ -14607,7 +14614,7 @@ var Clustergrammer =
 	  if (params.matrix.tile_type == 'updn') {
 
 	    // value split
-	    var row_split_data = _.filter(inp_row_data, function (num) {
+	    var row_split_data = underscore.filter(inp_row_data, function (num) {
 	      return num.value_up != 0 || num.value_dn != 0;
 	    });
 
@@ -14704,7 +14711,9 @@ var Clustergrammer =
 
 /***/ }),
 /* 95 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+	var underscore = __webpack_require__(66);
 
 	module.exports = function mouseover_tile(params, inst_selection, tip, inst_arguments) {
 
@@ -14715,7 +14724,7 @@ var Clustergrammer =
 
 	  d3.select(inst_selection).classed('hovering', true);
 
-	  _.each(['row', 'col'], function (inst_rc) {
+	  underscore.each(['row', 'col'], function (inst_rc) {
 
 	    d3.selectAll(params.root + ' .' + inst_rc + '_label_group text').style('font-weight', function (d) {
 	      var font_weight;
@@ -14760,7 +14769,9 @@ var Clustergrammer =
 
 /***/ }),
 /* 96 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+	var underscore = __webpack_require__(66);
 
 	module.exports = function mouseout_tile(params, inst_selection, tip) {
 
@@ -14768,7 +14779,7 @@ var Clustergrammer =
 
 	  d3.selectAll(params.viz.root_tips + '_tile_tip').style('display', 'none');
 
-	  _.each(['row', 'col'], function (inst_rc) {
+	  underscore.each(['row', 'col'], function (inst_rc) {
 
 	    d3.selectAll(params.root + ' .' + inst_rc + '_label_group text').style('font-weight', 'normal');
 	  });
@@ -23688,6 +23699,7 @@ var Clustergrammer =
 	var make_network_using_view = __webpack_require__(10);
 	var disable_sidebar = __webpack_require__(202);
 	var update_viz_with_network = __webpack_require__(203);
+	var underscore = __webpack_require__(66);
 
 	module.exports = function update_viz_with_view(cgm, requested_view) {
 
@@ -23701,7 +23713,7 @@ var Clustergrammer =
 
 	  // reset dendrogram filtering when updating with a new view
 	  // e.g. with the row filter sliders
-	  _.each(['row', 'col'], function (inst_rc) {
+	  underscore.each(['row', 'col'], function (inst_rc) {
 
 	    // set class to reflect that no filtering was ran
 	    d3.select(cgm.params.root + ' .' + inst_rc + '_dendro_icons_group').classed('ran_filter', false);
@@ -23878,7 +23890,9 @@ var Clustergrammer =
 
 /***/ }),
 /* 204 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+	var underscore = __webpack_require__(66);
 
 	module.exports = function (old_params, params) {
 
@@ -23887,26 +23901,26 @@ var Clustergrammer =
 	  // check if exit or enter or both are required
 	  var old_row_nodes = old_params.network_data.row_nodes;
 	  var old_col_nodes = old_params.network_data.col_nodes;
-	  var old_row = _.map(old_row_nodes, function (d) {
+	  var old_row = underscore.map(old_row_nodes, function (d) {
 	    return d.name;
 	  });
-	  var old_col = _.map(old_col_nodes, function (d) {
+	  var old_col = underscore.map(old_col_nodes, function (d) {
 	    return d.name;
 	  });
 	  var all_old_nodes = old_row.concat(old_col);
 
 	  var row_nodes = params.network_data.row_nodes;
 	  var col_nodes = params.network_data.col_nodes;
-	  var row = _.map(row_nodes, function (d) {
+	  var row = underscore.map(row_nodes, function (d) {
 	    return d.name;
 	  });
-	  var col = _.map(col_nodes, function (d) {
+	  var col = underscore.map(col_nodes, function (d) {
 	    return d.name;
 	  });
 	  var all_nodes = row.concat(col);
 
-	  var exit_nodes = _.difference(all_old_nodes, all_nodes).length;
-	  var enter_nodes = _.difference(all_nodes, all_old_nodes).length;
+	  var exit_nodes = underscore.difference(all_old_nodes, all_nodes).length;
+	  var enter_nodes = underscore.difference(all_nodes, all_old_nodes).length;
 
 	  var delays = {};
 
@@ -26305,6 +26319,7 @@ var Clustergrammer =
 
 	var filter_network_using_new_nodes = __webpack_require__(11);
 	var update_viz_with_network = __webpack_require__(203);
+	var underscore = __webpack_require__(66);
 
 	module.exports = function filter_viz_using_names(names, external_cgm = false) {
 
@@ -26322,7 +26337,7 @@ var Clustergrammer =
 	  var new_nodes = {};
 	  var found_nodes;
 
-	  _.each(['row', 'col'], function (inst_rc) {
+	  underscore.each(['row', 'col'], function (inst_rc) {
 
 	    var orig_nodes = params.inst_nodes[inst_rc + '_nodes'];
 
@@ -26890,6 +26905,7 @@ var Clustergrammer =
 /***/ (function(module, exports, __webpack_require__) {
 
 	var make_full_name = __webpack_require__(256);
+	var underscore = __webpack_require__(66);
 
 	module.exports = function make_matrix_string(params) {
 
@@ -26898,7 +26914,7 @@ var Clustergrammer =
 	  // get order indexes
 	  var order_indexes = {};
 	  var inst_name;
-	  _.each(['row', 'col'], function (tmp_rc) {
+	  underscore.each(['row', 'col'], function (tmp_rc) {
 
 	    var inst_rc;
 	    // row/col names are reversed in saved orders
@@ -26937,7 +26953,7 @@ var Clustergrammer =
 	  var row_data;
 	  matrix_string = matrix_string + '\n';
 
-	  _.each(order_indexes.row, function (inst_index) {
+	  underscore.each(order_indexes.row, function (inst_index) {
 
 	    // row names
 	    row_data = inst_matrix.matrix[inst_index].row_data;
