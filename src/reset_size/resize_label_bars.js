@@ -1,10 +1,11 @@
 var calc_val_max = require('../params/calc_val_max');
+// var underscore = require('underscore');
 
 module.exports = function resize_label_bars(cgm, svg_group){
   var params = cgm.params;
 
   // // set bar scale
-  // var val_max = Math.abs(_.max( params.network_data.row_nodes, function(d) {
+  // var val_max = Math.abs(underscore.max( params.network_data.row_nodes, function(d) {
   //   return Math.abs(d.value);
   // } ).value) ;
 

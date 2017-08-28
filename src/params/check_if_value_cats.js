@@ -1,3 +1,5 @@
+var underscore = require('underscore');
+
 module.exports = function check_if_value_cats(cat_states){
 
   var tmp_cat = cat_states[0];
@@ -49,7 +51,7 @@ module.exports = function check_if_value_cats(cat_states){
   if (cat_types === 'cat_values'){
 
     // get absolute value
-    var max_value = _.max(all_values, function (d) {
+    var max_value = underscore.max(all_values, function (d) {
       return Math.abs(d);
     });
 

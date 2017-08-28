@@ -11459,7 +11459,9 @@ var Clustergrammer =
 
 /***/ }),
 /* 65 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+	var underscore = __webpack_require__(282);
 
 	module.exports = function ini_label_params(params) {
 
@@ -11476,11 +11478,11 @@ var Clustergrammer =
 
 	  labels.show_label_tooltips = params.show_label_tooltips;
 
-	  labels.row_max_char = _.max(params.network_data.row_nodes, function (inst) {
+	  labels.row_max_char = underscore.max(params.network_data.row_nodes, function (inst) {
 	    return inst.name.length;
 	  }).name.length;
 
-	  labels.col_max_char = _.max(params.network_data.col_nodes, function (inst) {
+	  labels.col_max_char = underscore.max(params.network_data.col_nodes, function (inst) {
 	    return inst.name.length;
 	  }).name.length;
 
@@ -11655,17 +11657,19 @@ var Clustergrammer =
 
 /***/ }),
 /* 72 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+	var underscore = __webpack_require__(282);
 
 	module.exports = function calc_val_max(params) {
 
-	  var val_max = Math.abs(_.max(params.network_data.col_nodes, function (d) {
+	  var val_max = Math.abs(underscore.max(params.network_data.col_nodes, function (d) {
 	    return Math.abs(d.value);
 	  }).value);
 
 	  params.labels.bar_scale_col = d3.scale.linear().domain([0, val_max]).range([0, 0.75 * params.viz.norm_labels.width.col]);
 
-	  val_max = Math.abs(_.max(params.network_data.row_nodes, function (d) {
+	  val_max = Math.abs(underscore.max(params.network_data.row_nodes, function (d) {
 	    return Math.abs(d.value);
 	  }).value);
 
@@ -11730,6 +11734,7 @@ var Clustergrammer =
 
 	var utils = __webpack_require__(2);
 	var initialize_matrix = __webpack_require__(75);
+	var underscore = __webpack_require__(282);
 
 	module.exports = function ini_matrix_params(params) {
 
@@ -11808,11 +11813,11 @@ var Clustergrammer =
 	  });
 
 	  if (utils.has(network_data, 'all_links')) {
-	    matrix.max_link = _.max(network_data.all_links, function (d) {
+	    matrix.max_link = underscore.max(network_data.all_links, function (d) {
 	      return Math.abs(d.value);
 	    }).value;
 	  } else {
-	    matrix.max_link = _.max(network_data.links, function (d) {
+	    matrix.max_link = underscore.max(network_data.links, function (d) {
 	      return Math.abs(d.value);
 	    }).value;
 	  }
@@ -12425,7 +12430,9 @@ var Clustergrammer =
 
 /***/ }),
 /* 84 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+	var underscore = __webpack_require__(282);
 
 	module.exports = function check_if_value_cats(cat_states) {
 
@@ -12476,7 +12483,7 @@ var Clustergrammer =
 	  if (cat_types === 'cat_values') {
 
 	    // get absolute value
-	    var max_value = _.max(all_values, function (d) {
+	    var max_value = underscore.max(all_values, function (d) {
 	      return Math.abs(d);
 	    });
 
@@ -20386,12 +20393,13 @@ var Clustergrammer =
 /***/ (function(module, exports, __webpack_require__) {
 
 	var calc_val_max = __webpack_require__(72);
+	// var underscore = require('underscore');
 
 	module.exports = function resize_label_bars(cgm, svg_group) {
 	  var params = cgm.params;
 
 	  // // set bar scale
-	  // var val_max = Math.abs(_.max( params.network_data.row_nodes, function(d) {
+	  // var val_max = Math.abs(underscore.max( params.network_data.row_nodes, function(d) {
 	  //   return Math.abs(d.value);
 	  // } ).value) ;
 
@@ -27866,7 +27874,9 @@ var Clustergrammer =
 
 /***/ }),
 /* 281 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+	var underscore = __webpack_require__(282);
 
 	module.exports = function make_colorbar(cgm) {
 
@@ -27886,7 +27896,7 @@ var Clustergrammer =
 
 	  var network_data = params.network_data;
 
-	  var max_link = _.max(network_data.links, function (d) {
+	  var max_link = underscore.max(network_data.links, function (d) {
 	    return d.value;
 	  }).value;
 

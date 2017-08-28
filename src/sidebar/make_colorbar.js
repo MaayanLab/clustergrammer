@@ -1,3 +1,5 @@
+var underscore = require('underscore');
+
 module.exports = function make_colorbar(cgm){
 
   var params = cgm.params;
@@ -22,7 +24,7 @@ module.exports = function make_colorbar(cgm){
 
   var network_data = params.network_data;
 
-  var max_link = _.max(network_data.links, function (d) {
+  var max_link = underscore.max(network_data.links, function (d) {
     return d.value;
   }).value;
 

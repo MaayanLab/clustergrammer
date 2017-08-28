@@ -1,3 +1,5 @@
+var underscore = require('underscore');
+
 module.exports = function ini_label_params(params){
 
   var labels = {};
@@ -13,12 +15,12 @@ module.exports = function ini_label_params(params){
 
   labels.show_label_tooltips = params.show_label_tooltips;
 
-  labels.row_max_char = _.max(params.network_data.row_nodes,
+  labels.row_max_char = underscore.max(params.network_data.row_nodes,
     function (inst) {
       return inst.name.length;
     }).name.length;
 
-  labels.col_max_char = _.max(params.network_data.col_nodes,
+  labels.col_max_char = underscore.max(params.network_data.col_nodes,
     function (inst) {
       return inst.name.length;
     }).name.length;
