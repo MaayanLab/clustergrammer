@@ -1,4 +1,5 @@
 var get_cat_title = require('../categories/get_cat_title');
+var underscore = require('underscore');
 
 module.exports = function cat_tooltip_text(params, inst_data, inst_selection, inst_rc){
 
@@ -40,7 +41,7 @@ module.exports = function cat_tooltip_text(params, inst_data, inst_selection, in
         node_types = ['row','col'];
       }
 
-      _.each(node_types, function(tmp_rc){
+      underscore.each(node_types, function(tmp_rc){
 
         // only highlight string categories that are not 'false' categories
         if (typeof cat_name === 'string' ){

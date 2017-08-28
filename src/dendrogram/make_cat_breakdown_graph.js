@@ -1,4 +1,5 @@
 var calc_cat_cluster_breakdown = require('./calc_cat_cluster_breakdown');
+var underscore = require('underscore');
 
 module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, dendro_info, selector, tooltip=false){
 
@@ -55,7 +56,7 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
       // calculate the total number of nodes in downsampled case
       var inst_bar_data = cat_breakdown[0].bar_data;
       cluster_total = 0;
-      _.each(inst_bar_data, function(tmp_data){
+      underscore.each(inst_bar_data, function(tmp_data){
         cluster_total = cluster_total + tmp_data[num_nodes_ds_index];
       });
     }
@@ -67,7 +68,7 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
 
     // calculate height needed for svg based on cat_breakdown data
     var svg_height = 20;
-    _.each(cat_breakdown.slice(0,max_cats), function(tmp_break){
+    underscore.each(cat_breakdown.slice(0,max_cats), function(tmp_break){
       var num_bars = tmp_break.bar_data.length;
       if (num_bars > max_bars){
         num_bars = max_bars;
@@ -105,7 +106,7 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
     // limit the category-types
     cat_breakdown = cat_breakdown.slice(0, max_cats);
 
-    _.each(cat_breakdown, function(cat_data){
+    underscore.each(cat_breakdown, function(cat_data){
 
       var max_bar_value = cat_data.bar_data[0][bars_index];
 

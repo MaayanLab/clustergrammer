@@ -4,6 +4,7 @@ var reset_cat_opacity = require('./reset_cat_opacity');
 var ini_cat_opacity = require('./ini_cat_opacity');
 // var click_filter_cats = require('./click_filter_cats');
 var get_cat_names = require('../categories/get_cat_names');
+var underscore = require('underscore');
 
 module.exports = function make_col_cat(cgm) {
 
@@ -56,7 +57,7 @@ module.exports = function make_col_cat(cgm) {
     .append('g')
     .attr('class', 'col_cat_group')
     .attr('transform', function(d) {
-      var inst_index = _.indexOf(params.network_data.col_nodes_names, d.name);
+      var inst_index = underscore.indexOf(params.network_data.col_nodes_names, d.name);
       // return 'translate(' + params.viz.x_scale(d.col_index) + ',0)';
       return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
     });
@@ -72,7 +73,7 @@ module.exports = function make_col_cat(cgm) {
       var inst_selection = this;
       var cat_rect;
 
-      _.each( params.viz.all_cats.col, function(inst_cat){
+      underscore.each( params.viz.all_cats.col, function(inst_cat){
 
         var inst_num = parseInt(inst_cat.split('-')[1], 10);
         var cat_rect_class = 'col_cat_rect_'+String(inst_num);

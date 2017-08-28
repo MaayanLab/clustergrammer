@@ -16349,6 +16349,7 @@ var Clustergrammer =
 /***/ (function(module, exports, __webpack_require__) {
 
 	var calc_cat_cluster_breakdown = __webpack_require__(114);
+	var underscore = __webpack_require__(66);
 
 	module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, dendro_info, selector, tooltip = false) {
 
@@ -16405,7 +16406,7 @@ var Clustergrammer =
 	      // calculate the total number of nodes in downsampled case
 	      var inst_bar_data = cat_breakdown[0].bar_data;
 	      cluster_total = 0;
-	      _.each(inst_bar_data, function (tmp_data) {
+	      underscore.each(inst_bar_data, function (tmp_data) {
 	        cluster_total = cluster_total + tmp_data[num_nodes_ds_index];
 	      });
 	    }
@@ -16417,7 +16418,7 @@ var Clustergrammer =
 
 	    // calculate height needed for svg based on cat_breakdown data
 	    var svg_height = 20;
-	    _.each(cat_breakdown.slice(0, max_cats), function (tmp_break) {
+	    underscore.each(cat_breakdown.slice(0, max_cats), function (tmp_break) {
 	      var num_bars = tmp_break.bar_data.length;
 	      if (num_bars > max_bars) {
 	        num_bars = max_bars;
@@ -16441,7 +16442,7 @@ var Clustergrammer =
 	    // limit the category-types
 	    cat_breakdown = cat_breakdown.slice(0, max_cats);
 
-	    _.each(cat_breakdown, function (cat_data) {
+	    underscore.each(cat_breakdown, function (cat_data) {
 
 	      var max_bar_value = cat_data.bar_data[0][bars_index];
 
@@ -22125,6 +22126,7 @@ var Clustergrammer =
 	var ini_cat_opacity = __webpack_require__(181);
 	// var click_filter_cats = require('./click_filter_cats');
 	var get_cat_names = __webpack_require__(182);
+	var underscore = __webpack_require__(66);
 
 	module.exports = function make_col_cat(cgm) {
 
@@ -22159,7 +22161,7 @@ var Clustergrammer =
 	  d3.select(params.root + ' .col_cat_container').selectAll('g').data(params.network_data.col_nodes, function (d) {
 	    return d.name;
 	  }).enter().append('g').attr('class', 'col_cat_group').attr('transform', function (d) {
-	    var inst_index = _.indexOf(params.network_data.col_nodes_names, d.name);
+	    var inst_index = underscore.indexOf(params.network_data.col_nodes_names, d.name);
 	    // return 'translate(' + params.viz.x_scale(d.col_index) + ',0)';
 	    return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
 	  });
@@ -22172,7 +22174,7 @@ var Clustergrammer =
 	    var inst_selection = this;
 	    var cat_rect;
 
-	    _.each(params.viz.all_cats.col, function (inst_cat) {
+	    underscore.each(params.viz.all_cats.col, function (inst_cat) {
 
 	      var inst_num = parseInt(inst_cat.split('-')[1], 10);
 	      var cat_rect_class = 'col_cat_rect_' + String(inst_num);
@@ -22219,6 +22221,7 @@ var Clustergrammer =
 /***/ (function(module, exports, __webpack_require__) {
 
 	var get_cat_title = __webpack_require__(139);
+	var underscore = __webpack_require__(66);
 
 	module.exports = function cat_tooltip_text(params, inst_data, inst_selection, inst_rc) {
 
@@ -22257,7 +22260,7 @@ var Clustergrammer =
 	        node_types = ['row', 'col'];
 	      }
 
-	      _.each(node_types, function (tmp_rc) {
+	      underscore.each(node_types, function (tmp_rc) {
 
 	        // only highlight string categories that are not 'false' categories
 	        if (typeof cat_name === 'string') {
@@ -22300,11 +22303,13 @@ var Clustergrammer =
 
 /***/ }),
 /* 180 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+	var underscore = __webpack_require__(66);
 
 	module.exports = function reset_cat_opacity(params) {
 
-	  _.each(['row', 'col'], function (inst_rc) {
+	  underscore.each(['row', 'col'], function (inst_rc) {
 
 	    d3.selectAll(params.root + ' .' + inst_rc + '_cat_group').selectAll('rect').style('opacity', function () {
 
@@ -22413,6 +22418,7 @@ var Clustergrammer =
 	var ini_cat_opacity = __webpack_require__(181);
 	// var click_filter_cats = require('./click_filter_cats');
 	var get_cat_names = __webpack_require__(182);
+	var underscore = __webpack_require__(66);
 
 	module.exports = function make_row_cat(cgm, updating = false) {
 
@@ -22456,7 +22462,7 @@ var Clustergrammer =
 	  d3.select(params.root + ' .row_cat_container').selectAll('g').data(params.network_data.row_nodes, function (d) {
 	    return d.name;
 	  }).enter().append('g').attr('class', 'row_cat_group').attr('transform', function (d) {
-	    var inst_index = _.indexOf(params.network_data.row_nodes_names, d.name);
+	    var inst_index = underscore.indexOf(params.network_data.row_nodes_names, d.name);
 	    return 'translate(0, ' + params.viz.y_scale(inst_index) + ')';
 	  });
 
@@ -22473,7 +22479,7 @@ var Clustergrammer =
 
 	      inst_selection = this;
 
-	      _.each(params.viz.all_cats.row, function (inst_cat) {
+	      underscore.each(params.viz.all_cats.row, function (inst_cat) {
 
 	        var inst_num = parseInt(inst_cat.split('-')[1], 10);
 	        var cat_rect_class = 'row_cat_rect_' + String(inst_num);
@@ -24243,7 +24249,7 @@ var Clustergrammer =
 	  var inp_row_data = ini_inp_row_data.row_data;
 
 	  // remove zero values from
-	  var row_values = _.filter(inp_row_data, function (num) {
+	  var row_values = underscore.filter(inp_row_data, function (num) {
 	    return num.value != 0;
 	  });
 

@@ -12,7 +12,7 @@ module.exports = function eeu_existing_row(params, ini_inp_row_data, delays, dur
   var inp_row_data = ini_inp_row_data.row_data;
 
   // remove zero values from
-  var row_values = _.filter(inp_row_data, function(num){
+  var row_values = underscore.filter(inp_row_data, function(num){
     return num.value !=0;
   });
 
