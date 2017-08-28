@@ -28,7 +28,7 @@ module.exports = function make_colorbar(cgm){
     return d.value;
   }).value;
 
-  var min_link = _.min(network_data.links, function (d) {
+  var min_link = underscore.min(network_data.links, function (d) {
     return d.value;
   }).value;
 

@@ -3,6 +3,7 @@ var toggle_dendro_view = require('../dendrogram/toggle_dendro_view');
 var ini_zoom_info = require('../zoom/ini_zoom_info');
 var get_previous_zoom = require('../zoom/get_previous_zoom');
 var calc_downsampled_levels = require('../matrix/calc_downsampled_levels');
+var underscore = require('underscore');
 
 module.exports = function row_reorder(cgm, row_selection, inst_row) {
 
@@ -30,7 +31,7 @@ module.exports = function row_reorder(cgm, row_selection, inst_row) {
       });
 
       // find index
-      inst_row = _.indexOf(tmp_arr, inst_row);
+      inst_row = underscore.indexOf(tmp_arr, inst_row);
 
       // gather the values of the input genes
       tmp_arr = [];
@@ -64,14 +65,14 @@ module.exports = function row_reorder(cgm, row_selection, inst_row) {
       t.select('.col_zoom_container')
         .selectAll('.col_label_text')
         .attr('transform', function(d) {
-          var inst_index = _.indexOf(col_nodes_names, d.name);
+          var inst_index = underscore.indexOf(col_nodes_names, d.name);
           return 'translate(' + params.viz.x_scale(inst_index) + ')rotate(-90)';
         });
 
       // reorder col_class groups
       t.selectAll('.col_cat_group')
         .attr('transform', function(d) {
-          var inst_index = _.indexOf(col_nodes_names, d.name);
+          var inst_index = underscore.indexOf(col_nodes_names, d.name);
           return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
         });
 

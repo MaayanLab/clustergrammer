@@ -1,11 +1,12 @@
 var all_reorder = require('./all_reorder');
+var underscore = require('underscore');
 
 module.exports = function ini_cat_reorder(cgm){
 /* eslint-disable */
 
   var params = cgm.params;
 
-  _.each(['row','col'], function(inst_rc){
+  underscore.each(['row','col'], function(inst_rc){
 
     if (params.viz.show_categories[inst_rc]){
       d3.selectAll(params.root+' .'+inst_rc+'_cat_super')

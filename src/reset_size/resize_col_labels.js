@@ -1,3 +1,5 @@
+var underscore = require('underscore');
+
 module.exports = function(params, ini_svg_group, delay_info=false){
 
   var delays = {};
@@ -23,7 +25,7 @@ module.exports = function(params, ini_svg_group, delay_info=false){
       .data(col_nodes, function(d){return d.name;})
       .transition().delay(delays.update).duration(duration)
       .attr('transform', function(d) {
-        var inst_index = _.indexOf(col_nodes_names, d.name);
+        var inst_index = underscore.indexOf(col_nodes_names, d.name);
         return 'translate(' + params.viz.x_scale(inst_index) + ', 0) rotate(-90)';
       });
 
@@ -34,7 +36,7 @@ module.exports = function(params, ini_svg_group, delay_info=false){
       .selectAll('.col_label_text')
       .data(col_nodes, function(d){return d.name;})
       .attr('transform', function(d) {
-        var inst_index = _.indexOf(col_nodes_names, d.name);
+        var inst_index = underscore.indexOf(col_nodes_names, d.name);
         return 'translate(' + params.viz.x_scale(inst_index) + ', 0) rotate(-90)';
       });
 

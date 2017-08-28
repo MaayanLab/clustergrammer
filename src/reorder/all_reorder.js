@@ -4,6 +4,7 @@ var ini_zoom_info = require('../zoom/ini_zoom_info');
 var calc_downsampled_levels = require('../matrix/calc_downsampled_levels');
 var two_translate_zoom = require('../zoom/two_translate_zoom');
 var get_previous_zoom = require('../zoom/get_previous_zoom');
+var underscore = require('underscore');
 
 module.exports = function(cgm, inst_order, inst_rc) {
 
@@ -64,7 +65,7 @@ module.exports = function(cgm, inst_order, inst_rc) {
 
     t.selectAll('.row')
       .attr('transform', function(d) {
-        var inst_index = _.indexOf(row_nodes_names, d.name);
+        var inst_index = underscore.indexOf(row_nodes_names, d.name);
         return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
         })
       .selectAll('.tile')
@@ -87,7 +88,7 @@ module.exports = function(cgm, inst_order, inst_rc) {
   t.select('.row_label_zoom_container')
     .selectAll('.row_label_group')
     .attr('transform', function(d) {
-      var inst_index = _.indexOf(row_nodes_names, d.name);
+      var inst_index = underscore.indexOf(row_nodes_names, d.name);
       return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
     });
 
@@ -95,21 +96,21 @@ module.exports = function(cgm, inst_order, inst_rc) {
   t.select('.col_zoom_container')
     .selectAll('.col_label_text')
     .attr('transform', function(d) {
-      var inst_index = _.indexOf(col_nodes_names, d.name);
+      var inst_index = underscore.indexOf(col_nodes_names, d.name);
       return 'translate(' + params.viz.x_scale(inst_index) + ') rotate(-90)';
     });
 
   // reorder row categories
   t.selectAll('.row_cat_group')
     .attr('transform', function(d) {
-      var inst_index = _.indexOf(row_nodes_names, d.name);
+      var inst_index = underscore.indexOf(row_nodes_names, d.name);
       return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
     });
 
   // reorder col_class groups
   t.selectAll('.col_cat_group')
     .attr('transform', function(d) {
-      var inst_index = _.indexOf(col_nodes_names, d.name);
+      var inst_index = underscore.indexOf(col_nodes_names, d.name);
       return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
     });
 

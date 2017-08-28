@@ -1,4 +1,5 @@
 var two_translate_zoom = require('../zoom/two_translate_zoom');
+var underscore = require('underscore');
 
 module.exports = function run_row_search(cgm, search_term, entities){
 
@@ -11,7 +12,7 @@ module.exports = function run_row_search(cgm, search_term, entities){
       .select('rect').style('opacity', 0);
 
     // calc pan_dy
-    var idx = _.indexOf(entities, search_term);
+    var idx = underscore.indexOf(entities, search_term);
     var inst_y_pos = cgm.params.viz.y_scale(idx);
     var pan_dy = cgm.params.viz.clust.dim.height / 2 - inst_y_pos;
 

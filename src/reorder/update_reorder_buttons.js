@@ -1,5 +1,7 @@
+var underscore = require('underscore');
+
 module.exports = function update_reorder_buttons(tmp_config, params){
-  _.each(['row','col'], function(inst_rc){
+  underscore.each(['row','col'], function(inst_rc){
 
     var other_rc;
     if (inst_rc === 'row'){
@@ -14,5 +16,5 @@ module.exports = function update_reorder_buttons(tmp_config, params){
       })
       .classed('active',true);
 
-  });  
+  });
 };

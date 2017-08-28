@@ -1,3 +1,5 @@
+var underscore = require('underscore');
+
 module.exports = function resize_dendro(params, svg_group, delay_info=false){
 
   // resize dendrogram
@@ -27,7 +29,7 @@ module.exports = function resize_dendro(params, svg_group, delay_info=false){
       .data(col_nodes, function(d){return d.name;})
       .transition().delay(delays.update).duration(duration)
       .attr('transform', function(d) {
-        var inst_index = _.indexOf(col_nodes_names, d.name);
+        var inst_index = underscore.indexOf(col_nodes_names, d.name);
         return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
       });
 
@@ -37,7 +39,7 @@ module.exports = function resize_dendro(params, svg_group, delay_info=false){
       .data(col_nodes, function(d){return d.name;})
       .transition().delay(delays.update).duration(duration)
       .attr('transform', function(d) {
-        var inst_index = _.indexOf(col_nodes_names, d.name);
+        var inst_index = underscore.indexOf(col_nodes_names, d.name);
         return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
       });
 
@@ -50,7 +52,7 @@ module.exports = function resize_dendro(params, svg_group, delay_info=false){
       // data binding needed for loss/gain of columns
       .data(col_nodes, function(d){return d.name;})
       .attr('transform', function(d) {
-        var inst_index = _.indexOf(col_nodes_names, d.name);
+        var inst_index = underscore.indexOf(col_nodes_names, d.name);
         return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
       });
 
@@ -59,7 +61,7 @@ module.exports = function resize_dendro(params, svg_group, delay_info=false){
       // data binding needed for loss/gain of columns
       .data(col_nodes, function(d){return d.name;})
       .attr('transform', function(d) {
-        var inst_index = _.indexOf(col_nodes_names, d.name);
+        var inst_index = underscore.indexOf(col_nodes_names, d.name);
         return 'translate(' + params.viz.x_scale(inst_index) + ',0)';
       });
 
@@ -68,7 +70,7 @@ module.exports = function resize_dendro(params, svg_group, delay_info=false){
   var i;
   var inst_class;
 
-  _.each(['row','col'], function(inst_rc){
+  underscore.each(['row','col'], function(inst_rc){
 
     var num_cats = params.viz.all_cats[inst_rc].length;
 

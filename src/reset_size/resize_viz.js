@@ -27,6 +27,7 @@ var ini_cat_reorder = require('../reorder/ini_cat_reorder');
 var position_svg_dendro_slider = require('../dendrogram/position_svg_dendro_slider');
 var ini_zoom_info = require('../zoom/ini_zoom_info');
 var grid_lines_viz = require('../matrix/grid_lines_viz');
+var underscore = require('underscore');
 
 module.exports = function resize_viz(cgm) {
 
@@ -56,7 +57,7 @@ module.exports = function resize_viz(cgm) {
   var svg_group = d3.select(params.viz.viz_svg);
 
   // redefine x and y positions
-  _.each(params.network_data.links, function(d){
+  underscore.each(params.network_data.links, function(d){
     d.x = params.viz.x_scale(d.target);
     d.y = params.viz.y_scale(d.source);
   });
@@ -142,7 +143,7 @@ module.exports = function resize_viz(cgm) {
   svg_group
     .selectAll('.row_cat_group')
     .attr('transform', function(d) {
-        var inst_index = _.indexOf(row_nodes_names, d.name);
+        var inst_index = underscore.indexOf(row_nodes_names, d.name);
         return 'translate(0, ' + params.viz.y_scale(inst_index) + ')';
       });
 

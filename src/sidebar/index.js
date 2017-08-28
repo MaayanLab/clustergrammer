@@ -7,6 +7,7 @@ var make_icons = require('./make_icons');
 var make_modals = require('./make_modals');
 var set_up_opacity_slider = require('./set_up_opacity_slider');
 var make_colorbar = require('./make_colorbar');
+var underscore = require('underscore');
 
 /* Represents sidebar with controls.
  */
@@ -76,7 +77,7 @@ module.exports = function sidebar(cgm) {
 
   set_up_opacity_slider(sidebar);
 
-  var possible_filter_names = _.keys(params.viz.possible_filters);
+  var possible_filter_names = underscore.keys(params.viz.possible_filters);
 
   if (possible_filter_names.indexOf('enr_score_type')>-1){
     possible_filter_names.sort(function (a, b) {
@@ -86,7 +87,7 @@ module.exports = function sidebar(cgm) {
 
   cgm.slider_functions = {};
 
-  _.each(possible_filter_names, function(inst_filter){
+  underscore.each(possible_filter_names, function(inst_filter){
     set_up_filters(cgm, inst_filter);
   });
 

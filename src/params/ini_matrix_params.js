@@ -31,7 +31,7 @@ module.exports = function ini_matrix_params(params){
 
   matrix.orders = {};
 
-  _.each(['row','col'], function(inst_rc){
+  underscore.each(['row','col'], function(inst_rc){
 
     // row ordering is based on col info and vice versa
     var other_rc;
@@ -48,7 +48,7 @@ module.exports = function ini_matrix_params(params){
     var nodes_names = utils.pluck(inst_nodes, 'name');
     var tmp = nodes_names.sort();
 
-    var alpha_index = _.map(tmp, function(d){
+    var alpha_index = underscore.map(tmp, function(d){
       return network_data[other_rc+'_nodes_names'].indexOf(d);
     });
 
@@ -61,14 +61,14 @@ module.exports = function ini_matrix_params(params){
     }
 
     if (params.viz.all_cats[other_rc].length > 0){
-      _.each( params.viz.all_cats[other_rc], function(inst_cat){
+      underscore.each( params.viz.all_cats[other_rc], function(inst_cat){
         // the index of the category has replaced - with _
         inst_cat = inst_cat.replace('-','_');
         possible_orders.push(inst_cat+'_index');
       });
     }
 
-    _.each(possible_orders, function(inst_order){
+    underscore.each(possible_orders, function(inst_order){
 
       var tmp_order_index = d3.range(num_nodes)
         .sort(function(a,b){

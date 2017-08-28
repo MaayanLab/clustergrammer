@@ -4,6 +4,7 @@ var math = core.create();
 var dist_fun = require('./distance_functions');
 var get_order_and_groups_clusterfck_tree = require('./get_order_and_groups_clusterfck_tree');
 var update_view = require('../update/update_view');
+var underscore = require('underscore');
 
 math.import(require('mathjs/lib/function/matrix/transpose'));
 math.import(require('mathjs/lib/type/matrix'));
@@ -22,7 +23,7 @@ module.exports = function recluster(cgm, new_distance_metric){
   new_view.nodes.row_nodes = $.extend(true, [], cgm.params.network_data.row_nodes);
   new_view.nodes.col_nodes = $.extend(true, [], cgm.params.network_data.col_nodes);
 
-  _.each(['row', 'col'], function(inst_rc){
+  underscore.each(['row', 'col'], function(inst_rc){
 
     var mat;
     var transpose = math.transpose;

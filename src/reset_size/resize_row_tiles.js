@@ -1,6 +1,7 @@
 var draw_up_tile = require('../enter/draw_up_tile');
 var draw_dn_tile = require('../enter/draw_dn_tile');
 var fine_position_tile = require('../matrix/fine_position_tile');
+var underscore = require('underscore');
 
 module.exports = function resize_row_tiles(params, svg_group){
 
@@ -15,7 +16,7 @@ module.exports = function resize_row_tiles(params, svg_group){
     // resize rows
     svg_group.selectAll('.row')
       .attr('transform', function(d){
-        var tmp_index = _.indexOf(row_nodes_names, d.name);
+        var tmp_index = underscore.indexOf(row_nodes_names, d.name);
         var inst_y = params.viz.y_scale(tmp_index);
         return 'translate(0,'+inst_y+')';
       });

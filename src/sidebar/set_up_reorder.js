@@ -1,4 +1,5 @@
 // var get_cat_title = require('../categories/get_cat_title');
+var underscore = require('underscore');
 
 module.exports = function set_up_reorder(params, sidebar){
 
@@ -23,7 +24,7 @@ module.exports = function set_up_reorder(params, sidebar){
     reorder_types = ['row','col'];
   }
 
-  _.each(reorder_types, function(inst_rc){
+  underscore.each(reorder_types, function(inst_rc){
 
     button_dict = {
       'clust':'Cluster',
@@ -44,7 +45,7 @@ module.exports = function set_up_reorder(params, sidebar){
 
     var possible_orders = [];
 
-    _.each(tmp_orders, function(inst_name){
+    underscore.each(tmp_orders, function(inst_name){
 
       if (inst_name.indexOf(other_rc) > -1){
         inst_name = inst_name.replace('_row','').replace('_col','');
@@ -57,11 +58,11 @@ module.exports = function set_up_reorder(params, sidebar){
     });
 
     // specific to Enrichr
-    if ( _.keys(params.viz.filter_data).indexOf('enr_score_type') > -1 ){
+    if ( underscore.keys(params.viz.filter_data).indexOf('enr_score_type') > -1 ){
       possible_orders = ['clust','rank'];
     }
 
-    possible_orders = _.uniq(possible_orders);
+    possible_orders = underscore.uniq(possible_orders);
 
     possible_orders = possible_orders.sort();
 

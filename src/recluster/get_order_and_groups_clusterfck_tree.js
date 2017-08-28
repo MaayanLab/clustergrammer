@@ -1,4 +1,5 @@
 var get_max_distance_in_dm = require('./get_max_distance_in_dm');
+var underscore = require('underscore');
 
 module.exports = function get_order_and_groups_clusterfck_tree(clusters, names){
 
@@ -40,7 +41,7 @@ module.exports = function get_order_and_groups_clusterfck_tree(clusters, names){
     cutoff_indexes.push(i);
   }
 
-  _.each(['left','right'], function(side){
+  underscore.each(['left','right'], function(side){
 
     get_leaves(tree[side], side, ini_level, tree_height, threshold_status);
 
@@ -49,7 +50,7 @@ module.exports = function get_order_and_groups_clusterfck_tree(clusters, names){
   function get_leaves(limb, side, inst_level, inst_dist, threshold_status){
 
     // lock if distance is under resolvable distance
-    _.each(cutoff_indexes, function(index){
+    underscore.each(cutoff_indexes, function(index){
       if (inst_dist <= cutoff_vals[index]){
 
         // increment group if going from above to below threshold
@@ -68,12 +69,12 @@ module.exports = function get_order_and_groups_clusterfck_tree(clusters, names){
     });
 
     // if there are more branches then there is a distance
-    if ( _.has(limb, 'dist')){
+    if ( underscore.has(limb, 'dist')){
 
       inst_dist = limb.dist;
       inst_level = inst_level + 1;
 
-      _.each(['left', 'right'], function(side2){
+      underscore.each(['left', 'right'], function(side2){
         get_leaves(limb[side2], side2, inst_level, inst_dist,  threshold_status);
       });
 
@@ -82,7 +83,7 @@ module.exports = function get_order_and_groups_clusterfck_tree(clusters, names){
       inst_key = limb.key;
 
       // increment group if leaf is above threshold
-      _.each(cutoff_indexes, function(index){
+      underscore.each(cutoff_indexes, function(index){
 
         if (threshold_status[index] === 'above'){
           group[index] = group[index] + 1;
@@ -120,7 +121,7 @@ module.exports = function get_order_and_groups_clusterfck_tree(clusters, names){
   // generate ordered names
   var inst_name;
   var ordered_names = [];
-  _.each(order_list, function(index){
+  underscore.each(order_list, function(index){
     inst_name = names[index];
     ordered_names.push(inst_name);
   });

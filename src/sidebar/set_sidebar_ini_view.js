@@ -1,9 +1,9 @@
 var make_filter_title = require('../filters/make_filter_title');
-
+var underscore = require('underscore');
 
 module.exports = function set_sidebar_ini_view(params){
 
-  _.each( _.keys(params.ini_view), function(inst_filter){
+  underscore.each( underscore.keys(params.ini_view), function(inst_filter){
 
     // initialize filter slider using ini_view
     var inst_value = params.ini_view[inst_filter];
