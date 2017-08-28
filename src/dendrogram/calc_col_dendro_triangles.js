@@ -1,3 +1,5 @@
+var underscore = require('underscore');
+
 module.exports = function calc_col_dendro_triangles(params){
 
   var triangle_info = {};
@@ -5,14 +7,14 @@ module.exports = function calc_col_dendro_triangles(params){
   var col_nodes = params.network_data.col_nodes;
   var col_nodes_names = params.network_data.col_nodes_names;
 
-  _.each(col_nodes, function(d){
+  underscore.each(col_nodes, function(d){
 
     var tmp_group = d.group[inst_level];
-    var inst_index = _.indexOf(col_nodes_names, d.name);
+    var inst_index = underscore.indexOf(col_nodes_names, d.name);
     var inst_top = params.viz.x_scale(inst_index);
     var inst_bot = inst_top + params.viz.x_scale.rangeBand();
 
-    if ( _.has(triangle_info, tmp_group) === false){
+    if ( underscore.has(triangle_info, tmp_group) === false){
       triangle_info[tmp_group] = {};
       triangle_info[tmp_group].name_top = d.name;
       triangle_info[tmp_group].name_bot = d.name;
@@ -42,7 +44,7 @@ module.exports = function calc_col_dendro_triangles(params){
 
   var group_info = [];
 
-  _.each(triangle_info, function(d){
+  underscore.each(triangle_info, function(d){
     group_info.push(d);
   });
 

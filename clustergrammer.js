@@ -15761,7 +15761,9 @@ var Clustergrammer =
 
 /***/ }),
 /* 106 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+	var underscore = __webpack_require__(66);
 
 	module.exports = function calc_row_dendro_triangles(params) {
 
@@ -15770,16 +15772,16 @@ var Clustergrammer =
 	  var row_nodes = params.network_data.row_nodes;
 	  var row_nodes_names = params.network_data.row_nodes_names;
 
-	  _.each(row_nodes, function (d) {
+	  underscore.each(row_nodes, function (d) {
 
 	    // console.log('row_node '+d.name)
 
 	    var tmp_group = d.group[inst_level];
-	    var inst_index = _.indexOf(row_nodes_names, d.name);
+	    var inst_index = underscore.indexOf(row_nodes_names, d.name);
 	    var inst_top = params.viz.y_scale(inst_index);
 	    var inst_bot = inst_top + params.viz.y_scale.rangeBand();
 
-	    if (_.has(triangle_info, tmp_group) === false) {
+	    if (underscore.has(triangle_info, tmp_group) === false) {
 	      triangle_info[tmp_group] = {};
 	      triangle_info[tmp_group].name_top = d.name;
 	      triangle_info[tmp_group].name_bot = d.name;
@@ -15808,7 +15810,7 @@ var Clustergrammer =
 
 	  var group_info = [];
 
-	  _.each(triangle_info, function (d) {
+	  underscore.each(triangle_info, function (d) {
 	    group_info.push(d);
 	  });
 
@@ -15817,7 +15819,9 @@ var Clustergrammer =
 
 /***/ }),
 /* 107 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+	var underscore = __webpack_require__(66);
 
 	module.exports = function calc_col_dendro_triangles(params) {
 
@@ -15826,14 +15830,14 @@ var Clustergrammer =
 	  var col_nodes = params.network_data.col_nodes;
 	  var col_nodes_names = params.network_data.col_nodes_names;
 
-	  _.each(col_nodes, function (d) {
+	  underscore.each(col_nodes, function (d) {
 
 	    var tmp_group = d.group[inst_level];
-	    var inst_index = _.indexOf(col_nodes_names, d.name);
+	    var inst_index = underscore.indexOf(col_nodes_names, d.name);
 	    var inst_top = params.viz.x_scale(inst_index);
 	    var inst_bot = inst_top + params.viz.x_scale.rangeBand();
 
-	    if (_.has(triangle_info, tmp_group) === false) {
+	    if (underscore.has(triangle_info, tmp_group) === false) {
 	      triangle_info[tmp_group] = {};
 	      triangle_info[tmp_group].name_top = d.name;
 	      triangle_info[tmp_group].name_bot = d.name;
@@ -15862,7 +15866,7 @@ var Clustergrammer =
 
 	  var group_info = [];
 
-	  _.each(triangle_info, function (d) {
+	  underscore.each(triangle_info, function (d) {
 	    group_info.push(d);
 	  });
 
@@ -16644,8 +16648,10 @@ var Clustergrammer =
 /***/ (function(module, exports, __webpack_require__) {
 
 	var binom_test = __webpack_require__(115);
+	var underscore = __webpack_require__(66);
 
 	module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc) {
+
 	  // Category-breakdown of dendrogram-clusters
 	  /////////////////////////////////////////////
 	  /*
@@ -16671,7 +16677,7 @@ var Clustergrammer =
 	  var is_downsampled = false;
 
 	  var inst_name;
-	  _.each(all_nodes, function (inst_node) {
+	  underscore.each(all_nodes, function (inst_node) {
 
 	    inst_name = inst_node.name;
 
@@ -16690,7 +16696,7 @@ var Clustergrammer =
 	    var inst_cat_info = params.viz.cat_info[inst_rc];
 
 	    // tmp list of all categories
-	    var tmp_types_index = _.keys(inst_cat_info);
+	    var tmp_types_index = underscore.keys(inst_cat_info);
 	    // this will hold the indexes of string-type categories
 	    var cat_types_index = [];
 
@@ -16745,7 +16751,7 @@ var Clustergrammer =
 	      // all rows/cols
 	      // params
 
-	      _.each(cat_types_index, function (cat_index) {
+	      underscore.each(cat_types_index, function (cat_index) {
 
 	        inst_index = cat_index.split('-')[1];
 	        type_name = cat_types_names[inst_index];
@@ -16763,7 +16769,7 @@ var Clustergrammer =
 	        tmp_run_count[type_name] = {};
 
 	        // loop through the nodes and keep a running count of categories
-	        _.each(clust_nodes, function (tmp_node) {
+	        underscore.each(clust_nodes, function (tmp_node) {
 
 	          cat_name = tmp_node[cat_index];
 

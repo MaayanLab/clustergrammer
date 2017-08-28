@@ -1,6 +1,8 @@
 var binom_test = require('./binom_test');
+var underscore = require('underscore');
 
 module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc){
+
   // Category-breakdown of dendrogram-clusters
   /////////////////////////////////////////////
   /*
@@ -26,7 +28,7 @@ module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc)
   var is_downsampled = false;
 
   var inst_name;
-  _.each(all_nodes, function(inst_node){
+  underscore.each(all_nodes, function(inst_node){
 
     inst_name = inst_node.name;
 
@@ -46,7 +48,7 @@ module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc)
     var inst_cat_info = params.viz.cat_info[inst_rc];
 
     // tmp list of all categories
-    var tmp_types_index = _.keys(inst_cat_info);
+    var tmp_types_index = underscore.keys(inst_cat_info);
     // this will hold the indexes of string-type categories
     var cat_types_index = [];
 
@@ -103,7 +105,7 @@ module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc)
       // all rows/cols
       // params
 
-      _.each(cat_types_index, function(cat_index){
+      underscore.each(cat_types_index, function(cat_index){
 
         inst_index = cat_index.split('-')[1];
         type_name = cat_types_names[inst_index];
@@ -121,7 +123,7 @@ module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc)
         tmp_run_count[type_name] = {};
 
         // loop through the nodes and keep a running count of categories
-        _.each(clust_nodes, function (tmp_node){
+        underscore.each(clust_nodes, function (tmp_node){
 
           cat_name = tmp_node[cat_index];
 
