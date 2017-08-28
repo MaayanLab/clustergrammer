@@ -20453,7 +20453,7 @@ var Clustergrammer =
 	      tmp_left = max_room;
 	    }
 
-	    tmp_top = viz.clust.margin.top + 3 * viz.uni_margin + 90;
+	    tmp_top = viz.clust.margin.top + 3 * viz.uni_margin - 50; // + 90 ;
 	  } else {
 
 	    // column dendrogram
@@ -21023,7 +21023,8 @@ var Clustergrammer =
 	  build_svg_dendro_slider(cgm, 'row');
 	  build_svg_dendro_slider(cgm, 'col');
 
-	  build_svg_tree_icon(cgm);
+	  // disabled
+	  // build_svg_tree_icon(cgm);
 		};
 
 /***/ }),
@@ -21912,13 +21913,14 @@ var Clustergrammer =
 
 	module.exports = function get_order_and_groups_clusterfck_tree(clusters, names) {
 
-	  console.log('**** checking in get_order ***********************');
-	  console.log(clusters.hc.dists[0][5]);
-	  console.log(clusters.hc.dists[0]);
+	  // console.log('**** checking in get_order ***********************')
+	  // console.log(clusters.hc.dists[0][5])
+	  // console.log(clusters.hc.dists[0])
 
-	  console.log('**** checking dists_backup get_order ***********************');
-	  console.log(clusters.hc.dists_backup[0][5]);
-	  console.log(clusters.hc.dists_backup[0]);
+	  // console.log('**** checking dists_backup get_order ***********************')
+	  // console.log(clusters.hc.dists_backup[0][5])
+	  // console.log(clusters.hc.dists_backup[0])
+
 
 	  var max_distance_in_dm = get_max_distance_in_dm(clusters.hc.dists_backup);
 
@@ -21936,8 +21938,6 @@ var Clustergrammer =
 	  var ini_level = 1;
 	  var tree_height = tree.dist;
 
-	  console.log(max_distance_in_dm);
-
 	  // var cutoff_fractions = [];
 	  var cutoff_vals = [];
 	  var cutoff_indexes = [];
@@ -21949,7 +21949,6 @@ var Clustergrammer =
 	    group.push(0);
 	    cutoff_indexes.push(i);
 	  }
-	  // console.log(cutoff_vals)
 
 	  _.each(['left', 'right'], function (side) {
 
