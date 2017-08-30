@@ -3,7 +3,8 @@ var recluster = require('../recluster/recluster');
 module.exports = function make_tree_menu(cgm){
 
   var params = cgm.params;
-  var menu_width = 475;
+  var menu_width = 400;
+  var underline_width = menu_width/2 - 25;
 
   // make tree menu (state is in cgm, remade each time)
   /////////////////////////////////////////////////////
@@ -51,33 +52,39 @@ module.exports = function make_tree_menu(cgm){
     .attr('cursor', 'default')
     .text('Clustering Menu');
 
-  // menu options
+  // distance menu options
   var possible_distances = ['cosine', 'euclidean', 'correlation'];
   var vertical_space = 30;
   var menu_y_offset = 110;
   var distance_line_offset = 80;
+  var menu_x_offset = menu_width/20;
 
-  tree_menu
+  distance_menu = tree_menu
+    .append('g')
+    .classed('distance_menu', true)
+    .attr('transform', 'translate(' + menu_x_offset + ', 0)')
+
+  distance_menu
     .append('text')
-    .attr('transform', 'translate(25, 70)')
+    .attr('transform', 'translate(0, 70)')
     .attr('font-size', '18px')
     .attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif')
     .style('cursor', 'default')
     .text('Distance Metric');
 
-  tree_menu
+  distance_menu
     .append('rect')
     .classed('tree_menu_line', true)
     .attr('height', '2px')
-    .attr('width','435px')
+    .attr('width', underline_width+'px')
     .attr('stroke-width', '3px')
     .attr('opacity', 0.3)
     .attr('fill', 'black')
-    .attr('transform', 'translate(20,' + distance_line_offset + ')');
+    .attr('transform', 'translate(0,' + distance_line_offset + ')');
 
-  var distance_section = tree_menu
+  var distance_section = distance_menu
     .append('g')
-    .attr('transform', 'translate(20,'+menu_y_offset+')')
+    .attr('transform', 'translate(0,'+menu_y_offset+')')
     .classed('distance_section', true);
 
   var distance_groups = distance_section
