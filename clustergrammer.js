@@ -22957,6 +22957,12 @@ var Clustergrammer =
 
 	  var params = cgm.params;
 	  var menu_width = 400;
+	  var menu_height = 237;
+	  var default_opacity = 0.35;
+	  var high_opacity = 0.5;
+	  var x_offset = 20;
+	  var update_buton_x = 25;
+	  var update_buton_y = 205;
 
 	  // make tree menu (state is in cgm, remade each time)
 	  /////////////////////////////////////////////////////
@@ -22974,13 +22980,10 @@ var Clustergrammer =
 	  tree_menu.append('rect').classed('tree_menu_background', true).attr('width', function () {
 	    var inst_width = menu_width;
 	    return inst_width;
-	  }).attr('height', function () {
-	    var inst_height = 500;
-	    return inst_height;
-	  }).attr('fill', 'white').attr('stroke', '#A3A3A3').attr('stroke-width', '3px').attr('opacity', menu_opacity);
+	  }).attr('height', menu_height).attr('fill', 'white').attr('stroke', '#A3A3A3').attr('stroke-width', '3px').attr('opacity', menu_opacity);
 
 	  // Clustering Parameters
-	  tree_menu.append('text').classed('tree_menu_title', true).attr('transform', 'translate(20,30)').attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('font-size', '18px').attr('font-weight', 800).attr('cursor', 'default').text('Clustering Parameters');
+	  tree_menu.append('text').classed('tree_menu_title', true).attr('transform', 'translate(' + x_offset + ',30)').attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('font-size', '18px').attr('font-weight', 800).attr('cursor', 'default').text('Clustering Parameters');
 
 	  var reorder_click = function (d) {
 
@@ -23017,13 +23020,25 @@ var Clustergrammer =
 	  button_info.x_offset = 200;
 	  button_section(button_info, linkage_names, reorder_click);
 
-	  // // linkage
+	  // // Z-score
 	  // /////////////////
-	  // var linkage_names = ['average', 'single', 'complete'];
+	  // var zscore_names = ['row', 'col'];
 	  // button_info.name = 'Linkage Type';
-	  // button_info.y_offset = 65;
-	  // button_info.x_offset = 200;
+	  // button_info.y_offset = 200;
+	  // button_info.x_offset = 0;
 	  // button_section(button_info, linkage_names, reorder_click)
+
+	  var update_button = tree_menu.append('g').classed('update_button', true).attr('transform', 'translate(' + update_buton_x + ', ' + update_buton_y + ')').on('click', function () {
+	    console.log('clicking update button');
+	  }).on('mouseover', function () {
+	    d3.select(this).select('rect').attr('opacity', high_opacity);
+	  }).on('mouseout', function () {
+	    d3.select(this).select('rect').attr('opacity', default_opacity);
+	  });
+
+	  update_button.append('rect').attr('width', '80px').attr('height', '35px').attr('fill', 'blue').attr('transform', 'translate(0, -23)').attr('stroke', '#A3A3A3').attr('stroke-width', '1px').attr('opacity', default_opacity);
+
+	  update_button.append('text').attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('font-size', '18px').attr('font-weight', 500).attr('cursor', 'default').text('Update').attr('transform', 'translate(10, 0)');
 
 	  ///////////////////////////////////////////////////////
 	};
