@@ -20,7 +20,12 @@ module.exports = function cat_tooltip_text(params, inst_data, inst_selection, in
     }
   }
 
-  var cat_string = cat_title + ': '+ cat_name;
+  /* old category string */
+  // var cat_string = cat_title + ': '+ cat_name;
+
+  /* new string with click instructions */
+  var cat_string = '<div>' + cat_title + ': '+ cat_name +
+                   '</div> <div> <br>Click for Category Menu </div>';
 
   d3.select(inst_selection)
     .classed('hovering',true);

@@ -22,6 +22,8 @@ module.exports = function make_tree_menu(cgm){
     .transition()
     .attr('opacity', 1.0);
 
+  var menu_opacity = 0.95;
+
   tree_menu
     .append('rect')
     .classed('tree_menu_background', true)
@@ -36,7 +38,7 @@ module.exports = function make_tree_menu(cgm){
     .attr('fill', 'white')
     .attr('stroke', '#A3A3A3')
     .attr('stroke-width', '3px')
-    .attr('opacity', 0.95);
+    .attr('opacity', menu_opacity);
 
   // tree_menu
   tree_menu
