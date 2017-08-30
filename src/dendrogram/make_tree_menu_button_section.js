@@ -1,24 +1,27 @@
-module.exports = function make_tree_menu_button_section(cgm, tree_menu, menu_width,  button_names, click_function){
+module.exports = function make_tree_menu_button_section(button_info,  button_names, click_function){
+
+  var cgm = button_info.cgm;
+  var tree_menu = button_info.tree_menu;
+  var menu_width = button_info.menu_width;
+  var button_offset = 35;
 
   // Linkage menu options
   var vertical_space = 30;
-  var menu_y_offset = 110;
-  var distance_line_offset = 80;
-  var menu_x_offset = menu_width/20;
-  var underline_width = menu_width/2 - 25;
+  var menu_x_offset = menu_width/20 + button_info.x_offset;
+  var underline_width = menu_width/2 - 40;
 
   var distance_menu = tree_menu
     .append('g')
     .classed('distance_menu', true)
-    .attr('transform', 'translate(' + menu_x_offset + ', 0)');
+    .attr('transform', 'translate(' + menu_x_offset + ', ' + button_info.y_offset + ')');
 
   distance_menu
     .append('text')
-    .attr('transform', 'translate(0, 70)')
+    .attr('transform', 'translate(0, 0)')
     .attr('font-size', '18px')
     .attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif')
     .style('cursor', 'default')
-    .text('Distance Metric');
+    .text(button_info.name);
 
   distance_menu
     .append('rect')
@@ -28,11 +31,11 @@ module.exports = function make_tree_menu_button_section(cgm, tree_menu, menu_wid
     .attr('stroke-width', '3px')
     .attr('opacity', 0.3)
     .attr('fill', 'black')
-    .attr('transform', 'translate(0,' + distance_line_offset + ')');
+    .attr('transform', 'translate(0,10)');
 
   var distance_section = distance_menu
     .append('g')
-    .attr('transform', 'translate(0,'+menu_y_offset+')')
+    .attr('transform', 'translate(0,' + button_offset + ')')
     .classed('distance_section', true);
 
   var distance_groups = distance_section

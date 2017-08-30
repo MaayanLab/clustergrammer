@@ -52,7 +52,6 @@ module.exports = function make_tree_menu(cgm){
     .attr('cursor', 'default')
     .text('Clustering Parameters');
 
-var button_names = ['cosine', 'euclidean', 'correlation'];
 
 var reorder_click = function(d){
 
@@ -72,7 +71,34 @@ var reorder_click = function(d){
 
     }
 
-  button_section(cgm, tree_menu, menu_width, button_names, reorder_click)
+  var button_info = {};
+  button_info.cgm = cgm;
+  button_info.tree_menu = tree_menu;
+  button_info.menu_width = menu_width;
+
+  // linkage
+  /////////////////
+  var distance_names = ['cosine', 'euclidean', 'correlation'];
+  button_info.name = 'Distance Metric';
+  button_info.y_offset = 65;
+  button_info.x_offset = 0;
+  button_section(button_info, distance_names, reorder_click)
+
+  // linkage
+  /////////////////
+  var linkage_names = ['average', 'single', 'complete'];
+  button_info.name = 'Linkage Type';
+  button_info.y_offset = 65;
+  button_info.x_offset = 200;
+  button_section(button_info, linkage_names, reorder_click)
+
+  // // linkage
+  // /////////////////
+  // var linkage_names = ['average', 'single', 'complete'];
+  // button_info.name = 'Linkage Type';
+  // button_info.y_offset = 65;
+  // button_info.x_offset = 200;
+  // button_section(button_info, linkage_names, reorder_click)
 
   ///////////////////////////////////////////////////////
 };
