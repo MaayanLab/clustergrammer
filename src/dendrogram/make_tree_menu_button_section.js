@@ -10,12 +10,12 @@ module.exports = function make_tree_menu_button_section(button_type, button_info
   var menu_x_offset = menu_width/20 + button_info.x_offset;
   var underline_width = menu_width/2 - 40;
 
-  var distance_menu = tree_menu
+  var inst_menu = tree_menu
     .append('g')
-    .classed('distance_menu', true)
+    .classed('inst_menu', true)
     .attr('transform', 'translate(' + menu_x_offset + ', ' + button_info.y_offset + ')');
 
-  distance_menu
+  inst_menu
     .append('text')
     .attr('transform', 'translate(0, 0)')
     .attr('font-size', '18px')
@@ -23,7 +23,7 @@ module.exports = function make_tree_menu_button_section(button_type, button_info
     .attr('cursor', 'default')
     .text(button_info.name);
 
-  distance_menu
+  inst_menu
     .append('rect')
     .classed('tree_menu_line', true)
     .attr('height', '2px')
@@ -33,13 +33,13 @@ module.exports = function make_tree_menu_button_section(button_type, button_info
     .attr('fill', 'black')
     .attr('transform', 'translate(0,10)');
 
-  var distance_section = distance_menu
+  var inst_section = inst_menu
     .append('g')
     .attr('transform', 'translate(0,' + button_offset + ')')
-    .classed('distance_section', true);
+    .classed('inst_section', true);
 
   var button_class = cgm.params.root.replace('#','')+ '_' + button_type + '_buttons';
-  var distance_groups = distance_section
+  var section_groups = inst_section
     .selectAll('g')
     .data(button_names)
     .enter()
@@ -60,7 +60,7 @@ module.exports = function make_tree_menu_button_section(button_type, button_info
 
     });
 
-  distance_groups
+  section_groups
     .append('circle')
     .attr('cx', 10)
     .attr('cy', -6)
@@ -69,7 +69,7 @@ module.exports = function make_tree_menu_button_section(button_type, button_info
     .attr('stroke-width', '2px')
     .attr('fill', circle_fill_function);
 
-  distance_groups
+  section_groups
     .append('text')
     .attr('transform', 'translate(25,0)')
     .attr('font-size','16px')

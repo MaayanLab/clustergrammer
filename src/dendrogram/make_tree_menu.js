@@ -53,31 +53,44 @@ module.exports = function make_tree_menu(cgm){
     .attr('cursor', 'default')
     .text('Clustering Parameters');
 
+  var distance_circle_fill = function(d){
+    var inst_color = 'white';
+    if (d === cgm.params.matrix.distance_metric){
+      inst_color = 'red';
+    }
+    return inst_color;
+  }
 
-  var reorder_click = function(button_selection, d, button_info){
+  var linkage_circle_fill = function(d){
+    var inst_color = 'white';
+    if (d === cgm.params.matrix.linkage_type){
+      inst_color = 'red';
+    }
+    return inst_color;
+  }
+
+  var distance_click = function(button_selection, d, button_info){
     button_info.distance_metric = d;
-    console.log(button_info.distance_metric);
-    console.log(d3.select(button_selection).select('circle').empty())
-
     d3.select(button_selection)
       .select('circle')
       .attr('fill', 'red');
-      // .remove()
   }
 
-  var distance_circle_fill = function(d){
-      var inst_color = 'white';
-      if (d === cgm.params.matrix.distance_metric){
-        inst_color = 'red';
-      }
-      return inst_color;
-    }
+  var linkage_click = function(button_selection, d, button_info){
+    button_info.linkage_type = d;
+    console.log('clicking linkage', button_info.linkage_type)
+    d3.select(button_selection)
+      .select('circle')
+      .attr('fill', 'red');
+  }
+
 
   var button_info = {};
   button_info.cgm = cgm;
   button_info.tree_menu = tree_menu;
   button_info.menu_width = menu_width;
-  button_info.distance = cgm.params.matrix.distance_metric;
+  button_info.distance_metric = cgm.params.matrix.distance_metric;
+  button_info.linkage_type = cgm.params.matrix.linkage_type;
 
   // linkage
   /////////////////
@@ -85,7 +98,7 @@ module.exports = function make_tree_menu(cgm){
   button_info.name = 'Distance Metric';
   button_info.y_offset = 65;
   button_info.x_offset = 0;
-  button_section('distance', button_info, distance_names, distance_circle_fill, reorder_click)
+  button_section('distance', button_info, distance_names, distance_circle_fill, distance_click)
 
   // linkage
   /////////////////
@@ -93,7 +106,7 @@ module.exports = function make_tree_menu(cgm){
   button_info.name = 'Linkage Type';
   button_info.y_offset = 65;
   button_info.x_offset = menu_width/2;
-  button_section('linkage', button_info, linkage_names, distance_circle_fill, reorder_click)
+  button_section('linkage', button_info, linkage_names, linkage_circle_fill, linkage_click)
 
   // // Z-score
   // /////////////////
@@ -101,7 +114,7 @@ module.exports = function make_tree_menu(cgm){
   // button_info.name = 'Linkage Type';
   // button_info.y_offset = 200;
   // button_info.x_offset = 0;
-  // button_section(button_info, linkage_names, reorder_click)
+  // button_section(button_info, linkage_names, distance_click)
 
   var update_button_width = 100;
   var update_buton_x = menu_width/2 + x_offset;
@@ -127,8 +140,10 @@ module.exports = function make_tree_menu(cgm){
           .remove();
       }, 700);
 
+      // transfer to cgm object when update is pressed
       cgm.params.matrix.distance_metric = button_info.distance_metric;
-      recluster(cgm, button_info.distance_metric);
+      cgm.params.matrix.linkage_type = button_info.linkage_type;
+      recluster(cgm, button_info.distance_metric, button_info.linkage_type);
 
     })
     .on('mouseover', function(){

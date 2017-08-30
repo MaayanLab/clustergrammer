@@ -10,12 +10,12 @@ var underscore = require('underscore');
 math.import(require('mathjs/lib/function/matrix/transpose'));
 math.import(require('mathjs/lib/type/matrix'));
 
-module.exports = function recluster(cgm, new_distance_metric){
+module.exports = function recluster(cgm, distance_metric, linkage_type){
 
   var new_view = {};
   new_view.N_row_sum = 'null';
   new_view.N_row_var = 'null';
-  new_view.dist = new_distance_metric;
+  new_view.dist = distance_metric;
 
   // // constructing new nodes from old view (does not work when filtering)
   // new_view.nodes = $.extend(true, [], cgm.params.network_data.views[0].nodes);
@@ -47,8 +47,7 @@ module.exports = function recluster(cgm, new_distance_metric){
 
 
     // average, single, complete
-    var new_linkage = 'average';
-    var clusters = clusterfck.hcluster(mat, dist_fun[new_distance_metric], new_linkage);
+    var clusters = clusterfck.hcluster(mat, dist_fun[distance_metric], linkage_type);
 
     var order_info = get_order_and_groups_clusterfck_tree(clusters, names);
     var inst_node;
@@ -70,6 +69,6 @@ module.exports = function recluster(cgm, new_distance_metric){
 
   // add new view to views
   cgm.config.network_data.views.push(new_view);
-  update_view(cgm, 'dist', new_distance_metric);
+  update_view(cgm, 'dist', distance_metric);
 
 };
