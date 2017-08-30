@@ -23,6 +23,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 */
 
+/* eslint-disable */
+
 module.exports = {
    hcluster: require("./hcluster"),
    Kmeans: require("./kmeans"),

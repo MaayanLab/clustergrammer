@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 var distances = require("./distance");
 
 function KMeans(centroids) {
@@ -10,7 +12,7 @@ KMeans.prototype.randomCentroids = function(points, k) {
       return (Math.round(Math.random()) - 0.5);
    });
    return centroids.slice(0, k);
-}
+};
 
 KMeans.prototype.classify = function(point, distance) {
    var min = Infinity,
@@ -30,7 +32,7 @@ KMeans.prototype.classify = function(point, distance) {
    }
 
    return index;
-}
+};
 
 KMeans.prototype.cluster = function(points, k, distance, snapshotPeriod, snapshotCb) {
    k = k || Math.max(2, Math.ceil(Math.sqrt(points.length / 2)));
@@ -45,11 +47,12 @@ KMeans.prototype.cluster = function(points, k, distance, snapshotPeriod, snapsho
    var assignment = new Array(points.length);
    var clusters = new Array(k);
 
+   var i;
    var iterations = 0;
    var movement = true;
    while (movement) {
       // update point-to-centroid assignments
-      for (var i = 0; i < points.length; i++) {
+      for (i = 0; i < points.length; i++) {
          assignment[i] = this.classify(points[i], distance);
       }
 
@@ -57,7 +60,7 @@ KMeans.prototype.cluster = function(points, k, distance, snapshotPeriod, snapsho
       movement = false;
       for (var j = 0; j < k; j++) {
          var assigned = [];
-         for (var i = 0; i < assignment.length; i++) {
+         for (i = 0; i < assignment.length; i++) {
             if (assignment[i] == j) {
                assigned.push(points[i]);
             }
@@ -72,7 +75,7 @@ KMeans.prototype.cluster = function(points, k, distance, snapshotPeriod, snapsho
 
          for (var g = 0; g < centroid.length; g++) {
             var sum = 0;
-            for (var i = 0; i < assigned.length; i++) {
+            for (i = 0; i < assigned.length; i++) {
                sum += assigned[i][g];
             }
             newCentroid[g] = sum / assigned.length;
@@ -92,19 +95,19 @@ KMeans.prototype.cluster = function(points, k, distance, snapshotPeriod, snapsho
    }
 
    return clusters;
-}
+};
 
 KMeans.prototype.toJSON = function() {
    return JSON.stringify(this.centroids);
-}
+};
 
 KMeans.prototype.fromJSON = function(json) {
    this.centroids = JSON.parse(json);
    return this;
-}
+};
 
 module.exports = KMeans;
 
 module.exports.kmeans = function(vectors, k) {
    return (new KMeans()).cluster(vectors, k);
-}
+};

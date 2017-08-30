@@ -47,7 +47,7 @@ module.exports = function recluster(cgm, new_distance_metric){
 
 
     // average, single, complete
-    var new_linkage = 'average'
+    var new_linkage = 'average';
     var clusters = clusterfck.hcluster(mat, dist_fun[new_distance_metric], new_linkage);
 
     var order_info = get_order_and_groups_clusterfck_tree(clusters, names);

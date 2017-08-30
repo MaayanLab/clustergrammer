@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 var distances = require("./distance");
 
 var HierarchicalClustering = function(distance, linkage, threshold) {
@@ -18,6 +20,7 @@ HierarchicalClustering.prototype = {
       this.mins = []; // closest cluster for each cluster
       this.index = []; // keep a hash of all clusters by key
 
+
       for (var i = 0; i < items.length; i++) {
          var cluster = {
             value: items[i],
@@ -31,6 +34,7 @@ HierarchicalClustering.prototype = {
          this.mins[i] = 0;
       }
 
+      // Calculate Distance Matrix
       for (var i = 0; i < this.tree.length; i++) {
 
          for (var j = 0; j <= i; j++) {
@@ -153,14 +157,15 @@ HierarchicalClustering.prototype = {
 
       return true;
    },
+
    clusters: function(num){
      //  Return all nodes if num is invalid
-     if(num > this.tree.size || num < 1) num = this.tree.size
+     if (num > this.tree.size || num < 1) num = this.tree.size
 
      var result = [],
          subtrees = [this.tree];
 
-    //  Get a list of root nodes for num different clusters
+     //  Get a list of root nodes for num different clusters
      while(num > 1){
        var furthest = _findNextFurthest(subtrees);
        subtrees.splice(subtrees.indexOf(furthest), 1);

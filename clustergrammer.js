@@ -23134,6 +23134,8 @@ var Clustergrammer =
 
 	*/
 
+	/* eslint-disable */
+
 	module.exports = {
 	   hcluster: __webpack_require__(194),
 	   Kmeans: __webpack_require__(196),
@@ -23143,6 +23145,8 @@ var Clustergrammer =
 /***/ }),
 /* 194 */
 /***/ (function(module, exports, __webpack_require__) {
+
+	/* eslint-disable */
 
 	var distances = __webpack_require__(195);
 
@@ -23164,6 +23168,7 @@ var Clustergrammer =
 	      this.mins = []; // closest cluster for each cluster
 	      this.index = []; // keep a hash of all clusters by key
 
+
 	      for (var i = 0; i < items.length; i++) {
 	         var cluster = {
 	            value: items[i],
@@ -23177,6 +23182,7 @@ var Clustergrammer =
 	         this.mins[i] = 0;
 	      }
 
+	      // Calculate Distance Matrix
 	      for (var i = 0; i < this.tree.length; i++) {
 
 	         for (var j = 0; j <= i; j++) {
@@ -23292,6 +23298,7 @@ var Clustergrammer =
 
 	      return true;
 	   },
+
 	   clusters: function (num) {
 	      //  Return all nodes if num is invalid
 	      if (num > this.tree.size || num < 1) num = this.tree.size;
@@ -23356,14 +23363,14 @@ var Clustergrammer =
 	   euclidean: function (v1, v2) {
 	      var total = 0;
 	      for (var i = 0; i < v1.length; i++) {
-	         total += Math.pow(v2[i] - v1[i], 2);
+	         total = total + Math.pow(v2[i] - v1[i], 2);
 	      }
 	      return Math.sqrt(total);
 	   },
 	   manhattan: function (v1, v2) {
 	      var total = 0;
 	      for (var i = 0; i < v1.length; i++) {
-	         total += Math.abs(v2[i] - v1[i]);
+	         total = total + Math.abs(v2[i] - v1[i]);
 	      }
 	      return total;
 	   },
@@ -23379,6 +23386,8 @@ var Clustergrammer =
 /***/ }),
 /* 196 */
 /***/ (function(module, exports, __webpack_require__) {
+
+	/* eslint-disable */
 
 	var distances = __webpack_require__(195);
 
@@ -23427,11 +23436,12 @@ var Clustergrammer =
 	   var assignment = new Array(points.length);
 	   var clusters = new Array(k);
 
+	   var i;
 	   var iterations = 0;
 	   var movement = true;
 	   while (movement) {
 	      // update point-to-centroid assignments
-	      for (var i = 0; i < points.length; i++) {
+	      for (i = 0; i < points.length; i++) {
 	         assignment[i] = this.classify(points[i], distance);
 	      }
 
@@ -23439,7 +23449,7 @@ var Clustergrammer =
 	      movement = false;
 	      for (var j = 0; j < k; j++) {
 	         var assigned = [];
-	         for (var i = 0; i < assignment.length; i++) {
+	         for (i = 0; i < assignment.length; i++) {
 	            if (assignment[i] == j) {
 	               assigned.push(points[i]);
 	            }
@@ -23454,7 +23464,7 @@ var Clustergrammer =
 
 	         for (var g = 0; g < centroid.length; g++) {
 	            var sum = 0;
-	            for (var i = 0; i < assigned.length; i++) {
+	            for (i = 0; i < assigned.length; i++) {
 	               sum += assigned[i][g];
 	            }
 	            newCentroid[g] = sum / assigned.length;
