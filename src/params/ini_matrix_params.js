@@ -28,7 +28,7 @@ module.exports = function ini_matrix_params(params){
   matrix.click_hlight_col = -666;
 
   // definition of a large matrix (num links) determines if transition is run
-  matrix.def_large_matrix = 10000;
+  matrix.def_large_matrix = 2e4;
   matrix.opacity_function = params.opacity_scale;
 
   matrix.orders = {};

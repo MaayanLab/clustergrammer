@@ -13343,7 +13343,7 @@ var Clustergrammer =
 	  matrix.click_hlight_col = -666;
 
 	  // definition of a large matrix (num links) determines if transition is run
-	  matrix.def_large_matrix = 10000;
+	  matrix.def_large_matrix = 2e4;
 	  matrix.opacity_function = params.opacity_scale;
 
 	  matrix.orders = {};
@@ -23095,7 +23095,13 @@ var Clustergrammer =
 
 	  // add new view to views
 	  cgm.config.network_data.views.push(new_view);
-	  update_view(cgm, 'name', view_name);
+
+	  // delay update if menu has not been removed
+	  if (d3.select(cgm.params.root + ' .tree_menu').empty()) {
+	    update_view(cgm, 'name', view_name);
+	  } else {
+	    setTimeout(update_view, 700, cgm, 'name', view_name);
+	  }
 		};
 
 /***/ }),

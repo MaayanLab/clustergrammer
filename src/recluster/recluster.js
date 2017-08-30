@@ -74,6 +74,12 @@ module.exports = function recluster(cgm, distance_metric, linkage_type){
 
   // add new view to views
   cgm.config.network_data.views.push(new_view);
-  update_view(cgm, 'name', view_name);
+
+  // delay update if menu has not been removed
+  if (d3.select(cgm.params.root+' .tree_menu').empty()){
+    update_view(cgm, 'name', view_name);
+  } else {
+    setTimeout(update_view, 700, cgm, 'name', view_name);
+  }
 
 };
