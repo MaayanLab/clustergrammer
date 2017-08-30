@@ -84,8 +84,6 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
   /////////////////////////
   cgm.params.matrix.distance_metric = inst_distance_metric;
   cgm.params.matrix.linkage_type = inst_linkage_type;
-  console.log('\n\n')
-  console.log(cgm.params.matrix.linkage_type)
 
   // have persistent group levels while updating
   cgm.params.group_level = inst_group_level;
