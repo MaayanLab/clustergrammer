@@ -1,4 +1,4 @@
-module.exports = function make_tree_menu_button_section(button_info,  button_names, click_function){
+module.exports = function make_tree_menu_button_section(button_info,  button_names, circle_fill_function, click_function){
 
   var cgm = button_info.cgm;
   var tree_menu = button_info.tree_menu;
@@ -48,7 +48,9 @@ module.exports = function make_tree_menu_button_section(button_info,  button_nam
       var transform_string = 'translate(0,'+ vert + ')';
       return transform_string;
     })
-    .on('click', click_function);
+    .on('click', function(d){
+      click_function(d, button_info);
+    });
 
   distance_groups
     .append('circle')
@@ -57,14 +59,7 @@ module.exports = function make_tree_menu_button_section(button_info,  button_nam
     .attr('r', 7)
     .style('stroke', '#A3A3A3')
     .style('stroke-width', '2px')
-    .style('fill',function(d){
-      var inst_color = 'white';
-      if (d === cgm.params.matrix.distance_metric){
-        inst_color = 'red';
-      }
-
-      return inst_color;
-    });
+    .style('fill', circle_fill_function);
 
   distance_groups
     .append('text')

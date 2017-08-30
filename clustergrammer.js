@@ -22961,15 +22961,13 @@ var Clustergrammer =
 	  var default_opacity = 0.35;
 	  var high_opacity = 0.5;
 	  var x_offset = 20;
-	  var update_buton_x = 25;
-	  var update_buton_y = 205;
 
 	  // make tree menu (state is in cgm, remade each time)
 	  /////////////////////////////////////////////////////
 	  var tree_menu = d3.select(params.root + ' .viz_svg').append('g').attr('transform', function () {
 	    var shift = {};
-	    shift.x = params.viz.clust.dim.width + params.viz.clust.margin.left - menu_width + 25;
-	    shift.y = params.viz.clust.margin.top;
+	    shift.x = params.viz.clust.dim.width + params.viz.clust.margin.left - menu_width + 30;
+	    shift.y = params.viz.clust.margin.top + 15;
 	    return 'translate(' + shift.x + ', ' + shift.y + ')';
 	  }).classed('tree_menu', true);
 
@@ -22985,24 +22983,24 @@ var Clustergrammer =
 	  // Clustering Parameters
 	  tree_menu.append('text').classed('tree_menu_title', true).attr('transform', 'translate(' + x_offset + ',30)').attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('font-size', '18px').attr('font-weight', 800).attr('cursor', 'default').text('Clustering Parameters');
 
-	  var reorder_click = function (d) {
+	  var reorder_click = function (d, button_info) {
+	    button_info.distance_metric = d;
+	    console.log(button_info.distance_metric);
+	  };
 
-	    // toggle tree menu
-	    d3.select(params.root + ' .tree_menu').transition(700).attr('opacity', 0);
-	    setTimeout(function () {
-	      d3.select(params.root + ' .tree_menu').remove();
-	    }, 700);
-
-	    // update distance metric
-	    cgm.params.matrix.distance_metric = d;
-
-	    recluster(cgm, d);
+	  var distance_circle_fill = function (d) {
+	    var inst_color = 'white';
+	    if (d === cgm.params.matrix.distance_metric) {
+	      inst_color = 'red';
+	    }
+	    return inst_color;
 	  };
 
 	  var button_info = {};
 	  button_info.cgm = cgm;
 	  button_info.tree_menu = tree_menu;
 	  button_info.menu_width = menu_width;
+	  button_info.distance = cgm.params.matrix.distance_metric;
 
 	  // linkage
 	  /////////////////
@@ -23010,15 +23008,15 @@ var Clustergrammer =
 	  button_info.name = 'Distance Metric';
 	  button_info.y_offset = 65;
 	  button_info.x_offset = 0;
-	  button_section(button_info, distance_names, reorder_click);
+	  button_section(button_info, distance_names, distance_circle_fill, reorder_click);
 
 	  // linkage
 	  /////////////////
 	  var linkage_names = ['average', 'single', 'complete'];
 	  button_info.name = 'Linkage Type';
 	  button_info.y_offset = 65;
-	  button_info.x_offset = 200;
-	  button_section(button_info, linkage_names, reorder_click);
+	  button_info.x_offset = menu_width / 2;
+	  button_section(button_info, linkage_names, distance_circle_fill, reorder_click);
 
 	  // // Z-score
 	  // /////////////////
@@ -23028,17 +23026,34 @@ var Clustergrammer =
 	  // button_info.x_offset = 0;
 	  // button_section(button_info, linkage_names, reorder_click)
 
+	  var update_button_width = 100;
+	  var update_buton_x = menu_width / 2 + x_offset;
+	  var update_buton_y = 205;
+
 	  var update_button = tree_menu.append('g').classed('update_button', true).attr('transform', 'translate(' + update_buton_x + ', ' + update_buton_y + ')').on('click', function () {
+
 	    console.log('clicking update button');
+
+	    console.log(button_info.distance_metric);
+
+	    // toggle tree menu
+	    d3.select(params.root + ' .tree_menu').transition(700).attr('opacity', 0);
+
+	    setTimeout(function () {
+	      d3.select(params.root + ' .tree_menu').remove();
+	    }, 700);
+
+	    cgm.params.matrix.distance_metric = button_info.distance_metric;
+	    recluster(cgm, button_info.distance_metric);
 	  }).on('mouseover', function () {
 	    d3.select(this).select('rect').attr('opacity', high_opacity);
 	  }).on('mouseout', function () {
 	    d3.select(this).select('rect').attr('opacity', default_opacity);
 	  });
 
-	  update_button.append('rect').attr('width', '80px').attr('height', '35px').attr('fill', 'blue').attr('transform', 'translate(0, -23)').attr('stroke', '#A3A3A3').attr('stroke-width', '1px').attr('opacity', default_opacity);
+	  update_button.append('rect').attr('width', update_button_width + 'px').attr('height', '35px').attr('fill', 'blue').attr('transform', 'translate(0, -23)').attr('stroke', '#A3A3A3').attr('stroke-width', '1px').attr('opacity', default_opacity);
 
-	  update_button.append('text').attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('font-size', '18px').attr('font-weight', 500).attr('cursor', 'default').text('Update').attr('transform', 'translate(10, 0)');
+	  update_button.append('text').attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('font-size', '18px').attr('font-weight', 500).attr('cursor', 'default').text('Update').attr('transform', 'translate(18, 0)');
 
 	  ///////////////////////////////////////////////////////
 	};
@@ -25487,7 +25502,7 @@ var Clustergrammer =
 /* 226 */
 /***/ (function(module, exports) {
 
-	module.exports = function make_tree_menu_button_section(button_info, button_names, click_function) {
+	module.exports = function make_tree_menu_button_section(button_info, button_names, circle_fill_function, click_function) {
 
 	  var cgm = button_info.cgm;
 	  var tree_menu = button_info.tree_menu;
@@ -25511,16 +25526,11 @@ var Clustergrammer =
 	    var vert = i * vertical_space;
 	    var transform_string = 'translate(0,' + vert + ')';
 	    return transform_string;
-	  }).on('click', click_function);
-
-	  distance_groups.append('circle').attr('cx', 10).attr('cy', -6).attr('r', 7).style('stroke', '#A3A3A3').style('stroke-width', '2px').style('fill', function (d) {
-	    var inst_color = 'white';
-	    if (d === cgm.params.matrix.distance_metric) {
-	      inst_color = 'red';
-	    }
-
-	    return inst_color;
+	  }).on('click', function (d) {
+	    click_function(d, button_info);
 	  });
+
+	  distance_groups.append('circle').attr('cx', 10).attr('cy', -6).attr('r', 7).style('stroke', '#A3A3A3').style('stroke-width', '2px').style('fill', circle_fill_function);
 
 	  distance_groups.append('text').attr('transform', 'translate(25,0)').style('font-size', '16px').attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').style('cursor', 'default').text(function (d) {
 	    return capitalizeFirstLetter(d);
