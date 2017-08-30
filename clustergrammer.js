@@ -23037,7 +23037,12 @@ var Clustergrammer =
 	  var new_view = {};
 	  new_view.N_row_sum = 'null';
 	  new_view.N_row_var = 'null';
-	  new_view.dist = distance_metric;
+	  new_view.distance_metric = distance_metric;
+	  new_view.linkage_type = distance_metric;
+
+	  var view_name = distance_metric + '_' + linkage_type;
+
+	  new_view.name = view_name;
 
 	  // // constructing new nodes from old view (does not work when filtering)
 	  // new_view.nodes = $.extend(true, [], cgm.params.network_data.views[0].nodes);
@@ -23088,7 +23093,7 @@ var Clustergrammer =
 
 	  // add new view to views
 	  cgm.config.network_data.views.push(new_view);
-	  update_view(cgm, 'dist', distance_metric);
+	  update_view(cgm, 'name', view_name);
 		};
 
 /***/ }),
