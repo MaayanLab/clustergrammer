@@ -41,7 +41,7 @@ module.exports = function make_tree_menu(cgm){
     .attr('stroke-width', '3px')
     .attr('opacity', menu_opacity);
 
-  // tree_menu
+  // Clustering Parameters
   tree_menu
     .append('text')
     .classed('tree_menu_title', true)
@@ -50,19 +50,42 @@ module.exports = function make_tree_menu(cgm){
     .attr('font-size','18px')
     .attr('font-weight', 800)
     .attr('cursor', 'default')
-    .text('Clustering Menu');
+    .text('Clustering Parameters');
 
-  // distance menu options
-  var possible_distances = ['cosine', 'euclidean', 'correlation'];
+var button_names = ['cosine', 'euclidean', 'correlation'];
+
+var reorder_click = function(d){
+
+      // toggle tree menu
+      d3.select(params.root+' .tree_menu')
+        .transition(700)
+        .attr('opacity', 0);
+      setTimeout(function(){
+        d3.select(params.root+' .tree_menu')
+          .remove();
+      }, 700);
+
+      // update distance metric
+      cgm.params.matrix.distance_metric = d;
+
+      recluster(cgm, d);
+
+    }
+
+make_buttons(button_names, reorder_click)
+
+function make_buttons(button_names, click_function){
+
+  // Linkage menu options
   var vertical_space = 30;
   var menu_y_offset = 110;
   var distance_line_offset = 80;
   var menu_x_offset = menu_width/20;
 
-  distance_menu = tree_menu
+  var distance_menu = tree_menu
     .append('g')
     .classed('distance_menu', true)
-    .attr('transform', 'translate(' + menu_x_offset + ', 0)')
+    .attr('transform', 'translate(' + menu_x_offset + ', 0)');
 
   distance_menu
     .append('text')
@@ -89,7 +112,7 @@ module.exports = function make_tree_menu(cgm){
 
   var distance_groups = distance_section
     .selectAll('g')
-    .data(possible_distances)
+    .data(button_names)
     .enter()
     .append('g')
     .attr('transform', function(d,i){
@@ -97,25 +120,7 @@ module.exports = function make_tree_menu(cgm){
       var transform_string = 'translate(0,'+ vert + ')';
       return transform_string;
     })
-    .on('click', function(d){
-
-      // if (d === 'euclidean'){
-        // toggle tree menu
-        d3.select(params.root+' .tree_menu')
-          .transition(700)
-          .attr('opacity', 0);
-        setTimeout(function(){
-          d3.select(params.root+' .tree_menu')
-            .remove();
-        }, 700);
-
-        // update distance metric
-        cgm.params.matrix.distance_metric = d;
-
-        recluster(cgm, d);
-      // }
-
-    });
+    .on('click', click_function);
 
   distance_groups
     .append('circle')
@@ -142,6 +147,10 @@ module.exports = function make_tree_menu(cgm){
     .text(function(d){
       return capitalizeFirstLetter(d);
     });
+
+}
+
+
 
 
   function capitalizeFirstLetter(string) {
