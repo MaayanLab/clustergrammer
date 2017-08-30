@@ -1,4 +1,4 @@
-module.exports = function make_tree_menu_button_section(button_type, button_info,  button_names, circle_fill_function, click_function){
+module.exports = function make_tree_menu_button_section(button_type, button_info,  button_names, click_function){
 
   var cgm = button_info.cgm;
   var tree_menu = button_info.tree_menu;
@@ -60,6 +60,7 @@ module.exports = function make_tree_menu_button_section(button_type, button_info
 
     });
 
+
   section_groups
     .append('circle')
     .attr('cx', 10)
@@ -67,7 +68,19 @@ module.exports = function make_tree_menu_button_section(button_type, button_info
     .attr('r', 7)
     .attr('stroke', '#A3A3A3')
     .attr('stroke-width', '2px')
-    .attr('fill', circle_fill_function);
+    .attr('fill', function(d){
+      return circle_fill_function(d, button_type);
+    });
+
+  function circle_fill_function(d, button_type){
+    console.log(button_type)
+    console.log(cgm.params.matrix[button_type])
+    var inst_color = 'white';
+    if (d === cgm.params.matrix[button_type]){
+      inst_color = 'red';
+    }
+    return inst_color;
+  }
 
   section_groups
     .append('text')

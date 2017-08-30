@@ -22983,22 +22983,6 @@ var Clustergrammer =
 	  // Clustering Parameters
 	  tree_menu.append('text').classed('tree_menu_title', true).attr('transform', 'translate(' + x_offset + ',30)').attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('font-size', '18px').attr('font-weight', 800).attr('cursor', 'default').text('Clustering Parameters');
 
-	  var distance_circle_fill = function (d) {
-	    var inst_color = 'white';
-	    if (d === cgm.params.matrix.distance_metric) {
-	      inst_color = 'red';
-	    }
-	    return inst_color;
-	  };
-
-	  var linkage_circle_fill = function (d) {
-	    var inst_color = 'white';
-	    if (d === cgm.params.matrix.linkage_type) {
-	      inst_color = 'red';
-	    }
-	    return inst_color;
-	  };
-
 	  var distance_click = function (button_selection, d, button_info) {
 	    button_info.distance_metric = d;
 	    d3.select(button_selection).select('circle').attr('fill', 'red');
@@ -23023,7 +23007,7 @@ var Clustergrammer =
 	  button_info.name = 'Distance Metric';
 	  button_info.y_offset = 65;
 	  button_info.x_offset = 0;
-	  button_section('distance', button_info, distance_names, distance_circle_fill, distance_click);
+	  button_section('distance_metric', button_info, distance_names, distance_click);
 
 	  // linkage
 	  /////////////////
@@ -23031,7 +23015,7 @@ var Clustergrammer =
 	  button_info.name = 'Linkage Type';
 	  button_info.y_offset = 65;
 	  button_info.x_offset = menu_width / 2;
-	  button_section('linkage', button_info, linkage_names, linkage_circle_fill, linkage_click);
+	  button_section('linkage_type', button_info, linkage_names, linkage_click);
 
 	  // // Z-score
 	  // /////////////////
@@ -25523,7 +25507,7 @@ var Clustergrammer =
 /* 226 */
 /***/ (function(module, exports) {
 
-	module.exports = function make_tree_menu_button_section(button_type, button_info, button_names, circle_fill_function, click_function) {
+	module.exports = function make_tree_menu_button_section(button_type, button_info, button_names, click_function) {
 
 	  var cgm = button_info.cgm;
 	  var tree_menu = button_info.tree_menu;
@@ -25556,7 +25540,19 @@ var Clustergrammer =
 	    click_function(this, d, button_info);
 	  });
 
-	  section_groups.append('circle').attr('cx', 10).attr('cy', -6).attr('r', 7).attr('stroke', '#A3A3A3').attr('stroke-width', '2px').attr('fill', circle_fill_function);
+	  section_groups.append('circle').attr('cx', 10).attr('cy', -6).attr('r', 7).attr('stroke', '#A3A3A3').attr('stroke-width', '2px').attr('fill', function (d) {
+	    return circle_fill_function(d, button_type);
+	  });
+
+	  function circle_fill_function(d, button_type) {
+	    console.log(button_type);
+	    console.log(cgm.params.matrix[button_type]);
+	    var inst_color = 'white';
+	    if (d === cgm.params.matrix[button_type]) {
+	      inst_color = 'red';
+	    }
+	    return inst_color;
+	  }
 
 	  section_groups.append('text').attr('transform', 'translate(25,0)').attr('font-size', '16px').attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('cursor', 'default').text(function (d) {
 	    return capitalizeFirstLetter(d);
