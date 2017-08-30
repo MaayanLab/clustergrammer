@@ -16,9 +16,6 @@ module.exports = function make_tree_menu_update_button(cgm, button_info){
     .attr('transform', 'translate('+ update_buton_x +', ' + update_buton_y + ')')
     .on('click', function(){
 
-      console.log('clicking update button')
-      console.log(button_info.distance_metric)
-
       // toggle tree menu
       d3.select(cgm.params.root+' .tree_menu')
         .transition(700)
@@ -38,12 +35,12 @@ module.exports = function make_tree_menu_update_button(cgm, button_info){
     .on('mouseover', function(){
       d3.select(this)
         .select('rect')
-        .attr('opacity', high_opacity)
+        .attr('opacity', high_opacity);
     })
     .on('mouseout', function(){
       d3.select(this)
         .select('rect')
-        .attr('opacity', default_opacity)
+        .attr('opacity', default_opacity);
     });
 
   update_button
@@ -54,7 +51,7 @@ module.exports = function make_tree_menu_update_button(cgm, button_info){
     .attr('transform', 'translate(0, -23)')
     .attr('stroke', '#A3A3A3')
     .attr('stroke-width', '1px')
-    .attr('opacity', default_opacity)
+    .attr('opacity', default_opacity);
 
   update_button
     .append('text')

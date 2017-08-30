@@ -13333,6 +13333,8 @@ var Clustergrammer =
 
 	  matrix.distance_metric = 'cosine';
 	  matrix.linkage_type = 'average';
+	  matrix.filter_state = 'no-filter';
+	  matrix.normalization_state = 'no-normalization';
 
 	  // initialized clicked tile and rows
 	  matrix.click_hlight_x = -666;
@@ -23819,6 +23821,9 @@ var Clustergrammer =
 	  // copy persistent parameters
 	  var inst_distance_metric = cgm.params.matrix.distance_metric;
 	  var inst_linkage_type = cgm.params.matrix.linkage_type;
+	  var inst_filter_state = cgm.params.matrix.filter_state;
+	  var inst_normalization_state = cgm.params.matrix.normalization_state;
+
 	  var inst_group_level = cgm.params.group_level;
 	  var inst_crop_fitler = cgm.params.crop_filter_nodes;
 
@@ -23868,6 +23873,8 @@ var Clustergrammer =
 	  /////////////////////////
 	  cgm.params.matrix.distance_metric = inst_distance_metric;
 	  cgm.params.matrix.linkage_type = inst_linkage_type;
+	  cgm.params.matrix.filter_state = inst_filter_state;
+	  cgm.params.matrix.normalization_state = inst_normalization_state;
 
 	  // have persistent group levels while updating
 	  cgm.params.group_level = inst_group_level;
@@ -25510,8 +25517,6 @@ var Clustergrammer =
 	  });
 
 	  function circle_fill_function(d, button_type) {
-	    console.log(button_type);
-	    console.log(cgm.params.matrix[button_type]);
 	    var inst_color = 'white';
 	    if (d === cgm.params.matrix[button_type]) {
 	      inst_color = 'red';
@@ -29740,9 +29745,6 @@ var Clustergrammer =
 	  var high_opacity = 0.5;
 
 	  var update_button = button_info.tree_menu.append('g').classed('update_button', true).attr('transform', 'translate(' + update_buton_x + ', ' + update_buton_y + ')').on('click', function () {
-
-	    console.log('clicking update button');
-	    console.log(button_info.distance_metric);
 
 	    // toggle tree menu
 	    d3.select(cgm.params.root + ' .tree_menu').transition(700).attr('opacity', 0);

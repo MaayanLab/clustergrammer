@@ -79,8 +79,6 @@ module.exports = function make_tree_menu_button_section(button_type, button_info
     });
 
   function circle_fill_function(d, button_type){
-    console.log(button_type)
-    console.log(cgm.params.matrix[button_type])
     var inst_color = 'white';
     if (d === cgm.params.matrix[button_type]){
       inst_color = 'red';

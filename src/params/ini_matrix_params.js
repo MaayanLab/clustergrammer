@@ -18,6 +18,8 @@ module.exports = function ini_matrix_params(params){
 
   matrix.distance_metric = 'cosine';
   matrix.linkage_type = 'average';
+  matrix.filter_state = 'no-filter';
+  matrix.normalization_state = 'no-normalization';
 
   // initialized clicked tile and rows
   matrix.click_hlight_x = -666;

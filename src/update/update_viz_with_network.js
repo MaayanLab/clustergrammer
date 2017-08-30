@@ -33,6 +33,9 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
   // copy persistent parameters
   var inst_distance_metric = cgm.params.matrix.distance_metric;
   var inst_linkage_type = cgm.params.matrix.linkage_type;
+  var inst_filter_state = cgm.params.matrix.filter_state;
+  var inst_normalization_state = cgm.params.matrix.normalization_state;
+
   var inst_group_level = cgm.params.group_level;
   var inst_crop_fitler = cgm.params.crop_filter_nodes;
 
@@ -84,6 +87,8 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
   /////////////////////////
   cgm.params.matrix.distance_metric = inst_distance_metric;
   cgm.params.matrix.linkage_type = inst_linkage_type;
+  cgm.params.matrix.filter_state = inst_filter_state;
+  cgm.params.matrix.normalization_state = inst_normalization_state;
 
   // have persistent group levels while updating
   cgm.params.group_level = inst_group_level;

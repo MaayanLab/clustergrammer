@@ -18,7 +18,7 @@ module.exports = function recluster(cgm, distance_metric, linkage_type){
   new_view.distance_metric = distance_metric;
   new_view.linkage_type = distance_metric;
 
-  var view_name = distance_metric + '_' + linkage_type
+  var view_name = distance_metric + '_' + linkage_type;
 
   new_view.name = view_name;
 

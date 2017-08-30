@@ -70,7 +70,7 @@ module.exports = function build_svg_tree_icon(cgm, inst_rc){
     });
 
   // tmp
-  console.log('initialize with tree menu open')
+  console.log('initialize with tree menu open');
   toggle_tree_menu(cgm, 'open');
 
   d3.select(params.root + ' .dendro_tree_container')
