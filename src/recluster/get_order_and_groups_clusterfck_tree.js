@@ -11,9 +11,7 @@ module.exports = function get_order_and_groups_clusterfck_tree(clusters, names){
   // console.log(clusters.hc.dists_backup[0][5])
   // console.log(clusters.hc.dists_backup[0])
 
-
   var max_distance_in_dm = get_max_distance_in_dm(clusters.hc.dists_backup);
-
 
   // get order information from clusterfck tree
   ///////////////////////////////////////////////

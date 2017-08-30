@@ -52,7 +52,7 @@ module.exports = function make_tree_menu(cgm){
     .text('Clustering Menu');
 
   // menu options
-  var possible_distances = ['cosine', 'euclidean', 'correlation', 'jaccard'];
+  var possible_distances = ['cosine', 'euclidean', 'correlation'];
   var vertical_space = 30;
   var menu_y_offset = 110;
   var distance_line_offset = 80;

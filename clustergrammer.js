@@ -22978,7 +22978,7 @@ var Clustergrammer =
 	  tree_menu.append('text').classed('tree_menu_title', true).attr('transform', 'translate(20,30)').attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('font-size', '18px').attr('font-weight', 800).attr('cursor', 'default').text('Clustering Menu');
 
 	  // menu options
-	  var possible_distances = ['cosine', 'euclidean', 'correlation', 'jaccard'];
+	  var possible_distances = ['cosine', 'euclidean', 'correlation'];
 	  var vertical_space = 30;
 	  var menu_y_offset = 110;
 	  var distance_line_offset = 80;
@@ -23033,6 +23033,7 @@ var Clustergrammer =
 /* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
+	// var clusterfck = require('cornhundred-clusterfck');
 	var clusterfck = __webpack_require__(193);
 	var core = __webpack_require__(13);
 	var math = core.create();
@@ -23078,7 +23079,9 @@ var Clustergrammer =
 	      name_nodes = 'col_nodes';
 	    }
 
-	    var clusters = clusterfck.hcluster(mat, dist_fun[new_distance_metric]);
+	    // average, single, complete
+	    var new_linkage = 'average';
+	    var clusters = clusterfck.hcluster(mat, dist_fun[new_distance_metric], new_linkage);
 
 	    var order_info = get_order_and_groups_clusterfck_tree(clusters, names);
 	    var inst_node;
@@ -23106,7 +23109,30 @@ var Clustergrammer =
 /* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	"use strict";
+	/*
+
+	Copyright (c) 2011 Heather Arthur <fayearthur@gmail.com>
+
+	Permission is hereby granted, free of charge, to any person obtaining
+	a copy of this software and associated documentation files (the
+	"Software"), to deal in the Software without restriction, including
+	without limitation the rights to use, copy, modify, merge, publish,
+	distribute, sublicense, and/or sell copies of the Software, and to
+	permit persons to whom the Software is furnished to do so, subject to
+	the following conditions:
+
+	The above copyright notice and this permission notice shall be
+	included in all copies or substantial portions of the Software.
+
+	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+	EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+	MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+	NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+	LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+	OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+	WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+	*/
 
 	module.exports = {
 	   hcluster: __webpack_require__(194),
@@ -23118,11 +23144,9 @@ var Clustergrammer =
 /* 194 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	"use strict";
-
 	var distances = __webpack_require__(195);
 
-	var HierarchicalClustering = function HierarchicalClustering(distance, linkage, threshold) {
+	var HierarchicalClustering = function (distance, linkage, threshold) {
 
 	   this.distance = distance || "euclidean";
 	   this.linkage = linkage || "average";
@@ -23134,7 +23158,7 @@ var Clustergrammer =
 	};
 
 	HierarchicalClustering.prototype = {
-	   tree: function tree(items, snapshotPeriod, snapshotCb) {
+	   tree: function (items, snapshotPeriod, snapshotCb) {
 	      this.tree = [];
 	      this.dists = []; // distances between each pair of clusters
 	      this.mins = []; // closest cluster for each cluster
@@ -23189,7 +23213,7 @@ var Clustergrammer =
 	      return this.tree;
 	   },
 
-	   mergeClosest: function mergeClosest() {
+	   mergeClosest: function () {
 	      // find two closest clusters from cached mins
 	      var minKey = 0,
 	          min = Infinity;
@@ -23266,10 +23290,9 @@ var Clustergrammer =
 	      // delete c1.key; delete c2.key;
 	      // delete c1.index; delete c2.index;
 
-
 	      return true;
 	   },
-	   clusters: function clusters(num) {
+	   clusters: function (num) {
 	      //  Return all nodes if num is invalid
 	      if (num > this.tree.size || num < 1) num = this.tree.size;
 
@@ -23312,7 +23335,7 @@ var Clustergrammer =
 	   }
 	};
 
-	var hcluster = function hcluster(items, distance, linkage, threshold, snapshot, snapshotCallback) {
+	var hcluster = function (items, distance, linkage, threshold, snapshot, snapshotCallback) {
 	   var hc = new HierarchicalClustering(distance, linkage, threshold);
 	   var tree = hc.tree(items, snapshot, snapshotCallback);
 
@@ -23329,24 +23352,22 @@ var Clustergrammer =
 /* 195 */
 /***/ (function(module, exports) {
 
-	"use strict";
-
 	module.exports = {
-	   euclidean: function euclidean(v1, v2) {
+	   euclidean: function (v1, v2) {
 	      var total = 0;
 	      for (var i = 0; i < v1.length; i++) {
 	         total += Math.pow(v2[i] - v1[i], 2);
 	      }
 	      return Math.sqrt(total);
 	   },
-	   manhattan: function manhattan(v1, v2) {
+	   manhattan: function (v1, v2) {
 	      var total = 0;
 	      for (var i = 0; i < v1.length; i++) {
 	         total += Math.abs(v2[i] - v1[i]);
 	      }
 	      return total;
 	   },
-	   max: function max(v1, v2) {
+	   max: function (v1, v2) {
 	      var max = 0;
 	      for (var i = 0; i < v1.length; i++) {
 	         max = Math.max(max, Math.abs(v2[i] - v1[i]));
@@ -23358,8 +23379,6 @@ var Clustergrammer =
 /***/ }),
 /* 196 */
 /***/ (function(module, exports, __webpack_require__) {
-
-	"use strict";
 
 	var distances = __webpack_require__(195);
 
@@ -23560,7 +23579,6 @@ var Clustergrammer =
 	  // console.log('**** checking dists_backup get_order ***********************')
 	  // console.log(clusters.hc.dists_backup[0][5])
 	  // console.log(clusters.hc.dists_backup[0])
-
 
 	  var max_distance_in_dm = get_max_distance_in_dm(clusters.hc.dists_backup);
 

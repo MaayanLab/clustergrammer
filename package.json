@@ -32,7 +32,6 @@
   },
   "dependencies": {
     "awesomplete": "1.1.1",
-    "cornhundred-clusterfck": "^0.7.5",
     "d3": "^3.5.15",
     "extend": "^3.0.0",
     "jquery": "1.11.0",
@@ -40,7 +39,6 @@
     "mathjs": "3.16.0",
     "save-svg-as-png": "^1.1.0",
     "style-loader": "^0.13.1",
-    "tayden-clusterfck": "^0.7.0",
     "underscore": "1.8.3"
   }
 }

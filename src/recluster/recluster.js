@@ -1,4 +1,5 @@
-var clusterfck = require('cornhundred-clusterfck');
+// var clusterfck = require('cornhundred-clusterfck');
+var clusterfck = require('../clusterfck_local/clusterfck');
 var core = require('mathjs/core');
 var math = core.create();
 var dist_fun = require('./distance_functions');
@@ -45,7 +46,9 @@ module.exports = function recluster(cgm, new_distance_metric){
     }
 
 
-    var clusters = clusterfck.hcluster(mat, dist_fun[new_distance_metric]);
+    // average, single, complete
+    var new_linkage = 'average'
+    var clusters = clusterfck.hcluster(mat, dist_fun[new_distance_metric], new_linkage);
 
     var order_info = get_order_and_groups_clusterfck_tree(clusters, names);
     var inst_node;
