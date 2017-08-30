@@ -1,4 +1,4 @@
-module.exports = function make_tree_menu_button_section(button_info,  button_names, circle_fill_function, click_function){
+module.exports = function make_tree_menu_button_section(button_type, button_info,  button_names, circle_fill_function, click_function){
 
   var cgm = button_info.cgm;
   var tree_menu = button_info.tree_menu;
@@ -20,7 +20,7 @@ module.exports = function make_tree_menu_button_section(button_info,  button_nam
     .attr('transform', 'translate(0, 0)')
     .attr('font-size', '18px')
     .attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif')
-    .style('cursor', 'default')
+    .attr('cursor', 'default')
     .text(button_info.name);
 
   distance_menu
@@ -38,18 +38,26 @@ module.exports = function make_tree_menu_button_section(button_info,  button_nam
     .attr('transform', 'translate(0,' + button_offset + ')')
     .classed('distance_section', true);
 
+  var button_class = cgm.params.root.replace('#','')+ '_' + button_type + '_buttons';
   var distance_groups = distance_section
     .selectAll('g')
     .data(button_names)
     .enter()
     .append('g')
+    .classed(button_class, true)
     .attr('transform', function(d,i){
       var vert = i * vertical_space;
       var transform_string = 'translate(0,'+ vert + ')';
       return transform_string;
     })
     .on('click', function(d){
-      click_function(d, button_info);
+      // deselect all buttons
+      d3.selectAll( '.' + button_class + ' circle')
+        .attr('fill', 'white');
+
+      // pass this along so that it can be updated in the callback
+      click_function(this, d, button_info);
+
     });
 
   distance_groups
@@ -57,16 +65,16 @@ module.exports = function make_tree_menu_button_section(button_info,  button_nam
     .attr('cx', 10)
     .attr('cy', -6)
     .attr('r', 7)
-    .style('stroke', '#A3A3A3')
-    .style('stroke-width', '2px')
-    .style('fill', circle_fill_function);
+    .attr('stroke', '#A3A3A3')
+    .attr('stroke-width', '2px')
+    .attr('fill', circle_fill_function);
 
   distance_groups
     .append('text')
     .attr('transform', 'translate(25,0)')
-    .style('font-size','16px')
+    .attr('font-size','16px')
     .attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif')
-    .style('cursor', 'default')
+    .attr('cursor', 'default')
     .text(function(d){
       return capitalizeFirstLetter(d);
     });

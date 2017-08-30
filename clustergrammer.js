@@ -22983,9 +22983,13 @@ var Clustergrammer =
 	  // Clustering Parameters
 	  tree_menu.append('text').classed('tree_menu_title', true).attr('transform', 'translate(' + x_offset + ',30)').attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('font-size', '18px').attr('font-weight', 800).attr('cursor', 'default').text('Clustering Parameters');
 
-	  var reorder_click = function (d, button_info) {
+	  var reorder_click = function (button_selection, d, button_info) {
 	    button_info.distance_metric = d;
 	    console.log(button_info.distance_metric);
+	    console.log(d3.select(button_selection).select('circle').empty());
+
+	    d3.select(button_selection).select('circle').attr('fill', 'red');
+	    // .remove()
 	  };
 
 	  var distance_circle_fill = function (d) {
@@ -23008,7 +23012,7 @@ var Clustergrammer =
 	  button_info.name = 'Distance Metric';
 	  button_info.y_offset = 65;
 	  button_info.x_offset = 0;
-	  button_section(button_info, distance_names, distance_circle_fill, reorder_click);
+	  button_section('distance', button_info, distance_names, distance_circle_fill, reorder_click);
 
 	  // linkage
 	  /////////////////
@@ -23016,7 +23020,7 @@ var Clustergrammer =
 	  button_info.name = 'Linkage Type';
 	  button_info.y_offset = 65;
 	  button_info.x_offset = menu_width / 2;
-	  button_section(button_info, linkage_names, distance_circle_fill, reorder_click);
+	  button_section('linkage', button_info, linkage_names, distance_circle_fill, reorder_click);
 
 	  // // Z-score
 	  // /////////////////
@@ -25502,7 +25506,7 @@ var Clustergrammer =
 /* 226 */
 /***/ (function(module, exports) {
 
-	module.exports = function make_tree_menu_button_section(button_info, button_names, circle_fill_function, click_function) {
+	module.exports = function make_tree_menu_button_section(button_type, button_info, button_names, circle_fill_function, click_function) {
 
 	  var cgm = button_info.cgm;
 	  var tree_menu = button_info.tree_menu;
@@ -25516,23 +25520,28 @@ var Clustergrammer =
 
 	  var distance_menu = tree_menu.append('g').classed('distance_menu', true).attr('transform', 'translate(' + menu_x_offset + ', ' + button_info.y_offset + ')');
 
-	  distance_menu.append('text').attr('transform', 'translate(0, 0)').attr('font-size', '18px').attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').style('cursor', 'default').text(button_info.name);
+	  distance_menu.append('text').attr('transform', 'translate(0, 0)').attr('font-size', '18px').attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('cursor', 'default').text(button_info.name);
 
 	  distance_menu.append('rect').classed('tree_menu_line', true).attr('height', '2px').attr('width', underline_width + 'px').attr('stroke-width', '3px').attr('opacity', 0.3).attr('fill', 'black').attr('transform', 'translate(0,10)');
 
 	  var distance_section = distance_menu.append('g').attr('transform', 'translate(0,' + button_offset + ')').classed('distance_section', true);
 
-	  var distance_groups = distance_section.selectAll('g').data(button_names).enter().append('g').attr('transform', function (d, i) {
+	  var button_class = cgm.params.root.replace('#', '') + '_' + button_type + '_buttons';
+	  var distance_groups = distance_section.selectAll('g').data(button_names).enter().append('g').classed(button_class, true).attr('transform', function (d, i) {
 	    var vert = i * vertical_space;
 	    var transform_string = 'translate(0,' + vert + ')';
 	    return transform_string;
 	  }).on('click', function (d) {
-	    click_function(d, button_info);
+	    // deselect all buttons
+	    d3.selectAll('.' + button_class + ' circle').attr('fill', 'white');
+
+	    // pass this along so that it can be updated in the callback
+	    click_function(this, d, button_info);
 	  });
 
-	  distance_groups.append('circle').attr('cx', 10).attr('cy', -6).attr('r', 7).style('stroke', '#A3A3A3').style('stroke-width', '2px').style('fill', circle_fill_function);
+	  distance_groups.append('circle').attr('cx', 10).attr('cy', -6).attr('r', 7).attr('stroke', '#A3A3A3').attr('stroke-width', '2px').attr('fill', circle_fill_function);
 
-	  distance_groups.append('text').attr('transform', 'translate(25,0)').style('font-size', '16px').attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').style('cursor', 'default').text(function (d) {
+	  distance_groups.append('text').attr('transform', 'translate(25,0)').attr('font-size', '16px').attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('cursor', 'default').text(function (d) {
 	    return capitalizeFirstLetter(d);
 	  });
 
