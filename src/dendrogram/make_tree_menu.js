@@ -53,22 +53,6 @@ module.exports = function make_tree_menu(cgm){
     .attr('cursor', 'default')
     .text('Clustering Parameters');
 
-  var distance_click = function(button_selection, d, button_info){
-    button_info.distance_metric = d;
-    d3.select(button_selection)
-      .select('circle')
-      .attr('fill', 'red');
-  }
-
-  var linkage_click = function(button_selection, d, button_info){
-    button_info.linkage_type = d;
-    console.log('clicking linkage', button_info.linkage_type)
-    d3.select(button_selection)
-      .select('circle')
-      .attr('fill', 'red');
-  }
-
-
   var button_info = {};
   button_info.cgm = cgm;
   button_info.tree_menu = tree_menu;
@@ -82,7 +66,7 @@ module.exports = function make_tree_menu(cgm){
   button_info.name = 'Distance Metric';
   button_info.y_offset = 65;
   button_info.x_offset = 0;
-  button_section('distance_metric', button_info, distance_names, distance_click)
+  button_section('distance_metric', button_info, distance_names)
 
   // linkage
   /////////////////
@@ -90,7 +74,7 @@ module.exports = function make_tree_menu(cgm){
   button_info.name = 'Linkage Type';
   button_info.y_offset = 65;
   button_info.x_offset = menu_width/2;
-  button_section('linkage_type', button_info, linkage_names, linkage_click)
+  button_section('linkage_type', button_info, linkage_names)
 
   // // Z-score
   // /////////////////

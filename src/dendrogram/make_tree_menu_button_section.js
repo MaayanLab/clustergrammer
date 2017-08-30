@@ -1,4 +1,4 @@
-module.exports = function make_tree_menu_button_section(button_type, button_info,  button_names, click_function){
+module.exports = function make_tree_menu_button_section(button_type, button_info,  button_names){
 
   var cgm = button_info.cgm;
   var tree_menu = button_info.tree_menu;
@@ -60,6 +60,12 @@ module.exports = function make_tree_menu_button_section(button_type, button_info
 
     });
 
+ function click_function(button_selection, d, button_info){
+    button_info[button_type] = d;
+    d3.select(button_selection)
+      .select('circle')
+      .attr('fill', 'red');
+  }
 
   section_groups
     .append('circle')
