@@ -1,3 +1,5 @@
+var recluster = require('../recluster/recluster');
+
 module.exports = function make_tree_menu_update_button(cgm, button_info){
 
   var update_button_width = 100;
@@ -18,12 +20,12 @@ module.exports = function make_tree_menu_update_button(cgm, button_info){
       console.log(button_info.distance_metric)
 
       // toggle tree menu
-      d3.select(params.root+' .tree_menu')
+      d3.select(cgm.params.root+' .tree_menu')
         .transition(700)
         .attr('opacity', 0);
 
       setTimeout(function(){
-        d3.select(params.root+' .tree_menu')
+        d3.select(cgm.params.root+' .tree_menu')
           .remove();
       }, 700);
 

@@ -22950,7 +22950,6 @@ var Clustergrammer =
 /* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var recluster = __webpack_require__(192);
 	var button_section = __webpack_require__(226);
 	var make_tree_menu_update_button = __webpack_require__(284);
 
@@ -29721,7 +29720,9 @@ var Clustergrammer =
 
 /***/ }),
 /* 284 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+	var recluster = __webpack_require__(192);
 
 	module.exports = function make_tree_menu_update_button(cgm, button_info) {
 
@@ -29739,10 +29740,10 @@ var Clustergrammer =
 	    console.log(button_info.distance_metric);
 
 	    // toggle tree menu
-	    d3.select(params.root + ' .tree_menu').transition(700).attr('opacity', 0);
+	    d3.select(cgm.params.root + ' .tree_menu').transition(700).attr('opacity', 0);
 
 	    setTimeout(function () {
-	      d3.select(params.root + ' .tree_menu').remove();
+	      d3.select(cgm.params.root + ' .tree_menu').remove();
 	    }, 700);
 
 	    // transfer parameters to cgm object when update is pressed

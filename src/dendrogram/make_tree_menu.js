@@ -1,4 +1,3 @@
-var recluster = require('../recluster/recluster');
 var button_section = require('./make_tree_menu_button_section');
 var make_tree_menu_update_button = require('./make_tree_menu_update_button');
 
