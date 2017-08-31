@@ -3,7 +3,7 @@ var calc_col_dendro_triangles = require('./calc_col_dendro_triangles');
 var dendro_group_highlight = require('./dendro_group_highlight');
 var d3_tip_custom = require('../tooltip/d3_tip_custom');
 var make_dendro_crop_buttons = require('./make_dendro_crop_buttons');
-var make_cat_breakdown_graph = require('./make_cat_breakdown_graph');
+var make_cat_breakdown_graph = require('../categories/make_cat_breakdown_graph');
 
 module.exports = function make_dendro_triangles(cgm, inst_rc, is_change_group = false)
 {

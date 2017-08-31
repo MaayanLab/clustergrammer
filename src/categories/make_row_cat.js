@@ -8,8 +8,6 @@ var underscore = require('underscore');
 
 module.exports = function make_row_cat(cgm, updating=false) {
 
-  // console.log('make_row_cat')
-
   var params = cgm.params;
 
   // make or reuse outer container

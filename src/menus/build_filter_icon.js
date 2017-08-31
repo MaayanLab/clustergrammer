@@ -56,8 +56,6 @@ module.exports = function build_filter_icon(cgm){
     .classed('filter_container', true)
     .on('click', function(){
 
-      console.log('clicking filter icon')
-
       if (d3.select(params.root+' .filter_menu').empty()){
 
         // have to pass make menu function as callback
@@ -104,9 +102,6 @@ module.exports = function build_filter_icon(cgm){
       return output_string;
     })
     .style('opacity', 0.35);
-
-  var small_leaf_offset = 13;
-  var small_leaf_radius = 9.5;
 
   filter_icon_group
     .selectAll()

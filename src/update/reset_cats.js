@@ -1,4 +1,4 @@
-var make_row_cat = require('../dendrogram/make_row_cat');
+var make_row_cat = require('../categories/make_row_cat');
 var calc_viz_params = require('../params/calc_viz_params');
 var resize_viz = require('../reset_size/resize_viz');
 var modify_row_node_cats = require('./modify_row_node_cats');

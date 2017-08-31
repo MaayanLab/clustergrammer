@@ -17,7 +17,7 @@ module.exports = function make_tree_menu_update_button(cgm, button_info){
     .attr('transform', 'translate('+ update_buton_x +', ' + update_buton_y + ')')
     .on('click', function(){
 
-      toggle_menu(cgm, 'tree_menu', 'close')
+      toggle_menu(cgm, 'tree_menu', 'close');
 
       // transfer parameters to cgm object when update is pressed
       cgm.params.matrix.distance_metric = button_info.distance_metric;
@@ -54,6 +54,5 @@ module.exports = function make_tree_menu_update_button(cgm, button_info){
     .attr('cursor', 'default')
     .text('Update')
     .attr('transform', 'translate(18, 0)');
-
 
 };
