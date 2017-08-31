@@ -1,6 +1,6 @@
 var position_filter_icon = require('./position_filter_icon');
 var d3_tip_custom = require('../tooltip/d3_tip_custom');
-// var toggle_tree_menu = require('./toggle_tree_menu');
+// var toggle_filter_menu = require('./toggle_filter_menu');
 
 module.exports = function build_filter_icon(cgm){
 
@@ -10,70 +10,71 @@ module.exports = function build_filter_icon(cgm){
   var high_opacity = 0.6;
 
   // d3-tooltip
-  var tree_menu_tip = d3_tip_custom()
+  var filter_icon_tip = d3_tip_custom()
     .attr('class', function(){
       var root_tip_selector = params.viz.root_tips.replace('.','');
-      var class_string = root_tip_selector + '_tree_menu_tip d3-tip';
+      var class_string = root_tip_selector + '_filter_icon_tip d3-tip';
       return class_string;
     })
-    .direction('sw')
+    .direction('w')
     .style('display', 'none')
     .offset([-10,-5])
     .html(function(){
-      return 'Clustering Menu';
+      return 'Filtering Menu';
     });
 
-  var tree_icon_outer_group = d3.select(params.root +' .viz_svg')
+  var filter_icon_outer_group = d3.select(params.root +' .viz_svg')
       .append('g')
       .classed( 'filter_icon', true)
       .on('mouseover', function(){
 
-        // // only if no menu is showing
-        // if (d3.select(params.root+' .tree_menu').empty()){
+        // only if no menu is showing
+        if (d3.select(params.root+' .filter_menu').empty()){
 
-        //   d3.selectAll( params.viz.root_tips + '_tree_menu_tip')
-        //     .style('opacity', 1)
-        //     .style('display', 'block');
+          d3.selectAll( params.viz.root_tips + '_filter_icon_tip')
+            .style('opacity', 1)
+            .style('display', 'block');
 
-        //   tree_menu_tip.show();
+          filter_icon_tip.show();
 
-        // }
+        }
 
-        // d3.selectAll(params.root + ' .tree_leaf_circle')
-        //   .style('opacity', high_opacity);
+        d3.selectAll(params.root + ' .filter_icon_circle')
+          .style('opacity', high_opacity);
 
       })
       .on('mouseout', function(){
-        tree_menu_tip.hide();
-        d3.selectAll(params.root + ' .tree_leaf_circle')
+        filter_icon_tip.hide();
+        d3.selectAll(params.root + ' .filter_icon_circle')
         .style('opacity', default_opacity);
       })
-      .call(tree_menu_tip);
+      .call(filter_icon_tip);
 
-  var filter_icon_group =  tree_icon_outer_group
+  var filter_icon_group =  filter_icon_outer_group
     .append('g')
-    .classed('dendro_tree_container', true)
+    .classed('filter_container', true)
     .on('click', function(){
 
-      // if (d3.select(params.root+' .tree_menu').empty()){
+      console.log('clicking filter icon')
 
-      //   toggle_tree_menu(cgm, 'open');
+      if (d3.select(params.root+' .filter_menu').empty()){
 
-      //   tree_menu_tip.hide();
+        // toggle_filter_menu(cgm, 'open');
 
-      // } else {
+        filter_icon_tip.hide();
 
-      //   toggle_tree_menu(cgm, 'close');
+      } else {
 
-      // }
+        // toggle_filter_menu(cgm, 'close');
+
+      }
     });
 
   // // tmp
-  // console.log('initialize with tree menu open');
-  // toggle_tree_menu(cgm, 'open');
+  // toggle_filter_menu(cgm, 'open');
 
-  d3.select(params.root + ' .dendro_tree_container')
-    .attr('transform', 'scale(0.9)');
+  // d3.select(params.root + ' .filter_container')
+  //   .attr('transform', 'scale(1.0)');
 
   position_filter_icon(cgm);
 

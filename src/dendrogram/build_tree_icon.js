@@ -10,13 +10,13 @@ module.exports = function build_tree_icon(cgm){
   var high_opacity = 0.6;
 
   // d3-tooltip
-  var tree_menu_tip = d3_tip_custom()
+  var tree_icon_tip = d3_tip_custom()
     .attr('class', function(){
       var root_tip_selector = params.viz.root_tips.replace('.','');
-      var class_string = root_tip_selector + '_tree_menu_tip d3-tip';
+      var class_string = root_tip_selector + '_tree_icon_tip d3-tip';
       return class_string;
     })
-    .direction('sw')
+    .direction('w')
     .style('display', 'none')
     .offset([-10,-5])
     .html(function(){
@@ -31,11 +31,11 @@ module.exports = function build_tree_icon(cgm){
         // only if no menu is showing
         if (d3.select(params.root+' .tree_menu').empty()){
 
-          d3.selectAll( params.viz.root_tips + '_tree_menu_tip')
+          d3.selectAll( params.viz.root_tips + '_tree_icon_tip')
             .style('opacity', 1)
             .style('display', 'block');
 
-          tree_menu_tip.show();
+          tree_icon_tip.show();
 
         }
 
@@ -43,11 +43,11 @@ module.exports = function build_tree_icon(cgm){
           .style('opacity', high_opacity);
       })
       .on('mouseout', function(){
-        tree_menu_tip.hide();
+        tree_icon_tip.hide();
         d3.selectAll(params.root + ' .tree_leaf_circle')
         .style('opacity', default_opacity);
       })
-      .call(tree_menu_tip);
+      .call(tree_icon_tip);
 
   var tree_icon_group =  tree_icon_outer_group
     .append('g')
@@ -58,7 +58,7 @@ module.exports = function build_tree_icon(cgm){
 
         toggle_tree_menu(cgm, 'open');
 
-        tree_menu_tip.hide();
+        tree_icon_tip.hide();
 
       } else {
 
