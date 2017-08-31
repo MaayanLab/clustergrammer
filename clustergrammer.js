@@ -14123,7 +14123,9 @@ var Clustergrammer =
 	var trim_text = __webpack_require__(144);
 	var make_row_dendro = __webpack_require__(184);
 	var make_col_dendro = __webpack_require__(185);
-	var make_svg_dendro_sliders = __webpack_require__(186);
+	var build_dendro_sliders = __webpack_require__(288);
+	var build_svg_tree_icon = __webpack_require__(189);
+	var build_svg_filter_icon = __webpack_require__(287);
 	var make_row_dendro_spillover = __webpack_require__(229);
 	var underscore = __webpack_require__(3);
 
@@ -14178,7 +14180,12 @@ var Clustergrammer =
 	  }
 
 	  // sliders should go above super labels
-	  make_svg_dendro_sliders(cgm);
+	  build_dendro_sliders(cgm);
+	  build_svg_tree_icon(cgm);
+
+	  // // disable
+	  // //////////////////
+	  // build_svg_filter_icon(cgm);
 
 	  function border_colors() {
 	    var inst_color = params.viz.super_border_color;
@@ -22649,121 +22656,8 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 186 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var build_svg_dendro_slider = __webpack_require__(187);
-	var build_svg_tree_icon = __webpack_require__(189);
-
-	module.exports = function make_svg_dendro_sliders(cgm) {
-
-	  build_svg_dendro_slider(cgm, 'row');
-	  build_svg_dendro_slider(cgm, 'col');
-
-	  build_svg_tree_icon(cgm);
-		};
-
-/***/ }),
-/* 187 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var change_groups = __webpack_require__(188);
-	var position_svg_dendro_slider = __webpack_require__(176);
-
-	module.exports = function build_svg_dendro_slider(cgm, inst_rc) {
-
-	  var slider_length = 100;
-
-	  var drag = d3.behavior.drag().on("drag", dragging).on('dragend', function () {
-	    cgm.params.is_slider_drag = false;
-	  });
-
-	  var slider_group = d3.select(cgm.params.root + ' .viz_svg').append('g').classed(inst_rc + '_slider_group', true);
-
-	  position_svg_dendro_slider(cgm, inst_rc);
-
-	  var rect_height = slider_length + 20;
-	  var rect_width = 30;
-	  slider_group.append('rect').classed(inst_rc + '_slider_background', true).attr('height', rect_height + 'px').attr('width', rect_width + 'px').attr('fill', cgm.params.viz.background_color).attr('transform', function () {
-	    var translate_string = 'translate(-10, -5)';
-	    return translate_string;
-	  }).style('opacity', 0);
-
-	  slider_group.append("line").style('stroke-width', slider_length / 7 + 'px').style('stroke', 'black').style('stroke-linecap', 'round').style('opacity', 0.0).attr("y1", 0).attr("y2", function () {
-	    return slider_length - 2;
-	  }).on('click', click_dendro_slider);
-
-	  var offset_triangle = -slider_length / 40;
-	  slider_group.append('path').style('fill', 'black').attr('transform', 'translate(' + offset_triangle + ', 0)').attr('d', function () {
-
-	    // up triangle
-	    var start_x = 0;
-	    var start_y = 0;
-
-	    var mid_x = 0;
-	    var mid_y = slider_length;
-
-	    var final_x = slider_length / 10;
-	    var final_y = 0;
-
-	    var output_string = 'M' + start_x + ',' + start_y + ', L' + mid_x + ', ' + mid_y + ', L' + final_x + ',' + final_y + ' Z';
-
-	    return output_string;
-	  }).style('opacity', 0.35).on('click', click_dendro_slider);
-
-	  var default_opacity = 0.35;
-	  var high_opacity = 0.6;
-	  slider_group.append('circle').classed(inst_rc + '_group_circle', true).attr('r', slider_length * 0.08).attr('transform', function () {
-	    return 'translate(0, ' + slider_length / 2 + ')';
-	  }).style('fill', 'blue').style('opacity', default_opacity).on('mouseover', function () {
-	    d3.select(this).style('opacity', high_opacity);
-	  }).on('mouseout', function () {
-	    d3.select(this).style('opacity', default_opacity);
-	  }).call(drag);
-
-	  function dragging() {
-
-	    cgm.params.is_slider_drag = true;
-
-	    // d[0] = d3.event.x;
-	    var slider_pos = d3.event.y;
-
-	    if (slider_pos < 0) {
-	      slider_pos = 0;
-	    }
-
-	    if (slider_pos > slider_length) {
-	      slider_pos = slider_length;
-	    }
-
-	    if (this.nextSibling) {
-	      this.parentNode.appendChild(this);
-	    }
-
-	    slider_pos = d3.round(slider_pos, -1);
-
-	    var slider_value = 10 - slider_pos / 10;
-
-	    d3.select(this).attr("transform", "translate(0, " + slider_pos + ")");
-
-	    change_groups(cgm, inst_rc, slider_value);
-	  }
-
-	  function click_dendro_slider() {
-
-	    var clicked_line_position = d3.mouse(this);
-
-	    var rel_pos = d3.round(clicked_line_position[1], -1);
-
-	    d3.select(cgm.params.root + ' .' + inst_rc + '_group_circle').attr('transform', 'translate(0, ' + rel_pos + ')');
-
-	    var slider_value = 10 - rel_pos / 10;
-
-	    change_groups(cgm, inst_rc, slider_value);
-	  }
-	};
-
-/***/ }),
+/* 186 */,
+/* 187 */,
 /* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -29821,6 +29715,251 @@ var Clustergrammer =
 	      shift.y = params.viz.clust.margin.top + 15;
 	      return 'translate(' + shift.x + ', ' + shift.y + ')';
 	    });
+	  }
+	};
+
+/***/ }),
+/* 287 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var position_tree_icon = __webpack_require__(190);
+	var d3_tip_custom = __webpack_require__(98);
+	var toggle_tree_menu = __webpack_require__(191);
+
+	module.exports = function build_svg_filter_icon(cgm) {
+
+	  var slider_length = 40;
+	  var params = cgm.params;
+	  var default_opacity = 0.35;
+	  var high_opacity = 0.6;
+
+	  // d3-tooltip
+	  var tree_menu_tip = d3_tip_custom().attr('class', function () {
+	    var root_tip_selector = params.viz.root_tips.replace('.', '');
+	    var class_string = root_tip_selector + '_tree_menu_tip d3-tip';
+	    return class_string;
+	  }).direction('sw').style('display', 'none').offset([-10, -5]).html(function () {
+	    return 'Clustering Menu';
+	  });
+
+	  var tree_icon_outer_group = d3.select(params.root + ' .viz_svg').append('g').classed('tree_group', true).on('mouseover', function () {
+
+	    // only if no menu is showing
+	    if (d3.select(params.root + ' .tree_menu').empty()) {
+
+	      d3.selectAll(params.viz.root_tips + '_tree_menu_tip').style('opacity', 1).style('display', 'block');
+
+	      tree_menu_tip.show();
+	    }
+
+	    d3.selectAll(params.root + ' .tree_leaf_circle').style('opacity', high_opacity);
+	  }).on('mouseout', function () {
+	    tree_menu_tip.hide();
+	    d3.selectAll(params.root + ' .tree_leaf_circle').style('opacity', default_opacity);
+	  }).call(tree_menu_tip);
+
+	  var tree_icon_group = tree_icon_outer_group.append('g').classed('dendro_tree_container', true).on('click', function () {
+
+	    if (d3.select(params.root + ' .tree_menu').empty()) {
+
+	      toggle_tree_menu(cgm, 'open');
+
+	      tree_menu_tip.hide();
+	    } else {
+
+	      toggle_tree_menu(cgm, 'close');
+	    }
+	  });
+
+	  // // tmp
+	  // console.log('initialize with tree menu open');
+	  // toggle_tree_menu(cgm, 'open');
+
+	  d3.select(params.root + ' .dendro_tree_container').attr('transform', 'scale(0.9)');
+
+	  position_tree_icon(cgm);
+
+	  var offset_triangle = 0;
+	  var tree_width = 20;
+
+	  // main branch
+	  tree_icon_group.append('path').style('fill', 'black').attr('transform', 'translate(' + offset_triangle + ', 0)').attr('d', function () {
+
+	    // up triangle
+	    var start_x = 0;
+	    var start_y = slider_length;
+
+	    var mid_x = tree_width / 2; //left_x + slider_length/10;
+	    var mid_y = 0;
+
+	    var final_x = tree_width; //left_x + slider_length/5;
+	    var final_y = slider_length;
+
+	    var output_string = 'M' + start_x + ',' + start_y + ', L' + mid_x + ', ' + mid_y + ', L' + final_x + ',' + final_y + ' Z';
+
+	    return output_string;
+	  }).style('opacity', 0.35);
+
+	  // left branch
+	  var branch_height = 30;
+	  tree_icon_group.append('path').style('fill', 'black').attr('transform', 'translate(' + offset_triangle + ', 0)').attr('d', function () {
+
+	    // up triangle
+	    var start_x = 4.3;
+	    var start_y = 23;
+
+	    var mid_x = -5; //left_x + slider_length/10;
+	    var mid_y = branch_height / 2.5;
+
+	    var final_x = 5.8; //left_x + slider_length/5;
+	    var final_y = branch_height / 1.8;
+
+	    var output_string = 'M' + start_x + ',' + start_y + ', L' + mid_x + ', ' + mid_y + ', L' + final_x + ',' + final_y + ' Z';
+
+	    return output_string;
+	  }).style('opacity', 0.35);
+
+	  // right branch
+	  tree_icon_group.append('path').style('fill', 'black').attr('transform', 'translate(' + offset_triangle + ', 0)').attr('d', function () {
+
+	    // up triangle
+	    var start_x = 15.7;
+	    var start_y = 23;
+
+	    var mid_x = 25; //left_x + slider_length/10;
+	    var mid_y = branch_height / 2.5;
+
+	    var final_x = 14.2; //left_x + slider_length/5;
+	    var final_y = branch_height / 1.8;
+
+	    var output_string = 'M' + start_x + ',' + start_y + ', L' + mid_x + ', ' + mid_y + ', L' + final_x + ',' + final_y + ' Z';
+
+	    return output_string;
+	  }).style('opacity', 0.35);
+
+	  var small_leaf_offset = 13;
+	  var small_leaf_radius = 9.5;
+
+	  tree_icon_group.selectAll().data([[-3, small_leaf_offset, small_leaf_radius], [tree_width / 2, 0, 17], [23, small_leaf_offset, small_leaf_radius]]).enter().append('circle').classed('tree_leaf_circle', true).attr('r', function (d) {
+	    return d[2];
+	  }).attr('transform', function (d) {
+	    return 'translate(' + d[0] + ', ' + d[1] + ')';
+	  }).attr('fill', 'blue').attr('opacity', default_opacity).attr('');
+
+	  tree_icon_group.append('rect').attr('width', 50).attr('height', 62).attr('transform', function () {
+	    return 'translate(' + -15 + ', ' + -19 + ')';
+	  }).attr('opacity', 0.0);
+		};
+
+/***/ }),
+/* 288 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var build_single_dendro_slider = __webpack_require__(289);
+
+	module.exports = function build_dendro_sliders(cgm) {
+
+	  build_single_dendro_slider(cgm, 'row');
+	  build_single_dendro_slider(cgm, 'col');
+		};
+
+/***/ }),
+/* 289 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var change_groups = __webpack_require__(188);
+	var position_svg_dendro_slider = __webpack_require__(176);
+
+	module.exports = function build_single_dendro_slider(cgm, inst_rc) {
+
+	  var slider_length = 100;
+
+	  var drag = d3.behavior.drag().on("drag", dragging).on('dragend', function () {
+	    cgm.params.is_slider_drag = false;
+	  });
+
+	  var slider_group = d3.select(cgm.params.root + ' .viz_svg').append('g').classed(inst_rc + '_slider_group', true);
+
+	  position_svg_dendro_slider(cgm, inst_rc);
+
+	  var rect_height = slider_length + 20;
+	  var rect_width = 30;
+	  slider_group.append('rect').classed(inst_rc + '_slider_background', true).attr('height', rect_height + 'px').attr('width', rect_width + 'px').attr('fill', cgm.params.viz.background_color).attr('transform', function () {
+	    var translate_string = 'translate(-10, -5)';
+	    return translate_string;
+	  }).style('opacity', 0);
+
+	  slider_group.append("line").style('stroke-width', slider_length / 7 + 'px').style('stroke', 'black').style('stroke-linecap', 'round').style('opacity', 0.0).attr("y1", 0).attr("y2", function () {
+	    return slider_length - 2;
+	  }).on('click', click_dendro_slider);
+
+	  var offset_triangle = -slider_length / 40;
+	  slider_group.append('path').style('fill', 'black').attr('transform', 'translate(' + offset_triangle + ', 0)').attr('d', function () {
+
+	    // up triangle
+	    var start_x = 0;
+	    var start_y = 0;
+
+	    var mid_x = 0;
+	    var mid_y = slider_length;
+
+	    var final_x = slider_length / 10;
+	    var final_y = 0;
+
+	    var output_string = 'M' + start_x + ',' + start_y + ', L' + mid_x + ', ' + mid_y + ', L' + final_x + ',' + final_y + ' Z';
+
+	    return output_string;
+	  }).style('opacity', 0.35).on('click', click_dendro_slider);
+
+	  var default_opacity = 0.35;
+	  var high_opacity = 0.6;
+	  slider_group.append('circle').classed(inst_rc + '_group_circle', true).attr('r', slider_length * 0.08).attr('transform', function () {
+	    return 'translate(0, ' + slider_length / 2 + ')';
+	  }).style('fill', 'blue').style('opacity', default_opacity).on('mouseover', function () {
+	    d3.select(this).style('opacity', high_opacity);
+	  }).on('mouseout', function () {
+	    d3.select(this).style('opacity', default_opacity);
+	  }).call(drag);
+
+	  function dragging() {
+
+	    cgm.params.is_slider_drag = true;
+
+	    // d[0] = d3.event.x;
+	    var slider_pos = d3.event.y;
+
+	    if (slider_pos < 0) {
+	      slider_pos = 0;
+	    }
+
+	    if (slider_pos > slider_length) {
+	      slider_pos = slider_length;
+	    }
+
+	    if (this.nextSibling) {
+	      this.parentNode.appendChild(this);
+	    }
+
+	    slider_pos = d3.round(slider_pos, -1);
+
+	    var slider_value = 10 - slider_pos / 10;
+
+	    d3.select(this).attr("transform", "translate(0, " + slider_pos + ")");
+
+	    change_groups(cgm, inst_rc, slider_value);
+	  }
+
+	  function click_dendro_slider() {
+
+	    var clicked_line_position = d3.mouse(this);
+
+	    var rel_pos = d3.round(clicked_line_position[1], -1);
+
+	    d3.select(cgm.params.root + ' .' + inst_rc + '_group_circle').attr('transform', 'translate(0, ' + rel_pos + ')');
+
+	    var slider_value = 10 - rel_pos / 10;
+
+	    change_groups(cgm, inst_rc, slider_value);
 	  }
 	};
 

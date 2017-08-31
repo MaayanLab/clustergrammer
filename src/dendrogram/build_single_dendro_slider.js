@@ -1,7 +1,7 @@
 var change_groups = require('./change_groups');
 var position_svg_dendro_slider = require('./position_svg_dendro_slider');
 
-module.exports = function build_svg_dendro_slider(cgm, inst_rc){
+module.exports = function build_single_dendro_slider(cgm, inst_rc){
 
   var slider_length = 100;
 
