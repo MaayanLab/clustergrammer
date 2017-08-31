@@ -220,4 +220,21 @@ module.exports = function resize_viz(cgm) {
   setTimeout(position_svg_dendro_slider, 500, cgm, 'row');
   setTimeout(position_svg_dendro_slider, 500, cgm, 'col');
 
+
+  if (d3.select(params.root+' .tree_menu').empty() === false){
+
+    var menu_width = cgm.params.viz.tree_menu_width;
+    var menu_height = cgm.params.viz.tree_menu_height;
+    var x_offset = cgm.params.viz.tree_menu_x_offset;
+
+    d3.select(params.root+' .tree_menu')
+      .attr('transform', function(){
+        var shift = {};
+        shift.x = params.viz.clust.dim.width + params.viz.clust.margin.left - menu_width + 30;
+        shift.y = params.viz.clust.margin.top + 15;
+        return 'translate(' + shift.x + ', ' + shift.y + ')';
+      })
+
+  }
+
 };

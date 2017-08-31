@@ -4,9 +4,9 @@ var make_tree_menu_update_button = require('./make_tree_menu_update_button');
 module.exports = function make_tree_menu(cgm){
 
   var params = cgm.params;
-  var menu_width = 400;
-  var menu_height = 237;
-  var x_offset = 20;
+  var menu_width = cgm.params.viz.tree_menu_width;
+  var menu_height = cgm.params.viz.tree_menu_height;
+  var x_offset = cgm.params.viz.tree_menu_x_offset;
 
   // make tree menu (state is in cgm, remade each time)
   /////////////////////////////////////////////////////
