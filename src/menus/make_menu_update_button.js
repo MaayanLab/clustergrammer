@@ -1,10 +1,10 @@
 module.exports = function make_menu_update_button(cgm, button_info, update_callback){
 
 
-  var update_button_width = 100;
-  var menu_width = button_info.menu_width;
-  var update_buton_x = menu_width/2 + button_info.default_x_offset;
-  var update_buton_y = 205;
+  var update_button_width = cgm.params.viz.update_button_width;
+
+  // var menu_width = button_info.menu_width;
+  // var button_x = menu_width/2 + button_info.default_x_offset;
 
   var default_opacity = 0.35;
   var high_opacity = 0.5;
@@ -12,7 +12,7 @@ module.exports = function make_menu_update_button(cgm, button_info, update_callb
   var update_button = button_info.selection
     .append('g')
     .classed('update_button', true)
-    .attr('transform', 'translate('+ update_buton_x +', ' + update_buton_y + ')')
+    .attr('transform', 'translate('+ button_info.update_x +', ' + button_info.update_y + ')')
     .on('click', update_callback)
     .on('mouseover', function(){
       d3.select(this)

@@ -7,8 +7,8 @@ var recluster = require('../recluster/recluster');
 module.exports = function make_filter_menu(cgm){
 
   var params = cgm.params;
-  var menu_width = cgm.params.viz.tree_menu_width;
-  var menu_height = cgm.params.viz.tree_menu_height;
+  var menu_width = cgm.params.viz.filter_menu_width;
+  var menu_height = cgm.params.viz.filter_menu_height;
   var x_offset = cgm.params.viz.tree_menu_x_offset;
 
   // make tree menu (state is in cgm, remade each time)
@@ -60,7 +60,7 @@ module.exports = function make_filter_menu(cgm){
   button_info.linkage_type = cgm.params.matrix.linkage_type;
   button_info.default_x_offset = x_offset;
 
-  // linkage
+  // filter
   /////////////////
   var distance_names = ['cosine', 'euclidean', 'correlation'];
   button_info.name = 'Distance Metric';
@@ -68,13 +68,13 @@ module.exports = function make_filter_menu(cgm){
   button_info.x_offset = 0;
   make_menu_button_section('filter_menu', 'distance_metric', button_info, distance_names);
 
-  // linkage
-  /////////////////
-  var linkage_names = ['average', 'single', 'complete'];
-  button_info.name = 'Linkage Type';
-  button_info.y_offset = 65;
-  button_info.x_offset = menu_width/2;
-  make_menu_button_section('filter_menu', 'linkage_type', button_info, linkage_names);
+  // // linkage
+  // /////////////////
+  // var linkage_names = ['average', 'single', 'complete'];
+  // button_info.name = 'Linkage Type';
+  // button_info.y_offset = 65;
+  // button_info.x_offset = menu_width/2;
+  // make_menu_button_section('filter_menu', 'linkage_type', button_info, linkage_names);
 
   // // Z-score
   // /////////////////
@@ -95,6 +95,10 @@ module.exports = function make_filter_menu(cgm){
     // recluster(cgm, button_info.distance_metric, button_info.linkage_type);
 
   }
+
+  console.log(menu_width)
+  button_info.update_x = menu_width - cgm.params.viz.update_button_width -  button_info.default_x_offset;
+  button_info.update_y = 205;
 
   make_menu_update_button(cgm, button_info, update_callback);
 

@@ -60,7 +60,7 @@ module.exports = function make_tree_menu(cgm){
   button_info.linkage_type = cgm.params.matrix.linkage_type;
   button_info.default_x_offset = x_offset;
 
-  // linkage
+  // distance
   /////////////////
   var distance_names = ['cosine', 'euclidean', 'correlation'];
   button_info.name = 'Distance Metric';
@@ -93,6 +93,8 @@ module.exports = function make_tree_menu(cgm){
     recluster(cgm, button_info.distance_metric, button_info.linkage_type);
   }
 
+  button_info.update_x = menu_width/2 + button_info.default_x_offset;
+  button_info.update_y = 205;
   make_menu_update_button(cgm, button_info, update_callback);
 
 };

@@ -12954,9 +12954,11 @@ var Clustergrammer =
 	    viz.tree_menu_height = 237;
 	    viz.tree_menu_x_offset = 20;
 
-	    viz.filter_menu_width = 400;
+	    viz.filter_menu_width = 500;
 	    viz.filter_menu_height = 237;
 	    viz.filter_menu_x_offset = 20;
+
+	    viz.update_button_width = 100;
 
 	    viz.viz_svg = viz.viz_wrapper + ' .viz_svg';
 
@@ -20849,7 +20851,7 @@ var Clustergrammer =
 	  button_info.linkage_type = cgm.params.matrix.linkage_type;
 	  button_info.default_x_offset = x_offset;
 
-	  // linkage
+	  // distance
 	  /////////////////
 	  var distance_names = ['cosine', 'euclidean', 'correlation'];
 	  button_info.name = 'Distance Metric';
@@ -20882,6 +20884,8 @@ var Clustergrammer =
 	    recluster(cgm, button_info.distance_metric, button_info.linkage_type);
 	  }
 
+	  button_info.update_x = menu_width / 2 + button_info.default_x_offset;
+	  button_info.update_y = 205;
 	  make_menu_update_button(cgm, button_info, update_callback);
 		};
 
@@ -23450,8 +23454,8 @@ var Clustergrammer =
 	module.exports = function make_filter_menu(cgm) {
 
 	  var params = cgm.params;
-	  var menu_width = cgm.params.viz.tree_menu_width;
-	  var menu_height = cgm.params.viz.tree_menu_height;
+	  var menu_width = cgm.params.viz.filter_menu_width;
+	  var menu_height = cgm.params.viz.filter_menu_height;
 	  var x_offset = cgm.params.viz.tree_menu_x_offset;
 
 	  // make tree menu (state is in cgm, remade each time)
@@ -23480,7 +23484,7 @@ var Clustergrammer =
 	  button_info.linkage_type = cgm.params.matrix.linkage_type;
 	  button_info.default_x_offset = x_offset;
 
-	  // linkage
+	  // filter
 	  /////////////////
 	  var distance_names = ['cosine', 'euclidean', 'correlation'];
 	  button_info.name = 'Distance Metric';
@@ -23488,13 +23492,13 @@ var Clustergrammer =
 	  button_info.x_offset = 0;
 	  make_menu_button_section('filter_menu', 'distance_metric', button_info, distance_names);
 
-	  // linkage
-	  /////////////////
-	  var linkage_names = ['average', 'single', 'complete'];
-	  button_info.name = 'Linkage Type';
-	  button_info.y_offset = 65;
-	  button_info.x_offset = menu_width / 2;
-	  make_menu_button_section('filter_menu', 'linkage_type', button_info, linkage_names);
+	  // // linkage
+	  // /////////////////
+	  // var linkage_names = ['average', 'single', 'complete'];
+	  // button_info.name = 'Linkage Type';
+	  // button_info.y_offset = 65;
+	  // button_info.x_offset = menu_width/2;
+	  // make_menu_button_section('filter_menu', 'linkage_type', button_info, linkage_names);
 
 	  // // Z-score
 	  // /////////////////
@@ -23514,6 +23518,10 @@ var Clustergrammer =
 	    // cgm.params.matrix.linkage_type = button_info.linkage_type;
 	    // recluster(cgm, button_info.distance_metric, button_info.linkage_type);
 	  }
+
+	  console.log(menu_width);
+	  button_info.update_x = menu_width - cgm.params.viz.update_button_width - button_info.default_x_offset;
+	  button_info.update_y = 205;
 
 	  make_menu_update_button(cgm, button_info, update_callback);
 		};
@@ -30032,15 +30040,15 @@ var Clustergrammer =
 
 	module.exports = function make_menu_update_button(cgm, button_info, update_callback) {
 
-	  var update_button_width = 100;
-	  var menu_width = button_info.menu_width;
-	  var update_buton_x = menu_width / 2 + button_info.default_x_offset;
-	  var update_buton_y = 205;
+	  var update_button_width = cgm.params.viz.update_button_width;
+
+	  // var menu_width = button_info.menu_width;
+	  // var button_x = menu_width/2 + button_info.default_x_offset;
 
 	  var default_opacity = 0.35;
 	  var high_opacity = 0.5;
 
-	  var update_button = button_info.selection.append('g').classed('update_button', true).attr('transform', 'translate(' + update_buton_x + ', ' + update_buton_y + ')').on('click', update_callback).on('mouseover', function () {
+	  var update_button = button_info.selection.append('g').classed('update_button', true).attr('transform', 'translate(' + button_info.update_x + ', ' + button_info.update_y + ')').on('click', update_callback).on('mouseover', function () {
 	    d3.select(this).select('rect').attr('opacity', high_opacity);
 	  }).on('mouseout', function () {
 	    d3.select(this).select('rect').attr('opacity', default_opacity);
