@@ -16392,7 +16392,7 @@ var Clustergrammer =
 
 	var calc_cat_cluster_breakdown = __webpack_require__(277);
 	var underscore = __webpack_require__(3);
-	var cat_breakdown_bar_groups = __webpack_require__(293);
+	var cat_breakdown_bars = __webpack_require__(296);
 	var cat_breakdown_values = __webpack_require__(295);
 
 	module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, dendro_info, selector, tooltip = false) {
@@ -16416,15 +16416,10 @@ var Clustergrammer =
 	    var cluster_info_container = d3.select(selector + ' .cluster_info_container');
 
 	    // loop through cat_breakdown data
-	    var super_string = ': ';
-	    var paragraph_string = '<p>';
 	    var width = 370;
-	    var bar_offset = 23;
-	    var bar_width = params.viz.cat_bar_width;
-	    var bar_height = params.viz.cat_bar_height;
-	    var max_string_length = 25;
 	    var title_height = 27;
 	    var shift_tooltip_left = 177;
+	    var bar_offset = 23;
 
 	    // these are the indexes where the number-of-nodes and the number of downsampled
 	    // nodes are stored
@@ -16476,80 +16471,30 @@ var Clustergrammer =
 
 	    var main_dendro_svg = cluster_info_container.append('div').style('margin-top', '5px').classed('cat_graph', true).append('svg').style('height', svg_height + 'px').style('width', width + 'px');
 
+	    cluster_info_container.style('margin-bottom', '5px');
+
 	    // make background
 	    main_dendro_svg.append('rect').classed('cat_background', true).attr('height', svg_height + 'px').attr('width', width + 'px').attr('fill', 'white').attr('opacity', 1);
 
-	    // the total amout to shift down the next category
-	    var shift_down = title_height;
-
 	    // limit the category-types
 	    cat_breakdown = cat_breakdown.slice(0, max_cats);
+
+	    // shift the position of the numbers based on the size of the number
+	    // offset the count column based on how large the counts are
+	    var digit_offset_scale = d3.scale.linear().domain([0, 100000]).range([20, 30]);
+
+	    // the total amout to shift down the next category
+	    var shift_down = title_height;
 
 	    underscore.each(cat_breakdown, function (cat_data) {
 
 	      var max_bar_value = cat_data.bar_data[0][bars_index];
 
-	      // offset the count column based on how large the counts are
-	      var digit_offset_scale = d3.scale.linear().domain([0, 100000]).range([20, 30]);
-
-	      // only keep the top max_bars categories
-	      cat_data.bar_data = cat_data.bar_data.slice(0, max_bars);
-
-	      cluster_info_container.style('margin-bottom', '5px');
+	      var count_offset = digit_offset_scale(max_bar_value);
 
 	      var cat_graph_group = main_dendro_svg.append('g').classed('cat_graph_group', true).attr('transform', 'translate(10, ' + shift_down + ')');
 
-	      // shift down based on number of bars
-	      shift_down = shift_down + title_height * (cat_data.bar_data.length + 1);
-
-	      var inst_title = cat_data.type_name;
-	      // ensure that title is not too long
-	      if (inst_title.length >= max_string_length) {
-	        inst_title = inst_title.slice(0, max_string_length) + '..';
-	      }
-
-	      // make title
-	      cat_graph_group.append('text').classed('cat_graph_title', true).text(inst_title).style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').style('font-weight', 800);
-
-	      // shift the position of the numbers based on the size of the number
-	      var count_offset = digit_offset_scale(max_bar_value);
-
-	      // Count Title
-	      cat_graph_group.append('text').text('Count').attr('transform', function () {
-	        var inst_x = bar_width + count_offset;
-	        var inst_translate = 'translate(' + inst_x + ', 0)';
-	        return inst_translate;
-	      });
-
-	      // Percentage Title
-	      cat_graph_group.append('text').text('Pct').attr('transform', function () {
-	        var inst_x = bar_width + count_offset + 60;
-	        var inst_translate = 'translate(' + inst_x + ', 0)';
-	        return inst_translate;
-	      });
-
-	      // Percentage Title
-	      cat_graph_group.append('text').text('P-val').attr('transform', function () {
-	        var inst_x = bar_width + count_offset + 115;
-	        var inst_translate = 'translate(' + inst_x + ', 0)';
-	        return inst_translate;
-	      });
-
-	      // Count Downsampled Title
-	      if (is_downsampled) {
-	        cat_graph_group.append('text').text('Clusters').attr('transform', function () {
-	          var inst_x = bar_width + offset_ds_count;
-	          var inst_translate = 'translate(' + inst_x + ', 0)';
-	          return inst_translate;
-	        });
-	      }
-
-	      var line_y = 4;
-	      cat_graph_group.append('line').attr('x1', 0).attr('x2', bar_width).attr('y1', line_y).attr('y2', line_y).attr('stroke', 'blue').attr('stroke-width', 1).attr('opacity', 1.0);
-
 	      var cat_bar_container = cat_graph_group.append('g').classed('cat_bar_container', true).attr('transform', 'translate(0, 10)');
-
-	      cat_breakdown_bar_groups();
 
 	      // make bar groups (hold bar and text)
 	      var cat_bar_groups = cat_bar_container.selectAll('g').data(cat_data.bar_data).enter().append('g').attr('transform', function (d, i) {
@@ -16557,39 +16502,12 @@ var Clustergrammer =
 	        return 'translate(0,' + inst_y + ')';
 	      });
 
-	      // bar length is max when all nodes in cluster are of
-	      // a single cat
-	      var bar_scale = d3.scale.linear().domain([0, max_bar_value]).range([0, bar_width]);
+	      cat_breakdown_bars(params, cat_data, cat_graph_group, title_height, bars_index, max_bars, cat_bar_groups);
 
-	      // make bars
-	      cat_bar_groups.append('rect').attr('height', bar_height + 'px').attr('width', function (d) {
-	        var inst_width = bar_scale(d[bars_index]);
-	        return inst_width + 'px';
-	      }).attr('fill', function (d) {
-	        // cat color is stored in the third element
-	        return d[3];
-	      }).attr('opacity', params.viz.cat_colors.opacity).attr('stroke', 'grey').attr('stroke-width', '0.5px');
+	      cat_breakdown_values(params, cat_graph_group, cat_bar_groups, num_nodes_index, is_downsampled, count_offset, bars_index, cluster_total);
 
-	      // make bar labels
-	      cat_bar_groups.append('text').classed('bar_labels', true).text(function (d) {
-	        var inst_text = d[1];
-	        if (inst_text.indexOf(super_string) > 0) {
-	          inst_text = inst_text.split(super_string)[1];
-	        }
-	        if (inst_text.indexOf(paragraph_string) > 0) {
-	          // required for Enrichr category names (needs improvements)
-	          inst_text = inst_text.split(paragraph_string)[0];
-	        }
-	        // ensure that bar name is not too long
-	        if (inst_text.length >= max_string_length) {
-	          inst_text = inst_text.slice(0, max_string_length) + '..';
-	        }
-	        return inst_text;
-	      }).attr('transform', function () {
-	        return 'translate(5, ' + 0.75 * bar_height + ')';
-	      }).attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('font-weight', 400).attr('text-anchor', 'right');
-
-	      cat_breakdown_values(params, cat_bar_groups, num_nodes_index, is_downsampled, count_offset, bars_index, cluster_total);
+	      // shift down based on number of bars
+	      shift_down = shift_down + title_height * (cat_data.bar_data.length + 1);
 	    });
 
 	    // reposition tooltip
@@ -30008,22 +29926,47 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 293 */
-/***/ (function(module, exports) {
-
-	module.exports = function cat_breakdown_bar_groups() {};
-
-/***/ }),
+/* 293 */,
 /* 294 */,
 /* 295 */
 /***/ (function(module, exports) {
 
-	module.exports = function cat_breakdown_values(params, cat_bar_groups, num_nodes_index, is_downsampled, count_offset, bars_index, cluster_total) {
+	module.exports = function cat_breakdown_values(params, cat_graph_group, cat_bar_groups, num_nodes_index, is_downsampled, count_offset, bars_index, cluster_total) {
 
 	  var bar_width = params.viz.cat_bar_width;
 	  var bar_height = params.viz.cat_bar_height;
 	  var offset_ds_count = 150;
 	  var binom_pval_index = 6;
+
+	  // Count Title
+	  cat_graph_group.append('text').text('Count').attr('transform', function () {
+	    var inst_x = bar_width + count_offset;
+	    var inst_translate = 'translate(' + inst_x + ', 0)';
+	    return inst_translate;
+	  });
+
+	  // Percentage Title
+	  cat_graph_group.append('text').text('Pct').attr('transform', function () {
+	    var inst_x = bar_width + count_offset + 60;
+	    var inst_translate = 'translate(' + inst_x + ', 0)';
+	    return inst_translate;
+	  });
+
+	  // Percentage Title
+	  cat_graph_group.append('text').text('P-val').attr('transform', function () {
+	    var inst_x = bar_width + count_offset + 115;
+	    var inst_translate = 'translate(' + inst_x + ', 0)';
+	    return inst_translate;
+	  });
+
+	  // Count Downsampled Title
+	  if (is_downsampled) {
+	    cat_graph_group.append('text').text('Clusters').attr('transform', function () {
+	      var inst_x = bar_width + offset_ds_count;
+	      var inst_translate = 'translate(' + inst_x + ', 0)';
+	      return inst_translate;
+	    });
+	  }
 
 	  // Counts
 	  /////////////////////////////
@@ -30084,6 +30027,70 @@ var Clustergrammer =
 	      return 'translate(' + inst_x + ', ' + inst_y + ')';
 	    }).attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('font-weight', 400).attr('text-anchor', 'end');
 	  }
+		};
+
+/***/ }),
+/* 296 */
+/***/ (function(module, exports) {
+
+	module.exports = function cat_breakdown_bars(params, cat_data, cat_graph_group, title_height, bars_index, max_bars, cat_bar_groups) {
+
+	  var paragraph_string = '<p>';
+	  var super_string = ': ';
+
+	  var bar_width = params.viz.cat_bar_width;
+	  var bar_height = params.viz.cat_bar_height;
+
+	  var max_string_length = 25;
+
+	  var max_bar_value = cat_data.bar_data[0][bars_index];
+
+	  // only keep the top max_bars categories
+	  cat_data.bar_data = cat_data.bar_data.slice(0, max_bars);
+
+	  var inst_title = cat_data.type_name;
+	  // ensure that title is not too long
+	  if (inst_title.length >= max_string_length) {
+	    inst_title = inst_title.slice(0, max_string_length) + '..';
+	  }
+
+	  // make title
+	  cat_graph_group.append('text').classed('cat_graph_title', true).text(inst_title).style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').style('font-weight', 800);
+
+	  var line_y = 4;
+	  cat_graph_group.append('line').attr('x1', 0).attr('x2', bar_width).attr('y1', line_y).attr('y2', line_y).attr('stroke', 'blue').attr('stroke-width', 1).attr('opacity', 1.0);
+
+	  // bar length is max when all nodes in cluster are of
+	  // a single cat
+	  var bar_scale = d3.scale.linear().domain([0, max_bar_value]).range([0, bar_width]);
+
+	  // make bars
+	  cat_bar_groups.append('rect').attr('height', bar_height + 'px').attr('width', function (d) {
+	    var inst_width = bar_scale(d[bars_index]);
+	    return inst_width + 'px';
+	  }).attr('fill', function (d) {
+	    // cat color is stored in the third element
+	    return d[3];
+	  }).attr('opacity', params.viz.cat_colors.opacity).attr('stroke', 'grey').attr('stroke-width', '0.5px');
+
+	  // make bar labels
+	  cat_bar_groups.append('text').classed('bar_labels', true).text(function (d) {
+	    var inst_text = d[1];
+	    if (inst_text.indexOf(super_string) > 0) {
+	      inst_text = inst_text.split(super_string)[1];
+	    }
+	    if (inst_text.indexOf(paragraph_string) > 0) {
+	      // required for Enrichr category names (needs improvements)
+	      inst_text = inst_text.split(paragraph_string)[0];
+	    }
+	    // ensure that bar name is not too long
+	    if (inst_text.length >= max_string_length) {
+	      inst_text = inst_text.slice(0, max_string_length) + '..';
+	    }
+	    return inst_text;
+	  }).attr('transform', function () {
+	    return 'translate(5, ' + 0.75 * bar_height + ')';
+	  }).attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('font-weight', 400).attr('text-anchor', 'right');
 		};
 
 /***/ })

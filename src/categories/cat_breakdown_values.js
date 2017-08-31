@@ -1,10 +1,53 @@
-module.exports = function cat_breakdown_values(params, cat_bar_groups, num_nodes_index, is_downsampled, count_offset, bars_index, cluster_total){
+module.exports = function cat_breakdown_values(params, cat_graph_group, cat_bar_groups, num_nodes_index, is_downsampled, count_offset, bars_index, cluster_total){
 
 
   var bar_width = params.viz.cat_bar_width;
   var bar_height = params.viz.cat_bar_height;
   var offset_ds_count = 150;
   var binom_pval_index = 6;
+
+
+  // Count Title
+  cat_graph_group
+    .append('text')
+    .text('Count')
+    .attr('transform', function(){
+      var inst_x = bar_width + count_offset;
+      var inst_translate = 'translate('+ inst_x +', 0)';
+      return inst_translate;
+    });
+
+  // Percentage Title
+  cat_graph_group
+    .append('text')
+    .text('Pct')
+    .attr('transform', function(){
+      var inst_x = bar_width + count_offset + 60;
+      var inst_translate = 'translate('+ inst_x +', 0)';
+      return inst_translate;
+    });
+
+  // Percentage Title
+  cat_graph_group
+    .append('text')
+    .text('P-val')
+    .attr('transform', function(){
+      var inst_x = bar_width + count_offset + 115;
+      var inst_translate = 'translate('+ inst_x +', 0)';
+      return inst_translate;
+    });
+
+  // Count Downsampled Title
+  if (is_downsampled){
+    cat_graph_group
+      .append('text')
+      .text('Clusters')
+      .attr('transform', function(){
+        var inst_x = bar_width + offset_ds_count ;
+        var inst_translate = 'translate('+ inst_x +', 0)';
+        return inst_translate;
+      });
+  }
 
   // Counts
   /////////////////////////////
