@@ -22670,30 +22670,7 @@ var Clustergrammer =
 		};
 
 /***/ }),
-/* 191 */
-/***/ (function(module, exports) {
-
-	
-	module.exports = function toggle_tree_menu(cgm, menu_type, toggle, make_menu_function = null) {
-
-	  var params = cgm.params;
-
-	  if (toggle === 'open') {
-
-	    if (make_menu_function != null) {
-	      make_menu_function(cgm);
-	    }
-	  } else if (toggle === 'close') {
-
-	    d3.select(params.root + ' .' + menu_type).transition(700).attr('opacity', 0);
-
-	    setTimeout(function () {
-	      d3.select(params.root + ' .' + menu_type).remove();
-	    }, 700);
-	  }
-		};
-
-/***/ }),
+/* 191 */,
 /* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -22830,7 +22807,7 @@ var Clustergrammer =
 /***/ (function(module, exports, __webpack_require__) {
 
 	var recluster = __webpack_require__(195);
-	var toggle_tree_menu = __webpack_require__(191);
+	var toggle_menu = __webpack_require__(294);
 
 	module.exports = function make_tree_menu_update_button(cgm, button_info) {
 
@@ -22844,7 +22821,7 @@ var Clustergrammer =
 
 	  var update_button = button_info.tree_menu.append('g').classed('update_button', true).attr('transform', 'translate(' + update_buton_x + ', ' + update_buton_y + ')').on('click', function () {
 
-	    toggle_tree_menu(cgm, 'tree_menu', 'close');
+	    toggle_menu(cgm, 'tree_menu', 'close');
 
 	    // transfer parameters to cgm object when update is pressed
 	    cgm.params.matrix.distance_metric = button_info.distance_metric;
@@ -29656,7 +29633,7 @@ var Clustergrammer =
 
 	var position_tree_icon = __webpack_require__(190);
 	var d3_tip_custom = __webpack_require__(98);
-	var toggle_tree_menu = __webpack_require__(191);
+	var toggle_menu = __webpack_require__(294);
 	var make_tree_menu = __webpack_require__(192);
 
 	module.exports = function build_tree_icon(cgm) {
@@ -29695,12 +29672,12 @@ var Clustergrammer =
 
 	    if (d3.select(params.root + ' .tree_menu').empty()) {
 
-	      toggle_tree_menu(cgm, 'tree_menu', 'open', make_tree_menu);
+	      toggle_menu(cgm, 'tree_menu', 'open', make_tree_menu);
 
 	      tree_icon_tip.hide();
 	    } else {
 
-	      toggle_tree_menu(cgm, 'tree_menu', 'close');
+	      toggle_menu(cgm, 'tree_menu', 'close');
 	    }
 	  });
 
@@ -29961,6 +29938,30 @@ var Clustergrammer =
 	    }
 	    return inst_translation;
 	  }).style('opacity', 1);
+		};
+
+/***/ }),
+/* 294 */
+/***/ (function(module, exports) {
+
+	
+	module.exports = function toggle_menu(cgm, menu_type, toggle, make_menu_function = null) {
+
+	  var params = cgm.params;
+
+	  if (toggle === 'open') {
+
+	    if (make_menu_function != null) {
+	      make_menu_function(cgm);
+	    }
+	  } else if (toggle === 'close') {
+
+	    d3.select(params.root + ' .' + menu_type).transition(700).attr('opacity', 0);
+
+	    setTimeout(function () {
+	      d3.select(params.root + ' .' + menu_type).remove();
+	    }, 700);
+	  }
 		};
 
 /***/ })

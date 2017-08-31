@@ -1,6 +1,6 @@
 var position_tree_icon = require('./position_tree_icon');
 var d3_tip_custom = require('../tooltip/d3_tip_custom');
-var toggle_tree_menu = require('./toggle_tree_menu');
+var toggle_menu = require('./toggle_menu');
 var make_tree_menu = require('./make_tree_menu');
 
 module.exports = function build_tree_icon(cgm){
@@ -57,13 +57,13 @@ module.exports = function build_tree_icon(cgm){
 
       if (d3.select(params.root+' .tree_menu').empty()){
 
-        toggle_tree_menu(cgm, 'tree_menu', 'open', make_tree_menu);
+        toggle_menu(cgm, 'tree_menu', 'open', make_tree_menu);
 
         tree_icon_tip.hide();
 
       } else {
 
-        toggle_tree_menu(cgm, 'tree_menu', 'close');
+        toggle_menu(cgm, 'tree_menu', 'close');
 
       }
     });

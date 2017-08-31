@@ -1,5 +1,5 @@
 var recluster = require('../recluster/recluster');
-var toggle_tree_menu = require('./toggle_tree_menu');
+var toggle_menu = require('./toggle_menu');
 
 module.exports = function make_tree_menu_update_button(cgm, button_info){
 
@@ -17,7 +17,7 @@ module.exports = function make_tree_menu_update_button(cgm, button_info){
     .attr('transform', 'translate('+ update_buton_x +', ' + update_buton_y + ')')
     .on('click', function(){
 
-      toggle_tree_menu(cgm, 'tree_menu', 'close')
+      toggle_menu(cgm, 'tree_menu', 'close')
 
       // transfer parameters to cgm object when update is pressed
       cgm.params.matrix.distance_metric = button_info.distance_metric;

@@ -1,5 +1,5 @@
 
-module.exports = function toggle_tree_menu(cgm, menu_type, toggle, make_menu_function=null){
+module.exports = function toggle_menu(cgm, menu_type, toggle, make_menu_function=null){
 
   var params = cgm.params;
 
