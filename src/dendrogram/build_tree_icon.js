@@ -2,7 +2,7 @@ var position_tree_icon = require('./position_tree_icon');
 var d3_tip_custom = require('../tooltip/d3_tip_custom');
 var toggle_tree_menu = require('./toggle_tree_menu');
 
-module.exports = function build_svg_tree_icon(cgm){
+module.exports = function build_tree_icon(cgm){
 
   var slider_length = 40;
   var params = cgm.params;
