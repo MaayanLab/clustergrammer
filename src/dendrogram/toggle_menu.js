@@ -1,13 +1,17 @@
 
-module.exports = function toggle_menu(cgm, menu_type, toggle, make_menu_function=null){
+module.exports = function toggle_menu(cgm, menu_type, toggle, make_menu=null){
 
   var params = cgm.params;
 
   if (toggle === 'open'){
 
-    if (make_menu_function != null){
-      make_menu_function(cgm);
+    d3.selectAll(cgm.params.root + ' .svg_menus')
+      .remove();
+
+    if (make_menu != null){
+      make_menu(cgm);
     }
+
 
   } else if (toggle === 'close'){
 

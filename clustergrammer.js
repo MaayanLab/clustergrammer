@@ -22687,7 +22687,7 @@ var Clustergrammer =
 
 	  // make tree menu (state is in cgm, remade each time)
 	  /////////////////////////////////////////////////////
-	  var tree_menu = d3.select(params.root + ' .viz_svg').append('g').attr('cursor', 'default').classed('tree_menu', true);
+	  var tree_menu = d3.select(params.root + ' .viz_svg').append('g').attr('cursor', 'default').classed('tree_menu', true).classed('svg_menus', true);
 
 	  position_tree_menu(cgm);
 
@@ -29763,7 +29763,7 @@ var Clustergrammer =
 
 	var position_filter_icon = __webpack_require__(292);
 	var d3_tip_custom = __webpack_require__(98);
-	// var toggle_filter_menu = require('./toggle_filter_menu');
+	var toggle_menu = __webpack_require__(294);
 
 	module.exports = function build_filter_icon(cgm) {
 
@@ -29803,13 +29803,12 @@ var Clustergrammer =
 
 	    if (d3.select(params.root + ' .filter_menu').empty()) {
 
-	      // toggle_filter_menu(cgm, 'open');
+	      toggle_menu(cgm, 'filter_menu', 'open');
 
 	      filter_icon_tip.hide();
 	    } else {
 
-	      // toggle_filter_menu(cgm, 'close');
-
+	      toggle_menu(cgm, 'filter_menu', 'close');
 	    }
 	  });
 
@@ -29845,11 +29844,7 @@ var Clustergrammer =
 	  var small_leaf_offset = 13;
 	  var small_leaf_radius = 9.5;
 
-	  filter_icon_group.selectAll().data([
-	  // [-3,small_leaf_offset,small_leaf_radius],
-	  [filter_width / 2, 0, filter_width / 2]
-	  // [23,small_leaf_offset,small_leaf_radius]
-	  ]).enter().append('circle').classed('filter_circle', true).attr('r', function (d) {
+	  filter_icon_group.selectAll().data([[filter_width / 2, 0, filter_width / 2]]).enter().append('circle').classed('filter_circle', true).attr('r', function (d) {
 	    return d[2];
 	  }).attr('transform', function (d) {
 	    return 'translate(' + d[0] + ', ' + d[1] + '), scale(1, 0.4)';
@@ -29945,14 +29940,16 @@ var Clustergrammer =
 /***/ (function(module, exports) {
 
 	
-	module.exports = function toggle_menu(cgm, menu_type, toggle, make_menu_function = null) {
+	module.exports = function toggle_menu(cgm, menu_type, toggle, make_menu = null) {
 
 	  var params = cgm.params;
 
 	  if (toggle === 'open') {
 
-	    if (make_menu_function != null) {
-	      make_menu_function(cgm);
+	    d3.selectAll(cgm.params.root + ' .svg_menus').remove();
+
+	    if (make_menu != null) {
+	      make_menu(cgm);
 	    }
 	  } else if (toggle === 'close') {
 

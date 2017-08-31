@@ -1,6 +1,6 @@
 var position_filter_icon = require('./position_filter_icon');
 var d3_tip_custom = require('../tooltip/d3_tip_custom');
-// var toggle_filter_menu = require('./toggle_filter_menu');
+var toggle_menu = require('./toggle_menu');
 
 module.exports = function build_filter_icon(cgm){
 
@@ -59,13 +59,13 @@ module.exports = function build_filter_icon(cgm){
 
       if (d3.select(params.root+' .filter_menu').empty()){
 
-        // toggle_filter_menu(cgm, 'open');
+        toggle_menu(cgm, 'filter_menu', 'open');
 
         filter_icon_tip.hide();
 
       } else {
 
-        // toggle_filter_menu(cgm, 'close');
+        toggle_menu(cgm, 'filter_menu', 'close');
 
       }
     });
@@ -112,9 +112,7 @@ module.exports = function build_filter_icon(cgm){
   filter_icon_group
     .selectAll()
     .data([
-      // [-3,small_leaf_offset,small_leaf_radius],
       [filter_width/2, 0, filter_width/2]
-      // [23,small_leaf_offset,small_leaf_radius]
       ])
     .enter()
     .append('circle')
