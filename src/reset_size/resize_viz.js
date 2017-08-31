@@ -25,6 +25,7 @@ var position_play_button = require('../demo/position_play_button');
 var make_row_cat_super_labels = require('../labels/make_row_cat_super_labels');
 var ini_cat_reorder = require('../reorder/ini_cat_reorder');
 var position_svg_dendro_slider = require('../dendrogram/position_svg_dendro_slider');
+var position_tree_menu = require('../dendrogram/position_tree_menu');
 var ini_zoom_info = require('../zoom/ini_zoom_info');
 var grid_lines_viz = require('../matrix/grid_lines_viz');
 var underscore = require('underscore');
@@ -219,6 +220,7 @@ module.exports = function resize_viz(cgm) {
 
   setTimeout(position_svg_dendro_slider, 500, cgm, 'row');
   setTimeout(position_svg_dendro_slider, 500, cgm, 'col');
+  setTimeout(position_tree_menu, 500, cgm);
 
 
   if (d3.select(params.root+' .tree_menu').empty() === false){

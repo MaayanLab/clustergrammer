@@ -1,4 +1,4 @@
-module.exports = function position_svg_dendro_slider(cgm, inst_rc){
+module.exports = function position_svg_dendro_slider(cgm, inst_rc='row'){
 
   var viz = cgm.params.viz;
   var tmp_left;
@@ -31,24 +31,12 @@ module.exports = function position_svg_dendro_slider(cgm, inst_rc){
 
   }
 
-  // reposition tree icon
-  d3.select(cgm.params.root + ' .' + inst_rc + '_tree_group')
-    .attr('transform', function() {
-      var inst_translation;
-      tmp_top = tmp_top - 75;
-      inst_translation = 'translate(' + tmp_left + ',' + tmp_top + ')';
-
-      return inst_translation;
-    })
-    .style('opacity', 1);
-
   // reposiiton slider
   d3.select(cgm.params.root + ' .' + inst_rc + '_slider_group')
     .attr('transform', function() {
       var inst_translation;
       if (inst_rc === 'row'){
         tmp_left = tmp_left + 0.8 * viz.dendro_room.row;
-        tmp_top = tmp_top + 65;
         inst_translation = 'translate(' + tmp_left + ',' + tmp_top + ')';
       } else {
         inst_translation = 'translate(' + tmp_left + ',' + tmp_top +
@@ -57,6 +45,5 @@ module.exports = function position_svg_dendro_slider(cgm, inst_rc){
       return inst_translation;
     })
     .style('opacity', 1);
-
 
 };

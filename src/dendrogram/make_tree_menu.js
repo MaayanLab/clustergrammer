@@ -18,6 +18,7 @@ module.exports = function make_tree_menu(cgm){
       shift.y = params.viz.clust.margin.top + 15;
       return 'translate(' + shift.x + ', ' + shift.y + ')';
     })
+    .attr('cursor', 'default')
     .classed('tree_menu', true);
 
   tree_menu

@@ -39,6 +39,7 @@ module.exports = function make_tree_menu_button_section(button_type, button_info
     .classed('inst_section', true);
 
   var button_class = cgm.params.root.replace('#','')+ '_' + button_type + '_buttons';
+
   var section_groups = inst_section
     .selectAll('g')
     .data(button_names)
@@ -50,6 +51,7 @@ module.exports = function make_tree_menu_button_section(button_type, button_info
       var transform_string = 'translate(0,'+ vert + ')';
       return transform_string;
     })
+    .attr('cursor', 'default')
     .on('click', function(d){
       // deselect all buttons
       d3.selectAll( '.' + button_class + ' circle')
@@ -57,7 +59,6 @@ module.exports = function make_tree_menu_button_section(button_type, button_info
 
       // pass this along so that it can be updated in the callback
       click_function(this, d, button_info);
-
     });
 
  function click_function(button_selection, d, button_info){
