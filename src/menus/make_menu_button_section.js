@@ -1,4 +1,4 @@
-module.exports = function make_tree_menu_button_section(menu_type, button_type, button_info,  button_names){
+module.exports = function make_menu_button_section(menu_type, button_type, button_info,  button_names){
 
   var cgm = button_info.cgm;
   var menu_width = button_info.menu_width;
