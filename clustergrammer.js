@@ -23450,7 +23450,7 @@ var Clustergrammer =
 	    return output_string;
 	  }).style('opacity', 0.35);
 
-	  filter_icon_group.selectAll().data([[filter_width / 2, 0, filter_width / 2]]).enter().append('circle').classed('filter_circle', true).attr('r', function (d) {
+	  filter_icon_group.selectAll().data([[filter_width / 2, 0, filter_width / 2]]).enter().append('circle').classed('filter_icon_circle', true).attr('r', function (d) {
 	    return d[2];
 	  }).attr('transform', function (d) {
 	    return 'translate(' + d[0] + ', ' + d[1] + '), scale(1, 0.4)';

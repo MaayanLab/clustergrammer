@@ -110,7 +110,7 @@ module.exports = function build_filter_icon(cgm){
       ])
     .enter()
     .append('circle')
-    .classed('filter_circle', true)
+    .classed('filter_icon_circle', true)
     .attr('r', function(d){
       return d[2];
     })
