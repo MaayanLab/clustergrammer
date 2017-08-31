@@ -39,7 +39,6 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
     var num_nodes_index = 4;
     var num_nodes_ds_index = 5;
     var offset_ds_count = 150;
-    var binom_pval_index = 6;
 
     var is_downsampled = false;
     if (cat_breakdown[0].bar_data[0][num_nodes_ds_index] != null){
@@ -306,42 +305,9 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
         .attr('font-weight', 400)
         .attr('text-anchor', 'end');
 
-      // Binomial Test Pvals
-      cat_bar_groups
-        .append('text')
-        .classed('count_labels', true)
-        .text(function(d){
-          // calculate the percentage relative to the current cluster
-          var inst_count = d[binom_pval_index];
 
-          if (inst_count<0.001){
-            inst_count = parseFloat(inst_count.toPrecision(3));
-            inst_count = inst_count.toExponential();
-          } else {
-            inst_count = parseFloat(inst_count.toPrecision(2));
-          }
+      cat_breakdown_bar_values(params, cat_bar_groups, num_nodes_index, is_downsampled, count_offset);
 
-          // inst_count = inst_count.toLocaleString();
-          return inst_count;
-        })
-        .attr('transform', function(){
-          var inst_x = bar_width + count_offset + shift_count_num + 112;
-          var inst_y = 0.75 * bar_height;
-          return 'translate('+ inst_x +', ' + inst_y + ')' ;
-        })
-        .attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif')
-        .attr('font-weight', 400)
-        .attr('text-anchor', 'end');
-
-      console.log('here')
-      console.log(is_downsampled)
-      if (is_downsampled){
-
-        console.log('downsampled')
-        //
-        cat_breakdown_bar_values(params, cat_bar_groups, num_nodes_index);
-
-      }
 
     });
 
