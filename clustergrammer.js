@@ -20627,7 +20627,6 @@ var Clustergrammer =
 /* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// var build_color_groups = require('./build_color_groups');
 	var make_dendro_triangles = __webpack_require__(105);
 
 	/* Changes the groupings (x- and y-axis color bars).

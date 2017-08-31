@@ -1,4 +1,3 @@
-// var build_color_groups = require('./build_color_groups');
 var make_dendro_triangles = require('./make_dendro_triangles');
 
 /* Changes the groupings (x- and y-axis color bars).
