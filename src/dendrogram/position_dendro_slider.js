@@ -12,14 +12,14 @@ module.exports = function position_dendro_slider(cgm, inst_rc='row'){
     var max_room = viz.svg_dim.width - 3 * viz.uni_margin;
 
     // position close to row dendrogram trapezoids
-    tmp_left = viz.clust.margin.left + viz.clust.dim.width + 5.25  * viz.dendro_room.row;
+    tmp_left = viz.clust.margin.left + viz.clust.dim.width + 5.25  * viz.dendro_room.row + 2;
 
     if (tmp_left > max_room){
       tmp_left = max_room;
     }
 
     // tmp_top =  viz.clust.margin.top + 3 * viz.uni_margin - 50;
-    tmp_top =  viz.clust.margin.top + 3 * viz.uni_margin + 80;
+    tmp_top =  viz.clust.margin.top + 3 * viz.uni_margin + 135;
 
   } else {
 

@@ -79,7 +79,7 @@ module.exports = function build_filter_icon(cgm){
   position_filter_icon(cgm);
 
   var offset_triangle = 0;
-  var tree_width = 30;
+  var filter_width = 30;
 
   // main branch
   filter_icon_group
@@ -92,10 +92,10 @@ module.exports = function build_filter_icon(cgm){
       var start_x = 0;
       var start_y = 0;
 
-      var mid_x = tree_width/2;//left_x + slider_length/10;
+      var mid_x = filter_width/2;//left_x + slider_length/10;
       var mid_y = slider_length;
 
-      var final_x = tree_width;//left_x + slider_length/5;
+      var final_x = filter_width;//left_x + slider_length/5;
       var final_y = 0;
 
       var output_string = 'M' + start_x + ',' + start_y + ', L' +
@@ -106,57 +106,6 @@ module.exports = function build_filter_icon(cgm){
     })
     .style('opacity', 0.35);
 
-  // // left branch
-  // var branch_height = 30;
-  // filter_icon_group
-  //   .append('path')
-  //   .style('fill', 'black')
-  //   .attr('transform', 'translate('+offset_triangle+', 0)')
-  //   .attr('d', function() {
-
-  //     // up triangle
-  //     var start_x = 4.3;
-  //     var start_y = 23;
-
-  //     var mid_x = -5;//left_x + slider_length/10;
-  //     var mid_y = branch_height/2.5;
-
-  //     var final_x = 5.8;//left_x + slider_length/5;
-  //     var final_y = branch_height/1.8;
-
-  //     var output_string = 'M' + start_x + ',' + start_y + ', L' +
-  //     mid_x + ', ' + mid_y + ', L'
-  //     + final_x + ','+ final_y +' Z';
-
-  //     return output_string;
-  //   })
-  //   .style('opacity', 0.35);
-
-  // // right branch
-  // filter_icon_group
-  //   .append('path')
-  //   .style('fill', 'black')
-  //   .attr('transform', 'translate('+offset_triangle+', 0)')
-  //   .attr('d', function() {
-
-  //     // up triangle
-  //     var start_x = 15.7;
-  //     var start_y = 23;
-
-  //     var mid_x = 25;//left_x + slider_length/10;
-  //     var mid_y = branch_height/2.5;
-
-  //     var final_x = 14.2;//left_x + slider_length/5;
-  //     var final_y = branch_height/1.8;
-
-  //     var output_string = 'M' + start_x + ',' + start_y + ', L' +
-  //     mid_x + ', ' + mid_y + ', L'
-  //     + final_x + ','+ final_y +' Z';
-
-  //     return output_string;
-  //   })
-  //   .style('opacity', 0.35);
-
   var small_leaf_offset = 13;
   var small_leaf_radius = 9.5;
 
@@ -164,7 +113,7 @@ module.exports = function build_filter_icon(cgm){
     .selectAll()
     .data([
       // [-3,small_leaf_offset,small_leaf_radius],
-      [tree_width/2, 0, tree_width/2]
+      [filter_width/2, 0, filter_width/2]
       // [23,small_leaf_offset,small_leaf_radius]
       ])
     .enter()

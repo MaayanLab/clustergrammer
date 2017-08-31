@@ -1,22 +1,22 @@
-var make_tree_menu = require('./make_tree_menu');
 
-module.exports = function toggle_tree_menu(cgm, toggle){
+module.exports = function toggle_tree_menu(cgm, menu_type, toggle, make_menu_function=null){
 
   var params = cgm.params;
 
   if (toggle === 'open'){
 
-    // console.log('open')
-    make_tree_menu(cgm);
+    if (make_menu_function != null){
+      make_menu_function(cgm);
+    }
 
   } else if (toggle === 'close'){
 
-    d3.select(params.root+' .tree_menu')
+    d3.select(params.root + ' .' + menu_type)
       .transition(700)
       .attr('opacity', 0);
 
     setTimeout(function(){
-      d3.select(params.root+' .tree_menu')
+      d3.select(params.root + ' .' + menu_type)
         .remove();
     }, 700);
   }

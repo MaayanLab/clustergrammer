@@ -26,6 +26,7 @@ var make_row_cat_super_labels = require('../labels/make_row_cat_super_labels');
 var ini_cat_reorder = require('../reorder/ini_cat_reorder');
 var position_dendro_slider = require('../dendrogram/position_dendro_slider');
 var position_tree_icon = require('../dendrogram/position_tree_icon');
+var position_filter_icon = require('../dendrogram/position_filter_icon');
 var position_tree_menu = require('../dendrogram/position_tree_menu');
 var ini_zoom_info = require('../zoom/ini_zoom_info');
 var grid_lines_viz = require('../matrix/grid_lines_viz');
@@ -223,5 +224,6 @@ module.exports = function resize_viz(cgm) {
   setTimeout(position_dendro_slider, 500, cgm, 'col');
   setTimeout(position_tree_icon, 500, cgm);
   setTimeout(position_tree_menu, 500, cgm);
+  setTimeout(position_filter_icon, 500, cgm);
 
 };
