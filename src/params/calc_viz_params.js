@@ -62,6 +62,9 @@ module.exports = function calc_viz_params(params, predefined_cat_colors=true){
     viz.cat_filter = params.cat_filter;
     viz.cat_value_colors = params.cat_value_colors;
 
+    viz.cat_bar_width = 180;
+    viz.cat_bar_height = 20;
+
     viz.tree_menu_width = 400;
     viz.tree_menu_height = 237;
     viz.tree_menu_x_offset = 20;

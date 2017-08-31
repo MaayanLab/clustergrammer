@@ -12950,6 +12950,9 @@ var Clustergrammer =
 	    viz.cat_filter = params.cat_filter;
 	    viz.cat_value_colors = params.cat_value_colors;
 
+	    viz.cat_bar_width = 180;
+	    viz.cat_bar_height = 20;
+
 	    viz.tree_menu_width = 400;
 	    viz.tree_menu_height = 237;
 	    viz.tree_menu_x_offset = 20;
@@ -16389,6 +16392,8 @@ var Clustergrammer =
 
 	var calc_cat_cluster_breakdown = __webpack_require__(277);
 	var underscore = __webpack_require__(3);
+	var cat_breakdown_bar_groups = __webpack_require__(293);
+	var cat_breakdown_bar_values = __webpack_require__(294);
 
 	module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, dendro_info, selector, tooltip = false) {
 
@@ -16415,9 +16420,9 @@ var Clustergrammer =
 	    var paragraph_string = '<p>';
 	    var width = 370;
 	    var bar_offset = 23;
-	    var bar_height = 20;
+	    var bar_width = params.viz.cat_bar_width;
+	    var bar_height = params.viz.cat_bar_height;
 	    var max_string_length = 25;
-	    var bar_width = 180;
 	    var title_height = 27;
 	    var shift_tooltip_left = 177;
 
@@ -16545,6 +16550,8 @@ var Clustergrammer =
 
 	      var cat_bar_container = cat_graph_group.append('g').classed('cat_bar_container', true).attr('transform', 'translate(0, 10)');
 
+	      cat_breakdown_bar_groups();
+
 	      // make bar groups (hold bar and text)
 	      var cat_bar_groups = cat_bar_container.selectAll('g').data(cat_data.bar_data).enter().append('g').attr('transform', function (d, i) {
 	        var inst_y = i * bar_offset;
@@ -16629,15 +16636,13 @@ var Clustergrammer =
 	        return 'translate(' + inst_x + ', ' + inst_y + ')';
 	      }).attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('font-weight', 400).attr('text-anchor', 'end');
 
+	      console.log('here');
+	      console.log(is_downsampled);
 	      if (is_downsampled) {
-	        cat_bar_groups.append('text').classed('count_labels', true).text(function (d) {
-	          return String(d[num_nodes_index].toLocaleString());
-	        }).attr('transform', function () {
-	          // downsampled cluster numbers are smaller and need less flexible offsetting
-	          var inst_x = bar_width + shift_count_num + offset_ds_count + 20;
-	          var inst_y = 0.75 * bar_height;
-	          return 'translate(' + inst_x + ', ' + inst_y + ')';
-	        }).attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('font-weight', 400).attr('text-anchor', 'end');
+
+	        console.log('downsampled');
+	        //
+	        cat_breakdown_bar_values(params, cat_bar_groups, num_nodes_index);
 	      }
 	    });
 
@@ -23449,7 +23454,7 @@ var Clustergrammer =
 	var make_menu_update_button = __webpack_require__(292);
 	var position_filter_menu = __webpack_require__(290);
 	var toggle_menu = __webpack_require__(180);
-	var recluster = __webpack_require__(184);
+	// var recluster = require('../recluster/recluster');
 
 	module.exports = function make_filter_menu(cgm) {
 
@@ -23511,15 +23516,12 @@ var Clustergrammer =
 	  function update_callback() {
 	    toggle_menu(cgm, 'filter_menu', 'close');
 
-	    console.log('updating filtering state');
-
 	    // // transfer parameters to cgm object when update is pressed
 	    // cgm.params.matrix.distance_metric = button_info.distance_metric;
 	    // cgm.params.matrix.linkage_type = button_info.linkage_type;
 	    // recluster(cgm, button_info.distance_metric, button_info.linkage_type);
 	  }
 
-	  console.log(menu_width);
 	  button_info.update_x = menu_width - cgm.params.viz.update_button_width - button_info.default_x_offset;
 	  button_info.update_y = 205;
 
@@ -30057,6 +30059,35 @@ var Clustergrammer =
 	  update_button.append('rect').attr('width', update_button_width + 'px').attr('height', '35px').attr('fill', 'blue').attr('transform', 'translate(0, -23)').attr('stroke', '#A3A3A3').attr('stroke-width', '1px').attr('opacity', default_opacity);
 
 	  update_button.append('text').attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('font-size', '18px').attr('font-weight', 500).attr('cursor', 'default').text('Update').attr('transform', 'translate(18, 0)');
+		};
+
+/***/ }),
+/* 293 */
+/***/ (function(module, exports) {
+
+	module.exports = function cat_breakdown_bar_groups() {};
+
+/***/ }),
+/* 294 */
+/***/ (function(module, exports) {
+
+	module.exports = function cat_breakdown_bar_values(params, cat_bar_groups, num_nodes_index) {
+
+	  console.log('adding downsample values');
+
+	  var bar_width = params.viz.cat_bar_width;
+	  var bar_height = params.viz.cat_bar_height;
+	  var shift_count_num = 35;
+	  var offset_ds_count = 150;
+
+	  cat_bar_groups.append('text').classed('count_labels', true).text(function (d) {
+	    return String(d[num_nodes_index].toLocaleString());
+	  }).attr('transform', function () {
+	    // downsampled cluster numbers are smaller and need less flexible offsetting
+	    var inst_x = bar_width + shift_count_num + offset_ds_count + 20;
+	    var inst_y = 0.75 * bar_height;
+	    return 'translate(' + inst_x + ', ' + inst_y + ')';
+	  }).attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('font-weight', 400).attr('text-anchor', 'end');
 		};
 
 /***/ })

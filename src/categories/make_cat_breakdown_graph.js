@@ -1,5 +1,7 @@
 var calc_cat_cluster_breakdown = require('./calc_cat_cluster_breakdown');
 var underscore = require('underscore');
+var cat_breakdown_bar_groups = require('./cat_breakdown_bar_groups');
+var cat_breakdown_bar_values = require('./cat_breakdown_bar_values');
 
 module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, dendro_info, selector, tooltip=false){
 
@@ -26,9 +28,9 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
     var paragraph_string = '<p>';
     var width = 370;
     var bar_offset = 23;
-    var bar_height = 20;
+    var bar_width = params.viz.cat_bar_width;
+    var bar_height = params.viz.cat_bar_height;
     var max_string_length = 25;
-    var bar_width = 180;
     var title_height = 27;
     var shift_tooltip_left = 177;
 
@@ -203,6 +205,8 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
         .classed('cat_bar_container', true)
         .attr('transform', 'translate(0, 10)');
 
+      cat_breakdown_bar_groups();
+
       // make bar groups (hold bar and text)
       var cat_bar_groups = cat_bar_container
         .selectAll('g')
@@ -329,22 +333,14 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
         .attr('font-weight', 400)
         .attr('text-anchor', 'end');
 
+      console.log('here')
+      console.log(is_downsampled)
       if (is_downsampled){
-        cat_bar_groups
-          .append('text')
-          .classed('count_labels', true)
-          .text(function(d){
-            return String(d[num_nodes_index].toLocaleString());
-          })
-          .attr('transform', function(){
-            // downsampled cluster numbers are smaller and need less flexible offsetting
-            var inst_x = bar_width + shift_count_num + offset_ds_count  + 20;
-            var inst_y = 0.75 * bar_height;
-            return 'translate('+ inst_x +', ' + inst_y + ')' ;
-          })
-          .attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif')
-          .attr('font-weight', 400)
-          .attr('text-anchor', 'end');
+
+        console.log('downsampled')
+        //
+        cat_breakdown_bar_values(params, cat_bar_groups, num_nodes_index);
+
       }
 
     });

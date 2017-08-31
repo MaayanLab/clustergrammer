@@ -2,7 +2,7 @@ var make_menu_button_section = require('./make_menu_button_section');
 var make_menu_update_button = require('./make_menu_update_button');
 var position_filter_menu = require('./position_filter_menu');
 var toggle_menu = require('./toggle_menu');
-var recluster = require('../recluster/recluster');
+// var recluster = require('../recluster/recluster');
 
 module.exports = function make_filter_menu(cgm){
 
@@ -87,7 +87,6 @@ module.exports = function make_filter_menu(cgm){
   function update_callback(){
     toggle_menu(cgm, 'filter_menu', 'close');
 
-    console.log('updating filtering state')
 
     // // transfer parameters to cgm object when update is pressed
     // cgm.params.matrix.distance_metric = button_info.distance_metric;
@@ -96,7 +95,6 @@ module.exports = function make_filter_menu(cgm){
 
   }
 
-  console.log(menu_width)
   button_info.update_x = menu_width - cgm.params.viz.update_button_width -  button_info.default_x_offset;
   button_info.update_y = 205;
 
