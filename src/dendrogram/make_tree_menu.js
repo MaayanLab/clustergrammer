@@ -1,5 +1,6 @@
 var button_section = require('./make_tree_menu_button_section');
 var make_tree_menu_update_button = require('./make_tree_menu_update_button');
+var position_tree_menu = require('./position_tree_menu');
 
 module.exports = function make_tree_menu(cgm){
 
@@ -12,14 +13,10 @@ module.exports = function make_tree_menu(cgm){
   /////////////////////////////////////////////////////
   var tree_menu = d3.select(params.root+' .viz_svg')
     .append('g')
-    .attr('transform', function(){
-      var shift = {};
-      shift.x = params.viz.clust.dim.width + params.viz.clust.margin.left - menu_width + 30;
-      shift.y = params.viz.clust.margin.top + 15;
-      return 'translate(' + shift.x + ', ' + shift.y + ')';
-    })
     .attr('cursor', 'default')
     .classed('tree_menu', true);
+
+  position_tree_menu(cgm);
 
   tree_menu
     .attr('opacity', 0.0)

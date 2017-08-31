@@ -20683,7 +20683,8 @@ var Clustergrammer =
 	var make_row_cat_super_labels = __webpack_require__(148);
 	var ini_cat_reorder = __webpack_require__(140);
 	var position_svg_dendro_slider = __webpack_require__(176);
-	var position_tree_menu = __webpack_require__(190);
+	var position_tree_icon = __webpack_require__(190);
+	var position_tree_menu = __webpack_require__(286);
 	var ini_zoom_info = __webpack_require__(86);
 	var grid_lines_viz = __webpack_require__(177);
 	var underscore = __webpack_require__(3);
@@ -20840,21 +20841,8 @@ var Clustergrammer =
 
 	  setTimeout(position_svg_dendro_slider, 500, cgm, 'row');
 	  setTimeout(position_svg_dendro_slider, 500, cgm, 'col');
+	  setTimeout(position_tree_icon, 500, cgm);
 	  setTimeout(position_tree_menu, 500, cgm);
-
-	  if (d3.select(params.root + ' .tree_menu').empty() === false) {
-
-	    var menu_width = cgm.params.viz.tree_menu_width;
-	    var menu_height = cgm.params.viz.tree_menu_height;
-	    var x_offset = cgm.params.viz.tree_menu_x_offset;
-
-	    d3.select(params.root + ' .tree_menu').attr('transform', function () {
-	      var shift = {};
-	      shift.x = params.viz.clust.dim.width + params.viz.clust.margin.left - menu_width + 30;
-	      shift.y = params.viz.clust.margin.top + 15;
-	      return 'translate(' + shift.x + ', ' + shift.y + ')';
-	    });
-	  }
 		};
 
 /***/ }),
@@ -22803,7 +22791,7 @@ var Clustergrammer =
 /* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var position_tree_menu = __webpack_require__(190);
+	var position_tree_icon = __webpack_require__(190);
 	var d3_tip_custom = __webpack_require__(98);
 	var toggle_tree_menu = __webpack_require__(191);
 
@@ -22858,7 +22846,7 @@ var Clustergrammer =
 
 	  d3.select(params.root + ' .dendro_tree_container').attr('transform', 'scale(0.9)');
 
-	  position_tree_menu(cgm);
+	  position_tree_icon(cgm);
 
 	  var offset_triangle = 0;
 	  var tree_width = 20;
@@ -22936,7 +22924,7 @@ var Clustergrammer =
 /* 190 */
 /***/ (function(module, exports) {
 
-	module.exports = function position_tree_menu(cgm) {
+	module.exports = function position_tree_icon(cgm) {
 
 	  var viz = cgm.params.viz;
 	  var tmp_left;
@@ -22994,6 +22982,7 @@ var Clustergrammer =
 
 	var button_section = __webpack_require__(193);
 	var make_tree_menu_update_button = __webpack_require__(194);
+	var position_tree_menu = __webpack_require__(286);
 
 	module.exports = function make_tree_menu(cgm) {
 
@@ -23004,12 +22993,9 @@ var Clustergrammer =
 
 	  // make tree menu (state is in cgm, remade each time)
 	  /////////////////////////////////////////////////////
-	  var tree_menu = d3.select(params.root + ' .viz_svg').append('g').attr('transform', function () {
-	    var shift = {};
-	    shift.x = params.viz.clust.dim.width + params.viz.clust.margin.left - menu_width + 30;
-	    shift.y = params.viz.clust.margin.top + 15;
-	    return 'translate(' + shift.x + ', ' + shift.y + ')';
-	  }).attr('cursor', 'default').classed('tree_menu', true);
+	  var tree_menu = d3.select(params.root + ' .viz_svg').append('g').attr('cursor', 'default').classed('tree_menu', true);
+
+	  position_tree_menu(cgm);
 
 	  tree_menu.attr('opacity', 0.0).transition().attr('opacity', 1.0);
 
@@ -29814,6 +29800,29 @@ var Clustergrammer =
 	    return inst_string;
 	  }).style('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').style('font-weight', 300).style('font-size', font_size).attr('transform', 'translate(' + high_left_margin + ',' + top_margin + ')').attr('text-anchor', 'end');
 		};
+
+/***/ }),
+/* 286 */
+/***/ (function(module, exports) {
+
+	module.exports = function position_tree_menu(cgm) {
+
+	  var params = cgm.params;
+
+	  if (d3.select(params.root + ' .tree_menu').empty() === false) {
+
+	    var menu_width = cgm.params.viz.tree_menu_width;
+	    var menu_height = cgm.params.viz.tree_menu_height;
+	    var x_offset = cgm.params.viz.tree_menu_x_offset;
+
+	    d3.select(params.root + ' .tree_menu').attr('transform', function () {
+	      var shift = {};
+	      shift.x = params.viz.clust.dim.width + params.viz.clust.margin.left - menu_width + 30;
+	      shift.y = params.viz.clust.margin.top + 15;
+	      return 'translate(' + shift.x + ', ' + shift.y + ')';
+	    });
+	  }
+	};
 
 /***/ })
 /******/ ]);

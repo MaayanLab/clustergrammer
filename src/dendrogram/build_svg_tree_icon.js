@@ -1,4 +1,4 @@
-var position_tree_menu = require('./position_tree_menu');
+var position_tree_icon = require('./position_tree_icon');
 var d3_tip_custom = require('../tooltip/d3_tip_custom');
 var toggle_tree_menu = require('./toggle_tree_menu');
 
@@ -74,7 +74,7 @@ module.exports = function build_svg_tree_icon(cgm){
   d3.select(params.root + ' .dendro_tree_container')
     .attr('transform', 'scale(0.9)');
 
-  position_tree_menu(cgm);
+  position_tree_icon(cgm);
 
   var offset_triangle = 0;
   var tree_width = 20;

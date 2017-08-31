@@ -1,29 +1,20 @@
 module.exports = function position_tree_menu(cgm){
 
-  var viz = cgm.params.viz;
-  var tmp_left;
-  var tmp_top;
+  var params = cgm.params;
 
-  // keep slider near clustergram
-  var max_room = viz.svg_dim.width - 3 * viz.uni_margin;
+  if (d3.select(params.root+' .tree_menu').empty() === false){
 
-  // position close to row dendrogram trapezoids
-  tmp_left = viz.clust.margin.left + viz.clust.dim.width + 5.25  * viz.dendro_room.row;
+    var menu_width = cgm.params.viz.tree_menu_width;
+    var menu_height = cgm.params.viz.tree_menu_height;
+    var x_offset = cgm.params.viz.tree_menu_x_offset;
 
-  if (tmp_left > max_room){
-    tmp_left = max_room;
+    d3.select(params.root+' .tree_menu')
+      .attr('transform', function(){
+        var shift = {};
+        shift.x = params.viz.clust.dim.width + params.viz.clust.margin.left - menu_width + 30;
+        shift.y = params.viz.clust.margin.top + 15;
+        return 'translate(' + shift.x + ', ' + shift.y + ')';
+      })
+
   }
-
-  // tmp_top =  viz.clust.margin.top + 3 * viz.uni_margin - 50;
-  tmp_top =  viz.clust.margin.top + 3 * viz.uni_margin + 90;
-
-  // reposition tree icon
-  d3.select(cgm.params.root + ' .' + 'tree_group')
-    .attr('transform', function() {
-      var inst_translation;
-      tmp_top = tmp_top - 75;
-      inst_translation = 'translate(' + tmp_left + ',' + tmp_top + ')';
-      return inst_translation;
-    })
-    .style('opacity', 1);
 };

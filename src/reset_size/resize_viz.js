@@ -25,6 +25,7 @@ var position_play_button = require('../demo/position_play_button');
 var make_row_cat_super_labels = require('../labels/make_row_cat_super_labels');
 var ini_cat_reorder = require('../reorder/ini_cat_reorder');
 var position_svg_dendro_slider = require('../dendrogram/position_svg_dendro_slider');
+var position_tree_icon = require('../dendrogram/position_tree_icon');
 var position_tree_menu = require('../dendrogram/position_tree_menu');
 var ini_zoom_info = require('../zoom/ini_zoom_info');
 var grid_lines_viz = require('../matrix/grid_lines_viz');
@@ -220,23 +221,7 @@ module.exports = function resize_viz(cgm) {
 
   setTimeout(position_svg_dendro_slider, 500, cgm, 'row');
   setTimeout(position_svg_dendro_slider, 500, cgm, 'col');
+  setTimeout(position_tree_icon, 500, cgm);
   setTimeout(position_tree_menu, 500, cgm);
-
-
-  if (d3.select(params.root+' .tree_menu').empty() === false){
-
-    var menu_width = cgm.params.viz.tree_menu_width;
-    var menu_height = cgm.params.viz.tree_menu_height;
-    var x_offset = cgm.params.viz.tree_menu_x_offset;
-
-    d3.select(params.root+' .tree_menu')
-      .attr('transform', function(){
-        var shift = {};
-        shift.x = params.viz.clust.dim.width + params.viz.clust.margin.left - menu_width + 30;
-        shift.y = params.viz.clust.margin.top + 15;
-        return 'translate(' + shift.x + ', ' + shift.y + ')';
-      })
-
-  }
 
 };
