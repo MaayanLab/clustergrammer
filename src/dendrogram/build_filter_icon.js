@@ -1,6 +1,7 @@
 var position_filter_icon = require('./position_filter_icon');
 var d3_tip_custom = require('../tooltip/d3_tip_custom');
 var toggle_menu = require('./toggle_menu');
+var make_filter_menu = require('./make_filter_menu');
 
 module.exports = function build_filter_icon(cgm){
 
@@ -59,7 +60,8 @@ module.exports = function build_filter_icon(cgm){
 
       if (d3.select(params.root+' .filter_menu').empty()){
 
-        toggle_menu(cgm, 'filter_menu', 'open');
+        // have to pass make menu function as callback
+        toggle_menu(cgm, 'filter_menu', 'open', make_filter_menu);
 
         filter_icon_tip.hide();
 
@@ -69,9 +71,6 @@ module.exports = function build_filter_icon(cgm){
 
       }
     });
-
-  // // tmp
-  // toggle_filter_menu(cgm, 'open');
 
   // d3.select(params.root + ' .filter_container')
   //   .attr('transform', 'scale(1.0)');

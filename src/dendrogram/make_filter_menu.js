@@ -14,7 +14,8 @@ module.exports = function make_filter_menu(cgm){
   var tree_menu = d3.select(params.root+' .viz_svg')
     .append('g')
     .attr('cursor', 'default')
-    .classed('tree_menu', true);
+    .classed('filter_menu', true)
+    .classed('svg_menus', true);
 
   position_tree_menu(cgm);
 
