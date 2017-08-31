@@ -25,7 +25,7 @@ module.exports = function build_tree_icon(cgm){
 
   var tree_icon_outer_group = d3.select(params.root +' .viz_svg')
       .append('g')
-      .classed( 'tree_group', true)
+      .classed( 'tree_icon', true)
       .on('mouseover', function(){
 
         // only if no menu is showing
@@ -67,9 +67,7 @@ module.exports = function build_tree_icon(cgm){
       }
     });
 
-  // tmp
-  console.log('initialize with tree menu open');
-  toggle_tree_menu(cgm, 'open');
+  // toggle_tree_menu(cgm, 'open');
 
   d3.select(params.root + ' .dendro_tree_container')
     .attr('transform', 'scale(0.9)');

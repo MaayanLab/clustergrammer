@@ -1,5 +1,5 @@
 var change_groups = require('./change_groups');
-var position_svg_dendro_slider = require('./position_svg_dendro_slider');
+var position_dendro_slider = require('./position_dendro_slider');
 
 module.exports = function build_single_dendro_slider(cgm, inst_rc){
 
@@ -15,7 +15,7 @@ module.exports = function build_single_dendro_slider(cgm, inst_rc){
       .append('g')
       .classed( inst_rc + '_slider_group', true);
 
-  position_svg_dendro_slider(cgm, inst_rc);
+  position_dendro_slider(cgm, inst_rc);
 
   var rect_height = slider_length + 20;
   var rect_width = 30;

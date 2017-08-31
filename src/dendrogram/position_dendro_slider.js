@@ -1,4 +1,4 @@
-module.exports = function position_svg_dendro_slider(cgm, inst_rc='row'){
+module.exports = function position_dendro_slider(cgm, inst_rc='row'){
 
   var viz = cgm.params.viz;
   var tmp_left;
@@ -19,7 +19,7 @@ module.exports = function position_svg_dendro_slider(cgm, inst_rc='row'){
     }
 
     // tmp_top =  viz.clust.margin.top + 3 * viz.uni_margin - 50;
-    tmp_top =  viz.clust.margin.top + 3 * viz.uni_margin + 90;
+    tmp_top =  viz.clust.margin.top + 3 * viz.uni_margin + 80;
 
   } else {
 

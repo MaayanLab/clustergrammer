@@ -90,7 +90,7 @@ module.exports = function make_viz(cgm) {
 
   // // disable
   // //////////////////
-  // build_filter_icon(cgm);
+  build_filter_icon(cgm);
 
   function border_colors() {
     var inst_color = params.viz.super_border_color;

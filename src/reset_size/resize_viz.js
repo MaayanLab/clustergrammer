@@ -24,7 +24,7 @@ var calc_viz_dimensions = require('../params/calc_viz_dimensions');
 var position_play_button = require('../demo/position_play_button');
 var make_row_cat_super_labels = require('../labels/make_row_cat_super_labels');
 var ini_cat_reorder = require('../reorder/ini_cat_reorder');
-var position_svg_dendro_slider = require('../dendrogram/position_svg_dendro_slider');
+var position_dendro_slider = require('../dendrogram/position_dendro_slider');
 var position_tree_icon = require('../dendrogram/position_tree_icon');
 var position_tree_menu = require('../dendrogram/position_tree_menu');
 var ini_zoom_info = require('../zoom/ini_zoom_info');
@@ -219,8 +219,8 @@ module.exports = function resize_viz(cgm) {
   d3.select(cgm.params.root+ ' .col_slider_group')
     .style('opacity', 0);
 
-  setTimeout(position_svg_dendro_slider, 500, cgm, 'row');
-  setTimeout(position_svg_dendro_slider, 500, cgm, 'col');
+  setTimeout(position_dendro_slider, 500, cgm, 'row');
+  setTimeout(position_dendro_slider, 500, cgm, 'col');
   setTimeout(position_tree_icon, 500, cgm);
   setTimeout(position_tree_menu, 500, cgm);
 

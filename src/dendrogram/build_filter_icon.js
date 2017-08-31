@@ -1,6 +1,6 @@
-var position_tree_icon = require('./position_tree_icon');
+var position_filter_icon = require('./position_filter_icon');
 var d3_tip_custom = require('../tooltip/d3_tip_custom');
-var toggle_tree_menu = require('./toggle_tree_menu');
+// var toggle_tree_menu = require('./toggle_tree_menu');
 
 module.exports = function build_filter_icon(cgm){
 
@@ -25,22 +25,23 @@ module.exports = function build_filter_icon(cgm){
 
   var tree_icon_outer_group = d3.select(params.root +' .viz_svg')
       .append('g')
-      .classed( 'tree_group', true)
+      .classed( 'filter_icon', true)
       .on('mouseover', function(){
 
-        // only if no menu is showing
-        if (d3.select(params.root+' .tree_menu').empty()){
+        // // only if no menu is showing
+        // if (d3.select(params.root+' .tree_menu').empty()){
 
-          d3.selectAll( params.viz.root_tips + '_tree_menu_tip')
-            .style('opacity', 1)
-            .style('display', 'block');
+        //   d3.selectAll( params.viz.root_tips + '_tree_menu_tip')
+        //     .style('opacity', 1)
+        //     .style('display', 'block');
 
-          tree_menu_tip.show();
+        //   tree_menu_tip.show();
 
-        }
+        // }
 
-        d3.selectAll(params.root + ' .tree_leaf_circle')
-          .style('opacity', high_opacity);
+        // d3.selectAll(params.root + ' .tree_leaf_circle')
+        //   .style('opacity', high_opacity);
+
       })
       .on('mouseout', function(){
         tree_menu_tip.hide();
@@ -49,22 +50,22 @@ module.exports = function build_filter_icon(cgm){
       })
       .call(tree_menu_tip);
 
-  var tree_icon_group =  tree_icon_outer_group
+  var filter_icon_group =  tree_icon_outer_group
     .append('g')
     .classed('dendro_tree_container', true)
     .on('click', function(){
 
-      if (d3.select(params.root+' .tree_menu').empty()){
+      // if (d3.select(params.root+' .tree_menu').empty()){
 
-        toggle_tree_menu(cgm, 'open');
+      //   toggle_tree_menu(cgm, 'open');
 
-        tree_menu_tip.hide();
+      //   tree_menu_tip.hide();
 
-      } else {
+      // } else {
 
-        toggle_tree_menu(cgm, 'close');
+      //   toggle_tree_menu(cgm, 'close');
 
-      }
+      // }
     });
 
   // // tmp
@@ -74,13 +75,13 @@ module.exports = function build_filter_icon(cgm){
   d3.select(params.root + ' .dendro_tree_container')
     .attr('transform', 'scale(0.9)');
 
-  position_tree_icon(cgm);
+  position_filter_icon(cgm);
 
   var offset_triangle = 0;
-  var tree_width = 20;
+  var tree_width = 30;
 
   // main branch
-  tree_icon_group
+  filter_icon_group
     .append('path')
     .style('fill', 'black')
     .attr('transform', 'translate('+offset_triangle+', 0)')
@@ -88,13 +89,13 @@ module.exports = function build_filter_icon(cgm){
 
       // up triangle
       var start_x = 0;
-      var start_y = slider_length;
+      var start_y = 0;
 
       var mid_x = tree_width/2;//left_x + slider_length/10;
-      var mid_y = 0;
+      var mid_y = slider_length;
 
       var final_x = tree_width;//left_x + slider_length/5;
-      var final_y = slider_length;
+      var final_y = 0;
 
       var output_string = 'M' + start_x + ',' + start_y + ', L' +
       mid_x + ', ' + mid_y + ', L'
@@ -104,80 +105,81 @@ module.exports = function build_filter_icon(cgm){
     })
     .style('opacity', 0.35);
 
-  // left branch
-  var branch_height = 30;
-  tree_icon_group
-    .append('path')
-    .style('fill', 'black')
-    .attr('transform', 'translate('+offset_triangle+', 0)')
-    .attr('d', function() {
+  // // left branch
+  // var branch_height = 30;
+  // filter_icon_group
+  //   .append('path')
+  //   .style('fill', 'black')
+  //   .attr('transform', 'translate('+offset_triangle+', 0)')
+  //   .attr('d', function() {
 
-      // up triangle
-      var start_x = 4.3;
-      var start_y = 23;
+  //     // up triangle
+  //     var start_x = 4.3;
+  //     var start_y = 23;
 
-      var mid_x = -5;//left_x + slider_length/10;
-      var mid_y = branch_height/2.5;
+  //     var mid_x = -5;//left_x + slider_length/10;
+  //     var mid_y = branch_height/2.5;
 
-      var final_x = 5.8;//left_x + slider_length/5;
-      var final_y = branch_height/1.8;
+  //     var final_x = 5.8;//left_x + slider_length/5;
+  //     var final_y = branch_height/1.8;
 
-      var output_string = 'M' + start_x + ',' + start_y + ', L' +
-      mid_x + ', ' + mid_y + ', L'
-      + final_x + ','+ final_y +' Z';
+  //     var output_string = 'M' + start_x + ',' + start_y + ', L' +
+  //     mid_x + ', ' + mid_y + ', L'
+  //     + final_x + ','+ final_y +' Z';
 
-      return output_string;
-    })
-    .style('opacity', 0.35);
+  //     return output_string;
+  //   })
+  //   .style('opacity', 0.35);
 
-  // right branch
-  tree_icon_group
-    .append('path')
-    .style('fill', 'black')
-    .attr('transform', 'translate('+offset_triangle+', 0)')
-    .attr('d', function() {
+  // // right branch
+  // filter_icon_group
+  //   .append('path')
+  //   .style('fill', 'black')
+  //   .attr('transform', 'translate('+offset_triangle+', 0)')
+  //   .attr('d', function() {
 
-      // up triangle
-      var start_x = 15.7;
-      var start_y = 23;
+  //     // up triangle
+  //     var start_x = 15.7;
+  //     var start_y = 23;
 
-      var mid_x = 25;//left_x + slider_length/10;
-      var mid_y = branch_height/2.5;
+  //     var mid_x = 25;//left_x + slider_length/10;
+  //     var mid_y = branch_height/2.5;
 
-      var final_x = 14.2;//left_x + slider_length/5;
-      var final_y = branch_height/1.8;
+  //     var final_x = 14.2;//left_x + slider_length/5;
+  //     var final_y = branch_height/1.8;
 
-      var output_string = 'M' + start_x + ',' + start_y + ', L' +
-      mid_x + ', ' + mid_y + ', L'
-      + final_x + ','+ final_y +' Z';
+  //     var output_string = 'M' + start_x + ',' + start_y + ', L' +
+  //     mid_x + ', ' + mid_y + ', L'
+  //     + final_x + ','+ final_y +' Z';
 
-      return output_string;
-    })
-    .style('opacity', 0.35);
+  //     return output_string;
+  //   })
+  //   .style('opacity', 0.35);
 
   var small_leaf_offset = 13;
   var small_leaf_radius = 9.5;
 
-  tree_icon_group
+  filter_icon_group
     .selectAll()
     .data([
-      [-3,small_leaf_offset,small_leaf_radius],
-      [tree_width/2,0, 17],
-      [23,small_leaf_offset,small_leaf_radius]])
+      // [-3,small_leaf_offset,small_leaf_radius],
+      [tree_width/2, 0, tree_width/2]
+      // [23,small_leaf_offset,small_leaf_radius]
+      ])
     .enter()
     .append('circle')
-    .classed('tree_leaf_circle', true)
+    .classed('filter_circle', true)
     .attr('r', function(d){
       return d[2];
     })
     .attr('transform', function(d){
-      return 'translate('+d[0]+', '+d[1]+')';
+      return 'translate('+d[0]+', '+d[1]+'), scale(1, 0.4)';
     })
     .attr('fill', 'blue')
     .attr('opacity', default_opacity)
     .attr('');
 
-  tree_icon_group
+  filter_icon_group
     .append('rect')
     .attr('width', 50)
     .attr('height', 62)
