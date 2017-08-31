@@ -1,6 +1,6 @@
-var button_section = require('./make_tree_menu_button_section');
-var make_tree_menu_update_button = require('./make_tree_menu_update_button');
-var position_tree_menu = require('./position_tree_menu');
+var make_tree_menu_button_section = require('./make_tree_menu_button_section');
+// var make_tree_menu_update_button = require('./make_tree_menu_update_button');
+var position_filter_menu = require('./position_filter_menu');
 
 module.exports = function make_filter_menu(cgm){
 
@@ -17,7 +17,7 @@ module.exports = function make_filter_menu(cgm){
     .classed('filter_menu', true)
     .classed('svg_menus', true);
 
-  position_tree_menu(cgm);
+  position_filter_menu(cgm);
 
   tree_menu
     .attr('opacity', 0.0)
@@ -39,7 +39,7 @@ module.exports = function make_filter_menu(cgm){
     .attr('stroke-width', '3px')
     .attr('opacity', menu_opacity);
 
-  // Clustering Parameters
+  // Filtering Options
   tree_menu
     .append('text')
     .classed('tree_menu_title', true)
@@ -48,11 +48,11 @@ module.exports = function make_filter_menu(cgm){
     .attr('font-size','18px')
     .attr('font-weight', 800)
     .attr('cursor', 'default')
-    .text('Clustering Parameters');
+    .text('Filtering Options');
 
   var button_info = {};
   button_info.cgm = cgm;
-  button_info.tree_menu = tree_menu;
+  button_info.selection = tree_menu;
   button_info.menu_width = menu_width;
   button_info.distance_metric = cgm.params.matrix.distance_metric;
   button_info.linkage_type = cgm.params.matrix.linkage_type;
@@ -64,7 +64,7 @@ module.exports = function make_filter_menu(cgm){
   button_info.name = 'Distance Metric';
   button_info.y_offset = 65;
   button_info.x_offset = 0;
-  button_section('distance_metric', button_info, distance_names);
+  make_tree_menu_button_section('filter_menu', 'distance_metric', button_info, distance_names);
 
   // linkage
   /////////////////
@@ -72,7 +72,7 @@ module.exports = function make_filter_menu(cgm){
   button_info.name = 'Linkage Type';
   button_info.y_offset = 65;
   button_info.x_offset = menu_width/2;
-  button_section('linkage_type', button_info, linkage_names);
+  make_tree_menu_button_section('filter_menu', 'linkage_type', button_info, linkage_names);
 
   // // Z-score
   // /////////////////
@@ -82,6 +82,6 @@ module.exports = function make_filter_menu(cgm){
   // button_info.x_offset = 0;
   // button_section(button_info, linkage_names, distance_click)
 
-  make_tree_menu_update_button(cgm, button_info);
+  // make_tree_menu_update_button(cgm, button_info);
 
 };

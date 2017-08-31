@@ -11,7 +11,7 @@ module.exports = function make_tree_menu_update_button(cgm, button_info){
   var default_opacity = 0.35;
   var high_opacity = 0.5;
 
-  var update_button = button_info.tree_menu
+  var update_button = button_info.selection
     .append('g')
     .classed('update_button', true)
     .attr('transform', 'translate('+ update_buton_x +', ' + update_buton_y + ')')

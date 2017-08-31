@@ -1,4 +1,4 @@
-var button_section = require('./make_tree_menu_button_section');
+var make_tree_menu_button_section = require('./make_tree_menu_button_section');
 var make_tree_menu_update_button = require('./make_tree_menu_update_button');
 var position_tree_menu = require('./position_tree_menu');
 
@@ -52,7 +52,7 @@ module.exports = function make_tree_menu(cgm){
 
   var button_info = {};
   button_info.cgm = cgm;
-  button_info.tree_menu = tree_menu;
+  button_info.selection = tree_menu;
   button_info.menu_width = menu_width;
   button_info.distance_metric = cgm.params.matrix.distance_metric;
   button_info.linkage_type = cgm.params.matrix.linkage_type;
@@ -64,7 +64,7 @@ module.exports = function make_tree_menu(cgm){
   button_info.name = 'Distance Metric';
   button_info.y_offset = 65;
   button_info.x_offset = 0;
-  button_section('distance_metric', button_info, distance_names);
+  make_tree_menu_button_section('tree_menu', 'distance_metric', button_info, distance_names);
 
   // linkage
   /////////////////
@@ -72,7 +72,7 @@ module.exports = function make_tree_menu(cgm){
   button_info.name = 'Linkage Type';
   button_info.y_offset = 65;
   button_info.x_offset = menu_width/2;
-  button_section('linkage_type', button_info, linkage_names);
+  make_tree_menu_button_section('tree_menu', 'linkage_type', button_info, linkage_names);
 
   // // Z-score
   // /////////////////

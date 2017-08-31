@@ -66,6 +66,10 @@ module.exports = function calc_viz_params(params, predefined_cat_colors=true){
     viz.tree_menu_height = 237;
     viz.tree_menu_x_offset = 20;
 
+    viz.filter_menu_width = 400;
+    viz.filter_menu_height = 237;
+    viz.filter_menu_x_offset = 20;
+
     viz.viz_svg = viz.viz_wrapper + ' .viz_svg';
 
     viz.zoom_element = viz.viz_wrapper + ' .viz_svg';

@@ -12954,6 +12954,10 @@ var Clustergrammer =
 	    viz.tree_menu_height = 237;
 	    viz.tree_menu_x_offset = 20;
 
+	    viz.filter_menu_width = 400;
+	    viz.filter_menu_height = 237;
+	    viz.filter_menu_x_offset = 20;
+
 	    viz.viz_svg = viz.viz_wrapper + ' .viz_svg';
 
 	    viz.zoom_element = viz.viz_wrapper + ' .viz_svg';
@@ -20806,7 +20810,7 @@ var Clustergrammer =
 /* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var button_section = __webpack_require__(182);
+	var make_tree_menu_button_section = __webpack_require__(182);
 	var make_tree_menu_update_button = __webpack_require__(183);
 	var position_tree_menu = __webpack_require__(166);
 
@@ -20837,7 +20841,7 @@ var Clustergrammer =
 
 	  var button_info = {};
 	  button_info.cgm = cgm;
-	  button_info.tree_menu = tree_menu;
+	  button_info.selection = tree_menu;
 	  button_info.menu_width = menu_width;
 	  button_info.distance_metric = cgm.params.matrix.distance_metric;
 	  button_info.linkage_type = cgm.params.matrix.linkage_type;
@@ -20849,7 +20853,7 @@ var Clustergrammer =
 	  button_info.name = 'Distance Metric';
 	  button_info.y_offset = 65;
 	  button_info.x_offset = 0;
-	  button_section('distance_metric', button_info, distance_names);
+	  make_tree_menu_button_section('tree_menu', 'distance_metric', button_info, distance_names);
 
 	  // linkage
 	  /////////////////
@@ -20857,7 +20861,7 @@ var Clustergrammer =
 	  button_info.name = 'Linkage Type';
 	  button_info.y_offset = 65;
 	  button_info.x_offset = menu_width / 2;
-	  button_section('linkage_type', button_info, linkage_names);
+	  make_tree_menu_button_section('tree_menu', 'linkage_type', button_info, linkage_names);
 
 	  // // Z-score
 	  // /////////////////
@@ -20874,10 +20878,9 @@ var Clustergrammer =
 /* 182 */
 /***/ (function(module, exports) {
 
-	module.exports = function make_tree_menu_button_section(button_type, button_info, button_names) {
+	module.exports = function make_tree_menu_button_section(menu_type, button_type, button_info, button_names) {
 
 	  var cgm = button_info.cgm;
-	  var tree_menu = button_info.tree_menu;
 	  var menu_width = button_info.menu_width;
 	  var button_offset = 35;
 
@@ -20886,11 +20889,11 @@ var Clustergrammer =
 	  var menu_x_offset = menu_width / 20 + button_info.x_offset;
 	  var underline_width = menu_width / 2 - 40;
 
-	  var inst_menu = tree_menu.append('g').classed('inst_menu', true).attr('transform', 'translate(' + menu_x_offset + ', ' + button_info.y_offset + ')');
+	  var inst_menu = button_info.selection.append('g').classed('inst_menu', true).attr('transform', 'translate(' + menu_x_offset + ', ' + button_info.y_offset + ')');
 
 	  inst_menu.append('text').attr('transform', 'translate(0, 0)').attr('font-size', '18px').attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('cursor', 'default').text(button_info.name);
 
-	  inst_menu.append('rect').classed('tree_menu_line', true).attr('height', '2px').attr('width', underline_width + 'px').attr('stroke-width', '3px').attr('opacity', 0.3).attr('fill', 'black').attr('transform', 'translate(0,10)');
+	  inst_menu.append('rect').classed(menu_type + '_line', true).attr('height', '2px').attr('width', underline_width + 'px').attr('stroke-width', '3px').attr('opacity', 0.3).attr('fill', 'black').attr('transform', 'translate(0,10)');
 
 	  var inst_section = inst_menu.append('g').attr('transform', 'translate(0,' + button_offset + ')').classed('inst_section', true);
 
@@ -20951,7 +20954,7 @@ var Clustergrammer =
 	  var default_opacity = 0.35;
 	  var high_opacity = 0.5;
 
-	  var update_button = button_info.tree_menu.append('g').classed('update_button', true).attr('transform', 'translate(' + update_buton_x + ', ' + update_buton_y + ')').on('click', function () {
+	  var update_button = button_info.selection.append('g').classed('update_button', true).attr('transform', 'translate(' + update_buton_x + ', ' + update_buton_y + ')').on('click', function () {
 
 	    toggle_menu(cgm, 'tree_menu', 'close');
 
@@ -23524,9 +23527,9 @@ var Clustergrammer =
 /* 219 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var button_section = __webpack_require__(182);
-	var make_tree_menu_update_button = __webpack_require__(183);
-	var position_tree_menu = __webpack_require__(166);
+	var make_tree_menu_button_section = __webpack_require__(182);
+	// var make_tree_menu_update_button = require('./make_tree_menu_update_button');
+	var position_filter_menu = __webpack_require__(290);
 
 	module.exports = function make_filter_menu(cgm) {
 
@@ -23539,7 +23542,7 @@ var Clustergrammer =
 	  /////////////////////////////////////////////////////
 	  var tree_menu = d3.select(params.root + ' .viz_svg').append('g').attr('cursor', 'default').classed('filter_menu', true).classed('svg_menus', true);
 
-	  position_tree_menu(cgm);
+	  position_filter_menu(cgm);
 
 	  tree_menu.attr('opacity', 0.0).transition().attr('opacity', 1.0);
 
@@ -23550,12 +23553,12 @@ var Clustergrammer =
 	    return inst_width;
 	  }).attr('height', menu_height).attr('fill', 'white').attr('stroke', '#A3A3A3').attr('stroke-width', '3px').attr('opacity', menu_opacity);
 
-	  // Clustering Parameters
-	  tree_menu.append('text').classed('tree_menu_title', true).attr('transform', 'translate(' + x_offset + ',30)').attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('font-size', '18px').attr('font-weight', 800).attr('cursor', 'default').text('Clustering Parameters');
+	  // Filtering Options
+	  tree_menu.append('text').classed('tree_menu_title', true).attr('transform', 'translate(' + x_offset + ',30)').attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('font-size', '18px').attr('font-weight', 800).attr('cursor', 'default').text('Filtering Options');
 
 	  var button_info = {};
 	  button_info.cgm = cgm;
-	  button_info.tree_menu = tree_menu;
+	  button_info.selection = tree_menu;
 	  button_info.menu_width = menu_width;
 	  button_info.distance_metric = cgm.params.matrix.distance_metric;
 	  button_info.linkage_type = cgm.params.matrix.linkage_type;
@@ -23567,7 +23570,7 @@ var Clustergrammer =
 	  button_info.name = 'Distance Metric';
 	  button_info.y_offset = 65;
 	  button_info.x_offset = 0;
-	  button_section('distance_metric', button_info, distance_names);
+	  make_tree_menu_button_section('filter_menu', 'distance_metric', button_info, distance_names);
 
 	  // linkage
 	  /////////////////
@@ -23575,7 +23578,7 @@ var Clustergrammer =
 	  button_info.name = 'Linkage Type';
 	  button_info.y_offset = 65;
 	  button_info.x_offset = menu_width / 2;
-	  button_section('linkage_type', button_info, linkage_names);
+	  make_tree_menu_button_section('filter_menu', 'linkage_type', button_info, linkage_names);
 
 	  // // Z-score
 	  // /////////////////
@@ -23585,7 +23588,7 @@ var Clustergrammer =
 	  // button_info.x_offset = 0;
 	  // button_section(button_info, linkage_names, distance_click)
 
-	  make_tree_menu_update_button(cgm, button_info);
+	  // make_tree_menu_update_button(cgm, button_info);
 		};
 
 /***/ }),
@@ -30011,6 +30014,27 @@ var Clustergrammer =
 
 	exports.name = 'number';
 	exports.factory = factory;
+
+/***/ }),
+/* 290 */
+/***/ (function(module, exports) {
+
+	module.exports = function position_filter_menu(cgm) {
+
+	  var params = cgm.params;
+
+	  if (d3.select(params.root + ' .filter_menu').empty() === false) {
+
+	    var menu_width = cgm.params.viz.filter_menu_width;
+
+	    d3.select(params.root + ' .filter_menu').attr('transform', function () {
+	      var shift = {};
+	      shift.x = params.viz.clust.dim.width + params.viz.clust.margin.left - menu_width + 30;
+	      shift.y = params.viz.clust.margin.top + 80;
+	      return 'translate(' + shift.x + ', ' + shift.y + ')';
+	    });
+	  }
+	};
 
 /***/ })
 /******/ ]);

@@ -1,7 +1,6 @@
-module.exports = function make_tree_menu_button_section(button_type, button_info,  button_names){
+module.exports = function make_tree_menu_button_section(menu_type, button_type, button_info,  button_names){
 
   var cgm = button_info.cgm;
-  var tree_menu = button_info.tree_menu;
   var menu_width = button_info.menu_width;
   var button_offset = 35;
 
@@ -10,7 +9,7 @@ module.exports = function make_tree_menu_button_section(button_type, button_info
   var menu_x_offset = menu_width/20 + button_info.x_offset;
   var underline_width = menu_width/2 - 40;
 
-  var inst_menu = tree_menu
+  var inst_menu = button_info.selection
     .append('g')
     .classed('inst_menu', true)
     .attr('transform', 'translate(' + menu_x_offset + ', ' + button_info.y_offset + ')');
@@ -25,7 +24,7 @@ module.exports = function make_tree_menu_button_section(button_type, button_info
 
   inst_menu
     .append('rect')
-    .classed('tree_menu_line', true)
+    .classed( menu_type + '_line', true)
     .attr('height', '2px')
     .attr('width', underline_width+'px')
     .attr('stroke-width', '3px')
