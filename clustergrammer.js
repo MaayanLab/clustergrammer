@@ -16393,7 +16393,7 @@ var Clustergrammer =
 	var calc_cat_cluster_breakdown = __webpack_require__(277);
 	var underscore = __webpack_require__(3);
 	var cat_breakdown_bar_groups = __webpack_require__(293);
-	var cat_breakdown_bar_values = __webpack_require__(294);
+	var cat_breakdown_values = __webpack_require__(295);
 
 	module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, dendro_info, selector, tooltip = false) {
 
@@ -16589,33 +16589,7 @@ var Clustergrammer =
 	        return 'translate(5, ' + 0.75 * bar_height + ')';
 	      }).attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('font-weight', 400).attr('text-anchor', 'right');
 
-	      // Count/Pct Rows
-	      /////////////////////////////
-	      var shift_count_num = 35;
-
-	      cat_bar_groups.append('text').classed('count_labels', true).text(function (d) {
-	        var inst_count = d[bars_index];
-	        inst_count = inst_count.toLocaleString();
-	        return String(inst_count);
-	      }).attr('transform', function () {
-	        var inst_x = bar_width + count_offset + shift_count_num;
-	        var inst_y = 0.75 * bar_height;
-	        return 'translate(' + inst_x + ', ' + inst_y + ')';
-	      }).attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('font-weight', 400).attr('text-anchor', 'end');
-
-	      cat_bar_groups.append('text').classed('count_labels', true).text(function (d) {
-	        // calculate the percentage relative to the current cluster
-	        var inst_count = d[bars_index] / cluster_total * 100;
-	        inst_count = Math.round(inst_count * 10) / 10;
-	        inst_count = inst_count.toLocaleString();
-	        return String(inst_count);
-	      }).attr('transform', function () {
-	        var inst_x = bar_width + count_offset + shift_count_num + 47;
-	        var inst_y = 0.75 * bar_height;
-	        return 'translate(' + inst_x + ', ' + inst_y + ')';
-	      }).attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('font-weight', 400).attr('text-anchor', 'end');
-
-	      cat_breakdown_bar_values(params, cat_bar_groups, num_nodes_index, is_downsampled, count_offset);
+	      cat_breakdown_values(params, cat_bar_groups, num_nodes_index, is_downsampled, count_offset, bars_index, cluster_total);
 	    });
 
 	    // reposition tooltip
@@ -30040,16 +30014,44 @@ var Clustergrammer =
 	module.exports = function cat_breakdown_bar_groups() {};
 
 /***/ }),
-/* 294 */
+/* 294 */,
+/* 295 */
 /***/ (function(module, exports) {
 
-	module.exports = function cat_breakdown_bar_values(params, cat_bar_groups, num_nodes_index, is_downsampled, count_offset) {
+	module.exports = function cat_breakdown_values(params, cat_bar_groups, num_nodes_index, is_downsampled, count_offset, bars_index, cluster_total) {
 
 	  var bar_width = params.viz.cat_bar_width;
 	  var bar_height = params.viz.cat_bar_height;
-	  var shift_count_num = 35;
 	  var offset_ds_count = 150;
 	  var binom_pval_index = 6;
+
+	  // Counts
+	  /////////////////////////////
+	  var shift_count_num = 35;
+
+	  cat_bar_groups.append('text').classed('count_labels', true).text(function (d) {
+	    var inst_count = d[bars_index];
+	    inst_count = inst_count.toLocaleString();
+	    return String(inst_count);
+	  }).attr('transform', function () {
+	    var inst_x = bar_width + count_offset + shift_count_num;
+	    var inst_y = 0.75 * bar_height;
+	    return 'translate(' + inst_x + ', ' + inst_y + ')';
+	  }).attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('font-weight', 400).attr('text-anchor', 'end');
+
+	  // Percentage
+	  //////////////////////
+	  cat_bar_groups.append('text').classed('count_labels', true).text(function (d) {
+	    // calculate the percentage relative to the current cluster
+	    var inst_count = d[bars_index] / cluster_total * 100;
+	    inst_count = Math.round(inst_count * 10) / 10;
+	    inst_count = inst_count.toLocaleString();
+	    return String(inst_count);
+	  }).attr('transform', function () {
+	    var inst_x = bar_width + count_offset + shift_count_num + 47;
+	    var inst_y = 0.75 * bar_height;
+	    return 'translate(' + inst_x + ', ' + inst_y + ')';
+	  }).attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('font-weight', 400).attr('text-anchor', 'end');
 
 	  // Binomial Test Pvals
 	  cat_bar_groups.append('text').classed('count_labels', true).text(function (d) {
