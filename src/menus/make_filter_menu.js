@@ -1,6 +1,8 @@
 var make_menu_button_section = require('./make_menu_button_section');
-// var make_tree_menu_update_button = require('./make_tree_menu_update_button');
+var make_menu_update_button = require('./make_menu_update_button');
 var position_filter_menu = require('./position_filter_menu');
+var toggle_menu = require('./toggle_menu');
+var recluster = require('../recluster/recluster');
 
 module.exports = function make_filter_menu(cgm){
 
@@ -82,6 +84,18 @@ module.exports = function make_filter_menu(cgm){
   // button_info.x_offset = 0;
   // button_section(button_info, linkage_names, distance_click)
 
-  // make_tree_menu_update_button(cgm, button_info);
+  function update_callback(){
+    toggle_menu(cgm, 'filter_menu', 'close');
+
+    console.log('updating filtering state')
+
+    // // transfer parameters to cgm object when update is pressed
+    // cgm.params.matrix.distance_metric = button_info.distance_metric;
+    // cgm.params.matrix.linkage_type = button_info.linkage_type;
+    // recluster(cgm, button_info.distance_metric, button_info.linkage_type);
+
+  }
+
+  make_menu_update_button(cgm, button_info, update_callback);
 
 };

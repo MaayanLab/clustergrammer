@@ -79,7 +79,7 @@ module.exports = function recluster(cgm, distance_metric, linkage_type){
   if (d3.select(cgm.params.root+' .tree_menu').empty()){
     update_view(cgm, 'name', view_name);
   } else {
-    setTimeout(update_view, 700, cgm, 'name', view_name);
+    setTimeout(update_view, 500, cgm, 'name', view_name);
   }
 
 };

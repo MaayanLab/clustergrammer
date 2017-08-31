@@ -20811,8 +20811,10 @@ var Clustergrammer =
 /***/ (function(module, exports, __webpack_require__) {
 
 	var make_menu_button_section = __webpack_require__(291);
-	var make_tree_menu_update_button = __webpack_require__(183);
+	var make_menu_update_button = __webpack_require__(292);
 	var position_tree_menu = __webpack_require__(166);
+	var toggle_menu = __webpack_require__(180);
+	var recluster = __webpack_require__(184);
 
 	module.exports = function make_tree_menu(cgm) {
 
@@ -20871,47 +20873,21 @@ var Clustergrammer =
 	  // button_info.x_offset = 0;
 	  // button_section(button_info, linkage_names, distance_click)
 
-	  make_tree_menu_update_button(cgm, button_info);
-		};
-
-/***/ }),
-/* 182 */,
-/* 183 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var recluster = __webpack_require__(184);
-	var toggle_menu = __webpack_require__(180);
-
-	module.exports = function make_tree_menu_update_button(cgm, button_info) {
-
-	  var update_button_width = 100;
-	  var menu_width = button_info.menu_width;
-	  var update_buton_x = menu_width / 2 + button_info.default_x_offset;
-	  var update_buton_y = 205;
-
-	  var default_opacity = 0.35;
-	  var high_opacity = 0.5;
-
-	  var update_button = button_info.selection.append('g').classed('update_button', true).attr('transform', 'translate(' + update_buton_x + ', ' + update_buton_y + ')').on('click', function () {
-
+	  function update_callback() {
 	    toggle_menu(cgm, 'tree_menu', 'close');
 
 	    // transfer parameters to cgm object when update is pressed
 	    cgm.params.matrix.distance_metric = button_info.distance_metric;
 	    cgm.params.matrix.linkage_type = button_info.linkage_type;
 	    recluster(cgm, button_info.distance_metric, button_info.linkage_type);
-	  }).on('mouseover', function () {
-	    d3.select(this).select('rect').attr('opacity', high_opacity);
-	  }).on('mouseout', function () {
-	    d3.select(this).select('rect').attr('opacity', default_opacity);
-	  });
+	  }
 
-	  update_button.append('rect').attr('width', update_button_width + 'px').attr('height', '35px').attr('fill', 'blue').attr('transform', 'translate(0, -23)').attr('stroke', '#A3A3A3').attr('stroke-width', '1px').attr('opacity', default_opacity);
-
-	  update_button.append('text').attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('font-size', '18px').attr('font-weight', 500).attr('cursor', 'default').text('Update').attr('transform', 'translate(18, 0)');
+	  make_menu_update_button(cgm, button_info, update_callback);
 		};
 
 /***/ }),
+/* 182 */,
+/* 183 */,
 /* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -20993,7 +20969,7 @@ var Clustergrammer =
 	  if (d3.select(cgm.params.root + ' .tree_menu').empty()) {
 	    update_view(cgm, 'name', view_name);
 	  } else {
-	    setTimeout(update_view, 700, cgm, 'name', view_name);
+	    setTimeout(update_view, 500, cgm, 'name', view_name);
 	  }
 		};
 
@@ -23466,8 +23442,10 @@ var Clustergrammer =
 /***/ (function(module, exports, __webpack_require__) {
 
 	var make_menu_button_section = __webpack_require__(291);
-	// var make_tree_menu_update_button = require('./make_tree_menu_update_button');
+	var make_menu_update_button = __webpack_require__(292);
 	var position_filter_menu = __webpack_require__(290);
+	var toggle_menu = __webpack_require__(180);
+	var recluster = __webpack_require__(184);
 
 	module.exports = function make_filter_menu(cgm) {
 
@@ -23526,7 +23504,18 @@ var Clustergrammer =
 	  // button_info.x_offset = 0;
 	  // button_section(button_info, linkage_names, distance_click)
 
-	  // make_tree_menu_update_button(cgm, button_info);
+	  function update_callback() {
+	    toggle_menu(cgm, 'filter_menu', 'close');
+
+	    console.log('updating filtering state');
+
+	    // // transfer parameters to cgm object when update is pressed
+	    // cgm.params.matrix.distance_metric = button_info.distance_metric;
+	    // cgm.params.matrix.linkage_type = button_info.linkage_type;
+	    // recluster(cgm, button_info.distance_metric, button_info.linkage_type);
+	  }
+
+	  make_menu_update_button(cgm, button_info, update_callback);
 		};
 
 /***/ }),
@@ -30035,6 +30024,31 @@ var Clustergrammer =
 	  function capitalizeFirstLetter(string) {
 	    return string.charAt(0).toUpperCase() + string.slice(1);
 	  }
+		};
+
+/***/ }),
+/* 292 */
+/***/ (function(module, exports) {
+
+	module.exports = function make_menu_update_button(cgm, button_info, update_callback) {
+
+	  var update_button_width = 100;
+	  var menu_width = button_info.menu_width;
+	  var update_buton_x = menu_width / 2 + button_info.default_x_offset;
+	  var update_buton_y = 205;
+
+	  var default_opacity = 0.35;
+	  var high_opacity = 0.5;
+
+	  var update_button = button_info.selection.append('g').classed('update_button', true).attr('transform', 'translate(' + update_buton_x + ', ' + update_buton_y + ')').on('click', update_callback).on('mouseover', function () {
+	    d3.select(this).select('rect').attr('opacity', high_opacity);
+	  }).on('mouseout', function () {
+	    d3.select(this).select('rect').attr('opacity', default_opacity);
+	  });
+
+	  update_button.append('rect').attr('width', update_button_width + 'px').attr('height', '35px').attr('fill', 'blue').attr('transform', 'translate(0, -23)').attr('stroke', '#A3A3A3').attr('stroke-width', '1px').attr('opacity', default_opacity);
+
+	  update_button.append('text').attr('font-family', '"Helvetica Neue", Helvetica, Arial, sans-serif').attr('font-size', '18px').attr('font-weight', 500).attr('cursor', 'default').text('Update').attr('transform', 'translate(18, 0)');
 		};
 
 /***/ })

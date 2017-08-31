@@ -1,7 +1,5 @@
-var recluster = require('../recluster/recluster');
-var toggle_menu = require('./toggle_menu');
+module.exports = function make_menu_update_button(cgm, button_info, update_callback){
 
-module.exports = function make_tree_menu_update_button(cgm, button_info){
 
   var update_button_width = 100;
   var menu_width = button_info.menu_width;
@@ -15,16 +13,7 @@ module.exports = function make_tree_menu_update_button(cgm, button_info){
     .append('g')
     .classed('update_button', true)
     .attr('transform', 'translate('+ update_buton_x +', ' + update_buton_y + ')')
-    .on('click', function(){
-
-      toggle_menu(cgm, 'tree_menu', 'close');
-
-      // transfer parameters to cgm object when update is pressed
-      cgm.params.matrix.distance_metric = button_info.distance_metric;
-      cgm.params.matrix.linkage_type = button_info.linkage_type;
-      recluster(cgm, button_info.distance_metric, button_info.linkage_type);
-
-    })
+    .on('click', update_callback)
     .on('mouseover', function(){
       d3.select(this)
         .select('rect')
