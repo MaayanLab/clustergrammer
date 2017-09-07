@@ -28,7 +28,25 @@ print(df.shape)
 
 noise = pd.DataFrame(np.random.randint(0, 50,size=( 103, 72)))
 
-net.load_df(df)
+noise_mat = noise.as_matrix()
+noise_mat = noise_mat/1000
+
+dna_mat = df.as_matrix()
+
+new_mat = dna_mat + noise
+
+df.data = new_mat
+
+cols = df.columns.tolist()
+rows = df.index.tolist()
+
+new_df = pd.DataFrame(data=new_mat)
+new_df.columns = cols
+new_df.index = rows
+print(new_mat.shape)
+print(df.shape)
+
+net.load_df(new_df)
 
 # optional filtering and normalization
 ##########################################
