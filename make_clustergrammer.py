@@ -31,14 +31,14 @@ cols = df.columns.tolist()
 num_cols = len(cols)
 for inst_col in cols:
     inst_val = float(inst_col[1])
-    df[inst_col] = df[inst_col] * inst_val/float(num_cols)*3
+    df[inst_col] = df[inst_col] * inst_val/float(num_cols)*4
 
 # net.enrichrgram('KEA_2015')
 
 noise = pd.DataFrame(np.random.randint(0, 50,size=( 103, 72)))
 
 # scale down and center mat
-noise = noise/25
+noise = noise/20
 noise = noise - noise.mean()
 
 
@@ -52,7 +52,7 @@ for inst_col in cols:
 noise_mat = noise.as_matrix()
 
 dna_mat = df.as_matrix()
-dna_mat = dna_mat
+dna_mat = dna_mat * 0.8
 
 new_mat = dna_mat + noise_mat
 
