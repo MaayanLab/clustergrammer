@@ -20,6 +20,8 @@ net.load_file('txt/rc_two_cats.txt')
 # net.load_file('txt/mnist.txt')
 # net.load_file('txt/tuple_cats.txt')
 # net.load_file('txt/example_tsv.txt')
+
+net.swap_nan_for_zero()
 df = net.export_df()
 print(df.shape)
 # print(df)
@@ -29,11 +31,13 @@ print(df.shape)
 noise = pd.DataFrame(np.random.randint(0, 50,size=( 103, 72)))
 
 noise_mat = noise.as_matrix()
-noise_mat = noise_mat/1000
+noise_mat = noise_mat/30
+noise_mat = noise_mat - noise_mat.mean()
 
 dna_mat = df.as_matrix()
+dna_mat = dna_mat * 2
 
-new_mat = dna_mat + noise
+new_mat = dna_mat + noise_mat
 
 df.data = new_mat
 
