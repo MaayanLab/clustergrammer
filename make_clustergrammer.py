@@ -31,7 +31,7 @@ cols = df.columns.tolist()
 num_cols = len(cols)
 for inst_col in cols:
     inst_val = float(inst_col[1])
-    df[inst_col] = df[inst_col] * inst_val/float(num_cols)*4
+    df[inst_col] = df[inst_col] * inst_val/float(num_cols)*4.2
 
 # net.enrichrgram('KEA_2015')
 
@@ -47,7 +47,10 @@ noise = noise - noise.mean()
 cols = noise.columns.tolist()
 num_cols = len(cols)
 for inst_col in cols:
-    noise[inst_col] = noise[inst_col] * (num_cols - inst_col)/float(num_cols) + 0.1
+    index = num_cols - inst_col - 10
+    if index < 0:
+      index = 0
+    noise[inst_col] = noise[inst_col] * ((index)/float(num_cols) + 0.05 )
 
 noise_mat = noise.as_matrix()
 
