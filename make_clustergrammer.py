@@ -31,7 +31,7 @@ print(df.shape)
 noise = pd.DataFrame(np.random.randint(0, 50,size=( 103, 72)))
 
 # scale down and center mat
-noise = noise/30
+noise = noise/25
 noise = noise - noise.mean()
 
 
@@ -40,12 +40,12 @@ noise = noise - noise.mean()
 cols = noise.columns.tolist()
 num_cols = len(cols)
 for inst_col in cols:
-    noise[inst_col] = noise[inst_col] * (num_cols - inst_col)/float(num_cols)
+    noise[inst_col] = noise[inst_col] * (num_cols - inst_col)/float(num_cols) + 0.07
 
 noise_mat = noise.as_matrix()
 
 dna_mat = df.as_matrix()
-dna_mat = dna_mat * 2
+dna_mat = dna_mat * 1.5
 
 new_mat = dna_mat + noise_mat
 
