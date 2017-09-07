@@ -8,6 +8,8 @@ https://github.com/MaayanLab/clustergrammer-py
 '''
 
 from clustergrammer import Network
+import pandas as pd
+import numpy as np
 net = Network()
 
 # load matrix tsv file
@@ -19,18 +21,22 @@ net.load_file('txt/rc_two_cats.txt')
 # net.load_file('txt/tuple_cats.txt')
 # net.load_file('txt/example_tsv.txt')
 df = net.export_df()
-
+print(df.shape)
 # print(df)
 
 # net.enrichrgram('KEA_2015')
+
+noise = pd.DataFrame(np.random.randint(0, 50,size=( 103, 72)))
+
+net.load_df(df)
 
 # optional filtering and normalization
 ##########################################
 # net.filter_sum('row', threshold=20)
 # net.normalize(axis='col', norm_type='zscore', keep_orig=True)
 # net.filter_N_top('row', 250, rank_type='sum')
-# net.filter_threshold('row', threshold=3.0, num_occur=4)
-# net.swap_nan_for_zero()
+# net.filter_threshold('row', threshold=0.01, num_occur=4)
+net.swap_nan_for_zero()
 # net.set_cat_color('col', 1, 'Category: one', 'blue')
 
   # net.make_clust()
