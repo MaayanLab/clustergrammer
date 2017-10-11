@@ -43,6 +43,11 @@ Pleae see Clustergramer's [documentation](http://clustergrammer.readthedocs.io/)
 - [Biology-Specific Features](https://clustergrammer.readthedocs.io/biology_specific_features.html)
 - [Developing Clustergrammer](https://clustergrammer.readthedocs.io/developing_with_clustergrammer.html)
 
+## Citing Clustergrammer
+Please consider supporting Clustergrammer by citing our publication:
+
+Fernandez, N. F. et al. Clustergrammer, a web-based heatmap visualization and analysis tool for high-dimensional biological data. Sci. Data 4:170151 doi: [10.1038/sdata.2017.151](https://www.nature.com/articles/sdata2017151 ) (2017).
+
 ## Licensing
 Clustergrammer was developed by the [Ma'ayan lab](http://labs.icahn.mssm.edu/maayanlab/) at the [Icahn School of Medicine at Mount Sinai](http://icahn.mssm.edu/) for the [BD2K-LINCS DCIC](http://lincs-dcic.org/#/) and the [KMC-IDG](http://commonfund.nih.gov/idg/overview). Clustergrammer's license and third-party licenses are in the LICENSES directory and more information can be found at [Clustergrammer License](https://clustergrammer.readthedocs.io/license.html).
 
