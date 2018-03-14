@@ -11523,10 +11523,20 @@ var Clustergrammer =
 
 	    viz = make_cat_params(params, viz, predefined_cat_colors);
 
+	    // // always make group level dict
+	    // params.group_level = {};
+
 	    if (_.has(params, 'group_level') == false) {
 	      if (viz.show_dendrogram) {
 	        params.group_level = {};
 	      }
+
+	      // preventing error when un-clustered, above statement
+	      // preserves dendro state while updating
+	      if (_.has(params, 'group_level') == false) {
+	        params.group_level = {};
+	      }
+
 	      params.group_level.row = 5;
 	      params.group_level.col = 5;
 	    }
@@ -14221,9 +14231,8 @@ var Clustergrammer =
 	  if (params.viz.show_dendrogram) {
 	    make_row_dendro(cgm);
 	    make_col_dendro(cgm);
+	    make_row_dendro_spillover(cgm);
 	  }
-
-	  make_row_dendro_spillover(cgm);
 
 	  make_col_label_container(cgm);
 
@@ -14254,8 +14263,10 @@ var Clustergrammer =
 	    generate_super_labels(params);
 	  }
 
-	  // sliders should go above super labels
-	  make_svg_dendro_sliders(cgm);
+	  if (params.viz.show_dendrogram) {
+	    // sliders should go above super labels
+	    make_svg_dendro_sliders(cgm);
+	  }
 
 	  function border_colors() {
 	    var inst_color = params.viz.super_border_color;
@@ -15677,14 +15688,16 @@ var Clustergrammer =
 
 	  var dendro_info;
 
-	  if (inst_rc === 'row') {
-	    dendro_info = calc_row_dendro_triangles(params);
-	  } else {
-	    dendro_info = calc_col_dendro_triangles(params);
-	  }
+	  if (params.viz.show_dendrogram) {
+	    if (inst_rc === 'row') {
+	      dendro_info = calc_row_dendro_triangles(params);
+	    } else {
+	      dendro_info = calc_col_dendro_triangles(params);
+	    }
 
-	  if (d3.select(cgm.params.root + ' .' + inst_rc + '_dendro_crop_buttons').empty() === false) {
-	    make_dendro_crop_buttons(cgm, inst_rc);
+	    if (d3.select(cgm.params.root + ' .' + inst_rc + '_dendro_crop_buttons').empty() === false) {
+	      make_dendro_crop_buttons(cgm, inst_rc);
+	    }
 	  }
 
 	  // constant dendrogram opacity
@@ -19805,7 +19818,9 @@ var Clustergrammer =
 	  y_offset = 0;
 	  b_spill_container.append('g').classed('col_dendro_icons_container', true).attr('transform', 'translate(' + x_offset + ',' + y_offset + ')').append('g').classed('col_dendro_icons_group', true);
 
-	  make_dendro_crop_buttons(cgm, 'col');
+	  if (params.viz.show_dendrogram) {
+	    make_dendro_crop_buttons(cgm, 'col');
+	  }
 
 	  var x_offset = viz.clust.margin.left + viz.clust.dim.width;
 	  var y_offset = viz.clust.margin.top + viz.clust.dim.height;
