@@ -11,7 +11,7 @@ var trim_text = require('./zoom/trim_text');
 var make_row_dendro = require('./dendrogram/make_row_dendro');
 var make_col_dendro = require('./dendrogram/make_col_dendro');
 var build_dendro_sliders = require('./dendrogram/build_dendro_sliders');
-var build_tree_icon = require('./menus/build_tree_icon');
+// var build_tree_icon = require('./menus/build_tree_icon');
 // var build_filter_icon = require('./menus/build_filter_icon');
 var make_row_dendro_spillover = require('./spillover/make_row_dendro_spillover');
 var underscore = require('underscore');
@@ -82,22 +82,19 @@ module.exports = function make_viz(cgm) {
     generate_super_labels(params);
   }
 
-// <<<<<<< HEAD
-  // sliders should go above super labels
-  build_dendro_sliders(cgm);
-  build_tree_icon(cgm);
 
-  // // // disable
-  // // //////////////////
+  // // disable recluster and filter icons
+  // //////////////////
+
+  // // sliders should go above super labels
+  // build_tree_icon(cgm);
+
   // build_filter_icon(cgm);
-// =======
 
-  // if (params.viz.show_dendrogram){
-  //   // sliders should go above super labels
-  //   make_svg_dendro_sliders(cgm);
-  // }
+  build_dendro_sliders(cgm);
 
-// >>>>>>> master_with_reclustering
+
+
 
   function border_colors() {
     var inst_color = params.viz.super_border_color;
