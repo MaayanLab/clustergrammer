@@ -119,7 +119,9 @@ module.exports = function Spillover(cgm) {
     .append('g')
     .classed('col_dendro_icons_group', true);
 
-  make_dendro_crop_buttons(cgm, 'col');
+  if (params.viz.show_dendrogram){
+    make_dendro_crop_buttons(cgm, 'col');
+  }
 
   var x_offset = viz.clust.margin.left + viz.clust.dim.width;
   var y_offset = viz.clust.margin.top + viz.clust.dim.height;

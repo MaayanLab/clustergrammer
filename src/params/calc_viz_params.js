@@ -126,10 +126,20 @@ module.exports = function calc_viz_params(params, predefined_cat_colors=true){
 
     viz = make_cat_params(params, viz, predefined_cat_colors);
 
+    // // always make group level dict
+    // params.group_level = {};
+
     if (_.has(params, 'group_level') == false){
       if (viz.show_dendrogram){
         params.group_level = {};
       }
+
+      // preventing error when un-clustered, above statement
+      // preserves dendro state while updating
+      if (_.has(params, 'group_level') == false){
+        params.group_level = {};
+      }
+
       params.group_level.row = 5;
       params.group_level.col = 5;
     }

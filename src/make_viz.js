@@ -46,9 +46,8 @@ module.exports = function make_viz(cgm) {
   if (params.viz.show_dendrogram){
     make_row_dendro(cgm);
     make_col_dendro(cgm);
+    make_row_dendro_spillover(cgm);
   }
-
-  make_row_dendro_spillover(cgm);
 
   make_col_label_container(cgm);
 
@@ -67,7 +66,6 @@ module.exports = function make_viz(cgm) {
             trim_text(params, this, inst_rc);
           });
       }
-
     });
   }
 
@@ -84,6 +82,7 @@ module.exports = function make_viz(cgm) {
     generate_super_labels(params);
   }
 
+// <<<<<<< HEAD
   // sliders should go above super labels
   build_dendro_sliders(cgm);
   build_tree_icon(cgm);
@@ -91,6 +90,14 @@ module.exports = function make_viz(cgm) {
   // // // disable
   // // //////////////////
   // build_filter_icon(cgm);
+// =======
+
+  // if (params.viz.show_dendrogram){
+  //   // sliders should go above super labels
+  //   make_svg_dendro_sliders(cgm);
+  // }
+
+// >>>>>>> master_with_reclustering
 
   function border_colors() {
     var inst_color = params.viz.super_border_color;

@@ -71,3 +71,12 @@ clustergrammer
 # git rm -r --cached .
 # git add .
 # git commit -m "fixing .gitignore"
+
+# Word temporary
+~$*.doc*
+
+# Excel temporary
+~$*.xls*
+
+# Excel Backup File
+*.xlk

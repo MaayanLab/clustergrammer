@@ -31,15 +31,19 @@ module.exports = function make_dendro_triangles(cgm, inst_rc, is_change_group = 
 
   var dendro_info;
 
-  if (inst_rc === 'row'){
-    dendro_info = calc_row_dendro_triangles(params);
-  } else {
-    dendro_info = calc_col_dendro_triangles(params);
+  if (params.viz.show_dendrogram){
+    if (inst_rc === 'row'){
+      dendro_info = calc_row_dendro_triangles(params);
+    } else {
+      dendro_info = calc_col_dendro_triangles(params);
+    }
+
+    if (d3.select(cgm.params.root+' .'+ inst_rc +'_dendro_crop_buttons').empty() === false){
+      make_dendro_crop_buttons(cgm, inst_rc);
+    }
+
   }
 
-  if (d3.select(cgm.params.root+' .'+ inst_rc +'_dendro_crop_buttons').empty() === false){
-    make_dendro_crop_buttons(cgm, inst_rc);
-  }
 
   // constant dendrogram opacity
   var inst_dendro_opacity = params.viz.dendro_opacity;

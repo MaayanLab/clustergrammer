@@ -8,7 +8,7 @@
 
 Clustergrammer is a web-based tool for visualizing high-dimensional data (e.g. a matrix) as an interactive and shareable hierarchically clustered heatmap. Clustergrammer's front end ([Clustergrammer-JS](http://clustergrammer.readthedocs.io/clustergrammer_js.html#clustergrammer-js)) is built using [D3.js](https://d3js.org/) and its back-end ([Clustergrammer-PY](http://clustergrammer.readthedocs.io/clustergrammer_py.html#clustergrammer-py)) is built using Python. Clustergrammer produces highly interactive visualizations that enable intuitive exploration of high-dimensional data and has several biology-specific features (e.g. enrichment analysis, see [Biology-Specific Features](http://clustergrammer.readthedocs.io/biology_specific_features.html#biology-specific-features)) to facilitate the exploration of gene-level biological data. Click the screenshot below to view an interactive tutorial:
 
-[![demo_screenshot](img/demo_screenshot.png "demo_screenshot.png")](http://maayanlab.github.io/clustergrammer/scrolling_tour)
+[![demo_screenshot](img/demo_high-fr.gif "demo_high-fr.gif")](http://maayanlab.github.io/clustergrammer/scrolling_tour)
 
 Clustergrammer's interacive features include:
 - [Zooming and Panning](http://clustergrammer.readthedocs.io/interacting_with_viz.html#zooming-and-panning)
@@ -42,6 +42,11 @@ Pleae see Clustergramer's [documentation](http://clustergrammer.readthedocs.io/)
 - [Case Studies and Examples](https://clustergrammer.readthedocs.io/case_studies.html)
 - [Biology-Specific Features](https://clustergrammer.readthedocs.io/biology_specific_features.html)
 - [Developing Clustergrammer](https://clustergrammer.readthedocs.io/developing_with_clustergrammer.html)
+
+## Citing Clustergrammer
+Please consider supporting Clustergrammer by citing our publication:
+
+Fernandez, N. F. et al. Clustergrammer, a web-based heatmap visualization and analysis tool for high-dimensional biological data. Sci. Data 4:170151 doi: [10.1038/sdata.2017.151](https://www.nature.com/articles/sdata2017151 ) (2017).
 
 ## Licensing
 Clustergrammer was developed by the [Ma'ayan lab](http://labs.icahn.mssm.edu/maayanlab/) at the [Icahn School of Medicine at Mount Sinai](http://icahn.mssm.edu/) for the [BD2K-LINCS DCIC](http://lincs-dcic.org/#/) and the [KMC-IDG](http://commonfund.nih.gov/idg/overview). Clustergrammer's license and third-party licenses are in the LICENSES directory and more information can be found at [Clustergrammer License](https://clustergrammer.readthedocs.io/license.html).
