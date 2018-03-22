@@ -19,7 +19,9 @@ module.exports = function position_dendro_slider(cgm, inst_rc='row'){
     }
 
     // tmp_top =  viz.clust.margin.top + 3 * viz.uni_margin - 50;
-    tmp_top =  viz.clust.margin.top + 3 * viz.uni_margin + 135;
+    // 135 is a magic number that moves the slider down to make room for the
+    // reordering tree
+    tmp_top =  viz.clust.margin.top + 3 * viz.uni_margin + 75;
 
   } else {
 
