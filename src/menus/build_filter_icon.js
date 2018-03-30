@@ -95,8 +95,8 @@ module.exports = function build_filter_icon(cgm){
       var final_x = filter_width;//left_x + slider_length/5;
       var final_y = 0;
 
-      var output_string = 'M' + start_x + ',' + start_y + ', L' +
-      mid_x + ', ' + mid_y + ', L'
+      var output_string = 'M' + start_x + ',' + start_y + ' L' +
+      mid_x + ', ' + mid_y + ' L'
       + final_x + ','+ final_y +' Z';
 
       return output_string;

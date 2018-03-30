@@ -9,6 +9,6 @@ module.exports = function col_viz_aid_triangle(params){
   params.viz.border_width.x);
   var final_y = -params.viz.border_width.x;
   var output_string = 'M ' + origin_y + ',0 L ' + start_y + ',' +
-    start_x + ', L ' + final_y + ',' + final_x + ' Z';
+    start_x + ' L ' + final_y + ',' + final_x + ' Z';
   return output_string;
 };

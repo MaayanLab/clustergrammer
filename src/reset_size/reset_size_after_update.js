@@ -144,7 +144,7 @@ module.exports = function reset_size_after_update(cgm, duration=0, delays=null) 
         var final_x = params.viz.cat_room.symbol_width - 1;
         var final_y = params.viz.y_scale.rangeBand();
         var output_string = 'M ' + origin_x + ',' + origin_y + ' L ' +
-          mid_x + ',' + mid_y + ', L ' + final_x + ',' + final_y + ' Z';
+          mid_x + ',' + mid_y + ' L ' + final_x + ',' + final_y + ' Z';
         return output_string;
       });
 
@@ -182,7 +182,7 @@ module.exports = function reset_size_after_update(cgm, duration=0, delays=null) 
         var final_x = params.viz.cat_room.symbol_width - 1;
         var final_y = params.viz.y_scale.rangeBand();
         var output_string = 'M ' + origin_x + ',' + origin_y + ' L ' +
-          mid_x + ',' + mid_y + ', L ' + final_x + ',' + final_y + ' Z';
+          mid_x + ',' + mid_y + ' L ' + final_x + ',' + final_y + ' Z';
         return output_string;
       });
 

@@ -157,8 +157,8 @@ module.exports = function make_dendro_triangles(cgm, inst_rc, is_change_group = 
       }
 
 
-      var output_string = 'M' + start_x + ',' + start_y + ', L' +
-      mid_x + ', ' + mid_y + ', L'
+      var output_string = 'M' + start_x + ',' + start_y + ' L' +
+      mid_x + ', ' + mid_y + ' L'
       + final_x + ','+ final_y +' Z';
       return output_string;
     });

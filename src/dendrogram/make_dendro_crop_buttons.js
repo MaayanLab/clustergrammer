@@ -119,8 +119,8 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc){
         var data_key = '__data__';
         d3.select(this)[0][0][data_key].tri_dim = tri_dim;
 
-        var output_string = 'M' + start_x + ',' + start_y + ', L' +
-        mid_x + ', ' + mid_y + ', L'
+        var output_string = 'M' + start_x + ',' + start_y + ' L' +
+        mid_x + ', ' + mid_y + ' L'
         + final_x + ','+ final_y +' Z';
 
         return output_string;
@@ -184,8 +184,8 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc){
         var data_key = '__data__';
         d3.select(this)[0][0][data_key].tri_dim = 10;
 
-        var output_string = 'M' + start_x + ',' + start_y + ', L' +
-        mid_x + ', ' + mid_y + ', L'
+        var output_string = 'M' + start_x + ',' + start_y + ' L' +
+        mid_x + ', ' + mid_y + ' L'
         + final_x + ','+ final_y +' Z';
 
         return output_string;

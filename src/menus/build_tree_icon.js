@@ -93,8 +93,8 @@ module.exports = function build_tree_icon(cgm){
       var final_x = tree_width;//left_x + slider_length/5;
       var final_y = slider_length;
 
-      var output_string = 'M' + start_x + ',' + start_y + ', L' +
-      mid_x + ', ' + mid_y + ', L'
+      var output_string = 'M' + start_x + ',' + start_y + ' L' +
+      mid_x + ', ' + mid_y + ' L'
       + final_x + ','+ final_y +' Z';
 
       return output_string;
@@ -119,8 +119,8 @@ module.exports = function build_tree_icon(cgm){
       var final_x = 5.8;//left_x + slider_length/5;
       var final_y = branch_height/1.8;
 
-      var output_string = 'M' + start_x + ',' + start_y + ', L' +
-      mid_x + ', ' + mid_y + ', L'
+      var output_string = 'M' + start_x + ',' + start_y + ' L' +
+      mid_x + ', ' + mid_y + ' L'
       + final_x + ','+ final_y +' Z';
 
       return output_string;
@@ -144,8 +144,8 @@ module.exports = function build_tree_icon(cgm){
       var final_x = 14.2;//left_x + slider_length/5;
       var final_y = branch_height/1.8;
 
-      var output_string = 'M' + start_x + ',' + start_y + ', L' +
-      mid_x + ', ' + mid_y + ', L'
+      var output_string = 'M' + start_x + ',' + start_y + ' L' +
+      mid_x + ', ' + mid_y + ' L'
       + final_x + ','+ final_y +' Z';
 
       return output_string;

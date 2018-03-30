@@ -60,8 +60,8 @@ module.exports = function build_single_dendro_slider(cgm, inst_rc){
       var final_x = slider_length/10;
       var final_y = 0;
 
-      var output_string = 'M' + start_x + ',' + start_y + ', L' +
-      mid_x + ', ' + mid_y + ', L'
+      var output_string = 'M' + start_x + ',' + start_y + ' L' +
+      mid_x + ', ' + mid_y + ' L'
       + final_x + ','+ final_y +' Z';
 
       return output_string;
