@@ -44,6 +44,8 @@ module.exports = function make_dendro_triangles(cgm, inst_rc, is_change_group = 
 
   }
 
+  console.log(dendro_info)
+
 
   // constant dendrogram opacity
   var inst_dendro_opacity = params.viz.dendro_opacity;
