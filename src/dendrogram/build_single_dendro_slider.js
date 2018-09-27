@@ -82,6 +82,7 @@ module.exports = function build_single_dendro_slider(cgm, inst_rc){
     .style('fill', 'blue')
     .style('opacity', default_opacity)
     .on('mouseover', function(){
+      console.log('mouseover')
       d3.select(this).style('opacity', high_opacity);
     })
     .on('mouseout', function(){

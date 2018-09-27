@@ -34,10 +34,10 @@ net.load_file('txt/rc_two_cats.txt')
   # net.dendro_cats('row', 5)
 
 net.cluster(dist_type='cos',views=['N_row_sum', 'N_row_var'] , dendro=True,
-               sim_mat=True, filter_sim=0.1, calc_cat_pval=False, enrichrgram=
+               sim_mat=False, filter_sim=0.1, calc_cat_pval=False, enrichrgram=
                False, run_clustering=True)
 
 # write jsons for front-end visualizations
 net.write_json_to_file('viz', 'json/mult_view.json', 'indent')
-net.write_json_to_file('sim_row', 'json/mult_view_sim_row.json', 'no-indent')
-net.write_json_to_file('sim_col', 'json/mult_view_sim_col.json', 'no-indent')
+# net.write_json_to_file('sim_row', 'json/mult_view_sim_row.json', 'no-indent')
+# net.write_json_to_file('sim_col', 'json/mult_view_sim_col.json', 'no-indent')
