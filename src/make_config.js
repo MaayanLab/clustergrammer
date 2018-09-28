@@ -59,11 +59,11 @@ module.exports = function make_config(args) {
   });
 
   // process view
-  if (_.has(config.network_data, 'views')){
+  if (underscore.has(config.network_data, 'views')){
     config.network_data.views.forEach(function(inst_view){
 
       underscore.each( underscore.keys(filters.possible_filters), function(inst_filter){
-        if ( !_.has(inst_view, inst_filter) ){
+        if (!underscore.has(inst_view, inst_filter) ){
           inst_view[inst_filter] = default_states[inst_filter];
         }
       });
@@ -97,17 +97,11 @@ module.exports = function make_config(args) {
   var col_nodes = config.network_data.col_nodes;
   var row_nodes = config.network_data.row_nodes;
 
-  // console.log( config.network_data.links[0] )
-  // console.log( config.network_data.links[1] )
-  // console.log( config.network_data.links[2] )
-
-  // console.log(_.has(config.network_data,'mat'));
-
   ///////////////////////////
   // convert 'mat' to links
   ///////////////////////////
 
-  if (_.has(config.network_data, 'mat')){
+  if (underscore.has(config.network_data, 'mat')){
 
     var links = [];
     var mat = config.network_data.mat;

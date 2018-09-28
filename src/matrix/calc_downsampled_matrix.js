@@ -44,7 +44,7 @@ module.exports = function calc_downsampled_matrix(params, mat, ds_level){
     ds_mat[ds_index].all_names.push(inst_row.name);
 
     // gather row_data
-    if (_.has(ds_mat[ds_index], 'row_data')){
+    if (underscore.has(ds_mat[ds_index], 'row_data')){
 
       for (x=0; x < inst_row_data.length; x++){
         ds_mat[ds_index].row_data[x].value = ds_mat[ds_index].row_data[x].value + inst_row_data[x].value;

@@ -243,11 +243,11 @@ var Clustergrammer =
 	  });
 
 	  // process view
-	  if (_.has(config.network_data, 'views')) {
+	  if (underscore.has(config.network_data, 'views')) {
 	    config.network_data.views.forEach(function (inst_view) {
 
 	      underscore.each(underscore.keys(filters.possible_filters), function (inst_filter) {
-	        if (!_.has(inst_view, inst_filter)) {
+	        if (!underscore.has(inst_view, inst_filter)) {
 	          inst_view[inst_filter] = default_states[inst_filter];
 	        }
 	      });
@@ -278,17 +278,11 @@ var Clustergrammer =
 	  var col_nodes = config.network_data.col_nodes;
 	  var row_nodes = config.network_data.row_nodes;
 
-	  // console.log( config.network_data.links[0] )
-	  // console.log( config.network_data.links[1] )
-	  // console.log( config.network_data.links[2] )
-
-	  // console.log(_.has(config.network_data,'mat'));
-
 	  ///////////////////////////
 	  // convert 'mat' to links
 	  ///////////////////////////
 
-	  if (_.has(config.network_data, 'mat')) {
+	  if (underscore.has(config.network_data, 'mat')) {
 
 	    var links = [];
 	    var mat = config.network_data.mat;
@@ -2068,7 +2062,7 @@ var Clustergrammer =
 
 	      if (inst_key != 'nodes') {
 
-	        if (!_.has(filter_data, inst_key)) {
+	        if (!underscore.has(filter_data, inst_key)) {
 	          filter_data[inst_key] = [];
 	        }
 
@@ -2318,13 +2312,14 @@ var Clustergrammer =
 
 	var filter_network_using_new_nodes = __webpack_require__(12);
 	var get_subset_views = __webpack_require__(64);
+	var underscore = __webpack_require__(3);
 
 	module.exports = function make_network_using_view(config, params, requested_view) {
 
 	  var orig_views = config.network_data.views;
 
 	  var is_enr = false;
-	  if (_.has(orig_views[0], 'enr_score_type')) {
+	  if (underscore.has(orig_views[0], 'enr_score_type')) {
 	    is_enr = true;
 	  }
 
@@ -2421,7 +2416,7 @@ var Clustergrammer =
 	  new_network_data.views = config.network_data.views;
 
 	  // add cat_colors if necessary
-	  if (_.has(config.network_data, 'cat_colors')) {
+	  if (underscore.has(config.network_data, 'cat_colors')) {
 	    new_network_data.cat_colors = config.network_data.cat_colors;
 	  }
 
@@ -13002,6 +12997,7 @@ var Clustergrammer =
 	var utils = __webpack_require__(2);
 	var get_available_filters = __webpack_require__(5);
 	var make_cat_params = __webpack_require__(84);
+	var underscore = __webpack_require__(3);
 
 	module.exports = function calc_viz_params(params, predefined_cat_colors = true) {
 
@@ -13119,14 +13115,14 @@ var Clustergrammer =
 	    // // always make group level dict
 	    // params.group_level = {};
 
-	    if (_.has(params, 'group_level') == false) {
+	    if (underscore.has(params, 'group_level') == false) {
 	      if (viz.show_dendrogram) {
 	        params.group_level = {};
 	      }
 
 	      // preventing error when un-clustered, above statement
 	      // preserves dendro state while updating
-	      if (_.has(params, 'group_level') == false) {
+	      if (underscore.has(params, 'group_level') == false) {
 	        params.group_level = {};
 	      }
 
@@ -13306,32 +13302,34 @@ var Clustergrammer =
 
 /***/ }),
 /* 73 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+	var underscore = __webpack_require__(3);
 
 	module.exports = function calc_clust_width(viz) {
 
 	  viz.clust = {};
 	  viz.clust.margin = {};
 
-	  // margin on left/top of the clustergram/matrix 
+	  // margin on left/top of the clustergram/matrix
 	  // 1) norm_label margin and width
-	  // 2) cat_room and uni_margin 
+	  // 2) cat_room and uni_margin
 	  viz.clust.margin.left = viz.norm_labels.margin.left + viz.norm_labels.width.row + viz.cat_room.row + viz.uni_margin;
 
 	  viz.clust.margin.top = viz.norm_labels.margin.top + viz.norm_labels.width.col + viz.cat_room.col + viz.uni_margin;
 
 	  // the clustergram/matrix width is the svg width minus:
-	  // the margin of the clustergram on the left 
-	  // the room for the spillover on the right 
-	  // ** the dendro will fit in the spillover room on the right 
+	  // the margin of the clustergram on the left
+	  // the room for the spillover on the right
+	  // ** the dendro will fit in the spillover room on the right
 	  var ini_clust_width = viz.svg_dim.width - viz.clust.margin.left - viz.spillover_col_slant;
 
-	  // make tmp scale to calc height of triangle col labels 
-	  var tmp_x_scale = d3.scale.ordinal().rangeBands([0, ini_clust_width]).domain(_.range(viz.num_col_nodes));
+	  // make tmp scale to calc height of triangle col labels
+	  var tmp_x_scale = d3.scale.ordinal().rangeBands([0, ini_clust_width]).domain(underscore.range(viz.num_col_nodes));
 
 	  var triangle_height = tmp_x_scale.rangeBand() / 2;
 
-	  // prevent the visualization from being unnecessarily wide 
+	  // prevent the visualization from being unnecessarily wide
 	  if (triangle_height > viz.norm_labels.width.col) {
 	    var reduce_width = viz.norm_labels.width.col / triangle_height;
 	    ini_clust_width = ini_clust_width * reduce_width;
@@ -13498,7 +13496,7 @@ var Clustergrammer =
 
 	    var possible_orders = ['clust', 'rank'];
 
-	    if (_.has(inst_nodes[0], 'rankvar')) {
+	    if (underscore.has(inst_nodes[0], 'rankvar')) {
 	      possible_orders.push('rankvar');
 	    }
 
@@ -13801,7 +13799,7 @@ var Clustergrammer =
 	    ds_mat[ds_index].all_names.push(inst_row.name);
 
 	    // gather row_data
-	    if (_.has(ds_mat[ds_index], 'row_data')) {
+	    if (underscore.has(ds_mat[ds_index], 'row_data')) {
 
 	      for (x = 0; x < inst_row_data.length; x++) {
 	        ds_mat[ds_index].row_data[x].value = ds_mat[ds_index].row_data[x].value + inst_row_data[x].value;
@@ -14027,7 +14025,7 @@ var Clustergrammer =
 	      });
 	    }
 
-	    if (_.has(params.network_data, 'cat_colors') && predefined_cat_colors === true) {
+	    if (underscore.has(params.network_data, 'cat_colors') && predefined_cat_colors === true) {
 	      viz.cat_colors[inst_rc] = params.network_data.cat_colors[inst_rc];
 	    }
 
@@ -14069,10 +14067,6 @@ var Clustergrammer =
 	    viz.norm_labels.width[inst_rc] = label_scale(params.labels[inst_rc + '_max_char']) * params[inst_rc + '_label_scale'];
 
 	    viz['num_' + inst_rc + '_nodes'] = params.network_data[inst_rc + '_nodes'].length;
-
-	    // if (_.has(config, 'group_level')){
-	    //   config.group_level[inst_rc] = 5;
-	    // }
 
 	    if (inst_rc === 'row') {
 	      viz.dendro_room[inst_rc] = viz.dendro_room.symbol_width;
@@ -14653,7 +14647,7 @@ var Clustergrammer =
 	  }
 
 	  var keep_orig;
-	  if (_.has(params.network_data.links[0], 'value_orig')) {
+	  if (underscore.has(params.network_data.links[0], 'value_orig')) {
 	    keep_orig = true;
 	  } else {
 	    keep_orig = false;
@@ -15362,7 +15356,6 @@ var Clustergrammer =
 	    row_nodes = params.network_data.row_nodes;
 	  } else {
 	    underscore.each(params.network_data.row_nodes, function (inst_row) {
-	      // if (_.contains(row_names, inst_row.name)){
 	      if (underscore.contains(row_names, inst_row.name)) {
 	        row_nodes.push(inst_row);
 	      }
@@ -16848,7 +16841,7 @@ var Clustergrammer =
 
 	          // working on tracking the 'real' number of nodes, which is only different
 	          // if downsampling has been done
-	          if (_.has(inst_run_count[inst_cat], 'num_nodes_ds')) {
+	          if (underscore.has(inst_run_count[inst_cat], 'num_nodes_ds')) {
 	            var num_nodes_ds = inst_run_count[inst_cat].num_nodes_ds;
 	          } else {
 	            num_nodes_ds = null;
@@ -20584,6 +20577,7 @@ var Clustergrammer =
 
 	var get_cat_title = __webpack_require__(143);
 	var d3_tip_custom = __webpack_require__(100);
+	var underscore = __webpack_require__(3);
 
 	module.exports = function make_row_cat_super_labels(cgm) {
 
@@ -20684,7 +20678,7 @@ var Clustergrammer =
 	    d3.selectAll(params.root + ' .row_cat_selection_bar').call(cat_tip);
 	  }
 
-	  if (_.has(params.network_data, 'row_cat_bars')) {
+	  if (underscore.has(params.network_data, 'row_cat_bars')) {
 
 	    // Enrichrgram title
 	    /////////////////////
@@ -24158,7 +24152,6 @@ var Clustergrammer =
 	  if (delays.run_transition) {
 
 	    update_row_tiles.transition().delay(delays.update).duration(duration).attr('width', params.viz.rect_width).attr('height', params.viz.rect_height).attr('transform', function (d) {
-	      // if (_.contains(col_nodes_names, d.col_name)){
 	      if (underscore.contains(col_nodes_names, d.col_name)) {
 	        return fine_position_tile(params, d);
 	      } else {
@@ -25406,7 +25399,7 @@ var Clustergrammer =
 
 	    var orig_nodes = params.inst_nodes[inst_rc + '_nodes'];
 
-	    if (_.has(names, inst_rc)) {
+	    if (underscore.has(names, inst_rc)) {
 
 	      if (names[inst_rc].length > 0) {
 	        var inst_names = names[inst_rc];

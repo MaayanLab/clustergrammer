@@ -1,5 +1,6 @@
 var get_cat_title = require('../categories/get_cat_title');
 var d3_tip_custom = require('../tooltip/d3_tip_custom');
+var underscore = require('underscore');
 
 module.exports = function make_row_cat_super_labels(cgm){
 
@@ -150,7 +151,7 @@ module.exports = function make_row_cat_super_labels(cgm){
       .call(cat_tip);
   }
 
-  if (_.has(params.network_data, 'row_cat_bars')){
+  if (underscore.has(params.network_data, 'row_cat_bars')){
 
     // Enrichrgram title
     /////////////////////

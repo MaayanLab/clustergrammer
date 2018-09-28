@@ -16,7 +16,6 @@ module.exports = function make_row_labels(cgm, row_names='all', text_delay = 0){
     row_nodes = params.network_data.row_nodes;
   } else {
     underscore.each(params.network_data.row_nodes, function(inst_row){
-      // if (_.contains(row_names, inst_row.name)){
       if (underscore.contains(row_names, inst_row.name)){
         row_nodes.push(inst_row);
       }
