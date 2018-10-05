@@ -9,8 +9,11 @@ module.exports = function ini_cat_reorder(cgm){
   underscore.each(['row','col'], function(inst_rc){
 
     if (params.viz.show_categories[inst_rc]){
+
       d3.selectAll(params.root+' .'+inst_rc+'_cat_super')
         .on('dblclick',function(){
+
+          console.log('double clicking cat reorder ')
 
           if (params.sim_mat){
             inst_rc = 'both';
@@ -25,6 +28,8 @@ module.exports = function ini_cat_reorder(cgm){
             all_reorder( cgm, order_id, 'col');
           }
           else {
+
+            console.log(order_id)
             all_reorder( cgm, order_id, inst_rc);
           }
         });

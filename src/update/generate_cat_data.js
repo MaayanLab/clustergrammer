@@ -1,5 +1,9 @@
 var underscore = require('underscore');
 
+/*
+Only used for resetting category data
+*/
+
 module.exports = function generate_cat_data(cgm){
 
   // only row category resetting is supported currently

@@ -44,6 +44,8 @@ module.exports = function make_cat_breakdown_graph(params, inst_rc, inst_data, d
 
     // the index that will be used to generate the bars (will be different if
     // downsampled)
+    console.log(dendro_info)
+    console.log(inst_data)
     var cluster_total = dendro_info.all_names.length;
     var bars_index = num_nodes_index;
     if (is_downsampled){

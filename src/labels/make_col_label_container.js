@@ -163,6 +163,7 @@ module.exports = function make_col_label_container(cgm, text_delay = 0) {
     })
     .on('dblclick', function(d) {
 
+
         var data_attr = '__data__';
         var col_name = this[data_attr].name;
 
