@@ -28,9 +28,18 @@ Clustergrammer can be used in three main ways (this repo contains the source cod
 
 For information about building a webpage or app using Clustergrammer see: [Web-Development with Clustergrammer](http://clustergrammer.readthedocs.io/building_webpage.html)
 
-# JupyterCon 2018 Presentation
+# What's New
+
+### JupyterCon 2018 Presentation
 [![Clustergrammer JupyterCon 2018](http://img.youtube.com/vi/82epZkmfkrE/0.jpg)](http://www.youtube.com/watch?v=82epZkmfkrE)
 
+Clustergrammer was recently presented at JupyterCon 2018 (see [slides](http://bit.ly/clustergrammer-jupytercon)).
+
+### Clustergrammer2 
+
+[![ccle_gif](https://github.com/MaayanLab/clustergrammer-docs/blob/master/docs/_static/clustergrammer2_480px.gif "demo_high-fr.gif")](https://github.com/ismms-himc/clustergrammer2)
+
+Clustergrammer is being re-built using the WebGL library [regl](http://regl.party/). The new in-development front-end is [clustergrammer-gl](https://github.com/ismms-himc/clustergrammer-gl) and the new in-development Jupyter widget is [Clustergrammer2](https://github.com/ismms-himc/clustergrammer2).
 
 # Using Clustergrammer
 
