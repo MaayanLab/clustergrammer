@@ -35,7 +35,8 @@ For information about building a webpage or app using Clustergrammer see: [Web-D
 
 Clustergrammer was recently presented at JupyterCon 2018 (see [slides](http://bit.ly/clustergrammer-jupytercon)).
 
-### Clustergrammer2 
+### Clustergrammer2
+<img src='https://github.com/ismms-himc/clustergrammer2/blob/master/img/clustergrammer2_logo.png' alt="Clustergramer2" width="350px" >
 
 [![ccle_gif](https://github.com/MaayanLab/clustergrammer-docs/blob/master/docs/_static/clustergrammer2_480px.gif "demo_high-fr.gif")](https://github.com/ismms-himc/clustergrammer2)
 
