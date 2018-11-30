@@ -35,12 +35,11 @@ For information about building a webpage or app using Clustergrammer see: [Web-D
 
 Clustergrammer was recently presented at JupyterCon 2018 (see [slides](http://bit.ly/clustergrammer-jupytercon)).
 
-### Clustergrammer2
 <img src='https://github.com/ismms-himc/clustergrammer2/blob/master/img/clustergrammer2_logo.png' alt="Clustergramer2" width="350px" >
 
 [![ccle_gif](https://github.com/MaayanLab/clustergrammer-docs/blob/master/docs/_static/clustergrammer2_480px.gif "demo_high-fr.gif")](https://github.com/ismms-himc/clustergrammer2)
 
-Clustergrammer is being re-built using the WebGL library [regl](http://regl.party/). The new in-development front-end is [clustergrammer-gl](https://github.com/ismms-himc/clustergrammer-gl) and the new in-development Jupyter widget is [Clustergrammer2](https://github.com/ismms-himc/clustergrammer2).
+Clustergrammer is being re-built using the WebGL library [regl](http://regl.party/). The new in-development front-end is [Clustergrammer-GL](https://github.com/ismms-himc/clustergrammer-gl) and the new in-development Jupyter widget is [Clustergrammer2](https://github.com/ismms-himc/clustergrammer2).
 
 # Using Clustergrammer
 
