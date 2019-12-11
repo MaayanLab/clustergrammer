@@ -1,4 +1,6 @@
 var calc_downsampled_matrix = require('../matrix/calc_downsampled_matrix');
+var $ = require('jquery');
+var d3 = require('d3');
 
 module.exports = function calc_downsampled_levels(params){
 

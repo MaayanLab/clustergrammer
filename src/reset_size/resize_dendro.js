@@ -1,3 +1,4 @@
+var d3 = require('d3');
 var underscore = require('underscore');
 
 module.exports = function resize_dendro(params, svg_group, delay_info=false){

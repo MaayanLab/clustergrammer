@@ -1,6 +1,7 @@
 var draw_up_tile = require('./draw_up_tile');
 var draw_dn_tile = require('./draw_dn_tile');
 var fine_position_tile = require('../matrix/fine_position_tile');
+var d3 = require('d3');
 var underscore = require('underscore');
 
 module.exports = function enter_split_tiles(params, inp_row_data, row_selection, tip, delays, duration, tile){

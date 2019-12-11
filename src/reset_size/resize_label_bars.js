@@ -1,4 +1,5 @@
 var calc_val_max = require('../params/calc_val_max');
+// var d3 = require('d3');
 // var underscore = require('underscore');
 
 module.exports = function resize_label_bars(cgm, svg_group){

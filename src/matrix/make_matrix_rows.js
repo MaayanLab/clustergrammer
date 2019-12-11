@@ -1,6 +1,7 @@
 var make_simple_rows = require('./make_simple_rows');
 var d3_tip_custom = require('../tooltip/d3_tip_custom');
 var underscore = require('underscore');
+var d3 = require('d3');
 
 // current matrix can change with downsampling
 module.exports = function make_matrix_rows(params, current_matrix,

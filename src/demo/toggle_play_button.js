@@ -1,4 +1,7 @@
-module.exports = function toggle_play_button(params, show){
+var $ = require('jquery');
+var d3 = require('d3');
+
+module.exports = function toggle_play_button(params, show) {
 
   
   if (show === false){

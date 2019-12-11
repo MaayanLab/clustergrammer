@@ -1,3 +1,4 @@
+var d3 = require('d3');
 var underscore = require('underscore');
 
 module.exports = function make_view_request(params, requested_view){

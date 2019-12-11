@@ -1,4 +1,5 @@
 var resize_viz = require('./reset_size/resize_viz');
+var d3 = require('d3');
 
 module.exports = function initialize_resizing(cgm) {
 

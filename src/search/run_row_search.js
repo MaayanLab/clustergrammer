@@ -1,4 +1,5 @@
 var two_translate_zoom = require('../zoom/two_translate_zoom');
+var d3 = require('d3');
 var underscore = require('underscore');
 
 module.exports = function run_row_search(cgm, search_term, entities){

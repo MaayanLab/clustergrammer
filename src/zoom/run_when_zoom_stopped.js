@@ -4,6 +4,7 @@ var num_visible_labels = require('./num_visible_labels');
 var toggle_grid_lines = require('../matrix/toggle_grid_lines');
 var show_visible_area = require('./show_visible_area');
 var check_zoom_stop_status = require('./check_zoom_stop_status');
+var d3 = require('d3');
 var underscore = require('underscore');
 
 module.exports = function run_when_zoom_stopped(cgm){

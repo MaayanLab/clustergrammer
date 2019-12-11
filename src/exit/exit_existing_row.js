@@ -1,3 +1,4 @@
+var d3 = require('d3');
 var underscore = require('underscore');
 
 module.exports = function exit_existing_row(params, delays, cur_row_tiles, inp_row_data, row_selection){

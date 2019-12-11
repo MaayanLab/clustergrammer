@@ -3,6 +3,7 @@ var make_menu_update_button = require('./make_menu_update_button');
 var position_filter_menu = require('./position_filter_menu');
 var toggle_menu = require('./toggle_menu');
 // var recluster = require('../recluster/recluster');
+var d3 = require('d3');
 
 module.exports = function make_filter_menu(cgm){
 

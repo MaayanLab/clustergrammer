@@ -4,6 +4,7 @@ var d3_tip_custom = require('../tooltip/d3_tip_custom');
 var dendro_group_highlight = require('./dendro_group_highlight');
 var run_dendro_filter = require('./run_dendro_filter');
 var zoom_crop_triangles = require('../zoom/zoom_crop_triangles');
+var d3 = require('d3');
 
 module.exports = function make_dendro_crop_buttons(cgm, inst_rc){
 

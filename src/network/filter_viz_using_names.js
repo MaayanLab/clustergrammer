@@ -1,5 +1,6 @@
 var filter_network_using_new_nodes = require('./filter_network_using_new_nodes');
 var update_viz_with_network = require('../update/update_viz_with_network');
+var $ = require('jquery');
 var underscore = require('underscore');
 
 module.exports = function filter_viz_using_names(names, external_cgm = false){
@@ -22,7 +23,7 @@ module.exports = function filter_viz_using_names(names, external_cgm = false){
 
     var orig_nodes = params.inst_nodes[inst_rc+'_nodes'];
 
-    if (_.has(names, inst_rc)){
+    if (underscore.has(names, inst_rc)) {
 
       if (names[inst_rc].length > 0){
         var inst_names = names[inst_rc];

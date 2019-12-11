@@ -4,6 +4,7 @@ var ini_zoom_info = require('../zoom/ini_zoom_info');
 var calc_downsampled_levels = require('../matrix/calc_downsampled_levels');
 var two_translate_zoom = require('../zoom/two_translate_zoom');
 var get_previous_zoom = require('../zoom/get_previous_zoom');
+var d3 = require('d3');
 var underscore = require('underscore');
 
 module.exports = function(cgm, inst_order, inst_rc) {

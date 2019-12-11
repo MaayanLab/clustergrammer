@@ -5,6 +5,8 @@ var show_visible_area = require('../zoom/show_visible_area');
 var ini_zoom_info = require('../zoom/ini_zoom_info');
 var get_previous_zoom = require('../zoom/get_previous_zoom');
 var calc_downsampled_levels = require('../matrix/calc_downsampled_levels');
+var $ = require('jquery');
+var d3 = require('d3');
 var underscore = require('underscore');
 
 module.exports = function col_reorder(cgm, col_selection, inst_term) {

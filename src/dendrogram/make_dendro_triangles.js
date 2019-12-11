@@ -4,6 +4,9 @@ var dendro_group_highlight = require('./dendro_group_highlight');
 var d3_tip_custom = require('../tooltip/d3_tip_custom');
 var make_dendro_crop_buttons = require('./make_dendro_crop_buttons');
 var make_cat_breakdown_graph = require('../categories/make_cat_breakdown_graph');
+var $ = require('jquery');
+var d3 = require('d3');
+require('bootstrap/js/modal');
 
 module.exports = function make_dendro_triangles(cgm, inst_rc, is_change_group = false)
 {

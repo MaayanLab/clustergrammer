@@ -2,6 +2,7 @@ var reset_size_after_update = require('../reset_size/reset_size_after_update');
 var make_col_label_container = require('../labels/make_col_label_container');
 var show_visible_area = require('../zoom/show_visible_area');
 var resize_containers = require('../reset_size/resize_containers');
+var d3 = require('d3');
 
 module.exports = function ds_enter_exit_update(cgm){
 

@@ -2,6 +2,7 @@ var find_viz_rows = require('../zoom/find_viz_rows');
 var make_matrix_rows = require('../matrix/make_matrix_rows');
 var make_row_labels = require('../labels/make_row_labels');
 var make_row_visual_aid_triangles = require('../labels/make_row_visual_aid_triangles');
+var d3 = require('d3');
 var underscore = require('underscore');
 
 module.exports = function show_visible_area(cgm, zooming_stopped=false,

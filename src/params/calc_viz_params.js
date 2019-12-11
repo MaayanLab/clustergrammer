@@ -11,6 +11,7 @@ var calc_default_fs = require('./calc_default_fs');
 var utils = require('../Utils_clust');
 var get_available_filters = require('./get_available_filters');
 var make_cat_params = require('./make_cat_params');
+var underscore = require('underscore');
 
 module.exports = function calc_viz_params(params, predefined_cat_colors=true){
 
@@ -129,14 +130,14 @@ module.exports = function calc_viz_params(params, predefined_cat_colors=true){
     // // always make group level dict
     // params.group_level = {};
 
-    if (_.has(params, 'group_level') == false){
+    if (underscore.has(params, 'group_level') == false){
       if (viz.show_dendrogram){
         params.group_level = {};
       }
 
       // preventing error when un-clustered, above statement
       // preserves dendro state while updating
-      if (_.has(params, 'group_level') == false){
+      if (underscore.has(params, 'group_level') == false){
         params.group_level = {};
       }
 

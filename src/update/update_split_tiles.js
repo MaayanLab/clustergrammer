@@ -3,6 +3,7 @@ var draw_dn_tile = require('../enter/draw_dn_tile');
 var mouseover_tile = require('../matrix/mouseover_tile');
 var mouseout_tile = require('../matrix/mouseout_tile');
 var fine_position_tile = require('../matrix/fine_position_tile');
+var d3 = require('d3');
 var underscore = require('underscore');
 
 module.exports = function update_split_tiles(params, inp_row_data, row_selection, delays, duration, cur_row_tiles, tip){

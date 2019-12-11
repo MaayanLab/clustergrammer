@@ -1,6 +1,7 @@
 var mouseover_tile = require('../matrix/mouseover_tile');
 var mouseout_tile = require('../matrix/mouseout_tile');
 var fine_position_tile = require('../matrix/fine_position_tile');
+var d3 = require('d3');
 
 module.exports = function enter_existing_row(params, delays, duration, cur_row_tiles, tip){
 

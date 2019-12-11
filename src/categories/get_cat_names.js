@@ -1,4 +1,5 @@
 var utils = require('../Utils_clust');
+var d3 = require('d3');
 var underscore = require('underscore');
 
 module.exports = function get_cat_names(params, inst_data, inst_selection, inst_rc){

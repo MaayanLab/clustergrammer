@@ -1,4 +1,5 @@
 var calc_viz_dimensions = require('./params/calc_viz_dimensions');
+var d3 = require('d3');
 
 module.exports = function set_viz_wrapper_size(params) {
 

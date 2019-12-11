@@ -1,4 +1,5 @@
 var utils = require('../Utils_clust');
+var d3 = require('d3');
 
 module.exports = function resize_col_text(params, svg_group){
   svg_group

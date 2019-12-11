@@ -14,6 +14,7 @@ var build_dendro_sliders = require('./dendrogram/build_dendro_sliders');
 // var build_tree_icon = require('./menus/build_tree_icon');
 // var build_filter_icon = require('./menus/build_filter_icon');
 var make_row_dendro_spillover = require('./spillover/make_row_dendro_spillover');
+var d3 = require('d3');
 var underscore = require('underscore');
 
 module.exports = function make_viz(cgm) {

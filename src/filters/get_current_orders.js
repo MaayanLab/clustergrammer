@@ -1,3 +1,4 @@
+var d3 = require('d3');
 var underscore = require('underscore');
 
 module.exports = function get_current_orders(params){

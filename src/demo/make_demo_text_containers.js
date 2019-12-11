@@ -1,4 +1,6 @@
-module.exports = function make_demo_text_containers(params, demo_text_size){
+var d3 = require('d3');
+
+module.exports = function make_demo_text_containers(params, demo_text_size) {
 
   if (d3.select(params.root+' .demo_group').empty()){
 

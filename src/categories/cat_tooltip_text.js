@@ -1,4 +1,5 @@
 var get_cat_title = require('../categories/get_cat_title');
+var d3 = require('d3');
 var underscore = require('underscore');
 
 module.exports = function cat_tooltip_text(params, inst_data, inst_selection, inst_rc){

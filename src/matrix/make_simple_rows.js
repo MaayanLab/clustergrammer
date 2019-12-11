@@ -5,6 +5,7 @@ var draw_dn_tile = require('../enter/draw_dn_tile');
 var mouseover_tile = require('./mouseover_tile');
 var mouseout_tile = require('./mouseout_tile');
 var fine_position_tile = require('./fine_position_tile');
+var d3 = require('d3');
 var underscore = require('underscore');
 
 module.exports = function make_simple_rows(params, inst_data, tip, row_selection, ds_level = -1) {
@@ -19,7 +20,7 @@ module.exports = function make_simple_rows(params, inst_data, tip, row_selection
   }
 
   var keep_orig;
-  if (_.has(params.network_data.links[0], 'value_orig')) {
+  if (underscore.has(params.network_data.links[0], 'value_orig')) {
     keep_orig = true;
   } else {
     keep_orig = false;

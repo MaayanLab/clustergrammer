@@ -1,4 +1,6 @@
-module.exports = function position_filter_icon(cgm){
+var d3 = require('d3');
+
+module.exports = function position_filter_icon(cgm) {
 
   var viz = cgm.params.viz;
   var tmp_left;

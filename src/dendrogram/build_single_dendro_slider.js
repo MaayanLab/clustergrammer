@@ -1,5 +1,6 @@
 var change_groups = require('./change_groups');
 var position_dendro_slider = require('./position_dendro_slider');
+var d3 = require('d3');
 
 module.exports = function build_single_dendro_slider(cgm, inst_rc){
 

@@ -181,7 +181,7 @@ module.exports = function calc_cat_cluster_breakdown(params, inst_data, inst_rc)
 
           // working on tracking the 'real' number of nodes, which is only different
           // if downsampling has been done
-          if (_.has(inst_run_count[inst_cat], 'num_nodes_ds')){
+          if (underscore.has(inst_run_count[inst_cat], 'num_nodes_ds')){
             var num_nodes_ds = inst_run_count[inst_cat].num_nodes_ds;
           } else {
             num_nodes_ds = null;

@@ -1,4 +1,5 @@
 var make_dendro_triangles = require('../dendrogram/make_dendro_triangles');
+var d3 = require('d3');
 
 module.exports = function toggle_dendro_view(cgm, inst_rc, wait_time = 1500){
 

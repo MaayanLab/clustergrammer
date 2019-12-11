@@ -1,3 +1,4 @@
+var d3 = require('d3');
 var underscore = require('underscore');
 
 module.exports = function calc_cat_params(params, viz){
@@ -20,7 +21,7 @@ module.exports = function calc_cat_params(params, viz){
 
     viz['num_'+inst_rc+'_nodes'] = params.network_data[inst_rc+'_nodes'].length;
 
-    // if (_.has(config, 'group_level')){
+    // if (underscore.has(config, 'group_level')){
     //   config.group_level[inst_rc] = 5;
     // }
 

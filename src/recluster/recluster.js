@@ -5,6 +5,8 @@ var math = core.create();
 var dist_fun = require('./distance_functions');
 var get_order_and_groups_clusterfck_tree = require('./get_order_and_groups_clusterfck_tree');
 var update_view = require('../update/update_view');
+var $ = require('jquery');
+var d3 = require('d3');
 var underscore = require('underscore');
 
 math.import(require('mathjs/lib/function/matrix/transpose'));

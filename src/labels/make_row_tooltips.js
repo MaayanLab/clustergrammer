@@ -1,4 +1,5 @@
 var d3_tip_custom = require('../tooltip/d3_tip_custom');
+var d3 = require('d3');
 
 module.exports = function make_row_tooltips(params){
 

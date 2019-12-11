@@ -1,5 +1,6 @@
 var utils = require('../Utils_clust');
 var initialize_matrix = require('../initialize_matrix');
+var d3 = require('d3');
 var underscore = require('underscore');
 
 module.exports = function ini_matrix_params(params){
@@ -58,7 +59,7 @@ module.exports = function ini_matrix_params(params){
 
     var possible_orders = ['clust','rank'];
 
-    if (_.has(inst_nodes[0], 'rankvar')){
+    if (underscore.has(inst_nodes[0], 'rankvar')) {
       possible_orders.push('rankvar');
     }
 

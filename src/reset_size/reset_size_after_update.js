@@ -17,6 +17,7 @@ var calc_default_fs = require('../params/calc_default_fs');
 var calc_zoom_switching = require('../zoom/calc_zoom_switching');
 // var show_visible_area = require('../zoom/show_visible_area');
 var ini_zoom_info = require('../zoom/ini_zoom_info');
+var d3 = require('d3');
 var underscore = require('underscore');
 
 module.exports = function reset_size_after_update(cgm, duration=0, delays=null) {

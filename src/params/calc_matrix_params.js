@@ -1,5 +1,6 @@
 var ini_matrix_params = require('./ini_matrix_params');
 var calc_downsampled_levels = require('../matrix/calc_downsampled_levels');
+var d3 = require('d3');
 var underscore = require('underscore');
 
 module.exports = function calc_matrix_params(params){

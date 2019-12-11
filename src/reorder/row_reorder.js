@@ -3,6 +3,8 @@ var toggle_dendro_view = require('../dendrogram/toggle_dendro_view');
 var ini_zoom_info = require('../zoom/ini_zoom_info');
 var get_previous_zoom = require('../zoom/get_previous_zoom');
 var calc_downsampled_levels = require('../matrix/calc_downsampled_levels');
+var $ = require('jquery');
+var d3 = require('d3');
 var underscore = require('underscore');
 
 module.exports = function row_reorder(cgm, row_selection, inst_row) {

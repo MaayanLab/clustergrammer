@@ -2,6 +2,7 @@ var enter_split_tiles = require('./enter_split_tiles');
 var mouseover_tile = require('../matrix/mouseover_tile');
 var mouseout_tile = require('../matrix/mouseout_tile');
 var fine_position_tile = require('../matrix/fine_position_tile');
+var d3 = require('d3');
 var underscore = require('underscore');
 
 // make each row in the clustergram

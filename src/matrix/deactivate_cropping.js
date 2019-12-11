@@ -1,4 +1,6 @@
-module.exports = function deactivate_cropping(cgm){
+var d3 = require('d3');
+
+module.exports = function deactivate_cropping(cgm) {
 
   d3.select(cgm.params.root+' .brush_group')
     .transition()

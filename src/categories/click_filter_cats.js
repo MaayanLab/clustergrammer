@@ -1,4 +1,5 @@
 var get_cat_names = require('../categories/get_cat_names');
+var d3 = require('d3');
 
 module.exports = function click_filter_cats(cgm, inst_data, inst_selection, inst_rc){
 

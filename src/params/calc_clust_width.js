@@ -1,3 +1,6 @@
+var d3 = require('d3');
+var underscore = require('underscore');
+
 module.exports = function calc_clust_width(viz){
 
   viz.clust = {};
@@ -24,7 +27,7 @@ module.exports = function calc_clust_width(viz){
   var tmp_x_scale = d3.scale
     .ordinal()
     .rangeBands([0, ini_clust_width])
-    .domain(_.range( viz.num_col_nodes ));
+    .domain(underscore.range(viz.num_col_nodes));
 
   var triangle_height = tmp_x_scale.rangeBand()/2;
 

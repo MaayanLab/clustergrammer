@@ -1,4 +1,5 @@
 var make_filter_title = require('./make_filter_title');
+var d3 = require('d3');
 var underscore = require('underscore');
 
 module.exports = function reset_other_filter_sliders(cgm, filter_type, inst_state){

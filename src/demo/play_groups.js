@@ -1,6 +1,7 @@
 var demo_text = require('./demo_text');
 var highlight_sidebar_element = require('./highlight_sidebar_element');
 var change_groups = require('../dendrogram/change_groups');
+var $ = require('jquery');
 
 module.exports = function play_groups(){
   /* eslint-disable */

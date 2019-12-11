@@ -1,4 +1,5 @@
 var all_reorder = require('./all_reorder');
+var d3 = require('d3');
 var underscore = require('underscore');
 
 module.exports = function ini_cat_reorder(cgm){

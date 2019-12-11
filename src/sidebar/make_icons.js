@@ -2,6 +2,9 @@ var file_saver = require('../screenshot/file_saver');
 var two_translate_zoom = require('../zoom/two_translate_zoom');
 var deactivate_cropping = require('../matrix/deactivate_cropping');
 var save_svg_png = require('save-svg-as-png');
+var $ = require('jquery');
+var d3 = require('d3');
+require('bootstrap/js/modal');
 
 module.exports = function make_icons(cgm, sidebar){
 
@@ -72,7 +75,7 @@ module.exports = function make_icons(cgm, sidebar){
     .style('padding-right', padding_right)
     .append('i')
     .classed('fa',true)
-    .classed('fa fa-cloud-download',true)
+    .classed('fa-cloud-download',true)
     .classed('icon_buttons',true)
     .style('font-size','25px')
     .on('click', function() {

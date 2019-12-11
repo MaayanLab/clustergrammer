@@ -7,6 +7,7 @@ var make_icons = require('./make_icons');
 var make_modals = require('./make_modals');
 var set_up_opacity_slider = require('./set_up_opacity_slider');
 var make_colorbar = require('./make_colorbar');
+var d3 = require('d3');
 var underscore = require('underscore');
 
 /* Represents sidebar with controls.

@@ -1,4 +1,5 @@
 var calc_real_font_size = require('./calc_real_font_size');
+var d3 = require('d3');
 
 module.exports = function constrain_font_size(params) {
 

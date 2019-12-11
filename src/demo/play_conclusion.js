@@ -1,5 +1,6 @@
 var demo_text = require('./demo_text');
 var toggle_play_button = require('./toggle_play_button');
+var d3 = require('d3');
 
 module.exports = function play_conclusion(){
 

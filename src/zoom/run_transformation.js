@@ -5,6 +5,7 @@ var zoom_crop_triangles = require('./zoom_crop_triangles');
 var get_previous_zoom = require('./get_previous_zoom');
 var run_when_zoom_stopped = require('./run_when_zoom_stopped');
 var check_zoom_stop_status = require('./check_zoom_stop_status');
+var d3 = require('d3');
 
 module.exports = function run_transformation(cgm){
 

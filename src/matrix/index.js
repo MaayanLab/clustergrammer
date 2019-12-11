@@ -2,6 +2,7 @@ var utils = require('../Utils_clust');
 var draw_gridlines = require('../matrix/draw_gridlines');
 var add_click_hlight = require('./add_click_hlight');
 var make_matrix_rows = require('./make_matrix_rows');
+var d3 = require('d3');
 
 module.exports = function(params, svg_elem) {
   var network_data = params.network_data;

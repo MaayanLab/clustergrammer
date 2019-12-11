@@ -1,6 +1,7 @@
 var make_network_using_view = require('./make_network_using_view');
 var disable_sidebar = require('../sidebar/disable_sidebar');
 var update_viz_with_network = require('../update/update_viz_with_network');
+var d3 = require('d3');
 var underscore = require('underscore');
 
 module.exports = function update_viz_with_view(cgm, requested_view) {
@@ -14,6 +15,7 @@ module.exports = function update_viz_with_view(cgm, requested_view) {
   // reset crop button
   d3.select(cgm.params.root+' .crop_button')
     .style('color', '#337ab7')
+    .classed('fa', true)
     .classed('fa-crop', true)
     .classed('fa-undo', false)
     .classed('active_cropping', false);

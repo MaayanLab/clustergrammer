@@ -2,6 +2,7 @@ var utils = require('../Utils_clust');
 var add_row_click_hlight = require('./add_row_click_hlight');
 var row_reorder = require('../reorder/row_reorder');
 var make_row_tooltips = require('./make_row_tooltips');
+var d3 = require('d3');
 var underscore = require('underscore');
 
 module.exports = function make_row_labels(cgm, row_names='all', text_delay = 0){
@@ -16,7 +17,7 @@ module.exports = function make_row_labels(cgm, row_names='all', text_delay = 0){
     row_nodes = params.network_data.row_nodes;
   } else {
     underscore.each(params.network_data.row_nodes, function(inst_row){
-      // if (_.contains(row_names, inst_row.name)){
+      // if (underscore.contains(row_names, inst_row.name)){
       if (underscore.contains(row_names, inst_row.name)){
         row_nodes.push(inst_row);
       }

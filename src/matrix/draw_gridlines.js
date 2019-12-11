@@ -1,5 +1,6 @@
 // var grid_lines_viz = require('./grid_lines_viz');
 // var toggle_grid_lines = require('./toggle_grid_lines');
+// var d3 = require('d3');
 
  /* eslint-disable */
 module.exports = function draw_gridlines(params, delays, duration){

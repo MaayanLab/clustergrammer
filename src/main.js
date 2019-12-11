@@ -16,6 +16,7 @@ var run_zoom = require('./zoom/run_zoom');
 var d3_tip_custom = require('./tooltip/d3_tip_custom');
 var all_reorder = require('./reorder/all_reorder');
 var make_matrix_string = require('./matrix/make_matrix_string');
+var d3 = require('d3');
 
 // moved d3.slider to src
 d3.slider = require('./d3.slider');
@@ -26,6 +27,10 @@ var awesomplete = require('awesomplete');
 // getting css from src
 require('!style!css!./d3.slider/d3.slider.css');
 require('!style!css!awesomplete/awesomplete.css');
+
+require("!style!css!font-awesome/css/font-awesome.min.css");
+require("!style!css!bootstrap/dist/css/bootstrap.min.css");
+require("!style!css!../css/custom.css");
 
 /* clustergrammer v1.19.5
  * Nicolas Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai

@@ -1,4 +1,5 @@
 var utils = require('./Utils_clust');
+var d3 = require('d3');
 
 module.exports = function(network_data) {
   var matrix = [];

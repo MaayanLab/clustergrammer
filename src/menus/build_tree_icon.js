@@ -2,6 +2,7 @@ var d3_tip_custom = require('../tooltip/d3_tip_custom');
 var position_tree_icon = require('./position_tree_icon');
 var toggle_menu = require('./toggle_menu');
 var make_tree_menu = require('./make_tree_menu');
+var d3 = require('d3');
 
 module.exports = function build_tree_icon(cgm){
 

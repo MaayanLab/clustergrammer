@@ -8,6 +8,7 @@ var enter_row_groups = require('../enter/enter_row_groups');
 var resize_containers = require('../reset_size/resize_containers');
 var label_constrain_and_trim = require('../labels/label_constrain_and_trim');
 var d3_tip_custom = require('../tooltip/d3_tip_custom');
+var d3 = require('d3');
 
 module.exports = function enter_exit_update(cgm, network_data, delays){
 

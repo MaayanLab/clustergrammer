@@ -30,6 +30,7 @@ var position_filter_icon = require('../menus/position_filter_icon');
 var position_tree_menu = require('../menus/position_tree_menu');
 var ini_zoom_info = require('../zoom/ini_zoom_info');
 var grid_lines_viz = require('../matrix/grid_lines_viz');
+var d3 = require('d3');
 var underscore = require('underscore');
 
 module.exports = function resize_viz(cgm) {

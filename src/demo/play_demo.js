@@ -14,6 +14,8 @@ var play_categories = require('./play_categories');
 var play_conclusion = require('./play_conclusion');
 var toggle_play_button = require('./toggle_play_button');
 var play_menu_button = require('./play_menu_button');
+var $ = require('jquery');
+var d3 = require('d3');
 
 module.exports = function play_demo(){
 

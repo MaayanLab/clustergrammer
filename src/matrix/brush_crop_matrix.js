@@ -1,4 +1,5 @@
 var deactivate_cropping = require('./deactivate_cropping');
+var d3 = require('d3');
 var underscore = require('underscore');
 
 module.exports = function brush_crop_matrix(){
@@ -62,6 +63,7 @@ module.exports = function brush_crop_matrix(){
 
       d3.select(params.root+' .crop_button')
         .style('color', '#337ab7')
+        .classed('fa', true)
         .classed('fa-crop', false)
         .classed('fa-undo', true);
 

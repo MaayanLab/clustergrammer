@@ -1,4 +1,5 @@
 var calc_cat_cluster_breakdown = require('./calc_cat_cluster_breakdown');
+var d3 = require('d3');
 var underscore = require('underscore');
 var cat_breakdown_bars = require('./cat_breakdown_bars');
 var cat_breakdown_values = require('./cat_breakdown_values');

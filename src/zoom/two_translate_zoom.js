@@ -3,6 +3,7 @@ var label_constrain_and_trim = require('../labels/label_constrain_and_trim');
 var show_visible_area = require('./show_visible_area');
 var ini_zoom_info = require('../zoom/ini_zoom_info');
 var toggle_grid_lines = require('../matrix/toggle_grid_lines');
+var d3 = require('d3');
 var underscore = require('underscore');
 
 module.exports = function two_translate_zoom(cgm, pan_dx, pan_dy, fin_zoom) {

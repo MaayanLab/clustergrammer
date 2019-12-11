@@ -1,3 +1,4 @@
+var d3 = require('d3');
 var underscore = require('underscore');
 
 module.exports = function mouseover_tile(params, inst_selection, tip, inst_arguments){

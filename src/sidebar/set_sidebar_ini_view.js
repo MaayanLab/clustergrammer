@@ -1,4 +1,5 @@
 var make_filter_title = require('../filters/make_filter_title');
+var d3 = require('d3');
 var underscore = require('underscore');
 
 module.exports = function set_sidebar_ini_view(params){

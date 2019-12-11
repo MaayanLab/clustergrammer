@@ -3,6 +3,7 @@ var calc_clust_height = require('../params/calc_clust_height');
 var calc_clust_width = require('../params/calc_clust_width');
 var calc_default_fs = require('../params/calc_default_fs');
 var calc_zoom_switching = require('../zoom/calc_zoom_switching');
+var d3 = require('d3');
 var underscore = require('underscore');
 
 module.exports = function recalc_params_for_resize(params){

@@ -4,6 +4,7 @@ var col_reorder = require('../reorder/col_reorder');
 var row_reorder = require('../reorder/row_reorder');
 var make_col_tooltips = require('./make_col_tooltips');
 var col_viz_aid_triangle = require('./col_viz_aid_triangle');
+var d3 = require('d3');
 
 module.exports = function make_col_label_container(cgm, text_delay = 0) {
 

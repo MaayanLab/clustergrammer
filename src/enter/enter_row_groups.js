@@ -1,4 +1,5 @@
 var enter_new_rows = require('./enter_new_rows');
+var d3 = require('d3');
 
 module.exports = function enter_row_groups(params, delays, duration, tip){
 
