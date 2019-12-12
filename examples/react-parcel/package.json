@@ -1,0 +1,25 @@
+{
+  "name": "clustergrammer-react-parcel-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "parcel serve --no-source-maps index.html"
+  },
+  "author": "Daniel J. B. Clarke <u8sand@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "clustergrammer": "file:../..",
+    "isomorphic-fetch": "^2.2.1",
+    "isomorphic-form-data": "^2.0.0",
+    "parcel-bundler": "^1.12.4",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.7.5",
+    "@babel/plugin-proposal-class-properties": "^7.7.4",
+    "@babel/plugin-transform-runtime": "^7.7.6",
+    "@babel/preset-react": "^7.7.4"
+  }
+}
