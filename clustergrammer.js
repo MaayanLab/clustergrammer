@@ -28729,7 +28729,7 @@ var Clustergrammer =
 	  var defs = main_svg.append("defs");
 
 	  //Append a linearGradient element to the defs and give it a unique id
-	  var linearGradient = defs.append("linearGradient").attr("id", "linear-gradient");
+	  var linearGradient = defs.append("linearGradient").attr("id", params.root.replace('#','')+'_'+"linear-gradient");
 
 	  var special_case = 'none';
 
@@ -28769,7 +28769,7 @@ var Clustergrammer =
 	    }
 
 	  // make colorbar
-	  main_svg.append('rect').classed('background', true).attr('height', colorbar_height + 'px').attr('width', colorbar_width + 'px').attr('fill', 'url(#linear-gradient)').attr('transform', 'translate(' + bar_margin_left + ', ' + bar_margin_top + ')').attr('stroke', 'grey').attr('stroke-width', '0.25px');
+	  main_svg.append('rect').classed('background', true).attr('height', colorbar_height + 'px').attr('width', colorbar_width + 'px').attr('fill', 'url(#'+params.root.replace('#','')+'_'+'linear-gradient)').attr('transform', 'translate(' + bar_margin_left + ', ' + bar_margin_top + ')').attr('stroke', 'grey').attr('stroke-width', '0.25px');
 
 	  // make title
 	  ///////////////
