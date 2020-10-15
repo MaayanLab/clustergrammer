@@ -24,6 +24,7 @@ function make_clust(inst_network){
         'matrix_update_callback':matrix_update_callback,
         'cat_update_callback': cat_update_callback,
         'sidebar_width':150,
+        // 'tile_colors':['#ED9124','#1C86EE'],
         // 'ini_view':{'N_row_var':20}
         // 'ini_expand':true
       };
