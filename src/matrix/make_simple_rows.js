@@ -19,7 +19,7 @@ module.exports = function make_simple_rows(params, inst_data, tip, row_selection
   }
 
   var keep_orig;
-  if (_.has(params.network_data.links[0], 'value_orig')) {
+  if (underscore.has(params.network_data.links[0], 'value_orig')) {
     keep_orig = true;
   } else {
     keep_orig = false;

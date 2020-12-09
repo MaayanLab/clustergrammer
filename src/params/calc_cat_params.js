@@ -20,10 +20,6 @@ module.exports = function calc_cat_params(params, viz){
 
     viz['num_'+inst_rc+'_nodes'] = params.network_data[inst_rc+'_nodes'].length;
 
-    // if (_.has(config, 'group_level')){
-    //   config.group_level[inst_rc] = 5;
-    // }
-
     if(inst_rc === 'row'){
       viz.dendro_room[inst_rc] = viz.dendro_room.symbol_width;
     } else {

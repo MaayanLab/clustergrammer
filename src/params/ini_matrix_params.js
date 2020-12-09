@@ -58,7 +58,7 @@ module.exports = function ini_matrix_params(params){
 
     var possible_orders = ['clust','rank'];
 
-    if (_.has(inst_nodes[0], 'rankvar')){
+    if (underscore.has(inst_nodes[0], 'rankvar')){
       possible_orders.push('rankvar');
     }
 

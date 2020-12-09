@@ -63,7 +63,7 @@ module.exports = function filter_network_using_new_nodes(config, new_nodes) {
   new_network_data.views = config.network_data.views;
 
   // add cat_colors if necessary
-  if (_.has(config.network_data, 'cat_colors')){
+  if (underscore.has(config.network_data, 'cat_colors')){
     new_network_data.cat_colors = config.network_data.cat_colors;
   }
 

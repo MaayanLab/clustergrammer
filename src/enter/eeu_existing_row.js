@@ -47,7 +47,6 @@ module.exports = function eeu_existing_row(params, ini_inp_row_data, delays, dur
       .attr('width', params.viz.rect_width)
       .attr('height', params.viz.rect_height)
       .attr('transform', function(d) {
-        // if (_.contains(col_nodes_names, d.col_name)){
         if (underscore.contains(col_nodes_names, d.col_name)){
           return fine_position_tile(params, d);
         } else {

@@ -12,7 +12,7 @@ module.exports = function get_available_filters(views){
 
       if (inst_key != 'nodes'){
 
-        if (!_.has(filter_data, inst_key)){
+        if (!underscore.has(filter_data, inst_key)){
           filter_data[inst_key] = [];
         }
 

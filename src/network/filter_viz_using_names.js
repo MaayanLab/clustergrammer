@@ -22,7 +22,7 @@ module.exports = function filter_viz_using_names(names, external_cgm = false){
 
     var orig_nodes = params.inst_nodes[inst_rc+'_nodes'];
 
-    if (_.has(names, inst_rc)){
+    if (underscore.has(names, inst_rc)){
 
       if (names[inst_rc].length > 0){
         var inst_names = names[inst_rc];
