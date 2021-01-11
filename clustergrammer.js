@@ -24619,7 +24619,7 @@ var Clustergrammer =
 	  d3.selectAll('.awesomplete ul').style('z-index', 99);
 
 	  // submit genes button
-	  $(params.root + ' .gene_search_box').keyup(function (e) {
+	  $(params.root + ' .gene_search_box').on("keyup", function (e) {
 	    if (e.keyCode === 13) {
 	      var search_gene = $(params.root + ' .gene_search_box').val();
 	      run_row_search(cgm, search_gene, entities);
