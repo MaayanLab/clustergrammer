@@ -23409,7 +23409,7 @@ var Clustergrammer =
 	      return this.__data__ == inst_order;
 	    })[0];
 
-	    $(inst_button).click();
+	    $(inst_button).on("click");
 	  }
 
 	  return {
@@ -23471,7 +23471,7 @@ var Clustergrammer =
 	  }
 
 	  function run_search(params) {
-	    $(params.root + ' .submit_gene_button').click();
+	    $(params.root + ' .submit_gene_button').on("click");
 	    $(params.root + ' .gene_search_box').autocomplete("search", '');
 	  }
 
@@ -24619,14 +24619,14 @@ var Clustergrammer =
 	  d3.selectAll('.awesomplete ul').style('z-index', 99);
 
 	  // submit genes button
-	  $(params.root + ' .gene_search_box').keyup(function (e) {
+	  $(params.root + ' .gene_search_box').on("keyup", function (e) {
 	    if (e.keyCode === 13) {
 	      var search_gene = $(params.root + ' .gene_search_box').val();
 	      run_row_search(cgm, search_gene, entities);
 	    }
 	  });
 
-	  $(params.root + ' .submit_gene_button').off().click(function () {
+	  $(params.root + ' .submit_gene_button').off().on("click", function () {
 	    var search_gene = $(params.root + ' .gene_search_box').val();
 	    run_row_search(cgm, search_gene, entities);
 	  });
@@ -24641,7 +24641,7 @@ var Clustergrammer =
 	  underscore.each(reorder_types, function (inst_rc) {
 
 	    // reorder buttons
-	    $(params.root + ' .toggle_' + inst_rc + '_order .btn').off().click(function (evt) {
+	    $(params.root + ' .toggle_' + inst_rc + '_order .btn').off().on("click", function (evt) {
 
 	      var order_id = $(evt.target).attr('name').replace('_row', '').replace('_col', '');
 
@@ -25022,7 +25022,7 @@ var Clustergrammer =
 	      return this.__data__ == inst_order;
 	    })[0];
 
-	    $(inst_button).click();
+	    $(inst_button).on("click");
 	  }
 
 	  // allows doubleclicking on d3 element
@@ -27866,7 +27866,7 @@ var Clustergrammer =
 	    return button_dict[d];
 	  });
 
-	  $(params.root + ' .categorical_filter .btn').off().click(function () {
+	  $(params.root + ' .categorical_filter .btn').off().on("click", function () {
 
 	    d3.selectAll(params.root + ' .categorical_filter .btn').classed('active', false);
 
