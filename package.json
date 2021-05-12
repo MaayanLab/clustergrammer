@@ -34,7 +34,7 @@
     "awesomplete": "1.1.1",
     "d3": "^3.5.15",
     "jquery": "1.11.0",
-    "mathjs": "3.17.0",
+    "mathjs": "7.5.1",
     "save-svg-as-png": "^1.1.0",
     "style-loader": "^0.13.1",
     "underscore": "1.8.3"
