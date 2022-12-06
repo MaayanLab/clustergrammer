@@ -13190,20 +13190,26 @@ var Clustergrammer =
 	var calc_viz_dimensions = __webpack_require__(70);
 
 	module.exports = function set_viz_wrapper_size(params) {
-
 	  // Create wrapper around SVG visualization
-	  if (d3.select(params.root + ' .viz_wrapper').empty()) {
+	  if (d3.select(params.root + " .viz_wrapper").empty()) {
+	    // customization
+	    // d3.select(params.root)
+	    //   .append('div')
+	    //   .classed('sidebar_wrapper', true);
 
-	    d3.select(params.root).append('div').classed('sidebar_wrapper', true);
-
-	    d3.select(params.root).append('div').classed('viz_wrapper', true);
+	    d3.select(params.root).append("div").classed("viz_wrapper", true);
 	  }
 
 	  var cont_dim = calc_viz_dimensions(params);
 
-	  d3.select(params.root + ' .sidebar_wrapper').style('float', 'left').style('width', params.sidebar_width + 'px').style('height', cont_dim.height + 'px').style('overflow', 'hidden');
+	  // customization
+	  // d3.select(params.root + " .sidebar_wrapper")
+	  //   .style("float", "left")
+	  //   .style("width", params.sidebar_width + "px")
+	  //   .style("height", cont_dim.height + "px")
+	  //   .style("overflow", "hidden");
 
-	  d3.select(params.viz.viz_wrapper).style('float', 'left').style('width', cont_dim.width + 'px').style('height', cont_dim.height + 'px');
+	  d3.select(params.viz.viz_wrapper).style("float", "left").style("width", cont_dim.width + "px").style("height", cont_dim.height + "px");
 		};
 
 /***/ }),
@@ -30741,8 +30747,7 @@ var Clustergrammer =
 
 	      d3.selectAll(params.root + " .borders").style("fill", "white");
 	      // d3.select(params.root+' .footer_section').style('display', 'none');
-	      // customization
-	      // d3.select(params.root + " .sidebar_wrapper").style("display", "none");
+	      d3.select(params.root + " .sidebar_wrapper").style("display", "none");
 
 	      // contract view
 	    } else {
@@ -30756,9 +30761,8 @@ var Clustergrammer =
 	      d3.selectAll(params.root + " .borders").style("fill", "#eee");
 	      // d3.select(params.root+' .footer_section').style('display', 'block');
 	      d3.select(params.root + " .viz_wrapper").style("width", "100px");
-	      // customization
-	      // d3.select(params.root+' .sidebar_wrapper')
-	      //   .style('display','block');
+
+	      d3.select(params.root + " .sidebar_wrapper").style("display", "block");
 	    }
 
 	    // // resize parent div

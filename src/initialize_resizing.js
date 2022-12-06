@@ -71,8 +71,7 @@ module.exports = function initialize_resizing(cgm) {
 
         d3.selectAll(params.root + " .borders").style("fill", "white");
         // d3.select(params.root+' .footer_section').style('display', 'none');
-        // customization
-        // d3.select(params.root + " .sidebar_wrapper").style("display", "none");
+        d3.select(params.root + " .sidebar_wrapper").style("display", "none");
 
         // contract view
       } else {
@@ -86,9 +85,8 @@ module.exports = function initialize_resizing(cgm) {
         d3.selectAll(params.root + " .borders").style("fill", "#eee");
         // d3.select(params.root+' .footer_section').style('display', 'block');
         d3.select(params.root + " .viz_wrapper").style("width", "100px");
-        // customization
-        // d3.select(params.root+' .sidebar_wrapper')
-        //   .style('display','block');
+
+        d3.select(params.root + " .sidebar_wrapper").style("display", "block");
       }
 
       // // resize parent div
