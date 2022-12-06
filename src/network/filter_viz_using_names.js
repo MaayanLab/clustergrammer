@@ -1,14 +1,13 @@
-var filter_network_using_new_nodes = require('./filter_network_using_new_nodes');
-var update_viz_with_network = require('../update/update_viz_with_network');
-var underscore = require('underscore');
+var filter_network_using_new_nodes = require("./filter_network_using_new_nodes");
+var update_viz_with_network = require("../update/update_viz_with_network");
+var _ = require("underscore");
 
-module.exports = function filter_viz_using_names(names, external_cgm = false){
-
+module.exports = function filter_viz_using_names(names, external_cgm = false) {
   // names is an object with row and column names that will be used to filter
   // the matrix
 
   var cgm;
-  if (external_cgm === false){
+  if (external_cgm === false) {
     cgm = this;
   } else {
     cgm = external_cgm;
@@ -18,31 +17,23 @@ module.exports = function filter_viz_using_names(names, external_cgm = false){
   var new_nodes = {};
   var found_nodes;
 
-  underscore.each(['row', 'col'], function(inst_rc){
+  _.each(["row", "col"], function (inst_rc) {
+    var orig_nodes = params.inst_nodes[inst_rc + "_nodes"];
 
-    var orig_nodes = params.inst_nodes[inst_rc+'_nodes'];
-
-    if (_.has(names, inst_rc)){
-
-      if (names[inst_rc].length > 0){
+    if (_.has(names, inst_rc)) {
+      if (names[inst_rc].length > 0) {
         var inst_names = names[inst_rc];
-        found_nodes = $.grep(orig_nodes, function(d){
-          return $.inArray(d.name, inst_names) > -1 ;
+        found_nodes = $.grep(orig_nodes, function (d) {
+          return $.inArray(d.name, inst_names) > -1;
         });
-
       } else {
-
         found_nodes = orig_nodes;
-
       }
-
     } else {
-
       found_nodes = orig_nodes;
     }
 
-    new_nodes[inst_rc+'_nodes'] = found_nodes;
-
+    new_nodes[inst_rc + "_nodes"] = found_nodes;
   });
 
   // keep backup of the nodes for resetting filtering
@@ -57,12 +48,11 @@ module.exports = function filter_viz_using_names(names, external_cgm = false){
 
   // only keep backup if previous number of nodes were larger than current number
   // of nodes
-  if (inst_row_nodes.length > cgm.params.inst_nodes.row_nodes.length){
+  if (inst_row_nodes.length > cgm.params.inst_nodes.row_nodes.length) {
     cgm.params.inst_nodes.row_nodes = inst_row_nodes;
   }
 
-  if (inst_col_nodes.length > cgm.params.inst_nodes.col_nodes.length){
+  if (inst_col_nodes.length > cgm.params.inst_nodes.col_nodes.length) {
     cgm.params.inst_nodes.col_nodes = inst_col_nodes;
   }
-
 };
