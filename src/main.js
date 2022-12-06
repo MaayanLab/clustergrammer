@@ -64,10 +64,10 @@ function Clustergrammer(args) {
     cgm.params.viz.clust.margin.top,
   ]);
 
-  if (cgm.params.use_sidebar) {
-    var make_sidebar = require("./sidebar/");
-    make_sidebar(cgm);
-  }
+  // if (cgm.params.use_sidebar) {
+  //   var make_sidebar = require("./sidebar/");
+  //   make_sidebar(cgm);
+  // }
 
   // make visualization using parameters
   make_viz(cgm);
