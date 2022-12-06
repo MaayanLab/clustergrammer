@@ -64,6 +64,7 @@ function Clustergrammer(args) {
     cgm.params.viz.clust.margin.top,
   ]);
 
+  // customization
   // if (cgm.params.use_sidebar) {
   //   var make_sidebar = require("./sidebar/");
   //   make_sidebar(cgm);
