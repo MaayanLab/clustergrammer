@@ -1,6 +1,7 @@
 var filter_network_using_new_nodes = require("./filter_network_using_new_nodes");
 var update_viz_with_network = require("../update/update_viz_with_network");
 var _ = require("underscore");
+var $ = require("$");
 
 module.exports = function filter_viz_using_names(names, external_cgm = false) {
   // names is an object with row and column names that will be used to filter

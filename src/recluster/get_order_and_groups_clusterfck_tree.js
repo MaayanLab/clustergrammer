@@ -1,8 +1,11 @@
-var get_max_distance_in_dm = require('./get_max_distance_in_dm');
-var underscore = require('underscore');
+var get_max_distance_in_dm = require("./get_max_distance_in_dm");
+var underscore = require("underscore");
+var $ = require("$");
 
-module.exports = function get_order_and_groups_clusterfck_tree(clusters, names){
-
+module.exports = function get_order_and_groups_clusterfck_tree(
+  clusters,
+  names
+) {
   // console.log('**** checking in get_order ***********************')
   // console.log(clusters.hc.dists[0][5])
   // console.log(clusters.hc.dists[0])
@@ -32,61 +35,49 @@ module.exports = function get_order_and_groups_clusterfck_tree(clusters, names){
   var cutoff_indexes = [];
   var threshold_status = [];
   for (var i = 0; i <= 10; i++) {
-    cutoff_vals.push(max_distance_in_dm * i/10);
+    cutoff_vals.push((max_distance_in_dm * i) / 10);
     // cutoff_vals.push(manual_cutoff);
-    threshold_status.push('above');
+    threshold_status.push("above");
     group.push(0);
     cutoff_indexes.push(i);
   }
 
-  underscore.each(['left','right'], function(side){
-
+  underscore.each(["left", "right"], function (side) {
     get_leaves(tree[side], side, ini_level, tree_height, threshold_status);
-
   });
 
-  function get_leaves(limb, side, inst_level, inst_dist, threshold_status){
-
+  function get_leaves(limb, side, inst_level, inst_dist, threshold_status) {
     // lock if distance is under resolvable distance
-    underscore.each(cutoff_indexes, function(index){
-      if (inst_dist <= cutoff_vals[index]){
-
+    underscore.each(cutoff_indexes, function (index) {
+      if (inst_dist <= cutoff_vals[index]) {
         // increment group if going from above to below threshold
-        if (threshold_status[index] === 'above'){
+        if (threshold_status[index] === "above") {
           group[index] = group[index] + 1;
         }
 
         // locks[index] = true;
-        threshold_status[index] = 'below';
-
+        threshold_status[index] = "below";
       } else {
-
-        threshold_status[index] = 'above';
+        threshold_status[index] = "above";
       }
-
     });
 
     // if there are more branches then there is a distance
-    if ( underscore.has(limb, 'dist')){
-
+    if (underscore.has(limb, "dist")) {
       inst_dist = limb.dist;
       inst_level = inst_level + 1;
 
-      underscore.each(['left', 'right'], function(side2){
-        get_leaves(limb[side2], side2, inst_level, inst_dist,  threshold_status);
+      underscore.each(["left", "right"], function (side2) {
+        get_leaves(limb[side2], side2, inst_level, inst_dist, threshold_status);
       });
-
     } else {
-
       inst_key = limb.key;
 
       // increment group if leaf is above threshold
-      underscore.each(cutoff_indexes, function(index){
-
-        if (threshold_status[index] === 'above'){
+      underscore.each(cutoff_indexes, function (index) {
+        if (threshold_status[index] === "above") {
           group[index] = group[index] + 1;
         }
-
       });
 
       inst_leaf = {};
@@ -107,19 +98,18 @@ module.exports = function get_order_and_groups_clusterfck_tree(clusters, names){
 
       // increment order when terminal node is found
       inst_order = inst_order + 1;
-
     }
   }
 
   // sort on key value
-  order_array.sort(function(a,b){
+  order_array.sort(function (a, b) {
     return a.key - b.key;
   });
 
   // generate ordered names
   var inst_name;
   var ordered_names = [];
-  underscore.each(order_list, function(index){
+  underscore.each(order_list, function (index) {
     inst_name = names[index];
     ordered_names.push(inst_name);
   });
@@ -130,5 +120,4 @@ module.exports = function get_order_and_groups_clusterfck_tree(clusters, names){
   order_info.ordered_names = ordered_names;
 
   return order_info;
-
 };

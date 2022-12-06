@@ -1,4 +1,5 @@
 var _ = require("underscore");
+var $ = require("$");
 
 var tmp_num;
 var cat_colors;
