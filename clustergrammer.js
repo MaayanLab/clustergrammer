@@ -13200,7 +13200,8 @@ var Clustergrammer =
 	    d3.select(params.root).append("div").classed("viz_wrapper", true);
 	  }
 
-	  var cont_dim = calc_viz_dimensions(params);
+	  // customization
+	  var cont_dim = calc_viz_dimensions(Object.assign(params, { sidebar_width: 0 }));
 
 	  // customization
 	  // d3.select(params.root + " .sidebar_wrapper")
