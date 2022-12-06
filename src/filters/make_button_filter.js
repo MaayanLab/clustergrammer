@@ -1,6 +1,6 @@
 // var update_network = require('../network/update_network');
 var make_requested_view = require("./make_requested_view");
-var $ = require("$");
+var $ = require("jquery");
 
 module.exports = function make_button_filter(
   config,

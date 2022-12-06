@@ -1,6 +1,6 @@
 var get_max_distance_in_dm = require("./get_max_distance_in_dm");
 var underscore = require("underscore");
-var $ = require("$");
+var $ = require("jquery");
 
 module.exports = function get_order_and_groups_clusterfck_tree(
   clusters,

@@ -1,6 +1,6 @@
 var demo_text = require("./demo_text");
 var sim_click = require("./sim_click");
-var $ = require("$");
+var $ = require("jquery");
 
 module.exports = function play_menu_button() {
   /* eslint-disable */

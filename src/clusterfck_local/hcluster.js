@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 var distances = require("./distance");
-var $ = require("$");
+var $ = require("jquery");
 
 var HierarchicalClustering = function (distance, linkage, threshold) {
   this.distance = distance || "euclidean";

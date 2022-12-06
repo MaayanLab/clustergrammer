@@ -1,7 +1,7 @@
 var demo_text = require("./demo_text");
 var highlight_sidebar_element = require("./highlight_sidebar_element");
 var update_viz_with_view = require("../network/update_viz_with_view");
-var $ = require("$");
+var $ = require("jquery");
 
 module.exports = function play_filter() {
   function run(cgm) {

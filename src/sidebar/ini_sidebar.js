@@ -5,7 +5,7 @@ var all_reorder = require("../reorder/all_reorder");
 var ini_cat_reorder = require("../reorder/ini_cat_reorder");
 var run_row_search = require("../search/run_row_search");
 var underscore = require("underscore");
-var $ = require("$");
+var $ = require("jquery");
 
 module.exports = function ini_sidebar(cgm) {
   var params = cgm.params;

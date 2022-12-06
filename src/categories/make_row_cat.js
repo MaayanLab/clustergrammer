@@ -5,7 +5,7 @@ var ini_cat_opacity = require("./ini_cat_opacity");
 // var click_filter_cats = require('./click_filter_cats');
 var get_cat_names = require("../categories/get_cat_names");
 var underscore = require("underscore");
-var $ = require("$");
+var $ = require("jquery");
 
 module.exports = function make_row_cat(cgm, updating = false) {
   var params = cgm.params;

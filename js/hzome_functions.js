@@ -1,5 +1,5 @@
 var _ = require("underscore");
-var $ = require("$");
+var $ = require("jquery");
 
 function ini_hzome(root_id) {
   // save gene data to global variable

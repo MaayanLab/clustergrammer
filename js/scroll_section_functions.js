@@ -1,5 +1,5 @@
 var _ = require("underscore");
-var $ = require("$");
+var $ = require("jquery");
 
 var section_fun = {};
 

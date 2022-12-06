@@ -1,7 +1,7 @@
 var genes_were_found = {};
 enr_obj = {};
 var _ = require("underscore");
-var $ = require("$");
+var $ = require("jquery");
 
 function check_setup_enrichr(inst_cgm) {
   var has_enrichrgram = _.has(inst_cgm.params.network_data, "enrichrgram");

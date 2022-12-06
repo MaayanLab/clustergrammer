@@ -1,4 +1,4 @@
-var $ = require("$");
+var $ = require("jquery");
 
 module.exports = function toggle_play_button(params, show) {
   if (show === false) {

@@ -1,5 +1,5 @@
 var calc_downsampled_matrix = require("../matrix/calc_downsampled_matrix");
-var $ = require("$");
+var $ = require("jquery");
 
 module.exports = function calc_downsampled_levels(params) {
   // console.log('---- before ---------')
