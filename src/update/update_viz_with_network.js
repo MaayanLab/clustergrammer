@@ -1,32 +1,32 @@
-var make_params = require('../params/make_params');
-var define_enter_exit_delays = require('../network/define_enter_exit_delays');
-var enter_exit_update = require('../enter/enter_exit_update');
-var initialize_resizing = require('../initialize_resizing');
-var make_col_cat = require('../categories/make_col_cat');
-var make_row_cat = require('../categories/make_row_cat');
-var make_row_dendro = require('../dendrogram/make_row_dendro');
-var make_col_dendro = require('../dendrogram/make_col_dendro');
-var ini_sidebar = require('../sidebar/ini_sidebar');
-var enable_sidebar  = require('../sidebar/enable_sidebar');
-var ini_doubleclick = require('../zoom/ini_doubleclick');
-var update_reorder_buttons = require('../reorder/update_reorder_buttons');
-var make_row_cat_super_labels = require('../labels/make_row_cat_super_labels');
-var modify_row_node_cats = require('./modify_row_node_cats');
-var run_zoom = require('../zoom/run_zoom');
-var ds_enter_exit_update = require('../enter/ds_enter_exit_update');
-var make_cat_params = require('../params/make_cat_params');
+var make_params = require("../params/make_params");
+var define_enter_exit_delays = require("../network/define_enter_exit_delays");
+var enter_exit_update = require("../enter/enter_exit_update");
+var initialize_resizing = require("../initialize_resizing");
+var make_col_cat = require("../categories/make_col_cat");
+var make_row_cat = require("../categories/make_row_cat");
+var make_row_dendro = require("../dendrogram/make_row_dendro");
+var make_col_dendro = require("../dendrogram/make_col_dendro");
+var ini_sidebar = require("../sidebar/ini_sidebar");
+var enable_sidebar = require("../sidebar/enable_sidebar");
+var ini_doubleclick = require("../zoom/ini_doubleclick");
+var update_reorder_buttons = require("../reorder/update_reorder_buttons");
+var make_row_cat_super_labels = require("../labels/make_row_cat_super_labels");
+var modify_row_node_cats = require("./modify_row_node_cats");
+var run_zoom = require("../zoom/run_zoom");
+var ds_enter_exit_update = require("../enter/ds_enter_exit_update");
+var make_cat_params = require("../params/make_cat_params");
 
-module.exports = function update_viz_with_network(cgm, new_network_data){
-
+module.exports = function update_viz_with_network(cgm, new_network_data) {
   // set runnning_update class, prevents multiple update from running at once
-  d3.select(cgm.params.viz.viz_svg).classed('running_update', true);
+  d3.select(cgm.params.viz.viz_svg).classed("running_update", true);
 
   // remove downsampled rows always
-  d3.selectAll(cgm.params.root+' .ds'+String(cgm.params.viz.ds_level)+'_row')
-    .remove();
+  d3.selectAll(
+    cgm.params.root + " .ds" + String(cgm.params.viz.ds_level) + "_row"
+  ).remove();
 
   // run optional callback function
-  if (cgm.params.matrix_update_callback != null){
+  if (cgm.params.matrix_update_callback != null) {
     cgm.params.matrix_update_callback();
   }
 
@@ -45,13 +45,17 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
   var new_row_cats = null;
 
   // bring in 'new' category data
-  if (cgm.params.new_row_cats != null){
+  if (cgm.params.new_row_cats != null) {
     modify_row_node_cats(cgm.params.new_row_cats, new_network_data.row_nodes);
     new_row_cats = cgm.params.new_row_cats;
     cgm.params.new_row_cats = new_row_cats;
     // do not preserve the updated (row) cats
     var predefined_cat_colors = true;
-    cgm.params.viz = make_cat_params(cgm.params, cgm.params.viz, predefined_cat_colors);
+    cgm.params.viz = make_cat_params(
+      cgm.params,
+      cgm.params.viz,
+      predefined_cat_colors
+    );
   }
 
   tmp_config.network_data = new_network_data;
@@ -77,9 +81,10 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
   cgm.params = new_params;
 
   // set up zoom
-  cgm.params.zoom_behavior = d3.behavior.zoom()
+  cgm.params.zoom_behavior = d3.behavior
+    .zoom()
     .scaleExtent([1, cgm.params.viz.square_zoom * cgm.params.viz.zoom_ratio.x])
-    .on('zoom', function(){
+    .on("zoom", function () {
       run_zoom(cgm);
     });
 
@@ -97,7 +102,7 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
   cgm.params.crop_filter_nodes = inst_crop_fitler;
 
   // only run enter-exit-updates if there is no downsampling
-  if (cgm.params.viz.ds_num_levels === 0){
+  if (cgm.params.viz.ds_num_levels === 0) {
     // new_network_data is necessary
     enter_exit_update(cgm, new_network_data, delays);
   } else {
@@ -105,17 +110,16 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
   }
 
   // reduce opacity during update
-  d3.select(cgm.params.viz.viz_svg)
-    .style('opacity',0.70);
+  d3.select(cgm.params.viz.viz_svg).style("opacity", 0.7);
 
   make_row_cat(cgm);
   make_row_cat_super_labels(cgm);
 
-  if (cgm.params.viz.show_categories.col){
+  if (cgm.params.viz.show_categories.col) {
     make_col_cat(cgm);
   }
 
-  if (cgm.params.viz.show_dendrogram){
+  if (cgm.params.viz.show_dendrogram) {
     make_row_dendro(cgm);
     make_col_dendro(cgm);
   }
@@ -126,7 +130,8 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
 
   ini_doubleclick(cgm);
 
-  ini_sidebar(cgm);
+  // customization
+  // ini_sidebar(cgm);
 
   cgm.params.viz.run_trans = true;
 
@@ -142,24 +147,22 @@ module.exports = function update_viz_with_network(cgm, new_network_data){
   setTimeout(remove_shadows, 1000);
   setTimeout(remove_shadows, 1500);
 
-  function remove_shadows(){
-    d3.selectAll('.dendro_shadow').remove();
+  function remove_shadows() {
+    d3.selectAll(".dendro_shadow").remove();
   }
 
-  function finish_update(){
+  function finish_update() {
     d3.select(cgm.params.viz.viz_svg)
-      .transition().duration(250)
-      .style('opacity',1.0);
+      .transition()
+      .duration(250)
+      .style("opacity", 1.0);
 
-    setTimeout( finish_update_class, 1000 );
-
+    setTimeout(finish_update_class, 1000);
   }
 
   setTimeout(finish_update, delays.enter);
 
-  function finish_update_class(){
-    d3.select(cgm.params.viz.viz_svg)
-      .classed('running_update', false);
+  function finish_update_class() {
+    d3.select(cgm.params.viz.viz_svg).classed("running_update", false);
   }
-
 };

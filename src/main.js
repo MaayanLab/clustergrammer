@@ -25,11 +25,6 @@ d3.slider = require("./d3.slider");
 
 /* eslint-disable */
 
-var awesomplete = require("awesomplete");
-// getting css from src
-require("!style!css!./d3.slider/d3.slider.css");
-require("!style!css!awesomplete/awesomplete.css");
-
 /* clustergrammer v1.19.5
  * Nicolas Fernandez, Ma'ayan Lab, Icahn School of Medicine at Mount Sinai
  * (c) 2017
