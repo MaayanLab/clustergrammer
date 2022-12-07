@@ -30113,7 +30113,7 @@ module.exports =
 	  var rect_height = viz.clust.margin.top + viz.uni_margin / 5;
 	  // white rect to cover excess labels
 	  d3.select(viz.viz_svg).append("rect").attr("fill", viz.background_color) //!! prog_colors
-	  .attr("width", viz.clust.margin.left).attr("height", rect_height).attr("class", "top_left_white");
+	  .attr("width", viz.clust.margin.left).attr("height", rect_height - 1).attr("class", "top_left_white");
 
 	  // customization
 	  // var inst_height = viz.cat_room.col + 1.5 * viz.uni_margin;

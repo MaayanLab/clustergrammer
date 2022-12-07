@@ -35,7 +35,7 @@ module.exports = function Spillover(cgm) {
     .append("rect")
     .attr("fill", viz.background_color) //!! prog_colors
     .attr("width", viz.clust.margin.left)
-    .attr("height", rect_height)
+    .attr("height", rect_height - 1)
     .attr("class", "top_left_white");
 
   // customization
