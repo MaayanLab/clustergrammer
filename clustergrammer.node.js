@@ -30146,9 +30146,8 @@ module.exports =
 	  y_offset = 0;
 	  b_spill_container.append("g").classed("col_dendro_icons_container", true).attr("transform", "translate(" + x_offset + "," + y_offset + ")").append("g").classed("col_dendro_icons_group", true);
 
-	  if (params.viz.show_dendrogram) {
-	    make_dendro_crop_buttons(cgm, "col");
-	  }
+	  // customization hide dendrogram
+	  // make_dendro_crop_buttons(cgm, "col");
 
 	  var x_offset = viz.clust.margin.left + viz.clust.dim.width;
 	  var y_offset = viz.clust.margin.top + viz.clust.dim.height;
