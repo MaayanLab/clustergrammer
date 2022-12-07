@@ -69,8 +69,6 @@ module.exports = function set_defaults() {
     new_row_cats: null,
     make_modals: true,
     show_viz_border: false,
-    // customization
-    show_dendrogram: true,
   };
 
   return defaults;
