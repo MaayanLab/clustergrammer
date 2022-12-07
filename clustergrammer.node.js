@@ -354,8 +354,7 @@ module.exports =
 	  var row_has_group = utils.has(config.network_data.row_nodes[0], "group");
 	  var col_has_group = utils.has(config.network_data.col_nodes[0], "group");
 
-	  // customization
-	  config.show_dendrogram = args.show_dendrogram ? row_has_group || col_has_group : false;
+	  config.show_dendrogram = row_has_group || col_has_group;
 
 	  if (utils.has(config.network_data.links[0], "value_orig")) {
 	    config.keep_orig = true;
@@ -2206,9 +2205,7 @@ module.exports =
 	    dendro_click_callback: null,
 	    new_row_cats: null,
 	    make_modals: true,
-	    show_viz_border: false,
-	    // customization
-	    show_dendrogram: true
+	    show_viz_border: false
 	  };
 
 	  return defaults;
@@ -24467,10 +24464,8 @@ module.exports =
 
 	  // build_filter_icon(cgm);
 
-	  // customization
-	  if (params.viz.show_dendrogram) {
-	    build_dendro_sliders(cgm);
-	  }
+	  // customization, hide sliders
+	  // build_dendro_sliders(cgm);
 
 	  function border_colors() {
 	    var inst_color = params.viz.super_border_color;
@@ -33212,10 +33207,8 @@ module.exports =
 	    d3.select(params.root + " .row_dendro_outer_container").select(".row_dendro_spillover").attr("width", spillover_width + "px").attr("height", params.viz.svg_dim.height);
 	  }
 
-	  // customization
-	  if (params.viz.show_dendrogram) {
-	    make_dendro_triangles(cgm, "row", false);
-	  }
+	  // customization, hide dendrogram
+	  // make_dendro_triangles(cgm, "row", false);
 
 	  if (params.viz.inst_order.col != "clust") {
 	    d3.selectAll(params.root + " .row_dendro_group").remove();
@@ -33253,10 +33246,8 @@ module.exports =
 	    d3.select(params.root + " .col_dendro_outer_container").select(".col_dendro_spillover").attr("width", params.viz.svg_dim.width).attr("height", spillover_height + "px");
 	  }
 
-	  // customization
-	  if (params.viz.show_dendrogram) {
-	    make_dendro_triangles(cgm, "col", false);
-	  }
+	  // customization, hide dendrogram
+	  // make_dendro_triangles(cgm, "col", false);
 
 	  if (params.viz.inst_order.row != "clust") {
 	    d3.selectAll(params.root + " .col_dendro_group").remove();

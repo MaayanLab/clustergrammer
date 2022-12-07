@@ -38,10 +38,8 @@ module.exports = function make_row_dendro(cgm) {
       .attr("height", params.viz.svg_dim.height);
   }
 
-  // customization
-  if (params.viz.show_dendrogram) {
-    make_dendro_triangles(cgm, "row", false);
-  }
+  // customization, hide dendrogram
+  // make_dendro_triangles(cgm, "row", false);
 
   if (params.viz.inst_order.col != "clust") {
     d3.selectAll(params.root + " .row_dendro_group").remove();
