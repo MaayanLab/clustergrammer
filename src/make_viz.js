@@ -92,7 +92,7 @@ module.exports = function make_viz(cgm) {
 
   // build_filter_icon(cgm);
 
-  // customization, hide sliders
+  // customization hide sliders
   // build_dendro_sliders(cgm);
 
   function border_colors() {

@@ -9,15 +9,16 @@ module.exports = function Spillover(cgm) {
   var viz = params.viz;
 
   // hide spillover from slanted column labels on right side
-  // customization
-  // d3.select(viz.root+' .col_container')
-  //   .append('path')
-  //   .style('stroke-width', '0')
-  //   .attr('d', 'M 0,0 L 1000,-1000, L 1000,0 Z')
-  //   .attr('fill', viz.background_color) //!! prog_colors
-  //   .attr('class', 'right_slant_triangle')
-  //   .attr('transform', 'translate(' + viz.clust.dim.width + ',' +
-  //   viz.norm_labels.width.col + ')');
+  d3.select(viz.root + " .col_container")
+    .append("path")
+    .style("stroke-width", "0")
+    .attr("d", "M 0,0 L 1000,-1000, L 1000,0 Z")
+    .attr("fill", viz.background_color) //!! prog_colors
+    .attr("class", "right_slant_triangle")
+    .attr(
+      "transform",
+      "translate(" + viz.clust.dim.width + "," + viz.norm_labels.width.col + ")"
+    );
 
   // hide spillover from slanted column labels on left side
   d3.select(viz.root + " .col_container")
@@ -38,21 +39,20 @@ module.exports = function Spillover(cgm) {
     .attr("height", rect_height - 1)
     .attr("class", "top_left_white");
 
-  // customization
-  // var inst_height = viz.cat_room.col + 1.5 * viz.uni_margin;
+  var inst_height = viz.cat_room.col + 1.5 * viz.uni_margin;
   // white rect to cover excess labels
-  // d3.select(viz.viz_svg)
-  //   .append("rect")
-  //   .attr("fill", viz.background_color)
-  //   .attr("width", 2 * viz.clust.dim.width)
-  //   .attr("height", inst_height)
-  //   .attr("class", "top_right_white")
-  //   .attr("transform", function () {
-  //     var tmp_left = viz.clust.margin.left + viz.clust.dim.width;
-  //     var tmp_top =
-  //       viz.norm_labels.width.col + viz.norm_labels.margin.top - viz.uni_margin;
-  //     return "translate(" + tmp_left + ", " + tmp_top + ")";
-  //   });
+  d3.select(viz.viz_svg)
+    .append("rect")
+    .attr("fill", viz.background_color)
+    .attr("width", 2 * viz.clust.dim.width)
+    .attr("height", inst_height)
+    .attr("class", "top_right_white")
+    .attr("transform", function () {
+      var tmp_left = viz.clust.margin.left + viz.clust.dim.width;
+      var tmp_top =
+        viz.norm_labels.width.col + viz.norm_labels.margin.top - viz.uni_margin;
+      return "translate(" + tmp_left + ", " + tmp_top + ")";
+    });
 
   x_offset = viz.clust.margin.left + viz.clust.dim.width + viz.uni_margin;
   y_offset =

@@ -24301,7 +24301,7 @@ var Clustergrammer =
 
 	  // build_filter_icon(cgm);
 
-	  // customization, hide sliders
+	  // customization hide sliders
 	  // build_dendro_sliders(cgm);
 
 	  function border_colors() {
@@ -29809,15 +29809,8 @@ var Clustergrammer =
 	  var viz = params.viz;
 
 	  // hide spillover from slanted column labels on right side
-	  // customization
-	  // d3.select(viz.root+' .col_container')
-	  //   .append('path')
-	  //   .style('stroke-width', '0')
-	  //   .attr('d', 'M 0,0 L 1000,-1000, L 1000,0 Z')
-	  //   .attr('fill', viz.background_color) //!! prog_colors
-	  //   .attr('class', 'right_slant_triangle')
-	  //   .attr('transform', 'translate(' + viz.clust.dim.width + ',' +
-	  //   viz.norm_labels.width.col + ')');
+	  d3.select(viz.root + " .col_container").append("path").style("stroke-width", "0").attr("d", "M 0,0 L 1000,-1000, L 1000,0 Z").attr("fill", viz.background_color) //!! prog_colors
+	  .attr("class", "right_slant_triangle").attr("transform", "translate(" + viz.clust.dim.width + "," + viz.norm_labels.width.col + ")");
 
 	  // hide spillover from slanted column labels on left side
 	  d3.select(viz.root + " .col_container").append("path").style("stroke-width", "0").attr("d", "M 0,0 L 500,-500, L 0,-500 Z").attr("fill", viz.background_color).attr("class", "left_slant_triangle")
@@ -29829,21 +29822,13 @@ var Clustergrammer =
 	  d3.select(viz.viz_svg).append("rect").attr("fill", viz.background_color) //!! prog_colors
 	  .attr("width", viz.clust.margin.left).attr("height", rect_height - 1).attr("class", "top_left_white");
 
-	  // customization
-	  // var inst_height = viz.cat_room.col + 1.5 * viz.uni_margin;
+	  var inst_height = viz.cat_room.col + 1.5 * viz.uni_margin;
 	  // white rect to cover excess labels
-	  // d3.select(viz.viz_svg)
-	  //   .append("rect")
-	  //   .attr("fill", viz.background_color)
-	  //   .attr("width", 2 * viz.clust.dim.width)
-	  //   .attr("height", inst_height)
-	  //   .attr("class", "top_right_white")
-	  //   .attr("transform", function () {
-	  //     var tmp_left = viz.clust.margin.left + viz.clust.dim.width;
-	  //     var tmp_top =
-	  //       viz.norm_labels.width.col + viz.norm_labels.margin.top - viz.uni_margin;
-	  //     return "translate(" + tmp_left + ", " + tmp_top + ")";
-	  //   });
+	  d3.select(viz.viz_svg).append("rect").attr("fill", viz.background_color).attr("width", 2 * viz.clust.dim.width).attr("height", inst_height).attr("class", "top_right_white").attr("transform", function () {
+	    var tmp_left = viz.clust.margin.left + viz.clust.dim.width;
+	    var tmp_top = viz.norm_labels.width.col + viz.norm_labels.margin.top - viz.uni_margin;
+	    return "translate(" + tmp_left + ", " + tmp_top + ")";
+	  });
 
 	  x_offset = viz.clust.margin.left + viz.clust.dim.width + viz.uni_margin;
 	  y_offset = viz.norm_labels.margin.top + viz.norm_labels.width.col + 2.5 * viz.uni_margin;
@@ -32810,7 +32795,7 @@ var Clustergrammer =
 	    d3.select(params.root + " .row_dendro_outer_container").select(".row_dendro_spillover").attr("width", spillover_width + "px").attr("height", params.viz.svg_dim.height);
 	  }
 
-	  // customization, hide dendrogram
+	  // customization hide dendrogram
 	  // make_dendro_triangles(cgm, "row", false);
 
 	  if (params.viz.inst_order.col != "clust") {
@@ -32847,7 +32832,7 @@ var Clustergrammer =
 	    d3.select(params.root + " .col_dendro_outer_container").select(".col_dendro_spillover").attr("width", params.viz.svg_dim.width).attr("height", spillover_height + "px");
 	  }
 
-	  // customization, hide dendrogram
+	  // customization hide dendrogram
 	  // make_dendro_triangles(cgm, "col", false);
 
 	  if (params.viz.inst_order.row != "clust") {
@@ -32997,28 +32982,28 @@ var Clustergrammer =
 	var make_dendro_crop_buttons = __webpack_require__(113);
 
 	module.exports = function make_row_dendro_spillover(cgm) {
-
 	  var viz = cgm.params.viz;
 
 	  // hide spillover from right
 	  var tmp_left = viz.clust.margin.left + viz.clust.dim.width + viz.uni_margin + viz.dendro_room.row;
 
-	  var r_spill_container = d3.select(viz.viz_svg).append('g').classed('right_spillover_container', true).attr('transform', function () {
-	    return 'translate(' + tmp_left + ', 0)';
+	  var r_spill_container = d3.select(viz.viz_svg).append("g").classed("right_spillover_container", true).attr("transform", function () {
+	    return "translate(" + tmp_left + ", 0)";
 	  });
 
 	  var tmp_top = viz.norm_labels.margin.top + viz.norm_labels.width.col;
 
-	  r_spill_container.append('rect').attr('fill', viz.background_color) //!! prog_colors
-	  .attr('width', 10 * viz.clust.dim.width).attr('height', viz.svg_dim.height + 'px').attr('class', 'white_bars').attr('class', 'right_spillover').attr('transform', function () {
-	    return 'translate( 0,' + tmp_top + ')';
+	  r_spill_container.append("rect").attr("fill", viz.background_color) //!! prog_colors
+	  .attr("width", 10 * viz.clust.dim.width).attr("height", viz.svg_dim.height + "px").attr("class", "white_bars").attr("class", "right_spillover").attr("transform", function () {
+	    return "translate( 0," + tmp_top + ")";
 	  });
 
 	  var x_offset = 0;
 	  var y_offset = viz.clust.margin.top;
-	  r_spill_container.append('g').classed('row_dendro_icons_container', true).attr('transform', 'translate(' + x_offset + ',' + y_offset + ')').append('g').classed('row_dendro_icons_group', true);
+	  r_spill_container.append("g").classed("row_dendro_icons_container", true).attr("transform", "translate(" + x_offset + "," + y_offset + ")").append("g").classed("row_dendro_icons_group", true);
 
-	  make_dendro_crop_buttons(cgm, 'row');
+	  // customization hide dendrogram
+	  make_dendro_crop_buttons(cgm, "row");
 
 	  // hide spillover from top of row dendrogram
 	  x_offset = viz.clust.margin.left + viz.clust.dim.width;
@@ -33026,9 +33011,9 @@ var Clustergrammer =
 
 	  var tmp_width = viz.dendro_room.row + viz.uni_margin;
 	  var tmp_height = viz.cat_room.col + viz.uni_margin;
-	  d3.select(viz.viz_svg).append('rect').attr('fill', viz.background_color).attr('width', tmp_width).attr('height', tmp_height).attr('transform', function () {
-	    return 'translate(' + x_offset + ',' + y_offset + ')';
-	  }).classed('white_bars', true).classed('dendro_row_spillover', true);
+	  d3.select(viz.viz_svg).append("rect").attr("fill", viz.background_color).attr("width", tmp_width).attr("height", tmp_height).attr("transform", function () {
+	    return "translate(" + x_offset + "," + y_offset + ")";
+	  }).classed("white_bars", true).classed("dendro_row_spillover", true);
 		};
 
 /***/ }),

@@ -38,7 +38,7 @@ module.exports = function make_row_dendro(cgm) {
       .attr("height", params.viz.svg_dim.height);
   }
 
-  // customization, hide dendrogram
+  // customization hide dendrogram
   // make_dendro_triangles(cgm, "row", false);
 
   if (params.viz.inst_order.col != "clust") {

@@ -45,7 +45,7 @@ module.exports = function make_col_dendro(cgm) {
       .attr("height", spillover_height + "px");
   }
 
-  // customization, hide dendrogram
+  // customization hide dendrogram
   // make_dendro_triangles(cgm, "col", false);
 
   if (params.viz.inst_order.row != "clust") {
