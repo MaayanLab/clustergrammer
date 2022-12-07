@@ -33003,7 +33003,7 @@ var Clustergrammer =
 	  r_spill_container.append("g").classed("row_dendro_icons_container", true).attr("transform", "translate(" + x_offset + "," + y_offset + ")").append("g").classed("row_dendro_icons_group", true);
 
 	  // customization hide dendrogram
-	  make_dendro_crop_buttons(cgm, "row");
+	  // make_dendro_crop_buttons(cgm, "row");
 
 	  // hide spillover from top of row dendrogram
 	  x_offset = viz.clust.margin.left + viz.clust.dim.width;
