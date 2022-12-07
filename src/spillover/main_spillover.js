@@ -38,20 +38,21 @@ module.exports = function Spillover(cgm) {
     .attr("height", rect_height)
     .attr("class", "top_left_white");
 
-  var inst_height = viz.cat_room.col + 1.5 * viz.uni_margin;
+  // customization
+  // var inst_height = viz.cat_room.col + 1.5 * viz.uni_margin;
   // white rect to cover excess labels
-  d3.select(viz.viz_svg)
-    .append("rect")
-    .attr("fill", viz.background_color)
-    .attr("width", 2 * viz.clust.dim.width)
-    .attr("height", inst_height)
-    .attr("class", "top_right_white")
-    .attr("transform", function () {
-      var tmp_left = viz.clust.margin.left + viz.clust.dim.width;
-      var tmp_top =
-        viz.norm_labels.width.col + viz.norm_labels.margin.top - viz.uni_margin;
-      return "translate(" + tmp_left + ", " + tmp_top + ")";
-    });
+  // d3.select(viz.viz_svg)
+  //   .append("rect")
+  //   .attr("fill", viz.background_color)
+  //   .attr("width", 2 * viz.clust.dim.width)
+  //   .attr("height", inst_height)
+  //   .attr("class", "top_right_white")
+  //   .attr("transform", function () {
+  //     var tmp_left = viz.clust.margin.left + viz.clust.dim.width;
+  //     var tmp_top =
+  //       viz.norm_labels.width.col + viz.norm_labels.margin.top - viz.uni_margin;
+  //     return "translate(" + tmp_left + ", " + tmp_top + ")";
+  //   });
 
   x_offset = viz.clust.margin.left + viz.clust.dim.width + viz.uni_margin;
   y_offset =
