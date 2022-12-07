@@ -359,7 +359,7 @@ module.exports =
 	  var row_has_group = utils.has(config.network_data.row_nodes[0], "group");
 	  var col_has_group = utils.has(config.network_data.col_nodes[0], "group");
 
-	  config.show_dendrogram = row_has_group || col_has_group;
+	  config.show_dendrogram = args.show_dendrogram ? row_has_group || col_has_group : false;
 
 	  if (utils.has(config.network_data.links[0], "value_orig")) {
 	    config.keep_orig = true;
@@ -2138,10 +2138,9 @@ module.exports =
 /* 7 */
 /***/ (function(module, exports) {
 
-	'use strict';
+	"use strict";
 
 	module.exports = function set_defaults() {
-
 	  var defaults = {
 	    // Label options
 	    row_label_scale: 1,
@@ -2152,23 +2151,23 @@ module.exports =
 	    show_tile_tooltips: true,
 	    // matrix options
 	    transpose: false,
-	    tile_colors: ['#FF0000', '#1C86EE'],
-	    bar_colors: ['#FF0000', '#1C86EE'],
+	    tile_colors: ["#FF0000", "#1C86EE"],
+	    bar_colors: ["#FF0000", "#1C86EE"],
 	    // value-cat colors
 	    // cat_value_colors: ['#2F4F4F', '#8A2BE2'],
-	    cat_value_colors: ['#2F4F4F', '#9370DB'],
-	    outline_colors: ['orange', 'black'],
-	    highlight_color: '#FFFF00',
+	    cat_value_colors: ["#2F4F4F", "#9370DB"],
+	    outline_colors: ["orange", "black"],
+	    highlight_color: "#FFFF00",
 	    tile_title: false,
 	    // Default domain is set to 0: the domain will be set automatically
 	    input_domain: 0,
-	    opacity_scale: 'linear',
+	    opacity_scale: "linear",
 	    do_zoom: true,
 	    is_zoom: 0,
 	    is_slider_drag: false,
 	    is_cropping: false,
-	    background_color: '#FFFFFF',
-	    super_border_color: '#F5F5F5',
+	    background_color: "#FFFFFF",
+	    super_border_color: "#F5F5F5",
 	    outer_margins: {
 	      top: 0,
 	      bottom: 0,
@@ -2191,7 +2190,7 @@ module.exports =
 	    about: null,
 	    sidebar_width: 160,
 	    sidebar_icons: true,
-	    row_search_placeholder: 'Row',
+	    row_search_placeholder: "Row",
 	    buffer_width: 10,
 	    show_sim_mat: false,
 	    cat_colors: null,
@@ -2199,9 +2198,9 @@ module.exports =
 	    clamp_opacity: 0.85,
 	    expand_button: true,
 	    max_allow_fs: 20,
-	    dendro_filter: { 'row': false, 'col': false },
-	    cat_filter: { 'row': false, 'col': false },
-	    crop_filter_nodes: { 'row': false, 'col': false },
+	    dendro_filter: { row: false, col: false },
+	    cat_filter: { row: false, col: false },
+	    crop_filter_nodes: { row: false, col: false },
 	    row_tip_callback: null,
 	    col_tip_callback: null,
 	    tile_tip_callback: null,
@@ -2211,7 +2210,8 @@ module.exports =
 	    dendro_click_callback: null,
 	    new_row_cats: null,
 	    make_modals: true,
-	    show_viz_border: false
+	    show_viz_border: false,
+	    show_dendrogram: true
 	  };
 
 	  return defaults;
