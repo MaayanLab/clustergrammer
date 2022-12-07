@@ -359,6 +359,7 @@ module.exports =
 	  var row_has_group = utils.has(config.network_data.row_nodes[0], "group");
 	  var col_has_group = utils.has(config.network_data.col_nodes[0], "group");
 
+	  // customization
 	  config.show_dendrogram = args.show_dendrogram ? row_has_group || col_has_group : false;
 
 	  if (utils.has(config.network_data.links[0], "value_orig")) {
@@ -2211,6 +2212,7 @@ module.exports =
 	    new_row_cats: null,
 	    make_modals: true,
 	    show_viz_border: false,
+	    // customization
 	    show_dendrogram: true
 	  };
 
@@ -24395,7 +24397,7 @@ module.exports =
 /* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	var generate_matrix = __webpack_require__(92);
 	var make_row_label_container = __webpack_require__(103);
@@ -24416,14 +24418,13 @@ module.exports =
 	var underscore = __webpack_require__(3);
 
 	module.exports = function make_viz(cgm) {
-
 	  var params = cgm.params;
 
-	  d3.select(params.viz.viz_wrapper + ' svg').remove();
+	  d3.select(params.viz.viz_wrapper + " svg").remove();
 
-	  var svg_group = d3.select(params.viz.viz_wrapper).append('svg').attr('class', 'viz_svg').attr('id', 'svg_' + params.root.replace('#', '')).attr('width', params.viz.svg_dim.width).attr('height', params.viz.svg_dim.height).attr('is_zoom', 0).attr('stopped_zoom', 1);
+	  var svg_group = d3.select(params.viz.viz_wrapper).append("svg").attr("class", "viz_svg").attr("id", "svg_" + params.root.replace("#", "")).attr("width", params.viz.svg_dim.width).attr("height", params.viz.svg_dim.height).attr("is_zoom", 0).attr("stopped_zoom", 1);
 
-	  svg_group.append('rect').attr('class', 'super_background').style('width', params.viz.svg_dim.width).style('height', params.viz.svg_dim.height).style('fill', 'white');
+	  svg_group.append("rect").attr("class", "super_background").style("width", params.viz.svg_dim.width).style("height", params.viz.svg_dim.height).style("fill", "white");
 
 	  generate_matrix(params, svg_group);
 
@@ -24439,13 +24440,12 @@ module.exports =
 
 	  // initial trim text
 	  if (params.viz.ds_level === -1) {
-	    underscore.each(['row', 'col'], function (inst_rc) {
-
-	      var inst_fs = Number(d3.select('.' + inst_rc + '_label_group').select('text').style('font-size').replace('px', ''));
+	    underscore.each(["row", "col"], function (inst_rc) {
+	      var inst_fs = Number(d3.select("." + inst_rc + "_label_group").select("text").style("font-size").replace("px", ""));
 
 	      var min_trim_fs = 8;
 	      if (inst_fs > min_trim_fs) {
-	        d3.selectAll(params.root + ' .' + inst_rc + '_label_group').each(function () {
+	        d3.selectAll(params.root + " ." + inst_rc + "_label_group").each(function () {
 	          trim_text(params, this, inst_rc);
 	        });
 	      }
@@ -24472,35 +24472,38 @@ module.exports =
 
 	  // build_filter_icon(cgm);
 
-	  build_dendro_sliders(cgm);
+	  // customization
+	  if (params.viz.show_dendrogram) {
+	    build_dendro_sliders(cgm);
+	  }
 
 	  function border_colors() {
 	    var inst_color = params.viz.super_border_color;
 	    if (params.viz.is_expand || params.show_viz_border == false) {
-	      inst_color = 'white';
+	      inst_color = "white";
 	    }
 	    return inst_color;
 	  }
 
 	  // left border
-	  d3.select(params.viz.viz_svg).append('rect').classed('left_border', true).classed('borders', true).attr('fill', border_colors).attr('width', params.viz.grey_border_width).attr('height', params.viz.svg_dim.height).attr('transform', 'translate(0,0)');
+	  d3.select(params.viz.viz_svg).append("rect").classed("left_border", true).classed("borders", true).attr("fill", border_colors).attr("width", params.viz.grey_border_width).attr("height", params.viz.svg_dim.height).attr("transform", "translate(0,0)");
 
 	  // right border
-	  d3.select(params.viz.viz_svg).append('rect').classed('right_border', true).classed('borders', true).attr('fill', border_colors).attr('width', params.viz.grey_border_width).attr('height', params.viz.svg_dim.height).attr('transform', function () {
+	  d3.select(params.viz.viz_svg).append("rect").classed("right_border", true).classed("borders", true).attr("fill", border_colors).attr("width", params.viz.grey_border_width).attr("height", params.viz.svg_dim.height).attr("transform", function () {
 	    var inst_offset = params.viz.svg_dim.width - params.viz.grey_border_width;
-	    return 'translate(' + inst_offset + ',0)';
+	    return "translate(" + inst_offset + ",0)";
 	  });
 
 	  // top border
-	  d3.select(params.viz.viz_svg).append('rect').classed('top_border', true).classed('borders', true).attr('fill', border_colors).attr('width', params.viz.svg_dim.width).attr('height', params.viz.grey_border_width).attr('transform', function () {
+	  d3.select(params.viz.viz_svg).append("rect").classed("top_border", true).classed("borders", true).attr("fill", border_colors).attr("width", params.viz.svg_dim.width).attr("height", params.viz.grey_border_width).attr("transform", function () {
 	    var inst_offset = 0;
-	    return 'translate(' + inst_offset + ',0)';
+	    return "translate(" + inst_offset + ",0)";
 	  });
 
 	  // bottom border
-	  d3.select(params.viz.viz_svg).append('rect').classed('bottom_border', true).classed('borders', true).attr('fill', border_colors).attr('width', params.viz.svg_dim.width).attr('height', params.viz.grey_border_width).attr('transform', function () {
+	  d3.select(params.viz.viz_svg).append("rect").classed("bottom_border", true).classed("borders", true).attr("fill", border_colors).attr("width", params.viz.svg_dim.width).attr("height", params.viz.grey_border_width).attr("transform", function () {
 	    var inst_offset = params.viz.svg_dim.height - params.viz.grey_border_width;
-	    return 'translate(0,' + inst_offset + ')';
+	    return "translate(0," + inst_offset + ")";
 	  });
 
 	  initialize_resizing(cgm);
@@ -24511,8 +24514,8 @@ module.exports =
 	    d3.select(params.viz.zoom_element).call(params.zoom_behavior);
 	  }
 
-	  d3.select(params.viz.zoom_element).on('dblclick.zoom', null);
-		};
+	  d3.select(params.viz.zoom_element).on("dblclick.zoom", null);
+	};
 
 /***/ }),
 /* 92 */
