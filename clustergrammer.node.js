@@ -351,10 +351,17 @@ module.exports =
 	    config.inst_order.row = args.col_order;
 	  }
 
+	  // customization fix zoom without dendrogram data
 	  var row_has_group = utils.has(config.network_data.row_nodes[0], "group");
 	  var col_has_group = utils.has(config.network_data.col_nodes[0], "group");
-
-	  config.show_dendrogram = row_has_group || col_has_group;
+	  if (!row_has_group) {
+	    config.network_data.row_nodes[0].group = [];
+	  }
+	  if (!col_has_group) {
+	    config.network_data.col_nodes[0].group = [];
+	  }
+	  // config.show_dendrogram = row_has_group || col_has_group;
+	  config.show_dendrogram = true;
 
 	  if (utils.has(config.network_data.links[0], "value_orig")) {
 	    config.keep_orig = true;
