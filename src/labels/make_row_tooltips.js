@@ -30,34 +30,11 @@ module.exports = function make_row_tooltips(params) {
     d3.select(params.root + " .row_label_zoom_container")
       .selectAll("g")
       .on("mouseover", function (d) {
-        // d3.select(params.viz.root_tips + "_row_tip").classed(d.name, true);
-
-        // d3.selectAll(params.viz.root_tips + "_row_tip").style(
-        //   "display",
-        //   "block"
-        // );
-
-        // d3.select(this).select("text").classed("active", true);
-
-        // row_tip.show(d);
-
-        // if (params.row_tip_callback != null) {
-        //   params.row_tip_callback(params.viz.root_tips, d);
-        // }
-
         dispatchEvent(
           new CustomEvent("ROW_MOUSEOVER", { row_index: d.row_index })
         );
       })
       .on("mouseout", function mouseout(d) {
-        // d3.selectAll(params.viz.root_tips + "_row_tip")
-        //   .style("display", "none")
-        //   .classed(d.name, false);
-
-        // d3.select(this).select("text").classed("active", false);
-
-        // row_tip.hide(d);
-
         dispatchEvent(
           new CustomEvent("ROW_MOUSEOUT", { row_index: d.row_index })
         );

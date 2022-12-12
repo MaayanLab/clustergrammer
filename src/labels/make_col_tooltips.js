@@ -32,28 +32,11 @@ module.exports = function make_col_tooltips(params) {
     d3.select(params.root + " .col_zoom_container")
       .selectAll(".col_label_group")
       .on("mouseover", function (d) {
-        // d3.selectAll(params.viz.root_tips + "_col_tip").style(
-        //   "display",
-        //   "block"
-        // );
-
-        // col_tip.show(d);
-        // if (params.col_tip_callback != null) {
-        //   params.col_tip_callback(d);
-        // }
-
         dispatchEvent(
           new CustomEvent("COL_MOUSEOVER", { col_index: d.col_index })
         );
       })
-      .on("mouseout", function () {
-        // col_tip.hide(this);
-
-        // d3.selectAll(params.viz.root_tips + "_col_tip").style(
-        //   "display",
-        //   "none"
-        // );
-
+      .on("mouseout", function (d) {
         dispatchEvent(
           new CustomEvent("COL_MOUSEOUT", { col_index: d.col_index })
         );

@@ -29092,31 +29092,8 @@ var Clustergrammer =
 	    d3.select(params.viz.viz_wrapper).select(params.root + " .row_container").call(row_tip);
 
 	    d3.select(params.root + " .row_label_zoom_container").selectAll("g").on("mouseover", function (d) {
-	      // d3.select(params.viz.root_tips + "_row_tip").classed(d.name, true);
-
-	      // d3.selectAll(params.viz.root_tips + "_row_tip").style(
-	      //   "display",
-	      //   "block"
-	      // );
-
-	      // d3.select(this).select("text").classed("active", true);
-
-	      // row_tip.show(d);
-
-	      // if (params.row_tip_callback != null) {
-	      //   params.row_tip_callback(params.viz.root_tips, d);
-	      // }
-
 	      dispatchEvent(new CustomEvent("ROW_MOUSEOVER", { row_index: d.row_index }));
 	    }).on("mouseout", function mouseout(d) {
-	      // d3.selectAll(params.viz.root_tips + "_row_tip")
-	      //   .style("display", "none")
-	      //   .classed(d.name, false);
-
-	      // d3.select(this).select("text").classed("active", false);
-
-	      // row_tip.hide(d);
-
 	      dispatchEvent(new CustomEvent("ROW_MOUSEOUT", { row_index: d.row_index }));
 	    });
 	  } else {
@@ -29731,25 +29708,8 @@ var Clustergrammer =
 	    d3.select(params.viz.viz_wrapper).select("svg").select(params.root + " .col_zoom_container").selectAll(".col_label_group").select("text").call(col_tip);
 
 	    d3.select(params.root + " .col_zoom_container").selectAll(".col_label_group").on("mouseover", function (d) {
-	      // d3.selectAll(params.viz.root_tips + "_col_tip").style(
-	      //   "display",
-	      //   "block"
-	      // );
-
-	      // col_tip.show(d);
-	      // if (params.col_tip_callback != null) {
-	      //   params.col_tip_callback(d);
-	      // }
-
 	      dispatchEvent(new CustomEvent("COL_MOUSEOVER", { col_index: d.col_index }));
-	    }).on("mouseout", function () {
-	      // col_tip.hide(this);
-
-	      // d3.selectAll(params.viz.root_tips + "_col_tip").style(
-	      //   "display",
-	      //   "none"
-	      // );
-
+	    }).on("mouseout", function (d) {
 	      dispatchEvent(new CustomEvent("COL_MOUSEOUT", { col_index: d.col_index }));
 	    });
 	  }
