@@ -31,12 +31,16 @@ module.exports = function make_row_tooltips(params) {
       .selectAll("g")
       .on("mouseover", function (d) {
         dispatchEvent(
-          new CustomEvent("ROW_MOUSEOVER", { row_index: d.row_index })
+          new CustomEvent("ROW_MOUSEOVER", {
+            detail: { row_index: d.row_index },
+          })
         );
       })
       .on("mouseout", function mouseout(d) {
         dispatchEvent(
-          new CustomEvent("ROW_MOUSEOUT", { row_index: d.row_index })
+          new CustomEvent("ROW_MOUSEOUT", {
+            detail: { row_index: d.row_index },
+          })
         );
       });
   } else {

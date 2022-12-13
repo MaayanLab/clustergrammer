@@ -33,12 +33,20 @@ module.exports = function make_col_tooltips(params) {
       .selectAll(".col_label_group")
       .on("mouseover", function (d) {
         dispatchEvent(
-          new CustomEvent("COL_MOUSEOVER", { col_index: d.col_index })
+          new CustomEvent("COL_MOUSEOVER", {
+            detail: {
+              col_index: d.col_index,
+            },
+          })
         );
       })
       .on("mouseout", function (d) {
         dispatchEvent(
-          new CustomEvent("COL_MOUSEOUT", { col_index: d.col_index })
+          new CustomEvent("COL_MOUSEOUT", {
+            detail: {
+              col_index: d.col_index,
+            },
+          })
         );
       });
   }

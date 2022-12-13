@@ -29342,9 +29342,13 @@ module.exports =
 	    d3.select(params.viz.viz_wrapper).select(params.root + " .row_container").call(row_tip);
 
 	    d3.select(params.root + " .row_label_zoom_container").selectAll("g").on("mouseover", function (d) {
-	      dispatchEvent(new CustomEvent("ROW_MOUSEOVER", { row_index: d.row_index }));
+	      dispatchEvent(new CustomEvent("ROW_MOUSEOVER", {
+	        detail: { row_index: d.row_index }
+	      }));
 	    }).on("mouseout", function mouseout(d) {
-	      dispatchEvent(new CustomEvent("ROW_MOUSEOUT", { row_index: d.row_index }));
+	      dispatchEvent(new CustomEvent("ROW_MOUSEOUT", {
+	        detail: { row_index: d.row_index }
+	      }));
 	    });
 	  } else {
 	    d3.select(params.root + " .row_label_zoom_container").selectAll("g").on("mouseover", function () {
@@ -29978,9 +29982,17 @@ module.exports =
 	    d3.select(params.viz.viz_wrapper).select("svg").select(params.root + " .col_zoom_container").selectAll(".col_label_group").select("text").call(col_tip);
 
 	    d3.select(params.root + " .col_zoom_container").selectAll(".col_label_group").on("mouseover", function (d) {
-	      dispatchEvent(new CustomEvent("COL_MOUSEOVER", { col_index: d.col_index }));
+	      dispatchEvent(new CustomEvent("COL_MOUSEOVER", {
+	        detail: {
+	          col_index: d.col_index
+	        }
+	      }));
 	    }).on("mouseout", function (d) {
-	      dispatchEvent(new CustomEvent("COL_MOUSEOUT", { col_index: d.col_index }));
+	      dispatchEvent(new CustomEvent("COL_MOUSEOUT", {
+	        detail: {
+	          col_index: d.col_index
+	        }
+	      }));
 	    });
 	  }
 	};
