@@ -24,7 +24,7 @@ module.exports = function mouseover_tile(
   });
   dispatchEvent(
     new CustomEvent("TILE_MOUSEOVER", {
-      detail: inst_arguments.__data__,
+      detail: inst_data,
     })
   );
 };
