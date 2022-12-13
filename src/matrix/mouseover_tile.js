@@ -12,7 +12,7 @@ module.exports = function mouseover_tile(
       function (d) {
         var font_weight;
         var inst_found =
-          inst_data[inst_rc + "_name"].replace(/_/g, " ") === d.name;
+          (inst_data[inst_rc + "_name"] || "").replace(/_/g, " ") === d.name;
         if (inst_found) {
           font_weight = "bold";
         } else {

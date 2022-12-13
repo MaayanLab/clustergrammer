@@ -25047,7 +25047,7 @@ module.exports =
 	  ["row", "col"].forEach(function (inst_rc) {
 	    d3.selectAll(params.root + " ." + inst_rc + "_label_group text").style("font-weight", function (d) {
 	      var font_weight;
-	      var inst_found = inst_data[inst_rc + "_name"].replace(/_/g, " ") === d.name;
+	      var inst_found = (inst_data[inst_rc + "_name"] || "").replace(/_/g, " ") === d.name;
 	      if (inst_found) {
 	        font_weight = "bold";
 	      } else {
