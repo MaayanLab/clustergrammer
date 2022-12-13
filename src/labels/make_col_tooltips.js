@@ -34,18 +34,14 @@ module.exports = function make_col_tooltips(params) {
       .on("mouseover", function (d) {
         dispatchEvent(
           new CustomEvent("COL_MOUSEOVER", {
-            detail: {
-              col_index: d.col_index,
-            },
+            detail: d,
           })
         );
       })
       .on("mouseout", function (d) {
         dispatchEvent(
           new CustomEvent("COL_MOUSEOUT", {
-            detail: {
-              col_index: d.col_index,
-            },
+            detail: d,
           })
         );
       });

@@ -29343,11 +29343,11 @@ module.exports =
 
 	    d3.select(params.root + " .row_label_zoom_container").selectAll("g").on("mouseover", function (d) {
 	      dispatchEvent(new CustomEvent("ROW_MOUSEOVER", {
-	        detail: { row_index: d.row_index }
+	        detail: d
 	      }));
 	    }).on("mouseout", function mouseout(d) {
 	      dispatchEvent(new CustomEvent("ROW_MOUSEOUT", {
-	        detail: { row_index: d.row_index }
+	        detail: d
 	      }));
 	    });
 	  } else {
@@ -29983,15 +29983,11 @@ module.exports =
 
 	    d3.select(params.root + " .col_zoom_container").selectAll(".col_label_group").on("mouseover", function (d) {
 	      dispatchEvent(new CustomEvent("COL_MOUSEOVER", {
-	        detail: {
-	          col_index: d.col_index
-	        }
+	        detail: d
 	      }));
 	    }).on("mouseout", function (d) {
 	      dispatchEvent(new CustomEvent("COL_MOUSEOUT", {
-	        detail: {
-	          col_index: d.col_index
-	        }
+	        detail: d
 	      }));
 	    });
 	  }
