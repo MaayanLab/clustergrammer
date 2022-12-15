@@ -41,11 +41,9 @@ module.exports = function make_viz(cgm) {
 
   make_row_label_container(cgm);
 
-  if (params.viz.show_dendrogram) {
-    make_row_dendro(cgm);
-    make_col_dendro(cgm);
-    make_row_dendro_spillover(cgm);
-  }
+  make_row_dendro(cgm);
+  make_col_dendro(cgm);
+  make_row_dendro_spillover(cgm);
 
   make_col_label_container(cgm);
 

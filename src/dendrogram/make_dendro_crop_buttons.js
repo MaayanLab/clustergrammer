@@ -13,12 +13,14 @@ module.exports = function make_dendro_crop_buttons(cgm, inst_rc) {
   // information needed to make dendro
   var dendro_info;
   var other_rc;
-  if (inst_rc === 'row') {
-    dendro_info = calc_row_dendro_triangles(params);
-    other_rc = 'col';
-  } else {
-    dendro_info = calc_col_dendro_triangles(params);
-    other_rc = 'row';
+  if (params.viz.show_dendrogram) {
+    if (inst_rc === 'row') {
+      dendro_info = calc_row_dendro_triangles(params);
+      other_rc = 'col';
+    } else {
+      dendro_info = calc_col_dendro_triangles(params);
+      other_rc = 'row';
+    }
   }
 
   // d3-tooltip

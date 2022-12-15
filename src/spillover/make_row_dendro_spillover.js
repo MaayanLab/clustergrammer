@@ -40,7 +40,6 @@ module.exports = function make_row_dendro_spillover(cgm) {
     .append('g')
     .classed('row_dendro_icons_group', true);
 
-  // customization: hide if no dendrogram data
   if (cgm.config.show_dendrogram) {
     make_dendro_crop_buttons(cgm, 'row');
   }

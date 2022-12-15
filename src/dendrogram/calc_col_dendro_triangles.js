@@ -4,7 +4,7 @@ var utils = require('../Utils_clust');
 module.exports = function calc_col_dendro_triangles(params) {
   var triangle_info = {};
   var inst_level = params.group_level.col;
-  var col_nodes = params.network_data.col_nodes;
+  var col_nodes = params.network_data.col_nodes || [];
   var col_nodes_names = params.network_data.col_nodes_names || [];
 
   each(col_nodes, function (d) {

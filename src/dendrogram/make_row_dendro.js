@@ -38,7 +38,6 @@ module.exports = function make_row_dendro(cgm) {
       .attr('height', params.viz.svg_dim.height);
   }
 
-  // customization: hide if no dendrogram data
   if (cgm.config.show_dendrogram) {
     make_dendro_triangles(cgm, 'row', false);
   }

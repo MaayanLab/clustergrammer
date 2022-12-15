@@ -1,5 +1,5 @@
 var make_network_using_view = require('../network/make_network_using_view');
-var ini_sidebar_params = require('./ini_sidebar_params');
+// var ini_sidebar_params = require('./ini_sidebar_params');
 var make_requested_view = require('../filters/make_requested_view');
 var get_available_filters = require('./get_available_filters');
 var calc_viz_params = require('./calc_viz_params');

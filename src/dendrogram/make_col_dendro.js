@@ -45,7 +45,6 @@ module.exports = function make_col_dendro(cgm) {
       .attr('height', spillover_height + 'px');
   }
 
-  // customization: hide if no dendrogram data
   if (cgm.config.show_dendrogram) {
     make_dendro_triangles(cgm, 'col', false);
   }
