@@ -1,4 +1,4 @@
-module.exports = function ini_sidebar_params(params){
+module.exports = function ini_sidebar_params(params) {
   var sidebar = {};
 
   sidebar.wrapper = {};
@@ -14,7 +14,6 @@ module.exports = function ini_sidebar_params(params){
   sidebar.slider = {};
   sidebar.slider.width = params.sidebar_width - 30;
   sidebar.slider.margin_left = 15;
-
 
   sidebar.key_cat = {};
   sidebar.key_cat.width = params.sidebar_width - 15;

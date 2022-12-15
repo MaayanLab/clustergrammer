@@ -1,9 +1,8 @@
-module.exports = function zoom_rules_y(params, zoom_info){
-
+module.exports = function zoom_rules_y(params, zoom_info) {
   var viz = params.viz;
   // zoom in the x direction before zooming in the y direction
-  if (viz.zoom_ratio.y > 1){
-    if (zoom_info.zoom_y < viz.zoom_ratio.y){
+  if (viz.zoom_ratio.y > 1) {
+    if (zoom_info.zoom_y < viz.zoom_ratio.y) {
       zoom_info.trans_y = 0;
       zoom_info.zoom_y = 1;
     } else {
@@ -20,8 +19,7 @@ module.exports = function zoom_rules_y(params, zoom_info){
   if (zoom_info.trans_y >= 0) {
     zoom_info.trans_y = 0;
     // console.log('y no positive panning\n\n')
-  }
-  else if (zoom_info.trans_y <= -zoom_info.pan_room_y) {
+  } else if (zoom_info.trans_y <= -zoom_info.pan_room_y) {
     zoom_info.trans_y = -zoom_info.pan_room_y;
     // console.log('y restrict pan room \n\n')
   }

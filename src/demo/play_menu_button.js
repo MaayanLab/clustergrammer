@@ -1,12 +1,12 @@
-var demo_text = require("./demo_text");
-var sim_click = require("./sim_click");
-var $ = require("jquery");
+var demo_text = require('./demo_text');
+var sim_click = require('./sim_click');
+var $ = require('jquery');
 
 module.exports = function play_menu_button() {
   /* eslint-disable */
 
   function run(params) {
-    var text = "View additional controls\nby clicking the menu button";
+    var text = 'View additional controls\nby clicking the menu button';
     demo_text(params, text, 4000);
 
     // var inst_element = get_row_element(params, 'EGFR');
@@ -25,20 +25,20 @@ module.exports = function play_menu_button() {
 
     var x_trans = Number(
       d3
-        .select(params.root + " .expand_button")
-        .attr("x")
-        .replace("px", "")
+        .select(params.root + ' .expand_button')
+        .attr('x')
+        .replace('px', '')
     );
     var y_trans = Number(
       d3
-        .select(params.root + " .expand_button")
-        .attr("y")
-        .replace("px", "")
+        .select(params.root + ' .expand_button')
+        .attr('y')
+        .replace('px', '')
     );
 
     var wait_click = 3000;
     var wait_real_click = 3400;
-    setTimeout(sim_click, wait_click, params, "single", x_trans, y_trans);
+    setTimeout(sim_click, wait_click, params, 'single', x_trans, y_trans);
     setTimeout(click_menu_button, wait_real_click, params);
   }
 
@@ -47,12 +47,12 @@ module.exports = function play_menu_button() {
   }
 
   function click_menu_button(params) {
-    $(params.root + " .expand_button").d3Click();
+    $(params.root + ' .expand_button').d3Click();
   }
 
   function get_row_element(params, inst_row) {
     var inst_element = d3
-      .selectAll(params.root + " .row_label_group")
+      .selectAll(params.root + ' .row_label_group')
       .filter(function () {
         var inst_data = this.__data__;
         return inst_data.name == inst_row;
@@ -64,9 +64,9 @@ module.exports = function play_menu_button() {
   // allows doubleclicking on d3 element
   jQuery.fn.d3Click = function () {
     this.each(function (i, e) {
-      var evt = document.createEvent("MouseEvents");
+      var evt = document.createEvent('MouseEvents');
       evt.initMouseEvent(
-        "click",
+        'click',
         true,
         true,
         window,
@@ -89,9 +89,9 @@ module.exports = function play_menu_button() {
   // allows doubleclicking on d3 element
   jQuery.fn.d3DblClick = function () {
     this.each(function (i, e) {
-      var evt = document.createEvent("MouseEvents");
+      var evt = document.createEvent('MouseEvents');
       evt.initMouseEvent(
-        "dblclick",
+        'dblclick',
         true,
         true,
         window,
@@ -112,6 +112,6 @@ module.exports = function play_menu_button() {
   };
   return {
     run: run,
-    get_duration: get_duration,
+    get_duration: get_duration
   };
 };

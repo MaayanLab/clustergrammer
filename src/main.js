@@ -1,27 +1,26 @@
-var make_config = require("./make_config");
-var make_params = require("./params/make_params");
-var make_viz = require("./make_viz");
-var resize_viz = require("./reset_size/resize_viz");
-var play_demo = require("./demo/play_demo");
-var ini_demo = require("./demo/ini_demo");
-var filter_viz_using_nodes = require("./network/filter_viz_using_nodes");
-var filter_viz_using_names = require("./network/filter_viz_using_names");
-var update_cats = require("./update/update_cats");
-var reset_cats = require("./update/reset_cats");
-var two_translate_zoom = require("./zoom/two_translate_zoom");
-var update_view = require("./update/update_view");
-var save_matrix = require("./matrix/save_matrix");
-var brush_crop_matrix = require("./matrix/brush_crop_matrix");
-var run_zoom = require("./zoom/run_zoom");
-var d3_tip_custom = require("./tooltip/d3_tip_custom");
-var all_reorder = require("./reorder/all_reorder");
-var make_matrix_string = require("./matrix/make_matrix_string");
-var d3 = require("d3");
-var _ = require("underscore");
-var jQuery = require("jquery");
+var make_config = require('./make_config');
+var make_params = require('./params/make_params');
+var make_viz = require('./make_viz');
+var resize_viz = require('./reset_size/resize_viz');
+var play_demo = require('./demo/play_demo');
+var ini_demo = require('./demo/ini_demo');
+var filter_viz_using_nodes = require('./network/filter_viz_using_nodes');
+var filter_viz_using_names = require('./network/filter_viz_using_names');
+var update_cats = require('./update/update_cats');
+var reset_cats = require('./update/reset_cats');
+var two_translate_zoom = require('./zoom/two_translate_zoom');
+var update_view = require('./update/update_view');
+var save_matrix = require('./matrix/save_matrix');
+var brush_crop_matrix = require('./matrix/brush_crop_matrix');
+var run_zoom = require('./zoom/run_zoom');
+var d3_tip_custom = require('./tooltip/d3_tip_custom');
+var all_reorder = require('./reorder/all_reorder');
+var make_matrix_string = require('./matrix/make_matrix_string');
+var d3 = require('d3');
+var jQuery = require('jquery');
 
 // moved d3.slider to src
-d3.slider = require("./d3.slider");
+d3.slider = require('./d3.slider');
 
 /* eslint-disable */
 
@@ -50,13 +49,13 @@ function Clustergrammer(args) {
   cgm.params.zoom_behavior = d3.behavior
     .zoom()
     .scaleExtent([1, cgm.params.viz.square_zoom * cgm.params.viz.zoom_ratio.x])
-    .on("zoom", function () {
+    .on('zoom', function () {
       run_zoom(cgm);
     });
 
   cgm.params.zoom_behavior.translate([
     cgm.params.viz.clust.margin.left,
-    cgm.params.viz.clust.margin.top,
+    cgm.params.viz.clust.margin.top
   ]);
 
   // customization
@@ -69,7 +68,7 @@ function Clustergrammer(args) {
   make_viz(cgm);
 
   function external_resize() {
-    d3.select(cgm.params.viz.viz_svg).style("opacity", 0.5);
+    d3.select(cgm.params.viz.viz_svg).style('opacity', 0.5);
 
     var wait_time = 500;
     if (this.params.viz.run_trans === true) {
@@ -97,11 +96,11 @@ function Clustergrammer(args) {
   }
 
   function api_reorder(inst_rc, inst_order) {
-    if (inst_order === "sum") {
-      inst_order = "rank";
+    if (inst_order === 'sum') {
+      inst_order = 'rank';
     }
-    if (inst_order === "var") {
-      inst_order = "rankvar";
+    if (inst_order === 'var') {
+      inst_order = 'rankvar';
     }
     all_reorder(this, inst_order, inst_rc);
   }

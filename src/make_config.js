@@ -1,11 +1,10 @@
-var utils = require("./Utils_clust");
-var transpose_network = require("./network/transpose_network");
-var get_available_filters = require("./params/get_available_filters");
-var get_filter_default_state = require("./filters/get_filter_default_state");
-var set_defaults = require("./config/set_defaults");
-var check_sim_mat = require("./config/check_sim_mat");
-var check_nodes_for_categories = require("./config/check_nodes_for_categories");
-var _ = require("underscore");
+var utils = require('./Utils_clust');
+var transpose_network = require('./network/transpose_network');
+var get_available_filters = require('./params/get_available_filters');
+var get_filter_default_state = require('./filters/get_filter_default_state');
+var set_defaults = require('./config/set_defaults');
+var check_sim_mat = require('./config/check_sim_mat');
+var check_nodes_for_categories = require('./config/check_nodes_for_categories');
 
 module.exports = function make_config(args) {
   var defaults = set_defaults();
@@ -15,17 +14,17 @@ module.exports = function make_config(args) {
 
   config.network_data = args.network_data;
 
-  var super_string = ": ";
+  var super_string = ': ';
 
   // replace undersores with space in row/col names
-  _.each(["row", "col"], function (inst_rc) {
-    var inst_nodes = config.network_data[inst_rc + "_nodes"];
+  ['row', 'col'].forEach(function (inst_rc) {
+    var inst_nodes = config.network_data[inst_rc + '_nodes'] || [];
 
     var has_cats = check_nodes_for_categories(inst_nodes);
 
     inst_nodes.forEach(function (d, i) {
       // add index to row_nodes and col_nodes
-      d[inst_rc + "_index"] = i;
+      d[inst_rc + '_index'] = i;
 
       if (has_cats) {
         config.super_labels = true;
@@ -35,17 +34,17 @@ module.exports = function make_config(args) {
 
       d.name = String(d.name);
 
-      d.name = d.name.replace(/_/g, " ");
+      d.name = d.name.replace(/_/g, ' ');
     });
   });
 
   config.network_data.row_nodes_names = utils.pluck(
     config.network_data.row_nodes,
-    "name"
+    'name'
   );
   config.network_data.col_nodes_names = utils.pluck(
     config.network_data.col_nodes,
-    "name"
+    'name'
   );
 
   config.sim_mat = check_sim_mat(config);
@@ -53,17 +52,19 @@ module.exports = function make_config(args) {
   var filters = get_available_filters(config.network_data.views);
 
   var default_states = {};
-  _.each(_.keys(filters.possible_filters), function (inst_filter) {
+  Object.keys(filters.possible_filters || {}).forEach(function (inst_filter) {
     var tmp_state = get_filter_default_state(filters.filter_data, inst_filter);
 
     default_states[inst_filter] = tmp_state;
   });
 
   // process view
-  if (_.has(config.network_data, "views")) {
+  if (utils.has(config.network_data, 'views')) {
     config.network_data.views.forEach(function (inst_view) {
-      _.each(_.keys(filters.possible_filters), function (inst_filter) {
-        if (!_.has(inst_view, inst_filter)) {
+      Object.keys(filters.possible_filters || {}).forEach(function (
+        inst_filter
+      ) {
+        if (!utils.has(inst_view, inst_filter)) {
           inst_view[inst_filter] = default_states[inst_filter];
         }
       });
@@ -71,21 +72,21 @@ module.exports = function make_config(args) {
       var inst_nodes = inst_view.nodes;
 
       // proc row/col nodes names in views
-      _.each(["row", "col"], function (inst_rc) {
+      ['row', 'col'].forEach(function (inst_rc) {
         var has_cats = check_nodes_for_categories(
-          inst_nodes[inst_rc + "_nodes"]
+          inst_nodes[inst_rc + '_nodes']
         );
 
-        inst_nodes[inst_rc + "_nodes"].forEach(function (d, i) {
+        inst_nodes[inst_rc + '_nodes'].forEach(function (d, i) {
           // add index to row_nodes and col_nodes
-          d[inst_rc + "_index"] = i;
+          d[inst_rc + '_index'] = i;
 
           if (has_cats) {
             d.name = d.name.split(super_string)[1];
           }
 
           d.name = String(d.name);
-          d.name = d.name.replace(/_/g, " ");
+          d.name = d.name.replace(/_/g, ' ');
         });
       });
     });
@@ -94,17 +95,11 @@ module.exports = function make_config(args) {
   var col_nodes = config.network_data.col_nodes;
   var row_nodes = config.network_data.row_nodes;
 
-  // console.log( config.network_data.links[0] )
-  // console.log( config.network_data.links[1] )
-  // console.log( config.network_data.links[2] )
-
-  // console.log(_.has(config.network_data,'mat'));
-
   ///////////////////////////
   // convert 'mat' to links
   ///////////////////////////
 
-  if (_.has(config.network_data, "mat")) {
+  if (utils.has(config.network_data, 'mat')) {
     var links = [];
     var mat = config.network_data.mat;
     var inst_link = {};
@@ -128,7 +123,7 @@ module.exports = function make_config(args) {
 
   // add names and instantaneous positions to links
   config.network_data.links.forEach(function (d) {
-    d.name = row_nodes[d.source].name + "_" + col_nodes[d.target].name;
+    d.name = row_nodes[d.source].name + '_' + col_nodes[d.target].name;
     d.row_name = row_nodes[d.source].name;
     d.col_name = col_nodes[d.target].name;
   });
@@ -159,8 +154,8 @@ module.exports = function make_config(args) {
     config.inst_order.row = args.order;
     config.inst_order.col = args.order;
   } else {
-    config.inst_order.row = "clust";
-    config.inst_order.col = "clust";
+    config.inst_order.row = 'clust';
+    config.inst_order.col = 'clust';
   }
 
   // set row or column order directly -- note that row/col are swapped
@@ -181,17 +176,12 @@ module.exports = function make_config(args) {
     config.inst_order.row = args.col_order;
   }
 
-  // customization fix zoom without dendrogram data
-  var row_has_group = utils.has(config.network_data.row_nodes[0], "group");
-  var col_has_group = utils.has(config.network_data.col_nodes[0], "group");
-  if (!row_has_group) {
-    config.network_data.row_nodes[0].group = [];
-  }
-  if (!col_has_group) {
-    config.network_data.col_nodes[0].group = [];
-  }
+  var row_has_group = utils.has(config.network_data.row_nodes[0], 'group');
+  var col_has_group = utils.has(config.network_data.col_nodes[0], 'group');
 
-  if (utils.has(config.network_data.links[0], "value_orig")) {
+  config.show_dendrogram = row_has_group || col_has_group;
+
+  if (utils.has(config.network_data.links[0], 'value_orig')) {
     config.keep_orig = true;
   } else {
     config.keep_orig = false;

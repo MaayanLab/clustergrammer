@@ -1,9 +1,11 @@
 {
   "name": "clustergrammer",
-  "version": "v1.19.15",
+  "version": "v1.19.21",
   "description": "This is a clustergram implemented in D3.js. I started from the example http://bost.ocks.org/mike/miserables/ and added the following features",
   "main": "clustergrammer.node.js",
   "scripts": {
+    "pre-commit": "lint-staged --allow-empty",
+    "postinstall": "husky install",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -29,12 +31,20 @@
     "less-loader": "^2.2.3",
     "object-assign": "^4.1.0",
     "style-loader": "^0.13.1",
-    "webpack": "^1.13.2"
+    "webpack": "^1.13.2",
+    "husky": "^7.0.4",
+    "lint-staged": "^13.0.3",
+    "prettier": "^2.7.1"
   },
   "dependencies": {
     "d3": "^3.5.15",
     "jquery": "1.11.0",
     "mathjs": "3.17.0",
-    "underscore": "1.8.3"
+    "underscore": "1.13.6"
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx,json,html}": [
+      "prettier --write"
+    ]
   }
 }

@@ -1,17 +1,16 @@
-var ini_label_params = require("./ini_label_params");
-var set_viz_wrapper_size = require("../set_viz_wrapper_size");
-var get_svg_dim = require("./get_svg_dim");
-var calc_label_params = require("./calc_label_params");
-var calc_clust_width = require("./calc_clust_width");
-var calc_clust_height = require("./calc_clust_height");
-var calc_val_max = require("./calc_val_max");
-var calc_matrix_params = require("./calc_matrix_params");
-var set_zoom_params = require("./set_zoom_params");
-var calc_default_fs = require("./calc_default_fs");
-var utils = require("../Utils_clust");
-var get_available_filters = require("./get_available_filters");
-var make_cat_params = require("./make_cat_params");
-var _ = require("underscore");
+var ini_label_params = require('./ini_label_params');
+var set_viz_wrapper_size = require('../set_viz_wrapper_size');
+var get_svg_dim = require('./get_svg_dim');
+var calc_label_params = require('./calc_label_params');
+var calc_clust_width = require('./calc_clust_width');
+var calc_clust_height = require('./calc_clust_height');
+var calc_val_max = require('./calc_val_max');
+var calc_matrix_params = require('./calc_matrix_params');
+var set_zoom_params = require('./set_zoom_params');
+var calc_default_fs = require('./calc_default_fs');
+var utils = require('../Utils_clust');
+var get_available_filters = require('./get_available_filters');
+var make_cat_params = require('./make_cat_params');
 
 module.exports = function calc_viz_params(
   params,
@@ -45,9 +44,9 @@ module.exports = function calc_viz_params(
 
     viz.root = params.root;
 
-    viz.root_tips = params.root.replace("#", ".") + "_" + "d3-tip";
+    viz.root_tips = params.root.replace('#', '.') + '_' + 'd3-tip';
 
-    viz.viz_wrapper = params.root + " .viz_wrapper";
+    viz.viz_wrapper = params.root + ' .viz_wrapper';
     viz.do_zoom = params.do_zoom;
     viz.background_color = params.background_color;
     viz.super_border_color = params.super_border_color;
@@ -76,9 +75,9 @@ module.exports = function calc_viz_params(
 
     viz.update_button_width = 100;
 
-    viz.viz_svg = viz.viz_wrapper + " .viz_svg";
+    viz.viz_svg = viz.viz_wrapper + ' .viz_svg';
 
-    viz.zoom_element = viz.viz_wrapper + " .viz_svg";
+    viz.zoom_element = viz.viz_wrapper + ' .viz_svg';
 
     viz.uni_duration = 1000;
     // extra space below the clustergram (was 5)
@@ -88,7 +87,7 @@ module.exports = function calc_viz_params(
     viz.duration = 1000;
 
     viz.resize = params.resize;
-    if (utils.has(params, "size")) {
+    if (utils.has(params, 'size')) {
       viz.fixed_size = params.size;
     } else {
       viz.fixed_size = false;
@@ -130,14 +129,14 @@ module.exports = function calc_viz_params(
     // // always make group level dict
     // params.group_level = {};
 
-    if (_.has(params, "group_level") == false) {
+    if (!utils.has(params, 'group_level')) {
       if (viz.show_dendrogram) {
         params.group_level = {};
       }
 
       // preventing error when un-clustered, above statement
       // preserves dendro state while updating
-      if (_.has(params, "group_level") == false) {
+      if (!utils.has(params, 'group_level')) {
         params.group_level = {};
       }
 

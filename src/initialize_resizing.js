@@ -1,4 +1,4 @@
-var resize_viz = require("./reset_size/resize_viz");
+var resize_viz = require('./reset_size/resize_viz');
 
 module.exports = function initialize_resizing(cgm) {
   // customization

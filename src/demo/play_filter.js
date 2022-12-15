@@ -1,36 +1,36 @@
-var demo_text = require("./demo_text");
-var highlight_sidebar_element = require("./highlight_sidebar_element");
-var update_viz_with_view = require("../network/update_viz_with_view");
-var $ = require("jquery");
+var demo_text = require('./demo_text');
+var highlight_sidebar_element = require('./highlight_sidebar_element');
+var update_viz_with_view = require('../network/update_viz_with_view');
+var $ = require('jquery');
 
 module.exports = function play_filter() {
   function run(cgm) {
     var params = cgm.params;
 
-    var text = "Filter rows based on sum or\nvariance using the sliders";
+    var text = 'Filter rows based on sum or\nvariance using the sliders';
     demo_text(params, text, 4000);
 
-    var filter_type = "N_row_sum";
+    var filter_type = 'N_row_sum';
 
     setTimeout(
       highlight_sidebar_element,
       5000,
       params,
-      "slider_" + filter_type,
+      'slider_' + filter_type,
       13000
     );
 
-    text = "Filter: Top 20 rows by sum";
+    text = 'Filter: Top 20 rows by sum';
     setTimeout(demo_text, 5000, params, text, 4000);
     setTimeout(run_update, 5300, cgm, filter_type, 20, 1);
 
-    text = "Filter: Top 10 rows by sum";
+    text = 'Filter: Top 10 rows by sum';
     setTimeout(demo_text, 10000, params, text, 4000);
     setTimeout(run_update, 10300, cgm, filter_type, 10, 2);
 
-    text = "Filter: All rows";
+    text = 'Filter: All rows';
     setTimeout(demo_text, 15000, params, text, 4000);
-    setTimeout(run_update, 15300, cgm, filter_type, "all", 0);
+    setTimeout(run_update, 15300, cgm, filter_type, 'all', 0);
   }
 
   function get_duration() {
@@ -45,22 +45,22 @@ module.exports = function play_filter() {
     update_viz_with_view(cgm, requested_view);
 
     // quick fix for slider
-    $(params.root + " .slider_" + filter_type).slider("value", filter_index);
+    $(params.root + ' .slider_' + filter_type).slider('value', filter_index);
 
     var unit_name;
-    if (filter_type === "N_row_sum") {
-      unit_name = "sum";
+    if (filter_type === 'N_row_sum') {
+      unit_name = 'sum';
     } else {
-      unit_name = "variance";
+      unit_name = 'variance';
     }
 
-    d3.select(params.root + " .title_" + filter_type).text(
-      "Top rows " + unit_name + ": " + filter_value
+    d3.select(params.root + ' .title_' + filter_type).text(
+      'Top rows ' + unit_name + ': ' + filter_value
     );
   }
 
   return {
     run: run,
-    get_duration: get_duration,
+    get_duration: get_duration
   };
 };

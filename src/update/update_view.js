@@ -1,8 +1,7 @@
 var update_viz_with_view = require('../network/update_viz_with_view');
 var reset_other_filter_sliders = require('../filters/reset_other_filter_sliders');
 
-module.exports = function update_view(cgm, filter_type, inst_state){
-
+module.exports = function update_view(cgm, filter_type, inst_state) {
   // add something to control slider position
   /////////////////////////////////////////////
 

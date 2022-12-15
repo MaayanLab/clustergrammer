@@ -1,11 +1,12 @@
 /* eslint-disable */
 
-var draw_up_tile = require("../enter/draw_up_tile");
-var draw_dn_tile = require("../enter/draw_dn_tile");
-var mouseover_tile = require("./mouseover_tile");
-var mouseout_tile = require("./mouseout_tile");
-var fine_position_tile = require("./fine_position_tile");
-var _ = require("underscore");
+var draw_up_tile = require('../enter/draw_up_tile');
+var draw_dn_tile = require('../enter/draw_dn_tile');
+var mouseover_tile = require('./mouseover_tile');
+var mouseout_tile = require('./mouseout_tile');
+var fine_position_tile = require('./fine_position_tile');
+var filter = require('underscore/cjs/filter');
+var utils = require('../Utils_clust');
 
 module.exports = function make_simple_rows(
   params,
@@ -24,7 +25,7 @@ module.exports = function make_simple_rows(
   }
 
   var keep_orig;
-  if (_.has(params.network_data.links[0], "value_orig")) {
+  if (utils.has(params.network_data.links[0], 'value_orig')) {
     keep_orig = true;
   } else {
     keep_orig = false;
@@ -33,7 +34,7 @@ module.exports = function make_simple_rows(
   var row_values;
   if (keep_orig === false) {
     // value: remove zero values to make visualization faster
-    row_values = _.filter(inp_row_data, function (num) {
+    row_values = filter(inp_row_data, function (num) {
       return num.value !== 0;
     });
   } else {
@@ -43,20 +44,20 @@ module.exports = function make_simple_rows(
   // generate tiles in the current row
   var tile = d3
     .select(row_selection)
-    .selectAll("rect")
+    .selectAll('rect')
     .data(row_values, function (d) {
       return d.col_name;
     })
     .enter()
-    .append("rect")
-    .attr("class", "tile row_tile")
-    .attr("width", params.viz.rect_width)
-    .attr("height", rect_height)
-    .style("fill", function (d) {
+    .append('rect')
+    .attr('class', 'tile row_tile')
+    .attr('width', params.viz.rect_width)
+    .attr('height', rect_height)
+    .style('fill', function (d) {
       // switch the color based on up/dn value
       var inst_fill;
-      if (d.value_orig === "NaN") {
-        inst_fill = "#000000";
+      if (d.value_orig === 'NaN') {
+        inst_fill = '#000000';
       } else {
         inst_fill =
           d.value > 0
@@ -65,10 +66,10 @@ module.exports = function make_simple_rows(
       }
       return inst_fill;
     })
-    .style("fill-opacity", function (d) {
+    .style('fill-opacity', function (d) {
       // calculate output opacity using the opacity scale
       var inst_opacity;
-      if (d.value_orig === "NaN") {
+      if (d.value_orig === 'NaN') {
         // console.log('found NaN while making tiles');
         inst_opacity = 0.175;
       } else {
@@ -76,13 +77,13 @@ module.exports = function make_simple_rows(
       }
       return inst_opacity;
     })
-    .attr("transform", function (d) {
+    .attr('transform', function (d) {
       return fine_position_tile(params, d);
     });
 
   if (make_tip) {
     tile
-      .on("mouseover", function () {
+      .on('mouseover', function () {
         for (
           var inst_len = arguments.length, args = Array(inst_len), inst_key = 0;
           inst_key < inst_len;
@@ -92,7 +93,7 @@ module.exports = function make_simple_rows(
         }
         mouseover_tile(params, this, tip, args);
       })
-      .on("mouseout", function () {
+      .on('mouseout', function () {
         mouseout_tile(params, this, tip);
       });
   }
@@ -138,73 +139,73 @@ module.exports = function make_simple_rows(
   //     return fine_position_tile(params, d);
   //   });
 
-  if (params.matrix.tile_type == "updn") {
+  if (params.matrix.tile_type == 'updn') {
     // value split
-    var row_split_data = _.filter(inp_row_data, function (num) {
+    var row_split_data = filter(inp_row_data, function (num) {
       return num.value_up != 0 || num.value_dn != 0;
     });
 
     // tile_up
     d3.select(row_selection)
-      .selectAll(".tile_up")
+      .selectAll('.tile_up')
       .data(row_split_data, function (d) {
         return d.col_name;
       })
       .enter()
-      .append("path")
-      .attr("class", "tile_up")
-      .attr("d", function () {
+      .append('path')
+      .attr('class', 'tile_up')
+      .attr('d', function () {
         return draw_up_tile(params);
       })
-      .attr("transform", function (d) {
+      .attr('transform', function (d) {
         fine_position_tile(params, d);
       })
-      .style("fill", function () {
+      .style('fill', function () {
         return params.matrix.tile_colors[0];
       })
-      .style("fill-opacity", function (d) {
+      .style('fill-opacity', function (d) {
         var inst_opacity = 0;
         if (Math.abs(d.value_dn) > 0) {
           inst_opacity = params.matrix.opacity_scale(Math.abs(d.value_up));
         }
         return inst_opacity;
       })
-      .on("mouseover", function (...args) {
+      .on('mouseover', function (...args) {
         mouseover_tile(params, this, tip, args);
       })
-      .on("mouseout", function () {
+      .on('mouseout', function () {
         mouseout_tile(params, this, tip);
       });
 
     // tile_dn
     d3.select(row_selection)
-      .selectAll(".tile_dn")
+      .selectAll('.tile_dn')
       .data(row_split_data, function (d) {
         return d.col_name;
       })
       .enter()
-      .append("path")
-      .attr("class", "tile_dn")
-      .attr("d", function () {
+      .append('path')
+      .attr('class', 'tile_dn')
+      .attr('d', function () {
         return draw_dn_tile(params);
       })
-      .attr("transform", function (d) {
+      .attr('transform', function (d) {
         fine_position_tile(params, d);
       })
-      .style("fill", function () {
+      .style('fill', function () {
         return params.matrix.tile_colors[1];
       })
-      .style("fill-opacity", function (d) {
+      .style('fill-opacity', function (d) {
         var inst_opacity = 0;
         if (Math.abs(d.value_up) > 0) {
           inst_opacity = params.matrix.opacity_scale(Math.abs(d.value_dn));
         }
         return inst_opacity;
       })
-      .on("mouseover", function (...args) {
+      .on('mouseover', function (...args) {
         mouseover_tile(params, this, tip, args);
       })
-      .on("mouseout", function () {
+      .on('mouseout', function () {
         mouseout_tile(params, this, tip);
       });
 
@@ -218,8 +219,8 @@ module.exports = function make_simple_rows(
 
   // append title to group
   if (params.matrix.tile_title) {
-    tile.append("title").text(function (d) {
-      var inst_string = "value: " + d.value;
+    tile.append('title').text(function (d) {
+      var inst_string = 'value: ' + d.value;
       return inst_string;
     });
   }

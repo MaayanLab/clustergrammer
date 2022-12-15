@@ -3,12 +3,11 @@ var calc_viz_params = require('../params/calc_viz_params');
 var resize_viz = require('../reset_size/resize_viz');
 var modify_row_node_cats = require('./modify_row_node_cats');
 
-module.exports = function update_cats(cgm, cat_data){
-
+module.exports = function update_cats(cgm, cat_data) {
   // Only accessible from the cgm API, cat_data is provided by externally
   ///////////////////////////////////////////////////////////////////////////
 
-  if (cgm.params.cat_update_callback != null){
+  if (cgm.params.cat_update_callback != null) {
     cgm.params.cat_update_callback(this);
   }
 
@@ -28,5 +27,4 @@ module.exports = function update_cats(cgm, cat_data){
   cgm.params.new_row_cats = cat_data;
 
   cgm.params.viz.cat_colors.col = col_cat_colors;
-
 };

@@ -1,5 +1,5 @@
-var calc_downsampled_matrix = require("../matrix/calc_downsampled_matrix");
-var $ = require("jquery");
+var calc_downsampled_matrix = require('../matrix/calc_downsampled_matrix');
+var $ = require('jquery');
 
 module.exports = function calc_downsampled_levels(params) {
   // console.log('---- before ---------')
@@ -74,7 +74,7 @@ module.exports = function calc_downsampled_levels(params) {
         .ordinal()
         .rangeBands([0, params.viz.clust.dim.width]);
 
-      ds.x_scale.domain(params.matrix.orders[inst_order + "_row"]);
+      ds.x_scale.domain(params.matrix.orders[inst_order + '_row']);
 
       // y_scale
       /////////////////////////

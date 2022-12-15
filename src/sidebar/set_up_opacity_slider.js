@@ -1,5 +1,4 @@
-module.exports = function set_up_opacity_slider(sidebar){
-
+module.exports = function set_up_opacity_slider(sidebar) {
   var slider_container = sidebar
     .append('div')
     .classed('opacity_slider_container', true)
@@ -18,5 +17,4 @@ module.exports = function set_up_opacity_slider(sidebar){
     .append('div')
     .classed('slider', true)
     .classed('opacity_slider', true);
-
 };

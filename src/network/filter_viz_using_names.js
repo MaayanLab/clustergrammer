@@ -1,7 +1,7 @@
-var filter_network_using_new_nodes = require("./filter_network_using_new_nodes");
-var update_viz_with_network = require("../update/update_viz_with_network");
-var _ = require("underscore");
-var $ = require("jquery");
+var filter_network_using_new_nodes = require('./filter_network_using_new_nodes');
+var update_viz_with_network = require('../update/update_viz_with_network');
+var utils = require('../Utils_clust');
+var $ = require('jquery');
 
 module.exports = function filter_viz_using_names(names, external_cgm = false) {
   // names is an object with row and column names that will be used to filter
@@ -18,10 +18,10 @@ module.exports = function filter_viz_using_names(names, external_cgm = false) {
   var new_nodes = {};
   var found_nodes;
 
-  _.each(["row", "col"], function (inst_rc) {
-    var orig_nodes = params.inst_nodes[inst_rc + "_nodes"];
+  ['row', 'col'].forEach(function (inst_rc) {
+    var orig_nodes = params.inst_nodes[inst_rc + '_nodes'];
 
-    if (_.has(names, inst_rc)) {
+    if (utils.has(names, inst_rc)) {
       if (names[inst_rc].length > 0) {
         var inst_names = names[inst_rc];
         found_nodes = $.grep(orig_nodes, function (d) {
@@ -34,7 +34,7 @@ module.exports = function filter_viz_using_names(names, external_cgm = false) {
       found_nodes = orig_nodes;
     }
 
-    new_nodes[inst_rc + "_nodes"] = found_nodes;
+    new_nodes[inst_rc + '_nodes'] = found_nodes;
   });
 
   // keep backup of the nodes for resetting filtering

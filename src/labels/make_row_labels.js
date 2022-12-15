@@ -1,12 +1,13 @@
-var utils = require("../Utils_clust");
-var add_row_click_hlight = require("./add_row_click_hlight");
-var row_reorder = require("../reorder/row_reorder");
-var make_row_tooltips = require("./make_row_tooltips");
-var _ = require("underscore");
+var utils = require('../Utils_clust');
+var add_row_click_hlight = require('./add_row_click_hlight');
+var row_reorder = require('../reorder/row_reorder');
+var make_row_tooltips = require('./make_row_tooltips');
+var each = require('underscore/cjs/each');
+var contains = require('underscore/cjs/contains');
 
 module.exports = function make_row_labels(
   cgm,
-  row_names = "all",
+  row_names = 'all',
   text_delay = 0
 ) {
   // console.log('make_row_labels')
@@ -15,12 +16,11 @@ module.exports = function make_row_labels(
   var params = cgm.params;
   var row_nodes = [];
 
-  if (row_names === "all") {
+  if (row_names === 'all') {
     row_nodes = params.network_data.row_nodes;
   } else {
-    _.each(params.network_data.row_nodes, function (inst_row) {
-      // if (_.contains(row_names, inst_row.name)){
-      if (_.contains(row_names, inst_row.name)) {
+    each(params.network_data.row_nodes, function (inst_row) {
+      if (contains(row_names, inst_row.name)) {
         row_nodes.push(inst_row);
       }
     });
@@ -28,24 +28,24 @@ module.exports = function make_row_labels(
 
   // make row labels in row_label_zoom_container, bind row_nodes data
   var row_labels = d3
-    .select(params.root + " .row_label_zoom_container")
-    .selectAll("g")
+    .select(params.root + ' .row_label_zoom_container')
+    .selectAll('g')
     .data(row_nodes, function (d) {
       return d.name;
     })
     .enter()
-    .append("g")
-    .classed("row_label_group", true);
+    .append('g')
+    .classed('row_label_group', true);
 
-  var row_nodes_names = params.network_data.row_nodes_names;
-  row_labels.attr("transform", function (d) {
+  var row_nodes_names = params.network_data.row_nodes_names || [];
+  row_labels.attr('transform', function (d) {
     // var inst_index = d.row_index;
-    var inst_index = _.indexOf(row_nodes_names, d.name);
-    return "translate(0," + params.viz.y_scale(inst_index) + ")";
+    var inst_index = row_nodes_names.indexOf(d.name);
+    return 'translate(0,' + params.viz.y_scale(inst_index) + ')';
   });
 
-  row_labels.on("dblclick", function (d) {
-    var data_attr = "__data__";
+  row_labels.on('dblclick', function (d) {
+    var data_attr = '__data__';
     var row_name = this[data_attr].name;
 
     // if (params.sim_mat){
@@ -74,42 +74,42 @@ module.exports = function make_row_labels(
   make_row_tooltips(params);
 
   // append rectangle behind text
-  row_labels.insert("rect").style("opacity", 0);
+  row_labels.insert('rect').style('opacity', 0);
 
   // append row label text
   row_labels
-    .append("text")
+    .append('text')
     .attr(
-      "y",
+      'y',
       params.viz.rect_height * 0.5 + params.labels.default_fs_row * 0.35
     )
-    .attr("text-anchor", "end")
-    .style("font-size", params.labels.default_fs_row + "px")
+    .attr('text-anchor', 'end')
+    .style('font-size', params.labels.default_fs_row + 'px')
     .text(function (d) {
       return utils.normal_name(d);
     })
-    .attr("pointer-events", "none")
-    .style("opacity", 0)
-    .style("cursor", "default")
+    .attr('pointer-events', 'none')
+    .style('opacity', 0)
+    .style('cursor', 'default')
     .transition()
     .delay(text_delay)
     .duration(text_delay)
-    .style("opacity", 1);
+    .style('opacity', 1);
 
   // change the size of the highlighting rects
   row_labels.each(function () {
-    var bbox = d3.select(this).select("text")[0][0].getBBox();
+    var bbox = d3.select(this).select('text')[0][0].getBBox();
     d3.select(this)
-      .select("rect")
-      .attr("x", bbox.x)
-      .attr("y", 0)
-      .attr("width", bbox.width)
-      .attr("height", params.viz.y_scale.rangeBand())
-      .style("fill", function () {
-        var inst_hl = "yellow";
+      .select('rect')
+      .attr('x', bbox.x)
+      .attr('y', 0)
+      .attr('width', bbox.width)
+      .attr('height', params.viz.y_scale.rangeBand())
+      .style('fill', function () {
+        var inst_hl = 'yellow';
         return inst_hl;
       })
-      .style("opacity", function (d) {
+      .style('opacity', function (d) {
         var inst_opacity = 0;
         // highlight target genes
         if (d.target === 1) {
@@ -121,26 +121,26 @@ module.exports = function make_row_labels(
 
   // almost-deprecated row value bars
   ///////////////////////////////
-  if (utils.has(params.network_data.row_nodes[0], "value")) {
+  if (utils.has(params.network_data.row_nodes[0], 'value')) {
     row_labels
-      .append("rect")
-      .classed("row_bars", true)
-      .attr("width", function (d) {
+      .append('rect')
+      .classed('row_bars', true)
+      .attr('width', function (d) {
         var inst_value = 0;
         inst_value = params.labels.bar_scale_row(Math.abs(d.value));
         return inst_value;
       })
-      .attr("x", function (d) {
+      .attr('x', function (d) {
         var inst_value = 0;
         inst_value = -params.labels.bar_scale_row(Math.abs(d.value));
         return inst_value;
       })
-      .attr("height", params.viz.y_scale.rangeBand())
-      .attr("fill", function (d) {
+      .attr('height', params.viz.y_scale.rangeBand())
+      .attr('fill', function (d) {
         return d.value > 0
           ? params.matrix.bar_colors[0]
           : params.matrix.bar_colors[1];
       })
-      .attr("opacity", 0.4);
+      .attr('opacity', 0.4);
   }
 };

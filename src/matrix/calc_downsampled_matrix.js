@@ -1,4 +1,5 @@
-var _ = require("underscore");
+var each = require('underscore/cjs/each');
+var utils = require('../Utils_clust');
 
 module.exports = function calc_downsampled_matrix(params, mat, ds_level) {
   var inst_num_rows = params.viz.ds[ds_level].num_rows;
@@ -30,7 +31,7 @@ module.exports = function calc_downsampled_matrix(params, mat, ds_level) {
     ds_mat.push(inst_obj);
   }
 
-  _.each(mat, function (inst_row) {
+  each(mat, function (inst_row) {
     // row ordering information is contained in y_scale
     var inst_y = params.viz.y_scale(inst_row.row_index);
 
@@ -42,7 +43,7 @@ module.exports = function calc_downsampled_matrix(params, mat, ds_level) {
     ds_mat[ds_index].all_names.push(inst_row.name);
 
     // gather row_data
-    if (_.has(ds_mat[ds_index], "row_data")) {
+    if (utils.has(ds_mat[ds_index], 'row_data')) {
       for (x = 0; x < inst_row_data.length; x++) {
         ds_mat[ds_index].row_data[x].value =
           ds_mat[ds_index].row_data[x].value + inst_row_data[x].value;
@@ -58,12 +59,12 @@ module.exports = function calc_downsampled_matrix(params, mat, ds_level) {
   });
 
   // average the values
-  _.each(ds_mat, function (tmp_ds) {
+  ds_mat.forEach(function (tmp_ds) {
     var tmp_row_data = tmp_ds.row_data;
 
     var num_names = tmp_ds.all_names.length;
 
-    _.each(tmp_row_data, function (tmp_obj) {
+    each(tmp_row_data, function (tmp_obj) {
       tmp_obj.value = (tmp_obj.value / num_names) * opacity_factor;
     });
   });
@@ -71,7 +72,7 @@ module.exports = function calc_downsampled_matrix(params, mat, ds_level) {
   // all names were found
   var all_names = [];
 
-  _.each(ds_mat, function (inst_row) {
+  ds_mat.forEach(function (inst_row) {
     all_names = all_names.concat(inst_row.all_names);
   });
 

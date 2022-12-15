@@ -3,8 +3,8 @@ var utils = require('../Utils_clust');
  */
 module.exports = function (net) {
   var tnet = {},
-      inst_link,
-      i;
+    inst_link,
+    i;
 
   tnet.row_nodes = net.col_nodes;
   tnet.col_nodes = net.row_nodes;

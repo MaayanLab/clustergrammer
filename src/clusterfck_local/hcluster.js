@@ -1,14 +1,14 @@
 /* eslint-disable */
 
-var distances = require("./distance");
-var $ = require("jquery");
+var distances = require('./distance');
+var $ = require('jquery');
 
 var HierarchicalClustering = function (distance, linkage, threshold) {
-  this.distance = distance || "euclidean";
-  this.linkage = linkage || "average";
+  this.distance = distance || 'euclidean';
+  this.linkage = linkage || 'average';
   this.threshold = threshold == undefined ? Infinity : threshold;
 
-  if (typeof this.distance == "string") {
+  if (typeof this.distance == 'string') {
     this.distance = distances[this.distance];
   }
 };
@@ -25,7 +25,7 @@ HierarchicalClustering.prototype = {
         value: items[i],
         key: i,
         index: i,
-        size: 1,
+        size: 1
       };
       this.tree[i] = cluster;
       this.index[i] = cluster;
@@ -96,7 +96,7 @@ HierarchicalClustering.prototype = {
       left: c1,
       right: c2,
       key: c1.key,
-      size: c1.size + c2.size,
+      size: c1.size + c2.size
     };
 
     this.tree[c1.index] = merged;
@@ -109,17 +109,17 @@ HierarchicalClustering.prototype = {
       var dist;
       if (c1.key == ci.key) {
         dist = Infinity;
-      } else if (this.linkage == "single") {
+      } else if (this.linkage == 'single') {
         dist = this.dists[c1.key][ci.key];
         if (this.dists[c1.key][ci.key] > this.dists[c2.key][ci.key]) {
           dist = this.dists[c2.key][ci.key];
         }
-      } else if (this.linkage == "complete") {
+      } else if (this.linkage == 'complete') {
         dist = this.dists[c1.key][ci.key];
         if (this.dists[c1.key][ci.key] < this.dists[c2.key][ci.key]) {
           dist = this.dists[c2.key][ci.key];
         }
-      } else if (this.linkage == "average") {
+      } else if (this.linkage == 'average') {
         dist =
           (this.dists[c1.key][ci.key] * c1.size +
             this.dists[c2.key][ci.key] * c2.size) /
@@ -194,7 +194,7 @@ HierarchicalClustering.prototype = {
     }
 
     return result;
-  },
+  }
 };
 
 var hcluster = function (
@@ -211,7 +211,7 @@ var hcluster = function (
   return {
     hc: hc,
     tree: threshold === undefined ? tree[0] : tree,
-    clusters: hc.clusters,
+    clusters: hc.clusters
   };
 };
 

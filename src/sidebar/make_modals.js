@@ -1,14 +1,13 @@
 var make_modal_skeleton = require('../modal/make_modal_skeleton');
 
-module.exports = function ini_modals(params){
-
+module.exports = function ini_modals(params) {
   // share modal
   ///////////////////////////////////////
   var share_modal = make_modal_skeleton(params, 'share_info');
 
   share_modal.header
     .append('a')
-    .attr('target','_blank')
+    .attr('target', '_blank')
     .attr('href', '/clustergrammer/');
 
   share_modal.header
@@ -30,9 +29,7 @@ module.exports = function ini_modals(params){
     .classed('modal-title', true)
     .html('Save a snapshot of the visualization');
 
-  screenshot_modal.body
-    .append('div')
-    .classed('download_buttons', true);
+  screenshot_modal.body.append('div').classed('download_buttons', true);
 
   // dendro modal
   ///////////////////////////////////////
@@ -43,9 +40,7 @@ module.exports = function ini_modals(params){
     .classed('modal-title', true)
     .html('Cluster Information');
 
-  dendro_modal.body
-    .append('g')
-    .classed('cluster_info_container', true);
+  dendro_modal.body.append('g').classed('cluster_info_container', true);
 
   dendro_modal.body
     .append('div')
@@ -54,5 +49,4 @@ module.exports = function ini_modals(params){
     .classed('bootstrap_highlight', true)
     .classed('current_names', true)
     .style('width', '100%');
-
 };

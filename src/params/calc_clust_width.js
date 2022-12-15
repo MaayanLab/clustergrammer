@@ -1,4 +1,4 @@
-var _ = require("underscore");
+var range = require('underscore/cjs/range');
 
 module.exports = function calc_clust_width(viz) {
   viz.clust = {};
@@ -30,7 +30,7 @@ module.exports = function calc_clust_width(viz) {
   var tmp_x_scale = d3.scale
     .ordinal()
     .rangeBands([0, ini_clust_width])
-    .domain(_.range(viz.num_col_nodes));
+    .domain(range(viz.num_col_nodes));
 
   var triangle_height = tmp_x_scale.rangeBand() / 2;
 

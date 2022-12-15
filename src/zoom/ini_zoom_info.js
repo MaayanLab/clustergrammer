@@ -1,5 +1,4 @@
-module.exports = function ini_zoom_info(){
-
+module.exports = function ini_zoom_info() {
   var zoom_info = {};
   zoom_info.zoom_x = 1;
   zoom_info.zoom_y = 1;
@@ -7,5 +6,4 @@ module.exports = function ini_zoom_info(){
   zoom_info.trans_y = 0;
 
   return zoom_info;
-
 };

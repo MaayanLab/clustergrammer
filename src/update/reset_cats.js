@@ -4,8 +4,7 @@ var resize_viz = require('../reset_size/resize_viz');
 var modify_row_node_cats = require('./modify_row_node_cats');
 var generate_cat_data = require('./generate_cat_data');
 
-module.exports = function reset_cats(run_resize_viz = true){
-
+module.exports = function reset_cats(run_resize_viz = true) {
   // console.log('RESET CATS')
 
   var cgm = this;
@@ -22,8 +21,7 @@ module.exports = function reset_cats(run_resize_viz = true){
   cgm.params.new_row_cats = cat_data;
   cgm.params.viz.cat_colors.col = col_cat_colors;
 
-  if (run_resize_viz){
-
+  if (run_resize_viz) {
     // resize visualizatino
     ////////////////////////////
     // recalculate the visualization parameters using the updated network_data
@@ -32,7 +30,5 @@ module.exports = function reset_cats(run_resize_viz = true){
 
     make_row_cat(cgm, true);
     resize_viz(cgm);
-
   }
-
 };

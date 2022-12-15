@@ -1,4 +1,4 @@
-module.exports = function(params, inst_rc, d) {
+module.exports = function (params, inst_rc, d) {
   var inst_level;
   var inst_nodes;
 
@@ -13,8 +13,8 @@ module.exports = function(params, inst_rc, d) {
   var inst_group = d.group[inst_level];
   var group_nodes_list = [];
 
-  inst_nodes.forEach(function(node) {
-    if (node.group[inst_level] === inst_group){
+  inst_nodes.forEach(function (node) {
+    if (node.group[inst_level] === inst_group) {
       group_nodes_list.push(node.name);
     }
   });

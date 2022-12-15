@@ -9,44 +9,57 @@ var resize_containers = require('../reset_size/resize_containers');
 var label_constrain_and_trim = require('../labels/label_constrain_and_trim');
 var d3_tip_custom = require('../tooltip/d3_tip_custom');
 
-module.exports = function enter_exit_update(cgm, network_data, delays){
-
+module.exports = function enter_exit_update(cgm, network_data, delays) {
   var params = cgm.params;
 
   // remove old tooltips
-  d3.selectAll(params.viz.root_tips)
-    .remove();
+  d3.selectAll(params.viz.root_tips).remove();
 
   // d3-tooltip - for tiles
   var tip = d3_tip_custom()
-    .attr('class', function(){
-      var root_tip_selector = params.viz.root_tips.replace('.','');
-      var class_string = root_tip_selector + ' d3-tip '+
-                         root_tip_selector + '_tile_tip';
+    .attr('class', function () {
+      var root_tip_selector = params.viz.root_tips.replace('.', '');
+      var class_string =
+        root_tip_selector + ' d3-tip ' + root_tip_selector + '_tile_tip';
       return class_string;
     })
     .direction('nw')
     .offset([0, 0])
     .style('display', 'none')
-    .html(function(d){
+    .html(function (d) {
       var inst_value = String(d.value.toFixed(3));
       var tooltip_string;
 
-      if (params.keep_orig){
+      if (params.keep_orig) {
         var orig_value = String(d.value_orig.toFixed(3));
-        tooltip_string = '<p>' + d.row_name + ' and ' + d.col_name + '</p>' +
-        '<p> normalized value: ' + inst_value +'</p>' +
-        '<div> original value: ' + orig_value +'</div>'  ;
+        tooltip_string =
+          '<p>' +
+          d.row_name +
+          ' and ' +
+          d.col_name +
+          '</p>' +
+          '<p> normalized value: ' +
+          inst_value +
+          '</p>' +
+          '<div> original value: ' +
+          orig_value +
+          '</div>';
       } else {
-        tooltip_string = '<p>' + d.row_name + ' and ' + d.col_name + '</p>' +
-        '<div> value: ' + inst_value +'</div>';
+        tooltip_string =
+          '<p>' +
+          d.row_name +
+          ' and ' +
+          d.col_name +
+          '</p>' +
+          '<div> value: ' +
+          inst_value +
+          '</div>';
       }
 
       return tooltip_string;
     });
 
-  d3.select(params.root+' .clust_group')
-    .call(tip);
+  d3.select(params.root + ' .clust_group').call(tip);
 
   // necessary for repositioning clust, col and col-cat containers
   resize_containers(params);
@@ -64,41 +77,45 @@ module.exports = function enter_exit_update(cgm, network_data, delays){
   // add name to links for object constancy
   for (var i = 0; i < tile_data.length; i++) {
     var d = tile_data[i];
-    tile_data[i].name = row_nodes[d.source].name + '_' + col_nodes[d.target].name;
+    tile_data[i].name =
+      row_nodes[d.source].name + '_' + col_nodes[d.target].name;
   }
 
   // move rows
-  var move_rows = d3.select(params.root+' .clust_group')
+  var move_rows = d3
+    .select(params.root + ' .clust_group')
     .selectAll('.row')
-    .data(params.matrix.matrix, function(d){return d.name;});
+    .data(params.matrix.matrix, function (d) {
+      return d.name;
+    });
 
-  if (delays.run_transition){
+  if (delays.run_transition) {
     move_rows
-      .transition().delay(delays.update).duration(duration)
-      .attr('transform', function(d){
+      .transition()
+      .delay(delays.update)
+      .duration(duration)
+      .attr('transform', function (d) {
         var tmp_index = d.row_index;
-        return 'translate(0,'+params.viz.y_scale(tmp_index)+')';
+        return 'translate(0,' + params.viz.y_scale(tmp_index) + ')';
       });
   } else {
-    move_rows
-      .attr('transform', function(d){
-        var tmp_index = d.row_index;
-        return 'translate(0,'+params.viz.y_scale(tmp_index)+')';
-      });
+    move_rows.attr('transform', function (d) {
+      var tmp_index = d.row_index;
+      return 'translate(0,' + params.viz.y_scale(tmp_index) + ')';
+    });
   }
 
   // update existing rows - enter, exit, update tiles in existing row
-  d3.select(params.root+' .clust_group')
+  d3.select(params.root + ' .clust_group')
     .selectAll('.row')
-    .each(function(d) {
+    .each(function (d) {
       // TODO add tip back to arguments
       var inst_selection = this;
       eeu_existing_row(params, d, delays, duration, inst_selection, tip);
     });
 
-
-  d3.selectAll(params.root+' .horz_lines').remove();
-  d3.selectAll(params.root+' .vert_lines').remove();
+  d3.selectAll(params.root + ' .horz_lines').remove();
+  d3.selectAll(params.root + ' .vert_lines').remove();
 
   // exit
   ////////////
@@ -118,5 +135,4 @@ module.exports = function enter_exit_update(cgm, network_data, delays){
   draw_gridlines(params, delays, duration);
 
   setTimeout(label_constrain_and_trim, 2000, params);
-
 };
