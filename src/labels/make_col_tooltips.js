@@ -7,7 +7,8 @@ module.exports = function make_col_tooltips(params) {
           new CustomEvent('COL_MOUSEOVER', {
             detail: {
               col: d,
-              boundingClientRect: this.childNodes[0].getBoundingClientRect()
+              text: this.childNodes[0].getBoundingClientRect(),
+              triangle: this.childNodes[1].getBoundingClientRect()
             }
           })
         );
@@ -16,8 +17,7 @@ module.exports = function make_col_tooltips(params) {
         dispatchEvent(
           new CustomEvent('COL_MOUSEOUT', {
             detail: {
-              col: d,
-              boundingClientRect: this.getBoundingClientRect()
+              col: d
             }
           })
         );

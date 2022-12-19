@@ -16,8 +16,7 @@ module.exports = function make_row_tooltips(params) {
         dispatchEvent(
           new CustomEvent('ROW_MOUSEOUT', {
             detail: {
-              row: d,
-              boundingClientRect: this.getBoundingClientRect()
+              row: d
             }
           })
         );

@@ -28139,8 +28139,7 @@ var Clustergrammer =
 	    }).on('mouseout', function mouseout(d) {
 	      dispatchEvent(new CustomEvent('ROW_MOUSEOUT', {
 	        detail: {
-	          row: d,
-	          boundingClientRect: this.getBoundingClientRect()
+	          row: d
 	        }
 	      }));
 	    });
@@ -28840,14 +28839,14 @@ var Clustergrammer =
 	      dispatchEvent(new CustomEvent('COL_MOUSEOVER', {
 	        detail: {
 	          col: d,
-	          boundingClientRect: this.childNodes[0].getBoundingClientRect()
+	          text: this.childNodes[0].getBoundingClientRect(),
+	          triangle: this.childNodes[1].getBoundingClientRect()
 	        }
 	      }));
 	    }).on('mouseout', function (d) {
 	      dispatchEvent(new CustomEvent('COL_MOUSEOUT', {
 	        detail: {
-	          col: d,
-	          boundingClientRect: this.getBoundingClientRect()
+	          col: d
 	        }
 	      }));
 	    });
@@ -30790,7 +30789,7 @@ var Clustergrammer =
 	  }
 
 	  dispatchEvent(new CustomEvent('ON_VIZ_RESIZE'));
-		};
+	};
 
 /***/ }),
 /* 214 */
