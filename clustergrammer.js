@@ -23392,7 +23392,7 @@ var Clustergrammer =
 	  clust_group = svg_elem.append('g').attr('class', 'clust_container').attr('transform', 'translate(' + params.viz.clust.margin.left + ',' + params.viz.clust.margin.top + ')').append('g').attr('class', 'clust_group').classed('clust_group', true);
 
 	  // clustergram background rect
-	  clust_group.append('rect').classed('background', true).classed('grey_background', true).style('fill', '#eee').style('opacity', 0.25).attr('width', params.viz.clust.dim.width).attr('height', params.viz.clust.dim.height);
+	  clust_group.append('rect').classed('background', true).classed('grey_background', true).style('fill', '#E4E5E7').attr('width', params.viz.clust.dim.width).attr('height', params.viz.clust.dim.height);
 
 	  // pass in params and the rows (row_nodes) that need to be made
 	  // in this case all row nodes
