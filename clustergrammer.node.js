@@ -31216,7 +31216,9 @@ module.exports =
 
 	    run_transformation(cgm);
 	  }
-	};
+
+	  dispatchEvent(new CustomEvent('ON_VIZ_RESIZE'));
+		};
 
 /***/ }),
 /* 215 */

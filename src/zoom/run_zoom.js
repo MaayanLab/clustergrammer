@@ -32,4 +32,6 @@ module.exports = function zoomed(cgm) {
 
     run_transformation(cgm);
   }
+
+  dispatchEvent(new CustomEvent('ON_VIZ_RESIZE'));
 };
