@@ -28840,7 +28840,7 @@ var Clustergrammer =
 	      dispatchEvent(new CustomEvent('COL_MOUSEOVER', {
 	        detail: {
 	          col: d,
-	          boundingClientRect: this.getBoundingClientRect()
+	          boundingClientRect: this.childNodes[0].getBoundingClientRect()
 	        }
 	      }));
 	    }).on('mouseout', function (d) {
