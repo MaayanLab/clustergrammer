@@ -28133,7 +28133,7 @@ var Clustergrammer =
 	      dispatchEvent(new CustomEvent('ROW_MOUSEOVER', {
 	        detail: {
 	          row: d,
-	          boundingClientRect: this.getBoundingClientRect()
+	          rect: this.getBoundingClientRect()
 	        }
 	      }));
 	    }).on('mouseout', function mouseout(d) {

@@ -7,7 +7,7 @@ module.exports = function make_row_tooltips(params) {
           new CustomEvent('ROW_MOUSEOVER', {
             detail: {
               row: d,
-              boundingClientRect: this.getBoundingClientRect()
+              rect: this.getBoundingClientRect()
             }
           })
         );
