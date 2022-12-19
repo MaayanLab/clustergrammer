@@ -28131,11 +28131,17 @@ var Clustergrammer =
 	  if (params.labels.show_label_tooltips) {
 	    d3.select(params.root + ' .row_label_zoom_container').selectAll('g').on('mouseover', function (d) {
 	      dispatchEvent(new CustomEvent('ROW_MOUSEOVER', {
-	        detail: d
+	        detail: {
+	          row: d,
+	          boundingClientRect: this.getBoundingClientRect()
+	        }
 	      }));
 	    }).on('mouseout', function mouseout(d) {
 	      dispatchEvent(new CustomEvent('ROW_MOUSEOUT', {
-	        detail: d
+	        detail: {
+	          row: d,
+	          boundingClientRect: this.getBoundingClientRect()
+	        }
 	      }));
 	    });
 	  } else {
@@ -28832,11 +28838,17 @@ var Clustergrammer =
 	  if (params.labels.show_label_tooltips) {
 	    d3.select(params.root + ' .col_zoom_container').selectAll('.col_label_group').on('mouseover', function (d) {
 	      dispatchEvent(new CustomEvent('COL_MOUSEOVER', {
-	        detail: d
+	        detail: {
+	          col: d,
+	          boundingClientRect: this.getBoundingClientRect()
+	        }
 	      }));
 	    }).on('mouseout', function (d) {
 	      dispatchEvent(new CustomEvent('COL_MOUSEOUT', {
-	        detail: d
+	        detail: {
+	          col: d,
+	          boundingClientRect: this.getBoundingClientRect()
+	        }
 	      }));
 	    });
 	  }
