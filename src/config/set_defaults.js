@@ -25,6 +25,7 @@ module.exports = function set_defaults() {
     is_slider_drag: false,
     is_cropping: false,
     background_color: '#FFFFFF',
+    clust_group_background_color: '#E4E5E7',
     super_border_color: '#F5F5F5',
     outer_margins: {
       top: 0,
