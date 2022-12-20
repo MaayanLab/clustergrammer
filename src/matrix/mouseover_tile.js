@@ -24,7 +24,10 @@ module.exports = function mouseover_tile(
   });
   dispatchEvent(
     new CustomEvent('TILE_MOUSEOVER', {
-      detail: inst_data
+      detail: {
+        tile: inst_data,
+        rect: inst_selection.getBoundingClientRect()
+      }
     })
   );
 };
