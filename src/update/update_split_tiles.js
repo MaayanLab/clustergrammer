@@ -4,6 +4,7 @@ var mouseover_tile = require('../matrix/mouseover_tile');
 var mouseout_tile = require('../matrix/mouseout_tile');
 var fine_position_tile = require('../matrix/fine_position_tile');
 var filter = require('underscore/cjs/filter');
+var click_tile = require('../matrix/click_tile');
 
 module.exports = function update_split_tiles(
   params,
@@ -35,10 +36,9 @@ module.exports = function update_split_tiles(
     .on('mouseout', function mouseout() {
       mouseout_tile(params, this, tip);
     })
-    .on('click', function () {
-      console.log('click');
-    })
-    .on('dblclick', null);
+    .on('click', function (...args) {
+      click_tile(args);
+    });
 
   if (delays.run_transition) {
     update_tiles_up
@@ -77,10 +77,9 @@ module.exports = function update_split_tiles(
     .on('mouseout', function mouseout() {
       mouseout_tile(params, this, tip);
     })
-    .on('click', function () {
-      console.log('click');
-    })
-    .on('dblclick', null);
+    .on('click', function (...args) {
+      click_tile(args);
+    });
 
   if (delays.run_transition) {
     update_tiles_dn
