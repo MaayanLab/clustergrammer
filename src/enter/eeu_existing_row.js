@@ -47,7 +47,8 @@ module.exports = function eeu_existing_row(
     })
     .on('click', function () {
       console.log('click');
-    });
+    })
+    .on('dblclick', null);
 
   var col_nodes_names = params.network_data.col_nodes_names;
 

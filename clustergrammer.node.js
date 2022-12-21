@@ -13915,7 +13915,7 @@ module.exports =
 	      mouseout_tile(params, this, tip);
 	    }).on('click', function () {
 	      console.log('click');
-	    });
+	    }).on('dblclick', null);
 	  }
 
 	  // // tile circles
@@ -13990,7 +13990,7 @@ module.exports =
 	      mouseout_tile(params, this, tip);
 	    }).on('click', function () {
 	      console.log('click');
-	    });
+	    }).on('dblclick', null);
 
 	    // tile_dn
 	    d3.select(row_selection).selectAll('.tile_dn').data(row_split_data, function (d) {
@@ -14017,7 +14017,7 @@ module.exports =
 	      mouseout_tile(params, this, tip);
 	    }).on('click', function () {
 	      console.log('click');
-	    });
+	    }).on('dblclick', null);
 
 	    // remove rect when tile is split
 	    tile.each(function (d) {
@@ -23600,7 +23600,7 @@ module.exports =
 	    mouseout_tile(params, this, tip);
 	  }).on('click', function () {
 	    console.log('click');
-	  });
+	  }).on('dblclick', null);
 
 	  var col_nodes_names = params.network_data.col_nodes_names;
 
@@ -23696,7 +23696,7 @@ module.exports =
 	    mouseout_tile(params, this, tip);
 	  }).on('click', function () {
 	    console.log('click');
-	  }).attr('fill-opacity', 0).attr('transform', function (d) {
+	  }).on('dblclick', null).attr('fill-opacity', 0).attr('transform', function (d) {
 	    return fine_position_tile(params, d);
 	  });
 
@@ -23759,7 +23759,7 @@ module.exports =
 	    mouseout_tile(params, this, tip);
 	  }).on('click', function () {
 	    console.log('click');
-	  });
+	  }).on('dblclick', null);
 
 	  if (delays.run_transition) {
 	    update_tiles_up.transition().delay(delays.update).duration(duration).attr('d', function () {
@@ -23791,7 +23791,7 @@ module.exports =
 	    mouseout_tile(params, this, tip);
 	  }).on('click', function () {
 	    console.log('click');
-	  });
+	  }).on('dblclick', null);
 
 	  if (delays.run_transition) {
 	    update_tiles_dn.transition().delay(delays.update).duration(duration).attr('d', function () {
@@ -23938,7 +23938,7 @@ module.exports =
 	    mouseout_tile(params, this, tip);
 	  }).on('click', function () {
 	    console.log('click');
-	  });
+	  }).on('dblclick', null);
 
 	  tile.style('fill-opacity', 0).transition().delay(delays.enter).duration(duration).style('fill-opacity', function (d) {
 	    // calculate output opacity using the opacity scale

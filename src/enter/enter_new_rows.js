@@ -47,7 +47,8 @@ module.exports = function enter_new_rows(
     })
     .on('click', function () {
       console.log('click');
-    });
+    })
+    .on('dblclick', null);
 
   tile
     .style('fill-opacity', 0)

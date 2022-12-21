@@ -98,7 +98,8 @@ module.exports = function make_simple_rows(
       })
       .on('click', function () {
         console.log('click');
-      });
+      })
+      .on('dblclick', null);
   }
 
   // // tile circles
@@ -181,7 +182,8 @@ module.exports = function make_simple_rows(
       })
       .on('click', function () {
         console.log('click');
-      });
+      })
+      .on('dblclick', null);
 
     // tile_dn
     d3.select(row_selection)
@@ -216,7 +218,8 @@ module.exports = function make_simple_rows(
       })
       .on('click', function () {
         console.log('click');
-      });
+      })
+      .on('dblclick', null);
 
     // remove rect when tile is split
     tile.each(function (d) {

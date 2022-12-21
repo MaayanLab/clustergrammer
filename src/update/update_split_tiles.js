@@ -37,7 +37,8 @@ module.exports = function update_split_tiles(
     })
     .on('click', function () {
       console.log('click');
-    });
+    })
+    .on('dblclick', null);
 
   if (delays.run_transition) {
     update_tiles_up
@@ -78,7 +79,8 @@ module.exports = function update_split_tiles(
     })
     .on('click', function () {
       console.log('click');
-    });
+    })
+    .on('dblclick', null);
 
   if (delays.run_transition) {
     update_tiles_dn

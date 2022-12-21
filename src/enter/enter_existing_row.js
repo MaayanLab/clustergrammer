@@ -25,6 +25,7 @@ module.exports = function enter_existing_row(
     .on('click', function () {
       console.log('click');
     })
+    .on('dblclick', null)
     .attr('fill-opacity', 0)
     .attr('transform', function (d) {
       return fine_position_tile(params, d);
