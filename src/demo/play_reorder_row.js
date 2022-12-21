@@ -53,7 +53,7 @@ module.exports = function play_reorder_row() {
   }
 
   // allows doubleclicking on d3 element
-  jQuery.fn.d3DblClick = function () {
+  $.fn.d3DblClick = function () {
     this.each(function (i, e) {
       var evt = document.createEvent('MouseEvents');
       evt.initMouseEvent(

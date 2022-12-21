@@ -50,7 +50,7 @@ module.exports = function quick_cluster() {
   }
 
   // allows doubleclicking on d3 element
-  jQuery.fn.d3Click = function () {
+  $.fn.d3Click = function () {
     this.each(function (i, e) {
       var evt = document.createEvent('MouseEvents');
       evt.initMouseEvent(

@@ -62,7 +62,7 @@ module.exports = function play_menu_button() {
   }
 
   // allows doubleclicking on d3 element
-  jQuery.fn.d3Click = function () {
+  $.fn.d3Click = function () {
     this.each(function (i, e) {
       var evt = document.createEvent('MouseEvents');
       evt.initMouseEvent(
@@ -87,7 +87,7 @@ module.exports = function play_menu_button() {
   };
 
   // allows doubleclicking on d3 element
-  jQuery.fn.d3DblClick = function () {
+  $.fn.d3DblClick = function () {
     this.each(function (i, e) {
       var evt = document.createEvent('MouseEvents');
       evt.initMouseEvent(

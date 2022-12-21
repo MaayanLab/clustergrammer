@@ -17,7 +17,7 @@ var d3_tip_custom = require('./tooltip/d3_tip_custom');
 var all_reorder = require('./reorder/all_reorder');
 var make_matrix_string = require('./matrix/make_matrix_string');
 var d3 = require('d3');
-var jQuery = require('jquery');
+// var jQuery = require('jquery');
 
 // moved d3.slider to src
 d3.slider = require('./d3.slider');

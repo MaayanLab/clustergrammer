@@ -15,6 +15,7 @@ var modify_row_node_cats = require('./modify_row_node_cats');
 var run_zoom = require('../zoom/run_zoom');
 var ds_enter_exit_update = require('../enter/ds_enter_exit_update');
 var make_cat_params = require('../params/make_cat_params');
+var $ = require('jquery');
 
 module.exports = function update_viz_with_network(cgm, new_network_data) {
   // set runnning_update class, prevents multiple update from running at once
@@ -40,7 +41,7 @@ module.exports = function update_viz_with_network(cgm, new_network_data) {
   var inst_crop_fitler = cgm.params.crop_filter_nodes;
 
   // make tmp config to make new params
-  var tmp_config = jQuery.extend(true, {}, cgm.config);
+  var tmp_config = $.extend(true, {}, cgm.config);
 
   var new_row_cats = null;
 

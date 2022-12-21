@@ -7,7 +7,6 @@ var BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 module.exports = [
   {
     entry: './src/main.js',
-    // devtool: DEBUG ? 'cheap-module-eval-source-map' : false,
     devtool: DEBUG ? 'cheap-module-source-map' : false,
     target: 'web',
     output: {
@@ -17,9 +16,7 @@ module.exports = [
       library: 'Clustergrammer'
     },
     externals: {
-      jQuery: 'jQuery',
-      // 'lodash': '_',
-      // 'underscore': '_',
+      jquery: 'jquery',
       d3: 'd3'
     },
     module: {
@@ -48,7 +45,6 @@ module.exports = [
   },
   {
     entry: './src/main.js',
-    // devtool: DEBUG ? 'cheap-module-eval-source-map' : false,
     devtool: DEBUG ? 'cheap-module-source-map' : false,
     target: 'web',
     output: {
@@ -58,9 +54,7 @@ module.exports = [
       library: 'Clustergrammer'
     },
     externals: {
-      jQuery: 'jQuery',
-      // 'lodash': '_',
-      // 'underscore': '_',
+      jquery: 'jquery',
       d3: 'd3'
     },
     module: {
@@ -77,7 +71,6 @@ module.exports = [
   },
   {
     entry: './src/main.js',
-    // devtool: DEBUG ? 'cheap-module-eval-source-map' : false,
     devtool: DEBUG ? 'cheap-module-source-map' : false,
     target: 'web',
     output: {
@@ -87,9 +80,7 @@ module.exports = [
       library: 'Clustergrammer'
     },
     externals: {
-      jQuery: 'jQuery',
-      // 'lodash': '_',
-      // 'underscore': '_',
+      jquery: 'jquery',
       d3: 'd3'
     },
     plugins: [
@@ -109,7 +100,6 @@ module.exports = [
   },
   {
     entry: './src/main.js',
-    // devtool: DEBUG ? 'cheap-module-eval-source-map' : false,
     devtool: DEBUG ? 'cheap-module-source-map' : false,
     target: 'web',
     output: {
@@ -119,9 +109,7 @@ module.exports = [
       library: 'Clustergrammer'
     },
     externals: {
-      jQuery: 'jQuery',
-      // 'lodash': '_',
-      // 'underscore': '_',
+      jquery: 'jquery',
       d3: 'd3'
     },
     plugins: [
