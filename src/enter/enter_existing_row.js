@@ -1,6 +1,7 @@
 var mouseover_tile = require('../matrix/mouseover_tile');
 var mouseout_tile = require('../matrix/mouseout_tile');
 var fine_position_tile = require('../matrix/fine_position_tile');
+var click_tile = require('../matrix/click_tile');
 
 module.exports = function enter_existing_row(
   params,
@@ -21,6 +22,9 @@ module.exports = function enter_existing_row(
     })
     .on('mouseout', function mouseout() {
       mouseout_tile(params, this, tip);
+    })
+    .on('click', function (...args) {
+      click_tile(args);
     })
     .attr('fill-opacity', 0)
     .attr('transform', function (d) {

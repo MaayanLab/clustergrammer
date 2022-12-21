@@ -7,6 +7,7 @@ var mouseout_tile = require('./mouseout_tile');
 var fine_position_tile = require('./fine_position_tile');
 var filter = require('underscore/cjs/filter');
 var utils = require('../Utils_clust');
+var click_tile = require('./click_tile');
 
 module.exports = function make_simple_rows(
   params,
@@ -95,6 +96,9 @@ module.exports = function make_simple_rows(
       })
       .on('mouseout', function () {
         mouseout_tile(params, this, tip);
+      })
+      .on('click', function (...args) {
+        click_tile(args);
       });
   }
 
@@ -175,6 +179,9 @@ module.exports = function make_simple_rows(
       })
       .on('mouseout', function () {
         mouseout_tile(params, this, tip);
+      })
+      .on('click', function (...args) {
+        click_tile(args);
       });
 
     // tile_dn
@@ -207,6 +214,9 @@ module.exports = function make_simple_rows(
       })
       .on('mouseout', function () {
         mouseout_tile(params, this, tip);
+      })
+      .on('click', function (...args) {
+        click_tile(args);
       });
 
     // remove rect when tile is split

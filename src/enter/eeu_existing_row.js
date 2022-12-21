@@ -6,6 +6,7 @@ var mouseout_tile = require('../matrix/mouseout_tile');
 var fine_position_tile = require('../matrix/fine_position_tile');
 var filter = require('underscore/cjs/filter');
 var contains = require('underscore/cjs/contains');
+var click_tile = require('../matrix/click_tile');
 
 // TODO add tip back to arguments
 module.exports = function eeu_existing_row(
@@ -44,6 +45,9 @@ module.exports = function eeu_existing_row(
     })
     .on('mouseout', function mouseout() {
       mouseout_tile(params, this, tip);
+    })
+    .on('click', function (...args) {
+      click_tile(args);
     });
 
   var col_nodes_names = params.network_data.col_nodes_names;
