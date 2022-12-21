@@ -13692,6 +13692,8 @@ var Clustergrammer =
 	      mouseover_tile(params, this, tip, args);
 	    }).on('mouseout', function () {
 	      mouseout_tile(params, this, tip);
+	    }).on('click', function () {
+	      console.log('click');
 	    });
 	  }
 
@@ -13761,6 +13763,8 @@ var Clustergrammer =
 	      mouseover_tile(params, this, tip, args);
 	    }).on('mouseout', function () {
 	      mouseout_tile(params, this, tip);
+	    }).on('click', function () {
+	      console.log('click');
 	    });
 
 	    // tile_dn
@@ -13782,6 +13786,8 @@ var Clustergrammer =
 	      mouseover_tile(params, this, tip, args);
 	    }).on('mouseout', function () {
 	      mouseout_tile(params, this, tip);
+	    }).on('click', function () {
+	      console.log('click');
 	    });
 
 	    // remove rect when tile is split
@@ -23065,6 +23071,8 @@ var Clustergrammer =
 	    mouseover_tile(params, this, tip, args);
 	  }).on('mouseout', function mouseout() {
 	    mouseout_tile(params, this, tip);
+	  }).on('click', function () {
+	    console.log('click');
 	  });
 
 	  var col_nodes_names = params.network_data.col_nodes_names;
@@ -23151,6 +23159,8 @@ var Clustergrammer =
 	    mouseover_tile(params, this, tip, args);
 	  }).on('mouseout', function mouseout() {
 	    mouseout_tile(params, this, tip);
+	  }).on('click', function () {
+	    console.log('click');
 	  }).attr('fill-opacity', 0).attr('transform', function (d) {
 	    return fine_position_tile(params, d);
 	  });
@@ -23206,6 +23216,8 @@ var Clustergrammer =
 	    mouseover_tile(params, this, tip, args);
 	  }).on('mouseout', function mouseout() {
 	    mouseout_tile(params, this, tip);
+	  }).on('click', function () {
+	    console.log('click');
 	  });
 
 	  if (delays.run_transition) {
@@ -23232,6 +23244,8 @@ var Clustergrammer =
 	    mouseover_tile(params, this, tip, args);
 	  }).on('mouseout', function mouseout() {
 	    mouseout_tile(params, this, tip);
+	  }).on('click', function () {
+	    console.log('click');
 	  });
 
 	  if (delays.run_transition) {
@@ -23367,6 +23381,8 @@ var Clustergrammer =
 	    mouseover_tile(params, this, tip, args);
 	  }).on('mouseout', function mouseout() {
 	    mouseout_tile(params, this, tip);
+	  }).on('click', function () {
+	    console.log('click');
 	  });
 
 	  tile.style('fill-opacity', 0).transition().delay(delays.enter).duration(duration).style('fill-opacity', function (d) {

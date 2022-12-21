@@ -44,6 +44,9 @@ module.exports = function eeu_existing_row(
     })
     .on('mouseout', function mouseout() {
       mouseout_tile(params, this, tip);
+    })
+    .on('click', function () {
+      console.log('click');
     });
 
   var col_nodes_names = params.network_data.col_nodes_names;

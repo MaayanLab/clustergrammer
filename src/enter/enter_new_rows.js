@@ -44,6 +44,9 @@ module.exports = function enter_new_rows(
     })
     .on('mouseout', function mouseout() {
       mouseout_tile(params, this, tip);
+    })
+    .on('click', function () {
+      console.log('click');
     });
 
   tile

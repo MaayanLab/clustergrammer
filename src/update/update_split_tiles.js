@@ -34,6 +34,9 @@ module.exports = function update_split_tiles(
     })
     .on('mouseout', function mouseout() {
       mouseout_tile(params, this, tip);
+    })
+    .on('click', function () {
+      console.log('click');
     });
 
   if (delays.run_transition) {
@@ -72,6 +75,9 @@ module.exports = function update_split_tiles(
     })
     .on('mouseout', function mouseout() {
       mouseout_tile(params, this, tip);
+    })
+    .on('click', function () {
+      console.log('click');
     });
 
   if (delays.run_transition) {

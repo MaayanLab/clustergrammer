@@ -95,6 +95,9 @@ module.exports = function make_simple_rows(
       })
       .on('mouseout', function () {
         mouseout_tile(params, this, tip);
+      })
+      .on('click', function () {
+        console.log('click');
       });
   }
 
@@ -175,6 +178,9 @@ module.exports = function make_simple_rows(
       })
       .on('mouseout', function () {
         mouseout_tile(params, this, tip);
+      })
+      .on('click', function () {
+        console.log('click');
       });
 
     // tile_dn
@@ -207,6 +213,9 @@ module.exports = function make_simple_rows(
       })
       .on('mouseout', function () {
         mouseout_tile(params, this, tip);
+      })
+      .on('click', function () {
+        console.log('click');
       });
 
     // remove rect when tile is split

@@ -22,6 +22,9 @@ module.exports = function enter_existing_row(
     .on('mouseout', function mouseout() {
       mouseout_tile(params, this, tip);
     })
+    .on('click', function () {
+      console.log('click');
+    })
     .attr('fill-opacity', 0)
     .attr('transform', function (d) {
       return fine_position_tile(params, d);
