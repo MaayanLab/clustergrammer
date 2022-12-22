@@ -1,14 +1,12 @@
-/* global __dirname:false */
-
-var DEBUG = process.argv.indexOf('-p') === -1;
 var webpack = require('webpack');
 var BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 
 module.exports = [
   {
+    mode: 'development',
     entry: './src/main.js',
-    devtool: DEBUG ? 'cheap-module-source-map' : false,
     target: 'web',
+    devtool: 'cheap-source-map',
     output: {
       path: __dirname,
       filename: 'clustergrammer.js',
@@ -20,12 +18,12 @@ module.exports = [
       d3: 'd3'
     },
     module: {
-      loaders: [
+      rules: [
         {
           test: /\.js$/,
-          loader: 'babel',
-          query: {
-            // presets: ['es2015']
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env']
           }
         }
       ]
@@ -44,35 +42,43 @@ module.exports = [
     ]
   },
   {
+    mode: 'production',
     entry: './src/main.js',
-    devtool: DEBUG ? 'cheap-module-source-map' : false,
     target: 'web',
+    devtool: 'cheap-source-map',
     output: {
       path: __dirname,
-      filename: 'clustergrammer.node.js',
+      filename: 'clustergrammer.cjs.js',
       libraryTarget: 'commonjs2',
       library: 'Clustergrammer'
+    },
+    performance: {
+      hints: false
     },
     externals: {
       jquery: 'jquery',
       d3: 'd3'
     },
+    optimization: {
+      minimize: false
+    },
     module: {
-      loaders: [
+      rules: [
         {
           test: /\.js$/,
-          loader: 'babel',
-          query: {
-            presets: ['es2015']
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env']
           }
         }
       ]
     }
   },
   {
+    mode: 'production',
     entry: './src/main.js',
-    devtool: DEBUG ? 'cheap-module-source-map' : false,
     target: 'web',
+    devtool: 'cheap-source-map',
     output: {
       path: __dirname,
       filename: 'clustergrammer.min.js',
@@ -83,48 +89,19 @@ module.exports = [
       jquery: 'jquery',
       d3: 'd3'
     },
-    plugins: [
-      new webpack.optimize.UglifyJsPlugin({ compress: { warnings: false } })
-    ],
     module: {
-      loaders: [
+      rules: [
         {
           test: /\.js$/,
-          loader: 'babel',
-          query: {
-            presets: ['es2015']
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env']
           }
         }
       ]
-    }
-  },
-  {
-    entry: './src/main.js',
-    devtool: DEBUG ? 'cheap-module-source-map' : false,
-    target: 'web',
-    output: {
-      path: __dirname,
-      filename: 'clustergrammer.node.min.js',
-      libraryTarget: 'commonjs2',
-      library: 'Clustergrammer'
     },
-    externals: {
-      jquery: 'jquery',
-      d3: 'd3'
-    },
-    plugins: [
-      new webpack.optimize.UglifyJsPlugin({ compress: { warnings: false } })
-    ],
-    module: {
-      loaders: [
-        {
-          test: /\.js$/,
-          loader: 'babel',
-          query: {
-            presets: ['es2015']
-          }
-        }
-      ]
+    performance: {
+      hints: false
     }
   }
 ];

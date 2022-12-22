@@ -1,8 +1,8 @@
 {
   "name": "clustergrammer",
-  "version": "3.0.7",
+  "version": "3.0.17",
   "description": "This is a clustergram implemented in D3.js. I started from the example http://bost.ocks.org/mike/miserables/ and added the following features",
-  "main": "clustergrammer.node.js",
+  "main": "clustergrammer.cjs.js",
   "scripts": {
     "build": "webpack",
     "stats": "webpack --json > stats.json",
@@ -20,26 +20,21 @@
   },
   "homepage": "https://github.com/MaayanLab/clustergrammer#readme",
   "devDependencies": {
-    "babel-core": "^6.14.0",
-    "babel-eslint": "^4.1.8",
-    "babel-loader": "^6.2.5",
-    "babel-preset-es2015": "^6.14.0",
-    "browser-sync": "^2.18.13",
-    "browser-sync-webpack-plugin": "^1.2.0",
-    "css-loader": "^0.23.1",
-    "eslint": "^2.1.0",
-    "expose-loader": "^0.7.1",
-    "less-loader": "^2.2.3",
-    "object-assign": "^4.1.0",
-    "style-loader": "^0.13.1",
-    "webpack": "^1.13.2",
+    "@babel/preset-env": "^7.20.2",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.3.0",
+    "browser-sync": "^2.27.11",
+    "browser-sync-webpack-plugin": "^2.3.0",
     "husky": "^7.0.4",
     "lint-staged": "^13.0.3",
-    "prettier": "^2.7.1"
+    "object-assign": "^4.1.0",
+    "prettier": "^2.7.1",
+    "webpack": "^4.46.0",
+    "webpack-cli": "^4.10.0"
   },
   "dependencies": {
     "d3": "^3.5.15",
-    "jquery": "1.11.0",
+    "jquery": "^3.6.3",
     "mathjs": "3.17.0",
     "underscore": "1.13.6"
   },
