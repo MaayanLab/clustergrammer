@@ -9,6 +9,8 @@ var filter = require('underscore/cjs/filter');
 var utils = require('../Utils_clust');
 var click_tile = require('./click_tile');
 
+const POSITION_INACCURACY = 2;
+
 module.exports = function make_simple_rows(
   params,
   inst_data,
@@ -83,8 +85,11 @@ module.exports = function make_simple_rows(
     });
 
   if (make_tip) {
+    let data = null;
+    let posX,
+      posY = null;
     tile
-      .on('mouseover', function () {
+      .on('mouseover', function mouseover() {
         for (
           var inst_len = arguments.length, args = Array(inst_len), inst_key = 0;
           inst_key < inst_len;
@@ -93,12 +98,27 @@ module.exports = function make_simple_rows(
           args[inst_key] = arguments[inst_key];
         }
         mouseover_tile(params, this, tip, args);
+        data = args;
       })
-      .on('mouseout', function () {
+      .on('mouseout', function mouseout() {
         mouseout_tile(params, this, tip);
+        data = null;
       })
-      .on('click', function (...args) {
-        click_tile(args);
+      .on('mousedown', function mousedown() {
+        const { clientX, clientY } = d3.event;
+        posX = clientX;
+        posY = clientY;
+      })
+      .on('mouseup', function mouseup() {
+        const { clientX, clientY } = d3.event;
+        if (
+          clientX <= posX + POSITION_INACCURACY &&
+          clientX >= posX - POSITION_INACCURACY &&
+          clientY <= posY + POSITION_INACCURACY &&
+          clientY >= posY - POSITION_INACCURACY
+        ) {
+          click_tile(data);
+        }
       });
   }
 
@@ -179,9 +199,6 @@ module.exports = function make_simple_rows(
       })
       .on('mouseout', function () {
         mouseout_tile(params, this, tip);
-      })
-      .on('click', function (...args) {
-        click_tile(args);
       });
 
     // tile_dn
@@ -214,9 +231,6 @@ module.exports = function make_simple_rows(
       })
       .on('mouseout', function () {
         mouseout_tile(params, this, tip);
-      })
-      .on('click', function (...args) {
-        click_tile(args);
       });
 
     // remove rect when tile is split
