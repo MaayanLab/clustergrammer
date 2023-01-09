@@ -1,6 +1,6 @@
 {
   "name": "clustergrammer",
-  "version": "3.0.41",
+  "version": "3.1.0",
   "description": "This is a clustergram implemented in D3.js. I started from the example http://bost.ocks.org/mike/miserables/ and added the following features",
   "main": "clustergrammer.cjs.js",
   "scripts": {

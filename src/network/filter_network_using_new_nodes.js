@@ -3,6 +3,7 @@ var core = require('mathjs/core');
 var math = core.create();
 math.import(require('mathjs/lib/type/matrix'));
 math.import(require('mathjs/lib/function/matrix/zeros'));
+var filter = require('underscore/cjs/filter');
 
 module.exports = function filter_network_using_new_nodes(config, new_nodes) {
   var links = config.network_data.links;
@@ -19,7 +20,7 @@ module.exports = function filter_network_using_new_nodes(config, new_nodes) {
   );
   new_mat = new_mat.toArray();
 
-  var new_links = _.filter(links, function (inst_link) {
+  var new_links = filter(links, function (inst_link) {
     var inst_row = inst_link.name.split('_')[0];
     var inst_col = inst_link.name.split('_')[1];
 

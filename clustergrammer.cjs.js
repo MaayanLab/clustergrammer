@@ -401,9 +401,7 @@ exports.toEngineering = function (value, precision) {
   var decimalIdx = 1;
 
   // push decimal index over by expDiff times
-  while (--expDiff >= 0) {
-    decimalIdx++;
-  }
+  while (--expDiff >= 0) decimalIdx++;
 
   // if all coefficient values are zero after the decimal point, don't add a decimal value.
   // otherwise concat with the rest of the coefficients
@@ -998,6 +996,24 @@ exports.toString = toString;
 /* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var _cb = __webpack_require__(15);
+var each = __webpack_require__(1);
+
+// Return all the elements that pass a truth test.
+function filter(obj, predicate, context) {
+  var results = [];
+  predicate = _cb(predicate, context);
+  each(obj, function (value, index, list) {
+    if (predicate(value, index, list)) results.push(value);
+  });
+  return results;
+}
+module.exports = filter;
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
 "use strict";
 
 
@@ -1027,7 +1043,7 @@ DimensionError.prototype.isDimensionError = true;
 module.exports = DimensionError;
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1110,24 +1126,6 @@ function factory(type, config, load, typed) {
 }
 exports.name = 'matrix';
 exports.factory = factory;
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _cb = __webpack_require__(15);
-var each = __webpack_require__(1);
-
-// Return all the elements that pass a truth test.
-function filter(obj, predicate, context) {
-  var results = [];
-  predicate = _cb(predicate, context);
-  each(obj, function (value, index, list) {
-    if (predicate(value, index, list)) results.push(value);
-  });
-  return results;
-}
-module.exports = filter;
 
 /***/ }),
 /* 10 */
@@ -1824,7 +1822,7 @@ exports.toSymbol = function (name, isUnit) {
 
 var underscore = __webpack_require__(31);
 var _baseIteratee = __webpack_require__(83);
-var iteratee = __webpack_require__(180);
+var iteratee = __webpack_require__(179);
 
 // The function we call internally to generate a callback. It invokes
 // `_.iteratee` if overridden, otherwise `baseIteratee`.
@@ -2081,9 +2079,7 @@ function keys(obj) {
   if (!isObject(obj)) return [];
   if (_setup.nativeKeys) return _setup.nativeKeys(obj);
   var keys = [];
-  for (var key in obj) {
-    if (_has(obj, key)) keys.push(key);
-  }
+  for (var key in obj) if (_has(obj, key)) keys.push(key);
   // Ahem, IE < 9.
   if (_setup.hasEnumBug) _collectNonEnumProps(obj, keys);
   return keys;
@@ -2117,7 +2113,7 @@ var number = __webpack_require__(3);
 var string = __webpack_require__(74);
 var object = __webpack_require__(4);
 var types = __webpack_require__(75);
-var DimensionError = __webpack_require__(7);
+var DimensionError = __webpack_require__(8);
 var IndexError = __webpack_require__(153);
 
 /**
@@ -3456,6 +3452,7 @@ var core = __webpack_require__(72);
 var math = core.create();
 math["import"](__webpack_require__(151));
 math["import"](__webpack_require__(169));
+var filter = __webpack_require__(7);
 module.exports = function filter_network_using_new_nodes(config, new_nodes) {
   var links = config.network_data.links;
 
@@ -3467,7 +3464,7 @@ module.exports = function filter_network_using_new_nodes(config, new_nodes) {
   var col_names = utils.pluck(new_nodes.col_nodes, 'name') || [];
   var new_mat = math.matrix(math.zeros([new_nodes.row_nodes.length, new_nodes.col_nodes.length]));
   new_mat = new_mat.toArray();
-  var new_links = _.filter(links, function (inst_link) {
+  var new_links = filter(links, function (inst_link) {
     var inst_row = inst_link.name.split('_')[0];
     var inst_col = inst_link.name.split('_')[1];
     var row_index = row_names.indexOf(inst_row);
@@ -3849,7 +3846,7 @@ module.exports = function nearlyEqual(x, y, epsilon) {
 
 
 var util = __webpack_require__(21);
-var DimensionError = __webpack_require__(7);
+var DimensionError = __webpack_require__(8);
 var string = util.string,
   isString = string.isString;
 function factory(type, config, load, typed) {
@@ -5430,7 +5427,7 @@ module.exports = function make_params(input_config) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var filter_network_using_new_nodes = __webpack_require__(43);
-var get_subset_views = __webpack_require__(170);
+var get_subset_views = __webpack_require__(180);
 var utils = __webpack_require__(0);
 module.exports = function make_network_using_view(config, params, requested_view) {
   var orig_views = config.network_data.views;
@@ -5739,7 +5736,7 @@ exports.type = function (x) {
 
 
 var util = __webpack_require__(21);
-var DimensionError = __webpack_require__(7);
+var DimensionError = __webpack_require__(8);
 var getSafeProperty = __webpack_require__(77).getSafeProperty;
 var setSafeProperty = __webpack_require__(77).setSafeProperty;
 var string = util.string;
@@ -5881,9 +5878,7 @@ function factory(type, config, load, typed) {
     if (index.length != this._size.length) throw new DimensionError(index.length, this._size.length);
 
     // check index
-    for (var x = 0; x < index.length; x++) {
-      validateIndex(index[x], this._size[x]);
-    }
+    for (var x = 0; x < index.length; x++) validateIndex(index[x], this._size[x]);
     var data = this._data;
     for (var i = 0, ii = index.length; i < ii; i++) {
       var index_i = index[i];
@@ -6780,7 +6775,7 @@ exports.factory = factory;
 var nearlyEqual = __webpack_require__(3).nearlyEqual;
 var bigNearlyEqual = __webpack_require__(46);
 function factory(type, config, load, typed) {
-  var matrix = load(__webpack_require__(8));
+  var matrix = load(__webpack_require__(9));
   var algorithm03 = load(__webpack_require__(80));
   var algorithm07 = load(__webpack_require__(81));
   var algorithm12 = load(__webpack_require__(82));
@@ -6940,7 +6935,7 @@ exports.factory = factory;
 "use strict";
 
 
-var DimensionError = __webpack_require__(7);
+var DimensionError = __webpack_require__(8);
 function factory(type, config, load, typed) {
   var DenseMatrix = type.DenseMatrix;
 
@@ -7063,7 +7058,7 @@ exports.factory = factory;
 "use strict";
 
 
-var DimensionError = __webpack_require__(7);
+var DimensionError = __webpack_require__(8);
 function factory(type, config, load, typed) {
   var DenseMatrix = type.DenseMatrix;
 
@@ -7122,9 +7117,7 @@ function factory(type, config, load, typed) {
     // result arrays
     var cdata = [];
     // initialize c
-    for (i = 0; i < rows; i++) {
-      cdata[i] = [];
-    }
+    for (i = 0; i < rows; i++) cdata[i] = [];
 
     // matrix
     var c = new DenseMatrix({
@@ -7295,12 +7288,12 @@ exports.factory = factory;
 /* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var identity = __webpack_require__(171);
+var identity = __webpack_require__(170);
 var isFunction = __webpack_require__(69);
 var isObject = __webpack_require__(68);
 var isArray = __webpack_require__(48);
-var matcher = __webpack_require__(172);
-var property = __webpack_require__(176);
+var matcher = __webpack_require__(171);
+var property = __webpack_require__(175);
 var _optimizeCb = __webpack_require__(67);
 
 // An internal function to generate callbacks that can be applied to each
@@ -8108,7 +8101,7 @@ var extend = __webpack_require__(4).extend;
 var array = __webpack_require__(22);
 function factory(type, config, load, typed) {
   var latex = __webpack_require__(14);
-  var matrix = load(__webpack_require__(8));
+  var matrix = load(__webpack_require__(9));
   var addScalar = load(__webpack_require__(78));
   var multiplyScalar = load(__webpack_require__(217));
   var equalScalar = load(__webpack_require__(23));
@@ -9051,7 +9044,7 @@ exports.factory = factory;
 
 var restArguments = __webpack_require__(230);
 var _flatten = __webpack_require__(231);
-var filter = __webpack_require__(9);
+var filter = __webpack_require__(7);
 var contains = __webpack_require__(16);
 
 // Take the difference between one array and a number of other arrays.
@@ -10874,9 +10867,7 @@ var _has = __webpack_require__(28);
 // arrays of strings.
 function emulatedSet(keys) {
   var hash = {};
-  for (var l = keys.length, i = 0; i < l; ++i) {
-    hash[keys[i]] = true;
-  }
+  for (var l = keys.length, i = 0; i < l; ++i) hash[keys[i]] = true;
   return {
     contains: function contains(key) {
       return hash[key] === true;
@@ -13393,7 +13384,7 @@ module.exports = [
 // types
 __webpack_require__(45), __webpack_require__(76), __webpack_require__(156), __webpack_require__(157), __webpack_require__(162), __webpack_require__(164), __webpack_require__(165), __webpack_require__(166),
 // construction functions
-__webpack_require__(167), __webpack_require__(8), __webpack_require__(168)];
+__webpack_require__(167), __webpack_require__(9), __webpack_require__(168)];
 
 /***/ }),
 /* 152 */
@@ -13703,7 +13694,7 @@ exports.callWithRightArgumentCount = function (fn, args, argCount) {
 
 
 var util = __webpack_require__(21);
-var DimensionError = __webpack_require__(7);
+var DimensionError = __webpack_require__(8);
 var array = util.array;
 var object = util.object;
 var string = util.string;
@@ -14197,9 +14188,7 @@ function factory(type, config, load, typed) {
     values.splice(k, 1);
     index.splice(k, 1);
     // update pointers
-    for (var x = j + 1; x < ptr.length; x++) {
-      ptr[x]--;
-    }
+    for (var x = j + 1; x < ptr.length; x++) ptr[x]--;
   };
   var _insert = function _insert(k, i, j, v, values, index, ptr) {
     // insert value
@@ -14207,9 +14196,7 @@ function factory(type, config, load, typed) {
     // update row for k
     index.splice(k, 0, i);
     // update column pointers
-    for (var x = j + 1; x < ptr.length; x++) {
-      ptr[x]++;
-    }
+    for (var x = j + 1; x < ptr.length; x++) ptr[x]++;
   };
 
   /**
@@ -14553,9 +14540,7 @@ function factory(type, config, load, typed) {
         if (i >= minRow && i <= maxRow) {
           // zero values
           if (!skipZeros) {
-            for (var x = p; x < i; x++) {
-              invoke(0, x - minRow, j - minColumn);
-            }
+            for (var x = p; x < i; x++) invoke(0, x - minRow, j - minColumn);
           }
           // value @ k
           invoke(matrix._values[k], i - minRow, j - minColumn);
@@ -14565,9 +14550,7 @@ function factory(type, config, load, typed) {
       }
       // zero values
       if (!skipZeros) {
-        for (var y = p; y <= maxRow; y++) {
-          invoke(0, y - minRow, j - minColumn);
-        }
+        for (var y = p; y <= maxRow; y++) invoke(0, y - minRow, j - minColumn);
       }
     }
     // store number of values in ptr
@@ -14611,9 +14594,7 @@ function factory(type, config, load, typed) {
         // check we need to process zeros
         if (!skipZeros) {
           // zero values
-          for (var x = p; x < i; x++) {
-            callback(0, [x, j], me);
-          }
+          for (var x = p; x < i; x++) callback(0, [x, j], me);
         }
         // value @ k
         callback(this._values[k], [i, j], me);
@@ -14623,9 +14604,7 @@ function factory(type, config, load, typed) {
       // check we need to process zeros
       if (!skipZeros) {
         // zero values
-        for (var y = p; y < rows; y++) {
-          callback(0, [y, j], me);
-        }
+        for (var y = p; y < rows; y++) callback(0, [y, j], me);
       }
     }
   };
@@ -14658,9 +14637,7 @@ function factory(type, config, load, typed) {
     // initialize array
     for (i = 0; i < rows; i++) {
       a[i] = [];
-      for (j = 0; j < columns; j++) {
-        a[i][j] = 0;
-      }
+      for (j = 0; j < columns; j++) a[i][j] = 0;
     }
 
     // loop columns
@@ -15206,7 +15183,7 @@ exports.factory = factory;
 
 var extend = __webpack_require__(4).extend;
 function factory(type, config, load, typed) {
-  var matrix = load(__webpack_require__(8));
+  var matrix = load(__webpack_require__(9));
   var addScalar = load(__webpack_require__(78));
   var latex = __webpack_require__(14);
   var algorithm01 = load(__webpack_require__(159));
@@ -15357,7 +15334,7 @@ exports.factory = factory;
 "use strict";
 
 
-var DimensionError = __webpack_require__(7);
+var DimensionError = __webpack_require__(8);
 function factory(type, config, load, typed) {
   var DenseMatrix = type.DenseMatrix;
 
@@ -15416,9 +15393,7 @@ function factory(type, config, load, typed) {
     // result (DenseMatrix)
     var cdata = [];
     // initialize c
-    for (i = 0; i < rows; i++) {
-      cdata[i] = [];
-    }
+    for (i = 0; i < rows; i++) cdata[i] = [];
 
     // workspace
     var x = [];
@@ -15470,7 +15445,7 @@ exports.factory = factory;
 "use strict";
 
 
-var DimensionError = __webpack_require__(7);
+var DimensionError = __webpack_require__(8);
 function factory(type, config, load, typed) {
   var equalScalar = load(__webpack_require__(23));
   var SparseMatrix = type.SparseMatrix;
@@ -16099,7 +16074,7 @@ exports.factory = factory;
 var nearlyEqual = __webpack_require__(3).nearlyEqual;
 var bigNearlyEqual = __webpack_require__(46);
 function factory(type, config, load, typed) {
-  var matrix = load(__webpack_require__(8));
+  var matrix = load(__webpack_require__(9));
   var algorithm03 = load(__webpack_require__(80));
   var algorithm07 = load(__webpack_require__(81));
   var algorithm12 = load(__webpack_require__(82));
@@ -17171,7 +17146,7 @@ exports.factory = factory;
 var isInteger = __webpack_require__(3).isInteger;
 var resize = __webpack_require__(22).resize;
 function factory(type, config, load, typed) {
-  var matrix = load(__webpack_require__(8));
+  var matrix = load(__webpack_require__(9));
 
   /**
    * Create a matrix filled with zeros. The created matrix can have one or
@@ -17291,11 +17266,172 @@ exports.factory = factory;
 
 /***/ }),
 /* 170 */
+/***/ (function(module, exports) {
+
+// Keep the identity function around for default iteratees.
+function identity(value) {
+  return value;
+}
+module.exports = identity;
+
+/***/ }),
+/* 171 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var extendOwn = __webpack_require__(172);
+var isMatch = __webpack_require__(174);
+
+// Returns a predicate for checking whether an object has a given set of
+// `key:value` pairs.
+function matcher(attrs) {
+  attrs = extendOwn({}, attrs);
+  return function (obj) {
+    return isMatch(obj, attrs);
+  };
+}
+module.exports = matcher;
+
+/***/ }),
+/* 172 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _createAssigner = __webpack_require__(173);
+var keys = __webpack_require__(20);
+
+// Assigns a given object with all the own properties in the passed-in
+// object(s).
+// (https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/assign)
+var extendOwn = _createAssigner(keys);
+module.exports = extendOwn;
+
+/***/ }),
+/* 173 */
+/***/ (function(module, exports) {
+
+// An internal function for creating assigner functions.
+function createAssigner(keysFunc, defaults) {
+  return function (obj) {
+    var length = arguments.length;
+    if (defaults) obj = Object(obj);
+    if (length < 2 || obj == null) return obj;
+    for (var index = 1; index < length; index++) {
+      var source = arguments[index],
+        keys = keysFunc(source),
+        l = keys.length;
+      for (var i = 0; i < l; i++) {
+        var key = keys[i];
+        if (!defaults || obj[key] === void 0) obj[key] = source[key];
+      }
+    }
+    return obj;
+  };
+}
+module.exports = createAssigner;
+
+/***/ }),
+/* 174 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var keys = __webpack_require__(20);
+
+// Returns whether an object has a given set of `key:value` pairs.
+function isMatch(object, attrs) {
+  var _keys = keys(attrs),
+    length = _keys.length;
+  if (object == null) return !length;
+  var obj = Object(object);
+  for (var i = 0; i < length; i++) {
+    var key = _keys[i];
+    if (attrs[key] !== obj[key] || !(key in obj)) return false;
+  }
+  return true;
+}
+module.exports = isMatch;
+
+/***/ }),
+/* 175 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _deepGet = __webpack_require__(176);
+var _toPath = __webpack_require__(177);
+
+// Creates a function that, when passed an object, will traverse that object’s
+// properties down the given `path`, specified as an array of keys or indices.
+function property(path) {
+  path = _toPath(path);
+  return function (obj) {
+    return _deepGet(obj, path);
+  };
+}
+module.exports = property;
+
+/***/ }),
+/* 176 */
+/***/ (function(module, exports) {
+
+// Internal function to obtain a nested property in `obj` along `path`.
+function deepGet(obj, path) {
+  var length = path.length;
+  for (var i = 0; i < length; i++) {
+    if (obj == null) return void 0;
+    obj = obj[path[i]];
+  }
+  return length ? obj : void 0;
+}
+module.exports = deepGet;
+
+/***/ }),
+/* 177 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var underscore = __webpack_require__(31);
+__webpack_require__(178);
+
+// Internal wrapper for `_.toPath` to enable minification.
+// Similar to `cb` for `_.iteratee`.
+function toPath(path) {
+  return underscore.toPath(path);
+}
+module.exports = toPath;
+
+/***/ }),
+/* 178 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var underscore = __webpack_require__(31);
+var isArray = __webpack_require__(48);
+
+// Normalize a (deep) property `path` to array.
+// Like `_.iteratee`, this function can be customized.
+function toPath(path) {
+  return isArray(path) ? path : [path];
+}
+underscore.toPath = toPath;
+module.exports = toPath;
+
+/***/ }),
+/* 179 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var underscore = __webpack_require__(31);
+var _baseIteratee = __webpack_require__(83);
+
+// External wrapper for our callback generator. Users may customize
+// `_.iteratee` if they want additional predicate/iteratee shorthand styles.
+// This abstraction hides the internal-only `argCount` argument.
+function iteratee(value, context) {
+  return _baseIteratee(value, context, Infinity);
+}
+underscore.iteratee = iteratee;
+module.exports = iteratee;
+
+/***/ }),
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var utils = __webpack_require__(0);
 var get_filter_default_state = __webpack_require__(42);
-var filter = __webpack_require__(9);
+var filter = __webpack_require__(7);
 var each = __webpack_require__(1);
 module.exports = function get_subset_views(params, views, requested_view) {
   var inst_value;
@@ -17356,167 +17492,6 @@ module.exports = function get_subset_views(params, views, requested_view) {
   });
   return export_views;
 };
-
-/***/ }),
-/* 171 */
-/***/ (function(module, exports) {
-
-// Keep the identity function around for default iteratees.
-function identity(value) {
-  return value;
-}
-module.exports = identity;
-
-/***/ }),
-/* 172 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var extendOwn = __webpack_require__(173);
-var isMatch = __webpack_require__(175);
-
-// Returns a predicate for checking whether an object has a given set of
-// `key:value` pairs.
-function matcher(attrs) {
-  attrs = extendOwn({}, attrs);
-  return function (obj) {
-    return isMatch(obj, attrs);
-  };
-}
-module.exports = matcher;
-
-/***/ }),
-/* 173 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _createAssigner = __webpack_require__(174);
-var keys = __webpack_require__(20);
-
-// Assigns a given object with all the own properties in the passed-in
-// object(s).
-// (https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/assign)
-var extendOwn = _createAssigner(keys);
-module.exports = extendOwn;
-
-/***/ }),
-/* 174 */
-/***/ (function(module, exports) {
-
-// An internal function for creating assigner functions.
-function createAssigner(keysFunc, defaults) {
-  return function (obj) {
-    var length = arguments.length;
-    if (defaults) obj = Object(obj);
-    if (length < 2 || obj == null) return obj;
-    for (var index = 1; index < length; index++) {
-      var source = arguments[index],
-        keys = keysFunc(source),
-        l = keys.length;
-      for (var i = 0; i < l; i++) {
-        var key = keys[i];
-        if (!defaults || obj[key] === void 0) obj[key] = source[key];
-      }
-    }
-    return obj;
-  };
-}
-module.exports = createAssigner;
-
-/***/ }),
-/* 175 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var keys = __webpack_require__(20);
-
-// Returns whether an object has a given set of `key:value` pairs.
-function isMatch(object, attrs) {
-  var _keys = keys(attrs),
-    length = _keys.length;
-  if (object == null) return !length;
-  var obj = Object(object);
-  for (var i = 0; i < length; i++) {
-    var key = _keys[i];
-    if (attrs[key] !== obj[key] || !(key in obj)) return false;
-  }
-  return true;
-}
-module.exports = isMatch;
-
-/***/ }),
-/* 176 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _deepGet = __webpack_require__(177);
-var _toPath = __webpack_require__(178);
-
-// Creates a function that, when passed an object, will traverse that object’s
-// properties down the given `path`, specified as an array of keys or indices.
-function property(path) {
-  path = _toPath(path);
-  return function (obj) {
-    return _deepGet(obj, path);
-  };
-}
-module.exports = property;
-
-/***/ }),
-/* 177 */
-/***/ (function(module, exports) {
-
-// Internal function to obtain a nested property in `obj` along `path`.
-function deepGet(obj, path) {
-  var length = path.length;
-  for (var i = 0; i < length; i++) {
-    if (obj == null) return void 0;
-    obj = obj[path[i]];
-  }
-  return length ? obj : void 0;
-}
-module.exports = deepGet;
-
-/***/ }),
-/* 178 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var underscore = __webpack_require__(31);
-__webpack_require__(179);
-
-// Internal wrapper for `_.toPath` to enable minification.
-// Similar to `cb` for `_.iteratee`.
-function toPath(path) {
-  return underscore.toPath(path);
-}
-module.exports = toPath;
-
-/***/ }),
-/* 179 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var underscore = __webpack_require__(31);
-var isArray = __webpack_require__(48);
-
-// Normalize a (deep) property `path` to array.
-// Like `_.iteratee`, this function can be customized.
-function toPath(path) {
-  return isArray(path) ? path : [path];
-}
-underscore.toPath = toPath;
-module.exports = toPath;
-
-/***/ }),
-/* 180 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var underscore = __webpack_require__(31);
-var _baseIteratee = __webpack_require__(83);
-
-// External wrapper for our callback generator. Users may customize
-// `_.iteratee` if they want additional predicate/iteratee shorthand styles.
-// This abstraction hides the internal-only `argCount` argument.
-function iteratee(value, context) {
-  return _baseIteratee(value, context, Infinity);
-}
-underscore.iteratee = iteratee;
-module.exports = iteratee;
 
 /***/ }),
 /* 181 */
@@ -18351,7 +18326,7 @@ var draw_dn_tile = __webpack_require__(35);
 var mouseover_tile = __webpack_require__(24);
 var mouseout_tile = __webpack_require__(25);
 var fine_position_tile = __webpack_require__(12);
-var filter = __webpack_require__(9);
+var filter = __webpack_require__(7);
 var utils = __webpack_require__(0);
 var click_tile = __webpack_require__(200);
 var POSITION_INACCURACY = 2;
@@ -19573,7 +19548,7 @@ function factory(type, config, load, typed) {
   var latex = __webpack_require__(14);
   var eye = load(__webpack_require__(220));
   var multiply = load(__webpack_require__(98));
-  var matrix = load(__webpack_require__(8));
+  var matrix = load(__webpack_require__(9));
   var fraction = load(__webpack_require__(221));
   var number = load(__webpack_require__(222));
 
@@ -19750,7 +19725,7 @@ exports.factory = factory;
 var array = __webpack_require__(22);
 var isInteger = __webpack_require__(3).isInteger;
 function factory(type, config, load, typed) {
-  var matrix = load(__webpack_require__(8));
+  var matrix = load(__webpack_require__(9));
 
   /**
    * Create a 2-dimensional identity matrix with size m x n or n x n.
@@ -20478,9 +20453,7 @@ function flatten(input, depth, strict, output) {
       } else {
         var j = 0,
           len = value.length;
-        while (j < len) {
-          output[idx++] = value[j++];
-        }
+        while (j < len) output[idx++] = value[j++];
       }
     } else if (!strict) {
       output[idx++] = value;
@@ -21910,7 +21883,7 @@ var update_split_tiles = __webpack_require__(270);
 var mouseover_tile = __webpack_require__(24);
 var mouseout_tile = __webpack_require__(25);
 var fine_position_tile = __webpack_require__(12);
-var filter = __webpack_require__(9);
+var filter = __webpack_require__(7);
 var contains = __webpack_require__(16);
 
 // TODO add tip back to arguments
@@ -21969,7 +21942,7 @@ module.exports = function eeu_existing_row(params, ini_inp_row_data, delays, dur
 /* 268 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var filter = __webpack_require__(9);
+var filter = __webpack_require__(7);
 module.exports = function exit_existing_row(params, delays, cur_row_tiles, inp_row_data, row_selection) {
   if (delays.run_transition) {
     cur_row_tiles.exit().transition().duration(300).attr('fill-opacity', 0).remove();
@@ -22056,7 +22029,7 @@ var draw_dn_tile = __webpack_require__(35);
 var mouseover_tile = __webpack_require__(24);
 var mouseout_tile = __webpack_require__(25);
 var fine_position_tile = __webpack_require__(12);
-var filter = __webpack_require__(9);
+var filter = __webpack_require__(7);
 module.exports = function update_split_tiles(params, inp_row_data, row_selection, delays, duration, cur_row_tiles, tip) {
   // value split
   var row_split_data = filter(inp_row_data, function (num) {
@@ -22208,7 +22181,7 @@ var enter_split_tiles = __webpack_require__(274);
 var mouseover_tile = __webpack_require__(24);
 var mouseout_tile = __webpack_require__(25);
 var fine_position_tile = __webpack_require__(12);
-var filter = __webpack_require__(9);
+var filter = __webpack_require__(7);
 
 // make each row in the clustergram
 module.exports = function enter_new_rows(params, ini_inp_row_data, delays, duration, tip, row_selection) {
@@ -22255,7 +22228,7 @@ module.exports = function enter_new_rows(params, ini_inp_row_data, delays, durat
 var draw_up_tile = __webpack_require__(34);
 var draw_dn_tile = __webpack_require__(35);
 var fine_position_tile = __webpack_require__(12);
-var filter = __webpack_require__(9);
+var filter = __webpack_require__(7);
 module.exports = function enter_split_tiles(params, inp_row_data, row_selection, tip, delays, duration, tile) {
   // value split
   var row_split_data = filter(inp_row_data, function (num) {
