@@ -1,7 +1,6 @@
 var filter_network_using_new_nodes = require('./filter_network_using_new_nodes');
 var update_viz_with_network = require('../update/update_viz_with_network');
 var utils = require('../Utils_clust');
-var $ = require('jquery');
 
 module.exports = function filter_viz_using_names(names, external_cgm = false) {
   // names is an object with row and column names that will be used to filter
@@ -14,19 +13,30 @@ module.exports = function filter_viz_using_names(names, external_cgm = false) {
     cgm = external_cgm;
   }
 
-  var params = cgm.params;
+  var config = cgm.config;
   var new_nodes = {};
   var found_nodes;
 
   ['row', 'col'].forEach(function (inst_rc) {
-    var orig_nodes = params.inst_nodes[inst_rc + '_nodes'];
-
+    var orig_nodes = JSON.parse(
+      JSON.stringify(config.network_data[inst_rc + '_nodes'])
+    );
     if (utils.has(names, inst_rc)) {
       if (names[inst_rc].length > 0) {
         var inst_names = names[inst_rc];
-        found_nodes = $.grep(orig_nodes, function (d) {
-          return $.inArray(d.name, inst_names) > -1;
-        });
+        found_nodes = (orig_nodes || []).filter((d) =>
+          (inst_names || []).some((name) =>
+            d.name.toLowerCase().includes(name.toLowerCase())
+          )
+        );
+        if (!found_nodes.length) {
+          found_nodes = [
+            {
+              name: '',
+              row_index: 0
+            }
+          ];
+        }
       } else {
         found_nodes = orig_nodes;
       }

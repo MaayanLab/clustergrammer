@@ -89,6 +89,9 @@ module.exports = function make_row_cat(cgm, updating = false) {
         d.name
       );
       return 'translate(0, ' + params.viz.y_scale(inst_index) + ')';
+    })
+    .attr('opacity', function (d) {
+      return d.name ? 'initial' : 0;
     });
 
   d3.select(params.root + ' .row_cat_container')
