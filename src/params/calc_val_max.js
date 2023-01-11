@@ -1,3 +1,5 @@
+var d3 = require('d3');
+
 var max = require('underscore/cjs/max');
 
 module.exports = function calc_val_max(params) {

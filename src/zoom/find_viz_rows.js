@@ -1,3 +1,5 @@
+var d3 = require('d3');
+
 module.exports = function find_viz_rows(params, viz_area) {
   var should_be_rows = [];
   var curr_rows = [];

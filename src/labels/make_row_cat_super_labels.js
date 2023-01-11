@@ -1,3 +1,4 @@
+var d3 = require('d3');
 var get_cat_title = require('../categories/get_cat_title');
 var d3_tip_custom = require('../tooltip/d3_tip_custom');
 var utils = require('../Utils_clust');

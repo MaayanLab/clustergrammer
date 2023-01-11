@@ -1,3 +1,4 @@
+var d3 = require('d3');
 var constrain_font_size = require('./constrain_font_size');
 var show_visible_area = require('./show_visible_area');
 var resize_label_val_bars = require('./resize_label_val_bars');

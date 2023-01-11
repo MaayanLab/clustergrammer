@@ -1,3 +1,4 @@
+var d3 = require('d3');
 var run_transformation = require('./run_transformation');
 var zoom_rules_y = require('./zoom_rules_y');
 var zoom_rules_x = require('./zoom_rules_x');

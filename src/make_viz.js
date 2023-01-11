@@ -1,3 +1,4 @@
+var d3 = require('d3');
 var generate_matrix = require('./matrix');
 var make_row_label_container = require('./labels/make_row_label_container');
 var make_col_label_container = require('./labels/make_col_label_container');

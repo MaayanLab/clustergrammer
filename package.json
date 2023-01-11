@@ -1,11 +1,10 @@
 {
-  "name": "clustergrammer",
-  "version": "3.1.9",
+  "name": "clustergrammer-lite",
+  "version": "3.2.2",
   "description": "This is a clustergram implemented in D3.js. I started from the example http://bost.ocks.org/mike/miserables/ and added the following features",
-  "main": "clustergrammer.cjs.js",
+  "main": "src/main.js",
   "scripts": {
-    "build": "webpack",
-    "stats": "webpack --json > stats.json",
+    "dev": "parcel example/index.html",
     "pre-commit": "lint-staged --allow-empty",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -20,17 +19,10 @@
   },
   "homepage": "https://github.com/MaayanLab/clustergrammer#readme",
   "devDependencies": {
-    "@babel/preset-env": "^7.20.2",
-    "babel-core": "^6.26.3",
-    "babel-loader": "^8.3.0",
-    "browser-sync": "^2.27.11",
-    "browser-sync-webpack-plugin": "^2.3.0",
     "husky": "^7.0.4",
     "lint-staged": "^13.0.3",
-    "object-assign": "^4.1.0",
-    "prettier": "^2.7.1",
-    "webpack": "^4.46.0",
-    "webpack-cli": "^4.10.0"
+    "parcel": "^2.8.2",
+    "prettier": "^2.7.1"
   },
   "dependencies": {
     "d3": "^3.5.15",

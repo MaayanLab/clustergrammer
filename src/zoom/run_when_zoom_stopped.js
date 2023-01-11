@@ -1,3 +1,4 @@
+var d3 = require('d3');
 var constrain_font_size = require('./constrain_font_size');
 var trim_text = require('./trim_text');
 var num_visible_labels = require('./num_visible_labels');

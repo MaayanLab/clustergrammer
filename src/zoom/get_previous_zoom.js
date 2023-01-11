@@ -1,3 +1,5 @@
+var d3 = require('d3');
+
 module.exports = function get_previous_zoom(params) {
   var prev_zoom = {};
 

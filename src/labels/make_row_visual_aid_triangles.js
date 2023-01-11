@@ -1,3 +1,5 @@
+var d3 = require('d3');
+
 module.exports = function make_row_visual_aid_triangles(params) {
   if (d3.select(params.root + ' .row_cat_group path').empty() === true) {
     d3.selectAll(params.root + ' .row_cat_group')

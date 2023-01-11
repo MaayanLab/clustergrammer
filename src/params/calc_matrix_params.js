@@ -1,3 +1,4 @@
+var d3 = require('d3');
 var ini_matrix_params = require('./ini_matrix_params');
 var calc_downsampled_levels = require('../matrix/calc_downsampled_levels');
 

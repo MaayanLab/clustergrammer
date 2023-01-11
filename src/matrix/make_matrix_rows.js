@@ -1,3 +1,4 @@
+var d3 = require('d3');
 var make_simple_rows = require('./make_simple_rows');
 var d3_tip_custom = require('../tooltip/d3_tip_custom');
 var each = require('underscore/cjs/each');

@@ -1,3 +1,4 @@
+var d3 = require('d3');
 var two_translate_zoom = require('./two_translate_zoom');
 
 module.exports = function ini_doubleclick(cgm) {

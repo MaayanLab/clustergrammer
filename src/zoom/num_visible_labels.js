@@ -1,3 +1,5 @@
+var d3 = require('d3');
+
 module.exports = function num_visible_labels(params, inst_rc) {
   // counting the number of visible labels, probably not necessary
 

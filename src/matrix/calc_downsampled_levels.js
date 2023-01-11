@@ -1,3 +1,4 @@
+var d3 = require('d3');
 var calc_downsampled_matrix = require('../matrix/calc_downsampled_matrix');
 var $ = require('jquery');
 

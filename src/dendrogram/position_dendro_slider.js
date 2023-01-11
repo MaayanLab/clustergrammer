@@ -1,3 +1,5 @@
+var d3 = require('d3');
+
 module.exports = function position_dendro_slider(cgm, inst_rc = 'row') {
   var viz = cgm.params.viz;
   var tmp_left;

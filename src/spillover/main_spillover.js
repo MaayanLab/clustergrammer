@@ -1,3 +1,4 @@
+var d3 = require('d3');
 var get_cat_title = require('../categories/get_cat_title');
 var ini_cat_reorder = require('../reorder/ini_cat_reorder');
 var make_row_cat_super_labels = require('../labels/make_row_cat_super_labels');

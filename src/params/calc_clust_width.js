@@ -1,3 +1,5 @@
+var d3 = require('d3');
+
 var range = require('underscore/cjs/range');
 
 module.exports = function calc_clust_width(viz) {

@@ -1,3 +1,4 @@
+var d3 = require('d3');
 var make_dendro_crop_buttons = require('../dendrogram/make_dendro_crop_buttons');
 
 module.exports = function make_row_dendro_spillover(cgm) {

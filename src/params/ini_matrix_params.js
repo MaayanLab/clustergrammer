@@ -1,3 +1,5 @@
+var d3 = require('d3');
+
 var utils = require('../Utils_clust');
 var initialize_matrix = require('../initialize_matrix');
 var max = require('underscore/cjs/max');

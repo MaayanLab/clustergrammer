@@ -1,3 +1,4 @@
+var d3 = require('d3');
 var find_viz_rows = require('../zoom/find_viz_rows');
 var make_matrix_rows = require('../matrix/make_matrix_rows');
 var make_row_labels = require('../labels/make_row_labels');

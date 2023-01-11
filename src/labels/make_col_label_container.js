@@ -1,3 +1,4 @@
+var d3 = require('d3');
 var utils = require('../Utils_clust');
 var add_col_click_hlight = require('./add_col_click_hlight');
 var col_reorder = require('../reorder/col_reorder');

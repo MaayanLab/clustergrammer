@@ -1,3 +1,5 @@
+var d3 = require('d3');
+
 module.exports = function calc_cat_params(params, viz) {
   var separtion_room;
 

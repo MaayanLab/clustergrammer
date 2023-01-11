@@ -1,3 +1,4 @@
+var d3 = require('d3');
 var utils = require('./Utils_clust');
 
 module.exports = function (network_data) {

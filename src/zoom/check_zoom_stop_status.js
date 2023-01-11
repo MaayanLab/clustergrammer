@@ -1,3 +1,5 @@
+var d3 = require('d3');
+
 module.exports = function check_zoom_stop_status(params) {
   var inst_zoom = Number(d3.select(params.root + ' .viz_svg').attr('is_zoom'));
 

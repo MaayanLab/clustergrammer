@@ -1,3 +1,4 @@
+var d3 = require('d3');
 var dendro_shade_bars = require('./dendro_shade_bars');
 
 module.exports = function dendro_group_highlight(

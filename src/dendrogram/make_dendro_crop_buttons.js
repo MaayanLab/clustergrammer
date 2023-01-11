@@ -1,3 +1,4 @@
+var d3 = require('d3');
 var calc_row_dendro_triangles = require('./calc_row_dendro_triangles');
 var calc_col_dendro_triangles = require('./calc_col_dendro_triangles');
 var d3_tip_custom = require('../tooltip/d3_tip_custom');

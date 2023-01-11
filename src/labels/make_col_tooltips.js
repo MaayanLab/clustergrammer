@@ -1,3 +1,5 @@
+var d3 = require('d3');
+
 module.exports = function make_col_tooltips(params) {
   if (params.labels.show_label_tooltips) {
     d3.select(params.root + ' .col_zoom_container')

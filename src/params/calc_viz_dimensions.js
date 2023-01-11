@@ -1,3 +1,5 @@
+var d3 = require('d3');
+
 module.exports = function calc_viz_dimensions(params) {
   var cont_dim = {};
   var extra_space = params.buffer_width;

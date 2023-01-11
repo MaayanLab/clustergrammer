@@ -1,3 +1,5 @@
+var d3 = require('d3');
+
 module.exports = function zoom_crop_triangles(params, zoom_info, inst_rc) {
   if (inst_rc === 'row') {
     // transform icons (undo zoom on triangles)

@@ -1,3 +1,4 @@
+var d3 = require('d3');
 var make_row_labels = require('./make_row_labels');
 
 module.exports = function make_row_label_container(cgm, text_delay) {

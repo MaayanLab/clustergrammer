@@ -1,3 +1,5 @@
+var d3 = require('d3');
+
 module.exports = function (params, inst_selection, inst_rc) {
   if (d3.select(inst_selection).style('display') != 'none') {
     // trim text that is longer than the container

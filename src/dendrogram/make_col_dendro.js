@@ -1,3 +1,4 @@
+var d3 = require('d3');
 var make_dendro_triangles = require('./make_dendro_triangles');
 
 module.exports = function make_col_dendro(cgm) {

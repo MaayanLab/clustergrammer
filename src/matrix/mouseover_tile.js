@@ -1,3 +1,5 @@
+var d3 = require('d3');
+
 module.exports = function mouseover_tile(
   params,
   inst_selection,
