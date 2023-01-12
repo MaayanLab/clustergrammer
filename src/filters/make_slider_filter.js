@@ -2,6 +2,7 @@ var make_filter_title = require('./make_filter_title');
 var run_filter_slider = require('./run_filter_slider');
 var get_filter_default_state = require('./get_filter_default_state');
 var get_subset_views = require('./get_subset_views');
+var d3 = require('d3');
 d3.slider = require('../d3.slider');
 var debounce = require('underscore/cjs/debounce');
 

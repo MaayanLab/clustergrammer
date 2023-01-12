@@ -1,3 +1,4 @@
+var d3 = require('d3');
 var utils = require('../Utils_clust');
 var run_zoom = require('../zoom/run_zoom');
 var ini_doubleclick = require('../zoom/ini_doubleclick');

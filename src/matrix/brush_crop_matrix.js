@@ -1,3 +1,4 @@
+var d3 = require('d3');
 var deactivate_cropping = require('./deactivate_cropping');
 var each = require('underscore/cjs/each');
 

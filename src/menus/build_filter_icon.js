@@ -1,3 +1,4 @@
+var d3 = require('d3');
 var position_filter_icon = require('./position_filter_icon');
 var d3_tip_custom = require('../tooltip/d3_tip_custom');
 var toggle_menu = require('./toggle_menu');

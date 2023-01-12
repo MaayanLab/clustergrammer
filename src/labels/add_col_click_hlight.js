@@ -1,3 +1,5 @@
+var d3 = require('d3');
+
 module.exports = function (params, clicked_col, id_clicked_col) {
   if (id_clicked_col != params.click_hlight_col) {
     params.click_hlight_col = id_clicked_col;

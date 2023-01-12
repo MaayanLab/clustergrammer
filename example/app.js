@@ -1,4 +1,5 @@
 import Clustergrammer from '../src/main.js';
+import data from './data.json';
 
 function generateData() {
   const rowCount = 500;
@@ -36,8 +37,13 @@ function generateData() {
 }
 
 const network_data = generateData();
-const clustergrammer = Clustergrammer({
-  root: '#clust_container',
-  network_data,
+Clustergrammer({
+  root: '#clustExample1',
+  network_data: network_data
+});
+
+Clustergrammer({
+  root: '#clustExample2',
+  network_data: data,
   tile_colors: ['#2F80ED', '#2F80ED']
 });

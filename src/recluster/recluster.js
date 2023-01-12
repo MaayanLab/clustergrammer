@@ -6,6 +6,7 @@ var dist_fun = require('./distance_functions');
 var get_order_and_groups_clusterfck_tree = require('./get_order_and_groups_clusterfck_tree');
 var update_view = require('../update/update_view');
 var $ = require('jquery');
+var d3 = require('d3');
 
 math.import(require('mathjs/lib/function/matrix/transpose'));
 math.import(require('mathjs/lib/type/matrix'));

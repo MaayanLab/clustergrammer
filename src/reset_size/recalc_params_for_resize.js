@@ -1,3 +1,4 @@
+var d3 = require('d3');
 var get_svg_dim = require('../params/get_svg_dim');
 var calc_clust_height = require('../params/calc_clust_height');
 var calc_clust_width = require('../params/calc_clust_width');

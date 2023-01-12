@@ -1,3 +1,4 @@
+var d3 = require('d3');
 var update_viz_with_view = require('../network/update_viz_with_view');
 var reset_other_filter_sliders = require('./reset_other_filter_sliders');
 var get_current_orders = require('./get_current_orders');

@@ -1,3 +1,5 @@
+var d3 = require('d3');
+
 module.exports = function enable_sidebar(params) {
   /* only enable dendrogram sliders if there has been no dendro_filtering */
 

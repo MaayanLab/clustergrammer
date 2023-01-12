@@ -1,3 +1,5 @@
+var d3 = require('d3');
+
 module.exports = function make_view_request(params, requested_view) {
   // this will add all necessary information to a view request
   // it will grab necessary view information from the sliders

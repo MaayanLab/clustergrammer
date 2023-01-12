@@ -1,3 +1,4 @@
+var d3 = require('d3');
 var make_slider_filter = require('./make_slider_filter');
 var make_button_filter = require('./make_button_filter');
 

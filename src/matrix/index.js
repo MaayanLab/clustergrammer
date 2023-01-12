@@ -1,3 +1,4 @@
+var d3 = require('d3');
 var utils = require('../Utils_clust');
 var draw_gridlines = require('../matrix/draw_gridlines');
 var add_click_hlight = require('./add_click_hlight');

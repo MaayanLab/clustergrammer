@@ -1,3 +1,5 @@
+var d3 = require('d3');
+
 module.exports = function demo_text(params, text, read_duration) {
   var split_text = text.split('\n');
 

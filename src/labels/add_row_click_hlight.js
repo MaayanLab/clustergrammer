@@ -1,3 +1,5 @@
+var d3 = require('d3');
+
 module.exports = function (params, clicked_row, id_clicked_row) {
   if (id_clicked_row != params.click_hlight_row) {
     var rel_width_hlight = 6;

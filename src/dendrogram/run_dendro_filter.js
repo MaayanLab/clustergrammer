@@ -1,3 +1,5 @@
+var d3 = require('d3');
+
 module.exports = function run_dendro_filter(cgm, d, inst_rc) {
   var names = {};
 

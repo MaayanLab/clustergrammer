@@ -1,3 +1,4 @@
+var d3 = require('d3');
 var demo_text = require('./demo_text');
 var sim_click = require('./sim_click');
 var $ = require('jquery');

@@ -1,3 +1,4 @@
+var d3 = require('d3');
 var get_cat_names = require('../categories/get_cat_names');
 
 module.exports = function click_filter_cats(

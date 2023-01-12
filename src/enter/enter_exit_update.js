@@ -1,3 +1,4 @@
+var d3 = require('d3');
 var reset_size_after_update = require('../reset_size/reset_size_after_update');
 var make_row_label_container = require('../labels/make_row_label_container');
 var make_col_label_container = require('../labels/make_col_label_container');

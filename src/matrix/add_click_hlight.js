@@ -1,3 +1,5 @@
+var d3 = require('d3');
+
 module.exports = function (params, clicked_rect) {
   // get x position of rectangle
   d3.select(clicked_rect).each(function (d) {

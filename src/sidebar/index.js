@@ -1,3 +1,4 @@
+var d3 = require('d3');
 var ini_sidebar = require('./ini_sidebar');
 var set_up_filters = require('../filters/set_up_filters');
 var set_up_search = require('./set_up_search');

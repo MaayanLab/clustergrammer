@@ -1,5 +1,6 @@
 var sim_click = require('./sim_click');
 var $ = require('jquery');
+var d3 = require('d3');
 
 module.exports = function quick_cluster() {
   /* eslint-disable */

@@ -1,3 +1,4 @@
+var d3 = require('d3');
 var filter = require('underscore/cjs/filter');
 
 module.exports = function exit_existing_row(

@@ -1,3 +1,4 @@
+var d3 = require('d3');
 var get_cat_title = require('../categories/get_cat_title');
 
 module.exports = function cat_tooltip_text(

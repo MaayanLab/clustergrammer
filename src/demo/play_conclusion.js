@@ -1,3 +1,4 @@
+var d3 = require('d3');
 var demo_text = require('./demo_text');
 var toggle_play_button = require('./toggle_play_button');
 

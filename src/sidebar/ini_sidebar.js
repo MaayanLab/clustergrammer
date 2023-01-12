@@ -5,6 +5,7 @@ var all_reorder = require('../reorder/all_reorder');
 var ini_cat_reorder = require('../reorder/ini_cat_reorder');
 var run_row_search = require('../search/run_row_search');
 var $ = require('jquery');
+var d3 = require('d3');
 
 module.exports = function ini_sidebar(cgm) {
   var params = cgm.params;

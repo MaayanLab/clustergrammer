@@ -1,3 +1,4 @@
+var d3 = require('d3');
 var all_reorder = require('./all_reorder');
 
 module.exports = function ini_cat_reorder(cgm) {

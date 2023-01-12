@@ -1,3 +1,5 @@
+var d3 = require('d3');
+
 module.exports = function make_modal_skeleton(params, modal_class) {
   var modal_skeleton = {};
 

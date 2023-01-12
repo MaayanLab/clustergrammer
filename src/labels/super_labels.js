@@ -1,3 +1,5 @@
+var d3 = require('d3');
+
 module.exports = function (params) {
   d3.select(params.viz.viz_svg)
     .append('rect')

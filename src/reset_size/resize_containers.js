@@ -1,3 +1,5 @@
+var d3 = require('d3');
+
 module.exports = function resize_containers(params) {
   // reposition matrix
   d3.select(params.root + ' .clust_container').attr(

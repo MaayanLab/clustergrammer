@@ -1,3 +1,5 @@
+var d3 = require('d3');
+
 module.exports = function make_menu_button_section(
   menu_type,
   button_type,

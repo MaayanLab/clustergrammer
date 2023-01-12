@@ -1,3 +1,5 @@
+var d3 = require('d3');
+
 module.exports = function sim_click(params, single_double, pos_x, pos_y) {
   var click_duration = 200;
 

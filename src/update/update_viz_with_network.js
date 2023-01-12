@@ -16,6 +16,7 @@ var run_zoom = require('../zoom/run_zoom');
 var ds_enter_exit_update = require('../enter/ds_enter_exit_update');
 var make_cat_params = require('../params/make_cat_params');
 var $ = require('jquery');
+var d3 = require('d3');
 
 module.exports = function update_viz_with_network(cgm, new_network_data) {
   // set runnning_update class, prevents multiple update from running at once

@@ -1,3 +1,5 @@
+var d3 = require('d3');
+
 module.exports = function exit_components(params, delays, duration) {
   var row_nodes = params.network_data.row_nodes;
   var col_nodes = params.network_data.col_nodes;

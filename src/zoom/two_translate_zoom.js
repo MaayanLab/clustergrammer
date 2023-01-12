@@ -1,3 +1,4 @@
+var d3 = require('d3');
 var utils = require('../Utils_clust');
 var label_constrain_and_trim = require('../labels/label_constrain_and_trim');
 var show_visible_area = require('./show_visible_area');

@@ -1,3 +1,4 @@
+var d3 = require('d3');
 var position_play_button = require('./position_play_button');
 
 module.exports = function make_play_button(cgm) {

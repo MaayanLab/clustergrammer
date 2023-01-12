@@ -1,3 +1,4 @@
+var d3 = require('d3');
 var $ = require('jquery');
 
 module.exports = function toggle_play_button(params, show) {

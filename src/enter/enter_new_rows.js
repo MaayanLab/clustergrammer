@@ -1,3 +1,4 @@
+var d3 = require('d3');
 var enter_split_tiles = require('./enter_split_tiles');
 var mouseover_tile = require('../matrix/mouseover_tile');
 var mouseout_tile = require('../matrix/mouseout_tile');

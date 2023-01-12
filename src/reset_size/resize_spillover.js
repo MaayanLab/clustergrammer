@@ -1,3 +1,5 @@
+var d3 = require('d3');
+
 module.exports = function resize_spillover(
   viz,
   ini_svg_group,

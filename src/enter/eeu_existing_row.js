@@ -1,3 +1,4 @@
+var d3 = require('d3');
 var exit_existing_row = require('../exit/exit_existing_row');
 var enter_existing_row = require('./enter_existing_row');
 var update_split_tiles = require('../update/update_split_tiles');

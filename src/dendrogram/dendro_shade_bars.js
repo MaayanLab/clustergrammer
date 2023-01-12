@@ -1,3 +1,5 @@
+var d3 = require('d3');
+
 module.exports = function dendro_shade_bars(
   params,
   inst_selection,

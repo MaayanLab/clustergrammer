@@ -1,3 +1,4 @@
+var d3 = require('d3');
 var make_network_using_view = require('./make_network_using_view');
 var disable_sidebar = require('../sidebar/disable_sidebar');
 var update_viz_with_network = require('../update/update_viz_with_network');

@@ -1,3 +1,4 @@
+var d3 = require('d3');
 var utils = require('../Utils_clust');
 var filter = require('underscore/cjs/each');
 

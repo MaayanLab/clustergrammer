@@ -1,3 +1,5 @@
+var d3 = require('d3');
+
 module.exports = function position_play_button(params) {
   var clust_transform = d3
     .select(params.root + ' .clust_container')

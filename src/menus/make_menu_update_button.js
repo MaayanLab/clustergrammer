@@ -1,3 +1,5 @@
+var d3 = require('d3');
+
 module.exports = function make_menu_update_button(
   cgm,
   button_info,

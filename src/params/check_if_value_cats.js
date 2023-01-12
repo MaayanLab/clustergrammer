@@ -1,3 +1,4 @@
+var d3 = require('d3');
 var max = require('underscore/cjs/max');
 
 module.exports = function check_if_value_cats(cat_states) {

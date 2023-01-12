@@ -1,6 +1,7 @@
 var demo_text = require('./demo_text');
 var highlight_sidebar_element = require('./highlight_sidebar_element');
 var $ = require('jquery');
+var d3 = require('d3');
 
 module.exports = function play_reorder_buttons() {
   /* eslint-disable */

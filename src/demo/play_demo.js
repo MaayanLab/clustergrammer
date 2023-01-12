@@ -1,5 +1,6 @@
 /* eslint-disable */
 
+var d3 = require('d3');
 var run_segment = require('./run_segment');
 var play_intro = require('./play_intro');
 var play_zoom = require('./play_zoom');

@@ -2,6 +2,7 @@ var file_saver = require('../screenshot/file_saver');
 var two_translate_zoom = require('../zoom/two_translate_zoom');
 var deactivate_cropping = require('../matrix/deactivate_cropping');
 var $ = require('jquery');
+var d3 = require('d3');
 
 module.exports = function make_icons(cgm, sidebar) {
   var params = cgm.params;

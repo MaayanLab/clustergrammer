@@ -1,3 +1,4 @@
+var d3 = require('d3');
 var calc_cat_cluster_breakdown = require('./calc_cat_cluster_breakdown');
 var each = require('underscore/cjs/each');
 var cat_breakdown_bars = require('./cat_breakdown_bars');

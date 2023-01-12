@@ -1,3 +1,4 @@
+var d3 = require('d3');
 var max = require('underscore/cjs/max');
 var min = require('underscore/cjs/min');
 

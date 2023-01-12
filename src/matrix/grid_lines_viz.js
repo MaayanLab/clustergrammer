@@ -1,3 +1,5 @@
+var d3 = require('d3');
+
 module.exports = function grid_lines_viz(params, duration = 0) {
   var delay = 0;
   if (duration > 0) {

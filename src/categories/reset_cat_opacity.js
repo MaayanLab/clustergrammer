@@ -1,3 +1,5 @@
+var d3 = require('d3');
+
 module.exports = function reset_cat_opacity(params) {
   ['row', 'col'].forEach(function (inst_rc) {
     d3.selectAll(params.root + ' .' + inst_rc + '_cat_group')

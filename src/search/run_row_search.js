@@ -1,3 +1,4 @@
+var d3 = require('d3');
 var two_translate_zoom = require('../zoom/two_translate_zoom');
 
 module.exports = function run_row_search(cgm, search_term, entities) {

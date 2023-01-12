@@ -1,3 +1,5 @@
+var d3 = require('d3');
+
 module.exports = function get_current_orders(params) {
   // get current orders
   var other_rc;
