@@ -1,10 +1,11 @@
 {
   "name": "clustergrammer-lite",
-  "version": "3.2.2",
+  "version": "3.2.3",
   "description": "This is a clustergram implemented in D3.js. I started from the example http://bost.ocks.org/mike/miserables/ and added the following features",
   "main": "src/main.js",
   "scripts": {
     "dev": "parcel example/index.html",
+    "lint": "eslint --ext .js ./src",
     "pre-commit": "lint-staged --allow-empty",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -19,6 +20,8 @@
   },
   "homepage": "https://github.com/MaayanLab/clustergrammer#readme",
   "devDependencies": {
+    "eslint": "^8.31.0",
+    "eslint-config-prettier": "^8.6.0",
     "husky": "^7.0.4",
     "lint-staged": "^13.0.3",
     "parcel": "^2.8.2",

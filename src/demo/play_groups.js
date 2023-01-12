@@ -4,8 +4,6 @@ var change_groups = require('../dendrogram/change_groups');
 var $ = require('jquery');
 
 module.exports = function play_groups() {
-  /* eslint-disable */
-
   function run(params) {
     var text =
       'Identify row and column groups\nof varying sizes using ' +

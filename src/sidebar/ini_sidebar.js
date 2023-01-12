@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 var change_groups = require('../dendrogram/change_groups');
 var all_reorder = require('../reorder/all_reorder');
 var ini_cat_reorder = require('../reorder/ini_cat_reorder');

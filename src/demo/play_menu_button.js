@@ -4,8 +4,6 @@ var $ = require('jquery');
 var d3 = require('d3');
 
 module.exports = function play_menu_button() {
-  /* eslint-disable */
-
   function run(params) {
     var text = 'View additional controls\nby clicking the menu button';
     demo_text(params, text, 4000);

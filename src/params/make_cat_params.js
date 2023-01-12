@@ -137,8 +137,6 @@ module.exports = function make_cat_params(
     }
   });
 
-  viz.cat_colors = viz.cat_colors;
-
   viz.cat_colors.opacity = 0.6;
   viz.cat_colors.active_opacity = 0.9;
 

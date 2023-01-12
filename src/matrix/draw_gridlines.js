@@ -1,7 +1,6 @@
 // var grid_lines_viz = require('./grid_lines_viz');
 // var toggle_grid_lines = require('./toggle_grid_lines');
 
-/* eslint-disable */
 module.exports = function draw_gridlines(params, delays, duration) {
   // var row_nodes = params.network_data.row_nodes;
   // var col_nodes = params.network_data.col_nodes;

@@ -3,8 +3,6 @@ var $ = require('jquery');
 var d3 = require('d3');
 
 module.exports = function quick_cluster() {
-  /* eslint-disable */
-
   function run(params) {
     var x_trans = Number(
       d3

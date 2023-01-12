@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 var distances = require('./distance');
 
 function KMeans(centroids) {

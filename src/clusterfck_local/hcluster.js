@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 var distances = require('./distance');
 var $ = require('jquery');
 

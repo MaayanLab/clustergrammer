@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 var d3 = require('d3');
 var draw_up_tile = require('../enter/draw_up_tile');
 var draw_dn_tile = require('../enter/draw_dn_tile');

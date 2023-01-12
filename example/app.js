@@ -2,7 +2,7 @@ import Clustergrammer from '../src/main.js';
 import data from './data.json';
 
 function generateData() {
-  const rowCount = 500;
+  const rowCount = 300;
   const colCount = 100;
   const nGroupDepth = 10;
   const linkCount = 10000;
@@ -37,13 +37,15 @@ function generateData() {
 }
 
 const network_data = generateData();
-Clustergrammer({
+const clust1 = Clustergrammer({
   root: '#clustExample1',
   network_data: network_data
 });
+window.clust1 = clust1;
 
-Clustergrammer({
+const clust2 = Clustergrammer({
   root: '#clustExample2',
   network_data: data,
   tile_colors: ['#2F80ED', '#2F80ED']
 });
+window.clust2 = clust2;

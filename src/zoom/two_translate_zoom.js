@@ -165,9 +165,14 @@ module.exports = function two_translate_zoom(cgm, pan_dx, pan_dy, fin_zoom) {
     // toggle crop buttons
     var inst_button_opacity;
     ['row', 'col'].forEach(function (inst_rc) {
-      inst_button_opacity = d3
-        .select(params.root + ' .' + inst_rc + '_dendro_crop_buttons')
-        .style('opacity');
+      var selection = d3.select(
+        params.root + ' .' + inst_rc + '_dendro_crop_buttons'
+      );
+
+      // Fixes case when there are no clusters defined
+      if (!selection[0] || selection[0][0] === null) return;
+
+      inst_button_opacity = selection.style('opacity');
       d3.selectAll(params.root + ' .' + inst_rc + '_dendro_crop_buttons').style(
         'opacity',
         0

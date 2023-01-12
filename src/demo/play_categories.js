@@ -4,8 +4,6 @@ var sim_click = require('./sim_click');
 var $ = require('jquery');
 
 module.exports = function play_category() {
-  /* eslint-disable */
-
   function run(params) {
     var text =
       'Row and column categories\ncan be use to reorder\nby double-clicking';

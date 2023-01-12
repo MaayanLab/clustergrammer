@@ -4,8 +4,6 @@ var $ = require('jquery');
 var d3 = require('d3');
 
 module.exports = function play_reorder_row() {
-  /* eslint-disable */
-
   function run(params) {
     var text =
       'Reorder the matrix based on a single\nrow or column by double-clicking a\nlabel';

@@ -4,8 +4,6 @@ var $ = require('jquery');
 var d3 = require('d3');
 
 module.exports = function play_reorder_buttons() {
-  /* eslint-disable */
-
   function run(params) {
     var text =
       'Reorder all rows and columns\nby clicking the reorder\n buttons';
