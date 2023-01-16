@@ -37,13 +37,13 @@ function generateData() {
 }
 
 const network_data = generateData();
-const clust1 = Clustergrammer({
+const clust1 = new Clustergrammer({
   root: '#clustExample1',
   network_data: network_data
 });
 window.clust1 = clust1;
 
-const clust2 = Clustergrammer({
+const clust2 = new Clustergrammer({
   root: '#clustExample2',
   network_data: data,
   tile_colors: ['#2F80ED', '#2F80ED']
